@@ -1,0 +1,2672 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=1in,headheight=15pt}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{listings}
+
+\definecolor{proofgreen}{RGB}{15,105,68}
+\definecolor{openblue}{RGB}{27,84,145}
+\definecolor{classicalgray}{RGB}{85,92,99}
+\definecolor{computeviolet}{RGB}{100,55,145}
+\definecolor{codegray}{RGB}{248,248,248}
+\definecolor{rulegray}{RGB}{92,101,111}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=openblue,
+  citecolor=proofgreen,
+  urlcolor=openblue,
+  pdftitle={The Alaoglu--Erdos Integer-Exponent Conjecture: Polynomial Approximation, Integer-Valued Interpolation, and the Arithmetic Unit Barrier},
+  pdfauthor={OpenAI, continuation of the ProveIt unified report},
+  pdfsubject={Polynomial approximation methods for the Alaoglu--Erdos conjecture}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s conjecture}
+\rhead{Polynomial-approximation continuation}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.3em,topsep=0.45em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.45em}
+\setlist[description]{leftmargin=3.6cm,labelsep=0.5cm,itemsep=0.35em,topsep=0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{4em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{experiment}[theorem]{Experiment}
+\newtheorem{warning}[theorem]{Caution}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Bsem}{\mathcal B}
+\newcommand{\Lsem}{\Lambda}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\Int}{\operatorname{Int}}
+\newcommand{\capc}{\operatorname{cap}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
+\newcommand{\thetaq}{\vartheta}
+\newcommand{\fall}[2]{\left(#1\right)_{\!\underline{#2}}}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\statusnew}{\textcolor{proofgreen}{\textbf{[proved in this continuation]}}}
+\newcommand{\statusclassical}{\textcolor{classicalgray}{\textbf{[classical]}}}
+\newcommand{\statusinherited}{\textcolor{openblue}{\textbf{[inherited from the unified report]}}}
+\newcommand{\statusexperiment}{\textcolor{computeviolet}{\textbf{[exact or numerical experiment]}}}
+\newcommand{\statusopen}{\textcolor{openblue}{\textbf{[open target]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.45em}\textbf{Status:} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{resultbox}
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.55cm}
+{\Huge\bfseries The \AEname\par}
+\vspace{0.18cm}
+{\Huge\bfseries Integer-Exponent Conjecture\par}
+\vspace{0.65cm}
+{\LARGE Polynomial Approximation, Integer-Valued Interpolation,\par}
+\vspace{0.12cm}
+{\LARGE and the Arithmetic Unit Barrier\par}
+\vspace{0.85cm}
+{\large A nonduplicative continuation of the supplied unified report\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Executive verdict.}
+No unconditional proof of the conjecture is obtained, and no published resolution was found
+in the literature checked through August 21, 2026.  The continuation does, however, extract a
+new approximation-theoretic core with several exact results.  The sharp Bernstein-ellipse
+optimization shows that a classical blockwise polynomial approximation can have enough nodes
+only for the smallest hypothetical output $M=2^x=3$; the optimal block ratio is
+$3+2\sqrt2$, and that entire degree-versus-node geometry cannot reach any $M\ge5$ before coefficient
+arithmetic is considered.  A dyadic Newton-interpolation certificate then gives short exact
+proofs that $M^\vartheta$ is nonintegral for $M=3,5,6,7$, where
+$\vartheta=\log_2 3$.  A discrete minimax theorem identifies the real best error as a
+cofactor quotient and shows exactly how clearing its denominator raises the residual to a
+nonzero integer.  Finally, a $q$-Newton/Gaussian-binomial construction gives canonical
+integer-valued interpolants on geometric progressions and an exact extrapolation formula;
+its first omitted value grows rather than shrinks.  These results isolate the remaining task:
+construct Bernstein-quality approximants in the sparse ring
+$\operatorname{Int}(\langle2,3\rangle,\mathbb Z)$, or find an equivalent source of
+nonarchimedean cancellation.
+\end{minipage}
+\vfill
+{\large August 21, 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+Write $\thetaq=\log 3/\log 2$.  The \AEname\ conjecture asserts that
+$2^x,3^x\in\Z$ for real $x$ implies $x\in\Z$; equivalently, an integer $M$ with
+$M^{\thetaq}\in\Z$ must be a power of two.  The supplied unified report already develops
+machine-checked structural reductions, exact conditional semigroup descriptions, determinant
+methods, sparse interpolation, finite verification, and the reduction to the four
+exponentials frontier.  This continuation does not repeat that material.  It asks instead
+whether approximation theory can convert the many conditional integral values into a
+subunit error and hence an exact contradiction.
+
+The first result is an exact archimedean optimization.  If a hypothetical counterexample has
+$M=2^\beta$, then the $3$-smooth nodes in $[X,cX]$ have asymptotic density
+$\frac{\log c}{\log2\log3}\log X$, while best degree-$d$ polynomial approximation to
+$t^\beta$ on that block requires
+$d\sim\beta\log X/\log\rho(c)$, where
+$\rho(c)=(\sqrt c+1)/(\sqrt c-1)$.  The efficiency
+$\log c\log\rho(c)$ has the exact maximum
+$2\log^2(1+\sqrt2)$, attained at $c=3+2\sqrt2$.  Consequently this scheme can beat the
+node threshold only when
+$M<\exp(2\log^2(1+\sqrt2)/\log3)=4.113124586\ldots$; among non-powers of two, only $M=3$
+remains.  The second result explains why even that case is not settled by the real minimax
+polynomial: normalization to a compact interval introduces a denominator cost of order
+$X^d$, overwhelming the geometric gain.  Markov resolution gives the same diagnosis in a
+different language: $O(\log X)$ arithmetic nodes are too coarse by a factor of $\log X$ to
+norm degree $O(\log X)$ polynomials.
+
+On the arithmetic side, this continuation proves a dyadic interpolation certificate.  If the
+rational polynomial interpolating $T^{\thetaq}$ at $d+1$ powers of two comes within the
+reciprocal of its reduced denominator at an integer $M$, then $M^{\thetaq}$ is not an
+integer.  Quadratic instances give exact exclusions for $M=3,5,6,7$.  A general discrete
+Chebyshev duality theorem expresses the best real uniform error on $d+2$ nodes as
+$|\det V|$ divided by the sum of the adjacent cofactors.  At arithmetic nodes, clearing the
+minimax denominator produces an integer-coefficient alternant whose error is the nonzero
+integer $\det V$; this is the exact ``unit barrier.''  A separate $q$-Newton theorem constructs
+integer-valued interpolation polynomials on $\{q^n\}$, with Gaussian-binomial basis and first
+extrapolation error $\prod_{i=0}^d(r-q^i)$.  The formula makes clear why one-axis arithmetic
+interpolation is plentiful but cross-axis control is absent.
+
+The report closes by formulating precise sufficient conditions in the ring of
+integer-valued polynomials on the $3$-smooth semigroup, by connecting them with Bhargava
+$p$-orderings and generalized factorials, and by auditing rational, Pad\'e,
+Hermite--Pad\'e, orthogonal-polynomial, and probabilistic-rounding approaches.  Recent work
+on matrix coefficients, exponential-product transcendence, discrete Chebyshev systems, and
+integer-valued polynomial bases sharpens the available language but does not remove the
+rank-two four-exponentials obstruction.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive answer, scope, and claim ledger}
+\label{sec:executive}
+
+\subsection{What this continuation does not repeat}
+
+The supplied unified report is already a book-length synthesis.  It contains the reduction to
+four exponentials, the exact conditional free-monoid structure of all solutions, a
+power-primitive odd generator, block counting and equidistribution, arbitrary-node and
+semigroup determinants, $p$-adic valuation budgets, HCIZ bounds, sparse power-curve
+interpolation, matrix-coefficient reformulations, boundary-dilation defects, finite scans,
+and a detailed Lean inventory.  Repeating those arguments would obscure rather than extend
+them.
+
+This document uses only the following inherited facts.
+
+\begin{enumerate}
+\item A hypothetical noninteger solution is irrational and in fact transcendental.
+\item If $\beta$ is such a solution and
+      \[
+        M=2^\beta,\qquad N=3^\beta,
+      \]
+      then $M,N$ are positive integers and
+      \[
+        (2^a3^b)^\beta=M^aN^b\in\Z
+        \qquad(a,b\in\Nzero).
+      \]
+\item The functions $t^{\lambda_0},\ldots,t^{\lambda_s}$ with distinct real exponents form
+      an extended complete Chebyshev system on $(0,\infty)$; a nonzero linear combination has
+      at most $s$ positive zeros, counted without multiplicity for the applications here.
+\item The conjecture is a special $2\times2$ case of the four exponentials problem, and the
+      known six exponentials theorem does not specialize far enough.
+\end{enumerate}
+
+Everything else is rederived or newly developed below.
+
+\subsection{Claim ledger}
+
+\begin{longtable}{p{0.30\textwidth}p{0.19\textwidth}p{0.43\textwidth}}
+\toprule
+Statement & Status & Role \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Role \\
+\midrule
+\endhead
+Bernstein root asymptotic for $t^\beta$ & \statusclassical & Determines the best possible
+archimedean exponential rate on a fixed multiplicative block. \\
+Exact maximization of $\log c\log\rho(c)$ & \statusnew & Shows that classical block
+polynomial approximation has enough nodes only for $M=3$. \\
+Arithmetic subunit locking on $3$-smooth nodes & \statusnew & Converts an
+integer-valued approximant with error $<1$ into too many exact zeros. \\
+Integer-part shift has no asymptotic gain & \statusnew & Shows that replacing $\beta$ by
+its fractional part merely changes the arithmetic threshold from $1$ to $X^{-\lfloor\beta\rfloor}$. \\
+Scaling/denominator tax & \statusnew & Proves that naive compact-interval
+normalization costs $X^d$ when coefficients are cleared. \\
+Dyadic interpolation certificate & \statusnew & Gives exact finite certificates from
+rational interpolation at powers of two. \\
+Exclusions $M=3,5,6,7$ & \statusnew & Independent symbolic consequences of the
+certificate theorem; much weaker in range than inherited finite scans. \\
+Discrete minimax cofactor identity & \statusnew & Gives the exact real best error and the
+alternation vector on arbitrary arithmetic nodes. \\
+Arithmetic alternant after denominator clearing & \statusnew & Identifies the residual
+as the nonzero integer determinant, explaining the unit barrier. \\
+$q$-Newton/Gaussian-binomial interpolation & \statusnew & Constructs integer-valued
+interpolants on geometric progressions and gives exact extrapolation errors. \\
+Large zero-free computational ranges & \statusinherited & Not rerun or enlarged here. \\
+A complete proof of the conjecture & \statusopen & No such proof is claimed. \\
+\bottomrule
+\end{longtable}
+
+\subsection{The new bottom line}
+
+Approximation theory supplies an unexpectedly sharp archimedean opportunity.  For the
+smallest hypothetical generator $M=3$, best polynomial approximation has enough degrees of
+freedom to become subunit on more arithmetic nodes than its zero count permits.  This is not
+merely a rough comparison: the optimal block and the exact threshold can be calculated.
+
+The obstruction is arithmetic.  The best real approximant has coefficients with no reason to
+take integral values on the conditional node set.  Clearing denominators changes a small
+normalized error into a large integral residual.  The central problem may therefore be stated
+without transcendence terminology:
+
+\begin{resultbox}
+Construct, for a nonintegral $\beta$ with $2^\beta,3^\beta\in\Z$, a degree-$d$ polynomial
+that is integer-valued on $\langle2,3\rangle$, has error $<1$ from $t^\beta$ on at least
+$d+2$ positive nodes, and retains Bernstein-quality size.
+\end{resultbox}
+
+The report proves that the real and arithmetic sides separately have the right scale in the
+edge case $M=3$, but no construction currently satisfies both.
+
+\section{Minimal setup and the approximation dictionary}
+\label{sec:setup}
+
+\subsection{Two dual normalizations}
+
+Set
+\[
+  \thetaq:=\frac{\log3}{\log2}=1.584962500721156\ldots.
+\]
+There are two equivalent ways to organize a counterexample.
+
+\paragraph{Exponent normalization.}
+Assume that $\beta\notin\Z$ and
+\[
+  M=2^\beta\in\N,\qquad N=3^\beta\in\N.
+\]
+Then
+\[
+  \beta=\log_2M,\qquad M^{\thetaq}=N.
+\]
+The fixed arithmetic node set
+\[
+  \Bsem:=\{2^a3^b:a,b\in\Nzero\}
+\]
+satisfies $q^\beta\in\Z$ for every $q\in\Bsem$.
+
+\paragraph{Power-curve normalization.}
+Fix $\thetaq$ and regard $M$ as a positive integer.  The conjecture is equivalent to
+\[
+  M^{\thetaq}\in\Z\quad\Longrightarrow\quad M=2^m\text{ for some }m\in\Nzero.
+\]
+The first normalization is better for approximation on the fixed node set $\Bsem$; the
+second is better for interpolation at the known points
+$(2^m,3^m)$ of the curve $y=x^{\thetaq}$.
+
+\subsection{The locking principle}
+
+The basic mechanism is an integer-versus-small-real comparison.
+
+\begin{lemma}[Chebyshev zero bound]
+\label{lem:power-cheb}
+Let $\lambda_0<\cdots<\lambda_s$ be real.  If
+\[
+  F(t)=\sum_{j=0}^s c_jt^{\lambda_j}
+\]
+is not identically zero, then $F$ has at most $s$ distinct zeros on $(0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Put $t=e^u$.  Then $F(e^u)=\sum_jc_je^{\lambda_ju}$ is an exponential polynomial with
+strictly ordered real frequencies.  Its Wronskian equals a nonzero Vandermonde factor times a
+positive exponential.  Hence the functions form an extended complete Chebyshev system.
+\end{proof}
+
+\begin{theorem}[Arithmetic subunit locking]
+\label{thm:locking}
+Assume $q^\beta\in\Z$ for every $q$ in a finite set $E\subset(0,\infty)\cap\Z$.  Let
+$P\in\R[T]$ have degree at most $d$ and satisfy $P(q)\in\Z$ for every $q\in E$
+(for example, $P\in\operatorname{Int}(E,\Z)$).  If
+\[
+  \max_{q\in E}|q^\beta-P(q)|<1,
+\]
+then $q^\beta=P(q)$ for every $q\in E$.  Consequently, if $\beta\notin\Nzero$ and
+$\#E\ge d+2$, no such $P$ exists.
+\end{theorem}
+
+\begin{proof}
+For each $q\in E$, both $q^\beta$ and $P(q)$ are integers.  A difference of absolute value
+less than one must vanish.  If there are $d+2$ zeros, the nonzero generalized polynomial
+$q^\beta-P(q)$ contradicts Lemma~\ref{lem:power-cheb} applied to
+$1,t,\ldots,t^d,t^\beta$.
+\end{proof}
+
+The same argument does not require ordinary powers.
+
+\begin{theorem}[Quantized M\"untz approximation]
+\label{thm:muntz-lock}
+Assume $M=2^\beta,N=3^\beta\in\Z$ and define
+\[
+  \Lsem_\beta:=\{n+k\beta:n,k\in\Nzero\}.
+\]
+For every $q\in\Bsem$ and $\lambda\in\Lsem_\beta$, one has $q^\lambda\in\Z$.
+Let $\lambda_1,\ldots,\lambda_s,\mu$ be distinct elements of $\Lsem_\beta$.  For any finite
+$E\subset\Bsem$ with $\#E\ge s+1$,
+\[
+ \inf_{c_1,\ldots,c_s\in\Z}
+ \max_{q\in E}\left|q^\mu-\sum_{j=1}^sc_jq^{\lambda_j}\right|\ge1.
+\]
+Likewise, every nonzero integer-coefficient M\"untz polynomial with $s$ terms has supremum at
+least one on any $s$ distinct nodes of $\Bsem$.
+\end{theorem}
+
+\begin{proof}
+Integrality follows from
+\[
+ (2^a3^b)^{n+k\beta}=(2^a3^b)^n(M^aN^b)^k.
+\]
+If the displayed maximum were below one, all residuals would vanish.  The residual has at
+most $s$ positive zeros by Lemma~\ref{lem:power-cheb}, whereas $E$ has at least $s+1$ nodes.
+The homogeneous statement is identical with one fewer term.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:muntz-lock} is the approximation-theoretic dual of an integer generalized
+Vandermonde determinant.  The determinant language is already developed in the supplied
+report; the new point here is that the lower bound is exactly the arithmetic unit $1$, while
+the corresponding real minimax error may be exponentially smaller.
+\end{remark}
+
+\subsection{Subtracting the integer part does not help}
+
+One might hope to reduce a large $\beta$ to its fractional part before approximating.  The
+arithmetic threshold changes by exactly the amount that cancels this advantage.
+
+\begin{lemma}[Integer-shift invariance of the degree scale]
+\label{lem:integer-shift}
+Write $\beta=m+\delta$ with $m\in\Nzero$ and $0<\delta<1$.  For $q\in\Bsem$ and
+$P\in\Z[T]$,
+\[
+ q^m\bigl(q^\delta-P(q)\bigr)=q^\beta-q^mP(q)\in\Z.
+\]
+Thus a sufficient pointwise locking condition is
+\[
+ |q^\delta-P(q)|<q^{-m}.
+\]
+On a block $[X,cX]$, best degree-$d$ real polynomial approximation to $t^\delta$ has
+archimedean scale $X^\delta\rho(c)^{-d}$, so reaching the threshold $X^{-m}$ still requires
+\[
+ d\ge \frac{\beta\log X}{\log\rho(c)}+o(\log X).
+\]
+\end{lemma}
+
+\begin{proof}
+The integrality identity is immediate.  The approximation statement follows from the
+Bernstein root asymptotic proved in Section~\ref{sec:bernstein}: the condition
+$X^\delta\rho(c)^{-d}<X^{-m+o(1)}$ is equivalent to the displayed degree bound.
+\end{proof}
+
+This simple cancellation is a recurring warning: lowering the analytic exponent usually
+introduces an exactly compensating denominator.
+
+\section{Recent literature and the relevant frontier}
+\label{sec:literature}
+
+\subsection{Four exponentials and matrix coefficients}
+
+Waldschmidt's 2023 survey places the question ``$2^t,3^t\in\Z$ implies $t\in\Nzero$?''
+explicitly inside the four exponentials problem and records that both remain open
+\cite{Waldschmidt2023}.  Dasgupta and Kakde subsequently formulated the Matrix Coefficient
+Conjecture for matrices of logarithms of algebraic numbers and proved a substantial converse
+direction linking it with four exponentials and structural rank
+\cite{DasguptaKakde2024,DasguptaKakde2026}.  The supplied unified report already specializes
+that framework to the present $2\times2$ matrix.  Approximation theory does not bypass this
+frontier automatically: its coefficient lattice is another form of the same rank-collapse
+problem.
+
+Massold's 2025 preprint gives new lower bounds for transcendence degrees of fields generated
+by exponentials of products and reduces a stronger estimate to a torus-intersection
+conjecture \cite{Massold2025}.  The parameter range does not supply the missing $2\times2$
+case here.  The importance of the work is diagnostic: even contemporary advances naturally
+stop at a geometric intersection statement when the product matrix is critical.
+
+\subsection{Hermite--Pad\'e and explicit transcendence measures}
+
+Fischler and Rivoal's 2025 preprint develops a new explicit transcendence measure for values
+of the exponential function.  The construction optimizes an accessory parameter in a Siegel
+determinant built from Hermite--Pad\'e approximants to powers of $\exp$
+\cite{FischlerRivoal2025}.  This is very close in spirit to what one would like here: an
+auxiliary function with unusually small archimedean value and controlled arithmetic
+coefficients.
+
+The hypotheses, however, are materially different.  Classical $E$-function and
+Hermite--Pad\'e machinery obtains arithmetic information from differential equations over
+algebraic function fields and evaluation at algebraic points.  In the present problem the
+natural functions are
+\[
+ z\longmapsto e^{z\log2},\qquad z\longmapsto e^{z\log3},
+\]
+whose differential coefficients $\log2,\log3$ are transcendental, and the hypothetical
+evaluation point $z=\beta$ is transcendental.  Faverjon and Adamczewski's recent algebraic
+independence measures for $E$- and $M$-functions likewise emphasize algebraic systems and
+algebraic evaluation points \cite{AdamczewskiFaverjon2025}.  Section~\ref{sec:hermite-pade}
+turns this mismatch into an explicit failure audit.
+
+\subsection{Discrete Chebyshev systems and integer-valued polynomials}
+
+Gorbachev, Ivanov, and Tikhonov developed a discrete Chebyshev alternance theorem and a
+Remez-type algorithm for restrictions of Chebyshev systems to ordered discrete sets
+\cite{GorbachevIvanovTikhonov2025}.  Their framework is directly relevant to the cofactor
+minimax identity in Section~\ref{sec:minimax}: the conditional arithmetic nodes form a
+strictly ordered discrete set and the power functions form a Chebyshev system.
+
+On the arithmetic side, Berger and Sprang connected regular bases of integer-valued
+polynomial rings with $p$-adic Fourier theory \cite{BergerSprang2025}.  Lagarias and Yangjit's 2025 work on $B$-orderings extends Bhargava's ordering machinery for generalized
+factorials \cite{LagariasYangjit2025,Bhargava1997}.  These developments do not solve the
+\AEname\ problem, but they provide exactly the language needed for the open construction in
+$\Int(\Bsem,\Z)$.
+
+\subsection{Integer Chebyshev and potential theory}
+
+The integer Chebyshev problem studies small polynomials with integer coefficients on compact
+sets, with logarithmic capacity governing the first approximation scale.  The monic variant
+was developed in detail by Borwein, Pinner, and Pritsker
+\cite{BorweinPinnerPritsker2003}; Pritsker's work surveys the interaction of capacity,
+algebraic integers, and integer coefficients \cite{Pritsker2005}.  Our problem is
+inhomogeneous and the relevant ring is integer-valued on a sparse semigroup rather than
+$\Z[T]$.  Nevertheless, potential theory explains why normalization to $[1,c]$ is
+archimedeanly optimal and arithmetically dangerous.
+
+\begin{statusbox}
+The literature review above is \statusclassical.  No source located through August 21, 2026
+claims a proof of the \AEname\ conjecture or of the general four exponentials conjecture.
+The new theorems below are independent paper proofs and are not claimed to be machine checked.
+\end{statusbox}
+
+\section{Bernstein ellipses and the exact block-efficiency theorem}
+\label{sec:bernstein}
+
+\subsection{Best approximation on a multiplicative block}
+
+For $c>1$, $\alpha>0$ with $\alpha\notin\Nzero$, and $d\in\Nzero$, define
+\[
+ E_d(\alpha;c):=
+ \inf_{P\in\R[T],\,\deg P\le d}\ 
+ \max_{1\le t\le c}|t^\alpha-P(t)|.
+\]
+The affine map from $[1,c]$ to $[-1,1]$ sends the branch point $t=0$ to
+\[
+ s_0=-\frac{c+1}{c-1}<-1.
+\]
+The Bernstein ellipse through $s_0$ has parameter
+\begin{equation}
+ \rho(c)=|s_0|+\sqrt{s_0^2-1}
+ =\frac{\sqrt c+1}{\sqrt c-1}.
+ \label{eq:rho}
+\end{equation}
+
+\begin{theorem}[Bernstein root asymptotic]
+\label{thm:bernstein-root}
+For fixed $c>1$ and positive nonintegral $\alpha$,
+\[
+ \lim_{d\to\infty} E_d(\alpha;c)^{1/d}=\rho(c)^{-1}.
+\]
+Consequently, on $[X,cX]$,
+\[
+ \inf_{\deg P\le d}\max_{X\le t\le cX}|t^\alpha-P(t)|
+ =X^\alpha E_d(\alpha;c),
+\]
+and subunit real error requires
+\begin{equation}
+ d\ge \frac{\alpha\log X}{\log\rho(c)}+o(\log X).
+ \label{eq:degree-need}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The function $t^\alpha$, with the principal branch, is holomorphic in the slit plane
+$\C\setminus(-\infty,0]$.  Under the affine map, it is holomorphic inside every Bernstein
+ellipse of parameter smaller than $\rho(c)$, and the branch point at $0$ prevents analytic
+continuation through the ellipse of parameter $\rho(c)$.  Bernstein's converse theorem for
+geometric polynomial approximation gives the root asymptotic.  The scaling identity follows
+by writing $t=Xu$ and absorbing $X^\alpha$ into the coefficients.
+\end{proof}
+
+\subsection{How many arithmetic nodes are available?}
+
+Let
+\[
+ B(X,c):=\#\bigl(\Bsem\cap[X,cX]\bigr).
+\]
+Put $a=\log2$, $b=\log3$, $L=\log X$, and $h=\log c$.  The condition
+$2^m3^n\in[X,cX]$ is
+\[
+ L\le am+bn\le L+h.
+\]
+Since $a/b$ is irrational, the boundary phases are equidistributed.
+
+\begin{proposition}[Thin-strip count]
+\label{prop:thin-strip}
+For every fixed $c>1$,
+\begin{equation}
+ B(X,c)=\frac{\log c}{\log2\log3}\log X+o(\log X)
+ \qquad(X\to\infty).
+ \label{eq:node-count}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Sum over $n\le(L+h)/b$.  For each $n$, the admissible $m$ lie in an interval of fixed length
+$h/a$ whose endpoints have fractional parts obtained from the irrational rotation
+$n(b/a)$.  Weyl equidistribution gives average occupancy $h/a$; the number of $n$ is
+$L/b+O(1)$.  The resulting main term is $hL/(ab)$ and the discrepancy is $o(L)$.
+\end{proof}
+
+The supplied report proves stronger blockwise equidistribution statements conditionally for
+candidate semigroups.  Proposition~\ref{prop:thin-strip} is the fixed-node analogue needed
+here.
+
+\subsection{The necessary degree-versus-node inequality}
+
+Assume a counterexample $\beta$ and suppose, optimistically, that one can find a degree-$d$
+polynomial integer-valued on $\Bsem$ whose error from $t^\beta$ is below one throughout
+$[X,cX]$.  Theorem~\ref{thm:locking} needs $B(X,c)\ge d+2$.  Comparing
+\eqref{eq:degree-need} and \eqref{eq:node-count} gives the leading-order necessary inequality
+\begin{equation}
+ \frac{\log c}{\log2\log3}\ge
+ \frac{\beta}{\log\rho(c)}.
+ \label{eq:raw-efficiency}
+\end{equation}
+Because $M=2^\beta$, this is
+\begin{equation}
+ \boxed{\quad
+   \log c\,\log\rho(c)\ge\log3\,\log M.
+ \quad}
+ \label{eq:efficiency-condition}
+\end{equation}
+A strict inequality is needed for a positive asymptotic degree margin; equality would require
+lower-order analysis.
+
+The left side depends only on block geometry.  It can be optimized exactly.
+
+\subsection{Exact optimization}
+
+\begin{theorem}[Optimal multiplicative block]
+\label{thm:optimal-block}
+For $c>1$, set
+\[
+ \Psi(c):=\log c\,\log\frac{\sqrt c+1}{\sqrt c-1}.
+\]
+Then
+\begin{equation}
+ \max_{c>1}\Psi(c)=2\log^2(1+\sqrt2),
+ \label{eq:psi-max}
+\end{equation}
+and the unique maximizer is
+\begin{equation}
+ c_*=3+2\sqrt2=(1+\sqrt2)^2.
+ \label{eq:cstar}
+\end{equation}
+At this point $\rho(c_*)=1+\sqrt2$.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ y=\tfrac12\log c,
+ \qquad
+ u=\log\rho(c)=\log\coth(y/2).
+\]
+The identity $\tanh(y/2)=e^{-u}$ gives
+\[
+ \sinh y\,\sinh u=1.
+\]
+We claim that $yu\le\arsinh(1)^2$.  The function
+\[
+ z\longmapsto \log\sinh(e^z)
+\]
+is strictly convex, because with $x=e^z$ its second derivative is
+\[
+ x\coth x-x^2\operatorname{csch}^2x
+ =\frac{x(\sinh x\cosh x-x)}{\sinh^2x}>0.
+\]
+Applying midpoint convexity at $\log y$ and $\log u$ yields
+\[
+ \sinh\sqrt{yu}
+ \le\sqrt{\sinh y\sinh u}=1.
+\]
+Hence $\sqrt{yu}\le\arsinh(1)=\log(1+\sqrt2)$.  Equality forces $y=u$,
+so $\sinh^2y=1$, whence $y=u=\arsinh(1)$.  Finally
+$\Psi(c)=2yu$, giving \eqref{eq:psi-max}, and
+$c=e^{2y}=(1+\sqrt2)^2$.
+\end{proof}
+
+\begin{corollary}[The generator-three frontier]
+\label{cor:M3-frontier}
+A blockwise Bernstein-rate polynomial strategy can satisfy the leading-order
+degree-versus-node inequality only if
+\begin{equation}
+ M\le\exp\!\left(\frac{2\log^2(1+\sqrt2)}{\log3}\right)
+ =4.113124586019410\ldots.
+ \label{eq:Mcritical}
+\end{equation}
+A positive asymptotic margin requires the strict inequality.  Among positive integers that
+are not powers of two, only $M=3$ qualifies.
+\end{corollary}
+
+\begin{proof}
+Combine \eqref{eq:efficiency-condition} with Theorem~\ref{thm:optimal-block}.  The numerical
+value follows by direct evaluation.  The only integer $M$ with $2<M<4.113\ldots$ is $3$;
+$M=4$ corresponds to the integral exponent $\beta=2$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$M$ & $\beta=\log_2M$ & node coefficient & degree coefficient & margin \\
+\midrule
+$3$ & $1.5849625$ & $2.3148354$ & $1.7982868$ & $+0.5165486$ \\
+$4$ & $2.0000000$ & $2.3148354$ & $2.2691853$ & $+0.0456501$ \\
+$5$ & $2.3219281$ & $2.3148354$ & $2.6344426$ & $-0.3196072$ \\
+$6$ & $2.5849625$ & $2.3148354$ & $2.9328795$ & $-0.6180441$ \\
+$7$ & $2.8073549$ & $2.3148354$ & $3.1852043$ & $-0.8703689$ \\
+$9$ & $3.1699250$ & $2.3148354$ & $3.5965736$ & $-1.2817382$ \\
+\bottomrule
+\end{tabular}
+\caption{Asymptotic coefficients of $\log X$ at the optimal block $c_*=3+2\sqrt2$.
+The node coefficient is $\log c_*/(\log2\log3)$; the degree coefficient is
+$\beta/\log(1+\sqrt2)$.  $M=4$ is shown only as a calibration.}
+\label{tab:efficiency}
+\end{table}
+
+\subsection{Interpretation}
+
+Corollary~\ref{cor:M3-frontier} is both encouraging and restrictive.
+
+\begin{itemize}
+\item It is encouraging because the archimedean side is not uniformly too weak.  For $M=3$
+      it has a genuine positive asymptotic margin.
+\item It is restrictive because no sharpening of constants inside ordinary polynomial
+      approximation can make this particular block-count method reach $M\ge5$.  A different
+      function space, a different arithmetic source of nodes, or a nonarchimedean gain is
+      necessary.
+\item It identifies the exact place where an integer-valued approximation theorem would have
+      the highest leverage: the ring $\Int(\Bsem,\Z)$, exponent
+      $\beta=\thetaq$, and block ratio $3+2\sqrt2$.
+\end{itemize}
+
+The next section explains why the real minimax polynomial cannot simply be rounded or scaled
+into that ring.
+
+\section{Why the real minimax polynomial does not become arithmetic}
+\label{sec:integerization}
+
+\subsection{The normalization and denominator tax}
+
+A best approximant on $[1,c]$ has real coefficients.  To use
+Theorem~\ref{thm:locking}, one must turn it into a polynomial taking integer values at the
+arithmetic nodes.  The most obvious conversion is fatal.
+
+\begin{proposition}[Naive coefficient clearing]
+\label{prop:clearing-tax}
+Assume $X\in\Bsem$ and put $A=X^\beta\in\Z$.  Let
+\[
+ p(u)=\sum_{j=0}^da_ju^j\in\Q[u],
+ \qquad Da_j\in\Z
+\]
+for a positive integer $D$.  Define
+\[
+ \widetilde P_X(t):=DX^dA\,p(t/X)\in\Z[t].
+\]
+Then
+\begin{equation}
+ \max_{X\le t\le cX}
+ \bigl|DX^dt^\beta-\widetilde P_X(t)\bigr|
+ =DX^{d+\beta}\max_{1\le u\le c}|u^\beta-p(u)|.
+ \label{eq:clearing-error}
+\end{equation}
+If $p$ has Bernstein-rate error $\rho(c)^{-d+o(d)}$, the logarithm of the right side is
+\[
+ d\log X-d\log\rho(c)+\beta\log X+\log D+o(d).
+\]
+For every choice $d\asymp\log X$, the positive term $d\log X\asymp(\log X)^2$ overwhelms the
+Bernstein gain $d\log\rho(c)\asymp\log X$.
+\end{proposition}
+
+\begin{proof}
+The coefficient of $t^j$ in $DX^dA p(t/X)$ is
+$DAa_jX^{d-j}\in\Z$.  The identity \eqref{eq:clearing-error} follows after setting $t=Xu$.
+The asymptotic comparison is immediate.
+\end{proof}
+
+\begin{warning}
+Proposition~\ref{prop:clearing-tax} is a no-go theorem only for the naive operation
+``approximate on $[1,c]$, rescale, clear all coefficient denominators.''  It does not rule out
+polynomials that are integer-valued on $\Bsem$ without having integer coefficients.  That
+larger ring is the principal open direction in Section~\ref{sec:int-valued}.
+\end{warning}
+
+The same tax appears if one normalizes several $3$-smooth nodes by a common node $X$.  Ratios
+such as $2^a3^b/X$ have numerator and denominator of order $X$ when the exponent vectors move
+in opposite directions.  A common coefficient denominator for a degree-$d$ polynomial in
+those ratios can therefore be of order $X^d$.  The obstruction is not numerical roundoff; it
+is the arithmetic cost of changing scale.
+
+\subsection{Capacity on the original scale}
+
+Potential theory gives a complementary formulation.
+
+\begin{proposition}[Monic Chebyshev norm on a block]
+\label{prop:monic-capacity}
+Let $I=[X,cX]$ and $d\ge1$.  Among monic real polynomials of degree $d$,
+\begin{equation}
+ \min_{P\text{ monic}}\|P\|_I
+ =2\left(\frac{(c-1)X}{4}\right)^d.
+ \label{eq:monic-cheb}
+\end{equation}
+In particular,
+\[
+ \capc(I)=\frac{(c-1)X}{4}.
+\]
+\end{proposition}
+
+\begin{proof}
+Scale the monic Chebyshev polynomial on $[-1,1]$.  Since $T_d$ has leading coefficient
+$2^{d-1}$ and uniform norm one, the monic extremal polynomial on an interval of length
+$L=(c-1)X$ has norm $L^d/2^{2d-1}=2(L/4)^d$.
+\end{proof}
+
+On the normalized interval $[1,c]$, capacity is fixed and geometric approximation is
+possible.  On the original interval, capacity grows linearly with $X$.  Integer coefficients
+live naturally on the original scale, whereas complex approximation lives naturally on the
+normalized scale.  Proposition~\ref{prop:clearing-tax} is the coefficient-level expression
+of this conflict.
+
+The classical integer Chebyshev problem asks for a nonzero $P\in\Z[T]$ with small norm on a
+fixed compact set.  Here one asks for an inhomogeneous approximation to $t^\beta$, and the
+right arithmetic class is $\Int(\Bsem,\Z)$.  Capacity remains an indispensable lower-order
+constraint, but it cannot alone see the sparse congruences of $\Bsem$.
+
+\subsection{The Markov resolution deficit}
+
+Could one control a polynomial on the full block from its values on the arithmetic nodes and
+then use a real minimax construction?  Standard norming arguments fail by one logarithm.
+
+For a finite set $E\subset I=[X,cX]$, define its fill distance
+\[
+ h(E,I):=\max_{t\in I}\min_{q\in E}|t-q|.
+\]
+Markov's inequality on an interval of length $L=(c-1)X$ gives
+\[
+ \|P'\|_I\le\frac{2d^2}{L}\|P\|_I
+ \qquad(\deg P\le d).
+\]
+Therefore
+\begin{equation}
+ \|P\|_I
+ \le \|P\|_E+\frac{2d^2h(E,I)}{L}\|P\|_I.
+ \label{eq:markov-norming}
+\end{equation}
+When $2d^2h/L<1$, the nodes are a norming mesh with constant
+$(1-2d^2h/L)^{-1}$.
+
+\begin{proposition}[Arithmetic nodes are below Markov resolution]
+\label{prop:markov-deficit}
+Let $E_X=\Bsem\cap[X,cX]$, with fixed $c>1$.  If $d\asymp\log X$, then
+\[
+ \frac{2d^2h(E_X,[X,cX])}{(c-1)X}\longrightarrow\infty
+\]
+after passage to any sequence on which the implicit degree constant is positive.  More
+precisely,
+\[
+ h(E_X,[X,cX])\ge
+ \frac{(c-1)X}{2(B(X,c)+1)},
+\]
+so the Markov factor is at least $d^2/(B(X,c)+1)\asymp\log X$.
+\end{proposition}
+
+\begin{proof}
+The $B(X,c)$ nodes split the interval into at most $B(X,c)+1$ gaps.  One gap has length at
+least $L/(B(X,c)+1)$, and its midpoint is at distance at least half that length from every
+node.  Proposition~\ref{prop:thin-strip} gives $B(X,c)\asymp\log X$.
+\end{proof}
+
+A degree-$d$ polynomial has boundary-layer resolution $L/d^2$.  The $3$-smooth nodes have
+spacing scale $L/d$ when $d\asymp\log X$.  Thus a degree-$d$ polynomial can form a narrow peak
+inside a typical arithmetic gap.  This does not prove that every discrete approximation
+scheme fails, but it proves that the most common Markov-mesh transfer cannot supply the
+missing estimate.
+
+A measure-theoretic Remez inequality is even less adapted: a finite node set has measure zero.
+Thickening each node to the Markov scale $L/d^2$ gives total measure only
+$O(B(X,c)L/d^2)=O(L/\log X)$, and the resulting Remez constant grows roughly like a power of
+$\log X$ raised to degree $d$.  Its logarithm is of order
+$\log X\log\log X$, larger than the $O(\log X)$ Bernstein margin.
+
+\subsection{Rounding coefficients is not a small perturbation}
+
+Let $p(t)=\sum_{j=0}^da_jt^j$ approximate $t^\beta$ on $[X,cX]$.  Rounding each coefficient
+to a nearby integer creates a pointwise perturbation bounded only by
+\[
+ \frac12\sum_{j=0}^d(cX)^j\asymp X^d.
+\]
+Using a Newton or Chebyshev basis reduces conditioning over the real numbers but does not by
+itself make the basis integer-valued on $\Bsem$.  The correct rounding problem is a closest
+vector problem in the evaluation lattice
+\[
+ \mathcal L_E=
+ \bigl\{(P(q))_{q\in E}:P\in\Z[T],\ \deg P\le d\bigr\}\subset\Z^E,
+\]
+or, more flexibly, in the evaluation image of $\Int(\Bsem,\Z)$.  The cofactor identity of
+Section~\ref{sec:minimax} computes the continuous optimum, but its distance to this lattice is
+the unresolved quantity.
+
+\section{Dyadic interpolation as an exact proof-producing certificate}
+\label{sec:dyadic-cert}
+
+The power-curve normalization supplies infinitely many exact rational interpolation data:
+\[
+ (2^n,(2^n)^{\thetaq})=(2^n,3^n),\qquad n\in\Nzero.
+\]
+A rational interpolant through such points can be compared with an integer target at another
+integer $M$.  The reciprocal of its reduced denominator is an exact exclusion threshold.
+
+\subsection{The certificate theorem}
+
+\begin{theorem}[Dyadic interpolation certificate]
+\label{thm:dyadic-certificate}
+Let $0\le n_0<\cdots<n_d$ and let $I_{\mathbf n}\in\Q[T]$ be the unique polynomial of degree
+at most $d$ satisfying
+\[
+ I_{\mathbf n}(2^{n_j})=3^{n_j}\qquad(0\le j\le d).
+\]
+Let $M\in\N$ be distinct from all $2^{n_j}$, and write
+\[
+ I_{\mathbf n}(M)=\frac ab
+\]
+in lowest terms with $b>0$.  If
+\begin{equation}
+ \left|M^{\thetaq}-\frac ab\right|<\frac1b,
+ \label{eq:dyadic-cert}
+\end{equation}
+then $M^{\thetaq}\notin\Z$.
+\end{theorem}
+
+\begin{proof}
+Suppose $M^{\thetaq}\in\Z$.  The difference
+$M^{\thetaq}-a/b$ is rational.  It cannot vanish: otherwise
+$T^{\thetaq}-I_{\mathbf n}(T)$ would have the $d+2$ distinct positive zeros
+$2^{n_0},\ldots,2^{n_d},M$, contradicting Lemma~\ref{lem:power-cheb}.  A nonzero difference
+between an integer and a reduced fraction with denominator $b$ has absolute value at least
+$1/b$, contradicting \eqref{eq:dyadic-cert}.
+\end{proof}
+
+\begin{remark}
+This is a genuine polynomial-approximation proof certificate, not a floating-point test.  The
+interpolant and its denominator are exact.  The only analytic input is a certified interval
+for $M^{\thetaq}$ narrow enough to verify \eqref{eq:dyadic-cert}.  Such an interval can be
+proved by integer power comparisons using rational bounds for $\thetaq$.
+\end{remark}
+
+\subsection{Two quadratic interpolants}
+
+Interpolation at $1,2,4$ gives
+\begin{equation}
+ I_{0,1,2}(T)=\frac{T^2+3T-1}{3}.
+ \label{eq:I012}
+\end{equation}
+Interpolation at $2,4,8$ gives the scaled polynomial
+\begin{equation}
+ I_{1,2,3}(T)=\frac{T^2+6T-4}{4}.
+ \label{eq:I123}
+\end{equation}
+Both identities are checked by substitution.
+
+The following rational bounds are elementary:
+\begin{equation}
+ \frac{19}{12}<\thetaq<\frac85,
+ \qquad
+ \thetaq<\frac{27}{17}.
+ \label{eq:theta-rational-bounds}
+\end{equation}
+Indeed,
+\[
+ 3^{12}=531441>524288=2^{19},
+ \qquad
+ 3^5=243<256=2^8,
+\]
+and
+\[
+ 3^{17}=129140163<134217728=2^{27}.
+\]
+
+\begin{corollary}[Four short symbolic exclusions]
+\label{cor:small-M}
+One has
+\[
+ 3^{\thetaq},\ 5^{\thetaq},\ 6^{\thetaq},\ 7^{\thetaq}\notin\Z.
+\]
+Equivalently, no \AEname\ counterexample can have
+$2^\beta\in\{3,5,6,7\}$.
+\end{corollary}
+
+\begin{proof}
+For $M=3$, \eqref{eq:I012} gives $I(3)=17/3$.  The exact comparisons
+\[
+ 3^{31}=617673396283947>582622237229761=17^{12},
+ \qquad
+ 3^8=6561<7776=6^5
+\]
+imply
+\[
+ \frac{17}{3}<3^{19/12}<3^{\thetaq}<3^{8/5}<6.
+\]
+Hence $|3^{\thetaq}-17/3|<1/3$, and
+Theorem~\ref{thm:dyadic-certificate} applies.
+
+For $M=5$, the same interpolant gives $I(5)=13$.  The integer comparisons
+\[
+ 5^{19}=19073486328125>8916100448256=12^{12},
+ \qquad
+ 5^8=390625<537824=14^5
+\]
+give $12<5^{\thetaq}<14$, so $|5^{\thetaq}-13|<1$.
+
+For $M=6$, \eqref{eq:I123} gives $I(6)=17$.  Since
+\[
+ 6^{19}=609359740010496>582622237229761=17^{12},
+ \qquad
+ 6^8=1679616<1889568=18^5,
+\]
+we obtain $17<6^{\thetaq}<18$.
+
+For $M=7$, \eqref{eq:I123} gives $I(7)=87/4$.  The lower comparison
+\[
+ 7^{19}4^{12}=191461105130195933708288
+ >188031682201497672618241=87^{12}
+\]
+and the upper comparisons in \eqref{eq:theta-rational-bounds}, together with
+\[
+ 7^{27}=65712362363534280139543
+ <8771994066994086373138432=22^{17},
+\]
+give
+\[
+ \frac{87}{4}<7^{19/12}<7^{\thetaq}<7^{27/17}<22.
+\]
+Thus $|7^{\thetaq}-87/4|<1/4$.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lllll}
+\toprule
+$M$ & interpolation nodes & $I(M)$ & certified interval for $M^{\thetaq}$ & threshold \\
+\midrule
+$3$ & $1,2,4$ & $17/3$ & $(17/3,6)$ & $1/3$ \\
+$5$ & $1,2,4$ & $13$ & $(12,14)$ & $1$ \\
+$6$ & $2,4,8$ & $17$ & $(17,18)$ & $1$ \\
+$7$ & $2,4,8$ & $87/4$ & $(87/4,22)$ & $1/4$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact dyadic interpolation certificates.  The open interval has width at most twice
+the threshold around the displayed interpolant value; equality with the interpolant is
+excluded by the Chebyshev zero bound.}
+\label{tab:small-certificates}
+\end{table}
+
+\subsection{What the certificate adds, and what it does not}
+
+The inherited finite verification in the supplied report excludes a vastly larger range of
+candidate generators.  Corollary~\ref{cor:small-M} is therefore not a record computation.
+Its value is conceptual:
+
+\begin{itemize}
+\item it is a short symbolic proof based entirely on polynomial approximation and exact
+      integer inequalities;
+\item it makes the denominator threshold explicit;
+\item it produces independently checkable certificates consisting only of a node list, a
+      rational polynomial value, and a rational interval for $M^{\thetaq}$;
+\item it generalizes immediately to any set of dyadic interpolation nodes.
+\end{itemize}
+
+For larger $M$, the interpolation error and the reduced denominator compete.  Moving the
+nodes near $M$ improves real approximation but introduces powers of two into the denominator.
+This is a finite version of Proposition~\ref{prop:clearing-tax}.
+
+\subsection{A rational-interpolation variant}
+
+Let $P,Q\in\Z[T]$ be coprime and suppose $P/Q$ interpolates $T^{\thetaq}$ at
+$d+e+1$ dyadic nodes, with $\deg P\le d$ and $\deg Q\le e$.  If $Q(M)\ne0$ and
+\begin{equation}
+ |M^{\thetaq}Q(M)-P(M)|<1,
+ \label{eq:rational-finite-cert}
+\end{equation}
+then $M^{\thetaq}\notin\Z$.  Indeed, an integral target would make the residual a nonzero
+integer.  It is nonzero because
+$T^{\thetaq}Q(T)-P(T)$ contains at most $d+e+2$ distinct powers and therefore at most
+$d+e+1$ positive zeros, while equality at $M$ would add one zero beyond the interpolation
+count.  Section~\ref{sec:rational} develops the asymptotic version and explains why the factor
+$Q(M)$ is usually prohibitive.
+
+\section{Discrete minimax duality and the exact unit barrier}
+\label{sec:minimax}
+
+Real best approximation on a finite node set has a closed determinant formula.  Its
+arithmetic interpretation reveals the missing denominator saving.
+
+\subsection{The cofactor alternant}
+
+Let $q_0<\cdots<q_N$ be positive nodes and let
+$\lambda_0<\cdots<\lambda_{N-1}<\mu$.  Put
+\[
+ A=(q_i^{\lambda_j})_{\substack{0\le i\le N\\0\le j<N}},
+ \qquad
+ f=(q_i^\mu)_{0\le i\le N},
+ \qquad
+ V=[A\ f].
+\]
+For $0\le i\le N$, let
+\[
+ C_i=(-1)^{i+N}\det A_{\widehat i},
+\]
+where $A_{\widehat i}$ is obtained by deleting row $i$.  Set
+\[
+ D=\det V,
+ \qquad
+ S=\sum_{i=0}^N|C_i|.
+\]
+Strict total positivity of the generalized Vandermonde matrix implies $D>0$ and that the
+$C_i$ alternate in sign after a fixed global normalization.
+
+\begin{theorem}[Exact discrete minimax error]
+\label{thm:cofactor-minimax}
+With the notation above,
+\begin{equation}
+ \min_{c\in\R^N}\|f-Ac\|_\infty=\frac{|D|}{S}.
+ \label{eq:minimax-cofactor}
+\end{equation}
+There is a unique minimizer, and its residual vector is
+\begin{equation}
+ f-Ac_* = \frac{D}{S}\bigl(\sgn C_0,\ldots,\sgn C_N\bigr)^T.
+ \label{eq:alternating-residual}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The vector $C=(C_0,\ldots,C_N)^T$ spans the one-dimensional nullspace of $A^T$ by Laplace
+expansion.  The $\ell^\infty$ distance from $f$ to $\operatorname{col}(A)$ has the dual
+formula
+\[
+ \min_c\|f-Ac\|_\infty
+ =\max_{A^Ty=0,\ \|y\|_1\le1}|y^Tf|.
+\]
+The feasible nullspace is one-dimensional, so the maximum is attained at
+$y=C/S$.  Another Laplace expansion gives $C^Tf=D$.  Hence the optimum is $|D|/S$.
+
+Let $s_i=\sgn C_i$.  The dual equality condition for $\ell^\infty$--$\ell^1$ duality forces
+the primal residual to equal $\varepsilon s$ at every node, with
+$\varepsilon=D/S$.  The augmented matrix $[A\ s]$ is nonsingular because its determinant is
+$\sum_i|C_i|=S$, so this residual and the minimizer are unique.
+\end{proof}
+
+This is the finite-node form of Chebyshev alternation.  It also appears naturally in the
+discrete theory of Chebyshev systems developed in \cite{GorbachevIvanovTikhonov2025}.
+
+\subsection{Clearing the minimax denominator}
+
+Suppose now that all entries of $A$ and $f$ are integers, as happens conditionally on
+$\Bsem$ for exponents in $\Lsem_\beta$.  Then $D,C_i,S\in\Z$.
+
+\begin{theorem}[Arithmetic alternant]
+\label{thm:arithmetic-alternant}
+Under the integral-entry hypothesis, let $s=(\sgn C_i)$.  There exists
+$z\in\Z^N$ such that
+\begin{equation}
+ Sf-Az=D s.
+ \label{eq:integer-alternant}
+\end{equation}
+Equivalently, the integer-coefficient generalized polynomial
+\[
+ G(t)=S t^\mu-\sum_{j=0}^{N-1}z_jt^{\lambda_j}
+\]
+takes the alternating values $D\,\sgn C_i$ at the nodes $q_i$.
+In particular, the real minimax residual $D/S$ becomes the nonzero integer residual $D$
+after the natural denominator is cleared.
+\end{theorem}
+
+\begin{proof}
+Solve $Az=Sf-Ds$.  By \eqref{eq:alternating-residual}, the real solution is $z=Sc_*$.  Since
+$\det[A\ s]=S$,
+\[
+ \binom{z}{D}=[A\ s]^{-1}Sf=\operatorname{adj}([A\ s])f.
+\]
+The adjugate and $f$ are integral, so every component of $z$ is an integer.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:arithmetic-alternant} is the exact arithmetic gap.  The real optimum can be
+far below one because $S$ is large.  But the canonical scaling that makes its coefficients
+integral multiplies the residual by the same $S$, leaving $D\ge1$.  Any proof along this line
+must avoid paying all of $S$, or prove an extra divisibility of $D$ that is incompatible with
+an independent upper bound.
+\end{remark}
+
+\subsection{A three-node example}
+
+Take nodes $1,2,3$, basis $1,t$, and target $t^2$.  Then
+\[
+ A=\begin{pmatrix}1&1\\1&2\\1&3\end{pmatrix},
+ \qquad
+ f=\begin{pmatrix}1\\4\\9\end{pmatrix},
+ \qquad
+ C=(1,-2,1),
+\]
+so $D=2$ and $S=4$.  The best real linear approximant is
+\[
+ p_*(t)=4t-\frac72,
+\]
+with alternating residuals $(1/2,-1/2,1/2)$.  Clearing the cofactor denominator gives
+\[
+ 4t^2-16t+14,
+\]
+whose node values are $(2,-2,2)$.  The small real error $1/2$ has become the nonzero integer
+$2$.
+
+For comparison, the best integer-coefficient linear approximation has uniform error one:
+$p(t)=4t-3$ gives residuals $(0,-1,0)$.  Thus the evaluation lattice may beat the canonical
+cofactor scaling, but it cannot cross the unit threshold on three nodes because equality at
+all three would violate the zero bound.
+
+\subsection{Smith normal form and the true arithmetic optimization}
+
+Let $E=\{q_0,\ldots,q_N\}$ and consider the lattice $\mathcal L=A\Z^N\subset\Z^{N+1}$.
+The exact arithmetic problem is
+\begin{equation}
+ \dist_{\ell^\infty}(f,\mathcal L).
+ \label{eq:lattice-distance}
+\end{equation}
+The real minimax theorem replaces $\mathcal L$ by its real span.  Smith normal form describes
+the quotient $\Z^{N+1}/\mathcal L$ and its congruence obstructions, while the cofactor vector
+identifies the unique real dual direction.  A successful argument would combine:
+
+\begin{enumerate}
+\item an archimedean upper bound showing that $f$ lies within distance $<1$ of
+      $\operatorname{span}_\R\mathcal L$;
+\item a lattice theorem showing that the closest real point can be represented by an integral
+      coefficient vector without increasing the error to one;
+\item or, conversely, a congruence theorem forcing every nonzero residual to have absolute
+      value much larger than the analytic upper bound.
+\end{enumerate}
+
+Theorem~\ref{thm:arithmetic-alternant} shows why a generic determinant estimate is not enough:
+$D$ and $S$ must be studied together.
+
+\section{$q$-Newton interpolation, Gaussian binomials, and the geometric-axis trap}
+\label{sec:qnewton}
+
+The dyadic certificates are initial pieces of a canonical integer-valued interpolation
+calculus on a geometric progression.  Its formulas are exact and reveal both a large
+arithmetic denominator budget and a matching extrapolation explosion.
+
+\subsection{The normalized geometric Newton basis}
+
+Fix integers $q\ge2$ and $r\ge1$.  For $k\ge0$, define
+\begin{equation}
+ B_k^{(q)}(X):=
+ \prod_{i=0}^{k-1}\frac{X-q^i}{q^k-q^i},
+ \qquad B_0^{(q)}=1,
+ \label{eq:q-newton-basis}
+\end{equation}
+and
+\begin{equation}
+ a_k(q,r):=\prod_{i=0}^{k-1}(r-q^i),
+ \qquad a_0(q,r)=1.
+ \label{eq:q-newton-coeff}
+\end{equation}
+For $n,k\in\Nzero$,
+\begin{equation}
+ B_k^{(q)}(q^n)=
+ \qbinom{n}{k}{q}
+ :=\prod_{j=0}^{k-1}\frac{q^{n-j}-1}{q^{k-j}-1},
+ \label{eq:gaussian-value}
+\end{equation}
+with the convention that the Gaussian binomial is zero when $k>n$.  Hence the basis is
+integer-valued on the geometric set $\{q^n:n\ge0\}$.
+
+\begin{theorem}[$q$-Newton interpolation]
+\label{thm:q-newton}
+Define
+\begin{equation}
+ P_d^{q,r}(X):=\sum_{k=0}^d a_k(q,r)B_k^{(q)}(X).
+ \label{eq:q-newton-poly}
+\end{equation}
+Then:
+\begin{enumerate}
+\item $P_d^{q,r}(q^n)\in\Z$ for every $n\in\Nzero$;
+\item $P_d^{q,r}(q^n)=r^n$ for $0\le n\le d$;
+\item for every $n>d$,
+\begin{equation}
+ r^n-P_d^{q,r}(q^n)
+ =\sum_{k=d+1}^n\qbinom{n}{k}{q}
+   \prod_{i=0}^{k-1}(r-q^i);
+ \label{eq:q-newton-remainder}
+\end{equation}
+\item at the first omitted geometric node,
+\begin{equation}
+ r^{d+1}-P_d^{q,r}(q^{d+1})
+ =\prod_{i=0}^d(r-q^i).
+ \label{eq:first-extrapolation}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:gaussian-value} follows by factoring $q^i$ from numerator and denominator
+and reversing the product.  Gaussian binomial coefficients are integers, proving the first
+claim.
+
+The Newton interpolation formula for the function $F(q^n)=r^n$ on the nodes
+$1,q,q^2,\ldots$ has divided-difference coefficient
+$\prod_{i<k}(r-q^i)$ in the normalized basis \eqref{eq:q-newton-basis}.  Equivalently, for
+each $n$ the polynomial identity in $r$
+\begin{equation}
+ r^n=\sum_{k=0}^n\qbinom{n}{k}{q}
+       \prod_{i=0}^{k-1}(r-q^i)
+ \label{eq:q-newton-identity}
+\end{equation}
+holds because both sides have degree $n$ and agree at $r=1,q,\ldots,q^n$ by triangularity.
+Truncating \eqref{eq:q-newton-identity} proves the second and third claims.  For $n=d+1$, the
+remainder has a single term and the Gaussian coefficient is one.
+\end{proof}
+
+\subsection{Termination and the entire Newton shadow}
+
+Let $\alpha=\log_qr$.  If $r=q^m$ with $m\in\Nzero$, then
+$a_{m+1}(q,r)=0$ and all subsequent coefficients vanish.  The series terminates at
+$P_m^{q,r}(X)=X^m$.  Conversely, if $r$ is not a nonnegative integral power of $q$, no
+coefficient vanishes.
+
+The denominator of $B_k^{(q)}$ is
+\begin{equation}
+ D_k(q):=\prod_{i=0}^{k-1}(q^k-q^i)
+ =q^{k^2}\prod_{j=1}^k(1-q^{-j}).
+ \label{eq:q-newton-denominator}
+\end{equation}
+For fixed $q,r$ with no terminating coefficient,
+\begin{equation}
+ \log|a_k(q,r)|=\frac{k(k-1)}2\log q+O_{q,r}(1),
+ \qquad
+ \log D_k(q)=k^2\log q+O_q(1).
+ \label{eq:q-newton-growth}
+\end{equation}
+For fixed $X$, the $k$th term of \eqref{eq:q-newton-poly} is $O_{q,r,X}(q^{-k})$.
+Consequently
+\begin{equation}
+ H_{q,r}(X):=\sum_{k=0}^\infty a_k(q,r)B_k^{(q)}(X)
+ \label{eq:newton-shadow}
+\end{equation}
+converges locally uniformly to an entire function satisfying
+$H_{q,r}(q^n)=r^n$ for every $n\ge0$.
+
+When $\alpha\notin\Nzero$, this entire interpolation function is not $X^\alpha$: the latter
+has a branch point at zero.  Thus the geometric data admit a canonical entire ``Newton
+shadow'' different from the intended power function between the nodes.  This is a special
+function version of the underdetermination inherent in one-axis interpolation.
+
+For example,
+\[
+ H_{2,3}(3)=5.698459082460503\ldots,
+ \qquad
+ 3^{\thetaq}=5.704522494691118\ldots.
+\]
+The difference is small but nonzero.  The approximation is not the issue; the shadow has no
+known reason to share the second arithmetic axis.
+
+\subsection{First extrapolation grows superexponentially}
+
+Equation~\eqref{eq:first-extrapolation} has a particularly clear asymptotic consequence.
+For fixed $q,r$ with $r\ne q^m$,
+\begin{equation}
+ \log\left|r^{d+1}-P_d^{q,r}(q^{d+1})\right|
+ =\frac{d(d+1)}2\log q+O_{q,r}(1).
+ \label{eq:extrapolation-growth}
+\end{equation}
+The same quadratic exponent that creates large admissible denominators also creates a large
+first extrapolation residual.  Integer-valued interpolation on one geometric axis is
+therefore abundant but not close to minimax extrapolation.
+
+For $q=2,r=3$, the first omitted errors are exact integers:
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{r@{\qquad}r@{\qquad}r}
+\toprule
+$d$ & $3^{d+1}-P_d^{2,3}(2^{d+1})$ & absolute value \\
+\midrule
+$0$ & $2$ & $2$ \\
+$1$ & $2$ & $2$ \\
+$2$ & $-2$ & $2$ \\
+$3$ & $10$ & $10$ \\
+$4$ & $-130$ & $130$ \\
+$5$ & $3770$ & $3770$ \\
+$6$ & $-229970$ & $229970$ \\
+$7$ & $28746250$ & $28746250$ \\
+$8$ & $-7272801250$ & $7272801250$ \\
+$9$ & $3701855836250$ & $3701855836250$ \\
+\bottomrule
+\end{tabular}
+\caption{The exact first-extrapolation product
+$\prod_{i=0}^d(3-2^i)$.}
+\label{tab:qnewton-errors}
+\end{table}
+
+\subsection{The cross-axis criterion}
+
+Return to a hypothetical $M=2^\beta\in\Z$.  The polynomial
+$P_d^{2,M}(X)$ is integer-valued on every dyadic node and agrees with $X^\beta$ at
+$1,2,4,\ldots,2^d$.  The second condition $N=3^\beta\in\Z$ would be contradicted by a single
+cross-axis estimate.
+
+\begin{criterion}[Cross-axis $q$-Newton certificate]
+\label{crit:cross-axis}
+Write $P_d^{2,M}(3)=a/b$ in lowest terms.  If
+\[
+ \left|3^\beta-\frac ab\right|<\frac1b,
+\]
+then $3^\beta\notin\Z$.
+\end{criterion}
+
+\begin{proof}
+This is Theorem~\ref{thm:dyadic-certificate}, since as a polynomial in $M$ the value
+$P_d^{2,M}(3)$ is precisely the interpolant to $M^{\thetaq}$ at
+$M=1,2,4,\ldots,2^d$.
+\end{proof}
+
+For $d=2$,
+\[
+ P_2^{2,M}(3)=\frac{M^2+3M-1}{3},
+\]
+which is the polynomial used in Corollary~\ref{cor:small-M}.  The open problem is to choose
+nodes or a more flexible integer-valued basis so that the cross-axis error beats the reduced
+denominator for every non-power $M$.
+
+\section{Integer-valued polynomials on the $3$-smooth semigroup}
+\label{sec:int-valued}
+
+The natural arithmetic class is
+\begin{equation}
+ \Int(\Bsem,\Z):=
+ \{P\in\Q[T]:P(q)\in\Z\text{ for every }q\in\Bsem\}.
+ \label{eq:int-ring}
+\end{equation}
+It is much larger than $\Z[T]$ and can absorb denominators through congruences rather than
+through coefficient clearing.
+
+\subsection{Universal congruence polynomials}
+
+For a prime $p\notin\{2,3\}$ and $k\ge1$, every $q\in\Bsem$ is a unit modulo $p^k$.
+Euler's theorem gives
+\[
+ q^{\varphi(p^k)}\equiv1\pmod{p^k}.
+\]
+Hence
+\begin{equation}
+ U_{p,k}(T):=\frac{T^{\varphi(p^k)}-1}{p^k}
+ \in\Int(\Bsem,\Z).
+ \label{eq:universal-congruence}
+\end{equation}
+This elementary family proves that coefficient denominators need not be paid by a factor
+$X^d$ at the evaluation stage.  Sparse-set congruences can pay them uniformly.
+
+The efficiency of this particular family is limited:
+\[
+ \frac{\log p^k}{\deg U_{p,k}}
+ =\frac{k\log p}{p^{k-1}(p-1)}.
+\]
+It decays rapidly in $p$ and $k$.  Products over many primes create larger denominators but
+also larger degrees.  The relevant extremal question is global.
+
+\subsection{Bhargava orderings and generalized factorials}
+
+Bhargava's $p$-orderings attach to an arbitrary subset $S$ of a Dedekind domain a generalized
+factorial sequence measuring the largest denominators compatible with integer-valuedness
+\cite{Bhargava1997}.  Recent $B$-ordering work supplies simultaneous variants for collections
+of ideals \cite{LagariasYangjit2025}.  For $S=\Bsem$, the desired invariant is the
+characteristic fractional ideal
+\[
+ \mathfrak I_d(S)=
+ \bigl\{a_d:\exists\,P(T)=\sum_{j=0}^d a_jT^j\in\Int(S,\Z)\bigr\}.
+\]
+Equivalently, one wants a regular basis
+$F_0,F_1,\ldots$ of $\Int(S,\Z)$ with controlled denominators, heights, and norms on
+multiplicative blocks.
+
+The geometric Newton basis demonstrates the possible scale.  On
+$S_q=\{q^n:n\ge0\}$, the degree-$k$ denominator
+$D_k(q)$ in \eqref{eq:q-newton-denominator} satisfies
+\[
+ \log D_k(q)=k^2\log q+O(1).
+\]
+Thus a sparse set can support quadratic-in-degree denominator growth.  Since the naive
+normalization tax has logarithm $d\log X$ and the interesting regime has $d\asymp\log X$,
+both live on the $(\log X)^2$ scale.  This is the first reason the integer-valued-polynomial
+route is not ruled out by Proposition~\ref{prop:clearing-tax}.
+
+The second reason is also a warning: for the canonical $q$-Newton interpolant, the Newton
+coefficient consumes about half of that quadratic budget, and the first extrapolation error
+grows on the same scale.  The full semigroup $\Bsem$ may provide better mixed-base
+congruences, but they must be optimized jointly with archimedean norm.
+
+\subsection{The exact arithmetic Bernstein criterion}
+
+The open construction can be stated as a theorem with a single missing hypothesis.
+
+\begin{criterion}[Arithmetic Bernstein criterion]
+\label{crit:arithmetic-bernstein}
+Let $\beta\notin\Nzero$ satisfy $q^\beta\in\Z$ for all $q\in\Bsem$.  Suppose that for some
+fixed $c>1$ there are arbitrarily large $X$, degrees $d=d(X)$, and polynomials
+$P_X\in\Int(\Bsem,\Z)$ such that
+\begin{enumerate}
+\item $\deg P_X\le d$;
+\item $\#(\Bsem\cap[X,cX])\ge d+2$;
+\item
+\[
+ \max_{q\in\Bsem\cap[X,cX]}|q^\beta-P_X(q)|<1.
+\]
+\end{enumerate}
+Then no such $\beta$ exists.
+\end{criterion}
+
+\begin{proof}
+Apply Theorem~\ref{thm:locking} to the node set
+$\Bsem\cap[X,cX]$.
+\end{proof}
+
+For $M=3$, Theorem~\ref{thm:optimal-block} says the degree and node counts leave a positive
+linear-in-$\log X$ margin at $c=c_*$.  Thus it would be enough to prove an
+integer-valued analogue of Bernstein approximation with no loss in the exponential base.
+For $M\ge5$, the same function space cannot work even under ideal arithmetic
+integerization; one needs rational or M\"untz spaces, additional nodes, or a nonarchimedean
+amplifier.
+
+\subsection{A concrete $p$-ordering computation program}
+
+For each prime $p$, a $p$-ordering of $\Bsem$ greedily chooses
+$a_0,a_1,\ldots\in\Bsem$ so that
+\[
+ v_p\!\left(\prod_{i<n}(a_n-a_i)\right)
+\]
+is minimal at each stage.  The resulting valuation is independent of the choices and gives
+the $p$-part of the generalized factorial.  A finite rigorous program can:
+
+\begin{enumerate}
+\item enumerate $3$-smooth numbers up to a certified cutoff;
+\item compute greedy minima for each $p$ up to a degree $d$;
+\item use periodicity of $2^a3^b\bmod p^k$ to prove that the finite search is complete;
+\item combine the local factorials into a candidate regular basis;
+\item solve a linear or lattice optimization for minimal uniform error on
+      $\Bsem\cap[X,cX]$.
+\end{enumerate}
+
+The key theorem to seek is not merely a formula for the generalized factorial.  It is a
+simultaneous bound
+\begin{equation}
+ \inf_{P\in\Int(\Bsem,\Z),\,\deg P\le d}
+ \max_{q\in\Bsem\cap[X,cX]}|q^\beta-P(q)|
+ \le \exp\bigl(\beta\log X-d\log\rho(c)+o(\log X)\bigr),
+ \label{eq:int-bernstein-target}
+\end{equation}
+with a loss smaller than the positive margin in Table~\ref{tab:efficiency}.  No such theorem
+is presently known.
+
+\subsection{Why regular bases and $p$-adic Fourier theory matter}
+
+Berger and Sprang show that regular bases of rings of integer-valued polynomials can be
+encoded by $p$-adic Fourier expansions and used to derive numerical criteria for arithmetic
+properties \cite{BergerSprang2025}.  In the present setting, a regular basis adapted to
+$\Bsem$ could do two things at once:
+
+\begin{itemize}
+\item make integer-valuedness automatic, replacing a hard global congruence constraint by
+      integral basis coefficients;
+\item expose the archimedean norm of each basis element on $[X,cX]$, turning
+      \eqref{eq:int-bernstein-target} into a weighted coefficient approximation problem.
+\end{itemize}
+
+The obstacle is that $\Bsem$ is sparse in the real topology but highly recurrent in every
+$p$-adic unit group away from $2$ and $3$.  That mixture is exactly what generalized
+factorials are designed to encode.
+
+\section{Rational approximation and the moving denominator threshold}
+\label{sec:rational}
+
+Polynomial approximation is only one member of the classical hierarchy.  Rational functions
+can place poles near the branch cut of $t^\beta$ and may converge substantially faster on a
+fixed compact interval.  In the arithmetic problem, however, the comparison scale is no
+longer the fixed number one.  The denominator of the approximant is evaluated at the
+arithmetic node, so the locking threshold moves with the node.
+
+\subsection{An exact rational locking theorem}
+
+\begin{theorem}[Rational-function locking]
+\label{thm:rational-locking}
+Let $\alpha>0$ be nonintegral and let $E\subset\N$ be a finite set such that
+$q^\alpha\in\Z$ for every $q\in E$.  Let $P,Q\in\Z[T]$ be nonzero with
+\[
+ \deg P\le m,\qquad \deg Q\le n,
+\]
+and suppose $Q(q)\ne0$ for all $q\in E$.  If
+\begin{equation}
+ \left|q^\alpha-\frac{P(q)}{Q(q)}\right|<\frac1{|Q(q)|}
+ \qquad(q\in E),
+ \label{eq:rational-lock}
+\end{equation}
+then $|E|\le m+n+1$.  Consequently, finding $m+n+2$ such nodes satisfying
+\eqref{eq:rational-lock} excludes the assumed integrality.
+\end{theorem}
+
+\begin{proof}
+For every $q\in E$, the quantity
+\[
+ q^\alpha Q(q)-P(q)
+\]
+is an integer.  Inequality~\eqref{eq:rational-lock} forces that integer to vanish.  Hence the
+generalized polynomial
+\[
+ F(t)=t^\alpha Q(t)-P(t)
+\]
+has $|E|$ positive zeros.  Its exponents lie in the disjoint sets
+$\{\alpha,\alpha+1,\ldots,\alpha+n\}$ and $\{0,1,\ldots,m\}$, which are disjoint because
+$\alpha\notin\Z$.  Thus $F$ has at most $m+n+2$ nonzero terms and, by the generalized
+Descartes--Chebyshev zero theorem, at most $m+n+1$ positive zeros.  The function cannot vanish
+identically because the two exponent sets are disjoint.
+\end{proof}
+
+For the conjecture one may take $\alpha=\beta$ and $E\subset\Bsem$, or
+$\alpha=\thetaq$ and $E$ in the conditional candidate semigroup
+$\{2^aM^b:a,b\ge0\}$.  The theorem is exact and does not assume uniform approximation on the
+whole interval.
+
+\subsection{Why ordinary rational convergence is not the right metric}
+
+On a fixed interval $[1,c]$, a type-$(m,n)$ rational approximant may have a very small real
+error.  After transporting it to $[X,cX]$, however, an integer polynomial denominator of
+degree $n$ is typically of size $X^n$ at the nodes.  The arithmetic requirement is therefore
+not merely
+\[
+ \|t^\beta-R(t)\|=o(1),
+\]
+but a weighted estimate
+\begin{equation}
+ \max_{q\in E}|Q(q)|\,
+ \left|q^\beta-\frac{P(q)}{Q(q)}\right|<1.
+ \label{eq:weighted-rational-target}
+\end{equation}
+If $n\asymp\log X$ and $|Q(q)|$ has its generic $X^n$ scale, the required error is
+$\exp(-\Theta((\log X)^2))$.  Fixed-block polynomial approximation supplies only
+$\exp(-\Theta(n))$, and even many standard rational schemes supply an exponential in the
+degree rather than the required exponential in $n\log X$.
+
+This does not prove that every rational scheme fails.  It identifies the missing property:
+the denominator must be arithmetically tiny on the selected smooth nodes while the numerator
+still approximates $t^\beta Q(t)$.  In other words, the problem is a weighted rational
+approximation problem with a denominator constrained simultaneously in the real and
+nonarchimedean metrics.
+
+\begin{criterion}[Weighted rational certificate]
+\label{crit:weighted-rational}
+A counterexample is impossible if, for arbitrarily large $X$, there are
+$P_X,Q_X\in\Z[T]$ and a set
+$E_X\subset\Bsem\cap[X,cX]$ such that
+\begin{enumerate}
+\item $|E_X|>\deg P_X+\deg Q_X+1$;
+\item $Q_X$ has no zero on $E_X$;
+\item the weighted bound~\eqref{eq:weighted-rational-target} holds at every point of $E_X$.
+\end{enumerate}
+\end{criterion}
+
+\subsection{Pad\'e approximants and the coefficient-field obstruction}
+
+The local Pad\'e approximants to $(1+z)^\beta$ have coefficients rational in $\beta$.
+For algebraic $\beta$ that feature is useful, and for rational $\beta$ it gives classical
+irrationality constructions.  Here a hypothetical counterexample has transcendental
+$\beta$.  The Pad\'e coefficients therefore lie in $\Q(\beta)$ rather than $\Q$, and their
+evaluation at an integer node is not an integer or even an algebraic number with controlled
+denominator.  Clearing the coefficient field would require a polynomial relation for
+$\beta$, precisely what is unavailable.
+
+Approximating $t^{\thetaq}$ avoids an unknown exponent but replaces the coefficient field by
+$\Q(\thetaq)$.  Since $\thetaq$ is transcendental, the same obstruction remains.  A successful
+Pad\'e construction must therefore be adapted to the exponential identities
+$2^{\thetaq}=3$ and $M^{\thetaq}=N$, not merely to the Taylor series of a generic power.
+
+\begin{statusbox}{Theorem~\ref{thm:rational-locking} and
+Criterion~\ref{crit:weighted-rational} are \statusnew.  The diagnosis of standard Pad\'e
+coefficients is structural: it says why the usual algebraic-exponent machinery does not
+specialize, not that every possible rational auxiliary function is excluded.}
+\end{statusbox}
+
+
+\section{Hermite--Pad\'e auxiliary functions and the four-exponentials wall}
+\label{sec:hermite-pade}
+
+Recent work of Fischler and Rivoal obtains a new transcendence measure for values of the
+exponential function at nonzero algebraic arguments by combining Hermite--Pad\'e approximants
+to powers of the exponential function with a carefully optimized Siegel determinant
+\cite{FischlerRivoal2025}.  Faverjon and Adamczewski likewise obtain explicit algebraic
+independence measures for values of $E$-functions and Mahler functions at algebraic points
+\cite{AdamczewskiFaverjon2025}.  These are major improvements in quantitative auxiliary
+function technology.  The present problem sits just outside their arithmetic hypotheses.
+
+\subsection{The algebraic-point mismatch}
+
+The four relevant exponentials can be written as
+\[
+ e^{\log2}=2,\qquad e^{\log3}=3,
+ \qquad e^{\beta\log2}=M,
+ \qquad e^{\beta\log3}=N.
+\]
+All four values are algebraic, but the arguments $\log2,\log3,\beta\log2,\beta\log3$ are not
+algebraic.  Hermite--Pad\'e theorems for $E$-functions obtain arithmetic control by evaluating
+a differential system with algebraic coefficients at an algebraic point.  Here the natural
+differential systems
+\[
+ y'=\log2\,y,
+ \qquad
+ y'=\log3\,y
+\]
+already have transcendental coefficients, and the common evaluation point $z=\beta$ is itself
+transcendental under a counterexample.  Neither side of the usual arithmetic input survives.
+
+This is not a technical inconvenience.  Replacing the logarithms by formal algebraic
+parameters and later specializing them would require proving that a nonzero formal auxiliary
+determinant cannot vanish at $(\log2,\log3)$.  That is a statement about products of
+logarithms of algebraic numbers, exactly the structural-rank wall isolated in the supplied
+report and in the Matrix Coefficient program of Dasgupta--Kakde
+\cite{DasguptaKakde2024,DasguptaKakde2026}.
+
+\subsection{Exponential polynomials with integral values}
+
+A direct auxiliary function has the form
+\begin{equation}
+ F(z)=\sum_{(a,b)\in\Omega}c_{a,b}
+       e^{(a\log2+b\log3)z}
+     =\sum_{(a,b)\in\Omega}c_{a,b}2^{az}3^{bz},
+ \qquad c_{a,b}\in\Z.
+ \label{eq:direct-exp-poly}
+\end{equation}
+At $z=\beta$ every term is an integer, so $F(\beta)\in\Z$.  If one could arrange
+$0<|F(\beta)|<1$, the conjecture would follow.
+
+High-order vanishing at zero would impose
+\begin{equation}
+ \sum_{(a,b)\in\Omega}c_{a,b}(a\log2+b\log3)^j=0
+ \qquad(0\le j<L).
+ \label{eq:moment-log}
+\end{equation}
+For algebraic frequencies, Siegel's lemma can solve analogous systems over a number field.
+Here the coefficients of~\eqref{eq:moment-log} are polynomials in $\log2$ and $\log3$.
+Solving them with integer $c_{a,b}$ without treating those logarithms as independent is
+already a logarithmic-algebraic problem.  Treating them as formally independent replaces each
+condition by all its binomial coefficient conditions
+\[
+ \sum_{(a,b)\in\Omega}c_{a,b}a^rb^{j-r}=0,
+ \qquad 0\le r\le j,
+\]
+and consumes about $L^2/2$ degrees of freedom.  This quadratic cost is the auxiliary-function
+shadow of the critical $2\times2$ four-exponentials geometry.
+
+\subsection{The polynomial-on-a-curve version}
+
+Writing $X=2^z$ and $Y=3^z$, equation~\eqref{eq:direct-exp-poly} becomes
+$F(z)=Q(X,Y)$ with $Q\in\Z[X,Y]$.  A counterexample supplies the integral curve point
+$(M,N)=(2^\beta,3^\beta)$ on
+\[
+ Y=X^{\thetaq}.
+\]
+The inherited sparse-interpolation theorem says that a nonzero polynomial with $s$ monomials
+has at most $s-1$ distinct positive zeros on an irrational power curve.  Thus interpolation
+through $R$ positive nodes requires at least $R+1$ monomials.  The supplied report already
+identifies the exact one-monomial saving that would prove the conjecture.  Hermite--Pad\'e
+language does not erase that deficit; it repackages it as the need for one more exact moment
+condition than the available support supplies.
+
+\subsection{What the recent transcendence papers do supply}
+
+The recent literature is nevertheless instructive in three ways.
+
+\begin{enumerate}
+\item Fischler--Rivoal show that accessory parameters in a Siegel determinant can improve a
+      transcendence measure beyond the previously expected barrier.  This encourages a
+      search for an accessory parameter adapted to the two prime valuations rather than to a
+      single Archimedean norm.
+\item Faverjon--Adamczewski show how functional equations and differential systems can turn
+      algebraic independence into explicit Liouville-type inequalities.  A comparable
+      inequality for the specialized logarithmic matrix would immediately be relevant, but
+      no such theorem is presently known.
+\item Massold's 2025 work develops lower bounds for transcendence degrees of fields generated
+      by exponentials of products and reduces stronger estimates to a torus-intersection
+      problem \cite{Massold2025}.  The $2\times2$ specialization remains on the conjectural
+      side; it does not furnish the missing auxiliary function here.
+\end{enumerate}
+
+\begin{statusbox}{This section is an audited transfer analysis, not a negative theorem about
+all Hermite--Pad\'e methods.  The exact obstruction is that the natural arguments and
+coefficient matrices are transcendental, while current quantitative $E$-function theorems
+require algebraic arithmetic data.}
+\end{statusbox}
+
+
+\section{Orthogonal polynomials, Christoffel functions, and lattice rounding}
+\label{sec:orthogonal}
+
+Uniform approximation is the right norm for the one-unit locking principle, but least-squares
+approximation has a useful exact determinant formula.  It exposes another duality between
+approximation and the integer interpolation determinants of the supplied report.
+
+\subsection{A Gram-determinant identity}
+
+Let $E=\{q_0,\ldots,q_N\}$, let
+$A=(\phi_j(q_i))_{0\le i\le N,\,0\le j<N}$, and let
+$f=(\psi(q_i))_{0\le i\le N}$.  Give the nodes positive weights
+$w_i$ and write $W=\operatorname{diag}(w_0,\ldots,w_N)$ and $V=[A\ f]$.
+
+\begin{proposition}[Least-squares determinant quotient]
+\label{prop:gram-quotient}
+If $A$ has full column rank, then
+\begin{equation}
+ \min_{c\in\R^N}(f-Ac)^TW(f-Ac)
+ =\frac{\det(V^TWV)}{\det(A^TWA)}.
+ \label{eq:gram-quotient}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The normal equations give the minimizer
+$c=(A^TWA)^{-1}A^TWf$.  The minimum is the Schur complement
+\[
+ f^TWf-f^TWA(A^TWA)^{-1}A^TWf
+\]
+of $A^TWA$ in $V^TWV$.  The determinant formula for a Schur complement gives
+\eqref{eq:gram-quotient}.
+\end{proof}
+
+For polynomial bases, the denominator is a moment or Gram determinant and its reciprocal is a
+Christoffel-type quantity.  Choosing weights to minimize the largest leverage score is the
+least-squares analogue of choosing Fekete or alternation nodes in the uniform norm.
+
+\subsection{The arithmetic gap in quadratic norm}
+
+Under a counterexample, choose $q_i\in\Bsem$ and exponents from
+$\Nzero+\Nzero\beta$.  Then $A$ and $f$ have integer entries.  If the weights are integers,
+both determinants in~\eqref{eq:gram-quotient} are integers.  This looks promising, but the
+quotient can be much smaller than one because the denominator determinant may be enormous.
+Moreover, the real minimizer generally has rational rather than integral coefficients.
+Clearing its denominator again multiplies the residual to a nonzero integer vector.
+
+The correct arithmetic object is the evaluation lattice
+\begin{equation}
+ \cL_E=A\Z^N\subset\Z^{N+1}.
+ \label{eq:evaluation-lattice}
+\end{equation}
+The desired approximation asks for the distance of the integral target $f$ from this lattice,
+not merely from the real subspace $A\R^N$:
+\begin{equation}
+ \delta_\infty(E,A;f)
+ :=\min_{z\in\Z^N}\|f-Az\|_\infty.
+ \label{eq:evaluation-lattice-distance}
+\end{equation}
+When $|E|=N+1$, Theorem~\ref{thm:arithmetic-alternant} supplies the primitive dual
+functional.  Let $C=(C_0,\ldots,C_N)$ be its cofactor vector and let
+$g=\gcd(C_0,\ldots,C_N)$.  Then $C/g$ is primitive and every residual $r=f-Az$ satisfies
+\begin{equation}
+ \frac{C}{g}\cdot r=\frac{D}{g}.
+ \label{eq:primitive-functional}
+\end{equation}
+The real lower bound is $|D|/S$; the integral lower bound is the integer optimization problem
+of minimizing $\|r\|_\infty$ subject to~\eqref{eq:primitive-functional} and the torsion
+congruences of the Smith normal form of $A$.
+
+\begin{criterion}[Smith-coset criterion]
+\label{crit:smith-coset}
+A polynomial-approximation proof would follow if, for some counterexample candidate and some
+node/basis family with more nodes than basis functions, one could prove from the Smith normal
+form that the coset $f+\cL_E$ contains the zero vector while the Chebyshev zero theorem proves
+that it cannot.  Equivalently, a contradiction arises if the arithmetic congruences force an
+exact interpolant of insufficient dimension.
+\end{criterion}
+
+This criterion deliberately asks for exact membership, not a small real error.  Since all
+residual coordinates are integers, every nonzero coset representative has
+$\ell^\infty$ norm at least one.
+
+\subsection{Why independent coefficient rounding is too noisy}
+
+Let $c^*$ be a real minimax or least-squares coefficient vector and round each coordinate
+independently to an integer with mean $c_j^*$.  At node $q_i$ the rounding perturbation is
+\[
+ Z_i=\sum_j A_{ij}\xi_j,
+ \qquad |\xi_j|\le1.
+\]
+Even under unbiased Bernoulli rounding,
+\[
+ \operatorname{Var}(Z_i)
+ =\sum_j A_{ij}^2\operatorname{Var}(\xi_j)
+ \le\frac14\sum_jA_{ij}^2.
+\]
+For monomial or M\"untz bases on nodes of size $X$, the right side is dominated by powers of
+$X$ and is vastly larger than one.  Orthogonalizing the columns reduces the real condition
+number, but the orthogonal basis has nonintegral coefficients and destroys the evaluation
+lattice.  Thus generic randomized rounding attacks the wrong lattice.
+
+A potentially relevant replacement is discrepancy minimization in a basis already adapted to
+$\Int(\Bsem,\Z)$: one would round coefficients in a regular integer-valued basis whose
+vectors are small on the selected block.  This is exactly where generalized factorials and
+$p$-adic Fourier bases can matter.
+
+
+\section{A M\"untz-space formulation and two exact approximation floors}
+\label{sec:muntz}
+
+The conditional exponent semigroup
+\[
+ \Lambda_\beta=\{n+k\beta:n,k\in\Nzero\}
+\]
+provides far more functions than the ordinary powers.  Every finite collection of distinct
+exponents in $\Lambda_\beta$ is a M\"untz--Chebyshev system on $(0,\infty)$, and every such
+monomial is integral on the base semigroup $\Bsem$ under a counterexample.
+
+\subsection{The arithmetic M\"untz lattice}
+
+For finite $\Lambda\subset\Lambda_\beta$, define
+\[
+ \mathcal M_\Z(\Lambda)
+ =\left\{\sum_{\lambda\in\Lambda}c_\lambda t^\lambda:
+               c_\lambda\in\Z\right\}.
+\]
+If $q=2^a3^b$, then
+\[
+ q^{n+k\beta}=q^n(M^aN^b)^k\in\Z.
+\]
+Hence every $F\in\mathcal M_\Z(\Lambda)$ is integer-valued on $\Bsem$.
+
+\begin{theorem}[Unit floor for integer M\"untz polynomials]
+\label{thm:muntz-unit-floor}
+Let $\Lambda$ contain $s$ distinct exponents and let
+$E\subset\Bsem$ have at least $s$ points.  Under a nonintegral counterexample,
+\[
+ 0\ne F\in\mathcal M_\Z(\Lambda)
+ \quad\Longrightarrow\quad
+ \max_{q\in E}|F(q)|\ge1.
+\]
+More generally, if $\mu\in\Lambda_\beta\setminus\Lambda$ and $|E|\ge s+1$, then
+\begin{equation}
+ \inf_{(c_\lambda)\in\Z^\Lambda}
+ \max_{q\in E}
+ \left|q^\mu-\sum_{\lambda\in\Lambda}c_\lambda q^\lambda\right|
+ \ge1.
+ \label{eq:muntz-inhom-floor}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+All displayed values are integers.  A strict bound below one would therefore force a zero at
+every node.  A nonzero $s$-term M\"untz polynomial has at most $s-1$ positive zeros, while the
+inhomogeneous residual has at most $s+1$ terms and at most $s$ positive zeros.
+\end{proof}
+
+This theorem is simple but conceptually decisive.  Classical M\"untz approximation permits
+arbitrarily small real errors in many settings; the arithmetic coefficient lattice has a hard
+floor exactly at one.  The problem is to build a basis in which real approximation and
+integer-valuedness coexist before coefficient rounding.
+
+\subsection{A continuous-versus-arithmetic dichotomy}
+
+Because ordinary nonnegative integers already lie in $\Lambda_\beta$, the real span contains
+all algebraic polynomials and is dense on every compact interval.  Thus lack of analytic
+flexibility is not the issue.  The obstruction is entirely in the coefficient lattice.
+One may summarize it as
+\[
+ \underbrace{\operatorname{dist}_{\infty}
+  (t^\mu,\operatorname{span}_{\R}\{t^\lambda\})}_{\text{can be very small}}
+ \qquad\text{versus}\qquad
+ \underbrace{\operatorname{dist}_{\infty}
+  (t^\mu,\mathcal M_\Z(\Lambda))}_{\text{at least }1}.
+\]
+The cofactor formula of Section~\ref{sec:minimax} computes the first quantity on a finite
+alternation set; the Smith form of the evaluation matrix controls the second.
+
+\subsection{Signed exponents and the denominator price}
+
+Allowing negative exponents would create frequencies close to $\beta$ through good rational
+approximations $n+k\beta\approx0$ and could improve real approximation dramatically.  But
+$q^{n+k\beta}$ then acquires denominators on $\Bsem$.  Clearing them reintroduces prime powers
+whose logarithm is proportional to the size of the negative exponent.  This is the M\"untz
+version of the normalization tax: frequency localization and arithmetic integrality pull in
+opposite directions.
+
+A promising restricted question is to allow Laurent exponents while keeping all denominators
+supported only at $2$ and $3$, then seek a compensating $2$-adic and $3$-adic divisor in the
+cofactor determinant.  The supplied report's signed-progression and valuation modules provide
+part of the bookkeeping, but no leading-order cancellation is currently known.
+
+
+\section{Computational reconnaissance and reproducible certificates}
+\label{sec:computation}
+
+The computations in this continuation are diagnostic rather than evidence for a full proof.
+They are small enough to reproduce with exact integer or rational arithmetic, except for the
+single displayed value of the entire Newton shadow.
+
+\subsection{Counting $3$-smooth nodes in the optimal block}
+
+The following table enumerates $\Bsem\cap[X,c_*X]$ exactly and compares it with the leading
+term from Proposition~\ref{prop:thin-strip}.  The modest oscillation around the asymptotic is
+visible even at moderate scales.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{r@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$X$ & exact count & leading term & difference \\
+\midrule
+$10^2$  & $15$ & $10.6602$ & $4.3398$ \\
+$10^3$  & $19$ & $15.9903$ & $3.0097$ \\
+$10^4$  & $25$ & $21.3204$ & $3.6796$ \\
+$10^6$  & $36$ & $31.9806$ & $4.0194$ \\
+$10^8$  & $48$ & $42.6408$ & $5.3592$ \\
+$10^{10}$ & $57$ & $53.3011$ & $3.6989$ \\
+$10^{12}$ & $68$ & $63.9613$ & $4.0387$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact $3$-smooth node counts for $c_*=3+2\sqrt2$.}
+\label{tab:node-counts}
+\end{table}
+
+The asymptotic coefficient $2.3148353905\ldots$ is large enough to beat the real polynomial
+degree coefficient $1.7982868151\ldots$ only in the $M=3$ branch.  Table~\ref{tab:node-counts}
+does not address integer-valuedness.
+
+\subsection{Exact certificate generator}
+
+The following compact script constructs a rational dyadic interpolant, evaluates it at a
+candidate $M$, and reports the reduced denominator.  The analytic interval needed by
+Theorem~\ref{thm:dyadic-certificate} should be proved separately by integer power comparisons.
+
+\begin{lstlisting}[style=pythonstyle,caption={Exact dyadic interpolation certificate generator.}]
+from fractions import Fraction
+
+
+def interpolate(nodes, values):
+    """Return coefficients low-to-high of the exact interpolant."""
+    p = [Fraction(0)]
+    for i, xi in enumerate(nodes):
+        basis = [Fraction(1)]
+        denom = Fraction(1)
+        for j, xj in enumerate(nodes):
+            if i == j:
+                continue
+            out = [Fraction(0)] * (len(basis) + 1)
+            for k, a in enumerate(basis):
+                out[k] -= xj * a
+                out[k + 1] += a
+            basis = out
+            denom *= xi - xj
+        scale = Fraction(values[i], 1) / denom
+        if len(p) < len(basis):
+            p += [Fraction(0)] * (len(basis) - len(p))
+        for k, a in enumerate(basis):
+            p[k] += scale * a
+    return p
+
+
+def evaluate(coeffs, x):
+    y = Fraction(0)
+    for a in reversed(coeffs):
+        y = y * x + a
+    return y
+
+
+exponents = [0, 1, 2]
+nodes = [2**n for n in exponents]
+values = [3**n for n in exponents]
+poly = interpolate(nodes, values)
+for M in [3, 5, 6, 7]:
+    value = evaluate(poly, M)
+    print(M, value, value.denominator)
+\end{lstlisting}
+
+\subsection{A finite $p$-ordering experiment}
+
+For a finite set $S_H=\{2^a3^b:0\le a,b\le H\}$ and a prime $p$, one can greedily construct
+a $p$-ordering by selecting the next element $x$ minimizing
+\[
+ v_p\!\left(\prod_{y\text{ already selected}}(x-y)\right).
+\]
+Repeating this for many primes produces an empirical generalized-factorial profile.  The
+experiment should record:
+
+\begin{enumerate}
+\item the greedy sequence and its valuation increments;
+\item stabilization as $H$ grows;
+\item the leading coefficient denominator permitted in degree $d$;
+\item the sup norm on $\Bsem\cap[X,c_*X]$ of the corresponding regular-basis element;
+\item the ratio between that norm and the Bernstein minimax error.
+\end{enumerate}
+
+The key output is not merely a large denominator.  It is a basis element having a large
+admissible denominator and a small block norm at the same time.  Geometric $q$-Newton bases
+supply the first property but fail the second by
+Theorem~\ref{thm:q-newton}; ordinary Chebyshev polynomials supply the second but fail the first.
+
+\subsection{Numerical trust boundary}
+
+All tables except the Newton-shadow value are derived from exact integers or rational
+arithmetic and rounded only for presentation.  No numerical calculation in this continuation
+is used as a premise in a proof of the conjecture.  The symbolic exclusions in
+Corollary~\ref{cor:small-M} reduce entirely to the displayed integer inequalities.
+
+
+\section{Exact sufficient conditions extracted from approximation theory}
+\label{sec:criteria}
+
+The preceding analysis yields several precise statements whose proof would settle the
+conjecture or a substantial branch of it.  They are listed here in decreasing order of
+immediate plausibility.
+
+\subsection{The generator-three integer Bernstein target}
+
+\begin{criterion}[Optimal-block integer Bernstein target]
+\label{crit:M3-bernstein}
+Let $c_*=3+2\sqrt2$.  If there are arbitrarily large $X$ and polynomials
+$P_X\in\Int(\Bsem,\Z)$ such that
+\[
+ \deg P_X<\#(\Bsem\cap[X,c_*X])-1
+\]
+and
+\[
+ \max_{q\in\Bsem\cap[X,c_*X]}|q^{\thetaq}-P_X(q)|<1,
+\]
+then $3^{\thetaq}\notin\Z$.
+\end{criterion}
+
+
+\begin{proof}
+Apply Theorem~\ref{thm:locking} with $\alpha=\thetaq$ and the indicated node set.
+\end{proof}
+
+This criterion focuses on the only nonintegral generator for which ordinary Bernstein
+geometry has enough asymptotic nodes.  It is therefore the natural first branch for a
+$p$-ordering or integer-Chebyshev attack.
+
+\subsection{A generalized-factorial norm target}
+
+Let $F_d$ be a degree-$d$ regular-basis element of $\Int(\Bsem,\Z)$, normalized by its leading
+coefficient.  A sufficient quantitative theorem would be a bound of the form
+\begin{equation}
+ \|F_d\|_{[X,c_*X]}
+ \le \exp(o(d))\,\rho(c_*)^{-d}X^d
+ \label{eq:factorial-norm-target}
+\end{equation}
+together with enough control of the lower-degree basis elements to approximate
+$X^{\thetaq}t^{\thetaq}$.  The $X^d$ factor in~\eqref{eq:factorial-norm-target} is unavoidable
+for a monic polynomial; the generalized factorial must cancel it in the leading coefficient.
+Thus one needs
+\[
+ \log d!_{\Bsem}\sim d\log X
+\]
+on the chosen degree/scale relation, with the same basis retaining the Chebyshev norm profile.
+This is an adelic capacity problem rather than a purely real one.
+
+\subsection{A cofactor-denominator saving}
+
+In the notation of Theorem~\ref{thm:cofactor-minimax}, the best real residual is $D/S$ and the
+cleared arithmetic residual is $D$.  A proof would follow from a construction in which the
+minimax coefficient vector is already integral, or more generally in which its denominator
+is strictly smaller than the natural cofactor sum and the remaining residual is subunit on
+one additional arithmetic node.
+
+\begin{criterion}[Cofactor saving]
+\label{crit:cofactor-saving}
+Suppose a family of smooth nodes and integral M\"untz basis functions admits a best
+alternating residual whose coefficients all have a common denominator $H<S$ and such that
+$H(D/S)<1$.  If the corresponding coefficient clearing preserves target coefficient one,
+then no counterexample exists.
+\end{criterion}
+
+The last clause is essential: multiplying the entire residual by $H$ changes the target from
+$t^\mu$ to $Ht^\mu$.  One needs a congruence that clears the approximating coefficients while
+leaving the target coefficient congruent to one.
+
+\subsection{A cross-axis Newton target}
+
+For each non-power integer $M$, choose dyadic nodes
+$2^{n_0},\ldots,2^{n_d}$ and let $I_{\mathbf n}$ interpolate
+$(2^{n_j},3^{n_j})$.  Theorem~\ref{thm:dyadic-certificate} reduces the conjecture to finding a
+node set for which
+\[
+ \left|M^{\thetaq}-I_{\mathbf n}(M)\right|
+ <\frac1{\den(I_{\mathbf n}(M))}.
+\]
+The node set may depend on $M$.  The standard consecutive dyadic nodes have excellent
+integer-valuedness but poor extrapolation.  Nonconsecutive nodes, Leja-type node selection,
+or a mixture of dyadic and triadic axes are concrete alternatives.
+
+\subsection{A weighted rational target}
+
+Criterion~\ref{crit:weighted-rational} asks for rational functions whose denominator is small
+at smooth nodes.  A natural sufficient theorem would construct $Q$ from cyclotomic or
+universal-congruence factors so that $Q(q)$ has controlled prime divisibility for all
+$q\in\Bsem$, while $P/Q$ is a near-best rational approximation to $t^\beta$.  Such a theorem
+would combine potential theory with the generalized factorial of $\Bsem$.
+
+\subsection{A new logarithmic auxiliary-function theorem}
+
+Finally, any theorem producing an integer exponential polynomial
+$F$ of the form~\eqref{eq:direct-exp-poly} with
+$0<|F(\beta)|<1$ would solve the problem immediately.  The moment analysis shows that the needed
+coefficient estimate must exploit the specialization $(\log2,\log3)$, not treat the two logs
+as generic independent variables.  This is the point at which approximation theory meets the
+Matrix Coefficient Conjecture.
+
+
+\section{Formalization blueprint}
+\label{sec:formalization}
+
+The supplied repository already contains APIs for exponential-polynomial zero bounds,
+integer determinants, finite candidates, and several semigroup grids.  The continuation can
+be formalized in layers.
+
+\subsection{Low-cost exact modules}
+
+\begin{description}[style=nextline]
+\item[\texttt{OptimalBernsteinBlock}]
+Define $\rho(c)$ and $\Psi(c)$; prove the identity $\sinh y\sinh u=1$, the log-convexity
+inequality, and the maximizer $c_*=3+2\sqrt2$.  This is elementary real analysis once the
+convexity lemma is available.
+
+\item[\texttt{DyadicInterpolationCertificate}]
+Formalize rational Lagrange interpolation on dyadic nodes, the Chebyshev zero-count endpoint,
+and the denominator locking lemma.  Instantiate it for $M=3,5,6,7$ using norm-num-certified
+integer powers.
+
+\item[\texttt{DiscreteCofactorAlternation}]
+Formalize the cofactor vector, $A^TC=0$, the $\ell^1$ dual formula, and
+$B(z,D)^T=Sf$.  The arithmetic alternant is pure linear algebra over $\Z$ and $\Q$.
+
+\item[\texttt{GeometricNewtonBasis}]
+Define $B_k^{(q)}$, prove evaluation as a Gaussian binomial coefficient, derive the Newton
+coefficients $a_k$, and prove the first-extrapolation product.
+
+\item[\texttt{RationalPowerLocking}]
+Formalize Theorem~\ref{thm:rational-locking} using the existing exponential-polynomial zero
+API.
+\end{description}
+
+\subsection{Medium-cost analytic modules}
+
+\begin{description}[style=nextline]
+\item[\texttt{PowerBernsteinRate}]
+Formalize the affine map to $[-1,1]$, Bernstein ellipses, the branch obstruction at zero, and
+the root asymptotic for best approximation.  This likely requires a significant complex
+approximation library.
+
+\item[\texttt{SmoothThinStripCount}]
+Formalize the fixed-width count of $2^a3^b$ in a multiplicative block using irrational
+rotation and discrepancy.  Much of the equidistribution infrastructure already exists in the
+repository.
+
+\item[\texttt{EntireNewtonShadow}]
+Prove compact convergence of the geometric Newton series and its interpolation property.
+Only geometric estimates and standard uniform convergence are needed.
+\end{description}
+
+\subsection{Research-level arithmetic modules}
+
+\begin{description}[style=nextline]
+\item[\texttt{SmoothSemigroupPOrdering}]
+Compute and certify local $p$-orderings of $\Bsem$, generalized factorials, and regular-basis
+leading coefficients.
+
+\item[\texttt{AdelicBlockNorm}]
+Relate the generalized factorial to the real block norm of regular-basis elements.  This is
+the central open approximation target.
+
+\item[\texttt{EvaluationLatticeSmith}]
+Compute Smith forms for selected smooth-node M\"untz matrices and extract exact coset
+obstructions.  Finite instances are certifiable even before an asymptotic theorem is found.
+\end{description}
+
+The recommended order is exact algebra first, then finite certified experiments, then the
+complex approximation asymptotic.  None of the open arithmetic modules should be represented
+as a theorem until its denominator and norm estimates are both proved.
+
+
+\section{Comparison of approximation approaches}
+\label{sec:comparison}
+
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.17\textwidth}
+                  >{\raggedright\arraybackslash}p{0.20\textwidth}
+                  >{\raggedright\arraybackslash}p{0.22\textwidth}
+                  >{\raggedright\arraybackslash}p{0.25\textwidth}}
+\toprule
+Method & Archimedean strength & Arithmetic advantage & Exact stopping point \\
+\midrule
+\endfirsthead
+\toprule
+Method & Archimedean strength & Arithmetic advantage & Exact stopping point \\
+\midrule
+\endhead
+Bernstein polynomial & Exponential in degree with exact rate $\rho(c)^{-d}$ & None for the real minimax coefficients & Node geometry reaches only $M=3$; scaling costs $X^d$ \\
+
+Integer Chebyshev & Directly controls integer coefficients & Values integral at all integer nodes & Original interval has capacity $\asymp X$; normalization loses integrality \\
+
+$\Int(\Bsem,\Z)$ regular basis & Potentially large admissible denominators & Integral on every smooth node & No known regular basis has both sufficient denominator and Chebyshev norm \\
+
+Dyadic interpolation & Exact rational certificate; short proofs & Fits $2^n\mapsto3^n$ exactly & Extrapolation denominator/error loses for large $M$ \\
+
+$q$-Newton & Entire geometric interpolation; explicit coefficients & Integer-valued on a geometric axis & First extrapolation is a superexponentially large integer \\
+
+Discrete minimax & Exact alternation and cofactor formula & Integral evaluation matrix & Clearing coefficients changes subunit error $D/S$ into integer error $D$ \\
+
+Rational/Pad\'e & Can place poles near the branch set & Integer numerator/denominator at integer nodes & Locking scale is $1/|Q(q)|$; coefficients often lie in $\Q(\beta)$ \\
+
+Hermite--Pad\'e exponential & Powerful determinant and multiplicity machinery & Works for algebraic differential data & Natural arguments and system coefficients are logarithmic/transcendental \\
+
+Orthogonal / Christoffel & Exact Gram quotient; good conditioning & Determinants integral with integral weights & Real least squares ignores the evaluation-lattice coset \\
+
+M\"untz system & Flexible semigroup of frequencies & Every term integral on $\Bsem$ under a counterexample & Integer coefficient space has a hard unit floor; signed exponents incur denominators \\
+\bottomrule
+\caption{Approximation-theoretic approaches and their audited failure points.}
+\label{tab:comparison}
+\end{longtable}
+}
+
+The common pattern is now transparent.  Real approximation can be made strong, and arithmetic
+integrality can be made exact, but every known construction pays for moving from one to the
+other.  The conjecture asks for a single auxiliary object that is simultaneously near-minimax
+at infinity and denominator-rich at every finite prime.
+
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+No unconditional proof of the Alaoglu--Erd\H{o}s conjecture has been obtained in this
+continuation.  The research completed here nevertheless narrows the polynomial-approximation
+program to a small number of exact targets.
+
+The sharp Archimedean result is Theorem~\ref{thm:optimal-block}: among all multiplicative
+blocks, $c=3+2\sqrt2$ maximizes the product of smooth-node density and Bernstein-ellipse rate.
+The optimized inequality can reach only the smallest hypothetical non-power generator
+$M=3$; it is geometrically incapable of treating $M\ge5$.  This is a rigorous boundary on an
+entire class of classical polynomial proofs.
+
+The sharp arithmetic result is the unit barrier.  On smooth nodes, integer or conditional
+M\"untz coefficients give integral residuals, so every unsuccessful approximation has norm at
+least one.  The discrete cofactor formula shows exactly what happens to the real minimax
+solution: its subunit error $D/S$ becomes the nonzero integer determinant $D$ when the
+coefficient denominator is cleared.  The missing theorem is therefore not a slightly better
+real approximation estimate.  It is an arithmetic construction that clears the approximant
+without multiplying the target coefficient.
+
+Two constructive by-products are exact.  Dyadic interpolation gives short symbolic
+certificates excluding $M=3,5,6,7$, and the $q$-Newton basis gives a complete formula for
+integer-valued interpolation on a geometric progression, including its superexponential
+first-extrapolation error.  These results are modest compared with the inherited finite scan,
+but they are independent, proof-producing, and formalization-ready.
+
+The most promising next step is the generator-three branch in
+$\Int(\Bsem,\Z)$.  Bhargava $p$-orderings and their recent extensions provide a language for
+its allowable denominators; integer Chebyshev and potential theory provide the real norm to
+beat.  A regular basis combining both at the optimal block would settle $3^{\thetaq}\notin\Z$.
+To reach all $M$, a stronger ingredient is needed: a weighted rational construction, a signed
+M\"untz basis with compensated denominators, or a genuinely new logarithmic auxiliary-function
+theorem crossing the four-exponentials boundary.
+
+\begin{resultbox}
+\textbf{Final status.}
+The conjecture remains open.  The continuation proves a sharp optimal-block theorem, exact
+polynomial and rational locking principles, a cofactor minimax identity with an arithmetic
+integerization theorem, a $q$-Newton interpolation theorem, and four symbolic generator
+exclusions.  It also identifies the precise arithmetic approximation theorem that would turn
+the only favorable Bernstein branch into a proof.
+\end{resultbox}
+
+
+\appendix
+
+\section{Detailed calculus for the optimal block}
+\label{app:optimal-block}
+
+For reference, the ellipse parameter can be derived directly.  Map $[1,c]$ affinely to
+$[-1,1]$ by
+\[
+ x=\frac{2t-(1+c)}{c-1}.
+\]
+The branch point $t=0$ maps to
+\[
+ x_0=-\frac{c+1}{c-1}<-1.
+\]
+The Bernstein ellipse through $x_0$ has parameter
+\[
+ \rho=|x_0|+\sqrt{x_0^2-1}
+ =\frac{c+1+2\sqrt c}{c-1}
+ =\frac{\sqrt c+1}{\sqrt c-1}.
+\]
+If $c=e^{2y}$, then
+\[
+ \rho=\frac{e^y+1}{e^y-1}=\coth(y/2)=e^u.
+\]
+The half-angle identity gives
+\[
+ \tanh(y/2)=e^{-u},
+ \qquad
+ \sinh y=\frac{2e^{-u}}{1-e^{-2u}}=\frac1{\sinh u}.
+\]
+Thus the optimization of $\Psi(c)=2yu$ is symmetric in $y$ and $u$ under the constraint
+$\sinh y\sinh u=1$.  Strict convexity of $z\mapsto\log\sinh(e^z)$ gives
+\[
+ \log\sinh\sqrt{yu}
+ \le\frac12\log\sinh y+\frac12\log\sinh u=0.
+\]
+Therefore $yu\le\arsinh(1)^2$, with equality only at $y=u=\arsinh(1)$.
+
+The numerical constants are
+\begin{align*}
+ c_*&=5.8284271247461900976\ldots,\\
+ \rho(c_*)&=2.4142135623730950488\ldots,\\
+ \max\Psi&=1.5536387997913919630\ldots,\\
+ M_{\mathrm{crit}}&=4.1131245860194105174\ldots.
+\end{align*}
+
+
+\section{Proof details for the generalized power zero bound}
+\label{app:cheb-zero}
+
+Let $\lambda_0<\cdots<\lambda_s$ be distinct real numbers.  The Wronskian of
+$t^{\lambda_0},\ldots,t^{\lambda_s}$ on $(0,\infty)$ is
+\[
+ W(t)=t^{\lambda_0+\cdots+\lambda_s-s(s+1)/2}
+      \prod_{0\le i<j\le s}(\lambda_j-\lambda_i).
+\]
+It never vanishes.  Hence the functions form an extended complete Chebyshev system, and any
+nontrivial linear combination has at most $s$ positive zeros counted with multiplicity.
+This proves every zero-count statement used in the polynomial, rational, and M\"untz locking
+theorems.
+
+An elementary induction is also available.  Divide a nonzero generalized polynomial by its
+smallest power, differentiate, and apply Rolle's theorem.  Each differentiation removes the
+constant term and leaves one fewer exponent.  This proves the distinct-zero form without the
+full Wronskian formalism.
+
+
+\section{Derivation of the discrete cofactor formula}
+\label{app:cofactor}
+
+Let $A$ be an $(N+1)\times N$ real matrix of rank $N$, $f\in\R^{N+1}$, and
+$V=[A\ f]$.  For each $i$, let
+\[
+ C_i=(-1)^{i+N}\det A_{\widehat i},
+\]
+where $A_{\widehat i}$ deletes row $i$.  Laplace expansion gives
+\[
+ A^TC=0,
+ \qquad
+ C^Tf=\det V=D.
+\]
+The dual of the distance from $f$ to $\operatorname{im}A$ in $\ell^\infty$ is
+\[
+ \max\{y^Tf:A^Ty=0,\ \|y\|_1\le1\}.
+\]
+The nullspace is spanned by $C$, so the value is $|D|/S$ with
+$S=\sum_i|C_i|$.  If the ordered evaluation matrix is strictly totally positive, then the
+$C_i$ alternate in sign.  Setting $s_i=\sgn(C_i)$, the square matrix $B=[A\ s]$ has
+\[
+ \det B=C^Ts=S.
+\]
+The equation
+\[
+ Ac+\frac DSs=f
+\]
+therefore has a unique solution and is the alternant.  If $A,f$ are integral, multiply by
+$S$:
+\[
+ B\binom{Sc}{D}=Sf.
+\]
+Since $\operatorname{adj}(B)$ is integral,
+\[
+ \binom{Sc}{D}=\operatorname{adj}(B)f\in\Z^{N+1}.
+\]
+This proves Theorems~\ref{thm:cofactor-minimax} and~\ref{thm:arithmetic-alternant}.
+
+
+\section{The geometric Newton identity}
+\label{app:qnewton}
+
+For $q\ge2$ and $n\ge k$, one has
+\[
+ B_k^{(q)}(q^n)
+ =\prod_{i=0}^{k-1}\frac{q^n-q^i}{q^k-q^i}
+ =\prod_{i=0}^{k-1}\frac{q^{n-i}-1}{q^{k-i}-1}
+ =\qbinom{n}{k}{q}.
+\]
+For $n<k$, the product vanishes because one factor is $q^n-q^n$.
+The Newton coefficient at stage $k$ is the error at the new node $q^k$, hence
+\[
+ a_k=r^k-P_{k-1}(q^k).
+\]
+Induction using the Gaussian-binomial recursion gives
+\[
+ a_k=\prod_{i=0}^{k-1}(r-q^i).
+\]
+Equivalently, the exact identity
+\[
+ r^n=\sum_{k=0}^n\qbinom{n}{k}{q}
+             \prod_{i=0}^{k-1}(r-q^i)
+\]
+is the Newton expansion of the data $q^n\mapsto r^n$.  Truncating at $d$ gives
+Theorem~\ref{thm:q-newton}; at $n=d+1$ only one tail term survives.
+
+
+\section{Literature chronology and relevance matrix}
+\label{app:literature}
+
+\begin{longtable}{p{0.16\textwidth}p{0.28\textwidth}p{0.47\textwidth}}
+\toprule
+Date & Source & Relevance to this continuation \\
+\midrule
+\endfirsthead
+\toprule
+Date & Source & Relevance to this continuation \\
+\midrule
+\endhead
+1944 & Alaoglu--Erd\H{o}s & Original arithmetic question in the theory of highly composite numbers. \\
+1957 & Schneider & Places the surrounding four-exponentials problem among central open transcendence questions. \\
+1997 & Bhargava & $p$-orderings and generalized factorials for integer-valued polynomial rings on arbitrary subsets. \\
+2003 & Borwein--Pinner--Pritsker & Monic integer Chebyshev problem and exact constants on arithmetic compact sets. \\
+2005 & Pritsker & Integer Chebyshev polynomials, potential theory, capacity, and small integer-coefficient polynomials. \\
+2023 & Waldschmidt & Modern survey explicitly connecting the question to four exponentials and Schanuel-type conjectures. \\
+2024/2026 & Dasgupta--Kakde & Matrix Coefficient Conjecture and its relation to strong four exponentials; published in Advances in Mathematics. \\
+2025 & Massold & Transcendence-degree estimates for exponentials of products; stronger cases reduced to torus intersections. \\
+2025 & Fischler--Rivoal & New exponential-value transcendence measure using Hermite--Pad\'e approximants and an optimized Siegel determinant. \\
+2025 & Adamczewski--Faverjon & Explicit algebraic-independence measures for values of $E$- and $M$-functions at algebraic points. \\
+2025/2026 & Gorbachev--Ivanov--Tikhonov & Discrete Chebyshev alternation and Sturm oscillation for discrete polynomial systems. \\
+2025/2026 & Berger--Sprang & Links regular bases of integer-valued polynomial rings with $p$-adic Fourier theory. \\
+2025 & Lagarias--Yangjit & Extends Bhargava-style orderings and generalized factorials from prime ideals to general ideals. \\
+\bottomrule
+\caption{Selected literature used to delimit the approximation program.}
+\label{tab:literature}
+\end{longtable}
+
+The chronology shows that the relevant tools are progressing on both sides: quantitative
+auxiliary functions at the Archimedean place and generalized integer-valued polynomial bases
+at finite places.  What remains absent is a theorem joining them for the specialized
+$2\times2$ logarithmic matrix.
+
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock DOI: \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Schneider1957}
+Th.~Schneider,
+\newblock \emph{Einf\"uhrung in die transzendenten Zahlen},
+\newblock Springer, 1957.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer, 2000.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in J.-M.~Morel and B.~Teissier (eds.), \emph{Mathematics Going Forward},
+Lecture Notes in Mathematics 2313, Springer, 2023, pp.~579--592.
+\newblock DOI: \href{https://doi.org/10.1007/978-3-031-12244-6_39}{10.1007/978-3-031-12244-6\_39}.
+
+\bibitem{DasguptaKakde2024}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{Ranks of Matrices of Logarithms of Algebraic Numbers II: The Matrix
+Coefficient Conjecture},
+\newblock arXiv:2408.08178, 2024; subsequently published in 2026 as cited below.
+
+\bibitem{DasguptaKakde2026}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{Ranks of matrices of logarithms of algebraic numbers II: The Matrix
+Coefficient Conjecture},
+\newblock Advances in Mathematics \textbf{487} (2026), Article 110753.
+\newblock DOI: \href{https://doi.org/10.1016/j.aim.2025.110753}{10.1016/j.aim.2025.110753}.
+
+\bibitem{Massold2025}
+H.~Massold,
+\newblock \emph{Transcendence degrees of fields generated by exponentials of products},
+\newblock arXiv:2506.01123, 2025.
+
+\bibitem{FischlerRivoal2025}
+S.~Fischler and T.~Rivoal,
+\newblock \emph{A new transcendence measure for the values of the exponential function at algebraic arguments},
+\newblock arXiv:2502.17992v1, February 2025.
+
+\bibitem{AdamczewskiFaverjon2025}
+C.~Faverjon and B.~Adamczewski,
+\newblock \emph{Algebraic Independence Measures for Values of $E$-functions and
+$M$-functions},
+\newblock arXiv:2502.09999, 2025.
+
+\bibitem{GorbachevIvanovTikhonov2025}
+D.~V.~Gorbachev, V.~I.~Ivanov, and S.~Yu.~Tikhonov,
+\newblock \emph{Chebyshev systems and Sturm oscillation theory for discrete polynomials},
+\newblock Forum of Mathematics, Sigma \textbf{14} (2026), e84.
+\newblock DOI: \href{https://doi.org/10.1017/fms.2026.10168}{10.1017/fms.2026.10168};
+\newblock arXiv:2501.02358v2, August 2026.
+
+\bibitem{Bhargava1997}
+M.~Bhargava,
+\newblock \emph{$P$-orderings and polynomial functions on arbitrary subsets of Dedekind
+rings},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{490} (1997), 101--127.
+
+\bibitem{LagariasYangjit2025}
+J.~C.~Lagarias and W.~Yangjit,
+\newblock \emph{$B$-orderings for all ideals $B$ of Dedekind domains and generalized
+factorials},
+\newblock arXiv:2502.19072, 2025.
+
+\bibitem{BergerSprang2025}
+L.~Berger and J.~Sprang,
+\newblock \emph{Integer-valued polynomials and $p$-adic Fourier theory},
+\newblock Rendiconti del Seminario Matematico della Universit\`a di Padova,
+Online First, July 21, 2026.
+\newblock DOI: \href{https://doi.org/10.4171/RSMUP/204}{10.4171/RSMUP/204};
+\newblock arXiv:2502.18053v2, April 2025.
+
+\bibitem{Pritsker2005}
+I.~E.~Pritsker,
+\newblock \emph{Small polynomials with integer coefficients},
+\newblock Journal d'Analyse Math\'ematique \textbf{96} (2005), 151--190.
+\newblock DOI: \href{https://doi.org/10.1007/BF02787827}{10.1007/BF02787827}.
+
+\bibitem{BorweinPinnerPritsker2003}
+P.~B.~Borwein, C.~G.~Pinner, and I.~E.~Pritsker,
+\newblock \emph{Monic integer Chebyshev problem},
+\newblock Mathematics of Computation \textbf{72} (2003), no.~244, 1901--1916.
+\newblock DOI: \href{https://doi.org/10.1090/S0025-5718-03-01477-7}{10.1090/S0025-5718-03-01477-7}.
+
+\bibitem{KarlinStudden1966}
+S.~Karlin and W.~J.~Studden,
+\newblock \emph{Tchebycheff Systems: With Applications in Analysis and Statistics},
+\newblock Interscience, 1966.
+
+\bibitem{Lorentz1986}
+G.~G.~Lorentz,
+\newblock \emph{Approximation of Functions},
+\newblock second edition, Chelsea, 1986.
+
+\bibitem{Trefethen2013}
+L.~N.~Trefethen,
+\newblock \emph{Approximation Theory and Approximation Practice},
+\newblock SIAM, 2013.
+
+\bibitem{CahenChabert1997}
+P.-J.~Cahen and J.-L.~Chabert,
+\newblock \emph{Integer-Valued Polynomials},
+\newblock Mathematical Surveys and Monographs 48, American Mathematical Society, 1997.
+
+\bibitem{UnifiedReport2026}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial
+Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+\newblock supplied unified report, August 21, 2026.
+
+\end{thebibliography}
+
+\end{document}
