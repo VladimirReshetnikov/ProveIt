@@ -1,0 +1,2074 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,mathrsfs}
+\usepackage{microtype}
+
+\title{On the Divisor and Circle Problems}
+\author{%
+  H. Iwaniec\thanks{Supported by the Institute for Advanced Study, Princeton, NJ 08540.}\\
+  Department of Mathematics, Rutgers University,\\
+  New Brunswick, New Jersey 08903
+  \and
+  C. J. Mozzochi\\
+  Institute for Advanced Study,\\
+  Princeton, New Jersey 08540}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+Communicated by H. Halberstam\\
+Received August 3, 1987
+\end{center}
+
+\noindent\textbf{Contents.}
+1. Introduction. 2. Analytic formulation of $\Delta(x)$.
+3. Fourier analysis of $\Delta(x)$. 4. Van der Corput method.
+5. Weyl's shift. 6. Special case. 7. Estimate of $S(n,r)$.
+8. Evaluation of $F(m(a/c))$. 9. Incomplete theta series.
+10. Evaluation of $F(m(a/c))$, continued.
+11. An Incomplete Bessel function.
+12. Evaluation of $F(m(a/c))$, completion.
+13. Estimation of $\mathscr{B}(A,C,K,L)$.
+14. A Mean-value theorem.
+
+\section*{1. Introduction}
+Let $d(n)$ denote the number of positive divisors of the integer $n$. Set
+
+$$
+D(x)=\sum_{1 \leqslant n \leqslant x} d(n)
+$$
+
+and
+
+$$
+\Delta(x)=D(x)-x \log x-(2\gamma-1)x
+$$
+
+for any $x \geqslant 1$, where $\gamma$ is Euler's constant. The Dirichlet divisor problem is to estimate $\Delta(x)$. Hardy (1916) and Ingham (1940) showed
+
+$$
+\begin{aligned}
+& \varlimsup_{x\to\infty} \Delta(x)x^{-1/4}=\infty \\
+& \varliminf_{x\to\infty} \Delta(x)x^{-1/4}=-\infty,
+\end{aligned}
+$$
+
+respectively. Let $\theta_{0}$ denote the smallest value of $\theta$ such that
+
+\begin{equation*}
+\Delta(x) \ll x^{\theta+\varepsilon} \tag{1.1}
+\end{equation*}
+
+holds for every $x \geqslant 1$ and $\varepsilon>0$ with the constant implied in $\ll$ depending only on $\varepsilon$. The conjecture, $\theta_{0}=\frac{1}{4}$, remains open, and efforts to establish the conjecture have stimulated much research into estimating exponential sums in one and several variables. The forthcoming book [4] contains an important exposition of this research. The reader is referred to Chapters 13 and 14 in [5] and to Chapter 8 in [2] for an interesting exposition concerning the divisor problem.
+
+The following list marks some steps in the history of the estimation of $\Delta(x)$ :
+
+$$
+\begin{array}{ll}
+\text { Dirichlet }(1849), & \theta=\frac{1}{2}=0.500000000 ; \\
+\text { Voronoi }(1904), & \theta=\frac{1}{3}=0.333333333 \ldots ; \\
+\text { Van der Corput }(1922), & \theta=\frac{33}{100}=0.330000000 ; \\
+\text { Van der Corput }(1928), & \theta=\frac{27}{82}=0.329268293 \ldots ; \\
+\text { Kolesnik }(1969), & \theta=\frac{12}{37}=0.324324324 \ldots ;
+\end{array}
+$$
+
+The most recent result of Kolesnik [6] is $\theta=\frac{139}{429}=0.324009324\ldots$. In this paper we establish (1.1) with
+
+
+\begin{equation*}
+\theta=\frac{7}{22}=0.318181818 \ldots . \tag{1.2}
+\end{equation*}
+
+
+Since
+
+$$
+\zeta^{2}(s)=\sum_{n=1}^{\infty} d(n) n^{-s}
+$$
+
+there is a natural connection between the problem of estimating $\Delta(x)$ and that of $\zeta(s)$. In [1] Bombieri and Iwaniec obtained
+
+
+\begin{equation*}
+\zeta\left(\frac{1}{2}+i t\right) \ll t^{\theta_{1}+\varepsilon} \tag{1.3}
+\end{equation*}
+
+
+with $\theta_{1}=9 / 56$. This work was inspired by [1]. Our arguments here differ in various places. We extend the new technique in [1] in such a way that we are able to go significantly beyond $2 \theta_{1}=0.321428571 \ldots$, which would be predicted by the heretofore standard approaches to both problems. This extension does not apply to the Riemann zeta-function, so $\theta_{1}=\frac{9}{56}$ in (1.3) is not reduced. In the forthcoming paper by M. Huxley and N. Watt the Bombieri-Iwaniec technique is elaborated further to treat general exponential sums and to get a new exponent pair.
+
+The circle problem is to estimate the error, $P(x)$, in the equation
+
+
+\begin{equation*}
+P(x)=R(x)-\pi x=\sum_{n \leqslant x} r(n)-\pi x, \tag{1.4}
+\end{equation*}
+
+
+where $r(n)$ is the number of representations of $n$ as a sum of two squares. Let $\theta_{0}$ denote the smallest value of $\theta$ such that
+
+
+\begin{equation*}
+P(x) \ll x^{\theta+\varepsilon} \tag{1.5}
+\end{equation*}
+
+
+holds for every $x \geqslant 1$ and $\varepsilon>0$ with the constant implied in $\ll$ depending only on $\varepsilon$.
+
+The methods of estimating $\Delta(x)$ and $P(x)$ had up to that point been very similar; hence the exponents obtained for both were equal, although they were not always claimed explicitly in various publications. The conjecture $\theta_{0}=\frac{1}{4}$ remains open.
+
+We list here significant steps in the early history of the estimation of $P(x)$ :
+
+$$
+\begin{array}{ll}
+\text { Gauss } & (1834), \theta=\frac{1}{2}=0.500000000 ; \\
+\text { Sierpiński } & (1906), \theta=\frac{1}{3}=0.333333333 \ldots ; \\
+\text { Walfisz } & (1927), \theta=\frac{163}{494}=0.329959514 \ldots ; \\
+\text { Titchmarsh } & (1935), \theta=\frac{15}{46}=0.326086957 \ldots ; \\
+\text { Hua } & (1942), \theta=\frac{13}{40}=0.325000000 \ldots .
+\end{array}
+$$
+
+We have
+
+
+\begin{equation*}
+R(x)=4 D(x ; 4,1,1,1)-4 D(x ; 4,3,1,1), \tag{1.6}
+\end{equation*}
+
+
+where
+
+
+\begin{equation*}
+D\left(x ; k_{1}, l_{1}, k_{2}, l_{2}\right)=\sum_{\substack{n_{1} n_{2} \leqslant x \\ n_{j} \equiv l_{j}\pmod{k_j}}} 1 . \tag{1.7}
+\end{equation*}
+
+
+By writing these sums as character sums $(\bmod 4)$, the arguments we give below for the divisor problem apply with slight modification to the circle problem. Hence we establish (1.5) with
+
+
+\begin{equation*}
+\theta=\frac{7}{22}=0.318181818 \ldots \tag{1.8}
+\end{equation*}
+
+
+(cf. [5, Sect. 13.8]).
+
+\section*{2. Analytic Formulation of $\Delta(x)$}
+We have
+
+$$
+\begin{aligned}
+D(x) & =\sum_{1\leqslant mn\leqslant x}1 \\
+& =2 \sum_{1 \leqslant m<x^{1 / 2}}\left(\left[\frac{x}{m}\right]-m\right)+\left[x^{1 / 2}\right] \\
+& =2 \sum_{1 \leqslant m<x^{1 / 2}}\left(\frac{x}{m}-m\right)-2 \sum_{1 \leqslant m<x^{1 / 2}} \psi\left(\frac{x}{m}\right)+O(1) .
+\end{aligned}
+$$
+
+The first term is equal to (by partial integration)
+
+$$
+\begin{aligned}
+2 \int_{1-}^{x^{1 / 2}}\left(x t^{-1}-t\right) d[t] & =x \log x-2 \int_{1}^{x^{1 / 2}}\left(x t^{-2}+1\right) \psi(t) d t \\
+& =x \log x-2 x \int_{1}^{\infty} t^{-2} \psi(t) d t+O(1)
+\end{aligned}
+$$
+
+Since
+
+$$
+-2 \int_{1}^{\infty} t^{-2} \psi(t) d t=2 \gamma-1
+$$
+
+we have proved that
+
+$$
+\Delta(x)=-2 \sum_{1 \leqslant m<x^{1 / 2}} \psi\left(\frac{x}{m}\right)+O(1) .
+$$
+
+Setting
+
+$$
+\Delta(x, M)=\sum_{m \sim M} \psi\left(\frac{x}{m}\right)
+$$
+
+we get
+
+$$
+\Delta(x)=-2 \sum_{M} \Delta(x, M)+O(1)
+$$
+
+where $M$ ranges over the sequence $\left\{2^{-j} x^{1 / 2} ; j=0,1, \ldots\right\}$. Since $|\Delta(x, M)| \leqslant M$ our aim (1.1) reduces to showing that
+
+
+\begin{equation*}
+\Delta(x, M) \ll x^{\theta+\varepsilon} \tag{2.1}
+\end{equation*}
+
+
+for any $M$ with
+
+
+\begin{equation*}
+x^{\theta}<M<x^{1 / 2} . \tag{2.2}
+\end{equation*}
+
+
+\section*{3. Fourier Analysis of $\Delta(x)$}
+Let $\chi(x)$ be a smooth function such that
+
+$$
+\begin{aligned}
+\quad \chi(x)=0 & \text { if } \quad x \geqslant 4 \\
+0<\chi(x) \leqslant 1 & \text { if } \quad 2 \leqslant x<4 \\
+\chi(x)=1-\chi(2 x) & \text { if } \quad 1<x \leqslant 2 \\
+\chi(x)=0 & \text { if } \quad x \leqslant 1 .
+\end{aligned}
+$$
+
+We then have
+
+
+\begin{equation*}
+\sum_{H} \chi\left(\frac{x}{H}\right)=1 \tag{3.1}
+\end{equation*}
+
+
+for all $x>0$, where $H$ ranges over the sequence $\left\{2^{j} ; j \in \mathbf{Z}\right\}$. Define
+
+$$
+\psi_{H}(t)=\sum_{h} \chi\left(\frac{h}{H}\right) \frac{\sin (2 \pi h t)}{\pi h} .
+$$
+
+By (3.1) and the well-known Fourier expansion (boundedly convergent)
+
+$$
+\psi(t)=\sum_{1 \leqslant h \leqslant y}(\pi h)^{-1} \sin (2 \pi h t)+O\left((1+\|t\| y)^{-1}\right)
+$$
+
+we infer by partial summation
+
+$$
+\psi(t)=\sum_{1 \leqslant H<y} \psi_{H}(t)+O\left((1+\|t\| y)^{-1}\right) .
+$$
+
+Hence
+
+$$
+\Delta(x, M)=\sum_{1 \leqslant H<y} \Delta(x, H, M)+O(E(x, y, M))
+$$
+
+where
+
+$$
+\Delta(x, H, M)=\sum_{m \sim M} \psi_{H}\left(\frac{x}{m}\right),
+$$
+
+and
+
+$$
+E(x, y, M)=\sum_{m \sim M}\left(1+\left\|\frac{x}{m}\right\| y\right)^{-1} .
+$$
+
+We have by an elementary argument
+
+$$
+E(x,y,M)\ll\left(1+My^{-1}\right)x^{\varepsilon}
+$$
+
+so the error term is admissible if $y=M x^{-\theta}$. Our aim (1.2) reduces to showing that
+
+
+\begin{equation*}
+\Delta(x, H, M) \ll x^{\theta+\varepsilon} \tag{3.2}
+\end{equation*}
+
+
+for any $M$ subject to (2.2) and for $H$ subject to
+
+
+\begin{equation*}
+1 \leqslant H \leqslant M x^{-\theta} . \tag{3.3}
+\end{equation*}
+
+
+\section*{4. Van der Corput Method}
+In this section we give further reduction of the ranges (2.2) for $M$ and (3.3) for $H$ by classical means. We use the exponent pairs $\left(\frac{1}{2}, \frac{1}{2}\right)$ and $\left(\frac{2}{7}, \frac{4}{7}\right)$ giving
+
+$$
+\sum_{m \sim M} e\left(\frac{x h}{m}\right) \ll\left\{\begin{array}{l}
+(x H)^{1 / 2} M^{-1 / 2} \\
+(x H)^{2 / 7} .
+\end{array}\right.
+$$
+
+The same bounds hold true for $\Delta(x, H, M)$. Therefore (3.2) is proved; unless
+
+
+\begin{equation*}
+Mx^{2\theta-1}<H<Mx^{-\theta} \tag{4.1}
+\end{equation*}
+
+
+and $H>x^{\frac{7}{2} \theta-1}$. By (3.3) the latter inequality implies
+
+
+\begin{equation*}
+x^{\frac{9}{2} \theta-1}<M<x^{1 / 2} . \tag{4.2}
+\end{equation*}
+
+
+From now on we assume both (4.1) and (4.2) hold.
+
+\section*{5. Weyl's Shift}
+In this section we apply Weyl's method and prepare the resulting sum for further analysis to be performed in the following sections. Let us consider a general sum
+
+$$
+S=\sum_{m \sim M} f(m)
+$$
+
+with $|f| \leqslant 1$. For any integer $n>0$ we have
+
+$$
+S=\sum_{m \sim M} f(m+n)+O(n) .
+$$
+
+Sum this over $n$ with weight
+
+$$
+g(n)=\varphi(n / N),
+$$
+
+where $\varphi$ is a smooth function, non-negative, supported in the interval [5, 7]. We get
+
+$$
+S T=\sum_{m \sim M} F(m)+O\left(N^{2}\right),
+$$
+
+where
+
+$$
+T=\sum_{n} g(n),
+$$
+
+and $F=f * g$ is defined by
+
+$$
+F(m)=\sum_{n} f(m+n) g(n) .
+$$
+
+Suppose that
+
+$$
+\mathscr{M}=[M, 2 M)=\bigcup \mathscr{M}_{r}
+$$
+
+is the union of disjoint intervals $\mathscr{M}_{r}$ of length
+
+$$
+\lambda_{r}=\left|\mathscr{M}_{r}\right|>1 ;
+$$
+
+so that each interval, $\mathscr{M}_{r}$, contains an integer $m_{r} \in \mathscr{M}_{r}$. We get
+
+
+\begin{equation*}
+S T=\sum_{r} S_{r}+O\left(N^{2}\right), \tag{5.1}
+\end{equation*}
+
+
+where
+
+
+\begin{equation*}
+S_{r}=\sum_{m \in \mathscr{M}_{r}} F(m) . \tag{5.2}
+\end{equation*}
+
+
+We shall treat the intervals $\mathscr{M}_{r}$ of length $\lambda_{r} \geqslant N$ and those of length $\lambda_{r}<N$ differently.
+
+First let us look at the intervals $\mathscr{M}_{r}$ with $\lambda_{r} \geqslant N$. We have
+
+
+\begin{align*}
+S_{r} & =\sum_{m \in \mathscr{M}_{r}} \sum_{n} g(n) f(m+n)  \tag{5.3}\\
+& =\sum_{n} g(n) S(n, r)
+\end{align*}
+
+
+with $S(n, r)$ given by
+
+
+\begin{equation*}
+S(n, r)=\sum_{L_{1} \leqslant l<L_{2}} f\left(m_{r}+l\right) \tag{5.4}
+\end{equation*}
+
+
+for some $L_{j}=L_{j}(n, r)$ such that
+
+
+\begin{equation*}
+-\lambda_{r}<L_{1}<L_{2}<8 \lambda_{r} . \tag{5.5}
+\end{equation*}
+
+
+In Section 7 we shall establish an upper bound for $S(n, r)$ which does not depend on $L_{1}, L_{2}$; let us say we have
+
+
+\begin{equation*}
+|S(n, r)| \leqslant B\left(m_{r}\right) . \tag{5.6}
+\end{equation*}
+
+
+Now let us look at the intervals $\mathscr{M}_{r}$ with $\lambda_{r}<N$. For $m \in \mathscr{M}_{r}$ we have
+
+$$
+F(m)=\sum_{n} f\left(m_{r}+n\right) g\left(n+m_{r}-m\right)
+$$
+
+with $\left|m_{r}-m\right|<N$. Our intention is to separate the variable $n$ in $g\left(n+m_{r}-m\right)$. For this reason we assume that the test function $\varphi$ is of convolution type
+
+$$
+\varphi(t)=\int \rho(t-s) \eta(s) d s
+$$
+
+where $\rho, \eta$ are non-negative, smooth functions supported on the intervals [4, 5] and [1, 2], respectively. Let $\sigma_{s}(t)=\rho(t-s)$. Then
+
+$$
+g\left(n+m_{r}-m\right)=\int \sigma_{s}\left(n N^{-1}\right) \eta\left(s+\left(m_{r}-m\right) N^{-1}\right) d s,
+$$
+
+and
+
+
+\begin{equation*}
+F(m)=\int_{0}^{3}\eta\left(s+(m_{r}-m)N^{-1}\right)F_{s}(m_{r})\,ds. \tag{5.7}
+\end{equation*}
+
+
+where $F_{s}=f * g_{s}$ and $g_{s}(n)=\sigma_{s}\left(n N^{-1}\right)$. Notice that $\sigma_{s}(t)$ is a smooth function in $t$ supported in the interval [1,5]; so that $n \asymp N$. Combining (5.1)-(5.7) we conclude
+
+
+\begin{equation*}
+S \ll \sum_{\lambda_{r} \geqslant N} B\left(m_{r}\right)+N^{-1} \sum_{\lambda_{r}<N} \lambda_{r}\left|F_{s}\left(m_{r}\right)\right|+N \tag{5.8}
+\end{equation*}
+
+
+with some $s$ in $0 \leqslant s \leqslant 3$.
+We drop the index $s$ in $\sigma_{s}, g_{s}$, and $F_{s}(m)$ for notational simplicity.
+
+\section*{6. Special Case}
+We specialize the results of Section 5 to
+
+$$
+f(m)=\psi_{H}\left(\frac{x}{m}\right) .
+$$
+
+Let $a/c$ range over the Farey points of order $H$, that is, over the rational numbers $a/c$ with
+
+
+\begin{equation*}
+1 \leqslant c \leqslant H \quad(a, c)=1 . \tag{6.1}
+\end{equation*}
+
+
+Consider the interval
+
+$$
+I(a / c)=\left[\frac{a+a_{1}}{c+c_{1}}, \frac{a+a_{2}}{c+c_{2}}\right)=\left[\frac{a}{c}-\frac{1}{c\left(c+c_{1}\right)}, \frac{a}{c}+\frac{1}{c\left(c+c_{2}\right)}\right),
+$$
+
+whose endpoints are Farey means. We have $H<c+c_{1} \leqslant 2 H$ and $H<c+c_{2} \leqslant 2 H$. Clearly the intervals $I(a / c)$ cover the real line. We are interested in points $a / c$ with
+
+
+\begin{equation*}
+cx(2M)^{-2}\leqslant a\leqslant cxM^{-2} . \tag{6.2}
+\end{equation*}
+
+
+Let $\mathscr{R}$ be the set of Farey points satisfying (6.1) and (6.2).
+Define the intervals
+
+$$
+\mathscr{M}_{a / c}=\left\{t ; x t^{-2} \in I(a / c)\right\}
+$$
+
+and the points
+
+$$
+m\left(\frac{a}{c}\right)=\left[\left(\frac{c x}{a}\right)^{1 / 2}\right] .
+$$
+
+Then we have $m(a / c) \in \mathscr{M}_{a / c}$, the $\mathscr{M}_{a / c}$ are disjoint, and
+
+$$
+[M, 2 M) \subset \bigcup_{a / c \in \mathscr{R}} \mathscr{M}_{a / c} .
+$$
+
+Also,
+
+
+\begin{equation*}
+\lambda_{a / c}=\left|\mathscr{M}_{a / c}\right| \asymp \frac{M^{3}}{x c H} \gg x^{3 / 44} \tag{6.3}
+\end{equation*}
+
+
+by (6.1), (6.2), (4.1), (4.2), and (1.2).
+
+Anticipating the immediate and the final arguments we choose (optimally)
+
+
+\begin{equation*}
+N=M x^{-\frac{2}{5}(1-\theta)} . \tag{6.4}
+\end{equation*}
+
+
+Let
+
+
+\begin{equation*}
+G=\frac{M^{3}}{x N H} . \tag{6.5}
+\end{equation*}
+
+
+By (4.1), (4.2), (6.4), and (1.2) we have
+
+
+\begin{equation*}
+1 \leqslant G \leqslant H, \tag{6.6}
+\end{equation*}
+
+
+and by (6.3) and (6.5) we have
+
+
+\begin{equation*}
+N^{-1} \lambda_{a / c} \asymp c^{-1} G . \tag{6.7}
+\end{equation*}
+
+
+Moreover, if $\lambda_{a / c} \geqslant N$ then $1 \leqslant c \leqslant \mu_{0} G$, and if $\lambda_{a / c}<N$ then $\mu_{1} G<c \leqslant H$ where $\mu_{0}, \mu_{1}$ are absolute positive constants.
+
+In the above setting (5.8) becomes
+
+
+\begin{equation*}
+\Delta(x, H, M) \ll \Delta_{0}(x, H, M)+\Delta_{1}(x, H, M)+N, \tag{6.8}
+\end{equation*}
+
+
+where
+
+$$
+\Delta_{0}(x, H, M)=\sum_{1 \leqslant c<\mu_{0} G} \sum_{a} B\left(m\left(\frac{a}{c}\right)\right)
+$$
+
+with $B(m(a/c))$ any quantity satisfying (5.6), and
+
+$$
+\Delta_{1}(x, H, M)=\sum_{\mu_{1} G<c \leqslant H} \frac{G}{c} \sum_{a}\left|F\left(m\left(\frac{a}{c}\right)\right)\right| .
+$$
+
+For convenience we split the range $\mu_{1}G<c\leqslant H$ of summation in $\Delta_{1}(x,H,M)$ into subintervals of type $c \sim C$; so we get
+
+
+\begin{equation*}
+\Delta(x, H, M) \ll \Delta_{0}(x, H, M)+\sum_{C} \Delta(x, C, H, M)+N, \tag{6.9}
+\end{equation*}
+
+
+where $C$ ranges over the sequence $\left\{2^{j} ; j \in \mathbf{Z}\right\}$ with
+
+
+\begin{equation*}
+\mu_{1} G<C \leqslant H \tag{6.10}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\Delta(x,C,H,M)=\frac{G}{C}
+\sum_{\substack{C\leqslant c<2C\\ \frac14 A<a<2A}}
+\left|F\left(m\left(\frac ac\right)\right)\right|. \tag{6.11}
+\end{equation*}
+
+
+with
+
+
+\begin{equation*}
+A=x C M^{-2} . \tag{6.12}
+\end{equation*}
+
+
+\section*{7. Estimate of $S(n, r)$}
+Our aim is to prove (5.6) with some $B\left(m_{r}\right)=B(m(a / c))$. By (5.4) we get
+
+$$
+|S(n,r)|\ll H^{-1} \sum_{h \sim H}\left|\sum_{L_{1} \leqslant l \leqslant L_{2}} e\left(\frac{x h}{m+l}\right)\right|,
+$$
+
+where $m=m(a / c)=(c x / a)^{1 / 2}-v$ with $0 \leqslant v<1$. We have
+
+$$
+\begin{aligned}
+\frac{x h}{m+l} & =\frac{x h}{m}-\frac{x h l}{m^{2}}+\frac{x h l^{2}}{m^{2}(m+l)} \\
+& =\frac{x h}{m}-\frac{a}{c} h l+r(l)
+\end{aligned}
+$$
+
+with
+
+
+\begin{equation*}
+r(l)=\frac{-v(2 m-v) x h l}{m^{2}(m+v)^{2}}+\frac{x h l^{2}}{m^{2}(m+l)} . \tag{7.1}
+\end{equation*}
+
+
+Thus
+
+$$
+\sum_{L_{1} \leqslant l \leqslant L_{2}} e\left(\frac{x h}{m+l}\right)=e\left(\frac{x h}{m}\right) \sum_{L_{1} \leqslant l \leqslant L_{2}} e\left(\frac{-a h l}{c}+r(l)\right) .
+$$
+
+Without loss of generality we can assume that $L_{1}, L_{2}$ are integers, thus we can attach to $l$ the weight function
+
+$$
+\omega(l)=\max \left\{0,1+\min \left\{l-L_{1}, L_{2}-l, 0\right\}\right\} .
+$$
+
+This redundant operation enables one to establish the following Poisson's summation formula
+
+
+\begin{equation*}
+\sum_{l}\omega(l)e\left(-\frac{ahl}{c}+r(l)\right)
+=\sum_{k\equiv-ah\, (\bmod c)}\int \omega(l)e\left(r(l)+\frac{kl}{c}\right)\,dl. \tag{7.2}
+\end{equation*}
+
+
+For $|k| \geqslant k_{0}$, where $k_{0}$ is an absolute constant, sufficiently large, we have
+
+
+\begin{equation*}
+\left|\int \omega(l)e\left(r(l)+\frac{kl}{c}\right)\,dl\right|\ll\min\left\{\frac{c}{|k|},\frac{c^{2}}{k^{2}}\right\} . \tag{7.3}
+\end{equation*}
+
+
+For $|k|<k_{0}$, we have
+
+
+\begin{equation*}
+\int \ll\left(x H M^{-3}\right)^{-1 / 2} . \tag{7.4}
+\end{equation*}
+
+
+Notice that the above bounds for $\int$ do not depend on $h$, but on $k ; \int \ll I(k)$, say. Gathering together the above results we obtain
+
+$$
+\begin{aligned}
+|S(n,r)| & \ll H^{-1} \sum_{h \sim H} \sum_{k \equiv-a h\, (\bmod c)} I(k) \\
+& \ll c^{-1} \sum_{k} I(k) \ll c^{-1}(x H)^{-1 / 2} M^{3 / 2}+\log c .
+\end{aligned}
+$$
+
+Here the term $\log c$ is absorbed by the first term. This shows that (5.6) holds true with
+
+
+\begin{equation*}
+B(m(a / c)) \ll c^{-1}(x H)^{-1 / 2} M^{3 / 2} . \tag{7.5}
+\end{equation*}
+
+
+By (7.5) we conclude that the long intervals $\mathscr{M}_{a / c}$ (that is, those with $\lambda_{a / c} \geqslant N$) contribute to $\Delta(x, H, M)$ at most
+
+
+\begin{align*}
+\Delta_{0}(x,H,M) & \ll G M^{3 / 2}(x H)^{-1 / 2} \frac{x}{M^{2}} \ll x^{-1 / 2} H^{-3 / 2} N^{-1} M^{5 / 2} \\
+& =M^{3 / 2} H^{-3 / 2} x^{\frac{2}{5}(1-\theta)-1 / 2}<x^{(7-17 \theta) / 5}=x^{\theta} \tag{7.6}
+\end{align*}
+
+
+by (6.4), (4.1), and (1.2).
+From now on the rest of the work is directed to estimating $\Delta(x, C, H, M)$; see (6.9) and (6.11).
+
+\section*{8. Evaluation of $F(m(a / c))$}
+We recall that
+
+$$
+\begin{aligned}
+F(m) & =\sum_{n} g(n) f(m+n) \\
+& =\sum_{n} \sigma\left(\frac{n}{N}\right) \psi_{H}\left(\frac{x}{m+n}\right) \\
+& =\operatorname{Im}\sum_{h}(\pi h)^{-1} \chi\left(\frac{h}{H}\right) R(h, m)
+\end{aligned}
+$$
+
+with
+
+$$
+R(h, m)=\sum_{n} \sigma\left(\frac{n}{N}\right) e\left(\frac{h x}{m+n}\right) .
+$$
+
+Our aim is to approximate $R(h, m)$ for $m=m(a / c)=(c x / a)^{1 / 2}-v$ by the incomplete theta-series,
+
+$$
+\theta(\alpha, \beta)=\sum_{n} \sigma(n / N) e\left(\alpha n+\beta n^{2}\right),
+$$
+
+with
+
+
+\begin{equation*}
+\beta=x^{-1 / 2}\left(\frac{a}{c}\right)^{3 / 2} h \quad \text { and } \quad \alpha=-\frac{a h}{c}-2 v \beta . \tag{8.1}
+\end{equation*}
+
+
+By (6.1), (6.2), and (6.6) we obtain
+
+
+\begin{equation*}
+\beta N \ll 1 \ll \beta c N . \tag{8.2}
+\end{equation*}
+
+
+As in Section 7 we have
+
+
+\begin{equation*}
+\frac{x h}{m+n}=\frac{x h}{m}-\frac{a}{c} h n+r(n), \tag{8.3}
+\end{equation*}
+
+
+where $r(n)$ is given by (7.1). We develop (8.3) further by extracting from $r(n)$ two leading terms. We get by (7.1)
+
+$$
+r(n)=\beta n(n-2 v)+t(n),
+$$
+
+where
+
+$$
+\begin{aligned}
+t(n)={}&-\frac{v(2m-v)xhn}{m^{2}(m+v)^{2}}
+       +\frac{2vxhn}{(m+v)^{3}}
+       +\frac{xhn^{2}}{m^{2}(m+n)}
+       -\frac{xhn^{2}}{(m+v)^{3}} \\
+={}&-\frac{v^{2}(m-v)xhn}{m^{2}(m+v)^{3}}
+    -\frac{(m^{2}n-3m^{2}v-3mv^{2}-v^{3})xhn^{2}}
+           {m^{2}(m+n)(m+v)^{3}}.
+\end{aligned}
+$$
+
+Hence
+
+$$
+R(h, m)=e\left(\frac{x h}{m}\right) \sum_{n} \sigma(n / N) e\left(\alpha n+\beta n^{2}+t(n)\right) .
+$$
+
+We shall remove the factor $e(t(n))$ by partial summation. This requires the following bounds
+
+$$
+\begin{aligned}
+|t(n)| & \ll xHN^{3}M^{-4}, \\
+|t^{\prime}(n)| & \ll xHN^{2}M^{-4},
+\end{aligned}
+$$
+
+and (see [7, Theorem 5.9] and (8.2))
+
+$$
+\sum_{N_{1} \leqslant n<N_{2}} e\left(\alpha n+\beta n^{2}\right) \ll \beta^{-1 / 2} .
+$$
+
+We obtain
+
+$$
+\begin{aligned}
+\sum_{n} \sigma(n / N) e\left(\alpha n+\beta n^{2}\right)[e(t(n))-1] & \\
+& \ll \beta^{-1/2}xHN^{3}M^{-4}\ll(xH)^{1/2} M^{-5 / 2} N^{3} \\
+& \ll M^{-2} N^{3} x^{(1-\theta) / 2} \ll M x^{-\frac{7}{10}(1-\theta)} \ll x^{(7 \theta-2) / 10}=x^{1 / 44}
+\end{aligned}
+$$
+
+by (4.1), (6.4), and (2.2). Hence we conclude
+
+
+\begin{equation*}
+R(h, m)=e\left(\frac{x h}{m}\right) \theta(\alpha, \beta)+O\left(x^{1 / 44}\right) . \tag{8.4}
+\end{equation*}
+
+
+\section*{9. Incomplete Theta-Series}
+In this section we give an approximate modular relation for the incomplete theta-series
+
+
+\begin{equation*}
+\theta(\alpha, \beta)=\sum_{n} g(n) e\left(\alpha n+\beta n^{2}\right), \tag{9.1}
+\end{equation*}
+
+
+where $g(n)$ is a smooth function compactly supported, and $\alpha, \beta$ are real numbers. Without loss of generality we assume that $\beta>0$ and
+
+
+\begin{equation*}
+\alpha=-\frac{b+\eta}{c}, \tag{9.2}
+\end{equation*}
+
+
+where $b, c$ are integers, $c \geqslant 1$ and $-\frac{1}{2}<\eta \leqslant \frac{1}{2}$. By Poisson's summation we get
+
+$$
+\begin{aligned}
+\theta(\alpha, \beta) & =\sum_{a\, (\bmod c)} e\left(\frac{-a b}{c}\right) \sum_{n\equiv a\, (\bmod c)} g(n) e\left(\frac{-\eta n}{c}+\beta n^{2}\right) \\
+& =\sum_{a\, (\bmod c)} e\left(\frac{-a b}{c}\right) c^{-1} \sum_{l} e\left(\frac{a l}{c}\right) \int g(n) e\left(\frac{-(l+\eta) n}{c}+\beta n^{2}\right) d n \\
+& =\sum_{l\equiv b\, (\bmod c)}\int g(n) e\left(\frac{-(l+\eta) n}{c}+\beta n^{2}\right) d n \\
+& =\sum_{l \equiv b\, (\bmod c)} e\left(-\frac{(l+\eta)^{2}}{4 \beta c^{2}}\right) \int g\left(n+\frac{l+\eta}{2 \beta c}\right) e\left(\beta n^{2}\right) d n .
+\end{aligned}
+$$
+
+Setting $n_{0}=(l+\eta) / 2 \beta c$ we split
+
+$$
+\int g\left(n+n_{0}\right) e\left(\beta n^{2}\right) d n=g\left(n_{0}\right) P(\infty)+Q\left(n_{0}\right),
+$$
+
+where
+
+$$
+P(n)=\int_{-\infty}^{n} e\left(\beta t^{2}\right) d t
+$$
+
+and
+
+$$
+Q\left(n_{0}\right)=\int\left(g\left(n+n_{0}\right)-g\left(n_{0}\right)\right) e\left(\beta n^{2}\right) d n
+$$
+
+We have
+
+$$
+P(\infty)=\left(\frac{i}{2 \beta}\right)^{1 / 2}
+$$
+
+and
+
+$$
+P(n) \ll \beta^{-1 / 2} .
+$$
+
+It remains to estimate $Q\left(n_{0}\right)$. Integrating by parts we get
+
+$$
+\begin{aligned}
+Q\left(n_{0}\right) & =\frac{-1}{4 \pi i \beta} \int\left(\frac{g\left(n+n_{0}\right)-g\left(n_{0}\right)}{n}\right)^{\prime} e\left(\beta n^{2}\right) d n \\
+& =\frac{1}{4\pi i\beta}\int\left(\frac{g(n+n_{0})-g(n_{0})}{n}\right)^{\prime\prime}P(n)\,dn \\
+& \ll \beta^{-3 / 2} \int\left|\left(\frac{g\left(n+n_{0}\right)-g\left(n_{0}\right)}{n}\right)^{\prime \prime}\right| d n
+\end{aligned}
+$$
+
+In order to simplify the arguments we assume that $g(n)$ is supported on $n \asymp N$ with $\beta N^{2} \gg 1$ and that
+
+
+\begin{equation*}
+\left|n^{j} g^{(j)}(n)\right| \leqslant 1 \quad \text { for } \quad j=0,1,2,3 . \tag{9.3}
+\end{equation*}
+
+
+Hence we deduce
+
+$$
+Q\left(n_{0}\right) \ll \beta^{-3 / 2} \min \left\{n_{0}^{-2}, N^{-2}\right\} .
+$$
+
+Gathering together the above results we obtain
+
+$$
+\begin{aligned}
+\theta(\alpha,\beta)=\left(\frac{i}{2\beta}\right)^{1/2}
+\sum_{l\equiv b\, (\bmod c)}\Bigg[&g\left(\frac{l+\eta}{2\beta c}\right)
+ e\left(-\frac{(l+\eta)^{2}}{4\beta c^{2}}\right)\\
+&+O\left(\beta^{-1}\min\left\{N^{-2},
+\left(\frac{\beta c}{l+\eta}\right)^{2}\right\}\right)\Bigg].
+\end{aligned}
+$$
+
+We simplify this formula under the following hypothesis
+
+
+\begin{equation*}
+\beta N \ll 1 \ll \beta c N \tag{9.4}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+|\eta| \ll \beta c . \tag{9.5}
+\end{equation*}
+
+
+By the mean value theorem we get
+
+$$
+g\left(\frac{l+\eta}{2\beta c}\right)=g\left(\frac{l}{2\beta c}\right)+O\left(N^{-1}\right) .
+$$
+
+Moreover, for $|l| \leqslant \beta c N$ we have
+
+$$
+e\left(\frac{-(l+\eta)^{2}}{4 \beta c^{2}}\right)=e\left(\frac{-l^{2}-2 \eta l}{4 \beta c^{2}}\right)+O(\beta) .
+$$
+
+From both approximations we get
+
+
+\begin{equation*}
+\theta(\alpha, \beta)=\left(\frac{i}{2 \beta}\right)^{1 / 2} \sum_{l \equiv b\, (\bmod c)} g\left(\frac{l}{2 \beta c}\right) e\left(\frac{-l^{2}-2 \eta l}{4 \beta c^{2}}\right)+R \tag{9.6}
+\end{equation*}
+
+
+with
+
+$$
+R \ll \beta^{-3 / 2} N^{-2} \#\{l ;|l| \leqslant \beta c N, l \equiv b\, (\bmod c)\}+\beta^{1 / 2} c^{2} \sum_{\substack{|l|>\beta c N \\ l \equiv b\, (\bmod c)}} l^{-2} .
+$$
+
+Given $l$ with $|l| \leqslant \beta c N$ and $l \equiv b\, (\bmod c)$ we infer the following: $l=c k+b$, $|k+b / c| \leqslant \beta N,\|b / c\| \leqslant \beta N$. Hence
+
+$$
+\#\{l ;|l| \leqslant \beta c N, l \equiv b\, (\bmod c)\} \leqslant 2 \min \left\{1, \beta N\left\|\frac{b}{c}\right\|^{-1}\right\} .
+$$
+
+Analogously we obtain
+
+$$
+\begin{aligned}
+c^{2}\sum_{\substack{|l|>\beta cN\\ l\equiv b\, (\bmod c)}}l^{-2}
+&=\sum_{|k+b/c|>\beta N}\left(k+\frac bc\right)^{-2}\\
+&\leqslant 4\min\left\{(\beta N)^{-2},\left\|\frac bc\right\|^{-2}\right\}\\
+&\leqslant 4(\beta N)^{-2}\min\left\{1,\beta N\left\|\frac bc\right\|^{-1}\right\}.
+\end{aligned}
+$$
+
+Finally we conclude that (9.6) is true with
+
+
+\begin{equation*}
+R \ll \beta^{-3 / 2} N^{-2} \min \left\{1, \beta N\left\|\frac{b}{c}\right\|^{-1}\right\} . \tag{9.7}
+\end{equation*}
+
+
+\section*{10. Evaluation of $F(m(a / c))$, Continued}
+In Section 8 we have proved that for $m=m(a / c)=\left[(c x / a)^{1 / 2}\right]=$ $(c x / a)^{1 / 2}-v$ we have
+
+$$
+F(m)=\operatorname{Im}\sum_{h}(\pi h)^{-1} \chi\left(\frac{h}{H}\right) e\left(\frac{x h}{m}\right) \theta(\alpha, \beta)+O\left(x^{1 / 44}\right),
+$$
+
+where $\theta(\alpha, \beta)$ is the incomplete theta-series with $\alpha, \beta$ given by (8.1). Then in Section 9 we gave an approximate modular relation (9.6) for $\theta(\alpha, \beta)$ under the conditions (9.4) and (9.5), which are ensured by (8.2). The error term in this approximation is bounded in (9.7); it contributes to $F(m)$ at most
+
+$$
+\begin{aligned}
+\beta^{-3 / 2} & N^{-2} \sum_{h \sim H} h^{-1} \min \left\{1, \beta N\left\|\frac{a h}{c}\right\|^{-1}\right\} \\
+& \ll \beta^{-3 / 2} N^{-2} c^{-1} \sum_{b\, (\bmod c)} \min \left\{1, \beta N\left\|\frac{b}{c}\right\|^{-1}\right\} \\
+& \ll\beta^{-1/2}N^{-1}\log(2c)\ll\left(\frac{M^{3}}{x H}\right)^{1 / 2} N^{-1} \log x \\
+& \ll M N^{-1} x^{-\theta} \log x=x^{(2-7 \theta) / 5} \log x=x^{-1 / 22} \log x .
+\end{aligned}
+$$
+
+Set
+
+
+\begin{equation*}
+\beta=\gamma h \quad \text { with } \quad \gamma=x^{-1 / 2}\left(\frac{a}{c}\right)^{3 / 2} ; \tag{10.1}
+\end{equation*}
+
+
+so $\gamma=x m^{-3}\left(1+O\left(m^{-1}\right)\right)$. Inserting (9.6) and changing the order of summation we conclude
+
+$$
+\begin{gathered}
+F(m)=\operatorname{Im}\,\pi^{-1}(-2 i \gamma)^{-1 / 2} \sum_{l} e\left(-\frac{v l}{c}\right) \\
+\sum_{h\equiv\bar a l\, (\bmod c)} h^{-3 / 2} \chi\left(\frac{h}{H}\right) \sigma\left(\frac{l}{2 \gamma c h N}\right) e\left(\frac{-l^{2}}{4 \gamma c^{2} h}+\frac{h x}{m}\right)+O\left(x^{1 / 44}\right) .
+\end{gathered}
+$$
+
+Denote $b=[c x / m]$ and $\kappa=c x / m-[c x / m]$, so $0 \leqslant \kappa<1$. We have
+
+$$
+e\left(\frac{h x}{m}\right)=e\left(\frac{h}{c}(b+\kappa)\right)=e\left(\frac{\bar{a} b l}{c}\right) e\left(\frac{\kappa h}{c}\right) .
+$$
+
+By Poisson's summation in $h \equiv \bar{a} l\, (\bmod c)$ we get
+
+
+\begin{equation*}
+F(m)=\operatorname{Im}\,(-2i\gamma)^{-1 / 2}(\pi c)^{-1} \sum_{l} \sum_{k} e\left(\frac{(\bar{a}(k+b)-v) l}{c}\right) I(k-\kappa, l)+O\left(x^{1 / 44}\right), \tag{10.2}
+\end{equation*}
+
+
+where $I(k, l)$ is the Fourier integral
+
+$$
+I(k, l)=\int_{0}^{\infty} \xi^{-3 / 2} \chi\left(\frac{\xi}{H}\right) \sigma\left(\frac{l}{2 \gamma c N \xi}\right) e\left(\frac{-l^{2}}{4 \gamma c^{2} \xi}-\frac{\xi k}{c}\right) d \xi
+$$
+
+Since $\sigma$ is compactly supported on $(0, \infty)$, we find that the variable $l$ in (10.2) is constrained by
+
+
+\begin{equation*}
+l \asymp x C H N M^{-3}=L . \tag{10.3}
+\end{equation*}
+
+
+Notice that
+
+
+\begin{equation*}
+1 \ll L \ll C \tag{10.4}
+\end{equation*}
+
+
+by (6.5), (6.6), and (6.10). With regard to the variable $k$ in (10.2) we shall trivially reduce its range to
+
+
+\begin{equation*}
+k \asymp x C N^{2} M^{-3}=K . \tag{10.5}
+\end{equation*}
+
+
+Indeed, if $k<\mu_{2} K$ or $k>\mu_{3} K$, where $\mu_{2}, \mu_{3}$ are absolute positive constants, sufficiently small and sufficiently large, respectively, then
+
+
+\begin{equation*}
+I(k,l)\ll\left(\frac{xHN^{2}}{M^{3}}+\frac{|k|H}{C}\right)^{-j}\ll\left(x^{1/11}+|k|\right)^{-j} \tag{10.6}
+\end{equation*}
+
+
+on integrating by parts $j$ times. Taking $j$ sufficiently large (10.6) shows that such terms contribute to $F(m)$ less than the error term in (10.2).
+
+Observe that $1\ll L\ll K$. In fact there are stronger bounds
+
+
+\begin{equation*}
+x^{1 / 22} L \ll K \ll x^{1 / 11} L \tag{10.7}
+\end{equation*}
+
+
+by (4.1) and (6.4). For $k, l$ satisfying (10.3) and (10.5), respectively, one may evaluate $I(k, l)$ by the stationary phase method. In the particular situation under consideration here it is relatively easy to give a more elegant treatment of $I(k, l)$, which we present in the next section.
+
+\section*{11. An Incomplete Bessel Function}
+The integral we are interested in
+
+
+\begin{equation*}
+I_{f}(a, b)=\int_{0}^{\infty} x^{-3 / 2} f(x) e\left(-a x^{-1}-b x\right) d x \tag{11.1}
+\end{equation*}
+
+
+is a sort of incomplete Bessel function. We shall prove
+
+\medskip\noindent\textbf{Lemma 11.1.} \textit{Let $a>0, b>0$, and $f$ be a smooth function compactly supported on $(0, \infty)$. We then have}
+
+\begin{equation*}
+I_{f}(a, b)=(2 i a)^{-1 / 2} e(-2 \sqrt{a b}) f\left(\sqrt{\frac{a}{b}}\right)+R_{f}(a, b) \tag{11.2}
+\end{equation*}
+
+
+with
+
+
+\begin{equation*}
+R_{f}(a, b) \ll\left(b^{-3 / 2}+a^{-1 / 2} b^{-2}\right) \int y^{2}|\hat{f}(y)| d y . \tag{11.3}
+\end{equation*}
+
+
+We also have
+
+
+\begin{equation*}
+\int y^{2}|\hat{f}(y)| d y \leqslant \sqrt{2 \pi}\left\|f^{\prime \prime}\right\|^{1 / 2}\left\|f^{\prime \prime \prime}\right\|^{1 / 2} \tag{11.4}
+\end{equation*}
+
+
+where
+
+$$
+\|g\|=\left(\int|g(x)|^{2} d x\right)^{1 / 2}
+$$
+
+\medskip\noindent\textit{Proof.} For $a>0$, $b>0$, we have
+
+
+\begin{equation*}
+\int_{0}^{\infty} x^{-3 / 2} e\left(-a x^{-1}-b x\right) d x=(2 i a)^{-1 / 2} e(-2 \sqrt{a b}) . \tag{11.5}
+\end{equation*}
+
+
+This remains true for $a>0$ and $b \leqslant 0$, in which case one should take $\sqrt{b}=-i\sqrt{|b|}$, so that the integral is equal to
+
+$$
+(2 i a)^{-1 / 2} \exp (-4 \pi \sqrt{a|b|}) .
+$$
+
+The preceding formula can be inferred from 3.478(4) in [3], 3.71(8) in [8] and 3.71(13) in [8] by a continuity argument. Now writing
+
+$$
+f(x)=\int_{-\infty}^{\infty} \hat{f}(y) e(-x y) d y
+$$
+
+we obtain by (11.5) (after changing the order of integration)
+
+$$
+I_{f}(a, b)=(2 i a)^{-1 / 2} \int_{-\infty}^{\infty}\widehat f(y)e(-2\sqrt{a(b+y)})\,dy
+$$
+
+If $2|y|<b$ we have the expansion
+
+$$
+\sqrt{b+y}=\sqrt{b}+\frac{y}{2 \sqrt{b}}+O\left(b^{-3 / 2} y^{2}\right)
+$$
+
+so that
+
+$$
+e(-2 \sqrt{a(b+y)})=e\left(-2 \sqrt{a b}-\sqrt{\frac{a}{b}} y\right)+O\left(a^{1 / 2} b^{-3 / 2} y^{2}\right) .
+$$
+
+The last statement remains true for $2|y| \geqslant b$ if we add an extra error term $O\left(b^{-2} y^{2}\right)$. Hence (11.3) follows.
+
+In order to prove (11.4) we apply the Cauchy-Schwarz inequality
+
+$$
+\int y^{2}|\hat{f}(y)| d y \leqslant\left(\int\left(y^{2}+\lambda^{2}\right)^{-1} d y\right)^{1 / 2}\left(\int\left(y^{2}+\lambda^{2}\right) y^{4}|\hat{f}(y)|^{2} d y\right)^{1 / 2}
+$$
+
+where $\lambda$ is an arbitrary positive number at our disposal. By formula 3.037(1) in [3] we have
+
+$$
+\int\left(y^{2}+\lambda^{2}\right)^{-1} d y=\pi \lambda^{-1}
+$$
+
+Moreover $(-iy)^{2}\widehat f(y)=\widehat{f^{\prime\prime}}(y)$ and $(-iy)^{3}\widehat f(y)=\widehat{f^{\prime\prime\prime}}(y)$; thus, by the Plancherel theorem
+
+$$
+\int\left(y^{2}+\lambda^{2}\right) y^{4}|\hat{f}(y)|^{2} d y=\left\|f^{\prime \prime \prime}\right\|^{2}+\lambda^{2}\left\|f^{\prime \prime}\right\|^{2}
+$$
+
+Gathering together the above results with $\lambda$ properly chosen we obtain (11.4).
+
+Now suppose that $f(x)$ vanishes unless $x\asymp X$, and that
+
+
+\begin{equation*}
+f^{\prime \prime}(x) \ll X^{-2}, \quad f^{\prime \prime \prime}(x) \ll X^{-3} . \tag{11.6}
+\end{equation*}
+
+
+Then we deduce
+
+
+\begin{equation*}
+R_{f}(a, b) \ll\left(b^{-3 / 2}+a^{-1 / 2} b^{-2}\right) X^{-2} . \tag{11.7}
+\end{equation*}
+
+
+A particularly interesting case is $X=\sqrt{a / b}$, giving
+
+
+\begin{equation*}
+R_{f}(a, b) \ll a^{-1} b^{-1 / 2}+a^{-3 / 2} b^{-1}, \tag{11.8}
+\end{equation*}
+
+
+and when $a b>1$ it simplifies to
+
+
+\begin{equation*}
+R_{f}(a, b) \ll a^{-1} b^{-1 / 2} . \tag{11.9}
+\end{equation*}
+
+
+\section*{12. Evaluation of $F(m(a / c))$, Completion}
+Let $k, l$ be in the range of (10.3) and (10.5), respectively. By (11.2) and (11.9) we obtain
+
+$$
+\begin{aligned}
+I(k,l)={}&(-2i\gamma)^{1/2}\frac{c}{l}
+\chi\left(\frac{1}{2H\sqrt{\gamma ck}}\right)
+\sigma\left(\frac{\sqrt{\gamma ck}}{N}\right)
+ e\left(-\frac{k^{1/2}l}{c\sqrt{\gamma c}}\right)\\
+&+O\left(\frac{\gamma c^{2}}{L^{2}}\left(\frac{c}{K}\right)^{1/2}\right).
+\end{aligned}
+$$
+
+In fact we are interested in $I(k-\kappa, l)$ where $0 \leqslant \kappa<1$. This shift in $k$ does not make a large difference. By the mean value theorem we obtain
+
+$$
+\chi\left(\frac{1}{2 H \sqrt{\gamma c(k-\kappa)}}\right)=\chi\left(\frac{1}{2 H \sqrt{\gamma c k}}\right)+O\left(k^{-1}\right)
+$$
+
+and
+
+$$
+\sigma\left(\frac{\sqrt{\gamma c(k-\kappa)}}{N}\right)=\sigma\left(\frac{\sqrt{\gamma c k}}{N}\right)+O\left(k^{-1}\right) .
+$$
+
+The exponential factor needs better treatment. We have
+
+$$
+(k-\kappa)^{1 / 2}=k^{1 / 2}-\frac{1}{2} \kappa k^{-1 / 2}+O\left(k^{-3 / 2}\right)
+$$
+
+whence
+
+$$
+e\left(\frac{-(k-\kappa)^{1 / 2} l}{c \sqrt{\gamma c}}\right)=e\left(\frac{-k^{1 / 2} l+\frac{1}{2} \kappa k^{-1 / 2} l}{c \sqrt{\gamma c}}\right)+O\left(c^{-1} k^{-1} H\right) .
+$$
+
+Inserting the above evaluations into (10.2) we first see that the error terms contribute to $F(m)$ at most $O\left(c H^{-1}\right), O(1), O(1)$, and $O\left(c^{-1} H\right)$, respectively, and we are left with
+
+
+\begin{align*}
+F(m)= & \operatorname{Im}\sum_{k\asymp K}\sum_{l\asymp L} \frac{1}{\pi l} \chi\left(\left(\frac{x c}{a^{3}}\right)^{1 / 4} \frac{k^{-1 / 2} l}{2 H}\right) \sigma\left(\left(\frac{a^{3}}{x c}\right)^{1 / 4} \frac{k^{1 / 2}}{N}\right) \\
+& \times e\left(x_{1} l+x_{2} k l+x_{3} k^{1 / 2} l+x_{4} k^{-1 / 2} l\right)+O\left(c^{-1} H+x^{1 / 44}\right), \tag{12.1}
+\end{align*}
+
+
+where for notational simplicity we set
+
+
+\begin{equation*}
+x_{1}=\frac{\bar{a} b-v}{c}, x_{2}=\frac{\bar{a}}{c}, x_{3}=-x^{1 / 4}(a c)^{-3 / 4}, x_{4}=\frac{\kappa}{2} x^{1 / 4}(a c)^{-3 / 4} . \tag{12.2}
+\end{equation*}
+
+
+Remarks. The coefficients $x_{j}, j=1,2,3,4$, are functions of $a$ and $c$. The important feature of $x_{3}$ is that it depends smoothly on the product $a c$ alone. The others depend arithmetically on both $a$ and $c$. The nature of $x_{2}$ will matter in the sequel. But the extremal coefficients $x_{1}, x_{4}$ depend on $a, c$ in a highly involved manner, that is beyond control by means available to us. Bombieri and Iwaniec (see [1, Lemma 2.4]) designed a method of "ignoring" such terms at a certain price. We apply their method in this paper losing (essentially) a factor $L^{1 / 4}$ from the expected order of magnitude of $F(m)$.
+
+Our final step in evaluating $F(m(a / c))$ consists of separation of variables $k, l$ in $\chi$ and $\sigma$. This follows without difficulty by means of Mellin's transform. By the inversion formula we deduce the following integral representations
+
+$$
+\chi(\zeta)=\int_{-\infty}^{\infty} \tilde{\chi}(t) \zeta^{i t} d t \quad \text { with } \quad \int_{-\infty}^{\infty}|\tilde{\chi}(t)| d t \ll 1
+$$
+
+and
+
+$$
+\sigma(\zeta)=\int_{-\infty}^{\infty} \tilde{\sigma}(t) \zeta^{i t} d t \quad \text { with } \quad \int_{-\infty}^{\infty}|\tilde{\sigma}(t)| d t \ll 1
+$$
+
+Therefore, we obtain
+
+
+\begin{equation*}
+|F(m)| \ll \int_{-\infty}^{\infty} \int_{-\infty}^{\infty}\left|\tilde{\chi}\left(t_{1}\right) \tilde{\sigma}\left(t_{2}\right) \mathscr{B}_{t_{1} t_{2}}(\mathbf{x} ; K, L)\right| d t_{1} d t_{2}+O\left(c^{-1} H+x^{1 / 44}\right), \tag{12.3}
+\end{equation*}
+
+
+where
+
+$$
+\mathscr{B}_{t_{1} t_{2}}(\mathbf{x} ; K, L)=\sum_{k\asymp K}\sum_{l\asymp L} k^{\frac{i}{2}(t_{2}-t_{1})}l^{it_{1}-1} e\left(x_{1} l+x_{2} k l+x_{3} k^{1 / 2} l+x_{4} k^{-1 / 2} l\right) .
+$$
+
+Inserting (12.3) into (6.11) we conclude that
+
+
+\begin{equation*}
+\Delta(x,C,H,M)\ll\mathscr{B}(A,C,K,L)+G H M^{-2} x^{45 / 44}, \tag{12.4}
+\end{equation*}
+
+
+where
+
+$$
+\mathscr{B}(A, C, K, L)=\frac{G}{C} \sum_{a \sim A} \sum_{c \sim C}\left|\mathscr{B}_{t_{1}t_{2}}(\mathbf{x};K,L)\right|
+$$
+
+for some $t_{1}, t_{2} \in \mathbf{R}$. Here we have by (6.5)
+
+
+\begin{equation*}
+G H M^{-2} x^{45 / 44} \asymp M N^{-1} x^{1 / 44}=x^{13 / 44} . \tag{12.5}
+\end{equation*}
+
+
+\section*{13. Estimation of $\mathscr{B}(A, C, K, L)$}
+To complete the bound (12.4) for $\Delta(x, C, H, M)$ it remains to estimate the bilinear forms $\mathscr{B}(A, C, K, L)$. To do this we apply first Hölder's inequality, and then we use [1, Lemma 2.4] getting
+
+$$
+\begin{aligned}
+\mathscr{B}^{4}(A,C,K,L) & \ll G^{4} A^{2} C^{-2}\left(\sum_{a \sim A} \sum_{c \sim C}\left|\mathscr{B}_{t_{1} t_{2}}(\mathbf{x} ; K, L)\right|^{2}\right)^{2} \\
+& \ll G^{4} A^{2} C^{-2} L^{-4} \prod_{j=1}^{4}\left(1+X_{j} Y_{j}\right) \mathscr{B}_{1}\mathscr{B}_{2},
+\end{aligned}
+$$
+
+with
+
+$$
+\begin{gathered}
+X_{1}=1, X_{2}=1, X_{3}=x^{1 / 4}(A C)^{-3 / 4}, X_{4}=x^{1 / 4}(A C)^{-3 / 4} \\
+Y_{1}=L, Y_{2}=K L, Y_{3}=K^{1 / 2} L, Y_{4}=K^{-1 / 2} L .
+\end{gathered}
+$$
+
+Here $\mathscr{B}_{1}$ is the number of pairs $(a, c),\left(a_{1}, c_{1}\right)$ with $a, a_{1} \sim A, c, c_{1} \sim C$ simultaneously satisfying the four relations:
+
+
+\begin{align*}
+\left\|x_{1}(a, c)-x_{1}\left(a_{1}, c_{1}\right)\right\| & \ll Y_{1}^{-1},  \tag{13.1}\\
+\left\|\frac{\bar a}{c}-\frac{\bar a_{1}}{c_{1}}\right\| & \ll Y_{2}^{-1},  \tag{13.2}\\
+\left|x^{1 / 4}(a c)^{-3 / 4}-x^{1 / 4}\left(a_{1} c_{1}\right)^{-3 / 4}\right| & \ll Y_{3}^{-1},  \tag{13.3}\\
+\left|x_{4}(a, c)-x_{4}\left(a_{1}, c_{1}\right)\right| & \ll Y_{4}^{-1}, \tag{13.4}
+\end{align*}
+
+
+and $\mathscr{B}_{2}$ is the number of 8-tuples $k_{1}, k_{2}, k_{3}, k_{4} \asymp K, l_{1}, l_{2}, l_{3}, l_{4} \asymp L$ satisfying the four relations:
+
+
+\begin{align*}
+l_{1}+l_{2} & =l_{3}+l_{4}  \tag{13.5}\\
+k_{1} l_{1}+k_{2} l_{2} & =k_{3} l_{3}+k_{4} l_{4}  \tag{13.6}\\
+\sqrt{k_{1}} l_{1}+\sqrt{k_{2}} l_{2} & =\sqrt{k_{3}} l_{3}+\sqrt{k_{4}} l_{4}+O\left(X_{3}^{-1}\right),  \tag{13.7}\\
+\frac{l_{1}}{\sqrt{k_{1}}}+\frac{l_{2}}{\sqrt{k_{2}}} & =\frac{l_{3}}{\sqrt{k_{3}}}+\frac{l_{4}}{\sqrt{k_{4}}}+O\left(X_{4}^{-1}\right) . \tag{13.8}
+\end{align*}
+
+
+Since $X_{j} Y_{j} \gg 1$ for $j=1,2,3,4$ we get
+
+
+\begin{equation*}
+\prod_{j=1}^{4}\left(1+X_{j} Y_{j}\right) \ll \prod_{j=1}^{4} X_{j} Y_{j}=x^{1 / 2}(A C)^{-3 / 2} K L^{4} . \tag{13.9}
+\end{equation*}
+
+
+It remains to estimate $\mathscr{B}_{1}$ and $\mathscr{B}_{2}$. For $\mathscr{B}_{1}$ we shall appeal to [1], where the following system is considered
+
+
+\begin{gather*}
+\left\|\frac{\bar a}{c}-\frac{\bar a_{1}}{c_{1}}\right\|\ll\Delta_{1},  \tag{13.10}\\
+\left|a c-a_{1} c_{1}\right|<\Delta_{2} A C . \tag{13.11}
+\end{gather*}
+
+
+Notice that (13.2) becomes (13.10) with $\Delta_{1}=Y_{2}^{-1}$ and (13.3) is equivalent to (13.11) with $\Delta_{2}=x^{-1 / 4}(A C)^{3 / 4} Y_{3}^{-1}$. Two remaining inequalities (13.1) and (13.4) are difficult to explore; so we ignore them and get
+
+$$
+\mathscr{B}_{1}\ll\mathcal{N}(\Delta_{1},\Delta_{2};A,C),
+$$
+
+where $\mathcal{N}(\Delta_{1},\Delta_{2};A,C)$ stands for the number of solutions to (13.10) and (13.11). By Theorem 4.1 of [1] we have
+
+$$
+\mathcal{N}\left(\Delta_{1}, \Delta_{2} ; A, C\right) \ll\left(1+\Delta_{1}\Delta_{2}AC+\Delta_{1}^{2}AC\right)(A C)^{1+\varepsilon}
+$$
+
+provided $C \ll A$ and $\Delta_{1} C^{2} \gg 1$, which is obviously our case, following from (4.1), (4.2), (6.4), (6.12), (10.3), (10.5), and (1.2). Here we have
+
+$$
+\begin{gathered}
+1 \ll x^{-2} C^{-1} H^{-1} N^{-5} M^{7} \\
+\Delta_{1}\Delta_{2}AC\asymp x^{-1 / 4} K^{-3 / 2} L^{-2} A^{7 / 4} C^{7 / 4} \asymp x^{-2} H^{-2} N^{-5} M^{7}
+\end{gathered}
+$$
+
+and
+
+$$
+\Delta_{1}^{2}AC \asymp K^{-2} L^{-2} A C \ll K^{-2} L^{-1} A C \asymp x^{-2} C^{-1} H^{-1} N^{-5} M^{7} .
+$$
+
+Hence
+
+
+\begin{equation*}
+\mathscr{B}_{1} \ll x^{-2} C^{-1} H^{-1} N^{-5} M^{7}(A C)^{1+\varepsilon} . \tag{13.12}
+\end{equation*}
+
+
+To estimate $\mathscr{B}_{2}$ we ignore (13.8), and we shall deal with the reduced system (13.5), (13.6), (13.7) in Section 14. Since $1\ll L\ll K$, Theorem 14.1 yields
+
+$$
+\mathscr{B}_{2}\ll\mathscr{B}\left(\delta, \mu_{4} K, \mu_{5} L\right) \ll(1+\delta K)(K L)^{2+\varepsilon}
+$$
+
+with $\delta \asymp X_{3}^{-1} K^{-1 / 2} L^{-1}=x^{-1 / 4} A^{3 / 4} C^{3 / 4} K^{-1 / 2} L^{-1} \asymp C H^{-1} K^{-1} \ll K^{-1}$, and $\mu_{4}, \mu_{5}$ are absolute positive constants. Thus
+
+
+\begin{equation*}
+\mathscr{B}_{2} \ll(K L)^{2+\varepsilon} . \tag{13.13}
+\end{equation*}
+
+
+Combining (13.9), (13.12), and (13.13) we obtain
+
+$$
+\begin{aligned}
+\mathscr{B}^{4}(A,C,K,L) & \ll G^{4} A^{3 / 2} C^{-7 / 2} H^{-1} N^{-5} M^{7} K^{3} L^{2} x^{-3 / 2+\varepsilon} \\
+& \asymp \frac{M}{N}\left(\frac{C}{H}\right)^{3} x^{1+\varepsilon}\ll\frac{M}{N}x^{1+\varepsilon}=x^{14 / 11+\varepsilon} .
+\end{aligned}
+$$
+
+Finally, by (12.4) and (12.5) we conclude that
+
+$$
+\Delta(x,C,H,M)\ll x^{7/22+\varepsilon}
+$$
+
+for $C, H, M$ in question. This completes the proof of (1.1) with $\theta=\frac{7}{22}$.
+
+\section*{14. A Mean-Value Theorem}
+In this section we establish a new mean-value theorem for an exponential sum in two variables.
+
+Let $\mathscr{B}(\delta, K, L)$ be the number of solutions of
+
+
+\begin{align*}
+l_{1}+l_{2} & =l_{3}+l_{4}  \tag{14.1}\\
+k_{1} l_{1}+k_{2} l_{2} & =k_{3} l_{3}+k_{4} l_{4}  \tag{14.2}\\
+\left|\sqrt{k_{1}} l_{1}+\sqrt{k_{2}} l_{2}-\sqrt{k_{3}} l_{3}-\sqrt{k_{4}} l_{4}\right| & \leqslant \delta \sqrt{K} L \tag{14.3}
+\end{align*}
+
+
+in integers $k_{j}, l_{j}$ with $1 \leqslant k_{j} \leqslant K$ and $1 \leqslant l_{j} \leqslant L$. This quantity is equivalent to
+
+
+\begin{equation*}
+\mathscr{B}(\delta, K, L) \asymp \int_{0}^{1} \int_{0}^{1} \delta \int_{-\delta^{-1}}^{\delta^{-1}}\left|\sum_{k=1}^{K}\sum_{l=1}^{L}e\left(\alpha l+\beta kl+\gamma\frac{\sqrt{k}\,l}{\sqrt{K}\,L}\right)\right|^{4} d \alpha d \beta d \gamma \tag{14.4}
+\end{equation*}
+
+
+The proof of (14.4) follows by employing the same techniques used to establish [1, Lemma 2.3]. Our aim here is to prove
+
+\medskip\noindent\textbf{Theorem 14.1.} \textit{For $\delta>0, K \geqslant 1, L \geqslant 1$, and $\varepsilon>0$ we have}
+
+\begin{equation*}
+\mathscr{B}(\delta, K, L) \ll\left(K L^{3}+K^{2} L^{2}+\delta K^{3} L^{2}\right)(K L)^{\varepsilon} . \tag{14.5}
+\end{equation*}
+
+
+\medskip\noindent\textit{Proof.} Splitting the range of summation in (14.4) into intervals of type $\left[(1+\eta)^{n},(1+\eta)^{n+1}\right)$ and using Hölder's inequality we find that
+
+$$
+\mathscr{B}(\delta,K,L)\ll\mathscr{B}^{*}(\delta^{\prime},K^{\prime},L^{\prime}) \log ^{8}(2+K+L)
+$$
+
+for some $1 \leqslant K^{\prime} \leqslant K, \quad 1 \leqslant L^{\prime} \leqslant L$ with $\delta^{\prime}=\delta\,\dfrac{\sqrt{K}\,L}{\sqrt{K^{\prime}}\,L^{\prime}}$, where $\mathscr{B}^{*}(\delta, K, L)$ stands for the number of solutions of (14.1), (14.2), and (14.3) restricted by
+
+
+\begin{equation*}
+K \leqslant k_{j}<(1+\eta) K \tag{14.6}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+L \leqslant l_{j}<(1+\eta) L, \tag{14.7}
+\end{equation*}
+
+
+and $\eta$ is an absolute positive constant chosen sufficiently small. The above subdivision is not necessary, but it will simplify the argument. Hence it is sufficient to establish (14.5) for $\mathscr{B}^{*}(\delta, K, L)$.
+
+First we appeal to the trivial bounds
+
+$$
+\mathscr{B}^{*}(\delta,K,L)\ll K^{3}L^{3}
+$$
+
+and
+
+$$
+\mathscr{B}^{*}(\delta, K, L) \ll L^{4} K^{2}(1+\delta K) ;
+$$
+
+so that we can assume that $K$ and $L$ are arbitrarily large. Finally without loss of generality we assume
+
+
+\begin{equation*}
+(K+L) K^{-2}<\delta<\eta^{3}, \tag{14.8}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+k_{1} \leqslant k_{2}, \quad k_{3} \leqslant k_{4}, \quad k_{1} \leqslant k_{3} . \tag{14.9}
+\end{equation*}
+
+
+Now we proceed to the proof of (14.5) for $\mathscr{B}^{*}(\delta, K, L)$ under the above restrictions. We take $l_{1}$ from (14.1) and insert it into (14.2) and (14.3) getting
+
+
+\begin{equation*}
+\left(k_{2}-k_{1}\right) l_{2}=\left(k_{3}-k_{1}\right) l_{3}+\left(k_{4}-k_{1}\right) l_{4} \tag{14.10}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\left|\left(\sqrt{k_{2}}-\sqrt{k_{1}}\right) l_{2}-\left(\sqrt{k_{3}}-\sqrt{k_{1}}\right) l_{3}-\left(\sqrt{k_{4}}-\sqrt{k_{1}}\right) l_{4}\right| \leqslant \delta \sqrt{K} L . \tag{14.11}
+\end{equation*}
+
+
+Multiply both sides of (14.11) by $\left(\sqrt{k_{2}}+\sqrt{k_{1}}\right)$. Then substitute the value of ( $k_{2}-k_{1}$ ) $l_{2}$ from (14.10) into the left-hand side of the resulting inequality to get
+
+
+\begin{equation*}
+\left|\left(\sqrt{k_{3}}-\sqrt{k_{1}}\right)\left(\sqrt{k_{3}}-\sqrt{k_{2}}\right) l_{3}+\left(\sqrt{k_{4}}-\sqrt{k_{1}}\right)\left(\sqrt{k_{4}}-\sqrt{k_{2}}\right) l_{4}\right| \leqslant 3 \delta K L . \tag{14.12}
+\end{equation*}
+
+
+Multiply (14.12) by $\left(\sqrt{k_{3}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{3}}+\sqrt{k_{2}}\right)\left(\sqrt{k_{4}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{4}}+\sqrt{k_{2}}\right)$ to get
+
+
+\begin{align*}
+& \mid\left(k_{3}-k_{1}\right)\left(k_{3}-k_{2}\right)\left(\sqrt{k_{4}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{4}}+\sqrt{k_{2}}\right) l_{3} \\
+& \quad+\left(k_{4}-k_{1}\right)\left(k_{4}-k_{2}\right)\left(\sqrt{k_{3}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{3}}+\sqrt{k_{2}}\right) l_{4} \mid \leqslant 50 \delta K^{3} L . \tag{14.13}
+\end{align*}
+
+
+Now split
+
+
+\begin{equation*}
+\mathscr{B}^{*}(\delta, K, L)=\mathscr{B}_{1}(\delta, K, L)+\mathscr{B}_{2}(\delta, K, L), \tag{14.14}
+\end{equation*}
+
+
+where $\mathscr{B}_{1}(\delta, K, L)$ is the number of those solutions with
+
+
+\begin{equation*}
+\left|\left(k_{3}-k_{1}\right)\left(k_{3}-k_{2}\right)\right|<\eta^{-1} \delta K^{2}, \tag{14.15}
+\end{equation*}
+
+
+and $\mathscr{B}_{2}(\delta, K, L)$ accounts for the remaining solutions.
+We first estimate $\mathscr{B}_{1}(\delta, K, L)$. Letting $\kappa_{j}=k_{j}-k_{1}$ we get by (14.10)
+
+
+\begin{equation*}
+\kappa_{2} l_{2}=\kappa_{3} l_{3}+\kappa_{4} l_{4} \tag{14.16}
+\end{equation*}
+
+
+and by (14.15)
+
+
+\begin{equation*}
+\left|\kappa_{3}\left(\kappa_{3}-\kappa_{2}\right)\right|<\eta^{-1} \delta K^{2} . \tag{14.17}
+\end{equation*}
+
+
+Hence
+
+$$
+\mathscr{B}_{1}(\delta,K,L)\ll K\mathscr{B}_{11}(\delta,K,L),
+$$
+
+where $\mathscr{B}_{11}(\delta, K, L)$ is the number of solutions of (14.16) and (14.17) in $\kappa_{j}, l_{j}$ with $\left|\kappa_{j}\right| \leqslant K$ and $L \leqslant l_{j} \leqslant 2 L$. If $\kappa_{3} \kappa_{4}=0$, we ignore (14.17), and we count the solutions of (14.16) alone getting
+
+$$
+O\left(L^{3}+L(K L)^{1+\varepsilon}\right) .
+$$
+
+Now it remains to count the solutions such that $\kappa_{3} \kappa_{4} \neq 0$. By (14.16) for each $\left\{\kappa_{2}, \kappa_{3}, l_{2}, l_{3}\right\}$ the number of $\left\{\kappa_{4}, l_{4}\right\}$ satisfies
+
+$$
+\#\left\{\kappa_{4},l_{4}\right\}\ll d\left(\left|\kappa_{2} l_{2}-\kappa_{3} l_{3}\right|\right) \ll(K L)^{\varepsilon} ;
+$$
+
+so that by (14.17) we have
+
+$$
+\#\left\{\kappa_{2},\kappa_{3},\kappa_{4},l_{2},l_{3},l_{4}\right\}
+\ll L^{2}(KL)^{\varepsilon}\sum_{1\leqslant\kappa_{3}<K}
+\left(1+\delta K^{2}\kappa_{3}^{-1}\right)
+\ll L^{2}\left(K+\delta K^{2}\right)(KL)^{\varepsilon}.
+$$
+
+Gathering together the above results we conclude
+
+
+\begin{equation*}
+\mathscr{B}_{1}(\delta, K, L) \ll\left(K L^{3}+K^{2} L^{2}+\delta K^{3} L^{2}\right)(K L)^{\varepsilon} . \tag{14.18}
+\end{equation*}
+
+
+Now we estimate $\mathscr{B}_{2}(\delta, K, L)$, which accounts for the solutions with
+
+
+\begin{equation*}
+\left|\left(k_{3}-k_{1}\right)\left(k_{3}-k_{2}\right)\right| \geqslant \eta^{-1} \delta K^{2} . \tag{14.19}
+\end{equation*}
+
+
+Clearly, the two terms in (14.13) must have opposite sign and the same order of magnitude to produce a cancellation, since $\eta$ is sufficiently small. By (14.9) this implies
+
+$$
+k_{1}<k_{3}<k_{2}<k_{4} .
+$$
+
+Consequently, since $\kappa_{j}=k_{j}-k_{1}$ we have
+
+
+\begin{equation*}
+0<\kappa_{3}<\kappa_{2}<\kappa_{4}<\eta K, \tag{14.20}
+\end{equation*}
+
+
+and by (14.19) and (14.8) we have
+
+
+\begin{equation*}
+\kappa_{3}\left(\kappa_{2}-\kappa_{3}\right)>\eta^{-1} \delta K^{2}>\eta^{-1}(K+L) . \tag{14.21}
+\end{equation*}
+
+
+Now (14.10) becomes
+
+
+\begin{equation*}
+\kappa_{2} l_{2}=\kappa_{3} l_{3}+\kappa_{4} l_{4}, \tag{14.22}
+\end{equation*}
+
+
+and (14.13) becomes
+
+
+\begin{align*}
+& \mid \kappa_{3}\left(\kappa_{2}-\kappa_{3}\right)\left(\sqrt{k_{1}+\kappa_{4}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{1}+\kappa_{4}}+\sqrt{k_{1}+\kappa_{2}}\right) l_{3} \\
+& \quad-\kappa_{4}\left(\kappa_{4}-\kappa_{2}\right)\left(\sqrt{k_{1}+\kappa_{3}}+\sqrt{k_{1}}\right)\left(\sqrt{k_{1}+\kappa_{3}}+\sqrt{k_{1}+\kappa_{2}}\right) l_{4} \mid \leqslant 50 \delta K^{3} L \tag{14.23}
+\end{align*}
+
+
+so $\mathscr{B}_{2}(\delta, K, L)$ is the number of solutions of (14.22) and (14.23) in $\kappa_{j}, l_{j}$, $j=2,3,4$, and $k_{1}$ subject to the described conditions.
+
+By (14.6), (14.7), (14.20), (14.21), (14.22), and (14.23) we get
+
+
+\begin{equation*}
+\kappa_{2}=\kappa_{3}+\kappa_{4}(1+O(\eta)) \tag{14.24}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\kappa_{3}\left(\kappa_{2}-\kappa_{3}\right)=\kappa_{4}\left(\kappa_{4}-\kappa_{2}\right)(1+O(\eta)) . \tag{14.25}
+\end{equation*}
+
+
+Whence
+
+
+\begin{equation*}
+\kappa_{3}=O\left(\eta \kappa_{4}\right) \tag{14.26}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\kappa_{4}-\kappa_{2}=\kappa_{3}(1+O(\eta)) . \tag{14.27}
+\end{equation*}
+
+
+Moreover from (14.22) and (14.23) we get by using the expansion
+
+$$
+\sqrt{k_{1}+\kappa_{j}}=\sqrt{k_{1}}\left(1+O\left(\kappa_{j} K^{-1}\right)\right), \quad \eta<\frac{1}{2},
+$$
+
+that
+
+
+\begin{equation*}
+\kappa_{2}^{2} l_{2}=\kappa_{3}^{2} l_{3}+\kappa_{4}^{2} l_{4}+O\left(\kappa_{3} \kappa_{4}^{2} L K^{-1}+\delta K^{2} L\right) . \tag{14.28}
+\end{equation*}
+
+
+Let $f\left(k_{1}\right)$ denote the left-hand side of (14.23) divided by $k_{1}$, so (14.23) can be written as
+
+
+\begin{equation*}
+\left|f\left(k_{1}\right)\right| \leqslant 50 \delta K^{2} L . \tag{14.29}
+\end{equation*}
+
+
+Clearly
+
+$$
+\begin{aligned}
+f^{\prime}(k_{1})= & -\kappa_{3}\left(\kappa_{2}-\kappa_{3}\right)\left(2 \kappa_{4}+\kappa_{2}\right) l_{3} k_{1}^{-2}\left(1+O\left(\kappa_{4} K^{-1}\right)\right) \\
+& +\kappa_{4}\left(\kappa_{4}-\kappa_{2}\right)\left(2 \kappa_{3}+\kappa_{2}\right) l_{4} k_{1}^{-2}\left(1+O\left(\kappa_{4} K^{-1}\right)\right) \\
+= & -2 \kappa_{3} \kappa_{4}^{2} K^{-2} L(1+O(\eta))
+\end{aligned}
+$$
+
+by (14.26) and (14.27); so that by the mean value theorem the points $f\left(k_{1}\right)$ are well spaced. Therefore the number of $k_{1}$ 's satisfying (14.29) is estimated by
+
+
+\begin{equation*}
+\#\left\{k_{1}\right\}\ll\delta K^{4} \kappa_{3}^{-1} \kappa_{4}^{-2} . \tag{14.30}
+\end{equation*}
+
+
+For convenience split the range of $\kappa_{2}, \kappa_{3}, \kappa_{4}$ into dyadic intervals $\kappa_{2} \sim K_{2}, \kappa_{3} \sim K_{3}, \kappa_{4} \sim K_{4}$. By (14.20), (14.26), and (14.27) it holds that
+
+
+\begin{equation*}
+\frac{1}{2} \leqslant K_{3}, \quad \frac{1}{2} K_{3}<K_{2} \asymp K_{4}, \quad K_{i}<\eta K, \tag{14.31}
+\end{equation*}
+
+
+and hence by (14.8)
+
+
+\begin{equation*}
+K_{3} K_{4}>\eta^{-1} \delta K^{2}>\eta^{-1}(K+L) . \tag{14.32}
+\end{equation*}
+
+
+Clearly we have
+
+
+\begin{equation*}
+\mathscr{B}_{2}(\delta,K,L)\ll\#\left\{k_{1}\right\} \mathscr{N}\left(K_{3}, K_{4}\right)(K L)^{\varepsilon}, \tag{14.33}
+\end{equation*}
+
+
+where $\mathscr{N}\left(K_{3}, K_{4}\right)$ is the number of solutions of (14.22) and (14.28) in $\kappa_{j} \sim K_{j}, l_{j} \sim L, j=2,3,4$ with some $K_{j}$ subject to (14.31). We shall establish two bounds for $\mathscr{N}\left(K_{3}, K_{4}\right)$ and combine them to get a suitable result.
+
+\medskip\noindent\textit{Argument 1.} By (14.22) and (14.28) we get first
+
+$$
+\left(\kappa_{3} l_{3}+\kappa_{4} l_{4}\right)^{2}=\left(\kappa_{3}^{2} l_{3}+\kappa_{4}^{2} l_{4}\right) l_{2}+O\left(K_{3} K_{4}^{2} L^{2} K^{-1}+\delta K^{2} L^{2}\right)
+$$
+
+and then
+
+
+\begin{equation*}
+\kappa_{3}^{2} l_{3}\left(l_{3}-l_{2}\right)+2 \kappa_{3} \kappa_{4} l_{3} l_{4}+\kappa_{4}^{2} l_{4}\left(l_{4}-l_{2}\right)=O\left(K_{3} K_{4}^{2} L^{2} K^{-1}+\delta K^{2} L^{2}\right) . \tag{14.34}
+\end{equation*}
+
+
+The solutions with $l_{2}=l_{3}$ yield by (14.22)
+
+$$
+\left(\kappa_{2}-\kappa_{3}\right) l_{2}=\kappa_{4} l_{4}
+$$
+
+and
+
+$$
+\kappa_{2}+\kappa_{3}-\kappa_{4}=O(A)
+$$
+
+with
+
+
+\begin{equation*}
+A=K_{3} K_{4} K^{-1}+\delta K^{2} K_{4}^{-1} . \tag{14.35}
+\end{equation*}
+
+
+Therefore, for the number of such solutions, $\mathscr{N}^{=}(K_{3},K_{4})$, say, we have
+
+
+\begin{equation*}
+\mathscr{N}^{=}\left(K_{3}, K_{4}\right) \ll A K_{4} L(K L)^{\varepsilon} \ll\left(K_{3} K_{4}^{2} K^{-1} L+\delta K^{2} L\right)(K L)^{\varepsilon} . \tag{14.36}
+\end{equation*}
+
+
+Clearly, $l_{2}=l_{4}$ is not possible; because otherwise it would follow from (14.22) that $\kappa_{2}>\kappa_{4}$. Denote by $\mathscr{N}^{\neq}\left(K_{3}, K_{4}\right)$ the number of such remaining solutions $l_{3}\neq l_{2},\ l_{2}\neq l_{4}$. Factor the quadratic form (14.34) in $\kappa_{3}, \kappa_{4}$. The roots are
+
+$$
+Z=\frac{-l_{3} l_{4}+\sqrt{\partial}}{l_{3}\left(l_{3}-l_{2}\right)}, \quad z=\frac{-l_{3} l_{4}-\sqrt{\partial}}{l_{3}\left(l_{3}-l_{2}\right)},
+$$
+
+where
+
+$$
+\partial=\left(l_{3} l_{4}\right)^{2}-l_{3}\left(l_{3}-l_{2}\right) l_{4}\left(l_{4}-l_{2}\right)=l_{2} l_{3} l_{4}\left(l_{3}+l_{4}-l_{2}\right) .
+$$
+
+Thus (14.34) becomes
+
+$$
+l_{3}\left(l_{3}-l_{2}\right)\left(\kappa_{3}-Z \kappa_{4}\right)\left(\kappa_{3}-z \kappa_{4}\right)=O\left(K_{3} K_{4}^{2} L^{2} K^{-1}+\delta K^{2} L^{2}\right) .
+$$
+
+Whence
+
+
+\begin{equation*}
+\kappa_{3}-Z \kappa_{4}=O(A), \tag{14.37}
+\end{equation*}
+
+
+where $A$ is given by (14.35). Since $\eta^{-1} \ll A<\eta K_{3}$, this implies
+
+
+\begin{equation*}
+Z \asymp K_{3} K_{4}^{-1} . \tag{14.38}
+\end{equation*}
+
+
+Given $l_{2},l_{3},l_{4}\sim L$ with $l_{3}\neq l_{2}$ and $l_{2}\neq l_{4}$, and given $\kappa\sim K_{4}$, consider the solutions of (14.22) and (14.37) in $\kappa_{2} \sim K_{2}, \kappa_{3} \sim K_{3}, \kappa_{4} \sim K_{4}$ restricted by
+
+
+\begin{equation*}
+\left|\kappa_{4}-\kappa\right| \leqslant L^{1 / 2} . \tag{14.39}
+\end{equation*}
+
+
+Notice that $L^{1 / 2}<K_{4}$ by (14.32). Let $V\left(l_{2}, l_{3}, l_{4} ; \kappa\right)$ denote the number of such solutions. Clearly,
+
+
+\begin{equation*}
+\mathscr{N}^{\neq}\left(K_{3}, K_{4}\right) \ll \sum_{\substack{l_{2},l_{3},l_{4} \sim L\\ l_{3}\neq l_{2},\; l_{2}\neq l_{4}}} \sum_{\kappa \sim K_{4}} V\left(l_{2}, l_{3}, l_{4} ; \kappa\right), \tag{14.40}
+\end{equation*}
+
+
+where the summation over $l_{j}, j=2,3,4$ is restricted by (14.38), and $\kappa$ ranges over an $L^{1 / 2}$-spaced sequence of points. Two solutions accounted for by $V\left(l_{2}, l_{3}, l_{4} ; \kappa\right)$ yield
+
+$$
+\left(\kappa_{2}-\widetilde{\kappa}_{2}\right) l_{2}=\left(\kappa_{3}-\widetilde{\kappa}_{3}\right) l_{3}+\left(\kappa_{4}-\widetilde{\kappa}_{4}\right) l_{4}
+$$
+
+and
+
+$$
+\left|\kappa_{4}-\widetilde{\kappa}_{4}\right| \ll L^{1 / 2}, \quad\left|\kappa_{3}-\widetilde{\kappa}_{3}\right|\ll A+K_{3} K_{4}^{-1} L^{1 / 2}, \quad\left|\kappa_{2}-\widetilde{\kappa}_{2}\right| \ll K_{2} .
+$$
+
+Hence
+
+$$
+V\left(l_{2}, l_{3}, l_{4} ; \kappa\right) \leqslant \#\left\{p_{j}, j=2,3,4 ;\left|p_{j}\right| \leqslant P_{j}, p_{2} l_{2}=p_{3} l_{3}+p_{4} l_{4}\right\}
+$$
+
+with $P_{2} \ll K_{2}, P_{3} \ll A+K_{3} K_{4}^{-1} L^{1 / 2}$ and $P_{4} \ll L^{1 / 2}$. We observe that
+
+
+\begin{equation*}
+V\left(l_{2}, l_{3}, l_{4} ; \kappa\right) \leqslant V\left(l_{3}, l_{4} ; P_{3}, P_{4}\right)+V\left(l_{2}, l_{3}, l_{4} ; P_{2}, P_{3}, P_{4}\right), \tag{14.41}
+\end{equation*}
+
+
+where the first term accounts for points with $p_{2}=0$, and the second term accounts for the remaining points. We have
+
+
+\begin{equation*}
+\sum_{l_{2}} \sum_{l_{3}} \sum_{l_{4}} V\left(l_{2}, l_{3}, l_{4} ; P_{2}, P_{3}, P_{4}\right) \ll P_{3} P_{4} L^{2}(K L)^{\varepsilon}, \tag{14.42}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\sum_{l_{2}}\sum_{l_{3}}\sum_{l_{4}}V(l_{3},l_{4};P_{3},P_{4})
+\ll\sum_{\substack{p_{3},p_{4},l_{3},l_{4}\\ p_{3}l_{3}+p_{4}l_{4}=0}}
+\mathscr{V}(l_{3},l_{4};K_{3}K_{4}^{-1}). \tag{14.43}
+\end{equation*}
+
+
+where $\mathscr{V}\left(l_{3}, l_{4} ; K_{3} K_{4}^{-1}\right)$ is the number of $l_{2} \sim L$ with $l_{3}\neq l_{2},\ l_{2}\neq l_{4}$ and (14.38). By (14.38) we infer the equivalent statements
+
+$$
+\begin{aligned}
+Z & \asymp K_{3} K_{4}^{-1}, \\
+\frac{\partial-l_{3}^{2} l_{4}^{2}}{l_{3}\left(l_{3}-l_{2}\right)} & \asymp K_{3}K_{4}^{-1}L^{2}, \\
+\left(l_{2}-l_{4}\right) & \asymp K_{3} K_{4}^{-1} L .
+\end{aligned}
+$$
+
+Hence
+
+
+\begin{equation*}
+\mathscr{V}\left(l_{3}, l_{4} ; K_{3} K_{4}^{-1}\right) \ll K_{3} K_{4}^{-1} L . \tag{14.44}
+\end{equation*}
+
+
+Moreover we have
+
+
+\begin{equation*}
+\#\left\{p_{3}, p_{4}, l_{3}, l_{4} ; p_{3} l_{3}+p_{4} l_{4}=0\right\} \ll L^{2} . \tag{14.45}
+\end{equation*}
+
+
+Gathering together $(14.40)-(14.45)$ we conclude
+
+
+\begin{align*}
+\mathscr{N}^{\neq}(K_{3},K_{4}) & \ll K_{3} L^{5 / 2}+P_{3} P_{4} K_{4} L^{3 / 2}(K L)^{\varepsilon} \\
+& \ll\left(K_{3} L^{5 / 2}+K_{3} K_{4}^{2} K^{-1} L^{2}+\delta K^{2} L^{2}\right)(K L)^{\varepsilon} . \tag{14.46}
+\end{align*}
+
+
+\medskip\noindent\textit{Argument 2.} By (14.22) and (14.28) we get
+
+$$
+\kappa_{3}\left(\kappa_{2}-\kappa_{3}\right) l_{3}-\kappa_{4}\left(\kappa_{4}-\kappa_{2}\right) l_{4}=O\left(K_{3} K_{4}^{2} L K^{-1}+\delta K^{2} L\right)
+$$
+
+so
+
+
+\begin{equation*}
+l_{3}-t l_{4}=O(B), \tag{14.47}
+\end{equation*}
+
+
+where
+
+
+\begin{equation*}
+t=\frac{\kappa_{4}\left(\kappa_{4}-\kappa_{2}\right)}{\kappa_{3}\left(\kappa_{2}-\kappa_{3}\right)} \asymp 1, \tag{14.48}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+B=K_{4} K^{-1} L+\delta K^{2} L K_{3}^{-1} K_{4}^{-1} \tag{14.49}
+\end{equation*}
+
+
+by (14.24) and (14.27). Given $\kappa_{2}\sim K_{2}$, $\kappa_{3}\sim K_{3}$, $\kappa_{4}\sim K_{4}$, and $l\sim L$, consider the solutions of (14.22) and (14.47) in $l_{2} \sim L, l_{3} \sim L, l_{4} \sim L$ restricted by
+
+
+\begin{equation*}
+\left|l_{4}-l\right| \leqslant B . \tag{14.50}
+\end{equation*}
+
+
+Notice that $B<L$ by (14.32). Let $W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; l\right)$ denote the number of such solutions. Clearly,
+
+
+\begin{equation*}
+\mathscr{N}(K_{3},K_{4})\ll \sum_{\kappa_{2}} \sum_{\kappa_{3}} \sum_{\kappa_{4}} \sum_{l \sim L} W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; l\right), \tag{14.51}
+\end{equation*}
+
+
+where $l$ ranges over a $B$-spaced sequence of points. Two solutions accounted for by $W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; l\right)$ yield
+
+$$
+\kappa_{2}\left(l_{2}-\widetilde l_{2}\right)=\kappa_{3}\left(l_{3}-\widetilde l_{3}\right)+\kappa_{4}\left(l_{4}-\widetilde l_{4}\right)
+$$
+
+and
+
+$$
+\left|l_{4}-\widetilde l_{4}\right|\ll B,\quad\left|l_{3}-\widetilde l_{3}\right|\ll B,\quad\left|l_{2}-\widetilde l_{2}\right|\ll L .
+$$
+
+Hence
+
+$$
+W\left(\kappa_{2},\kappa_{3},\kappa_{4};l\right) \leqslant \#\left\{q_{j},\ j=2,3,4;\left|q_{j}\right| \leqslant Q_{j} ; \kappa_{2} q_{2}=\kappa_{3} q_{3}+\kappa_{4} q_{4}\right\}
+$$
+
+with $Q_{2} \ll L, Q_{3} \ll B, Q_{4}\ll B$. We observe that
+
+
+\begin{equation*}
+W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; l\right) \leqslant W\left(\kappa_{3},\kappa_{4};Q_{3},Q_{4}\right)+W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; Q_{2}, Q_{3}, Q_{4}\right), \tag{14.52}
+\end{equation*}
+
+
+where the first term accounts for points $q_{2}=0$, and the second term accounts for the remaining points. We have
+
+
+\begin{equation*}
+\sum_{\kappa_{2}} \sum_{\kappa_{3}} \sum_{\kappa_{4}} W\left(\kappa_{2}, \kappa_{3}, \kappa_{4} ; Q_{2}, Q_{3}, Q_{4}\right) \ll Q_{3} Q_{4} K_{3} K_{4}(K L)^{\varepsilon}, \tag{14.53}
+\end{equation*}
+
+
+and
+
+
+\begin{gather*}
+\sum_{\kappa_{2}} \sum_{\kappa_{3}} \sum_{\kappa_{4}} W\left(\kappa_{3}, \kappa_{4} ; Q_{3}, Q_{4}\right) \\
+\ll K_{2} \#\left\{q_{3}, q_{4}, \kappa_{3}, \kappa_{4} ; \kappa_{3} q_{3}+\kappa_{4} q_{4}=0\right\}  \tag{14.54}\\
+\ll K_{2}\left\{K_{3}K_{4}+K_{3}Q_{3}(KL)^{\varepsilon}\right\}
+\end{gather*}
+
+
+Gathering together (14.51)-(14.54) we conclude
+
+
+\begin{align*}
+\mathscr{N}(K_{3},K_{4}) & \ll \frac{L}{B}\left(K_{3} K_{4}^{2}+K_{3} K_{4} B^{2}\right)(K L)^{\varepsilon} \\
+& \ll\left(K_{3} K_{4} K+K_{3} K_{4}^{2} K^{-1} L^{2}+\delta K^{2} L^{2}\right)(K L)^{\varepsilon} . \tag{14.55}
+\end{align*}
+
+
+We now complete the proof of (14.5). Combining (14.36), (14.46), and (14.55) we obtain
+
+$$
+\begin{aligned}
+\mathscr{N}(K_{3},K_{4}) & \ll\left[\min \left\{K_{3} L^{5 / 2}, K_{3} K_{4} K\right\}+K_{3} K_{4}^{2} K^{-1} L^{2}+\delta K^{2} L^{2}\right](K L)^{\varepsilon} \\
+& \ll\left[K_{3}\left(K_{4} K\right)^{1 / 5} L^{2}+K_{3} K_{4}^{2} K^{-1} L^{2}+\delta K^{2} L^{2}\right](K L)^{\varepsilon} .
+\end{aligned}
+$$
+
+By (14.30) we infer the three bounds
+\begin{align*}
+\text{(i)}\quad \#\{k_{1}\}
+&\ll \min\{\delta K^{4}K_{3}^{-1}K_{4}^{-2},K\} \\
+&\leqslant K_{3}^{-1}\min\{\delta K^{4}K_{4}^{-2},KK_{4}\} \\
+&\ll K_{3}^{-1}\left(\delta K^{4}K_{4}^{-2}\right)^{2/5}
+       \left(KK_{4}\right)^{3/5} \\
+&=\delta^{2/5}K^{11/5}K_{3}^{-1}K_{4}^{-1/5},\\
+\text{(ii)}\quad \#\{k_{1}\}
+&\ll \delta K^{4}K_{3}^{-1}K_{4}^{-2},\\
+\text{(iii)}\quad \#\{k_{1}\}
+&\ll K.
+\end{align*}
+By (14.33) we have
+
+$$
+\begin{aligned}
+\mathscr{B}_{2}(\delta, K, L) & \ll\left[(\delta K)^{2 / 5} K^{2} L^{2}+\delta K^{3} L^{2}\right](K L)^{\varepsilon} \\
+& \ll\left(K^{2}L^{2}+\delta K^{3} L^{2}\right)(K L)^{\varepsilon} .
+\end{aligned}
+$$
+
+\section*{Acknowledgments}
+The authors express their gratitude to the Institute for Advanced Study for providing them with excellent conditions to pursue this work. The first-named author also extends his thanks to Professor Bombieri for sharing his ideas.
+
+\section*{References}
+\begin{enumerate}
+  \item E. Bombieri and H. Iwaniec, On the order of $\zeta(\tfrac12+it)$, \textit{Ann. Scuola Norm. Sup. Pisa}, Ser. IV, \textbf{13} (1986), 449--472.
+  \item K. Chandrasekharan, \textit{Arithmetical Functions}, Springer-Verlag, New York/Berlin, 1970.
+  \item I. S. Gradshteyn and I. M. Ryzhik, \textit{Table of Integrals, Series, and Products}, Academic Press, New York, 1965.
+  \item S. W. Graham and G. Kolesnik, \textit{Van der Corput's Method of Exponential Sums}, Cambridge (to appear).
+  \item A. Ivić, \textit{The Riemann Zeta-Function}, Wiley, New York, 1985.
+  \item G. Kolesnik, On the method of exponent pairs, \textit{Acta Arith.} \textbf{45} (1985), no. 2, 115--143.
+  \item E. C. Titchmarsh, \textit{The Theory of the Riemann Zeta-Function}, Oxford, 1951.
+  \item G. N. Watson, \textit{A Treatise on the Theory of Bessel Functions}, Cambridge, 1944.
+\end{enumerate}
+
+
+
+\end{document}

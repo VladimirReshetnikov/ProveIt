@@ -1,0 +1,315 @@
+\documentclass[10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem*{theorem}{Theorem}
+
+\title{Partial Fractions and Four Classical Theorems of Number Theory}
+\author{Michael D. Hirschhorn}
+\date{}
+
+\begin{document}
+\maketitle
+
+For some years Jacobi's two-square and four-square theorems have been sources of
+considerable fascination to me, so much so that I have continually sought the
+simplest, most direct proofs of them. Indeed, I have in the past presented two
+proofs of each in \cite{Hirschhorn1982,Hirschhorn1985,Hirschhorn1987,Hirschhorn1999}.
+It is my intention to give now what I regard as even simpler proofs of these two
+theorems, as well as results due to Dirichlet and Lorenz on representations by a
+square plus twice a square and a square plus three times a square, respectively.
+All four classical theorems follow from just one partial-fractions expansion
+together with special cases of Jacobi's triple-product identity. This work is my
+attempt to make rigorous, to simplify, and to present to a wider readership the
+work of Lorenz \cite{Lorenz1871}.
+
+With $d_{r,m}(n)$ denoting the number of divisors $d$ of $n$ with
+$d\equiv r\pmod m$, the theorems we prove are as follows.
+
+\begin{theorem}[Jacobi, 1828]
+The number of representations of the number $n\geq 1$ as the sum of two squares is
+\[
+4\bigl(d_{1,4}(n)-d_{3,4}(n)\bigr).
+\]
+\end{theorem}
+
+\begin{theorem}[Dirichlet, 1840]
+The number of representations of $n\geq 1$ as the sum of a square and twice a
+square is
+\[
+2\bigl(d_{1,8}(n)+d_{3,8}(n)-d_{5,8}(n)-d_{7,8}(n)\bigr).
+\]
+\end{theorem}
+
+\begin{theorem}[Lorenz, 1871]
+The number of representations of $n\geq 1$ as the sum of a square and three times
+a square is
+\[
+2\bigl(d_{1,3}(n)-d_{2,3}(n)\bigr)
+ +4\bigl(d_{4,12}(n)-d_{8,12}(n)\bigr).
+\]
+\end{theorem}
+
+and
+
+\begin{theorem}[Jacobi, 1829]
+The number of representations of $n\geq 1$ as the sum of four squares is
+\[
+8\sum_{\substack{d\mid n\\4\nmid d}} d.
+\]
+\end{theorem}
+
+\section*{The proofs}
+
+Before presenting the partial-fractions expansion referred to in the opening
+paragraph, let us look at the special cases of Jacobi's triple-product identity
+that we require. Jacobi's triple-product identity says that if $a\neq 0$ and
+$|q|<1$, then
+\[
+\prod_{n\geq 1}
+ \bigl(1+aq^{2n-1}\bigr)
+ \bigl(1+a^{-1}q^{2n-1}\bigr)
+ \bigl(1-q^{2n}\bigr)
+ =\sum_{n=-\infty}^{\infty}a^nq^{n^2}.
+\]
+If we set $a=-1$, we find
+\[
+\begin{aligned}
+\sum_{n=-\infty}^{\infty}(-1)^nq^{n^2}
+ &=\prod_{n\geq 1}\bigl(1-q^{2n-1}\bigr)^2\bigl(1-q^{2n}\bigr) \\
+ &=\prod_{n\geq 1}\frac{\bigl(1-q^n\bigr)^2}{1-q^{2n}}
+  =\prod_{n\geq 1}\frac{1-q^n}{1+q^n} \\
+ &=\prod_{n\geq 1}
+   \frac{1-q^{2n-1}}{1+q^{2n}}
+   \frac{1-q^{2n}}{1+q^{2n-1}},
+\end{aligned}
+\]
+and, if we put $-q^2$ for $q$ in this, we find
+\[
+\begin{aligned}
+\sum_{n=-\infty}^{\infty}q^{2n^2}
+ &=\prod_{n\geq 1}
+   \frac{\bigl(1+q^{4n-2}\bigr)\bigl(1-q^{4n}\bigr)}
+        {\bigl(1+q^{4n}\bigr)\bigl(1-q^{4n-2}\bigr)} \\
+ &=\prod_{n\geq 1}
+   \frac{\bigl(1+q^{4n-2}\bigr)\bigl(1-q^{2n}\bigr)}
+        {\bigl(1+q^{4n}\bigr)\bigl(1+q^{2n-1}\bigr)}
+   \frac{1+q^{2n}}{1-q^{2n-1}}.
+\end{aligned}
+\]
+
+Now, it is an easy exercise in partial fractions to show that, provided no term
+in a denominator is zero,
+\begin{equation}
+\frac{1}{2-x}\prod_{n=1}^{N}
+ \frac{1-aq^{n-1}x+a^2q^{2n-2}}{1-q^nx+q^{2n}}
+ =\frac{A_0}{2-x}
+  +\sum_{n=1}^{N}\frac{A_n}{1-q^nx+q^{2n}},
+\label{eq:finite-partial-fractions}
+\end{equation}
+where, with
+\[
+(a;q)_n=(1-a)(1-aq)\cdots\bigl(1-aq^{n-1}\bigr),
+\qquad (a;q)_0=1,
+\]
+we have
+\[
+A_0=\frac{(a;q)_N^2}{(q;q)_N^2},
+\]
+and, for $n\geq 1$,
+\[
+A_n=
+\frac{a^n(a^{-1}q;q)_n(1+q^n)}{(a;q)_n}
+\frac{(a;q)_{N+n}(a;q)_{N-n}}
+     {(q;q)_{N+n}(q;q)_{N-n}}.
+\]
+Dividing \eqref{eq:finite-partial-fractions} by $A_0$, assuming
+$0<|a|<1$ and $|q|<1$, and letting $N\to\infty$, we obtain
+\begin{equation}
+\begin{aligned}
+&\frac{1}{2-x}\prod_{n\geq 1}
+ \frac{1-aq^{n-1}x+a^2q^{2n-2}}{1-q^nx+q^{2n}}
+ \frac{(1-q^n)^2}{(1-aq^{n-1})^2} \\
+&\qquad=\frac{1}{2-x}
+ +\sum_{n\geq 1}
+  \frac{a^n(a^{-1}q;q)_n(1+q^n)}
+       {(a;q)_n(1-q^nx+q^{2n})},
+\end{aligned}
+\label{eq:infinite-partial-fractions}
+\end{equation}
+again provided no term in a denominator is zero.
+
+If in \eqref{eq:infinite-partial-fractions} we set $a=-q$ and $x=0$, we find
+\[
+\prod_{n\geq 1}\frac{(1-q^n)^2}{(1+q^n)^2}
+ =1+4\sum_{n\geq 1}\frac{(-1)^nq^n}{1+q^{2n}},
+\]
+or
+\begin{equation}
+\left(\sum_{n=-\infty}^{\infty}(-1)^nq^{n^2}\right)^2
+ =1+4\sum_{n\geq 1}\frac{(-1)^nq^n}{1+q^{2n}}.
+\label{eq:two-squares-base}
+\end{equation}
+If in \eqref{eq:two-squares-base} we put $-q$ for $q$, we obtain
+\[
+\begin{aligned}
+\left(\sum_{n=-\infty}^{\infty}q^{n^2}\right)^2
+ &=1+4\sum_{n\geq 1}\frac{q^n}{1+q^{2n}} \\
+ &=1+4\sum_{n\geq 1}
+   \left(\frac{q^n}{1-q^{4n}}-\frac{q^{3n}}{1-q^{4n}}\right) \\
+ &=1+4\sum_{\substack{k\geq 1\\\ell\geq 0}}
+   \left(q^{k(4\ell+1)}-q^{k(4\ell+3)}\right) \\
+ &=1+4\sum_{n\geq 1}\bigl(d_{1,4}(n)-d_{3,4}(n)\bigr)q^n,
+\end{aligned}
+\]
+from which Jacobi's two-square theorem follows.
+
+If in \eqref{eq:infinite-partial-fractions} we set $a=-q$ and $x=-2$, we find
+\[
+\prod_{n\geq 1}\frac{(1-q^n)^4}{(1+q^n)^4}
+ =1+8\sum_{n\geq 1}\frac{(-1)^nq^n}{(1+q^n)^2},
+\]
+or
+\begin{equation}
+\left(\sum_{n=-\infty}^{\infty}(-1)^nq^{n^2}\right)^4
+ =1+8\sum_{n\geq 1}\frac{(-1)^nq^n}{(1+q^n)^2}.
+\label{eq:four-squares-base}
+\end{equation}
+If in \eqref{eq:four-squares-base} we put $-q$ for $q$, we obtain
+\[
+\begin{aligned}
+\left(\sum_{n=-\infty}^{\infty}q^{n^2}\right)^4
+ &=1+8\sum_{\substack{n\geq 1\\n\text{ even}}}
+       \frac{q^n}{(1+q^n)^2}
+   +8\sum_{\substack{n\geq 1\\n\text{ odd}}}
+       \frac{q^n}{(1-q^n)^2} \\
+ &=1+8\sum_{n\geq 1}\frac{q^n}{(1-q^n)^2}
+   -8\sum_{\substack{n\geq 1\\n\text{ even}}}
+    \left(\frac{q^n}{(1-q^n)^2}-\frac{q^n}{(1+q^n)^2}\right) \\
+ &=1+8\sum_{n\geq 1}\frac{q^n}{(1-q^n)^2}
+   -32\sum_{n\geq 1}\frac{q^{4n}}{(1-q^{4n})^2} \\
+ &=1+8\sum_{n\geq 1}
+   \left(\sigma(n)-4\sigma\!\left(\frac{n}{4}\right)\right)q^n \\
+ &=1+8\sum_{n\geq 1}
+   \left(\sum_{\substack{d\mid n\\4\nmid d}}d\right)q^n,
+\end{aligned}
+\]
+where $\sigma(m)$ is the sum of the positive divisors of $m$, with
+$\sigma(x)=0$ when $x$ is not a positive integer. This proves Jacobi's
+four-square theorem.
+
+If in \eqref{eq:infinite-partial-fractions} we set $a=-q$ and $x=1$, we find
+\[
+\prod_{n\geq 1}
+ \frac{1-q^n}{1+q^n}\frac{1-q^{3n}}{1+q^{3n}}
+ =1+2\sum_{n\geq 1}\frac{(-1)^nq^n}{1-q^n+q^{2n}},
+\]
+or
+\begin{equation}
+\left(\sum_{n=-\infty}^{\infty}(-1)^nq^{n^2}\right)
+\left(\sum_{n=-\infty}^{\infty}(-1)^nq^{3n^2}\right)
+ =1+2\sum_{n\geq 1}\frac{(-1)^nq^n}{1-q^n+q^{2n}}.
+\label{eq:lorenz-base}
+\end{equation}
+If in \eqref{eq:lorenz-base} we put $-q$ for $q$, we obtain
+\[
+\begin{aligned}
+&\left(\sum_{n=-\infty}^{\infty}q^{n^2}\right)
+ \left(\sum_{n=-\infty}^{\infty}q^{3n^2}\right) \\
+&\quad=1+2\sum_{n\geq 1}
+ \frac{q^n}{1-(-1)^nq^n+q^{2n}} \\
+&\quad=1+2\sum_{\substack{n\geq 1\\n\text{ even}}}
+ \frac{q^n(1+q^n)}{1+q^{3n}}
+ +2\sum_{\substack{n\geq 1\\n\text{ odd}}}
+ \frac{q^n(1-q^n)}{1-q^{3n}} \\
+&\quad=1+2\sum_{n\geq 1}\frac{q^n(1-q^n)}{1-q^{3n}} \\
+&\qquad\quad
+ +2\sum_{\substack{n\geq 1\\n\text{ even}}}
+ \left(\frac{q^n(1+q^n)}{1+q^{3n}}
+       -\frac{q^n(1-q^n)}{1-q^{3n}}\right) \\
+&\quad=1+2\sum_{n\geq 1}\frac{q^n(1-q^n)}{1-q^{3n}}
+ +4\sum_{\substack{n\geq 1\\n\text{ even}}}
+ \frac{q^{2n}(1-q^{2n})}{1-q^{6n}} \\
+&\quad=1+2\sum_{n\geq 1}\frac{q^n(1-q^n)}{1-q^{3n}}
+ +4\sum_{n\geq 1}\frac{q^{4n}(1-q^{4n})}{1-q^{12n}} \\
+&\quad=1+2\sum_{n\geq 1}\bigl(d_{1,3}(n)-d_{2,3}(n)\bigr)q^n \\
+&\qquad\quad
+ +4\sum_{n\geq 1}\bigl(d_{4,12}(n)-d_{8,12}(n)\bigr)q^n,
+\end{aligned}
+\]
+from which Lorenz's theorem follows.
+
+If in \eqref{eq:infinite-partial-fractions} we put $q^2$ for $q$, set $a=-q$,
+and set $x=0$, we find
+\[
+\prod_{n\geq 1}
+ \frac{1+q^{4n-2}}{1+q^{4n}}
+ \frac{(1-q^{2n})^2}{(1+q^{2n-1})^2}
+ =1+2\sum_{n\geq 1}
+ \frac{(-1)^nq^n(1+q^{2n})}{1+q^{4n}},
+\]
+or
+\begin{equation}
+\left(\sum_{n=-\infty}^{\infty}q^{2n^2}\right)
+\left(\sum_{n=-\infty}^{\infty}(-1)^nq^{n^2}\right)
+ =1+2\sum_{n\geq 1}
+ \frac{(-1)^nq^n(1+q^{2n})}{1+q^{4n}}.
+\label{eq:dirichlet-base}
+\end{equation}
+If in \eqref{eq:dirichlet-base} we put $-q$ for $q$, we obtain
+\[
+\begin{aligned}
+\left(\sum_{n=-\infty}^{\infty}q^{n^2}\right)
+\left(\sum_{n=-\infty}^{\infty}q^{2n^2}\right)
+ &=1+2\sum_{n\geq 1}\frac{q^n(1+q^{2n})}{1+q^{4n}} \\
+ &=1+2\sum_{n\geq 1}
+ \left(\frac{q^n}{1-q^{8n}}
+      +\frac{q^{3n}}{1-q^{8n}}
+      -\frac{q^{5n}}{1-q^{8n}}
+      -\frac{q^{7n}}{1-q^{8n}}\right) \\
+ &=1+2\sum_{n\geq 1}
+ \bigl(d_{1,8}(n)+d_{3,8}(n)-d_{5,8}(n)-d_{7,8}(n)\bigr)q^n,
+\end{aligned}
+\]
+from which Dirichlet's theorem follows.
+
+\begin{thebibliography}{9}
+
+\bibitem{Hirschhorn1982}
+M.~D. Hirschhorn,
+``A simple proof of Jacobi's four-square theorem,''
+\emph{J. Austral. Math. Soc. Ser. A} \textbf{32} (1982), 61--67.
+
+\bibitem{Hirschhorn1985}
+M.~D. Hirschhorn,
+``A simple proof of Jacobi's two-square theorem,''
+\emph{Amer. Math. Monthly} \textbf{92} (1985), 579--580.
+
+\bibitem{Hirschhorn1987}
+M.~D. Hirschhorn,
+``A simple proof of Jacobi's four-square theorem,''
+\emph{Proc. Amer. Math. Soc.} \textbf{101} (1987), 436--438.
+
+\bibitem{Hirschhorn1999}
+M.~D. Hirschhorn,
+``Jacobi's two-square theorem and related identities,''
+\emph{Ramanujan J.} \textbf{3} (1999), 153--158.
+
+\bibitem{Lorenz1871}
+L.~Lorenz,
+``Contribution à la théorie des nombres,''
+in \emph{\OE uvres scientifiques de L. Lorenz},
+revues et annotées par H.~Valentiner, vol.~II,
+Lehmann \& Stage, Copenhague, 1904, pp.~403--431.
+
+\end{thebibliography}
+
+\bigskip
+\noindent\textit{School of Mathematics, UNSW, Sydney 2052, Australia}\\
+\texttt{m.hirschhorn@unsw.edu.au}
+
+\end{document}

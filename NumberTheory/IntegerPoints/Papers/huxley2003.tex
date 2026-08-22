@@ -1,0 +1,1084 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=cyan,}
+\urlstyle{same}
+
+\title{EXPONENTIAL SUMS AND LATTICE POINTS III}
+
+\author{M. N. HUXLEY}
+\date{}
+
+
+%New command to display footnote whose markers will always be hidden
+\let\svthefootnote\thefootnote
+\newcommand\blfootnotetext[1]{%
+  \let\thefootnote\relax\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \let\thefootnote\svthefootnote%
+}
+
+%Overriding the \footnotetext command to hide the marker if its value is `0`
+\let\svfootnotetext\footnotetext
+\renewcommand\footnotetext[2][?]{%
+  \if\relax#1\relax%
+    \ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+  \else%
+    \if?#1\ifnum\value{footnote}=0\blfootnotetext{#2}\else\svfootnotetext{#2}\fi%
+    \else\svfootnotetext[#1]{#2}\fi%
+  \fi
+}
+
+\begin{document}
+\noindent\scriptsize
+\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+\textit{Proc. London Math. Soc.} (3) 87 (2003) 591--609 & \textcopyright{} 2003 London Mathematical Society \\
+& DOI: 10.1112/S0024611503014485
+\end{tabular*}
+\normalsize
+
+\vspace{2.5em}
+\begin{center}
+{\Large EXPONENTIAL SUMS AND LATTICE POINTS III}\\[2.5em]
+M. N. HUXLEY
+\end{center}
+\vspace{1.5em}
+\footnotetext{Received 3 April 2001.\\
+2000 \textit{Mathematics Subject Classification} 11P21, 11L07.
+}
+
+\section*{1. Introduction}
+
+The method of counting squares for estimating the area $A$ of a closed curve $C$ consists of placing a piece of transparent squared paper (with $M$ squares per unit length) over the curve. The lattice points of the title are the crossing points of the square lattice. The number of lattice points within or on the curve $C$ is $A M^{2}$ plus a remainder term $D$, the signed discrepancy. Let $C$ be convex, made up of finitely many pieces for which the radius of curvature exists and is non-zero. We say that $C$ is of class $C^{r+2}$ if the radius of curvature is (piecewise) $r$ times continuously differentiable with respect to the direction of the tangent vector. We seek bounds
+
+
+\begin{equation*}
+D=O\left(M^{K}(\log M)^{\Lambda}\right), \tag{1.1}
+\end{equation*}
+
+
+where the $O$-constant depends on the shape of the curve $C$ (for example, through the maximum radius of curvature), but not on the position of the squared paper. The classical result with $K=\frac{2}{3}$ and $\Lambda=0$ for a $C^{2}$-curve was proved in Van der Corput's thesis [2] by two methods: approximating $C$ by a polygon as Voronoi [22] and Sierpiński [19] had done in special cases, and also by using the row-of-teeth function $\rho(t)=[t]-t+\frac{1}{2}$ to introduce harmonic analysis. In later work Van der Corput developed an ingenious iterative approach using exponential sums in several variables. Potentially applicable in general, the method was used for special problems such as the Gauss circle problem, where $C$ is $x^{2}+y^{2}=1$, and the Dirichlet divisor problem, where $C$ (not closed) is an arc of the hyperbola $xy=1$; in both problems the centre of $C$ is a lattice point, and the lattice lines lie in the $x$- and $y$-directions. Trifonov [21] handled the general case for a $C^{\infty}$-curve $C$, obtaining $K=\frac{27}{41}+\epsilon$ in (1.1).
+
+Kendall [15] gave a Fourier series for the discrepancy $D$ of a $C^{\infty}$-curve under translations, and showed that the root mean square size was $O(\sqrt{M})$. The terms of the Fourier series correspond to tangents with rational gradients. The result holds for a $C^{4}$-curve (Nowak [16]), and recent work of Redouaby and Sargos [18] suggests that the condition $C^{3}$ is sufficient.
+
+Iwaniec and Mozzochi [14], building on Bombieri and Iwaniec's work [1] on single exponential sums, got (1.1) with $K=\frac{7}{11}+\epsilon$ for the circle and divisor problems. The author [5] generalised to a curve $C$ of class $C^{3}$, with $K=\frac{7}{11}$ and $\Lambda=\frac{47}{22}$. Their method combines both Van der Corput's approaches, with exponential sums corresponding to each side of the Voronoi polygon, which are estimated in mean fourth power using a form of the large sieve inequality. Each polygon side is brought to a horizontal position by an automorphism of the integer lattice, carrying an arc of the curve with it. The arc is approximated by the vertex of a parabola, a quadratic polynomial with small squared term. Two arcs of the curve `resonate' if they become parts of the same parabolic arc under these transformations. An automorphism of the integer lattice, realised by an integer matrix of determinant 1, the `magic matrix', transforms one arc to an arc which overlaps the other, and coincides closely on the overlapping part. The large sieve inequality requires an upper bound for the number of resonant pairs of arcs.
+
+In [6] we showed that for an interval $(e / r, f / s)$ of gradients, the conditions for a fixed magic matrix to give a coincidence of minor arcs meant that there was an integer point close to a certain plane curve, the resonance curve. This was used trivially in [7] to give (1.1) with $K=\frac{46}{73}$ and $\Lambda=\frac{315}{146}$.
+
+A non-trivial study of resonance curves was begun in [11]. The resonance curve was found to depend on the interval ($e / r, f / s$) by adjoint action of the matrix $\left(\begin{array}{cc}f & e \\ s & r\end{array}\right)$. Hence there is a formal analogy with [8] and with Nowak [17], where Kendall's Fourier series [15] leads to counting integer points close to curves in the dual space. This paper is cast as an iteration step, in which a hypothesis on points close to curves leads to bounds for sums of the form $\sum \rho(f(m))$, and so for the discrepancy in (1.1). The resonance curve usually has singularities, where the hypothesis cannot be used, at a cusp and the endpoints.
+
+Hypothesis $\mathrm{H}(\kappa, \lambda)$. When $F(x)$ is a bounded function, three times continuously differentiable on an interval containing the unit interval [1, 2], with $F^{\prime \prime}(x) \neq 0$ and $F^{(3)}(x) \neq 0$, when $M$ and $N$ are real parameters with
+
+
+\begin{equation*}
+M \geqslant 2, \quad \sqrt{M} \leqslant N \leqslant M^{2}, \tag{1.2}
+\end{equation*}
+
+
+and $f(x)=N F(x / M)$, and when $\delta$ is real with $0 \leqslant \delta \leqslant \frac{1}{2}$, then $R$, the number of integer points $(m, n)$ with
+
+
+\begin{equation*}
+|n-f(m)| \leqslant \delta, \quad M \leqslant m \leqslant 2 M, \tag{1.3}
+\end{equation*}
+
+
+satisfies
+
+
+\begin{equation*}
+R=O\left(\delta M+(MN)^{\kappa}\bigl(\log(MN)\bigr)^{\lambda}\right). \tag{1.4}
+\end{equation*}
+
+
+The implied constant depends on $f(x)$ only by way of the upper and lower bounds for the derivatives of $F(x)$.
+
+The case $\kappa=\frac{1}{3}, \lambda=0$ of Hypothesis H is again due to Van der Corput. For $M=N$, the bound (1.1) implies (1.4) with $\kappa=\frac{1}{2} K$ and $\lambda=\Lambda$. Using $\mathrm{H}(\kappa, \lambda)$ with $\kappa \geqslant \frac{1}{4}$, we obtain (1.1) with
+
+$$
+K=\frac{67 \kappa-7}{106 \kappa-11}
+$$
+
+The value $\kappa=\frac{1}{3}$ gives the exponent $\frac{46}{73}$ of [7], and the results of [7] give (1.4) with $\kappa=\frac{23}{73}$ and $\lambda=\frac{315}{146}$ for a shorter range of $N$ than (1.2). There is a possible iterative argument, obtaining smaller and smaller improvements in $K$ and $\kappa$ at each step.
+
+Swinnerton-Dyer's method based on approximation determinants [20, 13, 10] gives results like (1.4) with $\kappa=\frac{3}{10}$, but with extra terms. Nevertheless, we obtain the estimate (1.1) with
+
+$$
+K=\frac{131}{208}=0.6298 \ldots, \quad \Lambda=\frac{18627}{8320}=2.2513 \ldots
+$$
+
+This is now the best estimate in the Gauss circle problem. For the Dirichlet divisor problem we have
+
+$$
+\sum_{n \leqslant T} d(n)=T \log T+(2 \gamma-1) T+O\left(T^{K / 2}(\log T)^{\Lambda+1}\right)
+$$
+
+again the best estimate. These bounds are better than we could hope to obtain by iterating between (1.1) and (1.4).
+
+There are similar improvements in a problem considered by Heath-Brown and the author [4] on the mean square of an exponential sum in one variable. This was essentially the first step in the Van der Corput iteration.
+
+Proposition 1. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $F(x)$ be a real function three times continuously differentiable for $1 \leqslant x \leqslant 2$, and let $g(x)$ and $G(x)$ be bounded functions of bounded variation on $1 \leqslant x \leqslant 2$. Let $C_{1}, \ldots, C_{6}$ be real numbers greater than or equal to 1. Suppose that
+
+
+\begin{equation*}
+\left|F^{(r)}(x)\right| \leqslant C_{r} \tag{1.5}
+\end{equation*}
+
+
+for $r=1,2,3$,
+
+
+\begin{equation*}
+\left|F^{(r)}(x)\right| \geqslant 1 / C_{r} \tag{1.6}
+\end{equation*}
+
+
+for $r=1,2$. In some ranges we require extra conditions, either (1.6) for $r=3$, or
+
+
+\begin{equation*}
+\left|F^{\prime}(x) F^{(3)}(x)-3 F^{\prime \prime}(x)^{2}\right| \geqslant 1 / C_{4}. \tag{1.7}
+\end{equation*}
+
+
+Let $H, M$ and $T$ be large parameters, and let $S$ denote the sum
+
+$$
+S=\sum_{h=H}^{2 H-1} g\left(\frac{h}{H}\right) \sum_{m=M}^{2 M} G\left(\frac{m}{M}\right) e\left(\frac{h T}{M} F\left(\frac{m}{M}\right)\right).
+$$
+
+Then we have the following bounds, in which $B_{1}$ and $B_{2}$ are positive constants constructed from $C_{1}, \ldots, C_{6}, \kappa, \lambda$ and from the functions $g(x)$ and $G(x)$.
+
+(A) In the range
+
+
+\begin{gather*}
+C_{5}^{-1} T^{67 \kappa-6}(\log T)^{(45 \kappa-4) \lambda} \leqslant M^{156 \kappa-14} \leqslant C_{5} T^{89 \kappa-8}(\log T)^{-(45 \kappa-4) \lambda},  \tag{1.8}\\
+H \leqslant B_{1} M T^{-\frac{23 \kappa-2}{78 \kappa-7}}(\log T)^{\frac{(9 \kappa-1) \lambda}{78 \kappa-7}}, \tag{1.9}
+\end{gather*}
+
+
+we have
+
+
+\begin{equation*}
+S \leqslant B_{2} H\left(\frac{H}{M}\right)^{\frac{6 \kappa-1}{100 \kappa-10}} T^{\frac{67 \kappa-7}{200 \kappa-20}}(\log T)^{\frac{9}{4}+\frac{(39 \kappa-4) \lambda}{200 \kappa-20}}, \tag{1.10}
+\end{equation*}
+
+
+subject to the extra conditions that (1.6) holds for $r=3$ when
+
+
+\begin{equation*}
+M^{156 \kappa-14} \leqslant C_{5} T^{69 \kappa-6}(\log T)^{-3(9 \kappa-1) \lambda}, \tag{1.11}
+\end{equation*}
+
+
+that (1.7) holds when
+
+
+\begin{equation*}
+M^{156 \kappa-14} \geqslant C_{5}^{-1} T^{87 \kappa-8}(\log T)^{3(9 \kappa-1) \lambda}, \tag{1.12}
+\end{equation*}
+
+
+that
+
+
+\begin{equation*}
+H \geqslant C_{6}^{-1} T^{4}(\log T)^{3 \lambda} / M^{9} \quad \text{for} M \leqslant C_{5}^{-1} T^{7 / 16}(\log T)^{\frac{\lambda}{32\kappa}}, \tag{1.13}
+\end{equation*}
+
+
+and that
+
+
+\begin{equation*}
+H \geqslant C_{6}^{-1} M^{11}(\log T)^{3 \lambda} / T^{6} \quad \text{for} M \geqslant C_{5} T^{9 / 16}(\log T)^{-\frac{\lambda}{32\kappa}}. \tag{1.14}
+\end{equation*}
+
+
+(B) If (1.6) holds for $r=3$, then in the ranges
+
+\begin{gather*}
+C_{5}^{-1} T^{1 / 3} \leqslant M \leqslant C_{5} T^{7 / 16}(\log T)^{3 \lambda / 16},  \tag{1.15}\\
+H \leqslant \min \left(B_{1} M^{\frac{15 \kappa-1}{33 \kappa-3}} T^{-\frac{2 \kappa}{33 \kappa-3}}(\log T)^{\frac{(9 \kappa-1) \lambda}{33 \kappa-3}},\right. \\
+\left.B_{1} M^{\frac{3}{2}} T^{-\frac{1}{2}}, C_{6} T^{4} M^{-9}(\log T)^{3 \lambda}\right), \tag{1.16}
+\end{gather*}
+
+we have
+
+\begin{align*}
+S \leqslant & B_{2} H^{\frac{87 \kappa-9}{80 \kappa-8}} M^{\frac{15 \kappa-1}{80 \kappa-8}} T^{\frac{9 \kappa-1}{40 \kappa-4}}(\log T)^{\frac{9}{4}+\frac{(9 \kappa-1) \lambda}{80 \kappa-8}} \\
+& +B_{2} H^{\frac{107 \kappa-13}{12(9 \kappa-1)}} M^{-\frac{7 \kappa-1}{4(9 \kappa-1)}} T^{\frac{43 \kappa-5}{12(9 \kappa-1)}}(\log T)^{\frac{9+\lambda}{4}} \tag{1.17}
+\end{align*}
+
+
+(C) If (1.7) holds, then in the ranges
+
+
+\begin{gather*}
+C_{5}^{-1} T^{9 / 16}(\log T)^{-5 \lambda / 16} \leqslant M \leqslant C_{5} T^{2 / 3},  \tag{1.18}\\
+H \leqslant \min \left(B_{1} M^{\frac{51 \kappa-1}{33 \kappa-3}} T^{-\frac{20 \kappa-2}{33 \kappa-3}}(\log T)^{\frac{(9 \kappa-1) \lambda}{33 \kappa-3}},\right. \\
+\left.B_{1} M^{\frac{1}{2}}, C_{6} M^{11} T^{-6}(\log T)^{3 \lambda}\right), \tag{1.19}
+\end{gather*}
+
+
+we have
+
+
+\begin{align*}
+S \leqslant & B_{2} H^{\frac{87 \kappa-9}{80 \kappa-8}} M^{-\frac{29 \kappa-3}{80 \kappa-8}} T^{\frac{1}{2}}(\log T)^{\frac{9}{4}+\frac{(9 \kappa-1) \lambda}{80 \kappa-8}} \\
+& +B_{2} H^{\frac{107 \kappa-13}{12(9 \kappa-1)}} M^{\frac{23 \kappa-1}{12(9 \kappa-1)}} T^{\frac{7 \kappa-1}{4(9 \kappa-1)}}(\log T)^{\frac{9+\lambda}{4}} \tag{1.20}
+\end{align*}
+
+
+Proposition 1 reduces to Theorem 18.1.2 of [9] with the Van der Corput values $\kappa=\frac{1}{3}, \lambda=0$, but we have stated the differentiability conditions more carefully.
+
+Theorem 1. The results of Proposition 1 hold unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+The simplest application of Proposition 1 is to the problem of integer points close to a curve in (1.4).
+
+Proposition 2. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $C_{1}, \ldots, C_{5}$ be real numbers with $C_{i} \geqslant 1$. Let $F(x)$ be a real function three times continuously differentiable for $1 \leqslant x \leqslant 2$, satisfying (1.5) for $r=1,2,3$ and (1.6) for $r=1,2$; in some ranges we require extra conditions, either (1.6) for $r=3$ or (1.7). Let $M$ and $N$ be large real parameters, and let $T=M N$. For $\delta$ fixed in $0 \leqslant \delta \leqslant \frac{1}{2}$, let $R(\delta)$ denote the number of integer points $(m, n)$ with
+
+
+\begin{equation*}
+\left|n-N F\left(\frac{m}{M}\right)\right| \leqslant \delta, \quad M \leqslant m \leqslant 2 M-1. \tag{1.21}
+\end{equation*}
+
+
+Then we have the following bounds, in which $B_{3}$ is a positive constant constructed from $C_{1}, \ldots, C_{5}, \kappa$ and $\lambda$.
+
+(A) In the range (1.8) we have
+
+\begin{equation*}
+R(\delta) \leqslant B_{3} \delta M+B_{3} T^{\frac{67 \kappa-7}{212 \kappa-22}}(\log T)^{\frac{450 \kappa-45+(39 \kappa-4) \lambda}{212 \kappa-22}}, \tag{1.22}
+\end{equation*}
+
+
+subject to the extra condition that (1.6) holds for $r=3$ in the range (1.11), and that (1.7) holds in the range (1.12).
+
+(B) If (1.6) holds for $r=3$, then in the range (1.15) we have
+
+
+\begin{align*}
+R(\delta) \leqslant & B_{3} \delta M+B_{3} M^{\frac{22 \kappa-2}{87 \kappa-9}} T^{\frac{18 \kappa-2}{87 \kappa-9}}(\log T)^{\frac{180 \kappa-18+(9 \kappa-1) \lambda}{87 \kappa-9}} \\
+& +B_{3} M^{-\frac{22 \kappa-2}{107 \kappa-13}} T^{\frac{43 \kappa-5}{107 \kappa-13}}(\log T)^{\frac{3(9+\lambda)(9 \kappa-1)}{107 \kappa-13}} \tag{1.23}
+\end{align*}
+
+
+(C) If (1.7) holds, then in the range (1.18) we have
+
+
+\begin{align*}
+R(\delta) \leqslant & B_{3} \delta M+B_{3} M^{-\frac{22 \kappa-2}{87 \kappa-9}} T^{\frac{40 \kappa-4}{87 \kappa-9}}(\log T)^{\frac{180 \kappa-18+(9 \kappa-1) \lambda}{87 \kappa-9}} \\
+& +B_{3} M^{\frac{22 \kappa-2}{107 \kappa-13}} T^{\frac{21 \kappa-3}{107 \kappa-13}}(\log T)^{\frac{3(9+\lambda)(9 \kappa-1)}{107 \kappa-13}}. \tag{1.24}
+\end{align*}
+
+
+Theorem 2. The results of Proposition 2 hold unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+We compare Proposition 2 with Hypothesis H for $f(x)=N F(x / M)$. The union of the ranges (1.8), (1.15) and (1.18) gives the range (1.2), but Hypothesis H requires (1.6) for $r=3$ in all ranges. Case (A) gives a bound of the right form (1.4), but Cases (B) and (C) give nothing better than $\kappa=\frac{1}{3}$ at the ends of the range (1.2). Even in Case (A), the exponent $(67 \kappa-7) /(212 \kappa-22)$ is greater than $\frac{3}{10}$. So iterating Proposition 2 would not give improved results, and we should have to check whether the calculations of [11] were valid with a weaker form of Hypothesis H.
+
+A slightly more complicated calculation gives bounds for rounding error sums formed with the row-of-teeth function $\rho(t)$. Sums of this type, usually with $N$ much larger than $M$, appear in the analysis of rounding error in numerical integration.
+
+Proposition 3. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $F(x), M, N$ and $T$ satisfy the conditions of Proposition 2. Let $R$ be the rounding error sum
+
+$$
+R=\sum_{m=M}^{M_{2}} \rho\left(N F\left(\frac{m}{M}\right)\right),
+$$
+
+where $M_{2}$ is an integer in the range $M \leqslant M_{2} \leqslant 2 M-1$. Then we have the following bounds, in which $B_{4}$ is a positive constant constructed from $C_{1}, \ldots, C_{5}, \kappa$ and $\lambda$.
+
+(A) In the range (1.8) we have
+
+
+\begin{equation*}
+R \leqslant B_{4} T^{\frac{67 \kappa-7}{212 \kappa-22}}(\log T)^{\frac{450 \kappa-45+(39 \kappa-4) \lambda}{212 \kappa-22}}, \tag{1.25}
+\end{equation*}
+
+
+subject to the extra condition that (1.6) holds for $r=3$ in the range (1.11), and that (1.7) holds in the range (1.12).
+
+(B) If (1.6) holds for $r=3$, then in the range (1.15) we have
+
+
+\begin{align*}
+R \leqslant & B_{4} M^{\frac{22 \kappa-2}{87 \kappa-9}} T^{\frac{18 \kappa-2}{87 \kappa-9}}(\log T)^{\frac{180 \kappa-18+(9 \kappa-1) \lambda}{87 \kappa-9}} \\
+& +B_{4} M^{-\frac{1}{5}} T^{\frac{2}{5}}(\log T)^{\frac{3(9+\lambda)(9 \kappa-1)}{110 \kappa-10}}. \tag{1.26}
+\end{align*}
+
+
+(C) If (1.7) holds, then in the range (1.18) we have
+
+
+\begin{align*}
+R \leqslant & B_{4} M^{-\frac{22 \kappa-2}{87 \kappa-9}} T^{\frac{40 \kappa-4}{87 \kappa-9}}(\log T)^{\frac{180 \kappa-18+(9 \kappa-1) \lambda}{87 \kappa-9}} \\
+& +B_{4} M^{\frac{1}{5}} T^{\frac{1}{5}}(\log T)^{\frac{3(9+\lambda)(9 \kappa-1)}{110 \kappa-10}} \tag{1.27}
+\end{align*}
+
+
+Corollary. If, in addition, $F(x)$ is defined for $1-\frac{1}{2M} \leqslant x \leqslant 1+\frac{1}{2M}$, and has two continuous derivatives in this wider range, then
+
+
+\begin{equation*}
+\sum_{m=M}^{M_{2}}\left[N F\left(\frac{m}{M}\right)\right]-\int_{M-1 / 2}^{M_{2}+1 / 2}\left(N F\left(\frac{x}{M}\right)-\frac{1}{2}\right) d x \tag{1.28}
+\end{equation*}
+
+
+satisfies the bounds for the sum $R$ in Proposition 3, with a possibly larger constant $B_{4}$.
+
+Theorem 3. The results and Corollary of Proposition 3 hold unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+The bounds of Proposition 3 are still complicated. By using the Van der Corput `exponent pair' bound $\left(\frac{2}{7}, \frac{4}{7}\right)$ (see Graham and Kolesnik [3]), we obtain the result of Case (A) in a wider range.
+
+Proposition 4. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $C_{0}, \ldots, C_{5}$ be real numbers with $C_{i} \geqslant 1$. Let $F(x)$ be a real function four times continuously differentiable for $1 \leqslant x \leqslant 2$, satisfying (1.5) for $r=1,2,3,4$, (1.6) for $r=1,2,3$, (1.7) and
+
+
+\begin{equation*}
+\left|F^{\prime \prime}(x) F^{(4)}(x)-3 F^{(3)}(x)^{2}\right| \geqslant 1 / C_{0}. \tag{1.29}
+\end{equation*}
+
+
+Let $M$ and $N$ be large real parameters, and let $T=M N$. Then in the notation of Proposition 3 we have (1.25) for
+
+
+\begin{equation*}
+M \leqslant C_{5} T^{\frac{123 \kappa-13}{212 \kappa-22}}(\log T)^{A}, \tag{1.30}
+\end{equation*}
+
+
+where $A$ is an exponent calculated from $\kappa$ and $\lambda$. A bound of the form (1.25) also holds for the rounding error expression (1.28).
+
+Theorem 4. The result of Proposition 4 holds unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+Theorem 4, applied to $O(\log T)$ ranges of the form $M \leqslant m \leqslant 2 M-1$, gives the bound in the Dirichlet divisor problem. Our next theorem gives the bound for the Gauss circle problem and its generalisations.
+
+Proposition 5. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $\Omega$ be a convex Euclidean plane domain of area $A$, bounded by a simple closed curve $C$ composed of finitely many pieces $C_{i}$ which are three times continuously differentiable in the following sense: on each piece $C_{i}$ the radius of curvature $\rho$ is non-zero and continuously differentiable with respect to the tangent angle $\psi$. Let $M$ be sufficiently large, and let $M \Omega$ denote the set formed by expanding $\Omega$ linearly by a factor $M$. Then for any isometric embedding of $M \Omega$ in the Euclidean plane, the number of integer lattice points $(m, n)$ in $M \Omega$ is
+
+
+\begin{equation*}
+A M^{2}+O\left(I M^{\frac{67 \kappa-7}{106 \kappa-11}}(\log M)^{\frac{450 \kappa-45+(39 \kappa-4) \lambda}{212 \kappa-22}}\right), \tag{1.31}
+\end{equation*}
+
+
+where $I$ is a number depending on the curve $C$ but not on $M$ or on the embedding of $M \Omega$. If the radius of curvature $\rho$ is monotone on each piece $C_{i}$ of the curve and satisfies $\rho_{0} \leqslant \rho \leqslant \rho_{i}$ on $C_{i}$, and if $M$ is sufficiently large in terms of $1 / \rho_{0}$, then (1.31) holds with
+
+$$
+I=\sum_{i} \rho_{i}^{\frac{67 \kappa-7}{106 \kappa-11}}.
+$$
+
+Theorem 5. The results of Proposition 5 hold unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+In Proposition 6 we have a family of sums with different values of a parameter $y$. The underlying function $F(x, y)$ depends on $x$ and $y$. We write $F_{1}$ or $\partial_{1} F$ for $\partial F / \partial x, F_{2}$ or $\partial_{2} F$ for $\partial F / \partial y$, and similarly for other derivatives. Note that $F_{12}$ means $\left(F_{1}\right)_{2}=\partial_{2} \partial_{1} F$.
+
+Proposition 6. Suppose that $\mathrm{H}(\kappa, \lambda)$ holds for some $\kappa$ and $\lambda$ with $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and $\lambda \geqslant 0$. Let $F(x, y)$ be a real function defined for $1 \leqslant x \leqslant 2$ and $0 \leqslant y \leqslant 1$, four times partially differentiable with respect to $x$, with $F_{1}(x, y)$ and $F_{11}(x, y)$ non-zero twice differentiable functions of $x$ and $y$, satisfying the following inequalities, in which $C_{0}, \ldots, C_{7}$ are some constants greater than 1:
+
+$$
+\left|\partial_{1}^{r} F\right| \leqslant C_{1}
+$$
+
+for $r=1,2,3,4$,
+
+
+\begin{equation*}
+\left|\partial_{1}^{r} F\right| \geqslant 1 / C_{2} \tag{1.32}
+\end{equation*}
+
+
+for $r=1,2$,
+
+
+\begin{equation*}
+\left|\left(\partial_{1}^{r+1} F\right)\left(\partial_{2} \partial_{1}^{r+1} F\right)-\left(\partial_{2} \partial_{1}^{r} F\right)\left(\partial_{1}^{r+2} F\right)\right| \geqslant 1 / C_{3} \tag{1.33}
+\end{equation*}
+
+
+for $r=1$. In some ranges we require extra conditions, either (1.32) for $r=3$ and (1.33) with $r=2$, or
+
+
+\begin{equation*}
+\left|F_{1} F_{111}-3 F_{11}^{2}\right| \geqslant 1 / C_{4} \tag{1.34}
+\end{equation*}
+
+
+and
+
+\begin{equation*}
+\left|
+\begin{array}{ccc}
+3 F_{11}^{2}+4 F_{1} F_{111} & 3 F_{1} F_{11} & F_{1}^{2} \\
+F_{1111} & F_{111} & F_{11} \\
+F_{1112} & F_{112} & F_{12}
+\end{array}
+\right| \geqslant \frac{1}{C_{5}}. \tag{1.35}
+\end{equation*}
+
+Let $y_{1}, \ldots, y_{I}$ be real numbers with
+
+$$
+0 \leqslant y_{1}<y_{2}<\ldots<y_{I}, \quad y_{i+1}-y_{i} \geqslant\left(C_{0} I\right)^{-1}.
+$$
+
+Let $g(x)$ and $G_{i}(x)$ be uniformly bounded functions of uniformly bounded variation on $1 \leqslant x \leqslant 2$. Let $H, M$ and $T$ be large parameters, and let $S_{i}$ denote the sum
+
+$$
+S_{i}=\sum_{h=H}^{2 H-1} g\left(\frac{h}{H}\right) \sum_{m=M}^{2 M-1} G_{i}\left(\frac{m}{M}\right) e\left(\frac{h T}{M} F\left(\frac{m}{M}, y_{i}\right)\right).
+$$
+
+Then we have the following bounds for the sum
+
+$$
+\Sigma=\sum_{i=1}^{I}\left|S_{i}\right|^{2},
+$$
+
+in which $B_{1}$ and $B_{2}$ are positive constants constructed from $C_{0}, \ldots, C_{7}, \kappa, \lambda$ and from the uniform bounds for the functions $g(x)$ and $G_{i}(x)$.
+
+(A) If either $M \leqslant C_{6} \sqrt{T}$ and (1.32) holds for $r=3$, and (1.33) holds for $r=2$, or if $M \geqslant C_{6}^{-1} \sqrt{T}$ and (1.34) and (1.35) hold, then in the range
+
+
+\begin{gather*}
+C_{6}^{-1}\left(I \log ^{\lambda} T\right)^{45 \kappa-4} T^{67 \kappa-6} \leqslant M^{156 \kappa-14} \leqslant C_{6}\left(I \log ^{\lambda} T\right)^{-45 \kappa+4} T^{89 \kappa-8},  \tag{1.36}\\
+C_{7}^{-1} I^{3}\left(\frac{T^{4}}{M^{9}}+\frac{M^{11}}{T^{6}}\right)(\log T)^{3 \lambda} \leqslant H \leqslant B_{1}\left(I \log ^{\lambda} T\right)^{\frac{9 \kappa-1}{78 \kappa-7}} M T^{-\frac{23 \kappa-2}{78 \kappa-7}}, \tag{1.37}
+\end{gather*}
+
+
+we have
+
+
+\begin{equation*}
+\Sigma \leqslant B_{2} H^{2}\left(\frac{H}{M}\right)^{\frac{6 \kappa-1}{50 \kappa-5}} I^{\frac{89 \kappa-9}{100 \kappa-10}} T^{\frac{67 \kappa-7}{100 \kappa-10}}(\log T)^{\frac{9}{2}+\frac{(39 \kappa-4) \lambda}{100 \kappa-10}}, \tag{1.38}
+\end{equation*}
+
+
+(B) If (1.32) for $r=3$ and (1.33) for $r=2$ hold, then in the range
+
+
+\begin{equation*}
+C_{6}^{-1} T^{1 / 3} \leqslant M \leqslant C_{6} T^{1 / 2}, \tag{1.39}
+\end{equation*}
+
+
+
+\begin{align*}
+& H \leqslant \min \left(C_{7} \frac{I^{3} T^{4}(\log T)^{3 \lambda}}{M^{9}}, B_{1}\left(\frac{\left(I \log ^{\lambda} T\right)^{9 \kappa-1} M^{15 \kappa-1}}{T^{2 \kappa}}\right)^{\frac{1}{33 \kappa-3}},\right. \\
+&\left.B_{1} M^{\frac{3}{2}} T^{-\frac{1}{2}}, B_{1} M^{\frac{54 \kappa-4}{45 \kappa-3}} T^{-\frac{1}{3}}\right), \tag{1.40}
+\end{align*}
+
+
+we have
+
+
+\begin{align*}
+\Sigma \leqslant & B_{2} H^{\frac{87 \kappa-9}{40 \kappa-4}} I^{\frac{29 \kappa-3}{40 \kappa-4}} M^{\frac{15 \kappa-1}{40 \kappa-4}} T^{\frac{9 \kappa-1}{20 \kappa-2}}(\log T)^{\frac{9}{2}+\frac{(9 \kappa-1)\lambda}{40 \kappa-4}} \\
+& +B_{2} H^{\frac{107 \kappa-13}{6(9 \kappa-1)}} I M^{-\frac{7 \kappa-1}{2(9 \kappa-1)}} T^{\frac{43 \kappa-5}{6(9 \kappa-1)}}(\log T)^{\frac{9+\lambda}{2}} \\
+& +B_{2} H^{\frac{111 \kappa-9}{48 \kappa-4}} I M^{-\frac{13 \kappa-1}{24 \kappa-2}} T^{\frac{37 \kappa-3}{48 \kappa-4}}(\log T)^{\frac{9+\lambda}{2}}. \tag{1.41}
+\end{align*}
+
+
+(C) If (1.34) and (1.35) hold, then in the range
+
+
+\begin{equation*}
+C_{6}^{-1} T^{1 / 2} \leqslant M \leqslant C_{6} T^{2 / 3}, \tag{1.42}
+\end{equation*}
+
+
+
+\begin{align*}
+& H \leqslant \min \left(C_{7} \frac{I^{3} M^{11}(\log T)^{3 \lambda}}{T^{6}}, B_{1}\left(\frac{\left(I \log ^{\lambda} T\right)^{9 \kappa-1} M^{51 \kappa-5}}{T^{20 \kappa-2}}\right)^{\frac{1}{33 \kappa-3}},\right. \\
+&\left.B_{1} M^{\frac{1}{2}}, B_{1} M^{\frac{54 \kappa-4}{45 \kappa-3}} T^{-\frac{1}{3}}\right), \tag{1.43}
+\end{align*}
+
+
+we have
+
+
+\begin{align*}
+\Sigma \leqslant & B_{2} H^{\frac{87 \kappa-9}{40 \kappa-4}} I^{\frac{29 \kappa-3}{40 \kappa-4}} M^{-\frac{29 \kappa-3}{40 \kappa-4}} T(\log T)^{\frac{9}{2}+\frac{(9 \kappa-1)\lambda}{40 \kappa-4}} \\
+& +B_{2} H^{\frac{107 \kappa-13}{6(9 \kappa-1)}} I M^{\frac{23 \kappa-1}{6(9 \kappa-1)}} T^{\frac{7 \kappa-1}{2(9 \kappa-1)}}(\log T)^{\frac{9+\lambda}{2}} \\
+& +B_{2} H^{\frac{111 \kappa-9}{48 \kappa-4}} I M^{-\frac{13 \kappa-1}{24 \kappa-2}} T^{\frac{37 \kappa-3}{48 \kappa-4}}(\log T)^{\frac{9+\lambda}{2}} \tag{1.44}
+\end{align*}
+
+
+Theorem 6. The results of Proposition 6 hold unconditionally with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+With the Van der Corput values $\kappa=\frac{1}{3}$ and $\lambda=0$, Proposition 6 essentially reduces to Theorem 18.4.1 of [9]. We have simplified the statement of Proposition 6 by not treating $C_{0}$ as a parameter and by omitting cases with $H$ very large, which have not arisen in applications. Proposition 6, unlike Theorem 18.4.1 of [9], requires partial derivatives only to the fourth order. The last terms in (1.43) and (1.44) are smaller than the corresponding terms in [9, Theorem 18.4.1].
+
+There are analogues of Propositions 2-5 for a family of lattice point problems. The reader can easily imagine what form they take. These results may be of use in more complicated lattice point problems, such as the primitive lattice points within a plane domain, considered by Nowak and the author in [12].
+
+\section*{2. Major and minor arcs}
+We divide the sum over $m$ into short intervals of length $N$. A related parameter $R$ is defined as the least positive integer for which $f^{\prime}(x)$ changes by at least $1 / R^{2}$ on any interval of length $N$; so
+
+
+\begin{gather*}
+\frac{1}{N R^{2}} \leqslant \min \left|f^{\prime \prime}(x)\right|,  \tag{2.1}\\
+(R-1)^{2} N T<C_{2} M^{3} \leqslant R^{3} N T. \tag{2.2}
+\end{gather*}
+
+
+The parameters must lie in the ranges
+
+
+\begin{align*}
+& 64 C_{2} H \leqslant N \leqslant M / 10  \tag{2.3}\\
+& 2 C_{2} \sqrt{H}+1 \leqslant R \leqslant H \tag{2.4}
+\end{align*}
+
+
+and
+
+
+\begin{equation*}
+H N^{2} \leqslant M R^{2}; \tag{2.5}
+\end{equation*}
+
+
+the condition (2.5) means that terms in $x^{3}$ and above in the Taylor series for $f(x)$ can be neglected on an interval of length $N$.
+
+We label the short interval of length $N$ as a Farey arc $I(a / q)$. The label $a / q$ is a rational value of $f^{\prime}(x)$ on the interval, usually the rational $a / q$ with smallest denominator $q$. Intervals with $q \geqslant 3 H$ are exceptional. They occur only if a nearby interval has $q \leqslant Q_{0}=\frac{2R^{2}}{3H}$. We form major arcs by coalescing a number of short intervals around some interval $I(a / q)$ with $q \leqslant Q_{0}$. The remaining intervals $I(a / q)$, the minor arcs, have
+
+
+\begin{equation*}
+Q_{0}=\frac{2R^{2}}{3H}<q<3H. \tag{2.6}
+\end{equation*}
+
+
+We can ensure that there are at least five minor arcs between two major arcs. The contribution of the major arcs was calculated in [5] and [9, Lemma 8.2.1].
+
+Lemma 2.1 (the major arcs contribution). The major arcs contribute
+
+
+\begin{equation*}
+O\left(\frac{M R}{\sqrt{H N}} \log H\right). \tag{2.7}
+\end{equation*}
+
+
+The remaining Farey arcs are minor arcs $I(a / q)$. We take the label $a / q$ to be the rational value of $f^{\prime}(x)$ for $x$ on $I(a / q)$ with $q$ minimal subject to $q \geqslant R$. We choose as centre of approximation the integer $m$ for which $f^{\prime}(m)$ is closest to $a / q$ and we use the Taylor approximation for $f(m+n)$,
+
+
+\begin{equation*}
+f(m)+n f^{\prime}(m)+\frac{1}{2} n^{2} f^{\prime \prime}(m). \tag{2.8}
+\end{equation*}
+
+
+Each minor arc sum is transformed by Poisson summation over $n$ and $h$. The sums are grouped into classes according to properties of the rational number $a / q$, both by the size range $Q \leqslant q \leqslant 2 Q$ and also, in [11] and in this paper, by whether $a / q$ has a good rational approximation $e / r$ with $r$ much smaller than $q$, so that there is a large partial quotient in the continued fraction for $a / q$.
+
+To treat the Second Spacing Problem we compare the coefficients of the Taylor series (2.8) for different Farey arcs $I(a / q)$ which have the same fractions $e / r$ and $f / s$ as consecutive convergents to the continued fraction for $a / q$. The bad intervals, for which
+
+
+\begin{equation*}
+\left|f^{\prime}(x)-\frac{c}{k}\right| \leqslant \frac{\eta}{K Q^{\prime}} \tag{2.9}
+\end{equation*}
+
+
+for some rational number $c / k$ with $k \leqslant Q^{\prime}$, form separate classes. The parameters $\eta$ and $Q^{\prime}$ are chosen later, with $\eta<1$ and
+
+
+\begin{equation*}
+1+M^{2} / T \leqslant Q^{\prime}<\eta R. \tag{2.10}
+\end{equation*}
+
+
+The lower bound in (2.10) is no real restriction, since $f^{\prime}(x)$ has order of magnitude $T / M^{2}$, and the denominator $k$ satisfies $k \gg M^{2} / T$. The remaining ranges for $f^{\prime}(x)$ outside major arcs and bad intervals form the good intervals. For Theorem 1 we classify the good intervals further according to the order of magnitude of $r / s$. We quote three results from [11] as lemmas.
+
+Lemma 2.3 (counting Farey arcs). Let $Q \geqslant \frac{1}{2} R$. Then the number of minor arcs $I(a / q)$ with $Q \leqslant q \leqslant 2 Q$ is
+
+
+\begin{equation*}
+O\left(\frac{M R^{2}}{N Q^{2}}\right). \tag{2.11}
+\end{equation*}
+
+
+Lemma 2.4 (bad Farey arcs). Let $Q \geqslant \frac{1}{2} R$. Then the number of minor arcs $I(a / q)$, where $q$ is chosen in a range $Q \leqslant q \leqslant 2 Q$, which meet the bad intervals, is
+
+
+\begin{equation*}
+O\left(\frac{\eta M R^{2}}{N Q^{2}}+\frac{M Q^{\prime}}{N Q}\right). \tag{2.12}
+\end{equation*}
+
+
+Lemma 2.5 (large partial quotients). The number of minor arcs $I(a / q)$ which can be contained in reference intervals $e / r \leqslant a / q \leqslant f / s$ with
+
+
+\begin{equation*}
+\min (r, s) \leqslant Q^{\prime}, \quad A \leqslant \frac{\max (r, s)}{\min (r, s)} \leqslant 2 A \tag{2.13}
+\end{equation*}
+
+
+is
+
+
+\begin{equation*}
+W_{A}=O\left(\frac{M \log N}{A N}\right). \tag{2.14}
+\end{equation*}
+
+
+Let $Q \geqslant \frac{1}{2} R$. Then the number of minor arcs $I(a / q)$ with $Q \leqslant q \leqslant 2 Q$ that satisfy (2.13) and lie outside the bad intervals is
+
+
+\begin{equation*}
+W_{A}(Q)=O\left(\frac{M R^{2} \log N}{A N Q^{2}}\right). \tag{2.15}
+\end{equation*}
+
+
+\section*{3. Choosing parameters}
+We modify the Iwaniec-Mozzochi combinatorics [9, Chapter 8] as follows. Let $S^{\prime}$ be the part of the sum $S$ taken over a particular class of minor arcs, which all satisfy $Q \leqslant q \leqslant 2 Q$ for some $Q$, and let $W^{\prime}$ be the number of minor arcs in this class. The Iwaniec-Mozzochi approximations give
+
+
+\begin{equation*}
+\left|S^{\prime}\right|^{2} \ll \frac{E R^{4} W^{\prime} \log ^{4} N}{Q^{2}}, \tag{3.1}
+\end{equation*}
+
+
+where $E$ is the maximum of a certain bilinear form. The large sieve inequality gives
+
+
+\begin{equation*}
+E^{2} \ll \frac{A B^{\prime} H^{4} N^{2} Q^{2} V}{R^{8}}, \tag{3.2}
+\end{equation*}
+
+
+where $A$ and $B^{\prime}$ are the upper bounds in the First and Second Spacing Problems for the number of pairs of vectors in given neighbourhoods of the diagonal, and $V$ is an extra parameter in the Second Spacing Problem. We write $B^{\prime}$ to indicate that the vectors are restricted to those from a given class of minor arcs. The First Spacing Problem depends on the class of minor arcs only through the parameter $Q$. Theorem 13.2.4 of [9], applied with $K \gg L$ and $\eta K \ll 1$ as in the proof of [9, Theorem 18.1.2], gives the following bound.
+
+Lemma 3.1 (the First Spacing Problem). We have
+
+
+\begin{equation*}
+A \ll \frac{H^{2} N^{2} Q^{4} \log N}{R^{8}}. \tag{3.3}
+\end{equation*}
+
+
+We deduce the inequalities
+
+
+\begin{equation*}
+\begin{aligned}
+E &\ll \frac{H^{3} N^{2} Q^{3} \sqrt{B^{\prime} V \log N}}{R^{8}}, \\
+\left|S^{\prime}\right|^{2} &\ll \frac{H^{3} N^{2} Q W^{\prime} \sqrt{B^{\prime} V}(\log N)^{9 / 2}}{R^{4}}.
+\end{aligned} \tag{3.4}
+\end{equation*}
+
+
+The Second Spacing Problem has a simple geometric interpretation as counting the number of pairs of Farey arcs of the curve $y=f(x)$ which can be brought into approximate coincidence by an automorphism of the integer lattice. The automorphism is given by some `magic matrix', an integer matrix of determinant 1, and some shift by an integer vector. The matrices are classified as follows. Type 1 is the identity matrix (which gives trivial coincidences), and any other matrices with small entries which occur. Type 2 is triangular matrices, and Type 3 is all matrices $\left(\begin{array}{cc}a & b \\ c & d\end{array}\right)$ for which $a / c$ and $-d / c$ are values of $f^{\prime}(x)$ for $x$ on a neighbourhood of the closed interval $[1,2]$. The parameter $V$ controls the size of $a, b, c, d$. There are values
+
+
+\begin{equation*}
+V_{1}=B_{3} \frac{R^{4}}{H N}, \quad V_{2}=B_{4} \frac{M^{2}}{H N^{3}} \tag{3.5}
+\end{equation*}
+
+
+such that for $V \geqslant V_{1}$ all magic matrices have $c=0$, and for $V \geqslant V_{2}$ all magic matrices have $b=0$. In these cases there are no Type 3 matrices. The constants $B_{3}$ and $B_{4}$ are constructed from $C_{1}, \ldots, C_{6}$. If
+
+
+\begin{equation*}
+M \ll H N^{2}, \tag{3.6}
+\end{equation*}
+
+
+then any upper triangular matrices have $b$ bounded, and they can be put into Type 1, and if
+
+
+\begin{equation*}
+R^{4} \ll H M, \tag{3.7}
+\end{equation*}
+
+
+then any lower triangular matrices have $c$ bounded, and they can be put into Type 1. In the argument of [11] using the hypothesis $\mathrm{H}(\kappa, \lambda)$, the optimum value of $V$ for Type 3 matrices is
+
+
+\begin{equation*}
+V_{0}=\left(\frac{H}{R}\right)^{\frac{6 \kappa}{9 \kappa-1}}. \tag{3.8}
+\end{equation*}
+
+
+For the single exponential sum we could arrange that $q \leqslant Q_{1}$ with $Q_{1}<H$ on the minor arcs. There is a minimum of three terms in Lemma 6.1 of [11], and one of them involves $Q$. The condition (7.2) of [11] is $Q \leqslant Q_{2}$, where $Q_{2}=Q_{2}(\kappa, \lambda)$ is given by
+
+
+\begin{equation*}
+Q_{2}(\kappa, \lambda)=H\left(\frac{R}{H}\right)^{\frac{4(10 \kappa-1)}{7(9 \kappa-1)}}\left(\log \frac{2 H}{R}\right)^{1-\lambda}. \tag{3.9}
+\end{equation*}
+
+
+For $Q>Q_{2}$, a term in Lemmas 6.6 and 6.7 of [11] which grows linearly in $Q$ may dominate. With $Q_{1} \leqslant Q_{2}$ the bound for $B^{\prime}$ is uniform in $Q$. However, for the double exponential sum, $Q$ can exceed $Q_{2}$, and we must insert a factor $\left(1+Q / Q_{2}\right)$ into the estimates for $B^{\prime}$ found in [11]. From the calculations of §§ 7 and 8 of [11] we deduce the following lemmas.
+
+Lemma 3.2 (the old estimate for the Second Spacing Problem). Suppose that the underlying function $F(x)$ satisfies the conditions of Proposition 1. Let $Q_{3}=Q_{2}\left(\frac{1}{3}, 0\right)$. Then for the class of all minor arcs with $Q \leqslant q \leqslant 2 Q$ we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{M}{N}+\left(1+\frac{Q}{Q_{3}}\right)\left(\frac{R}{H}\right)^{2 / 3} \frac{M^{2} R^{4}}{H^{2} N^{4} V} \tag{3.10}
+\end{equation*}
+
+
+in the following cases:
+
+\begin{itemize}
+  \item[(A)] when
+
+\begin{equation*}
+V \ll \min \left(\frac{R^{4}}{H N}, \frac{M^{2}}{H N^{3}}\right) \tag{3.11}
+\end{equation*}
+
+with $V=H / R$,
+  \item[(B)] when $M^{2} \ll T$, with $V=\max \left(V_{1}, 1\right)$,
+  \item[(C)] when $M^{2} \gg T$, with $V=\max \left(V_{2}, 1\right)$.
+\end{itemize}
+
+The arguments of [11] improve Lemma 3.2 for the good intervals, provided that the parameters $\eta, Q^{\prime}$ and $\Delta^{\prime}$ are within certain ranges, and the main parameters satisfy
+
+
+\begin{equation*}
+H^{21 \kappa-1} N^{9 \kappa-1} \ll M^{9 \kappa-1} R^{30 \kappa-2}. \tag{3.12}
+\end{equation*}
+
+
+The parameter $\Delta^{\prime}$ is internal to the calculation, and it must satisfy equation (6.26) of [11]:
+
+
+\begin{equation*}
+\left(\frac{R}{H}\right)^{\frac{2}{5(9 \kappa-1)}} \ll \frac{\Delta^{\prime}}{\Delta_{2}} \ll\left(\frac{R}{H}\right)^{\frac{4(1-3 \kappa)}{7(9 \kappa-1)}}, \tag{3.13}
+\end{equation*}
+
+
+where $\Delta_{2} \asymp \frac{R^{2}}{HN}$ is one of the approximation parameters in the large sieve. We take $\Delta^{\prime}$ as large as possible in (3.13), which is the only inequality that puts an upper bound on $\Delta^{\prime}$. The other conditions are firstly (6.22) of [11] (which implies (2.10) of [11]),
+
+
+\begin{equation*}
+\frac{Q^{\prime}}{R} \leqslant \frac{1}{B_{5}} \eta\left(\frac{\Delta^{\prime} R}{\Delta_{2} H}\right)^{1 / 3}, \tag{3.14}
+\end{equation*}
+
+
+secondly (6.27) of [11] (which implies (6.38) of [11]),
+
+
+\begin{equation*}
+V_{0} \geqslant \frac{B_{6} \eta \Delta_{2} R^{2}}{\Delta^{\prime} Q^{\prime 2}}, \tag{3.15}
+\end{equation*}
+
+
+and thirdly (7.1) of [11],
+
+
+\begin{equation*}
+\frac{\Delta^{\prime}}{\Delta_{2}}\left(\frac{Q^{\prime}}{R}\right)^{6} \gg\left(\frac{R}{H}\right)^{\frac{30 \kappa-2}{9 \kappa-1}}. \tag{3.16}
+\end{equation*}
+
+
+We shall choose $\eta$ to reduce the contributions of the bad intervals, and then take $Q^{\prime}$ as large as possible in (3.14).
+
+Lemma 3.3 (the Second Spacing Problem with Hypothesis H). Suppose that the underlying function $F(x)$ satisfies the conditions of Proposition 1, and that Hypothesis $\mathrm{H}(\kappa, \lambda)$ holds with some $\kappa$ in $\frac{1}{4} \leqslant \kappa \leqslant \frac{1}{3}$ and some $\lambda \geqslant 0$, and that (3.12)-(3.16) hold. Let $Q_{2}=Q_{2}(\kappa, \lambda)$ in (3.9). Then for the class of good minor arcs with $Q \leqslant q \leqslant 2 Q$ we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{M}{N}+\left(1+\frac{Q}{Q_{2}}\right) \frac{M^{2} R^{4}(\log N)^{\lambda}}{H^{2} N^{4} V_{0}^{2 / 3} V} \tag{3.17}
+\end{equation*}
+
+
+in the following cases:
+
+\begin{itemize}
+  \item[(A)] when (3.11) holds, with $V=V_{0}$,
+  \item[(B)] when $M^{2} \ll T$, with $V=\max \left(V_{1}, 1\right)$,
+  \item[(C)] when $M^{2} \gg T$, with $V=\max \left(V_{2}, 1\right)$.
+\end{itemize}
+
+Lemma 3.4 (the Second Spacing Problem unconditionally). Suppose that the underlying function $F(x)$ satisfies the conditions of Proposition 1. Suppose that (3.8) and (3.12) to (3.16) hold with $\kappa=\frac{3}{10}$. Let $Q_{2}=Q_{2}\left(\frac{3}{10}, \frac{1}{4}\right)$ in (3.9). Then for the subclass of good minor arcs with $Q \leqslant q \leqslant 2 Q$ for which (2.13) holds we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{M}{N}+\left(1+\frac{Q}{Q_{2}}\right) \frac{A^{11 / 70} M^{2} R^{4}(\log N)^{1 / 4}}{H^{2} N^{4} V_{0}^{2 / 3} V} \tag{3.18}
+\end{equation*}
+
+
+in the following cases:
+
+\begin{itemize}
+  \item[(A)] when (3.11) holds, with $V=V_{0}$,
+  \item[(B)] when $M^{2} \ll T$, with $V=\max \left(V_{1}, 1\right)$,
+  \item[(C)] when $M^{2} \gg T$, with $V=\max \left(V_{2}, 1\right)$.
+\end{itemize}
+
+We choose $N$ as large as possible, provided that the second term still dominates in (3.17) and (3.18). The parameter $R$ is fixed by (2.2). In Case (A) we take
+
+
+\begin{equation*}
+N^{50 \kappa-5} \asymp \frac{M^{78 \kappa-7}(\log M)^{(9 \kappa-1) \lambda}}{H^{28 \kappa-2} T^{23 \kappa-2}}. \tag{3.19}
+\end{equation*}
+
+
+In Case (B) we take
+
+
+\begin{equation*}
+N^{20 \kappa-2} \asymp \frac{M^{15 \kappa-1}(\log M)^{(9 \kappa-1) \lambda}}{H^{13 \kappa-1} T^{2 \kappa}}, \tag{3.20}
+\end{equation*}
+
+
+as long as this choice makes $V_{1} \geqslant B_{7}$ in (3.5); otherwise we take $V_{1}=B_{7}$, which leads to
+
+
+\begin{equation*}
+N \asymp M^{2} /\left(H T^{2}\right)^{1 / 3}. \tag{3.21}
+\end{equation*}
+
+
+In Case (C) we take
+
+
+\begin{equation*}
+N^{20 \kappa-2} \asymp \frac{M^{51 \kappa-5}(\log M)^{(9 \kappa-1) \lambda}}{H^{13 \kappa-1} T^{20 \kappa-2}}, \tag{3.22}
+\end{equation*}
+
+
+as long as this choice makes $V_{2} \geqslant B_{8}$ in (3.5); otherwise we take $V_{2}=B_{8}$, which leads to
+
+
+\begin{equation*}
+N \asymp M /(H M)^{1 / 3}. \tag{3.23}
+\end{equation*}
+
+
+The constants $B_{7}$ and $B_{8}$ are sufficiently large for the conditions $H \leqslant N$ and $V_{1} \geqslant 1$ to imply the lower bound in (2.4), and for $H \leqslant N$ and $V_{1} \geqslant 1, V_{2} \geqslant 1$ to imply (2.5).
+
+In all cases (3.17) gives
+
+$$
+B^{\prime} V \ll\left(1+\frac{Q}{Q_{2}}\right) \frac{M^{2} R^{4}(\log N)^{\lambda}}{H^{2} N^{4} V_{0}^{2 / 3}}.
+$$
+
+Substituting in (3.4) leads to
+
+
+\begin{equation*}
+\left|S^{\prime}\right| \ll \frac{H M}{\sqrt{N Q}} \cdot \frac{1}{V_{0}^{1 / 6}} \sqrt{\frac{W^{\prime} N Q^{2}}{M R^{2}}}\left(1+\frac{Q}{Q_{2}}\right)^{1 / 4}(\log N)^{(9+\lambda) / 4}. \tag{3.24}
+\end{equation*}
+
+
+The expression $\frac{W^{\prime}NQ^{2}}{MR^{2}}$ is bounded by Lemma 2.3, and $Q$ runs through powers of 2 with $Q \geqslant \frac{1}{2} R$. We have $Q_{2} \gg R$ in (3.9) for $\kappa \geqslant \frac{1}{4}$. The worst ranges are $Q=R$, for which
+
+
+\begin{equation*}
+\left|S^{\prime}\right| \ll \frac{H M}{\sqrt{N R}} \cdot \frac{1}{V_{0}^{1 / 6}}(\log N)^{(9+\lambda) / 4}, \tag{3.25}
+\end{equation*}
+
+
+giving the bounds of Proposition 1.
+
+The simplest Van der Corput estimate, the `exponent pair' $\left(\frac{1}{2}, \frac{1}{2}\right)$ gives
+
+
+\begin{equation*}
+S \ll H \sqrt{\frac{H T}{M}} \ll \frac{H M}{\sqrt{H N}} \cdot \frac{H}{R}, \tag{3.26}
+\end{equation*}
+
+
+which is better than (3.25) when
+
+
+\begin{equation*}
+\frac{H}{R} \ll(\log N)^{\frac{(9 \kappa-1)(9+\lambda)}{22 \kappa-2}}. \tag{3.27}
+\end{equation*}
+
+
+We note that if our parameter choice gives $R \gg H$, then (3.27) holds, and so Proposition 1 still holds in ranges where the parameter choices (3.19)-(3.23) would give $R \gg H$.
+
+The lower bound in (2.3), of the form $H \ll N$, does not follow from the construction. It leads to the upper bound (1.9) for $H$ and the first two terms in the upper bounds (1.16) and (1.19). In Case (A) the choice $V_{0} \leqslant V_{1}$ leads to (1.13) and the choice $V_{0} \leqslant V_{2}$ leads to (1.14). The conditions (3.6) and (3.7) lead to (1.11) and (1.12). The third upper bound for $H$ in (1.16) is the condition for Case (B) to give a better bound than Case (A) where both cases would be applicable, and similarly for the third upper bound in (1.19). The ranges for $M$, being (1.8) in Case (A), (1.15) in Case (B), (1.18) in Case (C), are those in which $N$ can be chosen to satisfy all the conditions for some value of $H$. The condition (3.12) can be written as
+
+$$
+V_{0}^{2} \ll N V_{1} V_{2},
+$$
+
+so it holds trivially in Case (A); it is also trivial if $\kappa=\frac{1}{3}$. Otherwise (3.12) can be verified by some calculation in Cases (B) and (C).
+
+In Lemma 3.4 there is an extra factor $A^{11 / 70}$, and Lemmas 2.3 and 2.5 give
+
+$$
+\frac{W^{\prime} N Q^{2}}{M R^{2}} \ll \min \left(1, \frac{\log N}{A}\right).
+$$
+
+Here $A$ runs through powers of 2. The worst ranges have $A \asymp \log N$, and the total logarithm power in (3.18) is $\frac{1}{4}+\frac{11}{70}=\frac{57}{140}$. The calculations follow those for Proposition 1 with $\kappa=\frac{3}{10}$ and $\lambda=\frac{57}{140}$.
+
+Now we consider the contribution of minor arcs in the bad intervals. We suppose that $\kappa<\frac{1}{3}$, since $\kappa=\frac{1}{3}$ means that we are using the Van der Corput values $\kappa=\frac{1}{3}$ and $\lambda=0$ in all cases, so there is no need to distinguish good from bad intervals. For $\kappa<\frac{1}{3}$ we use Lemma 3.2 instead of Lemma 3.3 (so $V_{0}$ is replaced by $H / R$ ), and Lemma 2.4 instead of Lemma 2.3, so
+
+$$
+\frac{W^{\prime} N Q^{2}}{M R^{2}} \ll \eta+\frac{Q Q^{\prime}}{R^{2}} \ll \eta\left(1+\frac{Q}{R}\left(\frac{\Delta^{\prime} R}{\Delta_{2} H}\right)^{1 / 3}\right)
+$$
+
+by (3.14). The analogue of (3.24) is
+
+
+\begin{equation*}
+\left|S^{\prime}(Q)\right| \ll \sqrt{\eta} \frac{H M}{\sqrt{N Q}}\left(\frac{R}{H}\right)^{1 / 6}\left(1+\frac{Q}{Q_{3}}\right)^{1 / 4}\left(1+\frac{Q}{Q_{4}}\right)^{1 / 2}(\log N)^{9 / 4} \tag{3.28}
+\end{equation*}
+
+
+where
+
+$$
+\begin{aligned}
+Q_{4} & =R\left(\frac{\Delta_{2} H}{\Delta^{\prime} R}\right)^{1 / 3} \asymp R\left(\frac{H}{R}\right)^{\frac{17 \kappa-1}{7(9 \kappa-1)}}, \\
+Q_{3} & =R\left(\frac{H}{R}\right)^{1 / 3}.
+\end{aligned}
+$$
+
+We note that $Q_{4} \gg Q_{3}$. For $Q \geqslant Q_{4}$ the bound in (3.28) is an increasing function of $Q$, so we estimate $W^{\prime}$ by Lemma 2.3. In this range we have
+
+
+\begin{equation*}
+\left|S^{\prime}(Q)\right| \ll \frac{H M}{\sqrt{N R}}\left(\frac{R}{H}\right)^{1 / 6}\left(\frac{R^{2}}{Q Q_{3}}\right)^{1 / 4}(\log N)^{9 / 4}. \tag{3.29}
+\end{equation*}
+
+
+We sum $Q$ through powers of 2 with $Q \geqslant Q_{4}$ in (3.29). These terms give less than the bound in (3.25) for $\kappa \geqslant \frac{17}{135}$.
+
+We must now choose $\eta$ and $Q^{\prime}$. We take $Q^{\prime}$ as large as possible (in terms of $\eta$ ) in (3.14), so that (3.15) becomes a lower bound on $\eta$, when we substitute for $Q^{\prime}$. We choose $\eta$ as small as possible in (3.15). Some calculation shows that (3.16) holds, and that the terms not involving $Q_{4}$ in (3.28) are smaller than (3.25), for $\kappa>\frac{13}{81}$.
+
+The contribution of the major arcs in Lemma 2.1 is smaller than (3.25) provided that our parameter choice gives $R \ll H$. This completes the proof of Proposition 1 and Theorem 1.
+
+For Proposition 2 we put $D=\left\lfloor\frac{1}{8\delta}\right\rfloor+1$ and we use the estimate
+
+
+\begin{equation*}
+R(\delta) \ll \frac{M}{D}+\frac{1}{D}\left(\sum_{h=1}^{D}\left(1-\frac{h}{D}\right) \sum_{m=M}^{2 M-1} e\left(h N F\left(\frac{m}{M}\right)\right)\right), \tag{3.30}
+\end{equation*}
+
+
+which follows from Lemma 5.3.2 of [9]. We divide the sum over $h$ into blocks $H \leqslant h \leqslant \min (D, 2 H-1)$. The bound for the block is an increasing function of $H$. There is a value $\delta_{0}$ at which both terms in (3.30) have the same order of magnitude, and the upper bounds for $H$ in Proposition 1 hold for $H \leqslant D$. For $\delta \geqslant \delta_{0}$, (3.30) gives $R(\delta) \ll \delta M$. For $\delta<\delta_{0}$, the bounds for $H$ may not be valid, but $R(\delta) \leqslant R\left(\delta_{0}\right)$ anyway.
+
+For Proposition 3 we use the expansion
+
+
+\begin{equation*}
+\rho(t)=\sum_{\substack{h=2-2 D \\ h \neq 0}}^{2 D-2} \frac{k(h)}{k(0)} \cdot \frac{e(h t)}{2 \pi i h}+O\left(\frac{1}{D}+\min \left(1, \frac{1}{D^{3}\|t\|^{3}}\right)\right), \tag{3.31}
+\end{equation*}
+
+
+as in Theorem 18.2.2 of [9], with $t=N F(m / M)$, and we sum over $m$. The resulting double sums are estimated by Proposition 1 as in the proof of Proposition 2. There is a factor $1 / h$ in (3.31) where (3.30) has $1 / D$. The contribution of the second terms in (1.17) and (1.20) increases as $H$ decreases. For small $H$ the bound (3.26) is better. The estimates at the change-over value of $H$ give the second terms in (1.26) and (1.27).
+
+The condition (1.29) of Proposition 4 allows us to use the Van der Corput exponent pair $\left(\frac{2}{7}, \frac{4}{7}\right)$, which gives
+
+$$
+S \ll H^{9 / 7} T^{2 / 7}
+$$
+
+for a wide range of values of $M$. The upper bound in (1.30) is the condition for Case (C) of Proposition 3 to imply (1.25).
+
+For Proposition 5 we use Case (A) of Proposition 3 with $N \asymp M$. The curve is subdivided into pieces. As explained in [9, Chapter 18], for each piece we can rotate the coordinates until Proposition 3 applies. The tangent of the angle of rotation is a rational number, so the rotated integer lattice still has a basis vector along the $x$-axis.
+
+Proposition 6 uses the structure of the Iwaniec-Mozzochi bilinear form implicit in (3.1). One set of variables is labelled by an integer summand, the other by the Farey arc $I(a / q)$. We sum over $i$ in (3.1), getting a bilinear form in more variables, one for each Farey arc in the class considered for each value of $i$. The first set of variables is unchanged, so we can still use Lemma 3.1 for the First Spacing Problem. We quote the results of [11], modified to allow $Q>Q_{3}$, as our next three lemmas.
+
+In (3.1) we consider only one class of Farey arcs at a time. Let $S_{i j}$ be the sum $S_{i}$ restricted to the $j$th class of minor arcs $I(a / q)$, in which $q$ lies in some range $Q_{j} \leqslant q<2Q_{j}$. We use Cauchy's inequality in the form
+
+$$
+\left|\sum_{j} S_{i j}\right|^{2} \leqslant\left(\sum_{j} \frac{1}{\log^{2}\left(\frac{4Q_{j}}{R}\right)}\right)\left(\sum_{j}\log^{2}\left(\frac{4Q_{j}}{R}\right)\left|S_{i j}\right|^{2}\right).
+$$
+
+The first factor on the right is bounded, and the second factor is ready for the inequality (3.1). The logarithms cause no trouble, as the estimates that we use contain negative powers of $Q_{j}$. For the double sums in the proof of Theorem 6 we introduce a factor $\log ^{2} A$ similarly.
+
+Lemma 3.5 (the old estimate for a family of sums). Suppose that the underlying function $F(x, y)$ and the points $y_{1}, \ldots, y_{I}$ satisfy the conditions of Proposition 6. Let $Q_{3}=Q_{2}\left(\frac{1}{3}, 0\right)$. Then for the class of minor arcs for a family of sums with $Q \leqslant q \leqslant 2 Q$ we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{I M}{N}+\left(1+\frac{Q}{Q_{3}}\right)\left(\frac{R}{H}\right)^{2 / 3} \frac{I^{2} M^{2} R^{4}}{H^{2} N^{4} V} \tag{3.32}
+\end{equation*}
+
+
+in the three cases (A), (B) and (C) of Lemma 3.2.
+
+Lemma 3.6 (using Hypothesis H for a family of sums). Suppose that the underlying function $F(x, y)$ and the points $y_{1}, \ldots, y_{I}$ satisfy the conditions of Proposition 6, and the hypotheses of Lemma 3.3 hold. Then for the class of good minor arcs for a family of sums with $Q \leqslant q \leqslant 2 Q$ we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{I M}{N}+\left(1+\frac{Q}{Q_{2}}\right) \frac{I^{2} M^{2} R^{4}(\log N)^{\lambda}}{H^{2} N^{4} V_{0}^{2 / 3} V} \tag{3.33}
+\end{equation*}
+
+
+in the three cases (A), (B) and (C) of Lemma 3.3.
+
+Lemma 3.7 (unconditional estimate for a family of sums). Suppose that the underlying function $F(x, y)$ and the points $y_{1}, \ldots, y_{I}$ satisfy the conditions of Proposition 6, and the hypotheses of Lemma 3.4 hold. Then for the subclass of good minor arcs for a family of sums with $Q \leqslant q \leqslant 2 Q$ for which (2.13) holds we have
+
+
+\begin{equation*}
+B^{\prime} \ll \frac{I M}{N}+\left(1+\frac{Q}{Q_{2}}\right) \frac{A^{11 / 70} I^{2} M^{2} R^{4}(\log N)^{1 / 4}}{H^{2} N^{4} V_{0}^{2 / 3} V} \tag{3.34}
+\end{equation*}
+
+
+in the three cases (A), (B) and (C) of Lemma 3.4.
+
+Again we choose $N$ as large as possible, provided that the second term dominates in (3.33) or (3.34). The parameter $R$ is fixed by (2.2), and the parameters $\eta, \Delta^{\prime}, Q^{\prime}$ and $Q_{3}$ are defined in terms of $H$ and $R$. In Case (A) we take
+
+
+\begin{equation*}
+N^{50 \kappa-5} \asymp \frac{\left(I \log ^{\lambda} M\right)^{9 \kappa-1} M^{78 \kappa-7}}{H^{28 \kappa-2} T^{23 \kappa-2}}, \tag{3.35}
+\end{equation*}
+
+
+corresponding to (3.19). In Case (B) we take
+
+
+\begin{equation*}
+N^{20 \kappa-2} \asymp \frac{\left(I \log ^{\lambda} M\right)^{9 \kappa-1} M^{15 \kappa-1}}{H^{13 \kappa-1} T^{2 \kappa}}, \tag{3.36}
+\end{equation*}
+
+
+corresponding to (3.20), as long as this choice makes $V_{1} \geqslant B_{7}$ in (3.5), and (3.12) is satisfied. If (3.5) is critical, then we take $V_{1}=B_{7}$, which leads to the choice (3.21), and if (3.12) is critical, then we take
+
+
+\begin{equation*}
+N^{20 \kappa-2} \asymp M^{54 \kappa-4} / T^{15 \kappa-1}. \tag{3.37}
+\end{equation*}
+
+
+In Case (C) we take
+
+
+\begin{equation*}
+N^{20 \kappa-2} \asymp \frac{\left(I \log ^{\lambda} M\right)^{9 \kappa-1} M^{51 \kappa-5}}{H^{13 \kappa-1} T^{20 \kappa-2}}, \tag{3.38}
+\end{equation*}
+
+
+as long as this choice makes $V_{2} \geqslant B_{8}$ in (3.5), and (3.12) is satisfied. If (3.5) is critical, then we take $V_{2}=B_{8}$, which leads to the choice (3.23), and if (3.12) is critical, then we choose $N$ by (3.37).
+
+The conditions relating the parameters are checked as in Proposition 1. The upper bound for $H$ in (2.3) becomes the upper bounds involving $B_{1}$ in (1.37), (1.40), and (1.43). There is no restriction corresponding to (3.6) and (3.7) for triangular matrices when we consider a family of sums, so some extra differentiability conditions are always needed. In Case (A) the requirements $V_{0} \leqslant V_{1}$ and $V_{0} \leqslant V_{2}$ lead to the lower bound in (1.37). The corresponding upper bounds for $H$ in (1.40) and (1.43) are the conditions for Case (B) or Case (C) to give a better bound than Case (A).
+
+\section*{References}
+\begin{itemize}
+  \item[1.] E. Bombieri and H. Iwaniec, `On the order of $\zeta\left(\frac{1}{2}+i t\right)$', Ann. Scuola Norm. Sup. Pisa Cl. Sci. (4) 13 (1986) 449--472.
+  \item[2.] J. G. Van der Corput, Over Roosterpunten in het Platte Vlak (Noordhoff, Groningen, 1919).
+  \item[3.] S. W. Graham and G. Kolesnik, Van der Corput's method of exponential sums, London Mathematical Society Lecture Note Series 126 (Cambridge University Press, 1991).
+  \item[4.] D. R. Heath-Brown and M. N. Huxley, `Exponential sums with a difference', Proc. London Math. Soc. (3) 61 (1990) 227--250.
+  \item[5.] M. N. Huxley, `Exponential sums and lattice points', Proc. London Math. Soc. (3) 60 (1990) 471--502; Corrigenda ibid. 66 (1993) 70.
+  \item[6.] M. N. Huxley, `Exponential sums and the Riemann zeta function IV', Proc. London Math. Soc. (3) 66 (1993) 1--40.
+  \item[7.] M. N. Huxley, `Exponential sums and lattice points II', Proc. London Math. Soc. (3) 66 (1993) 279--301; Corrigenda ibid. 68 (1994) 264.
+  \item[8.] M. N. Huxley, `The mean lattice point discrepancy', Proc. Edinburgh Math. Soc. 38 (1995) 523--531.
+  \item[9.] M. N. Huxley, Area, lattice points, and exponential sums, London Mathematical Society Monographs 13 (Oxford University Press, 1996).
+  \item[10.] M. N. Huxley, `The integer points close to a curve III', Number theory in progress (ed. K. Györy, H. Iwaniec and J. Urbanowicz, de Gruyter, Berlin, 1999) 911--939.
+  \item[11.] M. N. Huxley, `Exponential sums and the Riemann zeta function V', to appear.
+  \item[12.] M. N. Huxley and W. G. Nowak, `Primitive lattice points in convex planar domains', Acta Arith. 76 (1996) 271--283.
+  \item[13.] M. N. Huxley and O. Trifonov, `The square-full numbers in an interval', Math. Proc. Cambridge Philos. Soc. 119 (1996) 201--208.
+  \item[14.] H. Iwaniec and C. J. Mozzochi, `On the divisor and circle problems', J. Number Theory 29 (1988) 60--93.
+  \item[15.] D. G. Kendall, `On the number of lattice points inside a random oval', Quart. J. Math. Oxford 19 (1948) 1--26.
+  \item[16.] W. G. Nowak, `On the average order of the lattice rest of a convex planar domain', Math. Proc. Cambridge Philos. Soc. 98 (1985) 1--4.
+  \item[17.] W. G. Nowak, `On the mean lattice point discrepancy of a convex disc', Archiv Math. 78 (2002) 241--248.
+  \item[18.] M. Redouaby and P. Sargos, `Sur la transformation B de Van der Corput', Expo. Math. 17 (1999) 207--232.
+  \item[19.] W. Sierpiński, `O pewnem zagadnieniu z rachunku funkcyj asymptotycznych', Prace Mat.-Fiz. 17 (1906) 77--118, French translation in Oeuvres Choisies (PWN, Warsaw, 1974) 73--108.
+  \item[20.] H. P. F. Swinnerton-Dyer, `The number of lattice points on a convex curve', J. Number Theory 6 (1974) 128--135.
+  \item[21.] O. Trifonov, `On the number of the lattice points in some two-dimensional domains', Doklady Bulgar. Akad. Nauk 41, 11 (1988) 25--27.
+  \item[22.] G. Voronoi, `Sur un problème du calcul des fonctions asymptotiques', J. reine angew. Math. 126 (1903) 241--282.
+\end{itemize}
+
+M. N. Huxley\\
+School of Mathematics\\
+University of Cardiff\\
+23 Senghennydd Road\\
+Cardiff CF24 4YH\\
+\href{mailto:huxley@cf.ac.uk}{huxley@cf.ac.uk}
+
+
+\end{document}

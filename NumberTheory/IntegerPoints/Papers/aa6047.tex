@@ -1,0 +1,1462 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\newcommand{\articleSection}[2]{%
+  \par\medskip\noindent\textbf{#1. #2.}\enspace
+}
+
+\begin{document}
+
+\vspace*{-2em}
+\begin{flushleft}
+\textsc{Acta Arithmetica}\\
+LX.4 (1992)
+\end{flushleft}
+
+\vspace{4em}
+\begin{center}
+{\LARGE\bfseries The distribution and moments of the error term\\
+in the Dirichlet divisor problem\par}
+\vspace{1.5em}
+{\normalsize by\par}
+\vspace{0.8em}
+{\large\textsc{D. R. Heath-Brown} (Oxford)\par}
+\end{center}
+\vspace{2.5em}
+
+\articleSection{1}{Introduction}This paper will consider results about the distribution and moments of some of the well known error terms in analytic number theory. To focus attention we begin by considering the error term $\Delta(x)$ in the Dirichlet divisor problem, which is defined as
+
+$$
+\Delta(x)=\sum_{n \leq x} d(n)-x(\log x+2 \gamma-1) .
+$$
+
+We shall investigate the distribution of the function $x^{-1 / 4} \Delta(x)$ as $x$ tends to infinity and prove
+
+Theorem 1. The function $x^{-1 / 4} \Delta(x)$ has a distribution function $f(\alpha)$ in the sense that, for any interval $I$ we have
+
+$$
+X^{-1} \operatorname{mes}\left\{x \in[1, X]: x^{-1 / 4} \Delta(x) \in I\right\} \rightarrow \int_{I} f(\alpha) d \alpha
+$$
+
+as $X \rightarrow \infty$. The function $f(\alpha)$ and its derivatives satisfy the growth condition
+
+$$
+\frac{d^{k}}{d \alpha^{k}} f(\alpha) \ll_{A, k}(1+|\alpha|)^{-A}
+$$
+
+for $k=0,1,2, \ldots$ and any constant $A$. Moreover, $f(\alpha)$ extends to an entire function on $\mathbb{C}$.
+
+Theorem 2. For any exponent $k \in[0,9]$ the mean value
+
+$$
+X^{-1-k / 4} \int_{0}^{X}|\Delta(x)|^{k} d x
+$$
+
+converges to a finite limit as $X$ tends to infinity. Moreover, the same is true\\
+for the odd moments
+
+
+\begin{equation*}
+X^{-1-k / 4} \int_{0}^{X} \Delta(x)^{k} d x \tag{1.1}
+\end{equation*}
+
+
+for $k=1,3,5,7$ or 9.
+
+An examination of the proof shows that the range [0, 9] may be extended somewhat. For $k=2$ it was shown by Cramér [3] that
+
+
+\begin{equation*}
+X^{-3 / 2} \int_{0}^{X} \Delta(x)^{2} d x \rightarrow\left(6 \pi^{2}\right)^{-1} \sum_{n=1}^{\infty} d(n)^{2} n^{-3 / 2} \tag{1.2}
+\end{equation*}
+
+
+Moreover, when $k=1$ one has
+
+$$
+\int_{0}^{X} \Delta(x) d x=o\left(X^{5 / 4}\right)
+$$
+
+as follows from the work of Voronoï [12]. The cases $k=3$ and 4 of (1.1) have been handled very recently by Tsang [11] who gives the value of the limit explicitly, as the sum of an infinite series. When $k=3$ the limit is positive, contrasting with the case $k=1$. The distribution function $f(\alpha)$ of Theorem 1 must therefore be skewed towards positive values of $\alpha$. It should also be noted that the methods of the above papers all give reasonably good estimates for the rate of convergence, whereas our approach will not.
+
+The method applies equally well to certain other error terms. We have\\
+Theorem 3. The conclusions of Theorems 1 and 2 apply verbatim with $\Delta(x)$ replaced by the error term $P(x)$ in the circle problem, namely
+
+$$
+P(x)=\sum_{n \leq x} r(n)-\pi x ;
+$$
+
+or by the error term $E(T)$ for the mean value of the Riemann zeta-function, namely
+
+$$
+E(T)=\int_{0}^{T}\left|\zeta\left(\frac{1}{2}+i t\right)\right|^{2} d t-T\left(\log \frac{T}{2 \pi}+2 \gamma-1\right)
+$$
+
+Moreover, Theorems 1 and 2 also hold for the error term $\Delta_{3}(x)$ in the Piltz divisor problem, providing that $x^{-1 / 4} \Delta(x)$ is replaced by $x^{-1 / 3} \Delta_{3}(x)$, and $k$ is restricted to the range [0,3) in Theorem 2.
+
+Of course for $\Delta_{3}(x)$ we only handle the odd moment, analogous to (1.1), for $k=1$. Again we may note that
+
+$$
+X^{-3 / 2} \int_{0}^{X} P(x)^{2} d x \rightarrow\left(3 \pi^{2}\right)^{-1} \sum_{n=1}^{\infty} r(n)^{2} n^{-3 / 2} \quad \text { (Cramér [3]), }
+$$
+
+$$
+X^{-1-k / 4} \int_{0}^{X} P(x)^{k} d x \rightarrow c_{k} \quad(k=3,4) \quad(\text { Tsang [11] })
+$$
+
+\begin{equation*}
+T^{-3 / 2} \int_{0}^{T} E(t)^{2} d t \rightarrow \frac{2}{3}(2 \pi)^{-1 / 2} \sum_{n=1}^{\infty} d(n)^{2} n^{-3 / 2} \tag{1.3}
+\end{equation*}
+
+(Heath-Brown [4]),
+
+$$
+T^{-1-k / 4} \int_{0}^{T} E(t)^{k} d t \rightarrow c_{k}^{\prime} \quad(k=3,4) \quad \text { (Tsang [11]) }
+$$
+
+and
+
+
+\begin{equation*}
+X^{-5 / 3} \int_{0}^{X} \Delta_{3}(x)^{2} d x=\left(10 \pi^{2}\right)^{-1} \sum_{n=1}^{\infty} d_{3}(n)^{2} n^{-4 / 3}+O\left(X^{-1 / 9+\varepsilon}\right) \tag{1.4}
+\end{equation*}
+
+
+(Tong [10], Ivić [6; (13.43)]).\\
+It appears that the error terms $\Delta_{k}(x)$ for $k \geq 4$ cannot be handled by our methods, since no result corresponding to (1.2) and (1.4) is available.
+
+Our argument will consider a general function $F(t)$ which is approximated in the mean by an oscillating series as follows.
+
+Hypothesis (H). Let $a_{1}(t), a_{2}(t), \ldots$ be continuous real-valued functions of period 1, and suppose that there are non-zero constants $\gamma_{1}, \gamma_{2}, \ldots$ such that
+
+$$
+\lim _{N \rightarrow \infty} \limsup _{T \rightarrow \infty} \frac{1}{T} \int_{0}^{T} \min \left\{1,\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|\right\} d t=0
+$$
+
+This condition already suffices to obtain a distribution for $F(t)$, in a weak sense.
+
+Theorem 4. If $F(t)$ satisfies (H) then the mean value
+
+$$
+\frac{1}{T} \int_{0}^{T} p(F(t)) d t
+$$
+
+converges to a limit as $T \rightarrow \infty$, for any continuous piecewise differentiable function $p(\alpha)$ for which
+
+$$
+\int_{-\infty}^{\infty}|p(\alpha)| d \alpha, \quad \int_{-\infty}^{\infty}|\widehat{p}(\alpha)| d \alpha<\infty
+$$
+
+When the constants $\gamma_{i}$ in Hypothesis (H) are linearly independent over $\mathbb{Q}$ and the functions $a_{i}(t)$ are suitably behaved we can say rather more.
+
+Theorem 5. Let $F(t)$ satisfy (H) and suppose that the constants $\gamma_{i}$ are linearly independent over $\mathbb{Q}$. Suppose moreover that
+
+$$
+\begin{aligned}
+& \int_{0}^{1} a_{n}(t) d t=0 \quad(n \in \mathbb{N}) \\
+& \sum_{n=1}^{\infty} \int_{0}^{1} a_{n}(t)^{2} d t<\infty
+\end{aligned}
+$$
+
+and that there is a constant $\mu>1$ for which
+
+$$
+\max _{t \in[0,1]}\left|a_{n}(t)\right| \ll n^{1-\mu}
+$$
+
+and
+
+$$
+\lim _{n \rightarrow \infty} n^{\mu} \int_{0}^{1} a_{n}(t)^{2} d t=\infty
+$$
+
+Then $F(t)$ has a distribution function $f(\alpha)$ with the properties described in Theorem 1.
+
+Lastly, in order to establish Theorem 2 we shall prove\\
+Theorem 6. Let $F(t)$ have a distribution in the sense of Theorem 4, and suppose that
+
+$$
+\int_{0}^{T}|F(t)|^{K} d t \ll T
+$$
+
+for some positive exponent $K$. Then the limits
+
+$$
+\lim _{T \rightarrow \infty} \frac{1}{T} \int_{0}^{T}|F(t)|^{k} d t
+$$
+
+for real $k \in[0, K)$, and
+
+$$
+\lim _{T \rightarrow \infty} \frac{1}{T} \int_{0}^{T} F(t)^{k} d t
+$$
+
+for odd integers $k \in[0, K)$, all exist.
+
+Results of the above nature have been obtained by Kueh [8], who considered both the general situation and, as particular cases, the distribution of $|\zeta(1+i t)|$ and (on the Riemann Hypothesis) of $\sum_{n \leq x} n^{-1 / 2} \Lambda(n)-2 x^{1 / 2}$. However, Kueh's method appears not to apply to our examples. (Note that in Kueh's Theorem 1, the ambiguous expression ``for any $p>1$'' must be read as ``for every $p>1$'', rather than as ``for some $p>1$''.)
+
+It appears to be an open question whether
+
+$$
+x^{-1 / 2} M(x)=x^{-1 / 2} \sum_{n \leq x} \mu(n)
+$$
+
+has a distribution function. To prove this one would want to assume the Riemann Hypothesis and the simplicity of the zeros, and perhaps also a growth condition on $M(x)$.
+
+\articleSection{2}{Preliminary results}In this section we prove two results about the mean value of certain almost periodic functions. If $f(t)$ is a continuous function from $\mathbb{R}$ to $\mathbb{C}$, we define
+
+$$
+m_{T}(f)=\frac{1}{T} \int_{0}^{T} f(t) d t,
+$$
+
+and if $m_{T}(f)$ converges as $T$ tends to infinity we write $\mathcal{L}(f)$ for the resulting limit. As usual we shall define $e(x)=\exp (2 \pi i x)$.
+
+We first prove\\
+Lemma 1. Let $b_{i}(t)(1 \leq i \leq k)$ be continuous functions of period 1 from $\mathbb{R}$ to $\mathbb{C}$. Then $m_{T}\left(e(\gamma t) b_{1}\left(\gamma_{1} t\right) \ldots b_{k}\left(\gamma_{k} t\right)\right)$ converges for any real $\gamma, \gamma_{1}, \ldots, \gamma_{k}$. Moreover, if $\gamma$ is not an integral linear combination of the $\gamma_{i}$, then the limit is zero.
+
+The proof is by induction on $k$. When $k=0$ we merely observe that
+
+$$
+m_{T}(e(\gamma t)) \rightarrow
+\begin{cases}
+1, & \gamma=0, \\
+0, & \gamma \neq 0,
+\end{cases}
+\quad(T \rightarrow \infty).
+$$
+
+Suppose now that the lemma holds for a particular value of $k$. For ease of notation we shall write, temporarily,
+
+$$
+f(t)=e(\gamma t) b_{1}\left(\gamma_{1} t\right) \ldots b_{k}\left(\gamma_{k} t\right) .
+$$
+
+If $\gamma_{k+1}=0$, the assertion follows immediately from the induction hypothesis, so we may assume that $\gamma_{k+1}\neq 0$. We begin by observing that the function $b_{k+1}$ has a Fourier series which converges to it in the mean. Thus
+
+$$
+\lim _{N \rightarrow \infty} \int_{0}^{1}\left|b_{k+1}(t)-s_{N}(t)\right| d t=0
+$$
+
+where
+
+
+\begin{equation*}
+s_{N}(t)=\sum_{n=-N}^{N} c_{n} e(n t). \tag{2.1}
+\end{equation*}
+
+
+In general, if $b(t)$ is a continuous function of period 1, then
+
+$$
+m_{T}(|b|) \leq \frac{1}{[T]} \int_{0}^{1+[T]}|b(t)| d t=\frac{1+[T]}{[T]} m_{1}(|b|) \leq 2 m_{1}(|b|)
+$$
+
+for $T \geq 1$. It follows that
+
+$$
+m_{T}\left(\left|b_{k+1}\left(\gamma_{k+1} t\right)-s_{N}\left(\gamma_{k+1} t\right)\right|\right) \rightarrow 0 \quad(N \rightarrow \infty)
+$$
+
+uniformly for $T \geq |\gamma_{k+1}|^{-1}$. Now, since $f(t)$ is bounded, by $B$ say, we have
+
+
+\begin{align*}
+\left|m_{T}\left(f(t)\left\{b_{k+1}\left(\gamma_{k+1}t\right)-s_{N}\left(\gamma_{k+1}t\right)\right\}\right)\right|
+&\leq B\,m_{T}\left(\left|b_{k+1}\left(\gamma_{k+1}t\right)-s_{N}\left(\gamma_{k+1}t\right)\right|\right) \\
+&<\varepsilon. \tag{2.2}
+\end{align*}
+
+
+for some $N=N(\varepsilon)$ and any $T \geq |\gamma_{k+1}|^{-1}$. However,
+
+$$
+m_{T}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right)=\sum_{n=-N}^{N} c_{n} m_{T}\left(e\left(\left\{\gamma+n \gamma_{k+1}\right\} t\right) b_{1}\left(\gamma_{1} t\right) \ldots b_{k}\left(\gamma_{k} t\right)\right) .
+$$
+
+Our induction assumption therefore yields
+
+$$
+m_{T}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right) \rightarrow L_{\varepsilon} \quad(T \rightarrow \infty)
+$$
+
+for some limit $L_{\varepsilon}$ depending on $N(\varepsilon)$. Moreover, if $\gamma$ is not an integral linear combination of $\gamma_{1}, \ldots, \gamma_{k+1}$, then $\gamma+n \gamma_{k+1}$ cannot be an integral combination of $\gamma_{1}, \ldots, \gamma_{k}$, whence $L_{\varepsilon}=0$. We now have
+
+$$
+\left|m_{T}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right)-L_{\varepsilon}\right|<\varepsilon
+$$
+
+for $T \geq T(\varepsilon)$. It follows from (2.2) that
+
+
+\begin{equation*}
+\left|m_{T}\left(f(t) b_{k+1}\left(\gamma_{k+1} t\right)\right)-L_{\varepsilon}\right|<2 \varepsilon \tag{2.3}
+\end{equation*}
+
+
+for $T \geq T(\varepsilon)$ and hence that
+
+$$
+\left|m_{T}\left(f(t) b_{k+1}\left(\gamma_{k+1} t\right)\right)-m_{T^{\prime}}\left(f(t) b_{k+1}\left(\gamma_{k+1} t\right)\right)\right|<4 \varepsilon
+$$
+
+for $T, T^{\prime} \geq T(\varepsilon)$. The Cauchy convergence criterion is therefore satisfied, and so $m_{T}\left(f(t) b_{k+1}\left(\gamma_{k+1} t\right)\right)$ converges to a limit $L$, say, as required. It follows from (2.3) that $\left|L-L_{\varepsilon}\right| \leq 2 \varepsilon$. However, our linear independence condition would imply that $L_{\varepsilon}=0$, and hence $L=0$, since $\varepsilon$ is arbitrary. This completes the proof of Lemma 1.
+
+We now deduce\\
+Lemma 2. Let $b_{i}(t)(1 \leq i \leq k)$ be continuous functions of period 1 from $\mathbb{R}$ to $\mathbb{C}$. Then $m_{T}\left(b_{1}\left(\gamma_{1} t\right) \ldots b_{k}\left(\gamma_{k} t\right)\right)$ converges for any real constants $\gamma_{1}, \ldots, \gamma_{k}$. Moreover, if the numbers $\gamma_{i}$ are linearly independent over $\mathbb{Q}$, then the limit is $\prod_{i \leq k} \mathcal{L}\left(b_{i}\right)$.
+
+For the proof we again use induction on $k$, the results being trivial for $k=0$. We now write
+
+$$
+f(t)=b_{1}\left(\gamma_{1} t\right) \ldots b_{k}\left(\gamma_{k} t\right),
+$$
+
+for short. Suppose the lemma holds for a particular value of $k$. If $\gamma_{k+1}=0$, the assertion again follows immediately from the induction hypothesis, so we may assume that $\gamma_{k+1}\neq 0$. As before we have
+
+$$
+\left|m_{T}\left(f(t)\left\{b_{k+1}\left(\gamma_{k+1} t\right)-s_{N}\left(\gamma_{k+1} t\right)\right\}\right)\right|<\varepsilon,
+$$
+
+for some $N=N(\varepsilon)$ and any $T \geq |\gamma_{k+1}|^{-1}$. Moreover,
+
+$$
+m_{T}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right) \rightarrow \mathcal{L}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right),
+$$
+
+by Lemma 1, and
+
+$$
+\mathcal{L}\left(f(t) s_{N}\left(\gamma_{k+1} t\right)\right)=c_{0} \mathcal{L}(f),
+$$
+
+in the notation (2.1), providing the linear independence condition holds. Clearly
+
+$$
+m_{T}\left(b_{k+1}\right) \rightarrow \int_{0}^{1} b_{k+1}(t) d t=c_{0}=\mathcal{L}\left(b_{k+1}\right)
+$$
+
+whence
+
+$$
+c_{0} \mathcal{L}(f)=c_{0} \mathcal{L}\left(b_{1} \ldots b_{k}\right)=\prod_{i=1}^{k+1} \mathcal{L}\left(b_{i}\right),
+$$
+
+by our induction assumption. The proof of Lemma 2 may now be completed along the same lines as that of Lemma 1.
+
+\articleSection{3}{Proof of Theorems 4 and 6}We begin by using Lemma 2 to prove Theorem 4. Since $p(\alpha)$ is continuous and piecewise differentiable we have
+
+$$
+p(F(t))=\lim _{A \rightarrow \infty} \int_{-A}^{A} \widehat{p}(\alpha) e(\alpha F(t)) d \alpha
+$$
+
+Moreover, since $\int_{-\infty}^{\infty}|\widehat{p}(\alpha)| d \alpha<\infty$, we have $\int_{|\alpha|>A}|\widehat{p}(\alpha)| d \alpha<\varepsilon$ for $A \geq$ $A(\varepsilon)$. For such an $A$ we therefore deduce that
+
+
+\begin{equation*}
+\left|m_{T}(p(F))-\int_{-A}^{A} \widehat{p}(\alpha) m_{T}\{e(\alpha F(t))\} d \alpha\right|<\varepsilon. \tag{3.1}
+\end{equation*}
+
+
+However, if we set
+
+$$
+S_{N}(t)=\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right),
+$$
+
+then
+
+$$
+\left|e(\alpha F(t))-e\left(\alpha S_{N}(t)\right)\right| \leq 2 \pi A \min \left\{1,\left|F(t)-S_{N}(t)\right|\right\}
+$$
+
+uniformly for $|\alpha| \leq A$. Moreover, Hypothesis (H) implies that
+
+$$
+\frac{1}{T} \int_{0}^{T} \min \left\{1,\left|F(t)-S_{N}(t)\right|\right\} d t<\delta
+$$
+
+for any $N \geq N(\delta)$ and any $T \geq T_{0}=T_{0}(\delta, N)$. It follows that
+
+$$
+\left|m_{T}\{e(\alpha F(t))\}-m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\}\right| \leq 2 \pi A \delta
+$$
+
+for $N \geq N(\delta)$ and $T \geq T_{0}(\delta, N)$, and hence that
+
+
+\begin{align*}
+\left|
+\begin{aligned}
+&\int_{-A}^{A}\widehat{p}(\alpha)m_{T}\{e(\alpha F(t))\}\,d\alpha \\
+&\quad-\int_{-A}^{A}\widehat{p}(\alpha)m_{T}\!\left\{e\left(\alpha S_{N}(t)\right)\right\}\,d\alpha
+\end{aligned}
+\right|
+&<2\pi A\delta\int_{-A}^{A}|\widehat{p}(\alpha)|\,d\alpha. \tag{3.2}
+\end{align*}
+
+
+We now choose
+
+$$
+\delta=\varepsilon\left\{2 \pi A \int_{-A}^{A}|\widehat{p}(\alpha)| d \alpha\right\}^{-1} .
+$$
+
+Then (3.1) and (3.2) yield
+
+
+\begin{equation*}
+\left|m_{T}(p(F))-\int_{-A}^{A} \widehat{p}(\alpha) m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\} d \alpha\right|<2 \varepsilon \tag{3.3}
+\end{equation*}
+
+
+for $A \geq A(\varepsilon), N \geq N(\varepsilon, A)$ and $T \geq T_{0}(\varepsilon, A, N)$.\\
+We are now ready to apply Lemma 2, taking
+
+$$
+b_{i}(t)=e\left(\alpha a_{i}(t)\right),
+$$
+
+whence $m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\}$ converges to a limit $\mathcal{L}(\alpha, N)$, say. Moreover, if the numbers $\gamma_{i}$ are linearly independent over $\mathbb{Q}$, we have
+
+$$
+\mathcal{L}(\alpha, N)=\prod_{n \leq N} \chi_{n}(\alpha),
+$$
+
+where
+
+
+\begin{equation*}
+\chi_{n}(z)=\int_{0}^{1} e\left(z a_{n}(t)\right) d t \tag{3.4}
+\end{equation*}
+
+
+Since
+
+$$
+\left|\widehat{p}(\alpha) m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\}\right| \leq|\widehat{p}(\alpha)|
+$$
+
+for any $T$, we may apply Lebesgue's Dominated Convergence Theorem and\\
+deduce that
+
+$$
+\int_{-A}^{A} \widehat{p}(\alpha) m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\} d \alpha \rightarrow \int_{-A}^{A} \widehat{p}(\alpha) \mathcal{L}(\alpha, N) d \alpha
+$$
+
+as $T$ tends to infinity. Thus
+
+
+\begin{equation*}
+\left|\int_{-A}^{A} \widehat{p}(\alpha) m_{T}\left\{e\left(\alpha S_{N}(t)\right)\right\} d \alpha-\int_{-A}^{A} \widehat{p}(\alpha) \mathcal{L}(\alpha, N) d \alpha\right|<\varepsilon, \tag{3.5}
+\end{equation*}
+
+
+for $T \geq T_{1}=T_{1}(\varepsilon, A, N)$ say, so that
+
+$$
+\left|m_{T}\{p(F(t))\}-m_{T^{\prime}}\{p(F(t))\}\right|<6 \varepsilon
+$$
+
+for
+
+$$
+T, T^{\prime} \geq \max \left(T_{0}\{\varepsilon, A(\varepsilon), N(\varepsilon, A(\varepsilon))\}, T_{1}\{\varepsilon, A(\varepsilon), N(\varepsilon, A(\varepsilon))\}\right),
+$$
+
+by (3.3) and (3.5). We now see that $m_{T}\{p(F(t))\}$ converges as $T$ tends to infinity, by the Cauchy convergence criterion. This completes the proof of Theorem 4.
+
+The proof of Theorem 6 is now straightforward. Let $A>0$ be given. We choose a continuous non-negative function of compact support, $p(\alpha)$ say, which is twice continuously differentiable except possibly at $\alpha=0$, and which satisfies
+
+$$
+p(\alpha) \begin{cases}=|\alpha|^{k}, & |\alpha| \leq A, \\ \leq|\alpha|^{k}, & |\alpha|>A .\end{cases}
+$$
+
+Then
+
+$$
+\left|p(\alpha)-|\alpha|^{k}\right| \leq A^{k-K}|\alpha|^{K},
+$$
+
+for every $\alpha$, whence
+
+$$
+\left|m_{T}\{p(F(t))\}-m_{T}\left(|F(t)|^{k}\right)\right| \leq A^{k-K} m_{T}\left(|F(t)|^{K}\right) .
+$$
+
+The hypothesis of Theorem 6 therefore yields
+
+$$
+\left|m_{T}\{p(F(t))\}-m_{T}\left(|F(t)|^{k}\right)\right|<\varepsilon
+$$
+
+for sufficiently large $A=A(\varepsilon)$, uniformly for $T>0$. The conditions on the function $p$ clearly ensure that
+
+$$
+\int_{-\infty}^{\infty}|p(\alpha)| d \alpha<\infty .
+$$
+
+Moreover, we have
+
+$$
+\int_{0}^{\infty} e(\alpha t) p(t) d t=-\frac{1}{2 \pi i \alpha} \int_{0}^{\infty} e(\alpha t) p^{\prime}(t) d t \ll|\alpha|^{-\theta},
+$$
+
+for some $\theta>1$, since
+
+$$
+\int_{0}^{A} e(\alpha t) t^{k-1} d t \ll|\alpha|^{-k}
+$$
+
+and
+
+$$
+\int_{A}^{\infty} e(\alpha t) p^{\prime}(t) d t=-\frac{e(\alpha A)}{2 \pi i \alpha} p^{\prime}(A)-\frac{1}{2 \pi i \alpha} \int_{A}^{\infty} e(\alpha t) p^{\prime \prime}(t) d t \ll|\alpha|^{-1} .
+$$
+
+Thus the second condition
+
+$$
+\int_{-\infty}^{\infty}|\widehat{p}(\alpha)| d \alpha<\infty
+$$
+
+of Theorem 4 is also satisfied. Thus $m_{T}\{p(F(t))\}$ converges as $T$ tends to infinity, and we see that $m_{T}\left(|F(t)|^{k}\right)$ satisfies the Cauchy convergence criterion. The first part of Theorem 6 now follows. To handle the odd moments we proceed in exactly the same way after making the obvious modifications in the choice of the function $p(\alpha)$.
+
+\articleSection{4}{Proof of Theorem 5}To prove Theorem 5 we shall require the following properties of the functions $\chi_{n}$ given by (3.4).
+
+Lemma 3. Let $a_{n}(t)$ be continuous real-valued functions of period 1, such that
+
+
+\begin{equation*}
+\int_{0}^{1} a_{n}(t) d t=0 \quad(n \in \mathbb{N}) \tag{4.1}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\sum_{n=1}^{\infty} \int_{0}^{1} a_{n}(t)^{2} d t<\infty \tag{4.2}
+\end{equation*}
+
+
+Suppose further that there is a constant $\mu>1$ for which
+
+
+\begin{equation*}
+\max _{t \in[0,1]}\left|a_{n}(t)\right| \ll n^{1-\mu} \tag{4.3}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+\lim _{n \rightarrow \infty} n^{\mu} \int_{0}^{1} a_{n}(t)^{2} d t=\infty \tag{4.4}
+\end{equation*}
+
+
+Define
+
+
+\begin{equation*}
+\chi(z)=\prod_{n=1}^{\infty} \chi_{n}(z), \tag{4.5}
+\end{equation*}
+
+
+where $\chi_{n}(z)$ is given by (3.4). Then the product (4.5) converges absolutely and uniformly for $z$ in any compact set
+
+$$
+K_{0} \subseteq K=\left\{z=x+i y \in \mathbb{C}:|y| \leq \min \left(1,|x|^{-1 /(\mu-1)}\right)\right\} .
+$$
+
+The function $\chi(z)$ is therefore holomorphic on $K$. Moreover,
+
+
+\begin{equation*}
+\chi(z) \ll_{A} e^{-A|z|} \quad(z \in K) \tag{4.6}
+\end{equation*}
+
+
+for any real positive constant $A$, and
+
+$$
+\frac{d^{k}}{d x^{k}} \chi(x) \ll_{A, k} e^{-A|x|}
+$$
+
+for any real $x$, any integer $k \geq 0$, and any real positive constant $A$.\\
+Since $e(\alpha)=1+2 \pi i \alpha+O\left(|\alpha|^{2}\right)$ for any $\alpha \ll 1$, we see from (4.1) that
+
+$$
+\chi_{n}(z)=1+O\left(|z|^{2} \int_{0}^{1} a_{n}(t)^{2} d t\right)
+$$
+
+for
+
+
+\begin{equation*}
+n \geq|z|^{1 /(\mu-1)}. \tag{4.7}
+\end{equation*}
+
+
+Thus (4.2) implies the absolute convergence of the product (4.5), uniformly on any compact set. Similarly, since $e(\alpha)=1+2 \pi i \alpha-2 \pi^{2} \alpha^{2}+O\left(|\alpha|^{3}\right)$, for $\alpha \ll 1$, we have
+
+$$
+\begin{aligned}
+\chi_{n}(z) & =1-2 \pi^{2} z^{2} \int_{0}^{1} a_{n}(t)^{2} d t+O\left(|z|^{3} \int_{0}^{1}\left|a_{n}(t)\right|^{3} d t\right) \\
+& =1-2 \pi^{2} z^{2}\left\{1+O\left(n^{1-\mu}|z|\right)\right\} \int_{0}^{1} a_{n}(t)^{2} d t
+\end{aligned}
+$$
+
+for $n$ in the range (4.7), by (4.3). Moreover,
+
+$$
+\operatorname{Re}\left(z^{2}\right) \geq|z|^{2} / 2
+$$
+
+for large enough $z \in K$, and
+
+$$
+|1-\alpha| \leq \exp \left\{-\operatorname{Re}(\alpha)+O\left(|\alpha|^{2}\right)\right\}
+$$
+
+for $\alpha \ll 1$. Thus, if $n \geq N$, where $N=c|z|^{1 /(\mu-1)}$ and $c$ is a suitably large constant, we have
+
+$$
+\left|\chi_{n}(z)\right| \leq \exp \left(-|z|^{2} \int_{0}^{1} a_{n}(t)^{2} d t\right)
+$$
+
+For other values of $n$ we use the trivial bound
+
+$$
+\begin{aligned}
+\left|\chi_{n}(z)\right| & \leq \exp \left\{2 \pi|\operatorname{Im}(z)| \max _{t \in[0,1]}\left|a_{n}(t)\right|\right\} \\
+& \leq \exp \left\{O\left(|z|^{-1 /(\mu-1)} n^{1-\mu}\right)\right\} \leq \exp \left\{O\left(|z|^{-1 /(\mu-1)}\right)\right\} .
+\end{aligned}
+$$
+
+It then follows that
+
+
+\begin{equation*}
+|\chi(z)| \leq \exp \left\{O\left(|z|^{-1 /(\mu-1)} N\right)-|z|^{2} \sum_{n \geq N} \int_{0}^{1} a_{n}(t)^{2} d t\right\} \tag{4.8}
+\end{equation*}
+
+
+According to (4.4), for any value of $B$ we have
+
+$$
+\int_{0}^{1} a_{n}(t)^{2} d t \geq B n^{-\mu}
+$$
+
+for $n \geq N$ and $N \geq N(B)$. Hence (4.8) is at most
+
+$$
+\exp \left(O(1)-|z|^{2} B^{\prime} N^{1-\mu}\right) \ll \exp \left(-B^{\prime \prime}|z|\right)
+$$
+
+for constants $B^{\prime}, B^{\prime \prime}$ which tend to infinity with $B$. Thus (4.6) holds. It remains to estimate the derivatives of $\chi$ on the real axis. This can be done in the familiar way, using Cauchy's integral formula for the $k$ th derivative, choosing a circular contour of radius proportional to $|z|^{-1 /(\mu-1)}$, and estimating $\chi(z)$ by means of (4.6).
+
+We now re-examine the proof of Theorem 4. It follows from Lemma 3 that $\mathcal{L}(\alpha, N) \rightarrow \chi(\alpha)$ as $N \rightarrow \infty$, and since $|\mathcal{L}(\alpha, N)| \leq 1$, Lebesgue's Dominated Convergence Theorem shows that
+
+$$
+\lim _{A \rightarrow \infty} \lim _{N \rightarrow \infty} \int_{-A}^{A} \widehat{p}(\alpha) \mathcal{L}(\alpha, N) d \alpha=\int_{-\infty}^{\infty} \widehat{p}(\alpha) \chi(\alpha) d \alpha
+$$
+
+Taken in conjunction with (3.3) and (3.5) this produces
+
+$$
+\mathcal{L}\{p(F(t))\}=\int_{-\infty}^{\infty} \widehat{p}(\alpha) \chi(\alpha) d \alpha=\int_{-\infty}^{\infty} p(\alpha) \widehat{\chi}(\alpha) d \alpha,
+$$
+
+the conditions on the function $\chi$ needed for Parseval's identity following from Lemma 3. The function $\mathcal{L}\{p(F(t))\}$ is real and non-negative whenever $p$ is. Moreover, $\widehat{\chi}(\alpha)$ is continuous. Thus using a suitable test function $p$ we conclude that $\widehat{\chi}(\alpha)$ is necessarily real and non-negative. We now choose a finite interval $I$, and write $\psi(x)$ for its characteristic function. We apply Theorem 4 with $p$ chosen so that $\psi(x) \leq p(x)$ for all $x \in \mathbb{R}$ and such that
+
+$$
+\int_{-\infty}^{\infty}|\psi(x)-p(x)| d x<\varepsilon
+$$
+
+Then
+
+$$
+\begin{aligned}
+\limsup _{T \rightarrow \infty} m_{T}(\psi(F(t))) & \leq \lim _{T \rightarrow \infty} m_{T}(p(F(t)))=\int_{-\infty}^{\infty} p(\alpha) \widehat{\chi}(\alpha) d \alpha \\
+& <\int_{-\infty}^{\infty} \psi(\alpha) \widehat{\chi}(\alpha) d \alpha+\varepsilon \max _{\alpha}|\widehat{\chi}(\alpha)| \\
+& =\int_{I} \widehat{\chi}(\alpha) d \alpha+\varepsilon \max _{\alpha}|\widehat{\chi}(\alpha)|
+\end{aligned}
+$$
+
+Since $\varepsilon$ is arbitrary we conclude that
+
+$$
+\limsup _{T \rightarrow \infty} m_{T}(\psi(F(t))) \leq \int_{I} \widehat{\chi}(\alpha) d \alpha
+$$
+
+Similarly one finds that
+
+$$
+\liminf _{T \rightarrow \infty} m_{T}(\psi(F(t))) \geq \int_{I} \widehat{\chi}(\alpha) d \alpha
+$$
+
+The required result, with $f(\alpha)=\widehat{\chi}(\alpha)$, now follows.
+
+\articleSection{5}{Proof of Theorems 1 and 2}In this section we shall show how Theorems 4, 5 and 6 may be applied to $\Delta(x)$. Our starting point is the formula
+
+
+\begin{equation*}
+\Delta(x)=\frac{x^{1 / 4}}{\pi \sqrt{2}} \sum_{n \leq X} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi \sqrt{n x}-\pi / 4\}+O\left(X^{\varepsilon}\right), \tag{5.1}
+\end{equation*}
+
+
+for any fixed $\varepsilon>0$, which holds uniformly for $X \leq x \leq 4 X$. (See Titchmarsh [9; (12.4.4)], for example.) We shall define
+
+$$
+\begin{gathered}
+F(t)=t^{-1 / 2} \Delta\left(t^{2}\right), \\
+a_{n}(t)=\frac{\mu^{2}(n)}{n^{3 / 4}} \frac{1}{\pi \sqrt{2}} \sum_{r=1}^{\infty} \frac{d\left(n r^{2}\right)}{r^{3 / 2}} \cos \{2 \pi r t-\pi / 4\},
+\end{gathered}
+$$
+
+and
+
+$$
+\gamma_{n}=2 \sqrt{n} .
+$$
+
+In particular, we see that
+
+$$
+F(t)=\frac{1}{\pi \sqrt{2}} \sum_{n \leq T^{2}} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}+O\left(T^{-1 / 2+\varepsilon}\right),
+$$
+
+uniformly for $T \leq t \leq 2 T$. Then for any integer $N \leq T^{1 / 2}$ we have
+
+$$
+\begin{aligned}
+F(t)- & \sum_{n \leq N} a_{n}\left(\gamma_{n} t\right) \\
+& \ll\left|\sum_{n \leq T^{2}}^{\prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}\right|+\sum_{n \leq N} \frac{1}{n^{3 / 4}} \sum_{r>T / \sqrt{n}} \frac{d\left(n r^{2}\right)}{r^{3 / 2}} \\
+& \ll\left|\sum_{n \leq T^{2}}^{\prime} \frac{d(n)}{n^{3 / 4}} e(2 t \sqrt{n})\right|+N^{1 / 2} T^{-1 / 2+\varepsilon}
+\end{aligned}
+$$
+
+uniformly for $T \leq t \leq 2 T$, where $\sum^{\prime}$ indicates that $n$ is restricted to have square-free kernel greater than $N$. Moreover, if one calculates the mean value termwise, as in Ivić [6; Theorem 13.5] for example, one finds that
+
+$$
+\begin{aligned}
+\int_{T}^{2 T}\left|\sum_{n \leq T^{2}}^{\prime} \frac{d(n)}{n^{3 / 4}} e(2 t \sqrt{n})\right|^{2} d t & =T \sum_{n \leq T^{2}}^{\prime} \frac{d(n)^{2}}{n^{3 / 2}}+O\left(T^{\varepsilon}\right) \\
+& \leq T \sum_{n>N} \frac{d(n)^{2}}{n^{3 / 2}}+O\left(T^{\varepsilon}\right) \\
+& \ll T N^{\varepsilon-1 / 2}+T^{\varepsilon} .
+\end{aligned}
+$$
+
+It therefore follows that
+
+
+\begin{gather*}
+\int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} d t \ll T\left(T^{\varepsilon-1 / 2} N^{1 / 2}\right)^{2}+T N^{\varepsilon-1 / 2}+T^{\varepsilon}  \tag{5.2}\\
+\ll T N^{\varepsilon-1 / 2}
+\end{gather*}
+
+
+if $\varepsilon$ is small enough. Thus Cauchy's inequality implies that
+
+$$
+\limsup _{T \rightarrow \infty} \frac{1}{T} \int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right| d t \ll N^{\varepsilon-1 / 4},
+$$
+
+and Hypothesis (H) follows. Moreover, Theorem 1 is now an immediate consequence of Theorem 5, if one takes $\mu=5 / 3$, for example.
+
+To prove Theorem 2 we require an estimate of the form
+
+
+\begin{equation*}
+\int_{0}^{X}|\Delta(x)|^{K} d x \ll X^{1+K / 4+\varepsilon} \tag{5.3}
+\end{equation*}
+
+
+Such a bound has been given by Ivić [6; Theorem 13.9], who showed that one may take $K=35 / 4$. If one injects the estimate
+
+$$
+\Delta(x) \ll x^{7 / 22+\varepsilon}
+$$
+
+of Iwaniec and Mozzochi [7] into Ivić's argument one finds that (5.3) holds even for $K=28 / 3$. The deduction of Theorem 2 is now completed by means of the following result, used in conjunction with Theorem 6.
+
+Lemma 4. Suppose that (5.3) holds for some $K>2$. Then
+
+$$
+\int_{0}^{X}|\Delta(x)|^{k} d x \ll X^{1+k / 4}
+$$
+
+for any positive $k<K$.\\
+In fact, we shall show that
+
+$$
+\int_{T}^{2 T}|F(t)|^{k} d t \ll T,
+$$
+
+from which Lemma 4 immediately follows.\\
+We choose an even integer $L>K$ and we define
+
+
+\begin{equation*}
+N=T^{2^{-(2 L+2)}}. \tag{5.4}
+\end{equation*}
+
+
+Then
+
+$$
+\begin{aligned}
+\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)= & \frac{1}{\pi \sqrt{2}} \sum_{n \leq N^{4}}^{\prime \prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\} \\
+& \quad+O\left(\sum_{n \leq N} \frac{1}{n^{3 / 4}} \sum_{r \geq N^{2} n^{-1 / 2}} \frac{d\left(n r^{2}\right)}{r^{3 / 2}}\right) \\
+= & \frac{1}{\pi \sqrt{2}} \sum_{n \leq N^{4}}^{\prime \prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}+O(1)
+\end{aligned}
+$$
+
+where $\sum^{\prime \prime}$ restricts $n$ to have square-free kernel at most $N$. Thus
+
+
+\begin{align*}
+& \int_{T}^{2 T}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2 L} d t  \tag{5.5}\\
+& \quad \ll \int_{T}^{2 T}\left|\sum_{n \leq N^{4}}^{\prime \prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}\right|^{2 L} d t+T.
+\end{align*}
+
+
+We now have recourse to the following result, which we shall prove later.\\
+Lemma 5. Let $n_{1}, \ldots, n_{2 L}$ be positive integers all at most $N^{4}$. Then
+
+$$
+\left|\sqrt{n_{1}} \pm \ldots \pm \sqrt{n_{2 L}}\right| \gg N^{-2^{2 L+1}},
+$$
+
+unless the product $n_{1} \ldots n_{2 L}$ is square-full.
+
+Thus if $n_{1} \ldots n_{2 L}$ is not square-full we have
+
+$$
+2\left|\sqrt{n_{1}} \pm \ldots \pm \sqrt{n_{2 L}}\right| \geq \frac{1}{4T},
+$$
+
+by (5.4), if $T$ is large enough. However,
+
+$$
+\int_{-\infty}^{\infty} e(\alpha t)\left(\frac{\sin\left(\pi t/(4T)\right)}{t/(4T)}\right)^{2} d t=0 \quad\left(|\alpha| \geq \frac{1}{4T}\right)
+$$
+
+so that
+
+
+\begin{align*}
+& \int_{T}^{2 T}\left|\sum_{n \leq N^{4}}^{\prime \prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}\right|^{2 L} d t  \tag{5.6}\\
+& \quad \ll \int_{-\infty}^{\infty}\left|\sum_{n \leq N^{4}}^{\prime \prime} \frac{d(n)}{n^{3 / 4}} \cos \{4 \pi t \sqrt{n}-\pi / 4\}\right|^{2 L}\left(\frac{\sin\left(\pi t/(4T)\right)}{t/(4T)}\right)^{2} d t \\
+& \quad \ll T \sum \frac{d\left(n_{1}\right) \ldots d\left(n_{2 L}\right)}{\left(n_{1} \ldots n_{2 L}\right)^{3 / 4}}
+\end{align*}
+
+
+where the final sum is for all sets of positive $n_{i} \leq N^{4}$ whose product $q$, say, is square-full. Now, for a given value of $q$ there are $O\left(q^{\varepsilon}\right)$ possible sets of factors $n_{i}$. Moreover,
+
+$$
+d\left(n_{1}\right) \ldots d\left(n_{2 L}\right) \ll q^{\varepsilon} .
+$$
+
+It follows from (5.5) and (5.6) that
+
+$$
+\int_{T}^{2 T}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2 L} d t \ll T \sum_{q=1}^{\infty} q^{-3 / 4+2 \varepsilon},
+$$
+
+where $q$ runs over square-full integers only. The infinite sum above converges, since there are only $O\left(Q^{1 / 2}\right)$ square-full integers $q \leq Q$. We conclude therefore that
+
+$$
+\int_{T}^{2 T}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n}t\right)\right|^{2 L} d t \ll T,
+$$
+
+whence also
+
+
+\begin{equation*}
+\int_{T}^{2 T}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n}t\right)\right|^{k} d t, \quad \int_{T}^{2 T}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n}t\right)\right|^{K} d t \ll T, \tag{5.7}
+\end{equation*}
+
+
+by Hölder's inequality.\\
+On the other hand, if $2<k<K$,
+
+$$
+\begin{aligned}
+&\int_{T}^{2T}\left|F(t)-\sum_{n \leq N}a_{n}\left(\gamma_{n}t\right)\right|^{k}\,dt \\
+&\quad\leq\left(\int_{T}^{2T}\left|F(t)-\sum_{n \leq N}a_{n}\left(\gamma_{n}t\right)\right|^{2}\,dt\right)^{(K-k)/(K-2)} \\
+&\qquad\times\left(\int_{T}^{2T}\left|F(t)-\sum_{n \leq N}a_{n}\left(\gamma_{n}t\right)\right|^{K}\,dt\right)^{(k-2)/(K-2)}.
+\end{aligned}
+$$
+
+again by Hölder's inequality. Here
+
+$$
+\int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} d t \ll T N^{\varepsilon-1 / 2}
+$$
+
+by (5.2), while
+
+$$
+\begin{aligned}
+\int_{T}^{2T}\left|F(t)-\sum_{n \leq N}a_{n}\left(\gamma_{n}t\right)\right|^{K}\,dt
+&\ll \int_{T}^{2T}|F(t)|^{K}\,dt
+ +\int_{T}^{2T}\left|\sum_{n \leq N}a_{n}\left(\gamma_{n}t\right)\right|^{K}\,dt \\
+&\ll T^{1+\varepsilon}.
+\end{aligned}
+$$
+
+by our hypothesis in Lemma 4, together with the second of the bounds (5.7). Hence
+
+$$
+\int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{k} d t \ll T
+$$
+
+since $N$, given by (5.4), is a positive power of $T$. This bound, taken in conjunction with the first of the estimates (5.7), completes the proof of Lemma 4, since values of $k \leq 2$ can be handled by applying Hölder's inequality to values $k>2$.
+
+We now prove Lemma 5. If $p$ is a prime not dividing any of the integers $m_{1}, \ldots, m_{k}$ then $\sqrt{p}$ cannot be a rational linear combination of $\sqrt{m_{1}}, \ldots$, $\sqrt{m_{k}}$. This follows from a classical result of Besicovitch, to the effect that the square roots of distinct square-free integers are linearly independent over the rationals. Now suppose that the product $n_{1} \ldots n_{2 L}$ has a prime factor $p$ which occurs to the first power only, so that $p$ divides $n_{1}$, say, and no other $n_{i}$. Then any linear relation
+
+
+\begin{equation*}
+\pm \sqrt{n_{1}} \pm \ldots \pm \sqrt{n_{2 L}}=0 \tag{5.8}
+\end{equation*}
+
+
+would yield
+
+$$
+\sqrt{p}=\mp \frac{\sqrt{n_{2}}}{\sqrt{m}} \mp \ldots \mp \frac{\sqrt{n_{2 L}}}{\sqrt{m}},
+$$
+
+where $m=p^{-1} n_{1}$. As noted above such a relation is impossible, so that\\
+(5.8) can hold only when the product $n_{1} \ldots n_{2 L}$ is square-full. We now set
+
+$$
+P=\prod_{\sigma}\left\{\sum_{i=1}^{2 L} \sigma_{i} \sqrt{n_{i}}\right\},
+$$
+
+where $\sigma$ runs over all vectors $\left(\sigma_{1}, \ldots, \sigma_{2 L}\right)$ with $\sigma_{i}= \pm 1$. Then $P$ is an integer, and $P$ can only be zero when $n_{1} \ldots n_{2 L}$ is square-full. If $S$ is any factor in $P$ then $S \ll N^{2}$. Hence, if $S_{0}$ is the particular factor occurring in Lemma 5, we have
+
+$$
+1 \leq|P| \ll\left|S_{0}\right|\left(N^{2}\right)^{2^{2 L}},
+$$
+
+providing that $P \neq 0$. Lemma 5 now follows.
+
+\articleSection{6}{Proof of Theorem 3 for $P(x)$ and $E(T)$}The method of the previous section requires little modification to handle the functions $P(x)$ and $E(T)$. For $P(x)$ we replace (5.1) by the estimate
+
+$$
+P(x)=-\frac{x^{1 / 4}}{\pi} \sum_{n \leq X} \frac{r(n)}{n^{3 / 4}} \cos \{2 \pi \sqrt{n x}+\pi / 4\}+O\left(X^{\varepsilon}\right),
+$$
+
+which holds uniformly for $X \leq x \leq 4 X$. This formula may be proved by the method of Titchmarsh [9; §12.4], starting with the function $\sum r(n) n^{-s}$. We can then establish Hypothesis (H) for an appropriate $F(t)$, using the method of Section 5. To prove the analogue of Theorem 2 we also require a bound
+
+$$
+\int_{0}^{X}|P(x)|^{K} d x \ll X^{1+K / 4+\varepsilon}
+$$
+
+of the type given by Ivić [6; Theorem 13.2]. If one inserts the estimate
+
+$$
+P(x) \ll x^{7 / 22+\varepsilon}
+$$
+
+of Iwaniec and Mozzochi [7] into Ivić's argument one finds that one may take $K=28 / 3$. This allows for the range [0, 9] when one forms the analogue of Theorem 2 for $P(x)$.
+
+We turn now to the function $E(T)$. Our starting point here is the formula of Atkinson [2], which approximates $E(T)$ by a sum of functions
+
+$$
+A_{n}(T)=\frac{1}{\sqrt{2}}(-1)^{n} d(n)\left(\frac{n T}{2 \pi}+\frac{n^{2}}{4}\right)^{-1 / 4}\left\{\sinh ^{-1}\left(\frac{\pi n}{2 T}\right)^{1 / 2}\right\}^{-1} \cos f(n, T),
+$$
+
+where
+
+$$
+f(n, T)=2 T \sinh ^{-1}\left(\frac{\pi n}{2 T}\right)^{1 / 2}+\left(\pi^{2} n^{2}+2 \pi n T\right)^{1 / 2}-\pi / 4
+$$
+
+Specifically, we have
+
+$$
+E(t)=\sum_{n \leq X} A_{n}(t)+\Sigma_{2}(t)+O\left(\log ^{2} t\right)
+$$
+
+uniformly for $X \leq t \leq 4 X$, where
+
+$$
+\int_{X}^{4 X} \Sigma_{2}(t)^{2} d t \ll X(\log X)^{4}
+$$
+
+by Heath-Brown [4; Lemma 3]. We choose an integer $N \leq X^{1 / 16}$, and define
+
+$$
+S=\left\{n=m r^{2}: \mu^{2}(m)=1, m \leq N, m r^{2} \leq N^{4}\right\} .
+$$
+
+Then the non-diagonal terms of
+
+$$
+\int_{X}^{4 X}\left\{\sum_{n \leq X, n \notin S} A_{n}(t)\right\}^{2} d t
+$$
+
+contribute a total $O\left(X^{1+\varepsilon}\right)$, as in the proof of Heath-Brown [4; Lemma 1], whereas the diagonal terms are
+
+$$
+\ll X^{3 / 2} \sum_{n \notin S} d(n)^{2} n^{-3 / 2} \ll X^{3 / 2} \sum_{n>N} d(n)^{2} n^{-3 / 2} \ll X^{3 / 2} N^{\varepsilon-1 / 2},
+$$
+
+since $A_{n}(t) \ll d(n) X^{1 / 4} n^{-3 / 4}$. It follows that
+
+$$
+\begin{aligned}
+\int_{X}^{4X}\left|E(t)-\sum_{n \in S}A_{n}(t)\right|\,dt
+&\ll X(\log X)^{2}
+ +\int_{X}^{4X}\left|\sum_{\substack{n \leq X\\ n \notin S}}A_{n}(t)\right|\,dt \\
+&\quad+\int_{X}^{4X}|\Sigma_{2}(t)|\,dt \\
+&\ll X(\log X)^{2}+X^{5/4}N^{\varepsilon-1/4}
+ \ll X^{5/4}N^{\varepsilon-1/4}.
+\end{aligned}
+$$
+
+by Cauchy's inequality. We therefore conclude that
+
+$$
+X^{-5 / 4} \int_{X}^{4 X}\left|E(t)-\sum_{n \in S} A_{n}(t)\right| d t \ll N^{\varepsilon-1 / 4} .
+$$
+
+However, for $n \in S$ and $X \leq t \leq 4 X$ we have
+
+$$
+A_{n}(t)=B_{n}(t)+O\left(n^{3 / 4+\varepsilon} X^{-1 / 4}\right),
+$$
+
+where
+
+$$
+B_{n}(t)=\left(\frac{2 t}{\pi}\right)^{1 / 4}(-1)^{n} \frac{d(n)}{n^{3 / 4}} \cos \{\sqrt{8 \pi n t}-\pi / 4\} .
+$$
+
+Thus
+
+$$
+X^{-5 / 4} \int_{X}^{4 X}\left|E(t)-\sum_{n \in S} B_{n}(t)\right| d t \ll N^{\varepsilon-1 / 4}+X^{-1 / 2}\left(N^{4}\right)^{7 / 4+\varepsilon} \ll N^{-1 / 8} .
+$$
+
+Taking $X=T^{2}, F(t)=t^{-1 / 2} E\left(t^{2}\right)$ and $C_{n}(t)=t^{-1 / 2} B_{n}\left(t^{2}\right)$ we conclude that
+
+
+\begin{equation*}
+\frac{1}{T} \int_{T}^{2 T}\left|F(t)-\sum_{n \in S} C_{n}(t)\right| d t \ll N^{-1 / 8} \tag{6.1}
+\end{equation*}
+
+
+uniformly in $T$. However, if
+
+$$
+a_{n}(t)=\mu^{2}(n)\left(\frac{2}{\pi}\right)^{1 / 4} \sum_{r=1}^{\infty}(-1)^{n r} \frac{d\left(n r^{2}\right)}{\left(n r^{2}\right)^{3 / 4}} \cos \{2 \pi r t-\pi / 4\},
+$$
+
+with $\gamma_{n}=\sqrt{2 n / \pi}$, then
+
+
+\begin{align*}
+\sup _{t}\left|\sum_{n \in S} C_{n}(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right| & \leq \sum_{m \leq N} \sum_{r>N^{2} / \sqrt{m}} \frac{d\left(m r^{2}\right)}{\left(m r^{2}\right)^{3 / 4}}. \tag{6.2}\\
+& \ll \sum_{m \leq N} m^{-1 / 2+\varepsilon} N^{-1} \ll N^{-1 / 2+\varepsilon}
+\end{align*}
+
+
+It follows from (6.1) that
+
+$$
+\frac{1}{T} \int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right| d t \ll N^{-1 / 8}
+$$
+
+from which Hypothesis (H) may be deduced in the usual way. We can now proceed to prove versions of Theorems 1 and 2 for $E(T)$, just as before. We shall require the bound
+
+$$
+\int_{0}^{T}|E(t)|^{K} d t \ll T^{1+K / 4+\varepsilon}
+$$
+
+with $K=28 / 3$. However, this follows from the argument given by Ivić [6; Theorem 15.7], on inserting the estimate
+
+$$
+E(T) \ll T^{7 / 22+\varepsilon}
+$$
+
+of Heath-Brown and Huxley [5] into the argument.
+
+\articleSection{7}{Proof of Theorem 3 for $\Delta_{3}(x)$}For the function $\Delta_{3}(x)$ it would be nice to use the estimate
+
+$$
+\Delta_{3}(x)=\frac{x^{1 / 3}}{\pi \sqrt{3}} \sum_{n \leq T^{3} / x} \frac{d_{3}(n)}{n^{2 / 3}} \cos \{6 \pi \sqrt[3]{n x}\}+O\left(x^{1+\varepsilon} / T\right),
+$$
+
+of Atkinson [1], as quoted by Titchmarsh [9; (12.4.6)]. Unfortunately, Titchmarsh omits the condition $x^{1 / 2+\varepsilon} \leq T \leq x^{2 / 3-\varepsilon}$ required by Atkinson for the proof of his formula. The upper bound on $T$ prevents us getting an error term $o\left(x^{1 / 3}\right)$ in the formula, and there appears to be no simple way of extending the range for $T$. We must therefore return to first principles.
+
+We consider a non-negative function $\omega(x)$, supported in $\left[\frac{1}{2}, \frac{17}{2}\right]$, with derivatives of all orders and which satisfies $\omega(x)=1$ on [1, 8]. Our aim will be to show that
+
+$$
+\limsup _{T \rightarrow \infty} \frac{1}{T} \int_{0}^{\infty}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} \omega\left((t / T)^{3}\right) d t \rightarrow 0
+$$
+
+as $N$ tends to infinity, where $F(t)=t^{-1} \Delta_{3}\left(t^{3}\right)$ and
+
+$$
+a_{n}(t)=\frac{\varepsilon(n)}{\pi \sqrt{3}} \sum_{r=1}^{\infty} \frac{d_{3}\left(n r^{3}\right)}{\left(n r^{3}\right)^{2 / 3}} \cos \{6 \pi r t\}, \quad \gamma_{n}=\sqrt[3]{n},
+$$
+
+with $\varepsilon(n)=1$ if $n$ is cube-free, and $\varepsilon(n)=0$ otherwise. On integration by parts, the asymptotic formula (1.4) yields
+
+
+\begin{equation*}
+\int_{0}^{\infty} F(t)^{2} \omega\left((t / T)^{3}\right) d t=\frac{1}{6 \pi^{2}}\left\{\sum_{n=1}^{\infty} d_{3}(n)^{2} n^{-4 / 3}\right\} J+O\left(T^{2 / 3+\varepsilon}\right), \tag{7.1}
+\end{equation*}
+
+
+where
+
+$$
+J=\int_{0}^{\infty} \omega\left((t / T)^{3}\right) d t
+$$
+
+We proceed to estimate
+
+$$
+\int_{0}^{\infty}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} \omega\left((t / T)^{3}\right) d t,
+$$
+
+where $N \leq T^{1 / 6}$, by termwise integration. Since
+
+$$
+\int_{0}^{Y} \cos \{6 \pi y \sqrt[3]{n}\} \cos \{6 \pi y \sqrt[3]{m}\} d y= \begin{cases}Y / 2+O(1), & m=n \\ O\left(|\sqrt[3]{m}-\sqrt[3]{n}|^{-1}\right), & m \neq n\end{cases}
+$$
+
+an integration by parts yields
+
+
+\begin{equation*}
+\int_{0}^{\infty}(\cos \{6 \pi t \sqrt[3]{n}\})^{2} \omega\left((t / T)^{3}\right) d t=\frac{1}{2} J+O(1) \tag{7.2}
+\end{equation*}
+
+
+and
+
+
+\begin{align*}
+& \int_{0}^{\infty} \cos \{6 \pi t \sqrt[3]{n}\} \cos \{6 \pi t \sqrt[3]{m}\} \omega\left((t / T)^{3}\right) d t \ll|\sqrt[3]{m}-\sqrt[3]{n}|^{-1}  \tag{7.3}\\
+& \quad(m \neq n)
+\end{align*}
+
+
+Moreover, if $m \neq n$, we have
+
+\[
+|\sqrt[3]{m}-\sqrt[3]{n}|^{-1} \ll \begin{cases}(m n)^{1 / 3}|m-n|^{-1}, & m \ll n \ll m,  \tag{7.4}\\ \min \left(m^{-1 / 3}, n^{-1 / 3}\right), & \text { otherwise } .\end{cases}
+\]
+
+A straightforward estimate then shows that
+
+
+\begin{equation*}
+\int_{0}^{\infty}\left|\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} \omega\left((t / T)^{3}\right) d t=\sum_{n \leq N} S_{n}+O\left(N^{1 / 3+\varepsilon}\right), \tag{7.5}
+\end{equation*}
+
+
+where
+
+$$
+S_{n}=J \frac{\varepsilon(n)}{6 \pi^{2}} \sum_{r=1}^{\infty} d_{3}\left(n r^{3}\right)^{2}\left(n r^{3}\right)^{-4 / 3}
+$$
+
+We now consider the cross terms
+
+$$
+\int_{0}^{\infty} F(t) a_{n}\left(\gamma_{n} t\right) \omega\left((t / T)^{3}\right) d t
+$$
+
+and we therefore examine
+
+$$
+\int_{0}^{\infty} \Delta_{3}(x) \cos \{6 \pi \sqrt[3]{n x}\} \omega(x / X) \frac{d x}{x}=I(n, X),
+$$
+
+say, where $X=T^{3}$. Let $\gamma(T)$ denote a path from $2-i T$ to $2+i T$, passing to the left of $s=1$. Then Perron's formula shows that
+
+$$
+\frac{1}{2 \pi i} \int_{\gamma(T)} \zeta^{3}(s) \frac{x^{s}}{s} d s
+$$
+
+tends to $\Delta_{3}(x)$ as $T$ tends to infinity, for all non-integer values of $x$. Moreover, the discrepancy is bounded uniformly in $T$ for all $x \in[X / 2,17 X / 2]$. Thus Lebesgue's Bounded Convergence Theorem shows that
+
+
+\begin{equation*}
+I(n, X)=\lim _{T \rightarrow \infty} \frac{1}{2 \pi i} \int_{\gamma(T)} \zeta^{3}(s) K(s) \frac{d s}{s} \tag{7.6}
+\end{equation*}
+
+
+where
+
+$$
+K(s)=\int_{0}^{\infty} x^{s-1} \cos \{6 \pi \sqrt[3]{n x}\} \omega(x / X) d x
+$$
+
+Clearly $K(s)$ is an entire function. If we integrate by parts $k$ times we find
+
+
+\begin{align*}
+K(\sigma+i t) & =\frac{(-1)^{k}}{(1+i t)(2+i t) \ldots(k+i t)}  \tag{7.7}\\
+& \quad \times \int_{0}^{\infty} x^{k+i t} \frac{d^{k}}{d x^{k}}\left\{x^{\sigma-1} \cos \{6 \pi \sqrt[3]{n x}\} \omega(x / X)\right\} d x \\
+& \ll_{k, \sigma, \omega}(1+|t|)^{-k} X^{\sigma}(n X)^{k / 3}
+\end{align*}
+
+
+The path of integration in (7.6) may therefore be moved to $\operatorname{Re}(s)=-1$, giving
+
+$$
+\begin{aligned}
+I(n, X) & =\zeta(0)^{3} K(0)+\frac{1}{2 \pi i} \int_{-1-i \infty}^{-1+i \infty} \zeta^{3}(s) K(s) \frac{d s}{s} \\
+& =\zeta(0)^{3} K(0)+\frac{1}{2 \pi i} \int_{-1-i \infty}^{-1+i \infty} \zeta^{3}(1-s) \chi^{3}(s) K(s) \frac{d s}{s}
+\end{aligned}
+$$
+
+where
+
+$$
+\chi(s)=2^{s} \pi^{s-1} \sin (\pi s / 2) \Gamma(1-s) .
+$$
+
+The bound (7.7) yields $K(0) \ll 1$. We now expand $\zeta^{3}(1-s)$ as a Dirichlet series $\sum d_{3}(m) m^{s-1}$ and integrate termwise. When $m>X^{1 / 2}$ the contribution is
+
+$$
+\begin{aligned}
+& \ll d_{3}(m) m^{-2}\left\{\int_{0}^{(n X)^{1 / 3}}(1+t)^{7 / 2} X^{-1} d t+\int_{(n X)^{1 / 3}}^{\infty} t^{-3 / 2} n^{5 / 3} X^{2 / 3} d t\right\} \\
+& \ll d_{3}(m) m^{-2} n^{3 / 2} X^{1 / 2},
+\end{aligned}
+$$
+
+on using (7.7) with $k=0$ and $k=5$. The total contribution to $I(n, X)$ arising from terms $m>X^{1 / 2}$ is therefore $O\left(n^{3 / 2} X^{\varepsilon}\right)=O\left(X^{1 / 4+\varepsilon}\right)$.
+
+For the remaining terms we move the line of integration to $\operatorname{Re}(s)=$ $1 / 6+\varepsilon$. Then
+
+
+\begin{align*}
+& \frac{1}{2 \pi i} \int_{-1-i \infty}^{-1+i \infty} m^{s-1} \chi^{3}(s) K(s) \frac{d s}{s}  \tag{7.8}\\
+& =\int_{0}^{\infty} \cos \{6 \pi \sqrt[3]{n x}\} \omega(x / X)\left\{\frac{1}{2 \pi i} \int_{1 / 6+\varepsilon-i \infty}^{1 / 6+\varepsilon+i \infty}(m x)^{s-1} \chi^{3}(s) \frac{d s}{s}\right\} d x
+\end{align*}
+
+
+In the inner integral we note that
+
+$$
+\begin{aligned}
+\chi(s)^{3} s^{-1} & =\frac{1}{2 \pi} 3^{3 s-1 / 2} \chi(3 s)\left\{1+O\left(|s|^{-1}\right)\right\} \\
+& =\frac{1}{2 \pi} 3^{3 s-1 / 2} \chi(3 s)+O\left(|s|^{-1-\varepsilon}\right)
+\end{aligned}
+$$
+
+on the line of integration, by Stirling's approximation. Moreover,
+
+$$
+\frac{1}{2 \pi i} \int_{\sigma-i \infty}^{\sigma+i \infty} x^{s} \chi(s) d s=2 x \cos (2 \pi x)
+$$
+
+for $1 / 2<\sigma<1$ and any real positive $x$.
+
+It follows that
+
+$$
+\begin{aligned}
+& \frac{1}{2 \pi i} \int_{1 / 6+\varepsilon-i \infty}^{1 / 6+\varepsilon+i \infty}(m x)^{s} \chi^{3}(s) \frac{d s}{s} \\
+& \quad=\frac{1}{2 \pi i} \int_{1 / 2+3 \varepsilon-i \infty}^{1 / 2+3 \varepsilon+i \infty} \frac{1}{6 \pi \sqrt{3}}\left(3(m x)^{1 / 3}\right)^{s} \chi(s) d s+O\left((m x)^{1 / 6+\varepsilon}\right) \\
+& \quad=\frac{(m x)^{1 / 3}}{\pi \sqrt{3}} \cos \left\{6 \pi(m x)^{1 / 3}\right\}+O\left((m x)^{1 / 6+\varepsilon}\right)
+\end{aligned}
+$$
+
+The error term above contributes $O\left(m^{\varepsilon-5 / 6} X^{\varepsilon+1 / 6}\right)$ to (7.8), and hence, on summing over $m \leq X^{1 / 2}$, a total $O\left(X^{1 / 4+2 \varepsilon}\right)$ to $I(n, X)$. To handle the main term we note that
+
+$$
+\begin{aligned}
+\int_{0}^{\infty} \cos \{6 \pi \sqrt[3]{n x}\} \cos \{6 \pi & \sqrt[3]{m x}\} x^{-2 / 3} \omega(x / X) d x \\
+& =3 \int_{0}^{\infty} \cos \{6 \pi t \sqrt[3]{n}\} \cos \{6 \pi t \sqrt[3]{m}\} \omega\left((t / T)^{3}\right) d t
+\end{aligned}
+$$
+
+on recalling that $X=T^{3}$. In view of (7.2), (7.3) and (7.4) the contribution to (7.8) is
+
+$$
+\frac{\sqrt{3}}{2 \pi} n^{-2 / 3} J+O\left(n^{-2 / 3}\right),
+$$
+
+for $m=n$,
+
+$$
+\ll|m-n|^{-1},
+$$
+
+if $m \neq n$ and $m \ll n \ll m$, and
+
+$$
+\ll m^{-2 / 3} \min \left(m^{-1 / 3}, n^{-1 / 3}\right)
+$$
+
+otherwise. When we sum over $m \leq X^{1 / 2}$ the contribution to $I(n, X)$ arising from the error terms is therefore $O\left(X^{\varepsilon}\right)$, and we conclude, finally, that
+
+$$
+I(n, X)=\frac{\sqrt{3}}{2 \pi} d_{3}(n) n^{-2 / 3} J+O\left(X^{1 / 4+\varepsilon}\right)
+$$
+
+A change of variable now shows that
+
+$$
+\int_{0}^{\infty} F(t) \cos \{6 \pi t \sqrt[3]{n}\} \omega\left((t / T)^{3}\right) d t=\frac{1}{2 \pi \sqrt{3}} d_{3}(n) n^{-2 / 3} J+O\left(T^{3 / 4+\varepsilon}\right),
+$$
+
+uniformly for $n \leq N \leq T^{1 / 6}$. It follows that
+
+$$
+\int_{0}^{\infty} F(t) \frac{\varepsilon(n)}{\pi \sqrt{3}} \sum_{r}^{\prime} \frac{d_{3}\left(n r^{3}\right)}{\left(n r^{3}\right)^{2 / 3}} \cos \{6 \pi t r \sqrt[3]{n}\} \omega\left((t / T)^{3}\right) d t
+$$
+
+$$
+\begin{aligned}
+& =\frac{\varepsilon(n)}{6 \pi^{2}} J \sum_{r}^{\prime} \frac{d_{3}\left(n r^{3}\right)^{2}}{\left(n r^{3}\right)^{4 / 3}}+O\left(n^{-2 / 3+\varepsilon} T^{3 / 4+\varepsilon}\right) \\
+& =S_{n}+O\left(n^{-1 / 3+\varepsilon} T^{-1 / 6+\varepsilon} J\right)+O\left(n^{-2 / 3+\varepsilon} T^{3 / 4+\varepsilon}\right) \\
+& =S_{n}+O\left(n^{-1 / 3+\varepsilon} T^{5 / 6+\varepsilon}\right),
+\end{aligned}
+$$
+
+where $\sum^{\prime}$ indicates the condition $n r^{3} \leq T^{1 / 6}$. Moreover,
+
+$$
+a_{n}(t)-\frac{\varepsilon(n)}{\pi \sqrt{3}} \sum_{r}^{\prime} \frac{d_{3}\left(n r^{3}\right)}{\left(n r^{3}\right)^{2 / 3}} \cos \{6 \pi r t\} \ll n^{-1 / 3+\varepsilon} T^{-1 / 18+\varepsilon},
+$$
+
+whence
+
+$$
+\begin{aligned}
+& \int_{0}^{\infty} F(t) a_{n}\left(\gamma_{n} t\right) \omega\left((t / T)^{3}\right) d t \\
+= & S_{n}+O\left(n^{-1 / 3+\varepsilon} T^{5 / 6+\varepsilon}\right)+O\left(n^{-1 / 3+\varepsilon} T^{-1 / 18+\varepsilon} \int_{0}^{\infty}|F(t)| \omega\left((t / T)^{3}\right) d t\right)
+\end{aligned}
+$$
+
+Cauchy's inequality applied to (7.1) shows that
+
+$$
+\int_{0}^{\infty}|F(t)| \omega\left((t / T)^{3}\right) d t \ll T
+$$
+
+whence the second error term above is $O\left(n^{-1 / 3+\varepsilon} T^{17 / 18+\varepsilon}\right)$. It therefore follows that
+
+$$
+\int_{0}^{\infty} F(t) \sum_{n \leq N} a_{n}\left(\gamma_{n} t\right) \omega\left((t / T)^{3}\right) d t=\sum_{n \leq N} S_{n}+O\left(T^{35 / 36+\varepsilon}\right)
+$$
+
+for $N \leq T^{1 / 24}$. Combining this result with (7.1) and (7.5) we see that
+
+$$
+\begin{aligned}
+\int_{0}^{\infty}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right|^{2} \omega\left((t / T)^{3}\right) d t & =\sum_{n>N} S_{n}+O\left(T^{35 / 36+\varepsilon}\right) \\
+& \ll T N^{\varepsilon-1 / 3}+T^{35 / 36+\varepsilon} \ll T N^{-1 / 4}
+\end{aligned}
+$$
+
+for $N \leq T^{1 / 24}$. Hypothesis (H) now follows. Moreover, on applying Theorem 5 with $\mu=3 / 2$ we obtain a result corresponding to Theorem 1 for $\Delta_{3}(x)$.
+
+An analogue of Lemma 4 can be obtained by mimicking the argument of Section 5. However, the bound
+
+
+\begin{equation*}
+\int_{0}^{X}\left|\Delta_{3}(x)\right|^{K} d x \ll X^{1+K / 3+\varepsilon} \tag{7.9}
+\end{equation*}
+
+
+corresponding to (5.3), which is needed for the proof of the relevant version of Theorem 2, is not immediately available in the literature. Theorem 13.10 of Ivić [6] comes close to what is required, and, as indicated in Titchmarsh [9; p. 327] the argument can be modified so as to establish (7.9) with $K=3$. We complete our treatment of $\Delta_{3}(x)$ by supplying the necessary details.
+
+Lemma 6. For any $\varepsilon>0$ we have
+
+$$
+\int_{0}^{X}\left|\Delta_{3}(x)\right|^{3} d x \ll X^{2+\varepsilon}
+$$
+
+Note that, in contrast to the situation with $\Delta(x)$, the above result does not seem to be susceptible to small improvements through the use of upper bounds for $\Delta_{3}(x)$.
+
+We adapt Ivić's argument [6; pp. 368-372] by observing that if $\left|\Delta_{3}(t)\right| \geq$ $V$ with $T / 2 \leq t \leq T$, then
+
+
+\begin{equation*}
+\left|\sum_{M<n \leq 2 M} d_{3}(n) n^{-2 / 3} e(3 \sqrt[3]{n t})\right| \gg T^{-1 / 3}(\log T)^{-1} V \tag{7.10}
+\end{equation*}
+
+
+for some $M=2^{m} \leq T^{2+\varepsilon} V^{-3}$, as is shown by [6; (13.51)]. Moreover, (7.10) yields
+
+$$
+M^{1 / 3}(\log M)^{2} \gg T^{-1 / 3}(\log T)^{-1} V,
+$$
+
+whence in fact
+
+
+\begin{equation*}
+T^{-1+\varepsilon} V^{3} \ll M \ll T^{2+\varepsilon} V^{-3}. \tag{7.11}
+\end{equation*}
+
+
+We now divide the points $t_{1}, \ldots, t_{R}$ considered by Ivić into sets for which (7.10) holds. If each such set has $R(M)$ elements then there will be some value of $M$ for which
+
+$$
+R \ll R(M) \log T .
+$$
+
+The advantage of this procedure is that we may choose the parameter $T_{0}$ in Ivić's argument to depend on $M$. Indeed, we shall select $T_{0}=c(T M)^{2 / 3}$, with a suitable constant $c>0$. With this choice the exponential sums that occur can all be bounded via the "first derivative estimate", and one obtains
+
+$$
+\begin{aligned}
+R(M) & \ll\left(1+T / T_{0}\right)\left\{(T M)^{2 / 3}+T^{4 / 3} M^{1 / 3} V^{-1}\right\} V^{-2} T^{\varepsilon} \\
+& \ll\left\{(T M)^{2 / 3}+T+T^{4 / 3} M^{1 / 3} V^{-1}+T^{5 / 3} M^{-1 / 3} V^{-1}\right\} V^{-2} T^{\varepsilon} .
+\end{aligned}
+$$
+
+The bounds (7.11) then yield
+
+$$
+R(M) \ll\left\{T+T^{2} V^{-2}\right\} V^{-2} T^{2 \varepsilon} \ll T^{2+3 \varepsilon} V^{-4},
+$$
+
+whence $R \ll T^{2+4 \varepsilon} V^{-4}$. The proof of the lemma is now readily completed as in Ivić's work.
+
+\section*{References}
+[1] F. V. Atkinson, A divisor problem, Quart. J. Math. Oxford Ser. 12 (1941), 193--200.\\[0pt]
+[2] ---, The mean-value of the Riemann zeta function, Acta Math. 81 (1949), 353--376.\\[0pt]
+[3] H. Cramér, Über zwei Sätze von Herrn G. H. Hardy, Math. Z. 15 (1922), 201--210.\\[0pt]
+[4] D. R. Heath-Brown, The mean value theorem for the Riemann zeta-function, Mathematika 25 (1978), 177--184.\\[0pt]
+[5] D. R. Heath-Brown and M. N. Huxley, Exponential sums with a difference, Proc. London Math. Soc. (3) 61 (1990), 227--250.\\[0pt]
+[6] A. Ivić, The Riemann Zeta-function, Wiley, New York 1985.\\[0pt]
+[7] H. Iwaniec and C. J. Mozzochi, On the divisor and circle problems, J. Number Theory 29 (1988), 60--93.\\[0pt]
+[8] K.-L. Kueh, The moments of infinite series, J. Reine Angew. Math. 385 (1988), 1--9.\\[0pt]
+[9] E. C. Titchmarsh, The Theory of the Riemann Zeta-function, 2nd ed., Oxford Univ. Press, Oxford 1986.\\[0pt]
+[10] K.-C. Tong, On divisor problems, III, Acta Math. Sinica 6 (1956), 515--541.\\[0pt]
+[11] K.-M. Tsang, Higher power moments of $\Delta(x), E(t)$ and $P(x)$, Proc. London Math. Soc. (3), to appear.\\[0pt]
+[12] G. Voronoï, Sur une fonction transcendante et ses applications à la sommation de quelques séries, Ann. Sci. École Norm. Sup. (3) 21 (1904), 207--267 \& 459--533.
+
+\bigskip
+\begin{flushleft}
+\textsc{Magdalen College}\\
+\textsc{Oxford OX1 4AU}\\
+\textsc{England}
+\end{flushleft}
+
+\begin{center}
+\emph{Received on 20.2.1991}\\
+\emph{and in revised form on 7.5.1991}
+\end{center}
+
+\begin{flushright}
+(2124)
+\end{flushright}
+
+\end{document}

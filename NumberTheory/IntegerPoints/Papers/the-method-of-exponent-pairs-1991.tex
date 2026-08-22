@@ -1,0 +1,1095 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+
+\newcommand{\Fclass}{\mathbf{F}}
+\newcommand{\defeq}{\mathrel{\stackrel{\mathrm{def}}{=}}}
+\newcommand{\lcmop}{\operatorname{lcm}}
+
+\begin{document}
+
+\section*{3. THE METHOD OF EXPONENT PAIRS}
+
+\subsection*{3.1 INTRODUCTION}
+
+In this chapter, we will develop Phillips' method of exponent pairs. We are
+again striving for upper bounds for sums of the form
+\begin{equation*}
+ S=\sum_{n\in I}e(f(n)), \tag{3.1.1}
+\end{equation*}
+where $I=(a,b]$. However, we now assume that there is some $N>0$ such that
+$I\subseteq[N,2N]$, and our estimates will be in terms of $N$ rather than
+$|I|$. We will also assume that $f$ is some suitably well-defined function.
+The exact conditions on $f$ are complicated (see Section 3.3), but the most
+important feature is that $f'(x)$ is approximately $yx^{-s}$ for some $y>0$
+and some $s>0$. The bounds for $S$ are expressed in terms of $N$ and
+$L\defeq yN^{-s}$. (Note that $f'\approx L$.) If $L\leq1$, then a satisfactory
+estimate can be obtained from Theorems 2.1 and 2.2, so we concentrate on the
+case $L\geq1$. In this case, we seek an estimate of the form
+\[
+ S\ll L^kN^l.
+\]
+If we can prove such an estimate, we say that $(k,l)$ is an exponent pair.
+
+Clearly, $(0,1)$ is an exponent pair. Phillips' theory consists of two
+processes---$A$ and $B$---which produce new exponent pairs from old ones.
+
+The $A$-process is based on Lemma 2.5, the Weyl--van der Corput inequality. We
+shall see that if $(k,l)$ is an exponent pair, then so is
+\[
+ A(k,l)=\left(\frac{k}{2k+2},\frac{k+l+1}{2k+2}\right).
+\]
+
+The $B$-process is derived from the Poisson summation formula. From the
+exponent pair $(k,l)$, the $B$-process produces the pair
+\[
+ B(k,l)=(l-1/2,k+1/2).
+\]
+Note that $B(0,1)=(1/2,1/2)$; this exponent pair gives the same estimate as
+Theorem 2.9 in the case $q=0$. Moreover, $AB(0,1)=(1/6,2/3)$, which is
+Theorem 2.9 in the case $q=1$. (The product $AB$ is to be interpreted as a
+composition in the usual sense of analysis. Thus
+$AB(0,1)=A(1/2,1/2)=(1/6,2/3)$.)
+
+The $B$-process is involutory; that is, $B^2(k,l)=(k,l)$. Consequently, any
+exponent pair derivable from Phillips' theory has the form
+\begin{equation*}
+ A^{q_1}BA^{q_2}B\cdots A^{q_k}B(0,1) \tag{3.1.2}
+\end{equation*}
+or
+\begin{equation*}
+ BA^{q_1}BA^{q_2}B\cdots A^{q_k}B(0,1), \tag{3.1.3}
+\end{equation*}
+where the $q_i$ are positive integers.
+
+In Chapter 4, we will give several applications of exponent pairs. In these
+applications, the ultimate result will be expressed as a function of $k$ and
+$l$ of the form
+\begin{equation*}
+ \frac{ak+bl+c}{dk+el+f}, \tag{3.1.4}
+\end{equation*}
+where $a,\ldots,f$ are real numbers. In Chapter 5, we consider the question of
+how to minimize (3.1.4), or equivalently, how to make an optimal choice of the
+$q_i$ in (3.1.2) or (3.1.3).
+
+This chapter is organized in the following way. In Section 3.2, we give
+several lemmas on exponential integrals that will be used in the proof of the
+$B$-process. In Section 3.3, we give heuristic arguments for the $A$- and
+$B$-processes. Using these heuristics as a guide, we give the formal definition
+of an exponent pair. Sections 3.4 and 3.5 contain the proofs of the $A$- and
+$B$-processes, respectively.
+
+\subsection*{3.2 LEMMAS ON EXPONENTIAL INTEGRALS}
+
+In this section, we prove a number of estimates on exponential integrals.
+However, the only result that will be used in the other sections of this
+chapter is Lemma 3.6, which is the main tool necessary to prove the
+$B$-process.
+
+\medskip
+\noindent\textbf{LEMMA 3.1.}
+Assume that $f$ and $g$ are twice differentiable on $[a,b]$. Assume moreover
+that $g/f'$ is monotonic and that $|f'(x)/g(x)|\geq\lambda$. Then
+\[
+ \int_a^b g(x)e(f(x))\,dx\ll\frac1\lambda.
+\]
+
+\noindent\textit{Proof.}
+Integration by parts shows that the left-hand side is
+\[
+\begin{aligned}
+ \frac{1}{2\pi i}\int_a^b\frac{g(x)}{f'(x)}\,d(e(f(x)))
+ &=\left.\frac{g(x)e(f(x))}{2\pi i f'(x)}\right|_a^b
+   -\frac{1}{2\pi i}\int_a^b e(f(x))
+       \frac{d}{dx}\left(\frac{g(x)}{f'(x)}\right)\,dx \\
+ &\ll \frac1\lambda+
+   \int_a^b\left|\frac{d}{dx}\left(\frac{g(x)}{f'(x)}\right)\right|\,dx.
+\end{aligned}
+\]
+Since $g/f'$ is monotonic, the absolute-value bars may be taken outside the
+last integral, and the desired estimate follows.
+
+\medskip
+\noindent\textbf{LEMMA 3.2.}\par\noindent
+Assume that $f$ has two continuous derivatives on $[a,b]$ and that
+$|f''(x)|\geq\lambda_2>0$ there. Then
+\[
+ \int_a^b e(f(x))\,dx\ll\lambda_2^{-1/2}.
+\]
+
+\noindent\textit{Proof.}
+Let $\lambda$ be a number to be chosen later. We write
+$[a,b]=E_1\cup E_2$, where
+\[
+ E_1=\{x:|f'(x)|\geq\lambda\}
+ \quad\text{and}\quad
+ E_2=\{x:|f'(x)|<\lambda\}.
+\]
+Since $f''$ has constant sign, $E_1$ consists of at most two intervals and
+$E_2$ consists of at most one interval. By Lemma 3.1,
+\[
+ \int_{E_1}e(f(x))\,dx\ll\frac1\lambda.
+\]
+Let $E_2=(c,d)$. Then
+\[
+ (d-c)\lambda_2
+ \leq\left|\int_c^d f''(x)\,dx\right|
+ =|f'(d)-f'(c)|\leq2\lambda,
+\]
+so
+\[
+ \left|\int_{E_2}e(f(x))\,dx\right|\leq d-c\ll\frac{\lambda}{\lambda_2}.
+\]
+Combining the above gives
+\[
+ \int_a^b e(f(x))\,dx\ll\frac1\lambda+\frac{\lambda}{\lambda_2}.
+\]
+Choosing $\lambda=\lambda_2^{1/2}$ completes the proof.
+
+\medskip
+\noindent\textbf{LEMMA 3.3.}
+Let $A$ and $X$ be positive numbers. Then
+\[
+ \int_{-X}^{X}e(Ax^2)\,dx
+ =\frac{e(1/8)}{\sqrt{2A}}+O\left(\frac1{AX}\right).
+\]
+
+\noindent\textit{Proof.}
+After a couple of obvious changes of variables, we see that it suffices to
+show that
+\[
+ \int_0^X e(x^2)\,dx
+ =\frac{e(1/8)}{2\sqrt2}+O\left(\frac1X\right).
+\]
+Consider the contour integral
+\[
+ \int_{\mathbf C}e(z^2)\,dz,
+\]
+where $\mathbf C$ is the path that goes along the straight line from $0$ to
+$X$, along the circular arc from $X$ to $Xe(1/8)$, and along the straight line
+from $Xe(1/8)$ to $0$. Since the integrand is entire, the integral around the
+contour is zero. Therefore,
+\[
+ \int_0^X e(x^2)\,dx+\int_{\mathbf C_1}e(z^2)\,dz
+ =e(1/8)\int_0^X e^{-2\pi x^2}\,dx,
+\]
+where $\mathbf C_1$ is the circular arc of $\mathbf C$. Since
+$\sin 2\theta\geq4\theta/\pi$ for $0\leq\theta\leq\pi/4$, we have
+\[
+\begin{aligned}
+ \left|\int_{\mathbf C_1}e(z^2)\,dz\right|
+ &\leq X\int_0^{\pi/4}\exp(-2\pi X^2\sin 2\theta)\,d\theta \\
+ &\leq X\int_0^{\pi/4}\exp(-8X^2\theta)\,d\theta
+ \ll\frac1X.
+\end{aligned}
+\]
+Furthermore,
+\[
+\begin{aligned}
+ \int_0^X e^{-2\pi x^2}\,dx
+ &=\frac{1}{2\sqrt{2\pi}}\int_0^{2\pi X^2}y^{-1/2}e^{-y}\,dy \\
+ &=\frac{1}{2\sqrt{2\pi}}
+   \left\{\Gamma(1/2)-\int_{2\pi X^2}^{\infty}y^{-1/2}e^{-y}\,dy\right\} \\
+ &=\frac{1}{2\sqrt2}+O\left(\frac1X\right).
+\end{aligned}
+\]
+The result follows.
+
+\medskip
+\noindent\textbf{LEMMA 3.4.}
+Suppose $g$ is a real-valued function with four continuous derivatives on
+$[a,b]$. Suppose also that $g''(x)\geq\lambda_2>0$ and that $g'(x_0)=0$ for
+some $x_0\in[a,b]$. Finally, assume that there are positive constants
+$\lambda_3$ and $\lambda_4$ such that
+\[
+ |g^{(3)}(x)|\leq\lambda_3
+ \quad\text{and}\quad
+ |g^{(4)}(x)|\leq\lambda_4
+\]
+on $[a,b]$. Then
+\begin{equation*}
+ \int_a^b e(g(x))\,dx
+ =\frac{e(1/8+g(x_0))}{g''(x_0)^{1/2}}+O(R_1+R_2), \tag{3.2.1}
+\end{equation*}
+where
+\[
+ R_1=
+ \min\left(\frac{1}{\lambda_2(x_0-a)},\frac1{\lambda_2^{1/2}}\right)
+ +\min\left(\frac{1}{\lambda_2(b-x_0)},\frac1{\lambda_2^{1/2}}\right)
+\]
+and
+\[
+ R_2=(b-a)\lambda_4\lambda_2^{-2}
+     +(b-a)\lambda_3^2\lambda_2^{-3}.
+\]
+If the condition $g''(x)\geq\lambda_2>0$ is replaced by
+$g''(x)\leq-\lambda_2<0$, then we may replace $g$ by $-g$ and get the same
+result, save that the main term is now
+\[
+ \frac{e(-1/8+g(x_0))}{|g''(x_0)|^{1/2}}.
+\]
+In our applications of Lemma 3.4, we will be assuming that
+$\lambda_j\approx FN^{-j}$ for $j=2,3,4$. In this case, $R_2=O(F^{-1}N)$.
+
+\noindent\textit{Proof.}
+We may assume that
+\begin{equation*}
+ a+\lambda_2^{-1/2}\leq x_0\leq b-\lambda_2^{-1/2}, \tag{3.2.2}
+\end{equation*}
+for otherwise Lemma 3.2 is better than our claimed result.
+
+We multiply both sides of (3.2.1) by $e(-g(x_0))$ to reduce to the case
+$g(x_0)=0$. Similarly, we may translate coordinates so that $x_0=0$. Let
+$q(x)=\tfrac12g''(0)x^2$ and $r(x)=g(x)-q(x)$. Since $q(x)$ is the Taylor
+approximation to $g$ of order $2$, we may write
+\begin{equation*}
+ r(x)=\frac12x^3\int_0^1(1-u)^2g^{(3)}(xu)\,du. \tag{3.2.3}
+\end{equation*}
+Moreover, Taylor's theorem applied to $g'$ gives
+\begin{equation*}
+ r'(x)=x^2\int_0^1(1-u)g^{(3)}(xu)\,du. \tag{3.2.4}
+\end{equation*}
+We now write
+\[
+ \int_a^b e(g(x))\,dx
+ =\int_a^b e(q(x))\,dx
+  +\int_a^b e(q(x))\{e(r(x))-1\}\,dx.
+\]
+The first integral can be handled with Lemma 3.3. It then suffices to show
+that
+\begin{equation*}
+ \int_a^b e(q(x))\{e(r(x))-1\}\,dx\ll R_1+R_2. \tag{3.2.5}
+\end{equation*}
+Integrating by parts, we see that this integral is
+\begin{align*}
+ &\left.\frac{e(q(x))\{e(r(x))-1\}}{2\pi i g''(0)x}\right|_a^b \tag{3.2.6}\\
+ &\qquad
+ -\frac1{g''(0)}\int_a^b e(q(x))
+   \left\{\frac{e(r(x))r'(x)}x
+   -\frac{e(r(x))-1}{2\pi i x^2}\right\}\,dx.
+\end{align*}
+The first term contributes
+$\ll |a|^{-1}\lambda_2^{-1}+b^{-1}\lambda_2^{-1}\ll R_1$. We write the
+integral in (3.2.6) as $T_1+\frac1{2\pi}T_2$, where $T_1$ arises from the
+first term in braces and $T_2$ from the second.
+
+Let $h(x)=r'(x)x^{-2}$ and $j(x)=g'(x)x^{-1}$. Then
+\[
+\begin{aligned}
+ T_1
+ &=\int_a^b\frac{e(g(x))r'(x)}x\,dx
+  =\int_a^b\frac{h(x)}{j(x)}e(g(x))g'(x)\,dx \\
+ &=\frac1{2\pi i}\int_a^b\frac{h(x)}{j(x)}\,d(e(g(x))) \\
+ &=\left.\frac{h(x)e(g(x))}{2\pi i j(x)}\right|_a^b
+   -\frac1{2\pi i}\int_a^b
+       \frac{d}{dx}\left(\frac{h(x)}{j(x)}\right)e(g(x))\,dx.
+\end{aligned}
+\]
+From (3.2.4), we see that
+\[
+ h(x)=\int_0^1(1-u)g^{(3)}(xu)\,du\ll\lambda_3
+\]
+and
+\[
+ h'(x)=\int_0^1(1-u)u g^{(4)}(xu)\,du\ll\lambda_4.
+\]
+Similarly,
+\[
+ j(x)=\int_0^1g''(xu)\,du\geq\lambda_2,
+ \qquad
+ j'(x)=\int_0^1u g^{(3)}(xu)\,du\ll\lambda_3.
+\]
+Thus
+\[
+ \frac{d}{dx}\left(\frac hj\right)
+ =\frac{h'}j-\frac{hj'}{j^2}
+ \ll\frac{\lambda_4}{\lambda_2}
+     +\frac{\lambda_3^2}{\lambda_2^2},
+\]
+and so
+\[
+ T_1\ll\frac{\lambda_3}{\lambda_2}
+ +(b-a)\frac{\lambda_4}{\lambda_2}
+ +(b-a)\frac{\lambda_3^2}{\lambda_2^2}.
+\]
+
+To treat $T_2$, let $\delta$ be a parameter to be chosen later, and set
+\[
+ \mathbf I=[a,b]\cap[-\delta,\delta],
+ \qquad
+ \mathbf J=[a,b]\setminus[-\delta,\delta].
+\]
+Note that $\mathbf I=[c,d]$, where $c=\max(a,-\delta)$ and
+$d=\min(b,\delta)$. Define $k(x)=r(x)x^{-3}$. From (3.2.3), we see that
+$k(x)\ll\lambda_3$ and $k'(x)\ll\lambda_4$. Set
+$m(x)=(e(x)-1)/x$; then $m(x)\ll1$ and $m'(x)\ll1$. The contribution of the
+interval $\mathbf I$ to $T_2$ is
+\[
+\begin{aligned}
+ \int_c^d e(q(x))x m(r(x))k(x)\,dx
+ &=\left.\frac{e(q(x))m(r(x))k(x)}{2\pi i g''(0)}\right|_c^d \\
+ &\quad-\frac1{2\pi i g''(0)}\int_c^d e(q(x))m'(r(x))r'(x)k(x)\,dx \\
+ &\quad-\frac1{2\pi i g''(0)}\int_c^d e(q(x))m(r(x))k'(x)\,dx \\
+ &\ll \lambda_2^{-1}\lambda_3
+ +\lambda_2^{-1}\lambda_3^2\delta^3
+ +\lambda_2^{-1}\lambda_4(b-a).
+\end{aligned}
+\]
+For the interval $\mathbf J$, we apply Lemma 3.1 to the integrals
+\[
+ \int_{\mathbf J}\frac{e(g(x))}{x^2}\,dx
+ \quad\text{and}\quad
+ \int_{\mathbf J}\frac{e(q(x))}{x^2}\,dx.
+\]
+In the first integral, we are led to consider the function $g'(x)x^2$. Its
+absolute value is at least $\lambda_2\delta^3$, and it is monotonic since
+\[
+ (g'(x)x^2)'=g''(x)x^2+2xg'(x)>0.
+\]
+By Lemma 3.1,
+\[
+ \int_{\mathbf J}\frac{e(g(x))}{x^2}\,dx
+ \ll\lambda_2^{-1}\delta^{-3}.
+\]
+Similarly, since $q'(x)x^2=g''(0)x^3$ is monotonic,
+\[
+ \int_{\mathbf J}\frac{e(q(x))}{x^2}\,dx
+ \ll\lambda_2^{-1}\delta^{-3}.
+\]
+We take $\delta=\lambda_3^{-1/3}$ and combine this with our estimate of
+$T_1$ to see that the integral in (3.2.5) is
+\begin{equation*}
+ \begin{aligned}
+ &\ll R_1+\lambda_2^{-1}(T_1+T_2) \\
+ &\ll R_1+\lambda_2^{-2}\lambda_3
+ +(b-a)\lambda_2^{-2}\lambda_4
+ +(b-a)\lambda_2^{-3}\lambda_3^2.
+ \end{aligned} \tag{3.2.7}
+\end{equation*}
+Put $U=\lambda_2^{-1}(b-a)^{-1}$. From (3.2.2), we see that $U\ll R_1$.
+Since
+\[
+ \lambda_2^{-2}\lambda_3
+ =U^{1/2}\{\lambda_2^{-3}\lambda_3^2(b-a)\}^{1/2}
+ \ll\max\{R_1,\lambda_2^{-3}\lambda_3^2(b-a)\},
+\]
+the second term in (3.2.7) may be omitted. This completes the proof.
+
+For the next lemma, recall that we defined $[x]$ to be the greatest integer
+at most $x$, and $\psi(x)=x-[x]-1/2$.
+
+\medskip
+\noindent\textbf{LEMMA 3.5.}
+Suppose $f$ has two continuous derivatives on $[a,b]$. Suppose also that $f'$
+is decreasing, that $H_1$ and $H_2$ are integers such that
+$H_1<f'(x)<H_2$, and that $H=H_2-H_1\geq2$. Then
+\[
+ \sum_{n\in I}e(f(n))
+ =\sum_{H_1\leq h\leq H_2}\int_a^b e(f(x)-hx)\,dx+O(\log H).
+\]
+
+\noindent\textit{Proof.}
+The left-hand side is unchanged if we replace $f(n)$ by $f(n)-kn$ for any
+integer $k$. Therefore, we may normalize to the case $H_1<0<H_2$.
+
+Using Riemann--Stieltjes integration, we get
+\begin{equation*}
+ \sum_{n\in I}e(f(n))
+ =\int_a^b e(f(x))\,dx-\int_a^b e(f(x))\,d\psi(x)+O(1). \tag{3.2.8}
+\end{equation*}
+Integration by parts shows that
+\[
+ -\int_a^b e(f(x))\,d\psi(x)
+ =2\pi i\int_a^b e(f(x))f'(x)\psi(x)\,dx+O(1).
+\]
+The symmetric partial sums of the Fourier expansion
+\[
+ \psi(x)=\sum_{h\neq0}\frac{e(-hx)}{2\pi i h}
+\]
+are uniformly bounded and converge to $\psi(x)$ away from the integers; the
+values at the integers do not affect the integral. Hence
+\begin{equation*}
+ 2\pi i\int_a^b e(f(x))f'(x)\psi(x)\,dx
+ =\sum_{h\neq0}\frac1h\int_a^b e(f(x)-hx)f'(x)\,dx. \tag{3.2.9}
+\end{equation*}
+If $h<H_1$ or $h>H_2$, then $f'(x)-h$ is monotonic and nonzero on $[a,b]$.
+Moreover, $f'(x)/(f'(x)-h)$ is monotonic, so Lemma 3.1 gives
+\[
+ \int_a^b e(f(x)-hx)f'(x)\,dx
+ \ll\frac{|f'(b)|}{|f'(b)-h|}+\frac{|f'(a)|}{|f'(a)-h|}.
+\]
+When $h>H_2$, the above is $\ll H_2/(h-H_2)$. Thus these terms contribute
+\[
+ \ll\sum_{\substack{h>H_2\\h\neq0}}\frac{H_2}{h(h-H_2)}
+ \ll\sum_{\substack{h>H_2\\h\neq0}}
+ \left\{\frac1{h-H_2}-\frac1h\right\}
+ \ll\log H
+\]
+to (3.2.9). The same upper bound holds for the terms with $h<H_1$. We
+integrate the remaining terms by parts to get
+\[
+\begin{aligned}
+ &\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+   \frac1h\int_a^b f'(x)e(f(x)-hx)\,dx \\
+ &=\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+   \frac1{2\pi i h}\int_a^b e(-hx)\,d(e(f(x))) \\
+ &=\left.\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+   \frac{e(f(x)-hx)}{2\pi i h}\right|_a^b
+   +\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+   \int_a^b e(f(x)-hx)\,dx \\
+ &=\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+   \int_a^b e(f(x)-hx)\,dx+O(\log H).
+\end{aligned}
+\]
+Combining the above with (3.2.8) and (3.2.9) yields
+\[
+ \sum_{n\in I}e(f(n))
+ =\int_a^b e(f(x))\,dx
+ +\sum_{\substack{H_1\leq h\leq H_2\\h\neq0}}
+  \int_a^b e(f(x)-hx)\,dx+O(\log H).
+\]
+Since $H_1<0<H_2$, this completes the proof.
+
+\medskip
+\noindent\textbf{LEMMA 3.6.}
+Suppose that $f$ has four continuous derivatives on $[a,b]$, and that
+$f''<0$ on this interval. Suppose further that $[a,b]\subseteq[N,2N]$ and
+that $\alpha=f'(b)$ and $\beta=f'(a)$. Assume that there is some $F>0$ such
+that
+\[
+ -f''(x)\approx FN^{-2},
+ \qquad f^{(3)}(x)\ll FN^{-3},
+ \qquad f^{(4)}(x)\ll FN^{-4}
+\]
+for $x\in[a,b]$. For $\nu\in[\alpha,\beta]$, let $x_\nu$ be defined by the
+relation $f'(x_\nu)=\nu$, and let
+$\phi(\nu)=-f(x_\nu)+\nu x_\nu$. Then
+\[
+ \sum_{n\in I}e(f(n))
+ =\sum_{\alpha\leq\nu\leq\beta}
+  \frac{e(-\phi(\nu)-1/8)}{|f''(x_\nu)|^{1/2}}
+ +O\left(\log(FN^{-1}+2)+F^{-1/2}N\right).
+\]
+
+\noindent\textit{Proof.}
+We may assume that $F\geq1$, for the theorem is trivial otherwise. Let
+$H_1=[\alpha]-1$ and $H_2=[\beta]+1$. From the previous two lemmas, we see
+that
+\begin{equation*}
+ \sum_{n\in I}e(f(n))
+ =\sum_{\alpha<\nu<\beta}
+  \frac{e(-\phi(\nu)-1/8)}{|f''(x_\nu)|^{1/2}}+O(E), \tag{3.2.10}
+\end{equation*}
+where
+\[
+\begin{aligned}
+ E=\sum_{H_1\leq\nu\leq H_2}\bigl\{&F^{-1}N
+ +\min\bigl(|f'(a)-\nu|^{-1},F^{-1/2}N\bigr)\\
+ &+\min\bigl(|f'(b)-\nu|^{-1},F^{-1/2}N\bigr)\bigr\}.
+\end{aligned}
+\]
+Note that
+\[
+ H_2-H_1\ll\left|\int_a^b f''(x)\,dx\right|+1\ll FN^{-1}+1,
+\]
+so
+\[
+ \sum_{H_1\leq\nu\leq H_2}F^{-1}N
+ \ll F^{-1}N(FN^{-1}+1)\ll1+F^{-1}N.
+\]
+The non-harmonic remainder here is majorized by $F^{-1/2}N$ (and the
+constant term is absorbed by the logarithm). Note also that, for
+$\nu<H_2-1$,
+\[
+ |f'(a)-\nu|\geq H_2-1-\nu,
+\]
+so
+\[
+\begin{aligned}
+ &\sum_{H_1\leq\nu\leq H_2}
+ \min\bigl(|f'(a)-\nu|^{-1},F^{-1/2}N\bigr) \\
+ &\qquad\ll F^{-1/2}N
+ +\sum_{H_1\leq\nu<H_2-1}(H_2-1-\nu)^{-1} \\
+ &\qquad\ll F^{-1/2}N+\log(FN^{-1}+2).
+\end{aligned}
+\]
+The same upper bound holds for the sum involving $f'(b)$. Thus
+\[
+ E\ll\log(FN^{-1}+2)+F^{-1/2}N.
+\]
+Finally, extending the main sum in (3.2.10) to
+$\alpha\leq\nu\leq\beta$ changes it by at most two terms, each of size
+$O(F^{-1/2}N)$, and these may be absorbed into the error term.
+
+\subsection*{3.3 HEURISTIC ARGUMENTS AND DEFINITIONS}
+
+We begin this section by giving some heuristic arguments for the $A$- and
+$B$-processes. Then, partly guided by these heuristics, we give the formal
+definition of exponent pairs.
+
+Let $S$ be as defined in (3.1.1). Recall the Weyl--van der Corput inequality,
+which states that if $H\leq N$, then
+\[
+ |S|^2\ll\frac{N^2}{H}+\frac NH\sum_{1\leq h\leq H}|S_1(h)|,
+\]
+where
+\begin{equation*}
+ S_1(h)=\sum_{\substack{a<n\leq b\\a<n+h\leq b}}e(f_1(n;h)), \tag{3.3.1}
+\end{equation*}
+and $f_1(n;h)=f(n)-f(n+h)$. If $f'\approx L$, then
+$f_1'\approx L|h|N^{-1}$. If we assume that the exponent pair $(k,l)$ can be
+applied to $S_1(h)$, then we obtain
+\[
+\begin{aligned}
+ |S|^2
+ &\ll N^2H^{-1}+NH^{-1}\sum_{1\leq h\leq H}
+      (L|h|N^{-1})^kN^l \\
+ &\ll N^2H^{-1}+H^kL^kN^{1-k+l}.
+\end{aligned}
+\]
+Upon choosing $H$ to make the two terms equal, we get
+\[
+ |S|\ll L^{k/(2k+2)}N^{(k+l+1)/(2k+2)}.
+\]
+
+For the $B$-process, we use Lemma 3.6 to get
+\begin{equation*}
+ S=e(-1/8)\sum_{\alpha\leq\nu\leq\beta}
+ \frac{e(-\phi(\nu))}{|f''(x_\nu)|^{1/2}}+\text{error terms}. \tag{3.3.2}
+\end{equation*}
+For the purposes of this heuristic argument, we will ignore the error terms.
+Now $\phi'(\nu)=x_\nu\approx N$, and
+$|f''(x_\nu)|\approx LN^{-1}$. By partial summation (and complex conjugation),
+we see that
+\[
+ \left|\sum_{\alpha\leq\nu\leq\beta}
+ \frac{e(-\phi(\nu))}{|f''(x_\nu)|^{1/2}}\right|
+ \ll L^{-1/2}N^{1/2}
+ \max_{\alpha\leq\beta'\leq\beta}
+ \left|\sum_{\alpha<\nu\leq\beta'}e(\phi(\nu))\right|.
+\]
+If we assume that the exponent pair $(k,l)$ may be applied to the last sum,
+we get
+\[
+ |S|\ll L^{-1/2}N^{1/2}N^kL^l
+ =L^{l-1/2}N^{k+1/2}.
+\]
+
+To make these arguments rigorous, we need to work with a suitable class of
+functions $\Fclass$. This class should have the property that if
+$f\in\Fclass$, then the auxiliary functions $f_1$ and $\phi$ of (3.3.1) and
+(3.3.2), respectively, are also in $\Fclass$.
+
+Another requirement for our class of functions is that it contain those
+functions $f$ which satisfy $f'(x)=yx^{-s}$ for some $s>0$. For these
+functions we have
+\[
+ f^{(p+1)}(x)=(-1)^p(s)_p yx^{-s-p}.
+\]
+Here, $(s)_p$ is defined recursively by the relations
+\[
+ (s)_0=1,
+ \qquad
+ (s)_{p+1}=(s+p)(s)_p.
+\]
+Note that when $p\geq1$, $(s)_p=s(s+1)\cdots(s+p-1)$.
+
+\medskip
+\noindent\textbf{Definition.}
+Let $N,y,s$, and $\epsilon$ be positive real numbers with $\epsilon<1/2$, and
+let $P$ be a nonnegative integer. Define $\Fclass(N,P,s,y,\epsilon)$ to be the
+set of functions $f$ such that
+\begin{enumerate}
+ \item $f$ is defined and has $P$ continuous derivatives on some interval
+       $[a,b]$, with $[a,b]\subseteq[N,2N]$;
+ \item if $0\leq p\leq P-1$ and $a\leq x\leq b$, then
+ \begin{equation*}
+  \left|f^{(p+1)}(x)-(-1)^p(s)_p yx^{-s-p}\right|
+  <\epsilon(s)_p yx^{-s-p}. \tag{3.3.3}
+ \end{equation*}
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Definition.}
+Let $k$ and $l$ be real numbers such that
+$0\leq k\leq1/2\leq l\leq1$. Suppose that for every $s>0$, there is some
+$P=P(k,l,s)$ and some $\epsilon=\epsilon(k,l,s)<1/2$ such that for every
+$N>0$, every $y>0$, and every
+$f\in\Fclass(N,P,s,y,\epsilon)$, the estimate
+\begin{equation*}
+ \left|\sum_{n\in I}e(f(n))\right|
+ \ll (yN^{-s})^kN^l+y^{-1}N^s \tag{3.3.4}
+\end{equation*}
+holds. Here it is also assumed that $f$ is defined on $[a,b]$, and the implied
+constant depends only on $k,l$, and $s$. We then say that $(k,l)$ is an
+exponent pair.
+
+In proving that $(k,l)$ is an exponent pair, we may always assume that
+$yN^{-s}\geq1$. For if $yN^{-s}<1/2$, then Theorem 2.1 yields
+\[
+ \left|\sum_{n\in I}e(f(n))\right|\ll y^{-1}N^s.
+\]
+If $1/2\leq yN^{-s}<1$, then Theorem 2.2 yields
+\[
+ \left|\sum_{n\in I}e(f(n))\right|\ll N^{1/2},
+\]
+and $N^{1/2}\ll(yN^{-s})^kN^l$ since $l\geq1/2$.
+
+We close this section with an explanation of why the conditions
+$0\leq k\leq1/2\leq l\leq1$ are included in the definition of exponent
+pairs. The condition $l\geq1/2$ is no essential restriction, since no pair
+$(k,l)$ which satisfies (3.3.4) can have $l<1/2$. To see why, consider, for a positive integer $N$, the sum
+\[
+ S(t)=\sum_{N<n\leq2N}e\left(\frac tn\right).
+\]
+By Theorem 2 of Appendix A,
+\[
+ \int_T^{2T}|S(t)|^2\,dt\geq(T-4N^2)N.
+\]
+It follows that if $T\geq8N^2$, then there is some $t$ with
+$T\leq t\leq2T$ such that $|S(t)|\gg N^{1/2}$.
+
+We also claim that there is a sequence $\{t_\nu\}_{\nu=1}^{\infty}$ such that
+$t_\nu\to\infty$ and $|S(t_\nu)|=N$. Take
+\[
+ t_\nu=\nu\,\lcmop\{1,2,\ldots,2N\}.
+\]
+Then $t_\nu/n\in\mathbb Z$ whenever $N<n\leq2N$, and so $S(t_\nu)=N$.
+This shows that no exponent pair $(k,l)$ can have $k<0$, and any exponent pair
+that has $k=0$ must have $l=1$.
+
+There is no need ever to take $l>1$ in an exponent pair, for an exponent pair
+with $k\geq0$ and $l>1$ would yield an estimate worse than the trivial
+estimate provided by the exponent pair $(0,1)$. Similarly, there is no need
+to take $k>1/2$, for then $(k,l)$ would provide a weaker estimate than the
+pair $(1/2,1/2)$ of Theorem 2.2.
+
+Finally, we observe that if $(k,1/2)$ is an exponent pair, then $k=1/2$.
+Assume that $(k,1/2)$ is an exponent pair. Let $H$ be a positive integer. Let
+$t$ be defined by the equation
+\[
+ t^2=\lcmop\{1,2,\ldots,H\},
+\]
+and let $N=t^2H^{-2}$. Define
+\[
+ f(x)=2t x^{1/2}.
+\]
+Then $tN^{-1/2}=H$, and (3.3.4) gives
+\begin{equation*}
+ \left|\sum_{N<n\leq2N}e(f(n))\right|
+ \ll H^kN^{1/2}+H^{-1}. \tag{3.3.5}
+\end{equation*}
+On the other hand, Lemma 3.6 gives
+\[
+\begin{aligned}
+ \sum_{N<n\leq2N}e(f(n))
+ &=\sum_{2^{-1/2}tN^{-1/2}<\nu\leq tN^{-1/2}}
+  \frac{e(t^2/\nu-1/8)}{|f''(x_\nu)|^{1/2}}\\
+ &\quad+O\left(\log(H+2)+H^{-1/2}N^{1/2}\right).
+\end{aligned}
+\]
+Note that $tN^{-1/2}=H$ and $|f''(x_\nu)|\approx H/N$. Our definition of
+$t$ ensures that $t^2/\nu\in\mathbb Z$ for every integer $\nu$ in the range
+of summation. Therefore, for sufficiently large $H$,
+\begin{equation*}
+ \left|\sum_{N<n\leq2N}e(f(n))\right|
+ \gg H^{1/2}N^{1/2}. \tag{3.3.6}
+\end{equation*}
+Estimates (3.3.5) and (3.3.6) are inconsistent unless $k\geq1/2$, so the
+result is proved.
+
+\subsection*{3.4 PROOF OF THE A-PROCESS}
+
+Our first lemma shows that the auxiliary function $f_1$ of (3.3.1) is in an
+appropriate $\Fclass$-set.
+
+\medskip
+\noindent\textbf{LEMMA 3.7.}
+Suppose $P\geq1$, $f\in\Fclass(N,P,s,y,\epsilon)$, and $f$ is defined on
+$[a,b]$. Suppose also that
+\[
+ 1\leq h<\min\left(b-a,\frac{2\epsilon N}{s+P}\right).
+\]
+Define
+\[
+ f_1(x)=f(x)-f(x+h).
+\]
+Then $f_1$ is defined on $[a,b-h]$ and
+\[
+ f_1\in\Fclass(N,P-1,s+1,shy,3\epsilon).
+\]
+
+\noindent\textit{Proof.}
+Let
+\[
+ F(x)=
+ \begin{cases}
+  yx^{1-s}(1-s)^{-1},&s\neq1,\\
+  y\log x,&s=1.
+ \end{cases}
+\]
+Condition (3.3.3) may be written as
+\[
+ |f^{(p+1)}(x)-F^{(p+1)}(x)|
+ <\epsilon|F^{(p+1)}(x)|.
+\]
+Define $F_1(x)=F(x)-F(x+h)$ and $G(x)=-hyx^{-s}$. We will show that
+\begin{equation*}
+ |f_1^{(p+1)}(x)-F_1^{(p+1)}(x)|
+ <\epsilon|F_1^{(p+1)}(x)| \tag{3.4.1}
+\end{equation*}
+and that
+\begin{equation*}
+ |F_1^{(p+1)}(x)-G^{(p+1)}(x)|
+ <\epsilon|G^{(p+1)}(x)| \tag{3.4.2}
+\end{equation*}
+when $0\leq p\leq P-2$. The desired result will then follow readily.
+
+From our definitions of $f_1$ and $F_1$, we see that
+\[
+ |f_1^{(p+1)}(x)-F_1^{(p+1)}(x)|
+ =\left|\int_x^{x+h}
+   \{f^{(p+2)}(u)-F^{(p+2)}(u)\}\,du\right|.
+\]
+When $a\leq x\leq b-h$ and $0\leq p\leq P-2$, the above is bounded by
+\[
+ \epsilon\int_x^{x+h}|F^{(p+2)}(u)|\,du
+ =\epsilon|F_1^{(p+1)}(x)|.
+\]
+This proves (3.4.1). For (3.4.2), we observe that the left-hand side is equal
+to
+\[
+ y(s)_{p+1}\left|\int_x^{x+h}
+  (u^{-s-p-1}-x^{-s-p-1})\,du\right|
+ =y(s)_{p+2}\left|\int_x^{x+h}\int_x^u
+  w^{-s-p-2}\,dw\,du\right|,
+\]
+and this in turn is
+\[
+ \leq\frac12(s)_{p+2}yh^2x^{-s-p-2}
+ <\epsilon(s+1)_p shy x^{-s-p-1},
+\]
+provided $h<2\epsilon x/(s+p+1)$. This last condition is guaranteed by our
+hypothesis $h<2\epsilon N/(s+P)$.
+
+To complete the proof, we note that
+\[
+ |F_1^{(p+1)}(x)|<(1+\epsilon)|G^{(p+1)}(x)|
+\]
+follows from (3.4.2). Combining this with (3.4.1) and (3.4.2) yields
+\[
+ |f_1^{(p+1)}(x)-G^{(p+1)}(x)|
+ <(2\epsilon+\epsilon^2)|G^{(p+1)}(x)|.
+\]
+Since $2\epsilon+\epsilon^2<3\epsilon$ for $\epsilon<1$, the proof is
+complete.
+
+\medskip
+\noindent\textbf{THEOREM 3.8.}
+If $(k,l)$ is an exponent pair, then
+\[
+ (\kappa,\lambda)=A(k,l)
+ =\left(\frac{k}{2k+2},\frac{k+l+1}{2k+2}\right)
+\]
+is an exponent pair.
+
+\noindent\textit{Proof.}
+First, since $0\leq k$ and $1/2\leq l\leq1$, we have
+\[
+ 0\leq\kappa=\frac{k}{2k+2}<\frac{k+1}{2k+2}=\frac12,
+ \qquad
+ \frac12\leq\lambda=\frac12+\frac{l}{2k+2}\leq1.
+\]
+Now let $y,N$, and $s$ be positive. We need to show that there exist
+$P_1>0$ and $\epsilon_1>0$ such that if
+$f\in\Fclass(N,P_1,s,y,\epsilon_1)$ and $L=yN^{-s}\geq1$, then
+\[
+ \left|\sum_{n\in I}e(f(n))\right|\ll L^\kappa N^\lambda.
+\]
+Our proof breaks into two cases: (i) $L\geq\log N$ and
+(ii) $1\leq L<\log N$. We begin with case (i).
+
+Since $(k,l)$ is an exponent pair, for the parameter $s+1$ there exist
+$P>0$ and $\epsilon$ with $0<\epsilon<1/2$ such that the defining exponent
+pair estimate holds on $\Fclass(N,P,s+1,\cdot,\epsilon)$. We will show that
+we may take $P_1=P+1$ and $\epsilon_1=\epsilon/3$.
+
+Assume that
+\[
+ H\leq\min\left(b-a,\frac{2\epsilon_1N}{s+P_1}\right)
+ =\min\left(b-a,\frac{2\epsilon N}{3(s+P+1)}\right).
+\]
+In the notation of (2.3.4), we have
+\[
+ |S|^2\ll\frac{N^2}{H}+\frac NH\sum_{1\leq h\leq H}|S_1(h)|.
+\]
+By Lemma 3.7,
+\[
+ f_1\in\Fclass(N,P,s+1,shy,\epsilon),
+\]
+so the exponent pair $(k,l)$ may be applied to $S_1(h)$. Consequently,
+\[
+\begin{aligned}
+ |S|^2
+ &\ll H^{-1}N^2+H^{-1}N\sum_{1\leq h\leq H}
+ \left\{(hLN^{-1})^kN^l+h^{-1}L^{-1}N\right\} \\
+ &\ll H^{-1}N^2+H^kL^kN^{l-k+1}
+      +H^{-1}L^{-1}N^2\log N.
+\end{aligned}
+\]
+Since we are assuming that $L\geq\log N$, the first term dominates the
+third. Applying Lemma 2.4 and using the upper bound on $H$ yields
+\[
+ |S|\ll L^\kappa N^\lambda+N(b-a)^{-1/2}.
+\]
+If the first term dominates, we are done. Otherwise, we employ the trivial
+estimate to get
+\[
+ |S|\ll\min\{N(b-a)^{-1/2},b-a\}\ll N^{2/3}.
+\]
+Since $k\leq1/2$ and $l\geq1/2$, we have
+\[
+ \lambda=\frac12+\frac{l}{2k+2}\geq\frac23,
+\]
+and the desired estimate $|S|\ll L^\kappa N^\lambda$ follows.
+
+The remaining case $1\leq L<\log N$ is easily dispatched. By Theorem 2.2,
+\[
+ |S|\ll N^{1/2}(\log N)^{1/2}\ll N^{2/3}
+ \ll L^\kappa N^\lambda.
+\]
+
+\subsection*{3.5 PROOF OF THE B-PROCESS}
+
+As in the previous section, we begin by showing that the needed auxiliary
+function is in an appropriate $\Fclass$-set.
+
+\medskip
+\noindent\textbf{LEMMA 3.9.}
+Suppose $P\geq2$, $f\in\Fclass(N,P,s,y,\epsilon)$, and $f$ is defined on the
+interval $[a,b]$. Let $\alpha=f'(b)$ and $\beta=f'(a)$. For
+$\nu\in[\alpha,\beta]$, let $x_\nu$ be defined by the relation
+$f'(x_\nu)=\nu$, and define
+\[
+ \phi(\nu)=\nu x_\nu-f(x_\nu).
+\]
+Let $\sigma=1/s$ and $\eta=y^\sigma$. Then there is some constant
+$C=C(s,P)$ such that
+\[
+ \left|\phi^{(p+1)}(\nu)-(-1)^p(\sigma)_p\eta\nu^{-\sigma-p}\right|
+ <C\epsilon(\sigma)_p\eta\nu^{-\sigma-p}
+\]
+whenever $0\leq p\leq P-1$ and $\alpha\leq\nu\leq\beta$.
+
+\noindent\textit{Proof.}
+As in the proof of Lemma 3.7, let
+\[
+ F(x)=
+ \begin{cases}
+  yx^{1-s}(1-s)^{-1},&s\neq1,\\
+  y\log x,&s=1.
+ \end{cases}
+\]
+Condition (3.3.3) may be written as
+\begin{equation*}
+ |f^{(p+1)}(x)-F^{(p+1)}(x)|
+ <\epsilon|F^{(p+1)}(x)|. \tag{3.5.1}
+\end{equation*}
+Now define $X_\nu$ by the relation $F'(X_\nu)=\nu$, and define
+$\Phi(\nu)=\nu X_\nu-F(X_\nu)$. It is easy to see that
+\[
+ x_\nu=\phi'(\nu),
+ \qquad
+ X_\nu=\Phi'(\nu)=\eta\nu^{-\sigma}.
+\]
+To complete the proof, we will show that there is some constant $C=C(s,P)$
+such that
+\begin{equation*}
+ |\phi^{(p+1)}(\nu)-\Phi^{(p+1)}(\nu)|
+ <C\epsilon|\Phi^{(p+1)}(\nu)| \tag{3.5.2}
+\end{equation*}
+whenever $0\leq p\leq P-1$ and $\alpha\leq\nu\leq\beta$.
+
+From our definitions, we note that $f'(\phi'(\nu))=\nu$. By differentiating
+both sides with respect to $\nu$, we get
+\[
+ \phi''(\nu)=\frac1{f''(x_\nu)}.
+\]
+An easy induction argument shows that for $p\geq1$, we can find constants
+$w(u_1,\ldots,u_{p-1})$ such that
+\begin{equation*}
+ \phi^{(p+1)}(\nu)
+ =\frac{1}{\{f''(x_\nu)\}^{2p-1}}
+  \sum_{\mathbf u}w(u_1,\ldots,u_{p-1})
+  \prod_{j=1}^{p-1}f^{(u_j+1)}(x_\nu), \tag{3.5.3}
+\end{equation*}
+where the sum is over all $u_1,\ldots,u_{p-1}$ such that
+$1\leq u_j\leq p$ and $u_1+\cdots+u_{p-1}=2p-2$. For $p=1$, the sum and
+product are interpreted in the usual empty-product sense. The constants
+$w(u_1,\ldots,u_{p-1})$ depend only on $u_1,\ldots,u_{p-1}$ and not on $f$,
+so we also have
+\begin{equation*}
+ \Phi^{(p+1)}(\nu)
+ =\frac{1}{\{F''(X_\nu)\}^{2p-1}}
+  \sum_{\mathbf u}w(u_1,\ldots,u_{p-1})
+  \prod_{j=1}^{p-1}F^{(u_j+1)}(X_\nu). \tag{3.5.4}
+\end{equation*}
+
+From (3.5.1), we see that
+\[
+ |f'(x_\nu)-F'(x_\nu)|
+ =|\nu-yx_\nu^{-s}|<\epsilon yx_\nu^{-s}.
+\]
+Consequently,
+\[
+ (1-\epsilon)^\sigma\eta\nu^{-\sigma}
+ <x_\nu
+ <(1+\epsilon)^\sigma\eta\nu^{-\sigma},
+\]
+and so
+\[
+ |x_\nu-X_\nu|\ll\epsilon\eta\nu^{-\sigma}.
+\]
+Here, and in the remainder of this proof, all $\ll$-constants depend at most
+on $s$ and $P$. From (3.5.1), we see that if $1\leq p\leq P-1$, then
+\[
+ |f^{(p+1)}(x_\nu)-F^{(p+1)}(x_\nu)|
+ <\epsilon|F^{(p+1)}(x_\nu)|
+ \ll\epsilon yN^{-s-p}.
+\]
+Furthermore, there is some $t$ in the open interval with endpoints $x_\nu$
+and $X_\nu$ such that
+\[
+\begin{aligned}
+ |F^{(p+1)}(x_\nu)-F^{(p+1)}(X_\nu)|
+ &=|F^{(p+2)}(t)(X_\nu-x_\nu)| \\
+ &\ll \epsilon yN^{-s-p-1}\eta\nu^{-\sigma}
+ \ll \epsilon yN^{-s-p}.
+\end{aligned}
+\]
+The last two estimates together yield
+\[
+ |f^{(p+1)}(x_\nu)-F^{(p+1)}(X_\nu)|
+ \ll\epsilon yN^{-s-p}.
+\]
+Upon combining this with (3.5.3) and (3.5.4), we find, for $p\geq1$, that
+\[
+\begin{aligned}
+ |\phi^{(p+1)}(\nu)-\Phi^{(p+1)}(\nu)|
+ &\ll\frac{\epsilon y^{p-1}}{|F''(X_\nu)|^{2p-1}}
+ \sum_{\mathbf u}|w(u_1,\ldots,u_{p-1})|\\
+ &\qquad\qquad\times
+ X_\nu^{-s(p-1)-(u_1+\cdots+u_{p-1})} \\
+ &\ll\epsilon y^{-p}N^{ps+1}
+ \ll\epsilon|\Phi^{(p+1)}(\nu)|.
+\end{aligned}
+\]
+For $p=0$, (3.5.2) follows directly from the estimate for
+$|x_\nu-X_\nu|$. This proves (3.5.2), and thus completes the proof of the
+lemma.
+
+In terms of our definition of $\Fclass$, Lemma 3.9 says that if
+$f\in\Fclass(N,P,s,y,\epsilon)$, then the restriction of $\phi$ to the
+interval $[\alpha,\beta]\cap[J,2J]$ is in
+$\Fclass(J,P,\sigma,\eta,C\epsilon)$ for any $J$ with
+$\alpha\leq J\leq\beta$.
+
+\medskip
+\noindent\textbf{THEOREM 3.10.}
+If $(k,l)$ is an exponent pair, then
+\[
+ (\kappa,\lambda)=B(k,l)=(l-1/2,k+1/2)
+\]
+is an exponent pair.
+
+\noindent\textit{Proof.}
+First, $0\leq\kappa\leq1/2$ and $1/2\leq\lambda\leq1$ follow immediately
+from $0\leq k\leq1/2\leq l\leq1$. Moreover, if $l=1/2$, then, by the remarks
+at the end of Section 3.3, we have $k=1/2$. It follows that
+$(\kappa,\lambda)=(0,1)$ is an exponent pair by the trivial estimate. We may
+henceforth assume that $l>1/2$, and hence that $\kappa>0$.
+
+Assume that $y>0$, $s>0$, $N>0$, and $L=yN^{-s}\geq1$. We want to find
+$P_1$ and $\epsilon_1$ such that if
+$f\in\Fclass(N,P_1,s,y,\epsilon_1)$, then
+\[
+ S=\sum_{n\in I}e(f(n))\ll L^\kappa N^\lambda.
+\]
+Put $\sigma=1/s$ and $\eta=y^\sigma$. Since $(k,l)$ is an exponent pair,
+there exist $P>0$ and $\epsilon$ with $0<\epsilon<1/2$ such that the defining
+estimate (3.3.4) holds for the parameter $\sigma$. By increasing $P$ if
+necessary, we may assume that $P\geq4$. We take $P_1=P$ and
+\[
+ \epsilon_1=\min\left(\frac14,\frac{\epsilon}{C(s,P)}\right),
+\]
+where $C(s,P)$ is the constant occurring in Lemma 3.9.
+
+Since $f$ satisfies the hypotheses of Lemma 3.6 with $F\asymp LN$, we may
+write
+\begin{equation*}
+ S=\sum_{\alpha\leq\nu\leq\beta}
+ \frac{e(-\phi(\nu)-1/8)}{|f''(x_\nu)|^{1/2}}
+ +O\left(\log(2L)+L^{-1/2}N^{1/2}\right). \tag{3.5.5}
+\end{equation*}
+Here $\alpha=f'(b)$ and $\beta=f'(a)$, and
+$\alpha\asymp\beta\asymp L$, with constants depending only on $s$.
+Consequently, $[\alpha,\beta]$ can be covered by a bounded number of intervals
+contained in dyadic intervals $[J,2J]$ with $J\asymp L$.
+
+On each such interval, Lemma 3.9 and the exponent-pair hypothesis give,
+uniformly in $w$,
+\[
+\begin{aligned}
+ T_J(w)
+ &\defeq\sum_{\substack{\nu\text{ in the interval}\\\nu\leq w}}
+ e(\phi(\nu)) \\
+ &\ll(\eta J^{-\sigma})^kJ^l+\eta^{-1}J^\sigma
+ \ll N^kL^l+N^{-1}.
+\end{aligned}
+\]
+Let
+\[
+ A(w)=|f''(x_w)|^{-1/2}.
+\]
+The defining estimates for $\Fclass$ imply
+\[
+ A(w)\asymp(LN^{-1})^{-1/2}
+\]
+and, since $x_w'=1/f''(x_w)$,
+\[
+ |A'(w)|\ll |f^{(3)}(x_w)|\,|f''(x_w)|^{-5/2}
+ \ll N^{1/2}L^{-3/2}.
+\]
+Thus, on each of the above intervals,
+\[
+ \sup_w A(w)+\int|A'(w)|\,dw\ll(LN^{-1})^{-1/2}.
+\]
+Partial summation now gives
+\[
+\begin{aligned}
+ \left|\sum_{\nu\text{ in the interval}}
+ A(\nu)e(-\phi(\nu))\right|
+ &=\left|\int A(w)\,d\overline{T_J(w)}\right| \\
+ &\ll(N^kL^l+N^{-1})(LN^{-1})^{-1/2} \\
+ &\ll L^\kappa N^\lambda+L^{-1/2}N^{-1/2}.
+\end{aligned}
+\]
+Summing over the bounded number of intervals and using (3.5.5), we obtain
+\[
+ |S|\ll L^\kappa N^\lambda
+       +\log(2L)+L^{-1/2}N^{1/2}.
+\]
+Since $\kappa>0$ and $L\geq1$, the first term dominates the remaining terms,
+and the result is proved.
+
+\subsection*{3.6 NOTES}
+
+Here, we have presented the method of exponent pairs along very much the same
+lines as Phillips (1933). One difference is in the use of Lemma 3.4, which is
+somewhat stronger than the corresponding result of Phillips. Several variants
+of this result have appeared in the literature; see, for example, Lemma 4.6
+and pages 90--91 of Titchmarsh (1951), Lemma 10 of Heath-Brown (1983), and
+pages 86--91 of Vinogradov (1985). The proof given here is due to H. L.
+Montgomery (unpublished).
+
+\end{document}
