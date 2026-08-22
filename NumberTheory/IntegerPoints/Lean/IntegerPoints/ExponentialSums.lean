@@ -272,27 +272,28 @@ def wu_lemma25 : Prop :=
               (X ^ 2 * H ^ 18 * M ^ 18 * N ^ 7) ^ ((1 : ℝ) / 18) +
               X⁻¹ * H * M * N) * logL X H M N ^ 2
 
-/-- The Graham–Kolesnik function class `F(N, P, s, y, ε)`: `f` is `C^P`,
-`[a, b] ⊆ [N, 2N]`, and for `0 ≤ p < P` and `t ∈ [a, b]`
-`|f^{(p+1)}(t) - (-1)^p (s)_p y t^{-s-p}| ≤ ε (s)_p y t^{-s-p}`, where
-`(s)_p = s(s+1)⋯(s+p-1)` (so `f' ≈ y t^{-s}` and `y N^{-s} ≍ |f'|`). -/
+/-- The Graham–Kolesnik function class `F(N, P, s, y, ε)` (Graham–Kolesnik,
+*Van der Corput's Method of Exponential Sums*, §3.3): `f` has `P` continuous
+derivatives (here: is `C^P` on `ℝ`), `[a, b] ⊆ [N, 2N]`, and for `0 ≤ p < P`
+and `t ∈ [a, b]`,
+`|f^{(p+1)}(t) - (-1)^p (s)_p y t^{-s-p}| < ε (s)_p y t^{-s-p}`, where
+`(s)_p = s(s+1)⋯(s+p-1)` (so `f' ≈ y t^{-s}`). -/
 def InGKClass (N : ℝ) (P : ℕ) (s y ε a b : ℝ) (f : ℝ → ℝ) : Prop :=
   N ≤ a ∧ a ≤ b ∧ b ≤ 2 * N ∧ ContDiff ℝ P f ∧
     ∀ p : ℕ, p < P → ∀ t ∈ Set.Icc a b,
       |iteratedDeriv (p + 1) f t -
-          (-1) ^ p * (∏ i ∈ Finset.range p, (s + i)) * y * t ^ (-s - p)| ≤
+          (-1) ^ p * (∏ i ∈ Finset.range p, (s + i)) * y * t ^ (-s - p)| <
         ε * (∏ i ∈ Finset.range p, (s + i)) * y * t ^ (-s - p)
 
-/-- `(κ, l)` is an **exponent pair** in the sense of Graham–Kolesnik
-(*Van der Corput's Method of Exponential Sums*, Ch. 3): `0 ≤ κ ≤ 1/2 ≤ l ≤ 1`
-and for every `s > 0` there are `P`, `ε ∈ (0, 1/2)` and a constant `C` such
-that `∑_{a < n ≤ b} e(f(n)) ≤ C (y N^{-s})^κ N^l` for all `N ≥ 1`,
-`y ≥ N^s` and `f ∈ F(N, P, s, y, ε)`. -/
+/-- `(κ, l)` is an **exponent pair** (Graham–Kolesnik, §3.3, Definition):
+`0 ≤ κ ≤ 1/2 ≤ l ≤ 1` and for every `s > 0` there are `P`, `ε ∈ (0, 1/2)` and
+a constant `C` such that for all `N > 0`, `y > 0` and `f ∈ F(N, P, s, y, ε)`,
+`|∑_{a < n ≤ b} e(f(n))| ≤ C ((y N^{-s})^κ N^l + y⁻¹ N^s)`. -/
 def IsExponentPair (κ l : ℝ) : Prop :=
   0 ≤ κ ∧ κ ≤ 1 / 2 ∧ 1 / 2 ≤ l ∧ l ≤ 1 ∧
     ∀ s : ℝ, 0 < s → ∃ (P : ℕ) (ε C : ℝ), 0 < ε ∧ ε < 1 / 2 ∧
-      ∀ (N y a b : ℝ) (f : ℝ → ℝ), 1 ≤ N → N ^ s ≤ y → InGKClass N P s y ε a b f →
-        ‖∑ n ∈ intRange a b, e (f n)‖ ≤ C * ((y * N ^ (-s)) ^ κ * N ^ l)
+      ∀ (N y a b : ℝ) (f : ℝ → ℝ), 0 < N → 0 < y → InGKClass N P s y ε a b f →
+        ‖∑ n ∈ intRange a b, e (f n)‖ ≤ C * ((y * N ^ (-s)) ^ κ * N ^ l + y⁻¹ * N ^ s)
 
 /-- **Wu, Lemma 2.6, (2.14)** (Sargos–Wu, Theorem 7).  For `α < 1`,
 `αβγ ≠ 0`, `|a_h|, |b_{m,n}| ≤ 1`,

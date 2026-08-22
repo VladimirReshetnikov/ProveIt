@@ -27,8 +27,9 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     Fouvry–Iwaniec, Min's B-process, Srinivasan) and Wu Lemma 2.1,
     Theorem 2, Lemmas 2.5–2.7 (triple and double monomial exponential
     sums), with the Graham–Kolesnik definition of exponent pairs
-    (`f^{(p+1)} ≈ (−1)^p (s)_p y t^{−s−p}`, so `f' ≈ y t^{−s}` and
-    `z = yN^{−s} ≍ |f'|`; the bound is `≪ z^κ N^λ` for `z ≥ 1`).
+    (`f^{(p+1)} ≈ (−1)^p (s)_p y t^{−s−p}`, so `f' ≈ y t^{−s}`; the bound
+    is `≪ (yN^{−s})^κ N^λ + y⁻¹N^s` for all `y > 0`, exactly as in
+    Graham–Kolesnik §3.3, which is the form the A-process needs).
   - `IntegerPoints.ZhaiCao` — (1.1)–(1.4), Lemmas 9–10, Propositions 1–2.
   - `IntegerPoints.Wu` — Theorem 1, Nowak's formula, the reduction to
     `ℛ(M, N)`, the regions `𝒜, ℬ, 𝒞, 𝒟`, Propositions 1–4, and the exact
@@ -63,6 +64,18 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     integers, `|𝓕τ| ≤ K` by the convolution theorem, Fourier inversion at
     integers gives `Σ a_n = ∫ 𝓕τ(θ) Σ a_m e(mθ) dθ`, and `∫K = (2/π)(2 + log W)`
     explicitly (with `π > 3` from `sin(½) < ½` and `log 2 > 4/7`).
+  - `IntegerPoints.FouvryIwaniec` — **proved**: Zhai–Cao Lemma 6, the
+    Fouvry–Iwaniec counting lemma (`zhaiCao_lemma6_holds`, *Exponential
+    sums with monomials*, Lemma 1): quadruples are sorted by
+    `μ = gcd(m, m̃)`, `ν = gcd(n, ñ)`; distinct fractions with a fixed gcd are
+    `μ²/(4M²)`-spaced and the mean value theorem spaces their `α`-th
+    powers by `c(α) μ²/(4M²)`, so the box principle bounds each class by
+    `4 min(M²/μ², N²/ν²) + 32Δ M²N²/(c μ²ν²)`; the sums over `μ, ν` use
+    `Σ_ν min(a, N²/ν²) ≤ 4√a N`, `Σ 1/ν² ≤ 3` and the harmonic bound.
+  - `IntegerPoints.AProcess` — **proved**: Graham–Kolesnik Lemma 3.7
+    (`AP.lemma37`): if `f ∈ F(N, P+1, s, y, ε)` and `0 < h ≤ b − a`,
+    `h < εN/(s+P+1)`, then `f(x) − f(x+h) ∈ F(N, P, s+1, shy, 3ε)` on
+    `[a, b−h]` — the class-closure half of the A-process.
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete

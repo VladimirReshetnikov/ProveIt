@@ -16,6 +16,8 @@ import IntegerPoints.ExponentPairHalf
 import IntegerPoints.SineIntegral
 import IntegerPoints.Perron
 import IntegerPoints.BombieriIwaniec
+import IntegerPoints.FouvryIwaniec
+import IntegerPoints.AProcess
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -31,6 +33,10 @@ counting lemma), and the exponent pair `(1/2, 1/2)`; `IntegerPoints.SineIntegral
 Dirichlet integral `∫₀^∞ sin v/v dv = π/2` with the tail bound `2/y`, the
 analytic input for the truncated Perron formula, and `IntegerPoints.Perron`
 proves Zhai–Cao's Lemma 2 from it; `IntegerPoints.BombieriIwaniec` proves
-Zhai–Cao's Lemma 5 by Fourier inversion of a trapezoid weight.  Every statement is a `Prop`-valued definition; proved ones
+Zhai–Cao's Lemma 5 by Fourier inversion of a trapezoid weight;
+`IntegerPoints.FouvryIwaniec` proves Zhai–Cao's Lemma 6 (the Fouvry–Iwaniec
+counting lemma) by gcd classes and the box principle; `IntegerPoints.AProcess`
+proves Graham–Kolesnik's Lemma 3.7 (closure of the class `F` under
+differencing).  Every statement is a `Prop`-valued definition; proved ones
 have a companion `…_holds` theorem.
 -/
