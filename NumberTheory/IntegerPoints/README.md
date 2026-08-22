@@ -46,6 +46,11 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
   - `IntegerPoints.ExponentPairs` — **proved**: `(0, 1)` is an exponent pair.
   - `IntegerPoints.ExponentPairHalf` — **proved**: `(1/2, 1/2)` is an exponent
     pair (`isExponentPair_half_half`), from the second-derivative test.
+  - `IntegerPoints.SineIntegral` — **proved**: the sine integral
+    `Si y = ∫₀^y sin v/v`, its tail bound `|Si y' − Si y| ≤ 2/y`, and the
+    Dirichlet integral `Si y → π/2` (`tendsto_Si`,
+    `abs_Si_sub_pi_div_two_le`) via the Dirichlet kernel and the
+    Riemann–Lebesgue lemma — machinery for Lemma 2 (Perron).
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
