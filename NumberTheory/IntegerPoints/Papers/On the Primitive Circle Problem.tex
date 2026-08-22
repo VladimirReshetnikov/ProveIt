@@ -607,8 +607,12 @@ Proof. According to (11) in [6], we have
 
 
 \begin{equation*}
-\sum_{n\sim N}\mu(n)f(n)=\sum_{j\leqslant U^2}\sum_{k\sim N/j}a_jf(jk)
-+\sum_{\substack{j>U,\ k>U\\jk\sim N}}\mu(j)b_kf(jk).\tag{4.1}
+% [Editorial note: the source has plus signs in front of both sums. With
+% a_j and b_k as defined below, truncating mu = mu * 1 * mu at U gives, for
+% n > U, mu(n) = -sum_{jk=n, j<=U^2} a_j - sum_{jk=n, j>U, k>U} mu(j) b_k
+% (checked numerically); the signs are immaterial for the estimates below.]
+\sum_{n\sim N}\mu(n)f(n)=-\sum_{j\leqslant U^2}\sum_{k\sim N/j}a_jf(jk)
+-\sum_{\substack{j>U,\ k>U\\jk\sim N}}\mu(j)b_kf(jk).\tag{4.1}
 \end{equation*}
 
 

@@ -7,6 +7,10 @@
   factors of squares, the primitive Pythagorean parametrization, and the
   odd-even descent core), with reduction theorems relating the three
   descent-step granularities.
+- [`IntegerPoints/`](IntegerPoints/) states (without proofs yet) the
+  results of Zhai–Cao (1999) and Wu (2002) on the primitive circle problem
+  under RH, together with the exponential-sum lemmas they rely on, from the
+  OCR transcriptions in `IntegerPoints/Papers/`.
 - [`IntegerSums/`](IntegerSums/) proves the exact floor-square-root summation
   identity.
 - [`RationalEnumeration/`](RationalEnumeration/) proves that the rational

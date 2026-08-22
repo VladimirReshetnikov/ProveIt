@@ -4,6 +4,7 @@ import TrigonometricIdentities
 import ExponentialIdentities
 import DiophantineEquations
 import IntegerSums
+import IntegerPoints
 import RationalEnumeration
 import ShefferStroke
 import NaturalDeduction
