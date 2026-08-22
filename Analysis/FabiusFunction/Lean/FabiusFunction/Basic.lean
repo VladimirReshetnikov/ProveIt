@@ -27,7 +27,7 @@ are intentionally left to subsequent files.
 
 set_option autoImplicit false
 
-open scoped BigOperators
+open scoped BigOperators ContDiff
 open Set
 
 namespace Fabius
@@ -39,7 +39,7 @@ abbrev UnitInterval := Set.Icc (0 : ℝ) 1
 abbrev BoundedFabius := ℝ → UnitInterval
 
 /-- Forget the interval-valued codomain of a bounded Fabius candidate. -/
-def fabiusReal (F : BoundedFabius) : ℝ → ℝ :=
+abbrev fabiusReal (F : BoundedFabius) : ℝ → ℝ :=
   fun x => F x
 
 @[simp]
@@ -66,7 +66,7 @@ extension has a different role and is defined separately below.
 structure IsFabius (F : BoundedFabius) : Prop where
   zero_of_nonpos : ∀ x, x ≤ 0 → fabiusReal F x = 0
   one_of_one_le : ∀ x, 1 ≤ x → fabiusReal F x = 1
-  contDiff : ContDiff ℝ ⊤ (fabiusReal F)
+  contDiff : ContDiff ℝ ∞ (fabiusReal F)
   symmetry : ∀ x ∈ Set.Icc (0 : ℝ) 1,
     fabiusReal F (1 - x) = 1 - fabiusReal F x
   hasDerivAt : ∀ x ∈ Set.Icc (0 : ℝ) (1 / 2),

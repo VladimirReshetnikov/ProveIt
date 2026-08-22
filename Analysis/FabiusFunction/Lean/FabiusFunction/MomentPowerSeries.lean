@@ -354,6 +354,16 @@ theorem halfMoment_eq_evenMomentSum (n : ℕ) :
           intro k hk
           rw [ih k.val k.isLt]
 
+/-- Odd half moments reduce to a single even moment. -/
+theorem halfMoment_odd_eq_moment (n : ℕ) :
+    halfMoment (2 * n + 1) = ((2 * n + 1 : ℕ) : ℚ) / 2 * moment n := by
+  rw [halfMoment_eq_evenMomentSum]
+  rw [show (2 * n + 1) / 2 = n by omega]
+  have h := moment_original_recurrence n
+  rw [← h]
+  rw [pow_succ]
+  field_simp
+
 /-- Equation (32) at numerator one agrees with the half-moment formula (22). -/
 theorem fabiusAtInverseTwoPow_eq_halfMoment (n : ℕ) :
     fabiusAtInverseTwoPow n = halfMomentFabiusValue n := by

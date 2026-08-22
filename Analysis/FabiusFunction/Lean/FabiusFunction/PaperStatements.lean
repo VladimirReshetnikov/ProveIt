@@ -1,7 +1,11 @@
 import FabiusFunction.Basic
+import FabiusFunction.Differential
+import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.MomentPowerSeries
+import FabiusFunction.NormalizedEvenMoments
 import FabiusFunction.NormalizedMoments
+import FabiusFunction.Parity
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.Calculus.Taylor
@@ -33,7 +37,7 @@ the analytic functions.
 
 set_option autoImplicit false
 
-open scoped BigOperators Interval
+open scoped BigOperators ContDiff Interval
 open Finset MeasureTheory Set
 
 namespace Fabius
@@ -200,31 +204,6 @@ theorem fabius_lt_one_of_lt_one (F : BoundedFabius) (hF : IsFabius F)
     rw [hF.symmetry x hmem] at hpos
     linarith
 
-/-- Rvachev's function is smooth. -/
-theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
-    ContDiff ℝ ⊤ (rvachevUp F) := by
-  sorry
-
-/-- Rvachev's function is even. -/
-theorem rvachev_even (F : BoundedFabius) (hF : IsFabius F) :
-    Function.Even (rvachevUp F) := by
-  intro x
-  by_cases hx : x = 0
-  · subst x
-    simp
-  by_cases hxpos : 0 < x
-  · have hnx : -x ≤ 0 := by linarith
-    have hxnot : ¬ x ≤ 0 := not_le.mpr hxpos
-    simp only [rvachevUp, if_pos hnx, if_neg hxnot]
-    congr 1
-    ring
-  · have hxneg : x < 0 := lt_of_le_of_ne (le_of_not_gt hxpos) hx
-    have hnxnot : ¬ -x ≤ 0 := by linarith
-    have hxle : x ≤ 0 := hxneg.le
-    simp only [rvachevUp, if_neg hnxnot, if_pos hxle]
-    congr 1
-    ring
-
 /-- Rvachev's function is supported in `[-1,1]`. -/
 theorem support_rvachev_subset (F : BoundedFabius) (hF : IsFabius F) :
     Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
@@ -268,15 +247,9 @@ theorem rvachev_zero (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 :
   rw [rvachevUp, if_pos le_rfl]
   simpa [fabiusReal] using hF.one_of_one_le 1 le_rfl
 
-/-- The differential equation defining Rvachev's function. -/
-theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
-    HasDerivAt (rvachevUp F)
-      (2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1))) x := by
-  sorry
-
 /-- The signed global extension is smooth. -/
 theorem extendedFabius_contDiff (F : BoundedFabius) (hF : IsFabius F) :
-    ContDiff ℝ ⊤ (extendedFabius F) := by
+    ContDiff ℝ ∞ (extendedFabius F) := by
   sorry
 
 /-- The signed extension vanishes on nonpositive arguments. -/
@@ -425,63 +398,6 @@ theorem halfMomentNumerator_odd_index (n : ℕ) :
   sorry
 
 /-! ## Correctness specifications for the executable dyadic evaluator -/
-
-/-- The precomputed table contains the exact values `F(2⁻ᵏ)`. -/
-theorem fabiusInversePowTwoTable_get (maxExponent k : ℕ) (hk : k ≤ maxExponent) :
-    (fabiusInversePowTwoTable maxExponent)[k]? = some (fabiusAtInverseTwoPow k) := by
-  induction maxExponent generalizing k with
-  | zero =>
-      have hk0 : k = 0 := by omega
-      subst k
-      simp [fabiusInversePowTwoTable,
-        fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue]
-  | succ n ih =>
-      rw [fabiusInversePowTwoTable, Array.getElem?_push,
-        fabiusInversePowTwoTable_size]
-      by_cases hlast : k = n + 1
-      · subst k
-        simp only [ite_true]
-        congr 1
-        rw [fabiusAtInverseTwoPow_eq_halfMoment,
-          halfMomentFabiusValue_succ]
-        congr 1
-        apply Finset.sum_congr rfl
-        intro j hj
-        rw [ih j.val (by omega)]
-        simp [fabiusAtInverseTwoPow_eq_halfMoment]
-      · rw [if_neg hlast]
-        exact ih k (by omega)
-
-/-- The Horner routine evaluates the Taylor polynomial in Proposition 10. -/
-theorem fabiusTaylorHorner_eq_sum (maxExponent order : ℕ)
-    (horder : order ≤ maxExponent) (offset : ℚ) :
-    fabiusTaylorHorner (fabiusInversePowTwoTable maxExponent) order offset =
-      ∑ k ∈ range (order + 1),
-        (2 : ℚ) ^ (k + 1).choose 2 * fabiusAtInverseTwoPow (order - k) *
-          offset ^ k / k.factorial := by
-  have hzero : fabiusInversePowTwoTableValue
-      (fabiusInversePowTwoTable maxExponent) 0 = 1 := by
-    rw [fabiusInversePowTwoTableValue,
-      fabiusInversePowTwoTable_get maxExponent 0 (Nat.zero_le _)]
-    simp [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue]
-  change fabiusTaylorHorner.go (fabiusInversePowTwoTable maxExponent)
-      order offset order = _
-  have hgo := fabiusTaylorHorner_go_eq_sum
-    (fabiusInversePowTwoTable maxExponent) hzero offset order 0
-  simp only [Nat.zero_add] at hgo
-  rw [hgo]
-  apply Finset.sum_congr rfl
-  intro k hk
-  have hk_le : k ≤ order := by simpa using hk
-  have hlookup := fabiusInversePowTwoTable_get maxExponent (order - k)
-    (le_trans (Nat.sub_le order k) horder)
-  rw [fabiusInversePowTwoTableValue, hlookup]
-  norm_num
-
-/-- On the unit dyadic grid, the fast recursion agrees with equation (32). -/
-theorem fabiusDyadicUnit_eq_fabiusDyadic (n a : ℕ) (ha : a ≤ 2 ^ n) :
-    fabiusDyadicUnit n a = fabiusDyadic n a := by
-  sorry
 
 /-- Equation (32) really evaluates the bounded Fabius function on its dyadic grid. -/
 theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
@@ -667,7 +583,16 @@ theorem proposition_one :
       moment n =
         (momentNumerator n : ℚ) /
           ((oddDoubleFactorial (n + 1) * evenMersenneProduct n : ℕ) : ℚ)) := by
-  sorry
+  refine ⟨moment_zero, ?_, moment_eq_momentNumerator_div⟩
+  intro n hn
+  have h := moment_original_recurrence n
+  rw [sum_range_succ] at h
+  have hchoose : (2 * n + 1).choose (2 * n) = 2 * n + 1 := by
+    exact Nat.choose_succ_self_right (2 * n)
+  rw [hchoose] at h
+  push_cast at h
+  push_cast
+  linear_combination h
 
 /-- Proposition 2: the functional equation for the entire generating function. -/
 theorem proposition_two (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -724,7 +649,88 @@ theorem theorem_seven (n : ℕ) :
     IsNatural (reshetnikov (2 * n + 1)) ∧
     (∃ m : ℕ,
       reshetnikov (2 * n + 1) = (momentNumerator n * m : ℕ)) := by
-  sorry
+  let m : ℕ := ∏ j ∈ Icc n (2 * n), (2 * j + 1)
+  have hodd := oddDoubleFactorial_mul_Icc n
+  have hoddRat := congrArg (fun z : ℕ => (z : ℚ)) hodd
+  push_cast at hoddRat
+  have hoddPos : 0 < oddDoubleFactorial (n + 1) := by
+    unfold oddDoubleFactorial
+    apply Finset.prod_pos
+    intro j hj
+    omega
+  have hevenPos : 0 < evenMersenneProduct n := by
+    unfold evenMersenneProduct
+    apply Finset.prod_pos
+    intro j hj
+    exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+  have hden :
+      (((oddDoubleFactorial (n + 1) * evenMersenneProduct n : ℕ) : ℚ)) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt (Nat.mul_pos hoddPos hevenPos))
+  have hvalue :
+      reshetnikov (2 * n + 1) = (momentNumerator n : ℚ) * (m : ℚ) := by
+    rw [proposition_six (2 * n + 1) (by omega),
+      halfMoment_odd_eq_moment, moment_eq_momentNumerator_div]
+    rw [show (2 * n + 1) / 2 = n by omega]
+    field_simp [hden]
+    dsimp [m]
+    push_cast
+    linear_combination
+      (momentNumerator n : ℚ) * (evenMersenneProduct n : ℚ) * hoddRat
+  refine ⟨?_, ?_, ?_⟩
+  · simpa [m] using hvalue
+  · refine ⟨momentNumerator n * m, ?_⟩
+    rw [hvalue]
+    push_cast
+    rfl
+  · exact ⟨m, by simpa using hvalue⟩
+
+/-- Equation (30), the exact finite sum for the even Reshetnikov numbers. -/
+theorem reshetnikov_even_eq_sum (n : ℕ) (hn : 1 ≤ n) :
+    reshetnikov (2 * n) =
+      ∑ k : Fin (n + 1),
+        (2 * (momentNumerator k.val : ℚ) * Nat.choose (2 * n) (2 * k.val) *
+          oddFactorProduct (k.val + 1) (2 * n) *
+          (∏ ell ∈ Ico (k.val + 1) (n + 1), (2 ^ (2 * ell) - 1))) /
+            (2 : ℚ) ^ (2 * n) := by
+  rw [proposition_six (2 * n) (by omega)]
+  rw [show (2 * n) / 2 = n by omega]
+  rw [halfMoment_eq_evenMomentSum]
+  rw [show (2 * n) / 2 = n by omega]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun k =>
+      (2 * (momentNumerator k : ℚ) * Nat.choose (2 * n) (2 * k) *
+        oddFactorProduct (k + 1) (2 * n) *
+        (∏ ell ∈ Ico (k + 1) (n + 1), (2 ^ (2 * ell) - 1))) /
+          (2 : ℚ) ^ (2 * n)) (n + 1)]
+  rw [Finset.sum_div]
+  rw [Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [moment_eq_momentNumerator_div]
+  have hk_le : k ≤ n := by simpa using hk
+  have hodd := oddDoubleFactorial_mul_interval (k + 1) (2 * n) (by omega)
+  have heven := evenMersenneProduct_mul_interval k n hk_le
+  have hdenPos :
+      0 < oddDoubleFactorial (k + 1) * evenMersenneProduct k := by
+    unfold oddDoubleFactorial evenMersenneProduct
+    apply Nat.mul_pos
+    · apply Finset.prod_pos
+      intro j hj
+      omega
+    · apply Finset.prod_pos
+      intro j hj
+      exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+  have hden :
+      (((oddDoubleFactorial (k + 1) * evenMersenneProduct k : ℕ) : ℚ)) ≠ 0 := by
+    exact_mod_cast (Nat.ne_of_gt hdenPos)
+  have hoddRat := congrArg (fun z : ℕ => (z : ℚ)) hodd
+  have hevenRat := congrArg (fun z : ℕ => (z : ℚ)) heven
+  push_cast at hoddRat hevenRat
+  simp_rw [mersenneFactor_cast] at hevenRat
+  field_simp [hden]
+  push_cast
+  rw [← hoddRat, ← hevenRat]
+  ring
 
 /-- Proposition 8: the even-index formula and its power-of-two denominator bound. -/
 theorem proposition_eight (n : ℕ) (hn : 1 ≤ n) :
@@ -735,7 +741,27 @@ theorem proposition_eight (n : ℕ) (hn : 1 ≤ n) :
           (∏ ell ∈ Ico (k.val + 1) (n + 1), (2 ^ (2 * ell) - 1))) /
             (2 : ℚ) ^ (2 * n) ∧
     (reshetnikov (2 * n)).den ∣ 2 ^ (2 * n) := by
-  sorry
+  refine ⟨reshetnikov_even_eq_sum n hn, ?_⟩
+  let summand : Fin (n + 1) → ℕ := fun k =>
+    2 * momentNumerator k.val * Nat.choose (2 * n) (2 * k.val) *
+      oddFactorProduct (k.val + 1) (2 * n) *
+      (∏ ell ∈ Ico (k.val + 1) (n + 1), (2 ^ (2 * ell) - 1))
+  let numerator : ℕ := ∑ k, summand k
+  have hcast :
+      (numerator : ℚ) =
+        ∑ k : Fin (n + 1),
+          2 * (momentNumerator k.val : ℚ) * Nat.choose (2 * n) (2 * k.val) *
+            oddFactorProduct (k.val + 1) (2 * n) *
+            (∏ ell ∈ Ico (k.val + 1) (n + 1), (2 ^ (2 * ell) - 1)) := by
+    dsimp [numerator, summand]
+    push_cast
+    simp_rw [mersenneFactor_cast]
+  rw [reshetnikov_even_eq_sum n hn]
+  rw [← Finset.sum_div, ← hcast]
+  have hpowCast : (((2 ^ (2 * n) : ℕ) : ℚ)) = (2 : ℚ) ^ (2 * n) := by
+    norm_num
+  rw [← hpowCast]
+  exact rat_den_dvd_nat_div numerator (2 ^ (2 * n))
 
 /-- Theorem 9: Reshetnikov's numbers are natural numbers. -/
 theorem theorem_nine (n : ℕ) (hn : 1 ≤ n) :
@@ -831,19 +857,19 @@ theorem theorem_seventeen (p n k a : ℕ) (hp : p.Prime)
   exact Choose.lucas_theorem_nat hn hk
 
 /-- Proposition 18: counts of the odd binomial coefficients in the two ranges. -/
-theorem proposition_eighteen (n : ℕ) (hn : 1 ≤ n) :
+theorem proposition_eighteen (n : ℕ) (_hn : 1 ≤ n) :
     ((range (n + 1)).filter
       (fun k => Odd (Nat.choose (2 * n + 1) (2 * k)))).card =
         2 ^ binaryWeight n ∧
     ((range (2 * n + 2)).filter
       (fun k => Odd (Nat.choose (2 * n + 1) k))).card =
         2 ^ (binaryWeight n + 1) := by
-  sorry
+  exact odd_binomial_coefficient_counts n
 
 /-- Proposition 19: every natural moment numerator `F_n` is odd. -/
 theorem proposition_nineteen (n : ℕ) :
     Odd (momentNumerator n) := by
-  sorry
+  exact momentNumerator_odd n
 
 /-- Theorem 20: the numerator and denominator of `2 d_n` are odd. -/
 theorem theorem_twenty (n : ℕ) (hn : 1 ≤ n) :
