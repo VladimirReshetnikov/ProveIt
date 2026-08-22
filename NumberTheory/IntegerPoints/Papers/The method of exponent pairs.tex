@@ -270,8 +270,11 @@ Integrating by parts, we see that this integral is
 \end{align*}
 The first term contributes
 $\ll |a|^{-1}\lambda_2^{-1}+b^{-1}\lambda_2^{-1}\ll R_1$. We write the
-integral in (3.2.6) as $T_1+\frac1{2\pi}T_2$, where $T_1$ arises from the
-first term in braces and $T_2$ from the second.
+% ed.: the printed text has ``as $T_1+\frac1{2\pi}T_2$''; with $T_1=\int e(g)r'/x$
+% ed.: and $T_2=\int e(q)(e(r)-1)/x^2$ as used below, the integral in (3.2.6) is
+% ed.: $-g''(0)^{-1}\{T_1-(2\pi i)^{-1}T_2\}$, which is what (3.2.7) uses.
+integral in (3.2.6) as $-\frac1{g''(0)}\left\{T_1-\frac1{2\pi i}T_2\right\}$,
+where $T_1$ arises from the first term in braces and $T_2$ from the second.
 
 Let $h(x)=r'(x)x^{-2}$ and $j(x)=g'(x)x^{-1}$. Then
 \[
@@ -390,7 +393,11 @@ $H_1<f'(x)<H_2$, and that $H=H_2-H_1\geq2$. Then
 
 \noindent\textit{Proof.}
 The left-hand side is unchanged if we replace $f(n)$ by $f(n)-kn$ for any
-integer $k$. Therefore, we may normalize to the case $H_1<0<H_2$.
+% ed.: the original normalizes only to $H_1<0<H_2$; the bound $\ll H_2/(h-H_2)$
+% ed.: below uses $|f'|<H_2$ (and symmetrically $|f'|<-H_1$), which requires the
+% ed.: balanced choice $k=[(H_1+H_2)/2]$, giving $-H_1\asymp H_2\asymp H$.
+integer $k$. Therefore, taking $k=[(H_1+H_2)/2]$, we may normalize to the
+case $H_1<0<H_2$ with $-H_1\asymp H_2\asymp H$.
 
 Using Riemann--Stieltjes integration, we get
 \begin{equation*}
@@ -481,9 +488,11 @@ that
   \frac{e(-\phi(\nu)-1/8)}{|f''(x_\nu)|^{1/2}}+O(E), \tag{3.2.10}
 \end{equation*}
 where
+% ed.: the printed $E$ omits the $O(\log H)$ of Lemma 3.5, $H=H_2-H_1\ll FN^{-1}+1$;
+% ed.: it is $\ll\log(FN^{-1}+2)$ and is absorbed in the final bound for $E$.
 \[
 \begin{aligned}
- E=\sum_{H_1\leq\nu\leq H_2}\bigl\{&F^{-1}N
+ E=\log(H_2-H_1)+\sum_{H_1\leq\nu\leq H_2}\bigl\{&F^{-1}N
  +\min\bigl(|f'(a)-\nu|^{-1},F^{-1/2}N\bigr)\\
  &+\min\bigl(|f'(b)-\nu|^{-1},F^{-1/2}N\bigr)\bigr\}.
 \end{aligned}
@@ -625,7 +634,11 @@ constant depends only on $k,l$, and $s$. We then say that $(k,l)$ is an
 exponent pair.
 
 In proving that $(k,l)$ is an exponent pair, we may always assume that
-$yN^{-s}\geq1$. For if $yN^{-s}<1/2$, then Theorem 2.1 yields
+% ed.: Theorems 2.1 and 2.2 need $f'$ monotonic, resp.\ $|f''|\asymp yN^{-s-1}$;
+% ed.: both follow from (3.3.3) with $p=1$, so $P\geq2$ is tacitly assumed here
+% ed.: (for $P=1$ the class $\Fclass$ imposes nothing on $f''$ and the bounds fail).
+$yN^{-s}\geq1$. For if $yN^{-s}<1/2$, then Theorem 2.1 (applicable since
+we may take $P\geq2$, so that $f'$ is monotonic) yields
 \[
  \left|\sum_{n\in I}e(f(n))\right|\ll y^{-1}N^s.
 \]
@@ -715,6 +728,9 @@ Define
  f_1(x)=f(x)-f(x+h).
 \]
 Then $f_1$ is defined on $[a,b-h]$ and
+% ed.: the Definition of \S3.3 requires $\epsilon<1/2$; for $3\epsilon\geq1/2$ the
+% ed.: conclusion is to be read as (3.3.3) with $3\epsilon$ in place of $\epsilon$
+% ed.: (Theorem 3.8 only uses $\epsilon_1=\epsilon/3$, so no issue arises there).
 \[
  f_1\in\Fclass(N,P-1,s+1,shy,3\epsilon).
 \]

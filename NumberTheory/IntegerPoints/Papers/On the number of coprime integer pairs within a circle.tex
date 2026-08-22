@@ -150,7 +150,8 @@ Then
 
 $$
 \begin{aligned}
-\sum_{a<n \leq b} g(n) e(f(n))= & \sum_{\alpha<u \leq \beta} b_{u} \frac{g\left(n_{u}\right)}{\sqrt{\left|f^{\prime \prime}\left(n_{u}\right)\right|}} e\left(f\left(n_{u}\right)-u n_{u}+1 / 8\right) \\
+% ed.: printed text sums over $\alpha<u\leq\beta$, yet defines $b_u=1/2$ at $u=\alpha\in\mathbb{Z}$ as well; the B-process (Min, Theorem 2.2) sums over all integers $\alpha\leq u\leq\beta$ with half weights at integer endpoints.
+\sum_{a<n \leq b} g(n) e(f(n))= & \sum_{\alpha \leq u \leq \beta} b_{u} \frac{g\left(n_{u}\right)}{\sqrt{\left|f^{\prime \prime}\left(n_{u}\right)\right|}} e\left(f\left(n_{u}\right)-u n_{u}+1 / 8\right) \\
 & +O\left(G \log (\beta-\alpha+2)+G(b-a+R)\left(U^{-1}+U_{1}^{-1}\right)\right) \\
 & +O(G \min (\sqrt{R}, 1 /\langle\alpha\rangle)+G \min (\sqrt{R}, 1 /\langle\beta\rangle)),
 \end{aligned}
@@ -449,7 +450,8 @@ thus by Lemma 3,
                  u^{-\alpha/(1-\alpha)}\right)
 \end{aligned}
 \right| \\
-&\qquad\ll F^{1/2}Q_{1}^{3/2}N^{-1/2}\log^{2}N.
+% ed.: printed text has $Q_1^{3/2}$. Each inner sum has at most one term, of size $\sqrt R\asymp MN^{1/2}(FQ_1)^{-1/2}$, and is nonzero only when $\|c_iAM^{\alpha-1}g\|\leq\delta_i\asymp FQ_1^2/(MN^2)$; Lemma 3 in $n$ gives $\ll F^{1/2}Q_1^{3/2}N^{-1/2}\log N$ for each fixed $q$, and the sum over the $Q_1$ values $q\sim Q_1$ gives $Q_1^{5/2}$ (as in (2.18)). The term $F^{1/2}Q^{5/2}N^{-1/2}$ is already present in (2.34), so nothing downstream changes.
+&\qquad\ll F^{1/2}Q_{1}^{5/2}N^{-1/2}\log^{2}N.
 \end{aligned}
 \tag{2.20}
 \end{equation*}
@@ -922,7 +924,8 @@ x^{-\varepsilon} S(M, N) & \ll x^{7 / 20} N^{1 / 10} M^{-1 / 20}+x^{31 / 92} N^{
 \medskip\noindent\textsc{Case 3:} $N<M^{1 / 4}$. We use Lemma 10 to bound $T(M, N)$ and get
 
 $$
-x^{-\varepsilon} T(M, N) \ll x^{1 / 12} N^{11 / 12} M^{1 / 12}+N^{1 / 2} M^{11 / 12},
+% ed.: printed text has $M^{1/12}$; Lemma 10 gives $M^{7/12}$, and only $M^{7/12}$ produces the first term $x^{1/3}N^{1/6}M^{1/12}$ of (4.7) after multiplication by $x^{1/4}M^{-1/2}N^{-3/4}$.
+x^{-\varepsilon} T(M, N) \ll x^{1 / 12} N^{11 / 12} M^{7 / 12}+N^{1 / 2} M^{11 / 12},
 $$
 
 whence we have

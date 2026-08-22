@@ -163,8 +163,9 @@ conjugate), `|f'''| ≪ 1/(RU)`, `|g| ≪ G`, `|g'| ≪ G/U₁`, `U, U₁ ≥ 1`
      + O(G log(β - α + 2) + G (b - a + R)(U⁻¹ + U₁⁻¹))
      + O(G min(√R, 1/⟨α⟩) + G min(√R, 1/⟨β⟩))`.
 The sum over `u` is over all integers in `[α, β]` with `b_u = 1/2` at integer
-endpoints, the standard form of the B-process (the paper writes
-`α < u ≤ β` but defines `b_u` at `u = α` as well). -/
+endpoints, the standard form of the B-process (the printed paper writes
+`α < u ≤ β` but defines `b_u` at `u = α` as well; the transcription has been
+corrected to `α ≤ u ≤ β` with an `% ed.:` note). -/
 def zhaiCao_lemma7 : Prop :=
   ∀ c₁ c₂ c₃ c₄ c₅ : ℝ, 0 < c₁ → 0 < c₂ → 0 < c₃ → 0 < c₄ → 0 < c₅ →
     ∃ C : ℝ, ∀ (a b R U U₁ G : ℝ) (f g : ℝ → ℝ) (nu : ℤ → ℝ),

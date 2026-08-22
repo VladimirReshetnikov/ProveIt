@@ -19,6 +19,10 @@ import IntegerPoints.BombieriIwaniec
 import IntegerPoints.FouvryIwaniec
 import IntegerPoints.AProcess
 import IntegerPoints.AProcessTheorem
+import IntegerPoints.Lemma9Tools
+import IntegerPoints.Lemma9Core
+import IntegerPoints.Lemma9Sum
+import IntegerPoints.Lemma9
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -39,6 +43,8 @@ Zhai–Cao's Lemma 5 by Fourier inversion of a trapezoid weight;
 counting lemma) by gcd classes and the box principle; `IntegerPoints.AProcess`
 proves Graham–Kolesnik's Lemma 3.7 (closure of the class `F` under
 differencing) and `IntegerPoints.AProcessTheorem` proves Theorem 3.8, the
-A-process `(k, l) ↦ (k/(2k+2), (k+l+1)/(2k+2))` on exponent pairs.  Every statement is a `Prop`-valued definition; proved ones
+A-process `(k, l) ↦ (k/(2k+2), (k+l+1)/(2k+2))` on exponent pairs;
+`IntegerPoints.Lemma9` (with `Lemma9Tools`, `Lemma9Core`, `Lemma9Sum`) proves
+Zhai–Cao's Lemma 9 by Heath-Brown's method from Lemmas 1 and 6.  Every statement is a `Prop`-valued definition; proved ones
 have a companion `…_holds` theorem.
 -/

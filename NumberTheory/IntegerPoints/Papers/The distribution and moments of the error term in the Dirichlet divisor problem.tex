@@ -505,7 +505,8 @@ $$
 for some $\theta>1$, since
 
 $$
-\int_{0}^{A} e(\alpha t) t^{k-1} d t \ll|\alpha|^{-k}
+% ed.: the original prints $\ll|\alpha|^{-k}$, which is false for $k>1$ (integration by parts then gives only $\ll|\alpha|^{-1}$); the bound $\ll|\alpha|^{-\min(k,1)}$ is what holds, and it suffices for $\theta=1+\min(k,1)>1$.
+\int_{0}^{A} e(\alpha t) t^{k-1} d t \ll|\alpha|^{-\min(k,1)}
 $$
 
 and
@@ -763,7 +764,8 @@ $$
 \limsup _{T \rightarrow \infty} \frac{1}{T} \int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right| d t \ll N^{\varepsilon-1 / 4},
 $$
 
-and Hypothesis (H) follows. Moreover, Theorem 1 is now an immediate consequence of Theorem 5, if one takes $\mu=5 / 3$, for example.
+% ed.: as printed, Theorem 5 is applied to the family indexed by all $n$; but $a_n\equiv 0$ for non-square-free $n$ (so (4.4) fails, e.g. $n^{\mu}\int_0^1 a_4(t)^2\,dt=0$) and the $\gamma_n=2\sqrt n$ are not $\mathbb{Q}$-linearly independent ($\gamma_4=2\gamma_1$). Theorem 5 must be applied to the subfamily indexed by square-free $n$ (Besicovitch), the vanishing terms being discarded; the same remark applies in \S6 (square-free $n$) and \S7 (cube-free $n$, where $\gamma_8=2\gamma_1$).
+and Hypothesis (H) follows. Moreover, Theorem 1 is now an immediate consequence of Theorem 5 (applied to the subfamily indexed by square-free $n$, the remaining $a_n$ being identically zero), if one takes $\mu=5 / 3$, for example.
 
 To prove Theorem 2 we require an estimate of the form
 
@@ -1071,7 +1073,8 @@ $$
 \frac{1}{T} \int_{T}^{2 T}\left|F(t)-\sum_{n \leq N} a_{n}\left(\gamma_{n} t\right)\right| d t \ll N^{-1 / 8}
 $$
 
-from which Hypothesis (H) may be deduced in the usual way. We can now proceed to prove versions of Theorems 1 and 2 for $E(T)$, just as before. We shall require the bound
+% ed.: as in \S5, Theorem 5 is to be applied to the subfamily indexed by square-free $n$ (the $a_n$ with $\mu^2(n)=0$ vanish, and $\gamma_4=2\gamma_1$).
+from which Hypothesis (H) may be deduced in the usual way. We can now proceed to prove versions of Theorems 1 and 2 for $E(T)$, just as before (Theorem 5 being applied to the subfamily indexed by square-free $n$). We shall require the bound
 
 $$
 \int_{0}^{T}|E(t)|^{K} d t \ll T^{1+K / 4+\varepsilon}
@@ -1361,7 +1364,8 @@ $$
 \end{aligned}
 $$
 
-for $N \leq T^{1 / 24}$. Hypothesis (H) now follows. Moreover, on applying Theorem 5 with $\mu=3 / 2$ we obtain a result corresponding to Theorem 1 for $\Delta_{3}(x)$.
+% ed.: as in \S5, Theorem 5 is to be applied to the subfamily indexed by cube-free $n$ (the $a_n$ with $\varepsilon(n)=0$ vanish, and $\gamma_8=\sqrt[3]{8}=2\gamma_1$); the cube roots of the cube-free integers are $\mathbb{Q}$-linearly independent.
+for $N \leq T^{1 / 24}$. Hypothesis (H) now follows. Moreover, on applying Theorem 5 with $\mu=3 / 2$ (to the subfamily indexed by cube-free $n$) we obtain a result corresponding to Theorem 1 for $\Delta_{3}(x)$.
 
 An analogue of Lemma 4 can be obtained by mimicking the argument of Section 5. However, the bound
 

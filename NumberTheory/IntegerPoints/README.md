@@ -85,6 +85,18 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     `N²/Q₀ = (L^κ N^λ)²`, the range `L < 1 + log N` is handled by the pair
     `(1/2, 1/2)`, and `Q₀ < 1` or `Q₀ > cN` reduce to trivial bounds.
     Corollary: `(1/6, 2/3)` is an exponent pair.
+  - `IntegerPoints.Lemma9` (+ `Lemma9Tools`, `Lemma9Core`, `Lemma9Sum`) —
+    **proved**: Zhai–Cao Lemma 9 (`zhaiCao_lemma9_holds`) by Heath-Brown's
+    method: the pairs `(v, n)` are sorted into `Q` classes by `√n/v`,
+    Cauchy–Schwarz over `(u, class)` and expansion give
+    `‖S‖² ≪ U Q Σ_{|λ| ≤ 2√N/(VQ)} |Σ_u e(√x λ/u)|` with
+    `λ = √n₁/v₁ − √n₂/v₂`; the inner sum is bounded by Lemma 1 (for
+    `f(u) = √xλ/u`, smoothly extended below `1/2`), the number of pairs with
+    `|λ| ≤ t` by Lemma 6 (`α = 1/2, β = 1`), dyadic shells in `|λ|` give
+    `‖S‖² ≪ (log x)² (U²QNV + x^{1/4}U^{1/2}N^{9/4}V^{3/2}Q^{-1/2})`, and
+    `Q₀ = x^{1/6}U^{-1}N^{5/6}V^{1/3}` (or `Q = 1`, or the trivial bound
+    when `Q₀ > VN`) finishes, with all exponents handled through twelfth
+    roots.
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
