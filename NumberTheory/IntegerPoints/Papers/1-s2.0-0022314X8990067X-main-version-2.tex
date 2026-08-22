@@ -1,0 +1,1216 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amssymb,mathrsfs}
+
+\title{Exponential Sums with Monomials}
+\author{Étienne Fouvry\\
+Université de Paris-Sud, 91405 Orsay, France
+\and
+Henryk Iwaniec\\
+Rutgers University, New Brunswick, New Jersey 08903}
+\date{Communicated by H. L. Montgomery\\Received April 6, 1988}
+
+\newcommand{\proofend}{\hfill\(\blacksquare\)}
+
+\begin{document}
+\maketitle
+
+\section*{1. Introduction}
+The exponential sums of type
+
+
+\begin{equation*}
+\sum_{m} e(f(m)), \tag{1.1}
+\end{equation*}
+
+
+where $m$ ranges over integers from an interval and $f(m)$ is a smooth function, play a central role in analytic number theory. General methods of estimating such sums were established by H. Weyl [9], J. G. van der Corput [2], and I. M. Vinogradov [8]. Later, the exponential sums in several variables
+
+
+\begin{equation*}
+\sum_{m_{1}} \cdots \sum_{m_{j}} e\left(f\left(m_{1}, \ldots, m_{j}\right)\right) \tag{1.2}
+\end{equation*}
+
+
+were introduced to enhance these methods as well as for their own importance. Our main interest in this paper is to estimate the exponential sums in which $f$ is a monomial function,
+
+
+\begin{equation*}
+f\left(m_{1}, \ldots, m_{j}\right)=x m_{1}^{\alpha_{1}} \cdots m_{j}^{\alpha_{j}} . \tag{1.3}
+\end{equation*}
+
+
+We regard such sums as a special case of bilinear forms
+
+
+\begin{equation*}
+\mathscr{B}_{\varphi \psi}(\mathscr{X}, \mathscr{Y})=\sum_{r} \sum_{s} \varphi_{r} \psi_{s} e\left(x_{r} y_{s}\right), \tag{1.4}
+\end{equation*}
+
+
+where $\mathscr{X}=\left(x_{r}\right), \mathscr{Y}=\left(y_{s}\right)$ are finite sequences of real numbers with
+
+
+\begin{equation*}
+\left|x_{r}\right| \leqslant X, \quad\left|y_{s}\right| \leqslant Y, \tag{1.5}
+\end{equation*}
+
+
+say, and $\varphi_{r}, \psi_{s}$ are complex numbers. Our arguments are based on the following general inequality of [1].
+
+Proposition 1. We have
+
+
+\begin{equation*}
+\left|\mathscr{B}_{\varphi \psi}(\mathscr{X}, \mathscr{Y})\right|^{2} \leqslant 20(1+X Y) \mathscr{B}_{\varphi}(\mathscr{X}, Y) \mathscr{B}_{\psi}(\mathscr{Y}, X) \tag{1.6}
+\end{equation*}
+
+
+with
+
+$$
+\mathscr{B}_{\varphi}(\mathscr{X}, Y)=\sum_{\left|x_{r_{1}}-x_{r_{2}}\right| \leqslant Y^{-1}}\left|\varphi_{r_{1}} \varphi_{r_{2}}\right|
+$$
+
+and $\mathscr{B}_{\psi}(\mathscr{Y}, X)$ defined similarly.\\
+We begin by applying (1.6) directly. Next we introduce a number of innovations to combine with (1.6) giving deeper results. Finally, we illustrate how to use these results for estimating sums which occur in sieve problems for short intervals.
+
+Notation and conventions:
+
+$$
+\begin{aligned}
+& {[x]=\max \{k \in \mathbb{Z} ; k \leqslant x\} .} \\
+& \|x\|=\min \{|x-k| ; k \in \mathbb{Z}\} . \\
+& e(z)=\exp (2 \pi i z) .
+\end{aligned}
+$$
+
+$f \ll g$ means $|f| \leqslant c g$ with some positive constant $c$.\\
+$f=O(g)$ means $f \ll g$.\\
+$f \sim g$ means $c_{1}f<g<c_{2}f$ with some positive, unspecified constants $c_{1}, c_{2}$.
+
+The constants implied in the symbols $O$ and $\ll$ may depend, without mentioning, on those implied in the relevant relations $f \sim g$.\\
+$\|\varphi\|$ stands for the $\ell_{2}$-norm of the sequence $\varphi=\left(\varphi_{r}\right)$, i.e.,
+
+$$
+\|\varphi\|=\left(\sum_{r}\left|\varphi_{r}\right|^{2}\right)^{1 / 2} .
+$$
+
+\(\blacksquare\) indicates the end of a proof.
+
+\section*{2. Direct Results}
+By Proposition 1 we immediately obtain
+
+Corollary 1. Suppose that the sequences $\mathscr{X}$ and $\mathscr{Y}$ are $A$-spaced and $B$-spaced, respectively, i.e., $\left|x_{r_{1}}-x_{r_{2}}\right| \geqslant A$ and $\left|y_{s_{1}}-y_{s_{2}}\right| \geqslant B$ for $r_{1} \neq r_{2}$ and $s_{1} \neq s_{2}$, respectively. We then have
+
+$$
+\left|\mathscr{B}_{\varphi \psi}(\mathscr{X}, \mathscr{Y})\right| \leqslant 5(1+X Y)^{1 / 2}\left(1+\frac{1}{A Y}\right)^{1 / 2}\left(1+\frac{1}{B X}\right)^{1 / 2}\|\varphi\|\|\psi\| .
+$$
+
+Yet, this result is ineffective since the spacing problem is not resolved. We easily handle that in the following situation.
+
+Theorem 1. Let $f$ and $g$ be smooth functions such that
+
+$$
+\begin{array}{ll}
+f \sim F, & f^{\prime} \sim F M^{-1}, \\
+g \sim G, & g^{\prime} \sim G N^{-1},
+\end{array}
+$$
+
+with $F, G, M, N$ positive, and let $\varphi_{m}, \psi_{n}$ be complex numbers. We then have
+
+$$
+\begin{aligned}
+S_{\varphi\psi}(M, N) & =\sum_{m \sim M} \sum_{n \sim N} \varphi_{m} \psi_{n} e(f(m) g(n)) \\
+& \ll(F G)^{-1 / 2}(F G+M)^{1 / 2}(F G+N)^{1 / 2}\|\varphi\|\|\psi\| .
+\end{aligned}
+$$
+
+Proof. It follows from Corollary 1 and from the relations
+
+$$
+\left|f\left(m_{1}\right)-f\left(m_{2}\right)\right| \sim\left|m_{1}-m_{2}\right| M^{-1} F, \quad\left|g\left(n_{1}\right)-g\left(n_{2}\right)\right| \sim\left|n_{1}-n_{2}\right| N^{-1} G .
+$$
+\proofend
+
+Next we investigate the spacing of binomial points $m^{\alpha} n^{\beta}$.\\
+Lemma 1. Let $\alpha \beta \neq 0, \Delta>0, M \geqslant 1$ and $N \geqslant 1$. Let $\mathscr{A}(M, N ; \Delta)$ be the number of quadruples ( $m, \tilde{m}, n, \tilde{n}$ ) such that
+
+$$
+\left|\left(\frac{\tilde{m}}{m}\right)^{\alpha}-\left(\frac{\tilde{n}}{n}\right)^{\beta}\right|<\Delta,
+$$
+
+with $M \leqslant m, \tilde{m}<2 M$ and $N \leqslant n, \tilde{n}<2 N$. We then have
+
+$$
+\mathscr{A}(M, N ; \Delta) \ll M N \log 2 M N+\Delta M^{2} N^{2} .
+$$
+
+Proof. We divide the solutions into classes each one having fixed values $(m, \tilde{m})=\mu$ and $(n, \tilde{n})=\nu$, say. In a given class the points $(\tilde{m} / m)^{\alpha}$ are spaced by $c(\alpha) \mu^{2} M^{-2}$ and the points $(\tilde{n} / n)^{\beta}$ are spaced by $c(\beta)\nu^{2}N^{-2}$, where $c(\alpha)$\\
+and $c(\beta)$ are positive constants. Therefore, by the Dirichlet box principle each class contains
+
+$$
+\begin{aligned}
+& \ll \min\left\{\mu^{-2}M^{2}\left(1+\Delta\nu^{-2}N^{2}\right),
+\nu^{-2}N^{2}\left(1+\Delta\mu^{-2}M^{2}\right)\right\} \\
+& =\min\left\{\mu^{-2}M^{2},\nu^{-2}N^{2}\right\}
+  +\Delta\mu^{-2}\nu^{-2}M^{2}N^{2}.
+\end{aligned}
+$$
+
+points. Summing over $\mu$ and $\nu$ we complete the proof. \proofend\\
+Proposition 1 and Lemma 1 yield an estimate for the exponential sum (1.2) in which $f$ is a quadrinomial function.
+
+Theorem 2. Let $\alpha_{j} \neq 0, M_{j} \geqslant 1$ for $j=1,2,3,4$, $x>0$, and $\varphi_{m_{1} m_{2}}, \psi_{m_{3} m_{4}}$ be complex numbers with $\left|\varphi_{m_{1}m_{2}}\right| \leqslant 1,\left|\psi_{m_{3} m_{4}}\right| \leqslant 1$. We then have
+
+$$
+\begin{aligned}
+S_{\varphi\psi}\left(M_{1}, M_{2}, M_{3}, M_{4}\right)= & \sum_{m_{j} \sim M_{j}} \varphi_{m_{1} m_{2}} \psi_{m_{3} m_{4}} e\left(x \frac{m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}} m_{3}^{\alpha_{3}} m_{4}^{\alpha_{4}}}{M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}} M_{3}^{\alpha_{3}} M_{4}^{\alpha_{4}}}\right) \\
+\ll & \left\{\left(x M_{1} M_{2} M_{3} M_{4}\right)^{1 / 2}+M_{1} M_{2}\left(M_{3} M_{4}\right)^{1 / 2}\right. \\
+& \left.+\left(M_{1} M_{2}\right)^{1 / 2} M_{3} M_{4}+x^{-1 / 2} M_{1} M_{2} M_{3} M_{4}\right\} \\
+& \times \log 2 M_{1} M_{2} M_{3} M_{4} .
+\end{aligned}
+$$
+
+Proof. We apply (1.6) for the two sequences $\mathscr{X}=\left(x m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}} M_{1}^{-\alpha_{1}} M_{2}^{-\alpha_{2}}\right)$ and $\mathscr{Y}=\left(m_{3}^{\alpha_{3}} m_{4}^{\alpha_{4}} M_{3}^{-\alpha_{3}} M_{4}^{-\alpha_{4}}\right)$ getting
+
+$$
+S_{\varphi\psi} \ll\left((1+x) S_{\varphi} S_{\psi}\right)^{1 / 2},
+$$
+
+where
+
+$$
+S_{\varphi}=\#\left\{\left(m_{1}, m_{2}, \tilde{m}_{1}, \tilde{m}_{2}\right) ;\left|m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}}-\tilde{m}_{1}^{\alpha_{1}} \tilde{m}_{2}^{\alpha_{2}}\right| \ll x^{-1} M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}}\right\}
+$$
+
+and $S_{\psi}$ is defined similarly. Hence $S_{\varphi}$ is bounded by the number of solutions to
+
+$$
+\left|\left(\frac{\tilde{m}_{1}}{m_{1}}\right)^{\alpha_{1}}-\left(\frac{\tilde{m}_{2}}{m_{2}}\right)^{\alpha_{2}}\right| \ll \frac{1}{x},
+$$
+
+so, by Lemma 1 we have
+
+$$
+S_{\varphi} \ll M_{1} M_{2} \log 2 M_{1} M_{2}+x^{-1} M_{1}^{2} M_{2}^{2} .
+$$
+
+Similarly
+
+$$
+S_{\psi} \ll M_{3} M_{4} \log 2 M_{3} M_{4}+x^{-1} M_{3}^{2} M_{4}^{2} .
+$$
+
+These estimates and (1.6) yield the assertion of Theorem 2 provided $x \geqslant 1$. If $x<1$ the assertion is trivial. \proofend
+
+Remarks. Theorem 2 is useful in the range $1 \ll x \ll M_{1} M_{2} M_{3} M_{4}$. The sharpest bound is attained for $M_{1} M_{2} M_{3} M_{4} \sim x^{2}$. The reason that Theorem 2 is trivial for $x \ll 1$ is that the exponential factor does not oscillate and the reason that it is also trivial for $x \gg M_{1} M_{2} M_{3} M_{4}$ is that the exponential factor oscillates too rapidly. In the latter case the method fails because the number of terms is too small to control the oscillations. In order to overcome this problem, in the next section, we appeal to Weyl's method which creates additional points of summation and at the same time it reduces the oscillatory behaviour of the exponential factor. There is a double price for this operation. First is that Weyl's method shifts the argument of the exponential function destroying its monomial character and consequently it causes serious problems about the spacing of the resulting points. Second is the use of Cauchy's inequality which halves the final saving.
+
+\section*{3. Two Combinations with the Weyl Shift}
+Weyl's method depends on the following inequality:\\
+Lemma 2. Let $L>K, Q>0$, and $z_{k}$ be complex numbers. We then have
+
+$$
+\left|\sum_{K \leqslant k<L} z_{k}\right|^{2} \leqslant\left(2+\frac{L-K}{Q}\right) \sum_{|q|<Q}\left(1-\frac{|q|}{Q}\right) \sum_{K \leqslant k-q, k+q<L} z_{k-q} \bar{z}_{k+q} .
+$$
+
+Proof. It is similar to that of Lemma 5.10 in [6]. \proofend
+
+Our aim is to prove the following:\\
+Theorem 3. Let $\alpha, \alpha_{1}, \alpha_{2}$ be real constants such that $\alpha \neq 1$ and $\alpha \alpha_{1} \alpha_{2} \neq 0$. Let $M, M_{1}, M_{2}, x \geqslant 1$, and $\varphi_{m}, \psi_{m_{1} m_{2}}$ be complex numbers with $\left|\varphi_{m}\right| \leqslant 1$ and $\left|\psi_{m_{1} m_{2}}\right| \leqslant 1$. We then have
+
+$$
+\begin{aligned}
+S_{\varphi\psi}\left(M, M_{1}, M_{2}\right)= & \sum_{m \sim M} \sum_{m_{1} \sim M_{1}} \sum_{m_{2} \sim M_{2}} \varphi_{m} \psi_{m_{1} m_{2}} e\left(x \frac{m^{\alpha} m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}}}{M^{\alpha} M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}}}\right) \\
+\ll & \left\{x^{1 / 4} M^{1 / 2}\left(M_{1} M_{2}\right)^{3 / 4}+M^{7 / 10} M_{1} M_{2}\right. \\
+& \left.+M\left(M_{1} M_{2}\right)^{3 / 4}+x^{-1 / 4} M^{11 / 10} M_{1} M_{2}\right\}\left(\log 2 M M_{1} M_{2}\right)^{2} .
+\end{aligned}
+$$
+
+Proof. By Lemma 2 we get that
+
+$$
+\left|S_{\varphi\psi}\right|^{2} \ll Q^{-1} M M_{1} M_{2}\left(M M_{1} M_{2}+\left|S\left(Q_{0}\right)\right| \log 2 Q\right)
+$$
+
+for any $Q \leqslant \frac{1}{3} M$ and some $Q_{0} \leqslant Q$, where
+
+$$
+S\left(Q_{0}\right)=\sum_{q \sim Q_{0}}\left(1-q Q^{-1}\right) \sum_{m} \sum_{m_{1}} \sum_{m_{2}} \varphi_{m+q} \overline{\varphi}_{m-q} e\left(x \frac{t(m, q) m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}}}{M^{\alpha} M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}}}\right)
+$$
+
+and
+
+$$
+t(m, q)=(m+q)^{\alpha}-(m-q)^{\alpha} \sim Q_{0} M^{\alpha-1}
+$$
+
+By (1.6) we obtain
+
+
+\begin{equation*}
+S\left(Q_{0}\right)\ll\left(\mathscr{A}\mathscr{B}xQ_{0}M^{-1}\right)^{1/2} . \tag{3.1}
+\end{equation*}
+
+
+Here $\mathscr{A}$ is the number of quadruples $\left(m_{1}, m_{2}, \tilde{m}_{1}, \tilde{m}_{2}\right)$ such that
+
+$$
+\left|\left(\frac{\tilde{m}_{1}}{m_{1}}\right)^{\alpha_{1}}-\left(\frac{\tilde{m}_{2}}{m_{2}}\right)^{\alpha_{2}}\right|<\left(x Q_{0}\right)^{-1} M,
+$$
+
+thus by Lemma 1 we have
+
+
+\begin{equation*}
+\mathscr{A} \ll M_{1} M_{2} \log 2 M_{1} M_{2}+\left(x Q_{0}\right)^{-1} M M_{1}^{2} M_{2}^{2} \tag{3.2}
+\end{equation*}
+
+
+It remains to estimate $\mathscr{B}$, which stands for the number of quadruples ( $m, \tilde{m}, q, \tilde{q}$ ) such that
+
+$$
+|t(m, q)-t(\tilde{m}, \tilde{q})|<x^{-1} M^{\alpha} .
+$$
+
+We shall consider this problem in the next section. From Proposition 2 we obtain
+
+
+\begin{equation*}
+\mathscr{B} \ll Q_{0} M\left(1+x^{-1} M^{2}\right)(\log 2 M)^{4} \tag{3.3}
+\end{equation*}
+
+
+provided $3 Q_{0} \leqslant M^{3 / 5}$. Combining (3.1), (3.2), and (3.3) we infer
+
+$$
+\begin{aligned}
+S\left(Q_{0}\right) \ll & Q_{0}\left(x M_{1} M_{2}\right)^{1 / 2}\left(1+x^{-1} Q_{0}^{-1} M M_{1} M_{2}\right)^{1 / 2} \\
+& \times\left(1+x^{-1} M^{2}\right)^{1 / 2}\left(\log 2 M M_{1} M_{2}\right)^{5 / 2}
+\end{aligned}
+$$
+
+Note that the worst value for $Q_{0}$ is $Q_{0}=Q$. Setting $Q=\frac{1}{3}M^{3/5}$ we conclude the proof. \proofend
+
+Next we estimate the bilinear forms of type
+
+$$
+S_{\varphi\psi}\left(M_{1}, M_{2}\right)=\sum_{m_{1} \sim M_{1}} \sum_{m_{2} \sim M_{2}} \varphi_{m_{1}} \psi_{m_{2}} e\left(x \frac{m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}}}{M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}}}\right)
+$$
+
+by alternated application of the Weyl shift.
+
+Theorem 4. Let $\alpha_{1}, \alpha_{2}$ be real constants different from 0 and 1. Let $M_{1}, M_{2}, x \geqslant 1$, and $\varphi_{m_{1}}, \psi_{m_{2}}$ be complex numbers with $\left|\varphi_{m_{1}}\right| \leqslant 1$ and $\left|\psi_{m_{2}}\right| \leqslant 1$. We then have
+
+$$
+\begin{aligned}
+S_{\varphi\psi}\left(M_{1}, M_{2}\right)\ll & \left\{x^{1 / 8}\left(M_{1} M_{2}\right)^{3 / 4}+M_{1}^{4 / 5} M_{2}+M_{1} M_{2}^{17 / 20}\right. \\
+& \left.+x^{-1 / 8}\left(M_{1} M_{2}\right)^{21 / 20}\right\}\left(\log 2 M_{1} M_{2}\right)^{2} .
+\end{aligned}
+$$
+
+Proof. By Lemma 2 we get that
+
+$$
+\begin{aligned}
+& \left|S_{\varphi\psi}\right|^{2} \ll Q_{1}^{-1} M_{1}^{2} M_{2}^{2}+Q_{1}^{-1} M_{1} M_{2}\left(\log 2 M_{1}\right) \\
+& \left|\sum_{q_{1} \sim Q_{1}^{*}}\left(1-\frac{q_{1}}{Q_{1}^{*}}\right) \sum_{m_{1} \sim M_{1}} \sum_{m_{2} \sim M_{2}} \varphi_{m_{1}+q_{1}}\overline{\varphi}_{m_{1}-q_{1}} e\left(x t\left(m_{1}, q_{1}\right) m_{2}^{\alpha_{2}} M_{1}^{-\alpha_{1}} M_{2}^{-\alpha_{2}}\right)\right|
+\end{aligned}
+$$
+
+for any $Q_{1} \leqslant \frac{1}{3} M_{1}$ and some $Q_{1}^{*} \leqslant Q_{1}$. Another application of Lemma 2 gives
+
+$$
+\left|S_{\varphi\psi}\right|^{4} \ll Q_{1}^{-2} M_{1}^{4} M_{2}^{4}+Q_{1}^{-2} Q_{2}^{-1} Q_{1}^{*} M_{1}^{3} M_{2}^{3}\left(Q_{1}^{*} M_{1} M_{2}+S\right)\left(\log 2 M_{1} M_{2}\right)^{3},
+$$
+
+where
+
+$$
+S \leqslant \sum_{\substack{m_{1} \sim M_{1} \\ m_{2} \sim M_{2}}}
+\sum_{\substack{q_{1} \sim Q_{1}^{*} \\ q_{2} \sim Q_{2}^{*}}}
+\left(1-\frac{q_{2}}{Q_{2}}\right)e\left(x t\left(m_{1}, q_{1}\right) t\left(m_{2}, q_{2}\right) M_{1}^{-\alpha_{1}} M_{2}^{-\alpha_{2}}\right)
+$$
+
+for any $Q_{2} \leqslant \frac{1}{3} M_{2}$ and some $Q_{2}^{*} \leqslant Q_{2}$. By Proposition 1 we obtain
+
+$$
+S \ll\left(\mathscr{B}_{1}\mathscr{B}_{2}xQ_{1}^{*}Q_{2}^{*}M_{1}^{-1}M_{2}^{-1}\right)^{1/2},
+$$
+
+where $\mathscr{B}_{1}$ is the number of solutions to the inequality
+
+$$
+\left|t\left(m_{1}, q_{1}\right)-t\left(\tilde{m}_{1}, \tilde{q}_{1}\right)\right| \ll\left(x Q_{2}^{*}\right)^{-1} M_{1}^{\alpha_{1}} M_{2}
+$$
+
+in integers $m_{1}, \tilde{m}_{1} \sim M_{1}$ and $q_{1}, \tilde{q}_{1} \sim Q_{1}^{*}$ and $\mathscr{B}_{2}$ is defined similarly. Assuming that $3 Q_{1} \leqslant M_{1}^{3 / 5}$ and $3 Q_{2} \leqslant M_{2}^{3 / 5}$ we are entitled to use Proposition 2 giving
+
+$$
+\mathscr{B}_{1} \ll Q_{1}^{*} M_{1}\left(1+\frac{M_{1}^{2} M_{2}}{x Q_{2}^{*}}\right)\left(\log 2 M_{1}\right)^{4} .
+$$
+
+A similar inequality holds for $\mathscr{B}_{2}$. From both results we get
+
+$$
+S \ll x^{1 / 2} Q_{1}^{*} Q_{2}^{*}\left(1+\frac{M_{1}^{2} M_{2}}{x Q_{2}^{*}}\right)^{1 / 2}\left(1+\frac{M_{1} M_{2}^{2}}{x Q_{1}^{*}}\right)^{1 / 2}\left(\log 2 M_{1} M_{2}\right)^{4} .
+$$
+
+Now observe that the worst values for $Q_{1}^{*}, Q_{2}^{*}$ are $Q_{1}^{*}=Q_{1}$ and $Q_{2}^{*}=Q_{2}$. Setting $Q_{1}=\frac{1}{3} M_{1}^{3 / 5}$ and $Q_{2}=\frac{1}{3} M_{2}^{3 / 5}$ the resulting inequalities finally yield
+
+$$
+\begin{aligned}
+S_{\varphi\psi} \ll & M_{1} M_{2}\left(M_{1}^{-3 / 10}+M_{2}^{-3 / 20}\right) \log 2 M_{1} M_{2} \\
+& +x^{1 / 8}\left(M_{1} M_{2}\right)^{3 / 4}\left(1+x^{-1} M_{1}^{2} M_{2}^{2 / 5}\right)^{1 / 8} \\
+& \times\left(1+x^{-1} M_{1}^{2 / 5} M_{2}^{2}\right)^{1 / 8}\left(\log 2 M_{1} M_{2}\right)^{2} \\
+& \ll\left(M_{1} M_{2}^{17 / 20}+M_{1}^{4 / 5} M_{2}+x^{1 / 8} M_{1}^{3 / 4} M_{2}^{3 / 4}+x^{-1 / 8} M_{1}^{21 / 20} M_{2}^{21 / 20}\right) \\
+& \times\left(\log 2 M_{1} M_{2}\right)^{2} .
+\end{aligned}
+$$
+\proofend
+
+\section*{4. The Spacing Problem}
+In this section we investigate the distribution of real numbers of type
+
+$$
+t(m, q)=(m+q)^{\alpha}-(m-q)^{\alpha}
+$$
+
+with $\alpha \neq 0,1$ where $m, q$ range over integers with $M \leqslant m<2 M, Q \leqslant q<2 Q$, and $3 Q<M$. Note that
+
+$$
+|t(m, q)| \sim M^{\alpha-1} Q=T,
+$$
+
+say. Let $\mathscr{B}(M,Q,\Delta)$ be the number of quadruples $(m, \tilde{m}, q, \tilde{q})$ such that
+
+
+\begin{equation*}
+|t(m, q)-t(\tilde{m}, \tilde{q})|<\Delta T . \tag{4.1}
+\end{equation*}
+
+
+Our aim is to prove the following:\\
+Proposition 2. If $Q \leqslant M^{2 / 3}$ we have
+
+
+\begin{equation*}
+\mathscr{B}(M,Q,\Delta)\ll\left(MQ+\Delta M^{2}Q^{2}+M^{-2}Q^{6}\right)(\log 2 M)^{4}, \tag{4.2}
+\end{equation*}
+
+
+the constant implied in $\ll$ depends on $\alpha$ only.\\
+The proof depends on three lemmas.\\
+Lemma 3. Let $\mathscr{C}(A,B,M,\Delta)$ be the number of integers $m$ with
+$M\leqslant m<2M$ such that
+
+$$
+\left\|Am-Bm^{-1}\right\|<\Delta.
+$$
+
+If $0<B<\Delta M^{2}$, we have
+
+$$
+\begin{aligned}
+\mathscr{C}(A,B,M,\Delta)\ll{}&
+\Delta M\sum_{0\leqslant s<\Delta^{-1}}(1+\|sA\|M)^{-1}\\
+&+\Delta B^{-1/2}M^{3/2}
+\sum_{\substack{0<s<\Delta^{-1}\\
+\|sA\|<2sBM^{-2}}}s^{-1/2},
+\end{aligned}
+$$
+
+where the constant implied in $\ll$ is absolute.
+
+Proof. We assume that $\Delta\leqslant\frac14$, because otherwise the
+assertion of Lemma 3 is trivial. For $S>0$ we have the identity
+
+$$
+\sum_{|s|<S}\left(1-\frac{|s|}{S}\right)e(sx)
+=\frac{1-\{S\}}{S}\left(\frac{\sin \pi x[S]}{\sin \pi x}\right)^{2}
++\frac{\{S\}}{S}\left(\frac{\sin \pi x[S+1]}{\sin \pi x}\right)^{2}.
+$$
+
+Hence the sum is positive for all real $x$, and it is $\geqslant\frac14S$
+if $\|x\|<(4S)^{-1}$. From this observation it follows that
+
+$$
+\mathscr{C}(A,B,M,\Delta)\ll S^{-1}\sum_{0\leqslant s<S}
+\left|\sum_{M\leqslant m<2M}e\left(Asm-Bsm^{-1}\right)\right|
+$$
+
+with $S=(4\Delta)^{-1}$. The constant term $(s=0)$ contributes
+$O(\Delta M)$. For $1\leqslant s\leqslant S$ the innermost sum is equal to
+(see Lemma 4.8 in [6])
+
+$$
+\int_M^{2M}e\left(\pm\|As\|\xi-Bs\xi^{-1}\right)d\xi+O(1).
+$$
+
+By Lemma 4.4 of [6] we have
+
+$$
+\left|\int_M^{2M}e\left(\pm\|As\|\xi-Bs\xi^{-1}\right)d\xi\right|
+\ll (sB)^{-1/2}M^{3/2},
+$$
+
+and by Lemma 4.2 of [6] we have
+
+$$
+\left|\int_M^{2M}e\left(\pm\|As\|\xi-Bs\xi^{-1}\right)d\xi\right|
+\ll \|sA\|^{-1},
+$$
+
+unless $\|sA\|<2sBM^{-2}$. Finally, we have the trivial bound
+
+$$
+\left|\int_M^{2M}e\left(\pm\|As\|\xi-Bs\xi^{-1}\right)d\xi\right|\leqslant M.
+$$
+
+Gathering together the above estimates, we complete the proof of Lemma 3.
+\proofend
+
+Lemma 4. Let $A(q / \tilde{q})=(q / \tilde{q})^{\gamma}$ with $\gamma \neq 0$ and $B(q, \tilde{q}) \sim|q-\tilde{q}| Q$ for $Q \leqslant q, \tilde{q}<2 Q$. Let $\mathscr{D}(M, Q, \Delta)$ be the number of triplets $(m, q, \tilde{q})$ of integers $m, q, \tilde{q}$ in $M \leqslant m<2 M, Q \leqslant q, \tilde{q}<2 Q$ such that
+
+$$
+\left\|A(q / \tilde{q}) m-B(q, \tilde{q}) m^{-1}\right\|<\Delta
+$$
+
+If $Q<M^{2 / 3}$ we have
+
+$$
+\mathscr{D}(M,Q,\Delta)\ll\left(M Q+\Delta M Q^{2}+Q^{8 / 3}\right)(\log 2 M)^{4} .
+$$
+
+Proof. Without loss of generality we can assume that $Q^{-1}<\Delta<1$. First we count the triplets $(m, q, \tilde{q})$ with $|B(q, \tilde{q})|<\Delta M$ by a crude argument. We have
+
+$$
+\|A(q/\tilde q)m\|<2\Delta
+$$
+
+which implies
+
+$$
+\left|\left(\frac{q}{\tilde{q}}\right)^{\gamma}-\frac{\tilde{m}}{m}\right|<\Delta M^{-1} .
+$$
+
+Therefore, by Lemma 1 we conclude that the number of such triplets is
+
+$$
+O\left(M Q \log 2 M+\Delta M Q^{2}\right) .
+$$
+
+For counting the remaining triplets, i.e., those $(m, q, \tilde{q})$ with $|B(q, \tilde{q})| \geqslant \Delta M$, we appeal to Lemma 3, giving
+
+$$
+O\left(\Delta M Q^{2}+\mathscr{D}_{1}(M, Q, \Delta)+\mathscr{D}_{2}(M, Q, \Delta)\right),
+$$
+
+where $\mathscr{D}_{1}$ and $\mathscr{D}_{2}$ are defined by
+
+$$
+\mathscr{D}_{1}(M, Q, \Delta)=\Delta M \sum_{0<s<\Delta^{-1}} \sum_{Q \leqslant q, \tilde{q}<2 Q}(1+\|s A(q / \tilde{q})\| M)^{-1}
+$$
+
+and
+
+$$
+\mathscr{D}_{2}(M,Q,\Delta)=\Delta M^{3/2}Q^{-1/2}
+\sum_{0<s<\Delta^{-1}}^{*}\sum_{Q\leqslant q,\tilde q<2Q}^{*}
+(s|q-\tilde q|)^{-1/2},
+$$
+
+where * means that the summation is restricted by two inequalities
+
+$$
+\Delta M\ll |q-\tilde q|Q,
+$$
+
+and
+
+$$
+\|sA(q/\tilde q)\|\ll s|q-\tilde q|QM^{-2} .
+$$
+
+First, we estimate $\mathscr{D}_{1}$. We split the range of summation into subsets defined by
+
+$$
+S \leqslant s<2 S \quad \text { and } \quad\|s A(q / \tilde{q})\|<\delta,
+$$
+
+where $1 \leqslant S<\Delta^{-1}$ and $M^{-1}<\delta<1$. The complete splitting can be arranged with at most $O\left((\log 2 M)^{2}\right)$ subsets, so
+
+$$
+\mathscr{D}_{1}(M,Q,\Delta)\ll \Delta\delta^{-1} \mathscr{A}\left(Q, S, \delta S^{-1}\right)(\log 2 M)^{2}
+$$
+
+for some relevant $S$ and $\delta$. Since $Q \leqslant M$ we conclude by Lemma 1 that
+
+$$
+\mathscr{D}_{1}(M, Q, \Delta) \ll M Q(\log 2 M)^{3} .
+$$
+
+Now we estimate $\mathscr{D}_{2}$ in a similar way, so we split the range of summation into subsets defined by
+
+$$
+S \leqslant s<2 S \quad \text { and } \quad R \leqslant|q-\tilde{q}|<2 R,
+$$
+
+where $1 \leqslant S<\Delta^{-1}$ and $\Delta M Q^{-1} \ll R \ll Q$. We obtain
+
+$$
+\mathscr{D}_{2}(M,Q,\Delta)\ll\Delta M^{3/2}(QRS)^{-1/2} \mathscr{A}\left(Q, S, M^{-2} Q R\right)(\log 2 M)^{2}
+$$
+
+for some relevant $S$ and $R$. By Lemma 1 we conclude that
+
+$$
+\mathscr{D}_{2}(M, Q, \Delta) \ll\left(M Q+(\Delta M)^{-1 / 2} Q^{3}\right)(\log 2 M)^{4} .
+$$
+
+Hence
+
+$$
+\mathscr{D}(M, Q, \Delta) \ll \Delta M Q^{2}+\left(M Q+(\Delta M)^{-1 / 2} Q^{3}\right)(\log 2 M)^{4} .
+$$
+
+Finally, since $\mathscr{D}(M, Q, \Delta)$ is non-decreasing in $\Delta$ we can replace $\Delta$ on the right-hand side by $\Delta+M^{-1} Q^{2 / 3}$, completing the proof of Lemma 4. \proofend
+
+Now we are ready to prove Proposition 2. Clearly (4.1) implies
+
+$$
+|s(m, q)-s(\tilde{m}, \tilde{q})| \ll \Delta T^{1 /(\alpha-1)}=\Delta M Q^{1 /(\alpha-1)},
+$$
+
+where
+
+$$
+s(m, q)=\left(\frac{t(m, q)}{2 \alpha}\right)^{1 /(\alpha-1)}=q^{1 /(\alpha-1)} m f\left(\frac{q}{m}\right)
+$$
+
+with
+
+$$
+f(u)=\left(\frac{(1+u)^{\alpha}-(1-u)^{\alpha}}{2 \alpha u}\right)^{1 /(\alpha-1)}=1+\frac{\alpha-2}{6} u^{2}+O\left(u^{4}\right) .
+$$
+
+Hence
+
+$$
+\begin{aligned}
+\Bigg|&\left(q^{1/(\alpha-1)}m-\tilde q^{1/(\alpha-1)}\tilde m\right)
++\frac{\alpha-2}{6}\left(q^{(2\alpha-1)/(\alpha-1)}m^{-1}
+-\tilde q^{(2\alpha-1)/(\alpha-1)}\tilde m^{-1}\right)\Bigg|\\
+&\ll \Delta M Q^{1/(\alpha-1)}+M^{-3}Q^{4+1/(\alpha-1)}.
+\end{aligned}
+$$
+
+This gives the first approximation to $\tilde{m}$ in terms of $m, q, \tilde{q}$, namely,
+
+$$
+\tilde{m}=\left(\frac{q}{\tilde{q}}\right)^{1 /(\alpha-1)} m+O\left(\Delta M+M^{-1} Q^{2}\right)
+$$
+
+which inserted into the last term yields the second (stronger) approximation
+
+$$
+\left|A(q / \tilde{q}) m-\tilde{m}+B(q, \tilde{q}) m^{-1}\right| \ll \Delta M+M^{-3} Q^{4},
+$$
+
+where
+
+$$
+A(q / \tilde{q})=(q / \tilde{q})^{1 /(\alpha-1)}
+$$
+
+and
+
+$$
+B(q, \tilde{q})=\frac{\alpha-2}{6}\left(q^{2} A(q / \tilde{q})-\tilde{q}^{2} A(\tilde{q} / q)\right)
+$$
+
+The second approximation implies
+
+
+\begin{equation*}
+\left\|A(q / \tilde{q}) m+B(q,\tilde q)m^{-1}\right\| \ll \Delta M+M^{-3} Q^{4} \tag{4.3}
+\end{equation*}
+
+
+and that for given $m, q, \tilde{q}$ the number of $\tilde{m}$ 's is bounded by $O(1+\Delta M)$. Now by Lemma 4 we obtain
+
+$$
+\mathscr{B}(M, Q, \Delta) \ll(1+\Delta M)\left(M Q+\Delta M^{2} Q^{2}+M^{-2} Q^{6}+Q^{8 / 3}\right)(\log 2 M)^{4} .
+$$
+
+Since $Q^{8 / 3}=(M Q)^{2 / 3}\left(M^{-2} Q^{6}\right)^{1 / 3} \leqslant M Q+M^{-2} Q^{6}$ the last term can be omitted. If $\Delta M<1$ we obtain (4.2), otherwise the trivial bound yields
+
+$$
+\mathscr{B}(M,Q,\Delta)\leqslant(1+\Delta M)MQ^{2} \ll \Delta M^{2} Q^{2} .
+$$
+
+This completes the proof of Proposition 2. \proofend
+
+\section*{5. A Combination of Weyl's Shift with Poisson's Summation}
+In this section we anticipate the use of Lemma 2 by an application of Poisson's summation and the stationary phase method to the sum
+
+$$
+S_{\varphi\psi}\left(M_{1}, M_{2}, M_{3}, M_{4}\right)=\sum_{m_{j}\sim M_{j}} \varphi_{m_{1} m_{2}} \psi_{m_{3}} e\left(x \frac{m_{1}^{\alpha_{1}} m_{2}^{\alpha_{2}} m_{3}^{\alpha} m_{4}^{-\alpha}}{M_{1}^{\alpha_{1}} M_{2}^{\alpha_{2}} M_{3}^{\alpha} M_{4}^{-\alpha}}\right) .
+$$
+
+We appeal to a special case of the van der Corput lemma\\
+Lemma 5. Let $X>0, M>0, \mu>1$, and $\alpha\neq0,1$. We then have
+
+$$
+\begin{aligned}
+\sum_{M<m<\mu M} m^{-1 / 2} e\left(\alpha^{-1} m^{\alpha} M^{-\alpha} X\right)= & \gamma \sum_{N<n<\nu N} n^{-1 / 2} e\left(-\beta^{-1} n^{\beta} N^{-\beta} X\right) \\
+& +O\left(M^{-1 / 2} \log (2+M)+N^{-1 / 2} \log (2+N)\right)
+\end{aligned}
+$$
+
+with $\beta=\alpha/(\alpha-1)$, $\nu=\mu^{\alpha-1}$, $MN=X$, and some $\gamma$ depending on $\alpha$ alone. The constant implied in the symbol $O$ depends at most on $\alpha$ and $\mu$. If $\nu<1$ ($\alpha<1$) the range of summation in $n$ is understood to be $\nu N<n<N$.
+
+Proof. This result is a special case of Theorem 4.9 of [6], except that we claim a better error term, for which see [7]. \proofend
+
+In our applications of Lemma 5 the parameter $X$ will depend multiplicatively on several variables; so will $N$. In order to separate the dependence from the range of summation we appeal to the following formula
+
+Lemma 6. Let $0<L\leqslant N<\nu N<\lambda L$ and let $a_l$ be
+complex numbers with $|a_l|\leqslant1$. We then have
+
+$$
+\sum_{N<n<\nu N}a_n=\frac{1}{2\pi}\int_{-L}^{L}
+\left(\sum_{L<l<\lambda L}a_l l^{-it}\right)
+N^{it}\left(\nu^{it}-1\right)t^{-1}\,dt+O(\log(2+L)),
+$$
+
+where the constant implied in $O$ depends on $\lambda$ only. \proofend
+
+Combining Lemmas 5 and 6 we obtain
+
+Lemma 7. Let $X>0$, $M>0$, $\mu>1$, and $\alpha\neq0,1$. We then have
+
+$$
+\begin{aligned}
+\sum_{M<m<\mu M}m^{-1/2}e\left(\alpha^{-1}m^{\alpha}M^{-\alpha}X\right)
+={}&\frac{\gamma}{2\pi}\int_{-L}^{L}
+\left(\sum_{\lambda^{-1}L<l<\lambda L}l^{-1/2}
+\left(\frac{X}{lM}\right)^{it}
+ e\left(-\beta^{-1}\left(\frac{lM}{X}\right)^{\beta}X\right)\right)\\
+&\qquad\times\frac{\mu^{i(\alpha-1)t}-1}{t}\,dt\\
+&+O\left(M^{-1/2}\log(2+M)+L^{-1/2}\log(2+L)\right),
+\end{aligned}
+$$
+
+where $\beta=\alpha/(\alpha-1)$,
+$\lambda=2\left(\mu^{\alpha-1}+\mu^{1-\alpha}\right)$, and $L$ is any
+number with $\frac12<LMX^{-1}<2$; the constant implied in $O$ depends at
+most on $\alpha$ and $\mu$.
+
+Now by Lemma 7 with $\alpha$ replaced by $-\alpha$ we obtain
+
+$$
+\begin{aligned}
+S_{\varphi\psi}\ll{}&x^{-1/2}M_4
+\sum_{m_1\sim M_1}\sum_{m_2\sim M_2}\sum_{m_3\sim M_3}\sum_{l\sim L}
+\tilde\varphi_{m_1m_2}\tilde\psi_{m_3}\zeta_l\\
+&\times e\left(\tilde\alpha^{-1}x
+\frac{m_1^{\beta_1}m_2^{\beta_2}m_3^{\beta}l^{\beta}}
+{M_1^{\beta_1}M_2^{\beta_2}M_3^{\beta}L^{\beta}}\right)\\
+&+O\left(M_1M_2M_3\left(1+x^{-1/2}M_4\right)\log(xM_4)\right).
+\end{aligned}
+$$
+
+where $\tilde{\varphi}_{m_{1} m_{2}}$ and $\tilde{\psi}_{m_{3}}$ are some complex numbers with $|\tilde\varphi_{m_1m_2}|\leqslant1$, $|\tilde\psi_{m_3}|\ll\log 2x$, $\zeta_l$ is a complex number with $\left|\zeta_{l}\right| \leqslant 1$, and $\beta_{1}=\alpha_{1} /(\alpha+1)$, $\beta_{2}=\alpha_{2} /(\alpha+1), \quad \beta=\alpha /(\alpha+1), \quad \tilde{\alpha}=(\alpha+1) \alpha^{\beta}, \quad L=M_{4}^{-1} x$. Since the exponents in $m_{3}$ and $l$ are equal it permits us to treat $l m_{3}$ as one variable, $m=l m_{3}$ say, with the multiplicity bounded by the divisor function $\tau(m) \leqslant m^{\varepsilon}$. Theorem 3 is applicable with $M=L M_{3}=x M_{3} M_{4}^{-1}$ giving
+
+Theorem 5. Let $\alpha, \alpha_{1}, \alpha_{2}$ be real constants such that $\alpha \neq -1$ and $\alpha \alpha_{1} \alpha_{2} \neq 0$. Let $M_{1}, M_{2}, M_{3}, M_{4}, x \geqslant 1$, and $\varphi_{m_{1} m_{2}}, \psi_{m_{3}}$ be complex numbers with $\left|\varphi_{m_{1} m_{2}}\right| \leqslant 1$ and $\left|\psi_{m_{3}}\right| \leqslant 1$. We then have
+
+$$
+\begin{aligned}
+S_{\varphi\psi}\left(M_1,M_2,M_3,M_4\right)\ll & \left\{x^{1 / 2}\left(M_{1} M_{2}\right)^{3 / 4} M_{3}+x^{7 / 20} M_{1} M_{2} M_{3}^{11 / 10} M_{4}^{-1 / 10}\right. \\
+& +x^{1 / 4}\left(M_{1} M_{2}\right)^{3 / 4}\left(M_{3} M_{4}\right)^{1 / 2}+x^{1 / 5} M_{1} M_{2} M_{3}^{7 / 10} M_{4}^{3 / 10} \\
+& \left.+x^{-1 / 2} M_{1} M_{2} M_{3} M_{4}\right\}\left(x M_{1} M_{2} M_{3} M_{4}\right)^{\varepsilon}
+\end{aligned}
+$$
+
+for any $\varepsilon>0$, the constant implied in $\ll$ depends on $\alpha, \alpha_{1}, \alpha_{2}$ and $\varepsilon$ only.
+
+\section*{6. A Special Sum}
+In this section we estimate sums of type
+
+$$
+S_{\chi\varphi\psi}(H, M, N)=\sum_{h \sim H} \sum_{m \sim M} \sum_{n \sim N} \chi(h) \varphi_{m} \psi_{n} e\left(x \frac{h n^{-1} m^{\alpha}}{H N^{-1} M^{\alpha}}\right),
+$$
+
+where $\chi(h)$ is an additive character, i.e., $\chi(h)=e(\xi h)$, say. Such sums occur in applications of modern sieve methods. The nature of the monomial $h n^{-1}$ will be exploited effectively by a refined version of the argument established in [5]. We prove
+
+Theorem 6. Let $\alpha \neq 0,1$ and $H, M, N, x \geqslant 1$. Let $\chi(h)$ be an additive character and $\varphi_{m}, \psi_{n}$ be complex numbers with $\left|\varphi_{m}\right| \leqslant 1$ and $\left|\psi_{n}\right| \leqslant 1$. We then have
+
+$$
+\begin{aligned}
+S_{\chi\varphi\psi}(H, M, N) \ll & (H M N)^{1 / 2}\left[( H + N ) ^ { 1 / 2 } \left(x^{1 / 8} H^{-1 / 6} M^{1 / 12} N^{1 / 6}\right.\right. \\
+& \left.+x^{1 / 8} H^{-1 / 8} N^{3 / 8}+N^{1 / 2}+N^{1 / 4} M^{1 / 8}\right) x^{1 / 8} \\
+& \left.+M^{1 / 2}+x^{-1 / 4} M^{1 / 2} N\right] \mathscr{L}^{4},
+\end{aligned}
+$$
+
+where the constant implied in $\ll$ depends on $\alpha$ only and we set $\mathscr{L}=\log 2 H M N x$.
+
+The proof is rather long. We begin by applying Cauchy's inequality
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{2} & \ll M^{3/2} \sum_{m \sim M} m^{-1 / 2}\left|\sum_{h \sim H} \sum_{n \sim N} \chi(h) \psi_{n} e\left(x \frac{h n^{-1} m^{\alpha}}{H N^{-1} M^{\alpha}}\right)\right|^{2} \\
+&=M^{3 / 2} \sum_{n_{1} \sim N}\sum_{n_{2} \sim N} \psi_{n_1}\overline{\psi}_{n_2} \sum_{k} \omega_{n_{1} n_{2}}(k) \sum_{m} m^{-1 / 2} e\left(y \frac{k m^{\alpha}}{n_{1} n_{2}}\right),
+\end{aligned}
+$$
+
+say, where $y=x H^{-1} N M^{-\alpha}$ and $\omega_{n_1n_2}(k)$ is defined by
+
+$$
+\omega_{n_1n_2}(k)=
+\sum_{\substack{h_1,h_2\sim H\\h_1n_2-h_2n_1=k}}
+\chi(h_1)\overline{\chi(h_2)}.
+$$
+
+The terms with $k=0$ contribute trivially $O\left(H M^{2} N \mathscr{L}\right)$. The remaining $k$ fall into dyadic intervals $|k| \sim K$ with $1\ll K\ll HN$. For a technical convenience we wish to work with $n_{1}, n_{2}$ coprime. To make that restriction we observe that $\quad \omega_{n_{1} n_{2}}(k)=\omega_{n_{1}^{*} n_{2}^{*}}\left(k^{*}\right)$, where $k^{*}=k / d, \quad n_{1}^{*}=n_{1} / d, \quad n_{2}^{*}=n_{2} / d \quad$ with $d=\left(n_{1}, n_{2}\right)$, and we get
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{2}\ll & \mathscr{L}^{3} M^{3 / 2} \sum_{d \sim D} \sum_{n_{1} \sim N_{1}} \sum_{\substack{n_{2} \sim N_{2} \\
+\left(n_{1}, n_{2}\right)=1}}\left|\sum_{r \sim R} \omega_{n_{1} n_{2}}(r) \sum_{m \sim M} m^{-1 / 2} e\left(y \frac{r m^{\alpha}}{d n_{1} n_{2}}\right)\right| \\
+& +H M^{2} N \mathscr{L}^{3}
+\end{aligned}
+$$
+
+for some $K$ with $1 \ll K \ll H N$ and for some $D$ with $1 \leqslant D \leqslant \min \{K, N\}$, where $R=D^{-1} K$ and $N_{1}=N_{2}=D^{-1} N$. Hence by Lemma 7 we obtain
+
+
+\begin{align*}
+\left|S_{\chi\varphi\psi}\right|^{2}\ll & \mathscr{L}^{3} M^{2}\left(\frac{H N}{x K}\right)^{1 / 2} \sum_{d\sim D}\sum_{\substack{n_1\sim N_1,\ n_2\sim N_2\\(n_1,n_2)=1}}\sum_{l\sim L}\left|\sum_{r \sim R} r^{i t} \omega_{n_{1} n_{2}}(r) e\left(w r^{-\beta} R^{\beta}\right)\right| \\
+& +\mathscr{L}^{3} H M N\left(M+N^{2}+x^{-1 / 2} M N^{2}\right), \tag{6.1}
+\end{align*}
+
+
+where $L=|\alpha| x K(H M N)^{-1}, t$ is a real number, $\beta=(\alpha-1)^{-1}$, and
+
+$$
+w=(1-\alpha) \frac{x K}{H N}\left(\frac{l}{L}\right)^{\alpha \beta}\left(\frac{d n_{1} n_{2}}{D N_{1} N_{2}}\right)^{\beta} .
+$$
+
+Now, our nearest aim is to build a single variable $c=d n_{1} n_{2}$, say, out of the three variables $d, n_{1}, n_{2}$. We begin by the Fourier analysis of the arithmetic function $\omega_{n_{1} n_{2}}(r)$ to separate the variable $r$ from the parameters $n_{1}, n_{2}$.
+
+Lemma 8. Let $H_1\geqslant H_1'\geqslant1$,
+$H_2\geqslant H_2'\geqslant1$, let $\xi_1,\xi_2$ be real numbers, and let
+$n_1,n_2$ be positive integers with $(n_1,n_2)=1$. We have
+
+\begin{align*}
+\omega(r)
+&=\sum_{\substack{H_1'\leqslant h_1<H_1,\ H_2'\leqslant h_2<H_2\\
+h_1n_1-h_2n_2=r}}e(\xi_1h_1+\xi_2h_2)\\
+&=\int_0^1\widehat\omega(\theta)e(\theta r)\,d\theta, \tag{6.2}
+\end{align*}
+
+with
+
+\begin{equation*}
+\int_0^1|\widehat\omega(\theta)|\,d\theta
+\ll\left(1+\frac{H_1H_2}{n_1n_2}\right)^{1/2}
+\left(\log 2H_1H_2\right)^2, \tag{6.3}
+\end{equation*}
+
+and the constant implied in $\ll$ is absolute.
+
+Proof. We have (6.2) with
+
+$$
+\widehat\omega(\theta)=
+\left(\sum_{H_1'\leqslant h_1<H_1}e\left((\xi_1-\theta n_1)h_1\right)\right)
+\left(\sum_{H_2'\leqslant h_2<H_2}e\left((\xi_2+\theta n_2)h_2\right)\right).
+$$
+
+Since
+
+$$
+\left|\sum_{M_1\leqslant m<M}e(\xi m)\right|
+=\sum_{m\in\mathbb Z}\alpha(m)e(\xi m),
+$$
+
+with
+
+$$
+\alpha(m)=\alpha(M_1,M;m)\ll
+\left(1+\frac{m^2}{M^2}\right)^{-1}\log 2M,
+$$
+
+it gives
+
+$$
+|\widehat\omega(\theta)|=
+\left(\sum_{h_1\in\mathbb Z}\alpha_1(h_1)e((\xi_1-\theta n_1)h_1)\right)
+\left(\sum_{h_2\in\mathbb Z}\alpha_2(h_2)e((\xi_2+\theta n_2)h_2)\right),
+$$
+
+with
+
+$$
+\alpha_j(h_j)\ll\left(1+h_j^2H_j^{-2}\right)^{-1}\log 2H_j.
+$$
+
+Hence
+
+$$
+\begin{aligned}
+\int_0^1|\widehat\omega(\theta)|\,d\theta
+&=\sum_{\substack{h_1,h_2\in\mathbb Z\\h_1n_1=h_2n_2}}
+\alpha_1(h_1)\alpha_2(h_2)e(\xi_1h_1+\xi_2h_2)\\
+&\ll\sum_{h\in\mathbb Z}
+\left(1+h^2n_2^2H_1^{-2}\right)^{-1}
+\left(1+h^2n_1^2H_2^{-2}\right)^{-1}
+\left(\log 2H_1H_2\right)^2\\
+&\ll\left(1+\min\left\{\frac{H_1}{n_2},\frac{H_2}{n_1}\right\}\right)
+\left(\log 2H_1H_2\right)^2,
+\end{aligned}
+$$
+
+and this yields (6.3). \proofend
+
+By Lemma 8 and by the Cauchy-Schwarz inequality we deduce that
+
+$$
+\begin{aligned}
+& \left|\sum_{r \sim R} r^{i t} \omega_{n_{1} n_{2}}(r) e\left(w r^{-\beta} R^{\beta}\right)\right|^{2} \\
+& \quad \leqslant\left(\int_{0}^{1}|\widehat{\omega}(\theta)| d \theta\right) \int_{0}^{1}|\widehat{\omega}(\theta)|\left|\sum_{r \sim R} r^{i t} e\left(\theta r+w r^{-\beta} R^{\beta}\right)\right|^{2} d \theta
+\end{aligned}
+$$
+
+Next, by Lemma 2 we obtain
+
+$$
+\begin{aligned}
+& \left|\sum_{r \sim R} r^{i t} e\left(\theta r+w r^{-\beta} R^{\beta}\right)\right|^{2} \\
+& \quad\ll\frac{R^{2}}{Q}+\frac{R}{Q} \sum_{1 \leqslant q<Q}\left|\sum_{\substack{r+q \sim R \\
+r-q \sim R}}\left(\frac{r+q}{r-q}\right)^{i t} e\left(w R^{\beta}\left[(r+q)^{-\beta}-(r-q)^{-\beta}\right]\right)\right|
+\end{aligned}
+$$
+
+with any $Q<R/3$. Note that the bound does not depend on $\theta$ and that
+
+$$
+\int_{0}^{1}|\widehat{\omega}(\theta)| d \theta \ll\left(1+D H N^{-1}\right) \mathscr{L}^{2}
+$$
+
+Combining the above results with (6.1) we conclude that
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{2} \ll & \mathscr{L}^{5} M^{2}\left(\frac{H N}{x K}\right)^{1 / 2}\left(1+\frac{D H}{N}\right) \\
+& \times \sum_{d\sim D}\sum_{n_1\sim N_1}\sum_{n_2\sim N_2}\sum_{l\sim L}
+\Bigg(\frac{R^2}{Q}+\frac{R}{Q}\sum_{1\leqslant q<Q}
+\Bigg|\sum_{\substack{r+q\sim R\\r-q\sim R}}
+\left(\frac{r+q}{r-q}\right)^{it} \\
+& \times e\left(wR^{\beta}\left[(r+q)^{-\beta}-(r-q)^{-\beta}\right]\right)\Bigg|\Bigg)^{1/2} \\
+& +\mathscr{L}^{3} H M N\left(M+N^{2}+x^{-1 / 2} M N^{2}\right) .
+\end{aligned}
+$$
+
+Note that the variables $d, n_{1}, n_{2}$ occur only in $w$ as a product $c=d n_{1} n_{2}$. Given $c \sim D N_{1} N_{2}=D^{-1} N^{2}=C$, say, the number of representations of $c$ in the form $c=d n_{1} n_{2}$ is bounded by the divisor function $\tau_{3}(c)$. By Cauchy's inequality we obtain
+
+$$
+\begin{gathered}
+\left|S_{\chi\varphi\psi}\right|^{4} \ll \mathscr{L}^{12} D^{-1} M^{3}(D H+N)^{2}\left(\frac{x N K^{3}}{H M Q D^{3}}+\frac{K}{Q D} \sum_{1 \leqslant q<Q} S_{q}\right) \\
++\mathscr{L}^{6}(H M N)^{2}\left(M+N^{2}+x^{-1 / 2} M N^{2}\right)^{2},
+\end{gathered}
+$$
+
+where
+
+$$
+S_{q}=\sum_{c \sim C} \sum_{l \sim L}\left|\sum_{\substack{r+q \sim R \\ r-q \sim R}}\left(\frac{r+q}{r-q}\right)^{i t} e\left(w R^{\beta}\left[(r+q)^{-\beta}-(r-q)^{-\beta}\right]\right)\right|
+$$
+
+with $w=(1-\alpha)(xK/HN)(l/L)^{\alpha\beta}(c / C)^{\beta}$ and $\beta=(\alpha-1)^{-1}$. It remains to estimate $S_{q}$ for each $q$ individually. We appeal to Proposition 1. The arguments are similar to those used in the proof of Theorem 2 if we treat
+
+$$
+\delta(r)=(r+q)^{-\beta}-(r-q)^{-\beta} \sim q r^{-\alpha \beta}
+$$
+
+as a monomial in $r$ of degree $-\alpha \beta$. More to the point we have
+
+$$
+|\delta(r)-\delta(\tilde{r})| \sim q\left|r^{-\alpha \beta}-\tilde{r}^{-\alpha \beta}\right|,
+$$
+
+so the spacing problems for the points $\delta(r)$ and for the points $r^{\alpha \beta}$ are equivalent. From these remarks it is clear that Proposition 1 produces a bound for $S_{q}$, the same as that in Theorem 2 with the following parameters; $M_{1}=L, M_{2}=C, M_{3}=R, M_{4}=1$, and with $x$ replaced by $\mathfrak{x}=qxDH^{-1}N^{-1}$. We obtain
+
+$$
+\begin{aligned}
+\mathscr{L}^{-1}S_q\ll{}&
+\left(\mathfrak{x}M_1M_2M_3M_4\right)^{1/2}
++M_1M_2(M_3M_4)^{1/2}\\
+&+(M_1M_2)^{1/2}M_3M_4
++\mathfrak{x}^{-1/2}M_1M_2M_3M_4\\
+\ll{}&\frac{xK}{H}\left(\frac{q}{DM}\right)^{1/2}
++\frac{xN}{HM}\left(\frac{K}{D}\right)^{3/2}
++\left(\frac{xN}{HM}\right)^{1/2}\left(\frac{K}{D}\right)^{3/2}\\
+&+\left(\frac{x}{qH}\right)^{1/2}\frac{K^2N^{3/2}}{MD^{5/2}}
+\end{aligned}
+$$
+
+Hence
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{4}\ll{}&\mathscr{L}^{13} D^{-1} M^{3}(D H+N)^{2}\left(W_{1} Q^{-1}+W_{2} Q^{-1 / 2}+W_{3}+W_{4} Q^{1 / 2}\right) \\
+& +\mathscr{L}^{6}(H M N)^{2}\left(M+N^{2}+x^{-1 / 2} M N^{2}\right)^{2},
+\end{aligned}
+$$
+
+where $W_{1}=\dfrac{xN}{HM}\left(\dfrac{K}{D}\right)^{3}$, $W_{2}=\left(\dfrac{xN^{3}K^{6}}{D^{7}HM^{2}}\right)^{1/2}$, $W_{3}=\dfrac{xN}{HM}\left(\dfrac{K}{D}\right)^{5/2}+\left(\dfrac{xN}{HM}\right)^{1/2}\left(\dfrac{K}{D}\right)^{5/2}$, and $W_{4}=\dfrac{xK^{2}}{HM^{1/2}D^{3/2}}$. We choose
+
+$$
+Q=\min \left\{\frac{K}{3 D}, \frac{W_{2}}{W_{4}}+\left(\frac{W_{1}}{W_{4}}\right)^{2 / 3}\right\}
+$$
+
+giving
+
+$$
+\begin{aligned}
+W_{1} Q^{-1} & +W_{2} Q^{-1 / 2}+W_{3}+W_{4} Q^{1 / 2} \\
+& \ll W_{1}\left(\frac{D}{K}\right)+W_{2}\left(\frac{D}{K}\right)^{1 / 2}+W_{3}+W_{1}^{1 / 3} W_{4}^{2 / 3}+W_{2}^{1 / 2} W_{4}^{1 / 2} \\
+& \ll\frac{x N K^{2}}{H M D^{2}}+\left(\frac{x N^{3} K^{5}}{H M^{2} D^{6}}\right)^{1 / 2}+\frac{x N}{H M}\left(\frac{K}{D}\right)^{5 / 2} \\
+& +\left(\frac{x N}{H M}\right)^{1 / 2}\left(\frac{K}{D}\right)^{5 / 2}+\frac{x}{H}\left(\frac{N K^{7}}{M^{2} D^{6}}\right)^{1 / 3}+\left(\frac{x N}{H M}\right)^{3 / 4}\left(\frac{K}{D}\right)^{5 / 2}
+\end{aligned}
+$$
+
+Here the first term is majorized by the third term and the sixth term is equal to the geometric mean of the third and the fourth terms. Thus we obtain
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{4}\ll & \mathscr{L}^{13} D^{-1} M^{3}(D H+N)\left\{\left(\frac{x N^{3} K^{5}}{H M^{2} D^{6}}\right)^{1 / 2}+\frac{x N}{H M}\left(\frac{K}{D}\right)^{5 / 2}\right. \\
+& \left.+\left(\frac{x N}{H M}\right)^{1 / 2}\left(\frac{K}{D}\right)^{5 / 2}+\frac{x}{H}\left(\frac{N K^{7}}{M^{2} D^{6}}\right)^{1 / 3}\right\} \\
+& +\mathscr{L}^{6}(H M N)^{2}\left(M+N^{2}+x^{-1 / 2} M N^{2}\right)^{2} .
+\end{aligned}
+$$
+
+Now observe that the worst case is $D \sim 1$ and $K \sim H N$ giving
+
+$$
+\begin{aligned}
+\left|S_{\chi\varphi\psi}\right|^{4} \ll & \mathscr{L}^{13} M^{2}(H+N)^{2}\left\{x^{1 / 2} H^{2} N^{4}+x H^{3 / 2} N^{7 / 2}\right. \\
+& \left.+x^{1 / 2} H^{2} M^{1 / 2} N^{3}+x H^{4 / 3} M^{1 / 3} N^{8 / 3}\right\} \\
+& +\mathscr{L}^{6}(H M N)^{2}\left(M+N^{2}+x^{-1 / 2} M N^{2}\right)^{2}
+\end{aligned}
+$$
+
+Here the last but one term is majorized by the first term, so it can be omitted. This completes the proof of Theorem 6. \proofend
+
+\section*{7. Exponential Sums Related to Short Intervals}
+Considerable attention in analytic number theory is given to the distribution of special sequences in short intervals
+
+$$
+\mathscr{A}=\{n ; x-y<n \leqslant x\}
+$$
+
+with $1 \leqslant y \leqslant \frac{1}{2} x$. A powerful approach to many such problems is offered by the sieve method which depends on estimates for the remainder terms
+
+$$
+r_{d}=\left[\frac{x}{d}\right]-\left[\frac{x-y}{d}\right]-\frac{y}{d} .
+$$
+
+The modern version of the linear sieve [4] requires estimates for the bilinear form
+
+
+\begin{equation*}
+R(M, N)=\sum_{1 \leqslant m<M} \sum_{1 \leqslant n<N} a_{m} b_{n} r_{m n} \tag{7.1}
+\end{equation*}
+
+
+with real coefficients $a_{m}, b_{n}$ subject to $\left|a_{m}\right| \leqslant 1,\left|b_{n}\right| \leqslant 1$. One needs the upper bound
+
+
+\begin{equation*}
+R(M,N)\ll yx^{-\varepsilon} \tag{7.2}
+\end{equation*}
+
+
+Clearly (7.2) holds true if $M N \leqslant y x^{-\varepsilon}$ because $\left|r_{d}\right| \leqslant 1$. However, one can do better by taking into account a cancellation of terms in (7.1) due to the variation in sign of $r_{d}$. The following lemma transforms the problem to estimating exponential sums of type
+
+$$
+S_u(H,M,N)=\sum_{1 \leqslant h \leqslant H} \sum_{1 \leqslant m<M} \sum_{1\leqslant n<N} \frac{a_{m} b_{n}}{m n} e\left(\frac{hu}{mn}\right) .
+$$
+
+Lemma 9. Let $M,N\geqslant1$ and $|a_m|\leqslant1$, $|b_n|\leqslant1$.
+We have
+
+$$
+|R(M,N)|\leqslant2\int_{x-2y}^{x+y}|S_u(H,M,N)|\,du
++O\left(yx^{-\varepsilon}\right),
+$$
+
+with $H=MNy^{-1}x^{3\varepsilon}$, the constant implied in $O$ depending
+on $\varepsilon$ alone.
+
+Proof. Let $f(u)$ be a smooth function supported in the interval
+$[x-y-yx^{-2\varepsilon},x+yx^{-2\varepsilon}]$ such that $f(u)=1$ in
+$[x-y,x]$ and
+
+$$
+f^{(j)}(u)\ll\left(yx^{-2\varepsilon}\right)^{-j}
+$$
+
+for any $j\geqslant0$, the constant implied in $\ll$ depending on $j$ only.
+We then have
+
+$$
+\begin{aligned}
+\sum_{x-y<lmn\leqslant x}a_mb_n
+&=\sum_l\sum_m\sum_n a_mb_nf(lmn)+O\left(yx^{-\varepsilon}\right)\\
+&=\sum_m\sum_n\frac{a_mb_n}{mn}\sum_h
+\widehat f\left(\frac{h}{mn}\right)+O\left(yx^{-\varepsilon}\right)
+\end{aligned}
+$$
+
+by Poisson's summation, where $\widehat f(t)$ is the Fourier transform of
+$f(u)$. The constant term $(h=0)$ contributes
+
+$$
+\widehat f(0)\sum_m\sum_n\frac{a_mb_n}{mn}
+=y\sum_m\sum_n\frac{a_mb_n}{mn}+O\left(yx^{-\varepsilon}\right).
+$$
+
+For $|h|>H=MNy^{-1}x^{3\varepsilon}$ we have
+$\widehat f(h/mn)\ll h^{-2}$, so the terms with $|h|>H$ contribute
+$O(yx^{-\varepsilon})$. Combining these results, we complete the proof.
+\proofend
+
+By Theorem 6 and Lemma 9 we infer\\
+Theorem 7. Let $2 \leqslant y \leqslant x^{1 / 2}$ and $\left|a_{m}\right| \leqslant 1,\left|b_{n}\right| \leqslant 1$. We then have
+
+
+\begin{equation*}
+\sum_{M \leqslant m<2 M} \sum_{N \leqslant n<2 N} a_mb_nr_{mn}\ll yx^{-\varepsilon} \tag{7.3}
+\end{equation*}
+
+
+provided
+
+
+\begin{align*}
+M & <y x^{-\varepsilon^{\prime}}  \tag{7.4}\\
+N^{6} & <M y^{7} x^{-3-\varepsilon^{\prime}}  \tag{7.5}\\
+M^{2} N^{4} & <y x^{1-\varepsilon^{\prime}} \tag{7.6}
+\end{align*}
+
+
+where $\varepsilon^{\prime}=48 \varepsilon$, the constant implied in $\ll$ depending on $\varepsilon$ alone.\\
+Proof. We have to show that
+
+$$
+\sum_{h\sim H}\sum_{m\sim M}\sum_{n\sim N}a_mb_n
+ e\left(\frac{hu}{mn}\right)\ll MNx^{-2\varepsilon}
+$$
+
+for any $H$ with $1 \leqslant H<M N y^{-1} x^{3 \varepsilon}$ and $x-2y<u<x+y$. Since $u\asymp x$ uniformly in this range and $H<N$, Theorem 6 gives
+
+$$
+\begin{aligned}
+& \ll(HMN)^{1/2}\left[N ^ { 1 / 2 } \left(\left(\frac{x H}{M N}\right)^{1 / 8} H^{-1 / 6} M^{1 / 12} N^{1 / 6}\right.\right. \\
+& \left.\quad+\left(\frac{x H}{M N}\right)^{1 / 8} H^{-1 / 8} N^{3 / 8}+N^{1 / 2}+N^{1 / 4} M^{1 / 8}\right)\left(\frac{x H}{M N}\right)^{1 / 8} \\
+& \left.\quad+M^{1 / 2}+\left(\frac{M N}{x H}\right)^{1 / 4} M^{1 / 2} N\right](\log x)^{4} .
+\end{aligned}
+$$
+
+Now observe that the worst value of $H$ is $H=M N y^{-1} x^{3 \varepsilon}$ giving
+
+$$
+\begin{aligned}
+\ll{}&y^{-1/2}MN\left[x^{1 / 4}(y M)^{-1 / 12} N^{1 / 2}+x^{1 / 4}(y M)^{-1 / 8} N^{3 / 4}\right. \\
+& +x^{1 / 8} y^{-1 / 8} N+x^{1 / 8} y^{-1 / 8} N^{3 / 4} M^{1 / 8} \\
+& \left.+M^{1 / 2}+x^{-1 / 4} y^{1 / 4} M^{1 / 2} N\right] x^{2 \varepsilon} \ll M N x^{-2 \varepsilon}
+\end{aligned}
+$$
+
+provided (7.4), (7.5), (7.6) hold as well as
+
+
+\begin{gather*}
+N^{6}<M y^{5} x^{-2-\varepsilon^{\prime}}  \tag{7.7}\\
+N^{8}<y^{5} x^{-1-\varepsilon^{\prime}}  \tag{7.8}\\
+M N^{6}<y^{5} x^{-1-\varepsilon^{\prime}} \tag{7.9}
+\end{gather*}
+
+
+But (7.7)--(7.9) follow from (7.4)--(7.6) under the hypothesis $y\leqslant x^{1/2}$. \proofend
+
+The bilinear form (7.1) was investigated in various papers. It was proved in [3,5] that (7.2) holds true subject to (7.4) and
+
+
+\begin{equation*}
+M^{2} N^{4}<y^{5} x^{-1-\varepsilon^{\prime}} . \tag{7.10}
+\end{equation*}
+
+
+Combining (7.5) and (7.10) we conclude\\
+Corollary. Let $x^{7 / 19}<y<x^{11 / 23}$ and $\left|a_{m}\right| \leqslant 1,\left|b_{n}\right| \leqslant 1$. We then have (7.2) provided
+
+
+\begin{equation*}
+M<y x^{-\varepsilon^{\prime}} \tag{7.4}
+\end{equation*}
+
+
+and
+
+
+\begin{equation*}
+N<y^{19 / 16} x^{-7 / 16-\varepsilon^{\prime}} . \tag{7.11}
+\end{equation*}
+
+
+\section*{Acknowledgments}
+The principal part of this work was accomplished in the summer of 1987 when the first-named author visited Rutgers University. It is his pleasure to express thanks to the Mathematics Department for the invitation and for the financial support. The second author takes this opportunity to thank Professor H. Halberstam and Professor H.-E. Richert for the stimulating correspondence on related topics. Finally, the authors are grateful to the referee for careful reading and catching typographical errors in the manuscript.
+
+\section*{References}
+\begin{thebibliography}{9}
+\bibitem{1}
+E. Bombieri and H. Iwaniec, On the order of
+$\zeta\left(\frac12+it\right)$, Ann. Scuola Norm. Sup. Pisa 13, No. 3
+(1986), 449--472.
+
+\bibitem{2}
+J. G. van der Corput, Verschärfung der Abschätzung beim Teilerproblem,
+Math. Ann. 87 (1922), 39--65.
+
+\bibitem{3}
+H. Halberstam, D. R. Heath-Brown, and H.-E. Richert, Almost-primes in
+short intervals, in ``Recent Progress in Analytic Number Theory,'' Vol. 1,
+pp. 69--101, Academic Press, London, 1981.
+
+\bibitem{4}
+H. Iwaniec, A new form of the error term in the linear sieve,
+Acta Arith. 37 (1980), 307--320.
+
+\bibitem{5}
+H. Iwaniec and M. Laborde, $P_2$ in short intervals,
+Ann. Inst. Fourier (Grenoble) 31, No. 4 (1981), 37--56.
+
+\bibitem{6}
+E. C. Titchmarsh, ``The Theory of the Riemann Zeta-Function,'' Oxford,
+1951.
+
+\bibitem{7}
+I. M. Vinogradov, ``Izbrannye Trudy,'' Moscow, 1952; Selected Works,
+Springer, Berlin, 1985.
+
+\bibitem{8}
+I. M. Vinogradov, A new method of estimation of trigonometrical sums,
+Mat. Sb. 43 (1936), 115--188.
+
+\bibitem{9}
+H. Weyl, Über die Gleichverteilung von Zahlen mod. Eins,
+Math. Ann. 77 (1916), 313--352.
+\end{thebibliography}
+
+\end{document}

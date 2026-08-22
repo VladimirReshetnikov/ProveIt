@@ -1,0 +1,2411 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathrsfs,mathtools}
+\usepackage[a4paper,margin=30mm]{geometry}
+\usepackage{microtype}
+
+\title{On the method of exponent pairs}
+\author{G. Kolesnik (Los Angeles, Cal.)}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+The method of exponent pairs (henceforth abbreviated to m.e.p.) was introduced by van der Corput~[2] for estimating certain one-dimensional exponential sums. We write, as is customary, $e(x)$ for $\exp(2\pi i x)$. The sums in question have the form
+\[
+  \sum_{X<x<X+Y} e(f(x)),
+\]
+where $Y\leqslant X$ and $f(x)$ behaves rather like a power of $x$ (not a positive integer power). We shall introduce notation below to make explicit the similarity required between $f(x)$ and the power of $x$ (for one- and several-dimensional functions $f(x)$).
+
+As is well known, such exponential sums are of great importance in analytic number theory. Let us suppose that $f(x)$ is similar to $FX^{-\alpha}x^\alpha$. Then, in the refined form given by E.~Phillips, the m.e.p. leads to an estimate of the form
+\[
+  \left|\sum_{X<x<X+Y} e(f(x))\right|\ll F^kX^l,
+\]
+where $(k,l)$ is an exponent pair (e.p.). (We have modified Phillips' definition slightly for the purpose of this paper; in his definition $f'\asymp F$.) It is trivial to see that $(0,1)$ is an e.p. All other e.p. are produced by two processes $A$ and $B$. Process $A$ is essentially an application of the Cauchy--Schwarz inequality, and process $B$ is essentially the combination of the Poisson summation formula with the method of stationary phase. Rankin~[6] proved that
+\[
+  \inf_{(k,l)\in E}(2k+l)=0.829021356\ldots
+\]
+(in fact, $2k+l$ corresponds to $k+l$ in his definition), where $E$ denotes the set of all e.p. obtained by the one-dimensional m.e.p. Consequently the one-dimensional m.e.p., when applied to the problem of bounding $\zeta(\tfrac12+it)$, cannot give a better result than
+\[
+  \zeta\left(\tfrac12+it\right)\ll t^\theta,
+  \qquad \theta=0.16451067\ldots.
+\]
+As Rankin observed, this is inferior to what may be proved by using two-dimensional exponential sums. Srinivasan~[7] developed a m.e.p. for the estimation of many-dimensional exponential sums $\sum_{x\in D}e(f(x))$, where $D\in\mathscr D$ and $f\in\mathscr F$ (see Section~2), but he fails to take full advantage of the Cauchy--Schwarz inequality, and so it leads to weaker results than one would like. The m.e.p. gives the same estimate for all $f\in\mathscr F$, $D\in\mathscr D$:
+\[
+  S\equiv\left|\sum_{x\in D}e(f(x))\right|
+  \ll F^{\lambda_0}X_1^{\lambda_1}\cdots X_n^{\lambda_n}.
+\]
+The vector $\lambda=(\lambda_0,\ldots,\lambda_n)$ is called an exponent $(n+1)$-tuple, or we write $\lambda\in E_n$ (note that the above definition differs from the corresponding definitions in~[5]--[7]). As in the one-dimensional case, m.e.p. consists of repeated applications of processes $A\in\mathscr A$ and $B\in\mathscr B$, defined respectively by Lemmas~2 and~1 (in~[5]--[7] Lemma~2 is used with $k=1$ only). After applying processes $A$ and $B$ several times and estimating the last sum trivially, we obtain an exponent pair (which depends on the number of times we apply each of the processes $A$ and $B$).
+
+The transformation $B$ is applied whenever
+\[
+  F^{\varepsilon_0-1/3}\ll A_k^{-1}\asymp H_k(f(x))\ll 1
+\]
+and the remainder
+\[
+  R=N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}
+\]
+in Lemma~1 is smaller than the principal sum. If we could ignore the error term, then, denoting by $S(F;X)$ the best estimate of the exponential sum $\left|\sum_{x\in D}e(f(x))\right|$ which can be obtained by m.e.p. for $f\in\mathscr F(F;X;\Delta)$, we could in such a case write Lemma~1 in the following form:
+\begin{equation}
+  S(F;X)\lll X_1\cdots X_kF^{-k/2}
+  S\left(F;\frac F{X_1},\ldots,\frac F{X_k},X_{k+1},\ldots,X_n\right)
+  \tag{1}
+\end{equation}
+for any $k\in[1,n]$.
+
+If we estimate the last sum trivially, then we get
+\begin{equation}
+  S(F;X)\lll N\sqrt{F^k(X_1\cdots X_k)^{-2}}
+  \asymp N\lvert H_k(f(x))\rvert^{1/2},
+  \tag{2}
+\end{equation}
+which gives a non-trivial estimate for $S(F;X)$ if $\lvert H_k(f(x))\rvert$ is small. If $\lvert H_k(f(x))\rvert$ is not small, one applies a transformation $A$ sufficiently many times to make it small. Lemma~2 reduces the estimation of $S$ to the estimation of another exponential sum $\left|\sum_{x,h}e(g(x,h))\right|$, where
+\[
+  g(x,h)=h_1f_{x_1}(x)+\cdots+h_mf_{x_m}(x)+g_1(x,h),
+\]
+and $g_1(x,h)$ is usually small, so that we have
+\[
+  \lvert H_l(g(x,h))\rvert\ll\lvert H_l(f(x))\rvert\rho^l,
+  \qquad
+  \rho=\left|\frac{h_1}{X_1}\right|+\cdots+\left|\frac{h_n}{X_n}\right|.
+\]
+If we take $m=1$ (or $A\in\mathscr A_1$), then
+\[
+  g(x,h_1)\in\mathscr F\left(\frac{Fh_1}{X_1};X;\Delta+\frac{h_1}{X_1}\right);
+\]
+also, after applying Lemma~1 to the last sum we get a new sum with a function, say, $\varphi(x,h_1)$, such that for $h_1\in[H_1,2H_1]$,
+\[
+  \varphi\in\mathscr F\left(\frac{FH_1}{X_1};X,H_1;\Delta+\frac{H_1}{X_1}\right).
+\]
+So we can write transformation $A$, for $A\in\mathscr A_1$, as follows:
+\begin{align}
+  |S(F;X)|^2
+  &\lll \frac{N^2}{q}+\frac Nq\max_{1\leqslant H\leqslant q}
+      S\left(\frac{FH}{X_1};X,H\right) \notag\\
+  &=\frac{N^2}{q}+\frac NqS\left(\frac{Fq}{X_1};X;q\right)
+  \tag{3}
+\end{align}
+for any $q\leqslant X_1$. If $m>1$, then $g(x,h)\notin\mathscr F$. Also, while applying Lemma~2 with $m>1$ allows us to reduce the values of $\lvert H_l(g(x,h))\rvert$ much faster than if we take $m=1$, and in a generic case
+\[
+  \lvert H_l(g(x,h))\rvert\asymp\lvert H_l(f(x))\rvert\rho^l,
+\]
+it can be too small at some points of $D_1$, and we cannot use Lemma~1. Suppose, however, that $\mathscr F_0\subset\mathscr F$, $\mathscr A_0\subset\mathscr A$, and $\mathscr B_0\subset\mathscr B$ are such that for all $f\in\mathscr F_0$, $A\in\mathscr A_0$, and $B\in\mathscr B_0$ inequality~(1) holds, and suppose that we can ignore the points at which $H_l(g(x,h))$ is very small, so that the processes $A$ can be written as
+\begin{equation}
+  S(F;X)^2\ll N^2Q^{-1}+NQ^{-1}S(F\rho;X,Q),
+  \tag{4}
+\end{equation}
+where
+\[
+  \rho=\frac{q_1}{X_1}=\cdots=\frac{q_m}{X_m}=\sqrt[m]{\frac Q{N_m}},
+  \qquad Q=q_1\cdots q_m,
+  \qquad N_m=X_1\cdots X_m,
+\]
+and $1\leqslant m\leqslant m(n,\mathscr A_0)\leqslant n$. One can show that the conjecture that both (1) and (4) are true is equivalent to one conjecture:
+\[
+  S(F;X_1,\ldots,X_n)\ll S(F;X_1)\cdots S(F;X_n).
+\]
+In particular, (1) and (4) hold if we take $\mathscr A_0=\mathscr A_1$, $\mathscr B_0=\mathscr B$, and $\mathscr F_0=\mathscr F$. Using (1) and (3), one can develop an improvement of the m.e.p. of~[7] for $A\in\mathscr A_1$. One can, however, obtain a better estimate by using our Theorems~1--3.
+
+\medskip
+\noindent\textbf{Theorem 1.}
+\textit{Let $k_1,k_2$ be positive integers with $1\leqslant k_1,k_2\leqslant3$, and let $\alpha,\beta$ be real numbers such that $\alpha,\beta$ are not integers,
+\[
+  \alpha+\beta\ne k_1,\qquad
+  \alpha+\beta\ne k_1+1,\qquad
+  (\alpha-k_1-1)^2+\beta(\alpha-k_1)\ne0,
+\]
+and $\alpha+\beta\ne k_1+1+1/k_2$. Let $\Delta$ be small and let $f(x,y)$ be a real $C^\infty$ function in
+\[
+  D\subset\{(x,y)\mid X\leqslant x\leqslant2X,\;Y\leqslant y\leqslant2Y\}
+\]
+such that
+\[
+  f(x,y)\underset{\Delta}{\sim}FX^{-\alpha}Y^{-\beta}x^\alpha y^\beta,
+  \qquad X\geqslant Y,\qquad XY=N.
+\]
+Then
+\[
+  S\equiv\left|\sum_{(x,y)\in D}e(f(x,y))\right|\lll\frac N{\sqrt{Q_1}},
+\]
+where $Q_1$ is the largest number satisfying the following inequalities:
+\begin{equation}
+\begin{aligned}
+Q_1\leqslant\min\Bigg\{&
+\left(N^{2k_1K_1+4K_1-k_1k_2-2k_1-k_2-4}
+      F^{2k_2+4-4K_1}\right)^{\!1/(4K_1K_2-2K_2-k_2K_1-3K_1+k_2+2)},\\
+&\left(N^{3k_1K_2+6K_2-2k_1-2}F^{4-6K_2}\right)^{\!1/(6K_1K_2-2K_1-3K_2+2)}
+\Bigg\},
+\end{aligned}
+\tag{5}
+\end{equation}
+where $K_1=2^{k_1}$ and $K_2=2^{k_2}$; also, for $k_1=3$,
+\[
+  \sqrt[4]{N\Delta^2}\leqslant Q_1\leqslant
+  \min\left\{(F^2N^{-3})^{11/115},\;(N^5F^{-2})^{1/13},\;(N^{47}F^{-18})^{1/151}\right\};
+\]
+for $k_1=2$,
+\[
+  \sqrt{N\Delta^2}\leqslant Q_1\leqslant
+  \min\left\{(FN^{-1})^{2/5},\;(N^2F^{-1})^{9/29}\right\};
+\]
+and for $k_1=1$,
+\[
+  Q_1\leqslant\min\{\Delta^{-1},N^{2/7}\}.
+\]}
+
+Note that the restrictions $1\leqslant k_1,k_2\leqslant3$ and $(\alpha-k_1-1)^2+\beta(\alpha-k_1)\ne0$ can be removed and are introduced to simplify the proof. Also, it seems that, using the idea of the proof of the theorem, one can develop the method of exponent pairs for double and possibly multiple sums. Note that $O(N^\varepsilon)$ can be replaced with $O(\log^4N)$. Using Theorem~1, one can similarly to~[4] show that
+\[
+  \zeta\left(\tfrac12+it\right)\lll t^{139/858},
+  \qquad \Delta(R)\ll R^{139/429},
+\]
+and many other constants can be improved.
+
+\medskip
+\noindent\textbf{Theorem 2.}
+\textit{Let $\alpha,\beta,\gamma$ be real numbers such that
+\[
+  \alpha+\beta+\gamma\ne1,\qquad
+  \alpha+\beta+\gamma\ne2,\qquad
+  \alpha\beta\gamma(\alpha-1)(\beta-1)(\gamma-1)\ne0,
+\]
+and $\Delta\leqslant\varepsilon_0$. Let $f(x,y,z)$ be a real $C^\infty$ function such that
+\[
+  f(x,y,z)\underset{\Delta}{\sim}
+  FX^{-\alpha}Y^{-\beta}Z^{-\gamma}x^\alpha y^\beta z^\gamma
+\]
+throughout
+\[
+\begin{gathered}
+  D\subset\{(x,y,z)\mid X\leqslant x\leqslant2X,\;Y\leqslant y\leqslant2Y,\;Z\leqslant z\leqslant2Z\},\\
+  X\geqslant Y\geqslant Z,\qquad XYZ=N.
+\end{gathered}
+\]
+Then
+\[
+\begin{aligned}
+S\equiv\left|\sum_{(x,y,z)\in D}e(f(x,y,z))\right|
+\ll N\Big[&FN^{-1}+Z^{-1}+N^{-1/4}+\sqrt[5]{F^3X^4N^{-5}}\\
+&+\sqrt[8]{F^6\Delta^3X^6N^{-8}}+\sqrt[6]{\Delta Y^{-2}Z^{-2}}+F^{-1/2}\\
+&+Y^{-2/5}Z^{-2/5}+\sqrt[8]{F^{-1}Y^{-2}Z^{-2}}\Big]^{1/2}\log^4N.
+\end{aligned}
+\]}
+
+\medskip
+\noindent\textbf{Theorem 3.}
+\textit{Let $\alpha_1,\ldots,\alpha_n$ be real numbers such that
+\[
+  \alpha_1\cdots\alpha_n\ne0,\qquad
+  \alpha_1+\cdots+\alpha_n\ne2,\qquad
+  \alpha_1+\alpha_2+\alpha_3\ne2,
+\]
+and $\alpha_{j_1}+\cdots+\alpha_{j_i}\ne1$ for every $\{j_1,\ldots,j_i\}\subset\{1,\ldots,n\}$. Let
+\[
+  n\geqslant4,\quad \Delta\leqslant\varepsilon_0,\quad F\geqslant X_1^2,
+  \quad X_1\geqslant X_2\geqslant\cdots\geqslant X_n,
+  \quad X_1X_2\cdots X_n=N,
+\]
+and let $f(x)$ be a real $C^\infty$ function such that, for
+\[
+  x\in D\subset\{x\mid X_i\leqslant x_i\leqslant2X_i,\ i=1,\ldots,n\},
+\]
+we have
+\[
+  f(x)\underset{\Delta}{\sim}
+  FX_1^{-\alpha_1}\cdots X_n^{-\alpha_n}x_1^{\alpha_1}\cdots x_n^{\alpha_n}.
+\]
+Then
+\[
+\begin{aligned}
+S\equiv\left|\sum_{x\in D}e(f(x))\right|
+\ll N^{1+\varepsilon}\Big[&
+  \left(F^{3n}X_1^{-n}X_2^{-n}X_3^{-n}N^{-6}\right)^{1/(n+6)}\\
+&+X_3^{-1}\sqrt[19]{F^3X_1^{-1}X_2^{-1}}
+ +X_2^{-1}X_3^{-1}\sqrt[23]{F^{15}/X_1^5}\\
+&+X_3^{-1}\sqrt[7]{F^3\Delta^6X_1^{-1}X_2^{-1}}
+ +X_2^{-1}X_3^{-1}\sqrt[8]{F^6\Delta^3X_1^{-2}}\\
+&+N^{-1/(n+1)}+X_3^{-3/4}+\sqrt{\Delta/X_3}\Big]^{1/2}\log^2N.
+\end{aligned}
+\]}
+
+Theorems~1--3 are applied in the case when, using (3) once, we reduce the value of $H(f(x))$ so that (2) gives a non-trivial estimate of $S(F;X)$. If the determinant is still ``large'', then one can apply (3) several times and the corresponding Theorem~1, 2, or~3 after that. We can improve the above theorems under the restriction that we apply the transformations $A$ and $B$ at most $K$ times. Then, similarly to~[4], one can show that there exists a polynomial $P$, depending on $K$ only, such that for all $f\in\mathscr F$ with $P(\alpha)\ne0$ one can use (1) and (4) at most $K$ times. Unfortunately, it is difficult to find $P$ explicitly. We think, however (see Section~4), that (1) and (4) hold for all $f\in\mathscr F$ and all $m$. Assuming this, one can develop a general m.e.p.
+
+\medskip
+\noindent\textbf{Theorem 4.}
+\textit{Let $m\in[1,n]$ and $(\lambda_0,\lambda_1,\ldots,\lambda_n)\in E_n$. Then $(\widetilde\lambda_0,\widetilde\lambda_1,\ldots,\widetilde\lambda_n)\in E_n$, where
+\[
+  \widetilde\lambda_0=\lambda_0+\lambda_1+\cdots+\lambda_m-\frac m2,
+\]
+\[
+  \widetilde\lambda_j=1-\lambda_j\quad(j=1,\ldots,m),
+  \qquad
+  \widetilde\lambda_j=\lambda_j\quad(j=m+1,\ldots,n).
+\]}
+
+\medskip
+\noindent\textbf{Theorem 5.}
+\textit{Let $\lambda_j\geqslant0$ $(j=0,\ldots,n)$, $m\in[1,n]$, and $\lambda_j^*\geqslant0$ $(j=1,\ldots,m)$. Suppose that
+\[
+  \lambda_0+|\lambda^*|\equiv\lambda_0+\lambda_1^*+\cdots+\lambda_m^*\geqslant m
+\]
+and
+\[
+  (\lambda_0,\lambda_1,\ldots,\lambda_n,\lambda_1^*,\ldots,\lambda_m^*)\in E_{m+n}.
+\]
+Then $(\widetilde\lambda_0,\widetilde\lambda_1,\ldots,\widetilde\lambda_n)\in E_n$, where
+\[
+  \widetilde\lambda_0=\frac{\lambda_0m}{2(\lambda_0+|\lambda^*|)},
+\]
+\[
+  \widetilde\lambda_j=
+  \frac{(\lambda_j+\lambda_j^*-1)m}{2(\lambda_0+|\lambda^*|)}+\frac12
+  \quad(j=1,\ldots,m),
+\]
+and
+\[
+  \widetilde\lambda_j=
+  \frac{(\lambda_j-1)m}{2(\lambda_0+|\lambda^*|)}+1
+  \quad(j=m+1,\ldots,n).
+\]}
+
+While these theorems are conditional upon the truth of (1) and (4) for all $f\in\mathscr F$, they allow us to estimate the upper bound of the estimates one can hope to obtain by using the general m.e.p.
+
+Using the conditional Theorems~4 and~5, one can write a program so that a computer can find various possible exponent pairs (the algorithm is due to Enrico Bombieri). Indeed, we start with the e.p. $(0\mid1,\ldots,1)$ and apply Theorem~4, then we apply Theorem~5 several times, etc.
+
+Ending the process at any time, we obtain an exponent pair. Another algorithm allows us to estimate the limits of the m.e.p. Suppose we know the sizes of $F,X_1,\ldots,X_n$ depending on some parameter $T$. We apply (1) with some $k$ such that $X_1^2\cdots X_k^2\gg F^k$. If such a $k$ does not exist, then we take $Q=N^2T^{-2\alpha}$; if $Q\geqslant N$, then it is impossible to prove that $S(F;X)\ll T^\alpha$ by m.e.p. Otherwise we apply (4), etc. Using the algorithm, we discovered that one cannot show that
+\[
+  \zeta\left(\tfrac12+it\right)\lll t^{0.1618}
+\]
+by using the m.e.p. only. Under the condition that Theorems~4 and~5 are true, we found that
+\[
+  \left(\frac{6966}{117930}\,\middle|\,
+        \frac{99727}{117930},\frac{99727}{117930}\right)\in E_2,
+\]
+\[
+  \left(\frac{47728}{274910}\,\middle|\,\frac12\right)\in E_1,
+  \qquad
+  \zeta\left(\tfrac12+it\right)\lll t^{47728/274910},
+\]
+where $47728/274910=0.16183920$. For comparison, the best published unconditional result is
+\[
+  \zeta\left(\tfrac12+it\right)\lll t^{35/216},
+\]
+[4], where $35/216=0.162037\ldots$; Theorem~1 of this paper implies a slightly better constant:
+\[
+  \zeta\left(\tfrac12+it\right)\lll t^{139/858},
+\]
+where $139/858=0.162004\ldots$. Similar calculations can be done for other problems.
+
+The author would like to express his gratitude to Professor Enrico Bombieri for generously sharing his ideas.
+
+
+\section{Notation}
+
+Throughout the paper we suppose that all considered domains $D,D_1,\ldots$ belong to the set $\mathscr D=\mathscr D(X)$ of all subdomains of
+\[
+  \{x\mid X_i\leqslant x_i\leqslant2X_i,\ i=1,\ldots,n\}
+\]
+such that the boundary of each of them consists of at most $C$ algebraic curves of degrees at most $C$. We write
+\[
+  x=(x_1,\ldots,x_n),\qquad i=(i_1,\ldots,i_n),
+\]
+etc. The numbers $X_1,\ldots,X_n$ are sufficiently large and satisfy
+\[
+  X_1\geqslant X_2\geqslant\cdots\geqslant X_n,
+  \qquad X_1\cdots X_n=N,
+  \qquad X_1\cdots X_m=N_m.
+\]
+We use the following notation:
+\begin{align*}
+  f(x)\ll g(x)
+  &\quad\text{means}\quad f(x)=O(g(x)),\\
+  f(x)\lll g(x)
+  &\quad\text{means}\quad f(x)\ll N^\varepsilon g(x),\\
+  f(x)\asymp g(x)
+  &\quad\text{means}\quad f(x)\ll g(x)\ll f(x),\\
+  f(x)\sim g(x)
+  &\quad\text{means}\quad f(x)-g(x)=o(g(x)),\\
+  f^i(x)
+  &=\frac{\partial^{i_1+\cdots+i_n}f(x)}
+          {\partial x_1^{i_1}\cdots\partial x_n^{i_n}}.
+\end{align*}
+The notation
+\[
+  f(x)\underset{\Delta}{\sim}g(x)
+\]
+means that
+\[
+  f^i(x)=g^i(x)+O\bigl(\Delta g^i(x)\bigr)
+\]
+for all $x$ and $i$ for which it makes sense.
+
+The class $\mathscr F\equiv\mathscr F(F;X;\Delta)$ is the set of all sufficiently many times differentiable real functions $f(x)$ in $D$ such that
+\[
+  f(x)\underset{\Delta}{\sim}
+  FX_1^{-\alpha_1}\cdots X_n^{-\alpha_n}x_1^{\alpha_1}\cdots x_n^{\alpha_n},
+\]
+where $\alpha_{j_1}+\cdots+\alpha_{j_i}$ is not an integer for any
+$\{j_1,\ldots,j_i\}\subset\{1,\ldots,n\}$, and $X_1\lll F$.
+
+Further,
+\begin{itemize}
+  \item $R(P_1(x_1,\ldots,x_k),\ldots,P_k(x_1,\ldots,x_k))$ is the resultant of the polynomials $P_1,\ldots,P_k$;
+  \item $H_j(f(x))$ is the determinant of the $j$th principal minor of the Hessian, and $H(f(x))=H_n(f(x))$;
+  \item $C,C_1,\ldots$ denote appropriate constants;
+  \item
+  \[
+    D(m;f)=\{(y_1,\ldots,y_m,x_{m+1},\ldots,x_n)
+      \mid y_j=f'_{x_j}(x),\ j=1,\ldots,m,\ x\in D\};
+  \]
+  \item
+  \[
+    D(B_{11},B_{12},\ldots,B_{n1},B_{n2})
+    =\{x\mid x\in D,\ B_{j1}\leqslant x_j\leqslant B_{j2},\ j=1,\ldots,n\};
+  \]
+  \item $e(f)=\exp(2\pi i f)$.
+\end{itemize}
+
+\section{Transformation $B$}
+
+Transformation $B$ is a combination of the Poisson summation formula (or some variation) with the method of stationary phase.
+
+\medskip
+\noindent\textbf{Lemma 1.}
+\textit{Let $f(x)$ be a real $C^\infty$ function such that for all $x\in D$ we have:}
+\begin{enumerate}
+  \item[(i)] \textit{for all integral $a_{i_l}\in[-c,c]$, the functions
+  \[
+    \sum_i\prod_{l\leqslant c}a_{i_l}f^{i_l}(x)
+  \]
+  do not change sign, where $i=(i_1,\ldots,i_c)$, $i_l=(i_{1l},\ldots,i_{nl})$, and $i_{jl}\leqslant c$;}
+  \item[(ii)] \textit{$|f^i(x)|\ll FX_1^{-i_1}\cdots X_n^{-i_n}$ for some $F$;}
+  \item[(iii)] \textit{$|H_k(f(x))|\asymp A_k^{-1}$ for some $k\in[1,n]$ and some
+  \[
+    A_k\ll(X_1\cdots X_k)^2F^{1/6-\varepsilon-k}.
+  \]}
+\end{enumerate}
+\textit{Then there exist real numbers $B_{ij}$ such that, for
+\[
+\begin{aligned}
+  D_1&=D_2(B_{11},B_{12},\ldots,B_{n1},B_{n2}),\\
+  D_2&=D_3(k;f),\\
+  D_3&=D(B_{13},B_{14},\ldots,B_{n3},B_{n4}),
+\end{aligned}
+\]
+we have}
+\[
+\begin{aligned}
+S\equiv\left|\sum_{x\in D}e(f(x))\right|
+\ll{}&\sqrt{A_k}\left|\sum_{(m,x_{k+1},\ldots,x_n)\in D_1}
+ e\bigl(f_1(m,x_{k+1},\ldots,x_n)\bigr)\right|+O(N^\varepsilon)\\
+&+O\left(N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}\right)\\
+\ll{}&|\mathscr L|A_k^{-1/2}
+ +N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}+N^\varepsilon
+ +NX_k^{-1}A_k^{-1/2}\\
+&+X_{k+1}\cdots X_n\left(\frac F{X_2}+1\right)\cdots
+  \left(\frac F{X_k}+1\right)\sqrt{A_k},
+\end{aligned}
+\]
+\textit{where $m=(m_1,\ldots,m_k)$,
+\[
+\begin{aligned}
+f_1(m,x_{k+1},\ldots,x_n)
+={}&f(\varphi_1,\ldots,\varphi_k,x_{k+1},\ldots,x_n)\\
+&-\varphi_1m_1-\cdots-\varphi_km_k,
+\end{aligned}
+\]
+and $\varphi_1,\ldots,\varphi_k$ are the solutions of the system
+\[
+  f'_{x_j}(\varphi_1,\ldots,\varphi_k,x_{k+1},\ldots,x_n)=m_j
+  \qquad(j=1,\ldots,k).
+\]}
+
+\medskip
+\noindent\textit{Proof.}
+We suppose that $k=n$; the general case can be proved similarly. Using the Poisson summation formula, we write
+\[
+  S=\sum_{m_1,\ldots,m_n}\int_D e(f(x)-m\cdot x)\,dx+O(N^\varepsilon),
+\]
+where the last sum is over an $n$-dimensional rectangle containing $D(n;f)$. Denoting
+\[
+  \varphi(x)\equiv\varphi_m(x)=F^{-1}(f(x)-m\cdot x)
+\]
+and
+\[
+  g(x)=\int_{\mathbb R^n}
+  \chi_D(x_1-y_1\delta_1,\ldots,x_n-y_n\delta_n)U(y)\,dy,
+\]
+where
+\[
+  \delta_j=X_j\sqrt{F^{n-1}A_nN^{-2}},
+  \qquad U(y)=U_1(y_1)\cdots U_1(y_n),
+\]
+and $\chi_D(x)$ is the characteristic function of $D$, with
+\[
+  U_1(y)=
+  \begin{cases}
+    c^{-1}\exp\bigl((y^2-1)^{-1}\bigr),&|y|<1,\\
+    0,&|y|\geqslant1,
+  \end{cases}
+  \qquad
+  c=\int_{-1}^{1}\exp\bigl((y^2-1)^{-1}\bigr)\,dy,
+\]
+we obtain
+\[
+\begin{aligned}
+S={}&\sum_m\int_{\mathbb R^n}g(x)e(F\varphi(x))\,dx+O(N^\varepsilon)
+ +\sum_x(\chi_D(x)-g(x))e(f(x))\\
+={}&\sum_m\int_{\mathbb R^n}g(x)e(F\varphi(x))\,dx
+ +O\left(N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}\right)+O(N^\varepsilon).
+\end{aligned}
+\]
+Denoting
+\[
+  g_1(x)=g(X_1x_1,\ldots,X_nx_n),
+  \qquad
+  \varphi_1(x)=\varphi(x_1X_1,\ldots,x_nX_n),
+\]
+we obtain
+\begin{equation}
+  S=N\sum_m\int_{\mathbb R^n}g_1(x)e(F\varphi_1(x))\,dx
+  +O\left(N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}\right).
+  \tag{6}
+\end{equation}
+Now we use (3.17) of~[1] to find an asymptotic expansion for the last integral. If $x^0$ is a stationary point of $\varphi_1(x)$, then
+\begin{align}
+I(F)&\equiv\int_{\mathbb R^n}g_1(x)e(F\varphi_1(x))\,dx\notag\\
+&=F^{-n/2}|H(\varphi_1(x^0))|^{-1/2}
+ e\left(\frac n8-\frac{\operatorname{Ind}H(x^0)}4+F\varphi_1(x^0)\right)\notag\\
+&\quad\times\left\{g_1(x^0)+\sum_{k=1}^{K}\frac1{k!}
+ \left[\left(-\frac{i}{2F}\langle H^{-1}(x^0)D_x,D_x\rangle\right)^k
+ \bigl(g_1(x)e(Fh(x))\bigr)\right]_{x=x^0}\right\}\notag\\
+&\quad+e(F\varphi_1(x^0))P_K(F,x^0).
+\tag{7}
+\end{align}
+Here $P_K(F,x^0)$ is defined by (3.30), (3.27), (3.28), and (3.22) of~[1] (the expression for $P_K(F,x^0)$ is too long; since it will be shown to be small later, we do not include it here), and $x^0=(x_1^0,\ldots,x_n^0)$. Further,
+\[
+  \langle H^{-1}(x^0)D_x,D_x\rangle B(x)
+  =\sum_{i,j}h'_{ij}B_{x_ix_j}(x),
+\]
+where $h'_{ij}$ is the $(i,j)$ entry of the inverse matrix for the Hessian $H(x)$ of $\varphi_1(x)$ at $x=x^0$, and $\operatorname{Ind}H(x)$ is the number of negative eigenvalues of $H(x)$. Finally,
+\[
+  h(x)=\varphi_1(x)-\varphi_1(x^0)
+  -\frac12\sum_{i,j}\varphi_{1x_ix_j}(x^0)(x_i-x_i^0)(x_j-x_j^0).
+\]
+For $|i|\leqslant4n/\varepsilon_0=2K$ we have
+\[
+  \left.
+  \left|\frac{\partial^{|i|}}
+  {\partial x_1^{i_1}\cdots\partial x_n^{i_n}}
+  \bigl(g_1(x)e(Fh(x))\bigr)\right|\right|_{x=x^0}
+  \ll F^{|i|/3}+\delta_1^{-i_1}X_1^{i_1}\cdots\delta_n^{-i_n}X_n^{i_n}.
+\]
+Also, if for all $x\in D$
+\[
+  |H(f(x))|\asymp\delta F^nN^{-2},
+  \qquad
+  \delta=F^{-n}N^2A_n^{-1}>F^{\varepsilon_0-1/3},
+\]
+then
+\[
+  h'_{ij}\ll\frac1\delta\ll F^{1/3-\varepsilon_0}.
+\]
+Thus each term in (7) is piecewise monotone as a function of each variable and bounded by an absolute constant; as in the proof of (3.40) of~[1], one can show that
+\[
+  P_K(F,x^0)\ll(\delta F^{-1/3})^{-K-1}
+  \ll F^{-\varepsilon_0(K+1)}\ll F^{-n}.
+\]
+Using this together with (6) and (7), and applying Abel's summation formula, we obtain
+\[
+  S\ll N\delta^{-1/2}F^{-n/2}
+  \left|\sum_{m\in D_2}e(f_1(m))\right|
+  +N^{1+\varepsilon}\sqrt{F^{n-1}A_nN^{-2}},
+\]
+where
+\[
+  f_1(m)=F\varphi_1(x^0)=f(x(m))-m\cdot x(m),
+\]
+and $x(m)$ is the solution of the system $\nabla f(x)=m$, where $\nabla f$ is the gradient vector.
+
+This lemma is in applications better than Lemma~1 of~[3], because the remainder contains only one $A_k$, while the remainder in Lemma~1 of~[3] contains $A_1,\ldots,A_k$. However, the error term is too large in some cases and needs to be improved. If
+\[
+  f(x)\underset{\Delta}{\sim}Ax_1^{\alpha_1}\cdots x_n^{\alpha_n},
+  \qquad
+  A=FX_1^{-\alpha_1}\cdots X_n^{-\alpha_n},
+\]
+then
+\[
+  f_1(m)\underset{\Delta}{\sim}Bm_1^{\beta_1}\cdots m_n^{\beta_n},
+\]
+where
+\[
+\begin{aligned}
+  B&=(1-\alpha_1-\cdots-\alpha_n)
+  \left(\frac{\alpha_1^{\alpha_1}\cdots\alpha_n^{\alpha_n}}A\right)^{1/(\alpha_1+\cdots+\alpha_n-1)},\\
+  \beta_j&=\frac{\alpha_j}{\alpha_1+\cdots+\alpha_n-1}\qquad(j=1,\ldots,n),\\
+  m_j&\asymp F/X_j=M_j\qquad(j=1,\ldots,n),
+  \qquad f_1(m)\asymp F.
+\end{aligned}
+\]
+Thus, if $f\in\mathscr F(F;X;\Delta)$, then $f_1\in\mathscr F(F;M;\Delta)$, and Lemma~1 implies that
+\[
+  S(F;X)\ll N_kF^{-k/2}
+  S\left(F;\frac F{X_k},\ldots,\frac F{X_1},X_{k+1},\ldots,X_n\right)
+  +NF^{-1/2}.
+\]
+While this inequality differs from (1) by a summand $NF^{-1/2}$, in applications this term is usually smaller than the principal term.
+
+It may also be possible to improve it. Indeed, the error term comes from the estimate for
+\[
+  R=\left|\sum_xg_1(x)e(f(x))\right|,
+  \qquad g_1(x)=\chi_D(x)-g(x),
+\]
+where $g_1(x)\ne0$ in a domain of volume $\ll\sqrt{A_nF^{n-1}}$ and $0\leqslant g_1(x)\leqslant1$. If $D$ can be divided into at most $C$ subdomains in each of which
+\[
+  \int_{-1}^{1}\cdots\int_{-1}^{1}
+  \frac{\partial^n}{\partial t_1\cdots\partial t_n}
+  g_1(x_1+t_1,\ldots,x_n+t_n)\,dt_1\cdots dt_n
+\]
+does not change sign (this is true if $D$ is a parallelepiped; using some devices, one can very often reduce the problem of estimating $S$ to such a case), then we can apply Abel's summation formula and obtain
+\[
+  R\ll\left|\sum_{x\in D_0}e(f(x))\right|,
+  \qquad |D_0|\ll\sqrt{A_nF^{n-1}},
+\]
+and it is possible to estimate this non-trivially. Because the last sum is of the same type as $S$ but over a much smaller domain, it is natural to expect $R\leqslant\varepsilon_0S$. In such a case we get (1). If
+\[
+  A_k\gg N_k^2F^{1/3-\varepsilon_0-k}
+\]
+(this does not happen if $f\in\mathscr F$), then one needs to estimate the sum differently. One expects that it is possible to find a subsum
+\[
+  \sum_{x_{i_1},\ldots,x_{i_m}}e(f(x))
+\]
+such that $H_{i_1,\ldots,i_m}(f(x))$ is not small. Applying Lemma~1 to the above subsum, we can find a non-trivial estimate of $S$.
+
+\section{Transformation $A$}
+
+\medskip
+\noindent\textbf{Lemma 2.}
+\textit{Let $f(x)$ be a real function, and put
+\[
+  f_1(x,h)=\int_0^1\frac{\partial}{\partial t}f(x+th)\,dt.
+\]
+Let $q_1,\ldots,q_m$ be positive numbers such that
+\[
+  \frac{q_1}{X_1}=\cdots=\frac{q_m}{X_m}=\sqrt[m]{\frac Q{N_m}},
+  \qquad Q=q_1\cdots q_m,
+  \qquad N_m=X_1\cdots X_m,
+\]
+\[
+  D_1=\{(x,h)\mid x\in D,\ x+h\in D,\ h\ne0,\ |h_j|\leqslant q_j\},
+\]
+and
+\[
+  |D|\geqslant\sum_{x\in D}1,
+  \qquad \frac{q_1}{X_1}\leqslant\frac{|D|}{N}.
+\]
+Then
+\[
+  |S|^2\equiv\left|\sum_{x\in D}e(f(x))\right|^2
+  \leqslant |D|^2Q^{-1}+|D|Q^{-1}
+  \left|\sum_{(x,h)\in D_1}e(f_1(x,h))\right|.
+\]}
+
+In applications the terms in the above sum with some $h_j=0$ are easier to estimate, so we shall ignore them in the future.
+
+While we do not know how to prove our conjecture~(4) at this moment, we can try to ``justify'' it. If we apply Lemma~2 $k$ times, we obtain
+\[
+  |S|^{2^k}\ll |D|^{2^k}Q^{-2^{k-1}}
+  +|D|^{2^k-1}Q^{1-2^k}
+  \left|\sum_{(x,h)\in D_2}e(f_2(x,h))\right|,
+\]
+where
+\[
+\begin{gathered}
+  h=(h^{(1)},\ldots,h^{(k)}),
+  \qquad h^{(j)}=(h_{1j},\ldots,h_{m_j,j})\ne0,
+  \qquad |h_{ij}|\leqslant q_{ij},\\
+  q_{1j}\cdots q_{m_j,j}=Q_j=Q^{2^{j-1}}
+  \qquad(j=1,\ldots,k),\\
+  D_2=\{(x,h)\mid x+h^{(1)}+\cdots+h^{(j)}\in D
+  \text{ for }j=0,\ldots,k\},
+\end{gathered}
+\]
+and
+\[
+\begin{aligned}
+  f_2(x,h)
+  &=\int_0^1\cdots\int_0^1
+  \frac{\partial^k}{\partial t_1\cdots\partial t_k}
+  f(x+t_1h^{(1)}+\cdots+t_kh^{(k)})\,dt_1\cdots dt_k\\
+  &\ll F\rho_1\cdots\rho_k\equiv F_2,
+\end{aligned}
+\]
+where
+\[
+  \rho_j=\frac{|h_{1j}|}{X_1}+\cdots+\frac{|h_{m_j,j}|}{X_{m_j}}.
+\]
+We divide $D_2$ into $O(N^\varepsilon)$ subdomains of the type
+\[
+\begin{aligned}
+D_3=\{(x,h)\mid{}&H_{ij}\leqslant h_{ij}\leqslant(1+\varepsilon_0)H_{ij},
+\quad X_i\leqslant x_i\leqslant(1+\varepsilon_0)X_i,\\
+& H_n(f_2(x,h))\asymp A_n^{-1}=\delta F_2^nN^{-2},
+\quad (x,h)\in D_2\}.
+\end{aligned}
+\]
+If $\delta\gg F_2^{\varepsilon_0-1/3}$, then we use Lemma~1; otherwise, in a generic case,
+\[
+  |D_3|\ll\delta N\prod_{i,j}H_{ij},
+\]
+and there is a $j$ such that
+\[
+  \frac{\partial^2}{\partial x_j^2}f_2(x,h)\asymp F_2X_j^{-2},
+\]
+so we can use Lemma~1 with $n=1$. In both cases we obtain
+\[
+\begin{aligned}
+S_1\equiv\left|\sum_{(x,h)\in D_3}e(f_2(x,h))\right|
+\ll{}&NF_2^{-n/2}\delta^{-1/2}
+\left|\sum_{(m,h)\in D_4}e(f_3(m,h))\right|\\
+&+\left(N^{1+\varepsilon}F_2^{-1/2}
+ +N^{1+\varepsilon}F_2^{-1/3}X_n^{-2/3}\right)\prod_{i,j}H_{ij},
+\end{aligned}
+\]
+where $D_4\subset D_3(n;f_2)$ and
+\[
+  |D_4|\ll\delta N\prod_{i,j}H_{ij}.
+\]
+Consequently,
+\[
+\begin{aligned}
+|S|^{2^k}\ll{}&N^{2^k}Q^{-2^{k-1}}\\
+&+N^{2^k}Q^{1-2^k}
+ \max_{H_{ij}}\max_{\delta\gg F_2^{\varepsilon-1/3}}
+ \delta^{-1/2}F_2^{-n/2}
+ \left|\sum_{m,h}e(f_3(m,h))\right|\\
+&+N^{1+\varepsilon}F_2^{-1/2}
+ +N^{1+\varepsilon}F_2^{-1/3}X_n^{-2/3}.
+\end{aligned}
+\]
+The remainder in the above inequality is usually smaller than the first term, and it can also be improved. If we can ignore the remainder, then
+\[
+\begin{aligned}
+|S|^{2^k}\ll{}&N^{2^k}Q^{-2^{k-1}}\\
+&+N^{2^k}Q^{1-2^k}
+ \max_{H_{ij}}\max_{\delta\gg F_2^{\varepsilon-1/3}}
+ \delta^{-1/2}F_2^{-n/2}
+ \left|\sum_{m,h}e(f_3(m,h))\right|.
+\end{aligned}
+\]
+We can apply this to the last sum, and so on. We see that the maximum is attained when $\delta=1$ and that we get similar inequalities as if (taking $k=1$) we had
+\[
+  f_2(x,h)\in\mathscr F(F\rho;X,H),
+\]
+where
+\[
+  H=(H_1,\ldots,H_m),\qquad H_j\leqslant q_j,
+  \qquad \rho=H_1/X_1+\cdots+H_m/X_m.
+\]
+This gives some justification for our conjecture that
+\[
+  |S(F;X)|^2\lll N^2Q^{-1}+NQ^{-1}
+  \max_{H_j\leqslant q_j}S(F\rho;X,H).
+\]
+Because the entries of any exponent $n$-tuple are non-negative, the maximum is attained at $H_j=q_j$, and the last inequality is the same as~(4).
+
+
+\section{Estimates}
+
+In this section we shall prove Theorems~1 and~3 and, assuming~(1) and~(4), Theorems~4 and~5. To prove Theorem~1, we need the following results.
+
+\medskip
+\noindent\textbf{Lemma A.}
+\textit{Let $f(x,y)$ be a real $C^\infty$ function such that, for any $c$, the equation $f_{x^i y^j}=c$ has $O(N^\varepsilon)$ solutions; suppose that
+\[
+  \lvert f_{x^i y^j}\rvert\ll_{i,j}FX^{-i}Y^{-j}
+\]
+for some $F$ and all
+\[
+  (x,y)\in\mathscr D\subset
+  \{(x,y)\mid X\leqslant x\leqslant2X,\ Y\leqslant y\leqslant2Y\},
+\]
+that
+\[
+  \lvert f_{x^2}\rvert\asymp M_1^{-1}\gg F^{2/3+\varepsilon_0}X^{-2},
+  \qquad
+  \bigl\lvert f_{x^2}f_{y^2}-(f_{xy})^2\bigr\rvert\asymp M_2^{-1},
+  \qquad N=XY.
+\]
+Then
+\[
+  \left\lvert\sum_{(x,y)\in\mathscr D}e(f(x,y))\right\rvert
+  \lll \frac{\lvert\mathscr D\rvert}{\sqrt{M_2}}
+       +Y\sqrt{M_1}+\frac{F\sqrt{M_2}}{X}.
+\]}
+
+\medskip
+\noindent\textbf{Lemma B.}
+\textit{Let $f(x,y)$ be a real $C^\infty$ function such that
+\[
+  \lvert f_{x^k}\rvert\asymp aM^{-1}X^{-2},
+  \qquad
+  \lvert f_{x^{k-2}y^2}\rvert\asymp bM^{-1}Y^{-2}
+\]
+for some $M$ and all
+\[
+  (x,y)\in\mathscr D\subset
+  \{(x,y)\mid X\leqslant x\leqslant2X,\ Y\leqslant y\leqslant2Y\};
+  \qquad K=2^k,\quad k\geqslant2.
+\]
+Then
+\[
+\begin{aligned}
+\left\lvert\sum_{(x,y)\in\mathscr D}e(f(x,y))\right\rvert
+\lll \min\Bigl\{\;&
+ \lvert\mathscr D\rvert(aM^{-1}X^{-2})^{1/(K-2)}
+ +\lvert\mathscr D\rvert^{1-2/K}Y^{2/K}(k-2)\\
+&+\lvert\mathscr D\rvert^{1-2k/K}N^{4/K}(M/a)^{2/K};\\
+&\lvert\mathscr D\rvert(bM^{-1}Y^{-2})^{1/(K-2)}
+ +\lvert\mathscr D\rvert^{1-2/K}X^{2/K}(k-2)\\
+&+\lvert\mathscr D\rvert^{1-2k/K}N^{4/K}(M/b)^{2/K}
+\Bigr\}.
+\end{aligned}
+\]}
+
+Lemma~A is obtained by applying Lemma~1 to the sum over $x$ and then using van der Corput's estimate for the sum over $y$. Lemma~B can be proved by induction on $k$, applying Lemma~2 with $m=1$ (for $k=2$, Lemma~B follows from van der Corput's estimate).
+
+We put
+\[
+  K=2^k,\qquad K_1=2^{k_1},\qquad
+  F_1=F\sqrt{Q_1^{K_1-1}N^{-k_1}}.
+\]
+If $Y\leqslant N^{3/7}$ and $k_1=1$, then we use Lemma~B with $k=2$ and $k=3$ and obtain
+\[
+  S\lll N\min\left\{
+    (F^7N^{-8})^{1/14}+F^{-1/2};
+    (F^7N^{-12})^{1/42}+N^{-1/7}+F^{-1/14}
+  \right\},
+\]
+which proves Theorem~1 in the case under consideration. If $k_1\geqslant2$ and
+\[
+  Y^{2k_1-2}\ll N^{2k_1+1}F^{-2}Q_1^{2-5K_1/2},
+\]
+then we apply Lemma~2 $k_1-1$ times with $n=1$ and $Q_1$ as in~(5). Using Theorem~1 of~[3]---which, after some obvious changes connected with the application of Lemma~1 of this paper, can be stated as
+\[
+  S\lll \sqrt[6]{F^2N^3}+N^{5/6}
+       +\sqrt[10]{\Delta^4F^2N^9X^{-4}},
+\]
+we obtain
+\[
+\begin{aligned}
+(S/N)^{K_1/2}
+&\lll Q_1^{-K_1/4}
+ +N^{-1}Q_1^{1-K_1/2}
+   \sum_h\left\lvert\sum_{x,y}e(f_0(x,y))\right\rvert\\
+&\ll Q_1^{-K_1/4}+N^{-1}\Bigl(
+ \sqrt[6]{F^2Q_1^{K_1-2}X^{2-2k_1}N^3}+N^{5/6}\\
+&\hspace{42mm}
+ +\sqrt[10]{\Delta^4F^2Q_1^{K_1-2}X^{-2k_1-2}N^9}
+ \Bigr)
+\ll Q_1^{-K_1/4}.
+\end{aligned}
+\]
+Here we have written $f_0(x,y)$ for the integral
+\[
+  \int_0^1\!\cdots\!\int_0^1
+  \frac{\partial^{k_1-1}}{\partial t_1\cdots\partial t_{k_1-1}}
+  f\bigl(x+h_1t_1+\cdots+h_{k_1-1}t_{k_1-1},y\bigr)\,dt.
+\]
+The estimates obtained prove Theorem~1 in the cases under consideration. We now assume
+\[
+  N^{3/7}\leqslant Y\leqslant\sqrt N,
+  \qquad
+  Y^{2k_1-2}\gg N^{2k_1+1}F^{-2}Q_1^{2-5K_1/2}
+  \quad(k_1\geqslant2),
+\]
+and apply Lemma~2 with $n=2$ and $Q_1$ as in~(5). We obtain
+\[
+  (S/N)^2\ll Q_1^{-1}
+  +N^{-1}Q_1^{-1}\sum_{h_1,h_2}
+   \left\lvert\sum_{x,y}e(f_1(x,y))\right\rvert,
+\]
+where
+\[
+  f_1(x,y)=\int_0^1\frac{\partial}{\partial t}
+  f(x+h_1t,y+h_2t)\,dt.
+\]
+For fixed $(h_1,h_2)$ with $h_1h_2\ne0$ (otherwise the sum is easier to estimate and the estimate is smaller), we divide the domain $D$ into subdomains on which
+\[
+\begin{aligned}
+\delta_0a_1&\leqslant\lvert C_{30}\theta+C_{21}\sigma_{11}\rvert
+              \leqslant2\delta_0a_1,\\
+\delta_0b_1&\leqslant\lvert C_{12}\theta+C_{03}\sigma_{11}\rvert
+              \leqslant2\delta_0b_1,\\
+\delta_0^2c_1&\leqslant
+ \left\lvert
+ (C_{30}\theta+C_{21}\sigma_{11})(C_{12}\theta+C_{03}\sigma_{11})
+ -(C_{21}\theta+C_{12}\sigma_{11})^2
+ \right\rvert
+ \leqslant2\delta_0^2c_1,
+\end{aligned}
+\]
+where
+\[
+  \theta=y/x,\qquad \sigma_{11}=h_2/h_1,\qquad
+  \delta_0=y/x+\lvert\sigma_{11}\rvert,
+\]
+and
+\[
+  C_{ij}=\left.
+  \frac{\partial^{i+j}}{\partial x^i\partial y^j}(x^\alpha y^\beta)
+  \right|_{x=y=1}.
+\]
+There is also one domain containing all the remaining points, $O(\sqrt N)$ of them, say. We assume that a subdomain $D_1$, corresponding to the largest subsum, is defined by the inequalities above, and consider the following disjoint cases (in each case the conditions of all preceding cases are assumed not to hold).
+
+\medskip
+\noindent\textbf{I.} $c_1\ll Q_1^{-1}$. Then
+\[
+  \lvert D_1\rvert\ll\sqrt N+Nc_1\ll N/Q_1,
+  \qquad S_1\ll N/\sqrt{Q_1}.
+\]
+
+\medskip
+\noindent\textbf{II.}
+\[
+  c_1\ll Q_1^{-1}
+  \left[N^{k_1+2}F^{-2}(X/Y)^{k_1-1}\right]^{1/(3K_1-3)}.
+\]
+We take
+\[
+  Q_2=\left[N^{k_1+2}F^{-2}(X/Y)^{k_1-1}\right]^{2/(3K_1-3)}
+\]
+and apply Lemma~2 $k_1-1$ times with $n=1$:
+\[
+\begin{aligned}
+(S/N)^{K_1}\ll{}&Q_1^{-K_1/2}
+ +\left(N^{-1}Q_1^{-1}\sum_h\lvert D_1\rvert\right)^{K_1/2}
+  Q_2^{-K_1/4}\\
+&+\left(N^{-1}Q_1^{-1}\sum_h\lvert D_1\rvert\right)^{K_1/2-1}
+ N^{-1}Q_1^{-1}Q_2^{1-K_1/2}
+ \sum_h\left\lvert\sum_{x,y}e(f_2(x,y))\right\rvert.
+\end{aligned}
+\]
+Here
+\[
+  h=(h_1,h_2,\ldots,h_{k_1+1}),\qquad
+  \lvert h_3\rvert\leqslant Q_2,\ldots,
+  \lvert h_{k_1+1}\rvert\leqslant Q_2^{K_1/4}.
+\]
+Moreover, $\lvert D_1\rvert\ll Nc_1+\sqrt N\ll Nc_1$; and, since
+$C_{30}C_{03}\ne C_{21}C_{12}$,
+\[
+  \max\{a_1,b_1\}\gg\varepsilon_0.
+\]
+Using Lemma~A to estimate the last sum, we get
+\[
+\begin{aligned}
+(S/N)^{K_1}\ll{}&Q_1^{-K_1/2}
++c_1^{K_1/2}
+ \sqrt{F^2Q_1c_1Q_2^{K_1-2}N^{-k_1-2}(X/Y)^{k_1-1}}\\
+&+c_1^{K_1/2-1}
+ \left[F^2Q_1Q_2^{K_1-2}N^{-k_1}(X/Y)^{k_1-1}\right]^{-1/4}
++c_1^{(K_1-3)/2}Y^{-1}\\
+&\ll Q_1^{-K_1/2}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{III.}
+\[
+  c_1\gg Q_1^{-1}
+  \left[N^{k_1+2}F^{-2}(X/Y)^{k_1-1}\right]^{1/(3K_1-3)}.
+\]
+If $k_1=1$, we continue as in case~7 below. Otherwise we apply Lemma~2 with $n=2$ and $Q=Q_1^2$:
+\[
+  (S/N)^4\ll Q_1^{-2}
+  +N^{-1}Q_1^{-3}\sum_h
+   \left\lvert\sum_{x,y}e(f_3(x,y))\right\rvert,
+\]
+where
+\[
+  f_3(x,y)=\int_0^1\!\int_0^1
+  \frac{\partial^2}{\partial t_1\partial t_2}
+  f(x+h_1t_1+h_3t_2,y+h_2t_1+h_4t_2)\,dt_1\,dt_2.
+\]
+Put
+\[
+  \sigma_{12}=h_2/h_1+h_4/h_3,\qquad
+  \sigma_{22}=h_2h_4/(h_1h_3),
+\]
+\[
+  \delta_1=(y/x+\lvert h_2/h_1\rvert)
+            (y/x+\lvert h_4/h_3\rvert).
+\]
+We divide $D_1$ into subdomains on which
+\[
+\begin{aligned}
+\delta_1a_2&\leqslant
+ \lvert C_{40}\theta^2+C_{31}\sigma_{12}\theta+C_{22}\sigma_{22}\rvert
+ \equiv\lvert P_1(\theta)\rvert\leqslant2\delta_1a_2,\\
+\delta_1b_2&\leqslant
+ \lvert C_{22}\theta^2+C_{13}\sigma_{12}\theta+C_{04}\sigma_{22}\rvert
+ \equiv\lvert P_2(\theta)\rvert\leqslant2\delta_1b_2,\\
+\delta_1^2c_2&\leqslant
+ \left\lvert P_1(\theta)P_2(\theta)
+ -(C_{31}\theta^2+C_{22}\sigma_{12}\theta+C_{13}\sigma_{22})^2
+ \right\rvert\\
+&\equiv\lvert P_0(\theta)\rvert\leqslant2\delta_1^2c_2.
+\end{aligned}
+\]
+There is also one domain containing $O(\sqrt N)$ integral points. We suppose that the domain $D_2$ defined by the inequalities above corresponds to the largest subsum, and consider the following disjoint cases.
+
+\medskip
+\noindent\textbf{A.}
+\[
+ c_2\ll\min\left\{
+ (N^2Y^4F^{-2}Q_1^{-11})^{1/4};
+ (N^2X^4F^{-2}Q_1^{-11})^{9/20}
+ \right\}\quad(k_1=2),
+\]
+and
+\[
+ c_2\ll\min\left\{
+ (N^2F^{-2}Q_1^{-27}X^6)^{3/20};
+ (YQ_1^{-8})^{1/3}
+ \right\}\quad(k_1=3).
+\]
+For fixed $(x,y,h_1,h_2)$ we divide $D_2$ into subdomains on which
+$P_0'(\theta)\asymp a\delta_1^{3/2}$. In such a subdomain
+\[
+  \theta=\theta_0(h)+O(c_2/a).
+\]
+Also, finding the resultant $R(\theta)$ of $P_0(\theta)$ and $P_0'(\theta)$, regarded as functions of $h_4/h_3$, we obtain
+\[
+  \lvert R(\theta)\rvert\ll(a+c_2)\delta_1^5.
+\]
+Since $R(\theta)$ is divisible by $\theta^2$,
+\[
+  \theta=\theta_0(h_2/h_1)+O\bigl(\sqrt[8]{a+c_2}\bigr).
+\]
+Moreover,
+\[
+  h_4/h_3=\varphi(h_2/h_1,\theta)+O(\sqrt{c_2}),
+\]
+and hence
+\[
+\begin{aligned}
+N^{-1}Q_1^{-3}\sum_h\lvert D_2\rvert
+&\lll \max_a\min\left\{
+  c_2/a;
+  \sqrt[8]{a+c_2}\sqrt{c_2+Q^{-1}}
+ \right\}\\
+&\ll c_2^{5/9}+Q_1^{-1}\min\left\{1;\sqrt[9]{c_2Q_1}\right\}
+ \equiv\varrho.
+\end{aligned}
+\]
+Since $P_1(\theta)$ and $P_2(\theta)$ have no common divisor and, when
+\[
+  (\alpha-k_1-1)^2+\beta(\alpha-k_1)\ne0,
+\]
+the polynomials $P_1(\theta)$, $P_0(\theta)$ and $P_0'(\theta)$ have no common divisor, we have
+\[
+  \max\{a_2,b_2\}\gg1.
+\]
+If $a_2$ is small, then also
+\[
+  N^{-1}Q_1^{-3}\sum_h\lvert D_2\rvert\ll c_2.
+\]
+Applying Lemma~B with $k=k_1$ and
+\[
+  M^{-1}=FX^{2-k_1}\sqrt{Q_1^3N^{-2}},
+\]
+we obtain
+\[
+\begin{aligned}
+(S/N)^4\ll{}&Q_1^{-2}
++\varrho(F^2Q_1^3N^{-2}X^{-2k_1})^{1/(2K_1-4)}\\
+&+\varrho^{1-2/K_1}X^{-2/K_1}\lvert k_1-2\rvert
++\varrho^{1-4/K_1}X^{2/K_1-1/2}
+ (N^2X^{2k_1-4}F^{-2}Q_1^{-3})^{1/K_1}\\
+&+c_2^{1-2/K_1}Y^{-2/K_1}\lvert k_1-2\rvert
++c_2(F^2Q_1^3N^{-2}X^{4-2k_1}Y^{-4})^{1/(2K_1-4)}\\
+&\ll Q_1^{-2}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{B.}
+\[
+  c_2\ll
+  (N^4X^{2k_1-4}F^{-2}Q_1^{5-3K_1})^{18/(15K_1-22)}.
+\]
+As in A,
+\[
+  Q_1^{-3}\sum_h\lvert D_2\rvert\ll N\varrho,
+\]
+and, if $a_2\ll1$,
+\[
+  Q_1^{-3}\sum_h\lvert D_2\rvert\ll Nc_2.
+\]
+Applying Lemma~2 $k_1-2$ times with $n=1$ and an appropriate $Q$, we obtain
+\[
+\begin{aligned}
+(\Sigma_1)^{K_1/4}
+&\equiv\left(
+ N^{-1}Q_1^{-3}\sum_h
+ \left\lvert\sum_{x,y}e(f_3(x,y))\right\rvert
+ \right)^{K_1/4}\\
+&\lll \varrho^{K_1/4}Q_2^{-K_1/8}
+ +\varrho^{K_1/4-1}Q_2^{1-K_1/4}
+  \sum_h\sum_{h^{(1)}}
+  \left\lvert\sum_{x,y}e(f_4(x,y))\right\rvert,
+\end{aligned}
+\]
+where
+\[
+  Q_2=(N^4F^{-2}Q_1^{3/5}X^{2k_1-4})^{20/(15K_1-22)},
+\]
+\[
+  \sum_{h^{(1)}}=
+  \sum_{h_1^{(1)}=1}^{Q_2}\cdots
+  \sum_{h_{k_1-2}^{(1)}=1}^{Q_2^{K_1/8}},
+\]
+and
+\[
+\begin{aligned}
+ f_4(x,y)=\int_0^1\!\cdots\!\int_0^1
+ \frac{\partial^{k_1-2}}{\partial t_1\cdots\partial t_{k_1-2}}
+ f_3\bigl(&x+h_1^{(1)}t_1+\cdots
+ +h_{k_1-2}^{(1)}t_{k_1-2},y\bigr)\,dt.
+\end{aligned}
+\]
+
+Now we apply Lemma~1 and obtain
+\[
+\begin{aligned}
+(\Sigma_1)^{K_1/4}\ll{}&Q_1^{-K_1/2}
++\varrho^{K_1/4-1}\left[
+ (F^2Q_1^3Q_2^{K_1/2-2}c_2N^{-2}X^{4-2k_1})^{1/2}
+ +\frac1{X\sqrt{c_2}}
+ \right]\\
+&+c_2^{K_1/4-3/2}Y^{-1}
+\ll Q_1^{-K_1/2}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{C.}
+\[
+  c_2\gg
+  (N^4F^{-2}Q_1^{5-3K_1}X^{2k_1-4})^{18/(15K_1-22)}.
+\]
+If $k_1=2$, we continue as in case~7 below. If $k_1=3$, we apply Lemma~2 once more with $n=2$ and $Q=Q_1^4$, obtaining
+\[
+  (S/N)^8\ll Q_1^{-4}
+  +N^{-1}Q_1^{-4}\sum_h
+   \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert,
+\]
+where
+\[
+  f_5(x,y)=\int_0^1\!\int_0^1\!\int_0^1
+  \frac{\partial^3}{\partial t_1\partial t_2\partial t_3}
+  f(x+h_1t_1+h_3t_2+h_5t_3,
+    y+h_2t_1+h_4t_2+h_6t_3)\,dt.
+\]
+We put
+\[
+  \varphi_{ij}(\theta)=
+  C_{i+3,j}\theta^3+C_{i+2,j+1}\theta^2\sigma_1
+  +C_{i+1,j+2}\theta\sigma_2+C_{i,j+3}\sigma_3,
+\]
+where $\sigma_1,\sigma_2,\sigma_3$ are the elementary symmetric functions of
+\[
+  h_2/h_1,\qquad h_4/h_3,\qquad h_6/h_5.
+\]
+Also put
+\[
+  \varphi_1(\theta)=
+  \varphi_{20}(\theta)\varphi_{02}(\theta)
+  -\varphi_{11}(\theta)^2,
+  \qquad
+  \delta_2=\prod_{j=1}^3
+  \left(Y/X+\left\lvert\frac{h_{2j}}{h_{2j-1}}\right\rvert\right).
+\]
+For fixed $h=(h_1,\ldots,h_6)$ we divide $D_2$ into one subdomain containing $O(\sqrt N)$ integral points and subdomains defined by inequalities of the form
+\[
+\begin{gathered}
+ \delta_2a_3\leqslant\lvert\varphi_{20}(\theta)\rvert
+ \leqslant2\delta_2a_3,\qquad
+ \delta_2b_3\leqslant\lvert\varphi_{02}(\theta)\rvert
+ \leqslant2\delta_2b_3,\\
+ \delta_2^2c_3\leqslant\lvert\varphi_1(\theta)\rvert
+ \leqslant2c_3\delta_2^2.
+\end{gathered}
+\]
+We suppose that a domain $D_3$, corresponding to the largest subsum, is defined by the inequalities above, and consider the following cases.
+
+\medskip
+\noindent\textbf{1)}
+\[
+\begin{aligned}
+&\sqrt[4]{Q_1^4/N}+Q_1^8Y^{-2}\ll c_3
+ \ll N^5Q_1^{-15}F^{-2},
+ \qquad
+ a_3\ll\sqrt{N^3F^{-2}Q_1^9}\ll b_3,
+ \quad\text{or}\\
+&\sqrt[4]{Q_1^4/N}\ll c_3
+ \ll N^5Q_1^{-15}F^{-2},
+ \qquad
+ a_3\gg\sqrt{N^3F^{-2}Q_1^9}.
+\end{aligned}
+\]
+Using Lemma~A, we obtain
+\[
+\begin{aligned}
+(S/N)^8
+&\ll Q_1^{-4}+N^{-1}Q_1^{-7}\sum_h
+ \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert\\
+&\lll Q_1^{-4}+\sqrt{c_3F^2Q_1^7N^{-5}}\\
+&\quad+\min\left\{
+ (b_3F\sqrt{Q_1^7N^{-3}})^{-1/2}+(Y\sqrt{c_3})^{-1/2};
+ (a_3F\sqrt{Q_1^7N^{-3}})^{-1/2}+(X\sqrt{c_3})^{-1/2}
+ \right\}\\
+&\ll Q_1^{-4}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{2)}
+\[
+  \sqrt{N^3F^{-2}Q_1^9}\ll c_3\ll N^5Q_1^{-15}F^{-2},
+  \qquad
+  c_3\ggg(F^2Q_1^7N^{-3})^{-1/6}.
+\]
+Applying Lemma~1, we obtain
+\[
+  N^{-1}Q_1^{-7}\sum_h
+  \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert
+  \lll F\sqrt{Q_1^7c_3N^{-5}}
+  +(Fc_3\sqrt{Q_1^7N^{-3}})^{-1/2}
+  \ll Q_1^{-4}.
+\]
+
+\medskip
+\noindent\textbf{3)}
+\[
+  \max\{a_3,b_3,c_3\}\ll\sqrt{N^3F^{-2}Q_1^9},
+  \qquad c_3\gg\sqrt{Q_1^4/N},
+\]
+\[
+  \max\{a_3,b_3\}\gg
+  (c_3^2+c_3/Q_1^2)\sqrt{N^3F^{-2}Q_1^9}.
+\]
+Put
+\[
+  \gamma_1=\max\{a_3,b_3,\sqrt{c_3}\},
+  \qquad
+  \gamma_2=\min\{a_3,b_3,\sqrt{c_3}\}.
+\]
+If $\gamma_1$ is small, then, since in $D_3$ we have
+\[
+  \max\{\lvert\varphi_{20}(\theta)\rvert,
+          \lvert\varphi_{02}(\theta)\rvert,
+          \lvert\varphi_{11}(\theta)\rvert\}
+  \ll\gamma_1\delta_2,
+\]
+we put
+\[
+  u=\sigma_1/\theta,\qquad v=\sigma_2/\theta^2,
+  \qquad w=\sigma_3/\theta^3.
+\]
+Solving the preceding system for $u,v,w$, we obtain
+\[
+\begin{gathered}
+ \sigma_1=d_1\theta+O(\gamma_1\theta),\qquad
+ \sigma_2=d_2\theta^2+O(\gamma_1\theta^2),\qquad
+ \sigma_3=d_3\theta^3+O(\gamma_1\theta^3),\\
+ h_4/h_3=d_4h_2/h_1+O(\gamma_1\theta),\qquad
+ h_6/h_5=d_5h_2/h_1+O(\gamma_1\theta),
+\end{gathered}
+\]
+and hence
+\[
+\begin{gathered}
+ N^{-1}Q_1^{-7}\sum_h\lvert D_3\rvert
+ \ll\gamma_2(\gamma_1+Q_1^{-2})(\gamma_1+Q_1^{-1}),\\
+ Q_1^{-7}\sum_h1
+ \ll(\gamma_1+Q_1^{-2})(\gamma_1+Q_1^{-1}).
+\end{gathered}
+\]
+Applying Lemma~A, we obtain
+\[
+\begin{aligned}
+&N^{-1}Q_1^{-7}\sum_h
+ \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert\\
+&\quad\lll N^{-1}Q_1^{-7}\sum_h\sum_{x,y}
+ \sqrt{F^2Q_1^7N^{-5}c_3}\\
+&\qquad+Q_1^{-7}\sum_h\left[
+ (F^2Q_1^7N^{-3})^{-1/4}
+ \max\{a_3^{-1/2},b_3^{-1/2}\}
+ +Y^{-1}c_3^{-1/2}
+ \right]
+ \ll Q_1^{-4}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{4)}
+\[
+  \sqrt{Q_1^4/N}\ll c_3\ll\sqrt{N^3F^{-2}Q_1^9},
+\]
+\[
+  \max\{a_3,b_3\}\ll
+  (c_3^2+c_3Q_1^{-2})\sqrt{N^3F^{-2}Q_1^9}.
+\]
+Arguing as in case~3, one can show that if
+$\max\{a_3,b_3,c_3\}\ll1$, then
+\[
+  \frac{\partial^3}{\partial x^3}f_5(x,y)\gg F_1X^{-3}.
+\]
+Using Lemma~B with $k=3$, we obtain
+\[
+\begin{aligned}
+(S/N)^8\lll{}&Q_1^{-4}
+ +N^{-1}Q_1^{-7}\sum_h\sum_{x,y}(F_1X^{-3})^{1/6}\\
+&+X^{-1/4}Q_1^{-7}\sum_h
+ \left(\sum_{x,y}1/N\right)^{3/4}
+ +(F_1)^{-1/4}Q_1^{-7}\sum_h
+ \left(\sum_{x,y}1/N\right)^{1/2}\\
+\ll{}&Q_1^{-4}
+ +(F^2Q_1^7N^{-6})^{1/12}(N^3F^{-2}Q_1^9)^2\\
+&+X^{-1/4}\gamma_2^{3/4}
+ (\gamma_1+Q_1^{-1})(\gamma_1+Q_1^{-2})\\
+&+(F_1)^{1/4}\gamma_2^{1/2}
+ (\gamma_1+Q_1^{-1})(\gamma_1+Q_1^{-2})
+ \ll Q_1^{-4}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{5)}
+\[
+  c_3\ll\sqrt{Q_1^4/N},
+  \qquad
+  \max\{a_3,b_3\}\ll\sqrt{N^3F^{-2}Q_1^9}.
+\]
+If
+\[
+  \max\{a_3,b_3\}\ll
+  (c_3^2+c_3Q^{-2})\sqrt{N^3F^{-2}Q_1^9},
+\]
+then
+\[
+  N^{-1}Q_1^{-7}\sum_h\lvert D_3\rvert\ll Q_1^{-4},
+  \qquad (S/N)^8\ll Q_1^{-4}.
+\]
+Otherwise we use Lemma~B with $k=2$; taking, say, $b_3\geqslant a_3$, which is the worst case, gives
+\[
+\begin{aligned}
+N^{-1}Q_1^{-7}\sum_h
+ \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert
+&\ll Q_1^{-4}+N^{-1}Q_1^{-7}\sum_h\left(
+ \sum_{x,y}\sqrt{F_1b_3Y^{-2}}+N\sqrt{F_1b_3}
+ \right)\\
+&\ll Q_1^{-4}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{6)}
+\[
+  a_3\gg\sqrt{N^3F^{-2}Q_1^3},
+  \qquad c_3\ll\sqrt{Q_1^4N^{-1}},
+\]
+or
+\[
+  a_3\ll\sqrt{N^3F^{-2}Q_1^9}\ll b_3,
+  \qquad
+  c_3\ll Q_1^8Y^{-2}+\sqrt{Q_1^4N^{-1}}.
+\]
+Dividing $D_3$ into subdomains on which
+\[
+  \lvert\varphi_1'(\theta)\rvert\asymp a(y/x)^5,
+\]
+we obtain
+\[
+\begin{aligned}
+N^{-1}Q_1^{-7}\sum_h\lvert D_2\rvert
+&\lll\max_a\min\left\{
+ c_3/a;
+ \sqrt{c_3/c_2+Q_1^{-2}}
+ \min\{c_2^{5/9}+Q_1^{-1};a^{1/8}+Q_1^{-1/2}\}
+ \right\}\\
+&\ll\sqrt{c_3Q_1^{-1}c_2^{-1}}+Q_1^{-5/2}
+ +c_3^{41/81}+Q_1^{-2}(c_3Q_1^2)^{1/9}.
+\end{aligned}
+\]
+If $a_3\gg\sqrt{N^3F^{-2}Q_1^9}$, we apply Lemma~B with $k=2$ to obtain
+\[
+\begin{aligned}
+N^{-1}Q_1^{-7}\sum_h
+ \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert
+&\lll \sqrt[4]{F^2Q_1^7N^{-5}}
+ N^{-1}Q_1^{-7}\sum_h\lvert D_2\rvert+Q_1^{-4}\\
+&\ll Q_1^{-4}+\sqrt[4]{F^2Q_1^7N^{-5}}
+ \Bigl[Q_1^{-5/2}+(Q_1^4N^{-1})^{41/162}\\
+&\hspace{39mm}+(NQ_1^{28})^{-1/18}
+ +(F^{36}Q_1^{440}N^{-139})^{1/196}\Bigr]\\
+&\ll Q_1^{-4}.
+\end{aligned}
+\]
+If $a_3\ll\sqrt{N^3Q_1^9F^{-2}}$, we again divide $D_3$ into subdomains on which
+$\lvert\varphi_1'(\theta)\rvert\asymp a(y/x)^5$. If
+\[
+  a\gg\sqrt[4]{F^2Q_1^{31}N^{-5}Y^{-4}},
+\]
+then $\lvert D_3\rvert\ll Nc_3/a$ and, as above,
+\[
+  (S/N)^8\lll Q_1^{-4}
+  +\sqrt[4]{F^2Q_1^7N^{-3}Y^{-4}}\,N^{-1}\lvert D_3\rvert
+  \ll Q_1^{-4}.
+\]
+If
+\[
+  a\ll\sqrt[4]{F^2Q_1^7N^{-5}Y^{-4}},
+\]
+then, as in case~3, one can show that
+\[
+\begin{gathered}
+ Q_1^{-7}\sum_h1\ll
+ (\sqrt{a_3+c_3}+a+Q_1^{-2})
+ (\sqrt{a_3+c_3}+Q_1^{-1}+a),\\
+ \lvert D_3\rvert\ll\sqrt{a_3}\lvert D_2\rvert.
+\end{gathered}
+\]
+If
+\[
+  a_3\gg(c_3+a^2+Q_1^{-4})\sqrt{N^3F^{-2}Q_1^9},
+\]
+then, as above,
+\[
+  (S/N)^8\ll Q_1^{-4}
+  +Q_1^{-7}(F^2Q_1^7N^{-3}a_3^2)^{-1/4}\sum_h1
+  \ll Q_1^{-4}.
+\]
+Otherwise Lemma~B gives
+\[
+\begin{aligned}
+(S/N)^8
+&\ll Q_1^{-4}
+ +\sqrt[4]{F^2Q_1^7N^{-3}Y^{-4}}
+  N^{-1}Q_1^{-7}\sum_h\sum_{x,y}1\\
+&\ll Q_1^{-4}
+ +\sqrt[4]{F^2Q_1^7N^{-3}Y^{-4}}
+ \left(\sqrt[4]{N^3F^{-2}Q_1^9}
+       \sqrt{F^2Q_1^{31}N^{-5}Y^{-4}}\right)\\
+&\qquad\times
+ \left(\sqrt[4]{F^2Q_1^{31}N^{-5}Y^{-4}}+Q_1^{-1}\right)
+ \ll Q_1^{-4}.
+\end{aligned}
+\]
+
+\medskip
+\noindent\textbf{7)} $c_3\gg N^5Q_1^{-15}F^{-2}$. We define
+\[
+\begin{gathered}
+ \Phi_{2,0}(f)=-f_{y^2},\qquad
+ \Phi_{1,1}(f)=f_{xy},\qquad
+ \Phi_{0,2}(f)=-f_{x^2},\\
+ H(f)=f_{x^2}f_{y^2}-(f_{xy})^2,
+\end{gathered}
+\]
+\[
+\begin{aligned}
+\Phi_{i,j+1}(f)=[H(f)]^{2i+2j-1}\Bigg[&
+ -\frac{\partial}{\partial x}
+  \bigl(\Phi_{i,j}(f)(H(f))^{3-2i-2j}\bigr)f_{xy}\\
+&+\frac{\partial}{\partial y}
+  \bigl(\Phi_{i,j}(f)(H(f))^{3-2i-2j}\bigr)f_{x^2}
+\Bigg],
+\end{aligned}
+\]
+and
+\[
+\begin{aligned}
+\Phi_{i+1,j}(f)=[H(f)]^{2i+2j-1}\Bigg[&
+ \frac{\partial}{\partial x}
+  \bigl(\Phi_{i,j}(f)(H(f))^{3-2i-2j}\bigr)f_{y^2}\\
+&-\frac{\partial}{\partial y}
+  \bigl(\Phi_{i,j}(f)(H(f))^{3-2i-2j}\bigr)f_{xy}
+\Bigg]
+\end{aligned}
+\]
+for $i+j\geqslant2$. The polynomials
+$\varphi_2(\theta),\ldots,\varphi_{k_2+4}(\theta)$ are obtained respectively from
+\[
+  \Phi_{k_2+2,0}(f(x,y)),\ldots,\Phi_{0,k_2+2}(f(x,y))
+\]
+by replacing $f_{x^iy^j}$ with $\varphi_{ij}(\theta)$. They are all polynomials of degree $k_1(3k_2+1)$ in $\theta$ and of degree $3k_2+1$ in $\sigma_1,\sigma_2,\sigma_3$. Further,
+\[
+\begin{aligned}
+ \varphi_{k_2+5}
+ &=\frac{\varphi_{k_2+4}\varphi_{k_2+2}-\varphi_{k_2+3}^2}
+        {\varphi_1^2},\\
+ \varphi_{k_2+6}
+ &=\frac{\varphi_{k_2+4}\varphi_{k_2+1}
+          -\varphi_{k_2+3}\varphi_{k_2+2}}
+        {\varphi_1^2}
+\end{aligned}
+\]
+are both polynomials of degree $k_1(6k_2-2)$ in $\theta$ and of degree $6k_2-2$ in $\sigma_1,\sigma_2,\sigma_3$. For
+\[
+  m=0,1,\ldots,k_2,
+  \qquad l=0,1,\ldots,k_2-m+2,
+\]
+put
+\[
+  \Psi_{l,m}(\theta)=\sum_{j=0}^m
+  \varphi_{l+j+2}(\theta)\theta^{m-j}\sigma_{j,m},
+\]
+where $\sigma_{j,m}$ is the $j$th elementary symmetric function of
+\[
+  \alpha_1=h_{21}/h_{11},\ldots,
+  \alpha_m=h_{2m,1}/h_{2m-1,1}.
+\]
+Finally, put
+\[
+\begin{aligned}
+ \Psi_{j+1}^1
+ &=\Psi_{j,k_2-j}\Psi_{j+2,k_2-j}
+   -\Psi_{j+1,k_2-j}^2
+ &&(j=0,1,\ldots,k_2),\\
+ \Psi_{j+1}^2
+ &=\Psi_{j,k_2-j-1}\Psi_{j+3,k_2-j-1}
+   -\Psi_{j+1,k_2-j-1}\Psi_{j+2,k_2-j-1}
+ &&(j=0,\ldots,k_2-1).
+\end{aligned}
+\]
+We divide $D_3$ into $O(N^\varepsilon)$ subdomains and choose a subdomain $D_4$, corresponding to the largest subsum, on which, say,
+\[
+\begin{aligned}
+ d_j\delta_2^{9k_2+3}
+ &\leqslant\lvert\varphi_j(\theta)\rvert
+ \leqslant2d_j\delta_2^{9k_2+3}
+ &&(j=2,\ldots,k_2+4),\\
+ d_j\delta_2^{3k_1k_2-2k_1}
+ &\leqslant\lvert\varphi_j(\theta)\rvert
+ \leqslant2d_j\delta_2^{3k_1k_2-3k_1}
+ &&(j=k_2+5,k_2+6).
+\end{aligned}
+\]
+We take the largest $Q_2$ such that
+\[
+\begin{aligned}
+Q_2\ll\min\Bigg\{&
+ \max\left\{
+  (F_1^{2k_2+2}N^{-k_2-2})^{1/(2K_2-1)};
+  (F_1^{6k_2+2}N^{-3k_2-4})^{1/(3K_2-3)}
+ \right\};\\
+&Q_1;
+ (N^2Q_1^{-K_1})^{1/(6k_2-2)}
+\Bigg\},
+\end{aligned}
+\]
+and
+\[
+\begin{aligned}
+ Q_2&\leqslant N^{2k_1+5}F^{-4}Q_1^{2-5K_1}
+ &&(k_2=1),\\
+ Q_2&\leqslant N^{5k_1}F^{-10}Q_1^{5-11K_1}
+ &&(k_2=2),\\
+ Q_2&\ll\max\left\{
+ (F_1^{38}N^{-25})^{1/30};
+ (F_1^{118}N^{-77})^{1/114}
+ \right\}
+ &&(k_2=3).
+\end{aligned}
+\]
+
+If
+\[
+  \min\{d_{k_2+5},d_{k_2+6}\}\ll Q_2^{1-3k_2}
+\]
+or
+\[
+  \min\{d_2,\ldots,d_{k_2+4}\}\ll Q_2^{-1/[2(3k_2+1)]},
+\]
+then it is easy to see that
+\[
+  Q_1^{1-K_1}\sum_h |D_4|\ll Q_2^{-1/2},
+\]
+and we can estimate the sum in~(8) below trivially to obtain the required estimate. We now assume that
+\[
+  a\equiv\min\left\{
+    d_2^{2/(3k_2+1)},\ldots,d_{k_2+4}^{2/(3k_2+1)},
+    d_{k_2+5}^{1/(3k_2-1)},d_{k_2+6}^{1/(3k_2-1)}
+  \right\}\gg Q_2^{-1},
+\]
+and use Lemma~1 to get
+\begin{equation}
+  \left(\frac SN\right)^{K_1}
+  \ll Q_1^{-K_1/2}
+  +F_1Q_1^{1-K_1}c_{k_1}^{-1/2}
+   \sum_h\left|\sum_{u,v}e(g(u,v))\right|.
+  \tag{8}
+\end{equation}
+Here the domain of summation over $(u,v)$ and the function $g(u,v)$ are as in Lemma~1, and
+\[
+\begin{aligned}
+  Q_1^{1-K_1}\sum_h\sum_{u,v}1
+  &\ll Q_1^{1-K_1}F_1^2N^{-2}c_{k_1}\sum_h|D_4|\\
+  &\ll F_1^2N^{-1}ac_{k_1}\equiv N_1.
+\end{aligned}
+\]
+Thus, if $a^2c_{k_1}\ll Q_2^{-1}$, then
+\[
+  \left(\frac SN\right)^{K_1}
+  \ll Q_1^{-K_1/2}+F_1N^{-1}Q_2^{-1/2}
+  \ll Q_2^{-K_1/2}.
+\]
+We henceforth assume that $a^2c_{k_1}\gg Q_2^{-1}$. If $k_2\geqslant2$ and
+\[
+  (X/Y)^{k_2-1}
+  \gg Q_2^{K_2/2-1}+NQ_2^{3K_2/2-2}N_0^{-k_2-1/3},
+  \qquad N_0=F_1^2/N,
+\]
+then we apply Lemma~2 $k_2-1$ times with $n=1$ and continue as below. Also, if
+\[
+  X/Y\gg Q_2+NQ_2^{K_2}N_0^{-k_2-1/3},
+\]
+then we apply Lemma~2 once with $n=1$ and continue as below. We may therefore assume that
+\[
+  X/Y\ll\min\{Q_2,\,NQ_2^{K_2}N_0^{-k_2-1/3}\},
+\]
+and consider the following cases.
+
+\paragraph{Case (a).}
+Suppose that
+\begin{equation}
+  d_{k_2+5}^{3(K_2+k_2-1)/(3k_2-1)}
+  \ll N^{6K_2-k_2-6}Q_1^{2K_1-2K_1K_2}F_1^{6+2k_2-6K_2}.
+  \tag{a}
+\end{equation}
+We apply Lemma~2 with $n=1$, $k_2$ times:
+\[
+\begin{aligned}
+  |\Sigma_2|^{K_2}
+  &\equiv Q_1^{1-K_1}
+    \left(\sum_h\left|\sum_{u,v}e(g(u,v))\right|\right)^{K_2}\\
+  &\ll N_1^{K_2}Q_3^{-K_2/2}
+   +N_1^{K_2-1}Q_3^{1-K_2}
+    \sum_{h^{(1)}}Q_1^{1-K_1}\sum_h
+      \left|\sum_{u,v}e(g_1(u,v))\right|,
+\end{aligned}
+\]
+where
+\[
+\begin{aligned}
+  g_1(u,v)
+  &=\int_0^1\!\cdots\!\int_0^1
+    \frac{\partial^{k_2}}{\partial t_1\cdots\partial t_{k_2}}
+    g\bigl(u,v+t_1h_{11}+\cdots+t_{k_2}h_{1,k_2}\bigr)
+    \,dt_1\cdots dt_{k_2},\\
+  h^{(1)}&=(h_{11},\ldots,h_{1,k_2}),
+  \qquad |h_{1j}|\leqslant Q_3^{2^j-1}
+  \quad(j=1,\ldots,k_2),
+\end{aligned}
+\]
+and
+\[
+\begin{aligned}
+  Q_3=\min\Bigg\{&(F_1^2Y^{-2})^{1/K_2};\\
+  &\max\Bigg\{
+    \left(\frac{F_1^{2k_2+2}N^{-2}Y^{-2k_2}}{d_{k_2+5}}\right)^{1/(3K_2-2)};\\
+  &\hspace{20mm}
+    \left[
+      F_1^{3k_2+1}N^{-2}Y^{-3k_2}
+      (d_{k_2+4}d_{k_2+5})^{-1}a^2c_{k_1}^2
+    \right]^{1/[3(K_2-1)]}
+  \Bigg\}\Bigg\}.
+\end{aligned}
+\]
+Lemma~A now gives
+\[
+\begin{aligned}
+  |\Sigma_2|^{K_2}
+  \lll{}&N_1^{K_2}Q_3^{-K_2/2}
+  +N_1^{K_2}Q_3^{K_2-1}Y^{k_2}NF_1^{-k_2-1}d_{k_2+5}^{-1/2}\\
+  &+N_1^{K_2-1}
+    \left(F_1^{k_2+3}N^{-2}Y^{-k_1}Q_3^{1-K_2}d_{k_2+4}^{-1}\right)^{1/2}\\
+  &+N_1^{K_2-1}Y(F_1^2d_{k_2+5})^{-1/2}\\
+  \ll{}&\left(F_1^2\sqrt{c_{k_1}/Q_2}\,N^{-1}\right)^{K_2}.
+\end{aligned}
+\]
+Consequently
+\[
+  (S/N)^{K_1}\ll Q_1^{-K_1/2}.
+\]
+
+\paragraph{Case (b).}
+Suppose that
+\begin{equation}
+  a^{6(K_2+3k_2-1)(K_2+k_2-1)/K_2}
+  \ll F_1^{2k_2+6-6K_2}Q_1^{2k_2-2k_2k_1}N^{6K_2-6-k_2}.
+  \tag{b}
+\end{equation}
+As in case~(a), we obtain
+\[
+  (S/N)^{K_1}\ll Q_1^{-K_1/2}.
+\]
+
+\paragraph{Case (c).}
+Suppose that neither condition~(a) nor condition~(b) is satisfied. We apply Lemma~2 with $n=2$:
+\[
+\begin{aligned}
+  |S_1|^2
+  &\equiv Q_1^{1-K_1}
+    \left(\sum_h\left|\sum_{u,v}e(g(u,v))\right|\right)^2\\
+  &\ll N_1^2Q_2^{-1}
+    +N_1Q_2^{-1}\sum_{h^{(1)}}
+      \left|\sum_{u,v}e(g_1(u,v))\right|,
+\end{aligned}
+\]
+where
+\[
+  g_1(u,v)=\int_0^1\frac{\partial}{\partial t}
+    g(u+h_{11}t,v+h_{21}t)\,dt.
+\]
+We divide $D_4$ into subdomains on which
+\[
+\begin{aligned}
+  a_4\delta_2^{3k_2+1}\delta_{1,1}
+  &\leqslant|\psi_{0,1}(\theta)|
+   \leqslant2a_4\delta_2^{3k_2+1}\delta_{1,1},\\
+  b_4\delta_2^{3k_2+1}\delta_{1,1}
+  &\leqslant|\psi_{2,1}(\theta)|
+   \leqslant2b_4\delta_2^{3k_2+1}\delta_{1,1},\\
+  c_4\delta_2^{3k_2+1}\delta_{1,1}
+  &\leqslant|\psi_{1,1}(\theta)|
+   \leqslant2c_4\delta_2^{3k_2+1}\delta_{1,1},\\
+  c_{4,j}\delta_2^{6k_2+2}\delta_{1,1}^2
+  &\leqslant|\psi_1^j(\theta)|
+   \leqslant2c_{4,j}\delta_2^{6k_2+2}\delta_{1,1}^2
+  \qquad(j=1,2).
+\end{aligned}
+\]
+Here
+\[
+  \delta_{1,m}=\prod_{j=1}^m
+  \left(y/x+\left|h_{2j,1}/h_{2j-1,1}\right|\right).
+\]
+Let $D_5$ be a subdomain defined by these inequalities that corresponds to the largest subsum. Then
+\begin{equation}
+\begin{aligned}
+  \max\{a_4,c_4\}&\gg d_{k_2+5}c_{k_1}^2,\\
+  \max\{a_4,b_4\}&\gg d_{k_2+6}c_{k_1}^2,\\
+  c_{4,1}+a_4b_4+a_4^2&\gg d_{k_2+5}^2c_{k_1}^4.
+\end{aligned}
+\tag{9}
+\end{equation}
+We consider three cases.
+
+\subparagraph{1.}
+Suppose that $c_{4,1}\ll d_{k_2+5}/Q_2$ or $c_{4,2}\ll d_{k_2+6}/Q_2$. In either case,
+\[
+  Q_2^{-1}\sum_{h^{(1)}}|D_5|\ll Q_2^{-1/2}|D_4|.
+\]
+If
+\[
+  c_{4,1}\gg b\equiv
+  a^{2K_2-2}c_{k_1}^{K_2-2}
+  \min\left\{
+    Q_2^{1+K_2/2}NF_1^{-2};
+    Q_2^{1-K_2/2}(NF_1^{-2})^{1/3}
+  \right\},
+\]
+then, by~(9), either
+\[
+  a_4^2\gg
+  Q_2^{4-3K_2}c_{4,1}^2a^{2K_2-8}c_{k_1}^{6K_2-8}
+  \min\left\{1;
+    Q_2^{2-2K_2}(F_1^2/N)^{4/3}
+  \right\},
+\]
+or
+\[
+  c_{4,1}\gg bX/Y,
+  \qquad b_4\gg d_{k_2+5}c_{k_1}^2.
+\]
+Apply Lemma~2 $k_2-1$ times with $n=1$, choosing $Q$ to minimize the resulting expression, and put
+\[
+\begin{aligned}
+  g_2(u,v)=\int_0^1\!\cdots\!\int_0^1
+  &\frac{\partial^{k_2-1}}{\partial t_1\cdots\partial t_{k_2-1}}\\
+  &g_1\bigl(u,v+h_{31}t_1+\cdots+h_{k_2+1,1}t_{k_2-1}\bigr)
+  \,dt_1\cdots dt_{k_2-1}.
+\end{aligned}
+\]
+Lemma~A gives
+\[
+  |S_1|^{K_2}
+  \ll\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
+  +N_1^{K_2-1}Q_2^{(2-K_2)/4}Q^{1-K_2/2},
+\]
+and
+\[
+\begin{aligned}
+  \sum_{h^{(1)}}\left|\sum_{u,v}e(g_2(u,v))\right|
+  \lll{}&\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
+  +N_1^{K_2-1}Q_2^{-K_2/4}\\
+  &+ac_{k_1}\Bigg[
+    \left(c_{4,1}Q_2NQ^{K_2-2}F_1^{2-2K_2}Y^{2k_2-2}\right)^{1/2}\\
+  &\quad+\min\Bigg\{
+    \begin{aligned}
+      &\left(F_1^{2k_2+6}Q_2Q^{2-K_2}Y^{2-2k_2}N^{-5}a_4^{-2}\right)^{1/4}
+       +F_1X^{-1}\sqrt{Q_2/c_{4,1}};\\
+      &\left(F_1^{2k_2+6}Q_2Q^{2-2K_2}Y^{2-2k_2}N^{-5}b_4^{-2}\right)^{1/4}
+       +F_1Y^{-1}\sqrt{Q_2/c_{4,1}}
+    \end{aligned}
+    \Bigg\}\Bigg]\\
+  \ll{}&\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
+    +N_0^{K_2-1/3}c_{k_1}^{K_2/2}
+    \equiv R_0.
+\end{aligned}
+\]
+If $c_{4,1}\ll b$, we instead use Lemma~B with $k=2$; the same result follows.
+
+\subparagraph{2.}
+Suppose that
+\[
+  \min\{c_{4,1},c_{4,2}\}\gg d_{k_2+5}/Q_2
+\]
+and
+\[
+  \min\left\{
+    \frac{a_4}{d_{k_2+4}},\frac{b_4}{d_{k_2+2}},
+    \frac{c_4}{d_{k_2+3}},
+    \left(\frac{c_{4,2}}{d_{k_2+6}}\right)^{1/2}
+  \right\}
+  \ll\delta^{(3K_2-2)/(6K_2-8)},
+\]
+or that $c_{4,1}\ll\delta d_{k_2+5}$, where
+\[
+  \delta^{3K_2/2-1}
+  =a^{4-3K_2}\max\left\{
+    N_0^{k_2-8/(3K_2)}F_1^{-2}Q_2^{-1};
+    N_0^{k_2+1}N^{-1}Q_2^{3-3K_2}
+  \right\}.
+\]
+As in case~1,
+\[
+\begin{aligned}
+  Q_2^{-1}\sum_{h^{(1)}}|D_5|
+  \ll\Bigg(&Q_2^{-1/2}
+  +\min\left\{
+    \frac{a_4}{d_{k_2+4}},\frac{b_4}{d_{k_2+2}},
+    \frac{c_4}{d_{k_2+3}},
+    \sqrt{\frac{c_{4,1}}{d_{k_2+5}}},
+    \sqrt{\frac{c_{4,2}}{d_{k_2+6}}}
+  \right\}\Bigg)|D_4|,
+\end{aligned}
+\]
+and
+\[
+\begin{aligned}
+  |S_1|^{K_2}
+  \ll{}&N_1^{K_2}\left(Q_2^{-K_2/2}+\delta^{K_2/4}Q^{-K_2/4}\right)
+  +N_1^{K_2-1/3}\\
+  &+N_0^{K_2}c_{k_1}^{K_2/2}\delta^{K_2/4}
+  \left(Q_2N^{k_2+2}F_1^{-2k_2-2}\delta d_{k_2+5}Q^{K_2-2}\right)^{1/2}
+  \ll R_0.
+\end{aligned}
+\]
+
+\subparagraph{3.}
+Suppose that the inequalities of case~2 are not satisfied. If $k_2=1$, then, as in case~2,
+\[
+  |S_1|^{K_2}
+  \ll R_0+F_1^4c_{k_1}N^{-2}(Q_2N^3F_1^{-4})^{1/2}
+  \ll R_0.
+\]
+If $k_2\geqslant2$, apply Lemma~2 once more with $n=2$ and $Q=Q_2^2$:
+\begin{equation}
+  |S_1|^4
+  \ll N_1^4Q_2^{-2}
+  +N_1^3Q_2^{-3}\sqrt{\delta_3}
+   \sum_{h^{(1)}}\left|\sum_{u,v}e(g_3(u,v))\right|,
+  \tag{10}
+\end{equation}
+where
+\[
+  g_3(u,v)=\int_0^1\frac{\partial}{\partial t}
+  g_1(u+h_{31}t,v+h_{41}t)\,dt
+\]
+and
+\[
+  \delta_3=\min\left\{
+    1,\frac{c_{4,1}}{d_{k_2+5}},\frac{c_{4,2}}{d_{k_2+6}},
+    \frac{a_4^2}{d_{k_2+4}^2},\frac{b_4^2}{d_{k_2+2}^2},
+    \frac{c_4}{d_{k_2+3}^2}
+  \right\}.
+\]
+We divide $D_5$ into subdomains and choose one, denoted by $D_6$, that corresponds to the largest subsum and on which
+\[
+\begin{aligned}
+  a_5\delta_2^{3k_2+1}\delta_{1,2}
+  &\leqslant|\psi_{0,2}(\theta)|
+   \leqslant2a_5\delta_2^{3k_2+1}\delta_{1,2},\\
+  b_5\delta_2^{3k_2+1}\delta_{1,2}
+  &\leqslant|\psi_{2,2}(\theta)|
+   \leqslant2b_5\delta_2^{3k_2+1}\delta_{1,2},\\
+  c_5\delta_2^{3k_2+1}\delta_{1,2}
+  &\leqslant|\psi_{1,2}(\theta)|
+   \leqslant2c_5\delta_2^{3k_2+1}\delta_{1,2},\\
+  c_{5,j}\delta_2^{6k_2+2}\delta_{1,2}^2
+  &\leqslant|\psi_2^j(\theta)|
+   \leqslant2c_{5,j}\delta_2^{6k_2+2}\delta_{1,2}^2
+  \qquad(j=1,2).
+\end{aligned}
+\]
+Here
+\[
+  \max\{a_5,b_5\}\gg c_{4,2},
+  \qquad \max\{a_5,c_5\}\gg c_{4,1}.
+\]
+Writing
+\[
+  \delta_4=\min\left\{
+    \sqrt{c_{5,1}/c_{4,1}},\sqrt{c_{5,2}/c_{4,2}},
+    a_5/a_4,b_5/b_4,c_5/c_4,1
+  \right\},
+\]
+we have
+\[
+  Q_2^{-3}\sum_{h^{(1)}}|D_6|\ll\delta_4|D_5|.
+\]
+If $\delta_3\delta_4a^4c_{k_1}^2\ll Q_2^{-2}$, the sum in~(10) can be estimated trivially, giving
+\[
+  |S_1|^{K_2}\ll R_0.
+\]
+We now assume that $\delta_3\delta_4a^4c_{k_1}^2\gg Q_2^{-2}$ and distinguish the following cases.
+
+\paragraph{Case (a).}
+Suppose that $\delta_4\ll Q_2^{-1}$. If
+\[
+\begin{aligned}
+  c_{5,1}\gg d\equiv{}&
+  a^{2K_2-2}c_{k_1}^{K_2-2}
+  \delta_3^{(K_2-2)/2}\delta_4^{(K_2-4)/2}\\
+  &\times\min\left\{Q_2^{K_2}NF_1^{-2};(NF_1^{-2})^{1/3}\right\}X/Y,
+\end{aligned}
+\]
+put $g_4(u,v)=g_3(u,v)$ if $k_2=2$, and
+\[
+  g_4(u,v)=g_3(u,v+h_{5,1})-g_3(u,v)
+\]
+if $k_2=3$. Apply Lemma~2 $k_2-2$ times with $n=1$ and an appropriate $Q$, followed by Lemma~A. Then
+\[
+\begin{aligned}
+  |S_1|^{K_2}
+  \ll{}&R_0+
+  (F_1^2ac_{k_1}/N)^{K_2}(\delta_3\delta_4)^{K_2/4}Q^{-1}\\
+  &+(F_1^2ac_{k_1}/N)^{K_2-1}
+  \delta_3^{(K_2-2)/4}\delta_4^{(K_2-4)/4}
+  Q_2^{-3}Q^{1-K_2/4}
+  \sum_{h^{(1)}}\left|\sum_{u,v}e(g_4(u,v))\right|\\
+  \lll{}&R_0+
+  (F_1^2ac_{k_1}/N)^{K_2}(\delta_3\delta_4)^{K_2/4}
+  \left(Q^{-1}+\sqrt{Q_2^3Q^{K_2/2-2}Y^{2k_2-4}N^4F_1^{-2k_2-2}}\right)\\
+  &+(F_1^2ac_{k_1}/N)^{K_2-1}
+  \delta_3^{(K_2-2)/4}\delta_4^{(K_2-4)/4}\\
+  &\quad\times\min\Bigg\{
+  \frac{F_1}{X\sqrt{c_{5,1}}}
+  +\sqrt[4]{F_1^{2k_2+6}N^{-6}Q_2^{-3}Q^{2-K_2/2}Y^{4-2k_2}a_5^{-2}};\\
+  &\hspace{32mm}
+  \frac{F_1}{Y\sqrt{c_{5,1}}}
+  +\sqrt[4]{F_1^{2k_2+8}N^{-6}Q_2^{-3}Q^{2-K_2/2}Y^{4-2k_2}b_5^{-2}}
+  \Bigg\}\\
+  \ll{}&R_0+
+  \left[(ac_{k_1})^{K_2-2/3}
+    \delta_3^{K_2/4-1/3}\delta_4^{K_2/4-2/3}a_4^{-1/3}\right]
+  (F_1^2/N)^{K_2-1/3}
+  \ll R_0.
+\end{aligned}
+\]
+If $c_{5,1}\ll d$, use
+\[
+  c_{4,1}\ll\max\{a_5,c_5\}
+  \ll\max\{a_5,\sqrt{a_5b_5+c_{5,1}}\}
+\]
+and Lemma~B to obtain
+\[
+  |S_1|^{K_2}\lll R_0.
+\]
+
+\paragraph{Case (b).}
+Suppose that
+\[
+\begin{aligned}
+  Q_2^{-1}\ll\delta_4\ll f\equiv{}&
+  \left(Q_2^{-2}+N_1^{-4/(3K_1)}\right)
+  (a^4c_{k_1}^2\delta_3)^{-1}\\
+  &\times\left(F_1^{2k_2-2}Q_2^{-3}N^{-4}Y^{4-2k_2}\right)^{8/K_2^2},
+\end{aligned}
+\]
+or that $k_2=2$ and $\delta_4\gg Q_2^{-1}$. As in case~(a),
+\[
+  |S_1|^{K_2}\ll R_0.
+\]
+
+\paragraph{Case (c).}
+Suppose that $k_2=3$ and $\delta_4\gg f$. Applying Lemma~2 with a suitable $Q$ and $n=2$, we obtain
+\begin{equation}
+\begin{aligned}
+  |S_1|^{K_2}\ll{}&
+  \left(N_1\sqrt{c_{k_1}/Q_2}\right)^{K_2}\\
+  &+(F_1^2ac_{k_1}/N)^{K_2-1}
+  \delta_3^{(K_2-2)/4}\delta_4^{(K_2-4)/4}Q_2^{-3}Q^{-1}
+  \sum_{h^{(1)}}\left|\sum_{u,v}e(g_5(u,v))\right|\\
+  &+N_1^{K_2}(\delta_3\delta_4)^{K_2/4}Q^{-1}.
+\end{aligned}
+\tag{11}
+\end{equation}
+Here
+\[
+  g_5(u,v)=\int_0^1\frac{\partial}{\partial t}
+  g_3(u+h_{5,1}t,v+h_{6,1}t)\,dt.
+\]
+We again divide $D_6$ into subdomains and choose one, $D_7$, corresponding to the largest subsum and satisfying
+\[
+\begin{aligned}
+  a_6\delta_2^{3k_2+1}\delta_{1,3}
+  &\leqslant|\varphi_{0,3}(\theta)|
+   \leqslant2a_6\delta_2^{3k_2+1}\delta_{1,3},\\
+  b_6\delta_2^{3k_2+1}\delta_{1,3}
+  &\leqslant|\varphi_{2,3}(\theta)|
+   \leqslant2b_6\delta_2^{3k_2+1}\delta_{1,3},\\
+  c_6\delta_2^{3k_2+1}\delta_{1,3}
+  &\leqslant|\varphi_{1,3}(\theta)|
+   \leqslant2c_6\delta_2^{3k_2+1}\delta_{1,3},\\
+  c_{6,j}\delta_2^{6k_2+2}\delta_{1,3}^2
+  &\leqslant|\psi_3^j(\theta)|
+   \leqslant2c_{6,j}\delta_2^{6k_2+2}\delta_{1,3}^2
+  \qquad(j=1,2).
+\end{aligned}
+\]
+Here
+\[
+  \max\{a_6,b_6\}\gg c_{5,2},
+  \qquad \max\{a_6,c_6\}\gg c_{5,1},
+\]
+and
+\[
+  \max\{a_5,\sqrt{a_5b_5+c_{6,1}}\}\gg c_{5,1}.
+\]
+We consider the remaining two cases.
+
+\paragraph{Case (d).}
+Suppose that
+\[
+  c_{6,1}\gg g\equiv
+  NF_1^{-2}(ac_{k_1})^{14}\delta_3^2\delta_4^2
+  \left[Q_2^{-8}+(NF_1^{-2})^{2/3}\right]^{-1}.
+\]
+Applying Lemma~A to the sum in~(11) and choosing $Q$ to minimize the resulting expression gives
+\[
+\begin{aligned}
+  |S_1|^8\lll{}&R_0+N_1^7N_0\delta_3^{3/2}\delta_4\\
+  &\times\min\Bigg\{
+    \sqrt[6]{a^2\delta_3\delta_4^2a_6^{-2}(NF_1^{-2})^2c_{6,1}}
+      +\frac{YF_1^{-1}}{\sqrt{c_{6,1}}};\\
+  &\hspace{27mm}
+    \sqrt[6]{\delta_3\delta_4^2a^2b_6^{-2}(NF_1^{-2})^2c_{6,1}}
+      +\frac{XF_1^{-2}}{\sqrt{c_{6,1}}}
+  \Bigg\}.
+\end{aligned}
+\]
+If $c_{6,1}\gg gX/Y$, then, because
+\[
+  \max\{a_6,b_6\}\gg c_{5,1}\gg\delta_3\delta_4a^{16},
+\]
+the preceding expression is $\ll R_0$. If $c_{6,1}\ll gX/Y$ but
+\[
+  a_6\gg a^{22}\delta_3^5\delta_4^4c_{k_1}^9\sqrt{c_{6,1}},
+\]
+the same conclusion follows. Otherwise we use
+\[
+  \max\{a_6,\sqrt{a_6+c_6}\}\gg c_{5,1}
+\]
+to prove that
+\[
+  |S_1|^8\lll R_0.
+\]
+
+\paragraph{Case (e).}
+Suppose that $c_{6,1}\ll g$. Applying Lemma~B with $k=2$ and choosing $Q$ optimally, we obtain
+\[
+\begin{aligned}
+  |S_1|^8
+  &\lll R_0+N_1^8\delta_2^2\delta_3^2
+    \sqrt{c_{6,1}/c_{5,1}}
+    (X^4Q_2^3N^3F_1^{-8})^{1/5}\\
+  &\ll R_0+N_0^8c_{k_1}^4
+    (N_0Q_2^{-8}+N_0^{1/3})
+    (X^4Q_2^3N^3F_1^{-8})^{1/5}
+  \ll R_0.
+\end{aligned}
+\]
+This completes the proof of Theorem~1.
+
+Theorem~2 can be proved similarly to Theorem~2 in~[3]. The only change is in showing that
+\[
+  |D_2|\ll\sqrt{a_{31}}\,N.
+\]
+This follows by proving that $H(g(x))\asymp P(\theta_1,\theta_2,\theta_3)$, where $\theta_j=h_j/x_j$ and $P$ is a homogeneous polynomial of degree~$3$ such that the system
+\[
+  P(\theta)=P_{\theta_1}=P_{\theta_2}=P_{\theta_3}
+  =P_{\theta_1^2}=P_{\theta_2^2}=P_{\theta_3^2}=0
+\]
+has no nonzero solution.
+
+To prove Theorem~3, we apply Lemma~2 with $m=3$ and with
+$q=q_1q_2q_3$, where the $q_i$ will be chosen later:
+\begin{equation}
+\begin{aligned}
+  (S/N)^2\ll{}&q^{-1}+(qN)^{-1}
+  \sum_{|h_1|=1}^{q_1}\sum_{|h_2|=1}^{q_2}\sum_{|h_3|=1}^{q_3}
+  \left|\sum_{x\in D_1}e(g(x))\right|
+  +\left|\sum_{h,x}'\right|.
+\end{aligned}
+\tag{12}
+\end{equation}
+Here
+\[
+  g(x)=\int_0^1\frac{\partial}{\partial t}
+  f(x_1+h_1t,x_2+h_2t,x_3+h_3t,x_4,\ldots,x_n)\,dt,
+\]
+and the primed sum in~(12) is small compared with the estimate obtained for the first sum. Fix $h=(h_1,h_2,h_3)$, and put
+\[
+  \varrho=|h_1/X_1|+|h_2/X_2|+|h_3/X_3|,
+  \qquad \theta_j=\frac{h_j}{x_j\varrho},
+  \qquad F_1=F\varrho.
+\]
+Then
+\[
+  H(g(x))\asymp
+  \left[(P_1(\theta))^{n-3}P_2(\theta)+O(\Delta)\right]F_1^nN^{-2},
+\]
+where
+\[
+  P_1(\theta)=\alpha_1\theta_1+\alpha_2\theta_2+\alpha_3\theta_3
+\]
+and
+\[
+\begin{aligned}
+  P_2(\theta)={}&P_1^3-2(\theta_1+\theta_2+\theta_3)P_1^2\\
+  &+\bigl(\alpha_1\theta_1^2+\alpha_2\theta_2^2+\alpha_3\theta_3^2
+    +2\theta_1\theta_2+2\theta_1\theta_3+2\theta_2\theta_3\bigr)P_1\\
+  &+(\alpha_1+\alpha_2+\alpha_3-2)\theta_1\theta_2\theta_3.
+\end{aligned}
+\]
+Let $g_{i_1,\ldots,i_j}(x)$ denote the function obtained from $g(x)$ by fixing all variables except $x_{i_1},\ldots,x_{i_j}$. We have
+\[
+  H(g_{1,2,3}(x))\asymp
+  (P_2(\theta)+O(\Delta))F_1^3(X_1X_2X_3)^{-2},
+\]
+\[
+  H(g_i(x))\asymp
+  (P_1(\theta)-2\theta_i+O(\Delta))F_1X_i^{-2}
+  \qquad(i=1,2,3),
+\]
+and
+\[
+\begin{aligned}
+  H(g_{i,j}(x))\asymp\Big[{}
+  &(\alpha_i-1)(\alpha_j-1)(P_1-2\theta_i)(P_1-2\theta_j)\\
+  &-\alpha_i\alpha_j(P_1-\theta_i-\theta_j)^2+O(\Delta)
+  \Big]F_1^2(X_iX_j)^{-2}\\
+  &\equiv(P_{i,j}(\theta)+O(\Delta))F_1^2(X_iX_j)^{-2}
+  \qquad(1\leqslant i<j\leqslant3).
+\end{aligned}
+\]
+We divide $D_1$ into $\ll N^\varepsilon$ subdomains. One of them contains $\ll NF_1^{-1/2}$ points; every remaining subdomain is of the form
+\[
+\begin{aligned}
+  a_1&\leqslant|P_1(\theta)|\leqslant a_1(1+\varepsilon_0),\\
+  a_2&\leqslant|P_2(\theta)|\leqslant a_2(1+\varepsilon_0),\\
+  a_{i+2}&\leqslant|P_1(\theta)-2\theta_i|
+    \leqslant a_{i+2}(1+\varepsilon_0)
+    \qquad(i=1,2,3),\\
+  a_{i,j}&\leqslant|P_{i,j}(\theta)|
+    \leqslant a_{i,j}(1+\varepsilon_0)
+    \qquad(1\leqslant i<j\leqslant3).
+\end{aligned}
+\]
+Let $D_2$ be a subdomain defined by these inequalities that corresponds to the largest subsum. We distinguish three cases.
+
+\paragraph{1. $a_1\gg\varepsilon_0$ and $a_2\gg\varepsilon_0$.}
+Then $H(g(x))\gg F_1^nN^{-2}$, and Lemma~1 gives
+\[
+  S_1\equiv\left|\sum_{x\in D_2}e(g(x))\right|
+  \lll F_1^{n/2}+NF_1^{-1/2}.
+\]
+
+\paragraph{2. $a_1\ll\varepsilon_0$.}
+In this case
+\[
+  |D_2|\ll(\Delta+a_2)N,
+  \qquad \max\left\{a_2,\max_{i<j}a_{i,j}\right\}\gg\varepsilon_0,
+\]
+and
+\[
+  \max_{i<j}\bigl(a_{i,j}(a_{i+2}+a_{j+2})\bigr)\gg\varepsilon_0.
+\]
+If $a_2\gg F_1^{\varepsilon-1/3}$, we use Lemma~1 with $k=1$ three times, changing the order of summation when necessary:
+\[
+\begin{aligned}
+  S_1
+  &\lll X_iF_1^{-1/2}\sum_m
+      \left|\sum_xe(f_1(m,x))\right|+NF_1^{-1/2}\\
+  &\lll NF_1^{-1/2}+X_iX_jF_1^{-1}
+      \sum_{m_1,m_2}\left|\sum_xe(f_2(m_1,m_2,x))\right|\\
+  &\lll NF_1^{-1/2}
+      +X_1X_4\cdots X_n\frac{F_1}{a_2}
+      +(\Delta+\min\{a_1,a_2\})X_4\cdots X_nF_1^{3/2}.
+\end{aligned}
+\]
+If $a_2$ is small, Lemma~1 with $k=2$ gives
+\[
+  S_1\lll X_1X_4\cdots X_nF_1(\Delta+a_2)+NF_1^{-1/2}.
+\]
+Comparing these two estimates, we obtain
+\[
+\begin{aligned}
+  S_1\lll{}&X_1X_4\cdots X_nF_1\Delta+NF_1^{-1/2}
+  +\Delta X_4\cdots X_nF_1^{3/2}\\
+  &+X_1X_4\cdots X_nF_1^{2/3}.
+\end{aligned}
+\]
+
+\paragraph{3. $a_1\gg\varepsilon_0$ and $a_2\ll\varepsilon_0$.}
+Here
+\[
+  |D_2|\ll(\Delta+\sqrt{a_2})N
+\]
+(see the comments concerning Theorem~2), and also
+\[
+  |D_2|\ll\left(\Delta+\max_{i<j}a_{i,j}\right)N,
+  \qquad \max_{3\leqslant i\leqslant5}a_i\gg\varepsilon_0.
+\]
+If, say,
+\[
+  a_{2,3}=\max_{i<j}a_{i,j}\gg F_1^{\varepsilon-1/3},
+\]
+then $a_2\gg\varepsilon_0$ or $a_3\gg\varepsilon_0$, and two applications of Lemma~1 with $k=1$ give
+\[
+\begin{aligned}
+  S_1
+  &\lll X_2F_1^{-1/2}\sum_m
+    \left|\sum_{x_1,x_3,\ldots,x_n}e(f_1(m,x))\right|
+    +\frac{N}{\sqrt{F_1}}\\
+  &\lll(\sqrt\Delta+\sqrt{a_2})F X_1X_4\cdots X_n
+    +\frac{N}{\sqrt{F_1}}
+    +\frac{X_1X_2X_4\cdots X_n}{\sqrt{a_{2,3}}}.
+\end{aligned}
+\]
+An application of Lemma~1 with $k=1$ also gives
+\[
+  S_1\lll(\Delta+a_{2,3})X_1X_2X_4\cdots X_n\sqrt{F_1}
+  +\frac{N}{\sqrt{F_1}}.
+\]
+If $a_2\gg F_1^{\varepsilon_0-1/3}$, we apply Lemma~1 twice with $k=1$ and once with $k=n-2$:
+\[
+\begin{aligned}
+  S_1
+  &\lll X_2F_1^{-1/2}\sum_m
+    \left|\sum_{x_1,x_3,\ldots,x_n}e(f_1(m,x))\right|
+    +\frac{N}{\sqrt{F_1}}\\
+  &\lll X_2X_3F_1^{-1/2}\sum_{m_1,m_2}
+    \left|\sum_{x_1,x_4,\ldots,x_n}e(f_2(m_1,m_2,x))\right|\\
+  &\qquad+\frac{N}{\sqrt{F_1}}
+    +\frac{X_1X_2X_4\cdots X_n}{\sqrt{a_{2,3}}}\\
+  &\lll F_1^{n/2}
+    +\frac{\sqrt{F_1}\,X_1X_4\cdots X_n}{\sqrt{a_2}}
+    +\frac{X_1X_2X_4\cdots X_n}{\sqrt{a_{2,3}}}
+    +\frac{N}{\sqrt{F_1}}.
+\end{aligned}
+\]
+Comparing all three estimates, we obtain
+\[
+\begin{aligned}
+  S_1\lll{}&F_1^{n/2}+\frac{N}{\sqrt{F_1}}
+  +NF_1^{1/6}X_3^{-1}
+  +F_1^{3/4}N(X_2X_3)^{-1}\\
+  &+F_1^{5/6}N(X_2X_3)^{-1}
+  +N\Delta\sqrt{F_1}\,X_3^{-1}
+  +NF_1\sqrt\Delta\,(X_2X_3)^{-1}
+  \equiv R_0.
+\end{aligned}
+\]
+Thus in all three cases
+\[
+  S_1\lll R_0+\frac{\Delta NF_1^{3/2}}{X_1X_2X_3}\equiv R_1.
+\]
+Substituting this into~(12), we choose $q$ to minimize the resulting expression:
+\[
+\begin{aligned}
+  (S/N)^2
+  \lll{}&q^{-1}+(qN)^{-1}\sum_hR_1\\
+  \lll{}&q^{-1}+N^{-1}\Bigg[
+    \left(F\sqrt[3]{q(X_1X_2X_3)^{-1}}\right)^{n/2}\\
+  &+N\sqrt{X_1X_2X_3q^{-1}F^{-3}}\\
+  &+NX_3^{-1}\sqrt[18]{F^3q(X_1X_2X_3)^{-1}}\\
+  &+N(X_2X_3)^{-1}\sqrt[4]{F^3q(X_1X_2X_3)^{-1}}\\
+  &+N\Delta X_3^{-1}\sqrt[6]{F^3q(X_1X_2X_3)^{-1}}\\
+  &+N(X_2X_3)^{-1}\sqrt[18]{F^{15}q^5(X_1X_2X_3)^{-5}}\\
+  &+N\sqrt\Delta\,(X_2X_3)^{-1}\sqrt[3]{F^3q(X_1X_2X_3)^{-1}}\\
+  &+N\Delta\sqrt{F^3q(X_1X_2X_3)^{-3}}
+  \Bigg]\\
+  \ll{}&\left(F^{3n}N^{-6}(X_1X_2X_3)^{-n}\right)^{1/(n+6)}\\
+  &+X_3^{-1}\sqrt[19]{F^3X_1^{-1}X_2^{-1}}
+  +X_2^{-1}X_3^{-1}\sqrt[23]{F^{15}/X_1^5}\\
+  &+X_3^{-1}\sqrt[7]{F^3\Delta^6X_1^{-1}X_2^{-1}}
+  +X_2^{-1}X_3^{-1}\sqrt[8]{F^6\Delta^3X_1^{-2}}\\
+  &+N^{-1/(n+1)}+X_3^{-3/4}+\sqrt{\Delta/X_3}.
+\end{aligned}
+\]
+This proves Theorem~3.
+
+We now assume that~(1) and~(4) hold and prove Theorems~4 and~5. First observe that the m.e.p. can never yield an estimate better than
+\[
+  S\ll\sqrt N.
+\]
+This follows by induction on the total number of applications of~(1) and~(4). If we apply~(1) once, then
+\[
+  S\ll F^{m/2}X_{m+1}\cdots X_n,
+  \qquad F^{m/2}>X_1\cdots X_m.
+\]
+The condition $F\gg X_1$ is not essential: it may be removed by replacing~(1) with
+\[
+  S\ll N_mF^{-m/2}
+  S\left(F;F/X_1+1,\ldots,F/X_m+1,X_{m+1},\ldots,X_n\right).
+\]
+One can do slightly better when $F\ll\varepsilon_0X_1$. In that case,
+\[
+  S=\left|\sum_{x_2,\ldots,x_n}\sum_{x_1=X}^{X'}e(f(x))\right|
+\]
+and Fourier summation gives
+\[
+\begin{aligned}
+  S\ll{}&\left|\sum_{x_2,\ldots,x_n}\int_X^{X'}e(f(x))\,dx_1\right|\\
+  &+\sum_{m=1}^{\infty}\frac1m
+  \left|\sum_{x_2,\ldots,x_n}\int_X^{X'}e(f(x)-mx_1)\,dx_1\right|\\
+  \ll{}&\frac{X_1}{F}S(F;X_2,\ldots,X_n)+\cdots.
+\end{aligned}
+\]
+If we apply~(4) once, then
+\[
+  S^2\ll N^2/q+(N/q)S(F\varrho;X,q),
+\]
+where $N^2/q\gg N$. Suppose inductively that the assertion holds whenever~(1) and~(4) are applied a total of $k$ times. If they are applied $k+1$ times and the first operation is~(4), the same argument shows that no estimate better than $S\ll\sqrt N$ is possible. If the first operation is~(1), then
+\[
+  S\ll N_mF^{-m/2}
+  S(F;F/X_1,\ldots,F/X_m,X_{m+1},\ldots,X_n),
+\]
+and the remaining sum is treated by $k$ applications of~(1) and~(4). Hence the best possible bound is
+\[
+\begin{aligned}
+  S&\ll N_mF^{-m/2}
+  \left[(F/X_1)\cdots(F/X_m)X_{m+1}\cdots X_n\right]^{1/2}\\
+  &=\sqrt N.
+\end{aligned}
+\]
+
+To prove Theorem~4, suppose that $(\lambda_0,\ldots,\lambda_n)\in E_n$. By~(1),
+\[
+\begin{aligned}
+  S&\ll N_mF^{-m/2}
+  S(F;F/X_1,\ldots,F/X_m,X_{m+1},\ldots,X_n)\\
+  &\ll N_mF^{-m/2}\,
+  F^{\lambda_0}(F/X_1)^{\lambda_1}\cdots(F/X_m)^{\lambda_m}
+  X_{m+1}^{\lambda_{m+1}}\cdots X_n^{\lambda_n}\\
+  &=F^{\lambda_0-m/2+\lambda_1+\cdots+\lambda_m}
+  X_1^{1-\lambda_1}\cdots X_m^{1-\lambda_m}
+  X_{m+1}^{\lambda_{m+1}}\cdots X_n^{\lambda_n}.
+\end{aligned}
+\]
+Thus $(\widetilde\lambda_0,\ldots,\widetilde\lambda_n)\in E_n$.
+
+Theorem~5 follows similarly from~(4):
+\[
+\begin{aligned}
+  S^2
+  &\ll N^2/q+Nq^{-1}S\left(F\sqrt[m]{q/N_m};X,q\right)\\
+  &\ll N^2/q+Nq^{-1}
+  \left(F\sqrt[m]{q/N_m}\right)^{\lambda_0}
+  X_1^{\lambda_1}\cdots X_n^{\lambda_n}
+  q_1^{\lambda_1^*}\cdots q_m^{\lambda_m^*}\\
+  &=N^2/q+F^{\lambda_0}N
+  X_1^{\lambda_1+\lambda_1^*}\cdots X_m^{\lambda_m+\lambda_m^*}
+  X_{m+1}^{\lambda_{m+1}}\cdots X_n^{\lambda_n}\\
+  &\hspace{20mm}\times q^{-1}(q/N_m)^{(\lambda_0+|\lambda^*|)/m}.
+\end{aligned}
+\]
+Choosing $q$ to minimize this expression proves Theorem~5.
+
+\section{Final remarks}
+
+Although Theorems~1--3 apply to a wide class of functions in $\mathscr F$, in some cases they may not yield a ``good'' result. The general strategy for using the m.e.p. is as follows. Given the desired estimate for an exponential sum, one first applies the algorithm based on~(1) and~(4), described in the Introduction, to determine whether the estimate is attainable and, if so, which sequence of operations $A$ and $B$ is required. The final step is to prove the result using the ideas in the proof of Theorem~1. For a specific function this can be considerably simpler than in the general case.
+
+\begin{thebibliography}{9}
+
+\bibitem{AsadaFujiwara}
+Kenji Asada and Daisuke Fujiwara,
+\textit{On some oscillatory integral transformations in $L^2(\mathbb R^n)$},
+Japan J. Math. (N.S.) \textbf{4} (1978), 299--361.
+
+\bibitem{vanDerCorput}
+J.~G. van der Corput,
+\textit{Verschärfung der Abschätzung beim Teilerproblem},
+Math. Ann. \textbf{87} (1922), 39--65.
+
+\bibitem{KolesnikImprovement}
+G.~Kolesnik,
+\textit{An improvement of the method of exponent pairs},
+Colloquia Math. Soc. János Bolyai, to be published.
+
+\bibitem{KolesnikZeta}
+G.~Kolesnik,
+\textit{On the order of $\zeta(\tfrac12+it)$ and $\Delta(R)$},
+Pacific J. Math. \textbf{96} (1982), 107--122.
+
+\bibitem{Phillips}
+Eric Phillips,
+\textit{The zeta-function of Riemann; further developments of van der Corput's method},
+Quart. J. Math. \textbf{4} (1933), 209--225.
+
+\bibitem{Rankin}
+R.~A. Rankin,
+\textit{Van der Corput's method and the theory of exponent pairs},
+Quart. J. Math., Second Series, \textbf{6} (1955), 147--153.
+
+\bibitem{Srinivasan}
+B.~R. Srinivasan,
+\textit{The lattice point problem of many dimensional hyperboloids. III},
+Math. Ann. \textbf{160} (1965), 280--311.
+
+\end{thebibliography}
+
+\bigskip
+\begin{flushleft}
+\textsc{Department of Mathematics and Computer Science}\\
+\textsc{California State University}\\
+Los Angeles, California 90032
+\end{flushleft}
+
+\begin{flushright}
+\textit{Received on 4.8.1983}
+\end{flushright}
+
+\end{document}
