@@ -230,7 +230,9 @@ denominator clearing, an all-degree normalization-tax obstruction, and rational 
 rigidity.  Reports 9--13 add de-integralized common divisors and natural boundaries, a fixed
 integral-matrix and Loewner formulation, finite-place/Fermat-quotient transversality, and a
 microscopic prime-switch analysis, followed by an exterior-power and boundary-displacement
-matrix audit.  Each sharpens a finite interface while leaving the same
+matrix audit.  Reports 14--15 add, independently, a structural-prime boundary-resultant
+package and an information-theoretic audit of the synchronized semigroup, including an exact
+ordinary/power-sum decoder and algebraic-decoder degree growth.  Each sharpens a finite interface while leaving the same
 four-exponentials barrier intact.
 \end{minipage}
 \vfill
@@ -271,7 +273,7 @@ adds directly to the tropical minimum, giving $p^{\tau+U}\mid\det$ uniformly acr
 assignment cascade.  These gains are lower order; exact synthetic
 experiments expose genuine cross-layer carrying but do not exhibit a leading-order cascade at
 the tested sizes.  Third, it reconciles the genuinely new material independently developed
-in all thirteen reports under \lean{Article/new-reports/}.  The reports share this unified
+in all fifteen reports under \lean{Article/new-reports/}.  The reports share this unified
 document as their common base; they are audited independently and reconciled by mathematical
 content rather than treated as a sequential chain.  Reports 1--2 show that the
 Alaoglu--Erd\H{o}s conjecture is equivalent to a
@@ -296,7 +298,12 @@ colossally abundant prime-switch problem and shows that simultaneous switches re
 microscopic prescribed-prime resonance far below modern short-interval scales.
 Report 13 develops the matrix direction independently: projective arithmetic density,
 determinantal-divisor and exterior-power ceilings, and an exact rank-$K$ boundary compression
-of a $K^2$-point spectrum.
+of a $K^2$-point spectrum.  Report 14 develops the finite-place direction independently:
+minimal interpolation denominators, structural-prime residual scaling, Newton polygons, and
+odd-degree dilation resultants in two favorable residue branches.  Report 15 develops an
+independent information-theoretic direction: common digit-length and Sturmian channels,
+fixed-rank $S$-unit sum entropy, exact synchronized-sum decoding, algebraic-decoder degree
+growth, and a finite Fourier formulation of tied-term cancellation.
 Fourth, it
 quantifies the remaining gap: the determinant hierarchy misses the conditional population by
 exactly one factor of $\log X$.
@@ -391,7 +398,9 @@ The current algebraic-locus and nonarchimedean wave further includes
 \lean{RestrictedMatrixCoefficient}, \lean{FormalPrimeDeterminant},
 \lean{SparsePowerCurve}, \lean{RationalOrbitGrid}, \lean{BoundaryDilationDefect},
 \lean{SuperfactorialDeterminant}, \lean{SignedProgressionDeterminant},
-\lean{FejerKernelCertificate}.
+\lean{FejerKernelCertificate}, \lean{GlobalMixedPrefixCascade},\\
+\lean{DilationDifferenceQuotient}, \lean{SynchronizedSumDecoder},
+\lean{RationalSumDecoder}.
 \end{center}
 Public headline theorems throughout were audited with \lean{#print axioms}; only the standard
 Mathlib axioms \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur, and the
@@ -6843,12 +6852,13 @@ The headline declarations are
 \lean{beattyPower_pow_floor_dvd_quotient_of_not_blockPreserving}, and
 \lean{det_beattyPowerMatrix_eq_pow_mul_blockDet_add_pow_floor_mul}.  Thus the minimizing fiber,
 the tropical gap, and the full-product quotient identity no longer remain paper-only
-hypotheses.  The generic scaled consecutive-power wiring is now formalized below; only the
-construction of the explicit fiber certificates identifying the globally first mixed-semigroup
-columns of the report's named determinant $D_T$ remains a finite paper-level specialization.
-What remains globally is still the valuation and
-cancellation of the residual low-excess sums.  No leading-order bound follows from the exact
-expansion.
+hypotheses.  The generic scaled consecutive-power wiring is now formalized below, and
+\lean{GlobalMixedPrefixCascade} closes the formerly paper-level finite specialization: its
+sorted box prefix is the genuine global first-$N$ mixed-semigroup prefix, its coordinate
+fibers are lower-closed, and it constructs the lexicographic and colexicographic fiber
+equivalences needed for the dyadic and triadic determinant identities.  What remains globally
+is the valuation and cancellation of the residual low-excess sums.  No leading-order upper
+bound follows from the exact expansion.
 \end{statusbox}
 
 The complete assignment cascade can now be grouped more economically than the raw Leibniz
@@ -7004,9 +7014,11 @@ change and its additive combination with the tropical minimum are kernel-verifie
 generic scaled block model by \lean{RowBlockUnitDivisibility}; the concrete triangular index
 bridge, including column permutation and transfer back to the raw mixed integer matrix, is
 kernel-verified under explicit finite fiber certificates in
-\lean{MixedDeterminantUnitBridge}.  Constructing those certificates for the global first-$N$
-mixed-semigroup enumeration defining $D_T$ remains paper-level.  The resulting all-layer
-gain neither supplies nor upper-bounds the remaining leading-order cancellation excess.
+\lean{MixedDeterminantUnitBridge}.  The module \lean{GlobalMixedPrefixCascade} now constructs
+those certificates for the genuine global first-$N$ mixed-semigroup enumeration and proves
+the exact all-layer and cutoff-truncated dyadic and triadic formulas directly.  The resulting
+all-layer gain neither supplies nor upper-bounds the remaining leading-order cancellation
+excess.
 \end{statusbox}
 
 Consequently the missing fifth, or more, can arise only at primes where the assignment problem
@@ -14972,6 +14984,316 @@ termwise-divisor/Frobenius estimates; the boundary compression and Kraus positiv
 interfaces, not claimed contradictions.}
 \end{statusbox}
 
+\section{Fourteenth report: structural-prime residuals and dilation resultants}
+\label{sec:report14}
+
+Report 14 is another independent continuation from the common unified base.  Its first
+finite-place observations overlap report 11: the real logarithm matrix has rank one, whereas
+the Iwasawa logarithm matrices at the structural primes $2$ and $3$ have rank two; the first
+good-prime shadow is the Fermat-quotient determinant already isolated in
+\lean{FermatQuotientDeterminant}.  The genuinely new part begins when the square-grid
+interpolant is placed in its integral coefficient lattice and its two boundary residuals are
+normalized at a structural prime.
+
+\subsection{Local rank is thick, but it is not a product-formula input}
+\label{r14:local-rank}
+
+Under a hypothetical nonintegral solution write
+\[
+ M=2^\beta\in\N,\qquad A=3^\beta\in\N,\qquad \beta\notin\Q.
+\]
+For Iwasawa logarithms the positive-rational kernel is
+\[
+ \log_p r=0\quad\Longleftrightarrow\quad r\in p^\Z
+ \qquad(r\in\Q_{>0}).
+\]
+Consequently
+\[
+ \det\begin{pmatrix}\log_2 2&\log_2M\\ \log_2 3&\log_2A\end{pmatrix}
+   =-\log_2M\log_23\ne0,
+\quad
+ \det\begin{pmatrix}\log_3 2&\log_3M\\ \log_3 3&\log_3A\end{pmatrix}
+   =\log_32\log_3A\ne0.
+\]
+After principal-unit normalization, the two-parameter orbit therefore has open closure in a
+two-dimensional $p$-adic torus at both structural primes.  For a full-rank logarithm matrix
+$B_p$ there is a constant $c_p$ such that, for $z\ne0$,
+\[
+ \bigl|\min_i v_p((B_pz)_i)-\min_i v_p(z_i)\bigr|\le c_p.
+\]
+Thus for $K\ge2$, one fixed pair of distinct parameters in $\{0,\ldots,K-1\}^2$ cannot have
+depths $r_p$ at a finite set $S$ of full-rank primes unless
+\begin{equation}
+ \sum_{p\in S}r_p\log p
+ \le \log(K-1)+\sum_{p\in S}c_p\log p.
+ \label{r14:eq-collision-budget}
+\end{equation}
+This is a genuine local packing ceiling, not a contradiction.  The determinants of local
+logarithms are different transcendental periods at different places; they are not absolute
+values of one algebraic number and cannot be inserted directly into a product formula.
+
+At a good prime $\ell\nmid6MA$, after clearing denominators an integer relation
+$a\log_\ell2+b\log_\ell M=0$ first implies
+$2^aM^b\in\ell^\Z$.  Its $\ell$-valuation is zero, hence it equals one; multiplicative
+independence then gives $a=b=0$.  This kernel step is essential before applying
+Baker--Brumer to a putative local shadow exponent.  It is explicitly included here because
+omitting it would turn multiplicative independence into an invalid assertion about
+$p$-adic logarithms.
+
+\subsection{The interpolation denominator is a cokernel order}
+\label{r14:denominator-lattice}
+
+Let $K\ge2$, $R=K^2$, $n=K-1$, and enumerate the nodes and values
+\[
+ x_{ij}=2^i3^j,\qquad y_{ij}=M^iA^j\qquad(0\le i,j<K).
+\]
+Let $E_K=(x_{ij}^{\,r})_{(i,j),\,0\le r<R}$ and let $Q_K\in\Q[X]$ be the unique
+interpolant with $Q_K(x_{ij})=y_{ij}$.  Define
+\[
+ \delta_K=\min\{d>0:dQ_K\in\Z[X]\},\qquad P_K=\delta_KQ_K,
+\]
+and put
+\[
+ d_{ij}^{(K)}=\prod_{(a,b)\ne(i,j)}(x_{ij}-x_{ab}),
+ \qquad D_K^*=\operatorname{lcm}_{i,j}|d_{ij}^{(K)}|.
+\]
+The Lagrange basis and Smith normal form give three exact descriptions:
+\begin{equation}
+ D_K^*=\min\{D>0:DE_K^{-1}\in M_R(\Z)\}=s_R,
+ \qquad
+ \delta_K=\operatorname{ord}_{\Z^R/E_K\Z^R}[y],
+ \label{r14:eq-denominator-cokernel}
+\end{equation}
+where $s_R$ is the largest invariant factor of $E_K$.  If
+$UE_KV=\operatorname{diag}(s_1,\ldots,s_R)$, then more explicitly
+\[
+ \delta_K=\operatorname{lcm}_{1\le r\le R}
+ \frac{s_r}{\gcd(s_r,(Uy)_r)}.
+\]
+Thus all node-only denominator growth is separated from the order of the specialized value
+class.  Any unexpectedly small denominator must be an arithmetic statement about that class,
+not merely a small Vandermonde determinant.
+
+The exact endpoint valuation calculation finds the maximal dyadic barycentric denominator
+only in the top row and a maximizer at $(n,0)$; triadically it lies only in the rightmost
+column with a maximizer at $(0,n)$.  This yields two favorable, nonexhaustive branches:
+\begin{align}
+ M\text{ odd},\ A\text{ even}:&\quad
+   v_2([X^{R-1}]P_K)=0,\\
+ 3\mid M,\ 3\nmid A:&\quad
+   v_3([X^{R-1}]P_K)=0.
+ \label{r14:eq-favorable-branches}
+\end{align}
+The restrictions in \eqref{r14:eq-favorable-branches} are part of the theorem.  They do not
+cover every hypothetical counterexample.
+
+\subsection{Exact scaling, roots, and an honest algebraic resultant}
+\label{r14:scaled-resultants}
+
+Let $F_K,G_K\in\Z[X]$ be the two degree-$n$ residuals obtained from the dyadic and triadic
+boundary-dilation factorizations after multiplication by $\delta_K$.  In the first branch of
+\eqref{r14:eq-favorable-branches}, report 14 proves
+\begin{equation}
+ \mathcal F_K(Z)=2^{-n^2}F_K(2^nZ)\in\Z_2[Z],
+ \qquad
+ \overline{\mathcal F_K}(Z)\doteq1-(Z-1)^n,
+ \label{r14:eq-dyadic-scaling}
+\end{equation}
+with unit leading coefficient and
+$v_2(\mathcal F_K(0))=v_2(M-1)$.  In the second branch,
+\begin{equation}
+ \mathcal G_K(Z)=3^{-n^2}G_K(3^nZ)\in\Z_3[Z],
+ \qquad
+ \overline{\mathcal G_K}(Z)\doteq R_n(0)-\overline A R_n(Z),
+ \quad R_n(Z)=\prod_{i=1}^n(Z-2^i).
+ \label{r14:eq-triadic-scaling}
+\end{equation}
+Consequently
+\[
+ v_2([X^r]F_K)\ge n(n-r),\qquad
+ v_3([X^r]G_K)\ge n(n-r),
+\]
+and all roots have structural-prime depth at least $n$.  The total excess depth is exactly
+$v_2(M-1)$ or $v_3(A-1)$, respectively.  When $n$ is odd the reductions are sufficiently
+separable to determine the exceptional root classes.
+
+The categorical payoff is a single algebraic integer rather than unrelated local periods:
+\begin{align}
+ \mathcal R_{2,K}&=\operatorname{Res}(F_K(X),F_K(3X)),\\
+ \mathcal R_{3,K}&=\operatorname{Res}(G_K(X),G_K(2X)).
+\end{align}
+If the relevant resultant is nonzero, then
+\begin{align}
+ v_2(\mathcal R_{2,K})&\ge n^3+n+v_2(M-1),\\
+ v_3(\mathcal R_{3,K})&\ge n^3+v_3(A-1).
+ \label{r14:eq-resultant-depths}
+\end{align}
+For odd $n$ it is nonzero and equality holds.  The finite algebraic hinge is the identity
+\begin{equation}
+ P(3X)-P(X)=2X\,\mathcal D_3(P),\qquad
+ \overline{\mathcal D_3(P)}=\overline P'\quad\text{in }\mathbb F_2[X],
+ \label{r14:eq-dilation-quotient}
+\end{equation}
+where $\mathcal D_3(P)\in\Z[X]$ is an explicit geometric-sum quotient.  Equation
+\eqref{r14:eq-dilation-quotient} is \statuslean{} in
+\lean{DilationDifferenceQuotient}.
+
+The resultants are the right kind of adelic objects, but their known archimedean heights are
+far larger than the local divisor in \eqref{r14:eq-resultant-depths}.  No product-formula
+contradiction follows.  The next missing theorem would have to control primitive resultant
+height or force compatibility between the two favorable branches; neither is supplied by
+local rank or by the Smith denominator alone.
+
+\begin{statusbox}{Report 14 was audited independently from the common base.  Structural-prime
+rank and Fermat-quotient statements overlapping report 11 are cross-referenced rather than
+double-counted.  The integral dilation quotient and its mod-$2$ derivative reduction are
+\statuslean{} in \lean{DilationDifferenceQuotient}.  The denominator-lattice, endpoint,
+scaled-root, and resultant theorems are self-contained paper arguments, explicitly restricted
+to $M$ odd and $A$ even or to $3\mid M$ and $3\nmid A$ where stated.  The report's larger
+symbolic audit is retained only as an unbundled diagnostic: the displayed source does not
+reconstruct every claimed interpolation, Newton polygon, and resultant.  No conclusion here
+proves the conjecture.}
+\end{statusbox}
+
+\section{Fifteenth report: synchronized information and decoder complexity}
+\label{sec:report15}
+
+Report 15 is independent of report 14 and of every earlier continuation.  It treats a
+hypothetical semigroup as a finite information source.  Several of its dynamical statements
+overlap the Sturmian probability and natural-boundary packages of reports 7 and 9; those are
+cross-referenced.  Its genuinely new contribution is a sharp fixed-rank sum-channel
+calculation, an exact two-view decoder, quantitative degree obstructions for algebraic
+decoders, and a finite Fourier formulation of tied determinant cancellation.
+
+\subsection{One magnitude channel and a rank-two valuation profile}
+\label{r15:magnitude-channel}
+
+For $0\le n,k<L$ set
+\[
+ X_{n,k}=2^nM^k=2^{n+\beta k},\qquad
+ Y_{n,k}=3^nA^k=3^{n+\beta k}.
+\]
+The binary digit length of $X_{n,k}$ and ternary digit length of $Y_{n,k}$ are the same
+integer, $n+\lfloor\beta k\rfloor+1$.  Thus the two apparent size observations are one channel,
+not two independent constraints.  Its entropy is $\log L+O_\beta(1)$, while the source has
+entropy $2\log L$.  Prefix-code redundancies are bounded quasiperiodic functions of the same
+rotation phase, so their rate vanishes.
+
+The synchronized carry word has zero entropy rate and logarithmic block entropy; its exact
+prefix mean, variance, and two-shift covariance are already \statuslean{} in
+\lean{SturmianProbability}, while the carry/floor generating-series identities are
+\statuslean{} in \lean{SturmianGeneratingSeries}.  P\'olya--Carlson supplies a natural
+boundary only after the classical radius-one and non-eventual-periodicity hypotheses.  That
+one-variable obstruction does not create a two-prime functional equation.
+
+Fixed integer valuation observations have entropy growth equal to the rank of the displayed
+linear forms times $\log L+O(1)$.  For the two output boxes the normalized profile is a
+rank-two representable polymatroid.  Consequently every universal homogeneous linear rank or
+Shannon inequality is automatically satisfied at leading order.  Any contradiction must see
+heights, growing moduli, or a subleading arithmetic term.
+
+\subsection{Fixed-rank sums are asymptotically unordered-pair codes}
+\label{r15:sunit-entropy}
+
+Let $E$ be an $N$-element subset of a fixed finitely generated multiplicative group of
+positive algebraic numbers, of rank $r$.
+The Evertse--Schlickewei--Schmidt unit-equation theorem
+\cite{EvertseSchlickeweiSchmidt2002} implies that the nondegenerate
+solutions of $x_1+x_2=x_3+x_4$ contribute only $O_r(N)$ beyond the two trivial permutations.
+Hence
+\begin{align}
+ \mathcal E_+(E)&=2N^2-N+O_r(N),\\
+ |E+E|&=\frac{N^2}{2}+O_r(N),\\
+ H_2(Z+Z')&=2\log N-\log2+O_r(N^{-1}),\\
+ H(Z+Z')&=2\log N-\log2+O_r((\log N)/N),
+ \label{r15:eq-sunit-entropy}
+\end{align}
+for independent uniform $Z,Z'\in E$.  Thus the sum determines the unordered input pair with
+error $O_r(N^{-1})$.  This is a strong exact-shape theorem, but it is compatible with the
+hypothetical rank-two boxes: their additive channel is already almost maximally informative.
+
+\subsection{Exact synchronized decoding and degree growth}
+\label{r15:decoders}
+
+For any real $p>1$, strict convexity gives a finite injectivity statement with no number
+theory in its proof:
+\begin{equation}
+ a+b=c+d,\quad a^p+b^p=c^p+d^p,\quad a,b,c,d>0
+ \quad\Longrightarrow\quad
+ \{a,b\}=\{c,d\}.
+ \label{r15:eq-exact-decoder}
+\end{equation}
+Indeed, with $s=a+b$ the function $x\mapsto x^p+(s-x)^p$ is strictly decreasing on
+$[0,s/2]$.  This complete unordered-pair decoder is \statuslean{} in
+\lean{SynchronizedSumDecoder}; the formal theorem is
+\lean{eq_or_swap_of_sum_eq_rpow_sum_eq}.
+
+Exact decodability does not mean bounded algebraic complexity.  Suppose $L\ge2$ and
+$R=P/Q\in\R(z)$ has $\deg P,\deg Q\le d$, no pole at $2^n+1$, and
+\begin{equation}
+ R(2^n+1)=3^n+1\qquad(0\le n<L).
+ \label{r15:eq-rational-decoder}
+\end{equation}
+After cross multiplication and translation by one, the left side is a nonzero exponential
+polynomial whose bases lie in
+\[
+ \{2^j:0\le j\le d\}\cup\{3\cdot2^j:0\le j\le d\}.
+\]
+These $2d+2$ bases are distinct.  The Chebyshev zero bound therefore gives
+\begin{equation}
+ L\le2d+1,\qquad d\ge\left\lceil\frac{L-1}{2}\right\rceil.
+ \label{r15:eq-rational-decoder-degree}
+\end{equation}
+The cross-multiplied inequality $L\le2d+1$ is \statuslean{} as
+\lean{rational_sum_decoder_card_le} in \lean{RationalSumDecoder}; the formal hypotheses are
+$\deg P,\deg Q\le d$, $Q\ne0$, and the cross-multiplied identities
+$P(2^n+1)=(3^n+1)Q(2^n+1)$ for all $0\le n<L$.  The rational-function formulation follows
+from its no-pole premise.
+More generally, a nonzero $F\in\R[z,w]$ of total degree at most $d$ satisfying
+$F(2^n+1,3^n+1)=0$ for $0\le n<L$ gives
+\begin{equation}
+ L\le\binom{d+2}{2}-1=\frac{d(d+3)}2.
+ \label{r15:eq-algebraic-decoder-degree}
+\end{equation}
+The scope is the displayed exponential slice.  A completion criterion may use these bounds
+only when its synchronized family contains $(2^n,1)$ for arbitrarily long initial ranges;
+they do not prove degree growth on every unbounded collection of semigroup pairs.
+
+\subsection{Fourier separation identifies, but does not solve, tied cancellation}
+\label{r15:fourier-separation}
+
+Let $B\in\{\pm1\}$ be a balanced parity bit and $Z$ a random element of a finite abelian
+group $G$.  The signed measure
+\[
+ \nu(g)=\mathbb E[B\mathbf1_{Z=g}]
+\]
+has Fourier coefficients $\widehat\nu(\chi)=\mathbb E[B\overline{\chi(Z)}]$.  Finite Fourier
+inversion and Parseval give
+\begin{align}
+ B\text{ independent of }Z
+ &\Longleftrightarrow \widehat\nu(\chi)=0\quad(\chi\in\widehat G),\\
+ \operatorname{TV}(\mathcal L(B,Z),\mathcal L(B)\otimes\mathcal L(Z))
+ &\le\frac12\left(\sum_{\chi\in\widehat G}|\widehat\nu(\chi)|^2\right)^{1/2}.
+ \label{r15:eq-fourier-separation}
+\end{align}
+If $B$ is determined by $Z$, at least one character correlation has magnitude
+$|G|^{-1/2}$.  Applied to tied determinant terms, this says exactly what would force
+noncancellation: a legal twist family spanning all residue characters while preserving the
+archimedean estimate and the tied fiber.  No current determinant supplies that family, so
+\eqref{r15:eq-fourier-separation} is a precise target rather than a completed argument.
+
+\begin{statusbox}{Report 15 was audited independently from the common base.  Its exact
+ordinary/power-sum decoder is \statuslean{} in \lean{SynchronizedSumDecoder}.  The rational
+decoder degree bound is \statuslean{} in \lean{RationalSumDecoder}.  The algebraic decoder
+degree bound and finite Fourier lemma are unconditional paper proofs;
+the fixed-rank entropy estimates use the classical unit-equation theorem.  Sturmian and
+P\'olya--Carlson material overlapping reports 7 and 9 is not double-counted.  The report's
+uniform-decoder criterion is stated only for families containing the exponential slice
+$(2^n,1)$ through arbitrarily large initial ranges.  Character-twisted determinant
+separation remains an open construction.  None of the entropy identities by itself proves
+the conjecture.}
+\end{statusbox}
+
 \section{Varying the antecedent, the domain, and the codomain}
 \label{sec:variants}
 
@@ -15519,6 +15841,18 @@ Two-variable finite-difference divisor for every compound of the square-grid mat
 \statusnew & Section~\ref{r13:compounds}; top gain remains lower order \\
 Boundary transfer determinant and Kraus--Loewner positive integral/denominator tax &
 \statusnew & Section~\ref{r13:boundary-displacement}, Section~\ref{r13:kraus} \\
+Integral dilation-difference quotient and its mod-$2$ derivative reduction & \statuslean &
+\lean{DilationDifferenceQuotient}; Section~\ref{r14:scaled-resultants} \\
+Structural-prime denominator lattice, favorable-branch residual scaling, root depths, and
+odd-degree dilation-resultant valuations & \statusnew & Section~\ref{sec:report14}; only the
+two displayed residue branches \\
+Exact unordered-pair decoding from the ordinary and synchronized $p$-power sums & \statuslean &
+\lean{SynchronizedSumDecoder}; Section~\ref{r15:decoders} \\
+Rational synchronized-sum decoder degree bound $L\le2d+1$ & \statuslean &
+\lean{RationalSumDecoder}; Section~\ref{r15:decoders} \\
+Fixed-rank sum entropy, algebraic decoder degree growth, and finite Fourier parity--residue
+separation & \statusnew & Section~\ref{sec:report15}; unit-equation input classical where
+stated \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -15563,6 +15897,10 @@ $p^{\tau+U}\mid\det$ (no residual-cancellation bound) & \statuslean &
 \lean{RowBlockUnitDivisibility} \\
 Column-permuted raw mixed-matrix bridge and additive dyadic/triadic divisors under explicit
 finite fiber certificates & \statuslean & \lean{MixedDeterminantUnitBridge} \\
+Genuine global first-$N$ mixed prefix, automatic consecutive fibers, exact dyadic/triadic
+cutoff expansions, and structural-output divisors (no residual-cancellation upper bound) &
+\statuslean & \lean{GlobalMixedPrefixCascade}; strictly decreasing depths, with $A$ odd for
+the dyadic structural divisor and $3\nmid M$ for the triadic one \\
 Exact synthetic cascade computations, including counterexamples to first-layer equality and
 minimum-effective-layer equality & \statusexactcomp & Section~\ref{sec:cascade-experiments} \\
 Compact synchronized-orbit reformulation & \statuslean & \lean{CompactOrbit} \\
@@ -15729,6 +16067,10 @@ factorization, rational anisotropy, and exact equivalence with the conjecture \\
 their exact entry-integrality/conjecture equivalence \\
 \lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
 rational-approximation candidate alternant \\
+\lean{.../SynchronizedSumDecoder} & strict monotonicity on fixed-sum pairs and exact
+unordered-pair recovery from ordinary and synchronized real-power sums \\
+\lean{.../RationalSumDecoder} & exact $L\le2d+1$ bound for a degree-$d$ rational decoder on
+the synchronized slice $(2^n+1,3^n+1)$ \\
 \lean{.../FormalPrimeDeterminant} & multivariate prime-symbol determinant, specialization at
 prime logarithms, exact formal-zero classification, and Structural Rank equivalence \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
@@ -15740,6 +16082,8 @@ identities, terminal-boundary projector ranks, and rank-$K$ displacement consequ
 explicit $K>0$, nonsingularity, and nonzero-multiplier hypotheses \\
 \lean{.../BoundaryDilationDefect} & rectangular node products, dilation-defect divisibility,
 unique square-grid residuals, and the degree-$2K-2$ boundary commutator \\
+\lean{.../DilationDifferenceQuotient} & integral factorization of $P(cX)-P(X)$; dyadic
+$2X$ quotient and its formal-derivative reduction modulo two \\
 \lean{.../OrderedChamberPositivity} & positivity of generalized real-power Vandermonde
 determinants and of the semigroup determinant on ordered chambers \\
 \lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity, and
@@ -15792,6 +16136,10 @@ change; additive divisor $p^{\tau+U}$ for the full rank-one power determinant \\
 \lean{.../MixedDeterminantUnitBridge} & finite sorted-box mixed-exponent prefix; exact
 column-permuted identification with the rank-one scaled model; dyadic and triadic additive
 divisors under explicit block-fiber certificates \\
+\lean{.../GlobalMixedPrefixCascade} & global initial-segment certificate, automatic
+lexicographic/colexicographic fiber equivalences, exact truncated cascade identities, and
+structural-output determinant divisors under the stated decreasing-depth and residue
+hypotheses \\
 \midrule
 \multicolumn{2}{@{}l}{\emph{Second iterates, towers, and the candidate lattice}}\\
 \lean{.../CandidateLattice} & coordinatewise gcd and lcm for $2^s w^t$; unconditional closure
@@ -15870,7 +16218,9 @@ The current wave adds the following modules:
 \lean{SturmianGeneratingSeries}, \lean{PolynomialApproximationTax},\\
 \lean{RationalContactRigidity}, \lean{IntegralPowerMatrix},
 \lean{CandidateAlternant}, \lean{FermatQuotientDeterminant},
-\lean{ConsecutiveLogMeanBounds}, \lean{BoundaryDisplacement}.
+\lean{ConsecutiveLogMeanBounds}, \lean{BoundaryDisplacement},\\
+\lean{GlobalMixedPrefixCascade}, \lean{DilationDifferenceQuotient},
+\lean{SynchronizedSumDecoder}, \lean{RationalSumDecoder}.
 \end{center}
 Their headline APIs are likewise on the aggregate surface
 and covered by the axiom-audit module.
@@ -17941,6 +18291,11 @@ arXiv:2408.08178.
 H.~Massold,
 \newblock \emph{Transcendence degrees of fields generated by exponentials of products},
 \newblock arXiv:2506.01123v1, June 2025.
+
+\bibitem{EvertseSchlickeweiSchmidt2002}
+J.-H.~Evertse, H.~P.~Schlickewei, and W.~M.~Schmidt,
+\newblock \emph{Linear equations in variables which lie in a multiplicative group},
+\newblock Annals of Mathematics \textbf{155} (2002), 807--836.
 
 \end{thebibliography}
 \end{document}
