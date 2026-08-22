@@ -80,12 +80,42 @@ theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
 /-- Rvachev's function is even. -/
 theorem rvachev_even (F : BoundedFabius) (hF : IsFabius F) :
     Function.Even (rvachevUp F) := by
-  sorry
+  intro x
+  by_cases hx : x = 0
+  · subst x
+    simp
+  by_cases hxpos : 0 < x
+  · have hnx : -x ≤ 0 := by linarith
+    have hxnot : ¬ x ≤ 0 := not_le.mpr hxpos
+    simp only [rvachevUp, if_pos hnx, if_neg hxnot]
+    congr 1
+    ring
+  · have hxneg : x < 0 := lt_of_le_of_ne (le_of_not_gt hxpos) hx
+    have hnxnot : ¬ -x ≤ 0 := by linarith
+    have hxle : x ≤ 0 := hxneg.le
+    simp only [rvachevUp, if_neg hnxnot, if_pos hxle]
+    congr 1
+    ring
 
 /-- Rvachev's function is supported in `[-1,1]`. -/
 theorem support_rvachev_subset (F : BoundedFabius) (hF : IsFabius F) :
     Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
-  sorry
+  intro x hx
+  constructor
+  · by_contra h
+    have hxlt : x < -1 := lt_of_not_ge h
+    have hxle : x ≤ 0 := by linarith
+    have hxarg : x + 1 ≤ 0 := by linarith
+    apply hx
+    rw [rvachevUp, if_pos hxle]
+    exact hF.zero_of_nonpos _ hxarg
+  · by_contra h
+    have hxgt : 1 < x := lt_of_not_ge h
+    have hxnot : ¬ x ≤ 0 := by linarith
+    have hxarg : 1 - x ≤ 0 := by linarith
+    apply hx
+    rw [rvachevUp, if_neg hxnot]
+    exact hF.zero_of_nonpos _ hxarg
 
 /-- The topological support is exactly the compact interval `[-1,1]`. -/
 theorem tsupport_rvachev (F : BoundedFabius) (hF : IsFabius F) :
@@ -94,7 +124,8 @@ theorem tsupport_rvachev (F : BoundedFabius) (hF : IsFabius F) :
 
 /-- Normalization of Rvachev's function. -/
 theorem rvachev_zero (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 := by
-  sorry
+  rw [rvachevUp, if_pos le_rfl]
+  simpa [fabiusReal] using hF.one_of_one_le 1 le_rfl
 
 /-- The differential equation defining Rvachev's function. -/
 theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
@@ -110,13 +141,35 @@ theorem extendedFabius_contDiff (F : BoundedFabius) (hF : IsFabius F) :
 /-- The signed extension vanishes on nonpositive arguments. -/
 theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : x ≤ 0) : extendedFabius F x = 0 := by
-  sorry
+  unfold extendedFabius
+  rw [tsum_eq_single 0]
+  · norm_num [binaryWeight, rvachevUp]
+    rw [if_pos (hx.trans (by norm_num))]
+    exact hF.zero_of_nonpos _ hx
+  · intro n hn
+    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
+    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
+    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by linarith
+    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by linarith
+    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
+    simp
 
 /-- The bounded and signed versions agree on the unit interval. -/
 theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     extendedFabius F x = fabiusReal F x := by
-  sorry
+  unfold extendedFabius
+  rw [tsum_eq_single 0]
+  · norm_num [binaryWeight, rvachevUp, hx.2]
+  · intro n hn
+    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
+    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
+    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by
+      linarith [hx.2]
+    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by
+      linarith [hx.2]
+    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
+    simp
 
 /-- The global Fabius differential equation. -/
 theorem extendedFabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
@@ -181,7 +234,31 @@ theorem moment_original_recurrence (n : ℕ) :
     ((2 * n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (2 * n) * moment n =
       ∑ k ∈ range (n + 1),
         (Nat.choose (2 * n + 1) (2 * k) : ℚ) * moment k := by
-  sorry
+  cases n with
+  | zero => norm_num
+  | succ n =>
+      rw [sum_range_succ]
+      have hsum :
+          (∑ k : Fin (n + 1),
+              (Nat.choose (2 * (n + 1) + 1) (2 * k.val) : ℚ) * moment k.val) =
+            ∑ k ∈ range (n + 1),
+              (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℚ) * moment k := by
+        simpa using (Fin.sum_univ_eq_sum_range
+          (fun k : ℕ =>
+            (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℚ) * moment k) (n + 1))
+      have hpow : (1 : ℚ) < 2 ^ (2 * (n + 1)) := by
+        exact one_lt_pow₀ (by norm_num) (by omega)
+      have hden : ((((2 * (n + 1) + 1 : ℕ) : ℚ) *
+          ((2 : ℚ) ^ (2 * (n + 1)) - 1))) ≠ 0 :=
+        mul_ne_zero (by positivity) (ne_of_gt (sub_pos.mpr hpow))
+      have hrec := (eq_div_iff hden).mp (moment_succ n)
+      rw [hsum] at hrec
+      have hchoose : Nat.choose (2 * (n + 1) + 1) (2 * (n + 1)) =
+          2 * (n + 1) + 1 := by
+        convert Nat.choose_succ_self_right (2 * (n + 1)) using 1
+      rw [hchoose]
+      push_cast at hrec ⊢
+      linear_combination hrec
 
 /-- Equation (21), whose integral form starts at `n = 1`. -/
 theorem halfMoment_eq_integral (F : BoundedFabius) (hF : IsFabius F)
