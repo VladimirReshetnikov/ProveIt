@@ -1,0 +1,1252 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\definecolor{linkblue}{RGB}{25,82,140}
+\definecolor{proofgreen}{RGB}{17,105,72}
+\definecolor{warningred}{RGB}{145,45,45}
+\definecolor{softgray}{RGB}{245,246,248}
+\definecolor{rulegray}{RGB}{105,110,118}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=proofgreen,
+  urlcolor=linkblue,
+  pdftitle={Additive Moment Rigidity and the Alaoglu--Erdos Problem},
+  pdfauthor={Independent research continuation},
+  pdfsubject={Hausdorff moments, exact denominator defects, rational quadrature, and Muntz incompleteness}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s: additive moment continuation}
+\rhead{August 21, 2026}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{warning}[theorem]{Warning}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Ssmooth}{\mathcal S_{2,3}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
+\newcommand{\FE}{Four Exponentials Conjecture}
+
+\newenvironment{statusbox}
+{\begin{center}\begin{minipage}{0.92\textwidth}\small\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{1.0cm}
+{\Huge\bfseries Additive Moment Rigidity\par}
+\vspace{0.18cm}
+{\Huge\bfseries and the Alaoglu--Erd\H{o}s Problem\par}
+\vspace{0.65cm}
+{\Large A Hausdorff--M\"untz continuation beyond the supplied unified report\par}
+\vspace{1.0cm}
+{\large Independent research report\par}
+\vspace{0.15cm}
+{\large August 21, 2026\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Status statement.}
+The implication
+\[
+  2^x,3^x\in\Z \quad\Longrightarrow\quad x\in\Z
+\]
+is not proved in this report.  As of the date above it remains open, and a positive answer
+follows from the Four Exponentials Conjecture.  This document nevertheless gives a detailed,
+nonduplicative investigation of a new route based on the additive relation $3=2+1$.
+All theorems labeled as such below are proved.  The main outcome is both constructive and
+negative: a hypothetical counterexample produces an explicit Hausdorff moment sequence with
+several rational moments and exact prime-power denominators, but finite rational quadrature and
+a M\"untz incompleteness theorem show rigorously why linear moment positivity cannot finish the
+problem.  The remaining step is isolated as a nonlinear arithmetic-rigidity target.
+\end{minipage}
+\vfill
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+Let $x\in\R$ satisfy $2^x,3^x\in\Z$, and suppose $x$ is not an integer.  Writing
+$x=n+\alpha$ with $0<\alpha<1$ gives rational numbers
+$u=2^\alpha\in\Z[1/2]$ and $v=3^\alpha\in\Z[1/3]$.  The supplied unified report already
+pushes transcendence, determinant, $p$-adic, matrix, probability, symbolic-dynamical, and
+polynomial-approximation methods to their current barriers.  The present report instead
+exploits $3=2+1$ by studying the increments
+\[
+ d_j=(j+2)^\alpha-(j+1)^\alpha.
+\]
+They are the moments of the explicit positive measure
+\[
+ \dd\mu_\alpha(q)=\frac{\alpha}{\Gamma(1-\alpha)}
+ (1-q)(-\log q)^{-\alpha-1}\dd q,
+ \qquad 0<q<1.
+\]
+Consequently $(d_j)$ is strictly completely monotone, all its Hankel matrices are positive
+definite, and it is strictly log-convex.  The consecutive $3$-smooth pairs are exactly
+$(1,2),(2,3),(3,4),(8,9)$, so a counterexample makes precisely
+$d_0,d_1,d_2,d_7$ immediately rational.  We compute exact reduced denominators for the first
+Hankel defect and three higher log-convexity defects; the numerators are positive odd integers and are also prime to $3$ whenever a triadic denominator is present.
+
+The decisive audit is then twofold.  First, every finite set of these rational moment
+constraints has a positive atomic realization with rational nodes and rational weights; an
+explicit two-atom formula already reproduces $d_0,d_1,d_2$.  Second, the exponents
+$2^a3^b-1$ have a convergent reciprocal sum.  The full M\"untz theorem therefore supplies
+bounded, compactly supported perturbations of $\mu_\alpha$ that preserve \emph{all} linear
+$3$-smooth observations
+\[
+ \int_0^1\frac{1-q^{N-1}}{1-q}\dd\mu(q),\qquad N=2^a3^b,
+\]
+while leaving the endpoint singularities and moment asymptotics unchanged.  Thus no proof can
+come from linear positivity, finite Hankel certificates, measure reconstruction, or endpoint
+tail data alone.  A successful argument must use nonlinear coupling between the explicit
+one-parameter density, multiplicativity, and the separated dyadic/triadic denominator
+arithmetic.  That exact target is formulated at the end.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, current status, and novelty}
+
+\subsection{The problem}
+
+The \AEname{} integer-exponent conjecture is the following elementary-looking statement.
+
+\begin{conjecture}[\AEname{}]
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+The question appears in the circle of problems originating in Alaoglu and Erd\H{o}s's work on
+highly composite and colossally abundant numbers \cite{AlaogluErdos1944}.  Waldschmidt's
+modern survey states the question explicitly and records that a positive answer follows from
+the four exponentials problem; the latter remains open \cite{Waldschmidt2023}.  Recent work on
+matrices of logarithms likewise formulates, rather than resolves, a matrix-coefficient
+conjecture designed to control vanishing logarithmic determinants \cite{DasguptaKakde2024}.
+
+The statement is easy for rational or algebraic exponents.  Its difficulty is that any
+counterexample must be transcendental and creates a singular $2\times2$ matrix of logarithms
+at exactly the size not reached by the Six Exponentials Theorem.  This is not a reason to stop;
+it is a constraint on what a valid proof must add.
+
+\subsection{Relation to the supplied unified report}
+
+The supplied source
+\path{Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex}
+is a very large audit of the existing project.  It already develops:
+
+\begin{itemize}
+\item the reduction to Four Exponentials and the Gelfond--Schneider consequences;
+\item exact conditional free-monoid structure if one counterexample exists;
+\item ordinary and generalized Vandermonde determinants, interpolation, Loewner matrices,
+      HCIZ asymptotics, and finite differences;
+\item $p$-adic valuation cascades, tropical assignment layers, and formal Lean modules;
+\item rational-point counting, Sturmian and automatic-sequence models, probability,
+      information-theoretic, Mahler, spectral, and polynomial-approximation diagnostics.
+\end{itemize}
+
+This report does not repeat those developments.  It begins only with the minimal reductions
+needed for a standalone argument, and then studies a direction absent from the supplied text:
+\emph{the Hausdorff moment structure forced by the additive adjacency of the $3$-smooth
+numbers $1,2,3,4,8,9$}.  The strongest conclusions are new exact denominator theorems and two
+no-go theorems---finite rational quadrature and infinite M\"untz invisibility.
+
+\begin{statusbox}
+\textbf{Trust boundary.}  The report proves every displayed theorem by ordinary mathematical
+arguments.  It does not claim a Lean formalization.  Classical inputs used as black boxes are
+Gelfond--Schneider, Catalan--Mih\u{a}ilescu, and the full M\"untz theorem in $L^1$ on an interval
+away from the origin.
+\end{statusbox}
+
+\section{Minimal reductions and the four-exponentials wall}
+
+\begin{proposition}[Elementary and transcendence reductions]\label{prop:minimal-reductions}
+Suppose $2^x,3^x\in\Z$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $x\ge0$.
+\item If $x\in\Q$, then $x\in\Nzero$.
+\item If $x$ is algebraic, then $x\in\Nzero$.
+\item Assuming the Four Exponentials Conjecture, $x\in\Nzero$.
+\end{enumerate}
+Consequently every hypothetical counterexample is a positive transcendental irrational.
+\end{proposition}
+
+\begin{proof}
+If $x<0$, then $0<2^x<1$, so $2^x$ cannot be an integer.  This proves (i).
+
+For (ii), write $x=a/b$ in lowest terms with $a\ge0$ and $b\ge1$.  If $M=2^x\in\N$, then
+$M^b=2^a$.  Taking the $2$-adic valuation gives $b\,v_2(M)=a$.  Hence $b\mid a$; coprimality
+forces $b=1$.
+
+For (iii), if $x$ were algebraic and irrational, the Gelfond--Schneider theorem would make
+$2^x$ transcendental, contradicting $2^x\in\Z$.  Part (ii) handles the remaining algebraic
+case.
+
+For (iv), assume $x$ is not rational.  The pair $(\log2,\log3)$ is linearly independent over
+$\Q$, because $2^a3^b=1$ with $a,b\in\Z$ forces $a=b=0$.  The pair $(1,x)$ is also
+$\Q$-linearly independent.  The four numbers
+\[
+ e^{(\log2)\cdot1}=2,\quad e^{(\log2)x}=2^x,\quad
+ e^{(\log3)\cdot1}=3,\quad e^{(\log3)x}=3^x
+\]
+are algebraic.  Four Exponentials would force one to be transcendental, a contradiction.
+Thus $x\in\Q$, and (ii) applies.
+\end{proof}
+
+Equivalently, a counterexample gives positive integers $M,A$ with
+\begin{equation}\label{eq:log-det}
+ \frac{\log M}{\log2}=\frac{\log A}{\log3}=x,
+ \qquad
+ \det\begin{pmatrix}\log2&\log3\\ \log M&\log A\end{pmatrix}=0.
+\end{equation}
+The row and column pairs are $\Q$-independent when $x$ is irrational.  Equation
+\eqref{eq:log-det} is therefore a concrete $2\times2$ instance of the four-exponentials
+barrier.  The rest of this report asks whether the special additive relation $3=2+1$ adds
+something that the logarithmic determinant does not see.
+
+\section{Fractional normalization and prime-separated denominators}
+
+Let $x$ be a hypothetical counterexample.  Put
+\begin{equation}\label{eq:frac-normalization}
+ n=\lfloor x\rfloor,\qquad \alpha=x-n\in(0,1),\qquad
+ u=2^\alpha,\qquad v=3^\alpha.
+\end{equation}
+Since $2^x$ and $3^x$ are integers,
+\[
+ u=\frac{2^x}{2^n}\in\Q,
+ \qquad
+ v=\frac{3^x}{3^n}\in\Q.
+\]
+Write these fractions in lowest terms as
+\begin{equation}\label{eq:uv-reduced}
+ u=\frac{P}{2^r},\qquad v=\frac{Q}{3^s},
+\end{equation}
+where
+\begin{equation}\label{eq:rs-conditions}
+ 1\le r\le n,
+ \qquad 0\le s\le n,
+ \qquad P\ \text{is odd},
+ \qquad 3\nmid Q.
+\end{equation}
+The inequality $r\ge1$ follows from $1<u<2$: a rational integer strictly between $1$ and $2$
+does not exist.  The case $s=0$ is not excluded a priori, because the integer $v=2$ lies in
+$(1,3)$.
+
+Define the $3$-smooth semigroup
+\[
+ \Ssmooth=\{2^a3^b:a,b\in\Nzero\}.
+\]
+For every $N=2^a3^b\in\Ssmooth$,
+\begin{equation}\label{eq:s-smooth-rationality}
+ N^\alpha=u^av^b\in\Q.
+\end{equation}
+Thus one hypothetical solution gives infinitely many rational values of the concave function
+$t\mapsto t^\alpha$---but only on a logarithmically sparse multiplicative semigroup.
+
+Two elementary endpoint gaps will be useful for calibration.
+
+\begin{lemma}[The one-coordinate endpoint gaps]\label{lem:trivial-gaps}
+With the notation above,
+\begin{equation}\label{eq:trivial-gaps}
+ \alpha\ge2^{-r},
+ \qquad
+ 1-\alpha\ge\frac{2^{-r}}{2\log2}.
+\end{equation}
+In particular both distances are bounded below exponentially in $n$.
+\end{lemma}
+
+\begin{proof}
+The reduced numerator of $u-1=(P-2^r)/2^r$ is a positive odd integer, so
+$u-1\ge2^{-r}$.  Convexity of $2^t$ on $[0,1]$ places its graph below the chord joining
+$(0,1)$ and $(1,2)$; hence $2^\alpha-1\le\alpha$.  This proves the first inequality.
+
+Similarly, $2-u=(2^{r+1}-P)/2^r\ge2^{-r}$.  Also
+\[
+ 2-2^\alpha=\int_\alpha^1 2^t\log2\dd t
+ \le2\log2\,(1-\alpha).
+\]
+Combining the two bounds proves the second inequality.
+\end{proof}
+
+These simple gaps are important when evaluating later determinant bounds: a new positivity
+defect is only useful if it beats information already visible in the single dyadic coordinate.
+
+\section{The Hausdorff moment representation}
+
+\subsection{The increment sequence}
+
+For $j\in\Nzero$ define
+\begin{equation}\label{eq:dj-def}
+ d_j=(j+2)^\alpha-(j+1)^\alpha.
+\end{equation}
+Because $0<\alpha<1$, the sequence is positive and strictly decreasing.  More is true: it is a
+strict Hausdorff moment sequence with an explicit density.
+
+\begin{theorem}[Explicit Hausdorff measure]\label{thm:hausdorff}
+For $0<\alpha<1$, define a measure on $(0,1)$ by
+\begin{equation}\label{eq:mu-density}
+ \dd\mu_\alpha(q)=w_\alpha(q)\dd q,
+ \qquad
+ w_\alpha(q)=\frac{\alpha}{\Gamma(1-\alpha)}
+ (1-q)(-\log q)^{-\alpha-1}.
+\end{equation}
+Then $\mu_\alpha$ is finite, positive, and has full support in $[0,1]$.  Moreover
+\begin{equation}\label{eq:moment-representation}
+ d_j=\int_0^1q^j\dd\mu_\alpha(q)
+ \qquad(j\in\Nzero).
+\end{equation}
+More generally, for every real $z>-1$,
+\begin{equation}\label{eq:mellin-extension}
+ \int_0^1q^z\dd\mu_\alpha(q)
+ =(z+2)^\alpha-(z+1)^\alpha.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $t>0$, the gamma integral gives
+\[
+ t^{\alpha-1}
+ =\frac1{\Gamma(1-\alpha)}
+ \int_0^\infty e^{-ts}s^{-\alpha}\dd s.
+\]
+Since
+\[
+ d_j=\int_{j+1}^{j+2}\alpha t^{\alpha-1}\dd t,
+\]
+Tonelli's theorem yields
+\begin{align*}
+ d_j
+ &=\frac{\alpha}{\Gamma(1-\alpha)}
+   \int_0^\infty s^{-\alpha}
+   \left(\int_{j+1}^{j+2}e^{-ts}\dd t\right)\dd s\\
+ &=\frac{\alpha}{\Gamma(1-\alpha)}
+   \int_0^\infty e^{-js}e^{-s}(1-e^{-s})s^{-\alpha-1}\dd s.
+\end{align*}
+Put $q=e^{-s}$.  Then $\dd s=-\dd q/q$, and the last expression becomes
+\[
+ \frac{\alpha}{\Gamma(1-\alpha)}
+ \int_0^1q^j(1-q)(-\log q)^{-\alpha-1}\dd q,
+\]
+which is \eqref{eq:moment-representation}.
+
+Near $q=1$, $-\log q\sim1-q$, so the density is asymptotic to a positive constant times
+$(1-q)^{-\alpha}$ and is integrable because $\alpha<1$.  Near $q=0$ the change of variables
+$q=e^{-s}$ shows integrability.  The density is strictly positive on $(0,1)$, hence the support
+is all of $[0,1]$.  Replacing the integer $j$ by any real $z>-1$ in the same computation gives
+\eqref{eq:mellin-extension}.
+\end{proof}
+
+\subsection{Complete monotonicity, Hankel positivity, and log-convexity}
+
+\begin{corollary}[Strict complete monotonicity]\label{cor:complete-monotone}
+For all $j,k\in\Nzero$,
+\begin{equation}\label{eq:complete-monotone}
+ (-1)^k\Delta^kd_j
+ =\int_0^1q^j(1-q)^k\dd\mu_\alpha(q)>0,
+\end{equation}
+where $\Delta d_j=d_{j+1}-d_j$.
+\end{corollary}
+
+\begin{proof}
+Apply $\Delta^k$ to $q^j$ inside \eqref{eq:moment-representation}.  Since
+$\Delta^kq^j=q^j(q-1)^k$, the formula follows.  Strict positivity uses the positive density on
+$(0,1)$.
+\end{proof}
+
+\begin{corollary}[Strict Hankel positivity]\label{cor:hankel}
+For every $m\ge0$, the Hankel matrix
+\[
+ H_m=(d_{i+j})_{0\le i,j\le m}
+\]
+is positive definite.  In particular,
+\begin{equation}\label{eq:first-hankel}
+ d_0d_2-d_1^2>0.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For a nonzero real vector $(c_0,\ldots,c_m)$,
+\[
+ \sum_{i,j=0}^m c_ic_jd_{i+j}
+ =\int_0^1\left(\sum_{i=0}^mc_iq^i\right)^2\dd\mu_\alpha(q)>0.
+\]
+A nonzero polynomial cannot vanish on the full support of $\mu_\alpha$.
+\end{proof}
+
+\begin{corollary}[Strict log-convexity]\label{cor:logconvex}
+If $0\le i<j<k$, then
+\begin{equation}\label{eq:logconvex-general}
+ d_j^{\,k-i}<d_i^{\,k-j}d_k^{\,j-i}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Write
+\[
+ j=\frac{k-j}{k-i}i+\frac{j-i}{k-i}k
+\]
+and apply H\"older's inequality to
+$q^j=(q^i)^{(k-j)/(k-i)}(q^k)^{(j-i)/(k-i)}$.  Equality would force $q^i$ and $q^k$ to be
+proportional almost everywhere, impossible on a measure with full support.
+\end{proof}
+
+\subsection{Tail behavior}
+
+The mean-value theorem gives
+\begin{equation}\label{eq:tail}
+ d_j=\alpha\xi_j^{\alpha-1}
+ \quad\text{for some }\xi_j\in(j+1,j+2),
+ \qquad
+ d_j\sim\alpha j^{\alpha-1}.
+\end{equation}
+Thus the moment decay is polynomial, not exponential.  In measure language, this is caused by
+the integrable singularity of $w_\alpha$ at $q=1$.  This observation will separate the genuine
+infinite moment sequence from the finite atomic models constructed later.
+
+\section{Exactly which adjacent \texorpdfstring{$3$}{3}-smooth values are rational?}
+
+The formula $d_j=(j+2)^\alpha-(j+1)^\alpha$ is rational whenever both consecutive integers
+$j+1$ and $j+2$ are $3$-smooth.  Those pairs can be classified exactly.
+
+\begin{theorem}[Consecutive $3$-smooth pairs]\label{thm:consecutive-smooth}
+The positive consecutive pairs $(N,N+1)$ for which both entries belong to $\Ssmooth$ are
+\begin{equation}\label{eq:consecutive-list}
+ (1,2),\qquad(2,3),\qquad(3,4),\qquad(8,9).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The pair $(1,2)$ is immediate.  Suppose $N>1$.  Since $\gcd(N,N+1)=1$ and both numbers have
+all prime factors in $\{2,3\}$, their prime supports are disjoint.  Hence one is a pure power
+of $2$ and the other a pure power of $3$:
+\[
+ \{N,N+1\}=\{2^a,3^b\}
+ \qquad(a,b\ge1).
+\]
+If $a,b>1$, Catalan--Mih\u{a}ilescu says that the unique pair of nontrivial perfect powers that
+differ by $1$ is $8$ and $9$ \cite{Mihailescu2004}.  If one exponent equals $1$, direct
+inspection gives $2,3$ and $3,4$.  No other cases occur.
+\end{proof}
+
+\begin{corollary}[The four immediately rational moments]\label{cor:four-moments}
+Under the hypothetical counterexample normalization \eqref{eq:frac-normalization},
+\begin{equation}\label{eq:four-moments}
+ \begin{aligned}
+ d_0&=u-1,\\
+ d_1&=v-u,\\
+ d_2&=u^2-v,\\
+ d_7&=v^2-u^3,
+ \end{aligned}
+\end{equation}
+so $d_0,d_1,d_2,d_7\in\Q_{>0}$.
+\end{corollary}
+
+The list is exact for unit increments.  Of course every $3$-smooth value gives a rational
+\emph{partial sum} of the moments:
+\begin{equation}\label{eq:partial-sums}
+ N^\alpha-1
+ =\sum_{j=0}^{N-2}d_j
+ =\int_0^1\frac{1-q^{N-1}}{1-q}\dd\mu_\alpha(q),
+ \qquad N\in\Ssmooth,
+\end{equation}
+but only the four pairs in \eqref{eq:consecutive-list} isolate single moments directly.
+
+\section{Exact prime-power denominators of moment defects}
+
+\subsection{Arithmetic normalization}
+
+Retain \eqref{eq:uv-reduced}.  Define the positive integers
+\begin{equation}\label{eq:A-defs}
+ \begin{aligned}
+ A_0&=P-2^r,\\
+ A_1&=2^rQ-3^sP,\\
+ A_2&=3^sP^2-2^{2r}Q,\\
+ A_7&=2^{3r}Q^2-3^{2s}P^3.
+ \end{aligned}
+\end{equation}
+Then
+\begin{equation}\label{eq:dA}
+ d_0=\frac{A_0}{2^r},\qquad
+ d_1=\frac{A_1}{2^r3^s},\qquad
+ d_2=\frac{A_2}{2^{2r}3^s},\qquad
+ d_7=\frac{A_7}{2^{3r}3^{2s}}.
+\end{equation}
+Every $A_i$ is odd.  If $s\ge1$, then
+\begin{equation}\label{eq:A-mod3}
+ 3\nmid A_1A_2A_7.
+\end{equation}
+Indeed, the four numerators in \eqref{eq:A-defs} are respectively odd-minus-even,
+even-minus-odd, odd-minus-even, and even-minus-odd.  Modulo $3$, when $s\ge1$,
+\[
+ A_1\equiv2^rQ,
+ \quad A_2\equiv-2^{2r}Q,
+ \quad A_7\equiv2^{3r}Q^2,
+\]
+all nonzero.
+
+\subsection{The first Hankel defect}
+
+\begin{theorem}[Exact denominator of the first Hankel defect]\label{thm:H-denom}
+Let
+\begin{equation}\label{eq:H-def}
+ \mathcal H=d_0d_2-d_1^2.
+\end{equation}
+Then
+\begin{equation}\label{eq:H-uv}
+ \mathcal H
+ =(u-1)(u^2-v)-(v-u)^2
+ =u^3-2u^2+uv+v-v^2>0,
+\end{equation}
+and in lowest terms
+\begin{equation}\label{eq:H-exact}
+ \mathcal H
+ =\frac{3^sA_0A_2-2^rA_1^2}{2^{3r}3^{2s}}.
+\end{equation}
+In particular, the reduced denominator is exactly $2^{3r}3^{2s}$ and
+\begin{equation}\label{eq:H-lower}
+ \mathcal H\ge2^{-3r}3^{-2s}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Positivity is Corollary~\ref{cor:hankel}; the expression in $u,v$ is a direct expansion.
+Substitution of \eqref{eq:dA} gives \eqref{eq:H-exact}.  Its numerator is odd because the
+first term is odd and the second is even.  If $s\ge1$, the numerator is congruent modulo $3$
+to $-2^rA_1^2\ne0$.  If $s=0$, no factor of $3$ occurs in the denominator.  Hence no factor
+$2$ or $3$ cancels, proving exactness.  The positive numerator is at least $1$.
+\end{proof}
+
+The double-integral identity
+\begin{equation}\label{eq:H-variance}
+ \mathcal H
+ =\frac12\int_0^1\int_0^1(q-t)^2\dd\mu_\alpha(q)\dd\mu_\alpha(t)
+\end{equation}
+shows that $\mathcal H$ is the unnormalized variance of the Hausdorff measure.  Theorem
+\ref{thm:H-denom} therefore turns a continuous variance into a positive integer divided by a
+fully determined prime-power denominator.
+
+\subsection{Three higher log-convexity defects}
+
+Apply Corollary~\ref{cor:logconvex} to the triples $(0,1,7)$, $(1,2,7)$, and $(0,2,7)$.
+
+\begin{theorem}[Exact higher defects]\label{thm:higher-defects}
+The rational numbers
+\begin{align}
+ \mathcal F_{017}&=d_0^6d_7-d_1^7,\label{eq:F017}\\
+ \mathcal F_{127}&=d_1^5d_7-d_2^6,\label{eq:F127}\\
+ \mathcal F_{027}&=d_0^5d_7^2-d_2^7\label{eq:F027}
+\end{align}
+are strictly positive.  Their exact reduced forms are
+\begin{align}
+ \mathcal F_{017}
+ &=\frac{3^{5s}A_0^6A_7-2^{2r}A_1^7}
+ {2^{9r}3^{7s}},\label{eq:F017-exact}\\
+ \mathcal F_{127}
+ &=\frac{2^{4r}A_1^5A_7-3^sA_2^6}
+ {2^{12r}3^{7s}},\label{eq:F127-exact}\\
+ \mathcal F_{027}
+ &=\frac{2^{3r}3^{3s}A_0^5A_7^2-A_2^7}
+ {2^{14r}3^{7s}}.\label{eq:F027-exact}
+\end{align}
+Each displayed numerator is a positive odd integer; if $s\ge1$, it is coprime to $6$.  In every case it is coprime to the displayed denominator.  Consequently
+\begin{equation}\label{eq:F-lowers}
+ \mathcal F_{017}\ge2^{-9r}3^{-7s},\quad
+ \mathcal F_{127}\ge2^{-12r}3^{-7s},\quad
+ \mathcal F_{027}\ge2^{-14r}3^{-7s}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Strict positivity is exactly \eqref{eq:logconvex-general} for the three indicated index
+triples.  Equations \eqref{eq:F017-exact}--\eqref{eq:F027-exact} follow by substituting
+\eqref{eq:dA} and taking a common denominator.
+
+For \eqref{eq:F017-exact}, the first numerator term is odd and the second even, so the
+numerator is odd.  If $s\ge1$, it is congruent to $-2^{2r}A_1^7\ne0\pmod3$.
+For \eqref{eq:F127-exact}, the first term is even and the second odd, and modulo $3$ the
+numerator is $2^{4r}A_1^5A_7\ne0$.  For \eqref{eq:F027-exact}, the first term is even and the
+second odd, and modulo $3$ the numerator is $-A_2^7\ne0$.  The case $s=0$ again has no
+triadic denominator.  Exactness and the lower bounds follow.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\caption{Exact arithmetic defects supplied by the four rational moments.}
+\label{tab:defects}
+\small
+\begin{tabularx}{\textwidth}{@{}l l l X@{}}
+\toprule
+Defect & Positivity source & Exact denominator & Numerator information\\
+\midrule
+$d_0d_2-d_1^2$
+& $2\times2$ Hankel
+& $2^{3r}3^{2s}$
+& positive; coprime to the denominator\\
+$d_0^6d_7-d_1^7$
+& log-convex $(0,1,7)$
+& $2^{9r}3^{7s}$
+& positive; coprime to the denominator\\
+$d_1^5d_7-d_2^6$
+& log-convex $(1,2,7)$
+& $2^{12r}3^{7s}$
+& positive; coprime to the denominator\\
+$d_0^5d_7^2-d_2^7$
+& log-convex $(0,2,7)$
+& $2^{14r}3^{7s}$
+& positive; coprime to the denominator\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{What the exact defects do and do not buy}
+
+The exact denominator is genuine arithmetic information, but its immediate size consequence is
+not enough.  For example, since $d_7<d_0$ and $d_0=2^\alpha-1\le\alpha$,
+\[
+ 0<\mathcal F_{017}<d_0^7\le\alpha^7.
+\]
+Combining this with \eqref{eq:F-lowers} gives
+\begin{equation}\label{eq:F-alpha-gap}
+ \alpha\ge2^{-9r/7}3^{-s}.
+\end{equation}
+This is weaker than the elementary dyadic estimate $\alpha\ge2^{-r}$ in
+Lemma~\ref{lem:trivial-gaps} for many parameter ranges, and in any case remains exponentially
+small in $n$.  Similarly, an upper bound for $\mathcal H$ near $\alpha=1$ yields only another
+exponential endpoint gap.  The defects therefore provide exact certificates and useful
+formalization targets, but not a contradiction.
+
+This failure motivates the next question: can one combine many moment inequalities?  The
+answer is unexpectedly rigid in the opposite direction.  Every finite collection can be
+simulated by a rational atomic measure.
+
+\section{Finite rational quadrature: a no-go theorem}
+
+\subsection{An explicit two-atom model}
+
+\begin{theorem}[Rational two-atom reproduction]\label{thm:two-atom}
+Let $m_0,m_1,m_2\in\Q_{>0}$ satisfy
+\[
+ m_0>m_1>m_2,
+ \qquad m_0m_2>m_1^2.
+\]
+Then the positive atomic measure
+\begin{equation}\label{eq:two-atom-measure}
+ \nu=
+ \left(m_0-\frac{m_1^2}{m_2}\right)\delta_0
+ +\frac{m_1^2}{m_2}\,\delta_{m_2/m_1}
+\end{equation}
+has rational nodes and rational weights and satisfies
+\begin{equation}\label{eq:two-atom-moments}
+ \int q^j\dd\nu(q)=m_j
+ \qquad(j=0,1,2).
+\end{equation}
+In particular, under a hypothetical \AEname{} counterexample, the first three moments
+$d_0,d_1,d_2$ have a completely rational positive model unrelated to the transcendental
+parameter $\alpha$.
+\end{theorem}
+
+\begin{proof}
+The node $t=m_2/m_1$ lies in $(0,1)$.  The weight at $0$ is
+$(m_0m_2-m_1^2)/m_2>0$, and the other weight is positive.  Direct calculation gives
+\[
+ \nu([0,1])=m_0,
+ \quad
+ \int q\dd\nu=\frac{m_1^2}{m_2}\frac{m_2}{m_1}=m_1,
+ \quad
+ \int q^2\dd\nu=\frac{m_1^2}{m_2}\frac{m_2^2}{m_1^2}=m_2.
+\]
+All quantities are rational.
+\end{proof}
+
+For $m_j=d_j$, the positivity of the first weight is exactly the Hankel inequality
+$d_0d_2-d_1^2>0$.  Thus the first nontrivial Hankel certificate is not merely compatible with
+rational data; it canonically constructs a rational quadrature formula for it.
+
+\subsection{A general rational finite-observable theorem}
+
+The preceding phenomenon is not confined to three moments.
+
+\begin{lemma}[Rational interior quadrature]\label{lem:rational-quadrature}
+Let $f_1,\ldots,f_m\in\Q[q]$ be linearly independent real polynomials, and let $\mu$ be a
+finite positive measure with a strictly positive density on $(0,1)$.  Suppose
+\[
+ y_i=\int_0^1 f_i(q)\dd\mu(q)\in\Q
+ \qquad(1\le i\le m).
+\]
+Then there are finitely many rational nodes $q_1,\ldots,q_L\in(0,1)$ and positive rational
+weights $w_1,\ldots,w_L$ such that
+\begin{equation}\label{eq:rational-quadrature-general}
+ y_i=\sum_{\ell=1}^Lw_\ell f_i(q_\ell)
+ \qquad(1\le i\le m).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Set $F(q)=(f_1(q),\ldots,f_m(q))\in\R^m$, and let $C$ be the convex cone generated by
+$F((0,1))$.  The vector $y=(y_1,\ldots,y_m)$ lies in the interior of $C$.  Indeed, if a
+nonzero linear functional $c\in(\R^m)^*$ supported $C$ at $y$, then the polynomial
+$p(q)=c\cdot F(q)$ would be nonnegative on $(0,1)$ and satisfy
+$\int p\dd\mu=0$.  Positivity of the density would force $p$ to vanish identically, contrary
+to linear independence of the $f_i$.
+
+By finite-dimensional convex geometry, an interior point of a generated cone lies in the
+interior of a cone generated by finitely many of its generating rays.  Choose such nodes and
+then perturb them slightly to distinct rational nodes.  Interior containment is open, so it
+persists under a sufficiently small perturbation.  We obtain a rational matrix
+$B=(f_i(q_\ell))$ for which the system $Bw=y$ has a strictly positive real solution.  The
+affine solution space is defined over $\Q$; its rational points are dense.  Hence it has a
+strictly positive rational solution, which gives \eqref{eq:rational-quadrature-general}.
+\end{proof}
+
+\begin{corollary}[Finite simulation of all available additive data]\label{cor:finite-simulation}
+Assume a hypothetical counterexample.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the four rational moments $d_0,d_1,d_2,d_7$ are reproduced exactly by a finite positive
+      measure with rational atoms and rational weights;
+\item for every finite set $N_1,\ldots,N_m\in\Ssmooth$, there is such a rational atomic
+      measure $\nu$ satisfying
+\[
+ \int_0^1\frac{1-q^{N_i-1}}{1-q}\dd\nu(q)=N_i^\alpha-1
+ \qquad(1\le i\le m).
+\]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For (i), use Lemma~\ref{lem:rational-quadrature} with
+$f(q)=1,q,q^2,q^7$ and \eqref{eq:four-moments}.  For (ii), use the linearly independent
+polynomials
+\[
+ K_{N_i-1}(q)=\frac{1-q^{N_i-1}}{1-q}=1+q+\cdots+q^{N_i-2}
+\]
+after deleting repetitions.  Their integrals are rational by \eqref{eq:partial-sums} and
+\eqref{eq:s-smooth-rationality}.
+\end{proof}
+
+\begin{warning}[Finite positivity cannot prove the conjecture]
+Any argument that uses only a finite number of linear moment identities and positivity of
+integrals against nonnegative polynomials can be reproduced inside a completely rational
+finite atomic model.  Therefore no finite Hankel matrix, no finite list of complete-monotonicity
+inequalities, and no finite positive-kernel certificate can distinguish the putative
+counterexample from rational quadrature data.  A proof must be genuinely infinite or use
+additional nonlinear arithmetic.
+\end{warning}
+
+\section{The complete \texorpdfstring{$3$}{3}-smooth observation family}
+
+\subsection{The observation kernels}
+
+For $m\ge1$, put
+\begin{equation}\label{eq:Km}
+ K_m(q)=\frac{1-q^m}{1-q}=1+q+\cdots+q^{m-1}.
+\end{equation}
+Equation \eqref{eq:partial-sums} becomes
+\begin{equation}\label{eq:Km-data}
+ \int_0^1K_{N-1}(q)\dd\mu_\alpha(q)=N^\alpha-1
+ \qquad(N\in\Ssmooth,\ N\ge2).
+\end{equation}
+Under a counterexample, the right side is not merely rational; it factors coherently as
+$u^av^b-1$ when $N=2^a3^b$.
+
+Let
+\begin{equation}\label{eq:Lambda}
+ \Lambda=\{N-1:N\in\Ssmooth,\ N\ge2\}.
+\end{equation}
+This exponent set is too thin for M\"untz completeness.
+
+\begin{lemma}[Convergent reciprocal sum]\label{lem:reciprocal-sum}
+The set $\Lambda$ satisfies
+\begin{equation}\label{eq:sum-convergent}
+ \sum_{m\in\Lambda}\frac1m<\infty.
+\end{equation}
+More explicitly, the sum is at most $4$.
+\end{lemma}
+
+\begin{proof}
+For $N\ge2$, $N-1\ge N/2$, so
+\[
+ \sum_{N\in\Ssmooth,\,N\ge2}\frac1{N-1}
+ \le2\sum_{\substack{a,b\ge0\\(a,b)\ne(0,0)}}\frac1{2^a3^b}
+ =2\left(\frac1{1-1/2}\frac1{1-1/3}-1\right)=4.
+\]
+Unique factorization ensures that the parametrization $N=2^a3^b$ has no repetitions.
+\end{proof}
+
+\subsection{Why a density theorem is the right audit}
+
+The classical M\"untz--Sz\'asz theorem says, in the present integer-exponent setting, that
+\[
+ \Span\{1,q^m:m\in\Lambda\}
+\]
+is dense in $C[0,1]$ precisely when $\sum_{m\in\Lambda}1/m$ diverges.  Full versions give the
+same convergent-sum obstruction in $L^p$ and on intervals away from the origin
+\cite{Almira2007,BorweinErdelyi1995}.  Lemma~\ref{lem:reciprocal-sum} therefore implies that
+the $3$-smooth monomials leave an infinite-dimensional blind subspace.
+
+The kernels $K_m$ differ from $1-q^m$ only by multiplication by $(1-q)^{-1}$.  On any compact
+subinterval of $(0,1)$ this multiplier is bounded and invertible.  The same incompleteness
+therefore holds for the complete observation family in \eqref{eq:Km-data}.
+
+\section{M\"untz invisibility: an infinite-dimensional no-go theorem}
+
+The next theorem is the strongest conclusion of this report.  It says that even \emph{all}
+linear $3$-smooth observations, together with the exact endpoint behavior of the measure, do
+not identify $\mu_\alpha$ among positive measures.
+
+\begin{theorem}[Bounded invisible perturbations]\label{thm:muntz-invisible}
+Fix $0<\alpha<1$ and a closed interval $I=[a,b]\subset(0,1)$.  There exists a nonzero bounded
+real function $g\in L^\infty(\mu_\alpha)$ supported in $I$ such that
+\begin{equation}\label{eq:annihilate}
+ \int_0^1K_m(q)g(q)\dd\mu_\alpha(q)=0
+ \qquad\text{for every }m\in\Lambda.
+\end{equation}
+Consequently, for every sufficiently small $\varepsilon>0$, the two measures
+\begin{equation}\label{eq:mu-pm}
+ \dd\mu_\alpha^\pm=(1\pm\varepsilon g)\dd\mu_\alpha
+\end{equation}
+are distinct positive measures satisfying
+\begin{equation}\label{eq:same-data}
+ \int_0^1K_m\dd\mu_\alpha^+
+ =\int_0^1K_m\dd\mu_\alpha^-
+ =\int_0^1K_m\dd\mu_\alpha
+ \qquad(m\in\Lambda).
+\end{equation}
+They agree with $\mu_\alpha$ outside $I$.
+\end{theorem}
+
+\begin{proof}
+On $I$, multiplication by $1-q$ is a bounded invertible map on $L^1(I)$.  If
+$\Span\{K_m:m\in\Lambda\}$ were dense in $L^1(I)$, then
+$\Span\{1-q^m:m\in\Lambda\}$ would be dense as well, and adding constants would make
+$\Span\{1,q^m:m\in\Lambda\}$ dense.  This contradicts the convergent-sum part of the full
+M\"untz theorem and Lemma~\ref{lem:reciprocal-sum}.  Hence the $K_m$ span is a proper
+subspace of $L^1(I)$.
+
+By Hahn--Banach and the identification $(L^1(I))^*=L^\infty(I)$, there is a nonzero real
+$h\in L^\infty(I)$ such that
+\begin{equation}\label{eq:h-ann}
+ \int_IK_m(q)h(q)\dd q=0
+ \qquad(m\in\Lambda).
+\end{equation}
+The density $w_\alpha$ in \eqref{eq:mu-density} is continuous and bounded above and below by
+positive constants on $I$.  Define
+\[
+ g(q)=\begin{cases}
+ h(q)/w_\alpha(q),&q\in I,\\
+ 0,&q\notin I.
+ \end{cases}
+\]
+Then $g\in L^\infty(\mu_\alpha)$, is nonzero, and \eqref{eq:annihilate} follows from
+\eqref{eq:h-ann}.  Choose $\varepsilon\|g\|_\infty<1$.  Then
+$1\pm\varepsilon g>0$ almost everywhere, so \eqref{eq:mu-pm} defines distinct positive
+measures.  Equation \eqref{eq:same-data} is immediate from \eqref{eq:annihilate}, and the
+support condition gives agreement outside $I$.
+\end{proof}
+
+\begin{corollary}[Endpoint asymptotics are also invisible]\label{cor:endpoint-invisible}
+The perturbations in Theorem~\ref{thm:muntz-invisible} can be chosen to preserve the density of
+$\mu_\alpha$ on neighborhoods of both $0$ and $1$.  Their ordinary moments differ from those
+of $\mu_\alpha$ by $O(b^j)$, while
+\[
+ \int q^j\dd\mu_\alpha(q)\sim\alpha j^{\alpha-1}.
+\]
+Thus they have the same polynomial moment asymptotics, to an error exponentially smaller than
+the main term, and still agree on every $3$-smooth observation \eqref{eq:Km-data}.
+\end{corollary}
+
+\begin{proof}
+Choose $I=[a,b]$ with $0<a<b<1$.  The measures coincide off $I$.  Moreover
+\[
+ \left|\int_0^1q^j\dd(\mu_\alpha^+-\mu_\alpha^-)(q)\right|
+ \le 2\varepsilon\|g\|_\infty\mu_\alpha(I)b^j.
+\]
+Combine this with \eqref{eq:tail}.
+\end{proof}
+
+\begin{corollary}[Linear measure reconstruction cannot prove \AEname{}]\label{cor:no-linear-proof}
+No argument whose only inputs are
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item positivity of an unknown measure on $[0,1]$;
+\item the complete set of scalar observations \eqref{eq:Km-data}; and
+\item the local endpoint form or polynomial tail asymptotics of $\mu_\alpha$
+\end{enumerate}
+can uniquely recover the explicit Hausdorff measure.  In particular, linear functional
+analysis, positive kernels, and M\"untz-style measure determination alone cannot settle the
+\AEname{} conjecture.
+\end{corollary}
+
+\begin{remark}
+The theorem does not create another exponent $\beta$ with the same rational powers.  The
+perturbed measures need not belong to the one-parameter family $\{\mu_\beta\}$.  Its force is
+methodological and exact: the missing proof must exploit the \emph{parametric formula} for
+$w_\alpha$ and the arithmetic of its values nonlinearly, because all linear observation data
+can be held fixed under positive perturbation.
+\end{remark}
+
+\section{An analytic reformulation of the invisible directions}
+
+For a bounded perturbation $g$ supported in $[a,b]\subset(0,1)$, define its Mellin transform
+relative to $\mu_\alpha$ by
+\begin{equation}\label{eq:G-def}
+ G(z)=\int_0^1q^zg(q)\dd\mu_\alpha(q).
+\end{equation}
+Because the support stays away from $0$, $G$ is an entire function of $z$ and decays
+exponentially along the positive real axis.  Condition \eqref{eq:annihilate} becomes
+\begin{equation}\label{eq:partial-zero}
+ \sum_{j=0}^{m-1}G(j)=0
+ \qquad(m\in\Lambda).
+\end{equation}
+Thus M\"untz incompleteness produces nonzero entire Mellin transforms whose discrete partial
+sums vanish at every $3$-smooth-minus-one index.  The zero set is sparse enough to permit this
+without forcing $G=0$.
+
+By contrast, the unperturbed transform is explicit:
+\[
+ M_\alpha(z)=\int_0^1q^z\dd\mu_\alpha(q)
+ =(z+2)^\alpha-(z+1)^\alpha.
+\]
+A future proof would have to combine this special fractional-power form with the arithmetic
+statement that
+\[
+ 1+\sum_{j=0}^{N-2}M_\alpha(j)=N^\alpha=u^av^b
+ \quad(N=2^a3^b)
+\]
+has prime-separated rational denominators.  Neither the zero set in
+\eqref{eq:partial-zero} nor positivity alone detects that nonlinear coupling.
+
+\section{What would constitute a proof along this route?}
+
+\subsection{The exact nonlinear target}
+
+The moment representation converts the conjecture into the following statement.
+
+\begin{target}[Arithmetic Hausdorff rigidity]\label{target:arithmetic-hausdorff}
+Prove that no $\alpha\in(0,1)$ can simultaneously satisfy
+\begin{equation}\label{eq:target-coordinates}
+ 2^\alpha\in\Z[1/2],
+ \qquad
+ 3^\alpha\in\Z[1/3],
+\end{equation}
+using a property of the explicit density $w_\alpha$ that is nonlinear in the observation
+values
+\[
+ \int K_{2^a3^b-1}\dd\mu_\alpha=2^{a\alpha}3^{b\alpha}-1.
+\]
+A sufficient theorem must remain sensitive to the separate $2$-primary and $3$-primary
+reduced denominators and cannot depend only on linear combinations of the kernels $K_m$.
+\end{target}
+
+The target is equivalent to the original problem after the fractional normalization, but the
+report's no-go theorems sharply restrict plausible proofs.  A successful invariant could take
+one of the following forms:
+
+\begin{enumerate}
+\item a nonlinear determinant or resultant built from several \emph{reduced} observations,
+      with a lower bound from coprimality that exceeds a sharp analytic upper bound;
+\item a rigidity theorem for the explicit Mellin family
+      $(z+2)^\alpha-(z+1)^\alpha$ under coherent dyadic/triadic rational partial sums;
+\item a mixed real--nonarchimedean identity that transports the exponent $\alpha$ itself,
+      rather than merely the rational values, to $2$-adic and $3$-adic analytic data;
+\item an unconditional logarithm-product independence theorem strong enough to rule out
+      \eqref{eq:log-det}.
+\end{enumerate}
+
+The first three are genuinely adapted to the additive moment formulation.  The fourth returns
+to the classical four-exponentials frontier.
+
+\subsection{Why the current exact defects do not close}
+
+The new defects have three desirable features: positivity, rationality, and exact
+prime-power denominators.  What they lack is an upper bound small enough to force their
+positive integer numerators to vanish.  The natural analytic upper bounds deteriorate only
+polynomially in the endpoint distance, while the denominator lower bounds are exponentially
+small in $r+s$.  Lemma~\ref{lem:trivial-gaps} already supplies comparable or stronger
+one-coordinate bounds.  Increasing the finite order cannot change this diagnosis because
+Corollary~\ref{cor:finite-simulation} constructs rational atomic models for every finite
+collection.
+
+The infinite collection also fails as a linear uniqueness set by
+Theorem~\ref{thm:muntz-invisible}.  Therefore the missing gain cannot be ``more positivity''
+or ``more moments'' in the same linear sense.  It must be a nonlinear arithmetic identity
+that has no analogue for the rational quadrature and invisible perturbation models.
+
+\subsection{A precise conditional resolution}
+
+For completeness, the conjecture does have an immediate conditional proof.
+
+\begin{theorem}[Conditional resolution]\label{thm:conditional-resolution}
+The \AEname{} conjecture follows from the Four Exponentials Conjecture, and hence from Schanuel's
+conjecture.
+\end{theorem}
+
+\begin{proof}
+This is Proposition~\ref{prop:minimal-reductions}(iv).  Schanuel's conjecture implies Four
+Exponentials by the standard transcendence-degree argument.
+\end{proof}
+
+This conditional theorem is not a substitute for an unconditional proof, but it identifies the
+known transcendence strength sufficient to close every remaining case.
+
+\section{Comparison with the supplied report}
+
+The contribution of this continuation can be summarized without restating the existing
+unified report.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\caption{What is inherited, what is new, and what remains.}\label{tab:comparison}\\
+\toprule
+Topic & Supplied unified report & This continuation\\
+\midrule
+\endfirsthead
+\toprule
+Topic & Supplied unified report & This continuation\\
+\midrule
+\endhead
+Four-exponentials barrier
+& Exhaustive logarithmic, matrix, and determinant formulations.
+& Only the minimal standalone reduction is recalled.\\[0.5em]
+Conditional counterexample structure
+& Exact free-monoid and valuation classifications.
+& Not repeated; fractional normalization is used only to expose $u$ and $v$.\\[0.5em]
+Additive relation $3=2+1$
+& Appears indirectly in finite differences and Loewner-type methods.
+& Converted into an explicit Hausdorff moment measure for all consecutive increments.\\[0.5em]
+Adjacent $3$-smooth inputs
+& No Hausdorff-moment classification.
+& Exact list $(1,2),(2,3),(3,4),(8,9)$ and rational moments $d_0,d_1,d_2,d_7$.\\[0.5em]
+Arithmetic positivity
+& Many determinant and valuation certificates.
+& Exact reduced denominators for one Hankel and three nonconsecutive log-convex defects.\\[0.5em]
+Finite positivity barrier
+& General determinant-budget obstructions.
+& Explicit rational two-atom model and general rational finite quadrature theorem.\\[0.5em]
+Infinite linear barrier
+& Polynomial approximation and spectral sparsity analyses.
+& M\"untz incompleteness gives bounded positive perturbations preserving all $3$-smooth
+  observations and endpoint asymptotics.\\[0.5em]
+Final status
+& Conjecture open; remaining wall isolated.
+& Conjecture still open; the moment route is narrowed to nonlinear prime-separated arithmetic.\\
+\bottomrule
+\end{longtable}
+
+\section{Conclusion}
+
+The requested unconditional implication has not been proved.  The investigation nevertheless
+produces a coherent new theory around the additive structure that the standard logarithmic
+matrix forgets.
+
+A hypothetical noninteger solution gives a fractional exponent $0<\alpha<1$ for which the
+increments of $t^\alpha$ form an explicit Hausdorff moment sequence.  The only consecutive
+$3$-smooth pairs isolate four rational moments, and those moments generate positive Hankel and
+log-convexity defects whose reduced denominators can be computed exactly; their numerators are positive and coprime to the displayed denominators (and to $6$ when $s>0$).  These are rigorous new arithmetic certificates.
+
+The same analysis also explains why the certificates do not constitute a proof.  The first
+three moments possess an explicit rational two-atom model.  Every finite collection of rational
+polynomial observations has a rational positive quadrature model.  Most decisively, the
+$3$-smooth-minus-one exponents have a convergent reciprocal sum, so the full M\"untz theorem
+creates bounded perturbations of the actual measure that preserve all $3$-smooth linear data,
+remain positive, and leave the endpoint singularities and polynomial moment tail unchanged.
+
+The remaining problem is therefore not a generic moment problem.  It is a nonlinear arithmetic
+rigidity problem for the special one-parameter density $w_\alpha$, with coherent multiplicative
+values and mutually separated dyadic and triadic denominators.  Four Exponentials would settle
+it immediately.  Without that conjecture, a new theorem of precisely this nonlinear type is
+required.
+
+\appendix
+
+\section{Algebraic audit of the exact denominator formulas}
+
+For convenient verification, the common-denominator calculations are collected here.
+Starting from \eqref{eq:dA},
+\begin{align*}
+ d_0d_2-d_1^2
+ &=\frac{A_0A_2}{2^{3r}3^s}
+   -\frac{A_1^2}{2^{2r}3^{2s}}\\
+ &=\frac{3^sA_0A_2-2^rA_1^2}{2^{3r}3^{2s}},\\[0.4em]
+ d_0^6d_7-d_1^7
+ &=\frac{A_0^6A_7}{2^{9r}3^{2s}}
+   -\frac{A_1^7}{2^{7r}3^{7s}}\\
+ &=\frac{3^{5s}A_0^6A_7-2^{2r}A_1^7}{2^{9r}3^{7s}},\\[0.4em]
+ d_1^5d_7-d_2^6
+ &=\frac{A_1^5A_7}{2^{8r}3^{7s}}
+   -\frac{A_2^6}{2^{12r}3^{6s}}\\
+ &=\frac{2^{4r}A_1^5A_7-3^sA_2^6}{2^{12r}3^{7s}},\\[0.4em]
+ d_0^5d_7^2-d_2^7
+ &=\frac{A_0^5A_7^2}{2^{11r}3^{4s}}
+   -\frac{A_2^7}{2^{14r}3^{7s}}\\
+ &=\frac{2^{3r}3^{3s}A_0^5A_7^2-A_2^7}{2^{14r}3^{7s}}.
+\end{align*}
+The parity and residue arguments in Theorems~\ref{thm:H-denom} and
+\ref{thm:higher-defects} show that these common denominators are already reduced.
+
+\section{A moment-cone interpretation}
+
+For a finite set of exponents $E=\{e_1,\ldots,e_m\}$, define the moment curve
+\[
+ \Phi_E(q)=(q^{e_1},\ldots,q^{e_m})\in\R^m.
+\]
+The moment vector of $\mu_\alpha$ is
+\[
+ y_E=\int_0^1\Phi_E(q)\dd\mu_\alpha(q).
+\]
+Because the density is positive, $y_E$ lies in the interior of the cone generated by
+$\Phi_E((0,1))$.  This is the geometric reason rational quadrature works: when $y_E$ happens
+to be rational, rational points of the moment curve can be perturbed to surround it, and the
+resulting positive barycentric coordinates can be chosen rational.  The transcendental
+parameter $\alpha$ is therefore invisible to every finite-dimensional moment cone.
+
+For $E=\{0,1,2\}$, the cone is described by the truncated Hausdorff conditions
+\[
+ m_0\ge m_1\ge m_2\ge0,
+ \qquad m_0m_2\ge m_1^2.
+\]
+The sequence from Theorem~\ref{thm:hausdorff} lies strictly in the interior.  Formula
+\eqref{eq:two-atom-measure} is an explicit rational point of the fiber over the same moment
+vector.
+
+\section{Classical inputs and bibliography notes}
+
+The report uses three deep external results.
+
+\begin{enumerate}
+\item \textbf{Gelfond--Schneider.}  If $a$ and $b$ are algebraic, $a\ne0,1$, and $b$ is
+      algebraic irrational, then every value of $a^b$ is transcendental.  It rules out
+      algebraic irrational counterexamples.
+\item \textbf{Catalan--Mih\u{a}ilescu.}  The only solution in integers $X,Y,m,n>1$ of
+      $X^m-Y^n=1$ is $3^2-2^3=1$.  It classifies the consecutive $3$-smooth pairs.
+\item \textbf{Full M\"untz theorem.}  For a sequence of distinct positive exponents bounded
+      away from $0$, convergence of the reciprocal sum prevents density of the associated
+      monomials in $C$ and $L^p$ spaces, including intervals away from the origin.  It produces
+      the invisible directions in Theorem~\ref{thm:muntz-invisible}.
+\end{enumerate}
+
+No unproved transcendence conjecture is used in the unconditional theorems.  Four Exponentials
+and Schanuel appear only in the explicitly conditional Theorem~\ref{thm:conditional-resolution}.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock DOI: \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}
+{10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Almira2007}
+J.~M.~Almira,
+\newblock \emph{M\"untz type theorems I},
+\newblock Surveys in Approximation Theory \textbf{3} (2007), 152--194;
+\newblock arXiv:0710.3570.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BorweinErdelyi1995}
+P.~Borwein and T.~Erd\'elyi,
+\newblock \emph{Polynomials and Polynomial Inequalities},
+\newblock Graduate Texts in Mathematics 161, Springer, 1995.
+
+\bibitem{DasguptaKakde2024}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{Ranks of matrices of logarithms of algebraic numbers II: The Matrix
+Coefficient Conjecture},
+\newblock arXiv:2408.08178, 2024; published in Advances in Mathematics \textbf{487} (2026),
+Article 110753.
+
+\bibitem{Hausdorff1921a}
+F.~Hausdorff,
+\newblock \emph{Summationsmethoden und Momentfolgen. I},
+\newblock Mathematische Zeitschrift \textbf{9} (1921), 74--109.
+
+\bibitem{Hausdorff1921b}
+F.~Hausdorff,
+\newblock \emph{Summationsmethoden und Momentfolgen. II},
+\newblock Mathematische Zeitschrift \textbf{9} (1921), 280--299.
+
+\bibitem{Mihailescu2004}
+P.~Mih\u{a}ilescu,
+\newblock \emph{Primary cyclotomic units and a proof of Catalan's conjecture},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{572} (2004), 167--195.
+\newblock DOI: \href{https://doi.org/10.1515/crll.2004.048}{10.1515/crll.2004.048}.
+
+\bibitem{ShohatTamarkin1943}
+J.~A.~Shohat and J.~D.~Tamarkin,
+\newblock \emph{The Problem of Moments},
+\newblock Mathematical Surveys 1, American Mathematical Society, 1943.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer, 2000.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics 2313,
+Springer, 2023, pp.~579--592.
+\newblock DOI: \href{https://doi.org/10.1007/978-3-031-12244-6_39}
+{10.1007/978-3-031-12244-6\_39}.
+
+\bibitem{Widder1941}
+D.~V.~Widder,
+\newblock \emph{The Laplace Transform},
+\newblock Princeton University Press, 1941.
+
+\end{thebibliography}
+
+\end{document}

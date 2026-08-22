@@ -1,0 +1,1387 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=28mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{listings}
+\usepackage{caption}
+
+\definecolor{deepblue}{RGB}{18,60,105}
+\definecolor{softblue}{RGB}{232,240,249}
+\definecolor{softgray}{RGB}{245,246,247}
+\definecolor{deepred}{RGB}{128,24,24}
+\definecolor{deepgreen}{RGB}{18,96,58}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={The Two-Base Integer-Exponent Problem: Independent Audit and New Arithmetic Obstructions},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Alaoglu--Erdos integer-exponent conjecture},
+  pdfkeywords={Alaoglu--Erdos, four exponentials, continued fractions, divided differences, integer jets}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{The two-base integer-exponent problem}
+\rhead{Independent audit}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newenvironment{claimbox}[1]{%
+  \def\FrameCommand{\fcolorbox{deepblue}{softblue}}%
+  \MakeFramed{\advance\hsize-2\width\FrameRestore}%
+  \noindent\textbf{#1}\par\smallskip
+}{\endMakeFramed}
+
+\newenvironment{redbox}[1]{%
+  \def\FrameCommand{\fcolorbox{deepred}{softgray}}%
+  \MakeFramed{\advance\hsize-2\width\FrameRestore}%
+  \noindent\textbf{#1}\par\smallskip
+}{\endMakeFramed}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vp}[2]{v_{#1}(#2)}
+\newcommand{\AEconj}{Alaoglu--Erd\H{o}s}
+\newcommand{\fourE}{Four Exponentials Conjecture}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\bigO}{\mathrm O}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  backgroundcolor=\color{softgray},
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible
+}
+
+\title{\textbf{The Two-Base Integer-Exponent Problem}\\[0.3em]
+\Large An Independent Proof Audit, Unimodular Gap Arithmetic,\\
+Rational Secant Approximants, and a Fixed-Order Integer-Jet Barrier}
+\author{Prepared for Vladimir Reshetnikov}
+\date{August 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The \AEconj{} conjecture asks whether a real number $x$ satisfying
+$2^x,3^x\in\Z$ must be an integer.  The attached source report was audited
+line by line at the level of its mathematical claims.  It contains a large
+body of exact reductions, formalized partial results, conditional structure,
+and failed or incomplete research programs, but it explicitly does not
+contain an unconditional proof.  The present document is deliberately
+nonduplicative: it does not reproduce that corpus.  Instead it gives an
+independent proof ledger and develops four additions.
+
+First, a general unimodular collision theorem controls common divisors of
+binomial gaps $B^q-A^p$.  Applied to consecutive continued-fraction
+convergents to $\log 3/\log 2$, it proves that the gaps
+$3^{q_j}-2^{p_j}$ are pairwise coprime at adjacent indices.  Second, under a
+hypothetical counterexample, the corresponding output gaps produce positive
+rational divided differences and rational secant approximants to $x$ that
+alternate rigorously around $x$; their reduced denominator supports obey the
+same unimodular separation.  Third, a finite order-signature theorem shows
+that no finite collection of strict monomial comparisons can distinguish the
+pair $(2,3)$ from infinitely many unrelated coprime integer pairs.  Fourth, a
+matrix divisibility theorem proves that fixed-order Euler or Hasse integer
+jets contribute only $O(RJ\log L)$ to the logarithmic arithmetic budget of an
+$R\times R$ determinant with exponent scale $L$ and jet order $J$; therefore
+fixed-order jets cannot alter an $R^2$ leading constant when $\log L=o(R)$.
+
+These results are rigorous and new relative to the attached report, but they
+do not close the final algebraic-independence gap.  No unconditional proof of
+the \AEconj{} conjecture is claimed.  The exact missing implication is isolated,
+and a complete conditional proof from the \fourE{} is included.
+\end{abstract}
+
+\clearpage
+\begin{claimbox}{Outcome and claim ledger}
+\noindent\textbf{Unconditional proof of the full conjecture.}\par
+Not obtained; no such proof is present in the attached report.\medskip
+
+\noindent\textbf{Conditional proof from Four Exponentials.}\par
+Complete and elementary once the conjectural input is granted.\medskip
+
+\noindent\textbf{Counterexample restrictions.}\par
+Any counterexample is positive, irrational, transcendental, and gives multiplicatively independent integer outputs.\medskip
+
+\noindent\textbf{New arithmetic theorem.}\par
+Unimodular exponent pairs force a sharp gcd formula for binomial gaps.\medskip
+
+\noindent\textbf{New approximation theorem.}\par
+Hypothetical output gaps give rational secant approximants alternating around $x$, with separated denominator support.\medskip
+
+\noindent\textbf{New no-go theorem.}\par
+Finitely many monomial order comparisons cannot characterize the special logarithmic slope.\medskip
+
+\noindent\textbf{New determinant barrier.}\par
+Fixed-order entrywise integer jets are lower-order at the $R^2$ scale unless $J\log L\gtrsim R$ or a genuinely global cancellation mechanism is found.
+\end{claimbox}
+
+\tableofcontents
+\newpage
+
+\section{The problem and the standard boundary}
+
+\subsection{Statement}
+
+\begin{conjecture}[\AEconj{}]
+\label{conj:AE}
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+Because $2^x$ and $3^x$ are positive, the integer hypothesis means that they
+are positive integers.  Set
+\begin{equation}
+  M:=2^x,\qquad N:=3^x,
+  \label{eq:MN}
+\end{equation}
+whenever a hypothetical solution is under discussion, and put
+\begin{equation}
+  \alpha:=\frac{\log 3}{\log 2}=\log_2 3.
+  \label{eq:alpha}
+\end{equation}
+Then $N=M^\alpha$, and the conjecture is equivalently the assertion that the
+only positive integers $M$ for which $M^\alpha$ is an integer are powers of
+$2$.
+
+\subsection{Why a source audit matters}
+
+The attached source file
+\begin{center}
+\texttt{/Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex}
+\end{center}
+is a very large unified research report.  Its title page and several later
+status statements explicitly say that the full conjecture remains open.  It
+contains many exact lemmas, conditional classifications, determinant
+constructions, computational exclusions, and proposed interfaces, but the
+existence of such a large body of correct partial work is not itself a proof.
+The decisive audit question is whether any section derives a contradiction
+from the sole assumptions in \cref{conj:AE}.  It does not.
+
+The present report therefore follows two rules.
+\begin{enumerate}[label=(\roman*)]
+\item It does not copy or paraphrase at length the attached report's existing
+  twenty-part survey, exact conditional monoid classification, determinant
+  hierarchies, $p$-adic transport calculations, special-function audits, or
+  formalization catalogue.
+\item Every new claim below is proved from explicitly stated hypotheses, and
+  every point at which a known transcendence conjecture would be needed is
+  marked as such.
+\end{enumerate}
+
+\section{Elementary reductions that every proof must respect}
+
+\begin{proposition}[Sign and small interval]
+\label{prop:sign}
+If $2^x\in\Z$, then either $x=0$ or $x\ge 1$.  In particular, a nonintegral
+solution of \cref{conj:AE} would satisfy $x>1$.
+\end{proposition}
+
+\begin{proof}
+If $x<0$, then $0<2^x<1$, so $2^x$ cannot be a positive integer.  If
+$0<x<1$, then $1<2^x<2$, again impossible.  The remaining possibilities are
+$x=0$ and $x\ge1$.  A nonintegral solution cannot equal $1$.
+\end{proof}
+
+\begin{proposition}[Rational exponents]
+\label{prop:rational}
+Let $a>1$ be an integer.  If $x\in\Q$ and $a^x\in\Z$, then the denominator of
+$x$ in lowest terms divides every prime valuation of $a$.  In particular, if
+$a=2$ and $2^x\in\Z$, then $x\in\Z$.
+\end{proposition}
+
+\begin{proof}
+Write $x=r/s$ with $r\in\Z$, $s\in\N$, and $\gcd(r,s)=1$.  The case $r<0$ is
+excluded when $a^x$ is a positive integer other than zero.  Put $a^x=m\in\N$.
+Then $m^s=a^r$.  For every prime $p$,
+\[
+  s\,v_p(m)=r\,v_p(a).
+\]
+Since $\gcd(r,s)=1$, one has $s\mid v_p(a)$ for every $p\mid a$.  For $a=2$,
+$v_2(a)=1$, hence $s=1$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:irrational}
+Every nonintegral solution of \cref{conj:AE} is irrational.
+\end{corollary}
+
+\begin{proposition}[Algebraic exponents]
+\label{prop:transcendental}
+Every nonintegral solution of \cref{conj:AE} is transcendental.
+\end{proposition}
+
+\begin{proof}
+By \cref{cor:irrational}, such an $x$ is irrational.  If it were algebraic,
+then the Gelfond--Schneider theorem would make $2^x$ transcendental, contrary
+to $2^x\in\Z$.
+\end{proof}
+
+\begin{proposition}[Output multiplicative independence]
+\label{prop:independent}
+Let $x>0$ and let $M,N$ be as in \eqref{eq:MN}.  Then $M$ and $N$ are
+multiplicatively independent: if $M^rN^s=1$ for $r,s\in\Z$, then $r=s=0$.
+\end{proposition}
+
+\begin{proof}
+The relation gives $2^{xr}3^{xs}=1$, hence $2^r3^s=1$ after taking the
+positive $x$th root.  Unique factorization gives $r=s=0$.
+\end{proof}
+
+\subsection{Equivalent logarithmic formulations}
+
+For positive integers $M,N$, the equality
+\[
+  \frac{\log M}{\log 2}=\frac{\log N}{\log 3}
+\]
+is equivalent to
+\begin{equation}
+  \det\begin{pmatrix}
+  \log 2&\log M\\
+  \log 3&\log N
+  \end{pmatrix}=0.
+  \label{eq:logdet}
+\end{equation}
+Thus the problem asks for a very special classification of rank-one
+$2\times2$ matrices of logarithms of positive integers.  Baker's theorem
+controls nonzero \emph{linear} forms in logarithms with algebraic
+coefficients.  Equation \eqref{eq:logdet} is instead a bilinear relation among
+four logarithms.  Treating the coefficients $\log M$ and $\log N$ as if they
+were algebraic is precisely the invalid step in several tempting arguments.
+
+\section{The exact Four Exponentials implication}
+
+\begin{conjecture}[Four Exponentials]
+\label{conj:4e}
+Let $u_1,u_2$ be linearly independent over $\Q$, and let $v_1,v_2$ be
+linearly independent over $\Q$.  Then at least one of the four numbers
+$\exp(u_iv_j)$, $1\le i,j\le2$, is transcendental.
+\end{conjecture}
+
+\begin{theorem}[Conditional resolution]
+\label{thm:4e}
+The \fourE{} implies the \AEconj{} conjecture.
+\end{theorem}
+
+\begin{proof}
+Assume $2^x$ and $3^x$ are integers.  If $x\notin\Q$, take
+\[
+  (u_1,u_2)=(\log2,\log3),\qquad (v_1,v_2)=(1,x).
+\]
+The first pair is $\Q$-linearly independent because $2$ and $3$ are
+multiplicatively independent; the second pair is $\Q$-linearly independent
+because $x$ is irrational.  Yet all four exponentials
+\[
+  \e^{\log2}=2,\quad \e^{\log3}=3,\quad
+  \e^{x\log2}=2^x,\quad \e^{x\log3}=3^x
+\]
+are algebraic, contradicting \cref{conj:4e}.  Therefore $x\in\Q$, and
+\cref{prop:rational} gives $x\in\Z$.
+\end{proof}
+
+\begin{redbox}{The unavoidable status conclusion}
+The argument above is complete, but its decisive input is the unproved
+\fourE{}.  Replacing that conjecture by a sentence such as ``the four
+exponentials are algebraic, hence the rows or columns are dependent'' is not a
+proof; it is exactly the conjectural implication.  Any unconditional solution
+must either prove this special case of Four Exponentials or exploit the
+integrality of the four exponentials in a way not available for arbitrary
+algebraic values.
+\end{redbox}
+
+\section{Unimodular arithmetic of binomial gaps}
+\label{sec:gaps}
+
+The first new contribution is a general gcd theorem for gaps $B^q-A^p$.  It
+is elementary, but it organizes a substantial amount of local arithmetic in
+one determinant parameter.
+
+\subsection{The collision determinant}
+
+\begin{definition}
+For exponent pairs $(p,q),(r,s)\in\N^2$, define their determinant distance by
+\[
+  \Delta((p,q),(r,s)):=ps-rq,
+  \qquad D:=\abs{ps-rq}.
+\]
+The pairs are \emph{unimodular neighbors} when $D=1$.
+\end{definition}
+
+\begin{theorem}[Unimodular gap gcd theorem]
+\label{thm:gapgcd}
+Let $A,B\ge2$ be coprime integers, let $p,q,r,s\in\N$, and assume
+$D=\abs{ps-rq}>0$.  Then
+\begin{equation}
+ \gcd(B^q-A^p,\,B^s-A^r)
+ \mid \gcd(A^D-1,\,B^D-1).
+ \label{eq:gapgcd}
+\end{equation}
+In particular, if $D=1$, then the sharp identity
+\begin{equation}
+ \gcd(B^q-A^p,\,B^s-A^r)
+ = \gcd(A-1,B-1)
+ \label{eq:unimodular}
+\end{equation}
+holds.
+\end{theorem}
+
+\begin{proof}
+Let $d$ be the gcd on the left of \eqref{eq:gapgcd}.  Since $\gcd(A,B)=1$,
+$d$ is coprime to $AB$: a prime dividing both $d$ and $A$ would also divide
+$B^q$, and similarly with $A$ and $B$ interchanged.  Hence $A$ and $B$ are
+units modulo $d$.  We have
+\[
+  B^q\equiv A^p\pmod d,\qquad B^s\equiv A^r\pmod d.
+\]
+Raise the first congruence to the power $s$ and the second to the power $q$.
+The left sides agree, so
+\[
+ A^{ps}\equiv A^{rq}\pmod d,
+\]
+and therefore $A^{ps-rq}\equiv1\pmod d$.  The same argument, raising the
+first congruence to $r$ and the second to $p$, gives
+$B^{rq-sp}\equiv1\pmod d$.  Inverting when necessary yields
+$A^D\equiv B^D\equiv1\pmod d$, proving \eqref{eq:gapgcd}.  If $D=1$,
+this shows that the left-hand gcd divides $\gcd(A-1,B-1)$.  Conversely,
+every divisor of both $A-1$ and $B-1$ divides each gap $B^q-A^p$ because
+$A\equiv B\equiv1$ modulo that divisor.  This proves the equality
+\eqref{eq:unimodular}.
+\end{proof}
+
+\begin{remark}[Primewise version without coprimality]
+\label{rem:primewise}
+If $A$ and $B$ are not assumed coprime, the same proof applies to every prime
+$\ell\nmid AB$.  Thus the part of the left-hand gcd supported away from
+$AB$ divides $\gcd(A^D-1,B^D-1)$.  Equivalently, any such common prime
+satisfies
+\[
+  \ord_\ell(A)\mid D,\qquad \ord_\ell(B)\mid D.
+\]
+\end{remark}
+
+\subsection{The continued-fraction recurrence shadow}
+
+The determinant proof gives the cleanest gcd statement.  There is also an
+exact recurrence explaining why adjacent gcds propagate unchanged along a
+continued fraction.
+
+\begin{proposition}[Gap recurrence]
+\label{prop:gaprecurrence}
+Suppose exponent pairs satisfy
+\[
+ p_{j+1}=a_{j+1}p_j+p_{j-1},\qquad
+ q_{j+1}=a_{j+1}q_j+q_{j-1}
+\]
+with $a_{j+1}\in\N$.  Put $h_j=B^{q_j}-A^{p_j}$.  Then
+\begin{align}
+ h_{j+1}
+ &=B^{q_{j-1}}h_j
+   \sum_{t=0}^{a_{j+1}-1}
+   B^{q_j(a_{j+1}-1-t)}A^{p_jt}
+   +A^{a_{j+1}p_j}h_{j-1}.
+ \label{eq:gaprecurrence}
+\end{align}
+If $\gcd(A,B)=1$, then
+\begin{equation}
+ \gcd(h_{j+1},h_j)=\gcd(h_j,h_{j-1}).
+ \label{eq:gcdconservation}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Substitute the recurrences for $p_{j+1},q_{j+1}$ and add and subtract
+$B^{q_{j-1}}A^{a_{j+1}p_j}$:
+\begin{align*}
+ h_{j+1}
+ &=B^{q_{j-1}}(B^{q_j})^{a_{j+1}}
+   -A^{p_{j-1}}(A^{p_j})^{a_{j+1}}\\
+ &=B^{q_{j-1}}
+   \bigl((B^{q_j})^{a_{j+1}}-(A^{p_j})^{a_{j+1}}\bigr)
+   +A^{a_{j+1}p_j}(B^{q_{j-1}}-A^{p_{j-1}}).
+\end{align*}
+Factor the difference of powers to obtain \eqref{eq:gaprecurrence}.  Modulo
+$h_j$ this gives
+\[
+ h_{j+1}\equiv A^{a_{j+1}p_j}h_{j-1}\pmod{h_j}.
+\]
+When $\gcd(A,B)=1$, every $h_j=B^{q_j}-A^{p_j}$ is coprime to $A$.
+Multiplication by $A^{a_{j+1}p_j}$ therefore does not change the gcd with
+$h_j$, proving \eqref{eq:gcdconservation}.
+\end{proof}
+
+\begin{corollary}[Exact adjacent gcd along the $2$--$3$ slope]
+\label{cor:exactadjacentgeneral}
+Let $(p_j/q_j)$ be the convergents to $\log3/\log2$.  For every coprime
+$A,B\ge2$ and every $j\ge0$,
+\[
+ \gcd(B^{q_j}-A^{p_j},\,B^{q_{j+1}}-A^{p_{j+1}})
+ =\gcd(A-1,B-1).
+\]
+\end{corollary}
+
+\begin{proof}
+Consecutive convergents are unimodular, so this is already
+\eqref{eq:unimodular}.  Alternatively, \cref{prop:gaprecurrence} shows the
+adjacent gcd is constant; at the first two convergents $(1,1)$ and $(2,1)$ it
+is
+\[
+ \gcd(B-A,B-A^2)=\gcd(A-1,B-1),
+\]
+where coprimality removes the possible factor from $A$.
+\end{proof}
+
+\subsection{Continued fractions and adjacent coprimality}
+
+Let
+\[
+  \frac{p_j}{q_j}=[a_0;a_1,\ldots,a_j]
+\]
+be the convergents to $\alpha=\log3/\log2$, indexed from $j=0$.  Consecutive
+convergents satisfy
+\begin{equation}
+  \abs{p_jq_{j+1}-p_{j+1}q_j}=1.
+  \label{eq:cfdet}
+\end{equation}
+Define the signed base gaps
+\begin{equation}
+  g_j:=3^{q_j}-2^{p_j}.
+  \label{eq:basegap}
+\end{equation}
+
+\begin{theorem}[Adjacent base gaps are coprime]
+\label{thm:adjacent}
+For every $j\ge0$,
+\begin{equation}
+  \gcd(g_j,g_{j+1})=1.
+  \label{eq:adjacentcoprime}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:gapgcd} with $(A,B)=(2,3)$ and the two consecutive convergent
+pairs.  By \eqref{eq:cfdet}, $D=1$, so the gcd divides
+$\gcd(2-1,3-1)=1$.
+\end{proof}
+
+\begin{corollary}[Higher-distance collision spectrum]
+\label{cor:higherdistance}
+For any $j\ne k$, put
+\[
+  D_{jk}:=\abs{p_jq_k-p_kq_j}.
+\]
+Then
+\[
+  \gcd(g_j,g_k)\mid\gcd(2^{D_{jk}}-1,3^{D_{jk}}-1).
+\]
+Thus every repeated prime divisor of two base gaps has multiplicative orders
+of both $2$ and $3$ dividing the determinant distance $D_{jk}$.
+\end{corollary}
+
+The first convergents and gaps are shown in \cref{tab:gaps}.  The huge growth
+of the gaps is compatible with their adjacent coprimality; relative
+Diophantine closeness does not mean small absolute difference once the
+exponential scale is restored.
+
+\begin{table}[ht]
+\centering
+\caption{Initial convergents to $\log3/\log2$ and signed gaps.}
+\label{tab:gaps}
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$j$ & $p_j$ & $q_j$ & $\sgn(g_j)$ & $\abs{g_j}$ \\
+\midrule
+0 & 1 & 1 & $+$ & $1$\\
+1 & 2 & 1 & $-$ & $1$\\
+2 & 3 & 2 & $+$ & $1$\\
+3 & 8 & 5 & $-$ & $13$\\
+4 & 19 & 12 & $+$ & $7153$\\
+5 & 65 & 41 & $-$ & $420491770248316829$\\
+6 & 84 & 53 & $+$ & $40432553845953101497907$\\
+7 & 485 & 306 & $-$ & a $144$-digit integer\\
+8 & 1054 & 665 & $+$ & a $313$-digit integer\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Output gaps under a hypothetical counterexample}
+
+Assume now that $x>1$ is a nonintegral solution, and retain $M=2^x$,
+$N=3^x$.  Define
+\begin{equation}
+  G_j:=N^{q_j}-M^{p_j}.
+  \label{eq:outputgap}
+\end{equation}
+The common logarithmic slope implies
+\begin{equation}
+  \sgn(G_j)=\sgn(g_j).
+  \label{eq:samesign}
+\end{equation}
+Indeed, if
+\begin{equation}
+  \delta_j:=q_j\log3-p_j\log2,
+  \label{eq:delta}
+\end{equation}
+then
+\[
+  g_j=2^{p_j}(\e^{\delta_j}-1),\qquad
+  G_j=M^{p_j}(\e^{x\delta_j}-1).
+\]
+
+\begin{corollary}[Output collision restriction]
+\label{cor:outputgcd}
+For consecutive convergents, if $\gcd(M,N)=1$, then the exact formula
+\[
+  \gcd(G_j,G_{j+1})=\gcd(M-1,N-1)
+\]
+holds.
+Without the coprimality assumption, the part of
+$\gcd(G_j,G_{j+1})$ supported away from $MN$ satisfies the same divisibility.
+More generally, at indices $j\ne k$ every common prime $\ell\nmid MN$ has
+$\ord_\ell(M),\ord_\ell(N)\mid D_{jk}$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:gapgcd} or \cref{rem:primewise} to $(A,B)=(M,N)$.
+\end{proof}
+
+\begin{remark}[What this does not prove]
+The base gaps have adjacent gcd exactly $1$.  When $M,N$ are coprime, the
+output gaps have the equally rigid but not contradictory constant adjacent
+gcd $\gcd(M-1,N-1)$; without coprimality, additional factors supported on
+$MN$ may occur.  There is no known theorem forcing the same prime to recur in adjacent
+output gaps.  Consequently the gcd theorem supplies arithmetic separation,
+not a contradiction.
+\end{remark}
+
+\section{Transported divided differences}
+\label{sec:secants}
+
+The same convergents produce a rational family whose analytic behavior is
+completely rigid.
+
+\subsection{Positive rational divided differences}
+
+For any positive $p,q$ with $3^q\ne2^p$, define
+\begin{equation}
+  Q_{p,q}:=\frac{N^q-M^p}{3^q-2^p}.
+  \label{eq:Qpq}
+\end{equation}
+
+\begin{theorem}[Exact divided-difference transport]
+\label{thm:divdiff}
+Under a hypothetical solution $x>1$, $Q_{p,q}$ is a positive rational number
+and
+\begin{equation}
+ Q_{p,q}
+ =x\int_0^1\bigl((1-t)2^p+t3^q\bigr)^{x-1}\dd t.
+ \label{eq:integralQ}
+\end{equation}
+If $Q_{p,q}=a_{p,q}/b_{p,q}$ in lowest terms with $b_{p,q}>0$, then
+\begin{equation}
+ b_{p,q}=\frac{\abs{3^q-2^p}}
+ {\gcd(\abs{3^q-2^p},\abs{N^q-M^p})},
+ \qquad
+ b_{p,q}\mid\abs{3^q-2^p}.
+ \label{eq:denexact}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Both numerator and denominator in \eqref{eq:Qpq} are nonzero integers.  Their
+signs agree because $t\mapsto t^x$ is strictly increasing on the positive
+reals, so the quotient is positive.  The identity
+\[
+  \frac{b^x-a^x}{b-a}=x\int_0^1((1-t)a+tb)^{x-1}\dd t
+\]
+follows from the fundamental theorem of calculus after the affine
+substitution $u=(1-t)a+tb$; take $a=2^p$, $b=3^q$.  Formula
+\eqref{eq:denexact} is the standard reduction of a ratio of two integers.
+\end{proof}
+
+For convergents, write $Q_j:=Q_{p_j,q_j}$ and let $b_j$ be its reduced
+denominator.
+
+\begin{corollary}[Adjacent denominator separation]
+\label{cor:denomsep}
+For every $j\ge0$,
+\[
+  \gcd(b_j,b_{j+1})=1.
+\]
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:divdiff}, $b_j\mid\abs{g_j}$.  Apply
+\cref{thm:adjacent}.
+\end{proof}
+
+\subsection{Asymptotics at convergent nodes}
+
+The continued-fraction estimate gives
+\begin{equation}
+  \abs{\delta_j}
+  =\log2\,\abs{q_j\alpha-p_j}
+  <\frac{\log2}{q_{j+1}}.
+  \label{eq:deltabound}
+\end{equation}
+Moreover, the signs of $\delta_j$ alternate.
+
+\begin{proposition}[Asymptotic secant scale]
+\label{prop:Qasymp}
+As $j\to\infty$,
+\begin{align}
+ Q_j
+ &=2^{p_j(x-1)}\frac{\e^{x\delta_j}-1}{\e^{\delta_j}-1}
+ \label{eq:Qexactexp}\\
+ &=x\,2^{p_j(x-1)}
+ \left(1+\frac{x-1}{2}\delta_j+\bigO_x(\delta_j^2)\right)
+ \label{eq:Qasymp}\\
+ \log Q_j
+ &=(x-1)p_j\log2+\log x+\bigO_x(q_{j+1}^{-1})
+ \label{eq:logQ}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Use $3^{q_j}=2^{p_j}\e^{\delta_j}$ and
+$N^{q_j}=M^{p_j}\e^{x\delta_j}$ in \eqref{eq:Qpq}.  Since
+$M^{p_j}/2^{p_j}=2^{p_j(x-1)}$, this gives \eqref{eq:Qexactexp}.  Taylor
+expansion at $\delta=0$ yields
+\[
+ \frac{\e^{x\delta}-1}{\e^\delta-1}
+ =x+\frac{x(x-1)}2\delta
+ +\frac{x(x-1)(2x-1)}{12}\delta^2+\bigO_x(\delta^3).
+\]
+Combine this with \eqref{eq:deltabound}; taking logarithms is legitimate for
+all sufficiently large $j$ because the parenthetical factor tends to $1$.
+\end{proof}
+
+\subsection{Rational approximants that bracket the unknown exponent}
+
+Normalize away the exponential scale by defining
+\begin{equation}
+ T_j:=\frac{2^{p_j}}{M^{p_j}}Q_j
+ =\frac{2^{p_j}(N^{q_j}-M^{p_j})}
+ {M^{p_j}(3^{q_j}-2^{p_j})}.
+ \label{eq:Tj}
+\end{equation}
+Every $T_j$ is rational.  Define the analytic secant function
+\begin{equation}
+ \Phi_x(\delta):=
+ \begin{cases}
+ \dfrac{\e^{x\delta}-1}{\e^\delta-1},&\delta\ne0,\\[0.8em]
+ x,&\delta=0.
+ \end{cases}
+ \label{eq:Phi}
+\end{equation}
+Then $T_j=\Phi_x(\delta_j)$.
+
+\begin{theorem}[Alternating rational secant brackets]
+\label{thm:brackets}
+Let $x>1$.  The function $\Phi_x$ is strictly increasing on $\R$.  Hence
+\begin{equation}
+  \sgn(T_j-x)=\sgn(\delta_j),
+  \label{eq:bracketsign}
+\end{equation}
+and consecutive $T_j$ lie on opposite sides of $x$.  Quantitatively,
+\begin{equation}
+  T_j-x=\frac{x(x-1)}2\delta_j+\bigO_x(\delta_j^2)
+  =\bigO_x(q_{j+1}^{-1}).
+  \label{eq:Terror}
+\end{equation}
+Thus a hypothetical counterexample generates an explicit alternating sequence
+of rational upper and lower bounds converging to $x$.
+\end{theorem}
+
+\begin{proof}
+For every real $\delta$,
+\begin{equation}
+ \Phi_x(\delta)
+ =x\int_0^1(1-t+t\e^\delta)^{x-1}\dd t.
+ \label{eq:Phiintegral}
+\end{equation}
+Differentiating under the integral sign gives
+\[
+ \Phi_x'(\delta)
+ =x(x-1)\e^\delta
+ \int_0^1t(1-t+t\e^\delta)^{x-2}\dd t>0.
+\]
+Therefore $\Phi_x(\delta)-\Phi_x(0)$ has the sign of $\delta$, proving
+\eqref{eq:bracketsign}.  The expansion in \eqref{eq:Terror} is the Taylor
+series already used in \cref{prop:Qasymp}, and the final estimate follows from
+\eqref{eq:deltabound}.
+\end{proof}
+
+\begin{definition}[Denominator away from a fixed integer]
+For a positive integer $d$ and $M\ge2$, let $d^{(M)}$ denote the largest
+divisor of $d$ coprime to $M$.
+\end{definition}
+
+\begin{corollary}[External denominator separation for the rational brackets]
+\label{cor:Textden}
+Let $d_j$ be the reduced denominator of $T_j$.  Then
+\[
+ d_j^{(M)}\mid\abs{g_j},\qquad
+ \gcd(d_j^{(M)},d_{j+1}^{(M)})=1.
+\]
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:Tj} is obtained from $Q_j$ by multiplying by
+$2^{p_j}/M^{p_j}$.  New denominator primes can therefore come only from $M$;
+away from $M$, the reduced denominator still divides the denominator $b_j$ of
+$Q_j$, hence divides $g_j$.  Now use \cref{thm:adjacent}.
+\end{proof}
+
+\subsection{Why the rational brackets are not yet an irrationality-measure
+contradiction}
+
+The approximation error in \eqref{eq:Terror} is of order $q_{j+1}^{-1}$,
+whereas the denominator of $T_j$ can contain $M^{p_j}$ and has exponential
+height in $p_j$.  In terms of that denominator, the approximation is far too
+weak to contradict any general irrationality measure.  More importantly,
+$x$ is already forced to be transcendental by \cref{prop:transcendental}, so
+algebraic irrationality measures do not apply.  The new information is not
+the existence of rational approximants, but their canonical construction,
+alternation, and prime-support separation.
+
+\section{A finite order-signature no-go theorem}
+\label{sec:signature}
+
+The common logarithmic slope means that every monomial comparison is
+transported:
+\[
+  2^a3^b<2^c3^d
+  \quad\Longleftrightarrow\quad
+  M^aN^b<M^cN^d.
+\]
+It is tempting to search for a finite list of such inequalities that only the
+pair $(2,3)$ can satisfy.  The next theorem rules out that strategy in its
+pure form.
+
+\begin{theorem}[Finite order-signature indistinguishability]
+\label{thm:signature}
+Let $F\subset\Z^2\setminus\{(0,0)\}$ be finite.  There exist infinitely many
+coprime, multiplicatively independent integer pairs $(M,N)$ with $M,N>1$ such
+that
+\begin{equation}
+ \sgn(a\log M+b\log N)
+ =\sgn(a\log2+b\log3)
+ \quad\text{for every }(a,b)\in F.
+ \label{eq:signature}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $\rho=\log N/\log M$.  Since
+$\alpha=\log3/\log2$ is irrational, $a+b\alpha\ne0$ for every nonzero
+$(a,b)\in\Z^2$.  Because $F$ is finite, there is an open interval $I$
+containing $\alpha$ on which every function $\rho\mapsto a+b\rho$ has the
+same sign as at $\alpha$.
+
+Choose an arbitrarily large prime $P$ and set $M=P$.  Among any two
+consecutive integers nearest to $P^\alpha$, at least one is not divisible by
+$P$; choose such an integer as $N$.  Then $\gcd(M,N)=1$, and
+\[
+ \frac{N}{P^\alpha}\longrightarrow1,
+ \qquad
+ \frac{\log N}{\log P}\longrightarrow\alpha
+ \quad(P\to\infty).
+\]
+For all sufficiently large choices, $\rho\in I$, so
+\[
+ \sgn(a\log M+b\log N)
+ =\sgn(\log M)\,\sgn(a+b\rho)
+ =\sgn(a+b\alpha),
+\]
+which is the right side of \eqref{eq:signature}.  The pair is
+multiplicatively independent because two coprime integers greater than $1$
+cannot satisfy a nontrivial integer power relation.  Infinitely many primes
+$P$ give infinitely many pairs.
+\end{proof}
+
+\begin{corollary}[Finite monomial order patterns]
+\label{cor:finiteorder}
+For every finite set $E\subset\Z^2$, there exist infinitely many coprime,
+multiplicatively independent pairs $(M,N)$ for which the entire strict order
+pattern of the monomials $M^aN^b$, $(a,b)\in E$, is identical to that of
+$2^a3^b$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:signature} to all nonzero differences of pairs in $E$.
+\end{proof}
+
+\begin{warning}
+This theorem does not rule out a finite proof using congruences, exact
+integrality, valuations, or transcendence input.  It rules out only a proof
+whose distinguishing information is a finite collection of strict monomial
+order comparisons.  Any order-theoretic approach must use an infinite or
+uniform property, or combine order with genuinely arithmetic data.
+\end{warning}
+
+\section{A fixed-order integer-jet barrier}
+\label{sec:jets}
+
+Integer jets are attractive in determinant methods because Euler derivatives
+preserve integrality at integer points:
+\[
+ (X\partial_X)^r(Y\partial_Y)^s(X^nY^k)
+ =n^rk^sX^nY^k.
+\]
+The attached report identifies nonvanishing and scaling as unresolved.  The
+next result gives a sharp general budget for the automatic divisibility that
+can come from the entrywise integer multipliers alone.
+
+\subsection{A matrix theorem}
+
+For an integer matrix $C=(c_{ij})_{1\le i,j\le R}$, allow zero entries and
+set $v_p(0)=+\infty$.  Let
+\[
+ \Sigma(C):=\{\sigma\in S_R:c_{i,\sigma(i)}\ne0\text{ for all }i\}.
+\]
+If $\Sigma(C)\ne\varnothing$, define
+\begin{equation}
+ \tau_p(C):=\min_{\sigma\in\Sigma(C)}
+ \sum_{i=1}^R v_p(c_{i,\sigma(i)}),
+ \qquad
+ T(C):=\prod_p p^{\tau_p(C)}.
+ \label{eq:tau}
+\end{equation}
+Only finitely many factors in $T(C)$ are nontrivial.
+
+\begin{theorem}[Entrywise decoration budget]
+\label{thm:decoration}
+Let $E=(e_{ij})$ and $C=(c_{ij})$ be integer $R\times R$ matrices.  Assume
+$\Sigma(C)\ne\varnothing$ and $\abs{c_{ij}}\le B$ for every nonzero entry,
+where $B\ge1$.  Then
+\begin{equation}
+  T(C)\mid\det(E\circ C),
+  \label{eq:Tdiv}
+\end{equation}
+where $\circ$ denotes entrywise product, and
+\begin{equation}
+  \log T(C)\le R\log B.
+  \label{eq:Tbound}
+\end{equation}
+If additionally $\abs{e_{ij}}\le E_0$, then
+\begin{equation}
+ \log\abs{\det(E\circ C)}
+ \le\log(R!)+R\log E_0+R\log B
+ \label{eq:archbudget}
+\end{equation}
+whenever the determinant is nonzero.
+\end{theorem}
+
+\begin{proof}
+Expand the determinant by permutations.  A term with a zero $c$-entry
+vanishes.  Every nonzero term indexed by $\sigma\in\Sigma(C)$ has $p$-adic
+valuation at least
+\[
+ \sum_i v_p(c_{i,\sigma(i)})\ge\tau_p(C),
+\]
+because the $e_{ij}$ are integers.  Hence every term, and therefore their sum,
+is divisible by $p^{\tau_p(C)}$ for every $p$, proving \eqref{eq:Tdiv}.
+
+For the size bound, use ``sum of minima is at most the minimum of sums'':
+\begin{align*}
+ \log T(C)
+ &=\sum_p\tau_p(C)\log p\\
+ &\le\min_{\sigma\in\Sigma(C)}
+   \sum_p\sum_i v_p(c_{i,\sigma(i)})\log p\\
+ &=\min_{\sigma\in\Sigma(C)}
+   \sum_i\log\abs{c_{i,\sigma(i)}}
+ \le R\log B.
+\end{align*}
+Finally, every Leibniz term of $\det(E\circ C)$ has absolute value at most
+$(E_0B)^R$, and there are $R!$ terms, giving \eqref{eq:archbudget}.
+\end{proof}
+
+\begin{remark}[Optimality of the scale]
+The bound $R\log B$ cannot be improved in general: take $C=B I_R$ and an
+appropriate diagonal $E$.  The theorem is therefore a structural ceiling,
+not merely a loose use of Hadamard's inequality.
+\end{remark}
+
+\subsection{Euler and Hasse jets}
+
+Suppose exponents $n,k$ lie in $[0,L]\cap\Z$ and all Euler jet orders obey
+$r+s\le J$.  The multiplier satisfies
+\[
+ \abs{n^rk^s}\le L^{r+s}\le L^J
+\]
+when nonzero.
+
+\begin{corollary}[Euler-jet budget]
+\label{cor:eulerbudget}
+For an $R\times R$ determinant obtained by entrywise decorating an integral
+evaluation matrix with Euler-jet multipliers of total order at most $J$ and
+exponent scale at most $L$, the automatic extra divisor supplied solely by
+those multipliers has logarithm at most
+\begin{equation}
+  RJ\log L.
+  \label{eq:eulerbudget}
+\end{equation}
+The same quantity is the maximum added term in the crude logarithmic
+archimedean bound.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:decoration} with $B=L^J$.
+\end{proof}
+
+Hasse derivatives produce multipliers $\binom nr\binom ks$, also bounded by
+$L^{r+s}\le L^J$.  They additionally lower the powers of $X$ and $Y$; those
+row or column factors must be charged separately and cannot be counted as a
+free jet gain.
+
+\begin{corollary}[Leading-order no-go for fixed-order jets]
+\label{cor:jetnogo}
+Consider a sequence of $R\times R$ determinant constructions with exponent
+scale $L_R$ and jet order $J_R$.  If
+\begin{equation}
+  J_R\log L_R=o(R),
+  \label{eq:subcriticaljets}
+\end{equation}
+then the termwise guaranteed integer-jet divisor and the corresponding crude\
+archimedean multiplier budget are both $o(R^2)$ in logarithmic scale.  In particular, fixed $J_R$ with polynomially growing $L_R$ cannot
+alter an $R^2$ leading constant in an archimedean-versus-nonarchimedean
+determinant comparison.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:eulerbudget}, the contribution is at most
+$R J_R\log L_R=o(R^2)$.
+\end{proof}
+
+\begin{claimbox}{What a successful jet method must add}
+At least one of the following must occur:
+\begin{enumerate}[label=(\alph*)]
+\item $J_R\log L_R\gtrsim R$, so that the jet order or exponent scale is
+  genuinely large;
+\item the determinant has systematic cancellation beyond the minimum
+  valuation of its individual Leibniz terms;
+\item confluence creates a global factorization or rank defect not representable
+  as bounded entrywise integer decoration;
+\item a nonlocal arithmetic identity couples several primes or several jet
+  levels at once.
+\end{enumerate}
+Fixed-order differentiation alone cannot supply the missing leading-order
+arithmetic constant.
+\end{claimbox}
+
+\section{Stress tests of possible closure arguments}
+\label{sec:stress}
+
+This section records the last steps one might hope to extract from the new
+lemmas and explains precisely why each step is currently unavailable.
+
+\subsection{Can adjacent coprimality force a contradiction?}
+
+No.  The integers $g_j$ are allowed to introduce new prime divisors at every
+index.  The theorem $\gcd(g_j,g_{j+1})=1$ is entirely compatible with their
+exponential growth.  The reduced denominators $b_j$ of $Q_j$ inherit this
+separation, but a sequence of rationals can have pairwise coprime adjacent
+denominators indefinitely.  A contradiction would require a separate theorem
+forcing denominator recurrence or confinement to a fixed finite prime set.
+No such theorem follows from the hypotheses.
+
+\subsection{Can one transfer primitive primes from base gaps to output gaps?}
+
+The equality of logarithmic slopes synchronizes the signs and relative sizes
+of $g_j$ and $G_j$, but it does not synchronize their residues modulo a prime.
+A prime dividing $g_j$ satisfies $3^{q_j}\equiv2^{p_j}$, whereas a prime
+dividing $G_j$ satisfies $N^{q_j}\equiv M^{p_j}$.  The real-logarithmic
+relation gives no direct congruence between these two statements.  A theorem
+forcing infinitely many common prime divisors between corresponding base and
+output gaps would be a genuinely new local-global principle and would go
+well beyond the elementary gcd calculations.
+
+\subsection{Can the rational brackets prove \texorpdfstring{$x$}{x} rational?}
+
+The approximants $T_j$ are canonical and alternate, but their error is only
+$O(q_{j+1}^{-1})$ while their possible denominators are exponentially large.
+They do not give a Liouville-type approximation.  Nor can Roth's theorem or
+an algebraic irrationality measure be applied, because a counterexample is
+already known to be transcendental.
+
+\subsection{Can Pad\'e approximation close the logarithm-product relation?}
+
+A Pad\'e construction becomes decisive only if its denominator clearing and
+archimedean smallness beat each other at the same leading scale.  The relation
+\eqref{eq:logdet} involves products of logarithms, not a nonzero linear form
+with algebraic coefficients.  Recent Pad\'e advances for polylogarithmic
+periods provide useful techniques, but they do not currently imply the
+required special algebraic independence of
+$\log2,\log3,\log M,\log N$.
+
+\subsection{Can automaticity or Cobham-type rigidity be invoked?}
+
+Cobham theorems require an actual finite automaton, recognizability in two
+multiplicatively independent numeration systems, or an equivalent finite-state
+hypothesis.  The integrality of $2^x$ and $3^x$ does not by itself make the
+digit sequence of any associated quantity automatic.  Inferring automaticity
+from the existence of two integer values is an unsupported bridge.
+
+\subsection{Can finite order geometry identify the slope?}
+
+No finite list of strict monomial comparisons can do so, by
+\cref{thm:signature}.  An order-based proof must use a uniform statement over
+unbounded exponents, a compactness principle retaining arithmetic data, or a
+separate exact identity.
+
+\subsection{Can fixed-order confluence repair a determinant constant?}
+
+Not through the entrywise multiplier divisibility alone.  The bound in
+\cref{cor:jetnogo} shows that such a gain is lower-order.  A successful
+confluent determinant would need global cancellation, a growing jet regime,
+or an exact factorization invisible in termwise valuations.
+
+\section{Conditional and restricted positive results}
+
+The full conjecture remains beyond current unconditional methods, but several
+nearby statements are complete.
+
+\begin{theorem}[Three algebraic bases from Six Exponentials]
+\label{thm:sixexp}
+Let $a_1,a_2,a_3>1$ be algebraic numbers whose logarithms are linearly
+independent over $\Q$.  If $x\in\R$ and all three $a_i^x$ are algebraic, then
+$x\in\Q$.
+\end{theorem}
+
+\begin{proof}
+If $x\notin\Q$, then $1,x$ are $\Q$-linearly independent.  The Six
+Exponentials Theorem applied to the three logarithms $\log a_i$ and the two
+numbers $1,x$ says that at least one of the six exponentials
+$a_i$ or $a_i^x$ is transcendental, contrary to the hypotheses.
+\end{proof}
+
+\begin{corollary}
+If $2^x,3^x,5^x\in\Z$, then $x\in\Z$.
+\end{corollary}
+
+\begin{proof}
+The logarithms of $2,3,5$ are $\Q$-linearly independent by unique
+factorization.  Apply \cref{thm:sixexp}, then \cref{prop:rational}.
+\end{proof}
+
+\begin{proposition}[A logarithm-product independence criterion]
+\label{prop:productcriterion}
+Suppose the products $\log p\,\log q$, with $p,q$ ranging over primes, are
+linearly independent over $\Q$ subject only to the symmetry
+$\log p\log q=\log q\log p$.  Then \cref{conj:AE} holds.
+\end{proposition}
+
+\begin{proof}
+Factor hypothetical integer outputs as
+$M=\prod_p p^{a_p}$ and $N=\prod_q q^{b_q}$.  Equation \eqref{eq:logdet}
+becomes
+\[
+ \sum_p a_p\log p\log3-
+ \sum_q b_q\log q\log2=0.
+\]
+Under the stated independence, the coefficient of every unordered prime pair
+must vanish.  The only possible supports are then $M=2^m$ and $N=3^m$ with
+the same nonnegative integer $m$, giving $x=m$.
+\end{proof}
+
+\begin{remark}
+The hypothesis in \cref{prop:productcriterion} is far stronger than any
+currently known theorem and is stated only to identify the exact type of
+algebraic independence that would settle the problem.
+\end{remark}
+
+\section{Precise research targets exposed by the new work}
+
+\begin{problem}[Cross-family prime transfer]
+Find a theorem that uses the exact equality
+$\log N/\log M=\log3/\log2$ to force a nontrivial relation between the prime
+supports of
+\[
+  3^{q_j}-2^{p_j}
+  \quad\text{and}\quad
+  N^{q_j}-M^{p_j}
+\]
+for infinitely many convergents.  Real asymptotics and within-family gcd
+bounds are insufficient; the needed input must be genuinely local-global.
+\end{problem}
+
+\begin{problem}[Denominator confinement]
+Prove, from the counterexample hypotheses, that the reduced denominators of
+$Q_j$ or the prime-to-$M$ parts of the denominators of $T_j$ lie in a fixed
+finite prime set or satisfy a recurrent divisibility law.  Combined with the
+unimodular separation in \cref{cor:denomsep,cor:Textden}, such a result would
+create strong pressure toward eventual integrality.
+\end{problem}
+
+\begin{problem}[Leading-order jet cancellation]
+Construct a confluent determinant whose $p$-adic valuation exceeds the
+minimum valuation of its nonzero Leibniz terms by $cR^2+o(R^2)$ for some
+$c>0$, while preserving nonvanishing and a matching archimedean estimate.
+Theorem~\ref{thm:decoration} shows that bounded entrywise integer multipliers
+alone cannot do this.
+\end{problem}
+
+\begin{problem}[Infinite order rigidity]
+Replace finite monomial comparisons by a uniform order property over an
+unbounded region and prove that the combination of that property with
+integrality characterizes the slope $\log3/\log2$.  Theorem~\ref{thm:signature}
+shows why any finite truncation is inadequate.
+\end{problem}
+
+\section{Literature check through August 21, 2026}
+\label{sec:literature}
+
+The current literature check supports the same status conclusion as the
+source audit.
+
+\begin{enumerate}[label=(\roman*)]
+\item Waldschmidt's chapter on the Four Exponentials Problem states the exact
+  question whether $2^t$ and $3^t$ integral force $t$ to be a nonnegative
+  integer, and explains that a positive answer follows from Four
+  Exponentials; the relevant complex and $p$-adic questions remain open.
+\item The 2026 Lean formalization of Gelfond--Schneider rigorously covers the
+  algebraic-irrational case used in \cref{prop:transcendental}.  It does not
+  cover transcendental exponents, which are exactly the remaining case.
+\item Recent Pad\'e work on linear independence of polylogarithmic periods and
+  products of polylogarithms develops powerful approximation machinery, but
+  does not establish the logarithm-product independence required by
+  \eqref{eq:logdet}.
+\item Recent work on additive relations in irrational powers concerns a
+  different rigidity problem.  It provides useful surrounding techniques but
+  does not imply simultaneous integrality of the two powers only at integer
+  exponents.
+\end{enumerate}
+
+This report makes no global priority claim for its elementary lemmas.  The
+novelty statement is limited and verifiable: the particular unimodular gap gcd package, rational secant bracket package,\
+finite order-signature theorem, and fixed-order entrywise jet budget were not\
+located in the attached source report in the forms proved here.
+
+\section{Conclusion}
+
+The requested implication has not been proved unconditionally here, and it
+would be mathematically false to present the partial results as a proof.  The
+source audit and the current literature both place the problem at the Four
+Exponentials boundary.  Nevertheless, the investigation produces four exact
+advances relative to the attached report:
+\begin{enumerate}[label=(\arabic*)]
+\item determinant distance controls common divisors of exponential binomial
+  gaps, giving adjacent coprimality along the continued fraction of
+  $\log3/\log2$;
+\item a hypothetical counterexample transports these gaps into rational
+  divided differences and alternating rational secant brackets for $x$, with
+  sharply separated denominator support;
+\item finite monomial order data cannot isolate the special logarithmic
+  slope;
+\item fixed-order integer jets are provably lower-order at the termwise budget level\
+  unless a new global cancellation mechanism is found.
+\end{enumerate}
+
+The first two results create a concrete arithmetic interface between
+continued fractions and the hypothetical integer outputs.  The last two
+eliminate broad classes of finite or local closing arguments.  The remaining
+challenge is correspondingly narrow: one needs a mechanism coupling the real
+logarithmic identity to prime support or determinant cancellation at a scale
+that current linear-forms, Pad\'e, automatic, and termwise $p$-adic methods do
+not reach.
+
+\appendix
+
+\section{Detailed asymptotic bounds}
+
+For completeness, here is a nonasymptotic version of the estimates used in
+\cref{sec:secants}.  If $\abs{u}\le1/2$, the mean value theorem gives
+\[
+  \e^{-1/2}\abs{u}\le\abs{\e^u-1}\le\e^{1/2}\abs{u}.
+\]
+Consequently, whenever $\abs{\delta_j}\le1/(2x)$,
+\[
+ x\e^{-1}\,2^{p_j(x-1)}
+ \le Q_j \le
+ x\e\,2^{p_j(x-1)},
+\]
+a deliberately coarse but uniform two-sided exponential estimate.  More
+precise constants follow by applying Taylor's theorem with remainder to
+$\Phi_x$ on a compact interval around zero.
+
+The continued-fraction error bound
+\[
+ \abs{\alpha-\frac{p_j}{q_j}}
+ <\frac{1}{q_jq_{j+1}}
+\]
+immediately gives \eqref{eq:deltabound}.  Since the convergents alternate
+around an irrational number, $\delta_j$ alternates in sign, and the strict
+monotonicity of $\Phi_x$ converts this into the rational brackets of
+\cref{thm:brackets} without any asymptotic qualification.
+
+\section{Reproducible continued-fraction computation}
+
+The numerical entries in \cref{tab:gaps} can be reproduced with arbitrary
+precision using the following short script.
+
+\begin{lstlisting}[language=Python]
+import mpmath as mp
+from math import gcd
+
+mp.mp.dps = 200
+alpha = mp.log(3) / mp.log(2)
+
+# Continued-fraction coefficients.
+a = []
+y = alpha
+for _ in range(9):
+    z = int(mp.floor(y))
+    a.append(z)
+    y = 1 / (y - z)
+
+# Convergents p_j / q_j.
+p0, p1 = 0, 1
+q0, q1 = 1, 0
+conv = []
+for z in a:
+    p = z * p1 + p0
+    q = z * q1 + q0
+    conv.append((p, q))
+    p0, p1 = p1, p
+    q0, q1 = q1, q
+
+gaps = [pow(3, q) - pow(2, p) for p, q in conv]
+for j, ((p, q), g) in enumerate(zip(conv, gaps)):
+    next_gcd = gcd(abs(g), abs(gaps[j+1])) if j+1 < len(gaps) else None
+    print(j, p, q, g, next_gcd)
+\end{lstlisting}
+
+The computation is illustrative only.  The coprimality statement itself is
+proved symbolically in \cref{thm:adjacent} and does not depend on numerical
+verification.
+
+\section{Audit checklist for future claimed proofs}
+
+A proposed proof should be rejected or repaired if it contains any of the
+following transitions without a new theorem.
+\begin{enumerate}[label=(\arabic*)]
+\item From $\det(\log a_{ij})=0$ to a rational dependence of rows or columns.
+  This is the Four Exponentials step.
+\item From real-logarithmic equality to congruence equality at a prime.
+  Real and $p$-adic logarithms are not interchangeable.
+\item From many integer values to automaticity, recurrence, or an algebraic
+  generating function without constructing the required finite-state or
+  functional structure.
+\item From a termwise $p$-adic divisor to an extra leading determinant
+  constant without charging the same multiplier in the archimedean bound.
+\item From rational approximants to rationality of $x$ without comparing the
+  error to their reduced denominator height.
+\item From exhaustive computation below a bound to a proof for all $x$.
+\item From a conditional theorem under Four Exponentials, Schanuel, or an
+  unproved logarithm-product independence statement to an unconditional
+  conclusion.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L. Alaoglu and P. Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Trans. Amer. Math. Soc. \textbf{56} (1944), 448--469.
+\newblock \url{https://doi.org/10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Baker1975}
+A. Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{Butler2017}
+L. A. Butler,
+\newblock \emph{A Diophantine approach to the three and four exponentials conjectures},
+\newblock Ramanujan J. \textbf{42} (2017), 199--221.
+\newblock \url{https://doi.org/10.1007/s11139-015-9728-2}.
+
+\bibitem{Gelfond}
+A. O. Gelfond,
+\newblock \emph{Transcendental and Algebraic Numbers},
+\newblock Dover, 1960.
+
+\bibitem{HardyWright}
+G. H. Hardy and E. M. Wright,
+\newblock \emph{An Introduction to the Theory of Numbers}, 6th ed.,
+\newblock Oxford University Press, 2008.
+
+\bibitem{Harrison2026}
+J. Harrison,
+\newblock \emph{Additive relations in irrational powers},
+\newblock arXiv:2512.04081v3, July 31, 2026.
+\newblock \url{https://arxiv.org/abs/2512.04081}.
+
+\bibitem{KaratarakisWiedijk2026}
+M. Karatarakis and F. Wiedijk,
+\newblock \emph{A formalization of the Gelfond--Schneider theorem},
+\newblock arXiv:2603.24823, March 25, 2026.
+\newblock \url{https://arxiv.org/abs/2603.24823}.
+
+\bibitem{Kawashima2026}
+M. Kawashima,
+\newblock \emph{Linear independence of periods related to polylogarithms},
+\newblock arXiv:2605.17756, May 18, 2026.
+\newblock \url{https://arxiv.org/abs/2605.17756}.
+
+\bibitem{Schneider}
+T. Schneider,
+\newblock \emph{Einf\"uhrung in die transzendenten Zahlen},
+\newblock Springer, 1957.
+
+\bibitem{Waldschmidt2023}
+M. Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics
+2313, Springer, 2023, pp. 579--592.
+\newblock \url{https://doi.org/10.1007/978-3-031-12244-6_39}.
+
+\bibitem{AttachedReport}
+V. Reshetnikov et al.,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked
+Partial Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+\newblock attached source file
+\texttt{Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex},
+August 21, 2026.
+
+\end{thebibliography}
+
+\end{document}
