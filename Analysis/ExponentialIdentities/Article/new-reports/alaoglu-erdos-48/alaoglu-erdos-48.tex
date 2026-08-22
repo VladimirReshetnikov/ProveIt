@@ -1,0 +1,1561 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=1in,headheight=15pt}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+\definecolor{deepblue}{RGB}{24,74,128}
+\definecolor{deepgreen}{RGB}{16,105,73}
+\definecolor{deepviolet}{RGB}{90,55,135}
+\definecolor{deepred}{RGB}{150,45,45}
+\definecolor{softgray}{RGB}{247,248,250}
+\definecolor{rulegray}{RGB}{95,104,116}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepgreen,
+  urlcolor=deepblue,
+  pdftitle={Alaoglu--Erdos Beyond Report A: S-unit Secant Heights and Reciprocal Cyclotomic Barriers},
+  pdfauthor={OpenAI GPT-5.6 Pro},
+  pdfsubject={New conditional consequences and no-go theorems for the Alaoglu--Erdos conjecture}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s beyond Report A}
+\rhead{Secant heights and reciprocal filters}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.3em,topsep=0.45em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.45em}
+\setlist[description]{leftmargin=3.2cm,labelsep=0.6cm,itemsep=0.35em,topsep=0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computation}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Caution}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\vp}[2]{v_{#1}(#2)}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\height}{h}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\proved}{\textcolor{deepgreen}{\textsf{[proved here]}}}
+\newcommand{\classical}{\textcolor{deepblue}{\textsf{[classical input]}}}
+\newcommand{\computed}{\textcolor{deepviolet}{\textsf{[computation]}}}
+\newcommand{\openstatus}{\textcolor{deepred}{\textsf{[open target]}}}
+
+\newenvironment{resultbox}
+ {\begin{quote}\hrule\smallskip\noindent}
+ {\par\smallskip\hrule\end{quote}}
+
+\lstdefinestyle{py}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=4
+}
+
+\title{\bfseries Alaoglu--Erd\H{o}s Beyond Report A\\[0.35em]
+\Large $S$-unit secant heights, primitive residual cancellation,\\
+fixed-order extrapolation, and reciprocal cyclotomic barriers}
+\author{OpenAI GPT-5.6 Pro}
+\date{22 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Alaoglu--Erd\H{o}s integer-exponent conjecture asks whether
+\[
+  2^x,3^x\in\Z \quad\Longrightarrow\quad x\in\Z
+\]
+for real $x$.  The attached Report A already develops the exact conditional monoid,
+finite verification, determinant hierarchies, $p$-adic assignment methods, rational and
+algebraic output spectra, interpolation, operator, Mahler, moment, and canonical-product
+approaches.  This continuation deliberately does not repeat those lines.
+
+Assuming a least nonintegral solution $\beta$, with $M=2^\beta$ and $A=3^\beta$, we
+normalize continued-fraction convergents $r_j/s_j\to\beta$ into rational $S$-unit points
+\[
+ (u_j,v_j)=\left(\frac{2^{r_j}}{M^{s_j}},\frac{3^{r_j}}{A^{s_j}}\right)
+           =(2^{\eps_j},3^{\eps_j})\longrightarrow(1,1),
+ \qquad \eps_j=r_j-s_j\beta.
+\]
+Corvaja--Zannier height theory then gives an exact linear asymptotic for the reduced height
+of the rational secant $(u_j-1)/(v_j-1)$.  The coefficient is an explicit valuation
+functional $\kappa(M,A;\beta)>0$.  Consequently the reduced numerator and denominator of the
+secant are each $\exp((\kappa+o(1))s_j)$, while its error as an approximation to
+$\log2/\log3$ is only polynomial in $s_j$.  This produces a sharp ``height exponent zero''
+barrier.  It also yields an exact asymptotic for the total cross-residual gcd and shows that
+its entire exponential part is supported on the fixed primes dividing $6MA$; all auxiliary
+prime cancellation is subexponential.
+
+The same mechanism rules out every fixed-order Richardson/Prouhet extrapolation of toric
+secants: order $m$ improves the analytic error to $\Theta(|\eps_j|^m)$, but the reduced
+height remains $\Theta(s_j)$.  A separate algebraic argument proves that two distinct monic
+reciprocal polynomials of the same degree can agree at infinity to at most half their degree.
+For equal-totient cyclotomic pairs this is an exact universal ceiling.  A scan through index
+$50000$ finds $665095$ equal-totient pairs, confirms the ceiling, and identifies only $24$
+sharp pairs in that range.
+
+These results do not prove the conjecture.  They do, however, eliminate a broad new class of
+fixed-complexity secant, finite-difference, common-residual, and reciprocal-cyclotomic
+amplifiers, and isolate the surviving requirement: a growing-complexity construction whose
+\emph{primitive} height is saved by output-specific cancellation at the structural primes.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Executive answer and claim ledger}
+\label{sec:executive}
+
+\subsection{Outcome}
+
+No complete proof is claimed here.  The four-exponentials obstruction remains real: a
+nonintegral solution would make the four algebraic numbers $2,3,2^\beta,3^\beta$ occupy the
+forbidden $2\times2$ configuration predicted by the Four Exponentials Conjecture.  What is
+new is a conditional transformation of such a solution into a near-identity rank-two
+$S$-unit orbit on which the Subspace Theorem has unusually sharp consequences.
+
+The main conclusions are the following.
+
+\begin{enumerate}
+\item \textbf{Exact secant height.}  For convergents $r_j/s_j$ to $\beta$, the rational
+secants
+\[
+ \sigma_j=\frac{u_j-1}{v_j-1}
+ =\frac{A^{s_j}(2^{r_j}-M^{s_j})}
+        {M^{s_j}(3^{r_j}-A^{s_j})}
+\]
+satisfy
+\[
+ h(\sigma_j)=\kappa(M,A;\beta)s_j+o(s_j),
+\]
+where $\kappa$ is the explicit positive valuation functional in
+Theorem~\ref{thm:kappa}.  \proved
+
+\item \textbf{Primitive numerator and denominator.}  If $\sigma_j=P_j/Q_j$ in lowest
+terms, then
+\[
+ \log P_j=\log Q_j=\kappa s_j+o(s_j).
+\]
+At the same time
+\[
+ \sigma_j-\frac{\log2}{\log3}=\Theta(\eps_j),
+ \qquad s_j^{-C}\ll|\eps_j|<s_j^{-1}.
+\]
+Thus the approximation exponent relative to reduced height tends to zero.  \proved
+
+\item \textbf{Exact cross-residual cancellation.}  With
+\[
+ X_j=A^{s_j}|2^{r_j}-M^{s_j}|,
+ \qquad
+ Y_j=M^{s_j}|3^{r_j}-A^{s_j}|,
+ \qquad
+ G_j=\gcd(X_j,Y_j),
+\]
+one has
+\[
+ \log G_j=(\log M+\log A-\kappa)s_j+o(s_j).
+\]
+After removing the fixed primes dividing $6MA$, the remaining common divisor is
+$\exp(o(s_j))$.  Hence every linear-rate cancellation in $G_j$ is structural, not supplied
+by fresh primes.  \proved
+
+\item \textbf{Fixed-order extrapolation barrier.}  Put
+\[
+ \phi(t)=\frac{2^t-1}{3^t-1},\qquad \phi(0)=\frac{\log2}{\log3},
+\]
+and, for fixed $m\ge1$,
+\[
+ R_m(t)=\sum_{i=1}^m(-1)^{i-1}\binom mi\phi(it).
+\]
+Then $R_m(\eps_j)\in\Q$,
+\[
+ R_m(\eps_j)-\phi(0)=\Theta(\eps_j^m),
+ \qquad h(R_m(\eps_j))=\Theta(s_j),
+\]
+and again the height-normalized approximation exponent is zero.  This covers every fixed
+finite-difference order, not merely the first secant.  \proved
+
+\item \textbf{Reciprocal half-contact ceiling.}  If $P,Q\in\Z[Z]$ are distinct monic
+reciprocal polynomials of common degree $D$ and
+\[
+ \frac{P(Z)}{Q(Z)}=1+cZ^{-K}+O(Z^{-K-1}),\qquad c\ne0,
+\]
+then $K\le\lfloor D/2\rfloor$.  Equality forces $P-Q$ to be a single middle monomial.
+For $P=\Phi_n,Q=\Phi_m$ with $\varphi(n)=\varphi(m)$ this bounds the first unequal
+M\"obius layer by $\varphi(n)/2$.  \proved
+
+\item \textbf{Finite cyclotomic reconnaissance.}  Among all $665095$ pairs
+$3\le n<m\le50000$ with $\varphi(n)=\varphi(m)$, the maximum contact ratio is $1/2$,
+attained by $24$ pairs.  Every sharp pair found belongs to one of two infinite elementary
+families or is the exceptional pair $(3,4)$.  No global classification is claimed.
+\computed
+\end{enumerate}
+
+\begin{resultbox}
+\textbf{Central message.}
+The near-identity orbit supplies arbitrarily accurate analytic contact, but fixed rational
+observables retain linear primitive height.  The Subspace Theorem does not merely fail to
+finish the proof: it identifies exactly where the lost size goes.  Any successful continuation
+must use a family whose complexity grows and whose reduced height enjoys cancellation not
+available to any fixed rational function on $\Gm^2$.
+\end{resultbox}
+
+\subsection{Evidence labels}
+
+\begin{description}
+\item[\proved] A complete conventional proof is included in this report.  No Lean kernel
+claim is made.
+\item[\classical] A named theorem from the literature is used, chiefly the
+Corvaja--Zannier $S$-unit height theorem and a standard Baker lower bound for a linear form in
+two logarithms.
+\item[\computed] A finite Python computation is reproduced in Appendix~\ref{app:code}; it
+is not a formal proof of an infinite statement.
+\item[\openstatus] A precise sufficient target or an unresolved extension.
+\end{description}
+
+\subsection{Public-source reconnaissance}
+
+The model-comparison background was checked only to calibrate the competitive context, not
+to import mathematical assertions.  Anthropic's public launch page for Claude Fable 5 is
+\url{https://www.anthropic.com/news/claude-fable-5-mythos-5}.  Its 28 July 2026 research
+post, \emph{Discovering cryptographic weaknesses with Claude}, states that Fable 5 had
+resolved the Jacobian Conjecture earlier in July; see
+\url{https://www.anthropic.com/research/discovering-cryptographic-weaknesses}.  I found no
+public primary document disclosing the claimed Alaoglu--Erd\H{o}s idea.  The mathematics below
+is therefore independent of any undisclosed rival construction.
+
+\subsection{Nonduplication boundary}
+
+Report A already treats the exact solution monoid, candidate counting, finite scans,
+Four/Six Exponentials reductions, prime-log-product independence, arbitrary-node and mixed
+semigroup determinants, $p$-adic assignment cascades, Loewner and matrix-coefficient
+certificates, rational contact rigidity, geometric Newton interpolation, Mahler and natural
+boundary diagnostics, operator formulations, moments, Pad\'e defects, carry languages,
+canonical products, and several denominator barriers.  This continuation uses only the
+minimal conditional normalization from that corpus.  Its new object is the convergent-normalized
+$S$-unit orbit and the primitive height of rational observables on that orbit.
+
+\section{Conditional setup and the near-identity orbit}
+\label{sec:setup}
+
+\subsection{The least generator}
+
+Assume the conjecture is false.  Let $\beta>0$ be its least nonintegral solution and put
+\begin{equation}
+ M=2^\beta\in\N,\qquad A=3^\beta\in\N.
+ \label{eq:MA}
+\end{equation}
+The inherited exact classification gives all solutions as $n+k\beta$ with
+$n,k\in\Nzero$.  Only three elementary consequences are needed here:
+
+\begin{enumerate}
+\item $\beta$ is irrational, indeed transcendental;
+\item $M$ is not a pure power of $2$, and $A$ is not a pure power of $3$;
+\item $\log M=\beta\log2$ and $\log A=\beta\log3$.
+\end{enumerate}
+
+Let $r_j/s_j$ be the ordinary continued-fraction convergents to $\beta$, with $s_j>0$, and
+set
+\begin{equation}
+ \eps_j=r_j-s_j\beta.
+ \label{eq:epsilon}
+\end{equation}
+Then $\eps_j\ne0$, $\eps_j\to0$, and
+\begin{equation}
+ |\eps_j|<\frac1{s_j}.
+ \label{eq:cf-upper}
+\end{equation}
+A lower bound for the nonzero linear form
+\[
+ r_j\log2-s_j\log M=\eps_j\log2
+\]
+in two logarithms of algebraic numbers gives constants $C_0,C_1>0$, depending only on $M$,
+such that
+\begin{equation}
+ |\eps_j|\ge C_0s_j^{-C_1}
+ \label{eq:baker-lower}
+\end{equation}
+for all $j$.  This is the only quantitative transcendence estimate used below.
+
+\subsection{The normalized $S$-unit point}
+
+Define
+\begin{equation}
+ u_j=\frac{2^{r_j}}{M^{s_j}},\qquad
+ v_j=\frac{3^{r_j}}{A^{s_j}}.
+ \label{eq:uv}
+\end{equation}
+By~\eqref{eq:MA} and~\eqref{eq:epsilon}, as positive real numbers,
+\begin{equation}
+ u_j=2^{\eps_j},\qquad v_j=3^{\eps_j}.
+ \label{eq:real-path}
+\end{equation}
+Thus $(u_j,v_j)\to(1,1)$ along the analytic one-parameter subgroup
+$t\mapsto(2^t,3^t)$, while each coordinate is a rational number supported on the fixed set of
+primes dividing $6MA$.
+
+\begin{lemma}[Multiplicative independence]
+\label{lem:uv-independent}
+For every $j$, the rational numbers $u_j$ and $v_j$ are multiplicatively independent.
+\end{lemma}
+
+\begin{proof}
+Suppose $u_j^a v_j^b=1$ with $a,b\in\Z$.  Taking the real logarithm and using
+$\eps_j\ne0$ gives
+\[
+ a\log2+b\log3=0.
+\]
+Hence $2^a3^b=1$, so unique factorization gives $a=b=0$.
+\end{proof}
+
+The points lie in the finitely generated subgroup
+\begin{equation}
+ \Gamma=\langle(2,3),(M^{-1},A^{-1})\rangle\subset\Gm^2(\Q).
+ \label{eq:Gamma}
+\end{equation}
+This is precisely the setting of Corvaja--Zannier's height theorem.
+
+\subsection{Coordinate heights}
+
+Write
+\begin{equation}
+ M=2^mM_0,\quad 2\nmid M_0,
+ \qquad
+ A=3^aA_0,\quad 3\nmid A_0.
+ \label{eq:basefree}
+\end{equation}
+The nonintegrality of $\beta$ implies $M_0>1$ and $A_0>1$.  Since $r_j/s_j\to\beta$,
+we have $r_j>ms_j$ and $r_j>as_j$ for all sufficiently large $j$.  The fractions
+\[
+ u_j=\frac{2^{r_j-ms_j}}{M_0^{s_j}},\qquad
+ v_j=\frac{3^{r_j-as_j}}{A_0^{s_j}}
+\]
+are then in lowest terms.  Consequently
+\begin{align}
+ h(u_j)&=s_j\log M_0+O(|\eps_j|),
+ \label{eq:hu}\\
+ h(v_j)&=s_j\log A_0+O(|\eps_j|).
+ \label{eq:hv}
+\end{align}
+In particular both heights tend linearly to infinity even though the real values tend to $1$.
+This archimedean/nonarchimedean split is the source of the method.
+
+\section{The exact projective-height slope}
+\label{sec:kappa}
+
+For a rational projective point, use the absolute logarithmic Weil height
+\[
+ h(1:u:v)=\sum_{w}\log\max\{1,|u|_w,|v|_w\},
+\]
+with the usual normalized absolute values on $\Q$.
+
+For every rational prime $p$, put
+\[
+ m_p=v_p(M),\qquad a_p=v_p(A),
+\]
+and let $\mathbf 1_{p=q}$ denote the indicator of $p=q$.
+
+\begin{theorem}[Exact projective-height slope]
+\label{thm:kappa}
+Define
+\begin{equation}
+ \boxed{
+ \kappa(M,A;\beta)=
+ \sum_{p\ \mathrm{prime}}
+ \max\!\left\{
+ 0,
+ m_p-\beta\mathbf1_{p=2},
+ a_p-\beta\mathbf1_{p=3}
+ \right\}\log p.}
+ \label{eq:kappa}
+\end{equation}
+Then
+\begin{equation}
+ h(1:u_j:v_j)=\kappa(M,A;\beta)s_j+o(s_j).
+ \label{eq:projective-asymptotic}
+\end{equation}
+Moreover
+\begin{equation}
+ \kappa\ge\max\{\log M_0,\log A_0\}>0.
+ \label{eq:kappa-positive}
+\end{equation}
+\proved
+\end{theorem}
+
+\begin{proof}
+At a finite prime $p$,
+\begin{align*}
+ v_p(u_j)&=r_j\mathbf1_{p=2}-s_jm_p,\\
+ v_p(v_j)&=r_j\mathbf1_{p=3}-s_ja_p.
+\end{align*}
+The local projective contribution is therefore
+\[
+ \max\{0,-v_p(u_j),-v_p(v_j)\}\log p
+ =s_j\max\!\left\{
+ 0,
+ m_p-\frac{r_j}{s_j}\mathbf1_{p=2},
+ a_p-\frac{r_j}{s_j}\mathbf1_{p=3}
+ \right\}\log p.
+\]
+Only primes dividing $6MA$ occur.  Since $r_j/s_j\to\beta$, summing the finitely many
+terms gives $s_j\kappa+o(s_j)$.  At the archimedean place,
+$u_j=2^{\eps_j}$ and $v_j=3^{\eps_j}$, so the contribution is $O(|\eps_j|)=o(1)$.
+This proves~\eqref{eq:projective-asymptotic}.
+
+The inequalities $h(1:u:v)\ge h(u)$ and $h(1:u:v)\ge h(v)$, together with
+\eqref{eq:hu}--\eqref{eq:hv}, imply~\eqref{eq:kappa-positive}.
+\end{proof}
+
+\begin{remark}[What $\kappa$ measures]
+The real magnitudes of $u_j$ and $v_j$ contain essentially no height: both approach one.
+The coefficient $\kappa$ is the surviving denominator slope after all common projective
+content among $1,u_j,v_j$ has been removed.  It is therefore already a \emph{primitive}
+quantity.  Raw numerator sizes are larger and can be misleading.
+\end{remark}
+
+\begin{remark}[A useful defect identity]
+Set
+\begin{equation}
+ \lambda=\log M+\log A-\kappa.
+ \label{eq:lambda}
+\end{equation}
+Then
+\begin{equation}
+ \lambda=
+ \sum_p\left(
+ m_p+a_p-
+ \max\{0,m_p-\beta\mathbf1_{p=2},a_p-\beta\mathbf1_{p=3}\}
+ \right)\log p.
+ \label{eq:lambda-local}
+\end{equation}
+For $p\ne2,3$, the local coefficient is simply $\min(m_p,a_p)$.  Thus away from the two
+structural primes, the linear cancellation rate is exactly the logarithm of the common prime
+part of $M$ and $A$.
+\end{remark}
+
+\section{$S$-unit secants and exact primitive height}
+\label{sec:secant}
+
+\subsection{Corvaja--Zannier input}
+
+We use the following classical consequence of the Subspace Theorem.
+
+\begin{theorem}[Corvaja--Zannier, 2005]
+\label{thm:CZ}
+Let $\Gamma\subset\Gm^2(\Q)$ be finitely generated.  As multiplicatively independent
+$(u,v)\in\Gamma$ satisfy $\max\{h(u),h(v)\}\to\infty$,
+\begin{equation}
+ h\!\left(\frac{u-1}{v-1}\right)\sim h(1:u:v).
+ \label{eq:CZ-secant}
+\end{equation}
+More generally, for a fixed nonconstant $F\in\Q(X,Y)$, outside a finite union of translates
+of proper subtori, $h(F(u,v))$ is bounded below by a positive constant times
+$\max\{h(u),h(v)\}$.
+\classical
+\end{theorem}
+
+The cited paper states~\eqref{eq:CZ-secant} as Corollary 1 and the rational-function statement
+as its Main Theorem.  The exceptional translates are equations $X^cY^d=w$.
+
+\begin{lemma}[Coset avoidance]
+\label{lem:coset-avoidance}
+The sequence $(u_j,v_j)$ meets every fixed proper translate of a subtorus of $\Gm^2$ only
+finitely many times.
+\end{lemma}
+
+\begin{proof}
+A one-dimensional translate has an equation $X^cY^d=w$ with $(c,d)\ne(0,0)$.  If infinitely
+many $(u_j,v_j)$ lie on it, then
+\[
+ (2^c3^d)^{\eps_j}=w
+\]
+for infinitely many $j$.  Letting $j\to\infty$ gives $w=1$.  Since $2^c3^d\ne1$ and
+$\eps_j\ne0$, the left side is never $1$, a contradiction.
+\end{proof}
+
+\subsection{The principal secant theorem}
+
+Define
+\begin{equation}
+ \sigma_j=\frac{u_j-1}{v_j-1}.
+ \label{eq:sigma}
+\end{equation}
+The signs of numerator and denominator agree, so $\sigma_j>0$.
+
+\begin{theorem}[Exact primitive secant law]
+\label{thm:secant-law}
+Under the counterexample hypothesis,
+\begin{equation}
+ h(\sigma_j)=\kappa s_j+o(s_j).
+ \label{eq:sigma-height}
+\end{equation}
+If $\sigma_j=P_j/Q_j$ in lowest terms with $P_j,Q_j\in\N$, then
+\begin{equation}
+ \log P_j=\log Q_j=\kappa s_j+o(s_j).
+ \label{eq:PQ-height}
+\end{equation}
+Finally,
+\begin{equation}
+ \sigma_j=\frac{\log2}{\log3}
+ +\frac{\log2(\log2-\log3)}{2\log3}\,\eps_j
+ +O(\eps_j^2).
+ \label{eq:sigma-expansion}
+\end{equation}
+\proved
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:uv-independent}, equations~\eqref{eq:hu}--\eqref{eq:hv}, and
+Theorem~\ref{thm:CZ} give
+\[
+ h(\sigma_j)\sim h(1:u_j:v_j).
+\]
+Theorem~\ref{thm:kappa} proves~\eqref{eq:sigma-height}.  Since
+$\sigma_j\to\log2/\log3\in(0,\infty)$, the reduced numerator and denominator differ by only
+a bounded multiplicative factor.  Their maximum has logarithm $h(\sigma_j)$, proving
+\eqref{eq:PQ-height}.
+
+For~\eqref{eq:sigma-expansion}, write $a=\log2$, $b=\log3$ and use
+\[
+ \sigma_j=\frac{e^{a\eps_j}-1}{e^{b\eps_j}-1}.
+\]
+Division of the two Taylor series gives
+\[
+ \frac{e^{at}-1}{e^{bt}-1}
+ =\frac ab+\frac{a(a-b)}{2b}t+O(t^2).
+\]
+\end{proof}
+
+The limit $\log2/\log3$ is transcendental: if it were algebraic irrational,
+Gelfond--Schneider applied to $3^{\log2/\log3}=2$ would give a contradiction; if it were
+rational, unique factorization would give a nontrivial equality between powers of $2$ and
+$3$.
+
+\begin{corollary}[Height exponent zero]
+\label{cor:height-zero}
+There are constants $c,C>0$ such that
+\begin{equation}
+ s_j^{-C}\ll
+ \left|\sigma_j-\frac{\log2}{\log3}\right|
+ \ll s_j^{-1},
+ \label{eq:sigma-poly}
+\end{equation}
+and
+\begin{equation}
+ \frac{-\log\left|\sigma_j-\frac{\log2}{\log3}\right|}
+      {h(\sigma_j)}\longrightarrow0.
+ \label{eq:height-exponent-zero}
+\end{equation}
+\proved
+\end{corollary}
+
+\begin{proof}
+The coefficient of $\eps_j$ in~\eqref{eq:sigma-expansion} is nonzero.  Apply
+\eqref{eq:cf-upper}, \eqref{eq:baker-lower}, and~\eqref{eq:sigma-height}.
+\end{proof}
+
+\begin{resultbox}
+The secants do not merely have ``large denominators.''  Their \emph{reduced} numerator and
+denominator have an exact exponential rate $\kappa$.  Continued fractions improve the real
+error only polynomially.  Thus no irrationality-measure argument can be won by taking these
+secants at face value: the approximation exponent measured in their true height is zero.
+\end{resultbox}
+
+\subsection{Directional secants}
+
+The principal secant is one member of a toric family.  Let
+$\mathbf c=(c_1,c_2)$ and $\mathbf d=(d_1,d_2)$ be two linearly independent vectors in
+$\Z^2$, and put
+\[
+ U_j=u_j^{c_1}v_j^{c_2},\qquad
+ V_j=u_j^{d_1}v_j^{d_2}.
+\]
+Then
+\[
+ U_j=(2^{c_1}3^{c_2})^{\eps_j},\qquad
+ V_j=(2^{d_1}3^{d_2})^{\eps_j},
+\]
+and $U_j,V_j$ are multiplicatively independent.  Corvaja--Zannier therefore gives
+\begin{equation}
+ h\!\left(\frac{U_j-1}{V_j-1}\right)
+ \sim h(1:U_j:V_j)=\kappa_{\mathbf c,\mathbf d}s_j+o(s_j),
+ \label{eq:directional-height}
+\end{equation}
+where
+\begin{equation}
+ \kappa_{\mathbf c,\mathbf d}=
+ \sum_p\max\{0,L_{\mathbf c}(p),L_{\mathbf d}(p)\}\log p,
+ \label{eq:kappa-cd}
+\end{equation}
+with
+\[
+ L_{\mathbf c}(p)=c_1m_p+c_2a_p-
+ \beta(c_1\mathbf1_{p=2}+c_2\mathbf1_{p=3})
+\]
+and similarly for $\mathbf d$.  The secant tends to
+\[
+ \frac{\log(2^{c_1}3^{c_2})}{\log(2^{d_1}3^{d_2})}
+\]
+whenever the denominator is nonzero, again with only polynomial error and linear primitive
+height.  Thus changing toric directions does not evade the barrier.
+
+\section{Cross-residual gcds: exact total rate and auxiliary-prime extinction}
+\label{sec:gcd}
+
+\subsection{Raw residuals}
+
+Put
+\begin{equation}
+ E_{2,j}=2^{r_j}-M^{s_j},\qquad
+ E_{3,j}=3^{r_j}-A^{s_j}.
+ \label{eq:residuals}
+\end{equation}
+Both are nonzero and have the sign of $\eps_j$.  Define the positive cross-multiplied
+integers
+\begin{equation}
+ X_j=A^{s_j}|E_{2,j}|,
+ \qquad
+ Y_j=M^{s_j}|E_{3,j}|.
+ \label{eq:XY}
+\end{equation}
+Then $\sigma_j=X_j/Y_j$.
+
+\begin{lemma}[Raw size]
+\label{lem:raw-size}
+One has
+\begin{equation}
+ \log X_j=\log Y_j=(\log M+\log A)s_j+O(\log s_j).
+ \label{eq:raw-size}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $2^{r_j}=M^{s_j}e^{\eps_j\log2}$,
+\[
+ |E_{2,j}|=M^{s_j}|e^{\eps_j\log2}-1|.
+\]
+Equations~\eqref{eq:cf-upper} and~\eqref{eq:baker-lower} imply
+$\log|e^{\eps_j\log2}-1|=O(\log s_j)$.  Multiplication by $A^{s_j}$ gives the first formula;
+the second is identical.
+\end{proof}
+
+\subsection{The exact total gcd law}
+
+\begin{theorem}[Primitive cancellation identity]
+\label{thm:total-gcd}
+Let
+\begin{equation}
+ G_j=\gcd(X_j,Y_j).
+ \label{eq:G}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{
+ \log G_j=(\log M+\log A-\kappa)s_j+o(s_j).}
+ \label{eq:G-asymptotic}
+\end{equation}
+\proved
+\end{theorem}
+
+\begin{proof}
+Writing $\sigma_j=P_j/Q_j$ in lowest terms gives
+$P_j=X_j/G_j$ and $Q_j=Y_j/G_j$.  Subtract~\eqref{eq:PQ-height} from
+\eqref{eq:raw-size}.
+\end{proof}
+
+This theorem quantifies a phenomenon that raw formulas obscure.  The numerator and
+denominator in~\eqref{eq:sigma} possess a common divisor of exponential size, but that size
+is not free arithmetic information: after division, the surviving height still has the
+positive linear slope $\kappa$.
+
+\subsection{No exponential common divisor from new primes}
+
+Let $S$ be the finite set of rational primes dividing $6MA$.  Define the prime-to-$S$ common
+residual divisor
+\begin{equation}
+ g_j^{(S)}=
+ \prod_{p\notin S}p^{\min\{v_p(E_{2,j}),v_p(E_{3,j})\}}.
+ \label{eq:gS}
+\end{equation}
+
+\begin{theorem}[Auxiliary-prime extinction]
+\label{thm:aux-gcd}
+For every $\delta>0$ and all sufficiently large $j$,
+\begin{equation}
+ \log g_j^{(S)}<\delta s_j.
+ \label{eq:gS-small}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \log g_j^{(S)}=o(s_j).
+ \label{eq:gS-o}
+\end{equation}
+\proved
+\end{theorem}
+
+\begin{proof}
+At $p\notin S$, the denominators $M^{s_j}$ and $A^{s_j}$ are $p$-adic units, so
+\[
+ v_p(u_j-1)=v_p(E_{2,j}),\qquad
+ v_p(v_j-1)=v_p(E_{3,j}).
+\]
+The generalized-gcd form of Corvaja--Zannier's Corollary 1 says that for multiplicatively
+independent $(u_j,v_j)$ the total common local proximity of $u_j-1$ and $v_j-1$ is less than
+$\delta\max\{h(u_j),h(v_j)\}$ outside a finite set.  Restricting the nonnegative gcd sum to
+$p\notin S$ can only decrease it.  Equations~\eqref{eq:hu}--\eqref{eq:hv} then give
+\eqref{eq:gS-small}; since $\delta$ is arbitrary,~\eqref{eq:gS-o} follows.
+\end{proof}
+
+\begin{corollary}[Where the exponential gcd lives]
+\label{cor:gcd-support}
+The prime-to-$S$ part of $G_j$ is $\exp(o(s_j))$.  Hence the full linear rate
+$\log M+\log A-\kappa$ in~\eqref{eq:G-asymptotic} is carried by the fixed structural primes
+in $S$.
+\end{corollary}
+
+\begin{proof}
+Outside $S$, the factors $M^{s_j}$ and $A^{s_j}$ in~\eqref{eq:XY} contribute no valuation,
+so the prime-to-$S$ part of $G_j$ is exactly $g_j^{(S)}$.
+\end{proof}
+
+\begin{remark}[Finite families]
+Take finitely many nonproportional toric directions
+$\mathbf c_1,\ldots,\mathbf c_t\in\Z^2$ and the residuals
+$u_j^{c_{i,1}}v_j^{c_{i,2}}-1$.  The prime-to-$S$ gcd of all cleared residuals is bounded by
+the gcd of any multiplicatively independent pair, and is therefore $\exp(o(s_j))$.  Thus no
+fixed toric jet can acquire an exponential auxiliary common divisor.
+\end{remark}
+
+\begin{resultbox}
+The total cross-residual gcd is large, but its linear part is completely structural.  This
+rules out a common proposed escape hatch: manufacture many near-identity residuals and hope
+that fresh primes clear the denominator.  Fresh-prime clearing is subexponential on every
+fixed finite toric configuration.
+\end{resultbox}
+
+\section{Fixed-order Richardson extrapolation}
+\label{sec:richardson}
+
+The first secant has error $O(\eps_j)$.  It is natural to cancel successive Taylor terms by
+combining secants at $\eps_j,2\eps_j,\ldots,m\eps_j$.  The next theorem shows exactly why every
+fixed order still fails.
+
+\subsection{The analytic coefficients}
+
+Set
+\begin{equation}
+ \phi(t)=\frac{2^t-1}{3^t-1}
+ \quad(t\ne0),
+ \qquad
+ \phi(0)=\rho:=\frac{\log2}{\log3}.
+ \label{eq:phi}
+\end{equation}
+This is real analytic at $0$.  Write
+\begin{equation}
+ \phi(t)=\sum_{k\ge0}c_kt^k.
+ \label{eq:phi-series}
+\end{equation}
+
+\begin{lemma}[No vanished Taylor coefficient]
+\label{lem:ck-nonzero}
+Every coefficient $c_k$ is nonzero.
+\end{lemma}
+
+\begin{proof}
+Put $a=\log2$ and $b=\log3$.  From
+\[
+ \frac{e^{at}-1}{e^{bt}-1}
+ =\frac{e^{at}-1}{bt}\cdot\frac{bt}{e^{bt}-1}
+\]
+and the Bernoulli expansion $z/(e^z-1)=\sum_{n\ge0}B_nz^n/n!$, the coefficient $c_k$ is a
+homogeneous rational polynomial in $a,b$ divided by $b$.  Its term of highest degree in $a$
+is
+\[
+ \frac{a^{k+1}}{b(k+1)!},
+\]
+so the polynomial is not identically zero.  After substituting $b=\theta a$ with
+$\theta=\log3/\log2$ transcendental, a nonzero rational polynomial in $\theta$ cannot vanish.
+\end{proof}
+
+\subsection{The extrapolants}
+
+For fixed $m\ge1$, define
+\begin{equation}
+ R_m(t)=\sum_{i=1}^m(-1)^{i-1}\binom mi\phi(it).
+ \label{eq:Rm}
+\end{equation}
+At $t=\eps_j$ every summand is rational:
+\begin{equation}
+ \phi(i\eps_j)=\frac{u_j^i-1}{v_j^i-1}\in\Q.
+ \label{eq:phi-rational}
+\end{equation}
+Thus $R_m(\eps_j)\in\Q$.
+
+\begin{theorem}[Exact fixed-order barrier]
+\label{thm:richardson}
+For every fixed $m\ge1$ there are nonzero constants $C_m$ and positive constants
+$c_m',C_m'$ such that, as $j\to\infty$,
+\begin{align}
+ R_m(\eps_j)-\rho
+ &=C_m\eps_j^m+O(\eps_j^{m+1}),
+ \label{eq:Rm-error}\\
+ c_m's_j\le h(R_m(\eps_j))&\le C_m's_j,
+ \label{eq:Rm-height}\\
+ \frac{-\log|R_m(\eps_j)-\rho|}{h(R_m(\eps_j))}&\longrightarrow0.
+ \label{eq:Rm-zero}
+\end{align}
+\proved
+\end{theorem}
+
+\begin{proof}
+The binomial moment identity gives
+\begin{align*}
+ \sum_{i=1}^m(-1)^{i-1}\binom mi&=1,\\
+ \sum_{i=1}^m(-1)^{i-1}\binom mi i^k&=0
+ \quad(1\le k<m),\\
+ \sum_{i=1}^m(-1)^{i-1}\binom mi i^m&=(-1)^{m-1}m!.
+\end{align*}
+Substitution into~\eqref{eq:phi-series}, together with
+Lemma~\ref{lem:ck-nonzero}, proves~\eqref{eq:Rm-error} with
+$C_m=(-1)^{m-1}m!c_m\ne0$.
+
+Now define the fixed rational function
+\begin{equation}
+ F_m(X,Y)=\sum_{i=1}^m(-1)^{i-1}\binom mi\frac{X^i-1}{Y^i-1}
+ \in\Q(X,Y).
+ \label{eq:Fm}
+\end{equation}
+It is nonconstant: along $(X,Y)=(2^t,3^t)$ it tends to $\rho$ as $t\to0$ but tends to $0$
+as $t\to+\infty$.  Corvaja--Zannier's Main Theorem gives a positive linear lower bound for
+$h(F_m(u_j,v_j))$ outside finitely many subtorus translates.  Lemma~\ref{lem:coset-avoidance}
+removes those exceptions.  The standard height upper bound for a fixed rational map gives
+the other inequality in~\eqref{eq:Rm-height}.  Finally,~\eqref{eq:baker-lower},
+\eqref{eq:cf-upper}, and~\eqref{eq:Rm-error} show that the numerator in~\eqref{eq:Rm-zero} is
+$O(\log s_j)$, while the denominator is $\Theta(s_j)$.
+\end{proof}
+
+\begin{remark}[What increasing the fixed order accomplishes]
+The construction genuinely improves contact: order $m$ produces $m$th-order error.  The
+failure is arithmetic, not analytic.  Each fixed $F_m$ still has linear primitive height on
+the $S$-unit orbit.  Consequently no finite $m$, however large, changes the height exponent.
+\end{remark}
+
+\begin{warning}[Growing order is the surviving loophole]
+Theorem~\ref{thm:richardson} is uniform only after $m$ is fixed.  If $m=m_j\to\infty$, the
+rational function, its exceptional subtori, its coefficients, and its height constants all
+change.  That is not a technical omission: growing complexity is precisely the only regime
+not eliminated by the theorem.  Any proof along this line must control the \emph{reduced}
+height of the growing family, not merely a common denominator before cancellation.
+\end{warning}
+
+\section{Reciprocal filters and the half-contact theorem}
+\label{sec:reciprocal}
+
+A second natural amplifier uses products of cyclotomic polynomials or other reciprocal
+polynomials to cancel many leading powers at infinity.  Reciprocity imposes a rigid ceiling
+that appears not to have been used in Report A.
+
+\subsection{The algebraic ceiling}
+
+A polynomial $P\in\Z[Z]$ of degree $D$ is \emph{reciprocal} if
+\begin{equation}
+ Z^DP(Z^{-1})=P(Z).
+ \label{eq:reciprocal}
+\end{equation}
+
+\begin{theorem}[Reciprocal half-contact]
+\label{thm:half-contact}
+Let $P,Q\in\Z[Z]$ be distinct monic reciprocal polynomials of the same degree $D$ and with
+constant term $1$.  Suppose
+\begin{equation}
+ \frac{P(Z)}{Q(Z)}=1+cZ^{-K}+O(Z^{-K-1}),
+ \qquad c\ne0.
+ \label{eq:contact-infinity}
+\end{equation}
+Then
+\begin{equation}
+ K\le\left\lfloor\frac D2\right\rfloor.
+ \label{eq:half-bound}
+\end{equation}
+Equality can occur only if $D$ is even and
+\begin{equation}
+ P(Z)-Q(Z)=cZ^{D/2}.
+ \label{eq:middle-monomial}
+\end{equation}
+Conversely,~\eqref{eq:middle-monomial} gives equality.
+\proved
+\end{theorem}
+
+\begin{proof}
+Let $H=P-Q$.  Because $P$ and $Q$ are monic with constant term $1$, the leading and constant
+coefficients of $H$ vanish.  Reciprocity gives
+\[
+ Z^DH(Z^{-1})=H(Z),
+\]
+so the coefficient $h_i$ of $Z^i$ equals $h_{D-i}$.  If $d$ is the largest index with
+$h_d\ne0$, the smallest such index is $D-d$.  Hence $D-d\le d$, or $d\ge D/2$.
+Since $Q(Z)\sim Z^D$, the contact order in~\eqref{eq:contact-infinity} is $K=D-d$, proving
+$K\le D/2$.  Equality forces the smallest and largest nonzero indices of $H$ both to be
+$D/2$, so $H$ is a single middle monomial.  The converse is immediate.
+\end{proof}
+
+\subsection{A two-scale integer determinant}
+
+For fixed $P,Q$ as above, define
+\begin{equation}
+ \Delta_s(P,Q)=P(N^s)Q(M^s)-Q(N^s)P(M^s)\in\Z,
+ \qquad N:=A=M^\theta,
+ \label{eq:two-scale-det}
+\end{equation}
+where $\theta=\log3/\log2$ and $A=M^\theta$ under the counterexample hypothesis.
+
+\begin{proposition}[Exact growth of a fixed reciprocal filter]
+\label{prop:reciprocal-growth}
+With $K$ as in~\eqref{eq:contact-infinity},
+\begin{equation}
+ \log|\Delta_s(P,Q)|
+ =\bigl(D(1+\theta)-K\bigr)s\log M+O(1).
+ \label{eq:det-growth}
+\end{equation}
+In particular, by Theorem~\ref{thm:half-contact},
+\begin{equation}
+ \log|\Delta_s(P,Q)|
+ \ge D\left(\theta+\frac12\right)s\log M+O(1).
+ \label{eq:det-growth-lower}
+\end{equation}
+Thus every fixed reciprocal filter produces a rapidly growing nonzero integer rather than a
+subunit contradiction.  \proved
+\end{proposition}
+
+\begin{proof}
+Write $R=P/Q$.  Then
+\[
+ \Delta_s=Q(N^s)Q(M^s)\bigl(R(N^s)-R(M^s)\bigr).
+\]
+Since $Q(Z)=Z^D(1+O(Z^{-1}))$ and
+$R(Z)=1+cZ^{-K}+O(Z^{-K-1})$,
+\begin{align*}
+ Q(N^s)Q(M^s)&=M^{D(1+\theta)s}(1+o(1)),\\
+ R(N^s)-R(M^s)&=-cM^{-Ks}(1+o(1)).
+\end{align*}
+Multiplication gives~\eqref{eq:det-growth};~\eqref{eq:det-growth-lower} follows from
+$K\le D/2$.
+\end{proof}
+
+\begin{remark}
+The proposition addresses a fixed filter evaluated deeper and deeper on the conditional
+orbit.  It does not rule out a sequence $P_s,Q_s$ of increasing degree with output-dependent
+coefficient cancellation.  Once again, the only surviving regime is growing complexity.
+\end{remark}
+
+\section{Cyclotomic specialization}
+\label{sec:cyclotomic}
+
+For $n>1$, the cyclotomic polynomial $\Phi_n$ is monic, reciprocal, and has constant term
+$1$.  If $\varphi(n)=\varphi(m)=D$, Theorem~\ref{thm:half-contact} applies to
+$P=\Phi_n,Q=\Phi_m$.
+
+\subsection{The M\"obius-layer description}
+
+The standard factorization gives, as a Laurent expansion at infinity,
+\begin{equation}
+ \Phi_n(Z)=Z^{\varphi(n)}
+ \prod_{d\mid n}(1-Z^{-d})^{\mu(n/d)}.
+ \label{eq:cyclotomic-infinity}
+\end{equation}
+For equal totients define
+\begin{equation}
+ c_d(n,m)=
+ \mathbf1_{d\mid n}\mu(n/d)-
+ \mathbf1_{d\mid m}\mu(m/d).
+ \label{eq:cd}
+\end{equation}
+Then
+\begin{equation}
+ \frac{\Phi_n(Z)}{\Phi_m(Z)}
+ =\prod_{d\ge1}(1-Z^{-d})^{c_d(n,m)}.
+ \label{eq:cyclotomic-ratio}
+\end{equation}
+If
+\begin{equation}
+ K(n,m)=\min\{d\ge1:c_d(n,m)\ne0\},
+ \label{eq:Knm}
+\end{equation}
+then the first unequal M\"obius layer is exactly the contact order at infinity.
+
+\begin{corollary}[Cyclotomic half-contact]
+\label{cor:cyclotomic-half}
+For distinct $n,m>1$ with $\varphi(n)=\varphi(m)=D$,
+\begin{equation}
+ K(n,m)\le\left\lfloor\frac D2\right\rfloor.
+ \label{eq:cyclotomic-half}
+\end{equation}
+Equality forces
+$\Phi_n-\Phi_m$ to be a single middle monomial.  \proved
+\end{corollary}
+
+\subsection{Sharp infinite families}
+
+Two elementary families attain the ceiling.
+
+For $a\ge2$, let $h=2^{a-2}$.  Then
+\begin{align}
+ \Phi_{2^a}(Z)&=Z^{2h}+1,\\
+ \Phi_{3\cdot2^{a-1}}(Z)&=Z^{2h}-Z^h+1,
+\end{align}
+so their difference is $Z^h$ and $K=D/2=h$.
+
+For $a\ge1$, let $h=3^{a-1}$.  Then
+\begin{align}
+ \Phi_{3^a}(Z)&=Z^{2h}+Z^h+1,\\
+ \Phi_{2\cdot3^a}(Z)&=Z^{2h}-Z^h+1,
+\end{align}
+so their difference is $2Z^h$ and again $K=D/2=h$.  The pair $(3,4)$ is another sharp
+example:
+\[
+ \Phi_3(Z)-\Phi_4(Z)=Z.
+\]
+
+\subsection{Finite scan through $50000$}
+
+\begin{experiment}[Equal-totient cyclotomic scan]
+\label{exp:scan}
+The script in Appendix~\ref{app:code} enumerates all pairs
+\[
+ 3\le n<m\le50000,\qquad \varphi(n)=\varphi(m),
+\]
+computes $K(n,m)$ from~\eqref{eq:cd}, and checks the ratio $K/\varphi(n)$.
+It produced:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value\\
+\midrule
+Equal-totient pairs tested & $665095$\\
+Maximum $K/\varphi(n)$ & $1/2$\\
+Pairs attaining $1/2$ & $24$\\
+Pairs attaining the next ratio $1/4$ & $34$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $24$ sharp pairs are exactly the members, within the search range, of the two families
+above together with $(3,4)$.  This is finite evidence only; no infinite classification is
+asserted.  \computed
+\end{experiment}
+
+The sharp pairs are listed in Appendix~\ref{app:sharp-pairs}.  The finite result is useful as
+a sanity check on the algebraic theorem and as evidence that the middle-monomial equality
+case is highly rigid.
+
+\begin{resultbox}
+Reciprocity turns a potentially large coefficient space into a one-dimensional obstruction:
+two equal-degree reciprocal filters cannot erase more than half the degree at infinity.  In
+the conditional two-scale determinant, even this optimal contact leaves an exponential
+integer of rate at least $D(\theta+1/2)s\log M$.
+\end{resultbox}
+
+\section{Synthesis: what the new route proves and what it rules out}
+\label{sec:synthesis}
+
+\subsection{The height/contact ledger}
+
+The constructions above can be summarized by two quantities.  For a rational approximation
+$z_j\in\Q$ to a fixed real number $\xi$, define
+\begin{equation}
+ \mathcal A_j(\xi)=
+ \frac{-\log|z_j-\xi|}{h(z_j)}.
+ \label{eq:amplification-ratio}
+\end{equation}
+A successful irrationality-measure contradiction requires a positive ratio exceeding the
+known effective threshold for $\xi$.  The new secant families satisfy
+\[
+ \mathcal A_j\!\left(\frac{\log2}{\log3}\right)\longrightarrow0.
+\]
+For fixed Richardson order $m$, the numerator grows from $O(\log s_j)$ to
+$mO(\log s_j)$, but the denominator remains $\Theta(s_j)$.  No fixed $m$ changes the limit.
+
+The common-residual analysis explains why denominator reduction does not secretly rescue the
+construction.  The reduced height is already $\kappa s_j+o(s_j)$, and every fresh-prime gcd
+is $\exp(o(s_j))$.  The only exponential cancellation occurs at the fixed structural primes.
+
+\subsection{Families now excluded}
+
+The following strategies cannot close the conjecture without a genuinely new ingredient.
+
+\begin{enumerate}
+\item A single normalized secant, in any fixed pair of toric directions.
+\item Any fixed finite Richardson, Prouhet, or finite-difference combination of toric
+secants.
+\item Any attempt to obtain exponential denominator clearing from primes outside the fixed
+support of $6MA$ for a fixed finite residual family.
+\item Any fixed equal-degree reciprocal filter, including fixed products or quotients of
+cyclotomic polynomials, evaluated along the powers $(M^s,A^s)$.
+\item Any argument based on the raw numerator or common denominator before primitive
+reduction.  The exact slope $\kappa$ is the relevant invariant.
+\end{enumerate}
+
+\subsection{Why this is still not a proof}
+
+Corvaja--Zannier is a lower-height theorem outside algebraic subtori.  Our orbit avoids those
+subtori, so fixed rational functions retain height.  But the theorem is not uniform over a
+sequence of rational functions whose degrees, supports, and coefficients grow with $j$.
+Such a sequence may have output-specific cancellations invisible to every fixed-function
+statement.
+
+Likewise, auxiliary-prime gcds are subexponential, but structural-prime valuations can be
+linear and are not bounded away by the Subspace Theorem.  A proof may still exist in a
+carefully designed $2$- and $3$-adic construction, a growing Hermite--Pad\'e family, or a
+hybrid in which the same coefficients create both high archimedean contact and primitive
+structural-prime cancellation.
+
+\section{The surviving research target}
+\label{sec:target}
+
+\subsection{A primitive height/contact amplifier}
+
+The secant law suggests a precise target.
+
+\begin{target}[Growing rational observable]
+\label{target:growing-observable}
+Construct rational functions $F_j\in\Q(X,Y)$ and convergents $r_j/s_j\to\beta$ such that,
+for $z_j=(u_j,v_j)$,
+\begin{enumerate}
+\item $F_j(z_j)\in\Q$ tends to a fixed logarithmic constant, preferably
+$\rho=\log2/\log3$;
+\item the analytic contact order $k_j$ along $(2^t,3^t)$ tends to infinity;
+\item after complete numerator/denominator reduction,
+\[
+ h(F_j(z_j))=o(k_j\log s_j),
+\]
+or at least is small enough that the resulting approximation beats an explicit irrationality
+measure for $\rho$;
+\item the height saving is supported at the structural primes and is not merely a raw common
+denominator or an auxiliary-prime gcd.
+\end{enumerate}
+\openstatus
+\end{target}
+
+Every fixed $F$ fails condition 3 by the Corvaja--Zannier theorem.  Every fixed reciprocal
+cyclotomic filter fails already at the contact stage.  Thus a surviving family must be both
+growing and nontrivially primitive.
+
+\subsection{A finite arithmetic criterion}
+
+One can formulate a proof-producing version.  Let $F=P/Q$ with coprime integer polynomials,
+and evaluate at a concrete rational point $(u,v)$ from~\eqref{eq:uv}.  Compute the exact
+reduced rational $p/q=F(u,v)$ and a rigorous interval enclosure for $|p/q-\rho|$.  Any
+certificate satisfying
+\begin{equation}
+ 0<\left|\frac pq-\rho\right|<q^{-\mu_*}
+ \label{eq:irrationality-certificate}
+\end{equation}
+with $\mu_*$ larger than a certified irrationality exponent for $\rho$ would contradict the
+counterexample hypothesis.  Theorems~\ref{thm:secant-law} and~\ref{thm:richardson} show that
+no fixed support can produce such certificates asymptotically.  A search should therefore
+optimize reduced height directly over growing supports.
+
+\subsection{Suggested computational search}
+
+A practical experiment can be organized as follows.
+
+\begin{enumerate}
+\item Choose a symbolic support $\mathcal S_j\subset\Z^2$ whose size grows moderately.
+\item Impose $k_j$ linear Taylor-contact equations at $(1,1)$ along
+$t\mapsto(2^t,3^t)$.
+\item Solve over $\Z$ or over a lattice adapted to the known $2$- and $3$-adic valuations.
+\item Evaluate the resulting numerator and denominator at exact convergent points
+$(u_j,v_j)$.
+\item Reduce the rational number completely and record its Smith/valuation profile, not its
+unreduced denominator.
+\item Reject every family whose primitive height divided by $k_j\log s_j$ does not decrease.
+\end{enumerate}
+
+The report's theorems provide calibration tests: a correct implementation must reproduce the
+slope $\kappa$ for the basic secant, linear height for every fixed Richardson order, and the
+half-degree ceiling for reciprocal filters.
+
+\section{Formalization blueprint}
+\label{sec:lean}
+
+The new elementary and height bookkeeping can be separated cleanly from the classical deep
+inputs.
+
+\subsection{Kernel-suitable finite core}
+
+The following statements are suitable for direct formalization in Lean or another proof
+assistant.
+
+\begin{enumerate}
+\item Definition of $u(r,s)=2^r/M^s$ and $v(r,s)=3^r/A^s$ as rational numbers; proof of
+multiplicative independence when $r-s\beta\ne0$.
+\item Exact $p$-adic valuation formulas and the finite-sum formula for
+$h(1:u:v)$, with convergence to~\eqref{eq:kappa} under $r/s\to\beta$.
+\item Taylor expansion~\eqref{eq:sigma-expansion} and the finite-difference moment identities
+used in Theorem~\ref{thm:richardson}.
+\item The Bernoulli coefficient formula and nonvanishing reduction to transcendence of
+$\log3/\log2$.
+\item The reciprocal half-contact theorem, including the equality characterization.
+\item The M\"obius-layer formula~\eqref{eq:cyclotomic-ratio} and the deduction
+$K(n,m)\le\varphi(n)/2$.
+\item A certificate checker for the finite scan: totients, M\"obius values, divisor lists,
+and first unequal layer can all be verified by exact integer computation.
+\end{enumerate}
+
+\subsection{Explicit external interfaces}
+
+Two classical results should remain named hypotheses until formal libraries are available.
+
+\begin{description}
+\item[Two-logarithm lower bound.]  For nonzero
+$r\log2-s\log M$, a polynomial lower bound in $\max\{|r|,|s|\}$.
+\item[Corvaja--Zannier.]  The secant-height asymptotic and the fixed rational-function lower
+height outside finitely many proper torus translates.
+\end{description}
+
+All deductions from those interfaces are elementary height, valuation, and Taylor algebra.
+In particular, the exact gcd slope~\eqref{eq:G-asymptotic} should be formalized as a short
+corollary once the secant-height interface is assumed.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The new route begins with a hypothetical counterexample and follows its continued-fraction
+convergents in the opposite direction from the usual determinant method.  Instead of seeking
+many integer points at large scale, it compresses two adjacent multiplicative descriptions
+into a rational $S$-unit point converging to $(1,1)$.  This makes the archimedean contact
+excellent and the nonarchimedean height visible.
+
+The resulting picture is exact.  The basic rational secant has primitive height
+$\kappa s+o(s)$; its reduced numerator and denominator each have that rate.  The raw
+cross-residual gcd has a computable complementary rate, and every part arising from new
+primes is subexponential.  Fixed-order extrapolation improves only the power of a
+polynomially small error.  Reciprocal cyclotomic filters lose at least half their nominal
+contact before arithmetic is even considered.
+
+This does not cross the four-exponentials frontier.  It does narrow the battlefield.  A
+successful proof along the new seam must be a growing-complexity, primitive-height
+construction whose cancellation is tied specifically to the structural primes and to the
+conditional output pair.  Fixed rational observables, fresh-prime gcds, and reciprocal
+cyclotomic filters are no longer plausible places for the missing exponential gain to hide.
+
+\appendix
+
+\section{Detailed height calculation}
+\label{app:height}
+
+For completeness, this appendix writes the projective height in elementary integer terms.
+Let
+\[
+ u=\frac{U_1}{V_1},\qquad v=\frac{U_2}{V_2}
+\]
+be reduced positive rationals and let $D=\lcm(V_1,V_2)$.  Then
+\[
+ h(1:u:v)=
+ \log\frac{\max\{D,U_1D/V_1,U_2D/V_2\}}
+ {\gcd(D,U_1D/V_1,U_2D/V_2)}.
+\]
+Applied to~\eqref{eq:uv}, one may take, for large $j$,
+\begin{align*}
+ U_1&=2^{r_j-ms_j},&V_1&=M_0^{s_j},\\
+ U_2&=3^{r_j-as_j},&V_2&=A_0^{s_j}.
+\end{align*}
+The three unreduced projective coordinates are all archimedean-comparable because
+$u_j,v_j\to1$.  Their common content is nevertheless exponential and is exactly what the
+local maximum in~\eqref{eq:kappa} removes.  This is why replacing $h(1:u:v)$ by
+$\log\lcm(V_1,V_2)$ can overstate the useful height.
+
+At each prime $p$, the primitive denominator exponent is
+\[
+ \max\{0,-v_p(u_j),-v_p(v_j)\},
+\]
+which after division by $s_j$ converges to the local summand in~\eqref{eq:kappa}.  No limiting
+interchange issue occurs because only finitely many primes divide $6MA$.
+
+\section{Bernoulli coefficient formula}
+\label{app:bernoulli}
+
+Let $a,b\ne0$ and
+\[
+ \frac{e^{at}-1}{e^{bt}-1}=\sum_{k\ge0}c_k(a,b)t^k.
+\]
+Using $z/(e^z-1)=\sum_{n\ge0}B_nz^n/n!$ gives
+\begin{equation}
+ c_k(a,b)=
+ \frac1b
+ \sum_{n=1}^{k+1}
+ \frac{a^n}{n!}
+ \frac{B_{k+1-n}b^{k+1-n}}{(k+1-n)!}.
+ \label{eq:ck-bernoulli}
+\end{equation}
+The $n=k+1$ term is $a^{k+1}/(b(k+1)!)$, so the homogeneous polynomial is nonzero.  Setting
+$b=\theta a$ gives
+\[
+ c_k(a,\theta a)=a^kR_k(\theta)
+\]
+for a nonzero rational function $R_k$ whose numerator is a nonzero polynomial in $\theta$.
+Transcendence of $\theta$ proves $c_k\ne0$.
+
+The finite-difference moments follow from
+\[
+ \sum_{i=0}^m(-1)^i\binom mi e^{it}=(1-e^t)^m.
+\]
+Differentiating $k$ times at $t=0$ yields zero for $k<m$ and $(-1)^mm!$ for $k=m$.
+
+\section{Sharp cyclotomic pairs found in the scan}
+\label{app:sharp-pairs}
+
+The $24$ pairs $(n,m)$ with $3\le n<m\le50000$, equal totient, and
+$K(n,m)/\varphi(n)=1/2$ were
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $m$ & $\varphi(n)$ & $K$\\
+\midrule
+3&4&2&1\\
+3&6&2&1\\
+4&6&2&1\\
+8&12&4&2\\
+9&18&6&3\\
+16&24&8&4\\
+27&54&18&9\\
+32&48&16&8\\
+64&96&32&16\\
+81&162&54&27\\
+128&192&64&32\\
+243&486&162&81\\
+256&384&128&64\\
+512&768&256&128\\
+729&1458&486&243\\
+1024&1536&512&256\\
+2048&3072&1024&512\\
+2187&4374&1458&729\\
+4096&6144&2048&1024\\
+6561&13122&4374&2187\\
+8192&12288&4096&2048\\
+16384&24576&8192&4096\\
+19683&39366&13122&6561\\
+32768&49152&16384&8192\\
+\bottomrule
+\end{tabular}
+\end{center}
+The ordering in this table is by increasing maximum index, not by totient.  Within the finite
+range, all but $(3,4)$ are instances of
+\[
+ (2^a,3\cdot2^{a-1})\quad(a\ge2),
+ \qquad
+ (3^a,2\cdot3^a)\quad(a\ge1).
+\]
+
+\section{Finite scan source}
+\label{app:code}
+
+The following pure-Python program uses no external package.  It computes Euler totients and
+M\"obius values by sieves, groups indices by totient, and compares the finite coefficient maps
+in~\eqref{eq:cd}.
+
+\begin{lstlisting}[style=py]
+from collections import Counter, defaultdict
+from fractions import Fraction
+
+LIMIT = 50_000
+
+# Euler phi sieve.
+phi = list(range(LIMIT + 1))
+for p in range(2, LIMIT + 1):
+    if phi[p] == p:
+        for n in range(p, LIMIT + 1, p):
+            phi[n] -= phi[n] // p
+
+# Linear Mobius sieve.
+mu = [0] * (LIMIT + 1)
+least_prime = [0] * (LIMIT + 1)
+primes = []
+mu[1] = 1
+for n in range(2, LIMIT + 1):
+    if least_prime[n] == 0:
+        least_prime[n] = n
+        primes.append(n)
+        mu[n] = -1
+    for p in primes:
+        if p > least_prime[n] or p * n > LIMIT:
+            break
+        least_prime[p * n] = p
+        mu[p * n] = 0 if n % p == 0 else -mu[n]
+
+def divisors(n: int) -> list[int]:
+    small, large = [], []
+    d = 1
+    while d * d <= n:
+        if n % d == 0:
+            small.append(d)
+            if d * d != n:
+                large.append(n // d)
+        d += 1
+    return small + large[::-1]
+
+def layer_map(n: int) -> dict[int, int]:
+    return {d: mu[n // d] for d in divisors(n) if mu[n // d] != 0}
+
+groups = defaultdict(list)
+for n in range(3, LIMIT + 1):
+    groups[phi[n]].append(n)
+
+pair_count = 0
+sharp = []
+ratio_counts = Counter()
+
+for degree, indices in groups.items():
+    if len(indices) < 2:
+        continue
+    maps = {n: layer_map(n) for n in indices}
+    for i, n in enumerate(indices):
+        left = maps[n]
+        for m in indices[i + 1:]:
+            right = maps[m]
+            pair_count += 1
+            keys = set(left) | set(right)
+            contact = min(
+                d for d in keys if left.get(d, 0) != right.get(d, 0)
+            )
+            ratio = Fraction(contact, degree)
+            ratio_counts[ratio] += 1
+            if 2 * contact == degree:
+                sharp.append((n, m, degree, contact))
+            if 2 * contact > degree:
+                raise AssertionError((n, m, degree, contact))
+
+print("pairs", pair_count)
+print("maximum ratio", max(ratio_counts))
+print("sharp count", len(sharp))
+print("next ratios", sorted(ratio_counts.items(), reverse=True)[:6])
+for row in sharp:
+    print(*row)
+\end{lstlisting}
+
+The run used CPython 3 and completed in a few seconds on the report-generation host.  Its
+headline output was
+\begin{verbatim}
+pairs 665095
+maximum ratio 1/2
+sharp count 24
+next ratios [(1/2, 24), (1/4, 34), (1/6, 22),
+             (1/8, 145), (1/10, 25), (1/12, 186)]
+\end{verbatim}
+
+\section{Classical inputs and bibliography}
+\label{app:bib}
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{56} (1944),
+448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BCZ2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\newblock An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$,
+\newblock \emph{Mathematische Zeitschrift} \textbf{243} (2003), 79--84,
+\newblock DOI: \url{https://doi.org/10.1007/s00209-002-0449-z}.
+
+\bibitem{CZ2005}
+P.~Corvaja and U.~Zannier,
+\newblock A lower bound for the height of a rational function at $S$-unit points,
+\newblock \emph{Monatshefte f\"ur Mathematik} \textbf{144} (2005), 203--224,
+\newblock arXiv: \url{https://arxiv.org/abs/math/0311030},
+DOI: \url{https://doi.org/10.1007/s00605-004-0273-0}.
+
+\bibitem{LMN1995}
+M.~Laurent, M.~Mignotte, and Yu.~Nesterenko,
+\newblock Formes lin\'eaires en deux logarithmes et d\'eterminants d'interpolation,
+\newblock \emph{Journal of Number Theory} \textbf{55} (1995), 285--321.
+
+\bibitem{Matveev2000}
+E.~M.~Matveev,
+\newblock An explicit lower bound for a homogeneous rational linear form in logarithms of
+algebraic numbers. II,
+\newblock \emph{Izvestiya: Mathematics} \textbf{64} (2000), 1217--1269.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Springer, 2000.
+
+\bibitem{Yasufuku2026}
+Y.~Yasufuku,
+\newblock GCD inequalities arising from codimension-2 blowups,
+\newblock \emph{Bulletin of the London Mathematical Society} \textbf{58} (2026), e70349,
+\newblock DOI: \url{https://doi.org/10.1112/blms.70349}.
+
+\bibitem{AnthropicFable2026}
+Anthropic,
+\newblock Claude Fable 5 and Claude Mythos 5,
+\newblock 9 June 2026,
+\newblock \url{https://www.anthropic.com/news/claude-fable-5-mythos-5}.
+
+\bibitem{AnthropicCrypto2026}
+Anthropic,
+\newblock Discovering cryptographic weaknesses with Claude,
+\newblock 28 July 2026,
+\newblock \url{https://www.anthropic.com/research/discovering-cryptographic-weaknesses}.
+
+\end{thebibliography}
+
+\end{document}

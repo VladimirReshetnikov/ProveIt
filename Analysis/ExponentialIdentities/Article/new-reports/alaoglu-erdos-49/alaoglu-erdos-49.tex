@@ -1,0 +1,2078 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,longtable,tabularx,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{deepblue}{RGB}{25,65,125}
+\definecolor{deepgreen}{RGB}{25,105,70}
+\definecolor{deepred}{RGB}{145,45,40}
+\definecolor{softgray}{RGB}{246,247,249}
+\definecolor{softblue}{RGB}{239,245,252}
+\definecolor{softgreen}{RGB}{239,248,243}
+\definecolor{softred}{RGB}{252,242,241}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepgreen,
+  urlcolor=deepblue,
+  pdftitle={Local Support, Kummer Coherence, and the Additive Skeleton},
+  pdfauthor={OpenAI GPT-5.6 Pro}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s: local support and Kummer coherence}
+\fancyhead[R]{22 August 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research target}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Audit warning}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\vqp}{v_q}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\AEconj}{\textsc{AE}}
+\newcommand{\newresult}{\textcolor{deepgreen}{\textbf{NEW--UNCONDITIONAL}}}
+\newcommand{\classical}{\textcolor{deepblue}{\textbf{CLASSICAL INPUT}}}
+\newcommand{\computational}{\textcolor{deepred}{\textbf{COMPUTATIONAL CHECK}}}
+\newcommand{\target}{\textcolor{deepred}{\textbf{OPEN TARGET}}}
+
+\newcommand{\boxedparagraph}[2]{%
+\begin{center}
+\fcolorbox{#1}{softgray}{\begin{minipage}{0.92\textwidth}\small #2\end{minipage}}
+\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{deepblue}\bfseries,
+  commentstyle=\color{deepgreen},
+  stringstyle=\color{deepred},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{softgray},
+  columns=fullflexible
+}
+
+\title{\textbf{Local Support, Kummer Coherence, and the Additive Skeleton}\\[4pt]
+\large A Nonduplicative Progress Report on the Alaoglu--Erd\H{o}s Integer-Exponent Conjecture}
+\author{OpenAI GPT-5.6 Pro}
+\date{22 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $x\in\R$ and suppose
+\[
+        M:=2^x\in\Z,\qquad A:=3^x\in\Z.
+\]
+The Alaoglu--Erd\H{o}s conjecture asserts that $x\in\Z$.  The supplied unified report already
+contains an exceptionally broad investigation of transcendence, interpolation determinants,
+$p$-adic amplification, finite differences, matrix and operator methods, Sturmian coding,
+Pad\'e and canonical-product constructions, and many other routes.  This continuation therefore
+does not repackage those methods.  It develops a different local--global program built around
+the classical support problem for the multiplicative group and exact Kummer--Chebotarev
+statistics.
+
+The principal new result is an exact density theorem.  Put
+$\Gamma=\langle 2,3,M,A\rangle\subset\Q_{>0}^{\times}$.  A nonintegral candidate has
+$\rank\Gamma\in\{3,4\}$.  For an admissible odd prime $q$, an integer $e\ge1$, and
+$Q=q^e$, a prime $p\equiv1\pmod Q$ supplies four $Q$-power residue logarithms.  We call
+$p$ \emph{$Q$-coherent} when the output pair $(M,A)$ is a common scalar multiple of the
+base pair $(2,3)$ in this residue quotient.  If the rank is four, the conditional density of
+$Q$-coherent primes is
+\[
+ \frac{1+\dfrac{q(q^2-1)(q^{3e}-1)}{q^3-1}}{q^{4e}};
+\]
+if the rank is three and $q$ avoids one explicit determinant, it is
+\[
+ \frac{1+\dfrac{q(q^{2e}-1)}{q+1}}{q^{3e}}.
+\]
+Both are asymptotic to a constant times $q^{-e}$.  By contrast, an integral exponent is
+$Q$-coherent at every unramified prime.  Thus a hypothetical nonintegral solution is
+archimedean-coherent but, at arbitrarily deep prime-power residue levels, almost always
+finite-place incoherent.  This is a sharp quantitative local signature, although it is not by
+itself a contradiction.
+
+Two complementary results are proved.  First, Kummer theory gives positive-density failures of
+order support between $2$ and $M$ (and between $3$ and $A$) whenever the latter is not an
+integral power of the former.  Coupled with the theorem of Corrales--Rodrig\'a\~nez and Schoof,
+this identifies an exact sufficient target: prove that the candidate-induced monoid map on the
+$3$-smooth numbers preserves congruences.  Second, every additive relation in that monoid is
+classified, and all polynomial additive defects are shown to generate only the single ideal
+\[
+       (M-2,A-3)=\gcd(M-2,A-3)\Z.
+\]
+The corresponding dynamic anchors
+$\gcd(M^n-2^n,A^n-3^n)$ have subexponential size by the $S$-unit gcd theorem.  This gives a
+rigorous no-go result: additive identities alone cannot manufacture the exponential support
+needed by the local criterion.
+
+The conjecture is not proved here.  The report instead isolates a new, exact density gap; gives
+self-contained finite-ring counts and reproducible computations; identifies a finite regulator
+or reciprocity statement that would bridge the remaining archimedean/local divide; and separates
+Lean-friendly algebra from the external Chebotarev, support-theorem, and Subspace-Theorem inputs.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, nonduplication, and claim ledger}
+
+\subsection{What is inherited and what is new}
+
+The attached source was decompressed and audited before this continuation was written.  It has
+$20{,}925$ source lines and roughly $114{,}000$ words.  Its core and twenty-seven continuations
+already treat, among other subjects:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+\item equivalent four-exponentials formulations and the exact transcendence barrier;
+\item rational-function rigidity, perfect powers, valuation lattices, and algebraic auxiliary
+      bases;
+\item second iterates and exponential towers;
+\item arbitrary-node and semigroup Vandermonde determinants, min-plus valuations, transport
+      ceilings, and finite determinant certificates;
+\item Sturmian synchronization, Baker-type separation, sparse interpolation, random phases,
+      moments, M\"untz approximation, Pad\'e defects, canonical products, and Loewner matrices;
+\item structural-prime residuals, carry languages, operator coherence, and extensive Lean
+      blueprints.
+\end{itemize}
+Those subjects are not redeveloped below.  Only three inherited facts are used as a baseline:
+(1) a rational candidate exponent is integral; (2) the special four-exponentials instance is the
+central archimedean wall; and (3) a nonintegral candidate has multiplicative rank three or four.
+For completeness, the short proof of (3) is repeated in \cref{sec:rank}, because it is needed to
+state the new density theorem without importing a hundred-page dependency chain.
+
+The following notions and calculations form the new track of this report:
+\begin{enumerate}[leftmargin=2.2em,itemsep=2pt]
+\item the support preorder $u\preccurlyeq v$ and its exact application to $2,M$ and $3,A$;
+\item $q^e$-power residue logarithms and a common-exponent coherence condition;
+\item exact Chebotarev densities in both multiplicative-rank branches;
+\item a finite residue-pattern detector for the unique rank-three relation;
+\item the complete additive skeleton of the $3$-smooth monoid and its defect ideal;
+\item the dynamic anchor sequence $C_n=\gcd(M^n-2^n,A^n-3^n)$;
+\item a congruence-preservation target connected to Bhargava $p$-orderings;
+\item a finite-regulator formulation of the missing archimedean/local bridge.
+\end{enumerate}
+A literal search of the supplied source found no occurrence of ``Chebotarev'',
+``Corrales'', ``Schoof'', ``support problem'', ``discrete log'', or
+``congruence-preserving''.  Kummer theory and the Bugeaud--Corvaja--Zannier gcd theorem do appear
+there, but for different radical and cancellation diagnostics; the exact residue-density results
+below do not.
+
+\subsection{Status vocabulary}
+
+Every substantial assertion is tagged conceptually as follows.
+\begin{description}[style=nextline,leftmargin=1.8em]
+\item[\newresult] A theorem proved in this report from stated inputs.  The finite-ring counts are
+fully elementary; the density conversion uses standard Kummer theory and Chebotarev.
+\item[\classical] A published theorem used as a black box: Gelfond--Schneider,
+Chebotarev, Corrales--Rodrig\'a\~nez--Schoof, Bhargava's $p$-ordering framework, or the
+Corvaja--Zannier $S$-unit gcd estimate.
+\item[\computational] Exact modular arithmetic over a finite set of primes.  These checks test
+formulas but are not evidence for the Alaoglu--Erd\H{o}s conclusion itself.
+\item[\target] A statement whose proof would advance or settle the conjecture.  No target is
+silently promoted to a theorem.
+\end{description}
+
+\boxedparagraph{deepred}{\textbf{Bottom line.}  No unconditional proof of the Alaoglu--Erd\H{o}s
+conjecture is claimed.  The new achievement is an exact local density dichotomy and a precise
+support-transfer target, together with a proof that the most obvious additive route to that
+target collapses to a one-modulus invariant.}
+
+\subsection{Audit of the reported 2026 breakthroughs}
+
+The rival-team claims were checked only to calibrate the competitive context; none is used in a
+mathematical argument below.
+\begin{itemize}[leftmargin=2em]
+\item An explicit polynomial map $\mathbb{C}^3\to\mathbb{C}^3$ with constant Jacobian determinant and a
+three-point fibre was publicly circulated in July 2026 and independently formalized in Lean.
+It refutes the Jacobian conjecture in dimensions at least three; the plane case remains open.
+The relevant public artifacts are cited in the bibliography.
+\item The ICARM elliptic-curve leaderboard records a curve submitted on 20 August 2026 with a
+rank lower bound at least $30$ and a witness consisting of thirty independent rational points.
+The leaderboard commentary attributes the construction to Claude with Levent Alp\"oge and Ava
+Howell.  This is a certified lower bound, not an unconditional proof that the rank is exactly
+$30$.
+\item OEIS was updated in August 2026 to report Hadamard matrices for the twelve previously
+unresolved admissible orders at most $2000$, attributing the constructions to Levent Alp\"oge,
+Philippe Voinov, Saul Reynolds-Haertle, and Claude.  The existence checks themselves are finite
+exact matrix computations.
+\item No public preprint, repository, theorem statement, Lean file, or independently checkable
+artifact for the rumored Alaoglu--Erd\H{o}s breakthrough was located as of 22 August 2026.
+Accordingly, the rumor supplies neither a lemma nor a hint used here.
+\end{itemize}
+
+\section{Normalization and multiplicative rank}
+\label{sec:rank}
+
+Throughout,
+\[
+        2^x=M\in\Z_{>0},\qquad 3^x=A\in\Z_{>0}.
+\]
+If $x<0$, then $0<2^x<1$, impossible for a positive integer; if $0<x<1$, then
+$1<2^x<2$, also impossible.  Thus either $x=0$ or $x\ge1$.
+
+\begin{lemma}[Rational candidates]\label{lem:rational}
+If $x\in\Q$ and $2^x\in\Z$, then $x\in\Z$.
+\end{lemma}
+\begin{proof}
+Write $x=a/b$ with $b>0$ and $\gcd(a,b)=1$.  From $2^a=M^b$, comparison of the
+$2$-adic valuations gives $a=bv_2(M)$, hence $b\mid a$ and $b=1$.
+\end{proof}
+
+\begin{corollary}[Transcendence of a counterexample]\label{cor:trans}
+A nonintegral candidate $x$ is transcendental.
+\end{corollary}
+\begin{proof}
+By \cref{lem:rational}, $x$ is irrational.  If it were algebraic, the
+Gelfond--Schneider theorem would make $2^x$ transcendental, contrary to $2^x=M\in\Z$.
+\end{proof}
+
+Let
+\[
+   \Gamma=\langle 2,3,M,A\rangle\subset\Q_{>0}^{\times}
+\]
+and write $r=\rank\Gamma$.
+
+\begin{proposition}[Rank dichotomy]\label{prop:rankdichotomy}
+For a nonintegral candidate, $r\in\{3,4\}$.
+\end{proposition}
+\begin{proof}
+Clearly $r\ge2$ because $2$ and $3$ are multiplicatively independent.  Suppose $r=2$.
+Then $M$ and $A$ lie in the group generated by $2$ and $3$, so for integers
+$a,b,c,d$,
+\[
+       M=2^a3^b,\qquad A=2^c3^d.
+\]
+Set $\theta=\log3/\log2$.  The number $\theta$ is transcendental: it is not rational,
+and if it were algebraic irrational then $2^\theta=3$ would contradict
+Gelfond--Schneider.  Taking logarithms gives
+\[
+       x=a+b\theta=d+\frac{c}{\theta}.
+\]
+Hence
+\[
+       b\theta^2+(a-d)\theta-c=0.
+\]
+Transcendence of $\theta$ forces $b=c=0$ and $a=d$, so $x=a\in\Z$, a contradiction.
+Thus $r\ne2$, while $r\le4$ by definition.
+\end{proof}
+
+If $r=3$, the relation lattice has rank one.  Fix its primitive generator
+\[
+  \bm c=(c_1,c_2,c_3,c_4)\in\Z^4,
+  \qquad
+  2^{c_1}3^{c_2}M^{c_3}A^{c_4}=1,
+\]
+unique up to sign, and define
+\[
+       \Delta(\bm c)=c_1c_4-c_2c_3.
+\]
+
+\begin{lemma}[Nondegenerate rank-three relation]\label{lem:delta}
+For a nonintegral candidate in the rank-three branch,
+$\Delta(\bm c)\ne0$.
+\end{lemma}
+\begin{proof}
+If $\Delta=0$, the rational vectors $(c_1,c_2)$ and $(c_3,c_4)$ are proportional.
+Neither pair can be zero, because $2,3$ are independent and because $M,A$ cannot satisfy a
+nontrivial relation without forcing $x$ rational.  Thus there is $t\in\Q$ with
+$(c_1,c_2)=t(c_3,c_4)$.  Taking logarithms of the multiplicative relation and using
+$\log M=x\log2$, $\log A=x\log3$ gives
+\[
+  (t+x)(c_3\log2+c_4\log3)=0.
+\]
+The second factor is nonzero, so $x=-t\in\Q$, and \cref{lem:rational} yields
+$x\in\Z$, contradiction.
+\end{proof}
+
+\subsection{Admissible residue primes}
+
+The exact density formulas require exclusion of only finitely many primes.  This can be made
+completely explicit from a valuation matrix.
+
+Let $S$ be the finite set of rational primes dividing $6MA$.  Form the integer matrix $V$ whose
+columns are the valuation vectors of $2,3,M,A$ at all primes in $S$; zero rows may be omitted.
+Its rank is $r$.  Let $d_1\mid\cdots\mid d_r$ be the nonzero invariant factors in the Smith
+normal form of $V$, and put
+\[
+       \sigma_\Gamma=d_1\cdots d_r.
+\]
+The number $\sigma_\Gamma$ measures the failure of the valuation lattice to be saturated.
+
+\begin{definition}[Admissible prime]\label{def:admissible}
+An odd prime $q$ is \emph{admissible for $\Gamma$} if
+\[
+      q\nmid 6MA\sigma_\Gamma,
+\]
+and, in the rank-three branch, also $q\nmid\Delta(\bm c)$.
+\end{definition}
+There are infinitely many admissible primes.
+
+For $Q=q^e$, let $K_Q=\Q(\zeta_Q)$ and
+\[
+ L_Q=K_Q\bigl(2^{1/Q},3^{1/Q},M^{1/Q},A^{1/Q}\bigr).
+\]
+The next elementary saturation lemma is the algebraic engine behind all later densities.
+
+\begin{lemma}[Exact Kummer relation module]\label{lem:kummermodule}
+Let $q$ be admissible and $Q=q^e$.  For
+$\bm n=(n_1,n_2,n_3,n_4)\in\Z^4$, the rational number
+$2^{n_1}3^{n_2}M^{n_3}A^{n_4}$ is a $Q$th power in $K_Q$ if and only if
+\[
+ \bm n\in \mathcal R+Q\Z^4,
+\]
+where $\mathcal R$ is the integral relation lattice of $(2,3,M,A)$.  Consequently,
+\[
+ \Gal(L_Q/K_Q)\cong
+ \begin{cases}
+   (\Z/Q\Z)^4,&r=4,\\
+   \{\bm t\in(\Z/Q\Z)^4:\bm c\cdot\bm t=0\},&r=3,
+ \end{cases}
+\]
+and the latter group has order $Q^3$.
+\end{lemma}
+\begin{proof}
+The reverse implication is immediate.  For the forward implication, assume the indicated
+rational number is a $Q$th power in $K_Q$.  Because $q\nmid6MA$, every rational prime appearing
+in the four generators is unramified in $K_Q/\Q$.  At any prime ideal above such a rational
+prime $\ell$, the valuation of a $Q$th power is divisible by $Q$.  Therefore
+\[
+        V\bm n\in Q\Z^S.
+\]
+Since $q\nmid\sigma_\Gamma$, the Smith normal form shows that the valuation lattice is
+$q$-saturated at every depth: the last congruence implies
+$\bm n\in\ker(V)+Q\Z^4=\mathcal R+Q\Z^4$.
+
+Because $K_Q$ contains all $Q$th roots of unity, ordinary Kummer theory identifies the Galois
+group with the dual of the subgroup generated by the four classes in
+$K_Q^\times/(K_Q^\times)^Q$.  The relation-module computation gives the displayed groups.  In
+rank three, admissibility makes the primitive relation remain primitive modulo $q$, so its
+kernel has cardinality $Q^3$.
+\end{proof}
+
+\begin{remark}
+The use of explicit Kummer-degree theory can remove or optimize the finite exceptional set, but
+it is not needed for the qualitative or exact formulas here.  The valuation-matrix definition is
+algorithmic, elementary, and adequate for formalization.
+\end{remark}
+
+\section{The support problem as an exact bridge}
+\label{sec:support}
+
+The archimedean equations $M=2^x$ and $A=3^x$ do not themselves have a reduction modulo a
+prime when $x$ is nonintegral.  The support problem supplies a different local object: the
+orders of the rational integers $2,M$ and $3,A$ in finite fields.
+
+\begin{definition}[Support preorder]
+For $u,v\in\Q^\times$, write $u\preccurlyeq v$ if, for all but finitely many rational primes
+$p$ and every positive integer $n$,
+\[
+       u^n\equiv1\pmod p\quad\Longrightarrow\quad v^n\equiv1\pmod p.
+\]
+Equivalently,
+\[
+       \ord_p(v)\mid \ord_p(u)
+\]
+for almost all $p$ at which both elements are defined.
+\end{definition}
+The equivalence follows by taking $n=\ord_p(u)$ in one direction and using divisibility of
+orders in the other.
+
+\begin{theorem}[Corrales--Rodrig\'a\~nez--Schoof]\label{thm:CRS}
+Let $F$ be a number field and $u,v\in F^\times$.  If, for every integer $n$ and almost all
+prime ideals $\mathfrak p$,
+\[
+   u^n\equiv1\pmod{\mathfrak p}
+       \quad\Longrightarrow\quad
+   v^n\equiv1\pmod{\mathfrak p},
+\]
+then $v$ is an integral power of $u$.
+\end{theorem}
+
+In the rational positive setting needed here, the conclusion has no root-of-unity ambiguity.
+
+\begin{corollary}[Exact support reformulation]\label{cor:supportAE}
+A candidate exponent is integral if either
+\[
+       2\preccurlyeq M
+       \qquad\text{or}\qquad
+       3\preccurlyeq A.
+\]
+In fact, $2\preccurlyeq M$ implies $M=2^k$ for some $k\in\Z$, and then $x=k$.
+\end{corollary}
+
+\subsection{Cyclotomic divisibility target}
+
+For a prime $p\nmid2$ let $d=\ord_p(2)$.  Then $p\mid2^d-1$.  Thus the first support
+condition would follow from the divisibility sequence implication
+\[
+       2^n-1\mid M^n-1\qquad(n\ge1).
+       \tag{S2}\label{eq:S2}
+\]
+It is enough that \eqref{eq:S2} hold for every sufficiently large $n$: for fixed $p$, choose two
+consecutive integers $k,k+1$ with both $kd,(k+1)d$ in the valid range.  Then
+$M^{kd}\equiv M^{(k+1)d}\equiv1\pmod p$, hence $M^d\equiv1\pmod p$.
+
+Condition \eqref{eq:S2} is far stronger than the original real equation, but it identifies a
+concrete algebraic bridge.  It can be phrased on the $3$-smooth monoid.
+
+\begin{definition}[Candidate monoid map]\label{def:phi}
+Let
+\[
+       \mathcal U=\{2^a3^b:a,b\in\Z_{\ge0}\}.
+\]
+Define the monoid homomorphism
+\[
+       \Phi:\mathcal U\longrightarrow\Z_{>0},
+       \qquad
+       \Phi(2^a3^b)=M^aA^b.
+\]
+\end{definition}
+
+\begin{definition}[Congruence preservation]
+A map $f:E\to\Z$ on a subset $E\subset\Z$ is \emph{congruence-preserving} if
+\[
+       u-v\mid f(u)-f(v)
+       \qquad(u,v\in E).
+\]
+\end{definition}
+
+\begin{proposition}[Congruence-preservation criterion]\label{prop:CP}
+If the candidate map $\Phi$ is congruence-preserving on $\mathcal U$, then $x\in\Z$.
+The same conclusion holds if congruence preservation is known only for the pairs
+$(2^n,1)$ for all sufficiently large $n$.
+\end{proposition}
+\begin{proof}
+Since $1,2^n\in\mathcal U$ and $\Phi(1)=1$, congruence preservation gives
+\[
+       2^n-1\mid\Phi(2^n)-\Phi(1)=M^n-1.
+\]
+Now apply \cref{cor:supportAE}, with the preceding two-consecutive-multiples argument in the
+eventual case.
+\end{proof}
+
+\boxedparagraph{deepgreen}{\textbf{Exact new target.}  It is unnecessary to attack the
+four-exponentials statement in full generality.  It would suffice to prove the single divisibility
+law $u-v\mid\Phi(u)-\Phi(v)$ on the sparse monoid of $3$-smooth integers, or even only the
+one-dimensional family $2^n-1\mid M^n-1$.  Sections~\ref{sec:additive}--\ref{sec:bhargava}
+show both why ordinary additive identities do not yield this law and how $p$-orderings could
+encode the missing divisibility.}
+
+\subsection{Positive-density support failures from Kummer theory}
+
+The support theorem gives a qualitative dichotomy.  For rational integers one can also see the
+failure set directly and compute its density.
+
+\begin{theorem}[Pairwise Kummer discordance]\label{thm:pairdiscord}
+Let $u,v\in\Q_{>0}^{\times}$ be multiplicatively independent.  For all but finitely many odd
+primes $q$, among rational primes $p\equiv1\pmod q$ the four events
+\[
+\begin{array}{c|c}
+\text{event}&\text{conditional density among }p\equiv1\pmod q\\ \hline
+u\text{ and }v\text{ are }q\text{th powers modulo }p&1/q^2\\
+u\text{ is a }q\text{th power, }v\text{ is not}&(q-1)/q^2\\
+v\text{ is a }q\text{th power, }u\text{ is not}&(q-1)/q^2\\
+\text{neither is a }q\text{th power}&(q-1)^2/q^2
+\end{array}
+\]
+have the indicated Dirichlet densities.  Their unconditional densities are respectively
+\[
+ \frac1{(q-1)q^2},\qquad \frac1{q^2},\qquad\frac1{q^2},\qquad\frac{q-1}{q^2}.
+\]
+\end{theorem}
+\begin{proof}
+For an admissible $q$, the classes of $u$ and $v$ are independent in
+$\Q(\zeta_q)^\times/(\Q(\zeta_q)^\times)^q$, so the Kummer extension
+\[
+   \Q(\zeta_q,u^{1/q},v^{1/q})/\Q(\zeta_q)
+\]
+has Galois group $\F_q^2$.  For $p\equiv1\pmod q$, the two $q$th-power residue characters are
+the two coordinates of Frobenius.  Chebotarev makes this vector uniform in $\F_q^2$.  A
+coordinate is zero exactly when the corresponding rational number is a $q$th power modulo
+$p$.  Counting zero/nonzero coordinates gives the conditional densities.  Multiplication by
+the density $1/(q-1)$ of $p\equiv1\pmod q$ gives the unconditional values.
+\end{proof}
+
+Take $u=2$ and $v=M$.  If $M$ is not a power of $2$, the pair is multiplicatively independent.
+For every admissible $q$, \cref{thm:pairdiscord} supplies a positive-density set of primes such
+that $2$ is a $q$th power but $M$ is not.  At each such prime, with
+$n=(p-1)/q$,
+\[
+        2^n\equiv1\pmod p,
+        \qquad
+        M^n\not\equiv1\pmod p.
+\]
+Thus every admissible $q$ produces explicit failures of $2\preccurlyeq M$.  The reverse event
+also has positive density, so the local orders of $2$ and $M$ are generically incomparable.
+
+\begin{corollary}[Rational support theorem, density form]\label{cor:densitysupport}
+For $M\in\Z_{>0}$, the following are equivalent:
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item $M$ is a nonnegative integral power of $2$;
+\item $2\preccurlyeq M$;
+\item for one, equivalently every, sufficiently large admissible prime $q$, the event
+      ``$2$ is a $q$th power modulo $p$ but $M$ is not'' has density zero among
+      $p\equiv1\pmod q$.
+\end{enumerate}
+\end{corollary}
+
+This is a special rational case of the support theorem with additional quantitative information.
+Its limitation is equally clear: the real identity $M=2^x$ gives no known reason for the
+$q$th-power status of $M$ to follow that of $2$ when $x$ is not integral.  The next section
+measures the stronger requirement that the two output residues arise from one common exponent.
+
+\section{Prime-power residue logarithms and common-exponent coherence}
+\label{sec:coherence}
+
+\subsection{Residue-log vectors}
+
+Fix an admissible odd prime $q$, an integer $e\ge1$, and put
+\[
+      Q=q^e,\qquad R_Q=\Z/Q\Z.
+\]
+Let $p\equiv1\pmod Q$ be a prime not dividing $6MA$.  Choose an element
+$\omega_p\in\F_p^\times$ of exact order $Q$.  For $g\in\{2,3,M,A\}$ define
+$\lambda_{p,Q}(g)\in R_Q$ by
+\[
+        g^{(p-1)/Q}=\omega_p^{\lambda_{p,Q}(g)}.
+        \tag{4.1}\label{eq:reslog}
+\]
+Replacing $\omega_p$ by $\omega_p^u$, with $u\in R_Q^\times$, multiplies all four
+coordinates by $u^{-1}$.  Consequently any condition invariant under simultaneous multiplication
+by a unit is intrinsic.
+
+Write
+\[
+ \bm\lambda_{p,Q}
+ =\bigl(\lambda_{p,Q}(2),\lambda_{p,Q}(3),
+        \lambda_{p,Q}(M),\lambda_{p,Q}(A)\bigr).
+\]
+Kummer reciprocity identifies this vector, up to the harmless common unit, with the Frobenius
+of a prime of $K_Q$ in $L_Q/K_Q$.
+
+\begin{lemma}[Uniform residue-log distribution]\label{lem:uniform}
+Let $E\subseteq\Gal(L_Q/K_Q)$ be invariant under multiplication of all coordinates by units in
+$R_Q^\times$.  Then the set of rational primes $p\equiv1\pmod Q$ for which
+$\bm\lambda_{p,Q}\in E$ has conditional Dirichlet density
+\[
+       \frac{|E|}{|\Gal(L_Q/K_Q)|}.
+\]
+\end{lemma}
+\begin{proof}
+Chebotarev makes Frobenius elements of prime ideals of $K_Q$ uniform in the abelian group
+$\Gal(L_Q/K_Q)$.  A rational prime $p\equiv1\pmod Q$ splits completely in $K_Q$.  Its
+$\varphi(Q)$ primes correspond to the choices of the image of $\zeta_Q$, hence to replacing
+$\omega_p$ by $\omega_p^u$ for $u\in R_Q^\times$.  Since $E$ is invariant under this common
+rescaling, either all primes of $K_Q$ above $p$ satisfy the condition or none do.  The prime-ideal
+Chebotarev density therefore descends unchanged to the conditional density of rational primes.
+\end{proof}
+
+\subsection{The coherence condition}
+
+\begin{definition}[$Q$-coherence]\label{def:coherent}
+A prime $p\equiv1\pmod Q$ is \emph{$Q$-coherent} for the quadruple $(2,3,M,A)$ if there
+exists $k\in R_Q$ such that
+\[
+\begin{split}
+  \lambda_{p,Q}(M)&=k\lambda_{p,Q}(2),\\
+  \lambda_{p,Q}(A)&=k\lambda_{p,Q}(3).
+\end{split}
+\tag{4.2}\label{eq:coherent}
+\]
+\end{definition}
+This condition is invariant under the choice of $\omega_p$.
+
+If there is an actual integer $k$ satisfying
+$M\equiv2^k\pmod p$ and $A\equiv3^k\pmod p$, then \eqref{eq:coherent} follows after raising
+to $(p-1)/Q$.  The converse need not hold: $Q$-coherence sees only a quotient of the full
+discrete logarithm group.  It is therefore a deliberately coarse but tractable necessary
+condition for a common finite-field exponent.
+
+If $x=k\in\Z$, the equalities $M=2^k$, $A=3^k$ hold over $\Z$, so every prime
+$p\nmid6MA$ is $Q$-coherent for every $Q\mid p-1$.  The nonintegral branches behave in the
+opposite way.
+
+\subsection{Exact count in multiplicative rank four}
+
+\begin{theorem}[Rank-four coherence density]\label{thm:rank4density}
+Assume $\rank\Gamma=4$.  Let $q$ be admissible and $Q=q^e$.  Define
+\[
+ N_{4}(q,e)
+ =1+\frac{q(q^2-1)(q^{3e}-1)}{q^3-1}.
+ \tag{4.3}\label{eq:N4}
+\]
+Then the conditional Dirichlet density of $Q$-coherent primes among
+$p\equiv1\pmod Q$ is
+\[
+       P_4(q,e)=\frac{N_4(q,e)}{q^{4e}}.
+       \tag{4.4}\label{eq:P4}
+\]
+The unconditional density is
+\[
+       \frac{N_4(q,e)}{\varphi(Q)q^{4e}}.
+\]
+Moreover,
+\[
+       P_4(q,e)
+       \sim \frac{q(q+1)}{q^2+q+1}\,q^{-e}
+       \qquad(e\to\infty).
+       \tag{4.5}\label{eq:P4asym}
+\]
+\end{theorem}
+\begin{proof}
+By \cref{lem:kummermodule,lem:uniform}, the residue-log vector is uniform in
+$R_Q^4$.  Write its base and output halves as
+\[
+       \bm b=(u,v),\qquad \bm y=(m,a).
+\]
+For fixed $\bm b$, the coherent outputs are exactly the cyclic submodule
+$R_Q\bm b$.  If $\bm b=0$, this submodule has one element.  Otherwise define its content
+$s$ by
+\[
+        s=\min\{v_q(u),v_q(v),e\},\qquad 0\le s<e.
+\]
+Put $t=e-s$.  There are
+\[
+        q^{2t}-q^{2t-2}
+\]
+base vectors of content $s$, and the cyclic submodule they generate has $q^t$ elements.  Hence
+the number of coherent quadruples is
+\[
+\begin{split}
+  N_4(q,e)
+   &=1+\sum_{t=1}^{e}(q^{2t}-q^{2t-2})q^t\\
+   &=1+\frac{q(q^2-1)(q^{3e}-1)}{q^3-1}.
+\end{split}
+\]
+Division by $|R_Q^4|=q^{4e}$ and application of \cref{lem:uniform} gives the conditional
+density.  The primes $p\equiv1\pmod Q$ have density $1/\varphi(Q)$, giving the
+unconditional value.  The leading term in \eqref{eq:N4} yields \eqref{eq:P4asym}.
+\end{proof}
+
+At depth one,
+\[
+        P_4(q,1)=\frac{q^3-q+1}{q^4}
+        =\frac1q-\frac1{q^3}+\frac1{q^4}.
+        \tag{4.6}
+\]
+
+\subsection{Exact count in multiplicative rank three}
+
+The rank-three relation cuts the ambient Kummer group by one linear equation, but the coherence
+variety also intersects that hyperplane nontransversely at imprimitive base vectors.  The exact
+prime-power count therefore differs from simply multiplying the rank-four probability by $q$.
+
+\begin{theorem}[Rank-three coherence density]\label{thm:rank3density}
+Assume $\rank\Gamma=3$, let $\bm c$ be the primitive relation, and let $q$ be admissible in
+the sense of \cref{def:admissible}.  Put $Q=q^e$ and
+\[
+ N_3(q,e)
+ =1+\frac{q(q^{2e}-1)}{q+1}.
+ \tag{4.7}\label{eq:N3}
+\]
+Then the conditional Dirichlet density of $Q$-coherent primes among
+$p\equiv1\pmod Q$ is
+\[
+       P_3(q,e)=\frac{N_3(q,e)}{q^{3e}}.
+       \tag{4.8}\label{eq:P3}
+\]
+The unconditional density is
+\[
+       \frac{N_3(q,e)}{\varphi(Q)q^{3e}},
+\]
+and
+\[
+       P_3(q,e)\sim\frac{q}{q+1}\,q^{-e}
+       \qquad(e\to\infty).
+       \tag{4.9}\label{eq:P3asym}
+\]
+\end{theorem}
+\begin{proof}
+The Kummer group is the hyperplane
+\[
+ H_e=\{(u,v,m,a)\in R_Q^4:
+        c_1u+c_2v+c_3m+c_4a=0\},
+\]
+of cardinality $q^{3e}$.  A coherent vector has the form
+$(u,v,ku,kv)$.  Thus it lies in $H_e$ precisely when
+\[
+       (c_1+c_3k)u+(c_2+c_4k)v=0\pmod Q.
+       \tag{4.10}\label{eq:rank3eq}
+\]
+The zero base vector contributes one coherent vector.
+
+Now let $(u,v)$ have content $s<e$ and put $t=e-s$.  Divide by $q^s$ and work modulo
+$q^t$ with a primitive vector $(u',v')$.  Set
+\[
+   \alpha=c_1u'+c_2v',\qquad
+   \delta=c_3u'+c_4v'.
+\]
+Because $q\nmid\Delta(\bm c)$, the matrix
+\[
+      \begin{pmatrix}c_1&c_2\\c_3&c_4\end{pmatrix}
+\]
+is invertible modulo $q^t$.  Therefore $(u',v')\mapsto(\alpha,\delta)$ permutes the
+primitive vectors of $(\Z/q^t\Z)^2$.  Equation \eqref{eq:rank3eq} becomes
+\[
+        \alpha+k\delta=0\pmod{q^t}.
+\]
+For a primitive pair $(\alpha,\delta)$ this has a solution exactly when $\delta$ is a unit,
+and then the solution $k$ modulo $q^t$ is unique.  The number of such pairs is
+\[
+       q^t(q^t-q^{t-1})=q^{2t}-q^{2t-1}.
+\]
+Each gives one distinct coherent output.  Summing over contents,
+\[
+\begin{split}
+ N_3(q,e)
+   &=1+\sum_{t=1}^{e}(q^{2t}-q^{2t-1})\\
+   &=1+\frac{q(q^{2e}-1)}{q+1}.
+\end{split}
+\]
+Divide by $|H_e|=q^{3e}$ and invoke \cref{lem:uniform}.  The remaining assertions follow
+as in the rank-four case.
+\end{proof}
+
+At depth one,
+\[
+        P_3(q,1)=\frac{q^2-q+1}{q^3}
+        =\frac1q-\frac1{q^2}+\frac1{q^3}.
+        \tag{4.11}
+\]
+For every $q>1$,
+$P_4(q,1)-P_3(q,1)=(q-1)^2/q^4>0$; the rank-four branch is slightly more coherent because
+there is no relation hyperplane to constrain the output.
+
+\subsection{The density gap}
+
+\begin{theorem}[Finite-place density gap]\label{thm:densitygap}
+Let $(M,A)$ arise from a candidate exponent.
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item If $x\in\Z$, then for every $Q$ and every prime $p\equiv1\pmod Q$ with
+      $p\nmid6MA$, the prime $p$ is $Q$-coherent.
+\item If $x\notin\Z$, then $\rank\Gamma\in\{3,4\}$, and for every admissible $q$ and
+      every $e\ge1$ the conditional density of $q^e$-coherent primes is exactly
+      $P_3(q,e)$ or $P_4(q,e)$ according to the rank branch.  In particular it is
+      $O_q(q^{-e})$, while the incoherent density tends to $1$ as $e\to\infty$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Part (a) follows by taking the common scalar $k=x\bmod Q$ in
+\eqref{eq:coherent}.  Part (b) combines \cref{prop:rankdichotomy,thm:rank4density,thm:rank3density}.
+\end{proof}
+
+\begin{corollary}[Quantitative sufficient criterion]\label{cor:quantcriterion}
+Fix an admissible $q$ and $e\ge1$.  If one can prove, from the candidate equations, that the
+conditional density of $q^e$-coherent primes is strictly larger than both
+$P_3(q,e)$ and $P_4(q,e)$, then $x\in\Z$.
+\end{corollary}
+
+The criterion is deliberately quantitative.  A statement such as ``there are infinitely many
+coherent primes'' is useless: both nonintegral rank branches have positive density at every fixed
+depth.  One needs a density excess, coherence at almost every admissible prime, or a mechanism
+that remains coherent through unbounded depth.
+
+\boxedparagraph{deepblue}{\textbf{Interpretation.}  A hypothetical counterexample would satisfy
+the exact real determinant
+$\log2\,\log A-\log3\,\log M=0$, yet at depth $q^e$ its corresponding finite residue vectors
+would fail to share a scalar at a proportion tending to $1$.  The conjecture asks for a bridge
+showing that this extreme archimedean/finite-place mismatch cannot occur for the special integer
+quadruple.  Chebotarev quantifies the mismatch perfectly; it does not remove it.}
+
+\section{Recovering the rank branch from finite residue patterns}
+\label{sec:detector}
+
+The depth-one Kummer data contains more than the aggregate coherence probability.  In rank four,
+the four $q$th-power statuses are independent.  In rank three, the unique multiplicative relation
+forbids entire status patterns.  This gives a finite-place detector for the relation support.
+
+Fix an admissible prime $q$ and a prime $p\equiv1\pmod q$.  A coordinate
+$\lambda_{p,q}(g)$ is zero exactly when $g$ is a $q$th power modulo $p$.  Let
+\[
+       J_q=\{i\in\{1,2,3,4\}:c_i\not\equiv0\pmod q\}
+\]
+be the active support of the rank-three relation modulo $q$.
+
+\begin{lemma}[Nonzero solutions of one linear equation]\label{lem:Ns}
+For $s\ge0$, let $N_s(q)$ be the number of $(z_1,\dots,z_s)\in(\F_q^\times)^s$ satisfying
+\[
+       z_1+\cdots+z_s=0.
+\]
+Then
+\[
+       N_s(q)=\frac{(q-1)^s+(q-1)(-1)^s}{q}.
+       \tag{5.1}\label{eq:Ns}
+\]
+In particular $N_0(q)=1$ and $N_1(q)=0$.
+\end{lemma}
+\begin{proof}
+Using additive-character orthogonality,
+\[
+ N_s(q)=\frac1q\sum_{t\in\F_q}
+       \left(\sum_{z\in\F_q^\times}\exp\frac{2\pi i\,\mathrm{Tr}(tz)}q\right)^s.
+\]
+The inner sum is $q-1$ for $t=0$ and $-1$ for each $t\ne0$, yielding
+\eqref{eq:Ns}.  Equivalently, one may prove the same formula by the recurrence
+$N_s=(q-1)^{s-1}-N_{s-1}$.
+\end{proof}
+
+\begin{theorem}[Rank-three status-pattern law]\label{thm:patternlaw}
+Assume $\rank\Gamma=3$ and let $q$ be admissible.  Prescribe, for each of the four generators,
+whether its residue-log coordinate is zero or nonzero.  Let
+\begin{itemize}[leftmargin=2em,itemsep=1pt]
+\item $s$ be the number of active coordinates in $J_q$ prescribed to be nonzero;
+\item $h$ be the number of inactive coordinates outside $J_q$ prescribed to be nonzero.
+\end{itemize}
+Then the number of points in the Kummer hyperplane realizing the pattern is
+\[
+       N_s(q)(q-1)^h.
+       \tag{5.2}\label{eq:patterncount}
+\]
+Its conditional density among primes $p\equiv1\pmod q$ is
+\[
+       \frac{N_s(q)(q-1)^h}{q^3}.
+       \tag{5.3}\label{eq:patterndensity}
+\]
+In particular, every pattern with exactly one active nonzero coordinate is forbidden.
+\end{theorem}
+\begin{proof}
+The residue vector is uniform on the hyperplane $\bm c\cdot\bm t=0$ by
+\cref{lem:uniform}.  After independently scaling each active coordinate by the nonzero
+coefficient $c_i$, the relation is a sum of the $s$ prescribed nonzero active variables.  There
+are $N_s(q)$ choices by \cref{lem:Ns}.  Inactive nonzero coordinates are unrestricted and
+contribute $(q-1)^h$.  The hyperplane has $q^3$ points.
+\end{proof}
+
+\begin{proposition}[Rank-four status law]\label{prop:rank4patterns}
+If $\rank\Gamma=4$, every zero/nonzero pattern occurs.  A pattern with $z$ zero coordinates
+has conditional density
+\[
+       \frac{(q-1)^{4-z}}{q^4}.
+\]
+Thus the number of zero coordinates is binomial with parameters $4$ and $1/q$.
+\end{proposition}
+
+The forbidden-pattern law is stronger than a generic rank computation: by varying $q$, observed
+forbidden patterns reveal which coefficients $c_i$ vanish modulo $q$, and the frequencies of the
+remaining patterns constrain the relation support.  With full residue-log values rather than
+only zero/nonzero statuses, one can recover the projective relation $[\bm c]\in\mathbb P^3(\F_q)$
+from the orthogonal hyperplane.  Chinese remaindering over several admissible $q$ then reconstructs
+$\bm c$ once a height bound is available.
+
+\begin{example}[A clean rank-three test tuple]
+The quadruple $(2,3,7,42)$ has relation
+\[
+       2\cdot3\cdot7=42,
+\]
+so $\bm c=(1,1,1,-1)$ and every coordinate is active for $q=5$.  The four patterns with exactly
+one non-$5$th-power coordinate are therefore forbidden.  In the computation of
+\cref{sec:experiments}, each occurs zero times among $87{,}062$ primes $p\le5{,}000{,}000$ with
+$p\equiv1\pmod5$.
+\end{example}
+
+\section{Exact computational checks}
+\label{sec:experiments}
+
+All experiments in this section use exact integer modular arithmetic.  They are included for
+three reasons: to catch count-normalization errors, to test the descent from prime ideals to
+rational primes, and to provide small local witnesses suitable for later formalization.  They do
+not test whether a candidate counterexample exists.
+
+\subsection{Direct finite-ring enumeration}
+
+Before sampling primes, the two numerator formulas were checked by exhaustive enumeration of
+all quadruples over $\Z/q^e\Z$.  In the rank-three column the hyperplane was
+$u+v+m-a=0$, corresponding to the test relation $2\cdot3\cdot7=42$.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$q$ & $e$ & exhaustive $N_4$ & formula $N_4(q,e)$ & exhaustive/formula $N_3$\\
+\midrule
+$3$ & $1$ & $25$    & $25$    & $7/7$\\
+$3$ & $2$ & $673$   & $673$   & $61/61$\\
+$5$ & $1$ & $121$   & $121$   & $21/21$\\
+$5$ & $2$ & $15{,}121$ & $15{,}121$ & $521/521$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This check is independent of prime generation and directly tests the zero-divisor cases at
+$e=2$.
+
+\subsection{Pairwise discordance}
+
+Take $(u,v)=(2,14)$ and $q=5$.  Neither generator is divisible by $5$, and their classes are
+independent.  Among primes $p\le5{,}000{,}000$ with $p\equiv1\pmod5$, the observed counts are:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Status modulo $p$ & Count & Frequency & Predicted frequency\\
+\midrule
+both $5$th powers & $3{,}339$ & $0.03835198$ & $0.04000000$\\
+$2$ a $5$th power, $14$ not & $14{,}006$ & $0.16087386$ & $0.16000000$\\
+$14$ a $5$th power, $2$ not & $13{,}980$ & $0.16057522$ & $0.16000000$\\
+neither a $5$th power & $55{,}737$ & $0.64019894$ & $0.64000000$\\
+\midrule
+Total & $87{,}062$ & $1$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For several values of $q$, the least prime witnesses found below the same limit are shown next.
+Here $n=(p-1)/q$; the first witness has $2^n\equiv1$ and $14^n\not\equiv1$, while the second
+has the reverse status.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$q$ & first $p$ & first $n$ & reverse $p$ & reverse $n$\\
+\midrule
+3  & 31   & 10  & 13   & 4\\
+5  & 151  & 30  & 41   & 8\\
+7  & 631  & 90  & 71   & 10\\
+11 & 331  & 30  & 397  & 36\\
+13 & 4421 & 340 & 547  & 42\\
+17 & 1429 & 84  & 2347 & 138\\
+19 & 1103 & 58  & 1597 & 84\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are concrete finite certificates of the two support failures.
+
+\subsection{Common-exponent coherence at depths \texorpdfstring{$5$ and $25$}{5 and 25}}
+
+Two toy quadruples isolate the two rank branches:
+\[
+       (2,3,7,11)\quad\text{has rank }4,
+\]
+while
+\[
+       (2,3,7,42)\quad\text{has rank }3,
+       \qquad 2\cdot3\cdot7=42.
+\]
+The next table compares the observed coherence frequencies with
+\cref{thm:rank4density,thm:rank3density}.  The $Q=5$ rows use primes at most $5{,}000{,}000$;
+the $Q=25$ rows use primes at most $10{,}000{,}000$.  The $z$ column is the deviation divided
+by the binomial standard deviation $\sqrt{NP(1-P)}$.
+
+\begin{center}
+\begin{tabular}{llrrrrr}
+\toprule
+Rank & $Q$ & Eligible primes & Coherent & Observed & Predicted & $z$\\
+\midrule
+4 & $5$  & $87{,}061$ & $16{,}760$ & $0.19250870$ & $0.19360000$ & $-0.81$\\
+3 & $5$  & $87{,}062$ & $14{,}476$ & $0.16627231$ & $0.16800000$ & $-1.36$\\
+4 & $25$ & $33{,}155$ & $1{,}281$  & $0.03863671$ & $0.03870976$ & $-0.07$\\
+3 & $25$ & $33{,}155$ & $1{,}098$  & $0.03311718$ & $0.03334400$ & $-0.23$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The depth-$25$ predicted numerators are
+\[
+       N_4(5,2)=15{,}121,
+       \qquad
+       N_3(5,2)=521.
+\]
+The agreement is especially useful because prime-power rings contain zero divisors; a mistaken
+field-only count would generally first appear at $e=2$.
+
+\subsection{Status-pattern checks}
+
+For the rank-four tuple at $q=5$, grouping by the number of coordinates that are $5$th powers
+gives:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Number of $5$th-power coordinates & Count & Observed & Predicted\\
+\midrule
+0 & $35{,}627$ & $0.40921882$ & $0.40960000$\\
+1 & $35{,}800$ & $0.41120594$ & $0.40960000$\\
+2 & $13{,}354$ & $0.15338671$ & $0.15360000$\\
+3 & $2{,}143$  & $0.02461493$ & $0.02560000$\\
+4 & $137$      & $0.00157361$ & $0.00160000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the rank-three tuple, all four one-nonresidue patterns
+\[
+1110,\quad 1101,\quad 1011,\quad 0111
+\]
+(where $1$ means ``$5$th power'') had count zero, exactly as
+\cref{thm:patternlaw} predicts.  Selected nonzero patterns were:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+Pattern & Count & Observed & Predicted\\
+\midrule
+0000 & $36{,}185$ & $0.41562335$ & $0.41600000$\\
+0001 & $8{,}387$  & $0.09633365$ & $0.09600000$\\
+0011 & $2{,}781$  & $0.03194275$ & $0.03200000$\\
+1111 & $649$      & $0.00745446$ & $0.00800000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The maximum absolute frequency error over all sixteen patterns was $0.001103$.
+
+\subsection{What the computations do and do not establish}
+
+The tests strongly validate the finite counts and implementation.  They do not add an assumption
+such as GRH, because the theoretical densities are unconditional consequences of Chebotarev.
+They also do not provide statistical evidence for the Alaoglu--Erd\H{o}s conjecture: the toy
+tuples were chosen solely to have known multiplicative rank.  Their role is proof engineering.
+
+\section{The additive skeleton of the \texorpdfstring{$3$-smooth}{3-smooth} monoid}
+\label{sec:additive}
+
+The support criterion in \cref{prop:CP} asks for congruence preservation on
+$\mathcal U=\{2^a3^b\}$.  A natural first attempt is to exploit additive identities in
+$\mathcal U$ and transport them through $\Phi$.  This section classifies all such identities
+and proves that the attempt collapses to one fixed modulus.
+
+\subsection{Classification of primitive additive triples}
+
+Call a solution $u+v=w$ in $\mathcal U$ \emph{primitive} if
+$\gcd(u,v,w)=1$.
+
+\begin{theorem}[Complete primitive additive skeleton]\label{thm:additiveclassification}
+Up to interchanging $u$ and $v$, the primitive solutions of
+\[
+       u+v=w,\qquad u,v,w\in\mathcal U,
+\]
+are exactly
+\[
+       1+1=2,\qquad
+       1+2=3,\qquad
+       1+3=4,\qquad
+       1+8=9.
+       \tag{7.1}\label{eq:fourtriples}
+\]
+Every nonprimitive solution is obtained by multiplying one of these four by an element of
+$\mathcal U$.
+\end{theorem}
+\begin{proof}
+In a primitive solution the three numbers are pairwise coprime, since
+$\gcd(u,w)=\gcd(u,v)$ and similarly for $v$.  If both $u$ and $v$ are greater than one, their
+prime supports must be disjoint, so up to order $u=2^a$, $v=3^b$ with $a,b>0$.  But then $w$
+is coprime to both $2$ and $3$, forcing $w=1$, impossible.  Thus one summand is $1$.
+
+The case $1+1=2$ is immediate.  The remaining equations are
+\[
+       3^b-2^a=1
+       \qquad\text{or}\qquad
+       2^a-3^b=1.
+\]
+For the first, $a=1$ gives $(a,b)=(1,1)$.  If $a\ge2$, reduction modulo $4$ makes $b$ even,
+say $b=2m$.  Then
+\[
+       (3^m-1)(3^m+1)=2^a.
+\]
+Both factors are powers of $2$, have gcd $2$, and differ by $2$; hence they are $2$ and $4$.
+Thus $m=1$, giving $(a,b)=(3,2)$.
+
+For the second equation, reduction modulo $3$ makes $a$ even, say $a=2m$.  Then
+\[
+       (2^m-1)(2^m+1)=3^b.
+\]
+The coprime factors are powers of $3$ differing by $2$, so they are $1$ and $3$.  Hence
+$m=1$ and $(a,b)=(2,1)$.  This proves \eqref{eq:fourtriples}.  Dividing any nonprimitive
+solution by its common gcd, which is again $3$-smooth, gives the final assertion.
+\end{proof}
+
+No use of Catalan--Mih\u ailescu is needed; the two special exponential equations factor after a
+single congruence observation.
+
+\subsection{Defects of the four primitive relations}
+
+Transport the four identities through $\Phi$.  With signs chosen for convenience, define
+\[
+\begin{aligned}
+ d_{11}&=M-2,\\
+ d_{12}&=A-M-1,\\
+ d_{13}&=M^2-A-1,\\
+ d_{18}&=A^2-M^3-1.
+\end{aligned}
+\tag{7.2}\label{eq:defects}
+\]
+They satisfy the exact identities
+\[
+       d_{13}=(M+1)d_{11}-d_{12},
+       \tag{7.3}\label{eq:d13}
+\]
+and
+\[
+       d_{18}=-M(M+1)d_{11}+\bigl(2(M+1)+d_{12}\bigr)d_{12}.
+       \tag{7.4}\label{eq:d18}
+\]
+Moreover
+\[
+       d_{12}=(A-3)-(M-2).
+\]
+Thus all four primitive defects generate the same ideal as $M-2$ and $A-3$.
+
+\begin{theorem}[Additive defect ideal]\label{thm:defectideal}
+Let $\mathcal D$ be the ideal of $\Z$ generated by all transported additive defects
+\[
+       \Phi(u)+\Phi(v)-\Phi(w)
+\]
+with $u+v=w$ in $\mathcal U$.  Then
+\[
+       \mathcal D=(M-2,A-3)
+       =C\Z,
+       \qquad C:=\gcd(M-2,A-3).
+       \tag{7.5}\label{eq:C}
+\]
+\end{theorem}
+\begin{proof}
+By \cref{thm:additiveclassification}, every additive triple is a $3$-smooth multiple of one
+of the four primitive triples.  Under $\Phi$, multiplication by $2^a3^b$ multiplies the defect
+by $M^aA^b$.  Hence all defects lie in the ideal generated by the four numbers in
+\eqref{eq:defects}.  Equations \eqref{eq:d13}--\eqref{eq:d18} reduce that ideal to
+$(d_{11},d_{12})$, which equals $(M-2,A-3)$.  Conversely, $d_{11}$ and $d_{12}$ themselves
+come from the first two primitive identities, so equality holds.
+\end{proof}
+
+The next theorem shows that allowing arbitrary signed polynomial combinations of additive
+identities creates no new modulus.
+
+\begin{theorem}[Universal polynomial collapse]\label{thm:polycollapse}
+For every $P\in\Z[X,Y]$ with $P(2,3)=0$,
+\[
+       C\mid P(M,A).
+       \tag{7.6}\label{eq:polydiv}
+\]
+Conversely, the ideal generated by all integers $P(M,A)$ with $P(2,3)=0$ is exactly $C\Z$.
+Equivalently, $C$ is the largest positive integer $D$ for which
+\[
+       \Phi(u)\equiv u\pmod D
+       \qquad\text{for every }u\in\mathcal U.
+       \tag{7.7}\label{eq:largestmod}
+\]
+\end{theorem}
+\begin{proof}
+The evaluation kernel at $(2,3)$ is
+\[
+       \ker\bigl(\Z[X,Y]\xrightarrow{P\mapsto P(2,3)}\Z\bigr)
+       =(X-2,Y-3).
+\]
+Thus $P=(X-2)U+(Y-3)V$ for some $U,V\in\Z[X,Y]$, and
+$P(M,A)$ is divisible by $C$.  Conversely, $P=X-2$ and $P=Y-3$ show that the generated
+ideal contains $(M-2,A-3)=C\Z$.
+
+Since $M\equiv2$ and $A\equiv3\pmod C$, every monomial satisfies
+$M^aA^b\equiv2^a3^b\pmod C$, proving \eqref{eq:largestmod} for $D=C$.  Any modulus with
+that property must divide both $M-2$ and $A-3$, hence divide $C$.
+\end{proof}
+
+\begin{warning}
+The conclusion is not that additive information is useless.  It is that every identity obtained
+solely by evaluating an integral polynomial relation true at $(2,3)$ can see only the fixed
+anchor $C$.  A proof of congruence preservation must use varying differences $u-v$, multiplicative
+orders, or prime-dependent geometry; it cannot arise from accumulating more polynomial identities
+at the single point $(2,3)$.
+\end{warning}
+
+\section{Dynamic anchors and a subexponential no-go theorem}
+\label{sec:dynamic}
+
+The fixed modulus $C$ of \cref{thm:polycollapse} compares $(M,A)$ with $(2,3)$ at one time.
+A stronger attempt compares the $n$th powers and allows the modulus to vary:
+\[
+       C_n:=\gcd(M^n-2^n,A^n-3^n).
+       \tag{8.1}\label{eq:Cn}
+\]
+For a nonintegral candidate neither difference is identically zero.
+
+\begin{proposition}[Dynamic polynomial collapse]\label{prop:dynamiccollapse}
+For each $n\ge1$, the ideal generated by
+\[
+       \{P(M^n,A^n):P\in\Z[X,Y],\ P(2^n,3^n)=0\}
+\]
+is exactly $C_n\Z$.  Equivalently, $C_n$ is the largest modulus $D$ for which
+\[
+       M^{an}A^{bn}\equiv2^{an}3^{bn}\pmod D
+       \qquad(a,b\ge0).
+\]
+Moreover, if $m\mid n$, then $C_m\mid C_n$.
+\end{proposition}
+\begin{proof}
+Apply the proof of \cref{thm:polycollapse} with the evaluation point
+$(2^n,3^n)$.  Its kernel is $(X-2^n,Y-3^n)$, and evaluation at $(M^n,A^n)$ produces the
+ideal $(M^n-2^n,A^n-3^n)=C_n\Z$.  If $m\mid n$, then
+$X^m-Y^m$ divides $X^n-Y^n$, so both generators of the $m$th ideal divide their
+$n$th counterparts.
+\end{proof}
+
+For a prime $p\nmid6MA$,
+\[
+ p\mid C_n
+ \quad\Longleftrightarrow\quad
+ \left(\frac M2\right)^n\equiv1\pmod p
+ \ \text{and}\ 
+ \left(\frac A3\right)^n\equiv1\pmod p.
+ \tag{8.2}\label{eq:Cnorders}
+\]
+Thus $C_n$ records simultaneous return times of the two rational ratios $M/2$ and $A/3$.
+
+\begin{lemma}[Independence of the dynamic ratios]\label{lem:ratioind}
+If $x\ne1$, the rational numbers $M/2$ and $A/3$ are multiplicatively independent.
+\end{lemma}
+\begin{proof}
+A relation $(M/2)^r(A/3)^s=1$ gives, after substituting $M=2^x$, $A=3^x$ and taking
+real logarithms,
+\[
+       (x-1)(r\log2+s\log3)=0.
+\]
+Since $x\ne1$ and $2,3$ are multiplicatively independent, $r=s=0$.
+\end{proof}
+
+\begin{theorem}[Subexponential dynamic anchors]\label{thm:Cnsubexp}
+For a nonintegral candidate,
+\[
+       \log C_n=o(n)
+       \qquad(n\to\infty).
+       \tag{8.3}\label{eq:Cnsubexp}
+\]
+Equivalently, for every $\varepsilon>0$, one has $C_n<e^{\varepsilon n}$ for all sufficiently
+large $n$.
+\end{theorem}
+\begin{proof}
+Put $U=M/2$ and $V=A/3$.  By \cref{lem:ratioind}, $U$ and $V$ are multiplicatively
+independent rational $S$-units for the fixed finite set of primes dividing $6MA$.  The
+Corvaja--Zannier $S$-unit gcd estimate, extending the Bugeaud--Corvaja--Zannier theorem, gives
+an $o(n)$ upper bound for the contribution outside $S$ to the generalized gcd of
+$U^n-1$ and $V^n-1$.
+
+It remains to control primes in $S$.  If a prime $p\notin\{2,3\}$ divides $M$, then
+$v_p(M^n-2^n)=0$; if it divides $A$, then $v_p(A^n-3^n)=0$.  Thus such primes contribute
+nothing to the common gcd unless both relevant terms are $p$-adic units, in which case the
+standard lifting-the-exponent argument gives $O(v_p(n)+1)=O(\log n)$.  At $p=2$, either
+$A$ is even and $A^n-3^n$ is odd, or $A$ is odd and the same lifting argument gives
+$v_2(A^n-3^n)=O(\log n)$.  The prime $3$ is symmetric, using $M^n-2^n$.  Hence the total
+contribution from the fixed set $S$ is $O(\log n)$.  Combining it with the outside-$S$
+estimate proves \eqref{eq:Cnsubexp}.
+\end{proof}
+
+\begin{remark}
+The theorem also holds for integral exponents $x=k>1$; it is a limitation theorem for the
+anchor method, not an integer/noninteger discriminator.  The exceptional exponent $x=1$ makes
+both differences zero.
+\end{remark}
+
+\subsection{Why the additive route stops}
+
+A support proof along \eqref{eq:S2} would have to transfer all prime divisors of $2^n-1$ to
+$M^n-1$.  The modulus $2^n-1$ has exponential logarithmic size.  By contrast, every modulus
+produced by simultaneous polynomial return of $(M^n,A^n)$ to $(2^n,3^n)$ divides $C_n$, whose
+logarithm is $o(n)$.  Thus there is an exponential gap:
+\[
+      \log(2^n-1)\sim n\log2,
+      \qquad
+      \log C_n=o(n).
+\]
+This does not refute all uses of addition.  It refutes the specific strategy of accumulating
+ordinary polynomial identities at the two evaluation points and hoping their common defect
+becomes large enough to enforce support.  Any successful additive argument must retain
+prime-by-prime order information that the single gcd $C_n$ discards.
+
+\section{Local congruence kernels and the Bhargava-ordering route}
+\label{sec:bhargava}
+
+This section converts global congruence preservation into exact finite cyclic-group statements.
+It then explains how $p$-orderings offer a disciplined way to attack those statements without
+claiming that the existing theory solves them automatically.
+
+\subsection{Kernel inclusion on exponent lattices}
+
+For an odd prime $p\nmid6MA$ and $m\ge1$, define homomorphisms
+\[
+\begin{aligned}
+ \rho_{p^m}:\Z^2&\longrightarrow(\Z/p^m\Z)^\times,
+ & (a,b)&\longmapsto2^a3^b,\\
+ \rho'_{p^m}:\Z^2&\longrightarrow(\Z/p^m\Z)^\times,
+ & (a,b)&\longmapsto M^aA^b.
+\end{aligned}
+\tag{9.1}\label{eq:rhomaps}
+\]
+Although $\Phi$ was defined only for nonnegative exponents, any difference in $\Z^2$ can be
+realized by adding a sufficiently large common vector to two nonnegative exponent pairs.
+Consequently the local congruence condition on $\mathcal U$ is exactly a kernel inclusion.
+
+\begin{proposition}[Local kernel criterion]\label{prop:kernelcriterion}
+For fixed $p\nmid6MA$ and $m\ge1$, the following are equivalent.
+\begin{enumerate}[label=(\roman*),leftmargin=2em]
+\item Whenever $u,v\in\mathcal U$ satisfy $u\equiv v\pmod{p^m}$, one has
+      $\Phi(u)\equiv\Phi(v)\pmod{p^m}$.
+\item $\ker\rho_{p^m}\subseteq\ker\rho'_{p^m}$.
+\item The rule
+\[
+      2^a3^b\longmapsto M^aA^b
+\]
+defines a well-defined group homomorphism
+\[
+      f_{p^m}:\langle2,3\rangle\longrightarrow(\Z/p^m\Z)^\times.
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The equivalence of (ii) and (iii) is the universal property of a quotient.  To compare with (i),
+write $u=2^a3^b$ and $v=2^c3^d$.  Since all four generators are units modulo $p^m$,
+$u\equiv v$ is equivalent to $(a-c,b-d)\in\ker\rho_{p^m}$, and the corresponding output
+congruence is membership in $\ker\rho'_{p^m}$.  Negative coordinate differences cause no issue,
+as both exponent pairs may be shifted into $\Z_{\ge0}^2$.
+\end{proof}
+
+For odd $p$, the unit group $(\Z/p^m\Z)^\times$ is cyclic.  This makes every local monoid
+homomorphism a common power map.
+
+\begin{theorem}[Local common-exponent criterion]\label{thm:localcommon}
+Let $p$ be an odd prime with $p\nmid6MA$, and let $m\ge1$.  The equivalent conditions of
+\cref{prop:kernelcriterion} hold if and only if there exists an integer $k_{p,m}$ such that
+\[
+       M\equiv2^{k_{p,m}}\pmod{p^m},
+       \qquad
+       A\equiv3^{k_{p,m}}\pmod{p^m}.
+       \tag{9.2}\label{eq:fullcommon}
+\]
+\end{theorem}
+\begin{proof}
+If \eqref{eq:fullcommon} holds, raising congruent elements of $\mathcal U$ to the common power
+$k_{p,m}$ proves local congruence preservation.
+
+Conversely, let $H=\langle2,3\rangle$ in the cyclic group
+$G=(\Z/p^m\Z)^\times$, and let $f:H\to G$ be the homomorphism from
+\cref{prop:kernelcriterion}.  The image $f(H)$ has order dividing $|H|$.  A cyclic group has a
+unique subgroup of each order dividing $|G|$, so every element whose order divides $|H|$ lies
+in $H$; hence $f(H)\subseteq H$.  Thus $f$ is an endomorphism of the cyclic group $H$, and every
+such endomorphism is $h\mapsto h^k$ for some integer $k$.  Evaluating at $2$ and $3$ gives
+\eqref{eq:fullcommon}.
+\end{proof}
+
+\begin{corollary}[Global congruence preservation as local exponents]\label{cor:globalCP}
+Away from the finite set of primes dividing $6MA$, the map $\Phi$ is congruence-preserving if
+and only if compatible common exponents $k_{p,m}$ as in \eqref{eq:fullcommon} exist for every
+$p$ and $m$.  For the support conclusion alone, it is enough to have a common exponent modulo
+$p$ for almost all $p$.
+\end{corollary}
+
+The depth-$Q$ coherence of \cref{def:coherent} is a quotient shadow of
+\eqref{eq:fullcommon}: a full common exponent modulo $p$ implies $Q$-coherence for every
+$Q\mid p-1$.  The exact densities therefore quantify how rarely the first necessary quotient
+condition holds in the nonintegral rank branches.
+
+\subsection{Bhargava \texorpdfstring{$p$-orderings}{p-orderings} as a concrete coordinate system}
+
+Bhargava introduced $p$-orderings of an arbitrary subset of a Dedekind domain to describe
+integer-valued polynomial functions and generalized factorials.  For a subset
+$E\subset\Z$ and a prime $p$, a $p$-ordering is a sequence
+$e_0,e_1,\ldots$ chosen recursively so that $e_n$ minimizes
+\[
+       v_p\!\left(\prod_{j<n}(e-e_j)\right)
+\]
+among $e\in E$.  The resulting valuation sequence is independent of the choices and defines
+the generalized factorial of $E$.
+
+For $E=\mathcal U$, the residues are generated multiplicatively by $2$ and $3$.  Modulo
+$p^m$, the geometry of $E$ is therefore controlled by the lattice
+$\ker\rho_{p^m}\subset\Z^2$.  This makes the ordering problem unusually explicit: a greedy
+choice is a problem of selecting exponent vectors whose images spread through the cyclic subgroup
+$\langle2,3\rangle$ with maximal $p$-adic separation.
+
+The route proposed here has four precise stages.
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Compute the generalized factorials of $\mathcal U$.}  Express their $p$-adic
+      valuations in terms of the orders of $2$ and $3$ modulo $p^m$ and the index of
+      $\langle2,3\rangle$ in $(\Z/p^m\Z)^\times$.
+\item \textbf{Interpolate $\Phi$ on a $p$-ordering.}  The Newton coefficients are divided
+      differences of values $M^aA^b$.  Their required divisibility can be stated entirely in
+      $\Z_p$.
+\item \textbf{Convert coefficient divisibility to kernel inclusion.}  One seeks a theorem
+      adapted to this sparse multiplicative set, showing that the special exponential form of
+      the values forces the local condition in \cref{prop:kernelcriterion}.
+\item \textbf{Use the density obstruction.}  If that condition holds at almost all primes,
+      \cref{thm:localcommon} gives full local common exponents, while
+      \cref{thm:densitygap} rules out both nonintegral rank branches.
+\end{enumerate}
+
+\begin{warning}
+Bhargava's theory characterizes polynomial functions and integer-valued interpolation under
+specific hypotheses; it does not state that an arbitrary monoid homomorphism is
+congruence-preserving.  The proposed use is a coordinate system and divisibility framework, not a
+citation that closes the problem.
+\end{warning}
+
+\begin{problem}[Sparse-monoid factorial problem]\label{prob:factorial}
+Determine, for every odd prime $p$, the Bhargava factorial sequence of
+$\mathcal U=\{2^a3^b:a,b\ge0\}$ in terms of the filtration
+\[
+       \ker\rho_p\supseteq\ker\rho_{p^2}\supseteq\cdots.
+\]
+Then characterize those pairs $(M,A)$ for which the map $2^a3^b\mapsto M^aA^b$ has Newton
+coefficients satisfying the congruence-preserving divisibility bounds.
+\end{problem}
+
+This target is finite at every level, branch-sensitive through the Kummer relation, and directly
+connected to the exact support criterion.  It is therefore better focused than a generic appeal
+to integer-valued polynomial theory.
+
+\section{Finite regulators, horizontal sieves, and the missing bridge}
+\label{sec:regulator}
+
+The exact density theorem solves the local distribution problem conditional only on multiplicative
+rank.  What remains is to make the real identity communicate with those local characters.  This
+section formulates that gap in three related ways.
+
+\subsection{An archimedean tensor killed by one bilinear functional}
+
+In the tensor square of the rational multiplicative group, consider
+\[
+       \tau=2\otimes A-3\otimes M
+       \in\Gamma\otimes_{\Z}\Gamma.
+       \tag{10.1}\label{eq:tau}
+\]
+The archimedean logarithm gives a bilinear functional
+\[
+       B_\infty(u\otimes v)=\log u\,\log v.
+\]
+The candidate equations say exactly
+\[
+       B_\infty(\tau)
+       =\log2\,\log A-\log3\,\log M=0.
+       \tag{10.2}\label{eq:archdet}
+\]
+
+At a prime $p\equiv1\pmod Q$, the residue character
+$\lambda_{p,Q}:\Gamma\to R_Q$ gives the finite determinant
+\[
+ D_{p,Q}
+ =\lambda_{p,Q}(2)\lambda_{p,Q}(A)
+  -\lambda_{p,Q}(3)\lambda_{p,Q}(M).
+ \tag{10.3}\label{eq:finitedet}
+\]
+This is the image of $\tau$ under the corresponding finite bilinear functional.  $Q$-coherence
+implies $D_{p,Q}=0$.  At depth one, if the base vector
+$(\lambda(2),\lambda(3))$ is nonzero, the converse also holds because two vectors over a field
+are proportional exactly when their determinant vanishes.  Over $R_Q$ with $e>1$, determinant
+vanishing is weaker because of zero divisors, which is why the cyclic-submodule count in
+\cref{thm:rank4density,thm:rank3density} is the correct object.
+
+The conjectural missing principle can now be stated without mentioning exponentials.
+
+\begin{problem}[Finite-regulator principle]\label{prob:regulator}
+Find an arithmetic reciprocity law, product formula, height inequality, or regulator construction
+for tensors such as \eqref{eq:tau} with the following consequence: if a tensor built from positive
+rational integers is killed by $B_\infty$ for the special reason
+$\log M/\log2=\log A/\log3$, then its finite Kummer images
+\eqref{eq:finitedet} vanish, or become coherent in the stronger cyclic-submodule sense, at a
+set of primes whose density exceeds the exact rank-three and rank-four baselines.
+\end{problem}
+
+Ordinary product formulas apply to sums of valuations of one algebraic number; here the
+archimedean expression is a product of logarithms and the finite data consists of power-residue
+characters.  A solution may therefore require a genuinely higher object---for example a cup
+product, a $K_2$ symbol, or an adelic regulator---rather than another linear form in logarithms.
+The point of \cref{prob:regulator} is not to guess the correct cohomology in advance, but to give
+it a numerical acceptance test: it must beat $P_3(q,e)$ and $P_4(q,e)$.
+
+\subsection{Depth amplification}
+
+Because both coherence probabilities tend to zero, even a weak lower bound uniform in depth
+would settle the problem.
+
+\begin{corollary}[Uniform-depth amplification criterion]\label{cor:depthamp}
+Suppose there exist an admissible prime $q$, a constant $\delta>0$, and an unbounded set of
+integers $e$ such that the candidate equations imply
+\[
+ \underline{\dens}\left(
+   \{p\equiv1\pmod{q^e}:p\text{ is }q^e\text{-coherent}\}
+   \;\middle|\;p\equiv1\pmod{q^e}
+ \right)\ge\delta.
+ \tag{10.4}\label{eq:depthamp}
+\]
+Then $x\in\Z$.
+\end{corollary}
+\begin{proof}
+For a nonintegral candidate the exact conditional density is $P_3(q,e)$ or $P_4(q,e)$, both of
+which tend to zero.  This contradicts \eqref{eq:depthamp} along the unbounded set of depths.
+\end{proof}
+
+This criterion is substantially weaker than congruence preservation.  It does not ask for local
+common exponents at almost all primes, or even for density one.  Any positive amount of coherence
+that survives arbitrarily deep $q$-power quotients is enough.
+
+Possible sources of depth amplification include:
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{A $q$-adic interpolation of the exponent.}  Construct, for many primes $p$, a
+      compatible scalar in $\Z_q$ from the two equations and show its reductions solve
+      \eqref{eq:coherent}.  The obstacle is that $x$ is a real number with no given $q$-adic
+      incarnation.
+\item \textbf{A reciprocity constraint on the tensor $\tau$.}  Show that
+      $B_\infty(\tau)=0$ forces small finite regulator at all depths for a positive proportion
+      of Frobenius elements.
+\item \textbf{A congruence-preserving interpolation theorem.}  Use the special values of $\Phi$
+      on a $p$-ordering of $\mathcal U$ to obtain local common exponents modulo $p^m$ for a
+      set of primes with uniform lower density.
+\item \textbf{An unlikely-intersection theorem in character space.}  The Kummer characters of
+      $\Gamma$ form $R_Q^r$; coherence is a union of cyclic submodules.  One needs an
+      arithmetic reason for the Frobenius orbit of the special candidate to hit this thin set
+      more often than a generic rank-$r$ point.
+\end{enumerate}
+
+\subsection{Horizontal Frobenius sieve}
+
+A full common exponent modulo $p$ implies $q$-coherence for every prime $q\mid p-1$.  Thus one
+may impose many independent-looking Kummer filters horizontally, across distinct $q$.  For a
+single admissible $q$, the filter rejects a proportion
+\[
+       \frac1{q-1}\bigl(1-P_r(q,1)\bigr)
+\]
+of all primes at the first $q$-level.  The sum of the leading rejection probabilities over $q$
+diverges like $\sum_q1/q$.  This suggests that a large-sieve theorem for the compatible Kummer
+representations should force the set
+\[
+ \mathcal P_{\mathrm{full}}
+ =\{p:\exists k_p,
+       M\equiv2^{k_p},\ A\equiv3^{k_p}\pmod p\}
+ \tag{10.5}\label{eq:Pfull}
+\]
+to have density zero whenever $r>2$.
+
+A zero-density theorem for \eqref{eq:Pfull} would strengthen the qualitative support theorem and
+would be valuable independently of the conjecture.  It still would not prove Alaoglu--Erd\H{o}s,
+because no current argument places almost all primes in $\mathcal P_{\mathrm{full}}$.  Its value
+is strategic: it converts any future positive-density local-exponent consequence of the real
+equations into an immediate contradiction.
+
+The technical issue is entanglement.  Kummer fields for different $q$ share cyclotomic and
+occasionally radical subfields, so one cannot multiply the one-prime probabilities naively.
+The explicit entanglement-group theory of Perucca--Sgobba--Tronto is the natural tool for making
+the horizontal sieve rigorous.
+
+\begin{problem}[Horizontal common-exponent sieve]\label{prob:horizontalsieve}
+Prove that if $\rank\langle2,3,M,A\rangle>2$, then the prime set
+$\mathcal P_{\mathrm{full}}$ in \eqref{eq:Pfull} has natural density zero, with an effective
+upper-bound sieve expressed through the Kummer entanglement invariants of $\Gamma$.
+\end{problem}
+
+\subsection{Relation recovery as a computational attack on rank three}
+
+The rank-three branch is more structured and may be attacked separately.
+For admissible $q$, exact residue logs at sufficiently many primes identify the hyperplane
+$\bm c^\perp\subset\F_q^4$.  Repeating this for several $q$ reconstructs the primitive relation
+$\bm c$, after which the real exponent has the fractional-linear expression
+\[
+       x=-\frac{c_1+c_2\theta}{c_3+c_4\theta},
+       \qquad \theta=\frac{\log3}{\log2}.
+       \tag{10.6}\label{eq:mobiusx}
+\]
+The integrality conditions become the pair
+\[
+  2^{-\frac{c_1+c_2\theta}{c_3+c_4\theta}}\in\Z,
+  \qquad
+  3^{-\frac{c_1+c_2\theta}{c_3+c_4\theta}}\in\Z.
+\]
+This does not remove the four-exponentials wall, but it reduces the branch to a countable family
+indexed by primitive integer matrices with nonzero determinant.  A branch-specific computation
+can therefore prioritize relations of small height, test all local pattern consequences, and
+search for additional congruences forced by the valuation supports of $M$ and $A$.
+
+A useful formal target is an effective lower bound for the height of $\bm c$ in terms of $M,A$,
+or a theorem excluding all relations with $|\Delta|$ in a prescribed range.  Such a theorem
+would combine well with exact relation recovery modulo many $q$.
+
+\section{Synthesis: what would now constitute a proof}
+\label{sec:synthesis}
+
+The new local theory organizes several sufficient routes by strength.
+
+\begin{longtable}{p{0.25\textwidth}p{0.46\textwidth}p{0.20\textwidth}}
+\toprule
+Route & Required statement & Why it concludes\\
+\midrule
+\endfirsthead
+\toprule
+Route & Required statement & Why it concludes\\
+\midrule
+\endhead
+Full congruence preservation &
+$u-v\mid\Phi(u)-\Phi(v)$ for all $u,v\in\mathcal U$ &
+\cref{prop:CP} and the support theorem\\[4pt]
+One-dimensional divisibility &
+$2^n-1\mid M^n-1$ for all sufficiently large $n$ &
+Order support for $2,M$\\[4pt]
+Almost-everywhere local exponent &
+For almost all $p$, one $k_p$ satisfies
+$M\equiv2^{k_p}$ and $A\equiv3^{k_p}\pmod p$ &
+Implies $2\preccurlyeq M$ and $3\preccurlyeq A$\\[4pt]
+Fixed-depth density excess &
+For some admissible $(q,e)$, coherence density exceeds both exact baselines &
+\cref{cor:quantcriterion}\\[4pt]
+Uniform depth &
+A positive lower coherence density survives unbounded $e$ &
+\cref{cor:depthamp}\\[4pt]
+Finite regulator &
+$B_\infty(\tau)=0$ forces enough finite determinant or cyclic-submodule vanishing &
+Reduces to either density criterion\\
+\bottomrule
+\end{longtable}
+
+The additive results supply a complementary exclusion table.
+\begin{longtable}{p{0.30\textwidth}p{0.31\textwidth}p{0.30\textwidth}}
+\toprule
+Input used & Maximum modulus obtained & Obstruction\\
+\midrule
+\endfirsthead
+\toprule
+Input used & Maximum modulus obtained & Obstruction\\
+\midrule
+\endhead
+All primitive equations $u+v=w$ in $\mathcal U$ &
+$C=\gcd(M-2,A-3)$ &
+Fixed in $n$\\[4pt]
+All $P(2,3)=0$ with $P\in\Z[X,Y]$ &
+The same $C$ &
+Universal ideal collapse\\[4pt]
+All $P(2^n,3^n)=0$ at time $n$ &
+$C_n=\gcd(M^n-2^n,A^n-3^n)$ &
+$\log C_n=o(n)$\\[4pt]
+Support target &
+Needs to carry divisors of size about $e^{n\log2}$ &
+Exponential gap\\
+\bottomrule
+\end{longtable}
+
+The synthesis is therefore sharp.  The local side is not vague: its generic distributions and
+thresholds are exact.  The additive side is not merely unsuccessful: a full ideal theorem and an
+$S$-unit gcd estimate explain its ceiling.  The remaining problem is one specific transfer:
+produce non-generic finite-place coherence from the special real logarithmic dependence.
+
+\section{Lean formalization blueprint}
+\label{sec:lean}
+
+A useful formalization should separate elementary algebra, finite combinatorics, and deep imported
+number theory.  The following module graph minimizes trust boundaries.
+
+\subsection{Kernel-checkable elementary layer}
+
+The following statements can be formalized in Lean with Mathlib and no analytic number theory.
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Candidate normalization.}  Rational candidate implies integral; rank-two exclusion
+      assuming the transcendence of $\log3/\log2$ as an external theorem.
+\item \textbf{Relation algebra.}  Primitive relation lattice in rank three and
+      $\Delta\ne0$ for a nonintegral candidate.
+\item \textbf{Finite-ring content.}  Cardinality of vectors of exact $q$-adic content in
+      $(\Z/q^e\Z)^2$ and size of the cyclic submodule they generate.
+\item \textbf{Rank-four count.}  The identity
+\[
+  1+\sum_{t=1}^e(q^{2t}-q^{2t-2})q^t
+  =1+\frac{q(q^2-1)(q^{3e}-1)}{q^3-1}.
+\]
+\item \textbf{Rank-three count.}  Invertible change of variables under $q\nmid\Delta$ and
+\[
+  1+\sum_{t=1}^e(q^{2t}-q^{2t-1})
+  =1+\frac{q(q^{2e}-1)}{q+1}.
+\]
+\item \textbf{Pattern law.}  The recurrence and closed formula for $N_s(q)$, including the
+      forbidden one-nonzero patterns.
+\item \textbf{Additive skeleton.}  The elementary factorization proof of the four primitive
+      triples in \eqref{eq:fourtriples}.
+\item \textbf{Defect identities and ideals.}  Equations \eqref{eq:d13}--\eqref{eq:d18}, the
+      kernel $(X-2,Y-3)$, and the universal polynomial collapse.
+\item \textbf{Dynamic divisibility.}  $C_m\mid C_n$ when $m\mid n$.
+\item \textbf{Local cyclic groups.}  Kernel inclusion and the common-exponent criterion for
+      cyclic unit groups modulo odd prime powers.
+\end{enumerate}
+
+\subsection{External theorem interfaces}
+
+The deep inputs should appear as explicit assumptions or imported theorems with narrow signatures.
+\begin{description}[style=nextline,leftmargin=2em]
+\item[Kummer realization]
+For admissible $q$, identify the Galois group with the quotient of the exponent lattice computed
+in \cref{lem:kummermodule}.
+\item[Chebotarev]
+For a finite abelian extension, assign density $|E|/|G|$ to a union of Frobenius elements, then
+prove the scalar-invariant descent from prime ideals of $K_Q$ to rational primes.
+\item[Support theorem]
+Use the Corrales--Rodrig\'a\~nez--Schoof implication in the one-dimensional torus.
+\item[$S$-unit gcd]
+Package only the asymptotic statement needed for \cref{thm:Cnsubexp}; handle the finite support
+primes by formalized LTE lemmas.
+\end{description}
+
+This separation would already allow a machine-checked conditional theorem:
+\emph{assuming the four external interfaces, the exact density gap and additive no-go results
+follow}.  Full formalization of Chebotarev or the Subspace Theorem is not a prerequisite for
+checking the novel finite combinatorics.
+
+\subsection{Computational certificates}
+
+For fixed $(q,e)$, the theoretical numerator identities can be certified by exhaustive
+enumeration in \texttt{ZMod}$(q^e)$ for small parameters.  Prime experiments should be represented as
+independent certificates containing:
+\begin{itemize}[leftmargin=2em,itemsep=1pt]
+\item the prime list or a deterministic primality certificate;
+\item a primitive $Q$th root in each finite field;
+\item the four residue logs;
+\item the coherence witness $k$ when it exists;
+\item the relation check in rank three.
+\end{itemize}
+The proof does not depend on these certificates, but they are excellent regression tests for a
+formal development.
+
+\section{Prioritized research program}
+\label{sec:program}
+
+The following order maximizes the chance of converting the new framework into a proof rather than
+another collection of analogies.
+
+\begin{enumerate}[leftmargin=2.2em]
+\item \textbf{Formalize the two coherence counts.}  They are short, exact, and likely to reveal
+      any hidden issue with the prime-power content stratification.
+\item \textbf{Prove the horizontal zero-density theorem} in \cref{prob:horizontalsieve}.  This
+      is a natural standalone theorem about reductions of two points on $\mathbb G_m^2$ and can
+      use existing entanglement machinery.
+\item \textbf{Compute $p$-orderings of the $3$-smooth monoid.}  Begin with primes for which
+      $\langle2,3\rangle$ has small index modulo $p^m$; search for a stable generalized-factorial
+      formula.
+\item \textbf{Test candidate-value divided differences symbolically.}  Express the first several
+      Newton coefficients as Laurent polynomials in $M,A$ and factor their fixed divisors.  The
+      additive collapse theorem predicts which factors are spurious and which could encode orders.
+\item \textbf{Develop a finite regulator.}  Search first for a depth-one reciprocity law for
+      $D_{p,q}$, where the determinant criterion is linear algebra over a field.  Only after a
+      genuine density excess appears should the construction be lifted to $q^e$.
+\item \textbf{Exploit the rank-three pattern detector.}  Combine relation reconstruction with
+      valuation support to exclude low-height primitive relations; automate exact searches with
+      proof-producing certificates.
+\item \textbf{Maintain an adversarial claim ledger.}  Any proposed bridge must explicitly state
+      whether it yields infinitely many coherent primes, positive density, density one, or uniform
+      depth.  Only the last three can interact decisively with the exact baselines.
+\end{enumerate}
+
+\section{Conclusion}
+
+This investigation does not close the Alaoglu--Erd\H{o}s conjecture, but it changes the shape of
+the remaining work.
+
+First, the conjecture has an exact support-theoretic endpoint: it is enough to force
+$2\preccurlyeq M$ or $3\preccurlyeq A$.  Congruence preservation of the candidate monoid map is
+a concrete sufficient mechanism, and locally it is equivalent to the existence of one common
+finite exponent for the pairs $(2,3)$ and $(M,A)$.
+
+Second, the finite-place behavior of every hypothetical nonintegral candidate is now quantified.
+At prime-power depth $q^e$, common-exponent coherence has one of two exact densities, determined
+solely by whether the multiplicative rank is three or four.  Both decay like $q^{-e}$, while an
+integral exponent has density one.  The rank-three relation also leaves a visible fingerprint of
+forbidden $q$th-power patterns.
+
+Third, the obvious additive route has been exhausted in a rigorous sense.  The entire additive
+skeleton of the $3$-smooth monoid consists of four primitive triples; all their defects, and in
+fact all integral polynomial defects at $(2,3)$, generate only
+$\gcd(M-2,A-3)$.  Dynamic versions are subexponential by the $S$-unit gcd theorem.  Additional
+polynomial identities cannot bridge an exponential support gap unless they retain new
+prime-dependent order data.
+
+The most promising overlooked direction is therefore neither another interpolation determinant
+nor another generic transcendence estimate.  It is a local--global regulator or sparse-monoid
+interpolation theorem that converts the exact real logarithmic determinant into a non-generic
+supply of finite common exponents.  The acceptance threshold is explicit: beat
+$P_3(q,e)$ and $P_4(q,e)$ at one depth, or retain any positive density through unbounded depth.
+That is a sharply falsifiable research objective and a tractable target for formal proof
+engineering.
+
+\appendix
+
+\section{Derivation checks for the coherence numerators}
+
+For reference, the rank-four numerator may be rearranged as
+\[
+\begin{aligned}
+ N_4(q,e)
+ &=1+\sum_{t=1}^e(q^{2t}-q^{2t-2})q^t\\
+ &=1+(q^2-1)\sum_{t=1}^e q^{3t-2}\\
+ &=1+q(q^2-1)\frac{q^{3e}-1}{q^3-1}.
+\end{aligned}
+\]
+Its leading contribution comes from primitive base vectors ($s=0$, $t=e$):
+\[
+       (q^{2e}-q^{2e-2})q^e
+       =(1-q^{-2})q^{3e}.
+\]
+After division by $q^{4e}$ this gives
+\[
+  (1-q^{-2})q^{-e}
+  \frac{1}{1-q^{-3}}+O(q^{-4e})
+  =\frac{q(q+1)}{q^2+q+1}q^{-e}+O(q^{-4e}).
+\]
+
+Similarly,
+\[
+\begin{aligned}
+ N_3(q,e)
+ &=1+\sum_{t=1}^e(q^{2t}-q^{2t-1})\\
+ &=1+q(q-1)\frac{q^{2e}-1}{q^2-1}\\
+ &=1+\frac{q(q^{2e}-1)}{q+1},
+\end{aligned}
+\]
+so
+\[
+       P_3(q,e)=\frac{q}{q+1}q^{-e}+O(q^{-3e}).
+\]
+
+\section{A compact reproducibility script}
+\label{app:code}
+
+The following script reproduces the pairwise, status-pattern, and coherence experiments.  It uses
+only Python's exact integers.  The depth-$25$ loop is intentionally separated because it uses a
+larger prime bound.
+
+\begin{lstlisting}[style=pythonstyle]
+from __future__ import annotations
+from collections import Counter
+from math import isqrt
+
+
+def primes_upto(n: int) -> list[int]:
+    sieve = bytearray(b"\x01") * (n + 1)
+    sieve[:2] = b"\x00\x00"
+    for p in range(2, isqrt(n) + 1):
+        if sieve[p]:
+            sieve[p*p:n+1:p] = b"\x00" * (((n - p*p)//p) + 1)
+    return [i for i, flag in enumerate(sieve) if flag]
+
+
+def residue_logs(vals: tuple[int, ...], p: int, Q: int, q: int):
+    n = (p - 1)//Q
+    omega = None
+    for g in range(2, 200):
+        candidate = pow(g, n, p)
+        if pow(candidate, Q//q, p) != 1:  # exact order Q
+            omega = candidate
+            break
+    if omega is None:
+        raise RuntimeError(("no root", p, Q))
+    table = {}
+    cur = 1
+    for j in range(Q):
+        table[cur] = j
+        cur = cur * omega % p
+    return tuple(table[pow(v % p, n, p)] for v in vals)
+
+
+def coherent(t: tuple[int, int, int, int], Q: int) -> bool:
+    u, v, m, a = t
+    return any((k*u - m) % Q == 0 and (k*v - a) % Q == 0
+               for k in range(Q))
+
+
+def predicted(q: int, e: int, rank: int) -> float:
+    Q = q**e
+    if rank == 4:
+        numerator = 1 + q*(q*q - 1)*(q**(3*e) - 1)//(q**3 - 1)
+        return numerator/Q**4
+    numerator = 1 + q*(q**(2*e) - 1)//(q + 1)
+    return numerator/Q**3
+
+
+def coherence_run(limit: int, q: int, e: int):
+    Q = q**e
+    primes = primes_upto(limit)
+    examples = [
+        ("rank4", (2, 3, 7, 11), 4),
+        ("rank3", (2, 3, 7, 42), 3),
+    ]
+    for name, vals, rank in examples:
+        total = good = relation_bad = 0
+        for p in primes:
+            if p % Q != 1 or any(v % p == 0 for v in vals):
+                continue
+            t = residue_logs(vals, p, Q, q)
+            total += 1
+            good += coherent(t, Q)
+            if rank == 3 and (t[0] + t[1] + t[2] - t[3]) % Q:
+                relation_bad += 1
+        print(name, "Q", Q, "total", total, "good", good,
+              "frequency", good/total,
+              "predicted", predicted(q, e, rank),
+              "relation_bad", relation_bad)
+
+
+def is_qth_power(a: int, p: int, q: int) -> bool:
+    return pow(a % p, (p - 1)//q, p) == 1
+
+
+def status_run(limit: int = 5_000_000, q: int = 5):
+    primes = primes_upto(limit)
+
+    pair = Counter()
+    for p in primes:
+        if p % q == 1 and p not in (2, 7):
+            pair[(is_qth_power(2, p, q), is_qth_power(14, p, q))] += 1
+    print("pair", pair)
+
+    for name, vals in [("rank4", (2, 3, 7, 11)),
+                       ("rank3", (2, 3, 7, 42))]:
+        counts = Counter()
+        for p in primes:
+            if p % q != 1 or any(v % p == 0 for v in vals):
+                continue
+            pattern = tuple(int(is_qth_power(v, p, q)) for v in vals)
+            counts[pattern] += 1
+        print(name, counts)
+
+
+if __name__ == "__main__":
+    status_run()
+    coherence_run(5_000_000, 5, 1)
+    coherence_run(10_000_000, 5, 2)
+\end{lstlisting}
+
+\section{Source and novelty audit}
+
+The nonduplication audit used the following checks on the supplied source.
+\begin{itemize}[leftmargin=2em]
+\item Section headings and labels were extracted programmatically; the source contains a unified
+      report, two large continuations, twenty-seven shorter reports, and multiple appendices.
+\item Exact searches were run for the terminology central to this continuation.  No hits were
+      found for the support theorem authors, Chebotarev, the support problem, discrete logarithms,
+      or congruence preservation.  A normalized $20$-token shingle comparison found no substantive
+      common passage; its sole hit was shared theorem-environment boilerplate in the preambles.
+\item Generic Kummer theory, valuation lattices, and the Bugeaud--Corvaja--Zannier theorem do
+      occur in the source.  The present use differs: Kummer theory supplies exact residue-vector
+      densities; the gcd theorem proves the dynamic additive-anchor ceiling.
+\item The additive classification, defect ideal, prime-power coherence counts, relation-pattern
+      law, and local cyclic common-exponent criterion were derived independently for this report.
+\end{itemize}
+
+\section{Bibliography and public artifacts}
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\emph{On highly composite and similar numbers},
+Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{doi:10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{CRS1997}
+C.~Corrales-Rodrig\'a\~nez and R.~Schoof,
+\emph{The support problem and its elliptic analogue},
+Journal of Number Theory \textbf{64} (1997), 276--290.
+\href{https://doi.org/10.1006/jnth.1997.2114}{doi:10.1006/jnth.1997.2114}.
+
+\bibitem{Bhargava1997}
+M.~Bhargava,
+\emph{$P$-orderings and polynomial functions on arbitrary subsets of Dedekind rings},
+Journal f\"ur die reine und angewandte Mathematik \textbf{490} (1997), 101--128.
+\href{https://doi.org/10.1515/crll.1997.490.101}{doi:10.1515/crll.1997.490.101}.
+
+\bibitem{BCZ2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\emph{An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$},
+Mathematische Zeitschrift \textbf{243} (2003), 79--84.
+\href{https://doi.org/10.1007/s00209-002-0449-z}{doi:10.1007/s00209-002-0449-z}.
+
+\bibitem{CZ2004}
+P.~Corvaja and U.~Zannier,
+\emph{A lower bound for the height of a rational function at $S$-unit points},
+Monatshefte f\"ur Mathematik \textbf{144} (2005), 203--224; preprint 2003.
+\href{https://doi.org/10.1007/s00605-004-0273-0}{doi:10.1007/s00605-004-0273-0}.
+
+\bibitem{PST2020}
+A.~Perucca, P.~Sgobba, and S.~Tronto,
+\emph{Explicit Kummer theory for the rational numbers},
+International Journal of Number Theory \textbf{16} (2020), no.~10, 2213--2231.
+\href{https://doi.org/10.1142/S1793042120501146}{doi:10.1142/S1793042120501146}.
+
+\bibitem{PST2022}
+A.~Perucca, P.~Sgobba, and S.~Tronto,
+\emph{Kummer theory for number fields via entanglement groups},
+Manuscripta Mathematica \textbf{169} (2022), 251--270.
+\href{https://doi.org/10.1007/s00229-021-01328-0}{doi:10.1007/s00229-021-01328-0}.
+
+\bibitem{Perucca2011}
+A.~Perucca,
+\emph{On the reduction of points on abelian varieties and tori},
+International Mathematics Research Notices \textbf{2011} (2011), 293--308.
+\href{https://doi.org/10.1093/imrn/rnq080}{doi:10.1093/imrn/rnq080}.
+
+\bibitem{DebryPerucca2013}
+C.~Debry and A.~Perucca,
+\emph{Reductions of subgroups of the multiplicative group},
+arXiv:1312.6620 (2013).
+
+\bibitem{BruinPerucca2018}
+P.~Bruin and A.~Perucca,
+\emph{Reductions of points on algebraic groups, II},
+arXiv:1802.08527 (2018).
+
+\bibitem{GelfondSchneider}
+A.~O.~Gelfond,
+\emph{Transcendental and Algebraic Numbers}, Dover, 1960;
+and Th.~Schneider, \emph{Einf\"uhrung in die transzendenten Zahlen}, Springer, 1957.
+
+\bibitem{Chebotarev}
+J.~Neukirch,
+\emph{Algebraic Number Theory}, Springer, 1999, Chapter VII.
+
+\bibitem{JacobianLean2026}
+P.~Nogueira Grossi,
+\emph{An Independent Lean 4 Verification of the Alp\"oge--Fable Counterexample},
+Zenodo, version 1.0, 23 July 2026.
+\url{https://zenodo.org/records/21514514}.
+
+\bibitem{Gao2026}
+S.~Gao,
+\emph{Counterexamples to the Jacobian conjecture in dimensions greater than two},
+arXiv:2608.00222 (2026).
+
+\bibitem{ICARM273}
+NSF Institute for Computer-Aided Reasoning in Mathematics,
+\emph{Elliptic Curve Rank Leaderboard, curve 273}, accessed 22 August 2026.
+\url{https://elliptic-rank.icarm.cloud/curve/273}.
+
+\bibitem{OEISHadamard}
+OEIS Foundation,
+\emph{A007299 and A019442: Hadamard-matrix existence records},
+updates of 12--13 August 2026.
+\url{https://oeis.org/A007299}; \url{https://oeis.org/A019442}.
+
+\end{thebibliography}
+
+\end{document}
