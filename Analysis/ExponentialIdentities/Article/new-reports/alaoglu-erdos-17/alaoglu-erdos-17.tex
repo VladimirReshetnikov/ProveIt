@@ -1,0 +1,1909 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{
+  pdftitle={A Matrix-and-Probability Continuation of the Alaoglu--Erdos Program},
+  pdfauthor={Research continuation prepared from the supplied unified report},
+  pdfsubject={Alaoglu--Erdos conjecture; Smith normal form; Loewner matrices; probability and entropy}
+}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.25em,topsep=0.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\allowdisplaybreaks
+
+\definecolor{deepblue}{RGB}{28,60,104}
+\definecolor{deepgreen}{RGB}{34,92,66}
+\definecolor{deepred}{RGB}{130,45,42}
+\definecolor{softblue}{RGB}{239,245,252}
+\definecolor{softgreen}{RGB}{239,249,243}
+\definecolor{softred}{RGB}{253,241,240}
+\definecolor{softgray}{RGB}{246,246,246}
+
+\newtcolorbox{statusbox}[1][]{
+  breakable,enhanced,
+  colback=softblue,colframe=deepblue,
+  fonttitle=\bfseries,title=Status,
+  boxed title style={colback=deepblue,colframe=deepblue},
+  #1}
+\newtcolorbox{resultbox}[1][]{
+  breakable,enhanced,
+  colback=softgreen,colframe=deepgreen,
+  fonttitle=\bfseries,title=Result proved in this continuation,
+  boxed title style={colback=deepgreen,colframe=deepgreen},
+  #1}
+\newtcolorbox{targetbox}[1][]{
+  breakable,enhanced,
+  colback=softred,colframe=deepred,
+  fonttitle=\bfseries,title=Conditional proof target,
+  boxed title style={colback=deepred,colframe=deepred},
+  #1}
+\newtcolorbox{auditbox}[1][]{
+  breakable,enhanced,
+  colback=softgray,colframe=black!60,
+  fonttitle=\bfseries,title=Audit note,
+  boxed title style={colback=black!70,colframe=black!70},
+  #1}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computational check}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{obstruction}[theorem]{Obstruction}
+
+\newcommand{\AEconj}{Alaoglu--Erd\H{o}s}
+\newcommand{\Mtwo}{M_2}
+\newcommand{\Mthree}{M_3}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Hinf}{H_{\infty}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\inner}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\smashdelta}{\delta}
+\newcommand{\vander}{\Delta}
+\newcommand{\e}{\mathrm{e}}
+
+\lstdefinestyle{py}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  showstringspaces=false,
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  backgroundcolor=\color{softgray}
+}
+
+\title{\textbf{A Matrix-and-Probability Continuation of the \AEconj{} Program}\\[0.4em]
+\large Bulk Smith profiles, rational Loewner ensembles, singular-value hierarchies,\\
+entropy saturation, and exact conditional proof certificates}
+\author{Research continuation prepared from the supplied unified report}
+\date{Literature and computation cutoff: 21 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The \AEconj{} conjecture asks whether a real number $x$ for which both $2^x$ and $3^x$ are integers must itself be an integer.  The supplied unified report develops a large body of exact conditional structure, Lean-checked reductions, interpolation and determinant methods, a restricted Matrix Coefficient reformulation, Smith normalization, an HCIZ decomposition, signed-progression audits, and a first random-phase analysis.  The present document is a separately written continuation and does not reproduce those developments.
+
+The main new contribution is a matrix--probability framework that replaces a single determinant by the complete sequence of exterior powers.  For an integer matrix $A$, the squared Hilbert--Schmidt norm of $\bigwedge^k A$ is exactly the total squared $k$-minor mass, and its normalization is the mean square of a uniformly sampled $k$-minor.  Combining this identity with determinantal divisors, low-rank approximation, and diagonal gauge normalization yields a level-by-level comparison between the Smith profile of an integer evaluation matrix and the tail of the singular spectrum of its normalized analytic kernel.  A multilevel modular-rank theorem then supplies explicit divisibility at every Smith level for arbitrary multivariate monomial evaluation matrices.  An exact Smith normal form is derived for the geometric Vandermonde matrix $(q^{ij})$, providing both a useful calibration and a warning that large Smith mass along a one-base ray is not by itself exceptional.
+
+A second line uses the power Loewner kernel
+\[
+ K_\alpha(u,v)=\frac{u^\alpha-v^\alpha}{u-v},\qquad 0<\alpha<1.
+\]
+Under a hypothetical counterexample, $K_\alpha$ is rational on two disjoint subsets of the dense group $\langle2,3\rangle$.  Its minors admit an exact Andreief--Cauchy integral representation as positive random-matrix partition functions.  In the cluster limit they become Jacobi unitary ensemble integrals, evaluated by Selberg's formula.  The same kernel is a Gram kernel; orthogonal projection proves the universal hierarchy $\sigma_j=O(\eps^{2(j-1)})$ for clustered cross matrices, and the Selberg asymptotic shows that these orders are sharp for fixed nondegenerate clusters.  Combining this hierarchy with weighted Smith divisors gives a new family of exact conditional contradiction criteria at every compound-matrix level.
+
+The probability-theoretic part proves an exact min-entropy anti-concentration bound for random prime-valuation vectors, then shows that a hypothetical counterexample saturates the associated entropy-rank bound: both integer outputs separately recover the two latent semigroup coordinates.  Thus generic Littlewood--Offord reasoning can recover the known rank-two structure but has no entropy slack with which to force rank one.  Two further no-go theorems show that natural positive-semidefinite/Hadamard-power constructions are infinitely divisible and therefore blind to the arithmetic exponent, while the formal prime-log quadratic is sign-indefinite on the positive cone.
+
+No unconditional proof is claimed.  The report ends with four precise proof certificates, an obstacle ledger, and a computational program in which random minor sampling and random-prime scouting are used only to locate candidates that are then certified exactly.
+\end{abstract}
+
+\begin{statusbox}
+The conjecture was not closed.  All statements labeled as theorems or propositions below are proved in this document from standard inputs explicitly cited.  Numerical tables are checks, not proofs.  Statements boxed as conditional targets are sufficient criteria whose unresolved hypotheses are stated visibly.  The report's strongest genuinely new synthesis is the \emph{weighted Smith-profile versus singular-spectrum hierarchy}; it converts the determinant method from one scalar inequality into a complete family indexed by $1\leq k\leq n$.
+\end{statusbox}
+
+\tableofcontents
+\newpage
+
+\section{Scope, inherited baseline, and non-duplication boundary}
+\label{sec:scope}
+
+\subsection{The problem and its four-exponentials boundary}
+
+The conjecture is
+\begin{equation}
+  x\in\R,\qquad 2^x,3^x\in\Z
+  \quad\Longrightarrow\quad x\in\Z.
+  \label{eq:AE}
+\end{equation}
+A nonintegral solution is necessarily positive and irrational.  Indeed, $x<0$ would put $2^x$ strictly between $0$ and $1$, while a rational exponent $x=a/b$ in lowest terms for which $2^x$ is rational forces $b=1$ by unique factorization.  If such an $x$ were algebraic irrational, Gelfond--Schneider would make $2^x$ transcendental, so every counterexample would be transcendental.
+
+Writing the four algebraic exponentials as
+\[
+ \exp((\log2)\cdot1),\quad \exp((\log2)\cdot x),\quad
+ \exp((\log3)\cdot1),\quad \exp((\log3)\cdot x),
+\]
+shows why the problem sits exactly at the $2\times2$ four-exponentials boundary.  The rows $\log2,\log3$ are $\Q$-independent and, for nonintegral $x$, the columns $1,x$ are $\Q$-independent.  The Four Exponentials Conjecture would therefore settle \eqref{eq:AE}, but the corresponding unconditional theorem currently needs a third row or column.
+
+\subsection{What the supplied report already contains}
+
+The source file audited for this continuation is
+\begin{center}
+\path{/Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex}.
+\end{center}
+It has $16{,}614$ lines and already contains, among much else:
+\begin{itemize}
+\item a kernel-checked zero-free region and exact conditional semigroup structure;
+\item canonical primitive odd cores, radical degrees, auxiliary-base spectra, and valuation lattices;
+\item generalized Vandermonde determinants, interpolation repulsion, and sparse power-curve rank;
+\item a restricted $2\times2$ Matrix Coefficient equivalence and formal prime-symbol determinant;
+\item factorial content, primitive maximal-minor Smith normalization, HCIZ accounting, and tropical assignment cascades;
+\item a signed-progression determinant with an exact denominator-tax identity;
+\item random-phase, Fejer-kernel, and microscopic pair-correlation certificates.
+\end{itemize}
+Those arguments are treated here as inherited infrastructure.  Only the small amount of notation needed to state the new work is recalled.
+
+\subsection{Claim ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
+\toprule
+Label & Meaning in this report \\
+\midrule
+\endhead
+\textbf{Proved here} & A complete paper proof is supplied.  Most arguments use only Cauchy--Binet, Smith normal form, elementary module theory, the prime number theorem, Andreief's identity, the Cauchy determinant, Selberg's integral, and standard Hilbert-space approximation.\\
+\textbf{Inherited} & The statement is used from the supplied unified report and is not reproved.\\
+\textbf{Classical input} & A named theorem from the literature is used, with a bibliography entry.\\
+\textbf{Computational check} & Exact symbolic or high-precision arithmetic confirms finite cases; the underlying theorem has a separate proof.\\
+\textbf{Conditional target} & The displayed hypothesis would prove the conjecture, but the hypothesis is not established.\\
+\textbf{No-go} & A tempting architecture is shown to be structurally incapable of detecting integrality without an additional arithmetic ingredient.\\
+\bottomrule
+\end{longtable}
+
+\section{Literature audit through August 2026}
+\label{sec:literature}
+
+The literature search emphasized primary sources and papers whose content touches the exact $2\times2$ boundary, matrix positivity, Smith profiles, or anti-concentration.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.40\textwidth}@{}}
+\toprule
+Work & Development & Relevance to the present program \\
+\midrule
+\endhead
+Dasgupta--Kakde \cite{DasguptaKakde2026} & The Matrix Coefficient Conjecture, posted in 2024 and published in \emph{Advances in Mathematics} 487 (2026), article 110753. & Gives a conceptual conjecture for singular matrices of logarithms of algebraic numbers.  The supplied report proves that its restricted $2\times2$ instance is equivalent to \eqref{eq:AE}.  The present continuation instead studies integer evaluation matrices derived from a hypothetical singular logarithm matrix.\\
+Massold \cite{Massold2025} & New lower bounds and torus-intersection reductions for transcendence degrees of fields generated by arrays $\exp(\theta_i\kappa_j)$. & Places the surrounding problem in a modern transcendence-degree framework, but does not claim a resolution of the four-exponentials case.  It therefore supplies context rather than a missing $2\times2$ estimate.\\
+Bustos-Gajardo--Fokkink--Yassawi \cite{GaussianCobham2026} & Version 3 (August 2026) proves a Gaussian-integer Cobham theorem without assuming Four Exponentials, under a structural alternative on the bases. & Demonstrates that some applications formerly routed through Four Exponentials can be bypassed by extra combinatorial structure.  No analogous bypass is presently known for \eqref{eq:AE}.\\
+Bhatia--Friedland--Jain \cite{BFJ2015} & Complete inertia analysis for power Loewner matrices; in particular positivity for $0<\alpha<1$. & Supplies the classical positivity backdrop for the rational Loewner construction below.  Positivity alone is shown to be arithmetically blind, but the integral representation becomes useful when combined with denominator and Smith information.\\
+Jain \cite{Jain2020} and Khare \cite{KhareJKS} & Rank-two Hadamard powers and critical-exponent phenomena for positivity and total positivity; Khare's current arXiv revision is version 2 (2021). & Motivates a search for matrix tests sensitive to nonintegral exponents.  A no-go theorem below shows why the most natural $3$-smooth Gram constructions are infinitely divisible and therefore cannot distinguish integer from noninteger powers.\\
+Do--Nguyen--Phan--Tran--Vu \cite{DoEtAl2026} & A 2026 revision develops inverse anti-concentration on random permutations and nonsingularity applications. & Modern inverse Littlewood--Offord theory reinforces the principle that large concentration signals low-dimensional structure.  The exact entropy analysis below shows that a hypothetical \AEconj{} semigroup already saturates that structural conclusion.\\
+Wang--Stanley \cite{WangStanley2017} & Local-to-global distributions of Smith normal forms of random integer matrices. & Provides a probabilistic comparison class.  The evaluation matrices here are very far from random: residue-class collapse forces deterministic divisibility at every Smith level.\\
+\bottomrule
+\end{longtable}
+
+\begin{auditbox}
+The literature audit found no unconditional proof of the Four Exponentials Conjecture or of the \AEconj{} specialization as of 21 August 2026.  The results below are therefore presented as new deductions and sharper proof targets, not as a claim to have silently crossed a known open boundary.
+\end{auditbox}
+
+\section{Counterexample normalization and the dense rational orbit}
+\label{sec:normalization}
+
+Assume for the remainder of the structural discussion that a nonintegral solution exists.  Write
+\[
+ x=m+\alpha,
+ \qquad m=\lfloor x\rfloor,\qquad 0<\alpha<1.
+\]
+Set
+\begin{equation}
+ r=2^\alpha=\frac{2^x}{2^m}\in\Q_{>0},
+ \qquad
+ s=3^\alpha=\frac{3^x}{3^m}\in\Q_{>0}.
+ \label{eq:r-s}
+\end{equation}
+The number $\alpha$ is irrational.  Define the rank-two multiplicative group
+\begin{equation}
+ \Gamma=\set{2^a3^b:a,b\in\Z}\subset\Q_{>0}.
+ \label{eq:Gamma}
+\end{equation}
+Because $\log2/\log3\notin\Q$, the additive group $\Z\log2+\Z\log3$ is dense in $\R$, and hence $\Gamma$ is dense in $\R_{>0}$.  Moreover,
+\begin{equation}
+ q^\alpha=r^a s^b\in\Q_{>0}
+ \qquad(q=2^a3^b\in\Gamma).
+ \label{eq:dense-rational}
+\end{equation}
+This elementary consequence of a counterexample drives the Loewner construction in \cref{sec:loewner}.
+
+For integer evaluation matrices it is more convenient to retain the full exponent $x$.  Put
+\[
+ \Mtwo=2^x\in\N,\qquad \Mthree=3^x\in\N.
+\]
+Every pair $(n,k)\in\N^2$ gives the integer point
+\begin{equation}
+ (X_{n,k},Y_{n,k})=(2^n\Mtwo^k,3^n\Mthree^k)
+  =(2^{n+kx},3^{n+kx}).
+ \label{eq:semigroup-points}
+\end{equation}
+For a monomial exponent $(a,b)\in\N^2$ its value is
+\begin{equation}
+ X_{n,k}^aY_{n,k}^b
+ =\exp\bigl((a\log2+b\log3)(n+kx)\bigr).
+ \label{eq:exp-kernel-factor}
+\end{equation}
+Thus every finite monomial evaluation matrix on the conditional semigroup is simultaneously an integer matrix and a sample of the strictly totally positive kernel $\exp(uv)$.
+
+\part{Exterior powers, Smith profiles, and random minors}
+
+\section{Compound matrices as exact probability laws}
+\label{sec:compound}
+
+Let $A\in\R^{n\times n}$ have singular values
+\[
+ \sigma_1(A)\ge\cdots\ge\sigma_n(A)\ge0.
+\]
+For $1\le k\le n$, write $\mathcal I_{n,k}$ for the $k$-subsets of $\set{1,\dots,n}$ and $A_{I,J}$ for the corresponding submatrix.  Let
+\[
+ e_k(z_1,\dots,z_n)=\sum_{1\le i_1<\cdots<i_k\le n}z_{i_1}\cdots z_{i_k}
+\]
+be the $k$th elementary symmetric polynomial.
+
+\begin{theorem}[Exterior-power/minor identity]
+\label{thm:minor-identity}
+For every real $n\times n$ matrix $A$,
+\begin{equation}
+ \sum_{I,J\in\mathcal I_{n,k}}\det(A_{I,J})^2
+ =\norm{\bigwedge^k A}_{\mathrm{HS}}^2
+ =e_k(\sigma_1(A)^2,\dots,\sigma_n(A)^2).
+ \label{eq:minor-identity}
+\end{equation}
+Consequently, if $I,J$ are independent uniform random $k$-subsets, then
+\begin{equation}
+ \E\det(A_{I,J})^2
+ =\binom nk^{-2}e_k(\sigma_1(A)^2,\dots,\sigma_n(A)^2).
+ \label{eq:random-minor-expectation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+In the standard wedge bases, the matrix of $\bigwedge^kA$ is the $k$th compound matrix, whose $(I,J)$ entry is $\det(A_{I,J})$.  Its squared Hilbert--Schmidt norm is therefore the left side of \eqref{eq:minor-identity}.  Singular-value decomposition commutes with exterior powers, and the singular values of $\bigwedge^kA$ are the products $\sigma_{i_1}\cdots\sigma_{i_k}$.  Summing their squares gives the elementary symmetric polynomial.  Dividing by the number $\binom nk^2$ of ordered pairs $(I,J)$ proves \eqref{eq:random-minor-expectation}.
+\end{proof}
+
+The identity is not merely an analogy with probability: it makes the complete exterior spectrum an exact moment sequence of random minors.  The determinant is only the endpoint $k=n$.
+
+\subsection{Determinantal divisors and arithmetic lower bounds}
+
+For a full-rank integer matrix $A\in\Z^{n\times n}$, define the $k$th determinantal divisor
+\begin{equation}
+ \delta_k(A)=\gcd\set{\abs{\det(A_{I,J})}:I,J\in\mathcal I_{n,k}}.
+ \label{eq:det-divisor}
+\end{equation}
+If the Smith normal form has invariant factors
+\[
+ d_1\mid d_2\mid\cdots\mid d_n,
+\]
+then
+\begin{equation}
+ \delta_k(A)=d_1d_2\cdots d_k.
+ \label{eq:delta-SNF}
+\end{equation}
+Let $N_k(A)$ be the number of nonzero $k$-minors.
+
+\begin{corollary}[Smith mass below exterior spectral mass]
+\label{cor:smith-exterior}
+For a full-rank integer matrix,
+\begin{equation}
+ e_k(\sigma(A)^2)\ge N_k(A)\,\delta_k(A)^2.
+ \label{eq:smith-exterior}
+\end{equation}
+If every $k$-minor is nonzero, then
+\begin{equation}
+ e_k(\sigma(A)^2)\ge\binom nk^2\delta_k(A)^2,
+ \qquad
+ \E\det(A_{I,J})^2\ge\delta_k(A)^2.
+ \label{eq:all-minors-smith}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Every nonzero $k$-minor is a nonzero multiple of $\delta_k(A)$ and therefore has squared magnitude at least $\delta_k(A)^2$.  Sum and use \cref{thm:minor-identity}.
+\end{proof}
+
+The semigroup matrices in \eqref{eq:exp-kernel-factor}, with distinct ordered row frequencies and node parameters, are strictly totally positive.  Hence every minor is positive and the stronger form \eqref{eq:all-minors-smith} applies simultaneously for all $k$.
+
+\section{Low-rank approximation versus the full Smith profile}
+\label{sec:lowrank}
+
+The usual determinant method says that an integer determinant cannot be both nonzero and smaller than $1$.  The following theorem upgrades that statement to every exterior level.
+
+\begin{theorem}[Bulk Smith-profile obstruction]
+\label{thm:bulk-smith}
+Let $A\in\Z^{n\times n}$ be full rank and suppose every $k$-minor is nonzero.  Assume
+\[
+ A=B+R,
+ \qquad \rank B\le r<k,
+ \qquad \norm{R}_2\le\eps,
+ \qquad \norm{A}_2\le S.
+\]
+Then
+\begin{equation}
+ \boxed{
+ \sqrt{\binom nk}\,\delta_k(A)
+ \le S^r\eps^{k-r}.}
+ \label{eq:bulk-smith}
+\end{equation}
+Multiplying over $k=r+1,\dots,n$ gives
+\begin{equation}
+ \prod_{k=r+1}^n\left(\sqrt{\binom nk}\,\delta_k(A)\right)
+ \le S^{r(n-r)}
+ \eps^{(n-r)(n-r+1)/2}.
+ \label{eq:profile-product}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Weyl's inequality, $\sigma_{r+1}(A),\dots,\sigma_n(A)\le\eps$.  Put $\eta=\min(S,\eps)$.  Every product of $k$ squared singular values contains at most $r$ factors bounded by $S^2$ and at least $k-r$ further factors bounded by $\eta^2$.  Hence
+\[
+ e_k(\sigma(A)^2)\le\binom nk S^{2r}\eta^{2(k-r)}
+ \le\binom nk S^{2r}\eps^{2(k-r)}.
+\]
+The lower bound \eqref{eq:all-minors-smith} gives
+\[
+ \binom nk^2\delta_k(A)^2
+ \le e_k(\sigma(A)^2),
+\]
+and combining the two inequalities proves \eqref{eq:bulk-smith}.  Summing the exponents of $S$ and $\eps$ after multiplication gives \eqref{eq:profile-product}.
+\end{proof}
+
+\begin{resultbox}
+A contradiction at any intermediate level $r<k<n$ is enough.  This matters because the top determinant may lose arithmetic information through cancellation or gauge factors, while $\delta_k$ aggregates the divisibility of all $k$-minors.  The product inequality \eqref{eq:profile-product} forces the entire initial Smith profile to fit inside one low-rank singular tail.
+\end{resultbox}
+
+\subsection{A general singular-envelope form}
+
+Uniformly bounding the whole tail by one number $\eps$ can be wasteful.  The exact exterior identity immediately gives a sharper version.
+
+\begin{theorem}[Singular-envelope criterion]
+\label{thm:singular-envelope}
+Suppose $A\in\Z^{n\times n}$ has all $k$-minors nonzero, and suppose numbers
+$\tau_1\ge\cdots\ge\tau_n\ge0$ satisfy $\sigma_j(A)\le\tau_j$.  Then
+\begin{equation}
+ \binom nk\delta_k(A)
+ \le \sqrt{e_k(\tau_1^2,\dots,\tau_n^2)}
+ \le \sqrt{\binom nk}\prod_{j=1}^k\tau_j.
+ \label{eq:singular-envelope}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The first inequality follows by placing the envelope into \eqref{eq:all-minors-smith}.  For the second, every $k$-fold product of the nonincreasing $\tau_j^2$ is at most $\prod_{j=1}^k\tau_j^2$, and there are $\binom nk$ terms.
+\end{proof}
+
+The Loewner analysis in \cref{sec:loewner-singular} will produce the hierarchy $\tau_j\asymp\eps^{2(j-1)}$, yielding the sharp compound exponent $k(k-1)$.
+
+\section{Diagonal gauges and weighted compound matrices}
+\label{sec:weighted}
+
+Integer evaluation matrices are often enormous because of row and column scales that are analytically irrelevant.  Dividing them out destroys integrality, so a determinant-only argument pays the full denominator product.  At intermediate exterior levels, the correct object is a weighted elementary symmetric sum.
+
+Let
+\[
+ D=\diag(\rho_1,\dots,\rho_n),\qquad
+ E=\diag(\kappa_1,\dots,\kappa_n),
+ \qquad \rho_i,\kappa_j>0,
+\]
+and suppose
+\begin{equation}
+ K=D^{-1}AE^{-1}.
+ \label{eq:gauge}
+\end{equation}
+For a subset $I$, write $\rho_I=\prod_{i\in I}\rho_i$, and similarly for $\kappa_J$.
+
+\begin{theorem}[Weighted exterior identity and Smith lower bound]
+\label{thm:weighted-exterior}
+For every $k$,
+\begin{equation}
+ e_k(\sigma(K)^2)
+ =\sum_{I,J}\frac{\det(A_{I,J})^2}{\rho_I^2\kappa_J^2}.
+ \label{eq:weighted-minor-sum}
+\end{equation}
+If $A$ is an integer matrix and every $k$-minor is nonzero, then
+\begin{equation}
+ e_k(\sigma(K)^2)
+ \ge \delta_k(A)^2
+ e_k(\rho_1^{-2},\dots,\rho_n^{-2})
+ e_k(\kappa_1^{-2},\dots,\kappa_n^{-2}).
+ \label{eq:weighted-smith-lower}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The $k$-minor of $K$ indexed by $I,J$ is $\det(A_{I,J})/(\rho_I\kappa_J)$.  Apply \cref{thm:minor-identity} and then bound every nonzero integer minor by $\delta_k(A)$ in absolute value.  The remaining double sum factors into the two elementary symmetric polynomials.
+\end{proof}
+
+\begin{definition}[Gauge-invariant arithmetic mass]
+Define
+\begin{equation}
+ \mathcal A_k(A;D,E)
+ =\delta_k(A)
+ \left(
+ \frac{e_k(\rho^{-2})e_k(\kappa^{-2})}{\binom nk}
+ \right)^{1/2}.
+ \label{eq:arithmetic-mass}
+\end{equation}
+\end{definition}
+
+\begin{corollary}[Weighted Smith-tail criterion]
+\label{cor:weighted-tail}
+If $K=D^{-1}AE^{-1}$ has a rank-$r$ approximation with error at most $\eps$ in operator norm and $\norm K_2\le S$, then for $k>r$,
+\begin{equation}
+ \boxed{
+ \mathcal A_k(A;D,E)\le S^r\eps^{k-r}.}
+ \label{eq:weighted-tail}
+\end{equation}
+More generally, if $\sigma_j(K)\le\tau_j$, then
+\begin{equation}
+ \boxed{
+ \mathcal A_k(A;D,E)\le\prod_{j=1}^k\tau_j.}
+ \label{eq:weighted-envelope}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Combine \eqref{eq:weighted-smith-lower} with the upper bounds used in \cref{thm:bulk-smith,thm:singular-envelope}.
+\end{proof}
+
+At $k=n$, the quantity $\mathcal A_n$ is exactly $\abs{\det K}$, because $\delta_n(A)=\abs{\det A}$.  For $k<n$, it records how much of the Smith mass survives after allowing the cheapest $k$ row and column gauges.  This is precisely the information erased by a determinant-only normalization.
+
+\subsection{Probabilistic interpretation of the weights}
+
+Choose random $k$-subsets with
+\[
+ \Prob(I)=\frac{\rho_I^{-2}}{e_k(\rho^{-2})},
+ \qquad
+ \Prob(J)=\frac{\kappa_J^{-2}}{e_k(\kappa^{-2})}.
+\]
+Then
+\begin{equation}
+ \E\det(A_{I,J})^2
+ =\frac{e_k(\sigma(K)^2)}{e_k(\rho^{-2})e_k(\kappa^{-2})}
+ \ge\delta_k(A)^2.
+ \label{eq:weighted-random-minor}
+\end{equation}
+Thus the diagonal gauge induces the exact importance-sampling distribution for minors.  Random sampling can be used to locate promising levels and subsets, but the final inequality is deterministic and exact.
+
+\section{Multilevel modular rank forces bulk Smith divisibility}
+\label{sec:modular}
+
+The supplied report obtains factorial divisors for coordinate lower sets.  The next theorem is different: it applies to arbitrary monomial supports, controls every determinantal divisor, and uses all residue levels $p^t$.
+
+Let $\mathcal S=\set{\alpha_1,\dots,\alpha_n}\subset\N^d$, and let
+$z_1,\dots,z_n\in\Z^d$.  Define the square evaluation matrix
+\begin{equation}
+ V_{ij}=z_j^{\alpha_i}
+ =\prod_{\ell=1}^d z_{j,\ell}^{\alpha_{i,\ell}}.
+ \label{eq:multivar-eval}
+\end{equation}
+Assume $V$ has full rank over $\Q$.
+
+For a prime $p$, let the $p$-adic valuations of the Smith factors be
+\[
+ 0\le\nu_{p,1}\le\cdots\le\nu_{p,n}.
+\]
+Define
+\begin{equation}
+ r_{p,t}=\#\set{i:\nu_{p,i}<t}.
+ \label{eq:smith-rank-level}
+\end{equation}
+
+\begin{lemma}[Exact level decomposition]
+\label{lem:level-decomp}
+For every $k$,
+\begin{equation}
+ v_p(\delta_k(V))
+ =\sum_{t\ge1}(k-r_{p,t})_+.
+ \label{eq:level-decomp}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:delta-SNF}, the left side is $\sum_{i=1}^k\nu_{p,i}$.  Count the boxes in the Ferrers diagram of the nondecreasing sequence $\nu_{p,1},\dots,\nu_{p,k}$ by horizontal levels.  At level $t$, exactly $(k-r_{p,t})_+$ of the first $k$ valuations are at least $t$.
+\end{proof}
+
+\begin{lemma}[Residue-class generator bound]
+\label{lem:residue-generator}
+For the evaluation matrix \eqref{eq:multivar-eval},
+\begin{equation}
+ r_{p,t}\le p^{td}.
+ \label{eq:residue-generator}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Reduce the columns modulo $p^t$.  A column depends only on the residue class of $z_j\in(\Z/p^t\Z)^d$, so at most $p^{td}$ distinct column vectors occur.  Hence the image module of $V$ over the local ring $R_t=\Z/p^t\Z$ is generated by at most $p^{td}$ elements.
+
+On the other hand, Smith reduction identifies that image with a direct sum of the nonzero cyclic modules $p^{\nu_{p,i}}R_t$ for $\nu_{p,i}<t$.  By Nakayama's lemma, its minimal number of generators is exactly the number of such summands, namely $r_{p,t}$.  Therefore $r_{p,t}\le p^{td}$.
+\end{proof}
+
+\begin{theorem}[Multilevel modular-rank divisor]
+\label{thm:modular-divisor}
+For every $1\le k\le n$,
+\begin{equation}
+ \boxed{
+ \delta_k(V)\ \text{is divisible by}\
+ D_{k,d}:=\prod_p p^{\sum_{t\ge1}(k-p^{td})_+}.}
+ \label{eq:Dkd}
+\end{equation}
+Equivalently,
+\begin{equation}
+ v_p(\delta_k(V))\ge\sum_{t\ge1}(k-p^{td})_+.
+ \label{eq:modular-divisor-p}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:residue-generator} into \eqref{eq:level-decomp}.  Only finitely many terms are nonzero.
+\end{proof}
+
+\begin{corollary}[Asymptotic bulk divisor]
+\label{cor:Dkd-asymptotic}
+For fixed $d\ge1$,
+\begin{equation}
+ \log D_{k,d}
+ =\left(\frac{d}{d+1}+o(1)\right)k^{1+1/d}.
+ \label{eq:Dkd-asymptotic}
+\end{equation}
+If $r/n\to\rho\in[0,1)$, then
+\begin{equation}
+ \log\prod_{k=r+1}^n D_{k,d}
+ =\left(
+ \frac{d^2}{(d+1)(2d+1)}(1-\rho^{2+1/d})+o(1)
+ \right)n^{2+1/d}.
+ \label{eq:Dprofile-asymptotic}
+\end{equation}
+For the bivariate case $d=2$ the leading constants are $2/3$ and
+$\frac4{15}(1-\rho^{5/2})$, respectively.
+\end{corollary}
+
+\begin{proof}
+The $t=1$ contribution is
+\[
+ \sum_{p^d<k}(k-p^d)\log p.
+\]
+The prime number theorem and partial summation give
+\[
+ \sum_{p\le y}\log p\sim y,
+ \qquad
+ \sum_{p\le y}p^d\log p\sim\frac{y^{d+1}}{d+1}.
+\]
+Taking $y=k^{1/d}$ yields $\frac{d}{d+1}k^{1+1/d}$.  The sum of the levels $t\ge2$ is $O_d(k^{1+1/(2d)}\log k)$ and is lower order.  Summing \eqref{eq:Dkd-asymptotic} over $k$ and comparing with an integral gives \eqref{eq:Dprofile-asymptotic}.
+\end{proof}
+
+\begin{resultbox}
+For the conditional semigroup matrix \eqref{eq:exp-kernel-factor}, the columns are evaluations at integer points in two variables.  Therefore every Smith level obeys
+\[
+ \delta_k\ge D_{k,2}
+ =\prod_p p^{\sum_{t\ge1}(k-p^{2t})_+}.
+\]
+This lower bound is independent of the shape of the monomial support.  It is weaker than specialized factorial formulas on some lower sets, but it is available simultaneously for all supports and all compound levels.
+\end{resultbox}
+
+\subsection{Finite calibration}
+
+The exact values of the universal lower bound approach their asymptotic constant slowly.  The following values were computed directly from \eqref{eq:Dkd}; they are included only as scale calibration.
+
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$k$ & $\log D_{k,2}$ & $\log D_{k,2}/k^{3/2}$ \\
+\midrule
+30 & 58.843935 & 0.358113\\
+100 & 490.516404 & 0.490516\\
+300 & 2883.814682 & 0.554990\\
+1000 & 19237.571186 & 0.608345\\
+3000 & 104514.344239 & 0.636054\\
+10000 & 645526.888780 & 0.645527\\
+\bottomrule
+\end{tabular}
+\end{center}
+The limiting constant is $2/3$.
+
+\section{Exact Smith normal form of the geometric Vandermonde}
+\label{sec:qvandermonde}
+
+The next exact computation is both a tool and a warning.  Let
+\begin{equation}
+ V_n(q)=(q^{ij})_{0\le i,j<n},\qquad q\in\Z,\quad q\ge2.
+ \label{eq:qvandermonde}
+\end{equation}
+
+\begin{theorem}[Smith normal form of $V_n(q)$]
+\label{thm:q-SNF}
+The Smith normal form of $V_n(q)$ is
+\begin{equation}
+ \operatorname{diag}(s_0(q),s_1(q),\dots,s_{n-1}(q)),
+ \label{eq:q-SNF}
+\end{equation}
+where
+\begin{equation}
+ s_i(q)=q^{\binom i2}\prod_{r=1}^i(q^r-1),
+ \qquad s_0(q)=1.
+ \label{eq:siq}
+\end{equation}
+In particular $s_i(q)\mid s_{i+1}(q)$.
+\end{theorem}
+
+\begin{proof}
+Replace the monomial row basis $1,X,X^2,\dots$ by the Newton basis
+\[
+ P_i(X)=\prod_{r=0}^{i-1}(X-q^r).
+\]
+The change-of-basis matrix is lower unitriangular over $\Z$ and hence unimodular.  Evaluation gives $P_i(q^j)=0$ for $j<i$, while for $j\ge i$,
+\begin{align*}
+ P_i(q^j)
+ &=q^{\binom i2}\prod_{r=0}^{i-1}(q^{j-r}-1)\\
+ &=s_i(q)\binom{j}{i}_q,
+\end{align*}
+where $\binom ji_q\in\Z$ is the Gaussian binomial coefficient.  Thus the transformed matrix factors as $DG$, where $D=\diag(s_i(q))$ and $G$ is upper unitriangular over $\Z$.  Right multiplication by $G^{-1}\in\operatorname{GL}_n(\Z)$ leaves $D$.  Finally,
+\[
+ \frac{s_{i+1}(q)}{s_i(q)}=q^i(q^{i+1}-1)\in\Z,
+\]
+so $D$ is already in Smith order.
+\end{proof}
+
+\begin{corollary}[Asymptotics and modular rank]
+\label{cor:q-SNF-asymptotic}
+Let $c_q=\sum_{r\ge1}\log(1-q^{-r})$.  Then
+\begin{equation}
+ \log s_i(q)=i^2\log q+c_q+o(1),
+ \qquad
+ \log\delta_k(V_n(q))=\frac{\log q}{3}k^3+O_q(k^2).
+ \label{eq:q-SNF-asymptotic}
+\end{equation}
+Moreover, for a prime $p$,
+\begin{equation}
+ \rank_{\F_p}V_n(q)=
+ \begin{cases}
+  \min(n,2),&p\mid q,\\
+  \min(n,\ord_p(q)),&p\nmid q.
+ \end{cases}
+ \label{eq:q-mod-rank}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Expand $\log(q^r-1)=r\log q+\log(1-q^{-r})$ in \eqref{eq:siq} and sum.  The modular-rank statement follows because the number of Smith factors not divisible by $p$ is the rank modulo $p$.  If $p\mid q$, only $s_0,s_1$ are prime to $p$.  If $p\nmid q$, the first factor $q^r-1$ divisible by $p$ appears exactly when $r=\ord_p(q)$.
+\end{proof}
+
+\begin{experiment}[Exact symbolic verification]
+Using SymPy's Smith normal form over $\Z$, formula \eqref{eq:q-SNF} was verified for $q=2,3,5$ and every $1\le n\le8$.  For $n=8$ the diagonal lists begin
+\begin{align*}
+q=2:\quad&1,1,6,168,20160,9999360,20158709760,163849992929280,\\
+q=3:\quad&1,2,48,11232,24261120,475566474240,\\
+&84129611558952960,134068444202678083338240.
+\end{align*}
+The computation checks the implementation; the proof above is independent of it.
+\end{experiment}
+
+\begin{obstruction}[One-base Smith mass is not a discriminator]
+The matrices $V_n(q)$ have enormous Smith profiles for every ordinary integer $q\ge2$.  Therefore a large determinantal divisor along a single geometric ray cannot distinguish a hypothetical exceptional integer $\Mtwo=2^x$ from an unexceptional integer base.  Any successful Smith argument must be genuinely mixed: it must retain interaction between the two bases, survive diagonal gauge normalization, or exploit modular rank defects not shared by generic integer rays.
+\end{obstruction}
+
+\section{Application to conditional semigroup evaluation matrices}
+\label{sec:semigroup-matrix}
+
+Choose distinct monomial exponents $(a_i,b_i)\in\N^2$ and distinct semigroup indices $(n_j,k_j)\in\N^2$.  Set
+\begin{align}
+ \lambda_i&=a_i\log2+b_i\log3,\\
+ t_j&=n_j+k_jx,\\
+ A_{ij}&=(2^{n_j}\Mtwo^{k_j})^{a_i}(3^{n_j}\Mthree^{k_j})^{b_i}
+       =\e^{\lambda_i t_j}.
+ \label{eq:semigroup-A}
+\end{align}
+After sorting the $\lambda_i$ and $t_j$, the kernel $\e^{uv}$ is strictly totally positive, so all minors of $A$ are positive integers.
+
+Choose centers $\lambda_0,t_0$ and write
+\[
+ u_i=\lambda_i-\lambda_0,
+ \qquad v_j=t_j-t_0.
+\]
+Then
+\begin{equation}
+ A_{ij}
+ =\e^{\lambda_0t_0}\e^{t_0u_i}\e^{\lambda_0v_j}\e^{u_iv_j}.
+ \label{eq:semigroup-gauge}
+\end{equation}
+The first three factors are a common, row, and column gauge.  The analytic core is
+\begin{equation}
+ K_{ij}=\e^{u_iv_j}.
+ \label{eq:exp-core}
+\end{equation}
+
+\begin{lemma}[Taylor low-rank approximation]
+\label{lem:exp-lowrank}
+If $\abs{u_i}\le U$ and $\abs{v_j}\le V$, put $T=UV$.  For every $r\ge1$, the matrix
+\begin{equation}
+ B_r=\sum_{\ell=0}^{r-1}\frac{u^{\circ\ell}(v^{\circ\ell})^T}{\ell!}
+ \label{eq:exp-truncation}
+\end{equation}
+has rank at most $r$ and satisfies
+\begin{equation}
+ \norm{K-B_r}_2\le n\e^T\frac{T^r}{r!},
+ \qquad
+ \norm K_2\le n\e^T.
+ \label{eq:exp-error}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Each summand in \eqref{eq:exp-truncation} has rank one.  For $|z|\le T$,
+\[
+ \abs{\e^z-\sum_{\ell<r}z^\ell/\ell!}
+ \le\e^T\frac{T^r}{r!}.
+\]
+The operator norm of an $n\times n$ matrix is at most $n$ times its largest entry in absolute value.  The same estimate with no subtraction gives $\norm K_2\le n\e^T$.
+\end{proof}
+
+Distribute the common factor in \eqref{eq:semigroup-gauge} arbitrarily between the row and column gauges and let $D,E$ be the resulting positive diagonal matrices with $A=DKE$.  Combining \cref{cor:weighted-tail,thm:modular-divisor,lem:exp-lowrank} gives the following exact necessary condition for every hypothetical counterexample.
+
+\begin{criterion}[Bulk bounded-window certificate]
+\label{crit:semigroup-bulk}
+For every choice of distinct row exponents and semigroup nodes, every $r<k\le n$ must satisfy
+\begin{equation}
+ D_{k,2}
+ \left(
+ \frac{e_k(D^{-2})e_k(E^{-2})}{\binom nk}
+ \right)^{1/2}
+ \le
+ n^k\e^{kT}
+ \frac{T^{r(k-r)}}{(r!)^{k-r}}.
+ \label{eq:semigroup-bulk-certificate}
+\end{equation}
+Any finite configuration violating \eqref{eq:semigroup-bulk-certificate} proves the \AEconj{} conjecture.
+\end{criterion}
+
+\begin{proof}
+The modular theorem gives $\delta_k(A)\ge D_{k,2}$.  Apply \eqref{eq:weighted-tail} with the bounds \eqref{eq:exp-error}:
+\[
+ S^r\eps^{k-r}
+ \le(n\e^T)^r
+ \left(n\e^T\frac{T^r}{r!}\right)^{k-r},
+\]
+which simplifies to the right side of \eqref{eq:semigroup-bulk-certificate}.
+\end{proof}
+
+\begin{targetbox}
+The search problem is now finite and measurable: find two lattice sets whose logarithmic projections $u_i$ and $v_j$ lie in short windows, but for which the \emph{weighted} Smith mass on the left of \eqref{eq:semigroup-bulk-certificate} remains large at some intermediate $k$.  Uniform/global gauge factors are cancelled exactly, while nonuniform diagonal scales are explicitly penalized by $e_k(D^{-2})e_k(E^{-2})$.  This is stricter than maximizing the full determinant and is well suited to modular-rank scouting.
+\end{targetbox}
+
+\part{Rational Loewner kernels and random-matrix partition functions}
+
+\section{Rational cross-Loewner matrices under a counterexample}
+\label{sec:loewner}
+
+For $0<\alpha<1$, define the power divided-difference kernel
+\begin{equation}
+ L_\alpha(u,v)=
+ \begin{cases}
+ \displaystyle\frac{u^\alpha-v^\alpha}{u-v},&u\ne v,\\[1.1ex]
+ \alpha u^{\alpha-1},&u=v.
+ \end{cases}
+ \label{eq:loewner-kernel}
+\end{equation}
+The classical Stieltjes representation is
+\begin{equation}
+ L_\alpha(u,v)
+ =c_\alpha\int_0^\infty
+ \frac{t^\alpha}{(u+t)(v+t)}\dd t,
+ \qquad
+ c_\alpha=\frac{\sin(\pi\alpha)}{\pi}.
+ \label{eq:loewner-integral}
+\end{equation}
+It follows by subtracting the standard integral formula
+\[
+ u^\alpha=c_\alpha\int_0^\infty\frac{u}{u+t}t^{\alpha-1}\dd t.
+\]
+
+If $u,v\in\Gamma$ are distinct, then \eqref{eq:dense-rational} makes $u^\alpha,v^\alpha$ rational, and therefore
+\begin{equation}
+ L_\alpha(u,v)\in\Q.
+ \label{eq:loewner-rational}
+\end{equation}
+The diagonal value contains the irrational factor $\alpha$, so one must use two \emph{disjoint} node sets rather than a principal Loewner matrix.
+
+Let
+\[
+ 0<u_1<\cdots<u_n,
+ \qquad
+ 0<v_1<\cdots<v_n,
+ \qquad
+ \set{u_i}\cap\set{v_j}=\varnothing,
+\]
+with all nodes in $\Gamma$.  Define the rational cross matrix
+\begin{equation}
+ K_\alpha[\bm u;\bm v]
+ =(L_\alpha(u_i,v_j))_{i,j=1}^n.
+ \label{eq:cross-loewner}
+\end{equation}
+
+\section{Andreief--Cauchy formula and strict total positivity}
+\label{sec:andreief}
+
+\begin{theorem}[Positive $n$-fold integral for cross-Loewner minors]
+\label{thm:loewner-ensemble}
+For increasing positive node vectors $\bm u,\bm v$,
+\begin{align}
+ \det K_\alpha[\bm u;\bm v]
+ &=\frac{c_\alpha^n}{n!}\,
+ \vander(\bm u)\vander(\bm v)\\
+ &\quad\times
+ \int_{(0,\infty)^n}
+ \frac{\prod_{\ell=1}^n t_\ell^\alpha\,
+       \vander(\bm t)^2}
+ {\prod_{i,\ell}(u_i+t_\ell)(v_i+t_\ell)}
+ \dd\bm t.
+ \label{eq:loewner-ensemble}
+\end{align}
+In particular, $L_\alpha$ is strictly totally positive on $(0,\infty)\times(0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+Apply Andreief's identity to \eqref{eq:loewner-integral} with
+$f_i(t)=(u_i+t)^{-1}$ and $g_j(t)=(v_j+t)^{-1}$:
+\[
+ \det\left(\int f_i(t)g_j(t)c_\alpha t^\alpha\dd t\right)
+ =\frac{c_\alpha^n}{n!}\int
+ \det(f_i(t_\ell))\det(g_j(t_\ell))
+ \prod t_\ell^\alpha\dd\bm t.
+\]
+The Cauchy determinant formula gives
+\[
+ \det\left(\frac1{u_i+t_j}\right)
+ =\frac{\vander(\bm u)\vander(\bm t)}
+ {\prod_{i,j}(u_i+t_j)},
+\]
+and similarly for $\bm v$.  Multiplying yields \eqref{eq:loewner-ensemble}.  The integral is finite and strictly positive, so every ordered minor is positive.
+\end{proof}
+
+\subsection{A random-matrix partition function}
+
+Set
+\begin{equation}
+ Z_{n,\alpha}
+ =\int_{(0,\infty)^n}
+ \frac{\prod t_\ell^\alpha\vander(\bm t)^2}
+      {\prod(1+t_\ell)^{2n}}\dd\bm t.
+ \label{eq:Znalpha}
+\end{equation}
+Normalize the integrand to a probability measure $\nu_{n,\alpha}$.  Then \eqref{eq:loewner-ensemble} becomes
+\begin{align}
+ \det K_\alpha[\bm u;\bm v]
+ &=\frac{c_\alpha^nZ_{n,\alpha}}{n!}
+ \vander(\bm u)\vander(\bm v)\\
+ &\quad\times
+ \E_{\nu_{n,\alpha}}
+ \prod_{\ell=1}^n\prod_{i=1}^n
+ \frac{(1+t_\ell)^2}{(u_i+t_\ell)(v_i+t_\ell)}.
+ \label{eq:loewner-expectation}
+\end{align}
+The substitution $t=s/(1-s)$ transforms $\nu_{n,\alpha}$ into the Jacobi unitary ensemble on $(0,1)^n$ with weight
+\begin{equation}
+ \prod_{\ell=1}^n s_\ell^\alpha(1-s_\ell)^{-\alpha}
+ \vander(\bm s)^2.
+ \label{eq:JUE}
+\end{equation}
+Both exponents $\alpha$ and $-\alpha$ are greater than $-1$, so this is a genuine probability ensemble.  Formula \eqref{eq:loewner-expectation} is an exact positive expectation, with no determinant cancellation hidden inside it.
+
+\section{Selberg cluster asymptotics}
+\label{sec:selberg}
+
+Fix increasing real vectors $\bm\xi,\bm\eta$, with disjoint coordinate sets, and put
+\[
+ u_i=1+\eps\xi_i,
+ \qquad
+ v_j=1+\eps\eta_j.
+\]
+For sufficiently small positive $\eps$, all nodes are positive and remain ordered.
+
+\begin{theorem}[Exact cluster exponent and Selberg constant]
+\label{thm:loewner-cluster}
+As $\eps\downarrow0$,
+\begin{equation}
+ \det K_\alpha[\bm u;\bm v]
+ =\kappa_{n,\alpha}\,
+ \vander(\bm\xi)\vander(\bm\eta)
+ \eps^{n(n-1)}(1+O(\eps)),
+ \label{eq:cluster-asymptotic}
+\end{equation}
+where
+\begin{equation}
+ \boxed{
+ \kappa_{n,\alpha}
+ =\frac{c_\alpha^n}{n!}
+ \prod_{j=0}^{n-1}
+ \frac{\Gamma(j+1+\alpha)\Gamma(j+1-\alpha)\Gamma(j+2)}
+      {\Gamma(n+j+1)}.}
+ \label{eq:kappa}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The two Vandermonde factors in \eqref{eq:loewner-ensemble} contribute
+\[
+ \vander(\bm u)\vander(\bm v)
+ =\eps^{n(n-1)}\vander(\bm\xi)\vander(\bm\eta).
+\]
+Dominated convergence sends the integral to $Z_{n,\alpha}$.  Under $t=s/(1-s)$, that integral is Selberg's integral with parameters
+\[
+ a=1+\alpha,
+ \qquad b=1-\alpha,
+ \qquad \gamma=1.
+\]
+Selberg's formula gives exactly the product in \eqref{eq:kappa}.  The $O(\eps)$ refinement follows by uniformly expanding the expectation in \eqref{eq:loewner-expectation}; for nodes in a fixed compact interval, the logarithm of every ratio factor is $O(\eps)/(1+t)$.
+\end{proof}
+
+\begin{experiment}[High-precision check]
+For $\alpha=0.37$, exponents $\xi_i=2(i-1)$ and $\eta_j=2j-1$, and $n=2,3,4$, high-precision determinants were divided by the right side of \eqref{eq:cluster-asymptotic}.  The ratios were:
+\begin{center}
+\begin{tabular}{c|ccc}
+\toprule
+$n$ & $\eps=0.03$ & $\eps=0.01$ & $\eps=0.003$\\
+\midrule
+2 & 0.94461349 & 0.98124702 & 0.99434327\\
+3 & 0.86680514 & 0.95372266 & 0.98591325\\
+4 & 0.76481854 & 0.91521995 & 0.97385274\\
+\bottomrule
+\end{tabular}
+\end{center}
+The convergence is consistent with the proved asymptotic.  It is not used as evidence for the conjecture.
+\end{experiment}
+
+\subsection{Clusters inside the counterexample group}
+
+Because $\Gamma$ is dense, there exist $q_\nu\in\Gamma$ with $q_\nu>1$ and $q_\nu\to1$.  Fix disjoint increasing integer sets
+\[
+ a_1<\cdots<a_n,
+ \qquad b_1<\cdots<b_n.
+\]
+Take
+\begin{equation}
+ u_i=q_\nu^{a_i},
+ \qquad v_j=q_\nu^{b_j},
+ \qquad \eps_\nu=\log q_\nu.
+ \label{eq:Gamma-cluster}
+\end{equation}
+Then $u_i=1+a_i\eps_\nu+O(\eps_\nu^2)$ and similarly for $v_j$, so
+\begin{equation}
+ \det K_\alpha[\bm u;\bm v]
+ \sim\kappa_{n,\alpha}\vander(\bm a)\vander(\bm b)
+ \eps_\nu^{n(n-1)}.
+ \label{eq:Gamma-cluster-asymptotic}
+\end{equation}
+Every entry is rational by \eqref{eq:loewner-rational}.  The problem is therefore reduced to comparing the explicit archimedean decay with the arithmetic cost of clearing denominators.
+
+\section{Gram projection and the singular-value hierarchy}
+\label{sec:loewner-singular}
+
+The determinant asymptotic gives only the product of all singular values.  The Gram structure gives each singular scale separately.
+
+Let
+\begin{equation}
+ \mathcal H_\alpha=L^2((0,\infty),c_\alpha t^\alpha\dd t),
+ \qquad
+ \phi_u(t)=\frac1{u+t}.
+ \label{eq:feature-space}
+\end{equation}
+Then
+\begin{equation}
+ L_\alpha(u,v)=\inner{\phi_u}{\phi_v}_{\mathcal H_\alpha}.
+ \label{eq:Gram}
+\end{equation}
+For $r\ge1$, let $P_r$ be the orthogonal projection onto
+\begin{equation}
+ \mathcal H_r=\operatorname{span}\set{(1+t)^{-1},(1+t)^{-2},\dots,(1+t)^{-r}},
+ \label{eq:Hr}
+\end{equation}
+and put $Q_r=I-P_r$.
+
+\begin{lemma}[Feature residual]
+\label{lem:feature-residual}
+Fix $L>0$.  If $|u-1|\le L\eps\le1/2$, then
+\begin{equation}
+ \norm{Q_r\phi_u}_{\mathcal H_\alpha}
+ \le C_{r,\alpha,L}\eps^r,
+ \label{eq:feature-residual}
+\end{equation}
+where one admissible constant is
+\begin{equation}
+ C_{r,\alpha,L}
+ =2L^r\left(c_\alpha B(\alpha+1,2r+1-\alpha)\right)^{1/2}.
+ \label{eq:feature-constant}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The geometric expansion with exact remainder is
+\[
+ \frac1{1+t+(u-1)}
+ =\sum_{m=0}^{r-1}\frac{(-(u-1))^m}{(1+t)^{m+1}}
+ +\frac{(-(u-1))^r}{(1+t)^r(u+t)}.
+\]
+The finite sum lies in $\mathcal H_r$.  Since $u+t\ge(1+t)/2$,
+\[
+ \abs{\frac{(-(u-1))^r}{(1+t)^r(u+t)}}
+ \le\frac{2(L\eps)^r}{(1+t)^{r+1}}.
+\]
+Squaring and integrating gives \eqref{eq:feature-constant} through the beta integral.
+\end{proof}
+
+\begin{theorem}[Quadratic singular hierarchy for cross-Loewner clusters]
+\label{thm:loewner-singular-hierarchy}
+Let $K_\eps=(L_\alpha(u_i,v_j))_{i,j=1}^n$, where all $u_i,v_j$ lie within $L\eps$ of $1$.  For every $0\le r<n$,
+\begin{equation}
+ \sigma_{r+1}(K_\eps)
+ \le n C_{r,\alpha,L}^2\eps^{2r},
+ \label{eq:loewner-singular-hierarchy}
+\end{equation}
+with the convention that the $r=0$ bound is replaced by any fixed uniform bound on $\norm K_\eps$.  Hence there are constants $T_j$ depending only on $n,\alpha,L$ such that
+\begin{equation}
+ \boxed{\sigma_j(K_\eps)\le T_j\eps^{2(j-1)}
+ \qquad(1\le j\le n).}
+ \label{eq:sigma-hierarchy}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Define the rank-at-most-$r$ matrix
+\[
+ B_{ij}=\inner{P_r\phi_{u_i}}{P_r\phi_{v_j}}.
+\]
+Orthogonality gives
+\[
+ (K_\eps-B)_{ij}=\inner{Q_r\phi_{u_i}}{Q_r\phi_{v_j}}.
+\]
+View the residual matrix as $X^*Y$, where $X,Y$ are feature operators with $n$ columns.  The Frobenius norm of each is at most $\sqrt n C_{r,\alpha,L}\eps^r$, so
+\[
+ \norm{K_\eps-B}_2\le nC_{r,\alpha,L}^2\eps^{2r}.
+\]
+The Eckart--Young characterization of singular values gives \eqref{eq:loewner-singular-hierarchy}.  Set $r=j-1$.
+\end{proof}
+
+\begin{corollary}[Sharp singular scales for nondegenerate affine clusters]
+\label{cor:loewner-singular-sharp}
+Fix increasing real vectors $\bm\xi,\bm\eta$ with disjoint coordinate sets, and let
+\[
+ K_\eps=\bigl(L_\alpha(1+\eps\xi_i,1+\eps\eta_j)\bigr)_{i,j=1}^n.
+\]
+For each $1\le j\le n$ there are constants $c_j,C_j>0$ and $\eps_0>0$ such that
+\begin{equation}
+ c_j\eps^{2(j-1)}\le\sigma_j(K_\eps)
+ \le C_j\eps^{2(j-1)}
+ \qquad(0<\eps<\eps_0).
+ \label{eq:sharp-singular-scales}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The upper bounds are \cref{thm:loewner-singular-hierarchy}.  Strict total positivity and \cref{thm:loewner-cluster} give
+\[
+ \prod_{i=1}^n\sigma_i(K_\eps)=\det K_\eps
+ \ge c\eps^{n(n-1)}
+\]
+for sufficiently small $\eps$.  For a fixed $j$, apply the upper bounds to every factor except $\sigma_j$:
+\[
+ \prod_{i\ne j}\sigma_i(K_\eps)
+ \le C\eps^{n(n-1)-2(j-1)}.
+\]
+Dividing proves the lower bound in \eqref{eq:sharp-singular-scales}.
+\end{proof}
+
+\begin{resultbox}
+The exponent is twice the naive Taylor exponent because the kernel error is an inner product of two orthogonal feature residuals.  This is the matrix-theoretic reason the determinant has exponent
+\[
+ 0+2+4+\cdots+2(n-1)=n(n-1).
+\]
+For arbitrary bounded clusters the projection argument supplies the universal upper hierarchy; for fixed nondegenerate affine clusters, \cref{cor:loewner-singular-sharp} shows that every one of these orders is attained.  Thus the Selberg determinant asymptotic and the Hilbert-space singular hierarchy match level by level.
+\end{resultbox}
+
+\section{Weighted Smith criteria for rational Loewner clusters}
+\label{sec:loewner-smith}
+
+Let $K_\eps$ be a rational cross-Loewner matrix arising from nodes in $\Gamma$.  Choose positive integer diagonal matrices
+\[
+ D=\diag(d_1,\dots,d_n),
+ \qquad E=\diag(e_1,\dots,e_n)
+\]
+such that
+\begin{equation}
+ A_\eps=DK_\eps E\in\Z^{n\times n}.
+ \label{eq:loewner-clearing}
+\end{equation}
+For example, one may clear denominators row by row, though an optimized row--column factorization can be much cheaper.
+
+\begin{criterion}[Loewner compound certificate]
+\label{crit:loewner-compound}
+Under a counterexample, every such clearing and every $1\le k\le n$ must satisfy
+\begin{equation}
+ \boxed{
+ \delta_k(A_\eps)
+ \left(
+ \frac{e_k(d_1^{-2},\dots,d_n^{-2})
+       e_k(e_1^{-2},\dots,e_n^{-2})}
+      {\binom nk}
+ \right)^{1/2}
+ \le C_{n,k,\alpha,L}\eps^{k(k-1)}.}
+ \label{eq:loewner-compound-certificate}
+\end{equation}
+A violation for one finite rational cluster proves the \AEconj{} conjecture.
+\end{criterion}
+
+\begin{proof}
+Apply the weighted singular-envelope inequality \eqref{eq:weighted-envelope} and the bounds \eqref{eq:sigma-hierarchy}.  The product of the first $k$ envelopes has exponent
+$2\sum_{j=1}^k(j-1)=k(k-1)$.
+\end{proof}
+
+The endpoint $k=n$ is the ordinary denominator-versus-determinant comparison.  The intermediate levels are new: they ask whether the rational clearing has enough primitive Smith mass to outrun the singular hierarchy before the full determinant is formed.
+
+\subsection{The optimized row--column denominator cost}
+
+For a rational matrix $K$, define
+\begin{equation}
+ \mathfrak D_{\mathrm{rc}}(K)
+ =\min\set{
+  \prod_i d_i\prod_j e_j:
+  d_i,e_j\in\N_{>0},\ \diag(d_i)K\diag(e_j)\in\Z^{n\times n}}.
+ \label{eq:rc-cost}
+\end{equation}
+Strict total positivity makes the cleared determinant a positive integer, so
+\begin{equation}
+ \det K\ge\mathfrak D_{\mathrm{rc}}(K)^{-1}.
+ \label{eq:rc-lower}
+\end{equation}
+Combining with \eqref{eq:Gamma-cluster-asymptotic} gives an immediate sufficient condition.
+
+\begin{criterion}[Loewner denominator certificate]
+\label{crit:loewner-denominator}
+Fix $n\ge2$ and disjoint exponent sets $\bm a,\bm b$.  If there exists a sequence $q_\nu\in\Gamma$, $q_\nu>1$, $q_\nu\to1$, such that the associated rational matrices satisfy
+\begin{equation}
+ \mathfrak D_{\mathrm{rc}}(K_\nu)
+ =o\left((\log q_\nu)^{-n(n-1)}\right),
+ \label{eq:denominator-target}
+\end{equation}
+then no counterexample exists.
+\end{criterion}
+
+\begin{proof}
+The product of \eqref{eq:rc-lower} with \eqref{eq:Gamma-cluster-asymptotic} would make the positive integer
+$\mathfrak D_{\mathrm{rc}}(K_\nu)\det K_\nu$ tend to zero.
+\end{proof}
+
+\subsection{Why the obvious height estimate is far too expensive}
+
+Write a near-unity group element as
+\[
+ q=2^u3^{-v}>1,
+ \qquad u,v\in\N.
+\]
+Then $\log q=u\log2-v\log3$.  Continued-fraction convergents give sequences with $\abs{\log q}=O(1/v)$, while the numerator and denominator of $q$ have height $\exp(\Theta(v))$.  Under a counterexample,
+\[
+ q^\alpha=r^u s^{-v},
+\]
+whose naive height also grows exponentially in $u+v$.  Clearing every entry of
+\[
+ \frac{q^{\alpha a_i}-q^{\alpha b_j}}{q^{a_i}-q^{b_j}}
+\]
+by separate numerator and denominator heights therefore costs exponentially in $1/\abs{\log q}$ along this natural sequence, whereas \eqref{eq:denominator-target} permits only a fixed power of $1/\abs{\log q}$.
+
+Baker-type lower bounds for the nonzero linear form $u\log2-v\log3$ show more generally that very small $\abs{\log q}$ forces $u+v$ to grow at least as a positive power of $1/\abs{\log q}$.  Consequently, height-only denominator bounds are structurally too large.  A successful Loewner proof must find \emph{cancellation in the reduced row--column denominators} or additional Smith divisibility; it cannot merely clear the obvious powers of the numerators and denominators.
+
+\begin{auditbox}
+This is an audit of the available bound, not a proof that the actual reduced denominators are always large.  Unexpected cancellation is precisely what \cref{crit:loewner-denominator,crit:loewner-compound} ask one to exploit.
+\end{auditbox}
+
+\part{Positivity tests and their structural blind spots}
+
+\section{Hadamard powers: a rigorous infinite-divisibility no-go}
+\label{sec:hadamard}
+
+The critical-exponent literature suggests testing whether a noninteger entrywise power loses positive semidefiniteness or total positivity.  Integrality of the powered entries alone, however, does not force positivity.  Worse, the most natural $3$-smooth Gram matrices preserve positivity for \emph{every} nonnegative real power.
+
+\begin{theorem}[Infinitely divisible $3$-smooth Gram family]
+\label{thm:infinite-divisible}
+Choose nonnegative integer vectors $a_1,\dots,a_n\in\N^r$ and
+$b_1,\dots,b_n\in\N^s$.  Define
+\begin{equation}
+ H_{ij}=\inner{a_i}{a_j}\log2+\inner{b_i}{b_j}\log3,
+ \qquad
+ K_{ij}=\e^{H_{ij}}
+ =2^{\inner{a_i}{a_j}}3^{\inner{b_i}{b_j}}.
+ \label{eq:smooth-Gram}
+\end{equation}
+Then $K$ is an integer matrix and
+\begin{equation}
+ K^{\circ t}=(K_{ij}^t)_{ij}\succeq0
+ \qquad\text{for every }t\ge0.
+ \label{eq:all-powers-PSD}
+\end{equation}
+If $x$ is a hypothetical counterexample, $K^{\circ x}$ is in addition an integer matrix.
+\end{theorem}
+
+\begin{proof}
+The matrix $H$ is positive semidefinite because it is a positive linear combination of two Gram matrices.  By the Schur product theorem, every Hadamard power $H^{\circ m}$ is positive semidefinite.  The entrywise exponential series converges in finite dimension and gives
+\[
+ K^{\circ t}=\exp^{\circ}(tH)
+ =\sum_{m=0}^\infty\frac{t^m}{m!}H^{\circ m}\succeq0.
+\]
+If $\Mtwo=2^x$ and $\Mthree=3^x$ are integers, then
+\[
+ (K^{\circ x})_{ij}
+ =\Mtwo^{\inner{a_i}{a_j}}\Mthree^{\inner{b_i}{b_j}}\in\Z.
+\]
+\end{proof}
+
+The simplest example is $K=J+I$, whose diagonal entries are $2$ and off-diagonal entries are $1$.  Then
+\[
+ K^{\circ x}=J+(2^x-1)I\succeq0
+\]
+for every real $x\ge0$.  No critical-exponent transition is visible.
+
+\begin{obstruction}[Why positivity alone cannot prove integrality]
+The FitzGerald--Horn/Jain/Khare theory identifies matrices whose noninteger powers fail positivity or total positivity.  But a negative determinant of an integer matrix is not a contradiction, and the natural matrices for which $x$-th powers are automatically Gram matrices lie in the infinitely divisible cone of \cref{thm:infinite-divisible}.  A successful Hadamard-power argument therefore needs two ingredients simultaneously:
+\begin{enumerate}
+\item a $3$-smooth integer test matrix outside the infinitely divisible cone; and
+\item an independent arithmetic reason that its $x$-th Hadamard power must nevertheless be positive semidefinite or totally nonnegative.
+\end{enumerate}
+Neither ingredient follows from $2^x,3^x\in\Z$ alone.
+\end{obstruction}
+
+\section{The formal prime quadratic is not copositive}
+\label{sec:formal-quadratic}
+
+Let
+\[
+ \Mtwo=\prod_p p^{a_p},
+ \qquad
+ \Mthree=\prod_p p^{b_p},
+\]
+with finite nonnegative valuation vectors $a,b$.  The supplied report introduces the formal homogeneous quadratic
+\begin{equation}
+ \Phi(z)=z_2\sum_p b_pz_p-z_3\sum_pa_pz_p,
+ \label{eq:Phi}
+\end{equation}
+whose specialization $z_p=\log p$ is
+\[
+ \log2\log \Mthree-\log3\log \Mtwo.
+\]
+A counterexample makes this specialization zero while $\Phi$ remains a nonzero polynomial.
+
+\begin{proposition}[Positive-cone sign change]
+\label{prop:Phi-sign}
+For a nonintegral candidate, $\Mtwo$ has a prime divisor different from $2$ and $\Mthree$ has a prime divisor different from $3$.  Consequently, $\Phi$ assumes both positive and negative values on the strict positive orthant and its zero cone intersects that orthant.
+\end{proposition}
+
+\begin{proof}
+If $\Mtwo$ were a power of $2$, then $2^x=\Mtwo=2^m$ would force $x=m\in\Z$; similarly $\Mthree$ cannot be a pure power of $3$.  Fix all coordinates other than $z_2,z_3$ at positive values.  Letting $z_3\downarrow0$ with $z_2$ fixed makes the first term in \eqref{eq:Phi} dominate and gives a positive value, because $b$ has support away from $3$.  Letting $z_2\downarrow0$ with $z_3$ fixed makes the second term dominate and gives a negative value, because $a$ has support away from $2$.  A continuous path between the two points remains in the strict positive orthant, so it crosses the zero set.
+\end{proof}
+
+The quadratic form matrix of $\Phi$ has rank at most four:
+\begin{equation}
+ Q_\Phi=\tfrac12(e_2b^T+be_2^T-e_3a^T-ae_3^T).
+ \label{eq:Phi-matrix}
+\end{equation}
+
+\begin{obstruction}[Inertia and copositivity cannot locate the prime-log point]
+The zero at $(\log p)_p$ is not forbidden by positive-cone geometry: every nonintegral candidate already forces other positive zeros of the same quadratic.  Therefore an argument based only on the inertia of $Q_\Phi$, copositivity, or separation of the positive orthant cannot prove the conjecture.  One must use the arithmetic placement and rational independence properties of the specific point $(\log p)_p$.
+\end{obstruction}
+
+\part{Probability, anti-concentration, and entropy saturation}
+
+\section{Exact min-entropy anti-concentration for valuation vectors}
+\label{sec:minentropy}
+
+Let $P,Q$ be finite prime sets and define injective logarithmic maps
+\begin{equation}
+ \Lambda_P(u)=\sum_{p\in P}u_p\log p,
+ \qquad
+ \Lambda_Q(v)=\sum_{q\in Q}v_q\log q,
+ \label{eq:log-maps}
+\end{equation}
+for integer vectors $u,v$.  Injectivity is unique factorization.
+
+For a discrete random variable $Z$, define its min-entropy by
+\begin{equation}
+ \Hinf(Z)=-\log\max_z\Prob(Z=z).
+ \label{eq:minentropy}
+\end{equation}
+
+\begin{theorem}[Valuation anti-concentration]
+\label{thm:minentropy}
+Let $U$ and $V$ be independent random integer valuation vectors on $P$ and $Q$.  For nonzero real constants $c,d$,
+\begin{equation}
+ \Prob\bigl(c\Lambda_P(U)=d\Lambda_Q(V)\bigr)
+ \le\min\bigl(\norm{\mathcal L(U)}_\infty,
+               \norm{\mathcal L(V)}_\infty\bigr)
+ =\exp\bigl(-\max(\Hinf(U),\Hinf(V))\bigr).
+ \label{eq:minentropy-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Condition on $V=v$.  Since $\Lambda_P$ is injective, the equation determines at most one value of $U$, so the conditional probability is at most the largest atom of $U$.  Average over $v$.  Interchanging $U$ and $V$ gives the other bound.
+\end{proof}
+
+\begin{corollary}[Uniform boxes]
+\label{cor:box-count}
+If $U$ and $V$ are uniform on $\set{0,\dots,H}^r$ and $\set{0,\dots,H}^s$, then
+\begin{equation}
+ \Prob\bigl(c\Lambda_P(U)=d\Lambda_Q(V)\bigr)
+ \le(H+1)^{-\max(r,s)}.
+ \label{eq:box-prob}
+\end{equation}
+Hence the number of exact solution pairs is at most
+\begin{equation}
+ (H+1)^{\min(r,s)}.
+ \label{eq:box-count}
+\end{equation}
+\end{corollary}
+
+Taking $c=\log3$ and $d=\log2$ makes the event exactly the common-exponent equation
+\[
+ \frac{\log m}{\log2}=\frac{\log n}{\log3}
+\]
+for independently sampled integers supported on the selected prime sets.
+
+\subsection{Interpretation through inverse Littlewood--Offord theory}
+
+Modern anti-concentration theory says that unusually large point masses are usually caused by low-dimensional additive structure.  Here the elementary injectivity argument is already sharp enough to expose the relevant dimension.  If a family of exact pairs in two valuation boxes has order $H^d$, then \eqref{eq:box-count} forces both effective valuation dimensions to be at least $d$.  A hypothetical counterexample produces a two-parameter family and therefore naturally saturates the case $d=2$.  Anti-concentration recovers the known rank-two semigroup; by itself it does not collapse it to rank one.
+
+\section{Entropy growth equals valuation-lattice rank}
+\label{sec:entropy-rank}
+
+The preceding point can be made exact in Shannon entropy.
+
+\begin{theorem}[Entropy-rank law for integer linear images]
+\label{thm:entropy-rank}
+Let $C\in\Z^{m\times r}$ have rank $d$ over $\Q$, and let $Z_H$ be uniform on $\set{0,\dots,H}^r$.  Then
+\begin{equation}
+ H(CZ_H)=d\log(H+1)+O_C(1).
+ \label{eq:entropy-rank}
+\end{equation}
+The same leading term holds for min-entropy.
+\end{theorem}
+
+\begin{proof}
+Choose $d$ input coordinates and $d$ output rows forming a nonsingular $d\times d$ submatrix.  Once the remaining $r-d$ input coordinates are fixed, a specified output has at most one choice of the selected $d$ coordinates.  Thus every atom has probability at most $(H+1)^{-d}$, giving
+\[
+ \Hinf(CZ_H)\ge d\log(H+1).
+\]
+For the reverse bound, choose $d$ independent output rows.  Their values lie in a box of side length $O_C(H)$, and they determine all remaining output coordinates over $\Q$.  Hence the image has $O_C(H^d)$ points and
+$H(CZ_H)\le d\log(H+1)+O_C(1)$.  Shannon entropy dominates min-entropy.
+\end{proof}
+
+\section{A hypothetical counterexample saturates all entropy bounds}
+\label{sec:entropy-saturation}
+
+Let $x$ be a nonintegral solution and $\Mtwo=2^x$, $\Mthree=3^x$.  Let $N,K$ be independent uniform random variables on $\set{0,\dots,H}$ and define
+\begin{equation}
+ X_H=2^N\Mtwo^K,
+ \qquad
+ Y_H=3^N\Mthree^K.
+ \label{eq:random-semigroup}
+\end{equation}
+
+\begin{theorem}[Exact entropy saturation]
+\label{thm:entropy-saturation}
+For every $H\ge0$,
+\begin{equation}
+ H(X_H)=H(Y_H)=H(X_H,Y_H)=2\log(H+1),
+ \label{eq:entropy-values}
+\end{equation}
+and therefore
+\begin{equation}
+ I(X_H;Y_H)=2\log(H+1).
+ \label{eq:mutual-info}
+\end{equation}
+Moreover, two valuation coordinates of either output already recover the latent pair $(N,K)$.
+\end{theorem}
+
+\begin{proof}
+Because $x$ is nonintegral, $\Mtwo$ has an odd prime factor $p$.  Then
+\[
+ v_p(X_H)=K v_p(\Mtwo)
+\]
+recovers $K$, and $v_2(X_H)=N+K v_2(\Mtwo)$ then recovers $N$.  Thus the map $(N,K)\mapsto X_H$ is injective.  Similarly, a prime factor $q\ne3$ of $\Mthree$ shows that $(N,K)\mapsto Y_H$ is injective.  Each of $X_H,Y_H,(X_H,Y_H)$ is therefore an injective image of a uniform set of size $(H+1)^2$, proving \eqref{eq:entropy-values}.  The mutual information identity follows from
+$I(X;Y)=H(X)+H(Y)-H(X,Y)$.
+\end{proof}
+
+\begin{obstruction}[No Shannon-entropy slack]
+Both integer outputs separately contain all two-dimensional latent information, and they share it perfectly.  Data processing, entropy subadditivity, and ordinary mutual-information inequalities are therefore equalities at leading order.  Information theory can identify the rank-two semigroup but cannot force the rank-one integral branch without an additional inequality sensitive to the arithmetic values of the logarithms rather than merely to the valuation-lattice rank.
+\end{obstruction}
+
+\section{Generic random perturbations do not specialize}
+\label{sec:generic-no-go}
+
+The formal polynomial $\Phi$ in \eqref{eq:Phi} is nonzero for a hypothetical counterexample.  If its variables are replaced by independent continuously distributed positive random variables, then
+\begin{equation}
+ \Prob(\Phi(Z)=0)=0.
+ \label{eq:generic-zero}
+\end{equation}
+Likewise, random sign or random-phase models usually eliminate exact zeros.  This is a correct generic statement but it says nothing about the named deterministic point $Z_p=\log p$.  A low-degree polynomial can vanish at one prescribed point while being nonzero almost surely under every smooth perturbation.
+
+This observation aligns with the random-phase analysis in the supplied report: almost-everywhere extinction is easy, while the arithmetically distinguished phase zero may support a rigid exceptional orbit.  Probability becomes useful only when it produces a \emph{quantitative deterministic inequality} that survives specialization, as the random-minor identity \eqref{eq:random-minor-expectation} does.
+
+\section{Randomized discovery, exact certification}
+\label{sec:random-search}
+
+Randomness can still accelerate the search for a finite contradiction without entering the proof.
+
+\subsection{Random-prime scouting}
+
+For a proposed integer evaluation matrix $A$, sample moderate primes $p$ and compute
+\[
+ r_p=\rank_{\F_p}(A\bmod p).
+\]
+Every unexpectedly small $r_p$ gives the exact divisor
+\begin{equation}
+ v_p(\delta_k(A))\ge(k-r_p)_+.
+ \label{eq:rank-one-level}
+\end{equation}
+Computations modulo $p^t$ or direct Smith routines can then certify the stronger multilevel profile.  The random stage only identifies promising primes; the final rank calculation is exact.
+
+\subsection{Random minor sampling}
+
+For a normalized kernel $K=D^{-1}AE^{-1}$, sample $k$-subsets with the importance weights preceding \eqref{eq:weighted-random-minor}.  Large observed minors indicate a large exterior spectral mass and help identify which $k$ carries the strongest arithmetic/analytic tension.  Once a candidate is found, compute $\delta_k(A)$ and the relevant singular-value bound exactly or with certified intervals.
+
+\subsection{Search score}
+
+A convenient logarithmic score for a rank-$r$ approximation is
+\begin{equation}
+ \mathcal S_{k,r}
+ =\log\mathcal A_k(A;D,E)-r\log S-(k-r)\log\eps.
+ \label{eq:search-score}
+\end{equation}
+A rigorously positive score is a contradiction by \eqref{eq:weighted-tail}.  Floating-point values are only a filter; final candidates should use exact Smith divisors and directed-rounding norm bounds.
+
+\part{Synthesis and exact proof certificates}
+
+\section{What the matrix and probability approaches genuinely add}
+\label{sec:synthesis}
+
+The continuation yields five advances relative to the supplied report.
+
+\begin{enumerate}
+\item \textbf{The determinant becomes a profile.}  The identities in \cref{sec:compound,sec:weighted} compare every determinantal divisor $\delta_k$ with the corresponding exterior singular mass.  This exposes arithmetic information that can disappear at $k=n$.
+
+\item \textbf{Modular collapse is multilevel.}  The bound \eqref{eq:Dkd} uses all rings $\Z/p^t\Z$ and applies to arbitrary monomial supports.  It provides a baseline Smith profile for every semigroup evaluation matrix.
+
+\item \textbf{The Loewner determinant becomes a random-matrix ensemble.}  Formula \eqref{eq:loewner-expectation} is a positive expectation under a Jacobi unitary ensemble, and Selberg's integral gives the exact cluster constant.
+
+\item \textbf{The Loewner singular values are individually controlled.}  Orthogonal projection in the Stieltjes feature space gives $\sigma_j=O(\eps^{2(j-1)})$, matching the determinant exponent and enabling compound Smith tests.
+
+\item \textbf{Probability's limitation is quantified.}  Min-entropy anti-concentration and the entropy-rank theorem show that a counterexample is not merely structured; it is entropy-extremal.  Generic anti-concentration has no unused dimension to exploit.
+\end{enumerate}
+
+\section{Four exact sufficient certificates}
+\label{sec:certificates}
+
+\subsection{Certificate A: weighted semigroup Smith-tail violation}
+
+Construct finite row and column lattice sets in \eqref{eq:semigroup-A}.  Compute a diagonal gauge and a rank-$r$ approximation to the normalized exponential core.  If, for any $k>r$,
+\[
+ \mathcal A_k(A;D,E)>S^r\eps^{k-r},
+\]
+then the conjecture follows.  The universal lower bound $D_{k,2}$ may be substituted for $\delta_k(A)$, but a successful search will likely need extra modular rank defects.
+
+\subsection{Certificate B: Loewner denominator growth below the cluster exponent}
+
+Construct $q_\nu\in\Gamma$, $q_\nu\to1$, and fixed disjoint exponent sets.  If the optimized row--column denominator cost obeys \eqref{eq:denominator-target}, then the positive rational determinant is too small after clearing denominators.
+
+\subsection{Certificate C: an intermediate Loewner Smith-level violation}
+
+For one finite rational cluster, clear denominators to $A=DK E$ and prove that \eqref{eq:loewner-compound-certificate} fails at some $k<n$.  This can succeed even when the full determinant inequality at $k=n$ is exactly balanced.
+
+\subsection{Certificate D: a genuinely mixed modular subgroup defect}
+
+For semigroup points modulo many primes, the generic residue-space bound is $p^2$.  If one can prove, for a positive-density or sufficiently weighted collection of primes and levels, that the actual column image is generated by substantially fewer than $p^{2t}$ elements after removing row/column content, then \eqref{eq:level-decomp} gives enhanced Smith mass.  Combining that mass with a bounded-window singular tail through \eqref{eq:weighted-tail} is an exact proof route.
+
+\begin{targetbox}
+Certificate D appears the most compatible with the supplied report's valuation machinery.  It asks for a modular shadow of the real rank-one relation that is strong enough at many primes, but it measures the shadow through a gauge-invariant Smith profile rather than through termwise tropical valuations.
+\end{targetbox}
+
+\section{Obstacle ledger}
+\label{sec:obstacles}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Approach & Exact gain & Remaining obstruction \\
+\midrule
+\endhead
+Exterior/random minors & Converts all minors into the exact spectrum of $\bigwedge^kA$ and imports every determinantal divisor. & Need a configuration whose weighted Smith mass exceeds its analytic singular tail.\\
+Universal modular divisor & Gives $\log\delta_k\ge(2/3+o(1))k^{3/2}$ in two variables for arbitrary support. & On many natural square-grid scalings this is lower order than the gauge and analytic terms; extra rank defects are needed.\\
+Geometric Vandermonde SNF & Exact closed form and cubic Smith growth. & The same phenomenon occurs for every ordinary integer base, so it carries no exceptional two-base information.\\
+Loewner/Jacobi ensemble & Positive determinant, exact Selberg constant, and rational entries on counterexample orbits. & Naive denominator heights are exponentially larger than the polynomial cluster threshold.\\
+Loewner singular hierarchy & Gives the optimal compound exponent $k(k-1)$. & Must show primitive Smith mass remains after optimized denominator clearing.\\
+Hadamard critical exponents & Supplies many matrices whose noninteger powers change inertia or total positivity. & Powered entries being integers does not force positivity; natural Gram matrices are infinitely divisible.\\
+Formal quadratic matrix & Packages the logarithmic determinant into a rank-at-most-four form. & The form already has positive isotropic vectors, so copositivity cannot isolate the prime-log point.\\
+Anti-concentration & Exact min-entropy bound and inverse-structure interpretation. & The conditional semigroup is a perfectly coupled rank-two extremizer, not an independent random family.\\
+Shannon entropy & Gives an exact rank law for valuation images. & Both outputs separately recover all latent information, so every basic entropy inequality is saturated.\\
+\bottomrule
+\end{longtable}
+
+\section{Prioritized computational and formalization program}
+\label{sec:program}
+
+\subsection{Experiment 1: bulk Smith score on bounded logarithmic windows}
+
+Use lattice reduction to select $n$ distinct pairs $(a_i,b_i)$ for which
+$a_i\log2+b_i\log3$ lies in a short interval, and similarly select $(n_j,k_j)$ for
+$n_j+k_jx$ symbolically.  Because $x$ is unknown, the second selection should be expressed in terms of continued-fraction cells or the inherited least-generator parameter.  For each combinatorial shape:
+\begin{enumerate}
+\item build the integer monomial evaluation matrix symbolically in $\Mtwo,\Mthree$;
+\item compute universal and support-specific modular rank bounds;
+\item remove exact row/column gauges;
+\item bound the singular tail of $\e^{u_iv_j}$;
+\item evaluate all scores \eqref{eq:search-score}, not only $k=n$.
+\end{enumerate}
+
+\subsection{Experiment 2: modular subgroup images}
+
+For many ordinary pairs $(\Mtwo,\Mthree)$ of comparable size, compute the image size of
+\[
+ (n,k)\mapsto(2^n\Mtwo^k,3^n\Mthree^k)\pmod{p^t}
+\]
+for random primes and small $t$.  The purpose is not to test the conjecture numerically, but to learn which algebraic features cause persistent image collapse after gauge normalization.  Any conjectured deterministic rank bound can then be proved independently and inserted into \eqref{eq:level-decomp}.
+
+\subsection{Experiment 3: symbolic Loewner denominator factorization}
+
+Write $q=U/V$ and $q^\alpha=R/S$ in lowest terms and factor the cross entries
+\[
+ \frac{(R/S)^{a_i}-(R/S)^{b_j}}
+      {(U/V)^{a_i}-(U/V)^{b_j}}
+\]
+for fixed interlacing exponent sets.  Optimize row/column denominator extraction exactly.  The goal is to find systematic cyclotomic or resultant cancellation that makes
+$\mathfrak D_{\mathrm{rc}}$ much smaller than entrywise height clearing predicts.
+
+\subsection{Experiment 4: formal verification}
+
+The following modules are natural Lean targets because their proofs are finite algebra or elementary analysis:
+\begin{itemize}
+\item exterior-power/minor identity and the weighted Smith-tail criterion;
+\item the level decomposition \eqref{eq:level-decomp} and residue-generator bound;
+\item the exact $q$-Vandermonde Smith normal form;
+\item min-entropy anti-concentration and exact entropy recovery of $(N,K)$;
+\item infinite divisibility of the $3$-smooth Gram family;
+\item the positive-cone sign change of the formal quadratic.
+\end{itemize}
+The Andreief--Selberg and Hilbert-space projection sections are also formalizable but would require substantially more analytic infrastructure.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The matrix and probability viewpoints do not presently prove the \AEconj{} conjecture, but they sharpen the remaining wall in ways that the determinant endpoint alone cannot.
+
+The central lesson is that arithmetic and analysis should be compared at every exterior level.  An integer semigroup evaluation matrix has a full Smith profile forced by residue-class collapse.  After the irrelevant row and column scales are removed, its analytic kernel has a rapidly decaying singular tail.  The weighted compound inequalities state exactly how much arithmetic mass each tail can accommodate.  A proof can therefore arrive from one intermediate minor size even when the full determinant is inconclusive.
+
+The rational Loewner construction is the cleanest realization of this principle.  Under a counterexample it produces strictly totally positive rational matrices on arbitrarily fine clusters.  Their determinants are Jacobi-unitary-ensemble partition functions with an exact Selberg constant, and their singular values fall at the quadratic hierarchy $1,\eps^2,\eps^4,\dots$.  What remains is an arithmetic theorem about optimized denominator/Smith content.  The needed statement is no longer vague: it is precisely \eqref{eq:loewner-compound-certificate} or its endpoint \eqref{eq:denominator-target}.
+
+Probability contributes an equally useful negative conclusion.  Independent valuation vectors obey exact anti-concentration, but a hypothetical counterexample creates a perfectly coupled two-dimensional semigroup in which each output separately contains all latent entropy.  Genericity arguments therefore cannot be specialized without a new quantitative bridge.  Randomness is best used as a search device for modular rank defects and large minors, followed by exact certification.
+
+Among the proposed next steps, the most promising is a hybrid: construct bounded logarithmic windows by lattice reduction, scout for systematic modular image collapse, and test the resulting matrices with the complete weighted Smith profile.  This directly joins the inherited valuation machinery to the new compound-matrix framework and avoids the one-base and common-content false positives isolated in this report.
+
+\appendix
+
+\section{A compact proof of the prime-number-theorem asymptotic}
+\label{app:pnt}
+
+For completeness, define
+\[
+ D_{k,d}=\prod_p p^{\sum_{t\ge1}(k-p^{td})_+}.
+\]
+Then
+\begin{align*}
+ \log D_{k,d}
+ &=\sum_{t\ge1}\sum_{p^{td}<k}(k-p^{td})\log p.
+\end{align*}
+At $t=1$, with $y=k^{1/d}$,
+\begin{align*}
+ \sum_{p\le y}(k-p^d)\log p
+ &=k\vartheta(y)-\sum_{p\le y}p^d\log p\\
+ &=ky-\frac{y^{d+1}}{d+1}+o(k^{1+1/d})\\
+ &=\frac{d}{d+1}k^{1+1/d}+o(k^{1+1/d}).
+\end{align*}
+For $t\ge2$, the $t$th contribution is $O(k^{1+1/(dt)})$, and summing the geometrically decreasing exponents gives $O(k^{1+1/(2d)}\log k)$.  This proves \eqref{eq:Dkd-asymptotic}.  The profile formula follows from
+\[
+ \sum_{k=r+1}^n k^{1+1/d}
+ =\frac{d}{2d+1}(n^{2+1/d}-r^{2+1/d})+o(n^{2+1/d}).
+\]
+
+\section{Determinant constant from Selberg's integral}
+\label{app:selberg}
+
+The cluster integral is
+\[
+ Z_{n,\alpha}
+ =\int_{(0,\infty)^n}
+ \frac{\prod t_i^\alpha\vander(t)^2}{\prod(1+t_i)^{2n}}\dd\bm t.
+\]
+With $t_i=s_i/(1-s_i)$,
+\[
+ t_i^\alpha\dd t_i=(s_i^\alpha)(1-s_i)^{-\alpha-2}\dd s_i,
+\]
+while the denominator contributes $(1-s_i)^{2n}$ and the squared Vandermonde contributes $(1-s_i)^{-2(n-1)}$.  The net exponent is $-\alpha$.  Hence
+\[
+ Z_{n,\alpha}
+ =\int_{(0,1)^n}
+ \prod s_i^\alpha(1-s_i)^{-\alpha}\vander(s)^2\dd\bm s.
+\]
+Selberg's formula with $a=1+\alpha$, $b=1-\alpha$, and $\gamma=1$ yields
+\[
+ Z_{n,\alpha}
+ =\prod_{j=0}^{n-1}
+ \frac{\Gamma(j+1+\alpha)\Gamma(j+1-\alpha)\Gamma(j+2)}
+      {\Gamma(n+j+1)},
+\]
+which is \eqref{eq:kappa} after multiplication by $c_\alpha^n/n!$.
+
+\section{Reproducibility code for finite checks}
+\label{app:code}
+
+The following script verifies the finite Smith examples, evaluates the Selberg cluster ratios, and computes the multilevel modular divisor table.  It uses exact integer arithmetic for Smith forms and high precision only for the analytic calibration.
+
+\begin{lstlisting}[style=py]
+from __future__ import annotations
+import math
+import mpmath as mp
+import sympy as sp
+from sympy.matrices.normalforms import smith_normal_form
+from sympy.polys.domains import ZZ
+
+
+def predicted_snf(q: int, n: int) -> list[int]:
+    out = []
+    for i in range(n):
+        s = q ** (i * (i - 1) // 2)
+        for r in range(1, i + 1):
+            s *= q**r - 1
+        out.append(s)
+    return out
+
+
+def actual_snf(q: int, n: int) -> list[int]:
+    V = sp.Matrix([[q ** (i * j) for j in range(n)]
+                   for i in range(n)])
+    D = smith_normal_form(V, domain=ZZ)
+    return [abs(int(D[i, i])) for i in range(n)]
+
+
+def loewner(alpha, x, y):
+    if x == y:
+        return alpha * x ** (alpha - 1)
+    return (x**alpha - y**alpha) / (x - y)
+
+
+def vandermonde(v):
+    ans = mp.mpf(1)
+    for i in range(len(v)):
+        for j in range(i + 1, len(v)):
+            ans *= v[j] - v[i]
+    return ans
+
+
+def selberg_constant(alpha, n):
+    c = mp.sin(mp.pi * alpha) / mp.pi
+    prod = mp.mpf(1)
+    for j in range(n):
+        prod *= (mp.gamma(j + 1 + alpha)
+                 * mp.gamma(j + 1 - alpha)
+                 * mp.gamma(j + 2)
+                 / mp.gamma(n + j + 1))
+    return c**n / mp.factorial(n) * prod
+
+
+def modular_log_bound(k: int, d: int = 2) -> float:
+    total = 0.0
+    for p in sp.primerange(2, int(k ** (1 / d)) + 2):
+        t = 1
+        while p ** (t * d) < k:
+            total += (k - p ** (t * d)) * math.log(p)
+            t += 1
+    return total
+
+
+for q in (2, 3, 5):
+    for n in range(1, 9):
+        assert actual_snf(q, n) == predicted_snf(q, n)
+
+mp.mp.dps = 80
+alpha = mp.mpf("0.37")
+for n in (2, 3, 4):
+    a = list(range(0, 2 * n, 2))
+    b = list(range(1, 2 * n + 1, 2))
+    C = selberg_constant(alpha, n) * vandermonde(a) * vandermonde(b)
+    for eps_text in ("0.03", "0.01", "0.003"):
+        eps = mp.mpf(eps_text)
+        X = [mp.e ** (eps * z) for z in a]
+        Y = [mp.e ** (eps * z) for z in b]
+        K = mp.matrix([[loewner(alpha, x, y) for y in Y] for x in X])
+        ratio = mp.det(K) / (C * eps ** (n * (n - 1)))
+        print(n, eps, ratio)
+
+for k in (30, 100, 300, 1000, 3000, 10000):
+    L = modular_log_bound(k, 2)
+    print(k, L, L / k**1.5)
+\end{lstlisting}
+
+\section{Suggested theorem dependencies for formalization}
+\label{app:formalization}
+
+A dependency-minimal order for formal verification is:
+\begin{enumerate}
+\item determinantal divisors and Smith-factor products;
+\item compound matrices and Cauchy--Binet/Hilbert--Schmidt identities;
+\item Weyl or min--max singular-value bounds for low-rank perturbations;
+\item local-ring generator count for Smith factors modulo $p^t$;
+\item monomial-column congruence modulo $p^t$;
+\item Newton basis and Gaussian binomial integrality for \cref{thm:q-SNF};
+\item finite-distribution min-entropy and injective conditioning;
+\item valuation recovery of semigroup coordinates;
+\item Schur products and entrywise exponential limits;
+\item elementary positive-orthant continuity for \cref{prop:Phi-sign}.
+\end{enumerate}
+This order isolates the core algebra from the analytic Loewner machinery and would already certify most of the new matrix/probability framework.
+
+\begin{thebibliography}{99}
+\raggedright
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} 56 (1944), 448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BFJ2015}
+R.~Bhatia, S.~Friedland, and T.~Jain,
+\newblock Inertia of Loewner matrices,
+\newblock arXiv:1501.01505, 2015.
+
+\bibitem{BustosButler2017}
+L.~A.~Butler,
+\newblock A Diophantine approach to the three and four exponentials conjectures,
+\newblock \emph{Ramanujan Journal} 42 (2017), 199--221.
+
+\bibitem{GaussianCobham2026}
+A.~Bustos-Gajardo, R.~Fokkink, and R.~Yassawi,
+\newblock Cobham's theorem for the Gaussian integers,
+\newblock arXiv:2510.01440v3, 8 August 2026.
+
+\bibitem{Dasgupta2023}
+S.~Dasgupta,
+\newblock Ranks of matrices of logarithms of algebraic numbers I: the theorems of Baker and Waldschmidt--Masser,
+\newblock arXiv:2303.02037, 2023.
+
+\bibitem{DasguptaKakde2026}
+S.~Dasgupta and M.~Kakde,
+\newblock Ranks of matrices of logarithms of algebraic numbers II: The Matrix Coefficient Conjecture,
+\newblock \emph{Advances in Mathematics} 487 (2026), article 110753;
+ arXiv:2408.08178.
+
+\bibitem{DoEtAl2026}
+V.~H.~Do, H.~H.~Nguyen, K.~H.~Phan, T.~Tran, and V.~H.~Vu,
+\newblock The anti-concentration phenomenon with respect to random permutations,
+\newblock arXiv:2512.21779v2, 20 March 2026.
+
+\bibitem{FitzGeraldHorn1977}
+C.~H.~FitzGerald and R.~A.~Horn,
+\newblock On fractional Hadamard powers of positive definite matrices,
+\newblock \emph{Journal of Mathematical Analysis and Applications} 61 (1977), 633--642.
+
+\bibitem{Gelfond1960}
+A.~O.~Gelfond,
+\newblock \emph{Transcendental and Algebraic Numbers},
+\newblock Dover, 1960.
+
+\bibitem{HornJohnson2013}
+R.~A.~Horn and C.~R.~Johnson,
+\newblock \emph{Matrix Analysis}, second edition,
+\newblock Cambridge University Press, 2013.
+
+\bibitem{Jain2020}
+T.~Jain,
+\newblock Hadamard powers of rank two, doubly nonnegative matrices,
+\newblock arXiv:2004.03909, 2020.
+
+\bibitem{Karlin1968}
+S.~Karlin,
+\newblock \emph{Total Positivity, Volume I},
+\newblock Stanford University Press, 1968.
+
+\bibitem{KhareJKS}
+A.~Khare,
+\newblock Multiply positive functions, critical exponent phenomena, and the Jain--Karlin--Schoenberg kernel,
+\newblock arXiv:2008.05121v2, 2021.
+
+\bibitem{Massold2025}
+H.~Massold,
+\newblock Transcendence degrees of fields generated by exponentials of products,
+\newblock arXiv:2506.01123, 2025.
+
+\bibitem{Newman1972}
+M.~Newman,
+\newblock \emph{Integral Matrices},
+\newblock Academic Press, 1972.
+
+\bibitem{Schoenberg1955}
+I.~J.~Schoenberg,
+\newblock On the zeros of the generating functions of multiply positive sequences and functions,
+\newblock \emph{Annals of Mathematics} 62 (1955), 447--471.
+
+\bibitem{Selberg1944}
+A.~Selberg,
+\newblock Bemerkninger om et multipelt integral,
+\newblock \emph{Norsk Matematisk Tidsskrift} 26 (1944), 71--78.
+
+\bibitem{UnifiedReport2026}
+\newblock \emph{The \AEconj{} Integer-Exponent Conjecture: Machine-Checked Partial Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+\newblock supplied unified report, source file
+\path{/Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex}, audited 21 August 2026.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Springer, 2000.
+
+\bibitem{WangStanley2017}
+Y.~Wang and R.~P.~Stanley,
+\newblock The Smith normal form distribution of a random integer matrix,
+\newblock \emph{SIAM Journal on Discrete Mathematics} 31 (2017), 2247--2268;
+ arXiv:1506.00160.
+
+\end{thebibliography}
+
+\end{document}
