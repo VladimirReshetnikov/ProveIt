@@ -1,5 +1,9 @@
 import FabiusFunction.Basic
 import FabiusFunction.DyadicCorrectness
+import FabiusFunction.MomentPowerSeries
+import FabiusFunction.NormalizedMoments
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.Calculus.Taylor
 import Mathlib.Analysis.Fourier.Inversion
 import Mathlib.Data.Nat.Choose.Lucas
@@ -67,10 +71,134 @@ noncomputable def globalFabius : ℝ → ℝ :=
 
 /-! ## Analytic and exact-arithmetic bridges -/
 
+/-- The differential equation makes the Fabius function monotone on its first half. -/
+theorem fabius_monotoneOn_firstHalf (F : BoundedFabius) (hF : IsFabius F) :
+    MonotoneOn (fabiusReal F) (Icc (0 : ℝ) (1 / 2)) := by
+  apply monotoneOn_of_deriv_nonneg (convex_Icc (0 : ℝ) (1 / 2))
+      hF.contDiff.continuous.continuousOn
+      (hF.contDiff.differentiable (by simp)).differentiableOn
+  intro x hx
+  rw [interior_Icc] at hx
+  rw [(hF.hasDerivAt x ⟨le_of_lt hx.1, le_of_lt hx.2⟩).deriv]
+  exact mul_nonneg (by norm_num) (fabiusReal_nonneg F (2 * x))
+
+/-- Symmetry transfers first-half monotonicity to the second half. -/
+theorem fabius_monotoneOn_secondHalf (F : BoundedFabius) (hF : IsFabius F) :
+    MonotoneOn (fabiusReal F) (Icc (1 / 2 : ℝ) 1) := by
+  intro x hx y hy hxy
+  have hreflectx : 1 - x ∈ Icc (0 : ℝ) (1 / 2) := by
+    constructor <;> linarith [hx.1, hx.2]
+  have hreflecty : 1 - y ∈ Icc (0 : ℝ) (1 / 2) := by
+    constructor <;> linarith [hy.1, hy.2]
+  have hmono := fabius_monotoneOn_firstHalf F hF hreflecty hreflectx (by linarith)
+  rw [hF.symmetry x ⟨by linarith [hx.1], hx.2⟩,
+    hF.symmetry y ⟨by linarith [hy.1], hy.2⟩] at hmono
+  linarith
+
 /-- The bounded/CDF Fabius function is monotone on all of `ℝ`. -/
 theorem fabius_monotone (F : BoundedFabius) (hF : IsFabius F) :
     Monotone (fabiusReal F) := by
-  sorry
+  intro x y hxy
+  by_cases hy0 : y ≤ 0
+  · rw [hF.zero_of_nonpos y hy0, hF.zero_of_nonpos x (hxy.trans hy0)]
+  by_cases hx0 : x ≤ 0
+  · rw [hF.zero_of_nonpos x hx0]
+    exact fabiusReal_nonneg F y
+  have hxpos : 0 < x := lt_of_not_ge hx0
+  by_cases hx1 : 1 ≤ x
+  · rw [hF.one_of_one_le x hx1, hF.one_of_one_le y (hx1.trans hxy)]
+  by_cases hy1 : 1 ≤ y
+  · rw [hF.one_of_one_le y hy1]
+    exact fabiusReal_le_one F x
+  have hxmem : x ∈ Icc (0 : ℝ) 1 := ⟨hxpos.le, le_of_not_ge hx1⟩
+  have hymem : y ∈ Icc (0 : ℝ) 1 :=
+    ⟨le_of_not_ge hy0, le_of_not_ge hy1⟩
+  by_cases hyhalf : y ≤ 1 / 2
+  · exact fabius_monotoneOn_firstHalf F hF
+      ⟨hxmem.1, hxy.trans hyhalf⟩ ⟨hymem.1, hyhalf⟩ hxy
+  by_cases hxhalf : 1 / 2 ≤ x
+  · exact fabius_monotoneOn_secondHalf F hF
+      ⟨hxhalf, hxmem.2⟩ ⟨le_of_not_ge hyhalf, hymem.2⟩ hxy
+  · exact (fabius_monotoneOn_firstHalf F hF
+        ⟨hxmem.1, le_of_not_ge hxhalf⟩ ⟨by norm_num, by norm_num⟩
+          (le_of_not_ge hxhalf)).trans
+      (fabius_monotoneOn_secondHalf F hF
+        ⟨by norm_num, by norm_num⟩ ⟨le_of_not_ge hyhalf, hymem.2⟩
+          (le_of_not_ge hyhalf))
+
+/-- A zero on the first half would force a zero at twice the argument. -/
+theorem fabius_zero_double (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx0 : 0 ≤ x) (hxhalf : x ≤ 1 / 2)
+    (hz : fabiusReal F x = 0) : fabiusReal F (2 * x) = 0 := by
+  have hmin : IsMinOn (fabiusReal F) Set.univ x := by
+    intro y hy
+    rw [hz]
+    exact fabiusReal_nonneg F y
+  have hderiv : deriv (fabiusReal F) x = 0 :=
+    (hmin.isLocalMin Filter.univ_mem).deriv_eq_zero
+  rw [(hF.hasDerivAt x ⟨hx0, hxhalf⟩).deriv] at hderiv
+  linarith
+
+private theorem index_le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ]
+      have hone : 1 ≤ 2 ^ n := Nat.one_le_two_pow
+      omega
+
+/-- The Fabius function is strictly positive at every positive argument. -/
+theorem fabius_pos_of_pos (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : 0 < x) : 0 < fabiusReal F x := by
+  by_contra hnot
+  have hz : fabiusReal F x = 0 :=
+    le_antisymm (le_of_not_gt hnot) (fabiusReal_nonneg F x)
+  obtain ⟨N, hN⟩ := exists_nat_gt ((1 / 2 : ℝ) / x)
+  have hNle : (N : ℝ) ≤ (2 : ℝ) ^ N := by
+    exact_mod_cast index_le_two_pow N
+  have hex : ∃ n : ℕ, (1 / 2 : ℝ) ≤ (2 : ℝ) ^ n * x := by
+    refine ⟨N, ?_⟩
+    have : (1 / 2 : ℝ) < (N : ℝ) * x := by
+      rw [div_lt_iff₀ hx] at hN
+      linarith
+    nlinarith
+  let n := Nat.find hex
+  have hnreach : (1 / 2 : ℝ) ≤ (2 : ℝ) ^ n * x := Nat.find_spec hex
+  have hzero_iter : ∀ m : ℕ, m ≤ n →
+      fabiusReal F ((2 : ℝ) ^ m * x) = 0 := by
+    intro m hm
+    induction m with
+    | zero => simpa using hz
+    | succ m ih =>
+        have hm_lt : m < n := by omega
+        have hnotreach : ¬ (1 / 2 : ℝ) ≤ (2 : ℝ) ^ m * x := by
+          intro hreach
+          exact (Nat.not_lt_of_ge (Nat.find_min' hex hreach)) hm_lt
+        have hxm_nonneg : 0 ≤ (2 : ℝ) ^ m * x := by positivity
+        have hxm_half : (2 : ℝ) ^ m * x ≤ 1 / 2 := le_of_not_ge hnotreach
+        have hdoubled := fabius_zero_double F hF hxm_nonneg hxm_half (ih (by omega))
+        simpa [pow_succ, mul_assoc, mul_comm, mul_left_comm] using hdoubled
+  have hhalf_le_zero := fabius_monotone F hF
+      (show (1 / 2 : ℝ) ≤ (2 : ℝ) ^ n * x from hnreach)
+  rw [hzero_iter n le_rfl] at hhalf_le_zero
+  have hhalf : fabiusReal F (1 / 2) = 1 / 2 := by
+    have hs := hF.symmetry (1 / 2) (by constructor <;> norm_num)
+    norm_num at hs ⊢
+    linarith
+  rw [hhalf] at hhalf_le_zero
+  norm_num at hhalf_le_zero
+
+/-- Values strictly left of one are strictly below one. -/
+theorem fabius_lt_one_of_lt_one (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x < 1) : fabiusReal F x < 1 := by
+  by_cases hx0 : x ≤ 0
+  · rw [hF.zero_of_nonpos x hx0]
+    norm_num
+  · have hmem : x ∈ Icc (0 : ℝ) 1 := ⟨le_of_not_ge hx0, hx.le⟩
+    have hpos : 0 < fabiusReal F (1 - x) :=
+      fabius_pos_of_pos F hF (by linarith)
+    rw [hF.symmetry x hmem] at hpos
+    linarith
 
 /-- Rvachev's function is smooth. -/
 theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
@@ -120,7 +248,20 @@ theorem support_rvachev_subset (F : BoundedFabius) (hF : IsFabius F) :
 /-- The topological support is exactly the compact interval `[-1,1]`. -/
 theorem tsupport_rvachev (F : BoundedFabius) (hF : IsFabius F) :
     tsupport (rvachevUp F) = Icc (-1 : ℝ) 1 := by
-  sorry
+  have hinterior : Ioo (-1 : ℝ) 1 ⊆ Function.support (rvachevUp F) := by
+    intro x hx
+    change rvachevUp F x ≠ 0
+    by_cases hx0 : x ≤ 0
+    · unfold rvachevUp
+      rw [if_pos hx0]
+      exact ne_of_gt (fabius_pos_of_pos F hF (by linarith [hx.1]))
+    · unfold rvachevUp
+      rw [if_neg hx0]
+      exact ne_of_gt (fabius_pos_of_pos F hF (by linarith [hx.2]))
+  apply Set.Subset.antisymm
+  · exact closure_minimal (support_rvachev_subset F hF) isClosed_Icc
+  · rw [← closure_Ioo (by norm_num : (-1 : ℝ) ≠ 1)]
+    exact closure_mono hinterior
 
 /-- Normalization of Rvachev's function. -/
 theorem rvachev_zero (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 := by
@@ -229,37 +370,6 @@ theorem moment_eq_integral (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) = momentIntegral F n := by
   sorry
 
-/-- Equation (9), the original recurrence before isolating `c_n`. -/
-theorem moment_original_recurrence (n : ℕ) :
-    ((2 * n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (2 * n) * moment n =
-      ∑ k ∈ range (n + 1),
-        (Nat.choose (2 * n + 1) (2 * k) : ℚ) * moment k := by
-  cases n with
-  | zero => norm_num
-  | succ n =>
-      rw [sum_range_succ]
-      have hsum :
-          (∑ k : Fin (n + 1),
-              (Nat.choose (2 * (n + 1) + 1) (2 * k.val) : ℚ) * moment k.val) =
-            ∑ k ∈ range (n + 1),
-              (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℚ) * moment k := by
-        simpa using (Fin.sum_univ_eq_sum_range
-          (fun k : ℕ =>
-            (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℚ) * moment k) (n + 1))
-      have hpow : (1 : ℚ) < 2 ^ (2 * (n + 1)) := by
-        exact one_lt_pow₀ (by norm_num) (by omega)
-      have hden : ((((2 * (n + 1) + 1 : ℕ) : ℚ) *
-          ((2 : ℚ) ^ (2 * (n + 1)) - 1))) ≠ 0 :=
-        mul_ne_zero (by positivity) (ne_of_gt (sub_pos.mpr hpow))
-      have hrec := (eq_div_iff hden).mp (moment_succ n)
-      rw [hsum] at hrec
-      have hchoose : Nat.choose (2 * (n + 1) + 1) (2 * (n + 1)) =
-          2 * (n + 1) + 1 := by
-        convert Nat.choose_succ_self_right (2 * (n + 1)) using 1
-      rw [hchoose]
-      push_cast at hrec ⊢
-      linear_combination hrec
-
 /-- Equation (21), whose integral form starts at `n = 1`. -/
 theorem halfMoment_eq_integral (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
@@ -288,11 +398,6 @@ theorem moment_halfIntegral_eq_rvachev_dyadic
     (∫ t in (0 : ℝ)..1, t ^ (2 * n) * rvachevUp F t) =
       (Nat.factorial (2 * n) : ℝ) * 2 ^ (2 * n + 1).choose 2 *
         rvachevUp F (1 - ((2 : ℝ) ^ (2 * n + 1))⁻¹) := by
-  sorry
-
-/-- The two exact definitions of `F(2⁻ⁿ)` agree. -/
-theorem fabiusAtInverseTwoPow_eq_halfMoment (n : ℕ) :
-    fabiusAtInverseTwoPow n = halfMomentFabiusValue n := by
   sorry
 
 /-- Equation (16), the odd inverse-power value in terms of `F_n`. -/
@@ -378,12 +483,45 @@ theorem fabiusDyadicUnit_eq_fabiusDyadic (n a : ℕ) (ha : a ≤ 2 ^ n) :
     fabiusDyadicUnit n a = fabiusDyadic n a := by
   sorry
 
+/-- Equation (32) really evaluates the bounded Fabius function on its dyadic grid. -/
+theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) (ha : a ≤ 2 ^ n) :
+    (fabiusDyadic n a : ℝ) = fabiusReal F (a / (2 : ℝ) ^ n) := by
+  sorry
+
+/-- Equation (32) on its full `[0,2]` range, using the signed extension. -/
+theorem fabiusDyadic_cast_extended (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) :
+    (fabiusDyadic n a : ℝ) =
+      extendedFabius F (a / (2 : ℝ) ^ n) := by
+  sorry
+
 /-- The total signed-numerator evaluator computes the bounded Fabius function. -/
 theorem fabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (a : ℤ) :
     (fabiusDyadicValue n a : ℝ) =
       fabiusReal F ((a : ℝ) / (2 : ℝ) ^ n) := by
-  sorry
+  by_cases ha : a ≤ 0
+  · rw [fabiusDyadicValue_of_nonpos n a ha]
+    norm_num
+    apply (hF.zero_of_nonpos _ ?_).symm
+    exact div_nonpos_of_nonpos_of_nonneg (by exact_mod_cast ha) (by positivity)
+  · have hapos : 0 < a := lt_of_not_ge ha
+    by_cases hge : (2 ^ n : ℤ) ≤ a
+    · rw [fabiusDyadicValue_of_ge n a hge]
+      norm_num
+      apply (hF.one_of_one_le _ ?_).symm
+      rw [le_div_iff₀' (by positivity : (0 : ℝ) < 2 ^ n)]
+      norm_num at hge ⊢
+      exact_mod_cast hge
+    · rw [fabiusDyadicValue, if_neg ha]
+      have htoNat : (a.toNat : ℤ) = a := Int.toNat_of_nonneg hapos.le
+      have hbound : a.toNat ≤ 2 ^ n := by
+        exact ((Int.toNat_lt hapos.le).2 (lt_of_not_ge hge)).le
+      rw [fabiusDyadicUnit_eq_fabiusDyadic n a.toNat hbound,
+        fabiusDyadic_cast F hF n a.toNat hbound]
+      congr 1
+      rw [show (a.toNat : ℝ) = (a : ℝ) by exact_mod_cast htoNat]
 
 /-- The analogous exact evaluator computes the paper's signed global extension. -/
 theorem extendedFabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
@@ -396,14 +534,48 @@ theorem extendedFabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
 theorem evalFabiusDyadic_eq_some_correct (F : BoundedFabius) (hF : IsFabius F)
     (x value : ℚ) (hvalue : evalFabiusDyadic x = some value) :
     (value : ℝ) = fabiusReal F (x : ℝ) := by
-  sorry
+  unfold evalFabiusDyadic at hvalue
+  split at hvalue
+  · simp at hvalue
+  · rename_i exponent hexponent
+    injection hvalue with hvalue
+    subst value
+    have hden : x.den = 2 ^ exponent := by
+      unfold dyadicExponent? at hexponent
+      dsimp only at hexponent
+      split at hexponent
+      · rename_i h
+        injection hexponent with he
+        simpa [he] using h
+      · simp at hexponent
+    rw [fabiusDyadicValue_cast F hF]
+    congr 1
+    rw [Rat.cast_def, hden]
+    norm_num
 
 /-- A successful rational-input evaluation has the correct global value. -/
 theorem evalExtendedFabiusDyadic_eq_some_correct
     (F : BoundedFabius) (hF : IsFabius F)
     (x value : ℚ) (hvalue : evalExtendedFabiusDyadic x = some value) :
     (value : ℝ) = extendedFabius F (x : ℝ) := by
-  sorry
+  unfold evalExtendedFabiusDyadic at hvalue
+  split at hvalue
+  · simp at hvalue
+  · rename_i exponent hexponent
+    injection hvalue with hvalue
+    subst value
+    have hden : x.den = 2 ^ exponent := by
+      unfold dyadicExponent? at hexponent
+      dsimp only at hexponent
+      split at hexponent
+      · rename_i h
+        injection hexponent with he
+        simpa [he] using h
+      · simp at hexponent
+    rw [extendedFabiusDyadicValue_cast F hF]
+    congr 1
+    rw [Rat.cast_def, hden]
+    norm_num
 
 /--
 Every dyadic rational has an explicitly computed rational value equal to the
@@ -421,19 +593,6 @@ theorem evalFabiusDyadic_complete_correct
     simp [evalFabiusDyadic, hexponent, value]
   exact ⟨value, hvalue, evalFabiusDyadic_eq_some_correct F hF x value hvalue⟩
 
-/-- Equation (32) really evaluates the bounded Fabius function on its dyadic grid. -/
-theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
-    (n a : ℕ) (ha : a ≤ 2 ^ n) :
-    (fabiusDyadic n a : ℝ) = fabiusReal F (a / (2 : ℝ) ^ n) := by
-  sorry
-
-/-- Equation (32) on its full `[0,2]` range, using the signed extension. -/
-theorem fabiusDyadic_cast_extended (F : BoundedFabius) (hF : IsFabius F)
-    (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) :
-    (fabiusDyadic n a : ℝ) =
-      extendedFabius F (a / (2 : ℝ) ^ n) := by
-  sorry
-
 /-- The integer-numerator exact evaluator agrees with Rvachev's function on its support. -/
 theorem rvachevDyadic_cast (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (a : ℤ)
     (ha : a.natAbs ≤ 2 ^ n) :
@@ -443,7 +602,45 @@ theorem rvachevDyadic_cast (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (a : 
 /-- The Fabius-grid and Rvachev-grid descriptions of Definition 12 agree. -/
 theorem dyadicDenominator_eq_fabiusDyadicDenominator (n : ℕ) :
     dyadicDenominator n = fabiusDyadicDenominator n := by
-  sorry
+  cases n with
+  | zero => simp [dyadicDenominator, fabiusDyadicDenominator,
+      oddDyadicNumerators]
+  | succ n =>
+      apply Nat.dvd_antisymm
+      · unfold dyadicDenominator fabiusDyadicDenominator
+        apply Finset.lcm_dvd
+        intro a ha
+        have ha_filter := (mem_filter.mp (show
+          a ∈ (Finset.Icc 1 (2 ^ (n + 1) - 1)).filter Odd by
+            simpa [oddDyadicNumerators] using ha))
+        have ha_bounds := Finset.mem_Icc.mp ha_filter.1
+        have hascale : a ≤ 2 ^ (n + 1) := by omega
+        have hreflect : 2 ^ (n + 1) - a ∈ oddDyadicNumerators (n + 1) :=
+          oddDyadicNumerators_reflect_mem (n + 1) a (by omega) ha
+        rw [rvachevDyadic, if_pos]
+        · exact Finset.dvd_lcm hreflect
+        · simpa using hascale
+      · unfold dyadicDenominator fabiusDyadicDenominator
+        apply Finset.lcm_dvd
+        intro a ha
+        have ha_filter := (mem_filter.mp (show
+          a ∈ (Finset.Icc 1 (2 ^ (n + 1) - 1)).filter Odd by
+            simpa [oddDyadicNumerators] using ha))
+        have ha_bounds := Finset.mem_Icc.mp ha_filter.1
+        let b := 2 ^ (n + 1) - a
+        have hbmem : b ∈ oddDyadicNumerators (n + 1) :=
+          oddDyadicNumerators_reflect_mem (n + 1) a (by omega) ha
+        have hbscale : b ≤ 2 ^ (n + 1) := by
+          dsimp [b]
+          omega
+        have hba : 2 ^ (n + 1) - b = a := by
+          dsimp [b]
+          omega
+        have hdvd := Finset.dvd_lcm (f := fun c : ℕ =>
+          (rvachevDyadic (n + 1) c).den) hbmem
+        rw [rvachevDyadic, if_pos] at hdvd
+        · simpa [b, hba] using hdvd
+        · simpa using hbscale
 
 /-- The exact `R_n` is the paper's analytic expression after coercion to `ℝ`. -/
 theorem reshetnikov_cast (F : BoundedFabius) (hF : IsFabius F)
@@ -451,7 +648,11 @@ theorem reshetnikov_cast (F : BoundedFabius) (hF : IsFabius F)
     (reshetnikov n : ℝ) =
       (2 : ℝ) ^ (n - 1).choose 2 * (Nat.factorial (2 * n) : ℝ) *
         fabiusReal F (((2 : ℝ) ^ n)⁻¹) * evenMersenneProduct (n / 2) := by
-  sorry
+  unfold reshetnikov fabiusAtInverseTwoPow
+  push_cast
+  rw [fabiusDyadic_cast F hF n 1 Nat.one_le_two_pow]
+  congr 3
+  norm_num
 
 /-! ## Numbered results -/
 
@@ -484,14 +685,14 @@ theorem proposition_three (n : ℕ) :
     halfMoment n =
       (∑ k ∈ range (n / 2 + 1),
         (Nat.choose n (2 * k) : ℚ) * moment k) / (2 : ℚ) ^ n := by
-  sorry
+  exact halfMoment_eq_evenMomentSum n
 
 /-- Proposition 4: the natural normalization `G_n` of the half moments. -/
 theorem proposition_four (n : ℕ) :
     halfMoment n =
       (halfMomentNumerator n : ℚ) /
         (((n + 1).factorial * mersenneProduct n : ℕ) : ℚ) := by
-  sorry
+  exact halfMoment_eq_halfMomentNumerator n
 
 /-- Question 5 (Reshetnikov), subsequently answered by Theorem 9. -/
 def reshetnikovQuestion : Prop :=
@@ -501,7 +702,19 @@ def reshetnikovQuestion : Prop :=
 theorem proposition_six (n : ℕ) (hn : 1 ≤ n) :
     reshetnikov n =
       2 * halfMoment n * oddDoubleFactorial n * evenMersenneProduct (n / 2) := by
-  sorry
+  rw [reshetnikov, fabiusAtInverseTwoPow_eq_halfMoment,
+    halfMomentFabiusValue, factorial_two_mul_eq]
+  have hexp : (n - 1).choose 2 + n = n.choose 2 + 1 := by
+    obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+    rw [show 1 + m - 1 = m by omega]
+    rw [show 1 + m = m + 1 by omega]
+    rw [show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
+    simp [Nat.choose_one_right]
+    omega
+  push_cast
+  field_simp
+  rw [← pow_add, hexp, pow_succ]
+  ring
 
 /-- Theorem 7: the exact odd-index formula, hence divisibility by `F_n`. -/
 theorem theorem_seven (n : ℕ) :
@@ -582,7 +795,17 @@ theorem theorem_thirteen_denominator_bound (n : ℕ) (hn : 1 ≤ n) :
 /-- Proposition 15: the denominator at `2⁻ⁿ` divides the common denominator. -/
 theorem proposition_fifteen (n : ℕ) :
     (halfMomentFabiusValue n).den ∣ dyadicDenominator n := by
-  sorry
+  rw [dyadicDenominator_eq_fabiusDyadicDenominator]
+  by_cases hn : n = 0
+  · subst n
+    norm_num [halfMomentFabiusValue, fabiusDyadicDenominator]
+  · rw [← fabiusAtInverseTwoPow_eq_halfMoment]
+    unfold fabiusAtInverseTwoPow fabiusDyadicDenominator
+    apply Finset.dvd_lcm
+    have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    have hpow : 1 < 2 ^ n := one_lt_pow₀ (by omega) hn
+    have hone : 1 ≤ 2 ^ n - 1 := by omega
+    simp [oddDyadicNumerators, hone]
 
 /--
 Conjecture 16.  Natural divisibility is expressed through an explicit natural
@@ -604,7 +827,8 @@ theorem theorem_seventeen (p n k a : ℕ) (hp : p.Prime)
     Nat.ModEq p (Nat.choose n k)
       (∏ i ∈ range (a + 1),
         Nat.choose (n / p ^ i % p) (k / p ^ i % p)) := by
-  sorry
+  letI : Fact (Nat.Prime p) := ⟨hp⟩
+  exact Choose.lucas_theorem_nat hn hk
 
 /-- Proposition 18: counts of the odd binomial coefficients in the two ranges. -/
 theorem proposition_eighteen (n : ℕ) (hn : 1 ≤ n) :

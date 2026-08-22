@@ -48,6 +48,18 @@ def mersenneIntervalProduct (a b : ℕ) : ℕ :=
 def oddDoubleFactorial (n : ℕ) : ℕ :=
   ∏ k ∈ range n, (2 * k + 1)
 
+/-- Split `(2n)!` into its even and odd factors. -/
+theorem factorial_two_mul_eq (n : ℕ) :
+    (2 * n).factorial = 2 ^ n * n.factorial * oddDoubleFactorial n := by
+  induction n with
+  | zero => simp [oddDoubleFactorial]
+  | succ n ih =>
+      rw [show 2 * (n + 1) = (2 * n + 1) + 1 by omega,
+        Nat.factorial_succ (2 * n + 1), Nat.factorial_succ (2 * n), ih,
+        pow_succ, Nat.factorial_succ n]
+      simp only [oddDoubleFactorial, Finset.prod_range_succ]
+      ring
+
 /-- The product `∏_{k=1}^n (2^k - 1)`. -/
 def mersenneProduct (n : ℕ) : ℕ :=
   ∏ k ∈ range n, (2 ^ (k + 1) - 1)
@@ -368,6 +380,19 @@ def rvachevDyadic (n : ℕ) (a : ℤ) : ℚ :=
 /-- The positive odd numerators at dyadic level `n`. -/
 def oddDyadicNumerators (n : ℕ) : Finset ℕ :=
   (Icc 1 (2 ^ n - 1)).filter Odd
+
+/-- Reflection about the midpoint permutes the positive odd dyadic grid. -/
+theorem oddDyadicNumerators_reflect_mem (n a : ℕ) (hn : 1 ≤ n)
+    (ha : a ∈ oddDyadicNumerators n) :
+    2 ^ n - a ∈ oddDyadicNumerators n := by
+  have ha_filter := (mem_filter.mp (show
+    a ∈ (Icc 1 (2 ^ n - 1)).filter Odd by simpa [oddDyadicNumerators] using ha))
+  have ha_bounds := Finset.mem_Icc.mp ha_filter.1
+  have haodd := ha_filter.2
+  rw [oddDyadicNumerators, mem_filter, Finset.mem_Icc]
+  refine ⟨⟨by omega, by omega⟩, ?_⟩
+  apply Nat.Even.sub_odd (by omega) _ haodd
+  exact Nat.even_pow.mpr ⟨even_two, by omega⟩
 
 /-- The equivalent LCM formed from bounded Fabius values on the odd grid. -/
 def fabiusDyadicDenominator (n : ℕ) : ℕ :=
