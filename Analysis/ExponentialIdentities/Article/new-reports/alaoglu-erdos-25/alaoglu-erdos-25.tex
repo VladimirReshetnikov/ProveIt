@@ -1,0 +1,1432 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{needspace}
+\usepackage[most]{tcolorbox}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!35!black,
+  urlcolor=blue!60!black,
+  pdftitle={The Alaoglu--Erdos Conjecture at Weight Two},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\setlist{nosep,leftmargin=2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s at weight two}
+\fancyhead[R]{August 21, 2026}
+\fancyfoot[C]{\thepage\ of \pageref{LastPage}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Audit warning}
+
+\definecolor{provedbg}{RGB}{235,247,238}
+\definecolor{compbg}{RGB}{238,244,252}
+\definecolor{openbg}{RGB}{253,242,234}
+\newtcolorbox{provedbox}{
+  enhanced,breakable,colback=provedbg,colframe=green!35!black,
+  boxrule=0.55pt,arc=1.2mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  before upper={\textbf{PROVED.}\par\smallskip}
+}
+\newtcolorbox{compbox}{
+  enhanced,breakable,colback=compbg,colframe=blue!35!black,
+  boxrule=0.55pt,arc=1.2mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  before upper={\textbf{COMPUTATION.}\par\smallskip}
+}
+\newtcolorbox{conditionalbox}{
+  enhanced,breakable,colback=openbg,colframe=orange!55!black,
+  boxrule=0.55pt,arc=1.2mm,left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  before upper={\textbf{OPEN / CONDITIONAL.}\par\smallskip}
+}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\val}{\boldsymbol\nu}
+\newcommand{\height}{h}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Kc}{\mathcal C}
+\newcommand{\Vdef}{\mathcal V}
+\newcommand{\odotQ}{\mathbin{\odot}}
+\newcommand{\sha}[1]{\texttt{#1}}
+
+\lstdefinestyle{shell}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{black!2},
+  showstringspaces=false
+}
+
+\title{\textbf{The Alaoglu--Erd\H{o}s Conjecture at Weight Two}\\[0.35em]
+\large A Pad\'e Height Audit, Rational-Transfer No-Go Theorems,\\
+and a Directed-Rounding Extension through $2^{29}$}
+\author{Prepared for Vladimir Reshetnikov\\
+\small A nonduplicative continuation of the supplied unified report}
+\date{August 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $x\in\R$ and suppose that $2^x$ and $3^x$ are integers.  The Alaoglu--Erd\H{o}s
+conjecture asserts that $x$ is an integer.  The supplied 327-page unified report already
+reduces a hypothetical counterexample to an exact rank-two monoid, develops many determinant,
+valuation, dynamical, matrix, and operator formulations, and identifies the remaining wall as
+an unproved weight-two relation between logarithms.  This report does not repeat that material.
+
+The full conjecture is not proved here.  Instead, the report gives a new and fairly sharp audit
+of the most relevant post-report development: Kawashima's May 2026 Pad\'e criterion for products
+of polylogarithms.  The central new theorem is a representation-independent upper bound for
+Kawashima's height defect.  It shows that a successful weight-two specialization requires the
+polylogarithm arguments to have almost maximal \emph{arithmetic efficiency}: their local
+smallness must be within a factor $1-1/(m+1)^2$ of their average global height.  This one
+inequality rigorously rules out the direct prime-logarithm points, high-root splitting,
+ordinary telescoping decompositions, and every unbounded construction inside a fixed
+$S$-unit group.
+
+A second new theorem goes further.  At rational points, Kawashima's criterion is incompatible
+with having even $\log 2$ in the rational span of the resulting logarithms.  The proof combines
+the height-defect bound with a Cramer/Hadamard bound on a prime-valuation matrix.  A tensor-rank
+corollary rules out the corresponding formal quadratic transfer of the entire
+Alaoglu--Erd\H{o}s relation.  Thus the current Pad\'e theorem cannot settle the conjecture by
+any rational-point encoding of the natural kind; a successful continuation must exploit a
+genuinely new mixed-denominator or mixed-embedding cancellation mechanism.
+
+Finally, the exact MPFR verifier reproduced in the supplied report was rerun, without source
+changes, on the two new bit ranges $[2^{27},2^{28})$ and $[2^{28},2^{29})$.  All
+$402{,}653{,}182$ non-powers of two were separated from the nearest integer by directed
+logarithmic inequalities.  At the stated software trust level this extends the finite
+exclusion to $2^x<2^{29}$, so any nonintegral counterexample must satisfy $x>29$.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Executive verdict and claim ledger}
+
+\begin{conditionalbox}
+The requested unconditional proof was not obtained.  As of the literature check performed for
+this report, the problem remains an open special case of the Four Exponentials Conjecture
+\cite{MOAE}.  No
+step below is promoted from conditional or computational status to theorem status merely to
+produce a desired conclusion.
+\end{conditionalbox}
+
+The work nevertheless changes the technical picture in three concrete ways.
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item It extracts from Kawashima's criterion an intrinsic, representation-free obstruction
+      (\Cref{thm:projective-defect}) and turns it into an arithmetic-efficiency threshold.
+\item It proves that the entire rational-point transfer strategy is impossible under that
+      criterion (\Cref{thm:rational-transfer,cor:quadratic-transfer}), not merely that several
+      obvious choices of a common denominator fail.
+\item It extends the independent finite scan by two full bits, from $2^{27}$ to $2^{29}$
+      (\Cref{sec:scan}).
+\end{enumerate}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}
+                                  >{\raggedright\arraybackslash}p{0.16\textwidth}X@{}}
+\toprule
+Statement & Status & Logical role \\
+\midrule
+Projective Pad\'e defect bound & Proved & Necessary condition for every specialization of Kawashima's weight-two criterion. \\
+Arithmetic-efficiency threshold & Proved & Quantifies the exact high-efficiency region reached by the present theorem. \\
+Direct, radical, and telescoping encodings fail & Proved & Eliminates the most natural representations of integer logarithms. \\
+Rational-span transfer impossibility & Proved & Shows that no rational specialization satisfying the criterion can even span $\log 2$. \\
+Formal quadratic-transfer impossibility & Proved & Extends the preceding no-go from factor-by-factor substitutions to the natural prime-valuation tensor of a counterexample. \\
+Fixed-$S$ exceptional finiteness & Proved from published effective $S$-unit approximation & Any fixed multiplicative group supplies at most effectively many candidate Pad\'e tuples. \\
+Near-unit unimodular form & Proved & Converts a counterexample into infinitely many exact determinant zeros near $1$, but in the low-efficiency regime. \\
+Scan through $2^{29}$ & Directed-rounding computation & Excludes nonintegral $x\le 29$ at a disclosed software trust boundary. \\
+Full Alaoglu--Erd\H{o}s conjecture & Open & Still requires a genuinely new weight-two transcendence theorem. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Scope: what is imported and what is not repeated}
+
+Write
+\[
+  M=2^x,\qquad A=3^x.
+\]
+The supplied unified report is taken as the source for the following previously established
+facts and constructions:
+
+\begin{itemize}
+\item rational $x$ is automatically integral, while a nonintegral solution is transcendental;
+\item a counterexample gives the exact determinant relation
+\begin{equation}\label{eq:wall}
+   \log M\,\log 3-\log A\,\log 2=0;
+\end{equation}
+\item conditional on one counterexample, all solutions form the free additive monoid
+      $\{n+k\beta:n,k\ge0\}$ for a unique least nonintegral generator $\beta$;
+\item the corresponding output pairs form the free multiplicative monoid generated by
+      $(2,3)$ and $(M,A)$;
+\item the ordinary Four Exponentials Conjecture implies the desired conclusion, whereas the
+      Six Exponentials Theorem does not close the two-by-two case;
+\item the two outputs of a nonintegral solution cannot both be $3$-smooth;
+\item the existing directed-rounding audit covers $2^x<2^{27}$.
+\end{itemize}
+
+The long determinant, valuation, Sturmian, matrix, operator, and formalization developments of
+the supplied report are not copied.  Only the minimal statements needed to connect the new
+Pad\'e analysis to the original problem are restated.
+
+\section{The exact weight-two object}
+
+\subsection{Prime-valuation form}
+
+Let $\mathcal P$ be the set of rational primes and let
+\[
+  E=\Q^{(\mathcal P)}
+\]
+be the finite-support rational vector space with basis $(e_p)_{p\in\mathcal P}$.  For a
+positive rational number $r$, write
+\[
+  \val(r)=(v_p(r))_{p\in\mathcal P}\in E,
+  \qquad
+  \lambda(y)=\sum_p y_p\log p.
+\]
+Unique factorization gives an elementary but important fact:
+\begin{equation}\label{eq:lambda-inj}
+  \lambda:E\longrightarrow\R\quad\text{is injective as a $\Q$-linear map.}
+\end{equation}
+Indeed, after clearing denominators, $\lambda(y)=0$ says that a positive rational number is
+$1$.
+
+Put
+\[
+  u=\val(M),\qquad v=\val(A),\qquad a=e_2,\qquad b=e_3.
+\]
+Then \eqref{eq:wall} is the vanishing at the point $\lambda$ of the rational symmetric tensor
+\begin{equation}\label{eq:tensor}
+  T=u\odotQ b-v\odotQ a\in\operatorname{Sym}^2(E),
+  \qquad y\odotQ z:=\frac{y\otimes z+z\otimes y}{2}.
+\end{equation}
+This is the exact weight-two object to which a product-of-logarithms theorem must apply.
+
+\subsection{Rank of the counterexample tensor}
+
+The following elementary rank audit will be used later to prevent a hidden low-dimensional
+escape in a formal Pad\'e transfer.
+
+\begin{lemma}[Full range on the support span]\label{lem:tensor-rank}
+Assume that $(M,A)$ comes from a nonintegral counterexample.  Let
+\[
+  S=\Span_\Q\{u,v,a,b\}.
+\]
+Then $\dim S\ge3$, the tensor $T$ of \eqref{eq:tensor} has rank $\dim S$, and consequently
+its contraction range is exactly $S$.
+\end{lemma}
+
+\begin{proof}
+If $\dim S=2$, then $u$ and $v$ lie in $\Span\{e_2,e_3\}$, so both $M$ and $A$ are
+$3$-smooth.  This is excluded by the three-base/Six Exponentials consequence proved in the
+supplied report.
+
+If $\dim S=4$, use the four independent linear forms $u,b,v,a$ as coordinates on $S^*$.
+The quadratic form associated with $T$ is
+\[
+  X_1X_2-X_3X_4,
+\]
+whose matrix is the direct sum of two nondegenerate hyperbolic planes.  Its rank is $4$.
+
+Suppose $\dim S=3$.  The rank is at most $3$, and $T\ne0$: equality $u\odotQ b=v\odotQ a$
+would force the two supporting planes to coincide, hence $\dim S\le2$.  If the rank were $1$,
+the rational quadratic form would have the shape $c\,\xi(r)^2$ with $c\in\Q^\times$ and
+$0\ne r\in S$.  Evaluating at $\lambda$ and using \eqref{eq:wall} would give
+$\lambda(r)=0$, contrary to \eqref{eq:lambda-inj}.
+
+It remains to exclude rank $2$.  The vectors $u,v$ are independent: otherwise
+$\log M/\log A$ would be rational, whereas it equals $\log2/\log3$.  The vectors $a,b$ are
+also independent.  Hence the annihilators of $\Span\{u,v\}$ and $\Span\{a,b\}$ are two
+distinct rational isotropic lines.  The radical of a rank-two form on a three-dimensional
+space is only one-dimensional, so at least one of these isotropic lines is nonradical.  The
+rank-two quotient is therefore a rational hyperbolic plane, and the form factors as
+\[
+  q_T(\xi)=c\,\xi(r)\xi(s)
+\]
+with $c\in\Q^\times$ and nonzero $r,s\in S$.  Evaluating at $\lambda$ gives
+$\lambda(r)\lambda(s)=0$.  Injectivity \eqref{eq:lambda-inj} again yields a contradiction.
+Thus the rank is $3$.
+
+In either possible dimension, rank equals $\dim S$, so the range is all of $S$.
+\end{proof}
+
+\section{The 2024--2026 frontier}
+
+Three recent developments are especially close to the remaining wall.
+
+\paragraph{Matrix coefficients.}
+Dasgupta and Kakde formulate the Matrix Coefficient Conjecture for matrices of complex or
+$p$-adic logarithms.  In size two it contains the Four Exponentials problem rather than
+solving it: a zero determinant should become a zero coefficient after rational changes of
+basis.  Their work clarifies the algebraic shape of the obstruction, but the required
+coefficient theorem remains conjectural in the present case \cite{DasguptaKakde2026}.
+
+\paragraph{Arithmetic holonomy.}
+Calegari, Dimitrov, and Tang prove strong arithmetic-holonomy bounds and, among other
+applications, prove the $\Q$-linear independence of
+\[
+  1,\quad \log\!\left(1+\frac1m\right),\quad
+  \log\!\left(1+\frac1n\right),\quad
+  \log\!\left(1+\frac1m\right)\log\!\left(1+\frac1n\right)
+\]
+when $m/n$ is sufficiently close to $1$ and $m\ne n$ \cite{CDTProducts}.  The same authors'
+effective approximation theorem gives a uniform height bound for solutions of
+$|1-A\gamma|_v\le H(\gamma)^{-\varepsilon}$ in a fixed finitely generated multiplicative
+group \cite{CDTHolonomy}.  These are real advances at weight two, but their proven product
+case lies on the special unit-gap locus $(m+1)/m$.
+
+\paragraph{Products of polylogarithms.}
+Kawashima proves a new Pad\'e criterion for linear independence of products of
+polylogarithms at distinct algebraic points \cite{Kawashima2026}.  Since
+\[
+  \Li_1(z)=-\log(1-z),
+\]
+this is the first theorem in the new literature whose conclusion directly contains mixed
+products of logarithms at many points.  The rest of this report audits exactly how far its
+height hypothesis reaches toward \eqref{eq:wall}.
+
+\section{Kawashima's weight-two defect}
+
+Let $K$ be a number field, $v$ a place, $m\ge1$, and
+$\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_m)\in(K^\times)^m$ with pairwise distinct
+coordinates.  Put
+\[
+  \D_m=(m+1)^2-1=m^2+2m
+\]
+and
+\begin{equation}\label{eq:Cm}
+  \Kc_m=\D_m\log2+3\log(m+1)+2+2\D_m.
+\end{equation}
+For $\beta\in K$ satisfying $|\beta|_v>H_v(\boldsymbol\alpha)$, Kawashima's weight-two defect
+is
+\begin{align}\label{eq:Kdefect}
+ \Vdef_v(\boldsymbol\alpha,\beta)
+  ={}&(\D_m+1)h_v(\beta)-h_v(\boldsymbol\alpha)\\
+    &-\D_m\left(h(\beta)+\frac1m\sum_{i=1}^m h(\alpha_i)
+                     +h(\boldsymbol\alpha)\right)-\Kc_m.\notag
+\end{align}
+If this number is positive, then $1$ together with all products of polylogarithms of total
+weight at most two at the points $\alpha_i/\beta$ is linearly independent over $K$.
+In particular, all numbers
+\[
+  1,\qquad \Li_1(\alpha_i/\beta),\qquad
+  \Li_1(\alpha_i/\beta)\Li_1(\alpha_j/\beta)
+\]
+are linearly independent over $K$.
+
+The formula \eqref{eq:Kdefect} looks representation-dependent: the same points
+$z_i=\alpha_i/\beta$ admit many common scalings.  The next theorem removes that ambiguity by
+bounding the defect only in terms of the points themselves.
+
+\section{A representation-independent Pad\'e obstruction}
+
+\subsection{The projective defect theorem}
+
+\begin{theorem}[Projective height-defect bound]\label{thm:projective-defect}
+Keep the notation above and put
+\[
+  z_i=\frac{\alpha_i}{\beta},\qquad
+  a_v(\mathbf z)=-\log\max_i|z_i|_v,
+  \qquad
+  \overline h(\mathbf z)=\frac1m\sum_{i=1}^m h(z_i).
+\]
+Then $a_v(\mathbf z)>0$ and
+\begin{equation}\label{eq:projective-bound}
+  \boxed{\quad
+  \Vdef_v(\boldsymbol\alpha,\beta)
+  \le (\D_m+1)a_v(\mathbf z)-\D_m\overline h(\mathbf z)-\Kc_m.
+  \quad}
+\end{equation}
+The right-hand side is independent of the choice of common numerator and denominator.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ t=h_v(\beta)=\log|\beta|_v,
+ \qquad A=h_v(\boldsymbol\alpha).
+\]
+The strict size hypothesis implies $|\beta|_v>1$.  Since
+$\max_i|\alpha_i|_v=|\beta|_v\max_i|z_i|_v$, we have
+\begin{equation}\label{eq:Ata}
+  A=\max\{0,t-a_v(\mathbf z)\}.
+\end{equation}
+Set
+\[
+ H=h(\beta),\qquad X=\frac1m\sum_i h(\alpha_i),\qquad
+ Y=h(\boldsymbol\alpha),\qquad P=\overline h(\mathbf z).
+\]
+The elementary height inequality $h(\alpha_i/\beta)\le h(\alpha_i)+h(\beta)$ gives
+$P\le X+H$.  Also $H\ge t$ and $Y\ge A$.  Therefore
+\begin{equation}\label{eq:HXY}
+  H+X+Y\ge \max\{t,P\}+A.
+\end{equation}
+Substituting \eqref{eq:HXY} into \eqref{eq:Kdefect} yields
+\begin{equation}\label{eq:piecewise}
+ \Vdef_v\le
+ (\D_m+1)t-(\D_m+1)\max\{0,t-a_v\}
+ -\D_m\max\{t,P\}-\Kc_m.
+\end{equation}
+Finally,
+\[
+ h(z_i)=h(z_i^{-1})\ge h_v(z_i^{-1})=-\log|z_i|_v,
+\]
+so $P\ge a_v$.  The piecewise-linear expression in \eqref{eq:piecewise} is then maximized
+for any $t$ in the interval between $a_v$ and $P$, where its value is
+$(\D_m+1)a_v-\D_mP-\Kc_m$.  This proves \eqref{eq:projective-bound}.
+\end{proof}
+
+\begin{provedbox}
+\Cref{thm:projective-defect} is the main new analytic theorem of this report.  It applies at
+archimedean and nonarchimedean places, over arbitrary number fields, and optimizes the local scaling variable in the universal projective bound over every
+common scaling of $(\boldsymbol\alpha,\beta)$.
+\end{provedbox}
+
+\subsection{Arithmetic efficiency}
+
+\begin{definition}
+For a tuple with $|z_i|_v<1$, define its arithmetic efficiency at $v$ by
+\[
+  \eta_v(\mathbf z)=\frac{a_v(\mathbf z)}{\overline h(\mathbf z)}\in(0,1].
+\]
+\end{definition}
+
+\begin{corollary}[Efficiency and depth thresholds]\label{cor:efficiency}
+If $\Vdef_v(\boldsymbol\alpha,\beta)>0$, then
+\begin{align}
+  a_v(\mathbf z)&>\Kc_m,\label{eq:depth}\\
+  \eta_v(\mathbf z)&>\frac{\D_m}{\D_m+1}
+      =1-\frac1{(m+1)^2},\label{eq:eta}\\
+  \overline h(\mathbf z)&<\left(1+\frac1{\D_m}\right)a_v(\mathbf z).
+  \label{eq:Pupper}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Since $\overline h\ge a_v$, positivity in \eqref{eq:projective-bound} first gives
+$a_v>\Kc_m$.  Dropping the positive constant from the same inequality gives
+$(\D_m+1)a_v>\D_m\overline h$, which is \eqref{eq:eta}; rearrangement gives
+\eqref{eq:Pupper}.
+\end{proof}
+
+The numerical severity is visible immediately.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $\D_m$ & $\Kc_m$ & $e^{-\Kc_m}$ & required $\eta_v$ \\
+\midrule
+1 & 3  & 12.158883 & $5.24\times10^{-6}$  & $>0.750000$ \\
+2 & 8  & 26.841014 & $2.20\times10^{-12}$ & $>0.888889$ \\
+3 & 15 & 46.556091 & $6.04\times10^{-21}$ & $>0.937500$ \\
+4 & 24 & 71.463846 & $9.20\times10^{-32}$ & $>0.960000$ \\
+5 & 35 & 101.635430& $7.25\times10^{-45}$ & $>0.972222$ \\
+6 & 48 & 137.108795& $2.85\times10^{-60}$ & $>0.979592$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus ``make all points small'' is not enough.  Their local smallness must consume almost all
+of their global arithmetic height.
+
+\subsection{Exact scaling loss for integral presentations}
+
+\begin{proposition}[Common scaling is strictly harmful]\label{prop:scaling}
+Let $K=\Q$, $v=\infty$, and let $1\le\alpha_i<\beta$ be positive integers.  Put
+$\alpha_{\max}=\max_i\alpha_i$.  Then
+\begin{equation}\label{eq:integer-defect}
+ \Vdef_\infty(\boldsymbol\alpha,\beta)
+ =\log\beta-(\D_m+1)\log\alpha_{\max}
+   -\frac{\D_m}{m}\sum_i\log\alpha_i-\Kc_m.
+\end{equation}
+For every integer $t\ge1$,
+\begin{equation}\label{eq:scaling-law}
+ \Vdef_\infty(t\boldsymbol\alpha,t\beta)
+ =\Vdef_\infty(\boldsymbol\alpha,\beta)-2\D_m\log t.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For positive integers, every finite-place local height vanishes, so
+$h(\beta)=h_\infty(\beta)=\log\beta$,
+$h(\alpha_i)=\log\alpha_i$, and
+$h(\boldsymbol\alpha)=h_\infty(\boldsymbol\alpha)=\log\alpha_{\max}$.
+Substitution gives \eqref{eq:integer-defect}; scaling all terms gives
+\eqref{eq:scaling-law}.
+\end{proof}
+
+This exact law explains why clearing a larger common denominator cannot rescue a failed
+specialization.  It also corrects a tempting but false intuition: because the polylogarithm
+arguments are unchanged, one might expect the criterion to be projectively neutral.  It is
+not; the arithmetic approximants remember the chosen affine presentation.
+
+\section{Natural encodings and why each misses the criterion}
+
+\subsection{Direct prime-logarithm points}
+
+For every integer $q\ge2$,
+\begin{equation}\label{eq:direct}
+  \log q=\Li_1\!\left(1-\frac1q\right).
+\end{equation}
+But $1-1/q\ge1/2$.  Hence any tuple containing a direct point has
+$a_\infty\le\log2$, while \Cref{cor:efficiency} requires
+$a_\infty>\Kc_m\ge\Kc_1>12$.  Therefore:
+
+\begin{corollary}[Direct points never qualify]\label{cor:direct-no}
+No specialization of Kawashima's weight-two criterion containing even one point
+$1-1/q$ with $q\ge2$ can have positive defect, regardless of the common representation or
+of the other points.
+\end{corollary}
+
+This rules out the immediate choice
+\[
+  1/2,\quad 2/3,\quad 1-1/M,\quad 1-1/A
+\]
+for the four logarithms in \eqref{eq:wall}.
+
+\subsection{High-root splitting and degree dilution}
+
+A natural attempt to make the direct point small is
+\begin{equation}\label{eq:root-split}
+  \log q=n\Li_1(1-q^{-1/n}).
+\end{equation}
+For $q=2$ or $3$, the polynomial $X^n-q$ is Eisenstein, so every number field containing
+$q^{1/n}$ has degree at least $n$.  At the positive real place, Kawashima's normalized
+absolute value therefore gives
+\[
+ a_v=-\frac1{[K:\Q]}\log(1-q^{-1/n})
+ \le \frac1n\log\!\left(1+\frac{n}{\log q}\right)<1.
+\]
+Here we used $1-e^{-y}\ge y/(1+y)$ for $y>0$.  The depth condition
+$a_v>\Kc_m$ is impossible.
+
+\begin{corollary}[Radical splitting never qualifies]\label{cor:radical-no}
+For either base logarithm $\log2$ or $\log3$, replacing it by arbitrary high-root identities
+of the form \eqref{eq:root-split} cannot satisfy Kawashima's criterion at a real place.  The
+apparent archimedean gain is more than canceled by the normalization factor $[K:\Q]^{-1}$.
+\end{corollary}
+
+This is a useful warning for algebraic-point constructions: increasing the degree to make one
+chosen conjugate spectacularly close to $1$ can reduce the favorable local height by exactly
+the same degree.
+
+\subsection{Telescoping by unit fractions}
+
+For integers $q\ge2$ and $N\ge1$,
+\begin{equation}\label{eq:telescoping}
+ \log q=\sum_{k=N+1}^{qN}\log\frac{k}{k-1}
+       =\sum_{k=N+1}^{qN}\Li_1\!\left(\frac1k\right).
+\end{equation}
+These points have perfect individual efficiency: for $z=1/k$,
+$-\log z=h(z)=\log k$.  Nevertheless the number of distinct points is
+$m=(q-1)N$, while the largest point is $1/(N+1)$.  Thus
+\[
+  a_\infty=\log(N+1),\qquad
+  \Kc_m>2m^2.
+\]
+Since $\log(N+1)<2(q-1)^2N^2$ for every $q\ge2,N\ge1$, the necessary depth condition
+$a_\infty>\Kc_m$ fails before any finer height calculation is needed.
+
+\begin{corollary}[Dimension tax for ordinary telescoping]\label{cor:telescoping-no}
+No ordinary telescoping decomposition \eqref{eq:telescoping} satisfies Kawashima's
+weight-two criterion.
+\end{corollary}
+
+If one nevertheless clears all denominators with
+$L=\operatorname{lcm}(N+1,\ldots,qN)$, \Cref{prop:scaling} makes the failure substantially
+worse.  The exact integral defect is
+\[
+ -2\D_m\log L+(\D_m+1)\log(N+1)
+ +\frac{\D_m}{m}\log\frac{(qN)!}{N!}-\Kc_m,
+\]
+which tends to $-\infty$ rapidly.  The projective theorem shows that this is not a defect of
+that particular clearing; no other common scaling can reverse the sign.
+
+\section{A universal no-go theorem for rational Pad\'e transfer}
+
+The preceding examples might suggest searching for a more ingenious rational family.  The
+next theorem shows that this entire factor-by-factor strategy is impossible under the current
+criterion.
+
+\subsection{A valuation-lattice coefficient bound}
+
+\begin{lemma}[Cramer bound for a rational multiplicative span]\label{lem:cramer}
+Let $r_1,\ldots,r_m\in\Q_{>0}$, let
+$w_i=\val(r_i)$, and suppose $e_2\in\Span_\Q\{w_1,\ldots,w_m\}$.  If every coordinate of
+every $w_i$ has absolute value at most $E\ge1$, then there exist
+$t\le m$, indices $i_1,\ldots,i_t$, a nonzero integer $d$, and integers
+$c_1,\ldots,c_t$ such that
+\begin{equation}\label{eq:cramer-rel}
+  d e_2=\sum_{j=1}^t c_jw_{i_j}
+\end{equation}
+and
+\begin{equation}\label{eq:cramer-bound}
+  |c_j|\le (t-1)^{(t-1)/2}E^{t-1},
+\end{equation}
+with the right-hand side interpreted as $1$ for $t=1$.
+\end{lemma}
+
+\begin{proof}
+Choose $t$ independent columns spanning $e_2$.  Some $t\times t$ prime-row minor $B$ is
+invertible.  Such a minor necessarily contains the row indexed by $2$: otherwise the
+restricted right-hand side is zero, so the uniquely determined coefficient vector is zero,
+contrary to $e_2\ne0$.  Cramer's rule gives \eqref{eq:cramer-rel} with
+$d=\det B$ and the $c_j$ equal to cofactors in the $2$-row column.  Hadamard's inequality on
+each $(t-1)\times(t-1)$ minor gives \eqref{eq:cramer-bound}.
+\end{proof}
+
+\subsection[No rational tuple can span log 2]{No rational tuple can span $\log 2$}
+
+\begin{theorem}[Rational-transfer impossibility]\label{thm:rational-transfer}
+Let $z_1,\ldots,z_m\in\Q\cap(0,1)$ be pairwise distinct.  Suppose that they admit a
+specialization of Kawashima's weight-two criterion with positive defect at the real place.
+Put
+\[
+  \ell_i=\Li_1(z_i)=-\log(1-z_i).
+\]
+Then
+\begin{equation}\label{eq:log2-notspan}
+  \log2\notin\Span_\Q\{\ell_1,\ldots,\ell_m\}.
+\end{equation}
+The same conclusion holds with $2$ replaced by any fixed rational number after changing only
+the harmless explicit constant in the proof.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ a=-\log\max_i z_i,\qquad P=\frac1m\sum_i h(z_i),
+ \qquad D=\D_m,\qquad C=\Kc_m.
+\]
+By \Cref{cor:efficiency},
+\begin{equation}\label{eq:aPconditions}
+ a>C,\qquad P<\left(1+\frac1D\right)a.
+\end{equation}
+Write $r_i=(1-z_i)^{-1}$.  If $z_i=u_i/v_i$ in lowest terms with
+$0<u_i<v_i$, then $r_i=v_i/(v_i-u_i)$ is also in lowest terms and
+\begin{equation}\label{eq:equal-heights}
+ h(r_i)=\log v_i=h(z_i).
+\end{equation}
+Because all heights are nonnegative,
+\[
+ h(r_i)=h(z_i)\le mP<m\left(1+\frac1D\right)a.
+\]
+Every prime valuation of $r_i$ is consequently bounded by
+\begin{equation}\label{eq:Ebound}
+ |v_p(r_i)|\le\frac{h(r_i)}{\log2}<3ma=:E.
+\end{equation}
+Also $a>C>\log2$, so $z_i\le e^{-a}<1/2$ and
+\begin{equation}\label{eq:ell-small}
+ 0<\ell_i=-\log(1-z_i)\le\frac{z_i}{1-z_i}\le2e^{-a}.
+\end{equation}
+
+Assume for contradiction that $\log2$ belongs to the rational span of the $\ell_i$.
+Exponentiating after clearing denominators shows that $e_2$ belongs to the rational span of
+the valuation vectors $w_i=\val(r_i)$.  Apply \Cref{lem:cramer}.  Taking logarithms in
+\eqref{eq:cramer-rel} and using \eqref{eq:ell-small} gives
+\begin{align}
+ \log2
+ &\le |d|\log2
+  =\left|\sum_{j=1}^t c_j\ell_{i_j}\right| \\
+ &\le 2t(t-1)^{(t-1)/2}(3ma)^{t-1}e^{-a} \\
+ &\le 2m\,m^{(m-1)/2}(3ma)^{m-1}e^{-a}.
+ \label{eq:master-contradiction}
+\end{align}
+It remains only to check that the last expression is smaller than $\log2$ whenever
+$a>C$.
+
+The function $(3ma)^{m-1}e^{-a}$ is decreasing for $a>m-1$, and $C>2m^2>m-1$.
+Furthermore
+\begin{equation}\label{eq:Cupperlower}
+ 2m^2+4m< C<4(m+1)^2.
+\end{equation}
+The upper bound follows by writing $y=m+1\ge2$ and observing that
+$(2-\log2)y^2+\log2-3\log y>0$; the lower bound is immediate from
+$C=(2+\log2)(m^2+2m)+3\log(m+1)+2$.
+At $a=C$, the logarithm of the right-hand side of
+\eqref{eq:master-contradiction}, divided by $\log2$, is at most
+\[
+ \log(3m)+(m-1)\bigl(\log48+3.5\log m\bigr)-2m^2-4m.
+\]
+For $m=1$ the inequality is immediate.  For real $m\ge2$, the negative of this expression is
+positive at $m=2$ and has positive derivative; its derivative itself is increasing because
+$4-3.5/m-2.5/m^2>0$.  Hence the expression is negative for every integer $m\ge2$.
+This contradicts \eqref{eq:master-contradiction}.
+\end{proof}
+
+\begin{provedbox}
+The theorem is universal in $m$.  It does not merely say that the obvious representations of
+$\log2$ fail; it says that \emph{every rational tuple satisfying Kawashima's own height
+hypothesis} is too arithmetically close to $1$ for its valuation lattice to recover the fixed
+prime direction $e_2$.
+\end{provedbox}
+
+\subsection{The full formal quadratic transfer also fails}
+
+Let $W=\Span_\Q\{\val((1-z_i)^{-1}):1\le i\le m\}$.  Any factor-by-factor rational
+logarithm identity places the resulting quadratic forms in $\operatorname{Sym}^2(W)$.
+The tensor-rank audit from \Cref{lem:tensor-rank} now gives a stronger corollary.
+
+\begin{corollary}[No formal rational quadratic transfer]\label{cor:quadratic-transfer}
+Assume a nonintegral Alaoglu--Erd\H{o}s counterexample and let $T$ be its prime-valuation
+tensor \eqref{eq:tensor}.  There is no rational tuple $z_1,\ldots,z_m\in(0,1)$ such that
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a specialization of Kawashima's weight-two criterion at these points has positive defect;
+\item $T\in\operatorname{Sym}^2(W)$ for
+$W=\Span_\Q\{\val((1-z_i)^{-1})\}$.
+\end{enumerate}
+In particular, one cannot settle \eqref{eq:wall} by expressing its four logarithms through
+rational $\Li_1$ identities and then invoking Kawashima's product independence.
+\end{corollary}
+
+\begin{proof}
+Every tensor in $\operatorname{Sym}^2(W)$ has contraction range contained in $W$.
+By \Cref{lem:tensor-rank}, the range of $T$ is
+$S=\Span\{u,v,e_2,e_3\}$, so $e_2\in W$.  Applying $\lambda$ gives
+$\log2$ in the rational span of the numbers $\log(1-z_i)^{-1}=\Li_1(z_i)$, contradicting
+\Cref{thm:rational-transfer}.
+\end{proof}
+
+The corollary leaves a narrow but genuine escape hatch: one could use algebraic points,
+unbounded number-field degree, and cross-embedding or norm identities that do not reduce to a
+rational prime-valuation tensor inside one fixed field.  Sections below show why the obvious
+versions of that escape hatch also encounter strong barriers.
+
+\section{Fixed multiplicative groups: effective exceptional finiteness}
+
+The projective defect bound combines cleanly with the effective approximation theorem of
+Calegari--Dimitrov--Tang.
+
+\begin{theorem}[Fixed-group Pad\'e tuples are effectively finite]\label{thm:fixed-group}
+Fix a number field $K$, a place $v$, a finitely generated subgroup
+$\Gamma<K^\times$, and an integer $m\ge1$.  Consider pairwise distinct
+$\gamma_1,\ldots,\gamma_m\in\Gamma$ such that
+\[
+  z_i=1-\gamma_i,\qquad |z_i|_v<1.
+\]
+There are only finitely many such tuples for which the points $z_i$ admit a specialization of
+Kawashima's weight-two criterion with positive defect.  Their heights are effectively bounded
+in terms of $(K,v,\Gamma,m)$.
+\end{theorem}
+
+\begin{proof}
+Let $a=a_v(\mathbf z)$ and $P=\overline h(\mathbf z)$.  Positivity and
+\eqref{eq:Pupper} imply, for every $i$,
+\[
+ h(z_i)\le mP<\frac{m(\D_m+1)}{\D_m}a.
+\]
+Hence, with
+\[
+ \varepsilon_m=\frac{\D_m}{2m(\D_m+1)},
+\]
+we have $a>2\varepsilon_m h(z_i)$.  The standard height inequalities give
+$|h(\gamma_i)-h(z_i)|\le\log2$.  If $h(\gamma_i)\le2\log2$, it is already bounded.
+Otherwise
+\[
+ -\log|1-\gamma_i|_v=-\log|z_i|_v\ge a
+   >\varepsilon_m h(\gamma_i),
+\]
+so
+\[
+ |1-\gamma_i|_v<H(\gamma_i)^{-\varepsilon_m}.
+\]
+The effective approximation theorem of \cite{CDTHolonomy}, applied with $A=1$, bounds
+$h(\gamma_i)$ effectively.  Northcott finiteness in the fixed field $K$ then leaves only
+finitely many tuples.
+\end{proof}
+
+\begin{remark}
+The theorem does not prove Alaoglu--Erd\H{o}s.  Under a hypothetical counterexample the group
+of $S$-units generated by the finitely many primes dividing $6MA$ is fixed, but the effective
+exceptional set may be nonempty and its defining set $S$ is itself unknown.  What the theorem
+does prove is that no asymptotic sequence inside a fixed $S$-unit group can drive Kawashima's
+defect positive.  Any such proof would have to come from a finite exceptional configuration or
+from fields/groups whose arithmetic complexity changes with the construction.
+\end{remark}
+
+\section{The near-unit unimodular normal form}
+
+\subsection{Exact construction}
+
+Let
+\[
+  \rho=\frac{\log3}{\log2}
+\]
+and let $p_n/q_n$ be its continued-fraction convergents.  Define
+\[
+  u_n=2^{p_n}3^{-q_n},\qquad U_n=M^{p_n}A^{-q_n}=u_n^x.
+\]
+Let $\varepsilon_n\in\{\pm1\}$ orient the first unit above $1$:
+\[
+  r_n=u_n^{\varepsilon_n}>1,\qquad R_n=U_n^{\varepsilon_n}=r_n^x>1.
+\]
+Consecutive convergents satisfy
+$p_nq_{n+1}-p_{n+1}q_n=\pm1$.  Therefore $(r_n,r_{n+1})$ is a multiplicative basis of
+$\langle2,3\rangle$ and $(R_n,R_{n+1})$ is a multiplicative basis of
+$\langle M,A\rangle$.  Moreover
+\begin{equation}\label{eq:microdet}
+ \det\begin{pmatrix}
+  \log r_n&\log r_{n+1}\\
+  \log R_n&\log R_{n+1}
+ \end{pmatrix}=0
+\end{equation}
+and all four units tend to $1$.
+
+The usual convergent inequalities give
+\begin{equation}\label{eq:conv-bounds}
+ \frac{\log2}{q_n+q_{n+1}}
+ <|\log u_n|<\frac{\log2}{q_{n+1}}.
+\end{equation}
+Thus a counterexample is equivalent to infinitely many exact weight-two determinant zeros in
+an arbitrarily small neighborhood of $(1,1,1,1)$.
+
+\subsection{Why mere proximity is not enough}
+
+For a positive rational unit $r>1$, put
+\[
+ z(r)=1-r^{-1},\qquad
+ \eta(r)=\frac{-\log z(r)}{h(z(r))}.
+\]
+If $r=N/D$ is reduced, then $z(r)=(N-D)/N$ is reduced and
+$h(z(r))=\log N=h(r)$.  The ratios $(m+1)/m$ appearing in the product theorem of
+Calegari--Dimitrov--Tang have numerator gap $1$ and therefore
+\[
+ \eta\!\left(\frac{m+1}{m}\right)=1.
+\]
+They lie on the maximal-efficiency boundary.
+
+The convergent units are entirely different.  A lower bound for a nonzero linear form in
+$\log2$ and $\log3$ gives effective constants $c,C>0$ such that
+\[
+ |p\log2-q\log3|>c\,\max\{|p|,|q|\}^{-C}.
+\]
+Together with \eqref{eq:conv-bounds}, this implies
+\[
+ -\log z(r_n)=O(\log q_n),\qquad h(z(r_n))\asymp q_n,
+\]
+so
+\begin{equation}\label{eq:eta-to-zero}
+  \eta(r_n)\longrightarrow0.
+\end{equation}
+The same conclusion holds for $R_n$.  Indeed $\log R_n=x\log r_n$, while the valuation
+vectors $p_n\val(M)-q_n\val(A)$ have norm $\asymp q_n$ because $M$ and $A$ are
+multiplicatively independent.
+
+\begin{provedbox}
+The natural microlocal form of a counterexample lives in the \emph{low-efficiency} regime
+$\eta\to0$.  Kawashima's present criterion requires average efficiency
+$>1-1/(m+1)^2$, and the proved arithmetic-holonomy product theorem treats the unit-gap locus
+$\eta=1$.  The missing theorem must therefore cross an arithmetic-efficiency gap, not merely a
+geometric ``points close to one'' gap.
+\end{provedbox}
+
+\subsection{A numerical sample}
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & $p_n$ & $q_n$ & $|p_n\log2-q_n\log3|$ & height scale \\
+\midrule
+0 & 1 & 1 & $4.0547\times10^{-1}$ & $1$ \\
+1 & 2 & 1 & $2.8768\times10^{-1}$ & $2$ \\
+2 & 3 & 2 & $1.1778\times10^{-1}$ & $3$ \\
+3 & 8 & 5 & $5.2116\times10^{-2}$ & $8$ \\
+4 & 19 & 12 & $1.3551\times10^{-2}$ & $19$ \\
+5 & 65 & 41 & $1.1463\times10^{-2}$ & $65$ \\
+6 & 84 & 53 & $2.0881\times10^{-3}$ & $84$ \\
+7 & 485 & 306 & $1.0222\times10^{-3}$ & $485$ \\
+8 & 1054 & 665 & $4.3654\times10^{-5}$ & $1054$ \\
+9 & 24727 & 15601 & $1.8195\times10^{-5}$ & $24727$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The relevant decay is polynomial in the exponent size, while high-efficiency Pad\'e criteria
+need a gap essentially as small as the reciprocal arithmetic denominator.
+
+\section{Why the remaining nearby tools do not transfer}
+
+\subsection[p-adic specialization]{$p$-adic specialization}
+
+\Cref{thm:projective-defect} applies just as well at a finite place, and in some examples a
+$p$-adic local contribution can be much more favorable.  However Kawashima's conclusion at a
+finite place is linear independence of $p$-adic polylogarithm values in $K_v$.  The real
+relation \eqref{eq:wall} does not automatically become a relation between $p$-adic logarithms.
+A comparison principle strong enough to transfer that relation would itself be a new period
+or motivic theorem at approximately the same transcendence level as the original problem.
+Thus choosing a finite place changes the values being proved independent; it does not simply
+improve the height estimate for the real values.
+
+\subsection{Powers of one logarithm}
+
+Kawashima's appendix constructs new Pad\'e-type approximants for
+\[
+ \log(1-1/z),\ldots,\log^m(1-1/z)
+\]
+and proves the relevant functional determinant is nonzero.  This is valuable structural
+input, but \eqref{eq:wall} is a cross-product of logarithms at different algebraic arguments.
+Moreover the paper explicitly leaves the Poincar\'e-type recurrence asymptotics needed for
+sharp numerical independence measures to future work.  A one-point power theorem cannot
+collapse the multiplicative rank of $2$ and $3$ to one.
+
+\subsection{The proved holonomy product theorem}
+
+The theorem of Calegari--Dimitrov--Tang proves a genuine mixed product result, but specifically
+for
+\[
+ \log\!\left(1+\frac1m\right)\log\!\left(1+\frac1n\right)
+\]
+with $m/n$ close to $1$.  A convergent unit $2^p/3^q$ generally has numerator gap
+$|2^p-3^q|\gg1$, so it is not of the form $(m+1)/m$.  Pairwise irrationality of individual
+products also does not imply joint linear independence of all products arising after a long
+telescoping decomposition.  The theorem reaches weight two, but on a high-efficiency locus
+disjoint from the canonical counterexample normal form.
+
+\section{What a successful Pad\'e continuation would have to change}
+
+The no-go theorems above identify three requirements that are absent from the current
+criterion.
+
+\subsection{Direct determinant approximation rather than monomial independence}
+
+Kawashima proves the independence of a very large family: all polylogarithm monomials of total
+weight at most two.  For $m$ points this family has size $(m+1)^2$, and the constant
+$\Kc_m\asymp(2+\log2)m^2$ records that dimensional cost.  Alaoglu--Erd\H{o}s needs only one
+specific determinant.  A tailored construction should approximate
+\[
+ \Delta=\log M\log3-\log A\log2
+\]
+directly instead of paying for every monomial.
+
+\subsection{Separate local denominators}
+
+The common parameter $\beta$ forces all points through one affine denominator and charges the
+heights of both the coordinates and their vector.  A plausible replacement is a genuinely
+mixed-denominator Hermite--Pad\'e system with one local denominator for each point, followed by
+adelic cancellation \emph{before} a common denominator is cleared.  Merely rewriting the same
+points with a larger common denominator is impossible by \eqref{eq:scaling-law}.
+
+\subsection{Valuation-lattice cancellation}
+
+The rational-transfer theorem shows that individual high-efficiency logarithms are too small
+to recover a fixed prime direction with the polynomially bounded coefficients supplied by a
+valuation lattice.  A successful construction must therefore exploit cancellation at the
+level of the \emph{four-log determinant}: prime factors appearing in one Pad\'e row must cancel
+against prime factors in another row.  This is precisely the type of cross-row gain that the
+ordinary one-row height defect discards.
+
+The following statement isolates a sufficient target without pretending that it is already
+proved.
+
+\begin{conjecture}[Mixed-denominator determinant criterion]\label{conj:mixed}
+For positive rationals $r_1,r_2,s_1,s_2$ such that each pair is multiplicatively independent,
+there is a Pad\'e construction for
+\[
+ \log r_1\log s_2-\log r_2\log s_1
+\]
+whose denominator estimate is governed by the determinantal divisors of the two prime-valuation
+matrices, including their saturation indices, rather than by the sum of the four individual
+affine heights.  The construction proves that the displayed determinant is nonzero unless a
+rational row/column change produces a zero logarithmic coefficient.
+\end{conjecture}
+
+\begin{proposition}\label{prop:mixed-implies}
+\Cref{conj:mixed} implies the Alaoglu--Erd\H{o}s conjecture.
+\end{proposition}
+
+\begin{proof}
+Assume a counterexample.  Use consecutive convergents as in \Cref{eq:microdet}.  The pairs
+$(r_n,r_{n+1})$ and $(R_n,R_{n+1})$ are unimodular changes of the respective rank-two
+valuation-lattice generators, while
+their logarithmic determinant is zero.  The exceptional alternative in
+\Cref{conj:mixed} would give a zero logarithmic coefficient after rational basis changes.  By
+injectivity of the rational logarithm map, that coefficient is zero exactly when one of the
+corresponding multiplicative basis elements is $1$, impossible.  Hence the determinant must be
+nonzero, contradicting \eqref{eq:microdet}.
+\end{proof}
+
+The conjectural criterion is deliberately narrower than Four Exponentials in arbitrary
+algebraic settings: it asks only for positive rationals and rank-two prime-valuation
+lattices.  It is also deliberately stronger than the existing Pad\'e theorems in the one place
+where the present problem needs strength: low-efficiency, cross-row denominator cancellation.
+
+\section{\texorpdfstring{Directed-rounding extension through $2^{29}$}{Directed-rounding extension through 2 power 29}}\label{sec:scan}
+
+\subsection{Verifier contract}
+
+Let
+\[
+  \rho=\frac{\log3}{\log2}.
+\]
+For each positive integer $m$ that is not a power of two, the verifier seeks an integer $n$
+with
+\[
+  n<m^\rho<n+1.
+\]
+It never evaluates $m^\rho$.  At $192$-bit MPFR precision it computes directed enclosures of
+the needed logarithms and proves the two strict inequalities through positive lower bounds for
+\begin{align}
+ \delta_-&=\log(m)\log3-\log(n)\log2,\\
+ \delta_+&=\log(n+1)\log2-\log(m)\log3.
+\end{align}
+A long-double calculation proposes $n$, but the proposal has no logical role: acceptance
+requires both MPFR lower bounds to be strictly positive.  A locator error can therefore create
+a reported failure, not a false certificate.
+
+The exact C source was extracted from the supplied report without modification.  Its SHA-256
+digest is
+\begin{center}
+\sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d}.
+\end{center}
+This identity matches the source digest already printed in the supplied report.
+
+\subsection{New range and aggregate result}
+
+The new audit covers two consecutive bit ranges,
+\[
+ [2^{27},2^{29})=[134{,}217{,}728,536{,}870{,}912),
+\]
+partitioned into $96$ chunks of width $2^{22}$.  The powers $2^{27}$ and $2^{28}$ are skipped.
+Consequently the exact number of tested inputs is
+\[
+ (2^{29}-2^{27})-2=402{,}653{,}182.
+\]
+The first $32$ chunks cover $[2^{27},2^{28})$; the next $64$ cover the entire range
+$[2^{28},2^{29})$.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Range & tested nonpowers & failures & summed chunk time (s) \\
+\midrule
+$[2^{27},2^{28})$ & $134{,}217{,}727$ & $0$ & $395.843$ \\
+$[2^{28},2^{29})$ & $268{,}435{,}455$ & $0$ & $792.962$ \\
+\midrule
+Combined new audit & $402{,}653{,}182$ & $0$ & $1{,}188.805$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Across both new ranges, the smallest certified lower-side margin was
+\begin{equation}\label{eq:scan-lower}
+ \delta_->4.9141462461940518\times10^{-24}
+ \quad\text{at}\quad
+ (m,n)=(388{,}909{,}543,41{,}170{,}668{,}399{,}174),
+\end{equation}
+and the smallest certified upper-side margin was
+\begin{equation}\label{eq:scan-upper}
+ \delta_+>5.2103670350428438\times10^{-23}
+ \quad\text{at}\quad
+ (m,n)=(501{,}373{,}708,61{,}578{,}600{,}753{,}798).
+\end{equation}
+Both extremal records were replayed with one thread at $1024$-bit MPFR precision.  The
+corresponding directed lower bounds were unchanged to the displayed $17$ digits.  As a
+separate implementation check, a $320$-decimal-digit evaluation gave
+\[
+ \delta_-=4.914146246194051848982433252362132380596\ldots\times10^{-24}
+\]
+for \eqref{eq:scan-lower}, and
+\[
+ \delta_+=5.210367035042843821555189929112177636068\ldots\times10^{-23}
+\]
+for \eqref{eq:scan-upper}.  This decimal replay is corroborative only; the certificate is the
+positive directed MPFR lower bound.
+
+The executable used GCC~14.2.0, MPFR~4.2.2, $192$-bit precision, and five OpenMP threads for
+each chunk.  The source and executable SHA-256 digests were, respectively,
+\begin{align*}
+ &\sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d},\\
+ &\sha{85f2acca22ec3ea4bf783a2e13356a1e11d9faff3b95a4d1c79a7cced69deceb}.
+\end{align*}
+The concatenated logs for the two blocks had SHA-256 digests
+\begin{align*}
+ [2^{27},2^{28})&:\quad
+ \sha{3865fb3d99d3a6df4ab4ac101942781dea1065f38414462fb2e25b0ba4ef16ce},\\
+ [2^{28},2^{29})&:\quad
+ \sha{6899851a9d78bca4e7527011c10089aaede12f1f93a9584efdcaa0d5d56cebe2}.
+\end{align*}
+The two $1024$-bit replay logs had digests
+\begin{align*}
+ &\sha{333b015a3ac541f34a4c14197dc67d03d5211f7bc0828abd346695790a174555},\\
+ &\sha{de0eac89dcc88c63f080e8714fa5e93f0485beb8e913e87ab705316b80be619b},
+\end{align*}
+and the independent $320$-digit replay file had digest
+\[
+ \sha{791d592dc7140674e8300c2ae65db6ef6be9f539b1f92a05a8b6f5f4c37be223}.
+\]
+
+\begin{compbox}
+The result is a software-level directed-rounding certificate, not a proof-assistant kernel
+certificate.  It depends on the stated MPFR implementation, compiler, ABI declarations, and
+executed binary.  Those trust assumptions are materially stronger than ordinary floating-point
+sampling but materially weaker than a formal proof.
+\end{compbox}
+
+\subsection{Consequence for the exponent}
+
+\begin{proposition}[Finite exclusion through $29$]\label{prop:x29}
+At the trust level of the directed-rounding computation, any nonintegral counterexample
+satisfies $x>29$.
+\end{proposition}
+
+\begin{proof}
+Suppose $x<29$ and $M=2^x\in\N$.  Then $M<2^{29}$.  If $M$ is a power of two, injectivity of
+the real exponential gives $x\in\Z$.  Otherwise the inherited scan below $2^{27}$ together
+with the two new ranges proves that $M^\rho=3^x$ lies strictly between consecutive integers,
+contradicting the hypothesis that $3^x$ is an integer.  The endpoint $x=29$ is integral.
+\end{proof}
+
+\section{Synthesis}
+
+The post-report Pad\'e literature gets closer to the correct transcendence weight than any of
+the classical one-logarithm tools, but the new analysis identifies an exact mismatch.
+
+\begin{enumerate}[label=\textbf{\alph*.}]
+\item A counterexample is naturally converted by continued fractions into determinant zeros
+      among rational units arbitrarily close to $1$.
+\item Those units have arithmetic efficiency tending to $0$: their gaps are only polynomially
+      small in the exponent size, while their rational heights are exponential in that size.
+\item Kawashima's current theorem requires average efficiency
+      $>1-1/(m+1)^2$ and a local depth exceeding a quadratic dimension constant.
+\item The proven arithmetic-holonomy product theorem occupies the extreme unit-gap locus of
+      efficiency $1$.
+\item Rational algebraic transfer cannot bridge the gap: the valuation lattice bounds the
+      required coefficients polynomially, while all qualifying logarithms are exponentially
+      small.  This is the content of \Cref{thm:rational-transfer}.
+\end{enumerate}
+
+The remaining route is therefore not ``find a cleverer common denominator.''  It is to build a
+weight-two approximant that sees the prime-valuation determinant of the \emph{whole} expression
+and cancels denominators across rows before individual heights are charged.  That target is
+technically concrete, but it is not presently a theorem.
+
+\section{Final status}
+
+\begin{conditionalbox}
+No unconditional proof of
+\[
+  2^x,3^x\in\Z\quad\Longrightarrow\quad x\in\Z
+\]
+is contained in this report.  The exact unresolved statement remains the nonvanishing of the
+weight-two logarithmic determinant \eqref{eq:wall}, equivalently the corresponding restricted
+matrix-coefficient assertion.
+\end{conditionalbox}
+
+The rigorous advances are nonetheless substantive:
+
+\begin{itemize}
+\item a new projective upper bound for the 2026 polylogarithm-product criterion;
+\item a quantitative arithmetic-efficiency threshold with sharp dependence on the number of
+      points;
+\item complete no-go results for direct points, radical splitting, ordinary telescoping, and
+      common scaling;
+\item a universal rational-transfer impossibility theorem, plus a tensor-level corollary for
+      the formal Alaoglu--Erd\H{o}s quadratic relation;
+\item effective finiteness of every fixed-group Pad\'e attempt;
+\item a precise diagnosis of the high-efficiency/low-efficiency gap between current theorems
+      and the canonical counterexample normal form;
+\item an independently rerun directed-rounding exclusion through $2^{29}$.
+\end{itemize}
+
+These results eliminate a broad family of plausible but ultimately nonviable proof strategies
+and leave a narrower, technically explicit research target: direct determinant Pad\'e
+approximation with cross-row valuation cancellation.
+
+\appendix
+
+\section{Elementary inequalities used in the rational-transfer theorem}
+
+For completeness, this appendix records the two estimates compressed in
+\Cref{thm:rational-transfer}.
+
+Let $D=m^2+2m$ and
+\[
+ C=(2+\log2)D+3\log(m+1)+2.
+\]
+Then $C>2m^2+4m$ is immediate.  For the upper bound, put $y=m+1\ge2$:
+\begin{align*}
+ 4(m+1)^2-C
+ &=4y^2-(2+\log2)(y^2-1)-3\log y-2\\
+ &=(2-\log2)y^2+\log2-3\log y.
+\end{align*}
+The last expression is positive at $y=2$, and its derivative
+$2(2-\log2)y-3/y$ is positive for $y\ge2$.  Hence
+\[
+ 2m^2+4m<C<4(m+1)^2.
+\]
+
+For $m\ge2$, define
+\[
+ G(m)=2m^2+4m-\log(3m)-(m-1)(\log48+3.5\log m).
+\]
+Directly, $G(2)>7.9$.  Moreover
+\[
+ G'(m)=4m+\frac12+\frac{2.5}{m}-\log48-3.5\log m>0
+\]
+for $m\ge2$, because its derivative
+$4-3.5/m-2.5/m^2$ is already positive at $m=2$.  Thus $G(m)>0$ for all integers $m\ge2$.
+This is the last numerical inequality needed to make
+\eqref{eq:master-contradiction} impossible.
+
+\section{Scan chunk manifest}
+
+The table records every chunk.  Each interval has width $2^{22}$; ``start'' is its
+inclusive lower endpoint.  A record $d\;(m)$ means that the chunk minimum was the directed
+lower bound $d$ attained at that value of $m$.  The corresponding integer $n$ is retained in
+the hashed raw log; the two global $n$ values are displayed in
+\eqref{eq:scan-lower}--\eqref{eq:scan-upper}.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\begin{longtable}{@{}c r r >{\raggedleft\arraybackslash}p{34mm} >{\raggedleft\arraybackslash}p{34mm} r@{}}
+\caption{Directed-rounding chunk manifest for $[2^{27},2^{29})$.}\label{tab:scan-manifest}\\
+\toprule
+ID & start & tested & minimum $\delta_-$ $(m)$ & minimum $\delta_+$ $(m)$ & seconds \\
+\midrule
+\endfirsthead
+\multicolumn{6}{c}{\tablename\ \thetable\ continued}\\
+\toprule
+ID & start & tested & minimum $\delta_-$ $(m)$ & minimum $\delta_+$ $(m)$ & seconds \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+27.00 & 134{,}217{,}728 & 4{,}194{,}303 & $4.284e-20$ $(136{,}640{,}874)$ & $3.389e-20$ $(135{,}357{,}389)$ & 11.825 \\
+27.01 & 138{,}412{,}032 & 4{,}194{,}304 & $2.815e-20$ $(138{,}540{,}675)$ & $2.847e-21$ $(142{,}153{,}616)$ & 12.013 \\
+27.02 & 142{,}606{,}336 & 4{,}194{,}304 & $1.061e-20$ $(142{,}695{,}401)$ & $6.273e-22$ $(146{,}333{,}091)$ & 12.881 \\
+27.03 & 146{,}800{,}640 & 4{,}194{,}304 & $3.593e-21$ $(148{,}583{,}161)$ & $1.143e-20$ $(148{,}016{,}970)$ & 11.572 \\
+27.04 & 150{,}994{,}944 & 4{,}194{,}304 & $3.782e-21$ $(153{,}415{,}953)$ & $4.828e-20$ $(154{,}129{,}681)$ & 13.257 \\
+27.05 & 155{,}189{,}248 & 4{,}194{,}304 & $1.677e-20$ $(159{,}254{,}759)$ & $1.606e-20$ $(158{,}382{,}018)$ & 12.778 \\
+27.06 & 159{,}383{,}552 & 4{,}194{,}304 & $3.469e-20$ $(162{,}200{,}015)$ & $2.021e-20$ $(160{,}095{,}403)$ & 11.821 \\
+27.07 & 163{,}577{,}856 & 4{,}194{,}304 & $3.847e-21$ $(166{,}033{,}450)$ & $7.569e-21$ $(166{,}969{,}115)$ & 12.110 \\
+27.08 & 167{,}772{,}160 & 4{,}194{,}304 & $8.665e-21$ $(171{,}251{,}435)$ & $1.465e-20$ $(170{,}443{,}795)$ & 11.822 \\
+27.09 & 171{,}966{,}464 & 4{,}194{,}304 & $4.262e-20$ $(173{,}816{,}254)$ & $1.433e-20$ $(175{,}647{,}581)$ & 11.661 \\
+27.10 & 176{,}160{,}768 & 4{,}194{,}304 & $1.876e-20$ $(178{,}598{,}559)$ & $4.477e-21$ $(179{,}458{,}795)$ & 13.244 \\
+27.11 & 180{,}355{,}072 & 4{,}194{,}304 & $5.679e-20$ $(180{,}765{,}336)$ & $5.445e-22$ $(183{,}569{,}533)$ & 12.511 \\
+27.12 & 184{,}549{,}376 & 4{,}194{,}304 & $3.085e-22$ $(187{,}004{,}237)$ & $7.872e-21$ $(188{,}301{,}745)$ & 12.227 \\
+27.13 & 188{,}743{,}680 & 4{,}194{,}304 & $1.102e-20$ $(192{,}461{,}540)$ & $1.798e-20$ $(191{,}799{,}137)$ & 12.614 \\
+27.14 & 192{,}937{,}984 & 4{,}194{,}304 & $1.638e-21$ $(195{,}368{,}525)$ & $2.173e-20$ $(194{,}355{,}394)$ & 11.846 \\
+27.15 & 197{,}132{,}288 & 4{,}194{,}304 & $8.763e-21$ $(197{,}987{,}777)$ & $1.177e-20$ $(198{,}330{,}250)$ & 12.451 \\
+27.16 & 201{,}326{,}592 & 4{,}194{,}304 & $9.306e-22$ $(202{,}612{,}057)$ & $9.219e-21$ $(203{,}389{,}040)$ & 13.492 \\
+27.17 & 205{,}520{,}896 & 4{,}194{,}304 & $2.745e-21$ $(206{,}738{,}514)$ & $1.370e-21$ $(206{,}597{,}929)$ & 11.626 \\
+27.18 & 209{,}715{,}200 & 4{,}194{,}304 & $1.383e-20$ $(213{,}551{,}311)$ & $8.366e-21$ $(213{,}290{,}074)$ & 13.091 \\
+27.19 & 213{,}909{,}504 & 4{,}194{,}304 & $4.101e-22$ $(214{,}684{,}191)$ & $1.679e-21$ $(217{,}426{,}809)$ & 12.462 \\
+27.20 & 218{,}103{,}808 & 4{,}194{,}304 & $3.638e-21$ $(218{,}691{,}392)$ & $2.873e-21$ $(218{,}721{,}921)$ & 12.370 \\
+27.21 & 222{,}298{,}112 & 4{,}194{,}304 & $1.825e-20$ $(224{,}977{,}296)$ & $5.053e-21$ $(226{,}024{,}581)$ & 12.121 \\
+27.22 & 226{,}492{,}416 & 4{,}194{,}304 & $1.646e-20$ $(226{,}553{,}247)$ & $2.228e-20$ $(230{,}684{,}216)$ & 13.078 \\
+27.23 & 230{,}686{,}720 & 4{,}194{,}304 & $1.953e-22$ $(233{,}957{,}087)$ & $6.347e-21$ $(231{,}792{,}276)$ & 12.023 \\
+27.24 & 234{,}881{,}024 & 4{,}194{,}304 & $3.812e-21$ $(235{,}808{,}239)$ & $3.750e-21$ $(236{,}568{,}448)$ & 12.491 \\
+27.25 & 239{,}075{,}328 & 4{,}194{,}304 & $6.046e-21$ $(239{,}456{,}283)$ & $9.724e-21$ $(239{,}580{,}935)$ & 13.390 \\
+27.26 & 243{,}269{,}632 & 4{,}194{,}304 & $3.971e-21$ $(244{,}524{,}864)$ & $5.006e-21$ $(245{,}994{,}981)$ & 11.525 \\
+27.27 & 247{,}463{,}936 & 4{,}194{,}304 & $1.077e-20$ $(249{,}872{,}818)$ & $8.052e-21$ $(249{,}272{,}020)$ & 12.868 \\
+27.28 & 251{,}658{,}240 & 4{,}194{,}304 & $1.929e-20$ $(251{,}728{,}391)$ & $4.421e-21$ $(254{,}182{,}804)$ & 12.215 \\
+27.29 & 255{,}852{,}544 & 4{,}194{,}304 & $6.990e-21$ $(256{,}676{,}151)$ & $8.307e-22$ $(259{,}598{,}690)$ & 11.862 \\
+27.30 & 260{,}046{,}848 & 4{,}194{,}304 & $4.051e-21$ $(263{,}613{,}699)$ & $9.409e-22$ $(261{,}264{,}827)$ & 12.792 \\
+27.31 & 264{,}241{,}152 & 4{,}194{,}304 & $1.374e-21$ $(266{,}715{,}185)$ & $4.150e-21$ $(264{,}885{,}749)$ & 11.805 \\
+28.00 & 268{,}435{,}456 & 4{,}194{,}303 & $1.438e-20$ $(270{,}769{,}256)$ & $1.276e-20$ $(269{,}492{,}939)$ & 12.071 \\
+28.01 & 272{,}629{,}760 & 4{,}194{,}304 & $1.294e-20$ $(274{,}601{,}332)$ & $1.329e-20$ $(276{,}729{,}727)$ & 11.772 \\
+28.02 & 276{,}824{,}064 & 4{,}194{,}304 & $1.336e-21$ $(278{,}937{,}929)$ & $1.473e-20$ $(279{,}209{,}135)$ & 13.839 \\
+28.03 & 281{,}018{,}368 & 4{,}194{,}304 & $6.220e-21$ $(283{,}347{,}824)$ & $2.847e-21$ $(284{,}307{,}232)$ & 12.520 \\
+28.04 & 285{,}212{,}672 & 4{,}194{,}304 & $3.573e-21$ $(285{,}482{,}152)$ & $1.521e-20$ $(288{,}577{,}614)$ & 12.190 \\
+28.05 & 289{,}406{,}976 & 4{,}194{,}304 & $8.508e-21$ $(290{,}399{,}029)$ & $6.273e-22$ $(292{,}666{,}182)$ & 12.526 \\
+28.06 & 293{,}601{,}280 & 4{,}194{,}304 & $3.593e-21$ $(297{,}166{,}322)$ & $3.235e-21$ $(297{,}393{,}168)$ & 12.063 \\
+28.07 & 297{,}795{,}584 & 4{,}194{,}304 & $1.775e-21$ $(301{,}090{,}986)$ & $3.276e-20$ $(298{,}685{,}330)$ & 12.413 \\
+28.08 & 301{,}989{,}888 & 4{,}194{,}304 & $1.725e-21$ $(304{,}348{,}427)$ & $3.239e-21$ $(303{,}439{,}436)$ & 13.260 \\
+28.09 & 306{,}184{,}192 & 4{,}194{,}304 & $5.191e-22$ $(306{,}228{,}765)$ & $2.879e-20$ $(309{,}957{,}834)$ & 11.720 \\
+28.10 & 310{,}378{,}496 & 4{,}194{,}304 & $3.887e-21$ $(313{,}261{,}071)$ & $5.204e-21$ $(313{,}114{,}243)$ & 12.893 \\
+28.11 & 314{,}572{,}800 & 4{,}194{,}304 & $1.048e-20$ $(316{,}959{,}535)$ & $3.653e-22$ $(314{,}764{,}391)$ & 12.743 \\
+28.12 & 318{,}767{,}104 & 4{,}194{,}304 & $1.666e-20$ $(321{,}040{,}811)$ & $2.032e-21$ $(320{,}803{,}384)$ & 12.558 \\
+28.13 & 322{,}961{,}408 & 4{,}194{,}304 & $1.378e-20$ $(324{,}726{,}584)$ & $2.016e-20$ $(325{,}862{,}257)$ & 12.591 \\
+28.14 & 327{,}155{,}712 & 4{,}194{,}304 & $9.296e-21$ $(330{,}041{,}528)$ & $1.951e-21$ $(327{,}923{,}577)$ & 12.732 \\
+28.15 & 331{,}350{,}016 & 4{,}194{,}304 & $3.847e-21$ $(332{,}066{,}900)$ & $6.512e-21$ $(334{,}016{,}730)$ & 12.549 \\
+28.16 & 335{,}544{,}320 & 4{,}194{,}304 & $1.113e-21$ $(338{,}945{,}756)$ & $2.743e-21$ $(336{,}494{,}503)$ & 12.405 \\
+28.17 & 339{,}738{,}624 & 4{,}194{,}304 & $7.650e-21$ $(343{,}687{,}066)$ & $1.989e-21$ $(343{,}467{,}223)$ & 12.313 \\
+28.18 & 343{,}932{,}928 & 4{,}194{,}304 & $2.000e-21$ $(347{,}267{,}147)$ & $2.772e-21$ $(346{,}761{,}393)$ & 12.206 \\
+28.19 & 348{,}127{,}232 & 4{,}194{,}304 & $1.437e-22$ $(349{,}972{,}684)$ & $1.433e-20$ $(351{,}295{,}162)$ & 13.603 \\
+28.20 & 352{,}321{,}536 & 4{,}194{,}304 & $5.143e-22$ $(353{,}661{,}837)$ & $2.833e-21$ $(353{,}990{,}351)$ & 11.765 \\
+28.21 & 356{,}515{,}840 & 4{,}194{,}304 & $3.081e-21$ $(356{,}895{,}426)$ & $5.735e-22$ $(357{,}765{,}549)$ & 11.813 \\
+28.22 & 360{,}710{,}144 & 4{,}194{,}304 & $8.141e-22$ $(364{,}737{,}335)$ & $1.316e-22$ $(362{,}062{,}452)$ & 13.552 \\
+28.23 & 364{,}904{,}448 & 4{,}194{,}304 & $9.240e-22$ $(365{,}075{,}693)$ & $3.223e-22$ $(365{,}778{,}901)$ & 11.562 \\
+28.24 & 369{,}098{,}752 & 4{,}194{,}304 & $7.157e-22$ $(371{,}893{,}339)$ & $8.105e-22$ $(371{,}246{,}341)$ & 11.810 \\
+28.25 & 373{,}293{,}056 & 4{,}194{,}304 & $3.085e-22$ $(374{,}008{,}474)$ & $2.529e-21$ $(376{,}055{,}882)$ & 13.831 \\
+28.26 & 377{,}487{,}360 & 4{,}194{,}304 & $8.880e-21$ $(378{,}129{,}221)$ & $6.429e-21$ $(381{,}433{,}624)$ & 12.044 \\
+28.27 & 381{,}681{,}664 & 4{,}194{,}304 & $8.273e-22$ $(384{,}046{,}343)$ & $1.056e-20$ $(382{,}597{,}108)$ & 12.525 \\
+28.28 & 385{,}875{,}968 & 4{,}194{,}304 & $4.914e-24$ $(388{,}909{,}543)$ & $8.857e-21$ $(386{,}125{,}278)$ & 12.275 \\
+28.29 & 390{,}070{,}272 & 4{,}194{,}304 & $1.638e-21$ $(390{,}737{,}050)$ & $8.114e-22$ $(391{,}647{,}767)$ & 11.700 \\
+28.30 & 394{,}264{,}576 & 4{,}194{,}304 & $2.526e-21$ $(395{,}220{,}414)$ & $5.912e-21$ $(398{,}186{,}911)$ & 12.558 \\
+28.31 & 398{,}458{,}880 & 4{,}194{,}304 & $7.885e-24$ $(400{,}544{,}529)$ & $1.694e-20$ $(402{,}139{,}190)$ & 12.558 \\
+28.32 & 402{,}653{,}184 & 4{,}194{,}304 & $9.306e-22$ $(405{,}224{,}114)$ & $4.711e-22$ $(405{,}024{,}519)$ & 12.028 \\
+28.33 & 406{,}847{,}488 & 4{,}194{,}304 & $9.700e-22$ $(407{,}982{,}235)$ & $2.819e-21$ $(407{,}281{,}054)$ & 12.332 \\
+28.34 & 411{,}041{,}792 & 4{,}194{,}304 & $2.745e-21$ $(413{,}477{,}028)$ & $1.293e-21$ $(412{,}276{,}830)$ & 11.854 \\
+28.35 & 415{,}236{,}096 & 4{,}194{,}304 & $5.219e-21$ $(416{,}468{,}676)$ & $7.693e-22$ $(418{,}544{,}766)$ & 11.578 \\
+28.36 & 419{,}430{,}400 & 4{,}194{,}304 & $1.954e-21$ $(422{,}398{,}112)$ & $3.436e-21$ $(423{,}295{,}624)$ & 12.982 \\
+28.37 & 423{,}624{,}704 & 4{,}194{,}304 & $1.289e-21$ $(423{,}710{,}706)$ & $2.513e-22$ $(426{,}529{,}906)$ & 12.895 \\
+28.38 & 427{,}819{,}008 & 4{,}194{,}304 & $4.101e-22$ $(429{,}368{,}382)$ & $4.883e-22$ $(429{,}282{,}395)$ & 13.442 \\
+28.39 & 432{,}013{,}312 & 4{,}194{,}304 & $5.984e-21$ $(432{,}505{,}720)$ & $1.679e-21$ $(434{,}853{,}618)$ & 12.570 \\
+28.40 & 436{,}207{,}616 & 4{,}194{,}304 & $1.685e-21$ $(436{,}314{,}750)$ & $2.873e-21$ $(437{,}443{,}842)$ & 11.926 \\
+28.41 & 440{,}401{,}920 & 4{,}194{,}304 & $1.275e-21$ $(442{,}841{,}765)$ & $5.083e-21$ $(442{,}062{,}629)$ & 11.858 \\
+28.42 & 444{,}596{,}224 & 4{,}194{,}304 & $4.070e-21$ $(447{,}235{,}367)$ & $7.158e-21$ $(447{,}720{,}068)$ & 13.405 \\
+28.43 & 448{,}790{,}528 & 4{,}194{,}304 & $1.569e-21$ $(452{,}029{,}583)$ & $2.822e-22$ $(450{,}505{,}498)$ & 12.393 \\
+28.44 & 452{,}984{,}832 & 4{,}194{,}304 & $4.410e-21$ $(455{,}437{,}571)$ & $1.014e-21$ $(454{,}240{,}771)$ & 11.531 \\
+28.45 & 457{,}179{,}136 & 4{,}194{,}304 & $2.793e-21$ $(459{,}828{,}193)$ & $8.322e-21$ $(461{,}365{,}410)$ & 12.483 \\
+28.46 & 461{,}373{,}440 & 4{,}194{,}304 & $1.747e-21$ $(463{,}276{,}633)$ & $6.347e-21$ $(463{,}584{,}552)$ & 11.568 \\
+28.47 & 465{,}567{,}744 & 4{,}194{,}304 & $1.953e-22$ $(467{,}914{,}174)$ & $7.459e-22$ $(466{,}121{,}593)$ & 11.721 \\
+28.48 & 469{,}762{,}048 & 4{,}194{,}304 & $3.067e-21$ $(471{,}111{,}503)$ & $3.750e-21$ $(473{,}136{,}896)$ & 13.749 \\
+28.49 & 473{,}956{,}352 & 4{,}194{,}304 & $3.276e-21$ $(477{,}377{,}170)$ & $2.199e-22$ $(474{,}560{,}743)$ & 11.791 \\
+28.50 & 478{,}150{,}656 & 4{,}194{,}304 & $5.934e-21$ $(480{,}943{,}527)$ & $6.086e-21$ $(478{,}837{,}280)$ & 11.811 \\
+28.51 & 482{,}344{,}960 & 4{,}194{,}304 & $4.365e-22$ $(485{,}602{,}436)$ & $4.656e-22$ $(483{,}731{,}011)$ & 12.214 \\
+28.52 & 486{,}539{,}264 & 4{,}194{,}304 & $5.845e-22$ $(488{,}578{,}708)$ & $2.469e-22$ $(490{,}595{,}136)$ & 12.000 \\
+28.53 & 490{,}733{,}568 & 4{,}194{,}304 & $6.973e-21$ $(494{,}115{,}822)$ & $1.425e-21$ $(491{,}328{,}133)$ & 11.615 \\
+28.54 & 494{,}927{,}872 & 4{,}194{,}304 & $4.455e-21$ $(495{,}724{,}767)$ & $1.792e-21$ $(496{,}559{,}778)$ & 14.097 \\
+28.55 & 499{,}122{,}176 & 4{,}194{,}304 & $5.780e-22$ $(499{,}782{,}534)$ & $5.210e-23$ $(501{,}373{,}708)$ & 11.701 \\
+28.56 & 503{,}316{,}480 & 4{,}194{,}304 & $4.533e-21$ $(504{,}996{,}574)$ & $9.370e-22$ $(504{,}517{,}808)$ & 11.720 \\
+28.57 & 507{,}510{,}784 & 4{,}194{,}304 & $1.140e-21$ $(507{,}876{,}391)$ & $1.183e-21$ $(509{,}911{,}917)$ & 12.174 \\
+28.58 & 511{,}705{,}088 & 4{,}194{,}304 & $6.990e-21$ $(513{,}352{,}302)$ & $4.274e-22$ $(514{,}216{,}147)$ & 12.008 \\
+28.59 & 515{,}899{,}392 & 4{,}194{,}304 & $1.115e-21$ $(516{,}239{,}075)$ & $8.307e-22$ $(519{,}197{,}380)$ & 12.192 \\
+28.60 & 520{,}093{,}696 & 4{,}194{,}304 & $6.023e-22$ $(521{,}145{,}596)$ & $9.409e-22$ $(522{,}529{,}654)$ & 14.640 \\
+28.61 & 524{,}288{,}000 & 4{,}194{,}304 & $1.326e-21$ $(528{,}412{,}351)$ & $1.972e-21$ $(526{,}958{,}976)$ & 12.038 \\
+28.62 & 528{,}482{,}304 & 4{,}194{,}304 & $4.360e-21$ $(528{,}890{,}012)$ & $9.307e-22$ $(530{,}509{,}954)$ & 11.560 \\
+28.63 & 532{,}676{,}608 & 4{,}194{,}304 & $1.374e-21$ $(533{,}430{,}370)$ & $4.753e-21$ $(535{,}448{,}067)$ & 12.130 \\
+\end{longtable}
+\endgroup
+
+\section{Reproducibility commands}
+
+The source was compiled and the new range was scanned with commands equivalent to:
+
+\begin{lstlisting}[style=shell]
+gcc -O3 -fopenmp mpfr_scan.c /lib/x86_64-linux-gnu/libmpfr.so.6 \
+    -lm -o mpfr_scan
+
+for ((a=134217728; a<536870912; a+=4194304)); do
+  b=$((a + 4194304))
+  OMP_NUM_THREADS=5 ./mpfr_scan "$a" "$b" 192
+done
+\end{lstlisting}
+
+The two global extremal records were rerun individually at $1024$ bits.  A high-precision
+independent decimal evaluation of the true logarithmic margins is also reported in
+\Cref{sec:scan}; it is not used in place of the directed MPFR inequalities.
+
+\begin{thebibliography}{99}
+
+\bibitem{MOAE}
+MathOverflow community wiki,
+\newblock \emph{If $2^x$ and $3^x$ are integers, must $x$ be as well?},
+\newblock question 17560, accessed August 21, 2026.
+\newblock \href{https://mathoverflow.net/questions/17560/if-2x-and-3x-are-integers-must-x-be-as-well}{MathOverflow 17560}.
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{doi:10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BakerWustholz1993}
+A.~Baker and G.~W\"ustholz,
+\newblock \emph{Logarithmic forms and group varieties},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{442} (1993), 19--62.
+
+\bibitem{Butler2017}
+L.~A.~Butler,
+\newblock \emph{A Diophantine approach to the three and four exponentials conjectures},
+\newblock Ramanujan Journal \textbf{42} (2017), 199--221.
+
+\bibitem{DasguptaKakde2026}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{Ranks of matrices of logarithms of algebraic numbers II: The matrix coefficient conjecture},
+\newblock Advances in Mathematics \textbf{487} (2026), 110753.
+\newblock \href{https://doi.org/10.1016/j.aim.2025.110753}{doi:10.1016/j.aim.2025.110753};
+\href{https://arxiv.org/abs/2408.08178}{arXiv:2408.08178}.
+
+\bibitem{CDTProducts}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\newblock \emph{The linear independence of $1$, $\zeta(2)$, and $L(2,\chi_{-3})$},
+\newblock arXiv:2408.15403, 2024--2026; see Section~14 for products of two logarithms.
+
+\bibitem{CDTHolonomy}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\newblock \emph{Arithmetic holonomy bounds and effective Diophantine approximation},
+\newblock Proceedings of the International Congress of Mathematicians 2026, vol.~3,
+356--376.
+\newblock \href{https://doi.org/10.1137/25M1806776}{doi:10.1137/25M1806776};
+\href{https://arxiv.org/abs/2510.04156}{arXiv:2510.04156}.
+
+\bibitem{Kawashima2026}
+M.~Kawashima,
+\newblock \emph{Linear independence of periods related to polylogarithms},
+\newblock arXiv:2605.17756v1, May 18, 2026.
+
+\bibitem{Matveev2000}
+E.~M.~Matveev,
+\newblock \emph{An explicit lower bound for a homogeneous rational linear form in the logarithms of algebraic numbers. II},
+\newblock Izvestiya: Mathematics \textbf{64} (2000), 1217--1269.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Springer, 2000.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics, 2023, 579--592.
+
+\bibitem{SuppliedReport}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified report and continuations},
+\newblock supplied source file
+\texttt{/Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex},
+August 21, 2026.
+
+\end{thebibliography}
+
+\end{document}
