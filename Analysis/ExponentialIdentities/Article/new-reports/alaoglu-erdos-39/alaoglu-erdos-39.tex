@@ -1,0 +1,1850 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={A Radix--Carry Continuation of the Alaoglu--Erdos Program},
+  pdfauthor={OpenAI GPT-5.6 Pro},
+  pdfsubject={Alaoglu--Erdos conjecture; radix reinterpretation; carry cocycles; p-adic dynamics}
+}
+
+\allowdisplaybreaks
+\emergencystretch=3em
+\setlength{\parindent}{1.3em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjectural target}
+\newtheorem{problem}[theorem]{Research problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Zp}{\mathbb Z_p}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\vTwo}{v_2}
+\newcommand{\vThree}{v_3}
+\newcommand{\PhiMap}{\Phi}
+\newcommand{\PsiMap}{\Psi}
+\newcommand{\Rad}{\mathcal R}
+\newcommand{\Cantor}{\mathcal C}
+\newcommand{\carry}{\mathsf C}
+\newcommand{\revcarry}{\mathsf K}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\alphaAE}{\alpha}
+\newcommand{\evidence}[1]{\textsf{[#1]}}
+\newcommand{\baseline}{the unified report}
+
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\rad}{rad}
+
+\definecolor{proofgreen}{RGB}{30,105,65}
+\definecolor{targetorange}{RGB}{155,82,15}
+\definecolor{codegray}{RGB}{247,247,247}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{black!20},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
+
+\title{\textbf{A Radix--Carry Continuation of the Alaoglu--Erd\H{o}s Program}\\[0.45em]
+\large Exact digit transducers, defect dynamics, and structural-prime constraints}
+\author{OpenAI GPT-5.6 Pro}
+\date{22 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+  \thetaAE=\frac{\log 3}{\log 2},\qquad
+  \alphaAE=\frac{1}{\thetaAE}=\frac{\log 2}{\log 3}.
+\]
+The Alaoglu--Erd\H{o}s conjecture is equivalent to the assertion that an
+integer value of $M^{\thetaAE}$, with $M\in\N$, forces $M$ to be a power of
+$2$.  The attached unified report already develops the algebraic,
+transcendence-theoretic, determinant, finite-verification, primitive-generator,
+and dynamical structure of this problem.  This continuation deliberately does
+not repeat that material.  It develops a separate radix mechanism.
+
+Write an integer in base $2$ and reinterpret the same finite digit word in
+base $3$.  The resulting map $\PhiMap$ is an order-preserving embedding of
+$\Nzero$ into the ternary Cantor integers.  More strongly, it is an exact
+cross-prime isometry:
+\[
+  \vThree\bigl(\PhiMap(m)-\PhiMap(n)\bigr)=\vTwo(m-n)
+  \quad(m\ne n).
+\]
+Its failures of additivity and multiplicativity are not errors but explicit
+positive carry polynomials.  Reinterpreting canonical ternary digits in base
+$2$ gives a reverse map $\PsiMap$ with negative carry polynomials.  These facts
+lead to sharp Archimedean envelopes
+\[
+  \PhiMap(n)\le n^{\thetaAE},\qquad
+  \PsiMap(n)\ge n^{\alphaAE},
+\]
+with equality only at powers of the source base.
+
+For a hypothetical nonintegral solution
+$M=2^x$, $A=3^x$, define
+\[
+  P_k=\PhiMap(M^k),\quad D_k=A^k-P_k,
+  \qquad Q_k=\PsiMap(A^k),\quad E_k=Q_k-M^k.
+\]
+Then $D_k,E_k$ are positive integers for every $k\ge1$.  This report proves
+exact nonlinear carry recurrences for them; an exact mantissa formula; the
+uniform estimate
+\[
+  \frac{\fracpart{kx}}{3}
+  \le \frac{D_k}{A^k}
+  \le (\log 3)\fracpart{kx};
+\]
+a complete cross-prime valuation law for the Cantor shadow orbit $P_k$; and a
+first-collision theorem for binary squaring which gives
+\[
+ \vThree\bigl(P_{2k}-P_k^2\bigr)
+ =2k\vTwo(M)+\vTwo\bigl(U^k-1\bigr),
+ \qquad M=2^{\vTwo(M)}U,\ U\text{ odd}.
+\]
+A nonlinear spectral-radius reformulation also emerges:
+\[
+  \lim_{k\to\infty}\PhiMap(M^k)^{1/k}=M^{\thetaAE};
+\]
+hence the original conjecture asks whether this digit-dynamical spectral
+radius can be an integer only on the carry-free monomial orbits $M=2^n$.
+
+These are rigorous paper proofs, accompanied by independent finite executable
+checks.  They do not yet close the conjecture.  The remaining obstruction is
+isolated as a simultaneous Archimedean/$3$-adic rigidity problem for the same
+positive defect sequence, rather than another reformulation involving only
+logarithms.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\textwidth}
+\textbf{Status discipline.}
+\evidence{P} means proved in this report by a complete mathematical argument.
+\evidence{C} means independently checked by finite computation and is used
+only as a sanity check.  \evidence{B} refers to an input already established
+in the attached unified report.  \evidence{T} is a proposed closing lemma or
+research target.  No claim announced by another model or research group is
+used as evidence.  In particular, the Alaoglu--Erd\H{o}s conjecture remains
+open at the end of this continuation.
+\end{minipage}}
+\end{center}
+
+\tableofcontents
+
+\section{Scope, interface to the baseline, and the new result map}
+
+The unified report is already a large consolidation.  Repeating its survey of
+primitive generators, common odd cores, algebraic auxiliary outputs,
+determinant repulsion, higher differences, finite zero-free regions, and
+classical transcendence consequences would make this document longer while
+making the frontier less visible.  We therefore use only the following
+minimal interface.
+
+\begin{enumerate}[label=(B\arabic*)]
+\item If $2^x$ and $3^x$ are positive integers and $x$ is not an integer,
+then $x>0$ and $x$ is irrational.  In fact, standard transcendence theory
+makes $x$ transcendental, but irrationality is enough for the dynamical
+arguments below. \evidence{B}
+\item We may put
+\[
+  M=2^x\in\N,\qquad A=3^x\in\N,
+\]
+so that
+\[
+  A=M^{\thetaAE},\qquad \thetaAE=\log_2 3.
+\]
+Conversely, an integer pair $M,A$ satisfying this relation gives a solution
+$x=\log_2 M$. \evidence{B}
+\item Integer translation acts by
+$(M,A)\mapsto (2^rM,3^rA)$.  The baseline contains much sharper primitive
+normalisations; below we use only this elementary compatibility. \evidence{B}
+\end{enumerate}
+
+Everything after this interface is developed independently.  The main new
+objects and their evidence levels are as follows.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}
+                  >{\raggedright\arraybackslash}p{0.57\textwidth}
+                  >{\centering\arraybackslash}p{0.08\textwidth}}
+\toprule
+Object or theorem & Content & Status\\
+\midrule
+\endhead
+Radix embedding $\PhiMap$ & Binary digits re-evaluated in base $3$; strict
+order embedding and exact $2$-adic/$3$-adic isometry. & \evidence{P}\\
+Carry cocycles & Exact positive correction polynomials for addition and
+multiplication; exact negative corrections for $\PsiMap$. & \evidence{P}\\
+Power envelopes & $\PhiMap(n)\le n^{\thetaAE}$ and
+$\PsiMap(n)\ge n^{\alphaAE}$, with complete equality classification and
+explicit gaps. & \evidence{P}\\
+Counterexample defects & Positive integer sequences $D_k,E_k$ with exact
+nonlinear recurrences and carry-budget inequalities. & \evidence{P}\\
+Mantissa observable & Exact representation of $D_k/A^k$ by the fractional
+rotation $\fracpart{kx}$ and a Cantor digit embedding; universal two-sided
+bounds. & \evidence{P}\\
+Valuation resonance & Pairwise $3$-adic distances of $P_k$ are exactly the
+binary distances of $M^k$; outside an explicit LTE resonance set, valuations
+of $D_k-D_\ell$ are forced. & \evidence{P}\\
+Square first collision & The first nonzero ternary digit of the square-carry
+polynomial occurs at a computable position and has coefficient $1$. &
+\evidence{P}\\
+Radix spectral radius & $\sup_k\PhiMap(M^k)^{1/k}=M^{\thetaAE}$, giving a
+purely digit-dynamical equivalent form of the conjecture. & \evidence{P}\\
+Finite executable audit & Exhaustive checks of the exact identities over
+large finite boxes; never used in a proof. & \evidence{C}\\
+Closing theorem & A cross-place rigidity theorem strong enough to make the
+carry budget incompatible with the rotation gauge. & \evidence{T}\\
+\bottomrule
+\end{longtable}
+
+\section{Canonical digits and radix reinterpretation}
+
+\subsection{General definition}
+
+For an integer base $b\ge2$ and $n\in\Nzero$, write the canonical finite
+expansion
+\[
+  n=\sum_{i=0}^{L} d_i^{(b)}(n)b^i,
+  \qquad 0\le d_i^{(b)}(n)<b.
+\]
+Leading zeroes are harmless, but the canonical expansion has
+$d_L^{(b)}(n)\ne0$ when $n>0$.
+
+\begin{definition}[Radix reinterpretation]
+For bases $b,c\ge2$, define
+\[
+  \Rad_{b\to c}(n)
+   :=\sum_{i\ge0}d_i^{(b)}(n)c^i.
+\]
+The two maps used throughout are
+\[
+  \PhiMap:=\Rad_{2\to3},\qquad
+  \PsiMap:=\Rad_{3\to2}.
+\]
+Thus $\PhiMap$ replaces the place values $1,2,4,\ldots$ of a binary word by
+$1,3,9,\ldots$, while $\PsiMap$ evaluates canonical ternary digits
+$0,1,2$ at the place values $1,2,4,\ldots$.
+\end{definition}
+
+The image of $\PhiMap$ consists precisely of the nonnegative integers whose
+ternary digits belong to $\{0,1\}$.  We call them \emph{ternary Cantor
+integers}.  On this image, $\PsiMap$ is the genuine inverse:
+\[
+  \PsiMap(\PhiMap(n))=n.
+\]
+On arbitrary integers, however, $\PsiMap$ is not monotone and is not an
+inverse in either direction.  For example,
+\[
+  8=(22)_3,\quad \PsiMap(8)=6,
+  \qquad 9=(100)_3,\quad \PsiMap(9)=4.
+\]
+This warning prevents a tempting but invalid order argument later.
+
+\subsection{Strict order preservation in the expanding direction}
+
+\begin{proposition}[Order embedding]\label{prop:order}
+If $2\le b<c$, then $\Rad_{b\to c}$ is strictly increasing on $\Nzero$.
+In particular, $\PhiMap$ is a strict order embedding.
+\end{proposition}
+
+\begin{proof}
+Let $m<n$, and let $r$ be the highest digit position at which their canonical
+base-$b$ expansions differ.  At that position the digit of $n$ exceeds the
+digit of $m$ by at least $1$.  Lower positions can oppose this difference by
+at most
+\[
+  (b-1)\sum_{i=0}^{r-1}c^i
+  =(b-1)\frac{c^r-1}{c-1}<c^r,
+\]
+because $b<c$.  Hence the contribution $c^r$ at the highest differing
+position dominates every possible lower-digit loss, so
+$\Rad_{b\to c}(n)>\Rad_{b\to c}(m)$.
+\end{proof}
+
+\subsection{The exact cross-prime isometry}
+
+The strongest elementary feature of $\PhiMap$ is not its monotonicity but its
+preservation of the index of the first differing digit.
+
+\begin{theorem}[Binary--ternary valuation isometry]\label{thm:isometry}
+For distinct $m,n\in\Nzero$,
+\[
+  \boxed{\quad
+  \vThree\bigl(\PhiMap(m)-\PhiMap(n)\bigr)
+  =\vTwo(m-n).
+  \quad}
+\]
+Equivalently, the first binary digit at which $m$ and $n$ differ has exactly
+the same index as the first ternary digit at which their Cantor images differ.
+\end{theorem}
+
+\begin{proof}
+Put $r=\vTwo(m-n)$.  Congruence modulo $2^r$ says that the binary digits in
+positions $0,\ldots,r-1$ agree.  Failure of congruence modulo $2^{r+1}$ says
+that the digits in position $r$ differ, necessarily by $\pm1$.  Therefore
+\[
+ \PhiMap(m)-\PhiMap(n)
+ =3^r\bigl(\pm1+3z\bigr)
+\]
+for some $z\in\Z$.  The parenthesised factor is a $3$-adic unit, proving the
+claim.
+\end{proof}
+
+\begin{corollary}[A $2$-adic/$3$-adic Cantor embedding]\label{cor:padic-extension}
+The digit formula extends continuously to
+\[
+  \widehat\Phi:\Z_2\longrightarrow\Z_3,
+  \qquad
+  \widehat\Phi\!\left(\sum_{i\ge0}\varepsilon_i2^i\right)
+  =\sum_{i\ge0}\varepsilon_i3^i,
+  \quad \varepsilon_i\in\{0,1\}.
+\]
+It is a homeomorphism from $\Z_2$ onto the closed ternary Cantor subset of
+$\Z_3$, and for $u\ne v$,
+\[
+  \vThree\bigl(\widehat\Phi(u)-\widehat\Phi(v)\bigr)=\vTwo(u-v).
+\]
+\end{corollary}
+
+\begin{proof}
+The series converges in $\Z_3$.  Agreement of the first $r$ binary digits is
+equivalent to agreement modulo $2^r$ and becomes agreement of the first $r$
+ternary digits, hence agreement modulo $3^r$.  The argument of
+\cref{thm:isometry} gives equality at the first differing digit.  Compactness
+of $\Z_2$ and the explicit inverse on $\{0,1\}$-digit strings give the
+homeomorphism statement.
+\end{proof}
+
+This isometry is the first genuinely cross-place input of the report.  It
+turns a binary multiplicative orbit into a ternary Cantor shadow with exactly
+prescribed $3$-adic geometry.
+
+\section{Carry cocycles: exact failure of ring homomorphism}
+
+The map $\PhiMap$ is neither additive nor multiplicative.  Its defects are,
+however, completely explicit and have a fixed sign on nonnegative integers.
+
+\subsection{Addition}
+
+Let $u_i,v_i,w_i\in\{0,1\}$ be the binary digits of $u,v,u+v$.  Let
+$\kappa_{-1}=0$ and let $\kappa_i$ be the carry leaving position $i$, so
+\[
+  u_i+v_i+\kappa_{i-1}=w_i+2\kappa_i.
+\]
+
+\begin{theorem}[Addition carry identity]\label{thm:add-carry}
+For $u,v\in\Nzero$,
+\[
+ \boxed{
+ \PhiMap(u+v)=\PhiMap(u)+\PhiMap(v)
+       +\sum_{i\ge0}\kappa_i3^i.}
+\]
+Consequently $\PhiMap$ is superadditive, with equality exactly when the binary
+addition is carry-free.
+\end{theorem}
+
+\begin{proof}
+Multiply the digit recurrence by $3^i$ and sum over $i$:
+\[
+ \PhiMap(u)+\PhiMap(v)+\sum_{i\ge0}\kappa_{i-1}3^i
+ =\PhiMap(u+v)+2\sum_{i\ge0}\kappa_i3^i.
+\]
+The shifted carry sum is $3\sum_i\kappa_i3^i$, giving the formula after
+rearrangement.  Every coefficient is nonnegative, and the correction vanishes
+exactly when every carry vanishes.
+\end{proof}
+
+\subsection{Multiplication}
+
+Let $r_i=\sum_{p+q=i}u_pv_q$ be the raw binary convolution coefficient.  On
+normalising the convolution to binary digits $w_i$, carries satisfy
+\[
+  r_i+\kappa_{i-1}=w_i+2\kappa_i.
+\]
+
+\begin{theorem}[Multiplication carry identity]\label{thm:mul-carry}
+For $u,v\in\Nzero$,
+\[
+ \boxed{
+ \PhiMap(uv)=\PhiMap(u)\PhiMap(v)
+       +\sum_{i\ge0}\kappa_i3^i.}
+\]
+Thus $\PhiMap$ is supermultiplicative.  Equality holds precisely when the raw
+binary convolution already has every coefficient in $\{0,1\}$.
+\end{theorem}
+
+\begin{proof}
+The same summation as in \cref{thm:add-carry} applies, with
+$\sum_i r_i3^i=\PhiMap(u)\PhiMap(v)$.
+\end{proof}
+
+\begin{definition}[Carry cocycles]
+Set
+\[
+ \mathfrak a(u,v)=\PhiMap(u+v)-\PhiMap(u)-\PhiMap(v),
+ \qquad
+ \mathfrak m(u,v)=\PhiMap(uv)-\PhiMap(u)\PhiMap(v).
+\]
+On $\Nzero^2$ these are nonnegative integers whose ternary values are the
+carry polynomials in \cref{thm:add-carry,thm:mul-carry}.
+\end{definition}
+
+The terminology ``cocycle'' is useful: associativity forces identities among
+these corrections.  For example,
+\[
+ \mathfrak a(u,v)+\mathfrak a(u+v,w)
+ =\mathfrak a(v,w)+\mathfrak a(u,v+w).
+\]
+Likewise, comparing two parenthesisations of a triple product yields
+\[
+ \PhiMap(w)\mathfrak m(u,v)+\mathfrak m(uv,w)
+ =\PhiMap(u)\mathfrak m(v,w)+\mathfrak m(u,vw).
+\]
+These identities are automatic, but they are valuable formalisation checks.
+
+\subsection{The reverse sign}
+
+For canonical ternary digits, base-$3$ normalisation replaces three units at
+position $i$ by one unit at position $i+1$.  Evaluating at base $2$ makes that
+operation smaller rather than larger.
+
+\begin{theorem}[Reverse carry identities]\label{thm:reverse-carry}
+For $u,v\in\Nzero$, let $\lambda_i$ be the carries in the relevant canonical
+base-$3$ addition or multiplication.  Then
+\begin{align*}
+ \PsiMap(u+v)
+   &=\PsiMap(u)+\PsiMap(v)-\sum_{i\ge0}\lambda_i2^i,\\
+ \PsiMap(uv)
+   &=\PsiMap(u)\PsiMap(v)-\sum_{i\ge0}\lambda_i2^i.
+\end{align*}
+Hence $\PsiMap$ is subadditive and submultiplicative.
+\end{theorem}
+
+\begin{proof}
+The base-$3$ carry recurrence is
+$r_i+\lambda_{i-1}=w_i+3\lambda_i$.  Evaluate at $2$ rather than $3$.
+The shifted carry sum contributes $2\sum_i\lambda_i2^i$, leaving one negative
+copy of the carry polynomial after rearrangement.
+\end{proof}
+
+\begin{warning}
+Subadditivity and submultiplicativity do not imply monotonicity.  The explicit
+counterexample $\PsiMap(8)=6>4=\PsiMap(9)$ remains essential.  Every later use
+of $\PsiMap$ relies on its envelope or carry formula, never on an order claim.
+\end{warning}
+
+\section{Archimedean power envelopes}
+
+The digit maps have exact growth exponents.  The proof is elementary but the
+equality cases are the decisive feature.
+
+\subsection{The general expanding-base theorem}
+
+\begin{theorem}[Power envelope for radix reinterpretation]\label{thm:envelope-general}
+Let $2\le b<c$ and put
+\[
+  \gamma=\frac{\log c}{\log b}>1.
+\]
+Then for every $n\in\N$,
+\[
+  \Rad_{b\to c}(n)\le n^\gamma.
+\]
+Equality holds if and only if $n=b^L$ for some $L\in\Nzero$.
+\end{theorem}
+
+\begin{proof}
+Let $L=\floor{\log_b n}$ and write
+\[
+ Y_b=\frac{n}{b^L}
+   =\sum_{j=0}^{L}d_{L-j}^{(b)}(n)b^{-j},
+ \qquad
+ Y_c=\frac{\Rad_{b\to c}(n)}{c^L}
+   =\sum_{j=0}^{L}d_{L-j}^{(b)}(n)c^{-j}.
+\]
+The leading terms agree, and every lower place has $c^{-j}<b^{-j}$.
+Therefore $Y_c\le Y_b$.  Since $Y_b\ge1$ and $\gamma>1$,
+$Y_b\le Y_b^\gamma$.  As $b^{L\gamma}=c^L$,
+\[
+ \Rad_{b\to c}(n)=c^LY_c
+ \le c^LY_b^\gamma=n^\gamma.
+\]
+For equality, first $Y_c=Y_b$, forcing every lower digit to vanish.  Then
+$Y_b=Y_b^\gamma$, forcing the leading digit to be $1$.  Thus $n=b^L$.
+The converse is immediate.
+\end{proof}
+
+\begin{theorem}[Reverse power envelope]\label{thm:reverse-envelope}
+Under the same assumptions, put $\beta=1/\gamma$.  Then
+\[
+  \Rad_{c\to b}(m)\ge m^\beta
+  \qquad(m\in\N),
+\]
+with equality if and only if $m=c^L$.
+\end{theorem}
+
+\begin{proof}
+Normalise the canonical base-$c$ digits at their leading position:
+\[
+ Z_c=\frac{m}{c^L},\qquad
+ Z_b=\frac{\Rad_{c\to b}(m)}{b^L}.
+\]
+Now $b^{-j}>c^{-j}$ at every lower place, so $Z_b\ge Z_c$.  Also
+$Z_c\ge1\ge Z_c^{\beta-1}$, hence $Z_c\ge Z_c^\beta$.  Multiplication by
+$b^L=c^{L\beta}$ proves the inequality.  Equality requires no lower digits
+and leading digit $1$, exactly as before.
+\end{proof}
+
+Specialising gives the two fundamental bounds
+\begin{equation}\label{eq:two-envelopes}
+  \boxed{\PhiMap(n)\le n^{\thetaAE}},
+  \qquad
+  \boxed{\PsiMap(n)\ge n^{\alphaAE}}.
+\end{equation}
+
+\subsection{Exact decomposition of the forward gap}
+
+The proof of \cref{thm:envelope-general} separates two independent sources of
+strictness: curvature of $y\mapsto y^{\thetaAE}$ and contraction of lower
+binary places when they are reweighted by powers of $3$.
+
+\begin{proposition}[Curvature plus digit-weight gap]\label{prop:gap-decomposition}
+Let $n\in\N$, $L=\floor{\log_2n}$, and
+\[
+  Y_2=\frac{n}{2^L},\qquad
+  Y_3=\frac{\PhiMap(n)}{3^L}.
+\]
+Then
+\begin{align}
+ n^{\thetaAE}-\PhiMap(n)
+ &=3^L\bigl[(Y_2^{\thetaAE}-Y_2)+(Y_2-Y_3)\bigr],
+ \label{eq:gap-decomp}\\
+ Y_2-Y_3
+ &=\sum_{j=1}^{L}\varepsilon_{L-j}
+     \bigl(2^{-j}-3^{-j}\bigr),
+ \label{eq:digit-weight-gap}
+\end{align}
+where $\varepsilon_i$ are the binary digits of $n$.  In particular,
+\begin{equation}\label{eq:gap-lower}
+ n^{\thetaAE}-\PhiMap(n)
+ \ge(\thetaAE-1)\left(\frac32\right)^L(n-2^L).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The identity is obtained by adding and subtracting $3^LY_2$.  Formula
+\eqref{eq:digit-weight-gap} is termwise.  Convexity gives
+$Y_2^{\thetaAE}\ge1+\thetaAE(Y_2-1)$, hence
+$Y_2^{\thetaAE}-Y_2\ge(\thetaAE-1)(Y_2-1)$, which becomes
+\eqref{eq:gap-lower} after rescaling.
+\end{proof}
+
+The lower bound is especially strong near a power of $2$: if
+$n=2^L+r$ with $1\le r<2^L$, then the gap is at least
+$(\thetaAE-1)(3/2)^Lr$.  Thus the integer gap in a hypothetical solution is
+not merely nonzero; it grows at a definite cross-radix scale.
+
+\section{Specialisation to a hypothetical counterexample}
+
+Assume from now through \cref{sec:why-not-closed} that
+\begin{equation}\label{eq:candidate}
+  M=2^x\in\N,
+  \qquad A=3^x\in\N,
+  \qquad x\notin\Z.
+\end{equation}
+Then $x>0$, $M>1$, $A>1$, and
+\[
+  A=M^{\thetaAE},\qquad M=A^{\alphaAE}.
+\]
+Neither $M$ is a power of $2$ nor $A$ a power of $3$.
+
+\subsection{The four canonical sequences}
+
+\begin{definition}[Cantor shadows and defects]\label{def:defects}
+For $k\ge1$, set
+\[
+ P_k=\PhiMap(M^k),\qquad D_k=A^k-P_k,
+\]
+\[
+ Q_k=\PsiMap(A^k),\qquad E_k=Q_k-M^k.
+\]
+\end{definition}
+
+For bookkeeping at the identity element, we also set $P_0=Q_0=1$ and $D_0=E_0=0$.
+
+\begin{proposition}[Strict integer sandwich]\label{prop:strict-sandwich}
+For every $k\ge1$,
+\[
+  1\le D_k\le A^k-1,
+  \qquad
+  E_k\ge1.
+\]
+Equivalently,
+\[
+  \PhiMap(M^k)\le A^k-1,
+  \qquad
+  \PsiMap(A^k)\ge M^k+1.
+\]
+\end{proposition}
+
+\begin{proof}
+By \cref{thm:envelope-general},
+$P_k\le(M^k)^{\thetaAE}=A^k$.  Equality would force $M^k$ to be a power of
+$2$, hence $M$ a power of $2$, contrary to \eqref{eq:candidate}.  Both sides
+are integers, so $D_k\ge1$.  The upper bound follows from $P_k\ge1$.
+The reverse assertion follows from \cref{thm:reverse-envelope}; equality
+would force $A^k$, and hence $A$, to be a power of $3$.
+\end{proof}
+
+\subsection{Synchronous digit length}
+
+A small identity gives the radix construction its geometric coherence.
+
+\begin{proposition}[Equal word length]\label{prop:same-length}
+For every $k\ge1$, the binary word of $M^k$ and the ternary word of $A^k$
+have the same length,
+\[
+  L_k+1,\qquad L_k=\floor{kx}.
+\]
+Moreover, $P_k$ has as its ternary word exactly the binary word of $M^k$.
+Thus $P_k<A^k$ says that the ternary word of $A^k$ lies lexicographically
+above the binary word of $M^k$ when the latter is read as a $0$--$1$ ternary
+word.
+\end{proposition}
+
+\begin{proof}
+Since $\log_2M=x$ and $\log_3A=x$,
+\[
+ \floor{\log_2M^k}=\floor{kx}=\floor{\log_3A^k}.
+\]
+The remaining statements are the definition of $\PhiMap$ and ordinary
+positional comparison in base $3$.
+\end{proof}
+
+This lexical dominance is exact but, by itself, is not restrictive enough:
+it is already implied by the universal power envelope.  Its value comes from
+combining it with carries and valuations, not from treating it as a standalone
+order miracle.
+
+\subsection{Compatibility with integer translation}
+
+Let $r\ge0$ and write $M=2^rM_0$, $A=3^rA_0$.  Then
+\[
+  \PhiMap(2^rn)=3^r\PhiMap(n),
+  \qquad
+  \PsiMap(3^rm)=2^r\PsiMap(m).
+\]
+Consequently
+\[
+ D_k(M,A)=3^{rk}D_k(M_0,A_0),
+ \qquad
+ E_k(M,A)=2^{rk}E_k(M_0,A_0).
+\]
+Thus the radix defects respect the baseline's integer-shift reduction exactly;
+no information is lost by passing to a primitive translate.
+
+\section{Exact defect dynamics and the carry budget}
+
+\subsection{Forward recurrence}
+
+Let $\carry_{k,\ell}$ denote the binary multiplication carry polynomial,
+evaluated at $3$, for the product $M^kM^\ell=M^{k+\ell}$.  By
+\cref{thm:mul-carry},
+\[
+  P_{k+\ell}=P_kP_\ell+\carry_{k,\ell},
+  \qquad \carry_{k,\ell}\in\Nzero.
+\]
+
+\begin{theorem}[Forward defect recurrence]\label{thm:D-recurrence}
+For $k,\ell\ge1$,
+\begin{equation}\label{eq:D-recurrence}
+ \boxed{
+ D_{k+\ell}
+ =A^kD_\ell+A^\ell D_k-D_kD_\ell-\carry_{k,\ell}.}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:D-square}
+ D_{2k}=2A^kD_k-D_k^2-\carry_{k,k}.
+\end{equation}
+Because $D_{k+\ell}\ge1$, every hypothetical counterexample must satisfy the
+carry-budget inequality
+\begin{equation}\label{eq:carry-budget}
+ \carry_{k,\ell}+1
+ \le A^kD_\ell+A^\ell D_k-D_kD_\ell.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute $P_j=A^j-D_j$ into
+$P_{k+\ell}=P_kP_\ell+\carry_{k,\ell}$ and expand.  The last inequality is
+\cref{prop:strict-sandwich}.
+\end{proof}
+
+The recurrence has a useful interpretation.  If there were no binary carries,
+then $P_{k+\ell}=P_kP_\ell$, and the defect would evolve by the first three
+terms on the right of \eqref{eq:D-recurrence}.  Every actual carry consumes a
+positive portion of that available defect.  A proof by this route must show
+that, at some scale, the required carry expenditure exceeds the available
+budget.
+
+\subsection{Reverse recurrence}
+
+Let $\revcarry_{k,\ell}$ be the base-$3$ multiplication carry polynomial,
+evaluated at $2$, for $A^kA^\ell=A^{k+\ell}$.  Then
+\[
+ Q_{k+\ell}=Q_kQ_\ell-\revcarry_{k,\ell}.
+\]
+
+\begin{theorem}[Reverse defect recurrence]\label{thm:E-recurrence}
+For $k,\ell\ge1$,
+\begin{equation}\label{eq:E-recurrence}
+ \boxed{
+ E_{k+\ell}
+ =M^kE_\ell+M^\ell E_k+E_kE_\ell-\revcarry_{k,\ell}.}
+\end{equation}
+Hence
+\begin{equation}\label{eq:reverse-budget}
+ \revcarry_{k,\ell}+1
+ \le M^kE_\ell+M^\ell E_k+E_kE_\ell.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert $Q_j=M^j+E_j$ into the reverse carry identity and use $E_{k+\ell}\ge1$.
+\end{proof}
+
+The signs in \eqref{eq:D-recurrence} and \eqref{eq:E-recurrence} are genuinely
+different.  In the forward direction the mixed defect terms are reduced by
+$D_kD_\ell$; in the reverse direction they are enlarged by $E_kE_\ell$.
+This asymmetry is one reason to retain both sequences even though the forward
+map has the cleaner valuation theory.
+
+\subsection{Power bounds generated by the first defect}
+
+Supermultiplicativity and submultiplicativity give immediate global bounds.
+
+\begin{proposition}[Propagation from $k=1$]\label{prop:first-defect-prop}
+For every $k\ge1$,
+\begin{align*}
+  (A-D_1)^k&\le P_k\le A^k-1,\\
+  1\le D_k&\le A^k-(A-D_1)^k,\\
+  M^k+1&\le Q_k\le(M+E_1)^k,\\
+  1\le E_k&\le(M+E_1)^k-M^k.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+Repeated supermultiplicativity gives
+$P_k=\PhiMap(M^k)\ge\PhiMap(M)^k=(A-D_1)^k$.
+Repeated submultiplicativity gives
+$Q_k\le\PsiMap(A)^k=(M+E_1)^k$.  The remaining bounds are definitions and
+\cref{prop:strict-sandwich}.
+\end{proof}
+
+These estimates are not by themselves contradictory: the allowed intervals
+still have exponential width.  Their main purpose is to calibrate any proposed
+carry lower bound.
+
+\section{Structural-prime laws}
+
+\subsection{Valuation of a Cantor shadow}
+
+Let
+\[
+  a=\vTwo(M),\qquad M=2^aU,\quad U\text{ odd}.
+\]
+Because the least nonzero binary digit of $M^k$ is in position $ak$, the least
+nonzero ternary digit of $P_k$ is in the same position.
+
+\begin{proposition}[Structural valuation]\label{prop:Pk-valuation}
+For every $k\ge1$,
+\[
+  \vThree(P_k)=ak.
+\]
+If $U>1$, then
+\begin{equation}\label{eq:Pk-anchor}
+ \boxed{
+ \vThree\bigl(P_k-3^{ak}\bigr)
+ =ak+\vTwo(U^k-1).}
+\end{equation}
+The quotient after removal of this power of $3$ is congruent to $1$ modulo
+$3$.
+\end{proposition}
+
+\begin{proof}
+The shift identity gives $P_k=3^{ak}\PhiMap(U^k)$.  Since $U^k$ is odd, its
+least binary digit is $1$, so $\PhiMap(U^k)$ is a $3$-adic unit.  If
+$r=\vTwo(U^k-1)$, then the first binary digit after the least digit at which
+$U^k$ differs from $1$ is position $r$, and that digit is $1$.  The isometry
+\cref{thm:isometry}, or direct digit inspection, gives
+$\vThree(\PhiMap(U^k)-1)=r$ with unit quotient $1$ modulo $3$.
+\end{proof}
+
+Let $b=\vThree(A)$.  Since $D_k=A^k-P_k$, unequal structural slopes force the
+valuation of the defect without cancellation.
+
+\begin{corollary}[Unequal-slope defect valuation]\label{cor:D-valuation}
+If $a\ne b$, then for all $k\ge1$,
+\[
+  \vThree(D_k)=k\min(a,b).
+\]
+If $a=b$, then $3^{ak}\mid D_k$ and
+\[
+  \frac{D_k}{3^{ak}}
+  =\left(\frac{A}{3^a}\right)^k-\PhiMap(U^k).
+\]
+\end{corollary}
+
+\begin{proof}
+When $a\ne b$, the two summands $A^k$ and $P_k$ have unequal $3$-adic
+valuations $bk$ and $ak$, so their difference has the smaller valuation.  The
+equal case follows by factoring $3^{ak}$.
+\end{proof}
+
+\subsection{The first collision in a binary square}
+
+The next theorem identifies not just a lower bound but the exact first ternary
+place occupied by the square-carry polynomial.
+
+\begin{theorem}[Square first-collision theorem]\label{thm:first-collision}
+Let $n=2^au$ with $u>1$ odd, and set $r=\vTwo(u-1)$.  Then
+\[
+  C(n):=\PhiMap(n^2)-\PhiMap(n)^2>0
+\]
+and
+\begin{equation}\label{eq:first-collision}
+  \boxed{
+  \vThree(C(n))=2a+r,
+  \qquad
+  \frac{C(n)}{3^{2a+r}}\equiv1\pmod3.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The two lowest $1$-bits of $n$ occur in positions $a$ and $a+r$.  In the raw
+binary convolution for $n^2$, the coefficient at position $2a$ is $1$, and
+all coefficients through position $2a+r-1$ are at most $1$ with no incoming
+carry.  At position $2a+r$, the two cross terms
+$(a,a+r)$ and $(a+r,a)$ contribute exactly $2$.  Thus the first nonzero carry
+leaves position $2a+r$, and that carry equals $1$.  The multiplication carry
+identity evaluates the carry string in base $3$, proving
+\eqref{eq:first-collision}.
+\end{proof}
+
+Apply this to $n=M^k=2^{ak}U^k$.
+
+\begin{corollary}[Exact square-carry valuation along the orbit]
+\label{cor:orbit-square-carry}
+If $U>1$, then
+\begin{equation}\label{eq:orbit-square-carry}
+ \boxed{
+ \vThree(P_{2k}-P_k^2)
+ =2ak+\vTwo(U^k-1),}
+\end{equation}
+with leading $3$-adic unit congruent to $1$ modulo $3$.  Equivalently,
+\begin{equation}\label{eq:defect-square-valuation}
+ \boxed{
+ \vThree\bigl(2A^kD_k-D_k^2-D_{2k}\bigr)
+ =2ak+\vTwo(U^k-1).}
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:explicit-carry-budget}
+ D_k(2A^k-D_k)
+ \ge D_{2k}+3^{2ak+\vTwo(U^k-1)}
+ \ge1+3^{2ak+\vTwo(U^k-1)}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Use \cref{thm:first-collision} and the identity
+$P_{2k}-P_k^2=2A^kD_k-D_k^2-D_{2k}$.  Positivity and the least ternary place
+give the real lower bound for the carry polynomial.
+\end{proof}
+
+For $k=2^j$, lifting the exponent gives an especially transparent law.  If
+$U>1$ is odd and $j\ge1$, then
+\[
+ \vTwo(U^{2^j}-1)
+ =\vTwo(U-1)+\vTwo(U+1)+j-1.
+\]
+Therefore
+\begin{equation}\label{eq:dyadic-tower-valuation}
+ \vThree(P_{2^{j+1}}-P_{2^j}^2)
+ =2a\,2^j+j+\sigma_U,
+ \qquad
+ \sigma_U=\vTwo(U-1)+\vTwo(U+1)-1.
+\end{equation}
+This exact affine--exponential valuation profile is a compact target for Lean
+formalisation and for any future $3$-adic interpolation argument.
+
+\subsection{Pairwise valuation geometry and the resonance set}
+
+The square theorem is one slice of a complete pairwise law.
+
+\begin{theorem}[Pairwise Cantor-shadow distances]\label{thm:pairwise-shadow}
+For distinct $k,\ell\ge0$,
+\begin{equation}\label{eq:pairwise-shadow}
+ \boxed{
+ \vThree(P_k-P_\ell)=\vTwo(M^k-M^\ell).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+This is \cref{thm:isometry} applied to $M^k$ and $M^\ell$.
+\end{proof}
+
+For $k>\ell$, define
+\[
+ R_{k,\ell}=\vTwo(M^k-M^\ell),
+ \qquad
+ S_{k,\ell}=\vThree(A^k-A^\ell).
+\]
+Since
+\[
+ P_k-P_\ell=(A^k-A^\ell)-(D_k-D_\ell),
+\]
+the ultrametric inequality determines the defect difference whenever the two
+known valuations are unequal.
+
+\begin{theorem}[Valuation resonance dichotomy]\label{thm:resonance}
+If $R_{k,\ell}\ne S_{k,\ell}$, then
+\begin{equation}\label{eq:defect-difference-valuation}
+ \boxed{
+ \vThree(D_k-D_\ell)=\min(R_{k,\ell},S_{k,\ell}).}
+\end{equation}
+If $S_{k,\ell}<R_{k,\ell}$, then additionally
+\[
+ D_k-D_\ell\equiv A^k-A^\ell\pmod{3^{R_{k,\ell}}}.
+\]
+All exceptional cancellation is therefore confined to the explicit resonance
+locus
+\[
+  R_{k,\ell}=S_{k,\ell}.
+\]
+\end{theorem}
+
+\begin{proof}
+Set $X=A^k-A^\ell$ and $Y=D_k-D_\ell$.  We know
+$\vThree(X-Y)=R_{k,\ell}$ and $\vThree(X)=S_{k,\ell}$.  If these valuations
+are unequal, the non-Archimedean triangle law forces
+$\vThree(Y)$ to be their minimum.  When $S<R$, the relation
+$Y=X-(X-Y)$ also gives the displayed congruence.
+\end{proof}
+
+The resonance locus can be written explicitly by LTE.  Let $d=k-\ell$.
+If $a=\vTwo(M)>0$, then
+\[
+  R_{k,\ell}=a\ell,
+\]
+because $M^d-1$ is odd.  If $a=0$, so $M$ is odd, then
+\[
+ R_{k,\ell}=
+ \begin{cases}
+  \vTwo(M-1),&d\text{ odd},\\
+  \vTwo(M-1)+\vTwo(M+1)+\vTwo(d)-1,&d\text{ even}.
+ \end{cases}
+\]
+Similarly, if $b=\vThree(A)>0$, then $S_{k,\ell}=b\ell$.  If $b=0$, then
+\[
+ S_{k,\ell}=
+ \begin{cases}
+  \vThree(A-1)+\vThree(d),&A\equiv1\pmod3,\\
+  0,&A\equiv-1\pmod3\text{ and }d\text{ odd},\\
+  \vThree(A^2-1)+\vThree(d),&A\equiv-1\pmod3\text{ and }d\text{ even}.
+ \end{cases}
+\]
+Thus resonance is not an amorphous exceptional set: it lies on finitely many
+linear relations among $\vTwo(d)$, $\vThree(d)$, and $\ell$.
+
+\section{The mantissa observable and a sharp rotation gauge}
+
+This section links the real size of $D_k$ to the irrational rotation
+$k\mapsto\fracpart{kx}$.  Unlike a generic asymptotic estimate, the initial
+formula is exact.
+
+\subsection{A finite Cantor embedding of a dyadic mantissa}
+
+Put
+\[
+  L_k=\floor{kx},\qquad t_k=\fracpart{kx}\in(0,1).
+\]
+Then
+\[
+  M^k=2^{L_k+t_k}=2^{L_k}(1+u_k),
+  \qquad u_k=2^{t_k}-1.
+\]
+Because $M^k$ is an integer, $u_k$ is a dyadic rational with a terminating
+binary expansion of length at most $L_k$:
+\[
+  u_k=\sum_{j=1}^{L_k}\varepsilon_{k,j}2^{-j}.
+\]
+Define its finite Cantor embedding
+\[
+  \Cantor(u_k)=\sum_{j=1}^{L_k}\varepsilon_{k,j}3^{-j}.
+\]
+The normalised Cantor shadow is then
+\[
+  \frac{P_k}{3^{L_k}}=1+\Cantor(u_k),
+\]
+whereas
+\[
+  \frac{A^k}{3^{L_k}}=3^{t_k}.
+\]
+
+\begin{theorem}[Exact mantissa formula]\label{thm:mantissa}
+For every $k\ge1$,
+\begin{equation}\label{eq:mantissa-ratio}
+ \boxed{
+ \frac{P_k}{A^k}
+ =3^{-t_k}\bigl(1+\Cantor(2^{t_k}-1)\bigr),}
+\end{equation}
+and hence
+\begin{equation}\label{eq:defect-observable}
+ \boxed{
+ \frac{D_k}{A^k}
+ =1-3^{-t_k}\bigl(1+\Cantor(2^{t_k}-1)\bigr).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The binary digits below the leading bit of $M^k$ are exactly the terminating
+binary digits of $u_k$.  Reinterpreting them in base $3$ gives
+$P_k=3^{L_k}(1+\Cantor(u_k))$.  Divide by
+$A^k=3^{L_k+t_k}$.
+\end{proof}
+
+\subsection{Universal two-sided bounds}
+
+Termwise, $3^{-j}\le2^{-j}$, so
+\[
+  0\le\Cantor(u_k)\le u_k=2^{t_k}-1.
+\]
+This loses the fine digit structure but produces sharp, uniform control.
+
+\begin{theorem}[Rotation gauge for the forward defect]\label{thm:rotation-gauge}
+For every $k\ge1$,
+\begin{equation}\label{eq:ratio-bounds}
+  3^{-t_k}
+  \le\frac{P_k}{A^k}
+  \le\left(\frac23\right)^{t_k},
+\end{equation}
+so
+\begin{equation}\label{eq:defect-bounds-exponential}
+  1-\left(\frac23\right)^{t_k}
+  \le\frac{D_k}{A^k}
+  \le1-3^{-t_k}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:defect-bounds-linear}
+ \boxed{
+  \frac{t_k}{3}
+  \le\frac{D_k}{A^k}
+  \le(\log3)t_k.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The bounds in \eqref{eq:ratio-bounds} follow from
+$1\le1+\Cantor(u_k)\le1+u_k=2^{t_k}$.  Subtract from $1$ to obtain
+\eqref{eq:defect-bounds-exponential}.  The function
+$f(t)=1-(2/3)^t$ is concave on $[0,1]$, with $f(0)=0$ and $f(1)=1/3$, so
+$f(t)\ge t/3$.  Finally $1-e^{-y}\le y$ with $y=t\log3$ gives the upper
+linear bound.
+\end{proof}
+
+Equation \eqref{eq:defect-bounds-linear} is one of the central new reductions.
+It says that the same integer $D_k$ is simultaneously
+
+\begin{itemize}
+\item an exact positive carry-budget variable in \eqref{eq:D-recurrence};
+\item a $3$-adically constrained difference in
+\cref{thm:resonance,cor:orbit-square-carry}; and
+\item an Archimedean gauge of the rotation distance $t_k=\fracpart{kx}$,
+within absolute constants independent of the hypothetical pair.
+\end{itemize}
+
+\subsection{Density and oscillation}
+
+Because $x$ is irrational, the sequence $t_k=\fracpart{kx}$ is dense in
+$[0,1]$.  The gauge immediately gives a nontrivial oscillation law.
+
+\begin{corollary}[Macroscopic and thin relative defects]\label{cor:defect-oscillation}
+For a hypothetical counterexample,
+\[
+  \liminf_{k\to\infty}\frac{D_k}{A^k}=0,
+\]
+and
+\[
+  \frac13\le
+  \limsup_{k\to\infty}\frac{D_k}{A^k}
+  \le\frac23.
+\]
+\end{corollary}
+
+\begin{proof}
+Choose a subsequence with $t_k\to0$ and use the upper bound in
+\eqref{eq:defect-bounds-linear}.  Choose another with $t_k\to1$ and use the
+lower bound in \eqref{eq:defect-bounds-exponential}.  The universal upper
+bound follows from $1-3^{-t}<2/3$ for $t<1$.
+\end{proof}
+
+Thus $D_k$ is never a perturbative error sequence in absolute size.  It has
+subsequences that are small relative to $A^k$, but it also repeatedly occupies
+a fixed positive fraction of $A^k$.
+
+\subsection{The reverse mantissa}
+
+For completeness, write
+\[
+ A^k=3^{L_k}(1+v_k),\qquad v_k=3^{t_k}-1,
+\]
+and let
+\[
+  \mathcal G(v_k)=\sum_{j=1}^{L_k}\eta_{k,j}2^{-j}
+\]
+be the canonical ternary fractional digits of $v_k$, evaluated at binary
+fractional place values.  Then
+\[
+  \frac{Q_k}{M^k}
+  =2^{-t_k}\bigl(1+\mathcal G(3^{t_k}-1)\bigr).
+\]
+Since $2^{-j}\ge3^{-j}$ termwise,
+$\mathcal G(v_k)\ge v_k$, and therefore
+\begin{equation}\label{eq:E-lower}
+  \frac{E_k}{M^k}
+  \ge\left(\frac32\right)^{t_k}-1
+  \ge(\log(3/2))t_k.
+\end{equation}
+An elementary first-nonzero-digit estimate also gives
+\[
+  \mathcal G(v)\le4v^{\alphaAE}\qquad(0<v<2),
+\]
+so, using $3^t-1\le2t$ on $[0,1]$,
+\begin{equation}\label{eq:E-upper}
+  \frac{E_k}{M^k}
+  \le4(2t_k)^{\alphaAE}.
+\end{equation}
+The reverse defect is therefore controlled by a Hölder, rather than a linear,
+window near $t=0$.  This loss reflects the digit $2$ and the nonmonotonicity of
+$\PsiMap$.
+
+\section{Diophantine consequences of the rotation gauge}
+
+\subsection{An elementary absolute lower bound}
+
+Let $L=L_k$.  Since $M^k$ is an integer strictly larger than $2^L$,
+\[
+  2^{t_k}-1=\frac{M^k-2^L}{2^L}\ge2^{-L}.
+\]
+Convexity of $2^t$ on $[0,1]$ gives $2^t\le1+t$, hence $t_k\ge2^{-L}$.
+Combining with \eqref{eq:defect-bounds-linear} yields
+\[
+  D_k\ge\frac{A^k}{3\,2^{L_k}}
+       \ge\frac13\left(\frac32\right)^{L_k}.
+\]
+The sharper digit-sensitive bound \eqref{eq:gap-lower} is
+\[
+ D_k\ge(\thetaAE-1)
+ \left(\frac32\right)^{L_k}\bigl(M^k-2^{L_k}\bigr).
+\]
+Both are unconditional consequences of the radix envelope once the output
+$A^k$ is integral.
+
+\subsection{Baker--Matveev amplification}
+
+The elementary bound allows $t_k$ to be exponentially small in $k$.  For a
+fixed integer $M$ not equal to a power of $2$, linear forms in logarithms rule
+out such extreme approximation.
+
+\begin{theorem}[Effective polynomial lower bound]\label{thm:baker-defect}
+Fix an integer $M>1$ that is not a power of $2$, and put $x=\log_2M$.
+There exist effectively computable constants $c(M)>0$ and $C(M)>0$ such that
+for every $k\ge1$,
+\[
+  \fracpart{kx}\ge c(M)k^{-C(M)}.
+\]
+Consequently, if $A=M^{\thetaAE}$ is an integer, then
+\begin{equation}\label{eq:baker-D}
+  D_k\ge\frac{c(M)}{3}A^kk^{-C(M)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $L_k=\floor{kx}$.  The nonzero linear form
+\[
+ \Lambda_k=k\log M-L_k\log2=(\log2)\fracpart{kx}
+\]
+has fixed algebraic logarithms and integer coefficients of size $O(k)$.
+A standard explicit lower bound of Baker--W\"ustholz or Matveev gives
+$|\Lambda_k|\ge c'(M)k^{-C(M)}$ after adjusting constants for finitely many
+small $k$.  Apply \eqref{eq:defect-bounds-linear}.
+\end{proof}
+
+The point is qualitative but important: on every scale, the positive integer
+$D_k$ is exponentially large up to a fixed polynomial factor.  Therefore a
+closing argument cannot treat $D_k$ as a small absolute error.  It must use
+its special digit or $3$-adic structure.
+
+\subsection{Infinitely many thin relative defects}
+
+Continued-fraction convergents to an irrational number alternate around it.
+There are therefore infinitely many $k$ with
+\[
+  0<\fracpart{kx}<\frac1k.
+\]
+For those $k$, the upper gauge gives
+\begin{equation}\label{eq:thin-subsequence}
+  1\le D_k<\frac{\log3}{k}A^k.
+\end{equation}
+Thus the same sequence has Baker-controlled lower size at every index and
+Dirichlet-thin relative size on an infinite subsequence.  Any successful
+cross-place argument should be tested first on this subsequence.
+
+\section{A nonlinear spectral-radius reformulation}
+
+The carry inequalities naturally suggest a spectral point of view.
+
+\begin{definition}[Radix spectral radii]
+For $n,m\ge1$, define
+\[
+ r_\Phi(n)=\lim_{k\to\infty}\PhiMap(n^k)^{1/k},
+ \qquad
+ r_\Psi(m)=\lim_{k\to\infty}\PsiMap(m^k)^{1/k},
+\]
+provided the limits exist.
+\end{definition}
+
+\begin{theorem}[Exact radix spectral radii]\label{thm:spectral-radius}
+For every $n,m\in\N$,
+\begin{align}
+ r_\Phi(n)&=n^{\thetaAE}
+ =\sup_{k\ge1}\PhiMap(n^k)^{1/k},
+ \label{eq:phi-spectral}\\
+ r_\Psi(m)&=m^{\alphaAE}
+ =\inf_{k\ge1}\PsiMap(m^k)^{1/k}.
+ \label{eq:psi-spectral}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+The upper envelope gives
+$\PhiMap(n^k)\le n^{k\thetaAE}$.  If $L=\floor{\log_2n^k}$, then
+$\PhiMap(n^k)\ge3^L>n^{k\thetaAE}/3$.  Taking $k$th roots squeezes the limit
+to $n^{\thetaAE}$.  Supermultiplicativity of $\PhiMap$ makes
+$\log\PhiMap(n^k)$ superadditive in $k$, so Fekete's lemma identifies the
+limit with the supremum of the normalised terms.
+
+For $\PsiMap$, the reverse envelope gives the lower bound
+$m^{k\alphaAE}$.  If the ternary length is $L+1$, then
+\[
+ \PsiMap(m^k)\le2\sum_{i=0}^{L}2^i<2^{L+2}<4m^{k\alphaAE}.
+\]
+The $k$th roots again squeeze the limit.  Submultiplicativity and Fekete's
+lemma for subadditive logarithms give the infimum formula.
+\end{proof}
+
+\begin{corollary}[Spectral-radius form of Alaoglu--Erd\H{o}s]
+\label{cor:spectral-AE}
+The Alaoglu--Erd\H{o}s conjecture is equivalent to
+\[
+  \boxed{
+  r_\Phi(M)\in\N\quad\Longrightarrow\quad M=2^j
+  \text{ for some }j\in\Nzero.}
+\]
+Equivalently: the multiplicative orbit of an integer has an integer
+binary-to-ternary radix spectral radius only when every power belongs to the
+carry-free one-bit orbit.
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:spectral-radius}, $r_\Phi(M)=M^{\thetaAE}$.  If this is the
+integer $A$, then with $x=\log_2M$ we have $2^x=M$ and
+$3^x=M^{\thetaAE}=A$.  The original conjecture says that $x$ is integral,
+which is equivalent to $M$ being a power of $2$.
+\end{proof}
+
+This reformulation is not presented as a proof by renaming.  Its value is that
+$P_k=\PhiMap(M^k)$ is generated by a fixed multiplication-by-$M$ digit
+transducer, while $r_\Phi(M)$ is its orbit growth rate under the Archimedean
+weight $3^i$.  It opens a route through transfer operators, pressure, or
+infinite-state Perron--Frobenius theory that is absent from a logarithm-only
+formulation.
+
+\section{The adelic shadow orbit}
+
+The construction can be summarised as a single orbit viewed at two places.
+
+\subsection{Two compatible geometries}
+
+The binary orbit
+\[
+  1,M,M^2,M^3,\ldots\subset\Z_2
+\]
+has the Cantor shadow
+\[
+  1,P_1,P_2,P_3,\ldots\subset\Z_3,
+  \qquad P_k=\widehat\Phi(M^k).
+\]
+By \cref{thm:pairwise-shadow}, all pairwise distances are transported exactly:
+\[
+  |P_k-P_\ell|_3=3^{-\vTwo(M^k-M^\ell)}.
+\]
+At the Archimedean place the shadow sits strictly below the geometric orbit
+$A^k$:
+\[
+  0<P_k<A^k,
+  \qquad A^k-P_k=D_k.
+\]
+The same $D_k$ is then governed by the rotation gauge
+\eqref{eq:defect-bounds-linear}.
+
+This produces an exact three-way dictionary:
+\[
+\begin{array}{ccc}
+ M^k\in\Z_2
+ &\xrightarrow{\ \widehat\Phi\ }
+ &P_k\in\Cantor_3\subset\Z_3\\[0.4em]
+ &&\Big\downarrow\scriptstyle +D_k\\[-0.1em]
+ &&A^k\in\Z\subset\R\cap\Z_3.
+\end{array}
+\]
+The horizontal arrow is an ultrametric isometry; the vertical arrow is a
+positive Archimedean displacement with exact nonlinear recurrences.
+
+\subsection{Why this is more than the compact-orbit reformulation}
+
+The baseline already records compact and $S$-integral orbit formulations.
+The radix shadow adds two pieces of data not supplied by compactness alone:
+
+\begin{enumerate}
+\item the point $P_k$ is not merely close to an orbit; it belongs to a rigid
+Cantor subset and carries the complete binary digit word of $M^k$;
+\item the valuation of every difference $P_k-P_\ell$ is known exactly, not
+just bounded.
+\end{enumerate}
+
+This exactness is what makes \cref{thm:resonance,thm:first-collision}
+possible.  The unresolved task is to make the Archimedean order
+$P_k<A^k$ interact decisively with the ultrametric isometry.
+
+\section{Audited dead ends and the precise missing step}\label{sec:why-not-closed}
+
+The radix mechanism is strong enough to generate seductive false proofs.  It
+is useful to record exactly where they fail.
+
+\subsection{The envelope alone is universal}
+
+The inequality $\PhiMap(M^k)\le A^k$ may look like a new restriction on a
+counterexample.  It is not: $\PhiMap(n)\le n^{\thetaAE}$ holds for every
+integer $n$.  The genuinely arithmetic input is that $A^k$ is an integer, so
+$D_k$ is an integer, and that all $D_k$ belong to one coupled carry recurrence.
+Any argument using only the pointwise envelope is a reformulation, not a
+closure.
+
+\subsection{The reverse map is not monotone}
+
+From $P_k<A^k$ one cannot apply $\PsiMap$ and retain the inequality.  The
+example $8<9$ but $\PsiMap(8)>\PsiMap(9)$ is the smallest visible obstruction.
+The valid reverse inequality $\PsiMap(A^k)>M^k$ comes independently from the
+reverse power envelope.
+
+\subsection{Positive carries can absorb the entire discrepancy}
+
+Equation \eqref{eq:D-recurrence} does not make $D_{k+\ell}$ grow
+monotonically.  A large carry polynomial subtracts from the nominal defect
+budget.  Conversely, the fact that the carry is large is not itself a
+contradiction: its real size can be exponential while its first nonzero
+ternary place is only logarithmic in $k$.
+
+\subsection{Large $3$-adic divisibility does not imply real smallness}
+
+The exact valuation
+\[
+ \vThree(P_{2k}-P_k^2)=2ak+\vTwo(U^k-1)
+\]
+can grow without forcing the positive integer $P_{2k}-P_k^2$ to vanish.  A
+product-formula argument would need an independent upper bound below the
+corresponding power of $3$.  The current Archimedean bounds are far too large
+for that.
+
+\subsection{The two defects do not automatically descend}
+
+Both $D_k<A^k$ and, from a crude digit bound, $E_k<2M^k$ for large scales.
+This suggests a descent from $(M^k,A^k)$ to $(E_k,D_k)$.  But no identity
+$D_k=E_k^{\thetaAE}$ is available, and the carry corrections prevent the two
+radix maps from forming an order adjunction on all integers.  A descent claim
+without a preserved exponential relation is invalid.
+
+\subsection{A precise closing lemma}
+
+The new material reduces the desired contradiction to a cross-place rigidity
+statement of the following kind.
+
+\begin{problem}[Carry--rotation rigidity]\label{prob:closing}
+Classify integer pairs $M,A>1$ for which there exist positive integer
+sequences $D_k$ and nonnegative carry polynomials $\carry_{k,\ell}$ satisfying
+simultaneously
+\begin{enumerate}[label=(\roman*)]
+\item $A=M^{\thetaAE}$;
+\item the exact recurrence \eqref{eq:D-recurrence};
+\item the rotation gauge \eqref{eq:defect-bounds-linear};
+\item the cross-prime isometry constraints
+\eqref{eq:pairwise-shadow}--\eqref{eq:defect-difference-valuation}; and
+\item the first-collision law \eqref{eq:defect-square-valuation} with leading
+unit $1$.
+\end{enumerate}
+Prove that the only possibilities have $M=2^j$ and $A=3^j$.
+\end{problem}
+
+Condition (i) is still the original transcendental relation, so
+\cref{prob:closing} is not advertised as a logically weaker theorem.  The
+point is methodological: conditions (ii)--(v) expose rigid, computable
+consequences that a proof may attack by $p$-adic interpolation, transfer
+operators, or carry combinatorics.  The baseline formulations do not package
+these consequences in one sequence.
+
+\section{Promising next attacks}
+
+\subsection{A transfer operator for multiplication by $M$}
+
+Multiplication by a fixed $M$ is a finite-carry transducer when binary digits
+are read from least significant to most significant.  Iterating it generates
+the words of $M^k$.  The functional
+\[
+  w\longmapsto\sum_i w_i3^i
+\]
+assigns an Archimedean weight to the output word.  The exact spectral radius
+\cref{thm:spectral-radius} suggests constructing an infinite-dimensional
+positive transfer operator whose orbit vector is $P_k$.  The desired rigidity
+would follow from a theorem of the schematic form:
+
+\begin{conjecture}[Integer pressure rigidity]\label{conj:pressure}
+If the orbit pressure of the multiplication-by-$M$ binary carry transducer,
+under ternary place weights, is the logarithm of an integer, then the
+transducer orbit from $1$ is eventually carry-free.  Consequently $M$ is a
+power of $2$.
+\end{conjecture}
+
+A finite matrix representation is not presently justified; claiming one
+would be false in general because digit sums of powers need not satisfy a
+fixed linear recurrence.  The plausible object is a transfer operator on a
+space of carry-state distributions or $2$-adic cylinders.
+
+\subsection{Exploit the sparse resonance locus}
+
+Outside $R_{k,\ell}=S_{k,\ell}$, the valuation of $D_k-D_\ell$ is exact.  The
+LTE formula shows that resonance lies on explicit diagonals in
+$(\vTwo(k-\ell),\vThree(k-\ell),\ell)$.  A possible route is:
+
+\begin{enumerate}
+\item choose many indices with prescribed $2$- and $3$-adic valuations but
+with fractional parts $\fracpart{kx}$ in a short real interval;
+\item use \eqref{eq:defect-bounds-linear} to confine the corresponding
+$D_k$ to short Archimedean intervals;
+\item use \cref{thm:resonance} to force their pairwise differences into
+incompatible $3$-adic residue classes.
+\end{enumerate}
+
+The difficulty is quantitative.  Ordinary equidistribution gives real
+intervals of polynomial resolution, whereas forcing a positive integer to
+vanish from $3$-adic divisibility needs exponential resolution.  A successful
+version must gain cancellation by combining many differences, not by a single
+pair.
+
+\subsection{Carry-polynomial $S$-unit estimates}
+
+The square carry
+\[
+  C_k=P_{2k}-P_k^2
+
+ghas a ternary expansion whose first nonzero digit is known exactly.  Its
+remaining digits are generated by a constrained convolution of the binary
+support of $M^k$.  One can ask whether infinitely many unusually sparse carry
+polynomials are possible when $M$ has an odd factor.  Results on digit sums of
+powers and $S$-unit equations suggest the following intermediate target.
+
+\begin{problem}[Sparse-carry exclusion]
+Prove an effective lower bound for the number or weighted span of nonzero
+ternary digits of $C_k$ for $M$ not a power of $2$, strong enough to conflict
+with the carry budget \eqref{eq:carry-budget} on a Dirichlet-thin subsequence.
+\end{problem}
+
+A mere statement that the digit sum tends to infinity is too weak; the budget
+is exponential.  The needed estimate must retain the position and
+multiplicity of carries.
+
+\subsection{A two-place determinant}
+
+The baseline's determinant methods are Archimedean.  The isometry
+\cref{thm:isometry} makes it natural to build determinants from several
+$P_k=A^k-D_k$ such that
+
+\begin{itemize}
+\item row or column differences acquire prescribed high powers of $3$ from
+the binary orbit; while
+\item the Archimedean size is reduced by choosing $k$ with clustered
+fractional parts $\fracpart{kx}$.
+\end{itemize}
+
+The target is a nonzero integer determinant whose real absolute value is less
+than $1$, with its nonvanishing certified by the first differing Cantor digit.
+This is more specific than a generic Vandermonde repetition: the $3$-adic
+valuation matrix is known exactly from $M^k-M^\ell$.
+
+\subsection{Certified computation as theorem discovery}
+
+A useful search should track more than near-integrality of $M^{\thetaAE}$.
+For each candidate integer $M$ and its only possible nearby $A$, compute
+\[
+  D_1,D_2,D_4,\ldots,
+\]
+the exact carry polynomials, their first-collision positions, and the
+resonance matrix $R_{k,\ell}-S_{k,\ell}$.  The goal is to discover a finite
+inequality or congruence pattern that can later be proved symbolically.  This
+is complementary to the baseline's directed-rounding scan and should not be
+reported as a larger zero-free theorem until certificates are kernel-replayed.
+
+\section{Lean formalisation plan}
+
+The results above are designed to separate cleanly into small modules.  The
+following dependency order avoids importing the large existing corpus until
+the final candidate specialisation.
+
+\subsection{Module 1: canonical digit evaluation}
+
+Suggested definitions:
+
+\begin{lstlisting}[language={}] 
+-- schematic Lean, not claimed to compile verbatim
+
+def evalDigits (base : Nat) (d : List Nat) : Nat :=
+  d.foldr (fun x acc => x + base * acc) 0
+
+def reinterpret (source target n : Nat) : Nat :=
+  evalDigits target (Nat.digits source n)
+
+def phi : Nat -> Nat := reinterpret 2 3
+
+def psi : Nat -> Nat := reinterpret 3 2
+\end{lstlisting}
+
+Core theorems are canonical-digit reconstruction, shift compatibility, and
+strict monotonicity of `reinterpret b c` under $b<c$.
+
+\subsection{Module 2: valuation isometry}
+
+Use integers for subtraction:
+
+\begin{lstlisting}[language={}]
+theorem padicVal_phi_sub
+    {m n : Nat} (h : m != n) :
+    padicValInt 3 ((phi m : Int) - phi n)
+      = padicValInt 2 ((m : Int) - n)
+\end{lstlisting}
+
+The proof should avoid general $p$-adic analysis: identify the least differing
+digit and factor the difference as $3^r$ times a unit.
+
+\subsection{Module 3: carry normalisation}
+
+Define a generic normaliser for a finite coefficient list in base $b$,
+returning both output digits and carries.  Prove a polynomial-evaluation
+identity once:
+\[
+ \operatorname{eval}_c(\operatorname{normalise}_b r)
+ =\operatorname{eval}_c(r)+(c-b)\operatorname{eval}_c(\operatorname{carry}).
+\]
+Addition and multiplication are then corollaries.  This general statement is
+less brittle than separate bit-level proofs.
+
+\subsection{Module 4: real envelopes}
+
+The only analytic inputs are $\log$, real powers, and convexity of
+$y\mapsto y^\gamma$ on $[1,\infty)$.  A useful intermediate lemma is the
+normalised digit comparison
+\[
+ \frac{\Rad_{b\to c}(n)}{c^L}\le\frac{n}{b^L}.
+\]
+Equality classification should be formalised at the same time; downstream
+strict positivity of $D_k$ depends on it.
+
+\subsection{Module 5: candidate defects}
+
+Import the existing candidate predicate only here.  Define $P_k,D_k,Q_k,E_k$
+and prove the recurrences by ring normalisation.  The carry-budget inequalities
+then require only positivity of the strict defects.
+
+\subsection{Module 6: first collision and LTE}
+
+Formalise the two lowest set-bit positions of $2^au$.  The key local statement
+is that all square-convolution coefficients before $2a+r$ normalise without a
+carry and the coefficient at $2a+r$ is exactly $2$.  Combine this with
+Mathlib's LTE lemmas to obtain \eqref{eq:dyadic-tower-valuation}.
+
+\subsection{Module 7: mantissa gauge}
+
+Avoid formalising a global discontinuous Cantor function initially.  For each
+$k$, use the finite digit list of $M^k$ and define its normalised binary and
+ternary evaluations.  The inequalities
+\[
+  1\le Y_3\le Y_2=2^{\fracpart{kx}}
+\]
+are sufficient for \eqref{eq:defect-bounds-linear}.  The exact Cantor formula
+can be added as an interface theorem after the finite proof is stable.
+
+\subsection{Proposed theorem inventory}
+
+A compact first milestone is:
+
+\begin{longtable}{p{0.39\textwidth}p{0.51\textwidth}}
+\toprule
+Suggested Lean name & Mathematical statement\\
+\midrule
+\endhead
+`phi_strictMono` & \cref{prop:order} for bases $2,3$.\\
+`padicVal_phi_sub_eq` & \cref{thm:isometry}.\\
+`phi_add_eq_add_carry` & \cref{thm:add-carry}.\\
+`phi_mul_eq_mul_carry` & \cref{thm:mul-carry}.\\
+`psi_add_eq_sub_carry` & addition part of \cref{thm:reverse-carry}.\\
+`psi_mul_eq_sub_carry` & multiplication part of \cref{thm:reverse-carry}.\\
+`phi_le_rpow` & $\PhiMap(n)\le n^{\thetaAE}$.\\
+`phi_eq_rpow_iff` & equality iff $n$ is a power of $2$.\\
+`psi_ge_rpow` & $\PsiMap(n)\ge n^{\alphaAE}$.\\
+`candidate_defect_pos` & \cref{prop:strict-sandwich}.\\
+`defect_mul_recurrence` & \eqref{eq:D-recurrence}.\\
+`squareCarry_padicVal` & \cref{thm:first-collision}.\\
+`candidate_defect_rotation_bounds` & \eqref{eq:defect-bounds-linear}.\\
+`radixSpectralRadius` & \cref{thm:spectral-radius}.\\
+`alaogluErdos_iff_integer_radixRadius` & \cref{cor:spectral-AE}.\\
+\bottomrule
+\end{longtable}
+
+None of these identifiers is claimed to exist in the current repository.  The
+list is a formalisation specification, not a status report.
+
+\section{Independent executable audit}
+
+A short Python program was used only to detect indexing and sign mistakes.
+The exact proofs above do not depend on it.  The audit performed the following
+checks:
+
+\begin{itemize}
+\item \cref{thm:isometry} for every pair $0\le n<m<2048$;
+\item both addition and multiplication carry identities, in both radix
+directions, for every operand pair $0\le u,v<384$;
+\item \cref{thm:first-collision} for every $1<n<250000$ that is not a power
+of $2$;
+\item the two real envelopes for every $1\le n\le200000$, using
+$100$-decimal-digit arithmetic as a numerical sanity check.
+\end{itemize}
+
+All checks passed. \evidence{C}  The central routines are reproduced below so
+that the sign convention is auditable.
+
+\begin{lstlisting}[language=Python]
+def digits(n, base):
+    if n == 0:
+        return [0]
+    out = []
+    while n:
+        n, r = divmod(n, base)
+        out.append(r)          # least significant first
+    return out
+
+def eval_digits(ds, base):
+    acc = 0
+    for d in reversed(ds):
+        acc = acc * base + d
+    return acc
+
+def reinterpret(n, source, target):
+    return eval_digits(digits(n, source), target)
+
+def mul_carry_poly(u, v, source, target):
+    du, dv = digits(u, source), digits(v, source)
+    raw = [0] * (len(du) + len(dv) + 4)
+    for i, a in enumerate(du):
+        for j, b in enumerate(dv):
+            raw[i + j] += a * b
+    carry = 0
+    poly = 0
+    for i in range(len(raw)):
+        total = raw[i] + carry
+        carry = total // source
+        poly += carry * target**i
+    return poly
+
+phi = lambda n: reinterpret(n, 2, 3)
+psi = lambda n: reinterpret(n, 3, 2)
+
+# Forward sign: positive carry polynomial.
+assert phi(u*v) == phi(u)*phi(v) + mul_carry_poly(u,v,2,3)
+# Reverse sign: negative carry polynomial.
+assert psi(u*v) == psi(u)*psi(v) - mul_carry_poly(u,v,3,2)
+\end{lstlisting}
+
+For a kernel-verified development, the finite audit should be replaced by the
+module plan of the previous section, not imported through `native_decide` as a
+substitute for the general proofs.
+
+\section{Worked symbolic examples}
+
+\subsection{A single binary carry}
+
+Take $u=v=1$.  Binary addition gives $1+1=10_2$.  Hence
+\[
+ \PhiMap(2)=3,
+ \qquad \PhiMap(1)+\PhiMap(1)=2,
+\]
+and the carry polynomial is $1$.  The difference $3-2$ is exactly the gain
+from replacing two units of $3^0$ by one unit of $3^1$.
+
+\subsection{A carry-free and a carrying square}
+
+For $n=5=(101)_2$,
+\[
+ \PhiMap(5)=10,
+ \qquad 25=(11001)_2,
+ \qquad \PhiMap(25)=109.
+\]
+Thus
+\[
+ C(5)=109-10^2=9=3^2.
+\]
+Here $\vTwo(5-1)=2$, agreeing with \cref{thm:first-collision}.
+
+For $n=2^a$, every power has one binary digit, so
+\[
+ \PhiMap(n^2)=\PhiMap(n)^2
+\]
+and the carry polynomial vanishes.  The equality case of the power envelope
+identifies precisely these monomial orbits.
+
+\subsection{Why the reverse map can fall}
+
+The canonical ternary increment
+\[
+ (22)_3+1=(100)_3
+\]
+contains a two-position carry cascade.  Evaluating before normalisation at
+base $2$ gives $6+1=7$; evaluating after normalisation gives $4$.  The reverse
+carry polynomial is $3$, exactly accounting for the loss.  This is the local
+mechanism behind $\PsiMap(8)=6>4=\PsiMap(9)$.
+
+\section{Conclusions}
+
+This continuation does not produce a completed proof of the
+Alaoglu--Erd\H{o}s conjecture.  It does produce a coherent new rigidity package
+that is independent of the baseline's main routes:
+
+\begin{enumerate}
+\item The binary-to-ternary digit map is simultaneously an Archimedean order
+embedding and an exact $2$-adic/$3$-adic isometry.
+\item Addition and multiplication have explicit positive carry cocycles; the
+reverse digit evaluation has explicit negative cocycles.
+\item The smooth curve $y=x^{\thetaAE}$ is an exact upper envelope of the
+Cantor graph $y=\PhiMap(x)$, touching it only at powers of $2$.
+\item A hypothetical counterexample generates positive integer defects
+$D_k,E_k$ with coupled nonlinear recurrences.
+\item The relative forward defect is comparable, with absolute constants, to
+$\fracpart{kx}$, while its pairwise $3$-adic geometry is inherited exactly
+from the binary power orbit.
+\item The first square carry has a computable location and unit coefficient,
+producing exact valuation and real carry-budget constraints.
+\item The conjecture is equivalent to integer rigidity of a nonlinear radix
+spectral radius.
+\end{enumerate}
+
+The most promising next move is not another isolated inequality.  It is a
+multi-index construction that combines the exact $3$-adic distance matrix of
+the Cantor shadows with clustered real rotation phases, so that many defect
+differences cancel Archimedeanly while retaining certified nonzero
+$3$-adic leading terms.  That is a concrete determinant/interpolation problem
+and a natural target for both Lean formalisation and experimental theorem
+discovery.
+
+\begin{thebibliography}{99}
+
+\bibitem{Unified}
+Project manuscript,
+\emph{Unified report on the Alaoglu--Erd\H{o}s conjecture},
+attached consolidated report, integrated through continuation 27, 2026.
+
+\bibitem{Baker}
+A. Baker,
+\emph{Transcendental Number Theory},
+Cambridge University Press, 1975.
+
+\bibitem{BakerWustholz}
+A. Baker and G. W\"ustholz,
+\emph{Logarithmic Forms and Diophantine Geometry},
+New Mathematical Monographs 9, Cambridge University Press, 2007.
+
+\bibitem{Matveev}
+E. M. Matveev,
+An explicit lower bound for a homogeneous rational linear form in logarithms
+of algebraic numbers. II,
+\emph{Izvestiya: Mathematics} 64 (2000), 1217--1269.
+
+\bibitem{KuipersNiederreiter}
+L. Kuipers and H. Niederreiter,
+\emph{Uniform Distribution of Sequences},
+Wiley, 1974; reprint, Dover, 2006.
+
+\bibitem{AlloucheShallit}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{SengeStraus}
+H. G. Senge and E. G. Straus,
+PV-numbers and sets of multiplicity,
+\emph{Periodica Mathematica Hungarica} 3 (1973), 93--100.
+
+\end{thebibliography}
+
+\end{document}
