@@ -1,0 +1,978 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\allowdisplaybreaks
+
+\begin{document}
+
+\begin{center}
+  \textsc{Acta Arithmetica}\\
+  XC.1 (1999)
+
+  \vspace{2.5cm}
+  {\Large\bfseries On the number of coprime integer pairs within a circle\par}
+  \vspace{1em}
+  by
+  \vspace{0.5em}
+
+  \textsc{Wenguang Zhai} (Jinan) and \textsc{Xiaodong Cao} (Beijing)
+\end{center}
+
+\section{Introduction}
+Let $P(x)$ denote the number of integer pairs within the circle
+$a^{2}+b^{2} \leq x$, and let $E(x)$ denote the difference $P(x)-\pi x$.
+Then the well-known circle problem is to estimate the upper bound of $E(x)$,
+and the best result at present is
+
+\begin{equation*}
+E(x)=O\left(x^{23/73+\varepsilon}\right). \tag{1.1}
+\end{equation*}
+
+See Huxley [6].
+Let $V(x)$ denote the number of coprime integer pairs within the circle
+$a^{2}+b^{2} \leq x$. It is an exercise to deduce that
+
+\begin{equation*}
+V(x)=\frac{6}{\pi}x
+ +O\left(x^{1/2}\exp\left(-c\log^{3/5}x(\log\log x)^{-2/5}\right)\right), \tag{1.2}
+\end{equation*}
+
+where $c$ is some absolute constant. The problem of reducing the exponent
+$1/2$ is open. One way to make progress is to assume the Riemann Hypothesis
+(RH). W. G. Nowak [11] proved that RH implies
+
+\begin{equation*}
+V(x)=\frac{6}{\pi}x+O\left(x^{15/38+\varepsilon}\right). \tag{1.3}
+\end{equation*}
+
+D. Hensley [5] also got a result of this type, but with a larger exponent.
+
+The aim of this paper is to further improve this result. We have the following.
+
+\medskip
+\noindent\textbf{Theorem.} \textit{If RH is true, then}
+
+\begin{equation*}
+V(x)=\frac{6}{\pi}x+O\left(x^{11/30+\varepsilon}\right). \tag{1.4}
+\end{equation*}
+
+\noindent\textit{Notations.}
+$e(x)=\exp(2\pi i x)$. The notation $m\sim M$ means
+$c_{1}M\leq m\leq c_{2}M$ for absolute constants $c_{1}$ and $c_{2}$.
+$E(x)$ always denotes the error term in the circle problem.
+The symbol $\varepsilon$ denotes an arbitrarily small positive number and may
+be different at each occurrence.
+
+\begingroup
+\renewcommand{\thefootnote}{}
+\footnotetext{1991 Mathematics Subject Classification: 11N37, 11P21.\\
+This work is supported by the Natural Science Foundation of Shandong Province
+(Grant No. Q98A02110).}
+\addtocounter{footnote}{-1}
+\endgroup
+
+The authors thank Professor W. G. Nowak for kindly sending reprints of some of
+his papers.
+
+\section{Some preliminary lemmas and results}
+The following lemmas are needed.
+
+\medskip\noindent\textbf{Lemma 1.} Suppose $0<c_{1} \lambda_{1} \leq\left|f^{\prime}(n)\right| \leq c_{2} \lambda_{1}$ and $\left|f^{\prime \prime}(n)\right| \sim \lambda_{1} N^{-1}$ for $N \leq n \leq c N$. Then
+
+$$
+\sum_{N<n \leq c N} e(f(n)) \ll \lambda_{1}^{-1}+\lambda_{1}^{1 / 2} N^{1 / 2}.
+$$
+
+\smallskip\noindent\textit{Proof.} If $c_{2} \lambda_{1} \leq 1 / 2$, this estimate is contained in the Kuz'min-Landau inequality; otherwise, the estimate follows from the well-known van der Corput's estimate for the second order derivative.
+
+\medskip\noindent\textbf{Lemma 2.} Suppose $a(n)=O(1), 0<L \leq M<N \leq c L, L \gg 1, T \geq 2$. Then
+
+$$
+\begin{aligned}
+\sum_{M<n \leq N} a(n)= & \frac{1}{2 \pi i} \int_{-T}^{T} \sum_{L<l \leq c L} \frac{a(l)}{l^{i t}} \cdot \frac{N^{i t}-M^{i t}}{t} \, d t \\
+& +O\left(\min \left(1, \frac{L}{T\|M\|}\right)+\min \left(1, \frac{L}{T\|N\|}\right)\right) \\
+& +O\left(\frac{L \log(1+L)}{T}\right).
+\end{aligned}
+$$
+
+\smallskip\noindent\textit{Proof.} This is the well-known Perron formula.\\
+\medskip\noindent\textbf{Lemma 3.} Suppose $f(n) \ll P$ and $f^{\prime}(n) \gg \Delta$ for $n \sim N$. Then
+
+$$
+\sum_{n \sim N} \min \left(D, \frac{1}{\|f(n)\|}\right) \ll(P+1)\left(D+\Delta^{-1}\right) \log \left(2+\Delta^{-1}\right).
+$$
+
+\smallskip\noindent\textit{Proof.} This is contained in Lemma 2.8 of Krätzel [9].\\
+\medskip\noindent\textbf{Lemma 4.} Suppose $a(n)$ are any complex numbers and $1 \leq Q \leq N$. Then
+
+$$
+\left|\sum_{N<n \leq c N} a(n)\right|^{2} \ll \frac{N}{Q} \sum_{0 \leq q \leq Q}\left(1-\frac{q}{Q}\right) \Re \sum_{N<n \leq c N-q} a(n) \overline{a(n+q)}.
+$$
+
+\smallskip\noindent\textit{Proof.} This is Weyl's inequality.\\
+\medskip\noindent\textbf{Lemma 5.} Let $M \leq N<N_{1} \leq M_{1}$ and $a(n)$ be any complex numbers. Then
+
+$$
+\left|\sum_{N<n \leq N_{1}} a(n)\right| \leq \int_{-\infty}^{\infty} K(\theta)\left|\sum_{M<m \leq M_{1}} a(m) e(m \theta)\right| d \theta
+$$
+
+with $K(\theta)=\min \left(M_{1}-M+1,(\pi|\theta|)^{-1},(\pi|\theta|)^{-2}\right)$ and
+
+$$
+\int_{-\infty}^{\infty} K(\theta) d \theta \leq 3 \log \left(2+M_{1}-M\right)
+$$
+
+\smallskip\noindent\textit{Proof.} This is Lemma 2.2 of Bombieri and Iwaniec [2].\\
+\medskip\noindent\textbf{Lemma 6.} Let $\alpha \beta \neq 0, \Delta>0, M \geq 1, N \geq 1$. Let $\mathcal{A}(M, N, \Delta)$ be the number of quadruples $(m, \widetilde{m}, n, \widetilde{n})$ such that
+
+$$
+\left|(\widetilde{m} / m)^{\alpha}-(\widetilde{n} / n)^{\beta}\right|<\Delta
+$$
+
+with $M \leq m, \widetilde{m} \leq 2 M$ and $N \leq n, \widetilde{n} \leq 2 N$. Then
+
+$$
+\mathcal{A}(M, N, \Delta) \ll M N \log 2 M N+\Delta M^{2} N^{2}.
+$$
+
+\smallskip\noindent\textit{Proof.} This is Lemma 1 of [3].\\
+\medskip\noindent\textbf{Lemma 7.} Suppose $f(x)$ and $g(x)$ are algebraic functions in $[a, b]$ and
+
+$$
+\begin{aligned}
+& \left|f^{\prime \prime}(x)\right| \sim \frac{1}{R}, \quad\left|f^{\prime \prime \prime}(x)\right| \ll \frac{1}{R U}, \\
+& |g(x)| \ll G, \quad\left|g^{\prime}(x)\right| \ll G U_{1}^{-1}, \quad U, U_{1} \geq 1.
+\end{aligned}
+$$
+
+Then
+
+$$
+\begin{aligned}
+\sum_{a<n \leq b} g(n) e(f(n))= & \sum_{\alpha<u \leq \beta} b_{u} \frac{g\left(n_{u}\right)}{\sqrt{\left|f^{\prime \prime}\left(n_{u}\right)\right|}} e\left(f\left(n_{u}\right)-u n_{u}+1 / 8\right) \\
+& +O\left(G \log (\beta-\alpha+2)+G(b-a+R)\left(U^{-1}+U_{1}^{-1}\right)\right) \\
+& +O(G \min (\sqrt{R}, 1 /\langle\alpha\rangle)+G \min (\sqrt{R}, 1 /\langle\beta\rangle)),
+\end{aligned}
+$$
+
+where $[\alpha, \beta]$ is the image of $[a, b]$ under the mapping $y=f^{\prime}(x), n_{u}$ is the solution of the equation $f^{\prime}(x)=u$,
+
+$$
+b_{u}= \begin{cases}1 & \text { for } \alpha<u<\beta, \\ \frac{1}{2} & \text { for } u=\alpha \in \mathbb{Z} \text { or } u=\beta \in \mathbb{Z},\end{cases}
+$$
+
+and the function $\langle t\rangle$ is defined as follows:
+
+$$
+\langle t\rangle= \begin{cases}\|t\| & \text { if } t \text { is not an integer }, \\ \beta-\alpha & \text { otherwise, }\end{cases}
+$$
+
+where $\|t\|=\min _{n \in \mathbb{Z}}\{|t-n|\}$.\\[0pt]
+\smallskip\noindent\textit{Proof.} This is Theorem 2.2 of Min [10].\\
+\medskip\noindent\textbf{Lemma 8.} Suppose $A_{i}, B_{j}, a_{i}$ and $b_{j}$ are all positive numbers. If $Q_{1}$ and $Q_{2}$ are real with $0<Q_{1} \leq Q_{2}$, then there exists some $q$ such that $Q_{1} \leq q \leq Q_{2}$ and
+
+$$
+\begin{aligned}
+& \sum_{i=1}^{m} A_{i} q^{a_{i}}+\sum_{j=1}^{n} B_{j} q^{-b_{j}} \\
+& \quad \leq 2^{m+n}\left(\sum_{i=1}^{m} \sum_{j=1}^{n}\left(A_{i}^{b_{j}} B_{j}^{a_{i}}\right)^{1 /\left(a_{i}+b_{j}\right)}+\sum_{i=1}^{m} A_{i} Q_{1}^{a_{i}}+\sum_{j=1}^{n} B_{j} Q_{2}^{-b_{j}}\right).
+\end{aligned}
+$$
+
+\smallskip\noindent\textit{Proof.} This is Lemma 3 of Srinivasan [12].\\
+\medskip\noindent\textbf{Lemma 9.} Suppose $x$ is a large positive real number, $M, N, U$ are positive integers such that $1 \leq N \leq M^{1 / 4}, x^{\varepsilon} \leq M \leq x^{4 / 15}$ and $M^{1 / 6} \leq U \leq M^{5 / 6}$. Then
+
+
+\begin{align*}
+S & =\sum_{n \sim N} a_{n} \sum_{u \sim U} b_{u} \sum_{v \sim M U^{-1}} c_{v} e\left(\frac{\sqrt{n x}}{u v}\right)  \tag{2.1}\\
+& \ll\left(x^{1 / 12} M^{7 / 12} N^{11 / 12}+M^{11 / 12} N^{1 / 2}\right) \log x
+\end{align*}
+
+
+where $a_{n}, b_{u}, c_{v}$ are coefficients satisfying $\left|a_{n}\right| \leq 1,\left|b_{u}\right| \leq 1,\left|c_{v}\right| \leq 1$.\\[0pt]
+\smallskip\noindent\textit{Proof.} We use Heath-Brown's method [4].\\
+Without loss of generality, suppose $M^{1 / 2} \leq U \leq M^{5 / 6}$; otherwise we change the order of $U$ and $V=M U^{-1}$. Suppose $1 \leq Q \leq V N$ is a parameter to be determined. For each $q$ with $1 \leq q \leq Q$ define
+
+$$
+w_{q}=\left\{(v, n) \mid v \sim V, n \sim N, \frac{2 \sqrt{N}(q-1)}{V Q}<\frac{\sqrt{n}}{v}<\frac{2 \sqrt{N} q}{V Q}\right\}.
+$$
+
+Then
+
+$$
+S=\sum_{u \sim U} b_{u} \sum_{q=1}^{Q}\left(\sum_{(v, n) \in w_{q}} a_{n} c_{v} e\left(\frac{\sqrt{n x}}{u v}\right)\right).
+$$
+
+By Cauchy's inequality
+
+
+\begin{align*}
+|S|^{2} & \ll U Q \sum_{u \sim U} \sum_{q=1}^{Q} \sum_{\left(v_{1}, n_{1}\right),\left(v_{2}, n_{2}\right) \in w_{q}} a_{n_{1}} \bar{a}_{n_{2}}  \tag{2.2}\\
+& \times c_{v_{1}} \bar{c}_{v_{2}} e\left(\frac{\sqrt{x}}{u}\left(\frac{\sqrt{n_{1}}}{v_{1}}-\frac{\sqrt{n_{2}}}{v_{2}}\right)\right) \\
+& \ll U Q \sum_{(*)}\left|\sum_{u \sim U} e\left(\frac{\sqrt{x}}{u}\left(\frac{\sqrt{n_{1}}}{v_{1}}-\frac{\sqrt{n_{2}}}{v_{2}}\right)\right)\right|,
+\end{align*}
+
+
+where $(*)$ denotes the condition
+
+
+\begin{equation*}
+\left|\frac{\sqrt{n_{1}}}{v_{1}}-\frac{\sqrt{n_{2}}}{v_{2}}\right| \leq \frac{2 \sqrt{N}}{V Q}, \quad v_{1}, v_{2} \sim V, n_{1}, n_{2} \sim N . \tag{2.3}
+\end{equation*}
+
+
+Let $\lambda=\sqrt{n_{1}} / v_{1}-\sqrt{n_{2}} / v_{2}$. Then by Lemma 1, the inner sum in (2.2) can be estimated by
+
+
+\begin{equation*}
+\min \left(U, \frac{U^{2}}{\sqrt{x}|\lambda|}\right)+x^{1 / 4}|\lambda|^{1 / 2} U^{-1 / 2} . \tag{2.4}
+\end{equation*}
+
+
+By Lemma 6, the contribution of $U$ (namely $|\lambda| \leq U x^{-1 / 2}$ ) to $|S|^{2}$ is
+
+
+\begin{equation*}
+U^{2} Q\left(V N \log 2 V N+U x^{-1 / 2} N^{3 / 2} V^{3}\right) \ll U^{2} Q V N \log 2 V N . \tag{2.5}
+\end{equation*}
+
+
+The contribution of $U^{2} x^{-1 / 2}|\lambda|^{-1}\left(|\lambda|>U x^{-1 / 2}\right)$ is
+
+$$
+U^{2} Q V N(\log 2 V N)^{2}
+$$
+
+by a similar argument. The contribution of $x^{1 / 4}|\lambda|^{1 / 2} U^{-1 / 2}$ is (note $|\lambda| \ll$ $\sqrt{N} /(V Q), Q \ll V N)$
+
+$$
+x^{1 / 4} U^{1 / 2} N^{9 / 4} V^{3 / 2} Q^{-1 / 2}.
+$$
+
+Now, taking $Q=1+\left[x^{1 / 6} U^{-1} N^{5 / 6} V^{1 / 3}\right]$, we get
+
+
+\begin{equation*}
+|S| \log ^{-1} 2 V N \ll U V^{1 / 2} N^{1 / 2}+x^{1 / 12} U^{1 / 2} V^{2 / 3} N^{11 / 12}, \tag{2.6}
+\end{equation*}
+
+
+whence the lemma follows since $M^{1 / 2} \leq U \leq M^{5 / 6}$.\\
+\medskip\noindent\textbf{Lemma 10.} Suppose $x, M, N$ satisfy the conditions of Lemma 9. Then
+
+
+\begin{align*}
+T(M, N) & =\sum_{n \sim N} a(n) \sum_{m \sim M} \mu(m) e\left(\frac{\sqrt{n x}}{m}\right)  \tag{2.7}\\
+& \ll\left(x^{1 / 12} M^{7 / 12} N^{11 / 12}+M^{11 / 12} N^{1 / 2}\right) x^{\varepsilon}
+\end{align*}
+
+
+where $|a(n)| \leq 1$.\\
+\smallskip\noindent\textit{Proof.} By Heath-Brown's identity $(k=4), T(M, N)$ can be written as $O\left(\log ^{8} x\right)$ sums of the form
+
+
+\begin{equation*}
+T=\sum_{n \sim N} a(n) \sum_{m_{1} \sim M_{1}} \ldots \sum_{m_{8} \sim M_{8}} \mu\left(m_{1}\right) \ldots \mu\left(m_{4}\right) e\left(\frac{\sqrt{n x}}{m_{1} \ldots m_{8}}\right), \tag{2.8}
+\end{equation*}
+
+
+where $M \ll M_{1} \ldots M_{8} \ll M, M_{1}, M_{2}, M_{3}, M_{4} \leq(2 M)^{1 / 4}$. Some $m_{i}$ may only take the value 1.
+
+To prove the lemma we consider three cases.\\
+\medskip\noindent\textsc{Case 1:} There is some $M_{i}$ such that $M_{i}>M^{5 / 6}$. It must follow that $i \geq 5 ; i=8$ for example. We use the exponent pair (1/6, 4/6) to estimate the sum on $m_{8}$ and estimate other variables trivially, to get $\left(F=\sqrt{N x} M^{-1}\right)$
+
+
+\begin{align*}
+T & \ll N M M_{8}^{-1}\left(\frac{M_{8}}{F}+\left(\frac{F}{M_{8}}\right)^{1 / 6} M_{8}^{2 / 3}\right)  \tag{2.9}\\
+& \ll x^{-1 / 2} M^{2} N^{1 / 2}+x^{1 / 12} M^{5 / 12} N^{13 / 12} \\
+& \ll x^{1 / 12} M^{5 / 12} N^{13 / 12} \ll x^{1 / 12} M^{7 / 12} N^{11 / 12}.
+\end{align*}
+
+
+\medskip\noindent\textsc{Case 2:} There is some $M_{i}$ satisfying $M^{1 / 6} \leq M_{i} \leq M^{5 / 6}$. Let $u=m_{i}$, $v=\prod_{j \neq i} m_{j}, U=M_{i}$. Then by Lemma 9 we get
+
+
+\begin{equation*}
+x^{-\varepsilon} T \ll x^{1 / 12} M^{7 / 12} N^{11 / 12}+M^{11 / 12} N^{1 / 2}, \tag{2.10}
+\end{equation*}
+
+
+where $x^{\varepsilon}$ comes from the divisor argument.\\
+\medskip\noindent\textsc{Case 3:} All $M_{i}$ satisfy $M_{i} \leq M^{1 / 6}$. Without loss of generality, suppose $M_{1} \geq M_{2} \geq \ldots \geq M_{8}$. Let $l$ be the first positive integer such that
+
+
+\begin{equation*}
+M_{1} \ldots M_{l}>M^{1 / 6}. \tag{2.11}
+\end{equation*}
+
+
+then $l \geq 2$. Thus we have
+
+$$
+M_{1} \ldots M_{l} \leq\left(M_{1} \ldots M_{l-1}\right) M_{l} \leq M^{2 / 6}.
+$$
+
+Now take $u=m_{1} \ldots m_{l}$, $v=m_{l+1} \ldots m_{8}$, and $U=M_{1} \ldots M_{l}$. By Lemma 9, (2.10) still holds.
+
+Lemma 10 follows from the three cases.\\[0pt]
+Now we prove the following proposition. It plays an important role in this paper. The idea of the proof has been used by several authors; see Jia [8], Baker and Harman [1], for example.
+
+\medskip\noindent\textbf{Proposition 1.} Suppose $M, N$ are large positive numbers, $A>0, \alpha, \beta$ are rational numbers, neither of which is a non-negative integer. Suppose $m \sim M, n \sim N$, $F=A M^{\alpha} N^{\beta} \gg N,|a(m)| \leq 1,|b(n)| \leq 1$. Then
+
+$$
+\begin{aligned}
+S & = \sum_{M<m \leq 2 M} \sum_{N<n \leq 2 N} a(m) b(n) e\left(A m^{\alpha} n^{\beta}\right) \\
+& \ll \left(M N^{1 / 2}+F^{4 / 20} M^{13 / 20} N^{15 / 20}+F^{4 / 23} M^{15 / 23} N^{18 / 23}\right. \\
+& \left.+F^{1 / 6} M^{2 / 3} N^{7 / 9}+F^{1 / 5} M^{3 / 5} N^{4 / 5}+F^{1 / 10} M^{4 / 5} N^{7 / 10}\right) \log ^{4} F.
+\end{aligned}
+$$
+
+\smallskip\noindent\textit{Proof.} Without loss of generality, we suppose $\beta>0$; for $\beta<0$, the proof is the same. By Cauchy's inequality and Lemma 4 we get
+
+
+\begin{align*}
+|S|^{2} & \ll M \sum_{M<m \leq 2 M}\left|\sum_{N<n \leq 2 N} b(n) e\left(A m^{\alpha} n^{\beta}\right)\right|^{2}  \tag{2.12}\\
+& \ll \frac{M^{2} N^{2}}{Q}+\frac{M N}{Q}\left|\Sigma_{1}\right|
+\end{align*}
+
+
+with
+
+$$
+\Sigma_{1}=\sum_{q=1}^{Q}\left(1-\frac{q}{Q}\right) \sum_{N<n \leq 2 N-q} \overline{b(n)} b(n+q) \sum_{M<m \leq 2 M} e\left(A m^{\alpha} g(n, q)\right),
+$$
+
+where $Q$ is a parameter satisfying $\log N \leq Q \leq N \log ^{-1} N, g(n, q)=$ $(n+q)^{\beta}-n^{\beta}$.
+
+We write
+
+
+\begin{align*}
+\Sigma_{1}= & \sum_{1 \leq q \leq Q} \sum_{2 N-Q<n \leq 2 N-q} \sum_{m}+\sum_{q \leq B} \sum_{N<n \leq 2 N-Q} \sum_{m}  \tag{2.13}\\
+& +\sum_{B<q \leq Q} \sum_{N<n \leq 2 N-Q} \sum_{m}=\Sigma_{2}+\Sigma_{3}+\Sigma_{4}
+\end{align*}
+
+
+where $B=\max\left(\log N, \frac{MN}{c(\alpha,\beta)F}\right)$ and
+
+$$
+c(\alpha, \beta)=2|\alpha \beta| \max \left(2^{\alpha-1}, 1\right) \max \left(2^{\beta-1}, 1\right).
+$$
+
+By Lemma 1 we have
+
+
+\begin{align*}
+& \Sigma_{2} \ll\left(\frac{M N Q}{F}+\frac{F^{1 / 2} Q^{5 / 2}}{N^{1 / 2}}\right) \log N,  \tag{2.14}\\
+& \Sigma_{3} \ll\left(\frac{M N^{2}}{F}+F^{1 / 2} N^{1 / 2}\right) \log ^{2} N . \tag{2.15}
+\end{align*}
+
+
+So we only need to bound $\Sigma_{4}$. Notice that $\Sigma_{4}$ can be written as the sum of $O(\log Q)$ exponential sums of the form
+
+
+\begin{equation*}
+\Sigma_{5}=\sum_{Q_{1}<q \leq 2 Q_{1}} c(q) \sum_{N<n \leq 2 N-Q} \overline{b(n)} b(n+q) \sum_{M<m \leq 2 M} e\left(A m^{\alpha} g(n, q)\right), \tag{2.16}
+\end{equation*}
+
+
+where $B \leq Q_{1} \leq Q / 2, c(q)=1-q / Q$.\\
+By Lemma 7 we have
+
+
+\begin{align*}
+& \sum_{M<m \leq 2 M} e\left(A m^{\alpha} g(n, q)\right)  \tag{2.17}\\
+& =c_{3} \sum_{U_{1}<u \leq U_{2}} \frac{(A g)^{1 /(2(1-\alpha))}}{u^{(1-\alpha / 2) /(1-\alpha)}} e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right) \\
+& \quad+O\left(\log F+\frac{M N}{F q}+\min \left(\frac{M N^{1 / 2}}{F^{1 / 2} q^{1 / 2}}, \max \left(\frac{1}{\left\langle U_{2}\right\rangle}, \frac{1}{\left\langle U_{1}\right\rangle}\right)\right)\right),
+\end{align*}
+
+
+where $U_{1}=c_{5} A M^{\alpha-1} g, U_{2}=c_{6} A M^{\alpha-1} g, g=g(n, q)$. By Lemma 3, the contribution of the error term to $\Sigma_{5}$ is
+
+$$
+N Q_{1} \log F+M N^{2} F^{-1} \log Q_{1}+F^{1 / 2} Q_{1}^{3 / 2} N^{-1 / 2}.
+$$
+
+It can be easily seen that $g(n, q)<\beta q n^{\beta-1}$ for $0<\beta<1, g(n, q)>$ $\beta q n^{\beta-1}$ for $\beta>1$. If $\beta q A M^{\alpha-1} n^{\beta-1}-A M^{\alpha-1} g>\log ^{-1} N$, then by the trivial estimate we have $(i=5,6)$
+
+\begin{equation*}
+\begin{aligned}
+&\sum_{q\sim Q_{1}}\sum_{n\sim N}
+\left|
+\begin{aligned}
+&\sum_{\substack{c_{i}AM^{\alpha-1}g<u\\
+                  u\leq c_{i}\beta qAM^{\alpha-1}n^{\beta-1}}}
+\frac{(Ag)^{1/(2(1-\alpha))}}{u^{(1-\alpha/2)/(1-\alpha)}} \\
+&\qquad\times e\left(c_{4}A^{1/(1-\alpha)}g^{1/(1-\alpha)}
+                 u^{-\alpha/(1-\alpha)}\right)
+\end{aligned}
+\right| \\
+&\qquad\ll F^{1/2}Q_{1}^{5/2}N^{-1/2}\log^{2}N.
+\end{aligned}
+\tag{2.18}
+\end{equation*}
+
+Now suppose $\beta q A M^{\alpha-1} n^{\beta-1}-A M^{\alpha-1} g \leq \log ^{-1} N$. Notice that the fact that
+
+$$
+\left[c_{i} \beta q A M^{\alpha-1} n^{\beta-1}\right]-\left[c_{i} A M^{\alpha-1} g\right]=1
+$$
+
+always implies
+
+$$
+\left\|c_{i} A M^{\alpha-1} g\right\| \leq c_{i} \beta q A M^{\alpha-1} n^{\beta-1}-c_{i} A M^{\alpha-1} g=\delta_{i}.
+$$
+
+We have
+
+
+\begin{align*}
+\sum_{c_{i} A M^{\alpha-1} g<u \leq c_{i} \beta q A M^{\alpha-1} n^{\beta-1}} & \frac{(A g)^{1 /(2(1-\alpha))}}{u^{(1-\alpha / 2) /(1-\alpha)}}  \tag{2.19}\\
+& \ll \frac{M N^{1 / 2}}{F^{1 / 2} Q_{1}^{1 / 2}} \sum_{c_{i} A M^{\alpha-1} g<u \leq c_{i} \beta q A M^{\alpha-1} n^{\beta-1}} 1 \\
+& \ll \frac{M N^{1 / 2}}{F^{1 / 2} Q_{1}^{1 / 2}} \min \left(1, \frac{\delta_{i}}{\left\|c_{i} A M^{\alpha-1} g\right\|}\right) \\
+& \ll \frac{M N^{1 / 2}}{F^{1 / 2} Q_{1}^{1 / 2}} \min \left(1, \frac{F Q_{1}^{2}}{M N^{2}} \cdot \frac{1}{\left\|c_{i} A M^{\alpha-1} g\right\|}\right),
+\end{align*}
+
+
+thus by Lemma 3,
+
+\begin{equation*}
+\begin{aligned}
+&\sum_{q\sim Q_{1}}\sum_{n\sim N}
+\left|
+\begin{aligned}
+&\sum_{\substack{c_{i}AM^{\alpha-1}g<u\\
+                  u\leq c_{i}\beta qAM^{\alpha-1}n^{\beta-1}}}
+\frac{(Ag)^{1/(2(1-\alpha))}}{u^{(1-\alpha/2)/(1-\alpha)}} \\
+&\qquad\times e\left(c_{4}A^{1/(1-\alpha)}g^{1/(1-\alpha)}
+                 u^{-\alpha/(1-\alpha)}\right)
+\end{aligned}
+\right| \\
+&\qquad\ll F^{1/2}Q_{1}^{3/2}N^{-1/2}\log^{2}N.
+\end{aligned}
+\tag{2.20}
+\end{equation*}
+
+Now it suffices to bound
+
+
+\begin{align*}
+\Sigma_{6}= & \sum_{Q_{1}<q \leq 2 Q_{1}} c(q) \sum_{N<n \leq 2 N-Q} \overline{b(n)} b(n+q)  \tag{2.21}\\
+& \times \sum_{u} \frac{(A g)^{1 /(2(1-\alpha))}}{u^{(1-\alpha / 2) /(1-\alpha)}} e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right),
+\end{align*}
+
+
+where
+
+$$
+c_{5} \beta q A M^{\alpha-1} n^{\beta-1}<u \leq c_{6} \beta q A M^{\alpha-1} n^{\beta-1}.
+$$
+
+By Lemmas 2 and 3 we get (choose $T=F^{10}$ )
+
+
+\begin{equation*}
+\Sigma_{6} \ll\left|\Sigma_{7}\right|+F^{1 / 2} Q_{1}^{3 / 2} N^{-1 / 2} \log N \tag{2.22}
+\end{equation*}
+
+
+with
+
+
+\begin{align*}
+\Sigma_{7}= & \sum_{Q_{1}<q \leq 2 Q_{1}} c(q) \sum_{N<n \leq 2 N-Q} \overline{b(n)} b(n+q) \sum_{u} \frac{(A g)^{1 /(2(1-\alpha))}}{u^{(1-\alpha / 2) /(1-\alpha)}}  \tag{2.23}\\
+& \times \frac{q^{i t} A^{i t} M^{(\alpha-1) i t} n^{(\beta-1) i t}}{u^{i t}} e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right),
+\end{align*}
+
+
+where $t$ is a real number independent of the variables and
+
+$$
+c_{7} F Q_{1}(M N)^{-1}<u \leq c_{8} F Q_{1}(M N)^{-1}.
+$$
+
+It is easy to see that
+
+
+\begin{align*}
+\Sigma_{7}= & \sum_{u} \frac{A^{1 /(2(1-\alpha))+i t} M^{(\alpha-1) i t}}{u^{(1-\alpha / 2) /(1-\alpha)+i t}} \sum_{N<n \leq 2 N-Q} \overline{b(n)} n^{(\beta-1) i t}  \tag{2.24}\\
+& \times \sum_{Q_{1}<q \leq 2 Q_{1}} j(q) b(n+q) g^{1 /(2(1-\alpha))} \\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right) \\
+& \ll \sum_{u} \frac{A^{1/(2(1-\alpha))}}{u^{(1-\alpha/2)/(1-\alpha)}}
+\left(Q_{1}N^{\beta-1}\right)^{1/(2(1-\alpha))}\Sigma_{8}(u) \\
+& \ll F^{1 / 2} Q_{1}^{1 / 2} N^{-1 / 2} \Sigma_{8}\left(u_{0}\right)
+\end{align*}
+
+
+for some $u_{0}$ with
+
+
+\begin{align*}
+\Sigma_{8}(u)=\sum_{N<n \leq 2 N-Q} & \biggl|\sum_{Q_{1}<q \leq 2 Q_{1}} j(q) b(n+q) g_{0}^{1 /(2(1-\alpha))}  \tag{2.25}\\
+& \quad \times e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right)\biggr|
+\end{align*}
+
+
+where $j(q)=c(q) q^{i t}, 1 \ll g_{0}=g\left(Q_{1} N^{\beta-1}\right)^{-1} \ll 1$.\\
+Suppose $10 \leq R \leq Q_{1} \log ^{-1 / 2} N$ is a parameter to be determined. By Cauchy's inequality and Lemma 4 we get
+
+
+\begin{align*}
+\Sigma_{8}(u)^{2} & \ll N \sum_{n} \biggl|\sum_{q} j(q) b(n+q) g_{0}^{1 /(2(1-\alpha))}  \tag{2.26}\\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} g^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\right)\biggr|^{2} \\
+& \ll \frac{N^{2} Q_{1}^{2}}{R}+\frac{N Q_{1}}{R} \sum_{1 \leq r \leq R}\left|E_{r}\right|,
+\end{align*}
+
+
+where
+
+$$
+\begin{aligned}
+E_{r}= & \sum_{N<n \leq 2 N-Q} \sum_{Q_{1}<q \leq 2 Q_{1}-r} j(q) b(n+q) g_{0}^{1 /(2(1-\alpha))}(n, q) \\
+& \times \overline{j(q+r) b(n+q+r)} g_{0}^{1 /(2(1-\alpha))}(n, q+r) \\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\left(g^{1/(1-\alpha)}(n,q)-g^{1/(1-\alpha)}(n,q+r)\right)\right)
+\end{aligned}
+$$
+
+So it reduces to bound $E_{r}$ for fixed $r$. Making the change of variable $n+q=l$, we have
+
+$$
+\begin{aligned}
+E_{r}= & \sum_{Q_{1}<q \leq 2 Q_{1}-r} j(q) \overline{j(q+r)} \sum_{N+q<l \leq 2 N+q-Q} b(l) \overline{b(l+r)} g_{0}^{1 /(2(1-\alpha))}(l-q, q) \\
+& \times g_{0}^{1 /(2(1-\alpha))}(l-q, q+r) \\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}\left(g^{1/(1-\alpha)}(l-q,q)-g^{1/(1-\alpha)}(l-q,q+r)\right)\right) \\
+= & \sum_{N+Q_{1}<n \leq 2 N+2 Q_{1}-r-Q} b(n) \overline{b(n+r)} \\
+& \times \sum_{\max \left(Q_{1}, n-2 N+Q\right)<q \leq \min \left(2 Q_{1}-r, n-N\right)} j(q) \overline{j(q+r)} \\
+& \times g_{0}^{1 /(2(1-\alpha))}(n-q, q) g_{0}^{1 /(2(1-\alpha))}(n-q, q+r) \\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)} k(n, q, r)\right),
+\end{aligned}
+$$
+
+where
+
+$$
+k(n, q, r)=g^{1/(1-\alpha)}(n-q,q)-g^{1/(1-\alpha)}(n-q,q+r).
+$$
+
+By Lemma 5 we get
+
+$$
+\begin{aligned}
+E_{r} \log ^{-1} N & \ll \sum_{n \sim N} \biggl|\sum_{q \sim Q_{1}} j(q) \overline{j(q+r)} g_{0}^{1 /(2(1-\alpha))}(n-q, q) \\
+& \times g_{0}^{1 /(2(1-\alpha))}(n-q, q+r) e\left(c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)} k(n, q, r)+\theta_{0} q\right)\biggr|
+\end{aligned}
+$$
+
+where $\theta_{0}$ is a real number independent of $n$ and $q$.\\
+Suppose $10 \leq T \leq Q_{1} \log ^{-1 / 2} N$ is a parameter to be determined. By Cauchy's inequality and Lemma 4 we get
+
+
+\begin{equation*}
+\left|E_{r}\right|^{2} \log ^{-2} N \ll \frac{N^{2} Q_{1}^{2}}{T}+\frac{N Q_{1}}{T}\left|D_{t}(r)\right|, \tag{2.27}
+\end{equation*}
+
+
+with
+
+$$
+\begin{aligned}
+D_{t}(r)= & \sum_{n \sim N} \sum_{Q_{1}<q \leq 2 Q_{1}-r-t} j(q) \overline{j(q+r)} g_{0}^{1 /(2(1-\alpha))}(n-q, q) \\
+& \times g_{0}^{1 /(2(1-\alpha))}(n-q, q+r) j(q+t+r) \overline{j(q+t)} \\
+& \times g_{0}^{1 /(2(1-\alpha))}(n-q-t, q+t) g_{0}^{1 /(2(1-\alpha))}(n-q-t, q+t+r) \\
+& \times e\left(c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}(k(n, q, r)-k(n, q+t, r))\right) \\
+& \ll \sum_{q \sim Q_{1}}\left|\sum_{n \sim N} \phi(n) e(f(n))\right|,
+\end{aligned}
+$$
+
+where
+
+$$
+\begin{aligned}
+\phi(n)= & g_{0}^{1 /(2(1-\alpha))}(n-q, q) g_{0}^{1 /(2(1-\alpha))}(n-q, q+r) \\
+& \times g_{0}^{1 /(2(1-\alpha))}(n-q-t, q+t) g_{0}^{1 /(2(1-\alpha))}(n-q-t, q+t+r)
+\end{aligned}
+$$
+
+and
+
+$$
+f(n)=c_{4} A^{1 /(1-\alpha)} u^{-\alpha /(1-\alpha)}(k(n, q, r)-k(n, q+t, r)).
+$$
+
+It is an easy exercise to verify that $\phi(n)$ is monotonic and
+
+$$
+\left|f^{\prime}(n)\right| \sim \frac{F r t}{Q_{1} N^{2}}, \quad\left|f^{\prime \prime}(n)\right| \sim \frac{F r t}{Q_{1} N^{3}} \quad(N<n \leq 2 N) ;
+$$
+
+thus by Lemma 1 we get
+
+
+\begin{equation*}
+D_{t}(r) \ll Q_{1}\left(\frac{Q_{1} N^{2}}{F r t}+\frac{(F r t)^{1 / 2}}{\left(Q_{1} N\right)^{1 / 2}}\right)=\frac{Q_{1}^{2} N^{2}}{F r t}+\frac{\left(F r t Q_{1}\right)^{1 / 2}}{N^{1 / 2}} . \tag{2.28}
+\end{equation*}
+
+
+Inserting (2.28) into (2.27) we get
+
+
+\begin{equation*}
+\left|E_{r}\right|^{2} \log ^{-2} N \ll \frac{Q_{1}^{2} N^{2}}{T}+\frac{Q_{1}^{3} N^{3}}{F r T}+Q_{1}^{3 / 2}(N F T r)^{1 / 2} . \tag{2.29}
+\end{equation*}
+
+
+Notice that (2.29) is also true for $0<T<10$; then by Lemma 8 choosing a best $T \in\left(0, Q_{1} \log ^{-1 / 2} N\right)$ we get
+
+
+\begin{equation*}
+\left|E_{r}\right| \log ^{-1} N \ll N^{1 / 2} Q_{1}^{5 / 6} F^{1 / 6} r^{1 / 6}+N^{2 / 3} Q_{1}+N Q_{1}^{1 / 2}+\frac{N^{3 / 2} Q_{1}}{F^{1 / 2} r^{1 / 2}} . \tag{2.30}
+\end{equation*}
+
+
+Inserting (2.30) into (2.26) we have
+
+
+\begin{align*}
+& \Sigma_{8}(u)^{2} \log ^{-2} N  \tag{2.31}\\
+& \ll \frac{Q_{1}^{2} N^{2}}{R}+N^{3 / 2} Q_{1}^{11 / 6} F^{1 / 6} R^{1 / 6}+\frac{N^{5 / 2} Q_{1}^{2}}{F^{1 / 2} R^{1 / 2}}+N^{5 / 3} Q_{1}^{2}+N^{2} Q_{1}^{3 / 2}.
+\end{align*}
+
+
+This is also true for $0<R \leq 10$. Choosing a best $R \in\left(0, Q_{1} \log ^{-1 / 2} N\right)$ via Lemma 8 we get
+
+
+\begin{align*}
+\Sigma_{8}(u) \log ^{-1} N \ll & N^{11 / 14} Q_{1}^{13 / 14} F^{1 / 14}+N^{14 / 16} Q_{1}^{15 / 16}  \tag{2.32}\\
+& +N^{5 / 4} Q_{1}^{3 / 4} F^{-1 / 4}+N^{5 / 6} Q_{1}+N Q_{1}^{3 / 4}.
+\end{align*}
+
+
+Inserting (2.32) into (2.24) we have
+
+
+\begin{align*}
+\Sigma_{7} \ll & N^{4 / 14} Q_{1}^{20 / 14} F^{8 / 14}+N^{6 / 16} Q_{1}^{23 / 16} F^{8 / 16}+N^{3 / 4} Q_{1}^{5 / 4} F^{1 / 4}  \tag{2.33}\\
+& +N^{1 / 3} Q_{1}^{3 / 2} F^{1 / 2}+N^{1 / 2} Q_{1}^{5 / 4} F^{1 / 2}.
+\end{align*}
+
+
+Combining (2.17), (2.18), (2.20), (2.22) and (2.33) we get
+
+
+\begin{align*}
+\Sigma_{5} \log ^{-4} F \ll & N^{4 / 14} Q^{20 / 14} F^{8 / 14}+N^{6 / 16} Q^{23 / 16} F^{8 / 16}  \tag{2.34}\\
+& +N^{3 / 4} Q^{5 / 4} F^{1 / 4}+N^{1 / 3} Q^{3 / 2} F^{1 / 2} \\
+& +N^{1 / 2} Q^{5 / 4} F^{1 / 2}+N Q+M N^{2} F^{-1} \\
+& +F^{1 / 2} Q^{5 / 2} N^{-1 / 2}.
+\end{align*}
+
+
+Inserting (2.14), (2.15) and (2.34) into (2.12) we get
+
+
+\begin{align*}
+|S|^{2} \log ^{-6} F \ll & \frac{M^{2} N^{2}}{Q}+M N^{18 / 14} Q^{6 / 14} F^{8 / 14}  \tag{2.35}\\
+& +M N^{22 / 16} Q^{7 / 16} F^{8 / 16}+M N^{7 / 4} Q^{1 / 4} F^{1 / 4} \\
+& +M N^{4 / 3} Q^{1 / 2} F^{1 / 2}+M N^{3 / 2} Q^{1 / 4} F^{1 / 2}+M N^{2} \\
+& +M^{2} N^{3} Q^{-1} F^{-1}+M N^{1 / 2} Q^{3 / 2} F^{1 / 2}.
+\end{align*}
+
+
+Since $Q<N \ll F$, we have
+
+$$
+\begin{aligned}
+M N^{2}+M N^{7 / 4} Q^{1 / 4} F^{1 / 4} & \ll M N^{3 / 2} Q^{1 / 4} F^{1 / 2}, \\
+M^{2} N^{3}(F Q)^{-1} & \ll M^{2} N^{2} Q^{-1}.
+\end{aligned}
+$$
+
+So we obtain
+
+
+\begin{align*}
+|S|^{2} \log ^{-6} F \ll & \frac{M^{2} N^{2}}{Q}+M N^{18 / 14} Q^{6 / 14} F^{8 / 14}  \tag{2.36}\\
+& +M N^{22 / 16} Q^{7 / 16} F^{8 / 16}+M N^{4 / 3} Q^{1 / 2} F^{1 / 2} \\
+& +M N^{3 / 2} Q^{1 / 4} F^{1 / 2}+M N^{1 / 2} Q^{3 / 2} F^{1 / 2}
+\end{align*}
+
+
+Note that (2.36) is trivial for $0<Q \leq \log N$. Now the proposition follows from choosing a best $Q \in\left(0, N \log ^{-1} N\right)$ via Lemma 8.\\
+\section{An expression of the error term}
+In the rest of this paper, we always use $E_{P}(x)$ to denote the difference $V(x)-\frac{6}{\pi} x$. The aim of this section is to give an expression of $E_{P}(x)$ subject to RH.
+
+Let $y$ be a parameter, $x^{\varepsilon} \leq y \leq x^{1 / 2-\varepsilon}$,
+
+
+\begin{equation*}
+f_{1}(s)=\sum_{n \leq y} \mu(n) n^{-s}, \quad f_{2}(s)=\zeta^{-1}(s)-f_{1}(s) \tag{3.1}
+\end{equation*}
+
+
+Let $r(n)$ be the number of representations of $n$ as a sum of two squares. Then
+
+
+\begin{align*}
+V(x) & =\sum_{\substack{a^{2}+b^{2} \leq x \\
+(a, b)=1}} 1=\sum_{a^{2}+b^{2} \leq x} \sum_{m \mid(a, b)} \mu(m)  \tag{3.2}\\
+& =\sum_{m^{2}\left(a^{2}+b^{2}\right) \leq x} \mu(m)=\sum_{m^{2} k \leq x} \mu(m) r(k) \\
+& =\sum_{m \leq y}+\sum_{m>y}=\Sigma_{1}+\Sigma_{2}, \quad \text { say. }
+\end{align*}
+
+
+Notice that for $\sigma>1$,
+
+
+\begin{equation*}
+\sum_{n=1}^{\infty} r(n) n^{-s}=4 \zeta(s) L(s, \chi) \tag{3.3}
+\end{equation*}
+
+
+where $\chi$ is the non-principal character mod 4, we have
+
+
+\begin{align*}
+\Sigma_{1} & =\sum_{m \leq y} \mu(m) P\left(\frac{x}{m^{2}}\right)  \tag{3.4}\\
+& =\sum_{m \leq y} \mu(m)\left(\operatorname{Res}_{s=1} \frac{4 \zeta(s) L(s, \chi)}{s}\left(\frac{x}{m^{2}}\right)^{s}+E\left(\frac{x}{m^{2}}\right)\right) \\
+& =\operatorname{Res}_{s=1}\left(4 f_{1}(2 s) \zeta(s) L(s, \chi) x^{s} s^{-1}\right)+\sum_{m \leq y} \mu(m) E\left(\frac{x}{m^{2}}\right).
+\end{align*}
+
+
+To treat $\Sigma_{2}$ we begin with
+
+$$
+f_{2}(s)=\sum_{m>y} \mu(m) m^{-s}
+$$
+
+for $\sigma>1$. Hence
+
+
+\begin{equation*}
+4 f_{2}(2 s) \zeta(s) L(s, \chi)=\sum_{n=1}^{\infty} b(n) n^{-s} \quad(\sigma>1), \tag{3.5}
+\end{equation*}
+
+
+where
+
+$$
+b(n)=\sum_{n=m^{2} k, m>y} \mu(m) r(k).
+$$
+
+By Perron's formula we have
+
+
+\begin{equation*}
+\Sigma_{2}=\sum_{n \leq x} b(n)=\frac{1}{2 \pi i} \int_{1+\varepsilon-i x^{2}}^{1+\varepsilon+i x^{2}} g(s) d s+O\left(x^{\varepsilon}\right) \tag{3.6}
+\end{equation*}
+
+
+where
+
+$$
+g(s)=4 f_{2}(2 s) \zeta(s) L(s, \chi) x^{s} s^{-1}
+$$
+
+By Cauchy's theorem, we have
+
+
+\begin{equation*}
+\frac{1}{2 \pi i} \int_{1+\varepsilon-i x^{2}}^{1+\varepsilon+i x^{2}} g(s) d s=I_{1}+I_{2}-I_{3}+\operatorname{Res}_{s=1} g(s) \tag{3.7}
+\end{equation*}
+
+
+where
+
+$$
+\begin{gathered}
+I_{1}=\frac{1}{2 \pi i} \int_{0.5+\varepsilon+i x^{2}}^{1+\varepsilon+i x^{2}} g(s) d s, \quad I_{2}=\frac{1}{2 \pi i} \int_{0.5+\varepsilon-i x^{2}}^{0.5+\varepsilon+i x^{2}} g(s) d s \\
+I_{3}=\frac{1}{2 \pi i} \int_{0.5+\varepsilon-i x^{2}}^{1+\varepsilon-i x^{2}} g(s) d s
+\end{gathered}
+$$
+
+Since RH is true, it follows that
+
+
+\begin{equation*}
+\zeta(s) \ll|t|^{\varepsilon}+1, \quad \sigma \geq 0.5+\varepsilon, \tag{3.8}
+\end{equation*}
+
+
+
+\begin{equation*}
+f_{2}(2 s) \ll y^{-1 / 2}\left(|t|^{\varepsilon}+1\right), \quad \sigma \geq 0.5+\varepsilon . \tag{3.9}
+\end{equation*}
+
+
+For $L(s, \chi)$, we have
+
+
+\begin{equation*}
+L(s, \chi) \ll(|t|+1)^{(1-\sigma) / 2}, \quad 0.5 \leq \sigma \leq 1 . \tag{3.10}
+\end{equation*}
+
+
+Using (3.8)-(3.10) we get
+
+
+\begin{align*}
+& I_{1}-I_{3} \ll y^{-1 / 2}\left(1+x^{\varepsilon}\right)  \tag{3.11}\\
+& I_{2} \ll y^{-1 / 2} x^{1 / 2+\varepsilon}\left(\int_{1}^{x^{2}} \frac{|L(1 / 2+\varepsilon+i t, \chi)|}{t} d t+1\right)  \tag{3.12}\\
+& \ll y^{-1 / 2} x^{1 / 2+\varepsilon}.
+\end{align*}
+
+
+Combining (3.6)-(3.12) we get
+
+
+\begin{equation*}
+\Sigma_{2}=\operatorname{Res}_{s=1}\left(4 f_{2}(2 s) \zeta(s) L(s, \chi) x^{s} s^{-1}\right)+O\left(y^{-1 / 2} x^{1 / 2+\varepsilon}\right) . \tag{3.13}
+\end{equation*}
+
+
+From (3.2), (3.4) and (3.13) we get
+
+
+\begin{align*}
+V(x)= & \operatorname{Res}_{s=1}\left(4 \zeta^{-1}(2 s) \zeta(s) L(s, \chi) x^{s} s^{-1}\right)  \tag{3.14}\\
+& +\sum_{m \leq y} \mu(m) E\left(\frac{x}{m^{2}}\right)+O\left(y^{-1 / 2} x^{1 / 2+\varepsilon}\right) \\
+= & \frac{6}{\pi} x+\sum_{m \leq y} \mu(m) E\left(\frac{x}{m^{2}}\right)+O\left(y^{-1 / 2} x^{1 / 2+\varepsilon}\right).
+\end{align*}
+
+
+Now we obtain the main result of this section.\\
+\medskip\noindent\textbf{Proposition 2.} If $RH$ is true, then for $x^{\varepsilon} \leq y \leq x^{1 / 2-\varepsilon}$, we have
+
+
+\begin{equation*}
+E_{P}(x)=\sum_{m \leq y} \mu(m) E\left(\frac{x}{m^{2}}\right)+O\left(y^{-1 / 2} x^{1 / 2+\varepsilon}\right) . \tag{3.15}
+\end{equation*}
+
+
+\section{Proof of the Theorem}
+Take $y=x^{4/15}$ in Proposition 2. We only need to estimate the sum
+
+$$
+\sum_{m \sim M} \mu(m) E\left(\frac{x}{m^{2}}\right)
+$$
+
+for $x^{1 / 10} \ll M \ll y$. For $M \ll x^{1 / 10}$, we have trivially
+
+
+\begin{equation*}
+\sum_{m \leq x^{1 / 10}} \mu(m) E\left(\frac{x}{m^{2}}\right) \ll \sum_{m \leq x^{1 / 10}} x^{1 / 3} m^{-2 / 3} \ll x^{11 / 30} . \tag{4.1}
+\end{equation*}
+
+
+By the well-known Voronoi formula of $E(t)$ (see [7], 13.8) we get
+
+
+\begin{align*}
+x^{-\varepsilon} \sum_{m \sim M} \mu(m) & E\left(\frac{x}{m^{2}}\right)  \tag{4.2}\\
+& \ll\left|\sum_{m \sim M} \frac{\mu(m) x^{1 / 4}}{m^{1 / 2}} \sum_{n \leq x^{4 / 15}} \frac{r(n)}{n^{3 / 4}} e\left(\frac{\sqrt{n x}}{m}\right)\right|+x^{11 / 30}.
+\end{align*}
+
+
+It now suffices to show that $(1 \ll N \ll y)$
+
+
+\begin{equation*}
+S(M, N)=\sum_{m \sim M} \frac{\mu(m) x^{1 / 4}}{m^{1 / 2}} \sum_{n \sim N} \frac{r(n)}{n^{3 / 4}} e\left(\frac{\sqrt{n x}}{m}\right) \ll x^{11 / 30+\varepsilon} . \tag{4.3}
+\end{equation*}
+
+
+We consider three cases.\\
+\medskip\noindent\textsc{Case 1:} $M \leq N \leq x^{4 / 15}$. Let
+
+$$
+T(M, N)=\sum_{m \sim M} \frac{\mu(m) M^{1 / 2}}{m^{1 / 2}} \sum_{n \sim N} \frac{r(n) N^{3 / 4-\varepsilon}}{n^{3 / 4}} e\left(\frac{\sqrt{n x}}{m}\right).
+$$
+
+By Proposition 1 (take $(X, Y)=(N, M)$ ) we get
+
+
+\begin{align*}
+x^{-\varepsilon} T(M, N) \ll & N M^{1 / 2}+x^{2 / 20} N^{15 / 20} M^{11 / 20}  \tag{4.4}\\
+& +x^{2 / 23} N^{17 / 23} M^{14 / 23}+x^{1 / 12} N^{15 / 20} M^{11 / 18} \\
+& +x^{2 / 20} N^{14 / 20} M^{12 / 20}+x^{1 / 20} N^{17 / 20} M^{12 / 20},
+\end{align*}
+
+
+whence
+
+
+\begin{gather*}
+x^{-\varepsilon} S(M, N) \ll x^{1 / 4} N^{1 / 4}+x^{7 / 20} M^{1 / 20}+x^{31 / 92} M^{9 / 92}  \tag{4.5}\\
++x^{1 / 3} M^{1 / 9}+x^{3 / 10} N^{1 / 10} M^{1 / 10} \\
+\ll x^{109 / 300} \ll x^{11 / 30}.
+\end{gather*}
+
+
+\medskip\noindent\textsc{Case 2:} $M^{1 / 4} \leq N \leq M$. We again use Proposition 1 to bound $S(M, N)$ (now take $(X, Y)=(M, N)$ ) and get
+
+
+\begin{align*}
+x^{-\varepsilon} S(M, N) & \ll x^{7 / 20} N^{1 / 10} M^{-1 / 20}+x^{31 / 92} N^{11 / 92} M^{-1 / 46}  \tag{4.6}\\
+& +x^{1 / 3} N^{1 / 9}+x^{7 / 20} N^{3 / 20} M^{-1 / 10}+x^{3 / 10} M^{1 / 5} \\
+& +x^{1 / 4} N^{-1 / 4} M^{1 / 2} \\
+& \ll x^{109 / 300}+x^{1 / 4} M^{7 / 16} \ll x^{11 / 30}.
+\end{align*}
+
+
+\medskip\noindent\textsc{Case 3:} $N<M^{1 / 4}$. We use Lemma 10 to bound $T(M, N)$ and get
+
+$$
+x^{-\varepsilon} T(M, N) \ll x^{1 / 12} N^{11 / 12} M^{1 / 12}+N^{1 / 2} M^{11 / 12},
+$$
+
+whence we have
+
+
+\begin{align*}
+x^{-\varepsilon} S(M, N) & \ll x^{1 / 3} N^{1 / 6} M^{1 / 12}+x^{1 / 4} N^{-1 / 4} M^{5 / 12}  \tag{4.7}\\
+& +x^{1 / 3} M^{1 / 8}+x^{1 / 4} M^{5 / 12} \\
+& \ll x^{11 / 30}.
+\end{align*}
+
+
+This completes the proof of the Theorem.
+
+\section*{Acknowledgements}
+The authors thank the referee for his or her kind and valuable suggestions.
+
+\section*{References}
+\begin{itemize}
+  \item[] [1] R. C. Baker and G. Harman, \textit{Numbers with a large prime factor}, Acta Arith. 73 (1995), 119--145.
+  \item[] [2] E. Bombieri and H. Iwaniec, \textit{On the order of $\zeta\left(\frac{1}{2}+i t\right)$}, Ann. Scuola Norm. Sup. Pisa 13 (1986), 449--472.
+  \item[] [3] E. Fouvry and H. Iwaniec, \textit{Exponential sums with monomials}, J. Number Theory 33 (1989), 311--333.
+  \item[] [4] D. R. Heath-Brown, \textit{The Pjateckiĭ-Šapiro prime number theorem}, ibid. 16 (1983), 242--266.
+  \item[] [5] D. Hensley, \textit{The number of lattice points within a contour and visible from the origin}, Pacific J. Math. 166 (1994), 295--304.
+  \item[] [6] M. N. Huxley, \textit{Exponential sums and lattice points II}, Proc. London Math. Soc. 66 (1993), 279--301.
+  \item[] [7] A. Ivić, \textit{The Riemann Zeta-function}, Wiley, 1985.
+  \item[] [8] C. H. Jia, \textit{On the distribution of squarefree numbers (II)}, Sci. China Ser. A 8 (1992), 812--827.
+  \item[] [9] E. Krätzel, \textit{Lattice Points}, Deutsch. Verlag Wiss., Berlin, 1988.
+  \item[] [10] S. H. Min, \textit{Methods of Number Theory}, Science Press, Beijing, 1983 (in Chinese).
+  \item[] [11] W. G. Nowak, \textit{Primitive lattice points in rational ellipses and related arithmetical functions}, Monatsh. Math. 106 (1988), 57--63.
+  \item[] [12] B. R. Srinivasan, \textit{The lattice point problem of many-dimensional hyperboloids II}, Acta Arith. 8 (1963), 173--204.
+\end{itemize}
+
+Department of Mathematics\\
+Shandong Normal University\\
+Jinan, 250014, Shandong\\
+P.R. China\\
+E-mail: \texttt{wgzhai@jn-public.sd.cninfo.net}
+
+Beijing Institute\\
+of Petrochemical Technology\\
+Daxing, Beijing 102600\\
+P.R. China\\
+E-mail: \texttt{biptiao@info.ind.cn.net}
+
+\begin{center}
+\textit{Received on 22.11.1996\\
+and in revised form on 3.2.1999}
+\end{center}
+\hfill (3080)
+
+
+\end{document}

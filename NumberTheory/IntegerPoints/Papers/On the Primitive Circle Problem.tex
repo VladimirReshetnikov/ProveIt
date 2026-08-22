@@ -1,0 +1,766 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{mathrsfs}
+\usepackage{bbold}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=cyan,}
+\urlstyle{same}
+
+\title{On the Primitive Circle Problem}
+\author{By\\[0.5ex]\textbf{Jie Wu}\\
+Université Henri Poincaré, Nancy, France}
+\date{Received 28 May 2001}
+
+\newcommand{\starfootnote}[1]{%
+  \begingroup
+  \renewcommand{\thefootnote}{\fnsymbol{footnote}}%
+  \footnote[1]{#1}%
+  \endgroup
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that under the Riemann hypothesis one has for any $\varepsilon>0$, $$ \left|\left\{m^{2}+n^{2} \leqslant x,(m, n)=1\right\}\right|=\frac{6}{\pi} x+O\left(x^{221 / 608+\varepsilon}\right) . $$ This improves a result of Zhai and Cao, which requires 11/30 in place of 221/608.
+\end{abstract}
+
+2000 Mathematics Subject Classification: 11L07, 11N37\\
+Key words: Exponential sums, primitive circle problem
+
+\section*{1. Introduction}
+A question related to the well-known circle problem is to determine the asymptotic behaviour of the number of relatively prime integer pairs within a circle, namely, of the quantity
+
+$$
+V(x):=\sum_{\substack{m^{2}+n^{2} \leq x \\(m, n)=1}} 1 .
+$$
+
+Let $\zeta(s)$ be the Riemann zeta function and $\chi$ the non-principal character mod 4. It is easy to see that the associated zeta function is $4 \zeta(s) L(s, \chi) / \zeta(2 s)$ and one has
+
+
+\begin{equation*}
+V(x)=\frac{6}{\pi} x+O\left(x^{1 / 2} e^{-c(\log x)^{3 / 5} /(\log \log x)^{1 / 5}}\right) \tag{1.1}
+\end{equation*}
+
+
+with constant $c>0$. It seems extremely difficult to reduce the exponent 1/2. A natural way to attack this problem is to work under the Riemann hypothesis (RH). Let $\Delta(x)$ be the error term in (1.1). Assuming the RH, Nowak [7] has proved
+
+
+\begin{equation*}
+\Delta(x) \ll x^{15 / 38+\varepsilon}, \tag{1.2}
+\end{equation*}
+
+
+where $\varepsilon$ is an arbitrarily small positive number. Then Hensley [2] has considered more general contours, but when specialized to the circle his result has given a larger exponent. Recently Zhai and Cao [11] have improved Nowak's result $\frac{15}{38}$ to $\frac{11}{30}$.
+
+In this short note, we propose a better exponent.
+
+Theorem 1. If the RH is true, then we have
+
+$$
+\Delta(x) \ll x^{221 / 608+\varepsilon} .
+$$
+
+By applying an idea of Montgomery and Vaughan [6], Nowak [7] has essentially shown that under the RH one has, for $1 \leqslant y<x^{1 / 2}$,
+
+$$
+\Delta(x)=\sum_{m \leqslant y} \mu(m) E\left(x / m^{2}\right)+O\left(x^{1 / 2+\varepsilon} / y^{1 / 2}\right),
+$$
+
+where $\mu(m)$ is the Möbius function and $E(x)$ is the error term in the classical circle problem (also see [11], Proposition 2). Inserting the truncated Voronoi formula for $E(x)$ ([4], Eq. 13.75) with $N=y$, we deduce
+
+$$
+\Delta(x) \ll x^{1 / 4} \sum_{m \leqslant y} \frac{\mu(m)}{m^{1 / 2}} \sum_{n \leqslant y} \frac{r(n)}{n^{3 / 4}} e\left(\frac{\sqrt{x n}}{m}\right)+O\left(x^{1 / 2+\varepsilon} / y^{1 / 2}+x^{\varepsilon} y\right),
+$$
+
+where $e(t):=e^{2 \pi i t}$ and $r(n)$ is the number of representations of $n$ as a sum of two integer squares. Thus in order to prove Theorem 1, it is sufficient to verify
+
+
+\begin{equation*}
+\mathscr{R}(M, N):=\sum_{m \sim M} \frac{\mu(m)}{m^{1 / 2}} \sum_{n \sim N} \frac{r(n)}{n^{3 / 4}} e\left(\frac{\sqrt{x n}}{m}\right) \ll x^{\theta-1 / 4+\varepsilon} \tag{1.3}
+\end{equation*}
+
+
+for $M \leqslant x^{1-2 \theta}$ and $N \leqslant x^{1-2 \theta}$, where $\theta=\frac{221}{608}$ and $m \sim M$ means $M<m \leqslant 2 M$. For this, we divide the square $\left\{(M, N): M \leqslant x^{1-2 \theta}, N \leqslant x^{1-2 \theta}\right\}$ into four parts:
+
+$$
+\begin{aligned}
+\mathscr{A}(\theta) & :=\left\{(M, N): M \leqslant x^{20 \theta-7}, x^{3-8 \theta} \leqslant N \leqslant x^{1-2 \theta}\right\} \\
+\mathscr{B}(\theta) & :=\left\{(M, N): x^{20 \theta-7} \leqslant M \leqslant x^{1-2 \theta}, x^{3-8 \theta} \leqslant N \leqslant x^{1-2 \theta}\right\}, \\
+\mathscr{C}(\theta) & :=\left\{(M, N): M \leqslant x^{1-2 \theta}, N \leqslant x^{3-8 \theta}, M^{2} N^{-1} \leqslant x^{4 \theta-1}\right\}, \\
+\mathscr{D}(\theta) & :=\left\{(M, N): M \leqslant x^{1-2 \theta}, M^{2} N^{-1} \geqslant x^{4 \theta-1}\right\} .
+\end{aligned}
+$$
+
+We shall use some results on multiple exponential sums of [5] and [10] to prove (1.3) for $\mathscr{A}(\theta), \mathscr{B}(\theta), \mathscr{C}(\theta)$ in Sect. 3. For treating the region $\mathscr{D}(\theta)$, we shall first establish an estimate for a general triple exponential sum of type I by the method of [8] in Sect. 2, which is of interest in itself. Then we prove (1.3) for $\mathscr{D}(\theta)$ in Sect. 4. It is noteworthy that for $\mathscr{A}(\theta), \mathscr{B}(\theta), \mathscr{C}(\theta)$ we can prove (1.3) with a better exponent $\theta=\frac{17}{47}$. The final result $\theta=\frac{221}{608}$ comes from $\mathscr{D}(\theta)$ only.
+
+\section*{2. Estimations on Multiple Exponential Sums}
+This section is devoted to investigating multiple exponential sums, which will be useful later. First we investigate a general triple exponential sum of type I:
+
+$$
+S_{1}:=\sum_{h \sim H} \sum_{m \sim M} \sum_{n \sim N} a_{h} b_{m} e\left(X \frac{h^{\alpha} m^{\beta} n^{\gamma}}{H^{\alpha} M^{\beta} N^{\gamma}}\right) .
+$$
+
+The next result is essentially Lemma 4 in [8], where a particular case $\alpha=\gamma, \beta=1$ has been treated. Here we consider a general case and state it in a convenient form for application. Our proof is very similar to that of Lemma 4 in [8]. The essential difference is that we use a sharp form of the $B$-transformation of Van der Corput ([9], Lemma 2.2) instead of its usual form as in [8]. This is important for obtaining the exponent $\theta=\frac{221}{608}$.
+
+Theorem 2. Let $k \geqslant 2$, $K:=2^{k}$, and let $\alpha, \beta, \gamma \in \mathbb{R}$ with $\alpha\beta\gamma(1-\alpha) \neq 0$ and
+\[
+\frac{\gamma-1}{1-\alpha} \neq 0,\ldots,k-1.
+\]
+Let $X>0$, $H \geqslant 1$, $M \geqslant 1$, $N \geqslant 1$, $\mathscr{L}:=\log(2+XHMN)$, $|a_h|\leqslant 1$, and $|b_m|\leqslant 1$. If $X \leqslant \min\{H^{2},H^{2}M^{-1}N\}$, then
+
+$$
+\begin{aligned}
+S_{1} \ll & \left\{\left(X^{K} H^{4 K-2 k-4} M^{5 K-k-8} N^{5 K-3 k-8}\right)^{1 /(6 K-2 k-8)}+\left(X H^{2} M^{2} N^{4}\right)^{1 / 4}\right. \\
+& \left.+\left(X H^{2} M^{4} N^{2}\right)^{1 / 4}+H M+H(M N)^{1 / 2}+H^{1 / 2} M N+X^{-1 / 2} H M N\right\} \mathscr{L} .
+\end{aligned}
+$$
+
+We begin the proof by recalling Lemma 5 in [8].
+
+Lemma 2.1. Let $N \geqslant 1, Q \geqslant 1, z_{n} \in \mathbb{C}$ and $x_{n} \in \mathbb{R}$. If $\max_{1\leqslant j,k\leqslant N}|x_j-x_k|\leqslant 1-1/Q$, then
+
+$$
+\left|\sum_{n \leqslant N} z_{n}\right|^{2}
+\leqslant Q\sum_{\substack{j\leqslant N,\ k\leqslant N\\ |x_j-x_k|\leqslant 1/Q}}
+\left(1-Q|x_j-x_k|\right)z_j\bar z_k.
+$$
+
+Proof. Let $w(t):=\{\sin (\pi t / Q) /(\pi t / Q)\}^{2}$. By the Poisson formula, we have
+
+$$
+\left|\sum_{n \leqslant N} z_{n}\right|^{2} \leqslant \sum_{m \in \mathbb{Z}} w(m)\left|\sum_{n \leqslant N} z_{n} e^{-2 \pi i x_{n} m}\right|^{2}=\sum_{m \in \mathbb{Z}} \int_{\mathbb{R}} w(t)\left|\sum_{n \leqslant N} z_{n} e^{-2 \pi i x_{n} t}\right|^{2} e^{-2 \pi i m t} \mathrm{~d} t .
+$$
+
+By expanding the square, the right-hand side is
+
+$$
+\sum_{j \leqslant N} \sum_{k \leqslant N} z_{j} \bar{z}_{k} \sum_{m \in \mathbb{Z}} \int_{\mathbb{R}} w(t) e^{-2 \pi i\left(x_{j}-x_{k}+m\right) t} \mathrm{~d} t=\sum_{j \leqslant N} \sum_{k \leqslant N} z_{j} \bar{z}_{k} \sum_{m \in \mathbb{Z}} \hat{w}\left(x_{j}-x_{k}+m\right),
+$$
+
+where $\hat{w}(t)=Q \max \{0,1-Q|t|\}$ is the Fourier transform of $w(t)$. Observing that $\hat{w}(t)=0$ for $|t| \geqslant 1 / Q$ and $\left|x_{j}-x_{k}+m\right| \geqslant 1 / Q$ for $m \neq 0$, we easily deduce the desired result. \(\square\)
+
+In view of (3.10) of [5], we can suppose $X \geqslant M N$. By the Cauchy-Schwarz inequality, it follows
+
+$$
+|S_{1}|^{2} \ll H^{3 / 2} \sum_{h \sim H} h^{-1 / 2}\left|\sum_{m \sim M} \sum_{n \sim N} b_{m} e\left(X \frac{h^{\alpha} m^{\beta} n^{\gamma}}{H^{\alpha} M^{\beta} N^{\gamma}}\right)\right|^{2} .
+$$
+
+Let $c_{0}, c_{1}, \ldots$ be some suitable constants depending on $\alpha, \beta, \gamma$ at most and let $Q \geqslant 10$ be a parameter chosen later. We apply Lemma 2.1 with $z_i:=b_m e\left(Xh^{\alpha}m^{\beta}n^{\gamma}/(H^{\alpha}M^{\beta}N^{\gamma})\right)$ and $x_i:=m^{\beta}n^{\gamma}/\Xi$, where $\Xi:=c_{0} M^{\beta} N^{\gamma}$. Thus
+
+$$
+|S_{1}|^{2} \ll H^{3/2}Q\sum_{m\sim M}\sum_{\tilde m\sim M}
+\left|\sum_{\substack{n\sim N,\ \tilde n\sim N\\ |u|\leqslant \Xi/Q}}
+\varphi(u)\sum_{h\sim H}h^{-1/2}
+ e\left(\frac{Xh^{\alpha}u}{H^{\alpha}M^{\beta}N^{\gamma}}\right)\right|,
+$$
+
+where $u=u_{\mathbf{m}}(\mathbf{n}):=m^{\beta}n^{\gamma}-\tilde{m}^{\beta}\tilde{n}^{\gamma}$, $\mathbf{m}:=(m,\tilde{m})$, $\mathbf{n}:=(n,\tilde{n})$, and $\varphi(u):=1-Q|u|/\Xi$.
+
+By Lemma 1 in [9], the contribution of $|u| \leqslant \Xi \mathscr{L} / M N$ is $O\left(H^{2} M N Q \mathscr{L}\right)$. Thus after a dyadic split, we have, for some $\Delta \in(\mathscr{L} / M N, 1 / Q]$,
+
+
+\begin{align*}
+|S_{1}|^{2} \ll{}& H^{3/2}Q\mathscr{L}
+\sum_{m\sim M}\sum_{\tilde m\sim M}
+\left|\sum_{\substack{n\sim N,\ \tilde n\sim N\\
+\Delta<|u|/\Xi\leqslant 2\Delta}}
+\varphi(u)\sum_{h\sim H}h^{-1/2}
+ e\left(\frac{Xh^{\alpha}u}{H^{\alpha}M^{\beta}N^{\gamma}}\right)\right| \\
+&{}+H^{2}MNQ\mathscr{L}. \tag{2.1}
+\end{align*}
+
+
+If $H^{\prime}:=X \Delta / H \leqslant \varepsilon$, by Theorem 2.1 in [1] and Lemma 3.2 in [9] with $v^{*}=1$, the first term on the right-hand side of (2.1) is $\ll X^{-1}(H M N)^{2} Q \mathscr{L} \ll H^{2} M N Q \mathscr{L}$. Therefore we can suppose $H^{\prime} \geqslant \varepsilon$. By applying Lemma 2.2 in [9], the innermost sum of (2.1) is equal to
+
+$$
+e(1/8)\sum_{h'\in I'}(h')^{-1/2}e(f(u))+O\left(H^{-1 / 2} \mathscr{L}+H^{-1 / 2} \Psi_{1}(u)+H^{-1 / 2} \Psi_{2}(u)\right),
+$$
+
+where
+\[
+\begin{gathered}
+f(u):=Yu^{1/(1-\alpha)},\qquad
+Y:=|1-\alpha|\,|\alpha|^{-\alpha_1}X\Delta
+\left(\frac{h'}{H'}\right)^{\alpha_1}
+\left(\Delta M^\beta N^\gamma\right)^{\alpha_1/\alpha},\\
+\alpha_1:=\frac{\alpha}{\alpha-1},\qquad
+\Psi_i(u):=\min\left\{(X\Delta)^{-1/2}H,
+\frac{1}{\left\|c_iXu/(H\Xi)\right\|}\right\},\qquad
+\|t\|:=\min_{n\in\mathbb Z}|t-n|.
+\end{gathered}
+\]
+Here $I'$ is a subinterval of $[H',2H']$. Inserting this into (2.1), interchanging the order of summation, and estimating the sum over $h'$ trivially, we find, for some $\Delta\in(\mathscr{L}/MN,1/Q]$ and some $h'\asymp H'$,
+
+
+\begin{align*}
+|S_{1}|^{2} \ll & \left(X \Delta H^{2} Q^{2}\right)^{1 / 2} \mathscr{L} S(\Delta)+H Q\left\{T_{1}(\Delta)+T_{2}(\Delta)\right\} \\
+& +\left\{H^{2} M N Q+H(M N)^{2}\right\} \mathscr{L}^{2}, \tag{2.2}
+\end{align*}
+
+
+where
+
+$$
+\begin{aligned}
+S(\Delta)&:=\sum_{m\sim M}\sum_{\tilde m\sim M}
+\left|\sum_{\substack{n\sim N,\ \tilde n\sim N\\
+\Delta<|u|/\Xi\leqslant 2\Delta}}\varphi(u)e(f(u))\right|,\\
+T_i(\Delta)&:=\sum_{m\sim M}\sum_{\tilde m\sim M}
+\sum_{\substack{n\sim N,\ \tilde n\sim N\\
+\Delta<|u|/\Xi\leqslant 2\Delta}}\Psi_i(u).
+\end{aligned}
+$$
+
+Clearly $\left\{(m / \tilde{m})^{\beta / \gamma}: m \sim M, \tilde{m} \sim M\right\} \subset\left[c_{3}, c_{4}\right]=: I$. Let $J$ be a parameter which will be chosen later. We split $I$ into $J$ subintervals $I_{j}$ of length $\delta:=|I| / J$. For each $d \in \mathbb{N}$, we put
+
+$$
+\mathscr{M}_{j}(d):=\left\{\mathbf{m}: m \sim M, \tilde{m} \sim M,(m, \tilde{m})=d,(m / \tilde{m})^{\beta / \gamma} \in I_{j}\right\},
+$$
+
+and for every $\mathbf{m} \in \mathscr{M}_{j}(d)$ we define
+
+$$
+\mathscr{N}(\mathbf{m}):=\{\mathbf{n}: n \sim N, \tilde{n} \sim N, \Delta<|u| / \Xi \leqslant 2 \Delta\} .
+$$
+
+Thus we have
+
+
+\begin{gather*}
+S(\Delta)=\sum_{d\leqslant 2M}\sum_{j\leqslant J}\sum_{\mathbf m\in\mathscr M_j(d)}
+|S_j(\Delta,\mathbf m)|,
+\quad S_j(\Delta,\mathbf m):=\sum_{\mathbf n\in\mathscr N(\mathbf m)}\varphi(u)e(f(u)),
+\tag{2.3}\\
+T_i(\Delta)=\sum_{d\leqslant 2M}\sum_{j\leqslant J}\sum_{\mathbf m\in\mathscr M_j(d)}
+T_{i,j}(\Delta,\mathbf m),
+\quad T_{i,j}(\Delta,\mathbf m):=\sum_{\mathbf n\in\mathscr N(\mathbf m)}\Psi_i(u).
+\tag{2.3$'$}
+\end{gather*}
+
+
+The next lemma, due to Huxley and Watt (cf. [3], Lemma 1.6.1), is very crucial in the method of Rivat and Sargos [8].
+
+Lemma 2.2. We pick $a_{j} / b_{j} \in I_{j} \cap \mathbb{Q}$ with $b_j$ minimal subject to $b_j\geqslant\delta^{-1/2}$. Then for any $B>0$, we have $\left|\left\{1 \leqslant j \leqslant J: b_{j} \geqslant B\right\}\right| \ll 1 /(\delta B)^{2}$. In particular $b_{j} \ll \delta^{-1}$ for $1 \leqslant j \leqslant J$.
+
+For $d_{j} \in \mathbb{Z}$, we define $\Gamma_{d_{j}}:=\left\{(x, y) \in \mathbb{R}^{2}: y=\left(a_{j} x-d_{j}\right) / b_{j}\right\}$. Clearly when $d_{j}$ runs over $\mathbb{Z}, \mathbb{Z}^{2} \cap \Gamma_{d_{j}}$ constitutes a partition of $\mathbb{Z}^{2}$. Hence we can write
+
+
+\begin{align*}
+S_{j}(\Delta, \mathbf{m}) & \ll \sum_{d_{j} \in \mathbb{Z}}\left|\sum_{\mathbf{n} \in \mathscr{N}(\mathbf{m}) \cap \Gamma_{d_{j}}} \varphi(u) e(f(u))\right|,  \tag{2.4}\\
+T_{i,j}(\Delta,\mathbf m)&\ll\sum_{d_j\in\mathbb Z}\sum_{\mathbf n\in\mathscr N(\mathbf m)\cap\Gamma_{d_j}}\Psi_i(u).\tag{2.4$'$}
+\end{align*}
+
+
+Lemma 2.3. For $\mathscr{N}(\mathbf{m}) \cap \Gamma_{d_{j}}$, we have the following two properties:
+
+\begin{itemize}
+  \item[(i)] $\mathscr{N}(\mathbf{m}) \cap \Gamma_{d_j}$ consists of at most two segments.
+  \item[(ii)] If $\mathscr{N}(\mathbf{m}) \cap \Gamma_{d_{j}} \neq \emptyset$ and if $\delta \leqslant \varepsilon \Delta$, then $d_{j} \asymp \Delta N b_{j}$.
+\end{itemize}
+
+Proof. The condition $\Delta<|u| / \Xi \leqslant 2 \Delta$ can be written as $\left(\lambda n^{\gamma}-\mu_{1}\right)^{1 / \gamma} \leqslant \tilde{n} \leqslant \left(\lambda n^{\gamma}-\mu_{2}\right)^{1 / \gamma}$, where $\lambda:=(m / \tilde{m})^{\beta}$ and $\mu_{1}, \mu_{2} \asymp \Delta N^{\gamma}$. Put $g_{i}(x):=\left(\lambda x^{\gamma}-\mu_{i}\right)^{1 / \gamma}$. It is easy to see that $g_{i}^{\prime \prime}(x)$ has constant sign. Therefore $\mathscr{N}(\mathbf{m})$ is the difference of two convex sets. This implies (i).
+
+For $\mathbf{m} \in \mathscr{M}_{j}(d)$, we have $(m / \tilde{m})^{\beta / \gamma}=a_{j} / b_{j}+\eta$ with $|\eta| \leqslant \delta$. Define $\eta_{1}$ by the relation $\left(a_{j} / b_{j}+\eta\right)^{\gamma}=\left(a_{j} / b_{j}\right)^{\gamma}+\eta_{1}$, then $\left|\eta_{1}\right| \asymp|\eta| \leqslant \delta \leqslant \varepsilon \Delta$. If $\mathscr{N}(\mathbf{m}) \cap \Gamma_{d_{j}} \neq \emptyset$, then $\Delta<|u| / \Xi \leqslant 2 \Delta$ and $\tilde{n}=\left(a_{j} n-d_{j}\right) / b_{j}$. These imply
+
+$$
+\begin{aligned}
+\Delta N^{\gamma} & \asymp u / \tilde{m}^{\beta}=\left\{\left(a_{j} / b_{j}\right)^{\gamma}+\eta_{1}\right\} n^{\gamma}-\tilde{n}^{\gamma}=\left(a_{j} n / b_{j}\right)^{\gamma}-\tilde{n}^{\gamma}+\eta_{1} n^{\gamma} \\
+& \asymp\left(a_{j} n / b_{j}\right)^{\gamma}-\tilde{n}^{\gamma} \asymp N^{\gamma-1}\left(a_{j} n / b_{j}-\tilde{n}\right)=N^{\gamma-1} d_{j} / b_{j} .
+\end{aligned}
+$$
+
+This completes the proof. \(\square\)
+
+Let $(n_0,\tilde n_0)$ be the initial point of one of the nonempty segments of $\mathscr N(\mathbf m)\cap\Gamma_{d_j}$. Then $b_{j} \tilde{n}_{0}=a_{j} n_{0}-d_{j}$. Now we write the parametric equation of this straight line as follows:
+
+$$
+n=b_{j} l+n_{0}, \quad \tilde{n}=a_{j} l+\tilde{n}_{0} \quad\left(0 \leqslant l \leqslant c_{5} N / b_{j} \asymp N / a_{j}\right) .
+$$
+
+Put $u(t):=m^{\beta}\left(b_{j} t+n_{0}\right)^{\gamma}-\tilde{m}^{\beta}\left(a_{j} t+\tilde{n}_{0}\right)^{\gamma}, F(t):=f(u(t))$. From (2.4), (2.4$'$), and Lemma 2.3, we deduce
+
+
+\begin{align*}
+& S_{j}(\Delta, \mathbf{m}) \ll \begin{cases}\Delta N b_{j}\left|\sum_{l \leqslant c_{5} N / b_{j}} \varphi(u(l)) e(F(l))\right| & \text { if } b_{j} \leqslant N, \\
+\Delta N b_{j} & \text { if } b_{j}>N,\end{cases}  \tag{2.5}\\
+& T_{i, j}(\Delta, \mathbf{m}) \ll \begin{cases}\Delta N b_{j} \sum_{l \sim L} \Psi_{i}(u(l)) & \text { if } b_{j} \leqslant N, \\
+\left(X^{-1}\Delta\right)^{1/2}HNb_j & \text{if } b_j>N.\end{cases}\tag{2.5$'$}
+\end{align*}
+
+
+Lemma 2.4. If $\delta \leqslant \varepsilon \Delta$ and $(\gamma-1) /(1-\alpha) \neq 0,1, \ldots, k-1$, then
+
+
+\begin{gather*}
+u(t)=A\left(b_{j} t+n_{0}\right)^{\gamma-1}\{1+O(\varepsilon+\Delta)\},  \tag{2.6}\\
+F^{(i)}(t)=B_i\left(b_jt+n_0\right)^{(\gamma-1)/(1-\alpha)-i}b_j^i\left\{1+O_k(\varepsilon+\Delta)\right\}\quad(0\leqslant i\leqslant k), \tag{2.7}
+\end{gather*}
+
+
+where
+
+$$
+\begin{aligned}
+A & :=\gamma \tilde{m}^{\beta}\left(a_{j} / b_{j}\right)^{\gamma-1}\left(d_{j} / b_{j}\right) \asymp \Delta M^{\beta} N, \\
+B_i & :=\prod_{r=0}^{i-1}\left(\frac{\gamma-1}{1-\alpha}-r\right)YA^{1/(1-\alpha)}\asymp X\Delta N^{-(\gamma-1)/(1-\alpha)},\qquad (0\leqslant i\leqslant k),
+\end{aligned}
+$$
+
+where the empty product for $i=0$ is interpreted as $1$.
+
+Proof. Firstly we write
+
+$$
+u(t)=\tilde{m}^{\beta}\left(b_{j} t+n_{0}\right)^{\gamma}\left(\frac{a_{j}}{b_{j}}\right)^{\gamma} R, \quad R:=\left(\frac{m}{\tilde{m}}\right)^{\beta}\left(\frac{b_{j}}{a_{j}}\right)^{\gamma}-\left(\frac{t+\tilde{n}_{0} / a_{j}}{t+n_{0} / b_{j}}\right)^{\gamma} .
+$$
+
+Secondly we have
+
+$$
+\begin{aligned}
+& \left(\frac{m}{\tilde{m}}\right)^{\beta}\left(\frac{b_{j}}{a_{j}}\right)^{\gamma}=\left(\frac{a_{j}}{b_{j}}+\eta\right)^{\gamma}\left(\frac{b_{j}}{a_{j}}\right)^{\gamma}=\left(1+\frac{b_{j}}{a_{j}} \eta\right)^{\gamma}=1+O(\eta), \\
+& \left(\frac{t+\tilde{n}_{0} / a_{j}}{t+n_{0} / b_{j}}\right)^{\gamma}=\left(1-\frac{d_{j} / a_{j}}{b_{j} t+n_{0}}\right)^{\gamma}=1-\frac{\gamma d_{j} / a_{j}}{b_{j} t+n_{0}}+O\left(\left(\frac{d_{j} / a_{j}}{b_{j} t+n_{0}}\right)^{2}\right) .
+\end{aligned}
+$$
+
+Thus
+
+$$
+R=\frac{\gamma d_{j} / a_{j}}{b_{j} t+n_{0}}+O\left(\eta+\left(\frac{d_{j} / a_{j}}{b_{j} t+n_{0}}\right)^{2}\right)=\frac{\gamma d_{j} / a_{j}}{b_{j} t+n_{0}}\left\{1+O\left(R_{1}+R_{2}\right)\right\},
+$$
+
+where
+
+$$
+R_{1}:=\eta a_{j}\left(b_{j} t+n_{0}\right) / d_{j} \ll \delta / \Delta \ll \varepsilon, \quad R_2:=\frac{d_j}{\gamma a_j(b_jt+n_0)} \ll \Delta,
+$$
+
+since $b_{j} t+n_{0} \asymp N$ and $d_{j} \asymp \Delta N b_{j}$. These imply (2.6). From (2.6) and the definition of $F(t)$, we easily deduce (2.7). \(\square\)
+
+When $b_{j} \leqslant N$, we apply Lemma 2.3 in [9] and (2.6) to write
+
+$$
+T_{i, j}(\Delta, \mathbf{m}) \ll\left\{\left(X \Delta^{3}\right)^{1 / 2} N b_{j}+\Delta N^{2}\right\} \mathscr{L}^{2},
+$$
+
+where we have eliminated two superfluous terms. Since $\left(X^{-1} \Delta\right)^{1 / 2} H N b_{j} \ll \left(X \Delta^{3}\right)^{1 / 2} N b_{j}$, the previous estimate also holds when $b_{j}>N$. Inserting this into (2.3$'$) yields
+
+$$
+T_{i}(\Delta) \ll\left(X \Delta^{3}\right)^{1 / 2} N \mathscr{L}^{2} \sum_{d \leqslant 2 M} \sum_{j \leqslant J} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} b_{j}+\Delta(M N)^{2} \mathscr{L}^{2} .
+$$
+
+In addition, since the points in $\mathscr{M}_{j}(d)$ are spaced by $\gg(d/M)^2$, we have $\left|\mathscr{M}_{j}(d)\right| \ll \delta(M / d)^{2}+1$. By using Lemma 2.2, we deduce
+
+$$
+\begin{aligned}
+\sum_{d \leqslant 2 M} \sum_{j \leqslant J} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} b_{j} & \ll \sum_{d \leqslant 2 M}\left\{\delta(M / d)^{2}+1\right\} \sum_{0 \leqslant i \ll \mathscr{L}} \sum_{1 \leqslant j \leqslant J, 1\leqslant b_j/(2^i\delta^{-1/2})<2} b_{j} \\
+& \ll\left(\delta M^{2}+M\right) \sum_{0 \leqslant i \ll \mathscr{L}} 2^{-i} \delta^{-3 / 2} \ll \delta^{-1 / 2} M^{2}+M \delta^{-3 / 2} .
+\end{aligned}
+$$
+
+Inserting this into the previous estimate and taking $J=[|I| / \varepsilon \Delta]+1$ such that $\delta \asymp \varepsilon \Delta$, we get
+
+
+\begin{equation*}
+T_{i}(\Delta) \ll\left\{X^{1 / 2} \Delta M^{2} N+X^{1 / 2} M N+\Delta(M N)^{2}\right\} \mathscr{L}^{2} . \tag{2.8}
+\end{equation*}
+
+
+In order to bound $S_{j}(\Delta, \mathbf{m})$, we first remove $\varphi(u(l))$ by a partial summation and then apply Theorem 2.9\starfootnote{Clearly the condition $I\subset(N,2N]$ in this theorem can be relaxed to $I\subset[1,2N]$.} in [1] to $\sum_{l \leqslant c_{5} N / b_{j}} e(F(l))$ with $(F, N)=\left(X \Delta, N / b_{j}\right)$. We obtain, via (2.5),
+
+$$
+S_{j}(\Delta, \mathbf{m}) \ll \Delta N^{2} \mathscr{L} \Theta_{j}
+$$
+
+with
+
+$$
+\Theta_{j}:= \begin{cases}\min \left\{1, \Theta\left(b_{j}\right)\right\} & \text { if } b_{j} \leqslant N, \\ b_{j} / N & \text { if } b_{j}>N,\end{cases}
+$$
+
+where $\Theta\left(b_{j}\right):=\left(X \Delta N^{-k} b_{j}^{k}\right)^{1 /(K-2)}$. Inserting into (2.3) yields
+
+
+\begin{equation*}
+S(\Delta) \ll \Delta N^{2} \mathscr{L} \sum_{d \leqslant 2 M} \sum_{j \leqslant J, b_{j} \leqslant N} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} \Theta_{j}+\Delta N^{2} \mathscr{L} \sum_{d \leqslant 2 M} \sum_{j \leqslant J, b_{j}>N} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} \Theta_{j} . \tag{2.9}
+\end{equation*}
+
+
+By using Lemma 2.2, we have
+
+$$
+\sum_{j \leqslant J, b_{j}>N} \Theta_{j} \ll \sum_{0 \leqslant i \ll \mathscr{L}} \sum_{j \leqslant J, 1\leqslant b_j/(2^iN)\leqslant 2} b_{j} / N \ll \sum_{0 \leqslant i \ll \mathscr{L}} 2^{-i}(N \delta)^{-2} \ll(N \delta)^{-2} .
+$$
+
+Thus the second member on the right-hand side of (2.9) is
+
+
+\begin{equation*}
+\ll \Delta N^{2}\left(\delta M^{2}+M\right)(N \delta)^{-2} \mathscr{L} \ll\left(M^{2}+\Delta^{-1} M\right) \mathscr{L} . \tag{2.10}
+\end{equation*}
+
+
+Similarly, Lemma 2.2 allows us to deduce
+
+$$
+\begin{aligned}
+\sum_{j \leqslant J, b_{j} \leqslant N} \Theta_{j} & \ll \sum_{0 \leqslant i \ll \mathscr{L}} \sum_{j \leqslant J, 1\leqslant b_j/(2^i\delta^{-1/2})\leqslant 2} \Theta\left(b_{j}\right) \\
+& \ll \sum_{i \geqslant 0} 4^{-i} \delta^{-1} \Theta\left(2^{i} \delta^{-1 / 2}\right) \ll \delta^{-1} \Theta\left(\delta^{-1 / 2}\right) .
+\end{aligned}
+$$
+
+Thus the first member on the right-hand side of (2.9) is
+
+
+\begin{align*}
+& \ll \Delta N^{2} \mathscr{L} \sum_{d \leqslant \sqrt{\delta} M} \sum_{j \leqslant J, b_{j} \leqslant N} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} \Theta\left(b_{j}\right)+\Delta N^{2} \mathscr{L} \sum_{d>\sqrt{\delta} M} \sum_{j \leqslant J, b_{j} \leqslant N} \sum_{\mathbf{m} \in \mathscr{M}_{j}(d)} 1 \\
+& \ll \Delta N^{2} \mathscr{L} \sum_{d \leqslant \sqrt{\delta} M} \delta(M / d)^{2} \sum_{j \leqslant J, b_{j} \leqslant N} \Theta\left(b_{j}\right)+\Delta N^{2} \mathscr{L} \sum_{d>\sqrt{\delta} M}(M / d)^{2} \\
+& \ll \Delta(M N)^{2} \Theta\left(\delta^{-1 / 2}\right) \mathscr{L}+\Delta \delta^{-1 / 2} M N^{2} \mathscr{L} \\
+& \ll \Delta(M N)^{2} \Theta\left(\Delta^{-1 / 2}\right) \mathscr{L}+\Delta^{1 / 2} M N^{2} \mathscr{L} . \tag{2.11}
+\end{align*}
+
+
+Inserting (2.10) and (2.11) into (2.9), we obtain
+
+
+\begin{align*}
+S(\Delta) \ll & \left\{\left(X^{2} \Delta^{2 K-k-2} M^{4 K-8} N^{4 K-2 k-8}\right)^{1 /(2 K-4)}\right. \\
+& \left.+\Delta^{1 / 2} M N^{2}+M^{2}+\Delta^{-1} M\right\} \mathscr{L} . \tag{2.12}
+\end{align*}
+
+
+Inserting (2.8) and (2.12) into (2.2) and using $\mathscr{L} / M N \leqslant \Delta \leqslant 1 / Q$, we have
+
+
+\begin{align*}
+|S_{1}|^{2} \ll & \left\{\left(X^{K} H^{2 K-4} M^{4 K-8} N^{4 K-2 k-8} Q^{-(K-k)}\right)^{1 /(2 K-4)}+H^{2} M N Q\right. \\
+& +\left(X H^{2} M^{4} Q\right)^{1 / 2}+\left(X H^{2} M^{3} N Q^{2}\right)^{1 / 2}+\left(X H^{2} M^{2} N^{2} Q^{2}\right)^{1 / 2} \\
+& \left.+\left(X H^{2} M^{2} N^{4}\right)^{1 / 2}+\left(X H^{2} M^{4} N^{2}\right)^{1 / 2}+H(M N)^{2}\right\} \mathscr{L}^{2} . \tag{2.13}
+\end{align*}
+
+
+Since $X \leqslant \min \left\{H^{2}, H^{2} M^{-1} N\right\}$, we have $\left(X H^{2} M^{3} N Q^{2}\right)^{1 / 2}+\left(X H^{2} M^{2} N^{2} Q^{2}\right)^{1 / 2} \ll H^{2} M N Q$. In addition we suppose $Q \geqslant X H^{-2} M^{2} N^{-2}$ such that $\left(X H^{2} M^{4} Q\right)^{1 / 2} \leqslant H^{2} M N Q$. Thus (2.13) can be simplified as follows
+
+$$
+\begin{aligned}
+|S_{1}|^{2} \ll & \left\{\left(X^{K} H^{2 K-4} M^{4 K-8} N^{4 K-2 k-8} Q^{-(K-k)}\right)^{1 /(2 K-4)}+H^{2} M N Q\right. \\
+& \left.+\left(X H^{2} M^{2} N^{4}\right)^{1 / 2}+\left(X H^{2} M^{4} N^{2}\right)^{1 / 2}+H(M N)^{2}\right\} \mathscr{L}^{2}
+\end{aligned}
+$$
+
+provided $Q \geqslant Q_{0}:=\max \left\{10, X H^{-2} M^{2} N^{-2}\right\}$. Finally, optimizing $Q$ over $\left[Q_{0}, \infty\right)$ and noticing $X M^{3} N^{-1} \leqslant(H M)^{2}$, we get the required result. This completes the proof of Theorem 2. \(\square\)
+
+We also need another estimate for $S_{1}$ (see [9], Eq. 6.8)\starfootnote{In (6.8) of [9], the term $X^{1/2}M$ is superfluous. In fact, we can replace $X^{1/2}M$ by $X^{1/2}\min(H,M)$ in (6.5) of [9] and use the fact that $X^{1/2}\min(H,M)\leqslant(X^{2}H^{3}M^{3})^{1/4}$.}.
+
+Lemma 2.5. Let $\alpha,\beta,\gamma\in\mathbb R$ with
+$\alpha\beta\gamma(\gamma-1)(\gamma-2)(\alpha+\gamma-1)(\alpha+2\gamma-2)\neq0$,
+$X>0$, $H\geqslant1$, $M\geqslant1$, $N\geqslant1$,
+$\mathscr L:=\log(2+XHMN)$, $|a_h|\leqslant1$, and $|b_m|\leqslant1$. Then
+
+$$
+\begin{aligned}
+S_{1} \ll & \left\{\left(X^{6} H^{22} M^{22} N^{11}\right)^{1 / 26}+\left(X H^{3} M^{3} N^{2}\right)^{1 / 4}\right. \\
+& \left.+\left(X^{2} H^{3} M^{3}\right)^{1 / 4}+\left(X^{2} H^{18} M^{18} N^{7}\right)^{1 / 18}+X^{-1} H M N\right\} \mathscr{L}^{2} .
+\end{aligned}
+$$
+
+For triple exponential sums of type II
+
+$$
+S_{2}:=\sum_{h \sim H} \sum_{m \sim M} \sum_{n \sim N} a_{h} b_{m, n} e\left(X \frac{h^{\alpha} m^{\beta} n^{\gamma}}{H^{\alpha} M^{\beta} N^{\gamma}}\right),
+$$
+
+we have the following results (Theorem 7 in [9] and (3.11) in [5]).
+
+Lemma 2.6. Let $\alpha, \beta, \gamma \in \mathbb{R}$ with $\alpha<1$ and $\alpha \beta \gamma \neq 0, X>0, H \geqslant 1, M \geqslant 1$, $N \geqslant 1, \mathscr{L}:=\log (2+X H M N),\left|a_{h}\right| \leqslant 1$ and $\left|b_{m, n}\right| \leqslant 1$. Let $(\kappa, \lambda)$ be an exponent pair. Then
+
+
+\begin{align*}
+S_{2} \ll & \left\{\left(X^{4} H^{15} M^{22} N^{22}\right)^{1 / 26}+\left(X H^{2} M^{3} N^{3}\right)^{1 / 4}\right. \\
+& \left.+H(M N)^{3 / 4}+H^{11 / 18} M N+X^{-1 / 2} H M N\right\} \mathscr{L}^{2}, \tag{2.14}
+\end{align*}
+
+
+
+\begin{align*}
+S_{2} \ll & \left\{\left(X^{\kappa} H^{1+\kappa+\lambda} M^{2+\kappa} N^{2+\kappa}\right)^{1 /(2+2 \kappa)}\right. \\
+& \left.+H(M N)^{1 / 2}+H^{1 / 2} M N+X^{-1 / 2} H M N\right\} \mathscr{L} . \tag{2.15}
+\end{align*}
+
+
+For double exponential sums of type II
+
+$$
+S_{3}:=\sum_{m \sim M} \sum_{n \sim N} a_{m} b_{n} e\left(X \frac{m^{\alpha} n^{\beta}}{M^{\alpha} N^{\beta}}\right),
+$$
+
+we have the following results.
+
+Lemma 2.7. Let $\alpha, \beta \in \mathbb{R}$ with $\alpha \beta(\alpha-1)(\beta-1) \neq 0, X>0, M \geqslant 1, N \geqslant 1$, $\mathscr{L}:=\log (2+X M N),\left|a_{m}\right| \leqslant 1$ and $\left|b_{n}\right| \leqslant 1$. If $X \geqslant N$, then
+
+
+\begin{gather*}
+S_{3} \ll\left\{\left(X M^{3} N^{4}\right)^{1 / 5}+\left(X^{4} M^{10} N^{11}\right)^{1 / 16}+\left(X M^{7} N^{10}\right)^{1 / 11}+M N^{1 / 2}\right\} \mathscr{L}^{2},  \tag{2.16}\\
+S_{3} \ll\left\{\left(X^{4} M^{13} N^{15}\right)^{1 / 20}+\left(X^{3} M^{12} N^{14}\right)^{1 / 18}+\left(X M^{3} N^{4}\right)^{1 / 5}\right. \\
+\left.+\left(X M^{7} N^{10}\right)^{1 / 11}+M N^{1 / 2}\right\} \mathscr{L}^{2} . \tag{2.17}
+\end{gather*}
+
+
+If $X \geqslant \max \{M, N\}$ and if $\alpha=\frac{1}{2}$, then
+
+
+\begin{equation*}
+S_{3} \ll\left\{\left(X^{4} M^{10} N^{11}\right)^{1 / 16}+\left(X^{2} M^{8} N^{9}\right)^{1 / 12}+\left(X^{2} M^{4} N^{3}\right)^{1 / 6}+\left(X M^{2} N^{3}\right)^{1 / 4}\right\} \mathscr{L}^{2} . \tag{2.18}
+\end{equation*}
+
+
+Proof. The assertions (2.16) and (2.18) are simple consequences of (2.2) in [10] and of Theorem 2 in [5]. Taking $(\kappa, \lambda)=\left(\frac{1}{2}, \frac{1}{2}\right)$ in (2.1) in [10], we easily deduce the inequality (2.17). \(\square\)
+
+\section*{3. The Regions $\mathscr{A}(\theta), \mathscr{B}(\theta)$, and $\mathscr{C}(\theta)$ With $\frac{17}{47} \leqslant \theta \leqslant \frac{4}{11}$}
+The aim of this section is to prove the inequality (1.3) in the regions $\mathscr{A}(\theta)$, $\mathscr{B}(\theta)$, and $\mathscr{C}(\theta)$ with $\frac{17}{47} \leqslant \theta \leqslant \frac{4}{11}$, which we formulate as three propositions.
+
+Proposition 1. For $\frac{13}{36} \leqslant \theta \leqslant \frac{4}{11}$ and $(M, N) \in \mathscr{A}(\theta)$, we have $\mathscr{R}(M, N) \ll x^{\theta-1 / 4+\varepsilon}$.
+
+Proof. We first use (2.16) of Lemma 2.7 with $(X, M, N)=(2 \sqrt{x N} / M, M, N)$. The condition $X \geqslant N$ is interpreted as $M^{2} N \leqslant x$, which can be verified easily. Thus
+
+
+\begin{equation*}
+\mathscr{R}(M, N) \ll\left\{\left(x^{2} M^{-2} N^{3}\right)^{1 / 20}+\left(x^{2} M^{-2} N\right)^{1 / 16}+\left(x^{2} M^{2} N^{9}\right)^{1 / 44}+x^{\theta-1 / 4}\right\} x^{\varepsilon}, \tag{3.1}
+\end{equation*}
+
+
+where we have used the fact that $\left(M^{2} N^{-1}\right)^{1 / 4} \leqslant x^{\theta-1 / 4}$.
+We also use (2.17) with $(X, M, N)=(2 \sqrt{x N} / M, N, M)$. The condition $X \geqslant N$ is interpreted as $M^{4} \leqslant x N$, which can be verified easily. Thus
+
+
+\begin{equation*}
+\mathscr{R}(M, N) \ll\left\{\left(x^{2} M^{2} N^{-1}\right)^{1 / 20}+\left(x^{2} M^{14} N^{-3}\right)^{1 / 44}+x^{\theta-1 / 4}\right\} x^{\varepsilon}, \tag{3.2}
+\end{equation*}
+
+
+where we have used the fact that $\max \left\{\left(x^{2} M\right)^{1 / 20},\left(x^{3} M^{4}\right)^{1 / 36}, N^{1 / 4}\right\} \leqslant x^{\theta-1 / 4}$.
+Let $D_{1}, D_{2}, D_{3}$ be the first three terms on the right-hand side of (3.1) and let $E_{1}$, $E_{2}$ be the first two terms on the right-hand side of (3.2). From (3.1) and (3.2), we deduce
+
+$$
+\mathscr{R}(M, N) \ll\left(R_{1,1}+R_{1,2}+R_{2,1}+R_{2,2}+R_{3,1}+R_{3,2}+x^{\theta-1 / 4}\right) x^{\varepsilon},
+$$
+
+where $R_{j, k}:=\min \left\{D_{j}, E_{k}\right\}$. For $\frac{13}{36} \leqslant \theta \leqslant \frac{4}{11}$ and $(M, N) \in \mathscr{A}(\theta)$, it is easy to verify
+
+$$
+\left\{\begin{array}{l}
+R_{1,1} \leqslant\left(D_{1} E_{1}^{3}\right)^{1 / 4}=\left(x^{2} M\right)^{1 / 20} \leqslant x^{\theta-1 / 4}, \\
+R_{1,2} \leqslant\left(D_{1}^{5} E_{2}^{11}\right)^{1 / 16}=\left(x M^{3}\right)^{1 / 16} \leqslant x^{\theta-1 / 4}, \\
+R_{2,1} \leqslant\left(D_{2}^{4} E_{1}^{5}\right)^{1 / 9}=x^{1 / 9} \leqslant x^{\theta-1 / 4}, \\
+R_{2,2} \leqslant\left(D_{2}^{12} E_{2}^{11}\right)^{1 / 23}=(x M)^{2 / 23} \leqslant x^{\theta-1 / 4}, \\
+R_{3,1} \leqslant\left(D_{3}^{11} E_{1}^{45}\right)^{1 / 56}=(x M)^{5 / 56} \leqslant x^{\theta-1 / 4}, \\
+R_{3,2} \leqslant\left(D_{3} E_{2}^{3}\right)^{1 / 4}=\left(x^{2} M^{11}\right)^{1 / 44} \leqslant x^{\theta-1 / 4} .
+\end{array}\right.
+$$
+
+This completes the proof. \(\square\)
+
+Proposition 2. For $\frac{17}{47} \leqslant \theta \leqslant \frac{4}{11}$ and $(M, N) \in \mathscr{B}(\theta)$, we have $\mathscr{R}(M, N) \ll x^{\theta-1 / 4+\varepsilon}$.
+
+Proof. We use (2.18) with $(X, M, N)=(2 \sqrt{x N} / M, N, M)$. The condition $X \geqslant \max \{M, N\}$ is interpreted as $M^{2} N \leqslant x$ and $M^{4} \leqslant x N$, which can be verified easily. Thus for $\frac{17}{47} \leqslant \theta \leqslant \frac{4}{11}$ and $(M, N) \in \mathscr{B}(\theta)$, we have
+
+$$
+\mathscr{R}(M, N) \ll\left\{\left(x^{2} M^{-1}\right)^{1 / 16}+(x M)^{1 / 12}+\left(x^{2} M^{-4} N\right)^{1 / 12}+\left(x N^{-1}\right)^{1 / 8}\right\} x^{\varepsilon} \ll x^{\theta-1 / 4+\varepsilon} .
+$$
+
+This completes the proof. \(\square\)
+
+Proposition 3. For $\frac{5}{14} \leqslant \theta \leqslant \frac{1}{2}$ and $(M, N) \in \mathscr{C}(\theta)$, we have $\mathscr{R}(M, N) \ll x^{\theta-1 / 4+\varepsilon}$.
+
+Proof. We apply (2.15) with $(X, H, M, N)=(2 \sqrt{x N} / M, M, N, 1)$ and $(\kappa, \lambda)=\left(\frac{1}{2}, \frac{1}{2}\right)$. Thus for $\frac{5}{14} \leqslant \theta \leqslant \frac{1}{2}$ and $(M, N) \in \mathscr{C}(\theta)$, we have
+
+$$
+\mathscr{R}(M, N) \ll\left\{\left(x N^{2}\right)^{1 / 12}+\left(M^{2} N^{-1}\right)^{1 / 4}+N^{1 / 4}+x^{-1 / 4} M\right\} x^{\varepsilon} \ll x^{\theta-1 / 4+\varepsilon} .
+$$
+
+This completes the proof. \(\square\)
+
+\section*{4. The Region $\mathscr{D}(\theta)$ With $\theta=\frac{221}{608}$}
+This section is devoted to treating the region $\mathscr{D}\left(\frac{221}{608}\right)$. For this, we recall the Vaughan identity.
+
+Lemma 4.1. Let $N \geqslant 2$ and $U \in\left[N^{1 / 3}, N^{1 / 2}\right]$. For any arithmetic function $f(n)$, we can decompose the sum $\sum_{n \sim N} \mu(n) f(n)$ into $O\left(\log ^{2} N\right)$ sums of the form
+
+
+\begin{align*}
+S_I&:=\sum_{\substack{j\sim J,\ k\sim K\\jk\sim N}}a_jf(jk),
+& JK&=N, & J&\leqslant U, \tag{I}\\
+S_{I'}&:=\sum_{\substack{j\sim J,\ k\sim K\\jk\sim N}}a_jf(jk),
+& JK&=N, & N/U&<J\leqslant U^2, \tag{I$'$}\\
+S_{II}&:=\sum_{\substack{j\sim J,\ k\sim K\\jk\sim N}}a_jb_kf(jk),
+& JK&=N, & U&<J\leqslant N^{1/2}. \tag{II}
+\end{align*}
+
+where $\left|a_{j}\right| \ll N^{\varepsilon}$ and $\left|b_{k}\right| \ll N^{\varepsilon}$.\\[0pt]
+Proof. According to (11) in [6], we have
+
+
+\begin{equation*}
+\sum_{n\sim N}\mu(n)f(n)=\sum_{j\leqslant U^2}\sum_{k\sim N/j}a_jf(jk)
++\sum_{\substack{j>U,\ k>U\\jk\sim N}}\mu(j)b_kf(jk).\tag{4.1}
+\end{equation*}
+
+
+where
+
+$$
+a_{j}:=\sum_{\substack{d l=j \\ d \leqslant U, l \leqslant U}} \mu(d) \mu(l), \quad b_{k}:=\sum_{\substack{d \mid k \\ d \leqslant U}} \mu(d) .
+$$
+
+Let $S_1,S_2$ be the two double sums on the right-hand side of (4.1). By splitting the ranges of $j, k$ into dyadic intervals, we can decompose $S_{1}, S_{2}$ into $O\left(\log ^{2} N\right)$ subsums $S_{1, i}, S_{2, i}(i=1,2, \ldots)$. In view of the symmetry of $j$ and $k$, each sum $S_{2, i}$ is of type II. For $S_{1,i}$, we consider three possibilities: (i) If $J \leqslant U$, then $S_{1, i}$ is of type I. (ii) If $U<J \leqslant N / U$, then $S_{1, i}$ is of type II. (iii) If $N / U<J \leqslant U^{2}$, then $S_{1, i}$ is of type I'. This completes the proof. \(\square\)
+
+We have the following result.
+
+Proposition 4. For $\theta=\frac{221}{608}$ and $(M, N) \in \mathscr{D}(\theta)$, we have $\mathscr{R}(M, N) \ll x^{\theta-1 / 4+\varepsilon}$.
+
+Proof. Applying Lemma 4.1 with $U=M^{28 / 83}$ and
+
+$$
+f(m)=\frac{1}{\sqrt{m}} \sum_{n \sim N} \frac{r(n)}{n^{3 / 4}} e\left(\frac{\sqrt{x n}}{m}\right),
+$$
+
+we can decompose $\mathscr{R}(M, N)$ into $O\left(\log ^{2} M\right)$ sums of the form
+
+\[
+\begin{aligned}
+\mathscr R_I(M,N)&:=
+\sum_{\substack{j\sim J,\ k\sim K\\jk\sim M}}
+\frac{a_j}{\sqrt{jk}}\sum_{n\sim N}\frac{r(n)}{n^{3/4}}
+ e\left(\frac{\sqrt{xn}}{jk}\right),
+& JK&=M, & J&\leqslant M^{28/83};\\
+\mathscr R_{I'}(M,N)&:=
+\sum_{\substack{j\sim J,\ k\sim K\\jk\sim M}}
+\frac{a_j}{\sqrt{jk}}\sum_{n\sim N}\frac{r(n)}{n^{3/4}}
+ e\left(\frac{\sqrt{xn}}{jk}\right),
+& JK&=M, & M^{55/83}&\leqslant J\leqslant M^{56/83};\\
+\mathscr R_{II}(M,N)&:=
+\sum_{\substack{j\sim J,\ k\sim K\\jk\sim M}}
+\frac{a_jb_k}{\sqrt{jk}}\sum_{n\sim N}\frac{r(n)}{n^{3/4}}
+ e\left(\frac{\sqrt{xn}}{jk}\right),
+& JK&=M, & M^{28/83}&\leqslant J\leqslant M^{1/2}.
+\end{aligned}
+\]
+
+where $\left|a_{j}\right| \ll M^{\varepsilon}$ and $\left|b_{k}\right| \ll M^{\varepsilon}$.
+We begin by treating $\mathscr R_I(M,N)$. Firstly we remove $1 / \sqrt{k}$ by a partial summation. Then we eliminate the dependence $j k \sim M$ by Lemma 2.6 in [9] at the cost of a factor $\log M$ in the estimate. Finally we use Lemma 2.6 with $(X,H,M,N)=(\sqrt{xN}/(JK),N,J,K)$ to bound the exponential sums obtained. Thus
+
+$$
+\begin{aligned}
+\mathscr R_I(M,N) \ll & \left\{\left(x^{498} M^{-712} N^{913}\right)^{1 / 4316}+\left(x^{83} M^{-110} N^{83}\right)^{1 / 664}\right. \\
+& +\left(x^{83} M^{-248} N^{83}\right)^{1 / 332}+\left(x^{166} M^{-48} N^{913}\right)^{1 / 2988} \\
+& \left.+\left(x^{-2} M^{6} N^{-1}\right)^{1 / 4}\right\} x^{\varepsilon} .
+\end{aligned}
+$$
+
+Let $D_{1}, \ldots, D_{5}$ be the five terms on the right-hand side. For $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we have
+
+$$
+\left\{\begin{array}{l}
+D_{1} \leqslant\left(x^{1411-3652 \theta} M^{1114}\right)^{1 / 4316}<x^{\theta-1 / 4} \\
+D_{2} \leqslant\left(x^{83-166 \theta} M^{28}\right)^{1 / 332}<x^{\theta-1 / 4} \\
+D_{3} \leqslant\left(x^{83-166 \theta} M^{-41}\right)^{1 / 166}<x^{\theta-1 / 4} \\
+D_{4} \leqslant\left(x^{1079-3652 \theta} M^{1778}\right)^{1 / 2988}<x^{\theta-1 / 4} \\
+D_{5} \leqslant\left(x^{-2} M^{6}\right)^{1 / 4}<x^{\theta-1 / 4}
+\end{array}\right.
+$$
+
+Consequently for $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we have
+
+
+\begin{equation*}
+\mathscr R_I(M,N) \ll x^{\theta-1 / 4+\varepsilon} . \tag{4.2}
+\end{equation*}
+
+
+Next we use Theorem 2 with $(X, H, M, N)=(\sqrt{x N} / J K, J, N, K)$ and $k=5$ to bound $\mathscr R_{I'}(M, N)$. The condition $X \leqslant \min \left\{H^{2}, H^{2} M^{-1} N\right\}$ is interpreted as $x N \leqslant M^{2} J^{4}$ and $x N^{3} \leqslant M^{4} J^{2}$, which can be verified by using $M^{55 / 83}<J \leqslant M^{56 / 83}$ and $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$. Thus
+
+$$
+\begin{aligned}
+\mathscr R_{I'}(M, N) \ll & \left\{\left(x^{2656} M^{458} N^{5395}\right)^{1 / 28884}\right. \\
+& +\left(x^{83} M^{-54} N^{-83}\right)^{1 / 664}+\left(x M^{-2} N^{3}\right)^{1 / 8}+\left(M^{58} N^{83}\right)^{1 / 332} \\
+& \left.+\left(M^{112} N^{-83}\right)^{1 / 332}+x^{-1 / 4} M\right\} x^{\varepsilon},
+\end{aligned}
+$$
+
+where we have eliminated a superfluous term $\left(M^{56} N^{83}\right)^{1 / 332}$. Let $E_{1}, \ldots, E_{6}$ be the six terms on the right-hand side. For $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we have
+
+$$
+\left\{\begin{array}{l}
+E_{1} \leqslant\left(x^{8051-21580 \theta} M^{11248}\right)^{1 / 28884} \leqslant x^{\theta-1 / 4}, \\
+E_{2} \leqslant\left(x^{83} M^{-54}\right)^{1 / 664}<x^{\theta-1 / 4}, \\
+E_{3} \leqslant\left(x^{1-3 \theta} M\right)^{1 / 2}<x^{\theta-1 / 4}, \\
+E_{4} \leqslant\left(x^{83-332 \theta} M^{224}\right)^{1 / 332}<x^{\theta-1 / 4}, \\
+E_{5} \leqslant M^{28 / 83}<x^{\theta-1 / 4}, \\
+E_{6}<x^{\theta-1 / 4} .
+\end{array}\right.
+$$
+
+Consequently for $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we have
+
+
+\begin{equation*}
+\mathscr R_{I'}(M, N) \ll x^{\theta-1 / 4+\varepsilon} . \tag{4.3}
+\end{equation*}
+
+
+Finally we apply (2.14) of Lemma 2.6 with $(X, H, M, N)=(\sqrt{x N} / J K, K, J, N)$ to bound $\mathscr R_{II}(M, N)$. Noticing $M^{28 / 83} \leqslant J \leqslant M^{1 / 2}$, we have
+
+$$
+\begin{aligned}
+\mathscr R_{II}(M, N) \ll & \left\{\left(x^{4} M^{3} N^{9}\right)^{1 / 52}+\left(x M^{-1} N\right)^{1 / 8}+M^{69 / 166}\right. \\
+& \left.+\left(M^{11} N^{9}\right)^{1 / 36}+x^{-1 / 4} M\right\} x^{\varepsilon} .
+\end{aligned}
+$$
+
+Let $F_{1}, \ldots, F_{5}$ be the five terms on the right-hand side. For $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we easily verify
+
+$$
+\left\{\begin{array}{l}
+F_{1} \leqslant\left(x^{13-36 \theta} M^{21}\right)^{1 / 52}<x^{\theta-1 / 4} \\
+F_{2} \leqslant\left(x^{2-4 \theta} M\right)^{1 / 8}<x^{\theta-1 / 4} \\
+F_{3} \leqslant x^{\theta-1 / 4} \\
+F_{4} \leqslant\left(x^{9-36 \theta} M^{29}\right)^{1 / 36}<x^{\theta-1 / 4} \\
+F_{5}<x^{\theta-1 / 4}
+\end{array}\right.
+$$
+
+Consequently for $(M, N) \in \mathscr{D}\left(\frac{221}{608}\right)$, we have
+
+
+\begin{equation*}
+\mathscr R_{II}(M, N) \ll x^{\theta-1 / 4+\varepsilon} . \tag{4.4}
+\end{equation*}
+
+
+Now the desired result follows on combining (4.2), (4.3) and (4.4). \(\square\)
+
+\section*{References}
+\begin{itemize}
+  \item[] [1] Graham SW, Kolesnik G (1991) Van der Corput's Method of Exponential sums. Cambridge: Univ Press
+  \item[] [2] Hensley D (1994) The number of lattice points within a contour and visible from the origin. Pacific J Math 166: 295-304
+  \item[] [3] Huxley MN (1996) Area, Lattice Points and Exponential Sums. Oxford: Clarendon Press
+  \item[] [4] Ivić A (1985) The Riemann Zeta-Function. New York: Wiley
+  \item[] [5] Liu H-Q, Wu J (1999) Numbers with a large prime factor. Acta Arith 89: 163-187
+  \item[] [6] Montgomery HL, Vaughan RC (1981) The distribution of squarefree numbers. In: Halberstam H, Hooley C (eds) Recent Progress in Analytic Number Theory I, pp 247-256. London: Academic Press
+  \item[] [7] Nowak WG (1988) Primitive lattice points in rational ellipses and related arithmetic functions. Monatsh Math 106: 57-63
+  \item[] [8] Rivat J, Sargos P (2001) Nombres premiers de la forme $\left[n^{c}\right]$. Canad J Math 53: 414-433
+  \item[] [9] Sargos P, Wu J (2000) Multiple exponential sums with monomials and their applications in number theory. Acta Math Hungar 87: 333-354
+  \item[] [10] Wu J (1998) On the average number of unitary factors of finite abelian groups. Acta Arith 84: 17-29
+  \item[] [11] Zhai WG, Cao XD (1999) On the number of coprime integer pairs within a circle. Acta Arith 90: 1-16
+\end{itemize}
+
+Author's address: Institut Élie Cartan, UMR 7502 UHP-CNRS-INRIA, Université Henri Poincaré (Nancy 1), 54506 Vandœuvre-lès-Nancy, France, e-mail: \href{mailto:wujie@iecn.u-nancy.fr}{wujie@iecn.u-nancy.fr}
+
+
+\end{document}
