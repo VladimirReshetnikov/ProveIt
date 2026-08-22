@@ -1,0 +1,1980 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{needspace}
+
+\definecolor{proofgreen}{RGB}{17,105,72}
+\definecolor{classicalblue}{RGB}{32,82,147}
+\definecolor{targetviolet}{RGB}{112,54,145}
+\definecolor{computeorange}{RGB}{174,87,0}
+\definecolor{warningred}{RGB}{150,36,45}
+\definecolor{codegray}{RGB}{248,248,248}
+\definecolor{rulegray}{RGB}{105,110,118}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=classicalblue,
+  citecolor=proofgreen,
+  urlcolor=classicalblue,
+  pdftitle={Beyond the Unified Report: Kummer-Symbol Separators and Output-Sensitive Newton Calculus},
+  pdfauthor={Research continuation prepared for the ProveIt project},
+  pdfsubject={New partial results and exact obstruction theorems for the Alaoglu--Erdos conjecture}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s: new progress}
+\rhead{Kummer separators and Newton calculus}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.25em,itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\newtheorem{target}[theorem]{Research target}
+\newtheorem{warning}[theorem]{Caution}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\dd}{\mathop{\mathrm d}}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\statusproved}{\textcolor{proofgreen}{\textbf{[proved here]}}}
+\newcommand{\statusclassical}{\textcolor{classicalblue}{\textbf{[classical input]}}}
+\newcommand{\statuscompute}{\textcolor{computeorange}{\textbf{[exact computation]}}}
+\newcommand{\statustarget}{\textcolor{targetviolet}{\textbf{[open target]}}}
+\newcommand{\statuswarning}{\textcolor{warningred}{\textbf{[scope warning]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}\textbf{Status.} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{resultbox}
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\Huge\bfseries Beyond the Unified Report\par}
+\vspace{0.35cm}
+{\LARGE\bfseries Kummer-Symbol Separators and\par}
+\vspace{0.12cm}
+{\LARGE\bfseries Output-Sensitive Newton Calculus\par}
+\vspace{0.6cm}
+{\Large A new progress report on the Alaoglu--Erd\H{o}s conjecture\par}
+\vspace{0.8cm}
+{\large Research continuation prepared for the ProveIt project\par}
+\vfill
+\begin{minipage}{0.9\textwidth}
+\small
+\textbf{Bottom line.}
+No unconditional proof of
+\[
+  2^x,3^x\in\Z\quad\Longrightarrow\quad x\in\Z
+\]
+is claimed here.  The attached unified report already exhausts a remarkably broad family of
+archimedean determinants, tropical and $p$-adic termwise divisors, sparse interpolation,
+Sturmian dynamics, Loewner and operator formulations, canonical products, and standard
+transcendence reductions.  This continuation therefore attacks a different interface.
+
+The main new theorem attaches to every non-power pair $(M,A)$ a finite Kummer determinant
+whose nonvanishing occurs on a positive-density Chebotarev set of rational primes.  Such
+primes cannot divide a simultaneous approximation gap
+$\gcd(M^q-2^p,A^q-3^p)$ whenever one fixed prime $r$ does not divide $q$.  Thus any successful
+gcd amplification must avoid a positive-density Frobenius set on infinitely many convergent
+denominators.  Independently, an iterated geometric divided-difference calculus factors every
+mixed Newton functional on the $2$--$3$ grid into explicit shifted gaps
+$M-2^j$ and $A-3^j$.  Pairing complementary Newton words makes the synchronized numerator
+independent of the schedule, and a Kummer separator forbids simultaneous cancellation in
+every fixed exponent residue class.  Chebotarev then gives a quantitative, though only
+linear, lower bound for the surviving simultaneous denominator.
+
+These statements are exact and prove useful new obstruction theorems.  They do not yet
+connect the real logarithmic rank drop to enough finite-place divisibility to cross the
+four-exponentials barrier.  The report ends with a precise separator-hitting criterion that
+would close the conjecture and a Lean-oriented decomposition of the finite and global parts.
+\end{minipage}
+\vfill
+{\large 22 August 2026\par}
+\end{titlepage}
+
+\begin{abstract}
+Let $M=2^x$ and $A=3^x$ be positive integers.  The conjecture asks whether the real rank-one
+condition
+\[
+  \log M\,\log3-\log A\,\log2=0
+\]
+forces $(M,A)=(2^n,3^n)$.  We give two new, complementary packages.
+
+First, for an odd prime $r$ and a rational prime $\ell\equiv1\pmod r$, let
+$\kappa_{\ell,r}:\F_\ell^*\to\F_r$ be an $r$th-power residue character and set
+\[
+ \Delta_{\ell,r}(M,A)=
+ \kappa_{\ell,r}(2)\kappa_{\ell,r}(A)
+ -\kappa_{\ell,r}(3)\kappa_{\ell,r}(M).
+\]
+We prove, using only finite linear algebra, Kummer theory, and Chebotarev, that unless
+$(M,A)=(2^n,3^n)$ there is an odd $r$ for which
+$\Delta_{\ell,r}(M,A)\ne0$ on a set of primes of positive natural density; an explicit
+lower bound is $(r-2)/(r(r-1))$.  It follows that those primes divide no common gap
+$\gcd(M^q-2^p,A^q-3^p)$ with $r\nmid q$.  This is a new support restriction on the exact gcd
+whose exponential growth would be needed by rational-approximation approaches.
+
+Second, for
+$\mathcal N_{q,n}f(z)=[z,qz,\ldots,q^nz]f$ we prove the mixed word factorization
+\[
+ (\mathcal N_{q_h,n_h}\cdots\mathcal N_{q_1,n_1}t^x)(1)
+ =\prod_{i=1}^h
+  \frac{\prod_{j=0}^{n_i-1}(q_i^{x-S_{i-1}}-q_i^j)}
+       {\prod_{j=0}^{n_i-1}(q_i^{n_i}-q_i^j)},
+ \qquad S_i=n_1+\cdots+n_i.
+\]
+For $q_i\in\{2,3\}$ every numerator factors into explicit integer gaps.  Complementary words
+produce the same synchronized product
+$\prod_{j<N}(M-2^j)(A-3^j)$, independent of scheduling.  A residue-class version combines
+with the Kummer theorem to show that positive-density separator primes cannot be cancelled in
+both the dyadic and triadic Newton numerators.  The resulting Chebotarev mass is linear in the
+Newton order, which is rigorous new progress but remains below the quadratic arithmetic scale
+needed for closure.
+\end{abstract}
+
+\clearpage
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+\tableofcontents
+\clearpage
+
+\section{Executive answer and claim ledger}
+\label{sec:executive}
+
+\subsection{What has and has not been proved}
+
+The conjecture remains open.  This report does not promote a numerical pattern, a heuristic
+independence assumption, or a conditional transcendence statement to a proof.  Its strongest
+unconditional conclusions are the following.
+
+\begin{resultbox}
+\textbf{Positive-density Kummer separators.}
+If $M,A\in\N$ are not simultaneously $(2^n,3^n)$, then for some odd prime $r$ a positive-density
+set of rational primes $\ell\equiv1\pmod r$ satisfies
+\[
+ \Delta_{\ell,r}(M,A)\ne0.
+\]
+For every such $\ell$, the reduction of $(M,A)$ is not in the cyclic subgroup generated by
+$(2,3)$ in $(\F_\ell^*)^2$.  The density is at least
+$(r-2)/(r(r-1))$.  \statusproved{} with standard Kummer and Chebotarev inputs
+\statusclassical.
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{A fixed-modulus exclusion for simultaneous gaps.}
+For the same $r$ and the same Chebotarev set, if $r\nmid q$ then no separator prime divides
+\[
+  \gcd(M^q-2^p,A^q-3^p).
+\]
+More generally, a separator prime cannot divide both $M^q-2^p$ and $A^q-3^{p'}$ when
+$r\nmid q$ and $p\equiv p'\pmod r$.  \statusproved
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{Exact mixed Newton factorization.}
+Every ordered composition of geometric divided-difference operators on $t^x$ factors into
+one-dimensional shifted-gap products.  For a counterexample pair, all factors are explicit
+integers $M-2^j$ or $A-3^j$ divided by explicit geometric Vandermonde factors.  Pairing a word
+with its base-complement makes the synchronized numerator independent of the word.
+\statusproved
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{Quantitative simultaneous denominator survival.}
+For the residue-class Newton factors with ratios $2^r$ and $3^r$, separator primes cannot
+cancel both numerators.  Since every separator prime $\ell\le n+1$ divides both geometric
+Vandermonde denominators of order $n$, the least common multiple of the two reduced
+denominators has logarithm at least
+\[
+  (\delta_r+o(1))n,
+\]
+where $\delta_r>0$ is the Chebotarev density of the separator set.  \statusproved{} using the
+Chebotarev prime-number theorem \statusclassical.
+\end{resultbox}
+
+The last lower bound is deliberately not oversold.  A linear surviving mass is too small to
+settle the critical interpolation problem, whose natural denominator and height budgets are
+quadratic or cubic in the relevant order.  Its value is structural: it proves that the
+output-specific cancellation sought at the end of the unified report cannot be total, and it
+identifies a concrete Frobenius-distribution theorem whose strengthening would matter.
+
+\subsection{Novelty boundary relative to the attached report}
+
+The source report is approximately $114{,}000$ words long and already reconciles twenty-seven
+independent continuations.  Repeating its main reductions would obscure rather than advance
+the project.  The following table states the boundary used here.
+
+\begin{center}
+\small
+\begin{tabularx}{0.97\textwidth}{>{\raggedright\arraybackslash}p{0.31\textwidth}X}
+\toprule
+\textbf{Inherited and not re-proved} & \textbf{What is new in this continuation} \\
+\midrule
+Four Exponentials reduction; Gelfond--Schneider; Six Exponentials interfaces &
+A finite Kummer-symbol determinant with a positive-density nonvanishing theorem. \\
+Exact conditional monoid and primitive output normalization &
+Use only the notation $(M,A)$; no duplicate classification or counting theory. \\
+Ordinary and mixed generalized Vandermonde determinants; tropical ceilings &
+Nested geometric Newton operators, order-sensitive factorization, and complementary-word invariance. \\
+Iwasawa logarithm matrices, Fermat quotients, structural-prime transversality &
+Good-prime $r$th-power residue characters distributed by Chebotarev. \\
+Continued-fraction transfer and its unresolved common-gcd requirement &
+A positive-density forbidden support theorem for that exact common gcd. \\
+Canonical-product/Stieltjes denominator target &
+A residue-class Newton denominator theorem showing unavoidable simultaneous denominator survival. \\
+Loewner, operator, Sturmian, carry-language, entropy, Pad\'e, and Mahler audits &
+No repetition; only short cross-checks where they delimit the new route. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{External-status note}
+
+Anthropic publicly listed Claude Fable 5 and later announced its redeployment in June and
+July 2026~\cite{AnthropicFable,AnthropicRedeploy}.  A search performed on 22 August 2026 did
+not locate a publicly indexed manuscript, Lean repository, or precise theorem statement for
+a Fable proof of the \AEname{} conjecture.  The rival team's message is therefore treated as
+private, unverified information rather than as mathematical input.  Nothing below depends on
+it.
+
+\begin{statusbox}{The current-events paragraph is provenance only.  Every mathematical claim
+in the report is independently stated and proved or clearly labeled as a classical input,
+computation, or target.}
+\end{statusbox}
+
+\section{Minimal inherited setup}
+\label{sec:setup}
+
+\subsection{The counterexample notation}
+
+Assume, only for the purpose of deriving consequences, that
+\begin{equation}
+  2^x=M\in\N,
+  \qquad
+  3^x=A\in\N.
+  \label{eq:counterexample-pair}
+\end{equation}
+If $x<0$, both powers lie strictly between $0$ and $1$, so $x\ge0$.  If $x=0$ the conclusion
+is immediate.  We therefore take $x>0$.  Taking real logarithms gives
+\begin{equation}
+  x=\frac{\log M}{\log2}=\frac{\log A}{\log3},
+  \qquad
+  \log M\,\log3-\log A\,\log2=0.
+  \label{eq:real-determinant}
+\end{equation}
+The attached report proves that a nonintegral $x$ here would be transcendental and develops
+its exact additive and multiplicative solution monoids.  We need none of that structure in
+the first local theorem: the Kummer separator is valid for every positive integer pair
+$(M,A)$ that is not a common integral power pair.
+
+It is convenient to write
+\[
+ P=(2,3),\qquad Q=(M,A)\in \Gm^2(\Q).
+\]
+The desired conclusion is $Q=P^n$ for some $n\in\Nzero$, where powers are coordinatewise.
+The real relation~\eqref{eq:real-determinant} says that the two vectors
+$(\log2,\log3)$ and $(\log M,\log A)$ are parallel in $\R^2$.  Our local theorem asks whether
+the reductions of $P$ and $Q$ are parallel in a finite cyclic quotient.  They are not: unless
+$Q=P^n$, a positive-density set of primes detects a finite-place rank two.
+
+\subsection{Prime-exponent vectors}
+
+Let $S$ be the finite set of rational primes dividing $6MA$.  For a positive $S$-unit $u$,
+write
+\[
+ \nu(u)=(v_p(u))_{p\in S}\in\Z^S.
+\]
+Set
+\[
+ e=\nu(2),\quad f=\nu(3),\quad m=\nu(M),\quad a=\nu(A).
+\]
+The vectors $e$ and $f$ are distinct standard basis vectors.  Unique factorization identifies
+positive $S$-units modulo $r$th powers with the vector space
+\[
+ V_r=(\F_r)^S
+\]
+for any prime $r$.  A linear functional $\lambda\in V_r^*$ is therefore a formal
+$r$th-power residue character on the prime support.
+
+The central finite polynomial is
+\begin{equation}
+ \mathscr D_{M,A,r}(\lambda)
+ =\lambda(e)\lambda(a)-\lambda(f)\lambda(m)\in\F_r.
+ \label{eq:formal-kummer-det}
+\end{equation}
+It is the determinant of the two residue-symbol rows
+$(\lambda(e),\lambda(f))$ and $(\lambda(m),\lambda(a))$.
+
+\section{A positive-density Kummer-symbol separator theorem}
+\label{sec:kummer}
+
+\subsection{The formal rank-one criterion}
+
+We first isolate the elementary linear algebra that makes the global argument work.
+
+\begin{lemma}[Quadratic rank-one detector]
+\label{lem:formal-rank-one}
+Let $K$ be a field, let $V$ be a finite-dimensional $K$-vector space, and let
+$e,f\in V$ be linearly independent.  For $m,a\in V$, suppose
+\begin{equation}
+ \lambda(e)\lambda(a)=\lambda(f)\lambda(m)
+ \qquad\text{for every }\lambda\in V^*.
+ \label{eq:all-functional-zero}
+\end{equation}
+Then there is $c\in K$ such that
+\[
+  m=ce,\qquad a=cf.
+\]
+Conversely, these two equalities imply~\eqref{eq:all-functional-zero}.
+\end{lemma}
+
+\begin{proof}
+Choose $\lambda$ with $\lambda(e)=1$ and $\lambda(f)=0$.  Its values on a complement of
+$\Span(e,f)$ are arbitrary.  Equation~\eqref{eq:all-functional-zero} says
+$\lambda(a)=0$ for every such choice, so $a\in\Span(f)$.  Interchanging $e$ and $f$ gives
+$m\in\Span(e)$.  Write $a=cf$ and $m=de$.  A functional nonzero on both $e$ and $f$ then
+gives $c=d$.  The converse is immediate.
+\end{proof}
+
+\begin{corollary}[Formal determinant characterizes common powers]
+\label{cor:formal-common-power}
+Over $\Q$, the polynomial
+\[
+ \lambda\longmapsto
+ \lambda(e)\lambda(a)-\lambda(f)\lambda(m)
+\]
+is identically zero if and only if
+\[
+  M=2^n,\qquad A=3^n
+\]
+for one $n\in\Nzero$.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:formal-rank-one} gives $m=ce$ and $a=cf$ for $c\in\Q$.  The $2$-coordinate of
+$m$ is the integer $v_2(M)=c$, so $c=n\in\Nzero$; the other coordinates vanish.  The same
+argument applies to $A$.  The reverse implication is direct.
+\end{proof}
+
+\begin{remark}
+This criterion is an algebraic tensor statement, not an independence conjecture for numerical
+products of logarithms.  The latter was already isolated in the unified report.  Here the
+coefficients are prime-exponent vectors and the variable is a finite residue character;
+unique factorization makes the rank-one classification unconditional.
+\end{remark}
+
+\subsection{Reduction modulo an odd prime}
+
+If $(M,A)$ is not a common power pair, Corollary~\ref{cor:formal-common-power} says that the
+quadratic polynomial is nonzero over $\Q$.  Choose an odd prime $r$ for which its coefficient
+tensor remains nonzero modulo $r$.  There are infinitely many such $r$.
+
+A nonzero polynomial of total degree two on $(\F_r)^S$ cannot vanish everywhere when $r>2$.
+The elementary Schwartz--Zippel bound gives
+\begin{equation}
+ \#\{\lambda\in V_r^*: \mathscr D_{M,A,r}(\lambda)=0\}
+ \le 2r^{|S|-1}.
+ \label{eq:schwartz-zippel}
+\end{equation}
+Thus at least $r^{|S|-1}(r-2)$ formal characters have nonzero determinant.
+
+\subsection{Actual residue characters}
+
+Let $\ell\nmid6MAr$ be a rational prime with $\ell\equiv1\pmod r$.  Choose a primitive
+$r$th root of unity $\omega\in\F_\ell^*$.  The homomorphism
+\begin{equation}
+ \kappa_{\ell,r}:\F_\ell^*\longrightarrow\F_r,
+ \qquad
+ u^{(\ell-1)/r}=\omega^{\kappa_{\ell,r}(u)},
+ \label{eq:residue-character}
+\end{equation}
+is an $r$th-power residue character.  Replacing $\omega$ by another primitive root scales
+$\kappa_{\ell,r}$ by a nonzero element of $\F_r$.  Consequently the vanishing or nonvanishing
+of
+\begin{equation}
+ \Delta_{\ell,r}(M,A)=
+ \kappa_{\ell,r}(2)\kappa_{\ell,r}(A)
+ -\kappa_{\ell,r}(3)\kappa_{\ell,r}(M)
+ \label{eq:actual-kummer-det}
+\end{equation}
+is independent of that choice.
+
+\begin{lemma}[Local cyclicity forces determinant zero]
+\label{lem:local-cyclic-zero}
+If the reduction of $Q=(M,A)$ belongs to the cyclic subgroup generated by
+$P=(2,3)$ in $(\F_\ell^*)^2$, then $\Delta_{\ell,r}(M,A)=0$.
+\end{lemma}
+
+\begin{proof}
+There is an integer $k$ such that $M\equiv2^k$ and $A\equiv3^k\pmod\ell$.  Applying the
+homomorphism~\eqref{eq:residue-character} gives
+\[
+ \kappa(M)=k\kappa(2),\qquad \kappa(A)=k\kappa(3)
+\]
+in $\F_r$, and the determinant vanishes.
+\end{proof}
+
+\subsection{Kummer realization and Chebotarev density}
+
+We now show that the nonzero formal characters occur as Frobenius residue characters on a
+positive-density set of primes.
+
+\begin{theorem}[Positive-density Kummer separators]
+\label{thm:kummer-separators}
+Let $M,A\in\N$.  If $(M,A)\ne(2^n,3^n)$ for every $n\in\Nzero$, then there is an odd prime
+$r$ and a set $\mathcal P_r(M,A)$ of rational primes with positive natural density such that
+for every $\ell\in\mathcal P_r(M,A)$:
+\begin{enumerate}
+\item $\ell\equiv1\pmod r$ and $\ell\nmid6MAr$;
+\item $\Delta_{\ell,r}(M,A)\ne0$;
+\item $Q\bmod\ell\notin\langle P\bmod\ell\rangle\subset(\F_\ell^*)^2$.
+\end{enumerate}
+One may choose $r$ so that
+\begin{equation}
+ \dens\mathcal P_r(M,A)\ge\frac{r-2}{r(r-1)}.
+ \label{eq:density-lower}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Choose an odd $r$ for which the formal determinant polynomial
+$\mathscr D_{M,A,r}$ is nonzero.  Put $s=|S|$ and
+$K=\Q(\zeta_r)$.  Consider the Kummer extension
+\begin{equation}
+ L=K\bigl(p^{1/r}:p\in S\bigr).
+ \label{eq:kummer-field}
+\end{equation}
+The classes of the rational primes in $S$ are independent in $K^*/K^{*r}$.  Indeed, if
+$\prod_{p\in S}p^{c_p}$ is an $r$th power in $K$ with $0\le c_p<r$, valuation at a prime of
+$K$ above any $p\ne r$ gives $c_p\equiv0\pmod r$.  At the unique prime above $r$, the
+valuation of $r$ is $r-1$, which is also coprime to $r$, so the same conclusion holds.
+Therefore
+\begin{equation}
+ \Gal(L/K)\cong(\F_r)^S,
+ \qquad [L:\Q]=r^s(r-1).
+ \label{eq:kummer-galois}
+\end{equation}
+More explicitly, an element $\sigma_\lambda\in\Gal(L/K)$ indexed by
+$\lambda\in(\F_r)^S$ acts by
+\[
+ \sigma_\lambda(p^{1/r})=\zeta_r^{\lambda_p}p^{1/r}.
+\]
+
+Let
+\[
+ \Omega_r=\{\lambda\in(\F_r)^S:
+              \mathscr D_{M,A,r}(\lambda)\ne0\}.
+\]
+Conjugation by $\Gal(K/\Q)\cong\F_r^*$ scales $\lambda$ by a nonzero scalar, and the
+quadratic determinant scales by its square.  Hence $\Omega_r$ is a union of conjugacy classes
+in $\Gal(L/\Q)$.  Chebotarev's density theorem gives a set of unramified rational primes with
+Frobenius in this union and natural density
+\begin{equation}
+ \frac{|\Omega_r|}{r^s(r-1)}.
+ \label{eq:exact-cheb-density}
+\end{equation}
+Every such Frobenius restricts trivially to $K$, so the underlying rational prime satisfies
+$\ell\equiv1\pmod r$.  The Kummer action on the radicals $p^{1/r}$ is exactly the
+$r$th-power residue character~\eqref{eq:residue-character}, up to multiplication by a
+nonzero scalar.  Thus its determinant is nonzero.  Lemma~\ref{lem:local-cyclic-zero} gives
+local noncyclicity.
+
+Finally,~\eqref{eq:schwartz-zippel} yields
+$|\Omega_r|\ge r^{s-1}(r-2)$, and substitution in~\eqref{eq:exact-cheb-density} gives
+\eqref{eq:density-lower}.
+\end{proof}
+
+\begin{statusbox}{The finite rank-one criterion and density count are elementary paper proofs.
+The realization of characters uses standard Kummer theory and the density statement uses
+Chebotarev~\cite{Washington,Neukirch}.  The theorem is compatible with, but more specialized
+and more quantitative than, the classical support-problem literature
+\cite{CorralesSchoof,PeruccaSupport}.  No claim of literature priority is made for this
+specialization; the contribution here is the explicit determinant, density count, and its
+common-gap bridge in the \AEname{} setting.}
+\end{statusbox}
+
+\begin{corollary}[Local-global characterization of common power pairs]
+\label{cor:local-global-power}
+For $M,A\in\N$, the following are equivalent:
+\begin{enumerate}
+\item $(M,A)=(2^n,3^n)$ for some $n\in\Nzero$;
+\item for every odd prime $r$ and all but finitely many $\ell\equiv1\pmod r$,
+      $\Delta_{\ell,r}(M,A)=0$;
+\item there is no odd $r$ for which $\Delta_{\ell,r}(M,A)\ne0$ on a positive-density set of
+      rational primes.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The forward implication follows from multiplicativity of every residue character.  The
+contrapositive of Theorem~\ref{thm:kummer-separators} gives the reverse implications.
+\end{proof}
+
+\subsection{What the theorem says about a hypothetical counterexample}
+
+Under~\eqref{eq:counterexample-pair}, the real logarithm matrix has rank one.  If $x$ is
+nonintegral, $Q$ is not an integral power of $P$, so Theorem~\ref{thm:kummer-separators}
+produces an odd $r$ and positive-density primes at which the Kummer-symbol matrix has rank
+two.  This is a genuine adelic asymmetry:
+\begin{equation}
+ \det\begin{pmatrix}\log2&\log M\\\log3&\log A\end{pmatrix}=0,
+ \qquad
+ \det\begin{pmatrix}\kappa(2)&\kappa(M)\\\kappa(3)&\kappa(A)\end{pmatrix}\ne0
+ \quad\text{for a positive-density prime set}.
+ \label{eq:real-kummer-asymmetry}
+\end{equation}
+It differs from the Iwasawa-logarithm transversality already present in the unified report in
+two ways.  The primes are good primes rather than the structural primes $2$ and $3$, and the
+nonvanishing is distributed by one explicit finite Galois extension rather than being a
+pointwise local observation.
+
+\section{The common-gap bridge}
+\label{sec:common-gap}
+
+The unified report identifies a sharp rational-approximation bottleneck.  If $p/q$ is close
+to $x$, then the two integer gaps
+\begin{equation}
+ E_2(p,q)=M^q-2^p,
+ \qquad
+ E_3(p,q)=A^q-3^p
+ \label{eq:common-gaps}
+\end{equation}
+are simultaneously small relative to $M^q$ and $A^q$.  To turn that archimedean closeness
+into a contradiction, one needs unexpectedly large common arithmetic divisibility.  The new
+Kummer theorem gives a fixed positive-density set that such common divisibility is forbidden
+to use for most denominators $q$.
+
+\subsection{A residue-symbol calculation}
+
+\begin{proposition}[Mixed-gap determinant identity]
+\label{prop:mixed-gap-det}
+Fix an odd prime $r$ and a prime $\ell\equiv1\pmod r$ not dividing $6MA$.  Suppose
+\begin{equation}
+ M^q\equiv2^p\pmod\ell,
+ \qquad
+ A^q\equiv3^{p'}\pmod\ell.
+ \label{eq:mixed-gap-congruences}
+\end{equation}
+Then
+\begin{equation}
+ q\,\Delta_{\ell,r}(M,A)
+ =(p'-p)\,\kappa_{\ell,r}(2)\kappa_{\ell,r}(3)
+ \quad\text{in }\F_r.
+ \label{eq:mixed-gap-det-identity}
+\end{equation}
+In particular, if $r\nmid q$, $p\equiv p'\pmod r$, and
+$\Delta_{\ell,r}(M,A)\ne0$, the two congruences in~\eqref{eq:mixed-gap-congruences} cannot
+both hold.
+\end{proposition}
+
+\begin{proof}
+Applying $\kappa=\kappa_{\ell,r}$ to~\eqref{eq:mixed-gap-congruences} gives
+\[
+ q\kappa(M)=p\kappa(2),
+ \qquad
+ q\kappa(A)=p'\kappa(3).
+\]
+Therefore
+\begin{align*}
+ q\Delta_{\ell,r}(M,A)
+ &=\kappa(2)q\kappa(A)-\kappa(3)q\kappa(M)\\
+ &=p'\kappa(2)\kappa(3)-p\kappa(3)\kappa(2),
+\end{align*}
+which is~\eqref{eq:mixed-gap-det-identity}.
+\end{proof}
+
+\begin{theorem}[Fixed-modulus exclusion from every common gap]
+\label{thm:gap-exclusion}
+Let $(M,A)$ not be a common integral power pair, and choose $r$ and
+$\mathcal P_r(M,A)$ as in Theorem~\ref{thm:kummer-separators}.  For all integers $p$ and all
+positive integers $q$ with $r\nmid q$,
+\begin{equation}
+ \ell\nmid \gcd(M^q-2^p,A^q-3^p)
+ \qquad(\ell\in\mathcal P_r(M,A)).
+ \label{eq:gap-exclusion}
+\end{equation}
+Equivalently, every integer
+\[
+ G_{p,q}(M,A)=\gcd(M^q-2^p,A^q-3^p),\qquad r\nmid q,
+\]
+is supported on the complement of one fixed positive-density Chebotarev set.
+\end{theorem}
+
+\begin{proof}
+If $\ell$ divided both gaps, Proposition~\ref{prop:mixed-gap-det} with $p'=p$ would give
+$q\Delta_{\ell,r}(M,A)=0$.  Since $r\nmid q$ and the determinant is nonzero, this is
+impossible.
+\end{proof}
+
+\begin{remark}[Why the modulus is $r$, not $\ell-1$]
+A direct cyclic-group argument would require $q$ to be invertible modulo the order of
+$P\bmod\ell$, or at least modulo $\ell-1$.  The Kummer determinant only records the quotient
+modulo $r$ and therefore needs the much weaker condition $r\nmid q$.  This fixed-modulus form
+is essential for continued fractions: a fixed prime cannot divide every convergent
+denominator.
+\end{remark}
+
+\subsection{Continued fractions and an unavoidable subsequence}
+
+Let $p_j/q_j$ be the convergents of a nonintegral real $x$.  Consecutive denominators are
+coprime:
+\[
+ \gcd(q_j,q_{j+1})=1.
+\]
+For the detector prime $r$, at least one member of each consecutive pair is not divisible by
+$r$.  Consequently Theorem~\ref{thm:gap-exclusion} applies to infinitely many convergents,
+with gaps that are simultaneously archimedean-small in the sense developed in the unified
+report.
+
+\begin{corollary}[Chebotarev avoidance along convergents]
+\label{cor:convergent-avoidance}
+If a nonintegral counterexample exists, there is an odd prime $r$, a positive-density
+Chebotarev set $\mathcal P_r$, and an infinite set of indices $J$ such that
+\begin{equation}
+ \ell\nmid
+ \gcd(M^{q_j}-2^{p_j},A^{q_j}-3^{p_j})
+ \quad\text{for every }j\in J\text{ and every }\ell\in\mathcal P_r.
+ \label{eq:convergent-exclusion}
+\end{equation}
+One can choose $J$ to meet every pair $\{j,j+1\}$.
+\end{corollary}
+
+This does not bound the numerical size of the gcd: one large integer may be composed entirely
+of primes from a density-$1-\delta$ set.  It does, however, rule out any proof strategy that
+would force these gcds to sample all Frobenius classes indiscriminately.
+
+\subsection{A closure criterion}
+
+The following criterion packages exactly what is missing.  It is deliberately stated in a
+form that can be attacked by analytic or algebraic number theory without repeating the
+archimedean transfer estimates.
+
+\begin{criterion}[Separator-hitting criterion]
+\label{crit:separator-hitting}
+Suppose the following assertion holds.
+
+For every positive integer pair $(M,A)$ satisfying
+$\log M/\log2=\log A/\log3$, every odd prime $r$, and every positive-density Chebotarev set
+$\mathcal C$ in a Kummer extension generated by $r$th roots of the primes dividing $6MA$,
+there are integers $p,q$ with $r\nmid q$ and a prime $\ell\in\mathcal C$ such that
+\[
+ \ell\mid M^q-2^p,
+ \qquad
+ \ell\mid A^q-3^p.
+\]
+It is enough to require $p/q$ to range over convergents to
+$\log M/\log2$.
+
+Then the \AEname{} conjecture holds.
+\end{criterion}
+
+\begin{proof}
+If $(M,A)$ were a non-power pair, take the detector prime $r$ and separator Chebotarev set
+from Theorem~\ref{thm:kummer-separators}.  The asserted simultaneous divisibility contradicts
+Theorem~\ref{thm:gap-exclusion}.
+\end{proof}
+
+\begin{warning}
+Criterion~\ref{crit:separator-hitting} is not presently established and is stronger than a
+mere lower bound for the size of the common gap gcd.  It demands Frobenius-class coverage.
+The theorem's value is that this is now an exact, finite-extension target.  A proposed proof
+can be tested against it without invoking an unspecified ``random prime divisor'' heuristic.
+\end{warning}
+
+\subsection{Relation to the classical support problem}
+
+The support problem asks, roughly, whether inclusion or order divisibility of reductions at
+almost all primes forces a global dependence relation.  For products of multiplicative
+groups this has strong affirmative forms~\cite{CorralesSchoof,PeruccaSupport}.  Our direction
+is the quantitative contrapositive specialized to the two points $P=(2,3)$ and $Q=(M,A)$:
+a global failure of common-power dependence creates a positive-density set of local
+separators.  The explicit determinant~\eqref{eq:actual-kummer-det} is useful because it also
+interacts directly with approximation gaps through
+Proposition~\ref{prop:mixed-gap-det}; a black-box support theorem alone would not expose the
+fixed congruence $r\nmid q$.
+
+\section{An output-sensitive geometric Newton calculus}
+\label{sec:newton}
+
+The unified report ends by isolating output-specific cancellation in the rank-one table
+$M^aA^b$ as one of the few surviving interfaces.  Ordinary univariate interpolation on the
+nodes $2^a3^b$ produces large, usually irreducible determinant numerators.  A different
+operator ordering makes the output dependence completely factorized.
+
+\subsection{One geometric block}
+
+For distinct nodes $z_0,\ldots,z_n$, write
+$[z_0,\ldots,z_n]f$ for the divided difference of order $n$.  For $q>1$ define
+\begin{equation}
+ \mathcal N_{q,n}f(z)=[z,qz,\ldots,q^nz]f,
+ \qquad n\ge0.
+ \label{eq:geometric-newton-operator}
+\end{equation}
+For $n=0$ this is just $f(z)$.
+
+Put
+\begin{equation}
+ D_{q,n}=\prod_{j=0}^{n-1}(q^n-q^j)
+ =q^{\binom n2}\prod_{h=1}^n(q^h-1),
+ \qquad D_{q,0}=1.
+ \label{eq:geometric-vandermonde}
+\end{equation}
+
+\begin{theorem}[Geometric divided difference of a real monomial]
+\label{thm:one-block}
+For $z>0$, $q>1$, $n\in\Nzero$, and $y\in\R$,
+\begin{equation}
+ \mathcal N_{q,n}(t^y)(z)
+ =z^{y-n}
+  \frac{\prod_{j=0}^{n-1}(q^y-q^j)}{D_{q,n}}.
+ \label{eq:one-block-factorization}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Scaling all nodes by $z$ extracts $z^{y-n}$, so take $z=1$.  The barycentric formula expresses
+$[1,q,\ldots,q^n]t^y$ as a polynomial of degree at most $n$ in $R=q^y$.  It vanishes for
+$R=1,q,\ldots,q^{n-1}$ because the $n$th divided difference of each polynomial
+$t^k$, $k<n$, is zero.  Its leading coefficient is the reciprocal of
+$\prod_{j=0}^{n-1}(q^n-q^j)$.  This determines the polynomial and gives
+\eqref{eq:one-block-factorization}.
+\end{proof}
+
+\begin{remark}
+The one-block identity is the standard geometric or $q$-Newton factorization.  The new point
+below is to compose blocks of different bases, track the exponent shifts exactly, and pair
+complementary words.  The order dependence is essential; these operators do not commute.
+\end{remark}
+
+\subsection{Mixed words}
+
+Let
+\[
+ W=((q_1,n_1),\ldots,(q_h,n_h)),
+ \qquad q_i>1,
+ \quad n_i\in\N,
+\]
+and define cumulative orders
+\[
+ S_0=0,
+ \qquad
+ S_i=n_1+\cdots+n_i.
+\]
+The operator associated with $W$ is
+\[
+ \mathcal N_W=
+ \mathcal N_{q_h,n_h}\circ\cdots\circ\mathcal N_{q_1,n_1}.
+\]
+Thus the first listed block acts first.
+
+\begin{theorem}[Mixed-word factorization]
+\label{thm:mixed-word}
+For every real $x$,
+\begin{equation}
+ (\mathcal N_W t^x)(1)
+ =\prod_{i=1}^h
+ \frac{\displaystyle\prod_{j=0}^{n_i-1}
+       \bigl(q_i^{x-S_{i-1}}-q_i^j\bigr)}
+      {D_{q_i,n_i}}.
+ \label{eq:mixed-word-factorization}
+\end{equation}
+More generally,
+\[
+ (\mathcal N_W t^x)(z)
+ =z^{x-S_h}(\mathcal N_W t^x)(1).
+\]
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:one-block} says that $\mathcal N_{q,n}$ maps the monomial $t^y$ to a scalar
+multiple of $t^{y-n}$.  After the first $i-1$ blocks, the current exponent is
+$x-S_{i-1}$.  Multiplying the scalar factors from Theorem~\ref{thm:one-block} proves the
+formula by induction.
+\end{proof}
+
+\subsection{Specialization to a hypothetical counterexample}
+
+Suppose~\eqref{eq:counterexample-pair} and each $q_i$ is either $2$ or $3$.  Put
+\[
+ B_2=M,
+ \qquad
+ B_3=A.
+\]
+Then
+\begin{equation}
+ q_i^{x-S_{i-1}}=q_i^{-S_{i-1}}B_{q_i}.
+\end{equation}
+and Theorem~\ref{thm:mixed-word} becomes the completely rational factorization
+\begin{equation}
+ (\mathcal N_W t^x)(1)
+ =\prod_{i=1}^h
+ q_i^{-S_{i-1}n_i}
+ \frac{\displaystyle\prod_{j=0}^{n_i-1}
+       \bigl(B_{q_i}-q_i^{S_{i-1}+j}\bigr)}
+      {D_{q_i,n_i}}.
+ \label{eq:counterexample-word-factorization}
+\end{equation}
+Every numerator factor is an explicit integer gap.  The exponent intervals
+\[
+ [S_{i-1},S_i)\cap\Z
+\]
+partition $\{0,1,\ldots,S_h-1\}$; the word labels each interval dyadic or triadic.
+
+For two blocks one obtains, for example,
+\begin{align}
+ (\mathcal N_{3,m}\mathcal N_{2,n}t^x)(1)
+ &=3^{-nm}
+   \frac{\prod_{i=0}^{n-1}(M-2^i)}{D_{2,n}}
+   \frac{\prod_{j=0}^{m-1}(A-3^{n+j})}{D_{3,m}},
+ \label{eq:two-block-23}\\
+ (\mathcal N_{2,n}\mathcal N_{3,m}t^x)(1)
+ &=2^{-nm}
+   \frac{\prod_{j=0}^{m-1}(A-3^j)}{D_{3,m}}
+   \frac{\prod_{i=0}^{n-1}(M-2^{m+i})}{D_{2,n}}.
+ \label{eq:two-block-32}
+\end{align}
+The shifted intervals make the noncommutativity transparent.
+
+\subsection{Complementary-word invariance}
+
+When every $q_i\in\{2,3\}$, let $\overline W$ have the same block lengths but replace every
+$2$ by $3$ and every $3$ by $2$.
+
+\begin{theorem}[Complementary-word product]
+\label{thm:complementary-word}
+Let $N=S_h$.  Under~\eqref{eq:counterexample-pair},
+\begin{equation}
+ (\mathcal N_Wt^x)(1)(\mathcal N_{\overline W}t^x)(1)
+ =
+ \frac{\displaystyle\prod_{e=0}^{N-1}(M-2^e)(A-3^e)}
+ {\displaystyle
+  6^{\sum_{i=1}^h S_{i-1}n_i}
+  \prod_{i=1}^h D_{2,n_i}D_{3,n_i}}.
+ \label{eq:complementary-product}
+\end{equation}
+The right-hand side depends on the ordered partition $(n_1,\ldots,n_h)$ but not on which
+blocks of $W$ were labeled $2$ or $3$.
+\end{theorem}
+
+\begin{proof}
+For a fixed interval $[S_{i-1},S_i)$, the two complementary factors in
+\eqref{eq:counterexample-word-factorization} contribute every dyadic gap and every triadic
+gap in that interval.  Their shift powers multiply to
+$2^{-S_{i-1}n_i}3^{-S_{i-1}n_i}=6^{-S_{i-1}n_i}$, and their geometric denominators multiply
+to $D_{2,n_i}D_{3,n_i}$.  Multiplication over the partition proves the formula.
+\end{proof}
+
+For unit blocks $n_i=1$, the formula simplifies to
+\begin{equation}
+ (\mathcal N_Wt^x)(1)(\mathcal N_{\overline W}t^x)(1)
+ =
+ \frac{\displaystyle\prod_{e=0}^{N-1}(M-2^e)(A-3^e)}
+ {2^N6^{N(N-1)/2}}.
+ \label{eq:unit-complement-product}
+\end{equation}
+The exact schedule independence is useful experimentally: dynamic programming over words can
+optimize one functional without changing the paired synchronized numerator.
+
+\subsection{Structural-prime valuations}
+
+The factorization also gives exact $2$-adic and $3$-adic bookkeeping, rather than a termwise
+minimum estimate.
+
+\begin{proposition}[Exact structural valuation of a shifted block]
+\label{prop:structural-valuation}
+Let $q$ be prime, $B\in\N$, $a_0=v_q(B)$, and write $B=q^{a_0}u$ with $q\nmid u$.
+For $S,n\in\Nzero$ with $n>0$ and $B\ne q^{S+j}$ for $0\le j<n$, put
+\[
+ N_{q,n,S}(B)=\prod_{j=0}^{n-1}(B-q^{S+j}).
+\]
+Then
+\begin{equation}
+ v_q\bigl(N_{q,n,S}(B)\bigr)
+ =\sum_{j=0}^{n-1}\min(a_0,S+j)
+ +\mathbf 1_{\{S\le a_0<S+n\}}v_q(u-1).
+ \label{eq:exact-numerator-qvaluation}
+\end{equation}
+Consequently
+\begin{equation}
+ v_q\!\left(
+ q^{-Sn}\frac{N_{q,n,S}(B)}{D_{q,n}}
+ \right)
+ =\sum_{j=0}^{n-1}\min(a_0,S+j)-Sn-\binom n2
+ +\mathbf 1_{\{S\le a_0<S+n\}}v_q(u-1).
+ \label{eq:exact-block-qvaluation}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $a_0\ne S+j$,
+$v_q(B-q^{S+j})=\min(a_0,S+j)$.  At equality the valuation is
+$a_0+v_q(u-1)$, accounting for the correction term.  Finally,
+$v_q(D_{q,n})=\binom n2$ by~\eqref{eq:geometric-vandermonde}.
+\end{proof}
+
+Two clean regimes are worth recording:
+\begin{align*}
+ a_0<S:
+ &\quad v_q(\text{block})=n(a_0-S)-\binom n2,\\
+ a_0\ge S+n:
+ &\quad v_q(\text{block})=0.
+\end{align*}
+Thus a block placed strictly beyond the $q$-adic depth of the output pays a predictable
+quadratic denominator, while a block entirely below that depth is a $q$-adic unit.  This
+turns word ordering into an exact finite optimization problem.
+
+\subsection{Away-prime cancellation windows}
+
+For a prime $\ell\nmid qB$,
+\begin{equation}
+ v_\ell(D_{q,n})=\sum_{h=1}^n v_\ell(q^h-1),
+ \qquad
+ v_\ell(N_{q,n,S}(B))
+ =\sum_{e=S}^{S+n-1}v_\ell(B-q^e).
+ \label{eq:away-valuations}
+\end{equation}
+At the first residue layer,
+\begin{equation}
+ \ell\mid N_{q,n,S}(B)
+ \iff
+ B\bmod\ell=q^e\bmod\ell
+ \text{ for some }e\in[S,S+n)\cap\Z.
+ \label{eq:discrete-log-window}
+\end{equation}
+Hence reduction of the Newton denominator is a discrete-log window problem.  The output
+specificity absent from node-only Vandermonde bounds is now explicit: a prime can cancel only
+if the actual output $B$ lands in a prescribed interval of the cyclic orbit of $q$.
+
+\begin{statusbox}{Equations~\eqref{eq:counterexample-word-factorization},
+\eqref{eq:complementary-product}, \eqref{eq:exact-block-qvaluation}, and
+\eqref{eq:discrete-log-window} are the precise arithmetic interface exported by the Newton
+calculus.  They do not by themselves make the functional small enough for a unit-threshold
+contradiction.  Their role is to replace an opaque determinant numerator by explicit output
+gaps whose cancellation can be tested prime by prime.}
+\end{statusbox}
+
+\section{Synthesis: residue-class Newton factors meet Kummer separators}
+\label{sec:synthesis}
+
+The Kummer determinant remembers exponents only modulo $r$.  The correct Newton factors to
+pair with it therefore group gaps by one exponent residue class.
+
+\subsection{Residue-synchronized gap products}
+
+Fix the detector prime $r$ from Theorem~\ref{thm:kummer-separators}.  For
+$c\in\Z/r\Z$ and $N\ge1$, define
+\begin{align}
+ U_{c,N}^{(r)}(M)
+ &=\prod_{\substack{0\le e<N\\e\equiv c\pmod r}}(M-2^e),
+ \label{eq:residue-dyadic-product}\\
+ V_{c,N}^{(r)}(A)
+ &=\prod_{\substack{0\le e<N\\e\equiv c\pmod r}}(A-3^e).
+ \label{eq:residue-triadic-product}
+\end{align}
+Empty products are $1$.  Whenever $c$ occurs in an integer exponent below, we use the unique
+representative $0\le c<r$.
+
+\begin{theorem}[Residue-synchronized gcd sieve]
+\label{thm:residue-gcd-sieve}
+For every separator prime $\ell\in\mathcal P_r(M,A)$, every residue class $c\pmod r$, and
+every $N$,
+\begin{equation}
+ \ell\nmid
+ \gcd\bigl(U_{c,N}^{(r)}(M),V_{c,N}^{(r)}(A)\bigr).
+ \label{eq:residue-gcd-exclusion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $\ell$ divided both products, there would be exponents $e,f<N$ with
+$e\equiv f\equiv c\pmod r$ and
+\[
+ M\equiv2^e\pmod\ell,
+ \qquad
+ A\equiv3^f\pmod\ell.
+\]
+Proposition~\ref{prop:mixed-gap-det} with $q=1$, $p=e$, and $p'=f$ would give
+$\Delta_{\ell,r}(M,A)=0$, contrary to the definition of the separator set.
+\end{proof}
+
+The result is stronger than excluding the termwise gcds
+$\gcd(M-2^e,A-3^e)$: a separator prime cannot divide a dyadic gap and a triadic gap at
+\emph{different} exponents as long as the two exponents are congruent modulo $r$.
+
+\subsection{Residue-class Newton numerators}
+
+Let $Q>1$.  Applying Theorem~\ref{thm:one-block} with ratio $Q=q^r$ and exponent
+$(x-c)/r$ gives
+\begin{equation}
+ [1,q^r,q^{2r},\ldots,q^{rn}]\,t^{(x-c)/r}
+ =q^{-cn}
+ \frac{\prod_{j=0}^{n-1}(B_q-q^{c+rj})}{D_{q^r,n}},
+ \qquad B_2=M,\ B_3=A.
+ \label{eq:residue-newton-factor}
+\end{equation}
+The values of $t^{(x-c)/r}$ at these nodes are
+$(B_q/q^c)^j$, so after a transparent power of $q$ is cleared this is an arithmetic
+functional of integers.  Its numerator is exactly one finite segment of the residue-class
+products~\eqref{eq:residue-dyadic-product}--\eqref{eq:residue-triadic-product}.
+
+For a fixed $c$ and $n$, put
+\begin{align*}
+ N_{2,c,n}&=\prod_{j=0}^{n-1}(M-2^{c+rj}),
+ &F_{2,c,n}&=2^{-cn}\frac{N_{2,c,n}}{D_{2^r,n}},\\
+ N_{3,c,n}&=\prod_{j=0}^{n-1}(A-3^{c+rj}),
+ &F_{3,c,n}&=3^{-cn}\frac{N_{3,c,n}}{D_{3^r,n}}.
+\end{align*}
+Let $d_{2,c,n}$ and $d_{3,c,n}$ be their positive reduced denominators.
+
+\begin{proposition}[A primewise simultaneous-denominator obstruction]
+\label{prop:primewise-denominator}
+Let $\ell\in\mathcal P_r(M,A)$.  If
+$\ell\mid D_{2^r,n}$ and $\ell\mid D_{3^r,n}$, then
+\begin{equation}
+ v_\ell\!\left(\lcm(d_{2,c,n},d_{3,c,n})\right)
+ \ge
+ \min\bigl(v_\ell(D_{2^r,n}),v_\ell(D_{3^r,n})\bigr).
+ \label{eq:lcm-denominator-lower-prime}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Theorem~\ref{thm:residue-gcd-sieve} says that $\ell$ divides at most one of
+$N_{2,c,n}$ and $N_{3,c,n}$.  Since $\ell\ne2,3$, the prefactors $2^{-cn}$ and $3^{-cn}$ do
+not affect its valuation.  Therefore at least one reduced denominator retains the full
+$\ell$-adic valuation of its corresponding geometric denominator.  This is at least the
+minimum on the right side of~\eqref{eq:lcm-denominator-lower-prime}.
+\end{proof}
+
+\subsection{A quantitative Chebotarev mass}
+
+Every prime $\ell\le n+1$ with $\ell\nmid6r$ divides both denominators in
+Proposition~\ref{prop:primewise-denominator}.  Indeed,
+$\ord_\ell(2^r)$ and $\ord_\ell(3^r)$ are at most $\ell-1\le n$, while
+\[
+ D_{Q,n}=Q^{\binom n2}\prod_{h=1}^n(Q^h-1).
+\]
+Thus the positive-density separator set creates a universal denominator residue.
+
+\begin{theorem}[Linear simultaneous-denominator survival]
+\label{thm:linear-denominator-mass}
+Let $r$, $c$, and the reduced denominators $d_{2,c,n},d_{3,c,n}$ be as above, and let
+$\delta_r=\dens\mathcal P_r(M,A)>0$.  Then
+\begin{equation}
+ \log\lcm(d_{2,c,n},d_{3,c,n})
+ \ge (\delta_r+o(1))n
+ \qquad(n\to\infty).
+ \label{eq:linear-denominator-mass}
+\end{equation}
+In particular, with the construction in Theorem~\ref{thm:kummer-separators},
+$\delta_r\ge(r-2)/(r(r-1))$.
+\end{theorem}
+
+\begin{proof}
+For every $\ell\in\mathcal P_r(M,A)$ with $\ell\le n+1$, Proposition
+\ref{prop:primewise-denominator} contributes at least one factor $\ell$ to the least common
+multiple.  Hence
+\[
+ \log\lcm(d_{2,c,n},d_{3,c,n})
+ \ge \sum_{\substack{\ell\le n+1\\\ell\in\mathcal P_r(M,A)}}\log\ell.
+\]
+The Chebotarev prime-number theorem evaluates the sum as
+$(\delta_r+o(1))n$.
+\end{proof}
+
+\begin{remark}[Exact scale of the advance]
+The full geometric denominators have
+\[
+ \log D_{q^r,n}=rn^2\log q+O(n),
+\]
+whereas Theorem~\ref{thm:linear-denominator-mass} forces only $\Omega(n)$ surviving mass.
+Thus the theorem proves non-total cancellation but does not yet prevent a reduction by
+$\exp(\Theta(n^2))$.  The missing quantitative problem is now concrete: estimate separator
+primes whose orders of both $2^r$ and $3^r$ are at most $n$, not merely the automatic primes
+$\ell\le n+1$.
+\end{remark}
+
+\begin{target}[Quadratic separator mass]
+\label{target:quadratic-separator-mass}
+For a detector Chebotarev set $\mathcal P_r(M,A)$, study
+\begin{equation}
+ \Sigma_r(n)=
+ \sum_{\substack{\ell\in\mathcal P_r(M,A)\\
+        \ord_\ell(2^r)\le n,\ \ord_\ell(3^r)\le n}}
+ \min\bigl(v_\ell(D_{2^r,n}),v_\ell(D_{3^r,n})\bigr)\log\ell.
+ \label{eq:separator-mass-sum}
+\end{equation}
+Theorem~\ref{thm:linear-denominator-mass} gives $\Sigma_r(n)\gg n$.  A lower bound
+$\Sigma_r(n)\gg n^2$ would show that residue-class Newton denominators retain a positive
+fraction of their natural arithmetic scale.  A sharper result coordinated with an
+archimedean auxiliary function could close one of the surviving denominator-cancellation
+interfaces.
+\end{target}
+
+This target is related to simultaneous multiplicative-order statistics for $2$ and $3$ in a
+specified Frobenius set.  It is not a routine application of Artin's primitive-root
+conjecture: the condition asks for two orders to be small rather than maximal, and the
+primes are filtered by an independent Kummer determinant.  Nonetheless it is a much more
+specific analytic problem than ``find extra cancellation in a determinant.''
+
+\subsection{A finite local lemma suitable for formalization}
+
+The global density theorem uses algebraic number theory, but the cancellation obstruction is
+finite and can be isolated without Chebotarev.
+
+\begin{lemma}[Finite residue-class obstruction]
+\label{lem:finite-residue-class-obstruction}
+Let $r$ be an odd prime, let $\ell\equiv1\pmod r$, and let
+$\kappa:\F_\ell^*\to\F_r$ be a homomorphism.  Suppose
+\[
+ \kappa(2)\kappa(A)-\kappa(3)\kappa(M)\ne0.
+\]
+Then for any $c\in\F_r$ there do not exist integers $e,f\equiv c\pmod r$ with
+$M\equiv2^e$ and $A\equiv3^f\pmod\ell$.
+\end{lemma}
+
+\begin{proof}
+The two congruences imply
+$\kappa(M)=e\kappa(2)$ and $\kappa(A)=f\kappa(3)$.  Their determinant is
+$(f-e)\kappa(2)\kappa(3)=0$ because $e\equiv f\pmod r$.
+\end{proof}
+
+This lemma, Proposition~\ref{prop:mixed-gap-det}, and the mixed Newton factorization are the
+parts most immediately amenable to machine checking.
+
+\section{Scale audit: why the new identities do not yet prove the conjecture}
+\label{sec:scale-audit}
+
+A progress report on an open transcendence problem is useful only if it records the exact
+point where a promising identity stops.  This section gives that audit.
+
+\subsection{Archimedean size of one block}
+
+For fixed real $y\notin\Nzero$ and fixed $q>1$, Theorem~\ref{thm:one-block} gives, as
+$n\to\infty$,
+\begin{equation}
+ \log\left|\frac{\prod_{j=0}^{n-1}(q^y-q^j)}{D_{q,n}}\right|
+ =-\frac12n^2\log q+O(n).
+ \label{eq:block-arch-size}
+\end{equation}
+Indeed, all but $O_y(1)$ numerator factors have size $q^j(1+O(q^{y-j}))$, while
+$\log D_{q,n}=n^2\log q+O(n)$.  The natural denominator of the rational specialization in
+\eqref{eq:counterexample-word-factorization} has a quadratic logarithm of twice the leading
+archimedean decay.  The bare one-block functional is therefore far above its reciprocal
+denominator threshold.
+
+For a word $W$, the leading decay is approximately
+\begin{equation}
+ -\frac12\sum_i n_i^2\log q_i,
+ \label{eq:word-decay}
+\end{equation}
+whereas the explicit clearing denominator also contains the cross-shift tax
+\begin{equation}
+ \sum_i S_{i-1}n_i\log q_i.
+ \label{eq:word-shift-tax}
+\end{equation}
+Splitting into many short blocks improves the sum of squares but increases the cross term;
+using one long block does the reverse.  Without output-specific cancellation, neither
+extreme crosses a unit threshold.  This recovers, in a new operator language, the
+normalization barrier found abstractly in the unified report.
+
+\subsection{What output cancellation would have to accomplish}
+
+Let $d(W;M,A)$ be the reduced denominator of~\eqref{eq:counterexample-word-factorization}.
+A successful Newton certificate would require an archimedean estimate of the form
+\begin{equation}
+ 0<|\mathcal N_Wt^x(1)|<\frac1{d(W;M,A)}.
+ \label{eq:newton-unit-threshold}
+\end{equation}
+The factorization reduces the arithmetic side of this inequality to valuations of
+\[
+ \prod_i\prod_{e=S_{i-1}}^{S_i-1}(B_{q_i}-q_i^e).
+\]
+At structural primes these are given exactly by Proposition
+\ref{prop:structural-valuation}.  At away primes they are discrete-log windows
+\eqref{eq:discrete-log-window}.  The Kummer theorem shows that the dyadic and triadic windows
+cannot simultaneously cover a positive-density separator set when the exponents are aligned
+modulo $r$.
+
+Thus the new theory does not magically provide the cancellation; it converts the desired
+cancellation into a falsifiable collection of local orbit-covering statements.
+
+\subsection{Why linear separator mass is not enough}
+
+The denominator lower bound~\eqref{eq:linear-denominator-mass} is a no-go statement for
+perfect simultaneous reduction, but the critical budgets are quadratic.  If the reduced
+denominator loses only $e^{cn}$ relative to an $e^{Cn^2}$ natural denominator, the leading
+unit-threshold comparison is unchanged.  A proof through this route therefore needs one of
+the following genuinely stronger inputs:
+\begin{enumerate}
+\item a quadratic lower bound for the separator mass~\eqref{eq:separator-mass-sum}, combined
+      with a different auxiliary functional whose success requires excessive cancellation;
+\item a quadratic \emph{upper} bound on allowed cancellation in the complement, using
+      multiplicative-order or large-sieve information;
+\item an archimedean construction with decay matching the already unavoidable linear
+      denominator residue rather than the full quadratic scale;
+\item a direct separator-hitting theorem for the continued-fraction common gaps, as in
+      Criterion~\ref{crit:separator-hitting}.
+\end{enumerate}
+No one of these statements is supplied by generic Chebotarev alone.
+
+\section{Additional directions explored and sharply delimited}
+\label{sec:other-routes}
+
+This section records several nonduplicate probes.  They are shorter because each hits a clear
+ceiling before producing a theorem comparable to Sections~\ref{sec:kummer}--\ref{sec:synthesis}.
+
+\subsection{Ordinary rectangular interpolation versus nested Newton factorization}
+
+Take the four nodes $1,2,3,6$ with values $1,M,A,MA$.  The top ordinary univariate divided
+difference is
+\begin{equation}
+ [1,2,3,6]f
+ =\frac{MA-10A+15M-6}{60}.
+ \label{eq:rect-2x2}
+\end{equation}
+The numerator is irreducible over $\Q[M,A]$.  Larger $2$--$3$ rectangles rapidly produce
+higher-degree irreducible mixed numerators; see Section~\ref{sec:computations}.  In contrast,
+the nested operator first takes a geometric difference along one scaling direction and then
+along the other, yielding the completely factored expressions
+\eqref{eq:two-block-23}--\eqref{eq:two-block-32}.
+
+This comparison explains why the new operator ordering matters.  The ordinary top
+coefficient treats the set $\{2^a3^b\}$ as unrelated one-dimensional nodes and entangles all
+outputs.  The nested operator retains the multiplicative grid geometry and makes each
+cancellation event local in the output.
+
+\subsection{A rank-three prime-support probe}
+
+Suppose, as a restricted model, that all prime factors of $MA$ lie in $\{2,3,p\}$.  Write
+\[
+ M=2^u3^vp^w,
+ \qquad
+ A=2^{u'}3^{v'}p^{w'}.
+\]
+The real rank-one relation becomes a quadratic relation among
+$\log2,\log3,\log p$.  The two-prime-support theorem in the unified report handles the case
+$w=w'=0$.  With one additional prime, elementary unique factorization no longer diagonalizes
+the log-product relation.
+
+The new Kummer determinant does diagonalize the corresponding finite problem.  The support
+space has dimension three, and unless the exponent rows are a common integral multiple, a
+quadratic form in three residue-character variables is nonzero.  Thus a positive-density
+finite-place rank-two set exists even in the minimal unresolved support rank.  What remains
+missing is a theorem that transfers the real equality to the vanishing of those residue
+characters.  Standard Gelfond--Schneider and Six Exponentials inputs do not supply that
+transfer, so this route merges back into the separator-hitting problem rather than producing
+an independent closure.
+
+\subsection{Cyclotomic symmetrization}
+
+For a prime $q$, a tempting way to reduce a root-extraction error is the identity
+\begin{equation}
+ \Phi_{q^2}(z)=z^{q(q-1)}\frac{1-z^{-q^2}}{1-z^{-q}},
+ \label{eq:cyclotomic-tail}
+\end{equation}
+whose normalized logarithmic correction is $O(z^{-q})$.  Applying it to radicals constructed
+from $M,A,2,3$ gives excellent analytic cancellation.  However, clearing exponents and
+integerizing the cyclotomic value introduces degree and height of order $q^2$, while the
+gain in the logarithmic tail is only order $q$.  This is the same denominator/height tax
+already diagnosed for high-root splittings in the unified report.  No new inequality emerges
+without an output-specific common divisor.  The Kummer separator theorem is more informative:
+it says that any proposed common divisor must avoid a specified positive-density set for a
+fixed residue modulus.
+
+\subsection{Subset-moment collisions}
+
+Under a hypothetical counterexample, every number $t=2^aM^b$ and every shifted power
+$t^{x+j}$ is an integer whenever $j\in\Nzero$.  Since the candidate set up to $e^T$ has
+quadratic logarithmic cardinality, a subset-sum pigeonhole argument produces many signed
+relations annihilating any fixed finite list of moments
+\[
+ t^0,t^1,\ldots,t^d,t^x,t^{x+1},\ldots,t^{x+d}.
+\]
+This is a genuine abundance phenomenon, but the relation support is of order $T^2$, while a
+Chebyshev-system obstruction from $2d+2$ moments controls only relations with $O(d)$ sign
+changes or support.  Forcing sparse collisions pays an entropy cost that removes the
+pigeonhole surplus.  The route therefore does not presently beat the fixed-rank sum and
+Chebyshev ceilings already recorded in the source report.
+
+\subsection{Why the finite determinant cannot simply be ``taken to the limit''}
+
+The real relation~\eqref{eq:real-determinant} and the finite determinant
+\eqref{eq:actual-kummer-det} use different homomorphisms from the multiplicative group:
+$\log|\cdot|$ is archimedean and continuous, while $\kappa_{\ell,r}$ is a torsion quotient
+whose distribution varies with Frobenius.  There is no continuity principle taking one to
+the other.  Any proof claiming that the real determinant forces
+$\Delta_{\ell,r}=0$ for almost all $\ell$ would already establish a powerful new support
+principle and must exhibit its arithmetic mechanism.  The common-gap bridge is one such
+mechanism, but only at primes actually dividing both approximation gaps.
+
+\begin{statusbox}{The explorations in this section are included to prevent repeated effort.
+The principal new mathematical content remains the positive-density Kummer separator, the
+fixed-modulus common-gap exclusion, and the mixed Newton/residue-class synthesis.}
+\end{statusbox}
+
+\section{Computational reconnaissance}
+\label{sec:computations}
+
+The computations in this section are exact symbolic arithmetic or elementary finite-field
+enumeration.  They are diagnostics, not evidence for a theorem beyond the proved statements.
+The core script used for the symbolic and exact-density tables is reproduced in Appendix~\ref{app:code}; the empirical prime loop is described there as well.
+
+\subsection{Ordinary rectangular top coefficients}
+
+For the rectangle
+\[
+ \mathcal R_{u,v}=\{2^a3^b:0\le a<u,\ 0\le b<v\}
+\]
+assign the value $M^aA^b$ at $2^a3^b$ and form the ordinary univariate top divided
+difference.  Clearing content gives the following formulas.
+
+\begin{align}
+ \mathcal R_{2,2}:\quad
+ &\frac{MA-10A+15M-6}{60},
+ \label{eq:comp-22}\\[0.4em]
+ \mathcal R_{3,2}:\quad
+ &\frac{M^2A-66MA-880A+495M^2+594M-144}{47520},
+ \label{eq:comp-32}\\[0.4em]
+ \mathcal R_{2,3}:\quad
+ &\frac{7MA^2-340A^2+1428MA-5712A+6885M-2268}{3084480}.
+ \label{eq:comp-23}
+\end{align}
+
+Each displayed numerator is irreducible in $\Q[M,A]$.  For the $3\times3$ rectangle, the
+primitive numerator is
+\begin{align*}
+ &M^2A^2-660MA^2-119680A^2+21420M^2A+565488MA\\
+ &\qquad{}+2741760A-2044845M^2-1443420M+279936,
+\end{align*}
+with denominator $439723468800$; it is again irreducible over $\Q$.  The absence of a useful
+factor is not mysterious: the ordinary
+one-dimensional divided difference ignores the product-grid order.  The nested factorization
+in Theorem~\ref{thm:mixed-word} restores it exactly.
+
+\subsection{Exact finite Kummer densities in two examples}
+
+For a fixed pair, the Kummer theorem predicts the density by counting the formal characters
+$\lambda$.  Two small examples illustrate the calculation.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+$(M,A)$ & $r$ & prime support $S$ &
+$\Pr(\mathscr D(\lambda)\ne0\mid\ell\equiv1\bmod r)$ &
+absolute density \\
+\midrule
+$(2,9)$ & $3$ & $\{2,3\}$ & $4/9$ & $2/9$ \\
+$(5,13)$ & $3$ & $\{2,3,5,13\}$ & $16/27$ & $8/27$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $(2,9)$ the determinant polynomial is $\lambda_2\lambda_3$, so exactly four of the nine
+characters are separators.  For $(5,13)$ the four character values entering the $2\times2$
+determinant are independent; the nonzero cases are the invertible $2\times2$ matrices over
+$\F_3$, of which
+\[
+ |\operatorname{GL}_2(\F_3)|=(3^2-1)(3^2-3)=48.
+\]
+Dividing by $3^4$ gives $16/27$.  Multiplication by the cyclotomic splitting density $1/2$
+gives the absolute densities.
+
+Enumerating primes $\ell\le20{,}000$ with $\ell\equiv1\pmod3$ gives:
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+$(M,A)$ & eligible primes & nonzero determinants & observed proportion & exact proportion \\
+\midrule
+$(2,9)$ & $1{,}124$ & $505$ & $0.44929$ & $0.44444\ldots$ \\
+$(5,13)$ & $1{,}123$ & $672$ & $0.59840$ & $0.59259\ldots$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The experiment is only a check that the residue-symbol implementation and density formula
+agree at a visible scale.
+
+\subsection{Small-word checks}
+
+An independent exact-rational checker enumerated every word of total order at most eight,
+with every block size at most four and every base choice in $\{2,3\}$.  At three integral
+exponents above the total order it compared the recursively evaluated nested divided
+difference with~\eqref{eq:mixed-word-factorization} and also checked
+complementary-word invariance~\eqref{eq:complementary-product}.  This gave $19{,}032$ exact
+word checks.  A second loop performed $1{,}500$ exact valuation checks for
+\eqref{eq:exact-block-qvaluation} at $q\in\{2,3,5\}$.
+
+These checks are not used in the proofs.  They were useful for detecting the shift
+$x-S_{i-1}$; omitting that shift is the most natural but incorrect way to compose the
+operators.  A compact version of the checker is included after the main script in
+Appendix~\ref{app:code}.
+
+\section{Lean-oriented formalization plan}
+\label{sec:lean}
+
+The rival team's reported Lean activity makes it especially useful to separate the finite,
+fully elementary core from the global Chebotarev input.  The following organization minimizes
+the trusted interface.
+
+\subsection{Module graph}
+
+\begin{center}
+\small
+\begin{tabularx}{0.98\textwidth}{>{\ttfamily\raggedright\arraybackslash}p{0.32\textwidth}X}
+\toprule
+\textnormal{Module} & \textnormal{Contents} \\
+\midrule
+PrimeExponentVector & Finite support of a positive integer; exponent vector in
+$S\to\Z$ and reduction to $S\to\operatorname{ZMod}r$. \\
+FormalKummerDet & Definition of $\mathscr D_{M,A,r}$; Lemma~\ref{lem:formal-rank-one};
+common-power classification; nonzero-polynomial witness over $\operatorname{ZMod}r$. \\
+FiniteResidueCharacter & Multiplicative character
+$\F_\ell^*\to\operatorname{ZMod}r$ and determinant invariance under rescaling. \\
+LocalCyclicity & Lemma~\ref{lem:local-cyclic-zero}, Proposition~\ref{prop:mixed-gap-det},
+and Theorem~\ref{thm:residue-gcd-sieve}. \\
+GeometricDividedDifference & Barycentric divided differences, scaling, and
+Theorem~\ref{thm:one-block}. \\
+MixedNewtonWord & Cumulative orders, Theorems~\ref{thm:mixed-word} and
+\ref{thm:complementary-word}. \\
+BlockValuation & Proposition~\ref{prop:structural-valuation} and away-prime window lemmas. \\
+KummerChebotarevInterface & Statement that formal characters are Frobenius characters with
+the stated density.  Initially imported as one classical theorem; later expanded using
+mathlib's algebraic-number-theory infrastructure where available. \\
+SeparatorConsequences & Theorems~\ref{thm:kummer-separators},
+\ref{thm:gap-exclusion}, and \ref{thm:linear-denominator-mass}. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Finite statements first}
+
+A schematic Lean statement for the key finite obstruction is:
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\scriptsize,frame=single,backgroundcolor=\color{codegray}]
+theorem mixed_gap_det
+    {r ell : Nat} [Fact r.Prime] [Fact ell.Prime]
+    (hr : r dvd ell - 1)
+    (kappa : Units (ZMod ell) ->+ ZMod r)
+    (hM : (M : ZMod ell) ^ q = (2 : ZMod ell) ^ p)
+    (hA : (A : ZMod ell) ^ q = (3 : ZMod ell) ^ p') :
+    q * kummerDet kappa M A =
+      (p' - p) * kappa 2 * kappa 3 := by
+  ...
+\end{lstlisting}
+
+The exact types should use additive notation for the target character, as in the
+schematic declaration above.  The important point is dependency: this theorem requires
+only finite cyclic groups and no analysis or algebraic number theory.
+
+The mixed Newton theorem can be formalized by induction on a list of blocks after proving the
+monomial eigenvector identity
+\[
+ \mathcal N_{q,n}(t^y)=C_{q,n}(y)t^{y-n}.
+\]
+For initial progress, one can state it for integer or rational symbolic exponents in a
+Laurent-polynomial ring, then transfer the identity to real $x$ by direct evaluation.  The
+counterexample specialization is purely algebraic after introducing hypotheses $2^x=M$ and
+$3^x=A$.
+
+\subsection{The global theorem as a narrow interface}
+
+The Kummer/Chebotarev input can initially be isolated as follows.
+
+\begin{lstlisting}[language={},basicstyle=\ttfamily\scriptsize,frame=single,backgroundcolor=\color{codegray}]
+axiom exists_positive_density_kummer_character
+    (hnotpower : not  exists  n : Nat, M = 2^n and A = 3^n) :
+    exists  r : Nat, r.Prime and r != 2 and
+      exists  P : Set Nat,
+        HasNaturalDensity P delta and 0 < delta and
+        forall  ell in P, exists  kappa, kummerDet kappa M A != 0
+\end{lstlisting}
+
+This is not suggested as the final trusted form; it is a staging boundary.  The paper proof of
+Theorem~\ref{thm:kummer-separators} reduces it to four standard components:
+\begin{enumerate}
+\item independence of rational prime classes modulo $r$th powers in $\Q(\zeta_r)$;
+\item the Kummer Galois-group computation;
+\item conjugacy invariance of the nonzero determinant locus;
+\item Chebotarev density for that union of conjugacy classes.
+\end{enumerate}
+Each component can be formalized independently.  Even before Chebotarev is available, all
+finite consequences can be checked under an explicit Frobenius-character hypothesis.
+
+\subsection{Suggested proof order}
+
+The shortest machine-checked milestone is:
+\begin{enumerate}
+\item formal rank-one detector over an arbitrary field;
+\item mixed-gap determinant identity over $\operatorname{ZMod}r$;
+\item residue-synchronized gcd exclusion;
+\item one-block and mixed-word Newton factorization;
+\item complementary-word product;
+\item structural valuation formula.
+\end{enumerate}
+This milestone captures every new algebraic identity in the report and leaves only density and
+asymptotic prime summation outside the kernel.
+
+\section{Prioritized next attacks}
+\label{sec:next}
+
+\subsection{Simultaneous-order Chebotarev mass}
+
+The first priority is Target~\ref{target:quadratic-separator-mass}.  It admits both analytic
+and computational attacks.  For each detector extension and each separator Frobenius class,
+one can enumerate primes and record
+\[
+ \max(\ord_\ell(2^r),\ord_\ell(3^r)).
+\]
+The relevant cumulative weighted count is~\eqref{eq:separator-mass-sum}.  A useful theorem need
+not resolve a full Artin-type conjecture; even a superlinear lower bound would quantify a new
+barrier to simultaneous cancellation.
+
+A possible analytic decomposition is by divisors:
+\begin{equation}
+ \mathbf 1_{\ord_\ell(2^r)\le n}
+ \le \sum_{h\le n}\mathbf 1_{\ell\mid2^{rh}-1},
+ \label{eq:order-divisor-decomp}
+\end{equation}
+with an analogous factor for $3$.  Their product leads to primes dividing resultants of
+cyclotomic factors in two bases, filtered by a Kummer Frobenius class.  Generic upper bounds
+are easy; the required lower bound is the hard direction.  The exact formulation nevertheless
+permits targeted use of large-sieve-for-Frobenius methods rather than generic determinant
+estimates.
+
+\subsection{Common-gap Frobenius coverage}
+
+The second priority is to estimate the Frobenius distribution of prime divisors of
+\[
+ G_j=\gcd(M^{q_j}-2^{p_j},A^{q_j}-3^{p_j}).
+\]
+Theorem~\ref{thm:gap-exclusion} says that a counterexample forces every $G_j$ with
+$r\nmid q_j$ to avoid the separator classes.  An independent theorem saying that sufficiently
+large $G_j$ must hit every class in the Kummer extension would combine directly with the
+archimedean transfer machinery already present in the source report.
+
+A promising technical form is not ``$G_j$ has a random prime divisor,'' but a lower bound for
+its class-restricted radical:
+\begin{equation}
+ \log\rad_{\mathcal C}(G_j)
+ =\sum_{\substack{\ell\mid G_j\\\operatorname{Frob}_\ell\in\mathcal C}}\log\ell.
+ \label{eq:class-restricted-radical}
+\end{equation}
+Any positive lower bound for the separator class contradicts the exact exclusion.  This
+formulation is compatible with sieve weights and avoids needing one specially selected prime.
+
+\subsection{Word optimization with exact valuations}
+
+The mixed Newton factorization turns auxiliary-function design into a finite scheduling
+problem.  Given block lengths, each word assigns exponent intervals to bases $2$ and $3$.
+The objective can combine:
+\begin{enumerate}
+\item exact structural valuations from Proposition~\ref{prop:structural-valuation};
+\item away-prime cancellation from~\eqref{eq:discrete-log-window};
+\item archimedean decay from~\eqref{eq:word-decay};
+\item cross-shift tax from~\eqref{eq:word-shift-tax}.
+\end{enumerate}
+Dynamic programming can optimize over all words of total order hundreds or thousands without
+expanding any determinant.  Complementary-word invariance supplies a consistency check and
+allows one word to be optimized while the paired synchronized numerator stays fixed.
+
+The computational goal is not to infer a proof from a favorable finite ratio.  It is to
+identify a stable asymptotic scheduling law and then prove its valuation bounds symbolically.
+
+\subsection{Search for a real-to-Kummer transfer}
+
+The most direct route would prove that the real rank-one condition
+\eqref{eq:real-determinant}, together with integrality of all four entries, forces
+$\Delta_{\ell,r}=0$ on too many primes.  No known theorem does this.  Candidate mechanisms
+include:
+\begin{enumerate}
+\item a new support theorem using archimedean proportionality as an additional place;
+\item a reciprocity law for the Kummer determinant aggregated over primes;
+\item an auxiliary algebraic number whose local symbols equal
+      $\Delta_{\ell,r}(M,A)$ and whose archimedean height is forced to vanish;
+\item a subspace-theorem construction in which nonzero Kummer determinant primes contribute a
+      forbidden collection of local inequalities.
+\end{enumerate}
+The last two possibilities deserve particular attention because they could sum the
+positive-density local obstruction into a global height contradiction.  The report has not
+found the required auxiliary number.
+
+\subsection{Formalization as a research instrument}
+
+Formalizing the finite core is not merely presentational.  The identities involve three
+moduli simultaneously: exponent shifts in $\Z$, residue exponents in $\F_r$, and reductions
+in $\F_\ell$.  A proof assistant is well suited to preventing the common errors of inverting
+$q$ modulo $\ell-1$ when only modulo $r$ is needed, confusing the two exponents $p,p'$, or
+omitting the cumulative Newton shift $S_{i-1}$.  Once the interfaces are checked, automated
+experiments can emit candidate lemmas in exactly the form needed by the formal development.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The old report's final diagnosis was correct: generic node geometry has already yielded most
+of what it can yield.  The remaining arithmetic must see the actual outputs $M$ and $A$.
+This continuation makes that statement concrete in two ways.
+
+First, the Kummer-symbol determinant
+\[
+ \Delta_{\ell,r}(M,A)=
+ \kappa(2)\kappa(A)-\kappa(3)\kappa(M)
+\]
+is an exact finite-place rank detector.  Unless $(M,A)$ is the desired common power pair, one
+odd modulus $r$ produces nonzero determinant on a positive-density Chebotarev set.  Those
+primes are excluded from every simultaneous approximation gap with $r\nmid q$.  Thus a
+hypothetical counterexample must arrange its strongest common divisors inside the complement
+of a fixed Frobenius set on an unavoidable subsequence of continued-fraction denominators.
+This is a new, rigid global constraint.
+
+Second, mixed geometric Newton operators factor exactly into shifted output gaps.  Their
+complementary-word product synchronizes every dyadic and triadic gap while remaining
+independent of the base schedule.  Grouping exponents modulo the detector prime couples this
+factorization to the Kummer theorem: separator primes cannot cancel both residue-class
+Newton numerators.  Chebotarev forces a linear amount of surviving simultaneous denominator.
+The linear scale is not enough, but the previously qualitative phrase ``output-specific
+cancellation'' has been replaced by the explicit mass sum~\eqref{eq:separator-mass-sum}.
+
+The shortest credible path from here is therefore not another reformulation of Four
+Exponentials.  It is one of two quantitative bridges:
+\begin{enumerate}
+\item prove that prime divisors of the continued-fraction common gaps hit every positive-density
+      Kummer class; or
+\item prove that separator primes contribute quadratic mass to the paired residue-class
+      Newton denominators and combine this with a matching auxiliary-function estimate.
+\end{enumerate}
+Either theorem would interact immediately with exact identities already proved here.  Until
+such a bridge is established, the mathematically honest status is substantial new local-global
+progress, not a completed proof.
+
+\appendix
+\section{Details of the Kummer Galois computation}
+\label{app:kummer-details}
+
+For completeness, this appendix expands the two standard algebraic-number-theory facts used
+in Theorem~\ref{thm:kummer-separators}.
+
+\subsection{Independence of rational prime classes}
+
+Let $r$ be odd and $K=\Q(\zeta_r)$.  Suppose
+\[
+ \prod_{p\in S}p^{c_p}=\alpha^r,
+ \qquad \alpha\in K^*,
+ \qquad 0\le c_p<r.
+\]
+For $p\ne r$, the extension $K/\Q$ is unramified at $p$.  At any prime ideal
+$\mathfrak p$ above $p$,
+\[
+ v_{\mathfrak p}\!\left(\prod_{s\in S}s^{c_s}\right)=c_p.
+\]
+The right side $v_{\mathfrak p}(\alpha^r)$ is divisible by $r$, hence $c_p=0$.  At $p=r$,
+there is one prime above $r$ and $v_{\mathfrak r}(r)=r-1$.  Thus
+$c_r(r-1)$ is divisible by $r$; since $\gcd(r,r-1)=1$, again $c_r=0$.
+This proves independence in $K^*/K^{*r}$ and hence
+\[
+ \Gal\bigl(K(p^{1/r}:p\in S)/K\bigr)\cong(\Z/r\Z)^S.
+\]
+
+\subsection{Conjugacy and density}
+
+Let $N\cong(\F_r)^S$ be the Kummer subgroup and
+$H\cong\F_r^*=\Gal(K/\Q)$.  Then
+\[
+ \Gal(L/\Q)\cong N\rtimes H,
+\]
+where $a\in H$ acts on $\lambda\in N$ by scalar multiplication $a\lambda$.  Since
+$\mathscr D(a\lambda)=a^2\mathscr D(\lambda)$, the nonzero locus
+$\Omega_r\subset N$ is stable under conjugacy in the full Galois group.  Chebotarev applied
+to the union $\Omega_r$ gives density
+\[
+ \frac{|\Omega_r|}{|N\rtimes H|}
+ =\frac{|\Omega_r|}{r^{|S|}(r-1)}.
+\]
+The Frobenius elements lie in $N$ and hence restrict trivially to $K$, which is equivalent to
+$\ell\equiv1\pmod r$.  Choosing a prime of $K$ over $\ell$ chooses one representative
+$\lambda$ in its scalar conjugacy orbit; determinant nonvanishing is independent of this
+choice.
+
+\section{Reproducibility code}
+\label{app:code}
+
+The following compact Python/SymPy script computes the rectangular divided differences and
+the exact formal Kummer density.  The longer prime-enumeration loop used for the empirical
+table differs only by adding \texttt{primerange}, \texttt{primitive\_root}, and
+\texttt{discrete\_log}.
+
+\begin{lstlisting}[style=pythonstyle]
+from itertools import product
+from collections import Counter
+import sympy as sp
+
+M, A = sp.symbols("M A")
+
+def rectangular_top(u: int, v: int):
+    points = []
+    for a in range(u):
+        for b in range(v):
+            z = sp.Integer(2)**a * sp.Integer(3)**b
+            y = M**a * A**b
+            points.append((z, y))
+    value = 0
+    for i, (z, y) in enumerate(points):
+        den = sp.prod(z - w for j, (w, _) in enumerate(points) if i != j)
+        value += y / den
+    return sp.together(value)
+
+def exponent_vector(n: int, primes: list[int]) -> list[int]:
+    fac = sp.factorint(n)
+    return [fac.get(p, 0) for p in primes]
+
+def formal_density(M0: int, A0: int, r: int):
+    primes = sorted(sp.factorint(6*M0*A0))
+    e = exponent_vector(2, primes)
+    f = exponent_vector(3, primes)
+    m = exponent_vector(M0, primes)
+    a = exponent_vector(A0, primes)
+
+    def dot(x, y):
+        return sum(u*v for u, v in zip(x, y)) % r
+
+    def det(lam):
+        return (dot(lam, e)*dot(lam, a)
+                - dot(lam, f)*dot(lam, m)) % r
+
+    counts = Counter(det(lam)
+                     for lam in product(range(r), repeat=len(primes)))
+    nonzero = r**len(primes) - counts[0]
+    conditional = sp.Rational(nonzero, r**len(primes))
+    absolute = conditional / (r - 1)
+    return primes, conditional, absolute
+
+for shape in [(2, 2), (3, 2), (2, 3), (3, 3)]:
+    print(shape, rectangular_top(*shape))
+
+for pair in [(2, 9), (5, 13)]:
+    print(pair, formal_density(*pair, r=3))
+\end{lstlisting}
+
+The exact word checker uses recursive barycentric evaluation rather than the factorization it
+is testing.  Here is its compact core; the executed version additionally loops through all
+compositions of total order at most eight and performs the valuation tests described in
+Section~\ref{sec:computations}.
+
+\begin{lstlisting}[style=pythonstyle]
+from fractions import Fraction
+from functools import lru_cache
+
+def dd_geometric(f, q, n, z):
+    xs = [z*q**j for j in range(n+1)]
+    ans = Fraction(0)
+    for i, xi in enumerate(xs):
+        den = 1
+        for j, xj in enumerate(xs):
+            if i != j:
+                den *= xi-xj
+        ans += Fraction(f(xi), den)
+    return ans
+
+def direct_word(word, m):
+    @lru_cache(None)
+    def f(z):
+        return Fraction(z**m)
+    for q, n in word:
+        old = f
+        @lru_cache(None)
+        def f(z, old=old, q=q, n=n):
+            return dd_geometric(old, q, n, z)
+    return f(1)
+
+def D(q, n):
+    return sp.prod(q**n-q**j for j in range(n))
+
+def formula_word(word, m):
+    ans = Fraction(1)
+    shift = 0
+    for q, n in word:
+        num = sp.prod(q**(m-shift)-q**j for j in range(n))
+        ans *= Fraction(int(num), int(D(q, n)))
+        shift += n
+    return ans
+
+def check_complement(word, m):
+    other = [(5-q, n) for q, n in word]
+    lhs = formula_word(word, m)*formula_word(other, m)
+    N = sum(n for _, n in word)
+    shift = tax = 0
+    den = 1
+    for q, n in word:
+        tax += shift*n
+        den *= D(2, n)*D(3, n)
+        shift += n
+    M0, A0 = 2**m, 3**m
+    num = sp.prod((M0-2**e)*(A0-3**e) for e in range(N))
+    assert lhs == Fraction(int(num), int(6**tax*den))
+\end{lstlisting}
+
+\section{Glossary of the new interfaces}
+\label{app:glossary}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.66\textwidth}}
+\toprule
+\textbf{Term} & \textbf{Meaning in this report} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Term} & \textbf{Meaning in this report} \\
+\midrule
+\endhead
+Kummer determinant & The finite determinant
+$\kappa(2)\kappa(A)-\kappa(3)\kappa(M)$ in $\F_r$. \\
+Separator prime & A good prime $\ell\equiv1\pmod r$ at which the Kummer determinant is
+nonzero. \\
+Detector modulus & An odd prime $r$ for which the formal determinant polynomial is nonzero
+modulo $r$. \\
+Common gap & The pair $M^q-2^p$, $A^q-3^p$, or their gcd. \\
+Geometric Newton block & The divided-difference operator
+$\mathcal N_{q,n}f(z)=[z,qz,\ldots,q^nz]f$. \\
+Newton word & An ordered composition of geometric Newton blocks. \\
+Complementary word & The word obtained by exchanging bases $2$ and $3$ while retaining block
+lengths. \\
+Residue-class numerator & A product of gaps $M-2^e$ or $A-3^e$ with $e$ in one class modulo
+$r$. \\
+Separator mass & The logarithmically weighted contribution of separator primes to geometric
+Newton denominators; see~\eqref{eq:separator-mass-sum}. \\
+Separator-hitting & A theorem forcing a common gap to acquire a prime divisor in a prescribed
+positive-density Kummer Frobenius set. \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{UnifiedReport}
+ProveIt project,
+\emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified Report},
+unpublished working report, attached source version A, August 2026.
+
+\bibitem{CorralesSchoof}
+C.~Corrales-Rodrig\'a\~nez and R.~Schoof,
+The support problem and its elliptic analogue,
+\emph{Journal of Number Theory} \textbf{64} (1997), 276--290.
+
+\bibitem{PeruccaSupport}
+A.~Perucca,
+Two variants of the support problem for products of abelian varieties and tori,
+\emph{Journal of Number Theory} \textbf{129} (2009), 1883--1892;
+preprint \url{https://arxiv.org/abs/0712.2815}.
+
+\bibitem{Washington}
+L.~C.~Washington,
+\emph{Introduction to Cyclotomic Fields}, second edition,
+Graduate Texts in Mathematics 83, Springer, 1997.
+
+\bibitem{Neukirch}
+J.~Neukirch,
+\emph{Algebraic Number Theory},
+Grundlehren der mathematischen Wissenschaften 322, Springer, 1999.
+
+\bibitem{deBoor}
+C.~de Boor,
+Divided differences,
+\emph{Surveys in Approximation Theory} \textbf{1} (2005), 46--69.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\emph{Basic Hypergeometric Series}, second edition,
+Encyclopedia of Mathematics and its Applications 96, Cambridge University Press, 2004.
+
+\bibitem{BCZ}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$,
+\emph{Mathematische Zeitschrift} \textbf{243} (2003), 79--84.
+
+\bibitem{AnthropicFable}
+Anthropic,
+\emph{Claude Fable 5}, product announcement and model page, 2026,
+\url{https://www.anthropic.com/claude/fable}.
+
+\bibitem{AnthropicRedeploy}
+Anthropic,
+\emph{Redeploying Fable 5}, 30 June 2026,
+\url{https://www.anthropic.com/news/redeploying-fable-5}.
+
+\end{thebibliography}
+
+\end{document}
