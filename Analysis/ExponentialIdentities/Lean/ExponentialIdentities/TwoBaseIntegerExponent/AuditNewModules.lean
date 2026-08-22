@@ -83,6 +83,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RadixShadow
 import ExponentialIdentities.TwoBaseIntegerExponent.ValuationSlopeEnergy
 import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
 import ExponentialIdentities.TwoBaseIntegerExponent.QNewtonEndpointDefect
+import ExponentialIdentities.TwoBaseIntegerExponent.QNewtonOffAxisTransfer
 import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianGeneratingSeries
@@ -147,6 +148,13 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms QNewtonEndpointDefect.geometricNodeDenominator_succ
 #print axioms QNewtonEndpointDefect.qNewtonCoefficient_succ
 #print axioms QNewtonEndpointDefect.qNewtonPolynomial_endpoint_dilation_defect
+
+-- Finite off-axis q-Newton transfer recurrence and exact closed solution
+#print axioms QNewtonOffAxisTransfer.transferDenominator_succ
+#print axioms QNewtonOffAxisTransfer.transferForcing_succ
+#print axioms QNewtonOffAxisTransfer.transported_recurrence
+#print axioms QNewtonOffAxisTransfer.transfer_solution
+#print axioms QNewtonOffAxisTransfer.transfer_solution_sum
 
 -- Rational first-jet arithmetic and the base-two Jordan closing criterion (report 20)
 #print axioms rational_of_rpow_and_firstJet

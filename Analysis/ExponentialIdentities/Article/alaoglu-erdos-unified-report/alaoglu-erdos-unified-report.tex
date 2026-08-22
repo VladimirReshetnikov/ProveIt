@@ -14147,6 +14147,175 @@ integer-Chebyshev proposals remain research interfaces.  No dated literature-sea
 promoted, and none of these statements proves the conjecture.}
 \end{statusbox}
 
+\subsection{Connection coefficients, lateral branches, and off-axis transport}
+\label{arithinterp:qconnection}
+
+The entire completion in~\eqref{arithinterp:eq-entire-qnewton} has a useful connection
+theory that is invisible in any fixed truncation.  Continue with $Q=q^{-1}$ and put
+\begin{equation}
+ \mathcal E_q(z)=(z;Q)_\infty,
+ \qquad
+ \varkappa_q(r)=\frac{(r;Q)_\infty}{(Q;Q)_\infty}.
+ \label{arithinterp:eq-connection-coefficient}
+\end{equation}
+Thus~\eqref{arithinterp:eq-entire-qnewton-defect} reads
+\[
+ \mathcal N_{q,r}(qz)-r\mathcal N_{q,r}(z)
+ =\varkappa_q(r)\mathcal E_q(z).
+\]
+Besides detecting termination exactly, this identity gives the sharp growth dichotomy
+\begin{equation}
+ r\notin q^{\Nzero}
+ \quad\Longrightarrow\quad
+ \log M_{\mathcal N_{q,r}}(R)
+ =\frac{(\log R)^2}{2\log q}+O_{q,r}(\log R).
+ \label{arithinterp:eq-connection-growth}
+\end{equation}
+The upper bound follows from the defining series, and evaluation of the defect on the
+negative axis supplies the matching lower bound.
+
+When $q,r\ge2$ are integers, $N\ge1$, and $q^N<r<q^{N+1}$,
+\begin{equation}
+ \operatorname{sgn}\varkappa_q(r)=(-1)^{N+1},
+ \qquad
+ (q-1)^Nq^{(N^2-5N-2)/2}
+ <|\varkappa_q(r)|
+ <\frac{q^{(N+1)(N+2)/2}}{(q^{-1};q^{-1})_\infty}.
+ \label{arithinterp:eq-connection-amplification}
+\end{equation}
+The sign counts the negative factors of $(r;q^{-1})_\infty$.  For the lower bound, the
+integer gaps in the first $N$ factors and the two boundary factors are at least one; the
+remaining tail dominates and cancels $(q^{-1};q^{-1})_\infty$.  In particular
+$\log|\varkappa_q(r)|=\tfrac12N^2\log q+O_q(N)$.  The dependence on the common fractional
+phase is also exact: for $0<t<1$,
+\begin{equation}
+ \varkappa_q(q^{N+t})=(-1)^{N+1}q^{N(N+1)/2+(N+1)t}
+ \frac{(q^{-t};q^{-1})_{N+1}(q^{t-1};q^{-1})_\infty}
+ {(q^{-1};q^{-1})_\infty}.
+ \label{arithinterp:eq-connection-phase}
+\end{equation}
+Hence a hypothetical nonintegral solution gives dyadic and triadic coefficients with the
+same sign and quadratic-exponential size.  Their magnitudes need not agree, so this is a
+constraint rather than a contradiction.
+
+The meromorphic quotient
+\begin{equation}
+ \mathcal C_{q,r}(z)=\frac{\mathcal N_{q,r}(z)}{\mathcal E_q(z)}
+ \label{arithinterp:eq-connection-quotient}
+\end{equation}
+satisfies
+\begin{equation}
+ (1-qz)\mathcal C_{q,r}(qz)-r\mathcal C_{q,r}(z)=\varkappa_q(r).
+ \label{arithinterp:eq-connection-equation}
+\end{equation}
+Its Taylor coefficients and normally convergent Mittag--Leffler expansion are
+\begin{align}
+ [z^n]\mathcal C_{q,r}
+ &=\frac{(rQ^{n+1};Q)_\infty}{(Q;Q)_\infty},
+ & (1-rQ^n)[z^n]\mathcal C_{q,r}&=[z^{n-1}]\mathcal C_{q,r},
+ \label{arithinterp:eq-connection-taylor}\\
+ \mathcal C_{q,r}(z)
+ &=\frac1{(Q;Q)_\infty}
+ \sum_{n\ge0}\frac{(-1)^nr^nQ^{n(n+1)/2}}
+ {(Q;Q)_n(1-zQ^n)}.
+ \label{arithinterp:eq-connection-ML}
+\end{align}
+Here the recurrence is for $n\ge1$, while
+$(1-r)[z^0]\mathcal C_{q,r}=\varkappa_q(r)$.  It is deliberately undivided, so it remains
+valid at the resonances $r=q^m$.
+Euler's $q$-binomial identity proves the partial-fraction formula; in particular its poles
+are at most simple and its residue at $q^n$ is
+\[
+ \frac{(-1)^{n+1}r^nQ^{n(n-1)/2}}
+ {(Q;Q)_n(Q;Q)_\infty}.
+\]
+
+On the negative axis the connection coefficient is intrinsic:
+\begin{equation}
+ \lim_{R\to\infty}R\mathcal C_{q,r}(-R)=\varkappa_q(r).
+ \label{arithinterp:eq-connection-limit}
+\end{equation}
+More precisely, for every fixed $L$,
+\begin{equation}
+ \mathcal C_{q,r}(-R)=\sum_{\ell=1}^{L}\frac{a_\ell}{R^\ell}
+ +O_{q,r,L}(R^{-L-1}),
+ \quad
+ a_1=\varkappa_q(r),\quad
+ a_{\ell+1}=(rq^\ell-1)a_\ell.
+ \label{arithinterp:eq-connection-asymptotic}
+\end{equation}
+This follows by subtracting the displayed finite series from
+\eqref{arithinterp:eq-connection-equation}; the remainder obeys a contracting recurrence on
+successive logarithmic annuli.  For the nonterminating integral multipliers relevant here,
+$a_\ell$ has quadratic $q$-Gevrey growth.
+
+If $r=q^x$ and $x\in\R\setminus\Z$, the principal branch on
+$\C\setminus(-\infty,0]$ has the exact decomposition
+\begin{equation}
+ z^x=\mathcal N_{q,r}(z)+\mathcal E_q(z)\mathcal G_{q,x}(z),
+ \qquad
+ \mathcal G_{q,x}=-\mathcal C_{q,r}+\frac{z^x}{\mathcal E_q(z)}.
+ \label{arithinterp:eq-pole-monodromy}
+\end{equation}
+The positive geometric poles are removable.  Across the negative axis,
+\begin{align}
+ \mathcal G_{q,x,+}(-R)-\mathcal G_{q,x,-}(-R)
+ &=\frac{2i\sin(\pi x)R^x}{\mathcal E_q(-R)},
+ \label{arithinterp:eq-pole-monodromy-jump}\\
+ \log\left|\mathcal G_{q,x,+}(-R)-\mathcal G_{q,x,-}(-R)\right|
+ &=-\frac{(\log R)^2}{2\log q}+O_x(\log R).
+ \label{arithinterp:eq-pole-monodromy-jump-size}
+\end{align}
+Thus both lateral values share the expansion
+\eqref{arithinterp:eq-connection-asymptotic} to every algebraic order.  This does not hide
+termination---$a_1=\varkappa_q(r)$ detects it---but it explains why a finite inverse-power
+truncation cannot distinguish the lateral branches.
+
+For $M=2^x$ and $A=3^x$, the two corrections satisfy the compact system
+\begin{align}
+ (1-2z)\mathcal G_{2,x}(2z)-M\mathcal G_{2,x}(z)&=-\varkappa_2(M),\\
+ (1-3z)\mathcal G_{3,x}(3z)-A\mathcal G_{3,x}(z)&=-\varkappa_3(A),\\
+ \mathcal E_2(z)\mathcal G_{2,x}(z)-\mathcal E_3(z)\mathcal G_{3,x}(z)
+ &=\mathcal N_{3,A}(z)-\mathcal N_{2,M}(z).
+ \label{arithinterp:eq-two-axis-connection}
+\end{align}
+Both sides represent the same monodromy, but the different quadratic edge types allow two
+independent leading constants.  The system is therefore a precise compatibility interface,
+not a proof that the constants coincide.
+
+There is also an exact finite transport law away from the dyadic axis.  For $c\ge1$, put
+\[
+ g_{a,c}=\mathcal G_{2,x}(2^a3^c),
+ \qquad
+ D_{a,c}=\prod_{j=1}^{a}(1-2^j3^c),
+ \qquad D_{0,c}=1.
+\]
+Then
+\begin{align}
+ (1-2^{a+1}3^c)g_{a+1,c}-Mg_{a,c}&=-\varkappa_2(M),
+ \label{arithinterp:eq-off-axis-recurrence}\\
+ D_{a,c}g_{a,c}
+ &=M^ag_{0,c}-\varkappa_2(M)
+   \sum_{j=0}^{a-1}M^{a-1-j}D_{j,c}.
+ \label{arithinterp:eq-off-axis-solution}
+\end{align}
+The symmetric column recurrence holds at base $3$.  The denominators have the exact scale
+\[
+ D_{a,c}=(-1)^a2^{a(a+1)/2}3^{ac}
+ \prod_{j=1}^{a}\left(1-\frac1{2^j3^c}\right),
+\]
+matching the $q$-Gevrey scale at infinity.
+
+\begin{statusbox}{The finite endpoint defect preceding this subsection is already
+\statuslean{} in \lean{QNewtonEndpointDefect}.  The growth dichotomy, connection-coefficient
+sign/phase/amplification, quotient and Mittag--Leffler formulas, negative-axis expansion,
+pole--monodromy exchange, and two-axis system are \statusnew{} paper results using classical
+normally convergent $q$-products.  The finite denominator transport and closed recurrence
+are \statuslean{} in \lean{QNewtonOffAxisTransfer}; the formal theorem treats the connection
+constant as an arbitrary ring element and makes no analytic-existence claim.  Neither the
+synchronized sign nor the common lateral jump forces the two connection constants to agree.}
+\end{statusbox}
+
 \section{Operator coherence and local-to-global arithmetic}
 \label{sec:operator-coherence}
 
@@ -15618,6 +15787,37 @@ $H(z)=z^n$, $M=2^n$, and $A=3^n$.  This polynomial-boundary-quotient closure and
 are \statusnew{} paper theorems.  Critical type alone does not establish the polynomial
 quotient hypothesis; manufacturing that finite-dimensional boundary regularity is the new
 open target.
+
+The one-axis connection formalism in Section~\ref{arithinterp:qconnection} gives a useful
+gauge for the same cocycle without introducing another compatibility equation.  Abbreviate
+$\mathcal N_2(z)=\mathcal N_{2,M}(z)$,
+$\mathcal E_2(z)=(z;1/2)_\infty$, and $\varkappa_2=\varkappa_2(M)$.  Since an entire interpolant $H$ agrees with $\mathcal N_2$
+on the dyadic axis, there is an entire $W$ with
+\[
+ H(z)=\mathcal N_2(z)+\mathcal E_2(z)W(z).
+\]
+Its normalized dyadic defect is
+\begin{equation}
+ K_2(z):=\frac{H(2z)-MH(z)}{\mathcal E_2(z)}
+ =\varkappa_2+(1-2z)W(2z)-MW(z).
+ \label{crit:eq-qnewton-gauge}
+\end{equation}
+Because $E(z)=\mathcal E_2(z)E(z/3)$ and $D_2=EU$, one also has
+\begin{equation}
+ K_2(z)=E(z/3)U(z).
+ \label{crit:eq-qnewton-export}
+\end{equation}
+Thus $K_2$ vanishes on the shifted smooth grid and
+\begin{equation}
+ \limsup_{R\to\infty}\frac{\log^+M_{K_2}(R)}{(\log R)^3}
+ <\frac1{6\log2\log3}
+ \quad\Longrightarrow\quad K_2=0\quad\Longrightarrow\quad x\in\Nzero,
+ \label{crit:eq-qnewton-gauge-closure}
+\end{equation}
+with a symmetric triadic statement.  The scalar $\varkappa_2$ cannot by itself provide the
+strict saving: at the origin the free value of $W$ absorbs it, and
+$K_2(0)=(1-M)H(0)$.  Equation~\eqref{crit:eq-qnewton-export} also shows that this is exactly
+the existing boundary quotient in a one-axis-normalized gauge, not a second cocycle.
 
 \begin{statusbox}{The D-finite noncancellation core is \statuslean{} in
 \lean{DfiniteExponentCore}.  The universal-cover
@@ -17339,6 +17539,13 @@ Finite $q$-Newton endpoint dilation defect & \statuslean &
 Entire $q$-Newton completion and exact edge-product defect & \statusnew &
 Section~\ref{arithinterp:qnewton}; local-uniform convergence and classical
 basic-hypergeometric identity \\
+One-axis connection growth, sign/phase/integer amplification, meromorphic quotient,
+Mittag--Leffler expansion, and negative-axis asymptotics & \statusnew &
+Section~\ref{arithinterp:qconnection}; classical normally convergent $q$-products \\
+Pole--monodromy exchange and the exact two-axis branch connection system & \statusnew &
+Section~\ref{arithinterp:qconnection}; exact but nonclosing compatibility normal form \\
+Finite off-axis transfer denominator, forcing convolution, and closed solution & \statuslean &
+\lean{QNewtonOffAxisTransfer}; Section~\ref{arithinterp:qconnection} \\
 LCM-cleared arbitrary-node coefficients, vanishing moments, and the four-node cubic
 functional & \statuslean & \lean{ClearedDividedDifference};
 Section~\ref{df:cleared-divided-differences} \\
@@ -17649,6 +17856,9 @@ interpolation through the truncation degree, omitted-tail identity, and first ex
 product over arbitrary integer parameters \\
 \lean{.../QNewtonEndpointDefect} & exact finite endpoint-dilation defect for the geometric
 Newton interpolant, with the coefficient and node-denominator recurrences used in its proof \\
+\lean{.../QNewtonOffAxisTransfer} & arbitrary-commutative-ring transfer-denominator
+successor, forcing convolution, transported off-axis recurrence, and exact finite sum
+solution; no infinite-product or analytic-existence claim \\
 \lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
 score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
@@ -17888,7 +18098,8 @@ following kernel-accepted modules:
 \lean{SynchronizedSumDecoder}, \lean{RationalSumDecoder},\\
 \lean{AlgebraicBaseSpectrum}, \lean{MixedMahlerFinite},
 \lean{GeometricVandermondeSmith}, \lean{TwoScaleSupportFinite},
-\lean{GeometricNewtonInterpolation}, \lean{ClearedDividedDifference},
+\lean{GeometricNewtonInterpolation}, \lean{QNewtonEndpointDefect},
+\lean{QNewtonOffAxisTransfer}, \lean{ClearedDividedDifference},
 \lean{FinitePlaceShortRelationCore}, \lean{JordanFirstJet},\\
 \lean{MomentArithmetic}, \lean{RankGeometry},
 \lean{UnimodularGapCollision}, \lean{OrbitHeightEntropy},
@@ -17903,7 +18114,7 @@ following kernel-accepted modules:
 \lean{PositiveCoefficientClosure}, \lean{NewtonCollisionCore},
 \lean{RankOneNewtonKummer}, \lean{DyadicPrivateSupport},
 \lean{CaptureMultiplier}, \lean{CatalanTangentCore},
-\lean{MatchedGapAmplification}.
+\lean{MatchedGapAmplification}, \lean{ValuationSlopeEnergy}.
 \end{center}
 Their headline APIs are on the aggregate surface and covered by the axiom-audit module.
 

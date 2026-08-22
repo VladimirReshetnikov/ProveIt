@@ -82,7 +82,7 @@
   xrightmargin=0.5em
 }
 
-\title{\textbf{The Alaoglu--Erd\H{o}s Conjecture}\[0.35em]
+\title{\textbf{The Alaoglu--Erd\H{o}s Conjecture}\\[0.35em]
 \Large Geometric $q$-Newton Connection Coefficients, Pole--Monodromy Exchange, and an Exact Two-Axis Boundary System}
 \author{A nonduplicative continuation prepared for the ProveIt project}
 \date{22 August 2026}
@@ -104,11 +104,13 @@ It vanishes exactly when $B$ is a nonnegative integral power of $b$.  We prove a
 \]
 Thus a hypothetical Alaoglu--Erd\H{o}s counterexample produces base-$2$ and base-$3$ connection coefficients of the same sign and of quadratic-exponential size in $\floor{x}$.
 
-For $B=b^x$, the correction from the entire $q$-Newton kernel to the branch $z^x$ exchanges a geometric lattice of poles for monodromy at the origin.  Its algebraic asymptotic expansion on the negative axis is controlled by $\kk_b(B)$, whereas the nonintegral exponent appears only in a Stokes jump of size
+For $B=b^x$, the correction from the entire $q$-Newton kernel to the branch $z^x$ exchanges a geometric lattice of poles for monodromy at the origin.  Its algebraic asymptotic expansion on the negative axis is controlled by $\kk_b(B)$, whereas the distinction between its two lateral branches appears only in a Stokes jump of size
 \[
  \exp\!\left(-\frac{(\log R)^2}{2\log b}+O_x(\log R)\right),
 \]
-which is smaller than every inverse power of $R$.  This gives a precise explanation for the persistent failure of finite-jet and finite-determinant closures.
+which is smaller than every inverse power of $R$.  Thus the two lateral values have the same
+inverse-power expansion to every algebraic order; detecting their difference requires a
+nonperturbative input.
 
 Finally, the base-$2$ and base-$3$ constructions are coupled into an exact two-axis connection system, and an entire full-grid interpolant is placed in a one-axis-normalized gauge.  This yields a concrete closing target: force a normalized dilation defect below the critical two-dimensional canonical-product type.  The report ends with a theorem ledger, failure audit, computational checks, and a Lean-oriented formalization plan.  A complete proof of the conjecture is not claimed; the contribution is a new exact normal form and several rigorously proved quantitative obstructions that are absent from the supplied report.
 \end{abstract}
@@ -128,9 +130,12 @@ The conjecture is
 \[
  M,A\in\Z \quad\Longrightarrow\quad x\in\Z.
 \]
-We use the supplied file \texttt{alaoglu-erdos-unified-report.tex(3).gz} as the inherited baseline and cite it as the \emph{unified report}.  In particular, we use without reproving its elementary reductions, its exclusion of the rational nonintegral case, its effective lower-range computation, its full semigroup interpolation framework, and its canonical-product zero-density threshold.  Nothing below should be read as replacing those results.
+We use the current unified report as the baseline.  In particular, we use without reproving
+its elementary reductions, its exclusion of the rational nonintegral case, its effective
+lower-range computation, its semigroup interpolation framework, and its canonical-product
+zero-density threshold.  Nothing below should be read as replacing those results.
 
-The unified report already contains twenty-seven continuation reports.  Its relevant nearby ingredients include:
+Its relevant nearby ingredients include:
 \begin{itemize}
   \item finite geometric Newton interpolation on $1,b,b^2,\dots$;
   \item two-dimensional interpolation on $\{2^a3^c\}$;
@@ -140,20 +145,11 @@ The unified report already contains twenty-seven continuation reports.  Its rele
 \end{itemize}
 The present report begins precisely where the finite one-axis Newton formula was left: it identifies the finite dilation defect, takes its infinite limit, computes the resulting connection data, and then couples the two bases.
 
-\subsection{What is genuinely new in this continuation}
+\subsection{Distinctive contribution beyond the baseline}
 
-The following results are new to the supplied corpus.
+The finite interpolation and endpoint-defect formulas are included below to fix notation;
+they are already present in the current unified treatment.  The genuinely additive package is:
 \begin{enumerate}
-  \item The exact finite factorization
-  \[
-  \Nker^{(d)}_{b,B}(bz)-B\Nker^{(d)}_{b,B}(z)
-  =\kk_{b,d}(B)\qpf{z}{b^{-1}}{d}.
-  \]
-  \item The entire infinite kernel $\Nker_{b,B}$ and its exact defect
-  \[
-  \Nker_{b,B}(bz)-B\Nker_{b,B}(z)
-  =\kk_b(B)\Eker_b(z).
-  \]
   \item The zero, sign, phase, monotonicity, and integer-amplification formulas for $\kk_b(B)$.
   \item The quotient $\Cker_{b,B}=\Nker_{b,B}/\Eker_b$, its Taylor coefficients, residues, and normally convergent Mittag--Leffler expansion.
   \item The intrinsic limit
@@ -186,10 +182,6 @@ Alaoglu--Erd\H{o}s conjecture & Not closed here & No unsupported claim \\
 \bottomrule
 \end{tabularx}
 \end{center}
-
-\subsection{External reconnaissance}
-
-The prompt refers to recent public claims concerning the model called Claude Fable~5.  A source audit on 22 August 2026 located a public Jacobian-conjecture proof portal and public Hadamard-matrix artifacts asserting completion of the twelve previously unresolved orders below $2000$.  I also found social-media discussion of a rank-$30$ elliptic curve, but no comparably clear primary mathematical artifact during the audit.  No public Alaoglu--Erd\H{o}s manuscript or Lean development was located.  Consequently, none of those claims is used as a mathematical premise below.  The useful methodological lesson is narrower: prioritize explicit certificates, exact normal forms, and formalizable finite cores rather than a broad catalogue of analogies.
 
 \section{The geometric $q$-Newton kernel}
 
@@ -280,7 +272,9 @@ gives \eqref{eq:finite-kappa}.  Clearing the powers of $b$ in the two finite pro
 \end{proof}
 
 \begin{remark}
-The finite interpolation formula itself was present in the unified report.  The new content is that its entire dilation failure lies in one rank-one direction: the node polynomial $\qpf{z}{\rho}{d}$, multiplied by the scalar \eqref{eq:finite-kappa}.  This is the finite precursor of the connection coefficient.
+The finite interpolation and endpoint-defect formulas are both recorded in the current
+unified report.  They are retained here because this normalization makes the passage to the
+connection coefficient transparent.
 \end{remark}
 
 \begin{corollary}[Termination certificate]\label{cor:finite-termination}
@@ -557,11 +551,11 @@ Assume $x\notin\Z$ and $M=2^x,A=3^x\in\Z$.  Put $N=\floor{x}$.  Then
  |\kk_3(A)|&>2^N3^{(N^2-5N-2)/2}.
  \label{eq:k3-lb}
 \end{align}
-Using the inherited exclusion $x<12$, the first possible value $N=12$ already gives
+The established exclusion of $x<12$ makes $N=12$ the first possible value, and already gives
 \[
- |\kk_2(M)|>2^{41}>2.20	imes10^{12},
+ |\kk_2(M)|>2^{41}>2.19\times10^{12},
  \qquad
- |\kk_3(A)|>2^{12}3^{41}>1.49	imes10^{23}.
+ |\kk_3(A)|>2^{12}3^{41}>1.49\times10^{23}.
 \]
 \end{corollary}
 
@@ -635,13 +629,20 @@ For $|z|<1$,
  \qquad
  c_n=\frac{\qpi{B\rho^{n+1}}{\rho}}{\qpi{\rho}{\rho}}.
 \end{equation}
-The coefficients satisfy
+The coefficients satisfy the division-free recurrences
 \begin{equation}\label{eq:c-recurrence}
- c_n=\frac{c_{n-1}}{1-B\rho^n}\quad(n\ge1),
+ (1-B\rho^n)c_n=c_{n-1}\quad(n\ge1),
  \qquad
- c_0=\frac{\qpi{B\rho}{\rho}}{\qpi{\rho}{\rho}}
- =\frac{\kk_b(B)}{1-B}.
+ (1-B)c_0=\kk_b(B),
 \end{equation}
+and
+\[
+ c_0=\frac{\qpi{B\rho}{\rho}}{\qpi{\rho}{\rho}}.
+\]
+Whenever the displayed factors are nonzero, these identities may equivalently be divided
+to give $c_n=c_{n-1}/(1-B\rho^n)$ and
+$c_0=\kk_b(B)/(1-B)$.  In particular, the divided form is valid for every $n$ when
+$B$ is not a nonnegative integral power of $b$.
 Moreover,
 \begin{equation}\label{eq:c-limit}
  c_n\longrightarrow\frac1{\qpi{\rho}{\rho}}.
@@ -653,7 +654,14 @@ Insert $\sum c_nz^n$ into \eqref{eq:C-equation}.  The constant equation is $(1-B
 \[
  (b^n-B)c_n=b^nc_{n-1},
 \]
-which is \eqref{eq:c-recurrence}.  Iteration gives \eqref{eq:C-taylor}; the tail product tends to $1$, proving \eqref{eq:c-limit}.
+which is \eqref{eq:c-recurrence}.  If $B$ is not a nonnegative integral power of $b$,
+division and iteration give \eqref{eq:C-taylor}.  If $B=b^m$, then
+$\Nker_{b,B}(z)=z^m$ and Euler's reciprocal-product identity
+\[
+ \frac1{\qpi{z}{\rho}}=\sum_{k\ge0}\frac{z^k}{\qpf{\rho}{\rho}{k}}
+\]
+gives the same coefficient formula directly (with zero coefficients below degree $m$).
+In either case the tail product tends to $1$, proving \eqref{eq:c-limit}.
 \end{proof}
 
 \begin{remark}
@@ -695,7 +703,10 @@ shows that the coefficient is exactly $c_k$ from \cref{thm:C-taylor}.  The Gauss
 \end{proof}
 
 \begin{corollary}[Meromorphic interpolation rigidity]\label{cor:meromorphic-rigidity}
-Among meromorphic functions whose poles are contained in $\{b^n\}$ and whose principal part at $b^n$ has residue \eqref{eq:C-residue}, $\Cker_{b,B}$ is unique up to addition of an entire function.  The $q$-difference equation \eqref{eq:C-equation} fixes that entire ambiguity once a germ at the origin is prescribed.
+Among meromorphic functions with at most simple poles in $\{b^n:n\ge0\}$ and the residues
+\eqref{eq:C-residue}, $\Cker_{b,B}$ is unique up to addition of an entire function.  The
+$q$-difference equation \eqref{eq:C-equation} fixes that entire ambiguity once a germ at the
+origin is prescribed.
 \end{corollary}
 
 \section{The connection coefficient at infinity}
@@ -747,11 +758,26 @@ Equation \eqref{eq:F-recurrence} gives
 \]
 The first coefficient tends uniformly to zero and the second tends uniformly to $1$.  Since $Y_0$ is bounded on the compact interval, the sequence is bounded and converges uniformly to $\kk_b(B)$.  This proves \eqref{eq:kappa-limit}.
 
-For the full expansion, substitute a formal inverse-power series into \eqref{eq:F-recurrence}.  The constant term gives $a_1=\kk_b(B)$; the coefficient of $R^{-\ell}$ gives \eqref{eq:a-recurrence}.  A standard induction on the remainder, using the same contracting recurrence on each logarithmic annulus $[b^n,b^{n+1}]$, promotes the formal cancellation to the estimate \eqref{eq:qGevrey}.
+For the full expansion, substitute a formal inverse-power series into \eqref{eq:F-recurrence}.
+The constant term gives $a_1=\kk_b(B)$, and the coefficient of $R^{-\ell}$ gives
+\eqref{eq:a-recurrence}.  If
+$S_L(R)=\sum_{\ell=1}^{L}a_\ell R^{-\ell}$ and
+$e_L(R)=F(R)-S_L(R)$, direct substitution gives the exact remainder recurrence
+\[
+ e_L(bR)=\frac{B}{1+bR}e_L(R)
+ +\frac{a_{L+1}}{(1+bR)(bR)^L}.
+\]
+The first coefficient is uniformly contracting on all sufficiently large logarithmic
+annuli.  Starting from the bounded remainder on one compact annulus and iterating proves
+$e_L(R)=O_{b,B,L}(R^{-L-1})$, which is \eqref{eq:qGevrey}.
 \end{proof}
 
 \begin{remark}[$q$-Gevrey divergence]
-The coefficients $a_\ell$ grow like $b^{\ell^2/2+O(\ell)}$.  Thus \eqref{eq:qGevrey} is an asymptotic expansion, not a convergent Laurent series at infinity.  This quadratic coefficient growth is the natural $q$-difference analogue of Gevrey growth.
+If $\kk_b(B)\ne0$ and $B\ne b^{-m}$ for every $m\ge1$, then the coefficients $a_\ell$
+grow like $b^{\ell^2/2+O(\ell)}$.  Thus \eqref{eq:qGevrey} is an asymptotic expansion, not
+a convergent Laurent series at infinity.  This quadratic coefficient growth is the natural
+$q$-difference analogue of Gevrey growth.  At the excluded negative integral powers the
+coefficient recurrence terminates, while at nonnegative integral powers $\kk_b(B)=0$.
 \end{remark}
 
 \begin{corollary}[Asymptotic cancellation in the kernel]\label{cor:N-asymptotic}
@@ -791,7 +817,7 @@ The correction satisfies
  &=-\Cker_{b,B}(z)+\frac{z^\beta}{\Eker_b(z)}.
  \label{eq:G-C}
 \end{align}
-If $B$ is not a power of $b$, then $-\Cker_{b,B}$ is the unique solution of \eqref{eq:G-equation} holomorphic at $z=0$.  Substituting that solution into \eqref{eq:branch-decomp} yields the zero function.  Every nonzero homogeneous solution therefore pays for cancellation of the pole lattice by acquiring nontrivial local monodromy at $0$.
+If $B$ is not a power of $b$, then $-\Cker_{b,B}$ is the unique solution of \eqref{eq:G-equation} holomorphic at $z=0$.  Substituting that solution into \eqref{eq:branch-decomp} yields the zero function.  The homogeneous term that restores the specified nonzero branch is $z^\beta/\Eker_b$; it cancels the pole lattice and carries the branch monodromy at $0$.
 \end{theorem}
 
 \begin{proof}
@@ -802,7 +828,7 @@ For a germ $G(z)=\sum g_nz^n$ at zero, the coefficient recurrence has denominato
 
 \subsection{Beyond-all-orders monodromy}
 
-Let $R>0$ and denote by $\Gker_\pm(-R)$ the boundary values from the upper and lower half-planes.  Since $\Eker_b(-R)>0$ and $\Nker_{b,B}(-R)$ is real when $B,\beta$ are real,
+Let $\beta\in\R\setminus\Z$, let $R>0$, and denote by $\Gker_\pm(-R)$ the boundary values from the upper and lower half-planes.  Since $\Eker_b(-R)>0$ and $\Nker_{b,B}(-R)$ is real,
 \begin{equation}\label{eq:Stokes-jump}
  \Gker_+(-R)-\Gker_-(-R)
  =\frac{2i\sin(\pi\beta)R^\beta}{\Eker_b(-R)}.
@@ -821,10 +847,13 @@ On either side of the cut, \cref{thm:kappa-limit} gives the common asymptotic ex
  \Gker_{b,\beta}(-R\pm i0)
  \sim-\sum_{\ell\ge1}\frac{a_\ell}{R^\ell},
 \end{equation}
-while the entire information that $\beta$ is nonintegral is hidden in the exponentially smaller difference \eqref{eq:Stokes-jump}.
+while the distinction between the two lateral values is hidden in the exponentially smaller difference \eqref{eq:Stokes-jump}.  The leading coefficient $a_1=\kk_b(B)$ still detects whether the one-axis series terminates; the beyond-all-orders statement concerns monodromy, not termination.
 
 \begin{remark}[Why finite jets keep failing]
-Any argument that uses only finitely many coefficients of the inverse-power expansion \eqref{eq:G-asymptotic} sees $\kk_b(B)$ and its $q$-Gevrey descendants, but it cannot see the monodromy multiplier $e^{2\pi i\beta}$.  The latter is beyond every algebraic order.  This is a precise mechanism, not merely a metaphor: the finite algebraic data and the branch data occupy different asymptotic scales.
+Any argument that uses only finitely many coefficients of the inverse-power expansion
+\eqref{eq:G-asymptotic} sees $\kk_b(B)$ and its $q$-Gevrey descendants, but it cannot
+distinguish the two lateral values: their difference is beyond every algebraic order.  This
+does not make termination invisible; $\kk_b(B)=0$ already detects it exactly.
 \end{remark}
 
 \section{The exact two-axis connection system}
@@ -1008,7 +1037,9 @@ Write $H(z)=\sum_{n\ge0}h_nz^n$.  Then $(2^n-M)h_n=0$ for every $n$.  Because $H
 \end{proof}
 
 \begin{corollary}[Finite-dimensional versions]\label{cor:finite-dimensional}
-The conjecture follows if one can prove, for some entire full-grid interpolant, that $K_2$ or $K_3$ is a polynomial, an exponential polynomial, or any entire function class whose nonzero members cannot vanish on the corresponding shifted semigroup grid.
+The conjecture follows if one can prove, for some entire full-grid interpolant, that $K_2$
+or $K_3$ is a polynomial, or belongs to any entire function class whose nonzero members
+cannot vanish on the corresponding shifted semigroup grid.
 \end{corollary}
 
 \begin{warning}
@@ -1078,7 +1109,10 @@ The functions $E_b$, $N_b$, and the two-dimensional product $\EE$ sit at their r
 
 \section{Computational verification}
 
-All principal identities admit short independent checks.  The following Python program uses exact rational arithmetic for the finite theorem and high-precision arithmetic for the infinite limit.  It is included as a reproducibility aid, not as evidence replacing the proofs.
+The finite defect and sample connection coefficients admit short independent checks.  The
+following Python program uses exact rational arithmetic for the finite theorem and
+high-precision arithmetic for sample infinite products.  It is included as a reproducibility
+aid, not as evidence replacing the proofs.
 
 \begin{lstlisting}[style=code,language=Python,caption={Exact finite and numerical infinite checks}]
 from fractions import Fraction
@@ -1086,7 +1120,7 @@ import mpmath as mp
 
 
 def qpoch_finite(a, q, n):
-    p = 1
+    p = Fraction(1)
     for j in range(n):
         p *= 1 - a * q**j
     return p
@@ -1180,7 +1214,7 @@ theorem qNewton_eval_pow (n : Nat) (h : n <= d) :
 
 theorem qNewton_dilation_defect :
   qNewton b B d (b * z) - B * qNewton b B d z =
-    finiteKappa b B d * qPochhammer z (b⁻¹) d
+    finiteKappa b B d * qPochhammer z (b ^ (-1)) d
 
 theorem finiteKappa_eq_product_ratio :
   finiteKappa b B d =
@@ -1251,7 +1285,7 @@ For each base $b$, geometric interpolation has a canonical entire solution $\Nke
 \]
 where the scalar $\kk_b(B)$ vanishes exactly at integral exponents.  When $B$ is an integer but not a $b$-power, this scalar has a forced sign and quadratic-exponential size.  It is simultaneously the leading connection constant at infinity.
 
-Passing from the entire kernel to the actual branch $z^x$ cancels a lattice of poles and imports monodromy at the origin.  The cancellation has a complete algebraic asymptotic expansion, while the nonintegral exponent survives only in a beyond-all-orders Stokes jump.  This cleanly separates what finite algebra can detect from what the final proof must detect.
+Passing from the entire kernel to the actual branch $z^x$ cancels a lattice of poles and imports monodromy at the origin.  The cancellation has a complete algebraic asymptotic expansion, while the difference between its lateral branches is a beyond-all-orders Stokes jump.  This separates the termination data already visible in $\kk_b(B)$ from the monodromy data that no finite inverse-power truncation can recover.
 
 For the two bases, the connection corrections satisfy an exact coupled system with synchronized arithmetic constants and shared monodromy.  An entire full-grid interpolant yields a normalized defect vanishing on a shifted semigroup grid.  If that defect can be forced below the critical cubic logarithmic type, exact homogeneity follows and the conjecture is proved.
 
@@ -1316,7 +1350,7 @@ This report & Relation to inherited notation \\
 \midrule
 $\Nker^{(d)}_{b,B}$ & The finite geometric Newton interpolant, rewritten in $q$-Pochhammer normalization \\
 $\kk_{b,d}(B)$ & New scalar coefficient of the finite dilation defect \\
-$\Nker_{b,B}$ & Infinite locally uniform limit; not constructed in the inherited report \\
+$\Nker_{b,B}$ & Infinite locally uniform completion already recorded in the unified report \\
 $\Eker_b$ & The one-dimensional geometric canonical product already used as an edge factor \\
 $\Cker_{b,B}$ & New meromorphic connection quotient $\Nker/\Eker$ \\
 $\Gker_{b,\beta}$ & New slit-plane correction from the entire kernel to $z^\beta$ \\
@@ -1328,10 +1362,6 @@ $U,V$ & Boundary quotients; their commuting cocycle matches the inherited struct
 The novelty claims concern the explicit $q$-Newton connection theory and its arithmetic, not the already established existence of boundary defects or the canonical-product threshold.
 
 \begin{thebibliography}{99}
-
-\bibitem{UnifiedReport}
-\emph{Alaoglu--Erd\H{o}s Unified Report}, supplied source file
-\texttt{alaoglu-erdos-unified-report.tex(3).gz}, accessed 22 August 2026.
 
 \bibitem{GasperRahman}
 George Gasper and Mizan Rahman,
@@ -1361,16 +1391,6 @@ B. Ya. Levin,
 \emph{Distribution of Zeros of Entire Functions},
 revised edition, Translations of Mathematical Monographs, vol.~5,
 American Mathematical Society, 1980.
-
-\bibitem{FableJacobian}
-Fable 5 Research,
-``A Proof of the Jacobian Conjecture,'' public research portal, 2026,
-\url{https://fable5.ai/news/jacobian-conjecture-proof}.
-
-\bibitem{FableHadamard}
-FableAI,
-``Hadamard matrices below order 2000,'' public repository and certificates, 2026,
-\url{https://github.com/FableAI/Hadamard-Under-2000}.
 
 \end{thebibliography}
 
