@@ -46,6 +46,21 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
     window-sum argument.
+  - `IntegerPoints.LargeSieve` — **proved**: Wu Lemma 2.1, the Fejér-weighted
+    large-sieve inequality (`wu_lemma21_holds`), by Cauchy–Schwarz on the
+    step function `Σ zₙ 1_{[xₙ, xₙ+1/Q)}` (Bochner integrals).
+  - `IntegerPoints.KuzminLandau` — **proved**: the Kuz'min–Landau inequality
+    `‖Σ_{A<n≤B} e(F(n))‖ ≤ 4/λ` for `F'` monotone with `‖F'‖ ≥ λ`
+    (`KL.kuzmin_landau`), by summation by parts against
+    `w(g) = −½ − (i/2)cot(πg)`.
+  - `IntegerPoints.VanDerCorput` — **proved**: the second-derivative test
+    `‖Σ e(f(n))‖ ≤ 12α(B−A)√λ₂ + 24/√λ₂` for `λ₂ ≤ f'' ≤ αλ₂`
+    (`VdC.second_derivative`), by splitting into `round(f')`-windows.
+  - `IntegerPoints.Lemma1` — **proved**: Zhai–Cao Lemma 1
+    (`zhaiCao_lemma1_holds`) from the two results above.
+  - `IntegerPoints.Lemma3` — **proved**: Zhai–Cao Lemma 3, Krätzel's bound for
+    `Σ min(D, 1/‖f(n)‖)` (`zhaiCao_lemma3_holds`), by grouping on
+    `round(f(n))` and counting `δ`-separated values in shells.
 
 ## Status
 
@@ -53,8 +68,8 @@ Every result is a `Prop`-valued definition (e.g. `zhaiCao_theorem`,
 `wu_theorem1`); the ones proved so far have a companion `…_holds` theorem
 (or an implication between statements), listed above.  The library compiles
 with no `sorry` and no axioms beyond Mathlib's.  The analytic core — the
-exponential-sum estimates (Zhai–Cao Lemmas 1–3, 5–7, 9–10, Proposition 1; Wu
-Theorem 2, Lemmas 2.1, 2.5–2.7, Propositions 1–4), Nowak's formula, and the
+exponential-sum estimates (Zhai–Cao Lemmas 2, 5–7, 9–10, Proposition 1; Wu
+Theorem 2, Lemmas 2.5–2.7, Propositions 1–4), Nowak's formula, and the
 RH-conditional main theorems — remains unproved.
 
 ## Conventions worth knowing
