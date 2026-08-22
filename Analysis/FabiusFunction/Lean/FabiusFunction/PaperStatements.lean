@@ -1,8 +1,10 @@
 import FabiusFunction.Basic
+import FabiusFunction.BernoulliRecurrences
 import FabiusFunction.Differential
 import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
+import FabiusFunction.ExactInversePower
 import FabiusFunction.GlobalExtension
 import FabiusFunction.GlobalDyadic
 import FabiusFunction.HalfMomentDenominator
@@ -329,7 +331,7 @@ theorem fabiusAtInverseTwoPow_odd (n : ℕ) :
       (momentNumerator n : ℚ) /
         ((2 : ℚ) ^ (2 * n + 1).choose 2 * 2 * Nat.factorial (2 * n) *
           oddDoubleFactorial (n + 1) * evenMersenneProduct n) := by
-  sorry
+  exact fabiusAtInverseTwoPow_odd_formula n
 
 /-- Equation (25), the general inverse-power value in terms of `G_n`. -/
 theorem fabiusAtInverseTwoPow_eq_halfMomentNumerator (n : ℕ) :
@@ -337,7 +339,7 @@ theorem fabiusAtInverseTwoPow_eq_halfMomentNumerator (n : ℕ) :
       (halfMomentNumerator n : ℚ) /
         ((2 : ℚ) ^ n.choose 2 * n.factorial * (n + 1).factorial *
           mersenneProduct n) := by
-  sorry
+  exact fabiusAtInverseTwoPow_eq_halfMomentNumerator_formula n
 
 /-- Equation (26) and its natural divisibility consequence. -/
 theorem halfMomentNumerator_odd_index (n : ℕ) :
@@ -345,7 +347,7 @@ theorem halfMomentNumerator_odd_index (n : ℕ) :
       ((2 ^ n * (n + 1).factorial * momentNumerator n *
         oddMersenneProduct n : ℕ) : ℚ) ∧
     (2 * n + 1) * momentNumerator n ∣ halfMomentNumerator (2 * n + 1) := by
-  sorry
+  exact halfMomentNumerator_odd_index_formula n
 
 /-! ## Correctness specifications for the executable dyadic evaluator -/
 
@@ -913,7 +915,7 @@ theorem proposition_twenty_two (n : ℕ) (hn : 1 ≤ n) :
           (Nat.choose n (2 * k) : ℚ) * (2 : ℚ) ^ (n - 2 * k) *
             bernoulli (2 * k) * halfMoment (n - 2 * k)) /
           ((2 : ℚ) ^ n - 1) := by
-  sorry
+  exact proposition_twenty_two_formula n hn
 
 end
 
