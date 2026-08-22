@@ -1,0 +1,2280 @@
+
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=29mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{LinkBlue}{RGB}{20,63,120}
+\definecolor{RuleGray}{RGB}{95,95,95}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=LinkBlue,
+  citecolor=LinkBlue,
+  urlcolor=LinkBlue,
+  pdftitle={Operator-Theoretic Continuation on the Alaoglu--Erdos Conjecture},
+  pdfauthor={OpenAI}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s: operator-theoretic continuation}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{criterion}[theorem]{Closing criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Qp}{\mathbb Q_{>0}}
+\newcommand{\Alg}{\overline{\mathbb Q}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\ess}{\mathrm{ess}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cP}{\mathcal P}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.3em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.35em,topsep=0.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+\setlength{\emergencystretch}{3em}
+\setcounter{tocdepth}{2}
+
+\title{\textbf{Operator-Theoretic Continuation on the\\
+Alaoglu--Erd\H{o}s Conjecture}\\[0.5em]
+\large Local universality, arithmetic Hamiltonians, affine rigidity,\\
+Jordan self-extensions, and Koopman realizations}
+\author{Research continuation report}
+\date{21 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let \(x\in\R\) and suppose that \(A=2^x\) and \(B=3^x\) are
+integers.  The Alaoglu--Erd\H{o}s conjecture asserts that \(x\) is an
+integer.  This document is a continuation of the supplied unified report,
+not a replacement for it.  It deliberately avoids repeating that report's
+historical survey, standard transcendence-theoretic reductions, extensive
+catalogue of equivalent formulations, and previously explored analytic,
+\(p\)-adic, matrix, and asymptotic routes.
+
+The new organizing question is whether the scalar data can be forced to
+extend to an operator structure carrying enough \emph{additive},
+\emph{infinitesimal}, or \emph{finite-lattice} coherence to make a
+nonintegral exponent impossible.  Several exact results are obtained.
+Pairs of bilateral multiplication shifts are universal and therefore
+spectrally blind to the arithmetic labels.  The two-mode Fock Hamiltonians
+for \((2,3)\) and \((A,B)\) are exactly related by time rescaling, so heat
+traces, local KMS data, and Weyl asymptotics supply no obstruction.  In
+contrast, a global isometric intertwiner for the arithmetic Hamiltonian
+\(H e_n=(\log n)e_n\) exists precisely for positive integral scaling
+factors.  A finite prime-mode completion makes \(x\) an eigenvalue of an
+integer valuation matrix and hence an integer; an automorphic completion
+forces \(x=1\).  Adjoining even one affine \(ax+b\) coherence relation is
+quantitatively rigid, including modulo compact operators.
+
+Finite-dimensional functional calculus exhibits a complementary
+dichotomy.  Every semisimple rational operator supported at the two
+spectral points \(2\) and \(3\) is automatically blind: its \(x\)-th power
+is rational whenever \(2^x\) and \(3^x\) are.  A single nontrivial Jordan
+self-extension probes the derivative \(x2^{x-1}\) or \(x3^{x-1}\), and
+rationality of that first jet forces \(x\in\Q\), hence \(x\in\Z\).
+For the fractional part \(\alpha=\{x\}\), two rational-valued weighted
+Koopman operators are constructed.  Their cocycles are bounded
+coboundaries, explaining why spectra, Lyapunov growth, entropy, and
+determinant-like invariants collapse.  The surviving datum is a projection
+of trace \(\alpha\): an exact finite-dimensional tracial model or an exact
+finite-Hankel realization would force \(\alpha\) rational, whereas ordinary
+matrix approximation would not.
+
+No unconditional proof of the conjecture is claimed.  The report instead
+isolates a sharp local-to-global obstruction and ranks concrete closing
+targets.  The strongest small targets are: propagation to one third
+multiplicatively independent algebraic base; one rational Jordan
+self-extension; one finite prime-mode completion; one exact finite-Hankel
+realization; or one additive affine coherence relation.  Each target is
+proved sufficient, and the seductive operator invariants that merely
+repackage the original \(2\times2\) exponential array are explicitly
+separated from those that add genuinely new arithmetic information.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, conventions, and relation to the companion report}
+
+The supplied unified report already develops the classical reduction to a
+special case of the Four Exponentials Conjecture, the
+Gelfond--Schneider and Six Exponentials thresholds, logarithmic and
+valuation formulations, and a wide range of analytic and algebraic
+approaches.  Repeating those discussions would obscure the purpose of a
+continuation.  Here they are used only as black-box inputs when an
+operator construction reaches one of their exact closing thresholds.
+
+The main novelty is the distinction between three levels of structure.
+
+\begin{enumerate}
+\item \textbf{Local multiplicative structure.}  One retains only the two
+      multiplicatively independent modes generated by \(2\) and \(3\).
+      At this level, almost all natural operator invariants are universal
+      or are changed only by a continuous rescaling of time.
+\item \textbf{Finite-mode arithmetic structure.}  One asks whether the
+      two modes extend to a finite lattice of prime modes, to a
+      nonsemisimple rational functional calculus, or to a finite linear
+      realization.  Any such exact extension has discrete algebraic
+      invariants and is already strong enough to close the conjecture.
+\item \textbf{Additive--multiplicative structure.}  One couples
+      multiplication by \(n\) to translation by \(1\), as in the affine
+      semigroup.  Integer labels then become rigid rather than merely
+      spectral parameters.
+\end{enumerate}
+
+All Hilbert spaces are complex and separable.  For an unbounded operator,
+an intertwining identity is initially interpreted on the algebraic span
+of the indicated standard basis, which is a common invariant core.
+The positive integers are \(\N=\{1,2,\ldots\}\), while
+\(\Nzero=\{0,1,\ldots\}\).
+
+\subsection{Minimal standing reduction}
+
+Set
+\[
+        A=2^x\in\N,\qquad B=3^x\in\N.
+\]
+If \(x<0\), then \(0<2^x<1\), impossible for an integer; hence \(x\geq0\).
+The case \(x=0\) is already integral, so the substantive case has \(x>0\).
+Write
+\[
+        x=n+\alpha,\qquad n=\floor{x},\qquad 0\leq\alpha<1.
+\]
+Then
+\begin{equation}\label{eq:r-s}
+        r:=2^\alpha=\frac{A}{2^n}\in\Q,\qquad
+        s:=3^\alpha=\frac{B}{3^n}\in\Q.
+\end{equation}
+
+\begin{lemma}[Rational-exponent collapse]\label{lem:rational-collapse}
+If \(b\geq2\) is an integer, \(y\in\Q\), and \(b^y\in\Q\), then the
+denominator of \(y\) divides every valuation of \(b\).  In particular,
+if \(b\) is not a perfect power and \(b^y\in\Q\), then \(y\in\Z\).
+Consequently, under \eqref{eq:r-s}, \(\alpha\in\Q\) implies
+\(\alpha=0\).
+\end{lemma}
+
+\begin{proof}
+Write \(y=p/q\) in lowest terms with \(q>0\), and write
+\(b^y=u/v\) in lowest terms.  Taking \(q\)-th powers and applying each
+prime valuation gives
+\[
+        q\bigl(v_\ell(u)-v_\ell(v)\bigr)=p\,v_\ell(b).
+\]
+Since \(\gcd(p,q)=1\), the integer \(q\) divides every \(v_\ell(b)\).
+For \(b=2\), this gives \(q=1\).  Since \(0\leq\alpha<1\), one then has
+\(\alpha=0\).
+\end{proof}
+
+Thus a counterexample would have \(x\) and \(\alpha\) irrational; by
+Gelfond--Schneider it would in fact have \(x\) transcendental
+\cite{Gelfond,Schneider,BakerBook}.  The point
+of the operator constructions below is not to rediscover this reduction,
+but to identify what additional exact structure would force the missing
+rationality.
+
+\subsection{A result ledger}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.21\textwidth}
+                  >{\raggedright\arraybackslash}p{0.49\textwidth}
+                  >{\raggedright\arraybackslash}p{0.20\textwidth}}
+\toprule
+\textbf{Structure} & \textbf{Exact conclusion} & \textbf{Role}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Structure} & \textbf{Exact conclusion} & \textbf{Role}\\
+\midrule
+\endhead
+Bilateral shifts for two independent labels &
+All such pairs are unitarily equivalent with countable multiplicity. &
+No-go: pure spectrum is blind.\\
+Two-mode Fock Hamiltonian &
+\(H_{A,B}=xH_{2,3}\); heat traces and local KMS data are time-rescaled. &
+No-go: thermodynamics is blind.\\
+Arithmetic Hamiltonian on all \(\N\) &
+An isometry \(T\) with \(HT=xTH\) exists exactly for
+\(x\in\N\). &
+Global closing criterion.\\
+Finite invariant prime lattice &
+\(x\) is an algebraic-integer eigenvalue of a valuation matrix, hence
+\(x\in\Z\). &
+Finite-mode closing criterion.\\
+Unimodular prime-lattice completion &
+The same eigenvalue is an algebraic unit; hence \(x=1\). &
+Automorphic closing criterion.\\
+Affine \(ax+b\) coherence &
+Preserving \(V_2S=S^2V_2\), even modulo compacts in the stated model,
+forces \(A=2\), hence \(x=1\). &
+Robust additive rigidity.\\
+Semisimple rational functional calculus &
+Every operator with minimal polynomial dividing
+\((t-2)(t-3)\) remains rational under \(t\mapsto t^x\). &
+No-go: two values suffice.\\
+Jordan self-extension &
+Rationality of \((2I+N)^x\), \(N^2=0\neq N\), forces \(x\in\Q\). &
+Infinitesimal closing criterion.\\
+Sturmian Koopman realization &
+The rational weights are bounded coboundaries; one projection has trace
+\(\alpha\). &
+Separates blind invariants from trace.\\
+Exact finite tracial or Hankel model &
+The trace/frequency \(\alpha\) is rational, so \(\alpha=0\). &
+Finite-realization closing criterion.\\
+One third independent algebraic base &
+Six Exponentials forces \(x\in\Q\), hence \(x\in\Z\). &
+Smallest high-value propagation target.\\
+\bottomrule
+\end{longtable}
+
+\section{The maximal two-mode algebraic sector}
+
+Before introducing operator models, it is useful to sharpen exactly how
+far the hypotheses propagate by known transcendence theory.  This result
+is the correct boundary condition for every later local-to-global
+construction.
+
+\begin{theorem}[Three-mode barrier]\label{thm:three-mode}
+Assume \(x\notin\Q\), \(2^x,3^x\in\Alg\), and let \(q\in\Qp\).
+Then
+\[
+        q^x\in\Alg
+        \quad\Longleftrightarrow\quad
+        q=2^m3^n\ \text{for some }m,n\in\Z.
+\]
+In particular, if a nonintegral solution of the Alaoglu--Erd\H{o}s
+hypotheses exists, then
+\[
+ \{k\in\N:k^x\in\Alg\}
+ =
+ \{2^m3^n:m,n\in\Nzero\}.
+\]
+Every positive integer containing a prime other than \(2\) or \(3\) has
+transcendental \(x\)-th power.
+\end{theorem}
+
+\begin{proof}
+The reverse implication is immediate:
+\((2^m3^n)^x=(2^x)^m(3^x)^n\) is algebraic.
+
+For the forward implication, suppose that \(q\) is multiplicatively
+independent of \(2\) and \(3\).  Then
+\(\log2,\log3,\log q\) are linearly independent over \(\Q\), while
+\(1,x\) are linearly independent over \(\Q\).  The Six Exponentials
+Theorem \cite[Chap.~3]{WaldschmidtBook} says that at least one entry of
+\[
+\begin{pmatrix}
+ \exp(\log2) & \exp(\log3) & \exp(\log q)\\
+ \exp(x\log2) & \exp(x\log3) & \exp(x\log q)
+\end{pmatrix}
+=
+\begin{pmatrix}
+ 2&3&q\\ 2^x&3^x&q^x
+\end{pmatrix}
+\]
+is transcendental, contradicting the assumed algebraicity of all six
+entries.  Therefore \(q\) is multiplicatively dependent with \(2,3\):
+there are integers \(a,b,c\), with \(c\neq0\), such that
+\(q^c2^a3^b=1\).  Prime valuations show that \(q\) has no prime factor
+other than \(2\) or \(3\); since \(q\in\Qp\), it follows that
+\(q=2^m3^n\) with \(m,n\in\Z\).
+\end{proof}
+
+\begin{remark}
+The theorem says more than ``a third prime would help.''  Under a
+hypothetical counterexample, the rank-two group
+\(\langle2,3\rangle\) is the \emph{entire} rational domain on which the
+\(x\)-power map remains algebraic.  An operator proof must therefore
+force leakage out of this maximal sector, or extract an infinitesimal or
+finite-dimensional invariant that cannot live inside it.
+\end{remark}
+
+\begin{corollary}[One-vector closing target]\label{cor:one-vector}
+Under the Alaoglu--Erd\H{o}s hypotheses, it suffices to prove
+\(q^x\in\Alg\) for one rational \(q>0\) having a prime factor other than
+\(2\) or \(3\).  In particular, any one of \(5^x,7^x,10^x,\ldots\)
+being algebraic closes the conjecture.
+\end{corollary}
+
+\section{Bilateral multiplication shifts: a universality theorem}
+
+Let \(G=\Qp\) with multiplication, and let
+\(\cH_G=\ell^2(G)\) with standard basis \((e_q)_{q\in G}\).  For
+\(a\in G\), define a unitary
+\[
+        U_a e_q=e_{aq}.
+\]
+These are the most literal bilateral operator representatives of
+multiplication by rational labels; the orbit decomposition below is the
+regular-representation viewpoint standard in semigroup operator theory
+\cite{Nica,LacaRaeburn}.
+
+\begin{theorem}[Universality of two independent multiplication shifts]
+\label{thm:bilateral-universal}
+If \(a,b\in\Qp\) are multiplicatively independent, then the commuting
+pair \((U_a,U_b)\) is unitarily equivalent to a countably infinite
+multiple of the left regular representation of \(\Z^2\).  Consequently,
+for any two multiplicatively independent pairs \((a,b)\) and \((c,d)\),
+the pairs \((U_a,U_b)\) and \((U_c,U_d)\) are unitarily equivalent.
+\end{theorem}
+
+\begin{proof}
+Let \(\Lambda=\langle a,b\rangle=\{a^mb^n:m,n\in\Z\}\).
+Multiplicative independence identifies \(\Lambda\) with \(\Z^2\).
+Choose a transversal \(C\) for the cosets \(G/\Lambda\).  Then
+\[
+        \ell^2(G)=\bigoplus_{c\in C}\ell^2(c\Lambda),
+\]
+and on each summand the unitary
+\[
+        e_{ca^mb^n}\longmapsto e_{(m,n)}
+\]
+conjugates \(U_a,U_b\) to the two coordinate bilateral shifts on
+\(\ell^2(\Z^2)\).  The quotient \(G/\Lambda\) is countably infinite:
+it is countable, and primes outside the finite prime support of \(ab\)
+give infinitely many distinct cosets.  Thus the multiplicity is
+countably infinite and does not depend on the labels.
+\end{proof}
+
+For \(x>0\), the integers \(A=2^x\) and \(B=3^x\) are
+multiplicatively independent.  Indeed,
+\(A^mB^n=1\) implies \((2^m3^n)^x=1\), hence \(m=n=0\).
+Therefore \cref{thm:bilateral-universal} applies equally to
+\((2,3)\) and \((A,B)\).
+
+\begin{corollary}[Spectral blindness]\label{cor:spectral-blindness}
+The joint spectrum, joint spectral type, von Neumann algebra generated by
+the pair, and spectral multiplicity of the bilateral pair do not
+distinguish \((2,3)\) from \((2^x,3^x)\).  Any proposed proof based only
+on the unitary-equivalence class of the two multiplication shifts cannot
+see whether \(x\) is integral.
+\end{corollary}
+
+\begin{remark}
+Under Fourier transform, one copy of the regular representation becomes
+multiplication by the two coordinate functions on \(L^2(\mathbb T^2)\).
+Thus the joint spectrum is always \(\mathbb T^2\), with the same Haar spectral
+measure and the same countable multiplicity.  The failure is not a lack
+of a sufficiently clever spectral invariant; the entire pair is
+universal.
+\end{remark}
+
+\subsection{The logarithmic Hamiltonian restores scale locally}
+
+Define the self-adjoint arithmetic Hamiltonian
+\[
+        H_G e_q=(\log q)e_q.
+\]
+On its natural core,
+\begin{equation}\label{eq:comm-H-U}
+        [H_G,U_a]=(\log a)U_a.
+\end{equation}
+The commutator remembers the logarithmic label that pure shift spectrum
+forgets.  Nevertheless, on the two generated orbits it still gives no
+obstruction.
+
+Let
+\[
+ \cH_{2,3}=\overline{\spn}\{e_{2^m3^n}:m,n\in\Z\},\qquad
+ \cH_{A,B}=\overline{\spn}\{e_{A^mB^n}:m,n\in\Z\}.
+\]
+The map
+\begin{equation}\label{eq:local-W}
+        W e_{2^m3^n}=e_{A^mB^n}
+\end{equation}
+is a unitary \(\cH_{2,3}\to\cH_{A,B}\), and
+\begin{equation}\label{eq:local-H-cov}
+        H_GW=xWH_G.
+\end{equation}
+Thus even the Hamiltonian-covariant equivalence is automatic on the
+maximal rank-two algebraic sector.  The arithmetic content lies in
+extending \eqref{eq:local-W} beyond that sector while preserving a
+discrete basis or lattice.
+
+\section{Two-mode Fock Hamiltonians and thermodynamic no-go results}
+
+Let \(\cF_2=\ell^2(\Nzero^2)\), with number operators
+\[
+        N_1e_{m,n}=m e_{m,n},\qquad
+        N_2e_{m,n}=n e_{m,n}.
+\]
+For multiplicatively independent \(a,b>1\), set
+\[
+        H_{a,b}=(\log a)N_1+(\log b)N_2.
+\]
+Its eigenvalue at \(e_{m,n}\) is
+\(\log(a^mb^n)\), so the spectrum is simple.
+
+\begin{proposition}[Exact time homothety]\label{prop:fock-homothety}
+Under \(A=2^x\) and \(B=3^x\),
+\[
+        H_{A,B}=xH_{2,3}
+\]
+as self-adjoint operators on the same Fock space.
+\end{proposition}
+
+This equality is stronger than an asymptotic similarity.  Every spectral
+quantity derived functorially from \(H\) is merely reparametrized.
+
+For \(\beta>0\), the heat trace is
+\begin{equation}\label{eq:partition}
+ Z_{a,b}(\beta)
+ :=\Tr(\ee^{-\beta H_{a,b}})
+ =\sum_{m,n\geq0}a^{-\beta m}b^{-\beta n}
+ =\frac{1}{(1-a^{-\beta})(1-b^{-\beta})}.
+\end{equation}
+Consequently,
+\[
+        Z_{A,B}(\beta)=Z_{2,3}(x\beta).
+\]
+As \(\beta\downarrow0\),
+\begin{equation}\label{eq:heat-asymp}
+        Z_{a,b}(\beta)
+        =\frac{1}{\beta^2\log a\,\log b}
+         +O(\beta^{-1}),
+\end{equation}
+and the eigenvalue-counting function satisfies the elementary lattice
+estimate
+\begin{equation}\label{eq:weyl}
+ N_{a,b}(E)
+ :=\#\{(m,n)\in\Nzero^2:m\log a+n\log b\leq E\}
+ =\frac{E^2}{2\log a\,\log b}+O(E).
+\end{equation}
+Both leading terms simply acquire the continuous factor \(x^{-2}\) when
+\((a,b)=(2,3)\) is replaced by \((A,B)\).
+
+Let \(L_1,L_2\) be the coordinate unilateral shifts on \(\cF_2\).
+The Toeplitz algebra \(\cT^{(2)}=C^*(L_1,L_2)\) admits the dynamics
+\[
+        \sigma_t^{a,b}(L_1)=a^{\ii t}L_1,\qquad
+        \sigma_t^{a,b}(L_2)=b^{\ii t}L_2.
+\]
+Then
+\[
+        \sigma_t^{A,B}=\sigma_{xt}^{2,3}.
+\]
+Thus the underlying \(C^*\)-algebra, its \(K\)-theory, and the local
+two-mode representation are identical; the dynamics differs only by a
+time change.  Gibbs and KMS data parameterized by inverse temperature
+are transported by \(\beta\mapsto x\beta\); see
+\cite{BratteliRobinson,BostConnes} for the general equilibrium formalism.
+
+\begin{warning}[Why a critical temperature cannot quantize \(x\)]
+A critical inverse temperature is meaningful only after fixing an
+external normalization of time or energy.  In the isolated two-mode
+system there is no such normalization: multiplying the Hamiltonian by
+an arbitrary positive real number is an exact time reparametrization.
+Therefore a pole, heat coefficient, entropy density, or KMS transition
+inside this sector cannot force \(x\in\Z\).
+\end{warning}
+
+\section{The full prime Fock space and the local-to-global gap}
+
+Let \(\cP\) be the set of primes and
+\[
+        \Nzero^{(\cP)}
+        =\{v=(v_p)_{p\in\cP}:v_p\in\Nzero,\ 
+          v_p=0\text{ for all but finitely many }p\}.
+\]
+Unique factorization identifies \(\N\) with this monoid through the
+valuation vector
+\[
+        \nu(n)=(v_p(n))_{p\in\cP}.
+\]
+The full prime Fock space is
+\[
+        \cF_{\cP}=\ell^2(\Nzero^{(\cP)})\cong\ell^2(\N),
+\]
+and its Hamiltonian is
+\[
+        H_{\cP}e_v
+        =\left(\sum_{p\in\cP}v_p\log p\right)e_v.
+\]
+Under the identification with \(\ell^2(\N)\), this is simply
+\(H e_n=(\log n)e_n\).
+
+Let \(a=\nu(A)\) and \(b=\nu(B)\).  Since \(A,B\) are multiplicatively
+independent, the map
+\[
+        J:\cF_2\longrightarrow\cF_{\cP},\qquad
+        J e_{m,n}=e_{ma+nb}
+\]
+is an isometry.  Moreover,
+\begin{equation}\label{eq:fock-embedding}
+        H_{\cP}J=xJH_{2,3}.
+\end{equation}
+Thus the hypotheses themselves give an exact Hamiltonian-covariant
+embedding of the two-mode sector into the arithmetic spectrum.  This is
+not a partial proof; it is the canonical operator form of the two scalar
+equalities.
+
+The missing step is now precise:
+
+\begin{quote}
+\emph{Can the two-column valuation map
+\(e_2\mapsto\nu(A)\), \(e_3\mapsto\nu(B)\) be forced to extend to a
+finite or global integral lattice map that rescales the logarithmic
+energy functional by \(x\)?}
+\end{quote}
+
+Abstract Hilbert-space extension theorems are irrelevant here.  The
+isometry \(J\) can always be extended abstractly after adding arbitrary
+orthogonal complements.  What matters is an extension that remains
+\emph{monomial on the arithmetic basis}, \emph{integral on valuation
+lattices}, and \emph{covariant for \(H_{\cP}\)}.  The next two sections
+show that either a global extension or a finite prime-mode extension
+would close the conjecture.
+
+
+\section{Global arithmetic-Hamiltonian intertwiners}
+
+On \(\ell^2(\N)\), let
+\[
+        He_n=(\log n)e_n,
+\]
+with domain
+\[
+        \mathcal D(H)
+        =\left\{\xi:\sum_{n\geq1}(\log n)^2|\xi_n|^2<\infty\right\}.
+\]
+The eigenvalues are simple.  This converts a Hamiltonian covariance
+identity into an exact arithmetic condition on every basis label.
+
+\begin{theorem}[Global isometric covariance]\label{thm:global-isometry}
+For \(c>0\), the following are equivalent.
+\begin{enumerate}
+\item There is an isometry \(T:\ell^2(\N)\to\ell^2(\N)\) such that
+      \(HT=cTH\) on the finite-support core.
+\item \(n^c\in\N\) for every \(n\in\N\).
+\item \(c\in\N\).
+\end{enumerate}
+For \(c=k\in\N\), a canonical intertwiner is
+\[
+        T_k e_n=e_{n^k}.
+\]
+\end{theorem}
+
+\begin{proof}
+Suppose \(HT=cTH\).  For each \(n\),
+\[
+        H(Te_n)=c(\log n)Te_n.
+\]
+Since \(T\) is an isometry, \(Te_n\neq0\).  The spectrum of \(H\) is
+simple and consists of the numbers \(\log m\), \(m\in\N\), so there is
+an \(m\in\N\) with
+\(\log m=c\log n\); hence \(m=n^c\in\N\).  This proves (1)\(\Rightarrow\)(2).
+
+To prove (2)\(\Rightarrow\)(3), suppose that \(c\notin\N\), and choose
+\(r=\floor{c}+1\).  The \(r\)-th forward difference
+\[
+        \Delta^r n^c
+        =\sum_{j=0}^{r}(-1)^{r-j}\binom rj(n+j)^c
+\]
+is an integer.  Repeated use of the fundamental theorem of calculus
+gives the exact integral formula
+\[
+ \Delta^r n^c
+ =c(c-1)\cdots(c-r+1)
+  \int_{[0,1]^r}
+  (n+t_1+\cdots+t_r)^{c-r}\,dt_1\cdots dt_r.
+\]
+The coefficient is nonzero because \(c\) is not an integer, and the
+integrand has fixed sign.  Thus the difference is nonzero for every
+\(n\), while \(c-r<0\) implies \(\Delta^r n^c\to0\).  For large \(n\)
+this is a nonzero integer of absolute value less than \(1\), a
+contradiction.  Hence \(c\in\N\).
+
+Finally, if \(c=k\in\N\), then \(n\mapsto n^k\) is injective, so \(T_k\)
+is an isometry, and
+\[
+        HT_ke_n=k(\log n)e_{n^k}=kT_kHe_n.
+\]
+\end{proof}
+
+\begin{remark}[The endpoint \(c=0\)]
+The scalar map \(n\mapsto n^0=1\) collapses all basis vectors and cannot
+be implemented by an isometry.  It is represented by a rank-one
+collapse rather than an endomorphism.  This is why
+\cref{thm:global-isometry} classifies positive integers; the original
+conjecture separately includes the already trivial solution \(x=0\).
+\end{remark}
+
+\subsection{Partial intertwiners and exact support}
+
+For arbitrary \(c>0\), define
+\[
+        I_c=\{n\in\N:n^c\in\N\}.
+\]
+There is a canonical isometry
+\[
+        T_c:\ell^2(I_c)\longrightarrow\ell^2(\N),\qquad
+        T_c e_n=e_{n^c},
+\]
+and it satisfies \(HT_c=cT_cH\) on the natural source core.
+Under the Alaoglu--Erd\H{o}s hypotheses,
+\(\{2^m3^n:m,n\in\Nzero\}\subseteq I_x\), so an infinite-rank
+Hamiltonian intertwiner already exists.
+
+Combining this observation with \cref{thm:three-mode} gives a complete
+classification under a hypothetical counterexample.
+
+\begin{corollary}[Maximal support of the partial intertwiner]
+\label{cor:max-partial-support}
+If \(x\) is a nonintegral solution of the Alaoglu--Erd\H{o}s hypotheses,
+then
+\[
+        I_x=\{2^m3^n:m,n\in\Nzero\}.
+\]
+More strongly, replacing ``integer'' by ``algebraic'' in the definition
+of \(I_x\) gives the same set.
+\end{corollary}
+
+This identifies an especially small operator target: it is enough to
+make the covariant partial intertwiner nonzero at \emph{one} basis vector
+\(e_q\) with \(q\) not \(3\)-smooth and with algebraic target label.
+No global extension is needed; \cref{cor:one-vector} then closes the
+conjecture.
+
+\section{Finite prime-mode closure and valuation matrices}
+
+The global criterion in \cref{thm:global-isometry} is much stronger than
+the original hypotheses.  A finite-dimensional lattice completion is
+already enough.
+
+Let \(P=\{p_1,\ldots,p_d\}\) be a finite set of primes containing \(2\).
+Write
+\[
+        \Gamma_P
+        =\left\{\prod_{j=1}^d p_j^{v_j}:v_j\in\Z\right\}
+        \cong\Z^d.
+\]
+
+\begin{theorem}[Finite prime closure]\label{thm:finite-prime-closure}
+Let \(c\in\R\setminus\{0\}\).  Suppose that
+\begin{enumerate}
+\item \(2\in P\);
+\item \(p_j^c\in\Gamma_P\) for every \(p_j\in P\); and
+\item \(2^c\) is algebraic (in particular, rational or integral).
+\end{enumerate}
+Then \(c\in\Z\).  If \(c\geq0\), then \(c\in\Nzero\).
+\end{theorem}
+
+\begin{proof}
+For each \(j\), write uniquely
+\[
+        p_j^c=\prod_{i=1}^d p_i^{m_{ij}},
+        \qquad m_{ij}\in\Z,
+\]
+and let \(M=(m_{ij})\in M_d(\Z)\).  Set
+\[
+        \ell=(\log p_1,\ldots,\log p_d)^{\mathsf T}.
+\]
+Taking real logarithms column by column gives
+\[
+        M^{\mathsf T}\ell=c\ell.
+\]
+Thus \(c\) is an eigenvalue of an integer matrix and therefore an
+algebraic integer.  If \(c\) were algebraic irrational,
+Gelfond--Schneider would make \(2^c\) transcendental, contrary to
+assumption.  Hence \(c\in\Q\).  A rational algebraic integer is an
+integer.
+\end{proof}
+
+\begin{corollary}[Automorphic closure]\label{cor:automorphic-closure}
+In the setting of \cref{thm:finite-prime-closure}, suppose additionally
+that the power map
+\[
+        \Gamma_P\longrightarrow\Gamma_P,\qquad q\longmapsto q^c,
+\]
+is onto.  Then \(M\in\mathrm{GL}_d(\Z)\), so \(c\) is an algebraic unit.
+If \(c>0\), then \(c=1\).
+\end{corollary}
+
+\begin{proof}
+Surjectivity makes the valuation matrix unimodular.  Every eigenvalue of
+a unimodular integer matrix is an algebraic unit.  By
+\cref{thm:finite-prime-closure}, \(c\) is a rational integer; the only
+positive rational integer that is an algebraic unit is \(1\).
+\end{proof}
+
+\subsection{Operator form of the valuation theorem}
+
+On \(\ell^2(\Z^d)\), define
+\[
+        H_\ell e_v=\langle\ell,v\rangle e_v.
+\]
+The power map on \(\Gamma_P\) is injective for \(c\neq0\), hence the
+integer matrix \(M\) is injective on \(\Z^d\).  Therefore
+\[
+        T_Me_v=e_{Mv}
+\]
+is an isometry, and
+\[
+        H_\ell T_M=cT_MH_\ell
+        \quad\Longleftrightarrow\quad
+        M^{\mathsf T}\ell=c\ell.
+\]
+Thus the theorem may be read as follows: a finite arithmetic lattice
+model of Hamiltonian time rescaling makes the scaling factor an
+algebraic integer.  The scalar algebraicity \(2^c\in\Alg\) then reduces
+it to an ordinary integer.
+
+If all \(p_j^c\) are integers supported on \(P\), then \(M\) has
+nonnegative entries and the same statement can be realized on the
+positive Fock cone \(\ell^2(\Nzero^d)\).  If the matrix is irreducible,
+the positive logarithm vector exhibits \(c\) as its Perron--Frobenius
+eigenvalue.  Perron--Frobenius theory does not itself prove integrality;
+the decisive extra input remains Gelfond--Schneider.
+
+\begin{criterion}[Finite propagation closure]\label{crit:finite-propagation}
+Starting from \(P_0=\{2,3\}\), suppose one can prove that \(p^x\) is
+rational for every prime introduced as a divisor of a previously known
+\(q^x\), and that the resulting prime-propagation process terminates in
+a finite set \(P\).  Then \(P\) is invariant under the \(x\)-power map,
+so \cref{thm:finite-prime-closure} proves \(x\in\Z\).
+\end{criterion}
+
+A counterexample therefore cannot admit any finite exact
+prime-substitution completion.  This gives a concrete diagnostic for
+operator correspondences, graph \(C^*\)-algebras, fusion matrices, and
+substitution systems: if their finite incidence matrix really encodes
+the logarithmic scaling, the conjecture is already over.
+
+\section{\(C^*\)-dynamical interpretation: local covariance versus global arithmetic}
+
+The preceding Hilbert-space constructions have a direct
+\(C^*\)-dynamical reading.  It is useful to state it without relying on
+a particular presentation of the Bost--Connes algebra.
+
+Let \(\mathfrak T_{\mathrm{mult}}\) be the concrete Toeplitz algebra on
+\(\ell^2(\N)\) generated by the multiplication isometries
+\[
+        V_m e_n=e_{mn},\qquad m,n\in\N.
+\]
+They satisfy \(V_mV_n=V_{mn}\).  The Hamiltonian \(H e_n=(\log n)e_n\)
+implements the time evolution
+\begin{equation}\label{eq:time-evolution}
+        \sigma_t(V_m)=m^{\ii t}V_m.
+\end{equation}
+
+On the algebraic, nonselfadjoint semigroup generated by
+\(V_2,V_3\), the assignment
+\[
+        V_2\longmapsto V_A,\qquad
+        V_3\longmapsto V_B
+\]
+respects products and satisfies
+\[
+        \sigma_t\!\left(\Phi(V_j)\right)
+        =\Phi\!\left(\sigma_{xt}(V_j)\right),
+        \qquad j=2,3.
+\]
+At the \(C^*\)-level one should use the two-coordinate Fock compression
+from \cref{prop:fock-homothety}: adjoints and range projections in the
+full concrete representation can additionally record gcd/lcm data.
+That extra data is precisely valuation-lattice data; it does not follow
+from abstract rank-two dynamics alone.  In either formulation, local
+time covariance merely rescales the two known energies and does not
+quantize \(x\).
+
+A global monomial endomorphism would have to send each \(V_n\) to
+\(V_{n^x}\).  Such labels exist for all \(n\) exactly when
+\(n^x\in\N\) for all \(n\), and \cref{thm:global-isometry} then forces
+\(x\in\N\).  Likewise, a finite prime-generated endomorphism gives the
+integer matrix of \cref{thm:finite-prime-closure}.
+
+\begin{remark}[Bost--Connes and related systems]
+In Bost--Connes-type systems \cite{BostConnes}, the multiplicative isometries carry the
+same logarithmic time evolution, while additional additive or torsion
+data encode genuinely arithmetic relations.  Restricting to the two
+multiplicative modes loses precisely that extra coherence and leaves
+only a time-rescaled rank-two system.  A useful operator strategy must
+therefore exploit the additive diagonal, transfer operators, or an
+integral lattice completion; KMS data from the isolated modes cannot do
+the job.
+\end{remark}
+
+\section{Affine \(ax+b\) rigidity}
+
+The cleanest demonstration that additive structure restores integer
+labels uses the standard affine representation familiar from
+\(ax+b\) semigroup \(C^*\)-algebras \cite{CuntzAxB,BrownloweEtAl} on
+\(\ell^2(\Nzero)\).  Define
+\[
+        Se_k=e_{k+1},\qquad
+        V_m e_k=e_{mk}.
+\]
+Then
+\begin{equation}\label{eq:axb}
+        V_mS=S^mV_m.
+\end{equation}
+Unlike the purely multiplicative relations, this relation records the
+integer \(m\) as an actual translation length.
+
+\begin{theorem}[Quantitative affine rigidity]\label{thm:affine-rigidity}
+For integers \(a,b,d\geq1\), set
+\[
+        D_{a,b,d}=V_aS^d-S^{bd}V_a.
+\]
+Then
+\[
+        D_{a,b,d}=0\quad\Longleftrightarrow\quad a=b.
+\]
+If \(a\neq b\), then \(D_{a,b,d}\) is not compact and
+\[
+        \|D_{a,b,d}\|_{\mathrm{ess}}\geq\sqrt2.
+\]
+In particular, the affine relation determines the multiplicative label
+even in the Calkin algebra and is stable under norm errors smaller than
+\(\sqrt2\).
+\end{theorem}
+
+\begin{proof}
+For every \(k\geq0\),
+\[
+ D_{a,b,d}e_k
+ =e_{a(k+d)}-e_{ak+bd}
+ =e_{ak+ad}-e_{ak+bd}.
+\]
+If \(a=b\), this is zero.  If \(a\neq b\), the two displayed basis
+vectors are distinct, so
+\[
+        \|D_{a,b,d}e_k\|=\sqrt2
+\]
+for every \(k\).  Since \(e_k\to0\) weakly and every compact operator
+maps this sequence to a norm-null sequence, for every compact \(K\),
+\[
+        \liminf_{k\to\infty}\|(D_{a,b,d}-K)e_k\|\geq\sqrt2.
+\]
+Taking the infimum over \(K\) proves the essential-norm bound and
+noncompactness.
+\end{proof}
+
+\begin{corollary}[One affine coherence closes the conjecture]
+\label{cor:one-affine}
+Suppose a proposed operator extension sends
+\[
+        S\longmapsto S^d,\qquad V_2\longmapsto V_A
+\]
+for some \(d\geq1\), and preserves the single relation
+\(V_2S=S^2V_2\), either exactly or modulo compact operators.  Then
+\(A=2\), hence \(x=1\).
+\end{corollary}
+
+\begin{proof}
+The image of the relation requires
+\(V_AS^d-S^{2d}V_A\) to vanish, or at least to be compact.
+Apply \cref{thm:affine-rigidity} with \(a=A\) and \(b=2\).
+\end{proof}
+
+\begin{remark}
+This criterion is intentionally much stronger than the original scalar
+hypotheses, but it is structurally minimal: one generator \(S\), one
+multiplication mode \(V_2\), and one coherence square suffice.  It also
+explains why a proof cannot emerge from the multiplicative semigroup
+alone.  Translation gives an external integral ruler against which the
+label \(A\) can be measured.
+\end{remark}
+
+\subsection{A categorical shadow}
+
+Let \(E_n\) denote an \(n\)-dimensional object in a semisimple tensor
+category with direct sums.  The elementary coherence
+\[
+        E_2\otimes E_2\cong E_2\oplus E_2
+\]
+expresses \(2\cdot2=2+2\).  If a dimension-scaling construction sends
+\(E_2\) to an object of dimension \(A=2^x\) and preserves this one
+isomorphism, then
+\[
+        A^2=2A.
+\]
+Since \(A>0\), one gets \(A=2\) and \(x=1\).  The statement is simple,
+but its lesson is exact: a single additive--multiplicative coherence is
+vastly more rigid than all multiplicative powers of the two generators.
+
+
+\section{Finite-dimensional functional calculus: semisimple blindness}
+
+A direct matrix formulation replaces the two scalars by
+\(\diag(2,3)\) and observes that
+\(\diag(2,3)^x=\diag(A,B)\).  By itself this is exactly the original
+problem.  More revealing is the behavior of all rational operators
+whose spectrum is supported at \(2\) and \(3\).
+
+Let \(f_x(t)=t^x\) on the positive real axis, extended holomorphically
+to the slit plane; standard matrix-function facts used below may be
+found in \cite{Higham} \(\C\setminus(-\infty,0]\).
+
+\begin{theorem}[Semisimple two-point calculus is automatic]
+\label{thm:semisimple-blind}
+Assume \(A=2^x\in\Q\) and \(B=3^x\in\Q\).  If
+\(T\in M_d(\Q)\) satisfies
+\[
+        (T-2I)(T-3I)=0,
+\]
+then
+\begin{equation}\label{eq:semisimple-formula}
+        T^x=(B-A)T+(3A-2B)I\in M_d(\Q).
+\end{equation}
+If \(T,A,B\) have integer entries, then \(T^x\) has integer entries.
+\end{theorem}
+
+\begin{proof}
+The minimal polynomial is square-free, so \(T\) is semisimple with
+spectral projections
+\[
+        P_2=3I-T,\qquad P_3=T-2I.
+\]
+Since \(P_2+P_3=I\),
+\[
+        T^x=AP_2+BP_3
+        =A(3I-T)+B(T-2I),
+\]
+which is \eqref{eq:semisimple-formula}.
+\end{proof}
+
+The theorem covers every rationally diagonalizable coupling of the two
+modes, not merely the diagonal matrix.  For example,
+\[
+        T_c=\begin{pmatrix}2&c\\0&3\end{pmatrix}
+        \quad(c\in\Z)
+\]
+is diagonalizable and
+\[
+        T_c^x=
+        \begin{pmatrix}
+          A&c(B-A)\\0&B
+        \end{pmatrix}.
+\]
+Thus adding an off-diagonal interaction between the distinct eigenvalues
+does not add arithmetic content.  It merely evaluates the divided
+difference
+\[
+        f_x[2,3]=\frac{3^x-2^x}{3-2}=B-A,
+\]
+which the original two scalar values already determine.
+
+\begin{remark}[Module-theoretic interpretation]
+Finite-dimensional \(\Q[t]\)-modules supported at the distinct maximal
+ideals \((t-2)\) and \((t-3)\) split because the ideals are coprime.
+Functional calculus on a semisimple module depends only on the two
+values \(f_x(2)\) and \(f_x(3)\).  No extension class remains on which a
+derivative could be detected.
+\end{remark}
+
+\section{Jordan self-extensions and the first-jet obstruction}
+
+A repeated spectral point changes the situation.  Let \(N\neq0\) be a
+rational matrix with \(N^2=0\).  The binomial series terminates:
+\begin{equation}\label{eq:jordan-power}
+        (bI+N)^x=b^xI+xb^{x-1}N.
+\end{equation}
+
+\begin{theorem}[One rational Jordan lift closes the conjecture]
+\label{thm:jordan-closes}
+Assume \(b\geq2\), \(b^x\in\Q\), and \(N\in M_d(\Q)\) satisfies
+\(N^2=0\neq N\).  If \((bI+N)^x\in M_d(\Q)\), then \(x\in\Q\).
+Consequently, under the Alaoglu--Erd\H{o}s hypotheses, rationality of
+either \((2I+N)^x\) or \((3I+N)^x\) forces \(x\in\Z\).
+\end{theorem}
+
+\begin{proof}
+Choose an entry \(N_{ij}\neq0\).  From
+\eqref{eq:jordan-power}, rationality of the corresponding entry of
+\((bI+N)^x\) gives \(xb^{x-1}N_{ij}\in\Q\), hence
+\(xb^{x-1}\in\Q\).  Since \(b^x\in\Q^\times\),
+\[
+        x=\frac{b}{b^x}\,xb^{x-1}\in\Q.
+\]
+Under the Alaoglu--Erd\H{o}s hypotheses,
+\cref{lem:rational-collapse} then gives \(x\in\Z\).
+\end{proof}
+
+\begin{criterion}[Minimal infinitesimal bridge]\label{crit:first-jet}
+It is enough to prove that the scalar rationality \(2^x\in\Q\) extends
+to the first-order dual-number identity
+\[
+        (2+\varepsilon)^x
+        =2^x+x2^{x-1}\varepsilon
+        \in\Q[\varepsilon]/(\varepsilon^2).
+\]
+Equivalently, it is enough to rationalize one nonzero tangent direction
+at the spectral point \(2\) (or at \(3\)).
+\end{criterion}
+
+For a Jordan block of length \(r\),
+\[
+ (bI+N)^x
+ =\sum_{j=0}^{r-1}\binom{x}{j}b^{x-j}N^j.
+\]
+The first superdiagonal already reveals \(xb^{x-1}\); higher jets add no
+logical strength for rationality, although their divisibility may be
+useful in attempts to derive the first jet from an integral model.
+
+\subsection{The Loewner matrix diagnosis}
+
+Let \(D=\diag(2,3)\).  The Fr\'echet derivative of \(f_x\) at \(D\) is
+entrywise multiplication by the Loewner matrix:
+\[
+        \bigl(Df_x(D)[E]\bigr)_{ij}
+        =f_x^{[1]}(\lambda_i,\lambda_j)E_{ij},
+        \qquad(\lambda_1,\lambda_2)=(2,3),
+\]
+where
+\[
+ f_x^{[1]}(\lambda,\mu)=
+ \begin{cases}
+ \dfrac{\lambda^x-\mu^x}{\lambda-\mu},&\lambda\neq\mu,\\[1.2ex]
+ x\lambda^{x-1},&\lambda=\mu.
+ \end{cases}
+\]
+Under the scalar hypotheses, the off-diagonal coefficients are
+\[
+        f_x^{[1]}(2,3)=f_x^{[1]}(3,2)=B-A\in\Z,
+\]
+whereas the diagonal coefficients are
+\[
+        x2^{x-1},\qquad x3^{x-1}.
+\]
+This is a precise separation:
+
+\begin{quote}
+Coupling the \(2\)-mode to the \(3\)-mode probes only a secant, already
+fixed by \(A\) and \(B\).  A self-coupling at either mode probes a
+derivative and immediately forces \(x\) rational if that derivative is
+rational.
+\end{quote}
+
+In extension-theoretic language, extensions between the two distinct
+simple spectral modules split, while a self-extension is nontrivial and
+carries the missing first-jet datum.
+
+\subsection{A useful negative theorem}
+
+\begin{proposition}[No semisimple matrix amplification can help]
+\label{prop:no-semisimple-amplification}
+Fix any finite family of rational matrices \(T_j\) whose minimal
+polynomials are square-free and whose spectra are subsets of
+\(\{2,3\}\).  Under \(2^x,3^x\in\Q\), every \(T_j^x\) is rational.
+Therefore no condition asserting rationality or integrality of such
+semisimple powers is stronger than the original hypotheses.
+\end{proposition}
+
+This rules out a broad class of seemingly richer finite-dimensional
+constructions.  Any matrix-functional-calculus approach must introduce
+a repeated node, a new algebraic spectral point, or a nonfunctional
+relation such as addition.
+
+\section{The fractional-part system and rational Koopman cocycles}
+
+Return to \(x=n+\alpha\), \(0\leq\alpha<1\), and the rationals
+\(r=2^\alpha\), \(s=3^\alpha\) from \eqref{eq:r-s}.  If \(\alpha=0\)
+the conjecture is proved, so assume for analysis that \(\alpha\) is
+irrational.
+
+Let \(X=[0,1)\) with Lebesgue measure, and let
+\[
+        R_\alpha(t)=\{t+\alpha\}.
+\]
+Define the jump function
+\[
+        w(t)=\floor{t+\alpha}
+        =\mathbf 1_{[1-\alpha,1)}(t).
+\]
+The elementary identity
+\begin{equation}\label{eq:jump-coboundary}
+        w(t)-\alpha=t-R_\alpha(t)
+\end{equation}
+is the source of both the usefulness and the limitations of the model.
+
+For \(b=2,3\), define
+\begin{equation}\label{eq:cocycle}
+        c_b(t)=b^{w(t)-\alpha}.
+\end{equation}
+It takes exactly two values:
+\[
+        c_2(t)\in\left\{\frac1r,\frac2r\right\}\subset\Q,
+        \qquad
+        c_3(t)\in\left\{\frac1s,\frac3s\right\}\subset\Q.
+\]
+Conversely, rationality of either pair of values is equivalent to
+rationality of \(b^\alpha\).
+
+Let \(U_\alpha\) be the Koopman unitary
+\[
+        (U_\alpha\xi)(t)=\xi(R_\alpha(t))
+\]
+on \(L^2(X)\), and let
+\[
+        W_b=M_{c_b}U_\alpha.
+\]
+
+\begin{theorem}[The weighted operators are bounded coboundary twists]
+\label{thm:koopman-similar}
+Let \(h_b(t)=b^t\).  Then \(h_b\) and \(h_b^{-1}\) are bounded, and
+\begin{equation}\label{eq:similarity}
+        W_b=M_{h_b}U_\alpha M_{h_b}^{-1}.
+\end{equation}
+Consequently \(W_b\) is similar to \(U_\alpha\), and all spectral
+invariants preserved by bounded similarity are independent of the
+rationality of \(b^\alpha\).
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:jump-coboundary},
+\[
+        c_b(t)=b^{t-R_\alpha(t)}
+              =\frac{h_b(t)}{h_b(R_\alpha(t))}.
+\]
+Substitution into the definition of \(W_b\) gives
+\eqref{eq:similarity}.
+\end{proof}
+
+For irrational \(\alpha\), \(U_\alpha\) has eigenvalues
+\(\ee^{2\pi\ii k\alpha}\), \(k\in\Z\), dense in \(\mathbb T\), so
+\[
+        \Spec(W_b)=\Spec(U_\alpha)=\mathbb T.
+\]
+The iterated products telescope:
+\begin{equation}\label{eq:cocycle-telescope}
+ \prod_{j=0}^{N-1}c_b(R_\alpha^jt)
+ =b^{t-R_\alpha^Nt},
+\end{equation}
+which is uniformly bounded above and below independently of \(N\).
+Hence every logarithmic growth exponent is zero.  Also
+\[
+        \int_X\log c_b\,dt
+        =(\log b)\int_X(w-\alpha)\,dt=0,
+\]
+so the Fuglede--Kadison determinant of the positive multiplier
+\(M_{c_b}\) is \(1\).  The rotation has Kolmogorov--Sinai entropy zero
+for every \(\alpha\) \cite{Walters}.  None of these invariants can detect whether
+\(\alpha\) is rational.
+
+\subsection{The common projection is the surviving datum}
+
+Let
+\[
+        P=M_w.
+\]
+Then \(P\) is a projection and
+\begin{equation}\label{eq:trace-alpha}
+        \tau(P)=\int_Xw(t)\,dt=\alpha.
+\end{equation}
+The two rational multipliers are affine functions of the same
+projection:
+\begin{equation}\label{eq:weights-projection}
+        M_{c_2}=\frac1r(I+P),\qquad
+        M_{c_3}=\frac1s(I+2P).
+\end{equation}
+Equivalently,
+\[
+        2rM_{c_2}-sM_{c_3}=I.
+\]
+Thus the scalar hypotheses produce a rationally defined two-valued
+observable, but its invariant trace may be irrational.  Rational
+operator coefficients do not imply rational values of a trace state.
+
+\begin{theorem}[Exact finite-dimensional trace criterion]
+\label{thm:finite-trace}
+Assume \eqref{eq:r-s}.  If there exist \(N\geq1\), a projection
+\(P_N\in M_N(\C)\), and a trace-preserving identification of the
+distinguished projection in the Koopman model such that
+\[
+        \frac1N\Tr(P_N)=\tau(P)=\alpha,
+\]
+then \(\alpha=0\), and hence \(x\in\Z\).
+\end{theorem}
+
+\begin{proof}
+The normalized trace of a matrix projection is
+\(\rank(P_N)/N\in\Q\), so \(\alpha\in\Q\).  By
+\cref{lem:rational-collapse} and \(2^\alpha\in\Q\),
+\(\alpha=0\).
+\end{proof}
+
+\begin{warning}[Approximation is not enough]
+For every real \(\alpha\in[0,1]\), one can choose projections
+\(P_N\in M_N(\C)\) of rank \(\floor{\alpha N}\), giving
+\[
+        \frac1N\Tr(P_N)\longrightarrow\alpha.
+\]
+Thus quasidiagonal, sofic, MF, or moment approximation that reproduces
+the trace only in the limit cannot force rationality.  An operator proof
+along this route needs an \emph{exact} finite-dimensional trace
+realization, a bounded-denominator theorem, or an arithmetic restriction
+on the admissible matrix sizes.
+\end{warning}
+
+\section{Finite Hankel realization of the Sturmian jump word}
+
+Follow the orbit of \(0\) and define
+\begin{equation}\label{eq:sturmian-word}
+        w_k=w(R_\alpha^k0)
+            =\floor{(k+1)\alpha}-\floor{k\alpha}
+            \in\{0,1\}.
+\end{equation}
+This is the characteristic Sturmian word of slope \(\alpha\) when
+\(\alpha\) is irrational \cite{Lothaire,Queffelec}.  It is recoverable from either rational
+cocycle in \eqref{eq:cocycle}: the two values distinguish \(w_k=0\)
+from \(w_k=1\).
+
+Let
+\[
+        \mathsf H_w=(w_{i+j})_{i,j\geq0}
+\]
+be its infinite Hankel matrix.
+
+\begin{theorem}[Finite Hankel rank closes the conjecture]
+\label{thm:hankel-closes}
+Under the Alaoglu--Erd\H{o}s hypotheses, if
+\(\rank\mathsf H_w<\infty\) over \(\C\) (equivalently over any
+characteristic-zero field containing the sequence), then
+\(\alpha=0\), hence \(x\in\Z\).
+\end{theorem}
+
+\begin{proof}
+Finite Hankel rank implies that \((w_k)\) satisfies a linear recurrence
+of some finite order \cite{Kailath,Peller} \(d\), from some point onward.  Once the recurrence
+is in force, the state
+\[
+        (w_k,w_{k+1},\ldots,w_{k+d-1})
+\]
+belongs to the finite set \(\{0,1\}^d\) and determines the next term.
+Some state repeats, so the sequence is eventually periodic.
+
+On the other hand, telescoping \eqref{eq:sturmian-word} gives
+\[
+ \frac1N\sum_{k=0}^{N-1}w_k
+ =\frac{\floor{N\alpha}}{N}
+ \longrightarrow\alpha.
+\]
+The limiting mean of an eventually periodic binary sequence is rational.
+Thus \(\alpha\in\Q\), and \cref{lem:rational-collapse} gives
+\(\alpha=0\).
+\end{proof}
+
+\begin{corollary}[No exact finite-dimensional linear realization]
+\label{cor:no-finite-realization}
+If \(x\) were a counterexample, there could be no finite-dimensional
+linear system
+\[
+        w_k=\lambda(T^kv)
+\]
+with a fixed finite-dimensional vector space, operator \(T\), vector
+\(v\), and linear functional \(\lambda\).  Any such realization would
+give \(\rank\mathsf H_w<\infty\).
+\end{corollary}
+
+This criterion is more flexible than a finite-state automaton.  It rules
+out every exact finite-dimensional linear recurrence realization,
+including those over \(\R\) or \(\C\).  It suggests a concrete operator
+target: derive finite Hankel rank, rationality of the generating function
+\(\sum_{k\geq0}w_kz^k\), or a uniform bounded-denominator recurrence from
+the simultaneous rationality of the two cocycles.  Ordinary low-rank
+approximation is again insufficient: long finite Sturmian prefixes can
+be approximated by periodic words of growing periods.
+
+
+\section{Further operator routes: exact content and failure modes}
+
+This section records several natural operator-theoretic ideas that were
+tested against the local-to-global framework.  The purpose is to prevent
+a reformulation from being mistaken for progress and to identify the
+small modification that would turn each route into a genuine closing
+argument.
+
+\subsection{Wold theory and unilateral multiplication shifts}
+
+On \(\ell^2(\N)\), the multiplication isometry
+\(V_m e_n=e_{mn}\) is a pure isometry with countably infinite defect
+multiplicity for every \(m\geq2\).  Hence individual operators \(V_m\)
+are all unitarily equivalent by Wold theory.  A pair carries more orbit
+information, but its bilateral dilation returns to the universality of
+\cref{thm:bilateral-universal}.  Therefore neither the spectrum of one
+\(V_m\) nor its Wold multiplicity can compare the labels \(m=2\) and
+\(m=A\).
+
+\emph{What would help:} retain the additive shift \(S\), the Hamiltonian
+\(H\), or the concrete arithmetic basis.  The affine relation with \(S\)
+is rigid by \cref{thm:affine-rigidity}; global \(H\)-covariance is rigid
+by \cref{thm:global-isometry}.
+
+\subsection{Tensor products and multiplicative closure}
+
+Tensor powers of semisimple scalar modes produce eigenvalues
+\(2^a3^b\).  Unique factorization makes all such labels distinct, so
+the generated finite-dimensional functional calculus remains
+semisimple.  Under the target map they become \(A^aB^b\), which are
+again distinct.  Therefore tensoring cannot spontaneously create the
+Jordan self-extension needed in \cref{thm:jordan-closes}.
+
+\emph{What would help:} one additive decomposition that identifies two
+different tensor constructions, one nontrivial extension class, or one
+new simple object whose dimension is multiplicatively independent of
+\(2,3\).
+
+\subsection{Cuntz algebras and \(K\)-theory}
+
+The Cuntz algebra \(\mathcal O_n\) has \cite{Cuntz1977}
+\(K_0(\mathcal O_n)\cong\Z/(n-1)\Z\) and \(K_1(\mathcal O_n)=0\).
+Thus a stable isomorphism or Morita equivalence between
+\(\mathcal O_2\) and \(\mathcal O_A\) would force \(A=2\).  But the
+scalar equality \(A=2^x\) supplies no such equivalence; postulating it
+already inserts a strong bridge between the source and target labels.
+At the other extreme, the \(K\)-theory of the fixed two-coordinate
+Toeplitz algebra does not see the weights \(\log2,\log3\) at all.
+
+\emph{What would help:} a naturally constructed correspondence or
+bimodule whose \(K\)-theoretic class is forced by the scalar
+exponentiation and simultaneously relates \(\mathcal O_2\) to
+\(\mathcal O_A\).  Without that construction, the \(K\)-groups merely
+restate that different known integers give different Cuntz algebras.
+
+\subsection{Operator monotonicity and Loewner positivity}
+
+For \(0<\alpha<1\), the function \(t^\alpha\) is operator monotone and
+operator concave on \((0,\infty)\).  Its two-point Loewner matrix at
+\(2,3\) is positive:
+\[
+ \begin{pmatrix}
+   \alpha2^{\alpha-1}&3^\alpha-2^\alpha\\
+   3^\alpha-2^\alpha&\alpha3^{\alpha-1}
+ \end{pmatrix}\succeq0.
+\]
+Under \eqref{eq:r-s}, the off-diagonal entry and the factors
+\(2^{\alpha-1},3^{\alpha-1}\) are rational; the unknown \(\alpha\)
+remains in the diagonal derivative.  Positivity gives real inequalities,
+not an arithmetic discreteness condition.
+
+\emph{What would help:} algebraicity or rationality of any nonzero
+diagonal derivative, the determinant, or a finite-rank degeneracy.
+Each would make \(\alpha\) algebraic and then force \(\alpha=0\), but
+none follows from positivity alone.
+
+\subsection{Spectral determinants and heat asymptotics}
+
+The local partition function \eqref{eq:partition}, its meromorphic
+continuation, and the Weyl law \eqref{eq:weyl} depend analytically on
+the continuous parameters \(\log a,\log b\).  Under
+\((a,b)\mapsto(a^x,b^x)\) they transform by ordinary scaling.
+Similarly, the Koopman cocycles have zero mean logarithm and bounded
+products by \eqref{eq:cocycle-telescope}.  Determinants and Lyapunov
+exponents therefore vanish or rescale exactly as they should for every
+real \(x>0\).
+
+\emph{What would help:} an external integral normalization of energy,
+such as the full prime spectrum, together with an exact finite-lattice
+implementation.  Without the integral lattice, asymptotic coefficients
+are real-valued and cannot quantize the scale.
+
+\subsection{Continuous interpolation of degree}
+
+Maps \(z\mapsto z^n\) on the circle, endomorphisms of \(C(\mathbb T)\), and
+finite-degree covering operators carry an integer topological degree.
+A norm-continuous family cannot change this degree.  Consequently a
+continuous ``fractional-degree'' interpolation from \(2\) to \(A\)
+cannot remain inside the category of finite coverings.
+
+This observation does not prove the conjecture: the hypotheses do not
+provide such an interpolation.  It does show that attempts to realize
+\(n\mapsto n^x\) as a continuous flow of genuine covering maps must
+leave the arithmetic category between integer times.  The obstruction
+is topological rather than transcendence-theoretic.
+
+\subsection{Abstract dilation theory}
+
+The two-mode embedding \(J\) in \eqref{eq:fock-embedding} is an
+isometry, and abstract isometries admit many unitary or isometric
+dilations.  Such dilations can assign arbitrary vectors to the
+orthogonal complement and therefore erase the valuation lattice.
+They do not imply that \(p^x\) is rational for a new prime \(p\).
+
+\emph{What would help:} a dilation theorem inside a rigid category of
+monomial operators, product systems with integral degree maps, graph
+correspondences with finite incidence matrices, or based Hilbert
+modules whose basis is arithmetically distinguished.  In any finite
+such category, \cref{thm:finite-prime-closure} becomes the closing
+mechanism.
+
+\section{Five exact closing bridges}
+
+The operator analysis reduces a large search space to five compact
+targets.  Each target adds information of a different kind, but each is
+provably sufficient.
+
+\subsection{Bridge I: one third algebraic mode}
+
+By \cref{thm:three-mode}, prove \(q^x\in\Alg\) for one
+\(q\in\Qp\setminus\langle2,3\rangle\).  In Hamiltonian language, extend
+the partial intertwiner to one additional eigenvector:
+\[
+        Te_q\neq0,\qquad HT=xTH,
+\]
+with \(Te_q\) supported at an algebraic arithmetic label.  This is the
+smallest propagation target and uses the full strength of the Six
+Exponentials Theorem immediately.
+
+\subsection{Bridge II: one rational first jet}
+
+Construct any rational square-zero perturbation \(N\neq0\) for which
+\((2I+N)^x\) or \((3I+N)^x\) is rational.  By
+\cref{thm:jordan-closes}, this makes \(x\) rational.  Conceptually, this
+requires a derivation or self-extension compatible with the scalar
+power operation.
+
+A potentially useful algebraic formulation is to seek a
+\(\Q\)-derivation \(\delta\) on an operator algebra containing the
+scalar mode such that
+\[
+        \delta(a^x)=x a^{x-1}\delta(a)
+\]
+holds and both \(\delta(a)\) and \(\delta(a^x)\) are rationally
+controlled.  If \(\delta(2)\neq0\), the chain rule gives the missing
+coefficient.
+
+\subsection{Bridge III: finite prime-mode completion}
+
+Extend the two valuation columns
+\[
+        \nu(2)\longmapsto\nu(A),\qquad
+        \nu(3)\longmapsto\nu(B)
+\]
+to an integral endomorphism of a finite prime lattice that scales the
+log-energy vector.  Then \cref{thm:finite-prime-closure} applies.  A
+unimodular extension is even more rigid and forces \(x=1\).
+
+This target is natural for finite graph correspondences, substitution
+matrices, fusion rings, and finite product systems.  The audit question
+for any proposed construction is simple: does its incidence matrix
+really satisfy \(M^{\mathsf T}\ell=x\ell\), or does it merely reproduce
+the two known columns?
+
+\subsection{Bridge IV: exact finite realization of the jump observable}
+
+Produce an exact finite-dimensional tracial model for \(P\) or an exact
+finite-dimensional linear realization of the Sturmian sequence
+\((w_k)\).  The former invokes \cref{thm:finite-trace}; the latter invokes
+\cref{thm:hankel-closes}.  Approximation with growing dimensions or
+periods does not suffice.
+
+A more operator-invariant variant uses the correlation sequence
+\[
+        c_k=\tau(PU_\alpha^kPU_\alpha^{-k}).
+\]
+Its Fourier representation contains infinitely many nonzero frequencies
+when \(\alpha\) is irrational.  Any theorem forcing a finite spectral
+support, rational generating function, or bounded-denominator exact
+recurrence for \((c_k)\) would likewise force rationality of
+\(\alpha\).
+
+\subsection{Bridge V: one additive--multiplicative coherence}
+
+Construct a morphism preserving one affine relation such as
+\(V_2S=S^2V_2\), or one categorical relation such as
+\(E_2\otimes E_2\cong E_2\oplus E_2\).  The robust gap in
+\cref{thm:affine-rigidity} shows that even preservation modulo compact
+operators is enough in the concrete affine model.
+
+A weaker propagation version would only need to manufacture a third
+mode.  For example, a rule that makes the label \(5=2+3\) available
+after exponentiation would give algebraicity of \(5^x\), and
+\cref{thm:three-mode} would finish the argument before full additive
+functoriality is required.
+
+\section{Prioritized research program}
+
+The following program is ordered by the amount of genuinely new
+arithmetic structure required, not by aesthetic appeal.
+
+\subsection{Priority 1: third-mode leakage from an additive transfer operator}
+
+The largest payoff per lemma is to derive algebraicity of \(5^x\) (or
+any non-\(3\)-smooth rational base).  The affine semigroup suggests
+studying transfer operators that mix translation and dilation:
+\[
+        (L_mf)(k)=\sum_{j=0}^{m-1}f\!\left(\frac{k+j}{m}\right)
+\]
+in a suitable discrete or compact model, together with the
+multiplication isometries \(V_2,V_3\).  The goal is not a full
+endomorphism of the \(ax+b\) algebra---which would already force
+\(x=1\)---but a weaker positivity or integrality statement that produces
+one new algebraic mode.
+
+A concrete test is whether the ranges or defect projections attached to
+\(V_2\) and \(V_3\) can be combined canonically to create the degree-five
+range projection.  Any construction must be audited against
+\cref{thm:bilateral-universal}: if it uses only the commuting pair and
+not the additive placement of their ranges, it cannot distinguish the
+labels.
+
+\subsection{Priority 2: rational self-extension from a deformation}
+
+Seek a rational one-parameter deformation \(T(t)\) through \(T(0)=2I\)
+such that \(T(t)^x\) is rational to first order at \(t=0\).  Differentiating
+would give
+\[
+        \frac{d}{dt}T(t)^x\bigg|_{t=0}
+        =x2^{x-1}T'(0),
+\]
+and any nonzero rational \(T'(0)\) closes the problem.
+
+Possible sources include:
+\begin{itemize}
+\item a derivation on a rational semigroup algebra;
+\item a nontrivial extension in a category generated by the two scalar
+      modes and an arithmetic correspondence;
+\item a deformation of a transfer operator whose matrix entries remain
+      rational because they count finite fibers;
+\item a divided-difference construction in which two spectral nodes are
+      forced to coalesce without leaving the rational category.
+\end{itemize}
+The semisimple theorem shows exactly what must be avoided: coupling only
+the distinct nodes \(2\) and \(3\) gives \(B-A\), never a derivative.
+
+\subsection{Priority 3: finite correspondence or fusion completion}
+
+Build a finite based module with basis indexed by a finite prime set and
+an integral endomorphism extending the two known valuation columns.
+The logarithmic dimension vector should be a left eigenvector with
+eigenvalue \(x\).  Once this is achieved, no delicate spectral estimate
+is needed; \cref{thm:finite-prime-closure} and Gelfond--Schneider finish
+the proof.
+
+The hard point is not finding an integer matrix with the two desired
+columns; arbitrary completion is easy.  The hard point is forcing all
+columns to obey the same logarithmic scaling.  Candidate mechanisms are
+associativity constraints, duals in a rigid tensor category, finite
+index, or a trace/dimension function compatible with both source and
+target.
+
+\subsection{Priority 4: exact Hankel rigidity from two rational cocycles}
+
+The pair of rational-valued cocycles is stronger than one such cocycle
+only through the common exponent:
+\[
+        c_2=2^{P-\alpha I},\qquad
+        c_3=3^{P-\alpha I}.
+\]
+Both are affine rational functions of the same projection \(P\), so
+purely algebraic elimination recovers \(P\) but not its trace.  A
+successful argument must constrain the orbit of \(P\), not merely \(P\)
+itself.
+
+Promising exact statements would be:
+\begin{enumerate}
+\item a bounded-order recurrence for the words obtained from both
+      cocycles;
+\item a uniform denominator bound for all correlation moments;
+\item an exact rational generating function for one nontrivial orbit
+      observable;
+\item a finite-dimensional representation whose dimension is bounded
+      independently of the approximation scale.
+\end{enumerate}
+Any of these would invoke \cref{thm:hankel-closes} or
+\cref{thm:finite-trace}.
+
+\subsection{Priority 5: quantitative affine defects}
+
+The gap
+\(\|V_AS^d-S^{2d}V_A\|_{\ess}\geq\sqrt2\) for \(A\neq2\) suggests
+looking for an arithmetic construction whose affine defect can be shown
+strictly smaller than \(\sqrt2\).  This is weaker than exact
+functoriality and robust under compact errors.  Similar estimates can be
+studied in normalized Schatten norms on finite truncations.  In the
+standard basis, the wrong label produces a defect of fixed density, not
+a boundary effect.
+
+The challenge is to connect the scalar equalities \(A=2^x,B=3^x\) to
+such a norm estimate.  Heat-kernel averaging or transfer-operator
+regularization might turn logarithmic scaling into approximate affine
+coherence, but any estimate must beat a fixed, representation-independent
+gap rather than merely tend to a nonzero constant.
+
+\section{Logical audit: what has and has not been proved}
+
+The conjecture itself remains open in this report.  The rigorous gains
+are structural and conditional:
+
+\begin{enumerate}
+\item The largest rational/algebraic sector available under a
+      counterexample is exactly the rank-two group generated by \(2\)
+      and \(3\) (\cref{thm:three-mode}).
+\item Pure bilateral shift data is completely universal
+      (\cref{thm:bilateral-universal}).
+\item Local Hamiltonian, heat, and KMS data is exactly related by time
+      rescaling (\cref{prop:fock-homothety}).
+\item A global monomial Hamiltonian extension forces a positive integer
+      exponent (\cref{thm:global-isometry}).
+\item A finite invariant prime lattice forces an integer exponent, and
+      a lattice automorphism forces \(x=1\)
+      (\cref{thm:finite-prime-closure,cor:automorphic-closure}).
+\item One affine relation is robustly label-rigid, even modulo compact
+      operators (\cref{thm:affine-rigidity}).
+\item Semisimple rational functional calculus at \(2,3\) is automatic
+      and cannot help, while one Jordan self-extension forces
+      rationality (\cref{thm:semisimple-blind,thm:jordan-closes}).
+\item The Koopman cocycles are bounded coboundaries; exact finite trace
+      or Hankel realization closes, but approximation does not
+      (\cref{thm:koopman-similar,thm:finite-trace,thm:hankel-closes}).
+\end{enumerate}
+
+None of the additional structures in the right-hand column below has
+been derived from the scalar hypotheses.
+
+\begin{center}
+\begin{tabular}{p{0.42\textwidth}p{0.47\textwidth}}
+\toprule
+\textbf{Given unconditionally} & \textbf{Still missing}\\
+\midrule
+Two integer labels \(A=2^x,B=3^x\) &
+One third independent algebraic label \(q^x\).\\
+A rank-two covariant Fock embedding &
+A finite or global integral lattice completion.\\
+All semisimple rational two-point lifts &
+One rational nonsemisimple self-extension.\\
+Two rational-valued bounded coboundaries &
+An exact finite trace or finite-Hankel realization.\\
+Pure multiplicative semigroup coherence &
+One additive--multiplicative coherence relation.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This distinction is essential.  Each missing item is a genuine
+strengthening, not a disguised consequence already established in the
+report.
+
+\section{Updated literature reconnaissance}
+
+The literature search for this continuation was organized around three
+separate questions:
+
+\begin{enumerate}
+\item Has the special rational/integer case of the Four Exponentials
+      problem, or the Alaoglu--Erd\H{o}s conjecture itself, been resolved?
+\item Have recent algebraic-independence results lowered the unconditional
+      \(2\times3\) Six Exponentials threshold to the needed \(2\times2\)
+      array in this arithmetic setting?
+\item Do recent semigroup \(C^*\)-algebra, arithmetic-dynamics, or
+      operator-algebra constructions supply a canonical additive or
+      finite-lattice extension of the two multiplicative modes?
+\end{enumerate}
+
+Searches were run through 21 August 2026 using the exact phrases
+``Alaoglu--Erdos conjecture'', ``four exponentials conjecture'',
+``six exponentials theorem'', ``Schanuel conjecture'', ``algebraic
+independence logarithms'', ``Bost--Connes'', ``ax+b semigroup
+\(C^*\)-algebra'', and combinations with ``arXiv''.  Primary sources,
+arXiv records, journal pages, and author-hosted surveys were preferred.
+
+The search found no verified unconditional resolution of the conjecture
+or of the Four Exponentials Conjecture.  The operative unconditional
+threshold remains the Six Exponentials Theorem used in
+\cref{thm:three-mode}.  Modern work on Schanuel-type statements and
+exponential algebraic closedness \cite{Kirby2010,WaldschmidtOpen},, period conjectures, explicit linear
+forms in logarithms, and zero estimates refines surrounding theory, but
+does not turn the particular vanishing determinant
+\[
+        (\log2)(\log B)-(\log3)(\log A)=0
+\]
+into a contradiction.  Linear-form estimates apply when a nonzero
+linear form in logarithms must be bounded away from zero; here the hard
+relation is bilinear in logarithms and is exactly zero.
+
+On the operator side, the Bost--Connes system, semigroup
+\(C^*\)-algebras of \(ax+b\) type, product systems, and boundary
+quotients provide a mature language for the logarithmic Hamiltonian and
+for additive--multiplicative coherence.  They support the distinction
+proved here: multiplicative time evolution is naturally homogeneous,
+whereas additive range relations remember integer degree.  No source
+located in the search derives the required additive or finite-prime
+extension from the two scalar algebraicity assumptions alone.
+
+The reproducible arXiv metadata ledger below records recent items
+returned by the focused queries.  It is included to make the search
+auditable rather than to imply that every listed paper directly attacks
+the conjecture.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.10\textwidth}
+                  >{\raggedright\arraybackslash}p{0.23\textwidth}
+                  >{\raggedright\arraybackslash}p{0.48\textwidth}
+                  >{\raggedright\arraybackslash}p{0.10\textwidth}}
+\toprule
+\textbf{Date} & \textbf{Authors} & \textbf{Title} & \textbf{arXiv}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Date} & \textbf{Authors} & \textbf{Title} & \textbf{arXiv}\\
+\midrule
+\endhead
+\multicolumn{4}{p{0.94\textwidth}}{\emph{The live arXiv Atom harvest was not available inside the compilation sandbox.  The search protocol and stable references in the bibliography remain reproducible; no unverified recent title has been inserted.}}\\
+\bottomrule
+\end{longtable}
+
+\begin{remark}[How to interpret the ledger]
+The phrase searches inevitably return papers about model theory,
+exponential fields, linear forms, or operator systems that are adjacent
+rather than directly applicable.  Their relevance is negative as well
+as positive: they confirm that the known unconditional theorem supplies
+three logarithmic columns, while the present conjecture supplies two.
+No claim of completeness is made for indexing services that were not
+openly searchable.
+\end{remark}
+
+
+\section{Conclusions}
+
+Operator theory does not bypass the transcendence barrier merely by
+placing the four algebraic numbers \(2,3,A,B\) on a Hilbert space.  In
+the natural two-mode representations, it explains why the barrier is so
+stable: all multiplicative shift pairs are universal after bilateral
+amplification, and all local logarithmic Hamiltonians are related by a
+continuous time homothety.  Spectra, heat traces, local equilibrium
+states, entropy, and bounded-coboundary invariants are therefore exactly
+as compatible with a nonintegral \(x\) as with an integral one.
+
+The useful operator contribution is a precise map of where discreteness
+re-enters.
+
+\begin{itemize}
+\item The full arithmetic Hamiltonian has simple, discretely labelled
+      spectrum.  A global isometric rescaling must send every \(n\) to
+      the integer \(n^x\), and finite differences force \(x\in\N\).
+\item A finite prime-mode completion turns logarithmic scaling into an
+      integer-matrix eigenvalue problem.  Gelfond--Schneider then forces
+      the eigenvalue to be an integer.
+\item The affine relation \(V_mS=S^mV_m\) remembers the integer label in
+      a way the multiplicative pair cannot; even a compact perturbation
+      cannot disguise a wrong label.
+\item Semisimple functional calculus sees only the two given values.
+      A Jordan self-extension sees a derivative, and that first jet
+      immediately rationalizes \(x\).
+\item The Koopman model converts the fractional part into the trace of
+      one projection.  Exact finite-dimensional or finite-Hankel
+      realization discretizes the trace; approximation does not.
+\item Six Exponentials shows that a hypothetical counterexample has a
+      maximal algebraic sector of rank exactly two.  One new independent
+      algebraic mode is enough.
+\end{itemize}
+
+The most promising next attack is therefore not ``find a subtler
+spectrum.''  It is to derive one small coherence bridge that cannot be
+implemented in the universal rank-two model: a third mode, a first jet,
+a finite integral completion, an exact finite realization, or an
+additive range relation.  These targets are narrow enough to test
+individual constructions decisively, yet strong enough that no further
+transcendence breakthrough would be needed once any one of them is
+obtained.
+
+\appendix
+
+\section{Domain details for arithmetic Hamiltonians}
+
+This appendix records the unbounded-operator points used implicitly in
+the main text.
+
+Let \(H\) be diagonal on \(\ell^2(\N)\),
+\(He_n=(\log n)e_n\), with maximal domain
+\[
+ \mathcal D(H)
+ =\left\{\xi=(\xi_n):
+   \sum_{n\geq1}(\log n)^2|\xi_n|^2<\infty\right\}.
+\]
+The finite-support subspace
+\[
+        \mathcal C=\spn\{e_n:n\in\N\}
+\]
+is a core for \(H\).  If a bounded operator \(T\) satisfies
+\(HT=cTH\) on \(\mathcal C\), then \(T\mathcal C\subseteq\mathcal D(H)\).
+For each \(n\), spectral simplicity gives
+\[
+        Te_n\in\ker(H-c\log n).
+\]
+Thus either \(Te_n=0\), or \(n^c\in\N\) and
+\(Te_n=\lambda_ne_{n^c}\) for some scalar \(\lambda_n\).  In
+particular:
+
+\begin{proposition}\label{prop:all-H-intertwiners}
+Every bounded \(H\)-covariant operator has the form
+\[
+        Te_n=
+        \begin{cases}
+        \lambda_ne_{n^c},&n^c\in\N,\\
+        0,&n^c\notin\N,
+        \end{cases}
+\]
+with a bounded scalar family \((\lambda_n)\).  It is an isometry exactly
+when \(n^c\in\N\) and \(|\lambda_n|=1\) for every \(n\).
+\end{proposition}
+
+This proposition explains why support, not spectral multiplicity, is the
+central invariant.  Under a hypothetical counterexample, the support of
+every such algebraically labelled intertwiner is confined by
+\cref{thm:three-mode} to the \(3\)-smooth sector.
+
+On \(\ell^2(\Qp)\), the same argument applies to
+\(H_Ge_q=(\log q)e_q\).  A covariant operator is monomial on the rational
+basis wherever \(q^c\in\Qp\).  Under a nonintegral
+Alaoglu--Erd\H{o}s solution, \cref{thm:three-mode} says the algebraic
+support is precisely \(\langle2,3\rangle\).
+
+\section{The finite-difference integrality lemma in greater generality}
+
+The proof of \cref{thm:global-isometry} used a standard but useful
+criterion.
+
+\begin{theorem}[Integer-valued real powers]\label{thm:integer-valued-powers}
+Let \(c\geq0\).  If \(n^c\in\Z\) for every sufficiently large integer
+\(n\), then \(c\in\Nzero\).
+\end{theorem}
+
+\begin{proof}
+If \(c\notin\Nzero\), put \(r=\floor c+1\).  For all sufficiently large
+\(n\), every term \((n+j)^c\), \(0\leq j\leq r\), is an integer, hence
+\(\Delta^r n^c\in\Z\).  The repeated-integral identity
+\[
+ \Delta^r f(n)
+ =\int_{[0,1]^r}f^{(r)}(n+t_1+\cdots+t_r)
+   \,dt_1\cdots dt_r
+\]
+holds for \(f\in C^r\).  With \(f(t)=t^c\), the derivative is
+\[
+        f^{(r)}(t)
+        =c(c-1)\cdots(c-r+1)t^{c-r}.
+\]
+It is nonzero with fixed sign on \((0,\infty)\), while \(c-r<0\).
+Therefore \(\Delta^r n^c\) is nonzero and tends to zero, contradicting
+its eventual integrality.
+\end{proof}
+
+The theorem remains valid if \(n^c\) is required to lie in any discrete
+subset of \(\R\) with a uniform separation near the relevant range,
+provided the forward differences inherit that discreteness.  This is
+one reason exact lattice-valued operator models are powerful, while
+asymptotic closeness to a lattice is not.
+
+\section{Finite prime lattices as based operator correspondences}
+
+Let \(P=\{p_1,\ldots,p_d\}\) and let
+\(\ell=(\log p_1,\ldots,\log p_d)^{\mathsf T}\).
+An integer matrix \(M\) defines a monomial map on Laurent monomials:
+\[
+ z^v\longmapsto z^{Mv},\qquad v\in\Z^d.
+\]
+On the group Hilbert space \(\ell^2(\Z^d)\), it defines
+\(T_Me_v=e_{Mv}\) when \(M\) is injective.  The energy relation is
+\[
+ H_\ell T_Me_v
+ =\langle\ell,Mv\rangle e_{Mv}
+ =\langle M^{\mathsf T}\ell,v\rangle e_{Mv}.
+\]
+Hence \(H_\ell T_M=cT_MH_\ell\) exactly when
+\(M^{\mathsf T}\ell=c\ell\).
+
+The same matrix can be viewed in several equivalent categories:
+
+\begin{enumerate}
+\item as an endomorphism of the free abelian multiplicative group
+      \(\Gamma_P\);
+\item as a monomial endomorphism of the algebraic torus
+      \((\C^\times)^d\);
+\item as a based correspondence on the valuation lattice;
+\item when \(M\geq0\), as a multi-shift on the positive Fock cone;
+\item as an incidence matrix with logarithmic dimension vector
+      \(\ell\).
+\end{enumerate}
+
+In every finite realization, the scaling factor is an eigenvalue of a
+monic integer polynomial.  This is the categorical content of
+\cref{thm:finite-prime-closure}.  Passing to an infinite prime set
+removes the algebraic-integer conclusion: an infinite integer matrix may
+have arbitrary positive eigenvalues in an appropriate functional-analytic
+sense.  Therefore finiteness is not cosmetic; it is the source of
+arithmetic discreteness.
+
+\subsection{A completion test}
+
+Suppose a construction proposes a finite matrix \(M\) extending the two
+known columns.  The following checklist detects circularity.
+
+\begin{enumerate}
+\item Are the columns genuinely integral valuation vectors?
+\item Does \(M^{\mathsf T}\ell=x\ell\) hold for \emph{every} column, or
+      only for the columns indexed by \(2\) and \(3\)?
+\item Is the prime set finite and invariant under all introduced power
+      images?
+\item Was rationality of a new \(p^x\) proved, or silently assumed when
+      its valuation column was written down?
+\item If \(M\) is claimed unimodular, is surjectivity of the power map
+      actually available?
+\end{enumerate}
+
+A positive answer to the first three questions, without assuming the
+desired conclusion in the fourth, is already a proof.
+
+\section{Functional calculus on primary components}
+
+Let \(T\) be a rational matrix with positive spectrum contained in
+\(\{2,3\}\).  Its minimal polynomial has the form
+\[
+        m_T(t)=(t-2)^r(t-3)^s.
+\]
+Hermite interpolation gives a polynomial \(P_x(t)\) of degree
+less than \(r+s\) such that
+\[
+ P_x^{(j)}(2)=\frac{d^j}{dt^j}t^x\bigg|_{t=2},
+ \quad 0\leq j<r,
+\]
+and similarly at \(3\).  Then \(T^x=P_x(T)\).  Consequently:
+
+\begin{proposition}[Jet hierarchy]\label{prop:jet-hierarchy}
+Under \(2^x,3^x\in\Q\), rationality of \(T^x\) is automatic for every
+semisimple \(T\) (\(r,s\leq1\)).  If \(r\geq2\) or \(s\geq2\), it
+additionally requires rational control of at least one derivative
+\[
+        (x)_j\,2^{x-j}
+        \quad\text{or}\quad
+        (x)_j\,3^{x-j},
+\]
+where \((x)_j=x(x-1)\cdots(x-j+1)\).
+The first nonzero self-extension, \(j=1\), already forces \(x\in\Q\).
+\end{proposition}
+
+This hierarchy precisely classifies the information visible to every
+finite-dimensional rational functional-calculus model supported at the
+two original bases.
+
+\subsection{Why the distinct-node triangular matrix is split}
+
+For completeness, the matrix
+\[
+        T_c=\begin{pmatrix}2&c\\0&3\end{pmatrix}
+\]
+is rationally diagonalizable:
+\[
+ \begin{pmatrix}1&c\\0&1\end{pmatrix}^{-1}
+ T_c
+ \begin{pmatrix}1&c\\0&1\end{pmatrix}
+ =
+ \begin{pmatrix}2&0\\0&3\end{pmatrix}
+\]
+after the appropriate sign convention for the off-diagonal conjugating
+entry.  More invariantly, the coprimality of \(t-2\) and \(t-3\) makes
+the module split.  Its off-diagonal entry in \(T_c^x\) is a divided
+difference, not a derivative.  A genuine Jordan block cannot be reached
+by a rational similarity while keeping distinct eigenvalues.
+
+\section{Koopman calculations and correlation data}
+
+The jump identity
+\[
+        \sum_{j=0}^{N-1}(w(R_\alpha^jt)-\alpha)
+        =t-R_\alpha^Nt
+\]
+proves bounded discrepancy directly.  In particular, the Sturmian word
+has balanced prefixes:
+\[
+        \left|\sum_{j=0}^{N-1}w_j-N\alpha\right|<1.
+\]
+This strong regularity does not imply periodicity; it is shared by every
+irrational rotation word.
+
+The distinguished interval projection has Fourier coefficients
+\[
+ \widehat w(k)
+ =
+ \begin{cases}
+ \alpha,&k=0,\\[0.6ex]
+ \displaystyle
+ \frac{\ee^{-2\pi\ii k(1-\alpha)}-\ee^{-2\pi\ii k}}{2\pi\ii k},
+ &k\neq0.
+ \end{cases}
+\]
+For irrational \(\alpha\), infinitely many coefficients are nonzero.
+The correlation sequence
+\[
+ c_n=\tau(PU_\alpha^nPU_\alpha^{-n})
+\]
+has the Fourier expansion
+\[
+        c_n=\sum_{k\in\Z}|\widehat w(k)|^2
+             \ee^{2\pi\ii kn\alpha}.
+\]
+Thus its spectral measure has infinitely many atoms for irrational
+\(\alpha\).  Any exact representation that forces only finitely many
+frequencies would make \(\alpha\) rational.  This is the correlation
+counterpart of the Hankel-rank criterion.
+
+\subsection{Exact versus asymptotic matrix models}
+
+There are three materially different claims:
+
+\begin{enumerate}
+\item \emph{Exact fixed-size model:} a single \(M_N\) reproduces the
+      projection and its trace exactly.  This forces
+      \(\alpha\in\frac1N\Z\).
+\item \emph{Uniformly bounded size:} a sequence of exact models has
+      dimensions bounded by \(N_0\).  Passing to a constant-size
+      subsequence again forces a rational trace with bounded
+      denominator.
+\item \emph{Growing-size approximation:} dimensions tend to infinity
+      and traces converge to \(\alpha\).  This is compatible with every
+      real \(\alpha\) and gives no arithmetic conclusion.
+\end{enumerate}
+
+Any future claim based on microstates or finite sections should specify
+which of these regimes is proved.
+
+\section{Dependency map for the closing criteria}
+
+The logical flow can be summarized without operator terminology.
+
+\begin{align*}
+\text{third independent algebraic mode}
+&\Longrightarrow x\in\Q
+ &&\text{(Six Exponentials)},\\
+\text{rational first derivative at \(2\) or \(3\)}
+&\Longrightarrow x\in\Q
+ &&\text{(elementary division)},\\
+\text{finite invariant prime lattice}
+&\Longrightarrow x\text{ algebraic integer}
+ &&\text{(integer matrix)},\\
+x\text{ algebraic and }2^x\in\Alg
+&\Longrightarrow x\in\Q
+ &&\text{(Gelfond--Schneider)},\\
+x\in\Q,\ 2^x\in\Q
+&\Longrightarrow x\in\Z
+ &&\text{(valuation)},\\
+\text{exact finite trace/Hankel model}
+&\Longrightarrow\alpha\in\Q
+ &&\text{(finite rank/periodicity)},\\
+\alpha\in\Q,\ 2^\alpha\in\Q
+&\Longrightarrow\alpha=0
+ &&\text{(valuation)},\\
+\text{one affine coherence}
+&\Longrightarrow A=2
+ &&\text{(translation length)},\\
+A=2^x=2
+&\Longrightarrow x=1.
+\end{align*}
+
+This map makes the role of each external theorem explicit and prevents
+a closing criterion from being confused with a derivation of its
+premise.
+
+\section{Reproducible search notes}
+
+The arXiv metadata queries used for the ledger were variants of:
+
+\begin{verbatim}
+all:"four exponentials conjecture"
+(all:Schanuel OR all:"six exponentials" OR
+ all:"four exponentials") AND cat:math.NT
+(all:"algebraic independence" AND all:logarithms) AND cat:math.NT
+(all:"Bost-Connes" OR all:"ax+b semigroup" OR
+ all:"semigroup C*-algebra") AND cat:math.OA
+\end{verbatim}
+
+Results were sorted by submission date and screened for direct
+relevance.  General web searches additionally used the exact conjecture
+name with the scalar condition \(2^x,3^x\in\Z\), and checked cited
+surveys and journal versions.  Because negative literature searches can
+never prove nonexistence, the report's mathematical claims rely only on
+the theorems proved here or on standard cited results, not on the
+absence of a search hit.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society}
+  \textbf{56} (1944), 448--469.
+
+\bibitem{BakerBook}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock second edition, Cambridge University Press, 1990.
+
+\bibitem{BostConnes}
+J.-B.~Bost and A.~Connes,
+\newblock Hecke algebras, type III factors and phase transitions with
+spontaneous symmetry breaking in number theory,
+\newblock \emph{Selecta Mathematica (N.S.)} \textbf{1} (1995), 411--457.
+
+\bibitem{BratteliRobinson}
+O.~Bratteli and D.~W.~Robinson,
+\newblock \emph{Operator Algebras and Quantum Statistical Mechanics II},
+\newblock second edition, Springer, 1997.
+
+\bibitem{BrownOzawa}
+N.~P.~Brown and N.~Ozawa,
+\newblock \emph{\(C^*\)-Algebras and Finite-Dimensional Approximations},
+\newblock Graduate Studies in Mathematics 88, American Mathematical
+Society, 2008.
+
+\bibitem{BrownloweEtAl}
+N.~Brownlowe, A.~an Huef, M.~Laca, and I.~Raeburn,
+\newblock Boundary quotients of the Toeplitz algebra of the affine
+semigroup over the natural numbers,
+\newblock \emph{Ergodic Theory and Dynamical Systems} \textbf{32} (2012),
+35--62.
+
+\bibitem{Cuntz1977}
+J.~Cuntz,
+\newblock Simple \(C^*\)-algebras generated by isometries,
+\newblock \emph{Communications in Mathematical Physics} \textbf{57}
+(1977), 173--185.
+
+\bibitem{CuntzAxB}
+J.~Cuntz,
+\newblock \(C^*\)-algebras associated with the \(ax+b\)-semigroup over
+\(\N\),
+\newblock in \emph{K-Theory and Noncommutative Geometry}, EMS Series of
+Congress Reports, European Mathematical Society, 2008, 201--215;
+\newblock \url{https://arxiv.org/abs/math/0611541}.
+
+\bibitem{CuntzDeningerLaca}
+J.~Cuntz, C.~Deninger, and M.~Laca,
+\newblock \(C^*\)-algebras of Toeplitz type associated with algebraic
+number fields,
+\newblock \emph{Mathematische Annalen} \textbf{355} (2013), 1383--1423.
+
+\bibitem{Gelfond}
+A.~O.~Gelfond,
+\newblock \emph{Transcendental and Algebraic Numbers},
+\newblock Dover Publications, 1960.
+
+\bibitem{Higham}
+N.~J.~Higham,
+\newblock \emph{Functions of Matrices: Theory and Computation},
+\newblock Society for Industrial and Applied Mathematics, 2008.
+
+\bibitem{Kailath}
+T.~Kailath,
+\newblock \emph{Linear Systems},
+\newblock Prentice--Hall, 1980.
+
+\bibitem{Kirby2010}
+J.~Kirby,
+\newblock Schanuel's conjecture and the exponential algebraic closedness
+of the complex field,
+\newblock \emph{Bulletin of the London Mathematical Society}
+\textbf{42} (2010), 222--234;
+\newblock \url{https://arxiv.org/abs/0810.4285}.
+
+\bibitem{LacaRaeburn}
+M.~Laca and I.~Raeburn,
+\newblock Semigroup crossed products and the Toeplitz algebras of
+nonabelian groups,
+\newblock \emph{Journal of Functional Analysis} \textbf{139} (1996),
+415--440.
+
+\bibitem{Lang}
+S.~Lang,
+\newblock \emph{Introduction to Transcendental Numbers},
+\newblock Addison--Wesley, 1966.
+
+\bibitem{LindMarcus}
+D.~Lind and B.~Marcus,
+\newblock \emph{An Introduction to Symbolic Dynamics and Coding},
+\newblock Cambridge University Press, 1995.
+
+\bibitem{Lothaire}
+M.~Lothaire,
+\newblock \emph{Algebraic Combinatorics on Words},
+\newblock Encyclopedia of Mathematics and its Applications 90,
+Cambridge University Press, 2002.
+
+\bibitem{Nica}
+A.~Nica,
+\newblock \(C^*\)-algebras generated by isometries and Wiener--Hopf
+operators,
+\newblock \emph{Journal of Operator Theory} \textbf{27} (1992), 17--52.
+
+\bibitem{Peller}
+V.~V.~Peller,
+\newblock \emph{Hankel Operators and Their Applications},
+\newblock Springer Monographs in Mathematics, Springer, 2003.
+
+\bibitem{Queffelec}
+M.~Queff\'elec,
+\newblock \emph{Substitution Dynamical Systems---Spectral Analysis},
+\newblock second edition, Lecture Notes in Mathematics 1294, Springer,
+2010.
+
+\bibitem{Schneider}
+T.~Schneider,
+\newblock \emph{Einf\"uhrung in die transzendenten Zahlen},
+\newblock Springer, 1957.
+
+\bibitem{WaldschmidtBook}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups:
+Transcendence Properties of the Exponential Function in Several
+Variables},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer,
+2000.
+
+\bibitem{WaldschmidtOpen}
+M.~Waldschmidt,
+\newblock Open Diophantine problems,
+\newblock \emph{Moscow Mathematical Journal} \textbf{4} (2004), 245--305;
+\newblock \url{https://arxiv.org/abs/math/0312440}.
+
+\bibitem{Walters}
+P.~Walters,
+\newblock \emph{An Introduction to Ergodic Theory},
+\newblock Graduate Texts in Mathematics 79, Springer, 1982.
+
+\end{thebibliography}
+
+\end{document}
