@@ -10,7 +10,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage[nameinlink,capitalise]{cleveref}
-\usepackage{siunitx}
+\newcommand{\num}[1]{\texttt{#1}}
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage{setspace}
@@ -28,8 +28,6 @@
 \setlength{\headheight}{14pt}
 \setstretch{1.04}
 \setlist{itemsep=0.25em,topsep=0.4em}
-\sisetup{scientific-notation=true,round-mode=places,round-precision=7}
-
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -96,7 +94,7 @@ The elementary reductions in \cref{sec:reductions} are included only to make the
 
 Throughout, put
 \[
- a=2^x,\qquad b=3^x,\qquad \alpha=\frac{\log 3}{\log 2}.
+ a=2^x,\qquad b=3^x,\qquad \alpha=\log_2 3.
 \]
 Then $b=a^\alpha$ and $6^x=ab$.  Since a positive integer cannot lie strictly between $0$ and $1$, $x\ge 0$; the case $x=0$ is immediate.
 
@@ -144,7 +142,7 @@ Let
 where $c_n\ge0$ and $F(6)<\infty$.  Then
 \begin{align}
  F(1)F(6)-F(2)F(3)
- &=\sum_{0\le n<m}c_nc_m(2^m-2^n)(3^m-3^n) \label{eq:covariance-sum}\
+ &=\sum_{0\le n<m}c_nc_m(2^m-2^n)(3^m-3^n) \label{eq:covariance-sum}\\
  &\ge0.\nonumber
 \end{align}
 Equality holds if and only if at most one coefficient $c_n$ is nonzero.
@@ -202,18 +200,20 @@ The two random variables are strictly comonotone, so zero covariance is a degene
 A function analytic at the origin with nonnegative Taylor coefficients is absolutely monotone on every positive interval inside its disk of convergence.  Conversely, standard Bernstein-type representation theorems turn absolute monotonicity into coefficientwise positivity under mild analytic hypotheses.  Thus \cref{cor:positive-rigidity} may be read as follows.
 
 \begin{corollary}\label{cor:absolute-monotone}
-An analytic absolutely monotone interpolant through
+Let $F$ be analytic on a disk centered at the origin with radius greater than $6$, and
+suppose every Maclaurin coefficient of $F$ is nonnegative.  If $F$ interpolates
 \[
  (1,1),\quad (2,a),\quad (3,b),\quad (6,ab)
 \]
-can exist only when $(a,b)=(2^k,3^k)$ for an integer $k\ge0$.
+then $(a,b)=(2^k,3^k)$ for an integer $k\ge0$.
 \end{corollary}
 
 This identifies a sharply delimited bridge: any construction that derives an absolutely monotone interpolant from the integrality of $a$ and $b$ would finish the conjecture immediately.  The later separator theorem explains why an exact construction cannot arise from a generic positivity-preserving interpolation routine; it has to use the arithmetic hypothesis in an essential way.
 
 \section{Quantitative stability and denominator quantization}\label{sec:stability}
 
-The exact identity has a useful stability form.  Let $(p_n)_{n\ge0}$ be a probability distribution and put $M(t)=\sum p_nt^n$ and
+The exact identity has a useful stability form.  Let $(p_n)_{n\ge0}$ be a probability
+distribution with $M(6)<\infty$, and put $M(t)=\sum p_nt^n$ and
 \[
  \Delta=M(6)-M(2)M(3).
 \]
@@ -241,7 +241,7 @@ Since $p_n^2\le(\sup_jp_j)p_n$, the second inequality follows.
 There is also an exact arithmetic quantization.
 
 \begin{corollary}[Rational-weight gap]\label{cor:rational-gap}
-If every $p_n$ is an integral multiple of $1/D$, then $D^2\Delta$ is a nonnegative integer.  Hence either $\Delta=0$ or $\Delta\ge D^{-2}$.
+Let $D\ge1$.  If every $p_n$ is an integral multiple of $1/D$, then $D^2\Delta$ is a nonnegative integer.  Hence either $\Delta=0$ or $\Delta\ge D^{-2}$.
 \end{corollary}
 \begin{proof}
 Write $p_n=r_n/D$ with $r_n\in\N$.  Multiplying \eqref{eq:covariance-sum} by $D^2$ gives a sum of nonnegative integers.
@@ -297,9 +297,8 @@ In particular, the separating margin is at least one before normalization.
 \begin{corollary}[Sup-norm distance from the positive cone]\label{cor:distance}
 Let $\vct y$ be any normalized positive mixture of the vectors $\vct v(n)$.  If each of its four coordinates differs from the corresponding coordinate of $\vct v(x)$ by at most $\varepsilon$, then
 \[
- \varepsilon\ge \frac{1}{(2^k+1)(3^{k+1}+1)}.
+ \varepsilon\ge \frac{1}{3^{k+1}+2^k+1}.
 \]
-If the first coordinate is exactly $1$, the denominator may be replaced by $3^{k+1}+2^k+1$.
 \end{corollary}
 \begin{proof}
 One has $\lambda_k\cdot\vct y\ge0$ and $\lambda_k\cdot\vct v(x)\le-1$.  Apply the triangle inequality to $\lambda_k\cdot(\vct y-\vct v(x))$.
@@ -316,7 +315,9 @@ Then
 \begin{equation}\label{eq:weighted-negativity}
  \sum_{c_n<0}|c_n|h_k(n)\ge (a-2^k)(3^{k+1}-b)\ge1.
 \end{equation}
-If the support is contained in $\{0,\dots,N\}$ and $H_{k,N}=\max_{0\le n\le N}h_k(n)$, then the total negative mass $\eta=\sum_{c_n<0}|c_n|$ obeys
+If the support is contained in $\{0,\dots,N\}$ and $H_{k,N}=\max_{0\le n\le N}h_k(n)$,
+then the representation forces $H_{k,N}>0$, and the total negative mass
+$\eta=\sum_{c_n<0}|c_n|$ obeys
 \[
  \eta\ge \frac{1}{H_{k,N}}.
 \]
@@ -356,7 +357,7 @@ This cubic is not intended as a proof device by itself.  Its value is diagnostic
 The fourth moment $M(6)$ is not actually needed if one is willing to use the transcendental constant $\alpha$ explicitly.
 
 \begin{theorem}[Discrete Jensen rigidity]\label{thm:jensen}
-Let $(p_n)$ be a probability distribution on $\N$.  Then
+Let $(p_n)$ be a probability distribution on $\N$ with $\sum_np_n3^n<\infty$.  Then
 \begin{equation}\label{eq:jensen}
  \sum_np_n3^n\ge\left(\sum_np_n2^n\right)^\alpha.
 \end{equation}
@@ -455,7 +456,7 @@ For $n\ge2$,
 \begin{proof}
 The coefficient $c_n$ is the divided difference $[1,2,\dots,2^n]f$.  More generally, if $q>1$, $r>0$, and $g(q^j)=r^j$, induction in the Newton recursion gives
 \[
- [1,q,\dots,q^n]g=rac{\prod_{j=0}^{n-1}(r-q^j)}{\prod_{j=0}^{n-1}(q^n-q^j)}.
+ [1,q,\dots,q^n]g=\frac{\prod_{j=0}^{n-1}(r-q^j)}{\prod_{j=0}^{n-1}(q^n-q^j)}.
 \]
 Taking $(q,r)=(2,3)$ gives \eqref{eq:cn-product}.  The denominator is positive.  In the numerator the factors for $j=0,1$ are positive and all factors for $j\ge2$ are negative, proving \eqref{eq:cn-sign}.
 \end{proof}
@@ -485,7 +486,7 @@ $n$ & sign & $|\operatorname{num}(c_n)|$ & $\operatorname{den}(c_n)$\\
 The sign alternation in the coefficient sequence is canceled by the sign of the geometric Newton basis beyond the interval containing an integer argument.
 
 \begin{theorem}[One-signed geometric tail]\label{thm:one-signed-tail}
-Let $A$ be an integer with $2^k<A<2^{k+1}$.  Then every Newton summand
+Let $k\ge1$, and let $A$ be an integer with $2^k<A<2^{k+1}$.  Then every Newton summand
 \[
  c_n\prod_{j=0}^{n-1}(A-2^j),\qquad n\ge k+1,
 \]
@@ -573,11 +574,17 @@ Whenever $\theta_n$ is small, the rational number
 \end{equation}
 approximates $\alpha$:
 \begin{equation}\label{eq:Rn-expansion}
- R_n=\alpha+\frac{\log3\,(\log3-\log2)}{2\log2}\,\theta_n+O(\theta_n^2).
+ R_n=\alpha+\frac12\log_2 3\,(\log3-\log2)\,\theta_n+O(\theta_n^2).
 \end{equation}
 This follows by dividing the Taylor expansions of $e^{\theta\log3}-1$ and $e^{\theta\log2}-1$.
 
-Dirichlet approximation gives infinitely many $n$ with $\theta_n\ll1/n$.  But the denominator in \eqref{eq:Rn} is exponential in $m_n\asymp n$, while the error in \eqref{eq:Rn-expansion} is merely $O(1/n)$.  Expressed in terms of the rational denominator $Q_n$, the quality is only logarithmic, roughly $O(1/\log Q_n)$, vastly weaker than what an irrationality-measure contradiction requires.  Higher-order Richardson combinations replace $O(\theta_n)$ by $O(\theta_n^r)$ for fixed $r$, but this remains a power of $1/\log Q_n$.
+Dirichlet approximation gives infinitely many $n$ with $\theta_n\ll1/n$.  But the displayed
+unreduced denominator and height in \eqref{eq:Rn} are exponential in $m_n\asymp n$, while
+the error in \eqref{eq:Rn-expansion} is merely $O(1/n)$.  Reduced-denominator cancellation
+is not controlled here.  Without such cancellation, the quality expressed in terms of the
+available height is only logarithmic, far weaker than an irrationality-measure contradiction.
+Higher-order Richardson combinations replace $O(\theta_n)$ by $O(\theta_n^r)$ for fixed
+$r$, but still do not overcome the visible exponential height.
 
 This audit matters because derivative extraction from near-identity elements of the multiplicative group $\langle2,3\rangle$ initially looks very promising.  The calculation shows exactly why it does not compete with linear forms in logarithms: normalization creates exponentially large denominators.
 
@@ -676,29 +683,11 @@ The key algebraic lemma is the identity
 \]
 A Lean development can proceed by expanding products with \texttt{Finset.sum\_mul}, splitting the double sum into diagonal and ordered pairs, and invoking positivity of natural powers.
 
-\begin{lstlisting}[language={}] 
--- Schematic Lean 4 / mathlib structure; identifiers may need adjustment.
-def eval (S : Finset ℕ) (c : ℕ → ℝ) (t : ℝ) : ℝ :=
-  ∑ n in S, c n * t ^ n
-
-theorem covariance_identity
-    (S : Finset ℕ) (c : ℕ → ℝ) :
-    eval S c 1 * eval S c 6 - eval S c 2 * eval S c 3 =
-      ∑ n in S, ∑ m in S.filter (n < ·),
-        c n * c m * ((2 : ℝ)^m - 2^n) * ((3 : ℝ)^m - 3^n) := by
-  -- expand, pair (n,m) with (m,n), cancel diagonal
-  sorry
-
-theorem support_subsingleton_of_eq_zero
-    (S : Finset ℕ) (c : ℕ → ℝ)
-    (hc : ∀ n ∈ S, 0 ≤ c n)
-    (hzero : eval S c 1 * eval S c 6 = eval S c 2 * eval S c 3) :
-    (S.filter (fun n => c n ≠ 0)).card ≤ 1 := by
-  rw [← sub_eq_zero] at hzero
-  rw [covariance_identity] at hzero
-  -- every summand is nonnegative; a positive pair is impossible
-  sorry
-\end{lstlisting}
+The finite covariance and support core is formalized in
+\texttt{PositiveCoefficientClosure.lean}; its public endpoints are
+\texttt{two\_mul\_covariance\_identity} and
+\texttt{finite\_nonnegative\_rankOne\_eq\_single}.  The passage from finite support to
+the convergent infinite series remains the short truncation argument described above.
 
 The infinite-series theorem can then be obtained either by monotone convergence or by truncating and passing to the limit.  The separator theorem is even shorter: prove the sign of two monotone factors according to whether $n\le k$ or $k+1\le n$.
 

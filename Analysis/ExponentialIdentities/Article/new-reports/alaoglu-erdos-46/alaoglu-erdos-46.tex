@@ -288,26 +288,6 @@ symbolic scripts reproduced in Appendix~\ref{app:symbolic}, but they are not cla
 been accepted by a proof assistant.  The original \AEname{} conjecture remains \openstatus{}.}
 \end{statusbox}
 
-\subsection{External reconnaissance as of August 22, 2026}
-\label{sec:recon}
-
-Because the prompt specifically referred to recent public AI-assisted mathematics, the public
-record was checked separately from the mathematical derivation.  Anthropic publicly launched
-Claude Fable~5 on June 9, 2026 and restored broad access on July 1 after a temporary
-suspension~\cite{AnthropicFable,AnthropicRedeploy}.  The recent Jacobian development is a
-disproof in dimensions greater than two, with explicit constructions and exact verification;
-it does not settle the still-distinct two-dimensional case~\cite{GaoJacobian}.  A public
-MathOverflow update and the ICARM leaderboard report a curve of Mordell--Weil rank at least
-$30$, with exact rank $30$ conditional on BSD and GRH~\cite{SilvermanMO,ICARMRank}.  Public
-computational announcements also report exact constructions for the twelve previously open
-Hadamard orders below $2000$~\cite{VibeMathedHadamard,OEISHadamard}; at the time of writing this
-is best treated as an exact-computation announcement rather than a conventional refereed
-paper.
-
-No public source located in this search announced a proof of the \AEname{} conjecture or a Lean
-formalization of one.  The rival team's reported result may therefore be private or
-unannounced.  Nothing in this report assumes access to it.
-
 \subsection{The immovable transcendence boundary}
 
 The unified manuscript already explains that the conjecture is an integral special case of the
@@ -400,7 +380,7 @@ Then \eqref{eq:baseline} gives an exact order-preserving group homomorphism
  \rho_x(2^a3^b)=M^aN^b=(2^a3^b)^x.
  \label{eq:rho}
 \end{equation}
-Because $\log2/\log3\notin\Q$, the logarithms of elements of $\Gamma$ form a dense additive
+Because $\log_3 2\notin\Q$, the logarithms of elements of $\Gamma$ form a dense additive
 subgroup of $\R$.  In particular, there are sequences $r_j\in\Gamma\setminus\{1\}$ with
 $r_j\to1$.  This density creates confluence analytically; the entire problem is to make that
 confluence arithmetically rigid.
@@ -714,7 +694,7 @@ the quotient.  Hence the only non-rational scalar in the induced action is $x$.
 
 \begin{proof}
 Lemma~\ref{lem:commutatorcovariance} shows that commutators map to commutators, so the map is
-well-defined.  Since $x>0$ in the substantive case, the map $t\mapsto t^x$ is injective on the
+well-defined.  Since $x\ne0$, the map $t\mapsto t^x$ is injective on the
 positive spectrum; $A$ and $A^x$ therefore have the same spectral projectors and the same
 block-diagonal/off-diagonal decomposition.  Modulo the off-diagonal commutator space,
 \eqref{eq:powerderivative} becomes
@@ -1071,7 +1051,7 @@ Jordan jet.
 The previous no-go theorem is exact at every finite stage, but semisimplicity is not closed
 under singularly changing bases.  This produces a useful model of the analytic limit and a
 warning about arithmetic compactness.  Such integral collisions exist: if
-$p_j/q_j$ are continued-fraction convergents to $\log3/\log2$, then one may take
+$p_j/q_j$ are continued-fraction convergents to $\log_2 3$, then one may take
 $a_j=2^{p_j}$ and $b_j=3^{q_j}$ along either side of the approximation.
 
 \begin{theorem}[Unbounded integral conjugators recover the first jet]
@@ -1527,7 +1507,7 @@ Proposition~\ref{prop:firstsurvivingmoment} gives the sharpened leading term
 
 \subsection{Existence of rational approximants}
 
-By continued fractions for $\log3/\log2$, there are infinitely many coprime positive pairs
+By continued fractions for $\log_2 3$, there are infinitely many coprime positive pairs
 $(p,q)$ with
 \begin{equation}
  h_{p,q}=q\log3-p\log2\longrightarrow0.
@@ -2158,7 +2138,9 @@ semisimplicity: a torus construction supplies no nonzero class in any of those m
 
 \subsection{Higher triangular blocks}
 
-For an invertible $A$ and a nilpotent $N$ commuting with $A$ and satisfying $N^{r+1}=0$, one has the terminating
+Suppose the spectrum of $A$ is positive, or more generally that a holomorphic branch of
+$z^x$ is fixed on a neighborhood of the spectrum.  If $A$ is invertible and $N$ is nilpotent,
+commutes with $A$, and satisfies $N^{r+1}=0$, then one has the terminating
 formula
 \begin{equation}
  (A+N)^x
@@ -2335,8 +2317,7 @@ Full \AEname{} conjecture & \openstatus{} & Not proved here or in the attached m
 The ProveIt project,
 \newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial
 Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
-\newblock unified working manuscript with twenty-seven continuation reports, August 2026;
-attached source file \texttt{alaoglu-erdos-unified-report.tex(3).gz}.
+\newblock unified working manuscript, August 2026.
 
 \bibitem{AE1944}
 L.~Alaoglu and P.~Erd\H{o}s,
@@ -2383,47 +2364,6 @@ L.~F.~Richardson,
 problems involving differential equations, with an application to the stresses in a masonry
 dam},
 \newblock Philosophical Transactions of the Royal Society A \textbf{210} (1911), 307--357.
-
-\bibitem{AnthropicFable}
-Anthropic,
-\newblock \emph{Claude Fable 5}, official model page and announcement, June--July 2026.
-\newblock \url{https://www.anthropic.com/claude/fable}.
-
-\bibitem{AnthropicRedeploy}
-Anthropic,
-\newblock \emph{Redeploying Fable 5}, June 30, 2026; access restored July 1, 2026.
-\newblock \url{https://www.anthropic.com/news/redeploying-fable-5}.
-
-\bibitem{GaoJacobian}
-S.~Gao,
-\newblock \emph{Counterexamples to the Jacobian conjecture in dimensions greater than two},
-\newblock arXiv:2608.00222, July 31, 2026.
-\newblock \url{https://arxiv.org/abs/2608.00222}.
-
-\bibitem{SilvermanMO}
-J.~H.~Silverman,
-\newblock update to \emph{What heuristic evidence is there concerning the unboundedness or
-boundedness of Mordell--Weil ranks of elliptic curves over $\Q$?},
-\newblock MathOverflow, August 2026.
-\newblock \url{https://mathoverflow.net/questions/38356/}.
-
-\bibitem{ICARMRank}
-Institute for Computer-Aided Reasoning in Mathematics,
-\newblock \emph{Elliptic Curve Rank Leaderboard}, accessed August 22, 2026.
-\newblock \url{https://elliptic-rank.icarm.cloud/}.
-
-\bibitem{VibeMathedHadamard}
-VibeMathed contributors,
-\newblock \emph{Hadamard Matrix of Order 668}, exact AI-assisted construction record and
-verification note, August 2026.
-\newblock \url{https://vibemathed.com/}.
-
-\bibitem{OEISHadamard}
-OEIS Foundation,
-\newblock \emph{A007299: orders for which a Hadamard matrix is not yet known},
-\newblock update recording the twelve 2026 constructions below $2000$, accessed August 22,
-2026.
-\newblock \url{https://oeis.org/A007299}.
 
 \end{thebibliography}
 

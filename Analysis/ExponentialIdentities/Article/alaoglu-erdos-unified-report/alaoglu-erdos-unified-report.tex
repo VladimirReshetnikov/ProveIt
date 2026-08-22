@@ -13611,6 +13611,39 @@ and positivity for $q\ge2$ are \statuslean{} in \lean{GeometricVandermondeSmith}
 formal endpoint is
 \lean{geometricVandermonde_isUnimodularEquivalent_qSmithDiagonal}.
 
+The factorization also locates the mass exactly.  For the nodes
+$1,q,\ldots,q^d$, put
+\[
+ \mathcal V_d(q)=\prod_{0\le i<j\le d}(q^j-q^i).
+\]
+Then
+\begin{equation}
+ \mathcal V_d(q)=q^{\binom{d+1}{3}}
+ \prod_{r=1}^d(q^r-1)^{d+1-r}.
+ \label{wsmith:eq-half-mass-factorization}
+\end{equation}
+Consequently
+\begin{align}
+ \log \mathcal V_d(q)&=\frac{d(d+1)(2d+1)}6\log q+O_q(d),\notag\\
+ \sum_{p\mid q}v_p(\mathcal V_d(q))\log p
+ &=\binom{d+1}{3}\log q,\notag\\
+ \sum_{r=1}^d(d+1-r)\log(q^r-1)
+ &=\binom{d+2}{3}\log q+O_q(d).
+ \label{wsmith:eq-cubic-half-mass}
+\end{align}
+Thus the fixed-base and cyclotomic terms each carry asymptotically one half of the
+logarithmic determinant.  This is not recoverable from any fixed prime set.  If $S$ is a
+fixed finite set of primes, LTE gives only $O_{q,S}(d^2)$ cyclotomic mass at primes in $S$,
+and hence
+\begin{equation}
+ \sum_{\substack{p\notin S\\p\nmid q}}v_p(\mathcal V_d(q))\log p
+ =\binom{d+2}{3}\log q+O_{q,S}(d^2).
+ \label{wsmith:eq-cyclotomic-escape}
+\end{equation}
+Equivalently, asymptotically all of the cyclotomic half escapes beyond every fixed residue-order
+cutoff.  Structural primes can account for their half exactly, but a closing Smith argument
+must capture moving cyclotomic primes rather than enlarge a fixed local audit.
+
 \subsection{Pair-specific finite-place tomography}
 \label{wsmith:tomography}
 
@@ -14132,6 +14165,64 @@ solved: its defect quotient is a constant, and the common two-edge cocycle---not
 one-axis interpolation problem---is the remaining obstruction.  The notation and standard
 basic-hypergeometric identity are as in \cite{GasperRahman}.
 
+Mixed geometric blocks expose the output-dependent cancellation that a single edge hides.
+For $q_i>1$ and $n_i\ge1$, let
+\[
+ W=((q_1,n_1),\ldots,(q_h,n_h)),\qquad
+ S_i=n_1+\cdots+n_i,\qquad S_0=0,
+\]
+and let $\mathfrak D_W=\mathfrak D_{q_h,n_h}\circ\cdots\circ\mathfrak D_{q_1,n_1}$, where
+$\mathfrak D_{q,n}f(z)=[z,qz,\ldots,q^nz]f$.  Iterating the one-block formula gives
+\begin{equation}
+ (\mathfrak D_Wt^x)(1)=
+ \prod_{i=1}^h
+ \frac{\prod_{j=0}^{n_i-1}(q_i^{x-S_{i-1}}-q_i^j)}
+      {D_{q_i,n_i}},
+ \qquad
+ D_{q,n}=q^{\binom n2}\prod_{j=1}^n(q^j-1).
+ \label{arithinterp:eq-mixed-word}
+\end{equation}
+If every $q_i\in\{2,3\}$, put $B_2=M$, $B_3=A$.  Under a hypothetical solution this is
+the rational product
+\begin{equation}
+ (\mathfrak D_Wt^x)(1)=
+ \prod_{i=1}^h q_i^{-S_{i-1}n_i}
+ \frac{\prod_{j=0}^{n_i-1}(B_{q_i}-q_i^{S_{i-1}+j})}{D_{q_i,n_i}}.
+ \label{arithinterp:eq-mixed-word-output}
+\end{equation}
+The exponent intervals $[S_{i-1},S_i)$ partition $\{0,\ldots,S_h-1\}$, so the numerator
+is a word of explicit dyadic or triadic output gaps.  If $\overline W$ swaps $2$ and $3$
+while preserving the block lengths and $N=S_h$, then
+\begin{equation}
+ (\mathfrak D_Wt^x)(1)(\mathfrak D_{\overline W}t^x)(1)=
+ \frac{\prod_{e=0}^{N-1}(M-2^e)(A-3^e)}
+ {6^{\sum_iS_{i-1}n_i}\prod_iD_{2,n_i}D_{3,n_i}}.
+ \label{arithinterp:eq-complementary-word}
+\end{equation}
+The right side depends on the ordered block lengths but not on which blocks were assigned to
+which base.  At a structural prime $q$, writing $B=q^au$ with $q\nmid u$ gives the exact
+block valuation
+\begin{equation}
+ v_q\!\left(\prod_{j=0}^{n-1}(B-q^{S+j})\right)
+ =\sum_{j=0}^{n-1}\min(a,S+j)
+ +\mathbf1_{\{S\le a<S+n\}}v_q(u-1).
+ \label{arithinterp:eq-shifted-block-valuation}
+\end{equation}
+Thus word order is a finite, output-sensitive valuation optimization rather than an opaque
+determinant numerator.  The complementary product also shows its limitation: rearranging
+blocks cannot change the paired synchronized numerator.
+
+There is a useful sign refinement on the base-two edge.  For the data $2^j\mapsto3^j$,
+the Newton coefficients have sign $(-1)^{n-2}$ for $n\ge2$.  If $k\ge1$ and
+$2^k<A<2^{k+1}$, then every omitted summand
+\begin{equation}
+ c_n\prod_{j=0}^{n-1}(A-2^j),\qquad n\ge k+1,
+ \label{arithinterp:eq-one-signed-tail}
+\end{equation}
+has the single sign $(-1)^{k-1}$: the $n-k-1$ negative basis factors cancel the alternating
+coefficient sign.  Tail cancellation therefore cannot be the source of a subunit error at
+an integer between consecutive dyadic nodes.
+
 \begin{statusbox}{The unit-locking, optimal-block, dyadic-certificate, minimax-cofactor, and
 arithmetic-alternant statements are
 self-contained paper arguments using the stated classical Chebyshev/Bernstein inputs.  The
@@ -14140,7 +14231,8 @@ counterexample range.  The geometric Newton identity and its exact truncation/re
 \statuslean{} in \lean{GeometricNewtonInterpolation}, with endpoints
 \lean{qNewtonExpansion_eq_pow} and \lean{qNewtonTruncValue_first_omitted}.  The endpoint
 dilation defect is also finite algebra and is formalized separately; local-uniform convergence,
-the $q$-hypergeometric limit, and the infinite defect formula are \statusnew{} paper results.
+the $q$-hypergeometric limit, the infinite defect formula, mixed-word and complementary-word
+factorizations, exact block valuation, and one-signed tail are \statusnew{} paper results.
 All broader
 Bhargava-ordering, Hermite--Pad\'e, and
 integer-Chebyshev proposals remain research interfaces.  No dated literature-search claim is
@@ -14402,6 +14494,40 @@ $x=b\,(xb^{x-1})/b^x$ is rational.  Under the original integral-output hypothese
 forces $x\in\Z$.  Distinct-node Loewner entries are secants and automatic; a self-extension
 is the first finite-dimensional datum that sees the missing derivative.
 
+The exact false-positive locus can be classified for every rational semisimple base.  Let
+$T\in M_n(\Q)$ be semisimple with distinct positive rational eigenvalues
+$\lambda_1,\ldots,\lambda_s$ and rational spectral projectors $P_1,\ldots,P_s$, assume
+$\lambda_i^x\in\Q$, put $f_x(z)=z^x$, and write
+$\mathcal Z(T)=\{Y\in M_n(\Q):YT=TY\}$.  For $H\in M_n(\Q)$ set
+\[
+ \mathcal E_T(H)=\begin{pmatrix}T&H\\0&T\end{pmatrix}.
+\]
+The rational matrix space splits as
+\begin{equation}
+ M_n(\Q)=\mathcal Z(T)\oplus[T,M_n(\Q)],
+ \qquad
+ H_{\mathrm c}=\sum_iP_iHP_i,\qquad
+ H_{\mathrm o}=\sum_{i\ne j}P_iHP_j.
+ \label{opcoh:eq-centralizer-commutator-split}
+\end{equation}
+For irrational $x$, the divided-difference formula gives the exact equivalences
+\begin{equation}
+ Df_{x,T}[H]\in M_n(\Q)
+ \quad\Longleftrightarrow\quad
+ H\in[T,M_n(\Q)]
+ \quad\Longleftrightarrow\quad
+ \mathcal E_T(H)^x\in M_{2n}(\Q).
+ \label{opcoh:eq-self-extension-locus}
+\end{equation}
+Indeed the off-diagonal spectral blocks have rational coefficient
+$(\lambda_i^x-\lambda_j^x)/(\lambda_i-\lambda_j)$, while the central part is
+$x\sum_i\lambda_i^{x-1}P_iHP_i$ and can be rational only when every diagonal block
+vanishes.  Conversely, $H=[T,Y]$ gives
+$Df_{x,T}[H]=[T^x,Y]$ and makes $\mathcal E_T(H)$ rationally similar to $T\oplus T$.
+Thus all rational first-order false positives are precisely the split extensions.  Producing
+one rational powered extension with a nonzero centralizer component would force $x\in\Q$
+and hence $x\in\Z$; the original scalar values do not supply such a component.
+
 \subsection{Sturmian similarity and exact finite realization}
 \label{opcoh:koopman}
 
@@ -14422,7 +14548,8 @@ overlap the accepted \lean{SturmianProbability} and \lean{SturmianGeneratingSeri
 
 \begin{statusbox}{The bilateral universality, time-homothety, global and finite covariance
 criteria, affine essential-norm
-rigidity, semisimple blindness, Jordan first-jet criterion, and finite trace/Hankel criteria
+rigidity, semisimple blindness, exact rational self-extension locus, Jordan first-jet
+criterion, and finite trace/Hankel criteria
 are self-contained paper arguments with the named standard operator inputs.  The maximal
 algebraic support is already covered more generally by \lean{AlgebraicBaseSpectrum}, and the
 Sturmian/heat cores overlap earlier accepted modules.  The rational scalar and matrix-entry
@@ -15035,6 +15162,36 @@ These are \statusnew{} exact paper theorems.  The generic commutative-group coll
 both determinant orientations of the modular implication are \statuslean{} in
 \lean{UnimodularGapCollision}; the integer gcd packaging remains the paper layer.
 
+In the canonical odd-core branch the determinant-one ladder also forms an exact radix-shadow
+square.  Write $M=2^aw^d$ and $x=a+d\log_2w$, take adjacent convergents $p_n/q_n$ to
+$d\log_2w$, put $r_n=aq_n+p_n$, and restrict to the subsequence
+$\epsilon_n=q_nd\log_2w-p_n>0$.  Discarding finitely many terms, assume also
+$\epsilon_n<\log_3 2$.  Then
+$0<\mathcal B_n<2^{p_n}$ and $0<\mathcal C_n<3^{r_n}$ for the synchronized gaps
+\[
+ \mathcal B_n=w^{dq_n}-2^{p_n},\qquad
+ \mathcal C_n=A^{q_n}-3^{r_n}
+\]
+have the same logarithmic error and satisfy
+\begin{align}
+ M^{q_n}&=2^{r_n}+2^{aq_n}\mathcal B_n,&
+ A^{q_n}&=3^{r_n}+\mathcal C_n,\notag\\
+ L(M^{q_n})&=3^{r_n}+3^{aq_n}L(\mathcal B_n),&
+ R(A^{q_n})&=2^{r_n}+R(\mathcal C_n).
+ \label{gapjet:eq-radix-gap-square}
+\end{align}
+Consequently the digit defects from Section~\ref{carry:digit-lifts} obey
+\begin{equation}
+ D_{q_n}=\mathcal C_n-3^{aq_n}L(\mathcal B_n),\qquad
+ E_{q_n}=R(\mathcal C_n)-2^{aq_n}\mathcal B_n.
+ \label{gapjet:eq-radix-gap-defects}
+\end{equation}
+The square is exact but not contractive:
+$3^{aq_n}L(\mathcal B_n)/\mathcal C_n=O(\epsilon_n^{\log_2 3-1})\to0$ and
+$2^{aq_n}\mathcal B_n/R(\mathcal C_n)=O(\epsilon_n^{1-\log_3 2})\to0$.
+Thus $D_{q_n}\sim\mathcal C_n$ and $E_{q_n}\sim R(\mathcal C_n)$; digit transfer discards rather than
+amplifies the small relative gap.
+
 \subsection{Rational secants and separated denominators}
 \label{gapjet:secants}
 
@@ -15066,6 +15223,42 @@ $T_j$ alternate above and below $x$.  Away from primes dividing $M$, consecutive
 denominators remain coprime.  This is exact arithmetic separation, not an irrationality
 measure: the error is only $O(1/q_{j+1})$ while the rational heights can be exponential in
 $p_j$.
+
+Symmetrization gives arbitrary fixed contact order without fixing the height problem.  For a
+positive $3$-smooth rational $r\ne1$, define
+\begin{equation}
+ \mathcal J_x(r)=\frac{r^x-r^{-x}}{r-r^{-1}}.
+ \label{gapjet:eq-symmetric-secant}
+\end{equation}
+Under a hypothetical solution $\mathcal J_x(r)\in\Q$, and
+$\mathcal J_x(e^h)=\sinh(xh)/\sinh h$ is an even power series
+$x+\sum_{j\ge1}a_j(x)h^{2j}$.  For $m\ge1$ put
+\begin{equation}
+ c_{m,k}=(-1)^{k-1}\frac{2(m!)^2}{(m-k)!(m+k)!},\qquad1\le k\le m.
+ \label{gapjet:eq-richardson-coefficients}
+\end{equation}
+These are the Lagrange weights at zero for the nodes $1^2,\ldots,m^2$; hence
+\begin{equation}
+ \sum_{k=1}^mc_{m,k}=1,\qquad
+ \sum_{k=1}^mc_{m,k}k^{2j}=0\ (1\le j<m),\qquad
+ \sum_{k=1}^mc_{m,k}k^{2m}=(-1)^{m-1}(m!)^2.
+ \label{gapjet:eq-richardson-moments}
+\end{equation}
+The rational extrapolant
+\begin{equation}
+ R_{m,x}(r)=\sum_{k=1}^mc_{m,k}\mathcal J_x(r^k)
+ \label{gapjet:eq-richardson-extrapolant}
+\end{equation}
+therefore satisfies
+\begin{equation}
+ R_{m,x}(e^h)=x+(-1)^{m-1}(m!)^2a_m(x)h^{2m}
+ +O_{x,m}(h^{2m+2}).
+ \label{gapjet:eq-richardson-contact}
+\end{equation}
+Taking $r=3^q/2^p$ along convergents to $\log_2 3$ produces explicit rational
+approximations to $x$ with error $O_{x,m}(q^{-2m})$ for every fixed $m$.  This does not
+approach an irrationality-measure contradiction: the unreduced denominators remain
+exponential in $p+q$, and increasing $m$ increases their coefficient and product costs.
 
 \subsection{Finite signatures and the entrywise jet ceiling}
 \label{gapjet:finite-barriers}
@@ -15099,8 +15292,9 @@ results are \statusnew{} paper arguments and do not prove the conjecture.
 
 \begin{statusbox}{The determinant-distance collision core is \statuslean{} in
 \lean{UnimodularGapCollision}; the
-continued-fraction gcd, transported-secant, finite-signature, and entrywise jet packages are
-paper proofs.  Existing transcendence reductions are cross-referenced, and no fixed-order
+continued-fraction gcd, radix gap square, transported and symmetric secants, fixed-order
+Richardson extrapolants, finite-signature, and entrywise jet packages are paper proofs.
+Existing transcendence reductions are cross-referenced, and no fixed-order
 jet statement is promoted to a claim about global determinant cancellation.}
 \end{statusbox}
 
@@ -15608,11 +15802,11 @@ valuation transfer, and recurrences are exact paper-level constraints, but their
 heights grow with the outputs and currently yield no contradiction.
 
 The forward defect has an exact mantissa gauge.  For the terminating binary fraction
-$u_n=2^{t_n}-1$, define its Cantor reevaluation
+$\xi_n=2^{t_n}-1$, define its Cantor reevaluation
 $\mathcal C(\sum_{j\ge1}\varepsilon_j2^{-j})=\sum_{j\ge1}\varepsilon_j3^{-j}$.
 Then
 \begin{equation}
- \frac{L(M^n)}{A^n}=3^{-t_n}\bigl(1+\mathcal C(u_n)\bigr),
+ \frac{L(M^n)}{A^n}=3^{-t_n}\bigl(1+\mathcal C(\xi_n)\bigr),
  \qquad
  \frac{t_n}{3}\le\frac{D_n}{A^n}\le(\log3)t_n.
  \label{carry:eq-mantissa-gauge}
@@ -15634,14 +15828,103 @@ earlier carry is possible.  Writing $M=2^aU$ therefore gives
 for the non-power case $U>1$.  This supplies a precise structural-prime divisor of the
 normalization carry, but no matching archimedean upper bound is known.
 
+The individual increments of the two radix shadows are especially simple:
+\begin{align}
+ L(n)-L(n-1)&=\frac{3^{v_2(n)}+1}{2},&
+ R(n)-R(n-1)&=2-2^{v_3(n)}.
+ \label{carry:eq-radix-increments}
+\end{align}
+Hence
+\begin{equation}
+ L(N)=\frac N2+\frac12\sum_{n\le N}3^{v_2(n)},
+ \qquad
+ R(N)=2N-\sum_{n\le N}2^{v_3(n)}.
+ \label{carry:eq-radix-summatory}
+\end{equation}
+For the defects above, put $C_n=L(M^n)=A^n-D_n$ and
+$K_n=L(R(A^n))-A^n$.  Telescoping over the special endpoint intervals gives
+\begin{align}
+ E_n&=2D_n-\sum_{C_n<j\le A^n}2^{v_3(j)},\notag\\
+ D_n+K_n&=\frac12\left(E_n+
+   \sum_{M^n<j\le M^n+E_n}3^{v_2(j)}\right).
+ \label{carry:eq-defect-intervals}
+\end{align}
+In particular $0<E_n\le D_n$ and $E_n\le R(D_n)\le2D_n^{\log_3 2}$.  This converts
+the archimedean defect into an exact excess of valuation weights on consecutive intervals;
+average-order estimates alone do not control their arithmetic endpoints.
+
+There is also a rigid most-significant-digit description.  Write
+\begin{equation}
+ M^n=\sum_j\varepsilon_{n,j}2^j,\qquad
+ A^n=\sum_j\delta_{n,j}3^j,\qquad
+ P_n(Z)=\sum_j(\delta_{n,j}-\varepsilon_{n,j})Z^j.
+ \label{carry:eq-digit-difference-polynomial}
+\end{equation}
+Then
+\begin{equation}
+ P_n(3)=D_n,\qquad P_n(2)=E_n.
+ \label{carry:eq-two-word-evaluations}
+\end{equation}
+Its leading coefficient is $1$ or $2$.  More generally, if
+$P(Z)=\sum_{i=0}^Jc_iZ^i$ has $c_i\in\{-1,0,1,2\}$, positive leading coefficient,
+and $E=P(2)>0$, then
+\begin{align}
+ c_J=1&\Longrightarrow E=1+\sum_{i<J}(c_i+1)2^i,\notag\\
+ c_J=2&\Longrightarrow E=2^J+1+\sum_{i<J}(c_i+1)2^i.
+ \label{carry:eq-borrow-expansion}
+\end{align}
+Thus $E<2^s$ with $s\le J$ forces $c_J=1$ and
+$c_i=-1$ for $s\le i<J$.  For $P_n$, every such position has the digit pair
+$(\delta_{n,i},\varepsilon_{n,i})=(0,1)$.  This finite shifted-evaluation borrow step is
+\statuslean{} in \lean{BorrowBlockCore}.  The ensuing paper argument converts an abnormally
+small $E_n$ into
+\begin{equation}
+ M^n\equiv-u\pmod{2^J},\qquad A^n\equiv v\pmod{3^J},qquad
+ 1\le u\le2^s,\qquad0\le v<3^s.
+ \label{carry:eq-borrow-congruences}
+\end{equation}
+
+The common leading word has an explicit length.  Put
+$\ell_n=\lfloor nx\rfloor$ and $u_n=\{nx\}$.  The leading binary and ternary positions of
+$M^n$ and $A^n$ are both $\ell_n$.  For $0<u<\log_3 2$, compare the fractional digits of
+$2^u$ in base $2$ and of $3^u$ in base $3$.  Their common prefix is exactly a leading $1$
+followed by zeros; at the first mismatch the ternary digit is larger.  Indeed
+\begin{equation}
+ (1+2^{-t})^{\log_2 3}>1+2\,3^{-t}\qquad(t\ge1),
+ \label{carry:eq-cylinder-separation}
+\end{equation}
+so a binary $1$ at the first nonzero fractional position forces the ternary digit to be $2$.
+If
+\begin{equation}
+ t(u)=\left\lceil\log_3\frac1{3^u-1}\right\rceil,
+ \label{carry:eq-prefix-depth}
+\end{equation}
+then $P_n$ has degree $\ell_n-t(u_n)$ when $u_n<\log_3 2$, and degree $\ell_n$ otherwise.
+Two-logarithm bounds give $t(u_n)=O_M(\log n)$, hence
+\begin{equation}
+ D_n\gg_{M,A}\frac{A^n}{n^C}
+ \label{carry:eq-prefix-defect-lower}
+\end{equation}
+for an effective $C$.  The direct digit defect is therefore exponentially large even when
+long borrowing makes the return defect small.  Finally, normalizing the ternary digits of
+$A^n$ in base $2$ with carry bits $c_j$ gives the exact mask
+\begin{equation}
+ K_n=\sum_{j\ge0}c_j3^j.
+ \label{carry:eq-return-carry-mask}
+\end{equation}
+These identities expose a rigid cross-base word, but its two evaluations remain at
+incompatible scales and provide no contraction.
+
 \begin{statusbox}{The bounded carry-word sum, length, suffix-degree, and ordered reconstruction
 identities are \statuslean{} in
 \lean{CarryPath}; the mixed-radix local floor-carry identity is \statuslean{} in
-\lean{MixedRadixCarryFinite}, and the finite radix-shadow congruence and valuation-index
-bridge are \statuslean{} in \lean{RadixShadow}.  Multiset injectivity, multinomial fibers,
+\lean{MixedRadixCarryFinite}; the finite radix-shadow congruence and valuation-index
+bridge are \statuslean{} in \lean{RadixShadow}; and finite borrow-block rigidity is
+\statuslean{} in \lean{BorrowBlockCore}.  Multiset injectivity, multinomial fibers,
 character balancing, the finite and unrestricted pressure laws, finite floor-carry
 reconstruction, smooth-language consequences, hitting corridor, normalization carries,
-mantissa gauge, and square-collision formula are \statusnew{} paper results.  Every
+mantissa gauge, square-collision formula, interval-valuation identities, prefix separation,
+and carry-mask formula are \statusnew{} paper results.  Every
 ``exact rate'' is explicitly scoped to the carry-language construction; no contradiction
 with fixed-arity theorems or proof of Alaoglu--Erd\H{o}s is claimed.}
 \end{statusbox}
@@ -16096,6 +16379,51 @@ therefore prove the conjecture from the four values at $1,2,3,6$.  The finite co
 single-support core is \statuslean{} in \lean{PositiveCoefficientClosure}; the passage to an
 infinite nonnegative series is the displayed paper argument.
 
+This rigidity is quantitatively stable.  If $(p_n)$ is a probability distribution with
+$\mathcal M(t)=\sum_np_nt^n$ and $\mathcal M(6)<\infty$, then
+\begin{equation}
+ \Delta:=\mathcal M(6)-\mathcal M(2)\mathcal M(3)
+ \ge1-\sum_np_n^2\ge1-\sup_np_n.
+ \label{crit:eq-positive-concentration}
+\end{equation}
+Indeed the kernel in~\eqref{crit:eq-positive-covariance} is at least $2$ off the diagonal.
+Thus $\Delta\le\varepsilon<1$ forces one atom to carry mass at least $1-\varepsilon$.
+If every $p_n$ is an integral multiple of $1/D$, then $D^2\Delta$ is a nonnegative integer;
+either $\Delta=0$ or $\Delta\ge D^{-2}$.  A positive rational approximation can therefore
+close only if its covariance error beats the square of its weight mesh.
+
+The three values at $1,2,3$ already suffice analytically.  For a probability distribution
+with $\mathcal M(3)<\infty$, strict Jensen convexity gives
+\begin{equation}
+ \sum_np_n3^n\ge\left(\sum_np_n2^n\right)^{\log_2 3},
+ \label{crit:eq-discrete-jensen}
+\end{equation}
+with equality only for a point mass.  The four-value identity is more useful arithmetically
+because its defect is rational or integral.
+
+There is an explicit linear separator for the discrete moment cone.  If $k<x<k+1$, put
+\begin{equation}
+ \psi_k(t)=(2^t-2^k)(3^t-3^{k+1}).
+ \label{crit:eq-moment-separator}
+\end{equation}
+Then $\psi_k(n)\ge0$ for every integer $n\ge0$, whereas
+\begin{equation}
+ \psi_k(x)=-(M-2^k)(3^{k+1}-A)\in\Z_{\le-1}.
+ \label{crit:eq-integral-separation}
+\end{equation}
+Consequently any normalized positive mixture of
+$(1,2^n,3^n,6^n)$ stays at sup-norm distance at least
+$(3^{k+1}+2^k+1)^{-1}$ from the target four-vector.  More generally, a finite signed
+representation $\sum_nc_n(1,2^n,3^n,6^n)=(1,M,A,MA)$ must satisfy
+\begin{equation}
+ \sum_{c_n<0}|c_n|\psi_k(n)
+ \ge(M-2^k)(3^{k+1}-A)\ge1.
+ \label{crit:eq-weighted-negativity}
+\end{equation}
+Thus every exact interpolant needs a quantifiable negative component; moving a very small
+negative coefficient to a very large exponent can still pay the separator, so ordinary
+negative mass alone has no degree-independent lower bound.
+
 The canonical Stieltjes representative cannot satisfy this condition.  Write
 $m=\lfloor x\rfloor$ and $H_x(z)=\sum_{k\ge0}h_kz^k$.  The sign in
 \eqref{crit:eq-stieltjes-divdiff}, together with the signs of the elementary symmetric
@@ -16470,6 +16798,92 @@ factorization.  For a fixed candidate even one of the three almost-everywhere di
 forces $x\in\Z$.  This is an exact local--global reformulation, not a proof that a
 counterexample supplies the local hypothesis.
 
+The four Kummer coordinates give an exact finite density law.  For every sufficiently large
+odd prime $\ell$ outside the saturation set, put $K_\ell=\Q(\zeta_\ell)$ and let
+$V_\ell\subset K_\ell^\times/K_\ell^{\times\ell}$ be the space spanned by $2,3,M,A$.
+Its dimension is the ordinary multiplicative rank, and its dual character space
+$W_\ell=V_\ell^\vee$ embeds in $\mathbb F_\ell^4$ by evaluation on those four generators.
+For an unramified prime ideal $\mathfrak p$ write
+\begin{equation}
+ (u_1,u_2,v_1,v_2)=
+ (\kappa_{\mathfrak p}(2),\kappa_{\mathfrak p}(3),
+  \kappa_{\mathfrak p}(M),\kappa_{\mathfrak p}(A)).
+ \label{crit:eq-kummer-coordinate-vector}
+\end{equation}
+Exact local compatibility means that $(v_1,v_2)=t(u_1,u_2)$ for some
+$t\in\mathbb F_\ell$; it is stronger than the determinant equation
+$u_1v_2-u_2v_1=0$ when the source pair vanishes.  In the full space there are exactly
+\begin{equation}
+ 1+\ell(\ell^2-1)=\ell^3-\ell+1
+ \label{crit:eq-compatible-vector-count}
+\end{equation}
+compatible vectors.  Chebotarev therefore gives the relative prime-ideal densities
+\begin{align}
+ \operatorname{dens}_{\mathrm{rank},4}(\mathrm{compatible})
+ &=\frac1\ell-\frac1{\ell^3}+\frac1{\ell^4},\notag\\
+ \operatorname{dens}_{\mathrm{rank},3}(\mathrm{compatible})
+ &=\frac1\ell-\frac1{\ell^2}+\frac1{\ell^3}.
+ \label{crit:eq-exact-kummer-densities}
+\end{align}
+The second formula assumes that the rank-three Kummer hyperplane remains transverse modulo
+$\ell$, which again excludes only finitely many primes.  For every fixed $t$,
+compatibility has density exactly $\ell^{-2}$ in either rank.  Thus a nonintegral candidate
+is locally incompatible on density $1-1/\ell+O(\ell^{-2})$, even though its real logarithm
+matrix has rank one.  The exact existential-scalar count, including the zero-source case, is
+\statuslean{} in \lean{KummerCompatibilityFinite}; the Kummer realization and Chebotarev
+passage are classical paper inputs.
+
+The same coordinates localize common near-power divisors.  If at such a prime
+\begin{equation}
+ M^q\equiv2^p,\qquad A^q\equiv3^{p'}\pmod{\mathfrak p},
+ \label{crit:eq-mixed-gap-congruences}
+\end{equation}
+then
+\begin{equation}
+ q(u_1v_2-u_2v_1)=(p'-p)u_1u_2\quad\text{in }\mathbb F_\ell.
+ \label{crit:eq-mixed-gap-determinant}
+\end{equation}
+In particular, when $p=p'$ and $\ell\nmid q$, a nonzero determinant excludes simultaneous
+division of the two gaps.  The finite determinant identity and same-residue obstruction are
+\statuslean{} in \lean{MixedGapKummerFinite}.  The same module verifies the abstract
+retention bound
+\[
+ n_2=0\ \text{or}\ n_3=0
+ \quad\Longrightarrow\quad
+ \min(d_2,d_3)\le\max(d_2-n_2,d_3-n_3),
+\]
+where $d_2,d_3$ are denominator valuations and $n_2,n_3$ the corresponding numerator
+valuations.  Hence, for some fixed $\ell$, common gaps
+along every denominator $q$ prime to $\ell$ avoid a positive-density Chebotarev set.  This
+does not upper-bound the gcd: one large integer can be supported entirely on the complementary
+prime set.  It does turn the missing step into a precise Frobenius-distribution problem for
+the prime divisors of the near-power gaps.
+
+Archimedean closeness does not reduce this local entropy.  With
+$k_j=\lfloor jx\rfloor$, $\theta_j=\{jx\}$, the compact rational orbit
+\[
+ U_j=M^j2^{-k_j}=2^{\theta_j},\qquad
+ V_j=A^j3^{-k_j}=3^{\theta_j}
+\]
+satisfies, for every interval $I\subset[0,1)$ and every residues $r,s\pmod\ell$,
+\begin{equation}
+ \operatorname{dens}\{j:\theta_j\in I,\ j\equiv r,\ k_j\equiv s\pmod\ell\}
+ =\frac{|I|}{\ell^2}.
+ \label{crit:eq-carry-phase-equidistribution}
+\end{equation}
+This is elementary equidistribution of an irrational rotation after restricting $j$ to one
+residue class.  At $\mathfrak p$, the Kummer symbols of $(U_j,V_j)$ are the image of
+$(j,k_j)$ under
+\begin{equation}
+ \begin{pmatrix}\kappa(M)&-\kappa(2)\\
+                 \kappa(A)&-\kappa(3)\end{pmatrix}.
+ \label{crit:eq-mantissa-symbol-map}
+\end{equation}
+Conditional on any real interval $I$, they are uniform on this matrix image.  A nonzero
+Kummer determinant therefore gives all $\ell^2$ symbol pairs even on an arbitrarily short
+real arc.  The real orbit is dense and nearly one-dimensional, while its generic finite
+residue shadow remains fully two-dimensional.
+
 Failure occurs on a quantitatively structured set.  For multiplicatively independent
 $B,C>1$, choose two valuation coordinates with nonzero $2\times2$ minor and an odd prime
 $\ell$ not dividing that minor.  Then $B,C$ are independent modulo $\ell$th powers, also
@@ -16544,9 +16958,12 @@ $p\mid\delta_K$.  Reducing relation exponents modulo $p-1$ gives
 The index is $p-1$ because the live grid uses exponents $0,\ldots,K-1$.  Showing that many
 Kummer defects have $\rho_p$ much smaller than $p$ is a concrete remaining target.
 
-The support classification is the cited \statusknown{} input.  The Kummer density,
-collision valuation, ray divisor, and finite-box bridge are \statusnew{} paper deductions.
-They strengthen the denominator lower bound without supplying the missing upper bound.
+The support classification is the cited \statusknown{} input.  The finite exact-compatibility
+counts are \statuslean{} in \lean{KummerCompatibilityFinite}; the mixed-gap determinant and
+same-residue obstruction are \statuslean{} in \lean{MixedGapKummerFinite}.  Chebotarev
+densities, mantissa entropy, collision valuation, ray divisor, and the finite-box bridge are
+\statusnew{} paper deductions.  They strengthen the denominator lower bound without
+supplying the missing upper bound.
 
 \subsection{Directional gap quotients and exact capture cost}
 \label{crit:directional-capture}
@@ -17513,6 +17930,8 @@ $q$-digamma inputs classical where stated \\
 Exact determinant-one Smith reduction of the geometric Vandermonde, $q$-Pascal identity,
 factor formula, divisibility order, and positivity & \statuslean &
 \lean{GeometricVandermondeSmith}; Section~\ref{wsmith:modular-smith} \\
+Cubic fixed-base/cyclotomic half-mass law and escape beyond every fixed prime set &
+\statusnew & Section~\ref{wsmith:modular-smith}; exact factorization plus LTE \\
 Finite row-content amplification for a short prime-power relation & \statuslean &
 \lean{FinitePlaceShortRelationCore}; Section~\ref{wsmith:tomography} \\
 Pair-specific row/column Smith tomography, discrete-log image formula, and finite
@@ -17539,6 +17958,8 @@ Finite $q$-Newton endpoint dilation defect & \statuslean &
 Entire $q$-Newton completion and exact edge-product defect & \statusnew &
 Section~\ref{arithinterp:qnewton}; local-uniform convergence and classical
 basic-hypergeometric identity \\
+Mixed geometric-Newton words, complementary product, exact shifted-block valuation, and
+one-signed dyadic tail & \statusnew & Section~\ref{arithinterp:qnewton} \\
 One-axis connection growth, sign/phase/integer amplification, meromorphic quotient,
 Mittag--Leffler expansion, and negative-axis asymptotics & \statusnew &
 Section~\ref{arithinterp:qconnection}; classical normally convergent $q$-products \\
@@ -17554,6 +17975,8 @@ barrier & \statusnew & Section~\ref{sec:arithmetic-interpolation}; no improvemen
 Rational scalar/matrix-entry first-jet recovery and base-two integral-exponent closure &
 \statuslean & \lean{JordanFirstJet}; Section~\ref{opcoh:affine-jet}; matrix real-power formula
 remains paper-level \\
+Exact rationality locus for semisimple first-order self-extensions & \statusnew &
+Section~\ref{opcoh:affine-jet}; false positives are precisely commutator/split directions \\
 Operator local-universality no-go and global/finite/affine/trace/Hankel closing criteria &
 \statusnew & Section~\ref{sec:operator-coherence}; criteria are not consequences of the two outputs \\
 Exact rational moment-defect denominators and rational two-atom reproduction & \statuslean &
@@ -17571,6 +17994,8 @@ Generic determinant-distance group collision and modular unimodular wrappers & \
 \lean{UnimodularGapCollision}; Section~\ref{gapjet:gaps} \\
 Integer gap gcds, transported rational secants, finite order-signature no-go, and entrywise
 jet ceiling & \statusnew & Section~\ref{sec:unimodular-gaps}; jet ceiling is termwise only \\
+Symmetric rational secants and arbitrary fixed even-order Richardson contact & \statusnew &
+Section~\ref{gapjet:secants}; unreduced denominator height remains exponential \\
 Exact rotation-denominator floor law and finite simultaneous worst-case entropy bound &
 \statuslean & \lean{OrbitHeightEntropy}; Section~\ref{orbitheight:orbit},
 Section~\ref{orbitheight:farey} \\
@@ -17587,9 +18012,11 @@ Mixed-radix digit bounds and floor-carry plaquette identity & \statuslean &
 \lean{MixedRadixCarryFinite}; Section~\ref{carry:floor-rectangles} \\
 Binary-to-ternary radix-shadow congruence and exact valuation-index bridge & \statuslean &
 \lean{RadixShadow}; Section~\ref{carry:digit-lifts} \\
+Finite shifted-evaluation borrow step, forced $(0,1)$ digit pairs, and leading-$2$ exclusion & \statuslean &
+\lean{BorrowBlockCore}; Section~\ref{carry:digit-lifts} \\
 Finite floor-carry reconstruction, smooth-language universality, hitting corridor, and
-normalization-defect formulas & \statusnew & Sections~\ref{carry:floor-rectangles} and
-\ref{carry:digit-lifts} \\
+normalization-defect, interval-valuation, prefix-separation, and carry-mask formulas &
+\statusnew & Sections~\ref{carry:floor-rectangles} and \ref{carry:digit-lifts} \\
 Multiset carry paths, character balancing, multinomial fibers, and carry-language pressure &
 \statusnew & Section~\ref{sec:carry-languages}; exact-rate claims are restricted to the stated
 carry-language construction \\
@@ -17620,14 +18047,20 @@ Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, and positive reduced
 denominator target & \statusnew & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
-Infinite positive-series closure, canonical alternating tail, and boundary-quotient lower
-bounds & \statusnew & Section~\ref{crit:positive-closure} \\
+Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
+canonical alternating tail, and boundary-quotient lower bounds & \statusnew &
+Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
 ceiling & \statusnew & Section~\ref{crit:cyclotomic-defects} \\
 Fresh-prime pole, local synchronization, translated-block warning, and BCZ ray divisor &
 \statusnew & Section~\ref{crit:fresh-prime}; BCZ input classical \\
-Support classification, Kummer defect density, collision divisor, and finite-box detection &
-\statusnew & Section~\ref{crit:support-defects}; support and Chebotarev inputs classical \\
+Exact finite Kummer compatibility and transverse-hyperplane counts & \statuslean &
+\lean{KummerCompatibilityFinite}; Section~\ref{crit:support-defects} \\
+Mixed-gap Kummer determinant, same-residue obstruction, and denominator-retention core &
+\statuslean & \lean{MixedGapKummerFinite}; Section~\ref{crit:support-defects} \\
+Support classification, exact Chebotarev compatibility densities, mantissa entropy,
+collision divisor, and finite-box detection & \statusnew &
+Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs classical \\
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
 Shifted Newton--Kummer exponential smallness, norm deficit, and output-erasing traces &
@@ -17892,6 +18325,8 @@ strict suffix-degree descent and reconstruction from endpoint plus ordered suffi
 floor-carry plaquette identity \\
 \lean{.../RadixShadow} & injective binary-to-ternary digit reinterpretation, exact
 power-modulus congruence bridge, divisibility form, and valuation-index equality \\
+\lean{.../BorrowBlockCore} & finite shifted-evaluation coefficient vanishing, forced
+$(0,1)$ digit pairs, and exclusion of the leading-$2$ branch under a subpower bound \\
 \lean{.../DfiniteExponentCore} & bivariate exponent-relation polynomial for a formal
 linear differential operator; exact top exponent coefficient and nonzero certificate \\
 \lean{.../LambertCocycleFinite} & exact formal Lambert coefficient clearing, rational
@@ -17903,6 +18338,10 @@ positive unit mass \\
 \lean{.../NewtonCollisionCore} & one-step Newton append and evaluation preservation,
 residue-collision mismatch, and exact barycentric scaling under simultaneous node/value
 dilation \\
+\lean{.../MixedGapKummerFinite} & mixed-gap determinant identity, same-residue obstruction,
+and a finite valuation denominator-retention inequality \\
+\lean{.../KummerCompatibilityFinite} & exact finite-field common-scalar compatibility count
+and the transverse-hyperplane count, with the zero-source case included \\
 \lean{.../RankOneNewtonKummer} & higher geometric Newton product and cross-base cocycle;
 exact vanishing for every common natural exponent at or below the interpolation order \\
 \lean{.../DyadicPrivateSupport} & exact odd-prime order, congruence, and level privacy for
@@ -18104,7 +18543,8 @@ following kernel-accepted modules:
 \lean{MomentArithmetic}, \lean{RankGeometry},
 \lean{UnimodularGapCollision}, \lean{OrbitHeightEntropy},
 \lean{ProjectiveDefect}, \lean{CarryPath}, \lean{MixedRadixCarryFinite},
-\lean{RadixShadow}, \lean{DfiniteExponentCore},\\
+\lean{RadixShadow}, \lean{BorrowBlockCore}, \lean{DfiniteExponentCore},\\
+\lean{MixedGapKummerFinite}, \lean{KummerCompatibilityFinite},\\
 \lean{CrossResidualScaling}, \lean{ResultantScaling},
 \lean{NodeDivisorScaling}, \lean{CrossResultantBridge},\\
 \lean{DenominatorCancellationCounterexample}, \lean{GridTransformNoGo},
@@ -18707,242 +19147,8 @@ of the software trust boundary and is disclosed here rather than hidden.
 \subsection{Source}
 \label{a3:verifier-source}
 
-The listing below is the executed source verbatim.  Its language is C99; it is typeset in
-this report's generic code style, which has no C-specific highlighting.
-
-\begin{lstlisting}[style=pythonstyle,caption={Directed-rounding verifier (C99, MPFR, OpenMP).}]
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
-#include <math.h>
-#include <omp.h>
-
-#if defined(__has_include)
-#  if __has_include(<mpfr.h>)
-#    include <mpfr.h>
-#    define HAVE_SYSTEM_MPFR_HEADER 1
-#  endif
-#endif
-
-#ifndef HAVE_SYSTEM_MPFR_HEADER
-/* Minimal declarations for the MPFR 4.x ABI.  The execution environment had
-   libmpfr.so.6 but not the development header package.  A normal build with
-   libmpfr-dev installed takes the branch above instead. */
-typedef unsigned long mp_limb_t;
-typedef long mpfr_prec_t;
-typedef long mpfr_exp_t;
-typedef int mpfr_sign_t;
-typedef struct {
-  mpfr_prec_t _mpfr_prec;
-  mpfr_sign_t _mpfr_sign;
-  mpfr_exp_t _mpfr_exp;
-  mp_limb_t *_mpfr_d;
-} __mpfr_struct;
-typedef __mpfr_struct mpfr_t[1];
-typedef __mpfr_struct *mpfr_ptr;
-typedef const __mpfr_struct *mpfr_srcptr;
-typedef enum {
-  MPFR_RNDN = 0, MPFR_RNDZ = 1, MPFR_RNDU = 2,
-  MPFR_RNDD = 3, MPFR_RNDA = 4, MPFR_RNDF = 5,
-  MPFR_RNDNA = -1
-} mpfr_rnd_t;
-extern void mpfr_init2(mpfr_ptr, mpfr_prec_t);
-extern void mpfr_clear(mpfr_ptr);
-extern int mpfr_set_ui(mpfr_ptr, unsigned long, mpfr_rnd_t);
-extern int mpfr_log(mpfr_ptr, mpfr_srcptr, mpfr_rnd_t);
-extern int mpfr_mul(mpfr_ptr, mpfr_srcptr, mpfr_srcptr, mpfr_rnd_t);
-extern int mpfr_sub(mpfr_ptr, mpfr_srcptr, mpfr_srcptr, mpfr_rnd_t);
-extern int mpfr_cmp_ui(mpfr_srcptr, unsigned long);
-extern double mpfr_get_d(mpfr_srcptr, mpfr_rnd_t);
-extern const char *mpfr_get_version(void);
-#endif
-
-static inline int is_power_of_two_u64(uint64_t x) {
-  return x && ((x & (x - 1)) == 0);
-}
-
-typedef struct {
-  uint64_t checked;
-  uint64_t failures;
-  double min_lower;
-  double min_upper;
-  uint64_t min_lower_m, min_lower_n;
-  uint64_t min_upper_m, min_upper_n;
-  uint64_t first_fail_m, first_fail_guess;
-} Stats;
-
-int main(int argc, char **argv) {
-  uint64_t start = 1;
-  uint64_t limit = (1ULL << 20);
-  int bits = 192;
-  if (argc > 1) start = strtoull(argv[1], NULL, 0);
-  if (argc > 2) limit = strtoull(argv[2], NULL, 0);
-  if (argc > 3) bits = atoi(argv[3]);
-  if (start < 1 || limit <= start) {
-    fprintf(stderr, "bad range\n");
-    return 2;
-  }
-
-  int nt = omp_get_max_threads();
-  Stats *stats = calloc((size_t)nt, sizeof(Stats));
-  if (!stats) return 3;
-  for (int i = 0; i < nt; ++i) {
-    stats[i].min_lower = INFINITY;
-    stats[i].min_upper = INFINITY;
-  }
-
-  const long double theta = logl(3.0L) / logl(2.0L);
-  double t0 = omp_get_wtime();
-
-  mpfr_t two, three, ln2_lo, ln2_hi, ln3_lo, ln3_hi;
-  mpfr_init2(two, bits); mpfr_init2(three, bits);
-  mpfr_init2(ln2_lo, bits); mpfr_init2(ln2_hi, bits);
-  mpfr_init2(ln3_lo, bits); mpfr_init2(ln3_hi, bits);
-  mpfr_set_ui(two, 2, MPFR_RNDN);
-  mpfr_set_ui(three, 3, MPFR_RNDN);
-  mpfr_log(ln2_lo, two, MPFR_RNDD);
-  mpfr_log(ln2_hi, two, MPFR_RNDU);
-  mpfr_log(ln3_lo, three, MPFR_RNDD);
-  mpfr_log(ln3_hi, three, MPFR_RNDU);
-
-#pragma omp parallel
-  {
-    int tid = omp_get_thread_num();
-    Stats *st = &stats[tid];
-    mpfr_t xm, xn, xnp1;
-    mpfr_t logm_lo, logm_hi, logn_hi, lognp1_lo;
-    mpfr_t lhs_lo, lhs_hi, rhs_lo, rhs_hi, dl, du;
-    mpfr_init2(xm, bits); mpfr_init2(xn, bits); mpfr_init2(xnp1, bits);
-    mpfr_init2(logm_lo, bits); mpfr_init2(logm_hi, bits);
-    mpfr_init2(logn_hi, bits); mpfr_init2(lognp1_lo, bits);
-    mpfr_init2(lhs_lo, bits); mpfr_init2(lhs_hi, bits);
-    mpfr_init2(rhs_lo, bits); mpfr_init2(rhs_hi, bits);
-    mpfr_init2(dl, bits); mpfr_init2(du, bits);
-
-#pragma omp for schedule(static)
-    for (uint64_t m = start; m < limit; ++m) {
-      if (is_power_of_two_u64(m)) continue;
-
-      /* This is only a locator.  The MPFR inequalities below are the proof. */
-      uint64_t guess = (uint64_t)floorl(expl(theta * logl((long double)m)));
-
-      mpfr_set_ui(xm, (unsigned long)m, MPFR_RNDN);
-      mpfr_log(logm_lo, xm, MPFR_RNDD);
-      mpfr_log(logm_hi, xm, MPFR_RNDU);
-      mpfr_mul(lhs_lo, logm_lo, ln3_lo, MPFR_RNDD);
-      mpfr_mul(lhs_hi, logm_hi, ln3_hi, MPFR_RNDU);
-
-      int ok = 0;
-      uint64_t certn = 0;
-      double dl_d = 0.0, du_d = 0.0;
-      static const int offsets[7] = {0, -1, 1, -2, 2, -3, 3};
-      for (int oi = 0; oi < 7; ++oi) {
-        int off = offsets[oi];
-        if (off < 0 && guess < (uint64_t)(-off) + 1) continue;
-        uint64_t n = (uint64_t)((int64_t)guess + off);
-        if (n < 1) continue;
-
-        mpfr_set_ui(xn, (unsigned long)n, MPFR_RNDN);
-        mpfr_set_ui(xnp1, (unsigned long)(n + 1), MPFR_RNDN);
-
-        /* Directed lower bound for log(m)log(3)-log(n)log(2). */
-        mpfr_log(logn_hi, xn, MPFR_RNDU);
-        mpfr_mul(rhs_hi, logn_hi, ln2_hi, MPFR_RNDU);
-        mpfr_sub(dl, lhs_lo, rhs_hi, MPFR_RNDD);
-        if (mpfr_cmp_ui(dl, 0) <= 0) continue;
-
-        /* Directed lower bound for log(n+1)log(2)-log(m)log(3). */
-        mpfr_log(lognp1_lo, xnp1, MPFR_RNDD);
-        mpfr_mul(rhs_lo, lognp1_lo, ln2_lo, MPFR_RNDD);
-        mpfr_sub(du, rhs_lo, lhs_hi, MPFR_RNDD);
-        if (mpfr_cmp_ui(du, 0) <= 0) continue;
-
-        ok = 1;
-        certn = n;
-        dl_d = mpfr_get_d(dl, MPFR_RNDD);
-        du_d = mpfr_get_d(du, MPFR_RNDD);
-        break;
-      }
-
-      if (!ok) {
-        ++st->failures;
-        if (!st->first_fail_m || m < st->first_fail_m) {
-          st->first_fail_m = m;
-          st->first_fail_guess = guess;
-        }
-        continue;
-      }
-
-      ++st->checked;
-      if (dl_d < st->min_lower) {
-        st->min_lower = dl_d;
-        st->min_lower_m = m;
-        st->min_lower_n = certn;
-      }
-      if (du_d < st->min_upper) {
-        st->min_upper = du_d;
-        st->min_upper_m = m;
-        st->min_upper_n = certn;
-      }
-    }
-
-    mpfr_clear(xm); mpfr_clear(xn); mpfr_clear(xnp1);
-    mpfr_clear(logm_lo); mpfr_clear(logm_hi);
-    mpfr_clear(logn_hi); mpfr_clear(lognp1_lo);
-    mpfr_clear(lhs_lo); mpfr_clear(lhs_hi);
-    mpfr_clear(rhs_lo); mpfr_clear(rhs_hi);
-    mpfr_clear(dl); mpfr_clear(du);
-  }
-
-  Stats total = {0};
-  total.min_lower = INFINITY;
-  total.min_upper = INFINITY;
-  for (int i = 0; i < nt; ++i) {
-    Stats *s = &stats[i];
-    total.checked += s->checked;
-    total.failures += s->failures;
-    if (s->min_lower < total.min_lower) {
-      total.min_lower = s->min_lower;
-      total.min_lower_m = s->min_lower_m;
-      total.min_lower_n = s->min_lower_n;
-    }
-    if (s->min_upper < total.min_upper) {
-      total.min_upper = s->min_upper;
-      total.min_upper_m = s->min_upper_m;
-      total.min_upper_n = s->min_upper_n;
-    }
-    if (s->first_fail_m &&
-        (!total.first_fail_m || s->first_fail_m < total.first_fail_m)) {
-      total.first_fail_m = s->first_fail_m;
-      total.first_fail_guess = s->first_fail_guess;
-    }
-  }
-
-  double elapsed = omp_get_wtime() - t0;
-  printf("mpfr_version=%s\n", mpfr_get_version());
-  printf("range=[%" PRIu64 ",%" PRIu64 ")\n", start, limit);
-  printf("precision_bits=%d\nthreads=%d\n", bits, nt);
-  printf("checked_nonpowers=%" PRIu64 "\n", total.checked);
-  printf("failures=%" PRIu64 "\n", total.failures);
-  printf("min_lower_log_margin=%.17g at (m,n)=(%" PRIu64 ",%" PRIu64 ")\n",
-         total.min_lower, total.min_lower_m, total.min_lower_n);
-  printf("min_upper_log_margin=%.17g at (m,n)=(%" PRIu64 ",%" PRIu64 ")\n",
-         total.min_upper, total.min_upper_m, total.min_upper_n);
-  if (total.failures) {
-    printf("first_failure=(m,guess)=(%" PRIu64 ",%" PRIu64 ")\n",
-           total.first_fail_m, total.first_fail_guess);
-  }
-  printf("elapsed_seconds=%.6f\n", elapsed);
-
-  mpfr_clear(two); mpfr_clear(three);
-  mpfr_clear(ln2_lo); mpfr_clear(ln2_hi);
-  mpfr_clear(ln3_lo); mpfr_clear(ln3_hi);
-  free(stats);
-  return total.failures ? 1 : 0;
-}
-\end{lstlisting}
+The executed C99 source is stored at \path{source/mpfr_scan.c}.  It uses MPFR directed
+rounding and OpenMP.
 
 \subsection{Build and invocation}
 \label{a3:verifier-build}
@@ -18951,7 +19157,7 @@ On a system with the MPFR development headers installed, the whole build and a s
 full-range run are:
 
 \begin{lstlisting}[style=pythonstyle,numbers=none,caption={Build and invocation (POSIX shell).}]
-gcc -O3 -fopenmp mpfr_scan.c -lmpfr -lm -o mpfr_scan
+gcc -O3 -fopenmp source/mpfr_scan.c -lmpfr -lm -o mpfr_scan
 OMP_NUM_THREADS=5 ./mpfr_scan 1 67108864 192
 \end{lstlisting}
 

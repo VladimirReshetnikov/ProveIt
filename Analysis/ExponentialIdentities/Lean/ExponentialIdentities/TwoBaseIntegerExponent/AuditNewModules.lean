@@ -75,11 +75,13 @@ import ExponentialIdentities.TwoBaseIntegerExponent.LambertCocycleFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.PositiveCoefficientClosure
 import ExponentialIdentities.TwoBaseIntegerExponent.NewtonCollisionCore
 import ExponentialIdentities.TwoBaseIntegerExponent.RankOneNewtonKummer
+import ExponentialIdentities.TwoBaseIntegerExponent.MixedGapKummerFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.DyadicPrivateSupport
 import ExponentialIdentities.TwoBaseIntegerExponent.CatalanTangentCore
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedRadixCarryFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.CaptureMultiplier
 import ExponentialIdentities.TwoBaseIntegerExponent.RadixShadow
+import ExponentialIdentities.TwoBaseIntegerExponent.BorrowBlockCore
 import ExponentialIdentities.TwoBaseIntegerExponent.ValuationSlopeEnergy
 import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
 import ExponentialIdentities.TwoBaseIntegerExponent.QNewtonEndpointDefect
@@ -92,6 +94,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.PolynomialApproximationTax
 import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveLogMeanBounds
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedMahlerFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.TwoScaleSupportFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.KummerCompatibilityFinite
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -560,6 +563,11 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms RankOneNewtonKummer.calibration_two
 #print axioms RankOneNewtonKummer.calibration_three
 
+-- Finite mixed-gap Kummer determinant and denominator retention
+#print axioms MixedGapKummerFinite.mixedGap_determinant_identity
+#print axioms MixedGapKummerFinite.sameResidue_obstruction
+#print axioms MixedGapKummerFinite.denominatorRetention_of_one_numerator_uncancelled
+
 -- Private odd-prime order and level separation for dyadic cyclotomic factors
 #print axioms DyadicPrivateSupport.orderOf_eq_two_pow_succ
 #print axioms DyadicPrivateSupport.oddPrime_divisor_has_private_order
@@ -588,6 +596,12 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms RadixShadow.phi_modEq_pow_iff
 #print axioms RadixShadow.three_pow_dvd_phi_sub_iff_two_pow_dvd_sub
 #print axioms RadixShadow.padicValInt_phi_sub_eq
+
+-- Finite borrow-block rigidity for binary/ternary digit differences
+#print axioms BorrowBlockCore.shiftedCoefficient_eq_zero_of_lt
+#print axioms BorrowBlockCore.borrowShift_eq_zero_iff
+#print axioms BorrowBlockCore.digitPair_eq_zero_one_of_evaluation_lt
+#print axioms BorrowBlockCore.leadingTwoEvaluation_not_lt
 
 -- Zero-safe diagonal energy and total-variation comparison
 #print axioms ValuationSlopeEnergy.sum_max_eq_one_add_totalVariation
@@ -692,5 +706,11 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms fermatQuotientResidue_pow
 #print axioms firstLogDeterminant_eq_fermatQuotientDeterminant
 #print axioms fermatQuotientDeterminant_two_three_powers
+
+-- Exact finite compatibility and transverse-hyperplane counts
+#print axioms KummerCompatibilityFinite.card_compatible
+#print axioms KummerCompatibilityFinite.card_transverse_compatible
+#print axioms KummerCompatibilityFinite.card_compatible_zmod
+#print axioms KummerCompatibilityFinite.card_transverse_compatible_zmod
 
 end LeanProofs.TwoBaseIntegerExponent

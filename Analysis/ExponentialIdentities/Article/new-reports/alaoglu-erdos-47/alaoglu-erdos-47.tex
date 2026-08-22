@@ -64,6 +64,7 @@
 
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\F}{\mathbb{F}}
 \newcommand{\Gm}{\mathbb{G}_{\mathrm m}}
@@ -75,7 +76,6 @@
 \newcommand{\dens}{\operatorname{dens}}
 \newcommand{\mult}{\operatorname{mult}}
 \newcommand{\rad}{\operatorname{rad}}
-\newcommand{\AE}{\mathrm{AE}}
 \newcommand{\ellogtwo}{\log 2}
 \newcommand{\ellogthree}{\log 3}
 
@@ -164,7 +164,6 @@ Source file & \texttt{alaoglu-erdos-unified-report-A.tex.gz}\\
 Decompressed lines & \texttt{20,925}\\
 Whitespace-delimited words & \texttt{113,833}\\
 Structural headings & \texttt{491}\\
-SHA-256 of compressed source & \texttt{1e77491ea5cc0911d56e}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -259,7 +258,7 @@ transcendental.  This contradicts $2^x=m\in\Z$.
 
 Set
 \[
- \alpha=\frac{\log3}{\log2}.
+ \alpha=\log_2 3.
 \]
 
 \begin{proposition}\label{prop:alpha-transcendental}
@@ -880,12 +879,13 @@ $I\subset[0,1)$, conditional on $\theta_j\in I$ the vectors
  \bigl(\kappa_{\mathfrak p}(U_j),
        \kappa_{\mathfrak p}(V_j)\bigr)
 \]
-are uniformly distributed on $\operatorname{im}M_{\mathfrak p}$.  More
-precisely, each $w\in\operatorname{im}M_{\mathfrak p}$ occurs with natural
-density
+are uniformly distributed on $\operatorname{im}M_{\mathfrak p}$.  More precisely, each
+$w\in\operatorname{im}M_{\mathfrak p}$ occurs with absolute natural density
 \[
  \frac{|I|}{|\operatorname{im}M_{\mathfrak p}|}.
 \]
+Its conditional density among the indices with $\theta_j\in I$ is therefore
+$1/|\operatorname{im}M_{\mathfrak p}|$.
 Consequently:
 \begin{enumerate}
 \item if $\Delta(\boldsymbol\kappa_{\mathfrak p})\ne0$, every one of the
@@ -997,12 +997,13 @@ Therefore
  F(t)
  &=H_d\bigl(A\log2,B\log3\bigr)t^d+O(t^{d+1})\\
  &=(\log2)^d H_d(A,B\alpha)t^d+O(t^{d+1}),
- \qquad \alpha=\frac{\log3}{\log2}.
+ \qquad \alpha=\log_2 3.
 \end{align*}
 The polynomial $T\mapsto H_d(A,BT)$ is a nonzero polynomial over
 $\overline\Q$: multiplication of its coefficients by the nonzero algebraic
-numbers $A$ and $B$ cannot annihilate it.  By
-\cref{prop:alpha-transcendental}, it does not vanish at $T=\alpha$.  Hence the
+numbers $A$ and $B$ cannot annihilate it.  By \cref{prop:alpha-transcendental}, $\alpha$ is
+transcendental over $\Q$ and therefore over $\overline\Q$; it does not vanish at
+$T=\alpha$.  Hence the
 coefficient of $t^d$ is nonzero, proving \eqref{eq:ord-equals-mult}.
 \end{proof}
 
@@ -1047,7 +1048,7 @@ $\binom{D+2}{2}\asymp D^2/2$.  If one viewed
 $P(2^t,3^t)$ as an arbitrary one-variable analytic function, it would be
 tempting to impose almost $D^2/2$ vanishing derivatives at one point.  But
 those derivative equations have coefficients involving powers of
-$\alpha=\log3/\log2$.  For algebraic coefficients of $P$, the transcendence
+$\alpha=\log_2 3$.  For algebraic coefficients of $P$, the transcendence
 of $\alpha$ separates every coefficient of every power of $\alpha$.
 Consequently the first $T$ directional equations are exactly the
 $\binom{T+1}{2}$ mixed Taylor equations.  The apparent one-dimensional
@@ -1163,8 +1164,8 @@ equations with $t=ab^{-1}$.
 \begin{corollary}[Chebotarev sparsity of common factors]\label{cor:gcd-sparse}
 For a counterexample datum and a sufficiently large good $\ell$, every prime
 $p\equiv1\pmod\ell$ satisfying the hypotheses of
-\cref{prop:gcd-localization} lies over the exact compatible Chebotarev set.
-Its relative density is
+\cref{prop:gcd-localization} lies over the exact compatible Chebotarev set.  The ambient set
+of prime ideals of $K_\ell$ containing these possible divisors has relative density
 \[
  \frac1\ell-\frac1{\ell^2}+\frac1{\ell^3}
 \]
@@ -1601,7 +1602,7 @@ index $I_\Gamma$;
 \cref{lem:rank3-transverse}.
 \end{itemize}
 The only transcendence input in this layer is that
-$\log3/\log2$ is transcendental.  Until Gelfond--Schneider is available in the
+$\log_2 3$ is transcendental.  Until Gelfond--Schneider is available in the
 library, package this as a clearly named imported theorem rather than an
 opaque axiom local to the proof.
 
@@ -1773,7 +1774,7 @@ Statement & Status & Dependencies / caveat\\
 \endhead
 Rational $x$ with $2^x\in\Z$ is integral & proved & Unique factorization\\
 Nonintegral counterexample has transcendental $x$ & proved & Gelfond--Schneider\\
-$\alpha=\log3/\log2$ is transcendental & proved & Gelfond--Schneider\\
+$\alpha=\log_2 3$ is transcendental & proved & Gelfond--Schneider\\
 Multiplicative rank is at least three & proved & Transcendence of $\alpha$\\
 Rank-three relation is transverse & proved & Rational case plus primitive relation\\
 Eventual equality of ordinary and Kummer rank & proved & Valuation lattices and cyclotomic ramification\\

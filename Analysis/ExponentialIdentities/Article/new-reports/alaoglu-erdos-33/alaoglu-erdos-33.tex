@@ -164,7 +164,7 @@ The displayed identities are immediate. If $2^u\mid A=2^x$, then $2^u\le2^x$ and
 
 The number
 \[
- \alpha=\frac{\log 3}{\log 2}
+ \alpha=\log_2 3
 \]
 is irrational by unique factorization and transcendental by Gelfond--Schneider: if $\alpha$ were algebraic irrational, then $2^\alpha=3$ would be transcendental. This transcendence, rather than mere irrationality, is what makes the jet theorem in \cref{sec:jet} exact.
 
@@ -442,7 +442,7 @@ For every $n\ge1$:
 \end{equation}
 \item With
 \[
- R(t)=\frac{3^t-1}{2^t-1},\qquad R(0)=\frac{\log3}{\log2}=\alpha,
+ R(t)=\frac{3^t-1}{2^t-1},\qquad R(0)=\log_2 3=\alpha,
 \]
 one has the exact rational identity
 \begin{equation}\label{eq:R-rational}
@@ -555,9 +555,9 @@ where $H_d\ne0$ is homogeneous of least total degree $d$. Since
 the coefficient of $t^d$ in $F_P(t)$ is
 \[
  H_d(\log2,\log3)
- =(\log2)^d H_d\!\left(1,\frac{\log3}{\log2}\right).
+ =(\log2)^d H_d\!\left(1,\log_2 3\right).
 \]
-The polynomial $H_d(1,T)\in\QQ[T]$ is nonzero. Since $\alpha=\log3/\log2$ is transcendental, this coefficient cannot vanish. Hence the order is exactly $d$. The bidegree bound gives $d\le D_1+D_2$.
+The polynomial $H_d(1,T)\in\QQ[T]$ is nonzero. Since $\alpha=\log_2 3$ is transcendental, this coefficient cannot vanish. Hence the order is exactly $d$. The bidegree bound gives $d\le D_1+D_2$.
 
 At $t=m$, replace $P(U,V)$ by $P(2^mU,3^mV)$, which still has rational coefficients, and translate the parameter. At a counterexample $t=x$, use $P(AU,BV)$ instead.
 \end{proof}
@@ -797,7 +797,7 @@ For irrational $\theta$, $(c_n)$ is a Sturmian mechanical word. Thus a counterex
 
 The curve
 \[
- y=t^\alpha,\qquad \alpha=\frac{\log3}{\log2},
+ y=t^\alpha,\qquad \alpha=\log_2 3,
 \]
 contains the canonical integer orbit $(2^n,3^n)$ for $n\ge0$. A counterexample would add the independent integer orbit $(A^n,B^n)$. Their parameters are $n$ and $nx$. Diophantine approximation makes these parameters recurrently close, but only polynomially close; the corresponding affine lattice points remain exponentially far apart. Any lattice-geometry proof must therefore use high-order determinants or projective normalization, not Euclidean proximity of individual points.
 
@@ -865,7 +865,7 @@ The proved core is suitable for formalization in small independent modules.
 \item \texttt{DividedDifferenceSign.lean}: formalize the generalized mean-value theorem by induction from Rolle's theorem if the exact library lemma is absent; specialize to $t\mapsto t^x$ and prove \cref{thm:dd-master}.
 \item \texttt{LocalSidon.lean}: prove the double-integral identity and monotonic endpoint bounds in \cref{thm:local-sidon}.
 \item \texttt{ReturnGaps.lean}: formalize $M_n$, $\delta_n$, positivity of $a_n,b_n$, the rational identity \eqref{eq:R-rational}, monotonicity of $R$, and the synchronized recurrences.
-\item \texttt{JetRigidity.lean}: represent the translated polynomial by homogeneous components and prove the leading coefficient is nonzero from transcendence of $\log3/\log2$. This module needs a theorem packaging the Gelfond--Schneider consequence.
+\item \texttt{JetRigidity.lean}: represent the translated polynomial by homogeneous components and prove the leading coefficient is nonzero from transcendence of $\log_2 3$. This module needs a theorem packaging the Gelfond--Schneider consequence.
 \item \texttt{Alternant.lean}: formalize denominator clearing and positivity via a Chebyshev-system or total-positivity lemma; prove the Hadamard/divided-difference upper bound.
 \end{enumerate}
 
@@ -897,7 +897,7 @@ The work in this addendum changes the shape of the problem in three concrete way
 
 First, the integrality of $s^x$ on the smooth semigroup is not limited to a three-term curvature constraint. It yields a complete hierarchy of integer divided differences and one-sign Peano functionals. These give exact exclusion certificates and a principled optimization problem.
 
-Second, exact auxiliary-polynomial contact has a rigid ceiling. Because $\log3/\log2$ is transcendental, the exponential curve cannot have anomalously high rational-algebraic contact at a rational point. This removes an entire class of seemingly promising ``many coefficients, many vanishing derivatives'' arguments and explains exactly why they fail.
+Second, exact auxiliary-polynomial contact has a rigid ceiling. Because $\log_2 3$ is transcendental, the exponential curve cannot have anomalously high rational-algebraic contact at a rational point. This removes an entire class of seemingly promising ``many coefficients, many vanishing derivatives'' arguments and explains exactly why they fail.
 
 Third, multi-return alternants recover the missing quadratic order through a Vandermonde determinant. Their present failure is no longer vague: the archimedean determinant gain is $N^2\log N$, while generic denominator clearing costs $N^{5/2}$. A shared-denominator or determinant-divisibility theorem saving one factor of the monomial side length would cross the barrier. That is the most sharply defined route emerging from this round of work.
 

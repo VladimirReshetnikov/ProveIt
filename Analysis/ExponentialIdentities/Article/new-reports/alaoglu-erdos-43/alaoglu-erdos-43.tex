@@ -55,7 +55,7 @@
 \newcommand{\Span}{\operatorname{span}}
 \newcommand{\supp}{\operatorname{supp}}
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
-\newcommand{\AE}{Alaoglu--Erd\H{o}s}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
 \newcommand{\e}{\mathrm e}
 \newcommand{\dd}{\,\mathrm d}
 
@@ -71,7 +71,7 @@ a sharp half-mass barrier, a gcd-compatibility endgame, and a motivic conditiona
 
 \begin{abstract}
 Let $x\in\R$ and suppose that $M=2^x$ and $N=3^x$ are integers.  The
-\AE{} conjecture asserts that $x$ is an integer.  This report does not claim
+\AEname{} conjecture asserts that $x$ is an integer.  This report does not claim
 an unconditional proof.  It records a set of new results and proof targets
 that were selected specifically to avoid reproducing the broad determinant,
 Mahler-function, fixed-prime $p$-adic, interpolation, approximation-theoretic,
@@ -377,7 +377,7 @@ divided difference of the homogeneous function $T^x$ by $a^{x-k}$; using
 $F_k(a,q)=a^kF_k(1,q)$ gives \eqref{eq:dd-power-scaled}.
 \end{proof}
 
-For a putative \AE{} counterexample, \eqref{eq:dd-power-scaled} specializes
+For a putative \AEname{} counterexample, \eqref{eq:dd-power-scaled} specializes
 to the two separated families
 \begin{align}
  F_k(3^b,2)\,[3^b,3^b2,\ldots,3^b2^k]T^x
@@ -783,9 +783,9 @@ $\varepsilon$ is arbitrary, \eqref{eq:compat-zero} follows; the ratio statement
 uses \eqref{eq:M-asymptotic}.
 \end{proof}
 
-\begin{corollary}[A concrete sufficient condition for \AE]
+\begin{corollary}[A concrete sufficient condition for \AEname]
 \label{cor:compat-AE}
-Let $M=2^x$ and $N=3^x$ be integers.  If
+Let $x>0$, and let $M=2^x$ and $N=3^x$ be integers.  If
 \begin{equation}\label{eq:combined-positive-mass}
  \limsup_{d\to\infty}
  \frac{\mathfrak C_d(2,M)+\mathfrak C_d(3,N)}{d^3}>0,
@@ -797,8 +797,8 @@ then $x\in\Z$.
 Condition \eqref{eq:combined-positive-mass} implies that at least one of the
 two compatibility masses is not $o(d^3)$.  By
 \cref{thm:compat-zero-one}, either $M=2^m$ or $N=3^m$ for some
-$m\in\N$.  In the first case $x=\log M/\log2=m$; in the second,
-$x=\log N/\log3=m$.
+$m\in\N$.  In the first case $x=\log_2 M=m$; in the second,
+$x=\log_3 N=m$.
 \end{proof}
 
 \begin{corollary}[Single-layer version]\label{cor:single-layer}
@@ -832,7 +832,7 @@ Then
 \end{conjecture}
 
 \begin{corollary}
-\Cref{conj:MP-bridge} implies the \AE{} conjecture.
+\Cref{conj:MP-bridge} implies the \AEname{} conjecture.
 \end{corollary}
 
 \begin{proof}
@@ -890,7 +890,7 @@ $q^{an}Q^{bn}$ gains a factor $g_r$, and the $i$th transformed row gains
 $g_r^i$.  The determinant amplification exponent is therefore
 $0+1+\cdots+L$.
 
-For the \AE{} data, one may use the same exponent pairs $(a_j,b_j)$ in the
+For the \AEname{} data, one may use the same exponent pairs $(a_j,b_j)$ in the
 two semigroups
 \[
  u_j^{(2)}=2^{a_j}M^{b_j}=2^{a_j+b_jx},
@@ -1006,7 +1006,7 @@ the products
 are linearly independent over $\Q$.
 \end{definition}
 
-\begin{theorem}[Conditional \AE{} theorem]\label{thm:conditional-QPLI}
+\begin{theorem}[Conditional \AEname{} theorem]\label{thm:conditional-QPLI}
 Let $M=2^x$ and $N=3^x$ be positive integers, and let $S$ contain the prime
 divisors of $6MN$.  If $\mathrm{QPLI}(S)$ holds, then $x\in\N_0$.
 \end{theorem}
@@ -1415,12 +1415,12 @@ formalized.
 
 A practical order is
 \[
- \text{finite products}
- \longrightarrow q\text{-binomial divisibility}
- \longrightarrow p\text{-ordering}
- \longrightarrow\text{local valuations}
- \longrightarrow\text{mass laws}
+ \begin{gathered}
+ \text{finite products}\longrightarrow q\text{-binomial divisibility}
+ \longrightarrow p\text{-ordering}\longrightarrow\text{local valuations},\\
+ \text{local valuations}\longrightarrow\text{mass laws}
  \longrightarrow\text{compatibility reduction}.
+ \end{gathered}
 \]
 The prime-symbol normal form is independent and can be completed in parallel.
 The function-field theorem is also independent.  This separation makes it
@@ -1498,7 +1498,7 @@ The report establishes the following unconditional progress.
        $\mathfrak C_d(q,Q)$ obeys a zero--one law for prime $q$: full mass for
        an integral power and $o(d^3)$ for multiplicative independence.
  \item A positive combined compatibility mass for $(2,M)$ and $(3,N)$ is an
-       unconditional sufficient condition for the \AE{} conclusion.
+       unconditional sufficient condition for the \AEname{} conclusion.
  \item Block Vandermonde determinants amplify each compatibility factor by a
        quadratic exponent, giving a concrete mechanism for spending moving
        prime mass.
