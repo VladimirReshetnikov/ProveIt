@@ -97,7 +97,8 @@ methods, and research directions}
 \newcommand{\commit}[1]{\texttt{#1}}
 \newcommand{\statuslean}{\textcolor{leanblue}{\textbf{[kernel-verified Lean]}}}
 \newcommand{\statusnew}{\textcolor{newgreen}{\textbf{[paper proof in this report]}}}
-\newcommand{\statuscomp}{\textcolor{computeviolet}{\textbf{[interval computation]}}}
+\newcommand{\statuscomp}{\textcolor{computeviolet}{\textbf{[software computation]}}}
+\newcommand{\statusexactcomp}{\textcolor{computeviolet}{\textbf{[exact computation]}}}
 \newcommand{\statusknown}{\textcolor{classicalgray}{\textbf{[classical/open background]}}}
 \newcommand{\statusdraft}{\textcolor{computeviolet}{\textbf{[Lean draft, not yet accepted]}}}
 \newcommand{\statusrepo}{\textcolor{leanblue}{\textbf{[repository build reported]}}}
@@ -215,7 +216,15 @@ bound --- together with a diagnosis of exactly why they stop short: archimedean 
 needs $\asymp(\log X)^2$ nodes at scale $X$, while a counterexample supplies only
 $\asymp\log X$.  It also records a new sufficient condition of a different kind: if the
 products $\log p\log q$ of two prime logarithms are $\Q$-linearly independent, the conjecture
-follows.
+follows.  The independent continuations reconciled from \lean{Article/new-reports/} add a
+kernel-verified
+restricted matrix-coefficient equivalence and an exact sparse-interpolation obstruction:
+$R$ positive points on a hypothetical irrational power curve require exactly $R+1$
+monomials.  Its Newton-polygon and boundary-defect refinements isolate a concrete
+one-monomial saving problem, but do not solve it.  The other independent continuations add
+exact rational-orbit collision counts, a universal superfactorial determinant divisor, a
+signed-progression denominator-tax identity, and a random-phase/Fej\'er control experiment.
+Each sharpens a finite interface while leaving the same four-exponentials barrier intact.
 \end{minipage}
 \vfill
 {\large August 21, 2026\par}
@@ -230,7 +239,7 @@ $m^{\thetaq}\in\Z$ are the powers of two.  It is the first unresolved $2\times2$
 the four exponentials problem, while its three-base analogue follows from six exponentials and
 is formalized here by an interpolation determinant.
 
-This unified report has four purposes.  First, it catalogues the machine-checked corpus with
+This unified report has five purposes.  First, it catalogues the machine-checked corpus with
 exact Lean identifiers: zero-free regions, the Gelfond--Schneider dichotomy, multiplicative
 rank two, the canonical primitive odd core, the rational-power index and radical degree,
 localized-radical equivalences, arbitrary-order arithmetic-progression obstructions,
@@ -242,11 +251,33 @@ determinant methods.  Arbitrary candidate tuples on the lattice curve $y=x^{\the
  \prod_{0\le i<j\le r}(m_j-m_i)\ \ge\ \frac{r!}{|\fall{\thetaq}{r}|}\,m_0^{\,r-\thetaq},
 \]
 with no arithmetic-progression hypothesis; and the mixed exponent semigroup supplies positive
-integer generalized Vandermonde determinants whose repulsion exponent tends to one, yielding
-the explicit unconditional bound $\#(\Cand\cap[X,2X])\le10000\max\{1,\log X\}^2$ by a route
-independent of the prime-valuation rank theorem.  Third, it quantifies the remaining gap: the
-determinant hierarchy misses the conditional population by exactly one factor of $\log X$.
-Fourth, it records new equivalent and sufficient conditions --- block-growth dichotomies
+integer generalized Vandermonde determinants whose repulsion exponent tends to one.  The
+paper proof yields the explicit unconditional bound
+$\#(\Cand\cap[X,2X])\le10000\max\{1,\log X\}^2$ by a route independent of the
+prime-valuation rank theorem; the corresponding accepted Lean endpoint carries the explicit
+hypothesis \lean{NewtonFactorization}.  On the nonarchimedean side, the accepted corpus now
+identifies the exact Beatty minimizing fiber and gap, groups every tropical layer by row
+partitions, truncates the normalized determinant exactly modulo $p^K$, bounds the number of
+surviving row partitions by a stars-and-bars coefficient, and extracts finite
+first-fiber divisors.  In the block-scaled consecutive-power model, the all-layer unit gain
+adds directly to the tropical minimum, giving $p^{\tau+U}\mid\det$ uniformly across the
+assignment cascade.  These gains are lower order; exact synthetic
+experiments expose genuine cross-layer carrying but do not exhibit a leading-order cascade at
+the tested sizes.  Third, it reconciles the genuinely new material independently developed
+in all six reports under \lean{Article/new-reports/}.  Reports 1--2 show that the
+Alaoglu--Erd\H{o}s conjecture is equivalent to a
+restricted $2\times2$ Matrix Coefficient principle, while an irrational power curve through
+$R$ positive nodes has exact sparse interpolation threshold $R+1$.  The corresponding formal
+prime-symbol determinant, Newton-polygon calibration, and boundary-dilation identities expose
+an exact factor-four auxiliary-polynomial gap and a finite one-monomial target.  Reports 3--5
+add the exact rational-orbit collision spectrum, universal factorial and Smith divisors,
+adelic determinant accounting, and a signed-progression denominator tax.  Report 6 adds a
+uniform metric estimate, exact random-phase extinction, and a positive-kernel Fourier target
+for the exceptional phase zero.
+Fourth, it
+quantifies the remaining gap: the determinant hierarchy misses the conditional population by
+exactly one factor of $\log X$.
+Fifth, it records new equivalent and sufficient conditions --- block-growth dichotomies
 (including the observation that the conjecture is equivalent to the dyadic block count being
 $1$ for \emph{infinitely many} exponents), a compact synchronized $S$-integral orbit
 formulation, and the prime-log-product independence criterion --- and closes with a
@@ -292,10 +323,11 @@ A Lean source for the statement exists in the repository tree, but it has \emph{
 accepted by the kernel at the pinned state.  A draft is weaker evidence than \statusnew{}
 prose backed by a written proof, not stronger: it records intent to formalize, nothing more.
 \item[\statuscomp]
-A finite statement was checked by outward-rounded interval arithmetic.  The script,
-parameters, worst margins, and manifest hashes are recorded in Section~\ref{sec:finitecheck}
-and Appendix~\ref{app:interval}.  The trusted base includes CPython and \lean{mpmath}; this is
-not interchangeable with a Lean certificate.
+A finite statement was checked by an explicitly identified software computation, usually
+with outward rounding.  The local section records the script, parameters, margins, artifacts,
+and relevant trust base: this includes CPython and \lean{mpmath} for the interval checks and
+C, MPFR, and GMP for the directed-rounding scans.  Such evidence is not interchangeable with
+a Lean certificate.
 \item[\statusknown]
 A classical theorem quoted from the literature.
 \end{description}
@@ -322,6 +354,22 @@ drafts have since been accepted, and a further round added
 \lean{TowerRigidity}, \lean{SymmetricTowerConstants}, \lean{PrimeLogSpaceOperator},\\
 \lean{ArbitraryNodeRepulsion}, \lean{SemigroupGapBound}.
 \end{center}
+The current algebraic-locus and nonarchimedean wave further includes
+\begin{center}
+\lean{AlgebraicExponentLocus}, \lean{AlgebraicOutputLocus},\\
+\lean{RationalFunctionAlgebraicLocus}, \lean{AlgebraicTowerTransition},\\
+\lean{CrossBaseTowerTransition}, \lean{BlockVandermondeValuationBudget},
+\lean{AllLayerUnitBasis}, \lean{UnitOrderingGain},\\
+\lean{SimultaneousRadicalDegrees}, \lean{CanonicalRadicalMixedOutput},\\
+\lean{TropicalInitialForm}, \lean{BlockFiberFactorization},
+\lean{TropicalBlockApplication}, \lean{BeattyTropicalFiber},\\
+\lean{RowBlockLaplaceExpansion}, \lean{AssignmentExcessGeometry},
+\lean{RowBlockUnitDivisibility}, \lean{MixedDeterminantUnitBridge},\\
+\lean{RestrictedMatrixCoefficient}, \lean{FormalPrimeDeterminant},
+\lean{SparsePowerCurve}, \lean{RationalOrbitGrid}, \lean{BoundaryDilationDefect},
+\lean{SuperfactorialDeterminant}, \lean{SignedProgressionDeterminant},
+\lean{FejerKernelCertificate}.
+\end{center}
 Public headline theorems throughout were audited with \lean{#print axioms}; only the standard
 Mathlib axioms \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur, and the
 audit for the most recent round is itself a module, \lean{AuditNewModules}.  The two analytic
@@ -346,7 +394,10 @@ gcd-normalized odd core $w>1$, every candidate has unique coordinates $2^iw^j$, 
 solution set has the exact free-monoid classification $\Sol=\Nzero+\Nzero\beta$ with a unique
 least nonintegral generator $\beta$, which is affinely primitive.  Candidate counts below $N$
 are at most $\clog_2N\cdot\clog_3N$, each dyadic block $[2^T,2^{T+1})$ holds at most
-$\clog_3(2^{T+1})$ candidates, the exact block count is $\lfloor(N+1)/\beta\rfloor$, the
+$\clog_3(2^{T+1})$ candidates, the exact number of \emph{nonintegral solutions} in the
+exponent block $[N,N+1)$ is $\lfloor(N+1)/\beta\rfloor$, while the full solution count ---
+equivalently the candidate count in $[2^N,2^{N+1})$ --- is
+$1+\lfloor(N+1)/\beta\rfloor$, the
 cumulative count satisfies $C(T)/T^2\to1/(2\beta)$, and the conjecture is equivalent to
 subquadratic growth along $2^T$.  Exact block averages of every finite trigonometric
 polynomial converge to its constant Fourier coefficient.  \statuslean{}  The extension to all
@@ -370,17 +421,22 @@ product-of-gaps lower bound, giving explicit local packing bounds and a best ord
 exponent $0.241503\ldots$ at determinant order $4$ (Section~\ref{sec:arbnode}).  Enlarging the
 exponent set to the mixed semigroup $\Nzero+\Nzero\thetaq$ yields arbitrarily large positive
 integer generalized Vandermonde determinants, a near-linear repulsion exponent
-$1-O(r^{-1/2})$, and the unconditional dyadic bound
+$1-O(r^{-1/2})$, and the paper-level unconditional dyadic bound
 $\#(\Cand\cap[X,2X])\le10000\max\{1,\log X\}^2$ (Section~\ref{sec:semigroup}).  This route is
-independent of the repository's prime-valuation rank theorem.  \statusnew{}  Lean sources
+independent of the repository's prime-valuation rank theorem.  The paper theorems are
+unconditional.  Their current Lean forms isolate the two missing analytic ingredients as the
+explicit hypotheses \lean{RpowDividedDifferenceMeanValue} and \lean{NewtonFactorization};
+all determinant identities, integrality, nonvanishing, positivity, and the deductions from
+those hypotheses are kernel-accepted.  \statusnew{} \statuslean{}  Lean modules
 \lean{ArbitraryNodeDeterminant}, \lean{MixedExponentSemigroup}, \lean{SemigroupDeterminant},
-\lean{FallingFactorialBound}, and \lean{SemigroupWeightBound} exist but are not yet accepted.
-\statusdraft
+\lean{FallingFactorialBound}, \lean{SemigroupWeightBound},
+\lean{ArbitraryNodeRepulsion}, and \lean{SemigroupGapBound} are on the aggregate import
+surface.
 
 \item \textbf{New: a sufficient condition from products of prime logarithms.}  Suppose
-$2^x=A\in\Z$ and $3^x=M\in\Z$.  Eliminating $x$ gives the exact identity
+$2^x=M\in\Z$ and $3^x=A\in\Z$.  Eliminating $x$ gives the exact identity
 \[
-  \log A\,\log3=\log M\,\log2 .
+  \log M\,\log3=\log A\,\log2 .
 \]
 Expanding $A$ and $M$ into prime factorizations turns this into an integer-coefficient linear
 form in the pairwise products $\log p\,\log q$ of prime logarithms, and the form is nontrivial
@@ -390,8 +446,33 @@ pairs of primes, are linearly independent over $\Q$, the conjecture holds}
 It is different in kind from the four exponentials conjecture -- it constrains a bilinear
 lattice of logarithm products rather than a $2\times2$ logarithm determinant -- so it supplies
 a genuinely separate route to the same conclusion, not a reformulation of the same wall.
-\statusnew{}  A Lean module \lean{LogProductIndependence} is in preparation and has not yet
-been accepted by the kernel.  \statusdraft
+\statusnew{} \statuslean{}  The exact conditional implication is accepted in
+\lean{LogProductIndependence}; the asserted prime-log-product independence itself remains a
+classical hypothesis, not a theorem of the corpus.
+
+\item \textbf{Exact localization of the $p$-adic cascade.}  For the mixed Beatty determinant,
+the minimum assignments, their floor-sized gap, and the first block-determinant quotient are
+now exact.  More generally, after removing $p^\tau$, reduction modulo $p^K$ can receive
+contributions only from row partitions of assignment excess below $K$, with every coefficient a signed
+product of square unit minors.  The first-fiber valuation has an elementary finite cube budget,
+and monic unit-adapted bases extract additional whole-Vandermonde divisors.  For the
+block-scaled consecutive-power model, their common exponent $U$ is independent of the row
+partition and the exact additive divisor $p^{\tau+U}\mid\det$ follows.  These results
+also bound the number of terms below any fixed excess cutoff by an explicit binomial
+coefficient.  They localize every possible leading excess to the valuations of, and cancellation among, the
+surviving low-excess minor products; they bound neither phenomenon.  \statuslean
+
+\item \textbf{New: restricted matrix coefficients and exact sparse interpolation.}
+For positive integral outputs $M,A$, the singular logarithm matrix
+$\bigl[\begin{smallmatrix}\log2&\log M\\\log3&\log A\end{smallmatrix}\bigr]$
+has a zero coefficient between nonzero rational vectors exactly as required by the restricted
+Matrix Coefficient principle if and only if the Alaoglu--Erd\H{o}s conjecture holds.
+Moreover, on an irrational curve $Y=X^\beta$, vanishing at $R$ distinct positive nodes
+requires at least $R+1$ monomials, and a positive-node interpolant attains this bound with
+every coefficient nonzero.  The lower bound, integral evaluation determinant, matching
+interpolant, and matrix-coefficient equivalence are kernel verified.  The induced BK-degree
+threshold $R-1$ and boundary compression leave a precise one-monomial saving target.
+\statuslean{} \statusnew
 
 \item \textbf{The irreducible remainder.}  The conjecture is equivalent to: no odd integer
 $u>1$ satisfies $u^{\thetaq}\in\Zthree$, with a symmetric base-swapped formulation and an
@@ -414,7 +495,8 @@ near-linear repulsion exponent $1-O(r^{-1/2})$ and, unconditionally,
   \#(\Cand\cap[X,2X])\ll(\log X)^2,
 \]
 with the explicit constant $10000$ proved below.  Paper proof in this report; a Lean
-formalization is drafted but not yet accepted.  \statusnew{} \statusdraft
+formalization is accepted with its single Newton-factorization input visible as a theorem
+hypothesis.  \statusnew{} \statuslean
 \end{resultbox}
 
 \begin{resultbox}
@@ -426,6 +508,19 @@ interpolation, at its present strength, therefore misses the conditional populat
 one power of $\log X$.  A successful refinement must either reduce the determinant's node
 requirement to $O(\!\log X)$ or extract additional nonarchimedean size from the same nodes.
 \statusnew
+\end{resultbox}
+
+\begin{resultbox}
+\textbf{Matrix coefficients and sparse interpolation
+(Section~\ref{sec:matrix-continuation}).}
+The conjecture is exactly a restricted $2\times2$ Matrix Coefficient principle.  Independently,
+every nonzero relation supported on $m$ monomials restricts to an exponential polynomial with
+at most $m-1$ positive-curve zeros; the matching positive-node interpolant has all $R+1$
+coefficients nonzero.  Thus $R$ counterexample points have exact sparse interpolation
+complexity $R+1$, so saving even one monomial over ordinary interpolation would rule them out.
+The matrix equivalence, sparse lower bound, nonzero integral determinant, and matching
+interpolant are kernel checked; the BK-area calibration and resulting factor-four comparison
+with the general Matrix Coefficient target remain paper-level.  \statuslean{} \statusnew
 \end{resultbox}
 
 \subsection{Why this is not a proof}
@@ -1534,8 +1629,11 @@ block index,
  \#\bigl(\Cand\cap[X,2X]\bigr)\asymp\log X ,
 \]
 and the kernel-verified zero-free region gives $\beta\ge12$, hence $\beta>12$ because $\beta$ is
-irrational.  The block count is therefore at most $\lfloor N/12\rfloor$ (and at most
-$\lfloor N/20\rfloor$ under the interval scan, which is \statuscomp{}).  Summing over blocks,
+irrational.  The number of \emph{nonintegral} solutions in the block is therefore at most
+$\lfloor N/12\rfloor$, while the full solution count --- equivalently the dyadic candidate
+count --- is at most $1+\lfloor N/12\rfloor$.  Under the directed-rounding scan these bounds
+improve respectively to $\lfloor N/27\rfloor$ and $1+\lfloor N/27\rfloor$, at the weaker
+\statuscomp{} trust level.  Summing over blocks,
 the cumulative candidate count below $2^T$ is
 \begin{equation}
 C(T)=T+\sum_{r=1}^{T}\Bigl\lfloor\frac r\beta\Bigr\rfloor
@@ -1856,12 +1954,13 @@ arithmetic input, for instance:
 Both routes ask for divisibility rather than size, which is precisely why the $p$-adic
 direction is given priority in the research program of Section~\ref{sec:program}.
 
-\begin{statusbox}{\statusnew{} for the determinant hierarchy cited here: the arbitrary-node
-repulsion theorem and the semigroup generalized-Vandermonde bounds are paper proofs in this
-report.  \statusdraft{} --- \lean{ArbitraryNodeDeterminant}, \lean{SemigroupDeterminant},
-and \lean{MixedExponentSemigroup} contain Lean drafts that the kernel has not yet accepted.
-The reduction of Conjecture~\ref{conj:AE} to four exponentials is \statuslean{}, but four
-exponentials is open and the conjecture remains open with it.}
+\begin{statusbox}{\statusnew{} for the unconditional paper proofs of the determinant hierarchy.
+\statuslean{} for the accepted algebraic, integrality, nonvanishing, and positivity layers in
+\lean{ArbitraryNodeDeterminant}, \lean{SemigroupDeterminant},
+\lean{MixedExponentSemigroup}, and \lean{OrderedChamberPositivity}.  The quantitative Lean
+endpoints carry their still-missing calculus inputs as explicit theorem hypotheses rather than
+axioms.  The reduction of Conjecture~\ref{conj:AE} to four exponentials is \statuslean{}, but
+four exponentials is open and the conjecture remains open with it.}
 \end{statusbox}
 \section{Rational-function rigidity and closure properties}\label{sec:rigidity}
 
@@ -3599,9 +3698,9 @@ and symmetrically $A=3^{\gamma_3}=3^{\alpha_2}$.  Writing $n=\alpha_2\in\Nzero$ 
 $2^x=M=2^n$, and strict monotonicity of $t\mapsto2^t$ gives $x=n\in\Z$.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- a Lean module \lean{LogProductIndependence} implementing
-this argument (with the independence hypothesis recorded as an explicit \lean{Prop}, never
-asserted) is in preparation; the theorem statement there is
+\begin{statusbox}{\statuslean{} --- \lean{LogProductIndependence} implements this argument,
+with the independence hypothesis recorded as an explicit \lean{Prop} and never asserted; the
+accepted conditional theorem is
 \lean{alaogluErdosConjecture_of_primeLogProductIndependence}.}
 \end{statusbox}
 
@@ -4097,6 +4196,157 @@ The same modules also record the pointwise forms
 force every algebraic ratio output to sit.
 \end{statusbox}
 
+\subsection{Exact exponent, rational-function, and tower loci}
+\label{sec:exact-exponent-loci}
+
+Fix a hypothetical nonintegral solution $x$ and put
+\[
+ \mathcal E_x=\{y\in\R:2^y,3^y\in\Qbar\}.
+\]
+The transposed six-exponentials determinant determines this set exactly:
+\begin{equation}
+ \mathcal E_x=\Q+\Q x.
+ \label{sp:eq-exponent-plane}
+\end{equation}
+Thus every exponent outside the affine plane makes at least one of $2^y$ and $3^y$
+transcendental.  In particular $y=x^n$ for every $n\ge2$, and also $y=x^{-1}$, lie outside
+the plane because $x$ is transcendental.  For every fixed $n\ge2$, requiring both
+$2^{x^n}$ and $3^{x^n}$ to be algebraic at every original two-base solution is therefore
+equivalent to Conjecture~\ref{conj:AE}.  The theorem says ``at least one'': it neither selects
+which base is transcendental nor supplies the missing algebraicity needed to prove the
+conjecture.
+
+The exact plane makes every genuinely nonaffine rational function an equally sharp detector.
+For $P,Q\in\Q[X]$ with $Q(x)\ne0$,
+\begin{equation}
+ 2^{P(x)/Q(x)},3^{P(x)/Q(x)}\in\Qbar
+ \quad\Longleftrightarrow\quad
+ P=(q+rX)Q\quad\text{for some }q,r\in\Q.
+ \label{sp:eq-rational-function-locus}
+\end{equation}
+The reverse direction is literal affine membership in \eqref{sp:eq-exponent-plane}; the
+forward direction uses transcendence of $x$ to turn equality after evaluation into a
+polynomial identity.  Consequently any fixed nonaffine rational function represented as
+$P/Q$ with the displayed denominator $Q$ having no real zero gives a global formulation
+equivalent to Conjecture~\ref{conj:AE}, and every
+$P\in\Q[X]$ of degree at least two does so with $Q=1$.  These are detector equivalences, not
+new algebraicity results: they relocate the open conclusion to another exponent without
+proving it.
+
+Under failure, the same module chooses the canonical generator $\beta$ so that the two loci
+can be compared on one rational-function chart.  For every $P/Q$ defined at $\beta$, both
+$2^{P(\beta)/Q(\beta)}$ and $3^{P(\beta)/Q(\beta)}$ are algebraic exactly when
+$P=(q+rX)Q$ with $q,r\in\Q$, whereas $P(\beta)/Q(\beta)$ is itself an original integral
+solution exactly when $P=(n+kX)Q$ with $n,k\in\Nzero$.  Thus the exact solution monoid is the
+nonnegative integral cone inside the rational affine algebraic-output plane; the comparison
+is exact, but it does not collapse the larger plane to that cone.
+
+There is also an exact two-dimensional picture for the squared monomials.  Under a
+counterexample, the set
+\[
+ \mathcal F_x=\{(i,j)\in\Nzero^2:
+      (2^i3^j)^{x^2}\in\Qbar\}
+\]
+is exactly one of
+\[
+ \Nzero\times\{0\},\qquad \{0\}\times\Nzero,\qquad \{(0,0)\}.
+\]
+Writing $M=2^x$ and $B=3^x$, the three cases say respectively that $M$ is $2,3$-smooth and
+$B$ is not, that $B$ is $2,3$-smooth and $M$ is not, or that neither is; both cannot be
+$2,3$-smooth for a nonintegral solution.  Under the original two integrality hypotheses this
+coordinate-face property is pointwise equivalent to nonintegrality, and the conjecture is
+equivalent to excluding it for every solution.  All three faces remain compatible with the
+present theory, so the trichotomy does not itself yield a contradiction.
+
+A related transition theorem has a different, solution-independent plane.  With
+$\thetaq=\log_2 3$, define
+\[
+ \mathcal T_x=\{y\in\R:2^y\in\Qbar\text{ and }2^{xy}\in\Qbar\}.
+\]
+For every hypothetical nonintegral solution,
+\begin{equation}
+ \mathcal T_x=\Q+\Q\thetaq.
+ \label{sp:eq-tower-transition}
+\end{equation}
+Two consecutive algebraic base-two tower levels therefore correspond exactly to one exponent
+in this fixed plane.  More strongly, at most one positive depth $n$ can satisfy
+$x^n\in\mathcal T_x$.  Indeed, transcendence of $x$ makes the $\thetaq$-coefficients in the
+two affine expressions nonzero; raising the two expressions to cross-powers and using
+transcendence of $\thetaq$ promotes equality at $\thetaq$ to a polynomial identity, whose
+degree comparison forces the two depths to coincide.  Hence every three consecutive
+positive-depth levels
+\[
+ 2^{x^n},\qquad 2^{x^{n+1}},\qquad 2^{x^{n+2}}
+\]
+contain a transcendental value, and over any finite set the collection of depths starting an
+adjacent algebraic pair has cardinality at most one.  Conversely, for any fixed distinct
+positive depths $n\ne m$, the assertion that every original two-base solution has algebraic
+adjacent pairs at both depths $n$ and $m$ is equivalent to Conjecture~\ref{conj:AE}.  The
+restriction still permits isolated algebraic levels and a single adjacent algebraic pair; it
+does not prove the full conjecture.
+
+The symmetric transition picture is stronger than merely repeating the same argument with
+base three.  Put
+\[
+ \mathcal S_x=\{y\in\R:3^y\in\Qbar\text{ and }3^{xy}\in\Qbar\}.
+\]
+Under a nonintegral solution,
+\begin{equation}
+ y\in\mathcal S_x
+ \quad\Longleftrightarrow\quad
+ \thetaq y\in\Q+\Q\thetaq.
+ \label{sp:eq-three-tower-transition}
+\end{equation}
+No positive depth in the base-two tower can start an algebraic adjacent pair simultaneously
+with any positive depth in the base-three tower, even when the two depths are unrelated.
+The base-three tower itself has at most one such positive depth.  Consequently, across the
+two principal towers together there is at most one positive transition depth, and at that
+depth at most one of the two bases can occur.  There is also a direction-uniform version in
+the multiplicatively dependent-output branch: once its kernel relation produces a nonzero
+rational $2,3$-unit direction with a depth-one transition, every nonzero rational
+$2,3$-unit direction is excluded at every depth $n\ge2$.  These are strict structural
+obstructions, but they still allow the single depth-one transition forced by the kernel
+relation and therefore do not close that branch.
+
+\begin{statusbox}{\statuslean{} --- all statements in this subsection are accepted by the
+kernel.}
+The exact exponent plane and its natural-power and reciprocal consequences are
+\lean{TwoBaseNonintegerSolution.twoThreeRpowAlgebraic_iff_affine},
+\lean{transcendental_two_or_three_rpow_nat_pow},
+\lean{transcendental_two_or_three_rpow_inv}, and
+\lean{alaogluErdosConjecture_iff_twoThreeRpowAlgebraic_nat_pow} in
+\lean{AlgebraicExponentLocus}.  Equation~\eqref{sp:eq-rational-function-locus} and its global
+and polynomial specializations are
+\lean{TwoBaseNonintegerSolution.twoThreeRpowAlgebraic_rationalFunction_iff},
+\lean{alaogluErdosConjecture_iff_twoThreeRpowAlgebraic_rationalFunction}, and
+{\small\lean{alaogluErdosConjecture_iff_twoThreeRpowAlgebraic_polynomial_of_two_le_natDegree}}
+in
+\lean{RationalFunctionAlgebraicLocus}.  Its simultaneous two-locus package is
+\lean{exists_generator_with_exact_rationalFunction_algebraic_and_integral_loci}.
+
+The exact squared-coordinate-face statements are
+\lean{TwoBaseNonintegerSolution.exists_exact_algebraic_output_monomial_locus},
+\lean{algebraic_two_three_squared_monomial_locus_trichotomy},
+\lean{squaredTwoThreeMonomialAlgebraicLocusIsCoordinateFace_iff_not_integer}, and
+\lean{alaogluErdosConjecture_iff_no_squaredTwoThreeMonomial_coordinateFace} in
+\lean{AlgebraicOutputLocus}.  Finally, \eqref{sp:eq-tower-transition}, global uniqueness of a
+transition depth, and the fixed-distinct-depth equivalence are
+\lean{TwoBaseNonintegerSolution.twoRpowAlgebraicTransition_iff_affine_logRatio},
+\lean{transcendental_one_of_three_consecutive_two_rpow_tower},
+\lean{not_two_distinct_algebraic_tower_transitions},
+\lean{card_algebraicTowerTransitionDepths_le_one}, and
+\lean{alaogluErdosConjecture_iff_two_distinct_tower_transitions_algebraic} in
+\lean{AlgebraicTowerTransition}.  The symmetric locus
+\eqref{sp:eq-three-tower-transition}, the cross-base exclusion, the combined uniqueness
+theorem, and the rational-unit-direction exclusions are respectively
+\lean{TwoBaseNonintegerSolution.threeRpowAlgebraicTransition_iff_scaled_affine_logRatio},
+\lean{not_baseTwo_and_baseThree_tower_transitions},
+\lean{eq_of_twoOrThree_tower_transitions}, and
+\lean{not_higher_unitDirectionTowerTransition_of_kernelRelation} in
+\lean{CrossBaseTowerTransition}.  Their axiom audit uses only \lean{propext},
+\lean{Classical.choice}, and \lean{Quot.sound}.  None asserts Conjecture~\ref{conj:AE}.
+\end{statusbox}
+
 There is a corresponding zero-one law: assuming the conjecture fails and fixing
 $\alpha\in\Apos$, exactly one of two things happens.  Either $\alpha\in\GammaSat$ and
 $\alpha^{x}$ is algebraic for \emph{every} nonintegral solution $x$, or
@@ -4334,6 +4584,52 @@ packaged under failure of the conjecture as
 These are statements about the canonical radicals rather than about $\Lambda_x$ itself; they
 confirm the geometry of the lattice picture without yet formalizing it.
 \end{statusbox}
+
+\begin{resultbox}
+\textbf{Exact simultaneous radical degrees and mixed-output exclusion.}
+Under failure of the conjecture, let $\beta$ be the least nonintegral solution and choose its
+simultaneous primitive normalization
+\[
+ 2^\beta=2^a w^d,\qquad 3^\beta=3^b v^e,
+ \qquad a=0\ \text{or}\ b=0.
+\]
+For
+\[
+ E=w^{\thetaq},\qquad F=v^{1/\thetaq},
+\]
+the simultaneous power identities are
+\[
+ E^d=\frac{3^b v^e}{3^a},
+ \qquad
+ F^e=\frac{2^a w^d}{2^b}.
+\]
+The least positive rational-power indices of $E$ and $F$ are exactly $d$ and $e$.
+Consequently their minimal polynomials are the displayed pure binomials
+\[
+ X^d-\frac{3^b v^e}{3^a},
+ \qquad
+ X^e-\frac{2^a w^d}{2^b},
+\]
+and their degrees over $\Q$ are exactly $d$ and $e$.  In the zero-depth case $a=b=0$ one has
+$\gcd(d,e)=1$, and for $G=EF$,
+\[
+ \operatorname{minpoly}_{\Q}(G)=X^{de}-v^{e^2}w^{d^2},
+ \qquad [\Q(G):\Q]=de.
+\]
+Moreover, the canonical data supplied by failure contain an external prime, and for every
+$i,j>0$ the mixed output $(E^iF^j)^\beta$ is transcendental; if a nonnegative mixed output is
+algebraic, its exponent pair lies on one of the two coordinate axes.  \statuslean
+\end{resultbox}
+
+These conclusions are mutually compatible, not contradictory.  The degree statements concern
+the algebraic numbers $E$, $F$, and $EF$, whereas the real irrational-power outputs at
+$\beta$ are transcendental.  A field embedding of $\Q(E,F)$ need not commute with the chosen
+real operation $z\mapsto z^\beta$, so taking conjugates or norms does not turn the mixed-output
+transcendence into a forbidden algebraic relation.  In the zero-depth case the product degree
+$de$ is the maximal degree allowed by the two coprime pure-radical degrees, not an impossible
+dependence.  Thus the simultaneous theory sharpens the exact algebraic data and excludes the
+interior of the mixed-output quadrant, but leaves both coordinate axes --- and the full
+Alaoglu--Erd\H{o}s conjecture --- open.
 
 \subsection{Two translated solutions remove the fractional defect}
 
@@ -5551,7 +5847,7 @@ transcendental $\thetaq$ cancels against the $\log2$:
 The kernel-verified zero-free region $2^x<4096$ forces $\beta>12$ (Section~\ref{sec:conditional}),
 which already makes the ratio exceed $12\log3=13.1833\ldots$; the interval scan of
 Section~\ref{sec:finitecheck} raises it past $20\log3=21.9722\ldots$, and the extended
-directed-rounding scan through $2^{26}$ raises it past $26\log3=28.5639\ldots$.  The last two
+directed-rounding scan through $2^{27}$ raises it past $27\log3=29.6625\ldots$.  The last two
 improvements are \statuscomp{} and do not enter any kernel-verified statement; the exponent
 bound the kernel actually certifies remains $x\ge12$.
 
@@ -5565,7 +5861,7 @@ $\sim\log X/(\beta\log2)$ candidates by \eqref{od:eq-dyadic-count}.  The ratio i
 exactly $\beta\log3$: the optimized theorem asks a block to supply about $\beta\log3$ times
 as many candidates as it can possibly hold.  Concretely, at $X=2^{100}$ the block $[X,2X)$
 holds $100/\beta+O(1)$ candidates --- about eight if $\beta$ were as small as its
-kernel-certified floor, and about four under the $2^{26}$ scan --- while the shortest
+kernel-certified floor, and about three under the $2^{27}$ scan --- while the shortest
 progression the theorem forbids at that height already needs $r_n+1\approx111$ terms.
 
 \begin{remark}[Quantified barrier]
@@ -5679,21 +5975,23 @@ Therefore
 which rearranges to \eqref{df:arbitrary-node-bound}.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- the argument is unconditional and elementary once the
-divided-difference mean-value theorem is available.  It is not an instance of any committed
-Lean theorem: \lean{HigherDifference} assumes arithmetic progressions.  A formalization
-blueprint appears in Section~\ref{sec:blueprint}.}
+\begin{statusbox}{\statusnew{} for the unconditional paper theorem; \statuslean{} for the
+formal determinant and repulsion chain.  \lean{ArbitraryNodeDeterminant} proves integrality,
+the Vandermonde identities, and the hypothesis-carrying repulsion step, while
+\lean{ArbitraryNodeRepulsion} packages the final bound under the explicit hypothesis
+\lean{RpowDividedDifferenceMeanValue}.  The corpus does not assert that analytic hypothesis.}
 \end{statusbox}
 
 \begin{remark}[Formalization state]
 \label{df:rem-lean-draft}
-A Lean draft \lean{ArbitraryNodeDeterminant} exists in the working tree.  It supplies the
+The accepted module \lean{ArbitraryNodeDeterminant} supplies the
 algebraic half deliberately free of analysis --- the node matrix, an explicit integral model,
 integrality of the determinant with the resulting bound $1\le|\det|$, the Vandermonde product
-and its positivity on strictly increasing nodes.  \statusdraft{}: it has not yet been accepted
-by the kernel, and the analytic half (the divided-difference mean-value theorem for
-$t\mapsto t^{\thetaq}$) is still an input rather than a proved ingredient.  Nothing in this
-section may be cited as machine-checked.
+and its positivity on strictly increasing nodes.  The later endpoint theorem is also accepted,
+but its divided-difference mean-value statement for $t\mapsto t^{\thetaq}$ remains a visible
+hypothesis rather than a proved ingredient.  Thus the conditional Lean implication may be
+cited as machine-checked; the unconditional analytic discharge is supplied only by the paper
+proof here.
 \end{remark}
 
 \subsection{Three points: a lattice-triangle inequality}
@@ -6237,15 +6535,13 @@ prime-factor valuation rank of candidates.  Refining constants is much less impo
 finding an additional source of determinant lower bound.
 \end{statusbox}
 
-\begin{statusbox}{\statusdraft}
-Lean drafts of this hierarchy exist in the repository but have not yet been accepted by the
-kernel: \lean{MixedExponentSemigroup} for \eqref{sg:eq-mixed-integrality} and the ordered
-exponent semigroup, \lean{SemigroupDeterminant} for
-Theorem~\ref{sg:thm-semigroup-integer-det} and Theorem~\ref{sg:thm-semigroup-gap},
-\lean{FallingFactorialBound} for Lemma~\ref{sg:lem-falling-bound}, and
-\lean{SemigroupWeightBound} for Lemma~\ref{sg:lem-crude-semigroup} and its explicit
-consequences.  Until those files compile, every statement in this section rests on the paper
-proofs given above.
+\begin{statusbox}{\statuslean{} and \statusnew{}}
+The hierarchy is now kernel-accepted in \lean{MixedExponentSemigroup},
+\lean{SemigroupDeterminant}, \lean{FallingFactorialBound}, and
+\lean{SemigroupWeightBound}.  The final span and $10^4(\log X)^2$ deductions are accepted in
+\lean{SemigroupGapBound} conditional on its explicit \lean{NewtonFactorization} argument.
+That predicate is a visible input, not an axiom; the unconditional analytic proof remains the
+paper proof in this section.
 \end{statusbox}
 
 \section{The min-plus ceiling: why term-wise \texorpdfstring{$p$}{p}-adic amplification cannot
@@ -6432,13 +6728,273 @@ unit modulo $p$.
 $q^{\tau+1}\nmid\det$' so that no $p$-adic valuation machinery is needed.}
 \end{statusbox}
 
+The corresponding tied-minimum statement is now also exact at the algebraic level.  Suppose
+each Leibniz product has been written
+\[
+ \prod_i E_{i,\sigma(i)}=p^\tau q_\sigma
+\]
+with $q_\sigma\in\Z$.  Then the determinant factors as
+\begin{equation}
+ \det E=p^\tau\sum_\sigma\operatorname{sgn}(\sigma)q_\sigma,
+ \label{mp:eq-tropical-quotient}
+\end{equation}
+and, for every $k\ge0$,
+\begin{equation}
+ p^{\tau+k}\mid\det E
+ \quad\Longleftrightarrow\quad
+ p^k\mid\sum_\sigma\operatorname{sgn}(\sigma)q_\sigma.
+ \label{mp:eq-tropical-all-depth}
+\end{equation}
+If $p$ is prime and $S$ is the tied minimum fiber, while the quotients outside $S$ are
+divisible by $p$, the first extra factor is characterized exactly by the initial form
+\begin{equation}
+ p^{\tau+1}\mid\det E
+ \quad\Longleftrightarrow\quad
+ \sum_{\sigma\in S}\operatorname{sgn}(\sigma)q_\sigma=0
+ \quad\text{in }\Z/p\Z.
+ \label{mp:eq-tied-fiber}
+\end{equation}
+Thus higher-cost terms disappear modulo $p$ and all first-layer cancellation is concentrated
+in the tied fiber.
+
+\begin{statusbox}{\statuslean{} --- \lean{TropicalInitialForm} proves the factorization and
+all-depth divisibility criterion as
+\lean{det_eq_pow_mul_signedLeibnizQuotientSum} and
+\lean{det_pow_add_dvd_iff_signedLeibnizQuotientSum_dvd}; its prime first-layer forms are
+\lean{det_pow_succ_dvd_iff_signedLeibnizQuotientSum_eq_zero},
+\lean{signedLeibnizQuotientSum_mod_eq_tiedFiberSum}, and
+\lean{det_pow_succ_dvd_iff_tiedFiberSum_eq_zero}.}
+This module is a purely algebraic prerequisite and diagnostic.  It proves neither that the
+tied sum vanishes nor that it has a large higher $p$-adic valuation; in particular it supplies
+no cancellation lower bound and does not close Conjecture~\ref{conj:AE}.
+\end{statusbox}
+
+The abstract block factorization needed for the report's first-fiber calculation is also now
+kernel-verified.  If a block map $b$ describes the surviving permutations and $A_k$ is the
+square submatrix on the fiber $b^{-1}(k)$, then
+\begin{equation}
+ \sum_{\sigma\text{ preserving }b}
+   \operatorname{sgn}(\sigma)\prod_i A_{\sigma(i),i}
+ =\prod_k\det A_k.
+ \label{mp:eq-block-factorization}
+\end{equation}
+The formula allows varying block sizes and a fixed preliminary row permutation, whose sign is
+the only extra factor.  When, after reindexing, each $A_k$ consists of consecutive powers of
+nodes $x_{k,0},\ldots,x_{k,s_k-1}$, it becomes the exact Vandermonde product
+\begin{equation}
+ \prod_k\prod_{0\le i<j<s_k}(x_{k,j}-x_{k,i}).
+ \label{mp:eq-block-vandermonde}
+\end{equation}
+Composing \eqref{mp:eq-block-factorization} with the tropical quotient criterion gives an
+exact first-extra-factor test: under the explicit hypotheses that every quotient outside the
+block-preserving set vanishes modulo $p$ and that each block-preserving quotient equals the
+corresponding full Leibniz product of $A$,
+$p^{\tau+1}\mid\det E$ if and only if $\prod_k\det A_k$ vanishes modulo $p$; in the
+consecutive-power specialization the right side is precisely
+\eqref{mp:eq-block-vandermonde} modulo $p$.
+
+\begin{statusbox}{\statuslean{} --- \lean{BlockFiberFactorization} proves
+\lean{sum_blockPreserving_eq_prod_blockDet},
+\lean{sum_basePerm_mul_blockPreserving_eq_sign_mul_prod_blockDet},
+\lean{sum_blockPreserving_eq_prod_vandermonde_of_reindex}, and
+\lean{sum_blockPreserving_consecutivePowers_eq_prod_vandermonde}.
+\lean{TropicalBlockApplication} packages the composition as
+\lean{det_pow_succ_dvd_iff_prod_blockDet_eq_zero} and
+\lean{det_pow_succ_dvd_iff_prod_vandermonde_eq_zero}.}
+The rank-one Beatty scaffolding is now kernel-verified separately.  For matrices
+\[
+ E_{ij}=p^{\,n_i c(b_j)}A_{ij},
+ \qquad n_i=T-\lfloor i\beta\rfloor,
+\]
+with strictly decreasing Beatty depths, sorted block labels $b_j$, and strictly increasing
+block values $c$, \lean{BeattyTropicalFiber} proves that the minimum assignments are exactly
+the block-preserving permutations.  Every other assignment gains at least
+$\lfloor\beta\rfloor$, its normalized quotient is divisible by
+$p^{\lfloor\beta\rfloor}$, and the determinant has the exact expansion
+\[
+ \det E=p^\tau\left(\prod_k\det A_k+p^{\lfloor\beta\rfloor}Z\right).
+\]
+The headline declarations are
+\lean{rankOneAssignmentCost_eq_iff_blockPreserving},
+\lean{beattyAssignmentCost_add_floor_le_of_not_blockPreserving},
+\lean{beattyPower_pow_floor_dvd_quotient_of_not_blockPreserving}, and
+\lean{det_beattyPowerMatrix_eq_pow_mul_blockDet_add_pow_floor_mul}.  Thus the minimizing fiber,
+the tropical gap, and the full-product quotient identity no longer remain paper-only
+hypotheses.  The generic scaled consecutive-power wiring is now formalized below; only the
+construction of the explicit fiber certificates identifying the globally first mixed-semigroup
+columns of the report's named determinant $D_T$ remains a finite paper-level specialization.
+What remains globally is still the valuation and
+cancellation of the residual low-excess sums.  No leading-order bound follows from the exact
+expansion.
+\end{statusbox}
+
+The complete assignment cascade can now be grouped more economically than the raw Leibniz
+sum.  A \emph{row-block assignment} records only which row set is sent to each repeated column
+weight, with the prescribed fiber cardinalities.  For the rank-one power matrix, the whole
+Leibniz fiber over such an assignment $a$ factors as one sign times a product $m_a$ of square
+unit minors.  If $c(a)$ is its structural assignment cost and $\tau$ is the minimum, then
+\begin{equation}\label{mp:eq-row-block-all-layer}
+ \det E=p^\tau\sum_a p^{c(a)-\tau}m_a.
+\end{equation}
+More sharply, for every cutoff $K$ this is the exact finite-depth decomposition
+\begin{equation}\label{mp:eq-row-block-truncation}
+ \det E=p^\tau\left(
+   \sum_{c(a)-\tau<K}p^{c(a)-\tau}m_a
+   +p^K\sum_{c(a)-\tau\ge K}p^{c(a)-\tau-K}m_a
+ \right).
+\end{equation}
+Thus modulo $p^K$ every high-excess row partition disappears, and the surviving coefficients
+are explicit products of unit minors rather than sums over individual permutations.  In the
+Beatty specialization, every noncanonical row partition has excess at least
+$\lfloor\beta\rfloor$.
+
+\begin{statusbox}{\statuslean{} --- \lean{RowBlockLaplaceExpansion} proves the fiber
+factorization \lean{sum_permutationRowBlockAssignmentFiber_eq_sign_mul_prod_blockDet}, the
+normalized all-layer identity
+\lean{det_rankOnePowerMatrix_eq_minPow_mul_sum_assignmentExcess}, the exact cutoff formula
+\lean{det_rankOnePowerMatrix_eq_minPow_mul_truncatedAssignmentSum}, and the Beatty gap
+\lean{beattyRowBlockAssignment_excess_ge_floor}.}
+This is an exact support theorem for every finite cascade depth.  It gives no upper bound for
+the number of surviving row partitions by itself, no upper bound for the valuations of the residual
+minor-product quotients, and no noncancellation statement for their signed sum.  It therefore reorganizes the remaining
+wall but does not bound $v_p(\det E)-\tau$.
+\end{statusbox}
+
+There is, however, now an exact entropy bound for the first of those quantities.  For a row
+partition $a$, let $P_k(a)$ be the excess of the total block value assigned to the first
+$k+1$ rows over the oppositely sorted assignment, and define its crossing energy by
+\[
+ \mathcal E(a)=\sum_{k=0}^{N-1}P_k(a).
+\]
+Every $P_k(a)$ is nonnegative, the vector $(P_k(a))_k$ determines $a$ when the block values
+are distinct, and summation by parts identifies $\mathcal E(a)$ with the excess for the unit
+depth staircase.  For Beatty depths,
+\begin{equation}\label{mp:eq-beatty-crossing-energy}
+ c(a)-\tau\ge \lfloor\beta\rfloor\,\mathcal E(a).
+\end{equation}
+Consequently, for $N,K\ge1$, if $q=\lfloor(K-1)/\lfloor\beta\rfloor\rfloor$, stars and bars gives the explicit
+finite support upper bound
+\begin{equation}\label{mp:eq-low-excess-support}
+ \#\{a:c(a)-\tau<K\}\le \binom{N+q-1}{q}.
+\end{equation}
+For fixed normalized depth $q$ this is polynomial in $N$; for growing $q$ it is an explicit
+entropy bound, not a cancellation estimate.
+
+\begin{statusbox}{\statuslean{} --- \lean{AssignmentExcessGeometry} proves the exact identity
+\lean{rowBlockCrossingEnergy_eq_reverseFinRank_excess}, the Beatty lower bound
+\lean{beattyFloor_mul_rowBlockCrossingEnergy_le_excess}, the stars-and-bars injection
+\lean{card_rowBlockAssignment_crossingEnergy_lt_choose_of_pos}, and the specialized bound
+\lean{card_beattyRowBlockAssignment_excess_lt_of_pos}.}
+This controls how many row partitions can occur in the cutoff sum.  It supplies no upper
+bound for their minor-product valuations and no noncancellation theorem for their signed sum,
+so \eqref{mp:eq-low-excess-support} is cascade-support control rather than a proof of the
+conjecture.
+\end{statusbox}
+
+The fixed-divisor contribution can be threaded through this entire expansion, rather than
+applied only to the canonical block.  For a block-scaled consecutive-power unit matrix, let
+$s_k$ be the fixed size of block $k$, define
+\[
+ U_2(s)=\sum_{0\le j<s}\bigl(j+v_2(j!)\bigr),\qquad
+ U_3(s)=\sum_{0\le j<s}\left(\left\lfloor\frac j2\right\rfloor+
+ v_3\!\left(\left\lfloor\frac j2\right\rfloor!\right)\right),
+\]
+and put
+\[
+ \mathcal U_2=\sum_k U_2(s_k),\qquad \mathcal U_3=\sum_k U_3(s_k).
+\]
+Every row-block assignment has the same column-fiber sizes, so its minor product is divisible
+by $2^{\mathcal U_2}$, respectively $3^{\mathcal U_3}$.  Factoring this common divisor from the exact
+row-partition expansion gives
+\begin{equation}\label{mp:eq-additive-unit-gain}
+ 2^{\tau_2+\mathcal U_2}\mid\det E_2,
+ \qquad
+ 3^{\tau_3+\mathcal U_3}\mid\det E_3.
+\end{equation}
+The row scale is allowed to depend on both the target block and the row; this includes the
+mixed factors $M^{ku}$ in the dyadic blocks and $A^{kv}$ in the triadic blocks.  Thus the
+gain is genuinely uniform across every tropical layer, not a statement only about the first
+initial form.
+
+\begin{statusbox}{\statuslean{} --- \lean{RowBlockUnitDivisibility} defines
+\lean{fiberScaledConsecutivePowerMatrix}, proves the common-minor divisors
+\lean{two_pow_rowBlockOrderingExponent_dvd_minorProduct_fiberScaledConsecutivePowers} and
+\lean{three_pow_rowBlockOrderingExponent_dvd_minorProduct_fiberScaledConsecutivePowers}, and
+packages \eqref{mp:eq-additive-unit-gain} as
+\lean{two_pow_minCost_add_rowBlockOrderingExponent_dvd_det_rankOnePowerMatrix} and
+\lean{three_pow_minCost_add_rowBlockOrderingExponent_dvd_det_rankOnePowerMatrix}.}
+The exponent is exactly the sum of the block gains from \lean{UnitOrderingGain} and is
+independent of assignment cost.  Consequently it factors every cutoff sum in
+\eqref{mp:eq-row-block-truncation}, but it cannot distinguish layers or upper-bound the
+valuation of the residual signed sum.
+\end{statusbox}
+
+There is also a cascade-independent fixed divisor of the unit determinants.  A monic
+triangular change of columns from $1,X,X^2,\ldots$ to an integer polynomial basis preserves
+the full evaluation determinant.  On positive odd nodes with consecutive local degrees, the dyadic $p$-ordering basis
+\[
+ \prod_{0\le t<j}\bigl(X-(2t+1)\bigr)
+\]
+extracts the column weight
+\[
+ j+v_2(j!),
+\]
+while on positive nodes prime to three with consecutive local degrees, the ordering $1,2,4,5,7,8,\ldots$ extracts
+\[
+ \left\lfloor\frac j2\right\rfloor+
+ v_3\!\left(\left\lfloor\frac j2\right\rfloor!\right).
+\]
+The resulting prime powers divide the \emph{whole} univariate Vandermonde determinant,
+independently of which tropical layer survives.  At the univariate block level this extracts a
+universal lower-order divisor rather than estimating successive initial forms.
+
+\begin{statusbox}{\statuslean{} --- \lean{AllLayerUnitBasis} proves the generic column-content
+and determinant-one column-change lemmas \lean{prod_columnDivisor_dvd_det},
+\lean{pow_sum_columnWeight_dvd_det_of_unimodular_mul}, and
+\lean{pow_sum_dvd_det_vandermonde_of_monicBasis}.  Its strengthened unit specializations are
+\lean{two_pow_sum_degree_add_factorialVal_dvd_det_vandermonde} and
+\lean{three_pow_sum_halfDegree_add_factorialVal_dvd_det_vandermonde}.}
+The companion module \lean{UnitOrderingGain} proves exact digit-sum identities for the block
+weights and the finite aggregate bounds
+\[
+ \sum_k U_2(s_k)\le S^3,
+ \qquad
+ 2\sum_k U_3(s_k)\le S^3
+\]
+whenever there are at most $S$ blocks and every block has size at most $S$
+(\lean{sum_twoUnitBlockGain_le_cube} and
+\lean{two_mul_sum_threeUnitBlockGain_le_cube}).  For the report's $O(L)$ fibers of size
+$O(L)$, the remaining paper-level block count therefore gives $O(L^3)$, equivalently
+$O(N^{3/2})$, lower order than $H_T\asymp T^{5/2}$.  In fact, for the triangular cutoff
+$u+\thetaq v\le L$ and $N\sim L^2/(2\thetaq)$, elementary summation gives the paper-level
+leading terms for the total gains
+\[
+ \mathcal U_2\sim\frac{2^{3/2}}{3\sqrt{\thetaq}}N^{3/2}
+   =0.7488834673\ldots N^{3/2},
+ \qquad
+ \mathcal U_3\sim\sqrt{\frac{\thetaq}{8}}N^{3/2}
+   =0.4451070799\ldots N^{3/2}.
+\]
+The finite divisors and cubic aggregation are kernel-verified; the triangular fiber
+asymptotics and displayed constants are not Lean theorems.  The determinant-one fiberwise
+change and its additive combination with the tropical minimum are kernel-verified for the
+generic scaled block model by \lean{RowBlockUnitDivisibility}; the concrete triangular index
+bridge, including column permutation and transfer back to the raw mixed integer matrix, is
+kernel-verified under explicit finite fiber certificates in
+\lean{MixedDeterminantUnitBridge}.  Constructing those certificates for the global first-$N$
+mixed-semigroup enumeration defining $D_T$ remains paper-level.  The resulting all-layer
+gain neither supplies nor upper-bounds the remaining leading-order cancellation excess.
+\end{statusbox}
+
 Consequently the missing fifth, or more, can arise only at primes where the assignment problem
 ties, and the tie geometry is explicit: for $p\ne2,3$ columns tie along the rational lines
 orthogonal to the external valuation vector, and in the cross-coprime branch the $2$-adic cost
 depends only on $u$ and the $3$-adic cost only on $v$, so every vertical or horizontal column
 fiber creates equal-cost permutations.  The continuation report evaluates the first such tied
-layer and finds its valuation to be $O\bigl(T^{3/2}(\log T)^2\bigr)$ against a block budget
-$H_T\asymp T^{5/2}$, hence $o(1)$ of the budget.
+layer.  The kernel-verified finite cube budget, combined with the elementary paper-level count
+of the Beatty fiber sizes, gives $O(T^2)$ against $H_T\asymp T^{5/2}$, hence $o(1)$ of the
+budget; the sharper quoted two-logarithm estimate improves this to
+$O\bigl(T^{3/2}(\log T)^2\bigr)$.
 
 \subsection{What this leaves}
 
@@ -6697,11 +7253,10 @@ range a fixed finite computation could ever reach.  Only the infinitude of singl
 decisive.
 \end{remark}
 
-\begin{statusbox}{\statusnew{} --- Proposition~\ref{rf:prop:block-reforms} and
-Proposition~\ref{rf:prop:infinitely-many-blocks} are paper proofs in this report, resting on
-the kernel-verified exact dyadic block counts.  A Lean draft
-\lean{BlockGrowthReformulations} exists but has not yet been accepted by the kernel.
-\statusdraft}
+\begin{statusbox}{\statuslean{} for Proposition~\ref{rf:prop:block-reforms}:
+\lean{BlockGrowthReformulations} proves the bounded, little-$o$, liminf-zero, and identically
+one equivalences.  \statusnew{} for Proposition~\ref{rf:prop:infinitely-many-blocks}, whose
+short paper proof rests on the same kernel-verified exact dyadic block formula.}
 \end{statusbox}
 
 \subsection{Compact synchronized \texorpdfstring{$S$}{S}-integral orbit}
@@ -6745,8 +7300,8 @@ is nonintegral, so the conjecture fails.  The same identity now shows that the o
 the irrational-rotation orbit and is dense.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} --- paper proof in this report; the Lean draft
-\lean{CompactOrbit} has not yet been accepted by the kernel.  \statusdraft}
+\begin{statusbox}{\statuslean{} --- \lean{not_alaogluErdosConjecture_iff_exists_compactOrbit}
+and \lean{alaogluErdosConjecture_iff_no_compactOrbit} in \lean{CompactOrbit}.}
 \end{statusbox}
 
 This formulation isolates the synchronized-denominator feature that a specialized
@@ -6966,12 +7521,12 @@ from the arithmetic conclusion; Section~\ref{sec:deficit} measures that distance
 \begin{enumerate}[resume,label=\textup{(E\arabic*)}]
 \item \statuslean{} \emph{Subquadratic cumulative growth.} $\#\bigl(\Cand\cap[1,2^T]\bigr)$ is
 $o(T^2)$ as $T\to\infty$ (Section~\ref{sec:conditional}).
-\item \statusnew{} \emph{Bounded blocks.} The dyadic block counts $B(T)$ are bounded
+\item \statuslean{} \emph{Bounded blocks.} The dyadic block counts $B(T)$ are bounded
 (Section~\ref{sec:reform}).
-\item \statusnew{} \emph{Sublinear blocks.} $B(T)=o(T)$ (Section~\ref{sec:reform}).
-\item \statusnew{} \emph{Sublinear along a subsequence.} $\liminf_{T\to\infty}B(T)/T=0$
+\item \statuslean{} \emph{Sublinear blocks.} $B(T)=o(T)$ (Section~\ref{sec:reform}).
+\item \statuslean{} \emph{Sublinear along a subsequence.} $\liminf_{T\to\infty}B(T)/T=0$
 (Section~\ref{sec:reform}).
-\item \statusnew{} \emph{Singleton blocks.} $B(T)=1$ for every $T\in\Nzero$
+\item \statuslean{} \emph{Singleton blocks.} $B(T)=1$ for every $T\in\Nzero$
 (Section~\ref{sec:reform}); an immediate restatement of (E1) blockwise.
 \item \statusnew{} \emph{Infinitely many singleton blocks.} $B(T)=1$ for infinitely many
 $T\in\Nzero$ (Section~\ref{sec:reform}).
@@ -6992,10 +7547,13 @@ and ``for infinitely many'' is exactly the gap between a finite check and the co
 \begin{center}
 \lean{alaogluErdosConjecture_iff_candidate_count_below_two_pow_subquadratic}.
 \end{center}
-\statusnew{} for (E9)--(E13) --- paper proofs in this report, resting on the kernel-verified
-exact dyadic block counts of \lean{ExactCounting} and the quadratic asymptotic of
-\lean{QuadraticAsymptotic}.  A Lean draft \lean{BlockGrowthReformulations} exists but has not
-been accepted by the kernel.  \statusdraft}
+\statuslean{} for (E9)--(E12) ---
+\lean{alaogluErdosConjecture_iff_dyadicBlock_bounded},
+\lean{alaogluErdosConjecture_iff_dyadicBlock_isLittleO},
+\lean{alaogluErdosConjecture_iff_dyadicBlock_liminf_zero}, and
+\lean{alaogluErdosConjecture_iff_dyadicBlock_eq_one} in
+\lean{BlockGrowthReformulations}.  \statusnew{} for (E13), whose paper proof rests on the
+kernel-verified exact block formula.}
 \end{statusbox}
 
 \subsection{Cluster D: orbits and fractional parts}
@@ -7005,7 +7563,7 @@ converts the conjecture into the assertion that no such orbit can be arithmetica
 synchronized, and into three gap statements on the unit interval.
 
 \begin{enumerate}[resume,label=\textup{(E\arabic*)}]
-\item \statusnew{} \emph{Compact synchronized $S$-integral orbit.} There are no integers
+\item \statuslean{} \emph{Compact synchronized $S$-integral orbit.} There are no integers
 $M,A>1$ and irrational $\beta>0$ such that
 $\bigl(M^k/2^{\lfloor k\beta\rfloor},A^k/3^{\lfloor k\beta\rfloor}\bigr)$ lies on the compact
 arc $\{(2^t,3^t):0\le t<1\}$ for every $k\ge1$ (Section~\ref{sec:reform}).  The two coordinates
@@ -7026,8 +7584,8 @@ $0$ and $1$ by margins that decay like $2^{-\lfloor x\rfloor}$, and the equivale
 \emph{any} height-independent margin, however small and wherever located, is already the full
 conjecture.  The decay is therefore essential rather than an artifact of the estimate.
 
-\begin{statusbox}{\statusnew{} for (E14) --- paper proof in this report; the Lean draft
-\lean{CompactOrbit} has not been accepted by the kernel (\statusdraft).  \statuslean{} for
+\begin{statusbox}{\statuslean{} for (E14) ---
+\lean{alaogluErdosConjecture_iff_no_compactOrbit} in \lean{CompactOrbit}.  \statuslean{} for
 (E15)--(E17) ---
 \begin{center}
 \lean{alaogluErdosConjecture_iff_fract_avoids_interval},
@@ -7134,9 +7692,9 @@ strictly weaker than Schanuel, and is not known to imply or to follow from (S1).
 \lean{alaogluErdosConjecture_of_realFourExponentialsConjecture}
 \end{center}
 in \lean{FourExponentialsReduction}, which formalizes the implication without assuming its
-hypothesis.  \statusnew{} for (S2) and (S3) --- paper proofs in this report; a Lean module
-\lean{LogProductIndependence} recording the independence hypothesis as an explicit \lean{Prop},
-never asserted, is in preparation, with headline statement
+hypothesis.  \statusnew{} for the Schanuel implication in (S2).  \statuslean{} for the
+conditional implication in (S3): \lean{LogProductIndependence} records the independence
+hypothesis as an explicit \lean{Prop}, never asserted, with headline statement
 \begin{center}
 \lean{alaogluErdosConjecture_of_primeLogProductIndependence}.
 \end{center}}
@@ -7221,7 +7779,7 @@ solution has $x>20$.  \statuscomp
 
 \textbf{Directed-rounding scan.}  Under the C source, GCC code generation, OpenMP scheduling,
 the MPFR and GMP shared libraries, the x86-64 arithmetic environment, and the operating
-system, a nonintegral solution has $x>26$.  \statuscomp
+system, a nonintegral solution has $x>27$.  \statuscomp
 \end{resultbox}
 
 MPFR's correct-rounding contract makes the numerical reasoning crisp, and the interval scan
@@ -7252,8 +7810,9 @@ should share convergent enclosures across ranges, chunk the data modules to boun
 memory --- the failure mode of the $16384$ draft is precisely that the chunk bookkeeping, not
 the arithmetic, is the expensive part --- and rely on verified binary powering rather than
 giant literals.  The extremal pairs identified by both scans predict the required tier depth.
-A practical intermediate target is $2^{16}$, followed by a generated hierarchical certificate
-through $2^{26}$.
+A practical intermediate target is a generated, kernel-replayed certificate beyond $4096$
+(with the existing $16384$ draft as an engineering test), followed by a hierarchical
+certificate that approaches the current software frontier $2^{27}$.
 \section{Attempts at a full proof and their exact failure points}
 \label{sec:attempts}
 
@@ -7521,6 +8080,15 @@ archimedean size, zero estimates, and $2$- and $3$-adic valuations.  The hard pa
 the optimization is genuinely two-parameter and the useful shapes are not predicted by any
 current heuristic, so a search must precede a theorem.
 
+The continuation in Section~\ref{sec:matrix-continuation} turns this priority into an exact
+fewnomial target.  On $R$ distinct counterexample points, every vanishing auxiliary
+polynomial has at least $R+1$ monomials; therefore one must either construct a relation with
+one fewer monomial than ordinary interpolation would use, or exploit additional arithmetic
+structure not measured by support.  On the $2N$ grid, the BK-degree calibration shows a
+factor-four gap between the extremal interpolant and the general Matrix Coefficient target.
+The boundary-dilation defects are the most concrete finite compatibility equations currently
+available for attacking that gap.
+
 \subsection{Priority C: denominator-sensitive counting on the compact arc}
 \label{at:prog-counting}
 
@@ -7552,20 +8120,25 @@ Section~\ref{at:radical}: merely taking norms or conjugates of $X^{d}-c/3^{a}$ r
 known relations, so the new invariant must mix conjugation with the special logarithmic
 direction.
 
-\subsection{Priority E: formalize the new determinant results}
+\subsection{Priority E: discharge and sharpen the determinant hypotheses}
 \label{at:prog-formalize}
 
-The arbitrary-node repulsion theorem of Section~\ref{sec:arbnode} and the semigroup
-generalized-Vandermonde hierarchy of Section~\ref{sec:semigroup} are currently
-\statusnew{}.  Formalizing them converts the strongest new tools in this report into
-reusable kernel-checked objects and, just as importantly, forces the constants in the gap
-theorem and the explicit dyadic bound to be stated uniformly.  Lean drafts of
-\lean{ArbitraryNodeDeterminant}, \lean{MixedExponentSemigroup}, \lean{SemigroupDeterminant},
-and \lean{FallingFactorialBound} already exist but are \statusdraft{}; the module layout is
-described in Section~\ref{sec:blueprint}.  The hard part is analytic bookkeeping rather than
-mathematics: divided differences at arbitrary nodes, falling-factorial growth, and
-generalized-Vandermonde positivity all need uniform statements before the main theorems can
-be assembled cheaply.
+The algebraic and combinatorial determinant hierarchy has now been formalized and accepted:
+\begin{center}
+\lean{ArbitraryNodeDeterminant}, \lean{ExponentialPolynomialZeros},\\
+\lean{OrderedChamberPositivity}, \lean{MixedExponentSemigroup},\\
+\lean{SemigroupDeterminant}, \lean{FallingFactorialBound},\\
+\lean{SemigroupWeightBound}, \lean{ArbitraryNodeRepulsion}, \lean{SemigroupGapBound}.
+\end{center}
+They are all on the aggregate import surface.  \statuslean{}  The two
+quantitative endpoints retain their analytic inputs as explicit hypotheses,
+\lean{RpowDividedDifferenceMeanValue} and \lean{NewtonFactorization}; those propositions are
+not asserted by the corpus.  The priority is therefore no longer to translate the algebra,
+but to prove these named hypotheses in the required uniform form, or to replace them by a
+stronger factorization whose archimedean loss is small enough to interact with only
+$O(\log X)$ nodes.  The exact tropical initial-form criterion of
+\lean{TropicalInitialForm} is a useful prerequisite on the nonarchimedean side, but it does
+not supply the cancellation lower bound that this program needs.
 
 \subsection{Priority F: force a third algebraic exponential}
 \label{at:prog-thirdbase}
@@ -7594,9 +8167,11 @@ facts the conjecture actually needs.
 \subsection{Priority H: larger kernel-replayed regions and effective measures}
 \label{at:prog-finite}
 
-The zero-free region $2^{x}<4096$ is kernel-verified; the $2^{14}$ extension is in progress
-and $2^{20}$ is the natural next target, matching the region already covered by interval
-computation (\statuscomp{}) in Section~\ref{sec:finitecheck}.  Every descent constant
+The zero-free region $2^{x}<4096$ is kernel-verified, while the current software frontier is
+$2^{27}$ (\statuscomp{}) in Section~\ref{sec:finite27}.  A source draft aiming at $2^{14}$
+has verified arithmetic rows but no accepted assembled theorem, so the next target is a
+generated, kernel-replayed certificate beyond $4096$, with $16384$ a useful engineering
+milestone rather than an established bound.  Every descent constant
 improves by bookkeeping once the region grows, so the payoff is broad but shallow.  The
 bottleneck is a compact kernel-replayable proof object: adaptive convergent enclosures,
 chunked certificate modules, and tiers shared along ranges.  In the same vein, effective
@@ -7638,21 +8213,20 @@ reusable lemma rather than a step inside one monolithic proof.  The intended mod
 sits under \lean{ExponentialIdentities/TwoBaseIntegerExponent/} alongside the existing
 kernel-verified corpus of Section~\ref{sec:corpus}.
 
-Since the first draft of this blueprint was written, Lean sources have been committed for
-most of the modules below.  They are drafts in the precise sense that matters here: the
-files exist, contain no \lean{sorry}, and are written against the current corpus, but they
-have \emph{not} yet been accepted by the Lean kernel in a completed build, and all but
-\lean{FallingFactorialBound} are not yet on the aggregate import surface
-\lean{ExponentialIdentities.lean}.  Every such module is therefore marked \statusdraft{}
-below, and the underlying mathematics keeps whatever status Section~\ref{sec:arbnode} or
-Section~\ref{sec:semigroup} assigned it.  Nothing in this section may be read as a claim of
-kernel verification.
+Since the first draft of this blueprint was written, all of the modules described below have
+been accepted by the Lean kernel and placed on the aggregate import surface
+\lean{ExponentialIdentities.lean}.  The formal determinant chain deliberately exposes its
+two remaining analytic inputs --- \lean{RpowDividedDifferenceMeanValue} and
+\lean{NewtonFactorization} --- as hypotheses of the quantitative endpoint theorems.  Thus
+the algebraic identities and every deduction from those hypotheses are kernel-verified, but
+the corpus does not assert the hypotheses themselves.  The descriptions below record the
+implemented architecture rather than a pending plan.
 
 \subsection{\lean{ArbitraryNodeDeterminant}}
 \label{bp:arbnode-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{ArbitraryNodeDeterminant.lean}; the underlying
-mathematics is \statusnew{} (Section~\ref{sec:arbnode}).}
+\begin{statusbox}{\statuslean{} --- \lean{ArbitraryNodeDeterminant.lean}, with the analytic
+mean-value input exposed in the later module \lean{ArbitraryNodeRepulsion}.}
 \end{statusbox}
 
 This module formalizes the ordinary-power determinant and the arbitrary-node repulsion
@@ -7670,14 +8244,14 @@ coefficient \lean{fallingRpowCoeff}, both already available in \lean{HigherDiffe
 has integer determinant, so a nonzero determinant has absolute value at least one.
 \end{enumerate}
 
-The draft splits exactly along those four lines.  It defines \lean{nodeMatrix} and its
+The accepted module splits exactly along those four lines.  It defines \lean{nodeMatrix} and its
 integer shadow \lean{nodeIntMatrix}, proves that candidate nodes make every entry an
 integer, derives \lean{one_le_abs_det_nodeMatrix} from that, and then isolates the algebra
 of the final step in a hypothesis-carrying form: the analytic factorization
 $\det=V\cdot dd$ and the divided-difference bound $|dd|\le B$ are inputs, and the conclusion
 is the repulsion inequality.  A target statement for the fully analytic version is:
 
-\begin{lstlisting}[style=leanstyle,caption={Proposed arbitrary-node theorem signature.}]
+\begin{lstlisting}[style=leanstyle,caption={Schematic fully analytic arbitrary-node signature.}]
 theorem vandermonde_lower_bound_of_twoBaseNaturalCandidates
     {r : N} (hr : 2 <= r)
     (m : Fin (r + 1) -> N)
@@ -7688,11 +8262,11 @@ theorem vandermonde_lower_bound_of_twoBaseNaturalCandidates
       <= vandermondeProduct r m
 \end{lstlisting}
 
-The intermediate form actually proved in the draft is the hypothesis-carrying one, which is
+The intermediate form accepted by the kernel is the hypothesis-carrying one, which is
 worth stating separately because it is reusable for any $f$ whose divided differences can be
 bounded:
 
-\begin{lstlisting}[style=leanstyle,caption={Packaged repulsion step (draft form).}]
+\begin{lstlisting}[style=leanstyle,caption={Accepted packaged repulsion step.}]
 theorem inv_le_vandermondeProduct_of_dividedDifference (r : N)
     (m : Fin (r + 1) -> N) (hstrict : StrictMono m)
     (hcand : forall i, TwoBaseNaturalCandidate (m i)) {dd B : R}
@@ -7709,9 +8283,10 @@ end through the monotone enumeration \lean{Finset.orderEmbOfFin}.
 \subsection{\lean{GeneralizedVandermonde}}
 \label{bp:gv-module}
 
-\begin{statusbox}{Design note; the analytic content is \statusnew{}
-(Appendix~\ref{app:gvproof}), and the nonvanishing half is drafted in
-\lean{ExponentialPolynomialZeros}.}
+\begin{statusbox}{\statuslean{} --- the zero-count/nonvanishing engine is
+accepted in \lean{ExponentialPolynomialZeros}, and ordered-chamber positivity is accepted in
+\lean{OrderedChamberPositivity}.  Appendix~\ref{app:gvproof} gives the paper proof and its
+Wronskian interpretation.}
 \end{statusbox}
 
 The positivity theorem for generalized Vandermonde determinants with arbitrary real
@@ -7734,13 +8309,14 @@ continuity and a coalescing-node limit.
 The decisive observation for the present application is that only \emph{nonvanishing} is
 needed downstream.  The determinant in question has integer entries, and a nonzero integer
 already has absolute value at least one; the sign never enters the repulsion inequality.
-That removes the entire coalescing-limit argument from the critical path, and it is why the
-draft took the zero-count route and left strict positivity unproved.
+That removes the coalescing-limit argument from the critical path.  The formalization first
+took the zero-count route in \lean{ExponentialPolynomialZeros}; the independent accepted
+module \lean{OrderedChamberPositivity} now supplies the strict sign as well.
 
 \subsection{\lean{ExponentialPolynomialZeros}}
 \label{bp:expzeros-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{ExponentialPolynomialZeros.lean}.}
+\begin{statusbox}{\statuslean{} --- \lean{ExponentialPolynomialZeros.lean}.}
 \end{statusbox}
 
 This module carries the zero-count induction.  Write
@@ -7754,7 +8330,7 @@ proof.
 
 First, the Rolle step must produce $n$ \emph{distinct and ordered} interior points from
 $n+1$ ordered zeros.  Mathlib's \lean{exists_hasDerivAt_eq_zero} yields one interior point
-per gap, but nothing about how the points from different gaps compare.  The draft chooses
+per gap, but nothing about how the points from different gaps compare.  The implementation chooses
 them with \lean{choose}, then proves strict monotonicity by chaining
 $y_i<x_{i+1}\le x_j<y_j$ through the monotonicity of the node family.  When the hypothesis
 arrives as a \lean{Finset} of at least $n+1$ reals rather than an indexed family, the
@@ -7766,7 +8342,7 @@ is an $m$-term one whose exponents are $\lambda_{j+1}-\lambda_0$ and whose coeff
 $c_{j+1}(\lambda_{j+1}-\lambda_0)$, so every statement has to be transported along
 \lean{Fin.succ}, and the induction has to be set up with the order quantified first so that
 \lean{induction} may generalize over exponents, coefficients and nodes simultaneously.  In
-the draft this is done through a private auxiliary theorem of the shape
+the accepted module this is done through a private auxiliary theorem of the shape
 \lean{forall (n : N) (lam c : Fin (n + 1) -> R), ...}, from which the user-facing statements
 are one-line consequences.
 
@@ -7789,9 +8365,8 @@ determinant statement follows from the zero-count statement.
 \subsection{\lean{MixedExponentSemigroup} and \lean{SemigroupDeterminant}}
 \label{bp:semigroup-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{MixedExponentSemigroup.lean} and
-\lean{SemigroupDeterminant.lean}; the mathematics is \statusnew{}
-(Section~\ref{sec:semigroup}).}
+\begin{statusbox}{\statuslean{} --- \lean{MixedExponentSemigroup.lean} and
+\lean{SemigroupDeterminant.lean}.}
 \end{statusbox}
 
 The pair-indexed exponent is the whole of the definitional layer:
@@ -7833,8 +8408,8 @@ the paper proof, not a requirement of the formal one.
 \subsection{\lean{FallingFactorialBound}}
 \label{bp:falling-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{FallingFactorialBound.lean}; already on the
-aggregate import surface.}
+\begin{statusbox}{\statuslean{} --- \lean{FallingFactorialBound.lean}, on the aggregate
+import surface.}
 \end{statusbox}
 
 This module carries the two elementary estimates behind every Newton-row bound of
@@ -7863,7 +8438,7 @@ determinant is at most $(r+1)!\prod_iA_i\prod_jB_j$.
 \subsection{\lean{SemigroupWeightBound}}
 \label{bp:weight-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{SemigroupWeightBound.lean}.}
+\begin{statusbox}{\statuslean{} --- \lean{SemigroupWeightBound.lean}.}
 \end{statusbox}
 
 For the explicit logarithmic-square corollary the full asymptotic count of the ordered
@@ -7879,7 +8454,7 @@ $6(r+1)\sqrt r$;
 \item dividing by $R_r=r(r+1)/2$ gives the deficit ratio $\Sigma_r/R_r\le12/\sqrt r$.
 \end{itemize}
 
-The draft realizes the injective family explicitly by base-$(q+1)$ digits,
+The module realizes the injective family explicitly by base-$(q+1)$ digits,
 $j\mapsto(j\bmod(q+1),\;j\div(q+1))$, so no sorting is performed and no canonical ordered
 semigroup is ever constructed.  The statements are:
 
@@ -7900,14 +8475,15 @@ at most $r$ points, and applies pigeonhole.
 \subsection{\lean{SemigroupDyadicBound}}
 \label{bp:dyadic-module}
 
-\begin{statusbox}{Planned; no draft yet.  The mathematics is \statusnew{}
-(Section~\ref{sec:semigroup}).}
+\begin{statusbox}{\statuslean{} --- implemented in \lean{SemigroupGapBound}; the final
+cardinality theorem is conditional on the explicit \lean{NewtonFactorization} hypothesis.}
 \end{statusbox}
 
-This is the module that combines the span theorem with the consecutive-window summation and
-produces the explicit $O((\log X)^2)$ dyadic bound.  The final theorem could state:
+This layer combines the span theorem with the consecutive-window summation and produces the
+explicit $O((\log X)^2)$ dyadic bound.  The accepted endpoint is
+\lean{card_le_ten_thousand_max_log_sq}; schematically it states:
 
-\begin{lstlisting}[style=leanstyle,caption={Proposed explicit dyadic bound.}]
+\begin{lstlisting}[style=leanstyle,caption={Schematic explicit dyadic bound.}]
 theorem card_twoBaseNaturalCandidates_Icc_le_log_sq (X : N) (hX : 1 <= X) :
   ((Finset.Icc X (2 * X)).filter TwoBaseNaturalCandidate).card
     <= Nat.ceil (10000 * max 1 (Real.log X) ^ 2)
@@ -7923,8 +8499,7 @@ same bound twice.
 \subsection{\lean{BlockGrowthReformulations}}
 \label{bp:blockgrowth-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{BlockGrowthReformulations.lean}; the mathematics
-is \statusnew{} (Section~\ref{sec:reform}).}
+\begin{statusbox}{\statuslean{} --- \lean{BlockGrowthReformulations.lean}.}
 \end{statusbox}
 
 The exact conditional block formula proved in the corpus makes the dyadic block count
@@ -7951,8 +8526,7 @@ softening of the counting target buys anything.
 \subsection{\lean{CompactOrbit}}
 \label{bp:compactorbit-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{CompactOrbit.lean}; the mathematics is
-\statusnew{} (Section~\ref{sec:reform}).}
+\begin{statusbox}{\statuslean{} --- \lean{CompactOrbit.lean}.}
 \end{statusbox}
 
 This module states the conjecture as the nonexistence of a synchronized integral orbit on
@@ -7980,8 +8554,8 @@ $A=3^\beta$.  Formalizing that asymmetry was the only delicate part.
 \subsection{\lean{LogProductIndependence}}
 \label{bp:logprod-module}
 
-\begin{statusbox}{\statusdraft{} --- \lean{LogProductIndependence.lean}; the mathematics is
-\statusnew{} (Section~\ref{sec:logproduct}).}
+\begin{statusbox}{\statuslean{} --- \lean{LogProductIndependence.lean}.  The independence
+property is an explicit hypothesis, never asserted; the implication from it is accepted.}
 \end{statusbox}
 
 This module records the prime-log-product criterion of Section~\ref{sec:logproduct}.  The
@@ -8048,7 +8622,8 @@ $\thetaq$ is fixed \\
 Produces coordinates in two prime directions & Produces repulsion for arbitrary ordered
 nodes \\
 Naturally global in magnitude & Naturally local in additive intervals \\
-Kernel-verified \statuslean{} & Paper proof \statusnew{}, Lean draft \statusdraft{} \\
+Kernel-verified \statuslean{} & Paper theorem \statusnew{}; hypothesis-carrying Lean endpoint
+\statuslean{} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -8186,7 +8761,6 @@ structure is exact, the failure mode of the best available elementary method is 
 rather than guessed, and the surrounding formal infrastructure is strong enough to test the
 next idea precisely.
 \clearpage
-\pagenumbering{arabic}
 
 \section{Continuation: executive answer, scope, and trust boundaries}
 \label{sec:continuation}
@@ -9803,11 +10377,13 @@ profile, and at $p=3$ all columns with the same $v$ do.  It is natural to hope t
 inside those large fibers supplies the missing leading-order fraction.
 
 The present section computes that first cancellation layer exactly.  It factors into ordinary
-Vandermondes of the odd row parts.  Standard upper bounds for $p$-adic linear forms in two
-logarithms then show that the whole first layer is only
-$O(T^{3/2}(\log T)^C)$, whereas the mixed determinant has height $\asymp T^{5/2}$.  This does
-not bound the final determinant valuation---higher tropical layers may cancel again---but it
-rules out a one-step fiber explanation of the missing fraction.
+Vandermondes of the odd row parts.  There are two useful bounds.  Standard upper bounds for
+$p$-adic linear forms in two logarithms give the sharper
+$O(T^{3/2}(\log T)^C)$ estimate.  More importantly for formalization, the elementary fact
+$p^{v_p(z)}\le |z|$ already gives an unconditional $O(T^2)$ bound.  Either is lower order
+than the mixed determinant height $\asymp T^{5/2}$.  This does not bound the final determinant
+valuation---higher tropical layers may cancel again---but it rules out a one-step fiber
+explanation of the missing fraction without requiring deep $p$-adic approximation theory.
 
 \subsection{Tropical initial form at two}
 
@@ -9846,17 +10422,18 @@ odd number $M^{ku}$ from each row in a fixed $u$ block; the second is the ordina
 identity because $V_u$ is consecutive.
 
 \begin{proposition}[Exact first $2$-adic initial form]\label{prop:initial-two}
-There is an integer $Z_{2,T}$ and an integer gap $g_{2,T}\ge\lfloor\beta\rfloor$ such that
+There is an integer $Z_{2,T}$ such that
 \begin{equation}\label{eq:two-layer-expansion}
  2^{-\tau_{2,T}}D_T
- =\varepsilon_{2,T} I_{2,T}+2^{g_{2,T}}Z_{2,T},
+ =\varepsilon_{2,T} I_{2,T}+2^{\lfloor\beta\rfloor}Z_{2,T},
 \end{equation}
 where $\varepsilon_{2,T}$ is odd.  Consequently
 \begin{equation}\label{eq:two-layer-min}
  v_2(D_T)-\tau_{2,T}
- \ge \min\{v_2(I_{2,T}),g_{2,T}\},
+ \ge \min\{v_2(I_{2,T}),\lfloor\beta\rfloor\}.
 \end{equation}
-and equality holds whenever the two numbers inside the minimum are unequal.
+No equality assertion follows without controlling the valuation of the full outside-fiber
+remainder $Z_{2,T}$.
 \end{proposition}
 
 \begin{proof}
@@ -9893,9 +10470,8 @@ argument gives
 \end{equation}
 and
 \begin{equation}\label{eq:three-layer-expansion}
- 3^{-\tau_{3,T}}D_T
- =\varepsilon_{3,T}I_{3,T}+3^{g_{3,T}}Z_{3,T},
- \qquad g_{3,T}\ge\lfloor\beta\rfloor,
+3^{-\tau_{3,T}}D_T
+ =\varepsilon_{3,T}I_{3,T}+3^{\lfloor\beta\rfloor}Z_{3,T},
 \end{equation}
 with $\varepsilon_{3,T}$ a $3$-adic unit.
 
@@ -9925,6 +10501,24 @@ $(M,2,p=3)$.  Since $d,h=O_\beta(N)$, each factor in
 \eqref{eq:initial-two}--\eqref{eq:initial-three} has valuation
 $O_{M,A}((\log N)^2)$.
 
+For the qualitative scale separation, however, no linear-form theorem is needed.  If $p$ is
+prime and $a^d\ne b^h$, the divisor-size inequality gives the explicit finite bound
+\begin{equation}
+ v_p(a^d-b^h)
+ \le 1+d\,\lceil\log_p a\rceil+h\,\lceil\log_p b\rceil.
+ \label{eq:elementary-padic-power-difference}
+\end{equation}
+Indeed, $p^{v_p(a^d-b^h)}$ divides the nonzero difference, while
+$|a^d-b^h|\le a^d+b^h$ and each power is bounded by the corresponding power of $p$.
+Inside a Beatty row block, $h\le B_{\beta}d$ for a fixed integer $B_\beta$, so the right side
+is $O_{M,A}(d)$.  A block of size $s$ then contributes $O_{M,A}(s^3)$, because
+$\sum_{0\le i<j<s}(j-i)=O(s^3)$.  There are $O(L_N)$ fibers of size $O(L_N)$, hence the
+total elementary budget is
+\begin{equation}
+ O_{M,A}(L_N^4)=O_{M,A}(N^2)=O_{M,A}(T^2).
+ \label{eq:elementary-first-layer-budget}
+\end{equation}
+
 The number of pairs within the vertical fibers is
 \begin{equation}\label{eq:vertical-pairs}
  \sum_u\binom{s_u}{2}
@@ -9943,9 +10537,10 @@ We obtain the following rigorous scale separation.
 In the cross-coprime branch,
 \begin{equation}\label{eq:first-layer-small}
  v_2(I_{2,T})+v_3(I_{3,T})
- =O_{M,A}\!\left(N^{3/2}(\log N)^2\right)
- =O_{M,A}\!\left(T^{3/2}(\log T)^2\right).
+ =O_{M,A}(N^2)=O_{M,A}(T^2).
 \end{equation}
+If one invokes the quoted two-logarithm estimate \eqref{eq:padic-two-log}, the stronger bound
+$O_{M,A}(N^{3/2}(\log N)^2)$ also holds.
 In particular,
 \begin{equation}\label{eq:first-layer-negligible}
  \frac{v_2(I_{2,T})\log2+v_3(I_{3,T})\log3}{H_T}
@@ -9954,15 +10549,25 @@ In particular,
 \end{theorem}
 
 \begin{proof}
-Sum \eqref{eq:padic-two-log} over the pairs in
+For the elementary assertion, sum \eqref{eq:elementary-padic-power-difference} over the pairs
+in each fiber and use \eqref{eq:elementary-first-layer-budget}.  For the sharper assertion,
+sum \eqref{eq:padic-two-log} over the pair counts
 \eqref{eq:vertical-pairs} and \eqref{eq:horizontal-pairs}, using
-\eqref{eq:qdiff-two}--\eqref{eq:rdiff-three}.  Finally use
-$N\asymp_\beta T$ and $H_T\asymp_\beta T^{5/2}$.
+\eqref{eq:qdiff-two}--\eqref{eq:rdiff-three}.  Finally use $N\asymp_\beta T$ and
+$H_T\asymp_\beta T^{5/2}$.
 \end{proof}
 
-\begin{statusbox}{\statusnew{} modulo the quoted classical $p$-adic linear-form estimate
-\eqref{eq:padic-two-log}.  The factorization of the tropical initial forms is elementary and
-is a particularly attractive Lean target.}
+\begin{statusbox}{\statuslean{} for the exact finite valuation and cube-budget skeleton;
+\statusknown{} only for the optional sharper two-logarithm estimate.}
+The module \lean{BlockVandermondeValuationBudget} proves the exact collision-depth identity
+\lean{padicValNat_natVandermondeProduct_eq_sum_collisionCount}, the elementary power-difference
+bound \lean{padicValNat_natAbs_pow_sub_pow_le}, and the variable-block and power-difference cube bounds
+\lean{padicValNat_blockVandermondeNatProduct_le_cubeBudget} and
+\lean{padicValNat_blockVandermondeNatProduct_le_powDifferenceCubeBudget}.  The displayed
+$O(T^2)$ specialization still uses the elementary paper-level count of Beatty fiber sizes;
+the finite inequality on which it rests is kernel-verified.  The sharper
+$O(T^{3/2}(\log T)^2)$ statement uses the cited classical estimate and is not claimed as a
+Lean theorem.
 \end{statusbox}
 
 \subsection{What a leading excess would have to do}
@@ -9971,8 +10576,16 @@ Theorem~\ref{thm:first-layer-small} does not prove
 $v_2(D_T)-\tau_{2,T}=o(H_T)$ or its $3$-adic analogue.  If the initial form is divisible by a
 power exceeding the first tropical gap, terms from the next valuation layer enter; those can
 cancel, exposing another layer, and so on.  A leading-order excess is therefore possible only
-through a \emph{cascade} of cancellations across a number of tropical layers growing with
-$T$.  Cancellation confined to the minimum-permutation fibers is quantitatively negligible.
+through control of the valuations and cancellations in the truncated sums at cutoffs growing
+with $T$.  It could arise from unusually divisible low-excess minor products, cancellation
+within one layer, or carrying across several layers.  Cancellation confined to the
+minimum-permutation fibers is quantitatively negligible.
+Formula~\eqref{mp:eq-row-block-truncation} makes this statement finite and exact: at depth $K$
+one need only control the signed products of unit minors attached to row partitions of excess
+less than $K$.  The unit-adapted bases above extract a universal divisor from the relevant
+univariate minors, but its paper-level blockwise scale is only $O(N^{3/2})$.  What is missing is
+an upper bound on the valuation of the residual truncated sum, uniform for cutoffs growing
+with $T$.
 
 This yields a more precise version of the $p$-adic research target.
 
@@ -9984,6 +10597,69 @@ congruences such as \eqref{eq:qdiff-two} and \eqref{eq:rdiff-three} cannot by th
 supply the latter, because $p$-adic logarithm bounds make each congruence only polylogarithmic
 in the row separation.
 \end{target}
+
+\subsection{Exact finite cascade reconnaissance}
+\label{sec:cascade-experiments}
+
+Exact integer experiments help rule out two tempting but false simplifications of
+Target~\ref{target:cascade}.  For synthetic cross-coprime parameters $M,A$, put
+\[
+ \beta=\log_2M,\qquad n_k=T-\lfloor k\beta\rfloor,
+\]
+and take the first $N=1+\lfloor(T+1)/\beta\rfloor$ exponent pairs $(u,v)$ in increasing order
+of $u+\thetaq v$.  The tested determinant is exactly
+\[
+ D_T=\det\left(
+   (2^{n_k}M^k)^u(3^{n_k}A^k)^v
+ \right)_{0\le k<N, (u,v)}.
+\]
+Let $e_p=v_p(D_T)-\tau_p$, let $I_p$ denote the first-fiber Vandermonde product, and let $U_p$
+be the common row-block ordering exponent determined by the column-fiber sizes.  The weights
+come from \lean{AllLayerUnitBasis}, their finite sums from \lean{UnitOrderingGain}, and their
+uniform contribution to every row-block term and the full determinant from
+\lean{RowBlockUnitDivisibility}.  For $(M,A)=(5,7)$, exact DVR elimination
+gives:
+\begin{center}
+\small
+\begin{tabular}{@{}r r|r r r|r r r|c@{}}
+\toprule
+$T$ & $N$ & $e_2$ & $U_2$ & $v_2(I_2)$ & $e_3$ & $U_3$ & $v_3(I_3)$ &
+$(e_2\log2+e_3\log3)/H_T$ \\
+\midrule
+30  & 14  & 26  & 17  & 29  & 14  & 9   & 14  & $0.0360124$ \\
+100 & 44  & 157 & 136 & 157 & 87  & 74  & 87  & $0.0101461$ \\
+300 & 130 & 868 & 796 & 870 & 517 & 471 & 530 & $0.00353027$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The data are compatible with an $N^{3/2}$ excess and incompatible with no proved asymptotic;
+their purpose is diagnostic.
+
+Two exact small cases are more informative.  At $(M,A,T,p)=(5,7,30,2)$ one has
+\[
+ \tau_2=177,\qquad v_2(D_T)=203,
+ \qquad e_2=26<29=v_2(I_2).
+\]
+Writing $2^{-\tau_2}D_T=\sum_\delta2^\delta C_\delta$, the first layer has
+$v_2(C_0)=29$, whereas the layer $\delta=6$ has $v_2(C_6)=20$ and therefore smaller effective
+valuation $26$.  A nonminimal layer can genuinely beat the initial form.  Conversely, at
+$(M,A,T,p)=(11,5,20,2)$ the layers $\delta=0$ and $\delta=4$ both have effective valuation
+$9$, but their sum is divisible by $2^{10}$; all other layers have effective valuation at
+least $12$, and the final excess is $10$.  Thus even ``take the minimum effective layer'' is
+false because different layers can carry into one another.
+
+\begin{statusbox}{\statusexactcomp{} --- all displayed determinant, assignment, layer, and valuation
+integers use exact integer arithmetic; the logarithmic ratios are ordinary floating
+approximations used only diagnostically.  The no-dependency scripts
+\texttt{scripts/cascade\_experiments.py},
+\texttt{scripts/cascade\_layer\_report.py}, and
+\texttt{scripts/cascade\_verify.py} reproduce the computations; the last directly
+Bareiss-checks the same twenty small determinants and agrees on their valuations.}
+The parameters are deliberately synthetic: they satisfy $\gcd(6,MA)=1$, but do not assert the
+unknown identity $A=3^{\log_2M}$.  The decreasing ratios and the apparent $N^{3/2}$ scale are
+evidence only.  The two finite counterexamples to naive layer formulas are exact for the
+displayed mixed determinant family.
+\end{statusbox}
 
 \section{Synthesis of the determinant audits}
 \label{sec:synthesis}
@@ -10023,7 +10699,9 @@ $\le\pi/4=0.7853982\ldots$ &
 All-prime common divisor versus the sharp largest-Leibniz-term transport upper bound.\\[0.7em]
 First tied fibers at $2$ and $3$ &
 $o(1)$ of the mixed-block budget &
-Their valuations are $O(T^{3/2}(\log T)^2)$ against $H_T\asymp T^{5/2}$.\\
+Verified finite budgets plus elementary paper-level Beatty counting give $O(T^2)$ against
+$H_T\asymp T^{5/2}$; quoted two-logarithm estimates sharpen this to
+$O(T^{3/2}(\log T)^2)$.\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -10690,19 +11368,31 @@ Proposed module & Principal statement & Main dependencies \\
 \addlinespace
 \lean{FullGridTransport} & Row/column empirical distributions, countermonotone energy $\pi/8$, maximum energy $1/2$, and the ratio $\pi/4$. & Triangular lattice sums, quantile integration, rearrangement. \\
 \addlinespace
-\lean{TropicalInitialFibers} & Factorization of the first $2$- and $3$-adic initial forms into ordinary Vandermondes on column fibers. & Determinants over valued rings; stable sorting by valuations. \\
+\lean{BeattyTropicalFiber} [accepted] & Exact minimizing fibers, floor-sized gap, normalized quotient divisibility, and block-determinant expansion for Beatty rank-one matrices. & \lean{TropicalInitialForm}, \lean{BlockFiberFactorization}; rearrangement and floor arithmetic. \\
 \addlinespace
-\lean{InitialFiberValuationBound} & Under a standard $p$-adic logarithm hypothesis, the first tied layer contributes $o(H_T)$. & \lean{TropicalInitialFibers}; an abstract two-logarithm valuation bound. \\
+\lean{RowBlockLaplaceExpansion} [accepted] & Exact grouping of every assignment layer by row partitions; normalized and depth-$K$-truncated expansions with coefficients equal to signed products of unit minors. & \lean{BeattyTropicalFiber}, \lean{BlockFiberFactorization}; finite fiberwise sums and determinant algebra. \\
+\addlinespace
+\lean{AssignmentExcessGeometry} [accepted] & Prefix-surplus crossing energy, the Beatty lower bound $c(a)-\tau\ge\lfloor\beta\rfloor\mathcal E(a)$, and for $N>0$ the cutoff support bound $\#\{c(a)-\tau<K\}\le\binom{N+q-1}{q}$. & \lean{RowBlockLaplaceExpansion}; finite rearrangement, summation by parts, and stars and bars. \\
+\addlinespace
+\lean{BlockVandermondeValuationBudget} [accepted] & Exact collision-energy identity, elementary power-difference bound, and variable-block cube budget; the finite input to the paper-level $O(T^2)=o(H_T)$ first-layer specialization. & \lean{BlockFiberFactorization}; elementary $p$-adic valuation and finite sums. \\
+\addlinespace
+\lean{AllLayerUnitBasis} [accepted] & Monic unitriangular and determinant-one column changes extract complete-determinant unit divisors on positive dyadic/triadic unit nodes, with $p$-ordering weights $j+v_2(j!)$ and $\lfloor j/2\rfloor+v_3(\lfloor j/2\rfloor!)$. & \lean{BlockVandermondeValuationBudget}; integer polynomial evaluation and Vandermonde determinants. \\
+\addlinespace
+\lean{UnitOrderingGain} [accepted] & Exact block-weight decompositions and finite quadratic/cubic aggregate bounds; at most $S$ blocks of size at most $S$ have dyadic gain at most $S^3$ and twice the triadic gain at most $S^3$. & \lean{AllLayerUnitBasis}; Legendre digit sums and finite-sum bounds. \\
+\addlinespace
+\lean{RowBlockUnitDivisibility} [accepted] & Uniform dyadic/triadic unit divisors for every scaled row-block minor product and the additive full-determinant conclusion $p^{\tau+U}\mid\det$. & \lean{RowBlockLaplaceExpansion}, \lean{UnitOrderingGain}; row-scaled Vandermonde reindexing and a determinant-one fiberwise basis change. \\
 \addlinespace
 \lean{FiniteCheck2Pow27} & A kernel-replayable certificate excluding non-powers of two below $2^{27}$. & Existing finite-check certificate architecture; generated chunk certificates. \\
 \bottomrule
 \end{longtable}
 }
 
-The first two modules are almost entirely combinatorial.  The determinant modules should not
-import transcendence theory.  Conversely, the Baker and $p$-adic logarithm interfaces should
-be abstract propositions whose classical realization is documented outside the kernel unless
-and until Mathlib contains a suitable theorem.  This makes the trust boundary explicit.
+The first two modules are almost entirely combinatorial.  The accepted Beatty, block-budget,
+and unit-basis modules likewise import no transcendence theory; in particular, the qualitative
+first-layer scale separation no longer needs an abstract $p$-adic logarithm interface.  Any
+future use of the sharper estimate \eqref{eq:padic-two-log} should still be carried as a named
+classical input unless and until Mathlib contains a suitable theorem.  This keeps the trust
+boundary explicit.
 
 \subsection{Finite statements before asymptotics}
 
@@ -10765,24 +11455,41 @@ integers, and the asymptotic statements will likely use \lean{Tendsto} and \lean
 rather than a custom \lean{limsup}.  The sketches are included to fix the mathematical
 interfaces, not Lean syntax.
 
-\subsection{Formalizing the first tied layer}
+\subsection{The formalized finite core of the first tied layer}
 
-A useful reusable notion is the initial form of a determinant at a prime.  For a matrix over
+The reusable initial form of a determinant at a prime is now implemented.  For a matrix over
 $\Z$ and an assignment minimum $\tau_p$, reduce
 \[
  p^{-\tau_p}\det(E_{ij})\pmod p.
 \]
-Only minimizing permutations survive.  In the cross-coprime branch the minimizing
-permutations preserve equal-$u$ fibers at $p=2$ and equal-$v$ fibers at $p=3$; the surviving
-sum is a product of smaller determinants.  This should be proved as a purely finite
-combinatorial determinant identity.  The later valuation estimate can then be stated
-separately:
+Only minimizing permutations survive.  The modules \lean{TropicalInitialForm},
+\lean{BlockFiberFactorization}, and \lean{BeattyTropicalFiber} now prove, as purely finite
+identities, that the relevant minimizers preserve the equal-$u$ or equal-$v$ fibers, that the
+surviving sum is a product of smaller determinants, and that the next assignment layer begins
+at least $\lfloor\beta\rfloor$ later.  The module \lean{RowBlockLaplaceExpansion} extends this
+from the first fiber to every finite depth: after extracting the minimum power, its cutoff-$K$
+identity discards all row partitions of excess at least $K$ modulo $p^K$ and expresses every
+surviving coefficient as a signed product of square unit minors.  This is an exact support
+decomposition, not a bound on the surviving signed sum.  The companion
+\lean{AssignmentExcessGeometry} proves that Beatty excess dominates
+$\lfloor\beta\rfloor$ times prefix-crossing energy and, for $N>0$, bounds the number of partitions below
+cutoff $K$ by $\binom{N+q-1}{q}$, with $q=\lfloor(K-1)/\lfloor\beta\rfloor\rfloor$.
+The finite valuation estimate is
+separated into
+\lean{BlockVandermondeValuationBudget}.  Combining its kernel-verified cube inequality with
+the elementary paper-level count and size bounds for the Beatty fibers gives
 \begin{equation}\label{eq:initial-form-bound-formal}
   v_2(I_{2,T})+v_3(I_{3,T})
-  =O\!\left(N^{3/2}(\log N)^2\right).
+  =O(N^2)=o(T^{5/2}).
 \end{equation}
-The big-$O$ exponent is not sacred; any $o(T^{5/2})$ theorem is sufficient for the qualitative
-conclusion.
+The optional classical two-logarithm input sharpens $O(N^2)$ to
+$O(N^{3/2}(\log N)^2)$, but the sharper exponent is not needed for the qualitative
+conclusion.  Finally, \lean{RowBlockUnitDivisibility} applies the unit-ordering divisor to
+every row-partition minor product and proves the additive scaled-block conclusion
+$p^{\tau+U}\mid\det$.  Thus the reusable finite algebra and valuation inequality are formalized, while
+the displayed asymptotic specialization remains a short paper argument.  The remaining
+mathematical target is no longer the first tied fiber; it is the valuation and cancellation
+of the low-excess truncated sums as their cutoff grows.
 
 \subsection{Certificate architecture for the new finite bound}
 
@@ -12244,6 +12951,768 @@ while applying several rational bases to force incompatible denominator and
 gcd requirements.  That program is concrete, computationally testable, and
 amenable to partial formal verification.
 
+\section{Third continuation: matrix coefficients, sparse interpolation, and boundary defects}
+\label{sec:matrix-continuation}
+
+Reports 1--2 in \lean{Article/new-reports/} are independent continuations of the same unified
+base and therefore share most of their inherited body with this document.  They are reconciled
+here by mathematical content rather
+than by concatenation: stale module statuses, the old candidate-count off-by-one, and the
+incorrect first-layer valuation equality are not reintroduced.  Their genuinely new core is a
+matrix-coefficient reformulation, an exact sparse-interpolation threshold, a Newton-polygon
+degree calibration, and a boundary-defect identity for the extremal interpolant.  The matrix
+coefficient, formal prime-symbol, and sparse-interpolation components now have dedicated
+kernel-checked Lean modules.
+
+\begin{statusbox}{The full conjecture remains open.  The restricted matrix-coefficient
+equivalence, formal prime-symbol zero classification, Structural Rank equivalence, finite
+sparse power-curve lemmas, and boundary-dilation algebra below are \statuslean.
+Newton-polygon geometry, the packaged BK-degree threshold, the counting reinterpretations,
+and the complex monodromy consequence remain conventional mathematics or consequences of
+named classical inputs.}
+\end{statusbox}
+
+\subsection{The restricted matrix-coefficient principle}
+\label{mc:restricted}
+
+For positive integers $M,A$, put
+\[
+  \mathsf L(M,A)=
+  \begin{pmatrix}
+    \log2&\log M\\
+    \log3&\log A
+  \end{pmatrix}.
+\]
+The determinant vanishes exactly when there is a real $\beta$ with
+\[
+  M=2^\beta,\qquad A=3^\beta.
+\]
+In that case
+\[
+  \mathsf L(M,A)=
+  \binom{\log2}{\log3}\begin{pmatrix}1&\beta\end{pmatrix},
+\]
+and for rational vectors $w=(r,s)^T$ and $v=(u,z)^T$ one has the exact factorization
+\begin{equation}
+  w^T\mathsf L(M,A)v
+   =(r\log2+s\log3)(u+z\beta).
+  \label{mc:eq-factor}
+\end{equation}
+
+Define $\mathrm{MCC}_{2,3}^{\mathbb Z}$ to assert that every singular matrix of this
+restricted form has nonzero rational $w,v$ with $w^T\mathsf L(M,A)v=0$.
+
+\begin{theorem}[Restricted Matrix Coefficient equivalence]
+\label{mc:thm-equivalence}
+The Alaoglu--Erd\H{o}s conjecture is equivalent to
+$\mathrm{MCC}_{2,3}^{\mathbb Z}$.
+\end{theorem}
+
+\begin{proof}
+If the conjecture holds, singularity supplies a common exponent $\beta$, which must be an
+integer $m$; the rational right vector $(-m,1)^T$ lies in the kernel.  Conversely, suppose
+$\beta$ is a nonintegral common exponent.  Integrality of $2^\beta$ implies that $\beta$ is
+irrational.  In \eqref{mc:eq-factor} the left factor cannot vanish for nonzero rational
+$w$, by multiplicative independence of $2$ and $3$, and the right factor cannot vanish for
+nonzero rational $v$, by irrationality of $\beta$.  Thus the required zero matrix
+coefficient does not exist.
+\end{proof}
+
+The new module \lean{RestrictedMatrixCoefficient} formalizes the concrete $2\times2$ matrix,
+its determinant, the common-exponent equivalence, the rank-one identity
+\lean{restrictedLogMatrix_eq_rankOne}, the coefficient factorization and anisotropy, and the
+exact endpoint
+\[
+ \lean{alaogluErdosConjecture_iff_restrictedMatrixCoefficientPrinciple}.
+\]
+This is \statuslean.  It is a strict specialization of the Matrix Coefficient Conjecture of
+Dasgupta--Kakde~\cite{DasguptaKakde2026}; in the real $2\times2$ case their fewnomial
+condition implies the desired matrix coefficient, while constructing that fewnomial from
+singularity remains the open direction.
+
+\subsection{The formal prime-symbol determinant}
+\label{mc:formal-prime}
+
+Let $a_p=v_p(M)$ and $b_p=v_p(A)$, and introduce one formal variable $X_p$ for each prime in
+$\{2,3\}\cup\operatorname{supp}(MA)$.  The formal determinant is
+\begin{equation}
+  \Phi_{M,A}(\mathbf X)
+   =X_2\sum_p b_pX_p-X_3\sum_p a_pX_p.
+  \label{mc:eq-phi}
+\end{equation}
+Substitution $X_p=\log p$ gives $\det\mathsf L(M,A)$.  Coefficient comparison gives
+\begin{equation}
+  \Phi_{M,A}\equiv0
+  \quad\Longleftrightarrow\quad
+  \exists m\in\Nzero,\ M=2^m\ \text{and}\ A=3^m.
+  \label{mc:eq-formal-zero}
+\end{equation}
+Indeed, all $b_p$ away from $3$ and all $a_p$ away from $2$ must vanish, while the
+$X_2X_3$ coefficient forces $b_3=a_2$.  Hence the conjecture is equivalently the assertion
+that specialization of this signed sparse quadratic at the prime-logarithm point cannot
+vanish unless the polynomial is formally zero.
+
+For a hypothetical counterexample $\Phi_{M,A}$ is nonzero and irreducible over $\Q$.
+A factorization of a homogeneous quadratic would yield two rational linear factors; one of
+them would vanish after $X_p=\log p$, contradicting rational linear independence of logarithms
+of distinct primes.  The new \lean{FormalPrimeDeterminant} module defines the genuine
+\lean{MvPolynomial} \lean{formalPrimeDeterminant}, proves its specialization
+\lean{formalPrimeDeterminant_eval₂_log}, the unconditional classification
+\lean{formalPrimeDeterminant_eq_zero_iff}, and the exact equivalence
+\lean{alaogluErdosConjecture_iff_sparsePrimeLogStructuralRankPrinciple}.  These claims are
+\statuslean.  The homogeneous-factor irreducibility bookkeeping is intentionally kept
+separate and remains paper-level.
+
+\subsection{Exact sparse interpolation on an irrational power curve}
+\label{mc:sparse}
+
+For irrational $\beta$, a monomial $X^rY^s$ restricted to
+$(X,Y)=(e^t,e^{\beta t})$ becomes
+\[
+  e^{(r+s\beta)t}.
+\]
+Distinct pairs $(r,s)\in\Nzero^2$ give distinct frequencies.  The classical Chebyshev
+zero theorem for real exponential polynomials, already formalized in
+\lean{ExponentialPolynomialZeros}, therefore gives the following sharp lower bound.
+
+\begin{theorem}[Sparse power-curve zero bound]
+\label{mc:thm-sparse-lower}
+An $m$-term nonzero polynomial restricted to $Y=X^\beta$, with $\beta$ irrational, has at
+most $m-1$ distinct positive zeros.  Equivalently, vanishing at $R$ distinct positive curve
+points requires at least $R+1$ nonzero monomials.
+\end{theorem}
+
+The new \lean{SparsePowerCurve} module proves the arbitrary-order indexed form
+\lean{sparsePowerCurve_coeff_eq_zero_of_zeros}, its finite-zero-set form
+\lean{card_le_of_sparsePowerCurve_eq_zero}, and the nonsingularity of the square evaluation
+matrix.  It also proves the integral form
+\lean{det_natPowerCurveEvaluationMatrix_ne_zero}: if
+$y_i=x_i^\beta$ are natural numbers, then
+\[
+  \det\bigl(x_i^{r_j}y_i^{s_j}\bigr)\ne0
+\]
+for distinct monomial pairs and ordered positive $x_i$.  Thus the determinant is a nonzero
+integer and has absolute value at least one.  These statements are \statuslean.
+
+The matching upper construction is the node polynomial
+\[
+  P_0(T)=\prod_{i=1}^{R}(T-x_i).
+\]
+Because all $x_i$ are positive, every elementary symmetric coefficient is nonzero, so $P_0$
+has exactly $R+1$ monomials.  This coefficient assertion and the vanishing at every node are
+also formalized as \lean{positiveNodeInterpolant_support_card} and
+\lean{positiveNodeInterpolant_eval}.  Consequently the following packaged minimum is a
+paper-level corollary whose two substantive halves are kernel checked:
+\begin{equation}
+ \min\{\#\operatorname{supp}P:0\ne P\in\C[X,Y],\
+       \ P(x_i,x_i^\beta)=0\ (1\le i\le R)\}=R+1.
+ \label{mc:eq-exact-support}
+\end{equation}
+Here the paper-level minimum allows complex coefficients; the kernel-checked zero-bound and
+matching positive-node construction are stated over the real core needed in the application.
+
+In the restricted integer-output setting this gives an exact dichotomy.  If the common
+exponent is an integer $m$, the minimum support on any nonempty family is $2$, attained by
+$Y-X^m$; a single nonzero monomial cannot vanish at a positive point.  If the exponent is
+nonintegral, it is irrational and the minimum on $R$ distinct points is $R+1$ by
+\eqref{mc:eq-exact-support}.  The irrational branch is the kernel-checked sparse theorem;
+the integral branch is the displayed elementary two-term witness and positivity argument.
+
+For a counterexample $(M,A,\beta)$ and a finite
+$\Omega\subset\Nzero^2$, the points
+\[
+  (2^a3^b,M^aA^b)
+   =(e^{z_{a,b}},e^{\beta z_{a,b}}),
+  \qquad z_{a,b}=a\log2+b\log3,
+\]
+have distinct parameters.  Hence $R=\#\Omega$ gives the exact minimum $R+1$.  On the
+$2N\times2N$ box, any polynomial with at most $4N^2$ monomials would therefore save one term
+over trivial interpolation and rule out a counterexample.  Dasgupta--Kakde ask for the
+stronger support bound $<N^2$ on the same $4N^2$ points; for Alaoglu--Erd\H{o}s, one saved
+monomial already suffices.
+
+\subsection{BK degree and the exact factor-four threshold}
+\label{mc:bk}
+
+For $0\ne P\in\Q[X,Y]$, first divide out the greatest common monomial of its terms, as in the
+Dasgupta--Kakde translation-invariant normalization.  Let $P^{\rm red}$ denote the resulting
+polynomial, let $\Delta(P)$ be its Newton polygon, and set
+\[
+  \operatorname{bkd}(P)
+   =\max\{\deg P^{\rm red},\,2\operatorname{Area}\Delta(P)\}.
+\]
+Pick's theorem gives
+\begin{equation}
+  \#\operatorname{supp}P\le \operatorname{bkd}(P)+2,
+  \label{mc:eq-support-bk}
+\end{equation}
+with $+1$ when the Newton polygon is one-dimensional.  For irrational $\beta$ and $R\ge2$
+distinct positive rational nodes whose ordinates $x_i^\beta$ are rational, let
+$L\in\Q[X]$ be the Lagrange interpolation
+polynomial of degree at most $R-1$ with $L(x_i)=x_i^\beta$.  Combining
+\eqref{mc:eq-exact-support} with the thin interpolant
+$Y-L(X)$ forces all $R+1$ available coefficients to occur and yields the exact paper-level
+threshold
+\begin{equation}
+ \min\{\operatorname{bkd}(P):0\ne P\in\Q[X,Y],\
+       \ P(x_i,x_i^\beta)=0\}=R-1.
+ \label{mc:eq-bk-threshold}
+\end{equation}
+For the $K\times K$ semigroup grid with $K\ge2$ this is $K^2-1$; on the
+Dasgupta--Kakde $2N$ grid it is
+$4N^2-1$.  Their target $<N^2$ must therefore cross a genuine asymptotic factor-four gap.
+No Pick-theorem or normalized lattice-area library is currently present in the pinned
+Mathlib, so \eqref{mc:eq-support-bk}--\eqref{mc:eq-bk-threshold} remain \statusnew.
+
+\subsection{Boundary defects of the extremal interpolant}
+\label{mc:boundary}
+
+Assume $K\ge2$ and a counterexample normalization
+$M=2^\beta$, $A=3^\beta$ with $\beta$ irrational.  Let $Q_K\in\Q[X]$ be the
+degree-$K^2-1$ polynomial interpolating the second coordinate on the $K\times K$ grid, and let
+\[
+  \Pi_{r,s}(X)=\prod_{\substack{0\le i<r\\0\le j<s}}(X-2^i3^j).
+\]
+The interior grid is stable under the two dilations.  Therefore
+\begin{align}
+ Q_K(2X)-M Q_K(X)&=\Pi_{K-1,K}(X)U_K(X),\label{mc:eq-defect-two}\\
+ Q_K(3X)-A Q_K(X)&=\Pi_{K,K-1}(X)V_K(X),\label{mc:eq-defect-three}
+\end{align}
+where $U_K,V_K$ are unique of degree $K-1$; their leading coefficients are respectively
+$q_K(2^{K^2-1}-M)$ and $q_K(3^{K^2-1}-A)$ when $q_K$ is the leading coefficient of $Q_K$.
+The irrationality of $\beta$ makes both displayed factors nonzero.  More generally, the same
+degree conclusion requires the explicit noncancellation hypotheses
+$2^{K^2-1}\ne M$ and $3^{K^2-1}\ne A$.
+
+The dilation operators $D_2f=f(2X)-Mf(X)$ and $D_3f=f(3X)-Af(X)$ commute.  Substituting
+\eqref{mc:eq-defect-two}--\eqref{mc:eq-defect-three} and cancelling the common interior
+factor $\Pi_{K-1,K-1}$ produces an identity of degree at most $2K-2$ involving the top and
+right boundary pieces together with their bottom and left dilation preimages.  This boundary
+compression is a concrete finite target:
+it turns $K^2$ interpolation constraints into a low-degree compatibility equation.  It does
+not by itself produce the missing fewnomial, and no such claim is made.
+
+The module \lean{BoundaryDilationDefect} proves the residual polynomial algebra over a general
+field and the commutator identity over an infinite field.  Its theorem
+\lean{existsUnique_squareGridResiduals} gives both unique residuals, their exact
+degree and leading coefficients; \lean{boundaryDilation_commutator} proves the displayed
+commuting boundary identity; and \lean{squareBoundaryExpressions_natDegree_le} proves the
+$2K-2$ bounds.  The interpolation values, node injectivity, and noncancellation of the top
+coefficient remain visible hypotheses.  These statements are \statuslean.
+
+\subsection{Counting thresholds and rational monodromy}
+\label{mc:counting-monodromy}
+
+A counterexample gives the rational points
+\[
+  P_{n,k}=\bigl(2^nM^k,3^nA^k\bigr)
+  =\bigl(2^{n+k\beta},3^{n+k\beta}\bigr),\qquad n,k\in\Nzero,
+\]
+on the fixed curve $Y=X^{\thetaq}$.  Since the second coordinate controls the height, a
+triangular lattice count gives
+\[
+  \#\{(n,k)\in\Nzero^2:n+k\beta\le\log_3H\}
+  =\frac{(\log H)^2}{2\beta(\log3)^2}+O_\beta(\log H).
+\]
+Thus any uniform $o((\log H)^2)$ upper bound for rational points on the unbounded power curve
+would prove the conjecture.  The synchronized compact orbit from \lean{CompactOrbit} gives a
+sharper arithmetic target: its first $k$ points have height at most $A^k$, so an
+$o(\log H)$ bound for points retaining the common floor level would also suffice.  These are
+height reinterpretations of the accepted exact and quadratic conditional counts, not a new
+point-counting theorem.
+
+Finally, classical six exponentials forces a complex consequence which the current real
+determinant formalization does not cover.  If $\beta$ were a nonintegral solution and
+$q\in\Q^\times$, then
+\begin{equation}
+  e^{2\pi i q\beta}
+  \quad\text{is transcendental},
+  \label{mc:eq-monodromy}
+\end{equation}
+and so are its sine and cosine.  Apply six exponentials to the independent rows
+$1,\beta$ and the independent columns $\log2,\log3,2\pi iq$; five of the six exponentials are
+algebraic, forcing the sixth to be transcendental.  This is a valid consequence of the named
+classical theorem, not a new kernel theorem.
+
+\subsection{The reported \texorpdfstring{$2^{29}$}{2\^{}29} scan and its trust boundary}
+\label{mc:finite29}
+
+The first and fifth new reports record an MPFR directed-rounding extension through $2^{29}$,
+including chunk tables, SHA--256 identifiers, extremal records, and high-precision replays;
+report 5 also embeds the literal C source and a full manifest in its TeX.  The logical
+consequence would be that a nonintegral solution has $x>29$.  However, the merged
+\lean{new-reports/} directories contain no standalone scanner, canonical chunk logs, or
+replay artifacts named by those hashes, and the long run was not independently repeated as
+part of this merge.  It is therefore retained as a \emph{reported} \statuscomp{} result,
+while the repository-reproducible software frontier in Section~\ref{sec:finite27} remains
+$2^{27}$.
+
+\subsection{What changed, and what did not}
+
+The continuation produces exact finite reformulations, but no unconditional proof of the
+conjecture.  Its most useful hierarchy is now:
+\begin{enumerate}
+\item the conjecture is exactly the restricted matrix-coefficient principle
+  (\statuslean);
+\item the formal prime-symbol determinant specializes to the logarithmic determinant, and
+  its sparse Structural Rank principle is again exactly the conjecture (\statuslean);
+\item a counterexample has maximal sparse interpolation complexity $R+1$, with the lower
+  bound, matching positive interpolant, and evaluation determinant kernel checked;
+\item the corresponding BK-degree threshold is exactly $R-1$ (\statusnew), exposing a
+  factor-four gap to the current Matrix Coefficient auxiliary-polynomial target;
+\item dilation defects compress the extremal grid interpolant to boundary polynomials of
+  degree $K-1$ (\statuslean), but an arithmetic construction saving one monomial remains open;
+\item generic polylogarithmic point counting is insufficient unless its exponent is below
+  two globally, or below one on the synchronized compact orbit.
+\end{enumerate}
+The Massold v1 parameter substitution audited in report 2~\cite{Massold2025} does not cover the
+$2\times2$ case: its displayed choice gives $t=1$, $\mu=\nu=1$, making the required strict
+inequality $1/2>1$.  This is a narrow provenance warning about that version, not a claim
+about every possible correction.
+
+\section{Further continuations: support spectra and arithmetic determinant audits}
+\label{sec:further-continuations}
+
+Reports 3--5 are likewise independent continuations of that common base.  This section records
+their new mathematics after reconciling overlaps rather than treating the reports as a
+sequence.  Three themes survive audit: the exact support spectrum of a finite orbit,
+integer-valued-polynomial divisors and primitive Smith normalization, and an adelic audit of
+exact-grid determinants including a signed-progression no-go theorem.  We do not import a
+stated ``quadratic divisor criterion'' from report 5: an inequality containing an unspecified
+$o(N^2)$ term is not a sufficient eventual strict inequality.  Likewise, the proposed cusp
+lattice realization is kept conditional on the uniform logarithmic-energy convergence that
+its current proof does not establish.
+
+\subsection{The exact orbit-collision support spectrum}
+\label{fc:support-spectrum}
+
+For a finite nonempty $\Omega\subset\Z^2$, define
+\[
+ T_x(\Omega)=\{i+jx:(i,j)\in\Omega\},\qquad D_x(\Omega)=\#T_x(\Omega),
+\]
+and let $\mu_x(\Omega)$ be the least number of monomials in a nonzero Laurent polynomial
+in $\C[X^{\pm1},Y^{\pm1}]$ vanishing at all points
+\[
+ X_x(\Omega)=\{(2^{i+jx},3^{i+jx}):(i,j)\in\Omega\}.
+\]
+Multiplication by a monomial shows that the same minimum is obtained with ordinary
+polynomials.  Restriction to the orbit turns every monomial into an exponential with
+frequency $a\log2+b\log3$; these frequencies are distinct by unique factorization.
+Consequently the exponential-polynomial zero bound and the positive-node polynomial give
+the exact formula
+\begin{equation}
+  \boxed{\mu_x(\Omega)=D_x(\Omega)+1.}
+  \label{fc:eq-support-spectrum}
+\end{equation}
+More generally, every evaluation matrix over $\C$ has rank
+$\min(D_x(\Omega),\#S)$ for any finite monomial support $S$.  Repeated zeros counted with
+multiplicity obey the same rule: prescribing total multiplicity $R$ costs at least $R+1$
+monomials.
+
+For $L,K\ge1$, on the rectangle
+$\Omega_{L,K}=\{0,\ldots,L-1\}\times\{0,\ldots,K-1\}$ the collision count is explicit.
+If $x\notin\Q$, then $D_x(L,K)=LK$.  If $x=r/s\in\Q_{\ge0}$ is in lowest terms, then
+\begin{equation}
+ D_{r/s}(L,K)=LK-(L-r)_+(K-s)_+,
+ \qquad
+ \mu_{r/s}(L,K)=D_{r/s}(L,K)+1.
+ \label{fc:eq-rectangle-collision}
+\end{equation}
+Indeed two vertices collide exactly along the primitive direction $(r,-s)$; the collision
+classes are paths, and vertices minus edges gives \eqref{fc:eq-rectangle-collision}.  Thus
+rationality is equivalent to saving one monomial on some square grid, while an irrational
+exponent has $\mu_x(L,L)=L^2+1$ for every $L$.  For integer outputs, a complex dependence
+may be replaced by a rational one and denominators cleared, giving an integer certificate.
+This is the exact finite-support version of the restricted Matrix Coefficient target.
+
+The module \lean{RationalOrbitGrid} kernel-checks the exact rectangle formula, including the
+zero-numerator edge case, the irrational full-cardinality statement, the irrational square-grid
+sparse lower bound, and the canonical one-monomial-saving rational-orbit certificate once the grid exceeds
+the reduced numerator and denominator.  Together with \lean{SparsePowerCurve}, this certifies
+the real, nonnegative-exponent core of the spectrum above.  The arbitrary finite Laurent
+support/rank formulation and the confluent multiplicity packaging remain paper-level.
+\statuslean
+
+\subsection{Coefficient height and the generic-modulus no-go}
+\label{fc:sparse-height-no-go}
+
+The exact support count does not control coefficient height.  For $M\ge1$, under an irrational
+exponent $x$ with $A=2^x\in\Z_{>0}$, the canonical annihilator of the $M^2$
+first-coordinate nodes is
+\[
+ Q_M(T)=\prod_{0\le i,j<M}(T-2^iA^j)\in\Z[T].
+\]
+It has exactly $M^2+1$ nonzero coefficients.  Write
+$H(Q)=\max_k|q_k|$ for $Q(T)=\sum_kq_kT^k$.  Writing
+$C_M=(2A)^{M^2(M-1)/2}$, positivity of the roots gives the exact finite bounds
+\begin{equation}
+ C_M\le\lVert Q_M\rVert_1\le2^{M^2}C_M,
+ \qquad
+ \frac{C_M}{M^2+1}\le H(Q_M)\le2^{M^2}C_M,
+ \label{fc:eq-canonical-height}
+\end{equation}
+and hence
+\[
+ \log H(Q_M)=\frac{(1+x)\log2}{2}M^2(M-1)+O(M^2+\log M).
+\]
+Thus the canonical support is sharp but carries an $\exp(\Theta_x(M^3))$ archimedean cost.
+Adding confluent multiplicities does not lower the support cost: the exponential Chebyshev
+bound charges one extra monomial for each unit of prescribed total multiplicity.
+
+The corresponding adelic criterion is elementary and exact.  If $P\in\Z[X,Y]$ and, at every
+integer grid point $z$, a finite set of primes $S$ satisfies
+\[
+ |P(z)|_\infty\prod_{p\in S}|P(z)|_p<1,
+\]
+then the product formula forces $P(z)=0$.  Equivalently, it is enough to find a divisor
+$q_z\mid P(z)$ with $|P(z)|<q_z$ at every row.  This identifies the right target but does not
+construct the coefficients.
+
+A cardinality-only modular pigeonhole does not suffice.  Let $E\in\Z^{R\times K}$ with
+$1\le K\le R$, let $Q\ge2$ and $H\ge0$, and assume
+$|E_{rj}|\le M_r$ with $M_r\ge1$.  Using coefficient vectors in
+$\{0,\ldots,H\}^K$ and one modulus $Q$ requires
+$(H+1)^K>Q^R$, which forces $H\ge Q$; the generic bound
+$|(Ed)_r|\le KHM_r$ can then never prove $|(Ed)_r|<Q$.  Even row-dependent moduli do not
+repair this architecture: for $H\ge1$ and $q_r\ge2$, the two sufficient conditions
+\[
+ (H+1)^K>\prod_{r=1}^Rq_r,
+ \qquad q_r>KHM_r\quad(1\le r\le R)
+\]
+are incompatible.  Finally, if one uses the full adelic product---or a finite prime set
+containing every prime divisor of the row content $g_r$---then dividing that row by $g_r$
+changes neither the archimedean--$p$-adic product nor the meaningful cancellation: the product
+formula for $g_r$ exactly cancels the apparent common divisibility.  The useful arithmetic
+object is therefore the Smith profile of the row-primitive evaluation matrix, not a raw common
+modulus.
+
+These coefficient-height, adelic, pigeonhole, and row-content statements are paper-level.
+The same support proof is base-independent for every multiplicatively independent positive
+base tuple: distinct monomials restrict to exponentials with distinct real frequencies.
+
+\subsection{Universal factorial content and primitive interpolation}
+\label{fc:factorial-smith}
+
+For $r\ge1$, write
+\[
+ \mathfrak F_r=\prod_{j=0}^{r-1}j!.
+\]
+For arbitrary integers $m_0,\ldots,m_r,y_0,\ldots,y_r$, the interpolation determinant with
+columns $1,m,\ldots,m^{r-1},y$ is divisible by $\mathfrak F_r$.  Replacing the power columns
+by $\binom{m}{0},\ldots,\binom{m}{r-1}$ proves the claim by a triangular Stirling change of basis,
+and the nodes $0,\ldots,r$ with ordinate vector $(0,\ldots,0,1)$ show that the universal
+divisor is best possible.  Applied to candidate ordinates, this strengthens the arbitrary-node
+repulsion constant by the factor $\mathfrak F_r^{1/\binom{r+1}{2}}$ but leaves its exponent
+unchanged.
+
+The focused module \lean{SuperfactorialDeterminant} kernel-checks the nonnegative-integer-node
+instance of this universal divisor, its exact consecutive-node sharpness witness, the resulting lower bound for a nonzero
+candidate interpolation determinant, and the strengthened divided-difference repulsion and
+packing inequalities.  As in \lean{ArbitraryNodeRepulsion}, the final two endpoints retain
+\lean{RpowDividedDifferenceMeanValue} as an explicit hypothesis; the superfactorial
+divisibility itself is unconditional in that formalized scope.  The arbitrary signed-integer
+node formulation above remains a paper consequence.  \statuslean
+
+The bivariate version is equally exact.  If $\mathcal S\subset\Nzero^2$ is a finite coordinate
+lower set, then for exactly $|\mathcal S|$ integer points $(X_i,Y_i)$,
+\begin{equation}
+ \prod_{(a,b)\in\mathcal S}a!b!
+ \ \bigm|\
+ \det\bigl(X_i^aY_i^b\bigr)_{i,(a,b)\in\mathcal S}.
+ \label{fc:eq-lower-set-factorial}
+\end{equation}
+The proof uses the integer-valued basis $\binom{X}{a}\binom{Y}{b}$.  On a weighted triangular lower
+set of cardinality $N$, the logarithm of this divisor is
+$O(N^{3/2}\log N)=o(N^2)$.  It is a genuine source of primes absent from the matrix entries,
+but it cannot by itself repair a positive quadratic-scale determinant screen.
+
+There is a sharper invariant for the unique $(M+1)$-term interpolating relation.  Let $M\ge2$
+and let $u_1<\cdots<u_M$ be distinct integers, with $v_1,\ldots,v_M\in\Z$.  For the
+$M\times(M+1)$ matrix whose $i$th row
+is $(v_i,1,u_i,\ldots,u_i^{M-1})$, let $\Delta_M$ be the gcd of all signed maximal minors and
+let
+\[
+ G_M=\gcd_i\prod_{a<b,\ a,b\ne i}(u_b-u_a),\qquad
+ V_M=\prod_{a<b}(u_b-u_a),\qquad
+ R_i=\prod_{j\ne i}|u_i-u_j|.
+\]
+Then a primitive cofactor generator, determined only up to global sign, has
+$Y$-coefficient satisfying $|c_Y|=V_M/\Delta_M$, and
+\begin{equation}
+ \mathfrak F_{M-1}\mid G_M\mid\Delta_M,
+ \qquad
+ G_M=\frac{V_M}{\operatorname{lcm}_i R_i}.
+ \label{fc:eq-smith-node-divisor}
+\end{equation}
+Moreover $G_M$ is the greatest divisor forced uniformly by the nodes as the integer ordinate
+vector varies.  The remaining quotient $\Delta_M/G_M$ is therefore the precise
+output-dependent Smith mass that an arithmetic proof must enlarge.  These Smith statements
+and their $2^i3^j$-grid asymptotics remain paper-level.
+
+\subsection{The adelic--HCIZ accounting identity}
+\label{fc:adelic-hciz}
+
+Let $N\ge1$.  For an exact-grid matrix $E_{ij}=\exp(u_iv_j)\in\N$ with strictly increasing
+$u_1<\cdots<u_N$ and $v_1<\cdots<v_N$, let $D_N>0$ be its determinant.  Put
+\[
+ C_N^- =\sum_i u_iv_{N+1-i},\quad
+ M_N=\frac{(\sum_i u_i)(\sum_jv_j)}N,\quad
+ C_N^+=\sum_i u_iv_i.
+\]
+For each prime let $\tau_p$ be the minimum valuation of a Leibniz term, and set
+$T_N=\sum_p\tau_p\log p$ and $Q_N=\prod_pp^{\tau_p}$.  The HCIZ identity writes
+\[
+ \log D_N=V_N+\log I_N,\qquad
+ V_N=\log\DeltaV(u)+\log\DeltaV(v)-\log\!\prod_{j=1}^{N-1}j!.
+\]
+Here $I_N$ is the Harish--Chandra--Itzykson--Zuber integral
+$\int_{U(N)}\exp(\operatorname{tr}(\operatorname{diag}(u)U
+\operatorname{diag}(v)U^*))\,dU$ for normalized Haar probability measure.
+Rearrangement, averaging, Jensen, and von Neumann's trace inequality give the exact sandwich
+\begin{equation}
+ T_N\le C_N^-\le M_N\le\log I_N\le C_N^+.
+ \label{fc:eq-hciz-sandwich}
+\end{equation}
+Defining
+\[
+ \Xi_N=\log(D_N/Q_N),\quad S_N=V_N+M_N-C_N^-,\quad
+ H_N=\log I_N-M_N,\quad A_N=C_N^--T_N
+\]
+therefore gives
+\begin{equation}
+ \boxed{\Xi_N=S_N+H_N+A_N},\qquad H_N,A_N,\Xi_N\ge0.
+ \label{fc:eq-adelic-decomposition}
+\end{equation}
+This separates geometric screen, random-matrix entropy, and incompatible primewise
+assignments instead of hiding them in one determinant estimate.
+
+For the inherited triangular spectra, the best possible joint screen has normalized limit
+\[
+ f_{\rm joint}(c)=\tfrac12\log c-1+\left(\tfrac49-\tfrac\pi8\right)c,\qquad
+ c=2\sqrt{\beta\log2\log3}.
+\]
+Its unique zero corresponds to $\beta=6.9269442924\ldots$.  Hence throughout the
+kernel-verified range $\beta\ge12$, no combination of an exact HCIZ evaluation and termwise
+prime valuations can close the inherited triangular determinant family.  This is a no-go
+theorem for that geometry, not for all determinant methods.
+
+Report 5 proposes power-cusp spectra whose formal continuum screen tends to $-\infty$.
+The continuum formula itself is valid under convergence of logarithmic energies, but weak
+lattice convergence does not supply that hypothesis near the diagonal.  A complete lattice
+realization needs an explicit spacing/truncation estimate.  Even after such a repair, the
+separated-prime-support branch makes the adelic alignment defect grow linearly in the cusp
+parameter, so cusp concentration alone cannot be a universal proof.
+
+\subsection{Signed progressions and the denominator tax}
+\label{fc:signed-progressions}
+
+Assume $N\ge1$, $p,q,r,s,M,A\in\N_{>0}$, and the counterexample relations
+$M=2^\beta$, $A=3^\beta$ with $\beta$ irrational.  For $0\le i,j<N$, use the nonnegative exponent vectors
+\[
+ (a_i,b_i)=(iq,(N-1-i)p),\qquad
+ (n_j,k_j)=(jr,(N-1-j)s).
+\]
+Set
+\[
+ X=2^{qr},\quad Y=3^{pr},\quad Z=M^{qs},\quad W=A^{ps},
+ \qquad P=XW,\quad Q=YZ.
+\]
+Define the original integer matrix and its determinant by
+\[
+ E_{ij}=2^{a_in_j}3^{b_in_j}M^{a_ik_j}A^{b_ik_j},
+ \qquad D_N=\det(E_{ij})_{0\le i,j<N},
+\]
+and let $Q_N^{\rm trop}$ be the termwise tropical divisor of this matrix.
+Then
+\[
+\log(P/Q)=(q\log2-p\log3)(r-s\beta),
+\]
+so $P\ne Q$: unique factorization makes the first factor nonzero, while irrationality makes
+the second nonzero.  A direct reduction to a geometric Vandermonde gives
+\begin{equation}
+ |D_N|=(PQ)^{\binom N3}
+ \prod_{d=1}^{N-1}|P^d-Q^d|^{N-d}.
+ \label{fc:eq-signed-progression}
+\end{equation}
+After writing $g=\gcd(P,Q)$, $\widehat P=P/g$, $\widehat Q=Q/g$, every row, column, and common
+gauge factor cancels from the tropical quotient:
+\begin{equation}
+ \frac{|D_N|}{Q_N^{\rm trop}}
+ =\prod_{d=1}^{N-1}|\widehat P^{\,d}-\widehat Q^{\,d}|^{N-d}.
+ \label{fc:eq-progression-quotient}
+\end{equation}
+Let $B=\min(\widehat P,\widehat Q)$ and
+$\eta=|\log(\widehat P/\widehat Q)|$.  With
+$G(N+1)=\prod_{d=1}^{N-1}d^{N-d}$, the exact expansion is
+\begin{align}
+ \log\frac{|D_N|}{Q_N^{\rm trop}}
+ &=\binom{N+1}{3}\log B+\binom N2\log\eta+\log G(N+1)+R_N,\label{fc:eq-tax}\\
+ 0&\le R_N\le\binom{N+1}{3}\eta.
+\end{align}
+The integer gap $|\widehat P-\widehat Q|\ge1$ forces
+$\log B+\log\eta\ge-\eta$.  Thus the product of two continued-fraction errors is not free:
+the denominator height repays the apparent quadratic smallness at cubic scale.  This exact
+algebra rules out the naive double-continued-fraction progression, while leaving open more
+structured cyclotomic cancellation inside $\widehat P^d-\widehat Q^d$.
+
+The module \lean{SignedProgressionDeterminant} kernel-checks the geometric Vandermonde
+factorization, the primitive invariant quotient and its coprimality with both primitive
+bases, the exact finite logarithmic decomposition, the nonnegative remainder bound, and the
+integer-gap inequality.  The original four-parameter matrix-to-tropical-quotient reduction,
+the continued-fraction asymptotics, and any general impossibility theorem for nontropical
+determinant cancellation remain paper-level.  \statuslean
+
+\begin{statusbox}{The universal univariate superfactorial divisor and its strengthened
+repulsion/packing consequences are \statuslean{} in \lean{SuperfactorialDeterminant}; the
+finite signed-progression and denominator-tax algebra is \statuslean{} in
+\lean{SignedProgressionDeterminant}.
+The general support-spectrum, bivariate factorial/Smith, and HCIZ statements are paper proofs
+extracted from reports 3--5.  For signed progressions, the original four-parameter/tropical
+identification and continued-fraction conclusion remain paper-level.  No cusp lattice limit
+or full conjecture is asserted.}
+\end{statusbox}
+
+\section{Sixth report: phase randomization and positive-kernel certificates}
+\label{sec:phase-certificates}
+
+Report 6 is another independent continuation of the same common base.  Its matrix-coefficient
+and sparse-grid arguments overlap Sections~\ref{mc:restricted}--\ref{mc:sparse}, so they are
+reconciled rather than duplicated.
+Its genuinely distinct contribution is a probability-theoretic control experiment that
+separates a generic random phase from the arithmetically distinguished phase zero.  The
+experiment does not declare $\thetaq$ generic and does not prove the conjecture; it identifies
+one exact finite Fourier estimate that would suffice.
+
+\subsection{A uniform metric estimate and random-phase extinction}
+\label{pc:metric-phase}
+
+Fix $0<a<b$ and, for $m\ge2$ and $0<\varepsilon\le1/4$, set
+\[
+ E_m(\varepsilon)=
+ \{\alpha\in[a,b]:\distZ{m^\alpha}<\varepsilon\}.
+\]
+The monotone substitution $y=m^\alpha$ and a harmonic-sum estimate give
+\begin{equation}
+ \operatorname{Leb}(E_m(\varepsilon))
+ \le \frac83\left(b+\frac{1+\log3}{\log2}\right)\varepsilon.
+ \label{pc:eq-metric-bound}
+\end{equation}
+The constant is independent of $m$.  Consequently every nonnegative summable sequence
+$\sum_m\varepsilon_m<\infty$ satisfies
+\[
+ \distZ{m^\alpha}<\varepsilon_m
+ \quad\hbox{for only finitely many $m$}
+\]
+for almost every $\alpha>0$, by the first Borel--Cantelli lemma.  This is a metric theorem,
+not a specialization theorem for the named exponent $\thetaq$.
+
+For the synchronized model, fix $N\ge1$ and put
+\[
+ D_N=\{a\in\Z:2^N<a<2^{N+1}\},\qquad
+ Z_N(u;\eta)=\#\{a\in D_N:\distZ{a^{\thetaq}-u}<\eta\},
+\]
+where $u$ is a phase on $\R/\Z$.  A uniform phase makes each radius-$\eta$ arc have Haar
+measure $2\eta$, so at the natural resolution $\eta=3^{-N}$,
+\begin{equation}
+ \mathbb E_u Z_N(u;3^{-N})
+ =2(2^N-1)3^{-N}<2(2/3)^N.
+ \label{pc:eq-random-phase}
+\end{equation}
+Summability and Borel--Cantelli show that almost every single phase has no sufficiently late
+near hits.  No independence between blocks is used.
+
+Phase zero is qualitatively different.  Let
+\[
+ \mathcal H_N=\#\{a\in D_N:a^{\thetaq}\in\Z\}.
+\]
+If the conjecture holds then $\mathcal H_N=0$.  Under failure, the least nonintegral generator
+$\beta$ and \lean{ExactCounting} give the exact nonintegral count
+\begin{equation}
+ \mathcal H_N=\left\lfloor\frac{N+1}{\beta}\right\rfloor,
+ \qquad \frac{\mathcal H_N}{N}\longrightarrow\frac1\beta,
+ \qquad Z_N(0;3^{-N})\ge\mathcal H_N.
+ \label{pc:eq-phase-zero}
+\end{equation}
+This is deliberately the nonintegral count: the full candidate count in the half-open dyadic
+block convention used elsewhere in the report has the additional integral point and equals
+$1+\lfloor(N+1)/\beta\rfloor$.
+
+\subsection{The Fej\'er certificate}
+\label{pc:fejer}
+
+Write $e(t)=e^{2\pi i t}$ and, for an integer $H\ge2$, define
+\[
+ F_H(t)=\frac1H\left|\sum_{j=0}^{H-1}e(jt)\right|^2,
+ \qquad \Phi_H(t)=\frac{F_H(t)}H.
+\]
+Then $\Phi_H\ge0$, $\Phi_H(0)=1$, and
+\[
+ \Phi_H(t)=\frac1H\sum_{|h|<H}
+   \left(1-\frac{|h|}{H}\right)e(ht).
+\]
+With
+\[
+ S_N(h)=\sum_{a\in D_N}e(ha^{\thetaq}),\qquad
+ Q_N(H)=\sum_{a\in D_N}\Phi_H(a^{\thetaq}),
+\]
+positivity and the finite Fourier expansion give the exact certificate
+\begin{align}
+ \mathcal H_N&\le Q_N(H),\label{pc:eq-hit-score}\\
+ Q_N(H)&=\frac{|D_N|}{H}+
+ \frac2H\sum_{h=1}^{H-1}\left(1-\frac hH\right)\Re S_N(h).
+ \label{pc:eq-fejer-score}
+\end{align}
+Thus the conjecture follows if, along an unbounded sequence, one can choose $H=H_N^*$ with
+$|D_N|/H_N^*=o(N)$ and make the weighted Fourier term in
+\eqref{pc:eq-fejer-score} equal to $o(N)$.  The natural bandwidth $H=3^N$ has exponentially
+small random-phase mean, but it demands information at exponentially many frequencies;
+fixed-mode equidistribution from \lean{BlockWeyl} is therefore far too coarse.
+
+The same diagnosis appears in the exact second moment.  If
+$d_{a,a'}=\distZ{\{a^{\thetaq}\}-\{a'^{\thetaq}\}}$ and $0<\eta\le1/4$, then
+\[
+ \mathbb E_u Z_N(u;\eta)^2
+ =2\eta|D_N|+2\sum_{a<a'}(2\eta-d_{a,a'})_+.
+\]
+The second term is the microscopic pair-correlation energy that a counterexample must force
+to be large at phase zero.
+
+\subsection{Why naive random sparse coefficients do not bridge the gap}
+\label{pc:random-signs}
+
+The integrality amplifier behind the sparse certificate is exact: if
+$D\in\N_{>0}$, $0\ne P\in\Q[X,Y]$, $DP\in\Z[X,Y]$, and $|P(g)|<D^{-1}$ at every conditional integer-grid
+point $g$, then $P(g)=0$ everywhere.  Sections~\ref{mc:sparse} and
+\ref{fc:support-spectrum} then turn a subcritical support into rationality of the common
+exponent.
+
+Unconditioned random signs do not naturally reach this threshold.  For distinct monomials
+$M_\nu$, real $c_\nu$, and independent signs $\epsilon_\nu$, put
+$P_\epsilon=\sum_\nu\epsilon_\nu c_\nu M_\nu$.  On every finite grid
+$G\subset\R_{>0}^2$,
+\begin{equation}
+ \mathbb E\sum_{g\in G}|P_\epsilon(g)|^2
+ =\sum_\nu |c_\nu|^2\sum_{g\in G}|M_\nu(g)|^2.
+ \label{pc:eq-random-sign-energy}
+\end{equation}
+At a fixed $g$, if $\sigma_g^2=\sum_\nu|c_\nu M_\nu(g)|^2$, the fourth-moment bound and
+Paley--Zygmund give
+\[
+ \Pr\{|P_\epsilon(g)|\ge\sigma_g/\sqrt2\}\ge\frac1{12}.
+\]
+When $\sigma_g=0$ this is immediate; otherwise it is the usual Paley--Zygmund application to
+$|P_\epsilon(g)|^2$.  This gives an RMS-scale baseline at each fixed point.  It does not
+exclude rare simultaneous small-ball sign assignments, but any improvement must exploit more
+structure than this second-moment calculation records.
+
+\begin{statusbox}{The metric, Haar-phase, second-moment, and random-sign statements above are
+self-contained paper proofs from report 6.  The phase-zero count is a repackaging of
+\lean{ExactCounting}.  The finite positive-kernel bridge, exact weighted Fourier score, and
+integer-phase hit bound are \statuslean{} in \lean{FejerKernelCertificate}; Haar integration
+and Borel--Cantelli are not claimed there.  Neither almost-everywhere extinction nor fixed-mode
+equidistribution is specialized to $\thetaq$.}
+\end{statusbox}
+
 \section{Varying the antecedent, the domain, and the codomain}
 \label{sec:variants}
 
@@ -12344,9 +13813,11 @@ $t\log3\in\pi\Z$.  Write $t\log2=\pi a$ and $t\log3=\pi b$ with $a,b\in\Z$.  If 
 $a\ne0$, and dividing gives $\thetaq=b/a\in\Q$, contradicting irrationality of $\thetaq$.
 \end{proof}
 
-\begin{statusbox}{\statuslean{} --- \lean{im_eq_zero_of_complexTwoBaseIntegralSolution} and
-\lean{twoBaseIntegralSolution_re_of_complex} in \lean{ComplexSolutions}.  Only irrationality of
-$\thetaq$ enters; no transcendence input is used.}
+\begin{statusbox}{\statuslean{} for the integer-codomain version ---
+\lean{im_eq_zero_of_complexTwoBaseIntegralSolution} and
+\lean{twoBaseIntegralSolution_re_of_complex} in \lean{ComplexSolutions}.  The rational-codomain
+realness statement follows by the same paper argument but is not exported there.  Only
+irrationality of $\thetaq$ enters; no transcendence input is used.}
 \end{statusbox}
 
 Geometrically the sets $\{x:2^x\in\Z\}$ and $\{x:3^x\in\Z\}$ lie on horizontal gratings with
@@ -12446,12 +13917,15 @@ pursued; they meet the same wall with worse constants.
 \subsection{Summary}
 
 \begin{center}
-\begin{tabular}{ll}
+\begin{tabular}{p{0.34\textwidth}p{0.58\textwidth}}
 \toprule
 Reading & Status \\
 \midrule
-Exponent in $\C$, principal branch, values in $\Z$ or $\Q$ &
-equivalent to the original, \statuslean \\
+Exponent in $\C$, principal branch, values in $\Z$ & reduces to the real integer formulation,
+\statuslean \\
+Exponent in $\C$, principal branch, values in $\Q$ & reduces to the real rational-output
+formulation at paper level; equivalence to integer AE still needs the denominator-support
+lemma of Proposition~\ref{va:prop-rational-cost} \\
 Values in $\Qbar$, exponent real & two-base: four exponentials; conclusion $\Q$, sharp \\
 Values in $\Qbar$, exponent in $\C$ & splits into real and unit-circle slices \\
 Three bases, values in $\Qbar$, exponent in $\C$ & solution set exactly $\Q$, \statusknown \\
@@ -12474,13 +13948,16 @@ kernel accepts at the current repository state, with no \lean{sorry}, no extra a
 \lean{native_decide}.  \statusnew{} marks a paper proof given in this report that has not yet
 been formalized.  \statusdraft{} marks a statement for which Lean source exists in the
 repository but has not yet been accepted by the kernel.  \statuscomp{} marks a finite
-interval computation with a stated software trust boundary, which is not a kernel
-certificate.  \statusknown{} marks classical or open background.  No entry below asserts the
+software computation with its local trust boundary---for example CPython/\lean{mpmath}
+interval arithmetic or C/MPFR/GMP directed rounding---which is not a kernel certificate.
+\statusknown{} marks classical or open background.  No entry below asserts the
 full Alaoglu--Erd\H{o}s conjecture; it remains open.
 
 No row of the table carries \statusdraft{} any longer.  Every module that earlier revisions
 of this report listed as a pending draft has since been accepted by the kernel and placed on
-the aggregate import surface, so the tag survives only as a definition for future use.
+the aggregate import surface.  The tag still applies to the separate, unassembled $16384$
+finite-certificate attempt described in Section~\ref{sec:finitecheck}, which is not a row of
+this major-statement table and supplies no theorem.
 
 {\small
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.37\textwidth}
@@ -12522,8 +13999,10 @@ $2^x<100$ and $2^x<256\Rightarrow x\in\Z$ & \statuslean &
 $2^x<4096\Rightarrow x\in\Z$\ \ (so $x\ge12$) & \statuslean & \lean{FiniteCheck4096} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp &
 Section~\ref{sec:finitecheck}, Appendix~\ref{app:interval} \\
-No nonintegral candidate with $2^x<2^{26}$ & \statuscomp &
-Section~\ref{sec:finitecheck}, Appendix~\ref{app:scanner} \\
+No nonintegral candidate with $2^x<2^{27}$ & \statuscomp &
+Section~\ref{sec:finite27} \\
+Reported scan through $2^{29}$; canonical logs and replay artifacts absent from the merged
+report directory & \statuscomp & Section~\ref{mc:finite29} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Exact conditional structure}}\\
 Rank of candidate exponent vectors $\le2$ & \statuslean & \lean{MultiplicativeRank} \\
@@ -12578,6 +14057,9 @@ Algebraic output ratios lie on one external $p$-adic line (lattice rank $\le1$) 
 \statuslean & \lean{AlgebraicOutputLocus} \\
 Common algebraic-output exponent plane: $y\in\Q+\Q x$ & \statuslean &
 \lean{AlgebraicExponentLocus} \\
+Exact rational-function locus $P/Q\in\Q+\Q x$ iff $P=(q+rX)Q$; canonical
+$\Nzero$-cone comparison & \statuslean &
+{\scriptsize\lean{RationalFunctionAlgebraicLocus}} \\
 General two-base saturated spectrum $\GammaSat(a,b)=\{a^rb^s:r,s\in\Q\}$ & \statusnew &
 algebraic spectrum (this report) \\
 Strong spectrum: $x\log\alpha\notin\LL$ for $\alpha\in\Apos\setminus\GammaSat$ &
@@ -12600,6 +14082,9 @@ Conjecture~\ref{conj:AE} $\iff$ no squared-monomial algebraic coordinate face &
 \statuslean & \lean{AlgebraicOutputLocus} \\
 Conjecture~\ref{conj:AE} $\iff$ $2^y,3^y\in\Qbar$ at every natural power $y=x^n$ &
 \statuslean & \lean{AlgebraicExponentLocus} \\
+Conjecture~\ref{conj:AE} $\iff$ both outputs are algebraic after evaluation of any fixed
+$P\in\Q[X]$ of degree at least two & \statuslean &
+{\scriptsize\lean{RationalFunctionAlgebraicLocus}} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Canonical radical: valuation, degree, and hull}}\\
 Odd-prime valuation gcd; outer-power exponents of the canonical radical & \statuslean &
@@ -12647,6 +14132,12 @@ Base-$2$ cubic-tower equivalence: Conjecture~\ref{conj:AE} $\iff$
 $2^{x^2},2^{x^3}\in\Qbar$ & \statuslean & \lean{TowerRigidity} \\
 Base-$2$ depth-two dichotomy: $2^{x^2}\in\Qbar$ iff $2^x$ is $3$-smooth, and then
 $2^{x^2}\in\N$ while $2^{x^3}$ is transcendental & \statuslean & \lean{TowerRigidity} \\
+Exact transition $2^y,2^{xy}\in\Qbar$ iff $y\in\Q+\Q\thetaq$; at most one positive depth
+starts an adjacent algebraic pair; two fixed distinct depths give an AE equivalence & \statuslean &
+\lean{AlgebraicTowerTransition} \\
+Exact base-$3$ transition locus; no positive base-$2$/base-$3$ pair can coexist; across both
+principal towers at most one positive transition depth, with higher rational-unit directions
+excluded in the dependent-output branch & \statuslean & \lean{CrossBaseTowerTransition} \\
 Symmetric tower constants: at least one of $\log E_3$, $\log E_2$ lies outside $\LL$ &
 \statusnew & symmetric tower constants (this report) \\
 Exact conditional classification of $E_3=3^{\thetaq}$ and $E_2=2^{1/\thetaq}$ &
@@ -12686,12 +14177,44 @@ Exact radical degree and binomial irreducibility & \statuslean & \lean{RadicalDe
 Candidate-form localization equivalence & \statuslean & \lean{Localization} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{New results of this report}}\\
+Restricted logarithm-matrix coefficient principle $\Longleftrightarrow$
+Conjecture~\ref{conj:AE}; rational anisotropy of a counterexample & \statuslean &
+\lean{RestrictedMatrixCoefficient}; Section~\ref{mc:restricted} \\
+Sparse irrational-power-curve zero bound, nonzero integral evaluation determinant, and
+the exact $R+1$-term positive-node interpolant & \statuslean &
+\lean{SparsePowerCurve}; Section~\ref{mc:sparse} \\
+Exact rational rectangular orbit-collision count, irrational grid cardinality, and the
+one-monomial-saving rational-orbit square-grid certificate & \statuslean &
+\lean{RationalOrbitGrid}; Section~\ref{fc:support-spectrum} \\
+Formal prime-symbol determinant and its specialization; formal vanishing exactly in the
+integral branch; sparse Structural Rank equivalence & \statuslean &
+\lean{FormalPrimeDeterminant}; Section~\ref{mc:formal-prime} \\
+BK degree threshold $R-1$ and the factor-four comparison on the $2N$ grid & \statusnew &
+Section~\ref{mc:bk} \\
+Boundary-dilation defect factorization, unique degree-$K-1$ residuals, and the degree-$2K-2$
+commutator & \statuslean & \lean{BoundaryDilationDefect}; Section~\ref{mc:boundary} \\
+Unbounded $o((\log H)^2)$ and synchronized compact $o(\log H)$ point-counting targets &
+\statusnew & Section~\ref{mc:counting-monodromy} \\
+Transcendence of $e^{2\pi iq\beta}$ for $q\in\Q^\times$, deduced from classical six
+exponentials & \statusnew & Section~\ref{mc:counting-monodromy}; classical input
+\statusknown \\
 Exponential-polynomial zero count; generalized Vandermonde nonvanishing at ordered
 nodes & \statuslean & \lean{ExponentialPolynomialZeros} \\
-Generalized Vandermonde positivity (ordered chamber) & \statusnew &
-Section~\ref{sec:arbnode}, Appendix~\ref{app:gvproof} \\
+Generalized Vandermonde positivity (ordered chamber) & \statuslean &
+\lean{OrderedChamberPositivity} \\
 Arbitrary-node determinant integrality and divided-difference repulsion bound &
 \statuslean & \lean{ArbitraryNodeDeterminant} \\
+Universal nonnegative-node superfactorial interpolation divisor, exact consecutive-node witness, and
+strengthened candidate repulsion/packing & \statuslean &
+\lean{SuperfactorialDeterminant}; final repulsion endpoints retain the named
+mean-value hypothesis \\
+Normalized geometric signed-progression determinant, primitive quotient coprimality, and exact
+denominator-tax decomposition with bounded remainder & \statuslean &
+\lean{SignedProgressionDeterminant}; Section~\ref{fc:signed-progressions} \\
+Normalized Fej\'er kernel, exact finite weighted Fourier score, and exact integer-phase hit
+bound & \statuslean & \lean{FejerKernelCertificate}; Section~\ref{pc:fejer} \\
+Uniform metric near-integrality and Haar random-phase extinction & \statusnew &
+Section~\ref{pc:metric-phase}; finite Fej\'er bridge separately kernel-checked \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -12715,6 +14238,29 @@ Min-plus ceiling: term-wise $p$-adic content never exceeds a correct archimedean
 Exact termwise-divisor ceilings ($4/5$, $7/10$, $3/10$, $\pi/4$, $0.8710$) & \statusnew &
 Section~\ref{sec:minplus} \\
 A unique tropical minimizer forbids cancellation & \statuslean & \lean{MinPlusCeiling} \\
+Tropical quotient factorization, all-depth divisibility, and tied-fiber first-layer
+criterion (no cancellation lower bound) & \statuslean & \lean{TropicalInitialForm} \\
+Block-preserving tied sums factor into block determinants and consecutive-power
+Vandermondes; Beatty minimizers, floor gap, quotient divisibility, and exact expansion &
+\statuslean & \lean{BlockFiberFactorization}, \lean{TropicalBlockApplication},
+\lean{BeattyTropicalFiber} \\
+Exact all-layer row-partition expansion and cutoff-$K$ support truncation
+(no bound on surviving cancellation) & \statuslean & \lean{RowBlockLaplaceExpansion} \\
+Prefix-crossing lower bound and stars-and-bars count of row partitions below a Beatty
+excess cutoff (no valuation/cancellation bound) & \statuslean &
+\lean{AssignmentExcessGeometry} \\
+Exact Vandermonde collision energy, elementary power-difference valuation, and finite
+variable-block cube budget & \statuslean & \lean{BlockVandermondeValuationBudget} \\
+Whole-Vandermonde dyadic and triadic unit fixed divisors under monic column changes
+(no bound on the residual cascade) & \statuslean & \lean{AllLayerUnitBasis},
+\lean{UnitOrderingGain} \\
+Uniform scaled-block minor divisors and additive whole-determinant gain
+$p^{\tau+U}\mid\det$ (no residual-cancellation bound) & \statuslean &
+\lean{RowBlockUnitDivisibility} \\
+Column-permuted raw mixed-matrix bridge and additive dyadic/triadic divisors under explicit
+finite fiber certificates & \statuslean & \lean{MixedDeterminantUnitBridge} \\
+Exact synthetic cascade computations, including counterexamples to first-layer equality and
+minimum-effective-layer equality & \statusexactcomp & Section~\ref{sec:cascade-experiments} \\
 Compact synchronized-orbit reformulation & \statuslean & \lean{CompactOrbit} \\
 Block-growth reformulations (bounded, $o(T)$, $\liminf$, $\equiv1$) & \statuslean &
 \lean{BlockGrowthReformulations} \\
@@ -12822,6 +14368,9 @@ equivalences \\
 locus forces integrality; the resulting equivalence \\
 \lean{.../AlgebraicExponentLocus} & the common algebraic-output exponent plane
 $\Q+\Q x$, and its natural-power equivalence \\
+\lean{.../RationalFunctionAlgebraicLocus} & exact rational-function affine identity at a
+counterexample; nonaffine rational-function and degree-$\ge2$ polynomial detectors; canonical
+rational affine plane versus nonnegative integral cone \\
 \midrule
 \multicolumn{2}{@{}l}{\emph{Canonical radical arithmetic}}\\
 \lean{.../CanonicalRadicalValuation} & odd-prime valuation gcd; divisors of the gcd are
@@ -12852,8 +14401,26 @@ distinct from four exponentials, in both the integer-output and rational-output 
 \multicolumn{2}{@{}l}{\emph{Determinant hierarchy and reformulations}}\\
 \lean{.../ArbitraryNodeDeterminant} & interpolation determinant at arbitrary ordered nodes;
 integrality and the divided-difference repulsion bound \\
+\lean{.../SuperfactorialDeterminant} & universal nonnegative-node superfactorial divisor and exact
+consecutive-node witness; strengthened candidate determinant, repulsion, and packing bounds \\
+\lean{.../SignedProgressionDeterminant} & geometric Vandermonde factorization; primitive
+invariant quotient and coprimality; exact finite logarithmic denominator-tax identity \\
+\lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
+score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
 and nonvanishing of the generalized Vandermonde determinant \\
+\lean{.../SparsePowerCurve} & sparse zero bound on an irrational power curve; nonzero
+integral evaluation determinant; exact-support positive-node interpolant \\
+\lean{.../RationalOrbitGrid} & exact rational rectangle collision count; irrational grid
+cardinality and sparse lower bound; canonical one-monomial-saving rational-orbit certificate \\
+\lean{.../RestrictedMatrixCoefficient} & concrete logarithm matrix, rank-one coefficient
+factorization, rational anisotropy, and exact equivalence with the conjecture \\
+\lean{.../FormalPrimeDeterminant} & multivariate prime-symbol determinant, specialization at
+prime logarithms, exact formal-zero classification, and Structural Rank equivalence \\
+\lean{.../BoundaryDilationDefect} & rectangular node products, dilation-defect divisibility,
+unique square-grid residuals, and the degree-$2K-2$ boundary commutator \\
+\lean{.../OrderedChamberPositivity} & positivity of generalized real-power Vandermonde
+determinants and of the semigroup determinant on ordered chambers \\
 \lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity, and
 integrality of $m^{a+b\thetaq}$ \\
 \lean{.../SemigroupDeterminant} & integrality half of the semigroup generalized-Vandermonde
@@ -12871,6 +14438,33 @@ interpolation determinant, and the repulsion and packing bounds conditional on t
 mean-value hypothesis \\
 \lean{.../SemigroupGapBound} & Leibniz determinant bound, semigroup span inequality, and the
 explicit dyadic $10^4(\log X)^2$ block bound conditional on the named Newton factorization \\
+\lean{.../TropicalInitialForm} & common-power factorization of a Leibniz determinant;
+all-depth quotient divisibility and the modulo-$p$ tied-fiber criterion, without a
+cancellation lower bound \\
+\lean{.../BlockFiberFactorization} & block-preserving signed Leibniz sums as products of
+block determinants, including variable-size and consecutive-power Vandermonde forms \\
+\lean{.../TropicalBlockApplication} & first-extra-prime divisibility iff the product of
+block determinants, or its consecutive-power Vandermonde specialization, vanishes modulo
+$p$; application hypotheses remain explicit \\
+\lean{.../BeattyTropicalFiber} & exact repeated-weight minimizers for rank-one assignment
+costs; Beatty floor gap; normalized quotient divisibility; exact block-determinant expansion \\
+\lean{.../RowBlockLaplaceExpansion} & exact grouping of all assignment layers by row
+partitions; normalized and cutoff-$K$ expansions into signed products of square unit minors \\
+\lean{.../AssignmentExcessGeometry} & exact prefix-crossing energy; Beatty excess lower
+bound; stars-and-bars binomial count for row partitions below any fixed cutoff \\
+\lean{.../BlockVandermondeValuationBudget} & exact collision-depth formula for finite
+Vandermondes; elementary difference-of-powers valuation and variable-block cubic budgets \\
+\lean{.../AllLayerUnitBasis} & complete-determinant divisors from monic unitriangular or
+determinant-one column changes; strengthened positive dyadic-odd and triadic-unit $p$-ordering weights, without a residual-cascade
+bound \\
+\lean{.../UnitOrderingGain} & exact unit block-weight identities and finite square/cube
+aggregate bounds; no triangular-lattice asymptotic or residual-cascade estimate \\
+\lean{.../RowBlockUnitDivisibility} & row-scaled consecutive-power matrices; a common
+$p$-ordering divisor for every assignment-minor product; determinant-one fiberwise basis
+change; additive divisor $p^{\tau+U}$ for the full rank-one power determinant \\
+\lean{.../MixedDeterminantUnitBridge} & finite sorted-box mixed-exponent prefix; exact
+column-permuted identification with the rank-one scaled model; dyadic and triadic additive
+divisors under explicit block-fiber certificates \\
 \midrule
 \multicolumn{2}{@{}l}{\emph{Second iterates, towers, and the candidate lattice}}\\
 \lean{.../CandidateLattice} & coordinatewise gcd and lcm for $2^s w^t$; unconditional closure
@@ -12881,6 +14475,13 @@ rational linear relation among $1,\thetaq,x,x\thetaq$ and to the M\"obius orbit 
 same-sign vectors, rank at most one, smooth coordinate cases, and solution-independence \\
 \lean{.../TowerRigidity} & base-two second iterate as a natural number; the depth-two
 algebraic dichotomy; the depth-three transcendence and the cubic-tower equivalence \\
+\lean{.../AlgebraicTowerTransition} & exact transition locus
+$2^y,2^{xy}\in\Qbar\iff y\in\Q+\Q\thetaq$ under a counterexample; global uniqueness of a
+positive transition depth, the all-depth three-level exclusion, and the fixed-distinct-depth
+AE equivalence \\
+\lean{.../CrossBaseTowerTransition} & exact scaled base-three transition locus; cross-base
+mutual exclusion, combined uniqueness across both principal towers, and higher smooth-direction
+exclusions in the dependent-output branch \\
 \lean{.../SymmetricTowerConstants} & $E_3=3^{\thetaq}$ and $E_2=2^{1/\thetaq}$, their
 conditional rational powers, and their mutual exclusion \\
 \lean{.../PrimeLogSpaceOperator} & the $\thetaq$-pullback of the prime-logarithm span is
@@ -12889,17 +14490,18 @@ exactly $\Q\log2$ if and only if the rational-output conjecture holds \\
 incommensurability of the two argument gratings \\
 \lean{.../MinPlusCeiling} & the $\{2,3\}$-part of an integer divides it, hence term-wise
 $p$-adic content can never exceed a correct archimedean bound \\
-\lean{.../AuditNewModules} & \texttt{\#print axioms} audit of the headline theorems of the
-recent formalization rounds \\
+\lean{.../AuditNewModules} & \texttt{\#print axioms} audit of the headline algebraic-locus,
+rational-function, tower, radical-degree, mixed-output, determinant, tropical, and block-fiber
+theorems \\
 \bottomrule
 \end{longtable}
 }
 
-\subsection{Drafted modules not yet accepted by the kernel}
+\subsection{Former theorem drafts and the remaining finite-certificate draft}
 \label{st:no-drafts}
 
-There are none.  Earlier revisions of this report listed nine modules whose Lean sources
-existed in the repository but had not been accepted:
+No theorem module in the nine-item list from earlier revisions remains pending.  Those
+revisions listed the following Lean sources as not yet accepted:
 \begin{center}
 \lean{ArbitraryNodeDeterminant}, \lean{ExponentialPolynomialZeros},
 \lean{MixedExponentSemigroup},\\
@@ -12910,11 +14512,36 @@ All nine have since been accepted by the kernel, placed on the aggregate import 
 moved into the table above.  Statements that those modules actually contain are therefore
 \statuslean{}.
 
+Separately, the attempted $2^x<16384$ finite-certificate assembly described in
+Section~\ref{sec:finitecheck} remains a genuine \statusdraft{}: its individual arithmetic
+rows replay, but its covering theorem does not compile end to end.  It is not on the aggregate
+import surface and raises no kernel-verified bound.  The accepted finite frontier remains
+$2^x<4096$.
+
 A second round has since added eight further modules: \lean{CandidateLattice},
 \lean{KernelDichotomy}, \lean{SecondIterateKernel}, \lean{TowerRigidity},
 \lean{SymmetricTowerConstants}, \lean{PrimeLogSpaceOperator}, \lean{ArbitraryNodeRepulsion}
 and \lean{SemigroupGapBound}, all on the aggregate import surface and all audited with
 \texttt{\#print axioms}.
+
+The current wave adds the following modules:
+\begin{center}
+\lean{AlgebraicExponentLocus}, \lean{AlgebraicOutputLocus},\\
+\lean{RationalFunctionAlgebraicLocus}, \lean{AlgebraicTowerTransition},\\
+\lean{CrossBaseTowerTransition}, \lean{BlockVandermondeValuationBudget},
+\lean{AllLayerUnitBasis}, \lean{UnitOrderingGain},\\
+\lean{CanonicalRadicalMixedOutput}, \lean{SimultaneousRadicalDegrees},\\
+\lean{TropicalInitialForm}, \lean{BlockFiberFactorization},
+\lean{TropicalBlockApplication}, \lean{BeattyTropicalFiber},\\
+\lean{RowBlockLaplaceExpansion}, \lean{AssignmentExcessGeometry},
+\lean{RowBlockUnitDivisibility}, \lean{MixedDeterminantUnitBridge},\\
+\lean{RestrictedMatrixCoefficient}, \lean{FormalPrimeDeterminant},
+\lean{SparsePowerCurve}, \lean{BoundaryDilationDefect},
+\lean{SuperfactorialDeterminant}, \lean{RationalOrbitGrid},
+\lean{SignedProgressionDeterminant}, \lean{FejerKernelCertificate}.
+\end{center}
+Their headline APIs are likewise on the aggregate surface
+and covered by the axiom-audit module.
 
 Two cautions survive both promotions, and the status matrix reflects them.  First, a module
 being accepted certifies exactly the theorems it states.  The analytic halves of the repulsion
@@ -12922,10 +14549,12 @@ and gap theorems are now formal, but each carries its missing analytic input as 
 named \emph{hypothesis} --- \lean{RpowDividedDifferenceMeanValue} and
 \lean{NewtonFactorization} --- rather than as an axiom, so those two conclusions are
 conditional in a way the reader can see in the theorem statement; everything upstream and
-downstream of them is unconditional.  \lean{ExponentialPolynomialZeros} still delivers
-nonvanishing rather than the ordered-chamber positivity proved on paper in
-Appendix~\ref{app:gvproof}.  Second, the finite scans through $2^{20}$ and $2^{26}$ are
-\statuscomp{}, not kernel certificates; the kernel-verified exponent bound is still
+downstream of them is unconditional.  \lean{ExponentialPolynomialZeros} supplies the
+nonvanishing engine, while the separate accepted module \lean{OrderedChamberPositivity}
+supplies the ordered-chamber sign proved on paper in Appendix~\ref{app:gvproof}.  Second, the
+interval scan through $2^{20}$ and the combined
+directed-rounding scan through $2^{27}$ are \statuscomp{}, not kernel certificates; the
+kernel-verified exponent bound is still
 $x\ge12$ from \lean{FiniteCheck4096}.
 
 Each further headline theorem should be added to the aggregate import surface and checked
@@ -13002,9 +14631,9 @@ ordinary Vandermonde.  As $\varepsilon\downarrow0$, the quotient tends to
 $W_r(x)/\prod_{k=0}^{r}k!>0$.  Hence the original determinant is positive everywhere in the
 ordered chamber.
 
-\begin{statusbox}{\statusnew{} --- paper proof in this report.  The zero-count engine is
-drafted in \lean{ExponentialPolynomialZeros} but has not been accepted by the kernel
-(\statusdraft).}
+\begin{statusbox}{\statusnew{} and \statuslean{} --- paper proof in this report;
+kernel-accepted zero-count/nonvanishing in \lean{ExponentialPolynomialZeros} and the positive
+ordered-chamber determinant in \lean{OrderedChamberPositivity}.}
 \end{statusbox}
 
 \section{Numerical constants}
@@ -14966,6 +16595,20 @@ M.~Laurent, M.~Mignotte, and Yu.~Nesterenko,
 S.~Lang,
 \newblock \emph{Introduction to Transcendental Numbers},
 \newblock Addison--Wesley, 1966.
+
+\bibitem{DasguptaKakde2026}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{Ranks of matrices of logarithms of algebraic numbers II: The Matrix
+Coefficient Conjecture},
+\newblock Advances in Mathematics \textbf{487} (2026), Article 110753.
+\newblock DOI:
+\href{https://doi.org/10.1016/j.aim.2025.110753}{10.1016/j.aim.2025.110753};
+arXiv:2408.08178.
+
+\bibitem{Massold2025}
+H.~Massold,
+\newblock \emph{Transcendence degrees of fields generated by exponentials of products},
+\newblock arXiv:2506.01123v1, June 2025.
 
 \end{thebibliography}
 \end{document}
