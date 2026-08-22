@@ -69,6 +69,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.OrbitHeightEntropy
 import ExponentialIdentities.TwoBaseIntegerExponent.Report25ProjectiveDefect
 import ExponentialIdentities.TwoBaseIntegerExponent.Report26CarryPath
 import ExponentialIdentities.TwoBaseIntegerExponent.DfiniteExponentCore
+import ExponentialIdentities.TwoBaseIntegerExponent.LambertCocycleFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
 import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
@@ -484,6 +485,16 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms Report26CarryPath.word_eq_of_endpoint_eq_of_suffixVertices_eq
 #print axioms DfiniteExponentCore.coeff_exponentRelationPolynomial_order
 #print axioms DfiniteExponentCore.exponentRelationPolynomial_ne_zero
+
+-- Universal formal Lambert cocycle (post-report-27 closure audit)
+#print axioms lambertCoeff_native_dilation
+#print axioms mixedDoubleDilation_lambertCoeff_universal
+#print axioms lambertRationalCocycle_eq
+#print axioms seriesDilationDifference_formalLambertSeries
+#print axioms secondDilation_lambertRationalCocycle_commute
+#print axioms secondDilation_lambertRationalCocycle_eq
+#print axioms mixedDoubleDilation_formalLambertSeries_universal
+#print axioms mixedDoubleDilation_two_three_universal
 
 -- Exact rank-K boundary displacement for rectangular evaluation matrices
 #print axioms firstGridShiftMatrix_mul

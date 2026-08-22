@@ -244,10 +244,13 @@ four-exponentials barrier intact.  Reports 21--27 add independent moment, rank-g
 unimodular-gap, orbit-entropy, Pad\'e-defect, carry-language, and canonical-product audits.
 Their formal cores certify exact denominator, matrix, collision, entropy, defect,
 carry-word, and D-finite identities; their strongest paper endpoints still require a new
-transcendence, height, uniformity, or interpolation-regularity bridge.
+transcendence, height, uniformity, or interpolation-regularity bridge.  A subsequent
+closure audit constructs the canonical critical-type Stieltjes interpolant, sharpens the
+canonical-product threshold through its quadratic term, and proves exact Lambert, Hankel,
+fixed-prime-support, and pure-denominator no-go theorems.
 \end{minipage}
 \vfill
-{\large August 21, 2026\par}
+{\large August 22, 2026\par}
 \end{titlepage}
 
 \pagenumbering{roman}
@@ -348,6 +351,12 @@ distinguished-descendant carry languages, exact multinomial fibers, and their fi
 unrestricted pressure laws.  Report 27 identifies the sharp cubic logarithmic type of the
 $3$-smooth canonical product, proves subcritical interpolation rigidity, and isolates an
 exact critical boundary cocycle.
+The post-report closure audit then determines the canonical entire interpolant selected by
+finite Lagrange interpolation, its exact second-order critical growth, and the corresponding
+positive Stieltjes denominator target.  It also shows that the natural Lambert/Hadamard,
+fixed-$S$, reciprocal-Hankel, and pure-$2/3$-denominator amplifications fail at explicitly
+quantified scales, while leaving one output-specific primitive-denominator cancellation as a
+sharp finite arithmetic target.
 Fourth, it
 quantifies the remaining gap: the determinant hierarchy misses the conditional population by
 exactly one factor of $\log X$.
@@ -15729,7 +15738,14 @@ At a nonintegral real zero with $b^x=B\in\N$ one has
  \label{r16:eq-entire-derivative}
 \end{equation}
 These paper identities remove all known integral solutions exactly, but they do not create a
-two-dimensional common zero lattice; a common Barnes divisor would therefore be spurious.
+common nonreal phase lattice: the vertical replicas for bases $2$ and $3$ remain
+incommensurable.  On the real axis, however, a least nonintegral solution $\beta$ would
+generate the genuine rank-two common-zero semigroup
+$\{n+k\beta:n\in\Nzero,\ k\in\N\}$ from
+Section~\ref{r9:common-divisor}, and the associated Barnes product is an exact common
+divisor.  Its anisotropic quadratic-logarithmic indicator is compensated by the two
+residual quotients, which remain of infinite order; the divisor therefore supplies no
+contradiction by itself.
 
 Gauss multiplication, Hurwitz distribution, and the Cartier identity for
 $F_x(z)=\operatorname{Li}_{-x}(z)$ all yield the same multiplier $q^x$.  Under a
@@ -17504,6 +17520,397 @@ paper results.  Overlapping monodromy material is omitted, and neither critical-
 nor the cocycle currently supplies the missing interpolant regularity.}
 \end{statusbox}
 
+\section{Post-report closure audit: critical interpolation and exact no-go barriers}
+\label{sec:post27}
+
+This section records the direct closure attacks carried out after the reconciliation of the
+twenty-seven independent reports.  It is not a twenty-eighth source report.  The strongest
+positive result is an explicit entire interpolant at the exact critical type, together with a
+strict second-order criterion that would force it to be a monomial.  The same audit closes
+several tempting shortcuts negatively: low Hermite jets, Lambert cocycles, reciprocal Hankel
+rank, fixed-prime denominator support, and pure-$2/3$ convergent denominators all stop at
+quantified barriers.  None of the statements below is advertised as a proof of the
+Alaoglu--Erd\H{o}s conjecture.
+
+\subsection{The canonical critical interpolant and the quadratic threshold}
+\label{post27:critical-interpolant}
+
+Put
+\[
+ \alpha=\log2,\qquad \gamma=\log3,\qquad
+ \tau=\frac1{6\alpha\gamma},\qquad
+ c_E=\frac1{4\alpha}+\frac1{4\gamma},\qquad
+ \delta_{\mathrm{quad}}=\frac1{4\alpha}-\frac1{4\gamma}>0.
+\]
+For the canonical product $E$ from~\eqref{r27:eq-canonical-product}, irrational-rotation
+equidistribution sharpens the lattice count to
+\begin{equation}
+ \#\{(a,b)\in\Nzero^2:a\alpha+b\gamma\le T\}
+ =\frac{T^2}{2\alpha\gamma}
+  +\left(\frac1{2\alpha}+\frac1{2\gamma}\right)T+o(T).
+ \label{post27:eq-refined-count}
+\end{equation}
+Integrating this formula and comparing
+$\log(1+e^u)$ with $u_+$ in unit-width boundary shells gives
+\begin{equation}
+ \boxed{\log M_E(e^T)=\tau T^3+c_ET^2+o(T^2).}
+ \label{post27:eq-refined-product}
+\end{equation}
+The same Jensen argument as in Section~\ref{r27:canonical-product} now says that every
+nonzero entire function vanishing on all $2^a3^b$ has maximum-modulus logarithm at least the
+right side of~\eqref{post27:eq-refined-product}, up to $o(T^2)$.
+
+There is a canonical entire function attaining this refined scale for \emph{every}
+nonintegral $x>0$.  On the slit plane use the principal branch and define
+\begin{equation}
+ w_x(t)=\frac{t^x}{E(-t)},\qquad
+ J_x(z)=\int_0^\infty\frac{w_x(t)}{t+z}\,dt,\qquad
+ H_x(z)=z^x+\frac{\sin\pi x}{\pi}E(z)J_x(z).
+ \label{post27:eq-stieltjes-interpolant}
+\end{equation}
+All moments of $w_x$ are finite.  Across the negative axis the Plemelj jump of $J_x$ is
+$-2\pi i r^x/E(-r)$, exactly cancelling the jump of $z^x$; the remaining singularity at
+zero is removable.  Hence $H_x$ is entire and
+\begin{equation}
+ H_x(2^a3^b)=(2^a3^b)^x\qquad(a,b\ge0).
+ \label{post27:eq-exact-interpolation}
+\end{equation}
+Moreover, polynomial interpolation on any nested finite exhaustion of the smooth nodes
+converges locally uniformly to $H_x$.  To see convergence across the cut as well, order the
+nodes as $s_0,s_1,\ldots$, put $F_j=\{s_0,\ldots,s_j\}$, and write $P_j$ for the
+interpolating polynomial.  Its Newton increment is
+\[
+ P_j(z)-P_{j-1}(z)=[F_j](t^x)\prod_{i<j}(z-s_i).
+\]
+After discarding finitely many terms, choose $j_0>x$.  The positivity formula below gives,
+for $j\ge j_0$ and uniformly on $|z|\le R$,
+\[
+ |P_j(z)-P_{j-1}(z)|
+ \le \frac{C_{F_j}E(-R)}{s_j}
+ \le \frac{C_{F_{j_0}}E(-R)}{s_j}.
+\]
+Since $\sum_j s_j^{-1}=\sum_{a,b\ge0}2^{-a}3^{-b}<\infty$, the Weierstrass test gives
+local uniform convergence to an entire function.  Off the negative cut, the finite
+keyhole-contour remainder and dominated convergence identify that limit with $H_x$.
+
+The Cauchy transform in~\eqref{post27:eq-stieltjes-interpolant} is bounded in the two
+half-planes, while on the negative ray
+\[
+ R\operatorname{PV}\!\int_0^\infty\frac{w_x(t)}{t-R}\,dt
+ \longrightarrow-\mu_0,\qquad
+ \mu_0:=\int_0^\infty w_x(t)\,dt>0.
+\]
+Thus
+\begin{equation}
+ |H_x(-R)|\sim\frac{|\sin\pi x|\mu_0}{\pi R}E(-R),
+ \qquad
+ \log M_{H_x}(e^T)=\tau T^3+c_ET^2+o(T^2).
+ \label{post27:eq-interpolant-type}
+\end{equation}
+The positive Stieltjes moment is the first exact obstruction: it disappears precisely when
+$\sin\pi x=0$.  Cancelling finitely many moments only replaces $E(z)/z$ by $E(z)/z^k$ and
+does not change the quadratic coefficient.
+
+For an entire interpolant $H$, set
+\[
+ c_2(H):=\limsup_{T\to\infty}
+ \frac{\log M_H(e^T)-\tau T^3}{T^2}.
+\]
+The defect $D_2(z)=H(2z)-MH(z)$ vanishes at all smooth nodes.  Dilation raises the quadratic
+coefficient by $3\alpha\tau=1/(2\gamma)$, whereas refined Jensen requires $c_E$ if
+$D_2\ne0$.  Therefore
+\begin{equation}
+ \boxed{c_2(H)<\delta_{\mathrm{quad}}\quad\Longrightarrow\quad
+ H(z)=z^n,\quad M=2^n,\quad A=3^n.}
+ \label{post27:eq-quadratic-rigidity}
+\end{equation}
+This is strictly sharper than merely assuming that the boundary quotients are polynomials.
+Indeed, if $D_2=EU$ and $D_3=EV$, and
+\[
+ u=\limsup_{r\to\infty}\frac{T(r,U)}{(\log r)^2},\qquad
+ v=\limsup_{r\to\infty}\frac{T(r,V)}{(\log r)^2},
+\]
+then the cocycle~\eqref{r27:eq-defect-cocycle} and the global Nevanlinna inequalities give
+\begin{equation}
+ U,V\ne(0,0)\quad\Longrightarrow\quad u+v\ge\delta_{\mathrm{quad}}.
+ \label{post27:eq-nevanlinna-gap}
+\end{equation}
+There are no exceptional radii in this estimate.  If $U=0$, zeros of $B_2$ propagate under
+halving to zero and force $V=0$.  Thus $u+v<\delta_{\mathrm{quad}}$ is another exact sufficient condition.
+The explicit $H_x$ proves that ordinary residue interpolation lands on the wrong side of the
+gap: $c_2(H_x)=c_E>\delta_{\mathrm{quad}}$.
+
+\subsection{The positive Stieltjes denominator target}
+\label{post27:denominator-target}
+
+Let $F$ be a finite set of $N+1$ distinct positive nodes with $N>x$.  A keyhole contour gives
+the exact divided difference
+\begin{equation}
+ [F](t^x)=(-1)^{N+1}\frac{\sin\pi x}{\pi}
+ \int_0^\infty\frac{t^x\,dt}{\prod_{s\in F}(t+s)}.
+ \label{post27:eq-stieltjes-divdiff}
+\end{equation}
+Consequently, along every nested exhaustion of the smooth semigroup,
+\begin{equation}
+ C_F:=\left(\prod_{s\in F}s\right)|[F](t^x)|
+ \searrow
+ C_x:=\frac{|\sin\pi x|}{\pi}\int_0^\infty\frac{t^x}{E(-t)}\,dt>0.
+ \label{post27:eq-positive-residue}
+\end{equation}
+Under a counterexample all node values are integers, so $[F](t^x)$ is rational.  If
+$\mathfrak d_F$ is its reduced positive denominator, nonvanishing and
+\eqref{post27:eq-positive-residue} imply
+\begin{equation}
+ \boxed{
+ \liminf_{F\nearrow\{2^a3^b\}}
+ \frac{\mathfrak d_F}{\prod_{s\in F}s}\ge\frac1{C_x}>0.}
+ \label{post27:eq-denominator-lower}
+\end{equation}
+Hence a single semigroup exhaustion satisfying
+$\mathfrak d_F=o(\prod_{s\in F}s)$ would prove the conjecture.  This is a finite arithmetic
+target with no unspecified analytic constant in its leading scale.
+
+Node-only denominator theory cannot prove that saving.  For the size triangle
+\[
+ F_T=\{2^a3^b:a\alpha+b\gamma\le T\},\qquad
+ P_T=\prod_{s\in F_T}s,
+\]
+put
+\[
+ D_s=\prod_{t\in F_T\setminus\{s\}}(s-t),\qquad
+ L_T=\operatorname{lcm}_{s\in F_T}|D_s|.
+\]
+The symbolic top divided difference has denominator exactly $L_T$.  Already the endpoint
+$s=1$ gives, after removing the $2$- and $3$-parts,
+\begin{equation}
+ \log (L_T)_{(6)}\ge\log P_T-O(T)
+ \ge\frac{T^3}{3\log2\log3}-O(T^2).
+ \label{post27:eq-away-capacity}
+\end{equation}
+At the structural primes, the exact endpoint valuation comparison gives
+\begin{equation}
+ \log (L_T)_{\{2,3\}}=\log P_T-2T+O(1).
+ \label{post27:eq-smooth-capacity}
+\end{equation}
+Thus both the away-prime and smooth-prime capacities can individually pay the leading
+Stieltjes requirement.  Any proof of the needed $o(P_T)$ upper bound must exploit primitive
+cancellation for the \emph{one fixed} rank-one value table $M^aA^b$; no Vandermonde,
+$p$-ordering, or node-only Smith theorem can supply it.
+
+Finally, $E\in\Q[[z]]$: its reciprocal-zero power sums are
+\[
+ \sum_{a,b\ge0}2^{-ak}3^{-bk}
+ =\frac1{(1-2^{-k})(1-3^{-k})}\in\Q,
+\]
+and Newton identities make every Taylor coefficient rational.  Therefore rational Taylor
+coefficients and any finite collection of rational Hermite normalizations cannot select the
+critical interpolant: adding $qz^LP(z)E(z)$ preserves all node values and any prescribed
+finite jet while retaining critical growth.
+
+\subsection{Common-zero Hermite jets stop at order two}
+\label{post27:hermite}
+
+The common-zero route admits a striking but non-closing normalization.  For $a>1$ put
+\begin{equation}
+ F_a(z)=\frac{a^{-z/2}\sin(\pi a^z)}{\pi\log a}.
+ \label{post27:eq-half-density}
+\end{equation}
+At a positive zero $\lambda$ with $m=a^\lambda\in\N$ one has
+\begin{equation}
+ F_a'(\lambda)=(-1)^m\sqrt m\in\Qbar,
+ \qquad F_a''(\lambda)=0.
+ \label{post27:eq-algebraic-jet}
+\end{equation}
+Hence at a common zero, with $u=2^\lambda$ and $v=3^\lambda$, the removable quotient
+$H=F_2/F_3$ satisfies
+\[
+ H(\lambda)=(-1)^{u-v}\sqrt{u/v}\in\Qbar,
+ \qquad H'(\lambda)=0.
+\]
+This algebraic first jet adds no new logarithmic direction because $H(\lambda)^2=u/v$.
+
+The next two normalized jets make the ceiling exact.  With $L=\log a$,
+\begin{equation}
+ r_3:=\frac{F_a'''(\lambda)}{F_a'(\lambda)}
+ =L^2\left(\frac14-\pi^2m^2\right),\qquad
+ r_4:=\frac{F_a''''(\lambda)}{F_a'(\lambda)}=-4\pi^2L^3m^2,
+ \label{post27:eq-higher-jets}
+\end{equation}
+and therefore
+\begin{equation}
+ L^3-4r_3L+r_4=0.
+ \label{post27:eq-jet-cubic}
+\end{equation}
+The two higher jets cannot both be algebraic: the cubic would first make $L$ algebraic, and
+then the formula for the nonzero $r_4$ would make $\pi^2$ algebraic, contrary to
+Lindemann--Weierstrass~\cite{Baker1975}.
+
+The extra multiplicity in the unit-shift defect is paid exactly by an explicit
+infinite-order multiplier.  Writing $c_2(z)=\cos(\pi2^z)$,
+$c_3(z)=\cos(\pi3^z)$ and
+\[
+ B_1(z)=3c_2(z)-4c_3(z)^2+1,
+\]
+one has at every common zero $\lambda=n+k\beta$ with $n,k\ge1$
+\begin{equation}
+ F_2(z+1)F_3(z)-\sqrt{2/3}\,F_2(z)F_3(z+1)
+ =\frac{\sqrt2}{3}F_2(z)F_3(z)B_1(z).
+ \label{post27:eq-hermite-defect}
+\end{equation}
+Here $B_1$ has an exact double zero, so the cleared defect has order four, but $B_1$ is of
+infinite order.  The quotient $F_2/F_3$ also has at least $3^R-2^R+O(1)$ nonshared real poles
+up to real part $R$, and is not of bounded characteristic in the right half-plane.  Thus the algebraic first jet does
+not feed Schneider--Lang, a finite-order argument, or a bounded-characteristic uniqueness
+theorem; third derivatives restore the original logarithmic obstruction.
+
+\subsection{Lambert universality and the reciprocal-Hankel universal-clearing deficit}
+\label{post27:lambert-hankel}
+
+Over a field, for parameters $(s,r)$ satisfying $s^n\ne1$ for every $n\ge1$, define
+\[
+ h_n(s,r)=\frac{r^n-1}{s^n-1},\qquad
+ \mathcal H_{s,r}(X)=\sum_{n\ge1}h_n(s,r)X^n,
+\]
+and let $\Delta_cG(X)=G(cX)-G(X)$.  Coefficientwise cancellation gives
+\begin{equation}
+ \Delta_s\mathcal H_{s,r}
+ =\frac{rX}{1-rX}-\frac{X}{1-X}=:R_r(X).
+ \label{post27:eq-lambert-cocycle}
+\end{equation}
+More importantly,
+\begin{equation}
+ \boxed{
+ \Delta_N\Delta_2\mathcal H_{2,M}
+ =\Delta_M\Delta_3\mathcal H_{3,N}}
+ \label{post27:eq-universal-double-cocycle}
+\end{equation}
+holds for arbitrary rational $M,N$; both sides have $n$th coefficient
+$(M^n-1)(N^n-1)$.  Thus this visually cross-base identity contains no common-exponent input.
+The exact formal-series algebra, including the rational presentation and the fully generic
+four-parameter identity, is \statuslean{} in \lean{LambertCocycleFinite}.
+
+The leading Hankel determinants of the same sequence are also exact.  Put
+\[
+ \mathcal D_n(s,r)=\det\left(\frac{r^{i+j+1}-1}{s^{i+j+1}-1}
+                       \right)_{0\le i,j<n}.
+\]
+The Cauchy double alternant and the rank drops at $r=1,s^{\pm1},\ldots,s^{\pm(n-1)}$
+give
+\begin{equation}
+\begin{split}
+ \mathcal D_n(s,r)
+ &=(-1)^{\binom n2}s^{\binom n3}(r-1)^n\\
+ &\quad\times
+ \frac{\displaystyle\prod_{k=1}^{n-1}
+ (s^k-r)^{n-k}(s^kr-1)^{n-k}(s^k-1)^{2(n-k)}}
+ {\displaystyle\prod_{i,j=0}^{n-1}(s^{i+j+1}-1)}.
+\end{split}
+ \label{post27:eq-hankel-product}
+\end{equation}
+For integer $s,r\ge2$, the universal cyclotomic integerizer
+\[
+ Q_n(s)=
+ \frac{\prod_{i,j<n}(s^{i+j+1}-1)}
+      {\prod_{k=1}^{n-1}(s^k-1)^{2(n-k)}}
+\]
+is an integer.  Off the locus $r=s^k$ one has
+\begin{align}
+ \log Q_n(s)&=\frac23n^3\log s+O_s(n),
+ \label{post27:eq-hankel-denominator}\\
+ \log|\mathcal D_n(s,r)|
+ &=-\frac16n^3\log s+\frac12n^2\log(r/s)+O_{s,r}(n).
+ \label{post27:eq-hankel-smallness}
+\end{align}
+Therefore the universally cleared nonzero integer $Q_n(s)\mathcal D_n(s,r)$ grows at rate
+$\frac12n^3\log s+O(n^2)$: this cyclotomic integerizer costs four times the cubic decay.
+When $r=s^k$, the determinant vanishes for $n>k$, recovering integral-exponent finite rank;
+off that locus its signs depend only on $\lfloor\log_s r\rfloor$.  The detector is exact but
+this universal clearing has no subunit arithmetic regime.  Specialization-dependent gcd
+cancellation can reduce the actual denominator and is not controlled by this calculation,
+so the statement is deliberately not a reduced-denominator lower bound.
+
+There is an independent fixed-support obstruction.  If $a,b>1$ are multiplicatively
+independent integers, the reduced denominator $B_n$ of
+$(b^n-1)/(a^n-1)$ satisfies
+\begin{equation}
+ \log B_n=n\log a-o(n).
+ \label{post27:eq-bcz-denominator}
+\end{equation}
+Indeed, the Bugeaud--Corvaja--Zannier gcd theorem~\cite{BCZ2003} makes the cancelled part subexponential,
+whereas LTE makes the part supported on any fixed finite prime set only polynomial in $n$.
+Consequently the quotient lies outside every fixed $S$-integer ring for all sufficiently
+large $n$---there is not even an unbounded fixed-$S$ subsequence.  At a prime index $n$,
+every surviving denominator prime outside the fixed divisors of $a-1$ has exact
+multiplicative order $n$.  Since the fixed part is only polynomial and the full denominator
+is exponential, fresh order-$n$ primes occur for every sufficiently large prime $n$, and are
+distinct for distinct indices.  Hence the literal Hadamard-quotient strategy requires a
+hypothesis that a conditional counterexample provably violates.
+
+\subsection{Pure denominators still miss the Subspace threshold}
+\label{post27:ridout}
+
+Write a hypothetical nonintegral exponent as $x=B+\eta$, where $B\in\Nzero$ and
+$0<\eta<1$, and in lowest terms write
+\[
+ 2^\eta=\frac{W}{2^a},\qquad 3^\eta=\frac{Z}{3^b},
+ \qquad 2\nmid W,\quad 3\nmid Z.
+\]
+For a convergent $p/q$ to $\eta$, put
+\[
+ \varepsilon=q\eta-p,\qquad K=aq+p,\qquad L=bq+p.
+\]
+For every sufficiently large convergent, $p,K,L\ge1$; all statements below are restricted to
+that tail.  Set
+\[
+ X=\frac{W^q}{2^K}=2^\varepsilon,\qquad
+ Y=\frac{Z^q}{3^L}=3^\varepsilon.
+\]
+The strongest joint pure-support fraction is already reduced:
+\begin{equation}
+ X-Y=\frac{C_{p,q}}{D_{p,q}},\qquad
+ C_{p,q}=W^q3^L-Z^q2^K,\qquad D_{p,q}=2^K3^L,\qquad
+ \gcd(C_{p,q},6)=1.
+ \label{post27:eq-pure-cross}
+\end{equation}
+The parity and mod-$3$ assertions prove the gcd statement, while
+\begin{equation}
+ D_{p,q}=(WZ)^q6^{-\varepsilon},\qquad
+ C_{p,q}=D_{p,q}(2^\varepsilon-3^\varepsilon).
+ \label{post27:eq-pure-height}
+\end{equation}
+A two-logarithm Baker lower bound~\cite{Baker1975} and the convergent upper bound give constants
+$c_1,c_2,\kappa>0$ such that
+\begin{equation}
+ c_1D_{p,q}q^{-\kappa}\le |C_{p,q}|\le c_2D_{p,q}q^{-1}.
+ \label{post27:eq-pure-barrier}
+\end{equation}
+Thus $|C_{p,q}|=D_{p,q}^{1-o(1)}$.  Ridout's theorem or Schmidt's Subspace
+theorem~\cite{Ridout1958,Schmidt1980} would require a
+fixed saving $D_{p,q}^{1-\rho}$ with $\rho>0$; Baker proves that no such inequality can
+hold eventually.  For every fixed nonzero $P\in\Q[X,Y]$, contact rigidity gives
+\[
+ \operatorname{ord}_{t=0}P(2^t,3^t)
+ \le \deg_XP+\deg_YP.
+\]
+Indeed, the first nonzero homogeneous part of $P$ at $(1,1)$ evaluates at
+$(\log2,\log3)$; any further cancellation would make the transcendental ratio
+$\log3/\log2$ algebraic.
+Thus fixed-degree contact supplies only a polynomial-in-$q$ saving against the natural
+exponential common-denominator scale.  This does not rule out $q$-dependent polynomials of
+controlled height; a uniform theorem for such a family would be genuinely new.  The coprime
+$2/3$ supports are exact, but the unrestricted primes of $C_{p,q}$ absorb the product formula.
+
+\begin{statusbox}{The post-report closure audit makes one formal addition and several exact
+paper-level advances.  The universal Lambert double-difference identity is \statuslean{} in
+\lean{LambertCocycleFinite}; because it holds for arbitrary rational $M,N$, it is a certified
+no-go rather than a closing bridge.  The refined canonical-product coefficient, Stieltjes
+interpolant and denominator criterion, quadratic Jensen/Nevanlinna rigidity, half-density
+Hermite ceiling, reciprocal-Hankel product, BCZ fixed-support consequence, and pure-denominator
+Ridout barrier are \statusnew{} paper results.  They isolate output-specific primitive
+denominator cancellation, or equivalently a strict second-order boundary saving, as the
+sharpest surviving interface.}
+\end{statusbox}
+
 \appendix
 
 \section{Status matrix for major statements}
@@ -17935,6 +18342,17 @@ D-finite exponent-relation polynomial and top-coefficient noncancellation & \sta
 Sharp $3$-smooth canonical-product/Jensen threshold, subcritical interpolation rigidity,
 and critical defect cocycle & \statusnew & Section~\ref{sec:report27}; polynomial quotient
 regularity remains an explicit hypothesis \\
+Universal finite Lambert cocycle and base-$(2,3)$ mixed double-difference no-go &
+\statuslean & \lean{LambertCocycleFinite}; Section~\ref{post27:lambert-hankel} \\
+Canonical critical Stieltjes interpolant, refined quadratic threshold, and positive reduced
+denominator target & \statusnew & Sections~\ref{post27:critical-interpolant} and
+\ref{post27:denominator-target} \\
+Half-density algebraic first jet and exact higher-jet/infinite-order ceiling & \statusnew &
+Section~\ref{post27:hermite} \\
+Reciprocal-Hankel product and cubic universal-integerizer deficit; BCZ fixed-support no-go &
+\statusnew & Section~\ref{post27:lambert-hankel}; BCZ input classical \\
+Exactly reduced pure-$2/3$ convergent fraction and the Baker--Ridout/Subspace barrier &
+\statusnew & Section~\ref{post27:ridout}; Baker input classical \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -18172,6 +18590,9 @@ weight-two defect and the resulting depth and arithmetic-efficiency thresholds \
 strict suffix-degree descent and reconstruction from endpoint plus ordered suffix vertices \\
 \lean{.../DfiniteExponentCore} & bivariate exponent-relation polynomial for a formal
 linear differential operator; exact top exponent coefficient and nonzero certificate \\
+\lean{.../LambertCocycleFinite} & exact formal Lambert coefficient clearing, rational
+cocycle presentation, and universal mixed double-difference identity for arbitrary
+parameters; the base-$(2,3)$ specialization uses no common-exponent hypothesis \\
 \lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
 rational-approximation candidate alternant \\
 \lean{.../SynchronizedSumDecoder} & strict monotonicity on fixed-sum pairs and exact
@@ -18365,7 +18786,7 @@ The current wave adds the following modules:
 \lean{DenominatorCancellationCounterexample}, \lean{GridTransformNoGo},
 \lean{SmithProfileCore}, \lean{ContentNormalizedProfileFinite},
 \lean{DeepSubresultantCost},
-\lean{CompoundEndpointRate}.
+\lean{CompoundEndpointRate}, \lean{LambertCocycleFinite}.
 \end{center}
 Their headline APIs are likewise on the aggregate surface
 and covered by the axiom-audit module.
@@ -20220,6 +20641,27 @@ annotated manuscript in Ramanujan Journal \textbf{1} (1997), 119--153.
 A.~Baker,
 \newblock \emph{Transcendental Number Theory},
 \newblock Cambridge University Press, 1975.
+
+\bibitem{BCZ2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\newblock \emph{An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$},
+\newblock Mathematische Zeitschrift \textbf{243}(1) (2003), 79--84.
+\newblock DOI:
+\href{https://doi.org/10.1007/s00209-002-0449-z}{10.1007/s00209-002-0449-z}.
+
+\bibitem{Ridout1958}
+D.~Ridout,
+\newblock \emph{The $p$-adic generalization of the Thue--Siegel--Roth theorem},
+\newblock Mathematika \textbf{5}(1) (1958), 40--48.
+\newblock DOI:
+\href{https://doi.org/10.1112/S0025579300001339}{10.1112/S0025579300001339}.
+
+\bibitem{Schmidt1980}
+W.~M.~Schmidt,
+\newblock \emph{Diophantine Approximation},
+\newblock Lecture Notes in Mathematics 785, Springer, 1980.
+\newblock DOI:
+\href{https://doi.org/10.1007/978-3-540-38645-2}{10.1007/978-3-540-38645-2}.
 
 \bibitem{Hua1982}
 L.-K.~Hua,
