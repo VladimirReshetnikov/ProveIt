@@ -35,11 +35,21 @@ import ExponentialIdentities.TwoBaseIntegerExponent.MixedDeterminantUnitBridge
 import ExponentialIdentities.TwoBaseIntegerExponent.ComplexSolutions
 import ExponentialIdentities.TwoBaseIntegerExponent.SparsePowerCurve
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalOrbitGrid
+import ExponentialIdentities.TwoBaseIntegerExponent.RationalContactRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.RestrictedMatrixCoefficient
+import ExponentialIdentities.TwoBaseIntegerExponent.IntegralPowerMatrix
+import ExponentialIdentities.TwoBaseIntegerExponent.CandidateAlternant
 import ExponentialIdentities.TwoBaseIntegerExponent.FormalPrimeDeterminant
+import ExponentialIdentities.TwoBaseIntegerExponent.FermatQuotientDeterminant
 import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDilationDefect
+import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDisplacement
 import ExponentialIdentities.TwoBaseIntegerExponent.FejerKernelCertificate
 import ExponentialIdentities.TwoBaseIntegerExponent.SignedProgressionDeterminant
+import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
+import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
+import ExponentialIdentities.TwoBaseIntegerExponent.SturmianGeneratingSeries
+import ExponentialIdentities.TwoBaseIntegerExponent.PolynomialApproximationTax
+import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveLogMeanBounds
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -266,6 +276,17 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms restrictedMatrixCoefficient_ne_zero_of_not_integer
 #print axioms alaogluErdosConjecture_iff_restrictedMatrixCoefficientPrinciple
 
+-- A fixed split integral matrix and its exact integral-time reformulation
+#print axioms splitTwoThreeRealPowerMatrix_hasIntegralEntries_iff
+#print axioms alaogluErdosConjecture_iff_splitTwoThreeRealPowerMatrix
+
+-- Exact candidate alternant from a rational approximation
+#print axioms det_affineExponentVandermonde
+#print axioms rpowAffineExponentMatrix_eq_affineExponentVandermonde
+#print axioms candidateClusterExponent_eq_semigroupCombination
+#print axioms det_candidateApproximationAlternant
+#print axioms det_candidateApproximationAlternant_ne_zero
+
 -- Formal prime-symbol determinant and sparse Structural Rank reformulation
 #print axioms primeFactorLinearForm_eval₂_log
 #print axioms formalPrimeDeterminant_eval₂_log
@@ -292,6 +313,13 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms rationalOrbitNodePolynomial_eval_eq_zero
 #print axioms exists_rational_squareGrid_certificate
 
+-- Rational contact rigidity for an irrational power direction
+#print axioms ratPolynomial_eval₂_ne_zero_of_transcendental
+#print axioms homogeneousContactPolynomial_ne_zero
+#print axioms homogeneousContactCoefficient_ne_zero
+#print axioms rationalPade_firstContactCoefficient_ne_zero
+#print axioms rationalPadeResidual_deriv_ne_zero
+
 -- Rectangular interpolation-grid boundary compression
 #print axioms rectangularNodePolynomial_dilate_vertical
 #print axioms rectangularNodePolynomial_dilate_horizontal
@@ -300,6 +328,16 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms existsUnique_squareGridResiduals
 #print axioms squareBoundaryExpressions_natDegree_le
 #print axioms boundaryDilation_commutator
+
+-- Exact rank-K boundary displacement for rectangular evaluation matrices
+#print axioms firstGridShiftMatrix_mul
+#print axioms secondGridShiftMatrix_mul
+#print axioms rank_firstGridBoundaryProjector
+#print axioms rank_secondGridBoundaryProjector
+#print axioms first_gridEvaluation_displacement
+#print axioms second_gridEvaluation_displacement
+#print axioms rank_first_gridEvaluation_matrix_displacement
+#print axioms rank_second_gridEvaluation_matrix_displacement
 
 -- Signed-progression geometric factorization and exact denominator tax
 #print axioms det_geometricVandermondeMatrix_factored
@@ -327,5 +365,55 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms phaseExponentialSum_circlePhase
 #print axioms circlePhase_eq_one_iff
 #print axioms exactIntegerPhaseCount_le_fejerScore
+
+-- Exact denominator drift and p-adic escape
+#print axioms orbitDenominatorExponent_cast
+#print axioms orbitDenominatorExponent_centered
+#print axioms orbitDenominatorExponent_common_defect
+#print axioms orbitDenominatorExponent_sub
+#print axioms orbitDenominatorNat_tendsto_atTop
+#print axioms padicNorm_normalizedRationalOrbit
+#print axioms twoThree_padic_escape_of_normalized_outputs
+
+-- Exact mechanical-word probability laws and covariance kernel
+#print axioms floor_add_sub_floor_eq_carryBit
+#print axioms sum_bit_eq_floor_difference
+#print axioms sum_bit_eq_floor_add_carry
+#print axioms sum_bit_two_values
+#print axioms carryBit_sub_eq_coboundary
+#print axioms prefixCount_mean
+#print axioms prefixCount_variance
+#print axioms jointCarrySet_eq_union
+#print axioms jointCarrySet_measureReal
+#print axioms jointCarry_integral
+#print axioms carryCovariance_eq
+
+-- Exact polynomial denominator clearing, finite-difference floor, and normalization tax
+#print axioms pow_mul_denseIntegerPolynomialEval_div
+#print axioms normalizedPolynomialResidual_clearing
+#print axioms normalizedPolynomialResidual_eq_zero_of_abs_scaled_lt_one
+#print axioms polynomialApproximationFloor_le_of_pointwise
+#print axioms one_lt_normalizationTax_logThreeDivLogTwo
+#print axioms normalized_mem_Ico_one_two_of_mem_dyadicBlock
+#print axioms normalizationTax_obstruction
+
+-- Exact rational enclosure for the consecutive logarithmic mean
+#print axioms consecutiveLogMean_bounds
+
+-- Exact carry/floor and denominator formal-series identities
+#print axioms rotationCarry_eq_zero_or_one
+#print axioms sum_rotationCarry
+#print axioms X_mul_rotationCarrySeries
+#print axioms one_sub_X_sq_mul_linearIndexSeries
+#print axioms rotationDenominatorSeries_eq
+#print axioms one_sub_X_sq_mul_denominator_defect
+#print axioms rotationDenominatorSeries_sub
+
+-- Exact first Fermat-quotient determinant layer
+#print axioms prime_dvd_pow_sub_one
+#print axioms pow_eq_one_add_mul_fermatQuotientNat
+#print axioms fermatQuotientResidue_pow
+#print axioms firstLogDeterminant_eq_fermatQuotientDeterminant
+#print axioms fermatQuotientDeterminant_two_three_powers
 
 end LeanProofs.TwoBaseIntegerExponent

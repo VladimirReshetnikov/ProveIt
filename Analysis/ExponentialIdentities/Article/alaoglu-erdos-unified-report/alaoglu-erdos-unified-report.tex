@@ -224,7 +224,14 @@ monomials.  Its Newton-polygon and boundary-defect refinements isolate a concret
 one-monomial saving problem, but do not solve it.  The other independent continuations add
 exact rational-orbit collision counts, a universal superfactorial determinant divisor, a
 signed-progression denominator-tax identity, and a random-phase/Fej\'er control experiment.
-Each sharpens a finite interface while leaving the same four-exponentials barrier intact.
+The seventh and eighth independent reports add, respectively, compact/profinite limit laws
+with exact adelic drift, and an arithmetic audit of polynomial and Pad\'e approximation:
+denominator clearing, an all-degree normalization-tax obstruction, and rational contact
+rigidity.  Reports 9--13 add de-integralized common divisors and natural boundaries, a fixed
+integral-matrix and Loewner formulation, finite-place/Fermat-quotient transversality, and a
+microscopic prime-switch analysis, followed by an exterior-power and boundary-displacement
+matrix audit.  Each sharpens a finite interface while leaving the same
+four-exponentials barrier intact.
 \end{minipage}
 \vfill
 {\large August 21, 2026\par}
@@ -264,7 +271,9 @@ adds directly to the tropical minimum, giving $p^{\tau+U}\mid\det$ uniformly acr
 assignment cascade.  These gains are lower order; exact synthetic
 experiments expose genuine cross-layer carrying but do not exhibit a leading-order cascade at
 the tested sizes.  Third, it reconciles the genuinely new material independently developed
-in all six reports under \lean{Article/new-reports/}.  Reports 1--2 show that the
+in all thirteen reports under \lean{Article/new-reports/}.  The reports share this unified
+document as their common base; they are audited independently and reconciled by mathematical
+content rather than treated as a sequential chain.  Reports 1--2 show that the
 Alaoglu--Erd\H{o}s conjecture is equivalent to a
 restricted $2\times2$ Matrix Coefficient principle, while an irrational power curve through
 $R$ positive nodes has exact sparse interpolation threshold $R+1$.  The corresponding formal
@@ -273,7 +282,21 @@ an exact factor-four auxiliary-polynomial gap and a finite one-monomial target. 
 add the exact rational-orbit collision spectrum, universal factorial and Smith divisors,
 adelic determinant accounting, and a signed-progression denominator tax.  Report 6 adds a
 uniform metric estimate, exact random-phase extinction, and a positive-kernel Fourier target
-for the exceptional phase zero.
+for the exceptional phase zero.  Report 7 adds triangle--Haar and profinite Beatty laws,
+Sturmian covariance, exact denominator drift and $p$-adic escape, and a fixed-compact-factor
+no-go theorem.  Report 8 adds exact denominator-clearing identities for rational
+approximation, a finite-difference normalization-tax obstruction valid in every degree, and
+the rational contact-equals-multiplicity principle for irrational power curves.  Report 9
+adds an exact de-integralized common-zero lattice, a P\'olya--Carlson boundary, and a compact
+$\Theta(\log H)$ height dichotomy.  Report 10 gives a fixed $2\times2$ integral-power
+reformulation and denominator-sensitive Loewner certificates, together with their optimized
+one-half barrier.  Report 11 proves structural-prime $p$-adic transversality and isolates the
+Fermat-quotient first layer and adelic error wedge.  Report 12 returns to the historical
+colossally abundant prime-switch problem and shows that simultaneous switches require a
+microscopic prescribed-prime resonance far below modern short-interval scales.
+Report 13 develops the matrix direction independently: projective arithmetic density,
+determinantal-divisor and exterior-power ceilings, and an exact rank-$K$ boundary compression
+of a $K^2$-point spectrum.
 Fourth, it
 quantifies the remaining gap: the determinant hierarchy misses the conditional population by
 exactly one factor of $\log X$.
@@ -13713,6 +13736,1242 @@ and Borel--Cantelli are not claimed there.  Neither almost-everywhere extinction
 equidistribution is specialized to $\thetaq$.}
 \end{statusbox}
 
+\section{Seventh and eighth reports: compact laws and approximation rigidity}
+\label{sec:reports78}
+
+Reports 7 and 8 were produced independently from the same inherited unified report.  They are
+therefore not successive revisions of one another.  This section audits each continuation on
+its own terms and then reconciles the nonoverlapping conclusions.  Their directions are
+complementary.  Report 7 asks what fixed measure-theoretic, profinite, and adelic observables
+can see under a hypothetical counterexample.  Report 8 asks whether polynomial, rational, or
+Hermite--Pad\'e approximation can exploit the exact integer lattice.  Neither closes the
+conjecture: the first proves that every fixed compact factor is already maximally distributed,
+while the second proves that the most natural approximation scales lose their gain when
+denominators are cleared.
+
+\subsection{Difference groups, triangle--Haar laws, and profinite Beatty factors}
+\label{r78:compact-laws}
+
+Assume in this subsection that the conjecture fails and let $\beta=B+\alpha$ be its least
+nonintegral solution, where $B=\lfloor\beta\rfloor$ and $0<\alpha<1$.  Write
+\[
+ M=2^\beta=2^aW,\qquad A=3^\beta=3^bZ,
+ \qquad W>1\text{ odd},\quad Z>1,\quad 3\nmid Z.
+\]
+The inherited structure theorem gives
+$\Sol=\Nzero+\Nzero\beta$ and unique coordinates.  Taking differences produces an exact
+measure-theoretic dichotomy:
+\begin{equation}
+ \Sol-\Sol=
+ \begin{cases}
+   \Z,&\text{if the conjecture holds},\\
+   \Z+\Z\beta,&\text{if it fails}.
+ \end{cases}
+ \label{r78:eq-difference-group}
+\end{equation}
+Modulo $\Z$, the failure branch is the countable dense Haar-null subgroup
+$\{k\alpha:k\in\Z\}\subset\mathbb T$.  Thus closure, Haar measure, and the arithmetic set itself
+give three sharply different pictures of the same orbit.  This is the first reason that a
+fixed weak-limit argument cannot settle the problem.
+
+The macroscopic and microscopic coordinates can nevertheless be combined exactly.  Put
+\[
+ L_T=\{(n,k)\in\Nzero^2:n+\beta k\le T\},
+ \qquad N_T=\#L_T=\frac{T^2}{2\beta}+O_\beta(T),
+\]
+and $\Delta=\{(u,v)\in\R_{\ge0}^2:u+v\le1\}$.  Report 7 proves that for every continuous
+$F:\Delta\times\mathbb T\to\C$,
+\begin{equation}
+ \frac1{N_T}\sum_{(n,k)\in L_T}
+ F\!\left(\frac nT,\frac{\beta k}{T},\fract{k\beta}\right)
+ \longrightarrow
+ 2\int_\Delta\int_{\mathbb T} F(u,v,t)\,dt\,du\,dv.
+ \label{r78:eq-triangle-haar}
+\end{equation}
+For a nonzero circle Fourier mode, Abel summation reduces the assertion to bounded geometric
+partial sums of $e(hk\beta)$; the zero mode is an anisotropic Riemann sum.  In the variables
+$H=u+v$ and $C=v/(u+v)$, the limiting density is $2H\,dH\,dC$, independently of the Haar
+phase.  This is the precise independence statement; the separate Dirichlet description of
+$(u,v,1-u-v)$ is merely another description of uniform triangle area, not a replacement for
+the $(H,C)$ factorization.
+
+The finite congruence refinement is stronger.  For every irrational $\alpha$, every $d\ge1$,
+residues $r,j\pmod d$, and interval $I\subset\mathbb T$,
+\begin{equation}
+ \frac1K\#\{0\le k<K:k\equiv r\pmod d,
+   \ \lfloor k\alpha\rfloor\equiv j\pmod d,
+   \ \fract{k\alpha}\in I\}
+ \longrightarrow\frac{|I|}{d^2}.
+ \label{r78:eq-profinite-beatty}
+\end{equation}
+Indeed, after writing $k=d\ell+r$, the map
+$x\mapsto(\lfloor dx\rfloor,\fract{dx})$ sends Lebesgue measure to uniform measure on
+$\Z/d\Z$ times Lebesgue measure.  Equivalently,
+\[
+ k\longmapsto(k,\lfloor k\alpha\rfloor,\fract{k\alpha})
+\]
+is Haar distributed in $\widehat\Z^2\times\mathbb T$.  Every fixed family of congruence
+conditions is therefore asymptotically independent of the real phase.  With the inherited
+finite irrationality measure
+$\distZ{h\beta}\ge c_Mh^{1-\mu_M}$, where we harmlessly enlarge $\mu_M$ so that $\mu_M>1$,
+the same argument controls growing moduli only in the range
+$d^{\mu_M+1}=o(K)$.  The true denominator moduli grow exponentially in $k$, so this effective
+range remains far too small.
+
+\subsection{Exact denominator drift and noncompact escape}
+\label{r78:adelic-drift}
+
+The compact arc coordinates
+\[
+ R_k=\frac{M^k}{2^{\lfloor k\beta\rfloor}},
+ \qquad S_k=\frac{A^k}{3^{\lfloor k\beta\rfloor}}
+\]
+separate into primitive numerators and denominator exponents
+\[
+ q^{(2)}_k=\lfloor k\beta\rfloor-ka,
+ \qquad q^{(3)}_k=\lfloor k\beta\rfloor-kb.
+\]
+Writing $t_k=\fract{k\beta}$ gives the exact identities
+\begin{align}
+ q^{(2)}_k&=k(\beta-a)-t_k,&
+ q^{(3)}_k&=k(\beta-b)-t_k,\label{r78:eq-centered-drift}\\
+ q^{(2)}_k-q^{(3)}_k&=k(b-a).\label{r78:eq-drift-difference}
+\end{align}
+Both centered valuation defects are therefore the same bounded quantity $-t_k$, rather than
+independent noise.  Since $\beta-a=\log_2W>0$ and $\beta-b=\log_3Z>0$,
+\begin{equation}
+ |R_k|_2=2^{q^{(2)}_k}\longrightarrow\infty,
+ \qquad |S_k|_3=3^{q^{(3)}_k}\longrightarrow\infty.
+ \label{r78:eq-padic-escape}
+\end{equation}
+Thus the empirical measures escape every compact subset of $\Q_2\times\Q_3$.  Removing the
+denominator powers leaves $(W^k,Z^k)$ in the compact group
+$\mathcal H=\overline{\langle(W,Z)\rangle}\subset\Z_2^\times\times\Z_3^\times$; the pair
+$(t_k,W^k,Z^k)$ is distributed according to Lebesgue measure times Haar measure on
+$\mathcal H$.  In a moving frame the limiting measure is the pushforward of
+$dt\,dm_\mathcal H$ under
+\[
+ (t,u,v)\longmapsto(t,-t,-t,u,v).
+\]
+This retains exactly the phase information that one-point compactification would erase.
+
+The integer definition, the cast identity, the common centered defect, the cross-base
+difference, the natural-exponent layer, and the resulting $2$- and $3$-adic escape are
+\statuslean{} in \lean{AdelicDrift}.  The module deliberately defines the raw exponent in
+$\Z$ before proving nonnegativity, so no hidden natural-subtraction assumption enters the
+statement.
+
+\subsection{Sturmian rigidity and fixed-observable blindness}
+\label{r78:sturmian}
+
+Choose a representative $t\in[0,1)$ of an initial circle point and set
+\[
+ \xi_j(t)=\mathbf1_{[1-\alpha,1)}(\fract{t+j\alpha}).
+\]
+Each bit is the carry in addition by $\alpha$, so the exact telescoping identity is
+\begin{equation}
+ \sum_{j=0}^{N-1}\xi_j(t)=\lfloor t+N\alpha\rfloor-\lfloor t\rfloor.
+ \label{r78:eq-sturmian-prefix}
+\end{equation}
+For uniform $t$, this sum takes only $\lfloor N\alpha\rfloor$ and
+$\lceil N\alpha\rceil$, with mean $N\alpha$ and variance
+$\fract{N\alpha}(1-\fract{N\alpha})\le1/4$.  If
+$\delta_\ell=\fract{\ell\alpha}$, then
+\begin{equation}
+ \operatorname{Cov}(\xi_0,\xi_\ell)
+ =\max(0,\alpha-\delta_\ell)+\max(0,\alpha+\delta_\ell-1)-\alpha^2.
+ \label{r78:eq-sturmian-covariance}
+\end{equation}
+The correlations do not decay.  The process is a zero-entropy, pure-point factor of an
+irrational rotation; Bernoulli, Poisson, and central-limit heuristics are therefore the wrong
+model for its carries.
+
+More generally, let $G$ be a profinite group and let
+$\pi:\widehat\Z^2\to G$ be continuous.  Combining
+\eqref{r78:eq-triangle-haar} and \eqref{r78:eq-profinite-beatty} shows that for continuous
+observables the scaled triangle coordinate, $\pi(k,\lfloor k\alpha\rfloor)$, and the circle
+phase have the product limit.  The same holds for indicators whose discontinuity set has
+limiting measure zero; this qualification is needed for Sturmian bits, which are not
+continuous functions.  Consequently every fixed compact congruence or unit factor is blind
+to the counterexample.  A successful observable must move with height, retain an unbounded
+valuation, or resolve an exact shrinking target.
+
+Two further paper-level calibrations reinforce the point.  First,
+\[
+ \frac1{\log X}\int_1^X
+ \delta_{(\fract u,\fract{u^{\thetaq}})}\,\frac{du}{u}
+ \stackrel{*}{\longrightarrow}m_{\mathbb T^2};
+\]
+nonzero Fourier modes follow from a first-derivative estimate.  Second, for
+$E_m(\psi)=\{c\in[a,b]:\distZ{m^c}<\psi_m\}$ one has
+$\lambda(E_m(\psi))\ll_{a,b}\psi_m$, and for $\psi_m=m^{-\tau}$,
+\begin{equation}
+ \dim_{\mathrm H}\limsup_m E_m(m^{-\tau})
+ \le\min\!\left(1,\frac{b+1}{b+\tau}\right).
+ \label{r78:eq-metric-dimension}
+\end{equation}
+This can place $\thetaq$ in a zero-dimensional exceptional set without excluding that named
+number.  The local mass estimate near exact hits in report 7 is only a scale diagnostic unless
+overlaps and uniform Taylor remainders are controlled, and is not promoted here to a theorem.
+The near-Sidon statement for conditional truncations is likewise retained only as a
+conditional consequence of the \statusknown{} Evertse--Schlickewei--Schmidt finite-rank unit-equation
+theorem.
+
+\subsection{Arithmetic resolution of normalized polynomial approximation}
+\label{r78:approximation-tax}
+
+Report 8 starts from a candidate $m\in[2^T,2^{T+1})$, puts
+$u=m/2^T\in[1,2)$ and $n=m^{\thetaq}=3^Tu^{\thetaq}\in\N$, and keeps careful track of the
+denominators introduced by normalization.  If $p\in\Q[t]$, $\deg p\le d$, and
+$Hp\in\Z[t]$, then
+\begin{equation}
+ H2^{Td}\bigl(n-3^Tp(u)\bigr)\in\Z.
+ \label{r78:eq-normalized-clearing}
+\end{equation}
+Hence an error smaller than $(H3^T2^{Td})^{-1}$ forces exact equality at every candidate in
+the block.  For integral $A,B$ of degrees at most $d$, the correct rational-approximation
+object is the numerator residual, not the quotient error:
+\begin{equation}
+ 2^{Td}\bigl(B(u)n-3^TA(u)\bigr)
+ =3^T2^{Td}\bigl(B(u)u^{\thetaq}-A(u)\bigr)\in\Z.
+ \label{r78:eq-rational-residual-clearing}
+\end{equation}
+A small quotient can therefore be arithmetically useless when $B$ is large or has costly
+coefficients.
+
+The decisive analytic comparison is elementary.  For every $d\ge1$ and every real polynomial
+$p$ of degree at most $d$,
+\begin{equation}
+ \|t^{\thetaq}-p(t)\|_{[1,2]}
+ \ge c_d:=
+ \frac{|\fall{\thetaq}{d+1}|\,2^{\thetaq-2d-2}}{(d+1)^{d+1}}.
+ \label{r78:eq-finite-difference-lower}
+\end{equation}
+Indeed, with $h=(d+1)^{-1}$, the $(d+1)$-st forward difference of $p$ vanishes, the triangle
+inequality costs $2^{d+1}$, and the iterated finite-difference mean-value theorem evaluates the
+same difference of $t^{\thetaq}$ at an intermediate point.  For $d=0$, endpoint separation
+gives the lower bound $1$.
+
+Combining \eqref{r78:eq-normalized-clearing} and
+\eqref{r78:eq-finite-difference-lower} yields the all-degree obstruction:
+\begin{theorem}[Normalization-tax obstruction]
+\label{r78:thm-normalization-tax}
+If $T\ge4$, $d\ge0$, $H\ge1$, $\deg p\le d$, and $Hp\in\Z[t]$, then
+\begin{equation}
+ H3^T2^{Td}\|t^{\thetaq}-p(t)\|_{[1,2]}\ge1.
+ \label{r78:eq-normalization-tax}
+\end{equation}
+Thus no normalized rational polynomial, in any degree, crosses the arithmetic forcing
+threshold.
+\end{theorem}
+
+The proof reduces to $T=4,H=1$.  Writing $L_d=3^4 2^{4d}c_d$, the rational bounds
+$3/2<\thetaq<8/5$ show $L_1>\cdots>L_5>4$, $L_6>1$, and
+$L_{d+1}/L_d>1$ for $d\ge6$; in particular the exact calculation includes
+$L_5>13328/3125$.  No finite search bound is used.  The forward-difference estimate,
+polynomial degree floor, exact denominator clearing, and the all-degree tax theorem are
+\statuslean{} in \lean{PolynomialApproximationTax}; the sharp Bernstein-ellipse rate and its
+degree constant remain classical paper inputs.
+
+Working in the physical variable avoids the factor $2^{Td}$, but then the same lower bound
+requires degree
+\[
+ d\ge\frac{\log3}{\log(4e)}T-O(\log T)
+ =0.460384\ldots T-O(\log T).
+\]
+Classical Bernstein approximation improves the slope to
+$\log3/\log(3+2\sqrt2)=0.623238\ldots$.  Either slope exceeds the conditional block
+population slope by a wide margin; this is a structural mismatch, not a numerical failure at
+the beginning of the search range.
+
+\subsection{Rational contact rigidity and the area-to-diameter collapse}
+\label{r78:contact}
+
+The local approximation audit has a sharper exact conclusion.  For a polynomial $P$ and a
+rational point $(a,b)$, let $\operatorname{mult}_{(a,b)}P$ be the least total degree in the
+Taylor expansion of $P(a+U,b+V)$.
+
+\begin{theorem}[Rational contact equals algebraic multiplicity]
+\label{r78:thm-contact-multiplicity}
+Let $\tau$ be transcendental, $0\ne P\in\Q[X,Y]$, and
+$(a,b)\in\Q_{>0}^2$.  If $s=\operatorname{mult}_{(a,b)}P$, then
+\begin{equation}
+ \operatorname{ord}_{z=0}P(ae^z,be^{\tau z})=s.
+ \label{r78:eq-contact-multiplicity}
+\end{equation}
+\end{theorem}
+
+If $H_s(U,V)=\sum_{j=0}^s h_jU^{s-j}V^j$ is the first nonzero homogeneous Taylor layer, the
+coefficient of $z^s$ is
+$H_s(a,b\tau)=\sum_jh_ja^{s-j}b^j\tau^j$.  This is a nonzero rational polynomial evaluated
+at a transcendental number, so it cannot vanish.  In particular, for bidegree at most $(d,e)$
+the contact order is at most $d+e$; equality is attained only by a rational scalar multiple of
+$(X-a)^d(Y-b)^e$.  The square of $(d+1)(e+1)$ coefficient slots thus collapses to the diameter
+$d+e$ over $\Q$.  Over $\Q(\tau)$ the ordinary distinct-frequency Vandermonde instead permits
+order $(d+1)(e+1)-1$.
+
+For not-both-zero $A,B\in\Q[t]$ of degree at most $d$ this gives
+\[
+ \operatorname{ord}_{t=1}\bigl(B(t)t^\tau-A(t)\bigr)\le d+1.
+\]
+If $A(1)=B(1)$ and $B(1)\ne0$, the intersection is already transverse because
+\begin{equation}
+ B(1)\tau+B'(1)-A'(1)\ne0.
+ \label{r78:eq-pade-transverse}
+\end{equation}
+The rational-polynomial transcendence lemma, nonvanishing of the homogeneous leading
+coefficient, the derivative identity, and the Pad\'e transversality endpoint are
+\statuslean{} in \lean{RationalContactRigidity}.  The general Taylor-order packaging in
+Theorem~\ref{r78:thm-contact-multiplicity} remains a self-contained paper proof.
+
+Finally, for a finite support $S\subset\Nzero^2$ and nonzero integer coefficients,
+\[
+ F(x)=\sum_{(i,j)\in S}c_{ij}x^{i+j\thetaq}
+\]
+is integral at every candidate.  If $\|F\|_I<1$, it vanishes at all candidates in $I$, while
+the accepted exponential-polynomial zero bound gives at most $|S|-1$ positive zeros.  Hence
+\begin{equation}
+ \#(\Cand\cap I)\le |S|-1.
+ \label{r78:eq-muntz-certificate}
+\end{equation}
+This arithmetic M\"untz certificate is a direct corollary of the existing
+\lean{ExponentialPolynomialZeros} machinery, not a new approximation theorem.  The genuinely
+open target is to find an integral coefficient vector with norm below one after all
+archimedean, denominator, and $p$-adic height costs are charged.  The schematic adelic height
+functional proposed in report 8 records this target but is not itself a proved estimate.
+
+\begin{statusbox}{Reports 7 and 8 are independent continuations from the common unified base.
+The exact drift/escape package is \statuslean{} in \lean{AdelicDrift}; the finite-difference and
+normalization-tax package is \statuslean{} in \lean{PolynomialApproximationTax}; the exact
+carry, prefix, mean, variance, joint-probability, and covariance package is \statuslean{} in
+\lean{SturmianProbability}; and the
+homogeneous contact obstruction plus rational Pad\'e transversality are \statuslean{} in
+\lean{RationalContactRigidity}.  The triangle--Haar, profinite Beatty, logarithmic Haar,
+Hausdorff-dimension, full contact-order, and area-to-diameter statements above have
+self-contained paper proofs.  The effective discrepancy uses the inherited
+Baker--Matveev interface, the near-Sidon law uses the external finite-rank unit-equation
+theorem, and the sharp Bernstein rate is classical.  The reported $2^{29}$ computation is not
+promoted: this unified report retains its reproducible $2^{27}$ trust frontier.}
+\end{statusbox}
+
+\section{Ninth report: analytic common divisors and natural boundaries}
+\label{sec:report9}
+
+Report 9 is another independent continuation from the common unified base.  Its approximation
+section overlaps report 8 and is not repeated.  Its distinct contribution is a three-part
+analytic reformulation: cancel the automatic integer zeros of the two sine compositions,
+identify the resulting conditional zero lattice and its canonical divisor, and encode the
+synchronized denominator exponents by integer power series with a natural boundary.  A final
+compact-height count sharpens the earlier qualitative compact-orbit equivalence.
+
+\subsection{Removing the automatic zeros and counting the conditional divisor}
+\label{r9:common-divisor}
+
+Put
+\[
+ F_a(z)=\sin(\pi a^z),\qquad a\in\{2,3\}.
+\]
+The accepted complex-localization theorem already shows that every common zero of $F_2$ and
+$F_3$ is real and simple.  The nonnegative integers are automatic common zeros.  They can be
+removed without introducing new ones by filling the removable singularities in
+\begin{equation}
+ G_a(z)=\Gamma(-z)\sin(\pi a^z).
+ \label{r9:eq-deintegralized}
+\end{equation}
+Indeed, at $n\in\Nzero$ one has
+\begin{equation}
+ G_a(n)=\frac{\pi(\log a)a^n}{n!}(-1)^{n+1+a^n}\ne0,
+ \label{r9:eq-integer-value}
+\end{equation}
+so $G_2$ and $G_3$ have a common zero exactly when the conjecture has a nonintegral solution.
+
+Under failure, let $\beta$ be the least nonintegral solution.  The exact conditional monoid
+classification identifies the de-integralized common zero set as
+\[
+ \Lambda_\beta=\{n+k\beta:n\in\Nzero,\ k\in\N\}.
+\]
+Its representation is unique, and elementary lattice counting gives
+\begin{equation}
+ N_\beta(R):=\#(\Lambda_\beta\cap[0,R])
+ =\frac{R^2}{2\beta}+O_\beta(R).
+ \label{r9:eq-quadratic-zero-count}
+\end{equation}
+Consequently its exponent of convergence is exactly two.  With
+$E_2(w)=(1-w)\exp(w+w^2/2)$, the genus-two product
+\begin{equation}
+ P_\beta(z)=\prod_{\lambda\in\Lambda_\beta}E_2(z/\lambda)
+ \label{r9:eq-canonical-product}
+\end{equation}
+converges locally uniformly, has precisely those simple zeros, and divides both $G_2$ and
+$G_3$ in the ring of entire functions.  Conversely, any common nonunit entire divisor has a
+zero and hence gives a nonintegral solution.  Thus the conjecture is equivalently the absence
+of a common nonunit entire divisor.
+
+This is not an ordinary finite-order zero-counting problem: along suitable horizontal lines,
+$\log M(r,G_a)\ge c_a a^r$ for infinitely many $r$.  The conditional divisor has only
+quadratic zero density inside functions of infinite order.  It is also too large for a
+bounded-characteristic function on the right half-plane, since partial summation gives
+\begin{equation}
+ \sum_{\lambda\in\Lambda_\beta}\frac{\lambda}{1+\lambda^2}=\infty.
+ \label{r9:eq-blaschke-divergence}
+\end{equation}
+This supplies a precise but still open analytic target: a growth-controlled common divisor or
+B\'ezout theorem for the pair $G_2,G_3$.  Canonical-product convergence and the
+bounded-characteristic/Blaschke implication are classical analytic interfaces, not new Lean
+claims.
+
+\subsection{The synchronized word has a natural boundary}
+\label{r9:natural-boundary}
+
+Write $\beta=B+\alpha$ with $0<\alpha<1$, and define
+\[
+ e_k=\lfloor k\alpha\rfloor,\qquad s_k=e_{k+1}-e_k\in\{0,1\}.
+\]
+For the formal power series
+\[
+ \mathcal S(X)=\sum_{k\ge0}s_kX^k,\qquad
+ \mathcal E(X)=\sum_{k\ge1}e_kX^k,
+\]
+telescoping gives the exact identity
+\begin{equation}
+ X\mathcal S(X)=(1-X)\mathcal E(X).
+ \label{r9:eq-carry-floor-series}
+\end{equation}
+Both analytic series have radius one.  The binary Sturmian word $(s_k)$ is not eventually
+periodic because $\alpha$ is irrational.  A rational finite-alphabet power series has an
+eventually periodic coefficient sequence; hence $\mathcal S$ is not rational.  The classical
+P\'olya--Carlson dichotomy now makes the unit circle a natural boundary for $\mathcal S$, and
+\eqref{r9:eq-carry-floor-series} transfers that boundary to $\mathcal E$.
+
+The exact reduced denominator exponents have the form
+\[
+ q_{r,k}=rk+e_k,\qquad
+ \mathcal Q_r(X)=\frac{rX}{(1-X)^2}+\mathcal E(X).
+\]
+Thus every $\mathcal Q_r$ has the same natural boundary, and
+\begin{equation}
+ \mathcal Q_r-\mathcal Q_s=\frac{(r-s)X}{(1-X)^2}.
+ \label{r9:eq-denominator-difference}
+\end{equation}
+The carry telescope, formal-series identity, denominator decomposition, twice-cleared defect,
+and cross-base cancellation are \statuslean{} in \lean{SturmianGeneratingSeries}.  The
+natural-boundary conclusion itself invokes the classical P\'olya--Carlson theorem.  It is a
+one-slope diagnostic, not a contradiction: every irrational rotation already has this
+boundary, so a successful continuation theorem must use both prime supports together.
+
+\subsection{A logarithmic compact-height criterion}
+\label{r9:compact-height}
+
+Let
+\[
+ \mathcal C_{2,3}=\{(2^t,3^t):0\le t<1\}
+ \cap\bigl(\Z[1/2]\times\Z[1/3]\bigr),
+\]
+and for a reduced rational pair define
+$H(a/b,c/d)=\max(|a|,b,|c|,d)$.  Write $N_{2,3}(H)$ for the number of points of
+$\mathcal C_{2,3}$ of height at most $H$.  The accepted compact-orbit theorem gives the
+qualitative equivalence $\mathcal C_{2,3}=\{(1,1)\}$ if and only if the conjecture holds.
+Report 9 adds the exact growth dichotomy
+\begin{equation}
+ N_{2,3}(H)=
+ \begin{cases}
+  1,&\text{if the conjecture holds},\\
+  \asymp_\beta\log H,&\text{if it fails}.
+ \end{cases}
+ \label{r9:eq-compact-height-dichotomy}
+\end{equation}
+In the failure branch, the distinct points
+$(2^{\{k\alpha\}},3^{\{k\alpha\}})$ exhaust the localized arc, and their reduced numerator
+and denominator heights grow between two fixed exponentials in $k$.  Therefore each of
+\[
+ N_{2,3}(H)=O(1),\qquad N_{2,3}(H)=o(\log H)
+\]
+is equivalent to the conjecture.  Compact normalization has removed the automatic integer
+direction from the inherited $\asymp(\log H)^2$ unbounded count and leaves precisely one
+conditional generator.
+
+\begin{statusbox}{Report 9 was audited independently from the same common base as the other
+reports.  The formal generating-series algebra is \statuslean{} in
+\lean{SturmianGeneratingSeries}.  The Gamma cancellation, quadratic lattice count, compact
+height dichotomy, and Blaschke calculation have self-contained paper proofs; canonical-product
+and P\'olya--Carlson steps are classical interfaces.  The duplicated Bernstein approximation
+material is represented once in Section~\ref{sec:reports78}.  The inherited reported
+$2^{29}$ scan is not promoted; the unified trust frontier remains the reproducible $2^{27}$
+computation.}
+\end{statusbox}
+
+\section{Tenth report: matrix powers, Loewner certificates, and the one-half barrier}
+\label{sec:report10}
+
+Report 10 is an independent matrix-theoretic continuation from the common base.  It produces
+one exact reformulation and a family of genuine determinant certificates, but it also proves
+that polynomial representations of the original matrix carry no information beyond the two
+assumed integer outputs.  The optimized determinant family reaches a limiting one-half height
+exponent and therefore remains on the same side of the four-exponentials wall.
+
+\subsection{One fixed integral matrix}
+\label{r10:fixed-matrix}
+
+Consider
+\begin{equation}
+ A_0=\begin{pmatrix}0&-6\\1&5\end{pmatrix}.
+ \label{r10:eq-matrix}
+\end{equation}
+Its eigenvalues are $2,3$, and the complementary integral spectral projectors are
+$P_2=3I-A_0$ and $P_3=A_0-2I$.  Real functional calculus therefore gives
+\begin{equation}
+ A_0^t=2^tP_2+3^tP_3
+ =(3\,2^t-2\,3^t)I+(3^t-2^t)A_0.
+ \label{r10:eq-real-power}
+\end{equation}
+Consequently
+\begin{equation}
+ A_0^t\in M_2(\Z)
+ \quad\Longleftrightarrow\quad
+ 2^t,3^t\in\Z.
+ \label{r10:eq-integral-power-iff}
+\end{equation}
+For the nontrivial direction, if $B=A_0^t$ is integral then
+$c=B_{21}=3^t-2^t$ and $d=B_{11}=3\,2^t-2\,3^t$ are integers, while
+$2^t=d+2c$ and $3^t=d+3c$.  Equivalently,
+\[
+ \text{Alaoglu--Erd\H{o}s}
+ \quad\Longleftrightarrow\quad
+ \{t\in\R:A_0^t\in M_2(\Z)\}=\Nzero.
+\]
+The concrete matrix, all four entry formulas, the exact entry-integrality equivalence, and
+this conjectural equivalence are \statuslean{} in \lean{IntegralPowerMatrix}.
+
+This reformulation is exact but intentionally not advertised as extra arithmetic.  The
+unimodular matrix
+$\bigl(\begin{smallmatrix}-3&-2\\1&1\end{smallmatrix}\bigr)$ diagonalizes $A_0$ over
+$\Z$, so the lattice already splits into its $2$- and $3$-eigensummands.  Every polynomial,
+tensor, symmetric, or exterior-power construction from $(A_0,A_0^t)$ is a polynomial in the
+two integers $(2^t,3^t)$ and their monomials.  It cannot recover the common real time unless it
+introduces analytic dependence, a denominator-sensitive inequality, or a new logarithmic
+direction.
+
+\subsection{Cross-Loewner and generalized-alternant certificates}
+\label{r10:loewner}
+
+For distinct positive nodes $z_1,\ldots,z_N$ and distinct real exponents
+$\gamma_1,\ldots,\gamma_N$, strict total positivity of $e^{uv}$ gives
+\[
+ \det(z_i^{\gamma_j})\ne0,
+\]
+with positive sign when both lists are increasing.  If $t$ is a nonintegral solution, the
+two-block exponent list
+\begin{equation}
+ 0,1,\ldots,r-1,\quad t,t+1,\ldots,t+r-1
+ \label{r10:eq-two-block-exponents}
+\end{equation}
+is distinct.  At $2r$ distinct nodes in the $2,3$-smooth semigroup every entry is integral,
+so the alternant is a nonzero integer.
+
+The same certificate admits an exact divided-difference form.  For disjoint $r$-tuples
+$X=(x_i)$ and $Y=(y_j)$ and a function $f$ on their union, put
+\[
+ L_f(X,Y)_{ij}=\frac{f(x_i)-f(y_j)}{x_i-y_j}.
+\]
+If $M_f(X,Y)$ is the $2r$-row alternant with columns
+$1,z,\ldots,z^{r-1},f(z),zf(z),\ldots,z^{r-1}f(z)$, then
+\begin{equation}
+ \det M_f(X,Y)=(-1)^{r(r+1)/2}
+ \left(\prod_{i,j}(x_i-y_j)\right)\det L_f(X,Y).
+ \label{r10:eq-sylvester-loewner}
+\end{equation}
+For $f(u)=u^t$ and smooth integer nodes, the right-hand side is therefore a nonzero integer.
+Writing $t=k+\alpha$ with $0<\alpha<1$, the fractional-power kernel
+\[
+ K_\alpha(u,v)=\frac{u^\alpha-v^\alpha}{u-v}
+\]
+has the positive Stieltjes representation
+\[
+ K_\alpha(u,v)=\frac{\sin(\pi\alpha)}\pi
+ \int_0^\infty\frac{\lambda^\alpha}{(u+\lambda)(v+\lambda)}\,d\lambda.
+\]
+Thus its ordered cross minors are strictly positive.  Combining positivity with
+\eqref{r10:eq-sylvester-loewner} gives the explicit positive integer
+\begin{equation}
+ \left(\prod_i x_i^k y_i^k\right)
+ \left|\prod_{i,j}(x_i-y_j)\right|
+ \det(K_\alpha(x_i,y_j))\in\Z_{>0}.
+ \label{r10:eq-positive-loewner-integer}
+\end{equation}
+The positivity holds for every $0<\alpha<1$; all arithmetic content is in the displayed
+normalization.  These finite determinant identities have paper proofs here.  They are not
+silently conflated with the already formal generalized-Vandermonde positivity theorem.
+
+\subsection{Quantitative repulsion and the optimized barrier}
+\label{r10:one-half}
+
+Let $z_i=e^{u_i}$ with pairwise distinct $u_i\in[T,T+\delta]$, $0<\delta\le1$, and
+pairwise distinct exponents $0\le\gamma_j\le B$.  (With repeated nodes or exponents the
+determinant vanishes and the upper bound is trivial.)  Put $\Sigma=\sum_j\gamma_j$,
+$D=N(N-1)/2$, and $B_*=\max(1,B)$.  Newton divided differences followed by Hadamard's
+inequality give the explicit upper bound
+\begin{equation}
+ \left|\det(z_i^{\gamma_j})\right|
+ \le e^{T\Sigma}\delta^D
+ \frac{N^{N/2}e^{NB}B_*^D}{\prod_{\ell=0}^{N-1}\ell!}.
+ \label{r10:eq-alternant-upper}
+\end{equation}
+Together with the nonzero-integer lower bound, this excludes a sufficiently tight cluster of
+$2r$ smooth nodes.  For the equal two-block list
+\eqref{r10:eq-two-block-exponents} it gives an explicit bound of the shape
+\[
+ \delta\ge C_{r,t}^{-1/[r(2r-1)]}
+ R^{-(t+r-1)/(2r-1)}.
+\]
+The exponent tends to $1/2$ as $r\to\infty$, much smaller than the logarithmic spacings
+available from counting smooth numbers.
+
+Allowing unequal block sizes does not improve the limiting ratio.  With $p+q=N$ and exponent
+set $0,\ldots,p-1,t,\ldots,t+q-1$, the total exponent is
+\begin{equation}
+ \Sigma(p,q;t)=\frac{p(p-1)}2+qt+\frac{q(q-1)}2
+ =D+q(q+t-N),
+ \label{r10:eq-mixed-sum}
+\end{equation}
+so
+\begin{equation}
+ \min_{p+q=N}\frac{\Sigma(p,q;t)}D
+ =\frac12+O_t(N^{-1}).
+ \label{r10:eq-half-barrier}
+\end{equation}
+Initial consecutive shifts already minimize the height inside each coset.  Translating signed
+exponents into the first quadrant restores exactly the denominator height that cancellation
+appeared to save.  This is the matrix one-half barrier.
+
+There is a dual exact identity for candidate exponents.  Let $d\ge1$, let
+$p,q\in\N$ with $q>0$, and put $\varepsilon=qt-p$ and
+$\tau_i=(d-1-i)p+iqt$ for $0\le i<d$.  Then at distinct smooth bases $s_j$,
+$0\le j<d$,
+\begin{equation}
+ \det(s_j^{\tau_i})
+ =\left(\prod_j s_j^{(d-1)p}\right)
+   \prod_{j<k}(s_k^\varepsilon-s_j^\varepsilon).
+ \label{r10:eq-approx-vandermonde}
+\end{equation}
+Its nonzero-integral lower bound yields an explicit but exponentially weak irrationality
+estimate for $|qt-p|$.  Higher dimension organizes the elementary integer
+$2^{qt}-2^p$ but does not change its exponential scale.  The affine-exponent determinant,
+its real-power specialization, the exact semigroup exponent identity, and
+\eqref{r10:eq-approx-vandermonde} are \statuslean{} in \lean{CandidateAlternant}; the
+mean-value upper bound and resulting irrationality estimate remain the paper layer.
+
+\begin{statusbox}{Report 10 was audited independently from the common base.  The exact fixed
+matrix reformulation is \statuslean{} in \lean{IntegralPowerMatrix}.  Generalized-Vandermonde
+nonvanishing and ordered-chamber positivity are separately \statuslean{} in the inherited
+determinant modules, and the exact rational-approximation alternant is \statuslean{} in
+\lean{CandidateAlternant}.  The Sylvester--Loewner factorization, positive normalized
+determinant, explicit alternant bound, and optimized one-half barrier are retained as paper
+theorems.  No claim is made that formal representation theory manufactures a third
+exponential, or that matrix positivity by itself selects integral exponents.}
+\end{statusbox}
+
+\section{Eleventh report: finite-place transversality and local rank-drop certificates}
+\label{sec:report11}
+
+Report 11 is an independent $p$-adic and matrix-coefficient continuation from the common
+base.  Its real prime-symbol polynomial, rational matrix-coefficient obstruction, and sharp
+support bound overlap the already reconciled reports 1--4.  They are represented once by
+\lean{FormalPrimeDeterminant}, \lean{RestrictedMatrixCoefficient}, and
+\lean{SparsePowerCurve}.  The genuinely distinct layer compares the singular real logarithm
+matrix with its finite-place analogues, isolates the first Fermat-quotient obstruction, and
+shows why ordinary real rational approximation does not propagate to a local rank drop.
+
+\subsection{The structural primes are locally transverse}
+\label{r11:structural-primes}
+
+For the Iwasawa logarithm $\log_p:\Q_p^*\to\Q_p$, normalized by $\log_p p=0$, define
+\begin{equation}
+ L_p(M,A)=
+ \begin{pmatrix}\log_p2&\log_pM\\\log_p3&\log_pA\end{pmatrix},
+ \qquad
+ D_p(M,A)=\log_pM\log_p3-\log_pA\log_p2.
+ \label{r11:eq-local-matrix}
+\end{equation}
+On positive rationals the kernel is exactly
+\begin{equation}
+ \log_pu=0\quad\Longleftrightarrow\quad u=p^k
+ \text{ for some }k\in\Z.
+ \label{r11:eq-iwasawa-kernel}
+\end{equation}
+Hence a nonintegral counterexample pair $(M,A)=(2^\beta,3^\beta)$ satisfies
+\begin{align}
+ D_2(M,A)&=\log_2M\log_23\ne0,\\
+ D_3(M,A)&=-\log_3A\log_32\ne0.
+ \label{r11:eq-structural-nonzero}
+\end{align}
+The real matrix has rank one, but both finite-place matrices at the primes defining the
+problem have rank two.  If, for a prime $p$, the pair $(M,A)$ belonged to the closure of
+$\{(2^n,3^n):n\in\Z\}$ in $(\Q_p^*)^2$, continuity of $\log_p$ would instead force
+$D_p(M,A)=0$.  Thus a real-to-local closure principle at either structural prime would prove
+the conjecture, but no such transfer theorem is known.
+
+This is not merely a change of language.  It reverses the naive local expectation: a
+hypothetical counterexample is singular only at the real place among the three places that
+are directly visible from its definition.  Any adelic proof must compare a real zero with
+proven local nonzeros, not copy the real relation into $\Q_2$ or $\Q_3$.
+
+\subsection{The Fermat-quotient first layer}
+\label{r11:fermat}
+
+For an odd prime $p\nmid u$, set
+\[
+ q_p(u)=\frac{u^{p-1}-1}{p}\pmod p.
+\]
+The first Iwasawa-logarithm digit is
+\begin{equation}
+ \frac{\log_pu}{p}\equiv-q_p(u)\pmod p.
+ \label{r11:eq-log-fermat}
+\end{equation}
+Therefore, for $p\ge5$ and $p\nmid6MA$, the determinant
+\begin{equation}
+ \Delta_p(M,A)=q_p(M)q_p(3)-q_p(A)q_p(2)\pmod p
+ \label{r11:eq-fermat-determinant}
+\end{equation}
+satisfies
+\begin{equation}
+ \frac{D_p(M,A)}{p^2}\equiv\Delta_p(M,A)\pmod p.
+ \label{r11:eq-local-first-layer}
+\end{equation}
+Thus $\Delta_p\ne0$ certifies the exact first possible valuation
+$v_p(D_p)=2$.  Conversely, for every integer-exponent pair
+$(M,A)=(2^n,3^n)$,
+\[
+ q_p(u^n)\equiv n q_p(u)\pmod p
+\]
+makes $\Delta_p(M,A)=0$.  A local rank drop must therefore pass a generalized Wieferich
+congruence and then an infinite tower of higher congruences.  The finite near-miss scan in
+report 11 is retained only as a software diagnostic; it is not evidence that every primitive
+pair has a bounded detecting prime.
+
+\subsection{Real approximants and the exact adelic wedge}
+\label{r11:adelic-wedge}
+
+Let $r/s$ be a rational approximation to $\beta$, $s>0$, and put
+\[
+ R_2(r,s)=\frac{M^s}{2^r},\qquad
+ R_3(r,s)=\frac{A^s}{3^r}.
+\]
+At the real place the errors are perfectly synchronized:
+\[
+ \log R_2=(s\beta-r)\log2,\qquad
+ \log R_3=(s\beta-r)\log3.
+\]
+At a finite place set
+\[
+ E_p(r,s)=
+ (s\log_pM-r\log_p2,\ s\log_pA-r\log_p3).
+\]
+Direct expansion gives the exact wedge identity
+\begin{equation}
+ E_{p,1}(r,s)\log_p3-E_{p,2}(r,s)\log_p2=sD_p(M,A).
+ \label{r11:eq-adelic-wedge}
+\end{equation}
+At the structural primes the numerator $r$ disappears from one coordinate:
+\begin{align}
+ \log_2R_2(r,s)&=s\log_2M,&
+ v_2(\log_2R_2)&=v_2(s)+v_2(\log_2M),\\
+ \log_3R_3(r,s)&=s\log_3A,&
+ v_3(\log_3R_3)&=v_3(s)+v_3(\log_3A).
+ \label{r11:eq-structural-errors}
+\end{align}
+Choosing a better continued-fraction numerator improves the real approximation but has no
+effect on these two local depths; only divisibility of the denominator $s$ helps.  This exact
+anti-transfer explains why an archimedean convergent does not automatically produce a local
+near-singularity.
+
+\subsection{Cascade depth and the Kummer norm diagnostic}
+\label{r11:cascade-kummer}
+
+The report also records two useful no-go estimates.  First, suppose each of the first $J(T)$
+active tropical layers contributes at most $CT^{3/2}$ fixed-base logarithmic factors, each of
+valuation at most $C'(\log T)^2$.  Their total exposed valuation is then
+\begin{equation}
+ O\!\left(J(T)T^{3/2}(\log T)^2\right).
+ \label{r11:eq-cascade-depth}
+\end{equation}
+Against $H_T\asymp T^{5/2}$ this is lower order whenever
+$J(T)=o(T/(\log T)^2)$.  This is a conditional bookkeeping proposition for a factorized
+layer model, not an upper bound on arbitrary determinant cancellation; a global higher
+initial form may behave differently.
+
+Second, for positive real $N$th roots define the algebraic integer
+\[
+ \Xi_N=(M^{1/N}-1)(3^{1/N}-1)
+      -(A^{1/N}-1)(2^{1/N}-1).
+\]
+The determinant relation cancels the quadratic term and leaves
+\begin{equation}
+ \Xi_N=
+ \frac{\beta\log2\log3\,(\beta-1)(\log2-\log3)}{2N^3}
+ +O_{M,A}(N^{-4}).
+ \label{r11:eq-kummer-asymptotic}
+\end{equation}
+Thus the distinguished embedding is polynomially small and nonzero for large $N$.  The field
+degree and varying, generally uncontrolled root-of-unity twists (subject to the algebraic
+relations among the radicands) grow with $N$, however, so a crude product-formula
+bound becomes worse rather than better.  A viable algebraic-integer construction would need
+simultaneous smallness in many conjugates or exponential smallness at one place.
+
+\begin{statusbox}{Report 11 was audited independently from the common base.  Its real
+prime-symbol and matrix-coefficient layers are already \statuslean{} in
+\lean{FormalPrimeDeterminant} and \lean{RestrictedMatrixCoefficient}; its sparse-grid core is
+\statuslean{} in \lean{SparsePowerCurve}.  The exact Fermat-quotient divisibility identity,
+power law modulo $p$, determinant interface, and its vanishing on $(2^n,3^n)$ are
+\statuslean{} in \lean{FermatQuotientDeterminant}.  The passage from that residue determinant
+to the Iwasawa logarithm uses the classical congruence \eqref{r11:eq-log-fermat}; the
+structural-prime theorem uses the classical Iwasawa-logarithm kernel.  The exact wedge,
+conditional cascade-depth, and Kummer expansion remain elementary paper results.  No
+$p$-adic Matrix Coefficient or real-to-local transfer theorem is asserted.}
+\end{statusbox}
+
+\section{Twelfth report: prime switches and microscopic resonance}
+\label{sec:report12}
+
+Report 12 is another independent continuation from the common unified base.  It returns to
+the historical origin of the problem: simultaneous changes in the prime exponents of
+colossally abundant numbers.  This is a valuable structured test family, but its logical
+scope is narrower than the integer-output conjecture.  A switch produces rational values
+$p^\varepsilon$ and $q^\varepsilon$; excluding all switches would prove only a special case
+of the stronger rational-output statement.  No reduction from arbitrary rational outputs,
+or from this switch family, to Conjecture~\ref{conj:AE} is known.
+
+\subsection{Exact switch heights and logarithmic means}
+\label{r12:switch-logmean}
+
+For a prime $p$ and an integer $a\ge1$, set
+\begin{equation}
+ H_{p,a}=p+p^2+\cdots+p^a,
+ \qquad
+ \varepsilon_{p,a}=\frac{\log(1+H_{p,a}^{-1})}{\log p}.
+ \label{r12:eq-switch-height}
+\end{equation}
+Comparing the two consecutive local factors in
+$\sigma(n)/n^{1+\varepsilon}$ gives the exact tie identity
+\begin{equation}
+ p^{\varepsilon_{p,a}}=
+ \frac{p^{a+1}-1}{p^{a+1}-p}
+ =1+\frac1{H_{p,a}}.
+ \label{r12:eq-switch-output}
+\end{equation}
+For fixed $a$ this parameter decreases with $p$, and for fixed $p$ it decreases with $a$.
+If $p<q$ and $\varepsilon_{p,a}=\varepsilon_{q,b}$, then
+\begin{equation}
+ H_{p,a}>H_{q,b},\qquad a>b.
+ \label{r12:eq-antichain}
+\end{equation}
+Thus simultaneous switches form an antichain in prime size and local exponent.
+
+The analytic center of the calculation is the consecutive logarithmic mean
+\[
+ R(H)=\frac1{\log(1+1/H)},
+ \qquad
+ J(H)=H+\frac12-\frac1{12H}.
+\]
+For every real $H\ge1$ one has the globally valid two-sided enclosure
+\begin{equation}
+ J(H)<R(H)<J(H)+\frac1{24H^2}.
+ \label{r12:eq-logmean-enclosure}
+\end{equation}
+The proof differentiates two rational majorants for $\log(1+x)$ on $0<x\le1$; it is an
+inequality with an exact remainder, not merely an asymptotic expansion.  The definitions and
+the complete enclosure \eqref{r12:eq-logmean-enclosure} are \statuslean{} in
+\lean{ConsecutiveLogMeanBounds}.
+
+At a collision, $R(H_{p,a})\log p=R(H_{q,b})\log q$.  Writing
+$H=H_{p,a}$ and $K=H_{q,b}$, \eqref{r12:eq-logmean-enclosure} therefore gives
+\begin{equation}
+ \left|J(H)\log p-J(K)\log q\right|
+ <\frac{\log p}{24H^2}+\frac{\log q}{24K^2}.
+ \label{r12:eq-second-order-resonance}
+\end{equation}
+This is a highly structured Dirichlet-scale approximation: the coefficients are geometric
+sums, and exploiting that structure rather than merely invoking a general irrationality
+measure is essential.
+
+\subsection{A microscopic prescribed-prime window}
+\label{r12:microscopic-window}
+
+For fixed $b\ge1$, put
+\[
+ H_b(t)=t+t^2+\cdots+t^b,
+ \qquad \Phi_b(t)=J(H_b(t))\log t.
+\]
+Since $\Phi_b'(t)>bt^{b-1}\log t$ on $t>1$, there is a unique real
+$Q_{p,a,b}>1$ satisfying
+\[
+ \Phi_b(Q_{p,a,b})=J(H_{p,a})\log p.
+\]
+If primes $p<q$ switch simultaneously, the mean-value theorem and
+\eqref{r12:eq-second-order-resonance} imply
+\begin{equation}
+ |q-Q_{p,a,b}|<
+ \frac{\frac{\log p}{24H_{p,a}^{2}}+
+       \frac{\log q}{24H_{q,b}^{2}}}
+      {b(q-\frac12)^{b-1}\log(q-\frac12)}
+ =O_b(q^{1-3b}).
+ \label{r12:eq-microscopic-window}
+\end{equation}
+The interval has length less than one.  Already for $b=1$ its radius is $O(q^{-2})$.
+Consequently modern prime-in-short-interval theorems, whose intervals still have positive
+power length, cannot decide the switch: before primality enters, the nearest integer has
+already been prescribed.  The report's suggested modernization of the 1944 prime-block
+argument is retained only as a schematic transference of known prime-distribution input; its
+required uniform error estimates are not reconstructed here.  Likewise, the first-order
+formula for the location of $Q_{p,a,b}$ is a useful calibration, but its displayed proof in
+the source report omits a bootstrap and is not used as a theorem in this synthesis.
+
+\subsection{The exact $2$--$3$ convergent sieve}
+\label{r12:two-three-sieve}
+
+For a possible switch between $2$ at level $a$ and $3$ at level $b$, define
+\begin{equation}
+ P=2^{a+2}-3,
+ \qquad Q=3^{b+1}-2.
+ \label{r12:eq-PQ}
+\end{equation}
+The second-order enclosure, together with the elementary bounds
+$3/2<\thetaq<8/5$, yields the exact necessary condition
+\begin{equation}
+ 0<\thetaq-\frac PQ<\frac1{2Q^2}.
+ \label{r12:eq-legendre-window}
+\end{equation}
+After reduction, $P/Q$ must therefore be a continued-fraction convergent of $\thetaq$.
+Equivalently, a collision must hit an exponentially shrinking shifted-power target
+\[
+ 0<\thetaq(3^{b+1}-2)-(2^{a+2}-3)
+ <\frac1{2(3^{b+1}-2)}.
+\]
+This converts the transcendental equality into a discrete $S$-unit sieve, but no uniform
+argument over all convergents is currently known.
+
+The literal exact-integer verifier in report 12 checks this necessary condition for
+$1\le b\le10000$.  It certifies $10000$ unambiguous floors, finds the sole power-shape hit
+$(a,b,P,Q)=(5,3,125,79)$, and rejects that hit by the stronger Legendre window; hence there
+are no survivors in the tested range.  The verifier source has SHA-256
+\begin{center}
+\sha{a7aef69a62ce5b07bd8f909966244b3a5e92e23ac9bb2e1b951433d1f6902ce8}.
+\end{center}
+An independent rerun reproduced every mathematical field.  The source report's JSON digest
+is not used as a certificate because its payload includes nondeterministic elapsed time.
+This remains \statuscomp{}, not a kernel proof and not a finite test of the original
+integer-output conjecture.
+
+\subsection{What prime distribution can and cannot force}
+\label{r12:prime-barriers}
+
+For fixed integers $U,V\ge2$, define the universal Fermat-synchronized divisor
+\[
+ F_{U,V}(n)=
+ \prod_{\substack{\ell\ {\rm prime},\ \ell\nmid UV\\ \ell-1\mid n}}\ell.
+\]
+Fermat's theorem gives
+\begin{equation}
+ F_{U,V}(n)\mid\gcd(U^n-1,V^n-1),
+ \qquad
+ \log F_{U,V}(n)\le\tau(n)\log(n+1)=n^{o(1)}.
+ \label{r12:eq-fermat-sync}
+\end{equation}
+Along $n_y=\operatorname{lcm}(1,\ldots,\lfloor y\rfloor)$, the prime number theorem and the
+standard divisor estimate still leave $\log F_{U,V}(n_y)=n_y^{o(1)}=o(n_y)$.  This is far
+below the exponential common-divisor growth that would contradict the
+Bugeaud--Corvaja--Zannier bound for multiplicatively independent $U,V$.  Generic prime
+distribution therefore cannot manufacture the missing real-to-finite-place correlation.
+It becomes relevant only after another argument has produced a rigid prescribed integer,
+such as the nearest integer in \eqref{r12:eq-microscopic-window} or a convergent satisfying
+\eqref{r12:eq-legendre-window}.
+
+\begin{statusbox}{Report 12 was audited independently from the same common base as all other
+numbered reports.  The exact logarithmic-mean enclosure is \statuslean{} in
+\lean{ConsecutiveLogMeanBounds}.  The switch formula, antichain, resonance, microscopic
+window, convergent sieve, and Fermat-synchronization barrier are self-contained paper
+arguments.  The low-level switch exclusion is \statuscomp{} with the scope and software
+qualification stated above.  Modern short-interval results are scale calibrations only, and
+the claimed transference to the complete 1944 block argument is not promoted to a theorem.
+Nothing in this section reduces the rational switch problem to the original integer-output
+conjecture.}
+\end{statusbox}
+
+\section{Thirteenth report: exterior powers and boundary realizations}
+\label{sec:report13}
+
+Report 13 is independent of report 10 and of every other numbered continuation: it starts
+from the same inherited unified base and pursues a different matrix-analysis program.  Its
+new content is not another reformulation of the Matrix Coefficient principle.  It asks what
+finite-dimensional matrix phenomena a hypothetical counterexample can realize, whether
+proper exterior powers improve the determinant budget, and whether a $K^2$-point
+multiplicative grid can be compressed to its $O(K)$ boundary data.
+
+Throughout this section assume hypothetically that
+\begin{equation}
+ M=2^\beta\in\Z_{>0},\qquad A=3^\beta\in\Z_{>0},
+ \qquad \beta\notin\Q,
+ \label{r13:eq-counterexample}
+\end{equation}
+and retain $\thetaq=\log_2 3$.  Then
+\begin{equation}
+ G=\{2^rM^s:r,s\in\Z\}\subset\Q_{>0}
+ \label{r13:eq-dense-group}
+\end{equation}
+is dense in $\R_{>0}$ and every $g\in G$ has rational $\thetaq$-th power.
+
+\subsection{Rational conditioning does not create rational rank}
+\label{r13:rational-conditioning}
+
+The singular logarithm matrix factors as
+\[
+ L=\begin{pmatrix}\log2&\log M\\ \log3&\log A\end{pmatrix}
+ =\binom{\log2}{\log3}(1,\beta).
+\]
+For a nonzero $c\in\R^2$ and $B\ge1$, set
+\[
+ \mu_c(B)=\min_{0\ne z\in\Z^2,\ \|z\|_\infty\le B}|z^{\mathsf T}c|,
+ \qquad
+ \eta_L(B)=\min_{\substack{0\ne u,v\in\Z^2\\
+   \|u\|_\infty,\|v\|_\infty\le B}}|u^{\mathsf T}Lv|.
+\]
+The rank-one factorization gives the exact identity
+\begin{equation}
+ \eta_L(B)=
+ \mu_{(\log2,\log3)}(B)\,\mu_{(1,\beta)}(B).
+ \label{r13:eq-bilinear-minimum}
+\end{equation}
+Dirichlet approximation supplies $\eta_L(B)\ll_M B^{-2}$, while effective linear forms in
+logarithms give only a computable polynomial lower bound.  Approximate zero coefficients after
+bounded rational basis changes are therefore plentiful and entirely compatible with exact
+nonvanishing.  The missing conclusion remains rational orthogonality in one of the two
+factors, exactly as in \lean{RestrictedMatrixCoefficient}.
+
+\subsection{Projective arithmetic density and a Hadamard-power no-go}
+\label{r13:projective-density}
+
+The density in \eqref{r13:eq-dense-group} has a simultaneous finite-matrix strengthening.
+Given $n\ge1$, a positive-entry real matrix $B$, and $\epsilon>0$, choose each entry from
+$G$ within a sufficiently small tolerance and clear all negative exponents by one common
+$\lambda=2^RM^S$ with $R,S\ge0$.  Then
+$\lambda,\lambda^{\thetaq}\in\Z_{>0}$, and this produces
+\begin{equation}
+ C\in M_n(\Z_{>0}),\qquad C^{\circ\thetaq}\in M_n(\Z_{>0}),
+ \label{r13:eq-integral-hadamard-pair}
+\end{equation}
+such that
+\begin{equation}
+ \|\lambda^{-1}C-B\|_{\max}<\epsilon,
+ \qquad
+ \|\lambda^{-\thetaq}C^{\circ\thetaq}-B^{\circ\thetaq}\|_{\max}<\epsilon.
+ \label{r13:eq-projective-density}
+\end{equation}
+The choices may be made symmetrically.  More precisely, if $\mathcal U$ and $\mathcal V$ are
+separately open and invariant under positive scalar multiplication, then
+$B\in\mathcal U$ and $B^{\circ\thetaq}\in\mathcal V$ imply that the integral pair may be
+chosen with $C\in\mathcal U$ and $C^{\circ\thetaq}\in\mathcal V$.
+
+This retires a natural positivity route.  For distinct positive $r_1,\ldots,r_4$ and small
+$t>0$, Cauchy--Binet gives
+\begin{equation}
+ \det\bigl((1+tr_ir_j)^\alpha\bigr)_{i,j=1}^4
+ =t^6\left(\prod_{k=0}^3\binom\alpha k\right)
+   \prod_{i<j}(r_j-r_i)^2+O(t^7).
+ \label{r13:eq-hadamard-sign}
+\end{equation}
+For $1<\alpha<2$ the leading coefficient is negative.  After a small positive diagonal
+perturbation, the unpowered matrix is positive definite while its entrywise $\alpha$-power
+is indefinite.  Applying \eqref{r13:eq-projective-density} with $\alpha=\thetaq$ yields a
+positive-definite integer matrix $C$ for which $C^{\circ\thetaq}$ is both integral and
+indefinite.  Thus critical-exponent failure is compatible with a counterexample; it cannot
+serve as an integrality contradiction.
+
+Supports placed on a rational near-kernel direction give no hidden collective gain either.
+Their alternants factor into an ordinary Vandermonde times a Schur polynomial; for consecutive
+support the determinant is exactly a product of pairwise integer binomials.  This is the
+homogeneous counterpart of the affine factorization already \statuslean{} in
+\lean{CandidateAlternant}, so it is cross-referenced rather than counted as a separate formal
+advance.
+
+\subsection{Determinantal divisors and the compound ceiling}
+\label{r13:compounds}
+
+Let $E\in M_N(\Z)$ be nonsingular and $1\le k\le N$.  Write $d_k(E)$ for the gcd of its
+$k$-minors, let $\sigma_1(E)\ge\cdots\ge\sigma_N(E)>0$ be its singular values, adopt
+$v_p(0)=+\infty$, and define
+\begin{align}
+ \tau_{p,k}(E)&=
+ \min_{\substack{|I|=|J|=k\\\sigma:I\overset\sim\longrightarrow J}}
+ \sum_{i\in I}v_p(E_{i,\sigma(i)}),
+ &Q_k(E)&=\prod_p p^{\tau_{p,k}(E)}.
+ \label{r13:eq-compound-content}
+\end{align}
+Only finitely many primes contribute to $Q_k(E)$.
+The exact adelic compound sandwich is
+\begin{equation}
+ Q_k(E)\mid d_k(E),
+ \qquad
+ d_k(E)\le\|\textstyle\bigwedge^kE\|_2
+ =\prod_{j=1}^k\sigma_j(E).
+ \label{r13:eq-compound-sandwich}
+\end{equation}
+The divisibility uses only termwise prime divisibility of every minor; the inequality views
+the minors as the entries of $\bigwedge^kE$.  It is the entire Smith/exterior-power analogue
+of the inherited full-determinant comparison.
+
+On the complete triangular evaluation grid $E_T$, put $Q_{T,k}=Q_k(E_T)$ and let
+$E^-_{T,k}$ and $E^+_{T,k}$ denote,
+respectively, the minimum reverse-pairing and maximum same-order $k$-point assignment
+energies, and take $k/N_T\to\rho\in(0,1]$.  The limiting quantile is $\sqrt t$, so
+\begin{equation}
+ \frac{E^-_{T,k}}{N_TTL_T\log2}\longrightarrow
+ \int_0^\rho\sqrt{t(\rho-t)}\,dt=\frac\pi8\rho^2,
+ \qquad
+ \frac{E^+_{T,k}}{N_TTL_T\log2}\longrightarrow
+ \int_{1-\rho}^1t\,dt=\rho-\frac{\rho^2}{2}.
+ \label{r13:eq-compound-energies}
+\end{equation}
+The combinatorial factor $\binom{N_T}{k}k!$ is lower order on the $T^4$ scale.  Under these
+specific termwise-divisor and largest-minor/Frobenius bounds one obtains the ceiling
+\begin{equation}
+ \limsup_{T\to\infty}
+ \frac{\log Q_{T,k}}
+      {E^+_{T,k}+\log\!\left(\binom{N_T}{k}k!\right)}
+ \le R(\rho)=\frac{\pi\rho}{8-4\rho},
+ \qquad R(\rho)<R(1)=\frac\pi4\quad(0<\rho<1).
+ \label{r13:eq-compound-ceiling}
+\end{equation}
+Thus every proper compound is worse than the full determinant under the inherited estimates.
+This is not a no-go theorem for exterior powers themselves: a sharper singular-value free
+energy, cancellation among minors, or extra Smith divisibility could still change the
+comparison.
+
+The report also applies a two-variable finite-difference transform to the square-grid
+evaluation matrix.  It extracts diagonal weights $a!b!$.  If, for each prime $p$, the
+multiset $\{v_p(a!b!):0\le a,b<K\}$ is arranged as
+$\omega_{p,1}\le\cdots\le\omega_{p,K^2}$ and
+\[
+ \mathfrak F_{K,k}=\prod_p p^{\sum_{\ell=1}^k\omega_{p,\ell}},
+\]
+then the every-compound divisor is
+\begin{equation}
+ \mathfrak F_{K,k}\mid d_k(\mathcal E_K)\qquad(1\le k\le K^2).
+ \label{r13:eq-factorial-compounds}
+\end{equation}
+At top degree this becomes
+\[
+ \left(\prod_{r=0}^{K-1}r!\right)^{2K}\mid\det\mathcal E_K,
+ \qquad
+ \log\left(\prod_{r=0}^{K-1}r!\right)^{2K}
+ =K^3\log K-\frac32K^3+O(K^2\log K).
+\]
+The mechanism is the two-variable/all-compound extension of
+\lean{SuperfactorialDeterminant}, \lean{AllLayerUnitBasis}, and
+\lean{RowBlockUnitDivisibility}; its contribution
+is lower order than the $K^4$ determinant budget and is retained as a paper specialization,
+not advertised as a new leading divisor.
+
+\subsection{Exact boundary displacement and transfer determinants}
+\label{r13:boundary-displacement}
+
+Let $K>0$, $\mathcal I_K=\{0,\ldots,K-1\}^2$, and set
+\begin{equation}
+ \mathcal E_K[(i,j),(u,v)]
+ =(2^uM^v)^i(3^uA^v)^j.
+ \label{r13:eq-grid-matrix}
+\end{equation}
+Put $d_{2;u,v}=2^uM^v$ and $d_{3;u,v}=3^uA^v$.  Let $D_2,D_3$ be the diagonal matrices
+with these respective entries, let
+$S_2,S_3$ be the two truncated forward row shifts, and let $P_2,P_3$ project onto their
+terminal row boundaries.  Directly shifting a row index gives
+\begin{align}
+ S_2\mathcal E_K-\mathcal E_KD_2&=-P_2\mathcal E_KD_2,
+ &S_3\mathcal E_K-\mathcal E_KD_3&=-P_3\mathcal E_KD_3.
+ \label{r13:eq-displacement}
+\end{align}
+After sorting, irrationality of $\thetaq$ and $\beta$, respectively, makes the row parameters
+and column frequencies pairwise distinct; strict total positivity of $e^{xy}$ therefore gives
+$\det\mathcal E_K\ne0$.  Since the coordinate multipliers are nonzero, each right side in
+\eqref{r13:eq-displacement} has rank exactly $K$.  The commuting
+multiplication operators
+\[
+ T_r=\mathcal E_KD_r\mathcal E_K^{-1}\qquad(r=2,3)
+\]
+have the boundary-feedback form $T_r=S_r+R_r$ with $\operatorname{rank}R_r=K$.  Their commutativity gives
+the exact boundary relation
+\begin{equation}
+ [S_2,R_3]+[R_2,S_3]+[R_2,R_3]=0.
+ \label{r13:eq-boundary-commutator}
+\end{equation}
+
+If $J_r:\R^K\to\R^{K^2}$ injects the corresponding boundary and $R_r=J_rC_r$, the matrix
+determinant lemma compresses the full spectrum, for $z\ne0$, to
+\begin{equation}
+ \prod_{0\le u,v<K}(z-d_{r;u,v})
+ =z^{K^2}\det\!\left(I_K-C_r(zI-S_r)^{-1}J_r\right),
+ \qquad
+ (zI-S_r)^{-1}=\sum_{h=0}^{K-1}z^{-h-1}S_r^h.
+ \label{r13:eq-transfer-determinant}
+\end{equation}
+This is an exact $K\times K$ encoding of a $K^2$-point spectrum.  It does not by itself
+provide an arithmetic gain: the primitive denominators and local Smith factors of the
+boundary feedback remain unknown.
+
+Because the $d_{2;u,v}$ are distinct, there is also a unique
+$\widehat Q_K\in\Q[X]$ of degree below $K^2$ with
+$\widehat Q_K(d_{2;u,v})=d_{3;u,v}$.  Simultaneous diagonalization gives the exact paper
+identity
+\begin{equation}
+ T_3=\widehat Q_K(T_2).
+ \label{r13:eq-spectral-interpolation}
+\end{equation}
+Together with \eqref{r13:eq-boundary-commutator}, this concentrates the unresolved arithmetic
+in two rank-$K$ boundary feedbacks.
+
+\subsection{Kraus--Loewner positivity and its denominator tax}
+\label{r13:kraus}
+
+For $f(t)=t^{\thetaq}$ and $a,x,y>0$, let $K_a(x,y)=f[x,a,y]$ be the second divided
+difference.  The operator-convex integral representation gives
+\begin{equation}
+ K_a(x,y)=c_{\thetaq}\int_0^\infty
+ \frac{s^{\thetaq}}{(x+s)(a+s)(y+s)}\,ds,
+ \qquad c_{\thetaq}=\frac{\sin(\pi(\thetaq-1))}{\pi}>0.
+ \label{r13:eq-kraus-kernel}
+\end{equation}
+Let $0<x_1<\cdots<x_n$ and $0<y_1<\cdots<y_n$.  Andr\'eief's identity and the two Cauchy determinants
+give a strictly positive multiple integral for $\det(K_a(x_i,y_j))$.  Thus the cross-kernel
+is strictly totally positive.
+
+When $a,x_i,y_j$ are pairwise distinct positive integers and all their $\thetaq$-th powers
+are integers, each entry is rational and
+\begin{equation}
+ \left(\prod_i(x_i-a)\right)
+ \left(\prod_j(a-y_j)\right)
+ \left(\prod_{i,j}(x_i-y_j)\right)
+ \det(K_a(x_i,y_j))\in\Z\setminus\{0\}
+ \label{r13:eq-kraus-clearing}
+\end{equation}
+But scaling all nodes by $R>0$ multiplies this cleared expression by
+$R^{n^2+n\thetaq}$, a positive power.  (It remains an integer after scaling whenever the
+scaled nodes satisfy the same integrality hypotheses.)  The derivative decay is therefore overwhelmed by the
+naive denominator; a useful argument would need primitive denominator cancellation or new
+numerator divisibility.
+
+\begin{statusbox}{Report 13 was audited independently from the common base, not as a revision
+of report 10.  Its projective density and Hadamard-power no-go, compound sandwich and
+triangular ceiling, every-compound finite-difference specialization, transfer determinant,
+rational-conditioning factorization, and Kraus--Loewner package have self-contained paper
+proofs.  The exact shift/displacement identities are \statuslean{} in
+\lean{BoundaryDisplacement}; its rank-$K$ endpoints explicitly assume $K>0$, nonsingularity,
+and nonzero coordinate multipliers, all supplied for the displayed grid by the paper argument
+above.  The
+transfer determinant and spectral interpolation remain the paper layer.  The rational-direction
+alternant and factorial-basis mechanisms overlap existing
+accepted modules and are not double-counted.  The compound ceiling applies only to the stated
+termwise-divisor/Frobenius estimates; the boundary compression and Kraus positivity are exact
+interfaces, not claimed contradictions.}
+\end{statusbox}
+
 \section{Varying the antecedent, the domain, and the codomain}
 \label{sec:variants}
 
@@ -14215,6 +15474,51 @@ Normalized Fej\'er kernel, exact finite weighted Fourier score, and exact intege
 bound & \statuslean & \lean{FejerKernelCertificate}; Section~\ref{pc:fejer} \\
 Uniform metric near-integrality and Haar random-phase extinction & \statusnew &
 Section~\ref{pc:metric-phase}; finite Fej\'er bridge separately kernel-checked \\
+Exact denominator-exponent drift, common centered defect, and structural-prime $p$-adic escape
+& \statuslean & \lean{AdelicDrift}; Section~\ref{r78:adelic-drift} \\
+Sturmian carry telescope, exact prefix mean/variance, joint-carry probability, and covariance
+kernel & \statuslean & \lean{SturmianProbability}; Section~\ref{r78:sturmian} \\
+Dense denominator clearing, finite-difference approximation floor, and all-degree normalized
+tax obstruction & \statuslean & \lean{PolynomialApproximationTax};
+Section~\ref{r78:approximation-tax} \\
+Rational homogeneous contact nonvanishing and first-order Pad\'e transversality & \statuslean &
+\lean{RationalContactRigidity}; Section~\ref{r78:contact} \\
+Carry/floor and denominator formal-series identities, including the exact common defect &
+\statuslean & \lean{SturmianGeneratingSeries}; Section~\ref{r9:natural-boundary} \\
+De-integralized common-zero lattice and canonical divisor; compact $\Theta(\log H)$ height
+dichotomy & \statusnew & Section~\ref{r9:common-divisor}, Section~\ref{r9:compact-height} \\
+P\'olya--Carlson natural boundary for the carry, floor, and reduced-denominator series &
+\statusknown & Section~\ref{r9:natural-boundary}; exact series algebra separately
+kernel-checked \\
+Fixed $2\times2$ integral matrix: integral real power iff both original outputs are integral &
+\statuslean & \lean{IntegralPowerMatrix}; Section~\ref{r10:fixed-matrix} \\
+Affine-exponent and rational-approximation alternant factorizations & \statuslean &
+\lean{CandidateAlternant}; Section~\ref{r10:one-half} \\
+Cross-Loewner positive integer certificate and optimized two-coset one-half barrier &
+\statusnew & Section~\ref{r10:loewner}, Section~\ref{r10:one-half} \\
+Fermat-quotient exact identity, power law, first-log determinant interface, and vanishing on
+$(2^n,3^n)$ & \statuslean & \lean{FermatQuotientDeterminant}; Section~\ref{r11:fermat} \\
+Structural-prime Iwasawa transversality, exact adelic wedge, conditional cascade depth, and
+Kummer third-order diagnostic & \statusnew & Section~\ref{sec:report11}; classical Iwasawa
+kernel where stated \\
+Exact consecutive-logarithmic-mean enclosure & \statuslean &
+\lean{ConsecutiveLogMeanBounds}; Section~\ref{r12:switch-logmean} \\
+Prime-switch antichain, microscopic resonance window, and $2$--$3$ convergent sieve &
+\statusnew & Section~\ref{sec:report12}; rational-output switch family only \\
+Exact exclusion of simultaneous $2$--$3$ switches through $b=10000$ & \statuscomp &
+Section~\ref{r12:two-three-sieve}; Python big-integer/rational verifier \\
+Exact two-coordinate grid displacement identities and rank-$K$ boundary defects &
+\statuslean & \lean{BoundaryDisplacement}; rank under $K>0$, nonsingularity, and nonzero
+multipliers; Section~\ref{r13:boundary-displacement} \\
+Exact rational bilinear minimum, projective arithmetic density, and integral Hadamard-power
+no-go & \statusnew & Section~\ref{r13:rational-conditioning},
+Section~\ref{r13:projective-density} \\
+Determinantal-divisor compound sandwich and triangular method ceiling & \statusnew &
+Section~\ref{r13:compounds}; ceiling applies to the stated termwise/Frobenius bounds \\
+Two-variable finite-difference divisor for every compound of the square-grid matrix &
+\statusnew & Section~\ref{r13:compounds}; top gain remains lower order \\
+Boundary transfer determinant and Kraus--Loewner positive integral/denominator tax &
+\statusnew & Section~\ref{r13:boundary-displacement}, Section~\ref{r13:kraus} \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -14286,9 +15590,11 @@ Exact cost of the rational antecedent (denominator-support lemma) & \statusnew &
 
 All modules live under
 \lean{Analysis/ExponentialIdentities/Lean/ExponentialIdentities/}, in namespace
-\lean{LeanProofs}.  Every module listed below is reachable from the aggregate import
-surface, and the merged tree builds with no errors.  None of them contains \lean{sorry}, an
-extra axiom, or \lean{native_decide}; certificate tables are replayed by the kernel.
+\lean{LeanProofs}.  Every theorem module listed below is reachable from the aggregate
+import surface; \lean{AuditNewModules} is built separately as an assumption-audit target.
+The merged tree builds with no errors.  None of the theorem modules contains
+\lean{sorry}, an extra axiom, or \lean{native_decide}; certificate tables are replayed by
+the kernel.
 
 \subsection{Kernel-accepted modules}
 
@@ -14329,6 +15635,8 @@ Module & Contents \\
 \lean{.../SharperProgressions} & sharp three-candidate curvature obstruction \\
 \lean{.../ThirdDifference} & exact third difference, four-candidate obstruction \\
 \lean{.../HigherDifference} & uniform arbitrary-order forward-difference obstruction \\
+\lean{.../PolynomialApproximationTax} & exact dense denominator clearing, integer resolution,
+finite-difference approximation floor, and the all-degree normalized tax obstruction \\
 \lean{.../SharpProgression} & effective rational three-term criterion $h^{400}\le n^{83}$ \\
 \lean{.../ArithmeticRigidity} & descent, $r+8k\le x$ \\
 \lean{.../ThreeSmooth} & $3$-smooth classification of further bases \\
@@ -14413,10 +15721,23 @@ and nonvanishing of the generalized Vandermonde determinant \\
 integral evaluation determinant; exact-support positive-node interpolant \\
 \lean{.../RationalOrbitGrid} & exact rational rectangle collision count; irrational grid
 cardinality and sparse lower bound; canonical one-monomial-saving rational-orbit certificate \\
+\lean{.../RationalContactRigidity} & rational polynomial evaluation at a transcendental
+direction; homogeneous leading-contact nonvanishing and Pad\'e transversality \\
 \lean{.../RestrictedMatrixCoefficient} & concrete logarithm matrix, rank-one coefficient
 factorization, rational anisotropy, and exact equivalence with the conjecture \\
+\lean{.../IntegralPowerMatrix} & explicit real powers of a fixed split integral matrix and
+their exact entry-integrality/conjecture equivalence \\
+\lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
+rational-approximation candidate alternant \\
 \lean{.../FormalPrimeDeterminant} & multivariate prime-symbol determinant, specialization at
 prime logarithms, exact formal-zero classification, and Structural Rank equivalence \\
+\lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
+local-log determinant interface and integral-power determinant vanishing \\
+\lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
+consecutive logarithmic mean, with an explicit $1/(24H^2)$ remainder \\
+\lean{.../BoundaryDisplacement} & exact two-coordinate evaluation-matrix displacement
+identities, terminal-boundary projector ranks, and rank-$K$ displacement consequences under
+explicit $K>0$, nonsingularity, and nonzero-multiplier hypotheses \\
 \lean{.../BoundaryDilationDefect} & rectangular node products, dilation-defect divisibility,
 unique square-grid residuals, and the degree-$2K-2$ boundary commutator \\
 \lean{.../OrderedChamberPositivity} & positivity of generalized real-power Vandermonde
@@ -14433,6 +15754,12 @@ window-summation counting bridge \\
 reformulations of the conjecture \\
 \lean{.../CompactOrbit} & compact synchronized-orbit reformulation with shared floor
 exponent, in both directions \\
+\lean{.../AdelicDrift} & exact integer denominator exponents, common centered defect,
+structural-prime normalized orbit norms, and $p$-adic escape \\
+\lean{.../SturmianProbability} & carry/floor telescope, exact prefix law, mean, variance,
+joint-carry intervals, probability, and covariance kernel \\
+\lean{.../SturmianGeneratingSeries} & exact carry/floor and denominator formal power-series
+identities, twice-cleared defect, and cross-base cancellation \\
 \lean{.../ArbitraryNodeRepulsion} & divided differences, the Newton factorization of the
 interpolation determinant, and the repulsion and packing bounds conditional on the named
 mean-value hypothesis \\
@@ -14538,7 +15865,12 @@ The current wave adds the following modules:
 \lean{RestrictedMatrixCoefficient}, \lean{FormalPrimeDeterminant},
 \lean{SparsePowerCurve}, \lean{BoundaryDilationDefect},
 \lean{SuperfactorialDeterminant}, \lean{RationalOrbitGrid},
-\lean{SignedProgressionDeterminant}, \lean{FejerKernelCertificate}.
+\lean{SignedProgressionDeterminant}, \lean{FejerKernelCertificate},\\
+\lean{AdelicDrift}, \lean{SturmianProbability},
+\lean{SturmianGeneratingSeries}, \lean{PolynomialApproximationTax},\\
+\lean{RationalContactRigidity}, \lean{IntegralPowerMatrix},
+\lean{CandidateAlternant}, \lean{FermatQuotientDeterminant},
+\lean{ConsecutiveLogMeanBounds}, \lean{BoundaryDisplacement}.
 \end{center}
 Their headline APIs are likewise on the aggregate surface
 and covered by the axiom-audit module.
