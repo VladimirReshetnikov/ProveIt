@@ -1,0 +1,1378 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[letterpaper,margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{url}
+\usepackage{needspace}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\definecolor{AEBlue}{HTML}{264653}
+\definecolor{AEGreen}{HTML}{2A6F62}
+\definecolor{AEGold}{HTML}{A56A1F}
+\definecolor{AERed}{HTML}{9B3D3D}
+\definecolor{AEGray}{HTML}{F3F4F5}
+\definecolor{AEDarkGray}{HTML}{4F5962}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AEBlue,
+  citecolor=AEGreen,
+  urlcolor=AEBlue,
+  pdftitle={Asymptotic and Mellin-Spectral Continuation for the Alaoglu-Erdos Conjecture},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Asymptotic continuation for Alaoglu--Erd\H{o}s}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research problem}
+\newtheorem{experiment}[theorem]{Experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newtcolorbox{resultbox}[1][]{
+  enhanced,breakable,colback=AEGray,colframe=AEGreen,
+  boxrule=0.8pt,arc=1.2mm,left=1.5mm,right=1.5mm,top=1.2mm,bottom=1.2mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{statusbox}[1][]{
+  enhanced,breakable,colback=white,colframe=AEBlue,
+  boxrule=0.7pt,arc=1.2mm,left=1.5mm,right=1.5mm,top=1.2mm,bottom=1.2mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{barrierbox}[1][]{
+  enhanced,breakable,colback=white,colframe=AEGold,
+  boxrule=0.8pt,arc=1.2mm,left=1.5mm,right=1.5mm,top=1.2mm,bottom=1.2mm,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{cautionbox}[1][]{
+  enhanced,breakable,colback=white,colframe=AERed,
+  boxrule=0.8pt,arc=1.2mm,left=1.5mm,right=1.5mm,top=1.2mm,bottom=1.2mm,
+  title={#1},fonttitle=\bfseries
+}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sol}{\mathcal S}
+\newcommand{\Cand}{\mathcal C}
+\newcommand{\Out}{\mathcal D}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\asinh}{\operatorname{arsinh}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\bigO}{\mathrm O}
+\newcommand{\littleo}{\mathrm o}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Frac}[1]{\left\{#1\right\}}
+
+\title{\vspace{-1.2cm}\textbf{Asymptotic and Mellin--Spectral Continuation\\
+for the Alaoglu--Erd\H{o}s Conjecture}\\[0.55em]
+\large Heat traces, logarithmic spectral rank, two-scale Mahler equations,\\
+approximation barriers, and post-report literature}
+\author{Prepared for Vladimir Reshetnikov}
+\date{August 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report continues, without reproducing, the supplied unified report on the Alaoglu--Erd\H{o}s conjecture
+\[
+  2^x,3^x\in\Z \quad\Longrightarrow\quad x\in\Z.
+\]
+The earlier report establishes an exact conditional structure: if the conjecture fails and $\beta$ is its least nonintegral solution, then $\beta$ is irrational, $M=2^\beta$ and $A=3^\beta$ are integers, and every solution is uniquely $n+k\beta$ with $n,k\in\Nzero$.  The present work treats this free rank-two monoid as an asymptotic object and asks whether its spectral, Tauberian, Mahler, approximation-theoretic, or additive signatures are incompatible with simultaneous integrality.
+
+Several exact results are obtained.  First, the diagonal ``candidate operator'' with eigenvalues $2^x$ has spectral zeta function
+\[
+  \frac1{1-2^{-s}}
+  \quad\hbox{if the conjecture holds},
+  \qquad
+  \frac1{(1-2^{-s})(1-M^{-s})}
+  \quad\hbox{if it fails}.
+\]
+Thus the conjecture is equivalent to a simple rather than double pole at the origin, or to logarithmic spectral dimension one rather than two.  Second, Mellin inversion gives a complete small-$t$ expansion of the conditional heat trace
+\[
+  \sum_{n,k\ge0}\exp(-t2^nM^k).
+\]
+It consists of an explicit quadratic polynomial in $\log(1/t)$, two real-analytic periodic functions with incommensurable periods $\log2$ and $\log M$, and an ordinary power series in $t$.  Baker's theorem controls the small divisors between the two pole lattices and makes the oscillatory expansion absolutely convergent.  Third, the ordinary support series $\sum_{n,k\ge0}z^{2^nM^k}$ satisfies an exact two-scale inclusion--exclusion equation and has the unit circle as a natural boundary.  The same natural-boundary phenomenon already occurs in rank one, so it is not by itself a discriminator.
+
+A separate approximation analysis produces a quantitative no-go theorem.  On any fixed multiplicative window $[X,\e^hX]$, the best polynomial degree needed to approximate $x^\theta$, $\theta=\log3/\log2$, to sub-unit accuracy grows faster than the number of conditional integer nodes by a factor exceeding $5.88$, even under an unrealistically favorable arithmetic model.  The sharp universal approximation-capacity constant is
+\[
+  \sup_{h>0}h\log\coth(h/4)=2\asinh(1)^2=1.553638\ldots,
+\]
+whereas the conditional node problem requires more than $12\log2\log3=9.138000\ldots$.  This retires a broad family of fixed-window polynomial approximation/interpolation attacks.
+
+The July--August 2026 literature is also assessed, especially Harrison's additive-relations theorem for irrational powers, Nguyen's refined Diophantine exponent, recent multivariate Mahler theory, and a Gaussian-integer Cobham theorem.  These advances sharpen interfaces and suggest precise threshold problems, but none currently removes the same rank-two-to-rank-one obstruction.  No complete proof of the conjecture is claimed.  The principal contribution is a new, rigorous asymptotic dictionary, several exact conditional expansions and equivalences, a sharp approximation barrier, and a prioritized set of narrower research targets.
+\end{abstract}
+
+\begin{resultbox}[Principal outcome]
+The asymptotic theory does not yet contradict a counterexample.  It does, however, isolate exactly what any asymptotic proof must do: it must use simultaneous integrality to eliminate one of two logarithmic scaling directions.  Merely recovering the quadratic count, the two pole lattices, the imported synchronized-significand law, or the two-scale Mahler equation cannot work, because all of those are identities of the formal rank-two semigroup itself.
+\end{resultbox}
+
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and nonduplication}
+
+The attached unified report is exceptionally broad.  It already develops the exact conditional monoid, primitive output normalization, finite differences, arbitrary-node and exact-grid interpolation determinants, $p$-adic and tropical audits, operator formulations, Sturmian coding, effective Baker discrepancy, rational-point counting, matrix-coefficient conjectures, Kummer theory, and a substantial literature survey.  Repeating those arguments would obscure rather than advance the project.  This continuation therefore imports only a short list of facts and concentrates on material absent from the source: Mellin heat-trace asymptotics, logarithmic spectral dimension, full complex-pole expansions, radial singularities and natural boundaries of the ordinary support series, a sharp Bernstein-ellipse node-budget calculation, additive-relation thresholds from the newest literature, and a focused audit of recently posted work.
+
+The status labels used below are deliberately strict.
+\begin{itemize}
+  \item An \emph{imported fact} is proved in the supplied report and is used here without duplicating its proof.
+  \item A \emph{new theorem} is proved in this continuation.
+  \item A \emph{barrier} is a rigorous negative result for a specified family of methods, not a negative statement about all possible methods.
+  \item A \emph{research target} states an additional theorem that would be useful; it is not asserted.
+\end{itemize}
+
+All logarithms are natural unless a base is displayed.  We put
+\[
+  \theta:=\frac{\log3}{\log2}.
+\]
+The conjecture is a special case of the four exponentials conjecture and remains open as of the literature search performed on August 21, 2026; see Waldschmidt's survey \cite{Waldschmidt2023} and the current sources assessed in \cref{sec:recent-literature}.  That fact is not used mathematically, but it sets the appropriate burden of proof: an argument that silently proves the relevant four-exponentials instance must contain genuinely new transcendence input.
+
+\section{Imported conditional structure}
+\label{sec:imported}
+
+Define
+\[
+  \Sol:=\{x\in\R:2^x\in\N,\ 3^x\in\N\},
+  \qquad
+  \Cand:=\{2^x:x\in\Sol\},
+  \qquad
+  \Out:=\{3^x:x\in\Sol\}.
+\]
+Negative $x$ cannot occur, so $\Sol\subseteq\R_{\ge0}$.
+
+\begin{statusbox}[Imported exact structure from the supplied report]
+Exactly one of the following alternatives holds.
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item The Alaoglu--Erd\H{o}s conjecture holds, in which case
+  \[
+    \Sol=\Nzero,\qquad \Cand=\{2^n:n\ge0\},\qquad \Out=\{3^n:n\ge0\}.
+  \]
+  \item The conjecture fails.  Then there is a least nonintegral solution $\beta>12$, necessarily irrational, and integers
+  \[
+    M:=2^\beta,\qquad A:=3^\beta,
+  \]
+  such that every solution has a unique representation
+  \[
+    \Sol=\{n+k\beta:n,k\in\Nzero\}.
+  \]
+  Correspondingly,
+  \[
+    \Cand=\{2^nM^k:n,k\in\Nzero\},\qquad
+    \Out=\{3^nA^k:n,k\in\Nzero\},
+  \]
+  with unique coordinates, and
+  \[
+    \log M=\beta\log2,\qquad \log A=\beta\log3,
+    \qquad A=M^\theta.
+  \]
+\end{enumerate}
+The supplied report also proves an effective irrationality measure for $\beta$ by Baker theory and a power-saving discrepancy estimate for the rotation $k\mapsto\{k\beta\}$ \cite{UnifiedReport}.
+\end{statusbox}
+
+The uniqueness of coordinates is essential.  Since $\beta$ is irrational, $2$ and $M$ are multiplicatively independent: an equality $2^r=M^s$ with integers $r,s$ and $s\ne0$ would make $\beta=r/s$.  The same holds for $3$ and $A$.
+
+For later use, set
+\[
+  a:=\log2,\qquad b:=\log M=\beta a,
+  \qquad c:=\log3=\theta a,\qquad d:=\log A=\theta b.
+\]
+Thus the conditional candidate logarithms form the lattice cone
+\[
+  \log\Cand=\{an+bk:n,k\in\Nzero\},
+\]
+and the output logarithms are its homothetic image by the factor $\theta$.
+
+\section{A spectral formulation and the logarithmic Weyl law}
+\label{sec:spectral}
+
+The ordinary spectral dimension of the candidate set is zero: its counting function is only polylogarithmic.  The order of that polylogarithm, however, detects the conjecture exactly.
+
+\subsection{The candidate and output operators}
+
+Let $\mathscr H:=\ell^2(\Sol)$ with standard basis $(e_x)_{x\in\Sol}$.  Define positive diagonal operators
+\[
+  D e_x:=2^x e_x,
+  \qquad
+  E e_x:=3^x e_x.
+\]
+They have compact resolvent because their eigenvalues tend to infinity, and functional calculus gives the exact relation
+\begin{equation}
+  E=D^\theta.
+  \label{eq:E-Dtheta}
+\end{equation}
+The arithmetic content is that both spectra lie in $\N$.
+
+For $\Re s>0$, define the spectral zeta functions
+\[
+  Z_D(s):=\Tr(D^{-s})=\sum_{x\in\Sol}2^{-sx},
+  \qquad
+  Z_E(s):=\Tr(E^{-s})=\sum_{x\in\Sol}3^{-sx}.
+\]
+
+\begin{theorem}[Exact spectral-zeta dichotomy]
+\label{thm:zeta-dichotomy}
+If the conjecture holds, then
+\begin{equation}
+  Z_D(s)=\frac1{1-\e^{-as}}=\frac1{1-2^{-s}},
+  \qquad
+  Z_E(s)=\frac1{1-\e^{-cs}}=\frac1{1-3^{-s}}.
+  \label{eq:zeta-rank-one}
+\end{equation}
+If it fails, then
+\begin{equation}
+  Z_D(s)=\frac1{(1-\e^{-as})(1-\e^{-bs})}
+       =\frac1{(1-2^{-s})(1-M^{-s})},
+  \label{eq:zeta-rank-two-D}
+\end{equation}
+\begin{equation}
+  Z_E(s)=\frac1{(1-\e^{-cs})(1-\e^{-ds})}
+       =\frac1{(1-3^{-s})(1-A^{-s})}
+       =Z_D(\theta s).
+  \label{eq:zeta-rank-two-E}
+\end{equation}
+Consequently, $Z_D$ and $Z_E$ have simple poles at $s=0$ in the conjectural case and double poles there in the counterexample case.
+\end{theorem}
+
+\begin{proof}
+In rank one, sum the geometric series over $n\ge0$.  In rank two, use the unique coordinates $x=n+k\beta$ and separate the two geometric sums:
+\[
+ \sum_{n,k\ge0}\e^{-s(an+bk)}
+ =\left(\sum_{n\ge0}\e^{-asn}\right)
+  \left(\sum_{k\ge0}\e^{-bsk}\right).
+\]
+The identity for $E$ follows either identically or from \eqref{eq:E-Dtheta}.
+\end{proof}
+
+The theorem packages the exact generating series already implicit in the supplied report into a spectral invariant.  Its value is not the rational formula itself but the pole-order criterion and the heat-trace consequences below.
+
+\subsection{Logarithmic spectral dimension}
+
+Let
+\[
+  N_D(\Lambda):=\#\{x\in\Sol:2^x\le\Lambda\}.
+\]
+This is the eigenvalue counting function of $D$ (without multiplicity, which is harmless because the coordinates are unique).
+
+\begin{definition}
+When the limit exists, the \emph{logarithmic spectral dimension} is
+\[
+  \dim_{\log}D
+  :=\lim_{\Lambda\to\infty}
+     \frac{\log N_D(\Lambda)}{\log\log\Lambda}.
+\]
+\end{definition}
+
+\begin{theorem}[Logarithmic Weyl dichotomy]
+\label{thm:log-Weyl}
+The limit exists and
+\[
+ \dim_{\log}D=
+ \begin{cases}
+  1,&\text{if the conjecture holds},\\
+  2,&\text{if the conjecture fails}.
+ \end{cases}
+\]
+More precisely, as $\Lambda\to\infty$,
+\begin{align}
+ N_D(\Lambda)
+   &=\frac{\log\Lambda}{a}+\bigO(1)
+       &&\text{in rank one},
+       \label{eq:count-rank-one}\\
+ N_D(\Lambda)
+   &=\frac{(\log\Lambda)^2}{2ab}
+     +\left(\frac1{2a}+\frac1{2b}\right)\log\Lambda
+     +\bigO_{M}\!\left((\log\Lambda)^{1-\delta}\right)
+       &&\text{in rank two},
+       \label{eq:count-rank-two}
+\end{align}
+for some effective $\delta>0$ in the second line.  The linear coefficient and power-saving remainder are imported from the supplied report; the spectral interpretation is new.
+\end{theorem}
+
+\begin{proof}
+The first formula is immediate.  In rank two, $N_D(\Lambda)$ counts lattice points $(n,k)\in\Nzero^2$ under the line $an+bk\le\log\Lambda$, so the triangle-area argument already gives the leading term with error $\bigO(\log\Lambda)$.  For the sharper statement, put
+\[
+ T=\frac{\log\Lambda}{a},\qquad \beta=\frac ba.
+\]
+The supplied report proves
+\[
+ \#\{n+k\beta\le T\}
+ =\frac{T^2}{2\beta}+\frac{\beta+1}{2\beta}T
+  +\bigO_\beta(T^{1-\delta}).
+\]
+Substitution gives \eqref{eq:count-rank-two}, since
+$(\beta+1)/(2\beta a)=1/(2a)+1/(2b)$.  Taking logarithms gives the stated dimensions.
+\end{proof}
+
+\begin{corollary}[Exact asymptotic equivalences]
+\label{cor:asymptotic-equivalences}
+The following statements are equivalent:
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item the Alaoglu--Erd\H{o}s conjecture;
+  \item $Z_D$ has a simple pole at $0$;
+  \item $N_D(\Lambda)=\bigO(\log\Lambda)$;
+  \item $N_D(\Lambda)=\littleo((\log\Lambda)^2)$;
+  \item $\dim_{\log}D=1$.
+\end{enumerate}
+Failure is equivalently characterized by a double pole, a positive quadratic logarithmic Weyl coefficient, or logarithmic spectral dimension two.
+\end{corollary}
+
+This is an exact reformulation, not a proof: deciding the pole order from the definition of $\Sol$ is the original problem.  The advantage is that Mellin methods now expose all lower-order signatures of the two alternatives.
+
+\section{Heat traces and a complete Mellin expansion}
+\label{sec:heat}
+
+Define
+\[
+  H_D(t):=\Tr(\e^{-tD})=\sum_{x\in\Sol}\e^{-t2^x},
+  \qquad t>0.
+\]
+In rank two this becomes
+\begin{equation}
+  H_{a,b}(t):=\sum_{n,k\ge0}\exp\!\left(-t\e^{an+bk}\right)
+             =\sum_{n,k\ge0}\exp(-t2^nM^k).
+  \label{eq:rank-two-heat}
+\end{equation}
+The smoothing is strong enough to turn the rough discrepancy of a sharp triangular lattice count into an analytic almost-periodic fluctuation.
+
+\subsection{Mellin transform}
+
+For $\Re s>0$, Tonelli's theorem and
+\[
+  \int_0^\infty \e^{-t\lambda}t^{s-1}\dd t
+  =\Gamma(s)\lambda^{-s}
+\]
+give
+\begin{equation}
+  \int_0^\infty H_{a,b}(t)t^{s-1}\dd t
+  =\frac{\Gamma(s)}{(1-\e^{-as})(1-\e^{-bs})}.
+  \label{eq:heat-mellin}
+\end{equation}
+Thus, for any $\sigma>0$,
+\begin{equation}
+  H_{a,b}(t)=\frac1{2\pi\ii}
+   \int_{\sigma-\ii\infty}^{\sigma+\ii\infty}
+   \frac{\Gamma(s)t^{-s}}
+        {(1-\e^{-as})(1-\e^{-bs})}\dd s.
+  \label{eq:mellin-inversion}
+\end{equation}
+This is the standard harmonic-sum setting of Flajolet--Gourdon--Dumas \cite{FlajoletGourdonDumas1995}, with a genuinely two-scale denominator.
+
+\subsection{The small-divisor lemma}
+
+The two imaginary pole lattices can approach one another.  Their near-collisions are controlled effectively because $2$ and $M$ are algebraic and multiplicatively independent.
+
+\begin{lemma}[Baker control of pole-lattice near-collisions]
+\label{lem:small-divisor}
+Assume $M\ge2$ is an integer not equal to a power of $2$, and put $a=\log2$, $b=\log M$.  There are effectively computable constants $C>0$ and $\kappa>0$ such that, for every nonzero integer $\ell$,
+\begin{equation}
+ \dist\!\left(\ell\frac ba,\Z\right)
+   \ge C(1+|\ell|)^{-\kappa},
+ \qquad
+ \dist\!\left(\ell\frac ab,\Z\right)
+   \ge C(1+|\ell|)^{-\kappa}.
+ \label{eq:small-divisor}
+\end{equation}
+Consequently,
+\begin{align}
+ \left|1-\exp\!\left(-2\pi\ii\ell\frac ba\right)\right|^{-1}
+   &\ll (1+|\ell|)^\kappa,\label{eq:denom-a}\\
+ \left|1-\exp\!\left(-2\pi\ii\ell\frac ab\right)\right|^{-1}
+   &\ll (1+|\ell|)^\kappa.\label{eq:denom-b}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Let $m$ be a nearest integer to $\ell b/a$.  Then
+\[
+ a\left|\ell\frac ba-m\right|
+   =|\ell\log M-m\log2|.
+\]
+The linear form is nonzero because $2$ and $M$ are multiplicatively independent.  A two-logarithm form of Baker's theorem \cite{Baker1975,BakerWustholz1993} bounds it below by a negative power of the coefficient height; here $|m|\ll|\ell|$.  This proves the first inequality.  The second follows symmetrically, and $|1-\e^{2\pi\ii y}|=2|\sin\pi y|\asymp\dist(y,\Z)$ near the integers.
+\end{proof}
+
+The exponential decay
+\begin{equation}
+  |\Gamma(\sigma+\ii y)|
+   \sim \sqrt{2\pi}\,|y|^{\sigma-1/2}\e^{-\pi|y|/2}
+  \qquad(|y|\to\infty)
+  \label{eq:stirling-vertical}
+\end{equation}
+overwhelms these polynomial small divisors.  This is the key reason the full oscillatory expansion is better behaved than the corresponding sharp lattice discrepancy.
+
+\subsection{Explicit pole contributions}
+
+Put
+\[
+  L:=\log(1/t),\qquad \gamma:=0.57721\ldots
+\]
+for Euler's constant, and define
+\begin{align}
+ Q_{a,b}(L)
+  :={}&\frac{L^2}{2ab}
+  +\left(\frac1{2a}+\frac1{2b}-\frac\gamma{ab}\right)L
+  +C_{a,b},
+  \label{eq:Qab}\\
+ C_{a,b}
+  :={}&\frac14+\frac{a}{12b}+\frac{b}{12a}
+  -\frac\gamma{2a}-\frac\gamma{2b}
+  +\frac{\gamma^2/2+\pi^2/12}{ab}.
+  \label{eq:Cab}
+\end{align}
+The two oscillatory functions are
+\begin{align}
+ P_a(L)
+  &:={\sum_{\ell\in\Z\setminus\{0\}}}
+    \frac{\Gamma(2\pi\ii\ell/a)}
+    {a\bigl(1-\exp(-2\pi\ii\ell b/a)\bigr)}
+    \exp(2\pi\ii\ell L/a),
+  \label{eq:Pa}\\
+ P_b(L)
+  &:={\sum_{m\in\Z\setminus\{0\}}}
+    \frac{\Gamma(2\pi\ii m/b)}
+    {b\bigl(1-\exp(-2\pi\ii m a/b)\bigr)}
+    \exp(2\pi\ii m L/b).
+  \label{eq:Pb}
+\end{align}
+By Lemma~\ref{lem:small-divisor} and \eqref{eq:stirling-vertical}, both Fourier series converge absolutely with all derivatives.  They are real-valued on $\R$, because terms of opposite index are complex conjugates; $P_a$ has period $a$ and $P_b$ has period $b$.  Since $b/a=\beta$ is irrational, their sum is quasiperiodic rather than periodic.
+
+\begin{theorem}[Complete rank-two heat-trace expansion]
+\label{thm:heat-expansion}
+Let $M\ge2$ be an integer multiplicatively independent of $2$, and put $a=\log2$, $b=\log M$.  For every integer $R\ge0$, as $t\downarrow0$,
+\begin{equation}
+\boxed{
+ H_{a,b}(t)
+ =Q_{a,b}(L)+P_a(L)+P_b(L)
+  +\sum_{r=1}^{R}
+   \frac{(-1)^r t^r}
+        {r!\,(1-\e^{ar})(1-\e^{br})}
+  +\bigO_{a,b,R}(t^{R+1/2}).
+ }
+ \label{eq:full-heat-expansion}
+\end{equation}
+In particular,
+\begin{equation}
+  H_{a,b}(t)
+  =\frac{\log^2(1/t)}{2ab}
+   +\left(\frac1{2a}+\frac1{2b}-\frac\gamma{ab}\right)\log(1/t)
+   +\bigO_{a,b}(1).
+  \label{eq:heat-leading}
+\end{equation}
+The bounded remainder in \eqref{eq:heat-leading} does not converge: it contains two nonconstant oscillatory families with incommensurable periods $a$ and $b$, namely \eqref{eq:Pa}--\eqref{eq:Pb}.
+\end{theorem}
+
+\begin{proof}
+Start with \eqref{eq:mellin-inversion} and shift the contour from $\Re s=\sigma>0$ to $\Re s=-R-1/2$.  The poles crossed are:
+\begin{enumerate}
+  \item a third-order pole at $s=0$;
+  \item simple poles $s=2\pi\ii\ell/a$, $\ell\ne0$;
+  \item simple poles $s=2\pi\ii m/b$, $m\ne0$;
+  \item simple poles $s=-r$, $1\le r\le R$, from $\Gamma(s)$.
+\end{enumerate}
+The two nonzero imaginary lattices do not intersect because $b/a$ is irrational.  At $s=2\pi\ii\ell/a$, the first denominator has derivative $a$, so the residue is the $\ell$th summand of $P_a(L)$; similarly for $P_b(L)$.  At $s=-r$, the residue of $\Gamma$ is $(-1)^r/r!$, giving the displayed power term.
+
+At the origin, expand
+\[
+ \Gamma(s)=\frac1s-\gamma
+  +\left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)s+\bigO(s^2),
+\]
+\[
+ \frac1{1-\e^{-as}}=\frac1{as}+\frac12+\frac{as}{12}+\bigO(s^3),
+ \qquad
+ t^{-s}=\e^{Ls}=1+Ls+\frac{L^2s^2}{2}+\bigO(s^3).
+\]
+Multiplying and reading the coefficient of $s^{-1}$ yields exactly \eqref{eq:Qab}--\eqref{eq:Cab}.
+
+To justify the infinite residue sum, choose horizontal sides avoiding the two pole lattices.  Baker's lower bound makes the reciprocal denominators at worst polynomial in the height, whereas \eqref{eq:stirling-vertical} decays exponentially.  The horizontal integrals therefore vanish and the residue series converge absolutely.  On the new vertical line $\Re s=-R-1/2$, both denominators are uniformly separated from zero because $|\e^{-as}|=\e^{a(R+1/2)}>1$ and similarly for $b$.  Stirling's estimate makes the vertical integral absolutely convergent, with size $\bigO(t^{R+1/2})$.
+
+Finally, every nonzero Fourier coefficient displayed in \eqref{eq:Pa}--\eqref{eq:Pb} is nonzero, and the two frequency sets are disjoint because $b/a\notin\Q$.  Their sum is therefore a nonconstant uniformly almost-periodic function of $L$.  A uniformly almost-periodic function that has a limit as $L\to+\infty$ is constant, proving the asserted nonconvergence.
+\end{proof}
+
+\begin{remark}[Why smoothing reveals more than the sharp count]
+The sharp count under $an+bk\le L$ contains a Birkhoff sum of a sawtooth function and is governed by discrepancy of an irrational rotation.  The heat kernel replaces the discontinuous cutoff by an entire test function.  In Mellin space this inserts $\Gamma(s)$, whose exponential vertical decay turns the same arithmetic into two analytic Fourier series.  The oscillations are therefore explicit even though the corresponding unsmoothed error need not have a simple asymptotic expansion.
+\end{remark}
+
+\subsection{Rank-one comparison}
+
+The same contour argument in one scale gives a useful baseline.
+
+\begin{theorem}[Rank-one heat trace]
+\label{thm:rank-one-heat}
+For $a>0$ let
+\[
+ H_a(t):=\sum_{n\ge0}\exp(-t\e^{an}).
+\]
+For every $R\ge0$,
+\begin{align}
+ H_a(t)
+  ={}&\frac{L}{a}+\frac12-\frac\gamma a
+  +\sum_{\ell\in\Z\setminus\{0\}}
+     \frac{\Gamma(2\pi\ii\ell/a)}{a}
+     \exp(2\pi\ii\ell L/a)
+  \notag\\
+  &+\sum_{r=1}^{R}
+     \frac{(-1)^rt^r}{r!(1-\e^{ar})}
+  +\bigO_{a,R}(t^{R+1/2}).
+  \label{eq:rank-one-heat-expansion}
+\end{align}
+In particular, the conjecture is equivalent to
+\[
+  H_D(t)=\frac{\log(1/t)}{\log2}+\bigO(1),
+\]
+after the explicit periodic fluctuation is included in the bounded term.
+\end{theorem}
+
+Combining the two cases yields another exact criterion.
+
+\begin{corollary}[Heat-trace criterion]
+\label{cor:heat-criterion}
+The Alaoglu--Erd\H{o}s conjecture is equivalent to each of
+\[
+ H_D(t)=\bigO(\log(1/t)),
+ \qquad
+ \frac{H_D(t)}{\log^2(1/t)}\longrightarrow0
+ \quad(t\downarrow0).
+\]
+If the conjecture fails, then
+\[
+ \frac{H_D(t)}{\log^2(1/t)}\longrightarrow\frac1{2\log2\log M}>0.
+\]
+\end{corollary}
+
+\subsection{A numerical check of the residue formula}
+
+The following is only a verification of \cref{thm:heat-expansion}, not an experiment on the conjecture.  Take the formal semigroup generated by $2$ and $5$, so $a=\log2$, $b=\log5$.  Direct summation of \eqref{eq:rank-two-heat}, fifty Fourier modes in each periodic family, and four power terms give the following values.  The column $H-Q$ isolates the oscillatory and power corrections.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$t$ & direct $H_{\log2,\log5}(t)$ & $H-Q$ & $P_a+P_b$ \\
+\midrule
+$10^{-2}$ & $12.6443676729$ & $-9.4057815\!\times10^{-4}$ & $1.5587276\!\times10^{-3}$ \\
+$10^{-3}$ & $25.7104220402$ & $-1.3097351\!\times10^{-3}$ & $-1.0597420\!\times10^{-3}$ \\
+$10^{-4}$ & $43.5311152786$ & $ 3.5532609\!\times10^{-4}$ & $ 3.8032602\!\times10^{-4}$ \\
+$10^{-5}$ & $66.1027678882$ & $ 3.7510556\!\times10^{-4}$ & $ 3.7760556\!\times10^{-4}$ \\
+$10^{-6}$ & $93.4255564908$ & $-1.0737750\!\times10^{-3}$ & $-1.0735250\!\times10^{-3}$ \\
+$10^{-8}$ & $162.331168438$ & $-1.7507533\!\times10^{-3}$ & $-1.7507508\!\times10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The omitted error is about $8.6\times10^{-18}$ at $t=10^{-2}$ and falls by approximately five orders of magnitude whenever $t$ is divided by $10$.  This matches the first omitted residue term, $r=5$, and is stronger than the stated contour bound $\bigO(t^{9/2})$ after four power terms.
+
+\section{What the heat expansion does and does not prove}
+\label{sec:heat-audit}
+
+The expansion is exact, but every term is compatible with an arbitrary formal rank-two integer semigroup $\{2^nM^k\}$.  The additional arithmetic datum $A=M^\theta\in\N$ has not yet entered.  This section makes that limitation explicit and identifies several possible interfaces.
+
+\subsection{The output heat trace is a rescaling, not a second constraint}
+
+Under a counterexample,
+\[
+ H_E(t)=\sum_{n,k\ge0}\e^{-t3^nA^k}
+       =H_{c,d}(t),
+ \qquad c=\theta a,\quad d=\theta b.
+\]
+The zeta relation $Z_E(s)=Z_D(\theta s)$ means that its pole lattice and all heat coefficients are obtained by the same homothety.  Comparing the two expansions therefore reproduces $E=D^\theta$; it cannot generate an independent equation.
+
+For example, the leading coefficient transforms as
+\[
+ \frac1{2cd}=\frac1{2\theta^2ab},
+\]
+exactly as demanded by the change of logarithmic scale.  The periods $c$ and $d$ are likewise $\theta$ times the candidate periods.  There is no mismatch to exploit.
+
+\subsection{A joint partition function}
+
+A more faithful object keeps both integer spectra at once:
+\begin{equation}
+ \mathcal H(t,u)
+ :=\Tr(\e^{-tD-uE})
+ =\sum_{n,k\ge0}
+   \exp(-t2^nM^k-u3^nA^k).
+ \label{eq:joint-heat}
+\end{equation}
+
+\begin{proposition}[Exact two-direction renormalization]
+\label{prop:joint-renormalization}
+Under the counterexample model,
+\begin{equation}
+ \mathcal H(t,u)-\mathcal H(2t,3u)
+ -\mathcal H(Mt,Au)+\mathcal H(2Mt,3Au)
+ =\e^{-t-u}.
+ \label{eq:joint-renormalization}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The sum $\mathcal H(2t,3u)$ is exactly the sub-sum with $n\ge1$, and $\mathcal H(Mt,Au)$ is exactly the sub-sum with $k\ge1$; $\mathcal H(2Mt,3Au)$ is their intersection.  Inclusion--exclusion therefore leaves only $(n,k)=(0,0)$.
+\end{proof}
+
+Along the intrinsic ray $u=t^\theta$, one has
+\[
+ \mathcal H(t,t^\theta)
+ =\sum_{m\in\Cand}\exp\bigl(-tm-(tm)^\theta\bigr),
+\]
+so Mellin analysis again factors into the same $Z_D(s)$ times the Mellin transform of $y\mapsto\exp(-y-y^\theta)$.  Its leading logarithmic degree is still two.  Thus neither the joint trace nor its renormalization is contradictory by itself; both are exact consequences of the assumed pair $(M,A)$.
+
+\begin{problem}[Oscillation-elimination target]
+Find an arithmetic theorem saying that if $D$ has integer spectrum and $D^\theta$ also has integer spectrum for $\theta=\log3/\log2$, then the spectral zeta of $D$ cannot contain two incommensurable geometric factors.  In the present language, such a theorem would have to eliminate either $P_a$ or $P_b$, or reduce the double pole at zero to a simple pole.  No known Tauberian or spectral theorem supplies this implication merely from integrality of the two spectra.
+\end{problem}
+
+\subsection{Imported equidistribution as a synchronized-significand law}
+
+This is not a new theorem of the continuation.  The supplied report already proves quantitative equidistribution of
+\[
+  \left(2^{\{k\beta\}},3^{\{k\beta\}}\right)
+\]
+using the same effective Baker bound that enters its lattice-point estimate.  It is useful, however, to record the probabilistic interpretation because it clarifies what digit-statistical arguments can and cannot add.
+
+Indeed, the nonintegral solutions in $[N,N+1)$ are
+\[
+  N+\{k\beta\},
+  \qquad 1\le k\le\left\lfloor\frac{N+1}{\beta}\right\rfloor.
+\]
+Thus, with $K_N=\lfloor(N+1)/\beta\rfloor$, the imported result implies that for every continuous $f$ on $[1,2]\times[1,3]$,
+\[
+ \frac1{K_N}\sum_{k=1}^{K_N}
+ f\!\left(2^{\{k\beta\}},3^{\{k\beta\}}\right)
+ \longrightarrow
+ \int_0^1 f(2^u,3^u)\dd u.
+\]
+Candidates are therefore Benford in base $2$, outputs are Benford in base $3$, and their logarithmic significands are coupled identically rather than independently.  This law is striking but not impossible: it is exactly what any pair satisfying $\log_2M=\log_3A$ would produce.  Proving that powers of two unrelated integers must instead have asymptotically independent leading digits would itself amount to proving the required rational independence of their logarithms.  The distributional statement relocates, rather than resolves, the transcendence problem.
+
+\section{The ordinary support series and a two-scale Mahler equation}
+\label{sec:mahler}
+
+For a formal rank-two candidate semigroup, define
+\begin{equation}
+ F_{2,M}(z):=\sum_{n,k\ge0}z^{2^nM^k},
+ \qquad |z|<1.
+ \label{eq:support-series}
+\end{equation}
+Multiplicative independence makes the exponents distinct, so this is a $0$--$1$ power series.
+
+\subsection{An exact mixed functional equation}
+
+\begin{theorem}[Two-scale inclusion--exclusion equation]
+\label{thm:two-scale-mahler}
+For $|z|<1$,
+\begin{equation}
+ F_{2,M}(z)-F_{2,M}(z^2)-F_{2,M}(z^M)+F_{2,M}(z^{2M})=z.
+ \label{eq:two-scale-mahler}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The four sums implement inclusion--exclusion on the index quadrant.  Replacing $z$ by $z^2$ shifts $n$ to $n+1$; replacing it by $z^M$ shifts $k$ to $k+1$; the last term restores the doubly shifted quadrant.  Only the term $n=k=0$, namely $z$, survives.
+\end{proof}
+
+This is Mahler-like but importantly not the assertion that $F_{2,M}$ is separately a $2$-Mahler and an $M$-Mahler function.  Adamczewski--Bell's theorem \cite{AdamczewskiBell2017} says that a power series over characteristic zero which is separately Mahler in two multiplicatively independent integer bases must be rational.  The series \eqref{eq:support-series} is not rational, so the mixed equation lies exactly outside that theorem's hypotheses.
+
+\subsection{Natural boundary and radial singularity}
+
+\begin{theorem}[Natural boundary]
+\label{thm:natural-boundary}
+If $2$ and $M$ are multiplicatively independent, the unit circle is a natural boundary for $F_{2,M}$.
+\end{theorem}
+
+\begin{proof}
+The coefficients are integers and the radius of convergence is exactly one.  By the P\'olya--Carlson theorem \cite{PolyaCarlson}, the series is either rational or has the unit circle as a natural boundary.  A rational series with coefficients in a finite set has an eventually periodic coefficient sequence.  But the support of \eqref{eq:support-series} is infinite and has density zero, because its count below $X$ is $\asymp(\log X)^2$.  An infinite eventually periodic support has positive density.  Thus the series is not rational.
+\end{proof}
+
+The radial identity
+\begin{equation}
+ F_{2,M}(\e^{-t})=H_{a,b}(t)
+ \label{eq:radial-heat}
+\end{equation}
+transfers \cref{thm:heat-expansion} verbatim into a singular expansion as $z\to1^-$, with $t=-\log z$.  In particular,
+\[
+ F_{2,M}(z)
+ \sim\frac{\log^2\!\bigl(1/(1-z)\bigr)}{2\log2\log M}.
+\]
+The natural boundary describes the global obstruction to analytic continuation; the Mellin expansion resolves the local radial singularity at $1$ down to exponentially convergent quasiperiodic fluctuations.
+
+\begin{cautionbox}[Natural boundary is not the missing contradiction]
+The rank-one lacunary series $F_2(z)=\sum_{n\ge0}z^{2^n}$ also has the unit circle as a natural boundary.  P\'olya--Carlson therefore distinguishes rationality from lacunarity, not rank one from rank two.  The radial singularity order does distinguish the ranks, but proving that the actual support has rank one is again the original conjecture.
+\end{cautionbox}
+
+\subsection{Recent Mahler theory and the present equation}
+
+Brechler's July 2026 work develops rational--transcendental dichotomies and lifting theorems for multivariate Mahler systems associated with monomial transformations \cite{Brechler2026}.  Adamczewski and Faverjon's April 2026 Liouville-type inequality controls values of ordinary Mahler functions at algebraic points \cite{AdamczewskiFaverjon2026}.  These are substantial advances, but the variable needed here is not a value of a fixed Mahler function at an algebraic point.  The unknown relation is in the integer scaling parameters themselves:
+\[
+  M^\theta=A.
+\]
+Encoding \eqref{eq:two-scale-mahler} in a larger multivariate system preserves the formal semigroup and may prove transcendence of selected function values; it does not force $M$ to be a power of $2$.  A useful future theorem would need to combine two-scale functional equations with an arithmetic relation between the scale parameters, rather than treating those parameters as fixed integers.
+
+\section{A sharp fixed-window polynomial-approximation barrier}
+\label{sec:approximation-barrier}
+
+A natural asymptotic strategy is to approximate $x^\theta$ by a polynomial on a multiplicative window, use the many conditional integer points $(m,m^\theta)$ there, and convert near-integrality into an interpolation determinant or finite-difference contradiction.  The following calculation shows that every fixed-window version is already starved of nodes before arithmetic denominators are considered.
+
+\subsection{Best approximation rate on a multiplicative interval}
+
+Fix $h>0$ and scale $x=Xu$, $1\le u\le\e^h$.  Let
+\[
+  \varepsilon_d(h)
+  :=\inf_{\deg p\le d}\max_{1\le u\le\e^h}|u^\theta-p(u)|.
+\]
+Under the affine map from $[-1,1]$ to $[1,\e^h]$, the branch point $u=0$ maps to
+\[
+  z_0=-\frac{\e^h+1}{\e^h-1}=-\coth(h/2).
+\]
+The largest Bernstein ellipse avoiding that singularity has parameter
+\begin{equation}
+  \rho(h)=|z_0|+\sqrt{z_0^2-1}=\coth(h/4).
+  \label{eq:rho-h}
+\end{equation}
+The Bernstein-ellipse theorem for best polynomial approximation \cite{Trefethen2013} gives
+\begin{equation}
+  \lim_{d\to\infty}\varepsilon_d(h)^{1/d}=\rho(h)^{-1}.
+  \label{eq:best-approx-rate}
+\end{equation}
+For precise comparison, define
+\[
+ d_{\min}(X,h):=
+ \min\left\{d\ge0:
+   \inf_{\deg q\le d}\max_{X\le x\le\e^hX}
+      |x^\theta-q(x)|<\frac12
+ \right\},
+\]
+where the infimum is over real polynomials.  Scaling $x=Xu$ and using \eqref{eq:best-approx-rate} gives
+\begin{equation}
+  d_{\min}(X,h)\ge
+  \left(\frac{\theta}{\log\rho(h)}+o(1)\right)\log X.
+  \label{eq:degree-required}
+\end{equation}
+This is only an analytic requirement.  A polynomial suitable for an arithmetic determinant generally needs coefficient and denominator control, which can only increase the cost.
+
+\subsection{Conditional node supply}
+
+Let
+\[
+ K_X(h):=\#\bigl(\Cand\cap[X,\e^hX]\bigr).
+\]
+Under a counterexample, the power-saving count imported from the supplied report gives, for fixed $h$,
+\begin{equation}
+ K_X(h)
+ =\frac{h}{\beta(\log2)^2}\log X+o(\log X).
+ \label{eq:window-node-count}
+\end{equation}
+Indeed, in exponent coordinates the window has fixed width $h/\log2$ at height $T=\log X/\log2$, while the rank-two triangular count has derivative $T/\beta$.
+
+For a degree-based interpolation argument even to have more integer nodes than degree, the leading constants in \eqref{eq:degree-required} and \eqref{eq:window-node-count} would have to satisfy
+\begin{equation}
+  h\log\coth(h/4)>\beta\log2\log3.
+  \label{eq:required-capacity}
+\end{equation}
+The left side has a small universal maximum.
+
+\begin{lemma}[Sharp approximation-capacity constant]
+\label{lem:capacity-constant}
+One has
+\begin{equation}
+ \sup_{h>0}h\log\coth(h/4)
+ =2\asinh(1)^2
+ =1.55363879979139\ldots.
+ \label{eq:capacity-constant}
+\end{equation}
+The maximum occurs at
+\[
+  h_*=2\asinh(1)=\log(3+\sqrt8)=1.76274717403909\ldots.
+\]
+A simpler universal bound is $h\log\coth(h/4)<4$.
+\end{lemma}
+
+\begin{proof}
+Put $y=h/2$ and $u=\sinh y$.  Differentiation gives
+\[
+ f'(h)=\log\coth(y/2)-\frac{y}{\sinh y}
+      =\asinh(1/u)-\frac{\asinh u}{u}.
+\]
+The sign is transparent after multiplying by $u$:
+\begin{align*}
+ u f'(h)
+ &=u\asinh(1/u)-\asinh u\\
+ &=u\int_0^1\left(
+     \frac1{\sqrt{u^2+s^2}}
+     -\frac1{\sqrt{1+u^2s^2}}
+   \right)\dd s.
+\end{align*}
+The difference between the squared denominators is
+\[
+ (u^2+s^2)-(1+u^2s^2)=(u^2-1)(1-s^2).
+\]
+Hence $f'(h)>0$ for $u<1$, vanishes for $u=1$, and is negative for $u>1$.  The unique maximizer is therefore $y=\asinh1$, or $h_*=2\asinh1$.  At that point
+\[
+ \coth(h_*/4)=1+\sqrt2=\e^{h_*/2},
+\]
+so $f(h_*)=h_*^2/2=2\asinh(1)^2$.  Since $f(h)\to0$ as $h\downarrow0$ and as $h\to\infty$, this is the global maximum.
+
+For the crude bound, write $h=4x$ and use
+\[
+ \tanh x>\frac{x}{1+x},
+\]
+which follows by differentiating $(1+x)\sinh x-x\cosh x$.  Hence
+$\log\coth x<\log(1+1/x)<1/x$ and $4x\log\coth x<4$.
+\end{proof}
+
+\begin{theorem}[Fixed-window polynomial node-budget barrier]
+\label{thm:node-budget-barrier}
+Assume the imported lower bound $\beta>12$.  For every fixed $h>0$, the ratio of the conditional node count to the least degree needed for sub-unit uniform polynomial approximation satisfies
+\begin{equation}
+ \limsup_{X\to\infty}\frac{K_X(h)}{d_{\min}(X,h)}
+ \le
+ \frac{h\log\coth(h/4)}{\beta\log2\log3}
+ <\frac{2\asinh(1)^2}{12\log2\log3}
+ =0.1700195643\ldots.
+ \label{eq:node-degree-ratio}
+\end{equation}
+Thus the required polynomial degree exceeds the entire available conditional node supply by a factor greater than $5.88$, even before coefficient heights, common denominators, or determinant divisibility are charged.
+\end{theorem}
+
+\begin{proof}
+Divide the leading coefficient in \eqref{eq:window-node-count} by that in \eqref{eq:degree-required}, use $\theta=\log3/\log2$, and apply Lemma~\ref{lem:capacity-constant} and $\beta>12$.
+\end{proof}
+
+\begin{barrierbox}[Interpretation]
+This theorem retires any fixed-multiplicative-window scheme whose analytic core is: approximate $x^\theta$ uniformly by a degree-$d$ polynomial to sub-unit accuracy and then require at least $d+1$ conditional integer nodes to force an interpolation or finite-difference constraint.  It is an optimistic barrier: it grants perfect use of every node and ignores arithmetic denominator losses.  Variable windows, rational approximation, nonlinear auxiliary functions, and multivariate approximants are not ruled out, but they must beat the sharp constant obstruction rather than merely improve bookkeeping.
+\end{barrierbox}
+
+\subsection{What could evade the barrier?}
+
+Three possibilities remain technically distinct.
+\begin{enumerate}
+  \item \emph{Rational or Hermite--Pad\'e approximation.}  Poles can be placed near the branch cut and may improve the exponential constant per degree.  The price is a denominator whose arithmetic height must be controlled at the integer nodes.  A viable theorem must optimize approximation error and denominator growth simultaneously.
+  \item \emph{Growing windows.}  Letting $h=h(X)$ changes both the Bernstein geometry and the node count.  The fixed-window calculation no longer applies verbatim, but very wide windows reintroduce the severe dynamic range already encountered by the supplied determinant analyses.
+  \item \emph{Auxiliary functions adapted to the semigroup.}  A function built from $z\mapsto z^2$ and $z\mapsto z^M$ could exploit exact scaling rather than approximate $x^\theta$ generically.  The two-scale equation in \cref{sec:mahler} is a natural starting point, but the auxiliary function must also see $M^\theta\in\N$.
+\end{enumerate}
+
+\begin{problem}[Arithmetic rational-approximation target]
+Construct rational functions $R_d=P_d/Q_d$ on $[1,\e^h]$ such that
+\[
+ \|u^\theta-R_d(u)\|_\infty\le\e^{-\lambda d},
+\]
+while $P_d,Q_d$ have controlled integer coefficients and $|Q_d(m/X)|$ has enough divisibility or a sufficiently small common denominator on the conditional semigroup nodes.  To beat \cref{thm:node-budget-barrier}, the net arithmetic rate must exceed $\beta\log2\log3/h$, not merely the analytic polynomial rate $\log\coth(h/4)$.
+\end{problem}
+
+\section{Additive-energy asymptotics and the July 2026 threshold}
+\label{sec:additive}
+
+Joseph Harrison's paper \emph{Additive relations in irrational powers}, revised July 31, 2026, is unusually close to the present problem \cite{Harrison2026}.  For a finite set $B$ in an $N$-term arithmetic progression and irrational $c$, it bounds nontrivial solutions of
+\[
+  b_1^c+\cdots+b_s^c=b_1'^c+\cdots+b_r'^c
+\]
+and, above a polylogarithmic cardinality threshold, proves asymptotically maximal $k$-fold sumsets.  The proof combines functional transcendence with Pila--Wilkie counting and the recent polylogarithmic technology of Binyamini--Novikov--Zak in $\R_{\exp}$ \cite{PilaWilkie2006,BinyaminiNovikovZak}.
+
+\subsection{Applying the theorem to a hypothetical counterexample}
+
+Let
+\[
+  \Cand_X:=\Cand\cap[1,X].
+\]
+Under failure,
+\begin{equation}
+  |\Cand_X|
+  \sim\frac{(\log X)^2}{2\log2\log M}.
+  \label{eq:C-X-size}
+\end{equation}
+Moreover
+\[
+  \Cand_X^{[\theta]}
+  :=\{m^\theta:m\in\Cand_X\}
+  =\Out\cap[1,X^\theta]
+\]
+is again an integer rank-two semigroup truncation.
+
+Harrison's expansion theorem assumes $|B|\ge(\log N)^{C_1}$ for an effectively computable $C_1>1$.  Since \eqref{eq:C-X-size} has exponent exactly $2$, the hypothetical set lies at a critical polylogarithmic threshold:
+\begin{itemize}
+  \item if the method could give $C_1<2$ for fixed $k$, it would apply to $\Cand_X$;
+  \item if $C_1\ge2$, the present theorem does not reach this set from its stated asymptotic alone.
+\end{itemize}
+Even in the first case, asymptotically maximal sumset growth is compatible with the conjectural counterexample.  Multiplicative rank two does not force large equal-length additive energy.
+
+The relation-counting theorem has a more informative interface.  Its error for $k$-fold energy is
+\[
+  \bigO_k\bigl(|B|^{k-1}(\log N)^{C_2}\bigr).
+\]
+For $B=\Cand_X$, the ratio of this error to the trivial main term is of order
+\[
+  \frac{(\log X)^{C_2}}{|\Cand_X|}
+  \asymp(\log X)^{C_2-2}.
+\]
+Thus $C_2<2$ is the exact exponent threshold for an asymptotically trivial equal-length energy statement on the conditional set.  But such a statement, too, would be consistent with the semigroup.  Harrison explicitly lists extension to substantially sparser subsets as an open direction; the conditional size $\asymp(\log N)^2$ is therefore a natural concrete test case for that program.
+
+Harrison also proves a different nonvanishing criterion: an integer linear form in the $c$th powers of multiplicatively independent integers cannot vanish when $c$ lies in a sufficiently short, effectively computable one-sided interval above a rational $a/q$.  This does not currently apply to $M^\theta-A=0$.  The constant term $A$ and the base $M$ vary with the hypothetical counterexample, the two terms are not a fixed multiplicatively independent family of positive bases, and Baker theory supplies lower bounds for rational approximation to $\theta$, whereas the criterion needs membership in a specially short upper interval.  The result is nevertheless a useful model for how rational approximation and linear forms in logarithms can be combined without assuming Schanuel's conjecture.
+
+\subsection{Forced unequal-length relations saturate the expected scale}
+
+The output semigroup does force many additive relations, but of unequal length.  For every $m\in\Cand$,
+\begin{equation}
+  (2m)^\theta=3m^\theta
+  =m^\theta+m^\theta+m^\theta.
+  \label{eq:three-to-one}
+\end{equation}
+Hence, for $m,2m\le X$, \eqref{eq:three-to-one} gives a nontrivial $3$-to-$1$ relation in $\Cand_X^{[\theta]}$.  There are $\asymp|\Cand_X|$ such relations.  Likewise,
+\begin{equation}
+  (Mm)^\theta=A m^\theta
+  =\underbrace{m^\theta+\cdots+m^\theta}_{A\text{ terms}}
+  \label{eq:A-to-one}
+\end{equation}
+provides $A$-to-$1$ relations.
+
+For Harrison's general theorem with $r=1<s$, the exponent of $|B|$ in the upper bound is exactly one, up to a power of $\log N$.  The forced relations \eqref{eq:three-to-one} therefore attain the predicted polynomial scale; they do not violate it.  This is a useful consistency check: the new theorem sees the scaling identities but leaves precisely enough room for them.
+
+\begin{barrierbox}[Additive conclusion]
+A better polylogarithmic exponent alone will not prove the conjecture.  One also needs a lower bound for \emph{equal-length} nontrivial additive energy forced by simultaneous rank-two integrality, or a relation-count theorem that distinguishes the special $2\mapsto3$ and $M\mapsto A$ dilation identities from generic unequal-length relations.  No such lower bound is presently known, and formal semigroups can be close to Sidon sets at fixed additive length.
+\end{barrierbox}
+
+\begin{problem}[Critical sparse-set bridge]
+Develop an irrational-power relation theorem for multiplicatively generated sets of size $\asymp(\log N)^2$ with explicit exponents below the critical value $2$, and combine it with an independent theorem forcing nontrivial equal-length relations from two integer dilation laws.  Both halves are needed; either half by itself remains compatible with a hypothetical counterexample.
+\end{problem}
+
+\section{Recent Sturmian, automatic, and Mahler developments}
+\label{sec:recent-literature}
+
+This section records work that appeared or was materially revised after the main literature layer represented in the supplied report.  The emphasis is not on collecting titles but on testing exact hypotheses against the conditional model.
+
+\subsection{Nguyen's refined Diophantine exponent}
+
+Nguyen introduced the refined Diophantine exponent $\mathbf{Rdio}$ in arXiv:2605.30606v2 \cite{NguyenRdio2026}.  It permits long approximate repetitions whose mismatches are confined to a bounded number of intervals of small total length.  The associated Subspace-Theorem criterion gives transcendence or restricted algebraicity for values of generating series at algebraic points.  Of direct relevance, Nguyen proves that codings of irrational rotations by rational intervals have infinite refined Diophantine exponent, whether or not the rotation has bounded partial quotients.
+
+The block-count and jump words in the conditional Alaoglu--Erd\H{o}s model are Sturmian or closely related rotation codings.  Nguyen's machinery therefore provides stronger transcendence statements for many \emph{numbers formed from those words}.  It does not make the rotation number $\beta$ algebraic or force $M^\theta$ to be nonintegral.  The object known to be algebraic in our problem is a scale parameter such as $M$, not a value $\sum a_n\alpha^{-n}$ to which the theorem directly applies.
+
+A follow-up posted August 20, 2026, determines the spectrum of $\mathbf{Rdio}$ over a ternary alphabet as the whole interval $[1,\infty]$ and studies rotation codings and bracket words \cite{NguyenSpectrum2026}.  This flexibility is informative negatively: the refined exponent is a powerful sufficient statistic for transcendence of series values, but its magnitude alone is too nonrigid to characterize the exceptional arithmetic relation sought here.
+
+\subsection{Gaussian Cobham without four exponentials}
+
+Bustos-Gajardo, Fokkink, and Yassawi revised their Gaussian-integer Cobham theorem on August 8, 2026 \cite{GaussianCobham2026}.  Earlier work had invoked the four exponentials conjecture in a recognizability setting.  Their theorem proves eventual periodicity unconditionally for multiplicatively independent Gaussian bases when at least one base is not a root of an integer, while identifying a root-of-integer exceptional regime.
+
+This is conceptually encouraging: automaticity plus additional geometric structure can sometimes bypass a four-exponentials hypothesis.  It does not apply directly here.  The conditional Sturmian words are not automatic, and the ordinary support series satisfies a mixed two-scale relation rather than two independent Mahler equations.  Still, the proof architecture is worth mining for a ``mixed Cobham'' statement in which exact integer dilation laws replace automatic recognizability.
+
+\subsection{Multivariate Mahler lifting}
+
+Brechler's arXiv:2607.24877 establishes analytic and arithmetic properties of multivariate Mahler functions for broad monomial transformations, including a rational--transcendental dichotomy, an improved lifting theorem, and descent at regular points \cite{Brechler2026}.  This strengthens the toolkit for functions obeying systems of monomial substitutions.  The obstacle in \eqref{eq:two-scale-mahler} is different: the equation exists for every pair of multiplicatively independent integers $(2,M)$, regardless of whether $M^\theta$ is an integer.  A lifting theorem for values cannot by itself turn that extra arithmetic fact into rationality of $F_{2,M}$.
+
+\subsection{Harrison's additive-relations theorem}
+
+Harrison's v3 is the most directly relevant recent paper because it studies exactly the map $n\mapsto n^c$ for irrational $c$ and reaches polylogarithmically sparse sets.  Its present exponents, however, leave the conditional set at a critical threshold, and its conclusions are compatible with the forced $3$-to-$1$ dilation relations.  The precise assessment is given in \cref{sec:additive}.
+
+\subsection{Massold and the four-exponentials frontier}
+
+Massold's 2025 work proves a weaker lower bound for transcendence degrees of fields generated by exponentials of products and reduces a stronger expected estimate to a subgroup-intersection conjecture in algebraic tori \cite{Massold2025}.  It does not reach the $2\times2$ zero-transcendence-degree configuration needed here.  The matrix-coefficient conjecture of Dasgupta--Kakde, already analyzed in the supplied report, would imply four exponentials but remains conjectural \cite{DasguptaKakde2024}.  The recent literature therefore changes the map around the obstruction more than the obstruction itself.
+
+\begin{longtable}{L{0.19\textwidth}L{0.25\textwidth}L{0.48\textwidth}}
+\caption{Recent developments and their exact interface with the problem.}\label{tab:recent}\\
+\toprule
+Work & New capability & Verdict for Alaoglu--Erd\H{o}s \\
+\midrule
+\endfirsthead
+\toprule
+Work & New capability & Verdict for Alaoglu--Erd\H{o}s \\
+\midrule
+\endhead
+Harrison, arXiv:2512.04081v3 (July 31, 2026)
+& Polylogarithmic bounds for additive relations in irrational powers; maximal sumsets above a threshold
+& Directly relevant, but the conditional set has critical size $(\log N)^2$, and the semigroup's forced unequal-length relations fit the theorem's optimal scale. \\
+\addlinespace
+Nguyen, arXiv:2605.30606v2 (August 1, 2026)
+& Refined repetition invariant and Subspace-Theorem transcendence criteria; rotation codings have infinite refined exponent
+& Applies to series built from conditional Sturmian words, not to the unknown scale identity $M^\theta=A$. \\
+\addlinespace
+Nguyen, arXiv:2608.20191 (August 20, 2026)
+& Full spectrum $[1,\infty]$ for the refined exponent on a ternary alphabet
+& Shows flexibility of the combinatorial invariant; no direct rigidity for $\beta$. \\
+\addlinespace
+Brechler, arXiv:2607.24877 (July 27, 2026)
+& Multivariate Mahler rationality/transcendence and lifting at algebraic points
+& The mixed support equation can be encoded, but exists for every formal $M$ and does not use $M^\theta\in\N$. \\
+\addlinespace
+Bustos-Gajardo--Fokkink--Yassawi, arXiv:2510.01440v3 (August 8, 2026)
+& Gaussian Cobham theorem without assuming four exponentials in a geometric automatic setting
+& Suggests proof architecture, but hypotheses exclude the nonautomatic conditional Sturmian configuration. \\
+\addlinespace
+Adamczewski--Faverjon, arXiv:2604.08208
+& Liouville-type inequalities for values of Mahler functions
+& Controls values at algebraic points, not arithmetic dependence of the integer scale parameters. \\
+\bottomrule
+\end{longtable}
+
+\section{Further asymptotic approaches considered}
+\label{sec:further-approaches}
+
+The following approaches were examined far enough to identify their exact output and failure mode.  They are recorded to prevent the same attractive but circular arguments from recurring.
+
+\subsection{Tauberian inversion of the spectral zeta}
+
+A Tauberian theorem converts the pole at $s=0$ into the logarithmic Weyl law.  Conversely, the exact rank-two count reconstructs the double pole.  This circle is lossless but tautological: it translates the free monoid between counting, zeta, and heat languages without using $A\in\N$.  A successful Tauberian argument must insert an independent estimate derived from the output integrality, such as
+\[
+  H_D(t)=\bigO(\log(1/t)),
+\]
+which is already equivalent to the conjecture by Corollary~\ref{cor:heat-criterion}.
+
+\subsection{Pole-lattice resonance}
+
+One might hope that the two imaginary pole lattices
+\[
+  \frac{2\pi\ii}{\log2}\Z,
+  \qquad
+  \frac{2\pi\ii}{\log M}\Z
+\]
+are incompatible with integer coefficients of $F_{2,M}$.  They are not: the formal integer support $\{2^nM^k\}$ realizes them exactly.  Baker's theorem prevents exact intersections and bounds near-intersections, but that makes the expansion well behaved rather than contradictory.
+
+\subsection{Natural-boundary rigidity}
+
+The global natural boundary also follows for every formal $M$ and in rank one.  It can rule out D-finiteness or rationality, but neither property is expected for the actual candidate series.  Any use of P\'olya--Carlson must be coupled to an independent theorem forcing analytic continuation through an arc; simultaneous integrality presently supplies no such continuation.
+
+\subsection{Factorial and entropy asymptotics}
+
+Stirling expansions of factorials at $M^k$ and $A^k$ produce very accurate entropy formulae, but their leading scales differ by the power $\theta$.  Equalizing those scales requires irrational exponents or rational approximants whose denominator losses reproduce the existing linear-forms-in-logarithms barrier.  No integer factorial ratio was found whose complete asymptotic expansion cancels to a nonzero quantity of absolute value below one.  This route remains conceivable only if one discovers a combinatorial identity that supplies the cancellation algebraically rather than by choosing irrational weights.
+
+\subsection{Large deviations of digit statistics}
+
+The imported synchronized-significand equidistribution extends to weighted observables and, with the supplied Baker estimate, to effective discrepancy.  More delicate digit sums would require distribution results for powers of $M$ in base $2$ and powers of $A$ in base $3$.  Any theorem asserting asymptotic independence of the two leading-log rotations would assume or imply the rational independence that is in question.  Digit statistics may still offer a route if a finite automaton or carry structure can be forced, but generic equidistribution alone is circular.
+
+\section{A consolidated theorem ledger}
+\label{sec:ledger}
+
+For clarity, the genuinely new mathematical statements in this continuation are separated from imported facts and heuristic targets.
+
+\begin{longtable}{L{0.26\textwidth}L{0.16\textwidth}L{0.50\textwidth}}
+\caption{Result ledger.}\label{tab:ledger}\\
+\toprule
+Statement & Status & Content \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Content \\
+\midrule
+\endhead
+\Cref{thm:zeta-dichotomy}
+& Exact, conditional
+& Spectral-zeta product formulas and pole-order dichotomy. \\
+\addlinespace
+\Cref{thm:log-Weyl}
+& Exact, conditional
+& Logarithmic spectral dimension one versus two. \\
+\addlinespace
+Lemma~\ref{lem:small-divisor}
+& Unconditional for formal $M$
+& Effective polynomial separation of the two imaginary pole lattices by Baker theory. \\
+\addlinespace
+\Cref{thm:heat-expansion}
+& Unconditional for formal $M$
+& Full heat expansion: quadratic log polynomial, two analytic periodic families, all power corrections, and a contour remainder. \\
+\addlinespace
+\Cref{thm:rank-one-heat}
+& Unconditional
+& Matching rank-one expansion and exact heat-trace criterion. \\
+\addlinespace
+Proposition~\ref{prop:joint-renormalization}
+& Exact, conditional
+& Bivariate heat-trace inclusion--exclusion under the two dilation directions. \\
+\addlinespace
+\Cref{thm:two-scale-mahler}
+& Unconditional for formal $M$
+& Mixed two-scale functional equation for the ordinary support series. \\
+\addlinespace
+\Cref{thm:natural-boundary}
+& Unconditional for formal $M$
+& Unit-circle natural boundary by P\'olya--Carlson and zero support density. \\
+\addlinespace
+Lemma~\ref{lem:capacity-constant}
+& Unconditional
+& Sharp maximum $2\asinh(1)^2$ for fixed-window Bernstein capacity. \\
+\addlinespace
+\Cref{thm:node-budget-barrier}
+& Rigorous method barrier
+& At most $17.002\%$ as many conditional nodes as analytically required polynomial degree; factor $>5.88$ deficit. \\
+\bottomrule
+\end{longtable}
+
+\section{Prioritized research program}
+\label{sec:program}
+
+The following order reflects both mathematical leverage and the barriers established here.
+
+\subsection{Priority 1: mixed Mahler--Cobham rigidity with arithmetic scale coupling}
+
+The most structurally faithful target is a theorem about a $0$--$1$ series satisfying a mixed equation like \eqref{eq:two-scale-mahler} whose support is carried by integers and whose image under $n\mapsto n^\theta$ is also an integer support satisfying a second mixed equation.  Existing Mahler and Cobham theorems treat independent functional equations or automatic representations; the needed theorem must use the coupling
+\[
+  2^\theta=3,\qquad M^\theta=A.
+\]
+A successful result should force $M$ to be a power of $2$.  The recent Gaussian Cobham proof is a plausible source of geometric ideas, while Brechler's multivariate lifting supplies modern function-theoretic infrastructure.
+
+\subsection{Priority 2: denominator-sensitive polylogarithmic point counting}
+
+The conditional compact arc carries $\asymp\log H$ points of height $H$ in each logarithmic block, with first-coordinate denominators constrained to powers of $2$ and second-coordinate denominators to powers of $3$.  Generic Pila--Wilkie bounds are not sensitive to this prime support.  The desired theorem remains:
+\[
+ \#\{\text{such prime-supported rational points of height }\le H\}=o(\log H).
+\]
+This is a one-logarithm saving.  Harrison's use of polylogarithmic counting shows that the surrounding technology is moving toward the relevant scale, but its current formulation concerns additive relations and does not exploit the complementary denominator supports.
+
+\subsection{Priority 3: arithmetic rational approximation beyond the polynomial barrier}
+
+\Cref{thm:node-budget-barrier} says that fixed-window polynomial approximation is not close: it loses by a factor exceeding $5.88$ before arithmetic costs.  Rational or multivariate approximants are worth pursuing only with a complete height ledger.  A practical first milestone is an explicit theorem giving, for $u^\theta$ on $[1,\e^h]$, simultaneous bounds on approximation error, coefficient height, denominator values at integers, and resultants.  Without all four, an improved analytic rate may be illusory arithmetically.
+
+\subsection{Priority 4: additive relations at the critical exponent two}
+
+Harrison's theorem identifies $(\log N)^2$ as a natural frontier for the hypothetical set.  Two concrete questions are now sharply posed:
+\begin{enumerate}
+  \item Can the polylogarithmic exponent $C_2$ be made explicit and below $2$ for fixed small additive length?
+  \item Can simultaneous integer dilation laws force excess \emph{equal-length} additive energy, not merely the optimal-order unequal relations \eqref{eq:three-to-one} and \eqref{eq:A-to-one}?
+\end{enumerate}
+A negative answer to the second would retire additive energy as a direct route even if the first is solved.
+
+\subsection{Priority 5: formalization of the asymptotic interfaces}
+
+Several results are suitable for incremental Lean formalization without first formalizing all of Mellin analysis.
+\begin{enumerate}
+  \item The spectral-zeta identities can be represented as products of geometric series on a right half-plane.
+  \item The two-scale support equation \eqref{eq:two-scale-mahler} is combinatorial and finite-coefficient-wise.
+  \item The joint renormalization identity \eqref{eq:joint-renormalization} is another index-quadrant inclusion--exclusion.
+  \item The affine map and ellipse identity $\rho(h)=\coth(h/4)$, the elementary bound $h\log\coth(h/4)<4$, and the node-density comparison are accessible real analysis.
+  \item The complete heat expansion requires complex Mellin inversion, vertical Stirling estimates, and a Baker interface; it should be isolated behind a theorem statement until those libraries exist.
+\end{enumerate}
+
+\section{Conclusion}
+
+The asymptotic viewpoint produces a crisp dichotomy.  In the conjectural world, the candidate operator has one logarithmic scaling direction, a simple zeta pole at the origin, a linear heat logarithm, and one Fourier frequency lattice.  In a counterexample world, it has two scaling directions, a double zeta pole, a quadratic heat logarithm, and two incommensurable analytic oscillation families.  These signatures are exact and robust.
+
+They are not yet contradictory.  Every one of them is already present in the formal integer semigroup generated by $2$ and an arbitrary multiplicatively independent integer $M$.  The genuinely difficult datum is not asymptotic rank two but the additional statement that the irrational power map with exponent $\theta=\log3/\log2$ sends the entire semigroup to another integer semigroup.  Comparing the two heat traces simply rescales the same structure; natural boundaries occur in both ranks; generic additive expansion is compatible with the forced dilation relations; and polynomial approximation is decisively node-starved.
+
+The work nevertheless narrows the search.  It rules out a broad fixed-window approximation family quantitatively, exposes a critical $(\log N)^2$ threshold in the newest additive theory, and gives exact analytic objects on which a future arithmetic rigidity theorem could act.  The most promising next step is not another asymptotic extraction from the free monoid, but a theorem that couples the two integer scale systems -- a mixed Mahler--Cobham or denominator-sensitive point-counting principle strong enough to collapse logarithmic spectral rank two to one.
+
+\appendix
+
+\section{Residue calculation at the origin}
+\label{app:residue}
+
+For reference, write
+\[
+ \Phi(s):=\frac{\Gamma(s)\e^{Ls}}
+ {(1-\e^{-as})(1-\e^{-bs})}.
+\]
+The required expansions are
+\begin{align*}
+ \Gamma(s)
+ &=s^{-1}-\gamma
+  +\left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)s+\bigO(s^2),\\
+ (1-\e^{-as})^{-1}
+ &=(as)^{-1}+\frac12+\frac{as}{12}+\bigO(s^3),\\
+ (1-\e^{-bs})^{-1}
+ &=(bs)^{-1}+\frac12+\frac{bs}{12}+\bigO(s^3),\\
+ \e^{Ls}&=1+Ls+\frac{L^2s^2}{2}+\bigO(s^3).
+\end{align*}
+Multiplying gives
+\begin{align*}
+ \Phi(s)
+ ={}&\frac1{ab s^3}
+ +\frac{L/(ab)+1/(2a)+1/(2b)-\gamma/(ab)}{s^2}\\
+ &+\frac1s\left[
+ \frac{L^2}{2ab}
+ +\left(\frac1{2a}+\frac1{2b}-\frac\gamma{ab}\right)L
+ +\frac14+\frac a{12b}+\frac b{12a}
+ -\frac\gamma{2a}-\frac\gamma{2b}
+ +\frac{\gamma^2/2+\pi^2/12}{ab}
+ \right]+\bigO(1).
+\end{align*}
+The coefficient of $s^{-1}$ is $Q_{a,b}(L)$.
+
+\section{Sharp maximization of the Bernstein capacity}
+\label{app:capacity}
+
+For completeness, put $y=h/2$ and $u=\sinh y$.  Then
+\[
+ f(h)=2y\log\coth(y/2),
+ \qquad
+ f'(h)=\asinh(1/u)-\frac{\asinh u}{u}.
+\]
+Moreover,
+\[
+ u f'(h)=u\int_0^1\left(
+ \frac1{\sqrt{u^2+s^2}}-\frac1{\sqrt{1+u^2s^2}}
+ \right)\dd s.
+\]
+Because
+\[
+ (u^2+s^2)-(1+u^2s^2)=(u^2-1)(1-s^2),
+\]
+the derivative is positive for $u<1$, zero for $u=1$, and negative for $u>1$.  Thus the unique critical point occurs at $y_*=\asinh1$.  Since $\sinh y_*=1$ and $\cosh y_*=\sqrt2$,
+\[
+ \coth(y_*/2)=\frac{\cosh y_*+1}{\sinh y_*}=1+\sqrt2=\e^{y_*},
+\]
+and therefore $f(2y_*)=2y_*^2$.  The endpoint limits are zero, so this is the global maximum.
+
+\section{Source and literature notes}
+\label{app:sources}
+
+The supplied report is cited as a project document rather than duplicated.  Recent arXiv dates, versions, abstracts, and stated theorem hypotheses in the text were checked on August 21, 2026.  Statements from preprints are reported as preprint results, not as peer-reviewed final publications.
+
+\begin{thebibliography}{99}
+
+\bibitem{UnifiedReport}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: unified report},
+\newblock supplied source file
+\texttt{Article/alaoglu-erdos-unified-report/alaoglu-erdos-unified-report.tex},
+August 2026.
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{doi:10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BakerWustholz1993}
+A.~Baker and G.~W\"ustholz,
+\newblock \emph{Logarithmic forms and group varieties},
+\newblock Journal f\"ur die reine und angewandte Mathematik \textbf{442} (1993), 19--62.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics, 2023, 579--592.
+\newblock \href{https://doi.org/10.1007/978-3-031-12244-6_39}{doi:10.1007/978-3-031-12244-6\_39}.
+
+\bibitem{FlajoletGourdonDumas1995}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\newblock \emph{Mellin transforms and asymptotics: harmonic sums},
+\newblock Theoretical Computer Science \textbf{144} (1995), 3--58.
+\newblock \href{https://doi.org/10.1016/0304-3975(95)00002-E}{doi:10.1016/0304-3975(95)00002-E}.
+
+\bibitem{TitchmarshTheoryFunctions}
+E.~C.~Titchmarsh,
+\newblock \emph{The Theory of Functions}, second edition,
+\newblock Oxford University Press, 1939.
+
+\bibitem{Trefethen2013}
+L.~N.~Trefethen,
+\newblock \emph{Approximation Theory and Approximation Practice},
+\newblock SIAM, 2013; extended edition, 2019.
+
+\bibitem{PolyaCarlson}
+G.~P\'olya and F.~Carlson,
+\newblock classical P\'olya--Carlson theorem on integer-coefficient power series of radius one;
+\newblock see, for example, P.~Dienes, \emph{The Taylor Series}, Oxford University Press, 1931.
+
+\bibitem{YuPolyaCarlson}
+T.~Yu,
+\newblock \emph{A multivariate version of P\'olya--Carlson theorem},
+\newblock arXiv:2312.00428v4, 2023.
+
+\bibitem{AdamczewskiBell2017}
+B.~Adamczewski and J.~P.~Bell,
+\newblock \emph{A problem about Mahler functions},
+\newblock Annali della Scuola Normale Superiore di Pisa, Classe di Scienze \textbf{17} (2017), 1301--1355;
+preprint arXiv:1303.2019.
+
+\bibitem{SchaefkeSinger2017}
+R.~Sch\"afke and M.~F.~Singer,
+\newblock \emph{Mahler equations and rationality},
+\newblock preprint arXiv:1605.08830, 2017.
+
+\bibitem{AdamczewskiFaverjon2021}
+B.~Adamczewski and C.~Faverjon,
+\newblock \emph{Mahler's method in several variables and finite automata},
+\newblock preprint arXiv:2012.08283.
+
+\bibitem{AdamczewskiFaverjon2026}
+B.~Adamczewski and C.~Faverjon,
+\newblock \emph{A Liouville-type inequality for values of Mahler M-functions},
+\newblock arXiv:2604.08208, April 2026.
+
+\bibitem{Brechler2026}
+E.~Brechler,
+\newblock \emph{Transcendence of multivariate Mahler functions and algebraic relations between their values},
+\newblock arXiv:2607.24877v1, July 27, 2026.
+
+\bibitem{Harrison2026}
+J.~Harrison,
+\newblock \emph{Additive relations in irrational powers},
+\newblock arXiv:2512.04081v3, July 31, 2026.
+
+\bibitem{NguyenRdio2026}
+Q.-K.~Nguyen,
+\newblock \emph{Transcendence and measures via the refined Diophantine exponent},
+\newblock arXiv:2605.30606v2, August 1, 2026; manuscript dated August 11, 2026.
+
+\bibitem{NguyenSpectrum2026}
+Q.-K.~Nguyen,
+\newblock \emph{Spectrum of the refined Diophantine exponent},
+\newblock arXiv:2608.20191v1, August 20, 2026.
+
+\bibitem{GaussianCobham2026}
+\'A.~Bustos-Gajardo, R.~Fokkink, and R.~Yassawi,
+\newblock \emph{Cobham's theorem for the Gaussian integers},
+\newblock arXiv:2510.01440v3, revised August 8, 2026.
+
+\bibitem{Massold2025}
+H.~Massold,
+\newblock \emph{Transcendence degrees of fields generated by exponentials of products},
+\newblock arXiv:2506.01123, 2025.
+
+\bibitem{DasguptaKakde2024}
+S.~Dasgupta and M.~Kakde,
+\newblock \emph{On the matrix coefficient conjecture},
+\newblock arXiv:2408.08178, 2024.
+
+\bibitem{PilaWilkie2006}
+J.~Pila and A.~J.~Wilkie,
+\newblock \emph{The rational points of a definable set},
+\newblock Duke Mathematical Journal \textbf{133} (2006), 591--616.
+
+\bibitem{BinyaminiNovikovZak}
+G.~Binyamini, D.~Novikov, and B.~Zak,
+\newblock \emph{Wilkie's conjecture for Pfaffian structures},
+\newblock Annals of Mathematics (2) \textbf{199} (2024), no.~2, 795--821.
+
+\bibitem{KuipersNiederreiter}
+L.~Kuipers and H.~Niederreiter,
+\newblock \emph{Uniform Distribution of Sequences},
+\newblock Wiley, 1974; Dover reprint, 2006.
+
+\end{thebibliography}
+
+\end{document}
