@@ -258,7 +258,7 @@ then
 \begin{proof}
 First divide by a power of \(z\), if necessary, so that \(F(0)\ne0\); this changes \(\log M_F(R)\) by only \(O(\log R)\).  Choose radii avoiding the zeros and apply Jensen's formula.  If
 \[
-  N=\left\lfloor\frac{\log(cR)}{\log q}\right\rfloor,
+  N=\left\lfloor\log_q(cR)\right\rfloor,
 \]
 then the listed zeros with index at most \(N\) contribute
 \begin{align*}
@@ -294,7 +294,7 @@ The lower bound follows from Theorem~\ref{thm:jensen-edge}.  For the upper bound
   M_{P_{q,c}}(R)
   =\prod_{n\ge0}\left(1+\frac{cR}{q^n}\right),
 \]
-because the factorwise upper bound is attained at \(z=-R\).  Splitting the logarithmic sum at \(n=\lfloor\log(cR)/\log q\rfloor\) gives
+because the factorwise upper bound is attained at \(z=-R\).  Splitting the logarithmic sum at \(n=\lfloor\log_q(cR)\rfloor\) gives
 \[
   \sum_{n\ge0}\log\left(1+\frac{cR}{q^n}\right)
    =\frac{(\log R)^2}{2\log q}+O(\log R).
@@ -661,8 +661,8 @@ satisfying \eqref{eq:interpolation-data}.
 Enumerate \(\cB\) increasingly as \(\lambda_0<\lambda_1<\cdots\), and let \(y_n=M^aA^b\) when \(\lambda_n=2^a3^b\).  The counting bound
 \[
   \#\{\lambda\in\cB:\lambda\le X\}
-  \le\left(1+\frac{\log X}{\log2}\right)
-      \left(1+\frac{\log X}{\log3}\right).
+  \le\left(1+\log_2 X\right)
+      \left(1+\log_3 X\right).
 \]
 Consequently \(n+1\ll(1+\log\lambda_n)^2\), so
 \(\log\lambda_n\gg\sqrt n\) and therefore \(\lambda_n/n\to\infty\).

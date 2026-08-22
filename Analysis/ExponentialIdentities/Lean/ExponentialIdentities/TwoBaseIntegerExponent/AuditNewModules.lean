@@ -95,6 +95,10 @@ import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveLogMeanBounds
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedMahlerFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.TwoScaleSupportFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.KummerCompatibilityFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.PrimePowerKummerCoherence
+import ExponentialIdentities.TwoBaseIntegerExponent.ReciprocalHalfContact
+import ExponentialIdentities.TwoBaseIntegerExponent.ReciprocalMomentLatticeFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.TwoStarContent
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -712,5 +716,34 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms KummerCompatibilityFinite.card_transverse_compatible
 #print axioms KummerCompatibilityFinite.card_compatible_zmod
 #print axioms KummerCompatibilityFinite.card_transverse_compatible_zmod
+
+-- Exact prime-power Kummer coherence counts over ZMod(q^e)
+#print axioms PrimePowerKummerCoherence.scalarCompatibleEquiv
+#print axioms PrimePowerKummerCoherence.card_compatible_shell_sum
+#print axioms PrimePowerKummerCoherence.card_scalarCompatible_primePower
+#print axioms PrimePowerKummerCoherence.card_dominantBase_shell_sum
+#print axioms PrimePowerKummerCoherence.coefficientEquiv
+#print axioms PrimePowerKummerCoherence.card_transverseNormalForm_primePower
+
+-- Exact coefficient content of the primitive two-star determinant
+#print axioms formalPrimeDeterminant_content_eq_simultaneousCoordinateGCD
+#print axioms IsLeastTwoBaseNonintegerSolution.formalPrimeDeterminant_content_eq_one
+#print axioms map_ne_zero_of_integerCoefficientContent_eq_one
+#print axioms IsLeastTwoBaseNonintegerSolution.formalPrimeDeterminant_map_ne_zero
+
+-- Reciprocal coefficient symmetry and its exact half-contact ceiling
+#print axioms ReciprocalHalfContact.reverseIndex_reverseIndex
+#print axioms ReciprocalHalfContact.two_mul_contact_le_degree
+#print axioms ReciprocalHalfContact.two_mul_contact_eq_degree_iff_single_middle
+#print axioms ReciprocalHalfContact.even_degree_of_sharp_contact
+#print axioms ReciprocalHalfContact.coeff_eq_two_middle_of_odd_floor_contact
+
+-- One-Vandermonde reciprocal-moment clearing and integral Hankel lattice floor
+#print axioms ReciprocalMomentLatticeFinite.cofactorWeight_mul_signedDenominator
+#print axioms ReciprocalMomentLatticeFinite.cast_clearedMoment_eq_delta_mul_rationalBarycentricMoment
+#print axioms ReciprocalMomentLatticeFinite.quadraticValue_eq_doubleSum
+#print axioms ReciprocalMomentLatticeFinite.one_le_quadraticValue
+#print axioms ReciprocalMomentLatticeFinite.one_le_momentHankel_det
+#print axioms ReciprocalMomentLatticeFinite.one_div_clearedMoment_zero_le_normalizedQuadraticValue
 
 end LeanProofs.TwoBaseIntegerExponent

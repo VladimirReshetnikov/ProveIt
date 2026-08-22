@@ -132,7 +132,7 @@ Corvaja--Zannier height theory then gives an exact linear asymptotic for the red
 of the rational secant $(u_j-1)/(v_j-1)$.  The coefficient is an explicit valuation
 functional $\kappa(M,A;\beta)>0$.  Consequently the reduced numerator and denominator of the
 secant are each $\exp((\kappa+o(1))s_j)$, while its error as an approximation to
-$\log2/\log3$ is only polynomial in $s_j$.  This produces a sharp ``height exponent zero''
+$\log_3 2$ is only polynomial in $s_j$.  This produces a sharp ``height exponent zero''
 barrier.  It also yields an exact asymptotic for the total cross-residual gcd and shows that
 its entire exponential part is supported on the fixed primes dividing $6MA$; all auxiliary
 prime cancellation is subexponential.
@@ -189,7 +189,7 @@ terms, then
 \]
 At the same time
 \[
- \sigma_j-\frac{\log2}{\log3}=\Theta(\eps_j),
+ \sigma_j-\log_3 2=\Theta(\eps_j),
  \qquad s_j^{-C}\ll|\eps_j|<s_j^{-1}.
 \]
 Thus the approximation exponent relative to reduced height tends to zero.  \proved
@@ -212,7 +212,7 @@ by fresh primes.  \proved
 
 \item \textbf{Fixed-order extrapolation barrier.}  Put
 \[
- \phi(t)=\frac{2^t-1}{3^t-1},\qquad \phi(0)=\frac{\log2}{\log3},
+ \phi(t)=\frac{2^t-1}{3^t-1},\qquad \phi(0)=\log_3 2,
 \]
 and, for fixed $m\ge1$,
 \[
@@ -328,7 +328,7 @@ such that
 \end{equation}
 for all $j$.  This is the only quantitative transcendence estimate used below.
 
-\subsection{The normalized $S$-unit point}
+\subsection{The normalized \texorpdfstring{$S$}{S}-unit point}
 
 Define
 \begin{equation}
@@ -400,61 +400,41 @@ For a rational projective point, use the absolute logarithmic Weil height
 \]
 with the usual normalized absolute values on $\Q$.
 
-For every rational prime $p$, put
-\[
- m_p=v_p(M),\qquad a_p=v_p(A),
-\]
-and let $\mathbf 1_{p=q}$ denote the indicator of $p=q$.
-
 \begin{theorem}[Exact projective-height slope]
 \label{thm:kappa}
 Define
 \begin{equation}
  \boxed{
- \kappa(M,A;\beta)=
- \sum_{p\ \mathrm{prime}}
- \max\!\left\{
- 0,
- m_p-\beta\mathbf1_{p=2},
- a_p-\beta\mathbf1_{p=3}
- \right\}\log p.}
+ \kappa(M,A;\beta)=\log\operatorname{lcm}(M_0,A_0).}
  \label{eq:kappa}
 \end{equation}
-Then
+For all sufficiently large $j$ one has the exact formula
 \begin{equation}
- h(1:u_j:v_j)=\kappa(M,A;\beta)s_j+o(s_j).
+ h(1:u_j:v_j)=s_j\log\operatorname{lcm}(M_0,A_0)
+ +\max\{0,\eps_j\log2,\eps_j\log3\}.
  \label{eq:projective-asymptotic}
 \end{equation}
-Moreover
+In particular,
 \begin{equation}
- \kappa\ge\max\{\log M_0,\log A_0\}>0.
+ \kappa=\log\operatorname{lcm}(M_0,A_0)
+ \ge\max\{\log M_0,\log A_0\}>0.
  \label{eq:kappa-positive}
 \end{equation}
 \proved
 \end{theorem}
 
 \begin{proof}
-At a finite prime $p$,
+Put $m_p=v_p(M)$ and $a_p=v_p(A)$.  At a finite prime $p$,
 \begin{align*}
  v_p(u_j)&=r_j\mathbf1_{p=2}-s_jm_p,\\
  v_p(v_j)&=r_j\mathbf1_{p=3}-s_ja_p.
 \end{align*}
-The local projective contribution is therefore
-\[
- \max\{0,-v_p(u_j),-v_p(v_j)\}\log p
- =s_j\max\!\left\{
- 0,
- m_p-\frac{r_j}{s_j}\mathbf1_{p=2},
- a_p-\frac{r_j}{s_j}\mathbf1_{p=3}
- \right\}\log p.
-\]
-Only primes dividing $6MA$ occur.  Since $r_j/s_j\to\beta$, summing the finitely many
-terms gives $s_j\kappa+o(s_j)$.  At the archimedean place,
-$u_j=2^{\eps_j}$ and $v_j=3^{\eps_j}$, so the contribution is $O(|\eps_j|)=o(1)$.
-This proves~\eqref{eq:projective-asymptotic}.
-
-The inequalities $h(1:u:v)\ge h(u)$ and $h(1:u:v)\ge h(v)$, together with
-\eqref{eq:hu}--\eqref{eq:hv}, imply~\eqref{eq:kappa-positive}.
+For all sufficiently large $j$, the finite local contribution is therefore
+$s_j\max\{v_p(M_0),v_p(A_0)\}\log p$.  Summing over $p$ gives
+$s_j\log\operatorname{lcm}(M_0,A_0)$.  At the archimedean place,
+$u_j=2^{\eps_j}$ and $v_j=3^{\eps_j}$, giving precisely the maximum in
+\eqref{eq:projective-asymptotic}.  Finally, a nonintegral candidate cannot have
+$M_0=1$ or $A_0=1$, so the lcm is greater than one.
 \end{proof}
 
 \begin{remark}[What $\kappa$ measures]
@@ -470,21 +450,16 @@ Set
  \lambda=\log M+\log A-\kappa.
  \label{eq:lambda}
 \end{equation}
-Then
+Then the local expression simplifies to
 \begin{equation}
- \lambda=
- \sum_p\left(
- m_p+a_p-
- \max\{0,m_p-\beta\mathbf1_{p=2},a_p-\beta\mathbf1_{p=3}\}
- \right)\log p.
+ \lambda=m\log2+a\log3+\log\gcd(M_0,A_0)\ge0.
  \label{eq:lambda-local}
 \end{equation}
-For $p\ne2,3$, the local coefficient is simply $\min(m_p,a_p)$.  Thus away from the two
-structural primes, the linear cancellation rate is exactly the logarithm of the common prime
-part of $M$ and $A$.
+Thus the structural-prime contributions are explicit, while the remaining term is the
+logarithm of the common prime part of $M_0$ and $A_0$.  The slope may be zero.
 \end{remark}
 
-\section{$S$-unit secants and exact primitive height}
+\section{\texorpdfstring{$S$}{S}-unit secants and exact primitive height}
 \label{sec:secant}
 
 \subsection{Corvaja--Zannier input}
@@ -547,8 +522,8 @@ If $\sigma_j=P_j/Q_j$ in lowest terms with $P_j,Q_j\in\N$, then
 \end{equation}
 Finally,
 \begin{equation}
- \sigma_j=\frac{\log2}{\log3}
- +\frac{\log2(\log2-\log3)}{2\log3}\,\eps_j
+ \sigma_j=\log_3 2
+ +\tfrac12\log_3 2\,(\log2-\log3)\,\eps_j
  +O(\eps_j^2).
  \label{eq:sigma-expansion}
 \end{equation}
@@ -562,7 +537,7 @@ Theorem~\ref{thm:CZ} give
  h(\sigma_j)\sim h(1:u_j:v_j).
 \]
 Theorem~\ref{thm:kappa} proves~\eqref{eq:sigma-height}.  Since
-$\sigma_j\to\log2/\log3\in(0,\infty)$, the reduced numerator and denominator differ by only
+$\sigma_j\to\log_3 2\in(0,\infty)$, the reduced numerator and denominator differ by only
 a bounded multiplicative factor.  Their maximum has logarithm $h(\sigma_j)$, proving
 \eqref{eq:PQ-height}.
 
@@ -577,8 +552,8 @@ Division of the two Taylor series gives
 \]
 \end{proof}
 
-The limit $\log2/\log3$ is transcendental: if it were algebraic irrational,
-Gelfond--Schneider applied to $3^{\log2/\log3}=2$ would give a contradiction; if it were
+The limit $\log_3 2$ is transcendental: if it were algebraic irrational,
+Gelfond--Schneider applied to $3^{\log_3 2}=2$ would give a contradiction; if it were
 rational, unique factorization would give a nontrivial equality between powers of $2$ and
 $3$.
 
@@ -587,13 +562,13 @@ $3$.
 There are constants $c,C>0$ such that
 \begin{equation}
  s_j^{-C}\ll
- \left|\sigma_j-\frac{\log2}{\log3}\right|
+ \left|\sigma_j-\log_3 2\right|
  \ll s_j^{-1},
  \label{eq:sigma-poly}
 \end{equation}
 and
 \begin{equation}
- \frac{-\log\left|\sigma_j-\frac{\log2}{\log3}\right|}
+ \frac{-\log\left|\sigma_j-\log_3 2\right|}
       {h(\sigma_j)}\longrightarrow0.
  \label{eq:height-exponent-zero}
 \end{equation}
@@ -645,7 +620,7 @@ with
 \]
 and similarly for $\mathbf d$.  The secant tends to
 \[
- \frac{\log(2^{c_1}3^{c_2})}{\log(2^{d_1}3^{d_2})}
+ \log_{2^{d_1}3^{d_2}}(2^{c_1}3^{c_2})
 \]
 whenever the denominator is nonzero, again with only polynomial error and linear primitive
 height.  Thus changing toric directions does not evade the barrier.
@@ -715,9 +690,9 @@ $P_j=X_j/G_j$ and $Q_j=Y_j/G_j$.  Subtract~\eqref{eq:PQ-height} from
 \end{proof}
 
 This theorem quantifies a phenomenon that raw formulas obscure.  The numerator and
-denominator in~\eqref{eq:sigma} possess a common divisor of exponential size, but that size
-is not free arithmetic information: after division, the surviving height still has the
-positive linear slope $\kappa$.
+denominator in~\eqref{eq:sigma} have the explicit nonnegative common-divisor rate $\lambda$,
+which may vanish.  Any positive part of that rate is not free arithmetic information: after
+division, the surviving height still has the positive linear slope $\kappa$.
 
 \subsection{No exponential common divisor from new primes}
 
@@ -798,7 +773,7 @@ Set
  \phi(t)=\frac{2^t-1}{3^t-1}
  \quad(t\ne0),
  \qquad
- \phi(0)=\rho:=\frac{\log2}{\log3}.
+ \phi(0)=\rho:=\log_3 2.
  \label{eq:phi}
 \end{equation}
 This is real analytic at $0$.  Write
@@ -825,7 +800,7 @@ is
  \frac{a^{k+1}}{b(k+1)!},
 \]
 so the polynomial is not identically zero.  After substituting $b=\theta a$ with
-$\theta=\log3/\log2$ transcendental, a nonzero rational polynomial in $\theta$ cannot vanish.
+$\theta=\log_2 3$ transcendental, a nonzero rational polynomial in $\theta$ cannot vanish.
 \end{proof}
 
 \subsection{The extrapolants}
@@ -925,15 +900,15 @@ constant term $1$.  Suppose
 \end{equation}
 Then
 \begin{equation}
- K\le\left\lfloor\frac D2\right\rfloor.
+ 2K\le D.
  \label{eq:half-bound}
 \end{equation}
-Equality can occur only if $D$ is even and
+Equality holds if and only if $D$ is even and
 \begin{equation}
  P(Z)-Q(Z)=cZ^{D/2}.
  \label{eq:middle-monomial}
 \end{equation}
-Conversely,~\eqref{eq:middle-monomial} gives equality.
+Equivalently,~\eqref{eq:middle-monomial} characterizes equality.
 \proved
 \end{theorem}
 
@@ -946,7 +921,7 @@ coefficients of $H$ vanish.  Reciprocity gives
 so the coefficient $h_i$ of $Z^i$ equals $h_{D-i}$.  If $d$ is the largest index with
 $h_d\ne0$, the smallest such index is $D-d$.  Hence $D-d\le d$, or $d\ge D/2$.
 Since $Q(Z)\sim Z^D$, the contact order in~\eqref{eq:contact-infinity} is $K=D-d$, proving
-$K\le D/2$.  Equality forces the smallest and largest nonzero indices of $H$ both to be
+$2K\le D$.  Equality forces the smallest and largest nonzero indices of $H$ both to be
 $D/2$, so $H$ is a single middle monomial.  The converse is immediate.
 \end{proof}
 
@@ -958,7 +933,7 @@ For fixed $P,Q$ as above, define
  \qquad N:=A=M^\theta,
  \label{eq:two-scale-det}
 \end{equation}
-where $\theta=\log3/\log2$ and $A=M^\theta$ under the counterexample hypothesis.
+where $\theta=\log_2 3$ and $A=M^\theta$ under the counterexample hypothesis.
 
 \begin{proposition}[Exact growth of a fixed reciprocal filter]
 \label{prop:reciprocal-growth}
@@ -1067,7 +1042,7 @@ example:
  \Phi_3(Z)-\Phi_4(Z)=Z.
 \]
 
-\subsection{Finite scan through $50000$}
+\subsection{Finite scan through \texorpdfstring{$50000$}{50000}}
 
 \begin{experiment}[Equal-totient cyclotomic scan]
 \label{exp:scan}
@@ -1120,7 +1095,7 @@ $z_j\in\Q$ to a fixed real number $\xi$, define
 A successful irrationality-measure contradiction requires a positive ratio exceeding the
 known effective threshold for $\xi$.  The new secant families satisfy
 \[
- \mathcal A_j\!\left(\frac{\log2}{\log3}\right)\longrightarrow0.
+ \mathcal A_j\!\left(\log_3 2\right)\longrightarrow0.
 \]
 For fixed Richardson order $m$, the numerator grows from $O(\log s_j)$ to
 $mO(\log s_j)$, but the denominator remains $\Theta(s_j)$.  No fixed $m$ changes the limit.
@@ -1172,7 +1147,7 @@ Construct rational functions $F_j\in\Q(X,Y)$ and convergents $r_j/s_j\to\beta$ s
 for $z_j=(u_j,v_j)$,
 \begin{enumerate}
 \item $F_j(z_j)\in\Q$ tends to a fixed logarithmic constant, preferably
-$\rho=\log2/\log3$;
+$\rho=\log_3 2$;
 \item the analytic contact order $k_j$ along $(2^t,3^t)$ tends to infinity;
 \item after complete numerator/denominator reduction,
 \[
@@ -1244,7 +1219,7 @@ $h(1:u:v)$, with convergence to~\eqref{eq:kappa} under $r/s\to\beta$.
 \item Taylor expansion~\eqref{eq:sigma-expansion} and the finite-difference moment identities
 used in Theorem~\ref{thm:richardson}.
 \item The Bernoulli coefficient formula and nonvanishing reduction to transcendence of
-$\log3/\log2$.
+$\log_2 3$.
 \item The reciprocal half-contact theorem, including the equality characterization.
 \item The M\"obius-layer formula~\eqref{eq:cyclotomic-ratio} and the deduction
 $K(n,m)\le\varphi(n)/2$.

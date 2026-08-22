@@ -334,8 +334,7 @@ whereas the two-base statement sits at the unresolved $2\times2$ threshold of th
 exponentials conjecture (Schneider's first problem \cite{Schneider1957}; see Waldschmidt
 \cite{Waldschmidt2000,Waldschmidt2023}).  The elementary-looking integrality question is thus
 one of the canonical concrete tests of the gap between six and four exponentials, not an
-isolated recreational puzzle.  As of the dated literature check for this report, the four
-exponentials conjecture remains open.
+isolated recreational puzzle.  The four exponentials conjecture remains open.
 
 \subsection{Candidate-base normalization}
 
@@ -813,7 +812,7 @@ $\alpha^\beta$ is transcendental.
 \label{co:cor-transcendental}
 If $2^x\in\Z$ then $x$ is either an integer or transcendental; algebraicity of such $x$ is
 equivalent to integrality.  Every nonintegral two-base solution is transcendental, and
-$\thetaq=\log_23$ is transcendental.
+$\thetaq=\log_2 3$ is transcendental.
 \end{corollary}
 
 \begin{statusbox}{\statuslean{} --- \lean{transcendental_of_not_integer_of_two_rpow_integer},
@@ -1168,7 +1167,7 @@ excluding a common perfect-power degree (Corollary~\ref{cd:no-common-power}).
 These restrictions are strong, but they still admit infinitely many formal integer parameter
 patterns.  The unresolved analytic content is untouched: the pair $(M,A)$ must satisfy
 \[
- \frac{\log M}{\log2}=\frac{\log A}{\log3},
+ \log_2 M=\log_3 A,
 \]
 and no known local valuation argument turns the depth dichotomy $a=0$ or $b=0$, or the
 gcd-one condition, into a contradiction.  Every constraint proved so far is compatible with the
@@ -1482,7 +1481,7 @@ transcendence-theoretic wall, not a disguised elementary factorization problem.
 The smallest structural question already meets the open core.  A $3$-smooth candidate
 $m=2^a3^b$ with $b\ge1$ would require $3^aE_3^{\,b}\in\N$ for
 \[
-E_3=3^{\log_23}=e^{(\log3)^2/\log2}=5.7045224946911176\ldots,
+E_3=3^{\log_2 3}=e^{(\log3)\log_2 3}=5.7045224946911176\ldots,
 \]
 and even the irrationality of $E_3$ is open: it is a ``three-logarithms'' quantity outside
 the reach of Gelfond--Schneider, Baker's method, and the six exponentials theorem.  No
@@ -1493,13 +1492,13 @@ obstruction.
 
 \begin{conjecture}[Radical four-exponentials target]
 \label{ra:conj-radical-target}
-For every odd integer $u>1$, $u^{\log_23}\notin\Zthree$.  Equivalently, for every
+For every odd integer $u>1$, $u^{\log_2 3}\notin\Zthree$.  Equivalently, for every
 power-primitive odd $w>1$ and every $d\ge1$, $(3^{\log_2w})^d\notin\Zthree$.
 \end{conjecture}
 
 By Theorem~\ref{ra:thm-localization} and the primitive reduction above, both formulations
 are exactly equivalent to Conjecture~\ref{conj:AE}; neither is proved.  A proof of the
-special case $u=3$ --- even of the weaker assertion that $3^{\log_23}$ is irrational --- by
+special case $u=3$ --- even of the weaker assertion that $3^{\log_2 3}$ is irrational --- by
 any genuinely new mechanism would already be a meaningful breakthrough.
 
 \section{The exact four-exponentials barrier}
@@ -2077,7 +2076,7 @@ gives
 \[
  x=p+q\thetaq,\qquad x=s+\frac{r}{\thetaq},
 \]
-where $\thetaq=\log_23$.  Eliminating $x$ and clearing the denominator yields the quadratic
+where $\thetaq=\log_2 3$.  Eliminating $x$ and clearing the denominator yields the quadratic
 relation
 \begin{equation}
  q\,\thetaq^{2}+(p-s)\,\thetaq-r=0
@@ -2143,7 +2142,7 @@ $a=0$ or $b=0$, and the gcd-one condition, is \statuslean{} in \lean{OutputNorma
 
 The two exceptional rows are precisely the cases the corpus already identifies as hardest:
 $w=3$ makes $3^{\thetaq}$ the sharp radical target of Section~\ref{sec:radical}, and $v=2$ is
-its base-swapped mirror with $2^{1/\thetaq}=2^{\log_32}$.  The third row is generic and
+its base-swapped mirror with $2^{1/\thetaq}=2^{\log_3 2}$.  The third row is generic and
 carries two independent outside-prime supports.
 
 \subsection{Third-base transcendence from six exponentials}
@@ -3396,7 +3395,7 @@ $\Q_{>0}$ and its second symmetric power.
 
 \emph{The smallest instances are already open.}  Independence of the family includes, as its
 very first nontrivial case, the assertion that $(\log3)^2$, $(\log2)(\log3)$ and $(\log2)^2$
-are $\Q$-linearly independent, equivalently that $\thetaq=\log_23$ is not a root of a rational
+are $\Q$-linearly independent, equivalently that $\thetaq=\log_2 3$ is not a root of a rational
 quadratic --- a statement about the irrationality of $\thetaq^2$ modulo $\Q(\thetaq)$ that is
 not decided by present transcendence theory.  Indeed the relation exhibited in
 Section~\ref{sec:radical} for a $3$-smooth counterexample would already contradict the single
@@ -3439,7 +3438,7 @@ independent over $\Q$.
 
 \begin{proof}
 A vanishing relation $a(\log p)^2+b\log p\log q+c(\log q)^2=0$ with rational $a,b,c$, divided
-by $(\log p)^2$, reads $a+bt+ct^2=0$ where $t=\log q/\log p$.  If $(a,b,c)\neq0$ this makes
+by $(\log p)^2$, reads $a+bt+ct^2=0$ where $t=\log_p q$.  If $(a,b,c)\neq0$ this makes
 $t$ a root of a nonzero rational polynomial, hence algebraic.  But $t$ is transcendental:
 it is irrational by unique factorization, and were it algebraic irrational then
 Gelfond--Schneider applied to $p^{\,t}=q$ would make the integer $q$ transcendental.
@@ -4472,7 +4471,7 @@ the Diophantine formulations obscure.  In the independent branch $M,A,2,3$ are
 multiplicatively independent, so $\log M,\log A,\log2,\log3$ are $\Q$-linearly independent
 \emph{logarithms of algebraic numbers} --- all four arguments are positive integers.  Baker's
 homogeneous theorem then gives more than $\Q$-linear independence: these four logarithms are
-linearly independent over $\Qbar$.  The corpus has not previously used this input.
+linearly independent over $\Qbar$.
 
 \begin{corollary}[Algebraic-coefficient rigidity in the independent branch]
 \label{kn:cor-baker}
@@ -4963,7 +4962,7 @@ Two remarks are worth making about the direction of the implications.  First, no
 proves that $E_3$ or $E_2$ is transcendental: a counterexample would make one of them an
 explicit algebraic radical, and Corollary~\ref{tw:not-both-algebraic} only says that it cannot
 make both algebraic.  The conjecture remains open, and the smallest instance --- irrationality
-of $E_3=3^{\log_23}$ --- is exactly the wall named in Section~\ref{sec:radical}.  Second, the
+of $E_3=3^{\log_2 3}$ --- is exactly the wall named in Section~\ref{sec:radical}.  Second, the
 implication that is usable in the other direction is the strong one: proving
 $\thetaq\log3\notin\LL$ would kill the entire $w=3$ branch, and proving $\eta\log2\notin\LL$
 would kill the $v=2$ branch, leaving only the generic case, in which both outputs carry prime
@@ -6167,7 +6166,7 @@ over the places $2$ and $3$ only, in the cross-coprime branch and with a square-
 family, gives a ratio settling near $0.33$ across block heights $T=400,1200,3600,10000$,
 consistent with the exact continuum value $3/10$ for those places.  The same computation shows
 what happens outside the balanced primitive normalization: with a degenerate column family such
-as the pure-$b$ columns $(0,j)$, and with $A$ within $\log_23$ of being a power of three, the
+as the pure-$b$ columns $(0,j)$, and with $A$ within $\log_2 3$ of being a power of three, the
 ratio rises to $0.9964$.  That configuration violates none of the kernel-verified constraints,
 but it saturates \emph{tautologically} --- the entries are then nearly powers of three, their
 $3$-adic content is nearly their size, and \eqref{eq:mp-minplus} degenerates.  The same
@@ -6513,7 +6512,7 @@ The semigroup determinant is much stronger locally than the ordinary-power deter
 repulsion exponent approaches $1$.  It is therefore important to identify exactly why it does
 not prove the conjecture.
 
-\subsection{How many nodes are needed to approach scale $X$?}
+\subsection{How many nodes are needed to approach scale \texorpdfstring{$X$}{X}?}
 
 The asymptotic exponent in \eqref{sg:eq-delta-asymp} is
 \[
@@ -7109,7 +7108,7 @@ present the algebraic and the real-analytic arguments meet only at the four-loga
 determinant.
 \end{observation}
 
-\subsection{The compact $S$-integral orbit}
+\subsection{The compact \texorpdfstring{$S$}{S}-integral orbit}
 \label{at:orbit}
 
 From the least generator define
@@ -7201,7 +7200,7 @@ The list below is ordered by how directly each item attacks the quantitative def
 Section~\ref{sec:deficit} --- the one missing logarithm between what the determinant
 hierarchy delivers and what a contradiction requires.
 
-\subsection{Priority A: $p$-adic amplification of semigroup determinants}
+\subsection{Priority A: \texorpdfstring{$p$}{p}-adic amplification of semigroup determinants}
 \label{at:prog-padic}
 
 The semigroup determinant $D=\det\bigl(m_i^{a_j}(m_i^{\thetaq})^{b_j}\bigr)$ is a positive
@@ -7228,7 +7227,7 @@ column finite-difference operations, have a chance.  The exact affine primitivit
 gcd condition on the normalized degrees should be fed into the estimate rather than
 discarded.
 
-\subsection{Priority B: exploit the full $(n,k)$ grid, not sorted magnitudes}
+\subsection{Priority B: exploit the full \texorpdfstring{$(n,k)$}{(n,k)} grid, not sorted magnitudes}
 \label{at:prog-grid}
 
 The arbitrary-node argument forgets the canonical coordinates and retains only the sorted
@@ -7757,16 +7756,16 @@ $h\in\{\lfloor d\beta\rfloor,\lceil d\beta\rceil\}$,
 Summing over every factor, define
 \begin{equation}
  \mathcal G_N=
- \frac{\log\mathcal Q_{3,A}(N)}{\log3}
- -\frac{\log\mathcal Q_{2,M}(N)}{\log2}.
+ \log_3\mathcal Q_{3,A}(N)
+ -\log_2\mathcal Q_{2,M}(N).
  \label{sturmian:eq-complete-surplus}
 \end{equation}
 The monomial factors in~\eqref{sturmian:eq-gap-factorization} and the structural factors in
 the discriminants cancel exactly, leaving the equivalent formulas
 \begin{align}
  \mathcal G_N
- &=\frac{\log P_{3,A}(N)}{\log3}-\frac{\log P_{2,M}(N)}{\log2}\nonumber\\
- &=\frac{\log\Delta_{3,N}}{\log3}-\frac{\log\Delta_{2,N}}{\log2}
+ &=\log_3 P_{3,A}(N)-\log_2 P_{2,M}(N)\nonumber\\
+ &=\log_3\Delta_{3,N}-\log_2\Delta_{2,N}
  =\sum_{0\le i<j<N}\Phi(|\delta_j-\delta_i|).
  \label{sturmian:eq-surplus-identities}
 \end{align}
@@ -7923,7 +7922,7 @@ computable constants $c_M>0$ and $\mu_M<\infty$ such that, for every $p\in\Z$ an
 \end{equation}
 One may choose $\mu_M$ bounded by an effectively computable absolute constant times
 $1+\log M$, hence by an absolute constant times $1+\beta$.  The same conclusion follows from
-$\beta=\log A/\log3$.
+$\beta=\log_3 A$.
 \end{theorem}
 
 \begin{proof}
@@ -8764,7 +8763,7 @@ is positive, hence at least one.  The normalized wedge is therefore
  u_pv_q-u_qv_p
  =\frac{\log p\log q}{\beta^2\log2\log3}\,\omega_{pq}
  \ge\frac{\kappa_{\wedge}}{\beta^2},\qquad
- \kappa_{\wedge}:=\frac{\log5\log7}{\log2\log3}.
+ \kappa_{\wedge}:=(\log_2 5)(\log_3 7).
  \label{mp:eq-normalized-straddling-wedge}
 \end{equation}
 
@@ -9536,7 +9535,7 @@ They manufacture an exact rational approximation to $\vartheta$:
 Taylor expansion at zero gives
 \begin{equation}\label{eq:theta-transfer-error}
  R_{p,q}=\vartheta+
- \frac{\log3\,(\log3-\log2)}{2\log2}\,\varepsilon
+ \tfrac12\log_2 3\,(\log3-\log2)\,\varepsilon
  +O(\varepsilon^2),
 \end{equation}
 so $|R_{p,q}-\vartheta|\ll|\varepsilon|$.
@@ -9583,9 +9582,8 @@ irrationality measure for $\vartheta$ is defeated by the factor $6^p$ in
 \eqref{eq:transfer-denominator}.
 \end{proposition}
 
-No mechanism forcing $G_{p,q}$ to be exponentially large was found.  The two gaps share the
-same small real parameter $\varepsilon$, but real closeness does not impose a common prime
-divisor.
+The two gaps share the same small real parameter $\varepsilon$, but real closeness alone does
+not impose the exponentially large common prime divisor required here.
 
 \subsection{Two-row determinants and fixed-support \texorpdfstring{$S$}{S}-units}
 
@@ -10322,8 +10320,7 @@ Then the existence of these four rational exponentials implies
 Equivalently, if
 \[
  \Delta_{\rm den}:=
- \sum_{q\in\{r_1,r_2,R_1,R_2\}}
- \frac{\log\den(q)}{\log q},
+ \sum_{q\in\{r_1,r_2,R_1,R_2\}}\log_q\den(q),
 \]
 then
 \begin{equation}\label{eq:adelic-den}
@@ -10345,12 +10342,12 @@ lower constant
 The HCIZ upper constant remains $\tfrac12\log(2z_r)-1+z_r$.  This proves
 \eqref{eq:adelic-rho}.  Finally,
 \[
- \rho(q)=J-(K-J)\frac{\log\den(q)}{\log q},
+ \rho(q)=J-(K-J)\log_q\den(q),
 \]
 and substitution gives~\eqref{eq:adelic-den}.
 \end{proof}
 
-\subsection{All unimodular bases of $\langle2,3\rangle$}
+\subsection{All unimodular bases of \texorpdfstring{$\langle2,3\rangle$}{the two-base group}}
 
 Let
 \[
@@ -10397,7 +10394,7 @@ This proposition explains why a denominator-free lattice reduction cannot
 improve the triangular inequality: the exact monoid has already selected the
 smallest integral basis.
 
-\subsection{The basis $(2,3/2)$ and a gcd constraint}
+\subsection{The basis \texorpdfstring{$(2,3/2)$}{(2, 3/2)} and a gcd constraint}
 
 Take
 \[
@@ -10831,11 +10828,9 @@ most $m-1$ distinct positive zeros.  Equivalently, vanishing at $R$ distinct pos
 points requires at least $R+1$ nonzero monomials.
 \end{theorem}
 
-The new \lean{SparsePowerCurve} module proves the arbitrary-order indexed form
-\lean{sparsePowerCurve_coeff_eq_zero_of_zeros}, its finite-zero-set form
-\lean{card_le_of_sparsePowerCurve_eq_zero}, and the nonsingularity of the square evaluation
-matrix.  It also proves the integral form
-\lean{det_natPowerCurveEvaluationMatrix_ne_zero}: if
+The \lean{SparsePowerCurve} module proves arbitrary-order and finite-zero-set forms of this
+theorem, as well as nonsingularity of the square evaluation matrix.  It also proves the
+corresponding integral statement: if
 $y_i=x_i^\beta$ are natural numbers, then
 \[
   \det\bigl(x_i^{r_j}y_i^{s_j}\bigr)\ne0
@@ -11697,11 +11692,11 @@ degree constant remain classical paper inputs.
 Working in the physical variable avoids the factor $2^{Td}$, but then the same lower bound
 requires degree
 \[
- d\ge\frac{\log3}{\log(4e)}T-O(\log T)
+ d\ge\log_{4e}3\,T-O(\log T)
  =0.460384\ldots T-O(\log T).
 \]
 Classical Bernstein approximation improves the slope to
-$\log3/\log(3+2\sqrt2)=0.623238\ldots$.  Either slope exceeds the conditional block
+$\log_{3+2\sqrt2}3=0.623238\ldots$.  Either slope exceeds the conditional block
 population slope by a wide margin; this is a structural mismatch, not a numerical failure at
 the beginning of the search range.
 
@@ -12152,8 +12147,8 @@ On positive rationals the kernel is exactly
 \end{equation}
 Hence a nonintegral counterexample pair $(M,A)=(2^\beta,3^\beta)$ satisfies
 \begin{align}
- D_2(M,A)&=\log_2M\log_23\ne0,\\
- D_3(M,A)&=-\log_3A\log_32\ne0.
+ D_2(M,A)&=\log_2M\log_2 3\ne0,\\
+ D_3(M,A)&=-\log_3A\log_3 2\ne0.
  \label{fp:eq-structural-nonzero}
 \end{align}
 The real matrix has rank one, but both finite-place matrices at the primes defining the
@@ -12298,7 +12293,7 @@ For a prime $p$ and an integer $a\ge1$, set
 \begin{equation}
  H_{p,a}=p+p^2+\cdots+p^a,
  \qquad
- \varepsilon_{p,a}=\frac{\log(1+H_{p,a}^{-1})}{\log p}.
+ \varepsilon_{p,a}=\log_p(1+H_{p,a}^{-1}).
  \label{ps:eq-switch-height}
 \end{equation}
 Comparing the two consecutive local factors in
@@ -12376,7 +12371,7 @@ required uniform error estimates are not reconstructed here.  Likewise, the firs
 formula for the location of $Q_{p,a,b}$ is a useful calibration, but its displayed proof in
 the displayed derivation omits a bootstrap and is not used as a theorem in this synthesis.
 
-\subsection{The exact $2$--$3$ convergent sieve}
+\subsection{The exact \texorpdfstring{$2$--$3$}{2--3} convergent sieve}
 \label{ps:two-three-sieve}
 
 For a possible switch between $2$ at level $a$ and $3$ at level $b$, define
@@ -12742,10 +12737,10 @@ For Iwasawa logarithms the positive-rational kernel is
 Consequently
 \[
  \det\begin{pmatrix}\log_2 2&\log_2M\\ \log_2 3&\log_2A\end{pmatrix}
-   =-\log_2M\log_23\ne0,
+   =-\log_2M\log_2 3\ne0,
 \quad
  \det\begin{pmatrix}\log_3 2&\log_3M\\ \log_3 3&\log_3A\end{pmatrix}
-   =\log_32\log_3A\ne0.
+   =\log_3 2\log_3A\ne0.
 \]
 After principal-unit normalization, the two-parameter orbit therefore has open closure in a
 two-dimensional $p$-adic torus at both structural primes.  For a full-rank logarithm matrix
@@ -13458,8 +13453,8 @@ diagnostic.
 
 For $M,N\ge2$, put
 \begin{equation}
- \alpha=\frac{\log M}{\log2},\qquad
- \beta=\frac{\log N}{\log3}.
+ \alpha=\log_2 M,\qquad
+ \beta=\log_3 N.
 \end{equation}
 Termwise Mellin integration initially gives
 \begin{equation}
@@ -13489,7 +13484,7 @@ is valid as a geometric series for $\Re v>0$; the corresponding Barnes double-ze
 starts in $\Re w>2$, $\Re a>0$ and is then continued.  The double pole detects equality of
 the two exponents, not their integrality.
 
-\subsection{Double-sine, $q$-digamma, and the surviving target}
+\subsection{Double-sine, \texorpdfstring{$q$}{q}-digamma, and the surviving target}
 \label{trf:qgamma}
 
 The reciprocal double-sine normalization with periods $\log2,\log3$ packages the two outputs
@@ -13892,7 +13887,7 @@ in rank two.  Equivalently, for
 the exact conditional count, together with the paper-level Baker--discrepancy refinement,
 gives
 \begin{align}
- N_D(\Lambda)&=\frac{\log\Lambda}{\log2}+O(1)
+ N_D(\Lambda)&=\log_2\Lambda+O(1)
  &&\text{in rank one},\label{spec:eq-weyl-one}\\
  N_D(\Lambda)&=\frac{(\log\Lambda)^2}{2\log2\log M}
  +\left(\frac1{2\log2}+\frac1{2\log M}\right)\log\Lambda
@@ -13902,7 +13897,7 @@ gives
 Consequently the limit
 \begin{equation}
  \dim_{\log}D:=\lim_{\Lambda\to\infty}
- \frac{\log N_D(\Lambda)}{\log\log\Lambda}
+ \log_{\log\Lambda}N_D(\Lambda)
 \end{equation}
 is respectively $1$ or $2$.  This is an exact reformulation of the monoid dichotomy, not an
 independent method for deciding which case holds.
@@ -14041,10 +14036,10 @@ with distinct exponents in $\Nzero+\Nzero\beta$.
 
 For $c>1$, the $3$-smooth nodes in $[X,cX]$ have cardinality
 \begin{equation}
- \frac{\log c}{\log2\log3}\log X+o(\log X),
+ (\log_2 c)(\log_3 X)+o(\log X),
 \end{equation}
 whereas Bernstein approximation to $t^\beta$ on that block requires degree at least
-$\beta\log X/\log\rho(c)+o(\log X)$, with
+$\beta\log_{\rho(c)}X+o(\log X)$, with
 \begin{equation}
  \rho(c)=\frac{\sqrt c+1}{\sqrt c-1}.
 \end{equation}
@@ -14233,10 +14228,8 @@ counterexample range.  The geometric Newton identity and its exact truncation/re
 dilation defect is also finite algebra and is formalized separately; local-uniform convergence,
 the $q$-hypergeometric limit, the infinite defect formula, mixed-word and complementary-word
 factorizations, exact block valuation, and one-signed tail are \statusnew{} paper results.
-All broader
-Bhargava-ordering, Hermite--Pad\'e, and
-integer-Chebyshev proposals remain research interfaces.  No dated literature-search claim is
-promoted, and none of these statements proves the conjecture.}
+All broader Bhargava-ordering, Hermite--Pad\'e, and integer-Chebyshev proposals remain research
+interfaces, and none of these statements proves the conjecture.}
 \end{statusbox}
 
 \subsection{Connection coefficients, lateral branches, and off-axis transport}
@@ -15020,7 +15013,7 @@ Elementary height bounds give
  =0.8819474591\ldots\,x^3.
  \label{rankgeom:eq-mobius-height}
 \end{equation}
-Here one uses $r\le x\log2/\log5$, $s\le x\log3/\log5$ and the corresponding
+Here one uses $r\le x\log_5 2$, $s\le x\log_5 3$ and the corresponding
 structural-prime bounds.  This is a finite-height certificate, not a contradiction.
 
 There is a particularly clean classification when the cross primes are absent:
@@ -15047,7 +15040,7 @@ Both are equivalently summarized by the localized radical equation
 \end{equation}
 It produces a second sharp Four Exponentials square with bases $2,C$ and exponents
 $\thetaq,\eta$, where
-$\eta=\log3/\log C=|r\thetaq-s|/d$: the four values
+$\eta=\log_C 3=|r\thetaq-s|/d$: the four values
 $2^{\thetaq},2^\eta,C^{\thetaq},C^\eta$ are algebraic, while both base logarithms and both
 exponents are rationally independent.  This is another exact $2\times2$ frontier, not an
 application of the available Six Exponentials theorem; compare
@@ -15335,7 +15328,7 @@ $rk+\lfloor k\alpha\rfloor=\lfloor k(r+\alpha)\rfloor$; coprimality makes the di
 fractions reduced.  Consequently, with $C_0=\max(W,Z)$,
 \begin{equation}
  \#\{k\ge0:\max(H(R_k),H(S_k))\le H\}
- =1+\left\lfloor\frac{\log H}{\log C_0}\right\rfloor\qquad(H\ge1).
+ =1+\left\lfloor\log_{C_0}H\right\rfloor\qquad(H\ge1).
  \label{orbitheight:eq-exact-count}
 \end{equation}
 The floor and finite simultaneous-denominator cores are \statuslean{} in
@@ -15400,6 +15393,54 @@ $k\ge1$, and $F(R_k,S_k)\ne0$; this corrects the source statement, which fails a
 for constants of absolute value below one.  The contact-multiplicity core is already stronger in
 \lean{RationalContactRigidity}; the new paper contribution here is its two-sided composition
 with the Baker return scale.
+
+There is also an exact primitive-height calculation.  Write
+\[
+ M=2^mM_0,\quad 2\nmid M_0,
+ \qquad A=3^aA_0,\quad 3\nmid A_0,
+\]
+and let $r_j/s_j\to x$ be convergents with
+$\varepsilon_j=r_j-s_jx$.  For
+\[
+ u_j=\frac{2^{r_j}}{M^{s_j}}=2^{\varepsilon_j},\qquad
+ v_j=\frac{3^{r_j}}{A^{s_j}}=3^{\varepsilon_j},
+\]
+one has, for all sufficiently large $j$,
+\begin{equation}
+ h(1:u_j:v_j)
+ =s_j\log\operatorname{lcm}(M_0,A_0)
+  +\max\{0,\varepsilon_j\log2,\varepsilon_j\log3\}.
+ \label{orbitheight:eq-projective-secant-height}
+\end{equation}
+The coefficient $\log\operatorname{lcm}(M_0,A_0)$ is positive for a nonintegral
+candidate.  Corvaja--Zannier's rational-function height theorem
+\cite{CorvajaZannier2005} then gives
+\begin{equation}
+ h\!\left(\frac{u_j-1}{v_j-1}\right)
+ =s_j\log\operatorname{lcm}(M_0,A_0)+o(s_j),
+ \qquad
+ \frac{u_j-1}{v_j-1}\longrightarrow\log_3 2.
+ \label{orbitheight:eq-secant-height-zero}
+\end{equation}
+The analytic error is only polynomial in $s_j$, so its exponent relative to the reduced
+height tends to zero.  More generally, every fixed nonconstant rational observable outside
+the exceptional torus cosets has height $\gg s_j$.  Fixed Richardson order or fixed rational
+contact therefore cannot repair the exponential height loss; a successful transfer must
+have growing complexity or output-specific cancellation.
+For the cross-multiplied residuals
+\[
+ X_j=A^{s_j}|2^{r_j}-M^{s_j}|,\qquad
+ Y_j=M^{s_j}|3^{r_j}-A^{s_j}|,
+\]
+the same calculation gives
+\begin{equation}
+ \log\gcd(X_j,Y_j)
+ =\bigl(m\log2+a\log3+\log\gcd(M_0,A_0)\bigr)s_j+o(s_j).
+ \label{orbitheight:eq-cross-residual-gcd}
+\end{equation}
+The part supported away from the fixed primes dividing $6MA$ is only $\exp(o(s_j))$ by
+Corvaja--Zannier.  Hence every linear common-divisor contribution is structural, not a
+reservoir of new auxiliary primes.
 
 More abstractly, if nonzero rational certificates satisfy
 \[
@@ -15879,7 +15920,7 @@ $(\delta_{n,i},\varepsilon_{n,i})=(0,1)$.  This finite shifted-evaluation borrow
 \statuslean{} in \lean{BorrowBlockCore}.  The ensuing paper argument converts an abnormally
 small $E_n$ into
 \begin{equation}
- M^n\equiv-u\pmod{2^J},\qquad A^n\equiv v\pmod{3^J},qquad
+ M^n\equiv-u\pmod{2^J},\qquad A^n\equiv v\pmod{3^J},\qquad
  1\le u\le2^s,\qquad0\le v<3^s.
  \label{carry:eq-borrow-congruences}
 \end{equation}
@@ -16532,6 +16573,55 @@ coefficients and any finite collection of rational Hermite normalizations cannot
 critical interpolant: adding $qz^LP(z)E(z)$ preserves all node values and any prescribed
 finite jet while retaining critical growth.
 
+\subsection{The reciprocal Stieltjes moment lattice}
+\label{crit:reciprocal-moment-lattice}
+
+The same transform has an output-sensitive dual.  Assume a hypothetical nonintegral
+counterexample and put $\eta=1/x\in(0,1)$.  Choose distinct exponent pairs
+$e_i=(a_i,b_i)\in\Nzero^2$ so that
+\[
+ u_i=M^{a_i}A^{b_i}\quad(0\le i\le n)
+\]
+are increasing, and put $v_i=2^{a_i}3^{b_i}=u_i^\eta$.  For
+$P(T)=\prod_{i=0}^n(T-u_i)$ and $n\ge2d+1$, define
+\begin{equation}
+ h_r=\frac{\sin\pi\eta}{\pi}
+ \int_0^\infty\frac{s^{\eta+r}}{\prod_{i=0}^n(s+u_i)}\,ds
+ \qquad(0\le r\le2d).
+ \label{crit:eq-reciprocal-moments}
+\end{equation}
+Residues give the exact rational formula
+\begin{equation}
+ h_r=(-1)^{n+r+1}\sum_{i=0}^n\frac{u_i^rv_i}{P'(u_i)}>0.
+ \label{crit:eq-reciprocal-barycentric}
+\end{equation}
+Let
+$\Delta=\prod_{i<j}(u_j-u_i)$ and $k_r=\Delta h_r$.  Since
+$\Delta/P'(u_i)$ is, up to sign, the product of the gaps not incident to $u_i$, every
+$k_r$ is a positive integer.  Consequently
+\begin{equation}
+ K_d=(k_{i+j})_{0\le i,j\le d}
+ \quad\text{is integral and positive definite},
+ \qquad \det K_d\ge1.
+ \label{crit:eq-integral-hankel-lattice}
+\end{equation}
+After normalizing the measure in~\eqref{crit:eq-reciprocal-moments} by $h_0$, every
+nonzero $Q\in\Z[s]$ of degree at most $d$ satisfies
+\begin{equation}
+ \int_0^\infty Q(s)^2\,d\mu(s)
+ =\frac{\text{a positive integer}}{k_0}\ge\frac1{k_0},
+ \qquad
+ \det\left(\frac{h_{i+j}}{h_0}\right)_{0\le i,j\le d}
+ \ge k_0^{-(d+1)}.
+ \label{crit:eq-reciprocal-lattice-floor}
+\end{equation}
+This converts the reversed integer table into an entire positive-definite lattice, rather
+than only one divided difference.  Closure would require an integer polynomial whose
+analytic $L^2$ norm falls below $1/k_0$; ordinary localization estimates have not reached
+that scale.  The finite cofactor, integral-Hankel, and quadratic-lattice transport is
+\statuslean{} in \lean{ReciprocalMomentLatticeFinite}; the Stieltjes representation and
+positivity are paper inputs.
+
 \subsection{Cyclotomic defect cascades and familywise private support}
 \label{crit:cyclotomic-defects}
 
@@ -16664,8 +16754,34 @@ $1/(\thetaq\varphi(\operatorname{rad}m))$; among prime-power ladders it is
 $1/(\thetaq(p-1))$, so only the dyadic ladder is critical.  This theorem is deliberately
 fixed-polynomial and gives no uniform bound for degrees or coefficients varying with $n$.
 
+Reciprocity gives a complementary sharp ceiling.  Let $P,Q\in\Z[T]$ be distinct monic
+reciprocal polynomials of the same degree $D$, both with constant term $1$, and suppose
+\[
+ \frac{P(T)}{Q(T)}=1+cT^{-K}+O(T^{-K-1}),\qquad c\ne0.
+\]
+Then
+\begin{equation}
+ 2K\le D,
+ \label{crit:eq-reciprocal-half-contact}
+\end{equation}
+with equality exactly when $D$ is even and $P-Q=cT^{D/2}$.  Indeed $P-Q$ is reciprocal,
+so its smallest and largest nonzero exponents are paired about $D/2$.  Under a hypothetical
+counterexample, the integer
+\[
+ P(A^s)Q(M^s)-Q(A^s)P(M^s)
+\]
+therefore has logarithmic size
+\begin{equation}
+ \bigl(D(1+\thetaq)-K\bigr)s\log M+O(1)
+ \ge D\left(\thetaq+\frac12\right)s\log M+O(1).
+ \label{crit:eq-reciprocal-filter-growth}
+\end{equation}
+Thus every fixed reciprocal or cyclotomic filter produces a rapidly growing nonzero integer.
+The finite support and equality classification in~\eqref{crit:eq-reciprocal-half-contact}
+are \statuslean{} in \lean{ReciprocalHalfContact}; the orbit asymptotic is a paper argument.
+
 These formulas isolate a sharp open interface.  For an arbitrary fixed integer pair define
-$\lambda_j=-\log|\det L_j|/\log V_j$ only on the eventually nonzero tail.  A theorem saying
+$\lambda_j=-\log_{V_j}|\det L_j|$ only on the eventually nonzero tail.  A theorem saying
 that simultaneous power-primitivity and external support force
 $\liminf\lambda_j<X/Y$ would prove the conjecture.  Integral controls show that no
 one-sided private-support argument can establish it: cross-ladder synchronization is the
@@ -16773,6 +16889,29 @@ and ray-divisor statements above are \statusnew{} paper arguments; BCZ is the ci
 \subsection{Support rigidity and Kummer defect primes}
 \label{crit:support-defects}
 
+The finite determinant has a primitive integral model.  For
+$u\in\Q_{>0}^{\times}$ put
+\[
+ L_u(X)=\sum_pv_p(u)X_p,
+ \qquad
+ Q_{M,A}(X)=L_A(X)X_2-L_M(X)X_3.
+\]
+In the simultaneous normalization
+\[
+ M=2^aw^d,\qquad A=3^bv^e,
+\]
+where $w$ is odd, $3\nmid v$, and $w,v$ have primitive valuation vectors, one has
+\begin{equation}
+ \operatorname{cont}(Q_{M,A})=\gcd(d,e,|a-b|).
+ \label{crit:eq-two-star-content}
+\end{equation}
+Least-output primitivity makes this content $1$.  Thus $Q_{M,A}$ remains nonzero modulo
+every prime, while $Q_{M,A}=0$ over $\Z$ exactly for
+$(M,A)=(2^n,3^n)$.  The coefficient-content identity, its least-output specialization, and
+nonzero reduction modulo every nontrivial modulus are \statuslean{} in
+\lean{TwoStarContent}; the formal zero criterion is \statuslean{} in
+\lean{FormalPrimeDeterminant}.
+
 The local kernel criterion has a sharp classical global counterpart.  A theorem of
 Corrales--Rodr\'iguez and Schoof~\cite{CRS1997} states that if $u,v\in\Q^\times$ and, for
 all but finitely many primes and every integer $n$,
@@ -16833,6 +16972,70 @@ matrix has rank one.  The exact existential-scalar count, including the zero-sou
 \statuslean{} in \lean{KummerCompatibilityFinite}; the Kummer realization and Chebotarev
 passage are classical paper inputs.
 
+Compatibility at higher prime-power depth has an exact count.  Over
+$\Z/\ell^e\Z$, the number of compatible four-coordinate vectors in full rank is
+\begin{equation}
+ N_4(\ell,e)
+ =1+\ell(\ell^2-1)\frac{\ell^{3e}-1}{\ell^3-1},
+ \qquad
+ \operatorname{prop}_4=\frac{N_4(\ell,e)}{\ell^{4e}},
+ \label{crit:eq-prime-power-compatible-rank-four}
+\end{equation}
+whereas a transverse rank-three hyperplane contains
+\begin{equation}
+ N_3(\ell,e)
+ =1+\ell\frac{\ell^{2e}-1}{\ell+1},
+ \qquad
+ \operatorname{prop}_3=\frac{N_3(\ell,e)}{\ell^{3e}}.
+ \label{crit:eq-prime-power-compatible-rank-three}
+\end{equation}
+At $e=1$ these recover~\eqref{crit:eq-exact-kummer-densities}; as $e\to\infty$ the
+local proportions decay like $\ell^{-e}$.  Here transverse means that, for the primitive
+rank-three relation $c=(c_1,c_2,c_3,c_4)$, the determinant
+$c_1c_4-c_2c_3$ is an $\ell$-adic unit.  After Kummer realization these proportions are
+relative densities inside the cyclotomic split layer; the corresponding absolute
+rational-prime densities have the additional factor $1/\varphi(\ell^e)$.  The full-rank
+compatibility count and the unit-transverse post-scalar normal-form count are \statuslean{}
+in \lean{PrimePowerKummerCoherence}.  Identifying the latter normal form with compatible
+vectors in the Kummer hyperplane, Kummer realization at depth $\ell^e$, and its Chebotarev
+interpretation remain paper-level or classical inputs.
+At depth one the rank-three relation also determines every zero/nonzero status pattern.
+For its coefficient vector $c$, put
+$J_\ell=\{i:c_i\not\equiv0\pmod\ell\}$.  If $s$ coordinates in $J_\ell$ and $h$
+coordinates outside $J_\ell$ are prescribed nonzero, the count is
+\[
+ \frac{(\ell-1)^s+(\ell-1)(-1)^s}{\ell}\,(\ell-1)^h;
+\]
+in particular, a pattern with exactly one active nonzero coordinate is impossible.  Full
+rank allows every pattern.  This gives a finite detector for the support of the unique
+rank-three relation, but not an archimedean-to-local transfer theorem.
+
+The determinant condition is weaker than compatibility at a zero source pair, but its
+nonvanishing has a complementary density law.  Primitivity in
+\eqref{crit:eq-two-star-content} and the finite quadratic-form bound give, for every odd
+$\ell$, relative detecting density at least $(1-1/\ell)^2$ among primes splitting in the
+cyclotomic layer, hence absolute density at least $(\ell-1)/\ell^2$.  Characteristic two
+gives the absolute bound $1/4$.  Outside the finite saturation and rank-discriminant set,
+the exact relative/absolute densities are
+\begin{equation}
+ \begin{array}{c|cc}
+ &\text{relative}&\text{absolute}\\ \hline
+ \text{rank three}&1-\ell^{-1}&\ell^{-1}\\[2pt]
+ \text{rank four}&1-\ell^{-1}-(\ell-1)\ell^{-3}
+                  &\ell^{-1}-\ell^{-3}.
+ \end{array}
+ \label{crit:eq-determinant-chebotarev-densities}
+\end{equation}
+In particular the cubic universal bounds are $4/9$ relative and $2/9$ absolute.  These
+are determinant-transversality densities, not replacements for the stronger
+common-scalar counts above.  Chebotarev and Kummer theory are the classical inputs; the
+coefficient primitivity is the arithmetic hinge.
+At the fixed quadratic and cubic levels the radical extensions have degrees at most $16$
+and $162$, with logarithmic discriminant $O(\log(6MA))$.  Effective Chebotarev therefore
+gives a detecting prime $\ll\log^2(6MA)$ under GRH for the relevant Dedekind zeta function,
+and a fixed power of $6MA$ unconditionally.  These bounds are not uniform in a growing
+torsion level.
+
 The same coordinates localize common near-power divisors.  If at such a prime
 \begin{equation}
  M^q\equiv2^p,\qquad A^q\equiv3^{p'}\pmod{\mathfrak p},
@@ -16845,7 +17048,15 @@ then
 \end{equation}
 In particular, when $p=p'$ and $\ell\nmid q$, a nonzero determinant excludes simultaneous
 division of the two gaps.  The finite determinant identity and same-residue obstruction are
-\statuslean{} in \lean{MixedGapKummerFinite}.  The same module verifies the abstract
+\statuslean{} in \lean{MixedGapKummerFinite}.  Thus, for
+\[
+ D_2(r,s)=M^s-2^r,\qquad D_3(r,s)=A^s-3^r
+ \quad(r\ge0, s>0),
+\]
+every eligible good common prime divisor at a level $\ell\nmid s$ lies on the
+determinant-zero locus at that level.  If $s$ is odd this excludes a set of rational primes of density at least
+$1/4$; if $3\nmid s$ the cubic exclusion has density at least $2/9$.
+The same module verifies the abstract
 retention bound
 \[
  n_2=0\ \text{or}\ n_3=0
@@ -16858,6 +17069,26 @@ along every denominator $q$ prime to $\ell$ avoid a positive-density Chebotarev 
 does not upper-bound the gcd: one large integer can be supported entirely on the complementary
 prime set.  It does turn the missing step into a precise Frobenius-distribution problem for
 the prime divisors of the near-power gaps.
+
+The direct ordinary $K_2$ encoding reaches a precise sign barrier.  In Milnor
+$K_2(\Q)$~\cite{Milnor1971,Weibel2013} put
+\begin{equation}
+ \Xi(M,A)=\{M,3\}\{A,2\}.
+ \label{crit:eq-steinberg-class}
+\end{equation}
+It is trivial on every standard pair, and its tame symbols are
+\begin{equation}
+ \partial_p\Xi=2^{-v_p(A)}3^{-v_p(M)}\pmod p\quad(p\ne2,3),
+ \qquad
+ \partial_3\Xi=(-1)^{v_3(M)+v_3(A)}
+ \overline{M/3^{v_3(M)}}.
+ \label{crit:eq-steinberg-tame-symbols}
+\end{equation}
+The standard-vanishing exterior class has the opposite sign from the symmetric logarithmic
+determinant; retaining the symmetric sign makes the exterior class nonzero even on the
+integer ray.  Thus the ordinary Steinberg symbol does not encode the required quadratic
+period.  This rules out only the direct construction, not symmetric refinements or higher
+cohomological operations.
 
 Archimedean closeness does not reduce this local entropy.  With
 $k_j=\lfloor jx\rfloor$, $\theta_j=\{jx\}$, the compact rational orbit
@@ -16958,12 +17189,38 @@ $p\mid\delta_K$.  Reducing relation exponents modulo $p-1$ gives
 The index is $p-1$ because the live grid uses exponents $0,\ldots,K-1$.  Showing that many
 Kummer defects have $\rho_p$ much smaller than $p$ is a concrete remaining target.
 
+An additive reformulation has a sharp ceiling.  The semigroup homomorphism
+\[
+ \Phi(2^a3^b)=M^aA^b
+\]
+would force an integer exponent if it preserved all congruences away from the primes
+dividing $6MA$, by the local common-exponent criterion and the support theorem above.
+The primitive binary identities among $3$-smooth integers correspond, up to exchange, to
+the four adjacent pairs listed in Section~\ref{mom:moments}; all other binary identities are
+$3$-smooth scalings.  Their defects are
+$M-2$, $A-M-1$, $M^2-A-1$, and $A^2-M^3-1$.  More generally,
+\begin{equation}
+ \bigl(P(M,A):P\in\Z[X,Y],\ P(2,3)=0\bigr)
+ =\gcd(M-2,A-3)\Z.
+ \label{crit:eq-additive-defect-ideal}
+\end{equation}
+At time $n$ the corresponding ideal is generated by
+\begin{equation}
+ C_n=\gcd(M^n-2^n,A^n-3^n),
+ \qquad \log C_n=o(n)
+ \label{crit:eq-dynamic-additive-defect}
+\end{equation}
+for a nonintegral candidate, by the $S$-unit gcd theorem.  Thus primitive binary relations
+and same-time polynomial defects cannot supply the exponential congruence support required
+by the local criterion; this does not exclude more elaborate, time-dependent additive data.
+
 The support classification is the cited \statusknown{} input.  The finite exact-compatibility
-counts are \statuslean{} in \lean{KummerCompatibilityFinite}; the mixed-gap determinant and
-same-residue obstruction are \statuslean{} in \lean{MixedGapKummerFinite}.  Chebotarev
-densities, mantissa entropy, collision valuation, ray divisor, and the finite-box bridge are
-\statusnew{} paper deductions.  They strengthen the denominator lower bound without
-supplying the missing upper bound.
+counts are \statuslean{} in \lean{KummerCompatibilityFinite}, and their prime-power
+extensions are \statuslean{} in \lean{PrimePowerKummerCoherence}.  The mixed-gap determinant
+and same-residue obstruction are \statuslean{} in \lean{MixedGapKummerFinite}.  Chebotarev
+densities, mantissa entropy, collision valuation, ray divisor, finite-box bridge, tame-symbol
+calculation, and additive ceiling are \statusnew{} paper deductions.  They strengthen the
+denominator lower bound without supplying the missing upper bound.
 
 \subsection{Directional gap quotients and exact capture cost}
 \label{crit:directional-capture}
@@ -17165,11 +17422,8 @@ The product/cocycle identities and integral-exponent calibrations are \statuslea
 \subsection{Adjacent-smooth cyclic resultants and finite-logarithm descent}
 \label{crit:adjacent-resultants}
 
-The four adjacent smooth pairs
-\[
- (1,2),\qquad(2,3),\qquad(3,4),\qquad(8,9)
-\]
-support a Kummer construction whose distinguished embedding has unit rather than
+The four adjacent smooth pairs identified in Section~\ref{mom:moments} support a Kummer
+construction whose distinguished embedding has unit rather than
 exponential scale.  Let $N/q<x$ be a reduced lower convergent, put
 $\varepsilon=qx-N>0$ and $s=qx/N=1+\varepsilon/N$, and for
 $a\in\{1,2,3,8\}$ set
@@ -17902,7 +18156,7 @@ Section~\ref{res:cross-resultant-smith}; simultaneous favorable coefficient prof
 Sharp direct/shallow displacement-cost inequality and equality classification & \statuslean &
 \lean{DeepSubresultantCost}; combinatorial core of the principal-subresultant theorem \\
 Exact $n=1$ cancellation of the full interpolation denominator from the paired residual
-resultant & \statuslean & \lean{DenominatorCancellationCounterexample}; synthetic
+resultant & \statuslean & \lean{DenominatorCancellation}\allowbreak\lean{Counterexample}; synthetic
 $(M,A)=(9,2)$ test data, not a common-exponent pair \\
 Common-grid transformation no-go for simultaneous structural-prime axis support &
 \statuslean & \lean{GridTransformNoGo}; nonsingular direction changes cannot enlarge the
@@ -18001,6 +18255,9 @@ Exact rotation-denominator floor law and finite simultaneous worst-case entropy 
 Section~\ref{orbitheight:farey} \\
 Exact compact-orbit heights, Farey limiting distortion, and Baker--contact scale comparison &
 \statusnew & Section~\ref{sec:orbit-height-entropy}; entropy concerns relabelings, not new graph points \\
+Exact projective secant height and structural cross-residual gcd rate; fixed-observable
+height-exponent zero & \statusnew & Section~\ref{orbitheight:contact};
+Corvaja--Zannier input classical \\
 Piecewise projective Pad\'e-defect optimization and efficiency thresholds & \statuslean &
 \lean{ProjectiveDefect}; Section~\ref{pade:projective} \\
 Number-field projective defect, rational-transfer no-go, and fixed-cardinality group
@@ -18047,18 +18304,30 @@ Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, and positive reduced
 denominator target & \statusnew & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
+One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice, and normalized
+$1/k_0$ floor & finite arithmetic core \statuslean; analytic representation \statusnew &
+\lean{ReciprocalMomentLatticeFinite}; Section~\ref{crit:reciprocal-moment-lattice} \\
 Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
 canonical alternating tail, and boundary-quotient lower bounds & \statusnew &
 Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
 ceiling & \statusnew & Section~\ref{crit:cyclotomic-defects} \\
+Reciprocal-polynomial half-contact and exact equality classification; growing two-scale
+integer filter & finite support core \statuslean; orbit asymptotic \statusnew &
+\lean{ReciprocalHalfContact}; Section~\ref{crit:cyclotomic-defects} \\
 Fresh-prime pole, local synchronization, translated-block warning, and BCZ ray divisor &
 \statusnew & Section~\ref{crit:fresh-prime}; BCZ input classical \\
 Exact finite Kummer compatibility and transverse-hyperplane counts & \statuslean &
 \lean{KummerCompatibilityFinite}; Section~\ref{crit:support-defects} \\
+Exact full-rank prime-power compatibility count and unit-transverse rank-three normal-form
+count & \statuslean &
+\lean{PrimePowerKummerCoherence}; Section~\ref{crit:support-defects} \\
+Primitive two-star coefficient content and nonzero reduction at every modulus & \statuslean &
+\lean{TwoStarContent}; Section~\ref{crit:support-defects} \\
 Mixed-gap Kummer determinant, same-residue obstruction, and denominator-retention core &
 \statuslean & \lean{MixedGapKummerFinite}; Section~\ref{crit:support-defects} \\
-Support classification, exact Chebotarev compatibility densities, mantissa entropy,
+Support classification, exact compatibility and determinant Chebotarev densities,
+mixed-gap sieve, tame-symbol sign barrier, additive ceiling, mantissa entropy,
 collision divisor, and finite-box detection & \statusnew &
 Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs classical \\
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
@@ -18203,7 +18472,7 @@ finite-difference approximation floor, and the all-degree normalized tax obstruc
 \lean{.../ThreeSmooth} & $3$-smooth classification of further bases \\
 \lean{.../ShrinkingTarget} & fractional-part shrinking targets, Diophantine lower bounds \\
 \lean{.../DenominatorGrowth} & convergent-denominator growth cap $q_{n+1}<2m^{q_n}$ \\
-\lean{.../Transcendence} & Gelfond--Schneider applications: solutions and $\log_23$ \\
+\lean{.../Transcendence} & Gelfond--Schneider applications: solutions and $\log_2 3$ \\
 \lean{.../FractionalPartDensity} & density dichotomy, gap equivalences, infinitude \\
 \lean{.../Localization} & candidate-form localization equivalence \\
 \lean{.../FourExponentialsReduction} & four exponentials $\Rightarrow$ the conjecture \\
@@ -18292,6 +18561,11 @@ Newton interpolant, with the coefficient and node-denominator recurrences used i
 \lean{.../QNewtonOffAxisTransfer} & arbitrary-commutative-ring transfer-denominator
 successor, forcing convolution, transported off-axis recurrence, and exact finite sum
 solution; no infinite-product or analytic-existence claim \\
+\lean{.../ReciprocalHalfContact} & reciprocal coefficient-support symmetry, sharp
+$2K\le D$ contact bound, and exact even/odd equality classifications \\
+\lean{.../ReciprocalMomentLatticeFinite} & one-Vandermonde cofactor clearing, integral
+Hankel moments, determinant and quadratic-form floors under an explicit paper-supplied
+positive-definiteness hypothesis \\
 \lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
 score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
@@ -18342,6 +18616,8 @@ dilation \\
 and a finite valuation denominator-retention inequality \\
 \lean{.../KummerCompatibilityFinite} & exact finite-field common-scalar compatibility count
 and the transverse-hyperplane count, with the zero-source case included \\
+\lean{.../PrimePowerKummerCoherence} & exact full-rank compatibility count and
+unit-transverse post-scalar rank-three normal-form count over prime-power residue rings \\
 \lean{.../RankOneNewtonKummer} & higher geometric Newton product and cross-base cocycle;
 exact vanishing for every common natural exponent at or below the interpolation order \\
 \lean{.../DyadicPrivateSupport} & exact odd-prime order, congruence, and level privacy for
@@ -18363,6 +18639,8 @@ unordered-pair recovery from ordinary and synchronized real-power sums \\
 the synchronized slice $(2^n+1,3^n+1)$ \\
 \lean{.../FormalPrimeDeterminant} & multivariate prime-symbol determinant, specialization at
 prime logarithms, exact formal-zero classification, and Structural Rank equivalence \\
+\lean{.../TwoStarContent} & exact coefficient content of the formal two-star determinant,
+least-output content one, and nonzero reduction modulo every nontrivial modulus \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
@@ -18382,7 +18660,7 @@ cross-normalization identities, nonzero residue quotients, and two-prime divisib
 structural-prime boundary node divisors, with structural-prime-unit constant terms \\
 \lean{.../CrossResultantBridge} & conditional composition of the primary
 and opposite residual scalings into one nonzero cross resultant with exact $2$- and $3$-orders \\
-\lean{.../DenominatorCancellationCounterexample} & exact smallest-grid certificate that the
+\lean{.../Denominator}\allowbreak\lean{Cancellation}\allowbreak\lean{Counterexample} & exact smallest-grid certificate that the
 full interpolation denominator can disappear from the paired rational residual resultant \\
 \lean{.../GridTransformNoGo} & exact classification showing that one nonsingular common
 direction change cannot manufacture simultaneous dyadic and triadic axis separation \\
@@ -18554,7 +18832,9 @@ following kernel-accepted modules:
 \lean{PositiveCoefficientClosure}, \lean{NewtonCollisionCore},
 \lean{RankOneNewtonKummer}, \lean{DyadicPrivateSupport},
 \lean{CaptureMultiplier}, \lean{CatalanTangentCore},
-\lean{MatchedGapAmplification}, \lean{ValuationSlopeEnergy}.
+\lean{MatchedGapAmplification}, \lean{ValuationSlopeEnergy},
+\lean{ReciprocalHalfContact}, \lean{ReciprocalMomentLatticeFinite},
+\lean{TwoStarContent}, \lean{PrimePowerKummerCoherence}.
 \end{center}
 Their headline APIs are on the aggregate surface and covered by the axiom-audit module.
 
@@ -18580,7 +18860,7 @@ exact expressions or safe rational constants such as $1/24$ and $10000$.
 \section{A symmetric formulation}
 \label{app:symmetric}
 
-Everything above has a base-swapped version.  Put $\eta=\log_32=1/\thetaq$.  Failure of the
+Everything above has a base-swapped version.  Put $\eta=\log_3 2=1/\thetaq$.  Failure of the
 conjecture is also equivalent to the existence of an integer $v>1$ with $3\nmid v$ and
 \[
 v^{\eta}\in\Ztwo.
@@ -19309,7 +19589,7 @@ angle: every input listed here constrains a \emph{linear} configuration of logar
 \emph{algebraic} exponent, while the hypothetical counterexample is a \emph{bilinear}
 relation between logarithms with a transcendental exponent.
 
-\begin{description}[leftmargin=1.2em,style=nextline,itemsep=0.9em]
+\begin{description}[style=nextline,itemsep=0.9em]
 
 \item[Gelfond--Schneider (Hilbert's seventh problem)]
 \emph{Statement.}  Let $\alpha,\beta\in\Qbar$ with $\alpha\ne0,1$ and $\beta\notin\Q$.  Then
@@ -19646,7 +19926,7 @@ $-\log|x-y|$ and then sending $M\to\infty$ proves
 
 For $(\lambda_1,\lambda_2)=(\log2,\log3)$, the required finite type follows from
 linear forms in logarithms.  For $(1,\beta)$, it follows from
-$\beta=\log A/\log2$ and the multiplicative independence of $A$ and $2$.
+$\beta=\log_2 A$ and the multiplicative independence of $A$ and $2$.
 
 \section{Integral evaluations used in the determinant constants}
 
@@ -19741,7 +20021,7 @@ certifies the final pair of inequalities.
 #!/usr/bin/env python3
 """Rigorous finite verification for the Alaoglu--Erdos problem.
 
-For every integer A in [2, LIMIT], this proves that A^(log(3)/log(2))
+For every integer A in [2, LIMIT], this proves that A^(log_2(3))
 is an integer only when A is a power of two.  All decisive comparisons use
 Decimal directed rounding plus the positive atanh series for logarithms.
 The ordinary binary64 approximation is used only to choose an initial nearby
@@ -19899,7 +20179,7 @@ def main() -> None:
         "elapsed_seconds": elapsed,
         "conclusion": (
             f"For every integer 2 <= A <= {LIMIT}, "
-            "A^(log(3)/log(2)) is integral only if A is a power of two."
+            "A^(log_2(3)) is integral only if A is a power of two."
         ),
     }
     print(json.dumps(result, indent=2, sort_keys=True))
@@ -19909,21 +20189,16 @@ if __name__ == '__main__':
     main()
 \end{lstlisting}
 
-\section{External literature reconnaissance}
+\section{External mathematical context}
 \label{app:literature}
 
-This appendix merges two literature-and-strategy surveys of the same corpus.  It records what
-the surrounding literature does and does not supply, which imports are immediately usable, and
-which are techniques that would need adaptation.  Two tempting claims are retracted here;
-both are flagged where they occur.
-
-Citations are given in full in the text rather than through the bibliography, because the
-purpose of the appendix is provenance rather than argument: nothing below is used as a step in
-any proof in this report.
+This appendix records the external mathematical results that delimit the methods used above.
+Nothing below is used as a step in a proof unless it is cited at the point of use.  Two tempting
+claims are corrected where they occur.
 
 \subsection{Effective measures for the two logarithms}
 
-The sharpest linear-independence measure for the relevant triple is Qiang Wu, \emph{On the
+An explicit linear-independence measure for the relevant triple is Qiang Wu, \emph{On the
 linear independence measure of logarithms of rational numbers}, Math.\ Comp.\ \textbf{72}
 (2003), 901--911, which gives $\mu(1,\log2,\log3)\le7.6155$, improving Rhin's $7.616$.  For the
 single logarithm, Wu and Wang, J.\ Number Theory \textbf{142} (2014), 264--273, give
@@ -19935,7 +20210,7 @@ non-archimedean side, Bugeaud--Laurent (1996) and Bugeaud (1999) are the two-log
 workhorses, and K.~C.~Chim, J.\ Number Theory (2025), improves the $(\log B)^2$ dependence to
 $\log B$ for two $p$-adic logarithms.
 
-\begin{warning}[Retracted claim]
+\begin{warning}[Limitation of linear forms]
 A tempting proposal is that Wu's measure might yield a \emph{uniform} zero-free criterion
 replacing the per-value certificates of Section~\ref{sec:finitecheck}.  That is wrong, and the
 error is instructive.  Near-integrality of $U^{\thetaq}$ is not a rational approximation to
@@ -19946,9 +20221,8 @@ verification stays per-value.
 
 What the measure does give unconditionally is an effective irrationality exponent
 $\mu_{\mathrm{eff}}(\thetaq)\le8.62$, hence a polynomial recurrence $q_{n+1}\ll q_n^{7.62}$ for
-the convergent denominators of $\thetaq$.  That is the strongest known bound of its kind and
-supersedes the exponential estimate; the kernel-verified module \lean{DenominatorGrowth} proves
-only the weaker exponential form, which remains the strongest \statuslean{} statement here.
+the convergent denominators of $\thetaq$.  This supersedes the exponential estimate; the
+kernel-verified module \lean{DenominatorGrowth} proves only the weaker exponential form.
 
 \subsection{Interpolation determinants with non-archimedean amplification}
 
@@ -19957,7 +20231,7 @@ Section~\ref{sec:minplus} is Bombieri, \emph{Effective Diophantine approximation
 $\mathbb G_m$}, Ann.\ Scuola Norm.\ Sup.\ Pisa \textbf{20} (1993), 61--89, and Bombieri--Cohen,
 \emph{ibid.} \textbf{24} (1997), 205--225, with the elementary account in LMS Lecture Notes
 \textbf{303} (2003), 41--62.  These combine archimedean and non-archimedean interpolation
-determinants through the equivariant Thue--Siegel principle and are the only non-Baker route to
+determinants through the equivariant Thue--Siegel principle and provide a non-Baker route to
 effective results on the multiplicative group.  Laurent's interpolation-determinant papers
 (Acta Arith.\ \textbf{66} (1994), 181--199, and \textbf{133} (2008)) supply the determinant
 method in the form this report already uses.
@@ -19973,7 +20247,7 @@ Roy, \emph{An arithmetic criterion for the values of the exponential function}, 
 $\mathbb G_a\times\mathbb G_m$ and proves it \emph{equivalent} to Schanuel's conjecture.  His
 subsequent estimates --- Acta Arith.\ \textbf{135} (2008), 357--393; Int.\ J.\ Number Theory
 \textbf{6} (2010), 919--956; Mathematika \textbf{59} (2013), 333--363 --- and Nguyen--Roy, Int.\
-J.\ Number Theory \textbf{12} (2016), 1273--1293, are the deepest partial progress toward the
+J.\ Number Theory \textbf{12} (2016), 1273--1293, provide partial progress toward the
 four-exponentials and Schanuel circle.  Roy's Strong Six Exponentials Theorem, J.\ Number
 Theory \textbf{41} (1992), 22--47, is the object whose formalization would most directly
 strengthen the algebraic-base spectrum of Section~\ref{sec:spectrum}.
@@ -19981,7 +20255,7 @@ strengthen the algebraic-base spectrum of Section~\ref{sec:spectrum}.
 Butler, \emph{Some cases of Wilkie's conjecture}, Bull.\ London Math.\ Soc.\ \textbf{44}
 (2012), 642--660, shows that certain cases of Wilkie's conjecture are equivalent to real forms
 of the three- and four-exponentials conjectures.  That is a direct bridge between the counting
-route below and the transcendence core, and it was not previously cited in this corpus.
+route below and the transcendence core.
 
 \subsection{Counting rational points on the transcendental arc}
 
@@ -20025,7 +20299,7 @@ theory, this confirms that $S$-unit methods deliver finiteness, not nonexistence
 supply the exponential-in-$q$ divisibility the rational-approximation route would need.
 
 For the $\times2\times3$ side, Bourgain--Lindenstrauss--Michel--Venkatesh, Ergodic Theory
-Dynam.\ Systems \textbf{29} (2009), 1705--1722, give the only \emph{effective} Furstenberg-type
+Dynam.\ Systems \textbf{29} (2009), 1705--1722, give an effective Furstenberg-type
 density result, with a density gap of order $(\log\log L)^{-\kappa}$.  Shmerkin and Wu, Ann.\
 of Math.\ \textbf{189} (2019), resolved Furstenberg's intersection conjecture.  None of these
 can force visits to targets shrinking like $M^{-k}$; the target-width mismatch is fatal for a
@@ -20041,8 +20315,8 @@ Perucca--Sgobba--Tronto, Int.\ J.\ Number Theory \textbf{17} (2021), 1091--1110,
 Chan--Pajaziti--Perissinotto--Perucca, arXiv:2508.19211 (2025), complete Kneser's theorem on
 additive relations among radicals.  These make the algebraic half of the radical reformulation
 of Section~\ref{sec:radical} rigorous and formalizable.  They do not see the special value
-$\thetaq$: the mixed archimedean--radical invariant that the reformulation needs is supplied by
-no Kummer-theoretic result found.
+$\thetaq$: none of the cited Kummer results supplies the mixed archimedean--radical invariant
+that the reformulation needs.
 
 \subsection{Why the generic-power model theory excludes this exponent}
 
@@ -20089,7 +20363,7 @@ bound, whatever the primes, nodes or columns.  What survives of that direction i
 cancellation problem localized by Proposition~\ref{mp:prop-unique}, which is a different and
 harder target than the one the ranking had in view.
 
-\subsection{Provenance of the conjecture}
+\subsection{Consequences for abundant-number questions}
 
 Alaoglu and Erd\H{o}s proved that the ratio of consecutive superabundant numbers is prime, and,
 using the three-prime case that Siegel had claimed, that the ratio of consecutive colossally
@@ -20100,36 +20374,28 @@ makes the ratio of consecutive colossally abundant numbers prime.  Lagarias, Ame
 Monthly \textbf{109} (2002), 534--543, records the Robin/Riemann reformulation of the
 surrounding circle.
 
-\begin{warning}[Unverified figure]
-A frequently repeated count of colossally abundant numbers below
-$10^{18}$, attributed to Briggs, Experiment.\ Math.\ \textbf{15} (2006), 251--256.  That figure
-could not be verified against the accessible text and is not repeated here.  Any use of it
-should re-derive it.
-\end{warning}
-
 \subsection{The formalization landscape}
 
 Karatarakis and Wiedijk formalized the Gelfond--Schneider theorem in Lean~4, including a
 formalized Siegel lemma for algebraic integers and the auxiliary-function machinery; that
 development is the basis of the port used by this corpus and cited in
 Appendix~\ref{app:classical}.  Mathlib's Lindemann--Weierstrass development supplies analytic
-scaffolding only.  No formalization of Baker's theorem, of the six exponentials theorem, or of
-linear forms in logarithms was found in any proof assistant, so the transcendence inputs
-isolated behind interfaces in this report would be greenfield work.
+scaffolding only.  The present repository formalizes neither Baker's theorem, the six
+exponentials theorem, nor linear forms in logarithms; those transcendence inputs remain behind
+explicit interfaces.
 
-\subsection{Summary of what the literature does not supply}
+\subsection{Remaining gaps}
 
-Three gaps are unanimous across the surveyed material.  No lower-bound technology handles
+Three gaps remain.  No lower-bound technology handles
 linear or bilinear forms whose \emph{coefficients} are themselves logarithms, which is the wall
 of Section~\ref{sec:barrier}.  No counting theorem is sensitive to the arithmetic of
 denominators, which is what the compact-arc reformulation needs.  And no unconditional
 algebraic-independence result reaches products of two logarithms, which is what the criterion
-of Section~\ref{sec:logproduct} would need.  The conjecture remains open, and every route
-surveyed inherits the same rank-two-to-rank-one collapse.
+of Section~\ref{sec:logproduct} would need.  The conjecture remains open, and each route above
+faces the same rank-two-to-rank-one collapse.
 
-\begin{statusbox}{\statusknown{} throughout, with the two retractions marked as such.  Nothing
-in this appendix is used as a step in any argument of this report; it records provenance and
-the state of the surrounding literature.}
+\begin{statusbox}{\statusknown{} throughout, with the two corrections marked as such.  This
+appendix supplies mathematical context; no statement here is silently used as a proof input.}
 \end{statusbox}
 
 \begin{thebibliography}{99}
@@ -20464,6 +20730,16 @@ J.~Harrison,
 A.~Selberg,
 \newblock \emph{Bemerkninger om et multipelt integral},
 \newblock Norsk Matematisk Tidsskrift \textbf{26} (1944), 71--78.
+
+\bibitem{Milnor1971}
+J.~Milnor,
+\newblock \emph{Introduction to Algebraic $K$-Theory},
+\newblock Annals of Mathematics Studies 72, Princeton University Press, 1971.
+
+\bibitem{Weibel2013}
+C.~A.~Weibel,
+\newblock \emph{The $K$-Book: An Introduction to Algebraic $K$-Theory},
+\newblock Graduate Studies in Mathematics 145, American Mathematical Society, 2013.
 
 \end{thebibliography}
 \end{document}

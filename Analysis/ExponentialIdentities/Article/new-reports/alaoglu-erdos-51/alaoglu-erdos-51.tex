@@ -27,6 +27,7 @@
 \setlength{\parskip}{0.55em}
 \allowdisplaybreaks
 \pagestyle{fancy}
+\setlength{\headheight}{14pt}
 \fancyhf{}
 \lhead{Alaoglu--Erd\H{o}s progress report}
 \rhead{\thepage/\pageref{LastPage}}
@@ -56,7 +57,7 @@
 \newcommand{\Sm}{\mathcal S}
 \newcommand{\Pow}{\mathcal P}
 \newcommand{\DeltaU}{\Delta(\UU)}
-\newcommand{\AE}{Alaoglu--Erd\H{o}s}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Res}{Res}
@@ -64,7 +65,7 @@
 \DeclareMathOperator{\Span}{span}
 
 \title{\textbf{Reciprocal-Power Sign Rigidity and Stieltjes Moment Lattices}\\[0.4em]
-\large A nonredundant continuation toward the \AE\ conjecture}
+\large A nonredundant continuation toward the \AEname\ conjecture}
 \author{Research progress report}
 \date{22 August 2026}
 
@@ -84,9 +85,9 @@ correspondence
 Four concrete advances are obtained.  First, every counterexample gives an infinite
 hierarchy of strict signs of explicitly integral generalized Vandermonde determinants;
 a wrong sign is therefore a finite, logarithm-free contradiction certificate.  Second,
-all one-generator certificates are factored in closed form.  This proves that information
-confined to the $A$-axis or the $B$-axis cannot test compatibility: genuinely mixed minors
-are indispensable.  Third, scalar Stieltjes divided differences are lifted to positive
+the consecutive pure-axis family is factored in closed form.  Its sign hierarchy is automatic
+and therefore does not test compatibility: genuinely mixed minors are indispensable.  Third,
+scalar Stieltjes divided differences are lifted to positive
 Hankel Gram matrices.  After multiplication by one Vandermonde, these matrices are
 positive definite over $\Z$.  Normalizing the underlying Stieltjes measure produces an
 \emph{output-sensitive integer lattice}: every nonzero integer polynomial has squared
@@ -109,8 +110,7 @@ uniformly wrong mixed subresultant sign for every non-power pair $(A,B)$.
 Every assertion below is labelled by type.  ``Proved'' means a complete argument is given.
 ``Exact experiment'' means integer arithmetic on a finite set, not floating-point evidence.
 ``Criterion'' is a rigorously sufficient condition whose universal verification remains open.
-No claim about an external AI system is used as a mathematical premise, and no unconditional
-proof of the \AE\ conjecture is asserted.
+No unconditional proof of the \AEname\ conjecture is asserted.
 \end{minipage}}
 \end{center}
 
@@ -201,7 +201,7 @@ Let $f(u)=u^\theta$.  For distinct positive numbers $u_0<\cdots<u_k$, write
 $[u_0,\ldots,u_k]f$ for the ordinary divided difference.
 
 \begin{theorem}[Integral mixed-minor sign hierarchy]\label{thm:signoracle}
-Choose distinct exponent vectors $e_0,\ldots,e_k\in\N_0^2$ and order them so that
+Let $k\ge1$.  Choose distinct exponent vectors $e_0,\ldots,e_k\in\N_0^2$ and order them so that
 $V_{e_0}<\cdots<V_{e_k}$.  Set $u_i=U_{e_i}$ and $v_i=V_{e_i}$.  Under the
 counterexample hypothesis,
 \begin{equation}\label{eq:detcert}
@@ -286,8 +286,8 @@ For every integer $k\ge1$,
  {\displaystyle\prod_{r=0}^{k-1}(B^k-B^r)}.\label{eq:Baxis}
 \end{align}
 Both expressions automatically have sign $(-1)^{k-1}$ for every $A>2$ and every $B>3$.
-Consequently, no argument using only divided differences from one geometric axis can test the
-compatibility of $A^\theta=2$ with $B^\theta=3$.
+Consequently this consecutive pure-axis sign hierarchy cannot test the compatibility of
+$A^\theta=2$ with $B^\theta=3$.
 \end{theorem}
 
 \begin{proof}
@@ -562,8 +562,10 @@ infinity of a rational interpolation function determined entirely by integer inp
 data.
 
 \begin{proposition}[Fraction-free Pad\'e bridge]\label{prop:pade}
-After clearing the single factor $\Delta(\UU)$, every Hankel minor needed in
-\cref{thm:momentlattice} can be computed in either of two equivalent exact ways:
+After clearing the single factor $\Delta(\UU)$, the leading consecutive Hankel determinants
+used in \cref{thm:momentlattice} can be computed in either of two equivalent exact ways,
+with the Laurent expansion taken at infinity and the corresponding reversed-polynomial
+sign conventions fixed:
 \begin{enumerate}[label=(\roman*)]
 \item from the integral-moment formula \eqref{eq:momentformula} followed by a Bareiss
       determinant;
@@ -684,6 +686,8 @@ $Q_m=T_C^m$ obeys $|Q_m|^2\le16^{-m}$ there.  Splitting the normalized integral 
 Combining \eqref{eq:unitinterval} with \cref{lem:tail} gives a fully explicit route to
 \cref{crit:poly}.  It is not enough to show mere concentration: the tail must be controlled
 with the polynomial growth included, and the resulting bound must beat $1/k_0$.
+Here $\deg Q_m=2m$, so an application of the moment lattice requires $d\ge2m$ and
+$n\ge2d+1$; choosing $d=2m$ requires $n\ge4m+1$.
 
 \begin{problem}[Quantitative localization problem]\label{prob:localize}
 Construct, from every hypothetical non-power pair $(A,B)$, primitive mixed node sets
@@ -781,17 +785,17 @@ is transcendental.  Under a counterexample, the first five numbers except $5^x$ 
 so the theorem forces $5^x$ to be transcendental.  Consequently:
 
 \begin{criterion}[Third-base bootstrap]\label{crit:thirdbase}
-Any argument deriving the algebraicity of $5^x$ from $2^x,3^x\in\Z$ proves the \AE\
-conjecture.  The same holds with $5$ replaced by any algebraic number whose logarithm is
-$\Q$-independent of $\log2$ and $\log3$.
+Any argument deriving the algebraicity of $5^x$ from $2^x,3^x\in\Z$ proves the \AEname\
+conjecture.  The same holds with $5$ replaced by any positive algebraic number $c\ne1$ whose
+logarithm is $\Q$-independent of $\log2$ and $\log3$.
 \end{criterion}
 
 The moment framework suggests one possible bridge: interpolate $y\mapsto y^x$ at many
 $3$-smooth integers, where all values are integral, and evaluate at $5$.  What is missing is
 an arithmetic approximation strong enough to force algebraicity, not merely a good real
 approximation.  Ordinary Lagrange denominators grow too rapidly.  A successful construction
-would likely need one of the output-specific cancellations isolated in \cref{thm:axis,
-cor:L2lattice,prop:pade}.
+would likely need one of the output-specific cancellations isolated in
+\cref{thm:axis,cor:L2lattice,prop:pade}.
 
 \section{Routes tested in this continuation and the precise obstruction}
 
@@ -812,7 +816,7 @@ $N$ and number only $O(N)$, i.e. logarithmic in height.  This lies far below a g
 $H^\varepsilon$ upper bound.  A useful return to this route would require a sharp
 polylogarithmic count specific to irrational power curves.
 
-\subsection{$p$-adic automatic continuity}
+\subsection{\texorpdfstring{$p$}{p}-adic automatic continuity}
 
 The group homomorphism generated by $2\mapsto3$ and $A\mapsto B$ is real-order preserving.
 It is tempting to extend it continuously to a $p$-adic closure and compare $p$-adic logarithm
@@ -899,8 +903,8 @@ The immediate research program is:
 The strongest proved advance is \cref{thm:momentlattice,cor:L2lattice}: a hypothetical
 counterexample must support, for every admissible mixed node set, a positive definite
 \emph{integral} Hankel form whose normalized coefficient lattice has a quantified minimum.
-The strongest negative advance is \cref{thm:axis}: no amount of refinement confined to a
-single generator can settle compatibility.  Together they sharply focus subsequent effort
+The strongest negative advance is \cref{thm:axis}: the consecutive pure-axis sign hierarchy
+is automatic and cannot settle compatibility.  Together these facts focus subsequent effort
 on output-sensitive mixed minors and their analytic concentration.
 
 \appendix

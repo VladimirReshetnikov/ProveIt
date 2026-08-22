@@ -204,8 +204,8 @@ its primitive output pair.  Form the complete synchronized gap products
 where $C_{d,N}$ is the exact number of wraps of the length-$(N-d)$ rotation segment by
 $\fract{d\beta}$.  Then
 \[
- \frac{\log\mathcal Q_{3,A}(N)}{\log3}
- -\frac{\log\mathcal Q_{2,M}(N)}{\log2}
+ \log_3\mathcal Q_{3,A}(N)
+ -\log_2\mathcal Q_{2,M}(N)
  >\binom N2\log_3 2,
 \]
 and, more precisely, the left side divided by $N^2$ tends to
@@ -269,7 +269,7 @@ primitive and
 \end{equation}
 In particular $\beta$ is irrational and every $k\beta$ has nonzero fractional part.
 
-\item \statusprior{} Because $\beta=\log M/\log2$ is a ratio of logarithms of fixed algebraic
+\item \statusprior{} Because $\beta=\log_2 M$ is a ratio of logarithms of fixed algebraic
 numbers, a two-logarithm lower bound gives constants $c>0$ and $\tau>0$ with
 \begin{equation}
  \norm{q\beta}\ge c q^{-\tau}\qquad(q\ge1),
@@ -635,13 +635,13 @@ corresponding factor in $P_{b,B}(N)$, and $r_i$ occurs $N-1-i$ times.
 For a hypothetical Alaoglu--Erd\H{o}s pair, the two orbit polynomials have identical endpoint
 data after normalizing logarithms by the base:
 \begin{equation}
- \frac{\log\operatorname{lc}(F_{3,A,N})}{\log3}
- =\frac{\log\operatorname{lc}(F_{2,M,N})}{\log2}=R_N,
+ \log_3\operatorname{lc}(F_{3,A,N})
+ =\log_2\operatorname{lc}(F_{2,M,N})=R_N,
  \label{eq:lc-match}
 \end{equation}
 \begin{equation}
- \frac{\log|F_{3,A,N}(0)|}{\log3}
- =\frac{\log|F_{2,M,N}(0)|}{\log2}
+ \log_3|F_{3,A,N}(0)|
+ =\log_2|F_{2,M,N}(0)|
  =\beta\binom N2.
  \label{eq:ct-match}
 \end{equation}
@@ -857,8 +857,8 @@ $\thetaq=\log_2 3$ gives \eqref{eq:pointwise-gap}.
 For every $N\ge2$,
 \begin{equation}
  \mathcal G_N:=
- \frac{\log\mathcal Q_{3,A}(N)}{\log3}
- -\frac{\log\mathcal Q_{2,M}(N)}{\log2}
+ \log_3\mathcal Q_{3,A}(N)
+ -\log_2\mathcal Q_{2,M}(N)
  >\binom N2\log_3 2.
  \label{eq:G-lower}
 \end{equation}
@@ -871,11 +871,11 @@ Equivalently,
 The same surplus can be written in any of the following exact forms:
 \begin{align}
  \mathcal G_N
- &=\frac{\log P_{3,A}(N)}{\log3}
-   -\frac{\log P_{2,M}(N)}{\log2},
+ &=\log_3 P_{3,A}(N)
+   -\log_2 P_{2,M}(N),
  \label{eq:G-P}\\
- &=\frac{\log\Delta_{3,N}}{\log3}
-   -\frac{\log\Delta_{2,N}}{\log2},
+ &=\log_3\Delta_{3,N}
+   -\log_2\Delta_{2,N},
  \label{eq:G-Delta}\\
  &=\sum_{0\le i<j<N}\Phi(|t_j-t_i|),
  \label{eq:G-pairwise}\\
@@ -895,7 +895,7 @@ is $\sum_{d=1}^{N-1}L_d=\binom N2$, giving \eqref{eq:G-lower} and
 Equation~\eqref{eq:G-P} follows from Theorem~\ref{thm:gap-product}: the monomial terms cancel
 because
 \[
- \frac{\log A}{\log3}=\frac{\log M}{\log2}=\beta.
+ \log_3 A=\log_2 M=\beta.
 \]
 Equation~\eqref{eq:G-Delta} follows from Proposition~\ref{prop:cleared-vdm}, since the common
 $E_N$ cancels.  For a pair with $s=\min(t_i,t_j)$ and $u=|t_i-t_j|$,
@@ -945,8 +945,8 @@ Combine \eqref{eq:G-Delta} with Theorem~\ref{thm:energy-limit}.  Substitution of
 \label{cor:disc-separation}
 The orbit polynomials satisfy
 \begin{equation}
- \frac{\log|\operatorname{Disc}F_{3,A,N}|}{\log3}
- -\frac{\log|\operatorname{Disc}F_{2,M,N}|}{\log2}
+ \log_3|\operatorname{Disc}F_{3,A,N}|
+ -\log_2|\operatorname{Disc}F_{2,M,N}|
  =2\mathcal G_N
  >2\binom N2\log_3 2,
  \label{eq:disc-separation}
@@ -995,8 +995,8 @@ $\gcd(X_N,Y_N)=1$.  Since $\log3>\log2$,
 \begin{align*}
  \mathcal G_N
  &=\log H_N\left(\frac1{\log3}-\frac1{\log2}\right)
- +\frac{\log Y_N}{\log3}-\frac{\log X_N}{\log2}\\
- &\le\frac{\log Y_N}{\log3}.
+ +\log_3 Y_N-\log_2 X_N\\
+ &\le\log_3 Y_N.
 \end{align*}
 Apply Theorems~\ref{thm:finite-surplus} and~\ref{thm:kappa}.
 \end{proof}

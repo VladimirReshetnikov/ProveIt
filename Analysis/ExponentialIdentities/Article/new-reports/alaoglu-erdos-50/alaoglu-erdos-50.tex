@@ -3,7 +3,7 @@
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{libertinus}
+\usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{mathrsfs}
@@ -148,7 +148,7 @@ form the homogeneous quadratic prime-exponent polynomial
 \]
 The primitive-output theorem in \ReportA{} implies the new identity
 \[
- \cont(Q_{M,A})=\gcd(d,e,a-b)=1
+ \cont(Q_{M,A})=\gcd(d,e,|a-b|)=1
 \]
 for its simultaneous normalization \(M=2^aw^d\), \(A=3^bv^e\).  Thus \(Q_{M,A}\) remains
 nonzero modulo every prime.  Kummer theory and Chebotarev then turn this elementary content
@@ -228,13 +228,8 @@ symmetry.  It yields congruence restrictions but not the real period relation.
 \end{enumerate}
 \end{resultbox}
 
-The source audit used the decompressed attachment
-\nolinkurl{alaoglu-erdos-unified-report-A.tex.gz}, containing 20,925 lines.  Its decompressed
-SHA-256 digest is
-\begin{center}
-\texttt{6bb33ec36c1d548ae8f343681bda054e752d62a24a0ac4157e4471dbd0a5c565}.
-\end{center}
-A structural and keyword audit found extensive treatment of real and \(p\)-adic logarithmic
+The source audit used the attached unified manuscript.  A structural and keyword audit found
+extensive treatment of real and \(p\)-adic logarithmic
 determinants, but no Chebotarev density theorem, power-residue character determinant, Milnor
 \(K_2\), tame-symbol, or norm-residue formulation.  Those are the delta developed below.
 
@@ -262,7 +257,7 @@ where
 \item \(a=0\) or \(b=0\); and
 \item the exact affine-primitivity identity holds:
 \begin{equation}
- \gcd\bigl(d,e,a-b\bigr)=1.\label{eq:gcdone}
+ \gcd\bigl(d,e,|a-b|\bigr)=1.\label{eq:gcdone}
 \end{equation}
 \end{itemize}
 Here power-primitive means that the gcd of the positive prime valuations is one.  Thus if
@@ -280,7 +275,7 @@ Let
 \]
 The real relation
 \[
- \frac{\log M}{\log2}=\frac{\log A}{\log3}=\beta
+ \log_2 M=\log_3 A=\beta
 \]
 is equivalent to the vanishing of the period of
 \begin{equation}
@@ -322,7 +317,7 @@ coefficients, taken nonnegative.
 \label{thm:content}
 For the simultaneous normalization \eqref{eq:normalization},
 \begin{equation}
- \cont(Q_{M,A})=\gcd(d,e,a-b).\label{eq:content}
+ \cont(Q_{M,A})=\gcd(d,e,|a-b|).\label{eq:content}
 \end{equation}
 Consequently a least hypothetical counterexample has \(\cont(Q_{M,A})=1\).
 \end{theorem}
@@ -350,7 +345,7 @@ coefficient \(a-b\).  The coefficients contributed by \(dWX_3\) have gcd \(d\), 
 \(\gcd_ps_p=1\).  Even if a prime divides both \(w\) and \(v\), the corresponding monomials
 are \(X_pX_3\) and \(X_pX_2\), so they remain distinct.  If \(3\mid w\) or \(2\mid v\), the
 extra monomials are \(X_3^2\) or \(X_2^2\), again distinct.  Therefore the gcd of all
-coefficients is precisely \(\gcd(d,e,a-b)\).  Equation \eqref{eq:gcdone} proves the final
+coefficients is precisely \(\gcd(d,e,|a-b|)\).  Equation \eqref{eq:gcdone} proves the final
 claim.
 \end{proof}
 
@@ -962,7 +957,7 @@ construction is currently known.
 The attachment already studies convergents to a hypothetical \(\beta\) and the synchronized
 integer gaps.  The new torsion theorem adds a precise forbidden-prime statement.
 
-Let \(r/s\) be a rational approximation to \(\beta\), with \(s>0\), and define
+Let \(r/s\) be a rational approximation to \(\beta\), with \(r\ge0\) and \(s>0\), and define
 \begin{equation}
  D_2(r,s)=M^s-2^r,
  \qquad
@@ -1034,13 +1029,13 @@ measure how unrelated extreme real closeness can be from cubic torsion rank.
 
 Let
 \[
- \theta=\frac{\log3}{\log2}.
+ \theta=\log_2 3.
 \]
 For each \(2\le M\le12000\), the search examined the nearest integers to \(M^\theta\),
 removed exact standard pairs, retained pairs whose \(Q_{M,A}\) has content one, and sorted by
 \begin{equation}
  \delta_\infty(M,A)
- =\left|\frac{\log M}{\log2}-\frac{\log A}{\log3}\right|.\label{eq:realmismatch}
+ =\left|\log_2 M-\log_3 A\right|.\label{eq:realmismatch}
 \end{equation}
 For each retained pair, it found the first eligible cubic detecting prime and measured the
 nonvanishing frequency among primes \(\ell\le200000\), \(\ell\equiv1\pmod3\).
@@ -1216,11 +1211,10 @@ changes the sign in \eqref{eq:wedge-plus} back into the sign of
 \(\tau_{\mathrm{sym}}\) while preserving standard-ray vanishing.
 
 \begin{resultbox}[Cohomological parity barrier]
-A direct proof by the usual odd-primary \(K_2\) symbols or cup products cannot simply encode
-the Alaoglu--Erd\H{o}s determinant: the standard-vanishing exterior class has the opposite
+The direct ordinary odd-primary Steinberg symbol has the wrong sign for the
+Alaoglu--Erd\H{o}s determinant: the standard-vanishing exterior class has the opposite
 sign, while the same-sign antisymmetrization fails to vanish even for integer exponents.
-Any reciprocity proof must introduce genuinely symmetric degree-two information, not only an
-ordinary Steinberg symbol.
+This calculation does not exclude a symmetric refinement or a higher construction.
 \end{resultbox}
 
 Characteristic two makes plus and minus coincide, and \Cref{sec:char2} shows that the
@@ -1416,7 +1410,7 @@ represent
 as a function on finitely supported vectors.  A finite support containing
 \(\Supp(6MA)\) suffices.
 \item \textbf{Content theorem.}  Expand using \eqref{eq:Qexpanded}; prove that the gcd of the
-three coefficient blocks is \(\gcd(d,e,a-b)\).  The central interface with \ReportA{} is
+three coefficient blocks is \(\gcd(d,e,|a-b|)\).  The central interface with \ReportA{} is
 the theorem
 \[
  \texttt{simultaneousCoordinateGCD\_eq\_one}.
@@ -1695,9 +1689,7 @@ Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
 \bibitem{ReportA}
 \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial Results,
 Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
-attached unified report A, 20,925 lines, accessed 22 August 2026.
-Decompressed SHA-256:
-\texttt{6bb33ec36c1d548ae8f343681bda054e752d62a24a0ac4157e4471dbd0a5c565}.
+attached unified manuscript, accessed 22 August 2026.
 
 \bibitem{Baker1966}
 A. Baker,
