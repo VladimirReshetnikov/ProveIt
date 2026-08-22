@@ -1,0 +1,1818 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+
+\definecolor{DeepBlue}{HTML}{183A5A}
+\definecolor{MidBlue}{HTML}{2A6592}
+\definecolor{PaleBlue}{HTML}{EFF6FB}
+\definecolor{DeepGreen}{HTML}{285943}
+\definecolor{PaleGreen}{HTML}{EFF8F2}
+\definecolor{DeepRed}{HTML}{8A2E2E}
+\definecolor{PaleRed}{HTML}{FFF2F2}
+\definecolor{WarmGray}{HTML}{5C5C5C}
+\definecolor{PaleGray}{HTML}{F5F5F3}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DeepBlue,
+  citecolor=DeepGreen,
+  urlcolor=MidBlue,
+  pdftitle={One-Orbit Arithmeticity and Carry Entropy: A Fresh Attack on the Alaoglu--Erdos Conjecture},
+  pdfauthor={Research report prepared for Vladimir Reshetnikov},
+  pdfsubject={Alaoglu--Erdos conjecture; irrational powers; four exponentials; additive relations; algebraic tori},
+  pdfkeywords={Alaoglu--Erdos, four exponentials, six exponentials, irrational powers, additive energy, algebraic torus}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small One-orbit arithmeticity and carry entropy}
+\fancyhead[R]{\small Alaoglu--Erd\H{o}s conjecture}
+\fancyfoot[C]{\small Page \thepage\ of \pageref*{LastPage}}
+
+\titleformat{\section}{\Large\bfseries\color{DeepBlue}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{DeepBlue}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{DeepBlue}}{\thesubsubsection}{0.5em}{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{statusbox}{
+  breakable,
+  colback=PaleRed,
+  colframe=DeepRed,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=2.5mm,right=2.5mm,top=2mm,bottom=2mm,
+  title={Status and trust boundary},
+  fonttitle=\bfseries
+}
+\newtcolorbox{resultbox}[1][]{
+  breakable,
+  colback=PaleGreen,
+  colframe=DeepGreen,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=2.5mm,right=2.5mm,top=2mm,bottom=2mm,
+  title={#1},
+  fonttitle=\bfseries
+}
+\newtcolorbox{roadblockbox}[1][]{
+  breakable,
+  colback=PaleBlue,
+  colframe=MidBlue,
+  boxrule=0.8pt,
+  arc=1.5mm,
+  left=2.5mm,right=2.5mm,top=2mm,bottom=2mm,
+  title={#1},
+  fonttitle=\bfseries
+}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Gm}{\mathbb{G}_{m}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\Supp}{\operatorname{Supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\height}{\operatorname{H}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\AEconj}{\textup{AE}}
+\newcommand{\cL}{\mathscr{L}}
+\newcommand{\cC}{\mathscr{C}}
+\newcommand{\cG}{\mathscr{G}}
+\newcommand{\cA}{\mathscr{A}}
+\newcommand{\cB}{\mathscr{B}}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\asympK}{\asymp}
+
+\setlist[itemize]{leftmargin=1.8em,itemsep=0.35em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.35em,topsep=0.4em}
+\allowdisplaybreaks
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.4cm}
+{\Huge\bfseries\color{DeepBlue} One-Orbit Arithmeticity and Carry Entropy\par}
+\vspace{0.35cm}
+{\LARGE A Fresh Attack on the Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.8cm}
+{\large New equivalences, a post-2025 additive-rigidity audit, and an exact variable-arity obstruction\par}
+\vfill
+{\large Independent research report prepared for\par}
+\vspace{0.15cm}
+{\Large\bfseries Vladimir Reshetnikov\par}
+\vspace{0.8cm}
+{\large 21 August 2026\par}
+\vfill
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Problem.} Prove that for real $x$,
+\[
+        2^x\in\Z,\qquad 3^x\in\Z
+        \quad\Longrightarrow\quad x\in\Z.
+\]
+This report is deliberately separate from the supplied unified report.  It does not reproduce that report's machine-checked finite exclusions, least-generator monoid, determinant hierarchy, valuation lattices, tower results, or twenty continuation reports.  Instead it develops a different organizing principle---\emph{one-orbit arithmeticity}---and follows a new additive-combinatorial route prompted by Joseph Harrison's July 2026 work on additive relations in irrational powers.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{arabic}
+
+\begin{abstract}
+Let $\vartheta=\log 3/\log 2$ and
+\[
+   \cG_{\vartheta}=\{(u,u^{\vartheta}):u>0\}\subset(\R_{>0})^2.
+\]
+The Alaoglu--Erd\H{o}s conjecture says that the positive integral points on this transcendental subgroup are exactly $(2^n,3^n)$, $n\geq0$.  The first purpose of this report is to turn that statement into a precise arithmeticity problem for a non-algebraic scalar endomorphism on a Zariski-dense rational orbit.  This gives a clean dimension trichotomy: one test base is insufficient, three independent test bases are handled by the Six Exponentials Theorem, and two bases are exactly the unresolved Four Exponentials frontier.
+
+The second purpose is to incorporate a genuinely new literature input.  Harrison's 2026 theorem gives nearly optimal fixed-arity bounds for nontrivial additive relations among irrational powers.  A hypothetical counterexample $M=2^x$, $N=3^x$ supplies the carry identities $(2t)^x=M t^x$ and $(3t)^x=N t^x$.  We prove a character-balancing lemma showing that these identities lie precisely in the algebraic parts tolerated by functional-transcendence methods.  We then prove a carry-path theorem: for every $r,s\geq1$, the single integer $M^rN^s$ has at least $\binom{r+s}{r}$ distinct equal-length representations by values $(2^a3^b)^x$.
+
+The path construction admits a stronger carry-language extension.  Every $3$-smooth multiplier $d=2^a3^b$ gives an integer carry of size $d^x=M^aN^b$.  For any finite carry alphabet and prescribed symbol counts, all permutations of the symbols give distinct representations of one target, so the lower bound is a multinomial coefficient.  Already the alphabet $\{2,3,6\}$ forces, at infinitely many ambient scales $B$, a single target with $B^{1+o(1)}$ representations and only $O(\log B)$ summands.  Optimizing over finite alphabets of $3$-smooth multipliers raises the supremal ambient exponent to
+\[
+ \delta_* = 1.4352790836\ldots,
+ \qquad
+ (1-2^{-\delta_*})(1-3^{-\delta_*})=\frac12.
+\]
+This identifies a sharp reason current fixed-arity theorems do not close the conjecture.  A second pressure equation, depending on the hypothetical outputs $M,N$, gives the exact exponential growth rate per summand.  More strongly, an unrestricted carry-word generating function produces actual fixed-target fibers of size
+\[
+       \exp\bigl(\tau_x K-O_x(\log K)\bigr)
+\]
+along an arithmetic progression of arities $K$, while every input is at most $3^{K-1}$.  This yields a concrete and quantitatively sharp arity-uniformity target.
+
+No unconditional proof of the conjecture is claimed.  The conjecture remains open in the current literature.  What is proved here is an independent package of exact equivalences, structural theorems, conditional criteria, and a new variable-arity obstruction that was absent from the supplied report.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, outcome, and evidence discipline}
+
+\subsection{What this report does differently}
+
+The supplied source is already a very large synthesis.  Its mathematical center of gravity is the exact conditional solution monoid, finite verification, valuation and Smith-normal-form structure, interpolation determinants, finite differences, rational-function rigidity, smoothness restrictions, compact normalized orbits, and a long sequence of matrix-, operator-, spectral-, and approximation-theoretic continuations.  Recasting those results with new prose would add no mathematical value.
+
+This report therefore imposes a strict separation rule.  Foundational reductions are recalled only when needed to make the new arguments self-contained.  The substantive work is concentrated in four directions that are not developed in the supplied report in the form used here:
+
+\begin{enumerate}
+\item the logarithmic-intersection cone and its interpretation as the rational-point group of a transcendental real torus subgroup;
+\item a one-orbit arithmeticity formulation, including the one/two/three-base dimension threshold;
+\item a post-2025 audit based on Harrison's theorem on additive relations in irrational powers;
+\item a carry-rewriting theory culminating in an exponential family of equal-length power-sum representations at arity $\asymp\log N$.
+\end{enumerate}
+
+\begin{statusbox}
+As of 21 August 2026, no unconditional proof of the two-base conjecture is known.  Michel Waldschmidt's survey identifies it as an open special case of the Four Exponentials Problem~\cite{Waldschmidt2023}, and the current specialist discussion likewise records it as open~\cite{MathOverflow2026}.  Accordingly, no gap in this report is relabeled as a proof.  Every major assertion is marked by one of three logical types: proved here, imported from a named theorem, or stated as an unresolved target.
+\end{statusbox}
+
+\subsection{Main outputs}
+
+The principal deductions established in this report are the following.
+
+\begin{resultbox}[Results proved in this report]
+\begin{enumerate}
+\item \textbf{Exact logarithmic-cone equivalence.}  With $\vartheta=\log 3/\log 2$ and $\cL_+=\log\N_{>0}$,
+\[
+   \AEconj\quad\Longleftrightarrow\quad
+   \cL_+\cap\vartheta^{-1}\cL_+=\N_0\log 2.
+\]
+A counterexample therefore creates a second independent positive lattice direction in the rational-point group of $v=u^{\vartheta}$.
+
+\item \textbf{One-orbit arithmeticity equivalence.}  Let $P_x(t_1,t_2)=(t_1^x,t_2^x)$.  The conjecture is exactly the assertion that integrality of $P_x(2,3)$ forces the continuous homomorphism $P_x$ to be algebraic; algebraicity is equivalent to $x\in\Z$.
+
+\item \textbf{Dimension threshold.}  One algebraic test base admits abundant nonalgebraic exponents.  Three multiplicatively independent algebraic test bases force $x\in\Q$ by Six Exponentials, hence $x\in\Z$ for the prime bases $2,3,5$.  Two bases are precisely the missing Four Exponentials case.
+
+\item \textbf{Character balancing.}  A linear equation restricted to a torus coset vanishes identically exactly when its coefficients balance separately in every character class.  Counterexample-generated carry identities satisfy this criterion, explaining why Ax--Schanuel/Pila--Wilkie machinery regards them as algebraic parts rather than contradictions.
+
+\item \textbf{Balanced two-carry families.}  If $M=2^x$ and $N=3^x$ are integers, the two carry rules combine into fixed, equal-arity, positive-dimensional families of nontrivial additive relations.
+
+\item \textbf{Carry-path theorem.}  For multiplicatively independent integers $U,V\ge2$, the target $U^rV^s$ has at least $\binom{r+s}{r}$ distinct multiset representations as a sum of exactly $1+r(U-1)+s(V-1)$ elements of $\{U^aV^b:0\le a\le r,0\le b\le s\}$.  Under a counterexample, these become equal-length sums of irrational powers of $3$-smooth integers.
+
+\item \textbf{Composite carry-language theorem.}  For any finite set of carry moves $d_i=2^{a_i}3^{b_i}$ and prescribed multiplicities $n_i$, one target has at least $(\sum_i n_i)!/\prod_i n_i!$ distinct representations, all of the same length.  The proof is an injective distinguished-descendant encoding of words by frozen frontiers.
+
+\item \textbf{Optimal logarithmic-arity entropy.}  The alphabet $\{2,3,6\}$ alone gives $B^{1+o(1)}$ representations of one target at arity $O(\log B)$.  Optimizing over finite $3$-smooth carry alphabets gives every ambient exponent below
+\[
+  \delta_*=1.4352790836\ldots,
+  \qquad (1-2^{-\delta_*})(1-3^{-\delta_*})=\tfrac12.
+\]
+An output-dependent pressure root $\tau_x$ is the exact rate per summand.  Allowing the full carry alphabet at once upgrades the variational statement to an actual fiber: for every sufficiently large $K\equiv1\pmod{\gcd(M-1,N-1)}$, some target has
+\[
+       \exp\bigl(\tau_x(K-1)-O_x(\log K)\bigr)
+\]
+distinct $K$-term representations, all using inputs at most $3^{K-1}$.
+
+\item \textbf{Residual compact-orbit lower bound.}  A counterexample creates distinct rational points on the compact arc $(2^t,3^t)$, $0\le t<1$, with counting function $\Theta(\log H)$ in naive height.  Consequently, an orbit-sensitive $o(\log H)$ theorem would settle the conjecture, while the available polylogarithmic Wilkie bound is not strong enough.
+\end{enumerate}
+\end{resultbox}
+
+\subsection{Notation}
+
+Throughout, $\N_0=\{0,1,2,\ldots\}$.  A hypothetical nonintegral solution is denoted
+\[
+       x\in\R\setminus\Z,\qquad M=2^x\in\N,
+       \qquad N=3^x\in\N.
+\]
+The fixed logarithmic slope is
+\[
+       \vartheta=\frac{\log 3}{\log 2}.
+\]
+The letter $N$ is also conventionally used in statements of additive-combinatorial theorems for the length of an ambient arithmetic progression.  Where confusion could arise, that ambient length is written $N_{\mathrm{amb}}$.
+
+\section{Minimal normalization and the exact transcendence wall}
+
+\subsection{Elementary reductions}
+
+\begin{lemma}[Sign and rationality]\label{lem:elementary}
+Suppose $2^x\in\Z$ for a real number $x$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $x<0$, then $2^x$ is not an integer.
+\item If $x\in\Q$, then $x\in\Z$.
+\item Consequently, every nonintegral solution of the two-base problem is irrational.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If $x<0$, then $0<2^x<1$.  For the rational assertion, write $x=a/b$ in lowest terms with $b>0$.  If $2^{a/b}=M\in\N$, then $2^a=M^b$.  Taking the $2$-adic valuation gives
+\[
+      a=b\,v_2(M).
+\]
+Thus $b\mid a$, and coprimality forces $b=1$.  The final assertion follows.
+\end{proof}
+
+\begin{lemma}[Transcendence of a counterexample]\label{lem:transcendental-x}
+Every nonintegral solution $x$ is transcendental.  The number $\vartheta=\log 3/\log 2$ is also transcendental.
+\end{lemma}
+
+\begin{proof}
+By \cref{lem:elementary}, a nonintegral solution is irrational.  If it were algebraic, the Gelfond--Schneider theorem~\cite{Gelfond1960} would make $2^x$ transcendental, contrary to $2^x\in\N$.  The same argument applies to $\vartheta$: it is not rational by unique factorization, and if it were algebraic irrational, then $2^{\vartheta}=3$ would be transcendental.
+\end{proof}
+
+A hypothetical counterexample therefore begins beyond the reach of linear forms in logarithms in their standard algebraic-coefficient form.  The exact relation is
+\begin{equation}\label{eq:logdet}
+     \log M\,\log 3-\log N\,\log 2=0,
+\end{equation}
+with all four arguments of the logarithms algebraic.  This is a quadratic relation among logarithms, not a nonzero linear form in logarithms.
+
+\subsection{The Four Exponentials matrix}
+
+The matrix
+\[
+   \begin{pmatrix}
+      \log 2 & \log 3\\
+      x\log 2 & x\log 3
+   \end{pmatrix}
+\]
+after entrywise exponentiation becomes
+\[
+   \begin{pmatrix}
+      2 & 3\\
+      M & N
+   \end{pmatrix}.
+\]
+If $x$ were irrational, the two row multipliers $1,x$ would be $\Q$-linearly independent, while $\log2,\log3$ are $\Q$-linearly independent.  The Four Exponentials Conjecture predicts that at least one of the four exponentials must then be transcendental.  Since all four displayed numbers are integers, Four Exponentials would rule out the counterexample.
+
+This observation is not itself a proof.  It is the exact reason the problem has survived: the proven Six Exponentials Theorem needs a $2\times3$ or $3\times2$ array, whereas the conjecture supplies the unresolved $2\times2$ corner.
+
+\section{The logarithmic intersection cone}
+
+\subsection{The prime-logarithm lattice}
+
+Let
+\[
+  \cL=\log\Q_{>0}
+  =\left\{\sum_{p}z_p\log p:
+       z_p\in\Z,\ z_p=0\text{ for all but finitely many }p\right\}.
+\]
+Unique factorization identifies $\cL$ with the free abelian group
+$\bigoplus_p\Z\log p$.  Its positive monoid is
+\[
+  \cL_+=\log\N_{>0}
+  =\left\{\sum_p n_p\log p:n_p\in\N_0,
+       \ n_p=0\text{ for all but finitely many }p\right\}.
+\]
+For a real $c$, set
+\[
+   W_c=\cL\cap c^{-1}\cL,
+   \qquad
+   C_c=\cL_+\cap c^{-1}\cL_+.
+\]
+Thus $u\in W_c$ precisely when both $\ee^u$ and $\ee^{cu}$ are positive rationals, and $u\in C_c$ precisely when both are positive integers.
+
+\begin{theorem}[Exact cone formulation]\label{thm:cone}
+For $\vartheta=\log3/\log2$, the following are equivalent.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The Alaoglu--Erd\H{o}s conjecture is true.
+\item $C_{\vartheta}=\N_0\log2$.
+\item Every $u\in\cL_+$ satisfying $\vartheta u\in\cL_+$ is an integral multiple of $\log2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Suppose $u\in C_{\vartheta}$.  Write $u=\log m$ and $\vartheta u=\log n$ with $m,n\in\N$.  Put
+\[
+     y=\frac{u}{\log2}=\log_2m.
+\]
+Then $2^y=m$ and
+\[
+     3^y=\exp(y\log3)
+         =\exp\!\left(\frac{u\log3}{\log2}\right)
+         =\exp(\vartheta u)=n.
+\]
+The conjecture, in the form isolated by Alaoglu and Erd\H{o}s~\cite{AlaogluErdos1944}, says $y\in\N_0$, hence $u=y\log2$.  Conversely, every $u=k\log2$ with $k\in\N_0$ belongs to $C_{\vartheta}$ because $\vartheta u=k\log3$.  The equivalence of the three formulations is immediate.
+\end{proof}
+
+\begin{corollary}[Rank jump caused by a counterexample]\label{cor:rankjump}
+If $x$ is a counterexample and $u=\log M=x\log2$, then $\log2$ and $u$ are $\Q$-linearly independent elements of $W_{\vartheta}$.  In particular, $W_{\vartheta}$ has rank at least two.
+\end{corollary}
+
+\begin{proof}
+Both $\log2$ and $u$ lie in $W_{\vartheta}$, since multiplication by $\vartheta$ sends them to $\log3$ and $\log N$.  If $u$ and $\log2$ were $\Q$-linearly dependent, then $u=q\log2$ for some $q\in\Q$, so $x=u/\log2=q$ would be rational, contrary to \cref{lem:elementary}.
+\end{proof}
+
+The group statement $W_{\vartheta}=\Z\log2$ would be stronger than the conjecture: it would exclude signed rational points as well as positive integral ones.  Four Exponentials predicts precisely such a rank-one phenomenon.  The original problem asks whether the positivity cone alone is already rigid enough.
+
+\subsection{The transcendental subgroup and its rational points}
+
+Define
+\[
+  \cG_c=\{(u,u^c):u>0\}\subset(\R_{>0})^2.
+\]
+This is a one-dimensional real Lie subgroup under coordinatewise multiplication.  Its positive rational and integral points are
+\[
+ \cG_c(\Q)=\cG_c\cap(\Q_{>0})^2,
+ \qquad
+ \cG_c(\N)=\cG_c\cap\N^2.
+\]
+
+\begin{proposition}[Logarithmic parametrization]\label{prop:graphpoints}
+The map
+\[
+    W_c\longrightarrow\cG_c(\Q),
+    \qquad u\longmapsto(\ee^u,\ee^{cu})
+\]
+is a group isomorphism.  It restricts to a monoid isomorphism
+$C_c\cong\cG_c(\N)$.
+\end{proposition}
+
+\begin{proof}
+The map is a homomorphism and is injective because the real exponential is injective.  Its image consists exactly of pairs $(q,q^c)$ with both coordinates rational.  The positive-cone statement is identical with ``rational'' replaced by ``integral.''
+\end{proof}
+
+\begin{proposition}[Zariski density of an irrational power graph]\label{prop:graphdense}
+If $c\notin\Q$, then $\cG_c$ is Zariski dense in $\Gm^2$.
+\end{proposition}
+
+\begin{proof}
+Suppose a Laurent polynomial
+\[
+       F(X,Y)=\sum_{(a,b)\in S}\lambda_{a,b}X^aY^b
+\]
+vanishes on $\cG_c$.  Substitution gives
+\[
+       \sum_{(a,b)\in S}\lambda_{a,b}u^{a+bc}=0
+       \qquad(u>0).
+\]
+The exponents $a+bc$ are pairwise distinct unless the corresponding pairs $(a,b)$ agree, because $c$ is irrational.  Distinct real monomials $u^{\lambda}$ are linearly independent on an interval; for example, after writing $u=\ee^t$ this is the linear independence of exponentials $\ee^{\lambda t}$.  Hence every coefficient vanishes, so no nonzero Laurent polynomial cuts out the graph.
+\end{proof}
+
+For $c=\vartheta$, the point $(2,3)$ lies on this Zariski-dense transcendental subgroup.  The conjecture can now be read as
+\[
+       \cG_{\vartheta}(\N)=\{(2^n,3^n):n\in\N_0\}.
+\]
+A counterexample supplies a second integral point $(M,N)$ which is independent of $(2,3)$ in the group law.
+
+\begin{proposition}[Independence of the two integral points]\label{prop:pointind}
+If $x\notin\Q$ and $(M,N)=(2^x,3^x)\in\N^2$, then the subgroup generated by $(2,3)$ and $(M,N)$ is free abelian of rank two.
+\end{proposition}
+
+\begin{proof}
+A relation
+\[
+     (2,3)^a(M,N)^b=(1,1),\qquad a,b\in\Z,
+\]
+gives $2^{a+bx}=1$, hence $a+bx=0$.  Irrationality of $x$ forces $a=b=0$.
+\end{proof}
+
+\begin{roadblockbox}[Transcendental Mordell--Lang viewpoint]
+The graph $\cG_{\vartheta}$ is not an algebraic subgroup, yet it already contains the Zariski-dense cyclic subgroup generated by $(2,3)$.  A counterexample would enlarge its rational points from rank one to rank at least two.  Classical Mordell--Lang theorems cannot be applied directly: they control intersections with algebraic subvarieties, while the set imposing the relation $v=u^{\vartheta}$ is transcendental and Zariski dense.
+\end{roadblockbox}
+
+\section{One-orbit arithmeticity}
+
+\subsection{Scalar power maps on algebraic tori}
+
+For $d\ge1$ and $x\in\R$, define the continuous group homomorphism
+\[
+       P_x:(\R_{>0})^d\longrightarrow(\R_{>0})^d,
+       \qquad
+       P_x(t_1,\ldots,t_d)=(t_1^x,\ldots,t_d^x).
+\]
+
+\begin{proposition}[Algebraicity criterion]\label{prop:algebraic-power}
+The map $P_x$ is the restriction of an algebraic group endomorphism of $\Gm^d$ if and only if $x\in\Z$.
+\end{proposition}
+
+\begin{proof}
+Every algebraic group endomorphism of $\Gm^d$ is given by a monomial map
+\[
+   (t_1,\ldots,t_d)\longmapsto
+   \left(\prod_jt_j^{a_{1j}},\ldots,
+         \prod_jt_j^{a_{dj}}\right),
+   \qquad A=(a_{ij})\in M_d(\Z),
+\]
+because it acts integrally on the character lattice $X^*(\Gm^d)\cong\Z^d$.  If this agrees with $P_x$ on positive real points, restricting to $(t,1,\ldots,1)$ gives $t^x=t^{a_{11}}$ for every $t>0$, so $x=a_{11}\in\Z$.  Conversely, an integral scalar exponent is a monomial map.
+\end{proof}
+
+Let $g=(g_1,\ldots,g_d)\in(\Q_{>0})^d$ and
+\[
+       \Gamma_g=\{g^n:n\in\Z\}.
+\]
+The map $P_x$ takes $\Gamma_g$ into rational points if and only if each $g_i^x$ is rational.  Thus a finite list of exponential values can be viewed as arithmetic data for a continuous homomorphism on one rational orbit.
+
+\begin{theorem}[One-orbit formulation of Alaoglu--Erd\H{o}s]\label{thm:oneorbit}
+The following are equivalent.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $2^x,3^x\in\Z$ implies $x\in\Z$ for every real $x$.
+\item Whenever $P_x(2,3)\in\Z^2$, the continuous homomorphism $P_x:(\R_{>0})^2\to(\R_{>0})^2$ is algebraic.
+\item Whenever $P_x$ maps the positive orbit $\{(2^n,3^n):n\in\N_0\}$ into $\Z^2$, it is algebraic.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The equivalence of (a) and (b) is \cref{prop:algebraic-power}.  The hypotheses in (b) and (c) are themselves equivalent: if the generator maps to $(M,N)\in\Z^2$, then the $n$th positive-orbit point maps to $(M^n,N^n)$; conversely, integrality on the whole positive orbit includes the point $n=1$.  Hence (b) and (c) are equivalent.
+\end{proof}
+
+The orbit in \cref{thm:oneorbit} is already Zariski dense in $\Gm^2$: any character trivial on $(2,3)$ would give $2^a3^b=1$, hence $a=b=0$.  The statement therefore has a deliberately paradoxical appearance: a nonalgebraic continuous homomorphism is required to be recognized as algebraic from its arithmetic behavior on a Zariski-dense orbit.  Zariski density alone is not enough, because it is not Euclidean density and carries no continuity control between orbit points.
+
+\subsection{The one/two/three-base threshold}
+
+\begin{theorem}[Six Exponentials threshold]\label{thm:sixthreshold}
+Let $a_1,a_2,a_3$ be positive algebraic numbers such that
+$\log a_1,\log a_2,\log a_3$ are $\Q$-linearly independent.  If $x\in\R$ and each $a_i^x$ is algebraic, then $x\in\Q$.
+\end{theorem}
+
+\begin{proof}
+Assume $x\notin\Q$.  The two numbers $1,x$ are $\Q$-linearly independent, as are the three logarithms.  The Six Exponentials Theorem~\cite{Waldschmidt2000,Waldschmidt2005} says that among
+\[
+    \exp(\log a_i)=a_i,
+    \qquad
+    \exp(x\log a_i)=a_i^x
+    \qquad (i=1,2,3),
+\]
+at least one is transcendental.  This contradicts the algebraicity hypothesis.
+\end{proof}
+
+\begin{corollary}[Three prime bases]\label{cor:threeprime}
+If $2^x,3^x,5^x\in\Z$, then $x\in\Z$.
+\end{corollary}
+
+\begin{proof}
+The logarithms of distinct primes are $\Q$-linearly independent.  Hence \cref{thm:sixthreshold} gives $x\in\Q$, and \cref{lem:elementary} gives $x\in\Z$.
+\end{proof}
+
+This three-base phenomenon is also part of the classical circle of results developed by Lang~\cite{Lang1966}.
+
+The threshold is now transparent.
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}c X X@{}}
+\toprule
+Number of independent test bases & Arithmeticity conclusion & Reason \\
+\midrule
+$1$ & False in general & For an integer $A>1$ that is not a power of $2$, $x=\log_2A$ gives $2^x=A$ with $x\notin\Z$. \\
+$2$ & Open for $(2,3)$ & Exactly the Four Exponentials $2\times2$ frontier. \\
+$3$ & $x\in\Q$; integral for prime bases & Six Exponentials Theorem. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+This is a finite-test arithmeticity problem at the first unresolved cardinality.  In automorphic language, $q\mapsto q^x$ is the archimedean norm character.  Requiring all values $n^x$ to be algebraic integers in one fixed number field makes the corresponding Grossencharacter arithmetic; for tori, arithmeticity implies algebraicity and forces an integral infinity type~\cite{Waldschmidt1982}.  That is an all-integers theorem.  For the finite-test problem, three independent prime values already suffice by Six Exponentials, while the conjecture asks whether the two values at $2$ and $3$ happen to suffice.
+
+\subsection{A stronger rank-one target}
+
+The cone formulation suggests the following statement.
+
+\begin{conjecture}[Rank-one logarithmic intersection]\label{conj:rankone}
+For $\vartheta=\log3/\log2$,
+\[
+      W_{\vartheta}=\Z\log2.
+\]
+\end{conjecture}
+
+This is stronger than Alaoglu--Erd\H{o}s because it controls all rational points on $\cG_{\vartheta}$, including those with negative valuations.  Four Exponentials implies \cref{conj:rankone}: a second $\Q$-independent $u\in W_{\vartheta}$ would make all four numbers
+\[
+     \ee^{\log2},\quad \ee^u,
+     \quad \ee^{\vartheta\log2},\quad \ee^{\vartheta u}
+\]
+algebraic.  Positivity in \cref{thm:cone} may conceivably make the weaker cone statement accessible before the full group-rank statement, but no present theorem performs that upgrade.
+
+\section{Post-2025 input: additive relations in irrational powers}
+
+\subsection{Harrison's theorem}
+
+A new input became available after the main body of the supplied report was assembled.  In July 2026 Joseph Harrison proved strong fixed-arity estimates~\cite{Harrison2026} for equations among irrational powers.  We use the following form.
+
+\begin{theorem}[Harrison, 2026]\label{thm:harrison}
+Fix integers $1\le r\le s$.  There is an effectively computable constant $C_2(s)>0$ such that, for every irrational real $c$ and every subset $A$ of an $N_{\mathrm{amb}}$-term arithmetic progression in $\R_{\ge0}$, the number of solutions of
+\[
+      a_1^c+\cdots+a_s^c=b_1^c+\cdots+b_r^c
+\]
+with $a_i,b_j\in A$ and with the two tuples not related by a permutation is
+\[
+      O_s\!\left(|A|^{\max(1,\min(r,s-1))}
+                 (\log N_{\mathrm{amb}})^{C_2(s)}\right).
+\]
+In particular, for fixed $k$,
+\[
+ E_k(A^{[c]})
+ =k!|A|^k+O_k\!\left(|A|^{k-1}
+                  (\log N_{\mathrm{amb}})^{C_2(k)}\right),
+\]
+where $E_k$ is the $k$-fold additive energy.
+\end{theorem}
+
+The theorem is uniform in the irrational exponent $c$, but it is not uniform in the arity $s$.  This distinction will become decisive.
+
+The following intermediate lemma is even closer to the obstruction developed below.
+
+\begin{theorem}[Harrison fixed-target lemma, 2026]\label{thm:harrisonfixedtarget}
+Fix $t\geq1$.  Let $A$ be a subset of an $N_{\mathrm{amb}}$-term arithmetic progression in $\R_{\geq0}$, let $c$ be irrational, and fix $v>0$.  Then the number of ordered tuples $(u_1,\ldots,u_t)\in A^t$ satisfying
+\[
+        u_1^c+\cdots+u_t^c=v
+\]
+is
+\[
+        O_t\bigl((\log N_{\mathrm{amb}})^{O_t(1)}\bigr),
+\]
+uniformly in $c$, in the progression, and in $v$.
+\end{theorem}
+
+For the Alaoglu--Erd\H{o}s problem, the important qualification is again ``fix $t$''.  The theorem gives no stated control of the exponent or implied constant as $t$ grows with $N_{\mathrm{amb}}$.
+
+Harrison also obtains near-maximal $k$-fold sumset growth whenever
+$|A|\ge(\log N_{\mathrm{amb}})^{C_1(k)}$ for an effectively computable $C_1(k)>1$.  The proof combines functional transcendence with the polylogarithmic rational-point bounds of Binyamini, Novikov, and Zak.  The latter prove that rational points of height at most $H$ on the transcendental part of a fixed Pfaffian-definable set number at most a power of $\log H$.
+
+\subsection{How sparse is the \texorpdfstring{$3$}{3}-smooth input set?}
+
+The natural input set under a hypothetical counterexample is
+\[
+      \cA(X)=\{2^a3^b:a,b\in\N_0,\ 2^a3^b\le X\}.
+\]
+Its size is only polylogarithmic in the ambient interval length.
+
+\begin{proposition}[Triangular $3$-smooth count]\label{prop:triangularcount}
+As $X\to\infty$,
+\[
+   |\cA(X)|
+   =\frac{(\log X)^2}{2\log2\log3}+O(\log X).
+\]
+\end{proposition}
+
+\begin{proof}
+Put $T=\log X$, $\alpha=\log2$, and $\beta=\log3$.  Then
+\[
+ |\cA(X)|
+ =\sum_{b=0}^{\lfloor T/\beta\rfloor}
+   \left(\left\lfloor\frac{T-b\beta}{\alpha}\right\rfloor+1\right).
+\]
+Replacing the floor by its argument introduces $O(T)$ total error.  The remaining arithmetic progression sum is
+\[
+ \frac{1}{\alpha}
+ \sum_{b=0}^{\lfloor T/\beta\rfloor}(T-b\beta)+O(T)
+ =\frac{T^2}{2\alpha\beta}+O(T).
+\]
+\end{proof}
+
+A multiplicative shell is even sparser, but admits a particularly clean count.
+
+\begin{proposition}[Dyadic-shell count]\label{prop:shellcount}
+Let
+\[
+      \cA_{\mathrm{sh}}(X)=\{2^a3^b:X\le2^a3^b<2X\}.
+\]
+Then
+\[
+       |\cA_{\mathrm{sh}}(X)|
+       =\frac{\log X}{\log3}+O(1).
+\]
+\end{proposition}
+
+\begin{proof}
+Again let $T=\log X$, $\alpha=\log2$, and $\beta=\log3$.  For each fixed $b$ away from the two boundary ranges, the condition
+\[
+       T\le a\alpha+b\beta<T+\alpha
+\]
+places $a$ in a half-open interval of length exactly one, hence selects exactly one integer $a$.  The allowed $b$ range has $T/\beta+O(1)$ elements.  Only $O(1)$ values near $a=0$ or the upper boundary require separate treatment.
+\end{proof}
+
+The counts expose two numerical thresholds in \cref{thm:harrison}.
+
+\begin{proposition}[Harrison thresholds for $3$-smooth sets]\label{prop:harrisonthresholds}
+Fix $k$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $A=\cA(X)\subset[1,X]$, Harrison's energy formula is asymptotic from its stated error term if $C_2(k)<2$.
+\item For $A=\cA_{\mathrm{sh}}(X)\subset[X,2X]$, the analogous sufficient condition is $C_2(k)<1$.
+\item Harrison's sumset theorem applies directly to $\cA(X)$ if its exponent $C_1(k)$ can be taken below $2$; it cannot apply to the shell through the stated hypothesis because $C_1(k)>1$ while the shell has order $\log X$ elements.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For equal arity, the ratio of the error term to the main term is
+\[
+      O_k\!\left(\frac{(\log N_{\mathrm{amb}})^{C_2(k)}}{|A|}\right).
+\]
+Insert \cref{prop:triangularcount,prop:shellcount} and take
+$N_{\mathrm{amb}}\asymp X$.  The sumset statement follows by comparing
+$|A|$ with $(\log N_{\mathrm{amb}})^{C_1(k)}$.
+\end{proof}
+
+Even favorable numerical exponents would not by themselves prove the conjecture.  A set of integers can have nearly minimal additive energy, and a rank-two multiplicative progression can be close to a Sidon set additively.  What matters is not merely the total number of collisions, but the special carry relations forced by integrality of $2^x$ and $3^x$.
+
+\subsection{The two carry identities}
+
+Assume for this section that $x$ is a counterexample and put $M=2^x$, $N=3^x$.  For every $t>0$,
+\begin{equation}\label{eq:two-carries}
+       (2t)^x=M t^x,
+       \qquad
+       (3t)^x=N t^x.
+\end{equation}
+Because $M$ and $N$ are integers, these are additive relations: the first says that one copy of $(2t)^x$ equals the sum of $M$ copies of $t^x$, and similarly for $N$.
+
+For a fixed hypothetical counterexample, $M$ and $N$ are fixed arities.  Taking $t$ through $\cA(X/2)$ gives $\gg|\cA(X)|$ nontrivial solutions to an equation with $M$ summands on one side and one on the other.  This is exactly the order permitted by Harrison's exponent
+\[
+       \max(1,\min(1,M-1))=1.
+\]
+Harrison notes that dilation families make his estimate optimal up to powers of the logarithm.  The first carry in \eqref{eq:two-carries} is precisely such a dilation family; the second supplies another one.
+
+\section{Algebraic parts and character balancing}
+
+\subsection{A torus lemma}
+
+Functional-transcendence arguments separate a definable solution set into a transcendental part, where rational points are sparse, and algebraic parts, where positive-dimensional families may live.  The following elementary lemma describes the algebraic parts relevant to carries.
+
+\begin{lemma}[Character balancing]\label{lem:characterbalance}
+Let $H\cong\Gm^d$ be a complex algebraic torus.  Let
+$\chi_1,\ldots,\chi_m\in X^*(H)$ be characters, let
+$\gamma_i\in\C^\times$, and let $c_i\in\C$.  Then
+\[
+       F(h)=\sum_{i=1}^m c_i\gamma_i\chi_i(h)
+\]
+vanishes identically on $H$ if and only if, for every character
+$\chi\in X^*(H)$,
+\begin{equation}\label{eq:classbalance}
+       \sum_{i:\,\chi_i=\chi}c_i\gamma_i=0.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The coordinate ring $\C[H]$ is the group algebra
+$\C[X^*(H)]$.  Distinct characters form a $\C$-basis of this ring.  Grouping the displayed sum by equal characters shows that $F=0$ if and only if every grouped coefficient is zero, which is exactly \eqref{eq:classbalance}.
+\end{proof}
+
+\begin{example}[One carry as one character class]\label{ex:onecarry}
+Suppose $M=2^x$.  Parameterize a one-dimensional torus by $t$.  After applying the power map and reparameterizing the image torus by $s=t^x$, the $M+1$ coordinates
+\[
+      \underbrace{t^x,\ldots,t^x}_{M\ \text{times}},
+      \quad (2t)^x=M t^x
+\]
+all restrict to the same algebraic character $s\mapsto s$ up to constant multiples.  In the linear equation
+\[
+      t^x+\cdots+t^x-(2t)^x=0,
+\]
+the coefficient in that character class is $M-M=0$.  Thus the entire dilation curve is an algebraic part after the power map.  Functional transcendence is behaving correctly when it permits this family.
+\end{example}
+
+\subsection{Combining the two carries at equal arity}
+
+The relations in \eqref{eq:two-carries} have different numbers of summands on the two sides.  They can nevertheless be combined into equal-length relations without approximation.
+
+\begin{proposition}[Balanced two-carry family]\label{prop:balancedcarry}
+Let $M,N\ge2$ be integers, put
+\[
+      d=\gcd(M-1,N-1),\qquad
+      A=\frac{N-1}{d},\qquad
+      B=\frac{M-1}{d},
+\]
+and suppose $M=2^x$, $N=3^x$.  For arbitrary positive variables
+$t_1,\ldots,t_A,u_1,\ldots,u_B$ one has the equal-arity identity
+\begin{align}
+ &\sum_{i=1}^{A}\ \underbrace{(t_i^x+\cdots+t_i^x)}_{M\ \mathrm{terms}}
+   +\sum_{j=1}^{B}(3u_j)^x \notag\\
+ &\hspace{2.2cm}=
+   \sum_{i=1}^{A}(2t_i)^x
+   +\sum_{j=1}^{B}\ \underbrace{(u_j^x+\cdots+u_j^x)}_{N\ \mathrm{terms}}.
+ \label{eq:balancedcarry}
+\end{align}
+Both sides contain
+\[
+       K=AM+B=A+BN
+\]
+summands.
+\end{proposition}
+
+\begin{proof}
+Each $t_i$ block is equal by $(2t_i)^x=M t_i^x$, and each $u_j$ block is equal by $(3u_j)^x=N u_j^x$.  The equality of the term counts is
+\[
+       AM+B-(A+BN)=A(M-1)-B(N-1)=0
+\]
+by the definitions of $A$ and $B$.
+\end{proof}
+
+This gives an $(A+B)$-parameter family of nontrivial equal-sum relations at a fixed arity $K$ determined by the hypothetical outputs.  On a large finite input set stable under multiplication by $2$ and $3$, it yields on the order of $|A_0|^{A+B}$ discrete solutions after avoiding coincidences among parameters.  Harrison's equal-arity upper bound allows order $|A_0|^{K-1}$ up to logarithms.  Since a nonintegral counterexample has $M\ge3$ and $N\ge6$, one has $A+B<K-1$, so the family is entirely compatible with the theorem.
+
+\begin{proposition}[Carry identities are character-balanced]\label{prop:carrybalanced}
+Every additive identity obtained from expressions $t^x$ by finitely many applications of the rewrite rules
+\[
+       (2t)^x\longleftrightarrow
+       \underbrace{t^x+\cdots+t^x}_{M},
+       \qquad
+       (3t)^x\longleftrightarrow
+       \underbrace{t^x+\cdots+t^x}_{N}
+\]
+is a sum of independently balanced character classes in the sense of
+\cref{lem:characterbalance}.
+\end{proposition}
+
+\begin{proof}
+A single rewrite replaces one term by several terms carrying the same variable character, and the total coefficient in that character class changes by
+$M-M=0$ or $N-N=0$ after the relevant constant $2^x=M$ or $3^x=N$ is inserted.  Disjoint rewrites add such zero balances.  Induction on the number of rewrites proves the claim.
+\end{proof}
+
+\begin{roadblockbox}[Why functional transcendence does not immediately contradict two carries]
+The power map with irrational exponent does not restrict to an algebraic-group morphism on a nontrivial algebraic subgroup.  That fact is powerful when a relation is genuinely transverse.  Counterexample-generated carries are not transverse: after parameterization, equal characters occur with coefficients that cancel exactly.  They therefore inhabit the algebraic parts that Ax-type functional-transcendence theorems must preserve.  The obstacle is not a weakness of the theorem but an exact structural degeneracy.
+\end{roadblockbox}
+
+\section{The carry-path theorem}
+
+\subsection{A rewriting system on a rank-two multiplicative grid}
+
+Let $U,V\ge2$ be multiplicatively independent integers.  Write
+\[
+       e_{a,b}=U^aV^b\qquad(a,b\in\N_0).
+\]
+There are two value-preserving additive rewrites:
+\begin{equation}\label{eq:abstractrewrites}
+  e_{a,b}\longrightarrow
+     \underbrace{e_{a-1,b}+\cdots+e_{a-1,b}}_{U\ \mathrm{copies}}
+     \quad(a\ge1),
+\end{equation}
+\begin{equation}\label{eq:abstractrewrites2}
+  e_{a,b}\longrightarrow
+     \underbrace{e_{a,b-1}+\cdots+e_{a,b-1}}_{V\ \mathrm{copies}}
+     \quad(b\ge1).
+\end{equation}
+A naive full expansion always ends at $U^rV^s$ copies of $1$ and forgets the order of rewrites.  The useful construction expands only one distinguished descendant at each step and freezes the others.  The frozen frontier records a lattice path.
+
+\subsection{Path representations}
+
+A monotone path $P$ from $(r,s)$ to $(0,0)$ is a word of length $r+s$ with $r$ letters $\mathsf{U}$ and $s$ letters $\mathsf{V}$, where $\mathsf{U}$ decrements the first coordinate and $\mathsf{V}$ decrements the second.  If the successive vertices are
+\[
+       z_0=(r,s),z_1,\ldots,z_{r+s}=(0,0),
+\]
+A step $z_j=(a,b)\to z_{j+1}=(a-1,b)$ freezes $U-1$ copies of $e_{a-1,b}$; a step to $(a,b-1)$ freezes $V-1$ copies of $e_{a,b-1}$.  At the end, retain the single distinguished copy of $e_{0,0}=1$.
+
+Denote the resulting multiset by $\mathcal R(P)$.
+
+\begin{theorem}[Carry-path representation theorem]\label{thm:carrypath}
+Let $U,V\ge2$ be multiplicatively independent integers, and let $r,s\in\N_0$.  Then $U^rV^s$ has at least
+\[
+       \binom{r+s}{r}
+\]
+distinct multiset representations as a sum of exactly
+\begin{equation}\label{eq:patharity}
+       K_{r,s}=1+r(U-1)+s(V-1)
+\end{equation}
+elements of
+\[
+       \{U^aV^b:0\le a\le r,\ 0\le b\le s\}.
+\]
+The representations are indexed injectively by monotone lattice paths from $(r,s)$ to $(0,0)$.
+\end{theorem}
+
+\begin{proof}
+For a path with vertices $z_j=(a_j,b_j)$, put
+$w_j=U^{a_j}V^{b_j}$.  If the $j$th step decrements the first coordinate, then
+\[
+       w_j-w_{j+1}=(U-1)w_{j+1};
+\]
+if it decrements the second, then
+\[
+       w_j-w_{j+1}=(V-1)w_{j+1}.
+\]
+Therefore the sum of all frozen terms plus the final distinguished $1=w_{r+s}$ telescopes to
+\[
+    w_{r+s}+\sum_{j=0}^{r+s-1}(w_j-w_{j+1})=w_0=U^rV^s.
+\]
+Every first-coordinate step adds $U-1$ frozen terms, every second-coordinate step adds $V-1$, and the final distinguished term contributes one.  This proves \eqref{eq:patharity}.
+
+It remains to prove injectivity.  For each total degree
+$d=a+b$ with $1\le d\le r+s-1$, the representation contains frozen terms at exactly one exponent pair of degree $d$, namely the unique path vertex reached at that level.  Multiplicative independence makes the map $(a,b)\mapsto U^aV^b$ injective.  Hence the multiset determines the unique visited vertex at every degree.  Ordering these vertices by decreasing total degree reconstructs the path.  Thus different paths give different multisets.  There are $\binom{r+s}{r}$ paths.
+\end{proof}
+
+\begin{example}[The smallest nontrivial rectangle]\label{ex:pathsmall}
+Take $U=2$, $V=3$, $r=s=1$.  The two paths give
+\[
+     6=3+1+1+1
+     \qquad\text{and}\qquad
+     6=2+2+1+1.
+\]
+Both have $1+(2-1)+(3-1)=4$ terms.  For $(r,s)=(2,1)$ the three paths give
+\[
+\begin{aligned}
+ 12&=6+3+1+1+1,\\
+ 12&=6+2+1+1+2,\\
+ 12&=4+4+2+1+1,
+\end{aligned}
+\]
+a set of three five-term representations after harmless reordering.
+\end{example}
+
+\subsection{Application to a hypothetical counterexample}
+
+\begin{lemma}[Independence of the output bases]\label{lem:MNind}
+If $x\ne0$ and $M=2^x$, $N=3^x$, then $M$ and $N$ are multiplicatively independent.
+\end{lemma}
+
+\begin{proof}
+A relation $M^a=N^b$ gives
+$2^{ax}=3^{bx}$.  Since $x\ne0$, unique factorization gives $a=b=0$.
+\end{proof}
+
+\begin{corollary}[Power-sum carry paths]\label{cor:powercarrypaths}
+Assume $x\notin\Z$ and $M=2^x,N=3^x\in\N$.  For every $r,s\in\N_0$, the integer
+\[
+       M^rN^s=(2^r3^s)^x
+\]
+has at least $\binom{r+s}{r}$ distinct representations as a sum of exactly
+\[
+       K_{r,s}=1+r(M-1)+s(N-1)
+\]
+terms, each of which is of the form
+\[
+       M^aN^b=(2^a3^b)^x,
+       \qquad 0\le a\le r,\ 0\le b\le s.
+\]
+Any two distinct path representations give a nontrivial equal-length additive relation among $x$th powers of positive integers.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:carrypath} with $U=M$ and $V=N$, using \cref{lem:MNind}.  The displayed identification of each term follows from multiplicativity of the power function on positive reals.  Distinct multisets cannot be permutations of one another.
+\end{proof}
+
+Define the rectangular input set
+\[
+       \cA_{r,s}=\{2^a3^b:0\le a\le r,\ 0\le b\le s\}.
+\]
+It has $(r+1)(s+1)$ elements and lies in the interval
+$[1,2^r3^s]$.  Let $R_K(y;B)$ denote the number of ordered $K$-tuples from $B$ summing to $y$.
+
+\begin{corollary}[A large additive-energy fiber]\label{cor:energyfiber}
+Under a counterexample,
+\[
+ R_{K_{r,s}}\!\left(M^rN^s;\cA_{r,s}^{[x]}\right)
+       \ge\binom{r+s}{r}.
+\]
+Consequently, the number of non-permutation solutions to the equal-sum equation of arity $K_{r,s}$ is at least
+\[
+       \binom{r+s}{r}
+       \left(\binom{r+s}{r}-1\right).
+\]
+\end{corollary}
+
+\begin{proof}
+Choose one canonical ordering for each path multiset.  Pairing two different canonical tuples gives a non-permutation solution.
+\end{proof}
+
+\subsection{Entropy at logarithmic arity}
+
+Take $r=s=L$.  Then
+\begin{equation}\label{eq:centralpathdata}
+  R_L=\binom{2L}{L},\qquad
+  K_L=1+L(M+N-2),\qquad
+  N_{\mathrm{amb}}=6^L.
+\end{equation}
+Stirling's formula gives
+\begin{equation}\label{eq:pathentropy}
+  \log R_L=2L\log2-\tfrac12\log(\pi L)+o(1).
+\end{equation}
+
+\begin{theorem}[Critical-scale carry entropy]\label{thm:carryentropy}
+Under a counterexample, there are targets $y_L=(MN)^L$ with at least
+\[
+       N_{\mathrm{amb}}^{\log4/\log6+o(1)}
+\]
+distinct, pairwise non-permutation representations as sums of
+\[
+       K_L=\frac{M+N-2}{\log6}\log N_{\mathrm{amb}}+1
+\]
+values $a^x$ with $1\le a\le N_{\mathrm{amb}}$.  Equivalently,
+\[
+     \log R_L
+     =\frac{2\log2}{M+N-2}\,K_L+O(\log K_L).
+\]
+\end{theorem}
+
+\begin{proof}
+The input set $\cA_{L,L}$ lies in $[1,6^L]$.  Substitute
+$L=\log N_{\mathrm{amb}}/\log6$ into \eqref{eq:pathentropy} and use \eqref{eq:centralpathdata}.
+\end{proof}
+
+The exponent
+\[
+       \frac{\log4}{\log6}\approx0.7737056
+\]
+is independent of the hypothetical output sizes $M,N$.  Those sizes enter only through the proportionality constant between arity and $\log N_{\mathrm{amb}}$.
+
+\begin{roadblockbox}[Fixed arity versus logarithmic arity]
+Harrison's fixed-target estimates are polylogarithmic for every fixed number of summands.  The carry-path theorem produces polynomially many representations of one target only when the number of summands grows linearly with $\log N_{\mathrm{amb}}$.  Thus there is no contradiction: the constants and logarithmic exponents in the fixed-arity theorem are allowed to depend on an arity that now tends to infinity.
+\end{roadblockbox}
+
+
+\subsection{Composite carries and carry languages}
+
+The two primitive moves are not the only integer carries.  If $M=2^x$ and $N=3^x$ are integers, then every $3$-smooth multiplier
+\[
+       d=2^a3^b
+\]
+has the integer output $d^x=M^aN^b$.  It is therefore natural to allow a finite alphabet of jumps in the exponent lattice.
+
+\begin{theorem}[Multistep carry-language theorem]\label{thm:carrylanguage}
+Let $U,V\ge2$ be multiplicatively independent integers.  Let
+\[
+  \mathcal S=\{v_i=(\alpha_i,\beta_i):1\le i\le m\}
+       \subset\N_0^2\setminus\{(0,0)\}
+\]
+be a finite set of distinct moves, and put
+\[
+       D_i=U^{\alpha_i}V^{\beta_i}.
+\]
+For nonnegative integers $n_1,\ldots,n_m$, define
+\[
+  (r,s)=\sum_{i=1}^m n_i(\alpha_i,\beta_i),
+  \qquad
+  K=1+\sum_{i=1}^m n_i(D_i-1).
+\]
+Then $U^rV^s$ has at least
+\begin{equation}\label{eq:multinomial-carries}
+       \binom{n_1+\cdots+n_m}{n_1,\ldots,n_m}
+       =\frac{(n_1+\cdots+n_m)!}{n_1!\cdots n_m!}
+\end{equation}
+distinct multiset representations as a sum of exactly $K$ elements of
+\[
+       \{U^aV^b:0\le a\le r,\ 0\le b\le s\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Take a word $w=w_1\cdots w_\ell$ containing exactly $n_i$ copies of the symbol $i$, where $\ell=\sum_i n_i$.  Start at
+$z_0=(r,s)$ and recursively set
+\[
+       z_j=z_{j-1}-v_{w_j}.
+\]
+All coordinates remain nonnegative because $z_j$ is the sum of the moves still unused, and $z_\ell=(0,0)$.  If
+$e_{a,b}=U^aV^b$, then
+\[
+       e_{z_{j-1}}=D_{w_j}e_{z_j}.
+\]
+Continue one distinguished copy of $e_{z_j}$ and freeze the other
+$D_{w_j}-1$ copies.  At the end retain the distinguished $e_{0,0}=1$.
+Telescoping gives
+\[
+  1+\sum_{j=1}^{\ell}(D_{w_j}-1)e_{z_j}
+  =e_{z_0}=U^rV^s,
+\]
+and the number of terms is $K$.
+
+It remains to distinguish words.  Every nonzero destination $z_j$ occurs in the frozen multiset with positive multiplicity.  Multiplicative independence of $U,V$ makes $(a,b)\mapsto U^aV^b$ injective, so the multiset reveals all nonzero visited vertices.  Their coordinate sums strictly decrease along the path, hence ordering them by $a+b$ recovers the vertex sequence; adjoining the known endpoints $z_0$ and $(0,0)$ recovers every difference $v_{w_j}$.  Thus the word is recovered.  The number of words with the prescribed symbol counts is the multinomial coefficient in \eqref{eq:multinomial-carries}.
+\end{proof}
+
+\begin{corollary}[Composite power-sum carries]\label{cor:compositepowercarries}
+Assume $x\notin\Z$ and $M=2^x,N=3^x\in\N$.  For moves
+$v_i=(\alpha_i,\beta_i)$ put
+\[
+       d_i=2^{\alpha_i}3^{\beta_i},
+       \qquad D_i=d_i^x=M^{\alpha_i}N^{\beta_i}.
+\]
+With $(r,s)$ and $K$ as in \cref{thm:carrylanguage}, the target
+\[
+       (2^r3^s)^x=M^rN^s
+\]
+has at least the multinomial number \eqref{eq:multinomial-carries} of distinct representations as a sum of $K$ values $a^x$ with
+$1\le a\le 2^r3^s$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:carrylanguage} to $U=M,V=N$ and use
+$M^aN^b=(2^a3^b)^x$.  Every visited exponent pair is coordinatewise bounded by $(r,s)$, so every input is at most $2^r3^s$.
+\end{proof}
+
+\subsection{Entropy optimization and the full \texorpdfstring{$3$}{3}-smooth alphabet}
+
+Continue under a hypothetical counterexample, so that every $3$-smooth input multiplier has an integral output carry.  The multinomial theorem then permits an exact variational calculation.  Fix a finite carry alphabet $\mathcal S$ with at least two symbols.  Write
+\[
+       d_i=2^{\alpha_i}3^{\beta_i},
+       \qquad D_i=d_i^x,
+\]
+and let $\boldsymbol\pi=(\pi_1,\ldots,\pi_m)$ be a probability vector with positive coordinates.  Choose integer symbol counts
+$n_i(L)=\pi_iL+O(1)$ whose sum is $L$.  Put
+\[
+  B_L=\prod_i d_i^{n_i(L)},
+  \qquad
+  R_L=\binom{L}{n_1(L),\ldots,n_m(L)},
+  \qquad
+  K_L=1+\sum_i n_i(L)(D_i-1).
+\]
+Stirling's formula gives
+\begin{align}
+ \log R_L&=L\mathsf H(\boldsymbol\pi)+O(\log L),\label{eq:multientropy}\\
+ \log B_L&=L\sum_i\pi_i\log d_i+O(1),\label{eq:multicost}\\
+ K_L&=L\sum_i\pi_i(D_i-1)+O(1),\label{eq:multiarity}
+\end{align}
+where
+\[
+       \mathsf H(\boldsymbol\pi)=-\sum_i\pi_i\log\pi_i.
+\]
+
+\begin{proposition}[Two exact entropy optimizations]\label{prop:entropyoptimization}
+For a fixed finite alphabet $\mathcal S$, let $\delta_{\mathcal S}>0$ and
+$\tau_{\mathcal S}>0$ be the unique solutions of
+\begin{equation}\label{eq:deltaS}
+       \sum_{i=1}^m d_i^{-\delta_{\mathcal S}}=1,
+\end{equation}
+and
+\begin{equation}\label{eq:tauS}
+       \sum_{i=1}^m
+          \exp\!\bigl(-\tau_{\mathcal S}(D_i-1)\bigr)=1.
+\end{equation}
+Then
+\begin{align}
+ \sup_{\boldsymbol\pi}
+ \frac{\mathsf H(\boldsymbol\pi)}{\sum_i\pi_i\log d_i}
+ &=\delta_{\mathcal S},\label{eq:ambientopt}\\
+ \sup_{\boldsymbol\pi}
+ \frac{\mathsf H(\boldsymbol\pi)}{\sum_i\pi_i(D_i-1)}
+ &=\tau_{\mathcal S}.\label{eq:arityopt}
+\end{align}
+The first supremum is attained at
+$\pi_i=d_i^{-\delta_{\mathcal S}}$; the second is attained at
+$\pi_i=\exp(-\tau_{\mathcal S}(D_i-1))$.
+\end{proposition}
+
+\begin{proof}
+For the first assertion, put $q_i=d_i^{-\delta_{\mathcal S}}$; by
+\eqref{eq:deltaS}, $\boldsymbol q$ is a probability vector.  For every
+$\boldsymbol\pi$,
+\[
+ \mathsf H(\boldsymbol\pi)
+ -\delta_{\mathcal S}\sum_i\pi_i\log d_i
+ =-\sum_i\pi_i\log\frac{\pi_i}{q_i}\le0,
+\]
+with equality exactly at $\boldsymbol\pi=\boldsymbol q$.  This is the nonnegativity of relative entropy.  The proof of \eqref{eq:arityopt} is identical with
+$q_i=\exp(-\tau_{\mathcal S}(D_i-1))$.  Existence and uniqueness of the two positive roots follow from strict monotonicity of the corresponding sums from $m$ to $0$.
+\end{proof}
+
+\begin{corollary}[The alphabet \texorpdfstring{$\{2,3,6\}$}{\{2,3,6\}} reaches exponent one]\label{cor:236}
+Under a counterexample, for every positive integer $T$ the target
+\[
+       B_T^x,
+       \qquad B_T=2^{4T}3^{3T},
+\]
+has at least
+\[
+       \frac{(6T)!}{(3T)!(2T)!T!}=B_T^{1+o(1)}
+\]
+distinct representations as a sum of exactly
+\[
+       1+T\bigl(MN+3M+2N-6\bigr)
+       =O_x(\log B_T)
+\]
+values $a^x$ with $1\le a\le B_T$.
+\end{corollary}
+
+\begin{proof}
+Use the moves for $d_1=2,d_2=3,d_3=6$ with symbol counts
+$3T,2T,T$.  Their sum is $6T$, their endpoint is
+$(4T,3T)$, and \cref{thm:carrylanguage} gives the displayed multinomial coefficient and arity.  Since
+\[
+       \frac12+\frac13+\frac16=1,
+\]
+\cref{prop:entropyoptimization} gives $\delta_{\{2,3,6\}}=1$ and the optimizing proportions $(1/2,1/3,1/6)$.  Equations
+\eqref{eq:multientropy}--\eqref{eq:multicost} yield the asymptotic.
+\end{proof}
+
+The finite alphabet can do better than exponent one.
+
+\begin{theorem}[Supremal finite-alphabet carry exponent]\label{thm:smoothcarryexponent}
+Let $\delta_*$ be the unique positive solution of
+\begin{equation}\label{eq:deltastar}
+  (1-2^{-\delta_*})(1-3^{-\delta_*})=\frac12.
+\end{equation}
+Numerically,
+\[
+       \delta_*=1.43527908366942\ldots.
+\]
+If a counterexample exists, then for every $\varepsilon>0$ there is a finite alphabet of $3$-smooth carries and infinitely many ambient scales $B$ for which one target has at least
+\[
+       B^{\delta_*-\varepsilon+o(1)}
+\]
+distinct equal-length representations by values $a^x$, $1\le a\le B$, with arity $O_{x,\varepsilon}(\log B)$.
+\end{theorem}
+
+\begin{proof}
+For the infinite alphabet of all $3$-smooth integers $d=2^a3^b>1$,
+\begin{align*}
+ \sum_{d}d^{-\delta}
+ &=\sum_{a,b\ge0}2^{-a\delta}3^{-b\delta}-1\\
+ &=\frac{1}{(1-2^{-\delta})(1-3^{-\delta})}-1.
+\end{align*}
+Thus the equation that this sum equal one is exactly \eqref{eq:deltastar}.  Exhaust the infinite alphabet by finite subsets $\mathcal S_R$.  The roots $\delta_{\mathcal S_R}$ from \eqref{eq:deltaS} increase to $\delta_*$.  Given $\varepsilon>0$, choose a fixed finite $R$ with
+$\delta_{\mathcal S_R}>\delta_*-\varepsilon$.  Use the optimizing proportions in \cref{prop:entropyoptimization}, approximate them by integer counts, and apply \cref{cor:compositepowercarries}.  Equations
+\eqref{eq:multientropy}--\eqref{eq:multicost} give the representation exponent.  Because the alphabet is fixed, \eqref{eq:multiarity} gives arity proportional to $\log B$.
+\end{proof}
+
+\begin{roadblockbox}[What the optimized exponent does and does not prove]
+The exponent $\delta_*>1$ is not paradoxical: the number of available $3$-smooth inputs below $B$ is only $\Theta((\log B)^2)$, but multisets of $O(\log B)$ such inputs number $B^{\Theta(\log\log B)}$.  The carry-language theorem extracts a polynomial-sized fiber from that much larger space.  It still does not contradict a theorem whose constants may depend arbitrarily on the growing arity.
+\end{roadblockbox}
+
+The ambient exponent $\delta_*$ measures representations per logarithmic input scale.  There is also an exact critical exponent for representations per summand.
+
+\begin{theorem}[Supremal carry-language rate per summand]\label{thm:aritypressure}
+Under a hypothetical counterexample, let $\tau_x>0$ be the unique solution of
+\begin{equation}\label{eq:tau-infinite}
+ \sum_{(a,b)\in\N_0^2\setminus\{(0,0)\}}
+   \exp\!\left(-\tau_x\bigl(M^aN^b-1\bigr)\right)=1.
+\end{equation}
+Then the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every $\varepsilon>0$, some fixed finite alphabet of $3$-smooth carries produces infinitely many targets whose number $R_K$ of distinct equal-length representations using $K$ summands satisfies
+\[
+       \log R_K\ge (\tau_x-\varepsilon)K-O_{x,\varepsilon}(\log K).
+\]
+\item Conversely, for every fixed finite alphabet $\mathcal S$ and every sequence of prescribed symbol counts in the construction of \cref{thm:carrylanguage} along which $K\to\infty$,
+\[
+       \log R_K\le \tau_x(K-1)+O_{x,\mathcal S}(\log K).
+\]
+Thus $\tau_x$ is the exact supremal exponential rate, per summand, for the fixed-composition carry-language construction.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For a finite alphabet $\mathcal S$, \cref{prop:entropyoptimization} shows that the optimal ratio $\log R_K/K$ is the root $\tau_{\mathcal S}$ of
+\[
+       \sum_{i\in\mathcal S}
+          \exp\!\left(-\tau_{\mathcal S}(D_i-1)\right)=1.
+\]
+After the negligible additive $1$ in $K$ is discarded, this is the exact entropy-per-cost optimum.  Exhaust the nonzero exponent pairs by increasing finite sets.  The corresponding roots increase.  For every $\tau>0$ the infinite sum in \eqref{eq:tau-infinite} converges, since $M^aN^b$ grows exponentially in $a+b$ while the summands decay exponentially in $M^aN^b$.  The sum decreases continuously from $+\infty$ to $0$, so it has the unique root $\tau_x$, and monotone convergence gives $\tau_{\mathcal S}\uparrow\tau_x$.
+
+Choose a finite alphabet with $\tau_{\mathcal S}>\tau_x-\varepsilon/2$ and use its optimizing proportions.  Uniform Stirling estimates then give
+\[
+       \log R_K=\tau_{\mathcal S}(K-1)+O_{x,\mathcal S}(\log K),
+\]
+which proves (i), after absorbing the fixed gap $\varepsilon/2$ for large $K$.  For arbitrary prescribed counts in any other fixed alphabet, the same uniform Stirling bound and the relative-entropy inequality in \cref{prop:entropyoptimization} give
+\[
+       \log R_K\le\tau_{\mathcal S}(K-1)+O_{x,\mathcal S}(\log K)
+       \le\tau_x(K-1)+O_{x,\mathcal S}(\log K),
+\]
+proving (ii).
+\end{proof}
+
+\begin{remark}[A coding-theoretic interpretation]
+Equations \eqref{eq:deltastar} and \eqref{eq:tau-infinite} are Kraft-type pressure equations.  A carry letter has input cost $\log d$ and arity cost $d^x-1$.  Shannon entropy divided by average cost is maximized by the Gibbs weights that make the corresponding Kraft sum equal one.  This is why the two roots are exact rather than merely convenient lower-bound constants.
+\end{remark}
+
+The pressure root is not merely a variational envelope.  Allowing all $3$-smooth carry letters at once produces actual fibers attaining its exponential rate.
+
+\begin{theorem}[Exact unrestricted carry pressure]\label{thm:globalcarrypressure}
+Assume a hypothetical counterexample, and let $\tau_x$ be given by \eqref{eq:tau-infinite}.  Put
+\[
+       g=\gcd(M-1,N-1).
+\]
+For every sufficiently large positive multiple $n$ of $g$, there are nonnegative integers $r_n,s_n$ with $r_n+s_n\le n$ such that the target
+\[
+       M^{r_n}N^{s_n}=(2^{r_n}3^{s_n})^x
+\]
+has
+\begin{equation}\label{eq:global-pressure-fiber}
+       \gg_x \frac{\exp(\tau_x n)}{n^2}
+\end{equation}
+distinct multiset representations as a sum of exactly $n+1$ values $a^x$ with
+\[
+       1\le a\le 3^n.
+\]
+Equivalently, along the arithmetic progression $K\equiv1\pmod g$, one obtains a fixed-target fiber satisfying
+\[
+       \log R_K\ge \tau_x(K-1)-O_x(\log K)
+\]
+at arity $K$, with all inputs bounded by $3^{K-1}$.
+\end{theorem}
+
+\begin{proof}
+Use the infinite carry alphabet
+$\N_0^2\setminus\{(0,0)\}$.  Give the letter $(a,b)$ the positive integer cost
+\[
+       c_{a,b}=M^aN^b-1.
+\]
+Let $w_n$ be the number of finite words whose total cost is $n$, including the empty word when $n=0$.  The ordinary generating function for words is
+\begin{equation}\label{eq:carry-word-gf}
+ \sum_{n\ge0}w_nz^n
+ =\frac{1}{1-\Phi_x(z)},
+ \qquad
+ \Phi_x(z)=
+ \sum_{(a,b)\ne(0,0)}z^{M^aN^b-1}.
+\end{equation}
+The series $\Phi_x$ is analytic for $|z|<1$.  Its unique positive solution of $\Phi_x(\rho)=1$ is
+$\rho=\exp(-\tau_x)$.
+
+Every cost is divisible by $g$, because $M\equiv N\equiv1\pmod g$; conversely the alphabet contains the costs $M-1$ and $N-1$, so the gcd of all costs is exactly $g$.  Write
+$\Phi_x(z)=\Psi_x(z^g)$ and $R=\rho^g$.  The exponents occurring in $\Psi_x$ have gcd one.  On $|y|=R$, the triangle inequality gives
+$|\Psi_x(y)|\le\Psi_x(R)=1$, and equality together with $\Psi_x(y)=1$ forces every monomial to have the same positive phase.  The gcd-one property then forces $y=R$.  Hence
+$1/(1-\Psi_x(y))$ has a unique dominant singularity, a simple pole at $R$.  Taking its residue gives
+\begin{equation}\label{eq:carry-word-asymptotic}
+       w_n=0\quad(g\nmid n),
+       \qquad
+       w_n\sim
+       \frac{g}{\rho\Phi_x'(\rho)}\exp(\tau_x n)
+       \quad(g\mid n,
+       \ n\to\infty).
+\end{equation}
+For completeness, the coefficient estimate follows by subtracting the principal part at $R$; the remainder is analytic in a strictly larger disk because no other zero of $1-\Psi_x$ lies on $|y|=R$.
+
+Now fix a word of cost $n$, let $(r,s)$ be the sum of its exponent-pair letters, and apply the distinguished-descendant construction from \cref{thm:carrylanguage}.  It gives a representation of $M^rN^s$ with $n+1$ summands.  For a fixed endpoint $(r,s)$, the word is recovered from the representation exactly as in the proof of \cref{thm:carrylanguage}: all nonzero visited suffix vertices occur in the frozen multiset, their total degrees strictly decrease, and the known endpoints recover the successive letter differences.  Thus words with the same endpoint give distinct multisets, even when their symbol counts differ.
+
+Each letter satisfies
+\[
+       a+b\le 2^{a+b}-1\le M^aN^b-1=c_{a,b}.
+\]
+Consequently every endpoint of a cost-$n$ word obeys $r+s\le n$.  There are at most
+$(n+1)(n+2)/2$ such endpoints.  By \eqref{eq:carry-word-asymptotic}, one endpoint therefore receives
+$\gg_x\exp(\tau_x n)/n^2$ words.  Finally, every suffix vertex is coordinatewise bounded by $(r,s)$, so every input appearing in its representation is at most
+\[
+       2^r3^s\le3^{r+s}\le3^n.
+\]
+This proves the theorem.
+
+Conversely, every fiber produced by this unrestricted carry language is a subset of the $w_n$ cost-$n$ words.  Hence \eqref{eq:carry-word-asymptotic} also gives the upper bound $O_x(\exp(\tau_x n))$ for each such fiber.  Thus $\tau_x$ is the exact exponential growth rate of the largest unrestricted carry-language fiber; the factor $n^{-2}$ in \eqref{eq:global-pressure-fiber} is only the polynomial loss from pigeonholing among endpoints.
+\end{proof}
+
+\begin{roadblockbox}[What the exact pressure theorem still leaves open]
+The theorem creates an exponentially large fiber at arity proportional to the logarithm of the ambient cutoff, with the optimal carry-language exponent $\tau_x$.  It does not contradict Harrison's fixed-target lemma because that lemma fixes the arity before the ambient progression grows; its polylogarithmic exponent and implied constant may still grow without control as $K\to\infty$.
+\end{roadblockbox}
+
+\subsection{A precise uniformity target}
+
+For an irrational $c$, let $\mathcal M_t(N;c)$ be the maximum, over real $y$, of the number of pairwise non-permutation multiset representations
+\[
+       y=a_1^c+\cdots+a_t^c,
+       \qquad 1\le a_i\le N,
+\]
+when every $a_i$ is restricted to the fixed rank-two grid
+$\{2^a3^b:a,b\in\N_0\}$.  Harrison's work controls a substantially more general problem when $t$ is fixed.  The exact carry-pressure theorem gives the following sufficient criterion tailored to Alaoglu--Erd\H{o}s.
+
+\begin{proposition}[Uniform fixed-target criterion]\label{prop:uniformcriterion}
+Suppose that for every irrational $c$ one had a uniform bound
+\[
+       \mathcal M_t(N;c)
+       \le \exp(o_c(t))\,(\log N)^{C_c(t)}
+\]
+through the range $t\le C_0(c)\log N$ for some constant $C_0(c)>0$, where
+\[
+       C_c(t)=o_c\!\left(\frac{t}{\log t}\right)
+       \qquad(t\to\infty),
+\]
+and both little-$o_c$ terms were uniform in the indicated range.  Then the Alaoglu--Erd\H{o}s conjecture would follow.
+\end{proposition}
+
+\begin{proof}
+Suppose instead that an irrational $c$ satisfies $M=2^c\in\N$ and $N=3^c\in\N$.  By \cref{thm:globalcarrypressure}, along an arithmetic progression of arities $t$ there is a fixed-target lower bound
+\[
+       \exp\bigl(\tau_c(t-1)-O_c(\log t)\bigr),
+\]
+where $\tau_c>0$ is the root in \eqref{eq:tau-infinite}, and every input lies in the $2$--$3$ grid below $3^{t-1}$.  Enlarge the ambient cutoff, if necessary, to
+\[
+       N_t^{\prime}=\max\!\left(3^{t-1},\exp(t/C_0(c))\right).
+\]
+Then $t\le C_0(c)\log N_t^{\prime}$ and
+$\log N_t^{\prime}=\Theta_c(t)$.  The logarithm of the proposed upper bound is
+\[
+       o_c(t)+C_c(t)\log\log N_t^{\prime}
+       =o_c(t)+o_c(t/\log t)\,O_c(\log t)=o_c(t),
+\]
+contradicting the positive linear lower exponent $\tau_c t$.
+\end{proof}
+
+The condition in \cref{prop:uniformcriterion} is not known.  Its value is diagnostic: it quantifies exactly how much arity-uniformity a fixed-target theorem would need.  A mere uniform version of the total-energy bound
+$|A|^{t-1}$ would be far too weak, because for the rectangular grid
+$|A|=(L+1)^2$ and $|A|^{t-1}=\exp(\Theta(L\log L))$, which dwarfs the carry lower bound $\exp(\Theta(L))$.
+
+\section{The residual compact orbit and the linear-log height barrier}
+
+\subsection{Reduction modulo the known integral orbit}
+
+The graph $\cG_{\vartheta}$ already contains the known integral point
+$g=(2,3)$.  If a second integral point $h=(M,N)=g^x$ existed, powers of $h$ could be reduced modulo integral powers of $g$ into one compact fundamental arc.
+
+For $k\ge1$, write
+\[
+      n_k=\lfloor kx\rfloor,
+      \qquad t_k=\{kx\}=kx-n_k,
+\]
+and define
+\begin{equation}\label{eq:residualorbit}
+      Q_k=h^k g^{-n_k}
+      =\left(\frac{M^k}{2^{n_k}},
+              \frac{N^k}{3^{n_k}}\right)
+      =(2^{t_k},3^{t_k}).
+\end{equation}
+Thus all $Q_k$ lie on the compact arc
+\[
+      \cC=\{(2^t,3^t):0\le t<1\}.
+\]
+They are rational because $M,N,2,3$ are integers.
+
+\begin{proposition}[Distinctness and equidistribution]\label{prop:residualequid}
+If $x$ is irrational, then the points $Q_k$ are pairwise distinct and are equidistributed on $\cC$ with respect to the pushforward of Lebesgue measure under $t\mapsto(2^t,3^t)$.
+\end{proposition}
+
+\begin{proof}
+If $Q_k=Q_\ell$, then $2^{t_k}=2^{t_\ell}$, hence
+$t_k=t_\ell$ and $(k-\ell)x\in\Z$.  This contradicts irrationality for $k\ne\ell$.  Equidistribution follows from the classical equidistribution of the irrational rotation sequence $\{kx\}$ modulo one.
+\end{proof}
+
+\subsection{Height growth}
+
+For a positive rational number $q=a/b$ in lowest terms, set
+$H(q)=\max(a,b)$, and for a rational pair set
+$H(q_1,q_2)=\max(H(q_1),H(q_2))$.
+
+\begin{theorem}[Exponential height along the residual orbit]\label{thm:heightgrowth}
+Under a nonintegral counterexample there are constants $c_1,c_2>0$ such that
+\[
+       \exp(c_1k)\le H(Q_k)\le\exp(c_2k)
+       \qquad(k\ge1).
+\]
+Consequently,
+\begin{equation}\label{eq:linearlogcount}
+   \#\{k\ge1:H(Q_k)\le H\}=\Theta(\log H).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $a=v_2(M)$ and write $M=2^aM_0$ with $M_0$ odd.  Since $M=2^x$, one has $a\le x$.  If $M_0=1$, then $M=2^a$ and $x=a\in\Z$, contrary to the counterexample assumption.  Hence $M_0\ge3$.  The first coordinate of $Q_k$ is the reduced fraction
+\[
+      \frac{M_0^k}{2^{\lfloor kx\rfloor-ak}},
+\]
+because its numerator is odd and the denominator exponent is nonnegative.  Therefore
+\[
+      H(Q_k)\ge M_0^k.
+\]
+This gives the lower bound with $c_1=\log M_0$.
+
+For the upper bound, each unreduced numerator and denominator in
+\eqref{eq:residualorbit} is at most
+\[
+       \max(M,N,2^{x+1},3^{x+1})^k
+\]
+after enlarging the base constant to handle the floor.  Reduction cannot increase height, proving the exponential upper bound.  The counting estimate follows: the upper height bound includes every $k\le (\log H)/c_2$, while the lower bound excludes every $k>(\log H)/c_1$.
+\end{proof}
+
+The prime support of the coordinates of $Q_k$ is contained in the fixed finite set
+\[
+       S=\{2,3\}\cup\Supp(M)\cup\Supp(N).
+\]
+Thus a counterexample creates a dense sequence of $S$-integral rational points on a compact transcendental arc, at the exact rate $\Theta(\log H)$.
+
+\subsection{Comparison with current point-counting theorems}
+
+The classical Pila--Wilkie theorem~\cite{PilaWilkie2006} gives subpolynomial bounds on rational points in transcendental parts of definable sets.  Its sharp polylogarithmic refinement for the present setting, due to Binyamini--Novikov--Zak~\cite{BinyaminiNovikovZak2024}, supplies an upper bound
+$O((\log H)^\kappa)$ for rational points of height at most $H$ on the transcendental part of a fixed Pfaffian-definable set, with an exponent depending on complexity.  The arc $\cC$ is definable in $\R_{\exp}$ and has no positive-dimensional semialgebraic part.  Nevertheless,
+\[
+       \Theta(\log H)\le O((\log H)^\kappa)
+\]
+is compatible whenever $\kappa\ge1$.  The generic polylogarithmic theorem therefore lands on the wrong side of the critical exponent.
+
+The correct object is not merely the set of all rational points on $\cC$.  It is the residual orbit of a second rational point after quotienting by the known point $(2,3)$.  This motivates an orbit-sensitive strengthening.
+
+\begin{conjecture}[Residual $S$-integral sparsity]\label{conj:residualsublinear}
+For $y\in\R\setminus\Q$, define
+\[
+   Q_k(y)=\bigl(2^{\{ky\}},3^{\{ky\}}\bigr)\in\cC.
+\]
+For every fixed finite set of primes $S$,
+\begin{equation}\label{eq:residual-sparsity}
+ \#\left\{k\ge1:
+   \begin{array}{l}
+     Q_k(y)\text{ has rational coordinates whose numerators and}\\[-1mm]
+     \text{denominators have prime support in }S,\\[-1mm]
+     H(Q_k(y))\le H
+   \end{array}
+   \right\}
+   =o(\log H).
+\end{equation}
+\end{conjecture}
+
+This target is intentionally orbit-sensitive.  Generic point counting sees all rational points of the arc; \eqref{eq:residual-sparsity} asks for rational $S$-unit points occurring along one prescribed irrational rotation.  It is a counting-theoretic form of the stronger rank-one target \cref{conj:rankone}: a second rational point $h=(2^y,3^y)$ would make every residual point rational with fixed prime support and would produce the forbidden linear-log count.
+
+\begin{corollary}[Point-counting criterion]\label{cor:pointcriterion}
+The residual $S$-integral sparsity conjecture implies the Alaoglu--Erd\H{o}s conjecture.
+\end{corollary}
+
+\begin{proof}
+Under a counterexample, take $y=x$ and
+$S=\{2,3\}\cup\Supp(M)\cup\Supp(N)$.  Every $Q_k(x)$ is an $S$-integral rational point, while \cref{thm:heightgrowth} gives $\Theta(\log H)$ such indices up to height $H$, contradicting \eqref{eq:residual-sparsity}.
+\end{proof}
+
+\section{Five attempted closures and their exact failure points}
+
+This section records the actual proof search rather than only the successful lemmas.  Each route reaches a clean stopping statement.
+
+\subsection{Attempt I: algebraize a map from a Zariski-dense arithmetic orbit}
+
+The first hope is that a continuous homomorphism of positive real tori which maps a Zariski-dense rational orbit into rational points must be algebraic.  In the present setting that would immediately prove the conjecture by \cref{thm:oneorbit}.
+
+The difficulty is that Zariski density is too coarse.  The orbit
+$\{(2^n,3^n):n\in\Z\}$ is countable and escapes to infinity in the Euclidean topology.  A continuous map can be completely unconstrained between its points.  Moreover, one-base examples show that arithmeticity on a Zariski-dense subset of $\Gm$ is not sufficient: for any $A\in\N$ the nonalgebraic map $t\mapsto t^{\log_2A}$ sends every $2^n$ to $A^n$.
+
+The additional second coordinate is exactly where Four Exponentials enters.  No general algebraization theorem presently converts those two arithmetic values into an integral character-lattice action.
+
+\subsection{Attempt II: use functional transcendence to exclude carry families}
+
+Harrison's functional-transcendence framework, ultimately based on Ax's theorem~\cite{Ax1971,Harrison2026}, is well matched to irrational power maps.  A natural hope is that the simultaneous identities
+$(2t)^x=Mt^x$ and $(3t)^x=Nt^x$ create a semialgebraic family whose image lies in an additive hyperplane, contradicting functional transcendence.
+
+\Cref{lem:characterbalance,prop:carrybalanced} show why this fails.  Once each image parameter is reparameterized by $s=t^x$, every carry is a balanced relation among equal algebraic characters on the image torus.  The resulting family is an algebraic part, precisely the exceptional geometry that the theorem must allow.  Combining the two carries, even at equal arity as in \cref{prop:balancedcarry}, only forms products of independently balanced classes.
+
+A successful functional-transcendence argument would need a relation that couples the two carry directions in a character class that cannot balance separately.  The path construction does not do this: it creates many identities, but every identity remains in the rewrite ideal generated by the two local balances.
+
+\subsection{Attempt III: apply Harrison's fixed-arity counting theorem directly}
+
+For a fixed hypothetical $M$, the first carry produces $\Theta(|A|)$ solutions of an $M$-versus-$1$ equation.  Harrison's exponent is exactly one in this case, so the count is allowed and essentially sharp.  The balanced equal-arity family also remains far below the general $|A|^{K-1}$ upper bound.
+
+The $3$-smooth input set has size $\asymp(\log N_{\mathrm{amb}})^2$, near the threshold at which polylogarithmic errors become meaningful.  Even if the effective exponent $C_2(k)$ were below two for some fixed $k$, the resulting near-minimal total energy would not contradict integrality.  Integer multiplicative progressions can be additively sparse.
+
+Thus the missing ingredient is not a better constant in a fixed-$k$ total-energy theorem.  It is a structural bound on a specific representation fiber, uniform as $k$ grows.
+
+\subsection{Attempt IV: turn carry entropy into a contradiction}
+
+The carry-path theorem gives exponentially many representations at equal length, and the composite carry-language theorem strengthens this to $B^{1+o(1)}$ using only $\{2,3,6\}$ and to every exponent below $\delta_*=1.435279\ldots$ using a suitable fixed finite $3$-smooth alphabet.  The unrestricted carry-word generating function then removes the fixed-composition restriction: along an arithmetic progression of arities it produces an actual target fiber of size $\exp(\tau_xK-O_x(\log K))$.  Nevertheless, the arity remains $K\asymp\log B$.  Harrison's theorem fixes $K$ before the ambient scale tends to infinity, and its constants may grow arbitrarily rapidly with $K$.
+
+Nor does a hypothetical uniform version of the standard total-energy bound suffice.  The factor $|A|^{K-1}$ is
+\[
+       ((L+1)^2)^{\Theta(L)}
+       =\exp(\Theta(L\log L)),
+\]
+whereas the carry-path lower bound is only $\exp(\Theta(L))$.  The path theorem points instead to a maximum-fiber theorem with subexponential dependence on arity, such as \cref{prop:uniformcriterion}.
+
+\subsection{Attempt V: finite-place arithmeticity of the norm character}
+
+The map $q\mapsto q^x$ is a multiplicative character on $\Q_{>0}$.  When all values $n^x$ lie in the ring of integers of one fixed number field, the associated norm Grossencharacter is arithmetic; the arithmetic-implies-algebraic theorem for tori then forces $x\in\Z$~\cite{Waldschmidt1982}.  This uses an infinite family of finite-place conditions.  At the opposite extreme, three independent algebraic base values already force $x\in\Q$ by Six Exponentials, and one integral base then gives $x\in\Z$.
+
+The two-place problem is the first case not covered by either mechanism.  An automorphic reformulation does not create an extra independent exponential or an infinite arithmetic family; it repackages the same missing finite test.  Any proof along this route must establish a genuinely new statement: arithmeticity of this special norm character from only the values at $2$ and $3$.
+
+\begin{statusbox}
+The five routes fail for different reasons, but all failures meet at one point: available theorems either need a third independent exponential, discard the carry relations as algebraic parts, or lose uniformity when the arity grows like $\log N$.  No step above implies the conjecture unconditionally.
+\end{statusbox}
+
+\section{Conditional resolutions and sharply stated research targets}
+
+\subsection{Classical conditional closures}
+
+\begin{proposition}[Four Exponentials]\label{prop:fourconditional}
+The Four Exponentials Conjecture implies the Alaoglu--Erd\H{o}s conjecture.
+\end{proposition}
+
+\begin{proof}
+If $x$ were an irrational counterexample, use the $\Q$-independent rows
+$1,x$ and columns $\log2,\log3$.  The four exponentials are
+$2,3,M,N$, all algebraic, contradicting Four Exponentials.  A rational solution is integral by \cref{lem:elementary}.
+\end{proof}
+
+Schanuel's conjecture implies Four Exponentials and therefore also closes the problem.  These implications are classical; they identify the transcendence strength sufficient for the result but do not exploit the extra positivity and integrality in the hypothesis.
+
+\begin{proposition}[One additional independent base]\label{prop:thirdbaseconditional}
+If, in addition to $2^x,3^x\in\Z$, there is a positive algebraic number $a$ such that $a^x$ is algebraic and
+$\log a\notin\Q\log2+\Q\log3$, then $x\in\Z$.
+\end{proposition}
+
+\begin{proof}
+The three logarithms are $\Q$-linearly independent.  Apply
+\cref{thm:sixthreshold} and then \cref{lem:elementary}.
+\end{proof}
+
+\subsection{Four sufficient targets at lower apparent strength}
+
+\begin{theorem}[Target equivalence package]\label{thm:targetpackage}
+Each of the following statements is sufficient for the Alaoglu--Erd\H{o}s conjecture.
+\begin{enumerate}[label=\textup{(T\arabic*)}]
+\item $W_{\vartheta}=\Z\log2$.
+\item Every continuous scalar power map $P_x$ on $(\R_{>0})^2$ that is integral on the orbit generator $(2,3)$ is algebraic.
+\item Every irrational residual orbit satisfies the $S$-integral $o(\log H)$ bound in \cref{conj:residualsublinear}.
+\item The arity-uniform maximum-fiber estimate of \cref{prop:uniformcriterion} holds for the $2$--$3$ multiplicative grid.
+\end{enumerate}
+Moreover, (T1) is stronger than the original conjecture, (T2) is equivalent to it, and (T3)--(T4) contradict explicit consequences of any counterexample.
+\end{theorem}
+
+\begin{proof}
+(T1) implies the cone identity in \cref{thm:cone}.  (T2) is
+\cref{thm:oneorbit}.  (T3) contradicts \cref{thm:heightgrowth} for the fixed prime set attached to a counterexample.  (T4) contradicts \cref{thm:globalcarrypressure} by \cref{prop:uniformcriterion}.
+\end{proof}
+
+\subsection{A component-sensitive additive target}
+
+The standard additive energy counts all equal sums and is dominated by the enormous combinatorial freedom of choosing $K-1$ entries.  The carry paths instead create a large fiber over one target.  This suggests separating solutions into algebraic rewrite components.
+
+Let $\sim_{M,N}$ be the equivalence relation on multisets of monomials
+$M^aN^b$ generated by the two local carries
+\[
+   M\cdot M^aN^b\sim_{M,N}M^{a+1}N^b,
+   \qquad
+   N\cdot M^aN^b\sim_{M,N}M^aN^{b+1}.
+\]
+Every path representation lies in the same equivalence class as the singleton target.  A direct attempt to bound that class cannot work under a counterexample: \cref{thm:carrypath} computes a large part of it.  The useful theorem would have to derive the very existence of two independent integer carry rules from the geometry of a large class, and then show that an irrational power map cannot support both.
+
+\begin{question}[Two-carry recognition]\label{q:twocarryrecognition}
+Can one characterize, purely from a definable family of additive relations among $c$th powers, when two multiplicatively independent integer carry rules
+\[
+       (pt)^c=P t^c,
+       \qquad (qt)^c=Q t^c
+\]
+are present, and then prove that such a pair forces $c\in\Z$?
+\end{question}
+
+The first half is a problem in the geometry of algebraic parts; the second half is exactly a generalized Alaoglu--Erd\H{o}s statement.  The character-balancing lemma supplies a concrete language in which to attempt the recognition step.
+
+\subsection{Priority order}
+
+The new analysis suggests the following order of attack.
+
+\begin{enumerate}
+\item \textbf{Arity-uniform fixed-target bounds.}  Track the dependence on the number of summands in Harrison's functional-transcendence and point-counting proof.  The quantitative threshold is $C(t)=o(t/\log t)$ in \cref{prop:uniformcriterion}.
+\item \textbf{Classification at the critical $\log H$ rate.}  Strengthen polylogarithmic point counting from a generic upper bound to a classification of residual $S$-integral orbits that attain $\Omega(\log H)$ points on the power arc.
+\item \textbf{Character-class coupling.}  Search for an invariant of an additive relation that vanishes on each one-base carry component but detects the simultaneous presence of the $2$- and $3$-carry directions.
+\item \textbf{Finite-test arithmeticity for norm characters.}  Formulate the two-prime condition in the category of algebraic tori or Hecke characters and isolate the weakest theorem that would recover an integral infinity type from the two values.
+\end{enumerate}
+
+The first two priorities are meaningfully informed by 2024--2026 advances.  The third is the most elementary in formulation but appears to encode the original transcendence wall.  The fourth may connect the problem to broader arithmeticity principles but currently offers no extra exponential.
+
+\section{Conclusion}
+
+The search did not produce an unconditional proof, and it would be mathematically dishonest to present the conjecture as settled.  It did, however, produce a separate and coherent attack rather than another restatement of the supplied report.
+
+The central structural picture is this.  The irrational power graph
+\[
+       \cG_{\vartheta}=\{(u,u^{\vartheta}):u>0\},
+       \qquad \vartheta=\frac{\log3}{\log2},
+\]
+is a Zariski-dense transcendental subgroup containing the known integral cyclic group $\langle(2,3)\rangle$.  Alaoglu--Erd\H{o}s asserts that its positive integral points have no second independent direction.  Equivalently, a scalar continuous homomorphism is to be recognized as algebraic from its values at two multiplicatively independent primes.  One prime is insufficient; three are handled by Six Exponentials; two are the exact unresolved threshold.
+
+The 2026 additive-rigidity theorem of Harrison provides a powerful new lens but also a precise no-go theorem for a naive application.  Counterexample-generated carries are character-balanced algebraic parts.  They are not eliminated by functional transcendence, and their fixed-arity families fit the optimal exponents in the counting theorem.
+
+The carry construction goes further.  Primitive $2$--$3$ paths already force a single target to possess
+$\binom{2L}{L}=4^{L+o(L)}$ inequivalent equal-length representations by irrational powers.  Allowing composite $3$-smooth carries turns the path family into a carry language.  The alphabet $\{2,3,6\}$ reaches $B^{1+o(1)}$ representations of one target, and finite alphabets approach the ambient exponent
+$\delta_*=1.4352790836\ldots$, always with arity proportional to $\log B$.  The pressure root $\tau_x$ of \eqref{eq:tau-infinite} is the exact companion rate per summand.  In fact, the full carry alphabet yields actual target fibers
+$\exp(\tau_xK-O_x(\log K))$ along an arithmetic progression of arities, with all inputs below $3^{K-1}$.  This moves the problem to a new boundary: \emph{large fixed-target fibers at logarithmic arity}.  Existing results fix the arity, while standard energy bounds remain much too coarse when it grows.
+
+Accordingly, the most concrete new proof target is no longer ``obtain a slightly sharper fixed-order difference estimate.''  It is one of two classification statements:
+\begin{enumerate}
+\item classify the exceptional algebraic components of irrational power-sum equations uniformly up to arity $O(\log N)$; or
+\item classify residual $S$-integral orbits on the compact power arc at the extremal $\Theta(\log H)$ counting rate.
+\end{enumerate}
+Either classification would have to distinguish the known rank-one orbit from a hypothetical second direction.  That is exactly the arithmetic content the generic Four/Six Exponentials framework currently cannot see.
+
+\appendix
+
+\section{Expanded proofs and auxiliary calculations}
+
+\subsection{Linear independence of real monomials}
+
+For completeness, suppose $\lambda_1<\cdots<\lambda_m$ are distinct real numbers and
+\[
+       \sum_{j=1}^m c_j u^{\lambda_j}=0
+       \qquad(u>0).
+\]
+Writing $u=\ee^t$ gives an exponential polynomial
+$\sum_jc_j\ee^{\lambda_jt}$.  Divide by $\ee^{\lambda_mt}$ and let
+$t\to+\infty$ to obtain $c_m=0$.  Descending induction gives every
+$c_j=0$.  This is the elementary fact used in \cref{prop:graphdense}.
+
+\subsection{A sharper form of the triangular count}
+
+With $B=\lfloor T/\beta\rfloor$, one can write
+\begin{align*}
+ |\cA(\ee^T)|
+ &=\sum_{b=0}^{B}
+   \left(\frac{T-b\beta}{\alpha}+1
+          -\left\{\frac{T-b\beta}{\alpha}\right\}\right)\\
+ &=\frac{(B+1)T}{\alpha}
+   -\frac{\beta B(B+1)}{2\alpha}
+   +(B+1)
+   -\sum_{b=0}^{B}
+      \left\{\frac{T-b\beta}{\alpha}\right\}.
+\end{align*}
+The last sum lies between $0$ and $B+1$.  Since
+$B=T/\beta+O(1)$, this gives the explicit $O(T)$ error in
+\cref{prop:triangularcount} without invoking any lattice-point theorem.
+
+\subsection{Path reconstruction in detail}
+
+A path from $(r,s)$ to $(0,0)$ visits exactly one vertex on each diagonal
+$a+b=d$, $0\le d\le r+s$.  In the path representation, the rewrite entering the diagonal $d$ freezes copies of the monomial associated with that visited vertex.  For $d\ge1$, no other rewrite produces a monomial on the same diagonal.  Since $U^aV^b$ uniquely determines $(a,b)$, the multiset reveals the vertex on every nonzero diagonal.  Consecutive revealed vertices differ by one coordinate unit, so the step word is recovered.  The multiplicity at $1$ need not be used, avoiding any ambiguity caused by the final distinguished copy.
+
+\subsection{Central-binomial quantitative bounds}
+
+The elementary estimates
+\[
+       \frac{4^L}{2\sqrt L}
+       \le\binom{2L}{L}
+       \le\frac{4^L}{\sqrt{\pi L}}
+       \left(1+\frac{1}{8L}\right)
+\]
+for sufficiently large $L$ are more than enough for the entropy conclusions.  In particular, if
+$K_L=1+L(M+N-2)$, then
+\[
+ \binom{2L}{L}
+ \ge \frac{1}{2\sqrt L}
+     \exp\!\left(
+       \frac{2\log2}{M+N-2}(K_L-1)
+     \right).
+\]
+Thus the representation multiplicity is exponentially large in the arity with a positive rate depending on the hypothetical output pair.
+
+\section{Worked carry-path examples}
+
+\subsection{General formula}
+
+For a path $P$ with successive vertices $(a_j,b_j)$, define
+\[
+ \mathcal R(P)=\{1\}
+ \uplus\!\biguplus_{j:\,a_{j+1}=a_j-1}
+       (U-1)\{U^{a_{j+1}}V^{b_{j+1}}\}
+ \uplus\!\biguplus_{j:\,b_{j+1}=b_j-1}
+       (V-1)\{U^{a_{j+1}}V^{b_{j+1}}\}.
+\]
+Here $m\{z\}$ means a multiset containing $m$ copies of $z$.
+The identity
+\[
+       \sum_{z\in\mathcal R(P)}z=U^rV^s
+\]
+is the telescoping equality
+\[
+       1+\sum_{j=0}^{r+s-1}(w_j-w_{j+1})=w_0.
+\]
+
+\subsection{The \texorpdfstring{$2\times2$}{2-by-2} path square}
+
+For $(r,s)=(2,2)$ there are six paths, hence six representations, all with
+\[
+       1+2(U-1)+2(V-1)=2U+2V-3
+\]
+terms.  Writing only multiplicities of monomials, the path
+$\mathsf{UUVV}$ gives
+\[
+  U^2V^2
+  =(U-1)UV^2+(U-1)V^2+(V-1)V+(V-1)\cdot1+1,
+\]
+while $\mathsf{VVUU}$ gives
+\[
+  U^2V^2
+  =(V-1)U^2V+(V-1)U^2+(U-1)U+(U-1)\cdot1+1.
+\]
+The four interleavings produce mixed frontiers.  Under a counterexample, replacing $U^aV^b$ by $(2^a3^b)^x$ turns every one of these into an equal-length representation by irrational powers.
+
+\section{Logical status ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.48\textwidth}@{}}
+\toprule
+Statement & Status & Dependency or verification \\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Dependency or verification \\
+\midrule
+\endhead
+Nonintegral solution is transcendental & Imported classical theorem & Elementary rational reduction plus Gelfond--Schneider. \\
+Four Exponentials implication & Conditional & Direct $2\times2$ exponential matrix. \\
+Three-base theorem & Unconditional imported theorem & Six Exponentials plus rational-exponent descent. \\
+Logarithmic-cone equivalence & Proved here & Direct logarithmic parametrization. \\
+Zariski density of $\cG_\vartheta$ & Proved here & Linear independence of distinct real monomials. \\
+One-orbit arithmeticity equivalence & Proved here & Character-lattice classification of torus endomorphisms. \\
+Harrison fixed-arity relation bound & Imported, 2026 & Theorem 1.3 of Harrison. \\
+Harrison fixed-target polylogarithmic bound & Imported, 2026 & Lemma 4.2 of Harrison. \\
+BNZ polylogarithmic point count & Imported, 2024 & Wilkie's conjecture for Pfaffian structures. \\
+Triangular and shell counts & Proved here & Direct lattice summation. \\
+Character-balancing lemma & Proved here & Linear independence of torus characters in the group algebra. \\
+Balanced two-carry family & Proved here & Exact combination of the two carry identities. \\
+Carry-path theorem & Proved here & Distinguished-descendant rewrite and path reconstruction. \\
+Composite carry-language theorem & Proved here & Multistep distinguished-descendant encoding; words are recovered from frozen vertices. \\
+Optimal ambient carry exponent $\delta_*$ & Proved here, conditional on a counterexample & Multinomial entropy, relative-entropy optimization, and finite exhaustion of the $3$-smooth alphabet. \\
+Optimal per-summand carry rate $\tau_x$ & Proved here, conditional on a counterexample & Pressure equation and finite-alphabet exhaustion. \\
+Exact unrestricted carry-pressure fiber & Proved here, conditional on a counterexample & Infinite carry-word generating function, singularity analysis, endpoint pigeonhole, and injective word recovery. \\
+Critical carry entropy & Proved here, conditional on a counterexample & Carry-path theorem plus Stirling. \\
+Residual $\Theta(\log H)$ orbit & Proved here, conditional on a counterexample & Irrational rotation and elementary height estimates. \\
+Uniform maximum-fiber criterion & Conditional sufficient criterion & Contradiction with the exact unrestricted carry-pressure fiber. \\
+Residual $S$-integral sparsity & Open target & Would contradict the compact-orbit lower bound for the fixed support of a counterexample. \\
+Alaoglu--Erd\H{o}s conjecture & Open & No unconditional closing theorem supplied. \\
+\bottomrule
+\end{longtable}
+
+\section{Literature note}
+
+The supplied report already surveys a broad classical and modern literature.  The principal genuinely later input used here is Harrison's arXiv paper, version 3 dated 31 July 2026.  Its fixed-arity additive-relation theorem, its reliance on functional transcendence, and its explicit discussion of sparser sets and higher-dimensional homomorphisms make it unusually relevant.  The present report does not claim that the carry-path theorem or the one-orbit packaging is absent from all unpublished work; it claims only that these deductions were developed independently here and are not copied from the supplied source.
+
+The current-status conclusion is supported by Waldschmidt's 2023 survey chapter~\cite{Waldschmidt2023}, whose abstract states this exact $2^x,3^x$ problem and identifies it as open, with a positive answer following from Four Exponentials.  The specialist discussion, updated in July 2026, remains consistent with that status~\cite{MathOverflow2026}.  No paper found in the literature search through 21 August 2026 supplies an unconditional proof.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{56} (1944), 448--469.
+
+\bibitem{Ax1971}
+J.~Ax,
+\newblock On Schanuel's conjectures,
+\newblock \emph{Annals of Mathematics} \textbf{93} (1971), 252--268.
+
+\bibitem{BinyaminiNovikovZak2024}
+G.~Binyamini, D.~Novikov, and B.~Zak,
+\newblock Wilkie's conjecture for Pfaffian structures,
+\newblock \emph{Annals of Mathematics} \textbf{199} (2024), no.~2, 795--821.
+
+\bibitem{Gelfond1960}
+A.~O.~Gel'fond,
+\newblock \emph{Transcendental and Algebraic Numbers},
+\newblock Dover, New York, 1960.
+
+\bibitem{Harrison2026}
+J.~Harrison,
+\newblock Additive relations in irrational powers,
+\newblock arXiv:2512.04081v3 [math.NT], 31 July 2026,
+\newblock \url{https://arxiv.org/abs/2512.04081}.
+
+\bibitem{Lang1966}
+S.~Lang,
+\newblock Algebraic values of meromorphic functions. II,
+\newblock \emph{Topology} \textbf{5} (1966), 363--370.
+
+\bibitem{MathOverflow2026}
+MathOverflow community wiki,
+\newblock If $2^x$ and $3^x$ are integers, must $x$ be as well?,
+\newblock question 17560, last modified July 2026; accessed 21 August 2026,
+\newblock \url{https://mathoverflow.net/questions/17560/}.
+
+\bibitem{PilaWilkie2006}
+J.~Pila and A.~J.~Wilkie,
+\newblock The rational points of a definable set,
+\newblock \emph{Duke Mathematical Journal} \textbf{133} (2006), no.~3, 591--616.
+
+\bibitem{Waldschmidt1982}
+M.~Waldschmidt,
+\newblock Sur certains caract\`eres du groupe des classes d'id\`eles d'un corps de nombres,
+\newblock in \emph{Th\'eorie des nombres, S\'eminaire Delange--Pisot--Poitou 1980--81},
+Progress in Mathematics 22, Birkh\"auser, 1982, pp.~323--335.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Grundlehren der mathematischen Wissenschaften 326, Springer, 2000.
+
+\bibitem{Waldschmidt2005}
+M.~Waldschmidt,
+\newblock Variations on the Six Exponentials Theorem,
+\newblock in \emph{Algebra and Number Theory}, Hindustan Book Agency, 2005, pp.~338--355.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock The Four Exponentials Problem and Schanuel's conjecture,
+\newblock in J.-M.~Morel and B.~Teissier (eds.), \emph{Mathematics Going Forward: Collected Mathematical Brushstrokes},
+Lecture Notes in Mathematics 2313, Springer, 2023, pp.~579--592.
+
+\end{thebibliography}
+
+\end{document}
