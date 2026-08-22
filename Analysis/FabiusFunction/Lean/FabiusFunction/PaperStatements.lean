@@ -2,10 +2,13 @@ import FabiusFunction.Basic
 import FabiusFunction.Differential
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
+import FabiusFunction.GlobalExtension
+import FabiusFunction.HalfMomentDenominator
 import FabiusFunction.MomentPowerSeries
 import FabiusFunction.NormalizedEvenMoments
 import FabiusFunction.NormalizedMoments
 import FabiusFunction.Parity
+import FabiusFunction.TwoAdic
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.Calculus.Taylor
@@ -247,11 +250,6 @@ theorem rvachev_zero (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 :
   rw [rvachevUp, if_pos le_rfl]
   simpa [fabiusReal] using hF.one_of_one_le 1 le_rfl
 
-/-- The signed global extension is smooth. -/
-theorem extendedFabius_contDiff (F : BoundedFabius) (hF : IsFabius F) :
-    ContDiff ℝ ∞ (extendedFabius F) := by
-  sorry
-
 /-- The signed extension vanishes on nonpositive arguments. -/
 theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : x ≤ 0) : extendedFabius F x = 0 := by
@@ -284,25 +282,6 @@ theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
       linarith [hx.2]
     rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
     simp
-
-/-- The global Fabius differential equation. -/
-theorem extendedFabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
-    HasDerivAt (extendedFabius F) (2 * extendedFabius F (2 * x)) x := by
-  sorry
-
-/-- Equation (3): every iterated derivative is a rescaled Fabius value. -/
-theorem iteratedDeriv_extendedFabius (F : BoundedFabius) (hF : IsFabius F)
-    (k : ℕ) (x : ℝ) :
-    iteratedDeriv k (extendedFabius F) x =
-      2 ^ (k + 1).choose 2 * extendedFabius F (2 ^ k * x) := by
-  sorry
-
-/-- The corresponding iterated-derivative formula for Rvachev's function. -/
-theorem iteratedDeriv_rvachev (F : BoundedFabius) (hF : IsFabius F)
-    (n : ℕ) (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
-    iteratedDeriv n (rvachevUp F) x =
-      2 ^ (n + 1).choose 2 * extendedFabius F (2 ^ n * (x + 1)) := by
-  sorry
 
 /-- Equations (5) and (7): the Fourier transform, sinc product, and moment series agree. -/
 theorem rvachevFourier_eq_product_eq_series
@@ -766,7 +745,68 @@ theorem proposition_eight (n : ℕ) (hn : 1 ≤ n) :
 /-- Theorem 9: Reshetnikov's numbers are natural numbers. -/
 theorem theorem_nine (n : ℕ) (hn : 1 ≤ n) :
     IsNatural (reshetnikov n) := by
-  sorry
+  rcases Nat.even_or_odd n with heven | hodd
+  · obtain ⟨m, hm⟩ := heven
+    have hnEq : n = 2 * m := by omega
+    subst n
+    rw [hnEq]
+    have hmpos : 1 ≤ m := by omega
+    have hdenDvd : (reshetnikov (2 * m)).den ∣ 2 ^ (2 * m) :=
+      (proposition_eight m hmpos).2
+    have hdenOdd : Odd (reshetnikov (2 * m)).den := by
+      rw [proposition_six (2 * m) (by omega)]
+      rw [show (2 * m) / 2 = m by omega]
+      have hvalue :
+          2 * halfMoment (2 * m) * (oddDoubleFactorial (2 * m) : ℚ) *
+              (evenMersenneProduct m : ℚ) =
+            ((oddDoubleFactorial (2 * m) * evenMersenneProduct m : ℕ) : ℚ) *
+              (2 * halfMoment (2 * m)) := by
+        push_cast
+        ring
+      rw [hvalue]
+      exact rat_den_mul_nat_odd
+        (oddDoubleFactorial (2 * m) * evenMersenneProduct m)
+        (2 * halfMoment (2 * m))
+        (two_mul_halfMoment_den_odd (2 * m))
+    have hcoprime :
+        (reshetnikov (2 * m)).den.Coprime (2 ^ (2 * m)) :=
+      (Nat.coprime_two_right.mpr hdenOdd).pow_right (2 * m)
+    have hden : (reshetnikov (2 * m)).den = 1 :=
+      hcoprime.eq_one_of_dvd hdenDvd
+    have hoddPos : 0 < oddDoubleFactorial (2 * m) := by
+      unfold oddDoubleFactorial
+      apply Finset.prod_pos
+      intro j hj
+      omega
+    have hevenPos : 0 < evenMersenneProduct m := by
+      unfold evenMersenneProduct
+      apply Finset.prod_pos
+      intro j hj
+      exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+    have hvaluePos : 0 < reshetnikov (2 * m) := by
+      rw [proposition_six (2 * m) (by omega)]
+      rw [show (2 * m) / 2 = m by omega]
+      apply mul_pos
+      · apply mul_pos
+        · exact mul_pos (by norm_num) (halfMoment_pos (2 * m))
+        · exact_mod_cast hoddPos
+      · exact_mod_cast hevenPos
+    have hnumNonneg : 0 ≤ (reshetnikov (2 * m)).num :=
+      Rat.num_nonneg.mpr (le_of_lt hvaluePos)
+    refine ⟨(reshetnikov (2 * m)).num.natAbs, ?_⟩
+    calc
+      reshetnikov (2 * m) = ((reshetnikov (2 * m)).num : ℚ) :=
+        (Rat.coe_int_num_of_den_eq_one hden).symm
+      _ = (((reshetnikov (2 * m)).num.natAbs : ℕ) : ℚ) := by
+        have hnumEq :
+            (reshetnikov (2 * m)).num =
+              Int.ofNat (reshetnikov (2 * m)).num.natAbs :=
+          (Int.natAbs_of_nonneg hnumNonneg).symm
+        simpa using congrArg (fun z : ℤ => (z : ℚ)) hnumEq
+  · obtain ⟨m, hm⟩ := hodd
+    have hnEq : n = 2 * m + 1 := by omega
+    subst n
+    exact (theorem_seven m).2.1
 
 /--
 Lemma 1, with the missing hypothesis from the printed paper restored.
@@ -875,14 +915,40 @@ theorem proposition_nineteen (n : ℕ) :
 theorem theorem_twenty (n : ℕ) (hn : 1 ≤ n) :
     padicValRat 2 (2 * halfMoment n) = 0 ∧
       Odd (2 * halfMoment n).num.natAbs ∧ Odd (2 * halfMoment n).den := by
-  sorry
+  exact two_mul_halfMoment_padicVal_two_and_odd n hn
 
 /-- Theorem 21: oddness of `R_n` and the exact dyadic valuation. -/
 theorem theorem_twenty_one (n : ℕ) (hn : 1 ≤ n) :
     IsOddNatural (reshetnikov n) ∧
     padicValRat 2 (fabiusAtInverseTwoPow n) =
       -(n.choose 2 : ℤ) - 1 - padicValRat 2 (n.factorial : ℚ) := by
-  sorry
+  refine ⟨?_, fabiusAtInverseTwoPow_padicVal_two n hn⟩
+  have htwo := (theorem_twenty n hn).2
+  have hfirst := odd_num_den_mul_nat (oddDoubleFactorial n) htwo
+    (odd_oddDoubleFactorial n)
+  have hsecond := odd_num_den_mul_nat (evenMersenneProduct (n / 2)) hfirst
+    (odd_evenMersenneProduct (n / 2))
+  have hRodd :
+      Odd (reshetnikov n).num.natAbs ∧ Odd (reshetnikov n).den := by
+    rw [proposition_six n hn]
+    simpa [mul_assoc] using hsecond
+  apply isOddNatural_of_isNatural_of_odd_num _ hRodd.1
+  obtain ⟨m, rfl | rfl⟩ := Nat.even_or_odd' n
+  · have hm : 1 ≤ m := by omega
+    have hdenDvd := (proposition_eight m hm).2
+    have hdenOne := odd_eq_one_of_dvd_two_pow hRodd.2 hdenDvd
+    apply isNatural_of_den_eq_one_of_nonneg hdenOne
+    rw [(proposition_eight m hm).1]
+    apply Finset.sum_nonneg
+    intro k hk
+    apply div_nonneg
+    · apply mul_nonneg
+      · positivity
+      · apply Finset.prod_nonneg
+        intro ell hell
+        exact sub_nonneg.mpr (one_le_pow₀ (by norm_num))
+    · positivity
+  · exact (theorem_seven m).2.1
 
 /-- Proposition 22: the Bernoulli recurrences for `c_n` and `d_n`. -/
 theorem proposition_twenty_two_initial : moment 0 = 1 ∧ halfMoment 0 = 1 := by
