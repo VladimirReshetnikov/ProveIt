@@ -1,0 +1,785 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\allowdisplaybreaks
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+
+\newcommand{\cosec}{\operatorname{cosec}}
+\newcommand{\Min}{\operatorname{Min}}
+\newcommand{\Max}{\operatorname{Max}}
+\newcommand{\dd}{\,d}
+
+\title{\textit{The Lattice Points of a Circle}}
+\author{J. E. Littlewood, F.R.S., and A. Walfisz\\
+\large (With a Note by Prof. E. Landau.)}
+\date{(Received April 22, 1924.)}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{1.}
+Let $r(x)$ denote the number of ways in which the positive integer $x$ can
+be expressed as the sum of two squares (positive, negative or zero), and let
+\[
+ \mathrm{R}(x)=\sum_{0\leq n\leq x}r(n)
+ =\sum_{0\leq p^2+q^2\leq x}1.
+\]
+Thus $\mathrm{R}(x)$ is the number of ``lattice-points'' (points whose
+co-ordinates $p,q$ are integers, positive, negative or zero) in or on the
+boundary of the circle with centre at the origin and radius $\sqrt{x}$. It is
+trivial that
+\begin{equation}
+ \mathrm{R}(x)-\pi x=O\!\left(x^{1/2}\right),
+ \tag{1.1}
+\end{equation}
+it has been shown by Hardy\footnote{G. H. Hardy, ``On the expression of a
+number as the sum of two squares,'' \textit{Quarterly Journal of Math.},
+vol.~46, pp.~263--283 (1915).} and Landau\footnote{E. Landau, ``Über die
+Gitterpunkte in einem Kreise (II),'' \textit{Göttinger Nachrichten},
+pp.~161--171 (1915).} that the relation
+\[
+ \mathrm{R}(x)-\pi x=O\!\left(x^\alpha\right)
+\]
+is not true for any constant $\alpha<\tfrac14$, and it has been known for
+some time that
+\[
+ \mathrm{R}(x)-\pi x=O\!\left(x^{1/3}\right).
+\]
+A very important advance is due to van der Corput, who proved in a recent
+paper\footnote{J. G. van der Corput, ``Neue zahlentheoretische
+Abschätzungen,'' \textit{Math. Annalen}, vol.~89, pp.~215--254 (1923).} that
+\begin{equation}
+ \mathrm{R}(x)-\pi x=O\!\left(x^{\Theta+\varepsilon}\right),
+ \tag{1.2}
+\end{equation}
+where $\Theta$ is some constant less than $\tfrac13$. For the corresponding
+problem concerning
+\[
+ \mathrm{D}(x)=\sum_{0\leq n\leq x}d(n),
+\]
+where $d(n)$ is the number of divisors of $n$, van der Corput obtains\footnote{
+J. G. van der Corput, ``Verschärfung der Abschätzung beim Teilerproblem,''
+\textit{Math. Annalen}, vol.~87, pp.~39--65 (1922). A number of misprints in
+this paper are corrected by the author in the errata attached to vol.~89.}
+the more precise result
+\begin{equation}
+ \mathrm{D}(x)-\mathrm{D}_0(x)=O\!\left(x^{\Theta+\varepsilon}\right),
+ \tag{1.3}
+\end{equation}
+where $\mathrm{D}_0(x)$ is a certain elementary function whose leading term
+is $x\log x$, $\varepsilon$ is an arbitrary positive number, and $\Theta$ is
+some constant less than $\tfrac{33}{100}$.
+
+The present writers, applying a method used by Hardy and
+Littlewood\footnote{See E. Landau, ``Über die $\zeta$-Funktion und die
+$L$-Funktionen,'' \textit{Math. Zeitschr.}, vol.~20, pp.~105--125 (1924).}
+to prove that
+\begin{equation}
+ \zeta\!\left(\tfrac12+it\right)=O\!\left(t^{1/6+\varepsilon}\right),
+ \tag{1.4}
+\end{equation}
+discovered, independently, that it is possible to prove (1.2) with
+\begin{equation}
+ \Theta=\frac{37}{112}.
+ \tag{1.5}
+\end{equation}
+The result (1.5) is new, but we do not regard this as the main point of the
+present paper. Doubtless no proof of (1.2) (with $\Theta<\tfrac13$) can be
+altogether easy; but whereas van der Corput's method is probably the most
+formidable argument in the whole of pure mathematics, it will be found that
+the proof given here is both reasonably short and not impossible to grasp in
+its entirety.
+
+Our proof rests on the possibility of finding an expression as a (finite or
+infinite) series for $\mathrm{R}(x)-\pi x$, sufficiently approximate in itself,
+and amenable (in essence) to the argument of \S\S~5--7 below. There are, in
+point of fact, alternatives to the expression we adopt (which is based on a
+result due to Wigert); the several versions of the proof all lead, however,
+to the same value of $\Theta$.
+
+\medskip
+\noindent\textbf{2.}
+We suppose always $x\geq2$, and write for convenience
+\[
+ s=x^{75/112}.
+\]
+The symbols $c_1,c_2,\ldots,c_{30}$ denote positive constants depending only
+on $\alpha$, a positive constant introduced in \S~5, and $O$'s depend only on
+$\varepsilon$, and on $\alpha$ when that is a parameter.
+
+\medskip
+\noindent\textsc{Lemma 1.} \textit{We have}
+\[
+ \mathrm{R}(x)-\pi x
+ =\frac1\pi x^{1/4}\sum_{n=1}^{\infty}\frac{r(n)}{n^{3/4}}a_n
+  +O\!\left(x^{37/112+\varepsilon}\right),
+\]
+\textit{where}
+\begin{equation}
+ a_n=\int_0^\infty e^{-u}u^{1/(4s)}
+ \cos\!\left(2\pi\sqrt{nx}\,u^{1/(2s)}-\frac{3\pi}{4}\right)\dd u.
+ \tag{2.1}
+\end{equation}
+This result is due to Wigert,\footnote{S. Wigert, ``Über das Problem der
+Gitterpunkte in einem Kreise,'' \textit{Math. Zeitschr.}, vol.~5,
+pp.~310--318 (1919).} who proves it, indeed, uniformly in $s\geq1$ and with
+a remainder term
+\[
+ O\!\left(\frac{x^{1+\varepsilon}}s\right)+O\!\left(x^\varepsilon\right).
+\]
+Wigert's method, an application of the Euler--Maclaurin sum-formula, involves
+rather elaborate calculations, and we have thought it worth while to
+indicate an alternative proof, based on the double Fourier formula
+\[
+ \sum_{p,q=-\infty}^{\infty}f(p,q)
+ =\sum_{m,n=-\infty}^{\infty}\int_{-\infty}^{\infty}
+  \int_{-\infty}^{\infty}e^{2\pi i(mu+nv)}f(u,v)\dd u\dd v.
+\]
+This formula is easily seen to be valid when
+\[
+ f(p,q)=\exp\!\left\{-\left(\frac{p^2+q^2}{x}\right)^s\right\},
+\]
+and we have
+\begin{align*}
+&\sum_{p,q=-\infty}^{\infty}
+ \exp\!\left\{-\left(\frac{p^2+q^2}{x}\right)^s\right\} \\
+&=\sum_{p,q=-\infty}^{\infty}\int_{-\infty}^{\infty}
+  \int_{-\infty}^{\infty}
+ \cos(2\pi pu)\cos(2\pi qv)
+ \exp\!\left\{-\left(\frac{u^2+v^2}{x}\right)^s\right\}\dd u\dd v \\
+&=\frac{x}{2}\sum_{p,q=-\infty}^{\infty}\int_0^\infty e^{-R^s}\dd R
+ \int_0^{2\pi}
+ \cos\!\left(2\pi p\sqrt{xR}\cos\phi\right)
+ \cos\!\left(2\pi q\sqrt{xR}\sin\phi\right)\dd\phi \\
+&=\pi x\int_0^\infty e^{-R^s}\dd R
+ +\pi x\sum_{n=1}^{\infty}r(n)\int_0^\infty e^{-R^s}
+ J_0\!\left(2\pi\sqrt{nxR}\right)\dd R\,^{*} \\
+&=\pi x\Gamma\!\left(1+\frac1s\right)
+ +s\sqrt{x}\sum_{n=1}^{\infty}\frac{r(n)}{\sqrt n}
+ \int_0^\infty e^{-R^s}R^{s-1/2}
+ J_1\!\left(2\pi\sqrt{nxR}\right)\dd R\,^{\dagger} \\
+&=\pi x+\sqrt{x}\sum_{n=1}^{\infty}\frac{r(n)}{\sqrt n}
+ \int_0^\infty e^{-u}u^{1/(2s)}
+ J_1\!\left(2\pi\sqrt{nx}\,u^{1/(2s)}\right)\dd u
+ +O\!\left(x^{37/112}\right).
+ \tag{2.2}
+\end{align*}
+\begin{quote}\small
+$^{*}$ See G. N. Watson, \textit{Bessel Functions}, p.~21, \S~2.21,
+formula~1.\\
+$^{\dagger}$ We integrate by parts, and use Watson, p.~46, \S~3.2,
+formula~5.
+\end{quote}
+
+On the other hand we have, in virtue of $r(n)=O(n^\varepsilon)$,
+\begin{align*}
+\mathrm{R}(x)&-\sum_{p,q=-\infty}^{\infty}
+ \exp\!\left\{-\left(\frac{p^2+q^2}{x}\right)^s\right\} \\
+&=\sum_{0\leq n\leq x}r(n)
+ \left\{1-\exp\!\left[-\left(\frac nx\right)^s\right]\right\}
+ -\sum_{n>x}r(n)\exp\!\left[-\left(\frac nx\right)^s\right] \\
+&=O\!\left(\int_0^x u^\varepsilon\left(\frac ux\right)^s\dd u\right)
+ +O\!\left(\int_x^\infty u^\varepsilon
+ \exp\!\left[-\left(\frac ux\right)^s\right]\dd u\right)
+ +O\!\left(x^\varepsilon\right) \\
+&=O\!\left(\frac{x^{1+\varepsilon}}s\right)
+ =O\!\left(x^{37/112+\varepsilon}\right).
+\end{align*}
+Hence, from (2.2),
+\begin{equation}
+\begin{aligned}
+ \mathrm{R}(x)-\pi x
+ &=\sqrt{x}\sum_{n=1}^{\infty}\frac{r(n)}{\sqrt n}
+ \int_0^\infty e^{-u}u^{1/(2s)}
+ J_1\!\left(2\pi\sqrt{nx}\,u^{1/(2s)}\right)\dd u \\
+ &\qquad+O\!\left(x^{37/112+\varepsilon}\right).
+\end{aligned}
+\tag{2.3}
+\end{equation}
+Since
+\[
+ y^{3/2}\left|J_1(y)-\sqrt{\frac{2}{\pi y}}
+ \cos\!\left(y-\frac{3\pi}{4}\right)\right|
+\]
+is less than an absolute constant for $y>0$, it follows from (2.3) that
+\begin{align*}
+\mathrm{R}(x)-\pi x
+={}&\frac1\pi x^{1/4}\sum_{n=1}^{\infty}\frac{r(n)}{n^{3/4}}
+ \int_0^\infty e^{-u}u^{1/(4s)}
+ \cos\!\left(2\pi\sqrt{nx}\,u^{1/(2s)}-\frac{3\pi}{4}\right)\dd u \\
+&+O\!\left(x^{-1/4}\right)\sum_{n=1}^{\infty}\frac{r(n)}{n^{5/4}}
+ \int_0^\infty e^{-u}u^{-7/(4s)}\dd u
+ +O\!\left(x^{37/112+\varepsilon}\right) \\
+={}&\frac1\pi x^{1/4}\sum_{n=1}^{\infty}\frac{r(n)}{n^{3/4}}a_n
+ +O\!\left(x^{37/112+\varepsilon}\right),
+\end{align*}
+the desired result.
+
+\medskip
+\noindent\textbf{3.} \textsc{Lemma 2.} \textit{We have}
+\[
+ \mathrm{R}(x)-\pi x
+ =\frac1\pi x^{1/4}\sum_{n\leq x^{19/56+\varepsilon}}
+ \frac{r(n)}{n^{3/4}}a_n+O\!\left(x^{37/112+\varepsilon}\right).
+\]
+For each integer $\rho$ and large $x$ (or $s$) we have, writing $u^{2s}$
+for $u$ in (2.1) and integrating $2\rho$ times by parts,
+\[
+ |a_n|=\frac{2s}{(4\pi^2nx)^\rho}
+ \left|\int_0^\infty
+ \cos\!\left(2\pi\sqrt{nx}\,u-\frac{3\pi}{4}\right)
+ \left(\frac{d}{du}\right)^{2\rho}
+ \left\{e^{-u^{2s}}u^{2s-1/2}\right\}\dd u\right|.
+\]
+Integrating once more by parts and observing that
+\begin{align*}
+&\int_0^\infty\left|
+ \left(\frac{d}{du}\right)^{2\rho+1}
+ \left\{e^{-u^{2s}}u^{2s-1/2}\right\}\right|\dd u \\
+&\qquad<\sum_{m=0}^{2\rho+1}Ks^m\int_0^\infty e^{-u^{2s}}
+ \left(u^{2s+Ks}+u^{2s-K}\right)\dd u
+ <\sum Ks^m s^{-1}<Ks^{2\rho},
+\end{align*}
+we conclude that, for a suitable $x(\rho)\geq2$ and $x\geq x(\rho)$,
+\[
+ |a_n|<K\left(\frac{s^2}{nx}\right)^{\rho+1/2}
+ =K\left(\frac{x^{19/56}}n\right)^{\rho+1/2},
+\]
+where $K$ depends only on $\rho$. From this it follows that
+\begin{align*}
+&\frac1\pi x^{1/4}\sum_{n>x^{19/56+\varepsilon}}
+ \frac{r(n)}{n^{3/4}}|a_n| \\
+&\qquad=O\!\left(Kx^{1/4+(19/56)(\rho+1/2)}\right)
+ \sum_{n>x^{19/56+\varepsilon}}n^{\varepsilon-3/4-\rho-1/2},
+\end{align*}
+and this, by a suitable choice of $\rho=\rho(\varepsilon)$ (sufficiently
+large), is $O(x^{37/112+\varepsilon})$. Lemma~2 now follows from Lemma~1.
+
+\medskip
+\noindent\textbf{4.} \textsc{Lemma 3.} \textit{We have}
+\begin{equation}
+\begin{aligned}
+ \mathrm{R}(x)-\pi x
+ &=\frac1\pi x^{1/4}\int_{x^{-1}}^x e^{-u}u^{1/(4s)}
+ \sum_{n\leq x^{19/56+\varepsilon}}\frac{r(n)}{n^{3/4}}
+ \cos\!\left(z\sqrt n-\frac{3\pi}{4}\right)\dd u \\
+ &\qquad+O\!\left(x^{37/112+\varepsilon}\right),
+\end{aligned}
+\tag{4.1}
+\end{equation}
+\textit{where}
+\[
+ z=2\pi\sqrt{x}\,u^{1/(2s)}.
+\]
+For
+\begin{align*}
+&\frac1\pi x^{1/4}\sum_{n\leq x^{19/56+\varepsilon}}
+ \frac{r(n)}{n^{3/4}}
+ \left(\int_0^{x^{-1}}+\int_x^\infty\right)e^{-u}u^{1/(4s)}
+ \cos\!\left(2\pi\sqrt{nx}\,u^{1/(2s)}-\frac{3\pi}{4}\right)\dd u \\
+&\qquad=O\!\left(x^{1/4}\right)
+ \sum_{n\leq x^{19/56+\varepsilon}}
+ \left(\int_0^{x^{-1}}\dd u+\int_x^\infty e^{-u}u\dd u\right) \\
+&\qquad=O\!\left(x^{1/4}\right)\sum_n x^{-1}
+ =O\!\left(x^{37/112+\varepsilon}\right),
+\tag{4.2}
+\end{align*}
+and the result follows from (4.2) and Lemma~2.
+
+\medskip
+\noindent\textbf{5.} \textsc{Lemma 4.}
+\textit{For $\frac{19}{56}+\varepsilon\leq\frac23$, and uniformly for
+$x^{-1}\leq u\leq x$, we have}
+\begin{equation}
+ \sum_{n\leq x^{19/56+\varepsilon}}\frac{r(n)}{n^{3/4}}e^{iz\sqrt n}
+ =O\!\left(x^{9/112+\varepsilon}\right).
+ \tag{5.1}
+\end{equation}
+The main theorem follows at once when Lemma~4 is proved. For then the sum in
+(4.1) is $O(x^{9/112+\varepsilon})$, and we have
+\begin{align*}
+ \mathrm{R}(x)-\pi x
+ &=O\!\left(x^{1/4+9/112+\varepsilon}\right)
+ \int_{x^{-1}}^x e^{-u}u^{1/(4s)}\dd u \\
+ &=O\!\left(x^{37/112+\varepsilon}\right)
+ \int_0^\infty e^{-u}(1+u)\dd u
+ =O\!\left(x^{37/112+\varepsilon}\right).
+\end{align*}
+
+We prove first:
+
+\medskip
+\noindent\textsc{Lemma 5.}\footnote{It is here that we employ the method of
+Hardy and Littlewood referred to in \S~1.}
+\textit{Let $\alpha>0$, $0\leq\tau\leq\frac13$,
+\[
+ \frac1{\sqrt2}x^\tau\leq Q\leq Q'\leq2x^\tau,
+ \qquad 0<p\leq Q,
+\]
+$Q$ and $Q'$ being integers. Then}
+\begin{equation}
+ \left|\sum_{q=Q}^{Q'}e^{iz\sqrt{p^2+q^2}}\right|
+ \leq c_1\left(x^{9\tau/10+1/80+\alpha}
+ +p^{-1/4}x^{49\tau/40-1/80+\alpha}\right).
+ \tag{5.2}
+\end{equation}
+We may suppose that $\tau>\frac18$; for if $\tau\leq\frac18$,
+\[
+ \left|\sum_{q=Q}^{Q'}e^{iz\sqrt{p^2+q^2}}\right|
+ \leq2x^\tau\leq2x^{9\tau/10+1/80+\alpha}.
+\]
+We write
+\[
+ \nu=\left[x^{4\tau/5-1/10}\right],\qquad
+ N=\left[\frac{Q'-Q}{\nu}\right],\qquad
+ v_n=Q+n\nu,
+\]
+$n$ being a non-negative integer. Clearly $\nu\geq1$. We may suppose $N\geq2$,
+since otherwise
+\[
+ \left|\sum_{q=Q}^{Q'}e^{iz\sqrt{p^2+q^2}}\right|
+ \leq\nu\frac{Q'-Q}{\nu}+1\leq3\nu
+ \leq3x^{9\tau/10+1/80+\alpha}.
+\]
+And we may further suppose $x\geq c_2\geq2$, where $c_2$ has the property
+\[
+ \frac{3\nu}{v_n}\leq\frac{3\nu}{Q}\leq\frac12
+ \qquad(x\geq c_2),
+\]
+evidently valid if $c_2$ is large enough. Since
+\[
+ v_{N-1}+\nu=v_N>Q+\left(\frac{Q'-Q}{\nu}-1\right)\nu=Q'-\nu,
+\]
+we have
+\begin{equation}
+\begin{aligned}
+&\left|\sum_{q=Q}^{Q'}e^{iz\sqrt{p^2+q^2}}
+ -\sum_{n=0}^{N-1}\sum_{m=0}^{\nu-1}
+ e^{iz\sqrt{p^2+(v_n+m)^2}}\right| \\
+&\qquad\leq\nu\leq x^{9\tau/10+1/80+\alpha}.
+\end{aligned}
+\tag{5.3}
+\end{equation}
+Let now
+\[
+ \sqrt{p^2+(v_n+y)^2}
+ =\sqrt{p^2+v_n^2}\left\{P(y)+y^5f(y)\right\},
+\]
+where the square root is taken positive for $y\geq0$,
+\[
+ P(y)=P_n(y)=ay^4+a_1y^3+a_2y^2+a_3y+a_4
+\]
+is a real polynomial of the fourth degree in $y$, and $f(y)$ is regular at
+$y=0$. The number $a$ is given by
+\begin{equation}
+ a=\frac{p^2(4v_n^2-p^2)}{8(p^2+v_n^2)^4}.
+ \tag{5.4}
+\end{equation}
+We write further
+\[
+ g(y)=e^{iz\sqrt{p^2+v_n^2}\,y^5f(y)}=\sum_{h=0}^{\infty}g_h y^h,
+\]
+so that in the neighbourhood of $y=0$
+\begin{align*}
+ g(y)=\exp\Bigg[iz\sqrt{p^2+v_n^2}\Bigg\{&
+ \binom{1/2}{3}\frac{6v_ny^5+y^6}{(p^2+v_n^2)^3} \\
+ &+\binom{1/2}{4}
+ \frac{32v_n^3y^5+24v_n^2y^6+8v_ny^7+y^8}{(p^2+v_n^2)^4} \\
+ &+\sum_{k=5}^{\infty}\binom{1/2}{k}
+ \left(\frac{y^2+2v_ny}{p^2+v_n^2}\right)^k\Bigg\}\Bigg].
+\end{align*}
+Since $z\leq c_3\sqrt{x}$, it follows that
+\begin{align*}
+ \sum_{h=0}^{\infty}|g_h|\nu^h
+ &\leq\exp\left[c_4z\left\{
+ \frac{\nu^5v_n}{v_n^5}+\frac{\nu^5v_n^3}{v_n^7}
+ +v_n\sum_{k=5}^{\infty}\left(\frac{3\nu v_n}{v_n^2}\right)^k
+ \right\}\right] \\
+ &\leq\exp\left[c_5\sqrt{x}\frac{\nu^5}{v_n^4}\right]\leq c_6.
+\end{align*}
+Hence
+\begin{align*}
+&\left|\sum_{m=0}^{\nu-1}e^{iz\sqrt{p^2+(v_n+m)^2}}\right| \\
+&\quad=\left|\sum_{m=0}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}
+ \sum_{h=0}^{\infty}g_hm^h\right| \\
+&\quad\leq\sum_{h=0}^{\infty}|g_h|
+ \left|\sum_{m=0}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}m^h\right| \\
+&\quad\leq\sum_{h=0}^{\infty}|g_h|\nu^h
+ \max_{0\leq\nu'\leq\nu-1}
+ \left|\sum_{m=\nu'}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}\right| \\
+&\quad\leq c_6\max_{0\leq\nu'\leq\nu-1}
+ \left|\sum_{m=\nu'}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}\right|.
+\tag{5.5}
+\end{align*}
+
+\medskip
+\noindent\textbf{6.} \textsc{Lemma 6.}
+\textit{Suppose $b$ integral and $b\geq2$;
+\[
+ P(y)=\beta_0y^b+\beta_1y^{b-1}+\cdots+\beta_b
+\]
+a polynomial with real coefficients; $\psi$ real, $\nu_1$ integral,
+$\nu_2$ integral and $\nu_2\geq1$. Then}
+\begin{align*}
+ \left|\sum_{m=\nu_1+1}^{\nu_1+\nu_2}e^{i\psi P(m)}\right|^{2^{b-1}}
+ &\leq(2\nu_2)^{2^{b-1}-b}
+ \sum_{|m_1|+\cdots+|m_{b-1}|\leq\nu_2-1} \\
+ &\qquad\Min\left\{\nu_2,
+ \left|\cosec\!\left(\tfrac12\psi\beta_0b!m_1\cdots m_{b-1}\right)\right|
+ \right\}.\footnotemark
+\end{align*}
+\footnotetext{The ``Min'' denotes $\nu_2$ if the cosecant is infinite.}
+This result is due to Weyl.\footnote{H. Weyl, ``Über ein Problem aus dem
+Gebiet der Diophantischen Approximationen,'' \textit{Göttinger Nachrichten}
+(1914), pp.~234--244 (241--243). See also the same author, ``Über die
+Gleichverteilung von Zahlen mod. Eins,'' \textit{Math. Annalen}, vol.~77,
+pp.~313--352 (328--331) (1916), and again ``Zur Abschätzung von
+$\zeta(1+it)$,'' \textit{Math. Zeitschr.}, vol.~10, pp.~88--101 (90) (1921).
+The form we adopt, as sufficient for our purpose, is taken from a paper by
+E. Landau, ``Zum Waringschen Problem,'' \textit{Math. Zeitschr.}, vol.~12,
+pp.~219--247 (224--225) (1922).}
+In Lemma~6 we now take
+\[
+ b=4,\qquad \nu_1=\nu'-1,\qquad \nu_2=\nu-\nu',\qquad
+ \psi=z\sqrt{p^2+v_n^2},\qquad \beta_0=a.
+\]
+We obtain, writing for brevity
+\begin{equation}
+ t_n=12az\sqrt{p^2+v_n^2}\,m_1m_2m_3,
+ \tag{6.1}
+\end{equation}
+\begin{align*}
+&\left|\sum_{m=\nu'}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}\right| \\
+&\qquad\leq c_7(\nu-\nu')^{1/2}
+ \left\{\sum_{|m_1|+|m_2|+|m_3|\leq\nu-\nu'-1}
+ \Min\left(\nu-\nu',|\cosec t_n|\right)\right\}^{1/8},
+\end{align*}
+and consequently
+\begin{align*}
+&\max_{0\leq\nu'\leq\nu-1}
+ \left|\sum_{m=\nu'}^{\nu-1}e^{iz\sqrt{p^2+v_n^2}\,P(m)}\right| \\
+&\qquad\leq c_7\nu^{1/2}
+ \left\{\sum_{|m_1|+|m_2|+|m_3|\leq\nu}
+ \Min\left(\nu,|\cosec t_n|\right)\right\}^{1/8} \\
+&\qquad\leq c_8\nu^{1/2}
+ \left\{\nu^3+\sum_{m_1,m_2,m_3=1}^{\nu}
+ \Min\left(\nu,|\cosec t_n|\right)\right\}^{1/8} \\
+&\qquad\leq c_8\left[\nu^{7/8}+\nu^{1/2}
+ \left\{\sum_{m_1,m_2,m_3=1}^{\nu}
+ \Min\left(\nu,|\cosec t_n|\right)\right\}^{1/8}\right].
+\end{align*}
+From this and (5.5) it follows that
+\begin{align*}
+&\left|\sum_{n=0}^{N-1}\sum_{m=0}^{\nu-1}
+ e^{iz\sqrt{p^2+(v_n+m)^2}}\right| \\
+&\qquad\leq c_9\left[N\nu^{7/8}+\nu^{1/2}\sum_{n=0}^{N-1}
+ \left\{\sum_{m_1,m_2,m_3=1}^{\nu}
+ \Min\left(\nu,|\cosec t_n|\right)\right\}^{1/8}\right] \\
+&\qquad\leq c_9\left[N\nu^{7/8}+N^{7/8}\nu^{1/2}
+ \left\{\sum_{m_1,m_2,m_3=1}^{\nu}\sum_{n=0}^{N-1}
+ \Min\left(\nu,|\cosec t_n|\right)\right\}^{1/8}\right],
+\tag{6.2}
+\end{align*}
+by the generalised Schwarz inequality. By the hypotheses of Lemma~5,
+\[
+ N\nu^{7/8}\leq c_{10}x^{9\tau/10+1/80},\qquad
+ N^{7/8}\nu^{1/2}\leq c_{10}x^{23\tau/40+3/80}.
+\]
+Hence it is easily verified, from (5.3) and (6.2), that Lemma~5 follows when
+we have shown that
+\begin{equation}
+ \sum_{m_1,m_2,m_3=1}^{\nu}\sum_{n=0}^{N-1}
+ \Min\left(\nu,|\cosec t_n|\right)
+ \leq c_{11}\left(x^{13\tau/5-1/5+\alpha}
+ +p^{-2}x^{26\tau/5-2/5+2\alpha}\right).
+ \tag{6.3}
+\end{equation}
+Now from (5.4) and (6.1) we have
+\[
+ t_n=\frac32zm_1m_2m_3p^2
+ \frac{4v_n^2-p^2}{(p^2+v_n^2)^{7/2}}.
+\]
+Since
+\[
+ \frac{d}{dy}\frac{4y^2-p^2}{(p^2+y^2)^{7/2}}
+ =\frac{5y(3p^2-4y^2)}{(p^2+y^2)^{9/2}},
+\]
+and
+\[
+ 3p^2\leq3Q^2\leq3v_n^2,\qquad
+ v_{N-1}<v_N\leq Q+\frac{Q'-Q}{\nu}\nu=Q'\leq2x^\tau,
+ \qquad z>c_{12}\sqrt{x},
+\]
+we have for $0\leq n\leq N-2$
+\begin{align*}
+ t_n-t_{n+1}
+ &\geq(v_{n+1}-v_n)\frac32zm_1m_2m_3p^2
+ \min_{v_n\leq y\leq v_{n+1}}
+ \frac{5y(4y^2-3p^2)}{(p^2+y^2)^{9/2}} \\
+ &\geq c_{13}\nu\sqrt{x}\,m_1m_2m_3p^2
+ \frac{v_n^3}{v_{n+1}^9} \\
+ &\geq c_{14}m_1m_2m_3p^2x^{2/5-26\tau/5}.
+\tag{6.4}
+\end{align*}
+Let now $\xi_g$ ($g$ integral) denote the interval
+\[
+ \frac12\pi g<y\leq\frac12\pi(g+1).
+\]
+We consider the part sum
+\[
+ \eta_g=\sum_g\Min\left(\nu,|\cosec t_n|\right)=\sum_g u_n,
+\]
+where $\sum_g$ is taken over those values of $n$ between $0$ and $N-1$
+inclusive for which $t_n$ lies in $\xi_g$. Let $g^*$ be $\frac12g$ or
+$\frac12(g+1)$, whichever is an integer, and $n^*$ the rank of that term of
+$\eta_g$ for which $|t_{n^*}-\pi g^*|$ is a minimum. For $n=n^*$ we have
+$u_n\leq\nu$; for other values of $n$, $u_n\leq|\cosec t_n|$, and it follows
+from (6.4) that
+\begin{equation}
+ \eta_g\leq\nu+\sum_{\substack{t_n\in\xi_g\\n\neq n^*}}|\cosec t_n|
+ \leq\nu+\sum_k'\left|\cosec\!\left(
+ c_{14}m_1m_2m_3p^2x^{2/5-26\tau/5}k\right)\right|,
+ \tag{6.5}
+\end{equation}
+where $\sum'$ is taken only over $k$ for which
+\[
+ 1\leq k\leq N,\qquad
+ c_{14}m_1m_2m_3p^2x^{2/5-26\tau/5}k\leq\frac12\pi.
+\]
+From this it follows that
+\begin{equation}
+ \eta_g\leq\nu+c_{15}\frac{x^{26\tau/5-2/5}}{m_1m_2m_3p^2}
+ \sum_{k=1}^{N}\frac1k
+ \leq c_{16}\left(\nu+
+ \frac{x^{26\tau/5-2/5+\alpha}}{m_1m_2m_3p^2}\right).
+ \tag{6.6}
+\end{equation}
+Again, from (5.4) and (6.1),
+\[
+ t_n\leq c_{17}m_1m_2m_3p^2x^{1/2-5\tau}.
+\]
+The number of intervals $\xi_g$ (concerned with $t_n$'s) therefore does not
+exceed
+\[
+ c_{18}\left(m_1m_2m_3p^2x^{1/2-5\tau}+1\right).\footnotemark
+\]
+\footnotetext{The term $1$ cannot be omitted, since
+$x^{1/2-5\tau}\to0$ as $x\to\infty$; it has a real importance.}
+Hence, from (6.6),
+\begin{align*}
+&\sum_{m_1,m_2,m_3=1}^{\nu}\sum_{n=0}^{N-1}
+ \Min\left(\nu,|\cosec t_n|\right) \\
+&\quad\leq c_{19}\sum_{m_1,m_2,m_3=1}^{\nu}
+ \left(m_1m_2m_3p^2x^{1/2-5\tau}+1\right)
+ \left(\nu+\frac{x^{26\tau/5-2/5+\alpha}}{m_1m_2m_3p^2}\right) \\
+&\quad\leq c_{19}\left\{p^2\nu^7x^{1/2-5\tau}+\nu^4
+ +\nu^3x^{\tau/5+1/10+\alpha}
+ +p^{-2}x^{26\tau/5-2/5+\alpha}
+ \left(\sum_{m=1}^{\nu}\frac1m\right)^3\right\} \\
+&\quad\leq c_{20}\left(x^{13\tau/5-1/5}+x^{16\tau/5-2/5}
+ +x^{13\tau/5-1/5+\alpha}
+ +p^{-2}x^{26\tau/5-2/5+2\alpha}\right) \\
+&\quad\leq c_{21}\left(x^{13\tau/5-1/5+\alpha}
+ +p^{-2}x^{26\tau/5-2/5+2\alpha}\right).
+\end{align*}
+This is (6.3), and Lemma~5 is established.
+
+\medskip
+\noindent\textbf{7.}
+Returning now to Lemma~4, let $0\leq\tau\leq\frac13$. We take
+\[
+\begin{array}{ll}
+ Q=\left[\sqrt{x^{2\tau}-p^2}\right]+1,
+ &\displaystyle\left(0<p\leq\frac1{\sqrt2}x^\tau\right),\\[6pt]
+ Q=p+1,
+ &\displaystyle\left(\frac1{\sqrt2}x^\tau<p\leq\sqrt2x^\tau\right),
+\end{array}
+\]
+and (i.e. in either case) we take
+\[
+ Q'=\left[\sqrt{4x^{2\tau}-p^2}\right]
+ \qquad(0<p\leq\sqrt2x^\tau).
+\]
+Then
+\begin{align*}
+&\left|\sum_{x^{2\tau}<n\leq4x^{2\tau}}r(n)e^{iz\sqrt n}
+ -8\sum_{0<p\leq\sqrt2x^\tau}\sum_{Q\leq q\leq Q'}
+ e^{iz\sqrt{p^2+q^2}}\right| \\
+&\qquad=4\left|\sum_{x^\tau<q\leq2x^\tau}e^{izq}
+ +\sum_{x^\tau/\sqrt2<q\leq\sqrt2x^\tau}e^{izq\sqrt2}\right|
+ \leq c_{22}x^\tau.\footnotemark
+\tag{7.1}
+\end{align*}
+\footnotetext{Every $q$-sum for which $Q>Q'$ is, of course, interpreted to
+be zero.}
+Now to every existent $q$-sum in the left side of (7.1) corresponds a set of
+numbers $p,Q,Q'$ satisfying the conditions of Lemma~5, which gives therefore
+\begin{align*}
+&\left|\sum_{0<p\leq\sqrt2x^\tau}\sum_{Q\leq q\leq Q'}
+ e^{iz\sqrt{p^2+q^2}}\right| \\
+&\qquad\leq c_1\sum_{0<p\leq\sqrt2x^\tau}
+ \left(x^{9\tau/10+1/80+\alpha}
+ +p^{-1/4}x^{49\tau/40-1/80+\alpha}\right) \\
+&\qquad\leq c_{23}\left(x^{19\tau/10+1/80+\alpha}
+ +x^{79\tau/40-1/80+\alpha}\right)
+ \leq c_{24}x^{19\tau/10+1/80+\alpha}.
+\end{align*}
+Hence, from (7.1),
+\begin{equation}
+ \left|\sum_{x^{2\tau}<n\leq4x^{2\tau}}r(n)e^{iz\sqrt n}\right|
+ \leq c_{25}x^{19\tau/10+1/80+\alpha}.
+ \tag{7.2}
+\end{equation}
+We write now
+\[
+ x^\tau=x^{\tau_0}=2x^{\tau_1}=4x^{\tau_2}=\cdots=2^M x^{\tau_M},
+\]
+where $M$ is determined by
+\[
+ 2>x^{\tau_M}\geq1.
+\]
+Taking $\tau=\tau_m$ in (7.2), we have for $M\geq1$
+\begin{align*}
+&\left|\sum_{m=1}^{M}\sum_{x^{2\tau_m}<n\leq4x^{2\tau_m}}
+ r(n)e^{iz\sqrt n}\right| \\
+&\qquad\leq c_{25}\sum_{m=1}^{M}x^{19\tau_m/10+1/80+\alpha}
+ \leq c_{25}Mx^{19\tau/10+1/80+\alpha}
+ \leq c_{26}x^{19\tau/10+1/80+2\alpha},
+\end{align*}
+or
+\[
+ \left|\sum_{1\leq n\leq x^{2\tau}}r(n)e^{iz\sqrt n}\right|
+ \leq c_{26}x^{19\tau/10+1/80+2\alpha}+c_{27}
+ \leq c_{28}x^{19\tau/10+1/80+2\alpha}.
+\]
+Writing $y$ for $x^{2\tau}$ in this, we have
+\[
+ \left|\sum_{1\leq n\leq y}r(n)e^{iz\sqrt n}\right|
+ \leq c_{28}x^{1/80+2\alpha}y^{19/20}
+ \qquad(1\leq y\leq x^{2/3}).
+\]
+It follows by partial summation that
+\begin{align*}
+&\left|\sum_{1\leq n\leq x^{19/56+\varepsilon}}
+ \frac{r(n)}{n^{3/4}}e^{iz\sqrt n}\right| \\
+&\qquad\leq c_{29}x^{1/80+2\alpha}
+ \sum_{1\leq n\leq x^{19/56+\varepsilon}}n^{19/20-7/4}
+ \leq c_{30}x^{9/112+\varepsilon/5+2\alpha}.
+\end{align*}
+If in this we take $\alpha=\frac25\varepsilon$, we obtain the result of
+Lemma~4, and our proof is completed.
+
+\bigskip
+\begin{center}
+\textit{Note on the Preceding Paper by Prof. E. Landau.---Added August 2,
+1924.}
+\end{center}
+
+\noindent\textbf{8.}
+The authors deduce, by means of the ideas of Lemma~5, their main result from
+the formula of Lemma~1. It is possible to start from the relation
+\begin{equation}
+ \int_0^x\{\mathrm{R}(y)-\pi y\}\dd y
+ =-c_{31}x^{3/4}\sum_{n=1}^{\infty}\frac{r(n)}{n^{5/4}}
+ \cos\!\left(2\pi\sqrt{nx}-\frac\pi4\right)+O\!\left(x^{1/4}\right),
+ \tag{8.1}
+\end{equation}
+which is classical. I am able, indeed, to refine on the authors'
+$x^\varepsilon$, and in fact to deduce from (8.1) that
+\[
+ \mathrm{R}(x)-\pi x
+ =O\!\left(x^{37/112}\log^{5/56}x\right).
+\]
+The proof of Lemma~5 provides the inequality
+\[
+ \left|\sum_{q=Q}^{Q'}e^{2\pi i\sqrt y\sqrt{p^2+q^2}}\right|
+ <c_{32}\left(y^{1/80}Q^{9/10}\log^{1/8}Q
+ +y^{-1/80}p^{-1/4}Q^{49/40}\log^{1/2}Q\right)
+\]
+for $y>1$, $1\leq p<Q\leq Q'<2Q$, whence, by Abel's Lemma, with
+$j=\frac34$ or $\frac54$,
+\begin{equation}
+\begin{aligned}
+&\left|\sum_{q=Q}^{Q'}
+ \frac{e^{2\pi i\sqrt y\sqrt{p^2+q^2}}}{(p^2+q^2)^j}\right| \\
+&\quad<c_{32}\left(y^{1/80}Q^{9/10-2j}\log^{1/8}Q
+ +y^{-1/80}p^{-1/4}Q^{49/40-2j}\log^{1/2}Q\right).
+\end{aligned}
+\tag{8.2}
+\end{equation}
+Now (8.2) is valid without the assumption $Q'<2Q$, provided we replace
+$c_{32}$ by $c_{33}$.
+
+Therefore, if $2\leq\omega\leq y^{1/2}$,
+\begin{align*}
+&\left|\sum_{n\leq\omega}\frac{r(n)}{n^{3/4}}e^{2\pi i\sqrt{ny}}\right| \\
+&\quad<c_{34}+8\sum_{1<p\leq\sqrt{\omega/2}}
+ \left|\sum_{p<q\leq\sqrt{\omega-p^2}}
+ \frac{e^{2\pi i\sqrt y\sqrt{p^2+q^2}}}{(p^2+q^2)^{3/4}}\right| \\
+&\quad\leq c_{34}+c_{35}\sum_{1\leq p\leq\sqrt{\omega/2}}
+ \left(y^{1/80}p^{-3/5}\log^{1/8}p
+ +y^{-1/80}p^{-21/40}\log^{1/2}p\right) \\
+&\quad<c_{36}\left(y^{1/80}\omega^{1/5}\log^{1/8}y
+ +y^{-1/80}\omega^{19/80}\log^{1/2}y\right) \\
+&\quad<c_{37}y^{1/80}\omega^{1/5}\log^{1/8}y,
+\tag{8.3}
+\end{align*}
+and
+\begin{align*}
+&\left|\sum_{n>\omega}\frac{r(n)}{n^{5/4}}e^{2\pi i\sqrt{ny}}\right| \\
+&\quad<c_{38}\omega^{-3/4}+8\sum_{p=1}^{\infty}
+ \left|\sum_{q>\Max\{\sqrt{\omega-p^2},p\}}
+ \frac{e^{2\pi i\sqrt y\sqrt{p^2+q^2}}}{(p^2+q^2)^{5/4}}\right| \\
+&\quad<c_{38}\omega^{-3/4}
+ +c_{39}\sum_{1\leq p\leq\sqrt{\omega/2}}
+ \left(y^{1/80}\omega^{-4/5}\log^{1/8}\omega
+ +y^{-1/80}p^{-1/4}\omega^{-51/80}\log^{1/2}\omega\right) \\
+&\qquad+c_{40}\sum_{p>\sqrt{\omega/2}}
+ \left(y^{1/80}p^{-8/5}\log^{1/8}p
+ +y^{-1/80}p^{-61/40}\log^{1/2}p\right) \\
+&\quad<c_{41}\left(\omega^{-3/4}
+ +y^{1/80}\omega^{-3/10}\log^{1/8}y
+ +y^{-1/80}\omega^{-21/80}\log^{1/2}y\right) \\
+&\quad<c_{42}y^{1/80}\omega^{-3/10}\log^{1/8}y.
+\tag{8.4}
+\end{align*}
+I now take
+\[
+ \omega=x^{19/56}\log^{-5/28}x,\qquad
+ z=x^{37/112}\log^{5/56}x.
+\]
+Observing that
+\begin{align*}
+&\int_x^{x\pm z}\sum_{n\leq\omega}\frac{r(n)}{n^{5/4}}
+ \frac{d}{dy}\left\{y^{3/4}
+ \cos\!\left(2\pi\sqrt{ny}-\frac\pi4\right)\right\}\dd y \\
+&\quad=-c_{43}\int_x^{x\pm z}y^{1/4}
+ \sum_{n\leq\omega}\frac{r(n)}{n^{3/4}}
+ \sin\!\left(2\pi\sqrt{ny}-\frac\pi4\right)\dd y
+ +O\!\left(zx^{-1/4}\right),
+\end{align*}
+we obtain, from (8.1), (8.3) and (8.4),
+\begin{align*}
+ \int_x^{x\pm z}\{\mathrm{R}(y)-\pi y\}\dd y
+ &=\int_x^{x\pm z}\mathrm{R}(y)\dd y\mp\pi xz+O(z^2) \\
+ &=O\!\left(zx^{1/4}x^{1/80}\omega^{1/5}\log^{1/8}x\right)
+   +O\!\left(zx^{-1/4}\right) \\
+ &\quad+O\!\left(x^{3/4}x^{1/80}\omega^{-3/10}\log^{1/8}x\right)
+   +O\!\left(x^{1/4}\right) \\
+ &=O(z^2),
+\end{align*}
+and hence
+\[
+ \pi x+O(z)\leq\frac1z\int_{x-z}^{x}\mathrm{R}(y)\dd y
+ \leq\mathrm{R}(x)\leq\frac1z\int_x^{x+z}\mathrm{R}(y)\dd y
+ \leq\pi x+O(z).
+\]
+
+\end{document}
