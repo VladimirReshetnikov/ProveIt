@@ -57,6 +57,12 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     `(2/πT)(1/|log N/l| + 1/|log M/l|)` of the indicator, and the sums over
     `l` are bounded by shells around `round M`, `round N` (giving the
     `min(1, L/(T‖M‖))` edge terms) plus a harmonic sum.
+  - `IntegerPoints.BombieriIwaniec` — **proved**: Zhai–Cao Lemma 5, the
+    Bombieri–Iwaniec inequality (`zhaiCao_lemma5_holds`): the trapezoid
+    `τ = 1_{(⌊N⌋+½, ⌊N₁⌋+½)} ∗ 1_{(−½,½)}` is the indicator of `(N, N₁]` on
+    integers, `|𝓕τ| ≤ K` by the convolution theorem, Fourier inversion at
+    integers gives `Σ a_n = ∫ 𝓕τ(θ) Σ a_m e(mθ) dθ`, and `∫K = (2/π)(2 + log W)`
+    explicitly (with `π > 3` from `sin(½) < ½` and `log 2 > 4/7`).
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
@@ -83,7 +89,7 @@ Every result is a `Prop`-valued definition (e.g. `zhaiCao_theorem`,
 `wu_theorem1`); the ones proved so far have a companion `…_holds` theorem
 (or an implication between statements), listed above.  The library compiles
 with no `sorry` and no axioms beyond Mathlib's.  The analytic core — the
-exponential-sum estimates (Zhai–Cao Lemmas 5–7, 9–10, Proposition 1; Wu
+exponential-sum estimates (Zhai–Cao Lemmas 6–7, 9–10, Proposition 1; Wu
 Theorem 2, Lemmas 2.5–2.7, Propositions 1–4), Nowak's formula, and the
 RH-conditional main theorems — remains unproved.
 
