@@ -10,6 +10,8 @@ import FabiusFunction.MomentPowerSeries
 import FabiusFunction.NormalizedEvenMoments
 import FabiusFunction.NormalizedMoments
 import FabiusFunction.Parity
+import FabiusFunction.ScaleTranslation
+import FabiusFunction.TaylorReduction
 import FabiusFunction.TwoAdic
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
@@ -773,13 +775,7 @@ theorem lemma_one (F : BoundedFabius) (hF : IsFabius F)
       -(∫ t in 0..(x - (2 : ℝ) ^ scale),
         (x - (2 : ℝ) ^ scale - t) ^ order *
           iteratedDeriv (order + 1) (extendedFabius F) t) := by
-  sorry
-
-/-- The finite Taylor sum in Proposition 10 when its integer index is nonnegative. -/
-def fabiusReductionSum (n : ℕ) (y : ℝ) : ℝ :=
-  ∑ k ∈ range (n + 1),
-    (2 : ℝ) ^ ((Nat.choose (k + 1) 2 : ℤ) - Nat.choose (n - k) 2) *
-      (halfMoment (n - k) : ℝ) / (n - k).factorial * y ^ k / k.factorial
+  exact taylorRemainder_translate F hF x scale order hx hlo hhi horder
 
 /-- Proposition 10: the recursive evaluation formula for the signed extension. -/
 theorem proposition_ten (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) (n : ℤ)
@@ -789,7 +785,7 @@ theorem proposition_ten (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) (n : ℤ
     let y := x - (2 : ℝ) ^ (-n)
     extendedFabius F x = -extendedFabius F y +
       if 0 ≤ n then fabiusReductionSum n.toNat y else 0 := by
-  sorry
+  exact extendedFabius_reduction F hF x n hx hlo hhi
 
 /-
 Definition 12 is `dyadicDenominator` in `Arithmetic.lean`: the LCM of the
