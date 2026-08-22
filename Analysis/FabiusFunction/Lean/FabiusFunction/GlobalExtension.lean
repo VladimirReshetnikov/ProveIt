@@ -22,6 +22,10 @@ private lemma rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
     (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
   rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
 
+private lemma rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
 private lemma extendedSummand_eq_zero_of_lt_two_mul
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} {n : ℕ}
     (hx : x < 2 * (n : ℝ)) :
@@ -41,6 +45,58 @@ lemma extendedFabius_summable (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
   have hn0 : (0 : ℝ) ≤ n := by positivity
   apply extendedSummand_eq_zero_of_lt_two_mul F hF
   nlinarith
+
+/-- On each interval `[2b, 2b+2]`, the global series has just one nonzero translate. -/
+theorem extendedFabius_eq_single_translate (F : BoundedFabius)
+    (hF : IsFabius F) (b : ℕ) {x : ℝ}
+    (hlo : 2 * (b : ℝ) ≤ x) (hhi : x ≤ 2 * (b : ℝ) + 2) :
+    extendedFabius F x =
+      (-1 : ℝ) ^ binaryWeight b * rvachevUp F (x - 2 * (b : ℝ) - 1) := by
+  unfold extendedFabius
+  rw [tsum_eq_single b]
+  intro m hmb
+  rcases lt_or_gt_of_ne hmb with hmlt | hmlt
+  · have hmle : m + 1 ≤ b := by omega
+    have hmleR : (m : ℝ) + 1 ≤ b := by exact_mod_cast hmle
+    rw [rvachevUp_eq_zero_of_one_le F hF (by nlinarith)]
+    ring
+  · have hmle : b + 1 ≤ m := by omega
+    have hmleR : (b : ℝ) + 1 ≤ m := by exact_mod_cast hmle
+    rw [rvachevUp_eq_zero_of_le_neg_one F hF (by nlinarith)]
+    ring
+
+/-- The signed extension vanishes on nonpositive arguments. -/
+theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ≤ 0) : extendedFabius F x = 0 := by
+  unfold extendedFabius
+  rw [tsum_eq_single 0]
+  · norm_num [binaryWeight, rvachevUp]
+    rw [if_pos (hx.trans (by norm_num))]
+    exact hF.zero_of_nonpos _ hx
+  · intro n hn
+    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
+    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
+    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by linarith
+    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by linarith
+    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
+    simp
+
+/-- The bounded and signed versions agree on the unit interval. -/
+theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    extendedFabius F x = fabiusReal F x := by
+  unfold extendedFabius
+  rw [tsum_eq_single 0]
+  · norm_num [binaryWeight, rvachevUp, hx.2]
+  · intro n hn
+    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
+    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
+    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by
+      linarith [hx.2]
+    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by
+      linarith [hx.2]
+    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
+    simp
 
 /-- The signed global extension is infinitely differentiable. -/
 theorem extendedFabius_contDiff (F : BoundedFabius) (hF : IsFabius F) :

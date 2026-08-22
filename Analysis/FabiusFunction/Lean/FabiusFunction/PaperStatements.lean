@@ -4,6 +4,7 @@ import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.GlobalExtension
+import FabiusFunction.GlobalDyadic
 import FabiusFunction.HalfMomentDenominator
 import FabiusFunction.MomentPowerSeries
 import FabiusFunction.NormalizedEvenMoments
@@ -251,39 +252,6 @@ theorem rvachev_zero (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 :
   rw [rvachevUp, if_pos le_rfl]
   simpa [fabiusReal] using hF.one_of_one_le 1 le_rfl
 
-/-- The signed extension vanishes on nonpositive arguments. -/
-theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : x ≤ 0) : extendedFabius F x = 0 := by
-  unfold extendedFabius
-  rw [tsum_eq_single 0]
-  · norm_num [binaryWeight, rvachevUp]
-    rw [if_pos (hx.trans (by norm_num))]
-    exact hF.zero_of_nonpos _ hx
-  · intro n hn
-    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
-    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
-    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by linarith
-    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by linarith
-    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
-    simp
-
-/-- The bounded and signed versions agree on the unit interval. -/
-theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
-    extendedFabius F x = fabiusReal F x := by
-  unfold extendedFabius
-  rw [tsum_eq_single 0]
-  · norm_num [binaryWeight, rvachevUp, hx.2]
-  · intro n hn
-    have hnpos : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hn
-    have hnposReal : (1 : ℝ) ≤ n := by exact_mod_cast hnpos
-    have harg : x - 2 * (n : ℝ) - 1 ≤ 0 := by
-      linarith [hx.2]
-    have hinside : x - 2 * (n : ℝ) - 1 + 1 ≤ 0 := by
-      linarith [hx.2]
-    rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
-    simp
-
 /-- Equations (5) and (7): the Fourier transform, sinc product, and moment series agree. -/
 theorem rvachevFourier_eq_product_eq_series
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -413,13 +381,6 @@ theorem fabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
       congr 1
       rw [show (a.toNat : ℝ) = (a : ℝ) by exact_mod_cast htoNat]
 
-/-- The analogous exact evaluator computes the paper's signed global extension. -/
-theorem extendedFabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
-    (n : ℕ) (a : ℤ) :
-    (extendedFabiusDyadicValue n a : ℝ) =
-      extendedFabius F ((a : ℝ) / (2 : ℝ) ^ n) := by
-  sorry
-
 /-- A successful rational-input evaluation has the correct bounded value. -/
 theorem evalFabiusDyadic_eq_some_correct (F : BoundedFabius) (hF : IsFabius F)
     (x value : ℚ) (hvalue : evalFabiusDyadic x = some value) :
@@ -482,12 +443,6 @@ theorem evalFabiusDyadic_complete_correct
   have hvalue : evalFabiusDyadic x = some value := by
     simp [evalFabiusDyadic, hexponent, value]
   exact ⟨value, hvalue, evalFabiusDyadic_eq_some_correct F hF x value hvalue⟩
-
-/-- The integer-numerator exact evaluator agrees with Rvachev's function on its support. -/
-theorem rvachevDyadic_cast (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (a : ℤ)
-    (ha : a.natAbs ≤ 2 ^ n) :
-    (rvachevDyadic n a : ℝ) = rvachevUp F (a / (2 : ℝ) ^ n) := by
-  sorry
 
 /-- The Fabius-grid and Rvachev-grid descriptions of Definition 12 agree. -/
 theorem dyadicDenominator_eq_fabiusDyadicDenominator (n : ℕ) :
