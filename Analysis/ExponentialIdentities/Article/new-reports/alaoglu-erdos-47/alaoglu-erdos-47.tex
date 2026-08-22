@@ -1,0 +1,1943 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=28mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+
+\definecolor{linkblue}{RGB}{28,73,120}
+\definecolor{codegray}{RGB}{245,245,245}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Additive progress on the Alaoglu--Erdos conjecture},
+  pdfauthor={Research working note prepared for Vladimir Reshetnikov}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s: additive progress report B}
+\rhead{\thepage}
+
+\setlist[itemize]{topsep=4pt,itemsep=2pt,parsep=1pt}
+\setlist[enumerate]{topsep=4pt,itemsep=2pt,parsep=1pt}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.25em}
+\allowdisplaybreaks
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{target}[theorem]{Target lemma}
+\newtheorem{warning}[theorem]{Proof-audit warning}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Gm}{\mathbb{G}_{\mathrm m}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Frob}{\operatorname{Frob}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\mult}{\operatorname{mult}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\AE}{\mathrm{AE}}
+\newcommand{\ellogtwo}{\log 2}
+\newcommand{\ellogthree}{\log 3}
+
+\title{\textbf{Additive Progress on the Alaoglu--Erd\H{o}s Conjecture}\\[0.4em]
+\large Kummer--Chebotarev incompatibility, mantissa-orbit entropy,\\
+and a rigidity barrier for auxiliary polynomials}
+\author{Research working note prepared for Vladimir Reshetnikov}
+\date{22 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $x\in\R$ and suppose that $m=2^x$ and $n=3^x$ are integers.  The
+Alaoglu--Erd\H{o}s conjecture asserts that $x$ must be an integer.  This
+companion report is deliberately additive: it does not repeat the large
+survey and proof search in Report~A.  It develops three pieces of new
+infrastructure.
+
+First, it associates to $(2,3,m,n)$ an exact order-$\ell$ Kummer
+compatibility test.  Kummer theory and Chebotarev then give closed formulas
+for the density of primes at which a common residue exponent exists.  For a
+hypothetical nonintegral counterexample that density is asymptotic to
+$1/\ell$, while incompatibility has density tending to one.  The rank-three
+case, which initially appears exceptional, is shown to be transverse; its
+exact compatibility density is
+$\ell^{-1}-\ell^{-2}+\ell^{-3}$.
+
+Second, the normalized rational points
+\[
+ U_j=2^{\{jx\}}=\frac{m^j}{2^{\lfloor jx\rfloor}},\qquad
+ V_j=3^{\{jx\}}=\frac{n^j}{3^{\lfloor jx\rfloor}}
+\]
+are studied simultaneously in the real and finite topologies.  Conditional
+on any real subarc of the exponential curve, their order-$\ell$ residue
+symbols are uniformly distributed on the image of an explicit $2\times2$
+matrix.  At the Chebotarev-generic primes that matrix is invertible, so the
+finite residue data has full two-dimensional entropy even on an arbitrarily
+short real arc.  This is a rigorous archimedean-to-finite-place theorem, but
+it points in the opposite direction from a naive local-exponent proof.
+
+Third, an exact local zero estimate is proved.  If an algebraic-coefficient
+polynomial is restricted to $z\mapsto(2^z,3^z)$ at an algebraic point of the
+curve, its order of contact is exactly its ordinary bivariate multiplicity.
+Thus the roughly $D^2$ coefficients of a degree-$D$ auxiliary polynomial
+cannot buy order-$D^2$ directional vanishing; only order $O(D)$ is possible.
+This identifies, rather than merely gestures at, the obstruction in a broad
+class of interpolation-determinant attacks.
+
+The conjecture is not claimed solved here.  The report ends with three
+precise bridge lemmas which would finish it, a proof-status ledger, a
+finite-field verification program, and a staged Lean formalization plan.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, novelty boundary, and proof status}
+
+\subsection{The statement}
+
+We write the conjecture in the following form.
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s]\label{conj:AE}
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+Only positive integers can occur: if $x<0$, then $0<2^x<1$, while if
+$x=0$ the conclusion is immediate.  Hence every putative counterexample has
+$x>0$ and $m=2^x,n=3^x\in\Z_{>0}$.
+
+The external reports about recent machine-assisted mathematical discoveries
+are treated as motivation, not as evidence.  Every assertion used below is
+proved in the text or reduced to a named, standard theorem.  In particular,
+no unpublished announcement is used as a lemma.
+
+\subsection{How this document avoids duplicating Report A}
+
+The attached source corpus was decompressed and used as an exclusion map.
+Its machine-audited metadata is recorded here so that the relationship
+between the documents is reproducible:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Source file & \texttt{alaoglu-erdos-unified-report-A.tex.gz}\\
+Decompressed lines & \texttt{20,925}\\
+Whitespace-delimited words & \texttt{113,833}\\
+Structural headings & \texttt{491}\\
+SHA-256 of compressed source & \texttt{1e77491ea5cc0911d56e}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The following exact strings were also checked against Report~A.  This is only
+a lexical guard against accidental repetition, not a claim of priority in
+the literature.
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}Xc@{}}
+\toprule
+String identifying a result developed below & Present verbatim in Report A?\\
+\midrule
+\texttt{mantissa-orbit entropy} & no\\
+\texttt{transcendental-direction rigidity} & no\\
+\texttt{fixed-t Kummer density} & no\\
+\texttt{q\string^3-q+1} & no\\
+\texttt{rank-three transversality} & no\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The baseline reductions in \cref{sec:baseline} are included only to make the
+new arguments self-contained.  The substantive additions begin with the
+rank-three transversality lemma, the exact Kummer counts, the conditional
+mantissa equidistribution theorem, and the auxiliary-polynomial rigidity
+theorem.
+
+\subsection{What is proved, and what is not}
+
+The main unconditional conclusions of this report are as follows.
+
+\begin{enumerate}
+\item Every nonintegral counterexample has multiplicative rank at least three:
+      $\rank\langle2,3,m,n\rangle\ge3$.
+\item In rank three, the unique multiplicative relation is necessarily
+      transverse between the input pair $(2,3)$ and output pair $(m,n)$.
+\item For every sufficiently large odd prime $\ell$, the relative
+      Chebotarev density of primes admitting a common order-$\ell$ residue
+      exponent is given by an exact formula.  It is
+      $\ell^{-1}-\ell^{-2}+\ell^{-3}$ in rank three and
+      $\ell^{-1}-\ell^{-3}+\ell^{-4}$ in rank four.
+\item At a density $1-O(1/\ell)$ of primes, the normalized mantissa orbit has
+      all $\ell^2$ residue-symbol pairs, uniformly, even after conditioning
+      on an arbitrarily short real interval.
+\item Algebraic auxiliary polynomials have no anomalously high directional
+      contact with the curve $z\mapsto(2^z,3^z)$ at its algebraic points.
+\item A common prime divisor of the simultaneous near-power differences
+      $m^b-2^a$ and $n^b-3^a$ is forced into the rare Kummer-compatible
+      Chebotarev set whenever $\ell\nmid b$.
+\end{enumerate}
+
+None of these statements by itself proves \cref{conj:AE}.  The precise
+remaining gaps are isolated in \cref{sec:bridges}.  The most important
+negative conclusion is also constructive: simply transporting the real
+exponent $x$ to a $p$-adic or finite-field exponent cannot work at generic
+primes, because a hypothetical counterexample is provably incompatible at
+almost all of them.
+
+\section{Baseline reductions and the multiplicative-rank floor}\label{sec:baseline}
+
+Throughout the rest of the report, a \emph{counterexample datum} means a
+triple
+\[
+ (x,m,n),\qquad x\in\R\setminus\Z,\qquad m=2^x\in\Z_{>0},\quad
+ n=3^x\in\Z_{>0}.
+\]
+The point of introducing the term is not to assume that such a datum exists,
+but to make conditional deductions compact.
+
+\subsection{Rational and algebraic exponents are already excluded}
+
+\begin{proposition}\label{prop:rational-integer}
+If $x\in\Q$ and $2^x\in\Z$, then $x\in\Z$.
+\end{proposition}
+
+\begin{proof}
+Write $x=a/b$ with $a\in\Z$, $b\in\Z_{>0}$, and $\gcd(a,b)=1$.  Since
+$2^{a/b}$ is a positive integer $m$, one has $2^a=m^b$.  Comparing the
+$2$-adic valuations gives $a=bv_2(m)$.  Hence $b\mid a$, so $b=1$.
+\end{proof}
+
+\begin{corollary}\label{cor:x-transcendental}
+In a counterexample datum, $x$ is transcendental.
+\end{corollary}
+
+\begin{proof}
+By \cref{prop:rational-integer}, $x$ is irrational.  If it were algebraic,
+then the Gelfond--Schneider theorem, applied to the algebraic base $2$ and
+the algebraic irrational exponent $x$, would make every value of $2^x$
+transcendental.  This contradicts $2^x=m\in\Z$.
+\end{proof}
+
+Set
+\[
+ \alpha=\frac{\log3}{\log2}.
+\]
+
+\begin{proposition}\label{prop:alpha-transcendental}
+The number $\alpha$ is transcendental.
+\end{proposition}
+
+\begin{proof}
+It is not rational, since $\alpha=r/s\in\Q$ would imply $2^r=3^s$ after
+clearing denominators.  If $\alpha$ were algebraic irrational, then
+Gelfond--Schneider would make $2^\alpha$ transcendental, whereas
+$2^\alpha=3$.
+\end{proof}
+
+The conjecture can therefore be viewed as a very special rank-one relation
+between a $2\times2$ matrix of logarithms of positive integers:
+\begin{equation}\label{eq:logdet}
+ \det\begin{pmatrix}
+  \log2&\log3\\
+  \log m&\log n
+ \end{pmatrix}=0,
+ \qquad
+ (\log m,\log n)=x(\log2,\log3).
+\end{equation}
+The Four Exponentials Conjecture would rule out this matrix when $x$ is
+irrational.  The integrality of $m,n$ is the extra datum one hopes to exploit.
+
+\subsection{Multiplicative rank}
+
+For a finitely generated subgroup $\Gamma\subset\Q_{>0}^{\times}$, its rank
+means its rank as a free abelian group.  Put
+\[
+ \Gamma=\langle2,3,m,n\rangle\subset\Q_{>0}^{\times},\qquad r=\rank\Gamma.
+\]
+Since $2$ and $3$ are multiplicatively independent, $r\ge2$.
+
+\begin{proposition}[rank floor]\label{prop:rank-floor}
+For a counterexample datum one has $r\ge3$.
+\end{proposition}
+
+\begin{proof}
+Suppose $r=2$.  Since the valuation vectors of $2$ and $3$ are independent,
+any prime outside $\{2,3\}$ occurring in $m$ or $n$ would raise the rank.
+Consequently
+\[
+ m=2^a3^b,\qquad n=2^c3^d
+\]
+with $a,b,c,d\in\Z_{\ge0}$.  Dividing logarithms by $\log2$ gives
+\[
+ x=a+b\alpha,\qquad x\alpha=c+d\alpha.
+\]
+Eliminating $x$ yields
+\[
+ b\alpha^2+(a-d)\alpha-c=0.
+\]
+By \cref{prop:alpha-transcendental}, all three rational coefficients vanish.
+Thus $b=c=0$ and $a=d$, whence $x=a\in\Z$, contrary to the definition of a
+counterexample datum.
+\end{proof}
+
+\begin{corollary}\label{cor:outside-prime}
+In a counterexample datum, at least one of $m,n$ has a prime divisor outside
+$\{2,3\}$.
+\end{corollary}
+
+\begin{proof}
+If both were $\{2,3\}$-smooth, then $\Gamma$ would have rank two, contrary to
+\cref{prop:rank-floor}.
+\end{proof}
+
+\subsection{The rank-three normal form and its transversality}
+
+If $r=3$, the homomorphism $\Z^4\to\Gamma$ sending the standard basis to
+$2,3,m,n$ has a rank-one kernel.  Let
+\begin{equation}\label{eq:primitive-relation}
+ 2^A3^B m^C n^D=1,
+ \qquad (A,B,C,D)\in\Z^4
+\end{equation}
+be a primitive generator of that kernel, unique up to sign.
+Substitution of $m=2^x,n=3^x$ gives
+\begin{equation}\label{eq:mobius-relation}
+ (A+Cx)+(B+Dx)\alpha=0,
+ \qquad
+ x=-\frac{A+B\alpha}{C+D\alpha}.
+\end{equation}
+The denominator is nonzero: otherwise $C+D\alpha=0$, and the transcendence
+of $\alpha$ would force $C=D=0$, which would make
+$2^A3^B=1$ and hence $A=B=0$.
+
+\begin{lemma}[rank-three transversality]\label{lem:rank3-transverse}
+For a rank-three counterexample datum, the primitive relation
+\eqref{eq:primitive-relation} satisfies
+\[
+ AD-BC\ne0.
+\]
+Equivalently, the coefficient vectors $(A,B)$ and $(C,D)$ are not
+proportional over $\Q$.
+\end{lemma}
+
+\begin{proof}
+If $(A,B)=\lambda(C,D)$ for some $\lambda\in\Q$, then
+\eqref{eq:mobius-relation} becomes
+\[
+ (x+\lambda)(C+D\alpha)=0.
+\]
+The second factor is nonzero, so $x=-\lambda\in\Q$.  By
+\cref{prop:rational-integer}, $x\in\Z$, a contradiction.
+\end{proof}
+
+This tiny determinant will be responsible for the clean rank-three
+Chebotarev formula.  It removes an apparent exceptional case that would
+otherwise double the compatible density.
+
+\section{Kummer residue coordinates}\label{sec:kummer-setup}
+
+\subsection{The Kummer space}
+
+Fix an odd prime $\ell$ and put
+\[
+ K_\ell=\Q(\zeta_\ell),
+\]
+where $\zeta_\ell$ is a chosen primitive $\ell$th root of unity.  Let
+$V_\ell$ be the $\F_\ell$-subspace of
+$K_\ell^\times/K_\ell^{\times\ell}$ generated by the classes of
+$2,3,m,n$, and write
+\[
+ r_\ell=\dim_{\F_\ell}V_\ell.
+\]
+Kummer theory identifies
+\begin{equation}\label{eq:kummer-galois}
+ \Gal\bigl(K_\ell(2^{1/\ell},3^{1/\ell},m^{1/\ell},n^{1/\ell})/K_\ell\bigr)
+ \cong \operatorname{Hom}_{\F_\ell}(V_\ell,\mu_\ell),
+\end{equation}
+so this Galois group has order $\ell^{r_\ell}$.
+
+The dimension $r_\ell$ agrees with the ordinary multiplicative rank for all
+but finitely many $\ell$.  The finite exceptional set is worth stating
+correctly; ignoring it is a common source of overstrong Kummer claims.
+
+\begin{lemma}[eventual Kummer rank]\label{lem:eventual-rank}
+Let $\Gamma=\langle2,3,m,n\rangle$ have rank $r$.  There is a positive
+integer $I_\Gamma$ such that, for every odd prime $\ell\nmid I_\Gamma$,
+\[
+ r_\ell=r.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $S$ be the finite set of rational primes occurring in $6mn$.  The
+valuation map identifies the group of positive rationals supported on $S$
+with the lattice $\Z^S$.  The image $L$ of $\Gamma$ is a rank-$r$ sublattice.
+Let
+\[
+ L^{\mathrm{sat}}=(L\otimes_\Z\Q)\cap\Z^S,
+ \qquad I_\Gamma=[L^{\mathrm{sat}}:L].
+\]
+For $\ell\nmid I_\Gamma$, reduction modulo $\ell$ gives an $r$-dimensional
+image in $\Q^\times/\Q^{\times\ell}$.
+
+It remains to see that passing from $\Q$ to $K_\ell$ creates no new
+$\ell$th-power relation among positive rationals.  Suppose
+$a\in\Q_{>0}$ and $a=y^\ell$ for some $y\in K_\ell$.  At a rational prime
+$p\ne\ell$, the cyclotomic extension is unramified, so every valuation of
+$a$ above $p$ is $v_p(a)$ and must be divisible by $\ell$.  At $p=\ell$ the
+ramification index is $\ell-1$; hence $\ell\mid(\ell-1)v_\ell(a)$, and
+coprimality gives $\ell\mid v_\ell(a)$.  All rational prime valuations of
+$a$ are therefore divisible by $\ell$, and positivity gives
+$a\in\Q^{\times\ell}$.  Thus the rational Kummer classes inject into the
+cyclotomic Kummer space, proving the claim.
+\end{proof}
+
+We call an odd prime $\ell$ \emph{good for the datum} if it avoids
+$I_\Gamma$ and, in rank three, also avoids the nonzero integer $AD-BC$ from
+\cref{lem:rank3-transverse}.  Only finitely many odd primes are not good.
+
+\subsection{Residue-symbol coordinates}
+
+Let
+\[
+ L_\ell=K_\ell(2^{1/\ell},3^{1/\ell},m^{1/\ell},n^{1/\ell}).
+\]
+For a prime ideal $\mathfrak p$ of $K_\ell$ unramified in $L_\ell$ and not
+dividing $6mn\ell$, define $\kappa_{\mathfrak p}(a)\in\F_\ell$ by
+\[
+ \left(\frac{a}{\mathfrak p}\right)_\ell
+   =\zeta_\ell^{\kappa_{\mathfrak p}(a)},
+ \qquad a\in\{2,3,m,n\}.
+\]
+Equivalently, $\kappa_{\mathfrak p}$ is the Kummer character represented by
+$\Frob_{\mathfrak p}$.  Put
+\begin{equation}\label{eq:kappa-vector}
+ \boldsymbol\kappa_{\mathfrak p}
+ =\bigl(u_1,u_2,v_1,v_2\bigr)
+ =\bigl(\kappa_{\mathfrak p}(2),\kappa_{\mathfrak p}(3),
+        \kappa_{\mathfrak p}(m),\kappa_{\mathfrak p}(n)\bigr)
+ \in\F_\ell^4.
+\end{equation}
+Changing the chosen primitive root $\zeta_\ell$ multiplies all four
+coordinates by one nonzero scalar, so all zero/nonzero and proportionality
+conditions used below are canonical.
+
+By Chebotarev, the vectors \eqref{eq:kappa-vector} are uniformly distributed
+in the $r_\ell$-dimensional linear subspace
+\[
+ W_\ell=V_\ell^\vee\subset\F_\ell^4.
+\]
+More explicitly, every vector in $W_\ell$ occurs on a set of prime ideals of
+$K_\ell$ of relative density $\ell^{-r_\ell}$.
+
+\subsection{Exact compatibility versus a vanishing determinant}
+
+There are two related local tests, and they must not be conflated.
+
+\begin{definition}[exact common residue exponent]\label{def:exact-compatible}
+A vector $(u_1,u_2,v_1,v_2)\in\F_\ell^4$ is \emph{compatible} if there exists
+$t\in\F_\ell$ such that
+\[
+ (v_1,v_2)=t(u_1,u_2).
+\]
+Let $\mathcal C_\ell$ denote the set of compatible vectors, and let
+\[
+ \mathcal C_{\ell,t}=\{(u_1,u_2,tu_1,tu_2):u_1,u_2\in\F_\ell\}
+\]
+be the fixed-$t$ compatibility plane.
+\end{definition}
+
+The projective determinant
+\begin{equation}\label{eq:Delta}
+ \Delta(u_1,u_2,v_1,v_2)=u_1v_2-u_2v_1
+\end{equation}
+vanishes on $\mathcal C_\ell$, but the converse fails when
+$(u_1,u_2)=(0,0)$ and $(v_1,v_2)\ne(0,0)$.  Therefore
+$\Delta=0$ is a useful rank detector, not an exact common-exponent detector.
+The distinction changes the main term beyond first order and is important in
+formal verification.
+
+\begin{lemma}[finite compatibility count]\label{lem:C-count}
+One has
+\[
+ |\mathcal C_\ell|=\ell^3-\ell+1.
+\]
+\end{lemma}
+
+\begin{proof}
+For a nonzero source vector $u=(u_1,u_2)$, the $\ell$ values of $t$ give
+$\ell$ distinct targets $tu$.  This contributes
+$\ell(\ell^2-1)$ vectors.  For $u=0$, exact compatibility permits only the
+zero target, contributing one more vector.
+\end{proof}
+
+\begin{warning}\label{warn:det-not-exact}
+Replacing $|\mathcal C_\ell|$ by the number of singular $2\times2$ matrices,
+$\ell^3+\ell^2-\ell$, silently counts the $\ell^2-1$ false positives with
+zero source and nonzero target.  Any Lean formalization should define
+compatibility by an existential scalar before proving a determinant
+corollary.
+\end{warning}
+
+\section{Exact Kummer--Chebotarev density laws}\label{sec:kummer-density}
+
+\subsection{The universal density formula}
+
+The Kummer space gives a formula before any rank classification.
+
+\begin{theorem}[Kummer compatibility density]\label{thm:universal-density}
+For every odd prime $\ell$, the relative density among unramified prime
+ideals $\mathfrak p$ of $K_\ell$ at which a common order-$\ell$ residue
+exponent exists is
+\begin{equation}\label{eq:universal-density}
+ \dens_\ell(\mathrm{compatible})
+ =\frac{|W_\ell\cap\mathcal C_\ell|}{\ell^{r_\ell}}.
+\end{equation}
+For a fixed $t\in\F_\ell$, the corresponding density is
+\[
+ \dens_\ell(t)=
+ \frac{|W_\ell\cap\mathcal C_{\ell,t}|}{\ell^{r_\ell}}.
+\]
+\end{theorem}
+
+\begin{proof}
+The Kummer isomorphism \eqref{eq:kummer-galois} identifies the Galois group
+with the finite additive space $W_\ell$.  The Frobenius element at
+$\mathfrak p$ has coordinate vector
+$\boldsymbol\kappa_{\mathfrak p}$.  Chebotarev assigns density
+$1/\ell^{r_\ell}$ to each Galois element.  Summing over the indicated subsets
+proves both formulas.
+\end{proof}
+
+The content is therefore finite linear algebra.  The rank-three
+transversality lemma makes that linear algebra particularly clean.
+
+\subsection{Rank four}
+
+\begin{theorem}[rank-four law]\label{thm:rank4-law}
+Suppose $r_\ell=4$.  Then, for every $t\in\F_\ell$,
+\[
+ \dens_\ell(t)=\frac1{\ell^2},
+\]
+and the exact compatibility density is
+\begin{equation}\label{eq:rank4-compatible}
+ \dens_\ell(\mathrm{compatible})
+ =\frac{\ell^3-\ell+1}{\ell^4}
+ =\frac1\ell-\frac1{\ell^3}+\frac1{\ell^4}.
+\end{equation}
+The incompatibility density is therefore
+\begin{equation}\label{eq:rank4-incompatible}
+ 1-\frac1\ell+\frac1{\ell^3}-\frac1{\ell^4}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Here $W_\ell=\F_\ell^4$.  Each fixed-$t$ plane has $\ell^2$ points, giving
+density $\ell^2/\ell^4=\ell^{-2}$.  The union count is
+\cref{lem:C-count}; division by $\ell^4$ proves
+\eqref{eq:rank4-compatible}.
+\end{proof}
+
+The formula can also be seen as a corrected union of $\ell$ planes.  Any two
+planes $\mathcal C_{\ell,t}$ and $\mathcal C_{\ell,s}$ with $t\ne s$ meet
+only at the zero vector.  Thus
+\[
+ |\mathcal C_\ell|=1+\ell(\ell^2-1).
+\]
+The common zero Frobenius is the only overlap.
+
+\subsection{Rank three: the general hyperplane count}
+
+Before using transversality, it is useful to record the exact count for an
+arbitrary hyperplane.  Let
+\begin{equation}\label{eq:hyperplane}
+ W=\{(u_1,u_2,v_1,v_2):Au_1+Bu_2+Cv_1+Dv_2=0\}
+\end{equation}
+be a hyperplane in $\F_\ell^4$.  Define linear forms on
+$u=(u_1,u_2)$ by
+\[
+ L(u)=Au_1+Bu_2,\qquad M(u)=Cu_1+Du_2.
+\]
+On the fixed-$t$ compatibility plane $v=tu$, the hyperplane equation becomes
+\begin{equation}\label{eq:L+tM}
+ (L+tM)(u)=0.
+\end{equation}
+
+\begin{proposition}[exact hyperplane count]\label{prop:hyperplane-count}
+For the hyperplane \eqref{eq:hyperplane},
+\[
+ |W\cap\mathcal C_\ell|=
+ \begin{cases}
+  2\ell^2-2\ell+1,
+     & M\ne0\text{ and }L\in\F_\ell M,\\[2mm]
+  \ell^2-\ell+1,
+     & \text{otherwise}.
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+The zero source contributes the single zero vector.  For a nonzero source
+$u$, the number of scalars $t$ solving $L(u)+tM(u)=0$ is one if
+$M(u)\ne0$, is $\ell$ if $L(u)=M(u)=0$, and is zero if
+$M(u)=0\ne L(u)$.
+
+If $M\ne0$ and $L$ is proportional to $M$, their kernels coincide and contain
+$\ell-1$ nonzero vectors.  There are $\ell^2-\ell$ nonzero vectors outside
+that kernel, so the total is
+\[
+ 1+(\ell^2-\ell)+\ell(\ell-1)=2\ell^2-2\ell+1.
+\]
+If $M\ne0$ and $L,M$ are independent, the common kernel is zero and
+$M$ has $\ell-1$ nonzero zeros.  Hence the total is
+$1+(\ell^2-1)-(\ell-1)=\ell^2-\ell+1$.  Finally, if $M=0$, then $L\ne0$;
+only the $\ell-1$ nonzero vectors in $\ker L$ work, each with all $\ell$
+values of $t$, again giving $1+\ell(\ell-1)$.
+\end{proof}
+
+The larger first case is exactly the nontransverse case.  It cannot persist
+for a nonintegral rank-three counterexample.
+
+\subsection{Rank three for a hypothetical counterexample}
+
+\begin{theorem}[transverse rank-three law]\label{thm:rank3-law}
+Let $(x,m,n)$ be a rank-three counterexample datum, and let $\ell$ be good for
+the datum.  Then, for every $t\in\F_\ell$,
+\[
+ \dens_\ell(t)=\frac1{\ell^2},
+\]
+and the exact compatibility density is
+\begin{equation}\label{eq:rank3-compatible}
+ \dens_\ell(\mathrm{compatible})
+ =\frac{\ell^2-\ell+1}{\ell^3}
+ =\frac1\ell-\frac1{\ell^2}+\frac1{\ell^3}.
+\end{equation}
+Thus incompatibility has density
+\begin{equation}\label{eq:rank3-incompatible}
+ 1-\frac1\ell+\frac1{\ell^2}-\frac1{\ell^3}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a good $\ell$, $r_\ell=3$ and $W_\ell$ is the reduction modulo $\ell$ of
+the primitive relation \eqref{eq:primitive-relation}:
+\[
+ Au_1+Bu_2+Cv_1+Dv_2=0.
+\]
+Goodness includes $\ell\nmid AD-BC$, so $L$ and $M$ are independent.  For
+each fixed $t$, the form $L+tM$ is nonzero and has a one-dimensional kernel,
+so $|W_\ell\cap\mathcal C_{\ell,t}|=\ell$.  Since
+$|W_\ell|=\ell^3$, the fixed-$t$ density is $\ell^{-2}$.
+
+For distinct $s,t$, the sets
+$W_\ell\cap\mathcal C_{\ell,s}$ and
+$W_\ell\cap\mathcal C_{\ell,t}$ meet only at zero.  Their union therefore
+has
+\[
+ 1+\ell(\ell-1)=\ell^2-\ell+1
+\]
+points, proving \eqref{eq:rank3-compatible}.
+\end{proof}
+
+\begin{remark}[fixed exponents are uniformly expensive]\label{rem:fixed-t}
+The fixed-$t$ density is exactly $\ell^{-2}$ in both ranks three and four.
+Rank changes only the density of the completely split zero vector and hence
+the overlap correction when the $\ell$ possible exponents are united.
+This makes the main term $1/\ell$ transparent: there are $\ell$ candidate
+exponents, each imposing two independent residue equations.
+\end{remark}
+
+\subsection{The projective determinant law}
+
+The determinant $\Delta$ from \eqref{eq:Delta} is not the exact detector, but
+it will control the finite entropy of the mantissa orbit.  Its density is
+also elementary.
+
+\begin{proposition}[projective rank law]\label{prop:projective-law}
+Let $\ell$ be an odd prime.
+\begin{enumerate}
+\item If $r_\ell=4$, then
+\[
+ \dens_\ell(\Delta=0)
+ =\frac{\ell^3+\ell^2-\ell}{\ell^4}
+ =\frac1\ell+\frac1{\ell^2}-\frac1{\ell^3}.
+\]
+\item If $(x,m,n)$ is a rank-three counterexample datum and $\ell$ is good,
+then
+\[
+ \dens_\ell(\Delta=0)=\frac1\ell.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+In rank four, $\Delta=0$ means that a $2\times2$ matrix has rank at most one.
+There is one zero matrix and
+\[
+ \frac{(\ell^2-1)^2}{\ell-1}
+\]
+rank-one matrices, for a total of $\ell^3+\ell^2-\ell$.
+
+In rank three, $W_\ell$ is the hyperplane whose coefficient matrix
+$\bigl(\begin{smallmatrix}A&B\\C&D\end{smallmatrix}\bigr)$ is invertible
+modulo $\ell$.  Left and right changes of basis preserve singularity and
+reduce the hyperplane to $a+d=0$.  A matrix
+$\bigl(\begin{smallmatrix}a&b\\c&-a\end{smallmatrix}\bigr)$ is singular when
+$a^2+bc=0$.  If $b\ne0$, there are $\ell(\ell-1)$ choices, and if $b=0$ one
+must have $a=0$ while $c$ is arbitrary, giving another $\ell$ choices.  The
+total is $\ell^2$ out of $\ell^3$.
+\end{proof}
+
+\begin{corollary}[generic local incompatibility]\label{cor:generic-incompatibility}
+For every hypothetical counterexample datum and every sufficiently large odd
+prime $\ell$, exact common-exponent compatibility occurs on a relative
+Chebotarev set of density $1/\ell+O(1/\ell^2)$, while projective rank collapse
+occurs on a set of density $1/\ell+O(1/\ell^2)$.  In particular, both kinds
+of local alignment fail on a density tending to one as $\ell\to\infty$.
+\end{corollary}
+
+\begin{proof}
+By \cref{prop:rank-floor}, the rank is three or four.  Apply
+\cref{thm:rank4-law,thm:rank3-law,prop:projective-law} outside the finite set
+of bad primes.
+\end{proof}
+
+\subsection{Why this is an obstruction, not yet a contradiction}
+
+The real equation $(\log m,\log n)=x(\log2,\log3)$ does not define an element
+$x\bmod\ell$ and does not imply residue compatibility.  In fact,
+\cref{cor:generic-incompatibility} says that if a counterexample exists, then
+an attempted common residue exponent fails at almost every Kummer prime as
+$\ell$ grows.  Hence a proof cannot proceed by the sentence
+``reduce the real exponent modulo $\ell$''; there is no such reduction.
+
+A successful local proof would need one of the following genuinely new
+bridges:
+\begin{itemize}
+\item a reason to select primes from the sparse compatible Chebotarev set;
+\item a global product-formula argument that couples many incompatible
+      places without assigning a local exponent;
+\item or a theorem that turns the integrality of the entire orbit, rather
+      than one pair of values, into a finite-place constraint.
+\end{itemize}
+The next section tests the third possibility exactly.
+
+\section{The normalized mantissa orbit}\label{sec:mantissa}
+
+\subsection{A dense rational orbit on a compact arc}
+
+For $j\ge0$, define
+\begin{equation}\label{eq:mantissa-def}
+ k_j=\lfloor jx\rfloor,\qquad \theta_j=\{jx\},\qquad
+ U_j=\frac{m^j}{2^{k_j}}=2^{\theta_j},\qquad
+ V_j=\frac{n^j}{3^{k_j}}=3^{\theta_j}.
+\end{equation}
+Thus
+\[
+ 1\le U_j<2,\qquad 1\le V_j<3,
+\]
+and every $(U_j,V_j)$ is a rational point on the compact analytic arc
+\[
+ \mathcal A=\{(2^t,3^t):0\le t<1\}.
+\]
+Since $x$ is irrational, $(\theta_j)$ is dense and uniformly distributed in
+$[0,1)$; hence the rational points \eqref{eq:mantissa-def} are dense on
+$\mathcal A$.
+
+This reformulation packages all positive points of the additive lattice
+$\Z+\Z x$.  It is stronger than looking at $(m,n)$ alone, but its height
+also grows exponentially with $j$, so density by itself does not violate
+rational-point counting theorems.
+
+\subsection{Joint equidistribution of the index and the carry}
+
+The pair $(j,k_j)$ is the discrete coding of the irrational rotation by
+$x$.  The following exact refinement is the key input.
+
+\begin{theorem}[conditional carry equidistribution]\label{thm:carry-UD}
+Let $x$ be irrational and let $q\ge2$ be an integer.  For every residue pair
+$(r,s)\in(\Z/q\Z)^2$ and every interval $I\subset[0,1)$,
+\begin{equation}\label{eq:carry-density}
+ \lim_{N\to\infty}\frac1N
+ \#\{0\le j<N:
+      j\equiv r\pmod q,
+      \lfloor jx\rfloor\equiv s\pmod q,
+      \{jx\}\in I\}
+ =\frac{|I|}{q^2}.
+\end{equation}
+The same holds for finite unions of intervals whose boundaries have measure
+zero.  Equivalently,
+\[
+ \bigl(\{jx\},j\bmod q,\lfloor jx\rfloor\bmod q\bigr)
+\]
+is equidistributed for the product of Lebesgue measure and uniform counting
+measure on $(\Z/q\Z)^2$.
+\end{theorem}
+
+\begin{proof}
+Fix $r$ and write $j=r+q h$.  Put
+\[
+ y_h=\frac{jx}{q}=\frac{rx}{q}+hx,
+ \qquad t_h=\{y_h\}.
+\]
+Because $x$ is irrational, $(t_h)$ is uniformly distributed in $[0,1)$.
+Now
+\[
+ jx=q\lfloor y_h\rfloor+q t_h,
+\]
+so
+\[
+ \lfloor jx\rfloor\bmod q=\lfloor q t_h\rfloor,
+ \qquad \{jx\}=\{q t_h\}.
+\]
+The conditions $\lfloor jx\rfloor\equiv s\pmod q$ and $\{jx\}\in I$ are
+therefore equivalent to
+\[
+ t_h\in\frac{s+I}{q}
+   =\left\{\frac{s+u}{q}:u\in I\right\},
+\]
+an interval of length $|I|/q$.  Among indices with $j\equiv r\pmod q$ this
+has conditional density $|I|/q$; the residue class $r$ itself has density
+$1/q$.  Their product is $|I|/q^2$.
+\end{proof}
+
+The theorem is elementary, but it supplies the missing quantitative statement
+that ``real closeness'' may be imposed simultaneously with arbitrary residues
+of both $j$ and its carry $\lfloor jx\rfloor$.
+
+\subsection{Residue symbols of the mantissa orbit}
+
+Fix an odd prime $\ell$ and an unramified prime ideal $\mathfrak p$ as in
+\cref{sec:kummer-setup}.  Multiplicativity of the Kummer character and
+\eqref{eq:mantissa-def} give
+\begin{equation}\label{eq:mantissa-kappa}
+ \begin{pmatrix}
+  \kappa_{\mathfrak p}(U_j)\\
+  \kappa_{\mathfrak p}(V_j)
+ \end{pmatrix}
+ =
+ M_{\mathfrak p}
+ \begin{pmatrix}j\\k_j\end{pmatrix}
+ \pmod\ell,
+ \qquad
+ M_{\mathfrak p}=
+ \begin{pmatrix}
+  \kappa_{\mathfrak p}(m)&-\kappa_{\mathfrak p}(2)\\
+  \kappa_{\mathfrak p}(n)&-\kappa_{\mathfrak p}(3)
+ \end{pmatrix}.
+\end{equation}
+Its determinant is
+\begin{equation}\label{eq:mantissa-det}
+ \det M_{\mathfrak p}
+ =\kappa_{\mathfrak p}(2)\kappa_{\mathfrak p}(n)
+  -\kappa_{\mathfrak p}(3)\kappa_{\mathfrak p}(m)
+ =\Delta(\boldsymbol\kappa_{\mathfrak p}).
+\end{equation}
+
+\begin{theorem}[mantissa-orbit entropy]\label{thm:mantissa-entropy}
+Let $(x,m,n)$ be a counterexample datum, let $\ell$ be an odd prime, and let
+$\mathfrak p$ be an unramified prime ideal as above.  For every interval
+$I\subset[0,1)$, conditional on $\theta_j\in I$ the vectors
+\[
+ \bigl(\kappa_{\mathfrak p}(U_j),
+       \kappa_{\mathfrak p}(V_j)\bigr)
+\]
+are uniformly distributed on $\operatorname{im}M_{\mathfrak p}$.  More
+precisely, each $w\in\operatorname{im}M_{\mathfrak p}$ occurs with natural
+density
+\[
+ \frac{|I|}{|\operatorname{im}M_{\mathfrak p}|}.
+\]
+Consequently:
+\begin{enumerate}
+\item if $\Delta(\boldsymbol\kappa_{\mathfrak p})\ne0$, every one of the
+      $\ell^2$ symbol pairs occurs with density $|I|/\ell^2$;
+\item if $M_{\mathfrak p}$ has rank one, every point on its image line occurs
+      with density $|I|/\ell$;
+\item if $M_{\mathfrak p}=0$, the symbol pair is identically zero.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:carry-UD}, conditional on $\theta_j\in I$, the vector
+$(j,k_j)\bmod\ell$ is uniform on $\F_\ell^2$.  A linear map sends uniform
+measure to uniform measure on its image, with every image point having
+$|\ker M_{\mathfrak p}|$ preimages.  Equation
+\eqref{eq:mantissa-kappa} completes the proof.
+\end{proof}
+
+\begin{corollary}[full local entropy at generic primes]\label{cor:full-entropy}
+For a counterexample datum and every sufficiently large good odd prime
+$\ell$, the following holds.
+\begin{enumerate}
+\item In multiplicative rank four, a relative Chebotarev proportion
+\[
+ 1-\frac1\ell-\frac1{\ell^2}+\frac1{\ell^3}
+\]
+of prime ideals have full mantissa-orbit entropy $\ell^2$ on every real
+subinterval.
+\item In multiplicative rank three, a relative proportion $1-1/\ell$ have
+full entropy.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Full entropy is equivalent to $\Delta\ne0$ by
+\eqref{eq:mantissa-det}.  Apply \cref{prop:projective-law}.
+\end{proof}
+
+\subsection{Interpretation: a rigorous anti-continuity result}
+
+The points $(U_j,V_j)$ can be restricted to an arbitrarily short real arc
+around any point $(2^t,3^t)$, yet at a Chebotarev-generic prime their residue
+symbols still cover all of $\mu_\ell^2$ uniformly.  Thus no argument of the
+following form can be valid:
+\begin{quote}
+The real points lie nearly on one tangent direction, so their reductions
+must have approximately one-dimensional residue data.
+\end{quote}
+There is no finite-field notion of ``approximately,'' and the exact theorem
+shows two-dimensional behavior even after arbitrarily severe archimedean
+conditioning.
+
+This does not make local methods useless.  It says that any useful local
+constraint must involve heights, divisibility by primes that vary with $j$,
+or a simultaneous adelic product---not reduction modulo one fixed prime.
+The selected-prime strategy in \cref{sec:selected-prime} follows precisely
+that prescription.
+
+\section{A rigidity barrier for auxiliary polynomials}\label{sec:aux-rigidity}
+
+Auxiliary-polynomial and interpolation-determinant methods are natural here.
+A counterexample supplies algebraic points
+\[
+ (2^{a+bx},3^{a+bx})=(2^a m^b,3^a n^b)
+\]
+for all integers $a,b$ for which the displayed quantities are interpreted as
+rationals, and as integers when $a,b\ge0$.  One might hope to use the roughly
+$D^2$ coefficients of a bivariate degree-$D$ polynomial to obtain roughly
+$D^2$ orders of vanishing along the one-dimensional exponential curve.  The
+next theorem shows that algebraic coefficients forbid exactly that gain.
+
+\subsection{Exact equality of directional order and ordinary multiplicity}
+
+For a polynomial $P\in\overline\Q[X,Y]$ and a point
+$(A,B)\in\overline\Q^{\times2}$, let
+$\mult_{(A,B)}P$ be the least total degree of a nonzero homogeneous term in
+the Taylor expansion of $P(A+X,B+Y)$.  It is zero when $P(A,B)\ne0$.
+
+\begin{theorem}[transcendental-direction rigidity]\label{thm:direction-rigidity}
+Let $z_0\in\C$ be such that
+\[
+ A=2^{z_0},\qquad B=3^{z_0}
+\]
+are algebraic and nonzero.  For every nonzero
+$P\in\overline\Q[X,Y]$, define
+\[
+ F(t)=P\bigl(Ae^{t\log2},Be^{t\log3}\bigr)
+      =P(2^{z_0+t},3^{z_0+t}).
+\]
+Then
+\begin{equation}\label{eq:ord-equals-mult}
+ \ord_{t=0}F=\mult_{(A,B)}P.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $d=\mult_{(A,B)}P$ and write
+\[
+ P(A+X,B+Y)=H_d(X,Y)+\text{terms of total degree greater than }d,
+\]
+where $H_d\in\overline\Q[X,Y]$ is a nonzero homogeneous polynomial of degree
+$d$.  As $t\to0$,
+\[
+ Ae^{t\log2}-A=A(\log2)t+O(t^2),\qquad
+ Be^{t\log3}-B=B(\log3)t+O(t^2).
+\]
+Therefore
+\begin{align*}
+ F(t)
+ &=H_d\bigl(A\log2,B\log3\bigr)t^d+O(t^{d+1})\\
+ &=(\log2)^d H_d(A,B\alpha)t^d+O(t^{d+1}),
+ \qquad \alpha=\frac{\log3}{\log2}.
+\end{align*}
+The polynomial $T\mapsto H_d(A,BT)$ is a nonzero polynomial over
+$\overline\Q$: multiplication of its coefficients by the nonzero algebraic
+numbers $A$ and $B$ cannot annihilate it.  By
+\cref{prop:alpha-transcendental}, it does not vanish at $T=\alpha$.  Hence the
+coefficient of $t^d$ is nonzero, proving \eqref{eq:ord-equals-mult}.
+\end{proof}
+
+\begin{corollary}[directional conditions are all mixed conditions]\label{cor:mixed-conditions}
+Under the hypotheses of \cref{thm:direction-rigidity}, the following are
+equivalent for an integer $T\ge1$:
+\begin{enumerate}
+\item $F^{(j)}(0)=0$ for $0\le j<T$;
+\item every mixed partial derivative
+$\partial_X^r\partial_Y^sP(A,B)$ with $r+s<T$ vanishes;
+\item $P$ has ordinary bivariate multiplicity at least $T$ at $(A,B)$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The equivalence of the second and third statements is the definition of
+multiplicity in characteristic zero.  The first is $\ord_0F\ge T$, which is
+equivalent to the third by \cref{thm:direction-rigidity}.
+\end{proof}
+
+\begin{corollary}[degree barrier]\label{cor:degree-barrier}
+If $P$ has total degree at most $D$, then
+\[
+ \ord_{t=0}P(2^{z_0+t},3^{z_0+t})\le D.
+\]
+If $P$ has bidegree at most $(D,D)$, the order is at most $2D$.
+\end{corollary}
+
+\begin{proof}
+The multiplicity of a nonzero polynomial at a point cannot exceed its total
+degree.  A polynomial of bidegree $(D,D)$ has total degree at most $2D$.
+\end{proof}
+
+The theorem applies at every arithmetic lattice point $z_0=a+bx$, because
+$2^{z_0}=2^am^b$ and $3^{z_0}=3^an^b$ are rational.  Hence the obstruction is
+not confined to the base point $(1,1)$.
+
+\subsection{Why the tempting dimension count fails}
+
+The vector space of polynomials of total degree at most $D$ has dimension
+$\binom{D+2}{2}\asymp D^2/2$.  If one viewed
+$P(2^t,3^t)$ as an arbitrary one-variable analytic function, it would be
+tempting to impose almost $D^2/2$ vanishing derivatives at one point.  But
+those derivative equations have coefficients involving powers of
+$\alpha=\log3/\log2$.  For algebraic coefficients of $P$, the transcendence
+of $\alpha$ separates every coefficient of every power of $\alpha$.
+Consequently the first $T$ directional equations are exactly the
+$\binom{T+1}{2}$ mixed Taylor equations.  The apparent one-dimensional
+problem retains its full two-dimensional arithmetic cost.
+
+This explains a familiar threshold without appealing to vague statements
+about ``not enough parameters.''  A successful auxiliary construction must
+do something genuinely different from exact high contact by an algebraic
+polynomial.  Possibilities include:
+\begin{itemize}
+\item approximate rather than exact contact, together with an unusually
+      strong algebraic-independence measure for $\alpha$;
+\item simultaneous smallness at many points with denominators that cancel in
+      a global determinant;
+\item an auxiliary object outside $\overline\Q[X,Y]$, but with enough
+      arithmetic structure to retain a nonzero lower bound;
+\item or a finite-place divisibility gain that replaces high archimedean
+      multiplicity.
+\end{itemize}
+
+\subsection{A Wronskian companion}
+
+For completeness, let $(i_1,j_1),\ldots,(i_N,j_N)$ be distinct pairs of
+nonnegative integers and put
+\[
+ f_\nu(z)=2^{i_\nu z}3^{j_\nu z}.
+\]
+Their Wronskian is
+\begin{equation}\label{eq:wronskian}
+ W(f_1,\ldots,f_N)(z)
+ =\left(\prod_{\nu=1}^N f_\nu(z)\right)
+   \prod_{1\le\mu<\nu\le N}
+   \bigl((i_\nu-i_\mu)\log2+(j_\nu-j_\mu)\log3\bigr),
+\end{equation}
+up to the sign determined by the ordering.  It never vanishes, since a zero
+factor would make $\alpha$ rational.  Thus these monomials form an extended
+Chebyshev system on the real line: a nontrivial linear combination with $N$
+terms has at most $N-1$ real zeros counted with multiplicity.  This analytic
+zero estimate is sharp over arbitrary complex coefficients, while
+\cref{thm:direction-rigidity} is the stronger arithmetic local statement for
+algebraic polynomial coefficients.
+
+\begin{warning}[the auxiliary-polynomial trap]\label{warn:aux-trap}
+A claim of order $\gg D$ for
+$P(2^{z_0+t},3^{z_0+t})$ with
+$P\in\overline\Q[X,Y]$ of degree $D$ is false unless $P=0$.  If the proposed
+construction uses $D^2$ coefficients to impose $D^2$ directional derivatives,
+then either the coefficient field secretly contains $\alpha$, the equations
+are only approximate, or the linear system has only the zero solution.
+\end{warning}
+
+\section{Near collisions and a selected-prime bridge}\label{sec:selected-prime}
+
+The Kummer theorem says generic fixed primes are hostile to a local exponent.
+A more plausible strategy is to let the prime vary with a rational
+approximation to $x$.  This section identifies exactly where such primes are
+forced to lie.
+
+\subsection{Simultaneous near-power differences}
+
+Let $a,b\in\Z_{>0}$ and put
+\[
+ \delta=bx-a.
+\]
+Then
+\begin{equation}\label{eq:near-differences}
+ E_{a,b}=m^b-2^a=2^a(2^\delta-1),\qquad
+ F_{a,b}=n^b-3^a=3^a(3^\delta-1).
+\end{equation}
+When $a/b$ is a continued-fraction convergent to $x$, one has
+$|\delta|\ll1/b$.  For $|\delta|\le1$, the mean-value theorem gives constants
+$c_1,c_2>0$, independent of $a,b$, such that
+\begin{equation}\label{eq:near-bounds}
+ c_1 2^a|\delta|\le |E_{a,b}|\le c_2 2^a|\delta|,
+ \qquad
+ c_1 3^a|\delta|\le |F_{a,b}|\le c_2 3^a|\delta|.
+\end{equation}
+Thus the differences are small relatively, but still exponentially large
+absolutely.  Any argument that concludes $E_{a,b}=0$ merely from
+$|\delta|\ll1/b$ has lost an exponential factor.
+
+\subsection{Common divisors are Kummer-compatible}
+
+\begin{proposition}[common-divisor localization]\label{prop:gcd-localization}
+Let $\ell$ be an odd prime.  Let $p\nmid6mn\ell$ be a rational prime with
+$p\equiv1\pmod\ell$, and let $\mathfrak p$ be a prime of $K_\ell$ above $p$.
+Suppose
+\[
+ p\mid E_{a,b},\qquad p\mid F_{a,b},\qquad \ell\nmid b.
+\]
+Then $\mathfrak p$ is exactly compatible, with common residue exponent
+\[
+ t\equiv a b^{-1}\pmod\ell.
+\]
+\end{proposition}
+
+\begin{proof}
+The divisibilities give
+\[
+ m^b\equiv2^a\pmod{\mathfrak p},\qquad
+ n^b\equiv3^a\pmod{\mathfrak p}.
+\]
+Applying the order-$\ell$ residue character yields
+\[
+ b\kappa_{\mathfrak p}(m)=a\kappa_{\mathfrak p}(2),\qquad
+ b\kappa_{\mathfrak p}(n)=a\kappa_{\mathfrak p}(3)
+ \quad\text{in }\F_\ell.
+\]
+Since $b$ is invertible modulo $\ell$, these are exactly the two compatibility
+equations with $t=ab^{-1}$.
+\end{proof}
+
+\begin{corollary}[Chebotarev sparsity of common factors]\label{cor:gcd-sparse}
+For a counterexample datum and a sufficiently large good $\ell$, every prime
+$p\equiv1\pmod\ell$ satisfying the hypotheses of
+\cref{prop:gcd-localization} lies over the exact compatible Chebotarev set.
+Its relative density is
+\[
+ \frac1\ell-\frac1{\ell^2}+\frac1{\ell^3}
+\]
+in rank three and
+\[
+ \frac1\ell-\frac1{\ell^3}+\frac1{\ell^4}
+\]
+in rank four.
+\end{corollary}
+
+This is the cleanest connection found between archimedean approximation and
+the Kummer detector.  It does not assign a residue exponent to $x$; rather,
+a prime that divides both approximation errors manufactures the exponent
+$t=a/b$ modulo $\ell$.
+
+\subsection{Why density alone is insufficient}
+
+Chebotarev describes primes in the ambient set, not prime divisors of one
+thin sequence.  A set of density $1/\ell$ can contain every prime divisor of
+all the integers $\gcd(E_{a,b},F_{a,b})$ without contradiction.  Neither the
+prime number theorem nor effective Chebotarev supplies a ``generic prime
+factor'' of a prescribed integer.
+
+Likewise, the $abc$ conjecture applied separately to
+\[
+ m^b=2^a+E_{a,b},\qquad n^b=3^a+F_{a,b}
+\]
+would force substantial radical in each error term, but would not force the
+two radicals to overlap or to escape a specified Frobenius set.  Known upper
+bounds for greatest common divisors of fixed-base sequences, such as the
+Bugeaud--Corvaja--Zannier theorem, point in the opposite direction: they make
+large common divisors exceptional.  Here a proof needs either a lower bound
+or a prime-factor distribution theorem for two correlated, nonstationary
+exponential differences.
+
+\subsection{A precise sparse-support target}
+
+The following target is intentionally stated at the strength actually needed,
+not as an informal appeal to ``random prime factors.''
+
+\begin{target}[Frobenius escape for simultaneous near powers]\label{target:frob-escape}
+Let $m,n\in\Z_{>1}$ and let
+\[
+ x=\frac{\log m}{\log2}=\frac{\log n}{\log3}\notin\Q.
+\]
+Then there exists a sufficiently large odd prime $\ell$ and infinitely many
+continued-fraction convergents $a/b$ to $x$, with $\ell\nmid b$, such that
+$\gcd(E_{a,b},F_{a,b})$ has a prime divisor $p\equiv1\pmod\ell$ whose
+Frobenius vector is not in $\mathcal C_\ell$.
+\end{target}
+
+\begin{proposition}\label{prop:escape-finishes}
+\cref{target:frob-escape} implies the Alaoglu--Erd\H{o}s conjecture.
+\end{proposition}
+
+\begin{proof}
+Under a counterexample datum, the prime supplied by the target would satisfy
+the hypotheses of \cref{prop:gcd-localization}, which says its Frobenius
+vector is in $\mathcal C_\ell$.  This contradicts the conclusion of the
+target.
+\end{proof}
+
+The target may be stronger than necessary, because the gcd can often be one.
+A more flexible version would replace an actual common divisor by an adelic
+linear combination of $E_{a,b}$ and $F_{a,b}$ whose product formula forces
+Frobenius escape.  No such construction is presently available.  Still,
+\cref{target:frob-escape} gives a concrete interface for analytic number
+theory: it asks for a prime divisor in a named conjugacy subset of an explicit
+pair of integers.
+
+\section{The one-more-base route}\label{sec:third-base}
+
+A different way to break the $2\times2$ barrier is to manufacture one more
+multiplicatively independent algebraic base whose $x$th power is algebraic.
+The Six Exponentials Theorem then finishes the problem immediately.
+
+\begin{definition}
+For a fixed real $x$, define the algebraic-power domain
+\[
+ \mathcal D_x=
+ \{a\in\overline\Q_{>0}^{\times}:a^x\in\overline\Q^{\times}\},
+\]
+using the positive real value when $a>0$.
+\end{definition}
+
+\begin{theorem}[third-base exclusion]\label{thm:third-base-exclusion}
+Let $(x,m,n)$ be a counterexample datum.  If
+$a\in\overline\Q_{>0}^{\times}$ and $a^x$ is algebraic, then the three
+logarithms $\log2,\log3,\log a$ are linearly dependent over $\Q$.
+In particular,
+\begin{equation}\label{eq:Dx-integers}
+ \mathcal D_x\cap\Z_{>0}
+ \subseteq\{2^r3^s:r,s\in\Z_{\ge0}\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If the three logarithms were $\Q$-linearly independent, use them as the
+three first factors in the Six Exponentials Theorem and use the two
+$\Q$-linearly independent numbers $1,x$ as the second factors.  The six
+exponentials would be
+\[
+ 2,\ 3,\ a,\ 2^x=m,\ 3^x=n,\ a^x,
+\]
+all algebraic, contradicting that theorem.  For an integer $a$, a
+multiplicative dependence among $2,3,a$ means that no prime outside
+$\{2,3\}$ divides $a$, which proves \eqref{eq:Dx-integers}.
+\end{proof}
+
+\begin{corollary}[failure of immediate iteration]\label{cor:iteration-fails}
+For a counterexample datum, at least one of $m^x=2^{x^2}$ and
+$n^x=3^{x^2}$ is transcendental.
+\end{corollary}
+
+\begin{proof}
+By \cref{cor:outside-prime}, at least one of $m,n$ has a prime divisor outside
+$\{2,3\}$.  If its $x$th power were algebraic, it would violate
+\cref{thm:third-base-exclusion}.
+\end{proof}
+
+Thus the most obvious attempt to iterate the map $a\mapsto a^x$ is blocked in
+at least one coordinate.  Conversely, this makes the proof target extremely
+sharp.
+
+\begin{target}[one-more-base lemma]\label{target:one-more-base}
+Assume $2^x,3^x\in\Z$ for a real $x$.  Construct an integer
+$a$ with a prime divisor outside $\{2,3\}$ such that $a^x$ is algebraic.
+\end{target}
+
+\begin{proposition}
+\cref{target:one-more-base} implies \cref{conj:AE}.
+\end{proposition}
+
+\begin{proof}
+If $x$ were nonintegral, it would be irrational and the constructed $a$
+would contradict \cref{thm:third-base-exclusion}.
+\end{proof}
+
+The difficulty is that exponentiation respects multiplication but not
+addition, factor extraction, or polynomial operations.  From
+$m=2^x,n=3^x$ one obtains $(2^r3^s)^x=m^rn^s$, but these bases remain in the
+rank-two group generated by $2$ and $3$.  A valid third-base argument must
+supply a new multiplicative direction without using a false identity such as
+$(m+n)^x=m^x+n^x$.
+
+\section{Three proof bridges and one no-go theorem}\label{sec:bridges}
+
+The preceding sections turn several broad ideas into exact interfaces.  This
+section collects them in a form suitable for a research program or a proof
+assistant backlog.
+
+\subsection{Bridge I: universal local compatibility}
+
+The strongest possible local bridge would say that the real exponent relation
+forces compatibility at every prime.  One good Kummer level would already be
+enough.
+
+\begin{target}[universal Kummer bridge]\label{target:universal-kummer}
+For some odd prime $\ell$ outside the saturation exceptional set, prove from
+\[
+ \frac{\log m}{\log2}=\frac{\log n}{\log3}
+\]
+that every unramified Kummer Frobenius vector in $W_\ell$ belongs to
+$\mathcal C_\ell$.
+\end{target}
+
+\begin{proposition}\label{prop:universal-finishes}
+\cref{target:universal-kummer} implies the Alaoglu--Erd\H{o}s conjecture.
+\end{proposition}
+
+\begin{proof}
+If a nonintegral counterexample had rank four, the compatibility density
+would be the proper fraction in \eqref{eq:rank4-compatible}; if it had rank
+three, it would be the proper fraction in \eqref{eq:rank3-compatible}.
+Chebotarev guarantees Frobenius elements outside $\mathcal C_\ell$ in either
+case, contradicting the target.  Equivalently, a linear subspace of
+$2\times2$ matrices of dimension at least three cannot consist entirely of
+singular matrices, while $\mathcal C_\ell$ is contained in the singular
+cone.
+\end{proof}
+
+\cref{thm:mantissa-entropy} shows why a continuity proof of this target cannot
+work: at most primes the normalized orbit has full residue entropy even on a
+short real arc.  Any proof of the universal bridge would therefore have to
+use a global arithmetic invariant not visible in fixed-prime reduction.
+
+\subsection{Bridge II: selected-prime Frobenius escape}
+
+This is \cref{target:frob-escape}.  It asks varying prime divisors of the
+simultaneous near-power differences to escape a Chebotarev set of relative
+density about $1/\ell$.  It is the most concrete interface with analytic
+number theory, sieve theory, and arithmetic dynamics.
+
+A potentially more attainable variant is the following product-formula
+version.
+
+\begin{target}[adelic escape]\label{target:adelic-escape}
+For a counterexample datum, construct from infinitely many convergents $a/b$
+a nonzero rational or algebraic number $G_{a,b}$ satisfying all three
+properties:
+\begin{enumerate}
+\item its archimedean absolute value is bounded above by
+      $\exp(-c\,h(G_{a,b}))$ for some fixed $c>0$;
+\item at primes in the compatible Kummer set, its negative valuations have a
+      total contribution $o(h(G_{a,b}))$;
+\item at incompatible primes, \cref{prop:gcd-localization} or a replacement
+      forces nonnegative valuation.
+\end{enumerate}
+Then the product formula gives a contradiction for large height.
+\end{target}
+
+This target makes explicit what a vague ``combine the real and $p$-adic
+estimates'' must actually deliver.  The hard part is the second condition:
+Chebotarev density by itself does not control the valuation mass of a thin
+integer sequence.
+
+\subsection{Bridge III: one more algebraic power}
+
+This is \cref{target:one-more-base}.  It is algebraically the cleanest route:
+one new multiplicative direction invokes Six Exponentials and ends the
+problem.  Candidate constructions should be screened by the following
+closure test.
+
+\begin{proposition}[closure test]\label{prop:closure-test}
+Let $G=\langle2,3\rangle\subset\Q_{>0}^{\times}$.  Every base obtained from
+$2$ and $3$ using multiplication, inversion, and rational powers remains in
+$G\otimes\Q$ and cannot serve as the third base.  Every base obtained from
+$m,n$ by the same operations has a known $1/x$th power, not in general a
+known $x$th power.  Therefore a successful construction must either make the
+$x$-power of an output-side element algebraic or use an operation beyond the
+multiplicative group while retaining exact control of exponentiation.
+\end{proposition}
+
+\begin{proof}
+The first statement is closure of a divisible hull.  For the second, if
+$a=m^rn^s$, then $a^{1/x}=2^r3^s$ is algebraic, whereas
+$a^x=m^{rx}n^{sx}$ contains the unknown quantities $m^x,n^x$.  No
+multiplicative manipulation removes them unless an additional relation is
+proved.
+\end{proof}
+
+\subsection{No-go theorem: exact high directional contact}
+
+Theorem~\ref{thm:direction-rigidity} closes a broad family of auxiliary
+attacks.  It says that a target of the form
+\[
+ \ord_0 P(2^t,3^t)\gg\deg P
+\]
+with algebraic polynomial coefficients is not merely difficult; it is
+false.  A revised auxiliary method must use approximate smallness, multiple
+points, finite-place divisibility, or a nonpolynomial arithmetic object.
+
+\subsection{Architecture scorecard}
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.23\textwidth}p{0.25\textwidth}p{0.23\textwidth}@{}}
+\toprule
+Architecture & Rigorous gain in this report & Exact missing statement & Main failure mode to avoid\\
+\midrule
+\endfirsthead
+\toprule
+Architecture & Rigorous gain in this report & Exact missing statement & Main failure mode to avoid\\
+\midrule
+\endhead
+Kummer / Chebotarev & Exact compatible and determinant densities; rank-three transversality & Universal Kummer bridge or a selected compatible-prime mechanism & Treating a real exponent as an element of $\F_\ell$ or $\Z_p$\\
+\addlinespace
+Mantissa dynamics & Conditional real--finite equidistribution and full local entropy & A height-sensitive restriction coupling many places & Inferring finite continuity from a short real arc\\
+\addlinespace
+Near-power gcd & Every common divisor is localized to the compatible set & Frobenius escape for prime divisors of correlated errors & Applying ambient prime density to a thin sequence\\
+\addlinespace
+Auxiliary polynomial & Exact equality of directional order and ordinary multiplicity & An approximate or adelic replacement with a nonzero lower bound & Counting $D^2$ coefficients as $D^2$ directional zeros\\
+\addlinespace
+Six Exponentials & Third-base exclusion and an immediate finishing criterion & Produce one new base $a$ with $a^x$ algebraic & Reusing a base in the divisible hull of $\langle2,3\rangle$\\
+\addlinespace
+Rank-three structure & Möbius normal form and transverse relation determinant & Rule out the remaining fractional-linear case & Assuming transcendence of $\alpha$ implies algebraic independence of arbitrary functions of $\alpha$\\
+\bottomrule
+\end{longtable}
+
+\section{Finite verification and reproducible experiments}\label{sec:computation}
+
+The density theorems are conceptual consequences of Kummer theory and
+Chebotarev, but their finite combinatorics should be exhaustively checked
+before formalization.  The following table gives the exact cardinalities for
+small odd primes.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$\ell$ & $|\mathcal C_\ell|$ in rank 4 & transverse rank-3 compatible & rank-4 $\Delta=0$ & rank-3 $\Delta=0$\\
+\midrule
+3  & 25   & 7   & 33   & 9\\
+5  & 121  & 21  & 145  & 25\\
+7  & 337  & 43  & 385  & 49\\
+11 & 1321 & 111 & 1441 & 121\\
+\bottomrule
+\end{tabular}
+\end{center}
+The ambient cardinalities are respectively $\ell^4$ for rank four and
+$\ell^3$ for rank three.
+
+\subsection{Exhaustive checker}
+
+\begin{lstlisting}[language=Python,caption={Exhaustive verification of the compatibility formulas}]
+from itertools import product
+
+
+def compatible(q: int, z: tuple[int, int, int, int]) -> bool:
+    u1, u2, v1, v2 = z
+    return any(
+        (v1 - t * u1) % q == 0 and (v2 - t * u2) % q == 0
+        for t in range(q)
+    )
+
+
+def det_zero(q: int, z: tuple[int, int, int, int]) -> bool:
+    u1, u2, v1, v2 = z
+    return (u1 * v2 - u2 * v1) % q == 0
+
+
+def in_hyperplane(q: int, rho, z) -> bool:
+    return sum(a * b for a, b in zip(rho, z)) % q == 0
+
+
+def verify(q: int) -> None:
+    all4 = list(product(range(q), repeat=4))
+    comp = [z for z in all4 if compatible(q, z)]
+    assert len(comp) == q**3 - q + 1
+
+    singular = [z for z in all4 if det_zero(q, z)]
+    assert len(singular) == q**3 + q**2 - q
+
+    # Check every nonzero rank-three relation vector rho.
+    for rho in all4[1:]:
+        W = [z for z in all4 if in_hyperplane(q, rho, z)]
+        Wc = [z for z in W if compatible(q, z)]
+        A, B, C, D = rho
+        transverse = (A * D - B * C) % q != 0
+        expected = q**2 - q + 1 if transverse else None
+        if transverse:
+            assert len(Wc) == expected
+            assert sum(det_zero(q, z) for z in W) == q**2
+
+
+for q in (3, 5, 7, 11):
+    verify(q)
+print("all finite checks passed")
+\end{lstlisting}
+
+The code deliberately defines exact compatibility first and determinant
+vanishing second.  That ordering prevents the false zero-source equivalence
+in \cref{warn:det-not-exact}.
+
+\subsection{Arithmetic experiments suggested by the theory}
+
+There is no counterexample to sample.  Nevertheless, one can probe the
+interfaces on arbitrary multiplicatively ranked tuples $(2,3,m,n)$ and on
+near-relations.  The most informative experiments are:
+
+\begin{enumerate}
+\item \textbf{Kummer histogram.}  For fixed $\ell$, factor rational primes
+$p\equiv1\pmod\ell$, compute order-$\ell$ residue-symbol coordinates, and
+compare compatibility and determinant frequencies with the formulas for the
+observed multiplicative rank.
+\item \textbf{Rank-three transversality stress test.}  Generate tuples with a
+known primitive relation, separate the cases $AD-BC=0$ and $AD-BC\ne0$, and
+observe the two hyperplane counts in \cref{prop:hyperplane-count}.  The
+proportional case should always correspond to a rational scalar in the
+archimedean model.
+\item \textbf{Mantissa entropy.}  For an arbitrary irrational
+$x=\log m/\log2$ (without requiring $3^x$ integral), compare the empirical
+symbol distribution of $U_j$ with the exact linear image of $(j,k_j)$.  For
+a synthetic second coordinate, the determinant controls the transition from
+a line to the full plane.
+\item \textbf{Near-power prime factors.}  For pairs $(m,n)$ making the two log
+ratios unusually close, factor
+$E_{a,b},F_{a,b}$ along convergents and record Frobenius classes of common
+prime factors.  This does not prove escape, but it can falsify overly strong
+versions of \cref{target:frob-escape} and identify realistic hypotheses.
+\item \textbf{Auxiliary contact audit.}  Randomly generate algebraic
+polynomials with prescribed multiplicity at an arithmetic orbit point and
+verify symbolically that the restricted order equals that multiplicity.  Any
+higher observed order signals a bug in expansion or an accidental zero
+polynomial.
+\end{enumerate}
+
+For large Kummer computations, SageMath or PARI/GP is preferable to a custom
+discrete-log implementation.  The finite count checker above is independent
+of number-field software and should be included in continuous integration.
+
+\section{Lean formalization plan}\label{sec:lean}
+
+A productive formalization should not begin with Chebotarev.  The results
+separate into layers with sharply different library requirements.
+
+\subsection{Layer 0: finite combinatorics}
+
+This layer needs only finite fields and cardinalities.
+
+\begin{enumerate}
+\item Define
+\[
+ \mathrm{Compatible}(u,v)\;:\!\Longleftrightarrow\;
+ \exists t,\ v=t\,u
+\]
+for $u,v\in(\mathrm{ZMod}\ \ell)^2$.
+\item Prove $|\mathcal C_\ell|=\ell^3-\ell+1$ by splitting on $u=0$.
+\item Define fixed-$t$ planes and prove their pairwise intersection is the
+zero vector.
+\item Prove the transverse hyperplane count $\ell^2-\ell+1$ by showing
+$L+tM$ is nonzero for every $t$.
+\item Prove the singular-matrix counts separately and derive the warning that
+$\Delta=0$ is not exact compatibility.
+\end{enumerate}
+
+A schematic definition, not intended as drop-in syntax, is:
+
+\begin{lstlisting}[caption={Lean-shaped statement of exact compatibility}]
+def Compatible (u v : (ZMod ell) x (ZMod ell)) : Prop :=
+  exists t : ZMod ell, v.1 = t * u.1 /\ v.2 = t * u.2
+
+ theorem card_compatible [Fact (Nat.Prime ell)] :
+  Fintype.card {z // Compatible z.1 z.2} = ell^3 - ell + 1
+\end{lstlisting}
+
+\subsection{Layer 1: valuation lattices and rank}
+
+Represent a finitely supported positive rational by its prime-valuation
+vector.  Formalize:
+\begin{itemize}
+\item rational exponents giving integers are integral;
+\item the multiplicative-rank floor in \cref{prop:rank-floor};
+\item saturation of a finitely generated sublattice and the finite exceptional
+index $I_\Gamma$;
+\item the primitive relation in rank three and the determinant argument in
+\cref{lem:rank3-transverse}.
+\end{itemize}
+The only transcendence input in this layer is that
+$\log3/\log2$ is transcendental.  Until Gelfond--Schneider is available in the
+library, package this as a clearly named imported theorem rather than an
+opaque axiom local to the proof.
+
+\subsection{Layer 2: irrational rotation and mantissa entropy}
+
+Formalize \cref{thm:carry-UD} by reducing it to uniform distribution of
+$h\mapsto\{c+hx\}$.  The proof uses only affine transformations of an
+irrational rotation and interval measures.  Then formalize the linear push-
+forward in \cref{thm:mantissa-entropy}.  This layer is independent of
+algebraic number theory if $\kappa(2),\kappa(3),\kappa(m),\kappa(n)$ are
+abstract elements of a finite field.
+
+This separation is valuable: the full entropy theorem can be machine-checked
+as a statement about an arbitrary $2\times2$ matrix over $\F_\ell$ before
+residue symbols are introduced.
+
+\subsection{Layer 3: Kummer theory and Chebotarev}
+
+Required ingredients are:
+\begin{itemize}
+\item cyclotomic fields containing $\mu_\ell$;
+\item the Kummer isomorphism for a finite-dimensional subgroup of
+      $K^\times/K^{\times\ell}$;
+\item Frobenius elements and power-residue symbols;
+\item Chebotarev density for finite Galois extensions;
+\item the elementary injection of rational Kummer classes into
+      $\Q(\zeta_\ell)$ from \cref{lem:eventual-rank}.
+\end{itemize}
+If the library lacks a sufficiently general Chebotarev theorem, a sensible
+intermediate artifact is a theorem parameterized by an abstract
+``Frobenius-uniformity'' hypothesis.  The finite formulas and every later
+logical implication can then be formalized immediately; replacing the
+hypothesis by Chebotarev becomes an isolated library project.
+
+\subsection{Layer 4: analytic local rigidity}
+
+The proof of \cref{thm:direction-rigidity} requires multivariate Taylor
+expansion, order of a holomorphic zero, and transcendence of $\alpha$ over
+$\overline\Q$.  A purely formal-power-series version may be easier:
+expand
+\[
+ e^{t\log2}-1,\qquad e^{t\log3}-1
+\]
+and identify the lowest homogeneous Taylor term of $P$.  Only its linear
+terms are needed to prove the leading coefficient nonzero.  This avoids a
+large analytic dependency footprint.
+
+\subsection{Recommended theorem order}
+
+\begin{center}
+\begin{tikzpicture}[
+ node distance=8mm and 13mm,
+ box/.style={draw,rounded corners,align=center,inner sep=5pt,text width=35mm},
+ arr/.style={-{Latex[length=2mm]},thick}
+]
+\node[box] (finite) {Finite compatibility\\and determinant counts};
+\node[box,right=of finite] (rank) {Valuation lattice\\and rank-three transversality};
+\node[box,below=of finite] (rotation) {Carry equidistribution\\over $\F_\ell^2$};
+\node[box,right=of rotation] (kummer) {Kummer coordinates\\and Chebotarev};
+\node[box,below=of rotation] (entropy) {Mantissa-orbit\\entropy theorem};
+\node[box,right=of entropy] (density) {Exact density laws\\for counterexample data};
+\node[box,below=of density] (bridges) {Formal bridge lemmas\\and contradiction interfaces};
+
+\draw[arr] (finite) -- (density);
+\draw[arr] (rank) -- (density);
+\draw[arr] (kummer) -- (density);
+\draw[arr] (rotation) -- (entropy);
+\draw[arr] (kummer) -- (entropy);
+\draw[arr] (entropy) -- (bridges);
+\draw[arr] (density) -- (bridges);
+\end{tikzpicture}
+\end{center}
+
+The finite and dynamical branches can proceed in parallel.  They provide
+useful checked artifacts even before the deepest algebraic-number-theory
+layer is complete.
+
+\section{Research agenda after this report}\label{sec:agenda}
+
+\subsection{Highest-priority questions}
+
+\paragraph{1. Can common-divisor localization be upgraded to Frobenius
+escape?}
+The exact proposition is now available.  The next step is to search the
+literature on prime divisors of pairs of exponential-polynomial sequences,
+especially results that prescribe a conjugacy class rather than merely a
+congruence class.  A useful theorem must be uniform along convergents with
+both the base and exponent normalization present.
+
+\paragraph{2. Is there an adelic determinant whose forced divisibility beats
+its archimedean size?}
+The auxiliary-polynomial rigidity theorem says not to seek high exact contact
+at one point.  A determinant involving several near-collision points may
+still work if obvious powers of $2,3,m,n$ can be divided out while leaving a
+nonzero algebraic integer.  Every proposed normalization should be audited
+place by place; dividing by a large real factor without preserving
+integrality is the standard hidden error.
+
+\paragraph{3. Can one output be made to re-enter $\mathcal D_x$?}
+By \cref{cor:iteration-fails}, a counterexample forces at least one immediate
+second iterate to be transcendental.  A recurrence, algebraic correspondence,
+or trace/norm construction that makes either $m^x$ or $n^x$ algebraic would
+finish in many cases.  The construction must exploit integrality in a way
+not preserved by arbitrary algebraic outputs, or else it would solve the
+full Four Exponentials problem at once.
+
+\paragraph{4. Can the rank-three Möbius form be attacked separately?}
+In rank three,
+\[
+ x=-\frac{A+B\alpha}{C+D\alpha},\qquad AD-BC\ne0.
+\]
+This is a narrower special-function problem than unrestricted rank four.
+Possible tools include transcendence measures for fractional-linear
+functions of logarithm ratios, mixed real/$p$-adic regulators, and
+Hermite--Pad\'e approximation constrained by the integer relation
+$2^A3^Bm^Cn^D=1$.  Merely citing the transcendence of $\alpha$ is
+insufficient: a rational function of a transcendental number can certainly
+have algebraic exponentials.
+
+\subsection{Directions now deprioritized}
+
+The following directions are not impossible in principle, but the results
+above show that their naive versions cannot be the missing proof.
+
+\begin{itemize}
+\item \textbf{A common $p$-adic exponent at an arbitrary prime.}  Generic
+Kummer primes are incompatible with probability tending to one.
+\item \textbf{Finite continuity from the real curve.}  Conditional mantissa
+entropy is full at generic primes on every real subarc.
+\item \textbf{Order-$D^2$ contact from a degree-$D$ algebraic polynomial.}
+The exact local zero theorem bounds contact by $O(D)$.
+\item \textbf{Chebotarev density as a statement about prime factors.}
+Ambient density does not imply escape for a thin sequence.
+\item \textbf{A third base built only by multiplying known bases.}  This
+never leaves the rank-two divisible hull.
+\end{itemize}
+
+\subsection{A focused next experiment}
+
+The most informative computational project is a two-level Frobenius audit.
+Choose many integer pairs $(m,n)$ for which
+$\log m/\log2$ and $\log n/\log3$ agree to unusually high precision but are
+certifiably unequal.  For convergents $a/b$ to their mean, factor the common
+part of $m^b-2^a$ and $n^b-3^a$.  At several Kummer levels $\ell$, record:
+
+\begin{enumerate}
+\item whether common factors lie in the exact compatible set as predicted;
+\item how much logarithmic mass is carried by each Frobenius class;
+\item whether the mass resembles ambient Chebotarev density or is strongly
+      biased;
+\item and whether bias correlates with multiplicative rank three versus four.
+\end{enumerate}
+
+The experiment cannot establish the conjecture, but it directly tests the
+only bridge in this report that converts real approximants into selected
+finite primes.  It should also expose whether
+\cref{target:frob-escape} is realistic or needs an adelic reformulation.
+
+\section{Proof-status ledger and conclusion}\label{sec:status}
+
+\begin{longtable}{@{}p{0.42\textwidth}p{0.14\textwidth}p{0.35\textwidth}@{}}
+\toprule
+Statement & Status & Dependencies / caveat\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Dependencies / caveat\\
+\midrule
+\endhead
+Rational $x$ with $2^x\in\Z$ is integral & proved & Unique factorization\\
+Nonintegral counterexample has transcendental $x$ & proved & Gelfond--Schneider\\
+$\alpha=\log3/\log2$ is transcendental & proved & Gelfond--Schneider\\
+Multiplicative rank is at least three & proved & Transcendence of $\alpha$\\
+Rank-three relation is transverse & proved & Rational case plus primitive relation\\
+Eventual equality of ordinary and Kummer rank & proved & Valuation lattices and cyclotomic ramification\\
+Universal compatibility-density formula & proved & Kummer theory and Chebotarev\\
+Rank-four exact density & proved & Finite counting\\
+Rank-three exact density & proved & Transversality and finite counting\\
+Projective determinant densities & proved & Finite matrix counts\\
+Conditional carry equidistribution & proved & Irrational rotation\\
+Mantissa-orbit entropy theorem & proved & Carry equidistribution and character multiplicativity\\
+Directional order equals ordinary multiplicity & proved & Transcendence of $\alpha$ and Taylor expansion\\
+Common-divisor localization & proved & Residue-character congruences\\
+Third-base exclusion & proved & Six Exponentials Theorem\\
+Universal Kummer bridge & open target & Real relation gives no known finite exponent\\
+Frobenius escape for near powers & open target & Requires prime-factor distribution in a thin pair\\
+One-more-base lemma & open target & Must create a new multiplicative direction\\
+Alaoglu--Erd\H{o}s conjecture & unresolved here & Any one of the three bridges would finish it\\
+\bottomrule
+\end{longtable}
+
+The central lesson is not that local methods fail, but that their correct
+shape is now visible.  A hypothetical counterexample is maximally hostile to
+a common exponent at generic finite places: exact compatibility has density
+about $1/\ell$, and the normalized orbit has full two-dimensional residue
+entropy at almost all Kummer primes.  This rules out an entire family of
+unjustified archimedean-to-$p$-adic transfers.
+
+At the same time, simultaneous near-power differences provide a legitimate
+selected-prime bridge, and Six Exponentials turns any third algebraic-power
+base into an immediate proof.  The auxiliary-polynomial theorem eliminates
+a false parameter gain and redirects interpolation work toward approximate,
+multipoint, or adelic constructions.  These are substantive reductions of
+the search space even though the final bridge remains open.
+
+The strongest concrete next move is therefore not another broad survey.  It
+is to attack the Frobenius-escape interface for
+\[
+ \gcd(m^b-2^a,n^b-3^a)
+\]
+along convergents, while formalizing the finite counts and mantissa entropy in
+parallel.  A successful result there would connect the one place where the
+real exponent genuinely manufactures a finite residue exponent to the place
+where Chebotarev says such exponents are rare.
+
+\appendix
+
+\section{A compact derivation of the rank-three compatibility formula}
+
+Let $W=\ker\rho\subset\F_\ell^4$ with
+$\rho=(A,B,C,D)$ and $AD-BC\ne0$.  For each $t$, the fixed compatibility
+plane is
+\[
+ \mathcal C_t=\{(u,tu):u\in\F_\ell^2\}.
+\]
+The equation for $W\cap\mathcal C_t$ is
+\[
+ (A+tC)u_1+(B+tD)u_2=0.
+\]
+The coefficient pair cannot vanish, because that would imply
+$(A,B)=-t(C,D)$ and hence $AD-BC=0$.  Thus the intersection is a line with
+$\ell$ points.  Distinct $t$ give lines meeting only at the origin.  Hence
+\[
+ \left|W\cap\bigcup_t\mathcal C_t\right|
+ =1+\ell(\ell-1)=\ell^2-\ell+1.
+\]
+Dividing by $|W|=\ell^3$ gives
+$\ell^{-1}-\ell^{-2}+\ell^{-3}$.  This argument is short enough to be the
+preferred Lean proof.
+
+\section{Saturation index from a prime-exponent matrix}
+
+Let $S=\{p_1,\ldots,p_s\}$ contain the prime support of $6mn$.  Form the
+$s\times4$ integer matrix
+\[
+ E=\bigl(v_{p_i}(a_j)\bigr),
+ \qquad (a_1,a_2,a_3,a_4)=(2,3,m,n).
+\]
+Its column lattice is $L\subset\Z^s$.  A Smith normal form
+\[
+ UEV=\operatorname{diag}(d_1,\ldots,d_r,0,\ldots,0),
+ \qquad d_1\mid d_2\mid\cdots\mid d_r,
+\]
+computes both the multiplicative rank $r$ and the saturation index
+\[
+ I_\Gamma=d_1\cdots d_r.
+\]
+For every prime $\ell\nmid I_\Gamma$, the reduction of the column span modulo
+$\ell$ has dimension $r$.  This supplies an effective list of the Kummer
+levels excluded by \cref{lem:eventual-rank}.  In rank three, also exclude
+prime divisors of $AD-BC$.
+
+\section{Bibliographic notes}
+
+The original conjectural context is the work of Alaoglu and Erd\H{o}s on
+highly composite and related integers.  The transcendence baseline is the
+Gelfond--Schneider theorem and the Six Exponentials Theorem.  Kummer theory,
+cyclotomic fields, and Chebotarev are used only in their standard finite
+abelian form.  Uniform distribution enters through the elementary irrational
+rotation theorem.  The selected-prime discussion is informed by the modern
+literature on gcds of exponential sequences, but no such theorem is invoked
+in a proof above.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\emph{On highly composite and similar numbers},
+Transactions of the American Mathematical Society \textbf{56} (1944),
+448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\emph{Transcendental Number Theory},
+Cambridge University Press, 1975.
+
+\bibitem{BombieriGubler2006}
+E.~Bombieri and W.~Gubler,
+\emph{Heights in Diophantine Geometry},
+Cambridge University Press, 2006.
+
+\bibitem{BCZ2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\emph{An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$},
+Mathematische Zeitschrift \textbf{243} (2003), 79--84.
+
+\bibitem{EvertseSchlickeweiSchmidt2002}
+J.-H.~Evertse, H.~P.~Schlickewei, and W.~M.~Schmidt,
+\emph{Linear equations in variables which lie in a multiplicative group},
+Annals of Mathematics \textbf{155} (2002), 807--836.
+
+\bibitem{Gelfond1960}
+A.~O.~Gelfond,
+\emph{Transcendental and Algebraic Numbers},
+Dover Publications, 1960.
+
+\bibitem{KuipersNiederreiter1974}
+L.~Kuipers and H.~Niederreiter,
+\emph{Uniform Distribution of Sequences},
+Wiley, 1974.
+
+\bibitem{Lang1966}
+S.~Lang,
+\emph{Introduction to Transcendental Numbers},
+Addison--Wesley, 1966.
+
+\bibitem{Neukirch1999}
+J.~Neukirch,
+\emph{Algebraic Number Theory},
+Springer, 1999.
+
+\bibitem{SerreTopics}
+J.-P.~Serre,
+\emph{Topics in Galois Theory}, second edition,
+A K Peters, 2008.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\emph{Diophantine Approximation on Linear Algebraic Groups},
+Springer, 2000.
+
+\bibitem{Washington1997}
+L.~C.~Washington,
+\emph{Introduction to Cyclotomic Fields}, second edition,
+Springer, 1997.
+
+\end{thebibliography}
+
+\end{document}
