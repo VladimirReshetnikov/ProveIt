@@ -76,6 +76,15 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     (`AP.lemma37`): if `f ∈ F(N, P+1, s, y, ε)` and `0 < h ≤ b − a`,
     `h < εN/(s+P+1)`, then `f(x) − f(x+h) ∈ F(N, P, s+1, shy, 3ε)` on
     `[a, b−h]` — the class-closure half of the A-process.
+  - `IntegerPoints.AProcessTheorem` — **proved**: Graham–Kolesnik Theorem
+    3.8, the A-process (`AP.isExponentPair_A`): `(k, l)` exponent pair ⇒
+    `(k/(2k+2), (k+l+1)/(2k+2))` exponent pair.  Weyl differencing (Lemma 4
+    with an indicator-weighted sequence), Lemma 3.7 and the pair `(k, l)`
+    at parameter `s+1` give `|S|² ≪ N²/Q + Q^k L^k N^{l−k+1}`; the explicit
+    `Q₀ = N^{(1+k−l)/(k+1)} L^{−k/(k+1)}` balances the terms with
+    `N²/Q₀ = (L^κ N^λ)²`, the range `L < 1 + log N` is handled by the pair
+    `(1/2, 1/2)`, and `Q₀ < 1` or `Q₀ > cN` reduce to trivial bounds.
+    Corollary: `(1/6, 2/3)` is an exponent pair.
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
