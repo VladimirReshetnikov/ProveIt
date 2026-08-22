@@ -26,7 +26,9 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     Perron, Krätzel, Weyl–van der Corput, Bombieri–Iwaniec,
     Fouvry–Iwaniec, Min's B-process, Srinivasan) and Wu Lemma 2.1,
     Theorem 2, Lemmas 2.5–2.7 (triple and double monomial exponential
-    sums), with a Graham–Kolesnik definition of exponent pairs.
+    sums), with the Graham–Kolesnik definition of exponent pairs
+    (`f^{(p+1)} ≈ (−1)^p (s)_p y t^{−s−p}`, so `f' ≈ y t^{−s}` and
+    `z = yN^{−s} ≍ |f'|`; the bound is `≪ z^κ N^λ` for `z ≥ 1`).
   - `IntegerPoints.ZhaiCao` — (1.1)–(1.4), Lemmas 9–10, Propositions 1–2.
   - `IntegerPoints.Wu` — Theorem 1, Nowak's formula, the reduction to
     `ℛ(M, N)`, the regions `𝒜, ℬ, 𝒞, 𝒟`, Propositions 1–4, and the exact
@@ -42,6 +44,8 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
   - `IntegerPoints.Srinivasan` — **proved**: Zhai–Cao Lemma 8
     (`zhaiCao_lemma8_holds`) by an intermediate-value crossing argument.
   - `IntegerPoints.ExponentPairs` — **proved**: `(0, 1)` is an exponent pair.
+  - `IntegerPoints.ExponentPairHalf` — **proved**: `(1/2, 1/2)` is an exponent
+    pair (`isExponentPair_half_half`), from the second-derivative test.
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete

@@ -274,13 +274,14 @@ def wu_lemma25 : Prop :=
 
 /-- The Graham–Kolesnik function class `F(N, P, s, y, ε)`: `f` is `C^P`,
 `[a, b] ⊆ [N, 2N]`, and for `0 ≤ p < P` and `t ∈ [a, b]`
-`|f^{(p+1)}(t) - (-1)^p s(s+1)⋯(s+p) y t^{-s-p-1}| ≤ ε s(s+1)⋯(s+p) y t^{-s-p-1}`. -/
+`|f^{(p+1)}(t) - (-1)^p (s)_p y t^{-s-p}| ≤ ε (s)_p y t^{-s-p}`, where
+`(s)_p = s(s+1)⋯(s+p-1)` (so `f' ≈ y t^{-s}` and `y N^{-s} ≍ |f'|`). -/
 def InGKClass (N : ℝ) (P : ℕ) (s y ε a b : ℝ) (f : ℝ → ℝ) : Prop :=
   N ≤ a ∧ a ≤ b ∧ b ≤ 2 * N ∧ ContDiff ℝ P f ∧
     ∀ p : ℕ, p < P → ∀ t ∈ Set.Icc a b,
       |iteratedDeriv (p + 1) f t -
-          (-1) ^ p * (∏ i ∈ Finset.range (p + 1), (s + i)) * y * t ^ (-s - p - 1)| ≤
-        ε * (∏ i ∈ Finset.range (p + 1), (s + i)) * y * t ^ (-s - p - 1)
+          (-1) ^ p * (∏ i ∈ Finset.range p, (s + i)) * y * t ^ (-s - p)| ≤
+        ε * (∏ i ∈ Finset.range p, (s + i)) * y * t ^ (-s - p)
 
 /-- `(κ, l)` is an **exponent pair** in the sense of Graham–Kolesnik
 (*Van der Corput's Method of Exponential Sums*, Ch. 3): `0 ≤ κ ≤ 1/2 ≤ l ≤ 1`
