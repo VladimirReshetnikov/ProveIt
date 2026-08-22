@@ -240,7 +240,11 @@ conditional monoid.  The last two reports add an arithmetic approximation/minima
 an exact geometric Newton shadow, and an operator-theoretic classification of which local,
 finite-lattice, affine, first-jet, and finite-realization extensions would actually add new
 information.  Each sharpens a finite interface while leaving the same
-four-exponentials barrier intact.
+four-exponentials barrier intact.  Reports 21--27 add independent moment, rank-geometry,
+unimodular-gap, orbit-entropy, Pad\'e-defect, carry-language, and canonical-product audits.
+Their formal cores certify exact denominator, matrix, collision, entropy, defect,
+carry-word, and D-finite identities; their strongest paper endpoints still require a new
+transcendence, height, uniformity, or interpolation-regularity bridge.
 \end{minipage}
 \vfill
 {\large August 21, 2026\par}
@@ -280,7 +284,7 @@ adds directly to the tropical minimum, giving $p^{\tau+U}\mid\det$ uniformly acr
 assignment cascade.  These gains are lower order; exact synthetic
 experiments expose genuine cross-layer carrying but do not exhibit a leading-order cascade at
 the tested sizes.  Third, it reconciles the genuinely new material independently developed
-in all twenty reports under \lean{Article/new-reports/}.  The reports share this unified
+in all twenty-seven reports under \lean{Article/new-reports/}.  The reports share this unified
 document as their common base; they are audited independently and reconciled by mathematical
 content rather than treated as a sequential chain.  Reports 1--2 show that the
 Alaoglu--Erd\H{o}s conjecture is equivalent to a
@@ -332,6 +336,18 @@ Newton expansion whose first omitted value is explicit.  Report 20 independently
 operator interface: two-mode shifts, heat data, and semisimple functional calculus are blind,
 whereas a global or finite valuation lattice, one affine coherence, one rational first jet,
 or one exact finite trace/Hankel realization would force integrality.
+Report 21 adds a Hausdorff moment representation, exact structural-prime moment defects,
+finite rational-quadrature failure, and M\"untz-invisible positive perturbations.  Report 22
+classifies the depth-two logarithmic tensor by hyperbolic rank and supplies an exact rational
+symmetrization.  Report 23 proves determinant-distance gap gcds, transported rational
+secants, a finite order-signature no-go, and an entrywise jet ceiling.  Report 24 computes
+the conditional orbit heights exactly and turns Farey counting into simultaneous worst-case
+denominator entropy.  Report 25 optimizes Kawashima's projective Pad\'e defect and proves that
+no positive-defect rational tuple can recover the fixed prime logarithm.  Report 26 develops
+distinguished-descendant carry languages, exact multinomial fibers, and their finite and
+unrestricted pressure laws.  Report 27 identifies the sharp cubic logarithmic type of the
+$3$-smooth canonical product, proves subcritical interpolation rigidity, and isolates an
+exact critical boundary cocycle.
 Fourth, it
 quantifies the remaining gap: the determinant hierarchy misses the conditional population by
 exactly one factor of $\log X$.
@@ -15175,11 +15191,334 @@ contradiction follows.  The next missing theorem would have to control primitive
 height or force compatibility between the two favorable branches; neither is supplied by
 local rank or by the Smith denominator alone.
 
+\subsection{Paired residuals and the full structural Smith profile}
+\label{r14:cross-resultant-smith}
+
+There is nevertheless more arithmetic in the case where the two favorable branches occur
+simultaneously:
+\begin{equation}
+ M\text{ odd},\qquad A\text{ even},\qquad 3\mid M,\qquad 3\nmid A.
+ \label{r14:eq-simultaneous-favorable}
+\end{equation}
+This is a genuine restriction and is not known to follow from a hypothetical counterexample.
+Nor can a common change of exponent-grid directions manufacture it.  Put
+\[
+ a=v_2(M),\quad c=v_2(A),\quad d=v_3(M),\quad b=v_3(A),\qquad
+ B_2=\begin{pmatrix}1&0\\a&c\end{pmatrix},\quad
+ B_3=\begin{pmatrix}0&1\\d&b\end{pmatrix}.
+\]
+If a nonsingular common direction matrix $C$ makes both $B_2C$ and $B_3C$
+monomial---one nonzero in each row and column---then, and only then,
+\begin{equation}
+ a=b=0,\qquad c,d\ne0,\qquad C\text{ itself is monomial}.
+ \label{r14:eq-grid-transform-nogo}
+\end{equation}
+This is \statuslean{} as \lean{simultaneous_cross_support_iff} in
+\lean{GridTransformNoGo}.  Translations do not change the direction matrices, and the theorem
+does not assume unimodularity; hence signed axis swaps, reflections, rectangular finite-index
+sublattices, and general $GL_2(\Z)$ changes do not remove the branch restriction.  A local
+shear may repair one structural prime but necessarily spoils the other.  Dividing residuals
+by their contents is a different operation: it does not repair every fixed depth, and exact
+examples fail when the boundary degree equals one of the own-prime depths.  There is,
+however, an exact eventual theorem after full content normalization; it is stated below with
+its strict threshold.
+
+Write
+\[
+ F_K(X)=\sum_{r=0}^{n}f_rX^r,\qquad
+ G_K(X)=\sum_{r=0}^{n}g_rX^r,\qquad
+ \tau_r=\binom{n-r}{2},\qquad e_n=\binom n2.
+\]
+The boundary commutator does not merely transfer the total structural content.  Descending
+coefficient comparison gives the exact opposite-residual profiles
+\begin{equation}
+ v_2(g_r)=\tau_r,\qquad v_3(f_r)=\tau_r
+ \qquad(0\le r\le n).
+ \label{r14:eq-opposite-residual-profile}
+\end{equation}
+These complement the direct floors
+\[
+ v_2(f_r)\ge n(n-r),\qquad v_3(g_r)\ge n(n-r)
+\]
+from \eqref{r14:eq-dyadic-scaling}--\eqref{r14:eq-triadic-scaling}.
+
+Here is the finite mechanism.  In the notation of the boundary commutator, the coefficients
+of both $L_3^-$ and $L_3^+$ have dyadic valuation $\tau_r$: in the relevant elementary
+symmetric sum the unique minimum subset is $\{0,\ldots,n-r-1\}$.  The $L_2^+$ terms have the
+deep direct profile, while the cleared $L_2^-$ term is strictly deeper.  Compare the
+coefficient of $X^{n+r}$ and descend from $r=n$ to $r=0$.  If an already known coefficient is
+shifted by $d\ge1$, the doubled valuation gap is exactly
+\begin{equation}
+ 2\bigl(\tau_{r+d}+nd-\tau_r\bigr)=d(2r+d+1)>0.
+ \label{r14:eq-cross-profile-gap}
+\end{equation}
+The factor $A$ raises the competing half by at least one, while $M$ is a dyadic unit.  Thus
+the coefficient equation forces $v_2(g_r)=\tau_r$.  Interchanging $2,F,A,L_3$ with
+$3,G,M,L_2$ proves the triadic equality.
+
+Let $S_K=\operatorname{Sylv}(F_K,G_K)$ be the $2n\times2n$ Sylvester matrix.  Over the
+localization at either structural prime, its Smith-factor valuations are exactly
+\begin{equation}
+ \underbrace{0,\ldots,0}_{n+1\text{ times}},\qquad
+ a_k=\frac{k(3k+1)}2\quad(1\le k<n).
+ \label{r14:eq-cross-smith-profile}
+\end{equation}
+Equivalently, if $\Delta_\ell(S_K)$ is the gcd of the $\ell$-minors, then for
+$1\le m\le n$
+\begin{equation}
+ v_2\bigl(\Delta_{n+m}(S_K)\bigr)
+ =v_3\bigl(\Delta_{n+m}(S_K)\bigr)
+ =\mu_m:=m\binom m2=\frac{m^2(m-1)}2.
+ \label{r14:eq-cross-determinantal-divisors}
+\end{equation}
+In particular every $(n+m)$-minor is divisible by $6^{\mu_m}$, and at the endpoint
+\begin{equation}
+ \operatorname{Res}(F_K,G_K)\ne0,\qquad
+ v_2\operatorname{Res}(F_K,G_K)
+ =v_3\operatorname{Res}(F_K,G_K)
+ =\frac{n^2(n-1)}2.
+ \label{r14:eq-cross-resultant-exact}
+\end{equation}
+
+For completeness, the Smith calculation is local and finite.  Unit-normalize the direct
+residual to be monic and pivot on its shifted copies.  This gives a unimodular equivalence
+\[
+ \operatorname{Sylv}(f,g)\sim I_n\oplus T,
+\]
+where $T$ is multiplication by $g\bmod f$ on the monomial basis of
+$R[X]/(f)$.  The direct coefficient floor ensures that reduction modulo $f$ does not disturb
+the shallow coefficients.  Below the diagonal the entry costs are
+$\binom{n-i+j}{2}$; above it the wrap terms are strictly deeper.  For any $m$-matching of
+selected rows and columns, convexity and the injective-index bounds give total cost at least
+$m\binom m2$.  The bottom-$m$ by first-$m$ minor has a unique term of exactly this cost.
+Successive differences
+\[
+ \mu_m-\mu_{m-1}=\frac{(m-1)(3m-2)}2
+\]
+give \eqref{r14:eq-cross-smith-profile}.  The convex matching inequality and the universal
+Toeplitz-minor divisibility are \statuslean{} in \lean{SmithProfileCore}, whose endpoint is
+\lean{pow_smithMu_dvd_weightedLowerToeplitz_minor}.  The residual-specific commutator
+induction, wrap estimate, and exact-minor unit remain paper proofs.
+
+The same profile in fact extends beyond the simultaneous favorable branch after dividing
+by the full integer contents.  Assume only that $M,A$ are positive integers and that the two
+cross ranks are nonzero,
+\[
+ a=v_2(M),\qquad b=v_3(A),\qquad c=v_2(A)>0,\qquad d=v_3(M)>0,
+ \qquad n>\max(a,b).
+\]
+For a nonzero $H\in\Z[X]$, put
+$\operatorname{cont}(H)=\gcd_r|[X^r]H|$ and
+$H^{\rm pr}=H/\operatorname{cont}(H)$.  If
+$c_K=[X^{K^2-1}]P_K$, the local contents are exactly
+\begin{align}
+ v_2(\operatorname{cont}G_K)&=v_2(c_K),&
+ v_2(\operatorname{cont}F_K)&=v_2(c_K)+a,\notag\\
+ v_3(\operatorname{cont}F_K)&=v_3(c_K),&
+ v_3(\operatorname{cont}G_K)&=v_3(c_K)+b.
+ \label{r14:eq-eventual-content}
+\end{align}
+Writing $F_K^{\rm pr}=\sum f_rX^r$ and $G_K^{\rm pr}=\sum g_rX^r$, one has
+\begin{align}
+ v_2(g_r)&=v_3(f_r)=\binom{n-r}{2} &&(0\le r\le n),
+ \label{r14:eq-eventual-opposite}\\
+ v_2(f_{n-e})&\ge e(n-1)+1,&
+ v_3(g_{n-e})&\ge e(n-1)+1 &&(1\le e\le n).
+ \label{r14:eq-eventual-direct}
+\end{align}
+Consequently the primitive cross-Sylvester matrix has, at both $2$ and $3$, the full Smith
+profile \eqref{r14:eq-cross-smith-profile} and determinantal-divisor orders
+\eqref{r14:eq-cross-determinantal-divisors}.  Thus content normalization enlarges the exact
+profile from $a=b=0$ to every cross-rank pair once $n>\max(a,b)$; it does not force the
+cross-rank hypotheses $c,d>0$ for a hypothetical counterexample.
+
+The proof is coefficientwise.  In the Lagrange expansion the relevant endpoint is uniquely
+minimal once $a<n$ (and symmetrically $b<n$).  Quotient and divided-difference costs give
+\eqref{r14:eq-eventual-opposite}, while the direct residual has the stronger descending
+floor \eqref{r14:eq-eventual-direct}.  Pivoting the Sylvester matrix again gives
+$I_n\oplus T$.  With row coordinate $x$ and column coordinate $j$, a nonwrapping entry has
+doubled cost $(x+j+1)(x+j)$; every wrapping entry has a strictly larger lower bound.  A
+compressed-permutation argument then gives $2m\binom m2$ for every $m$-matching, with a
+unique antidiagonal minimizer.  The endpoint gap, direct floor, wrap inequalities, and finite
+assignment bound are \statuslean{} in \lean{ContentNormalizedProfileFinite}; the Lagrange
+identities, valuation transfer, Sylvester reduction, and application to the actual residuals
+are the \statusnew{} paper layer.  The strict threshold is necessary: equality cases
+$(K,M,A)=(4,24,2)$ with $n=a=3$ and $(3,3,18)$ with $n=b=2$ have noncanonical primitive
+Smith profiles.  Exact finite diagnostics found no failure above the threshold, but those
+calculations are unbundled evidence rather than part of the theorem.
+
+The exact prime-power cancellation, node-divisor normalizations, change-of-variable formula
+for resultants, and the implication from the two normalized residue identities to
+\eqref{r14:eq-cross-resultant-exact} are \statuslean{} in
+\lean{CrossResidualScaling}, \lean{ResultantScaling},
+\lean{Report14NodeDivisorScaling}, and \lean{Report14CrossResultantBridge}.  The strongest
+kernel endpoint, \lean{report14_actual_divisors_favorable_cross_resultant}, keeps the primary
+interpolant scalings and the two nonzero residue reductions as explicit hypotheses; the
+barycentric derivation of those hypotheses from \eqref{r14:eq-simultaneous-favorable} remains
+the paper layer.
+
+The full resultant is not the only exact local object.  For $1\le s\le n$, let
+$T_s(F_K,G_K)$ be the leading $2s\times2s$ Sylvester block and put
+\[
+ C_s(F_K,G_K)=\det T_s(F_K,G_K)
+   =\operatorname{psc}_{n-s}(F_K,G_K)
+\]
+up to the conventional sign.  The direct and opposite coefficient profiles give the exact
+principal-subresultant chain
+\begin{equation}
+ C_s(F_K,G_K)\ne0,\qquad
+ v_2(C_s(F_K,G_K))=v_3(C_s(F_K,G_K))
+ =\mu_s=\frac{s^2(s-1)}2.
+ \label{r14:eq-deep-subresultant-chain}
+\end{equation}
+Indeed every nonzero determinant matching has total displacement $s^2$.  If $E$ units of
+displacement are assigned to the direct rows, its doubled structural-prime cost is at least
+\[
+ 2nE+\sum_i d_i(d_i-1)\ge 2\mu_s,
+\]
+with equality only when $E=0$ and all $s$ shallow-row displacements equal $s$.  Thus the
+unique minimal term is $\pm f_n^s g_{n-s}^s$ at $2$ and
+$\pm g_n^s f_{n-s}^s$ at $3$.  The sharp cost inequality, strict case, and equality
+classification are \statuslean{} in \lean{DeepSubresultantCost}.  Their application to the
+residual coefficient profiles is the paper layer.
+
+Writing $c=[X^{K^2-1}]P_K$, the first column of $T_s$ is divisible by $c$; in the simultaneous
+favorable branch $c$ is a unit at $2$ and $3$.  Hence
+\[
+ \Theta_s=C_s/c\in\Z\setminus\{0\},\qquad
+ v_2(\Theta_s)=v_3(\Theta_s)=\mu_s.
+\]
+For $s=n-j$ with any fixed $j\ge1$, this proper subresultant retains the full leading
+$n^3/2$ local mass.  It still does not solve the height problem.  Define the truncated
+top-coefficient norms by
+\[
+ H_{F,s}^2=\sum_{d=0}^{\min(n,2s-1)}|f_{n-d}|^2,\qquad
+ H_{G,s}^2=\sum_{d=0}^{\min(n,2s-1)}|g_{n-d}|^2.
+\]
+The natural Hadamard bound satisfies
+\[
+ 0<|\Theta_s|\le\frac{H_{F,s}^sH_{G,s}^s}{|c|},\qquad
+ \frac{H_{F,s}^sH_{G,s}^s}{|c|}\ge6^{s(K^2-2)},
+\]
+so at $s\sim\rho n$ its deficit from the forced divisor is already
+\[
+ \left(\rho-\frac{\rho^3}{2}\right)(\log6)n^3+O(n^2)>0.
+\]
+Exact synthetic calculations likewise find a large primitive core: at $K=4$, $(M,A)=(9,2)$,
+and $s=2$, removing $c6^{\mu_2}$ leaves a primitive leading coefficient with $93$ decimal
+digits.  This is an unbundled exact-computation diagnostic, not a common-exponent theorem.
+The deep chain is a genuine local strengthening, but a cancellation-sensitive primitive-height
+estimate would still be new.
+
+The all-minor profile still does not close the argument.  Structural zero minors prevent a
+literal application of the all-nonzero-minor inequality of Section~\ref{r17:smith-profile}.
+A support-aware Cauchy--Binet bound can be written as follows.  Put
+$h_F=\lVert F_K\rVert_2$, $h_G=\lVert G_K\rVert_2$, $k=n+m$.  Row normalization and the fact
+that every $k$-row subset of an invertible matrix has some nonzero $k$-minor give the necessary
+inequality
+\begin{equation}
+ 6^{2\mu_m}\sum_{r=m}^{n}
+ \binom nr\binom n{n+m-r}h_F^{-2r}h_G^{-2(n+m-r)}
+ \le \binom{2n}{n+m}.
+ \label{r14:eq-cross-support-aware-bound}
+\end{equation}
+Even in the optimistic normalization where only the leading-coefficient costs remain, the
+order-$n^3$ logarithmic surplus at $m\sim\rho n$ is bounded by
+\begin{equation}
+ \frac{\rho^3}{2}\log6-\log2-\rho\log3\le-\log2<0
+ \qquad(0\le\rho\le1).
+ \label{r14:eq-cross-compound-deficit}
+\end{equation}
+Thus no intermediate exterior level repairs the endpoint constant using coefficient norms
+and Hadamard/Cauchy--Binet alone.  The displayed rate inequality is \statuslean{} in
+\lean{CompoundEndpointRate}.  A proof still needs a new primitive-height saving, a
+support-aware cancellation theorem stronger than these norm bounds, or a way to reach the
+simultaneous residue branch from every hypothetical counterexample.
+
+The full interpolation denominator does not supply the missing saving either.  There is an
+exact smallest-grid counterexample to any universal denominator-survival claim.  For the
+synthetic favorable pair $(M,A)=(9,2)$ and $n=1$, the primitive interpolation numerator
+\[
+ P=127X^3-1212X^2+3227X-2082
+\]
+takes the values $(60,120,540,1080)$ at $(1,3,2,6)$, so its interpolation denominator is
+$\delta=60$.  The two boundary residuals are
+\[
+ F=5552-127X,\qquad G=3175X+1041,\qquad
+ \operatorname{Res}(F,G)=-17759807=-13\cdot31\cdot127\cdot347.
+\]
+Thus $\gcd(\delta,\operatorname{Res}(F,G))=1$, and the rational residual resultant is the
+reduced fraction $-17759807/60^2$.  The entire scalar factor introduced by clearing the two
+residual denominators can cancel.  This certificate is \statuslean{} in
+\lean{DenominatorCancellationCounterexample}.  The pair $(9,2)$ is test data, not a
+common-exponent pair; accordingly the example rules out a grid-denominator-only theorem but
+does not rule out a bound using the still-missing common-$\beta$ arithmetic.
+
+The obstruction persists asymptotically.  For every $n\ge1$, apply the square-grid
+construction of side $K=n+1$ to the same fixed synthetic pair $(M,A)=(9,2)$; write
+$\delta_n$ for the least interpolation denominator and $F_n,G_n$ for its two boundary
+residuals.  Put
+\[
+ A_2(n)=\sum_{j=1}^{n}v_2(3^j-1),\qquad
+ A_3(n)=\sum_{i=1}^{n}v_3(2^i-1).
+\]
+The exact square-grid denominator formula and structural resultant order are
+\[
+ v_p(\delta_n)=\frac{n^3+2n^2-n}{2}+A_p(n),\qquad
+ v_p\operatorname{Res}(F_n,G_n)=\frac{n^2(n-1)}2
+ \quad(p=2,3).
+\]
+Since $A_p(n)\ge0$, subtraction gives the \statusnew{} all-$n$ inequality
+\[
+ 2n\,v_p(\delta_n)-v_p\operatorname{Res}(F_n,G_n)
+ \ge n^4+\frac32n^3-\frac12n^2.
+\]
+Thus grid vanishing, collisions, and the local Smith profile alone require an
+$\Omega(n^4)$ cancellation tax before they can even reach the primitive resultant.  This
+all-$n$ comparison is a paper consequence of the displayed exact formulas; exact-integer
+checks through $n=5$ serve only as diagnostics.  Its synthetic scope is essential.
+
+There is also an exact endpoint factorization, but it removes no certified structural-prime
+mass.  Let $D=K^2-1$, let $Q_K\in\Q[M,A][X]$ be the generic rational interpolant on the
+square grid, and write $\lambda_K=[X^D]Q_K$, $\kappa_K=Q_K(0)$ in $\Q[M,A]$.  Node inversion
+gives
+\[
+ \kappa_K(M,A)=(-1)^D\!\left(\prod_{i,j<K}2^i3^j\right)
+ \lambda_K(M/2,A/3).
+\]
+For the two generic rational boundary residuals $U_K,V_K$, every monomial of the padded
+Sylvester determinant contains at least one of their two top coefficients and at least one of
+their two constant coefficients: killing both tops lowers both degrees, while killing both
+constants gives the common root zero.  Their endpoint formulas therefore give the
+\statusnew{} all-$K$ divisibility identity
+\[
+ \operatorname{Res}_X(U_K,V_K)=\lambda_K\kappa_K H_K^{\rm rat},\qquad
+ H_K^{\rm rat}\in\Q[M,A].
+\]
+Thus the primitive numerator has the two universal Cramer endpoint factors, one annihilating
+the integer exponent curve at $0,\ldots,D-1$ and the other at $1,\ldots,D$.  Exact symbolic
+factorization for $K=2,3,4$ finds both factors with multiplicity one and a remaining core
+irreducible over $\Q[M,A]$ of bidegree $(1,1),(6,6),(15,15)$, respectively; the three
+specialized cores at $(9,2)$ are pairwise coprime and $2,3$-adic units.  These finite
+calculations are retained as an unbundled exact-CAS diagnostic, not as \statuscomp{} and not
+as an all-$K$ irreducibility theorem.  They give no stable primitive factor
+with which to offset the $\Theta(n^4)$ height scale; a deeper clustered subresultant would be
+a genuinely different object.
+
 \begin{statusbox}{Report 14 was audited independently from the common base.  Structural-prime
 rank and Fermat-quotient statements overlapping report 11 are cross-referenced rather than
 double-counted.  The integral dilation quotient and its mod-$2$ derivative reduction are
-\statuslean{} in \lean{DilationDifferenceQuotient}.  The denominator-lattice, endpoint,
-scaled-root, and resultant theorems are self-contained paper arguments, explicitly restricted
+\statuslean{} in \lean{DilationDifferenceQuotient}.  The paired-residual cancellation,
+resultant scaling, actual node-divisor normalization, conditional exact cross-resultant, and
+Toeplitz Smith-minor core are also \statuslean{} in the five modules named above.  The
+exact denominator-cancellation certificate is \statuslean{} in
+\lean{DenominatorCancellationCounterexample}; the common direction-change obstruction is
+\statuslean{} in \lean{GridTransformNoGo}, and the sharp deep-subresultant cost core is
+\statuslean{} in \lean{DeepSubresultantCost}.  The finite inequalities behind the eventual
+content-normalized profile are \statuslean{} in \lean{ContentNormalizedProfileFinite}, while
+their Lagrange, valuation, and residual application is the paper layer.  The
+denominator-lattice, endpoint, scaled-root, opposite-coefficient, residual-specific full Smith,
+and self-dilation-resultant theorems are self-contained paper arguments, explicitly restricted
 to $M$ odd and $A$ even or to $3\mid M$ and $3\nmid A$ where stated.  The report's larger
 symbolic audit is retained only as an unbundled diagnostic: the displayed source does not
 reconstruct every claimed interpolation, Newton polygon, and resultant.  No conclusion here
@@ -16336,6 +16675,835 @@ Values in $\Q(i)$ or split-prime rings & open \\
 
 In every reading the answer the conjecture predicts is the same.
 
+\section{Twenty-first report: Hausdorff moments and M\"untz invisibility}
+\label{sec:report21}
+
+Report 21 is independent of the previous continuations.  Its minimal transcendence and
+fractional-normalization steps overlap the accepted corpus; its new direction is the additive
+adjacency of the $\{2,3\}$-smooth numbers and the Hausdorff moment problem it creates.
+
+\subsection{The explicit moment measure}
+\label{r21:moments}
+
+For $0<\alpha<1$ define
+\[
+ d_j=(j+2)^\alpha-(j+1)^\alpha\qquad(j\ge0).
+\]
+These are the moments of the finite positive measure
+\begin{equation}
+ d\mu_\alpha(q)=\frac{\alpha}{\Gamma(1-\alpha)}
+ (1-q)(-\log q)^{-\alpha-1}\,dq,
+ \qquad
+ d_j=\int_0^1q^j\,d\mu_\alpha(q).
+ \label{r21:eq-hausdorff}
+\end{equation}
+The same Mellin identity holds for every real exponent $z>-1$.  It follows from the gamma
+integral for $t^{\alpha-1}$ and Tonelli after $q=e^{-s}$.  The density is positive on
+$(0,1)$, integrable at both endpoints, and has full support.  Consequently
+\begin{equation}
+ (-1)^k\Delta^kd_j=\int_0^1q^j(1-q)^k\,d\mu_\alpha(q)>0,
+ \label{r21:eq-complete-monotone}
+\end{equation}
+every finite Hankel matrix $(d_{i+j})$ is positive definite, and strict H\"older gives
+\[
+ d_j^{\,k-i}<d_i^{\,k-j}d_k^{\,j-i}\qquad(0\le i<j<k).
+\]
+These analytic identities are \statusnew{} paper proofs using classical integration.
+
+The only adjacent positive $\{2,3\}$-smooth pairs are
+\[
+ (1,2),\quad(2,3),\quad(3,4),\quad(8,9),
+\]
+by coprimality and Catalan--Mih\u{a}ilescu.  Thus under a hypothetical fractional solution,
+with $u=2^\alpha$ and $v=3^\alpha$, the adjacent endpoints force
+\begin{equation}
+ d_0=u-1,\qquad d_1=v-u,\qquad d_2=u^2-v,\qquad d_7=v^2-u^3
+ \label{r21:eq-forced-moments}
+\end{equation}
+to be rational and positive.  This is a list of the four moments whose rationality is
+\emph{forced by adjacent smooth endpoints}; it does not exclude accidental rationality of
+other moments.
+
+\subsection{Exact arithmetic defects and finite rational simulation}
+\label{r21:defects}
+
+Write $u=P/2^r$ and $v=Q/3^s$ in lowest terms.  The first Hankel defect and three
+nonconsecutive log-convexity defects are
+\[
+ \mathcal H=d_0d_2-d_1^2,\quad
+ \mathcal F_{017}=d_0^6d_7-d_1^7,\quad
+ \mathcal F_{127}=d_1^5d_7-d_2^6,\quad
+ \mathcal F_{027}=d_0^5d_7^2-d_2^7.
+\]
+They are strictly positive, and their exact reduced denominators are respectively
+\begin{equation}
+ 2^{3r}3^{2s},\qquad 2^{9r}3^{7s},\qquad
+ 2^{12r}3^{7s},\qquad 2^{14r}3^{7s}.
+ \label{r21:eq-defect-denominators}
+\end{equation}
+Parity and reduction modulo $3$ show that the displayed positive numerators are coprime to
+these denominators.  The four common-denominator identities and their local-unit conclusions
+are \statuslean{} in \lean{Report21MomentArithmetic}; positivity comes from
+\eqref{r21:eq-hausdorff} and remains the paper layer.
+
+Finite positivity data cannot distinguish the special measure.  If rational
+$m_0>m_1>m_2>0$ satisfy $m_0m_2>m_1^2$, then
+\begin{equation}
+ \left(m_0-\frac{m_1^2}{m_2}\right)\delta_0
+ +\frac{m_1^2}{m_2}\delta_{m_2/m_1}
+ \label{r21:eq-two-atom}
+\end{equation}
+is a positive rational two-atom measure reproducing $m_0,m_1,m_2$.  This identity is also
+\statuslean{} in \lean{Report21MomentArithmetic}.  More generally, a finite family of
+rational polynomial observations lying in the interior of the closed moment cone admits a
+positive rational finite quadrature: one first passes to the closed cone, uses
+$\operatorname{int}C=\operatorname{int}\overline C$, and then perturbs a finite generating
+set to rational nodes.  This is a \statusnew{} finite-dimensional paper theorem.
+
+\subsection{All smooth linear observations remain invisible}
+\label{r21:muntz}
+
+Put
+\[
+ \Lambda=\{N-1:N=2^a3^b\ge2\},\qquad
+ K_m(q)=\frac{1-q^m}{1-q}.
+\]
+Unique factorization gives the convergent reciprocal sum
+\begin{equation}
+ \sum_{m\in\Lambda}\frac1m\le4.
+ \label{r21:eq-muntz-sum}
+\end{equation}
+The full $L^1$ M\"untz theorem on an interval away from zero, followed by Hahn--Banach, now
+gives an exact infinite-dimensional no-go.  For every $0<a<b<1$ there is a nonzero bounded
+real $g$, supported in $[a,b]$, such that
+\begin{equation}
+ \int_0^1K_m(q)g(q)\,d\mu_\alpha(q)=0\qquad(m\in\Lambda).
+ \label{r21:eq-invisible}
+\end{equation}
+For sufficiently small $\varepsilon>0$, the distinct positive measures
+$(1\pm\varepsilon g)\mu_\alpha$ therefore have every same $\{2,3\}$-smooth linear
+observation, agree with $\mu_\alpha$ near both endpoints, and change the $j$th ordinary
+moment by only $O(b^j)$.  This is a \statusnew{} theorem conditional only on the classical
+M\"untz/Hahn--Banach inputs.  It is a no-go for reconstruction among positive measures; the
+perturbations need not belong to the one-parameter family $\{\mu_\beta\}$ and therefore do
+not produce another exponent.
+
+\begin{statusbox}{Report 21 was audited independently.  The exact two-atom and denominator
+arithmetic is \statuslean{} in \lean{Report21MomentArithmetic}.  The Hausdorff integral,
+finite moment-cone quadrature, and M\"untz invisible perturbations are paper/classical
+arguments with the scopes stated above.  They prove that positivity and all smooth linear
+observations are insufficient, not that the conjecture fails or holds.}
+\end{statusbox}
+
+\section{Twenty-second report: depth-two rank geometry and rational symmetrization}
+\label{sec:report22}
+
+Report 22 is another independent sibling of the common base.  Its restricted matrix
+coefficient, formal prime-symbol, and external-rank reductions overlap
+\lean{RestrictedMatrixCoefficient}, \lean{FormalPrimeDeterminant}, and the accepted
+external-rank modules.  The genuinely new layer is a quadratic-rank classification and a
+rational symmetric normal form for the multiplicatively dependent branch.
+
+\subsection{Baker excludes quadratic rank at most two}
+\label{r22:baker-rank}
+
+Let $\lambda_1,\ldots,\lambda_t$ be $\Q$-independent logarithms of positive algebraic
+numbers.  A nonzero rational quadratic form $q$ of rank at most two cannot vanish at these
+logarithms.  Over $\Qbar$, such a form factors as $q=L_1L_2$; vanishing would give a
+nontrivial algebraic linear relation among the $\lambda_i$, contrary to Baker's homogeneous
+linear-independence theorem.  This is a classical Baker consequence; its application to the
+two-star tensor is new to this corpus.
+
+In prime-exponent space put $a=\nu(M)$, $b=\nu(N)$ and
+\[
+ q_{a,b}=e_2b-e_3a\in\operatorname{Sym}^2(V).
+\]
+Its period specialization is
+$\log2\log N-\log3\log M$.  A nonintegral solution makes this zero but does not make the
+formal tensor zero, so Baker forces $\operatorname{rank}(q_{a,b})\ge3$.
+
+\subsection{Hyperbolic pullback and the rank-three conic}
+\label{r22:hyperbolic}
+
+For independent $e,f$ and arbitrary $a,b$, the universal tensor
+$eb-fa$ is the pullback of the hyperbolic form $z_1z_2-z_3z_4$.  If
+$r=\dim\operatorname{span}\{e,b,f,a\}$, its rank is four for $r=4$ and at most two for
+$r\le2$.  At $r=3$, write the unique relation as
+\[
+ c_1e+c_2b+c_3f+c_4a=0.
+\]
+The restricted form has rank three exactly when
+\begin{equation}
+ c_1c_2-c_3c_4\ne0;
+ \label{r22:eq-tangency}
+\end{equation}
+otherwise its rank is two.  Combining this finite classification with Baker shows that a
+hypothetical counterexample has equal multiplicative and quadratic rank, necessarily three
+or four.  In rank three the two external prime-exponent vectors lie on one rational ray, and
+the determinant relation becomes a nondegenerate split ternary conic.  This is a compression
+of the dependent branch, not a nonvanishing theorem for its prime-log point.
+
+The hyperbolic normal identity and exact conic determinant are \statuslean{} in
+\lean{Report22RankGeometry}.  Baker's theorem and the passage from the actual two-star tensor
+to the rank classification are the paper/classical layer.  The source report wrote the
+rank-three and rank-four kernel strata as intersections equal to $\{0\}$; literally those
+intersections must be empty, because the zero tensor is not in either stratum.  The unified
+formulation uses the corrected nonvanishing statement.
+
+\subsection{A rational symmetric normal form}
+\label{r22:symmetrization}
+
+Let $L\in M_2(\R)$ be nonzero and singular, suppose its entries span a three-dimensional
+rational vector space, and let its unique rational coefficient relation have matrix
+\[
+ C=\begin{pmatrix}\gamma&\alpha\\ \delta&\beta\end{pmatrix},
+ \qquad \Delta=\gamma\beta-\delta\alpha\ne0.
+\]
+The explicit right multiplier
+\begin{equation}
+ Q=\begin{pmatrix}-\delta&\gamma\\-\beta&\alpha\end{pmatrix},
+ \qquad \det Q=\Delta,
+ \label{r22:eq-symmetrizer}
+\end{equation}
+makes $LQ$ symmetric.  If $L=r(1,x)$ has rank one, symmetry forces
+\[
+ LQ=\kappa rr^T.
+\]
+For a rank-three counterexample, $r=(\log2,\log3)^T$; after changing the global sign,
+$\kappa>0$, and the three entries
+\[
+ \kappa(\log2)^2,\qquad \kappa\log2\log3,\qquad \kappa(\log3)^2
+\]
+are independent logarithms of positive algebraic numbers in geometric progression.  Thus
+there would be a positive algebraic $\eta>1$ for which
+\begin{equation}
+ \eta,\qquad \eta^{\thetaq},\qquad \eta^{\thetaq^2}
+ \quad\text{are algebraic and multiplicatively independent}.
+ \label{r22:eq-algebraic-orbit}
+\end{equation}
+Current transcendence theorems do not exclude this two-step orbit.  The determinant,
+right-multiplication symmetry, invertible-multiplier construction, and symmetric outer-product
+normal form are \statuslean{} in \lean{Report22RankGeometry}; algebraicity and the application
+to the counterexample remain the \statusnew{} paper layer.
+
+\begin{statusbox}{Report 22 was audited independently.  Its low-rank exclusion is a classical
+Baker consequence, and its hyperbolic pullback and rational symmetrization are new exact
+reductions.  The finite matrix identities are kernel-checked in
+\lean{Report22RankGeometry}.  The remaining rank-three and rank-four depth-two period
+nonvanishing statements are open; neither the conic nor the symmetric orbit proves the
+conjecture.}
+\end{statusbox}
+
+\section{Twenty-third report: unimodular gaps, transported secants, and finite-order barriers}
+\label{sec:report23}
+
+Report 23 is an independent continuation from the common unified base.  Its elementary and
+Four/Six Exponentials reductions coincide with accepted material and are not repeated.  Its
+new contribution is a determinant-distance law for binomial gaps, an associated family of
+rational secant brackets, and two precise no-go theorems for finite order data and bounded
+entrywise jets.
+
+\subsection{Determinant distance and adjacent gap coprimality}
+\label{r23:gaps}
+
+Let $A,B\ge2$ be coprime, let $p,q,r,s$ be positive integers, and put
+$D=|ps-rq|>0$.  Then
+\begin{equation}
+ \gcd(B^q-A^p,B^s-A^r)\mid\gcd(A^D-1,B^D-1).
+ \label{r23:eq-gap-gcd}
+\end{equation}
+Indeed a common divisor is prime to $AB$; eliminating first $B$ and then $A$ from the two
+power congruences gives $A^D\equiv B^D\equiv1$.  When $D=1$ the converse congruence is also
+automatic, so the exact identity is
+\begin{equation}
+ \gcd(B^q-A^p,B^s-A^r)=\gcd(A-1,B-1).
+ \label{r23:eq-unimodular-gap}
+\end{equation}
+Without coprimality, the same statement holds primewise away from $AB$.  Consecutive
+continued-fraction convergents to $\log3/\log2$ have determinant distance one; hence their
+signed gaps $3^{q_j}-2^{p_j}$ are pairwise coprime at adjacent indices.  For a hypothetical
+output pair $(M,N)=(2^x,3^x)$, the corresponding adjacent output-gap gcd is
+$\gcd(M-1,N-1)$ when $M,N$ are coprime, with the same away-from-$MN$ restriction otherwise.
+These are \statusnew{} exact paper theorems.  The generic commutative-group collision and
+both determinant orientations of the modular implication are \statuslean{} in
+\lean{UnimodularGapCollision}; the integer gcd packaging remains the paper layer.
+
+\subsection{Rational secants and separated denominators}
+\label{r23:secants}
+
+For positive $p,q$ with $3^q\ne2^p$, define
+\[
+ Q_{p,q}=\frac{N^q-M^p}{3^q-2^p}.
+\]
+Under a hypothetical solution $x>1$ this is positive rational and the fundamental theorem
+of calculus gives
+\begin{equation}
+ Q_{p,q}=x\int_0^1\bigl((1-t)2^p+t3^q\bigr)^{x-1}\,dt.
+ \label{r23:eq-secant-integral}
+\end{equation}
+Its reduced denominator is exactly
+$|3^q-2^p|/\gcd(|3^q-2^p|,|N^q-M^p|)$.  Thus adjacent convergents give coprime reduced
+denominators.  After setting
+\[
+ T_j=\frac{2^{p_j}}{M^{p_j}}Q_{p_j,q_j},\qquad
+ \delta_j=q_j\log3-p_j\log2,
+\]
+one has
+\[
+ T_j=\Phi_x(\delta_j),\qquad
+ \Phi_x(\delta)=\frac{e^{x\delta}-1}{e^\delta-1},\qquad
+ T_j-x=\frac{x(x-1)}2\delta_j+O_x(\delta_j^2).
+\]
+The integral representation of $\Phi_x$ makes it strictly increasing, so the rational
+$T_j$ alternate above and below $x$.  Away from primes dividing $M$, consecutive reduced
+denominators remain coprime.  This is exact arithmetic separation, not an irrationality
+measure: the error is only $O(1/q_{j+1})$ while the rational heights can be exponential in
+$p_j$.
+
+\subsection{Finite signatures and the entrywise jet ceiling}
+\label{r23:finite-barriers}
+
+No finite list of strict monomial comparisons identifies the special slope.  For every
+finite $F\subset\Z^2\setminus\{0\}$ there are infinitely many coprime multiplicatively
+independent pairs $(M,N)$ such that
+\[
+ \operatorname{sgn}(a\log M+b\log N)
+ =\operatorname{sgn}(a\log2+b\log3)\qquad((a,b)\in F).
+\]
+Choose a large prime $M=P$ and an integer $N$ nearest $P^{\log_2 3}$ but not divisible by
+$P$; the log slope lies in the same finite sign chamber.  This rules out only finite strict
+order signatures, not congruence, valuation, or uniform infinite information.
+
+There is a complementary determinant ceiling.  For an $R\times R$ integer decoration
+matrix $C$, let $\Sigma(C)$ be the set of permutations whose Leibniz products are nonzero
+and assume $\Sigma(C)\ne\varnothing$.  Let $\tau_p(C)$ be the minimum $p$-valuation over
+$\Sigma(C)$ and put
+$T(C)=\prod_pp^{\tau_p(C)}$.  If every nonzero $|c_{ij}|\le B$, then for every integral $E$,
+\begin{equation}
+ T(C)\mid\det(E\circ C),\qquad \log T(C)\le R\log B.
+ \label{r23:eq-decoration-budget}
+\end{equation}
+For Euler or Hasse multipliers of order at most $J$ on exponent scale $L$, this standalone
+guaranteed divisor contributes at most $RJ\log L$.  It need not be coprime to, or additive
+with, existing determinant divisors.  Therefore only the entrywise/termwise multiplier
+contribution is $o(R^2)$ when $J\log L=o(R)$; global confluence, cancellation, or
+factorization remains outside the theorem.  The gap, secant, signature, and decoration
+results are \statusnew{} paper arguments and do not prove the conjecture.
+
+\begin{statusbox}{Report 23 was reconciled as an independent sibling.  The genuinely new
+determinant-distance collision core is \statuslean{} in \lean{UnimodularGapCollision}; the
+continued-fraction gcd, transported-secant, finite-signature, and entrywise jet packages are
+paper proofs.  Existing transcendence reductions are cross-referenced, and no fixed-order
+jet statement is promoted to a claim about global determinant cancellation.}
+\end{statusbox}
+
+\section{Twenty-fourth report: exact orbit heights and Farey entropy}
+\label{sec:report24}
+
+Report 24 is another independent continuation from the common unified base.  Its compact
+orbit, recurrence, contact-rigidity, and Four Exponentials ingredients overlap earlier
+sections.  Its genuinely new contribution is quantitative: it computes every reduced orbit
+height exactly, converts Farey counting into a simultaneous two-coordinate denominator
+lower bound, and compares Baker recurrence with a fixed analytic contact order.
+
+\subsection{Exact reduced orbit law}
+\label{r24:orbit}
+
+Condition on a nonintegral counterexample and write $x=B+\alpha$ with $0<\alpha<1$.
+In lowest terms put
+\[
+ 2^\alpha=\frac{W}{2^r},\qquad 3^\alpha=\frac{Z}{3^s},
+ \qquad W>1\text{ odd},\quad 3\nmid Z.
+\]
+Thus $r+\alpha=\log_2W$ and $s+\alpha=\log_3Z$.  For $k\ge0$ let
+$(R_k,S_k)=(2^{\{k\alpha\}},3^{\{k\alpha\}})$, and for a reduced rational $a/b$ set
+$H(a/b)=\max(|a|,b)$.  For every $k\ge1$ the exact reduced expressions are
+\begin{equation}
+ R_k=\frac{W^k}{2^{\lfloor k\log_2W\rfloor}},\qquad
+ S_k=\frac{Z^k}{3^{\lfloor k\log_3Z\rfloor}},
+ \label{r24:eq-exact-orbit}
+\end{equation}
+so
+\begin{equation}
+ H(R_k)=W^k,\quad H(S_k)=Z^k,\qquad
+ \frac{W^k}{2}<\den(R_k)<W^k,\quad
+ \frac{Z^k}{3}<\den(S_k)<Z^k.
+ \label{r24:eq-height-law}
+\end{equation}
+The floor identity behind this is
+$rk+\lfloor k\alpha\rfloor=\lfloor k(r+\alpha)\rfloor$; coprimality makes the displayed
+fractions reduced.  Consequently, with $C_0=\max(W,Z)$,
+\begin{equation}
+ \#\{k\ge0:\max(H(R_k),H(S_k))\le H\}
+ =1+\left\lfloor\frac{\log H}{\log C_0}\right\rfloor\qquad(H\ge1).
+ \label{r24:eq-exact-count}
+\end{equation}
+The floor and finite simultaneous-denominator cores are \statuslean{} in
+\lean{OrbitHeightEntropy}; the reduced-fraction and height specialization is the
+\statusnew{} paper layer.
+
+\subsection{Worst-case Farey-to-orbit distortion}
+\label{r24:farey}
+
+Fix a nondegenerate closed interval $I\subset(0,1)$ and let $\mathcal F_I(Q)$ be its
+reduced rationals with denominator at most $Q$.  The classical estimate
+\[
+ \#\mathcal F_I(Q)=\frac{3|I|}{\pi^2}Q^2+O_I(Q\log Q)
+\]
+combines with~\eqref{r24:eq-height-law} as follows.  If
+\[
+ \Phi:\Q\cap I\longrightarrow\{(R_k,S_k):k\ge0\}
+\]
+is injective and $D_2(Q),D_3(Q)$ are the maximum first- and second-coordinate
+denominators over $\mathcal F_I(Q)$, then
+\begin{equation}
+ \liminf_{Q\to\infty}\frac{\log D_2(Q)}{Q^2}
+ \ge\frac{3|I|}{\pi^2}\log W,\qquad
+ \liminf_{Q\to\infty}\frac{\log D_3(Q)}{Q^2}
+ \ge\frac{3|I|}{\pi^2}\log Z.
+ \label{r24:eq-farey-entropy}
+\end{equation}
+Indeed $N$ distinct nonnegative orbit indices include one index at least $N-1$; the
+\emph{same} image therefore has denominators exceeding $W^{N-1}/2$ and $Z^{N-1}/3$.
+The argument also permits fibers of a fixed integer multiplicity $M\ge1$, dividing the two
+constants by $M$.  The finite injective engine is \statuslean{} in
+\lean{OrbitHeightEntropy}; the Farey asymptotic and limiting constants are
+\statusnew{} paper mathematics.
+
+This is a maximum-envelope theorem: for each large cutoff it forces at least one badly
+distorted input, not every input.  It excludes polynomially tame injective, or uniformly
+bounded-multiplicity, relabelings of the existing orbit.  It does not exclude an arithmetic
+operation that creates new rational graph points.  A denominator-tame thickening with
+polynomially many genuinely new points is therefore a research target, not a consequence of
+the entropy theorem.
+
+\subsection{Baker recurrence versus fixed contact}
+\label{r24:contact}
+
+Let $p_j/q_j$ run through the convergents below $\alpha$, so
+$0<\delta_j=q_j\alpha-p_j<q_j^{-1}$.  A two-logarithm Baker estimate~\cite{Baker1975} gives constants
+$c,\kappa>0$ with $\delta_j\ge c q_j^{-\kappa}$.  If
+$0\ne P\in\Q[X,Y]$, $P(1,1)=0$, and
+\[
+ \sigma(P)=\ord_{t=0}P(2^t,3^t),
+\]
+then eventual nonvanishing and Taylor comparison give
+\begin{equation}
+ c_Pq_j^{-\kappa\sigma(P)}
+ \le |P(R_{q_j},S_{q_j})|
+ \le C_Pq_j^{-\sigma(P)}.
+ \label{r24:eq-contact-window}
+\end{equation}
+The separate elementary height estimate
+$|F(R_k,S_k)|\ge e^{-C_Fk}$ applies when $F\in\Q(X,Y)$ is regular near the compact arc,
+$k\ge1$, and $F(R_k,S_k)\ne0$; this corrects the source statement, which fails at $k=0$
+for constants of absolute value below one.  The contact-multiplicity core is already stronger in
+\lean{RationalContactRigidity}; the new paper contribution here is its two-sided composition
+with the Baker return scale.
+
+More abstractly, if nonzero rational certificates satisfy
+\[
+ \den(\Xi_N)\le e^{A_NN},\qquad |\Xi_N|\le C_NN^{-d_N},
+\]
+with $A_N,d_N\ge0$ and $C_N>0$, the elementary denominator lower bound can contradict the
+analytic estimate only if
+\begin{equation}
+ d_N\log N>A_NN+\log C_N.
+ \label{r24:eq-jet-budget}
+\end{equation}
+Here ``subexponential'' means $\log C_N=o(N)$.  This is a necessary scale benchmark, not a
+construction and not a proof of the conjecture.
+
+\begin{statusbox}{Report 24 was audited as an independent sibling.  The exact floor identities
+and finite worst-case entropy mechanism are \statuslean{} in \lean{OrbitHeightEntropy}.
+The exact rational heights, Farey limits, and Baker--contact comparison are \statusnew{}
+paper results.  The entropy theorem concerns relabelings of the existing cyclic orbit; a
+genuine arithmetic thickening and every closing jet construction remain open.}
+\end{statusbox}
+
+\section{Twenty-fifth report: projective Pad\'e defect and rational-transfer no-go}
+\label{sec:report25}
+
+Report 25 independently tests the new weight-two polylogarithmic criterion of
+Kawashima~\cite{Kawashima2026} against the logarithm determinant.  Its tensor-rank
+reduction overlaps the stronger rank geometry in Section~\ref{sec:report22}, and its
+directed-rounding scan repeats an unbundled computation already separated from the certified
+finite frontier.  Neither is counted again.  The new contribution is an optimized,
+representation-independent height defect and the no-go theorem it forces for rational
+polylogarithm points.
+
+\subsection{The projective defect bound}
+\label{r25:projective}
+
+For $m\ge1$ put $D_m=(m+1)^2-1$ and
+\[
+ C_m=D_m\log2+3\log(m+1)+2+2D_m.
+\]
+Let $K$ be a number field, $v$ a place, let
+$\alpha_1,\ldots,\alpha_m\in K^\times$ be pairwise distinct, and suppose
+$\beta\in K$ satisfies
+$|\beta|_v>H_v(\boldsymbol\alpha):=\max(1,\max_i|\alpha_i|_v)$.  Set
+$z_i=\alpha_i/\beta$ and write
+\[
+ a_v(\mathbf z)=-\log\max_i|z_i|_v,\qquad
+ \overline h(\mathbf z)=\frac1m\sum_{i=1}^m h(z_i).
+\]
+Kawashima's weight-two defect $\mathcal V_v(\boldsymbol\alpha,\beta)$ obeys the exact
+projective upper bound
+\begin{equation}
+ \mathcal V_v(\boldsymbol\alpha,\beta)
+ \le (D_m+1)a_v(\mathbf z)-D_m\overline h(\mathbf z)-C_m.
+ \label{r25:eq-projective-defect}
+\end{equation}
+The proof writes $t=h_v(\beta)$ and optimizes
+\[
+ (D_m+1)t-(D_m+1)\max(0,t-a_v)-D_m\max(t,\overline h)-C_m.
+\]
+Since $a_v\le\overline h$, the maximum is attained throughout
+$a_v\le t\le\overline h$ and equals the right side of
+\eqref{r25:eq-projective-defect}.  This piecewise optimization and its abstract height-budget
+wrapper are \statuslean{} in \lean{Report25ProjectiveDefect}; the number-field height
+specialization and Kawashima's theorem are respectively \statusnew{} and \statusknown{}.
+
+If the defect is positive, then necessarily
+\begin{equation}
+ a_v>C_m,\qquad
+ \frac{a_v}{\overline h}>\frac{D_m}{D_m+1}
+ =1-\frac1{(m+1)^2},\qquad
+ \overline h<\left(1+\frac1{D_m}\right)a_v.
+ \label{r25:eq-efficiency}
+\end{equation}
+These implications are also \statuslean{} in \lean{Report25ProjectiveDefect}.  Thus mere
+archimedean proximity to one is insufficient: the local depth must consume almost all of the
+global height.  Direct points $1-1/q$, high-root splittings, and ordinary unit-fraction
+telescoping all fail this necessary condition.  A common integral rescaling is strictly
+harmful, decreasing the affine defect by $2D_m\log t$.
+
+\subsection{No rational transfer of the prime direction}
+\label{r25:rational-transfer}
+
+Let distinct $z_1,\ldots,z_m\in\Q\cap(0,1)$ admit a positive-defect specialization at the
+real place, and put $\ell_i=-\log(1-z_i)$.  Then
+\begin{equation}
+ \log2\notin\operatorname{span}_{\Q}\{\ell_1,\ldots,\ell_m\}.
+ \label{r25:eq-no-transfer}
+\end{equation}
+The same proof applies to a fixed $q\in\Q_{>0}\setminus\{1\}$ with a changed constant.
+Indeed~\eqref{r25:eq-efficiency} makes every $\ell_i=O(e^{-a_v})$ while bounding all prime
+valuations of $(1-z_i)^{-1}$ by $O(ma_v)$.  If the fixed prime direction lay in their
+rational span, Cramer's rule and Hadamard's inequality would supply integer coefficients of
+size polynomial in $a_v$; exponentiation would then force the nonzero constant $\log2$ below
+an exponentially decaying bound.  The final elementary comparison is uniform in $m$ (with
+the logarithm taken of the ratio of that bound to $\log2$ and with the endpoint derivative
+checked explicitly).  This is a \statusnew{} paper theorem.
+
+Consequently a positive-defect rational tuple cannot reproduce the counterexample's formal
+four-log tensor.  The range of that tensor contains the prime directions by
+Section~\ref{sec:report22}, whereas every tensor built from these rational logarithms has
+range inside their forbidden valuation span.  This rules out the factor-by-factor rational
+$\operatorname{Li}_1$ transfer; it does not rule out algebraic points, varying fields, or a
+genuinely mixed-denominator determinant construction.
+
+For a fixed number field $K$, place $v$, finitely generated
+$\Gamma<K^\times$, and fixed cardinality $m$, the effective approximation theorem of
+Calegari--Dimitrov--Tang~\cite{CDTHolonomy} further implies that only finitely many tuples
+$z_i=1-\gamma_i$, $\gamma_i\in\Gamma$, can have positive defect, with effective height
+bounds.  The fixed-$m$ qualification is essential; this is not uniform over constructions
+with $m\to\infty$.
+
+Finally, let $p_n/q_n$ be the continued-fraction convergents to $\log3/\log2$ and choose
+$\varepsilon_n\in\{\pm1\}$ so that the units
+$r_n=(2^{p_n}3^{-q_n})^{\varepsilon_n}>1$; then $r_n\to1$ and
+\[
+ \frac{-\log(1-r_n^{-1})}{h(1-r_n^{-1})}\longrightarrow0,
+\]
+and the output units have the same low-efficiency behavior.  The present Pad\'e criterion
+requires efficiency tending to one.  This identifies an arithmetic-efficiency gap, not a
+closing theorem.  A proposed cross-row, mixed-denominator cancellation remains only a
+schematic research target because its exceptional ``zero coefficient after rational
+changes'' alternative has not yet been defined precisely.
+
+\begin{statusbox}{Report 25 was audited independently.  The finite projective optimization
+and efficiency implications are \statuslean{} in \lean{Report25ProjectiveDefect}; the
+number-field specialization, rational-transfer no-go, and fixed-cardinality group finiteness
+are \statusnew{} paper results using the cited external theorems.  The repeated $2^{29}$ scan
+is not promoted, and no mixed-denominator construction or proof of the conjecture is claimed.}
+\end{statusbox}
+
+\section{Twenty-sixth report: carry languages and fixed-target entropy}
+\label{sec:report26}
+
+Report 26 is an independent sibling.  Its logarithmic cone, one-orbit equivalence,
+one/two/three-base threshold, $3$-smooth lattice count, and residual compact orbit largely
+overlap the accepted corpus.  Its distinct contribution is additive: a hypothetical
+counterexample forces a distinguished-descendant carry language whose words give many
+equal-arity representations of one fixed target.  Character balancing explains why these
+families lie in algebraic parts rather than contradicting functional transcendence.
+
+\subsection{Carry paths and finite alphabets}
+\label{r26:carry-path}
+
+Let $U,V\ge2$ be multiplicatively independent integers and write
+$e_{a,b}=U^aV^b$.  A step decreasing the first exponent replaces one distinguished copy by
+$U$ copies, freezes $U-1$, and continues with the remaining copy; the second-coordinate
+step does the same with $V$.  A monotone word with $r$ first steps and $s$ second steps
+therefore yields a multiset representation
+\begin{equation}
+ U^rV^s=\sum_{j=1}^{K_{r,s}} e_{a_j,b_j},\qquad
+ K_{r,s}=1+r(U-1)+s(V-1).
+ \label{r26:eq-path-representation}
+\end{equation}
+The frozen terms telescope to the initial monomial.  At every intermediate total degree the
+multiset records the unique visited vertex; multiplicative independence then reconstructs
+the word.  Hence there are at least
+\begin{equation}
+ \binom{r+s}{r}
+ \label{r26:eq-binomial-fiber}
+\end{equation}
+distinct representations of the fixed target.  Under a hypothetical counterexample this
+applies to $(U,V)=(M,N)=(2^x,3^x)$ and every term is itself
+$(2^a3^b)^x$.
+
+The construction extends to a finite alphabet of distinct moves
+$v_i=(\alpha_i,\beta_i)\in\mathbb N_0^2\setminus\{(0,0)\}$.  Put
+\[
+ D_i=U^{\alpha_i}V^{\beta_i},\qquad
+ (r,s)=\sum_i n_iv_i,\qquad
+ K=1+\sum_i n_i(D_i-1).
+\]
+Words with the same symbol counts then give at least
+\begin{equation}
+ \binom{\sum_i n_i}{n_1,\ldots,n_m}
+ \label{r26:eq-multinomial-fiber}
+\end{equation}
+distinct $K$-term representations of $U^rV^s$.  The exact telescoping sum, term count,
+strict suffix-degree descent, and reconstruction from the endpoint and ordered suffix list
+are \statuslean{} in \lean{Report26CarryPath}.  Recovering the word from the unordered
+frozen multiset and the multinomial enumeration remain the \statusnew{} paper layer.
+
+The two primitive counterexample carries $(2t)^x=Mt^x$ and $(3t)^x=Nt^x$ are also exactly
+character-balanced.  More generally every finite sequence of such rewrites groups into
+independently vanishing character classes.  Thus their positive-dimensional families are
+compatible with, rather than forbidden by, the usual functional-transcendence
+decomposition.
+
+\subsection{Exact carry-language pressure}
+\label{r26:pressure}
+
+For a fixed finite alphabet $\mathcal S$ of at least two $3$-smooth integers
+$d_i=2^{\alpha_i}3^{\beta_i}>1$, let
+$D_i=d_i^x$ under the hypothetical solution.  Entropy maximization gives two exact
+\emph{carry-language} rates.  They are the unique positive roots
+\begin{equation}
+ \sum_i d_i^{-\delta_{\mathcal S}}=1,\qquad
+ \sum_i e^{-\tau_{\mathcal S}(D_i-1)}=1.
+ \label{r26:eq-finite-pressure}
+\end{equation}
+For symbol proportions $\pi_i$, relative entropy proves
+\[
+ \sup_\pi\frac{H(\pi)}{\sum_i\pi_i\log d_i}=\delta_{\mathcal S},\qquad
+ \sup_\pi\frac{H(\pi)}{\sum_i\pi_i(D_i-1)}=\tau_{\mathcal S}.
+\]
+The alphabet $\{2,3,6\}$ already gives ambient exponent one.  Exhausting all nonunit
+$3$-smooth letters gives
+\begin{equation}
+ (1-2^{-\delta_*})(1-3^{-\delta_*})=\frac12,\qquad
+ \delta_*=1.4352790836694176\ldots .
+ \label{r26:eq-delta-star}
+\end{equation}
+This is an exact supremum over the finite-alphabet carry construction, not over all additive
+representations.
+
+There is also an unrestricted word pressure.  Let $\tau_x>0$ be the unique solution of
+\begin{equation}
+ \sum_{(a,b)\in\Nzero^2\setminus\{(0,0)\}}
+ e^{-\tau_x(M^aN^b-1)}=1,
+ \qquad g=\gcd(M-1,N-1).
+ \label{r26:eq-global-pressure}
+\end{equation}
+For every sufficiently large positive multiple $n$ of $g$, some endpoint $(r_n,s_n)$ with
+$r_n+s_n\le n$ receives
+\begin{equation}
+ \gg_x\frac{e^{\tau_x n}}{n^2}
+ \label{r26:eq-fixed-target-fiber}
+\end{equation}
+distinct carry-language representations of the fixed target $M^{r_n}N^{s_n}$ as a sum of
+$n+1$ values $a^x$, all with $a\le3^n$.  The word generating series is
+\[
+ \frac1{1-\Phi_x(z)},\qquad
+ \Phi_x(z)=\sum_{(a,b)\ne(0,0)}z^{M^aN^b-1}.
+\]
+After factoring the period $g$, its unique dominant positive pole gives
+$[z^n](1-\Phi_x)^{-1}\asymp_x e^{\tau_xn}$ along $g\mid n$; pigeonholing among
+$O(n^2)$ endpoints yields~\eqref{r26:eq-fixed-target-fiber}.  The matching upper rate is
+only for fibers generated by this unrestricted carry language, not for the full additive
+representation fiber.
+
+These are \statusnew{} exact paper theorems.  They do not conflict with Harrison's
+fixed-arity and fixed-target bounds~\cite{Harrison2026}: here the arity grows linearly with
+the logarithm of the input cutoff.  A closing
+theorem would need uniform fixed-target bounds through that growing-arity range, strong
+enough to beat $e^{\tau_xn}$; no such estimate is known.  Compact-orbit and point-counting
+reformulations do not supply it.
+
+\begin{statusbox}{Report 26 was reconciled independently.  The bounded carry-word sum,
+length, suffix-degree, and ordered reconstruction identities are \statuslean{} in
+\lean{Report26CarryPath}.  Multiset injectivity, multinomial fibers, character balancing,
+and the finite and unrestricted pressure laws are \statusnew{} paper results.  Every
+``exact rate'' is explicitly scoped to the carry-language construction; no contradiction
+with fixed-arity theorems or proof of Alaoglu--Erd\H{o}s is claimed.}
+\end{statusbox}
+
+\section{Twenty-seventh report: canonical-product threshold and critical defect cocycle}
+\label{sec:report27}
+
+Report 27 independently studies the power function on the universal cover of
+$\C^\times$ and the arithmetic sampling set $\{2^a3^b:a,b\ge0\}$.  Its Six Exponentials
+monodromy and algebraic-multiplier consequences overlap Sections~\ref{mc:counting-monodromy} and
+\ref{r16:spectrum}; they are not repeated.  Its new core is an exact analytic growth
+threshold for the $3$-smooth lattice and an infinite boundary-defect identity at that
+threshold.
+
+\subsection{Regularity ladder for a power branch}
+\label{r27:regularity}
+
+On the universal cover, a holomorphic function satisfying
+\[
+ F(w+\log2)=2^xF(w),\qquad F(w+\log3)=3^xF(w),\qquad F(0)=1
+\]
+is necessarily $F(w)=e^{xw}$: after division by $e^{xw}$, the two incommensurable real
+periods have a dense subgroup, so continuity makes the quotient constant.  The corresponding
+branch $z^x$ descends to a single-valued holomorphic function on $\C^\times$ exactly when
+$e^{2\pi i x}=1$, hence exactly when $x\in\Z$.  Throughout the algebraic, Puiseux, and
+D-finite discussion, $z^x$ means a branch on a simply connected punctured neighborhood or
+on this universal cover, not an ordinary analytic germ at zero.
+
+Finite ramification makes the monodromy a root of unity and forces $x\in\Q$, after which the
+elementary rational-exponent argument closes the conjecture.  A further exact criterion is
+arithmetic D-finiteness.  If a branch $z^\lambda$ satisfies a nonzero linear differential
+equation with coefficients in $\overline\Q[z]$, of order $r$ and leading coefficient
+$p_r\ne0$, then clearing powers of $z$ gives
+\begin{equation}
+ Q(z,\lambda)=\sum_{j=0}^r p_j(z)(\lambda)_jz^{r-j}=0.
+ \label{r27:eq-dfinite-relation}
+\end{equation}
+The polynomial $Q(z,X)$ is nonzero because $[X^r]Q=p_r(z)$, so $\lambda$ is algebraic.
+The coefficient identity and noncancellation are \statuslean{} in
+\lean{DfiniteExponentCore}; the differential-equation specialization is the
+\statusnew{} paper layer.  This would force integrality for the conditional power branch,
+whose nonintegral exponent is already known transcendental.  Allowing coefficients that
+depend on $x$ makes differential algebraicity vacuous: $zy'-xy=0$.  Even without admitting
+$x$ as a coefficient, every power branch satisfies the coefficient-free nonlinear identity
+\[
+ zyy''-z(y')^2+yy'=0,
+\]
+so unrestricted nonlinear differential algebraicity still does not isolate the arithmetic
+exponents.
+
+Integer samples accumulating at a puncture are also insufficient.  The entire product below
+makes $1+E(1/z)$ holomorphic on $0<|z|<\varepsilon$, essential at zero, yet equal to $1$ at
+every $z=2^{-a}3^{-b}$.  Exact dilation information, not sampling alone, is indispensable.
+
+\subsection{The sharp cubic logarithmic type}
+\label{r27:canonical-product}
+
+Define the locally uniformly convergent entire product
+\begin{equation}
+ E(z)=\prod_{a,b\ge0}\left(1-\frac{z}{2^a3^b}\right).
+ \label{r27:eq-canonical-product}
+\end{equation}
+Its zeros are simple and exactly the positive $3$-smooth integers.  Factorwise equality at
+$z=-R$ gives $M_E(R)=E(-R)$, and lattice integration yields the exact leading growth
+\begin{equation}
+ \log M_E(R)=\frac{(\log R)^3}{6\log2\log3}+O((\log R)^2).
+ \label{r27:eq-cubic-growth}
+\end{equation}
+Indeed, for $T=\log R$,
+\[
+ \sum_{a,b\ge0}(T-a\log2-b\log3)_+
+ =\frac{T^3}{6\log2\log3}+O(T^2).
+\]
+For an entire $F$, set
+\[
+ \tau_3(F)=\limsup_{R\to\infty}
+ \frac{\log^+M_F(R)}{(\log R)^3},\qquad
+ \tau_*:=\frac1{6\log2\log3}.
+\]
+Jensen's formula gives the matching lower bound
+\begin{equation}
+ F\not\equiv0,\quad F(2^a3^b)=0\ (a,b\ge0)
+ \quad\Longrightarrow\quad \tau_3(F)\ge\tau_*.
+ \label{r27:eq-jensen-threshold}
+\end{equation}
+The constant is sharp by~\eqref{r27:eq-cubic-growth}.  These self-contained statements are
+\statusnew{} to this corpus; no claim of priority in the literature is made.
+
+The threshold gives a sharp sufficient analytic interface.  More generally, let $p,q>1$
+be multiplicatively independent, $P,Q\in\C^\times$, and suppose an entire $H$ satisfies
+\[
+ H(p^aq^b)=P^aQ^b\qquad(a,b\ge0).
+\]
+If
+\begin{equation}
+ \limsup_{R\to\infty}\frac{\log^+M_H(R)}{(\log R)^3}
+ <\frac1{6\log p\log q},
+ \label{r27:eq-subcritical}
+\end{equation}
+then $H(z)=z^n$, $P=p^n$, and $Q=q^n$ for some $n\in\Nzero$.  To prove this, the defect
+$H(pz)-PH(z)$ vanishes on the whole lattice and remains subcritical, so
+\eqref{r27:eq-jensen-threshold} annihilates it; coefficient comparison then leaves a single
+monomial.  Thus a subcritical interpolant of the hypothetical data would prove the
+conjecture.  At equality, $1+E$ is transcendental entire and integer-valued on every node,
+while $z^n+cE(z)$ interpolates the same integral-exponent data as $z^n$.  These examples show
+failure of uniqueness at critical type; they do not prove that every more structured
+critical-type criterion is incapable of forcing exponent integrality.
+
+\subsection{The critical boundary cocycle}
+\label{r27:cocycle}
+
+The product has exact edge factorizations
+\begin{equation}
+ E(2z)=E(z)B_2(z),\qquad E(3z)=E(z)B_3(z),
+ \label{r27:eq-edge-factorization}
+\end{equation}
+where
+\[
+ B_2(z)=\prod_{b\ge0}\left(1-\frac{2z}{3^b}\right),\qquad
+ B_3(z)=\prod_{a\ge0}\left(1-\frac{3z}{2^a}\right).
+\]
+Their second-order growth is
+\begin{equation}
+ \log M_{B_2}(R)=\frac{(\log R)^2}{2\log3}+O(\log R),\qquad
+ \log M_{B_3}(R)=\frac{(\log R)^2}{2\log2}+O(\log R).
+ \label{r27:eq-edge-growth}
+\end{equation}
+For an entire interpolant $H(2^a3^b)=M^aA^b$, set
+$D_2(z)=H(2z)-MH(z)$ and $D_3(z)=H(3z)-AH(z)$.  Their lattice zeros and the simplicity of
+$E$ give unique entire quotients $D_2=EU$ and $D_3=EV$.  Commutativity of the two dilations
+is exactly the cocycle
+\begin{equation}
+ B_3(z)U(3z)-AU(z)=B_2(z)V(2z)-MV(z).
+ \label{r27:eq-defect-cocycle}
+\end{equation}
+This is an infinite analytic analogue of \lean{BoundaryDilationDefect}, not a replacement
+for its finite algebra.
+
+If $U$ and $V$ are polynomials, the strict quadratic gap in
+\eqref{r27:eq-edge-growth}, evaluated on the negative real axis, first forces $U=0$ and
+then $V=0$.  Both dilation equations are exact, so coefficient comparison gives
+$H(z)=z^n$, $M=2^n$, and $A=3^n$.  This polynomial-boundary-quotient closure and the cocycle
+are \statusnew{} paper theorems.  Critical type alone does not establish the polynomial
+quotient hypothesis; manufacturing that finite-dimensional boundary regularity is the new
+open target.
+
+\begin{statusbox}{Report 27 was audited as an independent sibling.  Its D-finite
+noncancellation core is \statuslean{} in \lean{DfiniteExponentCore}.  The universal-cover
+classification, sharp canonical-product/Jensen threshold, subcritical interpolation
+rigidity, edge growth, critical cocycle, and polynomial-quotient closure are \statusnew{}
+paper results.  Overlapping monodromy material is omitted, and neither critical-type sampling
+nor the cocycle currently supplies the missing interpolant regularity.}
+\end{statusbox}
+
 \appendix
 
 \section{Status matrix for major statements}
@@ -16663,6 +17831,37 @@ Integral dilation-difference quotient and its mod-$2$ derivative reduction & \st
 Structural-prime denominator lattice, favorable-branch residual scaling, root depths, and
 odd-degree dilation-resultant valuations & \statusnew & Section~\ref{sec:report14}; only the
 two displayed residue branches \\
+Prime-power cross-residual cancellation, exact node-divisor scaling, and conditional exact
+nonzero cross-resultant orders at $2$ and $3$ & \statuslean &
+\lean{CrossResidualScaling}, \lean{ResultantScaling},
+\lean{Report14NodeDivisorScaling}, \lean{Report14CrossResultantBridge}; primary interpolant
+scalings and nonzero residue reductions remain hypotheses \\
+Opposite-residual coefficient laws and the full local cross-Sylvester Smith profile in the
+simultaneous favorable branch & \statusnew & Section~\ref{r14:cross-resultant-smith}; branch is
+nonexhaustive and the residual-specific Smith reduction remains paper-level \\
+Eventual full-content residual profile for $v_2(A),v_3(M)>0$ and
+$n>\max(v_2(M),v_3(A))$ & \statusnew & Section~\ref{r14:cross-resultant-smith}; finite cost
+and assignment core \statuslean{} in \lean{ContentNormalizedProfileFinite} \\
+Convex matching lower bound and $p^{m\binom m2}$ divisibility for every canonical weighted
+lower-Toeplitz $m$-minor & \statuslean & \lean{SmithProfileCore} \\
+Uniformly negative compound endpoint-rate functional & \statuslean &
+\lean{CompoundEndpointRate}; this certifies a no-closure bound, not the conjecture \\
+Exact structural-prime order of every leading principal subresultant & \statusnew &
+Section~\ref{r14:cross-resultant-smith}; simultaneous favorable coefficient profiles \\
+Sharp direct/shallow displacement-cost inequality and equality classification & \statuslean &
+\lean{DeepSubresultantCost}; combinatorial core of the principal-subresultant theorem \\
+Exact $n=1$ cancellation of the full interpolation denominator from the paired residual
+resultant & \statuslean & \lean{DenominatorCancellationCounterexample}; synthetic
+$(M,A)=(9,2)$ test data, not a common-exponent pair \\
+Common-grid transformation no-go for simultaneous structural-prime axis support &
+\statuslean & \lean{GridTransformNoGo}; nonsingular direction changes cannot enlarge the
+favorable branch \\
+All-$n$ $\Omega(n^4)$ denominator-cancellation tax for the synthetic pair $(9,2)$ &
+\statusnew & Section~\ref{r14:cross-resultant-smith}; exact paper consequence of the
+denominator and cross-resultant formulas, not common-exponent data \\
+Universal leading/constant Cramer factors of the paired residual resultant & \statusnew &
+Section~\ref{r14:cross-resultant-smith}; finite $K=2,3,4$ core factorizations are unbundled
+exact-CAS diagnostics only \\
 Exact unordered-pair decoding from the ordinary and synchronized $p$-power sums & \statuslean &
 \lean{SynchronizedSumDecoder}; Section~\ref{r15:decoders} \\
 Rational synchronized-sum decoder degree bound $L\le2d+1$ & \statuslean &
@@ -16703,6 +17902,39 @@ Rational scalar/matrix-entry first-jet recovery and base-two integral-exponent c
 remains paper-level \\
 Operator local-universality no-go and global/finite/affine/trace/Hankel closing criteria &
 \statusnew & Section~\ref{sec:report20}; criteria are not consequences of the two outputs \\
+Exact rational moment-defect denominators and rational two-atom reproduction & \statuslean &
+\lean{Report21MomentArithmetic}; Section~\ref{r21:defects} \\
+Hausdorff moment representation, finite rational quadrature, and M\"untz invisible positive
+perturbations & \statusnew & Section~\ref{sec:report21}; full M\"untz and Hahn--Banach inputs
+classical \\
+Hyperbolic rank geometry and rational symmetrization identities & \statuslean &
+\lean{Report22RankGeometry}; Section~\ref{sec:report22} \\
+Baker rank-two exclusion, counterexample rank-$3/4$ classification, and conditional algebraic
+three-term orbit & \statusnew & Section~\ref{sec:report22}; Baker input classical \\
+Generic determinant-distance group collision and modular unimodular wrappers & \statuslean &
+\lean{UnimodularGapCollision}; Section~\ref{r23:gaps} \\
+Integer gap gcds, transported rational secants, finite order-signature no-go, and entrywise
+jet ceiling & \statusnew & Section~\ref{sec:report23}; jet ceiling is termwise only \\
+Exact rotation-denominator floor law and finite simultaneous worst-case entropy bound &
+\statuslean & \lean{OrbitHeightEntropy}; Section~\ref{r24:orbit},
+Section~\ref{r24:farey} \\
+Exact compact-orbit heights, Farey limiting distortion, and Baker--contact scale comparison &
+\statusnew & Section~\ref{sec:report24}; entropy concerns relabelings, not new graph points \\
+Piecewise projective Pad\'e-defect optimization and efficiency thresholds & \statuslean &
+\lean{Report25ProjectiveDefect}; Section~\ref{r25:projective} \\
+Number-field projective defect, rational-transfer no-go, and fixed-cardinality group
+finiteness & \statusnew & Section~\ref{sec:report25}; external Pad\'e and approximation
+theorems cited there \\
+Exact finite carry-word telescoping, arity, suffix descent, and ordered reconstruction &
+\statuslean & \lean{Report26CarryPath}; Section~\ref{r26:carry-path} \\
+Multiset carry paths, character balancing, multinomial fibers, and carry-language pressure &
+\statusnew & Section~\ref{sec:report26}; exact-rate claims are restricted to the stated
+carry-language construction \\
+D-finite exponent-relation polynomial and top-coefficient noncancellation & \statuslean &
+\lean{DfiniteExponentCore}; Section~\ref{r27:regularity} \\
+Sharp $3$-smooth canonical-product/Jensen threshold, subcritical interpolation rigidity,
+and critical defect cocycle & \statusnew & Section~\ref{sec:report27}; polynomial quotient
+regularity remains an explicit hypothesis \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -16926,6 +18158,20 @@ their exact entry-integrality/conjecture equivalence \\
 \lean{.../JordanFirstJet} & rationality recovery from a scalar value and its nonzero first
 jet; rational matrix-entry extraction; base-two integral-exponent closure conditional on the
 formal first-jet matrix \\
+\lean{.../Report21MomentArithmetic} & rational two-atom moment reproduction; four exact
+common-denominator identities and their structural-prime local-unit conclusions \\
+\lean{.../Report22RankGeometry} & hyperbolic normal identity, ternary-conic determinant,
+explicit rational symmetrizer, and symmetric rank-one outer-product normal form \\
+\lean{.../UnimodularGapCollision} & determinant-distance power collisions in a commutative
+group and forward/reverse modular and unimodular congruence wrappers \\
+\lean{.../OrbitHeightEntropy} & exact integral-slope and logarithmic floor identities;
+finite injective-index entropy forcing simultaneous two-coordinate denominator bounds \\
+\lean{.../Report25ProjectiveDefect} & exact piecewise-linear optimization of the abstract
+weight-two defect and the resulting depth and arithmetic-efficiency thresholds \\
+\lean{.../Report26CarryPath} & exact distinguished-descendant carry-word sum and length;
+strict suffix-degree descent and reconstruction from endpoint plus ordered suffix vertices \\
+\lean{.../DfiniteExponentCore} & bivariate exponent-relation polynomial for a formal
+linear differential operator; exact top exponent coefficient and nonzero certificate \\
 \lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
 rational-approximation candidate alternant \\
 \lean{.../SynchronizedSumDecoder} & strict monotonicity on fixed-sum pairs and exact
@@ -16945,6 +18191,27 @@ explicit $K>0$, nonsingularity, and nonzero-multiplier hypotheses \\
 unique square-grid residuals, and the degree-$2K-2$ boundary commutator \\
 \lean{.../DilationDifferenceQuotient} & integral factorization of $P(cX)-P(X)$; dyadic
 $2X$ quotient and its formal-derivative reduction modulo two \\
+\lean{.../CrossResidualScaling} & generic prime-power cancellation through a unit polynomial;
+normalized opposite-residual transfer through a scaled defect identity \\
+\lean{.../ResultantScaling} & exact resultant change under $X\mapsto sX$; symmetric
+cross-normalization identities, nonzero residue quotients, and two-prime divisibility \\
+\lean{.../Report14NodeDivisorScaling} & exact dyadic and triadic normalization of the two
+report-14 boundary node divisors, with structural-prime-unit constant terms \\
+\lean{.../Report14CrossResultantBridge} & conditional composition of the report-14 primary
+and opposite residual scalings into one nonzero cross resultant with exact $2$- and $3$-orders \\
+\lean{.../DenominatorCancellationCounterexample} & exact smallest-grid certificate that the
+full interpolation denominator can disappear from the paired rational residual resultant \\
+\lean{.../GridTransformNoGo} & exact classification showing that one nonsingular common
+direction change cannot manufacture simultaneous dyadic and triadic axis separation \\
+\lean{.../SmithProfileCore} & convex injective-matching cost; strict equality case; universal
+$p^{m\binom m2}$ divisibility of weighted lower-Toeplitz minors \\
+\lean{.../ContentNormalizedProfileFinite} & endpoint-gap, quotient-cost, direct-floor,
+wrap-path, and compressed-permutation inequalities for the eventual primitive residual
+Smith profile \\
+\lean{.../DeepSubresultantCost} & sharp direct/shallow displacement-cost bound, strict case,
+and equality classification for the leading principal-subresultant matching \\
+\lean{.../CompoundEndpointRate} & kernel-checked negativity of the normalized structural
+compound gain after the mandatory base-$2$/base-$3$ endpoint costs \\
 \lean{.../OrderedChamberPositivity} & positivity of generalized real-power Vandermonde
 determinants and of the semigroup determinant on ordered chambers \\
 \lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity, and
@@ -17088,7 +18355,17 @@ The current wave adds the following modules:
 \lean{SynchronizedSumDecoder}, \lean{RationalSumDecoder},\\
 \lean{AlgebraicBaseSpectrum}, \lean{MixedMahlerFinite},
 \lean{GeometricVandermondeSmith}, \lean{TwoScaleSupportFinite},
-\lean{GeometricNewtonInterpolation}, \lean{JordanFirstJet}.
+\lean{GeometricNewtonInterpolation}, \lean{JordanFirstJet},\\
+\lean{Report21MomentArithmetic}, \lean{Report22RankGeometry},
+\lean{UnimodularGapCollision}, \lean{OrbitHeightEntropy},
+\lean{Report25ProjectiveDefect}, \lean{Report26CarryPath},
+\lean{DfiniteExponentCore},\\
+\lean{CrossResidualScaling}, \lean{ResultantScaling},
+\lean{Report14NodeDivisorScaling}, \lean{Report14CrossResultantBridge},\\
+\lean{DenominatorCancellationCounterexample}, \lean{GridTransformNoGo},
+\lean{SmithProfileCore}, \lean{ContentNormalizedProfileFinite},
+\lean{DeepSubresultantCost},
+\lean{CompoundEndpointRate}.
 \end{center}
 Their headline APIs are likewise on the aggregate surface
 and covered by the axiom-audit module.
@@ -19180,6 +20457,22 @@ P.~B.~Borwein,
 \newblock \emph{On the irrationality of certain series},
 \newblock Mathematical Proceedings of the Cambridge Philosophical Society
 \textbf{112} (1992), 141--146.
+
+\bibitem{Kawashima2026}
+M.~Kawashima,
+\newblock \emph{Linear independence of periods related to polylogarithms},
+\newblock arXiv:2605.17756v1, May 2026.
+
+\bibitem{CDTHolonomy}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\newblock \emph{Arithmetic holonomy bounds and effective Diophantine approximation},
+\newblock Proceedings of the International Congress of Mathematicians 2026, vol.~3,
+356--376; arXiv:2510.04156.
+
+\bibitem{Harrison2026}
+J.~Harrison,
+\newblock \emph{Additive relations in irrational powers},
+\newblock arXiv:2512.04081v3, July 2026.
 
 \bibitem{Selberg1944}
 A.~Selberg,
