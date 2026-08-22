@@ -32,6 +32,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RowBlockLaplaceExpansion
 import ExponentialIdentities.TwoBaseIntegerExponent.AssignmentExcessGeometry
 import ExponentialIdentities.TwoBaseIntegerExponent.RowBlockUnitDivisibility
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedDeterminantUnitBridge
+import ExponentialIdentities.TwoBaseIntegerExponent.GlobalMixedPrefixCascade
 import ExponentialIdentities.TwoBaseIntegerExponent.ComplexSolutions
 import ExponentialIdentities.TwoBaseIntegerExponent.SparsePowerCurve
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalOrbitGrid
@@ -39,9 +40,12 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RationalContactRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.RestrictedMatrixCoefficient
 import ExponentialIdentities.TwoBaseIntegerExponent.IntegralPowerMatrix
 import ExponentialIdentities.TwoBaseIntegerExponent.CandidateAlternant
+import ExponentialIdentities.TwoBaseIntegerExponent.SynchronizedSumDecoder
+import ExponentialIdentities.TwoBaseIntegerExponent.RationalSumDecoder
 import ExponentialIdentities.TwoBaseIntegerExponent.FormalPrimeDeterminant
 import ExponentialIdentities.TwoBaseIntegerExponent.FermatQuotientDeterminant
 import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDilationDefect
+import ExponentialIdentities.TwoBaseIntegerExponent.DilationDifferenceQuotient
 import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDisplacement
 import ExponentialIdentities.TwoBaseIntegerExponent.FejerKernelCertificate
 import ExponentialIdentities.TwoBaseIntegerExponent.SignedProgressionDeterminant
@@ -266,6 +270,17 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms two_pow_minCost_add_rowBlockOrderingExponent_dvd_det_mixedIntegerPowerMatrix
 #print axioms three_pow_minCost_add_rowBlockOrderingExponent_dvd_det_mixedIntegerPowerMatrix
 
+-- Concrete global mixed-prefix cascade and unit-divisor specialization
+#print axioms sortedMixedExponentBoxPrefix_weight_lt_of_not_mem
+#print axioms lexMixedPrefixFiberEquiv_degree
+#print axioms colexMixedPrefixFiberEquiv_degree
+#print axioms sign_mul_det_globalMixedPrefix_two_eq_minPow_mul_truncatedAssignmentSum
+#print axioms sign_mul_det_globalMixedPrefix_three_eq_minPow_mul_truncatedAssignmentSum
+#print axioms two_pow_globalMixedPrefix_minCost_add_unit_dvd_det
+#print axioms three_pow_globalMixedPrefix_minCost_add_unit_dvd_det
+#print axioms two_pow_globalMixedPrefix_structuralOutput_dvd_det
+#print axioms three_pow_globalMixedPrefix_structuralOutput_dvd_det
+
 -- Complex exponents
 #print axioms im_eq_zero_of_complexTwoBaseIntegralSolution
 #print axioms twoBaseIntegralSolution_re_of_complex
@@ -286,6 +301,14 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms candidateClusterExponent_eq_semigroupCombination
 #print axioms det_candidateApproximationAlternant
 #print axioms det_candidateApproximationAlternant_ne_zero
+
+-- Exact synchronized ordinary/power-sum decoder (report 15)
+#print axioms strictAntiOn_fixedSumRpow
+#print axioms eq_of_ordered_sum_eq_rpow_sum_eq
+#print axioms eq_or_swap_of_sum_eq_rpow_sum_eq
+
+-- Rational synchronized-sum decoder degree bound (report 15)
+#print axioms rational_sum_decoder_card_le
 
 -- Formal prime-symbol determinant and sparse Structural Rank reformulation
 #print axioms primeFactorLinearForm_eval₂_log
@@ -328,6 +351,11 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms existsUnique_squareGridResiduals
 #print axioms squareBoundaryExpressions_natDegree_le
 #print axioms boundaryDilation_commutator
+
+-- Integral dilation-difference quotient and dyadic derivative reduction (report 14)
+#print axioms dilation_sub_eq_C_mul_X_mul_integralDilationQuotient
+#print axioms dyadic_dilation_sub_factorization
+#print axioms integralDilationQuotient_three_map_zmod_two
 
 -- Exact rank-K boundary displacement for rectangular evaluation matrices
 #print axioms firstGridShiftMatrix_mul
