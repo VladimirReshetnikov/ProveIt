@@ -92,9 +92,7 @@ methods, and research directions}
 \newcommand{\GammaSat}{\Gamma}
 \newcommand{\PGL}{\operatorname{PGL}}
 \newcommand{\Qbar}{\Abar}
-\newcommand{\sha}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
-\newcommand{\commit}[1]{\texttt{#1}}
 \newcommand{\statuslean}{\textcolor{leanblue}{\textbf{[kernel-verified Lean]}}}
 \newcommand{\statusnew}{\textcolor{newgreen}{\textbf{[paper proof]}}}
 \newcommand{\statuscomp}{\textcolor{computeviolet}{\textbf{[software computation]}}}
@@ -275,7 +273,12 @@ spectral and moment representations; rank geometry; and projective defect bounds
 
 The critical analytic synthesis determines the canonical entire interpolant selected by
 finite Lagrange interpolation, its exact second-order critical growth, and the corresponding
-positive Stieltjes denominator target.  A four-value covariance theorem closes any
+positive Stieltjes denominator target.  Its one-edge residuals satisfy sharp quadratic
+Jensen barriers and a rational-coefficient uncertainty law $4\sigma_2\delta_2\ge1$; the
+canonical entire $q$-Newton completion realizes the exact boundary defect.  In the
+cross-coprime determinant branch, the former $7/10$ ceiling is sharpened to the identity
+$7/10-\mathcal E_{\rm val}/20$, with an explicit arithmetic deficit of order $x^{-4}$.
+A four-value covariance theorem closes any
 nonnegative-coefficient representative; a fresh-prime Newton theorem converts primitive
 denominator cancellation into local relation transfer; and a shifted higher Newton--Kummer
 cocycle gives an exponentially small algebraic integer while exposing exact norm and trace
@@ -4778,7 +4781,7 @@ algebraicity there.}
 
 The exponent $\thetaq=\log_2 3$ and its reciprocal
 \[
- \eta=\frac1{\thetaq}=\frac{\log2}{\log3}
+ \eta=\frac1{\thetaq}=\log_3 2
 \]
 generate two symmetric ``next outputs'',
 \[
@@ -5193,7 +5196,7 @@ scale obtainable by optimizing the curvature condition \eqref{df:progression-con
 $r$ is
 \[
  h_{\max}(n)\sim\frac{n}{\thetaq\log n}
- =\frac{\log2}{\log3}\cdot\frac{n}{\log n}
+ =\log_3 2\cdot\frac{n}{\log n}
  =0.6309297535\ldots\cdot\frac{n}{\log n}.
 \]
 \end{theorem}
@@ -7615,16 +7618,16 @@ Thus
 \begin{equation}
  \rho_n:=\frac{g_{3,n}2^{m_n}}{g_{2,n}3^{m_n}}
  =\frac{3^{\delta_n}-1}{2^{\delta_n}-1}\in\Q,
- \qquad \frac{\log3}{\log2}<\rho_n<2.
+ \qquad \log_2 3<\rho_n<2.
  \label{sturmian:eq-return-ratio}
 \end{equation}
 The ratio on the right is strictly increasing, and at zero has the expansion
 \[
  \frac{3^t-1}{2^t-1}
- =\frac{\log3}{\log2}\left(1+\frac{\log3-\log2}{2}t
+ =\log_2 3\left(1+\frac{\log3-\log2}{2}t
  +\frac{(\log3-\log2)(2\log3-\log2)}{12}t^2+O(t^3)\right).
 \]
-Each return therefore gives a rational approximation to $\log3/\log2$ from above, but its
+Each return therefore gives a rational approximation to $\log_2 3$ from above, but its
 native prime height is already exponential.  If
 $\lambda=v_2(M)$ and $\mu=v_3(A)$, then for all large $n$
 \begin{equation}
@@ -8707,6 +8710,101 @@ Thus the total norm is at least $4/5$, and
 $1-(3/8)(4/5)=7/10$.  Equality in the triangle inequality requires positive collinearity.
 \end{proof}
 
+\subsection{The exact valuation-slope energy below seven tenths}
+\label{mp:valuation-slope-energy}
+
+In the cross-coprime branch the external vectors
+\[
+ (u_p,v_p):=c_p
+ =\left(\frac{v_p(M)\log p}{\beta\log2},
+         \frac{v_p(A)\log p}{\beta\log3}\right),\qquad p\ge5,
+\]
+are two finitely supported probability distributions:
+$\sum_pu_p=\sum_pv_p=1$.  The first-quadrant specialization of
+Proposition~\ref{prop:G-explicit} is
+\begin{equation}
+ \mathfrak G(u,v)=\frac2{15}\left(
+ u+v+\frac{(u-v)^2}{\max(u,v)}\right),
+ \label{mp:eq-gini-diagonal-defect}
+\end{equation}
+where the final quotient is zero at $(u,v)=(0,0)$.  Define the valuation-slope energy
+\begin{equation}
+ \mathcal E_{\rm val}(M,A)
+ =\sum_{p\ge5}\frac{(u_p-v_p)^2}{\max(u_p,v_p)}
+ =\frac1{\beta\log3}\sum_{p\ge5}\log p\,
+   \frac{(v_p(M)\vartheta-v_p(A))^2}
+        {\max(v_p(M)\vartheta,v_p(A))},
+ \label{mp:eq-valuation-slope-energy}
+\end{equation}
+with absent primes omitted.  Summing~\eqref{mp:eq-gini-diagonal-defect} and adding the two
+structural vectors gives the exact refinement
+\begin{equation}
+ \boxed{
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \longrightarrow\frac7{10}-\frac1{20}\mathcal E_{\rm val}(M,A).}
+ \label{mp:eq-energy-corrected-ceiling}
+\end{equation}
+The energy is strictly positive.  Equality in a nonzero summand would give
+$v_p(M)\log3=v_p(A)\log2$, impossible by unique factorization; the external support is
+nonempty.  Thus the qualitative equality case in Corollary~\ref{cor:seven-tenths} never
+occurs for an arithmetic pair.
+
+There is also a uniform, albeit small, arithmetic separation.  Put
+\[
+ \delta_p=v_p(M)\vartheta-v_p(A).
+\]
+The identity $\sum_{p\ge5}(\log p)\delta_p=0$ and the irrationality of $\vartheta$ produce
+distinct primes $p,q\ge5$ with $\delta_p>0>\delta_q$.  Their integral valuation minor
+\begin{equation}
+ \omega_{pq}=v_p(M)v_q(A)-v_q(M)v_p(A)
+ \label{mp:eq-straddling-minor}
+\end{equation}
+is positive, hence at least one.  The normalized wedge is therefore
+\begin{equation}
+ u_pv_q-u_qv_p
+ =\frac{\log p\log q}{\beta^2\log2\log3}\,\omega_{pq}
+ \ge\frac{\kappa_{\wedge}}{\beta^2},\qquad
+ \kappa_{\wedge}:=\frac{\log5\log7}{\log2\log3}.
+ \label{mp:eq-normalized-straddling-wedge}
+\end{equation}
+
+For two probability vectors define
+$\operatorname{TV}(u,v)=\frac12\sum_p|u_p-v_p|$.  Cauchy--Schwarz and
+$\sum_p\max(u_p,v_p)=1+\operatorname{TV}(u,v)$ give
+\begin{equation}
+ \frac{4\operatorname{TV}(u,v)^2}{1+\operatorname{TV}(u,v)}
+ \le\mathcal E_{\rm val}(M,A)
+ \le2\operatorname{TV}(u,v).
+ \label{mp:eq-energy-tv}
+\end{equation}
+For the straddling pair,
+$0<u_pv_q-u_qv_p\le\operatorname{TV}(u,v)$.  Combining this with
+\eqref{mp:eq-normalized-straddling-wedge} yields
+\begin{equation}
+ \boxed{
+ \mathcal E_{\rm val}(M,A)
+ \ge\frac{4\kappa_{\wedge}^2}
+          {\beta^4+\kappa_{\wedge}\beta^2},\qquad
+ \frac{\log Q_T^{\mathrm{trop}}}{H_T}
+ \longrightarrow\frac7{10}-\frac{\mathcal E_{\rm val}}{20}
+ \le\frac7{10}-
+ \frac{\kappa_{\wedge}^2}{5(\beta^4+\kappa_{\wedge}\beta^2)}.}
+ \label{mp:eq-explicit-energy-gap}
+\end{equation}
+Since the finite exclusion gives $\beta>12$, one may simplify the final deficit to
+$\kappa_{\wedge}^2/(10\beta^4)=1.6914306423\ldots/\beta^4$.
+
+This correction moves the guaranteed divisor in the unfavorable direction: it lies
+strictly \emph{below} $7/10$.  It therefore does not prove the conjecture.  Its value is to
+remove the last equality case and to quantify the additional cancellation or divisibility
+that a successful rank-four determinant would have to recover.
+
+\begin{statusbox}{\statusnew{} --- the arithmetic specialization, straddling minor, exact
+energy correction, and $\beta^{-4}$ separation are paper results.  The abstract finite
+energy--total-variation and wedge-to-energy inequalities are \statuslean{} in
+\lean{ValuationSlopeEnergy}; the prime-valuation adapter remains paper-level.}
+\end{statusbox}
+
 The places $2$ and $3$ alone have an even smaller exact continuum contribution.
 
 \begin{corollary}[The structural-place $3/10$ constant]\label{cor:three-tenths}
@@ -9372,17 +9470,7 @@ not from numerical experimentation.}
 The reproducible MPFR scan excludes every non-power-of-two candidate below $2^{27}$.
 The interval $[2^{26},2^{27})$ was divided into sixteen chunks of width $2^{22}$ and
 checked with 192-bit outward-rounded endpoints; all $67{,}108{,}863$ non-power inputs
-passed.  The concatenated extension log has SHA-256
-\[
- \sha{b11843448cd8946442aba13758b5b666e4ac6eae50d2243fbdc32d83274cea8d}.
-\]
-The extracted verifier source has SHA-256
-\[
- \sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d};
-\]
-this differs from an older printed digest, so semantic replay rather than that stale
-digest is the source-identity check.  The verifier and invocation details are in
-Appendix~\ref{app:scanner}.
+passed.  The verifier and invocation details are in Appendix~\ref{app:scanner}.
 
 The smallest new lower and upper logarithmic margins are respectively
 \[
@@ -10605,11 +10693,7 @@ integer steps needed to repair an initial binary64 guess was 0.  The
 smallest absolute interval endpoint encountered was
 $\texttt{6.263278510736485942331545732E-13}$, far outside the interval uncertainty.  Runtime on the
 working container was approximately 15.238 seconds.  The exact verifier
-used for the run is reproduced in Appendix~\ref{app:finite-verifier}; its
-SHA--256 digest is
-\begin{center}
-\texttt{acc099fb776f830b243a2421bc7ce27d5bedc63a38c3a7b190accb3c621cbadd}.
-\end{center}
+used for the run is reproduced in Appendix~\ref{app:finite-verifier}.
 \end{proof}
 
 \begin{remark}
@@ -10905,11 +10989,11 @@ classical theorem, not a new kernel theorem.
 \label{mc:finite29}
 
 Bundled documentation records an MPFR directed-rounding extension through $2^{29}$,
-including chunk tables, SHA--256 identifiers, extremal records, high-precision replays, the
-literal C source, and a full manifest.  The logical consequence would be that a nonintegral
-solution has $x>29$.  However, the repository contains no standalone scanner, canonical chunk
-logs, or replay artifacts named by those hashes, and the long run was not independently
-repeated during this audit.  It is therefore retained as a documented \statuscomp{} result,
+including chunk tables, extremal records, high-precision replays, the literal C source, and a
+run summary.  The logical consequence would be that a nonintegral solution has $x>29$.
+However, the repository contains no standalone scanner or canonical run logs, and the long
+run was not independently repeated during this audit.  It is therefore retained as a
+documented \statuscomp{} result,
 while the repository-reproducible software frontier in Section~\ref{sec:finite27} remains
 $2^{27}$.
 
@@ -12319,12 +12403,8 @@ argument over all convergents is currently known.
 The literal exact-integer verifier checks this necessary condition for
 $1\le b\le10000$.  It certifies $10000$ unambiguous floors, finds the sole power-shape hit
 $(a,b,P,Q)=(5,3,125,79)$, and rejects that hit by the stronger Legendre window; hence there
-are no survivors in the tested range.  The verifier source has SHA-256
-\begin{center}
-\sha{a7aef69a62ce5b07bd8f909966244b3a5e92e23ac9bb2e1b951433d1f6902ce8}.
-\end{center}
-An independent rerun reproduced every mathematical field.  The source JSON digest
-is not used as a certificate because its payload includes nondeterministic elapsed time.
+are no survivors in the tested range.  An independent rerun reproduced every mathematical
+field.
 This remains \statuscomp{}, not a kernel proof and not a finite test of the original
 integer-output conjecture.
 
@@ -13639,8 +13719,8 @@ is an exact finite contradiction certificate for the proposed pair $(M,A)$.
 Along admissible factorizations one can approach the optimal leading budget
 $4\sqrt{x\log2\log3}\,m^2$; for example take
 $U=ac,V=bd,R=ad,S=bc$ and choose rational ratios
-$a/b\to\sqrt{x\log3/\log2}$ and
-$c/d\to\sqrt{x\log2/\log3}$.  If $V\ge2$ and a set $\mathcal P_m$ of good primes admits
+$a/b\to\sqrt{x\log_2 3}$ and
+$c/d\to\sqrt{x\log_3 2}$.  If $V\ge2$ and a set $\mathcal P_m$ of good primes admits
 moving slopes
 \[
  (M,A)\equiv(2,3)^{c_p}\pmod p,\qquad |c_p|\le\eta U,\qquad0<\eta<1,
@@ -14015,8 +14095,42 @@ $r^n$ for $n\le d$, and has first omitted error
 \end{equation}
 Unless $r$ is a nonnegative integral power of $q$, the Newton series never terminates and this
 extrapolation product grows rather than shrinks.  This complements the exact geometric Smith
-geometric Smith calculation: one-axis integer-valued interpolation is abundant, but it supplies no
+calculation: one-axis integer-valued interpolation is abundant, but it supplies no
 cross-axis smallness.
+
+The finite expansion has a canonical entire completion.  Put
+\[
+ \phi_n^{(q)}(z)=\prod_{j=0}^{n-1}(z-q^j),\qquad
+ d_n^{(q)}=\prod_{j=0}^{n-1}(q^n-q^j),\qquad
+ c_n(q,r)=\frac{\prod_{j=0}^{n-1}(r-q^j)}{d_n^{(q)}}
+\]
+and $N_N^{(q,r)}(z)=\sum_{n=0}^Nc_n(q,r)\phi_n^{(q)}(z)$.  Its exact endpoint defect is
+\begin{equation}
+ N_N^{(q,r)}(qz)-rN_N^{(q,r)}(z)
+ =(q^N-r)c_N(q,r)\phi_N^{(q)}(z).
+ \label{arithinterp:eq-qnewton-endpoint-defect}
+\end{equation}
+Both sides have degree at most $N$ and vanish at $1,q,\ldots,q^{N-1}$; their leading
+coefficients agree.  With $Q=q^{-1}$, the locally uniformly convergent limit is
+\begin{equation}
+ \mathcal N_{q,r}(z)
+ =\sum_{n\ge0}\frac{(r;Q)_n(z;Q)_n}{(Q;Q)_n}Q^n
+ ={}_2\phi_1\!\left(\begin{matrix}r,z\\0\end{matrix};Q,Q\right),
+ \label{arithinterp:eq-entire-qnewton}
+\end{equation}
+where $(a;Q)_n=\prod_{j=0}^{n-1}(1-aQ^j)$.  Passing to the limit in
+\eqref{arithinterp:eq-qnewton-endpoint-defect} gives
+\begin{equation}
+ \boxed{
+ \mathcal N_{q,r}(qz)-r\mathcal N_{q,r}(z)
+ =\frac{(r;Q)_\infty}{(Q;Q)_\infty}(z;Q)_\infty.}
+ \label{arithinterp:eq-entire-qnewton-defect}
+\end{equation}
+For positive $r$, the constant vanishes exactly when $r=q^m$ for some $m\ge0$; then the
+series terminates and $\mathcal N_{q,r}(z)=z^m$.  Thus one geometric edge is completely
+solved: its defect quotient is a constant, and the common two-edge cocycle---not either
+one-axis interpolation problem---is the remaining obstruction.  The notation and standard
+basic-hypergeometric identity are as in \cite{GasperRahman}.
 
 \begin{statusbox}{The unit-locking, optimal-block, dyadic-certificate, minimax-cofactor, and
 arithmetic-alternant statements are
@@ -14024,7 +14138,10 @@ self-contained paper arguments using the stated classical Chebyshev/Bernstein in
 fixed-window constant agrees with the spectral calculation and is already incompatible with the kernel-verified
 counterexample range.  The geometric Newton identity and its exact truncation/remainder are
 \statuslean{} in \lean{GeometricNewtonInterpolation}, with endpoints
-\lean{qNewtonExpansion_eq_pow} and \lean{qNewtonTruncValue_first_omitted}; all broader
+\lean{qNewtonExpansion_eq_pow} and \lean{qNewtonTruncValue_first_omitted}.  The endpoint
+dilation defect is also finite algebra and is formalized separately; local-uniform convergence,
+the $q$-hypergeometric limit, and the infinite defect formula are \statusnew{} paper results.
+All broader
 Bhargava-ordering, Hermite--Pad\'e, and
 integer-Chebyshev proposals remain research interfaces.  No dated literature-search claim is
 promoted, and none of these statements proves the conjecture.}
@@ -14585,6 +14702,93 @@ quantitative rational-approximation constraint internal to the dependent branch,
 contradiction.  The conic determinant is kernel-checked in \lean{RankGeometry};
 \eqref{rankgeom:eq-external-ray-factorization} is an elementary paper identity.
 
+The same integer $D$ is also the determinant of the natural M\"obius parametrization; this
+identifies two descriptions that otherwise look unrelated.  Put
+\begin{equation}
+ U=sm_2-ra_2,\qquad V=sm_3-ra_3.
+ \label{rankgeom:eq-mobius-uv}
+\end{equation}
+Eliminating $Z$ from the two output logarithms gives
+\begin{equation}
+ x=\frac{U+V\thetaq}{s-r\thetaq},\qquad
+ D=-rU-sV,\qquad
+ \frac{d}{dt}\frac{U+Vt}{s-rt}\bigg|_{t=\thetaq}
+ =-\frac{D}{(s-r\thetaq)^2}.
+ \label{rankgeom:eq-mobius-determinant}
+\end{equation}
+Thus the M\"obius map is nonconstant exactly when the ternary conic has rank three.
+Elementary height bounds give
+\begin{equation}
+ 1\le|D|\le
+ \frac{3\log2\log3}{(\log5)^2}\,x^3
+ =0.8819474591\ldots\,x^3.
+ \label{rankgeom:eq-mobius-height}
+\end{equation}
+Here one uses $r\le x\log2/\log5$, $s\le x\log3/\log5$ and the corresponding
+structural-prime bounds.  This is a finite-height certificate, not a contradiction.
+
+There is a particularly clean classification when the cross primes are absent:
+\begin{equation}
+ 3\nmid M,\qquad 2\nmid A,\qquad\text{so}\qquad m_3=a_2=0.
+ \label{rankgeom:eq-no-cross-primes}
+\end{equation}
+The primitive-depth alternative $m_2=0$ or $a_3=0$, together with $D\ne0$, forces
+$r,s>0$ and exactly one of
+\begin{align}
+ &m_2=0,\quad a_3=d>0,\quad
+ M=C^r,\quad A=3^dC^s,\quad r\thetaq>s,\quad
+ x=\frac{rd\thetaq}{r\thetaq-s},
+ \label{rankgeom:eq-no-cross-plus}\\
+ &a_3=0,\quad m_2=d>0,\quad
+ M=2^dC^r,\quad A=C^s,\quad s>r\thetaq,\quad
+ x=\frac{sd}{s-r\thetaq}.
+ \label{rankgeom:eq-no-cross-minus}
+\end{align}
+Both are equivalently summarized by the localized radical equation
+\begin{equation}
+ \boxed{C^{|r\thetaq-s|}=3^d},\qquad C>1,\quad(C,6)=1,\quad r,s,d\ge1.
+ \label{rankgeom:eq-localized-radical}
+\end{equation}
+It produces a second sharp Four Exponentials square with bases $2,C$ and exponents
+$\thetaq,\eta$, where
+$\eta=\log3/\log C=|r\thetaq-s|/d$: the four values
+$2^{\thetaq},2^\eta,C^{\thetaq},C^\eta$ are algebraic, while both base logarithms and both
+exponents are rationally independent.  This is another exact $2\times2$ frontier, not an
+application of the available Six Exponentials theorem; compare
+Section~\ref{sec:fourexp}.
+
+More generally the entire rank-three branch reduces to one explicitly parameterized radical.
+Define
+\begin{equation}
+ \rho_*=
+ \frac{a_2+(a_3-m_2)\thetaq-m_3\thetaq^2}{r\thetaq-s},
+ \qquad
+ x_*=m_2+m_3\thetaq+r\rho_*.
+ \label{rankgeom:eq-special-radical-parameters}
+\end{equation}
+For nonnegative integral data with $(r,s)\ne(0,0)$, $r\thetaq\ne s$, and
+$\rho_*,x_*>0$, there is an integer $C>1$, coprime to $6$, satisfying
+\[
+ 2^{x_*}=2^{m_2}3^{m_3}C^r,\qquad
+ 3^{x_*}=2^{a_2}3^{a_3}C^s
+\]
+if and only if the single number
+\begin{equation}
+ \boxed{C_*=2^{\rho_*}}
+ \label{rankgeom:eq-one-special-radical}
+\end{equation}
+is such an integer.  In that case $C=C_*$ uniquely; when the data come from an existing
+rank-three solution, its exponent is $x_*$.  This equivalence simply solves the logarithmic
+conic for $\log_2C$ and isolates the remaining arithmetic obstruction without claiming to
+remove it.
+
+\begin{statusbox}{The conic determinant and its nonvanishing core are already
+\statuslean{} in \lean{RankGeometry}.  The M\"obius identification, height estimate,
+no-cross classification, localized radical equation, and one-special-radical equivalence are
+\statusnew{} paper refinements.  They compress the rank-three branch and expose another
+Four Exponentials threshold; they do not prove that the special radical is nonintegral.}
+\end{statusbox}
+
 \subsection{A rational symmetric normal form}
 \label{rankgeom:symmetrization}
 
@@ -14654,7 +14858,7 @@ automatic, so the exact identity is
  \label{gapjet:eq-unimodular-gap}
 \end{equation}
 Without coprimality, the same statement holds primewise away from $AB$.  Consecutive
-continued-fraction convergents to $\log3/\log2$ have determinant distance one; hence their
+continued-fraction convergents to $\log_2 3$ have determinant distance one; hence their
 signed gaps $3^{q_j}-2^{p_j}$ are pairwise coprime at adjacent indices.  For a hypothetical
 output pair $(M,N)=(2^x,3^x)$, the corresponding adjacent output-gap gcd is
 $\gcd(M-1,N-1)$ when $M,N$ are coprime, with the same away-from-$MN$ restriction otherwise.
@@ -14943,7 +15147,7 @@ $z_i=1-\gamma_i$, $\gamma_i\in\Gamma$, can have positive defect, with effective 
 bounds.  The fixed-$m$ qualification is essential; this is not uniform over constructions
 with $m\to\infty$.
 
-Finally, let $p_n/q_n$ be the continued-fraction convergents to $\log3/\log2$ and choose
+Finally, let $p_n/q_n$ be the continued-fraction convergents to $\log_2 3$ and choose
 $\varepsilon_n\in\{\pm1\}$ so that the units
 $r_n=(2^{p_n}3^{-q_n})^{\varepsilon_n}>1$; then $r_n\to1$ and
 \[
@@ -15421,6 +15625,131 @@ classification, sharp canonical-product/Jensen threshold, subcritical interpolat
 rigidity, edge growth, critical cocycle, and polynomial-quotient closure are \statusnew{}
 paper results.  Overlapping monodromy material is omitted, and neither critical-type sampling
 nor the cocycle currently supplies the missing interpolant regularity.}
+\end{statusbox}
+
+\subsection{One-edge residual rigidity at quadratic type}
+\label{crit:edge-residual}
+
+The two-dimensional product has cubic logarithmic growth, but each exposed edge has a sharp
+quadratic scale.  For an entire function $F$, put
+\begin{equation}
+ \sigma_2(F)=\limsup_{R\to\infty}
+ \frac{\log^+M_F(R)}{(\log R)^2},
+ \qquad M_F(R)=\max_{|z|\le R}|F(z)|.
+ \label{crit:eq-quadratic-type}
+\end{equation}
+Jensen's formula gives the exact edge barrier
+\begin{equation}
+ F\not\equiv0,\quad F(q^n/c)=0\ (n\ge0)
+ \quad\Longrightarrow\quad
+ \sigma_2(F)\ge\frac1{2\log q}
+ \qquad(q>1,\ c>0).
+ \label{crit:eq-edge-jensen}
+\end{equation}
+Indeed, the zeros through radius $R$ contribute
+$(\log R)^2/(2\log q)+O(\log R)$ to Jensen's sum.  Equality is attained by
+$\prod_{n\ge0}(1-cz/q^n)$; this is the one-dimensional version of the canonical-product
+calculation above \cite{LevinEntire}.
+
+The cocycle admits two asymmetric residuals
+\begin{align}
+ R_2(z)&=A U(z)+B_2(z)V(2z)-M V(z),\\
+ R_3(z)&=M V(z)+B_3(z)U(3z)-A U(z).
+ \label{crit:eq-edge-residuals}
+\end{align}
+Using~\eqref{crit:eq-defect-cocycle} once gives the exact factorizations
+\begin{equation}
+ \boxed{R_2(z)=B_3(z)U(3z),\qquad R_3(z)=B_2(z)V(2z).}
+ \label{crit:eq-edge-residual-factorization}
+\end{equation}
+Thus $R_2$ vanishes at every $2^a/3$, and $R_3$ at every $3^b/2$.  Consequently
+\begin{equation}
+ \boxed{
+ \sigma_2(R_2)<\frac1{2\log2}\quad\text{or}\quad
+ \sigma_2(R_3)<\frac1{2\log3}
+ \quad\Longrightarrow\quad x\in\Nzero.}
+ \label{crit:eq-edge-residual-closure}
+\end{equation}
+For example, the first inequality and~\eqref{crit:eq-edge-jensen} force $R_2=0$;
+then~\eqref{crit:eq-edge-residual-factorization} gives $U=0$.  Comparing coefficients in
+$H(2z)=MH(z)$ leaves one monomial, and evaluation at $3$ identifies the same integral
+exponent.  In particular a counterexample forces both residuals to be nonzero and to meet or
+exceed their respective critical edge scales.  The deliberately stronger separated hypothesis
+\[
+ \sigma_2(U)<\frac1{2\log2},\qquad
+ \sigma_2(V)<\frac1{2\log2}-\frac1{2\log3}
+\]
+implies the first inequality in~\eqref{crit:eq-edge-residual-closure}, but the residual itself
+is the more flexible target because it retains cancellation among its three terms.
+
+There is a matching coefficient-space criterion.  Euler's $q$-binomial identity gives
+\begin{equation}
+ [z^j]B_2=\frac{(-6)^j}{\prod_{k=1}^j(3^k-1)},\qquad
+ [z^j]B_3=\frac{(-6)^j}{\prod_{k=1}^j(2^k-1)}.
+ \label{crit:eq-edge-coefficients}
+\end{equation}
+If $r_n=[z^n]R_2$, then any estimate
+\begin{equation}
+ |r_n|\le C\exp\!\left[-\left(\frac{\log2}{2}+\varepsilon\right)n^2\right]
+ \quad(n\gg1)
+ \label{crit:eq-edge-gaussian-certificate}
+\end{equation}
+makes $\sigma_2(R_2)<1/(2\log2)$ by completing the square in
+$\sum_n|r_n|R^n$, and therefore closes the conjecture.
+
+Arithmetic supplies a second sharp coordinate.  For
+$F(z)=\sum_{n\ge0}a_nz^n\in\Q[[z]]$ entire, define
+\begin{equation}
+ \delta_2(F)=\limsup_{n\to\infty}\frac{\log\den(a_n)}{n^2}.
+ \label{crit:eq-coefficient-denominator-type}
+\end{equation}
+A Cauchy estimate at $R=\exp(n/(2\sigma'))$ proves the elementary uncertainty theorem
+\begin{equation}
+ \boxed{4\sigma_2(F)\delta_2(F)<1\quad\Longrightarrow\quad F\text{ is a polynomial}.}
+ \label{crit:eq-coefficient-uncertainty}
+\end{equation}
+Indeed, a nonzero rational coefficient is at least the reciprocal of its reduced
+denominator, while Cauchy's bound is
+$|a_n|\le\exp(-n^2/(4\sigma'))$; strict separation of the two quadratic constants forces all
+large coefficients to vanish.  It follows that
+\begin{equation}
+ R_2\in\Q[[z]],\quad
+ \sigma_2(R_2)\le\frac1{2\log2},\quad
+ \delta_2(R_2)<\frac{\log2}{2}
+ \quad\Longrightarrow\quad x\in\Nzero,
+ \label{crit:eq-critical-arithmetic-closure}
+\end{equation}
+with the symmetric triadic statement as well.  The constants are exact: the edge product
+$B_3$ has the two values $1/(2\log2)$ and $(\log2)/2$, so their uncertainty product is one.
+In checking its reduced denominators, primes dividing the base $q$ are separated from primes
+dividing the fixed numerator parameter; LTE on the remaining progressions shows that only
+$O(n\log n)$ can cancel from the quadratic denominator logarithm.
+
+This arithmetic interface is nonempty.  Expanding the two-dimensional product formally gives
+\begin{equation}
+ ne_n=-\sum_{k=1}^n
+ \frac{e_{n-k}}{(1-2^{-k})(1-3^{-k})},
+ \qquad E(z)=\sum_{n\ge0}e_nz^n,
+ \label{crit:eq-rational-product-recurrence}
+\end{equation}
+so $E\in\Q[[z]]$.  Moreover the smooth nodes can be enumerated as
+$\lambda_0<\lambda_1<\cdots$ with $\lambda_n/n\to\infty$.  Successively correcting a
+rational interpolation polynomial by
+\[
+ d_n\left(\frac z{\lambda_n}\right)^{k_n}
+ \frac{\prod_{j<n}(z-\lambda_j)}{\prod_{j<n}(\lambda_n-\lambda_j)},
+ \qquad k_n\ge n,
+\]
+and choosing $k_n$ to make the correction at most $2^{-n}$ on $|z|\le n$ constructs an
+entire rational-coefficient interpolant.  Formal division by $E\in1+z\Q[[z]]$ then makes
+$U,V,R_2,R_3$ rational-coefficient entire functions.  This construction gives no useful
+growth or denominator bound; rather, it isolates the exact missing simultaneous estimate.
+
+\begin{statusbox}{\statusnew{} --- the edge Jensen barrier, residual factorization and
+closure, coefficient uncertainty, rational-coefficient interpolation, and the sharp
+type--denominator gauge target are paper theorems.  Jensen's formula and the elementary
+$q$-product identities are classical; no priority claim is made.  The strict inequalities
+are essential, since the canonical edge product realizes equality in both coordinates.}
 \end{statusbox}
 
 The critical analysis can be sharpened further.  The strongest positive result is an explicit
@@ -16204,7 +16533,7 @@ cancellation.
 
 There is one useful rank calibration.  If $\gcd(6,MA)=1$, then the base-prime and output-prime
 valuation lattices split.  Rank three would force $M=W^r$, $A=W^s$, hence
-$\log3/\log2=s/r\in\Q$, impossible.  Every hypothetical cross-coprime counterexample is
+$\log_2 3=s/r\in\Q$, impossible.  Every hypothetical cross-coprime counterexample is
 therefore in the harder rank-four Kummer branch.  In the ring of integers of $K_N$, the next
 concrete local object is the ideal sum
 \begin{equation}
@@ -16579,7 +16908,7 @@ hold eventually.  For every fixed nonzero $P\in\Q[X,Y]$, contact rigidity gives
 \]
 Indeed, the first nonzero homogeneous part of $P$ at $(1,1)$ evaluates at
 $(\log2,\log3)$; any further cancellation would make the transcendental ratio
-$\log3/\log2$ algebraic.
+$\log_2 3$ algebraic.
 Thus fixed-degree contact supplies only a polynomial-in-$q$ saving against the natural
 exponential common-denominator scale.  This does not rule out $q$-dependent polynomials of
 controlled height; a uniform theorem for such a family would be genuinely new.  The coprime
@@ -17005,6 +17334,11 @@ Sharp fixed-window polynomial node-budget barrier and capacity constant & \statu
 Section~\ref{spec:approximation}; no claim about rational or growing-window approximants \\
 Exact finite geometric Newton expansion, interpolation, omitted tail, and first extrapolation
 product & \statuslean & \lean{GeometricNewtonInterpolation}; Section~\ref{arithinterp:qnewton} \\
+Finite $q$-Newton endpoint dilation defect & \statuslean &
+\lean{QNewtonEndpointDefect}; Section~\ref{arithinterp:qnewton} \\
+Entire $q$-Newton completion and exact edge-product defect & \statusnew &
+Section~\ref{arithinterp:qnewton}; local-uniform convergence and classical
+basic-hypergeometric identity \\
 LCM-cleared arbitrary-node coefficients, vanishing moments, and the four-node cubic
 functional & \statuslean & \lean{ClearedDividedDifference};
 Section~\ref{df:cleared-divided-differences} \\
@@ -17024,6 +17358,8 @@ Hyperbolic rank geometry and rational symmetrization identities & \statuslean &
 \lean{RankGeometry}; Section~\ref{sec:rank-geometry} \\
 Baker rank-two exclusion, counterexample rank-$3/4$ classification, and conditional algebraic
 three-term orbit & \statusnew & Section~\ref{sec:rank-geometry}; Baker input classical \\
+M\"obius--conic determinant identification, no-cross families, localized radical, and
+one-special-radical reduction & \statusnew & Section~\ref{rankgeom:hyperbolic} \\
 Generic determinant-distance group collision and modular unimodular wrappers & \statuslean &
 \lean{UnimodularGapCollision}; Section~\ref{gapjet:gaps} \\
 Integer gap gcds, transported rational secants, finite order-signature no-go, and entrywise
@@ -17055,6 +17391,9 @@ D-finite exponent-relation polynomial and top-coefficient noncancellation & \sta
 Sharp $3$-smooth canonical-product/Jensen threshold, subcritical interpolation rigidity,
 and critical defect cocycle & \statusnew & Section~\ref{sec:critical-interpolation}; polynomial quotient
 regularity remains an explicit hypothesis \\
+Sharp geometric-edge Jensen barrier, one-residual closure, rational coefficient uncertainty,
+and rational-coefficient interpolant existence & \statusnew &
+Section~\ref{crit:edge-residual} \\
 Universal finite Lambert cocycle and base-$(2,3)$ mixed double-difference no-go &
 \statuslean & \lean{LambertCocycleFinite}; Section~\ref{crit:lambert-hankel} \\
 Finite positive-coefficient covariance identity and single-support closure & \statuslean &
@@ -17116,6 +17455,9 @@ Min-plus ceiling: term-wise $p$-adic content never exceeds a correct archimedean
 \statuslean & \lean{MinPlusCeiling} \\
 Exact termwise-divisor ceilings ($4/5$, $7/10$, $3/10$, $\pi/4$, $0.8710$) & \statusnew &
 Section~\ref{sec:minplus} \\
+Exact cross-coprime correction $7/10-\mathcal E_{\rm val}/20$ and explicit
+$\beta^{-4}$ separation & \statusnew; abstract finite inequalities \statuslean &
+\lean{ValuationSlopeEnergy}; Section~\ref{mp:valuation-slope-energy} \\
 A unique tropical minimizer forbids cancellation & \statuslean & \lean{MinPlusCeiling} \\
 Tropical quotient factorization, all-depth divisibility, and tied-fiber first-layer
 criterion (no cancellation lower bound) & \statuslean & \lean{TropicalInitialForm} \\
@@ -17305,6 +17647,8 @@ cardinality amplification for $p^t$-divisible rows, and the eliminated-row endpo
 \lean{.../GeometricNewtonInterpolation} & exact finite $q$-Newton power expansion;
 interpolation through the truncation degree, omitted-tail identity, and first extrapolation
 product over arbitrary integer parameters \\
+\lean{.../QNewtonEndpointDefect} & exact finite endpoint-dilation defect for the geometric
+Newton interpolant, with the coefficient and node-denominator recurrences used in its proof \\
 \lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
 score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
@@ -17360,6 +17704,8 @@ tangent-lattice parametrizations, two residue relations, and a conditional resid
 identity \\
 \lean{.../MatchedGapAmplification} & monotonic power increments, the strict scale-free
 one-gap inequality, its logarithmic base-$(2,3)$ form, and finite-product amplification \\
+\lean{.../ValuationSlopeEnergy} & zero-safe finite probability energy and total variation;
+sharp two-sided energy bounds and the opposite-sign wedge lower certificate \\
 \lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
 rational-approximation candidate alternant \\
 \lean{.../SynchronizedSumDecoder} & strict monotonicity on fixed-sum pairs and exact
@@ -17720,7 +18066,7 @@ The script below verifies one range.  Set \lean{START} to $1$ or $2^{19}$ and \l
 $2^{19}$ or $2^{20}$ to obtain the two halves reported afterwards.
 
 \begin{lstlisting}[style=pythonstyle,caption={Interval verification},label={ap:lst-interval}]
-import math, time, hashlib
+import math, time
 import mpmath as mp
 
 START = 1
@@ -17736,7 +18082,6 @@ checked = 0
 failures = []
 min_lower = (float("inf"), None, None)
 min_upper = (float("inf"), None, None)
-manifest = hashlib.sha256()
 start_time = time.time()
 
 for m in range(START, LIMIT):
@@ -17758,14 +18103,12 @@ for m in range(START, LIMIT):
 
     min_lower = min(min_lower, (lower_lb, m, n))
     min_upper = min(min_upper, (upper_lb, m, n))
-    manifest.update(f"{m}:{n};".encode())
     checked += 1
 
 print("checked_nonpowers=", checked)
 print("failures=", len(failures))
 print("min_lower_log_margin=", min_lower)
 print("min_upper_log_margin=", min_upper)
-print("sha256_m_n_manifest=", manifest.hexdigest())
 print("elapsed_seconds=", time.time() - start_time)
 assert not failures
 \end{lstlisting}
@@ -17779,7 +18122,6 @@ checked_nonpowers=524268
 failures=0
 min_lower_log_margin=(1.4147089634746718e-15, 189427, 231498127)
 min_upper_log_margin=(3.0841010256409534e-15, 306982, 497586055)
-sha256_m_n_manifest=02b589461fa8c1721bc251575b98b1e3d58001f54cb7faa2cd6c59edb8c819a5
 elapsed_seconds=18.505
 \end{lstlisting}
 
@@ -17790,21 +18132,11 @@ checked_nonpowers=524287
 failures=0
 min_lower_log_margin=(9.490232037370244e-16, 958460, 3023921230)
 min_upper_log_margin=(2.3019781003173366e-15, 556061, 1275861767)
-sha256_m_n_manifest=fccccf5de8673379d37ff0fc840ab091d9ff7a2352ff64a93091f01c21bf4cb4
 elapsed_seconds=18.904
 \end{lstlisting}
 
-The two SHA-256 manifests are
-\[
-\text{lower: }\sha{02b589461fa8c1721bc251575b98b1e3d58001f54cb7faa2cd6c59edb8c819a5},
-\]
-\[
-\text{upper: }\sha{fccccf5de8673379d37ff0fc840ab091d9ff7a2352ff64a93091f01c21bf4cb4}.
-\]
 Elapsed times are machine-dependent sanity checks; the counts, zero-failure results, extremal
-tuples, and hashes are the reproducibility data.  The hashes cover the ASCII stream
-\lean{m:n;} of proposed-and-certified pairs and make accidental changes to the candidate
-sequence detectable across reruns.
+tuples, and displayed code are the reproducibility data.
 
 \begin{statusbox}{\statuscomp{} --- interval arithmetic in \lean{mpmath} \cite{mpmath} at 40
 digits.  This is a software trust boundary, not a kernel certificate.  The kernel-verified
@@ -18150,16 +18482,12 @@ Powers of two are skipped rather than tested, since $\left(2^{q}\right)^{\thetaq
 the known integral candidate; an exact integral value at a non-power of two would satisfy
 neither strict inequality for any $n$ and would be reported.
 
-\subsection{Source identity and environment}
+\subsection{Environment}
 \label{a3:verifier-env}
 
 The recorded run used MPFR $4.2.2$ linked as \lean{libmpfr.so.6}, GCC $14.2.0$ with
 \lean{-O3 -fopenmp}, GNU OpenMP with five worker threads, Linux on x86-64, and $192$-bit
-precision with the directed modes \lean{MPFR_RNDD} and \lean{MPFR_RNDU}.  The SHA-256 digest
-of the exact executed source reproduced below is
-\begin{center}
-\sha{f888c0d89be9366f01e2d26f339dcbe446556d39d4c5dbcf8f579ec0d0052e1d}
-\end{center}
+precision with the directed modes \lean{MPFR_RNDD} and \lean{MPFR_RNDU}.
 The execution image contained the MPFR shared library but not its development header, so the
 source carries a guarded minimal declaration of the MPFR~4.x ABI; on a system with
 \lean{mpfr.h} present the standard header branch is taken instead.  That ABI detail is part
@@ -18433,10 +18761,7 @@ There are $2^{26}-1=67{,}108{,}863$ positive integers below $2^{26}$, of which e
 are powers of two, namely $2^{0}$ through $2^{25}$.  The verifier therefore tests
 $67{,}108{,}863-26=67{,}108{,}837$ inputs.  The range was split at multiples of $2^{22}$ into
 one initial chunk $[1,2^{22})$ and fifteen chunks of width $2^{22}$.  The canonical chunk log
-holds the full standard output of every invocation and has SHA-256 digest
-\begin{center}
-\sha{dcaa7f3b7e5be44acaee9015a2045da14ee42d8fa2d96b9619cdd44c072a6fd7}
-\end{center}
+holds the full standard output of every invocation.
 
 Table~\ref{a3:tab:chunkaudit} reports, for each chunk, the exact scanned integer interval, the
 number of non-powers certified, and the smallest directed lower and upper logarithmic margins
@@ -18526,7 +18851,7 @@ To reproduce the finite claim independently:
 
 \begin{enumerate}
 \item obtain MPFR~4.2.x and GMP on a $64$-bit platform;
-\item save the source of Appendix~\ref{app:scanner} and verify its SHA-256 digest;
+\item save the source of Appendix~\ref{app:scanner};
 \item compile with optimization and OpenMP, or delete the OpenMP pragmas for a serial run;
 \item run the sixteen half-open intervals of Table~\ref{a3:tab:chunkaudit} at $192$ bits;
 \item verify that every invocation reports \lean{failures=0};
@@ -19489,6 +19814,18 @@ S.~Karlin and W.~J.~Studden,
 \newblock \emph{Tchebycheff Systems: With Applications in Analysis and Statistics},
 \newblock Interscience, 1966.
 
+\bibitem{LevinEntire}
+B.~Ya.~Levin,
+\newblock \emph{Distribution of Zeros of Entire Functions},
+\newblock revised edition, Translations of Mathematical Monographs, vol.~5,
+American Mathematical Society, 1980.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Encyclopedia of Mathematics and its Applications, vol.~96,
+Cambridge University Press, 2004.
+
 \bibitem{KuipersNiederreiter}
 L.~Kuipers and H.~Niederreiter,
 \newblock \emph{Uniform Distribution of Sequences},
@@ -19547,9 +19884,7 @@ F.~Johansson et al.,
 \bibitem{ProveIt}
 The ProveIt project,
 \newblock \emph{ProveIt repository},
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt},
-\newblock pinned in this report at commit
-\commit{5d3982ceb12644fdd3499569d9db5f62f9a31dc6}.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
 
 \bibitem{BakerWustholz1993}
 A.~Baker and G.~W\"ustholz,

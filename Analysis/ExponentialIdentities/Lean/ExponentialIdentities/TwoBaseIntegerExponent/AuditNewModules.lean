@@ -80,7 +80,9 @@ import ExponentialIdentities.TwoBaseIntegerExponent.CatalanTangentCore
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedRadixCarryFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.CaptureMultiplier
 import ExponentialIdentities.TwoBaseIntegerExponent.RadixShadow
+import ExponentialIdentities.TwoBaseIntegerExponent.ValuationSlopeEnergy
 import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
+import ExponentialIdentities.TwoBaseIntegerExponent.QNewtonEndpointDefect
 import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianGeneratingSeries
@@ -139,6 +141,12 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms qNewtonTruncValue_eq_pow_of_le
 #print axioms qNewtonTruncValue_remainder
 #print axioms qNewtonTruncValue_first_omitted
+
+-- Finite q-Newton basis dilation and exact endpoint defect
+#print axioms QNewtonEndpointDefect.dilate_geometricNodeBasis_succ
+#print axioms QNewtonEndpointDefect.geometricNodeDenominator_succ
+#print axioms QNewtonEndpointDefect.qNewtonCoefficient_succ
+#print axioms QNewtonEndpointDefect.qNewtonPolynomial_endpoint_dilation_defect
 
 -- Rational first-jet arithmetic and the base-two Jordan closing criterion (report 20)
 #print axioms rational_of_rpow_and_firstJet
@@ -572,6 +580,14 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms RadixShadow.phi_modEq_pow_iff
 #print axioms RadixShadow.three_pow_dvd_phi_sub_iff_two_pow_dvd_sub
 #print axioms RadixShadow.padicValInt_phi_sub_eq
+
+-- Zero-safe diagonal energy and total-variation comparison
+#print axioms ValuationSlopeEnergy.sum_max_eq_one_add_totalVariation
+#print axioms ValuationSlopeEnergy.four_mul_totalVariation_sq_div_one_add_le_diagonalEnergy
+#print axioms ValuationSlopeEnergy.diagonalEnergy_le_two_mul_totalVariation
+#print axioms ValuationSlopeEnergy.wedge_pos_of_opposite_signs
+#print axioms ValuationSlopeEnergy.wedge_le_totalVariation_of_opposite_signs
+#print axioms ValuationSlopeEnergy.totalVariation_and_diagonalEnergy_lower_of_wedge
 
 -- Exact rank-K boundary displacement for rectangular evaluation matrices
 #print axioms firstGridShiftMatrix_mul

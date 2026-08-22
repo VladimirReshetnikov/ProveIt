@@ -5,7 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{booktabs,longtable,array,tabularx}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -65,6 +65,10 @@
 \newcommand{\ccol}{c^{\mathrm{col}}}
 \newcommand{\E}{\mathcal E}
 \newcommand{\Torus}{T}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\diag}{\operatorname{diag}}
+\newenvironment{resultbox}{\begin{quote}\small}{\end{quote}}
 \newcommand{\statusproved}{\textcolor{statusgreen}{\textbf{PROVED HERE}}}
 \newcommand{\statusknown}{\textcolor{statusblue}{\textbf{KNOWN / IMPORTED}}}
 \newcommand{\statuscompute}{\textcolor{statusorange}{\textbf{COMPUTATIONAL}}}
@@ -176,7 +180,7 @@ Because the prompt explicitly invokes very recent claims, a source audit was per
 
 The appropriate response to competitive pressure is not to lower the standard of proof.  It is to extract a mathematically exact target that can be attacked, checked, and formalized.
 
-\section{Minimal inherited framework}
+\section{Minimal inherited framework}\label{sec:grid}
 
 \subsection{Normalization of a hypothetical counterexample}
 
@@ -420,7 +424,7 @@ This $2/3$ law is already in the attached report and is quoted only for comparis
 \end{equation}
 whenever the actual pair occupies fewer residues than the ambient two-dimensional torus permits.  The central quantitative problem is whether the sum of these pair-specific excesses can be forced to reach the archimedean scale $m^2$.
 
-\section{Short congruence relations and weighted divisors}
+\section{Short congruence relations and weighted divisors}\label{sec:gcd}
 
 \subsection{A box-translation graph}
 
@@ -831,7 +835,7 @@ This is a proof-producing criterion.  It involves only exact modular exponentiat
 
 The row and column boxes should not generally be square.  For fixed area $m$, the leading parts of $T_{U,V}$ and $L_{R,S}$ are minimized separately by balancing their two summands:
 \begin{align}
- U&\sim\sqrt{\beta m},& V&\sim\sqrt{m/\beta},\label{eq:row-opt}\
+ U&\sim\sqrt{\beta m},& V&\sim\sqrt{m/\beta},\label{eq:row-opt}\\
  R&\sim\sqrt{m\log3/\log2},&
  S&\sim\sqrt{m\log2/\log3}.\label{eq:col-opt}
 \end{align}
@@ -1132,7 +1136,7 @@ The run used $N=24$, hence $m=N^2=576$.  For each pair $(M,A)$ and each good pri
 \item the orders of $P=(2,3)$ and $Q=(M,A)$ in $(\F_p^\times)^2$;
 \item whether $Q\in\langle P\rangle$, and if so the least nonnegative slope;
 \item a primitive-root discrete-log matrix $B_p$;
-\item the exact image size $|(\Z/(p-1)\Z)^2B_p|$ from the determinantal formula~\eqref{eq:image-size};
+\item the exact image size $|(\Z/(p-1)\Z)^2B_p|$ from the determinantal formula~\eqref{eq:image-formula};
 \item whether $p-1\mid\det B_p$, the rank-one-scale condition of Corollary~\ref{cor:rank-one-scale}.
 \end{enumerate}
 The direct box enumeration and the Smith/determinantal image formula agreed for every row of the data set.
@@ -1203,23 +1207,9 @@ It does \emph{not} test prime powers $p^t$, does not enumerate the column box, a
 
 \subsection{Reproducibility record}
 
-The exact files generated during the run have the following SHA--256 hashes:
-\begin{center}
-\small
-\begin{tabular}{@{}ll@{}}
-\toprule
-file & SHA--256\\
-\midrule
-\texttt{finite\_field\_scout.py}
-&\texttt{41dd55fae41016da5c514965fb51d33446084d1ce56f40ca0cc39fe52b7ba29f}\\
-\texttt{finite\_field\_scout.csv}
-&\texttt{892e61ff7d234d84614acfe3453599e22ba157ffde520a5792ef5c9568ddc9c4}\\
-\texttt{finite\_field\_scout\_summary.json}
-&\texttt{8b9eaed9713cdbe2dfb94c5a2cf564f05ee8acb3f1aaf1af0a81ea97af686082}\\
-\bottomrule
-\end{tabular}
-\end{center}
-The complete Python source is embedded in Appendix~\ref{app:code}; it uses only the Python standard library.
+The run produces \texttt{finite\_field\_scout.csv} and
+\texttt{finite\_field\_scout\_summary.json}. The complete Python source is embedded in
+Appendix~\ref{app:code}; it uses only the Python standard library.
 
 \section{A formalization-ready decomposition}
 \label{sec:formalization}
@@ -1482,7 +1472,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
 import math
 from pathlib import Path
@@ -1736,9 +1725,7 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(all_rows)
 
-    script_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     payload = {
-        "script_sha256": script_hash,
         "summaries": summaries,
     }
     args.summary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

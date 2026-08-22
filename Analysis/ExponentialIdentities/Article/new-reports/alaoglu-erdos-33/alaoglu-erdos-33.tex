@@ -4,7 +4,7 @@
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage[a4paper,margin=27mm]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{booktabs,longtable,array}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -41,6 +41,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{problem}[theorem]{Target problem}
 \newtheorem{experiment}[theorem]{Reproducible experiment}
+\newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{warning}[theorem]{Warning}
@@ -87,11 +88,9 @@ A way around that ceiling is to use many return times simultaneously. We constru
 
 \section{Scope, source audit, and standards of evidence}
 
-The input archive was parsed before this addendum was written. Its compressed SHA--256 digest is
-\begin{center}
-\texttt{e9f6dc782809d6e048a8782dccfd688af26f8a87e94eb87ca93e448a3211dd3c}
-\end{center}
-and the decompressed source contains \texttt{20,483} lines and \texttt{485} section-level headings. The role of these statistics is reproducibility: they identify the exact baseline against which ``new'' is being used here.
+The input archive was parsed before this addendum was written. The decompressed source contains
+\texttt{20,483} lines and \texttt{485} section-level headings. These statistics describe the
+baseline against which ``new'' is being used here.
 
 
 A case-insensitive lexical audit of the baseline source gives the following occurrence counts for the principal vocabulary of this addendum. A zero is evidence that the terminology is absent; a nonzero count is not by itself duplication, so every related section below states and proves a quantitatively stronger or structurally different result.
@@ -597,8 +596,6 @@ If $P$ has multiplicity $r$ at $(1,1)$ and coefficient height $H$, elementary Ta
 \begin{equation}\label{eq:jet-upper}
  |P(2^\delta,3^\delta)|
  \le C^{D_1+D_2}(D_1+1)(D_2+1)H\,\delta^r
-
-displaybreak[0]
 \end{equation}
 for an absolute effective $C>1$. Combining \eqref{eq:denom-lower} and \eqref{eq:jet-upper}, a proof that forces $P(u_n,v_n)=0$ by size alone would need
 \begin{equation}\label{eq:single-return-needed}
@@ -932,7 +929,7 @@ The table in \cref{sec:dd} is produced as follows.
 \begin{enumerate}
 \item Generate the first eighteen distinct integers of the form $2^a3^b$.
 \item For each $2\le k\le10$, enumerate every $(k+1)$-element subset containing $1$.
-\item Compute $d_j(T)=\prod_{i\ne j}(t_j-t_i)$ exactly and set $L(T)=\lcm_j|d_j(T)|$.
+\item Compute $d_j(T)=\prod_{i\ne j}(t_j-t_i)$ exactly and set $L(T)=\lcmop_j|d_j(T)|$.
 \item Minimize lexicographically $(L(T),\max T,\sum T)$.
 \item Verify exactly that the primitive coefficients $L(T)/d_j(T)$ annihilate the moments $0,\ldots,k-1$.
 \end{enumerate}

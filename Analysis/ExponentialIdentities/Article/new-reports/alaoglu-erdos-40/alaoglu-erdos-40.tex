@@ -384,8 +384,7 @@ The external valuation vectors are
  \mathbf b_{\ext}=(b_p)_{p\ge5}.
 \]
 
-We use the following inherited facts, and only these facts, from the large
-source report.
+We use the following inherited facts from the unified corpus.
 
 \begin{description}[style=nextline,leftmargin=2.3em]
 \item[H1: leastness and primitive depth.]
@@ -394,8 +393,7 @@ the two base depths obey
 \[
  \alpha_2=0\quad\text{or}\quad \gamma_3=0.
 \]
-The source gives stronger common-perfect-power exclusions, but the displayed
-dichotomy is the only part needed below.
+The stronger common-perfect-power exclusions are not needed below.
 
 \item[H2: rational exponents are already settled.]
 If $\beta\in\Q$ and $2^\beta,3^\beta\in\Z$, then $\beta\in\Z$.  This is also
@@ -416,14 +414,19 @@ Gini norm defined in \cref{def:gini} below.
 
 \item[H4: rank dichotomy.]
 The four logarithmic valuation vectors have only two surviving possibilities.
-In rank four, the external valuation vectors are independent.  In rank three,
-they are collinear and the second-iterate kernel is nonzero; equivalently,
+The external pair is not identically zero.  In rank four, the external valuation
+vectors are independent.  In rank three, they are collinear and the
+second-iterate kernel is nonzero; equivalently,
 $\beta$ lies in a rational M\"obius orbit of $\theta$.
 
 \item[H5: formal quadratic.]
 In rank three, unique factorization reduces the logarithmic relation to a
 homogeneous quadratic in three independent logarithms.  Baker-type results
 exclude rank at most two; the full-rank quadratic is the surviving case.
+
+\item[H6: finite exclusion.]
+The accepted finite verification gives $\beta>12$.  This is used only to
+simplify the final quantitative energy bound.
 \end{description}
 
 The point of the next two parts is to turn H3--H5 into exact arithmetic
@@ -540,7 +543,7 @@ The energy has the exact expression
 \begin{equation}
  \E(M,N)
  =\frac1{\beta\log3}
-   \sum_{p\ge5}\log p\,
+   \sum_{\substack{p\ge5\\a_p+b_p>0}}\log p\,
    \frac{(a_p\theta-b_p)^2}{\max(a_p\theta,b_p)}.
  \label{eq:energy-arithmetic-form}
 \end{equation}
@@ -1134,7 +1137,7 @@ Consequently
 \begin{equation}
  1\le|\Delta|
  \le \frac{3\log2\,\log3}{(\log5)^2}\,\beta^3
- =0.8809\ldots\,\beta^3.
+ =0.8819474591\ldots\,\beta^3.
  \label{eq:Delta-height-bound}
 \end{equation}
 \end{proposition}
@@ -1430,8 +1433,9 @@ $\omega_{pq}$ is nonzero.  Since the structural primes $2$ and $3$ already
 supply two independent valuation directions, this is precisely the
 multiplicative-rank-four branch.
 
-If $A\wedge B=0$, the nonzero vectors $A,B$ are rationally proportional.
-Because their coordinates are nonnegative integers, there is a unique
+If $A\wedge B=0$, the pair $A,B$ is dependent and not both zero.
+Because their coordinates are nonnegative integers, the nonzero member or
+members determine a unique
 primitive nonnegative integral vector
 $C=\sum c_pe_p$ and unique $r,s\in\Z_{\ge0}$, not both zero, such that
 $A=rC$ and $B=sC$.  Put $W=\prod p^{c_p}$.  This gives the displayed rank-three
@@ -1558,7 +1562,8 @@ Then the following are equivalent.
 \end{equation}
 is an integer $>1$ coprime to $6$.
 \end{enumerate}
-When these conditions hold, $W=W_*$ and $\beta=\beta_*$.
+When these conditions hold, $W=W_*$ uniquely.  When the data arise from an
+existing rank-three solution, its exponent is $\beta_*$.
 \end{theorem}
 
 \begin{proof}
@@ -1925,9 +1930,9 @@ theorem gini_firstQuadrant (u v : Real) (hu : 0 ≤ u) (hv : 0 ≤ v) :
     ring
 \end{lstlisting}
 
-The actual implementation needs a separate origin case before \code{field_simp}.
-This is a routine but important guard: an automated proof that silently assumes
-\code{max u v \ne 0} would formalize a stronger and false statement.
+A practical implementation should split off the origin before
+\code{field_simp}; although Lean defines division by zero to be zero, the
+nonzero branches are clearer when their denominator hypotheses are explicit.
 
 \subsection{Straddling and the integer minor}
 
@@ -2228,7 +2233,7 @@ base.
 The cubic discriminant bound uses
 \begin{equation}
  \frac{3\log2\log3}{(\log5)^2}
- =0.8809\ldots .
+ =0.8819474591\ldots .
  \label{eq:numerical-delta-constant}
 \end{equation}
 
