@@ -1,0 +1,1675 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.08in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Alaoglu--Erdos: Congruence-Kernel Rigidity, Kummer Defect Primes, and Denominator Escape},
+  pdfauthor={Research continuation, August 22, 2026}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\allowdisplaybreaks
+
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s continuation}
+\fancyhead[R]{Congruence kernels and defect primes}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\definecolor{codegray}{RGB}{246,246,246}
+\definecolor{rulegray}{RGB}{120,120,120}
+\definecolor{deepblue}{RGB}{30,60,120}
+\definecolor{deepgreen}{RGB}{25,105,70}
+\definecolor{deepred}{RGB}{145,45,45}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\vp}{v_p}
+\newcommand{\thetaq}{\vartheta}
+\newcommand{\Rel}{\mathcal K}
+\newcommand{\Def}{\mathcal D}
+\newcommand{\Sync}{\mathcal S}
+\newcommand{\boxdelta}{\delta^{\square}}
+\newcommand{\raydelta}{\delta^{\mathrm{ray}}}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
+\newcommand{\statusE}{\textcolor{deepgreen}{\textbf{[E]}}}
+\newcommand{\statusC}{\textcolor{deepblue}{\textbf{[C]}}}
+\newcommand{\statusD}{\textcolor{deepred}{\textbf{[D]}}}
+\newcommand{\statusP}{\textcolor{orange!70!black}{\textbf{[P]}}}
+
+\newenvironment{resultbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}\textbf{#1}\par\vspace{0.25em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{statusbox}
+{\begin{center}\begin{minipage}{0.94\textwidth}\small\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.65cm}
+{\Huge\bfseries The Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.4cm}
+{\LARGE\bfseries Congruence-Kernel Rigidity, Kummer Defect Primes,\par}
+\vspace{0.14cm}
+{\LARGE\bfseries and Denominator Escape\par}
+\vspace{0.65cm}
+{\large A nonduplicative continuation of the August 21, 2026 unified report\par}
+\vspace{0.2cm}
+{\large August 22, 2026\par}
+\vfill
+\begin{minipage}{0.9\textwidth}
+\small
+\textbf{Bottom line.}
+The full conjecture is not proved here.  The new contribution is an exact local-global
+framework that was not present in the attached report.  At a good prime $p$, the congruence
+relations among $2$ and $3$ form a lattice
+\[
+ \Rel_p(2,3)=\{(r,s)\in\Z^2:2^r3^s\equiv1\pmod p\}.
+\]
+The inclusion $\Rel_p(2,3)\subseteq\Rel_p(M,A)$ is equivalent to the existence of a
+\emph{synchronized local exponent} $e_p$ with
+$M\equiv2^{e_p}$ and $A\equiv3^{e_p}\pmod p$.
+Using the Corrales--Rodrig\'a\~nez--Schoof support theorem, almost-everywhere inclusion is
+proved equivalent to the global diagonal form $(M,A)=(2^k,3^k)$.  Thus, for a fixed pair
+$M=2^x$, $A=3^x$, integrality of $x$ is equivalent to synchronized local exponentiation at
+all but finitely many primes.
+
+The opposite direction is quantified.  If $B$ and $C$ are multiplicatively independent,
+Kummer theory and Chebotarev produce a positive-density set of primes at which
+$\ord_p(C)\nmid\ord_p(B)$.  For a suitable odd prime $\ell$, an explicit Frobenius class has
+density $1/\ell^2$.  Consequently, a hypothetical nonintegral solution has positive-density
+local defects on each of the three rays $(2,M)$, $(3,A)$, and $(6,MA)$.
+Every such defect forces a prime divisor of a corresponding interpolation denominator; a
+controlled squarefree part of that denominator has logarithm $N/\ell+o(N)$.  Finally, the
+Bugeaud--Corvaja--Zannier gcd theorem shows that the exact two-point secant denominators on all
+three rays have maximal exponential rate.
+
+These results sharpen the remaining barrier rather than conceal it: the missing implication is
+an archimedean-to-finite-place transfer strong enough to force synchronized local exponents,
+whereas Kummer--Chebotarev shows that any nonintegral candidate would fail synchronization on
+positive-density Frobenius sets.
+\end{minipage}
+\vfill
+{\footnotesize Status labels: \statusE{} elementary proof in this report;
+\statusC{} rigorous modulo a named classical theorem; \statusD{} exact finite computation;
+\statusP{} proposed research target.\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+\begin{abstract}
+Put $\thetaq=\log 3/\log 2$.  The \AEname{} conjecture asserts that
+$2^x,3^x\in\Z$ implies $x\in\Z$.  The attached unified report already develops the
+four-exponentials reduction, exact conditional semigroup structure, determinant and Smith-form
+methods, $p$-adic transversality, sparse interpolation, special-function, spectral, moment,
+information-theoretic, and canonical-product routes.  This continuation therefore does not
+repeat those arguments.
+
+For $p\nmid BC$, define the relation kernel
+$\Rel_p(B,C)=\{(r,s)\in\Z^2:B^rC^s\equiv1\pmod p\}$.
+We prove that
+\[
+ \Rel_p(2,3)\subseteq\Rel_p(M,A)
+ \quad\Longleftrightarrow\quad
+ \exists!\ e_p\pmod{|\langle2,3\rangle|}:
+ (M,A)\equiv(2^{e_p},3^{e_p})\pmod p.
+\]
+Combining this finite cyclic-group lemma with the support theorem of
+Corrales--Rodrig\'a\~nez and Schoof gives a global classification: for positive integers
+$M,A$, almost-everywhere relation-kernel inclusion, almost-everywhere synchronized local
+exponents, three elementary order-divisibility conditions, and the global identity
+$(M,A)=(2^k,3^k)$ are equivalent.
+
+We then prove a quantitative converse for multiplicatively independent pairs.  If the classes
+of $B,C$ are independent modulo $\ell$th powers, the Kummer extension
+$\Q(\zeta_\ell,B^{1/\ell},C^{1/\ell})$ contains a conjugacy-stable set of Frobenius elements
+of relative size $1/\ell^2$ for which $B$ is an $\ell$th power modulo $p$ and $C$ is not.
+These primes satisfy $\ord_p(C)\nmid\ord_p(B)$.  Hence every hypothetical nonintegral
+\AEname{} pair has positive-density defect-prime sets.
+
+A general collision-valuation lemma transfers those defects to interpolation denominators.
+For the polynomial interpolating $B^j\mapsto C^j$ on $0\le j\le N$, its least integral
+coefficient denominator is divisible by
+\[
+ \operatorname{lcm}_{1\le n\le N}
+ \frac{B^n-1}{\gcd(B^n-1,C^n-1)}.
+\]
+The Kummer Frobenius set supplies a squarefree divisor with logarithm $N/\ell+o(N)$, and the
+Bugeaud--Corvaja--Zannier theorem gives the exact secant-denominator rate
+$\frac1n\log d_n(B,C)\to\log B$.  The report closes with a verified computation, a precise
+failure analysis, and a Lean-oriented formalization plan.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive summary and claim ledger}
+\label{sec:executive}
+
+\subsection{The new exact statements}
+
+\begin{resultbox}{Finite-prime synchronization criterion \statusE}
+For every prime $p\nmid6MA$, relation-kernel inclusion
+$\Rel_p(2,3)\subseteq\Rel_p(M,A)$ holds if and only if there is a unique residue class
+$e_p$ modulo $h_p=|\langle2,3\rangle\subset\F_p^\times|$ such that
+\[
+ M\equiv2^{e_p}\pmod p,
+ \qquad
+ A\equiv3^{e_p}\pmod p.
+\]
+This is a finite cyclic-group theorem; no transcendence input is used.
+\end{resultbox}
+
+\begin{resultbox}{Global synchronized-power rigidity \statusC}
+For positive integers $M,A$, the following are equivalent:
+(i) $(M,A)=(2^k,3^k)$ for some $k\ge0$;
+(ii) relation-kernel inclusion holds for all but finitely many primes;
+(iii) synchronized local exponents exist for all but finitely many primes; and
+(iv) for almost all primes,
+\[
+ \ord_p(M)\mid\ord_p(2),\quad
+ \ord_p(A)\mid\ord_p(3),\quad
+ \ord_p(MA)\mid\ord_p(6).
+\]
+The only non-elementary input is the 1997 support theorem of
+Corrales--Rodrig\'a\~nez and Schoof.
+\end{resultbox}
+
+\begin{resultbox}{Positive-density Kummer defect primes \statusC}
+If $B,C\in\Q_{>0}$ are multiplicatively independent, there is an odd prime $\ell$ and a set
+$\Sigma_\ell(B,C)$ of rational primes of natural density $1/\ell^2$ such that
+\[
+ \ord_p(C)\nmid\ord_p(B)
+ \qquad(p\in\Sigma_\ell(B,C)).
+\]
+The set is defined by the explicit residue-symbol conditions
+\[
+ p\equiv1\pmod\ell,
+ \qquad B\in(\F_p^\times)^\ell,
+ \qquad C\notin(\F_p^\times)^\ell.
+\]
+This is a direct Kummer--Chebotarev argument.
+\end{resultbox}
+
+\begin{resultbox}{Collision primes force denominator primes \statusE}
+Let $Q\in\Q[X]$ interpolate integer data $Q(x_i)=y_i$ at distinct integer nodes, and let
+$\delta$ be the least positive integer with $\delta Q\in\Z[X]$.  Then
+\[
+ v_p(\delta)\ge
+ \max\{0,\,v_p(x_i-x_j)-v_p(y_i-y_j)\}
+\]
+for every pair $i\ne j$.  In particular, an input collision modulo $p$ not respected by the
+outputs forces $p\mid\delta$.
+\end{resultbox}
+
+\begin{resultbox}{Ray-denominator and secant escape \statusE{} \statusC}
+Let $\raydelta_N(B,C)$ be the least coefficient denominator of the degree-$N$ polynomial
+interpolating $B^j\mapsto C^j$ for $0\le j\le N$.  Then
+\[
+ \operatorname{lcm}_{1\le n\le N}
+ \frac{B^n-1}{\gcd(B^n-1,C^n-1)}
+ \mid \raydelta_N(B,C).
+\]
+If $B,C$ are multiplicatively independent, the two-point denominator
+$d_n(B,C)=(B^n-1)/\gcd(B^n-1,C^n-1)$ satisfies
+\[
+ \lim_{n\to\infty}\frac{\log d_n(B,C)}n=\log B.
+\]
+For the Kummer set above, the squarefree product of primes
+$p\le\ell N+1$ in $\Sigma_\ell(B,C)$ divides $\raydelta_N(B,C)$ and has logarithm
+$N/\ell+o(N)$.
+\end{resultbox}
+
+\subsection{What this does and does not accomplish}
+
+The new route gives an exact local-global characterization of the desired conclusion and a
+positive-density description of how every hypothetical counterexample must fail that
+characterization.  It also converts the failure into explicit prime divisors of rational
+interpolation denominators.  These are substantive additions: the attached report discusses
+$p$-adic logarithmic rank, Fermat-quotient layers, and interpolation denominators as Smith
+cokernel orders, but it does not use finite-field relation kernels, the support problem, or
+Kummer Frobenius classes.
+
+The final contradiction is still absent.  Denominator lower bounds alone do not help unless
+one also constructs a rational or algebraic quantity whose archimedean height is smaller than
+those denominators force.  The attached report repeatedly identifies exactly this denominator
+or height tax.  The present approach supplies a more structured denominator divisor, not an
+unjustified upper bound.
+
+\subsection{Trust convention}
+
+Throughout the report:
+\begin{description}[leftmargin=1.2cm,style=nextline]
+\item[\statusE] The statement is proved from elementary algebra, finite cyclic groups,
+polynomial divisibility, or unique factorization in the text.
+\item[\statusC] The deduction is complete modulo a named published theorem, principally the
+support theorem, Chebotarev density, Kummer theory, or the Bugeaud--Corvaja--Zannier gcd bound.
+\item[\statusD] Every finite decision is exact; floating-point values are used only to display
+ratios of already exact counts and logarithmic sums.
+\item[\statusP] The item is a research target or formalization plan, not a proved theorem.
+\end{description}
+
+\section{Nonduplication audit of the attached report}
+\label{sec:audit}
+
+The supplied source contains 20,483 lines and reconciles twenty-seven independent
+continuations.  A thematic and keyword audit was performed before choosing the present route.
+The point of this section is not to summarize that document again, but to make the scope
+boundary explicit.
+
+\begin{longtable}{p{0.28\textwidth}p{0.31\textwidth}p{0.33\textwidth}}
+\toprule
+Topic & Already in the attached report & Treatment here \\
+\midrule
+\endhead
+Four exponentials and transcendence & Exact $2\times2$ reduction; rational and algebraic
+exponent exclusions; the remaining four-exponentials wall. & Assumed as inherited context;
+not reproved. \\
+Conditional solution structure & Primitive common odd core, least generator, free monoid of
+solutions and candidates, exact counts and block laws. & Used only to state that a
+nonintegral candidate is multiplicatively independent on the three rays. \\
+Archimedean determinants & Arbitrary-node repulsion, mixed-exponent semigroup determinants,
+sparse interpolation, one-logarithm deficit. & No new archimedean determinant is claimed. \\
+Finite-place methods & Iwasawa logarithms at $2$ and $3$, Fermat quotients, tropical layers,
+structural-prime residuals, resultants, Smith profiles. & We work instead in the finite cyclic
+group $\F_p^\times$ and track exact congruence-relation kernels. \\
+Interpolation denominator & Identified as the order of a value vector in a Vandermonde
+cokernel; structural-prime specializations and residual resultants. & We add a general
+collision-valuation lower bound and identify positive-density Kummer primes that must divide
+the denominator. \\
+Gcd methods & The Bugeaud--Corvaja--Zannier theorem is mentioned as a generic obstruction to
+manufacturing large common divisors. & We derive the exact asymptotic of a natural reduced
+secant denominator and apply it on all three counterexample rays. \\
+Kummer theory & Radical degree and entanglement literature are surveyed, with the conclusion
+that they do not see the special real exponent. & We use a different Kummer object: a finite
+extension detecting whether one rational number is an $\ell$th power modulo $p$ while another
+is not. \\
+Support problem & No occurrence of the Corrales--Rodrig\'a\~nez--Schoof theorem, congruence
+relation kernels, or synchronized local exponents was found. & This is the central new branch. \\
+\bottomrule
+\end{longtable}
+
+\begin{statusbox}
+The phrase ``new'' in this report means new relative to the supplied unified report after this
+audit.  Several ingredients are classical; the contribution is their exact assembly around
+the \AEname{} pair, the positive-density defect theorem, and the denominator-transfer package.
+\end{statusbox}
+
+\section{External landscape audit as of August 22, 2026}
+\label{sec:landscape}
+
+The user's comparison with another model concerns rapidly changing public claims, so it was
+checked separately from the mathematical argument.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{0.19\textwidth}X p{0.27\textwidth}}
+\toprule
+Claim & Publicly verifiable status & Evidence boundary \\
+\midrule
+Jacobian conjecture & A 2026 primary preprint by Gao gives counterexamples in every dimension
+greater than two and describes Alp\"oge's earlier three-dimensional counterexample.  Thus the
+general conjecture is false in dimensions $n\ge3$, while the two-dimensional case remains
+open. & Primary arXiv sources are available; ``resolved'' must not be read as solving the
+remaining $n=2$ case. \\
+Hadamard matrices below $2000$ & Public trackers report exact constructions for the twelve
+previously unresolved admissible orders.  Epoch AI marks order $668$ provisionally solved, and
+OEIS records all twelve orders. & The constructions are finitely and exactly checkable, but a
+conventional paper and full contribution account were not located in this audit. \\
+Elliptic curve of rank at least $30$ & No public primary source, equation, or independence
+certificate was located.  Epoch AI still listed the task as unsolved and the public record as
+rank at least $29$. & A private result may exist, but it cannot be treated as verified without
+the curve and thirty independent points. \\
+New \AEname{} breakthrough & No public preprint, announcement, or Lean artifact matching the
+reported private claim was located. & The private communication is not evidence available for
+mathematical comparison. \\
+\bottomrule
+\end{tabularx}
+\caption{Current-claim audit.  This table is contextual and is not used in any proof.}
+\end{table}
+
+The mathematical response to a competitive claim should therefore be a checkable theorem
+package rather than a speculative declaration of victory.  The rest of this report is written
+to that standard.
+
+\section{Setup and elementary consequences of a hypothetical solution}
+\label{sec:setup}
+
+Let
+\[
+ \thetaq=\frac{\log3}{\log2}.
+\]
+Suppose
+\begin{equation}
+  M=2^x\in\Z_{>0},
+  \qquad
+  A=3^x\in\Z_{>0}.
+  \label{eq:candidate}
+\end{equation}
+If $x<0$, then $0<2^x<1$, impossible for a positive integer.  Thus $x\ge0$.  If $x$ is
+rational, writing $x=a/b$ in lowest terms and using unique factorization in
+$2^a=M^b$ forces $b=1$.  Hence every nonintegral candidate is irrational; the attached report
+proves the stronger statement that it is transcendental.
+
+The following elementary independence observation will be used repeatedly.
+
+\begin{lemma}[Three independent rays]
+\label{lem:three-rays}
+Assume \eqref{eq:candidate} and $x\notin\Z$.  Then each pair
+\[
+ (2,M),\qquad(3,A),\qquad(6,MA)
+\]
+is multiplicatively independent in $\Q_{>0}^{\times}$.
+\end{lemma}
+
+\begin{proof}
+If $M^u=2^v$ for nonzero integers $u,v$, then
+$2^{xu}=2^v$, so $x=v/u\in\Q$, hence $x\in\Z$, a contradiction.  The same proof applies to
+$(3,A)$.  Finally, $(MA)^u=6^v$ gives $6^{xu}=6^v$, again forcing $x=v/u\in\Z$.
+\end{proof}
+
+\begin{remark}
+The three rays have different logical roles.  Either of the first two is already sufficient
+to recognize an integer exponent once an almost-everywhere order-divisibility statement is
+known.  The third ray is needed for a symmetric classification of arbitrary pairs $(M,A)$:
+it forces the two independently detected integer exponents to agree.
+\end{remark}
+
+\section{Finite-field relation kernels and synchronized exponents}
+\label{sec:relkernels}
+
+\subsection{The relation lattice}
+
+Let $p$ be a prime not dividing $BC$.  Negative powers are then defined in
+$\F_p^\times$.  Define
+\begin{equation}
+ \Rel_p(B,C)
+ =\{(r,s)\in\Z^2:B^rC^s\equiv1\pmod p\}.
+ \label{eq:relation-kernel}
+\end{equation}
+This is the kernel of the homomorphism
+\[
+ \Phi_{p;B,C}:\Z^2\longrightarrow\F_p^\times,
+ \qquad(r,s)\longmapsto B^rC^s.
+\]
+It is a full-rank sublattice of $\Z^2$, with index
+$|\langle B,C\rangle|$.
+
+For the base pair, write
+\[
+ H_p=\langle2,3\rangle\subset\F_p^\times,
+ \qquad h_p=|H_p|.
+\]
+Because $\F_p^\times$ is cyclic, $H_p$ is the unique subgroup of order $h_p$.
+
+\subsection{Local factorization theorem}
+
+\begin{theorem}[Relation-kernel factorization]
+\label{thm:local-sync}
+Let $p\nmid6MA$.  The following are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item $\Rel_p(2,3)\subseteq\Rel_p(M,A)$.
+\item The rule $2^r3^s\mapsto M^rA^s$ is a well-defined group homomorphism
+$H_p\to\F_p^\times$.
+\item There exists an integer $e_p$, unique modulo $h_p$, such that
+\begin{equation}
+ M\equiv2^{e_p}\pmod p,
+ \qquad
+ A\equiv3^{e_p}\pmod p.
+ \label{eq:sync-local}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The map $\Phi_{p;2,3}:\Z^2\to H_p$ is surjective, and its kernel is
+$\Rel_p(2,3)$.  The map $\Phi_{p;M,A}:\Z^2\to\F_p^\times$ factors through the quotient
+$\Z^2/\Rel_p(2,3)\cong H_p$ if and only if
+$\Rel_p(2,3)\subseteq\Rel_p(M,A)$.  This proves (i)$\Leftrightarrow$(ii).
+
+Let $g$ generate $\F_p^\times$, and write $H_p=\langle g^{(p-1)/h_p}\rangle$.  Every
+homomorphism from the cyclic group $H_p$ to $\F_p^\times$ has image of order dividing
+$h_p$.  Since a cyclic group has a unique subgroup of each order, that image lies in $H_p$.
+Every endomorphism of $H_p$ is exponentiation by a unique class $e_p\pmod{h_p}$.  Evaluating
+at the generators $2$ and $3$ gives \eqref{eq:sync-local}.  Conversely,
+\eqref{eq:sync-local} defines the required exponentiation homomorphism.  Uniqueness follows
+because $2$ and $3$ generate $H_p$.
+\end{proof}
+
+\begin{corollary}[Axis and diagonal shadows]
+\label{cor:axis-shadows}
+If the equivalent conditions of \cref{thm:local-sync} hold, then
+\[
+ \ord_p(M)\mid\ord_p(2),\qquad
+ \ord_p(A)\mid\ord_p(3),\qquad
+ \ord_p(MA)\mid\ord_p(6).
+\]
+\end{corollary}
+
+\begin{proof}
+The relation vectors $(\ord_p(2),0)$, $(0,\ord_p(3))$, and
+$(\ord_p(6),\ord_p(6))$ lie in $\Rel_p(2,3)$.  Kernel inclusion sends them into
+$\Rel_p(M,A)$, which is exactly the displayed divisibility.
+\end{proof}
+
+\begin{remark}
+The converse of \cref{cor:axis-shadows} need not hold at a single prime.  Three selected
+one-dimensional relations need not generate the full two-dimensional relation lattice.
+Their power appears globally, where the support theorem turns almost-everywhere order
+conditions into exact rational powers.
+\end{remark}
+
+\subsection{A local defect radius}
+
+\begin{definition}
+For $p\nmid6MA$, define the full local defect set
+\[
+ \Sync_p(M,A)=\Rel_p(2,3)\setminus\Rel_p(M,A).
+\]
+If it is nonempty, define its radius
+\begin{equation}
+ \lambda_p(M,A)=
+ \min_{(r,s)\in\Sync_p(M,A)}\max\{|r|,|s|\}.
+ \label{eq:defect-radius}
+\end{equation}
+If $\Sync_p(M,A)$ is empty, put $\lambda_p(M,A)=\infty$.
+\end{definition}
+
+By \cref{thm:local-sync}, $\lambda_p(M,A)=\infty$ exactly when a synchronized exponent
+exists.  The quantity $\lambda_p$ measures how large an exponent box is needed to witness the
+failure.
+
+\section{Global support rigidity}
+\label{sec:support}
+
+\subsection{The classical support theorem}
+
+We use the following theorem in its multiplicative-group form.
+
+\begin{theorem}[Corrales--Rodrig\'a\~nez--Schoof]
+\label{thm:CRS}
+Let $u,v\in\Q^\times$.  Suppose that for all but finitely many rational primes $p$ and every
+integer $n$,
+\[
+ u^n\equiv1\pmod p
+ \quad\Longrightarrow\quad
+ v^n\equiv1\pmod p.
+\]
+Then $v=u^k$ for some $k\in\Z$.
+\end{theorem}
+
+For primes not dividing $uv$, the hypothesis is equivalent to
+$\ord_p(v)\mid\ord_p(u)$.  The theorem is a local-to-global detection result for membership in
+a cyclic subgroup of $\Q^\times$.
+
+\subsection{Three-ray classification}
+
+\begin{theorem}[Global synchronized-power rigidity]
+\label{thm:global-rigidity}
+Let $M,A\in\Z_{>0}$.  The following are equivalent.
+\begin{enumerate}[label=(\alph*)]
+\item There exists $k\in\Z_{\ge0}$ such that
+\begin{equation}
+ M=2^k,
+ \qquad A=3^k.
+ \label{eq:global-diagonal}
+\end{equation}
+\item For all but finitely many primes $p$,
+$\Rel_p(2,3)\subseteq\Rel_p(M,A)$.
+\item For all but finitely many primes $p$, there is a synchronized exponent $e_p$ satisfying
+\eqref{eq:sync-local}.
+\item For all but finitely many primes $p$,
+\begin{equation}
+ \ord_p(M)\mid\ord_p(2),\qquad
+ \ord_p(A)\mid\ord_p(3),\qquad
+ \ord_p(MA)\mid\ord_p(6).
+ \label{eq:three-support}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If \eqref{eq:global-diagonal} holds, then
+$M^rA^s=(2^r3^s)^k$.  Thus every base relation is respected at every prime not dividing
+$6MA$, proving (a)$\Rightarrow$(b).  The equivalence (b)$\Leftrightarrow$(c) is
+\cref{thm:local-sync}, and (b)$\Rightarrow$(d) is \cref{cor:axis-shadows}.
+
+Assume (d).  The first order divisibility and \cref{thm:CRS} give $M=2^a$ for some
+$a\in\Z$.  Since $M$ is a positive integer and $2>1$, necessarily $a\ge0$.  Similarly,
+$A=3^b$ with $b\ge0$.  The third order divisibility gives $MA=6^c$ with $c\ge0$.  Unique
+factorization in
+\[
+ 2^a3^b=2^c3^c
+\]
+forces $a=b=c$.  This is \eqref{eq:global-diagonal}.
+\end{proof}
+
+\begin{corollary}[Exact local-global reformulation of a fixed \AEname{} pair]
+\label{cor:AE-localglobal}
+Assume $M=2^x$ and $A=3^x$ are positive integers.  Then the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $x\in\Z$;
+\item synchronized local exponents exist for all but finitely many primes;
+\item relation-kernel inclusion holds for all but finitely many primes.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+If $x\in\Z$, take $k=x$ in \cref{thm:global-rigidity}.  Conversely, either local condition
+gives $(M,A)=(2^k,3^k)$ for some integer $k$.  Since the real exponential is injective,
+$2^x=M=2^k$ implies $x=k$.
+\end{proof}
+
+\begin{corollary}[One-ray support criteria]
+\label{cor:one-ray}
+Under the hypotheses of \cref{cor:AE-localglobal}, each one of the following conditions alone
+is equivalent to $x\in\Z$:
+\[
+ \ord_p(M)\mid\ord_p(2)\text{ for almost all }p,
+\]
+\[
+ \ord_p(A)\mid\ord_p(3)\text{ for almost all }p,
+\]
+\[
+ \ord_p(MA)\mid\ord_p(6)\text{ for almost all }p.
+\]
+\end{corollary}
+
+\begin{proof}
+The forward implication is immediate.  For the first condition, \cref{thm:CRS} gives
+$M=2^k$, and then $2^x=2^k$ gives $x=k$.  The other two cases are identical.
+\end{proof}
+
+\begin{remark}
+\Cref{cor:AE-localglobal} is an exact reformulation, not a proof of the conjecture.  Its value
+is that it replaces an irrational real exponent by a family of finite cyclic-group
+compatibility conditions and identifies precisely how much local compatibility would suffice.
+\end{remark}
+
+\section{Defect primes and their positive density}
+\label{sec:defects}
+
+\subsection{Order-defect sets}
+
+\begin{definition}
+For $B,C\in\Z_{>1}$, define
+\begin{equation}
+ \Def(B,C)=
+ \{p:p\nmid BC,\ \ord_p(C)\nmid\ord_p(B)\}.
+ \label{eq:defect-set}
+\end{equation}
+Equivalently, if $d=\ord_p(B)$, then $p\in\Def(B,C)$ exactly when
+$C^d\not\equiv1\pmod p$.
+\end{definition}
+
+\begin{corollary}[Infinitely many defects]
+\label{cor:infinite-defects}
+If $B$ and $C$ are multiplicatively independent positive integers, then $\Def(B,C)$ is
+infinite.
+\end{corollary}
+
+\begin{proof}
+If the set were finite, then $\ord_p(C)\mid\ord_p(B)$ for almost all $p$.
+\Cref{thm:CRS} would give $C=B^k$, contradicting multiplicative independence.
+\end{proof}
+
+By \cref{lem:three-rays}, a hypothetical nonintegral \AEname{} solution therefore has three
+infinite defect sets
+\begin{equation}
+ \Def(2,M),\qquad \Def(3,A),\qquad \Def(6,MA).
+ \label{eq:three-defect-sets}
+\end{equation}
+Each is contained in the set of primes at which synchronized exponentiation fails.
+
+\subsection{Choosing a Kummer witness exponent}
+
+The support theorem gives infinitude but not a quantitative set.  Kummer theory gives a
+positive-density subset with a transparent Frobenius description.
+
+Write a positive rational number as
+$B=\prod_q q^{b_q}$ and $C=\prod_q q^{c_q}$, with finitely many nonzero integer exponents.
+Multiplicative independence means that the two valuation vectors $(b_q)_q$ and $(c_q)_q$ are
+linearly independent over $\Q$.  Hence there are primes $q_1,q_2$ with
+\begin{equation}
+ D=b_{q_1}c_{q_2}-b_{q_2}c_{q_1}\ne0.
+ \label{eq:minor-D}
+\end{equation}
+Choose an odd prime $\ell\nmid D$.
+
+\begin{lemma}[Independence modulo $\ell$th powers]
+\label{lem:kummer-independence}
+For an odd prime $\ell\nmid D$, the classes of $B$ and $C$ are linearly independent in
+$\Q^\times/(\Q^\times)^\ell$.  They remain independent in
+$F^\times/(F^\times)^\ell$, where $F=\Q(\zeta_\ell)$.
+\end{lemma}
+
+\begin{proof}
+If $B^uC^v$ is an $\ell$th power in $\Q$ with $(u,v)\not\equiv(0,0)\pmod\ell$, then taking
+$q_1$- and $q_2$-adic valuations gives a nonzero vector in the kernel modulo $\ell$ of the
+matrix with determinant $D$, impossible because $\ell\nmid D$.
+
+For the second statement, suppose a rational number $r$ is an $\ell$th power in
+$F=\Q(\zeta_\ell)$.  If $r$ is not an $\ell$th power in $\Q$, Capelli's binomial
+irreducibility criterion gives $[\Q(r^{1/\ell}):\Q]=\ell$.  But this field would be a
+subfield of $F$, whose degree is $\ell-1$, impossible.  Thus the natural map
+$\Q^\times/(\Q^\times)^\ell\to F^\times/(F^\times)^\ell$ is injective, and independence
+persists.
+\end{proof}
+
+\subsection{The Kummer Frobenius set}
+
+Let
+\begin{equation}
+ L=\Q(\zeta_\ell,B^{1/\ell},C^{1/\ell}).
+ \label{eq:kummer-field}
+\end{equation}
+By \cref{lem:kummer-independence},
+$[L:\Q(\zeta_\ell)]=\ell^2$, and
+\[
+ |\Gal(L/\Q)|=(\ell-1)\ell^2.
+\]
+Define $\Sigma_\ell(B,C)$ to be the set of unramified rational primes $p$ satisfying
+\begin{equation}
+ p\equiv1\pmod\ell,
+ \qquad
+ B\in(\F_p^\times)^\ell,
+ \qquad
+ C\notin(\F_p^\times)^\ell.
+ \label{eq:kummer-set}
+\end{equation}
+
+\begin{theorem}[Kummer defect-density theorem]
+\label{thm:kummer-density}
+With $B,C,\ell$ as above, the set $\Sigma_\ell(B,C)$ has natural density
+\begin{equation}
+ \delta(\Sigma_\ell(B,C))=\frac1{\ell^2}.
+ \label{eq:density-one-over-l2}
+\end{equation}
+Every prime in this set lies in $\Def(B,C)$.  Consequently,
+\begin{equation}
+ \underline\delta\bigl(\Def(B,C)\bigr)\ge\frac1{\ell^2}.
+ \label{eq:defect-density-lower}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Over $F=\Q(\zeta_\ell)$, Kummer theory identifies
+$\Gal(L/F)$ with $(\Z/\ell\Z)^2$.  Choose coordinates so that
+$(a,b)$ sends
+\[
+ B^{1/\ell}\longmapsto\zeta_\ell^aB^{1/\ell},
+ \qquad
+ C^{1/\ell}\longmapsto\zeta_\ell^bC^{1/\ell}.
+\]
+Inside $\Gal(L/\Q)$, the subset
+\[
+ \mathcal C=\{(0,b):b\in(\Z/\ell\Z)^\times\}
+\]
+is stable under conjugacy: the cyclotomic Galois group multiplies both Kummer coordinates by
+the same nonzero scalar.  It has $\ell-1$ elements.  Chebotarev's density theorem therefore
+gives density
+\[
+ \frac{|\mathcal C|}{|\Gal(L/\Q)|}
+ =\frac{\ell-1}{(\ell-1)\ell^2}
+ =\frac1{\ell^2}.
+\]
+The associated splitting conditions are exactly \eqref{eq:kummer-set}: Frobenius is trivial on
+$F$, fixes $B^{1/\ell}$, and acts nontrivially on $C^{1/\ell}$.
+
+Now write $p-1=\ell^t m$ with $\ell\nmid m$.  In the cyclic group $\F_p^\times$, an
+$\ell$th power has multiplicative order whose $\ell$-adic valuation is at most $t-1$.
+A non-$\ell$th power has order with $\ell$-adic valuation exactly $t$.  Hence
+\[
+ v_\ell(\ord_p(B))\le t-1<t=v_\ell(\ord_p(C)),
+\]
+so $\ord_p(C)\nmid\ord_p(B)$.  This proves the containment and density lower bound.
+\end{proof}
+
+\begin{corollary}[Explicit witness for a non-power integer]
+\label{cor:explicit-witness}
+Suppose $M$ is a positive integer that is not a power of $2$.  Let $q$ be any odd prime
+factor of $M$, put $t=v_q(M)$, and choose any odd prime $\ell\nmid t$.  Then
+$\Sigma_\ell(2,M)$ has density $1/\ell^2$ and is contained in $\Def(2,M)$.
+\end{corollary}
+
+\begin{proof}
+The $2\times2$ valuation minor using the primes $2$ and $q$ is $t$, so
+\cref{lem:kummer-independence,thm:kummer-density} apply.
+\end{proof}
+
+\begin{corollary}[Positive-density failure for a hypothetical counterexample]
+\label{cor:candidate-density}
+If \eqref{eq:candidate} holds with $x\notin\Z$, then each of the three sets in
+\eqref{eq:three-defect-sets} has positive lower density.  In particular, synchronized local
+exponentiation fails on a positive-density set of primes.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:kummer-density} to each multiplicatively independent pair in
+\cref{lem:three-rays}.  An axis order defect prevents relation-kernel inclusion by
+\cref{cor:axis-shadows}, hence prevents a synchronized exponent by \cref{thm:local-sync}.
+\end{proof}
+
+\subsection{Weighted prime asymptotics}
+
+Chebotarev's prime number theorem gives the stronger weighted form
+\begin{equation}
+ \sum_{\substack{p\le X\\p\in\Sigma_\ell(B,C)}}\log p
+ =\frac{X}{\ell^2}+o(X).
+ \label{eq:chebotarev-theta}
+\end{equation}
+This will turn the positive-density Frobenius set into an explicit squarefree divisor of an
+interpolation denominator.
+
+\section{Interpolation denominators detect local relation defects}
+\label{sec:denominators}
+
+\subsection{A general collision-valuation lemma}
+
+Let $x_0,\ldots,x_N$ be distinct integers and $y_0,\ldots,y_N$ integers.  Let
+$Q\in\Q[X]$ be the unique polynomial of degree at most $N$ with $Q(x_i)=y_i$, and define
+\begin{equation}
+ \delta(Q)=\min\{d\in\Z_{>0}:dQ\in\Z[X]\}.
+ \label{eq:min-denom}
+\end{equation}
+
+\begin{theorem}[Collision-valuation bound]
+\label{thm:collision-valuation}
+For every prime $p$ and every $i\ne j$ with $y_i\ne y_j$,
+\begin{equation}
+ v_p(\delta(Q))
+ \ge
+ \max\{0,\,v_p(x_i-x_j)-v_p(y_i-y_j)\}.
+ \label{eq:collision-valuation}
+\end{equation}
+In particular,
+\begin{equation}
+ x_i\equiv x_j\pmod p,
+ \quad y_i\not\equiv y_j\pmod p
+ \quad\Longrightarrow\quad
+ p\mid\delta(Q).
+ \label{eq:collision-prime}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $P=\delta(Q)Q\in\Z[X]$.  The polynomial $P(X)-P(x_j)$ is divisible by $X-x_j$ in
+$\Z[X]$.  Evaluating at $x_i$ gives
+\[
+ x_i-x_j\mid P(x_i)-P(x_j)
+ =\delta(Q)(y_i-y_j).
+\]
+Taking $p$-adic valuations yields
+\[
+ v_p(x_i-x_j)
+ \le v_p(\delta(Q))+v_p(y_i-y_j),
+\]
+which is \eqref{eq:collision-valuation}.  The final implication is the case where the
+left-hand difference has valuation at least one and the right-hand output difference has
+valuation zero.
+\end{proof}
+
+\begin{remark}
+The attached report identifies the interpolation denominator as an order in a Vandermonde
+cokernel.  \Cref{thm:collision-valuation} gives a direct local witness for that order: two
+rows of the evaluation matrix coalesce modulo $p^a$, while their prescribed values coalesce
+to smaller depth.  No Smith-form computation is needed to certify the resulting denominator
+factor.
+\end{remark}
+
+\subsection{Geometric-ray interpolation}
+
+For integers $B,C>1$, let $Q_N^{B,C}$ be the unique degree-$N$ polynomial satisfying
+\begin{equation}
+ Q_N^{B,C}(B^j)=C^j
+ \qquad(0\le j\le N),
+ \label{eq:ray-interpolation}
+\end{equation}
+and put
+\[
+ \raydelta_N(B,C)=\delta(Q_N^{B,C}).
+\]
+Define the reduced secant denominator
+\begin{equation}
+ d_n(B,C)=\frac{B^n-1}{\gcd(B^n-1,C^n-1)}.
+ \label{eq:secant-denom}
+\end{equation}
+
+\begin{theorem}[Secant divisors of the full ray denominator]
+\label{thm:secant-divides}
+For every $1\le n\le N$,
+\begin{equation}
+ d_n(B,C)\mid\raydelta_N(B,C).
+ \label{eq:dn-divides}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lcm_{1\le n\le N}d_n(B,C)
+ \mid\raydelta_N(B,C).
+ \label{eq:lcm-divides}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:collision-valuation} to the interpolation points
+$(x_0,y_0)=(1,1)$ and $(x_n,y_n)=(B^n,C^n)$.  For every prime $p$,
+\[
+ v_p(\raydelta_N(B,C))
+ \ge\max\{0,v_p(B^n-1)-v_p(C^n-1)\}
+ =v_p(d_n(B,C)).
+\]
+This proves \eqref{eq:dn-divides}; taking the primewise maximum over $n$ gives
+\eqref{eq:lcm-divides}.
+\end{proof}
+
+\begin{corollary}[Order defects divide the ray denominator]
+\label{cor:defect-divides-ray}
+If $p\in\Def(B,C)$ and $\ord_p(B)\le N$, then
+$p\mid\raydelta_N(B,C)$.
+\end{corollary}
+
+\begin{proof}
+Set $n=\ord_p(B)$.  Then $p\mid B^n-1$ but $p\nmid C^n-1$, so $p\mid d_n(B,C)$.
+Apply \cref{thm:secant-divides}.
+\end{proof}
+
+\subsection{A controlled squarefree denominator divisor}
+
+For a Kummer witness prime $\ell$, define
+\begin{equation}
+ R_N(B,C;\ell)=
+ \prod_{\substack{p\le\ell N+1\\p\in\Sigma_\ell(B,C)}}p.
+ \label{eq:kummer-divisor}
+\end{equation}
+
+\begin{theorem}[Kummer squarefree divisor]
+\label{thm:kummer-denominator}
+For every $N\ge1$,
+\begin{equation}
+ R_N(B,C;\ell)\mid\raydelta_N(B,C).
+ \label{eq:kummer-divides-denom}
+\end{equation}
+Moreover,
+\begin{equation}
+ \log R_N(B,C;\ell)=\frac{N}{\ell}+o(N).
+ \label{eq:kummer-divisor-asymp}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $p\in\Sigma_\ell(B,C)$, the element $B$ is an $\ell$th power modulo $p$.  Hence
+\[
+ \ord_p(B)\mid\frac{p-1}{\ell}.
+\]
+If $p\le\ell N+1$, then $\ord_p(B)\le N$.  By
+\cref{thm:kummer-density}, $p\in\Def(B,C)$, so
+\cref{cor:defect-divides-ray} gives $p\mid\raydelta_N(B,C)$.  The primes in the product are
+distinct, proving \eqref{eq:kummer-divides-denom}.
+
+Finally, use \eqref{eq:chebotarev-theta} with $X=\ell N+1$:
+\[
+ \log R_N(B,C;\ell)
+ =\sum_{\substack{p\le\ell N+1\\p\in\Sigma_\ell(B,C)}}\log p
+ =\frac{\ell N+1}{\ell^2}+o(N)
+ =\frac N\ell+o(N).
+\]
+\end{proof}
+
+\begin{remark}
+The divisor in \cref{thm:kummer-denominator} is not merely large; every prime in it belongs
+to one specified Frobenius class and witnesses a one-unit loss in $\ell$-adic order.  This
+structure is the feature that could interact with a future finite-place determinant or
+resultant construction.  Its exponential size by itself is not enough for a contradiction.
+\end{remark}
+
+\subsection{The two-dimensional candidate grid}
+
+Let
+\[
+ \Omega_N=\{0,1,\ldots,N\}^2,
+ \qquad
+ x_{a,b}=2^a3^b,
+ \qquad
+ y_{a,b}=M^aA^b.
+\]
+The nodes $x_{a,b}$ are distinct.  Let $Q_N^\square\in\Q[X]$ be the unique polynomial of
+degree below $(N+1)^2$ with
+$Q_N^\square(x_{a,b})=y_{a,b}$, and let
+$\boxdelta_N(M,A)$ be its least coefficient denominator.
+
+\begin{theorem}[Box denominator detects relation defects]
+\label{thm:box-detects}
+Let $p\nmid6MA$.
+\begin{enumerate}[label=(\roman*)]
+\item If $\lambda_p(M,A)\le N$, then $p\mid\boxdelta_N(M,A)$.
+\item If $p\nmid\boxdelta_{p-2}(M,A)$, then
+$\Rel_p(2,3)\subseteq\Rel_p(M,A)$ and a synchronized local exponent exists.
+\item Equivalently, failure of synchronized local exponentiation at $p$ forces
+\begin{equation}
+ p\mid\boxdelta_{p-2}(M,A).
+ \label{eq:p-divides-box}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For (i), choose $(r,s)\in\Sync_p(M,A)$ with
+$\max(|r|,|s|)\le N$.  Write
+$r=r_+-r_-$ and $s=s_+-s_-$ with nonnegative parts.  The two grid points
+$(r_+,s_+)$ and $(r_-,s_-)$ lie in $\Omega_N$.  Their input nodes are congruent modulo $p$
+because $2^r3^s\equiv1$, but their output values are not because
+$M^rA^s\not\equiv1$.  Apply \cref{thm:collision-valuation}.
+
+For (ii), take any relation $(r,s)\in\Rel_p(2,3)$ and reduce each coordinate modulo $p-1$ to
+$r',s'\in\{0,\ldots,p-2\}$.  Then
+$x_{r',s'}\equiv1=x_{0,0}\pmod p$.  If $p$ does not divide the box denominator, the collision
+must be respected, so $M^{r'}A^{s'}\equiv1$.  Reduction modulo $p-1$ does not change powers in
+$\F_p^\times$, hence $(r,s)\in\Rel_p(M,A)$.  Apply \cref{thm:local-sync}.
+Statement (iii) is the contrapositive.
+\end{proof}
+
+\begin{remark}
+The scale $p-2$ is exact but too large for a direct global determinant argument.  A major
+quantitative target is to prove that many defect primes have
+$\lambda_p(M,A)\ll(\log p)^C$ or even $p^{1/2-\eta}$.  Kummer ray defects only give the axis
+bound $\lambda_p\le(p-1)/\ell$.  Improving this relation-vector scale is one of the clearest
+new bottlenecks exposed by the kernel language.
+\end{remark}
+
+\section{Maximal secant-denominator escape from the gcd theorem}
+\label{sec:BCZ}
+
+The two-point interpolant through $(1,1)$ and $(B^n,C^n)$ is
+\[
+ L_n(X)=1+\frac{C^n-1}{B^n-1}(X-1).
+\]
+Its least coefficient denominator is exactly $d_n(B,C)$ from
+\eqref{eq:secant-denom}: both coefficients have common denominator
+$(B^n-1)/\gcd(B^n-1,C^n-1)$ after reduction.
+
+\begin{theorem}[Bugeaud--Corvaja--Zannier]
+\label{thm:BCZ}
+If $B,C>1$ are multiplicatively independent integers, then for every $\varepsilon>0$ and all
+sufficiently large $n$,
+\begin{equation}
+ \gcd(B^n-1,C^n-1)\le e^{\varepsilon n}.
+ \label{eq:BCZ}
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Exact secant-denominator rate]
+\label{cor:secant-rate}
+If $B,C>1$ are multiplicatively independent, then
+\begin{equation}
+ \lim_{n\to\infty}\frac1n\log d_n(B,C)=\log B.
+ \label{eq:secant-rate}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+By definition,
+\[
+ \log d_n(B,C)
+ =\log(B^n-1)-\log\gcd(B^n-1,C^n-1).
+\]
+The first term divided by $n$ tends to $\log B$.  By \cref{thm:BCZ}, the second term divided
+by $n$ tends to zero.  This proves the limit.
+\end{proof}
+
+\begin{corollary}[Three-ray maximal escape for a counterexample]
+\label{cor:three-ray-escape}
+If \eqref{eq:candidate} holds with $x\notin\Z$, then
+\begin{align}
+ \lim_{n\to\infty}\frac1n\log d_n(2,M)&=\log2,\\
+ \lim_{n\to\infty}\frac1n\log d_n(3,A)&=\log3,\\
+ \lim_{n\to\infty}\frac1n\log d_n(6,MA)&=\log6.
+ \label{eq:three-rates}
+\end{align}
+In particular, the reduced secant denominators escape at the largest exponential rate allowed
+by their input denominators on all three rays.
+\end{corollary}
+
+\begin{proof}
+Use \cref{lem:three-rays,cor:secant-rate}.
+\end{proof}
+
+\begin{remark}
+This is stronger than the qualitative statement that generic common divisors are too small.
+It identifies an exact rational object naturally attached to the candidate interpolation
+problem and computes its exponential rate.  It also explains why a proof based on unexpectedly
+small secant denominators cannot work: a hypothetical counterexample forces the opposite,
+namely asymptotically maximal reduced denominators.
+\end{remark}
+
+\section{Consequences specialized to the \AEname{} problem}
+\label{sec:specialization}
+
+Collecting the preceding results gives a compact conditional profile.
+
+\begin{theorem}[Local arithmetic profile of a hypothetical nonintegral solution]
+\label{thm:profile}
+Assume $M=2^x$ and $A=3^x$ are integers with $x\notin\Z$.  Then:
+\begin{enumerate}[label=(\arabic*)]
+\item \statusE{} The pairs $(2,M)$, $(3,A)$, and $(6,MA)$ are multiplicatively independent.
+\item \statusC{} Each ray has a positive-density set of order-defect primes; for suitable odd
+primes $\ell_2,\ell_3,\ell_6$, the corresponding explicit Kummer subsets have densities
+$1/\ell_2^2$, $1/\ell_3^2$, and $1/\ell_6^2$.
+\item \statusC{} Synchronized local exponentiation fails on a positive-density set of primes.
+\item \statusE{} Every ray defect $p$ with $\ord_p(B)\le N$ divides the ray interpolation
+denominator $\raydelta_N(B,C)$.
+\item \statusC{} Each ray denominator contains a controlled squarefree Frobenius divisor with
+logarithm $N/\ell_i+o(N)$.
+\item \statusC{} Each two-point secant denominator has its maximal exponential rate, as in
+\eqref{eq:three-rates}.
+\item \statusE{} At every prime of full synchronization failure,
+$p\mid\boxdelta_{p-2}(M,A)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Items (1)--(7) are respectively
+\cref{lem:three-rays,thm:kummer-density,cor:candidate-density,cor:defect-divides-ray,thm:kummer-denominator,cor:three-ray-escape,thm:box-detects}.
+\end{proof}
+
+\subsection{An exact dichotomy}
+
+For each candidate pair, there are only two possibilities.
+
+\begin{enumerate}[label=\textbf{Case \Alph*.},leftmargin=2.2cm]
+\item $x\in\Z$.  Then one global exponent $k=x$ works at every good prime; every relation is
+respected; the ray interpolants eventually become monomials $X^k$ and have denominator one.
+\item $x\notin\Z$.  Then synchronized local exponentiation fails on positive-density Kummer
+sets; the ray and box interpolation denominators acquire the exact defect divisors described
+above; and the two-point denominators have maximal exponential rate.
+\end{enumerate}
+
+This dichotomy is unusually sharp, but it is not self-contradictory.  The second case is
+arithmetically coherent as far as the present theorems go.
+
+\section{Exact computational reconnaissance}
+\label{sec:computation}
+
+The computation in this section is illustrative, not evidentiary for the infinite theorems.
+Its purposes are to test the finite-group equivalences, display the role of the third ray, and
+check convergence toward the Kummer density.
+
+\subsection{Synthetic pair tests}
+
+For a good prime $p$, the code computes multiplicative orders exactly, checks for an exponent
+$e_p$ modulo $h_p$, and finds the first order defect on each ray.  Integer-power pairs pass by
+theorem; mismatched powers show why the $(6,MA)$ ray is needed.
+
+\begin{table}[ht]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.4pt}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$(M,A)$
+& \shortstack{first\\$\Def(2,M)$}
+& \shortstack{first\\$\Def(3,A)$}
+& \shortstack{first\\$\Def(6,MA)$}
+& \shortstack{first full\\failure}
+& \shortstack{synchronized / good\\$p\le10^4$} \\
+\midrule
+$(4,9)$   & none & none & none & none & $1227/1227$ \\
+$(8,27)$  & none & none & none & none & $1227/1227$ \\
+$(4,27)$  & none & none & $5$ & $5$ & $1/1227$ \\
+$(8,9)$   & none & none & $5$ & $5$ & $1/1227$ \\
+$(5,13)$  & $7$ & $11$ & $7$ & $7$ & $1/1225$ \\
+$(10,38)$ & $7$ & $13$ & $7$ & $7$ & $2/1225$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact modular reconnaissance.  ``None'' for the first two rows is a theorem, not
+merely a search statement.  For display consistency, the search cutoff for a first defect was
+$10^5$.}
+\end{table}
+
+The pairs $(4,27)$ and $(8,9)$ separately satisfy the first two ray identities globally:
+$4=2^2$, $27=3^3$ and $8=2^3$, $9=3^2$.  The diagonal ray detects the mismatch immediately,
+because $MA$ is not a common power of $6$.
+
+\subsection{A Kummer density experiment}
+
+For $(B,C,\ell)=(2,5,3)$, the Kummer set is
+\[
+ p\equiv1\pmod3,
+ \qquad 2^{(p-1)/3}\equiv1\pmod p,
+ \qquad 5^{(p-1)/3}\not\equiv1\pmod p.
+\]
+Its predicted density is $1/9=0.111111\ldots$.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$X$ & $\#\Sigma_3(2,5)$ & good primes & count ratio &
+$X^{-1}\sum_{p\le X,\,p\in\Sigma}\log p$ \\
+\midrule
+$10^3$ & $17$ & $166$ & $0.102409638554$ & $0.095640842040$ \\
+$10^4$ & $139$ & $1227$ & $0.113284433578$ & $0.112447409348$ \\
+$10^5$ & $1062$ & $9590$ & $0.110740354536$ & $0.110329538804$ \\
+$10^6$ & $8701$ & $78496$ & $0.110846412556$ & $0.110666164775$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact prime and residue decisions; decimal ratios are display-only.  Both columns
+approach the Chebotarev prediction $1/9$.}
+\end{table}
+
+The exact script has SHA-256 digest
+\[
+ \texttt{bf14ae4af00e825968c3bddde08ca9ee073a9b12c734fb88ac8c3c4e49215f33}.
+\]
+Its captured output has digest
+\[
+ \texttt{aedb75029c41695873d3a2203ca0a5b38d31997c885a186ddb0ecc66a09ab31b}.
+\]
+The complete source appears in \cref{app:code}.
+
+\section{Why this still stops short}
+\label{sec:barrier}
+
+\subsection{The missing real-to-local bridge}
+
+The new local-global theorem says that it would be enough to prove, from the real equalities
+$M=2^x$ and $A=3^x$, that almost every congruence relation among $2$ and $3$ is respected by
+$M$ and $A$.  There is no known mechanism for doing this.  The identity
+\[
+ \log M\,\log3=\log A\,\log2
+\]
+is archimedean.  Reducing it modulo $p$ is meaningless, and replacing real logarithms by
+$p$-adic logarithms changes the kernel.  The attached report's Iwasawa-logarithm analysis
+makes this mismatch explicit at the structural primes.
+
+Kummer--Chebotarev makes the obstacle sharper: if a nonintegral candidate exists, the desired
+local synchronization does not merely fail at sporadic primes.  It fails on positive-density,
+explicit Frobenius sets.  A successful proof must therefore force an almost-everywhere local
+property that is strongly incompatible with ordinary multiplicative independence.
+
+\subsection{Why denominator divisibility is not yet a contradiction}
+
+The collision lemma proves that defect primes divide interpolation denominators.  But a large
+denominator is compatible with a rational polynomial of large height.  The full geometric and
+square-grid interpolation matrices already have very large Vandermonde denominators.  The new
+Kummer divisor is a structured part of that denominator, not an upper bound for the remaining
+part and not a small algebraic integer.
+
+A product-formula contradiction would require one of the following additional inputs:
+\begin{enumerate}[label=(\alph*)]
+\item a primitive numerator or resultant whose archimedean height is
+$o(\exp(N/\ell))$ while the Kummer divisor survives;
+\item cancellation that removes the generic node denominator but preserves the defect-prime
+part;
+\item a low-degree auxiliary polynomial whose value class cannot absorb the positive-density
+Frobenius divisor; or
+\item a relation-radius theorem that detects many defect primes in an exponent box much
+smaller than $p$.
+\end{enumerate}
+None is presently proved.
+
+\subsection{A geometry-of-numbers attempt and its scale failure}
+
+One might try to choose a short relation $(r,s)\in\Rel_p(2,3)$ for which
+$|r\log2+s\log3|$ is very small.  A lattice rectangle argument can trade coordinate size
+against the real linear form, but only polynomially in the lattice index.  To turn
+\[
+ M^rA^s=(2^r3^s)^x
+\]
+into an equality of rationals by archimedean smallness, one needs an error exponentially small
+in $|r|+|s|$, because clearing negative exponents introduces denominators of size roughly
+$M^{|r|}A^{|s|}$.  Polynomial lattice approximation cannot reach that scale.  This recovers,
+in relation-kernel language, the shrinking-target and normalization-tax barriers already
+found by other routes in the attached report.
+
+\subsection{Why positive density alone is insufficient}
+
+Positive density gives
+$\sum_{p\le X,p\in\Sigma}\log p\asymp X$, but a determinant built from all exponents up to
+$N$ can have archimedean height of order $\exp(cN^2)$ or worse.  The Kummer product captured by
+$N$ has logarithm only $\asymp N$.  To win, one must either compress the archimedean object to
+linear logarithmic height or amplify each Frobenius defect beyond one squarefree prime factor.
+This is a quantitative formulation of the next barrier.
+
+\section{A prioritized research program}
+\label{sec:program}
+
+\subsection{Target I: short defect relations}
+
+\begin{problem}[Short-defect problem \statusP]
+For a hypothetical nonintegral candidate $(M,A)$, prove that there are infinitely many, or a
+positive-density set of, primes $p$ for which
+\[
+ \lambda_p(M,A)\le p^{1/2-\eta}
+\]
+for some fixed $\eta>0$.  A polylogarithmic bound would be substantially stronger.
+\end{problem}
+
+A theorem of this kind would move defect-prime divisibility into much smaller square-grid
+interpolants, where the archimedean height might be competitive.  It asks for more than a
+short relation in $\Rel_p(2,3)$: the relation must lie outside $\Rel_p(M,A)$.
+
+\subsection{Target II: primitive denominator extraction}
+
+\begin{problem}[Frobenius-stable primitive denominator \statusP]
+Construct from the data
+$2^a3^b\mapsto M^aA^b$ an algebraic integer or primitive resultant $R_N$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item every Kummer defect prime $p\le cN$ divides $R_N$;
+\item the generic Vandermonde denominator cancels from $R_N$; and
+\item $\log|R_N|=o(N)$ at the distinguished archimedean embedding.
+\end{enumerate}
+\end{problem}
+
+The attached report's boundary-dilation resultants are the closest existing objects, but their
+known heights dominate their local divisibility.  The Kummer condition suggests selecting
+residuals by power-residue symbols rather than only by the structural primes $2$ and $3$.
+
+\subsection{Target III: character-filtered interpolation}
+
+For a fixed $\ell$, the indicator that $B$ is an $\ell$th power and $C$ is not can be written
+using order-$\ell$ multiplicative characters at primes $p\equiv1\pmod\ell$.  This suggests a
+character-filtered determinant or resultant whose local initial form vanishes on the
+$B$-residue component but not on the $C$ component.  The exact Frobenius density gives the
+expected supply of primes.  The unresolved point is global coherence: characters live in
+different residue fields and cannot simply be added across primes.
+
+\subsection{Target IV: support theorem with quantitative certificates}
+
+The qualitative support theorem says that if $C$ is not a power of $B$, some prime detects the
+failure.  The Kummer proof in \cref{sec:defects} provides a positive-density certificate after
+choosing $\ell$.  An effective Chebotarev theorem, conditionally on GRH or unconditionally with
+weaker bounds, can bound the least such prime in terms of the discriminant of
+$\Q(\zeta_\ell,B^{1/\ell},C^{1/\ell})$.  For the \AEname{} problem this does not bound the unknown
+integers $M,A$, but it can make every finite search branch fully explicit once a size range is
+fixed.
+
+\subsection{Target V: combine the three rays in one Kummer extension}
+
+A joint Kummer extension generated by roots of
+$2,3,6,M,A,MA$ may contain Frobenius classes that impose simultaneous defects or prescribed
+patterns across the three rays.  Dependencies among these rational numbers determine the
+actual Kummer rank.  Computing the exact conjugacy-stable class sizes could yield stronger
+multi-ray denominator divisors than the union of three independent one-ray arguments.  This is
+a finite linear-algebra problem over $\F_\ell$ once the prime-exponent vectors of $M,A$ are
+known, but those vectors are unknown in the conjecture.
+
+\section{Lean formalization blueprint}
+\label{sec:lean}
+
+The rival claim reportedly emphasizes Lean.  The present route naturally separates into a
+large elementary finite component and three classical black-box theorems.
+
+\subsection{Elementary modules}
+
+The following units should be formalizable directly with existing finite-group and polynomial
+infrastructure.
+
+\begin{enumerate}[label=\texttt{K\arabic*.},leftmargin=1.45cm]
+\item \texttt{FiniteRelationKernel}: define the homomorphism
+$\Z\times\Z\to\F_p^\times$ and its kernel.
+\item \texttt{SynchronizedExponent}: prove \cref{thm:local-sync} using cyclicity of
+$\F_p^\times$ and the universal property of quotient groups.
+\item \texttt{AxisDiagonalSupport}: derive the three order-divisibility shadows.
+\item \texttt{CollisionDenominator}: formalize polynomial difference divisibility and
+\cref{thm:collision-valuation} in a discrete valuation setting.
+\item \texttt{GeometricRayDenominator}: prove
+$d_n(B,C)\mid\raydelta_N(B,C)$ without constructing Lagrange coefficients.
+\item \texttt{BoxDefect}: formalize the positive/negative-part translation of a relation
+vector and \cref{thm:box-detects}.
+\item \texttt{ExactRecon}: optionally verify the finite tables by reflection or native
+decision procedures.
+\end{enumerate}
+
+A schematic theorem signature for the central finite lemma is:
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,frame=single,backgroundcolor=\color{codegray}]
+theorem relKernel_le_iff_exists_syncExponent
+    (p : Nat) [Fact p.Prime]
+    (M A : ZMod p) (hgood : 2 * 3 * M * A != 0) :
+    relKernel (2 : ZMod p) 3 <= relKernel M A <->
+      Exists e : ZMod (orderOfSubgroup (2 : ZMod p) 3),
+        M = 2 ^ e.val /\ A = 3 ^ e.val
+\end{lstlisting}
+
+The exact encoding will depend on whether exponent vectors are represented in $\Z^2$, a free
+abelian group, or a finitely supported function type.
+
+\subsection{Classical theorem interfaces}
+
+Three inputs should be isolated as explicit axiomatized interfaces until independently
+formalized:
+
+\begin{enumerate}[label=\texttt{C\arabic*.},leftmargin=1.45cm]
+\item the Corrales--Rodrig\'a\~nez--Schoof support theorem for $\Q^\times$;
+\item Kummer degree and Chebotarev density for the extension in \eqref{eq:kummer-field};
+\item the Bugeaud--Corvaja--Zannier subexponential gcd theorem.
+\end{enumerate}
+
+Everything after these interfaces is short.  In particular, the global three-ray theorem is
+just three applications of the support interface plus unique factorization, and the secant
+rate is one line after the gcd interface.
+
+\subsection{Formalization order}
+
+The most efficient order is K4, K5, K1, K2, K3, K6, followed by the global wrappers.  This
+produces useful denominator lemmas even before the deep number-theoretic interfaces are
+available.  Every theorem should retain the status distinction between a kernel-checked
+finite statement and a deduction from a classical theorem imported as a hypothesis.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+This continuation does not claim a proof of the \AEname{} conjecture.  It does produce a new,
+coherent theorem package that is both mathematically exact and sharply connected to the final
+obstruction.
+
+The main structural advance is the congruence-kernel reformulation:
+\[
+ x\in\Z
+ \quad\Longleftrightarrow\quad
+ \text{synchronized local exponents exist for almost every }p
+\]
+for every fixed integral-output pair $(2^x,3^x)$.  The global implication is a clean
+application of the support problem, while the local equivalence is elementary finite-group
+algebra.
+
+The main quantitative advance is the Kummer defect theorem.  Multiplicative independence does
+not merely create infinitely many bad primes; it creates a Frobenius set of explicit positive
+density $1/\ell^2$.  A hypothetical counterexample therefore has positive-density local
+failures on all three natural rays.  These failures inject into interpolation denominators
+through a general collision-valuation inequality, yielding controlled squarefree divisors and
+maximal secant-denominator escape.
+
+The remaining problem is now stated in a more rigid form.  One must convert the real equality
+of logarithmic slopes into either almost-everywhere finite-field synchronization or an
+archimedean object too small to absorb the positive-density defect-prime divisor.  The present
+results identify the exact local data such an object must preserve, the scale at which current
+box interpolation detects it, and the quantitative improvements needed for a contradiction.
+
+\appendix
+\section{Exact reconnaissance source}
+\label{app:code}
+
+\begin{lstlisting}[style=pythonstyle]
+#!/usr/bin/env python3
+"""Exact reconnaissance for congruence-kernel defect primes.
+
+All arithmetic decisions use Python integers and pow(..., mod). No floating-point
+value enters a primality, residue, order, or synchronization decision.
+"""
+from __future__ import annotations
+
+from math import gcd, isqrt, log
+
+
+def primes_upto(n: int) -> list[int]:
+    sieve = bytearray(b"\x01") * (n + 1)
+    sieve[:2] = b"\x00\x00"
+    for q in range(2, isqrt(n) + 1):
+        if sieve[q]:
+            sieve[q*q:n+1:q] = b"\x00" * (((n - q*q) // q) + 1)
+    return [q for q in range(2, n + 1) if sieve[q]]
+
+
+def factor(n: int) -> list[int]:
+    ans: list[int] = []
+    q = 2
+    while q*q <= n:
+        if n % q == 0:
+            ans.append(q)
+            while n % q == 0:
+                n //= q
+        q += 1 if q == 2 else 2
+    if n > 1:
+        ans.append(n)
+    return ans
+
+
+def order_mod(a: int, p: int) -> int:
+    assert gcd(a, p) == 1
+    d = p - 1
+    for q in factor(p - 1):
+        while d % q == 0 and pow(a, d // q, p) == 1:
+            d //= q
+    return d
+
+
+def lcm(a: int, b: int) -> int:
+    return a // gcd(a, b) * b
+
+
+def synchronized_exponent(M: int, A: int, p: int) -> int | None:
+    """Return e modulo |<2,3>| with 2^e=M and 3^e=A mod p, if one exists."""
+    if (6 * M * A) % p == 0:
+        return None
+    h = lcm(order_mod(2, p), order_mod(3, p))
+    for e in range(h):
+        if pow(2, e, p) == M % p and pow(3, e, p) == A % p:
+            return e
+    return None
+
+
+def first_ray_defect(B: int, C: int, primes: list[int]):
+    for p in primes:
+        if (B * C) % p == 0:
+            continue
+        d = order_mod(B, p)
+        if pow(C, d, p) != 1:
+            return p, d
+    return None
+
+
+def pair_table(limit_first: int = 100_000, limit_count: int = 10_000) -> None:
+    pfirst = primes_upto(limit_first)
+    pairs = [(4, 9), (8, 27), (4, 27), (8, 9), (5, 13), (10, 38)]
+    print("PAIR TABLE")
+    for M, A in pairs:
+        d2 = first_ray_defect(2, M, pfirst)
+        d3 = first_ray_defect(3, A, pfirst)
+        d6 = first_ray_defect(6, M*A, pfirst)
+        first_full = None
+        sync = good = 0
+        for p in pfirst:
+            if (6*M*A) % p == 0:
+                continue
+            if first_full is None and synchronized_exponent(M, A, p) is None:
+                first_full = p
+            if p <= limit_count:
+                good += 1
+                if synchronized_exponent(M, A, p) is not None:
+                    sync += 1
+        print(M, A, d2, d3, d6, first_full, f"{sync}/{good}")
+
+
+def kummer_table(B: int = 2, C: int = 5, ell: int = 3) -> None:
+    cutoffs = [10**3, 10**4, 10**5, 10**6]
+    primes = primes_upto(cutoffs[-1])
+    print("KUMMER TABLE", B, C, ell)
+    for X in cutoffs:
+        good = count = 0
+        theta_good = theta_s = 0.0
+        for p in primes:
+            if p > X:
+                break
+            if (B*C) % p == 0:
+                continue
+            good += 1
+            theta_good += log(p)
+            if (p % ell == 1 and
+                pow(B, (p-1)//ell, p) == 1 and
+                pow(C, (p-1)//ell, p) != 1):
+                count += 1
+                theta_s += log(p)
+        print(X, count, good, count/good, theta_s/X, theta_s/theta_good)
+
+
+if __name__ == "__main__":
+    pair_table()
+    kummer_table()
+\end{lstlisting}
+
+\section{Proof-dependency ledger}
+\label{app:ledger}
+
+\begin{longtable}{p{0.31\textwidth}p{0.18\textwidth}p{0.42\textwidth}}
+\toprule
+Statement & Status & Dependency \\
+\midrule
+\endhead
+Local synchronized-exponent criterion & \statusE & Cyclicity of $\F_p^\times$ and quotient
+factorization. \\
+Three-ray global rigidity & \statusC & Three applications of the 1997 support theorem plus
+unique factorization. \\
+Infinite defect sets & \statusC & Contrapositive of the support theorem. \\
+Kummer independence & \statusE{} / classical & Valuation minor; Capelli irreducibility for
+$X^\ell-r$; degree coprimality with $\Q(\zeta_\ell)$. \\
+Density $1/\ell^2$ & \statusC & Kummer Galois group and Chebotarev density. \\
+Defect order inequality & \statusE & Cyclic-group calculation of $\ell$-adic order. \\
+Collision-valuation lemma & \statusE & $x-y\mid P(x)-P(y)$ in $\Z[X]$. \\
+Secant divisibility & \statusE & Collision-valuation lemma. \\
+Kummer squarefree divisor & \statusC & Chebotarev prime number theorem plus secant
+divisibility. \\
+Box denominator detection & \statusE & Translation of signed exponent vectors to two grid
+points. \\
+Secant-denominator limit & \statusC & Bugeaud--Corvaja--Zannier gcd theorem. \\
+Finite tables & \statusD & Exact Python integer arithmetic; source and output digests stated. \\
+Research targets & \statusP & No theorem asserted. \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{UnifiedReport}
+\emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial Results,
+Exact Conditional Structure, Determinant Methods, and the Remaining Barrier}, unified report
+in the ProveIt corpus, August 21, 2026; source supplied with the present task.
+
+\bibitem{AlaogluErdos1944}
+L. Alaoglu and P. Erd\H{o}s,
+On highly composite and similar numbers,
+\emph{Transactions of the American Mathematical Society} \textbf{56} (1944), 448--469.
+
+\bibitem{CorralesSchoof1997}
+C. Corrales-Rodrig\'a\~nez and R. Schoof,
+The support problem and its elliptic analogue,
+\emph{Journal of Number Theory} \textbf{64} (1997), 276--290,
+\href{https://doi.org/10.1006/jnth.1997.2114}{doi:10.1006/jnth.1997.2114}.
+
+\bibitem{BCZ2003}
+Y. Bugeaud, P. Corvaja, and U. Zannier,
+An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$,
+\emph{Mathematische Zeitschrift} \textbf{243} (2003), 79--84,
+\href{https://doi.org/10.1007/s00209-002-0449-z}{doi:10.1007/s00209-002-0449-z}.
+
+\bibitem{Perucca2009}
+A. Perucca,
+The multilinear support problem for products of abelian varieties and tori,
+\emph{International Mathematics Research Notices} (2010),
+arXiv:\href{https://arxiv.org/abs/0903.0817}{0903.0817}.
+
+\bibitem{Sgobba2023}
+P. Sgobba,
+Divisibility conditions on the order of the reductions of algebraic numbers,
+\emph{Mathematics of Computation} \textbf{92} (2023), 2281--2305,
+arXiv:\href{https://arxiv.org/abs/2110.08911}{2110.08911}.
+
+\bibitem{SerreChebotarev}
+J.-P. Serre,
+\emph{Lectures on $N_X(p)$},
+A K Peters/CRC Press, 2012.
+
+\bibitem{Gao2026}
+S. Gao,
+Counterexamples to the Jacobian conjecture in dimensions greater than two,
+arXiv:\href{https://arxiv.org/abs/2608.00222}{2608.00222}, 2026.
+
+\bibitem{MengYang2026}
+G. Meng and L. Yang,
+A five-variable counterexample to the Hessian conjecture, and the low-dimensional status of
+the Jacobian and Hessian conjectures,
+arXiv:\href{https://arxiv.org/abs/2607.22198}{2607.22198}, 2026.
+
+\bibitem{HadamardOEIS}
+OEIS Foundation,
+Sequence A007299, historical notes and August 2026 update on the twelve Hadamard orders,
+\url{https://oeis.org/A007299}, accessed August 22, 2026.
+
+\bibitem{EpochHadamard}
+Epoch AI,
+Hadamard Matrix of Order 668, solution update,
+\url{https://epoch.ai/frontiermath/open-problems/hadamard}, accessed August 22, 2026.
+
+\bibitem{EpochRank}
+Epoch AI,
+Elliptic Curves over $\Q$ of Large Rank,
+\url{https://epoch.ai/frontiermath/open-problems/elliptic-curve-rank}, accessed August 22, 2026.
+
+\end{thebibliography}
+
+\end{document}
