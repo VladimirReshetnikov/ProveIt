@@ -4,9 +4,12 @@ This project formalizes the Fabius function and the statements in Juan Arias
 de Reyna, [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
 version 3.
 
-The current phase supplies definitions and theorem statements.  The theorem
-bodies in `PaperStatements.lean` are deliberately `sorry`; proofs are the next
-phase.
+The development contains executable exact arithmetic and is now in its proof
+completion phase.  The structural evaluator proofs, moment/half-moment
+power-series bridge, normalized half-moment formula, monotonicity and strict
+positivity, support calculations, and several paper results are checked
+without `sorry`; the remaining analytic and arithmetic statements are being
+discharged incrementally.
 
 ## Design
 
@@ -15,8 +18,8 @@ The formalization separates two functions that the sources both call `F`:
 - `BoundedFabius = ℝ → Set.Icc 0 1` is the CDF-style function requested for
   this project.  `IsFabius F` says that it is zero on `(-∞,0]`, one on
   `[1,∞)`, smooth, symmetric on `[0,1]`, and satisfies the differential
-  equation on `[0,1/2]`.  The statement-only existence/uniqueness theorem
-  selects the canonical `fabius`.
+  equation on `[0,1/2]`.  The existence/uniqueness theorem selects the
+  canonical `fabius`; its construction remains on the current proof frontier.
 - `extendedFabius F : ℝ → ℝ` is the signed global extension used in the
   paper.  It is defined by the locally finite Thue--Morse translate sum in
   equation (1).  It agrees with the bounded function on `[0,1]` but can be
@@ -53,6 +56,13 @@ uses roughly `O(n^2 + n * binaryWeight(a))` rational operations for `a / 2^n`,
 rather than work proportional to the numerator itself.  The rational-input
 wrapper is the preferred front door because Lean's `ℚ` representation first
 reduces inputs such as `10/32` to `5/16`.
+
+`DyadicCorrectness.lean` proves termination, clamping, table-prefix stability,
+refinement invariance, and representation independence.  The inverse-power
+table is connected axiom-cleanly to the executable moment recurrences in
+`MomentPowerSeries.lean`.  The remaining exact evaluator step is the general
+highest-bit Taylor identity connecting the fast recursion to equation (32),
+followed by the analytic bridge from equation (32) to `fabiusReal`.
 
 ```lean
 #eval Fabius.fabiusDyadicValue 4 5
