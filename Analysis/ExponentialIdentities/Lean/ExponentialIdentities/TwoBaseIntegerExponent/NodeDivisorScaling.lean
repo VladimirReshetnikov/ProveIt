@@ -1,7 +1,7 @@
 import ExponentialIdentities.TwoBaseIntegerExponent.CrossResidualScaling
 
 /-!
-# Exact structural-prime scaling of report 14's boundary node divisors
+# Exact structural-prime scaling of structural-residual analysis's boundary node divisors
 
 The report uses the two integer node products `Π_{n,n+1}` and
 `Π_{n+1,n}`.  This module gives their exact normalizations at `3^n` and

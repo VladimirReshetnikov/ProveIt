@@ -3,7 +3,7 @@ import Mathlib.Tactic
 namespace LeanProofs.TwoBaseIntegerExponent
 
 /-!
-# Report 21: finite moment arithmetic
+# Finite moment arithmetic
 
 This module verifies the bounded algebraic core of the additive Hausdorff-moment
 continuation.  It contains the explicit rational two-atom reproduction theorem,
@@ -15,7 +15,7 @@ quadrature theorem in arbitrary finite dimension, and Muntz invisibility theorem
 remain paper arguments.
 -/
 
-namespace Report21MomentArithmetic
+namespace MomentArithmetic
 
 /-- Algebraic core of the rational two-atom quadrature theorem.  The node
 `m₂ / m₁` and both weights are positive, the node is strictly below one, and
@@ -194,6 +194,6 @@ theorem defect027_numerator_localUnits
     simpa [mul_assoc] using hmul
   · exact three_not_dvd_pow hA₂3 7 (by norm_num)
 
-end Report21MomentArithmetic
+end MomentArithmetic
 
 end LeanProofs.TwoBaseIntegerExponent

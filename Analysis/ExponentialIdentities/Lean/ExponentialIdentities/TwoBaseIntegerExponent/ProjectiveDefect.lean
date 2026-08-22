@@ -3,7 +3,7 @@ import Mathlib.Tactic
 namespace LeanProofs.TwoBaseIntegerExponent
 
 /-!
-# Report 25: the projective Padé-defect optimization
+# Projective Padé-defect optimization
 
 This module formalizes the finite real-inequality core of report 25's
 representation-independent upper bound for Kawashima's weight-two defect.
@@ -11,7 +11,7 @@ The number-field height identities and Kawashima's transcendence theorem remain
 external paper inputs.
 -/
 
-namespace Report25ProjectiveDefect
+namespace ProjectiveDefect
 
 /-- The abstract affine expression occurring in the weight-two defect after
 the analytic constants have been named. -/
@@ -92,6 +92,6 @@ theorem depth_and_efficiency_threshold
       _ = (1 + 1 / D) * a := by field_simp [ne_of_gt hD]
   exact ⟨hdepth, heff, hupper⟩
 
-end Report25ProjectiveDefect
+end ProjectiveDefect
 
 end LeanProofs.TwoBaseIntegerExponent

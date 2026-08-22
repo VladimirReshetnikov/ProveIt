@@ -1,7 +1,7 @@
 import Mathlib.Tactic
 
 /-!
-# Carry-path algebra from continuation report 26
+# Carry-path algebra from carry-language analysis
 
 This module kernel-checks the finite algebraic core of report 26's new carry-language
 construction.  A word consists of exponent moves `(a,b)`.  Starting from the sum of all
@@ -20,7 +20,7 @@ the associated *multisets* are deliberately left at paper level.
 -/
 
 namespace LeanProofs.TwoBaseIntegerExponent
-namespace Report26CarryPath
+namespace CarryPath
 
 /-- An exponent-lattice move. -/
 abbrev Move := ℕ × ℕ
@@ -151,5 +151,5 @@ theorem word_eq_of_endpoint_eq_of_suffixVertices_eq
           subst v'
           rfl
 
-end Report26CarryPath
+end CarryPath
 end LeanProofs.TwoBaseIntegerExponent

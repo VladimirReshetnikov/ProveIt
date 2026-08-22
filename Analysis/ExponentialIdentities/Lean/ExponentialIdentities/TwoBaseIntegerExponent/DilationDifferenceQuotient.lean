@@ -6,8 +6,8 @@ import Mathlib.Data.ZMod.Basic
 
 For an integer polynomial `P` and an integer dilation `c`, the difference
 `P(cX) - P(X)` is divisible in `ℤ[X]` by `(c - 1)X`.  The explicit integral quotient
-defined here is the finite algebraic hinge used by independent report 14 in its dyadic
-boundary-resultant calculation.
+defined here is the finite algebraic hinge used in the dyadic boundary-resultant calculation
+of the structural-residual analysis.
 
 At `c = 3`, reducing this quotient modulo two gives the formal derivative of `P`.  This
 module proves only that exact finite identity; the report's subsequent `2`-adic root and

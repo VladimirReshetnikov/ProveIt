@@ -1,7 +1,7 @@
 import Mathlib.Tactic
 
 /-!
-# Rank geometry from continuation report 22
+# Rank geometry from rank-geometry analysis
 
 This module kernel-checks the finite algebra behind the genuinely new part of report 22.
 It deliberately does not formalize Baker's theorem or the remaining transcendence statement.
@@ -27,7 +27,7 @@ condition is exactly what makes this rational column operation invertible.
 -/
 
 namespace LeanProofs.TwoBaseIntegerExponent
-namespace Report22RankGeometry
+namespace RankGeometry
 
 open scoped Matrix
 
@@ -203,5 +203,5 @@ theorem symmetric_outerProduct_normalForm
   simp only [Matrix.vecMulVec_apply]
   ring
 
-end Report22RankGeometry
+end RankGeometry
 end LeanProofs.TwoBaseIntegerExponent

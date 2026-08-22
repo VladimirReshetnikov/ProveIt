@@ -5,6 +5,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.TowerRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.SymmetricTowerConstants
 import ExponentialIdentities.TwoBaseIntegerExponent.PrimeLogSpaceOperator
 import ExponentialIdentities.TwoBaseIntegerExponent.ArbitraryNodeRepulsion
+import ExponentialIdentities.TwoBaseIntegerExponent.ClearedDividedDifference
 import ExponentialIdentities.TwoBaseIntegerExponent.SuperfactorialDeterminant
 import ExponentialIdentities.TwoBaseIntegerExponent.SemigroupGapBound
 import ExponentialIdentities.TwoBaseIntegerExponent.OrderedChamberPositivity
@@ -26,6 +27,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.TropicalInitialForm
 import ExponentialIdentities.TwoBaseIntegerExponent.BlockFiberFactorization
 import ExponentialIdentities.TwoBaseIntegerExponent.BlockVandermondeValuationBudget
 import ExponentialIdentities.TwoBaseIntegerExponent.AllLayerUnitBasis
+import ExponentialIdentities.TwoBaseIntegerExponent.FinitePlaceShortRelationCore
 import ExponentialIdentities.TwoBaseIntegerExponent.UnitOrderingGain
 import ExponentialIdentities.TwoBaseIntegerExponent.TropicalBlockApplication
 import ExponentialIdentities.TwoBaseIntegerExponent.BeattyTropicalFiber
@@ -50,8 +52,8 @@ import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDilationDefect
 import ExponentialIdentities.TwoBaseIntegerExponent.DilationDifferenceQuotient
 import ExponentialIdentities.TwoBaseIntegerExponent.CrossResidualScaling
 import ExponentialIdentities.TwoBaseIntegerExponent.ResultantScaling
-import ExponentialIdentities.TwoBaseIntegerExponent.Report14NodeDivisorScaling
-import ExponentialIdentities.TwoBaseIntegerExponent.Report14CrossResultantBridge
+import ExponentialIdentities.TwoBaseIntegerExponent.NodeDivisorScaling
+import ExponentialIdentities.TwoBaseIntegerExponent.CrossResultantBridge
 import ExponentialIdentities.TwoBaseIntegerExponent.DenominatorCancellationCounterexample
 import ExponentialIdentities.TwoBaseIntegerExponent.GridTransformNoGo
 import ExponentialIdentities.TwoBaseIntegerExponent.CompoundEndpointRate
@@ -62,18 +64,27 @@ import ExponentialIdentities.TwoBaseIntegerExponent.GeometricVandermondeSmith
 import ExponentialIdentities.TwoBaseIntegerExponent.SmithProfileCore
 import ExponentialIdentities.TwoBaseIntegerExponent.ContentNormalizedProfileFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.DeepSubresultantCost
-import ExponentialIdentities.TwoBaseIntegerExponent.Report21MomentArithmetic
-import ExponentialIdentities.TwoBaseIntegerExponent.Report22RankGeometry
+import ExponentialIdentities.TwoBaseIntegerExponent.MomentArithmetic
+import ExponentialIdentities.TwoBaseIntegerExponent.RankGeometry
 import ExponentialIdentities.TwoBaseIntegerExponent.UnimodularGapCollision
 import ExponentialIdentities.TwoBaseIntegerExponent.OrbitHeightEntropy
-import ExponentialIdentities.TwoBaseIntegerExponent.Report25ProjectiveDefect
-import ExponentialIdentities.TwoBaseIntegerExponent.Report26CarryPath
+import ExponentialIdentities.TwoBaseIntegerExponent.ProjectiveDefect
+import ExponentialIdentities.TwoBaseIntegerExponent.CarryPath
 import ExponentialIdentities.TwoBaseIntegerExponent.DfiniteExponentCore
 import ExponentialIdentities.TwoBaseIntegerExponent.LambertCocycleFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.PositiveCoefficientClosure
+import ExponentialIdentities.TwoBaseIntegerExponent.NewtonCollisionCore
+import ExponentialIdentities.TwoBaseIntegerExponent.RankOneNewtonKummer
+import ExponentialIdentities.TwoBaseIntegerExponent.DyadicPrivateSupport
+import ExponentialIdentities.TwoBaseIntegerExponent.CatalanTangentCore
+import ExponentialIdentities.TwoBaseIntegerExponent.MixedRadixCarryFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.CaptureMultiplier
+import ExponentialIdentities.TwoBaseIntegerExponent.RadixShadow
 import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
 import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianGeneratingSeries
+import ExponentialIdentities.TwoBaseIntegerExponent.MatchedGapAmplification
 import ExponentialIdentities.TwoBaseIntegerExponent.PolynomialApproximationTax
 import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveLogMeanBounds
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedMahlerFinite
@@ -94,6 +105,17 @@ and `card_le_ten_thousand_log_sq`.
 -/
 
 namespace LeanProofs.TwoBaseIntegerExponent
+
+-- LCM-cleared barycentric integer functional and its cubic specialization
+#print axioms ClearedDividedDifference.signedDenominator_dvd_lcm
+#print axioms ClearedDividedDifference.denominatorLCM_dvd
+#print axioms ClearedDividedDifference.clearedCoefficient_mul_denominator
+#print axioms ClearedDividedDifference.cleared_moment_eq_zero
+#print axioms ClearedDividedDifference.cast_clearedFunctional_eq_lcm_mul_dividedDiff
+#print axioms ClearedDividedDifference.lcm_mul_dividedDiff_mem_intCast
+#print axioms ClearedDividedDifference.fourNodes_coefficients
+#print axioms ClearedDividedDifference.fourNodes_certificate
+#print axioms ClearedDividedDifference.fourNodes_moment_eq_zero
 
 -- Generic arbitrary-pair algebraic-base spectrum (report 16)
 #print axioms LeanProofs.AlgebraicBaseSpectrum.tripleMonomial_injective_iff
@@ -253,6 +275,9 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms prod_columnDivisor_dvd_det
 #print axioms pow_sum_columnWeight_dvd_det
 #print axioms pow_sum_columnWeight_dvd_det_of_unimodular_mul
+#print axioms pow_sum_rowWeight_dvd_det
+#print axioms pow_mul_card_dvd_det_of_rows_divisible
+#print axioms pow_mul_card_dvd_det_of_eliminatedRows
 #print axioms pow_sum_dvd_det_vandermonde_of_monicBasis
 #print axioms two_pow_sum_degree_dvd_det_vandermonde_of_odd
 #print axioms three_pow_sum_halfDegree_dvd_det_vandermonde_of_unit
@@ -404,7 +429,7 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms squareBoundaryExpressions_natDegree_le
 #print axioms boundaryDilation_commutator
 
--- Integral dilation-difference quotient and dyadic derivative reduction (report 14)
+-- Integral dilation-difference quotient and dyadic derivative reduction (structural-residual analysis)
 #print axioms dilation_sub_eq_C_mul_X_mul_integralDilationQuotient
 #print axioms dyadic_dilation_sub_factorization
 #print axioms integralDilationQuotient_three_map_zmod_two
@@ -422,7 +447,7 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms report14DyadicDivisorTriadicNormalization_constantCoeff_not_three_dvd
 #print axioms report14_actual_divisors_cross_normalizations
 #print axioms report14_simultaneous_favorable_cross_resultant
-#print axioms report14_actual_divisors_favorable_cross_resultant
+#print axioms actual_divisors_favorable_cross_resultant
 #print axioms DenominatorCancellationExample.cross_resultant_eq
 #print axioms DenominatorCancellationExample.delta_coprime_cross_resultant
 #print axioms DenominatorCancellationExample.Q_coeff_three_den
@@ -445,21 +470,21 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms crossCompoundEndpointRate_le_neg_log_two
 
 -- Reports 21--23: moment arithmetic, rank geometry, and unimodular gap collisions
-#print axioms Report21MomentArithmetic.rational_twoAtom_reproduction
-#print axioms Report21MomentArithmetic.firstHankel_commonDenominator
-#print axioms Report21MomentArithmetic.defect017_commonDenominator
-#print axioms Report21MomentArithmetic.defect127_commonDenominator
-#print axioms Report21MomentArithmetic.defect027_commonDenominator
-#print axioms Report21MomentArithmetic.firstHankel_numerator_localUnits
-#print axioms Report21MomentArithmetic.defect017_numerator_localUnits
-#print axioms Report21MomentArithmetic.defect127_numerator_localUnits
-#print axioms Report21MomentArithmetic.defect027_numerator_localUnits
-#print axioms Report22RankGeometry.dotProduct_hyperbolicGram_mulVec
-#print axioms Report22RankGeometry.rankThreeConicMatrix_det
-#print axioms Report22RankGeometry.symmetrizingMatrix_det
-#print axioms Report22RankGeometry.right_mul_symmetrizingMatrix_isSymm
-#print axioms Report22RankGeometry.exists_isUnit_rightMultiplier_isSymm
-#print axioms Report22RankGeometry.symmetric_outerProduct_normalForm
+#print axioms MomentArithmetic.rational_twoAtom_reproduction
+#print axioms MomentArithmetic.firstHankel_commonDenominator
+#print axioms MomentArithmetic.defect017_commonDenominator
+#print axioms MomentArithmetic.defect127_commonDenominator
+#print axioms MomentArithmetic.defect027_commonDenominator
+#print axioms MomentArithmetic.firstHankel_numerator_localUnits
+#print axioms MomentArithmetic.defect017_numerator_localUnits
+#print axioms MomentArithmetic.defect127_numerator_localUnits
+#print axioms MomentArithmetic.defect027_numerator_localUnits
+#print axioms RankGeometry.dotProduct_hyperbolicGram_mulVec
+#print axioms RankGeometry.rankThreeConicMatrix_det
+#print axioms RankGeometry.symmetrizingMatrix_det
+#print axioms RankGeometry.right_mul_symmetrizingMatrix_isSymm
+#print axioms RankGeometry.exists_isUnit_rightMultiplier_isSymm
+#print axioms RankGeometry.symmetric_outerProduct_normalForm
 #print axioms UnimodularGapCollision.pow_eq_one_of_det_forward
 #print axioms UnimodularGapCollision.pow_eq_one_of_det_reverse
 #print axioms UnimodularGapCollision.eq_one_of_det_forward_one
@@ -475,14 +500,14 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms OrbitHeightEntropy.exists_index_card_sub_one_le
 #print axioms OrbitHeightEntropy.exists_simultaneous_exponential_denominator_lower_bound
 #print axioms OrbitHeightEntropy.exists_report24_denominator_lower_bound
-#print axioms Report25ProjectiveDefect.piecewise_projective_bound
-#print axioms Report25ProjectiveDefect.padeDefect_le_projective
-#print axioms Report25ProjectiveDefect.depth_and_efficiency_threshold
-#print axioms Report26CarryPath.carryRepresentation_sum
-#print axioms Report26CarryPath.carryRepresentation_length
-#print axioms Report26CarryPath.carryConstruction_correct
-#print axioms Report26CarryPath.endpoint_tail_degree_lt
-#print axioms Report26CarryPath.word_eq_of_endpoint_eq_of_suffixVertices_eq
+#print axioms ProjectiveDefect.piecewise_projective_bound
+#print axioms ProjectiveDefect.padeDefect_le_projective
+#print axioms ProjectiveDefect.depth_and_efficiency_threshold
+#print axioms CarryPath.carryRepresentation_sum
+#print axioms CarryPath.carryRepresentation_length
+#print axioms CarryPath.carryConstruction_correct
+#print axioms CarryPath.endpoint_tail_degree_lt
+#print axioms CarryPath.word_eq_of_endpoint_eq_of_suffixVertices_eq
 #print axioms DfiniteExponentCore.coeff_exponentRelationPolynomial_order
 #print axioms DfiniteExponentCore.exponentRelationPolynomial_ne_zero
 
@@ -495,6 +520,58 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms secondDilation_lambertRationalCocycle_eq
 #print axioms mixedDoubleDilation_formalLambertSeries_universal
 #print axioms mixedDoubleDilation_two_three_universal
+
+-- Finite positive-coefficient covariance closure (post-report closure audit)
+#print axioms PositiveCoefficientClosure.two_mul_covariance_identity
+#print axioms PositiveCoefficientClosure.pow_two_three_pair_nonneg
+#print axioms PositiveCoefficientClosure.pow_two_three_pair_pos
+#print axioms PositiveCoefficientClosure.finite_nonnegative_rankOne_atMostOne
+#print axioms PositiveCoefficientClosure.finite_nonnegative_rankOne_eq_single
+
+-- Newton append, collision, and translated-table algebra
+#print axioms NewtonCollisionCore.appendPolynomial_eval_new
+#print axioms NewtonCollisionCore.appendPolynomial_eval_old
+#print axioms NewtonCollisionCore.residual_ne_zero_of_node_collision
+#print axioms NewtonCollisionCore.value_eq_of_node_collision_of_residual_eq_zero
+#print axioms NewtonCollisionCore.barycentricTop_scale
+
+-- Higher Newton--Kummer product and integral-exponent calibration
+#print axioms RankOneNewtonKummer.newtonCocycle_one
+#print axioms RankOneNewtonKummer.newtonProduct_natPower_eq_zero
+#print axioms RankOneNewtonKummer.newtonCocycle_natPower_eq_zero_of_lt
+#print axioms RankOneNewtonKummer.newtonCocycle_endpoint_eq_zero
+#print axioms RankOneNewtonKummer.newtonCocycle_natPower_eq_zero
+#print axioms RankOneNewtonKummer.calibration_two
+#print axioms RankOneNewtonKummer.calibration_three
+
+-- Private odd-prime order and level separation for dyadic cyclotomic factors
+#print axioms DyadicPrivateSupport.orderOf_eq_two_pow_succ
+#print axioms DyadicPrivateSupport.oddPrime_divisor_has_private_order
+#print axioms DyadicPrivateSupport.oddPrime_divisor_congruent_one
+#print axioms DyadicPrivateSupport.oddPrime_divisor_private
+
+-- Exact adjacent-smooth tangent and finite-residue identities
+#print axioms CatalanTangentCore.first_tangent_defect_identity
+#print axioms CatalanTangentCore.second_tangent_defect_identity
+#print axioms CatalanTangentCore.balanceVector_parametrization
+#print axioms CatalanTangentCore.tangentLattice_parametrization
+#print axioms CatalanTangentCore.fourResidues_first_relation
+#print axioms CatalanTangentCore.fourResidues_second_relation
+#print axioms CatalanTangentCore.balancedResidual_cross_identity
+
+-- Finite mixed-radix carry and cleaned-gap capture cores
+#print axioms MixedRadixCarryFinite.lowerHorizontalDigit_lt
+#print axioms MixedRadixCarryFinite.leftVerticalDigit_lt
+#print axioms MixedRadixCarryFinite.upperHorizontalDigit_lt
+#print axioms MixedRadixCarryFinite.rightVerticalDigit_lt
+#print axioms MixedRadixCarryFinite.mixedRadixPlaquette
+#print axioms CaptureMultiplier.capture_multiplier_iff_dvd
+
+-- Exact binary-to-ternary radix-shadow congruence and valuation bridge
+#print axioms RadixShadow.phi_injective
+#print axioms RadixShadow.phi_modEq_pow_iff
+#print axioms RadixShadow.three_pow_dvd_phi_sub_iff_two_pow_dvd_sub
+#print axioms RadixShadow.padicValInt_phi_sub_eq
 
 -- Exact rank-K boundary displacement for rectangular evaluation matrices
 #print axioms firstGridShiftMatrix_mul
@@ -575,6 +652,15 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms rotationDenominatorSeries_eq
 #print axioms one_sub_X_sq_mul_denominator_defect
 #print axioms rotationDenominatorSeries_sub
+
+-- Strict one-gap dyadic--triadic amplification and its finite-product form
+#print axioms strictMonoOn_unitRpowGap
+#print axioms unitRpowGap_two_lt
+#print axioms two_mul_rpow_lt_one_add_rpow_sub_one
+#print axioms matched_one_gap_bound
+#print axioms phi_gt_logb_three_two
+#print axioms prod_matched_gap_bound
+#print axioms prod_matched_one_gap_bound
 
 -- Exact first Fermat-quotient determinant layer
 #print axioms prime_dvd_pow_sub_one

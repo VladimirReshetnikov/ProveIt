@@ -8,8 +8,8 @@ namespace LeanProofs.TwoBaseIntegerExponent
 The dyadic and triadic input/output valuation-direction matrices are
 `[[1, 0], [a, c]]` and `[[0, 1], [d, b]]`.  This module proves that no one
 nonsingular change of exponent directions can make both matrices monomial
-unless the original data already lie in report 14's simultaneous favorable
-branch.
+unless the original data already lie in the simultaneous favorable branch of the
+structural-residual analysis.
 -/
 
 /-- A `2 × 2` matrix, written by entries, has exactly one nonzero entry in

@@ -1,13 +1,13 @@
 import ExponentialIdentities.TwoBaseIntegerExponent.CrossResidualScaling
 import ExponentialIdentities.TwoBaseIntegerExponent.ResultantScaling
-import ExponentialIdentities.TwoBaseIntegerExponent.Report14NodeDivisorScaling
+import ExponentialIdentities.TwoBaseIntegerExponent.NodeDivisorScaling
 import Mathlib.Data.ZMod.Basic
 
 /-!
-# Cross-resultant bridge for the simultaneous favorable branch of report 14
+# Cross-resultant bridge for the simultaneous favorable branch of structural-residual analysis
 
 This module deliberately does not identify the cross resultant below
-with either of report 14's self-dilation resultants.  It packages the genuinely
+with either of structural-residual analysis's self-dilation resultants.  It packages the genuinely
 new object `Res(F, G)` arising when both favorable structural-prime scalings are
 available for the two boundary residuals.
 -/
@@ -77,9 +77,9 @@ theorem report14_simultaneous_cross_normalizations
         hP₃ hD₂₃ hJ₃unit hFdefect
         (map_zmod_ne_zero_of_not_dvd_constantCoeff 3 J₃ hJ₃unit) hR₃map
 
-/-- The same transfer with report 14's actual node divisors substituted.  The
+/-- The same transfer with structural-residual analysis's actual node divisors substituted.  The
 exact node-divisor scalings and their unit constant coefficients are discharged
-by `Report14NodeDivisorScaling`; only the interpolant scalings and residue
+by `NodeDivisorScaling`; only the interpolant scalings and residue
 identities remain as hypotheses. -/
 theorem report14_actual_divisors_cross_normalizations
     (n e : ℕ) (M A : ℤ) (P H₂ H₃ F G : ℤ[X])
@@ -212,7 +212,7 @@ theorem report14_simultaneous_favorable_cross_resultant
 report's value `e = n(n-1)/2`, the conclusion says that the nonzero cross
 resultant has exact `2`- and `3`-adic orders `n²(n-1)/2`, encoded without any
 valuation API by the two nonzero residue quotients. -/
-theorem report14_actual_divisors_favorable_cross_resultant
+theorem actual_divisors_favorable_cross_resultant
     (n e : ℕ) (M A : ℤ) (P H₂ H₃ F G F₂ G₃ : ℤ[X])
     (u₂ : ZMod 2) (u₃ : ZMod 3)
     (hFdeg : F.natDegree = n) (hGdeg : G.natDegree = n)
