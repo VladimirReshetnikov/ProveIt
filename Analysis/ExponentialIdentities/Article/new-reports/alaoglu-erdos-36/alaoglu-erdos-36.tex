@@ -1,0 +1,1665 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{needspace}
+
+\definecolor{deepblue}{RGB}{24,75,125}
+\definecolor{deepgreen}{RGB}{16,105,65}
+\definecolor{amber}{RGB}{151,91,0}
+\definecolor{deepred}{RGB}{145,35,42}
+\definecolor{softgray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{93,101,111}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepgreen,
+  urlcolor=deepblue,
+  pdftitle={The Alaoglu--Erdos Conjecture: Rotation Discriminants, Matched-Gap Energy, and Radical Norm Compression},
+  pdfauthor={Independent continuation report},
+  pdfsubject={New exact identities and research targets for the two-base integer-exponent conjecture}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s continuation}
+\rhead{Rotation discriminants and matched gaps}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.28em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.25em,itemsep=0.28em,topsep=0.4em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Audit warning}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\fract}[1]{\left\{#1\right\}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\vpp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\thetaq}{\vartheta}
+\newcommand{\binomNtwo}{\binom{N}{2}}
+\newcommand{\binomNthree}{\binom{N}{3}}
+
+\newcommand{\statusprior}{\textcolor{deepblue}{\textbf{[imported]}}}
+\newcommand{\statusnew}{\textcolor{deepgreen}{\textbf{[new proof]}}}
+\newcommand{\statuscomp}{\textcolor{amber}{\textbf{[computation]}}}
+\newcommand{\statusopen}{\textcolor{deepred}{\textbf{[open target]}}}
+\newcommand{\statusaudit}{\textcolor{amber}{\textbf{[public-status audit]}}}
+
+\newenvironment{resultbox}
+  {\begin{center}\begin{minipage}{0.93\textwidth}\hrule\vspace{0.65em}}
+  {\vspace{0.45em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\bfseries\color{deepblue},
+  commentstyle=\itshape\color{deepgreen},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt
+}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{1.3cm}
+{\Huge\bfseries The Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.35cm}
+{\LARGE Rotation Discriminants, Matched-Gap Energy,\par}
+{\LARGE and Radical Norm Compression\par}
+\vspace{0.7cm}
+{\large An independent continuation of the supplied unified report\par}
+\vspace{1.0cm}
+\begin{minipage}{0.88\textwidth}
+\small
+\textbf{Scope.}  This document does not repeat the supplied report's twenty-seven
+continuations, its Lean inventory, or its proofs of the primitive-generator theorem.  It
+imports only the exact conditional free-monoid structure and the finite-type consequence of
+Baker's theorem, then develops a different object: the Vandermonde product of the compact
+rotation orbit.  The resulting formulas expose an exact second-order imbalance between the
+base-$2$ and base-$3$ integer gap products and a concrete cross-prime transport problem.
+
+\textbf{Trust convention.}  Every imported statement is marked \statusprior.  Every theorem
+proved here is marked \statusnew.  Numerical values are marked \statuscomp.  No Lean
+verification of the new material is claimed; a formalization blueprint is supplied.  The
+full Alaoglu--Erd\H{o}s conjecture is not claimed proved.
+\end{minipage}
+\vfill
+{\large August 22, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+Let $\thetaq=\log_2 3$.  The Alaoglu--Erd\H{o}s conjecture says that
+$2^x,3^x\in\Z$ implies $x\in\Z$.  Conditional on failure, the supplied report proves that
+there is a least nonintegral solution $\beta$ and integers
+$M=2^\beta$, $A=3^\beta$ such that every solution is $n+k\beta$.  Writing
+$r_k=\floor{k\beta}$ and $t_k=\fract{k\beta}$, the compact orbit is
+$(2^{t_k},3^{t_k})=(M^k/2^{r_k},A^k/3^{r_k})$.
+
+This continuation studies the products of all pairwise differences of that orbit.  It proves
+an exact lag-by-lag factorization into two Sudler-type factors, an exact structural-prime
+denominator formula, an integer orbit-polynomial discriminant identity, and a logarithmic
+energy limit with a closed form involving $\zeta(3)$ and $\Li_3$.  The two bases can then be
+compared pointwise.  A strictly decreasing universal function
+\[
+ \Phi(u)=\log_3(3^u-1)-\log_2(2^u-1)
+\]
+satisfies $\Phi(u)>\log_3 2$ on $(0,1)$.  Consequently every synchronized near-power gap obeys
+\[
+ |A^d-3^h|>2\,|M^d-2^h|^{\thetaq}
+ \qquad(h\in\{\floor{d\beta},\ceil{d\beta}\}),
+\]
+and the complete gap products have a universal normalized logarithmic surplus
+$\kappa N^2+o(N^2)$, where $\kappa=0.7079245703\ldots$.  In particular, after removing the
+greatest common divisor of the two complete gap products, the unmatched base-$3$ quotient is
+larger than $2^{\binom N2}$ for every $N\ge2$.  This turns the open problem into a precise
+second-order valuation-transport question.
+
+A separate algebraic calculation gives the exact norm of $E^k-3^n$ for the canonical radical
+$E^d=A/3^a$.  It proves that using all radical conjugates compresses to a single ordinary
+binomial gap and cannot, by itself, cross the required scale.  These results are substantial
+new structure, but they do not complete the conjecture.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive summary and claim ledger}
+\label{sec:summary}
+
+\subsection{Outcome}
+
+The conjecture remains open in this report.  The work below reaches a new arithmetic object
+that was not developed in the supplied unified report: the discriminant of the exact compact
+rotation orbit and the integer products obtained by clearing its denominators.  The main gain
+is not another equivalent formulation of the original four-logarithm determinant.  It is an
+exact decomposition of the ``missing cancellation'' into synchronized integer gaps and a
+universal, computable second-order surplus on the base-$3$ side.
+
+\begin{resultbox}
+\textbf{Principal new theorem.}  Assume a counterexample and let $M=2^\beta$, $A=3^\beta$ be
+its primitive output pair.  Form the complete synchronized gap products
+\[
+ \mathcal Q_{b,B}(N)=
+ \prod_{d=1}^{N-1}
+ |B^d-b^{\floor{d\beta}}|^{N-d-C_{d,N}}
+ |B^d-b^{\ceil{d\beta}}|^{C_{d,N}},
+\]
+where $C_{d,N}$ is the exact number of wraps of the length-$(N-d)$ rotation segment by
+$\fract{d\beta}$.  Then
+\[
+ \frac{\log\mathcal Q_{3,A}(N)}{\log3}
+ -\frac{\log\mathcal Q_{2,M}(N)}{\log2}
+ >\binom N2\log_3 2,
+\]
+and, more precisely, the left side divided by $N^2$ tends to
+$\kappa=0.7079245703208558\ldots$.  If
+$G_N=\gcd(\mathcal Q_{2,M}(N),\mathcal Q_{3,A}(N))$, then
+\[
+ \frac{\mathcal Q_{3,A}(N)}{G_N}>2^{\binom N2}.
+\]
+All three statements are proved in Sections~\ref{sec:amplification} and
+\ref{sec:unmatched}.  \statusnew
+\end{resultbox}
+
+The final inequality says that a hypothetical counterexample forces at least quadratic
+exponential mass in prime powers that occur in the base-$3$ gap product but not in the
+base-$2$ gap product.  In the branch $3\nmid A$, this mass is supported entirely on primes
+outside the fixed set of divisors of $3A$.  In the branch $3\mid A$, an exact cubic structural
+$3$-part can be separated, and the unresolved problem is to control the remaining second-order
+transport.
+
+\subsection{Claim ledger}
+
+\begin{center}
+\begin{tabularx}{0.98\textwidth}{>{\raggedright\arraybackslash}X p{0.16\textwidth} >{\raggedright\arraybackslash}p{0.31\textwidth}}
+\toprule
+Statement & Status & Main input \\
+\midrule
+Primitive generator $\mathrm{Sol}=\Nzero+\Nzero\beta$ and
+$M=2^\beta$, $A=3^\beta$ & \statusprior & Supplied unified report \\
+Finite-type bound $\norm{q\beta}\ge c q^{-\tau}$ & \statusprior & Baker--W\"ustholz/Matveev as imported in the supplied report \\
+Exact wrap and lag factorization of the orbit Vandermonde & \statusnew & Floor arithmetic and a two-case factorization \\
+Exact structural-prime denominator and integer numerator product & \statusnew & Unique factorization at $b=2$ or $3$ \\
+Orbit-polynomial discriminant identity & \statusnew & Discriminant of a product of integral linear forms \\
+Logarithmic-energy limit and closed form $I_b$ & \statusnew & Finite type, discrepancy, uniform integrability, an elementary series integral \\
+Pointwise matched-gap amplification & \statusnew & Monotonicity of $b^u/(b^u-1)$ in $b$ \\
+Universal surplus $\kappa N^2+o(N^2)$ & \statusnew & Energy limit plus exact integer product identity \\
+Quadratic unmatched-prime mass & \statusnew & Normalized surplus and a gcd decomposition \\
+Exact canonical-radical norm formula & \statusnew & Cyclotomic multiplicities and $X^D-Y^D$ \\
+Complete proof of Alaoglu--Erd\H{o}s & \statusopen & Requires a new cross-base valuation-transport theorem \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Scope, imported structure, and non-duplication}
+\label{sec:scope}
+
+\subsection{What is imported}
+
+We use two results from the supplied report and do not reprove them.
+
+\begin{enumerate}
+\item \statusprior{} If the conjecture is false, there is a unique least nonintegral solution
+$\beta>0$ and positive integers
+\[
+ M=2^\beta,\qquad A=3^\beta
+\]
+such that every solution is uniquely $n+k\beta$ with $n,k\in\Nzero$.  The pair is affinely
+primitive and
+\begin{equation}
+ \min\{\vpp{2}{M},\vpp{3}{A}\}=0.
+ \label{eq:primitive-depth}
+\end{equation}
+In particular $\beta$ is irrational and every $k\beta$ has nonzero fractional part.
+
+\item \statusprior{} Because $\beta=\log M/\log2$ is a ratio of logarithms of fixed algebraic
+numbers, a two-logarithm lower bound gives constants $c>0$ and $\tau>0$ with
+\begin{equation}
+ \norm{q\beta}\ge c q^{-\tau}\qquad(q\ge1),
+ \label{eq:finite-type}
+\end{equation}
+where $\norm{y}$ is distance to the nearest integer.  The constants may be very poor; only
+finiteness of $\tau$ is used.
+\end{enumerate}
+
+Set throughout
+\begin{equation}
+ \thetaq=\frac{\log3}{\log2}=\log_2 3,
+ \qquad A=M^{\thetaq}.
+ \label{eq:theta}
+\end{equation}
+
+\subsection{What is not repeated}
+
+The supplied report already treats the four-exponentials reduction, primitive odd cores,
+radical degree, exact counting, block equidistribution, arbitrary-node and semigroup
+Vandermonde determinants, $p$-adic assignment minima, exact-grid HCIZ estimates, Loewner and
+Smith-profile certificates, polynomial and Pad\'e approximation, compact $S$-integral orbits,
+Sturmian and carry languages, natural boundaries, special functions, and twenty-seven
+independent continuation reports.  Repackaging any of those arguments would violate the
+non-duplication requirement.
+
+The present object is different.  We retain the exact cyclic order of the compact orbit and
+multiply \emph{all pairwise differences}.  This creates an integer discriminant after clearing
+known denominators, and it allows the base-$2$ and base-$3$ products to be compared one gap at
+a time.
+
+\section{Public reconnaissance on the reported AI breakthroughs}
+\label{sec:recon}
+
+This section is not used in any proof.  It records what was publicly checkable on August 22,
+2026, and separates mathematical verification from attribution.
+
+\subsection{Jacobian conjecture}
+
+A public exact map in dimension three is accompanied by independent symbolic audits and Lean
+formalizations.  One convenient form is
+\[
+\begin{aligned}
+ F_1&=(1+xy)^3z+y^2(1+xy)(4+3xy),\\
+ F_2&=y+3x(1+xy)^2z+3xy^2(4+3xy),\\
+ F_3&=2x-3x^2y-x^3z,
+\end{aligned}
+\]
+with $\det JF=-2$ and an explicit three-point fiber.  The public provenance records credit
+Fable for work on the construction; the finite identities can be checked independently.
+This refutes the standard conjecture in dimensions at least three.  The plane case remains
+open.  See the exact audit~\cite{JacobianAudit}, the Fong--Fable status note~\cite{FongFable},
+and a Lean development~\cite{JacobianLean}.  \statusaudit
+
+\subsection{Hadamard matrices}
+
+The public tracker records a coordinated release covering the previously unresolved admissible
+orders below $2000$, with exact $\{\pm1\}$ matrices and checker scripts.  The tracker pages did
+not present a completely stable review label at the time of access: one page described partial
+independent reproduction and review pending, while the later project summary described all
+listed orders as verified.  Accordingly, this report treats the result as a strong public
+candidate with exact artifacts, not as a substitute for a refereed classification theorem.
+See~\cite{HadamardTracker}.  \statusaudit
+
+\subsection{Rank at least thirty}
+
+The public elliptic-curve leaderboard contains an explicit curve, thirty displayed independent
+rational points, and an unconditional lower bound $\operatorname{rank}\ge30$ for submission
+\#273~\cite{RankThirty}.  The submitter is listed only as ``ranksunbounded.''  I found no
+primary public source that identifies that submitter with Fable.  The mathematical artifact is
+therefore public; the model attribution in the prompt is not independently verified here.
+\statusaudit
+
+\subsection{Alaoglu--Erd\H{o}s}
+
+No indexed public proof, preprint, repository, or Lean development of the claimed new
+Alaoglu--Erd\H{o}s route was located in the searches performed for this report.  That is a
+search result, not evidence that no private or newly unindexed argument exists.  The work below
+was therefore reconstructed independently.
+
+\section{The compact orbit and exact carry calculus}
+\label{sec:orbit}
+
+Assume from now on that a counterexample exists.  For $k\ge0$ define
+\begin{equation}
+ r_k=\floor{k\beta},\qquad t_k=\fract{k\beta},
+ \label{eq:rt}
+\end{equation}
+and, for a base $b>1$,
+\begin{equation}
+ X_{b,k}=b^{t_k}.
+ \label{eq:Xbk}
+\end{equation}
+For the two arithmetic bases,
+\begin{equation}
+ X_{2,k}=\frac{M^k}{2^{r_k}},\qquad
+ X_{3,k}=\frac{A^k}{3^{r_k}}.
+ \label{eq:compact-orbit}
+\end{equation}
+Thus both coordinates use the same floor sequence and lie in fixed compact intervals.
+
+\subsection{Lag data}
+
+Fix $1\le d<N$.  Put
+\begin{equation}
+ h_d=\floor{d\beta},\qquad \eta_d=\fract{d\beta},\qquad L_d=N-d.
+ \label{eq:lag-data}
+\end{equation}
+For $0\le i<L_d$, define the carry
+\begin{equation}
+ \varepsilon_{i,d}=r_{i+d}-r_i-h_d.
+ \label{eq:carry}
+\end{equation}
+
+\begin{lemma}[Exact two-valued carry]
+\label{lem:carry}
+For every admissible $i,d$,
+\[
+ \varepsilon_{i,d}\in\{0,1\},\qquad
+ t_{i+d}=t_i+\eta_d-\varepsilon_{i,d}.
+\]
+Moreover $\varepsilon_{i,d}=1$ if and only if $t_i\ge1-\eta_d$.
+\end{lemma}
+
+\begin{proof}
+Write $i\beta=r_i+t_i$ and $d\beta=h_d+\eta_d$.  Then
+\[
+ (i+d)\beta=(r_i+h_d)+(t_i+\eta_d),
+\]
+where $0<t_i+\eta_d<2$.  Taking the integer and fractional parts gives exactly the stated
+formulas.
+\end{proof}
+
+Define the exact wrap count
+\begin{equation}
+ C_{d,N}=\sum_{i=0}^{L_d-1}\varepsilon_{i,d}.
+ \label{eq:wrap-count}
+\end{equation}
+It has the purely integral expression
+\begin{equation}
+ C_{d,N}=
+ \sum_{i=0}^{N-d-1}(r_{i+d}-r_i-h_d).
+ \label{eq:wrap-floor-sum}
+\end{equation}
+No discrepancy estimate is hidden in this identity.
+
+\subsection{Rotation Vandermonde products}
+
+\begin{definition}[Unsquared rotation discriminant]
+For $b>1$ and $N\ge2$, set
+\begin{equation}
+ \Delta_{b,N}=\prod_{0\le i<j<N}|b^{t_j}-b^{t_i}|.
+ \label{eq:Delta}
+\end{equation}
+Its square is the usual Vandermonde discriminant of the $N$ orbit points.
+\end{definition}
+
+\begin{theorem}[Exact lag factorization]
+\label{thm:lag-factorization}
+For every $b>1$, $1\le d<N$, and $L=L_d$,
+\begin{align}
+ &\prod_{i=0}^{L-1}|b^{t_{i+d}}-b^{t_i}| \\
+ &\quad =
+ b^{\displaystyle\sum_{i=0}^{L-1}t_i+C_{d,N}(\eta_d-1)}
+ (b^{\eta_d}-1)^{L-C_{d,N}}
+ (b^{1-\eta_d}-1)^{C_{d,N}}.
+ \label{eq:lag-factorization}
+\end{align}
+Consequently $\Delta_{b,N}$ is the product of the right side over $d=1,\ldots,N-1$.
+\end{theorem}
+
+\begin{proof}
+If $\varepsilon_{i,d}=0$, Lemma~\ref{lem:carry} gives
+\[
+ |b^{t_{i+d}}-b^{t_i}|=b^{t_i}(b^{\eta_d}-1).
+\]
+If $\varepsilon_{i,d}=1$, then $t_{i+d}=t_i+\eta_d-1<t_i$ and
+\[
+ |b^{t_{i+d}}-b^{t_i}|
+ =b^{t_i+\eta_d-1}(b^{1-\eta_d}-1).
+\]
+Multiplying the $L-C_{d,N}$ nonwrap factors and the $C_{d,N}$ wrap factors gives
+\eqref{eq:lag-factorization}.  Every pair $i<j$ occurs uniquely at lag $d=j-i$, proving the
+last assertion.
+\end{proof}
+
+\begin{remark}
+The factors $b^{\eta_d}-1$ and $b^{1-\eta_d}-1$ are a two-branch analogue of a Sudler product.
+The exact exponent $C_{d,N}$ retains the carry word instead of replacing it by its expected
+value.  This is the feature that later allows an integer gap factorization.
+\end{remark}
+
+\section{Exact denominators and integer numerator products}
+\label{sec:denominators}
+
+The orbit points are rational when $B=b^\beta$ is an integer.  Their pairwise differences have
+completely explicit denominators at the structural prime whenever $b\nmid B$.
+
+\subsection{One pair}
+
+Let $b\in\{2,3\}$, let $B=b^\beta\in\N$, and write
+\[
+ X_k=\frac{B^k}{b^{r_k}}=b^{t_k}.
+\]
+For $i<j$,
+\begin{equation}
+ X_j-X_i=
+ \frac{B^j-B^i b^{r_j-r_i}}{b^{r_j}}
+ =\frac{B^i(B^{j-i}-b^{r_j-r_i})}{b^{r_j}}.
+ \label{eq:pair-rational}
+\end{equation}
+
+\begin{theorem}[Exact structural-prime denominator]
+\label{thm:exact-denominator}
+Assume $b\nmid B$.  Then the numerator in \eqref{eq:pair-rational} is a $b$-adic unit, so the
+reduced denominator of $X_j-X_i$ is exactly $b^{r_j}$.
+\end{theorem}
+
+\begin{proof}
+The imported finite verification implies $\beta>1$; only $\beta>1$ is needed here.  Thus
+$r_j-r_i\ge1$.  Modulo $b$, the term $B^{j-i}$ is nonzero while
+$b^{r_j-r_i}$ is zero.  Multiplication by the $b$-adic unit $B^i$ preserves nonvanishing.
+\end{proof}
+
+\subsection{The complete numerator}
+
+Define
+\begin{equation}
+ E_N=\sum_{j=1}^{N-1}j r_j
+ \label{eq:EN}
+\end{equation}
+and
+\begin{equation}
+ P_{b,B}(N)=
+ \prod_{0\le i<j<N}|B^j-B^i b^{r_j-r_i}|\in\N.
+ \label{eq:P}
+\end{equation}
+
+\begin{proposition}[Cleared Vandermonde]
+\label{prop:cleared-vdm}
+For every $b\in\{2,3\}$ and integer $B=b^\beta$,
+\begin{equation}
+ P_{b,B}(N)=b^{E_N}\Delta_{b,N}.
+ \label{eq:P-Delta}
+\end{equation}
+If $b\nmid B$, then $P_{b,B}(N)$ is coprime to $b$ and
+\[
+ \vpp{b}{\Delta_{b,N}}=-E_N.
+\]
+Moreover
+\begin{equation}
+ E_N=\frac{\beta}{3}N^3+O_\beta(N^2).
+ \label{eq:EN-asymp}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Multiplying \eqref{eq:pair-rational} over all pairs contributes $r_j$ once for each
+$i=0,\ldots,j-1$, hence the denominator exponent is $E_N$.  The coprimality assertion follows
+from Theorem~\ref{thm:exact-denominator}.  Finally,
+\[
+ E_N=\beta\sum_{j=1}^{N-1}j^2-\sum_{j=1}^{N-1}j t_j,
+\]
+and the second sum is $O(N^2)$ while $\sum_{j<N}j^2=N^3/3+O(N^2)$.
+\end{proof}
+
+\begin{resultbox}
+\textbf{Cubic denominator tax.}  The known structural denominator of the complete orbit
+Vandermonde has logarithm $\frac13\beta(\log b)N^3+O(N^2)$, whereas the entire archimedean
+Vandermonde has logarithm only of order $N^2$ (Theorem~\ref{thm:energy-limit}).  Therefore an
+integer-lower-bound argument using only this denominator misses the analytic signal by one full
+power of $N$.  This is a different deficit from the one-logarithm node-count deficit in the
+supplied report.  \statusnew
+\end{resultbox}
+
+\subsection{Gap-only factorization}
+
+The factors $B^i$ in \eqref{eq:P} carry no near-power information.  Remove them by defining
+\begin{align}
+ \mathcal Q_{b,B}(N)
+ &:=\prod_{d=1}^{N-1}
+ |B^d-b^{h_d}|^{L_d-C_{d,N}}
+ |B^d-b^{h_d+1}|^{C_{d,N}}.
+ \label{eq:Q}
+\end{align}
+Because $d\beta$ is never an integer, every factor is a positive integer.
+
+\begin{theorem}[Exact integer gap product]
+\label{thm:gap-product}
+For every arithmetic pair $(b,B)$ as above,
+\begin{equation}
+ P_{b,B}(N)=B^{\binom N3}\mathcal Q_{b,B}(N).
+ \label{eq:P-Q}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At lag $d$, equation~\eqref{eq:P} contains
+\[
+ B^i|B^d-b^{h_d+\varepsilon_{i,d}}|
+\]
+for $i=0,\ldots,L_d-1$.  The wrap count supplies the exponents in
+\eqref{eq:Q}.  The total exponent of $B$ is
+\[
+ \sum_{d=1}^{N-1}\sum_{i=0}^{N-d-1}i
+ =\sum_{L=1}^{N-1}\frac{L(L-1)}2
+ =\binom N3.
+\]
+\end{proof}
+
+\section{Orbit polynomials and discriminants}
+\label{sec:polynomials}
+
+The same data can be packaged into one integer polynomial.
+
+\begin{definition}[Orbit polynomial]
+For $N\ge1$, put
+\begin{equation}
+ F_{b,B,N}(X)=\prod_{k=0}^{N-1}(b^{r_k}X-B^k)\in\Z[X].
+ \label{eq:orbit-polynomial}
+\end{equation}
+Its roots are the compact orbit points $X_k=B^k/b^{r_k}=b^{t_k}$.
+\end{definition}
+
+Let
+\begin{equation}
+ R_N=\sum_{k=0}^{N-1}r_k,
+ \qquad
+ S_N=\sum_{i=0}^{N-2}(N-1-i)r_i.
+ \label{eq:RS}
+\end{equation}
+
+\begin{proposition}[Endpoint data and discriminant]
+\label{prop:orbit-disc}
+The leading and constant coefficients are
+\begin{equation}
+ \operatorname{lc}(F_{b,B,N})=b^{R_N},
+ \qquad
+ |F_{b,B,N}(0)|=B^{\binom N2}.
+ \label{eq:endpoints}
+\end{equation}
+The discriminant is the positive square
+\begin{align}
+ |\operatorname{Disc}F_{b,B,N}|
+ &=\prod_{0\le i<j<N}
+ |B^j b^{r_i}-B^i b^{r_j}|^2 \\
+ &=b^{2S_N}P_{b,B}(N)^2.
+ \label{eq:disc}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+The endpoint formulas are immediate from the product.  For a product of linear forms
+$\prod_i(q_iX-p_i)$, direct substitution in the root formula for the discriminant gives
+\[
+ \operatorname{Disc}\Bigl(\prod_i(q_iX-p_i)\Bigr)
+ =\prod_{i<j}(p_iq_j-p_jq_i)^2.
+\]
+Take $p_i=B^i$ and $q_i=b^{r_i}$.  Each cross determinant contains $b^{r_i}$ times the
+corresponding factor in $P_{b,B}(N)$, and $r_i$ occurs $N-1-i$ times.
+\end{proof}
+
+For a hypothetical Alaoglu--Erd\H{o}s pair, the two orbit polynomials have identical endpoint
+data after normalizing logarithms by the base:
+\begin{equation}
+ \frac{\log\operatorname{lc}(F_{3,A,N})}{\log3}
+ =\frac{\log\operatorname{lc}(F_{2,M,N})}{\log2}=R_N,
+ \label{eq:lc-match}
+\end{equation}
+\begin{equation}
+ \frac{\log|F_{3,A,N}(0)|}{\log3}
+ =\frac{\log|F_{2,M,N}(0)|}{\log2}
+ =\beta\binom N2.
+ \label{eq:ct-match}
+\end{equation}
+Their discriminants, however, have a universal positive second-order separation.  That is
+proved after the logarithmic-energy calculation.
+
+\section{Logarithmic energy of the orbit}
+\label{sec:energy}
+
+\subsection{A finite-type uniform-integrability lemma}
+
+For $z_k=t_k=\fract{k\beta}$, the empirical measures
+$\mu_N=N^{-1}\sum_{k<N}\delta_{z_k}$ converge weakly to Lebesgue measure on $[0,1]$.
+The logarithmic kernel is singular on the diagonal, so weak convergence alone does not justify
+passing to pairwise energy.  The finite-type bound \eqref{eq:finite-type} supplies exactly the
+missing uniform integrability.
+
+\begin{lemma}[Near-collision tail]
+\label{lem:near-tail}
+Assume \eqref{eq:finite-type}.  There is $\delta>0$ such that, uniformly for intervals
+$I\subset[0,1]$,
+\begin{equation}
+ \#\{1\le d<N:\fract{d\beta}\in I\}
+ =N|I|+O(N^{1-\delta}).
+ \label{eq:discrepancy}
+\end{equation}
+Consequently
+\begin{equation}
+ \lim_{T\to\infty}\limsup_{N\to\infty}
+ \frac1{N^2}\sum_{\substack{0\le i\ne j<N\\|z_i-z_j|<e^{-T}}}
+ -\log|z_i-z_j|=0.
+ \label{eq:UI}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The discrepancy estimate is the standard Erd\H{o}s--Tur\'an consequence of finite type; see
+Kuipers--Niederreiter~\cite{KuipersNiederreiter}.  We include the tail reduction because it is
+the point at which the hypothesis is used.
+
+Let $A_N(\rho)=\#\{1\le d<N:\norm{d\beta}<\rho\}$.  Equation~\eqref{eq:discrepancy} gives
+$A_N(\rho)\le2\rho N+O(N^{1-\delta})$.  If $|z_i-z_j|<\rho$, then
+$\norm{(j-i)\beta}<\rho$, and for each lag there are at most $N$ ordered pairs.  The spacing
+bound \eqref{eq:finite-type} also gives $|z_i-z_j|\ge cN^{-\tau}$.  Using
+$(-\log y-T)_+=\int_T^{-\log y}du$ therefore bounds the normalized tail by
+\[
+ \int_T^{\tau\log N+O(1)}
+ \left(4e^{-u}+O(N^{-\delta})\right)du
+ \le4e^{-T}+O(N^{-\delta}\log N).
+\]
+First let $N\to\infty$, then $T\to\infty$.
+\end{proof}
+
+\subsection{Energy limit}
+
+\begin{theorem}[Rotation-discriminant energy]
+\label{thm:energy-limit}
+For every $b>1$,
+\begin{equation}
+ \frac{2}{N^2}\log\Delta_{b,N}\longrightarrow I_b,
+ \qquad
+ I_b=\int_0^1\!\int_0^1\log|b^s-b^t|\,ds\,dt.
+ \label{eq:energy-limit}
+\end{equation}
+The constant has the closed form
+\begin{equation}
+ I_b=\frac{2\log b}{3}
+ -\frac{\pi^2}{3\log b}
+ +\frac{2\bigl(\zeta(3)-\Li_3(1/b)\bigr)}{(\log b)^2}.
+ \label{eq:Ib}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ K_b(s,t)=\log|b^s-b^t|.
+\]
+The difference
+\[
+ H_b(s,t)=K_b(s,t)-\log|s-t|
+\]
+extends continuously to the diagonal, with
+$H_b(s,s)=\log((\log b)b^s)$.  Weak convergence of $\mu_N\times\mu_N$ handles $H_b$.  For the
+logarithmic term, first truncate at height $-T$, use weak convergence for the bounded continuous
+truncation, and then apply Lemma~\ref{lem:near-tail}.  The $N$ omitted diagonal terms contribute
+$O(N)/N^2$ after truncation.  This proves \eqref{eq:energy-limit}.
+
+For the integral, let $L=\log b$ and use the density $2(1-u)$ of $u=|s-t|$.  Since
+\[
+ \log|b^s-b^t|=L\min(s,t)+Lu+\log(1-e^{-Lu}),
+\]
+the first two expectations total $2L/3$.  Expanding
+$\log(1-e^{-Lu})=-\sum_{n\ge1}e^{-nLu}/n$ and integrating termwise gives
+\[
+ 2\int_0^1(1-u)\log(1-e^{-Lu})\,du
+ =-\frac{\pi^2}{3L}
+ +\frac{2(\zeta(3)-\Li_3(e^{-L}))}{L^2},
+\]
+which is \eqref{eq:Ib}.
+\end{proof}
+
+\subsection{Numerical values}
+
+High-precision evaluation gives
+\begin{align}
+ I_2&=-1.51660817273459213659\ldots,\label{eq:I2}\\
+ I_3&=-0.84829781726239522907\ldots.\label{eq:I3}
+\end{align}
+These negative values are expected: many orbit points are closer than one in the ordinary
+metric, so the product of differences is exponentially small at the $N^2$ scale.
+
+For an implementation check, take $\beta=\log_2 5$.  The following table lists
+$2N^{-2}\log\Delta_{b,N}$ and the corresponding normalized base surplus.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$N$ & base $2$ energy & base $3$ energy & normalized surplus $N^{-2}$ \\
+\midrule
+50   & $-1.4053349594$ & $-0.7474049836$ & $0.6735762212$ \\
+100  & $-1.4458192176$ & $-0.7818859890$ & $0.6870864586$ \\
+200  & $-1.4834158187$ & $-0.8196667457$ & $0.6970119103$ \\
+400  & $-1.4983414907$ & $-0.8318264138$ & $0.7022444033$ \\
+800  & $-1.5053190365$ & $-0.8377156849$ & $0.7045973159$ \\
+1600 & $-1.5113158350$ & $-0.8433138330$ & $0.7063752646$ \\
+3200 & $-1.5133107059$ & $-0.8451095375$ & $0.7069969994$ \\
+\midrule
+limit & $-1.5166081727$ & $-0.8482978173$ & $0.7079245703$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\statuscomp{}  The table is illustrative only; Theorem~\ref{thm:energy-limit} is proved
+independently of the computation.
+
+\section{Matched-gap amplification}
+\label{sec:amplification}
+
+This section is the central new arithmetic comparison.
+
+\subsection{The universal one-gap function}
+
+Define for $0<u<1$
+\begin{equation}
+ \Phi(u)=\log_3(3^u-1)-\log_2(2^u-1).
+ \label{eq:Phi}
+\end{equation}
+
+\begin{lemma}[Strict gap amplification]
+\label{lem:Phi}
+The function $\Phi$ is strictly decreasing on $(0,1)$ and
+\begin{equation}
+ \Phi(u)>\log_3 2\qquad(0<u<1).
+ \label{eq:Phi-lower}
+\end{equation}
+Moreover $\Phi(u)\to+\infty$ as $u\downarrow0$ and
+$\Phi(u)\to\log_3 2$ as $u\uparrow1$.
+\end{lemma}
+
+\begin{proof}
+For $b>1$,
+\[
+ \frac{d}{du}\log_b(b^u-1)=\frac{b^u}{b^u-1}
+ =\frac1{1-b^{-u}}.
+\]
+For fixed $u>0$ this is strictly decreasing in $b$, hence $\Phi'(u)<0$.  The endpoint at one is
+\[
+ \log_3(3-1)-\log_2(2-1)=\log_3 2.
+\]
+The expansion $b^u-1=u\log b+O(u^2)$ proves divergence at zero.
+\end{proof}
+
+\subsection{Every synchronized integer gap}
+
+For $d\ge1$, put $h=\floor{d\beta}$ and $\eta=\fract{d\beta}$.  Then
+\begin{align}
+ A^d-3^h&=3^h(3^\eta-1),\\
+ M^d-2^h&=2^h(2^\eta-1).
+\end{align}
+For the ceiling branch, the absolute gaps are
+$3^h(3-3^\eta)$ and $2^h(2-2^\eta)$.
+
+\begin{theorem}[Pointwise matched-gap inequality]
+\label{thm:pointwise-gap}
+For every $d\ge1$ and
+$h\in\{\floor{d\beta},\ceil{d\beta}\}$,
+\begin{equation}
+ |A^d-3^h|>2\,|M^d-2^h|^{\thetaq}.
+ \label{eq:pointwise-gap}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \log_3|A^d-3^h|-\log_2|M^d-2^h|>\log_3 2.
+ \label{eq:pointwise-log}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $h=\floor{d\beta}$, the $h$ terms cancel in the normalized logarithms and the left side of
+\eqref{eq:pointwise-log} is $\Phi(\eta)$.  For $h=\ceil{d\beta}$ it is
+\[
+ \log_3(3-3^\eta)-\log_2(2-2^\eta)=\Phi(1-\eta),
+\]
+because $b-b^\eta=b^\eta(b^{1-\eta}-1)$.  Lemma~\ref{lem:Phi} proves both cases.
+Multiplying \eqref{eq:pointwise-log} by $\log3$ and using
+$\thetaq=\log3/\log2$ gives \eqref{eq:pointwise-gap}.
+\end{proof}
+
+\subsection{Complete products}
+
+\begin{theorem}[Finite universal surplus]
+\label{thm:finite-surplus}
+For every $N\ge2$,
+\begin{equation}
+ \mathcal G_N:=
+ \frac{\log\mathcal Q_{3,A}(N)}{\log3}
+ -\frac{\log\mathcal Q_{2,M}(N)}{\log2}
+ >\binom N2\log_3 2.
+ \label{eq:G-lower}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \mathcal Q_{3,A}(N)>
+ 2^{\binom N2}\,\mathcal Q_{2,M}(N)^{\thetaq}.
+ \label{eq:Q-product-ineq}
+\end{equation}
+The same surplus can be written in any of the following exact forms:
+\begin{align}
+ \mathcal G_N
+ &=\frac{\log P_{3,A}(N)}{\log3}
+   -\frac{\log P_{2,M}(N)}{\log2},
+ \label{eq:G-P}\\
+ &=\frac{\log\Delta_{3,N}}{\log3}
+   -\frac{\log\Delta_{2,N}}{\log2},
+ \label{eq:G-Delta}\\
+ &=\sum_{0\le i<j<N}\Phi(|t_j-t_i|),
+ \label{eq:G-pairwise}\\
+ &=\sum_{d=1}^{N-1}
+ \bigl((L_d-C_{d,N})\Phi(\eta_d)
+       +C_{d,N}\Phi(1-\eta_d)\bigr).
+ \label{eq:G-lag}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:pointwise-gap} to each of the
+$(L_d-C_{d,N})$ floor gaps and $C_{d,N}$ ceiling gaps at lag $d$.  The total number of factors
+is $\sum_{d=1}^{N-1}L_d=\binom N2$, giving \eqref{eq:G-lower} and
+\eqref{eq:Q-product-ineq}.
+
+Equation~\eqref{eq:G-P} follows from Theorem~\ref{thm:gap-product}: the monomial terms cancel
+because
+\[
+ \frac{\log A}{\log3}=\frac{\log M}{\log2}=\beta.
+\]
+Equation~\eqref{eq:G-Delta} follows from Proposition~\ref{prop:cleared-vdm}, since the common
+$E_N$ cancels.  For a pair with $s=\min(t_i,t_j)$ and $u=|t_i-t_j|$,
+\[
+ \log_b|b^{t_j}-b^{t_i}|=s+\log_b(b^u-1),
+\]
+so the $s$ terms cancel between bases and leave $\Phi(u)$.  This proves
+\eqref{eq:G-pairwise}; grouping by lags gives \eqref{eq:G-lag}.
+\end{proof}
+
+\subsection{The exact second-order constant}
+
+\begin{theorem}[Universal matched-gap energy]
+\label{thm:kappa}
+One has
+\begin{equation}
+ \frac{\mathcal G_N}{N^2}\longrightarrow\kappa,
+ \qquad
+ \kappa=\frac12\left(\frac{I_3}{\log3}-\frac{I_2}{\log2}\right),
+ \label{eq:kappa}
+\end{equation}
+where
+\begin{align}
+ \kappa
+ &=\frac{\pi^2}{6}
+ \left(\frac1{(\log2)^2}-\frac1{(\log3)^2}\right) \\
+ &\quad +\frac{\zeta(3)-\Li_3(1/3)}{(\log3)^3}
+ -\frac{\zeta(3)-\Li_3(1/2)}{(\log2)^3} \\
+ &=0.7079245703208558078744\ldots.
+ \label{eq:kappa-closed}
+\end{align}
+In particular
+\begin{equation}
+ \kappa>\frac12\log_3 2=0.3154648767\ldots.
+ \label{eq:kappa-lower}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Combine \eqref{eq:G-Delta} with Theorem~\ref{thm:energy-limit}.  Substitution of
+\eqref{eq:Ib} gives the closed form; the $2/3$ terms cancel.  Inequality
+\eqref{eq:kappa-lower} also follows without numerical evaluation by dividing
+\eqref{eq:G-lower} by $N^2$ and taking the limit.
+\end{proof}
+
+\begin{corollary}[Discriminant separation]
+\label{cor:disc-separation}
+The orbit polynomials satisfy
+\begin{equation}
+ \frac{\log|\operatorname{Disc}F_{3,A,N}|}{\log3}
+ -\frac{\log|\operatorname{Disc}F_{2,M,N}|}{\log2}
+ =2\mathcal G_N
+ >2\binom N2\log_3 2,
+ \label{eq:disc-separation}
+\end{equation}
+while their normalized leading and constant coefficients agree exactly by
+\eqref{eq:lc-match}--\eqref{eq:ct-match}.  The left side divided by $N^2$ tends to $2\kappa$.
+\end{corollary}
+
+\begin{proof}
+Use Proposition~\ref{prop:orbit-disc}.  The common $S_N$ cancels, leaving twice
+\eqref{eq:G-P}.
+\end{proof}
+
+\section{Quadratic unmatched-prime mass}
+\label{sec:unmatched}
+
+The universal surplus has an immediate arithmetic interpretation that does not mention real
+powers.
+
+\begin{theorem}[Unmatched base-$3$ quotient]
+\label{thm:unmatched}
+Let
+\begin{equation}
+ H_N=\gcd(\mathcal Q_{2,M}(N),\mathcal Q_{3,A}(N)),
+ \qquad
+ Y_N=\frac{\mathcal Q_{3,A}(N)}{H_N}.
+ \label{eq:HN-YN}
+\end{equation}
+Then for every $N\ge2$,
+\begin{equation}
+ Y_N>2^{\binom N2}.
+ \label{eq:unmatched-finite}
+\end{equation}
+More precisely,
+\begin{equation}
+ \liminf_{N\to\infty}\frac{\log Y_N}{N^2}
+ \ge\kappa\log3
+ =0.7777346324045835\ldots.
+ \label{eq:unmatched-asymp}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $\mathcal Q_{2,M}=H_NX_N$ and $\mathcal Q_{3,A}=H_NY_N$ with
+$\gcd(X_N,Y_N)=1$.  Since $\log3>\log2$,
+\begin{align*}
+ \mathcal G_N
+ &=\log H_N\left(\frac1{\log3}-\frac1{\log2}\right)
+ +\frac{\log Y_N}{\log3}-\frac{\log X_N}{\log2}\\
+ &\le\frac{\log Y_N}{\log3}.
+\end{align*}
+Apply Theorems~\ref{thm:finite-surplus} and~\ref{thm:kappa}.
+\end{proof}
+
+This is stronger than saying that the two gap products are unequal.  It forces a rapidly
+growing quotient supported on prime powers absent from the dyadic gap product.
+
+\subsection{Support in the triadically primitive branch}
+
+Write
+\begin{equation}
+ A=3^bV,\qquad b=\vpp{3}{A},\qquad 3\nmid V.
+ \label{eq:Adepth}
+\end{equation}
+
+\begin{corollary}[External support when $3\nmid A$]
+\label{cor:external-support}
+If $b=0$, then
+\begin{equation}
+ \gcd(\mathcal Q_{3,A}(N),3A)=1.
+ \label{eq:Q3-coprime}
+\end{equation}
+Consequently the quotient $Y_N$ in Theorem~\ref{thm:unmatched} is supported on primes outside
+the fixed set of divisors of $3A$ and has logarithmic size at least
+$(\kappa\log3+o(1))N^2$.
+\end{corollary}
+
+\begin{proof}
+Every factor of $\mathcal Q_{3,A}$ is $|A^d-3^h|$ with $h\ge1$.  Modulo $3$ it is nonzero
+because $3\nmid A$.  If $p\mid A$ and $p\ne3$, then $A^d-3^h\equiv-3^h\not\equiv0\pmod p$.
+\end{proof}
+
+\subsection{Exact structural part when \texorpdfstring{$3\mid A$}{3 divides A}}
+
+If $b>0$, the $3$-part of the triadic gap product is cubic and must be separated before the
+quadratic surplus can be interpreted as genuinely new primes.  Put
+\[
+ \gamma=\beta-b=\log_3V>0.
+\]
+Because $\gamma$ is irrational, $\ceil{d\gamma}\ge1$ for every $d\ge1$.
+
+\begin{proposition}[Exact structural $3$-part]
+\label{prop:structural-three}
+If $b>0$, then
+\begin{equation}
+ \vpp{3}{\mathcal Q_{3,A}(N)}
+ =b\binom{N+1}{3}
+ +\sum_{\substack{1\le d<N\\d\gamma<1}}
+ (N-d-C_{d,N})\,\vpp{3}{V^d-1}.
+ \label{eq:structural-three}
+\end{equation}
+The sum on the right has finitely many $d$, independent of $N$, and is $O_A(N)$.  Hence
+\begin{equation}
+ \vpp{3}{\mathcal Q_{3,A}(N)}
+ =\frac{b}{6}N^3+O_A(N^2).
+ \label{eq:structural-three-asymp}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $h=\ceil{d\beta}=bd+\ceil{d\gamma}>bd$,
+\[
+ \vpp{3}{A^d-3^h}=bd.
+\]
+For $h=\floor{d\beta}=bd+\floor{d\gamma}$ the same holds unless
+$\floor{d\gamma}=0$.  In that exceptional case the valuation is
+$bd+\vpp{3}{V^d-1}$.  The floor branch appears with exponent
+$N-d-C_{d,N}$.  Finally
+\[
+ \sum_{d=1}^{N-1}d(N-d)=\binom{N+1}{3}.
+\]
+\end{proof}
+
+There is a symmetric statement for $a=\vpp{2}{M}>0$.  The primitive-depth condition
+\eqref{eq:primitive-depth} says that the two structural cubic terms never occur simultaneously.
+The open problem is not to discover these terms; they are exact.  It is to transport the
+remaining prime mass across the two bases at the $N^2$ scale.
+
+\subsection{The valuation-transport target}
+
+Expanding the universal surplus into prime valuations gives the exact identity
+\begin{equation}
+ \mathcal G_N=
+ \sum_p\left(
+ \frac{\vpp{p}{\mathcal Q_{3,A}(N)}}{\log3}
+ -\frac{\vpp{p}{\mathcal Q_{2,M}(N)}}{\log2}
+ \right)\log p.
+ \label{eq:valuation-identity}
+\end{equation}
+This is merely unique factorization, but it pinpoints what a closing theorem must do.
+
+\begin{criterion}[Cross-base valuation transport]
+\label{crit:transport}
+Any arithmetic theorem, applicable to every primitive integer pair $(M,A)$, which forces
+\begin{equation}
+ \limsup_{N\to\infty}\frac1{N^2}
+ \sum_p\left(
+ \frac{\vpp{p}{\mathcal Q_{3,A}(N)}}{\log3}
+ -\frac{\vpp{p}{\mathcal Q_{2,M}(N)}}{\log2}
+ \right)\log p<\kappa
+ \label{eq:transport-target}
+\end{equation}
+would prove the Alaoglu--Erd\H{o}s conjecture.
+\end{criterion}
+
+\begin{proof}
+Under a counterexample, Theorem~\ref{thm:kappa} says that the same expression tends to
+$\kappa$.
+\end{proof}
+
+Criterion~\ref{crit:transport} is intentionally phrased as a sufficient condition, not as a
+new name for the conjecture.  Its value is that every summand concerns valuations of explicit
+ordinary integer differences
+\[
+ M^d-2^{\floor{d\beta}},\quad M^d-2^{\ceil{d\beta}},\quad
+ A^d-3^{\floor{d\beta}},\quad A^d-3^{\ceil{d\beta}}.
+\]
+There are no logarithmic coefficients inside those valuations.  The transcendental relation
+enters only through the common Beatty exponents.
+
+\begin{warning}
+A small-gcd theorem by itself does not close the problem.  Standard subspace-theorem estimates
+for common divisors tend to make $H_N$ smaller, which makes the unmatched quotient in
+Theorem~\ref{thm:unmatched} larger.  The needed input is a cross-base \emph{upper} control on
+the normalized unshared mass, or a mechanism that converts its growth into a forbidden third
+algebraic exponential.
+\end{warning}
+
+\section{Canonical-radical norm compression}
+\label{sec:radical}
+
+The supplied report reduces a counterexample to a canonical radical.  We now compute exactly
+what all of its conjugates contribute to a near-power gap.
+
+\subsection{Setup}
+
+\statusprior{}  There are integers $w>1$ odd, $d\ge1$, $a\ge0$, and $A\ge1$ such that
+\begin{equation}
+ E=w^{\thetaq}>0,\qquad E^d=q=\frac{A}{3^a},
+ \label{eq:E}
+\end{equation}
+$d$ is the least positive exponent for which $E^d\in\Q$, and
+$X^d-q$ is irreducible over $\Q$.
+
+Fix $k\ge1$ and $n\ge0$.  Put
+\begin{equation}
+ g=\gcd(k,d),\qquad K=\frac{k}{g},\qquad D=\frac{d}{g}.
+ \label{eq:gKD}
+\end{equation}
+
+\begin{theorem}[Exact cyclotomic norm]
+\label{thm:radical-norm}
+The field norm is
+\begin{align}
+ \left|N_{\Q(E)/\Q}(E^k-3^n)\right|
+ &=\left|q^K-3^{nD}\right|^g \\
+ &=\frac{|A^K-3^{aK+nD}|^g}{3^{ak}}.
+ \label{eq:radical-norm}
+\end{align}
+The numerator is nonzero.  Furthermore
+\begin{equation}
+ |E^k-3^n|
+ =\frac{|A^K-3^{aK+nD}|}
+ {3^{aK}\displaystyle\sum_{j=0}^{D-1}(E^k)^{D-1-j}(3^n)^j},
+ \label{eq:radical-factor}
+\end{equation}
+and hence
+\begin{equation}
+ |E^k-3^n|
+ \ge\frac{3^{-aK}}{D\max(E^k,3^n)^{D-1}}.
+ \label{eq:radical-lower-elementary}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The conjugates of $E$ are $\zeta_d^jE$.  The multiset of $k$th powers
+$\zeta_d^{jk}$ contains every $D$th root of unity exactly $g$ times.  Therefore
+\[
+ \prod_{j=0}^{d-1}\bigl((\zeta_d^jE)^k-3^n\bigr)
+ =\pm\bigl((E^k)^D-3^{nD}\bigr)^g
+ =\pm(q^K-3^{nD})^g.
+\]
+Substitution of $q=A/3^a$ gives \eqref{eq:radical-norm}.  If its numerator vanished, positivity
+would give $E^k=3^n$, and then
+$k\thetaq\log w=n\log3$, so $w^k=2^n$, impossible for odd $w>1$.
+
+Finally use
+\[
+ X^D-Y^D=(X-Y)\sum_{j=0}^{D-1}X^{D-1-j}Y^j
+\]
+with $X=E^k$, $Y=3^n$, and clear $3^{aK}$.  The denominator sum is at most
+$D\max(X,Y)^{D-1}$.
+\end{proof}
+
+\subsection{Baker-strengthened relative separation}
+
+Because $E$ and $3$ are multiplicatively independent positive algebraic numbers, Baker's
+theorem gives constants $C,\mu>0$ such that
+\begin{equation}
+ |k\log E-n\log3|\ge C(k+n)^{-\mu}
+ \label{eq:Baker-E}
+\end{equation}
+whenever the form is nonzero.  Standard comparison with $e^z-1$ yields
+\begin{equation}
+ |E^k-3^n|
+ \ge C'\max(E^k,3^n)(k+n)^{-\mu'}
+ \label{eq:relative-radical}
+\end{equation}
+for suitable $C',\mu'>0$, after harmless adjustment outside the close regime.
+
+This is stronger than \eqref{eq:radical-lower-elementary}, but it still matches the best
+rational-return scale rather than contradicting it.  The norm has not created a new algebraic
+quantity; it has compressed all conjugates to the ordinary binomial difference
+$A^K-3^{aK+nD}$.
+
+\begin{resultbox}
+\textbf{Exact no-go statement.}  Any argument that uses the conjugates of $E$ only through the
+field norm of $E^k-3^n$ reduces exactly to one two-logarithm gap.  Norm amplification alone
+cannot create the missing third independent exponential or a super-polynomial separation.
+A successful radical argument must retain more than the total product of conjugates---for
+example, a signed subset product, a resolvent sensitive to the real embedding, or a coupled
+finite-place invariant.  \statusnew
+\end{resultbox}
+
+\section{Why the new identities still stop short}
+\label{sec:failure}
+
+\subsection{The integer lower bound has the wrong scale}
+
+When $b\nmid B$, the rational number $\Delta_{b,N}$ has exact denominator
+$b^{E_N}$, so nonvanishing gives only
+\[
+ |\Delta_{b,N}|\ge b^{-E_N}
+ =\exp\left(-\frac{\beta\log b}{3}N^3+O(N^2)\right).
+\]
+The true size is
+\[
+ |\Delta_{b,N}|=
+ \exp\left(\frac{I_b}{2}N^2+o(N^2)\right).
+\]
+The lower bound is therefore exponentially weaker by one power of $N$.  Taking squares,
+discriminants, or products of the same denominators cannot change that order.
+
+\subsection{The universal surplus is compatible with ordinary arithmetic}
+
+The inequality
+\[
+ \mathcal Q_{3,A}>2^{\binom N2}\mathcal Q_{2,M}^{\thetaq}
+\]
+is strong but points in a direction that large-base geometry naturally permits.  Both gap
+products themselves have logarithm of order $N^3$; the surplus is only their second-order
+difference.  An arbitrary pair of unrelated integer products can easily have such a surplus.
+The conjecture can be reached only by exploiting the fact that both products use the
+\emph{same} Beatty exponents and arise from the same primitive output pair.
+
+\subsection{Why a gcd upper bound is not enough}
+
+Theorem~\ref{thm:unmatched} already says that the quotient remaining after the gcd is enormous.
+A theorem of Bugeaud--Corvaja--Zannier type~\cite{BCZ} that makes the common divisor even smaller
+does not contradict anything.  What is needed is one of the following stronger mechanisms:
+
+\begin{enumerate}
+\item an upper bound for the weighted unmatched base-$3$ prime mass at the exact $N^2$ scale;
+\item a rule transporting a fixed positive proportion of that mass into the dyadic gap product;
+\item a primitive-divisor theorem whose new primes manufacture a third algebraic exponential;
+\item a cross-resultant or resolvent whose product formula turns the surplus into an upper, not
+      a lower, archimedean bound.
+\end{enumerate}
+
+\subsection{Why the radical norm is not the missing transport}
+
+Equation~\eqref{eq:radical-norm} has only one numerator, and Baker controls it polynomially in
+the exponent.  It does not connect primes dividing $M^d-2^h$ to primes dividing $A^d-3^h$.
+Thus the radical and discriminant routes currently meet only at the same unresolved transport
+problem.
+
+\section{Concrete research program}
+\label{sec:program}
+
+\subsection{Priority A: cross-base local orders}
+
+For a prime $p\nmid6MA$, simultaneous divisibility
+\[
+ p\mid M^d-2^h,
+ \qquad
+ p\mid A^d-3^h
+\]
+means that the reduction of $(M,A)^d(2,3)^{-h}$ is the identity in
+$(\mathbb F_p^\times)^2$.  Fixing a generator of $\mathbb F_p^\times$ turns this into a
+$2\times2$ modular linear system.  The determinant of its discrete-log matrix is the finite
+place analogue of the real logarithmic determinant.  A useful theorem would compare the
+orders of this kernel for many $p$ with the exact Beatty set
+$h\in\{\floor{d\beta},\ceil{d\beta}\}$.
+
+The key requirement is quantitative: an $o(N^2)$ estimate is not enough if it concerns only the
+number of primes.  It must control the log-weighted valuations in
+\eqref{eq:valuation-identity}.
+
+\subsection{Priority B: primitive divisors of moving-exponent gaps}
+
+Classical Zsigmondy theory handles $a^n-b^n$.  Here the relevant factors are
+\[
+ A^d-3^{\floor{d\beta}},\qquad
+ A^d-3^{\ceil{d\beta}},
+\]
+with two exponents moving along an irrational line.  A theorem guaranteeing a primitive prime
+for most $d$, together with a criterion excluding that prime from the corresponding dyadic
+gap, would turn Theorem~\ref{thm:unmatched} from aggregate mass into a supply of genuinely new
+prime directions.  The second step is essential; primitive divisors on the triadic side alone
+do not force another algebraic exponential.
+
+\subsection{Priority C: signed or partial radical norms}
+
+The full norm destroys the real embedding.  A more promising radical object is a partial
+product over a Galois-stable but not full set of conjugates, or a resolvent that records which
+conjugate lies on the positive real branch.  Its denominator and local valuations must still be
+controlled exactly.  Equation~\eqref{eq:radical-norm} is a test: any proposed invariant that
+collapses to that formula has not added information.
+
+\subsection{Priority D: orbit-polynomial comparison}
+
+The polynomials $F_{2,M,N}$ and $F_{3,A,N}$ have equal normalized leading and constant
+coefficients but discriminants separated by $2\kappa N^2+o(N^2)$.  A cross-base coefficient
+inequality sensitive to complete splitting over $\Q$, rather than to Mahler measure alone,
+could convert this into a contradiction.  Standard discriminant--Mahler bounds are too coarse:
+their leading scale is $N^3$ and they tolerate the observed $N^2$ difference.
+
+\subsection{Priority E: formalization before further optimization}
+
+The finite identities in Sections~\ref{sec:orbit}, \ref{sec:denominators},
+\ref{sec:polynomials}, \ref{sec:amplification}, and \ref{sec:radical} are suitable for immediate
+Lean formalization.  Doing so would protect the exponent bookkeeping---especially the wrap
+multiplicities and discriminant powers---before a deeper valuation experiment is built on top
+of them.
+
+\section{Lean-oriented formalization blueprint}
+\label{sec:lean}
+
+No claim of kernel verification is made for this continuation.  The following decomposition
+keeps all analytic inputs explicit.
+
+\subsection{Module \texttt{RotationCarry}}
+
+Definitions:
+\[
+ r(k)=\floor{k\beta},\quad t(k)=k\beta-r(k),\quad
+ \varepsilon(i,d)=r(i+d)-r(i)-r(d).
+\]
+Targets:
+\begin{itemize}
+\item $\varepsilon(i,d)=0\lor\varepsilon(i,d)=1$;
+\item the exact fractional-part update;
+\item the floor-sum formula for $C_{d,N}$.
+\end{itemize}
+All are elementary ordered-ring/floor lemmas.
+
+\subsection{Module \texttt{RotationVandermonde}}
+
+Define the finite product $\Delta_{b,N}$ and prove Theorem~\ref{thm:lag-factorization} by
+partitioning the finite index set according to the carry.  No transcendence theorem is needed;
+irrationality of $\beta$ is used only to make every factor nonzero.
+
+\subsection{Module \texttt{OrbitGapProduct}}
+
+For prime $b$ and natural $B$, define the integer numerator matrix
+\[
+ N_{ij}=B^j-B^i b^{r_j-r_i}.
+\]
+Formalize:
+\begin{itemize}
+\item the exact denominator under $b\nmid B$;
+\item $P=b^{E_N}\Delta$;
+\item $P=B^{\binom N3}\mathcal Q$;
+\item the finite sums $\sum_{j<N}jr_j$ and
+      $\sum_{d<N}\sum_{i<N-d}i=\binom N3$.
+\end{itemize}
+
+\subsection{Module \texttt{OrbitPolynomialDiscriminant}}
+
+Formalize the general identity
+\[
+ \operatorname{Disc}\left(\prod_i(q_iX-p_i)\right)
+ =\prod_{i<j}(p_iq_j-p_jq_i)^2
+\]
+for a field, then specialize to integral coefficients.  This module should be independent of
+real powers once the integer sequences are supplied.
+
+\subsection{Module \texttt{MatchedGapAmplification}}
+
+The key analytic lemma is one-dimensional:
+\[
+ u\mapsto\log_3(3^u-1)-\log_2(2^u-1)
+\]
+is strictly decreasing.  Mathlib's derivative rules for real powers and logarithms should make
+the proof direct.  The integer product inequality and unmatched-gcd corollary are then finite
+algebra and order arithmetic.
+
+A schematic endpoint theorem is:
+\begin{verbatim}
+theorem unmatched_triadic_gap_mass
+    (hpair : A = Real.rpow M (Real.log 3 / Real.log 2))
+    (hbeta : ... exact floor synchronization ... ) :
+    2 ^ Nat.choose N 2 < Q3 N / Nat.gcd (Q2 N) (Q3 N)
+\end{verbatim}
+The actual statement should avoid natural-number division by expressing the quotient through a
+witness from the gcd divisibility theorem.
+
+\subsection{Module \texttt{RotationLogEnergy}}
+
+Separate the theorem into two interfaces:
+\begin{enumerate}
+\item a finite-type discrepancy hypothesis implying uniform integrability of the logarithmic
+kernel;
+\item the elementary evaluation of $I_b$.
+\end{enumerate}
+The finite algebraic conclusions do not depend on this module; only the limit constant
+$\kappa$ does.
+
+\subsection{Module \texttt{CanonicalRadicalNorm}}
+
+Formalize the multiset map $j\mapsto jk\pmod d$, its fibers of size $g=\gcd(k,d)$, and the
+cyclotomic product.  The exact norm theorem can be stated first for an abstract root of
+$X^d-q$ and then specialized to the positive real radical.
+
+\section{Computational reconnaissance}
+\label{sec:computation}
+
+The calculations in this report are symbolic.  Computation was used only to check indexing and
+to evaluate constants.  The following self-contained Python script verifies the finite product
+factorization for exact integers and reproduces the energy table.
+
+\begin{lstlisting}[style=pythonstyle,caption={Exact product checks and numerical energy.}]
+from __future__ import annotations
+
+from math import comb, floor, log
+from typing import List
+
+import mpmath as mp
+import numpy as np
+
+mp.mp.dps = 100
+
+
+def floor_sequence(base: int, output: int, n: int) -> List[int]:
+    """r_k=floor(k log_base(output)), evaluated at high precision."""
+    beta = mp.log(output) / mp.log(base)
+    return [int(mp.floor(k * beta)) for k in range(n)]
+
+
+def direct_numerator_product(base: int, output: int, n: int) -> int:
+    r = floor_sequence(base, output, n)
+    ans = 1
+    for i in range(n):
+        for j in range(i + 1, n):
+            ans *= abs(output**j - output**i * base ** (r[j] - r[i]))
+    return ans
+
+
+def grouped_gap_product(base: int, output: int, n: int) -> int:
+    r = floor_sequence(base, output, n)
+    q = 1
+    for d in range(1, n):
+        h = r[d]
+        wraps = sum(r[i + d] - r[i] - h for i in range(n - d))
+        q *= abs(output**d - base**h) ** (n - d - wraps)
+        q *= abs(output**d - base ** (h + 1)) ** wraps
+    return output ** comb(n, 3) * q
+
+
+def verify_exact(base: int, output: int, n: int) -> None:
+    assert output % base != 0
+    left = direct_numerator_product(base, output, n)
+    right = grouped_gap_product(base, output, n)
+    assert left == right
+
+    r = floor_sequence(base, output, n)
+    for i in range(n):
+        for j in range(i + 1, n):
+            numerator = output**j - output**i * base ** (r[j] - r[i])
+            assert numerator % base != 0  # exact reduced denominator
+
+
+def I(base: int) -> mp.mpf:
+    L = mp.log(base)
+    return (2 * L / 3 - mp.pi**2 / (3 * L)
+            + 2 * (mp.zeta(3) - mp.polylog(3, mp.mpf(1) / base)) / L**2)
+
+
+def empirical_energy(beta: float, base: int, n: int) -> float:
+    t = (np.arange(n, dtype=np.float64) * beta) % 1.0
+    x = np.power(float(base), t)
+    total = 0.0
+    for i in range(n):
+        total += np.log(np.abs(x[i + 1:] - x[i])).sum()
+    return 2.0 * total / (n * n)
+
+
+if __name__ == "__main__":
+    verify_exact(2, 5, 14)
+    verify_exact(3, 10, 14)
+
+    beta = log(5, 2)
+    for n in [50, 100, 200, 400, 800, 1600, 3200]:
+        e2 = empirical_energy(beta, 2, n)
+        e3 = empirical_energy(beta, 3, n)
+        surplus = 0.5 * (e3 / log(3) - e2 / log(2))
+        print(n, e2, e3, surplus)
+
+    kappa = mp.mpf("0.5") * (I(3) / mp.log(3) - I(2) / mp.log(2))
+    print("I2 =", I(2))
+    print("I3 =", I(3))
+    print("kappa =", kappa)
+\end{lstlisting}
+
+The exact check uses $(b,B)=(2,5)$ and $(3,10)$ separately; no counterexample is assumed or
+simulated.  The energy test can use any finite-type irrational rotation because the limiting
+constant depends on $b$, not on the rotation angle.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+The attached report identified two recurring obstacles: the $2\times2$ four-exponentials wall
+and a shortage of one logarithmic factor in determinant arguments.  The present continuation
+does not remove either wall, but it changes the arithmetic interface in three concrete ways.
+
+First, every compact-orbit Vandermonde is now factored exactly by lag and carry, and its
+structural denominator is known with equality.  This proves that denominator clearing by itself
+has a cubic tax against a quadratic analytic signal.
+
+Second, comparing the two bases before discarding the carry structure produces a universal
+pointwise inequality.  Its complete product is not merely nonzero: it has a fixed quadratic
+surplus and forces an exponentially large quotient of triadic gap prime powers not shared by
+the dyadic gaps.  The constant $\kappa$ is explicit and independent of the hypothetical
+counterexample.
+
+Third, the full conjugate norm of the canonical radical is computed exactly and shown to
+collapse to one ordinary binomial gap.  This eliminates a broad family of norm-only arguments
+and specifies what an improved radical invariant must retain.
+
+The clearest next theorem is therefore not another reformulation of
+$\log M\log3=\log A\log2$.  It is a second-order valuation-transport estimate for the explicit
+moving-exponent gaps in \eqref{eq:valuation-identity}.  Proving such an estimate with a constant
+strictly below $\kappa$, or converting the forced unmatched primes into a third algebraic
+exponential, would complete the conjecture.
+
+\appendix
+
+\section{Details of the energy integral}
+\label{app:integral}
+
+For completeness, let $L=\log b$.  Symmetry and the change of variables $u=|s-t|$ give
+\begin{align*}
+ I_b
+ &=2\int_0^1\int_0^{1-u}
+ \left(Ls+\log(e^{Lu}-1)\right)ds\,du\\
+ &=\frac{L}{3}+2\int_0^1(1-u)\log(e^{Lu}-1)\,du\\
+ &=\frac{2L}{3}+2\int_0^1(1-u)\log(1-e^{-Lu})\,du.
+\end{align*}
+Now
+\[
+ \int_0^1(1-u)e^{-nLu}\,du
+ =\frac1{nL}-\frac{1-e^{-nL}}{n^2L^2}.
+\]
+Therefore
+\begin{align*}
+ 2\int_0^1(1-u)\log(1-e^{-Lu})\,du
+ &=-2\sum_{n\ge1}\frac1n
+ \left(\frac1{nL}-\frac{1-e^{-nL}}{n^2L^2}\right)\\
+ &=-\frac{2\zeta(2)}L
+ +\frac{2(\zeta(3)-\Li_3(e^{-L}))}{L^2},
+\end{align*}
+which is \eqref{eq:Ib}.
+
+\section{A compact dependency graph}
+\label{app:dependencies}
+
+\begin{center}
+\begin{tabularx}{0.98\textwidth}{>{\raggedright\arraybackslash}p{0.28\textwidth} >{\raggedright\arraybackslash}X}
+\toprule
+Result & Dependencies \\
+\midrule
+Exact carry and lag factorization & floor addition; no imported transcendence \\
+Exact denominator & $b$ prime, $b\nmid B$, $\beta>1$ \\
+Integer gap product & exact carry and finite product reindexing \\
+Orbit discriminant & general discriminant of integral linear factors \\
+Energy limit & irrational rotation, finite-type bound, discrepancy \\
+Closed form $I_b$ & elementary integration and power series \\
+Pointwise amplification & $A=M^{\thetaq}$ and monotonicity of $\Phi$ \\
+Finite surplus & pointwise amplification and exact wrap multiplicities \\
+Limit $\kappa$ & finite surplus identity plus energy theorem \\
+Unmatched quotient & finite surplus plus gcd factorization \\
+Radical norm & irreducible binomial and cyclotomic multiplicity \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{thebibliography}{99}
+\small
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Trans. Amer. Math. Soc. \textbf{56} (1944), 448--469.
+
+\bibitem{Baker}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BakerWustholz}
+A.~Baker and G.~W\"ustholz,
+\newblock \emph{Logarithmic Forms and Diophantine Geometry},
+\newblock Cambridge University Press, 2007.
+
+\bibitem{Matveev}
+E.~M.~Matveev,
+\newblock An explicit lower bound for a homogeneous rational linear form in logarithms of algebraic numbers II,
+\newblock Izv. Math. \textbf{64} (2000), 1217--1269.
+
+\bibitem{KuipersNiederreiter}
+L.~Kuipers and H.~Niederreiter,
+\newblock \emph{Uniform Distribution of Sequences},
+\newblock Wiley, 1974.
+
+\bibitem{BCZ}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\newblock An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$,
+\newblock Math. Z. \textbf{243} (2003), 79--84.
+
+\bibitem{UnifiedReport}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified Report},
+\newblock supplied source document, August 21, 2026.
+
+\bibitem{JacobianAudit}
+B.~Naskr\k{e}cki,
+\newblock \emph{A three-dimensional Keller map with a three-point fiber: exact audit and structural analysis},
+\newblock public repository, 2026,
+\newblock \url{https://github.com/nasqret/jacobian-counterexample}.
+
+\bibitem{FongFable}
+D.~Fong and Fable,
+\newblock \emph{The State of the Jacobian Conjectures},
+\newblock status note, July 23, 2026,
+\newblock \url{https://jacobianconjectures.com/jacobian/note/}.
+
+\bibitem{JacobianLean}
+D.~Cureton,
+\newblock \emph{Levent Alp\"oge/Fable 5's counterexample to the Jacobian conjecture},
+\newblock Lean 4 development, 2026,
+\newblock \url{https://github.com/deancureton/jacobian/blob/main/Jacobian/Counterexample.lean}.
+
+\bibitem{HadamardTracker}
+VibeMathed contributors,
+\newblock \emph{Hadamard Matrix Conjecture---Order 668} and project status records,
+\newblock accessed August 22, 2026,
+\newblock \url{https://vibemathed.com/problem/hadamard-matrix-order-668}.
+
+\bibitem{RankThirty}
+Elliptic Curve Rank Leaderboard,
+\newblock \emph{Curve \#273}, submitted August 20, 2026,
+\newblock \url{https://elliptic-rank.icarm.cloud/curve/273}.
+
+\end{thebibliography}
+
+\end{document}
