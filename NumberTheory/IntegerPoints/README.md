@@ -51,6 +51,12 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     Dirichlet integral `Si y → π/2` (`tendsto_Si`,
     `abs_Si_sub_pi_div_two_le`) via the Dirichlet kernel and the
     Riemann–Lebesgue lemma — machinery for Lemma 2 (Perron).
+  - `IntegerPoints.Perron` — **proved**: Zhai–Cao Lemma 2, the truncated
+    Perron formula for a finite sum (`zhaiCao_lemma2_holds`): the integral
+    is `Σ_l a_l (Si(T log N/l) − Si(T log M/l))/π`, the weights are within
+    `(2/πT)(1/|log N/l| + 1/|log M/l|)` of the indicator, and the sums over
+    `l` are bounded by shells around `round M`, `round N` (giving the
+    `min(1, L/(T‖M‖))` edge terms) plus a harmonic sum.
   - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
     Weyl–van der Corput inequality with real shift length `Q`
     (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
@@ -77,7 +83,7 @@ Every result is a `Prop`-valued definition (e.g. `zhaiCao_theorem`,
 `wu_theorem1`); the ones proved so far have a companion `…_holds` theorem
 (or an implication between statements), listed above.  The library compiles
 with no `sorry` and no axioms beyond Mathlib's.  The analytic core — the
-exponential-sum estimates (Zhai–Cao Lemmas 2, 5–7, 9–10, Proposition 1; Wu
+exponential-sum estimates (Zhai–Cao Lemmas 5–7, 9–10, Proposition 1; Wu
 Theorem 2, Lemmas 2.5–2.7, Propositions 1–4), Nowak's formula, and the
 RH-conditional main theorems — remains unproved.
 
