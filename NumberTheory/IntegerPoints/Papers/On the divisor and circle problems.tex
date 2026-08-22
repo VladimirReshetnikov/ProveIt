@@ -254,13 +254,14 @@ $$
 we infer by partial summation
 
 $$
-\psi(t)=\sum_{1 \leqslant H<y} \psi_{H}(t)+O\left((1+\|t\| y)^{-1}\right) .
+% ed.: printed text has no minus sign here and in the next display; with the corrected sign of the Fourier expansion above and psi_H as defined (plus sign), psi(t) = -sum_H psi_H(t) + ... and Delta(x,M) = -sum_H Delta(x,H,M) + ...; immaterial for the bounds.
+\psi(t)=-\sum_{1 \leqslant H<y} \psi_{H}(t)+O\left((1+\|t\| y)^{-1}\right) .
 $$
 
 Hence
 
 $$
-\Delta(x, M)=\sum_{1 \leqslant H<y} \Delta(x, H, M)+O(E(x, y, M))
+\Delta(x, M)=-\sum_{1 \leqslant H<y} \Delta(x, H, M)+O(E(x, y, M))
 $$
 
 where
@@ -681,6 +682,7 @@ $$
 \end{aligned}
 $$
 
+% ed.: the absorption requires c^{-1}(xH)^{-1/2}M^{3/2} = (lambda_{a/c}/c)^{1/2} >> log c, i.e. c << G by (6.7), (10.5), (10.7); this holds for the long intervals lambda_{a/c} >= N (c <= mu_0 G), the only case in which (7.5) is used (Delta_0 below). For c of order H one has lambda_{a/c} < c, r(l) << 1 on the range of l, and the sum is in general of order lambda_{a/c}, so (7.5) fails there.
 Here the term $\log c$ is absorbed by the first term. This shows that (5.6) holds true with
 
 
@@ -732,6 +734,7 @@ with
 \end{equation*}
 
 
+% ed.: (6.1), (6.2), (6.6) give beta N asymp 1/G << 1 and beta c N asymp c/G; the lower bound 1 << beta c N uses in addition c > mu_1 G (the short intervals lambda_{a/c} < N treated from here on, cf. Section 6), not c >= 1 alone.
 By (6.1), (6.2), and (6.6) we obtain
 
 
@@ -1300,6 +1303,7 @@ Inserting (12.3) into (6.11) we conclude that
 where
 
 $$
+% ed.: for (12.4) to follow from (6.11) and (12.3) the summation ranges must be those of (6.11), namely C <= c < 2C and A/4 < a < 2A with (a, c) = 1; the printed a ~ A omits A/4 < a <= A.
 \mathscr{B}(A, C, K, L)=\frac{G}{C} \sum_{a \sim A} \sum_{c \sim C}\left|\mathscr{B}_{t_{1}t_{2}}(\mathbf{x};K,L)\right|
 $$
 
@@ -1498,7 +1502,8 @@ $$
 and
 
 $$
-\mathscr{B}^{*}(\delta, K, L) \ll L^{4} K^{2}(1+\delta K) ;
+% ed.: printed text has no factor (KL)^epsilon; it is needed: for fixed l_1 = ... = l_4 = l (e.g. L = 1) and delta = 1/K the solutions of k_1 + k_2 = k_3 + k_4, |sqrt(k_1) + sqrt(k_2) - sqrt(k_3) - sqrt(k_4)| <= K^{-1/2} number asymp K^2 log K, whereas L^4 K^2 (1 + delta K) = 2K^2. The factor is harmless for (14.5).
+\mathscr{B}^{*}(\delta, K, L) \ll L^{4} K^{2}(1+\delta K)(KL)^{\varepsilon} ;
 $$
 
 so that we can assume that $K$ and $L$ are arbitrarily large. Finally without loss of generality we assume

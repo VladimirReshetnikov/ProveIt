@@ -221,7 +221,8 @@ Weyl's method depends on the following inequality.
 Lemma 2. Let $L>K, Q>0$, and $z_{k}$ be complex numbers. We then have
 
 $$
-\left|\sum_{K \leqslant k<L} z_{k}\right|^{2} \leqslant\left(2+\frac{L-K}{Q}\right) \sum_{|q|<Q}\left(1-\frac{|q|}{Q}\right) \sum_{K \leqslant k-q, k+q<L} z_{k-q} \bar{z}_{k+q} .
+% ed.: the original prints the inner condition as $K\leqslant k-q,\ k+q<L$, which for $q<0$ lets the index $k-q$ exceed $L$; both indices must lie in $[K,L)$, i.e. $K\leqslant k-|q|$ and $k+|q|<L$.
+\left|\sum_{K \leqslant k<L} z_{k}\right|^{2} \leqslant\left(2+\frac{L-K}{Q}\right) \sum_{|q|<Q}\left(1-\frac{|q|}{Q}\right) \sum_{K \leqslant k-|q|,\ k+|q|<L} z_{k-q} \bar{z}_{k+q} .
 $$
 
 Proof. It is similar to that of Lemma 5.10 in [6]. \(\blacksquare\)
@@ -697,8 +698,9 @@ dependence from the range of summation we appeal to the following formula.
 Let $0<L\le N<\nu N<\lambda L$ and let $a_l$ be complex numbers with
 $|a_l|\le1$. We then have
 \[
+% ed.: the original prints the factor $\frac1{2\pi}$; the correct Perron normalisation is $\frac1{2\pi i}$, since $\frac1{2\pi i}\int_{-L}^{L}\bigl((\nu N/l)^{it}-(N/l)^{it}\bigr)t^{-1}\,dt=\frac1\pi\bigl(\mathrm{Si}(L\log(\nu N/l))-\mathrm{Si}(L\log(N/l))\bigr)\to1$ for $N<l<\nu N$ (and $\to0$ otherwise); with $\frac1{2\pi}$ the right-hand side would be $i\sum a_n+O(\log(2+L))$, impossible e.g. for $a_n=1$, $N=L$, $\nu=2$.
 \sum_{N<n<\nu N}a_n
- =\frac1{2\pi}\int_{-L}^{L}
+ =\frac1{2\pi i}\int_{-L}^{L}
    \left(\sum_{L<l<\lambda L}a_l l^{-it}\right)
    N^{it}(\nu^{it}-1)t^{-1}\,dt+O(\log(2+L)),
 \]
@@ -714,7 +716,8 @@ Let $X>0$, $M>0$, $\mu>1$, and $\alpha\ne0,1$. We then have
 \begin{aligned}
 \sum_{M<m<\mu M}m^{-1/2}
  e\left(\alpha^{-1}m^\alpha M^{-\alpha}X\right)
-={}&\frac{\gamma}{2\pi}\int_{-L}^{L}
+% ed.: the original prints $\frac{\gamma}{2\pi}$; with the corrected Lemma~6 the factor is $\frac{\gamma}{2\pi i}$, $\gamma$ being the constant of Lemma~5 (as printed, the two $\gamma$'s would differ by the factor $i$).
+={}&\frac{\gamma}{2\pi i}\int_{-L}^{L}
  \left(\sum_{\lambda^{-1}L<l<\lambda L}
  l^{-1/2}\left(\frac{X}{lM}\right)^{it}
  e\left(-\beta^{-1}\left(\frac{lM}{X}\right)^\beta X\right)\right)\\
@@ -1100,8 +1103,9 @@ Now observe that the worst case is $D\asymp1$ and $K\asymp HN$, giving
 &+\mathscr L^6(HMN)^2\left(M+N^2+x^{-1/2}MN^2\right)^2.
 \end{aligned}
 \]
-Here the last but one term is majorized by the first term, so it can be
-omitted. This completes the proof of Theorem~6. \(\blacksquare\)
+% ed.: the original claims here that the last but one term $x^{1/2}H^2M^{1/2}N^3$ is majorized by the first term $x^{1/2}H^2N^4$ and omits it; this holds only when $N\ge M^{1/2}$, which is not assumed. The term is in fact retained in the statement of Theorem~6 (it is the summand $N^{1/4}M^{1/8}$), so nothing is omitted.
+Taking the fourth root, all four terms appear in the statement of
+Theorem~6. This completes the proof of Theorem~6. \(\blacksquare\)
 
 \section*{7. Exponential Sums Related to Short Intervals}
 Considerable attention in analytic number theory is given to the
@@ -1172,8 +1176,9 @@ $f(u)$. The constant term ($h=0$) contributes
  \widehat f(0)\sum_m\sum_n\frac{a_mb_n}{mn}
  =y\sum_m\sum_n\frac{a_mb_n}{mn}+O(yx^{-\varepsilon}).
 \]
+% ed.: as printed, $\widehat f(h/(mn))\ll h^{-2}$ is not uniform in $m,n$: two integrations by parts give $\widehat f(t)\ll t^{-2}(yx^{-2\varepsilon})^{-1}$, hence a tail $O(MNx^{-\varepsilon})$ rather than $O(yx^{-\varepsilon})$. Integrating by parts $j$ times gives $\widehat f(t)\ll_j |t|^{-j}(yx^{-2\varepsilon})^{1-j}$ and a tail $O_j(MNx^{-(j-1)\varepsilon})$; since $MN\le x$ may be assumed (otherwise $|r_{mn}|$ is dominated by the trivial term), $j=\lceil 3/\varepsilon\rceil$ suffices and the constant still depends on $\varepsilon$ alone.
 For $|h|>H=MNy^{-1}x^{3\varepsilon}$ we have
-$\widehat f(h/(mn))\ll h^{-2}$, so the terms with $|h|>H$ contribute
+$\widehat f(h/(mn))\ll_j (mn/h)^{j}(yx^{-2\varepsilon})^{1-j}$ for every $j\ge2$, so the terms with $|h|>H$ contribute
 $O(yx^{-\varepsilon})$. Combining these results completes the proof.
 \(\blacksquare\)
 

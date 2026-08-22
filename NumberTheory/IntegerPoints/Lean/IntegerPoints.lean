@@ -23,6 +23,15 @@ import IntegerPoints.Lemma9Tools
 import IntegerPoints.Lemma9Core
 import IntegerPoints.Lemma9Sum
 import IntegerPoints.Lemma9
+import IntegerPoints.GKStatements
+import IntegerPoints.FouvryIwaniecStatements
+import IntegerPoints.Kolesnik
+import IntegerPoints.HeathBrown
+import IntegerPoints.HuxleyStatements
+import IntegerPoints.IwaniecMozzochi
+import IntegerPoints.Hirschhorn
+import IntegerPoints.LittlewoodWalfisz
+import IntegerPoints.BerndtKimZaharescu
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao

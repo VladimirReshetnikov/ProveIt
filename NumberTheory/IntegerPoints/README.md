@@ -31,6 +31,23 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     is `≪ (yN^{−s})^κ N^λ + y⁻¹N^s` for all `y > 0`, exactly as in
     Graham–Kolesnik §3.3, which is the form the A-process needs).
   - `IntegerPoints.ZhaiCao` — (1.1)–(1.4), Lemmas 9–10, Propositions 1–2.
+  - Statement modules for the other papers in `Papers/` (statements and
+    auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
+    (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
+    Lemmas 2–9), `IntegerPoints.GKStatements` (Graham–Kolesnik Ch. 3:
+    Lemmas 3.1–3.6, 3.7, 3.9, Theorem 3.10, the §3.3 remarks),
+    `IntegerPoints.Kolesnik` (Kolesnik 1985: the classes `E_n`, Lemmas 1–2,
+    A, B, Theorems 1–5, the numerical corollaries),
+    `IntegerPoints.HeathBrown` (Heath-Brown 1992: Theorems 1–6, Lemmas 1–6,
+    the truncated Voronoi formulas), `IntegerPoints.HuxleyStatements`
+    (Huxley 2003: Hypothesis H, Propositions 1–6, Theorems 1–6, Lemmas
+    2.3–2.5), `IntegerPoints.IwaniecMozzochi` (Iwaniec–Mozzochi 1988:
+    the main theorems, the reductions, Lemma 11.1, Theorems 4.1 and 14.1,
+    the §6–§14 definitions), `IntegerPoints.Hirschhorn` (the four classical
+    theorems and the partial-fraction identities),
+    `IntegerPoints.LittlewoodWalfisz` (the theorem `37/112`, Lemmas 1–6,
+    Landau's note), `IntegerPoints.BerndtKimZaharescu` (the survey's
+    identities, Ω-results, moment asymptotics and the table of exponents).
   - `IntegerPoints.Wu` — Theorem 1, Nowak's formula, the reduction to
     `ℛ(M, N)`, the regions `𝒜, ℬ, 𝒞, 𝒟`, Propositions 1–4, and the exact
     Vaughan identity behind Lemma 4.1.
