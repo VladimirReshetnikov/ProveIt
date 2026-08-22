@@ -26,7 +26,7 @@ project, `Lean/` and `Coq/` are siblings; `Research/`, `Support/`, and
 | Topic | Contents |
 | --- | --- |
 | [`Algebra/`](Algebra/) | Linear-through-quartic root formulas; rational and generic Abel--Ruffini obstructions above degree four; a Lean-verified primitive-recursive radical-solvability criterion for individual integer quintics; and Jacobian-conjecture counterexamples including the dimension-three witness, a lower-degree stable representative, and an exact cubic reduction. |
-| [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities. |
+| [`Analysis/`](Analysis/) | Exact trigonometric, arctangent, and exponential identities; Fabius-function definitions, exact dyadic arithmetic, and paper statements. |
 | [`Combinatorics/`](Combinatorics/) | Enumeration of power towers and radical expressions, including OEIS certificates and research corpora; an exact `4.5235` upper-bound certificate for Klarner's polyomino growth constant; squaring the square (Duijvestijn's order-21 perfect squared square and small-order impossibility). |
 | [`Computability/`](Computability/) | Set Turing degrees (order, joins, cardinalities, jump/c.e. theory, and Post's problem); lambda/SK/SKI/Iota universality; Busy Beaver semantics, domination, exact small-state scores and times, and certificate bridges. |
 | [`Logic/`](Logic/) | First-order completeness, propositional/equational axiom systems, modal Kripke semantics and correspondence theory, PA infinitude, PA/HF interpretability, and bounded-complexity self-consistency for PA and for ZFC-inside-PA. |
@@ -176,6 +176,7 @@ The broad build is intentionally expensive. Focused examples are:
 ```powershell
 lake build JacobianConjecture
 lake build +PolynomialFormulas
+lake build FabiusFunction
 lake build +DiophantineEquations.FermatFour
 lake build +ShefferStroke.Sheffer
 lake build +FirstOrder.Fol

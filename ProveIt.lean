@@ -2,6 +2,7 @@ import JacobianConjecture
 import PolynomialFormulas
 import TrigonometricIdentities
 import ExponentialIdentities
+import FabiusFunction
 import DiophantineEquations
 import IntegerSums
 import IntegerPoints
