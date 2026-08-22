@@ -17,6 +17,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.AlgebraicTowerTransition
 import ExponentialIdentities.TwoBaseIntegerExponent.CrossBaseTowerTransition
 import ExponentialIdentities.TwoBaseIntegerExponent.AlgebraicExponentLocus
 import ExponentialIdentities.TwoBaseIntegerExponent.AlgebraicOutputLocus
+import ExponentialIdentities.TwoBaseIntegerExponent.AlgebraicBaseSpectrum
 import ExponentialIdentities.TwoBaseIntegerExponent.CanonicalRadicalMixedOutput
 import ExponentialIdentities.TwoBaseIntegerExponent.SimultaneousRadicalDegrees
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalFunctionAlgebraicLocus
@@ -39,6 +40,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RationalOrbitGrid
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalContactRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.RestrictedMatrixCoefficient
 import ExponentialIdentities.TwoBaseIntegerExponent.IntegralPowerMatrix
+import ExponentialIdentities.TwoBaseIntegerExponent.JordanFirstJet
 import ExponentialIdentities.TwoBaseIntegerExponent.CandidateAlternant
 import ExponentialIdentities.TwoBaseIntegerExponent.SynchronizedSumDecoder
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalSumDecoder
@@ -49,11 +51,15 @@ import ExponentialIdentities.TwoBaseIntegerExponent.DilationDifferenceQuotient
 import ExponentialIdentities.TwoBaseIntegerExponent.BoundaryDisplacement
 import ExponentialIdentities.TwoBaseIntegerExponent.FejerKernelCertificate
 import ExponentialIdentities.TwoBaseIntegerExponent.SignedProgressionDeterminant
+import ExponentialIdentities.TwoBaseIntegerExponent.GeometricVandermondeSmith
+import ExponentialIdentities.TwoBaseIntegerExponent.GeometricNewtonInterpolation
 import ExponentialIdentities.TwoBaseIntegerExponent.AdelicDrift
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianProbability
 import ExponentialIdentities.TwoBaseIntegerExponent.SturmianGeneratingSeries
 import ExponentialIdentities.TwoBaseIntegerExponent.PolynomialApproximationTax
 import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveLogMeanBounds
+import ExponentialIdentities.TwoBaseIntegerExponent.MixedMahlerFinite
+import ExponentialIdentities.TwoBaseIntegerExponent.TwoScaleSupportFinite
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -70,6 +76,34 @@ and `card_le_ten_thousand_log_sq`.
 -/
 
 namespace LeanProofs.TwoBaseIntegerExponent
+
+-- Generic arbitrary-pair algebraic-base spectrum (report 16)
+#print axioms LeanProofs.AlgebraicBaseSpectrum.tripleMonomial_injective_iff
+#print axioms LeanProofs.AlgebraicBaseSpectrum.real_rpow_isAlgebraic_iff_hasPositivePairPowerRelation
+
+-- Exact finite algebra behind the mixed Mahler equation (report 16)
+#print axioms mixedMahlerTrunc_succ_succ
+
+-- Exact finite algebra behind the ordinary two-scale support equation (report 18)
+#print axioms twoScaleSupportTrunc_succ_succ
+
+-- Exact Smith form of the geometric Vandermonde (report 17)
+#print axioms qPascal_mul_qFactorProduct
+#print axioms qSmithFactor_report_formula
+#print axioms qSmithFactor_dvd_succ
+#print axioms qSmithFactor_pos
+#print axioms geometricVandermonde_isUnimodularEquivalent_qSmithDiagonal
+
+-- Exact finite q-Newton interpolation and extrapolation (report 19)
+#print axioms qNewtonExpansion_eq_pow
+#print axioms qNewtonTruncValue_eq_pow_of_le
+#print axioms qNewtonTruncValue_remainder
+#print axioms qNewtonTruncValue_first_omitted
+
+-- Rational first-jet arithmetic and the base-two Jordan closing criterion (report 20)
+#print axioms rational_of_rpow_and_firstJet
+#print axioms firstJet_rational_of_jordanFirstJet_rational
+#print axioms integer_of_two_rpow_integer_of_jordanFirstJet_rational
 
 -- Candidate lattice
 #print axioms twoBaseNaturalCandidate_gcd

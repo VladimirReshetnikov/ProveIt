@@ -230,9 +230,16 @@ denominator clearing, an all-degree normalization-tax obstruction, and rational 
 rigidity.  Reports 9--13 add de-integralized common divisors and natural boundaries, a fixed
 integral-matrix and Loewner formulation, finite-place/Fermat-quotient transversality, and a
 microscopic prime-switch analysis, followed by an exterior-power and boundary-displacement
-matrix audit.  Reports 14--15 add, independently, a structural-prime boundary-resultant
-package and an information-theoretic audit of the synchronized semigroup, including an exact
-ordinary/power-sum decoder and algebraic-decoder degree growth.  Each sharpens a finite interface while leaving the same
+matrix audit.  Reports 14--20 add, independently, a structural-prime boundary-resultant
+package, an information-theoretic audit of the synchronized semigroup, a special-function
+transfer and mixed-Mahler audit, and a weighted Smith-profile/Loewner hierarchy.  They include
+an exact ordinary/power-sum decoder, algebraic-decoder degree growth, a generic algebraic-base
+spectrum, a finite mixed-Mahler identity, multilevel modular divisors, and exact
+geometric-Vandermonde Smith factors, and a Mellin--spectral/approximation audit of the exact
+conditional monoid.  The last two reports add an arithmetic approximation/minimax audit with
+an exact geometric Newton shadow, and an operator-theoretic classification of which local,
+finite-lattice, affine, first-jet, and finite-realization extensions would actually add new
+information.  Each sharpens a finite interface while leaving the same
 four-exponentials barrier intact.
 \end{minipage}
 \vfill
@@ -273,7 +280,7 @@ adds directly to the tropical minimum, giving $p^{\tau+U}\mid\det$ uniformly acr
 assignment cascade.  These gains are lower order; exact synthetic
 experiments expose genuine cross-layer carrying but do not exhibit a leading-order cascade at
 the tested sizes.  Third, it reconciles the genuinely new material independently developed
-in all fifteen reports under \lean{Article/new-reports/}.  The reports share this unified
+in all twenty reports under \lean{Article/new-reports/}.  The reports share this unified
 document as their common base; they are audited independently and reconciled by mathematical
 content rather than treated as a sequential chain.  Reports 1--2 show that the
 Alaoglu--Erd\H{o}s conjecture is equivalent to a
@@ -304,6 +311,27 @@ odd-degree dilation resultants in two favorable residue branches.  Report 15 dev
 independent information-theoretic direction: common digit-length and Sturmian channels,
 fixed-rank $S$-unit sum entropy, exact synchronized-sum decoding, algebraic-decoder degree
 growth, and a finite Fourier formulation of tied-term cancellation.
+Report 16 independently tests gamma, Hurwitz, polylogarithmic, Mahler, Barnes, double-sine,
+and $q$-digamma transfer mechanisms.  It promotes the algebraic-base spectrum to arbitrary
+independent positive algebraic pairs and isolates a corrected double-pole resonance without
+confusing resonance with integrality.  Report 17 independently replaces the determinant
+endpoint by a weighted Smith profile at every exterior degree, derives a universal
+multilevel modular divisor and an exact geometric-Vandermonde Smith form, and couples this
+arithmetic profile to rational cross-Loewner singular scales.  Its entropy analysis proves
+that a hypothetical semigroup is already extremal for ordinary anti-concentration and
+Shannon inequalities.
+Report 18 independently reads the exact monoid as a diagonal spectrum: rank one and rank two
+become simple and double spectral-zeta poles, linear and quadratic logarithmic Weyl laws, and
+one or two Mellin frequency lattices.  It also proves a sharp fixed-window polynomial
+node-budget barrier and isolates an exact two-scale support equation, while showing that none
+of these formal rank signatures uses the decisive extra integrality $M^{\thetaq}\in\N$.
+Report 19 independently develops the corresponding arithmetic approximation lattice: an
+exact unit-locking principle, the same optimized fixed-window capacity, finite dyadic
+interpolation certificates, a cofactor formula for discrete minimax error, and a geometric
+Newton expansion whose first omitted value is explicit.  Report 20 independently audits the
+operator interface: two-mode shifts, heat data, and semisimple functional calculus are blind,
+whereas a global or finite valuation lattice, one affine coherence, one rational first jet,
+or one exact finite trace/Hankel realization would force integrality.
 Fourth, it
 quantifies the remaining gap: the determinant hierarchy misses the conditional population by
 exactly one factor of $\log X$.
@@ -400,7 +428,10 @@ The current algebraic-locus and nonarchimedean wave further includes
 \lean{SuperfactorialDeterminant}, \lean{SignedProgressionDeterminant},
 \lean{FejerKernelCertificate}, \lean{GlobalMixedPrefixCascade},\\
 \lean{DilationDifferenceQuotient}, \lean{SynchronizedSumDecoder},
-\lean{RationalSumDecoder}.
+\lean{RationalSumDecoder}, \lean{AlgebraicBaseSpectrum},
+\lean{MixedMahlerFinite}, \lean{GeometricVandermondeSmith},
+\lean{TwoScaleSupportFinite}, \lean{GeometricNewtonInterpolation},
+\lean{JordanFirstJet}.
 \end{center}
 Public headline theorems throughout were audited with \lean{#print axioms}; only the standard
 Mathlib axioms \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} occur, and the
@@ -15294,6 +15325,792 @@ separation remains an open construction.  None of the entropy identities by itse
 the conjecture.}
 \end{statusbox}
 
+\section{Sixteenth report: transfer spectra and mixed Mahler resonance}
+\label{sec:report16}
+
+Report 16 is another independent sibling of reports 1--15: it starts from the same unified
+base and asks whether classical special functions can amplify the multiplicative rank of the
+two known outputs.  Its generic spectrum theorem strengthens the existing $(2,3)$
+classification, while its gamma, Hurwitz, polylogarithmic, Barnes, double-sine, and
+$q$-digamma packages diagnose several exact but rank-preserving reformulations.  The report's
+recorded metadata searches all failed, so no ``no proof found'' conclusion is imported here;
+only mathematical claims with an internal proof or an identified classical input are used.
+
+\subsection{The algebraic-base spectrum}
+\label{r16:spectrum}
+
+Let $a,b,c>0$ be algebraic, assume that the nonnegative monomials in $a,b$ are unique, and
+let $x\notin\Q$ with $a^x,b^x$ algebraic.  Write
+\begin{equation}
+ \operatorname{Rel}_{a,b}(c)\quad\Longleftrightarrow\quad
+ \exists n>0\ \exists i,j,k,l\in\Nzero:\
+ a^k b^l c^n=a^i b^j.
+ \label{r16:eq-pair-relation}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{c^x\in\Qbar\quad\Longleftrightarrow\quad
+        \operatorname{Rel}_{a,b}(c).}
+ \label{r16:eq-spectrum}
+\end{equation}
+Indeed, the forward implication follows from the algebraic Six Exponentials theorem unless
+the three-base nonnegative monomial map has a collision; the reverse implication follows by
+raising \eqref{r16:eq-pair-relation} to $x$ and extracting a positive real $n$th root.  This is
+\statuslean{} as
+\lean{AlgebraicBaseSpectrum.real_rpow_isAlgebraic_iff_hasPositivePairPowerRelation}; the exact
+collision equivalence is \lean{AlgebraicBaseSpectrum.tripleMonomial_injective_iff}.
+
+For a hypothetical nonintegral solution and $(a,b)=(2,3)$, this recovers the exact statement
+that the positive algebraic bases with algebraic $x$th power are precisely the divisible hull
+of $\langle2,3\rangle$.  Thus no positive algebraic third base can simultaneously have an
+algebraic output and supply an independent logarithmic direction.  Gamma quotients, radicals,
+norms, and structural-prime constructions do not evade this theorem once their positivity and
+algebraicity are established.
+
+\subsection{Entire cancellation and rank-preserving transfer formulas}
+\label{r16:entire-transfer}
+
+For an integer $b\ge2$, the apparent meromorphic quotient
+\begin{equation}
+ Q_b(z):=\frac{\Gamma(-z)}{\Gamma(1-b^z)}
+ \label{r16:eq-entire-quotient}
+\end{equation}
+extends to an entire function: at every $k\in\Nzero$ the two simple poles cancel with a
+nonzero ratio.  Its other zeros are the nonintegral points for which $b^z$ is a positive
+integer.  Since the two vertical phase lattices for bases $2$ and $3$ meet only on the real
+axis,
+\begin{equation}
+ \text{Alaoglu--Erd\H{o}s}\quad\Longleftrightarrow\quad
+ Z(Q_2)\cap Z(Q_3)=\varnothing.
+ \label{r16:eq-entire-coprime}
+\end{equation}
+At a nonintegral real zero with $b^x=B\in\N$ one has
+\begin{equation}
+ Q_b'(x)=\Gamma(-x)(-1)^B B!\log b.
+ \label{r16:eq-entire-derivative}
+\end{equation}
+These paper identities remove all known integral solutions exactly, but they do not create a
+two-dimensional common zero lattice; a common Barnes divisor would therefore be spurious.
+
+Gauss multiplication, Hurwitz distribution, and the Cartier identity for
+$F_x(z)=\operatorname{Li}_{-x}(z)$ all yield the same multiplier $q^x$.  Under a
+counterexample their normalized values are algebraic exactly for $3$-smooth $q$, by
+\eqref{r16:eq-spectrum}.  The dichotomy
+\begin{equation}
+ \operatorname{Li}_{-x}(z)\text{ is D-finite over }\C(z)
+ \quad\Longleftrightarrow\quad x\in\Nzero
+ \label{r16:eq-holonomic}
+\end{equation}
+is classical: nonintegral order produces infinitely many independent fractional-power
+monodromy germs.  Likewise, after defining $a_0=0$, the sequence $a_n=n^x$ is $q$-regular
+exactly for integral $x$.  Integer Cartier eigenvalues at $2$ and $3$, however, do not imply
+either finite holonomic rank or finite $q$-kernel rank; that missing implication is another
+form of the original wall.
+
+\subsection{A finite Mahler identity and the corrected resonance theorem}
+\label{r16:mahler}
+
+For a commutative ring and finite cutoffs define
+\begin{equation}
+ H_{A,B}(z):=\sum_{0\le a<A}\sum_{0\le b<B}
+ M^aN^b z^{2^a3^b}.
+ \label{r16:eq-mahler-trunc}
+\end{equation}
+The exact rectangular inclusion--exclusion identity
+\begin{align}
+ H_{A+1,B+1}(z)
+ &=z+M H_{A,B+1}(z^2)+N H_{A+1,B}(z^3)\\
+ &\qquad-MN H_{A,B}(z^6)
+ \label{r16:eq-mahler-finite}
+\end{align}
+is \statuslean{} as \lean{mixedMahlerTrunc_succ_succ} in
+\lean{MixedMahlerFinite}.  It is a finite algebra theorem only; convergence, natural
+boundaries, Mellin transforms, and asymptotics are not hidden in its statement.
+
+For positive integers $M,N$, the limiting integer-coefficient series
+\begin{equation}
+ H_{M,N}(z)=\sum_{a,b\ge0}M^aN^b z^{2^a3^b}
+ \label{r16:eq-mahler-series}
+\end{equation}
+has radius one and a non-eventually-periodic zero pattern, so the classical
+P\'olya--Carlson/Skolem--Mahler--Lech argument
+\cite{Carlson1921,Lech1953} makes the unit circle a natural boundary.  This
+happens for both integral and hypothetical nonintegral exponents and is therefore only a
+diagnostic.
+
+For $M,N\ge2$, put
+\begin{equation}
+ \alpha=\frac{\log M}{\log2},\qquad
+ \beta=\frac{\log N}{\log3}.
+\end{equation}
+Termwise Mellin integration initially gives
+\begin{equation}
+ \int_0^\infty H_{M,N}(e^{-t})t^{s-1}\,dt
+ =\frac{\Gamma(s)}{(1-M2^{-s})(1-N3^{-s})}
+ \qquad(\Re s>\max\{\alpha,\beta\}).
+ \label{r16:eq-mellin}
+\end{equation}
+The two geometric pole lattices meet exactly when $\alpha=\beta$, and then only at the real
+point $s=x$.  Consequently resonance gives
+\begin{equation}
+ H_{M,N}(e^{-t})
+ =t^{-x}\left[
+ \frac{\Gamma(x)}{\log2\log3}\log\frac1t+B+P_2(\log(1/t))+P_3(\log(1/t))
+ \right]+O(t^{-x+\eta}),
+ \label{r16:eq-resonance}
+\end{equation}
+where $P_2,P_3$ are absolutely convergent analytic periodic functions with periods
+$\log2,\log3$.  The restriction $M,N\ge2$ is essential: $M=1$ or $N=1$ introduces an
+unrelated Gamma-pole collision at $s=0$.  The Barnes kernel
+\begin{equation}
+ \frac1{(1-e^{-v\log2})(1-e^{-v\log3})}
+ =\sum_{a,b\ge0}e^{-v(a\log2+b\log3)}
+ \label{r16:eq-barnes-kernel}
+\end{equation}
+is valid as a geometric series for $\Re v>0$; the corresponding Barnes double-zeta integral
+starts in $\Re w>2$, $\Re a>0$ and is then continued.  The double pole detects equality of
+the two exponents, not their integrality.
+
+\subsection{Double-sine, $q$-digamma, and the surviving target}
+\label{r16:qgamma}
+
+The reciprocal double-sine normalization with periods $\log2,\log3$ packages the two outputs
+as adjacent shift quotients at $z_x=i x\log2\log3/(2\pi)$.  The shift compatibility is built
+into the function and supplies no contradiction.  Separately, Borwein's Pad\'e theorem gives
+the unconditional irrationality of
+\begin{equation}
+ L_b(B)=\sum_{k\ge0}\frac1{Bb^k-1}
+ =-\frac{\psi_{1/b}(x)+\log(1-b^{-1})}{\log b}
+ \qquad(B=b^x\in\N,\ b\ge2).
+ \label{r16:eq-qdigamma}
+\end{equation}
+This one-base irrationality \cite{Borwein1992} also holds for every genuine integral
+exponent.  Finally,
+${}_1F_0(-x;;-z)=(1+z)^x$ (continued analytically at the displayed arguments) makes the
+rank-amplification target explicit: the known values at $1+z=2,3$ do not algebraize the value
+at $1+z=5$.  A cross-base value theorem doing so would contradict
+\eqref{r16:eq-spectrum}, but no such theorem is presently available.
+
+\begin{statusbox}{Report 16 was audited independently from the common base.  The generic
+algebraic-base spectrum is \statuslean{} in \lean{AlgebraicBaseSpectrum}; the finite mixed
+Mahler identity is \statuslean{} in \lean{MixedMahlerFinite}.  The entire quotient, corrected
+$M,N\ge2$ Mellin resonance, and transfer identities are self-contained paper arguments.  The
+holonomic dichotomy, P\'olya--Carlson boundary, Barnes continuation, and Borwein irrationality
+use named classical inputs.  Double-sine rigidity, Cartier-to-holonomy, and all proposed
+rank-amplification statements remain open.  Nothing in the section proves the conjecture.}
+\end{statusbox}
+
+\section{Seventeenth report: weighted Smith profiles and rational Loewner clusters}
+\label{sec:report17}
+
+Report 17 is independent of reports 1--16.  It replaces the single determinant by the full
+sequence of determinantal divisors and compares that arithmetic profile with every exterior
+singular-value level.  It also develops a rational cross-Loewner ensemble and proves that
+ordinary probability and entropy are already saturated by the hypothetical semigroup.  The
+new certificates are exact sufficient criteria, not verified contradictions.  The basic
+exterior/Frobenius identity overlaps report 13, the fractional Loewner integral and rational
+positivity overlap report 10, and source-recovery entropy overlaps report 15.  The genuinely
+new refinements are the weighted all-minor inequality, the $p^t$-level modular divisor, the
+full geometric-Vandermonde Smith form, and the level-by-level Loewner singular hierarchy.
+
+\subsection{From one determinant to every exterior level}
+\label{r17:smith-profile}
+
+For a full-rank $A\in\Z^{n\times n}$ let $\delta_k(A)$ be the gcd of its $k$-minors and let
+$\sigma_1\ge\cdots\ge\sigma_n$ be its singular values.  Cauchy--Binet in exterior form gives
+\begin{equation}
+ \sum_{|I|=|J|=k}\det(A_{I,J})^2
+ =e_k(\sigma_1^2,\ldots,\sigma_n^2).
+ \label{r17:eq-exterior-minors}
+\end{equation}
+If all $k$-minors are nonzero, then
+\begin{equation}
+ e_k(\sigma(A)^2)\ge\binom nk^2\delta_k(A)^2.
+ \label{r17:eq-smith-mass}
+\end{equation}
+Thus, if $A=B+R$, $\operatorname{rank}B\le r<k$, $\|R\|_2\le\varepsilon$, and
+$\|A\|_2\le S$, then
+\begin{equation}
+ \boxed{\sqrt{\binom nk}\,\delta_k(A)\le S^r\varepsilon^{k-r}.}
+ \label{r17:eq-bulk-smith}
+\end{equation}
+Every intermediate $k$ is a possible contradiction level.
+
+For a diagonal gauge $K=D^{-1}AE^{-1}$ with positive diagonal entries $\rho_i,\kappa_j$,
+the exact weighted identity is
+\begin{equation}
+ e_k(\sigma(K)^2)
+ =\sum_{I,J}\frac{\det(A_{I,J})^2}{\rho_I^2\kappa_J^2}
+ \ge\delta_k(A)^2 e_k(\rho^{-2})e_k(\kappa^{-2}).
+ \label{r17:eq-weighted-smith}
+\end{equation}
+This retains Smith mass after removing analytically irrelevant row and column scales, unlike
+a determinant-only normalization.
+
+\subsection{Multilevel residue collapse and a geometric Smith model}
+\label{r17:modular-smith}
+
+For a $d$-variable integer monomial-evaluation matrix, let
+$0\le\nu_{p,1}\le\cdots\le\nu_{p,n}$ be the valuations of its Smith factors and put
+$r_{p,t}=\#\{i:\nu_{p,i}<t\}$.  The exact Ferrers-level identity and residue-class bound are
+\begin{equation}
+ v_p(\delta_k)=\sum_{t\ge1}(k-r_{p,t})_+,
+ \qquad r_{p,t}\le p^{td}.
+ \label{r17:eq-level-decomposition}
+\end{equation}
+Consequently every such matrix satisfies
+\begin{equation}
+ \boxed{D_{k,d}:=\prod_p p^{\sum_{t\ge1}(k-p^{td})_+}\mid\delta_k.}
+ \label{r17:eq-universal-divisor}
+\end{equation}
+For fixed $d$,
+\begin{equation}
+ \log D_{k,d}=\left(\frac d{d+1}+o(1)\right)k^{1+1/d};
+ \label{r17:eq-divisor-asymptotic}
+\end{equation}
+the bivariate constant is $2/3$.  This paper theorem applies to arbitrary supports, but its
+universal size is lower order in the natural global determinant budgets.
+
+The one-variable geometric Vandermonde
+\begin{equation}
+ V_n(q)=(q^{ij})_{0\le i,j<n},\qquad q\ge2,
+\end{equation}
+has the exact Smith factors
+\begin{equation}
+ s_i(q)=q^{\binom i2}\prod_{r=1}^i(q^r-1),\qquad 0\le i<n.
+ \label{r17:eq-q-smith}
+\end{equation}
+The proof changes from monomials to the Newton basis
+$\prod_{r<i}(X-q^r)$, leaving a diagonal matrix times an upper unitriangular Gaussian-binomial
+matrix.  Hence
+\begin{equation}
+ \log\delta_k(V_n(q))=\frac{\log q}{3}k^3+O_q(k^2).
+ \label{r17:eq-q-smith-asymptotic}
+\end{equation}
+This large one-base Smith mass occurs for every ordinary integer $q$ and is therefore a
+calibration and no-go, not evidence of exceptional two-base structure.  The complete
+determinant-one two-sided reduction, the integral $q$-Pascal identity, the divisibility chain,
+and positivity for $q\ge2$ are \statuslean{} in \lean{GeometricVandermondeSmith}; the
+formal endpoint is
+\lean{geometricVandermonde_isUnimodularEquivalent_qSmithDiagonal}.
+
+\subsection{Rational cross-Loewner clusters}
+\label{r17:loewner}
+
+Write a hypothetical exponent as $x=m+\alpha$ with $0<\alpha<1$.  For
+$u,v$ in the dense group $\{2^a3^b:a,b\in\Z\}$, both $u^\alpha,v^\alpha$ are rational, so the
+cross-Loewner kernel
+\begin{equation}
+ L_\alpha(u,v)=\frac{u^\alpha-v^\alpha}{u-v}
+ =\frac{\sin(\pi\alpha)}{\pi}
+   \int_0^\infty\frac{t^\alpha}{(u+t)(v+t)}\,dt
+ \label{r17:eq-loewner}
+\end{equation}
+is rational at distinct group nodes.  Andreief's identity and the Cauchy determinant give,
+for disjoint increasing node sets,
+\begin{align}
+ \det(L_\alpha(u_i,v_j))
+ &=\frac{c_\alpha^n}{n!}\,\Delta(u)\Delta(v)\\
+ &\quad\times\int_{(0,\infty)^n}
+ \frac{\prod t_\ell^\alpha\Delta(t)^2}
+      {\prod_{i,\ell}(u_i+t_\ell)(v_i+t_\ell)}\,dt,
+ \label{r17:eq-loewner-andreief}
+\end{align}
+which is strictly positive.  For affine clusters
+$u_i=1+\varepsilon\xi_i$, $v_j=1+\varepsilon\eta_j$, Selberg's integral yields
+\begin{equation}
+ \det(L_\alpha(u_i,v_j))
+ =\kappa_{n,\alpha}\Delta(\xi)\Delta(\eta)
+   \varepsilon^{n(n-1)}(1+O(\varepsilon)),
+ \label{r17:eq-loewner-cluster}
+\end{equation}
+with an explicit positive gamma-product constant.  Orthogonal projection in the Stieltjes
+feature space gives the sharper individual hierarchy
+\begin{equation}
+ \sigma_j=\Theta(\varepsilon^{2(j-1)})\qquad(1\le j\le n)
+ \label{r17:eq-loewner-singular}
+\end{equation}
+for fixed nondegenerate affine clusters; the determinant constant is the corresponding
+Selberg integral \cite{Selberg1944}.
+
+If $A=DKE$ clears a rational cluster to integers, combining
+\eqref{r17:eq-weighted-smith} and \eqref{r17:eq-loewner-singular} forces
+\begin{equation}
+ \delta_k(A)
+ \left(\frac{e_k(D^{-2})e_k(E^{-2})}{\binom nk}\right)^{1/2}
+ \le C_{n,k,\alpha}\varepsilon^{k(k-1)}.
+ \label{r17:eq-loewner-certificate}
+\end{equation}
+A finite violation would prove the conjecture.  Naive numerator/denominator clearing is
+exponentially more expensive than this polynomial target; reduced Smith content or genuine
+row--column cancellation is still missing.
+
+\subsection{Positivity and entropy no-go theorems}
+\label{r17:no-go}
+
+The most natural $3$-smooth Gram matrices are infinitely divisible: if
+\begin{equation}
+ K_{ij}=2^{\langle a_i,a_j\rangle}3^{\langle b_i,b_j\rangle},
+\end{equation}
+then $K^{\circ t}\succeq0$ for every $t\ge0$, and under a counterexample
+$K^{\circ x}$ is integral.  Thus positivity of Hadamard powers cannot distinguish integral
+from nonintegral $x$ without an additional arithmetic positivity principle.
+
+Probability is equally tight.  If $N,K$ are independent uniform variables on
+$\{0,\ldots,H\}$ and
+\begin{equation}
+ X_H=2^N M^K,\qquad Y_H=3^N A^K,
+\end{equation}
+then one external-prime valuation and the structural valuation recover $(N,K)$ from either
+output separately.  Hence
+\begin{equation}
+ \mathsf H(X_H)=\mathsf H(Y_H)=\mathsf H(X_H,Y_H)=2\log(H+1),
+ \qquad I(X_H;Y_H)=2\log(H+1).
+ \label{r17:eq-entropy-saturation}
+\end{equation}
+The hypothetical semigroup saturates, rather than violates, ordinary anti-concentration and
+Shannon inequalities.  Random minors and modular scouting remain useful discovery tools only
+when followed by an exact Smith or interval certificate.
+
+\begin{statusbox}{Report 17 was audited independently from the common base.  The exact
+geometric-Vandermonde Smith form is \statuslean{} in \lean{GeometricVandermondeSmith}.  The
+exterior-minor identities, weighted Smith inequalities, multilevel modular divisor,
+Loewner--Andreief/Selberg formulas, singular hierarchy, and entropy saturation remain
+self-contained paper arguments with the stated classical linear-algebra and integral inputs.
+The universal modular divisor is a baseline, not a closing estimate; the geometric Smith form
+is a one-base no-go; and the Loewner certificate still requires reduced denominator or Smith
+information not supplied by height clearing.  None of these results proves the conjecture.}
+\end{statusbox}
+
+\section{Eighteenth report: logarithmic spectral rank and approximation capacity}
+\label{sec:report18}
+
+Report 18 is an independent asymptotic reading of the common exact conditional structure.
+It regards the candidate set as the spectrum of a diagonal operator, resolves the associated
+heat trace by Mellin inversion, records a second mixed support equation, and compares the
+best polynomial approximation rate on a fixed multiplicative window with the number of
+conditional integer nodes.  These constructions distinguish a formal rank-one semigroup from
+a formal rank-two semigroup; by themselves they do not use the additional arithmetic fact
+that the synchronized $\thetaq$th powers are also integers.
+
+\subsection{Spectral zeta and logarithmic Weyl rank}
+\label{r18:spectral}
+
+On $\ell^2(\Sol)$ define $De_x=2^x e_x$ and $Ee_x=3^x e_x$.  Positive functional calculus
+gives $E=D^{\thetaq}$.  For $\Re s>0$, the exact conditional structure gives
+\begin{equation}
+ Z_D(s)=\operatorname{Tr}(D^{-s})=
+ \begin{cases}
+ (1-2^{-s})^{-1},&\Sol=\Nzero,\\[0.3em]
+ \bigl((1-2^{-s})(1-M^{-s})\bigr)^{-1},
+   &\Sol=\Nzero+\Nzero\beta,
+ \end{cases}
+ \label{r18:eq-spectral-zeta}
+\end{equation}
+and $Z_E(s)=Z_D(\thetaq s)$.  Thus the origin is a simple pole in rank one and a double pole
+in rank two.  Equivalently, for
+\begin{equation}
+ N_D(\Lambda)=\#\{x\in\Sol:2^x\le\Lambda\},
+\end{equation}
+the exact conditional count, together with the paper-level Baker--discrepancy refinement,
+gives
+\begin{align}
+ N_D(\Lambda)&=\frac{\log\Lambda}{\log2}+O(1)
+ &&\text{in rank one},\label{r18:eq-weyl-one}\\
+ N_D(\Lambda)&=\frac{(\log\Lambda)^2}{2\log2\log M}
+ +\left(\frac1{2\log2}+\frac1{2\log M}\right)\log\Lambda
+ +O_M((\log\Lambda)^{1-\delta})
+ &&\text{in rank two}.\label{r18:eq-weyl-two}
+\end{align}
+Consequently the limit
+\begin{equation}
+ \dim_{\log}D:=\lim_{\Lambda\to\infty}
+ \frac{\log N_D(\Lambda)}{\log\log\Lambda}
+\end{equation}
+is respectively $1$ or $2$.  This is an exact reformulation of the monoid dichotomy, not an
+independent method for deciding which case holds.
+
+\subsection{Complete heat-trace expansion}
+\label{r18:heat}
+
+For a formal independent pair $(2,M)$ put $a=\log2$, $b=\log M$ and
+\begin{equation}
+ H_{a,b}(t)=\sum_{n,k\ge0}\exp(-t e^{an+bk}).
+\end{equation}
+Mellin transformation gives
+\begin{equation}
+ \int_0^\infty H_{a,b}(t)t^{s-1}\,dt
+ =\frac{\Gamma(s)}{(1-e^{-as})(1-e^{-bs})}
+ \qquad(\Re s>0).
+ \label{r18:eq-heat-mellin}
+\end{equation}
+Since $2$ and $M$ are multiplicatively independent, Baker's theorem supplies polynomial
+lower bounds for the near-collisions of the two imaginary pole lattices.  The exponential
+vertical decay of $\Gamma$ then makes the residue series absolutely convergent.  With
+$L=\log(1/t)$, contour shifting yields, for every $R\ge0$,
+\begin{align}
+ H_{a,b}(t)
+ &=Q_{a,b}(L)+P_a(L)+P_b(L)\\
+ &\quad+\sum_{r=1}^{R}
+ \frac{(-1)^r t^r}{r!(1-e^{ar})(1-e^{br})}
+ +O_{a,b,R}(t^{R+1/2}),
+ \label{r18:eq-heat-expansion}
+\end{align}
+where
+\begin{align}
+ Q_{a,b}(L)
+ &=\frac{L^2}{2ab}
+ +\left(\frac1{2a}+\frac1{2b}-\frac{\gamma}{ab}\right)L+C_{a,b},\\
+ P_a(L)
+ &=\sum_{\ell\ne0}
+ \frac{\Gamma(2\pi i\ell/a)}{a(1-e^{-2\pi i\ell b/a})}
+ e^{2\pi i\ell L/a},
+\end{align}
+and $P_b$ is the symmetric series.  The two nonzero frequency sets are disjoint; hence the
+bounded remainder contains a genuine quasiperiodic component.  In rank one the leading term
+is $L/a$ with one periodic frequency lattice.  These paper formulas are mathematically
+sharper than the rough count, but the output heat trace is only the rescaling
+$Z_E(s)=Z_D(\thetaq s)$ and supplies no second independent constraint.
+
+\subsection{The finite two-scale support equation}
+\label{r18:support}
+
+For natural scales $p,q$ and a commutative ring, set
+\begin{equation}
+ F_{A,B}(z)=\sum_{0\le a<A}\sum_{0\le b<B}z^{p^a q^b}.
+\end{equation}
+The exact finite identity
+\begin{align}
+ F_{A+1,B+1}(z)
+ &=z+F_{A,B+1}(z^p)+F_{A+1,B}(z^q)-F_{A,B}(z^{pq})
+ \label{r18:eq-support-finite}
+\end{align}
+is \statuslean{} as \lean{twoScaleSupportTrunc_succ_succ} in
+\lean{TwoScaleSupportFinite}.  It is coefficientwise finite and has no analytic hypotheses.
+
+For multiplicatively independent integers $2,M$, passage to the convergent support series
+\begin{equation}
+ F_{2,M}(z)=\sum_{n,k\ge0}z^{2^nM^k},\qquad |z|<1,
+\end{equation}
+gives
+\begin{equation}
+ F_{2,M}(z)-F_{2,M}(z^2)-F_{2,M}(z^M)+F_{2,M}(z^{2M})=z.
+ \label{r18:eq-support-infinite}
+\end{equation}
+Its $0$--$1$ coefficient sequence has density-zero infinite support and is not eventually
+periodic, so P\'olya--Carlson gives the unit circle as a natural boundary.  Rank-one lacunary
+series already have the same boundary; only the radial singularity order sees the rank.
+Existing Mahler theorems for two separate independent functional equations do not apply to
+this one mixed inclusion--exclusion equation.
+
+\subsection{A sharp fixed-window node-budget barrier}
+\label{r18:approximation}
+
+Fix $h>0$.  On $[1,e^h]$ the nearest singularity of $u^{\thetaq}$ maps, under the affine
+normalization to $[-1,1]$, to the Bernstein ellipse parameter
+\begin{equation}
+ \rho(h)=\coth(h/4).
+ \label{r18:eq-ellipse}
+\end{equation}
+Therefore the least polynomial degree needed to approximate $x^{\thetaq}$ uniformly within
+$1/2$ on $[X,e^hX]$ obeys
+\begin{equation}
+ d_{\min}(X,h)\ge
+ \left(\frac{\thetaq}{\log\rho(h)}+o(1)\right)\log X.
+ \label{r18:eq-degree-cost}
+\end{equation}
+Under a counterexample the number of conditional nodes in the same window is
+\begin{equation}
+ K_X(h)=\frac{h}{\beta(\log2)^2}\log X+o(\log X).
+ \label{r18:eq-window-nodes}
+\end{equation}
+The elementary maximization
+\begin{equation}
+ \sup_{h>0}h\log\coth(h/4)=2\operatorname{arsinh}(1)^2
+ =1.5536387997\ldots
+ \label{r18:eq-capacity}
+\end{equation}
+occurs at $h=2\operatorname{arsinh}(1)$.  Using the kernel-verified lower bound $\beta>12$
+therefore gives
+\begin{equation}
+ \limsup_{X\to\infty}\frac{K_X(h)}{d_{\min}(X,h)}
+ \le\frac{h\log\coth(h/4)}{\beta\log2\log3}
+ <0.170020.
+ \label{r18:eq-node-barrier}
+\end{equation}
+Thus a fixed-window strategy that first approximates by a degree-$d$ polynomial to sub-unit
+accuracy and then demands at least $d+2$ integer nodes is starved by a factor greater than
+$5.88$, even before coefficient height and denominator taxes.  This does not exclude rational,
+multivariate, semigroup-adapted, or growing-window approximants.
+
+The report also compares the conditional $(\log X)^2$ set with recent irrational-power
+additive-relation bounds.  Unequal-length relations such as
+$(2m)^{\thetaq}=3m^{\thetaq}$ already occur at the scale allowed by those theorems, while no
+extra equal-length energy is forced.  Because the relevant preprints and constants are
+time-sensitive, this synthesis retains only the mathematical threshold diagnosis and does
+not elevate a dated literature search to a theorem.
+
+\begin{statusbox}{Report 18 was audited independently from the common base.  The finite
+two-scale support identity is \statuslean{} in \lean{TwoScaleSupportFinite}.  The zeta/Weyl
+reformulations use the kernel-verified exact monoid and leading counting asymptotic, with the
+displayed power-saving remainder kept at paper level.  The
+complete heat expansion and sharp fixed-window capacity theorem are paper arguments using,
+respectively, classical Mellin--Baker input and classical best-polynomial-approximation
+asymptotics.  The natural boundary is classical after the finite support algebra.  None of
+the spectral, heat, Mahler, approximation, or additive signatures eliminates a formal
+rank-two integer semigroup; the missing step is still the arithmetic coupling
+$M^{\thetaq}\in\N$.}
+\end{statusbox}
+
+\section{Nineteenth report: arithmetic approximation and geometric Newton interpolation}
+\label{sec:report19}
+
+Report 19 is an independent approximation-theoretic sibling of the preceding reports.  Its
+fixed-window optimization converges on the same capacity constant as report 18, but starts
+from the integer-valued-polynomial lattice on the $3$-smooth nodes rather than from a spectral
+count.  Its genuinely complementary finite content is an exact interpolation certificate,
+the cofactor formula for discrete minimax error, and a geometric Newton expansion with an
+explicit first extrapolation error.  These results isolate the arithmetic unit barrier; they
+do not manufacture the missing integer-valued approximant.
+
+\subsection{Subunit locking and the optimal multiplicative block}
+\label{r19:locking}
+
+Put $\mathcal B=\{2^a3^b:a,b\in\Nzero\}$.  Under a hypothetical solution $\beta$,
+$q^\beta\in\Z$ for every $q\in\mathcal B$.  If $E\subset\mathcal B$ is finite and a
+degree-$d$ polynomial $P$ is integer-valued on $E$, then
+\begin{equation}
+ \max_{q\in E}|q^\beta-P(q)|<1
+ \quad\Longrightarrow\quad q^\beta=P(q)\quad(q\in E).
+ \label{r19:eq-unit-lock}
+\end{equation}
+The generalized power system $1,t,\ldots,t^d,t^\beta$ is Chebyshev on $(0,\infty)$, so a
+nonintegral $\beta$ makes \eqref{r19:eq-unit-lock} impossible as soon as $|E|\ge d+2$.
+The same argument gives an exact unit floor for every integer-coefficient M\"untz polynomial
+with distinct exponents in $\Nzero+\Nzero\beta$.
+
+For $c>1$, the $3$-smooth nodes in $[X,cX]$ have cardinality
+\begin{equation}
+ \frac{\log c}{\log2\log3}\log X+o(\log X),
+\end{equation}
+whereas Bernstein approximation to $t^\beta$ on that block requires degree at least
+$\beta\log X/\log\rho(c)+o(\log X)$, with
+\begin{equation}
+ \rho(c)=\frac{\sqrt c+1}{\sqrt c-1}.
+\end{equation}
+The exact optimization is
+\begin{equation}
+ \max_{c>1}\log c\log\rho(c)=2\log^2(1+\sqrt2),
+ \qquad c_*=3+2\sqrt2.
+ \label{r19:eq-block-optimum}
+\end{equation}
+Consequently this particular method could have a positive degree-versus-node margin only for
+\begin{equation}
+ M=2^\beta<\exp\!\left(\frac{2\log^2(1+\sqrt2)}{\log3}\right)
+ =4.113124586\ldots.
+\end{equation}
+Among nonpowers of two only $M=3$ lies in that formal range, and the accepted finite corpus
+already excludes it (indeed it proves $M\ge4096$ for a counterexample).  Thus the exact
+constant is a sharp no-go for ordinary fixed-block polynomial approximation, consistent with
+the report-18 capacity calculation.
+
+\subsection{Dyadic certificates and the discrete minimax unit barrier}
+\label{r19:certificates}
+
+Let $0\le n_0<\cdots<n_d$, and let $I_{\mathbf n}\in\Q[T]$ be the degree-at-most-$d$
+interpolant with $I_{\mathbf n}(2^{n_j})=3^{n_j}$.  For an integer $M$ outside the node set,
+write $I_{\mathbf n}(M)=a/b$ in lowest terms, $b>0$.  The exact certificate is
+\begin{equation}
+ \left|M^{\thetaq}-\frac ab\right|<\frac1b
+ \quad\Longrightarrow\quad M^{\thetaq}\notin\Z.
+ \label{r19:eq-dyadic-certificate}
+\end{equation}
+If the target were integral, its nonzero difference from $a/b$ would have size at least
+$1/b$; equality with the interpolant is excluded by the $d+2$-zero Chebyshev bound.  The
+quadratic interpolants
+\begin{equation}
+ I_{0,1,2}(T)=\frac{T^2+3T-1}{3},\qquad
+ I_{1,2,3}(T)=\frac{T^2+6T-4}{4}
+\end{equation}
+give short exact exclusions for $M=3,5,6,7$.  They are conceptually transparent certificates,
+not an improvement on the much larger kernel-verified finite range.
+
+More generally, let $A$ be an $(N+1)\times N$ generalized evaluation matrix, $f$ the target
+column, and $C_i$ the signed maximal cofactors of $A$.  With
+\begin{equation}
+ D=\det[A\ f],\qquad S=\sum_{i=0}^N|C_i|,
+\end{equation}
+strict total positivity gives the exact real minimax value
+\begin{equation}
+ \min_{c\in\R^N}\|f-Ac\|_\infty=\frac{|D|}{S}.
+ \label{r19:eq-minimax}
+\end{equation}
+When $A$ and $f$ are integral, clearing this canonical denominator produces $z\in\Z^N$ with
+\begin{equation}
+ Sf-Az=D\,(\operatorname{sgn}C_i)_{i=0}^N.
+ \label{r19:eq-arithmetic-alternant}
+\end{equation}
+Thus the small real residual $D/S$ becomes the nonzero integer residual $D$.  Smith content
+or a different integer-valued basis must save part of $S$; ordinary coefficient clearing
+cannot cross the unit threshold.
+
+\subsection{The geometric Newton shadow}
+\label{r19:qnewton}
+
+For integers $q\ge2$, $r\ge1$, define
+\begin{equation}
+ B_k^{(q)}(X)=\prod_{i=0}^{k-1}\frac{X-q^i}{q^k-q^i},\qquad
+ a_k(q,r)=\prod_{i=0}^{k-1}(r-q^i).
+\end{equation}
+At $X=q^n$, the first factor is the Gaussian binomial
+$\genfrac{[}{]}{0pt}{}{n}{k}_q\in\Z$, and the exact
+Newton identity is
+\begin{equation}
+ r^n=\sum_{k=0}^n \genfrac{[}{]}{0pt}{}{n}{k}_q
+      \prod_{i=0}^{k-1}(r-q^i).
+ \label{r19:eq-qnewton}
+\end{equation}
+Hence the truncation through $k=d$ is integer-valued at every geometric node, interpolates
+$r^n$ for $n\le d$, and has first omitted error
+\begin{equation}
+ r^{d+1}-P_d^{q,r}(q^{d+1})=\prod_{i=0}^{d}(r-q^i).
+ \label{r19:eq-first-extrapolation}
+\end{equation}
+Unless $r$ is a nonnegative integral power of $q$, the Newton series never terminates and this
+extrapolation product grows rather than shrinks.  This complements the exact geometric Smith
+form of report 17: one-axis integer-valued interpolation is abundant, but it supplies no
+cross-axis smallness.
+
+\begin{statusbox}{Report 19 was audited independently from the common base.  The unit-locking,
+optimal-block, dyadic-certificate, minimax-cofactor, and arithmetic-alternant statements are
+self-contained paper arguments using the stated classical Chebyshev/Bernstein inputs.  The
+fixed-window constant overlaps report 18 and is already incompatible with the kernel-verified
+counterexample range.  The geometric Newton identity and its exact truncation/remainder are
+\statuslean{} in \lean{GeometricNewtonInterpolation}, with endpoints
+\lean{qNewtonExpansion_eq_pow} and \lean{qNewtonTruncValue_first_omitted}; all broader
+Bhargava-ordering, Hermite--Pad\'e, and
+integer-Chebyshev proposals remain research interfaces.  No dated literature-search claim is
+promoted, and none of these statements proves the conjecture.}
+\end{statusbox}
+
+\section{Twentieth report: operator coherence and local-to-global arithmetic}
+\label{sec:report20}
+
+Report 20 is an independent operator-theoretic sibling from the same unified base.  It asks
+which exact operator extensions would add arithmetic information beyond the two scalar values
+$2^x$ and $3^x$.  Bilateral shifts, two-mode thermodynamics, semisimple functional calculus,
+and bounded Sturmian cocycles are proved blind; global or finite valuation lattices, one
+affine coherence, one rational first jet, or one exact finite realization would close the
+problem.  These are sufficient criteria and no-go theorems, not constructions supplied by the
+original hypotheses.
+
+\subsection{Universal two-mode dynamics}
+\label{r20:local-universality}
+
+On $\ell^2(\Q_{>0})$ let $U_a e_q=e_{aq}$.  If $a,b$ are multiplicatively independent,
+the pair $(U_a,U_b)$ is a countable multiple of the regular representation of $\Z^2$:
+decompose $\Q_{>0}$ into cosets of $\langle a,b\rangle$.  For the substantive case $x>0$,
+the pairs attached to $(2,3)$ and $(2^x,3^x)$ are therefore unitarily equivalent.  On the
+two-mode Fock space,
+\begin{equation}
+ H_{2^x,3^x}=xH_{2,3},
+\end{equation}
+so heat traces, local KMS data, and Weyl laws are merely reparametrized in time.  This
+reconciles with report 18: logarithmic spectral rank detects one versus two generators, but
+cannot quantize a positive rescaling inside the rank-two sector.
+
+The same blindness holds for every rational semisimple matrix $T$ with
+$(T-2I)(T-3I)=0$.  Writing $M=2^x$ and $A=3^x$,
+\begin{equation}
+ T^x=(A-M)T+(3M-2A)I,
+ \label{r20:eq-semisimple}
+\end{equation}
+which is rational, or integral when the displayed data are integral.  Coupling the distinct
+spectral points probes only their already-known secant.
+
+\subsection{Global and finite arithmetic covariance}
+\label{r20:arithmetic-covariance}
+
+On $\ell^2(\N)$ let $He_n=(\log n)e_n$.  For $c>0$ the following are equivalent:
+\begin{equation}
+ \exists\text{ an isometry }T\text{ with }HT=cTH;
+ \quad n^c\in\N\ (n\in\N);
+ \quad c\in\N.
+ \label{r20:eq-global-covariance}
+\end{equation}
+Spectral simplicity gives the middle condition, while the forward difference of order
+$\lfloor c\rfloor+1$ is a nonzero integer tending to zero unless $c$ is integral.  Conversely
+$T e_n=e_{n^c}$ works for positive integral $c$.  This is much stronger than the original
+hypotheses, whose canonical partial intertwiner is supported only on the $3$-smooth sector.
+
+A finite prime lattice already suffices.  Let $P=\{p_1,\ldots,p_d\}$ contain $2$, assume
+$p_j^c\in\langle P\rangle$ for every $j$, and suppose $2^c$ is algebraic.  The valuation
+columns form $V\in M_d(\Z)$ with
+\begin{equation}
+ V^{\mathsf T}(\log p_i)_i=c(\log p_i)_i.
+\end{equation}
+Thus $c$ is an algebraic integer; Gelfond--Schneider and algebraicity of $2^c$ make it
+rational, hence integral.  If the lattice map is onto, $V$ is unimodular and positive $c$
+must equal $1$.  Finiteness and exact valuation support are the arithmetic input; an abstract
+Hilbert-space extension does not provide them.
+
+\subsection{Affine rulers and the first-jet criterion}
+\label{r20:affine-jet}
+
+On $\ell^2(\Nzero)$ let $Se_k=e_{k+1}$ and $V_a e_k=e_{ak}$.  For positive integers
+$a,b,d$,
+\begin{equation}
+ D_{a,b,d}=V_aS^d-S^{bd}V_a
+\end{equation}
+vanishes exactly when $a=b$; otherwise every basis vector is sent to the difference of two
+distinct basis vectors, so $D_{a,b,d}$ is noncompact and
+$\|D_{a,b,d}\|_{\mathrm{ess}}\ge\sqrt2$.  Hence preserving the single relation
+$V_2S=S^2V_2$ after $V_2\mapsto V_{2^x}$, even modulo compacts, forces $2^x=2$ and $x=1$.
+Translation acts as an external integral ruler absent from the multiplicative subsystem.
+
+At one positive repeated spectral point the terminating functional calculus gives, for
+$b>0$ and $N^2=0$,
+\begin{equation}
+ (bI+N)^x=b^xI+xb^{x-1}N.
+ \label{r20:eq-jordan}
+\end{equation}
+If $b^x$ and one nonzero first-jet coefficient $xb^{x-1}$ are rational, then
+$x=b\,(xb^{x-1})/b^x$ is rational.  Under the original integral-output hypotheses this
+forces $x\in\Z$.  Distinct-node Loewner entries are secants and automatic; a self-extension
+is the first finite-dimensional datum that sees the missing derivative.
+
+\subsection{Sturmian similarity and exact finite realization}
+\label{r20:koopman}
+
+Writing $x=n+\alpha$, define the rotation jump
+$w(t)=\lfloor t+\alpha\rfloor$ on $[0,1)$.  The rational two-valued cocycles
+\begin{equation}
+ c_b(t)=b^{w(t)-\alpha}\qquad(b=2,3)
+\end{equation}
+are bounded coboundaries because $w(t)-\alpha=t-\{t+\alpha\}$.  Their weighted Koopman
+operators are therefore similar to the rotation itself; spectra, entropy, Lyapunov growth,
+and determinant-like invariants are blind.  The surviving projection $P=M_w$ has trace
+$\tau(P)=\alpha$.  An exact finite-dimensional trace model would make $\alpha$ rational.
+Likewise, finite Hankel rank of
+$w_k=\lfloor(k+1)\alpha\rfloor-\lfloor k\alpha\rfloor$ would make this binary sequence
+eventually periodic and its mean rational.  Either exact realization closes the conjecture;
+ordinary finite-dimensional approximation does not.  The deterministic carry identities
+overlap the accepted \lean{SturmianProbability} and \lean{SturmianGeneratingSeries} modules.
+
+\begin{statusbox}{Report 20 was audited independently from the common base.  Its bilateral
+universality, time-homothety, global and finite covariance criteria, affine essential-norm
+rigidity, semisimple blindness, Jordan first-jet criterion, and finite trace/Hankel criteria
+are self-contained paper arguments with the named standard operator inputs.  The maximal
+algebraic support is already covered more generally by \lean{AlgebraicBaseSpectrum}, and the
+Sturmian/heat cores overlap earlier accepted modules.  The rational scalar and matrix-entry
+first-jet recovery is \statuslean{} in \lean{JordanFirstJet}; the theorem
+\lean{integer_of_two_rpow_integer_of_jordanFirstJet_rational} formalizes the arithmetic
+closing step once the square-zero holomorphic functional-calculus formula is supplied.  No
+global intertwiner, finite prime completion, affine
+coherence, or finite realization is derived from the two original outputs.  None of these
+criteria proves the conjecture.}
+\end{statusbox}
+
 \section{Varying the antecedent, the domain, and the codomain}
 \label{sec:variants}
 
@@ -15853,6 +16670,39 @@ Rational synchronized-sum decoder degree bound $L\le2d+1$ & \statuslean &
 Fixed-rank sum entropy, algebraic decoder degree growth, and finite Fourier parity--residue
 separation & \statusnew & Section~\ref{sec:report15}; unit-equation input classical where
 stated \\
+Generic algebraic-base spectrum for an arbitrary independent positive algebraic pair &
+\statuslean & \lean{AlgebraicBaseSpectrum}; Section~\ref{r16:spectrum} \\
+Finite rectangular mixed-Mahler inclusion--exclusion identity & \statuslean &
+\lean{MixedMahlerFinite}; Section~\ref{r16:mahler}; no infinite convergence claim \\
+Entire gamma quotient, corrected mixed-Mahler double-pole resonance, and transfer-spectrum
+diagnosis & \statusnew & Section~\ref{sec:report16}; holonomic, P\'olya--Carlson, Barnes, and
+$q$-digamma inputs classical where stated \\
+Exact determinant-one Smith reduction of the geometric Vandermonde, $q$-Pascal identity,
+factor formula, divisibility order, and positivity & \statuslean &
+\lean{GeometricVandermondeSmith}; Section~\ref{r17:modular-smith} \\
+Exterior-minor probability identity, weighted Smith-tail inequalities, and multilevel modular
+divisor & \statusnew & Section~\ref{r17:smith-profile}, Section~\ref{r17:modular-smith} \\
+Rational cross-Loewner Andreief--Selberg determinant, quadratic singular hierarchy, and
+weighted compound certificate & \statusnew & Section~\ref{r17:loewner}; reduced denominator
+or Smith gain remains open \\
+Infinitely divisible $3$-smooth Gram no-go and exact semigroup entropy saturation &
+\statusnew & Section~\ref{r17:no-go}; no closing arithmetic inequality \\
+Finite ordinary two-scale support inclusion--exclusion identity & \statuslean &
+\lean{TwoScaleSupportFinite}; Section~\ref{r18:support}; no infinite convergence claim \\
+Spectral-zeta/logarithmic-Weyl reformulations and complete rank-two heat expansion &
+\statusnew & Section~\ref{r18:spectral}, Section~\ref{r18:heat}; exact counting core already
+kernel-checked, Mellin--Baker expansion paper-level \\
+Sharp fixed-window polynomial node-budget barrier and capacity constant & \statusnew &
+Section~\ref{r18:approximation}; no claim about rational or growing-window approximants \\
+Exact finite geometric Newton expansion, interpolation, omitted tail, and first extrapolation
+product & \statuslean & \lean{GeometricNewtonInterpolation}; Section~\ref{r19:qnewton} \\
+Arithmetic unit locking, optimal-block no-go, dyadic certificates, and cofactor minimax unit
+barrier & \statusnew & Section~\ref{sec:report19}; no improvement to the accepted finite scan \\
+Rational scalar/matrix-entry first-jet recovery and base-two integral-exponent closure &
+\statuslean & \lean{JordanFirstJet}; Section~\ref{r20:affine-jet}; matrix real-power formula
+remains paper-level \\
+Operator local-universality no-go and global/finite/affine/trace/Hankel closing criteria &
+\statusnew & Section~\ref{sec:report20}; criteria are not consequences of the two outputs \\
 Arbitrary-node repulsion theorem and its packing corollary & \statuslean &
 \lean{ArbitraryNodeRepulsion}, conditional on its named divided-difference mean-value
 hypothesis \\
@@ -16005,6 +16855,9 @@ third base, first over a number field and then by clearing denominators \\
 algebraic locus is exactly the $2,3$-units unless the exponent is integral \\
 \lean{.../AlgebraicBaseUnitPower} & positive $2,3$-unit powers and the multiplicative rank
 of an algebraic auxiliary base \\
+\lean{.../AlgebraicBaseSpectrum} & arbitrary independent positive algebraic pair; exact
+positive-power/divisible-hull classification of positive algebraic bases with algebraic
+$x$th output \\
 \lean{.../AlgebraicConsequences} & pointwise algebraic natural-base classification;
 iterated-output transcendence; the $5^x$, $6^{x^2}$ and both-iterate equivalences \\
 \lean{.../AlgebraicOutputLocus} & exact algebraic output monomial locus (coordinate face or
@@ -16051,6 +16904,11 @@ integrality and the divided-difference repulsion bound \\
 consecutive-node witness; strengthened candidate determinant, repulsion, and packing bounds \\
 \lean{.../SignedProgressionDeterminant} & geometric Vandermonde factorization; primitive
 invariant quotient and coprimality; exact finite logarithmic denominator-tax identity \\
+\lean{.../GeometricVandermondeSmith} & integral $q$-Pascal and Newton-basis matrices;
+determinant-one two-sided reduction to the exact positive Smith diagonal for $q\ge2$ \\
+\lean{.../GeometricNewtonInterpolation} & exact finite $q$-Newton power expansion;
+interpolation through the truncation degree, omitted-tail identity, and first extrapolation
+product over arbitrary integer parameters \\
 \lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
 score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials
@@ -16065,6 +16923,9 @@ direction; homogeneous leading-contact nonvanishing and Pad\'e transversality \\
 factorization, rational anisotropy, and exact equivalence with the conjecture \\
 \lean{.../IntegralPowerMatrix} & explicit real powers of a fixed split integral matrix and
 their exact entry-integrality/conjecture equivalence \\
+\lean{.../JordanFirstJet} & rationality recovery from a scalar value and its nonzero first
+jet; rational matrix-entry extraction; base-two integral-exponent closure conditional on the
+formal first-jet matrix \\
 \lean{.../CandidateAlternant} & affine real-exponent Vandermonde factorization and the exact
 rational-approximation candidate alternant \\
 \lean{.../SynchronizedSumDecoder} & strict monotonicity on fixed-sum pairs and exact
@@ -16088,6 +16949,10 @@ $2X$ quotient and its formal-derivative reduction modulo two \\
 determinants and of the semigroup determinant on ordered chambers \\
 \lean{.../MixedExponentSemigroup} & pair-indexed exponent $a+b\thetaq$, injectivity, and
 integrality of $m^{a+b\thetaq}$ \\
+\lean{.../MixedMahlerFinite} & exact finite rectangular inclusion--exclusion identity behind
+the mixed $(2,3)$-Mahler equation; no convergence or natural-boundary assertion \\
+\lean{.../TwoScaleSupportFinite} & exact finite rectangular inclusion--exclusion identity
+behind the ordinary two-scale support equation; no convergence assertion \\
 \lean{.../SemigroupDeterminant} & integrality half of the semigroup generalized-Vandermonde
 hierarchy, with $\lvert\det\rvert\ge1$ \\
 \lean{.../FallingFactorialBound} & falling-factorial coefficient bound and dyadic-strip
@@ -16220,7 +17085,10 @@ The current wave adds the following modules:
 \lean{CandidateAlternant}, \lean{FermatQuotientDeterminant},
 \lean{ConsecutiveLogMeanBounds}, \lean{BoundaryDisplacement},\\
 \lean{GlobalMixedPrefixCascade}, \lean{DilationDifferenceQuotient},
-\lean{SynchronizedSumDecoder}, \lean{RationalSumDecoder}.
+\lean{SynchronizedSumDecoder}, \lean{RationalSumDecoder},\\
+\lean{AlgebraicBaseSpectrum}, \lean{MixedMahlerFinite},
+\lean{GeometricVandermondeSmith}, \lean{TwoScaleSupportFinite},
+\lean{GeometricNewtonInterpolation}, \lean{JordanFirstJet}.
 \end{center}
 Their headline APIs are likewise on the aggregate surface
 and covered by the axiom-audit module.
@@ -18296,6 +19164,27 @@ H.~Massold,
 J.-H.~Evertse, H.~P.~Schlickewei, and W.~M.~Schmidt,
 \newblock \emph{Linear equations in variables which lie in a multiplicative group},
 \newblock Annals of Mathematics \textbf{155} (2002), 807--836.
+
+\bibitem{Carlson1921}
+F.~Carlson,
+\newblock \emph{"Uber Potenzreihen mit ganzzahligen Koeffizienten},
+\newblock Mathematische Zeitschrift \textbf{9} (1921), 1--13.
+
+\bibitem{Lech1953}
+C.~Lech,
+\newblock \emph{A note on recurring series},
+\newblock Arkiv f\"or Matematik \textbf{2} (1953), 417--421.
+
+\bibitem{Borwein1992}
+P.~B.~Borwein,
+\newblock \emph{On the irrationality of certain series},
+\newblock Mathematical Proceedings of the Cambridge Philosophical Society
+\textbf{112} (1992), 141--146.
+
+\bibitem{Selberg1944}
+A.~Selberg,
+\newblock \emph{Bemerkninger om et multipelt integral},
+\newblock Norsk Matematisk Tidsskrift \textbf{26} (1944), 71--78.
 
 \end{thebibliography}
 \end{document}
