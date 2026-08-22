@@ -382,7 +382,7 @@ Transformation $B$ is a combination of the Poisson summation formula (or some va
   \item[(ii)] \textit{$|f^i(x)|\ll FX_1^{-i_1}\cdots X_n^{-i_n}$ for some $F$;}
   \item[(iii)] \textit{$|H_k(f(x))|\asymp A_k^{-1}$ for some $k\in[1,n]$ and some
   \[
-    A_k\ll(X_1\cdots X_k)^2F^{1/6-\varepsilon-k}.
+    A_k\leqslant(X_1\cdots X_k)^2F^{1/6-\varepsilon-k}.
   \]}
 \end{enumerate}
 \textit{Then there exist real numbers $B_{ij}$ such that, for
@@ -400,7 +400,8 @@ S\equiv\left|\sum_{x\in D}e(f(x))\right|
 \ll{}&\sqrt{A_k}\left|\sum_{(m,x_{k+1},\ldots,x_n)\in D_1}
  e\bigl(f_1(m,x_{k+1},\ldots,x_n)\bigr)\right|+O(N^\varepsilon)\\
 &+O\left(N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}\right)\\
-\ll{}&|\mathscr L|A_k^{-1/2}
+% ed.: both transcriptions read $|\mathscr L|$; the bound $\sqrt{A_k}\,|D_1|\ll\sqrt{A_k}\,|D|/A_k$ shows the intended quantity is $|D|$
+\ll{}&|D|A_k^{-1/2}
  +N^{1+\varepsilon}\sqrt{F^{k-1}A_kN_k^{-2}}+N^\varepsilon
  +NX_k^{-1}A_k^{-1/2}\\
 &+X_{k+1}\cdots X_n\left(\frac F{X_2}+1\right)\cdots
@@ -514,7 +515,7 @@ then
 Thus each term in (7) is piecewise monotone as a function of each variable and bounded by an absolute constant; as in the proof of (3.40) of~[1], one can show that
 \[
   P_K(F,x^0)\ll(\delta F^{-1/3})^{-K-1}
-  \ll F^{-\varepsilon_0(K+1)}\ll F^{-n}.
+  \leqslant F^{-\varepsilon_0(K+1)}\ll F^{-n}.
 \]
 Using this together with (6) and (7), and applying Abel's summation formula, we obtain
 \[
@@ -541,8 +542,9 @@ then
 where
 \[
 \begin{aligned}
+% ed.: printed text has $(\alpha_1^{\alpha_1}\cdots\alpha_n^{\alpha_n}/A)^{1/(\alpha_1+\cdots+\alpha_n-1)}$; corrected to $(A\alpha_1^{\alpha_1}\cdots\alpha_n^{\alpha_n})^{-1/(\alpha_1+\cdots+\alpha_n-1)}$: from $m_j=\alpha_jf/x_j$ one gets $f^{1-s}=A\prod\alpha_j^{\alpha_j}\prod m_j^{-\alpha_j}$ with $s=\sum\alpha_j$, and $f_1=(1-s)f$
   B&=(1-\alpha_1-\cdots-\alpha_n)
-  \left(\frac{\alpha_1^{\alpha_1}\cdots\alpha_n^{\alpha_n}}A\right)^{1/(\alpha_1+\cdots+\alpha_n-1)},\\
+  \left(A\alpha_1^{\alpha_1}\cdots\alpha_n^{\alpha_n}\right)^{-1/(\alpha_1+\cdots+\alpha_n-1)},\\
   \beta_j&=\frac{\alpha_j}{\alpha_1+\cdots+\alpha_n-1}\qquad(j=1,\ldots,n),\\
   m_j&\asymp F/X_j=M_j\qquad(j=1,\ldots,n),
   \qquad f_1(m)\asymp F.
@@ -784,7 +786,7 @@ If $Y\leqslant N^{3/7}$ and $k_1=1$, then we use Lemma~B with $k=2$ and $k=3$ an
 \[
   S\lll N\min\left\{
     (F^7N^{-8})^{1/14}+F^{-1/2};
-    (F^7N^{-12})^{1/42}+N^{-1/7}+F^{-1/14}
+    (F^7N^{-12})^{1/42}+N^{-1/7}+F^{-1/4}
   \right\},
 \]
 which proves Theorem~1 in the case under consideration. If $k_1\geqslant2$ and
@@ -794,6 +796,7 @@ which proves Theorem~1 in the case under consideration. If $k_1\geqslant2$ and
 then we apply Lemma~2 $k_1-1$ times with $n=1$ and $Q_1$ as in~(5). Using Theorem~1 of~[3]---which, after some obvious changes connected with the application of Lemma~1 of this paper, can be stated as
 \[
   S\lll \sqrt[6]{F^2N^3}+N^{5/6}
+% ed.: version-1 OCR reads $\sqrt[19]{\cdots}$ here but $\sqrt[10]{\cdots}$ in its application below; $10$ is kept
        +\sqrt[10]{\Delta^4F^2N^9X^{-4}},
 \]
 we obtain
@@ -900,7 +903,7 @@ Here
 Moreover, $\lvert D_1\rvert\ll Nc_1+\sqrt N\ll Nc_1$; and, since
 $C_{30}C_{03}\ne C_{21}C_{12}$,
 \[
-  \max\{a_1,b_1\}\gg\varepsilon_0.
+  \max\{a_1,b_1\}\geqslant\varepsilon_0.
 \]
 Using Lemma~A to estimate the last sum, we get
 \[
@@ -1102,8 +1105,9 @@ Now we apply Lemma~1 and obtain
 \]
 If $k_1=2$, we continue as in case~7 below. If $k_1=3$, we apply Lemma~2 once more with $n=2$ and $Q=Q_1^4$, obtaining
 \[
+% ed.: printed text has $N^{-1}Q_1^{-4}$; corrected to $N^{-1}Q_1^{-7}$, as in every later use of this sum (cases 1)--6))
   (S/N)^8\ll Q_1^{-4}
-  +N^{-1}Q_1^{-4}\sum_h
+  +N^{-1}Q_1^{-7}\sum_h
    \left\lvert\sum_{x,y}e(f_5(x,y))\right\rvert,
 \]
 where
@@ -1281,7 +1285,8 @@ Using Lemma~B with $k=3$, we obtain
  +(F^2Q_1^7N^{-6})^{1/12}(N^3F^{-2}Q_1^9)^2\\
 &+X^{-1/4}\gamma_2^{3/4}
  (\gamma_1+Q_1^{-1})(\gamma_1+Q_1^{-2})\\
-&+(F_1)^{1/4}\gamma_2^{1/2}
+% ed.: printed text has $(F_1)^{1/4}$; corrected to $(F_1)^{-1/4}$, the factor carried from the preceding line
+&+(F_1)^{-1/4}\gamma_2^{1/2}
  (\gamma_1+Q_1^{-1})(\gamma_1+Q_1^{-2})
  \ll Q_1^{-4}.
 \end{aligned}
@@ -1319,7 +1324,8 @@ N^{-1}Q_1^{-7}\sum_h
 \medskip
 \noindent\textbf{6)}
 \[
-  a_3\gg\sqrt{N^3F^{-2}Q_1^3},
+% ed.: printed text has $Q_1^3$; corrected to $Q_1^9$, the threshold $\sqrt{N^3F^{-2}Q_1^9}$ used in cases 1)--5) and below
+  a_3\gg\sqrt{N^3F^{-2}Q_1^9},
   \qquad c_3\ll\sqrt{Q_1^4N^{-1}},
 \]
 or
@@ -1372,7 +1378,8 @@ then $\lvert D_3\rvert\ll Nc_3/a$ and, as above,
 \]
 If
 \[
-  a\ll\sqrt[4]{F^2Q_1^7N^{-5}Y^{-4}},
+% ed.: printed text has $Q_1^7$; corrected to $Q_1^{31}$ so that this is the complement of the preceding case $a\gg\sqrt[4]{F^2Q_1^{31}N^{-5}Y^{-4}}$
+  a\ll\sqrt[4]{F^2Q_1^{31}N^{-5}Y^{-4}},
 \]
 then, as in case~3, one can show that
 \[
@@ -1417,6 +1424,7 @@ Otherwise Lemma~B gives
  \Phi_{2,0}(f)=-f_{y^2},\qquad
  \Phi_{1,1}(f)=f_{xy},\qquad
  \Phi_{0,2}(f)=-f_{x^2},\\
+% ed.: printed text names this determinant $M(f)$ and then uses $H(f)$ (once $M(f)$) in the recursion; since $H$ is the Hessian determinant of Section~2, $H(f)$ is used throughout
  H(f)=f_{x^2}f_{y^2}-(f_{xy})^2,
 \end{gathered}
 \]
@@ -1493,7 +1501,8 @@ We divide $D_3$ into $O(N^\varepsilon)$ subdomains and choose a subdomain $D_4$,
  &\leqslant\lvert\varphi_j(\theta)\rvert
  \leqslant2d_j\delta_2^{9k_2+3}
  &&(j=2,\ldots,k_2+4),\\
- d_j\delta_2^{3k_1k_2-2k_1}
+% ed.: printed text has $\delta_2^{3k_1k_2-2k_1}$ on the left and $\delta_2^{3k_1k_2-3k_1}$ on the right; the two exponents must agree and the right-hand one is kept
+ d_j\delta_2^{3k_1k_2-3k_1}
  &\leqslant\lvert\varphi_j(\theta)\rvert
  \leqslant2d_j\delta_2^{3k_1k_2-3k_1}
  &&(j=k_2+5,k_2+6).
@@ -1533,7 +1542,8 @@ If
 \]
 or
 \[
-  \min\{d_2,\ldots,d_{k_2+4}\}\ll Q_2^{-1/[2(3k_2+1)]},
+% ed.: printed text reads $Q_2^{-1/2(3k_2+1)}$; resolved as $Q_2^{-(3k_2+1)/2}$, which is exactly $a\ll Q_2^{-1}$ for $a$ defined below
+  \min\{d_2,\ldots,d_{k_2+4}\}\ll Q_2^{-(3k_2+1)/2},
 \]
 then it is easy to see that
 \[
@@ -1544,7 +1554,7 @@ and we can estimate the sum in~(8) below trivially to obtain the required estima
   a\equiv\min\left\{
     d_2^{2/(3k_2+1)},\ldots,d_{k_2+4}^{2/(3k_2+1)},
     d_{k_2+5}^{1/(3k_2-1)},d_{k_2+6}^{1/(3k_2-1)}
-  \right\}\gg Q_2^{-1},
+  \right\}>Q_2^{-1},
 \]
 and use Lemma~1 to get
 \begin{equation}
@@ -1565,8 +1575,9 @@ Here the domain of summation over $(u,v)$ and the function $g(u,v)$ are as in Le
 Thus, if $a^2c_{k_1}\ll Q_2^{-1}$, then
 \[
   \left(\frac SN\right)^{K_1}
+% ed.: printed text has $Q_1^{K_1/2}$ and $\ll Q_2^{-K_1/2}$; corrected to $Q_1^{-K_1/2}$ in both places (the target bound throughout is $(S/N)^{K_1}\ll Q_1^{-K_1/2}$)
   \ll Q_1^{-K_1/2}+F_1N^{-1}Q_2^{-1/2}
-  \ll Q_2^{-K_1/2}.
+  \ll Q_1^{-K_1/2}.
 \]
 We henceforth assume that $a^2c_{k_1}\gg Q_2^{-1}$. If $k_2\geqslant2$ and
 \[
@@ -1576,7 +1587,7 @@ We henceforth assume that $a^2c_{k_1}\gg Q_2^{-1}$. If $k_2\geqslant2$ and
 \]
 then we apply Lemma~2 $k_2-1$ times with $n=1$ and continue as below. Also, if
 \[
-  X/Y\gg Q_2+NQ_2^{K_2}N_0^{-k_2-1/3},
+  X/Y\geqslant Q_2+NQ_2^{K_2}N_0^{-k_2-1/3},
 \]
 then we apply Lemma~2 once with $n=1$ and continue as below. We may therefore assume that
 \[
@@ -1597,7 +1608,7 @@ We apply Lemma~2 with $n=1$, $k_2$ times:
   |\Sigma_2|^{K_2}
   &\equiv Q_1^{1-K_1}
     \left(\sum_h\left|\sum_{u,v}e(g(u,v))\right|\right)^{K_2}\\
-  &\ll N_1^{K_2}Q_3^{-K_2/2}
+  &\leqslant N_1^{K_2}Q_3^{-K_2/2}
    +N_1^{K_2-1}Q_3^{1-K_2}
     \sum_{h^{(1)}}Q_1^{1-K_1}\sum_h
       \left|\sum_{u,v}e(g_1(u,v))\right|,
@@ -1612,7 +1623,8 @@ where
     g\bigl(u,v+t_1h_{11}+\cdots+t_{k_2}h_{1,k_2}\bigr)
     \,dt_1\cdots dt_{k_2},\\
   h^{(1)}&=(h_{11},\ldots,h_{1,k_2}),
-  \qquad |h_{1j}|\leqslant Q_3^{2^j-1}
+% ed.: printed text reads $Q_3^{2j-1}$; corrected to $Q_3^{2^{j-1}}$ (the $j$th application of Lemma~2 uses $Q_j=Q^{2^{j-1}}$, cf.\ Section~4 and case~II)
+  \qquad |h_{1j}|\leqslant Q_3^{2^{j-1}}
   \quad(j=1,\ldots,k_2),
 \end{aligned}
 \]
@@ -1637,7 +1649,8 @@ Lemma~A now gives
   \lll{}&N_1^{K_2}Q_3^{-K_2/2}
   +N_1^{K_2}Q_3^{K_2-1}Y^{k_2}NF_1^{-k_2-1}d_{k_2+5}^{-1/2}\\
   &+N_1^{K_2-1}
-    \left(F_1^{k_2+3}N^{-2}Y^{-k_1}Q_3^{1-K_2}d_{k_2+4}^{-1}\right)^{1/2}\\
+% ed.: printed text has $Y^{-k_1}$; corrected to $Y^{-k_2}$ (only $k_2$ differences in $v$ are taken here)
+    \left(F_1^{k_2+3}N^{-2}Y^{-k_2}Q_3^{1-K_2}d_{k_2+4}^{-1}\right)^{1/2}\\
   &+N_1^{K_2-1}Y(F_1^2d_{k_2+5})^{-1/2}\\
   \ll{}&\left(F_1^2\sqrt{c_{k_1}/Q_2}\,N^{-1}\right)^{K_2}.
 \end{aligned}
@@ -1746,16 +1759,13 @@ Apply Lemma~2 $k_2-1$ times with $n=1$, choosing $Q$ to minimize the resulting e
   \,dt_1\cdots dt_{k_2-1}.
 \end{aligned}
 \]
-Lemma~A gives
-\[
-  |S_1|^{K_2}
-  \ll\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
-  +N_1^{K_2-1}Q_2^{(2-K_2)/4}Q^{1-K_2/2},
-\]
-and
+we use Lemma~A to get
 \[
 \begin{aligned}
-  \sum_{h^{(1)}}\left|\sum_{u,v}e(g_2(u,v))\right|
+  |S_1|^{K_2}
+  \ll{}&\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
+  +N_1^{K_2-1}Q_2^{(2-K_2)/4}Q^{1-K_2/2}
+  \sum_{h^{(1)}}\left|\sum_{u,v}e(g_2(u,v))\right|\\
   \lll{}&\left(N_0\sqrt{c_{k_1}/Q_2}\right)^{K_2}
   +N_1^{K_2-1}Q_2^{-K_2/4}\\
   &+ac_{k_1}\Bigg[
@@ -1778,7 +1788,7 @@ If $c_{4,1}\ll b$, we instead use Lemma~B with $k=2$; the same result follows.
 \subparagraph{2.}
 Suppose that
 \[
-  \min\{c_{4,1},c_{4,2}\}\gg d_{k_2+5}/Q_2
+  \min\{c_{4,1},c_{4,2}\}\geqslant d_{k_2+5}/Q_2
 \]
 and
 \[
@@ -1801,7 +1811,7 @@ As in case~1,
 \[
 \begin{aligned}
   Q_2^{-1}\sum_{h^{(1)}}|D_5|
-  \ll\Bigg(&Q_2^{-1/2}
+  \leqslant\Bigg(&Q_2^{-1/2}
   +\min\left\{
     \frac{a_4}{d_{k_2+4}},\frac{b_4}{d_{k_2+2}},
     \frac{c_4}{d_{k_2+3}},
@@ -1924,7 +1934,8 @@ if $k_2=3$. Apply Lemma~2 $k_2-2$ times with $n=1$ and an appropriate $Q$, follo
   +\sqrt[4]{F_1^{2k_2+6}N^{-6}Q_2^{-3}Q^{2-K_2/2}Y^{4-2k_2}a_5^{-2}};\\
   &\hspace{32mm}
   \frac{F_1}{Y\sqrt{c_{5,1}}}
-  +\sqrt[4]{F_1^{2k_2+8}N^{-6}Q_2^{-3}Q^{2-K_2/2}Y^{4-2k_2}b_5^{-2}}
+% ed.: printed text has $F_1^{2k_2+8}$; corrected to $F_1^{2k_2+6}$ to match the symmetric $a_5$-term
+  +\sqrt[4]{F_1^{2k_2+6}N^{-6}Q_2^{-3}Q^{2-K_2/2}Y^{4-2k_2}b_5^{-2}}
   \Bigg\}\\
   \ll{}&R_0+
   \left[(ac_{k_1})^{K_2-2/3}
@@ -1962,7 +1973,7 @@ or that $k_2=2$ and $\delta_4\gg Q_2^{-1}$. As in case~(a),
 Suppose that $k_2=3$ and $\delta_4\gg f$. Applying Lemma~2 with a suitable $Q$ and $n=2$, we obtain
 \begin{equation}
 \begin{aligned}
-  |S_1|^{K_2}\ll{}&
+  |S_1|^{K_2}\leqslant{}&
   \left(N_1\sqrt{c_{k_1}/Q_2}\right)^{K_2}\\
   &+(F_1^2ac_{k_1}/N)^{K_2-1}
   \delta_3^{(K_2-2)/4}\delta_4^{(K_2-4)/4}Q_2^{-3}Q^{-1}
@@ -1977,16 +1988,17 @@ Here
   g_3(u+h_{5,1}t,v+h_{6,1}t)\,dt.
 \]
 We again divide $D_6$ into subdomains and choose one, $D_7$, corresponding to the largest subsum and satisfying
+% ed.: printed text has $\varphi_{0,3},\varphi_{2,3},\varphi_{1,3}$; corrected to $\psi_{0,3},\psi_{2,3},\psi_{1,3}$, following the pattern of $D_5$ and $D_6$
 \[
 \begin{aligned}
   a_6\delta_2^{3k_2+1}\delta_{1,3}
-  &\leqslant|\varphi_{0,3}(\theta)|
+  &\leqslant|\psi_{0,3}(\theta)|
    \leqslant2a_6\delta_2^{3k_2+1}\delta_{1,3},\\
   b_6\delta_2^{3k_2+1}\delta_{1,3}
-  &\leqslant|\varphi_{2,3}(\theta)|
+  &\leqslant|\psi_{2,3}(\theta)|
    \leqslant2b_6\delta_2^{3k_2+1}\delta_{1,3},\\
   c_6\delta_2^{3k_2+1}\delta_{1,3}
-  &\leqslant|\varphi_{1,3}(\theta)|
+  &\leqslant|\psi_{1,3}(\theta)|
    \leqslant2c_6\delta_2^{3k_2+1}\delta_{1,3},\\
   c_{6,j}\delta_2^{6k_2+2}\delta_{1,3}^2
   &\leqslant|\psi_3^j(\theta)|
@@ -2021,7 +2033,8 @@ Applying Lemma~A to the sum in~(11) and choosing $Q$ to minimize the resulting e
       +\frac{YF_1^{-1}}{\sqrt{c_{6,1}}};\\
   &\hspace{27mm}
     \sqrt[6]{\delta_3\delta_4^2a^2b_6^{-2}(NF_1^{-2})^2c_{6,1}}
-      +\frac{XF_1^{-2}}{\sqrt{c_{6,1}}}
+% ed.: printed text has $XF_1^{-2}$; corrected to $XF_1^{-1}$ to match the symmetric term $YF_1^{-1}/\sqrt{c_{6,1}}$
+      +\frac{XF_1^{-1}}{\sqrt{c_{6,1}}}
   \Bigg\}.
 \end{aligned}
 \]
@@ -2060,9 +2073,9 @@ This completes the proof of Theorem~1.
 
 Theorem~2 can be proved similarly to Theorem~2 in~[3]. The only change is in showing that
 \[
-  |D_2|\ll\sqrt{a_{31}}\,N.
+  |D_2|\leqslant\sqrt{a_{31}}\,N.
 \]
-This follows by proving that $H(g(x))\asymp P(\theta_1,\theta_2,\theta_3)$, where $\theta_j=h_j/x_j$ and $P$ is a homogeneous polynomial of degree~$3$ such that the system
+This can be done by proving that $H(g(x))\asymp P(\theta_1,\theta_2,\theta_3)$, where $\theta_j=h_j/x_j$ and $P$ is a homogeneous polynomial of degree~$3$ such that the system
 \[
   P(\theta)=P_{\theta_1}=P_{\theta_2}=P_{\theta_3}
   =P_{\theta_1^2}=P_{\theta_2^2}=P_{\theta_3^2}=0
@@ -2076,7 +2089,7 @@ $q=q_1q_2q_3$, where the $q_i$ will be chosen later:
   (S/N)^2\ll{}&q^{-1}+(qN)^{-1}
   \sum_{|h_1|=1}^{q_1}\sum_{|h_2|=1}^{q_2}\sum_{|h_3|=1}^{q_3}
   \left|\sum_{x\in D_1}e(g(x))\right|
-  +\left|\sum_{h,x}'\right|.
+  +\left|\sum_{h,x}\right|.
 \end{aligned}
 \tag{12}
 \end{equation}
@@ -2085,7 +2098,7 @@ Here
   g(x)=\int_0^1\frac{\partial}{\partial t}
   f(x_1+h_1t,x_2+h_2t,x_3+h_3t,x_4,\ldots,x_n)\,dt,
 \]
-and the primed sum in~(12) is small compared with the estimate obtained for the first sum. Fix $h=(h_1,h_2,h_3)$, and put
+and $\left|\sum_{h,x}\right|$ is small compared with the estimate we obtain for the first sum. Fix $h=(h_1,h_2,h_3)$, and put
 \[
   \varrho=|h_1/X_1|+|h_2/X_2|+|h_3/X_3|,
   \qquad \theta_j=\frac{h_j}{x_j\varrho},
@@ -2145,31 +2158,31 @@ We divide $D_1$ into $\ll N^\varepsilon$ subdomains. One of them contains $\ll N
 \]
 Let $D_2$ be a subdomain defined by these inequalities that corresponds to the largest subsum. We distinguish three cases.
 
-\paragraph{1. $a_1\gg\varepsilon_0$ and $a_2\gg\varepsilon_0$.}
+\paragraph{1. $a_1\geqslant\varepsilon_0$, $a_2\geqslant\varepsilon_0$.}
 Then $H(g(x))\gg F_1^nN^{-2}$, and Lemma~1 gives
 \[
   S_1\equiv\left|\sum_{x\in D_2}e(g(x))\right|
   \lll F_1^{n/2}+NF_1^{-1/2}.
 \]
 
-\paragraph{2. $a_1\ll\varepsilon_0$.}
+\paragraph{2. $a_1\leqslant\varepsilon_0$.}
 In this case
 \[
-  |D_2|\ll(\Delta+a_2)N,
-  \qquad \max\left\{a_2,\max_{i<j}a_{i,j}\right\}\gg\varepsilon_0,
+  |D_2|\leqslant(\Delta+a_2)N,
+  \qquad \max\left\{a_2,\max_{i<j}a_{i,j}\right\}\geqslant\varepsilon_0,
 \]
 and
 \[
-  \max_{i<j}\bigl(a_{i,j}(a_{i+2}+a_{j+2})\bigr)\gg\varepsilon_0.
+  \max_{i<j}\bigl(a_{i,j}(a_{i+2}+a_{j+2})\bigr)\geqslant\varepsilon_0.
 \]
-If $a_2\gg F_1^{\varepsilon-1/3}$, we use Lemma~1 with $k=1$ three times, changing the order of summation when necessary:
+If $a_2\geqslant F_1^{\varepsilon-1/3}$, we use Lemma~1 with $k=1$ three times, changing the order of summation when necessary:
 \[
 \begin{aligned}
   S_1
   &\lll X_iF_1^{-1/2}\sum_m
       \left|\sum_xe(f_1(m,x))\right|+NF_1^{-1/2}\\
   &\lll NF_1^{-1/2}+X_iX_jF_1^{-1}
-      \sum_{m_1,m_2}\left|\sum_xe(f_2(m_1,m_2,x))\right|\\
+      \sum_{m_1,m_2}\left|\sum_xe(f_2(m,x))\right|\\
   &\lll NF_1^{-1/2}
       +X_1X_4\cdots X_n\frac{F_1}{a_2}
       +(\Delta+\min\{a_1,a_2\})X_4\cdots X_nF_1^{3/2}.
@@ -2188,21 +2201,21 @@ Comparing these two estimates, we obtain
 \end{aligned}
 \]
 
-\paragraph{3. $a_1\gg\varepsilon_0$ and $a_2\ll\varepsilon_0$.}
+\paragraph{3. $a_1\geqslant\varepsilon_0$, $a_2\leqslant\varepsilon_0$.}
 Here
 \[
-  |D_2|\ll(\Delta+\sqrt{a_2})N
+  |D_2|\leqslant(\Delta+\sqrt{a_2})N
 \]
-(see the comments concerning Theorem~2), and also
+(see the comments to Theorem~2), and also
 \[
-  |D_2|\ll\left(\Delta+\max_{i<j}a_{i,j}\right)N,
-  \qquad \max_{3\leqslant i\leqslant5}a_i\gg\varepsilon_0.
+  |D_2|\leqslant\left(\Delta+\max_{i<j}a_{i,j}\right)N,
+  \qquad \max_{3\leqslant i\leqslant5}a_i\geqslant\varepsilon_0.
 \]
 If, say,
 \[
-  a_{2,3}=\max_{i<j}a_{i,j}\gg F_1^{\varepsilon-1/3},
+  a_{2,3}=\max_{i<j}a_{i,j}\geqslant F_1^{\varepsilon-1/3},
 \]
-then $a_2\gg\varepsilon_0$ or $a_3\gg\varepsilon_0$, and two applications of Lemma~1 with $k=1$ give
+then $a_2\geqslant\varepsilon_0$ (or $a_3\geqslant\varepsilon_0$) and, applying Lemma~1 twice with $k=1$, we get
 \[
 \begin{aligned}
   S_1
@@ -2214,12 +2227,13 @@ then $a_2\gg\varepsilon_0$ or $a_3\gg\varepsilon_0$, and two applications of Lem
     +\frac{X_1X_2X_4\cdots X_n}{\sqrt{a_{2,3}}}.
 \end{aligned}
 \]
-An application of Lemma~1 with $k=1$ also gives
+% ed.: printed text reads ``Lemma 1 with $m=1$''; Lemma 1 is parametrised by $k$
+also, using Lemma~1 with $k=1$, we get
 \[
   S_1\lll(\Delta+a_{2,3})X_1X_2X_4\cdots X_n\sqrt{F_1}
   +\frac{N}{\sqrt{F_1}}.
 \]
-If $a_2\gg F_1^{\varepsilon_0-1/3}$, we apply Lemma~1 twice with $k=1$ and once with $k=n-2$:
+If $a_2\geqslant F_1^{\varepsilon_0-1/3}$, then we apply Lemma~1 twice with $k=1$ and once with $k=n-2$:
 \[
 \begin{aligned}
   S_1
@@ -2227,7 +2241,7 @@ If $a_2\gg F_1^{\varepsilon_0-1/3}$, we apply Lemma~1 twice with $k=1$ and once 
     \left|\sum_{x_1,x_3,\ldots,x_n}e(f_1(m,x))\right|
     +\frac{N}{\sqrt{F_1}}\\
   &\lll X_2X_3F_1^{-1/2}\sum_{m_1,m_2}
-    \left|\sum_{x_1,x_4,\ldots,x_n}e(f_2(m_1,m_2,x))\right|\\
+    \left|\sum_{x_1,x_4,\ldots,x_n}e(f_2(m,x))\right|\\
   &\qquad+\frac{N}{\sqrt{F_1}}
     +\frac{X_1X_2X_4\cdots X_n}{\sqrt{a_{2,3}}}\\
   &\lll F_1^{n/2}
@@ -2286,22 +2300,19 @@ This follows by induction on the total number of applications of~(1) and~(4). If
   S\ll F^{m/2}X_{m+1}\cdots X_n,
   \qquad F^{m/2}>X_1\cdots X_m.
 \]
-The condition $F\gg X_1$ is not essential: it may be removed by replacing~(1) with
+(Note that the condition $F\geqslant X_1$ is not essential; we can remove it and substitute~(1) with
 \[
   S\ll N_mF^{-m/2}
   S\left(F;F/X_1+1,\ldots,F/X_m+1,X_{m+1},\ldots,X_n\right).
 \]
-One can do slightly better when $F\ll\varepsilon_0X_1$. In that case,
-\[
-  S=\left|\sum_{x_2,\ldots,x_n}\sum_{x_1=X}^{X'}e(f(x))\right|
-\]
-and Fourier summation gives
+One can however do it better: if $F\leqslant\varepsilon_0X_1$, then
 \[
 \begin{aligned}
-  S\ll{}&\left|\sum_{x_2,\ldots,x_n}\int_X^{X'}e(f(x))\,dx_1\right|\\
-  &+\sum_{m=1}^{\infty}\frac1m
+  S&=\left|\sum_{x_2,\ldots,x_n}\sum_{x_1=X}^{X'}e(f(x))\right|\\
+  &\ll\left|\sum_{x_2,\ldots,x_n}\int_X^{X'}e(f(x))\,dx_1\right|
+  +\sum_{m=1}^{\infty}\frac1m
   \left|\sum_{x_2,\ldots,x_n}\int_X^{X'}e(f(x)-mx_1)\,dx_1\right|\\
-  \ll{}&\frac{X_1}{F}S(F;X_2,\ldots,X_n)+\cdots.
+  &\ll\frac{X_1}{F}S(F;X_2,\ldots,X_n)+\cdots.)
 \end{aligned}
 \]
 If we apply~(4) once, then
@@ -2323,6 +2334,7 @@ and the remaining sum is treated by $k$ applications of~(1) and~(4). Hence the b
 \]
 
 To prove Theorem~4, suppose that $(\lambda_0,\ldots,\lambda_n)\in E_n$. By~(1),
+% ed.: the middle line of this display is garbled in the OCR (a duplicate of the first line); reconstructed by inserting the exponent-tuple bound for the inner sum
 \[
 \begin{aligned}
   S&\ll N_mF^{-m/2}
@@ -2356,7 +2368,7 @@ Choosing $q$ to minimize this expression proves Theorem~5.
 
 \section{Final remarks}
 
-Although Theorems~1--3 apply to a wide class of functions in $\mathscr F$, in some cases they may not yield a ``good'' result. The general strategy for using the m.e.p. is as follows. Given the desired estimate for an exponential sum, one first applies the algorithm based on~(1) and~(4), described in the Introduction, to determine whether the estimate is attainable and, if so, which sequence of operations $A$ and $B$ is required. The final step is to prove the result using the ideas in the proof of Theorem~1. For a specific function this can be considerably simpler than in the general case.
+While Theorems~1--3 can be applied to a wide class of functions in $\mathscr F$, they may not give a ``good'' result in some cases. The general strategy in using m.e.p. is the following. Knowing the estimate of an exponential sum one wants to obtain, one needs to apply the algorithm (based on (1) and (4)) described in the Introduction to determine whether it is possible and (if it is possible) a sequence of operations $A$ and $B$ one needs to apply in order to obtain the result. The last step is to prove the result using the ideas contained in the proof of Theorem~1. For a specific function it can be done much more simply than in the general case.
 
 \begin{thebibliography}{9}
 

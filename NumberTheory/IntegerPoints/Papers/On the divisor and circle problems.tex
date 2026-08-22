@@ -247,7 +247,8 @@ $$
 By (3.1) and the well-known Fourier expansion (boundedly convergent)
 
 $$
-\psi(t)=\sum_{1 \leqslant h \leqslant y}(\pi h)^{-1} \sin (2 \pi h t)+O\left((1+\|t\| y)^{-1}\right)
+% ed.: printed text has no minus sign; with psi(t) = {t} - 1/2 (as used in Sections 2 and 3) the Fourier expansion is psi(t) = -sum (pi h)^{-1} sin(2 pi h t) + ...; irrelevant for |Delta|.
+\psi(t)=-\sum_{1 \leqslant h \leqslant y}(\pi h)^{-1} \sin (2 \pi h t)+O\left((1+\|t\| y)^{-1}\right)
 $$
 
 we infer by partial summation
@@ -280,7 +281,8 @@ $$
 E(x,y,M)\ll\left(1+My^{-1}\right)x^{\varepsilon}
 $$
 
-so the error term is admissible if $y=M x^{-\theta}$. Our aim (1.2) reduces to showing that
+% ed.: printed text has (1.2); the aim being reduced here is (2.1), cf. the parallel sentence before (2.1) in Section 2.
+so the error term is admissible if $y=M x^{-\theta}$. Our aim (2.1) reduces to showing that
 
 
 \begin{equation*}
@@ -450,7 +452,8 @@ F(m)=\int_{0}^{3}\eta\left(s+(m_{r}-m)N^{-1}\right)F_{s}(m_{r})\,ds, \tag{5.7}
 \end{equation*}
 
 
-where $F_{s}=f * g_{s}$ and $g_{s}(n)=\sigma_{s}\left(n N^{-1}\right)$. Notice that $\sigma_{s}(t)$ is a smooth function in $t$ supported in the interval [1,5]; so that $n \asymp N$. Combining (5.1)-(5.7) we conclude
+% ed.: printed text has [1,5]; rho is supported on [4,5] and s in [0,3], so sigma_s is supported in [4+s,5+s] subset [4,8].
+where $F_{s}=f * g_{s}$ and $g_{s}(n)=\sigma_{s}\left(n N^{-1}\right)$. Notice that $\sigma_{s}(t)$ is a smooth function in $t$ supported in the interval [4,8]; so that $n \asymp N$. Combining (5.1)-(5.7) we conclude
 
 
 \begin{equation*}
@@ -627,7 +630,8 @@ with
 
 
 \begin{equation*}
-r(l)=\frac{-v(2 m-v) x h l}{m^{2}(m+v)^{2}}+\frac{x h l^{2}}{m^{2}(m+l)} . \tag{7.1}
+% ed.: printed text has (2m-v); since m+v = (cx/a)^{1/2}, the linear coefficient xh/(m+v)^2 - xh/m^2 equals -xh v(2m+v)/(m^2(m+v)^2), so (2m+v) is correct.
+r(l)=\frac{-v(2 m+v) x h l}{m^{2}(m+v)^{2}}+\frac{x h l^{2}}{m^{2}(m+l)} . \tag{7.1}
 \end{equation*}
 
 
@@ -754,11 +758,13 @@ where
 
 $$
 \begin{aligned}
-t(n)={}&-\frac{v(2m-v)xhn}{m^{2}(m+v)^{2}}
+% ed.: printed text has (2m-v); corrected to (2m+v) as in (7.1).
+t(n)={}&-\frac{v(2m+v)xhn}{m^{2}(m+v)^{2}}
        +\frac{2vxhn}{(m+v)^{3}}
        +\frac{xhn^{2}}{m^{2}(m+n)}
        -\frac{xhn^{2}}{(m+v)^{3}} \\
-={}&-\frac{v^{2}(m-v)xhn}{m^{2}(m+v)^{3}}
+% ed.: printed text has -v^2(m-v)xhn/(m^2(m+v)^3), which follows from the misprint (2m-v) in (7.1); with (2m+v) the combination of the first two terms is -v^2(3m+v)xhn/(m^2(m+v)^3).
+={}&-\frac{v^{2}(3m+v)xhn}{m^{2}(m+v)^{3}}
     -\frac{(m^{2}n-3m^{2}v-3mv^{2}-v^{3})xhn^{2}}
            {m^{2}(m+n)(m+v)^{3}}.
 \end{aligned}
@@ -1155,7 +1161,8 @@ $$
 \int\left(y^{2}+\lambda^{2}\right)^{-1} d y=\pi \lambda^{-1}
 $$
 
-Moreover $(-iy)^{2}\widehat f(y)=\widehat{f^{\prime\prime}}(y)$ and $(-iy)^{3}\widehat f(y)=\widehat{f^{\prime\prime\prime}}(y)$; thus, by the Plancherel theorem
+% ed.: printed text has (-iy)^2 and (-iy)^3; with the convention e(-xy) of the Fourier transform the factors are (2 pi i y)^2, (2 pi i y)^3; accordingly the Plancherel identity below and the constant in (11.4) hold up to powers of 2 pi, which do not affect the estimates.
+Moreover $(2\pi iy)^{2}\widehat f(y)=\widehat{f^{\prime\prime}}(y)$ and $(2\pi iy)^{3}\widehat f(y)=\widehat{f^{\prime\prime\prime}}(y)$; thus, by the Plancherel theorem
 
 $$
 \int\left(y^{2}+\lambda^{2}\right) y^{4}|\hat{f}(y)|^{2} d y=\left\|f^{\prime \prime \prime}\right\|^{2}+\lambda^{2}\left\|f^{\prime \prime}\right\|^{2}
@@ -1201,8 +1208,10 @@ Let $k, l$ be in the range of (10.3) and (10.5), respectively. By (11.2) and (11
 $$
 \begin{aligned}
 I(k,l)={}&(-2i\gamma)^{1/2}\frac{c}{l}
-\chi\left(\frac{1}{2H\sqrt{\gamma ck}}\right)
-\sigma\left(\frac{\sqrt{\gamma ck}}{N}\right)
+% ed.: printed text omits the factor l in the argument of chi; restored (cf. (12.1)).
+\chi\left(\frac{l}{2H\sqrt{\gamma ck}}\right)
+% ed.: printed text has sigma(sqrt(gamma c k)/N); corrected to sigma(sqrt(k/(gamma c))/N), the stationary point xi_0 = sqrt(b/a) of (11.1) with a = l^2/(4 gamma c^2), b = k/c, consistent with (10.5) and (12.1).
+\sigma\left(\frac{\sqrt{k/(\gamma c)}}{N}\right)
  e\left(-\frac{k^{1/2}l}{c\sqrt{\gamma c}}\right)\\
 &+O\left(\frac{\gamma c^{2}}{L^{2}}\left(\frac{c}{K}\right)^{1/2}\right).
 \end{aligned}
@@ -1211,13 +1220,15 @@ $$
 In fact we are interested in $I(k-\kappa, l)$ where $0 \leqslant \kappa<1$. This shift in $k$ does not make a large difference. By the mean value theorem we obtain
 
 $$
-\chi\left(\frac{1}{2 H \sqrt{\gamma c(k-\kappa)}}\right)=\chi\left(\frac{1}{2 H \sqrt{\gamma c k}}\right)+O\left(k^{-1}\right)
+% ed.: printed text omits the factor l in the argument of chi; restored (cf. (12.1)).
+\chi\left(\frac{l}{2 H \sqrt{\gamma c(k-\kappa)}}\right)=\chi\left(\frac{l}{2 H \sqrt{\gamma c k}}\right)+O\left(k^{-1}\right)
 $$
 
 and
 
 $$
-\sigma\left(\frac{\sqrt{\gamma c(k-\kappa)}}{N}\right)=\sigma\left(\frac{\sqrt{\gamma c k}}{N}\right)+O\left(k^{-1}\right) .
+% ed.: printed text has sigma(sqrt(gamma c k)/N); corrected to sigma(sqrt(k/(gamma c))/N) (the stationary point of (11.1) with a = l^2/(4 gamma c^2), b = k/c; consistent with (10.5) and (12.1)).
+\sigma\left(\frac{\sqrt{(k-\kappa)/(\gamma c)}}{N}\right)=\sigma\left(\frac{\sqrt{k/(\gamma c)}}{N}\right)+O\left(k^{-1}\right) .
 $$
 
 The exponential factor needs better treatment. We have
@@ -1236,7 +1247,8 @@ Inserting the above evaluations into (10.2) we first see that the error terms co
 
 
 \begin{align*}
-F(m)= & \operatorname{Im}\sum_{k\asymp K}\sum_{l\asymp L} \frac{1}{\pi l} \chi\left(\left(\frac{x c}{a^{3}}\right)^{1 / 4} \frac{k^{-1 / 2} l}{2 H}\right) \sigma\left(\left(\frac{a^{3}}{x c}\right)^{1 / 4} \frac{k^{1 / 2}}{N}\right) \\
+% ed.: printed text has sigma((a^3/(xc))^{1/4} k^{1/2}/N); corrected to (xc/a^3)^{1/4}, since sqrt(k/(gamma c)) = (xc/a^3)^{1/4} k^{1/2} and only this makes the support of sigma give k asymp K as in (10.5).
+F(m)= & \operatorname{Im}\sum_{k\asymp K}\sum_{l\asymp L} \frac{1}{\pi l} \chi\left(\left(\frac{x c}{a^{3}}\right)^{1 / 4} \frac{k^{-1 / 2} l}{2 H}\right) \sigma\left(\left(\frac{x c}{a^{3}}\right)^{1 / 4} \frac{k^{1 / 2}}{N}\right) \\
 & \times e\left(x_{1} l+x_{2} k l+x_{3} k^{1 / 2} l+x_{4} k^{-1 / 2} l\right)+O\left(c^{-1} H+x^{1 / 44}\right), \tag{12.1}
 \end{align*}
 

@@ -45,7 +45,7 @@ $$
 and we first want to determine a function $M(x)$ such that
 
 $$
-\lim _{x \to \infty} \frac{A(x)}{M(x)}=1
+\lim _{x \to \infty} \frac{A(x)}{M(x)}=1 .
 $$
 
 But we want to know more. If we write
@@ -241,7 +241,7 @@ $$
 D(x)=\sum_{n \leq x} \sum_{d \mid n} 1=\sum_{d \leq x}\floor{\frac{x}{d}},
 $$
 
-where $\floor{x}$ is the greatest integer less than or equal to $x$. We divide this region under the hyperbola $yz=x$ into three sections as shown in Figure 2. Hence, if $\{x\}$ denotes the
+where $\floor{x}$ is the greatest integer less than or equal to $x$. We divide this region under the hyperbola $yz=x$ into three sections as shown in Figure~\ref{fig:divisor-problem}. Hence, if $\{x\}$ denotes the
 
 \begin{figure}[H]
 \centering
@@ -385,8 +385,12 @@ We now offer a few words about how upper bounds have been obtained. Although (3.
 \end{align*}
 
 
+% ed.: the printed citation [38] for van der Corput's 27/82 is his 1923 paper, which gives 33/100 (see the table);
+% the bound 27/82 is from van der Corput, Zum Teilerproblem, Math. Ann. 98 (1928) 697-716, not in the reference list.
 where $N+\frac{1}{2}=T^{2} /\left(4 \pi^{2} x\right)$. (Of course, a similar remark can be made for (2.4).) Titchmarsh uses (4.1) to obtain the bound $\frac{27}{82}$ established by L. W. Nieland [31] and J. G. van der Corput [38]. This, or a similar, truncated formula (4.1) has been the starting point for most attacks on the error term $\Delta(x)$.
 
+% ed.: printed text cites [23] (Pacific J. Math. 98, 1982, exponent 35/108) for the 1985 result 139/429;
+% the 1985 paper is Kolesnik, On the method of exponent pairs, Acta Arith. 45 (1985) 115-143, not in the reference list.
 Approximating $\Delta(x)$ by double exponential sums with the use of Voronoï's formula (3.6), as we did above in (4.1), was accomplished with great success by many mathematicians listed in our table, up to and including G. A. Kolesnik in his 1985 paper [23], where he uses the van der Corput method to estimate trigonometric sums of several variables.
 
 H. Iwaniec and C. J. Mozzochi [22] use a variety of methods related to Farey fractions and Weyl and van der Corput's treatment of exponential sums, but their main, new source of inspiration was provided by the work of E. Bombieri and H. Iwaniec [9]. In this pioneering work, among other things, Bombieri and Iwaniec examine certain averages of exponential sums by methods of Weyl and van der Corput, but they first analyze and transform these sums before averaging. Via an approximation by a cubic Taylor polynomial, they arrive at certain perturbed Gauss sums. They then can transform these by using the Poisson summation formula.
@@ -395,7 +399,8 @@ M. N. Huxley in 1993 [18], and then again in 2003 [19], succeeded in improving p
 
 \section{Lower Bounds for \texorpdfstring{$P(x)$ and $\Delta(x)$}{P(x) and Delta(x)}}
 
-It is natural to ask if lower bounds for $P(x)$ can be obtained. Landau [28] and Hardy [14, pp. 243-267], [16] in papers both published in 1915, obtained the first results in this direction. Employing an identity for the ``smoothed'' sum
+% ed.: printed text has [16, pp. 243-267]; corrected to 243-263, consistent with Section 2, with [16, p. 263] in Section 5, and with the 21-page original [14, pp. 263-283].
+It is natural to ask if lower bounds for $P(x)$ can be obtained. Landau [28] and Hardy [14], [16, pp. 243-263] in papers both published in 1915, obtained the first results in this direction. Employing an identity for the ``smoothed'' sum
 
 % As in (2.5), the printed lower limit n=0 is incompatible with the factor x/n.
 $$
@@ -404,9 +409,10 @@ $$
 
 Landau [28] showed that for every $\epsilon>0, P(x) \neq O\left(x^{1 / 4-\epsilon}\right)$, as $x \to \infty$.
 
-To describe Hardy's theorems, recall the definitions of $f(x)=\Omega(F(x)), f(x)=$ $\Omega_{+}(F(x)), f(x)=\Omega_{-}(F(x))$, and $f(x)=\Omega_{ \pm}(F(x))$, as $x \to \infty$, which we made at the close of the Introduction.
+To describe Hardy's theorems, recall the definitions of $f(x)=\Omega(F(x)), f(x)=\Omega_{+}(F(x)), f(x)=\Omega_{-}(F(x))$, and $f(x)=\Omega_{ \pm}(F(x))$, as $x \to \infty$, which we made at the close of the Introduction.
 
-Improving on Landau's result, but using a completely different method, Hardy [14], [16, pp. 243-267] proved that
+% ed.: printed text has [16, pp. 243-267]; corrected to 243-263 (see the note in the first paragraph of this section).
+Improving on Landau's result, but using a completely different method, Hardy [14], [16, pp. 243-263] proved that
 
 
 \begin{equation*}
@@ -442,7 +448,7 @@ $$
 P(x)=\Omega_{+}\left(x^{1 / 4} \exp \left(C_{1}(\log \log x)^{1 / 4}(\log \log \log x)^{-3 / 4}\right)\right)
 $$
 
-Corràdi and Katai (1967)
+Corrádi and Kátai (1967)
 
 $$
 P(x)=\Omega_{-}\left(x^{1 / 4}(\log x)^{1 / 4}(\log \log x)^{(\log 2) / 4} \exp \left(-C_{2} \sqrt{\log \log \log x}\right)\right)
@@ -477,7 +483,7 @@ Bounds for $P(x)$ and $\Delta(x)$ frequently lead to analogous improved upper bo
 We observe that Hardy's result (5.3) is better on the plus side than what he and others have been able to obtain on the minus side. One might therefore conjecture that $\Delta(x)$ is more often positive than negative. Indeed, it is a consequence of Voronoï's work [39] that
 
 $$
-\int_{0}^{X} \Delta(x) d x=\frac{1}{4} X+O\left(X^{3 / 4}\right), \quad X \to \infty
+\int_{0}^{X} \Delta(x) d x=\frac{1}{4} X+O\left(X^{3 / 4}\right), \quad X \to \infty .
 $$
 
 Thus, indeed, $\Delta(x)$ is more frequently positive than negative.
@@ -485,7 +491,7 @@ Thus, indeed, $\Delta(x)$ is more frequently positive than negative.
 On the other hand, Hardy's $\Omega$-theorem (5.2) and Hafner's improvement [13] point to a possibly negative bias of values for $P(x)$. Indeed, for $m=3,4$, K.-M. Tsang [36], and, for $5 \leq m \leq 9$, W. Zhai [41] showed that
 
 $$
-\int_{0}^{X} P^{m}(x) d x \sim(-1)^{m} C_{m} X^{1+m / 4}, \quad X \to \infty
+\int_{0}^{X} P^{m}(x) d x \sim(-1)^{m} C_{m} X^{1+m / 4}, \quad X \to \infty ,
 $$
 
 where $C_{m}>0$ and $3 \leq m \leq 9$. Thus, $P(x)$ prefers to be negative.
@@ -559,7 +565,7 @@ Note that the series on the left-hand side of (6.4) is finite, and discontinuous
 $$
 \begin{aligned}
 \frac{1}{\pi \sqrt{2} x^{1 / 4} m^{3 / 4}} & \left(\frac{\cos \left(4 \pi \sqrt{m(n+\theta) x}-\frac{3}{4} \pi\right)}{(n+\theta)^{3 / 4}}\right. \\
-& \left.-\frac{\cos \left(4 \pi \sqrt{m(n+1-\theta) x}-\frac{3}{4} \pi\right)}{(n+1-\theta)^{3 / 4}}\right)
+& \left.-\frac{\cos \left(4 \pi \sqrt{m(n+1-\theta) x}-\frac{3}{4} \pi\right)}{(n+1-\theta)^{3 / 4}}\right) .
 \end{aligned}
 $$
 
@@ -587,7 +593,7 @@ d_{\chi}(n)=\sum_{k \mid n} \chi(k), \tag{6.6}
 \end{equation*}
 
 
-where $\chi$ is an odd primitive character modulo $q$. We do not state this identity here, but using it, the authors of [8] derived a representation for $\sum_{0 \leq n \leq x}{ }^{\prime} r_{2}(n)$.
+where $\chi$ is an odd primitive character modulo $q$. We do not state this identity here, but using it, the authors of [8] derived a representation for $\sump_{0 \leq n \leq x} r_{2}(n)$.
 
 \begin{corollary}
 For any $x>0$,
@@ -674,7 +680,7 @@ The authors thank Byungchan Kim for the two geometrical figures appearing in thi
   \item[{[28]}] Landau, E. (1915). Über die Gitterpunkte in einem Kreise (Zweite Mitteilung). Göttingen: Nachr. Akad. Wiss., pp. 161-171.
   \item[{[29]}] Landau, E. (1947). Zahlentheorie, Zweiter Band, Vorlesungen über Zahlentheorie. New York: Chelsea.
   \item[{[30]}] Littlewood, J. E., Walfisz, A. (1924). The lattice points of a circle. Proc. Roy. Soc. (A). 106: 478-488.
-  \item[{[31]}] Nieland, L. W. (1928). Zum Kreisproblem. Math. Ann. 98: 717--736.
+  \item[{[31]}] Nieland, L. W. (1928). Zum Kreisproblem. Math. Ann. 98: 717-736.
   \item[{[32]}] Rademacher, H. (1964). Lectures on Elementary Number Theory. New York: Blaisdell.
   \item[{[33]}] Ramanujan, S. (1988). The Lost Notebook and Other Unpublished Papers. New Delhi: Narosa.
   \item[{[34]}] Sierpiński, W. (1906). O pewnem zagadnieniu z rachunku funkcyj asymptotycznych. Prace Mat. Fiz. 17: 77-118.
