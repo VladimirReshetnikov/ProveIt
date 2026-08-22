@@ -31,12 +31,31 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
   - `IntegerPoints.Wu` — Theorem 1, Nowak's formula, the reduction to
     `ℛ(M, N)`, the regions `𝒜, ℬ, 𝒞, 𝒟`, Propositions 1–4, and the exact
     Vaughan identity behind Lemma 4.1.
+  - `IntegerPoints.Consequences` — **proved**: Wu's Theorem 1 ⇒ Zhai–Cao's
+    Theorem ⇒ Nowak's bound; Wu's unconditional (1.1) ⇒ Zhai–Cao's (1.2);
+    Nowak's formula ⇒ Zhai–Cao Proposition 2; the regions cover the square,
+    so Propositions 1–4 plus the reduction give Wu's Theorem 1
+    (`wu_theorem1_of_props`).
+  - `IntegerPoints.Vaughan` — **proved**: both forms of the Vaughan identity
+    (`wu_vaughanIdentity_pointwise_holds`, `wu_vaughanIdentity_holds`) via
+    Dirichlet convolution with the truncated Möbius function.
+  - `IntegerPoints.Srinivasan` — **proved**: Zhai–Cao Lemma 8
+    (`zhaiCao_lemma8_holds`) by an intermediate-value crossing argument.
+  - `IntegerPoints.ExponentPairs` — **proved**: `(0, 1)` is an exponent pair.
+  - `IntegerPoints.WeylVanDerCorput` — **proved**: Zhai–Cao Lemma 4, the
+    Weyl–van der Corput inequality with real shift length `Q`
+    (`zhaiCao_lemma4_holds`, implied constant `6c`), by a fully discrete
+    window-sum argument.
 
 ## Status
 
-Statements only.  Every result is a `Prop`-valued definition (e.g.
-`zhaiCao_theorem`, `wu_theorem1`), so the library compiles with no `sorry`,
-no axioms beyond Mathlib's, and asserts nothing.  Proofs are future work.
+Every result is a `Prop`-valued definition (e.g. `zhaiCao_theorem`,
+`wu_theorem1`); the ones proved so far have a companion `…_holds` theorem
+(or an implication between statements), listed above.  The library compiles
+with no `sorry` and no axioms beyond Mathlib's.  The analytic core — the
+exponential-sum estimates (Zhai–Cao Lemmas 1–3, 5–7, 9–10, Proposition 1; Wu
+Theorem 2, Lemmas 2.1, 2.5–2.7, Propositions 1–4), Nowak's formula, and the
+RH-conditional main theorems — remains unproved.
 
 ## Conventions worth knowing
 
