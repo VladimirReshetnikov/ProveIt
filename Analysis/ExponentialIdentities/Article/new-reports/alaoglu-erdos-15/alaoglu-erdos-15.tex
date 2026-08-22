@@ -1,0 +1,1460 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\definecolor{navy}{RGB}{24,52,93}
+\definecolor{deepgreen}{RGB}{20,105,70}
+\definecolor{brick}{RGB}{150,45,35}
+\definecolor{gold}{RGB}{150,105,0}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navy,
+  citecolor=deepgreen,
+  urlcolor=brick,
+  pdftitle={Information-Theoretic Continuation of the Alaoglu--Erdos Program},
+  pdfauthor={The ProveIt project},
+  pdfsubject={Alaoglu--Erdos integer-exponent conjecture; entropy; S-units; Sturmian words},
+  pdfkeywords={Alaoglu--Erdos conjecture, four exponentials, Shannon entropy, Sturmian word, S-unit equation, additive energy}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Information-theoretic continuation}
+\fancyhead[R]{\small Alaoglu--Erd\H{o}s program}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Completion criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Research target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\HH}{\mathrm{H}}
+\newcommand{\II}{\mathrm{I}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\angles}[1]{\left\langle #1\right\rangle}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\proved}{\textcolor{deepgreen}{\textbf{proved here}}}
+\newcommand{\inherited}{\textcolor{navy}{\textbf{inherited}}}
+\newcommand{\conditional}{\textcolor{gold}{\textbf{conditional target}}}
+\newcommand{\openstatus}{\textcolor{brick}{\textbf{open}}}
+
+\title{\textbf{Information-Theoretic Continuation of the Alaoglu--Erd\H{o}s Program}\\[0.35em]
+\large Exact entropy laws, fixed-rank additive rigidity, and separating-channel targets}
+\author{The ProveIt project\\
+\small A non-duplicative companion to the supplied unified report}
+\date{August 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Alaoglu--Erd\H{o}s integer-exponent conjecture asks whether a real number $x$ satisfying $2^x,3^x\in\Z$ must be an integer.  A counterexample would be transcendental and would already lie on the unresolved $2\times2$ boundary of the Four Exponentials Conjecture.  The supplied unified report develops a large collection of transcendence, interpolation-determinant, valuation, Sturmian, $p$-adic, and variational approaches.  This companion report deliberately does not reproduce those developments.  It asks instead what can be extracted from information theory, and then joins the resulting entropy identities to fixed-rank additive combinatorics, complex analysis, and recent work on irrational powers.
+
+Several rigorous new conclusions are obtained under the counterexample hypothesis.  The binary and ternary digit-length observations are exactly the same random variable; their entropy is computed to second order and exhibits a one-dimensional ``synergy'' rather than two independent channels.  Optimal binary and ternary prefix-code redundancies are explicit functions of the same irrational rotation and have positive mean but vanishing rate.  The synchronized Sturmian carry word has zero entropy rate, logarithmic block entropy, maximal linear total correlation, and is asymptotically independent of every fixed periodic congruence observer.  All fixed collections of valuation observables have, to leading order, the entropy polymatroid of a rank-two linear matroid; consequently no universal homogeneous linear information inequality can produce the missing rank collapse.
+
+The strongest positive result is a fixed-rank $S$-unit entropy theorem.  For any $N$-element subset of a fixed finitely generated multiplicative group of positive algebraic numbers, the additive energy equals $2N^2+O(N)$, the sumset has size $N^2/2+O(N)$, and the sum of two independent uniform elements carries $2\log N-\log2+o(1)$ nats.  Applied to the hypothetical semigroup boxes in bases $2$ and $3$, each pair-sum channel is asymptotically lossless.  Strict convexity makes the two synchronized sums jointly an exact encoding of the unordered source pair.  This is substantial rigidity, but it does not itself contradict integrality: the induced decoder can have growing arithmetic complexity.  Quantitative degree lower bounds for rational decoders and implicit polynomial graph relations make that obstruction explicit.
+
+The report also proves that the Sturmian generating function has the unit circle as a natural boundary, formulates a Fourier-information criterion for forcing determinant parity/residue separation, and audits recent literature through August 21, 2026, including arXiv work on entropic sum-product inequalities, additive relations in irrational powers, refined Diophantine exponents, Gaussian Cobham theorems, and multiplicative dependence in sumsets.  No unconditional proof of the conjecture is claimed.  The outcome is a sharper map of what Shannon entropy can and cannot see, together with several concrete completion criteria whose verification would finish the problem.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, status, and non-duplication}
+
+\subsection{The problem and the inherited reduction}
+
+The conjecture is
+\begin{equation}\label{eq:AE}
+  x\in\R,\qquad 2^x\in\Z,\qquad 3^x\in\Z
+  \quad\Longrightarrow\quad x\in\Z.
+\end{equation}
+If $x<0$, then $0<2^x<1$, so $2^x$ cannot be an integer.  If $0<x<1$, then $1<2^x<2$, with the same conclusion.  Thus every nontrivial counterexample would satisfy $x>1$.
+
+We use only the minimal common notation from the supplied unified report.  Assume, for contradiction, that a noninteger solution exists and let $\beta>1$ be the least positive noninteger solution.  Put
+\begin{equation}\label{eq:MA}
+  M=2^\beta\in\N,\qquad A=3^\beta\in\N.
+\end{equation}
+Then $\beta$ is irrational: if $\beta=a/b\in\Q$ in lowest terms, $M^b=2^a$ forces $b=1$.  In fact Gelfond--Schneider shows that $\beta$ must be transcendental \cite{Gelfond1960}.  The inherited exact semigroup description gives
+\begin{equation}\label{eq:boxes}
+  \mathcal C_L=\{2^nM^k:0\leq n,k<L\},\qquad
+  \mathcal D_L=\{3^nA^k:0\leq n,k<L\},
+\end{equation}
+and both sets have cardinality $L^2$.  The power map
+\begin{equation}\label{eq:power-conj}
+  \Phi(t)=t^c,\qquad c=\frac{\log3}{\log2}>1,
+\end{equation}
+restricts to the exact bijection
+\begin{equation}\label{eq:phi-box}
+  \Phi(2^nM^k)=3^nA^k.
+\end{equation}
+Writing $\beta=B+\alpha$ with $B=\floor\beta$ and $0<\alpha<1$, the inherited carry word is
+\begin{equation}\label{eq:sturmian}
+  s_k=\floor{(k+1)\alpha}-\floor{k\alpha}\in\bits.
+\end{equation}
+It is a Sturmian word and hence aperiodic with factor complexity $p(n)=n+1$ \cite{Lothaire2002}.
+
+These facts are recalled only to make this companion self-contained.  Their proofs, the least-solution monoid theorem, the normalized rational orbits, the interpolation-determinant constructions, and the $p$-adic valuation ceilings belong to the supplied report and are not repeated here.
+
+\subsection{What is new in this companion}
+
+\begin{longtable}{p{0.31\textwidth}p{0.61\textwidth}}
+\toprule
+\textbf{Inherited topic} & \textbf{New, non-duplicative contribution here}\\
+\midrule
+Least counterexample, primitive outputs, exact monoid & Random-source model on finite semigroup boxes and exact entropy identities.\\
+Sturmian synchronization and nonautomaticity target & Block-entropy law, algorithmic-information law, total correlation, and independence from every fixed periodic arithmetic observer.\\
+Valuation lattices and $p$-adic determinant accounting & Rank-polymatroid theorem for valuation entropies and a no-go result for universal linear information inequalities.\\
+Interpolation determinants and tied minimal terms & Fourier-information and moment-separation criteria for parity versus unit residue.\\
+Compact rational orbit and rational-point counting & P\'olya--Carlson natural-boundary theorem for the carry generating function.\\
+Sum-product and smooth-number reconnaissance & A fixed-rank $S$-unit additive-energy theorem, sharp Shannon/collision entropies, and synchronized power-sum decoding.\\
+Literature through earlier continuations & Audit of developments available through August 21, 2026, with special attention to 2025--2026 arXiv work.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Result ledger}
+
+Every assertion in the report is assigned one of four statuses: \proved, \inherited, \conditional, or \openstatus.  The principal proved statements are:
+\begin{enumerate}
+  \item the exact common digit-length channel and its entropy asymptotics (Theorem~\ref{thm:length-entropy});
+  \item the optimal $D$-ary coding redundancy and its coupled binary/ternary oscillation (Theorem~\ref{thm:prefix});
+  \item logarithmic Sturmian block entropy and finite-observer independence (Theorems~\ref{thm:block-entropy} and~\ref{thm:periodic-observer});
+  \item the valuation entropy polymatroid and its linear-inequality obstruction (Theorem~\ref{thm:valuation-matroid});
+  \item fixed-rank near-Sidon behavior and asymptotically lossless additive channels (Theorem~\ref{thm:sunit-entropy});
+  \item exact joint decoding of synchronized power sums and degree lower bounds for rational and implicit algebraic decoders (Theorems~\ref{thm:joint-sums}, \ref{thm:decoder-degree}, and~\ref{thm:algebraic-decoder-degree});
+  \item a natural boundary for the carry generating function (Theorem~\ref{thm:natural-boundary}); and
+  \item a Fourier criterion that converts a sufficiently rich family of determinant cancellations into parity--residue independence (Theorem~\ref{thm:fourier-separation}).
+\end{enumerate}
+
+The conjecture itself remains \openstatus.  The purpose of the negative results is not merely cautionary: they isolate the precise extra structure a successful information-theoretic proof must create.
+
+\section{The finite-source information model}
+
+All logarithms and entropies in this report use the natural base.  Thus entropy is measured in nats.  Changing the logarithm base only rescales every identity.
+
+Let
+\begin{equation}\label{eq:source}
+  (N_L,K_L)\sim\operatorname{Unif}\{0,1,\ldots,L-1\}^2.
+\end{equation}
+Define the synchronized integer encoders
+\begin{equation}\label{eq:XY}
+  X_L=2^{N_L}M^{K_L},\qquad Y_L=3^{N_L}A^{K_L}.
+\end{equation}
+Multiplicative independence of $2$ and $M$ (and of $3$ and $A$) makes both maps injective.  Hence
+\begin{equation}\label{eq:source-entropy}
+  \HH(N_L,K_L)=\HH(X_L)=\HH(Y_L)=2\log L,
+\end{equation}
+and $Y_L=\Phi(X_L)$ exactly.
+
+This elementary model separates three notions that are easy to conflate:
+\begin{itemize}
+  \item \emph{source dimension}: the two independent coordinates $(N_L,K_L)$;
+  \item \emph{arithmetic observation}: a digit length, valuation, residue, sum, or determinant feature;
+  \item \emph{description complexity of a decoder}: the complexity of reconstructing the source from the observation.
+\end{itemize}
+A channel may preserve almost all Shannon entropy while requiring a decoder of unbounded algebraic or automata complexity.  This distinction becomes decisive in Sections~\ref{sec:sunit}--\ref{sec:synchronized-sums}.
+
+\section{The binary and ternary digit lengths are one channel}\label{sec:length}
+
+For a positive integer $z$, let
+\[
+  \ell_b(z)=\floor{\log_b z}+1
+\]
+be its number of base-$b$ digits.
+
+\begin{theorem}[Exact common length channel]\label{thm:length-identity}
+Under the counterexample hypothesis,
+\begin{equation}\label{eq:length-equality}
+ \ell_2(X_L)=\ell_3(Y_L)=N_L+\floor{\beta K_L}+1
+\end{equation}
+identically.
+\end{theorem}
+
+\begin{proof}
+Since $\log_2M=\log_3A=\beta$,
+\[
+ \log_2X_L=N_L+\beta K_L,
+ \qquad
+ \log_3Y_L=N_L+\beta K_L.
+\]
+Taking floors proves the claim.
+\end{proof}
+
+Thus observing both digit lengths does not provide two correlated measurements; it repeats the same measurement.  Put
+\begin{equation}\label{eq:T}
+  T_L=N_L+\floor{\beta K_L}.
+\end{equation}
+The next theorem computes its entropy beyond the leading $\log L$ term.
+
+\begin{theorem}[Entropy and synergy of the common length]\label{thm:length-entropy}
+Let $\beta>1$ be irrational and $(N_L,K_L)$ be as in \eqref{eq:source}.  Then
+\begin{equation}\label{eq:Tentropy}
+  \HH(T_L)=\log L+\log\beta+\frac{1}{2\beta}+o(1).
+\end{equation}
+Consequently,
+\begin{align}
+  \HH(N_L,K_L\mid T_L)
+    &=\log L-\log\beta-\frac{1}{2\beta}+o(1),\label{eq:conditional-source}\\
+  \II(T_L;N_L)=\II(T_L;K_L)
+    &=\log\beta+\frac{1}{2\beta}+o(1),\label{eq:individual-info}\\
+  \II(N_L;K_L\mid T_L)
+    &=\log L-\log\beta-\frac{1}{2\beta}+o(1).\label{eq:induced-correlation}
+\end{align}
+The same formulas hold with $T_L$ replaced by the pair $(\ell_2(X_L),\ell_3(Y_L))$.
+\end{theorem}
+
+\begin{proof}
+Let $U,V$ be independent uniform variables on $[0,1]$.  The scaled variable $T_L/L$ is a lattice approximation to $U+\beta V$.  Its probability masses satisfy a uniform Riemann-sum approximation away from the three break points, and the boundary contribution is $o(1)$ in entropy; a detailed proof appears in Appendix~\ref{app:local-limit}.  Therefore
+\begin{equation}\label{eq:lattice-diff}
+ \HH(T_L)=\log L+h(U+\beta V)+o(1),
+\end{equation}
+where $h$ is differential entropy.
+
+For $\beta>1$, the density of $U+\beta V$ is
+\begin{equation}\label{eq:trapezoid-density}
+ f_\beta(t)=
+ \begin{cases}
+ t/\beta,&0\leq t\leq1,\\
+ 1/\beta,&1\leq t\leq\beta,\\
+ (\beta+1-t)/\beta,&\beta\leq t\leq\beta+1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Direct integration gives
+\[
+ -\int f_\beta\log f_\beta
+ =2\left[-\int_0^1\frac{t}{\beta}\log\frac{t}{\beta}\,dt\right]
+   -\int_1^\beta\frac1\beta\log\frac1\beta\,dt
+ =\log\beta+\frac1{2\beta}.
+\]
+This proves \eqref{eq:Tentropy}.
+
+Given $K_L$, the variable $T_L$ is a translate of $N_L$, so
+$\HH(T_L\mid K_L)=\log L$.  Given $N_L$, the map
+$k\mapsto\floor{\beta k}$ is strictly increasing because $\beta>1$, so
+$\HH(T_L\mid N_L)=\log L$.  Equations \eqref{eq:individual-info} follow.  Since $T_L$ is a deterministic function of the source, \eqref{eq:conditional-source} follows from \eqref{eq:source-entropy}.  Finally, $N_L$ and $K_L$ are independent, and the standard interaction-information identity gives
+\[
+ \II(N_L;K_L\mid T_L)
+ =\HH(T_L\mid N_L)+\HH(T_L\mid K_L)-\HH(T_L),
+\]
+which is \eqref{eq:induced-correlation}.
+\end{proof}
+
+\subsection{Interpretation: constant individual information, logarithmic synergy}
+
+The common length contains $\log L+O(1)$ nats, but only $O(1)$ nats about either source coordinate separately.  Almost all of its information concerns the \emph{combination} $N_L+\beta K_L$.  Conditioning on that combination creates $\log L-O(1)$ nats of dependence between two coordinates that were initially independent.  In the terminology of multivariate information theory, the observation is predominantly synergistic.
+
+This calculation gives a rigorous obstruction to a tempting strategy.  Comparing binary and ternary lengths cannot overdetermine $(N_L,K_L)$: the two lengths are exactly equal, and one source dimension remains hidden.  Any successful digit argument must use internal digits, carries, residues, or another observation not determined by $T_L$.
+
+For calibration, when $\beta=\log_2 3\approx1.5849625$, the constant in \eqref{eq:Tentropy} is
+\[
+ \log\beta+\frac1{2\beta}\approx0.776025625.
+\]
+The finite-$L$ values of $\HH(T_L)-\log L$ are $0.774115$ at $L=50$, $0.775308$ at $L=100$, and $0.775991$ at $L=500$.
+
+\section{Coupled source-coding redundancy}\label{sec:prefix}
+
+The equality of logarithmic sizes also produces an exact pair of source-coding problems in the sense of Kraft--McMillan coding theory \cite{Shannon1948,CoverThomas2006}.  There are $M^q$ equiprobable messages in a binary code and $A^q$ equiprobable messages in a ternary code, with
+\[
+ \log_2(M^q)=\log_3(A^q)=q\beta.
+\]
+The irrational fractional part $\{q\beta\}$ controls both optimal code trees.
+
+\begin{lemma}[Optimal uniform $D$-ary prefix code]\label{lem:uniform-code}
+Let $D\geq2$, let $R\geq2$ be the number of equiprobable messages, and set $k=\floor{\log_D R}$.  The minimum expected length among all $D$-ary prefix codes is
+\begin{equation}\label{eq:optimal-length}
+  L_D^*(R)=k+1-\frac{a_D(R)}{R},
+  \qquad
+  a_D(R)=\floor{\frac{D^{k+1}-R}{D-1}}.
+\end{equation}
+An optimal code has $a_D(R)$ words of length $k$ and $R-a_D(R)$ words of length $k+1$.
+\end{lemma}
+
+\begin{proof}
+For equal probabilities, an optimal length vector can be balanced so that no two lengths differ by more than one.  The shorter length must be $k$, since $D^k\leq R<D^{k+1}$.  If $a$ words have length $k$ and the rest length $k+1$, Kraft's inequality is
+\[
+ aD^{-k}+(R-a)D^{-(k+1)}\leq1,
+\]
+which is equivalent to $a\leq(D^{k+1}-R)/(D-1)$.  Maximizing $a$ minimizes the mean length and gives \eqref{eq:optimal-length}.  Conversely, Kraft--McMillan realizes that length multiset.
+\end{proof}
+
+\begin{theorem}[Coupled binary/ternary redundancy]\label{thm:prefix}
+For $D\in\{2,3\}$ define
+\begin{equation}\label{eq:rhoD}
+ \rho_D(t)=1-t-\frac{D^{1-t}-1}{D-1},\qquad 0\leq t\leq1.
+\end{equation}
+Let $t_q=\{q\beta\}$.  Then
+\begin{align}
+ L_2^*(M^q)-q\beta&=\rho_2(t_q),\label{eq:binary-red}\\
+ L_3^*(A^q)-q\beta&=\rho_3(t_q)+O(A^{-q}).\label{eq:ternary-red}
+\end{align}
+The functions $\rho_D$ are nonnegative, vanish only at the endpoints, and attain their maxima at
+\begin{equation}\label{eq:tstar}
+ t_D^*=1-\log_D\left(\frac{D-1}{\log D}\right).
+\end{equation}
+Because $\beta$ is irrational, $(t_q)$ is equidistributed modulo one, and
+\begin{equation}\label{eq:mean-red}
+ \lim_{Q\to\infty}\frac1Q\sum_{q=1}^Q
+   \bigl(L_D^*(D^{q\beta})-q\beta\bigr)
+ =\overline\rho_D
+ =\frac12-\frac1{\log D}+\frac1{D-1},
+\end{equation}
+where $D^{q\beta}$ means $M^q$ for $D=2$ and $A^q$ for $D=3$.
+Numerically,
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$D$ & $t_D^*$ & $\max\rho_D$ & $\overline\rho_D$\\
+\midrule
+$2$ & $0.4712336271$ & $0.0860713321$ & $0.0573049591$\\
+$3$ & $0.4546762683$ & $0.1350845051$ & $0.0897607734$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+Let $k_q=\floor{q\beta}$ and $t_q=q\beta-k_q$.  For $R=D^{q\beta}$, Lemma~\ref{lem:uniform-code} gives
+\[
+ \frac{a_D(R)}{R}
+ =\frac{D^{1-t_q}-1}{D-1}+O(R^{-1}),
+\]
+where the error is zero for $D=2$.  Substitution in \eqref{eq:optimal-length} proves \eqref{eq:binary-red}--\eqref{eq:ternary-red}.
+
+Convexity of $D^{1-t}$ shows $\rho_D\geq0$, with equality only at $0$ and $1$.  Differentiating gives \eqref{eq:tstar}.  Weyl equidistribution \cite{KuipersNiederreiter1974} and direct integration yield
+\[
+ \int_0^1\rho_D(t)\,dt
+ =\frac12-\frac{1}{D-1}
+   \left(\int_0^1D^{1-t}\,dt-1\right)
+ =\frac12-\frac1{\log D}+\frac1{D-1}.
+\]
+\end{proof}
+
+\subsection{Why source coding alone does not close the problem}
+
+The simultaneous exact powers force two positive average redundancies governed by the same irrational phase.  This is a genuine cross-base synchronization law.  Nevertheless, the redundancy is $O(1)$ while the block entropy is $q\beta$.  The redundancy per message symbol therefore tends to zero.  Shannon's asymptotic coding theorem \cite{Shannon1948,CoverThomas2006} is insensitive to the difference between an exact $D$-power and a number lying between consecutive $D$-powers.
+
+A coding proof would need a \emph{finite exactness principle}: for example, an arithmetic reason that the two optimal trees must be complete at the same depths.  Completeness would force $t_q=0$ and hence $\beta\in\Q$.  No such principle follows from entropy or Kraft's inequality alone.
+
+\section{The synchronized Sturmian source}\label{sec:sturmian-entropy}
+
+The deterministic carry word \eqref{eq:sturmian} has no probability distribution until a sampling rule is specified.  The natural stationary model randomizes the intercept.  Let $\Theta$ be uniform on $[0,1)$ and define
+\begin{equation}\label{eq:phase-word}
+ S_j(\Theta)=\floor{\Theta+(j+1)\alpha}-\floor{\Theta+j\alpha},
+ \qquad j\geq0.
+\end{equation}
+The original carry word is the intercept-$0$ member of this uniquely ergodic Sturmian family \cite{Lothaire2002}.  Let
+\[
+ \mathbf S_n=(S_0,\ldots,S_{n-1}),\qquad H_n=\HH(\mathbf S_n),
+\]
+and let
+\[
+ h_2(\alpha)=-\alpha\log\alpha-(1-\alpha)\log(1-\alpha)
+\]
+be the binary entropy function.
+
+\subsection{Exact gap formula and logarithmic block entropy}
+
+The points
+\begin{equation}\label{eq:endpoints}
+ 0,-\alpha,-2\alpha,\ldots,-n\alpha\pmod1
+\end{equation}
+partition the circle into $n+1$ gaps.  On the interior of each gap, the block $\mathbf S_n(\Theta)$ is constant; the $n+1$ blocks are distinct.  If the gap lengths are $g_{n,1},\ldots,g_{n,n+1}$, then
+\begin{equation}\label{eq:gap-entropy}
+  H_n=-\sum_{j=1}^{n+1}g_{n,j}\log g_{n,j}.
+\end{equation}
+This is a complete finite-$n$ description, not only an entropy-rate statement.
+
+The counterexample hypothesis supplies an effective finite irrationality measure.  Indeed, $U=2^\alpha=M/2^B\in\Q\setminus\{1\}$, and effective lower bounds for the nonzero linear form \cite{Baker1975,Matveev2000}
+\[
+ q\log U-p\log2
+\]
+show that there are effectively computable constants $C>0$ and $\mu<\infty$ such that
+\begin{equation}\label{eq:irr-measure}
+ \left|\alpha-\frac pq\right|\geq Cq^{-\mu}
+ \qquad(p\in\Z,\ q\geq1).
+\end{equation}
+No useful small numerical value of $\mu$ is asserted; finiteness is what matters here.
+
+\begin{theorem}[Sturmian block-entropy window]\label{thm:block-entropy}
+For every admissible exponent $\mu$ in \eqref{eq:irr-measure},
+\begin{equation}\label{eq:block-window}
+ \frac{1}{\mu-1}\log n-O_{\alpha,\mu}(1)
+ \leq H_n\leq\log(n+1).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:entropy-rate-zero}
+ \lim_{n\to\infty}\frac{H_n}{n}=0,
+ \qquad
+ \lim_{n\to\infty}(H_{n+1}-H_n)=0.
+\end{equation}
+The second limit is the conditional-entropy rate of this stationary process.
+Moreover, the total correlation satisfies
+\begin{equation}\label{eq:total-correlation}
+ \sum_{j=0}^{n-1}\HH(S_j)-\HH(\mathbf S_n)
+ =n h_2(\alpha)-H_n
+ =n h_2(\alpha)-O(\log n).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The upper bound follows immediately from the $n+1$ possible blocks.  For the lower bound, let $q_m\leq n<q_{m+1}$ be consecutive continued-fraction denominator scales for $\alpha$.  The three-gap theorem \cite{KuipersNiederreiter1974} gives
+\begin{equation}\label{eq:max-gap}
+ \max_j g_{n,j}\leq \frac{C_0}{q_m}
+\end{equation}
+with an absolute constant $C_0$.  On the other hand, a convergent satisfies
+\[
+ \left|\alpha-\frac{p_m}{q_m}\right|<\frac{1}{q_mq_{m+1}}.
+\]
+Comparison with \eqref{eq:irr-measure} gives $q_{m+1}\ll q_m^{\mu-1}$ and hence
+$q_m\gg n^{1/(\mu-1)}$.  Since Shannon entropy dominates min-entropy,
+\[
+ H_n\geq-\log\max_jg_{n,j}
+ \geq\frac1{\mu-1}\log n-O(1).
+\]
+The first entropy-rate assertion follows from $H_n=O(\log n)$.  The stationary conditional entropies $H_{n+1}-H_n$ are nonincreasing, so their limit equals the entropy rate and is also zero.  Finally, every $S_j$ is Bernoulli with parameter $\alpha$, and the definition of total correlation gives \eqref{eq:total-correlation}.
+\end{proof}
+
+The conclusion is deliberately two-sided.  The process has zero entropy rate, yet a length-$n$ block carries an unbounded, at least logarithmic amount of phase information.  Its bits are individually nondegenerate but globally almost completely dependent.  This is exactly the opposite of a Bernoulli source.
+
+\subsection{Algorithmic information}
+
+Let $K_{\mathrm{pf}}(w)$ denote prefix-free Kolmogorov complexity with respect to a fixed universal machine.  The number $\alpha=\log_2U$ is computable because $U\in\Q_{>0}$, so the intercept-$0$ prefix $s_0\cdots s_{n-1}$ can be generated from $n$ by computing $\alpha$ with certified precision away from the finitely many relevant boundaries.  Conversely, $n$ is recoverable from the length of the word.  Therefore
+\begin{equation}\label{eq:kolmogorov}
+ K_{\mathrm{pf}}(s_0\cdots s_{n-1})=K_{\mathrm{pf}}(n)+O_{\alpha}(1)=O(\log n).
+\end{equation}
+For incompressible integers $n$, this is $\log n+O(\log\log n)$; for special $n$ it can be smaller.  Thus the common carry stream has vanishing algorithmic-information rate as well as vanishing Shannon rate.  Simultaneous rational realizations in bases $2$ and $3$ do not, by themselves, lower the order below the cost of specifying the prefix length.
+
+\subsection{Fixed arithmetic observers see asymptotic independence}
+
+A fixed congruence calculation on a power sequence evolves in a finite state space and is eventually periodic.  The next theorem samples the original deterministic carry word at a uniformly random index and shows that such an observer cannot predict even one carry bit asymptotically.
+
+\begin{theorem}[Independence from every fixed periodic observer]\label{thm:periodic-observer}
+Let $(Z_k)_{k\geq0}$ take values in a finite set and be eventually periodic.  Fix a block length $r\geq1$, let $J_L$ be uniform on $\{0,\ldots,L-1\}$, and put
+\[
+ B_{L,r}=(s_{J_L},s_{J_L+1},\ldots,s_{J_L+r-1}).
+\]
+Then
+\begin{equation}\label{eq:periodic-independence}
+ \II(B_{L,r};Z_{J_L})\longrightarrow0
+ \qquad(L\to\infty).
+\end{equation}
+In particular, for every fixed modulus $m$ and every fixed finite collection of residues obtained from $M^k$, $A^k$, $2^k$, or $3^k$ modulo $m$, the mutual information with a fixed carry block tends to zero.
+\end{theorem}
+
+\begin{proof}
+Discarding a finite prefix does not affect the limit, so suppose $Z_k$ has period $d$.  Conditional on a residue class $k\equiv a\pmod d$, the phases $\{k\alpha\}$ form an irrational rotation by $d\alpha$ and are equidistributed on the circle.  Therefore the limiting distribution of the carry block is the same in every residue class $a$.  Since $Z_k$ is a function of $a$, the limiting joint law factors as the product of the block law and the limiting law of $Z_{J_L}$.  Entropy is continuous on a fixed finite simplex, proving \eqref{eq:periodic-independence}.
+\end{proof}
+
+\begin{corollary}[Periodic-state data are insufficient]\label{cor:state-growth}
+No fixed eventually periodic observation of the index can determine a nonconstant fixed-length block of the carry word for all sufficiently large indices.  In particular, no fixed finite collection of residues of $M^k$, $A^k$, $2^k$, or $3^k$ modulo fixed moduli can extract the carry word.  Any exact predictor built only from such periodic arithmetic data must enlarge its state family, moduli, or precision as the prediction range grows.
+\end{corollary}
+
+This result explains why ``rational recurrence $\Rightarrow$ automatic word'' is not a formal consequence.  A rational number such as $U=3/2$ already produces the aperiodic Sturmian threshold sequence with slope $\log_2(3/2)$.  The second synchronized recurrence supplies extra structure, but any proof of automaticity must use genuinely nonperiodic data or growing precision.
+
+Recent work of Bustos-Gajardo, Fokkink, and Yassawi proves a Cobham theorem for broad Gaussian-integer numeration systems without invoking Four Exponentials \cite{BustosFokkinkYassawi2026}: simultaneous recognizability in suitable multiplicatively independent bases forces eventual periodicity.  Its relevance here is methodological.  Once genuine finite-state recognizability is available, transcendence can sometimes be bypassed.  The missing step in the present problem is precisely the extraction of such recognizability; Theorem~\ref{thm:periodic-observer} shows that bounded congruence data cannot supply it.
+
+\section{Zero-entropy dynamics and maximal analytic boundary}\label{sec:dynamics-complex}
+
+\subsection{Rotation conjugacies}
+
+The normalized rational orbits inherited from the unified report are
+\begin{equation}\label{eq:normalized-orbits}
+ R_k=\frac{U^k}{2^{\floor{k\alpha}}}=2^{\{k\alpha\}}\in[1,2),
+ \qquad
+ Q_k=\frac{V^k}{3^{\floor{k\alpha}}}=3^{\{k\alpha\}}\in[1,3),
+\end{equation}
+where $U=2^\alpha\in\Q$ and $V=3^\alpha\in\Q$.  They are generated by the piecewise-linear maps
+\begin{align}
+ F_U(r)&=\frac{Ur}{2^{\mathbf 1_{Ur\geq2}}},&1\leq r<2,\label{eq:FU}\\
+ F_V(q)&=\frac{Vq}{3^{\mathbf 1_{Vq\geq3}}},&1\leq q<3.\label{eq:FV}
+\end{align}
+The logarithmic coordinates $t=\log_2r$ and $t=\log_3q$ conjugate both maps to the same irrational rotation $t\mapsto t+\alpha\pmod1$.  The cross-conjugacy is
+\begin{equation}\label{eq:cross-conjugacy}
+ q=r^c,
+ \qquad c=\frac{\log3}{\log2}.
+\end{equation}
+The invariant measures are $dr/(r\log2)$ and $dq/(q\log3)$, and both metric and topological entropies are zero.
+
+The one-step partition entropy is $h_2(\alpha)>0$, but successive partition names have entropy only $O(\log n)$.  Also, the average logarithmic derivative vanishes:
+\begin{equation}\label{eq:lyap-zero}
+ (1-\alpha)\log U+\alpha\log(U/2)=0,
+ \qquad
+ (1-\alpha)\log V+\alpha\log(V/3)=0.
+\end{equation}
+Thus neither entropy production nor Lyapunov expansion distinguishes the hypothetical rational orbit from an arbitrary irrational rotation.  The arithmetic exceptionalism lies in the rationality and controlled heights of every orbit point, not in the measure-theoretic dynamics.
+
+\subsection{The carry generating function has a natural boundary}
+
+Define
+\begin{equation}\label{eq:carry-series}
+ F_\alpha(z)=\sum_{k\geq0}s_kz^k,
+ \qquad |z|<1.
+\end{equation}
+The coefficients are integers in $\{0,1\}$ and are not eventually periodic.
+
+\begin{theorem}[P\'olya--Carlson barrier]\label{thm:natural-boundary}
+The unit circle is a natural boundary for $F_\alpha$: the function admits no analytic continuation through any nonempty open arc of $|z|=1$.
+\end{theorem}
+
+\begin{proof}
+The radius of convergence is one because the coefficients are bounded and contain infinitely many ones.  The P\'olya--Carlson theorem \cite{Carlson1921,Polya1928} says that a power series with integer coefficients and radius one is either rational or has the unit circle as a natural boundary.  If $F_\alpha$ were rational, its finite-valued coefficient sequence would be eventually periodic.  A Sturmian word of irrational slope is aperiodic, so the rational alternative is impossible.
+\end{proof}
+
+If
+\[
+ G_\alpha(z)=\sum_{k\geq0}\floor{k\alpha}z^k,
+\]
+then summation of first differences gives
+\begin{equation}\label{eq:floor-series}
+ G_\alpha(z)=\frac{zF_\alpha(z)}{1-z}.
+\end{equation}
+Hence the floor series has the same natural boundary away from $z=1$.
+
+\begin{criterion}[Complex-analytic completion]\label{crit:continuation}
+Any consequence of the simultaneous rational recurrences that makes $F_\alpha$ algebraic, $D$-finite, rational, or meromorphic across even one arc of the unit circle would contradict Theorem~\ref{thm:natural-boundary} and prove the Alaoglu--Erd\H{o}s conjecture.
+\end{criterion}
+
+This criterion is stronger than merely proving transcendence of the generating series.  It asks for a finite functional equation or finite-dimensional analytic continuation mechanism.  No such mechanism has been extracted from the two rational recurrences.
+
+\subsection{Refined repetition exponents}
+
+Nguyen's 2026 refined Diophantine exponent detects approximate repetition with sparse or localized mismatches and yields transcendence criteria for values of digit series \cite{Nguyen2026a}.  The August 20, 2026 paper on its spectrum proves that every nontrivial coding of an irrational rotation by intervals has infinite refined Diophantine exponent \cite{Nguyen2026b}.  The carry word therefore lies at the strongest repetition end of that invariant even though it has a natural boundary and is not automatic.
+
+This is informative but not yet decisive.  The associated transcendence theorems apply to numbers obtained by evaluating the word as a digit expansion in an algebraic base.  The obstruction in \eqref{eq:MA} is instead a bilinear equality among logarithms.  A successful use of refined repetition would need a bridge from the carry series to one of $U,V,M,A$ that preserves algebraicity; no such bridge is presently known.
+
+\section{Valuation channels form an entropic rank matroid}\label{sec:valuation-entropy}
+
+Every fixed valuation of a semigroup element is an integer linear form in the source coordinates.  This permits a complete leading-order entropy calculation.
+
+\begin{theorem}[Entropy of fixed integer linear observations]\label{thm:linear-observations}
+Let $Z_L=(N_L,K_L)$ be uniform on $\{0,\ldots,L-1\}^2$.  Fix integer row vectors $c_1,\ldots,c_m\in\Z^2$, and for $J\subseteq\{1,\ldots,m\}$ write
+\[
+ W_{J,L}=(c_j\cdot Z_L)_{j\in J}.
+\]
+Then
+\begin{equation}\label{eq:rank-entropy}
+ \HH(W_{J,L})=\rank_{\Q}\{c_j:j\in J\}\,\log L+O_{c_1,\ldots,c_m}(1).
+\end{equation}
+If the rank is two, the entropy is exactly $2\log L$.
+\end{theorem}
+
+\begin{proof}
+Rank two makes the linear map injective on $\Z^2$, so the output determines $Z_L$ exactly.  For rank one, all outputs are fixed rational multiples of one nonzero primitive form $aN_L+bK_L$.  Its range has $O(L)$ values, while every fiber contains $O(L)$ lattice points.  Hence its entropy is at most $\log L+O(1)$ and at least
+$2\log L-\log(CL)=\log L-O(1)$.  Rank zero is trivial.
+\end{proof}
+
+For a prime $p$,
+\begin{align}
+ v_p(X_L)&=\mathbf1_{p=2}N_L+v_p(M)K_L,\label{eq:vX}\\
+ v_p(Y_L)&=\mathbf1_{p=3}N_L+v_p(A)K_L.\label{eq:vY}
+\end{align}
+Because $\beta$ is irrational, $M$ is not a pure power of $2$ and $A$ is not a pure power of $3$.  Thus each full valuation vector has rational rank two and recovers the source.
+
+\begin{theorem}[Valuation entropy polymatroid]\label{thm:valuation-matroid}
+For every fixed finite family of valuation coordinates from \eqref{eq:vX}--\eqref{eq:vY}, the normalized entropy profile
+\begin{equation}\label{eq:normalized-profile}
+ \frac{1}{\log L}\HH(W_{J,L})
+\end{equation}
+converges, for every subfamily $J$, to the rank function of the corresponding collection of vectors in $\Q^2$.
+Moreover, this limiting profile is exactly entropic: for every sufficiently large prime $\mathfrak p$, reduction of those vectors modulo $\mathfrak p$ preserves all ranks, and if $Z$ is uniform on $\F_{\mathfrak p}^2$, then
+\begin{equation}\label{eq:finite-field-profile}
+ \HH((c_j\cdot Z)_{j\in J})
+ =\rank_{\F_{\mathfrak p}}\{c_j:j\in J\}\log\mathfrak p.
+\end{equation}
+Consequently, no universal homogeneous linear information inequality, Shannon or non-Shannon, can contradict the leading-order valuation profile.
+\end{theorem}
+
+\begin{proof}
+The convergence is Theorem~\ref{thm:linear-observations}.  Only finitely many nonzero $1\times1$ and $2\times2$ minors are involved, so a prime avoiding all of them preserves the rational ranks.  Uniform linear forms of a uniform vector over a finite field have joint entropy equal to the linear rank times $\log\mathfrak p$.  Every universal linear information inequality holds for this genuine entropy vector, so it also holds for the limiting profile.
+\end{proof}
+
+Two independent valuation forms have only $O(1)$ mutual information, while parallel forms share $\log L+O(1)$ nats.  A collection of forms can recover two source dimensions even though each coordinate has only one-dimensional entropy.  This is another instance of synergistic rank.
+
+The theorem does not rule out a subleading argument.  An inequality whose rank-level terms cancel could constrain the $O(1)$ constants, and nonlinear arithmetic facts can see divisibility that entropy ignores.  It does rule out the hope that adding more fixed valuations and applying a universal information inequality will automatically force rank one.
+
+\section{Multiplicative entropy and current sum-product bounds}\label{sec:product-entropy}
+
+Let $X_L'$ be an independent copy of $X_L$.  Multiplication is addition in exponent coordinates:
+\[
+ X_LX_L'=2^{N_L+N_L'}M^{K_L+K_L'}.
+\]
+The two coordinate sums are independent and have the triangular distribution.
+
+\begin{proposition}[Exact asymptotic multiplicative doubling]\label{prop:mult-entropy}
+\begin{equation}\label{eq:mult-entropy}
+ \HH(X_LX_L')=2\log L+1+o(1)
+ =\HH(X_L)+1+o(1).
+\end{equation}
+The same formula holds for $Y_LY_L'$.
+\end{proposition}
+
+\begin{proof}
+If $U_L,U_L'$ are independent uniform variables on $\{0,\ldots,L-1\}$, then the lattice-to-density entropy limit for the triangular density gives
+\[
+ \HH(U_L+U_L')=\log L+\frac12+o(1),
+\]
+because $-2\int_0^1t\log t\,dt=1/2$.  Add the two independent coordinate contributions.
+\end{proof}
+
+Thus the semigroup box has constant multiplicative entropy doubling.  Recent work of Gavalakis, Goh, and Kontoyiannis proves, for finitely supported nonzero real $X$, an inequality of the form \cite{GavalakisGohKontoyiannis2026}
+\begin{equation}\label{eq:recent-entropic-SP}
+ \max\{\HH(X+X'),\HH(XX')\}
+ \geq\frac{4\HH(X)+2\HH_\infty(X)}5
+      -O(\log\HH_\infty(X)),
+\end{equation}
+where $\HH_\infty$ is min-entropy.  For a uniform $N$-point set this gives the exponent $6/5$ up to logarithmic loss.  Their theorem is an important general lower bound, but the fixed-rank setting permits a much sharper additive conclusion, proved next.
+
+
+\section{Fixed-rank \texorpdfstring{$S$}{S}-unit sets are asymptotically Sidon}\label{sec:sunit}
+
+The preceding general sum--product estimates do not use the decisive special feature of \(\mathcal C_L\): it lies in a multiplicative group of fixed rank.  The Subspace Theorem, through the finiteness theorem for nondegenerate unit equations, converts that fixed rank into almost maximal additive information.
+
+For a finite set \(E\) in an abelian group, write
+\begin{equation}\label{eq:additive-energy-def}
+ \mathcal E_+(E)=\#\{(a,b,c,d)\in E^4:a+b=c+d\}.
+\end{equation}
+If \(Z,Z'\) are independent and uniform on \(E\), the collision entropy of their sum is the standard additive-energy statistic in entropic additive combinatorics \cite{Tao2010}:
+\begin{equation}\label{eq:collision-energy}
+ \HH_2(Z+Z')=-\log\sum_s\Pp(Z+Z'=s)^2
+ =4\log\abs E-\log\mathcal E_+(E).
+\end{equation}
+Thus additive energy is literally the exponential of an information loss.
+
+\begin{theorem}[Fixed-rank $S$-unit entropy theorem]\label{thm:sunit-entropy}
+Let \(\Gamma\subset\overline{\Q}^{\,\times}\cap\R_{>0}\) be a fixed finitely generated multiplicative group of rank \(r\).  Let \(E\subset\Gamma\) have \(N\) elements, and let \(Z,Z'\) be independent and uniform on \(E\).  Then, with constants depending only on \(r\),
+\begin{align}
+ \mathcal E_+(E)&=2N^2-N+O_r(N),\label{eq:sunit-energy}\\
+ \abs{E+E}&=\frac{N^2}{2}+O_r(N),\label{eq:sunit-sumset}\\
+ \HH_2(Z+Z')&=2\log N-\log2+O_r(N^{-1}),\label{eq:sunit-collision}\\
+ \HH(Z+Z')&=2\log N-\log2+O_r\!\left(\frac{\log N}{N}\right).\label{eq:sunit-shannon}
+\end{align}
+If \(\mathcal U=\{Z,Z'\}\) denotes the unordered source pair, then there is a decoder \(\widehat{\mathcal U}(Z+Z')\) whose error probability is \(O_r(N^{-1})\), and
+\begin{equation}\label{eq:sunit-fano}
+ \HH(\mathcal U\mid Z+Z')=O_r\!\left(\frac{\log N}{N}\right).
+\end{equation}
+In this precise sense, addition is an asymptotically lossless channel on every fixed-rank multiplicative set.
+\end{theorem}
+
+\begin{proof}
+The Evertse--Schlickewei--Schmidt unit-equation theorem \cite{EvertseSchlickeweiSchmidt2002} gives a bound, depending only on \(r\) and the number of variables, for the nondegenerate solutions in a fixed-rank multiplicative group to a linear equation
+\[
+ a_1u_1+\cdots+a_mu_m=1.
+\]
+Consider a solution \(a+b=c+d\) with entries in \(E\), and divide by \(d\):
+\begin{equation}\label{eq:normalized-unit}
+ \frac ad+\frac bd-\frac cd=1.
+\end{equation}
+A degenerate solution has a vanishing proper subsum of the four signed positive terms \(a,b,-c,-d\).  Positivity then forces one positive term to equal one negative term; the full equation forces the complementary equality.  Hence the degenerate solutions are exactly
+\[
+ (a,b,c,d)=(a,b,a,b)\quad\text{or}\quad(a,b,b,a).
+\]
+Their union has cardinality \(2N^2-N\).
+
+The normalized nondegenerate triples \((a/d,b/d,c/d)\in\Gamma^3\) in \eqref{eq:normalized-unit} belong to a set of cardinality \(O_r(1)\).  Once such a triple is fixed, there are at most \(N\) admissible scales \(d\in E\).  This proves \eqref{eq:sunit-energy}.
+
+Let \(r_E(s)=\#\{(a,b)\in E^2:a+b=s\}\).  Cauchy--Schwarz and \eqref{eq:sunit-energy} give
+\[
+ \abs{E+E}\geq\frac{N^4}{\sum_s r_E(s)^2}
+ =\frac{N^2}{2}+O_r(N),
+\]
+while the number of unordered pairs gives \(\abs{E+E}\leq N(N+1)/2\).  This proves \eqref{eq:sunit-sumset}.  Formula \eqref{eq:sunit-collision} now follows from \eqref{eq:collision-energy}.
+
+Call an ordered pair \((a,b)\) exceptional if its sum has a second unordered representation.  To every exceptional ordered pair one may attach a nontrivial quadruple \((a,b,c,d)\) with \(a+b=c+d\), so \eqref{eq:sunit-energy} shows that only \(O_r(N)\) of the \(N^2\) ordered pairs are exceptional.  Outside this exceptional set, the sum determines the unordered pair exactly.  Therefore the decoder error is \(O_r(N^{-1})\), and Fano's inequality \cite{CoverThomas2006} yields \eqref{eq:sunit-fano} because the unordered-pair alphabet has size \(N(N+1)/2\).
+
+Finally, \(Z+Z'\) is a function of \(\mathcal U\), and
+\begin{equation}\label{eq:unordered-entropy}
+ \HH(\mathcal U)
+ =2\log N-\left(1-\frac1N\right)\log2.
+\end{equation}
+Indeed, a diagonal unordered pair has probability \(N^{-2}\), while an off-diagonal pair has probability \(2N^{-2}\).  Hence
+\[
+ \HH(Z+Z')=\HH(\mathcal U)-\HH(\mathcal U\mid Z+Z'),
+\]
+which gives \eqref{eq:sunit-shannon}.
+\end{proof}
+
+\begin{remark}[Uniformity and effectivity]
+The qualitative dependence in Theorem~\ref{thm:sunit-entropy} is uniform over all \(N\)-element subsets of all rank-\(r\) groups, but the classical Subspace-Theorem constant is enormous.  Its value is irrelevant to the entropy limit, and no claim of practical finite-\(L\) effectivity is made.  The recent work of Evertse, Gy\H{o}ry, Hajdu, Luca, and Remete on asymptotic counting in multiplicative groups \cite{EvertseEtAl2026} develops a complementary height-ordered viewpoint; here the box ordering is by exponent coordinates rather than height.
+\end{remark}
+
+\begin{corollary}[Near-maximal additive entropy of the hypothetical boxes]\label{cor:box-additive-entropy}
+Under the counterexample hypothesis, if \(X_L,X_L'\) are independent and uniform on \(\mathcal C_L\), and \(Y_L,Y_L'\) are independent and uniform on \(\mathcal D_L\), then
+\begin{align}
+ \HH(X_L+X_L')&=4\log L-\log2
+      +O_{M}\!\left(\frac{\log L}{L^2}\right),\label{eq:C-additive-entropy}\\
+ \HH(Y_L+Y_L')&=4\log L-\log2
+      +O_{A}\!\left(\frac{\log L}{L^2}\right).
+      \label{eq:D-additive-entropy}
+\end{align}
+Moreover, each sum recovers the corresponding unordered pair with probability \(1-O(L^{-2})\).
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:sunit-entropy} with \(N=L^2\) to the rank-two groups \(\langle2,M\rangle\) and \(\langle3,A\rangle\).
+\end{proof}
+
+The gain from \(\HH(X_L)=2\log L\) to \(\HH(X_L+X_L')=4\log L-\log2+o(1)\) is essentially the largest possible.  In particular, it is much stronger for this family than the universal \(8/7\) entropy expansion proved in 2026 by Li \cite{Li2026}.  The lesson is important: a generic entropy lower bound is not the missing ingredient.  The hypothetical counterexample already forces maximal additive expansion.
+
+\section{Synchronized power sums as a two-view code}\label{sec:synchronized-sums}
+
+Take two independent source points
+\[
+ X_1,X_2\sim\operatorname{Unif}(\mathcal C_L),
+ \qquad Y_i=\Phi(X_i)=X_i^c\in\mathcal D_L,
+\]
+and define the two channel outputs
+\begin{equation}\label{eq:two-sums}
+ S_L=X_1+X_2,
+ \qquad T_L=Y_1+Y_2=X_1^c+X_2^c.
+\end{equation}
+The same unordered source pair is observed through an ordinary sum and a strictly convex power sum.
+
+\begin{theorem}[Exact joint decoding by strict convexity]\label{thm:joint-sums}
+Let \(\mathcal U_L=\{X_1,X_2\}\).  The map
+\begin{equation}\label{eq:joint-map}
+ \mathcal U_L\longmapsto(S_L,T_L)
+\end{equation}
+ is injective.  Consequently,
+\begin{align}
+ \HH(S_L,T_L)&=\HH(\mathcal U_L)
+ =4\log L-\left(1-L^{-2}\right)\log2,
+ \label{eq:joint-entropy-exact}\\
+ \HH(T_L\mid S_L)&=O_M\!\left(\frac{\log L}{L^2}\right),
+ \qquad
+ \HH(S_L\mid T_L)=O_A\!\left(\frac{\log L}{L^2}\right),
+ \label{eq:conditional-sums}\\
+ \II(S_L;T_L)&=4\log L-\log2
+ +O_{M,A}\!\left(\frac{\log L}{L^2}\right).
+ \label{eq:mutual-sums}
+\end{align}
+Thus the two views are almost completely redundant in Shannon information, even though their exact joint injectivity comes from real convexity rather than the unit equation.
+\end{theorem}
+
+\begin{proof}
+Fix \(s>0\).  For \(0<x\leq s/2\), define
+\[
+ f_s(x)=x^c+(s-x)^c.
+\]
+Since \(c>1\),
+\[
+ f_s'(x)=c\bigl(x^{c-1}-(s-x)^{c-1}\bigr)<0
+ \qquad(0<x<s/2).
+\]
+Hence \(f_s\) is strictly decreasing on unordered decompositions \(s=x+(s-x)\).  The pair \((s,f_s(x))\) therefore determines \(\{x,s-x\}\), proving injectivity.
+
+The exact entropy formula is \eqref{eq:unordered-entropy} with \(N=L^2\).  Since \(S_L\) and \(T_L\) are functions of \(\mathcal U_L\),
+\[
+ \HH(T_L\mid S_L)=\HH(\mathcal U_L\mid S_L),
+ \qquad
+ \HH(S_L\mid T_L)=\HH(\mathcal U_L\mid T_L).
+\]
+Corollary~\ref{cor:box-additive-entropy} and Theorem~\ref{thm:sunit-entropy} bound these by \(O((\log L)/L^2)\).  The mutual-information identity follows from
+\[
+ \II(S_L;T_L)=\HH(S_L)+\HH(T_L)-\HH(S_L,T_L).
+\]
+\end{proof}
+
+The theorem supplies an unusually rigid communication picture.  Alice may transmit either \(S_L\) or \(T_L\); each message has essentially \(4\log L\) nats and almost always identifies the unordered pair.  Sending both messages guarantees exact recovery.  Yet this does not contradict integrality, because Shannon entropy measures the number and weights of codewords, not the arithmetic complexity of the decoding map.
+
+\subsection{A quantitative complexity obstruction for rational decoders}
+
+The one-dimensional slice obtained by pairing every element with \(1\) already forces any exact rational decoder to grow in degree.
+
+\begin{lemma}[Zeros of an exponential polynomial]\label{lem:exp-chebyshev}
+Let \(0<\lambda_1<\cdots<\lambda_s\), and let
+\[
+ F(t)=\sum_{j=1}^s c_j\lambda_j^t
+\]
+be nonzero.  Then \(F\) has at most \(s-1\) distinct real zeros.
+\end{lemma}
+
+\begin{proof}
+The functions \(e^{(\log\lambda_j)t}\) form an extended complete Chebyshev system: their Wronskian is a nonzero Vandermonde factor times a positive exponential.  Equivalently, induction using Rolle's theorem proves the stated zero bound.
+\end{proof}
+
+\begin{theorem}[Linear lower bound for a rational sum decoder]\label{thm:decoder-degree}
+Let \(L\geq2\).  Suppose \(R=P/Q\in\R(z)\), with
+\[
+ \max\{\deg P,\deg Q\}\leq d,
+ \qquad Q(2^n+1)\neq0\quad(0\leq n<L),
+\]
+and
+\begin{equation}\label{eq:decoder-interpolation}
+ R(2^n+1)=3^n+1\qquad(0\leq n<L).
+\end{equation}
+Then
+\begin{equation}\label{eq:degree-lower}
+ d\geq\ceil{\frac{L-1}{2}}.
+\end{equation}
+In particular, no rational function of bounded degree can recover the ternary power sum from the binary sum even on the slice \(\{1,2^n\}\).
+\end{theorem}
+
+\begin{proof}
+Cross-multiplication gives, for \(0\leq n<L\),
+\begin{equation}\label{eq:cross-decoder}
+ P(2^n+1)-(3^n+1)Q(2^n+1)=0.
+\end{equation}
+Expanding \((2^n+1)^j\) shows that the left side is an exponential polynomial in \(n\) whose bases belong to
+\begin{equation}\label{eq:decoder-bases}
+ \{2^h:0\leq h\leq d\}\cup\{3\cdot2^h:0\leq h\leq d\}.
+\end{equation}
+These \(2(d+1)\) positive bases are distinct.  The exponential polynomial is not identically zero: the coefficients of the bases \(3\cdot2^h\) are the coefficients of the shifted polynomial \(Q(z+1)\), up to sign, so their simultaneous vanishing would imply \(Q=0\).  Lemma~\ref{lem:exp-chebyshev} therefore permits at most \(2d+1\) distinct real zeros.  Since \eqref{eq:cross-decoder} provides \(L\) zeros, \(L\leq2d+1\), proving \eqref{eq:degree-lower}.
+\end{proof}
+
+\begin{theorem}[Degree lower bound for an algebraic graph relation]\label{thm:algebraic-decoder-degree}
+Let \(F\in\R[z,w]\setminus\{0\}\) have total degree at most \(d\).  If
+\begin{equation}\label{eq:algebraic-decoder-interpolation}
+ F(2^n+1,3^n+1)=0\qquad(0\leq n<L),
+\end{equation}
+then
+\begin{equation}\label{eq:algebraic-degree-lower}
+ L\leq\frac{d(d+3)}2,
+ \qquad
+ d\geq\ceil{\frac{\sqrt{8L+9}-3}{2}}.
+\end{equation}
+Thus even an implicit algebraic decoder requires unbounded degree; the linear bound in Theorem~\ref{thm:decoder-degree} is sharper because a rational graph relation is sparse in its second coordinate.
+\end{theorem}
+
+\begin{proof}
+Put \(G(x,y)=F(x+1,y+1)\).  Translation preserves total degree and nonzeroness, so
+\[
+ G(x,y)=\sum_{i+j\leq d}c_{ij}x^iy^j
+\]
+with at most \(\binom{d+2}{2}\) nonzero coefficients.  Substitution of \((x,y)=(2^n,3^n)\) turns \eqref{eq:algebraic-decoder-interpolation} into
+\[
+ \sum_{i+j\leq d}c_{ij}(2^i3^j)^n=0.
+\]
+The positive bases \(2^i3^j\) are pairwise distinct by unique factorization.  Lemma~\ref{lem:exp-chebyshev} therefore bounds the number of real zeros by one less than the number of nonzero terms, hence by
+\[
+ \binom{d+2}{2}-1=\frac{d(d+3)}2.
+\]
+This proves both inequalities in \eqref{eq:algebraic-degree-lower}.
+\end{proof}
+
+\begin{criterion}[Bounded-complexity decoder criterion]\label{crit:bounded-decoder}
+Suppose that, for arbitrarily large \(L\), the counterexample hypothesis forced either
+\begin{enumerate}
+ \item a rational function \(R_L\) of degree bounded independently of \(L\), or
+ \item a nonzero polynomial relation \(F_L(z,w)=0\) of total degree bounded independently of \(L\),
+\end{enumerate}
+relating \(z=u+v\) to \(w=u^c+v^c\) on a family of pairs in \(\mathcal C_L^2\) containing \((2^n,1)\) for \(0\leq n<L\).  Then Theorem~\ref{thm:decoder-degree} or Theorem~\ref{thm:algebraic-decoder-degree}, respectively, gives a contradiction and proves the Alaoglu--Erd\H{o}s conjecture.
+\end{criterion}
+
+The criterion is deliberately stronger than mere small conditional entropy.  Theorem~\ref{thm:joint-sums} says that a lookup-table decoder succeeds with error \(O(L^{-2})\); Theorems~\ref{thm:decoder-degree} and~\ref{thm:algebraic-decoder-degree} say that exact recovery cannot be compressed into a bounded-degree rational or algebraic law.  Information theory identifies the decoder as the bottleneck, while transcendence theory must control its algebraic description length.
+
+\section{Recent additive and multiplicative-dependence developments}\label{sec:recent-additive}
+
+Several 2025--2026 results change the strategic landscape.  None proves \eqref{eq:AE}, but each makes a particular bridge more precise.
+
+\subsection{Irrational powers have near-maximal additive expansion}
+
+Harrison's July 31, 2026 revision proves the following broad phenomenon \cite{Harrison2026}.  For each fixed \(k\), if \(E\) is a sufficiently large subset of an \(N\)-term arithmetic progression and \(c\) is irrational, then
+\begin{equation}\label{eq:harrison}
+ \abs{kE^{[c]}}\sim\frac{\abs E^k}{k!},
+ \qquad E^{[c]}=\{e^c:e\in E\},
+\end{equation}
+provided \(\abs E\geq(\log N)^{C_k}\).  The proof combines functional transcendence with Pila--Wilkie counting in \(\R_{\exp}\).  For \(E=\{1,\ldots,N\}\), it yields asymptotically maximal two-fold sumsets for every \(c\notin\{0,1,2\}\).
+
+This is philosophically aligned with Theorem~\ref{thm:sunit-entropy}: irrational powers tend to destroy additive coincidences.  It does not directly subsume our box result, because \(\mathcal C_L\) is not dense in a short arithmetic progression; relative to its ambient scale it is extremely sparse.  Conversely, the $S$-unit theorem exploits fixed multiplicative rank and gives the sharper \(O(N)\) nontrivial-energy error for this special geometry.
+
+\subsection{The general entropic sum--product theorem}
+
+Gavalakis, Goh, and Kontoyiannis obtained entropy lower bounds involving both Shannon and min-entropy \cite{GavalakisGohKontoyiannis2026}.  Li subsequently bypassed the min-entropy obstruction and proved \cite{Li2026}, for i.i.d. discrete real random variables of finite entropy,
+\begin{equation}\label{eq:li-87}
+ \max\{\HH(Z+Z'),\HH(ZZ')\}
+ \geq\frac87\HH(Z)-O(\log\HH(Z)).
+\end{equation}
+This is the first universal Shannon-entropic sum--product inequality with coefficient strictly larger than one.  Li also records a conjectural sharp-form direction
+\begin{equation}\label{eq:li-conjecture}
+ 2\HH(Z+Z')+\HH(ZZ')\geq(4-o(1))\HH(Z).
+\end{equation}
+For \(Z=X_L\), our exact asymptotics give
+\[
+ \HH(Z+Z')=2\HH(Z)-\log2+o(1),
+ \qquad
+ \HH(ZZ')=\HH(Z)+1+o(1),
+\]
+so even \eqref{eq:li-conjecture} would be satisfied with a large margin.  Thus the new entropic breakthrough is a benchmark, not a contradiction engine for the rank-two box.
+
+Bloom, Sawin, Schildkraut, and Zhelezov's 2026 counterexamples \cite{BloomEtAl2026} show that the near-quadratic real sum--product conjecture is false in general: their sets live in totally real fields whose degree grows like \(\log\abs E\).  This does not weaken Theorem~\ref{thm:sunit-entropy}; fixed rank and fixed algebraic ambient structure are exactly what their construction abandons.  It does warn against any argument using only the order topology of \(\R\).
+
+\subsection{Multiplicative dependence in sums of fixed-rank groups}
+
+Bilu and Luca consider almost disjoint finitely generated multiplicative groups \(\Gamma,\Delta\subset\overline\Q^{\,\times}\).  Their 2026 theorem \cite{BiluLuca2026} says that, apart from finitely many exceptions, two nonzero sums
+\[
+ x_1+y_1,
+ \qquad x_2+y_2,
+ \qquad x_i\in\Gamma,
+ \quad y_i\in\Delta,
+\]
+can be multiplicatively dependent only in the canonical scaling situation
+\begin{equation}\label{eq:bilu-luca-canonical}
+ \frac{x_1}{x_2}=\frac{y_1}{y_2}
+ \quad\text{and this common ratio is a root of unity}.
+\end{equation}
+Under our counterexample hypothesis, \(\langle2\rangle\cap\langle M\rangle=\{1\}\), since \(2^u=M^v=2^{\beta v}\) with integers \(u,v\) would force \(v=0\).  Hence their theorem applies to mixed sums
+\begin{equation}\label{eq:mixed-sums}
+ 2^n+M^k.
+\end{equation}
+
+\begin{problem}[Noncanonical mixed-sum dependence]\label{prob:mixed-dependence}
+Derive from the simultaneous integrality map \(2^nM^k\mapsto3^nA^k\) infinitely many multiplicative dependencies among distinct mixed sums \(2^n+M^k\) that are not explained by common scaling.  Bilu--Luca would then give a contradiction.
+\end{problem}
+
+At present no identity is known that creates such dependencies.  The point of the target is that it has become sharply falsifiable: one no longer needs a vague ``unlikely relation'' argument, but a concrete noncanonical relation in the sumset of two almost disjoint groups.
+
+\subsection{What the new results jointly say}
+
+The fixed-rank boxes exhibit three simultaneous properties:
+\begin{enumerate}
+ \item multiplicative doubling costs only \(1+o(1)\) nat;
+ \item additive doubling is asymptotically maximal and loses only the ordering bit;
+ \item the synchronized power image has the same properties, with almost complete mutual information between the two sum channels.
+\end{enumerate}
+These are mutually compatible.  The contradiction must therefore involve an arithmetic invariant not preserved by abstract entropy: height, divisibility, algebraic degree, analytic continuation, finite-state recognizability, or character-twisted determinant cancellation.
+
+\section{Fourier information for determinant parity and residue}\label{sec:fourier}
+
+The supplied report's interpolation determinants often reach the same final obstacle: several permutation terms share the minimal Archimedean or \(p\)-adic size, so cancellation is possible.  One then needs to separate permutation parity from unit residue.  Fourier analysis on a finite residue group gives an exact information-theoretic formulation of that separation problem.
+
+Let \(G\) be a finite abelian group, let \(B\in\{-1,+1\}\) be a balanced bit, and let \(Z\in G\).  Think of \(B\) as a permutation sign and \(Z\) as the residue class of its normalized leading unit.  Define the signed measure
+\begin{equation}\label{eq:signed-measure}
+ \nu(g)=\Pp(B=1,Z=g)-\Pp(B=-1,Z=g)
+       =\E\bigl[B\mathbf1_{Z=g}\bigr]
+\end{equation}
+and, for a character \(\chi\in\widehat G\),
+\begin{equation}\label{eq:fourier-correlation}
+ \widehat\nu(\chi)=\sum_{g\in G}\nu(g)\overline{\chi(g)}
+ =\E\bigl[B\overline{\chi(Z)}\bigr].
+\end{equation}
+The quantities \(\widehat\nu(\chi)\) are precisely character-twisted parity biases.
+
+\begin{theorem}[Fourier parity--residue separation]\label{thm:fourier-separation}
+With the notation above:
+\begin{enumerate}
+ \item \(B\) and \(Z\) are independent if and only if
+ \begin{equation}\label{eq:all-fourier-zero}
+  \widehat\nu(\chi)=0\qquad\text{for every }\chi\in\widehat G.
+ \end{equation}
+ \item Their total-variation dependence is exactly
+ \begin{equation}\label{eq:tv-nu}
+  \TV\bigl(\mathcal L(B,Z),\mathcal L(B)\otimes\mathcal L(Z)\bigr)
+  =\frac12\sum_{g\in G}\abs{\nu(g)},
+ \end{equation}
+ and it satisfies
+ \begin{equation}\label{eq:tv-fourier}
+  \TV\bigl(\mathcal L(B,Z),\mathcal L(B)\otimes\mathcal L(Z)\bigr)
+  \leq\frac12\left(\sum_{\chi\in\widehat G}
+  \abs{\E[B\overline{\chi(Z)}]}^2\right)^{1/2}.
+ \end{equation}
+ \item If \(B\) is a deterministic function of \(Z\), then
+ \begin{equation}\label{eq:deterministic-correlation}
+  \max_{\chi\in\widehat G}
+  \abs{\E[B\overline{\chi(Z)}]}
+  \geq\abs{G}^{-1/2}.
+ \end{equation}
+ In that case \(\II(B;Z)=\log2\), whereas \eqref{eq:all-fourier-zero} would force \(\II(B;Z)=0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Because \(B\) is balanced,
+\[
+ \Pp(B=1,Z=g)-\tfrac12\Pp(Z=g)=\tfrac12\nu(g),
+\]
+and the analogous difference for \(B=-1\) is \(-\nu(g)/2\).  Summing absolute values gives \eqref{eq:tv-nu}.  Fourier inversion says \(\nu=0\) if and only if every Fourier coefficient vanishes, and \(\nu=0\) is exactly independence.
+
+Parseval's identity in the unnormalized convention is
+\[
+ \sum_{\chi\in\widehat G}\abs{\widehat\nu(\chi)}^2
+ =\abs G\sum_{g\in G}\abs{\nu(g)}^2.
+\]
+Cauchy--Schwarz gives
+\[
+ \sum_g\abs{\nu(g)}
+ \leq\sqrt{\abs G\sum_g\abs{\nu(g)}^2}
+ =\left(\sum_\chi\abs{\widehat\nu(\chi)}^2\right)^{1/2},
+\]
+which proves \eqref{eq:tv-fourier}.  If \(B=f(Z)\), then \(\nu(g)=f(g)\Pp(Z=g)\), so \(\sum_g\abs{\nu(g)}=1\).  Parseval and the maximum--average bound yield \eqref{eq:deterministic-correlation}.  The mutual-information assertions follow because a balanced deterministic bit has entropy \(\log2\), while independence gives zero mutual information.
+\end{proof}
+
+There is a finite moment version of the same principle.
+
+\begin{lemma}[Vandermonde moment separation]\label{lem:vandermonde-moments}
+Let \(z_1,\ldots,z_m\) be distinct elements of a field and let \(w_1,\ldots,w_m\) be weights.  If
+\begin{equation}\label{eq:moment-vanish}
+ \sum_{i=1}^m w_i z_i^j=0
+ \qquad(0\leq j<m),
+\end{equation}
+then every \(w_i=0\).
+\end{lemma}
+
+\begin{proof}
+The coefficient vector \((w_i)\) is annihilated by the \(m\times m\) Vandermonde matrix \((z_i^j)_{0\leq j<m,1\leq i\leq m}\), whose determinant is \(\prod_{i<j}(z_j-z_i)\neq0\).
+\end{proof}
+
+One cancellation identity is not enough.  For example, put equal mass on \(1,2,3,4\in\Z/5\Z\), with signs \(+,-,-,+\).  The total signed mass and first signed moment vanish:
+\[
+ 1-1-1+1=0,
+ \qquad
+ 1-2-3+4=0,
+\]
+but the second moment does not.  A determinant proof that sees only the untwisted sum or one linear residue moment can therefore miss a genuine parity bias.
+
+\subsection{A concrete completion target for tied determinant terms}
+
+Suppose a tied minimal family \(\Omega\) of determinant terms has a parity bit \(B(\omega)\) and a unit residue \(Z(\omega)\in G\).  The following three ingredients would finish the local noncancellation step:
+\begin{enumerate}
+ \item a parity-balancing involution or weighting that makes \(B\) balanced;
+ \item a residue statistic rich enough that \(B\) is determined by \(Z\);
+ \item a family of legal row, column, or exponent twists forcing
+ \begin{equation}\label{eq:twisted-cancel-family}
+  \sum_{\omega\in\Omega}B(\omega)\chi(Z(\omega))=0
+  \qquad\text{for every }\chi\in\widehat G.
+ \end{equation}
+\end{enumerate}
+Theorem~\ref{thm:fourier-separation} makes these conditions incompatible: the second condition stores one full parity bit in the residue, while the third erases all parity information from it.
+
+\begin{problem}[Twist-complete determinant family]\label{prob:twist-complete}
+Construct, within one of the inherited interpolation determinants, a twist family that preserves the decisive Archimedean smallness and the set of tied minimal terms, but spans all characters of the relevant unit-residue group.  Alternatively, produce enough power moments to invoke Lemma~\ref{lem:vandermonde-moments}.
+\end{problem}
+
+This is more demanding than choosing a single favorable prime, but it explains exactly why isolated parity or residue observations have stalled.  The missing object is a \emph{separating family of channels}, not another scalar estimate.
+
+\section{Information-theoretic no-go results and completion criteria}\label{sec:no-go}
+
+The calculations above support a clean division between channels that are fully understood and bridges that remain genuinely arithmetic.
+
+\begin{longtable}{p{0.23\textwidth}p{0.31\textwidth}p{0.38\textwidth}}
+\toprule
+\textbf{Channel or method} & \textbf{What is proved} & \textbf{Why it does not yet contradict a counterexample}\\
+\midrule
+Binary/ternary digit length & The two observations are exactly the same random variable; entropy is \(\log L+O(1)\). & There is one common coarse magnitude channel, not two independent constraints.\\
+Optimal prefix coding & Coupled positive redundancy with explicit irrational-rotation law. & Redundancy is bounded, so its rate vanishes.\\
+Sturmian blocks & Zero entropy rate, \(\Theta(\log n)\) block entropy up to a Diophantine exponent, maximal total correlation. & Low entropy is compatible with every irrational rotation and does not imply finite-state generation.\\
+Fixed congruence observers & Asymptotic independence from every fixed periodic state. & A contradiction needs state space growing with precision.\\
+Valuations & Leading profile is a genuine rank-two linear entropy matroid. & Every universal homogeneous information inequality is automatically satisfied.\\
+Dynamical entropy & Both normalized systems are irrational rotations with zero entropy and Lyapunov exponent. & Arithmetic rationality of orbit points is invisible to measure entropy.\\
+General entropic sum--product & Universal expansion at least \(8/7-o(1)\). & The boxes already have nearly maximal additive entropy.\\
+Fixed-rank $S$-unit sums & Pair sums recover unordered pairs with error \(O(L^{-2})\). & The decoder can have unbounded arithmetic complexity.\\
+Synchronized two-view sums & Joint channel is exactly injective; the views have almost complete mutual information. & Redundancy is consistent with a complicated set-theoretic conjugacy.\\
+Natural boundary & Carry series cannot continue across any arc. & No algebraic or finite functional equation for that series has been derived from integrality.\\
+Fourier determinant channels & Full character cancellation would erase parity information. & Existing determinant identities provide too few twists or moments.\\
+Mixed-sum rigidity & Bilu--Luca classify pairwise multiplicative dependence up to finitely many exceptions. & No noncanonical dependence has yet been forced by the synchronized power map.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Six precise ways to finish}
+
+The following implications are rigorous.  Each antecedent is open, but each is narrower than the original conjecture.
+
+\begin{criterion}[Finite-state recognition]\label{crit:finite-state}
+If simultaneous integrality forces the carry word \((s_k)\) to be generated by a fixed finite automaton in any integer base, then the word is eventually periodic by the standard automatic/Sturmian obstruction, contradicting irrationality of \(\alpha\).
+\end{criterion}
+
+The recent Gaussian Cobham theorem of Bustos-Gajardo, Fokkink, and Yassawi \cite{BustosFokkinkYassawi2026} strengthens the plausibility of such rigidity in nonstandard numeration systems: multiplicatively independent Gaussian bases admit only eventually periodic common automatic configurations, except in the explicitly classified root-of-integer regime.  It does not apply directly because no second automatic presentation of \((s_k)\) has been produced.
+
+\begin{criterion}[Analytic continuation]\label{crit:analytic-restated}
+Any finite-dimensional functional equation forced by the two rational recurrences that continues \(F_\alpha(z)\) through an arc of \(\abs z=1\) proves the conjecture, by Theorem~\ref{thm:natural-boundary}.
+\end{criterion}
+
+\begin{criterion}[Uniform algebraic decoder]\label{crit:uniform-decoder}
+Any bounded-degree rational decoder or bounded-total-degree polynomial graph relation converting \(u+v\) to \(u^c+v^c\) on an unbounded family of synchronized semigroup pairs proves the conjecture, by Theorems~\ref{thm:decoder-degree} and~\ref{thm:algebraic-decoder-degree}.
+\end{criterion}
+
+\begin{criterion}[Mixed-sum multiplicative dependence]\label{crit:mixed-sum}
+Any construction of infinitely many noncanonical multiplicative dependencies among sums \(2^n+M^k\) proves the conjecture by the Bilu--Luca theorem \cite{BiluLuca2026}.
+\end{criterion}
+
+\begin{criterion}[Character-complete determinant separation]\label{crit:character-complete}
+If an inherited determinant can be twisted so that its tied minimal terms satisfy the three conditions preceding Problem~\ref{prob:twist-complete}, then Theorem~\ref{thm:fourier-separation} forces noncancellation and the determinant argument closes.
+\end{criterion}
+
+\begin{criterion}[Subleading valuation inequality]\label{crit:subleading}
+A nonuniversal entropy inequality whose rank-order terms cancel and whose constant term is forced by simultaneous divisibility to have the wrong sign would prove the conjecture.  Theorem~\ref{thm:valuation-matroid} shows that any such inequality must use arithmetic weights, heights, or growing moduli; fixed unweighted valuation entropies cannot suffice.
+\end{criterion}
+
+\subsection{Prioritized research program}
+
+The most promising next steps, in order of proximity to the inherited machinery, are:
+\begin{enumerate}
+ \item \textbf{Twisted determinant moments.}  Keep the parent report's sharp Archimedean estimates, but replace one residue test by a complete finite Fourier family.  Search for twists induced by translating interpolation nodes or multiplying columns by Teichm\"uller characters.
+ \item \textbf{Mixed-sum dependence.}  Study resultants of
+ \[
+  (2^n+M^k)^u-(2^{n'}+M^{k'})^v
+ \]
+ after applying the power map, with the explicit goal of entering the Bilu--Luca classification.
+ \item \textbf{Finite-state transduction with growing precision.}  Quantify the minimum number of states needed to convert the rational orbit \(U^k/2^{\floor{k\alpha}}\) into the carry bit.  Theorem~\ref{thm:periodic-observer} rules out every fixed-state congruence observer, so a lower bound matching an independently obtained upper bound could force a contradiction.
+ \item \textbf{Functional equations for the carry series.}  Eliminate \(U\) and \(V\) from the two rational recurrences to seek a Mahler-type or diagonal-of-rational representation.  Any representation with analytic continuation contradicts the natural boundary.
+ \item \textbf{Height-sensitive information.}  Replace Shannon entropy by a weighted code length proportional to logarithmic height.  Ordinary entropy treats all codewords alike, while the power map changes height by the irrational factor \(c\); a Kraft-type inequality compatible with both integer alphabets might create a nonvanishing linear-rate defect.
+\end{enumerate}
+
+The fifth direction is the most purely information-theoretic and the least developed.  A useful target would be a prefix-free code whose length for \(z\in\Z_{>0}\) is \(\log z+O(1)\), whose concatenation law respects multiplication, and whose redundancy is stable under the exact bijection \(z\mapsto z^c\) on the semigroup.  Standard universal integer codes have \(O(\log\log z)\) overhead, too large and too flexible to force a contradiction; an arithmetic code with locally additive redundancy would be needed.
+
+\section{Literature audit through August 21, 2026}\label{sec:literature}
+
+The table records works that materially affect the approaches in this companion.  Dates refer to the latest arXiv versions inspected when a version history was available.
+
+\begin{longtable}{p{0.20\textwidth}p{0.22\textwidth}p{0.50\textwidth}}
+\toprule
+\textbf{Work} & \textbf{Date/status} & \textbf{Relevance to the present program}\\
+\midrule
+Dasgupta--Kakde, \emph{Matrix Coefficient Conjecture}, arXiv:2408.08178 \cite{DasguptaKakde2024} & August 15, 2024 & Introduces a logarithmic-matrix conjecture whose \(2\times2\) case is equivalent to Four Exponentials.  It confirms that the inherited logarithmic determinant is situated exactly at a recognized open boundary, not in a routine consequence of existing transcendence theory.\\
+Becher--Carton--Figueira, \emph{Rauzy dimension and finite-state dimension}, arXiv:2406.18383v2 \cite{BecherCartonFigueira2025} & June 5, 2025 revision & Relates Rauzy complexity to conditional block entropy and finite-state notions.  Supports the distinction here between zero entropy rate and finite-state recognizability.\\
+Burton--Panangaden, work on Furstenberg's \(\times2,\times3\) problem, arXiv:2410.22701 \cite{BurtonPanangaden2024} & October 2024 & Clarifies current dynamical formulations of multiplicatively independent maps.  The normalized orbits here do not supply a common invariant positive-entropy measure, so measure rigidity cannot be invoked directly.\\
+Bustos-Gajardo--Fokkink--Yassawi, \emph{Cobham's theorem for the Gaussian integers}, arXiv:2510.01440v3 \cite{BustosFokkinkYassawi2026} & August 8, 2026 revision & Proves a common-automaticity rigidity theorem for multiplicatively independent Gaussian bases.  Motivates the finite-state completion criterion but does not itself recognize the carry word.\\
+Harrison, \emph{Additive relations in irrational powers}, arXiv:2512.04081v3 \cite{Harrison2026} & July 31, 2026 revision & Gives near-maximal \(k\)-fold sumsets for irrational powers of sufficiently dense subsets of arithmetic progressions, using functional transcendence and o-minimal counting.\\
+Gavalakis--Goh--Kontoyiannis, \emph{Entropy lower bounds and sum-product phenomena}, arXiv:2604.20233v2 \cite{GavalakisGohKontoyiannis2026} & April 2026 & Establishes Shannon/min-entropy sum--product bounds and a weak purely Shannon result.  Li later bypasses the min-entropy bottleneck by decomposing the distribution into nearly uniform pieces.\\
+Li, \emph{The Entropic Sum-Product Phenomenon}, arXiv:2607.29042v1 \cite{Li2026} & July 31, 2026 & Proves \(\max\{H(X+X'),H(XX')\}\geq\frac87H(X)-O(\log H(X))\), the first purely Shannon coefficient above one.  Our fixed-rank theorem is sharper on the hypothetical boxes.\\
+Bloom--Sawin--Schildkraut--Zhelezov, \emph{The sum-product conjecture is false for real numbers}, arXiv:2605.28781 \cite{BloomEtAl2026} & May 27, 2026 & Constructs real counterexamples in number fields of degree \(\asymp\log\abs E\).  Shows that real-order geometry alone cannot give near-quadratic expansion; fixed rank remains decisive.\\
+Evertse--Gy\H{o}ry--Hajdu--Luca--Remete, \emph{Asymptotic formulas for sums of elements from a multiplicative group}, arXiv:2605.28973 \cite{EvertseEtAl2026} & May 27, 2026 & Provides height-asymptotic counting for nondegenerate sums in fixed-rank multiplicative groups, complementary to the box-uniform unit-equation entropy theorem proved here.\\
+Nguyen, \emph{Transcendence and measures via the refined Diophantine exponent}, arXiv:2605.30606 \cite{Nguyen2026a} & May 28, 2026 & Develops repetition criteria robust to noise and quantitative transcendence measures.  Suggests a route only if the carry series can be tied algebraically to the semigroup parameters.\\
+Bilu--Luca, \emph{Multiplicative dependence in the sumset of multiplicative groups}, arXiv:2607.28857v1 \cite{BiluLuca2026} & July 30, 2026 posting & Classifies, up to finitely many exceptions, multiplicatively dependent pairs of sums from almost disjoint fixed-rank groups.  Produces the concrete mixed-sum target in Problem~\ref{prob:mixed-dependence}.\\
+Nguyen, \emph{Spectrum of the refined Diophantine exponent}, arXiv:2608.20191 \cite{Nguyen2026b} & August 20, 2026 & Computes broad spectral and topological behavior and treats interval codings of rotations.  Confirms that the Sturmian carry lies in a strong repetition regime without becoming automatic.\\
+\bottomrule
+\end{longtable}
+
+Two cautionary conclusions follow from the audit.  First, the strongest recent general theorems---entropic sum--product, irrational-power expansion, and real sum--product counterexamples---all emphasize that ambient category matters.  Our hypothetical set is simultaneously integral, fixed-rank multiplicative, and linked to a second integer set by a transcendental power map; discarding any one of these features loses the problem.  Second, the Matrix Coefficient Conjecture remains open, so a direct \(2\times2\) logarithmic-rank proof would constitute a breakthrough at least as strong as the original target.
+
+\section{Conclusion}\label{sec:conclusion}
+
+Information theory does not prove the Alaoglu--Erd\H{o}s conjecture by itself, but it reorganizes the obstruction sharply.
+
+The coarse base-2 and base-3 magnitude measurements are not two constraints: they coincide exactly.  Their entropy exhibits synergy, not independence.  The carry mechanism has zero entropy rate and is invisible to every fixed periodic observer, while its entire prefix still has logarithmic description complexity.  Fixed valuation channels realize a legitimate rank-two entropy matroid, so no universal linear inequality can force the desired rank collapse.  These are rigorous no-go results.
+
+On the positive side, fixed multiplicative rank makes addition almost perfectly informative.  An \(L^2\)-point semigroup box has only \(O(L^2)\) nontrivial additive quadruples among \(L^8\) ordered possibilities; the sum of two random elements retains \(4\log L-\log2+o(1)\) nats and identifies the unordered source pair with error \(O(L^{-2})\).  The synchronized binary and ternary sums jointly encode that pair exactly by strict convexity and share almost all of their information.  What remains unbounded is not uncertainty but decoder complexity, quantified by a linear rational-degree lower bound and a square-root lower bound for arbitrary polynomial graph relations.
+
+This shifts the central question from ``is there enough rigidity?'' to ``can the rigidity be represented in a bounded arithmetic language?''  Five such languages now have precise targets: finite automata, analytic continuation, bounded-degree algebraic decoders, multiplicative dependence of mixed sums, and complete Fourier families for determinant residues.  The determinant-character route is closest to the inherited machinery; the mixed-sum route is newly strengthened by Bilu--Luca \cite{BiluLuca2026}; and the analytic route has the cleanest all-or-nothing obstruction through P\'olya--Carlson.
+
+No unconditional proof is claimed.  The principal advance is a collection of exact theorems that eliminate several tempting but insufficient entropy arguments, together with fixed-rank near-Sidon rigidity and completion criteria that expose the missing arithmetic bridge in checkable form.
+
+\appendix
+
+\section{The lattice-to-differential entropy limit}\label{app:local-limit}
+
+This appendix justifies the entropy passage used in Theorem~\ref{thm:length-entropy}.  The argument is elementary but the endpoint control matters because the limiting trapezoid density vanishes at its boundary.
+
+\begin{lemma}[Entropy of a sampled compactly supported density]\label{lem:sampled-density}
+Let \(f:\R\to[0,\infty)\) be continuous, compactly supported, and satisfy \(\int f=1\).  Suppose probability masses \(p_{L,j}\), supported on \(O(L)\) consecutive integers, obey
+\begin{equation}\label{eq:uniform-density-approx}
+ Lp_{L,j}=f(j/L)+o(1)
+\end{equation}
+uniformly in \(j\).  Then
+\begin{equation}\label{eq:sampled-entropy}
+ -\sum_jp_{L,j}\log p_{L,j}
+ =\log L-\int_{\R}f(x)\log f(x)\,dx+o(1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put \(q_{L,j}=Lp_{L,j}\) and \(\varphi(u)=u\log u\), with \(\varphi(0)=0\).  All \(q_{L,j}\) lie in one fixed compact interval, and \(\varphi\) is uniformly continuous there.  Hence \eqref{eq:uniform-density-approx} gives
+\[
+ \frac1L\sum_j\varphi(q_{L,j})
+ -\frac1L\sum_j\varphi(f(j/L))\longrightarrow0.
+\]
+The second sum is a Riemann sum for \(\int f\log f\).  Finally,
+\[
+ -\sum_jp_{L,j}\log p_{L,j}
+ =\log L-\frac1L\sum_jq_{L,j}\log q_{L,j}.
+\]
+The continuity of \(u\log u\) at zero is exactly what absorbs the boundary cells.
+\end{proof}
+
+For \(T_L=N_L+\floor{\beta K_L}\), let
+\begin{equation}\label{eq:rLt}
+ r_L(t)=\#\{0\leq k<L:0\leq t-\floor{\beta k}<L\}.
+\end{equation}
+Then \(\Pp(T_L=t)=r_L(t)/L^2\).  The floor inequalities are equivalent to
+\begin{equation}\label{eq:k-interval}
+ t-L+1\leq\floor{\beta k}\leq t,
+\end{equation}
+so \(r_L(t)\) is the number of integers in
+\begin{equation}\label{eq:k-range}
+ [0,L-1]\cap
+ \left[\frac{t-L+1}{\beta},\frac{t+1}{\beta}\right).
+\end{equation}
+Counting integers in an interval differs from its length by \(O(1)\), uniformly in the endpoints.  On writing \(x=t/L\), this gives
+\begin{equation}\label{eq:r-density}
+ \frac{r_L(t)}{L}
+ =\operatorname{length}\left(
+ [0,1]\cap\left[\frac{x-1}{\beta},\frac{x}{\beta}\right]
+ \right)+O_\beta(L^{-1}).
+\end{equation}
+The length on the right is exactly the convolution density \(f_\beta(x)\) in \eqref{eq:trapezoid-density}.  Therefore
+\[
+ L\Pp(T_L=t)=f_\beta(t/L)+O_\beta(L^{-1})
+\]
+uniformly, and Lemma~\ref{lem:sampled-density} proves \eqref{eq:lattice-diff}.
+
+\section{Entropy bookkeeping identities}\label{app:bookkeeping}
+
+For reference, this appendix records the identities used repeatedly in the report.
+
+If \(W=f(Z)\) is deterministic, then
+\begin{equation}\label{eq:deterministic-entropy-id}
+ \HH(Z)=\HH(W)+\HH(Z\mid W).
+\end{equation}
+If \(Z_1,Z_2\) are independent and \(W=f(Z_1,Z_2)\), then
+\begin{equation}\label{eq:interaction-id}
+ \II(Z_1;Z_2\mid W)
+ =\HH(W\mid Z_1)+\HH(W\mid Z_2)-\HH(W).
+\end{equation}
+Indeed, expand the right side in joint entropies and use \(\HH(W\mid Z_1,Z_2)=0\).
+
+For a stationary process \((S_j)\), the increments
+\begin{equation}\label{eq:entropy-increments}
+ H_{n+1}-H_n=\HH(S_n\mid S_0,\ldots,S_{n-1})
+\end{equation}
+are nonincreasing and converge to the entropy rate.  Thus \(H_n=O(\log n)\) implies the increments themselves tend to zero, not merely their Ces\`aro averages.
+
+For a finite set \(E\) of size \(N\), with \(Z,Z'\) independent uniform and \(r_E(s)\) the ordered representation function,
+\begin{align}
+ \HH(Z+Z')&=2\log N-\frac1{N^2}\sum_s r_E(s)\log r_E(s),\label{eq:shannon-rep}\\
+ \HH_2(Z+Z')&=4\log N-\log\left(\sum_s r_E(s)^2\right).
+ \label{eq:collision-rep}
+\end{align}
+The second identity turns every unit-equation count directly into a collision-entropy estimate.  The first shows why controlling only the energy is not always enough for sharp Shannon entropy; in Theorem~\ref{thm:sunit-entropy}, the stronger statement that only \(O(N)\) ordered pairs lie in exceptional fibers supplies the missing control.
+
+Finally, Pinsker's inequality gives
+\begin{equation}\label{eq:pinsker}
+ \II(B;Z)
+ =D\!\left(\mathcal L(B,Z)\,\middle\|\,
+ \mathcal L(B)\otimes\mathcal L(Z)\right)
+ \geq2\TV\!\left(\mathcal L(B,Z),
+ \mathcal L(B)\otimes\mathcal L(Z)\right)^2
+\end{equation}
+for natural logarithms.  Combined with Theorem~\ref{thm:fourier-separation}, this interprets character correlations as certificates of nonzero parity information.
+
+\section{Reproducibility checks and finite examples}\label{app:computations}
+
+All numerical values displayed in the report come from exact finite sums followed by ordinary floating-point evaluation of logarithms.  No numerical experiment is used as evidence for the conjecture.
+
+\subsection{Common-length entropy}
+
+For any chosen irrational \(\beta>1\), the exact mass function is
+\begin{equation}\label{eq:finite-length-mass}
+ p_L(t)=\frac1{L^2}\#\{(n,k)\in\{0,\ldots,L-1\}^2:
+ n+\floor{\beta k}=t\}.
+\end{equation}
+Evaluating \(-\sum_tp_L(t)\log p_L(t)\) for the illustrative slope \(\beta=\log_2 3\) gives the values in Section~\ref{sec:length}.  This slope is used only to test the entropy formula; it is not asserted to satisfy the second integrality condition.
+
+\subsection{A fixed-rank sumset sanity check}
+
+As a check on the direction and scale of Theorem~\ref{thm:sunit-entropy}, consider
+\[
+ E_L=\{2^n3^k:0\leq n,k<L\}.
+\]
+This is a concrete rank-two multiplicative box, again not a hypothetical counterexample.  The table lists the nontrivial energy
+\[
+ \mathcal E_+(E_L)-(2\abs{E_L}^2-\abs{E_L})
+\]
+and the signed Shannon deviation
+\[
+ \HH(Z+Z')-\bigl(2\log\abs{E_L}-\log2\bigr)
+\]
+from the ideal unordered-pair entropy.
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+\(L\) & \(\abs{E_L}\) & \(\abs{E_L+E_L}\) & nontrivial energy & signed entropy deviation\\
+\midrule
+10 & 100 & 4,094 & 9,060 & \(-0.273240\)\\
+15 & 225 & 22,549 & 28,020 & \(-0.165769\)\\
+20 & 400 & 74,354 & 57,580 & \(-0.107468\)\\
+25 & 625 & 185,759 & 97,740 & \(-0.074600\)\\
+30 & 900 & 390,514 & 148,500 & \(-0.054604\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The signed deviation tends toward zero, while the nontrivial energy is compatible with an \(O(N)\) law whose constant reflects the many small identities generated by \(1+2=3\).  The theorem permits such a rank-dependent constant.
+
+\subsection{Minimal pseudocode}
+
+The following pseudocode reproduces both finite calculations.
+\begin{verbatim}
+length_counts = Counter()
+for n in range(L):
+    for k in range(L):
+        length_counts[n + floor(beta*k)] += 1
+H_length = -sum((v/L**2)*log(v/L**2) for v in length_counts.values())
+
+E = [2**n * M**k for n in range(L) for k in range(L)]
+sum_counts = Counter(a+b for a in E for b in E)
+energy = sum(v*v for v in sum_counts.values())
+H_sum = -sum((v/len(E)**2)*log(v/len(E)**2)
+             for v in sum_counts.values())
+\end{verbatim}
+
+\section{Dependency map of the main assertions}\label{app:dependency}
+
+For clarity, the logical dependencies are as follows.
+\begin{enumerate}
+ \item Theorems~\ref{thm:length-identity}, \ref{thm:length-entropy}, \ref{thm:prefix}, \ref{thm:periodic-observer}, and \ref{thm:valuation-matroid} use only the inherited semigroup reduction and standard entropy/equidistribution tools.
+ \item Theorem~\ref{thm:natural-boundary} uses Sturmian aperiodicity and P\'olya--Carlson.
+ \item Theorem~\ref{thm:sunit-entropy} uses the Evertse--Schlickewei--Schmidt unit-equation theorem.  Corollary~\ref{cor:box-additive-entropy} then uses the counterexample hypothesis only to place the two boxes in fixed-rank algebraic groups.
+ \item Theorem~\ref{thm:joint-sums} combines Corollary~\ref{cor:box-additive-entropy} with strict convexity of \(t^c\).
+ \item Theorems~\ref{thm:decoder-degree} and~\ref{thm:algebraic-decoder-degree} are unconditional and use only the Chebyshev property of exponentials.
+ \item Theorem~\ref{thm:fourier-separation} is finite Fourier analysis and is unconditional; its application to a determinant is the open target.
+\end{enumerate}
+No theorem in this report assumes Four Exponentials, Schanuel's conjecture, the \(abc\)-conjecture, or the Matrix Coefficient Conjecture.
+
+\begin{thebibliography}{99}
+
+\bibitem{Baker1975}
+A.~Baker,
+\emph{Transcendental Number Theory},
+Cambridge University Press, 1975.
+
+\bibitem{BecherCartonFigueira2025}
+V.~Becher, O.~Carton, and S.~Figueira,
+``Rauzy dimension and finite-state dimension,''
+arXiv:2406.18383v2, 2025.
+
+\bibitem{BiluLuca2026}
+Y.~Bilu and F.~Luca,
+``Multiplicative dependence in the sumset of multiplicative groups,''
+arXiv:2607.28857v1, 2026.
+
+\bibitem{BloomEtAl2026}
+T.~F.~Bloom, W.~Sawin, C.~Schildkraut, and D.~Zhelezov,
+``The sum-product conjecture is false for real numbers,''
+arXiv:2605.28781, 2026.
+
+\bibitem{BurtonPanangaden2024}
+P.~Burton and J.~Panangaden,
+``Formulations of Furstenberg's $\times2\times3$ conjecture in complex analysis and operator algebras,''
+arXiv:2410.22701, 2024.
+
+\bibitem{BustosFokkinkYassawi2026}
+A.~Bustos-Gajardo, R.~Fokkink, and R.~Yassawi,
+``Cobham's theorem for the Gaussian integers,''
+arXiv:2510.01440v3, 2026.
+
+\bibitem{Carlson1921}
+F.~Carlson,
+``\"Uber Potenzreihen mit ganzzahligen Koeffizienten,''
+\emph{Mathematische Zeitschrift} \textbf{9} (1921), 1--13.
+
+\bibitem{CoverThomas2006}
+T.~M.~Cover and J.~A.~Thomas,
+\emph{Elements of Information Theory}, 2nd ed.,
+Wiley, 2006.
+
+\bibitem{DasguptaKakde2024}
+S.~Dasgupta and M.~Kakde,
+``Ranks of matrices of logarithms of algebraic numbers II: The Matrix Coefficient Conjecture,''
+arXiv:2408.08178, 2024.
+
+\bibitem{EvertseSchlickeweiSchmidt2002}
+J.-H.~Evertse, H.~P.~Schlickewei, and W.~M.~Schmidt,
+``Linear equations in variables which lie in a multiplicative group,''
+\emph{Annals of Mathematics} \textbf{155} (2002), 807--836.
+
+\bibitem{EvertseEtAl2026}
+J.-H.~Evertse, K.~Gy\H{o}ry, L.~Hajdu, F.~Luca, and L.~Remete,
+``Asymptotic formulas for sums of elements from a multiplicative group,''
+arXiv:2605.28973, 2026.
+
+\bibitem{GavalakisGohKontoyiannis2026}
+L.~Gavalakis, M.~K.~Goh, and I.~Kontoyiannis,
+``Entropy lower bounds and sum-product phenomena,''
+arXiv:2604.20233v2, 2026.
+
+\bibitem{Gelfond1960}
+A.~O.~Gelfond,
+\emph{Transcendental and Algebraic Numbers},
+Dover, 1960.
+
+\bibitem{Harrison2026}
+J.~Harrison,
+``Additive relations in irrational powers,''
+arXiv:2512.04081v3, 2026.
+
+\bibitem{KuipersNiederreiter1974}
+L.~Kuipers and H.~Niederreiter,
+\emph{Uniform Distribution of Sequences},
+Wiley, 1974.
+
+\bibitem{Li2026}
+R.~Li,
+``The Entropic Sum-Product Phenomenon,''
+arXiv:2607.29042v1, 2026.
+
+\bibitem{Lothaire2002}
+M.~Lothaire,
+\emph{Algebraic Combinatorics on Words},
+Cambridge University Press, 2002.
+
+\bibitem{Matveev2000}
+E.~M.~Matveev,
+``An explicit lower bound for a homogeneous rational linear form in logarithms of algebraic numbers. II,''
+\emph{Izvestiya: Mathematics} \textbf{64} (2000), 1217--1269.
+
+\bibitem{Nguyen2026a}
+Q.-K.~Nguyen,
+``Transcendence and measures via the refined Diophantine exponent,''
+arXiv:2605.30606, 2026.
+
+\bibitem{Nguyen2026b}
+Q.-K.~Nguyen,
+``Spectrum of the refined Diophantine exponent,''
+arXiv:2608.20191, 2026.
+
+\bibitem{Polya1928}
+G.~P\'olya,
+``\"Uber gewisse notwendige Determinantenkriterien f\"ur die Fortsetzbarkeit einer Potenzreihe,''
+\emph{Mathematische Annalen} \textbf{99} (1928), 687--706.
+
+\bibitem{Shannon1948}
+C.~E.~Shannon,
+``A mathematical theory of communication,''
+\emph{Bell System Technical Journal} \textbf{27} (1948), 379--423, 623--656.
+
+\bibitem{Tao2010}
+T.~Tao,
+``Sumset and inverse sumset theory for Shannon entropy,''
+\emph{Combinatorics, Probability and Computing} \textbf{19} (2010), 603--639.
+
+\end{thebibliography}
+
+\end{document}
