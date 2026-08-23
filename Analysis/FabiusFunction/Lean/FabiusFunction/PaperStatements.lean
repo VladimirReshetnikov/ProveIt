@@ -7,6 +7,7 @@ import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.ExactInversePower
+import FabiusFunction.Existence
 import FabiusFunction.FourierAnalytic
 import FabiusFunction.GlobalExtension
 import FabiusFunction.GlobalDyadic
@@ -58,11 +59,6 @@ namespace Fabius
 noncomputable section
 
 /-! ## The distinguished Fabius function -/
-
-/-- Existence and uniqueness for the bounded/CDF characterization. -/
-theorem existsUnique_fabius :
-    ∃! F : BoundedFabius, IsFabius F := by
-  sorry
 
 /-- The canonical bounded Fabius function `ℝ → [0,1]`. -/
 noncomputable def fabius : BoundedFabius :=
