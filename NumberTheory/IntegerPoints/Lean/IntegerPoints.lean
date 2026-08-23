@@ -55,6 +55,7 @@ import IntegerPoints.GKSec33LGeHalf
 import IntegerPoints.GKSec33KNonneg
 import IntegerPoints.GKSec33Boundary
 import IntegerPoints.GKLemma39Class
+import IntegerPoints.GKProcessWords
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -103,7 +104,11 @@ the remaining boundary implication `(k, 1/2) exponent pair → k = 1/2`;
 `IntegerPoints.GKLemma39` proves the quantitative inverse-function estimate
 for every derivative order through `P`, including the endpoint frequencies,
 and `IntegerPoints.GKLemma39Class` packages it as the dyadically restricted
-Graham--Kolesnik class used by the B-process.
+Graham--Kolesnik class used by the B-process;
+`IntegerPoints.GKBProcessTheorem` assembles those ingredients to prove
+Theorem 3.10, the B-process `(k, l) ↦ (l - 1/2, k + 1/2)`, and
+`IntegerPoints.GKProcessWords` combines it with the A-process to prove that
+every finite word in `A` and `B` sends `(0, 1)` to an exponent pair.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/

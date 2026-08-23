@@ -132,11 +132,20 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     estimate is extended from the open frequency interval to both endpoints
     by continuity; restricting it to `[J, 2J]` then gives the dual phase class
     needed by the B-process.
+  - `IntegerPoints.GKBProcessTheorem`, `GKProcessWords` — **proved**:
+    Graham–Kolesnik's Theorem 3.10 (`gk_theorem310_holds`), the exponent-pair
+    B-process `(k, l) ↦ (l - 1/2, k + 1/2)`, and its §3.1 finite-word
+    consequence (`gk_sec31_words_holds`).  The proof isolates the boundary
+    pair, transports uniform class parameters through Lemma 3.9, applies the
+    exact Lemma 3.6 transform, bounds the stationary main term by dyadic
+    inverse-phase blocks, and absorbs both logarithmic and curvature errors
+    into the transformed exponent-pair model.  Induction then closes `(0, 1)`
+    under every finite word in the proved A- and B-processes.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
     Lemmas 2–9), `IntegerPoints.GKStatements` (Graham–Kolesnik Ch. 3:
-    Theorem 3.10 and the remaining statement-level material),
+    the statement definitions and remaining unproved material),
     `IntegerPoints.Kolesnik` (Kolesnik 1985: the classes `E_n`, Lemmas 1–2,
     A, B, Theorems 1–5, the numerical corollaries),
     `IntegerPoints.HeathBrown` (Heath-Brown 1992: Theorems 1–6, Lemmas 1–6,
