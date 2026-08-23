@@ -230,6 +230,81 @@ theorem sum_minInv_Icc_from_left (u : ℤ → ℝ) {A B : ℤ} (n : ℕ) {D q : 
       rw [Finset.mul_sum]
     _ = D + q * (harmonic n : ℝ) := by rw [← hharm]
 
+/-- Sum the `gkR₁` errors once the two derivative-to-endpoint gap estimates are known.
+This includes the empty one-past interval `A = B + 1`. -/
+theorem sum_gkR₁_le_of_gaps {a b lam₂ M₂ : ℝ} {A B : ℤ} (xν : ℤ → ℝ)
+    (hlam₂ : 0 < lam₂) (hM₂ : 0 < M₂)
+    (hgapLeft : ∀ ν ∈ Finset.Icc A B,
+      (B : ℝ) - (ν : ℝ) ≤ M₂ * (xν ν - a))
+    (hgapRight : ∀ ν ∈ Finset.Icc A B,
+      (ν : ℝ) - (A : ℝ) ≤ M₂ * (b - xν ν)) :
+    ∑ ν ∈ Finset.Icc A B, gkR₁ lam₂ a b (xν ν) ≤
+      2 * lam₂ ^ (-(1 : ℝ) / 2) +
+        2 * (M₂ / lam₂) * (harmonic (B - A).toNat : ℝ) := by
+  by_cases hnonempty : A ≤ B
+  · set n : ℕ := (B - A).toNat with hn
+    have hBA0 : 0 ≤ B - A := sub_nonneg.mpr hnonempty
+    have hnCast : (n : ℤ) = B - A := by
+      rw [hn, Int.toNat_of_nonneg hBA0]
+    have hB : B = A + (n : ℤ) := by omega
+    have hA : A = B - (n : ℤ) := by omega
+    set D : ℝ := lam₂ ^ (-(1 : ℝ) / 2) with hD
+    set q : ℝ := M₂ / lam₂ with hq
+    have hpointLeft : ∀ ν ∈ Finset.Icc A B, ν < B →
+        minInv D (lam₂ * (xν ν - a)) ≤ q * (((B : ℝ) - (ν : ℝ))⁻¹) := by
+      intro ν hν hνB
+      have hνB' : (ν : ℝ) < B := by exact_mod_cast hνB
+      have hj : 0 < (B : ℝ) - (ν : ℝ) := by linarith
+      have hdist : ((B : ℝ) - (ν : ℝ)) / M₂ ≤ xν ν - a :=
+        (div_le_iff₀ hM₂).2 (by simpa [mul_comm] using hgapLeft ν hν)
+      have hdist0 : 0 < xν ν - a := (div_pos hj hM₂).trans_le hdist
+      have hsmall : 0 < lam₂ * (((B : ℝ) - (ν : ℝ)) / M₂) := by positivity
+      calc
+        minInv D (lam₂ * (xν ν - a)) ≤ 1 / (lam₂ * (xν ν - a)) :=
+          minInv_le_inv (mul_pos hlam₂ hdist0)
+        _ ≤ 1 / (lam₂ * (((B : ℝ) - (ν : ℝ)) / M₂)) :=
+          one_div_le_one_div_of_le hsmall (mul_le_mul_of_nonneg_left hdist hlam₂.le)
+        _ = q * (((B : ℝ) - (ν : ℝ))⁻¹) := by
+          rw [hq]
+          field_simp [hlam₂.ne', hM₂.ne', hj.ne']
+    have hpointRight : ∀ ν ∈ Finset.Icc A B, A < ν →
+        minInv D (lam₂ * (b - xν ν)) ≤ q * (((ν : ℝ) - (A : ℝ))⁻¹) := by
+      intro ν hν hAν
+      have hAν' : (A : ℝ) < ν := by exact_mod_cast hAν
+      have hj : 0 < (ν : ℝ) - (A : ℝ) := by linarith
+      have hdist : ((ν : ℝ) - (A : ℝ)) / M₂ ≤ b - xν ν :=
+        (div_le_iff₀ hM₂).2 (by simpa [mul_comm] using hgapRight ν hν)
+      have hdist0 : 0 < b - xν ν := (div_pos hj hM₂).trans_le hdist
+      have hsmall : 0 < lam₂ * (((ν : ℝ) - (A : ℝ)) / M₂) := by positivity
+      calc
+        minInv D (lam₂ * (b - xν ν)) ≤ 1 / (lam₂ * (b - xν ν)) :=
+          minInv_le_inv (mul_pos hlam₂ hdist0)
+        _ ≤ 1 / (lam₂ * (((ν : ℝ) - (A : ℝ)) / M₂)) :=
+          one_div_le_one_div_of_le hsmall (mul_le_mul_of_nonneg_left hdist hlam₂.le)
+        _ = q * (((ν : ℝ) - (A : ℝ))⁻¹) := by
+          rw [hq]
+          field_simp [hlam₂.ne', hM₂.ne', hj.ne']
+    have hleft := sum_minInv_Icc_from_right
+      (u := fun ν => lam₂ * (xν ν - a)) (A := A) (B := B) n hA hpointLeft
+    have hright := sum_minInv_Icc_from_left
+      (u := fun ν => lam₂ * (b - xν ν)) (A := A) (B := B) n hB hpointRight
+    unfold gkR₁
+    rw [Finset.sum_add_distrib]
+    calc
+      _ ≤ (D + q * (harmonic n : ℝ)) + (D + q * (harmonic n : ℝ)) :=
+        add_le_add hleft hright
+      _ = 2 * lam₂ ^ (-(1 : ℝ) / 2) +
+          2 * (M₂ / lam₂) * (harmonic (B - A).toNat : ℝ) := by
+        rw [hD, hq, hn]
+        ring
+  · rw [Finset.Icc_eq_empty hnonempty]
+    simp
+    have hh : 0 ≤ (harmonic (B - A).toNat : ℝ) := by
+      rw [harmonic, Rat.cast_sum]
+      positivity
+    exact add_nonneg (by positivity)
+      (mul_nonneg (mul_nonneg (by norm_num) (div_nonneg hM₂.le hlam₂.le)) hh)
+
 /-! ### Scale normalization -/
 
 /-- The inverse square root of the curvature scale `c F N⁻²` has the expected
