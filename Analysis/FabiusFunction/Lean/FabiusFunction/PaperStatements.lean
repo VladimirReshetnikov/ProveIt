@@ -9,6 +9,7 @@ import FabiusFunction.DyadicCorrectness
 import FabiusFunction.ExactInversePower
 import FabiusFunction.Existence
 import FabiusFunction.FourierAnalytic
+import FabiusFunction.FourierProduct
 import FabiusFunction.GlobalExtension
 import FabiusFunction.GlobalDyadic
 import FabiusFunction.HalfMomentDenominator
@@ -33,8 +34,8 @@ import Mathlib.NumberTheory.Padics.PadicVal.Basic
 This module formalizes every proved result in Juan Arias de Reyna,
 *Arithmetic of the Fabius function*, arXiv:1702.06487v3.  It also records the
 paper's Question 5, Definition 12, and Conjecture 16.  Every numbered result is
-proved; the few remaining proof-completion targets are the auxiliary canonical
-existence theorem and Fourier-transform identities.
+proved, as are the auxiliary existence, uniqueness, exact-evaluation, and
+Fourier-transform results used by the development.
 
 There are two deliberate corrections/clarifications:
 
@@ -261,7 +262,10 @@ theorem rvachevFourier_eq_product_eq_series
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     rvachevFourier F z = rvachevFourierProduct z ∧
       rvachevFourierProduct z = rvachevMomentSeries z := by
-  sorry
+  constructor
+  · exact rvachevFourier_eq_product F hF z
+  · exact (rvachevFourier_eq_product F hF z).symm.trans
+      (rvachevFourier_eq_momentSeries F hF z)
 
 /-- Equation (6): Fourier inversion for Rvachev's function. -/
 theorem rvachev_fourier_inversion

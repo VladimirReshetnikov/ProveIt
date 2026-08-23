@@ -4,12 +4,11 @@ This project formalizes the Fabius function and the statements in Juan Arias
 de Reyna, [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
 version 3.
 
-The development contains executable exact arithmetic and is now in its proof
-completion phase.  The evaluator, its analytic correctness at every dyadic,
-the moment and denominator arithmetic, the global differential identities,
-Taylor reduction, and every numbered result of the paper are checked without
-`sorry`.  The remaining frontier consists of the canonical function's
-existence theorem and the Fourier/entire-series identities.
+The development contains executable exact arithmetic.  The evaluator and its
+analytic correctness at every dyadic, the canonical function's existence and
+uniqueness, the moment and denominator arithmetic, the global differential
+identities, Taylor reduction, the Fourier and entire-series identities, and
+every numbered result of the paper are checked without `sorry`.
 
 ## Design
 
@@ -19,7 +18,8 @@ The formalization separates two functions that the sources both call `F`:
   this project.  `IsFabius F` says that it is zero on `(-∞,0]`, one on
   `[1,∞)`, smooth, symmetric on `[0,1]`, and satisfies the differential
   equation on `[0,1/2]`.  The existence/uniqueness theorem selects the
-  canonical `fabius`; its construction remains on the current proof frontier.
+  canonical `fabius`, constructed as the fixed point of an integral
+  contraction on continuous symmetric unit-interval-valued functions.
 - `extendedFabius F : ℝ → ℝ` is the signed global extension used in the
   paper.  It is defined by the locally finite Thue--Morse translate sum in
   equation (1).  It agrees with the bounded function on `[0,1]` but can be
