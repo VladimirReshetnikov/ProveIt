@@ -7,6 +7,7 @@ import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.ExactInversePower
+import FabiusFunction.FourierAnalytic
 import FabiusFunction.GlobalExtension
 import FabiusFunction.GlobalDyadic
 import FabiusFunction.HalfMomentDenominator
@@ -26,12 +27,13 @@ import Mathlib.NumberTheory.Bernoulli
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 
 /-!
-# Statements from *Arithmetic of the Fabius function*
+# Results from *Arithmetic of the Fabius function*
 
 This module formalizes every proved result in Juan Arias de Reyna,
 *Arithmetic of the Fabius function*, arXiv:1702.06487v3.  It also records the
-paper's Question 5, Definition 12, and Conjecture 16.  Proofs are intentionally
-left as `sorry` in this first statement-only phase.
+paper's Question 5, Definition 12, and Conjecture 16.  Every numbered result is
+proved; the few remaining proof-completion targets are the auxiliary canonical
+existence theorem and Fourier-transform identities.
 
 There are two deliberate corrections/clarifications:
 
@@ -271,12 +273,12 @@ theorem rvachev_fourier_inversion
     (rvachevUp F x : ℂ) =
       ∫ t : ℝ, rvachevFourier F t *
         Complex.exp (2 * Real.pi * Complex.I * t * x) := by
-  sorry
+  exact rvachev_fourier_inversion_analytic F hF x
 
 /-- The Fourier transform of Rvachev's function is entire. -/
 theorem rvachevFourier_differentiable (F : BoundedFabius) (hF : IsFabius F) :
     Differentiable ℂ (rvachevFourier F) := by
-  sorry
+  exact rvachevFourier_differentiable_analytic F hF
 
 /-- Equation (17): the analytic generating function has coefficients `d_n`. -/
 theorem complexGeneratingFunction_eq_series
@@ -290,7 +292,7 @@ theorem complexGeneratingFunction_eq_fourier
     complexGeneratingFunction F z =
       Complex.exp (z / 2) *
         rvachevFourier F (Complex.I * z / (4 * Real.pi)) := by
-  sorry
+  exact complexGeneratingFunction_eq_fourier_analytic F hF z
 
 /-- Equation (8): `moment n` is the `2n`-th moment of `rvachev`. -/
 theorem moment_eq_integral (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
