@@ -1,0 +1,237 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+
+\begin{document}
+Below I'll give you a fully real-analysis-only derivation of the small- $x$ behavior of the Fabius function $F(x)$.
+
+\section*{1) Exact identity on a dyadic logarithmic scale}
+Set
+
+$$
+t:=\log _{2} \frac{1}{x}=\frac{\ln (1 / x)}{\ln 2}, \quad \phi(t):=F\left(2^{-t}\right), \quad g(t):=-\ln \phi(t)=-\ln F\left(2^{-t}\right) .
+$$
+
+We compute $\phi^{\prime}(t)$ by the chain rule:
+
+$$
+\phi^{\prime}(t)=\frac{d}{d t} F\left(2^{-t}\right)=F^{\prime}\left(2^{-t}\right) \cdot \frac{d}{d t}\left(2^{-t}\right)=F^{\prime}\left(2^{-t}\right) \cdot\left(-(\ln 2) 2^{-t}\right) .
+$$
+
+Using $F^{\prime}(x)=2 F(2 x)$ at $x=2^{-t}$ gives $F^{\prime}\left(2^{-t}\right)=2 F\left(2^{1-t}\right)$, hence
+
+$$
+\phi^{\prime}(t)=-(\ln 2) 2^{1-t} F\left(2^{1-t}\right)=-(\ln 2) 2^{1-t} \phi(t-1) .
+$$
+
+Since $\phi(t)>0$ and $\phi^{\prime}(t)<0$, both $\ln \phi$ and $\ln \left(-\phi^{\prime}\right)$ are defined. Rearranging and taking logs,
+
+$$
+\ln \phi(t-1)-\ln \phi(t)=\ln \left(-\phi^{\prime}(t)\right)-\ln (\ln 2)-(1-t) \ln 2-\ln \phi(t) .
+$$
+
+With $g=-\ln \phi$ and $g^{\prime}(t)=-\phi^{\prime}(t) / \phi(t)>0$, this becomes the exact identity
+
+
+\begin{equation*}
+g(t)-g(t-1)=\ln g^{\prime}(t)-\ln (\ln 2)-(1-t) \ln 2 . \tag{1}
+\end{equation*}
+
+
+\section*{2) Large- $t$ expansion of $g$ : determination of the coefficients}
+All $O(\cdot)$ estimates below are taken as $t \rightarrow \infty$ (that is, $x \rightarrow 0^{+}$).\\
+We will use the standard asymptotic expansions
+
+
+\begin{equation*}
+\ln (t-1)=\ln t-\frac{1}{t}-\frac{1}{2 t^{2}}+O\left(\frac{1}{t^{3}}\right), \quad \ln \frac{t}{t-1}=\frac{1}{t}+\frac{1}{2 t^{2}}+O\left(\frac{1}{t^{3}}\right) . \tag{2}
+\end{equation*}
+
+
+Seek $g$ of the form
+
+
+\begin{equation*}
+g(t)=\frac{\ln 2}{2} t^{2}+A t \ln t+B t+P(\ln t)^{2}+C \ln t+R(t), \tag{3}
+\end{equation*}
+
+
+with constants $A, B, P, C$ to be determined and a remainder $R(t)$ to be bounded later.
+
+\subsection*{2.1 Quadratic coefficient}
+If $g(t) \sim \alpha t^{2} / 2$, then $g(t)-g(t-1) \sim \alpha t$ and $\ln g^{\prime}(t)=\ln (\alpha t)=\ln t+\ln \alpha$. Comparing the $t$-terms in (1), whose right-hand side contains $(t-1) \ln 2=$ $t \ln 2-\ln 2$, forces $\alpha=\ln 2$. Thus the quadratic coefficient in (3) is $\ln 2 / 2$ as written.
+
+\subsection*{2.2 The $t \ln t$ and $t$ coefficients}
+Compute $g(t)-g(t-1)$ from (3), using (2). Each summand contributes:
+
+\begin{itemize}
+  \item[-] Quadratic part:
+$$
+\frac{\ln 2}{2}\left(t^{2}-(t-1)^{2}\right)=\ln 2 t-\frac{\ln 2}{2} .
+$$
+  \item[-] $A t \ln t$ part:
+$$
+A[t \ln t-(t-1) \ln (t-1)]=A\left(\ln t+1-\frac{1}{2 t}-\frac{1}{6 t^{2}}\right)+O\left(\frac{1}{t^{3}}\right) .
+$$
+  \item[-] $B t$ part: $=B$.
+  \item[-] $P(\ln t)^{2}$ part (use $\ln t-\ln (t-1)=\frac{1}{t}+\frac{1}{2 t^{2}}+O\left(\frac{1}{t^{3}}\right)$ ):
+$$
+P\left[(\ln t)^{2}-(\ln (t-1))^{2}\right]=2 P \frac{\ln t}{t}+P \frac{\ln t-1}{t^{2}}+O\left(\frac{\ln t}{t^{3}}\right) .
+$$
+  \item[-] $C \ln t$ part:
+$$
+C[\ln t-\ln (t-1)]=C\left(\frac{1}{t}+\frac{1}{2 t^{2}}\right)+O\left(\frac{1}{t^{3}}\right) .
+$$
+\end{itemize}
+
+Adding,
+
+
+\begin{align*}
+g(t)-g(t-1)= & \ln 2 t-\frac{\ln 2}{2}+A \ln t+A+B \\
+& +\frac{-\frac{A}{2}+C+2 P \ln t}{t}+\frac{-\frac{A}{6}+\frac{C}{2}+P \ln t-P}{t^{2}}+O\left(\frac{\ln t}{t^{3}}\right) . \tag{4}
+\end{align*}
+
+
+Next expand $\ln g^{\prime}(t)$. Differentiate (3):
+
+$$
+g^{\prime}(t)=\ln 2 t+A(\ln t+1)+B+\frac{2 P \ln t}{t}+\frac{C}{t}+R^{\prime}(t) .
+$$
+
+For $\ln (u+\delta)$ we use
+
+
+\begin{equation*}
+\ln (u+\delta)=\ln u+\frac{\delta}{u}-\frac{\delta^{2}}{2 u^{2}}+O\left(\frac{|\delta|^{3}}{|u|^{3}}\right) \quad \text { when }|\delta| \leq \frac{1}{2}|u| . \tag{5}
+\end{equation*}
+
+
+Here $u=\ln 2 t$, and for large $t$ the ratio $|\delta| /|u|=O\left(\frac{\ln t}{t}\right)$, so (5) applies. A direct substitution gives
+
+
+\begin{align*}
+\ln g^{\prime}(t)= & \ln (\ln 2)+\ln t+\frac{A \ln t+A+B}{\ln 2} \cdot \frac{1}{t} \\
+& +\left(\frac{C+2 P \ln t}{\ln 2}-\frac{(A \ln t+A+B)^{2}}{2(\ln 2)^{2}}\right) \frac{1}{t^{2}}+O\left(\frac{(\ln t)^{3}}{t^{3}}\right) . \tag{6}
+\end{align*}
+
+
+Subtracting $\ln (\ln 2)+(1-t) \ln 2$ (the remaining terms of the right-hand side of (1)) yields
+
+
+\begin{align*}
+\text { RHS of }(1)= & \ln 2 t-\ln 2+\ln t \\
+& +\frac{A \ln t+A+B}{\ln 2} \cdot \frac{1}{t}  \tag{7}\\
+& +\left(\frac{C+2 P \ln t}{\ln 2}-\frac{(A \ln t+A+B)^{2}}{2(\ln 2)^{2}}\right) \frac{1}{t^{2}}+O\left(\frac{(\ln t)^{3}}{t^{3}}\right) .
+\end{align*}
+
+
+Match (4) with (7):
+
+\begin{itemize}
+  \item[-] Coefficient of $\ln t$ (constant level): $A=1$.
+  \item[-] Constant term: $-\frac{\ln 2}{2}+A+B=-\ln 2$ with $A=1$, hence
+$$
+B=-1-\frac{\ln 2}{2} .
+$$
+\end{itemize}
+
+\subsection*{2.3 The $(\ln t)^{2}$ and $\ln t$ coefficients}
+Match the $1 / t$ terms in (4) and (7) using $A=1$ and the above $B$ :
+
+$$
+\frac{-\frac{1}{2}+C+2 P \ln t}{t}=\frac{\ln t-\frac{\ln 2}{2}}{\ln 2} \cdot \frac{1}{t} .
+$$
+
+Therefore
+
+$$
+P=\frac{1}{2 \ln 2}, \quad C=0 .
+$$
+
+With these coefficients,
+
+
+\begin{equation*}
+g(t)=\frac{\ln 2}{2} t^{2}+t \ln t-\left(1+\frac{\ln 2}{2}\right) t+\frac{(\ln t)^{2}}{2 \ln 2}+R(t) . \tag{8}
+\end{equation*}
+
+
+\section*{3) Remainder and the 1-periodic term}
+Define $G(t)$ to be the explicit part of $g(t)$ in (8), and set
+
+$$
+H(t):=g(t)-G(t)=R(t) .
+$$
+
+Subtract (1) written for $G$ from (1) written for $g$ :
+
+
+\begin{equation*}
+H(t)-H(t-1)=\left[\ln g^{\prime}(t)-\ln G^{\prime}(t)\right]+\rho(t), \tag{9}
+\end{equation*}
+
+
+where $\rho(t)=O\left((\ln t)^{2} / t^{2}\right)$ collects the first unmatched terms of order $1 / t^{2}$ from (4)-(7).
+
+Since
+
+$$
+G^{\prime}(t)=\ln 2 t+(\ln t)+O(1) \quad(t \rightarrow \infty),
+$$
+
+we have $G^{\prime}(t) \asymp t$. Write $g^{\prime}(t)=G^{\prime}(t)+H^{\prime}(t)$ and expand
+
+$$
+\ln g^{\prime}(t)-\ln G^{\prime}(t)=\ln \left(1+\frac{H^{\prime}(t)}{G^{\prime}(t)}\right)=\frac{H^{\prime}(t)}{G^{\prime}(t)}+O\left(\frac{H^{\prime}(t)^{2}}{t^{2}}\right) .
+$$
+
+Hence (9) becomes
+
+
+\begin{equation*}
+H(t)-H(t-1)=\frac{H^{\prime}(t)}{\ln 2 t}\left(1+O\left(\frac{\ln t}{t}\right)\right)+O\left(\frac{1}{t^{2}}\right) . \tag{10}
+\end{equation*}
+
+
+Fix $\theta \in[0,1)$ and put $t_{n}:=n+\theta$. Summing (10) from $n=1$ to $N$ gives
+
+$$
+H\left(t_{N}\right)-H\left(t_{0}\right)=\sum_{n=1}^{N} \frac{H^{\prime}\left(t_{n}\right)}{\ln 2 t_{n}}+O\left(\sum_{n=1}^{N} \frac{\ln t_{n}}{t_{n}^{2}}\right) .
+$$
+
+The second sum is $O(1)$. Using summation by parts on the first sum and $G^{\prime}(t) \asymp t$ shows that its tails are $O\left(\frac{\ln N}{N}\right)$. Therefore the limit
+
+$$
+\Psi(\theta):=\lim _{N \rightarrow \infty}\left(H\left(t_{N}\right)-\sum_{n=1}^{N} \frac{H^{\prime}\left(t_{n}\right)}{\ln 2 t_{n}}\right)
+$$
+
+exists, is bounded in $\theta$, and satisfies $\Psi(\theta+1)=\Psi(\theta)$. Writing $H$ as $\Psi(\{t\})$ plus the tail of the two series yields
+
+
+\begin{equation*}
+H(t)=\Psi(\{t\})+E(t), \quad E(t)=O\left(\frac{\ln t}{t}\right) \tag{11}
+\end{equation*}
+
+
+where $\{t\}=t-\lfloor t\rfloor$ is the fractional part of $t$. This proves the required decomposition of the remainder.\\
+4) Final formula for $\ln F(x)$ as $x \rightarrow 0^{+}$
+
+Recall $g(t)=-\ln F\left(2^{-t}\right)$ and $t=\log _{2}(1 / x)$. Negating (8)-(11):
+
+$$
+\begin{aligned}
+\ln F(x)= & -\frac{\ln 2}{2} t^{2}-t \ln t-\frac{(\ln t)^{2}}{2 \ln 2}+\left(1+\frac{\ln 2}{2}\right) t \\
+& +\Psi(\{t\})+O\left(\frac{\ln t}{t}\right), \quad t=\log _{2} \frac{1}{x} \rightarrow \infty .
+\end{aligned}
+$$
+
+Here $\Psi$ is a bounded 1-periodic function determined by the normalization of $F$ (rescaling $F$ by a constant adds a constant to $\Psi$ ). The remainder $O\left(\frac{\ln t}{t}\right)$ is strictly smaller than any displayed term.
+
+
+\end{document}

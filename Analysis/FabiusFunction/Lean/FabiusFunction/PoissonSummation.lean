@@ -1,0 +1,523 @@
+import FabiusFunction.FourierProduct
+import Mathlib.Analysis.Fourier.PoissonSummation
+
+/-!
+# Poisson summation and the partition of unity
+
+This file formalizes Theorem 5 and equations (25)--(32) of Arias de Reyna,
+*An infinitely differentiable function with compact support: definition and
+properties* (arXiv:1702.05442).
+
+There are two typographical errors in the source which matter to the formal
+statements below.
+
+* In (25), the exponential must depend on `t`: its exponent is
+  `2 * π * i * k * t / u`.  This is forced by the Fourier-coefficient
+  computation in the proof and by the specialization (29).
+* In (32), after multiplying (31) by `a`, the factor `1 / a` on the right
+  disappears.  We state both the unmultiplied identity and the corrected
+  multiplied identity.
+-/
+
+set_option autoImplicit false
+set_option maxHeartbeats 100000
+
+open scoped BigOperators ContDiff FourierTransform SchwartzMap
+open Filter MeasureTheory Set
+
+namespace Fabius
+
+noncomputable section
+
+private lemma rvachevUp_support_subset_poisson
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
+  intro x hx
+  constructor
+  · by_contra h
+    apply hx
+    rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
+    exact hF.zero_of_nonpos _ (by linarith)
+  · by_contra h
+    apply hx
+    rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
+    exact hF.zero_of_nonpos _ (by linarith)
+
+private lemma rvachevUp_hasCompactSupport_poisson
+    (F : BoundedFabius) (hF : IsFabius F) :
+    HasCompactSupport (rvachevUp F) :=
+  HasCompactSupport.of_support_subset_isCompact isCompact_Icc
+    (rvachevUp_support_subset_poisson F hF)
+
+/-- The Schwartz function obtained by positively rescaling Rvachev's compactly
+supported smooth function. -/
+private noncomputable def scaledRvachevSchwartz
+    (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) : SchwartzMap ℝ ℂ := by
+  let f : ℝ → ℝ := fun x ↦ rvachevUp F (u * x)
+  have hf_compact : HasCompactSupport f := by
+    simpa only [f, smul_eq_mul] using
+      (rvachevUp_hasCompactSupport_poisson F hF).comp_smul hu
+  have hf_smooth : ContDiff ℝ ∞ f := by
+    dsimp only [f]
+    exact (rvachev_contDiff F hF).comp (by fun_prop)
+  exact (hf_compact.comp_left (map_zero Complex.ofRealCLM)).toSchwartzMap
+    (Complex.ofRealCLM.contDiff.comp hf_smooth)
+
+private lemma scaledRvachevSchwartz_apply
+    (F : BoundedFabius) (hF : IsFabius F) (u : ℝ) (hu : u ≠ 0) (x : ℝ) :
+    scaledRvachevSchwartz F hF u hu x = (rvachevUp F (u * x) : ℂ) :=
+  rfl
+
+private lemma fourier_scaledRvachevSchwartz
+    (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (w : ℝ) :
+    𝓕 (scaledRvachevSchwartz F hF u hu.ne') w =
+      (u⁻¹ : ℝ) • rvachevFourier F (((w / u : ℝ) : ℂ)) := by
+  rw [SchwartzMap.fourier_coe]
+  rw [Real.fourier_real_eq_integral_exp_smul]
+  let q : ℝ → ℂ := fun y ↦
+    Complex.exp (((-2 * Real.pi * y * (w / u) : ℝ) : ℂ) * Complex.I) *
+      (rvachevUp F y : ℂ)
+  calc
+    (∫ v : ℝ, Complex.exp (((-2 * Real.pi * v * w : ℝ) : ℂ) * Complex.I) •
+        scaledRvachevSchwartz F hF u hu.ne' v) =
+        ∫ v : ℝ, q (u * v) := by
+      apply integral_congr_ae
+      filter_upwards with v
+      rw [scaledRvachevSchwartz_apply]
+      dsimp only [q]
+      simp only [smul_eq_mul]
+      congr 2
+      push_cast
+      field_simp [hu.ne']
+    _ = |u⁻¹| • ∫ y : ℝ, q y :=
+      MeasureTheory.Measure.integral_comp_mul_left q u
+    _ = (u⁻¹ : ℝ) • rvachevFourier F (((w / u : ℝ) : ℂ)) := by
+      rw [abs_of_pos (inv_pos.mpr hu)]
+      congr 1
+      unfold rvachevFourier
+      apply integral_congr_ae
+      filter_upwards with y
+      dsimp only [q]
+      push_cast
+      ring
+
+/-- Corrected equation (25), i.e. Poisson summation for Rvachev's function.
+The printed exponential in the source accidentally omits the factor `t`. -/
+theorem rvachev_poisson_summation
+    (F : BoundedFabius) (hF : IsFabius F) {u : ℝ} (hu : 0 < u) (t : ℝ) :
+    (∑' k : ℤ, (rvachevUp F (t + u * k) : ℂ)) =
+      ∑' k : ℤ, ((u⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((k : ℝ) / u : ℝ) : ℂ)) *
+          Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) * (t / u : ℂ)) := by
+  have hpoisson :=
+    (scaledRvachevSchwartz F hF u hu.ne').tsum_eq_tsum_fourier (t / u)
+  calc
+    (∑' k : ℤ, (rvachevUp F (t + u * k) : ℂ)) =
+        ∑' k : ℤ, scaledRvachevSchwartz F hF u hu.ne' (t / u + k) := by
+      apply tsum_congr
+      intro k
+      rw [scaledRvachevSchwartz_apply]
+      congr 2
+      field_simp [hu.ne']
+    _ = ∑' k : ℤ, 𝓕 (scaledRvachevSchwartz F hF u hu.ne') (k : ℝ) *
+        fourier k ((t / u : ℝ) : UnitAddCircle) := hpoisson
+    _ = ∑' k : ℤ, ((u⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((k : ℝ) / u : ℝ) : ℂ)) *
+          Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) * (t / u : ℂ)) := by
+      apply tsum_congr
+      intro k
+      rw [fourier_scaledRvachevSchwartz F hF hu]
+      simp only [fourier_coe_apply, Complex.real_smul]
+      push_cast
+      ring
+
+/-- The Fourier transform is normalized to one at the origin. -/
+lemma rvachevFourier_zero_poisson
+    (F : BoundedFabius) (hF : IsFabius F) : rvachevFourier F 0 = 1 := by
+  rw [rvachevFourier_eq_product F hF, rvachevFourierProduct]
+  simp [complexSinc]
+
+/-- The Fourier transform vanishes at every nonzero integer.  In the sinc
+product it is already the zeroth factor which vanishes. -/
+lemma rvachevFourier_int_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) (hm : m ≠ 0) :
+    rvachevFourier F (m : ℂ) = 0 := by
+  rw [rvachevFourier_eq_product F hF, rvachevFourierProduct]
+  apply tprod_of_exists_eq_zero
+  refine ⟨0, ?_⟩
+  simp only [pow_zero, div_one]
+  rw [complexSinc, if_neg]
+  · rw [show (Real.pi : ℂ) * (m : ℂ) = (m : ℂ) * Real.pi by ring,
+      Complex.sin_int_mul_pi]
+    simp
+  · exact mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) (Int.cast_ne_zero.mpr hm)
+
+private lemma rvachevUp_eq_zero_of_le_neg_one_poisson
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) :
+    rvachevUp F x = 0 := by
+  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+private lemma rvachevUp_eq_zero_of_one_le_poisson
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) :
+    rvachevUp F x = 0 := by
+  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+/-- Equation (26), first in the complex-valued form naturally produced by
+Poisson summation.  The positivity hypothesis records the implicit `n ≥ 1`
+condition in the paper. -/
+private lemma rvachev_partition_one_over_nat_complex
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 0 < n) (t : ℝ) :
+    (∑' k : ℤ, (rvachevUp F (t + (k : ℝ) / n) : ℂ)) = (n : ℂ) := by
+  have hnR : (0 : ℝ) < n := by exact_mod_cast hn
+  have hn0 : (n : ℝ) ≠ 0 := hnR.ne'
+  have h := rvachev_poisson_summation F hF (u := (n : ℝ)⁻¹)
+    (inv_pos.mpr hnR) t
+  calc
+    (∑' k : ℤ, (rvachevUp F (t + (k : ℝ) / n) : ℂ)) =
+        ∑' k : ℤ, (rvachevUp F (t + (n : ℝ)⁻¹ * k) : ℂ) := by
+      apply tsum_congr
+      intro k
+      congr 3
+      field_simp [hn0]
+    _ = ∑' k : ℤ, ((((n : ℝ)⁻¹)⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((k : ℝ) / (n : ℝ)⁻¹ : ℝ) : ℂ)) *
+          Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) *
+            (t / (n : ℝ)⁻¹ : ℂ)) := h
+    _ = (n : ℂ) := by
+      rw [tsum_eq_single 0]
+      · simp [rvachevFourier_zero_poisson F hF]
+      · intro k hk
+        have hkn : k * (n : ℤ) ≠ 0 := mul_ne_zero hk (by exact_mod_cast hn.ne')
+        have harg : ((((k : ℝ) / (n : ℝ)⁻¹ : ℝ) : ℂ)) =
+            ((k * (n : ℤ) : ℤ) : ℂ) := by
+          push_cast
+          field_simp [hn0]
+        rw [harg, rvachevFourier_int_eq_zero F hF (k * (n : ℤ)) hkn]
+        simp
+
+/-- Equation (26): the translates on the mesh `1 / n` form the constant
+partition with value `n`. -/
+theorem rvachev_partition_one_over_nat
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 0 < n) (t : ℝ) :
+    ∑' k : ℤ, rvachevUp F (t + (k : ℝ) / n) = n := by
+  apply Complex.ofReal_injective
+  simpa only [Complex.ofReal_tsum, Complex.ofReal_natCast] using
+    rvachev_partition_one_over_nat_complex F hF n hn t
+
+/-- Equation (27): the integer translates of Rvachev's function form a
+partition of unity. -/
+theorem rvachev_partition_unity
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    ∑' k : ℤ, rvachevUp F (t + k) = 1 := by
+  simpa using rvachev_partition_one_over_nat F hF 1 (by omega) t
+
+private lemma rvachevUp_zero_poisson
+    (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 := by
+  rw [rvachevUp, if_pos le_rfl]
+  simpa using hF.one_of_one_le 1 le_rfl
+
+/-- Equation (28), the two-term form of the partition of unity on `[0, 1]`. -/
+theorem rvachev_add_shift_eq_one
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
+    rvachevUp F t + rvachevUp F (t - 1) = 1 := by
+  have h := rvachev_partition_unity F hF t
+  rw [tsum_eq_sum (s := {(-1 : ℤ), 0})] at h
+  · simpa [sub_eq_add_neg, add_comm] using h
+  · intro k hk
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk
+    rcases (show k ≤ -2 ∨ 1 ≤ k by omega) with hkneg | hkpos
+    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+      have hknegR : (k : ℝ) ≤ -2 := by exact_mod_cast hkneg
+      linarith
+    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+      have hkposR : (1 : ℝ) ≤ k := by exact_mod_cast hkpos
+      linarith
+
+/-- Equation (29), the period-two Fourier expansion obtained from (25). -/
+theorem rvachev_even_translate_fourier
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    (∑' k : ℤ, (rvachevUp F (t + 2 * k) : ℂ)) =
+      (2 : ℂ)⁻¹ * ∑' k : ℤ,
+        rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) *
+          Complex.exp (Real.pi * Complex.I * (k : ℂ) * (t : ℂ)) := by
+  calc
+    (∑' k : ℤ, (rvachevUp F (t + 2 * k) : ℂ)) =
+        ∑' k : ℤ, (((2 : ℝ)⁻¹ : ℝ) : ℂ) *
+          rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) *
+            Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) * (t / 2 : ℂ)) :=
+      rvachev_poisson_summation F hF (by norm_num : (0 : ℝ) < 2) t
+    _ = (2 : ℂ)⁻¹ * ∑' k : ℤ,
+        rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) *
+          Complex.exp (Real.pi * Complex.I * (k : ℂ) * (t : ℂ)) := by
+      rw [← tsum_mul_left]
+      apply tsum_congr
+      intro k
+      push_cast
+      have hexp :
+          Complex.exp (2 * Real.pi * Complex.I * (k : ℂ) * (t / 2 : ℂ)) =
+            Complex.exp (Real.pi * Complex.I * (k : ℂ) * (t : ℂ)) := by
+        congr 1
+        ring
+      rw [hexp]
+      norm_num
+      ring
+
+private lemma complexSinc_neg_poisson (z : ℂ) : complexSinc (-z) = complexSinc z := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexSinc]
+  · simp only [complexSinc, neg_eq_zero, hz, if_false, Complex.sin_neg]
+    field_simp
+
+/-- The Fourier transform of the even Rvachev function is itself even. -/
+lemma rvachevFourier_neg
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    rvachevFourier F (-z) = rvachevFourier F z := by
+  rw [rvachevFourier_eq_product F hF, rvachevFourier_eq_product F hF]
+  unfold rvachevFourierProduct
+  apply tprod_congr
+  intro n
+  rw [show (Real.pi : ℂ) * -z / (2 : ℂ) ^ n =
+      -((Real.pi : ℂ) * z / (2 : ℂ) ^ n) by ring,
+    complexSinc_neg_poisson]
+
+private lemma rvachevFourier_half_int_summable
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Summable fun k : ℤ ↦ rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) := by
+  let φ : SchwartzMap ℝ ℂ :=
+    scaledRvachevSchwartz F hF 2 (by norm_num)
+  have hφ : Summable fun k : ℤ ↦ 𝓕 φ (k : ℝ) := by
+    exact summable_of_isBigO (Real.summable_abs_int_rpow one_lt_two)
+      (((𝓕 φ).isBigO_cocompact_rpow (-2)).comp_tendsto Int.tendsto_coe_cofinite)
+  have htwo := hφ.mul_left (2 : ℂ)
+  apply htwo.congr
+  intro k
+  dsimp only [φ]
+  rw [fourier_scaledRvachevSchwartz F hF (by norm_num : (0 : ℝ) < 2)]
+  simp only [Complex.real_smul]
+  norm_num
+  ring
+
+private lemma rvachevFourier_phase_summable
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    Summable fun k : ℤ ↦
+      rvachevFourier F ((((k : ℝ) / 2 : ℝ) : ℂ)) *
+        Complex.exp (Real.pi * Complex.I * (k : ℂ) * (t : ℂ)) := by
+  refine (rvachevFourier_half_int_summable F hF).norm.of_norm_bounded fun k ↦ ?_
+  rw [norm_mul]
+  have hexp : Real.pi * Complex.I * (k : ℂ) * (t : ℂ) =
+      (((Real.pi * (k : ℝ) * t : ℝ) : ℂ)) * Complex.I := by
+    push_cast
+    ring
+  rw [hexp, Complex.norm_exp_ofReal_mul_I, mul_one]
+
+private lemma exp_add_exp_neg_eq_two_mul_cos (x : ℝ) :
+    Complex.exp ((x : ℂ) * Complex.I) +
+        Complex.exp ((-x : ℝ) * Complex.I) =
+      2 * (Real.cos x : ℂ) := by
+  rw [Complex.exp_mul_I, Complex.exp_mul_I]
+  push_cast
+  rw [Complex.cos_neg, Complex.sin_neg]
+  rw [← Complex.ofReal_cos]
+  ring
+
+private lemma rvachev_fourier_phase_pair
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) (n : ℕ) :
+    rvachevFourier F ((((n : ℝ) / 2 : ℝ) : ℂ)) *
+          Complex.exp (Real.pi * Complex.I * (n : ℂ) * (t : ℂ)) +
+        rvachevFourier F ((((-(n : ℤ) : ℤ) : ℝ) / 2 : ℝ) : ℂ) *
+          Complex.exp (Real.pi * Complex.I * (-(n : ℤ) : ℂ) * (t : ℂ)) =
+      2 * rvachevFourier F ((((n : ℝ) / 2 : ℝ) : ℂ)) *
+        (Real.cos (Real.pi * n * t) : ℂ) := by
+  have hneg :
+      rvachevFourier F ((((-(n : ℤ) : ℤ) : ℝ) / 2 : ℝ) : ℂ) =
+        rvachevFourier F ((((n : ℝ) / 2 : ℝ) : ℂ)) := by
+    rw [show ((((-(n : ℤ) : ℤ) : ℝ) / 2 : ℝ) : ℂ) =
+      -((((n : ℝ) / 2 : ℝ) : ℂ)) by push_cast; ring,
+      rvachevFourier_neg F hF]
+  rw [hneg]
+  have hpos_exp : Real.pi * Complex.I * (n : ℂ) * (t : ℂ) =
+      (((Real.pi * n * t : ℝ) : ℂ)) * Complex.I := by
+    push_cast
+    ring
+  have hneg_exp : Real.pi * Complex.I * (-(n : ℤ) : ℂ) * (t : ℂ) =
+      (((-(Real.pi * n * t) : ℝ) : ℂ)) * Complex.I := by
+    push_cast
+    ring
+  rw [hpos_exp, hneg_exp, ← mul_add,
+    exp_add_exp_neg_eq_two_mul_cos (Real.pi * n * t)]
+  ring
+
+private lemma rvachev_even_translate_sum_eq_self
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht0 : -1 ≤ t) (ht1 : t ≤ 1) :
+    ∑' k : ℤ, rvachevUp F (t + 2 * k) = rvachevUp F t := by
+  rw [tsum_eq_single 0]
+  · norm_num
+  · intro k hk
+    rcases (show k ≤ -1 ∨ 1 ≤ k by omega) with hkneg | hkpos
+    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+      have hknegR : (k : ℝ) ≤ -1 := by exact_mod_cast hkneg
+      linarith
+    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+      have hkposR : (1 : ℝ) ≤ k := by exact_mod_cast hkpos
+      linarith
+
+/-- Equation (30), the cosine expansion on the support interval. -/
+theorem rvachev_cosine_series
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht0 : -1 ≤ t) (ht1 : t ≤ 1) :
+    (rvachevUp F t : ℂ) = (2 : ℂ)⁻¹ +
+      ∑' k : ℕ,
+        rvachevFourier F (((((2 * k + 1 : ℕ) : ℝ) / 2 : ℝ) : ℂ)) *
+          (Real.cos ((2 * k + 1) * Real.pi * t) : ℂ) := by
+  let f : ℤ → ℂ := fun n ↦
+    rvachevFourier F ((((n : ℝ) / 2 : ℝ) : ℂ)) *
+      Complex.exp (Real.pi * Complex.I * (n : ℂ) * (t : ℂ))
+  let q : ℕ → ℂ := fun n ↦ f (n : ℤ) + f (-(n : ℤ))
+  let c : ℕ → ℂ := fun k ↦
+    rvachevFourier F (((((2 * k + 1 : ℕ) : ℝ) / 2 : ℝ) : ℂ)) *
+      (Real.cos (Real.pi * (2 * k + 1) * t) : ℂ)
+  have hf : Summable f := by
+    simpa only [f] using rvachevFourier_phase_summable F hF t
+  have hq : Summable q := by
+    simpa only [q] using hf.nat_add_neg
+  have hpair (n : ℕ) :
+      q n = 2 * rvachevFourier F ((((n : ℝ) / 2 : ℝ) : ℂ)) *
+        (Real.cos (Real.pi * n * t) : ℂ) := by
+    simpa [q, f] using rvachev_fourier_phase_pair F hF t n
+  have hq_even : Summable (q ∘ fun k : ℕ ↦ 2 * k) :=
+    hq.comp_injective (show Function.Injective (fun k : ℕ ↦ 2 * k) by
+      intro i j hij
+      exact Nat.mul_left_cancel (by omega) hij)
+  have hq_odd : Summable (q ∘ fun k : ℕ ↦ 2 * k + 1) :=
+    hq.comp_injective (show Function.Injective (fun k : ℕ ↦ 2 * k + 1) by
+      intro i j hij
+      exact Nat.mul_left_cancel (by omega) (Nat.add_right_cancel hij))
+  have heven : ∑' k : ℕ, q (2 * k) = 2 := by
+    rw [tsum_eq_single 0]
+    · simp [q, f, rvachevFourier_zero_poisson F hF]
+      ring
+    · intro k hk
+      rw [hpair]
+      have hkInt : (k : ℤ) ≠ 0 := by exact_mod_cast hk
+      have harg : (((((2 * k : ℕ) : ℝ) / 2 : ℝ) : ℂ)) =
+          ((k : ℤ) : ℂ) := by
+        push_cast
+        norm_num
+      rw [harg, rvachevFourier_int_eq_zero F hF (k : ℤ) hkInt]
+      simp
+  have hodd : ∑' k : ℕ, q (2 * k + 1) = 2 * ∑' k : ℕ, c k := by
+    rw [← tsum_mul_left]
+    apply tsum_congr
+    intro k
+    rw [hpair]
+    dsimp only [c]
+    have hcos : Real.pi * ((2 * k + 1 : ℕ) : ℝ) * t =
+        (Real.pi * (2 * (k : ℝ) + 1) * t) := by
+      push_cast
+      ring
+    rw [hcos]
+    ring
+  have hsplit := tsum_even_add_odd hq_even hq_odd
+  have hnat : (∑' n : ℕ, q n) = (∑' n : ℤ, f n) + f 0 := by
+    simpa only [q] using tsum_nat_add_neg hf
+  have hf0 : f 0 = 1 := by
+    simp [f, rvachevFourier_zero_poisson F hF]
+  have hz : (∑' n : ℤ, f n) = 1 + 2 * ∑' k : ℕ, c k := by
+    calc
+      (∑' n : ℤ, f n) = (∑' n : ℕ, q n) - f 0 := by rw [hnat]; ring
+      _ = ((∑' k : ℕ, q (2 * k)) + ∑' k : ℕ, q (2 * k + 1)) - f 0 := by
+        rw [hsplit]
+      _ = 1 + 2 * ∑' k : ℕ, c k := by rw [heven, hodd, hf0]; ring
+  have h29 := rvachev_even_translate_fourier F hF t
+  have h29' : (rvachevUp F t : ℂ) = (2 : ℂ)⁻¹ * ∑' n : ℤ, f n := by
+    rw [← Complex.ofReal_tsum,
+      rvachev_even_translate_sum_eq_self F hF ht0 ht1] at h29
+    simpa only [f] using h29
+  calc
+    (rvachevUp F t : ℂ) = (2 : ℂ)⁻¹ * ∑' n : ℤ, f n := h29'
+    _ = (2 : ℂ)⁻¹ + ∑' k : ℕ, c k := by rw [hz]; ring
+    _ = (2 : ℂ)⁻¹ +
+        ∑' k : ℕ,
+          rvachevFourier F (((((2 * k + 1 : ℕ) : ℝ) / 2 : ℝ) : ℂ)) *
+            (Real.cos ((2 * k + 1) * Real.pi * t) : ℂ) := by
+      apply congrArg ((2 : ℂ)⁻¹ + ·)
+      apply tsum_congr
+      intro k
+      dsimp only [c]
+      congr 2
+      ring
+
+/-- Equation (31), Poisson summation specialized at `t = 0`. -/
+theorem rvachev_poisson_at_zero
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ} (ha : 0 < a) :
+    (∑' m : ℤ, (rvachevUp F (a * m) : ℂ)) =
+      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  simpa using rvachev_poisson_summation F hF ha 0
+
+private lemma rvachev_lattice_sum_on_half_one
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
+    ∑' m : ℤ, rvachevUp F (a * m) = 1 + 2 * rvachevUp F a := by
+  rw [tsum_eq_sum (s := {(-1 : ℤ), 0, 1})]
+  · rw [Finset.sum_insert]
+    · rw [Finset.sum_insert]
+      · rw [Finset.sum_singleton]
+        rw [show a * (-1 : ℤ) = -a by push_cast; ring,
+          (rvachev_even F hF a)]
+        simp only [Int.cast_zero, mul_zero, Int.cast_one, mul_one,
+          rvachevUp_zero_poisson F hF]
+        ring
+      · simp
+    · simp
+  · intro m hm
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hm
+    rcases (show m ≤ -2 ∨ 2 ≤ m by omega) with hmneg | hmpos
+    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+      have hmnegR : (m : ℝ) ≤ -2 := by exact_mod_cast hmneg
+      nlinarith
+    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+      have hmposR : (2 : ℝ) ≤ m := by exact_mod_cast hmpos
+      nlinarith
+
+/-- The direct support specialization of (31), before multiplying by `a`.
+This is the identity from which the corrected equation (32) follows. -/
+theorem rvachev_poisson_support_specialization_unscaled
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
+    (1 : ℂ) + 2 * rvachevUp F a =
+      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  rw [← rvachev_poisson_at_zero F hF ha, ← Complex.ofReal_tsum,
+    rvachev_lattice_sum_on_half_one F hF ha0 ha1]
+  push_cast
+  rfl
+
+/-- Corrected equation (32).  The source leaves an extra factor `1 / a` on
+the right after multiplying the preceding identity by `a`. -/
+theorem rvachev_poisson_support_specialization
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  have h := rvachev_poisson_support_specialization_unscaled F hF ha0 ha1
+  calc
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
+    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
+    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+      rw [← tsum_mul_left]
+      apply tsum_congr
+      intro m
+      push_cast
+      field_simp [ha.ne']
+
+end
+
+end Fabius

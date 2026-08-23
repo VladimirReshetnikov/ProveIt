@@ -1,14 +1,20 @@
 # Fabius function
 
-This project formalizes the Fabius function and the statements in Juan Arias
-de Reyna, [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
-version 3.
+This project formalizes the Fabius function and the results in both papers by
+Juan Arias de Reyna:
+
+- [*An infinitely differentiable function with compact support: Definition
+  and Properties*](https://arxiv.org/abs/1702.05442);
+- [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
+  version 3.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
-identities, Taylor reduction, the Fourier and entire-series identities, and
-every numbered result of the paper are checked without `sorry`.
+identities, Taylor reduction, the Fourier and entire-series identities,
+probability and weak-convergence constructions, polynomial step
+approximants, Poisson summation, and every theorem, lemma, corollary, and
+prose proposition in both papers are checked without `sorry`.
 
 ## Design
 
@@ -82,21 +88,43 @@ paper's oscillating continuation, for example `F(3) = -1`.
 
 ## Paper coverage
 
+`Paper05442.lean` is the public import for the first paper.  It includes all
+seven theorems, Lemma 1, the unnumbered non-analyticity corollary, and the
+prose probability proposition.  In particular, it proves the original
+existence-and-uniqueness characterization with the initially unknown scale,
+weak-* convergence of the finite convolution measures, pointwise convergence
+of the polynomial step approximants, the infinite-product probability model,
+the differential identities, Poisson summation, moment formulas, and global
+rationality at dyadic points.
+
+`Paper06487.lean` is the public import for the arithmetic paper.
 `PaperStatements.lean` contains all 18 proved numbered results in the v3 PDF:
 Propositions 1, 2, 3, 4, 6, 8, 10, 15, 18, 19, and 22; Theorems 7, 9, 13,
 17, 20, and 21; and Lemma 1.  It also formalizes Question 5, Definition 12,
-and Conjecture 16.  Remarks 11 and 14 are expository and are documented but
-do not receive theorem declarations.
+and Conjecture 16.  `Paper06487Supplement.lean` proves assertions made in the
+surrounding prose and inside proofs.
 
-Three source issues are made explicit:
+The exact source-to-Lean map is in [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).
 
-1. The arXiv abstract gives a negative exponent in `R_n`, but equation (27),
-   the proof, and the displayed values require the positive exponent used
-   here.
-2. Lemma 1 is false for a negative scale and arbitrary derivative order.  Its
-   proof requires `0 ≤ scale + order`; the Lean statement includes it.
-3. Proposition 2's quotient `(exp x - 1) / x` has a removable singularity.
+The source contains a few statements that are not literally correct.  The
+formalization records the mathematically valid versions next to their proofs.
+Among them:
+
+1. In the first paper, equation (12) must be a finite convolution; the printed
+   infinite upper index is incompatible with its dependence on `m`.
+2. The closed interval indicators in Theorem 2 double-count shared endpoints.
+   `halfEndpointIntervalIndicator` gives endpoints weight `1/2`, preserving
+   the asserted normalization `φ_n(0) = 1` and the pointwise limit.
+3. Equation (25) omits `t` from its exponential, equation (26) needs `n > 0`,
+   and equation (32) has inconsistent scaling.  The Poisson-summation module
+   proves the corrected identities.
+4. In the arithmetic paper, Lemma 1 is false for a negative scale and an
+   arbitrary derivative order.  Its proof requires
+   `0 ≤ scale + order`; the Lean statement includes that hypothesis.
+5. Proposition 2's quotient `(exp x - 1) / x` has a removable singularity;
    `expm1Div 0` is defined to be `1`.
+6. The exponent in `R_n` is positive in equation (27), its proof, and its
+   displayed values.  The development uses that consistent positive exponent.
 
 ## Checking
 

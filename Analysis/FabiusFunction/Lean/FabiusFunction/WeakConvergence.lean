@@ -1,0 +1,315 @@
+import FabiusFunction.EarlyApproximants
+import FabiusFunction.FourierProduct
+import FabiusFunction.PaperStatements
+import Mathlib.MeasureTheory.Measure.LevyConvergence
+import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+
+/-!
+# Weak convergence of the finite convolution approximants
+
+This module proves Lemma 1 of Arias de Reyna's *An infinitely differentiable
+function with compact support: definition and properties*.  In the paper's
+notation, the finite measures `mu_n` converge weak-* to `phi * lambda`, where
+`phi` is Rvachev's up function and `lambda` is Lebesgue measure.
+
+We formalize weak-* convergence as convergence in the standard weak topology
+on `ProbabilityMeasure ℝ`.  An explicit equivalent formulation against every
+bounded continuous real-valued test function is supplied below.
+
+The index `n` here is the paper's finite cutoff: `finiteConvolutionMeasure n`
+contains the factors indexed by `k = 1, ..., n`.  Internally those factors are
+stored with zero-based indices, so its characteristic function contains
+`cos (t / 2^(k+2))^(k+1)` for `k = 0, ..., n-1`.
+-/
+
+set_option autoImplicit false
+
+open scoped BigOperators ENNReal MeasureTheory Topology BoundedContinuousFunction
+open Filter Finset MeasureTheory Set
+open Asymptotics
+
+namespace Fabius
+
+noncomputable section
+
+/-- Rvachev's up function is nonnegative. -/
+theorem rvachevUp_nonneg (F : BoundedFabius) (x : ℝ) : 0 ≤ rvachevUp F x := by
+  unfold rvachevUp
+  split_ifs <;> exact fabiusReal_nonneg F _
+
+/-- Rvachev's up function is integrable. -/
+theorem rvachevUp_integrable (F : BoundedFabius) (hF : IsFabius F) :
+    Integrable (rvachevUp F) := by
+  apply (rvachev_contDiff F hF).continuous.integrable_of_hasCompactSupport
+  rw [HasCompactSupport, tsupport_rvachev F hF]
+  exact isCompact_Icc
+
+/-- Rvachev's up function has total integral one. -/
+theorem integral_rvachevUp_eq_one (F : BoundedFabius) (hF : IsFabius F) :
+    (∫ x : ℝ, rvachevUp F x) = 1 := by
+  have h := moment_eq_integral_formula F hF 0
+  simpa [momentIntegral] using h.symm
+
+/-- The density measure `φ λ` occurring in Lemma 1. -/
+noncomputable def rvachevMeasure (F : BoundedFabius) : Measure ℝ :=
+  volume.withDensity (fun x => ENNReal.ofReal (rvachevUp F x))
+
+theorem rvachevMeasure_isProbability (F : BoundedFabius) (hF : IsFabius F) :
+    IsProbabilityMeasure (rvachevMeasure F) := by
+  rw [isProbabilityMeasure_iff]
+  unfold rvachevMeasure
+  rw [withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]
+  rw [← ofReal_integral_eq_lintegral_ofReal (rvachevUp_integrable F hF)
+    (Eventually.of_forall (rvachevUp_nonneg F))]
+  rw [integral_rvachevUp_eq_one F hF]
+  norm_num
+
+/-- The characteristic function of the density `φ λ`, with the conversion
+between mathlib's convention and the paper's Fourier-transform convention. -/
+theorem rvachevMeasure_charFun (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    charFun (rvachevMeasure F) t =
+      rvachevFourier F (-(t : ℂ) / (2 * Real.pi)) := by
+  unfold charFun rvachevMeasure rvachevFourier
+  rw [integral_withDensity_eq_integral_toReal_smul]
+  · apply integral_congr_ae
+    filter_upwards with x
+    rw [ENNReal.toReal_ofReal (rvachevUp_nonneg F x)]
+    simp only [Real.inner_apply, Complex.real_smul]
+    congr 1
+    congr 1
+    push_cast
+    field_simp [Real.pi_ne_zero]
+  · exact ENNReal.measurable_ofReal.comp (rvachev_contDiff F hF).continuous.measurable
+  · exact Eventually.of_forall fun x => ENNReal.ofReal_lt_top
+
+/-- The half-angle factorization of the removable complex sinc function. -/
+theorem complexSinc_eq_cos_mul (z : ℂ) :
+    complexSinc z = Complex.cos (z / 2) * complexSinc (z / 2) := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexSinc]
+  · have hz2 : z / 2 ≠ 0 := div_ne_zero hz (by norm_num)
+    simp only [complexSinc, hz, hz2, if_false]
+    rw [show z = 2 * (z / 2) by ring, Complex.sin_two_mul]
+    field_simp
+
+/-- The removable complex sinc function is even. -/
+theorem complexSinc_neg (z : ℂ) : complexSinc (-z) = complexSinc z := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexSinc]
+  · simp [complexSinc, hz, Complex.sin_neg]
+
+/-- The finite cosine product which is the characteristic function of `μ_n`. -/
+noncomputable def finiteCosineProduct (n : ℕ) (t : ℝ) : ℂ :=
+  ∏ k ∈ range n, Complex.cos ((t : ℂ) / (2 : ℂ) ^ (k + 2)) ^ (k + 1)
+
+/-- The final sinc factor in the finite telescoping identity. -/
+noncomputable def sincTail (n : ℕ) (t : ℝ) : ℂ :=
+  complexSinc ((t : ℂ) / (2 : ℂ) ^ (n + 1))
+
+theorem finiteCosineProduct_succ (n : ℕ) (t : ℝ) :
+    finiteCosineProduct (n + 1) t = finiteCosineProduct n t *
+      Complex.cos ((t : ℂ) / (2 : ℂ) ^ (n + 2)) ^ (n + 1) := by
+  simp [finiteCosineProduct, prod_range_succ]
+
+/-- The finite telescoping identity behind the proof of Lemma 1. -/
+theorem finiteCosineProduct_mul_sincTail_pow (n : ℕ) (t : ℝ) :
+    finiteCosineProduct n t * sincTail n t ^ n =
+      ∏ k ∈ range n, complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1)) := by
+  induction n with
+  | zero => simp [finiteCosineProduct, sincTail]
+  | succ n ih =>
+      have hscale : sincTail n t =
+          Complex.cos ((t : ℂ) / (2 : ℂ) ^ (n + 2)) * sincTail (n + 1) t := by
+        unfold sincTail
+        rw [complexSinc_eq_cos_mul]
+        congr 1 <;> rw [pow_succ] <;> ring
+      have hprod :
+          (∏ k ∈ range (n + 1), complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) =
+            (∏ k ∈ range n, complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) *
+              sincTail n t := by
+        simp [prod_range_succ, sincTail]
+      rw [finiteCosineProduct_succ, hprod]
+      rw [pow_succ]
+      rw [← ih, hscale]
+      ring
+
+/-- The residual sinc factor in the telescoping identity tends to one even
+after it is raised to the growing power `n`. -/
+theorem tendsto_sincTail_pow (t : ℝ) :
+    Tendsto (fun n : ℕ => sincTail n t ^ n) atTop (𝓝 1) := by
+  have harg : Tendsto (fun n : ℕ => (t : ℂ) / (2 : ℂ) ^ (n + 1)) atTop (𝓝 0) := by
+    have hpow : Tendsto (fun n : ℕ => ((2 : ℂ)⁻¹) ^ (n + 1)) atTop (𝓝 0) :=
+      (tendsto_pow_atTop_nhds_zero_of_norm_lt_one (by norm_num)).comp
+        (tendsto_add_atTop_nat 1)
+    simpa [div_eq_mul_inv] using hpow.const_mul (t : ℂ)
+  have hO : (fun n : ℕ => sincTail n t - 1) =O[atTop]
+      (fun n : ℕ => (t : ℂ) / (2 : ℂ) ^ (n + 1)) := by
+    exact complexSinc_sub_one_isBigO.comp_tendsto harg
+  have hreal : Tendsto (fun n : ℕ => (n : ℝ) * (1 / 2 : ℝ) ^ n) atTop (𝓝 0) :=
+    tendsto_self_mul_const_pow_of_abs_lt_one (by norm_num)
+  have hcomplex : Tendsto
+      (fun n : ℕ => (n : ℂ) * (1 / 2 : ℂ) ^ n) atTop (𝓝 0) := by
+    simpa [Function.comp_def] using
+      Complex.continuous_ofReal.continuousAt.tendsto.comp hreal
+  have hcomplexInv : Tendsto
+      (fun n : ℕ => (n : ℂ) * ((2 : ℂ)⁻¹) ^ n) atTop (𝓝 0) := by
+    simpa only [show (1 / 2 : ℂ) = (2 : ℂ)⁻¹ by simp [div_eq_mul_inv]] using hcomplex
+  have hscaled := hcomplexInv.const_mul ((t : ℂ) / 2)
+  have hargScaled : Tendsto
+      (fun n : ℕ => (n : ℂ) * ((t : ℂ) / (2 : ℂ) ^ (n + 1))) atTop (𝓝 0) := by
+    convert hscaled using 1
+    · funext n
+      rw [pow_succ]
+      simp only [div_eq_mul_inv, mul_inv_rev, inv_pow]
+      ring
+    · ring
+  have hnO : (fun n : ℕ => (n : ℂ)) =O[atTop] (fun n : ℕ => (n : ℂ)) :=
+    isBigO_refl _ _
+  have hsmall : Tendsto (fun n : ℕ => (n : ℂ) * (sincTail n t - 1)) atTop (𝓝 0) :=
+    (hnO.mul hO).trans_tendsto hargScaled
+  have hpow := Complex.tendsto_one_add_pow_exp_of_tendsto hsmall
+  simpa using hpow
+
+/-- The infinite sinc product written in the normalization naturally produced
+by the characteristic functions of the convolution approximants. -/
+noncomputable def shiftedSincProduct (t : ℝ) : ℂ :=
+  ∏' k : ℕ, complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))
+
+lemma shiftedSincFactors_multipliable (t : ℝ) :
+    Multipliable (fun k : ℕ => complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) := by
+  have h := sincFactors_multipliable ((t : ℂ) / (2 * Real.pi))
+  convert h using 1
+  funext k
+  congr 1
+  field_simp [Real.pi_ne_zero]
+  rw [pow_succ]
+  ring
+
+/-- Conversion from the characteristic-function normalization to the paper's
+Fourier-transform normalization. -/
+lemma shiftedSincProduct_eq_rvachevFourierProduct (t : ℝ) :
+    shiftedSincProduct t = rvachevFourierProduct (-(t : ℂ) / (2 * Real.pi)) := by
+  unfold shiftedSincProduct rvachevFourierProduct
+  apply tprod_congr
+  intro k
+  have harg : (Real.pi : ℂ) * (-(t : ℂ) / (2 * Real.pi)) / (2 : ℂ) ^ k =
+      -((t : ℂ) / (2 : ℂ) ^ (k + 1)) := by
+    field_simp [Real.pi_ne_zero]
+    rw [pow_succ]
+    ring
+  rw [harg, complexSinc_neg]
+
+lemma tendsto_finiteSincProduct (t : ℝ) :
+    Tendsto
+      (fun n : ℕ => ∏ k ∈ range n,
+        complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1)))
+      atTop (𝓝 (shiftedSincProduct t)) := by
+  exact (shiftedSincFactors_multipliable t).tendsto_prod_tprod_nat
+
+/-- The finite cosine products converge to the infinite sinc product. -/
+theorem tendsto_finiteCosineProduct (t : ℝ) :
+    Tendsto (fun n : ℕ => finiteCosineProduct n t) atTop
+      (𝓝 (shiftedSincProduct t)) := by
+  have hprod := tendsto_finiteSincProduct t
+  have htail := tendsto_sincTail_pow t
+  have hmul : Tendsto
+      (fun n : ℕ => finiteCosineProduct n t * sincTail n t ^ n) atTop
+      (𝓝 (shiftedSincProduct t)) := by
+    exact hprod.congr' (Eventually.of_forall fun n =>
+      (finiteCosineProduct_mul_sincTail_pow n t).symm)
+  have hdiv := hmul.div htail one_ne_zero
+  have hne : ∀ᶠ n : ℕ in atTop, sincTail n t ^ n ≠ 0 :=
+    htail.eventually_ne one_ne_zero
+  have heq : (fun n : ℕ =>
+      (finiteCosineProduct n t * sincTail n t ^ n) / (sincTail n t ^ n)) =ᶠ[atTop]
+      (fun n : ℕ => finiteCosineProduct n t) := by
+    filter_upwards [hne] with n hn
+    field_simp
+  simpa using hdiv.congr' heq
+
+theorem finiteConvolutionMeasure_charFun_eq_finiteCosineProduct (n : ℕ) (t : ℝ) :
+    charFun (finiteConvolutionMeasure n) t = finiteCosineProduct n t := by
+  rw [finiteConvolutionMeasure_charFun]
+  unfold finiteCosineProduct
+  apply prod_congr rfl
+  intro k hk
+  congr 1
+  rw [Complex.ofReal_cos]
+  congr 1
+  push_cast
+  norm_cast
+
+/-- Pointwise convergence of the characteristic functions in Lemma 1. -/
+theorem finiteConvolutionMeasure_charFun_tendsto
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    Tendsto (fun n : ℕ => charFun (finiteConvolutionMeasure n) t) atTop
+      (𝓝 (charFun (rvachevMeasure F) t)) := by
+  have h := tendsto_finiteCosineProduct t
+  rw [shiftedSincProduct_eq_rvachevFourierProduct,
+    ← rvachevFourier_eq_product F hF,
+    ← rvachevMeasure_charFun F hF] at h
+  exact h.congr' (Eventually.of_forall fun n =>
+    (finiteConvolutionMeasure_charFun_eq_finiteCosineProduct n t).symm)
+
+/-- The finite convolution measures, bundled as probability measures. -/
+noncomputable def finiteConvolutionProbability (n : ℕ) : ProbabilityMeasure ℝ :=
+  ⟨finiteConvolutionMeasure n, inferInstance⟩
+
+/-- The measure with density Rvachev's up function, bundled as a probability measure. -/
+noncomputable def rvachevProbability (F : BoundedFabius) (hF : IsFabius F) :
+    ProbabilityMeasure ℝ :=
+  ⟨rvachevMeasure F, rvachevMeasure_isProbability F hF⟩
+
+/-- Lemma 1: the finite convolutions converge weakly to the measure with
+density Rvachev's up function. -/
+theorem finiteConvolutionProbability_tendsto
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto finiteConvolutionProbability atTop (𝓝 (rvachevProbability F hF)) := by
+  rw [ProbabilityMeasure.tendsto_iff_tendsto_charFun]
+  intro t
+  simpa [finiteConvolutionProbability, rvachevProbability] using
+    finiteConvolutionMeasure_charFun_tendsto F hF t
+
+/-- The bounded-continuous-test-function formulation of Lemma 1, exactly the
+weak-* convergence statement used in analysis. -/
+theorem integral_finiteConvolutionMeasure_tendsto
+    (F : BoundedFabius) (hF : IsFabius F) (g : ℝ →ᵇ ℝ) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) := by
+  have h := finiteConvolutionProbability_tendsto F hF
+  rw [ProbabilityMeasure.tendsto_iff_forall_integral_tendsto] at h
+  simpa [finiteConvolutionProbability, rvachevProbability] using h g
+
+/-- The complex bounded-continuous-test-function formulation used literally
+by the paper's complex Banach space of test functions. -/
+theorem integral_finiteConvolutionMeasure_complex_tendsto
+    (F : BoundedFabius) (hF : IsFabius F) (g : ℝ →ᵇ ℂ) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) := by
+  have h := finiteConvolutionProbability_tendsto F hF
+  rw [ProbabilityMeasure.tendsto_iff_forall_integral_rclike_tendsto ℂ] at h
+  simpa [finiteConvolutionProbability, rvachevProbability] using h g
+
+/-- Lemma 1 specialized to the canonical Fabius function. -/
+theorem finiteConvolutionProbability_tendsto_fabius :
+    Tendsto finiteConvolutionProbability atTop
+      (𝓝 (rvachevProbability fabius fabius_spec)) :=
+  finiteConvolutionProbability_tendsto fabius fabius_spec
+
+/-- The canonical Fabius specialization against a bounded continuous test function. -/
+theorem integral_finiteConvolutionMeasure_tendsto_fabius (g : ℝ →ᵇ ℝ) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure fabius)) :=
+  integral_finiteConvolutionMeasure_tendsto fabius fabius_spec g
+
+/-- The canonical complex-valued bounded-test-function specialization. -/
+theorem integral_finiteConvolutionMeasure_complex_tendsto_fabius (g : ℝ →ᵇ ℂ) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure fabius)) :=
+  integral_finiteConvolutionMeasure_complex_tendsto fabius fabius_spec g
+
+end
+
+end Fabius

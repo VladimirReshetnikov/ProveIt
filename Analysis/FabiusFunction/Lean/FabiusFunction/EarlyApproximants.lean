@@ -1,0 +1,437 @@
+import FabiusFunction.DyadicClosedForm
+import Mathlib.Algebra.Polynomial.BigOperators
+import Mathlib.MeasureTheory.Group.Convolution
+import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
+
+/-!
+# Polynomial and measure approximants from arXiv:1702.05442
+
+This file formalizes equations (10)--(19), the bounded-partition interpretation following
+equation (19), and the step functions used in Theorem 2 of the paper.
+
+Two corrections to the source are built into the definitions:
+
+* The upper convolution index in equation (12) must be finite (`1 ≤ k ≤ n`), as required by
+  equation (10) and by every subsequent use of `μ_n`.
+* The interval indicators defining `φ_n` need boundary value `1/2`; ordinary indicators of
+  closed intervals double-count adjacent endpoints and already give `φ_1(0) = 2`, contradicting
+  the proof of Theorem 2.  The symmetric half-endpoint representative gives `φ_1(0) = 1`.
+-/
+
+set_option autoImplicit false
+
+open scoped BigOperators ENNReal MeasureTheory
+open Finset MeasureTheory Set
+
+namespace Fabius
+
+open Polynomial
+
+/-- `1 + X + ... + X^(r-1)`. -/
+noncomputable def geometricPolynomial (r : ℕ) : Polynomial ℕ :=
+  ∑ j : Fin r, X ^ j.val
+
+@[simp] theorem geometricPolynomial_zero : geometricPolynomial 0 = 0 := by
+  simp [geometricPolynomial]
+
+@[simp] theorem geometricPolynomial_one : geometricPolynomial 1 = 1 := by
+  simp [geometricPolynomial]
+
+theorem geometricPolynomial_two_mul (r : ℕ) :
+    geometricPolynomial (2 * r) =
+      (geometricPolynomial r).comp (X ^ 2) * (1 + X) := by
+  rw [geometricPolynomial, sum_fin_two_mul]
+  simp only [geometricPolynomial]
+  rw [Polynomial.sum_comp Finset.univ (fun j : Fin r => X ^ j.val) (X ^ 2),
+    Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro j hj
+  simp only [X_pow_comp]
+  rw [pow_mul, pow_two]
+  ring
+
+/-- The polynomial `p_n` in equations (14), (15), and (19). -/
+noncomputable def approximationPolynomial (n : ℕ) : Polynomial ℕ :=
+  ∏ k ∈ range n, geometricPolynomial (2 ^ (k + 1))
+
+@[simp] theorem approximationPolynomial_zero : approximationPolynomial 0 = 1 := by
+  simp [approximationPolynomial]
+
+theorem approximationPolynomial_succ_product (n : ℕ) :
+    approximationPolynomial (n + 1) =
+      approximationPolynomial n * geometricPolynomial (2 ^ (n + 1)) := by
+  simp [approximationPolynomial, prod_range_succ]
+
+/-- Equation (14). -/
+theorem approximationPolynomial_succ (n : ℕ) :
+    approximationPolynomial (n + 1) =
+      (approximationPolynomial n).comp (X ^ 2) * (1 + X) ^ (n + 1) := by
+  induction n with
+  | zero => simp [approximationPolynomial, geometricPolynomial]
+  | succ n ih =>
+      calc
+        approximationPolynomial (n + 1 + 1) =
+            approximationPolynomial (n + 1) *
+              geometricPolynomial (2 ^ (n + 1 + 1)) :=
+          approximationPolynomial_succ_product (n + 1)
+        _ = ((approximationPolynomial n).comp (X ^ 2) *
+              (1 + X) ^ (n + 1)) *
+              geometricPolynomial (2 ^ (n + 1 + 1)) := by rw [ih]
+        _ = (approximationPolynomial (n + 1)).comp (X ^ 2) *
+              (1 + X) ^ (n + 1 + 1) := by
+          rw [show 2 ^ (n + 1 + 1) = 2 * 2 ^ (n + 1) by ring,
+            geometricPolynomial_two_mul,
+            approximationPolynomial_succ_product, mul_comp, pow_succ]
+          ring
+
+/-- The degree `g_n` of `p_n`. -/
+def approximationDegree (n : ℕ) : ℕ :=
+  ∑ k ∈ range n, (2 ^ (k + 1) - 1)
+
+@[simp] theorem approximationDegree_zero : approximationDegree 0 = 0 := by
+  simp [approximationDegree]
+
+theorem approximationDegree_succ_add (n : ℕ) :
+    approximationDegree (n + 1) =
+      approximationDegree n + (2 ^ (n + 1) - 1) := by
+  simp [approximationDegree, sum_range_succ]
+
+theorem approximationDegree_eq (n : ℕ) :
+    approximationDegree n + n + 2 = 2 ^ (n + 1) := by
+  induction n with
+  | zero => norm_num [approximationDegree]
+  | succ n ih =>
+      rw [approximationDegree_succ_add, pow_succ]
+      omega
+
+/-- Equation (16). -/
+theorem approximationDegree_succ (n : ℕ) :
+    approximationDegree (n + 1) = 2 * approximationDegree n + (n + 1) := by
+  rw [approximationDegree_succ_add]
+  have h := approximationDegree_eq n
+  omega
+
+/-- Equation (17), with the displayed sum indexed from zero. -/
+theorem approximationDegree_div_pow (n : ℕ) :
+    (approximationDegree n : ℚ) / (2 : ℚ) ^ n =
+      ∑ k ∈ range n, ((k + 1 : ℕ) : ℚ) / (2 : ℚ) ^ (k + 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [approximationDegree_succ, sum_range_succ]
+      simp only [Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat, Nat.cast_one,
+        pow_succ] at ih ⊢
+      rw [← ih]
+      ring
+
+theorem geometricPolynomial_coeff (r m : ℕ) :
+    (geometricPolynomial r).coeff m = if m < r then 1 else 0 := by
+  unfold geometricPolynomial
+  rw [Polynomial.finsetSum_coeff Finset.univ (fun j : Fin r => X ^ j.val) m]
+  simp only [coeff_X_pow]
+  by_cases h : m < r
+  · rw [if_pos h, Fintype.sum_eq_single ⟨m, h⟩]
+    · rw [if_pos (by rfl)]
+    · intro b hne
+      rw [if_neg]
+      intro heq
+      apply hne
+      apply Fin.ext
+      exact heq.symm
+  · rw [if_neg h]
+    apply Fintype.sum_eq_zero
+    intro b
+    rw [if_neg]
+    intro heq
+    apply h
+    rw [heq]
+    exact b.isLt
+
+theorem geometricPolynomial_natDegree {r : ℕ} (hr : 0 < r) :
+    (geometricPolynomial r).natDegree = r - 1 := by
+  apply le_antisymm
+  · rw [Polynomial.natDegree_le_iff_coeff_eq_zero]
+    intro N hN
+    rw [geometricPolynomial_coeff, if_neg]
+    omega
+  · apply Polynomial.le_natDegree_of_ne_zero
+    rw [geometricPolynomial_coeff, if_pos (by omega)]
+    norm_num
+
+theorem geometricPolynomial_monic {r : ℕ} (hr : 0 < r) :
+    (geometricPolynomial r).Monic := by
+  rw [Polynomial.Monic.def, ← Polynomial.coeff_natDegree,
+    geometricPolynomial_natDegree hr, geometricPolynomial_coeff,
+    if_pos (by omega)]
+
+theorem approximationPolynomial_natDegree (n : ℕ) :
+    (approximationPolynomial n).natDegree = approximationDegree n := by
+  unfold approximationPolynomial approximationDegree
+  rw [Polynomial.natDegree_prod_of_monic]
+  · apply Finset.sum_congr rfl
+    intro k hk
+    rw [geometricPolynomial_natDegree]
+    positivity
+  · intro k hk
+    exact geometricPolynomial_monic (by positivity)
+
+theorem geometricPolynomial_eval_one (r : ℕ) :
+    (geometricPolynomial r).eval 1 = r := by
+  unfold geometricPolynomial
+  rw [Polynomial.eval_finsetSum Finset.univ (fun j : Fin r => X ^ j.val) 1]
+  simp
+
+theorem approximationPolynomial_eval_one (n : ℕ) :
+    (approximationPolynomial n).eval 1 = 2 ^ (n + 1).choose 2 := by
+  unfold approximationPolynomial
+  rw [eval_prod]
+  simp only [geometricPolynomial_eval_one]
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [prod_range_succ, ih]
+      have hchoose : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
+        rw [show n + 2 = (n + 1) + 1 by omega, show 2 = 1 + 1 by omega,
+          Nat.choose_succ_succ]
+        simp [Nat.choose_one_right]
+        omega
+      rw [hchoose, pow_add]
+      ring_nf
+
+/-- A bounded `n`-part partition as in the combinatorial assertion after equation (19). -/
+abbrev RestrictedPartition (n : ℕ) :=
+  ∀ k : Fin n, Fin (2 ^ (k.val + 1))
+
+/-- Sum of the parts of a bounded partition. -/
+def restrictedPartitionWeight {n : ℕ} (s : RestrictedPartition n) : ℕ :=
+  ∑ k, (s k).val
+
+/-- Generating polynomial for the bounded partitions used in the paper. -/
+noncomputable def restrictedPartitionPolynomial (n : ℕ) : Polynomial ℕ :=
+  ∑ s : RestrictedPartition n, X ^ restrictedPartitionWeight s
+
+theorem approximationPolynomial_eq_partitionPolynomial (n : ℕ) :
+    approximationPolynomial n = restrictedPartitionPolynomial n := by
+  unfold approximationPolynomial restrictedPartitionPolynomial
+  rw [Finset.prod_range]
+  simp_rw [geometricPolynomial]
+  rw [Fintype.prod_sum]
+  congr 1
+  funext s
+  simp [restrictedPartitionWeight, Finset.prod_pow_eq_pow_sum]
+
+/-- Coefficients of `p_n` count the bounded partitions asserted after equation (19). -/
+theorem approximationPolynomial_coeff_eq_card (n r : ℕ) :
+    (approximationPolynomial n).coeff r =
+      Fintype.card {s : RestrictedPartition n // restrictedPartitionWeight s = r} := by
+  rw [approximationPolynomial_eq_partitionPolynomial]
+  unfold restrictedPartitionPolynomial
+  rw [Polynomial.finsetSum_coeff]
+  simp only [coeff_X_pow]
+  rw [Finset.sum_boole]
+  rw [Fintype.card_subtype]
+  simp [eq_comm]
+
+/-- Location of the atom replacing `X^m` in the polynomial description following
+equation (17). -/
+noncomputable def polynomialAtomLocation (n m : ℕ) : ℝ :=
+  ((2 : ℝ) * m - approximationDegree n) / (2 : ℝ) ^ (n + 1)
+
+/-- The finite atomic measure obtained from
+`2^(-choose (n+1) 2) * p_n` by replacing each monomial with its Dirac mass. -/
+noncomputable def polynomialMeasure (n : ℕ) : Measure ℝ :=
+  ∑ m ∈ range (approximationDegree n + 1),
+    (((approximationPolynomial n).coeff m : ℝ≥0∞) /
+      (2 : ℝ≥0∞) ^ ((n + 1).choose 2)) • Measure.dirac (polynomialAtomLocation n m)
+
+instance polynomialMeasure_isProbability (n : ℕ) :
+    IsProbabilityMeasure (polynomialMeasure n) := by
+  rw [isProbabilityMeasure_iff]
+  simp only [polynomialMeasure, Measure.coe_finsetSum, Finset.sum_apply,
+    Measure.smul_apply, Measure.dirac_apply', MeasurableSet.univ,
+    Set.indicator_univ, Pi.one_apply, smul_eq_mul, mul_one]
+  simp_rw [div_eq_mul_inv]
+  rw [← Finset.sum_mul]
+  have hcoeff :
+      ∑ m ∈ range (approximationDegree n + 1),
+          ((approximationPolynomial n).coeff m : ℝ≥0∞) =
+        (2 : ℝ≥0∞) ^ ((n + 1).choose 2) := by
+    norm_cast
+    rw [← approximationPolynomial_eval_one]
+    rw [Polynomial.eval_eq_sum_range]
+    rw [approximationPolynomial_natDegree]
+    simp
+  rw [hcoeff]
+  exact ENNReal.mul_inv_cancel (by norm_num) (by simp)
+
+theorem polynomialMeasure_charFun_sum (n : ℕ) (t : ℝ) :
+    charFun (polynomialMeasure n) t =
+      ∑ m ∈ range (approximationDegree n + 1),
+        (((approximationPolynomial n).coeff m : ℝ) /
+          (2 : ℝ) ^ ((n + 1).choose 2)) *
+          Complex.exp (t * polynomialAtomLocation n m * Complex.I) := by
+  unfold charFun polynomialMeasure
+  rw [integral_finsetSum_measure]
+  · simp [integral_smul_measure, polynomialAtomLocation]
+  · intro m hm
+    exact (integrable_dirac (by simp)).smul_measure (by finiteness)
+
+/-- A symmetric Bernoulli atom at scale `2^(-k-1)`. -/
+noncomputable def centeredBernoulliMeasure (k : ℕ) : Measure ℝ :=
+  (2 : ℝ≥0∞)⁻¹ • Measure.dirac ((2 : ℝ) ^ (-(k + 1 : ℤ))) +
+    (2 : ℝ≥0∞)⁻¹ • Measure.dirac (-((2 : ℝ) ^ (-(k + 1 : ℤ))))
+
+instance centeredBernoulliMeasure_isProbability (k : ℕ) :
+    IsProbabilityMeasure (centeredBernoulliMeasure k) := by
+  rw [isProbabilityMeasure_iff]
+  simp [centeredBernoulliMeasure]
+  rw [← two_mul]
+  exact ENNReal.mul_inv_cancel (by norm_num) (by norm_num)
+
+/-- Repeated additive convolution, with the Dirac mass at zero as unit. -/
+noncomputable def convolutionPow (μ : Measure ℝ) : ℕ → Measure ℝ
+  | 0 => Measure.dirac 0
+  | n + 1 => μ ∗ convolutionPow μ n
+
+instance convolutionPow_isProbability (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    (n : ℕ) : IsProbabilityMeasure (convolutionPow μ n) := by
+  induction n with
+  | zero =>
+      rw [isProbabilityMeasure_iff]
+      simp [convolutionPow]
+  | succ n ih =>
+      rw [convolutionPow]
+      infer_instance
+
+/-- The corrected finite convolution from equation (12): the upper index is `n`, not infinity. -/
+noncomputable def finiteConvolutionMeasure : ℕ → Measure ℝ
+  | 0 => Measure.dirac 0
+  | n + 1 => finiteConvolutionMeasure n ∗
+      convolutionPow (centeredBernoulliMeasure (n + 1)) (n + 1)
+
+instance finiteConvolutionMeasure_isProbability (n : ℕ) :
+    IsProbabilityMeasure (finiteConvolutionMeasure n) := by
+  induction n with
+  | zero =>
+      rw [isProbabilityMeasure_iff]
+      simp [finiteConvolutionMeasure]
+  | succ n ih =>
+      rw [finiteConvolutionMeasure]
+      infer_instance
+
+set_option maxHeartbeats 100000 in
+theorem centeredBernoulliMeasure_charFun (k : ℕ) (t : ℝ) :
+    charFun (centeredBernoulliMeasure k) t =
+      Real.cos (t / (2 : ℝ) ^ (k + 1)) := by
+  let a : ℝ := (2 : ℝ) ^ (-(k + 1 : ℤ))
+  let f : ℝ → ℂ := fun x => Complex.exp ((inner ℝ x t : ℝ) * Complex.I)
+  have hpos : Integrable f ((2 : ℝ≥0∞)⁻¹ • Measure.dirac a) :=
+    (integrable_dirac (by simp [f])).smul_measure (by simp)
+  have hneg : Integrable f ((2 : ℝ≥0∞)⁻¹ • Measure.dirac (-a)) :=
+    (integrable_dirac (by simp [f])).smul_measure (by simp)
+  unfold charFun centeredBernoulliMeasure
+  change (∫ x, f x ∂((2 : ℝ≥0∞)⁻¹ • Measure.dirac a +
+    (2 : ℝ≥0∞)⁻¹ • Measure.dirac (-a))) = _
+  rw [integral_add_measure hpos hneg]
+  simp only [integral_smul_measure, integral_dirac]
+  have hhalf : ((2 : ℝ≥0∞)⁻¹).toReal = (1 / 2 : ℝ) := by norm_num
+  rw [hhalf]
+  simp only [f, Real.inner_apply, one_div, Complex.real_smul, Complex.ofReal_inv,
+    Complex.ofReal_ofNat]
+  have ha : a * t = t / (2 : ℝ) ^ (k + 1) := by
+    dsimp [a]
+    rw [zpow_neg,
+      show (k : ℤ) + 1 = ((k + 1 : ℕ) : ℤ) by omega,
+      zpow_natCast]
+    ring
+  have hna : -a * t = -(t / (2 : ℝ) ^ (k + 1)) := by rw [← ha]; ring
+  rw [ha, hna, Complex.ofReal_cos]
+  rw [Complex.cos]
+  push_cast
+  ring
+
+theorem convolutionPow_charFun (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    (n : ℕ) (t : ℝ) :
+    charFun (convolutionPow μ n) t = (charFun μ t) ^ n := by
+  induction n with
+  | zero => simp [convolutionPow, charFun]
+  | succ n ih =>
+      rw [convolutionPow, charFun_conv, ih, pow_succ]
+      ring
+
+/-- The characteristic function of the corrected finite convolution in equation (12). -/
+theorem finiteConvolutionMeasure_charFun (n : ℕ) (t : ℝ) :
+    charFun (finiteConvolutionMeasure n) t =
+      ∏ k ∈ range n,
+        (Real.cos (t / (2 : ℝ) ^ (k + 2)) : ℂ) ^ (k + 1) := by
+  induction n with
+  | zero => simp [finiteConvolutionMeasure, charFun]
+  | succ n ih =>
+      rw [finiteConvolutionMeasure, charFun_conv,
+        convolutionPow_charFun, centeredBernoulliMeasure_charFun, ih]
+      simp [prod_range_succ]
+
+/-- Indicator of `[a,b]` with boundary values `1/2`.  This is the pointwise
+representative required in Theorem 2: using ordinary closed-interval indicators
+would double-count adjacent endpoints (already giving value `2` at zero for `n = 1`). -/
+noncomputable def halfEndpointIntervalIndicator (a b x : ℝ) : ℝ :=
+  if x = a ∨ x = b then 1 / 2 else if a < x ∧ x < b then 1 else 0
+
+/-- The left endpoint of the interval replacing the monomial `X^m` in Theorem 2. -/
+noncomputable def stepIntervalLeft (n m : ℕ) : ℝ :=
+  ((2 : ℝ) * m - 1 - approximationDegree n) / (2 : ℝ) ^ (n + 1)
+
+/-- The right endpoint of the interval replacing the monomial `X^m` in Theorem 2. -/
+noncomputable def stepIntervalRight (n m : ℕ) : ℝ :=
+  ((2 : ℝ) * m + 1 - approximationDegree n) / (2 : ℝ) ^ (n + 1)
+
+/-- The step function `φ_n` of Theorem 2, with the endpoint convention that makes
+the paper's asserted identity `φ_n(0) = 1` literally true. -/
+noncomputable def stepApproximant (n : ℕ) (x : ℝ) : ℝ :=
+  (2 : ℝ) ^ n / (2 : ℝ) ^ ((n + 1).choose 2) *
+    ∑ m ∈ range (approximationDegree n + 1),
+      ((approximationPolynomial n).coeff m : ℝ) *
+        halfEndpointIntervalIndicator (stepIntervalLeft n m) (stepIntervalRight n m) x
+
+theorem stepIntervalLeft_lt_right (n m : ℕ) :
+    stepIntervalLeft n m < stepIntervalRight n m := by
+  unfold stepIntervalLeft stepIntervalRight
+  have hden : (0 : ℝ) < 2 ^ (n + 1) := pow_pos (by norm_num) _
+  apply (div_lt_div_iff₀ hden hden).2
+  linarith
+
+@[simp] theorem halfEndpointIntervalIndicator_self_left {a b : ℝ} :
+    halfEndpointIntervalIndicator a b a = 1 / 2 := by
+  simp [halfEndpointIntervalIndicator]
+
+@[simp] theorem halfEndpointIntervalIndicator_self_right {a b : ℝ} :
+    halfEndpointIntervalIndicator a b b = 1 / 2 := by
+  simp [halfEndpointIntervalIndicator]
+
+theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
+    0 ≤ halfEndpointIntervalIndicator a b x := by
+  unfold halfEndpointIntervalIndicator
+  split_ifs <;> norm_num
+
+@[simp] theorem stepApproximant_zero (x : ℝ) :
+    stepApproximant 0 x = halfEndpointIntervalIndicator (-1 / 2) (1 / 2) x := by
+  simp [stepApproximant, stepIntervalLeft, stepIntervalRight, approximationDegree,
+    approximationPolynomial]
+
+@[simp] theorem stepApproximant_one_zero : stepApproximant 1 0 = 1 := by
+  have hp : approximationPolynomial 1 = 1 + X := by
+    rw [show 1 = 0 + 1 by omega, approximationPolynomial_succ]
+    simp
+  rw [stepApproximant]
+  norm_num [approximationDegree, hp, stepIntervalLeft, stepIntervalRight,
+    halfEndpointIntervalIndicator, Finset.sum_range_succ]
+  norm_num [Polynomial.coeff_one]
+
+theorem stepApproximant_nonneg (n : ℕ) (x : ℝ) : 0 ≤ stepApproximant n x := by
+  unfold stepApproximant
+  apply mul_nonneg (by positivity)
+  apply Finset.sum_nonneg
+  intro m hm
+  exact mul_nonneg (Nat.cast_nonneg _) (halfEndpointIntervalIndicator_nonneg _ _ _)
+
+end Fabius
