@@ -42,6 +42,8 @@ import IntegerPoints.PoissonBounds
 import IntegerPoints.PoissonIntegrals
 import IntegerPoints.PoissonTail
 import IntegerPoints.GKLemma35
+import IntegerPoints.SP1Taylor
+import IntegerPoints.SP2Parts
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
