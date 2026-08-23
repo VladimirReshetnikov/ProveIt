@@ -505,23 +505,23 @@ Lemma 3.7. Let $A$ be a subset of $\mathbb{Z}_{N}$ of cardinality $\delta N$ and
 
 Proof. We know the result for $d=0$ or 1 so let $d>1$ and assume that the result is known for $d-1$. The number of $d$-dimensional cubes in $A$ is the sum over all $r$ of the number of $(d-1)$-dimensional cubes in $A \cap(A+r)$. Write $\delta(r) N$ for the cardinality of $A \cap(A+r)$. Then by induction the number of $d$-dimensional cubes in $A$ is at least $\sum_{r} \delta(r)^{2^{d-1}} N^{d}$. Since the average value of $\delta(r)$ is exactly $\delta^{2}$, this is at least $\delta^{2^{d}} N^{d+1}$ as required. \(\square\)
 
-The next lemma is little more than the Cauchy-Schwarz inequality and some notation. It will be convenient to use abbreviations such as $x$ for $\left(x_{1}, \ldots, x_{k}\right)$ and $x . y$ for $\sum_{i=1}^{k} x_{i} y_{i}$. If $\epsilon \in\{0,1\}^{k}$ then we shall write $|\epsilon|$ for $\sum_{i=1}^{k} \epsilon_{i}$. Once again, $C$ is the operation of complex conjugation.
+The next lemma is little more than the Cauchy-Schwarz inequality and some notation. It will be convenient to use abbreviations such as $x$ for $\left(x_{1}, \ldots, x_{k}\right)$ and $x \cdot y$ for $\sum_{i=1}^{k} x_{i} y_{i}$. If $\epsilon \in\{0,1\}^{k}$ then we shall write $|\epsilon|$ for $\sum_{i=1}^{k} \epsilon_{i}$. Once again, $C$ is the operation of complex conjugation.
 
 Lemma 3.8. For every $\epsilon \in\{0,1\}^{d}$ let $f_{\epsilon}$ be a function from $\mathbb{Z}_{N}$ to $D$. Then
 
 $$
-\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon . x)\right| \leqslant \prod_{\epsilon \in\{0,1\}^{d}}\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\eta \in\{0,1\}^{d}} C^{|\eta|} f_{\epsilon}(s-\eta . x)\right|^{\frac{1}{2^{d}}} .
+\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon \cdot x)\right| \leqslant \prod_{\epsilon \in\{0,1\}^{d}}\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\eta \in\{0,1\}^{d}} C^{|\eta|} f_{\epsilon}(s-\eta \cdot x)\right|^{\frac{1}{2^{d}}} .
 $$
 
 Proof.
 
 $$
 \begin{aligned}
-& \left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon . x)\right| \\
-& =\left|\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left(\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon . x)\right)\left(\sum_{t} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 1}(t-\epsilon . x)\right)\right| \\
+& \left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon \cdot x)\right| \\
+& =\left|\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left(\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon \cdot x)\right)\left(\sum_{t} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 1}(t-\epsilon \cdot x)\right)\right| \\
 & \begin{array}{r}
-\leqslant\left(\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon . x)\right|^{2}\right)^{\frac{1}{2}} \\
-\quad \cdot\left(\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 1}(s-\epsilon . x)\right|^{2}\right)^{\frac{1}{2}} .
+\leqslant\left(\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon \cdot x)\right|^{2}\right)^{\frac{1}{2}} \\
+\quad \cdot\left(\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 1}(s-\epsilon \cdot x)\right|^{2}\right)^{\frac{1}{2}} .
 \end{array}
 \end{aligned}
 $$
@@ -529,7 +529,7 @@ $$
 Let us write $P_{d}(\epsilon)$ and $Q_{d}(\epsilon)$ for the sequences $\left(\epsilon_{1}, \ldots, \epsilon_{d-1}, 0\right)$ and $\left(\epsilon_{1}, \ldots, \epsilon_{d-1}, 1\right)$. Then
 
 $$
-\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon . x)\right|^{2}=\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{P_{d}(\epsilon)}(s-\epsilon . x)
+\sum_{x \in \mathbb{Z}_{N}^{d-1}}\left|\sum_{s} \prod_{\epsilon \in\{0,1\}^{d-1}} C^{|\epsilon|} f_{\epsilon, 0}(s-\epsilon \cdot x)\right|^{2}=\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{P_{d}(\epsilon)}(s-\epsilon \cdot x)
 $$
 
 and similarly for the second bracket with $Q_{d}$, so the two parts are square roots of expressions of the form we started with, except that the function $f_{\epsilon}$ no longer depends on $\epsilon_{d}$. Repeating this argument for the other coordinates, we obtain the result. \(\square\)
@@ -539,7 +539,7 @@ If we regard Lemma 3.8 as a modification of the Cauchy-Schwarz inequality, then 
 Lemma 3.9. Given any function $f: \mathbb{Z}_{N} \rightarrow \mathbb{C}$ and any $d \geqslant 2$, define $\|f\|_{d}$ by the formula
 
 $$
-\|f\|_{d}=\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f(s-\epsilon . x)\right|^{1 / 2^{d}} .
+\|f\|_{d}=\left|\sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f(s-\epsilon \cdot x)\right|^{1 / 2^{d}} .
 $$
 
 Then $\|f+g\|_{d} \leqslant\|f\|_{d}+\|g\|_{d}$ for any pair of functions $f, g: \mathbb{Z}_{N} \rightarrow \mathbb{C}$. In other words, $\|.\|_{d}$ is a norm.\\
@@ -549,7 +549,7 @@ $$
 \sum_{x \in \mathbb{Z}_{N}^{d}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|}(f+g)(s-\epsilon \cdot x) .
 $$
 
-If we expand the product we obtain $2^{2^{d}}$ terms of the form $\prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon . x)$, where each function $f_{\epsilon}$ is either $f$ or $g$. For each one of these terms, if we take the sum over $x_{1}, \ldots, x_{d}$ and $s$ and apply
+If we expand the product we obtain $2^{2^{d}}$ terms of the form $\prod_{\epsilon \in\{0,1\}^{d}} C^{|\epsilon|} f_{\epsilon}(s-\epsilon \cdot x)$, where each function $f_{\epsilon}$ is either $f$ or $g$. For each one of these terms, if we take the sum over $x_{1}, \ldots, x_{d}$ and $s$ and apply
 
 Lemma 3.8, we have an upper estimate of $\|f\|_{d}^{k}\|g\|_{d}^{l}$, where $k$ and $l$ are the number of times that $f_{\epsilon}$ equals $f$ and $g$ respectively. From this it follows that
 
@@ -1478,7 +1478,7 @@ $$
 Lemma 9.1 implies that
 
 $$
-\sum_{u, r}\left|\hat{f}_{u}(r)\right|^{16} \geqslant\left(\gamma N^{5} . N^{-18 / 7}\right)^{7}=\gamma^{7} N^{17}
+\sum_{u, r}\left|\hat{f}_{u}(r)\right|^{16} \geqslant\left(\gamma N^{5} \cdot N^{-18 / 7}\right)^{7}=\gamma^{7} N^{17}
 $$
 
 Hence, the number of sequences with the desired properties is, as stated, at least $\gamma^{7} N^{15}$. \(\square\)
@@ -2743,24 +2743,24 @@ $$
 
 Define a cube pair in $B$ to be an ordered pair $\left(\kappa_{1}, \kappa_{2}\right)$ of congruent cubes. (The difference between this and a parallelepiped is that the cubes are full-dimensional.) We shall say that $\phi$ respects this pair if $\phi\left(\kappa_{1}\right)=\phi\left(\kappa_{2}\right)$.
 
-Lemma 14.4. Let $B \subset \mathbb{Z}_{N}^{k}$ be a set of size $\beta N^{k}$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ and suppose that $\phi$ has the product property with parameter $\gamma$. Then $\phi$ respects at least $\beta^{4^{k}} \gamma^{2 k .4^{k}} N^{3 k}$ configurations in $B$.
+Lemma 14.4. Let $B \subset \mathbb{Z}_{N}^{k}$ be a set of size $\beta N^{k}$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ and suppose that $\phi$ has the product property with parameter $\gamma$. Then $\phi$ respects at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$ configurations in $B$.
 
 Proof. When $k=1$, a configuration is an additive quadruple and $\phi$ respects it if and only if it is $\phi$-additive. Therefore, Proposition 6.1 gives us the result.
 
 Now suppose that $k>1$ and that the result is true for $k-1$. Let $B \subset \mathbb{Z}_{N}^{k}$ be a set of cardinality $\beta N^{k}$ and for each $r$ let $B_{r}$ be the crosssection $\left\{\left(x_{1}, \ldots, x_{k}\right) \in B: x_{k}=r\right\}$. Write $\beta(r) N^{k-1}$ for the cardinality of $B_{r}$.
 
-By our inductive hypothesis, $B_{r}$ contains at least $\beta(r)^{4^{k-1}} \gamma^{2(k-1) .4^{k-1}} N^{3(k-1)}$ configurations respected by $\phi$. By Jensen's inequality, the average of this quantity over $r$ is at least $\beta^{4^{k-1}} \gamma^{2(k-1) .4^{k-1}} N^{3(k-1)}$. Therefore, if a random configuration $\lambda$ is chosen in $\mathbb{Z}_{N}^{k-1}$, then the average number of values of $r$ for\\
-which $\phi$ respects the configuration $(\lambda, r)$ (by which we mean the function from $\{0,1\}^{k-1}$ to $B_{r}$ defined by $\left.\epsilon \mapsto(\lambda(\epsilon), r)\right)$ is at least $\beta^{4^{k-1}} \gamma^{2(k-1) .4^{k-1}} N$. Let $E(\lambda)$ be the set of such $r$ and let $\eta(\lambda) N$ be the size of $E(\lambda)$.
+By our inductive hypothesis, $B_{r}$ contains at least $\beta(r)^{4^{k-1}} \gamma^{2(k-1) \cdot 4^{k-1}} N^{3(k-1)}$ configurations respected by $\phi$. By Jensen's inequality, the average of this quantity over $r$ is at least $\beta^{4^{k-1}} \gamma^{2(k-1) \cdot 4^{k-1}} N^{3(k-1)}$. Therefore, if a random configuration $\lambda$ is chosen in $\mathbb{Z}_{N}^{k-1}$, then the average number of values of $r$ for\\
+which $\phi$ respects the configuration $(\lambda, r)$ (by which we mean the function from $\{0,1\}^{k-1}\times\{0,1\}^{k-1}$ to $B_{r}$ defined by $(\epsilon,\eta) \mapsto(\lambda(\epsilon,\eta), r)$) is at least $\beta^{4^{k-1}} \gamma^{2(k-1) \cdot 4^{k-1}} N$. Let $E(\lambda)$ be the set of such $r$ and let $\eta(\lambda) N$ be the size of $E(\lambda)$.
 
-We now fix $\lambda$ and apply the product property to the $4^{k-1}$ functions $x \mapsto \phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), x\right)$, which are all defined on the set $E=E(\lambda)$. Taking $\theta$ to be identically 1 , we obtain from the product property that there are at least $\gamma^{8.4^{k-1}} \eta(\lambda)^{4} N^{3}$ quadruples $a+b=c+d$ such that for every $\left(\epsilon_{1}, \epsilon_{2}\right) \in$ $\{0,1\}^{k-1} \times\{0,1\}^{k-1}$ we have
+We now fix $\lambda$ and apply the product property to the $4^{k-1}$ functions $x \mapsto \phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), x\right)$, which are all defined on the set $E=E(\lambda)$. Taking $\theta$ to be identically 1 , we obtain from the product property that there are at least $\gamma^{8\cdot4^{k-1}} \eta(\lambda)^{4} N^{3}$ quadruples $a+b=c+d$ such that for every $\left(\epsilon_{1}, \epsilon_{2}\right) \in$ $\{0,1\}^{k-1} \times\{0,1\}^{k-1}$ we have
 
 $$
 \phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), a\right)+\phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), b\right)=\phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), c\right)+\phi\left(\lambda\left(\epsilon_{1}, \epsilon_{2}\right), d\right) .
 $$
 
-But, by the definition of $E$, each such quadruple gives us a configuration in $B$ which is respected by $\phi$. Since the average of $\eta(\lambda)$ is at least $\beta^{4^{k-1}} \gamma^{2(k-1) \cdot 4^{k-1}}$, Jensen's inequality implies that the number of configurations in $B$ that are respected by $\phi$ is at least $\gamma^{8.4^{k-1}} \beta^{4^{k}} \gamma^{2(k-1) .4^{k}} N^{3 k}=$ $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$, which proves the result. \(\square\)
+But, by the definition of $E$, each such quadruple gives us a configuration in $B$ which is respected by $\phi$. Since the average of $\eta(\lambda)$ is at least $\beta^{4^{k-1}} \gamma^{2(k-1) \cdot 4^{k-1}}$, Jensen's inequality implies that the number of configurations in $B$ that are respected by $\phi$ is at least $\gamma^{8\cdot4^{k-1}} \beta^{4^{k}} \gamma^{2(k-1) \cdot 4^{k}} N^{3 k}=$ $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$, which proves the result. \(\square\)
 
-Corollary 14.5. Let $B \subset \mathbb{Z}_{N}^{k}$ be a set of size $\beta N^{k}$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ and suppose that $\phi$ has the product property with parameter $\gamma$. Then $\phi$ respects at least $\beta^{4^{k}} \gamma^{2 k .4^{k}} N^{3 k}$ cube pairs in $B$.
+Corollary 14.5. Let $B \subset \mathbb{Z}_{N}^{k}$ be a set of size $\beta N^{k}$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ and suppose that $\phi$ has the product property with parameter $\gamma$. Then $\phi$ respects at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$ cube pairs in $B$.
 
 Proof. Let $\lambda=\left[r_{1}, \ldots, r_{k} ; g_{1}, \ldots, g_{k} ; h_{1}, \ldots, h_{k}\right]$ be a configuration in $B$ which is respected by $\phi$. We shall show that the cube pair
 
@@ -2779,7 +2779,7 @@ Because $\phi$ respects the configuration $\lambda$, we know that for all choice
 $$
 \begin{array}{r}
 \left(r_{1}+g_{1}+\eta_{1} h_{1}, \ldots, r_{j-1}+g_{j-1}+\eta_{j-1}, r_{j}+\epsilon_{j} g_{j}+\eta_{j} h_{j}, r_{j+1}+\eta_{j+1} h_{j+1}\right. \\
-\left.\ldots, r_{k}+\eta_{k} h_{k}\right)
+\left., \ldots, r_{k}+\eta_{k} h_{k}\right)
 \end{array}
 $$
 
@@ -2790,7 +2790,7 @@ where $\epsilon_{j}$ and $\eta_{j}$ take the values 0 or 1, is $\phi$-additive. 
 % $0<\gamma\leqslant1$, the exponent $3k\,4^{k+1}$ is a clean safe weakening.
 Corollary 14.6. Let $k\geqslant1$, let $0<\beta,\gamma\leqslant1$, let $B \subset \mathbb{Z}_{N}^{k+1}$ be a set of size $\beta N^{k+1}$, let $\phi: B \rightarrow \mathbb{Z}_{N}$ and suppose that $\phi$ has the product property with parameter $\gamma$. Then $\phi$ respects at least $\beta^{4^{k+1}} \gamma^{3k\cdot4^{k+1}} N^{5 k+3}$ parallelepiped pairs in $B$.
 
-Proof. The proof of this result is similar to that of Lemma 14.4. For each $r \in \mathbb{Z}_{N}$ let $\beta(r) N^{k}$ be the size of the cross-section $B_{r}$ of $B$. By Corollary $14.5, \phi$ respects at least $\beta(r)^{4^{k}} \gamma^{2 k .4^{k}} N^{3 k}$ cube pairs in $B_{r}$. The average of this number over $r$ is at least $\beta^{4^{k}} \gamma^{2 k .4^{k}} N^{3 k}$. Therefore, if we choose $r$ at random and choose a cube $\kappa$ in $\mathbb{Z}_{N}^{k}$ at random, the expected number of cubes $\kappa^{\prime}$ in $\mathbb{Z}_{N}^{k}$ for which $\left((\kappa, r),\left(\kappa^{\prime}, r\right)\right)$ is a cube pair in $B_{r}$ respected by $\phi$ is at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{k}$.
+Proof. The proof of this result is similar to that of Lemma 14.4. For each $r \in \mathbb{Z}_{N}$ let $\beta(r) N^{k}$ be the size of the cross-section $B_{r}$ of $B$. By Corollary 14.5, $\phi$ respects at least $\beta(r)^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$ cube pairs in $B_{r}$. The average of this number over $r$ is at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{3 k}$. Therefore, if we choose $r$ at random and choose a cube $\kappa$ in $\mathbb{Z}_{N}^{k}$ at random, the expected number of cubes $\kappa^{\prime}$ in $\mathbb{Z}_{N}^{k}$ for which $\left((\kappa, r),\left(\kappa^{\prime}, r\right)\right)$ is a cube pair in $B_{r}$ respected by $\phi$ is at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}} N^{k}$.
 
 Now let $\kappa$ be some fixed cube in $\mathbb{Z}_{N}^{k}$ and for each $r$ let $\theta(r)$ be the number of cubes $\kappa^{\prime}$ in $\mathbb{Z}_{N}^{k}$ for which $\left((\kappa, r),\left(\kappa^{\prime}, r\right)\right)$ is a cube pair in $B_{r}$ respected by $\phi$. Let $\theta$ be the average of the $\theta(r)$. By the product property, the sum of $\theta(a) \theta(b) \theta(c) \theta(d)$ over all additive quadruples $(a, b, c, d)$ such that
 
@@ -2798,9 +2798,9 @@ $$
 \phi(\kappa(\epsilon), a)+\phi(\kappa(\epsilon), b)=\phi(\kappa(\epsilon), c)+\phi(\kappa(\epsilon), d)
 $$
 
-for every $\epsilon \in\{0,1\}^{k}$ is at least $\theta^{4} \gamma^{8.2^{k}} N^{4 k+3}$. But this sum counts the number of parallelepiped pairs $\left(\left(\kappa_{i}^{\prime}, r_{i}\right)\right)_{i=1}^{4}$ in $B$ such that, for each $i,\left(\kappa_{i}, r_{i}\right)$ lies in $B_{r_{i}}$ and $\left(\kappa_{i}^{\prime}, r_{i}\right)$ is congruent to it. It is certainly a lower bound for the number of parallelepiped pairs such that each of the four cubes is congruent to $\kappa$.
+for every $\epsilon \in\{0,1\}^{k}$ is at least $\theta^{4} \gamma^{8\cdot2^{k}} N^{4 k+3}$. But this sum counts the number of parallelepiped pairs $\left(\left(\kappa_{i}^{\prime}, r_{i}\right)\right)_{i=1}^{4}$ in $B$ such that, for each $i$, $(\kappa,r_{i})$ lies in $B_{r_{i}}$ and $\left(\kappa_{i}^{\prime}, r_{i}\right)$ is congruent to it. It is certainly a lower bound for the number of parallelepiped pairs such that each of the four cubes is congruent to $\kappa$.
 
-If we now choose randomly, for every $h=\left(h_{1}, \ldots, h_{k}\right)$, some cube $\kappa(h)$ with sidelengths $\left(h_{1}, \ldots, h_{k}\right)$ and apply the above argument, we shall obtain, on average, at least $\left(\beta^{4^{k}} \gamma^{2 k .4^{k}}\right)^{4} \gamma^{8.2^{k}} N^{5 k+3}$ distinct parallelepiped pairs, since the average of $\theta$ (which still depends on $\kappa$ ) is at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}}$. This proves the corollary (where, just for the sake of neatness, we have stated a weaker bound). \(\square\)
+If we now choose randomly, for every $h=\left(h_{1}, \ldots, h_{k}\right)$, some cube $\kappa(h)$ with sidelengths $\left(h_{1}, \ldots, h_{k}\right)$ and apply the above argument, we shall obtain, on average, at least $\left(\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}}\right)^{4} \gamma^{8\cdot2^{k}} N^{5 k+3}$ distinct parallelepiped pairs, since the average of $\theta$ (which still depends on $\kappa$ ) is at least $\beta^{4^{k}} \gamma^{2 k \cdot 4^{k}}$. This proves the corollary (where, just for the sake of neatness, we have stated a weaker bound). \(\square\)
 
 Let $B \subset \mathbb{Z}_{N}^{k+1}$. By a $d$-arrangement in $B$ we shall mean a sequence $C_{1}, \ldots, C_{2 d}$ of congruent cubes, where $C_{j}$ lies in the cross-section $B_{r_{j}}$, and
 
@@ -2918,7 +2918,7 @@ Otherwise, with the exception of at most one $r$, the function $\mu\left(y_{1}, 
 
 The estimate above is sharp, since it gives the exact number of solutions of the equation $y_{1} \ldots y_{k}=0$.
 
-Lemma 15.4. The number of degenerate $d$-arrangements in $\mathbb{Z}_{N}^{k+1}$ is at most $3^{2 d .2^{k}} k N^{(2 d+1) k+2 d-2}$.
+Lemma 15.4. The number of degenerate $d$-arrangements in $\mathbb{Z}_{N}^{k+1}$ is at most $3^{2 d \cdot 2^{k}} k N^{(2 d+1) k+2 d-2}$.
 
 Proof. Let us fix non-zero sidelengths $h_{1}, \ldots, h_{k}$ and cross-sections $r_{1}, \ldots, r_{2 d}$ and take a general $d$-arrangement
 
@@ -2935,9 +2935,9 @@ $$
 \sum_{\epsilon, t} \eta(\epsilon, t) \prod_{i \in A} \rho(\epsilon, t)_{i}=\sum_{\epsilon, t} \eta(\epsilon, t) \prod_{i=1}^{k+1} \rho(\epsilon, t)_{i}=(-1)^{k} h_{1} \ldots h_{k} \sum_{j} \eta_{j} r_{j} .
 $$
 
-If $\eta$ is not a multiple of $\eta_{0}$, then $\left(\eta_{1}, \ldots, \eta_{2 d}\right)$ is not a multiple of the sequence $(1, \ldots, 1,-1, \ldots,-1)$ ( $d$ ones followed by $d$ minus ones). Therefore the equation $\sum_{j} \eta_{j} r_{j}$ places a further linear restriction on the sequence $\left(r_{1}, \ldots, r_{2 d}\right)$, meaning that the number of choices for this sequence is at most $N^{2 d-2}$.
+If $\eta$ is not a multiple of $\eta_{0}$, then $\left(\eta_{1}, \ldots, \eta_{2 d}\right)$ is not a multiple of the sequence $(1, \ldots, 1,-1, \ldots,-1)$ ( $d$ ones followed by $d$ minus ones). Therefore the equation $\sum_{j} \eta_{j} r_{j}=0$ places a further linear restriction on the sequence $\left(r_{1}, \ldots, r_{2 d}\right)$, meaning that the number of choices for this sequence is at most $N^{2 d-2}$.
 
-There are (strictly) fewer than $3^{2 d .2^{k}}$ functions $\eta:\{0,1\}^{k} \times\{1, \ldots, 2 d\} \rightarrow$ $\{-1,0,1\}$ that are not multiples of $\eta_{0}$. For each such function, the arguments we have just given show that the proportion of $d$-arrangements such that $\sum_{\epsilon, t} \eta(\epsilon, t) \prod_{i \in A} \rho(\epsilon, t)_{i}=0$ for every $A \subset\{1,2, \ldots, k+1\}$ is at most $k / N$. Finally, the proportion of $d$-arrangements for which at least one of the sidelengths $h_{i}$ is zero is also at most $k / N$. The lemma is proved. \(\square\)
+There are (strictly) fewer than $3^{2 d \cdot 2^{k}}$ functions $\eta:\{0,1\}^{k} \times\{1, \ldots, 2 d\} \rightarrow$ $\{-1,0,1\}$ that are not multiples of $\eta_{0}$. For each such function, the arguments we have just given show that the proportion of $d$-arrangements such that $\sum_{\epsilon, t} \eta(\epsilon, t) \prod_{i \in A} \rho(\epsilon, t)_{i}=0$ for every $A \subset\{1,2, \ldots, k+1\}$ is at most $k / N$. Finally, the proportion of $d$-arrangements for which at least one of the sidelengths $h_{i}$ is zero is also at most $k / N$. The lemma is proved. \(\square\)
 
 Notice that, in the above proof, the only set $A$ containing the element $k+1$ that we needed to consider was the set $\{1,2, \ldots, k+1\}$ itself. Thus, it would be possible to get away with a weaker definition of degeneracy. We are now ready for another random selection with dependences defined using Riesz products.
 
@@ -2987,10 +2987,10 @@ $$
 
 A term contributes to the sum over all the $s_{A}$ if and only if all the sums $\sum_{\epsilon, h} \eta(\epsilon, h) \prod_{i \in A} \lambda(\epsilon, h)_{i}$ are zero, and if $\lambda$ is non-degenerate, then this can happen only when $\eta$ is a multiple of $\eta_{0}$. If $\lambda$ is non-degenerate, $\eta \neq 0$ and the term contributes to the sum over $t$, then we must have in addition that $\sum_{\epsilon, h} \eta_{0}(\epsilon, h) \phi(\lambda(\epsilon, h))=0$. It is not hard to see that this is precisely the definition of $\phi$ respecting the 8-arrangement $\lambda$. The contribution of a non-zero term to the sum over $t$ and the $s_{A}$ is $2^{-2^{k+5}} N^{2^{k+1}+1}$ and the number of multiples of $\eta_{0}$, counted with multiplicity, is $2^{2^{k+4}}+2$, since 0 can be produced in $2^{2^{k+4}}$ ways, and $\pm \eta_{0}$ in one way each.
 
-Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2.2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2.2^{-2^{k+4}}\right)^{r}$ if it does. Therefore, our hypotheses imply that the expected number $X$ of 8-arrangements respected by $\phi$ is at least $2^{-2^{k+4} r}\left(1+2.2^{-2^{k+4}}\right)^{r} \alpha \beta^{15} N^{17 k+15}$, and the expected number $Y$ of non-degenerate 8-arrangements not respected by $\phi$ is at most $2^{-2^{k+4} r} \beta^{15} N^{17 k+15}$. Using the fact that
+Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2\cdot2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r}$ if it does. Therefore, our hypotheses imply that the expected number $X$ of 8-arrangements respected by $\phi$ is at least $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r} \alpha \beta^{15} N^{17 k+15}$, and the expected number $Y$ of non-degenerate 8-arrangements not respected by $\phi$ is at most $2^{-2^{k+4} r} \beta^{15} N^{17 k+15}$. Using the fact that
 
 $$
-1+2.2^{-2^{k+4}} \geqslant 2^{2^{-2^{k+4}+1}}
+1+2\cdot2^{-2^{k+4}} \geqslant 2^{2^{-2^{k+4}+1}}
 $$
 
 we can deduce that if $2^{2^{-2^{k+4}+1} r} \geqslant 2 / \alpha \eta$, then
@@ -3039,11 +3039,11 @@ $$
 
 which is at most the diameter of $\nu_{i}\left(Q_{j^{\prime}}\right)$. \(\square\)
 
-We are about to state a somewhat complicated inductive hypothesis (Theorem 16.2 below) which will be used to prove the main result of this section. First, let us extend slightly the definition of the product property from §14. Let $\Gamma$ be any subset of $\mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ and let $\gamma>0$. We shall say that $\Gamma$ has the product property with parameter $\gamma$ if, for every subset $B \subset \mathbb{Z}_{N}^{k}$ and every function $\phi: B \rightarrow \mathbb{Z}_{N}$ with graph contained in $\Gamma$ (in other words, $(x, \phi(x)) \in \Gamma$ for every $x \in B), \phi$ has the product property with parameter $\gamma$. We shall sometimes abbreviate this as the $\gamma$-product property.
+We are about to state a somewhat complicated inductive hypothesis (Theorem 16.2 below) which will be used to prove the main result of this section. First, let us extend slightly the definition of the product property from §14. Let $\Gamma$ be any subset of $\mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ and let $\gamma>0$. We shall say that $\Gamma$ has the product property with parameter $\gamma$ if, for every subset $B \subset \mathbb{Z}_{N}^{k}$ and every function $\phi: B \rightarrow \mathbb{Z}_{N}$ with graph contained in $\Gamma$ (in other words, $(x, \phi(x)) \in \Gamma$ for every $x \in B$), $\phi$ has the product property with parameter $\gamma$. We shall sometimes abbreviate this as the $\gamma$-product property.
 
-Before making the next definition, let us define three similar functions. We let $c(\theta, \gamma, k)=(\gamma \theta)^{2^{2^{k+8}}}, q(\theta, \gamma, k)=1 / c(\theta, \gamma, k)$ and $s(\theta, \gamma, k)=$ $(2 / \theta \gamma)^{2^{2^{k+6}}}$. We shall now define $\Gamma$ to be $(\gamma, r)$-multiply $k$-linear if, for every $\theta>0$ and every box $P$ of width $m$, there exists a subset $H \subset P$ of cardinality at least $(1-\theta)|P|$ together with a partition of $P$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{c\left(r^{-1} \theta, \gamma, k\right)^{r}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q}$ defined on $P_{j}$, where $q \leqslant q\left(r^{-1} \theta, \gamma, k\right)^{r}$, such that, for every $x \in P_{j} \cap H$ and every $y$ with $(x, y) \in \Gamma, y=\mu_{i}(x)$ for some $i$. Loosely speaking, this says that every box $P$ can be partitioned into further boxes $P_{j}$ such that, after a small bit of $\Gamma$ has been thrown away, for every $j, \Gamma \cap\left(P_{j} \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of not too many $k$-linear functions. If $r=1$, we shall say simply that $\Gamma$ is $\gamma$-multiply $k$-linear. If we do not wish to specify $k$, then we shall say that $\Gamma$ is $(\gamma, r)$-multiply multilinear.
+Before making the next definition, let us define three similar functions. We let $c(\theta, \gamma, k)=(\gamma \theta)^{2^{2^{k+8}}}, q(\theta, \gamma, k)=1 / c(\theta, \gamma, k)$ and $s(\theta, \gamma, k)=(2 /(\theta \gamma))^{2^{2^{k+6}}}$. We shall now define $\Gamma$ to be $(\gamma, r)$-multiply $k$-linear if, for every $\theta>0$ and every box $P$ of width $m$, there exists a subset $H \subset P$ of cardinality at least $(1-\theta)|P|$ together with a partition of $P$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{c\left(r^{-1} \theta, \gamma, k\right)^{r}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q}$ defined on $P_{j}$, where $q \leqslant q\left(r^{-1} \theta, \gamma, k\right)^{r}$, such that, for every $x \in P_{j} \cap H$ and every $y$ with $(x, y) \in \Gamma$, $y=\mu_{i}(x)$ for some $i$. Loosely speaking, this says that every box $P$ can be partitioned into further boxes $P_{j}$ such that, after a small bit of $\Gamma$ has been thrown away, for every $j$, $\Gamma \cap\left(P_{j} \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of not too many $k$-linear functions. If $r=1$, we shall say simply that $\Gamma$ is $\gamma$-multiply $k$-linear. If we do not wish to specify $k$, then we shall say that $\Gamma$ is $(\gamma, r)$-multiply multilinear.
 
-It is an immediate consequence of the definition that if $\Gamma$ is a $(\gamma, r)$ multiply multilinear set and $\Gamma^{\prime} \subset \Gamma$, then $\Gamma^{\prime}$ is also $(\gamma, r)$-multiply multilinear.
+It is an immediate consequence of the definition that if $\Gamma$ is a $(\gamma, r)$-multiply multilinear set and $\Gamma^{\prime} \subset \Gamma$, then $\Gamma^{\prime}$ is also $(\gamma, r)$-multiply multilinear.
 
 The next theorem is the main inductive statement we shall need in order to prove an appropriate generalization of Theorem 13.12 to functions that fail to be uniform of degree $k+1$. (See Corollary 16.11 below.)
 
@@ -3056,7 +3056,7 @@ Proof. Let $\theta>0$. Either there is a set $H$ of size at most $\theta N$ such
 
 If we now remove from $\Gamma$ all points $(x, \phi(x))$ with $x \in B$, we obtain a new set $\Gamma_{1}$ to which the above argument may be applied again. Continuing, we construct sets $B_{1}, \ldots, B_{q}$ of cardinality at least $2^{-1882} \gamma^{9312} \theta^{1165} N$ and homomorphisms $\phi_{i}: B_{i} \rightarrow \mathbb{Z}_{N}$ of order 8, such that the graph of each $\phi_{i}$ is contained in $\Gamma$, these graphs are disjoint and there is a set $J \subset \mathbb{Z}_{N}$ of size at least $(1-\theta) N$ such that $x \in J$ and $(x, y) \in \Gamma$ implies that $y=\phi_{i}(x)$ for some $i$. Moreover, the upper bound on the size of $\Gamma$ implies that $q \leqslant 2^{1882} \gamma^{-9314} \theta^{-1165}$.
 
-Now let $P$ be an arithmetic progression (or a one-dimensional box). By Corollary 7.11, with $\alpha=2^{-1882} \gamma^{9312} \theta^{1165}$ and $q$ as above, we can partition $P$ into subprogressions $Q_{1}, \ldots, Q_{M}$, each of size at least $|P|^{2^{-14} \alpha^{2} q^{-1}} \geqslant$ $|P|^{2^{-6000}} \gamma^{30000} \theta^{15000}$ such that the restriction of each $\phi_{i}$ to each $B_{i} \cap Q_{j}$ is linear. It is not hard to check that these numbers do indeed demonstrate that $\Gamma \cap\left(J \times \mathbb{Z}_{N}\right)$ is $\left(\gamma, \gamma^{-2} s(\theta, \gamma, 1)\right)$-multiply linear. \(\square\)
+Now let $P$ be an arithmetic progression (or a one-dimensional box). By Corollary 7.11, with $\alpha=2^{-1882} \gamma^{9312} \theta^{1165}$ and $q$ as above, we can partition $P$ into subprogressions $Q_{1}, \ldots, Q_{M}$, each of size at least $|P|^{2^{-14} \alpha^{2} q^{-1}} \geqslant |P|^{2^{-6000}\gamma^{30000}\theta^{15000}}$ such that the restriction of each $\phi_{i}$ to each $B_{i} \cap Q_{j}$ is linear. It is not hard to check that these numbers do indeed demonstrate that $\Gamma \cap\left(J \times \mathbb{Z}_{N}\right)$ is $\left(\gamma, \gamma^{-2} s(\theta, \gamma, 1)\right)$-multiply linear. \(\square\)
 
 We are now ready to begin the inductive argument in earnest.\\
 Lemma 16.4. Suppose that Theorem 16.2 is true in every positive dimension at most $k$. Let $\theta>0$ and let $\Gamma \subset \mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$ be a set of cardinality at most $\gamma^{-2} N^{k+1}$ satisfying the product property with parameter $\gamma$. Then either there is a set $H \subset \mathbb{Z}_{N}^{k+1}$ of cardinality less than $\theta N^{k+1}$ such that $\Gamma \subset H \times \mathbb{Z}_{N}$, or one can find a set $B \subset \mathbb{Z}_{N}^{k+1}$ and a function $\phi: B \rightarrow \mathbb{Z}_{N}$ with the following properties:
@@ -3106,20 +3106,20 @@ Let $H$ be the set of all $h \in \mathbb{Z}_{N}^{k}$ such that $G(h) \geqslant(1
 The statement that $G(h) \geqslant(1-2 \eta) C(h)$ is equivalent to the statement that the function induced by $\phi$ on $X_{h}$ is a $(1-2 \eta)$-homomorphism of order eight. We know that $X_{h}(y)$ has cardinality at most $N^{k}$ for each $y$, and it is not hard to show that if $C(h) \geqslant\left(\theta_{1} / 4\right) N^{16 k+15}$ then the cardinality of $X_{h}$ is at least $\theta_{1} N^{k+1} / 4$. Therefore, for every $h \in H$ we may apply Theorem 10.13 (with $\alpha=\theta_{1} / 4$ and $g=f_{h}$ ) and find a subset $Y_{h} \subset X_{h}$ of cardinality at least $2^{-27} \theta_{1}^{6}\left|X_{h}\right|$ such that the restriction of $\phi$ to $Y_{h}$ is a $B\left(K_{h}, \zeta\right)$ -homomorphism, where $\zeta$ is determined (as a function of $\theta$ ) by the equations $\theta_{1}=(\theta \gamma / 4)^{2^{2^{k+5}}}, \alpha=\theta_{1} / 4, k_{0}=2^{74} \alpha^{-10}$ and $\zeta=2^{-155 k_{0}} \alpha^{18 k_{0}} / k_{0}$. It can be checked that the resulting number $\zeta$ exceeds $2^{-s(\theta, \gamma, k)}$. \(\square\)
 
 From the definition of a $B\left(K_{h}, \zeta\right)$-homomorphism, we know in particular that, for any $x \in \mathbb{Z}_{N}$ and any $h \in H$, the restriction of $\phi$ to $Y_{h}(x)$ is\\
-constant. Let us write $\phi^{\prime}(h, x)$ for this value, when it is defined. Corollary 10.14 tells us that if $d \in B\left(K_{h}, \zeta / l\right)$ then the restriction of $\phi^{\prime}(h,$.$) to$ any arithmetic progression with common difference $d$ and length at most $l$ is linear. This fact will be used in the next lemma. We shall also adopt the convention that if a box in $\mathbb{Z}_{N}^{k+1}$ is written as a Cartesian product $A \times B$, then $A$ and $B$ are boxes in $\mathbb{Z}_{N}^{k}$ and $\mathbb{Z}_{N}$ respectively.
+constant. Let us write $\phi^{\prime}(h, x)$ for this value, when it is defined. Corollary 10.14 tells us that if $d \in B\left(K_{h}, \zeta / l\right)$ then the restriction of $\phi^{\prime}(h,\mathord\cdot)$ to any arithmetic progression with common difference $d$ and length at most $l$ is linear. This fact will be used in the next lemma. We shall also adopt the convention that if a box in $\mathbb{Z}_{N}^{k+1}$ is written as a Cartesian product $A \times B$, then $A$ and $B$ are boxes in $\mathbb{Z}_{N}^{k}$ and $\mathbb{Z}_{N}$ respectively.
 
 Let $\delta=2^{-37}\left(\theta_{1} / 4\right)^{11 / 2}$ and define $\Delta \subset \mathbb{Z}_{N}^{k} \times \mathbb{Z}_{N}$ to be the set of all $(h, r)$ such that $\left|\hat{f}_{h}(r)\right| \geqslant \delta N^{k+1}$, that is, such that $r \in K_{h}$. Lemma 14.3 tells us that $\Delta$ has the product property with parameter $\delta$. Therefore, if Theorem 16.2 is true for $k$, then there is a subset $J \subset \mathbb{Z}_{N}^{k}$ of size at least $\left(1-\theta_{1} / 8\right) N^{k}$ such that $\Delta_{1}=\Delta \cap\left(J \times \mathbb{Z}_{N}\right)$ is $\left(\delta, \delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)\right)$-multiply $k$-linear. Let $H_{1}=H \cap J$, where $H$ is the set defined in the proof of Lemma 16.5. Since $\sum_{h \notin J} C(h) \leqslant\left(\theta_{1} / 8\right) N^{17 k+15}$, we find that $\sum_{h \in H_{1}} C(h) \geqslant\left(\theta_{1} / 8\right) N^{17 k+15}$.
 
 Before we state and prove the next lemma, let us remark that the definition of the set $\Delta$ above is in a sense the moment where the induction takes place. For any given $h$, there are at most $\delta^{-2}$ values of $r$ such that $(h, r) \in \Delta$, so $\Delta$ is the union of the graphs of at most $\delta^{-2}$ functions. We have therefore managed once again to reduce the number of variables by one by considering a new function which tells us where some Fourier coefficients related to the domain of the old function are large. The results of the previous two sections together with the inductive hypothesis have told us that the new function has a lot of structure; this will now be used to tell us about the old function, which will complete the inductive step.
 
-% ed.: The printed statement leaves $K$ and $q$ undefined and loses the
-% nested exponent $2^{k+1}$ inherited from Lemma 16.1.
-Lemma 16.6. Let $P=Q \times I$ be a box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $\sigma>0$, let $K=(k+1)^{2}2^{k+4}$ and let $q=q(\sigma/t,\delta,k)^{t}$. Let $l=(\zeta / 2) m^{c\left(t^{-1} \sigma, \delta, k\right)^{t} / \left(2 K^{2^{k+1} q}\right)}$. Then there is a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$, such that, for every $u$ and every $h \in G \cap H_{1} \cap T_{u}$, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear.
+% ed.: The printed statement leaves $K$ and the natural graph count undefined
+% and loses the nested exponent $2^{k+1}$ inherited from Lemma 16.1.
+Lemma 16.6. Let $P=Q \times I$ be a box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $\sigma>0$ and let $K=(k+1)^{2}2^{k+4}$. Then there is a natural number $q_{0}$ satisfying $q_{0}\leqslant q(\sigma/t,\delta,k)^{t}$ such that, if $l=(\zeta / 2) m^{c\left(t^{-1} \sigma, \delta, k\right)^{t} / \left(2 K^{2^{k+1} q_{0}}\right)}$, there is a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$, such that, for every $u$ and every $h \in G \cap H_{1} \cap T_{u}$, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear.
 
-Proof. Because $\Delta_{1}$ is $(\delta, t)$-multiply $k$-linear, we can find a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $Q$ into subboxes $Q_{j}$ of width at least $m_{1}=m^{c(\sigma / t, \delta, k)^{t}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q}$ from $Q_{j}$ to $\mathbb{Z}_{N}$, with $q \leqslant q(\sigma / t, \delta, k)^{t}$ such that $\Delta_{1} \cap\left(\left(G \cap Q_{j}\right) \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of the $\mu_{i}$. This says that, for any $h \in G \cap Q_{j}$, the set $K_{h}=\left\{r \in \mathbb{Z}_{N}:\left|\hat{f}_{h}(r)\right| \geqslant \delta N^{k+1}\right\}$ is a subset of $\left\{\mu_{1}, \ldots, \mu_{q}\right\}$.
+Proof. Because $\Delta_{1}$ is $(\delta, t)$-multiply $k$-linear, we can find a natural number $q_{0}\leqslant q(\sigma / t, \delta, k)^{t}$, a subset $G \subset Q$ of size at least $(1-\sigma)|Q|$ and a partition of $Q$ into subboxes $Q_{j}$ of width at least $m_{1}=m^{c(\sigma / t, \delta, k)^{t}}$ such that for each $j$ there are $k$-linear functions $\mu_{1}, \ldots, \mu_{q_{0}}$ from $Q_{j}$ to $\mathbb{Z}_{N}$ such that $\Delta_{1} \cap\left(\left(G \cap Q_{j}\right) \times \mathbb{Z}_{N}\right)$ is contained in the union of the graphs of the $\mu_{i}$. This says that, for any $h \in G \cap Q_{j}$, the set $K_{h}=\left\{r \in \mathbb{Z}_{N}:\left|\hat{f}_{h}(r)\right| \geqslant \delta N^{k+1}\right\}$ is a subset of $\left\{\mu_{1}, \ldots, \mu_{q_{0}}\right\}$.
 
 By Lemma 16.1, each $Q_{j}$ may be partitioned into subboxes $R_{t}$ of width\\
-at least $m_{2}=m_{1}^{1 / K^{2^{k+1} q}} \geqslant l^{2}$ and common difference $d_{t}$ such that, given any $h \in R_{t}$ and any $i,\left|\mu_{i}(h) d_{t}\right| \leqslant 2 m_{1}^{-1 / K^{2^{k+1} q}} N \leqslant \zeta N /(l+1)$. By the conclusion of the last paragraph, this implies that, whenever $h \in G \cap R_{t}, d_{t}$ belongs to the Bohr neighbourhood $B\left(K_{h}, \zeta /(l+1)\right)$. For each $t, R_{t} \times I$ can be partitioned into boxes $S_{u}=T_{u} \times J_{u}$ of width $l$ or $l+1$. As remarked after the statement of Lemma 16.5, the restriction of $\phi^{\prime}(h,$.$) to an arithmetic$ progression with common difference $d \in B\left(K_{h}, \zeta /(l+1)\right)$ and length at most $l+1$ is linear. In other words, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear, as stated. \(\square\)
+at least $m_{2}=m_{1}^{1 / K^{2^{k+1} q_{0}}} \geqslant l^{2}$ and common difference $d_{t}$ such that, given any $h \in R_{t}$ and any $i,\left|\mu_{i}(h) d_{t}\right| \leqslant 2 m_{1}^{-1 / K^{2^{k+1} q_{0}}} N \leqslant \zeta N /(l+1)$. By the conclusion of the last paragraph, this implies that, whenever $h \in G \cap R_{t}$, $d_{t}$ belongs to the Bohr neighbourhood $B\left(K_{h}, \zeta /(l+1)\right)$. For each $t$, $R_{t} \times I$ can be partitioned into boxes $S_{u}=T_{u} \times J_{u}$ of width $l$ or $l+1$. As remarked after the statement of Lemma 16.5, the restriction of $\phi^{\prime}(h,\mathord\cdot)$ to any arithmetic progression with common difference $d \in B\left(K_{h}, \zeta /(l+1)\right)$ and length at most $l+1$ is linear. In other words, the function from $J_{u}$ to $\mathbb{Z}_{N}$ defined by $x \mapsto \phi^{\prime}(h, x)$ is linear, as stated. \(\square\)
 
 Notice that it was vital in the above lemma that $\Delta_{1}$ should have good structure and that this should give us information, via Fourier coefficients, about the restriction of $\phi$ to the sets $Y_{h}$, even though the definition of $\Delta_{1}$ was in terms of the $X_{h}$. It was to achieve this that we worked so hard in §10.\\
 Lemma 16.7. Let $\theta_{2}=2^{-32} \theta_{1}^{8}$. Then there exist elements $x_{1}, \ldots, x_{k}$ of $\mathbb{Z}_{N}$ such that, for at least $\theta_{2} N^{k+1}$ choices of $\left(h_{1}, \ldots, h_{k}, x\right)$ with $h \in H_{1}$, $\phi^{\prime}(h, x)$ is defined and equals
@@ -3142,13 +3142,21 @@ Let us now fix a choice of $x_{1}, \ldots, x_{k}$ satisfying the conclusion of L
 % $(k+1)$-dimensional remainder uses $q_\gamma$, whereas Lemma 16.6 supplies
 % $q_\delta$ and hence the recurrence denominator.  The printed formula
 % conflates them and also uses dimension $k$ for the former controls.
-Lemma 16.9. Let $\sigma>0$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $r=\left(2^{k}-1\right) \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)$, let $q_{\gamma}=q(\sigma / (2 r), \gamma, k+1)^{r}$, let $q_{\delta}=q(\sigma / (2 t),\delta,k)^{t}$ and let $K=(k+1)^{2}2^{k+4}$. Let $P=Q \times I$ be any box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$. Then there is a subset $E \subset P$ of size at least $(1-\sigma)|P|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ with the following property. Given $u$ and $h \in T_{u}$ let $\psi_{u, h}$ be the function $x \mapsto \phi_{1}(h, x)$, where the domain is the set of all $x$ such that $(h, x) \in B_{1} \cap E \cap S_{u}$. Then for every $u$ and $h \in T_{u}$ the graph of $\psi_{u, h}$ is contained in the union of the graphs of at most $q_{\gamma}$ linear functions. The width of each box $S_{u}$ is at least
+Lemma 16.9. Let $\sigma>0$, let $t=\delta^{-2} s\left(\theta_{1} / 8, \delta, k\right)$, let $r=\left(2^{k}-1\right) \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)$ and let $K=(k+1)^{2}2^{k+4}$. Let $P=Q \times I$ be any box in $\mathbb{Z}_{N}^{k+1}$ of width at least $m$. Then there are natural numbers $q_{\gamma}$ and $q_{\delta}$ satisfying
+
+$$
+q_{\gamma}\leqslant q(\sigma / (2 r), \gamma, k+1)^{r}
+\quad\hbox{and}\quad
+q_{\delta}\leqslant q(\sigma / (2 t),\delta,k)^{t}
+$$
+
+such that there is a subset $E \subset P$ of size at least $(1-\sigma)|P|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ with the following property. Given $u$ and $h \in T_{u}$ let $\psi_{u, h}$ be the function $x \mapsto \phi_{1}(h, x)$, where the domain is the set of all $x$ such that $(h, x) \in B_{1} \cap E \cap S_{u}$. Then for every $u$ and $h \in T_{u}$ the graph of $\psi_{u, h}$ is contained in the union of the graphs of at most $q_{\gamma}$ linear functions. The width of each box $S_{u}$ is at least
 
 $$
 l=(\zeta / 2) m^{c(\sigma / (2 r), \gamma, k+1)^{r} c(\sigma / (2 t), \delta, k)^{t} / \left(2 K^{2^{k+1}q_{\delta}}\right)}
 $$
 
-Proof. Given any sequence $\epsilon \in\{0,1\}^{k}$ apart from $(1,1, \ldots, 1)$, let $X=\{j$ : $\left.\epsilon_{j}=0\right\}$ and let $B_{\epsilon}$ be the cross-section of $B$ defined as the set of all $y \in B$ such that $y_{j}=x_{j}$ for every $j \in X$. By property (i) of Lemma 16.4, the restriction of $\phi$ to the cross-section $B_{\epsilon}$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear. It follows easily that $\phi_{\epsilon}$ itself is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$ multiply $(k+1)$-linear, since $\phi_{\epsilon}$ is obtained from the restriction of $\phi$ by introducing variables that make no difference, namely the $h_{i}$ with $i \in X$.
+Proof. Given any sequence $\epsilon \in\{0,1\}^{k}$ apart from $(1,1, \ldots, 1)$, let $X=\{j$ : $\left.\epsilon_{j}=0\right\}$ and let $B_{\epsilon}$ be the cross-section of $B$ defined as the set of all $y \in B$ such that $y_{j}=x_{j}$ for every $j \in X$. By property (i) of Lemma 16.4, the restriction of $\phi$ to the cross-section $B_{\epsilon}$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear. It follows easily that $\phi_{\epsilon}$ itself is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply $(k+1)$-linear, since $\phi_{\epsilon}$ is obtained from the restriction of $\phi$ by introducing variables that make no difference, namely the $h_{i}$ with $i \in X$.
 
 Hence, by Lemma 16.8 and the expression for $\phi_{1}$ just before the statement of this lemma, we can write
 
@@ -3170,15 +3178,16 @@ We have just shown that $\phi_{1}$ has a property similar to multiple multilinea
 Lemma 16.10. The function $\phi_{1}$ is itself $(\gamma, 1)$-multiply $(k+1)$-linear.\\
 Proof. We begin by remarking that, since $\phi_{1}$ is a translation of a restriction of $\phi$, property (i) of Lemma 16.4 implies that the restriction of $\phi_{1}$ to any cross-section of $B_{1}$ formed by fixing the final variable $x$ is $\left(\gamma, \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear of the appropriate dimension.
 
-Now let $\rho>0$, let $\sigma=\rho / 4$ and let $P=Q \times I$ be a box of width at least $m$. Applying Lemma 16.9, we can find a subset $E \subset P$ of size at least $(1-\sigma)|P|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$ satisfying the conclusion of that lemma. Let $S=T \times J$ be one of these boxes, and write $B_{1}(h)$ for the set $\left\{\left(h^{\prime}, x\right) \in B_{1} \cap E \cap S: h^{\prime}=h\right\}$. Each set $B_{1}(h)$ can be partitioned into subsets $C_{1}(h), \ldots, C_{q}(h)$ such that the restriction of $\phi_{1}$ to any $C_{t}(h)$ is linear. An easy averaging argument shows that
+Now let $\rho>0$, let $\sigma=\rho / 4$ and let $P=Q \times I$ be a box of width at least $m$. Applying Lemma 16.9, we can find natural graph counts $q_{\gamma}$ and $q_{\delta}$, a subset $E \subset P$ of size at least $(1-\sigma)|P|$ and a partition of $P$ into boxes $S_{u}=T_{u} \times J_{u}$ of width at least $l$ satisfying the conclusion of that lemma. Write $q=q_{\gamma}$ for the natural gamma-side cover count, padding the cover if necessary so that $q\geqslant1$. Let $S=T \times J$ be one of these boxes, and write $B_{1}(h)$ for the set $\left\{\left(h^{\prime}, x\right) \in B_{1} \cap E \cap S: h^{\prime}=h\right\}$. Each set $B_{1}(h)$ can be partitioned into subsets $C_{1}(h), \ldots, C_{q}(h)$ such that the restriction of $\phi_{1}$ to any $C_{t}(h)$ is linear. The total size of the small classes is bounded by
 
 $$
-\sum_{t=1}^{q} \sum_{h \in T}\left\{\left|C_{t}(h)\right|:\left|C_{t}(h)\right| \geqslant \sigma|J| / q\right\} \geqslant(1-\sigma)|S| .
+\sum_{\substack{1\leqslant t\leqslant q,\ h\in T\\
+ |C_{t}(h)|<\sigma|J|/q}} |C_{t}(h)| \leqslant \sigma|S| .
 $$
 
-Hence, there is a subset $D \subset S$ of size at least $(1-\sigma)|S|$ such that, for every $t, C_{t}(h) \cap D$ is either empty or of size at least $\sigma|J| / q$.
+Delete all those small classes from $S$ and call the resulting set $D$. Then $|D|\geqslant(1-\sigma)|S|$ and, for every $h,t$, $C_{t}(h) \cap D$ is either empty or of size at least $\sigma|J| / q$.
 
-Now let $r=q \sigma^{-2}$ and choose $x_{1}, \ldots, x_{r}$ randomly from $J$. If $\left|C_{t}(h)\right| \geqslant$ $\sigma|J| / q$, then the probability that $C_{t}(h)$ does not contain two distinct points $\left(h, x_{i}\right)$ and $\left(h, x_{j}\right)$ is at most $(1-\sigma / q)^{r}+r(\sigma / q)(1-\sigma / q)^{r-1}$, which is much\\
+Now let $r=\left\lceil q \sigma^{-2}\right\rceil$ and choose $x_{1}, \ldots, x_{r}$ randomly from $J$. If $\left|C_{t}(h)\right| \geqslant$ $\sigma|J| / q$, then the probability that $C_{t}(h)$ does not contain two distinct points $\left(h, x_{i}\right)$ and $\left(h, x_{j}\right)$ is at most $(1-\sigma / q)^{r}+r(\sigma / q)(1-\sigma / q)^{r-1}$, which is much\\
 smaller than $\sigma$. If we discard every set $C_{t}(h)$ which does not contain such a distinct pair, then the expected number of points discarded is at most $\sigma$ times the total number of points in the $C_{t}(h)$, which is certainly at most $\sigma|S|$. Hence, we can choose $x_{1}, \ldots, x_{r}$ and find a set $F \subset S$ of size at least $(1-\sigma)|S|$ such that for every $h, t$ and every $(h, x) \in C_{t}(h) \cap D \cap F$ there are $x_{i}$ and $x_{j}$ not the same with $\left(h, x_{i}\right)$ and $\left(h, x_{j}\right)$ both in $C_{t}(h) \cap D \cap F$ as well.
 
 For any fixed $h, t$, there are constants $\lambda_{t}(h)$ and $\mu_{t}(h)$ such that $\phi_{1}(h, x)$ $=\lambda_{t}(h) x+\mu_{t}(h)$ for every $(h, x) \in C_{t}(h)$. If in addition $x_{i} \neq x_{j}$ and $\left(h, x_{i}\right)$ and $\left(h, x_{j}\right)$ both belong to $C_{t}(h)$, then $\lambda_{t}(h) x_{i}+\mu_{t}(h)=\phi_{1}\left(h, x_{i}\right)$ and $\lambda_{t}(h) x_{j}+\mu_{t}(h)=\phi_{1}\left(h, x_{j}\right)$. These equations imply that
@@ -3193,9 +3202,9 @@ $$
 \mu_{t}(h)=\phi_{1}\left(h, x_{i}\right)-\lambda_{i j}(h) x_{i},
 $$
 
-which we shall denote by $\mu_{i j}(h)$. By Lemma 16.8 and the remark with which we opened the proof, the functions $\lambda_{i j}$ and $\mu_{i j}$ are all $\left(\gamma, 2 \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)-$multiply multilinear, and for every $(h, x) \in B_{1} \cap E \cap D \cap F$ we can find $i, j$ such that $\phi_{1}(h, x)=\lambda_{i j}(h) x+\mu_{i j}(h)$.
+which we shall denote by $\mu_{i j}(h)$. By Lemma 16.8 and the remark with which we opened the proof, the functions $\lambda_{i j}$ and $\mu_{i j}$ are all $\left(\gamma, 2 \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear, and for every $(h, x) \in B_{1} \cap E \cap D \cap F$ we can find $i, j$ such that $\phi_{1}(h, x)=\lambda_{i j}(h) x+\mu_{i j}(h)$.
 
-It is not hard to see (using Lemma 16.8 again) that $\lambda_{i j}(h) x+\mu_{i j}$ is a $\left(\gamma, 4 \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear function of $(h, x)$, and, by one further application of Lemma 16.8, the union of the graphs of all these functions, which contains the graph of $\phi_{1}$ restricted to $B_{1} \cap E \cap D \cap F$, is $\left(\gamma, 4 r^{2} \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear.
+It is not hard to see (using Lemma 16.8 again) that $\lambda_{i j}(h) x+\mu_{i j}(h)$ is a $\left(\gamma, 4 \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear function of $(h, x)$, and, by one further application of Lemma 16.8, the union of the graphs of all these functions, which contains the graph of $\phi_{1}$ restricted to $B_{1} \cap E \cap D \cap F$, is $\left(\gamma, 4 r^{2} \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)\right)$-multiply multilinear.
 
 Let $p=4 r^{2} \gamma^{-2} s\left(2^{-(k+2)} \theta, \gamma, k\right)$. By what we have just shown, there is a subset $G \subset S$ of size at least $(1-\sigma)|S|$ and a partition of $S$ into boxes $V$ of width at least $l^{c(\sigma / p, \gamma, k+1)^{p}}$ such that for each one the graph of $\phi_{1}$ restricted to $V \cap E \cap D \cap F \cap G$ is contained in the union of the graphs of $q(\sigma / p, \gamma, k+1)^{p}$ multilinear functions.
 
@@ -3207,7 +3216,7 @@ ber of sets removed is at most $\gamma^{-2} s(\theta, \gamma, k)$. The result no
 % ed.: The final ``straightforward calculation'' has its comparison in the
 % wrong direction.  The common exponent actually supplied by the definitions
 % is recorded explicitly instead of the unsupported printed tower.
-Corollary 16.11. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
+Corollary 16.11. Let $k\geqslant1$, let $0<\alpha\leqslant1/2$, and let $N$ be a sufficiently large odd prime. If $f: \mathbb{Z}_{N} \rightarrow D$ fails to be $\alpha$-uniform of degree $k+1$, set
 
 $$
 r=4\alpha^{-2}s(\alpha/4,\alpha/2,k),\qquad
@@ -3216,7 +3225,7 @@ $$
 
 Then there is a box $P \subset \mathbb{Z}_{N}^{k}$ of width at least $N^{c_{*}}$ and a multilinear function $\mu: P \rightarrow \mathbb{Z}_{N}$ such that, for at least $c_{*}|P|$ values of $\left(y_{1}, \ldots, y_{k}\right)$, we have $\left|\Delta\left(f ; y_{1}, \ldots, y_{k}\right)^{\wedge}\left(\mu\left(y_{1}, \ldots, y_{k}\right)\right)\right| \geqslant(\alpha / 2) N$.
 
-Proof. Since $f$ is not $\alpha$-uniform of degree $k+1$, we find, using the implication of (ii) from (vi) in Lemma 3.1, that there is a set $B \subset \mathbb{Z}_{N}^{k}$ of size at least $(\alpha / 2) N^{k}$ and a function $\phi: B \rightarrow \mathbb{Z}_{N}$ such that $\left|\Delta\left(f ; a_{1}, \ldots, a_{k}\right)^{\wedge}\left(\phi\left(a_{1}, \ldots, a_{k}\right)\right)\right| \geqslant(\alpha / 2) N$ for every $\left(a_{1}, \ldots, a_{k}\right) \in B$. Lemma 14.2 then implies that $\phi$ has the product property with parameter $\alpha / 2$. Next, Theorem 16.2 implies that $B$ has a subset $C$ of size at least $(\alpha / 4) N^{k}$ such that the restriction of $\phi$ to $C$ is $(\alpha / 2, r)$-multiply $k$-linear, where $r=4 \alpha^{-2} s(\alpha / 4, \alpha / 2, k)$. Applying the definition of multiple multilinearity in the case where the box $P$ is the whole of $\mathbb{Z}_{N}^{k}$ and $\theta=\alpha / 8$, we find a set $H \subset \mathbb{Z}_{N}^{k}$ of size at least $(1-\alpha / 8) N^{k}$ and partition of $\mathbb{Z}_{N}^{k}$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $N^{c(\alpha / 8 r, \alpha / 2, k)^{r}}$ such that for every $j$ the restriction of $\phi$ to $C \cap P_{j} \cap H$ is contained in the graph of at most $q(\alpha / 8 r, \alpha / 2, k)^{r}$ multilinear functions. By averaging, we can find a box $P_{j}$ such that $\left|C \cap P_{j} \cap H\right| \geqslant(\alpha / 8)\left|P_{j}\right|$. By further averaging, we can find a subset $D \subset P_{j}$ of size at least $\left(q(\alpha / 8 r, \alpha / 2, k)^{r}\right)^{-1}(\alpha / 8)\left|P_{j}\right|$ such that the restriction of $\phi$ to $D$ is multilinear. By the definitions of $q$ and $c_{*}$, this is exactly the asserted common lower exponent. \(\square\)
+Proof. Since $f$ is not $\alpha$-uniform of degree $k+1$, we find, using the implication of (ii) from (vi) in Lemma 3.1, that there is a set $B \subset \mathbb{Z}_{N}^{k}$ of size at least $(\alpha / 2) N^{k}$ and a function $\phi: B \rightarrow \mathbb{Z}_{N}$ such that $\left|\Delta\left(f ; a_{1}, \ldots, a_{k}\right)^{\wedge}\left(\phi\left(a_{1}, \ldots, a_{k}\right)\right)\right| \geqslant(\alpha / 2) N$ for every $\left(a_{1}, \ldots, a_{k}\right) \in B$. Lemma 14.2 then implies that $\phi$ has the product property with parameter $\alpha / 2$. Next, Theorem 16.2 implies that $B$ has a subset $C$ of size at least $(\alpha / 4) N^{k}$ such that the restriction of $\phi$ to $C$ is $(\alpha / 2, r)$-multiply $k$-linear, where $r=4 \alpha^{-2} s(\alpha / 4, \alpha / 2, k)$. Applying the definition of multiple multilinearity in the case where the box $P$ is the whole of $\mathbb{Z}_{N}^{k}$ and $\theta=\alpha / 8$, we find a set $H \subset \mathbb{Z}_{N}^{k}$ of size at least $(1-\alpha / 8) N^{k}$ and partition of $\mathbb{Z}_{N}^{k}$ into boxes $P_{1}, \ldots, P_{M}$ of width at least $N^{c(r^{-1}\alpha/8, \alpha / 2, k)^{r}}$ such that for every $j$ the restriction of $\phi$ to $C \cap P_{j} \cap H$ is contained in the graph of at most $q(r^{-1}\alpha/8, \alpha / 2, k)^{r}$ multilinear functions. By averaging, we can find a box $P_{j}$ such that $\left|C \cap P_{j} \cap H\right| \geqslant(\alpha / 8)\left|P_{j}\right|$. By further averaging, we can find a subset $D \subset P_{j}$ of size at least $\left(q(r^{-1}\alpha/8, \alpha / 2, k)^{r}\right)^{-1}(\alpha / 8)\left|P_{j}\right|$ such that the restriction of $\phi$ to $D$ is multilinear. By the definitions of $q$ and $c_{*}$, this is at least the asserted common lower exponent. \(\square\)
 
 \section*{17 The Main Inductive Step}
 We are finally ready to generalize the argument of §8, to complete a proof of Szemerédi's theorem for progressions of arbitrary length. It turns out that there is a second reason for this being harder than for progressions of length four, but fortunately it is much less serious than the difficulties we have dealt with in the last two sections.
@@ -3257,13 +3266,13 @@ Of course, if we have only a small piece of bilinearity to work with, the argume
 Lemma 17.1. Suppose that $k<N$. Let $\sigma$ be any $k$-linear function (over $\mathbb{Z}_{N}$ ) in variables $x_{1}, \ldots, x_{k}$. Then there are polynomials $\phi_{\epsilon}\left(\epsilon \in\{0,1\}^{k}\right)$ of degree at most $k$ giving the identity
 
 $$
-\sigma\left(x_{1}, \ldots, x_{k}\right)=\sum_{\epsilon \in\{0,1\}^{k}}(-1)^{|\epsilon|} \phi_{\epsilon}(s-\epsilon . x) .
+\sigma\left(x_{1}, \ldots, x_{k}\right)=\sum_{\epsilon \in\{0,1\}^{k}}(-1)^{|\epsilon|} \phi_{\epsilon}(s-\epsilon \cdot x) .
 $$
 
 Proof. It is enough to prove the result in the case $\sigma\left(x_{1}, \ldots, x_{k}\right)=x_{1} \ldots x_{k}$. Now $s^{k}-\left(s-x_{1}\right)^{k}$ is a polynomial in $s$ of degree $k-1$ with leading term $k x_{1} s^{k-1}$. It follows that $s^{k}-\left(s-x_{1}\right)^{k}-\left(s-x_{2}\right)^{k}+\left(s-x_{1}-x_{2}\right)^{k}$ is a polynomial in $s$ of degree $k-2$ with leading term $k(k-1) x_{1} x_{2} s^{k-2}$. Continuing, we find that
 
 $$
-k!x_{1} \ldots x_{k}=\sum_{\epsilon \in\{0,1\}^{k}}(-1)^{|\epsilon|}(s-\epsilon . x)^{k}
+k!x_{1} \ldots x_{k}=\sum_{\epsilon \in\{0,1\}^{k}}(-1)^{|\epsilon|}(s-\epsilon \cdot x)^{k}
 $$
 
 as we wanted. \(\square\)
@@ -3286,7 +3295,7 @@ $$
 Proof. By Lemma 17.1 we may write
 
 $$
-x_{k+1} \sigma(x)=\sum_{\epsilon \in\{0,1\}^{k+1}}(-1)^{|\epsilon|}\phi_{\epsilon}(s-\epsilon . x) .
+x_{k+1} \sigma(x)=\sum_{\epsilon \in\{0,1\}^{k+1}}(-1)^{|\epsilon|}\phi_{\epsilon}(s-\epsilon \cdot x) .
 $$
 
 We also have, for any $x \in \mathbb{Z}_{N}^{k}$,
@@ -3298,7 +3307,7 @@ $$
 Therefore,
 
 $$
-\sum_{x \in \mathbb{Z}_{N}^{k}}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2}=\sum_{x \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}} C^{|\epsilon|}\left(f(s-\epsilon . x) \omega^{-\phi_{\epsilon}(s-\epsilon . x)}\right) .
+\sum_{x \in \mathbb{Z}_{N}^{k}}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2}=\sum_{x \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}} C^{|\epsilon|}\left(f(s-\epsilon \cdot x) \omega^{-\phi_{\epsilon}(s-\epsilon \cdot x)}\right) .
 $$
 
 By Lemma 3.8, we can find some $\epsilon$ such that the function $g(s)=f(s) \omega^{-\phi_{\epsilon}(s)}$ satisfies the inequality
@@ -3315,18 +3324,18 @@ Lemma 17.4. The number of distinct regions defined by a set of $m$ hyperplanes i
 
 Proof. Apply induction on $m$, by considering how many new regions are created when each new hyperplane is added to the arrangement. To calculate this, use induction on $k$. The result is trivial when $k=1$. \(\square\)
 
-Corollary 17.5. Given real numbers $\alpha_{1}, \ldots, \alpha_{k}$, set $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}$ by $f(\epsilon)=\lfloor\epsilon . \alpha\rfloor$. If $r$ is an integer and the $\alpha_{i}$ are allowed to vary in the interval ( $-r, r$ ), then the number of distinct such functions that can result is at most $2^{2 r k^{3}}$.
+Corollary 17.5. Given real numbers $\alpha_{1}, \ldots, \alpha_{k}$, set $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}$ by $f(\epsilon)=\lfloor\epsilon \cdot \alpha\rfloor$. If $r$ is an integer and the $\alpha_{i}$ are allowed to vary in the interval ( $-r, r$ ), then the number of distinct such functions that can result is at most $2^{2 r k^{3}}$.
 
-Proof. The possible values taken by $f$ are the integers between $\lfloor-r k\rfloor$ and $\lfloor r k\rfloor$, and the set of $\epsilon$ such that $f(\epsilon) \leqslant j$ is the set of $\epsilon$ such that $\epsilon . \alpha<j+1$. Let us estimate how many distinct such sets can be obtained as $\alpha$ varies. Two real numbers $\alpha$ and $\alpha^{\prime}$ give distinct sets if and only if there exists some $\epsilon$ such that $\epsilon . \alpha<j+1$ and $\epsilon . \alpha^{\prime} \geqslant j+1$, that is, if and only if the hyperplane $\{\beta: \epsilon . \beta=j+1\}$ separates $\alpha$ from $\alpha^{\prime}$. There are $2^{k}$ different such hyperplanes, so the previous lemma tells us that the number of distinct sets of the given form is at most $k\binom{2^{k}}{k} \leqslant 2^{k^{2}}$. The function $f$ is determined by the $2 r k$ sets $\{\epsilon: f(\epsilon) \leqslant j\}$ with $\left\lfloor-k^{2} / 2\right\rfloor<j \leqslant\left\lfloor k^{2} / 2\right\rfloor$, so the result follows. \(\square\)
+Proof. The possible values taken by $f$ are the integers between $\lfloor-r k\rfloor$ and $\lfloor r k\rfloor$, and the set of $\epsilon$ such that $f(\epsilon) \leqslant j$ is the set of $\epsilon$ such that $\epsilon \cdot \alpha<j+1$. Let us estimate how many distinct such sets can be obtained as $\alpha$ varies. Two real numbers $\alpha$ and $\alpha^{\prime}$ give distinct sets if and only if there exists some $\epsilon$ such that $\epsilon \cdot \alpha<j+1$ and $\epsilon \cdot \alpha^{\prime} \geqslant j+1$, that is, if and only if the hyperplane $\{\beta: \epsilon \cdot \beta=j+1\}$ separates $\alpha$ from $\alpha^{\prime}$. There are $2^{k}$ different such hyperplanes, so the previous lemma tells us that the number of distinct sets of the given form is at most $k\binom{2^{k}}{k} \leqslant 2^{k^{2}}$. The function $f$ is determined by the $2 r k$ sets $\{\epsilon: f(\epsilon) \leqslant j\}$ with $\lfloor-rk\rfloor<j \leqslant\lfloor rk\rfloor$, so the result follows. \(\square\)
 
-Corollary 17.6. Let $\alpha_{0}, \alpha_{1}, \ldots, \alpha_{k}$ be real numbers, let $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}_{M}$ by $f(\epsilon)=\left\lfloor\alpha_{0}+\alpha . \epsilon\right\rfloor(\bmod M)$. If $\alpha_{0}$ can be arbitrary and the $\alpha_{i}$ are allowed to vary in the interval $(-r, r)$, then the number of distinct such functions that can result is at most $M .2^{2 r(k+1)^{3}}$.
+Corollary 17.6. Let $\alpha_{0}, \alpha_{1}, \ldots, \alpha_{k}$ be real numbers, let $\alpha=\left(\alpha_{1}, \ldots, \alpha_{k}\right)$ and define a function $f:\{0,1\}^{k} \rightarrow \mathbb{Z}_{M}$ by $f(\epsilon)=\left\lfloor\alpha_{0}+\alpha \cdot \epsilon\right\rfloor(\bmod M)$. If $\alpha_{0}$ can be arbitrary and the $\alpha_{i}$ are allowed to vary in the interval $(-r, r)$, then the number of distinct such functions that can result is at most $M \cdot 2^{2 r(k+1)^{3}}$.
 
 Proof. By Corollary 17.5, the number of functions that can result if the integer part of $\alpha_{0}$ is $j(\bmod M)$ is at most $2^{2 r(k+1)^{3}}$, since each such function\\
 can be thought of as $j$ added to the restriction of a function on $\{0,1\}^{k+1}$ of the given form (and reduced $\bmod M$ ). The result follows. \(\square\)
 
-The trivial bound in Corollary 17.5 is $k^{2^{k+1}}$, which gives a bound of $M .(k+1)^{2^{k+2}}$ in Corollary 17.6. As we commented above, this bound would be enough for our main result.
+The trivial bound in Corollary 17.5 is $k^{2^{k+1}}$, which gives a bound of $M \cdot (k+1)^{2^{k+2}}$ in Corollary 17.6. As we commented above, this bound would be enough for our main result.
 
-Before stating the next proposition, we define a concept which is similar to $\alpha$-uniformity but designed for situations where we are given a multilinear function on a small domain. Let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that we can partition $\mathbb{Z}_{N}$ into $\bmod -N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$, each of length at most $m$, such that, defining $Q_{i} f(s)$ to be $f(s)$ when $s \in Q_{i}$ and 0 otherwise, we have
+Before stating the next proposition, we define a concept which is similar to $\alpha$-uniformity but designed for situations where we are given a multilinear function on a small domain. Let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that we can partition $\mathbb{Z}_{N}$ into mod-$N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$, each of length at most $m$, such that, defining $Q_{i} f(s)$ to be $f(s)$ when $s \in Q_{i}$ and 0 otherwise, we have
 
 $$
 \sum_{i=1}^{M} \sum_{x \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \Delta\left(Q_{i} f ; x\right)(s) \leqslant \alpha m^{k+2} M .
@@ -3353,16 +3362,16 @@ $$
 \sum_{x \in P}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2} \geqslant \alpha N^{2} m^{k}
 $$
 
-Then there exist a polynomial $\phi$ of degree at most $k+1$ and a partition of $\mathbb{Z}_{N}$ into mod- $N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$ of size at least $m / 3 k$ such that the function $g(x)=f(x) \omega^{-\phi(x)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform of degree $k$ with respect to the partition $Q_{1}, \ldots, Q_{M}$.\\
+Then there exist a polynomial $\phi$ of degree at most $k+1$ and a partition of $\mathbb{Z}_{N}$ into mod- $N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$ of size at least $m /(3 k)$ such that the function $g(x)=f(x) \omega^{-\phi(x)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform of degree $k$ with respect to the partition $Q_{1}, \ldots, Q_{M}$.\\
 Proof. Without loss of generality $d=1$. Let $2 l+1=m$ and let $w$ be a real number such that $\lfloor l / k\rfloor-1<w \leqslant\lfloor l / k\rfloor$ and $M=N / w$ is an integer. For\\
-$0 \leqslant j \leqslant M-1$ define $Q_{j}$ to be the interval $\left\{x \in \mathbb{Z}_{N}: j w \leqslant x<(j+1) w\right\}$. Notice that the cardinality of $Q_{j}$ is always $\lfloor l / k\rfloor-1$ or $\lfloor l / k\rfloor$. Let a sequence $r=\left(r_{1}, \ldots, r_{k}\right)$ be defined by $P_{i}=\left\{r_{i}-l, r_{i}-l+1, \ldots, r_{i}+l\right\}$ and let $I$ be the interval $\{-l,-l+1, \ldots, l\}$. Then any $x \in P$ can be written uniquely as $a+r$ for some $a \in I^{k}$. Given $\epsilon \in\{0,1\}^{k}$, we shall write $f_{\epsilon}$ for the function that takes $s$ to $f(s-\epsilon . r)$. Let us also write $\tau(a)$ for $\sigma(a+r)$.
+$0 \leqslant j \leqslant M-1$ define $Q_{j}$ to be the interval $\left\{x \in \mathbb{Z}_{N}: j w \leqslant x<(j+1) w\right\}$. Notice that the cardinality of $Q_{j}$ is always $\lfloor l / k\rfloor-1$ or $\lfloor l / k\rfloor$. Let a sequence $r=\left(r_{1}, \ldots, r_{k}\right)$ be defined by $P_{i}=\left\{r_{i}-l, r_{i}-l+1, \ldots, r_{i}+l\right\}$ and let $I$ be the interval $\{-l,-l+1, \ldots, l\}$. Then any $x \in P$ can be written uniquely as $a+r$ for some $a \in I^{k}$. Given $\epsilon \in\{0,1\}^{k}$, we shall write $f_{\epsilon}$ for the function that takes $s$ to $f(s-\epsilon \cdot r)$. Let us also write $\tau(a)$ for $\sigma(a+r)$.
 
 Then
 
 $$
 \begin{aligned}
-\sum_{x \in P}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2} & =\sum_{a \in I^{k}}\left|\sum_{s} \omega^{-s \sigma(a+r)} \prod_{\epsilon} C^{|\epsilon|} f(s-\epsilon . a-\epsilon . r)\right|^{2} \\
-& =\sum_{a \in I^{k}}\left|\sum_{s} \omega^{-s \tau(a)} \prod_{\epsilon} C^{|\epsilon|} f_{\epsilon}(s-\epsilon . a)\right|^{2}
+\sum_{x \in P}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2} & =\sum_{a \in I^{k}}\left|\sum_{s} \omega^{-s \sigma(a+r)} \prod_{\epsilon} C^{|\epsilon|} f(s-\epsilon \cdot a-\epsilon \cdot r)\right|^{2} \\
+& =\sum_{a \in I^{k}}\left|\sum_{s} \omega^{-s \tau(a)} \prod_{\epsilon} C^{|\epsilon|} f_{\epsilon}(s-\epsilon \cdot a)\right|^{2}
 \end{aligned}
 $$
 
@@ -3376,23 +3385,23 @@ $$
 Interchanging the product over $\epsilon$ with the sum over $j$, we obtain
 
 $$
-\sum_{a \in I^{k}}\left|\sum_{s} \sum_{j} \omega^{-s \tau(a)} \prod_{\epsilon \in\{0,1\}^{k}}\left(Q_{j(\epsilon)} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a)\right|^{2},
+\sum_{a \in I^{k}}\left|\sum_{s} \sum_{j} \omega^{-s \tau(a)} \prod_{\epsilon \in\{0,1\}^{k}}\left(Q_{j(\epsilon)} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a)\right|^{2},
 $$
 
 where now the sum over $j$ stands for the sum over all functions $j$ : $\{0,1\}^{k} \rightarrow \mathbb{Z}_{M}$. Let us estimate how many such functions can give rise to a non-zero contribution to the entire expression.
 
-This we can do using Corollary 17.5. If $Q_{j(\epsilon)} f_{\epsilon}(s-\epsilon . a)$ is non-zero, then $s-\epsilon . a \in Q_{j(\epsilon)}$ which implies that $j(\epsilon) w \leqslant s-\epsilon . a<j(\epsilon) w$ and therefore that $j(\epsilon)$ is exactly the integer part of $w^{-1} s-\epsilon .\left(w^{-1} a\right)$. Since $-k-1<w^{-1} a_{i}<k+1$ for every $i$, Corollary 17.5 implies that the number of functions $j$ for which the product over $\epsilon$ can ever be non-zero is at most $M .2^{2(k+1)^{4}}$.
+This we can do using Corollary 17.6. If $Q_{j(\epsilon)} f_{\epsilon}(s-\epsilon \cdot a)$ is non-zero, then $s-\epsilon \cdot a \in Q_{j(\epsilon)}$, which implies that $j(\epsilon) w \leqslant s-\epsilon \cdot a<(j(\epsilon)+1)w$ and therefore that $j(\epsilon)$ is exactly the integer part of $w^{-1} s-\epsilon \cdot\left(w^{-1} a\right)$. Since $-k-1<w^{-1} a_{i}<k+1$ for every $i$, Corollary 17.6 implies that the number of functions $j$ for which the product over $\epsilon$ can ever be non-zero is at most $M \cdot 2^{2(k+1)^{4}}$.
 
-Let us define functions $j_{1}$ and $j_{2}$ (from $\{0,1\}^{k}$ to $\mathbb{Z}_{M}$ ) to be equivalent if they are translations of each other. Corollary 17.5 with $M=1$ implies that the number of equivalence classes is at most $2^{k(k+1)^{2}}$. Let us call them $J_{1}, \ldots, J_{L}$. By the Cauchy-Schwarz inequality, we can deduce from our calculations above that
+Let us define functions $j_{1}$ and $j_{2}$ (from $\{0,1\}^{k}$ to $\mathbb{Z}_{M}$ ) to be equivalent if they are translations of each other. Corollary 17.5 implies that the number of equivalence classes is at most $2^{k(k+1)^{2}}$. Let us call them $J_{1}, \ldots, J_{L}$. By the Cauchy-Schwarz inequality, we can deduce from our calculations above that
 
 $$
-\alpha N^{2} m^{k} \leqslant L \sum_{r=1}^{L} \sum_{a \in I^{k}}\left|\sum_{s} \sum_{j \in J_{r}} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a)\right|^{2} .
+\alpha N^{2} m^{k} \leqslant L \sum_{r=1}^{L} \sum_{a \in I^{k}}\left|\sum_{s} \sum_{j \in J_{r}} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a)\right|^{2} .
 $$
 
 We can therefore find $r$ such that, choosing some representative $j$ of $J_{r}$, we have
 
 $$
-L^{-2} \alpha N^{2} m^{k} \leqslant \sum_{a \in I^{k}}\left|\sum_{s} \sum_{i=1}^{M} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a)\right|^{2} .
+L^{-2} \alpha N^{2} m^{k} \leqslant \sum_{a \in I^{k}}\left|\sum_{s} \sum_{i=1}^{M} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a)\right|^{2} .
 $$
 
 Applying the Cauchy-Schwarz inequality again, this is at most
@@ -3401,46 +3410,46 @@ $$
 M \sum_{i=1}^{M} \sum_{a \in I^{k}}\left|\sum_{s} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a)\right|^{2} .
 $$
 
-Obviously this still exceeds $L^{-2} \alpha N^{2} m^{k}$ if we replace the sum over $a \in I_{k}$ above by a sum over all of $\mathbb{Z}_{N}^{k}$. Expanding the modulus squared and substituting in the usual way, the resulting inequality can be rewritten
+Obviously this still exceeds $L^{-2} \alpha N^{2} m^{k}$ if we replace the sum over $a \in I^{k}$ above by a sum over all of $\mathbb{Z}_{N}^{k}$. Expanding the modulus squared and substituting in the usual way, the resulting inequality can be rewritten
 
 $$
-M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \omega^{-\rho(a)} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a) \geqslant L^{-2} \alpha N^{2} m^{k},
+M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \omega^{-\rho(a)} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a) \geqslant L^{-2} \alpha N^{2} m^{k},
 $$
 
 where $j(\epsilon)$ and $f_{\epsilon}$ now mean $j\left(\epsilon_{1}, \ldots, \epsilon_{k}\right)$ and $f_{\epsilon_{1}, \ldots, \epsilon_{k}}$ respectively, and $\rho(a)$ is defined to be $a_{k+1} \tau\left(a_{1}, \ldots, a_{k}\right)$. Applying Lemma 17.1, we obtain for each $\epsilon \in\{0,1\}^{k+1}$ a polynomial $\phi_{\epsilon}$ of degree at most $k+1$ in such a way that
 
 $$
-\rho(a)=\sum_{\epsilon \in\{0,1\}^{k+1}}(-1)^{|\epsilon|} \phi_{\epsilon}(s-\epsilon . a)
+\rho(a)=\sum_{\epsilon \in\{0,1\}^{k+1}}(-1)^{|\epsilon|} \phi_{\epsilon}(s-\epsilon \cdot a)
 $$
 
 for every $a \in \mathbb{Z}_{N}^{k+1}$. Using these, we can rewrite the inequality yet again, this time as
 
 $$
-M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a) \omega^{-\phi_{\epsilon}(s-\epsilon . a)} \geqslant L^{-2} \alpha N^{2} m^{k} .
+M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a) \omega^{-\phi_{\epsilon}(s-\epsilon \cdot a)} \geqslant L^{-2} \alpha N^{2} m^{k} .
 $$
 
 We shall now apply Lemma 3.8 to the functions $Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}$. By the AM-GM inequality, the lemma implies that, for every $i$, the sum
 
 $$
-\sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon . a) \omega^{-\phi_{\epsilon}(s-\epsilon . a)}
+\sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a) \omega^{-\phi_{\epsilon}(s-\epsilon \cdot a)}
 $$
 
 is bounded above by the average over $\eta \in\{0,1\}^{k+1}$ of
 
 $$
-\sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\eta)+i} C^{|\epsilon|} f_{\eta}\right)(s-\epsilon . a) \omega^{-\phi_{\eta}(s-\epsilon . a)} .
+\sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\eta)+i} C^{|\epsilon|} f_{\eta}\right)(s-\epsilon \cdot a) \omega^{-\phi_{\eta}(s-\epsilon \cdot a)} .
 $$
 
 It follows by an averaging argument that we may choose $\eta \in\{0,1\}^{k+1}$ such that, setting $g(s)=f_{\eta}(s) \omega^{-\phi_{\eta}(s)}$, we have
 
 $$
-M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\epsilon)+i} C^{|\epsilon|} g\right)(s-\epsilon . a) \geqslant L^{-2} \alpha N^{2} m^{k},
+M \sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(Q_{j(\eta)+i} C^{|\epsilon|} g\right)(s-\epsilon \cdot a) \geqslant L^{-2} \alpha N^{2} m^{k},
 $$
 
 and this may be rewritten
 
 $$
-\sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(C^{|\epsilon|} Q_{i} g\right)(s-\epsilon . a) \geqslant L^{-2} \alpha M^{-2} N^{2} m^{k} M,
+\sum_{i=1}^{M} \sum_{a \in \mathbb{Z}_{N}^{k+1}} \sum_{s} \prod_{\epsilon \in\{0,1\}^{k+1}}\left(C^{|\epsilon|} Q_{i} g\right)(s-\epsilon \cdot a) \geqslant L^{-2} \alpha M^{-2} N^{2} m^{k} M,
 $$
 
 or
@@ -3454,25 +3463,29 @@ $$
 
 This implies that the function $g$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $Q_{1}, \ldots, Q_{M}$.
 
-This is not quite the statement of the proposition. To obtain it, recall that $f_{\eta}(s)=f(s-\eta . r)$. Therefore, the statement about $g$ implies that the function $f(s) \omega^{-\phi_{\eta}(s+\eta . r)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $\left(Q_{i}+\eta . r\right)_{i=1}^{m}$. Since $\phi_{\eta}(s+\eta . r)$ is still a polynomial in $s$ of degree at most $k+1$, the proposition is proved. \(\square\)
+This is not quite the statement of the proposition. To obtain it, recall that $f_{\eta}(s)=f(s-\eta \cdot r)$. Therefore, the statement about $g$ implies that the function $f(s) \omega^{-\phi_{\eta}(s+\eta \cdot r)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $\left(Q_{i}+\eta \cdot r\right)_{i=1}^{M}$. Since $\phi_{\eta}(s+\eta \cdot r)$ is still a polynomial in $s$ of degree at most $k+1$, the proposition is proved. \(\square\)
 
 \section*{18 Putting Everything Together}
 We are now ready for the proof of the main theorem. Indeed all we need to do is combine our earlier results in an obvious way. We shall divide the argument into two parts.
 
-Theorem 18.1. Let $\alpha \leqslant 1 / 2$ and let $A \subset \mathbb{Z}_{N}$ be a set which fails to be $\alpha$-uniform of degree $k$. There exists a partition of $\mathbb{Z}_{N}$ into arithmetic progressions $P_{1}, \ldots, P_{M}$ of average size at least $N^{\alpha^{2^{2^{k+10}}}}$ such that
+% ed.: The intended headline statement is retained.  After replacing the
+% unsupported tower estimate in Corollary 16.11 by the bound actually supplied
+% by its argument, however, the displayed proof below no longer establishes
+% this quantitative exponent.
+Theorem 18.1. Let $0<\alpha \leqslant 1 / 2$, suppose that $N$ is sufficiently large in terms of $\alpha$ and $k$, let $A \subset \mathbb{Z}_{N}$ be a set which fails to be $\alpha$-uniform of degree $k$, and let $f=f_A$ be its balanced function. There exists a partition of $\mathbb{Z}_{N}$ into arithmetic progressions $P_{1}, \ldots, P_{M}$ of average size at least $N^{\alpha^{2^{2^{k+10}}}}$ such that
 
 $$
 \sum_{j=1}^{M}\left|\sum_{s \in P_{j}} f(s)\right| \geqslant \alpha^{2^{2^{k+10}}} N .
 $$
 
-Proof. The result will be proved by induction on $k$. First, Corollary 16.11 gives us a box $P \subset \mathbb{Z}_{N}^{k}$ of width at least $N^{(\alpha / 2)^{2^{2^{k+8}}}}$ and a multilinear function $\mu: P \rightarrow \mathbb{Z}_{N}$ such that, for at least $(\alpha / 2)^{2^{2^{k+8}}}|P|$ values of $\left(y_{1}, \ldots, y_{k}\right) \in P$, we have
+Proof. The result will be proved by induction on $k$. First, Corollary 16.11 (with its parameter equal to $k-1$) gives us a box $P \subset \mathbb{Z}_{N}^{k-1}$ of width at least $N^{(\alpha / 2)^{2^{2^{k+8}}}}$ and a multilinear function $\mu: P \rightarrow \mathbb{Z}_{N}$ such that, for at least $(\alpha / 2)^{2^{2^{k+8}}}|P|$ values of $\left(y_{1}, \ldots, y_{k-1}\right) \in P$, we have
 
 $$
-\left|\Delta\left(f ; y_{1}, \ldots, y_{k}\right)^{\wedge}\left(\mu\left(y_{1}, \ldots, y_{k}\right)\right)\right| \geqslant(\alpha / 2) N .
+\left|\Delta\left(f ; y_{1}, \ldots, y_{k-1}\right)^{\wedge}\left(\mu\left(y_{1}, \ldots, y_{k-1}\right)\right)\right| \geqslant(\alpha / 2) N .
 $$
 
 Let $\beta=\left(\alpha^{2} / 8\right)(\alpha / 2)^{2^{2^{k+8}}}$ and let $m$ be the largest odd number less than or equal to $N^{(\alpha / 2)^{2^{2^{k+8}}}}$. Then the hypotheses for Proposition 17.7 are satisfied (with $\alpha$ replaced by $\beta$ ). We can therefore find a polynomial $\phi$ of\\
-degree at most $k$ and a partition of $\mathbb{Z}_{N}$ into mod- $N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$ of size $l$ or $l+1$, where $l \geqslant m / 3 k$, such that the function $g(x)=f(x) \omega^{-\phi(x)}$ is not $2^{-2(k+3)^{3}} \beta$-uniform of degree $k-1$ with respect to the partition $Q_{1}, \ldots, Q_{M}$.
+degree at most $k$ and a partition of $\mathbb{Z}_{N}$ into mod- $N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$ of size $l$ or $l+1$, where $l \geqslant m /(3 k)$, such that the function $g(x)=f(x) \omega^{-\phi(x)}$ is not $2^{-2(k+3)^{3}} \beta$-uniform of degree $k-1$ with respect to the partition $Q_{1}, \ldots, Q_{M}$.
 
 For each $i$, define a (non-negative real) number $\beta_{i}$ by the equation
 
@@ -3494,7 +3507,7 @@ $$
 \sum_{j=1}^{M_{i}}\left|\sum_{s \in S_{i j}} g(s)\right| \geqslant\left(\beta_{i} / 2 k\right)^{2^{2^{k+9}}}\left|Q_{i}\right| .
 $$
 
-The mod- $N$ progressions $S_{i j}$ with $i \in I$, together with those $Q_{i}$ for which $i \notin I$, partition $\mathbb{Z}_{N}$. From the way we chose $I$, the average size of a cell in this partition is at least $r=(2 k)^{-1} p^{\left(2^{-(k+4)^{3}} \beta / 2 k\right)^{2^{2^{k+9}}}}$. By Lemma 5.13 we can find a refinement of this partition into proper arithmetic progressions of average size at least $r^{1 / 2} / 4$. Let us call these progressions $T_{1}, \ldots, T_{L}$. Since $\sum_{i \in I}\left|Q_{i}\right| \geqslant 2^{-2(k+4)^{3}} \beta N$ we have the inequality
+The mod- $N$ progressions $S_{i j}$ with $i \in I$, together with those $Q_{i}$ for which $i \notin I$, partition $\mathbb{Z}_{N}$. From the way we chose $I$, the average size of a cell in this partition is at least $r=(2 k)^{-1} p^{\left(2^{-2(k+4)^{3}} \beta / 2 k\right)^{2^{2^{k+9}}}}$. By Lemma 5.13 we can find a refinement of this partition into proper arithmetic progressions of average size at least $r^{1 / 2} / 4$. Let us call these progressions $T_{1}, \ldots, T_{L}$. Since $\sum_{i \in I}\left|Q_{i}\right| \geqslant 2^{-2(k+4)^{3}} \beta N$ we have the inequality
 
 $$
 \sum_{j=1}^{L}\left|\sum_{s \in T_{j}} g(s)\right| \geqslant\left(2^{-2(k+4)^{3}} \beta / 2 k\right)^{2^{2^{k+9}}} 2^{-2(k+4)^{3}} \beta N .
@@ -3526,7 +3539,7 @@ It is not hard to check that this condition is satisfied when $N \geqslant$ $2 \
 Notice that what matters for the bounds in the above proof is the number of times the iteration is performed. The fact that at each iteration we raise $N$ to a very small power makes hardly any further difference.
 
 % ed.: The source itself numbers this corollary 18.7 (there are no 18.3--18.6).
-Corollary 18.7. Let $k$ be a positive integer and let $N \geqslant$ 2 ↑ 2 ↑ 2 ↑ 2 ↑ 2 ↑ $(k+9)$. Then however the set $\{1,2, \ldots, N\}$ is coloured with two colours, there will be a monochromatic arithmetic progression of length $k$. \(\square\)
+Corollary 18.7. Let $k$ be a positive integer and let $N \geqslant 2 \uparrow 2 \uparrow 2 \uparrow 2 \uparrow 2 \uparrow (k+9)$. Then however the set $\{1,2, \ldots, N\}$ is coloured with two colours, there will be a monochromatic arithmetic progression of length $k$. \(\square\)
 
 Ron Graham has conjectured in several places (see e.g. [GRS]) that the function $M(k, 2)$ is bounded above by a tower of twos of height $k$. Corollary 18.7 proves this conjecture for $k \geqslant 9$, and indeed gives a much stronger bound. It looks as though more would be needed to prove it for $k=7$ (for example) than merely tidying up our proof. For $k \leqslant 5$, the exact values of $M(k, 2)$ are known and satisfy the conjecture.
 
