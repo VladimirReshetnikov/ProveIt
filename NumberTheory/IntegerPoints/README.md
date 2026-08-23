@@ -89,6 +89,13 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     class estimate keeps `f'` uniformly away from the integers, the `p = 1`
     estimate makes it antitone, and Kuz'min–Landau gives
     `≪ y⁻¹Nˢ` when `yN⁻ˢ < 1/2`.
+  - `IntegerPoints.GKHighCurvature`, `GKTheorem22` — **proved**:
+    Graham–Kolesnik Theorem 2.2 in both forms invoked by the chapter
+    (`gk_theorem22_invoked_sec33_holds`,
+    `gk_theorem22_invoked_sec34_holds`).  A shared arbitrary-`ε`
+    second-derivative estimate gives `≪ √L√N` for `L = yN⁻ˢ ≥ 1/2`; the
+    ranges `L < 1` and `L < log N` yield `≪ √N` and `≪ √(N log N)`.
+    `IntegerPoints.ExponentPairHalf` now reuses the same high-curvature core.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

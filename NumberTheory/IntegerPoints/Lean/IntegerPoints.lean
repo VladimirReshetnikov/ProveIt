@@ -47,6 +47,8 @@ import IntegerPoints.GKLemma36
 import IntegerPoints.GKLemma37
 import IntegerPoints.GKEq234
 import IntegerPoints.GKTheorem21
+import IntegerPoints.GKHighCurvature
+import IntegerPoints.GKTheorem22
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -79,6 +81,8 @@ the exact book form of the differencing Lemma 3.7.
 integer-shift form used in §3.3.
 `IntegerPoints.GKTheorem21` proves the reciprocal-scale exponential-sum bound
 quoted from Graham–Kolesnik Theorem 2.1 and invoked in §3.3.
+`IntegerPoints.GKHighCurvature` supplies the reusable second-derivative bound
+used by `IntegerPoints.GKTheorem22` to prove both invoked forms of Theorem 2.2.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
