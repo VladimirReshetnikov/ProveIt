@@ -32,6 +32,7 @@ theorem norm_u_le_triv {x : ℝ} (hx0 : x ≠ 0) : ‖D.u x‖ ≤ 1 / (π * D.l
   unfold u
   have hg20 := D.g2_zero_pos
   have hpi := Real.pi_pos
+  have hlam2 := D.hlam₂
   rw [norm_div, norm_mul, norm_mul, PS.norm_two_pi_I, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos hg20, Complex.norm_real, Real.norm_eq_abs]
   have hxa : 0 < |x| := abs_pos.2 hx0
@@ -49,6 +50,8 @@ theorem norm_u_le_small {x : ℝ} (hx : x ∈ Set.Icc D.a D.b) (hx0 : x ≠ 0) :
   unfold u
   have hg20 := D.g2_zero_pos
   have hpi := Real.pi_pos
+  have hlam2 := D.hlam₂
+  have hlam3 := D.hlam₃
   rw [norm_div, norm_mul, norm_mul, PS.norm_two_pi_I, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos hg20, Complex.norm_real, Real.norm_eq_abs]
   have hxa : 0 < |x| := abs_pos.2 hx0
@@ -58,8 +61,7 @@ theorem norm_u_le_small {x : ℝ} (hx : x ∈ Set.Icc D.a D.b) (hx0 : x ≠ 0) :
   have h3 := D.g2_pos_at_zero
   have hx2 : x ^ 2 = |x| ^ 2 := (sq_abs x).symm
   calc ‖e (D.r x) - 1‖ * (6 * D.lam₂) ≤ 2 * π * (D.lam₃ * |x| ^ 3 / 6) * (6 * D.lam₂) := by
-        gcongr
-        exact h1.trans (by gcongr)
+        exact mul_le_mul_of_nonneg_right (h1.trans (by gcongr)) (by positivity)
     _ = D.lam₃ * |x| ^ 2 * (2 * π * D.lam₂ * |x|) := by ring
     _ ≤ D.lam₃ * |x| ^ 2 * (2 * π * D.g2 0 * |x|) := by gcongr
     _ = D.lam₃ * x ^ 2 * (2 * π * D.g2 0 * |x|) := by rw [hx2]
@@ -112,9 +114,9 @@ theorem piece_identity {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p
     simp only
     push_cast
     field_simp
-    ring
   have hvd : ∀ x ∈ Set.uIcc p q,
-      HasDerivAt (fun x => e (D.q x)) (2 * π * Complex.I * (D.g2 0 * x) * e (D.q x)) x :=
+      HasDerivAt (fun x => e (D.q x))
+        (2 * π * Complex.I * ((D.g2 0 * x : ℝ) : ℂ) * e (D.q x)) x :=
     fun x _ => PS.hasDerivAt_e_comp (D.hasDerivAt_q x)
   have hu'i : IntervalIntegrable u' volume p q := by
     apply ContinuousOn.intervalIntegrable
@@ -130,12 +132,14 @@ theorem piece_identity {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p
       intro x hx
       have : (x : ℂ) ≠ 0 := by exact_mod_cast hne x hx
       simp [hI, this]
-  have hv'i : IntervalIntegrable (fun x => 2 * π * Complex.I * (D.g2 0 * x) * e (D.q x)) volume p q :=
+  have hv'i : IntervalIntegrable
+      (fun x => 2 * π * Complex.I * ((D.g2 0 * x : ℝ) : ℂ) * e (D.q x)) volume p q :=
     ((continuous_const.mul (Complex.continuous_ofReal.comp (continuous_const.mul continuous_id))).mul
       (PS.continuous_e_comp D.continuous_q)).intervalIntegrable _ _
   have h := intervalIntegral.integral_mul_deriv_eq_deriv_mul hud hvd hu'i hv'i
   have hL : ∫ x in p..q, D.F x =
-      ∫ x in p..q, D.u x * (2 * π * Complex.I * (D.g2 0 * x) * e (D.q x)) := by
+      ∫ x in p..q, D.u x *
+        (2 * π * Complex.I * ((D.g2 0 * x : ℝ) : ℂ) * e (D.q x)) := by
     apply integral_congr
     intro x hx
     rw [hIcc] at hx
@@ -143,7 +147,6 @@ theorem piece_identity {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p
     have hx0 : (x : ℂ) ≠ 0 := by exact_mod_cast hne x hx
     push_cast
     field_simp
-    ring
   rw [hL, h]
   -- rewrite `∫ u' e(q)` as the combination of `T₁` and `T₂`
   have hR : ∫ x in p..q, u' x * e (D.q x) =
@@ -160,7 +163,6 @@ theorem piece_identity {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p
       have hg : e (D.g x) = e (D.q x) * e (D.r x) := by rw [D.g_eq_q_add_r, KL.e_add]
       rw [hg]
       field_simp
-      ring
     · apply ContinuousOn.intervalIntegrable_of_Icc hpq
       apply ContinuousOn.mul (PS.continuous_e_comp D.continuous_g).continuousOn
       apply Complex.continuous_ofReal.comp_continuousOn
@@ -195,9 +197,10 @@ theorem t₂_split {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q) 
     rw [Set.uIcc_of_le hpq] at hx
     unfold t₂
     have hx0 : (x : ℂ) ≠ 0 := by exact_mod_cast hne x hx
+    change e (D.q x) * (e (D.r x) - 1) / (x : ℂ) ^ 2 =
+      e (D.g x) / (x : ℂ) ^ 2 - e (D.q x) / (x : ℂ) ^ 2
     rw [D.g_eq_q_add_r, KL.e_add]
     field_simp
-    ring
   · apply ContinuousOn.intervalIntegrable_of_Icc hpq
     apply ContinuousOn.div (PS.continuous_e_comp D.continuous_g).continuousOn
       (Complex.continuous_ofReal.pow 2).continuousOn
@@ -214,17 +217,16 @@ theorem T2_q_far {p q m : ℝ} (hpq : p ≤ q) (hm : 0 < m) (h0 : (0 : ℝ) ∉ 
     ‖∫ x in p..q, e (D.q x) / ((x : ℂ) ^ 2)‖ ≤ 3 / (2 * π * D.lam₂ * m ^ 3) := by
   have hne : ∀ x ∈ Set.Icc p q, x ≠ 0 := fun x hx h => h0 (h ▸ hx)
   exact weighted_first_derivative (φ := D.q) (φ1 := fun x => D.g2 0 * x) (φ2 := fun _ => D.g2 0)
-    D.hasDerivAt_q (fun x => (hasDerivAt_id' x).const_mul (D.g2 0)) (by fun_prop) continuous_const
+    D.hasDerivAt_q (fun x => by simpa using (hasDerivAt_id' x).const_mul (D.g2 0))
+    (by fun_prop) continuous_const
     hpq hm D.hlam₂ hmx
     (fun x hx => by
-      have := D.g2_zero_pos
       have hx0 : x ≠ 0 := hne x hx
-      simp only
-      have : 0 < x * x := by positivity
-      nlinarith)
+      calc
+        0 < D.g2 0 * (x * x) := mul_pos D.g2_zero_pos (mul_self_pos.mpr hx0)
+        _ = x * (D.g2 0 * x) := by ring)
     (fun x _ => D.g2_zero_pos.le)
     (fun x hx => by
-      simp only
       rw [abs_mul, abs_of_pos D.g2_zero_pos]
       exact mul_le_mul_of_nonneg_right D.g2_pos_at_zero (abs_nonneg _))
 
@@ -238,11 +240,13 @@ theorem T2_g_far {p q m : ℝ} (hpq : p ≤ q) (hm : 0 < m) (h0 : (0 : ℝ) ∉ 
       have hx0 : x ≠ 0 := hne x hx
       have := D.hlam₂
       rcases lt_or_gt_of_ne hx0 with h | h
-      · have := D.g1_le_of_nonpos (hsub hx) h.le
-        nlinarith
-      · have := D.g1_ge_of_nonneg (hsub hx) h.le
-        nlinarith)
-    (fun x hx => by linarith [D.h2 x (hsub hx), D.hlam₂])
+      · have hg1neg : D.g1 x < 0 :=
+          (D.g1_le_of_nonpos (hsub hx) h.le).trans_lt (mul_neg_of_pos_of_neg D.hlam₂ h)
+        exact mul_pos_of_neg_of_neg h hg1neg
+      · have hg1pos : 0 < D.g1 x :=
+          (mul_pos D.hlam₂ h).trans_le (D.g1_ge_of_nonneg (hsub hx) h.le)
+        exact mul_pos h hg1pos)
+    (fun x hx => D.hlam₂.le.trans (D.h2 x (hsub hx)))
     (fun x hx => D.abs_g1_ge (hsub hx))
 
 /-- `T₂` over a piece `[p, q] ⊆ [a, b]` with `m ≤ |x|`, `0 ∉ [p, q]`. -/
@@ -270,7 +274,7 @@ theorem intervalIntegrable_t₂ {p q : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ 
 
 /-- The half-line bound, stated for `[p, q]` with `0 < p ≤ q ≤ b` or `a ≤ p ≤ q < 0`:
 `‖∫_p^q t₂‖ ≤ λ₃/(3λ₂) + (b − a) λ₄/(24λ₂) + π λ₃² δ³/(4λ₂) + 6/(2π λ₂ δ³)`. -/
-theorem T2_half {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q)
+theorem T2_half {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (_h0 : (0 : ℝ) ∉ Set.Icc p q)
     (hsub : Set.Icc p q ⊆ Set.Icc D.a D.b) (hpδ : |p| ≤ δ ∨ |q| ≤ δ)
     (hside : 0 < p ∨ q < 0) :
     ‖∫ x in p..q, D.t₂ x‖ ≤ D.lam₃ / (3 * D.lam₂) + (D.b - D.a) * (D.lam₄ / (24 * D.lam₂)) +
@@ -286,7 +290,7 @@ theorem T2_half {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (h0 : (0 : ℝ) �
     have hps : p ≤ s := by
       rcases hpδ with h | h
       · rw [abs_of_pos hp] at h; exact le_min hpq h
-      · rw [abs_of_pos (by linarith)] at h; exact le_min hpq h
+      · rw [abs_of_pos (by linarith)] at h; exact le_min hpq (hpq.trans h)
     have hsq : s ≤ q := min_le_left _ _
     have hsδ : s ≤ δ := min_le_right _ _
     have hsub1 : Set.Icc p s ⊆ Set.Icc D.a D.b := Set.Icc_subset_Icc (hsub ⟨le_rfl, hpq⟩).1
@@ -372,8 +376,8 @@ theorem T2_half {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (h0 : (0 : ℝ) �
 
 /-! ### The total bound -/
 
-/-- `K₂(δ)` dominates both half-line bounds of `T₂` added together. -/
-theorem two_halves_le_K₂ {δ : ℝ} (hδ : 0 < δ) :
+/-- `K₂(δ)` is exactly the sum of the two half-line bounds for `T₂`. -/
+theorem two_halves_eq_K₂ {δ : ℝ} (hδ : 0 < δ) :
     2 * (D.lam₃ / (3 * D.lam₂) + (D.b - D.a) * (D.lam₄ / (24 * D.lam₂)) +
       π * D.lam₃ ^ 2 * δ ^ 3 / (4 * D.lam₂) + 6 / (2 * π * D.lam₂ * δ ^ 3)) = D.K₂ δ := by
   unfold K₂
@@ -400,6 +404,15 @@ theorem piece_bound {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (h0 : (0 : ℝ
     exact one_div_le_one_div_of_le D.hlam₂ D.g2_pos_at_zero
   have hI : ‖(1 / (2 * π * Complex.I) : ℂ)‖ = 1 / (2 * π) := by
     rw [norm_div, norm_one, PS.norm_two_pi_I]
+  have hlam : 0 ≤ 1 / D.lam₂ := one_div_nonneg.mpr D.hlam₂.le
+  have hinner : ‖(∫ x in p..q, e (D.g x) * ((D.r1 x / x : ℝ) : ℂ)) -
+      (1 / (2 * π * Complex.I)) * ∫ x in p..q, D.t₂ x‖ ≤
+      ‖∫ x in p..q, e (D.g x) * ((D.r1 x / x : ℝ) : ℂ)‖ +
+        ‖(1 / (2 * π * Complex.I) : ℂ)‖ * ‖∫ x in p..q, D.t₂ x‖ := by
+    calc
+      _ ≤ ‖∫ x in p..q, e (D.g x) * ((D.r1 x / x : ℝ) : ℂ)‖ +
+          ‖(1 / (2 * π * Complex.I)) * ∫ x in p..q, D.t₂ x‖ := norm_sub_le _ _
+      _ = _ := by rw [norm_mul]
   calc ‖D.u q * e (D.q q) - D.u p * e (D.q p) -
         (1 / (D.g2 0 : ℂ)) * ((∫ x in p..q, e (D.g x) * ((D.r1 x / x : ℝ) : ℂ)) -
           (1 / (2 * π * Complex.I)) * ∫ x in p..q, D.t₂ x)‖
@@ -415,19 +428,20 @@ theorem piece_bound {δ p q : ℝ} (hδ : 0 < δ) (hpq : p ≤ q) (h0 : (0 : ℝ
     _ ≤ (‖D.u q‖ + ‖D.u p‖) +
         (1 / D.lam₂) * (‖∫ x in p..q, e (D.g x) * ((D.r1 x / x : ℝ) : ℂ)‖ +
           ‖(1 / (2 * π * Complex.I) : ℂ)‖ * ‖∫ x in p..q, D.t₂ x‖) := by
-        gcongr
-        · rw [norm_mul, PS.norm_e_one, mul_one]
-        · rw [norm_mul, PS.norm_e_one, mul_one]
-        · rw [← norm_mul]
-          exact norm_sub_le _ _
+        apply add_le_add
+        · rw [norm_mul, PS.norm_e_one, mul_one, norm_mul, PS.norm_e_one, mul_one]
+        · exact mul_le_mul hg hinner (norm_nonneg _) hlam
     _ ≤ (‖D.u q‖ + ‖D.u p‖) +
         (1 / D.lam₂) * (1 / (2 * π) * (D.lam₃ / D.lam₂ + (q - p) * D.B₂) +
           1 / (2 * π) * (D.lam₃ / (3 * D.lam₂) + (D.b - D.a) * (D.lam₄ / (24 * D.lam₂)) +
             π * D.lam₃ ^ 2 * δ ^ 3 / (4 * D.lam₂) + 6 / (2 * π * D.lam₂ * δ ^ 3))) := by
         rw [hI]
-        gcongr
+        refine add_le_add (le_refl _) ?_
+        apply mul_le_mul_of_nonneg_left _ hlam
+        exact add_le_add hT1 (mul_le_mul_of_nonneg_left hT2 (by positivity))
     _ = _ := by ring
 
+set_option maxHeartbeats 800000 in
 /-- **The error integral** `∫_a^b e(q)(e(r) − 1)`:
 `‖∫_a^b F‖ ≤ 1/(πλ₂|a|) + 1/(πλ₂ b) + (1/(2πλ₂)) (2λ₃/λ₂ + (b − a) B₂ + K₂(δ))`. -/
 theorem main_bound {δ : ℝ} (hδ : 0 < δ) :
@@ -473,7 +487,7 @@ theorem main_bound {δ : ℝ} (hδ : 0 < δ) :
       have : ε ^ 3 = ε ^ 2 * ε := by ring
       rw [this]
       nlinarith [sq_nonneg ε]
-    calc _ ≤ (ε - -ε) * (π * D.lam₃ * ε ^ 3 / 3) := this
+    calc _ ≤ (ε - -ε) * (π * D.lam₃ * ε ^ 3 / 3) := by simpa [mul_comm] using this
       _ = 2 * π * D.lam₃ / 3 * ε * ε ^ 3 := by ring
       _ ≤ 2 * π * D.lam₃ / 3 * ε ^ 2 := by
           have : 2 * π * D.lam₃ / 3 * ε * ε ^ 3 = 2 * π * D.lam₃ / 3 * (ε ^ 3 * ε) := by ring
@@ -487,7 +501,7 @@ theorem main_bound {δ : ℝ} (hδ : 0 < δ) :
   have hume := D.norm_u_le_small (x := -ε) ⟨by linarith, by linarith⟩ (by linarith)
   have hue := D.norm_u_le_small (x := ε) ⟨by linarith, by linarith⟩ hε.ne'
   rw [neg_sq] at hume
-  have hK := D.two_halves_le_K₂ hδ
+  have hK := D.two_halves_eq_K₂ hδ
   -- assemble
   have hsum : ‖(∫ x in D.a..(-ε), D.F x) + ((∫ x in (-ε)..ε, D.F x) + ∫ x in ε..D.b, D.F x)‖ ≤
       ‖∫ x in D.a..(-ε), D.F x‖ + (‖∫ x in (-ε)..ε, D.F x‖ + ‖∫ x in ε..D.b, D.F x‖) := by
