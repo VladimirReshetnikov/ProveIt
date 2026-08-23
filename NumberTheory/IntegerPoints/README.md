@@ -68,6 +68,13 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     quadratic integral with the Fresnel main term.  The public wrapper translates
     back to `x₀`, uses Lemma 3.2 when an endpoint is closer than `λ₂⁻¹⁄²`, and
     obtains the case `g'' ≤ −λ₂` by complex conjugation.
+  - `IntegerPoints.GKLemma36` — **proved**: Graham–Kolesnik Lemma 3.6, the
+    B-process transformation (`gk_lemma36_holds`).  The proof combines the
+    truncated Poisson formula with Lemmas 3.2 and 3.4, controls the stationary
+    indices by derivative monotonicity, sums the endpoint errors harmonically,
+    and normalises the result to
+    `log(F N⁻¹ + 2) + F⁻¹⁄² N`; a separate `F < 1` argument closes the
+    scale where the raw asymptotic estimate alone is too coarse.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
