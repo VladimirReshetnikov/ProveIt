@@ -20114,6 +20114,462 @@ would eliminate the architecture.  The supports should respect the transport rel
 arbitrary high-contact coefficients.
 \end{target}
 
+\section{Rank-two rigidity: the pair-lattice defect and rational Hankel rays}
+\label{sec:ranktwo}
+
+This section integrates a further external report.  Its core — the canonical primitive
+counterexample, the free monoid $\mathcal E_{\mathrm{int}}(2,3)=\N_0+\N_0\beta$ of common integral exponents,
+the group $\mathcal E_{\mathrm{rat}}(2,3)=\Z+\Z\beta$ of common rational exponents, the uniqueness and leastness
+of $\beta$, and the reciprocal duality $\mathcal E_{\mathrm{int}}(2^\beta,3^\beta)=\N_0+\N_0\beta^{-1}$ — is the
+exact conditional structure already established in Sections~\ref{sec:conditional}
+and~\ref{sec:radical} and kernel-verified in \lean{PrimitiveGenerator},
+\lean{RationalPowerIndex}, and \lean{LeastSolution}; none of it is repeated here.  What is
+new is a compact \emph{pair-lattice} packaging of the descent invariant, its local Kummer
+form, and an exact classification of rational Hankel (three-term exponentiation) branches
+inside the conditional orbit.  The finite algebra of the latter is \statuslean{} in
+\lean{RationalHankelTriple}.
+
+\subsection{The saturation defect of a pair}
+\label{rt:defect}
+
+For a counterexample pair $(A,B)=(2^x,3^x)$ write $a_p=v_p(A)$, $b_p=v_p(B)$ and define the
+\emph{saturation defect}
+\begin{equation}
+ \delta_{\mathrm{sat}}(A,B)=\gcd\bigl(\{a_p:p\ne2\},\ \{b_p:p\ne3\},\ b_3-a_2\bigr).
+ \label{rt:eq-defect}
+\end{equation}
+The valuation lattice spanned by the axis vector of $(2,3)$ and the vector of $(A,B)$ has
+Smith normal form $\operatorname{diag}(1,\delta_{\mathrm{sat}})$, so $\delta_{\mathrm{sat}}$ is exactly the index of
+the saturation; and $d\mid\delta_{\mathrm{sat}}$ holds iff there are a residue $r$ (unique mod $d$) and
+integers $C,D$ with
+\begin{equation}
+ A=2^rC^d,\qquad B=3^rD^d,
+ \label{rt:eq-root-extract}
+\end{equation}
+in which case $y=(x-r)/d$ is again a solution with outputs $(C,D)$.  Extracting the full
+defect at once and then removing the axis content $\min(v_2(A),v_3(B))$ lands on the
+canonical primitive pair in a single step --- no iterated descent is needed.  This is the
+pair-lattice form of the rational-power index of Section~\ref{sec:conditional} and of the
+ambient saturation index $d$ of Section~\ref{sec:lattice}; the three notions agree on a
+counterexample orbit.  For a descendant $\alpha=n+k\beta$ the invariants are exact:
+axis content $n$, defect $k$, localized pair $(A_0^k,B_0^k)$ --- so the coordinate $k$ is
+\emph{intrinsic} (the Smith index of the pair lattice of $\alpha$), and a candidate pair
+with defect $k>1$ is never primitive.  The change of basis from $(1,\beta)$ to
+$(1,\alpha)$ lifts to the determinant lift $G\oplus\det G$ with Smith form
+$\operatorname{diag}(1,k,k)$: the rank-three bookkeeping carries no third invariant.
+
+\subsection{Local Kummer form and the defect-forcing criterion}
+\label{rt:kummer}
+
+The defect localizes prime by prime: $\ell^e\mid\delta_{\mathrm{sat}}(A,B)$ iff the two valuation
+columns satisfy $g_1\equiv rg_0\pmod{\ell^e}$ for some residue $r$, iff
+\[
+ [A]=[2]^r,\qquad [B]=[3]^r
+ \qquad\text{in }\Q_{>0}^{\times}/\Q_{>0}^{\times\ell^e}
+\]
+for one common $r$.  Hence for the \emph{canonical} pair the two valuation columns are
+linearly independent over $\mathbb F_\ell$ for \emph{every} prime $\ell$: at least one of
+\[
+ \ell\nmid a_p\ (\text{some }p\ne2),\qquad
+ \ell\nmid b_p\ (\text{some }p\ne3),\qquad
+ a_2\not\equiv b_3\ (\mathrm{mod}\ \ell)
+\]
+holds for each $\ell$.
+
+\begin{proposition}[Defect-forcing criterion]\label{rt:crit-defect}
+If every counterexample pair necessarily satisfies $\delta_{\mathrm{sat}}(A,B)>1$ --- equivalently, if
+some prime $\ell$ always carries a matched Kummer alignment $[A]=[2]^r$, $[B]=[3]^r$ modulo
+$\ell$-th powers --- then the conjecture follows.
+\end{proposition}
+
+This is a clean endpoint for an ``archimedean-to-Kummer bridge'': the real relation would
+have to force one congruence of valuation columns at one prime.  It is the mod-$\ell$
+counterpart of the local common-exponent criterion of Section~\ref{crit:support-defects}
+(via Corrales-Rodr\'iguez--Schoof, a common exponent at almost every prime characterizes
+the integral case), and the same caution applies: nothing currently produces the bridge,
+and the control principle of Section~\ref{log:control} is satisfied --- the criterion's
+hypothesis genuinely fails for the controls, so it is not control-blind.  A cheap but
+telling special case of the mod-$2$ statement: if $A\equiv B\ (\mathrm{mod}\ \text{squares})$
+in the precise matched sense above, descent halves the exponent.
+
+\subsection{Rational Hankel triples and the square valuation pattern}
+\label{rt:hankel}
+
+A three-term exponentiation orbit $U$, $V=U^{\xi}$, $W=U^{\xi^2}$ is encoded by the
+logarithmic Hankel identity $(\log V)^2=\log U\log W$.  Two multiplicatively independent
+initial values with a \emph{common} slope activate the six exponentials theorem: if both
+triples $(U_i,V_i,W_i)$, $i=1,2$, satisfy the Hankel identity with the same
+$\xi=\log V_i/\log U_i$, all six entries are algebraic, and $U_1,U_2$ are multiplicatively
+independent, then $\xi\in\Q$.  (For algebraic $a,b$ this is the general-bases form of the
+escape criterion of Section~\ref{sec:smooth}: simultaneous algebraicity of
+$a,a^\xi,a^{\xi^2},b,b^\xi,b^{\xi^2}$ forces $\xi\in\Q$ via Gelfond--Schneider plus six
+exponentials.)  The rational-slope case then has an exact integral classification:
+
+\begin{theorem}[Square valuation pattern]\label{rt:thm-square}
+Let $U,V,W$ be positive integers with $U^r=V^s$ and $V^r=W^s$ for coprime $r,s\ge1$ (the
+monomial recurrences of the slope $\xi=r/s$).  Then there is a unique positive integer $T$
+with
+\[
+ U=T^{s^2},\qquad V=T^{rs},\qquad W=T^{r^2};
+\]
+equivalently $(v_p(U),v_p(V),v_p(W))=d_p\,(s^2,rs,r^2)$ for every prime $p$.  Moreover the
+positive solutions of $m_1^2=m_0m_2$ are exactly $(m_0,m_1,m_2)=d\,(u^2,uv,v^2)$ with
+$u,v$ coprime.
+\end{theorem}
+
+Both statements are \statuslean{} (\lean{exists_common_base_of_recurrences} --- three
+applications of the coprime-exponent common-base lemma, no factorization bookkeeping ---
+and \lean{sq_eq_mul_parametrization}).  The exponent vector $(s^2,rs,r^2)$ is the primitive
+integer kernel of the two recurrence rows $(r,-s,0)$, $(0,r,-s)$, whose $2\times2$ minors
+$r^2,-rs,s^2$ have gcd $1$: the square pattern is lattice saturation in disguise.
+
+Inside a conditional orbit the classification is global.  For
+$t_i=n_i+k_i\beta\in\mathcal E_{\mathrm{rat}}(2,3)$, $t_i\ne0$, transcendence of $\beta$ turns the numerical
+relation $t_1^2=t_0t_2$ into the coefficient identities
+$n_1^2=n_0n_2$, $2n_1k_1=n_0k_2+n_2k_0$, $k_1^2=k_0k_2$, and these force all cross
+determinants $n_ik_j-n_jk_i$ to vanish: the three exponents lie on one rational ray
+$t_i=m_i\tau$ with $m_1^2=m_0m_2$, hence, for positive integral exponents,
+\[
+ (t_0,t_1,t_2)=d\,(s^2,rs,r^2)\,\tau ,
+\]
+and the localized solution pairs are $(\mathbf T^{s^2},\mathbf T^{rs},\mathbf T^{r^2})$ with
+$\mathbf T=(A_0,B_0)^{d}$ after the axis factor is removed.  The determinant identity
+\[
+ (n_0k_1-n_1k_0)(n_2k_1-n_1k_2)=0
+\]
+and the full ray conclusion for nonzero forms, together with the transcendence bridge, are
+\statuslean{} (\lean{crossDet_mul_crossDet_eq_zero}, \lean{hankel_ray},
+\lean{coeff_identities_of_transcendental}).
+
+\begin{corollary}[Quadratic closure inside the orbit is rational]\label{rt:cor-quadclosure}
+Let $t\ne0$ lie in $\mathcal E_{\mathrm{rat}}(2,3)$ and $\theta\in\mathcal E_{\mathrm{rat}}(2^t,3^t)$.  If also
+$\theta^2\in\mathcal E_{\mathrm{rat}}(2^t,3^t)$, then $\theta\in\Q$.
+\end{corollary}
+
+\begin{proof}
+With $u=t\theta$, $v=t\theta^2$ in $\Z+\Z\beta$ one has $u^2=tv$; the ray classification
+puts $t,u,v$ on one rational ray, so $\theta=u/t\in\Q$.
+\end{proof}
+
+This makes exact the reason fractional-linear manipulations cannot manufacture the missing
+$\beta^2$ column: the orbit ratios $(m+\ell\beta)/(n+k\beta)$ with nonproportional
+coefficient vectors are transcendental (Gelfond--Schneider), each changed base pair
+$(2^t,3^t)$ again has the two-dimensional exponent group $(\Z+\Z\beta)/t$
+(Section~\ref{sec:spectrum} in spectrum form), and any \emph{quadratic} closure collapses
+to a rational slope.  The composable family of these base changes is a groupoid model of
+every transformation obtainable without new arithmetic information --- all of it strictly
+inside the six-exponentials ceiling of rank two.
+
+\subsection{Near-axis remarks and cross-references}
+\label{rt:nearaxis}
+
+For the canonical pair, $\min(a_2,b_3)=0$ prevents simultaneous cancellation at the axis:
+at least one of $A^q/2^p$, $B^q/3^p$ is already in lowest terms with denominator exactly
+$2^p$ resp.\ $3^p$, giving the elementary bound $|q\beta-p|\ge1/(2^{p+1}\log2)$ (resp.\
+base $3$) --- far weaker than the height laws of Sections~\ref{sec:orbit-height-entropy}
+and~\ref{masks:height} but assumption-free.  The report's ``synchronized difference pairs''
+$\Delta_2=2^p-A^q$, $\Delta_3=3^p-B^q$ with
+$(\Delta_3/3^p)/(\Delta_2/2^p)\to\log3/\log2$ are precisely the synchronized germ gaps of
+Section~\ref{sec:centeredtrace}; the two-channel theorem and the channel-descent
+proposition (Theorem~\ref{ct:thm-channels}, Proposition~\ref{ct:prop-descent}) are the
+sharpest known statements about coupling their prime divisors, and the reconnaissance of
+Section~\ref{log:channel-recon} found no further exploitable coupling.  The report's
+research programs map onto standing targets: its Kummer-alignment program is
+Criterion~\ref{rt:crit-defect}; its nonlinear-orbit and functional-source programs are the
+escape criterion (Section~\ref{sec:smooth}) and Section~\ref{primetop:remaining}; its
+synchronized-primitive-divisor program is Target~\ref{ct:target}; its monoid-leakage
+program packages the negative-coefficient contradictions already implicit in
+Section~\ref{sec:conditional}.
+
+\emph{Assessment.}  The merged material consolidates the conditional structure in a tighter
+normal form and contributes two exact classifications (the local Kummer form of the defect
+with its every-$\ell$ independence statement, and the Hankel-ray/square-pattern theorems,
+now kernel-checked).  It does not move the four-exponentials barrier; its value is that the
+defect-forcing criterion is a genuinely non-control-blind endpoint, and that quadratic
+closure inside the orbit is now excluded exactly rather than heuristically.
+
+\section{Bhargava factorials of the two--three semigroup}
+\label{sec:bhargava}
+
+The corpus has repeatedly normalized interpolation determinants by ad hoc Smith factors and
+noted (Section~\ref{crit:positive-closure} environs) that Bhargava orderings remained an
+undeveloped interface.  This section integrates a report that develops it completely for the
+input semigroup
+\[
+ \mathcal B=\{2^a3^b:a,b\in\Nzero\},
+\]
+computing the \emph{exact} generalized factorial $k!_{\mathcal B}$ --- hence the optimal universal
+denominator of integer-valued interpolation on the smooth nodes --- and reformulating the
+conjecture as a subunit problem in the canonical lattice
+$\operatorname{Int}(\mathcal B,\Z)=\{P\in\Q[T]:P(\mathcal B)\subset\Z\}$.  Status: the local formulas, the
+cutoff, the normalized determinant, the defect theorems, and the localized no-go are
+\statusnew{} paper proofs (with Bhargava's choice-invariance theorem \statusknown); the
+tables are \statusexactcomp{} with source; two finite cores added here are \statuslean{}
+(\lean{SmoothSemigroupCore}).
+
+\subsection{The exact local factorial}
+\label{bh:local}
+
+For a prime $p$ let $\nu_{\mathcal B,p}(k)$ be Bhargava's minimal valuation of a $k$-th difference
+product, so that $k!_{\mathcal B}=\prod_pp^{\nu_{\mathcal B,p}(k)}$ and a regular basis
+$F_0,F_1,\ldots$ of $\operatorname{Int}(\mathcal B,\Z)$ has leading coefficients $1/k!_{\mathcal B}$.
+Passing to $p$-adic closures and using that every closed subgroup of $\Z_p^\times$ ($p$ odd)
+is procyclic, one gets, with
+$h_p(e)=|\langle2,3\rangle\bmod p^e|=\operatorname{lcm}(\operatorname{ord}_{p^e}2,
+\operatorname{ord}_{p^e}3)$:
+\begin{equation}
+ \nu_{\mathcal B,p}(k)=\sum_{e\ge1}\mathcal Bigl\lfloor\frac k{h_p(e)}\mathcal Bigr\rfloor\quad(p\ge5),
+ \qquad
+ \nu_{\mathcal B,3}(k)=v_3(k!),
+ \label{bh:eq-local}
+\end{equation}
+the latter because $2$ is a primitive root modulo $3^e$, so $\mathcal B$ is dense in $\Z_3$ and the
+prime $3$ gives \emph{no gain} over $\Z$.  At $p=2$ the closure splits self-similarly,
+$K=\overline{\langle3\rangle}\sqcup2K$, giving an exact two-branch merge recursion for
+$a_k=\nu_{\mathcal B,2}(k)$ (odd-branch costs $u_s=s+\lfloor s/2\rfloor+v_2(s!)$, even-branch costs
+$r+a_r$; the multiset of values is the ordered merge of the two streams) with first values
+$0,0,1,1,3,4,4,5,7,9,9,10,\ldots$ (independently reverified here) and, by a renewal
+argument for self-similar merges,
+\begin{equation}
+ \lim_k\frac{\nu_{\mathcal B,2}(k)}k=\frac{\sqrt{11}-1}2=1.15831\ldots
+ \label{bh:eq-slope}
+\end{equation}
+(the equation $1/c=1/(1+c)+2/5$ from the odd-branch slope $5/2$).  Every unramified prime
+carries strict excess over the ordinary factorial:
+$\alpha_p=\sum_e1/h_p(e)\ge p/(p-1)^2$.  A one-line pigeonhole \emph{cutoff} makes the
+factorial finitely computable: for $p\ge5$ and $R=\lfloor\sqrt k\rfloor$, if
+$h_p(e)\le k$ then two of the $(R+1)^2$ box elements $2^a3^b$ ($a,b\le R$) collide modulo
+$p^e$, so $p^e$ divides a nonzero difference below $6^R$:
+\begin{equation}
+ h_p(e)\le k\ \Longrightarrow\ p^e<6^{\lfloor\sqrt k\rfloor}.
+ \label{bh:eq-cutoff}
+\end{equation}
+The pigeonhole core of \eqref{bh:eq-cutoff} is \statuslean{}
+(\lean{modulus_lt_of_card_image_lt}).  The resulting exact values (e.g.\
+$k!_{\mathcal B}/k!=1,1,1,1,5,2,7,2,5,20,22,92,10465,\ldots$; first proper-orbit prime $23$ at
+$k=11$ via $h_{23}(1)=11$; exceptional orbit primes like $431$ entering at degree
+$43$) come with independent consistency checks.  The same calculus applies verbatim to any
+two-generator semigroup --- in particular to the \emph{output} semigroup
+$\{M^aN^b\}$ of a counterexample, whose ramified branches at primes dividing $MN$ obey
+analogous rooted merge systems with closed renewal slopes.
+
+\subsection{A counterexample as an isomorphism of factorial semigroups}
+\label{bh:iso}
+
+Under a hypothetical solution the power map $q\mapsto q^x$ is an order-preserving monoid
+isomorphism from $\mathcal B$ onto the output semigroup, and both carry now-computable factorial
+spectra $(k!_{\mathcal B})$ and $(k!_{\mathcal C})$.  The isomorphism controls all archimedean
+ratios exactly, while the two local spectra are a priori unrelated --- Bhargava factorials
+are invariants of the embedded sets, not of the abstract monoid.  \emph{Factorial-spectrum
+rigidity} --- find a property of order-preserving power isomorphisms forcing a quantitative
+relation between the two spectra --- is a genuinely new formulation of the missing
+arithmetic--archimedean bridge, and it passes the control test of
+Section~\ref{log:control}: for integer $x$ the two spectra coincide up to the explicit
+change of generators.
+
+\subsection{The optimally normalized determinant and the factorial defect}
+\label{bh:determinant}
+
+For nodes $E=(q_0,\ldots,q_{d+1})\subset\mathcal B$ and a regular basis, the determinant with
+columns $F_0,\ldots,F_d,t^x$ is, under a counterexample, a \emph{nonzero integer} (each
+$F_j(q_i)\in\Z$, each $q_i^x\in\Z$; nonvanishing because $1,t,\ldots,t^d,t^x$ is a Chebyshev
+system on $\R_{>0}$), equal to the monomial determinant divided by $\prod_{j\le d}j!_{\mathcal B}$.
+Every $m$-node Vandermonde is divisible by $\prod_{j<m}j!_{\mathcal B}$, so each node set has an
+integer \emph{factorial defect} $Q_{\mathcal B}(E)=|V(E)|/\prod_{j<m}j!_{\mathcal B}$, and the master
+archimedean inequality for a counterexample reads
+\begin{equation}
+ Q_{\mathcal B}(E)\,(d+1)!_{\mathcal B}\,\mathcal Bigl|\binom{x}{d+1}\mathcal Bigr|\,\xi^{x-d-1}\ \ge\ 1
+ \qquad(\xi\in(\min E,\max E)).
+ \label{bh:eq-master}
+\end{equation}
+The defect minima through eight nodes are exactly
+\[
+ 1,\ 1,\ 1,\ 1,\ 1,\ 7,\ 7,\ 396 ,
+\]
+by exhaustive exact certificates.  The first failure is structural:
+
+\begin{theorem}[First factorial defect]\label{bh:thm-defect7}
+Every six-node subset of $\mathcal B$ has $Q_{\mathcal B}(E)\ge7$, with equality for
+$E_6=\{1,2,3,4,6,8\}$.  Hence $\mathcal B$ admits no simultaneous $p$-ordering prefix of length
+six, and the regular basis is not a Newton basis from degree $6$ on (the first non-Newton
+basis element is explicit, glued by CRT from local orderings).
+\end{theorem}
+
+The proof reduces, via a translation-invariant span bound, to $792$ gap patterns, of which
+only $(0,1,2,4,5,6)$ could beat $7$; that pattern would need two triples of consecutive
+$3$-smooth integers four apart, and \emph{the only consecutive triples in $\mathcal B$ are
+$\{1,2,3\}$ and $\{2,3,4\}$} --- this last, decisive fact is \statuslean{}
+(\lean{consecutive_threeSmooth_triples}).  The verification $V(E_6)=7\cdot345600$ and the
+denominator $\prod_{j\le5}j!_{\mathcal B}=345600$ are exact arithmetic.
+
+The lattice reformulation is a closest-vector statement (\emph{Bhargava locking}): for a
+counterexample, every $P\in\operatorname{Int}_{\le d}(\mathcal B,\Z)$ misses the integer vector
+$(q_i^x)_i$ by at least $1$ in $\ell^\infty$ on any $d+2$ nodes; the primitive left-kernel
+vector of the evaluation matrix is a dual certificate.  Four finite criteria result
+(normalized determinant below $\prod j!_{\mathcal B}$; low-defect curvature
+\eqref{bh:eq-master} reversed; regular-basis CVP; paired input--output determinants for
+$t^x$ and $t^{1/x}$), each unconditional as an implication.
+
+\subsection{Localization and the initial-form frontier}
+\label{bh:localized}
+
+Over $R_6=\Z[1/6]$ the full group $\{2^a3^b:a,b\in\Z\}$ is dense in $\R_{>0}$ and its
+localized factorial keeps exactly the unramified part of \eqref{bh:eq-local}.  For a
+counterexample the localized determinant is a nonzero element of $\Z[1/(6MN)]$: every
+possible denominator is supported on the finitely many structural primes
+$S=\{p:p\mid6MN\}$, so the conjecture follows from a single family of node sets with
+\[
+ |\Delta^\times|_\infty\cdot\mathfrak d_S(\Delta^\times)<1 .
+\]
+But the natural construction fails for the familiar reason, here in sharp form: for a
+one-ratio geometric cluster $1,u,\ldots,u^{d+1}$ with $u=2^a3^{-b}\to1$, the archimedean
+determinant decays only polynomially in $b$ (like $|\log u|^{\binom{d+2}2}$), while
+termwise clearing at the structural primes costs exponentially in $b$.  This is the
+Bhargava-normalized incarnation of the height mismatch of
+Sections~\ref{sec:orbit-height-entropy} and~\ref{masks:endgame}, with all universal
+denominators already removed; what survives is precisely a cancellation target: at each
+$p\in S$, write $\Delta^\times=p^{m_p}(I_p+pJ_p)$ with $m_p$ the minimal term valuation ---
+the \emph{initial-form bridge} asks for families where the archimedean logarithm is
+$-A_d+o(A_d)$ while the initial forms $I_p$ vanish to weighted depth exceeding the termwise
+budget by $A_d/\log p$.  This is the regular-basis twin of the shared-pole Newton endgame
+(Target~\ref{masks:target} and \eqref{masks:eq-shared-newton}); the two formulations should
+be attacked together, and the LP/Farkas methodology of Section~\ref{log:lp-experiment}
+applies to both.
+
+\subsection{Subquadratic growth and the two-prime synchronization gap}
+\label{bh:sync}
+
+A second, independently written report derives the same local calculus --- identical
+formulas at every prime, the identical two-adic value stream, and the identical slope
+$(\sqrt{11}-1)/2$ --- which functions as an external cross-check of
+Section~\ref{bh:local}.  It adds three results that complete the picture.
+
+First, the lifting depths are a gcd sequence: for $p\ge5$ with first orbit size
+$d_p=h_p(1)$, the saturation depth satisfies $c_p=v_p(G_{d_p})$ where
+$G_d=\gcd(2^d-1,3^d-1)$, so Bugeaud--Corvaja--Zannier \cite{BCZ2003} bounds the whole
+factorial:
+\begin{equation}
+ \log\bigl(k!_{\mathcal B}\bigr)
+ \le O(k)+2k\sum_{d\le k}\frac{\log G_d}{d}
+ = o(k^2).
+ \label{bh:eq-subquadratic}
+\end{equation}
+The intrinsic local denominator of the smooth semigroup is therefore \emph{subquadratic}:
+small enough that exponential-height nodes would beat it.
+
+Second, the \emph{conditional scalar bridge}: if there were simultaneous $p$-ordering
+prefixes $A_j\subset\mathcal B$ of lengths $n_j\to\infty$ whose least node satisfies
+$\log\min A_j\ge cn_j$, then the integer $n_j!_{\mathcal B}\,[A_j]\,t^x$ (integral by the
+unit-triangular Newton basis) would have absolute value
+$n_j!_{\mathcal B}\,|\binom{x}{n_j}|\,\xi^{x-n_j}\to0$ by
+\eqref{bh:eq-subquadratic} --- proving the conjecture.
+
+Third, and decisively, \emph{no such family exists}, for a reason more structural than the
+six-node defect: the two structural primes impose incompatible equilibrium populations.  An
+asymptotically optimal dyadic ordering must have odd-node proportion
+$q_2=(\sqrt{11}-1)/5=0.4633\ldots$ (from the self-similar merge slopes), while an
+asymptotically optimal triadic ordering must have $3$-unit proportion $2/3$; on
+$\mathcal B\setminus\{1\}$ the odd nodes and the $3$-unit nodes are \emph{disjoint}
+($2^a3^b$ is odd iff $a=0$, a $3$-unit iff $b=0$), and
+\[
+ q_2+\tfrac23=1+\tfrac{3\sqrt{11}-8}{15}>1 .
+\]
+Quantitatively, with pair energies
+$\mathcal E_p(A)=\tfrac2{N^2}\sum_{s<t}v_p(s-t)$, every $N$-node set
+$A\subset\mathcal B\setminus\{1\}$ pays
+\begin{equation}
+ \log2\,\bigl(\mathcal E_2(A)-\mathcal E_2^{\min}\bigr)
+ +\log3\,\bigl(\mathcal E_3(A)-\mathcal E_3^{\min}\bigr)
+ \ \ge\ \kappa+o(1),
+ \qquad
+ \kappa=\eta^2\frac{ab}{a+b}=0.0236\ldots,
+ \label{bh:eq-quadratic-gap}
+\end{equation}
+($\eta=q_2-\tfrac13$, $a=\tfrac{\sqrt{11}+6}2\log2$, $b=\tfrac94\log3$): at least
+$\tfrac12\kappa N^2$ extra logarithmic Vandermonde mass beyond the separated local minima.
+This explains the defects $7,7,396$ of Section~\ref{bh:determinant} asymptotically and
+closes the scalar-bridge route unconditionally --- another entry for the closed-routes
+ledger of Section~\ref{sec:session-log}, with the same conclusion as always: the surviving
+frontier is output-sensitive cancellation, not sharper counting.  A near-geometric chain
+$s_j=2^{ju}3^{(n-j)v}$ makes the same point in exact form: its $2$- and $3$-adic
+interpolation tax is $\tfrac{n(n-1)}2(u\log2+v\log3)$ against node heights $\asymp nu\log2$,
+cancelling all but one power of the archimedean decay --- consistent with the one-ratio
+cluster no-go of Section~\ref{bh:localized}.
+
+\emph{Assessment.}  The Bhargava calculus settles, exactly and permanently, the universal
+local-divisibility side of every interpolation attack on the smooth nodes: no future
+determinant experiment needs to guess its denominator normalization again, node sets can be
+scored by their exact defect $Q_{\mathcal B}$, and automatic output-prime mass is separated from
+genuine signed cancellation.  It does not move the barrier --- its own no-gos show the
+localized cluster route fails by the standard exponential-vs-polynomial margin, and the
+simultaneous-ordering route fails by the two-prime equilibrium clash
+\eqref{bh:eq-quadratic-gap} --- but it replaces ``try a larger determinant'' by two
+canonical open interfaces: factorial-spectrum rigidity for the input--output isomorphism,
+and structural-prime initial-form cancellation in the optimally normalized lattice.
+
+\section{Additive isolation and the weighted smooth-support series}
+\label{sec:additive-isolation}
+
+A further external report develops three themes.  Its first --- an ``algebraic-orbit
+filtration'' $\operatorname{Orb}_r(x)$ of bases whose first $r$ iterates under
+$\alpha\mapsto\alpha^x$ stay algebraic, with ranks $2,\le1,0$ at $r=1,2,3$, the rank
+identity $\operatorname{rank}\langle2,3,M,A\rangle=4-\operatorname{rank}
+\operatorname{Orb}_2(x)\in\{3,4\}$, and the M\"obius form of the exponent in the dependent
+branch --- is precisely the kernel-verified spectrum/kernel/tower chain of
+Sections~\ref{sec:spectrum}, \ref{sec:kernel}, and the depth-three tower theorem
+(\lean{TowerRigidity}), together with the rank-geometry M\"obius parametrization and its
+height bound in Section~\ref{sec:rank-geometry}; it is not repeated.  The two remaining
+themes are new to this report and are recorded here.
+
+\subsection{Additive isolation}
+\label{ai:isolation}
+
+The spectrum theorem makes $u^x$ algebraic exactly for $3$-smooth positive rationals $u$.
+Combining it with the classification of \emph{consecutive} smooth integers gives an exact
+additive statement:
+
+\begin{proposition}[Consecutive smooth pairs; additive isolation]\label{ai:prop-pairs}
+The positive integers $u$ with $u$ and $u+1$ both $3$-smooth are exactly
+$u\in\{1,2,3,8\}$ (pairs $(1,2),(2,3),(3,4),(8,9)$).  Consequently, under a hypothetical
+counterexample, $(u+1)^x$ is algebraic for a smooth $u$ exactly when $u\in\{1,2,3,8\}$, and
+transcendental otherwise; likewise $(u-1)^x$ is algebraic exactly for $u\in\{2,3,4,9\}$.
+The longest run of consecutive smooth integers is $1,2,3,4$.
+\end{proposition}
+
+The external report proves the pair classification by invoking Mih\u{a}ilescu's theorem;
+that is far more than needed.  The equations $2^a=3^b+1$ and $3^d=2^a+1$ are elementary
+(reduce modulo $3$ resp.\ $8$, force an even exponent, and factor $y^2-1$ into two powers of
+the other base differing by $2$), and the whole classification is \statuslean{} in
+\lean{SmoothSemigroupCore} (\lean{pow_two_eq_pow_three_add_one},
+\lean{pow_three_eq_pow_two_add_one}, \lean{consecutive_threeSmooth_pairs}), alongside the
+triple classification used by the six-node defect.  Additive isolation sharpens the
+``one more base'' picture of Section~\ref{sec:smooth}: a counterexample is multiplicatively
+closed but additively barren --- any derivation of algebraicity of $5^x$, or of the
+successor of any nonexceptional smooth integer, is already a complete proof, not an
+auxiliary step.
+
+\subsection{The weighted smooth-support series}
+\label{ai:series}
+
+The report encodes a hypothetical solution in the weighted series
+\[
+ H_{M,A}(z)=\sum_{a,b\ge0}M^aA^b\,z^{2^a3^b}\in\Z[[z]],
+\]
+whose coefficient at a smooth exponent $s$ is exactly $s^x$.  It satisfies an exact mixed
+$2$--$3$ Mahler identity (inclusion–exclusion over the two dilations $z\mapsto z^2$,
+$z\mapsto z^3$), extending the finite mixed-Mahler algebra of \lean{MixedMahlerFinite}.
+Two quantitative results are proved about the automatic side: the number of binary and
+ternary Cartier states of the unweighted support series grows exponentially (so the support
+is far from $2$- or $3$-automatic --- quantifying the carry-language analysis of
+Section~\ref{sec:carry-languages}), and the reductions of $H_{M,A}$ modulo a prime $\ell$ are
+classified: they are algebraic over $\mathbb F_\ell(z)$ exactly according to the
+$\ell$-divisibility geometry of $M$ and $A$.  The diagnosis matches the corpus: finite
+characteristic sees the divisibility geometry of the outputs, while the conjecture is an
+archimedean equality of two pole abscissae; the missing ingredient is a bridge between the
+two layers, the same missing coupling as everywhere else in this report.  \statusnew{}
+throughout this subsection; the elementary saturation and normalization layers of the
+external report duplicate kernel-verified corpus modules and were not re-integrated.
+
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
 
@@ -20391,7 +20847,7 @@ directed-rounding scan is mechanical with the semiconvergent device; it converts
 small, and the work is pure arithmetic replay.)
 \end{enumerate}
 
-\section{What the five frameworks add to the frontier}
+\section{What the integrated frameworks add to the frontier}
 \label{sec:frontier-update}
 
 Sections~\ref{sec:primetop}--\ref{sec:masks} came from five independent investigations.
@@ -21120,6 +21576,35 @@ kernel-checked) & \statuslean{} core; prime existence \statusknown &
 Constructive branch of the linear-width factorial target empty for every mesoscopic pair &
 \statusnew{} (one-paragraph proof from the independence proposition) &
 Corollary~\ref{log:cor-target-dead} \\
+Pair-lattice defect: gcd formula, Smith form $\operatorname{diag}(1,\delta_{\mathrm{sat}})$,
+matched root extraction, local Kummer form, mod-$\ell$ independence for every $\ell$,
+defect-forcing criterion & \statusnew{} (agrees with the kernel-verified rational-power
+index on the orbit) & Section~\ref{sec:ranktwo} \\
+Square valuation pattern, $m_1^2=m_0m_2$ parametrization, Hankel-ray classification with
+transcendence bridge; quadratic closure inside the orbit is rational & \statuslean{} core &
+\lean{RationalHankelTriple}; Section~\ref{rt:hankel} \\
+Bhargava factorial of $\langle2,3\rangle_+$: exact local formulas, two-adic merge recursion
+and slope $(\sqrt{11}-1)/2$, square-box cutoff, complete factorization, excess slopes &
+\statusnew{} (Bhargava invariance \statusknown); tables \statusexactcomp &
+Section~\ref{bh:local} \\
+Pigeonhole cutoff core and consecutive three-smooth triples & \statuslean &
+\lean{SmoothSemigroupCore}; Sections~\ref{bh:local}, \ref{bh:determinant} \\
+Bhargava-normalized determinant, factorial defect $Q_{\mathcal B}$, six-node defect $\ge7$,
+defect minima $1,1,1,1,1,7,7,396$, Bhargava locking, four criteria & \statusnew{};
+enumeration \statusexactcomp & Section~\ref{bh:determinant} \\
+Localized finite-support criterion, one-ratio cluster no-go, initial-form bridge &
+\statusnew & Section~\ref{bh:localized} \\
+Factorial-spectrum rigidity (input--output isomorphism) & \statusopen{} target &
+Section~\ref{bh:iso} \\
+Subquadratic factorial growth via $c_p=v_p(\gcd(2^{d_p}-1,3^{d_p}-1))$ and BCZ; conditional
+scalar bridge; no high simultaneous orderings ($q_2+\tfrac23>1$); quadratic synchronization
+gap $\kappa=0.0236\ldots$ & \statusnew{}; BCZ \statusknown &
+Section~\ref{bh:sync} \\
+Consecutive smooth pairs $(1,2),(2,3),(3,4),(8,9)$, Catalan-free, and additive isolation &
+pairs \statuslean{} (\lean{SmoothSemigroupCore}); isolation \statusnew &
+Section~\ref{ai:isolation} \\
+Weighted smooth-support series: mixed Mahler identity, Cartier-state growth, mod-$\ell$
+algebraicity classification & \statusnew & Section~\ref{ai:series} \\
 LP layer of the linear-width factorial target empty for the control; dense-plus-capture
 Farkas mechanism & \statusexactcomp &
 Section~\ref{log:lp-experiment}; \path{scripts/linear_width_lp.py} \\
@@ -21382,6 +21867,12 @@ structural primes, orthogonality determinant lemma \\
 \lean{.../TerminalFactorialIndependence} & window-prime valuation $v_p(F_t)=1$ from pure
 inequalities, high-prime exclusion, finite-product valuation, and multiplicative
 independence of the terminal factorials under a window-prime hypothesis \\
+\lean{.../RationalHankelTriple} & square valuation pattern from coprime-slope recurrences,
+parametrization of $m_1^2=m_0m_2$, Hankel-ray cross-determinant identity and
+classification, transcendence bridge to coefficient identities \\
+\lean{.../SmoothSemigroupCore} & pigeonhole modulus cutoff for distinct residues, injectivity
+of $(a,b)\mapsto2^a3^b$, square-box cutoff, and the classification of consecutive
+three-smooth triples \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
