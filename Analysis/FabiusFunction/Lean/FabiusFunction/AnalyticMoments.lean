@@ -966,4 +966,212 @@ theorem complexGeneratingFunction_eq_series_formula
   rw [halfMomentGeneratingSeries]
   exact hfull.tsum_eq.symm
 
+private lemma integral_rvachev_mul_eq_interval
+    (F : BoundedFabius) (hF : IsFabius F) (g : ℝ → ℂ) :
+    (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
+      ∫ x in (-1 : ℝ)..1, (rvachevUp F x : ℂ) * g x := by
+  have hwhole : (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
+      ∫ x : ℝ in Icc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x := by
+    rw [← integral_indicator measurableSet_Icc]
+    apply integral_congr_ae
+    filter_upwards with x
+    by_cases hmem : x ∈ Icc (-1 : ℝ) 1
+    · simp [hmem]
+    · have hout : x ≤ -1 ∨ 1 ≤ x := by
+        simp only [Set.mem_Icc, not_and_or, not_le] at hmem
+        rcases hmem with hx | hx
+        · exact Or.inl hx.le
+        · exact Or.inr hx.le
+      rcases hout with hx | hx
+      · rw [rvachev_eq_zero_of_le_neg_one F hF hx]
+        simp [hmem]
+      · rw [rvachev_eq_zero_of_one_le F hF hx]
+        simp [hmem]
+  calc
+    (∫ x : ℝ, (rvachevUp F x : ℂ) * g x) =
+        ∫ x : ℝ in Icc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x := hwhole
+    _ = ∫ x : ℝ in Ioc (-1 : ℝ) 1, (rvachevUp F x : ℂ) * g x :=
+      integral_Icc_eq_integral_Ioc
+    _ = ∫ x in (-1 : ℝ)..1, (rvachevUp F x : ℂ) * g x := by
+      rw [intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
+
+private lemma rvachevFourier_expansion_hasSum
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    HasSum
+      (fun m : ℕ => ∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ m /
+            (m.factorial : ℂ)))
+      (∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
+  let c : ℂ := -2 * Real.pi * Complex.I * z
+  let term : ℕ → ℝ → ℂ := fun m t =>
+    (rvachevUp F t : ℂ) * ((c * (t : ℂ)) ^ m / (m.factorial : ℂ))
+  let bound : ℕ → ℝ → ℝ := fun m _ => ‖c ^ m / (m.factorial : ℂ)‖
+  apply intervalIntegral.hasSum_integral_of_dominated_convergence bound
+  · intro m
+    exact ((Complex.continuous_ofReal.comp (rvachev_contDiff F hF).continuous).mul
+      (((continuous_const.mul Complex.continuous_ofReal).pow m).div_const _)).aestronglyMeasurable
+  · intro m
+    filter_upwards with t
+    intro ht
+    have htLower : -1 ≤ t := by simpa using ht.1.le
+    have htUpper : t ≤ 1 := by simpa using ht.2
+    have htNorm : ‖(t : ℂ)‖ ≤ 1 := by
+      rw [Complex.norm_real, Real.norm_eq_abs]
+      exact abs_le.2 ⟨by linarith, htUpper⟩
+    have htPow : ‖((t : ℂ) ^ m)‖ ≤ 1 := by
+      rw [norm_pow]
+      exact pow_le_one₀ (norm_nonneg _) htNorm
+    have hinner :
+        ‖(c * (t : ℂ)) ^ m / (m.factorial : ℂ)‖ ≤
+          ‖c ^ m / (m.factorial : ℂ)‖ := by
+      rw [show (c * (t : ℂ)) ^ m / (m.factorial : ℂ) =
+          (c ^ m / (m.factorial : ℂ)) * (t : ℂ) ^ m by
+        rw [mul_pow]
+        ring]
+      rw [norm_mul]
+      exact mul_le_of_le_one_right (norm_nonneg _) htPow
+    dsimp [term, bound]
+    rw [norm_mul]
+    exact (mul_le_of_le_one_left (norm_nonneg _)
+      (norm_rvachevUp_le_one F t)).trans hinner
+  · filter_upwards with t
+    intro _ht
+    exact NormedSpace.norm_expSeries_div_summable c
+  · have hconst : IntervalIntegrable
+        (fun _ : ℝ => ∑' m : ℕ, ‖c ^ m / (m.factorial : ℂ)‖)
+        volume (-1) 1 := intervalIntegrable_const
+    simpa only [bound] using hconst
+  · filter_upwards with t
+    intro _ht
+    simpa [term, c, Complex.exp_eq_exp_ℂ] using
+      (NormedSpace.expSeries_div_hasSum_exp (c * (t : ℂ))).mul_left
+        (rvachevUp F t : ℂ)
+
+private lemma fourierSeriesTerm_integral_factor
+    (F : BoundedFabius) (z : ℂ) (m : ℕ) :
+    (∫ t in (-1 : ℝ)..1,
+      (rvachevUp F t : ℂ) *
+        (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ m /
+          (m.factorial : ℂ))) =
+      ((-2 * Real.pi * Complex.I * z) ^ m / (m.factorial : ℂ)) *
+        ((∫ t in (-1 : ℝ)..1, t ^ m * rvachevUp F t : ℝ) : ℂ) := by
+  have hcast :
+      (∫ t in (-1 : ℝ)..1, (t ^ m * rvachevUp F t : ℂ)) =
+        ((∫ t in (-1 : ℝ)..1, t ^ m * rvachevUp F t : ℝ) : ℂ) := by
+    simpa only [Complex.ofReal_mul, Complex.ofReal_pow] using
+      (intervalIntegral.integral_ofReal
+        (f := fun t : ℝ => t ^ m * rvachevUp F t) (a := -1) (b := 1))
+  rw [← hcast, ← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro t _ht
+  push_cast
+  rw [mul_pow]
+  ring
+
+private lemma neg_two_pi_I_pow_even (z : ℂ) (n : ℕ) :
+    (-2 * Real.pi * Complex.I * z) ^ (2 * n) =
+      (-1 : ℂ) ^ n * (2 * Real.pi * z) ^ (2 * n) := by
+  rw [show (-2 * Real.pi * Complex.I * z : ℂ) =
+      (-Complex.I) * (2 * Real.pi * z) by ring]
+  rw [mul_pow]
+  congr 1
+  rw [pow_mul]
+  congr 1
+  rw [pow_two, neg_mul_neg, Complex.I_mul_I]
+
+private lemma fourierSeriesTerm_odd_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) (n : ℕ) :
+    (∫ t in (-1 : ℝ)..1,
+      (rvachevUp F t : ℂ) *
+        (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ (2 * n + 1) /
+          ((2 * n + 1).factorial : ℂ))) = 0 := by
+  rw [fourierSeriesTerm_integral_factor F z (2 * n + 1)]
+  rw [integral_odd_pow_mul_rvachev_eq_zero F hF n]
+  simp
+
+private lemma fourierSeriesTerm_even_eq_moment
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) (n : ℕ) :
+    (∫ t in (-1 : ℝ)..1,
+      (rvachevUp F t : ℂ) *
+        (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ (2 * n) /
+          ((2 * n).factorial : ℂ))) =
+      (-1 : ℂ) ^ n * (moment n : ℂ) /
+        ((2 * n).factorial : ℂ) * (2 * Real.pi * z) ^ (2 * n) := by
+  rw [fourierSeriesTerm_integral_factor F z (2 * n)]
+  have hm : (moment n : ℝ) =
+      ∫ t : ℝ, t ^ (2 * n) * rvachevUp F t := by
+    simpa [momentIntegral] using moment_eq_integral_formula F hF n
+  have hloc := integral_pow_mul_rvachev_eq_interval F hF (2 * n)
+  have hmoment : (∫ t in (-1 : ℝ)..1,
+      t ^ (2 * n) * rvachevUp F t) = (moment n : ℝ) :=
+    (hm.trans hloc).symm
+  rw [hmoment, neg_two_pi_I_pow_even]
+  push_cast
+  ring
+
+/-- The Fourier transform of Rvachev's function is its even-moment series. -/
+theorem rvachevFourier_eq_momentSeries
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    rvachevFourier F z = rvachevMomentSeries z := by
+  let term : ℕ → ℂ := fun m =>
+    ∫ t in (-1 : ℝ)..1,
+      (rvachevUp F t : ℂ) *
+        (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ m /
+          (m.factorial : ℂ))
+  have hall : HasSum term
+      (∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
+    exact rvachevFourier_expansion_hasSum F hF z
+  have hevenSummable : Summable (fun n : ℕ => term (2 * n)) :=
+    hall.summable.comp_injective (mul_right_injective₀ (two_ne_zero' ℕ))
+  have hodd (n : ℕ) : term (2 * n + 1) = 0 := by
+    exact fourierSeriesTerm_odd_eq_zero F hF z n
+  have hoddHas : HasSum (fun n : ℕ => term (2 * n + 1)) 0 := by
+    exact (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0).congr_fun hodd
+  have hsplit := HasSum.even_add_odd hevenSummable.hasSum hoddHas
+  have hevenEq : (∑' n : ℕ, term (2 * n)) =
+      ∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t) := by
+    simpa using hsplit.unique hall
+  have heven : HasSum (fun n : ℕ => term (2 * n))
+      (∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
+    rw [← hevenEq]
+    exact hevenSummable.hasSum
+  have hmoments : HasSum
+      (fun n : ℕ => (-1 : ℂ) ^ n * (moment n : ℂ) /
+        ((2 * n).factorial : ℂ) * (2 * Real.pi * z) ^ (2 * n))
+      (∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t)) := by
+    apply heven.congr_fun
+    intro n
+    exact (fourierSeriesTerm_even_eq_moment F hF z n).symm
+  have hfourier : rvachevFourier F z =
+      ∫ t in (-1 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          Complex.exp ((-2 * Real.pi * Complex.I * z) * t) := by
+    rw [rvachevFourier]
+    calc
+      (∫ t : ℝ, (rvachevUp F t : ℂ) *
+          Complex.exp (-2 * Real.pi * Complex.I * t * z)) =
+          ∫ t : ℝ, (rvachevUp F t : ℂ) *
+            Complex.exp ((-2 * Real.pi * Complex.I * z) * t) := by
+        apply integral_congr_ae
+        filter_upwards with t
+        congr 2
+        ring
+      _ = ∫ t in (-1 : ℝ)..1,
+          (rvachevUp F t : ℂ) *
+            Complex.exp ((-2 * Real.pi * Complex.I * z) * t) :=
+        integral_rvachev_mul_eq_interval F hF _
+  rw [hfourier, rvachevMomentSeries]
+  exact hmoments.tsum_eq.symm
+
 end Fabius
