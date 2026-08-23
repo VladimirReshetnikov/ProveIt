@@ -1,5 +1,5 @@
 import IntegerPoints.SP5Core
-import IntegerPoints.GKLemma32
+import IntegerPoints.GKLemma33
 
 /-!
 # Graham–Kolesnik, Lemma 3.4 (stationary phase)
@@ -74,6 +74,7 @@ theorem integral_shift (g : ℝ → ℝ) (a b x₀ : ℝ) :
     apply integral_congr
     intro y _
     unfold shift
+    change e (g x₀) * e (g (y + x₀) - g x₀) = e (g (y + x₀))
     rw [← KL.e_add]
     congr 1
     ring
@@ -88,8 +89,8 @@ theorem rpow_half_facts {lam₂ : ℝ} (h : 0 < lam₂) :
   · rw [← Real.rpow_add h]
     norm_num
     rw [Real.rpow_neg_one]
-    rfl
-  · rw [Real.sqrt_eq_rpow, show (-(1 : ℝ) / 2) = -(1 / 2) by ring, Real.rpow_neg h.le, one_div]
+  · rw [Real.sqrt_eq_rpow, show (-(1 : ℝ) / 2) = -(1 / 2) by ring, Real.rpow_neg h.le]
+    simp only [one_div]
 
 theorem minInv_nonneg {D t : ℝ} (hD : 0 ≤ D) (ht : 0 ≤ t) : 0 ≤ minInv D t := by
   unfold minInv
@@ -133,6 +134,9 @@ theorem gk_lemma34_holds : gk_lemma34 := by
   rw [iteratedDeriv_four] at h4
   obtain ⟨hs0, hss, hs⟩ := rpow_half_facts hl2
   set s : ℝ := lam₂ ^ (-(1 : ℝ) / 2) with hsdef
+  have hinv : 1 / s = lam₂ * s := by
+    rw [div_eq_iff hs0.ne', show lam₂ * s * s = lam₂ * (s * s) by ring, hss]
+    field_simp
   have hR2nn : 0 ≤ gkR₂ lam₂ lam₃ lam₄ a b := by
     unfold gkR₂
     have : 0 ≤ b - a := by linarith
@@ -149,7 +153,6 @@ theorem gk_lemma34_holds : gk_lemma34 := by
       abs_of_pos (Real.sqrt_pos.2 (by linarith)), hs]
     apply one_div_le_one_div_of_le (Real.sqrt_pos.2 hl2)
     exact Real.sqrt_le_sqrt hg2x₀
-  have hCnn : 0 ≤ |SP.Data.C₀ C₁ C₃| + |C₂| + 1 := by positivity
   by_cases hcase : s ≤ x₀ - a ∧ s ≤ b - x₀
   · -- the generic case: translate and apply the core estimate
     obtain ⟨hca, hcb⟩ := hcase
@@ -179,20 +182,11 @@ theorem gk_lemma34_holds : gk_lemma34 := by
       unfold SP.Data.R₁ gkR₁
       show 1 / (lam₂ * |a - x₀|) + 1 / (lam₂ * (b - x₀)) = _
       rw [minInv_eq_inv hs0 (by
-          rw [← hs, hsdef]
-          have : 1 / s ≤ lam₂ * s := by
-            rw [div_le_iff₀ hs0]
-            rw [show lam₂ * s * s = lam₂ * (s * s) by ring, hss]
-            field_simp
-          calc 1 / s ≤ lam₂ * s := this
-            _ ≤ lam₂ * (x₀ - a) := mul_le_mul_of_nonneg_left hca hl2.le),
+          rw [hinv]
+          exact mul_le_mul_of_nonneg_left hca hl2.le),
         minInv_eq_inv hs0 (by
-          have : 1 / s ≤ lam₂ * s := by
-            rw [div_le_iff₀ hs0]
-            rw [show lam₂ * s * s = lam₂ * (s * s) by ring, hss]
-            field_simp
-          calc 1 / s ≤ lam₂ * s := this
-            _ ≤ lam₂ * (b - x₀) := mul_le_mul_of_nonneg_left hcb hl2.le),
+          rw [hinv]
+          exact mul_le_mul_of_nonneg_left hcb hl2.le),
         abs_of_neg ha']
       ring_nf
     have hDR2 : D.R₂ = gkR₂ lam₂ lam₃ lam₄ a b := by
@@ -223,11 +217,9 @@ theorem gk_lemma34_holds : gk_lemma34 := by
       exact (h2 x hx).trans (le_abs_self _))
     have hR1 : s ≤ gkR₁ lam₂ a b x₀ := by
       unfold gkR₁
+      change s ≤ minInv s (lam₂ * (x₀ - a)) + minInv s (lam₂ * (b - x₀))
       have h1 : 0 ≤ lam₂ * (x₀ - a) := by nlinarith [hx₀.1]
       have h2' : 0 ≤ lam₂ * (b - x₀) := by nlinarith [hx₀.2]
-      have hinv : 1 / s = lam₂ * s := by
-        rw [div_eq_iff hs0.ne', show lam₂ * s * s = lam₂ * (s * s) by ring, hss]
-        field_simp
       push Not at hcase
       rcases le_or_gt s (x₀ - a) with hca | hca
       · have hcb := hcase hca
@@ -236,13 +228,13 @@ theorem gk_lemma34_holds : gk_lemma34 := by
           rw [hinv]
           exact mul_lt_mul_of_pos_left hcb hl2
         rw [this]
-        linarith [minInv_nonneg hs0.le h1]
+        exact le_add_of_nonneg_left (minInv_nonneg hs0.le h1)
       · have : minInv s (lam₂ * (x₀ - a)) = s := by
           apply minInv_eq_D hs0 h1
           rw [hinv]
           exact mul_lt_mul_of_pos_left hca hl2
         rw [this]
-        linarith [minInv_nonneg hs0.le h2']
+        exact le_add_of_nonneg_right (minInv_nonneg hs0.le h2')
     calc ‖(∫ x in a..b, e (g x)) - e (1 / 8 + g x₀) / ((Real.sqrt (deriv (deriv g) x₀) : ℝ) : ℂ)‖
         ≤ ‖∫ x in a..b, e (g x)‖ + ‖e (1 / 8 + g x₀) / ((Real.sqrt (deriv (deriv g) x₀) : ℝ) : ℂ)‖ :=
           norm_sub_le _ _
@@ -252,8 +244,14 @@ theorem gk_lemma34_holds : gk_lemma34 := by
           nlinarith
       _ ≤ (|C₂| + 1) * gkR₁ lam₂ a b x₀ := mul_le_mul_of_nonneg_left hR1 (by positivity)
       _ ≤ (|SP.Data.C₀ C₁ C₃| + |C₂| + 1) * (gkR₁ lam₂ a b x₀ + gkR₂ lam₂ lam₃ lam₄ a b) := by
-          have := abs_nonneg (SP.Data.C₀ C₁ C₃)
-          nlinarith
+          calc
+            (|C₂| + 1) * gkR₁ lam₂ a b x₀ ≤
+                (|SP.Data.C₀ C₁ C₃| + |C₂| + 1) * gkR₁ lam₂ a b x₀ :=
+              mul_le_mul_of_nonneg_right
+                (by linarith [abs_nonneg (SP.Data.C₀ C₁ C₃)]) hR1nn
+            _ ≤ (|SP.Data.C₀ C₁ C₃| + |C₂| + 1) *
+                (gkR₁ lam₂ a b x₀ + gkR₂ lam₂ lam₃ lam₄ a b) :=
+              mul_le_mul_of_nonneg_left (le_add_of_nonneg_right hR2nn) (by positivity)
 
 open GK34 in
 /-- **Graham–Kolesnik, Lemma 3.4**, the case `g'' ≤ −λ₂ < 0`, by conjugation. -/
@@ -262,10 +260,10 @@ theorem gk_lemma34_neg_holds : gk_lemma34_neg := by
   refine ⟨C, ?_⟩
   intro a b x₀ lam₂ lam₃ lam₄ g hab hl2 hl3 hl4 hg h2 hx₀ hg'0 h3 h4
   have hneg := hC a b x₀ lam₂ lam₃ lam₄ (-g) hab hl2 hl3 hl4 hg.neg
-    (fun x hx => by rw [iteratedDeriv_neg, Pi.neg_apply]; linarith [h2 x hx])
+    (fun x hx => by rw [iteratedDeriv_neg]; linarith [h2 x hx])
     hx₀ (by rw [deriv.neg, hg'0, neg_zero])
-    (fun x hx => by rw [iteratedDeriv_neg, Pi.neg_apply, abs_neg]; exact h3 x hx)
-    (fun x hx => by rw [iteratedDeriv_neg, Pi.neg_apply, abs_neg]; exact h4 x hx)
+    (fun x hx => by rw [iteratedDeriv_neg, abs_neg]; exact h3 x hx)
+    (fun x hx => by rw [iteratedDeriv_neg, abs_neg]; exact h4 x hx)
   rw [iteratedDeriv_neg, Pi.neg_apply] at hneg
   have hg2 : iteratedDeriv 2 g x₀ ≤ -lam₂ := h2 x₀ hx₀
   have habs : |iteratedDeriv 2 g x₀| = -iteratedDeriv 2 g x₀ := abs_of_neg (by linarith)
@@ -277,7 +275,11 @@ theorem gk_lemma34_neg_holds : gk_lemma34_neg := by
     rw [map_sub, map_div₀, Complex.conj_ofReal, ← GK32.integral_e_neg, ← KL.e_neg]
     congr 3
     ring
-  rw [hconj, Complex.norm_conj] at hneg
-  exact hneg
+  have hneg' : ‖(∫ x in a..b, e (-g x)) -
+      e (1 / 8 + -g x₀) / ((Real.sqrt (-iteratedDeriv 2 g x₀) : ℝ) : ℂ)‖ ≤
+      C * (gkR₁ lam₂ a b x₀ + gkR₂ lam₂ lam₃ lam₄ a b) := by
+    simpa using hneg
+  rw [hconj, Complex.norm_conj] at hneg'
+  exact hneg'
 
 end LeanProofs.IntegerPoints
