@@ -340,13 +340,15 @@ noncomputable def deltaCHM (χ σ : ℝ → ℝ) (x C H M : ℝ) : ℝ :=
 
 open Classical in
 /-- **(6.9) with (7.6)**: for the convolution weight `φ = ρ * η` of §5 with
-`ρ` supported in `[4, 5]`, there are absolute `μ₁ > 0`, `C` such that for
-every `x, H, M` in the main range there is `s ∈ [0, 3]` with
+the nonzero kernel `ρ` supported in `[4, 5]` chosen in the paper, there are
+absolute `μ₁ > 0`, `C` such that for every `x, H, M` in the main range there is
+`s ∈ [0, 3]` with
 `Δ(x, H, M) ≪ x^θ + ∑_{C = 2^j, μ₁ G < C ≤ H} Δ(x, C, H, M) + N`, where
 `Δ(x, C, H, M)` is formed with `σ = σ_s = ρ(· - s)`; the term `x^θ` is the
-bound (7.6) for the long-interval contribution `Δ₀(x, H, M)`. -/
+bound (7.6) for the long-interval contribution `Δ₀(x, H, M)`.  Nonzeroness
+excludes the degenerate zero convolution weight, which is not the paper's choice. -/
 def iwaniecMozzochi_eq69_eq76 : Prop :=
-  ∀ χ ρ : ℝ → ℝ, IsDyadicPartition χ → IsSmoothWeight ρ 4 5 →
+  ∀ χ ρ : ℝ → ℝ, IsDyadicPartition χ → IsSmoothWeight ρ 4 5 → ρ ≠ 0 →
     ∃ μ₁ C : ℝ, 0 < μ₁ ∧ ∀ x H M : ℝ, InMainRange x H M →
       ∃ s : ℝ, 0 ≤ s ∧ s ≤ 3 ∧
         |deltaHM χ x H M| ≤
@@ -378,12 +380,17 @@ def iwaniecMozzochi_eq72 : Prop :=
       ∑' k : ℤ, if k ≡ -((a : ℤ) * (h : ℤ)) [ZMOD (c : ℤ)] then
         trapezoidIntegral x h m v L₁ L₂ c k else 0
 
-/-- **(7.3)/(7.4)**: in the setting of §6–§7 (`h ∼ H`, `a/c ∈ 𝓡`,
-`m = m(a/c)`, `-λ < L₁ < L₂ < 8λ`), there are absolute `k₀, C` with
-`∫ ≪ min{c/|k|, c²/k²}` for `|k| ≥ k₀` and `∫ ≪ (x H M⁻³)^{-1/2}` for `|k| < k₀`. -/
+/-- **(7.3)/(7.4)**: in the setting of §6–§7 (`H < h < 4H`, the support of
+`χ(h/H)`, and `a/c ∈ 𝓡`,
+`m = m(a/c)`, `-λ < L₁ < L₂ < 8λ`), with `-m < L₁ - 1` so the
+full trapezoid support stays to the right of the pole `l = -m`, there are
+absolute positive `k₀, C` with `∫ ≪ min{c/|k|, c²/k²}` for `|k| ≥ k₀` and
+`∫ ≪ (x H M⁻³)^{-1/2}` for `|k| < k₀`.  The pole-separation premise is
+essential for both the nonstationary tail and second-derivative estimates. -/
 def iwaniecMozzochi_eq73_eq74 : Prop :=
-  ∃ k₀ C : ℝ, ∀ (x H M : ℝ) (a c h : ℕ) (L₁ L₂ : ℤ),
-    InMainRange x H M → InFareySet x H M a c → h ∈ dyadic H → L₁ < L₂ →
+  ∃ k₀ C : ℝ, 0 < k₀ ∧ 0 < C ∧ ∀ (x H M : ℝ) (a c h : ℕ) (L₁ L₂ : ℤ),
+    InMainRange x H M → InFareySet x H M a c → h ∈ intRange H (4 * H) → L₁ < L₂ →
+    -(fareyPoint x a c : ℝ) < (L₁ : ℝ) - 1 →
     -fareyLength x H M c < L₁ → (L₂ : ℝ) < 8 * fareyLength x H M c →
     (∀ k : ℤ, k₀ ≤ |(k : ℝ)| →
       ‖trapezoidIntegral x h (fareyPoint x a c) (fareyFrac x a c) L₁ L₂ c k‖ ≤
@@ -394,14 +401,17 @@ def iwaniecMozzochi_eq73_eq74 : Prop :=
 
 /-- **(7.5)** (the bound (5.6) for `S(n, r)`): for `a/c ∈ 𝓡` with `c ≤ μ₀ G`
 (the long intervals `λ_{a/c} ≥ N`, the only case in which (7.5) is used),
-`m = m(a/c)` and integers `-λ < L₁ < L₂ < 8λ`,
+`m = m(a/c)` and integers `-λ < L₁ < L₂ < 8λ` with `-m < L₁ - 1`,
 `∑_{L₁ ≤ l < L₂} ψ_H(x/(m + l)) ≪ c⁻¹ (x H)^{-1/2} M^{3/2}` uniformly in `L₁, L₂`.
 (The restriction `c ≤ μ₀ G` is needed for the `log c` of §7 to be absorbed,
-and for `c ≍ H` the bound is false; cf. the `ed.` note in §7 of the tex.) -/
+and for `c ≍ H` the bound is false; cf. the `ed.` note in §7 of the tex.
+The pole-separation premise is inherited from the original shifted sum and
+keeps every denominator in this finite sum in its intended positive range.) -/
 def iwaniecMozzochi_eq75 : Prop :=
   ∀ (χ : ℝ → ℝ) (μ₀ : ℝ), IsDyadicPartition χ → 0 < μ₀ →
     ∃ C : ℝ, ∀ (x H M : ℝ) (a c : ℕ) (L₁ L₂ : ℤ),
       InMainRange x H M → InFareySet x H M a c → (c : ℝ) ≤ μ₀ * Gscale x H M → L₁ < L₂ →
+      -(fareyPoint x a c : ℝ) < (L₁ : ℝ) - 1 →
       -fareyLength x H M c < L₁ → (L₂ : ℝ) < 8 * fareyLength x H M c →
       |∑ l ∈ Finset.Ico L₁ L₂, psiH χ H (x / (fareyPoint x a c + l))| ≤
         C * ((c : ℝ)⁻¹ * (x * H) ^ (-(1 : ℝ) / 2) * M ^ ((3 : ℝ) / 2))
@@ -426,21 +436,21 @@ noncomputable def alphaIM (x : ℝ) (a c h : ℕ) : ℝ :=
   -((a : ℝ) * h / c) - 2 * fareyFrac x a c * betaIM x a c h
 
 /-- **(8.2)**: `β N ≪ 1 ≪ β c N` for `a/c ∈ 𝓡` with `c > μ₁ G` (the short
-intervals), `h ∼ H`. -/
+intervals) and `H < h < 4H`, the full support of `χ(h/H)`. -/
 def iwaniecMozzochi_eq82 : Prop :=
   ∀ μ₁ : ℝ, 0 < μ₁ → ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
     ∀ (x H M : ℝ) (a c h : ℕ), InMainRange x H M → InFareySet x H M a c →
-      μ₁ * Gscale x H M < c → h ∈ dyadic H →
+      μ₁ * Gscale x H M < c → h ∈ intRange H (4 * H) →
       betaIM x a c h * shiftLength x M ≤ c₁ ∧
         c₂ ≤ betaIM x a c h * c * shiftLength x M
 
 /-- **(8.4)**: for `σ` smooth and supported in `[4, 8]`, `a/c ∈ 𝓡` with
-`c > μ₁ G`, `h ∼ H`, and `m = m(a/c)`,
+`c > μ₁ G`, `H < h < 4H` (the support of `χ(h/H)`), and `m = m(a/c)`,
 `R(h, m) = e(x h / m) θ(α, β) + O(x^{1/44})`. -/
 def iwaniecMozzochi_eq84 : Prop :=
   ∀ (σ : ℝ → ℝ) (μ₁ : ℝ), IsSmoothWeight σ 4 8 → 0 < μ₁ →
     ∃ C : ℝ, ∀ (x H M : ℝ) (a c h : ℕ), InMainRange x H M → InFareySet x H M a c →
-      μ₁ * Gscale x H M < c → h ∈ dyadic H →
+      μ₁ * Gscale x H M < c → h ∈ intRange H (4 * H) →
       ‖Rsum σ x (shiftLength x M) h (fareyPoint x a c) -
           e (x * h / fareyPoint x a c) *
             incompleteTheta (fun t => σ (t / shiftLength x M))
