@@ -11,9 +11,9 @@ exponent pairs.tex`) that is not already formalised elsewhere in this library:
 
 * the class `F(N, P, s, y, ε)` is `InGKClass` and the definition of exponent
   pair is `IsExponentPair` (`IntegerPoints.ExponentialSums`);
-* Lemma 3.7 is `AP.lemma37` (a variant; the book's form is restated here as
-  `gk_lemma37`) and Theorem 3.8 is `AP.isExponentPair_A`
-  (`IntegerPoints.AProcess`, `IntegerPoints.AProcessTheorem`).
+* Lemma 3.7 is `gk_lemma37_holds`, built from `AP.lemma37_sharp`, and
+  Theorem 3.8 is `AP.isExponentPair_A` (`IntegerPoints.GKLemma37`,
+  `IntegerPoints.AProcess`, `IntegerPoints.AProcessTheorem`).
 
 Stated here: the exponential-integral Lemmas 3.1–3.6 of §3.2 (including the
 stationary-phase Lemma 3.4 with its explicit error terms `R₁`, `R₂`, and the
@@ -242,8 +242,8 @@ def gk_sec33_k_eq_half_of_l_eq_half : Prop :=
 
 /-! ### §3.4 Lemma 3.7 in the book's form -/
 
-/-- **Graham–Kolesnik, Lemma 3.7** (the book's form; `AP.lemma37` proves a
-variant with `h < εN/(s+P)` in place of `h < 2εN/(s+P)`).  If `P ≥ 1`,
+/-- **Graham–Kolesnik, Lemma 3.7** (the book's form, proved as
+`gk_lemma37_holds`).  If `P ≥ 1`,
 `f ∈ F(N, P, s, y, ε)` on `[a, b]` and `1 ≤ h < min(b - a, 2εN/(s+P))`, then
 `f₁(x) = f(x) - f(x + h)` lies in `F(N, P - 1, s + 1, s h y, 3ε)` on
 `[a, b - h]`. -/

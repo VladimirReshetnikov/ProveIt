@@ -44,6 +44,7 @@ import IntegerPoints.PoissonIntegrals
 import IntegerPoints.PoissonTail
 import IntegerPoints.GKLemma35
 import IntegerPoints.GKLemma36
+import IntegerPoints.GKLemma37
 import IntegerPoints.GKEq234
 
 /-!
@@ -69,9 +70,10 @@ differencing) and `IntegerPoints.AProcessTheorem` proves Theorem 3.8, the
 A-process `(k, l) ↦ (k/(2k+2), (k+l+1)/(2k+2))` on exponent pairs;
 `IntegerPoints.Lemma9` (with `Lemma9Tools`, `Lemma9Core`, `Lemma9Sum`) proves
 Zhai–Cao's Lemma 9 by Heath-Brown's method from Lemmas 1 and 6.
-`IntegerPoints.GKLemma31` through `IntegerPoints.GKLemma36` prove
-Graham–Kolesnik's Lemmas 3.1–3.6, including both curvature forms of the
-stationary-phase Lemma 3.4 and the B-process transformation of Lemma 3.6.
+`IntegerPoints.GKLemma31` through `IntegerPoints.GKLemma37` prove
+Graham–Kolesnik's Lemmas 3.1–3.7, including both curvature forms of the
+stationary-phase Lemma 3.4, the B-process transformation of Lemma 3.6, and
+the exact book form of the differencing Lemma 3.7.
 `IntegerPoints.GKEq234` proves the Weyl–van der Corput inequality in the
 integer-shift form used in §3.3.
 Every statement is a `Prop`-valued definition; proved ones have a companion

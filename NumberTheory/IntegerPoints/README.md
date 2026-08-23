@@ -75,6 +75,10 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     and normalises the result to
     `log(F N⁻¹ + 2) + F⁻¹⁄² N`; a separate `F < 1` argument closes the
     scale where the raw asymptotic estimate alone is too coarse.
+  - `IntegerPoints.GKLemma37` — **proved**: Graham–Kolesnik Lemma 3.7 in its
+    exact book range (`gk_lemma37_holds`).  The A-process proof integrates the
+    affine tangent bound for `u⁻ᵠ` exactly, retaining the factor `1/2` in the
+    quadratic remainder and hence allowing `h < 2εN/(s+P)`.
   - `IntegerPoints.GKEq234` — **proved**: Graham–Kolesnik equation (2.3.4),
     the Weyl–van der Corput inequality in the integer-shift form used by §3.3
     (`gk_eq234_holds`).  It specializes the general differencing engine,
@@ -138,10 +142,12 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     powers by `c(α) μ²/(4M²)`, so the box principle bounds each class by
     `4 min(M²/μ², N²/ν²) + 32Δ M²N²/(c μ²ν²)`; the sums over `μ, ν` use
     `Σ_ν min(a, N²/ν²) ≤ 4√a N`, `Σ 1/ν² ≤ 3` and the harmonic bound.
-  - `IntegerPoints.AProcess` — **proved**: Graham–Kolesnik Lemma 3.7
-    (`AP.lemma37`): if `f ∈ F(N, P+1, s, y, ε)` and `0 < h ≤ b − a`,
-    `h < εN/(s+P+1)`, then `f(x) − f(x+h) ∈ F(N, P, s+1, shy, 3ε)` on
-    `[a, b−h]` — the class-closure half of the A-process.
+  - `IntegerPoints.AProcess` — **proved**: the shifted core of
+    Graham–Kolesnik Lemma 3.7 (`AP.lemma37_sharp`): if
+    `f ∈ F(N, P+1, s, y, ε)`, `0 < h ≤ b − a`, and
+    `h < 2εN/(s+P+1)`, then
+    `f(x) − f(x+h) ∈ F(N, P, s+1, shy, 3ε)` on `[a, b−h]`.
+    `AP.lemma37` preserves the former narrower-range API for existing callers.
   - `IntegerPoints.AProcessTheorem` — **proved**: Graham–Kolesnik Theorem
     3.8, the A-process (`AP.isExponentPair_A`): `(k, l)` exponent pair ⇒
     `(k/(2k+2), (k+l+1)/(2k+2))` exponent pair.  Weyl differencing (Lemma 4
