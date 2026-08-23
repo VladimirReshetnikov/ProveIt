@@ -53,6 +53,7 @@ import IntegerPoints.FiniteHilbert
 import IntegerPoints.GKAppendixATheorem2
 import IntegerPoints.GKSec33LGeHalf
 import IntegerPoints.GKSec33KNonneg
+import IntegerPoints.GKSec33Boundary
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -94,7 +95,10 @@ mean-square lower bound quoted from Graham--Kolesnik Appendix A, and
 `IntegerPoints.GKSec33LGeHalf` uses that lower bound to prove the §3.3
 restriction `l ≥ 1/2` from the exponential-sum estimate alone;
 `IntegerPoints.GKSec33KNonneg` uses factorial resonances to prove `k ≥ 0`
-and the boundary implication `k = 0 → l ≥ 1`.
+and the boundary implication `k = 0 → l ≥ 1`;
+`IntegerPoints.GKSec33Boundary` combines the square-root exponent-pair bound,
+the exact Lemma-3.6 transform, and a factorially resonant dual sum to prove
+the remaining boundary implication `(k, 1/2) exponent pair → k = 1/2`.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/

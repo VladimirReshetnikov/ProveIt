@@ -115,6 +115,14 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     `l ≥ 1`.  At the factorial scales `t = (2N)!ν`, every reciprocal phase
     is integral and the exponential sum is exactly `N`; multiplier limits
     rule out `k < 0` and then remove the error term in the boundary case.
+  - `IntegerPoints.GKSec33Boundary` — **proved**: the square-root boundary
+    restriction `gk_sec33_k_eq_half_of_l_eq_half_holds`: an exponent pair
+    `(k, 1/2)` has `k = 1/2`.  The proof specializes the exponent-pair bound
+    to `f(x) = 2HR√x` at `H = Q²`, `N = R²`, applies the exact Lemma 3.6
+    transform, and takes `R` to be a multiple of `H!`.  Every dual phase then
+    equals `e(-1/8)`, the dual interval has at least `H/4` terms, and its norm
+    is at least `RQ/4`; a diagonal choice of `Q` and the factorial multiplier
+    contradicts every `k < 1/2`.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
