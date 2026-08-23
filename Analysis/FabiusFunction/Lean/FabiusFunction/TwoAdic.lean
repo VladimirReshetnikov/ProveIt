@@ -178,7 +178,9 @@ private lemma two_mul_halfMoment_odd_index_num_den (n : ℕ) :
     exact hmul.2.2 ⟨odd_two_mul_add_one n, hmnum⟩
   · exact hmul.1
 
-private lemma two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
+/-- Equation (31) of *Arithmetic of the Fabius function*: the isolated
+half-moment recurrence after multiplying every term by two. -/
+theorem two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
     ((((N + 1) * (2 ^ N - 1) : ℕ) : ℚ) * (2 * halfMoment N)) =
       ∑ k : Fin N,
         (Nat.choose (N + 1) k.val : ℚ) * (2 * halfMoment k.val) := by

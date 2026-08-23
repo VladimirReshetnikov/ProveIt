@@ -74,7 +74,9 @@ private lemma rvachevFourier_zero_value
   have h := complexGeneratingFunction_eq_fourier_analytic F hF 0
   simpa [complexGeneratingFunction] using h.symm
 
-private lemma rvachevFourier_scaling
+/-- The Fourier refinement identity used explicitly in the proof of
+Proposition 2 of *Arithmetic of the Fabius function*. -/
+theorem rvachevFourier_scaling
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     rvachevFourier F z =
       complexSinc (Real.pi * z) * rvachevFourier F (z / 2) := by

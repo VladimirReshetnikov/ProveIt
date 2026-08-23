@@ -1,0 +1,576 @@
+import FabiusFunction.Existence
+import Mathlib.MeasureTheory.Constructions.UnitInterval
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Probability.CDF
+import Mathlib.Probability.Independence.InfinitePi
+import Mathlib.Probability.Independence.Process.Basic
+
+/-!
+# The product-probability representation of Rvachev's function
+
+This file formalizes Theorem 3 (and the equivalent probabilistic proposition)
+of Juan Arias de Reyna, *An infinitely differentiable function with compact
+support: Definition and properties*, arXiv:1702.05442.
+
+The paper indexes the coordinates by positive integers and writes
+`∑ k ≥ 1, x k / 2^k`.  We use Lean's natural-number indexing, so the same
+random variable is `∑' n, x n / 2 / 2^n`.
+-/
+
+open Filter Set MeasureTheory ProbabilityTheory Topology
+open scoped BigOperators unitInterval
+
+namespace Fabius
+namespace ProbabilityRepresentation
+
+set_option autoImplicit false
+noncomputable section
+
+/-- The sample space of countably many points of the closed unit interval. -/
+abbrev SampleSpace := ℕ → Set.Icc (0 : ℝ) 1
+
+/-- Product Lebesgue probability measure on `[0,1]^ℕ`. -/
+noncomputable def uniformProduct : Measure SampleSpace :=
+  Measure.infinitePi (fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1)))
+
+instance : IsProbabilityMeasure uniformProduct := by
+  unfold uniformProduct
+  infer_instance
+
+/-- The random series `X₁/2 + X₂/4 + ⋯`, with zero-based Lean indexing. -/
+noncomputable def weightedCoordinateSum (ω : SampleSpace) : ℝ :=
+  ∑' n : ℕ, (ω n : ℝ) / 2 / (2 : ℝ) ^ n
+
+private lemma summable_coordinate_series (ω : SampleSpace) :
+    Summable (fun n : ℕ => (ω n : ℝ) / 2 / (2 : ℝ) ^ n) := by
+  refine (summable_geometric_two' 1).of_norm_bounded (fun n => ?_)
+  have hn : 0 ≤ (ω n : ℝ) / 2 / (2 : ℝ) ^ n :=
+    div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
+  rw [Real.norm_eq_abs, abs_of_nonneg hn]
+  gcongr
+  exact (ω n).property.2
+
+lemma continuous_weightedCoordinateSum : Continuous weightedCoordinateSum := by
+  apply continuous_tsum
+  · intro n
+    fun_prop
+  · exact summable_geometric_two' 1
+  · intro n ω
+    have hn : 0 ≤ (ω n : ℝ) / 2 / (2 : ℝ) ^ n :=
+      div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
+    rw [Real.norm_eq_abs, abs_of_nonneg hn]
+    gcongr
+    exact (ω n).property.2
+
+lemma measurable_weightedCoordinateSum : Measurable weightedCoordinateSum :=
+  continuous_weightedCoordinateSum.measurable
+
+lemma weightedCoordinateSum_nonneg (ω : SampleSpace) :
+    0 ≤ weightedCoordinateSum ω := by
+  exact tsum_nonneg fun n =>
+    div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
+
+lemma weightedCoordinateSum_le_one (ω : SampleSpace) :
+    weightedCoordinateSum ω ≤ 1 := by
+  rw [weightedCoordinateSum]
+  calc
+    _ ≤ ∑' n : ℕ, (1 : ℝ) / 2 / (2 : ℝ) ^ n :=
+      (summable_coordinate_series ω).tsum_le_tsum
+        (fun n => by gcongr; exact (ω n).property.2)
+        (summable_geometric_two' 1)
+    _ = 1 := tsum_geometric_two' 1
+
+/-- Delete the first coordinate. -/
+def tail (ω : SampleSpace) : SampleSpace := fun n => ω (Nat.succ n)
+
+lemma measurable_tail : Measurable tail := by
+  exact measurable_pi_lambda _ fun n => measurable_pi_apply (Nat.succ n)
+
+lemma uniformProduct_map_tail : uniformProduct.map tail = uniformProduct := by
+  change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
+      (fun ω n => ω (Nat.succ n)) =
+    Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))
+  rw [Measure.map_infinitePi_infinitePi_of_inj Nat.succ_injective]
+
+private lemma independent_head_tail :
+    IndepFun (fun ω : SampleSpace => ω 0) tail uniformProduct := by
+  have hi : iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
+    unfold uniformProduct
+    exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
+  apply IndepFun.indepFun_process (measurable_pi_apply 0)
+    (fun n => measurable_pi_apply (Nat.succ n))
+  intro s
+  let t : Finset ℕ := s.image Nat.succ
+  have hdisj : Disjoint ({0} : Finset ℕ) t := by
+    rw [Finset.disjoint_left]
+    intro n hn0 hnt
+    simp only [Finset.mem_singleton] at hn0
+    subst n
+    rcases Finset.mem_image.mp hnt with ⟨n, _hn, hn⟩
+    omega
+  have hfin := iIndepFun.indepFun_finset ({0} : Finset ℕ) t hdisj hi
+    (fun n => measurable_pi_apply n)
+  let takeHead : ((i : ({0} : Finset ℕ)) → Set.Icc (0 : ℝ) 1) →
+      Set.Icc (0 : ℝ) 1 := fun z => z ⟨0, by simp⟩
+  let reindex : ((i : t) → Set.Icc (0 : ℝ) 1) →
+      ((i : s) → Set.Icc (0 : ℝ) 1) :=
+    fun z i => z ⟨Nat.succ i, Finset.mem_image.mpr ⟨i, i.property, rfl⟩⟩
+  have hcomp := hfin.comp (by fun_prop : Measurable takeHead)
+    (by fun_prop : Measurable reindex)
+  simpa only [Function.comp_def, takeHead, reindex, t] using hcomp
+
+lemma uniformProduct_map_head_tail :
+    uniformProduct.map (fun ω : SampleSpace => (ω 0, tail ω)) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod uniformProduct := by
+  have h := independent_head_tail.map_prod_eq_prod_map_map
+    (measurable_pi_apply 0).aemeasurable measurable_tail.aemeasurable
+  rw [uniformProduct_map_tail] at h
+  have hhead : uniformProduct.map (fun ω : SampleSpace => ω 0) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
+    unfold uniformProduct
+    rw [Measure.infinitePi_map_eval]
+  rwa [hhead] at h
+
+lemma weightedCoordinateSum_split (ω : SampleSpace) :
+    weightedCoordinateSum ω = ((ω 0 : ℝ) + weightedCoordinateSum (tail ω)) / 2 := by
+  rw [weightedCoordinateSum, (summable_coordinate_series ω).tsum_eq_zero_add]
+  simp only [pow_zero, div_one]
+  have htail : (∑' n : ℕ, (ω (n + 1) : ℝ) / 2 / (2 : ℝ) ^ (n + 1)) =
+      weightedCoordinateSum (tail ω) / 2 := by
+    rw [weightedCoordinateSum, ← tsum_div_const]
+    congr 1
+    funext n
+    simp only [tail, Nat.succ_eq_add_one, pow_succ]
+    field_simp
+  rw [htail]
+  ring
+
+/-- The distribution of the random series. -/
+noncomputable def weightedSumDistribution : Measure ℝ :=
+  uniformProduct.map weightedCoordinateSum
+
+instance : IsProbabilityMeasure weightedSumDistribution :=
+  Measure.isProbabilityMeasure_map measurable_weightedCoordinateSum.aemeasurable
+
+lemma uniformProduct_map_head_tailSum :
+    uniformProduct.map
+        (fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω))) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution := by
+  have hind := independent_head_tail.comp measurable_id measurable_weightedCoordinateSum
+  have h := hind.map_prod_eq_prod_map_map (measurable_pi_apply 0).aemeasurable
+    (measurable_weightedCoordinateSum.comp measurable_tail).aemeasurable
+  have hhead : uniformProduct.map (fun ω : SampleSpace => ω 0) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
+    unfold uniformProduct
+    rw [Measure.infinitePi_map_eval]
+  have htail : uniformProduct.map (weightedCoordinateSum ∘ tail) =
+      weightedSumDistribution := by
+    rw [← Measure.map_map measurable_weightedCoordinateSum measurable_tail,
+      uniformProduct_map_tail]
+    rfl
+  rwa [hhead, htail] at h
+
+lemma weightedSumDistribution_selfSimilar :
+    weightedSumDistribution =
+      ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).map
+        (fun p => ((p.1 : ℝ) + p.2) / 2) := by
+  change uniformProduct.map weightedCoordinateSum =
+    ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+      (uniformProduct.map weightedCoordinateSum)).map
+        (fun p => ((p.1 : ℝ) + p.2) / 2)
+  have hjoint : uniformProduct.map
+        (fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω))) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)).prod
+        (uniformProduct.map weightedCoordinateSum) := by
+    simpa only [weightedSumDistribution] using uniformProduct_map_head_tailSum
+  rw [← hjoint]
+  rw [Measure.map_map (μ := uniformProduct)
+    (f := fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω)))
+    (g := fun p : Set.Icc (0 : ℝ) 1 × ℝ => ((p.1 : ℝ) + p.2) / 2)
+    (by fun_prop)
+    ((measurable_pi_apply 0).prodMk
+      (measurable_weightedCoordinateSum.comp measurable_tail))]
+  apply Measure.map_congr
+  filter_upwards with ω
+  exact weightedCoordinateSum_split ω
+
+/-- Reflect every coordinate in the midpoint of the unit interval. -/
+def reflectCoordinates (ω : SampleSpace) : SampleSpace :=
+  fun n => unitInterval.symm (ω n)
+
+lemma measurable_reflectCoordinates : Measurable reflectCoordinates := by
+  exact measurable_pi_lambda _ fun n =>
+    unitInterval.measurable_symm.comp (measurable_pi_apply n)
+
+lemma uniformProduct_map_reflectCoordinates :
+    uniformProduct.map reflectCoordinates = uniformProduct := by
+  change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
+      (fun ω n => unitInterval.symm (ω n)) =
+    Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))
+  rw [Measure.infinitePi_map_pi
+    (fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1)))
+    (fun _ => unitInterval.measurable_symm)]
+  congr 1
+  funext n
+  exact unitInterval.measurePreserving_symm.map_eq
+
+lemma weightedCoordinateSum_reflect (ω : SampleSpace) :
+    weightedCoordinateSum (reflectCoordinates ω) = 1 - weightedCoordinateSum ω := by
+  rw [weightedCoordinateSum, weightedCoordinateSum]
+  have hterm (n : ℕ) :
+      ((reflectCoordinates ω n : Set.Icc (0 : ℝ) 1) : ℝ) / 2 / (2 : ℝ) ^ n =
+        (1 : ℝ) / 2 / (2 : ℝ) ^ n - (ω n : ℝ) / 2 / (2 : ℝ) ^ n := by
+    simp only [reflectCoordinates, unitInterval.symm, Subtype.coe_mk]
+    ring
+  simp_rw [hterm]
+  rw [(summable_geometric_two' 1).tsum_sub (summable_coordinate_series ω),
+    tsum_geometric_two' 1]
+
+lemma weightedSumDistribution_reflection :
+    weightedSumDistribution.map (fun x : ℝ => 1 - x) = weightedSumDistribution := by
+  rw [weightedSumDistribution,
+    Measure.map_map (by fun_prop : Measurable fun x : ℝ => 1 - x)
+      measurable_weightedCoordinateSum]
+  calc
+    uniformProduct.map ((fun x : ℝ => 1 - x) ∘ weightedCoordinateSum) =
+        uniformProduct.map (weightedCoordinateSum ∘ reflectCoordinates) := by
+      apply Measure.map_congr
+      filter_upwards with ω
+      exact (weightedCoordinateSum_reflect ω).symm
+    _ = (uniformProduct.map reflectCoordinates).map weightedCoordinateSum := by
+      rw [Measure.map_map measurable_weightedCoordinateSum measurable_reflectCoordinates]
+    _ = uniformProduct.map weightedCoordinateSum := by
+      rw [uniformProduct_map_reflectCoordinates]
+
+
+/-- Its cumulative distribution function. -/
+noncomputable def weightedSumCDF (x : ℝ) : ℝ :=
+  ProbabilityTheory.cdf weightedSumDistribution x
+
+lemma weightedSumCDF_eq_measureReal (x : ℝ) :
+    weightedSumCDF x = uniformProduct.real {ω | weightedCoordinateSum ω ≤ x} := by
+  rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real, weightedSumDistribution,
+    map_measureReal_apply measurable_weightedCoordinateSum measurableSet_Iic]
+  rfl
+
+lemma measurable_weightedSumCDF : Measurable weightedSumCDF := by
+  exact (ProbabilityTheory.monotone_cdf weightedSumDistribution).measurable
+
+lemma weightedSumCDF_nonneg (x : ℝ) : 0 ≤ weightedSumCDF x :=
+  ProbabilityTheory.cdf_nonneg weightedSumDistribution x
+
+lemma weightedSumCDF_le_one (x : ℝ) : weightedSumCDF x ≤ 1 :=
+  ProbabilityTheory.cdf_le_one weightedSumDistribution x
+
+/-- Conditioning on the first uniform coordinate gives the smoothing equation
+`H(y) = ∫₀¹ H(2y-u) du` for the CDF `H` of the random series. -/
+lemma weightedSumCDF_eq_integral (y : ℝ) :
+    weightedSumCDF y =
+      ∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ)) := by
+  let A : Set (Set.Icc (0 : ℝ) 1 × ℝ) :=
+    {p | ((p.1 : ℝ) + p.2) / 2 ≤ y}
+  have hA : MeasurableSet A := by
+    apply measurableSet_le
+    · fun_prop
+    · fun_prop
+  have hcombine : Measurable
+      (fun p : Set.Icc (0 : ℝ) 1 × ℝ => ((p.1 : ℝ) + p.2) / 2) := by
+    fun_prop
+  rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real,
+    weightedSumDistribution_selfSimilar,
+    map_measureReal_apply hcombine measurableSet_Iic]
+  change ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).real A = _
+  calc
+    ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).real A =
+        ∫ p, A.indicator (fun _ => (1 : ℝ)) p
+          ∂((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution) := by
+      symm
+      exact integral_indicator_one hA
+    _ = ∫ u : Set.Icc (0 : ℝ) 1,
+        ∫ v : ℝ, A.indicator (fun _ => (1 : ℝ)) (u, v) ∂weightedSumDistribution := by
+      apply integral_prod
+      exact (integrable_const (1 : ℝ)).indicator hA
+    _ = ∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ)) := by
+      apply integral_congr_ae
+      filter_upwards with u
+      let Au : Set ℝ := {v | (((u : ℝ) + v) / 2 : ℝ) ≤ y}
+      have hAu : MeasurableSet Au := by
+        apply measurableSet_le <;> fun_prop
+      calc
+        (∫ v : ℝ, A.indicator (fun _ => (1 : ℝ)) (u, v)
+            ∂weightedSumDistribution) =
+            ∫ v : ℝ, Au.indicator (fun _ => (1 : ℝ)) v
+              ∂weightedSumDistribution := by
+          apply integral_congr_ae
+          filter_upwards with v
+          rfl
+        _ = weightedSumDistribution.real Au := integral_indicator_one hAu
+        _ = weightedSumCDF (2 * y - (u : ℝ)) := by
+          rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
+          congr 2
+          ext v
+          simp only [Au, mem_setOf_eq, mem_Iic]
+          constructor <;> intro hv <;> linarith
+
+/-- The same smoothing equation written as an ordinary interval integral. -/
+lemma weightedSumCDF_eq_intervalIntegral (y : ℝ) :
+    weightedSumCDF y =
+      ∫ t in (2 * y - 1)..(2 * y), weightedSumCDF t := by
+  rw [weightedSumCDF_eq_integral]
+  calc
+    (∫ u : Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - (u : ℝ))) =
+        ∫ u in Set.Icc (0 : ℝ) 1, weightedSumCDF (2 * y - u) := by
+      simpa using (integral_subtype (G := ℝ) measurableSet_Icc
+        (fun u : ℝ => weightedSumCDF (2 * y - u)))
+    _ = ∫ u in (0 : ℝ)..1, weightedSumCDF (2 * y - u) := by
+      rw [integral_Icc_eq_integral_Ioc, intervalIntegral.integral_of_le (by norm_num)]
+    _ = ∫ t in (2 * y - 1)..(2 * y - 0), weightedSumCDF t :=
+      intervalIntegral.integral_comp_sub_left weightedSumCDF (2 * y)
+    _ = ∫ t in (2 * y - 1)..(2 * y), weightedSumCDF t := by ring_nf
+
+lemma continuous_weightedSumCDF : Continuous weightedSumCDF := by
+  have hint : ∀ a b : ℝ, IntervalIntegrable weightedSumCDF volume a b :=
+    fun _ _ => (ProbabilityTheory.monotone_cdf weightedSumDistribution).intervalIntegrable
+  have hp : Continuous (fun z : ℝ => ∫ t in (0 : ℝ)..z, weightedSumCDF t) :=
+    intervalIntegral.continuous_primitive hint 0
+  have hrepr : weightedSumCDF = fun y : ℝ =>
+      (∫ t in (0 : ℝ)..(2 * y), weightedSumCDF t) -
+        ∫ t in (0 : ℝ)..(2 * y - 1), weightedSumCDF t := by
+    funext y
+    rw [weightedSumCDF_eq_intervalIntegral]
+    exact (intervalIntegral.integral_interval_sub_left (hint 0 (2 * y))
+      (hint 0 (2 * y - 1))).symm
+  rw [hrepr]
+  exact (hp.comp (by fun_prop)).sub (hp.comp (by fun_prop))
+
+lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
+    weightedSumCDF x = 0 := by
+  rw [weightedSumCDF_eq_measureReal]
+  have hsubset : {ω : SampleSpace | weightedCoordinateSum ω ≤ x} ⊆
+      {ω : SampleSpace | weightedCoordinateSum ω = 0} := by
+    intro ω hω
+    exact le_antisymm (hω.trans hx) (weightedCoordinateSum_nonneg ω)
+  have hzero : uniformProduct {ω : SampleSpace | weightedCoordinateSum ω = 0} = 0 := by
+    have hcoord : {ω : SampleSpace | weightedCoordinateSum ω = 0} ⊆
+        {ω : SampleSpace | ω 0 = 0} := by
+      intro ω hω
+      change weightedCoordinateSum ω = 0 at hω
+      by_contra hn
+      change ω 0 ≠ 0 at hn
+      have hne : (ω 0 : ℝ) ≠ 0 := fun h => hn (Subtype.ext h)
+      have hpos : 0 < (ω 0 : ℝ) := lt_of_le_of_ne (ω 0).property.1 (Ne.symm hne)
+      have hle : (ω 0 : ℝ) / 2 ≤ weightedCoordinateSum ω := by
+        rw [weightedCoordinateSum, (summable_coordinate_series ω).tsum_eq_zero_add]
+        simp only [pow_zero, div_one]
+        apply le_add_of_nonneg_right
+        apply tsum_nonneg
+        intro n
+        exact div_nonneg (div_nonneg (ω (n + 1)).property.1 (by norm_num))
+          (pow_nonneg (by norm_num) _)
+      linarith
+    apply measure_mono_null hcoord
+    calc
+      uniformProduct {ω : SampleSpace | ω 0 = 0} =
+          (uniformProduct.map fun ω => ω 0) {(0 : Set.Icc (0 : ℝ) 1)} := by
+        rw [Measure.map_apply (μ := uniformProduct) (measurable_pi_apply 0)
+          (measurableSet_singleton (0 : Set.Icc (0 : ℝ) 1))]
+        rfl
+      _ = (volume : Measure (Set.Icc (0 : ℝ) 1)) {0} := by
+        rw [uniformProduct, Measure.infinitePi_map_eval]
+      _ = 0 := measure_singleton _
+  apply measureReal_mono_null hsubset
+  rw [measureReal_def, hzero]
+  simp
+
+lemma weightedSumCDF_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
+    weightedSumCDF x = 1 := by
+  rw [weightedSumCDF_eq_measureReal]
+  have hall : {ω : SampleSpace | weightedCoordinateSum ω ≤ x} = Set.univ := by
+    ext ω
+    simp only [mem_setOf_eq, mem_univ, iff_true]
+    exact (weightedCoordinateSum_le_one ω).trans hx
+  rw [hall, probReal_univ]
+
+lemma weightedSumDistribution_singleton (x : ℝ) :
+    weightedSumDistribution {x} = 0 := by
+  rw [← ProbabilityTheory.measure_cdf weightedSumDistribution,
+    StieltjesFunction.measure_singleton]
+  have hleft : Function.leftLim weightedSumCDF x = weightedSumCDF x :=
+    continuous_weightedSumCDF.continuousAt.continuousWithinAt.leftLim_eq
+  change ENNReal.ofReal (weightedSumCDF x - Function.leftLim weightedSumCDF x) = 0
+  rw [hleft, sub_self, ENNReal.ofReal_zero]
+
+/-- The law of the random series is symmetric about `1/2`. -/
+lemma weightedSumCDF_symmetry (x : ℝ) :
+    weightedSumCDF (1 - x) = 1 - weightedSumCDF x := by
+  letI : NullSingletonClass weightedSumDistribution :=
+    ⟨weightedSumDistribution_singleton⟩
+  calc
+    weightedSumCDF (1 - x) = weightedSumDistribution.real (Iic (1 - x)) := by
+      rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
+    _ = (weightedSumDistribution.map (fun z : ℝ => 1 - z)).real (Iic (1 - x)) := by
+      rw [weightedSumDistribution_reflection]
+    _ = weightedSumDistribution.real ((fun z : ℝ => 1 - z) ⁻¹' Iic (1 - x)) := by
+      rw [map_measureReal_apply (by fun_prop) measurableSet_Iic]
+    _ = weightedSumDistribution.real (Ici x) := by
+      have hset : ((fun z : ℝ => 1 - z) ⁻¹' Iic (1 - x)) = Ici x := by
+        ext z
+        change (1 - z ≤ 1 - x) ↔ x ≤ z
+        constructor <;> intro hz <;> linarith
+      rw [hset]
+    _ = weightedSumDistribution.real (Iio x)ᶜ := by rw [compl_Iio]
+    _ = 1 - weightedSumDistribution.real (Iio x) :=
+      probReal_compl_eq_one_sub measurableSet_Iio
+    _ = 1 - weightedSumDistribution.real (Iic x) := by
+      rw [measureReal_congr Iio_ae_eq_Iic]
+    _ = 1 - weightedSumCDF x := by
+      rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
+
+lemma weightedSumCDF_left_formula {x : ℝ}
+    (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
+    weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t := by
+  have hint : ∀ a b : ℝ, IntervalIntegrable weightedSumCDF volume a b :=
+    fun _ _ => (ProbabilityTheory.monotone_cdf weightedSumDistribution).intervalIntegrable
+  have hlower : 2 * x - 1 ≤ 0 := by linarith [hx.2]
+  have hzero : (∫ t in (2 * x - 1)..(0 : ℝ), weightedSumCDF t) = 0 := by
+    calc
+      (∫ t in (2 * x - 1)..(0 : ℝ), weightedSumCDF t) =
+          ∫ _t in (2 * x - 1)..(0 : ℝ), (0 : ℝ) := by
+        apply intervalIntegral.integral_congr
+        intro t ht
+        rw [uIcc_of_le hlower] at ht
+        exact weightedSumCDF_zero_of_nonpos ht.2
+      _ = 0 := intervalIntegral.integral_zero
+  rw [weightedSumCDF_eq_intervalIntegral,
+    ← intervalIntegral.integral_add_adjacent_intervals
+      (hint (2 * x - 1) 0) (hint 0 (2 * x)), hzero, zero_add]
+
+/-- The CDF restricted to the unit interval, as an element of the function
+space used in the existence proof. -/
+noncomputable def cdfContinuousMap : Existence.C :=
+  ⟨fun x => weightedSumCDF x, continuous_weightedSumCDF.comp continuous_subtype_val⟩
+
+@[simp] lemma cdfContinuousMap_apply (x : Existence.I) :
+    cdfContinuousMap x = weightedSumCDF x := rfl
+
+lemma cdfContinuousMap_admissible : Existence.admissible cdfContinuousMap := by
+  constructor
+  · intro x
+    exact ⟨weightedSumCDF_nonneg x, weightedSumCDF_le_one x⟩
+  · intro x
+    change weightedSumCDF (1 - (x : ℝ)) = 1 - weightedSumCDF x
+    exact weightedSumCDF_symmetry x
+
+noncomputable def cdfAdmissible : Existence.admissibleSet :=
+  ⟨cdfContinuousMap, cdfContinuousMap_admissible⟩
+
+private lemma cumulative_cdfContinuousMap {y : ℝ} (hy : y ∈ Icc (0 : ℝ) 1) :
+    Existence.cumulative cdfContinuousMap y =
+      ∫ t in (0 : ℝ)..y, weightedSumCDF t := by
+  apply intervalIntegral.integral_congr
+  intro t ht
+  rw [uIcc_of_le hy.1] at ht
+  rw [Existence.extend_eq cdfContinuousMap ⟨ht.1, ht.2.trans hy.2⟩]
+  rfl
+
+lemma cdfAdmissible_fixed :
+    Existence.transformSelf cdfAdmissible = cdfAdmissible := by
+  apply Subtype.ext
+  apply ContinuousMap.ext
+  intro x
+  change Existence.transformValue cdfContinuousMap x = weightedSumCDF x
+  by_cases hx : (x : ℝ) ≤ 1 / 2
+  · rw [Existence.transformValue, if_pos hx]
+    have h2x : 2 * (x : ℝ) ∈ Icc (0 : ℝ) 1 := by
+      constructor <;> linarith [x.property.1]
+    rw [cumulative_cdfContinuousMap h2x]
+    exact (weightedSumCDF_left_formula ⟨x.property.1, hx⟩).symm
+  · rw [Existence.transformValue, if_neg hx]
+    have hxhalf : 1 / 2 < (x : ℝ) := lt_of_not_ge hx
+    have honeSub : 1 - (x : ℝ) ∈ Icc (0 : ℝ) (1 / 2) := by
+      constructor <;> linarith [x.property.2]
+    have harg : 2 - 2 * (x : ℝ) ∈ Icc (0 : ℝ) 1 := by
+      constructor <;> linarith [x.property.2]
+    rw [cumulative_cdfContinuousMap harg]
+    have hleft := weightedSumCDF_left_formula honeSub
+    have hsymm := weightedSumCDF_symmetry (x : ℝ)
+    have heq : 2 * (1 - (x : ℝ)) = 2 - 2 * (x : ℝ) := by ring
+    rw [heq] at hleft
+    linarith
+
+lemma cdfAdmissible_eq_fixedCandidate :
+    cdfAdmissible = Existence.fixedCandidate :=
+  Existence.transformSelf_contracting.fixedPoint_unique cdfAdmissible_fixed
+
+lemma weightedSumCDF_eq_boundedCandidate {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    weightedSumCDF x = fabiusReal Existence.boundedCandidate x := by
+  change weightedSumCDF x = Existence.extend Existence.fixedCandidate.1 x
+  rw [Existence.extend_eq Existence.fixedCandidate.1 hx]
+  have h := congrArg (fun f : Existence.admissibleSet => f.1 ⟨x, hx⟩)
+    cdfAdmissible_eq_fixedCandidate
+  exact h
+
+/-- The random-series CDF is the unique bounded Fabius function, globally on
+`ℝ`.  Quantifying over `F` makes this immediately applicable to the canonical
+choice `fabius` as well as to any locally bundled construction. -/
+theorem weightedSumCDF_eq_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    weightedSumCDF x = fabiusReal F x := by
+  by_cases hx0 : x ≤ 0
+  · rw [weightedSumCDF_zero_of_nonpos hx0, hF.zero_of_nonpos x hx0]
+  by_cases hx1 : 1 ≤ x
+  · rw [weightedSumCDF_one_of_one_le hx1, hF.one_of_one_le x hx1]
+  have hx : x ∈ Icc (0 : ℝ) 1 :=
+    ⟨(lt_of_not_ge hx0).le, (lt_of_not_ge hx1).le⟩
+  rw [weightedSumCDF_eq_boundedCandidate hx]
+  have hF_eq := Existence.isFabius_eq F Existence.boundedCandidate hF
+    Existence.boundedCandidate_isFabius
+  rw [hF_eq]
+
+/-- The coordinate projections are mutually independent uniform random
+variables.  This is the prose proposition following Theorem 3 in the paper. -/
+lemma independent_uniform_coordinates :
+    iIndepFun (fun n : ℕ => fun ω : SampleSpace => ω n) uniformProduct := by
+  unfold uniformProduct
+  exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
+
+lemma coordinate_has_uniform_law (n : ℕ) :
+    uniformProduct.map (fun ω : SampleSpace => ω n) =
+      (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
+  unfold uniformProduct
+  rw [Measure.infinitePi_map_eval]
+
+/-- Theorem 3 of arXiv:1702.05442, in real-probability form. -/
+theorem rvachevUp_eq_weightedSum_probability
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Icc (-1 : ℝ) 0) :
+    rvachevUp F x = uniformProduct.real
+      {ω : SampleSpace |
+        0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} := by
+  have hunit : x + 1 ∈ Icc (0 : ℝ) 1 := by
+    constructor <;> linarith [hx.1, hx.2]
+  have hF_eq := Existence.isFabius_eq F Existence.boundedCandidate hF
+    Existence.boundedCandidate_isFabius
+  have hset : {ω : SampleSpace |
+      0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} =
+      {ω : SampleSpace | weightedCoordinateSum ω ≤ x + 1} := by
+    ext ω
+    simp only [mem_setOf_eq]
+    exact and_iff_right (weightedCoordinateSum_nonneg ω)
+  rw [hset, ← weightedSumCDF_eq_measureReal,
+    weightedSumCDF_eq_boundedCandidate hunit]
+  rw [rvachevUp, if_pos hx.2, hF_eq]
+
+/-- The same theorem with the probability left in its native `ℝ≥0∞` codomain. -/
+theorem ofReal_rvachevUp_eq_weightedSum_probability
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Icc (-1 : ℝ) 0) :
+    ENNReal.ofReal (rvachevUp F x) = uniformProduct
+      {ω : SampleSpace |
+        0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} := by
+  rw [rvachevUp_eq_weightedSum_probability F hF hx,
+    ofReal_measureReal]
+
+end
+end ProbabilityRepresentation
+end Fabius
