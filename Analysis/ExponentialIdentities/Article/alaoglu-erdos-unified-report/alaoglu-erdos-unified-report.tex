@@ -220,11 +220,13 @@ cover canonical products, natural boundaries, Mellin and special-function transf
 Hausdorff moments, and an explicit critical Stieltjes interpolant.
 
 Three especially sharp interfaces survive.  A nonnegative-coefficient entire interpolant
-would close the conjecture from the four values at $1,2,3,6$; fresh-prime cancellation in a
-nested Newton table would have to synchronize base and output relations locally; and a
-partial norm preserving the exponentially small shifted Newton--Kummer cocycle would have to
-avoid the output-erasing ordinary trace.  None of these bridges follows from the present
-hypotheses, and the four-exponentials barrier remains intact.
+would close the conjecture from the four values at $1,2,3,6$.  A balanced Newton exhaustion
+would need an output-specific denominator \emph{upper} bound despite nested fresh-prime
+exhaustions having asymptotically maximal denominator mass.  And a Kummer operation would
+have to preserve signed cross-base cancellation beyond ordinary traces, character
+projections, ideal gcds, and output partial norms, all of which now have exact deficits.
+None of these bridges follows from the present hypotheses, and the four-exponentials barrier
+remains intact.
 \end{minipage}
 \vfill
 {\large August 22, 2026\par}
@@ -279,10 +281,13 @@ canonical entire $q$-Newton completion realizes the exact boundary defect.  In t
 cross-coprime determinant branch, the former $7/10$ ceiling is sharpened to the identity
 $7/10-\mathcal E_{\rm val}/20$, with an explicit arithmetic deficit of order $x^{-4}$.
 A four-value covariance theorem closes any
-nonnegative-coefficient representative; a fresh-prime Newton theorem converts primitive
-denominator cancellation into local relation transfer; and a shifted higher Newton--Kummer
-cocycle gives an exponentially small algebraic integer while exposing exact norm and trace
-deficits.  Complete synchronized gap products give integer orbit polynomials, exact
+nonnegative-coefficient representative; reciprocal Stieltjes moments give a full
+Vandermonde-divisible Hankel determinant whose exact $T^5$ asymptotic nevertheless remains
+strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
+into reduced denominators, in the direction opposite to closure.  A shifted higher
+Newton--Kummer cocycle gives an exponentially small algebraic integer, while character
+projections and the exact common-ideal norm expose a one-factor partial-norm deficit.
+Complete synchronized gap products give integer orbit polynomials, exact
 discriminants, and a universal quadratic surplus
 $\kappa=0.7079245703208558\ldots$ between the triadic and dyadic products.  The same audit
 shows that the natural Lambert/Hadamard, fixed-$S$,
@@ -16506,6 +16511,59 @@ cocycle gap.  The surviving positive direction is correspondingly precise: const
 \emph{different} arithmetic representative in the nonnegative-coefficient cone.  Ordinary
 Stieltjes/Newton interpolation provably does not do so.
 
+The most natural positive measure attached to $E$ also fails in an exact way.  Normalize
+\begin{equation}
+ d\nu_x(t)=\frac{t^{x-1}}{I_xE(-t)}\,dt,
+ \qquad I_x=\int_0^\infty\frac{t^{x-1}}{E(-t)}\,dt,
+ \qquad
+ \mathcal A_s(t)=\frac{E(-t)}{E(-t/s)}.
+ \label{crit:eq-stieltjes-transfer-measure}
+\end{equation}
+For every suitable $f$ and $r,s>0$, substitution gives the exact quasi-invariance and
+cocycle
+\begin{equation}
+ \int f(t)\mathcal A_s(t)\,d\nu_x(t)
+ =s^x\int f(st)\,d\nu_x(t),
+ \qquad
+ \mathcal A_{sr}(t)=\mathcal A_s(t)\mathcal A_r(t/s).
+ \label{crit:eq-stieltjes-transfer}
+\end{equation}
+Thus for a smooth $s=2^a3^b$ the normalizing constant is exactly $s^x=M^aA^b$, but this is
+only the original table written as a Radon--Nikodym identity.  In particular
+\begin{equation}
+ \mathcal A_6(t)=\mathcal A_2(t)\mathcal A_3(t/2),\qquad
+ \mathcal A_2(t)\mathcal A_3(t)=(1+t)\mathcal A_6(t).
+ \label{crit:eq-stieltjes-transfer-corner}
+\end{equation}
+If $m_1=\int t\,d\nu_x(t)>0$, then
+\begin{equation}
+ \int\mathcal A_2\mathcal A_3\,d\nu_x
+ =6^x(1+6m_1)>6^x,\qquad
+ \int\mathcal A_2(t)\mathcal A_3(t/2)\,d\nu_x=6^x.
+ \label{crit:eq-stieltjes-transfer-gap}
+\end{equation}
+The shifted argument absorbs the whole positive covariance gap, so
+\eqref{crit:eq-positive-covariance} cannot be applied to these transfer weights.
+
+The same conclusion survives at every Hankel order.  If
+$H_d=(\int t^{i+j}\,d\nu_x)_{0\le i,j\le d}$ and $H_d[\mathcal A_s]$ denotes the matrix with
+the tilted moments, then
+\begin{equation}
+ H_d[\mathcal A_s]=s^x\operatorname{diag}(s^i)H_d\operatorname{diag}(s^i),
+ \qquad
+ \det H_d[\mathcal A_s]=s^{x(d+1)+d(d+1)}\det H_d.
+ \label{crit:eq-stieltjes-transfer-hankel}
+\end{equation}
+After probability normalization this is merely dilation congruence, not an arithmetic
+lattice floor.  Finally, normalizing the positive Taylor coefficients of
+$\mathcal A_s$ against the moments of $\nu_x$ produces an entire probability generating
+function $\Phi_s$, but it has infinitely many positive coefficients and hence a strict
+four-value covariance defect.  As smooth $s\to\infty$, every fixed coefficient of
+$\Phi_s$ tends to zero while $\Phi_s(1)=1$: all mass escapes to infinity, so there is no
+locally uniform positive-coefficient interpolant in this family.  These identities hold for
+every real $x>0$, including all integral controls; integrality changes only the displayed
+normalizing constants.
+
 \subsection{The positive Stieltjes denominator target}
 \label{crit:denominator-target}
 
@@ -16615,12 +16673,86 @@ nonzero $Q\in\Z[s]$ of degree at most $d$ satisfies
  \ge k_0^{-(d+1)}.
  \label{crit:eq-reciprocal-lattice-floor}
 \end{equation}
-This converts the reversed integer table into an entire positive-definite lattice, rather
-than only one divided difference.  Closure would require an integer polynomial whose
-analytic $L^2$ norm falls below $1/k_0$; ordinary localization estimates have not reached
-that scale.  The finite cofactor, integral-Hankel, and quadratic-lattice transport is
-\statuslean{} in \lean{ReciprocalMomentLatticeFinite}; the Stieltjes representation and
-positivity are paper inputs.
+The determinant has substantially more integral content than the unit floor shows.  Put
+$N=n+1$, $m=d+1$, and form the $N\times N$ alternant whose $i$th row is
+\begin{equation}
+ \mathcal B_{i,\bullet}=
+ (1,u_i,\ldots,u_i^{N-m-1},v_i,u_iv_i,\ldots,u_i^{m-1}v_i).
+ \label{crit:eq-reciprocal-alternant}
+\end{equation}
+Cauchy--Binet followed by complementary Vandermonde factorization gives the exact identity
+\begin{equation}
+ \boxed{
+ \det K_d=(-1)^{mN+\binom m2}\Delta^{m-1}\det\mathcal B.}
+ \label{crit:eq-reciprocal-alternant-identity}
+\end{equation}
+Since positivity fixes the sign of the right side and $\det\mathcal B$ is a nonzero integer,
+\begin{equation}
+ \det K_d\ge\Delta^d,
+ \qquad
+ \det\left(\frac{h_{i+j}}{h_0}\right)_{0\le i,j\le d}
+ \ge\frac1{\Delta h_0^{d+1}}
+ =\frac{\Delta^d}{k_0^{d+1}}.
+ \label{crit:eq-reciprocal-strong-floor}
+\end{equation}
+There is an entrywise refinement as well.  If
+\[
+ L_F=\operatorname{lcm}_i|P'(u_i)|,
+ \qquad G_F=\gcd_i\left|\frac{\Delta}{P'(u_i)}\right|=\frac{\Delta}{L_F},
+\]
+then $G_F$ divides every $k_r$.  The normalized quadratic floor in
+\eqref{crit:eq-reciprocal-lattice-floor} can therefore be strengthened from $1/k_0$ to
+$G_F/k_0=1/(L_Fh_0)$.
+
+These stronger floors still miss at the exact leading scale.  Take the complete input
+triangle
+\[
+ \mathcal S_T=\{v=2^a3^b:\log v\le T\},\qquad u=v^x,
+ \qquad \mathcal L=\log2\log3,
+\]
+and let $m/N\to\varrho\in(0,1/2]$.  With $\Delta_T,h_{0,T}$ and
+$G_d=(h_{i+j}/h_0)_{0\le i,j< m}$ attached to this table, lattice integration and
+Andr\'eief's identity give
+\begin{align}
+ \log\Delta_T&=\frac{x}{10\mathcal L^2}T^5+o(T^5),
+ &\log h_{0,T}&=-\frac{x}{3\mathcal L}T^3+o(T^3),\nonumber\\
+ \log\det G_d&=\frac{2\sqrt2}{15}\,
+   \frac{x\varrho^{5/2}}{\mathcal L^2}T^5+o(T^5),
+ \label{crit:eq-reciprocal-triangle-asymptotics}
+\end{align}
+and hence
+\begin{equation}
+ \log|\det\mathcal B|
+ =\frac{xT^5}{\mathcal L^2}
+ \left(\frac1{10}-\frac{\varrho}{6}
+       +\frac{2\sqrt2}{15}\varrho^{5/2}\right)+o(T^5).
+ \label{crit:eq-reciprocal-alternant-growth}
+\end{equation}
+The function in parentheses decreases on $[0,1/2]$ and has minimum $1/20$ at
+$\varrho=1/2$.  Thus the supposedly dangerous integer alternant instead grows at a strictly
+positive $T^5$ rate for every admissible matrix size.  At the endpoint,
+$\log\det G_d\sim xT^5/(30\mathcal L^2)$, whereas the logarithm of the lower floor in
+\eqref{crit:eq-reciprocal-strong-floor} is
+$-xT^5/(60\mathcal L^2)+o(T^5)$.  At the exact endpoint $N=2m$, for the control $x=2$ the columns in
+\eqref{crit:eq-reciprocal-alternant} become the consecutive powers of $v$, so
+$|\det\mathcal B|$ is exactly the ordinary Vandermonde in the input nodes; this realizes the
+$1/20$ coefficient.  At the same endpoint, the case $x=3$ is the Vandermonde times a
+positive Schur factor.
+
+The first two estimates in~\eqref{crit:eq-reciprocal-triangle-asymptotics} follow from
+triangular lattice integration.  After writing $s=e^{xt}$, the normalized Andr\'eief
+integral has ordered-particle exponent
+$x(2jt-t^3/(6\mathcal L))$; its maximizer is
+$t_j=2\sqrt{\mathcal Lj}$, which stays inside the triangle precisely for
+$\varrho\le1/2$ and yields the displayed $2\sqrt2/15$ constant.  Boundary and separation
+errors are $o(T^5)$.  This converts the reversed integer table into an entire
+positive-definite lattice and closes the most direct determinant attack negatively: neither
+the full Vandermonde divisor nor the optimal smooth triangle becomes subunit.
+
+The finite cofactor, integral-Hankel, quadratic-lattice transport, node--LCM content
+divisibility, and common-content amplification are \statuslean{} in
+\lean{ReciprocalMomentLatticeFinite}; the gcd characterization, alternant identity,
+Stieltjes representation, positivity, and asymptotic audit are paper results.
 
 \subsection{Cyclotomic defect cascades and familywise private support}
 \label{crit:cyclotomic-defects}
@@ -16885,6 +17017,42 @@ The one-step append/evaluation and barycentric scaling identities are \statuslea
 \lean{NewtonCollisionCore}.  The localization, valuation, synchronization, translation,
 and ray-divisor statements above are \statusnew{} paper arguments; BCZ is the cited
 \statusknown{} input.
+
+Fresh layers can in fact be made asymptotically as large as the whole node product, but this
+strengthens the obstruction rather than overcoming it.  If a fixed pair $M,A>1$ is not
+$(2^k,3^k)$, at least one of
+\[
+ (B,C)=(2,M),\qquad(3,A),\qquad(6,MA)
+\]
+is multiplicatively independent.  Given a finite smooth-node set $F$ containing $1$, choose
+a sufficiently large prime $n$ so that $\Phi_n(B)$ is coprime to the old Vandermonde.  At the
+new node $B^n\mapsto C^n$ every prime factor of $\Phi_n(B)$ gives a unique collision with
+$1$, and the fresh-pole calculation yields
+\begin{equation}
+ R_n:=\frac{\Phi_n(B)}{\gcd(\Phi_n(B),C^n-1)}
+ \mid \mathfrak d_{F\cup\{B^n\}},
+ \qquad \log R_n=n\log B-o(n).
+ \label{crit:eq-sparse-spike-divisor}
+\end{equation}
+The asymptotic is BCZ.  Recursively interleaving the next missing smooth node with a prime
+spike whose height dominates all preceding nodes produces one nested exhaustion and a
+subsequence along which
+\begin{equation}
+ \frac{\log\mathfrak d_F}{\log\prod_{s\in F}s}\ge1-o(1).
+ \label{crit:eq-sparse-spike-scale}
+\end{equation}
+This construction works for every fixed off-curve integer pair and uses no real common
+exponent.  More importantly, it has the wrong polarity for
+\eqref{crit:eq-denominator-lower}: both results are lower bounds for the reduced denominator.
+A larger denominator merely permits a larger reduced numerator, whereas closure requires an
+upper bound $\mathfrak d_F=o(\prod F)$.  Likewise, even after combining a fixed-level
+Kummer density with the generic $O(\sqrt p)$ short-relation estimate, the guaranteed
+contribution in a $K\times K$ table reaches only $p\ll K^2$, hence has quadratic squarefree
+logarithmic mass, while $\log\prod F_K=\Theta(K^3)$; residue-symbol depth is not a substitute
+for gap valuation.
+The missing statement is therefore an output-specific upper bound, or a theorem correlating
+prime divisors of the sparse $S$-unit gaps with the detecting Frobenius classes.  Chebotarev
+alone supplies neither.
 
 \subsection{Support rigidity and Kummer defect primes}
 \label{crit:support-defects}
@@ -17403,21 +17571,83 @@ $\ell\nmid rs$,
 \end{equation}
 Character orthogonality has erased $M,A,x$ completely.  At $m=\ell-1$ the dominant base-only
 term grows like $\exp(0.281244\ldots\ell)$, so trace destroys precisely the distinguished
-cancellation.
+cancellation.  This is not an accident of the invariant character: writing
+$F_m(T,P)=\sum_{k=0}^mc_k(P)T^k$, every rank-four character projection of $\Xi$ is either
+the base-only constant term, one term $D_m(Q)c_k(P)U^k$, or one term
+$-D_m(P)c_k(Q)V^k$.  All mixed nonconstant characters vanish.  Linear Fourier projection
+therefore either erases both outputs or retains only one axis; the rank-three exception is
+exactly a support collision forced by its unique relation.
 
 There is one useful rank calibration.  If $\gcd(6,MA)=1$, then the base-prime and output-prime
 valuation lattices split.  Rank three would force $M=W^r$, $A=W^s$, hence
 $\log_2 3=s/r\in\Q$, impossible.  Every hypothetical cross-coprime counterexample is
-therefore in the harder rank-four Kummer branch.  In the ring of integers of $K_N$, the next
-concrete local object is the ideal sum
+therefore in the harder rank-four Kummer branch.  The natural common ideal can be computed
+exactly, and it is still too small.  Let $\ell>3$ be prime, $1\le m<\ell$, put
+$P=2^{1/\ell}$, $Q=3^{1/\ell}$, $L=\Q(P,Q)$, and write
+\[
+ S=\frac{m(m-1)}2,\qquad
+ H_a(m)=\prod_{r=1}^m(a^r-1),\qquad
+ D_m(P)=P^S\prod_{r=1}^m(P^r-1)
+\]
+with the analogous formula for $D_m(Q)$.  For the ideal
 \begin{equation}
- (D_m(2^{1/N}))+(D_m(3^{1/N})),
+ \mathfrak I_{\ell,m}=(D_m(P))+(D_m(Q))\subset\mathcal O_L,
  \label{crit:eq-newton-kummer-ideal}
 \end{equation}
-whose prime-ideal size could in principle supply the divisor missing from the raw norm.
+set $a_p=v_p(H_2(m))$ and $b_p=v_p(H_3(m))$.  Then
+\begin{equation}
+ \boxed{
+ N_{L/\Q}\mathfrak I_{\ell,m}
+ =6^S\ell^{e_{\ell,m}}
+   \prod_{p\nmid6\ell}p^{\min(a_p,b_p)},
+ \qquad
+ 0\le e_{\ell,m}\le\ell\min(a_\ell,b_\ell).}
+ \label{crit:eq-newton-kummer-ideal-norm}
+\end{equation}
+At a good prime, a prime ideal dividing $D_m(P)$ makes $P^r=1$ for some $r<\ell$.
+B\'ezout between $r$ and $\ell$ then puts $P$ in the prime field and determines it uniquely
+from $2$; the same holds for $Q$.  Hence exactly one common degree-one prime occurs, with
+valuation $\min(a_p,b_p)$.  The primes $2$ and $3$ contribute $2^S$ and $3^S$; the displayed
+bound at $\ell$ follows from the two principal norms and LTE.  In particular
+\begin{equation}
+ \log N_{L/\Q}\mathfrak I_{\ell,m}=O(m^2+m\ell)=O(\ell^2).
+ \label{crit:eq-newton-kummer-ideal-size}
+\end{equation}
+For fixed $m$ and all sufficiently large $\ell$, the exact norm is simply
+$6^S\gcd(H_2(m),H_3(m))$.
+
+This settles the partial-norm scale.  The cross-resultants give
+\[
+ |N_{L/\Q}D_m(P)|=(2^SH_2(m))^\ell,
+ \qquad
+ |N_{L/\Q}D_m(Q)|=(3^SH_3(m))^\ell.
+\]
+In Kummer rank $\rho$, extension to $K_\ell$ raises
+\eqref{crit:eq-newton-kummer-ideal-norm} to the power $\ell^{\rho-2}$.  At
+$m=\ell-1$ its logarithm is therefore only $O(\ell^\rho)$, one full factor of $\ell$
+below the $O(\ell^{\rho+1})$ conjugate cost in
+\eqref{crit:eq-newton-kummer-norm-gap}.  In the cyclotomic Kummer closure, taking a norm over
+any subgroup of the output-twist group multiplies the ideal power and divides the remaining
+field degree in inverse proportions, so the absolute deficit is unchanged.  Projective
+normalization does not repair it either:
+\begin{equation}
+ (D_m(P))\cap(D_m(Q))=(D_m(P)D_m(Q))\mathfrak I_{\ell,m}^{-1},
+ \qquad
+ \log N_{L/\Q}\bigl((D_m(P))\cap(D_m(Q))\bigr)
+ =\ell^3\log6+O(\ell^2)
+ \label{crit:eq-newton-kummer-projective-tax}
+\end{equation}
+when $m=\ell-1$.  The normalized cross-base difference in
+\eqref{crit:eq-newton-kummer-normalized} is only polynomial at this shifted order; the
+exponential smallness comes from the distinguished values of $D_m(P)D_m(Q)$, exactly where
+the projective denominator is largest.  Thus ordinary traces, character projections, ideal
+gcds, and subgroup output partial norms do not improve these bounds at their exact scales.
+A successful algebraic operation would have to retain signed cross-base cancellation among
+nontrivial characters, not merely a distinguished branch or a common ideal.
+
 The product/cocycle identities and integral-exponent calibrations are \statuslean{} in
 \lean{RankOneNewtonKummer}; the sign, asymptotic, Kummer-degree, norm, and trace analysis is
-\statusnew{} paper mathematics.  No partial norm preserving the real cancellation is known.
+\statusnew{} paper mathematics, as are the ideal-norm and projection calculations above.
 
 \subsection{Adjacent-smooth cyclic resultants and finite-logarithm descent}
 \label{crit:adjacent-resultants}
@@ -17795,11 +18025,15 @@ Newton--Kummer integral-exponent calibration are \statuslean{} in
 tangent algebra are \statuslean{} in \lean{DyadicPrivateSupport},
 \lean{CaptureMultiplier}, and \lean{CatalanTangentCore}.  Their infinite-series, valuation,
 asymptotic, Kummer-field, density, and resultant extensions remain explicitly
-\statusnew{} paper arguments.  Together with the refined
-Stieltjes/Jensen, Hermite, reciprocal-Hankel, BCZ, and pure-denominator results, they isolate
-three sharp surviving interfaces: a positive arithmetic interpolant, aggregate fresh-prime
-synchronization, or a partial norm that preserves the shifted Newton--Kummer cancellation.
-None is supplied by the original hypotheses.}
+\statusnew{} paper arguments.  Together with the refined Stieltjes/Jensen, Hermite,
+reciprocal-Hankel, BCZ, and pure-denominator results, they leave three narrower interfaces:
+a genuinely different positive arithmetic interpolant; an output-specific denominator upper
+bound on a balanced exhaustion, rather than more fresh divisors; or a signed Kummer operation
+that couples nontrivial characters across both bases.  The natural Stieltjes transfer family,
+sparse-spike aggregation, reciprocal Hankel determinants, ordinary traces, character
+projections, common ideals, and subgroup output partial norms do not improve the relevant
+bounds at their exact scales.  None of the surviving bridges is supplied by the original
+hypotheses.}
 \end{statusbox}
 
 \appendix
@@ -18304,18 +18538,20 @@ Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, and positive reduced
 denominator target & \statusnew & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
-One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice, and normalized
-$1/k_0$ floor & finite arithmetic core \statuslean; analytic representation \statusnew &
+One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice,
+common-content floors, full alternant divisor, and sharp $T^5$ scale audit & finite arithmetic
+and common-content core \statuslean; alternant/asymptotic layer \statusnew &
 \lean{ReciprocalMomentLatticeFinite}; Section~\ref{crit:reciprocal-moment-lattice} \\
 Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
-canonical alternating tail, and boundary-quotient lower bounds & \statusnew &
+canonical alternating tail, boundary-quotient lower bounds, and Stieltjes-transfer no-go & \statusnew &
 Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
 ceiling & \statusnew & Section~\ref{crit:cyclotomic-defects} \\
 Reciprocal-polynomial half-contact and exact equality classification; growing two-scale
 integer filter & finite support core \statuslean; orbit asymptotic \statusnew &
 \lean{ReciprocalHalfContact}; Section~\ref{crit:cyclotomic-defects} \\
-Fresh-prime pole, local synchronization, translated-block warning, and BCZ ray divisor &
+Fresh-prime pole, local synchronization, BCZ ray divisor, and asymptotically maximal nested
+spike exhaustion &
 \statusnew & Section~\ref{crit:fresh-prime}; BCZ input classical \\
 Exact finite Kummer compatibility and transverse-hyperplane counts & \statuslean &
 \lean{KummerCompatibilityFinite}; Section~\ref{crit:support-defects} \\
@@ -18332,7 +18568,8 @@ collision divisor, and finite-box detection & \statusnew &
 Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs classical \\
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
-Shifted Newton--Kummer exponential smallness, norm deficit, and output-erasing traces &
+Shifted Newton--Kummer exponential smallness, character-projection ceiling, exact common-ideal
+norm, and one-factor partial-norm deficit &
 \statusnew & Section~\ref{crit:newton-kummer} \\
 Adjacent-smooth cyclic resultant, boundary law, balanced gcd target, and conditional
 Frobenius descent & \statusnew & Section~\ref{crit:adjacent-resultants} \\
@@ -18564,8 +18801,8 @@ solution; no infinite-product or analytic-existence claim \\
 \lean{.../ReciprocalHalfContact} & reciprocal coefficient-support symmetry, sharp
 $2K\le D$ contact bound, and exact even/odd equality classifications \\
 \lean{.../ReciprocalMomentLatticeFinite} & one-Vandermonde cofactor clearing, integral
-Hankel moments, determinant and quadratic-form floors under an explicit paper-supplied
-positive-definiteness hypothesis \\
+Hankel moments, common-content determinant divisibility, and strengthened determinant and
+quadratic-form floors under an explicit paper-supplied positive-definiteness hypothesis \\
 \lean{.../FejerKernelCertificate} & normalized finite Fej\'er kernel; exact weighted Fourier
 score; exact phase and integer-phase hit-count certificates \\
 \lean{.../ExponentialPolynomialZeros} & zero-count theorem for real exponential polynomials

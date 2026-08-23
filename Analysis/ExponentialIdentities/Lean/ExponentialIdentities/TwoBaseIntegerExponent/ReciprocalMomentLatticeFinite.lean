@@ -173,6 +173,107 @@ def clearedMoment (N : ℕ) (node value : Fin (N + 1) → ℤ) (r : ℕ) : ℤ :
   (-1) ^ (N + r + 1) *
     ∑ i, cofactorWeight N node i * node i ^ r * value i
 
+/-- The same signed moment cleared only by the least common multiple of the barycentric
+denominators. -/
+def lcmClearedMoment (N : ℕ) (node value : Fin (N + 1) → ℤ) (r : ℕ) : ℤ :=
+  (-1) ^ (N + r + 1) *
+    ∑ i, clearedCoefficient N node i * node i ^ r * value i
+
+/-- Node-only common content left when the Vandermonde clearing factor is divided by the
+least common multiple of the barycentric denominators. -/
+def nodeCofactorContent (N : ℕ) (node : Fin (N + 1) → ℤ) : ℤ :=
+  vandermondeDelta N node / (denominatorLCM N node : ℤ)
+
+/-- The least common multiple of the barycentric denominators divides the oriented
+Vandermonde product. -/
+theorem denominatorLCM_dvd_vandermondeDelta
+    (N : ℕ) (node : Fin (N + 1) → ℤ) :
+    (denominatorLCM N node : ℤ) ∣ vandermondeDelta N node := by
+  apply Int.natAbs_dvd_natAbs.mp
+  simpa using denominatorLCM_dvd N node (m := (vandermondeDelta N node).natAbs) (by
+    intro i
+    exact Int.natAbs_dvd_natAbs.mpr
+      (signedDenominator_dvd_vandermondeDelta N node i))
+
+theorem denominatorLCM_pos
+    (N : ℕ) (node : Fin (N + 1) → ℤ) (hnode : Function.Injective node) :
+    0 < denominatorLCM N node := by
+  apply Nat.pos_of_ne_zero
+  rw [denominatorLCM, Finset.lcm_ne_zero_iff]
+  intro i _
+  exact Int.natAbs_ne_zero.mpr (signedDenominator_ne_zero N node hnode i)
+
+/-- For positively oriented distinct nodes, the node-only cofactor content is positive. -/
+theorem nodeCofactorContent_pos
+    (N : ℕ) (node : Fin (N + 1) → ℤ) (hnode : Function.Injective node)
+    (hdelta : 0 < vandermondeDelta N node) :
+    0 < nodeCofactorContent N node := by
+  apply Int.ediv_pos_of_pos_of_dvd hdelta
+  · exact_mod_cast (denominatorLCM_pos N node hnode).le
+  · exact denominatorLCM_dvd_vandermondeDelta N node
+
+/-- At each node, the Vandermonde cofactor is exactly the node-content multiple of the
+minimal-LCM cofactor. -/
+theorem nodeCofactorContent_mul_clearedCoefficient
+    (N : ℕ) (node : Fin (N + 1) → ℤ) (hnode : Function.Injective node)
+    (i : Fin (N + 1)) :
+    nodeCofactorContent N node * clearedCoefficient N node i =
+      cofactorWeight N node i := by
+  have hden := signedDenominator_ne_zero N node hnode i
+  apply Int.eq_of_mul_eq_mul_right hden
+  calc
+    (nodeCofactorContent N node * clearedCoefficient N node i) *
+        signedDenominator N node i =
+      nodeCofactorContent N node *
+        (clearedCoefficient N node i * signedDenominator N node i) := by ring
+    _ = nodeCofactorContent N node * (denominatorLCM N node : ℤ) := by
+      rw [clearedCoefficient_mul_denominator]
+    _ = vandermondeDelta N node := by
+      exact Int.ediv_mul_cancel (denominatorLCM_dvd_vandermondeDelta N node)
+    _ = cofactorWeight N node i * signedDenominator N node i := by
+      exact (cofactorWeight_mul_signedDenominator N node i).symm
+
+/-- The node-only cofactor content divides every output-dependent cleared moment, with the
+quotient given by the minimally LCM-cleared moment. -/
+theorem nodeCofactorContent_mul_lcmClearedMoment
+    (N : ℕ) (node value : Fin (N + 1) → ℤ) (hnode : Function.Injective node)
+    (r : ℕ) :
+    nodeCofactorContent N node * lcmClearedMoment N node value r =
+      clearedMoment N node value r := by
+  rw [lcmClearedMoment, clearedMoment]
+  calc
+    nodeCofactorContent N node *
+        ((-1 : ℤ) ^ (N + r + 1) *
+          ∑ i, clearedCoefficient N node i * node i ^ r * value i) =
+      (-1 : ℤ) ^ (N + r + 1) *
+        (nodeCofactorContent N node *
+          ∑ i, clearedCoefficient N node i * node i ^ r * value i) := by ring
+    _ = (-1 : ℤ) ^ (N + r + 1) *
+        ∑ i, nodeCofactorContent N node *
+          (clearedCoefficient N node i * node i ^ r * value i) := by
+            rw [Finset.mul_sum]
+    _ =
+      (-1 : ℤ) ^ (N + r + 1) *
+        ∑ i, (nodeCofactorContent N node * clearedCoefficient N node i) *
+          node i ^ r * value i := by
+            congr 1
+            apply Finset.sum_congr rfl
+            intro i _
+            ring
+    _ = (-1 : ℤ) ^ (N + r + 1) *
+        ∑ i, cofactorWeight N node i * node i ^ r * value i := by
+          congr 1
+          apply Finset.sum_congr rfl
+          intro i _
+          rw [nodeCofactorContent_mul_clearedCoefficient N node hnode i]
+
+theorem nodeCofactorContent_dvd_clearedMoment
+    (N : ℕ) (node value : Fin (N + 1) → ℤ) (hnode : Function.Injective node)
+    (r : ℕ) :
+    nodeCofactorContent N node ∣ clearedMoment N node value r := by
+  refine ⟨lcmClearedMoment N node value r, ?_⟩
+  exact (nodeCofactorContent_mul_lcmClearedMoment N node value hnode r).symm
+
 /-- The explicit cofactor weights transport the rational barycentric moment to an integer
 after multiplication by the single Vandermonde factor. -/
 theorem cast_clearedMoment_eq_delta_mul_rationalBarycentricMoment
@@ -247,6 +348,53 @@ theorem quadraticValue_eq_doubleSum
         c i * clearedMoment N node value ((i : ℕ) + (j : ℕ)) * c j := by
   simp [quadraticValue, dotProduct, Matrix.mulVec, momentHankel, Finset.mul_sum, mul_assoc]
 
+/-! ## Common-content amplification -/
+
+/-- If one integer divides every cleared moment used by the truncated Hankel matrix, then it
+divides every integral quadratic value of that matrix.  In applications the divisor may be
+the node-only cofactor content, or the (usually larger) gcd of the actual output-dependent
+moments. -/
+theorem commonDivisor_dvd_quadraticValue
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ) (g : ℤ)
+    (hdiv : ∀ r : ℕ, r ≤ 2 * d → g ∣ clearedMoment N node value r)
+    (c : Fin (d + 1) → ℤ) :
+    g ∣ quadraticValue N d node value c := by
+  rw [quadraticValue_eq_doubleSum]
+  apply Finset.dvd_sum
+  intro i _
+  apply Finset.dvd_sum
+  intro j _
+  have hij : (i : ℕ) + (j : ℕ) ≤ 2 * d := by
+    have hi : (i : ℕ) ≤ d := Nat.le_of_lt_succ i.isLt
+    have hj : (j : ℕ) ≤ d := Nat.le_of_lt_succ j.isLt
+    omega
+  obtain ⟨z, hz⟩ := hdiv ((i : ℕ) + (j : ℕ)) hij
+  refine ⟨c i * z * c j, ?_⟩
+  rw [hz]
+  ring
+
+/-- Entrywise common content contributes one copy from every determinant column. -/
+theorem commonDivisor_pow_dvd_momentHankel_det
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ) (g : ℤ)
+    (hdiv : ∀ r : ℕ, r ≤ 2 * d → g ∣ clearedMoment N node value r) :
+    g ^ (d + 1) ∣ (momentHankel N d node value).det := by
+  classical
+  have hentry : ∀ i j : Fin (d + 1), g ∣ momentHankel N d node value i j := by
+    intro i j
+    apply hdiv
+    have hi : (i : ℕ) ≤ d := Nat.le_of_lt_succ i.isLt
+    have hj : (j : ℕ) ≤ d := Nat.le_of_lt_succ j.isLt
+    omega
+  have hprod : (∏ _j : Fin (d + 1), g) ∣ (momentHankel N d node value).det := by
+    rw [Matrix.det_apply']
+    apply Finset.dvd_sum
+    intro σ _
+    apply Dvd.dvd.mul_left
+    exact Finset.prod_dvd_prod_of_dvd (fun _j : Fin (d + 1) ↦ g)
+      (fun j ↦ momentHankel N d node value (σ j) j)
+      (fun j _ ↦ hentry (σ j) j)
+  simpa using hprod
+
 theorem cast_quadraticValue
     (N d : ℕ) (node value : Fin (N + 1) → ℤ) (c : Fin (d + 1) → ℤ) :
     (quadraticValue N d node value c : ℝ) =
@@ -275,6 +423,39 @@ theorem quadraticValue_pos
   rw [← cast_quadraticValue N d node value c] at hp'
   exact_mod_cast hp'
 
+/-- Positive definiteness turns a positive common moment divisor into a strengthened lower
+bound for every nonzero integral quadratic value. -/
+theorem commonDivisor_le_quadraticValue
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ) (g : ℤ)
+    (hg : 0 < g)
+    (hdiv : ∀ r : ℕ, r ≤ 2 * d → g ∣ clearedMoment N node value r)
+    (hpos : PaperPositiveDefinite N d node value)
+    (c : Fin (d + 1) → ℤ) (hc : c ≠ 0) :
+    g ≤ quadraticValue N d node value c := by
+  obtain ⟨z, hz⟩ := commonDivisor_dvd_quadraticValue N d node value g hdiv c
+  have hq : 0 < g * z := by
+    rw [← hz]
+    exact quadraticValue_pos N d node value hpos c hc
+  have hzpos : 0 < z := by
+    rcases (mul_pos_iff.mp hq) with h | h
+    · exact h.2
+    · exact (not_lt_of_ge hg.le h.1).elim
+  have hzone : (1 : ℤ) ≤ z := by omega
+  rw [hz]
+  nlinarith
+
+/-- Concrete node-LCM amplification of the quadratic floor. -/
+theorem nodeCofactorContent_le_quadraticValue
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ)
+    (hnode : Function.Injective node) (hdelta : 0 < vandermondeDelta N node)
+    (hpos : PaperPositiveDefinite N d node value)
+    (c : Fin (d + 1) → ℤ) (hc : c ≠ 0) :
+    nodeCofactorContent N node ≤ quadraticValue N d node value c := by
+  apply commonDivisor_le_quadraticValue N d node value (nodeCofactorContent N node)
+    (nodeCofactorContent_pos N node hnode hdelta)
+    (fun r _ ↦ nodeCofactorContent_dvd_clearedMoment N node value hnode r)
+    hpos c hc
+
 /-- The positive integral quadratic value has the unit floor. -/
 theorem one_le_quadraticValue
     (N d : ℕ) (node value : Fin (N + 1) → ℤ)
@@ -296,6 +477,27 @@ theorem momentHankel_det_pos
       (Int.cast_det (R := ℝ) (momentHankel N d node value))
   rw [← hcast] at hp
   exact_mod_cast hp
+
+/-- A positive common divisor of all used moments contributes its full matrix-size power to
+the positive Hankel determinant. -/
+theorem commonDivisor_pow_le_momentHankel_det
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ) (g : ℤ)
+    (hg : 0 < g)
+    (hdiv : ∀ r : ℕ, r ≤ 2 * d → g ∣ clearedMoment N node value r)
+    (hpos : PaperPositiveDefinite N d node value) :
+    g ^ (d + 1) ≤ (momentHankel N d node value).det := by
+  obtain ⟨z, hz⟩ := commonDivisor_pow_dvd_momentHankel_det N d node value g hdiv
+  have hgpow : 0 < g ^ (d + 1) := pow_pos hg _
+  have hdet : 0 < g ^ (d + 1) * z := by
+    rw [← hz]
+    exact momentHankel_det_pos N d node value hpos
+  have hzpos : 0 < z := by
+    rcases (mul_pos_iff.mp hdet) with h | h
+    · exact h.2
+    · exact (not_lt_of_ge hgpow.le h.1).elim
+  have hzone : (1 : ℤ) ≤ z := by omega
+  rw [hz]
+  nlinarith
 
 /-- In particular, the integral Hankel determinant is at least one. -/
 theorem one_le_momentHankel_det
@@ -335,6 +537,38 @@ theorem one_div_clearedMoment_zero_le_normalizedQuadraticValue
     exact_mod_cast hk0Z
   rw [normalizedQuadraticValue, div_le_div_iff_of_pos_right hk0Q]
   exact_mod_cast one_le_quadraticValue N d node value hpos c hc
+
+/-- Common-content version of the normalized lattice floor.  Taking `g = 1` recovers the
+unit bound above; taking the actual gcd of the used moments records output-sensitive Smith
+mass without changing the normalized measure. -/
+theorem commonDivisor_div_clearedMoment_zero_le_normalizedQuadraticValue
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ) (g : ℤ)
+    (hg : 0 < g)
+    (hdiv : ∀ r : ℕ, r ≤ 2 * d → g ∣ clearedMoment N node value r)
+    (hpos : PaperPositiveDefinite N d node value)
+    (c : Fin (d + 1) → ℤ) (hc : c ≠ 0) :
+    (g : ℚ) / (clearedMoment N node value 0 : ℚ) ≤
+      normalizedQuadraticValue N d node value c := by
+  have hk0Z := clearedMoment_zero_pos N d node value hpos
+  have hk0Q : (0 : ℚ) < (clearedMoment N node value 0 : ℚ) := by
+    exact_mod_cast hk0Z
+  rw [normalizedQuadraticValue, div_le_div_iff_of_pos_right hk0Q]
+  exact_mod_cast commonDivisor_le_quadraticValue N d node value g hg hdiv hpos c hc
+
+/-- Fully concrete normalized floor obtained from the node-only LCM cofactor content. -/
+theorem nodeCofactorContent_div_clearedMoment_zero_le_normalizedQuadraticValue
+    (N d : ℕ) (node value : Fin (N + 1) → ℤ)
+    (hnode : Function.Injective node) (hdelta : 0 < vandermondeDelta N node)
+    (hpos : PaperPositiveDefinite N d node value)
+    (c : Fin (d + 1) → ℤ) (hc : c ≠ 0) :
+    (nodeCofactorContent N node : ℚ) /
+        (clearedMoment N node value 0 : ℚ) ≤
+      normalizedQuadraticValue N d node value c := by
+  exact commonDivisor_div_clearedMoment_zero_le_normalizedQuadraticValue
+    N d node value (nodeCofactorContent N node)
+    (nodeCofactorContent_pos N node hnode hdelta)
+    (fun r _ ↦ nodeCofactorContent_dvd_clearedMoment N node value hnode r)
+    hpos c hc
 
 end
 
