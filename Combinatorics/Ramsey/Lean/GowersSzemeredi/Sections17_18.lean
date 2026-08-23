@@ -160,9 +160,14 @@ def section18Exponent (alpha : Real) (k : Nat) : Real :=
   alpha ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 10)))
 
 /-- **Theorem 18.1.** The balanced function is made explicit, and the average
-cell-size exponent is corrected to the same three-level tower used in the
-proof.  A threshold records the large-modulus assumptions inherited from the
-structural lemmas. -/
+cell-size exponent is corrected to the three-level tower printed in the
+article. A threshold records the large-modulus assumptions inherited from the
+structural lemmas.
+
+Editorial warning: the proof invokes the unsupported tower estimate in the
+published Corollary 16.11. The catalogue preserves the intended headline
+statement, but this Prop-valued entry does not claim that the displayed proof
+establishes it. -/
 def theorem_18_1 : Prop :=
   ∀ (k : Nat) (alpha : Real), 0 < alpha → alpha ≤ 1 / 2 →
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
@@ -193,9 +198,9 @@ def twoColorThreshold (k : Nat) : Real :=
   (2 : Real) ^ ((2 : Real) ^ ((2 : Real) ^
     ((2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat)))))
 
-/-- **Corollary 18.3.** The paper labels this result 18.7, although no results
-18.3--18.6 exist; the numbering is corrected here. -/
-def corollary_18_3 : Prop :=
+/-- **Corollary 18.7.** The source's unusual label is preserved even though
+there are no numbered results 18.3--18.6. -/
+def corollary_18_7 : Prop :=
   ∀ (k N : Nat), 0 < k → twoColorThreshold k ≤ N →
     ∀ color : Nat → Fin 2, HasMonochromaticAP N 2 color k
 
