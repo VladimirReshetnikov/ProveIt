@@ -120,8 +120,9 @@ theorem extendedFabiusDyadicValue_cast (F : BoundedFabius)
 theorem rvachevDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (a : ℤ) (ha : a.natAbs ≤ 2 ^ n) :
     (rvachevDyadic n a : ℝ) = rvachevUp F (a / (2 : ℝ) ^ n) := by
-  rw [rvachevDyadic, if_pos ha,
-    fabiusDyadic_cast F hF n (2 ^ n - a.natAbs) (by omega)]
+  rw [rvachevDyadic, if_pos ha, Rat.cast_abs,
+    fabiusDyadic_cast F hF n (2 ^ n - a.natAbs) (by omega),
+    abs_of_nonneg (fabiusReal_nonneg F _)]
   by_cases ha0 : a ≤ 0
   · rw [rvachevUp, if_pos (div_nonpos_of_nonpos_of_nonneg
         (by exact_mod_cast ha0) (by positivity))]

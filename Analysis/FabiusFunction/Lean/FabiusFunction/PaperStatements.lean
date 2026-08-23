@@ -1,5 +1,6 @@
 import FabiusFunction.Basic
 import FabiusFunction.BernoulliRecurrences
+import FabiusFunction.DenominatorBound
 import FabiusFunction.Differential
 import FabiusFunction.DyadicAnalytic
 import FabiusFunction.DyadicClosedForm
@@ -466,7 +467,7 @@ theorem dyadicDenominator_eq_fabiusDyadicDenominator (n : ℕ) :
         have hascale : a ≤ 2 ^ (n + 1) := by omega
         have hreflect : 2 ^ (n + 1) - a ∈ oddDyadicNumerators (n + 1) :=
           oddDyadicNumerators_reflect_mem (n + 1) a (by omega) ha
-        rw [rvachevDyadic, if_pos]
+        rw [rvachevDyadic, if_pos, Rat.den_abs_eq_den]
         · exact Finset.dvd_lcm hreflect
         · simpa using hascale
       · unfold dyadicDenominator fabiusDyadicDenominator
@@ -487,7 +488,7 @@ theorem dyadicDenominator_eq_fabiusDyadicDenominator (n : ℕ) :
           omega
         have hdvd := Finset.dvd_lcm (f := fun c : ℕ =>
           (rvachevDyadic (n + 1) c).den) hbmem
-        rw [rvachevDyadic, if_pos] at hdvd
+        rw [rvachevDyadic, if_pos, Rat.den_abs_eq_den] at hdvd
         · simpa [b, hba] using hdvd
         · simpa using hbscale
 
@@ -795,16 +796,18 @@ reduced denominators on the positive odd level-`n` dyadic grid.
 -/
 
 /-- Theorem 13: a common integral scaling of all level-`n` dyadic values. -/
-theorem theorem_thirteen (n : ℕ) (hn : 1 ≤ n) (a : ℤ)
+theorem theorem_thirteen (n : ℕ) (_hn : 1 ≤ n) (a : ℤ)
     (haLower : -((2 ^ n : ℕ) : ℤ) < a)
     (haUpper : a < ((2 ^ n : ℕ) : ℤ)) :
     IsNatural (rvachevDyadic n a * denominatorBound n) := by
-  sorry
+  have habs : a.natAbs ≤ 2 ^ n := by
+    rcases Int.natAbs_eq a with h | h <;> omega
+  exact rvachevDyadic_mul_denominatorBound_isNatural n a habs
 
 /-- The common-denominator formulation following Theorem 13. -/
-theorem theorem_thirteen_denominator_bound (n : ℕ) (hn : 1 ≤ n) :
+theorem theorem_thirteen_denominator_bound (n : ℕ) (_hn : 1 ≤ n) :
     dyadicDenominator n ∣ denominatorBound n := by
-  sorry
+  exact dyadicDenominator_dvd_denominatorBound n
 
 /-- Proposition 15: the denominator at `2⁻ⁿ` divides the common denominator. -/
 theorem proposition_fifteen (n : ℕ) :

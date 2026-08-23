@@ -370,10 +370,13 @@ def evalExtendedFabiusDyadic (x : ℚ) : Option ℚ :=
 /--
 The exact value of `up(a / 2^n)` for an integer numerator.  Evenness reduces
 negative arguments to nonnegative ones; values outside the support are zero.
+The absolute value records the nonnegative codomain of Rvachev's function in
+the exact representation.  The analytic bridge proves it is extensionally
+redundant whenever a bounded Fabius function is supplied.
 -/
 def rvachevDyadic (n : ℕ) (a : ℤ) : ℚ :=
   if a.natAbs ≤ 2 ^ n then
-    fabiusDyadic n (2 ^ n - a.natAbs)
+    |fabiusDyadic n (2 ^ n - a.natAbs)|
   else
     0
 
