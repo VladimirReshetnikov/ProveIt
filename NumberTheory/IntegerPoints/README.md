@@ -59,14 +59,15 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     endpoints so that the conditionally convergent boundary sums become
     alternating series — the textbook argument does not give `O(log H)`
     uniformly near integer endpoints.
-  - `IntegerPoints.SP1Taylor`, `SP2Parts` — **proved** (work in progress towards
-    Graham–Kolesnik Lemma 3.4, stationary phase): in the normalised setting
-    `g(0) = g'(0) = 0`, `g'' ≥ λ₂`, `|g'''| ≤ λ₃`, `|g''''| ≤ λ₄` (`SP.Data`), the
-    Taylor-type bounds on `r = g − g''(0)x²/2` (`|r'| ≤ λ₃x²/2`,
-    `|x r'' − 2r'| ≤ λ₄|x|³/6`, `|x r' − 3r| ≤ λ₄x⁴/24`, `|g'(x)| ≥ λ₂|x|`, all from
-    one helper `|F(x)| ≤ c|x|^{k+1}/(k+1)`), and the integral
-    `T₁ = ∫ e(g) r'/x ≪ λ₃/λ₂ + (b − a)(λ₄/λ₂ + λ₃²/λ₂²)` by parts with the weight
-    `r'/(x g')`, excising `(−ε, ε)` and letting `ε → 0`.
+  - `IntegerPoints.GKLemma34` — **proved**: both curvature forms of
+    Graham–Kolesnik Lemma 3.4, the stationary-phase estimate
+    (`gk_lemma34_holds`, `gk_lemma34_neg_holds`).  The internal
+    `SP1Taylor`–`SP5Core` chain normalises the critical point, proves sharp
+    Taylor bounds for the cubic remainder, controls the two integration-by-parts
+    error integrals, assembles them across the singular point, and compares the
+    quadratic integral with the Fresnel main term.  The public wrapper translates
+    back to `x₀`, uses Lemma 3.2 when an endpoint is closer than `λ₂⁻¹⁄²`, and
+    obtains the case `g'' ≤ −λ₂` by complex conjugation.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
@@ -175,10 +176,10 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
 Every result is a `Prop`-valued definition (e.g. `zhaiCao_theorem`,
 `wu_theorem1`); the ones proved so far have a companion `…_holds` theorem
 (or an implication between statements), listed above.  The library compiles
-with no `sorry` and no axioms beyond Mathlib's.  The analytic core — the
-exponential-sum estimates (Zhai–Cao Lemmas 6–7, 9–10, Proposition 1; Wu
-Theorem 2, Lemmas 2.5–2.7, Propositions 1–4), Nowak's formula, and the
-RH-conditional main theorems — remains unproved.
+with no `sorry` and no axioms beyond Mathlib's.  The remaining analytic core —
+the unproved exponential-sum estimates (Zhai–Cao Lemmas 7 and 10 and
+Proposition 1; Wu Theorem 2, Lemmas 2.5–2.7 and Propositions 1–4), Nowak's
+formula, and the RH-conditional main theorems — remains unproved.
 
 ## Conventions worth knowing
 

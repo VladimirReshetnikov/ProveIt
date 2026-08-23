@@ -35,6 +35,7 @@ import IntegerPoints.BerndtKimZaharescu
 import IntegerPoints.GKLemma31
 import IntegerPoints.GKLemma32
 import IntegerPoints.GKLemma33
+import IntegerPoints.GKLemma34
 import IntegerPoints.Sawtooth
 import IntegerPoints.EulerMaclaurin
 import IntegerPoints.Poisson
@@ -42,14 +43,13 @@ import IntegerPoints.PoissonBounds
 import IntegerPoints.PoissonIntegrals
 import IntegerPoints.PoissonTail
 import IntegerPoints.GKLemma35
-import IntegerPoints.SP1Taylor
-import IntegerPoints.SP2Parts
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
 (Acta Arith. 90, 1999) and Wu (Monatsh. Math. 135, 2002) on the primitive
-circle problem under the Riemann Hypothesis, with proofs of the elementary
-parts: the implications between the main theorems, the region-coverage
+circle problem under the Riemann Hypothesis, with machine-checked proofs of a
+substantial analytic and arithmetic subset: the implications between the main
+theorems, the region-coverage
 argument deriving Wu's Theorem 1 from his Propositions 1–4, the Vaughan
 identity of Lemma 4.1, Srinivasan's optimisation lemma, the Weyl–van der
 Corput inequality, Wu's large-sieve Lemma 2.1, the Kuz'min–Landau
@@ -66,6 +66,9 @@ proves Graham–Kolesnik's Lemma 3.7 (closure of the class `F` under
 differencing) and `IntegerPoints.AProcessTheorem` proves Theorem 3.8, the
 A-process `(k, l) ↦ (k/(2k+2), (k+l+1)/(2k+2))` on exponent pairs;
 `IntegerPoints.Lemma9` (with `Lemma9Tools`, `Lemma9Core`, `Lemma9Sum`) proves
-Zhai–Cao's Lemma 9 by Heath-Brown's method from Lemmas 1 and 6.  Every statement is a `Prop`-valued definition; proved ones
-have a companion `…_holds` theorem.
+Zhai–Cao's Lemma 9 by Heath-Brown's method from Lemmas 1 and 6.
+`IntegerPoints.GKLemma31` through `IntegerPoints.GKLemma35` prove
+Graham–Kolesnik's Lemmas 3.1–3.5, including the positive- and
+negative-curvature forms of the stationary-phase Lemma 3.4.  Every statement
+is a `Prop`-valued definition; proved ones have a companion `…_holds` theorem.
 -/
