@@ -1,16 +1,16 @@
 import IntegerPoints.SP4Assembly
-import IntegerPoints.GKStatements
 
 /-!
 # Stationary phase, part 5: the core estimate in the normalised setting
 
-For `D : SP.Data` with `a ≤ −λ₂^{-1/2}` and `λ₂^{-1/2} ≤ b` (the regime (3.2.2) of
-Graham–Kolesnik), we prove
+For `D : SP.Data`, whose endpoint assumptions are only `a < 0 < b`, we prove
 
 `‖∫_a^b e(g) − e(1/8)/√(g''(0))‖ ≤ C₀ (R₁ + R₂)`
 
 with `R₁ = 1/(λ₂|a|) + 1/(λ₂ b)`, `R₂ = (b − a) λ₄ λ₂⁻² + (b − a) λ₃² λ₂⁻³`, and an absolute
-constant `C₀` built from the constants of Lemmas 3.1 and 3.3.  The pieces:
+constant `C₀` built from the constants of Lemmas 3.1 and 3.3.  The stronger far-endpoint
+hypotheses in Graham–Kolesnik's regime (3.2.2) are needed only by the later wrapper that compares
+their truncated `R₁` with this core estimate.  The pieces:
 
 * `∫_a^b e(g) = ∫_a^b e(q) + ∫_a^b F` with `F = e(q)(e(r) − 1)` (`SP4Assembly.main_bound`);
 * `∫_a^b e(q) = ∫_{−X}^{X} e(q) + (rest)` with `X = min(|a|, b)`; the symmetric integral is the
@@ -102,12 +102,11 @@ theorem lam3_div_le : D.lam₃ / D.lam₂ ^ 2 ≤ D.R₁ + (D.b - D.a) * D.lam�
   have hUV : U * V = (D.lam₃ / D.lam₂ ^ 2) ^ 2 := by
     rw [hU, hV]
     field_simp
-    ring
   have hUR : U ≤ D.R₁ := by
     unfold R₁
     rw [hU, abs_of_neg ha]
     have h1 : 1 / (D.lam₂ * (D.b - D.a)) ≤ 1 / (D.lam₂ * -D.a) := by
-      apply one_div_le_one_div_of_le (by positivity)
+      apply one_div_le_one_div_of_le (mul_pos hl2 (neg_pos.mpr ha))
       nlinarith
     have h2 : 0 ≤ 1 / (D.lam₂ * D.b) := by positivity
     linarith
@@ -177,8 +176,9 @@ theorem fresnel_part {C₁ C₃ : ℝ}
         simp only [hderiv_q]
         have hx0 : x < 0 := by linarith [hx.2]
         have hy0 : y < 0 := by linarith [hy.2]
-        rw [div_le_div_iff_of_neg (by nlinarith) (by nlinarith)]
-        nlinarith))
+        exact one_div_le_one_div_of_neg_of_le
+          (mul_neg_of_pos_of_neg hg20 hy0)
+          (mul_le_mul_of_nonneg_left hxy hg20.le)))
       (fun x hx => by
         rw [hderiv_q]
         have hx0 : x ≤ -X := hx.2
@@ -212,7 +212,8 @@ theorem fresnel_part {C₁ C₃ : ℝ}
       linarith
     · have hXeq : X = D.b := min_eq_right h.le
       rw [hXeq]
-      have : 0 ≤ 1 / (D.lam₂ * -D.a) := by positivity
+      have : 0 ≤ 1 / (D.lam₂ * -D.a) :=
+        one_div_nonneg.mpr (mul_nonneg hl2.le (neg_nonneg.mpr ha.le))
       linarith
   have e1 : C₃ / (A * X) ≤ 2 * C₃ * (1 / (D.lam₂ * X)) := by
     rw [hA]
@@ -248,7 +249,7 @@ theorem fresnel_part {C₁ C₃ : ℝ}
 /-- The absolute constant of the core estimate, from the constants `C₁` (Lemma 3.1) and
 `C₃` (Lemma 3.3). -/
 noncomputable def C₀ (C₁ C₃ : ℝ) : ℝ :=
-  2 * C₃ + 2 * C₁ + 1 / π + (1 / (2 * π)) * (3 + 2 / 3 + π / 2 + 6 / π + 1)
+  2 * C₃ + 2 * C₁ + 1 / π + (1 / (2 * π)) * (2 + 2 / 3 + π / 2 + 6 / π + 1)
 
 /-- **The core estimate** in the normalised setting:
 `‖∫_a^b e(g) − e(1/8)/√(g''(0))‖ ≤ C₀ (R₁ + R₂)`. -/
@@ -276,6 +277,7 @@ theorem core_bound {C₁ C₃ : ℝ}
     apply integral_congr
     intro x _
     unfold F
+    change e (D.g x) = e (D.q x) + e (D.q x) * (e (D.r x) - 1)
     rw [D.g_eq_q_add_r, KL.e_add]
     ring
   have hF := D.fresnel_part h31 h33
@@ -303,11 +305,10 @@ theorem core_bound {C₁ C₃ : ℝ}
     unfold R₁
     rw [abs_of_neg ha]
     field_simp
-    ring
   -- the `B₂` and `K₂` terms
   have hmid : 1 / (2 * π * D.lam₂) * (2 * D.lam₃ / D.lam₂ + (D.b - D.a) * D.B₂ +
       ((2 / 3 + π / 2 + 6 / π) * (D.lam₃ / D.lam₂) + (D.b - D.a) * D.lam₄ / (12 * D.lam₂))) ≤
-      (1 / (2 * π)) * ((3 + 2 / 3 + π / 2 + 6 / π) * (D.R₁ + D.R₂) + D.R₂) := by
+      (1 / (2 * π)) * ((2 + 2 / 3 + π / 2 + 6 / π) * (D.R₁ + D.R₂) + D.R₂) := by
     unfold B₂
     have e1 : 1 / (2 * π * D.lam₂) * (2 * D.lam₃ / D.lam₂ + (D.b - D.a) *
         (D.lam₄ / (6 * D.lam₂) + 3 * D.lam₃ ^ 2 / (4 * D.lam₂ ^ 2)) +
@@ -348,7 +349,7 @@ theorem core_bound {C₁ C₃ : ℝ}
             ((2 / 3 + π / 2 + 6 / π) * (D.lam₃ / D.lam₂) + (D.b - D.a) * D.lam₄ / (12 * D.lam₂)))) :=
         add_le_add hF hM
     _ ≤ (2 * C₃ + 2 * C₁) * D.R₁ + ((1 / π) * D.R₁ +
-        (1 / (2 * π)) * ((3 + 2 / 3 + π / 2 + 6 / π) * (D.R₁ + D.R₂) + D.R₂)) := by
+        (1 / (2 * π)) * ((2 + 2 / 3 + π / 2 + 6 / π) * (D.R₁ + D.R₂) + D.R₂)) := by
         rw [hend]
         gcongr
     _ ≤ C₀ C₁ C₃ * (D.R₁ + D.R₂) := by
@@ -356,7 +357,7 @@ theorem core_bound {C₁ C₃ : ℝ}
         have hR2' := D.R₂_nonneg
         have h1 : 0 ≤ 1 / π := by positivity
         have h2 : 0 ≤ 1 / (2 * π) := by positivity
-        have h3 : 0 ≤ 3 + 2 / 3 + π / 2 + 6 / π := by positivity
+        have h3 : 0 ≤ 2 + 2 / 3 + π / 2 + 6 / π := by positivity
         nlinarith [mul_nonneg (add_nonneg hC1 hC3) hR2', mul_nonneg h1 hR2', mul_nonneg h2 hR2']
 
 end Data
