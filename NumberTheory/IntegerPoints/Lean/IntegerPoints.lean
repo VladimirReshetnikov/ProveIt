@@ -52,6 +52,7 @@ import IntegerPoints.GKTheorem22
 import IntegerPoints.FiniteHilbert
 import IntegerPoints.GKAppendixATheorem2
 import IntegerPoints.GKSec33LGeHalf
+import IntegerPoints.GKSec33KNonneg
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -91,7 +92,9 @@ finite Parseval and the centered-sawtooth Fourier coefficients;
 `IntegerPoints.GKAppendixATheorem2` applies it to prove the reciprocal-phase
 mean-square lower bound quoted from Graham--Kolesnik Appendix A, and
 `IntegerPoints.GKSec33LGeHalf` uses that lower bound to prove the §3.3
-restriction `l ≥ 1/2` from the exponential-sum estimate alone.
+restriction `l ≥ 1/2` from the exponential-sum estimate alone;
+`IntegerPoints.GKSec33KNonneg` uses factorial resonances to prove `k ≥ 0`
+and the boundary implication `k = 0 → l ≥ 1`.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/

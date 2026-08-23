@@ -110,6 +110,11 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     on `[N,2N]` belongs to the exponent-pair class at every finite derivative
     order.  Its bound on `8N² ≤ t ≤ 16N²`, combined with Appendix A, forces
     `N ≤ K(N^(2l) + 1)`; real-power decay rules this out when `l < 1/2`.
+  - `IntegerPoints.GKSec33KNonneg` — **proved**: the remaining coordinate
+    restriction `gk_sec33_k_nonneg_holds`: `k ≥ 0`, with `k = 0` forcing
+    `l ≥ 1`.  At the factorial scales `t = (2N)!ν`, every reciprocal phase
+    is integral and the exponential sum is exactly `N`; multiplier limits
+    rule out `k < 0` and then remove the error term in the boundary case.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
