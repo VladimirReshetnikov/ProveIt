@@ -19762,6 +19762,11 @@ $v_p(\mathcal F_{P_n,n})\ge0$ for all $p$, $\mathcal F_{P_n,n}\to1$, and
 $\deg P_n-k_n\ge(\log_23-1-o(1))(n+k_n)$.  A positive answer with an eventual strict
 inequality $\mathcal F_{P_n,n}\ne1$ (e.g.\ a sign-controlled first surviving mode) proves
 the conjecture; a negative answer by a dual valuation certificate closes the family.
+\emph{Update (session log): the constructive branch is empty ---
+Corollary~\ref{log:cor-target-dead} shows conditions (2) and (3) already force $P_n=0$ for
+any mesoscopic pair, so this target is resolved negatively; only integrality without
+convergence to $1$ remains, and the LP computation of Section~\ref{log:lp-experiment}
+indicates that it is empty too.}
 \end{target}
 
 For fixed $(M,A,n,d)$ the conditions are three homogeneous linear equations plus the finite
@@ -20254,6 +20259,73 @@ if nothing forces modular synchronization; as a target for ``forced shared trace
 (Target~\ref{ct:target}(i)), the fifth trace looks barren, and effort should go to
 channel-\emph{incompatibility} (Target~\ref{ct:target}(ii)) or higher traces instead.
 
+\subsection{The terminal factorials are multiplicatively independent (proved)}
+\label{log:factorial-independence}
+
+Analyzing the exact-unit case of the factorial target yields a clean unconditional
+statement.  Let $1<M<A$ with $\log M/\log A>0.525$ --- satisfied by every mesoscopic pair, where
+$\log M/\log A=\log2/\log3=0.6309\ldots$ --- and $F_t=(A^t)!/(A^t-M^t)!$.
+
+\begin{proposition}[Multiplicative independence of the terminal factorials]
+\label{log:prop-factorial-independence}
+There is $n_0=n_0(M,A)$ such that the integers $F_{n_0},F_{n_0+1},F_{n_0+2},\ldots$ are
+multiplicatively independent: $\prod_jF_{n+j}^{c_j}=1$ with integer exponents forces every
+$c_j=0$.  Consequently $\mathcal F_{P,n}=1$ is impossible for a nonzero $P\in\Z[T]$ once
+$n\ge n_0$.
+\end{proposition}
+
+\begin{proof}
+The interval $(A^t-M^t,A^t]$ has length $X^{\alpha}$ with $X=A^t$ and
+$\alpha>0.525$, so for $X$ large it contains a prime $p_t$ (Baker--Harman--Pintz
+\cite{BakerHarmanPintz2001}); fix such a prime for each $t\ge n_0$.  Suppose
+$\prod_jF_{n+j}^{c_j}=1$ with not all $c_j=0$, and let $j^*$ be the \emph{largest} index
+with $c_{j^*}\ne0$.  The prime $p_{n+j^*}$ divides $F_{n+j^*}$ exactly once, divides no
+$F_{n+j}$ with $j<j^*$ (it exceeds $A^{n+j}$), and the levels above $j^*$ carry zero
+exponent.  Taking $v_{p_{n+j^*}}$ of the relation gives $c_{j^*}=0$, a contradiction.
+\end{proof}
+
+The finite core is \statuslean{} in \lean{TerminalFactorialIndependence}: the window
+valuation $v_p(F_t)=1$ (\lean{padicValNat_termFall_eq_one}, from pure inequalities
+$A^t-M^t<p\le A^t$, $A^t\le2(A^t-M^t)$, $A^t<p^2$), the exclusion $p\nmid F_{t'}$ for
+$A^{t'}<p$, and the downward induction
+(\lean{termFall_multiplicative_independent}), with the window primes supplied as an
+explicit hypothesis.  The short-interval prime existence filling that hypothesis is
+\statusknown{} (Bertrand's postulate does not suffice: the window has sublinear length;
+Huxley's asymptotic used in Theorem~\ref{fc:thm-window} is stronger than needed, existence
+at exponent $0.525$ is enough).  The proposition does more than remove the exact-unit case: it \emph{closes the
+constructive branch of Target~\ref{fc:target-linear} entirely}.
+
+\begin{corollary}[The constructive branch of the linear-width target is empty]
+\label{log:cor-target-dead}
+Let $(M,A)$ be any pair in the mesoscopic window (in particular the output pair of any
+hypothetical counterexample), and let $P_n\in\Z[T]$ be nonzero polynomials of arbitrary
+degrees with $v_p(\mathcal F_{P_n,n})\ge0$ for every prime $p$ and
+$\mathcal F_{P_n,n}\to1$.  Then no such sequence exists: for all large $n$ the two
+conditions force $P_n=0$.
+\end{corollary}
+
+\begin{proof}
+Nonnegative valuations make $\mathcal F_{P_n,n}$ a positive integer; convergence to $1$
+puts it in $(0,2)$, hence equal to $1$, for all large $n$; and
+Proposition~\ref{log:prop-factorial-independence} then forces every coefficient of $P_n$ to
+vanish.
+\end{proof}
+
+No width hypothesis, coefficient bound, or archimedean sign analysis enters: items (2) and
+(3) of the target are jointly unsatisfiable with $P_n\ne0$.  The ``linear-width escape''
+left open by Theorem~\ref{fc:thm-window} therefore does not exist, and the
+factorial-cocycle architecture of Section~\ref{sec:factorialcocycle} is a complete no-go
+for proving the conjecture through an integer sequence converging to one.  (The proof is
+embarrassingly short in hindsight; what was missing was the multiplicative independence of
+the $F_t$, which makes the endgame ``integer $\to1$ is eventually $1$'' terminal rather
+than a step.)  The same argument closes the binomial variant of Section~\ref{sec:factorialcocycle}: a
+window prime has $v_p\binom{A^t}{M^t}=v_p(F_t)=1$ (it exceeds $M^t$, so the lower factorial
+is prime to it), and the levels below are again clean, so the binomials
+$\binom{A^t}{M^t}$ are multiplicatively independent as well.  What the argument does not
+exclude is a cocycle that is an integer \emph{without} converging to $1$ --- there the LP
+computation below gives strong evidence of emptiness as well, now the only remaining
+question in this family.
+
 \subsection{The LP layer of the linear-width factorial target is empty for the control
 (computed)}
 \label{log:lp-experiment}
@@ -20298,11 +20370,12 @@ complete no-go; the dual data above is the template for its proof.
 \label{log:directions}
 
 \begin{enumerate}
-\item \textbf{Negative closure of the linear-width family.}  Done at the LP layer for the
-control pair (Section~\ref{log:lp-experiment}): the cone is empty at every affordable shape,
-including width ratios far above critical, and the dual certificate exposes the
-dense-plus-capture mechanism.  What remains is to turn the certificate template into a
-theorem valid for all $(n,d)$ and all mesoscopic pairs $(M,A)$.
+\item \textbf{Negative closure of the linear-width family.}  Done: the constructive
+branch (integrality plus convergence to $1$) is empty for every mesoscopic pair
+(Corollary~\ref{log:cor-target-dead}), and the LP layer is empty for the control even
+without the convergence condition (Section~\ref{log:lp-experiment}).  What remains is the
+cosmetic residue: a certificate theorem excluding integer cocycle values $\ge2$ for all
+$(n,d)$, for which the dense-plus-capture dual is the template.
 \item \textbf{Shared-face masks on the actual stable support.}  Target~\ref{masks:target}
 is a finite integer program once $(M,A)$ is fixed; run it on control pairs to learn the
 shape of near-optimal masks, then test whether that shape consumes (i) above.
@@ -20362,11 +20435,12 @@ The software scans already reach $x>27$; the gap between the two is engineering,
 mathematics, and the semiconvergent device makes each further doubling a routine table.
 
 \paragraph{Where genuinely new input could enter.}  Three targets survive all five audits and
-are not yet known to be equivalent to the conjecture: the linear-width factorial feasibility
-problem (Target~\ref{fc:target-linear}), whose dual certificates are finite integer programs;
-shared structural-face capture (Target~\ref{masks:target}), a finite-prime statement about
-repeated cancellation on fixed Newton faces coupled by \eqref{masks:eq-transport}; and the
-nonlinear prime-top problem of Section~\ref{primetop:remaining}.  Each has a concrete
+are not yet known to be equivalent to the conjecture: shared structural-face capture
+(Target~\ref{masks:target}), a finite-prime statement about repeated cancellation on fixed
+Newton faces coupled by \eqref{masks:eq-transport}; and the nonlinear prime-top problem of
+Section~\ref{primetop:remaining}.  (The third such target at the time of integration, the
+linear-width factorial feasibility problem, was resolved negatively during the session:
+Corollary~\ref{log:cor-target-dead}.)  Each has a concrete
 computational entry point and a precise kill criterion, and each would have to use the
 structural-prime asymmetry (\eqref{fc:eq-carry-free}, $\mathcal P_\pm$) that distinguishes a
 hypothetical primitive pair from the integer controls $(2^m,3^m)$.
@@ -21040,6 +21114,15 @@ Section~\ref{sec:masks} \\
 Session log: integral Schneider constants, structural-prime relaxation, Pólya/Gel'fond
 view, $abc$ against convergent gaps (all quantified dead ends); control principle &
 \statusnew & Section~\ref{sec:session-log} \\
+Terminal factorials multiplicatively independent (window primes as hypothesis; finite core
+kernel-checked) & \statuslean{} core; prime existence \statusknown &
+\lean{TerminalFactorialIndependence}; Section~\ref{log:factorial-independence} \\
+Constructive branch of the linear-width factorial target empty for every mesoscopic pair &
+\statusnew{} (one-paragraph proof from the independence proposition) &
+Corollary~\ref{log:cor-target-dead} \\
+LP layer of the linear-width factorial target empty for the control; dense-plus-capture
+Farkas mechanism & \statusexactcomp &
+Section~\ref{log:lp-experiment}; \path{scripts/linear_width_lp.py} \\
 \bottomrule
 \end{longtable}
 }
@@ -21296,6 +21379,9 @@ fifth-trace two-channel theorem, synchronized channel identities \\
 \lean{.../ExponentLatticeMask} & cleared evaluation, one-direction gap-power theorem and
 cleared-value floor, adjacent valuation transport (additive and multiplicative), unshared
 structural primes, orthogonality determinant lemma \\
+\lean{.../TerminalFactorialIndependence} & window-prime valuation $v_p(F_t)=1$ from pure
+inequalities, high-prime exclusion, finite-product valuation, and multiplicative
+independence of the terminal factorials under a window-prime hypothesis \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
@@ -23253,6 +23339,10 @@ F.~Johansson et al.,
 The ProveIt project,
 \newblock \emph{ProveIt repository},
 \newblock \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{BakerHarmanPintz2001}
+R.~C. Baker, G. Harman, and J. Pintz, \emph{The difference between consecutive primes, II},
+Proc. London Math. Soc. (3) 83 (2001), 532--562.
 
 \bibitem{BakerWustholz1993}
 A.~Baker and G.~W\"ustholz,
