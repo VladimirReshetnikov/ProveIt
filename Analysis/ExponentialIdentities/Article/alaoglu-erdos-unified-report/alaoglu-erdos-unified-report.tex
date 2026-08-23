@@ -223,11 +223,14 @@ Three especially sharp interfaces survive.  Pointwise-positive rational entire i
 are flexible, but geometric log-convexity or log-concavity would close the conjecture from
 $1,2,3$, and nonnegative Taylor coefficients would close it from $1,2,3,6$.  A balanced Newton exhaustion
 would need an output-specific denominator \emph{upper} bound despite nested fresh-prime
-exhaustions having asymptotically maximal denominator mass.  And a Kummer operation would
+exhaustions and direct Markov--Pad\'e ratios forcing denominator mass in the opposite
+direction; the finite targets are now a saturated two-generator divisor of the Pad\'e-defect integer or control of
+the vanishing and $p$-adic lifts of the transverse bad-cluster factor.  And a Kummer operation would
 have to preserve signed cross-base cancellation through exceptional cross-conjugate ideal
 overlap: ordinary traces, character projections, ideal gcds, and partial norms have exact
 deficits, while augmentation-zero signed ratios satisfy an exact unit/divisor obstruction
-unless such overlap occurs.
+unless such overlap occurs.  The fixed-level order-one private-prime theorem supplies no
+polynomial-factor transfer to the unshifted or adaptive cocycle.
 None of these bridges follows from the present hypotheses, and the four-exponentials barrier
 remains intact.
 \end{minipage}
@@ -293,20 +296,27 @@ basic four-dilation rank-one defect remains exactly critical after division by t
 product.  Reciprocal
 Stieltjes moments give a full Vandermonde-divisible Hankel determinant whose residual
 alternant dominates the input Vandermonde for every node set and whose exact $T^5$ asymptotic
-remains strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
-into reduced denominators, in the direction opposite to closure.  Uniform
+remains strictly positive.  Direct-node Markov--Pad\'e ratios force denominator repulsion
+through half the interpolation order and isolate a positive Pad\'e-defect integer;
+arbitrarily deep one-axis collisions show that raw Hankel Smith content cancels from its
+primitive form.  Meanwhile, sparse fresh-prime spikes can force almost the full node-product mass into reduced
+denominators; both effects point away from closure.  Uniform
 Corvaja--Zannier estimates show that pairwise gap synchronization for one fixed hypothetical
 output table has only subcubic mass.  An exact collision-tree initial form proves transfer
 for a unique simple affine cluster, but the first complete triangle already exhibits
 collective cancellation and fixed four-node smooth supports have unbounded collective
-excess at one prime.  The unresolved full-triangle mechanism is therefore the capacity of
-tied, deeper, or non-affine maximal clusters.  A shifted higher
+excess at one prime.  The tied, deeper, or non-affine side necessarily carries the full
+cubic source capacity; the unresolved full-triangle quantity is its output-sensitive
+transverse cancellation.  A shifted higher
 Newton--Kummer cocycle gives an exponentially small algebraic integer, while character
 projections, the exact common-ideal norm, and signed-orbit augmentation expose both a
 one-factor partial-norm deficit and a conditional unit/divisor obstruction.  At fixed
 $\ell$ and Newton order one, an exact Fermat-like resultant splitting reduces the missing
 private-prime radical to the standard number-field $abc$ conjecture; known unconditional
-squarefree-factor estimates remain sublinear.
+squarefree-factor estimates remain sublinear.  The fixed-level argument is nonuniform and
+has no polynomial-factor descent to the unshifted or adaptive cocycle: the defining
+polynomials at distinct shifts are pairwise coprime, and the order-one zero curve is not
+contained in any higher Newton zero curve.
 Complete synchronized gap products give integer orbit polynomials, exact
 discriminants, and a universal quadratic surplus
 $\kappa=0.7079245703208558\ldots$ between the triadic and dyadic products.  The same audit
@@ -16849,7 +16859,9 @@ normalizing constants.
 \subsection{The positive Stieltjes denominator target}
 \label{crit:denominator-target}
 
-Let $F$ be a finite set of $N+1$ distinct positive nodes with $N>x$.  A keyhole contour gives
+Fix a hypothetical nonintegral counterexample, and let
+$F\subset\{2^a3^b:a,b\in\Nzero\}$ contain $N+1$ distinct nodes with $N>x$.
+A keyhole contour gives
 the exact divided difference
 \begin{equation}
  [F](t^x)=(-1)^{N+1}\frac{\sin\pi x}{\pi}
@@ -16875,6 +16887,254 @@ $\mathfrak d_F$ is its reduced positive denominator, nonvanishing and
 Hence a single semigroup exhaustion satisfying
 $\mathfrak d_F=o(\prod_{s\in F}s)$ would prove the conjecture.  This is a finite arithmetic
 target with no unspecified analytic constant in its leading scale.
+
+\paragraph{Successive Markov ratios.}
+The real common-power relation gives a stronger output-sensitive statement, but in the
+opposite direction.  Write
+\[
+ \mathcal D_F(z)=[F](t^z).
+\]
+For $|F|=N+1$, $N>x$, and a new smooth node $s\notin F$, the ratio of two successive divided
+differences is
+\begin{equation}
+ \Phi_F(s):=-\frac{\mathcal D_{F\cup\{s\}}(x)}{\mathcal D_F(x)}
+ =\int_0^\infty\frac{d\mu_F(t)}{s+t}\in\Q_{>0},
+ \qquad
+ d\mu_F(t)=
+ \frac{t^x\,dt}{I_F\prod_{u\in F}(t+u)},
+ \label{crit:eq-successive-markov-ratio}
+\end{equation}
+where $I_F$ normalizes the measure to mass one.  If $m\ge1$ and $2m<N-x$, its moments through order
+$2m$ are rational:
+\begin{equation}
+ \mu_k:=\int_0^\infty t^k\,d\mu_F(t)
+ =(-1)^k\frac{\mathcal D_F(x+k)}{\mathcal D_F(x)}
+ \in\Q
+ \qquad(0\le k\le2m).
+ \label{crit:eq-direct-rational-moments}
+\end{equation}
+Let $Q_m\in\Q[t]$ be the monic degree-$m$ orthogonal polynomial for $\mu_F$, put
+$h_m=\int Q_m^2\,d\mu_F$, and define
+\[
+ P_{m-1}(s)=
+ \int_0^\infty\frac{Q_m(-s)-Q_m(t)}{s+t}\,d\mu_F(t)\in\Q[s].
+\]
+Orthogonality gives the exact Markov--Pad\'e remainder
+\begin{equation}
+ \boxed{
+ \Phi_F(s)-\frac{P_{m-1}(s)}{Q_m(-s)}
+ =\frac1{Q_m(-s)^2}
+   \int_0^\infty\frac{Q_m(t)^2}{s+t}\,d\mu_F(t)>0.}
+ \label{crit:eq-markov-pade-remainder}
+\end{equation}
+
+This identity has an integral floor.  For $u\in F$, put
+\[
+ D_{F,u}=\prod_{v\in F\setminus\{u\}}(u-v),\qquad
+ L_F=\operatorname{lcm}_{u\in F}|D_{F,u}|.
+\]
+Then
+\[
+ R_k=L_F\mathcal D_F(x+k)\in\Z,\qquad
+ \epsilon=\operatorname{sgn}(R_0),\qquad
+ a_k=\epsilon(-1)^kR_k\in\Z_{>0}\quad(0\le k<N-x),
+\]
+and set
+\[
+ \Delta_j=\det(a_{r+s})_{0\le r,s<j}\in\Z_{>0}
+ \qquad(1\le j\le m+1).
+\]
+The Hankel system shows that $\Delta_mQ_m\in\Z[t]$ and that
+$a_0\Delta_mP_{m-1}\in\Z[t]$, while
+\[
+ h_m=\frac{\Delta_{m+1}}{a_0\Delta_m}.
+\]
+Thus $C_m=a_0\Delta_m$ is a simultaneous clearing and
+$C_mh_m=\Delta_{m+1}$.  If $\mathfrak b_{F,s}$ is the reduced denominator of
+$\Phi_F(s)$, rational separation in~\eqref{crit:eq-markov-pade-remainder}, together with
+the fact that every zero of $Q_m$ is positive, yields
+\begin{equation}
+ \boxed{
+ \mathfrak b_{F,s}>
+ \frac{s|Q_m(-s)|}{\Delta_{m+1}}>
+ \frac{s^{m+1}}{\Delta_{m+1}}.}
+ \label{crit:eq-markov-denominator-repulsion}
+\end{equation}
+If $\mathcal D_F(x)=A_F/\mathfrak d_F$ and
+$\mathcal D_{F\cup\{s\}}(x)=A_{F,s}/\mathfrak d_{F,s}$ are reduced, then
+$\mathfrak b_{F,s}\le |A_F|\mathfrak d_{F,s}$, so the same estimate divided by
+$|A_F|$ applies to $\mathfrak d_{F,s}$.  The strongest permitted choice has
+$m<(N-x)/2$, whereas the elementary append denominator has degree $N+1$ in $s$.
+The result therefore exposes an exact half-order barrier rather than the desired upper
+bound.
+
+The nonzero integer behind the floor is a useful sharper target.  Write both fractions in
+lowest terms:
+\[
+ \Phi_F(s)=\frac{\mathfrak a_{F,s}}{\mathfrak b_{F,s}},\qquad
+ \frac{P_{m-1}(s)}{Q_m(-s)}=\frac{p_s}{q_s},
+ \qquad \mathfrak b_{F,s},q_s>0.
+\]
+Then
+\begin{equation}
+ \begin{aligned}
+ \delta_{m,s}
+ &=\mathfrak a_{F,s}q_s-\mathfrak b_{F,s}p_s\in\Z_{>0},\\
+ \frac{\delta_{m,s}}{\mathfrak b_{F,s}q_s}
+ &=\frac1{Q_m(-s)^2}
+   \int_0^\infty\frac{Q_m(t)^2}{s+t}\,d\mu_F(t),\\
+ \delta_{m,s}
+ &<\frac{\mathfrak b_{F,s}q_sh_m}{sQ_m(-s)^2}.
+ \end{aligned}
+ \label{crit:eq-markov-defect-integer}
+\end{equation}
+Thus a source-sensitive divisor of $\delta_{m,s}$ exceeding an independent upper bound for
+the last quantity would give a contradiction.  No present cluster or Smith argument
+supplies one.
+For distinct new nodes $s,u$, the ratios also satisfy the exact resolvent recursion
+\begin{equation}
+ \Phi_{F\cup\{u\}}(s)
+ =\frac{\Phi_F(u)-\Phi_F(s)}{(s-u)\Phi_F(u)}.
+ \label{crit:eq-markov-resolvent-recursion}
+\end{equation}
+This is the cleanest finite identity through which such a divisor could propagate across
+Newton levels.
+For a finite calibration, not a global counterexample, take
+$x=1/2$, $F=\{1,4,9,16\}$, and $s=36$.  Then
+$\Phi_F(36)=1/40$, the primitive approximant $1/41$, and
+$\delta_{1,36}=1$.
+
+\paragraph{Smith saturation of the Pad\'e defect.}
+Raw collision content disappears on passing to the primitive approximant.  Put
+\[
+ \mathsf H_m=(a_{i+j})_{\substack{0\le i<m\\0\le j\le m}},\qquad
+ c_j=(-1)^{m+j}\det\mathsf H_m^{\widehat j}.
+\]
+Then
+\[
+ \sum_{j=0}^m c_jt^j=\Delta_mQ_m(t).
+\]
+Write $\Phi_F(s)=A/B$ in lowest terms, set
+\[
+ z_0=a_0A,\qquad z_j=Ba_{j-1}-sz_{j-1}\quad(1\le j\le m),
+\]
+and append this row to $\mathsf H_m$.  The moment identity
+$z_j=Ba_0\int t^j(s+t)^{-1}\,d\mu_F(t)$ gives
+\begin{equation}
+ \begin{split}
+ J_{m,s}:=\det\begin{pmatrix}\mathsf H_m\\z_0&\cdots&z_m\end{pmatrix}
+ &=Ba_0\Delta_m
+   \left(Q_m(-s)\Phi_F(s)-P_{m-1}(s)\right),\\
+ \delta_{m,s}&=\frac{|J_{m,s}|}{g_{m,s}},
+ \end{split}
+ \label{crit:eq-pade-smith-saturation}
+\end{equation}
+where
+\[
+ \widehat p_{m,s}=a_0\Delta_m(-1)^mP_{m-1}(s),\qquad
+ \widehat q_{m,s}=a_0\Delta_m(-1)^mQ_m(-s),\qquad
+ g_{m,s}=\gcd(\widehat p_{m,s},\widehat q_{m,s}).
+\]
+If
+\[
+ \mathfrak s_m=\gcd(c_0,\ldots,c_m),
+\]
+then $\mathfrak s_m$ is the top Smith determinantal divisor of $\mathsf H_m$,
+divides both safe Pad\'e coefficients, and
+$J_{m,s}=\mathfrak s_m\langle z,c^{\rm sat}\rangle$.
+Thus the relevant local quantity is
+\[
+ v_p(J_{m,s})-min\{v_p(\widehat p_{m,s}),v_p(\widehat q_{m,s})\},
+\]
+not $v_p(\mathfrak s_m)$.
+
+This distinction is sharp at arbitrary collision depth.  If
+$a_k=\sum_\nu w_\nu u_\nu^k$ with integral $w_\nu,u_\nu$ and
+$u_\nu\equiv u\pmod {p^h}$ for every $\nu$, a unimodular Pascal translation gives
+\begin{equation}
+ p^{h m(m-1)}\mid\mathfrak s_m.
+ \label{crit:eq-pade-cluster-smith-content}
+\end{equation}
+Indeed, after translation the $(i,j)$ entry is divisible by $p^{h(i+j)}$, and every
+maximal minor contains at least $h m(m-1)$ powers of $p$.
+Nevertheless, let
+\[
+ \widetilde M=5043,\qquad x_0=\log_2\widetilde M,\qquad
+ K_h=4\cdot5^{h-1},\qquad q_h=2^{K_h},\qquad w_h=\widetilde M^{K_h},
+\]
+and take the finite one-axis table
+\[
+ F_h=\{1,q_h,\ldots,q_h^{19}\},\qquad s_h=q_h^{20},\qquad m=2.
+\]
+Here $12<x_0<13$ and $4<19-x_0$; every source node, the appended node, and every
+output $w_h^j$ is congruent to $1$ modulo $5^h$.  This finite one-axis calibration neither
+assumes nor addresses the condition $3^{x_0}\in\Z$.  The geometric divided-difference formula yields
+\[
+ \Phi_{F_h}(s_h)=
+ \frac{q_h^{19}-w_h}{q_h^{19}(q_h^{20}-1)},\qquad
+ \mu_k=q_h^{19k-k(k+1)/2}
+ \prod_{r=1}^k\frac{q_h^rw_h-1}{q_h^{19-r}-w_h}.
+\]
+The congruence
+\[
+ \frac{a^{K_h}-1}{5^h}\equiv\frac{a^4-1}{5}\pmod5
+\]
+at the relevant unit bases gives
+\[
+ (\mu_1,\mu_2,\mu_3)\equiv(2,2,1)\pmod5.
+\]
+Hence $Q_2(-s_h)\equiv1$ and $P_1(s_h)\equiv3\pmod5$.  Moreover
+\[
+ v_5(q_h^{19}-w_h)=h,\qquad v_5(q_h^{20}-1)=h+1.
+\]
+After both fractions are reduced, the primitive defect $\delta_{2,s_h}$ is therefore a
+$5$-adic unit for every $h$, although~\eqref{crit:eq-pade-cluster-smith-content} gives
+$5^{2h}\mid\mathfrak s_2$.  Thus no divisor depending only on source/output collision
+depths, append congruence, or unsaturated Hankel Smith factors can control
+$\delta_{m,s}$.  This is only a no-go for common-collision and unsaturated-Smith arguments;
+a surviving divisor must use two-generator exponent geometry and the saturated transverse
+residue.
+
+There is no hidden real cancellation behind these inequalities.  Hermite--Genocchi gives
+\begin{equation}
+ L_F\mathcal D_F(z)
+ =L_F(z)_N\int_{\Delta_N}
+   \left(\sum_{u\in F}\lambda_u u\right)^{z-N}\,d\lambda.
+ \label{crit:eq-direct-circuit-real-factorization}
+\end{equation}
+Here $d\lambda$ is coordinate-simplex measure of total mass $1/N!$.  The second factor is
+positive on the real axis and is a compactly supported bilateral Laplace transform whose
+Hankel kernel is strictly totally positive.  Hence the restricted circuit has exactly the real zeros
+$0,1,\ldots,N-1$, all simple.  Likewise, if
+$0\le i_1<\cdots<i_r$, $0\le j_1<\cdots<j_r$, and $i_r+j_r<N-x$, then
+$\det(a_{i_p+j_q})_{p,q=1}^r$ is a positive integer.  In particular
+\begin{equation}
+ R_0R_2-R_1^2\ge1\qquad(x+2<N).
+ \label{crit:eq-shifted-circuit-hankel-floor}
+\end{equation}
+
+The safe Hankel clearing can itself be factored exactly.  Order
+$F=\{s_1<\cdots<s_n\}$, put
+$\Delta_F^{\mathrm V}=\prod_{i<j}(s_j-s_i)$, $y_i=s_i^x$, and let
+$\mathcal B^{\rm dir}_{F,r}$ have $i$th row
+\[
+ (1,s_i,\ldots,s_i^{n-r-1},y_i,y_is_i,\ldots,y_is_i^{r-1}).
+\]
+Cauchy--Binet and complementary Vandermonde factorization give
+\begin{equation}
+ \boxed{
+ \Delta_r
+ =\epsilon^r(-1)^{\binom r2}
+   \frac{L_F^r}{\Delta_F^{\mathrm V}}
+   \det\mathcal B^{\rm dir}_{F,r}.}
+ \label{crit:eq-direct-hankel-alternant}
+\end{equation}
+for $1\le r\le m+1$.
+At Pad\'e degree $m$, the exact prefactor is
+$L_F^{m+1}/\Delta_F^{\mathrm V}$.  The shifted exponent block is interlaced with the ordinary
+block, so the shape-free HCIZ dominance from the reciprocal construction below is
+unavailable.  The identity isolates primitive Cramer or Smith content as the part not
+measured by the full determinant.
 
 Node-only denominator theory cannot prove that saving.  For the size triangle
 \[
@@ -17155,6 +17415,71 @@ $R_{\mathcal J_T}(2^x,3^x)=0$ once the table is large enough.  Thus
 \eqref{crit:eq-triangular-gap-gcd} shows that, among nonstructural primes, any cancellation
 beyond the subcubic pairwise ratio-gap budget must be collective.  The CRT specializations
 above evade it because their group changes with $T$.
+
+The raw bad-cluster capacity in~\eqref{crit:eq-bad-cluster-capacity} cannot itself be made
+small.  For $d=(r,s)\in\Z^2$, set
+\[
+ H_\triangle(d)=\max\{r_+\log2+s_+\log3,
+                         r_-\log2+s_-\log3\}.
+\]
+Here $r_\pm=\max\{\pm r,0\}$ and $s_\pm=\max\{\pm s,0\}$.
+
+\begin{proposition}[Full capacity of the bad triangle geometry]
+\label{crit:prop-bad-cluster-full-capacity}
+For the complete size triangle, the primes that are not geometrically bad contribute only
+\[
+ \sum_{\substack{p\ge5\\p\ \mathrm{not\ geometrically\ bad}}}
+ \lambda_p\log p=O(T^2\log(2+T)).
+\]
+Consequently, for every fixed hypothetical pair $(M,A)$,
+\begin{equation}
+ \sum_{\substack{p\nmid6MA\\p\ \mathrm{geometrically\ bad}}}
+ \lambda_p\log p
+ \ge \frac{T^3}{3\log2\log3}-O_{M,A}(T^2\log(2+T)).
+ \label{crit:eq-bad-cluster-full-capacity}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+A prime counted in the first sum has a unique simple affine maximal class
+$C=\{e_0+kd:0\le k\le\lambda_p\}$.  Each of
+$C-(1,0)$, $C-(0,1)$, and $C+(1,0)$, whenever it stays inside $\mathcal J_T$, is a congruent
+subset contained in a distinct residue class of size at least $|C|$.  Uniqueness therefore
+forces the two coordinate minima of $C$ to be zero and its top edge to lie within $\log2$ of
+the boundary.  For
+$v=\lambda_pd$, its endpoints are $v_-$ and $v_+$ in the same coordinatewise convention, so
+\[
+ T-\log2<H_\triangle(v)\le T.
+\]
+For fixed $\lambda$, this constant-width lattice shell contains $O(T/\lambda+1)$ possible
+steps $d$; summing over $\lambda=O(T)$ gives $O(T\log(2+T))$ pairs $(\lambda,d)$.
+Every prime assigned to one pair divides
+\[
+ 2^{r_+}3^{s_+}-2^{r_-}3^{s_-},
+\]
+and hence the sum of $\lambda\log p$ over that pair is at most
+$\lambda H_\triangle(d)\le T$.  This proves the first estimate.  Now
+\eqref{crit:eq-away-capacity} gives the full nonstructural capacity, and the finitely many
+primes dividing $MA$ contribute only $O_{M,A}(T^2)$ by the fixed-prime estimate above.
+Subtracting proves~\eqref{crit:eq-bad-cluster-full-capacity}.
+\end{proof}
+
+Thus downward closure does not make the error term in
+\eqref{crit:eq-bad-cluster-capacity} lower order: almost all source capacity is forced into
+its bad side.  There is nevertheless one exact refinement.  Under the simple-cluster
+hypothesis, if all maximal classes have the same affine step $d=(r,s)$ up to orientation,
+then their confluent coordinates share the factor
+\begin{equation}
+ \overline R_E(U,V)=
+ \bigl(U^{r_+}V^{s_+}-U^{r_-}V^{s_-}\bigr)^{m-1}
+ Q_{p,E}(U,V)
+ \label{crit:eq-parallel-cluster-factor}
+\end{equation}
+over $\mathbf F_p$, where $m$ is their common maximal size.  This is the ordinary
+$(m-1)$st finite difference along each class.  The common binomial is charged to the
+pairwise budget; the genuinely unresolved quantities are the vanishing and higher $p$-adic
+lifts of the output-sensitive transverse factor $Q_{p,E}(M,A)$, together with nonparallel
+and deeper clusters.
 
 Finally, $E\in\Q[[z]]$: its reciprocal-zero power sums are
 \[
@@ -18426,6 +18751,70 @@ supplies no free output orbit.  The same caveat applies at a bad rank-collapsed 
 $\ell$.  The fixed-$\ell$ conditional result is not uniform in $\ell$ and reaches neither
 the original unshifted instance nor the adaptive $m=\ell-1$ cocycle.
 
+These two failures are structural.  First, the coefficient supplied by
+\eqref{crit:eq-private-prime-abc-radical} is
+\[
+ c_\ell(\varepsilon)
+ =\frac{\ell}{1+\varepsilon}-(\ell-2)
+ =2-\frac{\ell\varepsilon}{1+\varepsilon}.
+\]
+It is positive only for $\varepsilon<2/(\ell-2)$; obtaining
+$c_\ell(\varepsilon)\ge2-\delta$ for $0<\delta<2$ requires
+$\varepsilon\le\delta/(\ell-\delta)$.  Thus even a field-uniform $abc$ estimate with one
+fixed $\varepsilon$ cannot be diagonalized.  At the adaptive shift
+$t_\ell=\ell-1-\lfloor x\rfloor$, one would need
+$\varepsilon_\ell=O(\ell^{-1})$ and every fixed-field $abc$, gcd, and fixed-prime-part
+error to be $o(\ell)$.  The Bugeaud--Evertse threshold used above is not uniform in $\ell$, while
+\[
+ h(\mu),h(\nu)=\Theta_x(\ell),\qquad
+ \log\lVert G_\ell\rVert_\infty=O(\ell^2),
+\]
+so the fixed-$\ell$ asymptotic has no such diagonal error term.
+
+Second, order one does not divide the higher Newton hierarchy.  On its normalized
+common-zero curve write
+\[
+ U=1+\sigma(P-1),\qquad V=1+\sigma(Q-1),\qquad
+ \mathcal T_{P,m}(\sigma)
+ =\frac{F_m(1+\sigma(P-1),P)}{D_m(P)}.
+\]
+For every $m\ge2$, the difference
+$\mathcal T_{P,m}(\sigma)-\mathcal T_{Q,m}(\sigma)$ is a nonzero polynomial.  Already
+\begin{equation}
+ \mathcal T_{P,2}(\sigma)-\mathcal T_{Q,2}(\sigma)
+ =\sigma(\sigma-1)
+ \left(\frac1{P(P+1)}-\frac1{Q(Q+1)}\right),
+ \label{crit:eq-newton-order-separation}
+\end{equation}
+and in general its leading coefficient is
+\[
+ \frac{P^{-m(m-1)/2}}
+      {\prod_{r=1}^m(1+P+\cdots+P^{r-1})}
+ -
+ \frac{Q^{-m(m-1)/2}}
+      {\prod_{r=1}^m(1+Q+\cdots+Q^{r-1})}\ne0
+\]
+for $1<P<Q$.  A private divisor of an order-one difference therefore has no systematic
+reason to divide the order-$(\ell-1)$ cocycle.  There is no polynomial-factor descent in the
+shift parameter either: for distinct $r,t$ the irreducible polynomials
+\[
+ \mathcal C_\ell(2^rX,3^rY;c)
+ \quad\text{and}\quad
+ \mathcal C_\ell(2^tX,3^tY;c)
+\]
+are coprime.  Their common constant term fixes any associate scalar, and their $X^\ell$
+coefficients then force $r=t$.
+
+Finally, the free-orbit conclusion exists only in rank four; rank three remains an unresolved
+branch under the hypothetical counterexample.  At adaptive order in rank four, the absolute resultant and its
+discriminant--minor exceptional factor both have logarithmic size $O_x(\ell^6)$, whereas
+the known common ideal contributes only $O_x(\ell^5)$.  The diagonalized order-one $abc$
+lower bound has unnormalized scale $\Theta_x(\ell^4)$ and, by
+\eqref{crit:eq-newton-order-separation}, concerns a different resultant.  The exact
+missing input is therefore a moving-family truncated primitive-divisor theorem for the
+order-$(\ell-1)$ Kummer resultants, together with a separate rank-three analysis; standard
+fixed-field $abc$ does not provide either one.
+
 The extracted common ideal $\mathfrak I_{\ell,m}$ cancels from every
 augmentation-zero ratio.  Multiplication by
 cyclotomic units does not change valuations, and a Stickelberger class-group annihilator
@@ -18825,15 +19214,17 @@ asymptotic, Kummer-field, density, and resultant extensions remain explicitly
 reciprocal-Hankel, BCZ, and pure-denominator results, they leave three narrower interfaces:
 a positive arithmetic interpolant lying in a rigid cone such as nonnegative coefficients or
 one-signed geometric curvature; an output-specific denominator upper bound on a balanced
-exhaustion, rather than more fresh divisors; or exceptional
+exhaustion, or a saturated two-generator divisor of the positive Markov--Pad\'e defect integer, rather
+than more fresh divisors; or exceptional
 cross-conjugate ideal overlap that makes a signed Kummer operation integral.  The natural
-Stieltjes transfer family, finite positive-dilation filters, finite and one-ray infinite
+Stieltjes transfer family, unsaturated Markov--Pad\'e Hankel Smith content, finite positive-dilation filters, finite and one-ray infinite
 power-substitution corrections, four-dilation rank-one defect, sparse-spike aggregation,
 pairwise triangular gap synchronization, and collision-tree/Smith control without
-downward-closed triangle geometry,
+an output-sensitive estimate for the transverse bad-cluster factor and its $p$-adic lifts,
 reciprocal Hankel determinants, ordinary traces, character projections, common ideals,
 signed augmentation-zero ratios absent exceptional overlap, and subgroup output partial
-norms do not improve the relevant bounds at their exact scales.  None of the surviving
+norms do not improve the relevant bounds at their exact scales.  Fixed-level order-one
+defining polynomials also supply no factor descent in the shift or Newton order.  None of the surviving
 bridges is supplied by the original hypotheses.}
 \end{statusbox}
 
@@ -19343,9 +19734,11 @@ two residue relations, and a conditional residual cross identity & \statuslean &
 \lean{CatalanTangentCore};
 Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, positive reduced
-denominator target, universal rank-one fixed-divisor ceiling, and fixed-pair triangular
-synchronization ceiling; exact collision-tree initial form, simple affine-cluster transfer,
-and sharp collective-cancellation examples & \statusnew{} paper deductions; Corvaja--Zannier input
+denominator target, direct-node Markov--Pad\'e repulsion, saturated-Smith identity,
+arbitrarily deep unit-defect calibration, and real-axis root factorization,
+universal rank-one fixed-divisor ceiling, and fixed-pair triangular synchronization ceiling;
+exact collision-tree initial form, simple affine-cluster transfer, sharp collective examples,
+and full bad-geometry source capacity & \statusnew{} paper deductions; Corvaja--Zannier input
 \statusknown & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
 One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice,
@@ -19384,7 +19777,8 @@ Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
 Shifted Newton--Kummer exponential smallness, character-projection ceiling, exact common-ideal
 norm, one-factor partial-norm deficit, private-prime resultant criterion, Fermat-like
-resultant splitting, and number-field-$abc$ radical bridge &
+resultant splitting, number-field-$abc$ radical bridge, diagonal nonuniformity, and
+order/shift polynomial nondivisibility &
 \statusnew & Section~\ref{crit:newton-kummer}; radical conclusion conditional on $abc$ \\
 Adjacent-smooth cyclic resultant, boundary law, balanced gcd target, and conditional
 Frobenius descent & \statusnew & Section~\ref{crit:adjacent-resultants} \\
@@ -21398,9 +21792,13 @@ black box expected to apply.
 
 \subsection{Prioritized directions, and what the ceiling changes}
 
-A useful ranking by proximity to the obstruction gives highest priority to the rank-two
-multiplicative group combined with specialized o-minimal or algebraic covering and $S$-unit
-rigidity; to a Laurent-style
+A useful ranking by proximity to the obstruction gives highest priority to the vanishing
+and $p$-adic lifts of the output-sensitive transverse factors $Q_{p,E}(M,A)$ in
+\eqref{crit:eq-parallel-cluster-factor}, and to a saturated two-generator divisor of the positive
+Markov--Pad\'e defect integer in~\eqref{crit:eq-markov-defect-integer}; either target couples
+the fixed common-power table to both Archimedean and $p$-adic information.  Comparable
+priority goes to the rank-two multiplicative group combined with specialized o-minimal or
+algebraic covering and $S$-unit rigidity; to a Laurent-style
 interpolation-determinant redesign of the semigroup determinant of
 Section~\ref{sec:semigroup}; and to tropical or $p$-adic determinant amplification with modern
 $p$-adic logarithmic-form control.  High priority to the Corvaja--Zannier recurrence and
