@@ -324,4 +324,56 @@ theorem alaoglu_erdos_channels (M A p q : ℕ) :
   · ring
   · rw [mul_pow, show (6 : ℤ) ^ p = 2 ^ p * 3 ^ p by rw [← mul_pow]; norm_num]
 
+
+/-! ### Channel descent to the original gaps -/
+
+/-- Exact identities: `a (ad - bc) + b (ac - bd) = d (a^2 - b^2)` and
+`d (ac - bd) - c (ad - bc) = b (c^2 - d^2)`. -/
+theorem channel_descent_identities (a b c d : ℤ) :
+    a * (a * d - b * c) + b * (a * c - b * d) = d * (a ^ 2 - b ^ 2) ∧
+    d * (a * c - b * d) - c * (a * d - b * c) = b * (c ^ 2 - d ^ 2) := by
+  constructor <;> ring
+
+/-- **Channel descent.**  Any common divisor of the two channels `ad - bc`, `ac - bd` divides
+`d (a^2 - b^2)` and `b (c^2 - d^2)`.  For the synchronized germ `a/b = M^q/2^p`,
+`c/d = A^q/3^p` this says a prime `ℓ ∤ 6` shared by both channels divides both doubled gaps
+`M^{2q} - 4^p` and `A^{2q} - 9^p`: shared channel support is shared support of the original
+synchronized gaps up to sign. -/
+theorem dvd_of_dvd_both_channels {m a b c d : ℤ} (h₁ : m ∣ a * d - b * c)
+    (h₂ : m ∣ a * c - b * d) :
+    m ∣ d * (a ^ 2 - b ^ 2) ∧ m ∣ b * (c ^ 2 - d ^ 2) := by
+  obtain ⟨e₁, e₂⟩ := channel_descent_identities a b c d
+  exact ⟨e₁ ▸ dvd_add (Dvd.dvd.mul_left h₁ _) (Dvd.dvd.mul_left h₂ _),
+    e₂ ▸ dvd_sub (Dvd.dvd.mul_left h₂ _) (Dvd.dvd.mul_left h₁ _)⟩
+
+/-- Specialization to the Alaoglu–Erdős germ: a prime `ℓ` coprime to `6` dividing both
+`3^p M^q - 2^p A^q` and `(MA)^q - 6^p` divides `M^{2q} - 4^p` and `A^{2q} - 9^p`. -/
+theorem prime_dvd_doubled_gaps_of_dvd_both_channels {ℓ : ℕ} (hℓ : ℓ.Prime) (hℓ2 : ℓ ≠ 2)
+    (hℓ3 : ℓ ≠ 3) (M A p q : ℕ)
+    (h₁ : (ℓ : ℤ) ∣ 3 ^ p * M ^ q - 2 ^ p * A ^ q)
+    (h₂ : (ℓ : ℤ) ∣ (M * A) ^ q - 6 ^ p) :
+    (ℓ : ℤ) ∣ (M : ℤ) ^ (2 * q) - 4 ^ p ∧ (ℓ : ℤ) ∣ (A : ℤ) ^ (2 * q) - 9 ^ p := by
+  have hp' : Prime (ℓ : ℤ) := Nat.prime_iff_prime_int.mp hℓ
+  have h₁' : (ℓ : ℤ) ∣ (M ^ q : ℤ) * 3 ^ p - 2 ^ p * A ^ q := by
+    rw [mul_comm ((M : ℤ) ^ q)]; exact h₁
+  have h₂' : (ℓ : ℤ) ∣ (M ^ q : ℤ) * A ^ q - 2 ^ p * 3 ^ p := by
+    rw [← mul_pow, show ((2 : ℤ) ^ p * 3 ^ p) = 6 ^ p by rw [← mul_pow]; norm_num]
+    exact_mod_cast h₂
+  obtain ⟨d₁, d₂⟩ := dvd_of_dvd_both_channels h₁' h₂'
+  have hnot2 : ¬ (ℓ : ℤ) ∣ 2 := fun h => hℓ2 ((Nat.prime_dvd_prime_iff_eq hℓ Nat.prime_two).mp
+    (Int.natCast_dvd_natCast.mp (by exact_mod_cast h)))
+  have hnot3 : ¬ (ℓ : ℤ) ∣ 3 := fun h => hℓ3 ((Nat.prime_dvd_prime_iff_eq hℓ Nat.prime_three).mp
+    (Int.natCast_dvd_natCast.mp (by exact_mod_cast h)))
+  have hnot3p : ¬ (ℓ : ℤ) ∣ 3 ^ p := fun h => hnot3 (hp'.dvd_of_dvd_pow h)
+  have hnot2p : ¬ (ℓ : ℤ) ∣ 2 ^ p := fun h => hnot2 (hp'.dvd_of_dvd_pow h)
+  constructor
+  · have := (hp'.dvd_mul.mp d₁).resolve_left hnot3p
+    have e : ((M : ℤ) ^ q) ^ 2 - ((2 : ℤ) ^ p) ^ 2 = (M : ℤ) ^ (2 * q) - 4 ^ p := by
+      rw [← pow_mul, mul_comm q 2, ← pow_mul, mul_comm p 2, pow_mul, pow_mul]; norm_num
+    rwa [e] at this
+  · have := (hp'.dvd_mul.mp d₂).resolve_left hnot2p
+    have e : ((A : ℤ) ^ q) ^ 2 - ((3 : ℤ) ^ p) ^ 2 = (A : ℤ) ^ (2 * q) - 9 ^ p := by
+      rw [← pow_mul, mul_comm q 2, ← pow_mul, mul_comm p 2, pow_mul, pow_mul]; norm_num
+    rwa [e] at this
+
 end LeanProofs.TwoBaseIntegerExponent.CenteredTrace

@@ -19916,11 +19916,22 @@ $F(35,37)=11\cdot19\cdot31$, $F(64,65)=11\cdot31\cdot61$, with $31\mid D_-=-3\cd
 $11\mid D_+=-3\cdot5\cdot11$.
 
 The theorem says where shared content must go, not that any is forced: real synchronization
-does not transparently force modular synchronization.  Note also that a prime dividing both
-channels of \eqref{ct:eq-AE-channels} satisfies $A^{2q}\equiv9^p$, $M^{2q}\equiv4^p$, so
-$\gcd(D_-,D_+)\mid\gcd(M^{2q}-4^p,A^{2q}-9^p)$, whose logarithm is $o(q)$ by the fixed-group
-Corvaja--Zannier bound applied to $\langle(M,A),(2,3)\rangle$: the two channels are
-asymptotically disjoint.  Signed trace filters $\prod T_{d_i}^{c_i}$ can raise contact to
+does not transparently force modular synchronization.  The two channels are, however,
+asymptotically disjoint, by an exact descent to the original gaps:
+
+\begin{proposition}[Channel descent]\label{ct:prop-descent}
+For all integers, $a(ad-bc)+b(ac-bd)=d(a^2-b^2)$ and $d(ac-bd)-c(ad-bc)=b(c^2-d^2)$.  Hence
+any common divisor of the two channels divides $d(a^2-b^2)$ and $b(c^2-d^2)$, and a prime
+$\ell\nmid6$ dividing both channels of \eqref{ct:eq-AE-channels} divides the doubled gaps
+$M^{2q}-4^p=(M^q-2^p)(M^q+2^p)$ and $A^{2q}-9^p=(A^q-3^p)(A^q+3^p)$.
+\end{proposition}
+
+\statuslean{} (\lean{dvd_of_dvd_both_channels}, \lean{prime_dvd_doubled_gaps_of_dvd_both_channels}).
+The pair $(M^{2q}/4^p,A^{2q}/9^p)$ lies in the fixed group $\langle(M,A),(2,3)\rangle$ with
+multiplicatively independent coordinates, so the fixed-group Corvaja--Zannier bound of
+Section~\ref{primetop:uniform-gcd} gives $\log\gcd(D_-,D_+)=o(q)$ for $\gcd$ taken prime to
+$6$: shared channel support is, up to sign, shared support of the original synchronized
+gaps, and it is asymptotically negligible.  Signed trace filters $\prod T_{d_i}^{c_i}$ can raise contact to
 $2R$ exactly when $\sum_ic_i(d_i^{2r}-1)=0$ for $r<R$, which needs $m\ge R$ factors
 (Vandermonde), and their cyclotomic degree budget $\sum_n|e_n|\varphi(n)$ grows much faster
 than the contact (orders $4$ and $6$ already cost $10$ and $42$)---the trace-language form
@@ -20106,6 +20117,17 @@ actually occur (Section~\ref{lp:criterion-remarks}) and the subquadratic countin
 (Section~\ref{cd:counting}), is the conjecture in different clothing.  Its value is the
 explicit witness $\Lambda_q=\log(3^{a_q}/2^{b_q})$ with the elementary bound
 \eqref{sparsequad:eq-elementary-lower}, not a weakening of the goal.
+
+\paragraph{Does this bring the proof closer?}  Honestly assessed: no theorem in
+Sections~\ref{sec:primetop}--\ref{sec:masks} narrows the \emph{truth} of the conjecture;
+the open problem is unchanged and still sits exactly on the four-exponentials boundary of
+Section~\ref{sec:fourexp}.  What has changed is the map of the search space.  Four
+constructions that looked like candidate proof engines are now closed exactly (growing-order
+linear stencils, fixed and subcritical-width factorial cocycles, cubic-trace iteration,
+one-direction Prouhet masks), one proposed intermediate target has been shown to be the
+conjecture itself (Theorem~\ref{sparsequad:thm-scs}), and the finite algebra behind every
+closure is kernel-checked, so none of these routes will be re-opened by an oversight.  The
+residual targets below are the honest statement of what a proof would still have to supply.
 
 \paragraph{Where genuinely new input could enter.}  Three targets survive all five audits and
 are not yet known to be equivalent to the conjecture: the linear-width factorial feasibility
