@@ -158,6 +158,78 @@ theorem card_Icc_ceil_floor_le {α β : ℝ} (hαβ : α ≤ β) :
     _ = (⌊β⌋ : ℝ) + 1 - (⌈α⌉ : ℝ) := by push_cast; ring
     _ ≤ β - α + 1 := by linarith [Int.floor_le β, Int.le_ceil α]
 
+/-! ### Capped reciprocal sums -/
+
+/-- Sum capped reciprocals while measuring integer distance from the right endpoint.
+The endpoint itself contributes only the cap `D`; the remaining terms form `harmonic n`. -/
+theorem sum_minInv_Icc_from_right (u : ℤ → ℝ) {A B : ℤ} (n : ℕ) {D q : ℝ}
+    (hA : A = B - (n : ℤ))
+    (hu : ∀ ν ∈ Finset.Icc A B, ν < B →
+      minInv D (u ν) ≤ q * (((B : ℝ) - (ν : ℝ))⁻¹)) :
+    ∑ ν ∈ Finset.Icc A B, minInv D (u ν) ≤ D + q * (harmonic n : ℝ) := by
+  have hharm : (harmonic n : ℝ) =
+      ∑ j ∈ Finset.range n, (((j + 1 : ℕ) : ℝ)⁻¹) := by
+    rw [harmonic, Rat.cast_sum]
+    simp
+  calc
+    (∑ ν ∈ Finset.Icc A B, minInv D (u ν)) =
+        ∑ j ∈ Finset.range (n + 1), minInv D (u (B - (j : ℤ))) := by
+      rw [hA, PS.sum_Icc_eq_sum_range_rev]
+    _ = minInv D (u B) +
+        ∑ j ∈ Finset.range n, minInv D (u (B - ((j + 1 : ℕ) : ℤ))) := by
+      rw [Finset.sum_range_succ']
+      simp
+      ring
+    _ ≤ D + ∑ j ∈ Finset.range n, q * (((j + 1 : ℕ) : ℝ)⁻¹) := by
+      refine add_le_add (minInv_le_left D (u B)) ?_
+      exact Finset.sum_le_sum fun j hj => by
+        have hjn : j < n := Finset.mem_range.mp hj
+        have hmem : B - ((j + 1 : ℕ) : ℤ) ∈ Finset.Icc A B := by
+          rw [Finset.mem_Icc]
+          constructor <;> omega
+        have hlt : B - ((j + 1 : ℕ) : ℤ) < B := by omega
+        have hterm := hu (B - ((j + 1 : ℕ) : ℤ)) hmem hlt
+        convert hterm using 1
+        all_goals first | rfl | (push_cast; ring)
+    _ = D + q * ∑ j ∈ Finset.range n, (((j + 1 : ℕ) : ℝ)⁻¹) := by
+      rw [Finset.mul_sum]
+    _ = D + q * (harmonic n : ℝ) := by rw [← hharm]
+
+/-- Sum capped reciprocals while measuring integer distance from the left endpoint.
+The endpoint itself contributes only the cap `D`; the remaining terms form `harmonic n`. -/
+theorem sum_minInv_Icc_from_left (u : ℤ → ℝ) {A B : ℤ} (n : ℕ) {D q : ℝ}
+    (hB : B = A + (n : ℤ))
+    (hu : ∀ ν ∈ Finset.Icc A B, A < ν →
+      minInv D (u ν) ≤ q * (((ν : ℝ) - (A : ℝ))⁻¹)) :
+    ∑ ν ∈ Finset.Icc A B, minInv D (u ν) ≤ D + q * (harmonic n : ℝ) := by
+  have hharm : (harmonic n : ℝ) =
+      ∑ j ∈ Finset.range n, (((j + 1 : ℕ) : ℝ)⁻¹) := by
+    rw [harmonic, Rat.cast_sum]
+    simp
+  calc
+    (∑ ν ∈ Finset.Icc A B, minInv D (u ν)) =
+        ∑ j ∈ Finset.range (n + 1), minInv D (u (A + (j : ℤ))) := by
+      rw [hB, PS.sum_Icc_eq_sum_range_real]
+    _ = minInv D (u A) +
+        ∑ j ∈ Finset.range n, minInv D (u (A + ((j + 1 : ℕ) : ℤ))) := by
+      rw [Finset.sum_range_succ']
+      simp
+      ring
+    _ ≤ D + ∑ j ∈ Finset.range n, q * (((j + 1 : ℕ) : ℝ)⁻¹) := by
+      refine add_le_add (minInv_le_left D (u A)) ?_
+      exact Finset.sum_le_sum fun j hj => by
+        have hjn : j < n := Finset.mem_range.mp hj
+        have hmem : A + ((j + 1 : ℕ) : ℤ) ∈ Finset.Icc A B := by
+          rw [Finset.mem_Icc]
+          constructor <;> omega
+        have hlt : A < A + ((j + 1 : ℕ) : ℤ) := by omega
+        have hterm := hu (A + ((j + 1 : ℕ) : ℤ)) hmem hlt
+        convert hterm using 1
+        all_goals first | rfl | (push_cast; ring)
+    _ = D + q * ∑ j ∈ Finset.range n, (((j + 1 : ℕ) : ℝ)⁻¹) := by
+      rw [Finset.mul_sum]
+    _ = D + q * (harmonic n : ℝ) := by rw [← hharm]
+
 /-! ### Scale normalization -/
 
 /-- The inverse square root of the curvature scale `c F N⁻²` has the expected
