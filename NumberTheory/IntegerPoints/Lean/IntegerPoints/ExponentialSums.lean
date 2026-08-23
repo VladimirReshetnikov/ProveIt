@@ -1,5 +1,5 @@
 import IntegerPoints.Basic
-import Mathlib.Algebra.MvPolynomial.Basic
+import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Analysis.Calculus.ContDiff.Defs
 import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
@@ -26,6 +26,10 @@ is asserted, only *stated*.
   question; `deriv` / `iteratedDeriv` are then the classical derivatives
   there.  Any `C^k` function on a closed interval extends to one on `ℝ`, so
   this loses no generality.
+* The algebraic-function hypothesis in Lemma 7 carries a total-degree bound
+  quantified before the implied constant.  This records the fixed algebraic
+  complexity tacit in the paper without restricting the varying real
+  coefficients used in applications.
 * Sums `∑_{N < n ≤ c N}` are over `intRange N (c * N)`, and `n ∼ N` is the
   dyadic block `dyadic N` (see `IntegerPoints.Basic`).
 -/
@@ -66,6 +70,35 @@ noncomputable def quadrupleCount (α β M N Δ : ℝ) : ℕ :=
 variables vanishes on the graph of `f` over `s`. -/
 def AlgebraicOn (f : ℝ → ℝ) (s : Set ℝ) : Prop :=
   ∃ P : MvPolynomial (Fin 2) ℝ, P ≠ 0 ∧ ∀ t ∈ s, MvPolynomial.eval ![t, f t] P = 0
+
+/-- `f` is algebraic on `s` with graph equation of total degree at most `D`.
+
+The degree bound is the complexity parameter needed when an implied constant
+is to be uniform over a family of algebraic functions.  No coefficient-height
+bound is imposed: for the B-process application, the algebraic form has fixed
+degree while its real coefficients are allowed to vary. -/
+def AlgebraicOnDegreeLE (D : ℕ) (f : ℝ → ℝ) (s : Set ℝ) : Prop :=
+  ∃ P : MvPolynomial (Fin 2) ℝ,
+    P ≠ 0 ∧ P.totalDegree ≤ D ∧ ∀ t ∈ s, MvPolynomial.eval ![t, f t] P = 0
+
+/-- An algebraic graph equation remains valid after enlarging its degree
+bound.  In particular, finitely many algebraic functions can use one shared
+bound by taking the maximum of their individual bounds. -/
+theorem AlgebraicOnDegreeLE.mono {D E : ℕ} {f : ℝ → ℝ} {s : Set ℝ}
+    (h : AlgebraicOnDegreeLE D f s) (hDE : D ≤ E) : AlgebraicOnDegreeLE E f s := by
+  rcases h with ⟨P, hP, hdegree, hzero⟩
+  exact ⟨P, hP, hdegree.trans hDE, hzero⟩
+
+/-- Being algebraic is equivalent to admitting some finite total-degree
+bound.  In an estimate uniform over algebraic functions, the placement of
+this existential relative to the implied constant remains essential. -/
+theorem algebraicOn_iff_exists_degreeLE (f : ℝ → ℝ) (s : Set ℝ) :
+    AlgebraicOn f s ↔ ∃ D : ℕ, AlgebraicOnDegreeLE D f s := by
+  constructor
+  · rintro ⟨P, hP, hzero⟩
+    exact ⟨P.totalDegree, P, hP, le_rfl, hzero⟩
+  · rintro ⟨_D, P, hP, _hdegree, hzero⟩
+    exact ⟨P, hP, hzero⟩
 
 open Classical in
 /-- The weight `b_u` of the van der Corput B-process: `1` for `α < u < β`
@@ -154,7 +187,8 @@ def zhaiCao_lemma6 : Prop :=
         C * (M * N * Real.log (2 * M * N) + Δ * M ^ 2 * N ^ 2)
 
 /-- **Zhai–Cao, Lemma 7** (Min, Theorem 2.2; the van der Corput
-B-process with a smooth weight).  Let `f, g` be algebraic on `[a, b]` with
+B-process with a smooth weight).  For a fixed algebraic total-degree bound
+`D`, let `f, g` be algebraic of degree at most `D` on `[a, b]` with
 `f'' ∼ 1/R` (taken positive: for `f'' < 0` apply the statement to `-f` and
 conjugate), `|f'''| ≪ 1/(RU)`, `|g| ≪ G`, `|g'| ≪ G/U₁`, `U, U₁ ≥ 1`.  Let
 `[α, β] = f'([a, b])` and let `n_u ∈ [a, b]` solve `f'(n_u) = u`.  Then
@@ -167,10 +201,11 @@ endpoints, the standard form of the B-process (the printed paper writes
 `α < u ≤ β` but defines `b_u` at `u = α` as well; the transcription has been
 corrected to `α ≤ u ≤ β` with an `% ed.:` note). -/
 def zhaiCao_lemma7 : Prop :=
-  ∀ c₁ c₂ c₃ c₄ c₅ : ℝ, 0 < c₁ → 0 < c₂ → 0 < c₃ → 0 < c₄ → 0 < c₅ →
+  ∀ (D : ℕ) (c₁ c₂ c₃ c₄ c₅ : ℝ),
+    0 < c₁ → 0 < c₂ → 0 < c₃ → 0 < c₄ → 0 < c₅ →
     ∃ C : ℝ, ∀ (a b R U U₁ G : ℝ) (f g : ℝ → ℝ) (nu : ℤ → ℝ),
       0 ≤ a → a < b → 0 < R → 1 ≤ U → 1 ≤ U₁ → 0 < G →
-      AlgebraicOn f (Set.Icc a b) → AlgebraicOn g (Set.Icc a b) →
+      AlgebraicOnDegreeLE D f (Set.Icc a b) → AlgebraicOnDegreeLE D g (Set.Icc a b) →
       ContDiff ℝ 3 f → ContDiff ℝ 1 g →
       (∀ t ∈ Set.Icc a b, c₁ / R ≤ iteratedDeriv 2 f t ∧ iteratedDeriv 2 f t ≤ c₂ / R) →
       (∀ t ∈ Set.Icc a b, |iteratedDeriv 3 f t| ≤ c₃ / (R * U)) →
