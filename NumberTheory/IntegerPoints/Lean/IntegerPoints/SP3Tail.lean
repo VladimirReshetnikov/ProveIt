@@ -49,6 +49,7 @@ theorem norm_e_sub_one_sub_le (y : ℝ) : ‖e y - 1 - 2 * π * Complex.I * y‖
     have h1 := (hasDerivAt_e t).sub_const (1 : ℂ)
     have h2 := ((hasDerivAt_id' t).ofReal_comp).const_mul (2 * π * Complex.I)
     refine (h1.sub h2).congr_deriv ?_
+    norm_num
     ring
   have hFTC : ∫ t in (0 : ℝ)..y, 2 * π * Complex.I * (e t - 1) =
       (e y - 1 - 2 * π * Complex.I * y) - (e 0 - 1 - 2 * π * Complex.I * (0 : ℝ)) :=
@@ -72,7 +73,7 @@ theorem norm_e_sub_one_sub_le (y : ℝ) : ‖e y - 1 - 2 * π * Complex.I * y‖
       ((by fun_prop : Continuous fun t : ℝ => 4 * π ^ 2 * |t|).intervalIntegrable _ _)
     refine this.trans (le_of_eq ?_)
     rw [intervalIntegral.integral_const_mul]
-    have h := integral_abs_pow_nonneg hy 1
+    have h := Data.integral_abs_pow_nonneg hy 1
     simp only [pow_one] at h
     rw [h]
     push_cast
@@ -84,7 +85,7 @@ theorem norm_e_sub_one_sub_le (y : ℝ) : ‖e y - 1 - 2 * π * Complex.I * y‖
       ((by fun_prop : Continuous fun t : ℝ => 4 * π ^ 2 * |t|).intervalIntegrable _ _)
     refine this.trans (le_of_eq ?_)
     rw [intervalIntegral.integral_const_mul]
-    have h := integral_abs_pow_nonpos hy.le 1
+    have h := Data.integral_abs_pow_nonpos hy.le 1
     simp only [pow_one] at h
     rw [h]
     push_cast
@@ -128,13 +129,12 @@ theorem hasDerivAt_u₂ {x : ℝ} (hx : x ≠ 0) : HasDerivAt D.u₂ (D.u₂' x)
   have h1 : HasDerivAt (fun y : ℝ => e (D.r y) - 1) (2 * π * Complex.I * D.r1 x * e (D.r x)) x :=
     (PS.hasDerivAt_e_comp (D.hasDerivAt_r x)).sub_const 1
   have h2 : HasDerivAt (fun y : ℝ => ((y : ℂ) ^ 3)) (3 * (x : ℂ) ^ 2) x := by
-    have := ((hasDerivAt_id' x).ofReal_comp).pow 3
+    have := ((hasDerivAt_id' x).pow 3).ofReal_comp
     simpa using this
   have := h1.div h2 (pow_ne_zero 3 hx')
   refine this.congr_deriv ?_
   unfold u₂'
   field_simp
-  ring
 
 theorem norm_u₂_le {x : ℝ} (hx : x ∈ Set.Icc D.a D.b) (hx0 : x ≠ 0) :
     ‖D.u₂ x‖ ≤ π * D.lam₃ / 3 := by
@@ -174,16 +174,26 @@ theorem norm_u₂'_le {x : ℝ} (hx : x ∈ Set.Icc D.a D.b) (hx0 : x ≠ 0) :
   have t2 : ‖3 * ρ‖ ≤ 3 * (2 * π ^ 2 * (D.lam₃ * |x| ^ 3 / 6) ^ 2) := by
     rw [norm_mul, Complex.norm_ofNat]
     gcongr
-    refine hρb.trans ?_
-    gcongr
-    rw [← sq_abs (D.r x)]
-    gcongr
+    have hrsq : D.r x ^ 2 ≤ (D.lam₃ * |x| ^ 3 / 6) ^ 2 := by
+      rw [← sq_abs (D.r x)]
+      exact pow_le_pow_left₀ (abs_nonneg _) hr 2
+    exact hρb.trans (mul_le_mul_of_nonneg_left hrsq (by positivity))
   have t3 : ‖2 * π * Complex.I * x * D.r1 x * (e (D.r x) - 1)‖ ≤
       2 * π * |x| * (D.lam₃ * x ^ 2 / 2) * (2 * π * (D.lam₃ * |x| ^ 3 / 6)) := by
     rw [norm_mul, norm_mul, norm_mul, PS.norm_two_pi_I, Complex.norm_real, Real.norm_eq_abs,
       Complex.norm_real, Real.norm_eq_abs]
-    gcongr
-    exact he1.trans (by gcongr)
+    have hlam3 := D.hlam₃
+    have hcoef : 0 ≤ 2 * π * |x| := by positivity
+    have hr1b : 0 ≤ D.lam₃ * x ^ 2 / 2 := by positivity
+    have heb : ‖e (D.r x) - 1‖ ≤ 2 * π * (D.lam₃ * |x| ^ 3 / 6) :=
+      he1.trans (by gcongr)
+    calc
+      2 * π * |x| * |D.r1 x| * ‖e (D.r x) - 1‖ ≤
+          2 * π * |x| * (D.lam₃ * x ^ 2 / 2) * ‖e (D.r x) - 1‖ := by
+            exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hr1 hcoef) (norm_nonneg _)
+      _ ≤ 2 * π * |x| * (D.lam₃ * x ^ 2 / 2) *
+          (2 * π * (D.lam₃ * |x| ^ 3 / 6)) := by
+            exact mul_le_mul_of_nonneg_left heb (mul_nonneg hcoef hr1b)
   have hx2 : x ^ 2 = |x| ^ 2 := (sq_abs x).symm
   have hx4' : x ^ 4 = |x| ^ 4 := by rw [show (4 : ℕ) = 2 * 2 by norm_num, pow_mul, pow_mul, sq_abs]
   calc ‖2 * π * Complex.I * (D.Ψ x : ℂ) - 3 * ρ +
@@ -216,7 +226,7 @@ noncomputable def t₂ (x : ℝ) : ℂ := e (D.q x) * (e (D.r x) - 1) / ((x : �
 
 /-- **The piece of `T₂` near `0`**: for `[p, q] ⊆ [a, b]` with `0 ∉ [p, q]` and `|x| ≤ δ` on it. -/
 theorem T2_near {p q δ : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q)
-    (hsub : Set.Icc p q ⊆ Set.Icc D.a D.b) (hδ : ∀ x ∈ Set.Icc p q, |x| ≤ δ) (hδ0 : 0 ≤ δ) :
+    (hsub : Set.Icc p q ⊆ Set.Icc D.a D.b) (hδ : ∀ x ∈ Set.Icc p q, |x| ≤ δ) (_hδ0 : 0 ≤ δ) :
     ‖∫ x in p..q, D.t₂ x‖ ≤
       D.lam₃ / (3 * D.lam₂) + (q - p) * (D.lam₄ / (24 * D.lam₂) + π * D.lam₃ ^ 2 * δ ^ 2 / (4 * D.lam₂)) := by
   have hpi : (0 : ℝ) < π := Real.pi_pos
@@ -232,6 +242,7 @@ theorem T2_near {p q δ : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q)
     have := (PS.hasDerivAt_e_comp (D.hasDerivAt_q x)).div_const (2 * π * Complex.I * D.g2 0)
     refine this.congr_deriv ?_
     field_simp
+    push_cast
     ring
   have hu : ∀ x ∈ Set.uIcc p q, HasDerivAt D.u₂ (D.u₂' x) x := fun x hx => by
     rw [hIcc] at hx
@@ -250,13 +261,14 @@ theorem T2_near {p q δ : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q)
     unfold t₂ u₂
     have : (x : ℂ) ≠ 0 := by exact_mod_cast hne x hx
     field_simp
-    ring
   rw [hL, h]
   have hvb : ∀ x, ‖e (D.q x) / (2 * π * Complex.I * D.g2 0)‖ ≤ 1 / (2 * π * D.lam₂) := by
     intro x
     rw [norm_div, PS.norm_e_one, norm_mul, PS.norm_two_pi_I, Complex.norm_real, Real.norm_eq_abs,
       abs_of_pos hg20]
-    apply one_div_le_one_div_of_le (by positivity)
+    apply one_div_le_one_div_of_le (by
+      have := D.hlam₂
+      positivity)
     have := D.g2_pos_at_zero
     nlinarith
   have hub : ∀ x ∈ Set.Icc p q, ‖D.u₂ x‖ ≤ π * D.lam₃ / 3 :=
@@ -273,21 +285,22 @@ theorem T2_near {p q δ : ℝ} (hpq : p ≤ q) (h0 : (0 : ℝ) ∉ Set.Icc p q)
         refine (D.norm_u₂'_le (hsub hx') (hne x hx')).trans ?_
         have hxδ := hδ x hx'
         have : x ^ 2 ≤ δ ^ 2 := by rw [← sq_abs x]; exact pow_le_pow_left₀ (abs_nonneg _) hxδ 2
-        have := D.hlam₃
-        nlinarith)
+        gcongr)
     rw [abs_of_nonneg (by linarith)] at this
-    exact this
+    simpa [mul_comm] using this
   have hB : ‖D.u₂ q * (e (D.q q) / (2 * π * Complex.I * D.g2 0)) -
       D.u₂ p * (e (D.q p) / (2 * π * Complex.I * D.g2 0))‖ ≤
       2 * (π * D.lam₃ / 3 * (1 / (2 * π * D.lam₂))) := by
+    have hlam3 := D.hlam₃
+    have hconst : 0 ≤ π * D.lam₃ / 3 := by positivity
     calc _ ≤ ‖D.u₂ q * (e (D.q q) / (2 * π * Complex.I * D.g2 0))‖ +
           ‖D.u₂ p * (e (D.q p) / (2 * π * Complex.I * D.g2 0))‖ := norm_sub_le _ _
       _ ≤ π * D.lam₃ / 3 * (1 / (2 * π * D.lam₂)) + π * D.lam₃ / 3 * (1 / (2 * π * D.lam₂)) := by
           gcongr
           · rw [norm_mul]
-            exact mul_le_mul (hub q ⟨hpq, le_rfl⟩) (hvb q) (norm_nonneg _) (by positivity)
+            exact mul_le_mul (hub q ⟨hpq, le_rfl⟩) (hvb q) (norm_nonneg _) hconst
           · rw [norm_mul]
-            exact mul_le_mul (hub p ⟨le_rfl, hpq⟩) (hvb p) (norm_nonneg _) (by positivity)
+            exact mul_le_mul (hub p ⟨le_rfl, hpq⟩) (hvb p) (norm_nonneg _) hconst
       _ = _ := by ring
   calc ‖D.u₂ q * (e (D.q q) / (2 * π * Complex.I * D.g2 0)) -
         D.u₂ p * (e (D.q p) / (2 * π * Complex.I * D.g2 0)) -
@@ -333,6 +346,7 @@ theorem weighted_first_derivative {φ φ1 φ2 : ℝ → ℝ} (hφ : ∀ x, HasDe
     have hd : HasDerivAt (fun y => y ^ 2 * φ1 y) (2 * x * φ1 x + x ^ 2 * φ2 x) x := by
       have := ((hasDerivAt_id' x).pow 2).mul (hφ1 x)
       refine this.congr_deriv ?_
+      simp only [Pi.pow_apply]
       ring
     have hden : x ^ 2 * φ1 x ≠ 0 := mul_ne_zero (pow_ne_zero 2 (hne x hx).1) (hne x hx).2
     have := (hasDerivAt_const x (1 : ℝ)).div hd hden
@@ -395,7 +409,6 @@ theorem weighted_first_derivative {φ φ1 φ2 : ℝ → ℝ} (hφ : ∀ x, HasDe
     have hφ0 : (φ1 x : ℂ) ≠ 0 := by exact_mod_cast (hne x hx).2
     push_cast
     field_simp
-    ring
   rw [hL, h, norm_mul, norm_div, norm_one, PS.norm_two_pi_I]
   -- `∫|u'| = u(p) − u(q)`
   have hFTC : ∫ x in p..q, u' x = u q - u p :=
@@ -411,13 +424,22 @@ theorem weighted_first_derivative {φ φ1 φ2 : ℝ → ℝ} (hφ : ∀ x, HasDe
           rw [norm_mul, PS.norm_e_one, mul_one, Complex.norm_real, Real.norm_eq_abs,
             abs_of_nonpos (hu'nonpos x hx)]
       _ = u p - u q := by rw [intervalIntegral.integral_neg, hFTC]; ring
-      _ ≤ |u p| + |u q| := by
-          have := le_abs_self (u p)
-          have := neg_le_abs (u q)
-          linarith
-      _ ≤ 1 / (lam * m ^ 3) + 1 / (lam * m ^ 3) :=
-          add_le_add (hub p ⟨le_rfl, hpq⟩) (hub q ⟨hpq, le_rfl⟩)
-      _ = _ := by ring
+      _ ≤ 1 / (lam * m ^ 3) := by
+          rcases le_or_gt 0 p with hp | hp
+          · have hp0 : 0 < p := lt_of_le_of_ne hp (hne p ⟨le_rfl, hpq⟩).1.symm
+            have hq0 : 0 < q := lt_of_lt_of_le hp0 hpq
+            have hφq : 0 < φ1 q := pos_of_mul_pos_right (hsign q ⟨hpq, le_rfl⟩) hq0.le
+            have huq : 0 ≤ u q := by
+              rw [hu]
+              exact one_div_nonneg.mpr (mul_nonneg (sq_nonneg q) hφq.le)
+            have hup : u p ≤ |u p| := le_abs_self _
+            linarith [hub p ⟨le_rfl, hpq⟩]
+          · have hφp : φ1 p < 0 := neg_of_mul_pos_right (hsign p ⟨le_rfl, hpq⟩) hp.le
+            have hup : u p ≤ 0 := by
+              rw [hu]
+              exact one_div_nonpos.mpr (mul_nonpos_of_nonneg_of_nonpos (sq_nonneg p) hφp.le)
+            have huq : -u q ≤ |u q| := neg_le_abs _
+            linarith [hub q ⟨hpq, le_rfl⟩]
   have hB : ‖((u q : ℝ) : ℂ) * e (φ q) - ((u p : ℝ) : ℂ) * e (φ p) -
       ∫ x in p..q, ((u' x : ℝ) : ℂ) * e (φ x)‖ ≤ 3 / (lam * m ^ 3) := by
     calc _ ≤ ‖((u q : ℝ) : ℂ) * e (φ q) - ((u p : ℝ) : ℂ) * e (φ p)‖ +
