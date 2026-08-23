@@ -157,6 +157,112 @@ theorem card_Icc_ceil_floor_le {α β : ℝ} (hαβ : α ≤ β) :
     _ = (⌊β⌋ : ℝ) + 1 - (⌈α⌉ : ℝ) := by push_cast; ring
     _ ≤ β - α + 1 := by linarith [Int.floor_le β, Int.le_ceil α]
 
+/-! ### Scale normalization -/
+
+/-- The inverse square root of the curvature scale `c F N⁻²` has the expected
+dimension `c⁻¹ᐟ² F⁻¹ᐟ² N`. -/
+theorem inverse_sqrt_scale {c F N : ℝ} (hc : 0 < c) (hF : 0 < F) (hN : 0 < N) :
+    (c * F * N ^ (-(2 : ℝ))) ^ (-(1 : ℝ) / 2) =
+      c ^ (-(1 : ℝ) / 2) * F ^ (-(1 : ℝ) / 2) * N := by
+  rw [Real.mul_rpow (mul_nonneg hc.le hF.le) (Real.rpow_nonneg hN.le _),
+    Real.mul_rpow hc.le hF.le, ← Real.rpow_mul hN.le]
+  norm_num
+
+/-- The fourth-derivative contribution in `gkR₂` loses every power of `N`. -/
+theorem fourth_scale {c₁ c₄ F N : ℝ} (hc₁ : 0 < c₁) (hF : 0 < F) (hN : 0 < N) :
+    (c₄ * F * N ^ (-(4 : ℝ))) *
+        (c₁ * F * N ^ (-(2 : ℝ))) ^ (-(2 : ℝ)) =
+      (c₄ * c₁ ^ (-(2 : ℝ))) * F ^ (-(1 : ℝ)) := by
+  have hc₁F0 : 0 ≤ c₁ * F := mul_nonneg hc₁.le hF.le
+  have hNm2_0 : 0 ≤ N ^ (-(2 : ℝ)) := Real.rpow_nonneg hN.le _
+  have hN22 : (N ^ (-(2 : ℝ))) ^ (-(2 : ℝ)) = N ^ (4 : ℝ) := by
+    rw [← Real.rpow_mul hN.le]
+    norm_num
+  have hF12 : F * F ^ (-(2 : ℝ)) = F ^ (-(1 : ℝ)) := by
+    calc
+      F * F ^ (-(2 : ℝ)) = F ^ (1 : ℝ) * F ^ (-(2 : ℝ)) := by rw [Real.rpow_one]
+      _ = F ^ ((1 : ℝ) + -(2 : ℝ)) := by rw [← Real.rpow_add hF]
+      _ = F ^ (-(1 : ℝ)) := by congr 1; norm_num
+  have hN44 : N ^ (-(4 : ℝ)) * N ^ (4 : ℝ) = 1 := by
+    rw [← Real.rpow_add hN]
+    norm_num
+  rw [Real.mul_rpow hc₁F0 hNm2_0, Real.mul_rpow hc₁.le hF.le, hN22]
+  calc
+    c₄ * F * N ^ (-(4 : ℝ)) *
+          (c₁ ^ (-(2 : ℝ)) * F ^ (-(2 : ℝ)) * N ^ (4 : ℝ)) =
+        (c₄ * c₁ ^ (-(2 : ℝ))) * (F * F ^ (-(2 : ℝ))) *
+          (N ^ (-(4 : ℝ)) * N ^ (4 : ℝ)) := by ring
+    _ = (c₄ * c₁ ^ (-(2 : ℝ))) * F ^ (-(1 : ℝ)) := by
+      rw [hF12, hN44, mul_one]
+
+/-- The squared third-derivative contribution in `gkR₂` likewise loses every power of `N`. -/
+theorem third_scale {c₁ c₃ F N : ℝ} (hc₁ : 0 < c₁) (hF : 0 < F) (hN : 0 < N) :
+    (c₃ * F * N ^ (-(3 : ℝ))) ^ 2 *
+        (c₁ * F * N ^ (-(2 : ℝ))) ^ (-(3 : ℝ)) =
+      (c₃ ^ 2 * c₁ ^ (-(3 : ℝ))) * F ^ (-(1 : ℝ)) := by
+  have hc₁F0 : 0 ≤ c₁ * F := mul_nonneg hc₁.le hF.le
+  have hNm2_0 : 0 ≤ N ^ (-(2 : ℝ)) := Real.rpow_nonneg hN.le _
+  have hN32 : (N ^ (-(3 : ℝ))) ^ 2 = N ^ (-(6 : ℝ)) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul hN.le]
+    norm_num
+  have hN23 : (N ^ (-(2 : ℝ))) ^ (-(3 : ℝ)) = N ^ (6 : ℝ) := by
+    rw [← Real.rpow_mul hN.le]
+    norm_num
+  have hF23 : F ^ 2 * F ^ (-(3 : ℝ)) = F ^ (-(1 : ℝ)) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_add hF]
+    norm_num
+  have hN66 : N ^ (-(6 : ℝ)) * N ^ (6 : ℝ) = 1 := by
+    rw [← Real.rpow_add hN]
+    norm_num
+  simp only [mul_pow]
+  rw [hN32, Real.mul_rpow hc₁F0 hNm2_0, Real.mul_rpow hc₁.le hF.le, hN23]
+  calc
+    (c₃ ^ 2 * F ^ 2 * N ^ (-(6 : ℝ))) *
+          (c₁ ^ (-(3 : ℝ)) * F ^ (-(3 : ℝ)) * N ^ (6 : ℝ)) =
+        (c₃ ^ 2 * c₁ ^ (-(3 : ℝ))) * (F ^ 2 * F ^ (-(3 : ℝ))) *
+          (N ^ (-(6 : ℝ)) * N ^ (6 : ℝ)) := by ring
+    _ = (c₃ ^ 2 * c₁ ^ (-(3 : ℝ))) * F ^ (-(1 : ℝ)) := by
+      rw [hF23, hN66, mul_one]
+
+/-- For `F ≥ 1`, the scale `N/F` is absorbed by `F⁻¹ᐟ² N`. -/
+theorem div_le_inverse_sqrt_mul {F N : ℝ} (hF1 : 1 ≤ F) (hN : 0 ≤ N) :
+    N / F ≤ F ^ (-(1 : ℝ) / 2) * N := by
+  have hpow : F ^ (-(1 : ℝ)) ≤ F ^ (-(1 : ℝ) / 2) :=
+    Real.rpow_le_rpow_of_exponent_le hF1 (by norm_num)
+  calc
+    N / F = F ^ (-(1 : ℝ)) * N := by rw [Real.rpow_neg_one]; ring
+    _ ≤ F ^ (-(1 : ℝ) / 2) * N := mul_le_mul_of_nonneg_right hpow hN
+
+/-! ### Logarithmic normalization -/
+
+/-- Normalize a logarithm against `log (y + 2)`.  This form is tailored to a widened
+frequency interval whose width is at most `M (y + 2)`. -/
+theorem log_normalize {y M H : ℝ} (hy : 0 < y) (hM2 : 2 ≤ M) (hH0 : 0 < H)
+    (hHM : H ≤ M * (y + 2)) :
+    Real.log H ≤ (1 + Real.log M / Real.log 2) * Real.log (y + 2) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hM0 : 0 < M := lt_of_lt_of_le (by norm_num) hM2
+  have hy2 : 0 < y + 2 := by linarith
+  have hlogM0 : 0 ≤ Real.log M := Real.log_nonneg (by linarith)
+  have hlog2_le : Real.log 2 ≤ Real.log (y + 2) :=
+    Real.log_le_log (by norm_num) (by linarith)
+  have hratio : 1 ≤ Real.log (y + 2) / Real.log 2 := by
+    rw [le_div_iff₀ hlog2]
+    simpa using hlog2_le
+  have hlogM_absorb :
+      Real.log M ≤ Real.log M / Real.log 2 * Real.log (y + 2) := by
+    calc
+      Real.log M = Real.log M * 1 := by ring
+      _ ≤ Real.log M * (Real.log (y + 2) / Real.log 2) :=
+        mul_le_mul_of_nonneg_left hratio hlogM0
+      _ = Real.log M / Real.log 2 * Real.log (y + 2) := by ring
+  calc
+    Real.log H ≤ Real.log (M * (y + 2)) := Real.log_le_log hH0 hHM
+    _ = Real.log M + Real.log (y + 2) := Real.log_mul hM0.ne' hy2.ne'
+    _ ≤ Real.log M / Real.log 2 * Real.log (y + 2) + Real.log (y + 2) :=
+      add_le_add hlogM_absorb le_rfl
+    _ = (1 + Real.log M / Real.log 2) * Real.log (y + 2) := by ring
+
 end GK36
 
 end LeanProofs.IntegerPoints
