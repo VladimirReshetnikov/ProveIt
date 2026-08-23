@@ -108,6 +108,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.FactorialCocycle
 import ExponentialIdentities.TwoBaseIntegerExponent.SparseCoaction
 import ExponentialIdentities.TwoBaseIntegerExponent.RestrictedDenominatorDirichlet
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
+import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -809,5 +810,7 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms RestrictedDirichlet.covolume_conservation
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
+#print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384
+#print axioms fourteen_le_of_not_integer_of_two_three_rpow_integer
 
 end LeanProofs.TwoBaseIntegerExponent
