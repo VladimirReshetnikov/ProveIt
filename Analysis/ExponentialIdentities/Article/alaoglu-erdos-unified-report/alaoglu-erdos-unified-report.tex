@@ -3370,6 +3370,7 @@ accepted conditional theorem is
 \end{statusbox}
 
 \subsection{What the criterion is, and is not}
+\label{lp:criterion-remarks}
 
 Three remarks place Theorem~\ref{lp:thm-main} correctly.
 
@@ -19228,6 +19229,894 @@ defining polynomials also supply no factor descent in the shift or Newton order.
 bridges is supplied by the original hypotheses.}
 \end{statusbox}
 
+\section{Prime-top cyclotomic isolation and growing linear stencils}
+\label{sec:primetop}
+
+Section~\ref{sec:orbit-height-entropy} showed that a \emph{fixed} Richardson order or fixed rational
+contact cannot repair the exponential height loss of the rational symmetric secants
+$J_k(r,s)=(s^k-s^{-k})/(r^k-r^{-k})$.  This section removes the word ``fixed.''  For a
+hypothetical counterexample the level-$\ell$ secant at a prime $\ell$ carries, in its
+\emph{reduced} denominator, almost the entire homogeneous cyclotomic factor
+$\widehat\Phi_{2\ell}(P,Q)=(P^\ell+Q^\ell)/(P+Q)$, and no linear combination of lower levels
+with coefficients of small prime support can cancel it.  Against a denominator of logarithmic
+size $(\ell-1)\log P$ the real contact of an $m$-node maximally flat stencil supplies only
+$2m\log(1/|h|)$, and Baker's bound makes $\log(1/|h|)=O(\log\log P)$ along convergents.  The
+approximation exponent of every prime-top maximal-contact integer stencil therefore tends to
+zero even when the order grows almost as fast as $1/|h|$.  The finite algebra is
+\statuslean{} in \lean{PrimeTopIsolation}; the uniform gcd input and the nearest-pole
+asymptotics are \statusnew{} with a \statusknown{} citation.
+
+\subsection{Orbit-uniform generalized gcd}
+\label{primetop:uniform-gcd}
+
+Let $x\notin\Z$ with $M=2^x,A=3^x\in\Z$.  For $w=(a,b)\in\Z^2\setminus\{0\}$ put
+$r_w=2^a3^b$ and $s_w=M^aA^b=r_w^{\,x}$, oriented so that $r_w>1$, and write
+$r_w=P/Q$, $s_w=U/V$ in lowest terms.  The decisive observation is that every pair
+$(r_w^{\,n},s_w^{\,n})$ lies in the \emph{one} finitely generated group
+\begin{equation}
+ \Gamma_x=\langle(2,M),(3,A)\rangle\subset\mathbb G_m^2(\Q),
+ \label{primetop:eq-fixed-group}
+\end{equation}
+and $r_w,s_w$ are multiplicatively independent for every $w\ne0$ (a relation
+$r_w^cs_w^d=1$ gives $c+dx=0$, hence $x\in\Q$ and then $x\in\Z$).  Corvaja--Zannier's
+theorem for a fixed finitely generated subgroup of $\mathbb G_m^2$ \cite{CorvajaZannier2005}
+has a finite exceptional set, which cannot follow an unbounded sequence of changing
+directions.  Hence, uniformly in $w$,
+\begin{equation}
+ \log\gcd(P^n-Q^n,U^n-V^n)=o_x(n\log P)\qquad(n\log P\to\infty).
+ \label{primetop:eq-uniform-gcd}
+\end{equation}
+The orbit-height calculation of Section~\ref{sec:orbit-height-entropy} used the same theorem along
+one ray; \eqref{primetop:eq-uniform-gcd} is the moving-direction form.
+
+\subsection{Order of every fresh prime}
+\label{primetop:fresh-order}
+
+For an odd prime $\ell$ define
+$\widehat\Phi_{2\ell}(P,Q)=\sum_{i<\ell}P^i(-Q)^{\ell-1-i}$, so that
+$(P+Q)\widehat\Phi_{2\ell}(P,Q)=P^\ell+Q^\ell$ and
+$\log\widehat\Phi_{2\ell}(P,Q)=(\ell-1)\log P+O(1)$.
+
+\begin{lemma}[Fresh primes]\label{primetop:lem-fresh}
+Let $\ell$ be an odd prime, $P,Q$ coprime integers, and $p\ne\ell$ a prime dividing
+$\widehat\Phi_{2\ell}(P,Q)$.  Then $p\nmid PQ(P+Q)$, the residue $PQ^{-1}$ has exact order
+$2\ell$ in $\mathbb F_p^\times$, $2\ell\mid p-1$, and $p\nmid P^{2k}-Q^{2k}$ for
+$0<k<\ell$.  Moreover $v_\ell(\widehat\Phi_{2\ell}(P,Q))\le1$.
+\end{lemma}
+
+\begin{proof}
+Coprimality excludes $p\mid P$ or $p\mid Q$ from $p\mid P^\ell+Q^\ell$.  If $p\mid P+Q$ then
+$Q\equiv-P$ and $\widehat\Phi_{2\ell}\equiv\ell P^{\ell-1}\pmod p$, forcing $p=\ell$.  Thus
+$y=PQ^{-1}$ satisfies $y^\ell=-1\ne1$ (here $p\ne2$ because $P^\ell+Q^\ell$ is odd) and
+$y^2\ne1$ (as $y\ne\pm1$), so $\operatorname{ord}(y)=2\ell$ and $2\ell\mid p-1$.  If
+$p\mid P^{2k}-Q^{2k}$ then $2\ell\mid2k$, impossible for $0<k<\ell$.  The $\ell$-adic bound
+is lifting-the-exponent.
+\end{proof}
+
+All parts except the last are \statuslean{} in \lean{PrimeTopIsolation} (the order,
+the divisibility $2\ell\mid p-1$, and the lower-level integrality are separate theorems).  Define
+the \emph{fresh factor}
+\begin{equation}
+ \mathfrak F_\ell=\Bigl(\frac{\widehat\Phi_{2\ell}(P,Q)}
+ {\gcd(\widehat\Phi_{2\ell}(P,Q),U^{2\ell}-V^{2\ell})}\Bigr)_{(\ell)},
+ \label{primetop:eq-fresh-factor}
+\end{equation}
+the prime-to-$\ell$ part after removing target-gap cancellation.  By
+\eqref{primetop:eq-uniform-gcd} and the lemma,
+\begin{equation}
+ \log\mathfrak F_\ell=(\ell-1)\log P-o_x(\ell\log P)
+ \qquad(\ell\log P\to\infty\text{ through odd primes}),
+ \label{primetop:eq-fresh-mass}
+\end{equation}
+uniformly over varying directions.
+
+\subsection{Reduced-denominator survival and the coefficient tax}
+\label{primetop:survival}
+
+Let $p^d\parallel\mathfrak F_\ell$ with $\ell$ larger than every prime divisor of $MA$.
+Since $p>2\ell$ and $p\nmid PQ\,UV$, Lemma~\ref{primetop:lem-fresh} gives
+$v_p(J_\ell)=-d$ and $v_p(J_k)\ge0$ for $1\le k<\ell$.  The ultrametric unique-minimum
+lemma (\statuslean{}, \lean{padicValRat_sum_eq_top}) then yields:
+
+\begin{theorem}[Stencil survival]\label{primetop:thm-survival}
+If $a_1,\dots,a_\ell\in\Q$ with $a_\ell\ne0$ satisfy $v_p(a_\ell)=0$ and $v_p(a_k)\ge0$
+at every prime $p\mid\mathfrak F_\ell$, then
+$\mathfrak F_\ell\mid\operatorname{den}\bigl(\sum_{k\le\ell}a_kJ_k\bigr)$, and hence
+$\log\operatorname{den}\ge(\ell-1)\log P-o_x(\ell\log P)$.
+\end{theorem}
+
+Without any support hypothesis there is still a local tax.  Put
+$C_p=\max_{a_k\ne0}|v_p(a_k)|$ and $E_p=\max(0,-v_p(S))$ for $S=\sum a_kJ_k$.
+
+\begin{proposition}[Coefficient-or-denominator tax]\label{primetop:prop-tax}
+$2(E_p+C_p)\ge d$ for every $p^d\parallel\mathfrak F_\ell$.  Consequently
+$\log\operatorname{den}(S)+2\sum_kh(a_k)\ge\tfrac12\log\mathfrak F_\ell$.
+\end{proposition}
+
+\begin{proof}
+If $2C_p\ge d$ there is nothing to prove.  Otherwise the top summand has valuation
+$v_p(a_\ell)-d<-d/2$ while every other nonzero summand has valuation $\ge-C_p>-d/2$, so the
+unique-minimum lemma gives $v_p(S)=v_p(a_\ell)-d$ and $E_p\ge d-C_p$.
+\end{proof}
+
+The local inequality is \statuslean{} (\lean{coefficient_tax}); the height form uses
+$\sum_p|v_p(a)|\log p\le2h(a)$.  The factor $\tfrac12$ is sharp for this dichotomy.  The
+conclusion is not that adaptive coefficients are impossible, but that a proposed cancellation
+must visibly carry the moving prime mass it removes.
+
+\subsection{Maximal-contact stencils and nearest-pole asymptotics}
+\label{primetop:stencils}
+
+Let $f_x(z)=\sinh(xz)/\sinh z$ and let $1\le n_1<\dots<n_m=N$ be integer nodes with
+$\lambda_i=n_i^2$.  The weights $w_i=\prod_{j\ne i}\lambda_j/(\lambda_j-\lambda_i)$ are the
+Lagrange weights reproducing the value at $0$ for polynomials in $z^2$ of degree $<m$, and
+$\mathcal S_{\mathbf n,x}(e^h)=\sum_iw_if_x(n_ih)=\sum_iw_iJ_{n_i}(r,s)$ is rational for a
+$2$--$3$ rational $r=e^h$.  The moments satisfy $M_0=1$, $M_j=0$ for $0<j<m$, and
+$M_m=(-1)^{m-1}\prod\lambda_i$, with generating identity
+$\sum_{j}(M_j-\mathbf 1_{j=0})t^j=(-1)^{m-1}(\prod_i\lambda_i)t^m/\prod_i(1-\lambda_it)$.
+Every prime in a weight $w_i$ is below $2N$ (only $n_j$, $n_j\pm n_i$ occur), so for prime
+$N=\ell$ larger than the prime support of $MA$, Theorem~\ref{primetop:thm-survival}
+applies with zero coefficients at unused levels:
+\begin{equation}
+ \mathfrak F_N\mid\operatorname{den}\mathcal S_{\mathbf n,x}(e^h),\qquad
+ \log\operatorname{den}\mathcal S_{\mathbf n,x}(e^h)\ge(N-1)\log P-o_x(N\log P).
+ \label{primetop:eq-stencil-den}
+\end{equation}
+For consecutive nodes the weights are $c_{m,k}=2(-1)^{k-1}\binom{2m}{m+k}/\binom{2m}{m}$ and
+the stencil is a central difference:
+$\mathcal R_{m,x}(e^h)-x=(-1)^{m+1}\binom{2m}{m}^{-1}\delta_h^{2m}f_x(0)$, equivalently
+$\sum_{k\le m}c_{m,k}\cosh(kt)=1-(-1)^m\binom{2m}{m}^{-1}(2\sinh(t/2))^{2m}$.  On integer
+exponents this gives the exact finite sums
+$\mathcal R_{m,L}(e^h)-L=-2(-1)^m\binom{2m}{m}^{-1}\sum_j(2\sinh(jh))^{2m}$ over
+$j\le(L-1)/2$ (odd $L$; half-integer shifts for even $L$), which separate the integral locus
+from the pole-dominated regime below.
+
+For $x\notin\Z$ the nearest poles of $f_x$ are $\pm i\pi$, with principal part
+$2\pi\sin(\pi x)/(z^2+\pi^2)$; Cauchy estimates on $|z|\le\rho<2\pi$ give
+$b_j(x)=2(-1)^j\sin(\pi x)\pi^{-2j-1}+O(\rho^{-2j})$ for the Taylor coefficients of $f_x$.
+Inserting this into the exact tail
+$\mathcal S-x=(-1)^{m-1}(\prod\lambda_i)h^{2m}\sum_{r}b_{m+r}h^{2r}h_r(\lambda)$ (complete
+homogeneous $h_r$) and summing the geometric series gives, whenever $m\to\infty$ and
+$N|h|\to0$,
+\begin{equation}
+ \mathcal S_{\mathbf n,x}(e^h)-x
+ =-\frac{2\sin\pi x}{\pi}\prod_{i=1}^m\frac{n_i^2h^2}{\pi^2+n_i^2h^2}\,(1+o_x(1)),
+ \label{primetop:eq-pole-product}
+\end{equation}
+eventually nonzero with the fixed sign $-\operatorname{sgn}\sin\pi x$; the remainder is
+exponentially small in $m$ because $h^2\sum n_i^2\le mN^2h^2=o(m)$.
+
+\subsection{The growing-order no-go}
+\label{primetop:nogo}
+
+Let $p_j/q_j$ be convergents to $\log3/\log2$, $h_j=q_j\log3-p_j\log2$, oriented with
+$r_j=e^{|h_j|}=P_j/Q_j>1$, so $\log P_j\asymp q_j$ and $|h_j|\ll q_j^{-1}$.  A lower bound
+for linear forms in two logarithms \cite{BakerWustholz1993,LaurentMignotteNesterenko} gives
+$|h_j|\ge C_0q_j^{-C_1}$, hence $\log(1/|h_j|)=O(\log q_j)=o(\log P_j)$.
+
+\begin{theorem}[Prime-top maximal-contact stencils are weak]\label{primetop:thm-nogo}
+Let $N_j$ be odd primes with $N_j|h_j|\to0$, and let $S_j$ be any maximal-contact integer
+stencil with $m_j\to\infty$ nodes and largest node $N_j$ evaluated at $e^{|h_j|}$.  Then
+\[
+ \frac{-\log|S_j-x|}{\log\operatorname{den}(S_j)}\longrightarrow0,
+\]
+so $|S_j-x|>\operatorname{den}(S_j)^{-\eta}$ for every fixed $\eta>0$ and all large $j$.
+In particular this holds for Richardson orders $\ell_j\asymp q_j^{1/2}$ (Bertrand).
+\end{theorem}
+
+\begin{proof}
+By \eqref{primetop:eq-stencil-den}, $\log\operatorname{den}(S_j)\ge(1-o(1))N_j\log P_j$.
+By \eqref{primetop:eq-pole-product},
+$-\log|S_j-x|\le2m_j\log(C/|h_j|)+o(m_j)\le2N_j\log(C/|h_j|)+o(N_j)$.  Divide and use
+$\log(1/|h_j|)=o(\log P_j)$.
+\end{proof}
+
+Prime-top isolation contributes denominator mass $\asymp N\log P$ while real contact supplies
+at most $m\log(1/|h|)$ with $m\le N$; the ratio is $O(\log q/q)$ no matter how the nodes move.
+The theorem does not cover nonlinear constructions, stencils whose largest index leaves the
+near-identity window $N|h|\to0$, or coefficient systems not chosen by maximal polynomial
+contact; those remain genuine options, and Proposition~\ref{primetop:prop-tax} is the first
+test any of them must pass.
+
+\subsection{Covolume conservation for restricted denominators}
+\label{primetop:covolume}
+
+A separate proposal forces approximation denominators to carry prescribed $p$-adic depth and
+then combines real and $p$-adic smallness.  For $L=\prod_{p\in S}p^{e_p}$ the lattice
+$\{(q,q\beta-a):q\in L\Z,\,a\in\Z\}$ has covolume $L$, so Minkowski---or, more simply,
+Dirichlet's pigeonhole applied to $L\beta$---supplies $0<q\le nL$ with $L\mid q$ and
+$|q\beta-a|\le1/(n+1)\le L/q$, while every such $q$ has $\prod_{p\in S}|q|_p\le L^{-1}$.
+Therefore
+\begin{equation}
+ |q\beta-a|\prod_{p\in S}|q|_p\le\frac1q,
+ \label{primetop:eq-covolume}
+\end{equation}
+exactly the unrestricted Dirichlet exponent; and for each fixed $L$ a badly approximable
+$\beta=\alpha/L$ shows $|q\beta-a|\ge cL/q$ on $L\Z$, so the scale $L/Q$ is sharp.  The
+one-prime statement is \statuslean{} (\lean{covolume_conservation} in
+\lean{RestrictedDenominatorDirichlet}); the several-prime version is the product of local
+factors.  The law rules out only the direct strategy ``impose $q\equiv0\pmod L$ and invoke
+Minkowski''; accidental extra divisibility, correlations with the numerator, or
+output-specific congruences are outside its scope.
+
+\subsection{What remains viable}
+\label{primetop:remaining}
+
+The results narrow the search to three interfaces: a \emph{nonlinear} construction that
+escapes prime-top isolation (any proposal should first be run through
+Lemma~\ref{primetop:lem-fresh} and Proposition~\ref{primetop:prop-tax}); an
+\emph{output-specific} local-to-global cancellation involving several correlated cyclotomic
+factors rather than one pair (the orbit-uniform bound shows that direct cancellation between
+$\widehat\Phi_{2\ell}(P,Q)$ and $U^{2\ell}-V^{2\ell}$ has only $o(\ell\log P)$ mass); or a
+\emph{tensor-period} statement controlling the quadratic relation
+$\log M\log3-\log A\log2=0$.  Logarithms of algebraic numbers are periods of Kummer
+$1$-motives, for which the period conjecture is known through the analytic subgroup theorem,
+but the quadratic relation lives in a tensor square outside that linear theory; the
+function-field analogue (algebraic independence for Drinfeld-module logarithms via Frobenius
+difference equations) illustrates the missing operator-level symmetry but is not applicable
+here.  A concrete intermediate problem: for every rational expression of bounded degree in
+the prime-top values $J_1,\dots,J_\ell$, either a positive proportion of
+$\log\widehat\Phi_{2\ell}(P,Q)$ survives in its reduced height or the expression factors
+through an explicit multiplicative dependence.
+
+\section{The sparse quadratic prime-logarithm class}
+\label{sec:sparsequad}
+
+The log-product criterion of Section~\ref{sec:logproduct} and the formal prime determinant
+of Section~\ref{crit:support-defects} treat the relation
+$\log m\log3-\log n\log2=0$ as a linear form in products of prime logarithms.  This section
+records the exact \emph{local} structure of that form at an external prime, a $q$-adic
+realization that is unconditionally nonzero, the narrowest period-stability principle that
+would close the problem, and---new here---the calibration that this principle is
+\emph{equivalent} to the conjecture.  The canonical-generator, counting, and
+commensurability statements that accompany this viewpoint are already in
+Sections~\ref{sec:conditional} and~\ref{cd:counting} and are not repeated.
+
+\subsection{The formal class and its external derivatives}
+\label{sparsequad:class}
+
+Introduce formal variables $L_p$ ($p$ prime), $L(u)=\sum_pv_p(u)L_p$, and
+\begin{equation}
+ \mathcal F_{m,n}=L(m)L_3-L(n)L_2,
+ \qquad\operatorname{ev}_\infty(L_p)=\log p.
+ \label{sparsequad:eq-class}
+\end{equation}
+A candidate has $\operatorname{ev}_\infty(\mathcal F_{m,n})=0$, and
+$\mathcal F_{m,n}=0$ formally iff $m=2^k,n=3^k$ (compare the monomials $L_qL_3$, $L_qL_2$,
+$L_3^2$, $L_2^2$, $L_2L_3$).  For an external prime $q\notin\{2,3\}$,
+\begin{equation}
+ \partial_q\mathcal F_{m,n}=a_qL_3-b_qL_2,\qquad
+ \Lambda_q:=\operatorname{ev}_\infty(\partial_q\mathcal F_{m,n})
+ =\log\frac{3^{a_q}}{2^{b_q}},
+ \label{sparsequad:eq-derivative}
+\end{equation}
+with $a_q=v_q(m)$, $b_q=v_q(n)$.  By Section~\ref{sec:smooth} every nonintegral candidate
+has an external prime in the support of $mn$, and for such $q$ unique factorization gives
+$\Lambda_q\ne0$, quantitatively
+\begin{equation}
+ |\Lambda_q|\ge\frac1{\max(3^{a_q},2^{b_q})}
+ \label{sparsequad:eq-elementary-lower}
+\end{equation}
+(from $|\log(A/B)|\ge|A-B|/\max(A,B)$).  Both facts are \statuslean{}
+(\lean{external_derivative_ne_zero}, \lean{abs_external_derivative_ge} in
+\lean{SparseCoaction}).  Thus the hypothetical zero of $\mathcal F_{m,n}$ at the
+prime-logarithm point is \emph{nonsingular}: its gradient is nonzero.  Methods that detect
+only factorized or singular period relations cannot reach the conjecture.  The derivatives
+at the structural primes are $\partial_2\mathcal F=a_2L_3-b_2L_2-L(n)$ and
+$\partial_3\mathcal F=a_3L_3+L(m)-b_3L_2$, whose evaluations still involve $x$; only the
+external derivatives eliminate $x$ and become logarithms of explicit rationals.  Euler's
+identity $2\mathcal F=\sum_qL_q\partial_q\mathcal F$ exhibits the zero period as a weighted
+cancellation among first derivatives of which at least one is unconditionally nonzero.
+
+Writing $r_{\mathrm{ext}}=\operatorname{rank}\{(a_q,b_q):q\notin\{2,3\}\}\in\{1,2\}$, the
+rank-one case has $(a_q,b_q)=c_q(A,B)$ with coprime $(A,B)$, so $m=2^{a_2}3^{a_3}U^A$,
+$n=2^{b_2}3^{b_3}U^B$ with $U=\prod q^{c_q}$ and the relation collapses to the
+three-logarithm form
+\[
+ a_3(\log3)^2-b_2(\log2)^2+(a_2-b_3)\log2\log3+\log U\,(A\log3-B\log2)=0;
+\]
+in rank two, two external primes give independent descendants.  This refines the external
+rank classification of Section~\ref{sec:valuationlattice}.  As a symmetric operator on the
+prime-indexed vector space the form has rank at most four (image in
+$\operatorname{span}\{[m],[n],e_2,e_3\}$), independently of the number of prime divisors of
+$mn$: the prime-logarithm vector would be an isotropic, non-radical point of an ``arrowhead''
+form of rank $\le4$.
+
+\subsection{A nonarchimedean realization}
+\label{sparsequad:qadic}
+
+For $q\ge5$ let $\log_q$ be the Iwasawa logarithm on $\Q_q^\times$ ($\log_q q=0$).  On
+positive rationals its kernel is $q^\Z$ (the only positive rational root of unity is $1$).
+Define $\rho_q([u]\odot[v])=v_q(u)\log_q v+v_q(v)\log_q u$ on symmetric products of exponent
+vectors; then $\rho_q(\mathcal F_{m,n})=\log_q(3^{a_q}/2^{b_q})$, which is nonzero because
+$3^{a_q}/2^{b_q}$ is a $q$-unit different from $1$.  A candidate would therefore have the
+profile $\operatorname{ev}_\infty(\mathcal F_{m,n})=0$, $\rho_q(\mathcal F_{m,n})\ne0$.  The
+first nonzero $q$-adic digit is detected by a finite congruence: with
+$R=3^{a_q}/2^{b_q}$ and $h_q(R)=v_q(R^{q-1}-1)\ge1$ one has $v_q(\log_qR)=h_q(R)$, so
+$R^{q-1}\not\equiv1\pmod{q^{h_q(R)+1}}$; for $h_q=1$ this is the ordinary Fermat quotient
+(compare \lean{FermatQuotientDeterminant}).  No comparison theorem currently turns the
+archimedean/$q$-adic mismatch into a contradiction.
+
+\subsection{Sparse coaction separation is the conjecture}
+\label{sparsequad:scs}
+
+In the mixed-Tate category over $\Z[1/6mn]$ the decomposable weight-two class
+$\mathcal K_{m,n}=\ell^{\mathfrak m}(m)\ell^{\mathfrak m}(3)-\ell^{\mathfrak m}(n)\ell^{\mathfrak m}(2)$
+has real period $\log m\log3-\log n\log2$, and the prime-valuation functional applied to the
+de Rham factor of its $(1,1)$ coaction component gives
+$D_q\mathcal K_{m,n}=\ell^{\mathfrak m}(3^{a_q}/2^{b_q})$ with real period $\Lambda_q\ne0$.
+So a candidate gives a \emph{nonzero} motivic class with zero period and an explicit nonzero
+first descendant.  The narrowest principle that would finish is:
+
+\begin{definition}[Sparse coaction separation]\label{sparsequad:def-scs}
+For all positive integers $u,v$ with $\log u\log3=\log v\log2$ and every prime
+$q\notin\{2,3\}$: $v_q(u)\log3=v_q(v)\log2$.
+\end{definition}
+
+One must not infer $\operatorname{ev}_\infty(\partial_qF)=0$ from
+$\operatorname{ev}_\infty(F)=0$ for an arbitrary numerical relation; evaluation kernels are
+not stable under formal differentiation.  The coaction argument is valid only once a
+numerical relation is known to come from a motivic relation, which is exactly the missing
+injectivity.
+
+\begin{theorem}[Calibration]\label{sparsequad:thm-scs}
+Sparse coaction separation is \emph{equivalent} to Conjecture~\ref{conj:AE}.
+\end{theorem}
+
+\begin{proof}
+($\Rightarrow$) Given a nonintegral candidate, pick an external support prime $q$; the
+principle forces $\Lambda_q=0$, contradicting \eqref{sparsequad:eq-elementary-lower}.
+($\Leftarrow$) Given $u,v>0$ with $\log u\log3=\log v\log2$, put $t=\log u/\log2$; then
+$2^t=u$ and $3^t=e^{t\log3}=e^{\log v}=v$ are integers, so the conjecture gives $t\in\Z$,
+$t\ge0$, hence $u=2^t$, $v=3^t$ and $v_q(u)=v_q(v)=0$ for every external $q$.
+\end{proof}
+
+Both directions are \statuslean{} in \lean{SparseCoaction}, as the single equivalence
+\lean{sparseCoactionSeparation_iff_alaogluErdosConjecture}.
+The calibration matters: the principle was proposed as a ``deliberately narrow target,'' but
+its surplus generality---arbitrary $u,v$ rather than outputs of a single exponent---is
+illusory, exactly as for the prime-log-product criterion in Section~\ref{lp:criterion-remarks}.  A
+proof of separation for decomposable weight-two Kummer classes with one fixed factor in
+$\{\ell2,\ell3\}$ would be a proof of the conjecture, not a reduction of it; conversely,
+nothing short of the conjecture proves the separation.  The useful content is the precise
+\emph{witness}: the required injectivity has a fully explicit, minimal-weight descendant,
+and any argument using only the numerical equality of products of logarithms, without a
+mechanism making the relation coaction-stable, silently assumes the conclusion.
+
+\subsection{Convergent gaps under \texorpdfstring{$abc$}{abc}}
+\label{sparsequad:abc}
+
+Write $m=2^aM_0$ with $M_0$ odd and $n=3^bN_0$ with $3\nmid N_0$; for a nonintegral
+candidate neither $M_0$ nor $N_0$ is $1$.  Let $p_j/q_j$ be convergents of
+$y=\log M_0/\log2$ and $G_j=M_0^{q_j}-2^{p_j}$; then $\gcd(G_j,2M_0)=1$.  Similarly
+$H_j=N_0^{s_j}-3^{r_j}$ from convergents of $\log N_0/\log3$.
+
+\begin{proposition}[Radical-full gaps]\label{sparsequad:prop-abc}
+Assume the $abc$ conjecture.  Then
+$\log\operatorname{rad}|G_j|/\log|G_j|\to1$ and likewise for $H_j$; equivalently
+$|G_j|/\operatorname{rad}|G_j|=|G_j|^{o(1)}$.
+\end{proposition}
+
+\begin{proof}
+The three numbers $\min(M_0^{q_j},2^{p_j})$, $|G_j|$, $\max(\cdot)$ are pairwise coprime,
+so $abc$ gives $\max(M_0^{q_j},2^{p_j})\le K_\varepsilon\operatorname{rad}(2M_0G_j)^{1+\varepsilon}$,
+hence $\operatorname{rad}|G_j|\ge c_\varepsilon\max(\cdot)^{1/(1+\varepsilon)}$ while
+$\log|G_j|\le q_j\log M_0+o(q_j)=\log\max(\cdot)+o(q_j)$.  Let $\varepsilon\downarrow0$.
+\end{proof}
+
+No lower bound for the continued-fraction error is used.  The consequence for Frey-type
+curves $Y^2=X(X-M_0^{q_j})(X-2^{p_j})$ is that the repeated powers in the two main terms do
+\emph{not} produce a bounded or slowly growing level: the gap injects exponentially many
+distinct primes into the discriminant.  Baker-type bounds control the \emph{size} of the gap
+(finite irrationality measure of $y$); $abc$ controls its \emph{radical}.  The two are
+complementary, and a modular strategy must supply an independent reason for the gap primes
+to disappear from the residual conductor.
+
+\section{Mesoscopic factorial cocycles}
+\label{sec:factorialcocycle}
+
+This section develops an auxiliary construction not treated elsewhere in the report: signed
+products of the falling factorials $F_n=(A^n)_{M^n}=A^n!/(A^n-M^n)!$.  Its archimedean side
+is exactly solvable, its arithmetic side is exactly hostile, and the two determine a precise
+linear-width escape target.  The elementary identities are \statuslean{} in
+\lean{FactorialCocycle}; the prime-window theorem is \statusnew{} with \statusknown{}
+analytic inputs.
+
+\subsection{The one-divergent-cumulant regime}
+\label{fc:regime}
+
+With $\alpha=\log M/\log A=\log2/\log3$, the inequalities $4>3$ and $8<9$ give
+$\tfrac12<\alpha<\tfrac23$ (\statuslean{}).  Put $N_n=A^n$, $K_n=M^n=N_n^\alpha$, and
+\begin{equation}
+ q=\frac MA=\Bigl(\frac23\Bigr)^x,\qquad
+ \lambda=\frac{M^2}{A}=\Bigl(\frac43\Bigr)^x>1,\qquad
+ \eta=\frac{M^3}{A^2}=\Bigl(\frac89\Bigr)^x<1,\qquad
+ \tau=\frac{M^4}{A^3}<q<\eta.
+ \label{fc:eq-modes}
+\end{equation}
+For $K_n$ balls in $N_n$ boxes the pair-collision scale $K_n^2/N_n=\lambda^n$ diverges while
+the triple-collision scale $K_n^3/N_n^2=\eta^n$ vanishes; no information about the size of
+$x$ is needed.  The kernel bound $x\ge12$ (\lean{FiniteCheck4096}) enters only through
+$q\le(2/3)^{12}=0.0077\ldots$.
+
+\subsection{Exact expansion and fixed-shift classification}
+\label{fc:classification}
+
+From $-\log(1-u)=u+u^2/2+O(u^3/(1-u))$ and the first two power sums,
+\begin{equation}
+ \log F_n=nM^n\log A-\tfrac12\lambda^n+\tfrac12q^n-\tfrac16\eta^n+O(\tau^n).
+ \label{fc:eq-expansion}
+\end{equation}
+For $P(T)=\sum_jc_jT^j\in\Z[T]$ let $\mathcal F_{P,n}=\prod_jF_{n+j}^{c_j}$, so
+$\log\mathcal F_{P,n}=P(E)(\log F)_n$ with $E$ the forward shift.  The shift identities
+\begin{equation}
+ P(E)(\rho^n)=P(\rho)\rho^n,\qquad
+ P(E)(n\rho^n)=\rho^n\bigl(nP(\rho)+\rho P'(\rho)\bigr)
+ \label{fc:eq-shift}
+\end{equation}
+(\statuslean{}, \lean{shiftEval_geom}, \lean{shiftEval_mul_geom}) give the master asymptotic
+\[
+ \log\mathcal F_{P,n}=\log A\,M^n\bigl(nP(M)+MP'(M)\bigr)-\tfrac12P(\lambda)\lambda^n
+ +\tfrac12P(q)q^n-\tfrac16P(\eta)\eta^n+O_P(\tau^n).
+\]
+
+\begin{theorem}[Near-unit classification]\label{fc:thm-classification}
+$\mathcal F_{P,n}\to1$ if and only if $P(M)=P'(M)=P(M^2/A)=0$, i.e.\ iff
+$P_*\mid P$ in $\Z[T]$ where, with $g=\gcd(A,M^2)$,
+\[
+ P_*(T)=(T-M)^2\Bigl(\frac AgT-\frac{M^2}g\Bigr)
+ =-\frac{M^4}g+\frac{M^2(A+2M)}gT-\frac{M^2+2AM}gT^2+\frac AgT^3 .
+\]
+The minimal cocycle satisfies $\log\mathcal F_{P_*,n}=C_*\eta^n+O(q^n)$ with
+$C_*=\frac{M^2(A-M)}{6gA}\bigl(M-\frac{M^3}{A^2}\bigr)^2>0$, so
+$\mathcal F_{P_*,n}>1$ for large $n$.  Every nonzero annihilator has at least three
+coefficient sign variations (Descartes, three positive roots).
+\end{theorem}
+
+The three annihilations, the vanishing of all three growing modes under $P_*(E)$, and the
+coefficient expansion are \statuslean{} in \lean{FactorialCocycle}; necessity uses the
+separation $M>\lambda>1$ of the growing modes.  When $P(M)=P'(M)=0$ the visible powers
+$(A^n)^{M^n}$ cancel exactly (their exponent is $M^n(nP(M)+MP'(M))=0$), so
+$\prod_jR_{n+j}^{c_j}=\mathcal F_{P,n}$ for the no-collision probabilities
+$R_n=F_n/(A^n)^{M^n}$: the obstruction is the primitive prime content of the terminal
+intervals $(A^t-M^t,A^t]$ themselves.  Cancelling further collision modes
+$\rho_{r,s}=M^s/A^r$ (only $r=1,s=2$ exceeds one; the subunit ladder begins
+$\eta,q,\tau,(M/A)^2,\dots$) makes $|\mathcal F_{P,n}-1|$ smaller but never changes the
+sign-variation count or the fixed degree, and the next mode after $\eta$ decays at the rate
+$x\log(3/2)$ that also governs the thickness threshold below---a critical coincidence rather
+than slack.
+
+\subsection{The prime-window denominator theorem}
+\label{fc:primewindow}
+
+By Legendre, $V_p(t):=v_p(F_t)=\sum_{r\ge1}(\lfloor A^t/p^r\rfloor-\lfloor(A^t-M^t)/p^r\rfloor)$
+counts multiples of $p^r$ in the terminal interval, and
+$v_p(\mathcal F_{P,n})=\sum_jc_jV_p(n+j)$, $\log\operatorname{den}\mathcal F_{P,n}=\sum_p\max(0,-v_p)\log p$.
+Two \statusknown{} inputs: Huxley's short-interval theorem
+$\vartheta(X)-\vartheta(X-X^\gamma)\sim X^\gamma$ for $\gamma>7/12$ \cite{Huxley1972}
+(our exponent is $\alpha=0.6309\ldots$), and Brun--Titchmarsh
+$\pi(y+h)-\pi(y)\le2h/\log h$ \cite{MontgomeryVaughan2007}.
+
+\begin{theorem}[Prime-window obstruction]\label{fc:thm-window}
+Assume $x\ge12$ and fix $\varepsilon>0$.  Let $P_n\in\Z[T]$ be nonzero polynomials with a
+negative coefficient, $k_n$ the highest negative index, and suppose the span satisfies
+$d_n-k_n\le(\log_23-1-\varepsilon)(n+k_n)$.  Then
+\[
+ \log\operatorname{den}(\mathcal F_{P_n,n})\ge(-c_{n,k_n})(\Delta_\varepsilon+o(1))M^{n+k_n},
+ \qquad
+ \Delta_\varepsilon=1-\frac{8q}{(2-\log_23+\varepsilon(1-\alpha))(1-q)}>0 .
+\]
+In particular every fixed $P$ with a negative coefficient---hence every fixed near-unit---has
+$\log\operatorname{den}\mathcal F_{P,n}\gg M^n$, while $|\mathcal F_{P_*,n}-1|\sim C_*\eta^n$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+At level $N=n+k$ put $X=A^N$, $H=M^N$.  Each prime $p\in(X-H,X]$ occurs once in $F_N$ and in
+no lower factor; it enters the denominator unless some higher positive factor $F_{N+\ell}$
+captures a multiple $mp\in(Y_\ell-W_\ell,Y_\ell]$ with $Y_\ell=A^\ell X$, $W_\ell=M^\ell H$.
+For fixed $m\asymp A^\ell$ this confines $p$ to an interval of length $\le2Hq^\ell$, and
+there are at most $2+2A^\ell H/X$ multipliers.  The span hypothesis makes
+$\log(2Hq^\ell)/\log X\ge2-\log_23+\varepsilon(1-\alpha)=:\delta_\varepsilon>0$, so
+Brun--Titchmarsh bounds the logarithmic prime mass of each capture interval by
+$(4/\delta_\varepsilon+o(1))Hq^\ell$; summing over multipliers and $\ell\le D$ gives covered
+mass $\le(8q/(\delta_\varepsilon(1-q))+o(1))H$, the second geometric sum being negligible
+because $q^NM^D\le e^{-\varepsilon N\log M}$.  For $x\ge12$ the coefficient is
+$0.1497\ldots<1$ already at $\varepsilon=0$.  Huxley gives total mass $(1+o(1))H$, so
+uncovered primes have mass $\ge(\Delta_\varepsilon+o(1))H$, and each contributes
+$v_p\le c_{n,k}<0$.
+\end{proof}
+
+The same argument applies to binomial cocycles $\mathcal B_{P,n}=\prod_j\binom{A^{n+j}}{M^{n+j}}^{c_j}$,
+whose near-unit classification adds a double root at $1$ (Stirling's $\tfrac12n\log M$
+term): $P_{\mathrm{bin}}=(T-1)^2P_*$.  Two universal thresholds appear: the multiplier $m$
+begins to drift at span $\ell/(n+k)\asymp1-\alpha=0.369\ldots$, but covering survives until
+the higher interval is as long as the prime scale, at $\ell/(n+k)\asymp\log_23-1=0.585\ldots$.
+For a fixed polynomial the obstruction is visible in one contiguous slice without the
+$x\ge12$ input: with $\rho=\max\{(M/A)^{j-k}:j>k,c_j>0\}$, the primes in
+$(X-(1-\epsilon)H,X-(\rho+\epsilon)H)$ occur in no positive factor, giving the sharper
+$\log\operatorname{den}\ge(-c_k)(1-\rho+o(1))M^{n+k}$.
+
+\subsection{The linear-width target and the structural-prime prefix}
+\label{fc:target}
+
+\begin{target}[Linear-width factorial feasibility]\label{fc:target-linear}
+Decide whether there are $P_n\in\Z[T]$ with $P_n(M)=P_n'(M)=P_n(M^2/A)=0$,
+$v_p(\mathcal F_{P_n,n})\ge0$ for all $p$, $\mathcal F_{P_n,n}\to1$, and
+$\deg P_n-k_n\ge(\log_23-1-o(1))(n+k_n)$.  A positive answer with an eventual strict
+inequality $\mathcal F_{P_n,n}\ne1$ (e.g.\ a sign-controlled first surviving mode) proves
+the conjecture; a negative answer by a dual valuation certificate closes the family.
+\end{target}
+
+For fixed $(M,A,n,d)$ the conditions are three homogeneous linear equations plus the finite
+system $\sum_jc_jV_p(n+j)\ge0$, $p\le A^{n+d}$, i.e.\ a rational polyhedral cone
+$\mathcal C_{n,d}$ intersected with a codimension-three subspace; the proof above is a dual
+certificate below the critical width, and the right search at the critical width is for
+sparse dual certificates supported on prime windows and transported multiples (LP with exact
+Farkas certificates, then ILP with $P_n=P_*S_n$, then prime-power constraints).
+
+The factorial asymptotic uses only the ratio $\log2/\log3$ and cannot by itself distinguish a
+hypothetical primitive pair from the controls $(2^m,3^m)$.  The first primitive-sensitive
+ingredient is a structural prime $r\mid M$, $r\nmid A$ (or $s\mid A$, $s\nmid3$), which a
+nonintegral solution must have.  For such $r$ with $r^{e}\parallel M$, the lowest $en$
+base-$r$ digit positions create no carry when adding $M^n$ and $A^n-M^n$, so Kummer's theorem
+gives
+\begin{equation}
+ v_r\binom{A^n}{M^n}\le\lfloor n\log_rA\rfloor-en
+ \label{fc:eq-carry-free}
+\end{equation}
+(\statuslean{}, \lean{padicValNat_choose_le_of_pow_dvd}).  The high-prime obstruction has size
+$M^n$; the structural valuation is $O(n)$.  A hybrid dual certificate combining the two
+weightings (high primes constrain signs and span; a structural prime constrains the same
+coefficients through long carry-free prefixes) is the first remaining direction that
+genuinely uses nonintegrality rather than the ratio alone.
+
+\section{Centered cyclotomic trace dynamics}
+\label{sec:centeredtrace}
+
+Every rational approximation $p/q$ to a hypothetical nonintegral $\beta$ produces the
+\emph{synchronized} rational near-units
+\begin{equation}
+ z_2=\frac{M^q}{2^p}=2^{\delta},\qquad
+ z_3=\frac{A^q}{3^p}=3^{\delta}=z_2^{\thetaq},\qquad\delta=q\beta-p,
+ \label{ct:eq-germ}
+\end{equation}
+one small real parameter encoded by two rationals whose denominators are supported at the
+structural primes.  The symmetric secants of Section~\ref{sec:orbit-height-entropy} put the unknown
+exponent in the dilation slot; here the dilation is an auxiliary \emph{odd integer} $d$ and
+the near-unit is the dynamical variable, so the maps can be iterated and every iterate
+reduced prime by prime.  The finite core is \statuslean{} in \lean{CenteredTrace}.
+
+\subsection{Traces, Bernoulli expansion, and exact defect}
+\label{ct:traces}
+
+For odd $d=2h+1$ define $T_d(z)=d^{-1}\sum_{j=-h}^hz^j=z^{-h}(z^d-1)/(d(z-1))$.  It is
+reciprocal, $T_d(z)\ge1$ for $z>0$ with equality only at $z=1$ (AM--GM), and
+$T_d(e^t)=\sinh(dt/2)/(d\sinh(t/2))$, with the Bernoulli--Jordan expansion
+\begin{equation}
+ \log T_d(e^t)=\sum_{r\ge1}\frac{B_{2r}(d^{2r}-1)}{2r(2r)!}t^{2r}
+ =\frac{d^2-1}{24}t^2-\frac{d^4-1}{2880}t^4+\cdots,
+ \label{ct:eq-bernoulli}
+\end{equation}
+obtained from $\log((e^u-1)/u)=u/2+\sum B_{2r}u^{2r}/(2r(2r)!)$; the linear terms cancel,
+which is the analytic source of the quadratic contact.  Arithmetically,
+$T_d(z)=d^{-1}\prod_{n\mid d,n>1}\mathcal C_n(z)$ with the centered factors
+$\mathcal C_n=z^{-\varphi(n)/2}\Phi_n$, and
+$\log\mathcal C_n(e^t)=\log\Phi_n(1)+\sum_rB_{2r}J_{2r}(n)t^{2r}/(2r(2r)!)$ with Jordan
+totients $J_m$; summing $\sum_{n\mid d}J_m(n)=d^m$ recovers \eqref{ct:eq-bernoulli}.  (Raw
+necklace coordinates have only first-order contact at $1$; centering by reciprocity removes
+it.)
+
+For coprime $a,b>0$ and $S_d(a,b)=(a^d-b^d)/(a-b)$,
+\begin{equation}
+ T_d(a/b)=\frac{S_d(a,b)}{d(ab)^h},\qquad
+ \gcd(S_d(a,b),ab)=1,\qquad
+ \gcd\bigl(S_d(a,b),d(ab)^h\bigr)=\gcd(S_d(a,b),d)\mid d,
+ \label{ct:eq-exact-reduction}
+\end{equation}
+so reduction of one trace value cancels only a divisor of the fixed integer $d$.
+
+\begin{theorem}[Exact defect factorization]\label{ct:thm-defect}
+$S_{2h+1}(a,b)-(2h+1)(ab)^h=\sum_{j=1}^h(ab)^{h-j}(a^j-b^j)^2=(a-b)^2P_d(a,b)$ with
+$P_d(a,b)=\sum_{j=1}^h(ab)^{h-j}\bigl((a^j-b^j)/(a-b)\bigr)^2>0$ symmetric of degree $d-3$;
+$P_3=1$, $P_5=a^2+3ab+b^2$, $P_7=a^4+3a^3b+6a^2b^2+3ab^3+b^4$.  If $T_d(a/b)=a'/b'$ is reduced
+and $u=a-b$, then $a'-b'=u^2P_d(a,b)/\gcd(S_d(a,b),d)$.
+\end{theorem}
+
+The sum-of-squares identity and the divisibility by $(a-b)^2$ are \statuslean{} in
+\lean{CenteredTrace}, by induction on $h$.  Since
+$S_d\ge d(ab)^h$, the reduced height satisfies $|h(T_d(z))-(d-1)h(z)|\le\log d$: local
+contact is always two, arithmetic degree is $d-1$.  Hence for any composition
+$\Psi=T_{d_m}\circ\dots\circ T_{d_1}$ the contact is $2^m$ while $\deg\Psi=\prod(d_i-1)\ge2^m$,
+with equality exactly for pure cubic composition: the cubic trace is the unique
+\emph{critical} member, every higher positive trace is subcritical before any cross-branch
+cancellation.
+
+\subsection{Exact cubic dynamics}
+\label{ct:cubic}
+
+$T_3(z)-1=(z-1)^2/(3z)$, an exact square.  For reduced $z_k=a_k/b_k$ and $u_k=a_k-b_k$,
+\begin{equation}
+ a_{k+1}=\frac{a_k^2+a_kb_k+b_k^2}{g_k},\quad b_{k+1}=\frac{3a_kb_k}{g_k},\quad
+ u_{k+1}=\frac{u_k^2}{g_k},\quad g_k=3^{\mathbf 1_{3\mid u_k}},
+ \label{ct:eq-cubic-recurrence}
+\end{equation}
+because $a^2+ab+b^2-3ab=(a-b)^2$, $\gcd(a^2+ab+b^2,ab)=1$, and
+$3\mid a^2+ab+b^2\iff3\mid a-b$ (all \statuslean{}).  Therefore, for every prime
+$\ell\ne3$, $v_\ell(u_k)=2^kv_\ell(u_0)$ exactly (\lean{padicValInt_sq_div_three}), and
+$v_3(u_k)=1+2^k(v_3(u_0)-1)$ when $3\mid u_0$ (else $0$).  Two consequences:
+
+\begin{corollary}[No new cross-orbit support]\label{ct:cor-no-new-support}
+For two reduced cubic orbits with defects $u_k,v_k$:
+$\operatorname{rad}_{\ne3}\gcd(u_k,v_k)=\operatorname{rad}_{\ne3}\gcd(u_0,v_0)$ and
+$v_\ell(\gcd(u_k,v_k))=2^kv_\ell(\gcd(u_0,v_0))$ for $\ell\ne3$.
+\end{corollary}
+
+\begin{proposition}[Critical saturation]\label{ct:prop-saturation}
+For $z_0\in\Q_{>0}\setminus\{1\}$, $T_3^{\circ k}(z_0)\to1$ with
+$\varepsilon_{k+1}=\varepsilon_k^2/(3(1+\varepsilon_k))$, while
+$H_k^2/3\le H_{k+1}\le3H_k^2$, so the canonical height
+$\widehat h_3(z_0)=\lim2^{-k}\log H_k$ exists, is positive, and differs from $\log H_0$ by at
+most $\log3$; and $\varepsilon_k\ge1/b_k\ge1/H_k$.  Locally
+$T_3^{\circ k}(e^t)-1=3^{1-2^k}t^{2^k}(1+\alpha_kt^2+O(t^4))$ with $\alpha_1=1/12$,
+$\alpha_k=-2^{k-3}/3$ for $k\ge2$.
+\end{proposition}
+
+Applied to the synchronized germ, $R_{k;p,q}=E_{3,k}/E_{2,k}\in\Q_{>0}$ with
+$E_{i,k}=T_3^{\circ k}(z_i)-1$ satisfies
+$R_{k;p,q}=\thetaq^{2^k}\bigl(1+\alpha_k((\log3)^2-(\log2)^2)\delta^2+O_k(\delta^4)\bigr)$:
+the contact $2^k$ of each branch does \emph{not} transfer to the ratio, whose relative error
+stays quadratic in $\delta$, while its height is $O(2^kq)$.  By
+Corollary~\ref{ct:cor-no-new-support}, any exceptional cancellation in $R_{k;p,q}$ is already
+encoded in the initial gaps $M^q-2^p$ and $A^q-3^p$; iteration only raises their common
+valuations to powers.  This closes, exactly rather than by a loose height estimate, every
+``iterate until the rational number is too close to one'' argument based on the cubic trace.
+
+\subsection{Prime traces and the two fifth-trace channels}
+\label{ct:fifth}
+
+For an odd prime $p\ge5$ one has $P_p(a,b)\equiv(a-b)^{p-3}\pmod p$ (Frobenius on
+$S_p\equiv(a-b)^{p-1}$), $\gcd(S_p,p)=p$ iff $p\mid a-b$, and in that case
+$v_p(P_p(a,b))=1$ exactly (evaluate on the diagonal: $P_p(b,b)=pb^{p-3}(p^2-1)/24$, and the
+first derivative vanishes modulo $p$).  So the normalized factor
+$C_p=P_p/p^{\mathbf 1_{p\mid a-b}}$ is a $p$-free integer and the reduced defect is
+$a'-b'=(a-b)^2C_p(a,b)$: the fifth trace is the first level that can introduce new defect
+primes, and the last whose new factor is a single rational reciprocal quadratic.
+
+\begin{lemma}[Reciprocal-quadratic bridge]\label{ct:lem-bridge}
+In any commutative ring, $cd(a^2+\lambda ab+b^2)-ab(c^2+\lambda cd+d^2)=(ad-bc)(ac-bd)$.
+\end{lemma}
+
+\begin{theorem}[Two-channel decomposition]\label{ct:thm-channels}
+Let $F(a,b)=a^2+3ab+b^2$, $(a,b)$ and $(c,d)$ coprime pairs, and $p\ne5$ a prime with
+$p^e\mid F(a,b)$ and $p^e\mid F(c,d)$, $e\ge1$.  Then $p^e$ divides exactly one of the
+channels $D_-=ad-bc$, $D_+=ac-bd$, and $p$ does not divide the other.  Consequently, with
+$G=\gcd(C_1,C_2)$ of the normalized factors, $G=\gcd(G,D_-)\gcd(G,D_+)$ with coprime
+factors; unnormalized, $\gcd(F(a,b),F(c,d))\mid\operatorname{lcm}(|D_-|,|D_+|)$.
+\end{theorem}
+
+\begin{proof}
+$p\nmid abcd$ since $F(a,b)$ is coprime to $ab$.  The bridge gives $p^e\mid D_-D_+$.  If
+$p$ divided both channels then in $\mathbb F_p$ the ratios $r=a/b$, $s=c/d$ would satisfy
+$r=s$ and $rs=1$, so $r^2=1$; $r=-1$ contradicts $r^2+3r+1=0$, and $r=1$ forces $p=5$.
+Hence $p$ divides exactly one channel and, by coprimality, $p^e$ divides it.
+\end{proof}
+
+Both are \statuslean{} (\lean{bridge_identity}, \lean{fifth_trace_two_channel}).  For the
+synchronized germ with $z_2=a/b$, $z_3=c/d$ reduced, the channels are the explicit
+synchronized binomial gaps
+\begin{equation}
+ D_-\propto3^pM^q-2^pA^q=6^p(2^\delta-3^\delta),\qquad
+ D_+\propto(MA)^q-6^p=6^p(6^\delta-1),
+ \label{ct:eq-AE-channels}
+\end{equation}
+the first comparing the two branches in the same direction, the second a branch with the
+reciprocal of the other.  Every shared prime power of the new normalized fifth-trace
+factors is carried, with full valuation, by exactly one of them.  Exact examples:
+$F(35,37)=11\cdot19\cdot31$, $F(64,65)=11\cdot31\cdot61$, with $31\mid D_-=-3\cdot31$ and
+$11\mid D_+=-3\cdot5\cdot11$.
+
+The theorem says where shared content must go, not that any is forced: real synchronization
+does not transparently force modular synchronization.  Note also that a prime dividing both
+channels of \eqref{ct:eq-AE-channels} satisfies $A^{2q}\equiv9^p$, $M^{2q}\equiv4^p$, so
+$\gcd(D_-,D_+)\mid\gcd(M^{2q}-4^p,A^{2q}-9^p)$, whose logarithm is $o(q)$ by the fixed-group
+Corvaja--Zannier bound applied to $\langle(M,A),(2,3)\rangle$: the two channels are
+asymptotically disjoint.  Signed trace filters $\prod T_{d_i}^{c_i}$ can raise contact to
+$2R$ exactly when $\sum_ic_i(d_i^{2r}-1)=0$ for $r<R$, which needs $m\ge R$ factors
+(Vandermonde), and their cyclotomic degree budget $\sum_n|e_n|\varphi(n)$ grows much faster
+than the contact (orders $4$ and $6$ already cost $10$ and $42$)---the trace-language form
+of the finite-order height obstruction of Section~\ref{od:optimized}.
+
+\begin{target}[Trace interfaces]\label{ct:target}
+(i) Force shared normalized fifth-trace support along an infinite sequence of approximants
+beyond what the two channels can carry; (ii) show that primes generated by the normalized
+reciprocal quadratic have a local or Kummer signature incompatible with both
+$3^pM^q-2^pA^q$ and $(MA)^q-6^p$ outside a negligible set; (iii) for $p\ge7$ compute the
+bivariate common-root resultants of $P_p$ (the seventh-trace quartic factors over a
+quadratic field) and classify the extension-field channels by Frobenius type.
+\end{target}
+
+\section{Exponent-lattice moment masks}
+\label{sec:masks}
+
+The last framework keeps the scalar viewpoint but changes variables: instead of the smooth
+nodes it uses \emph{near-units attached to exponent-lattice relations}.  For
+$\nu=(a,b)\in\Z^2$ put $\rho_\nu=2^a3^b=e^{\delta_\nu}$, $\delta_\nu=a\log2+b\log3$, and
+$\sigma_\nu=M^aA^b=\rho_\nu^{\,x}$; for a convergent $p/q$ of $\thetaq$, $\nu=(-p,q)$ gives
+the output near-unit $z_\nu=A^q/M^p=e^{x\delta_\nu}$ (note the contrast with
+\eqref{ct:eq-germ}, which approximates $\beta$ rather than $\thetaq$).  Integer polynomials
+in such near-units are ``masks.''  The finite core is \statuslean{} in
+\lean{ExponentLatticeMask}; the barriers are \statusnew{} with classical inputs.
+
+\subsection{Exact height and the two-direction uncertainty}
+\label{masks:height}
+
+With $L_{M,A}(\nu)=\sum_{p\mid MA}|av_p(M)+bv_p(A)|\log p$, a norm on $\R^2$ (the
+valuation vectors of $M,A$ are independent because $M,A$ are multiplicatively independent),
+the reduced $\sigma_\nu=R_\nu/S_\nu$ satisfies
+\begin{equation}
+ \log R_\nu+\log S_\nu=L_{M,A}(\nu),\qquad
+ \log R_\nu-\log S_\nu=x\delta_\nu,
+ \label{masks:eq-height-law}
+\end{equation}
+so both sides are exponentially large in $|\nu|$ even when $x\delta_\nu$ is tiny.  For two
+vectors with determinant $D=ad-bc\ne0$ and $H=\|\nu\|_1+\|\omega\|_1$,
+$d\delta_\nu-b\delta_\omega=D\log2$ and $a\delta_\omega-c\delta_\nu=D\log3$, so
+$\max(|\delta_\nu|,|\delta_\omega|)\ge|D|\log3/H$; adjacent convergents ($D=\pm1$) are the
+optimally conditioned basis, and even they cannot make both errors smaller than the
+reciprocal exponent scale.
+
+\subsection{Toric collapse and the gap-power theorem}
+\label{masks:toric}
+
+For a list $\nu_1,\dots,\nu_k$, the kernel of $T_i\mapsto U^{a_i}V^{b_i}$ on Laurent
+polynomials is exactly the lattice ideal
+$I_\nu=\langle T^\alpha-T^\beta:\sum\alpha_i\nu_i=\sum\beta_i\nu_i\rangle$ (group terms by
+fibres), and every element of $I_\nu$ vanishes at \emph{both} $(\rho_{\nu_i})$ and
+$(\sigma_{\nu_i})$.  Modulo $I_\nu$ every mask is a Laurent polynomial in two adjacent
+near-units: adding convergent variables adds no formal degrees of freedom, and the
+continued-fraction recurrence itself gives $T_{n+1}-T_n^{a_{n+1}}T_{n-1}\in I_\nu$, so
+recurrence-only masks are identically zero, not small.  Any claimed high-contact mask must be
+reduced modulo $I_\nu$ before its contact is credited.  (The numerical kernel at $(2,3)$ is
+larger---$3-2-1=0$---but such additive identities do not transfer to arbitrary base pairs and
+are the hard, candidate-specific part.)
+
+For a mask $F\in\Z[U,V]$ the contact order at $(1,1)$ is the largest $r$ with
+$F\in(U-1,V-1)^r$, equivalently the vanishing of the two-dimensional Prouhet moments
+$\sum_\ell c_\ell a_\ell^ib_\ell^j$ for $i+j<r$; it is at most the total bidegree and at most
+$(\#\text{monomials})-1$ (a generic linear functional reduces to a univariate exponential
+sum with distinct frequencies).
+
+\begin{theorem}[One-direction gap power]\label{masks:thm-gap-power}
+If $P\in\Z[T]$ has a zero of multiplicity $\ge r$ at $1$ and $d\ge\deg P$, then for all
+integers $R$, $S\ne0$ the cleared value $S^dP(R/S)=\sum_iP_iR^iS^{d-i}$ is divisible by
+$(R-S)^r$; if nonzero it is at least $|R-S|^r$ in absolute value.
+\end{theorem}
+
+\statuslean{} (\lean{gap_pow_dvd_clearedEval}, \lean{abs_clearedEval_ge}): write
+$P=(T-1)^rQ$ and clear.  For the Thue--Morse mask $P_r=\prod_{j<r}(1-T^{2^j})$ the cleared
+value is exactly $\prod_{j<r}(S^{2^j}-R^{2^j})$.  This closes at once every one-dimensional
+Prouhet partition, finite-difference mask, and sign pattern: high contact on a single
+near-unit \emph{factorizes} into a power of the output gap.  Bivariately, contact $r$ places
+$S_1^dS_2^eF(z_1,z_2)$ in the ideal $(G_1,G_2)^r$ of the two gaps, with the primewise Newton
+floor $\tau_p(F)=\min_{\gamma_{ij}\ne0}(v_p(\gamma_{ij})+ig_{1,p}+jg_{2,p}+(d-i)s_{1,p}+(e-j)s_{2,p})$
+as guaranteed divisor and the scalar product-formula criterion
+$\prod_pp^{\tau_p}\le|J_F|\le\sum|\gamma_{ij}||G_1|^i|G_2|^jS_1^{d-i}S_2^{e-j}$.
+
+\subsection{Stable structural support and the shared-pole Newton law}
+\label{masks:stable}
+
+For $\ell\mid MA$ write $m_\ell=v_\ell(M)$, $n_\ell=v_\ell(A)$ and
+$u_{\ell,k}=v_\ell(z_k)=q_kn_\ell-p_km_\ell=q_k(n_\ell-\thetaq m_\ell)+m_\ell(q_k\thetaq-p_k)$.
+The coefficient $n_\ell-\thetaq m_\ell$ is nonzero ($\thetaq\notin\Q$), so for large $k$ the
+sign of $u_{\ell,k}$ is fixed: the reduced numerators and denominators of the adjacent
+near-units are supported on the \emph{same} fixed sets
+$\mathcal P_+=\{\ell:n_\ell>\thetaq m_\ell\}$ and $\mathcal P_-=\{\ell:n_\ell<\thetaq m_\ell\}$,
+both nonempty because $\sum_\ell(n_\ell-\thetaq m_\ell)\log\ell=\log A-\thetaq\log M=0$,
+with every depth linear in $q_k$.  Sufficiently deep adjacent pairs therefore have \emph{no
+private denominator prime}; the near-cancellation $z_k\to1$ is a balance between two fixed,
+linearly growing valuation profiles, not a matter of small valuations.  Adjacent depths are
+coupled exactly (\statuslean{}, \lean{transport_q}, \lean{transport_p}):
+\begin{equation}
+ q_{k+1}u_{\ell,k}-q_ku_{\ell,k+1}=\varepsilon_km_\ell,\qquad
+ p_{k+1}u_{\ell,k}-p_ku_{\ell,k+1}=\varepsilon_kn_\ell,\qquad
+ \varepsilon_k=p_{k+1}q_k-p_kq_{k+1}=\pm1,
+ \label{masks:eq-transport}
+\end{equation}
+i.e.\ $z_k^{q_{k+1}}/z_{k+1}^{q_k}=M^{\varepsilon_k}$ and $z_k^{p_{k+1}}/z_{k+1}^{p_k}=A^{\varepsilon_k}$.
+
+At a private prime ($p\mid S_1$, $p\nmid S_2$) the leading $U$-face $f_d(V)$ of
+$F=\sum f_i(V)U^i$ controls the first pole layer: if $v_p(S_2^ef_d(z_2))<s=v_p(S_1)$ then
+$v_p(J_F)=v_p(S_2^ef_d(z_2))$ and the reduced denominator keeps $p^{ds-v_p(A_d)}$; a unit
+or monomial top face keeps the full pole, and cancelling the first layer at all private primes
+costs $\log P_1\le eh(z_2)+\log\|f_d\|_1$.  Cyclotomic faces $A_{\mathcal M}(V)=\prod_{m\in\mathcal M}\Phi_m(V)$
+turn this into a finite order-cover condition
+$\operatorname{ord}_p(z_2)\in\mathcal M$ (and fixed-order factors supply only logarithmic
+depth).  Stable support shows this private-prime model is a finite diagnostic only.  The
+asymptotic law is the shared one: for $\ell\in\mathcal P_-$ and
+$F=\sum c_{ij}U^iV^j$,
+\begin{equation}
+ v_\ell(J_F)\ge\lambda_\ell:=\min_{c_{ij}\ne0}\bigl(v_\ell(c_{ij})+(d-i)s_{\ell,1}+(e-j)s_{\ell,2}\bigr),
+ \label{masks:eq-shared-newton}
+\end{equation}
+with equality when the minimum is unique; when it ties, $v_\ell(J_F)>\lambda_\ell$ iff the
+explicit initial form $\sum_{\text{face}}\overline{c_{ij}\ell^{-v_\ell(c_{ij})}}\,\overline{R_1}^i\overline{R_2}^j\overline{S_1'}^{d-i}\overline{S_2'}^{e-j}$
+vanishes in $\mathbb F_\ell$, and deeper cancellation repeats this layer by layer.  A unit
+top-right corner keeps the whole pole $\ell^{ds_{\ell,1}+es_{\ell,2}}$; the positive mask
+$(U-1)^{2r}+(V-1)^{2r}$ keeps $\ell^{2r\max(s_{\ell,1},s_{\ell,2})}$ unless the depths tie.  A
+nonzero binomial mask cannot vanish at both $(1,1)$ and $(z_1,z_2)$ (adjacent relation vectors
+are a basis, so $z_1,z_2$ generate the rank-two group of $M,A$; \statuslean{} in the form
+\lean{det_eq_zero_of_orthogonal}, \lean{not_dvd_of_dvd_reduced_gap}).
+
+\subsection{Barriers and the reduced-denominator endgame}
+\label{masks:endgame}
+
+Along adjacent convergents, with $\Delta_n=\max(|x\delta_n|,|x\delta_{n+1}|)$ and the
+effective two-logarithm bound $\log(1/\Delta_n)=O_x(\log q_n)$:
+
+\begin{theorem}[Three barriers]\label{masks:thm-barriers}
+(i) Full clearing cannot become subunit: for nonzero $F_n$ of bidegree $(d_n,e_n)$ and contact
+$r_n$, $S_n^{d_n}S_{n+1}^{e_n}\|\widetilde F_n\|_1(2\Delta_n)^{r_n}>1$ for all large $n$,
+uniformly in $F_n$, because $\log S\gg q(d+e)$ while $r\le d+e$ and $\log(1/\Delta)=O(\log q)$.
+(ii) Structural primes are never shared by the reduced gaps of independent directions, and
+$\gcd(G_\nu,G_\omega)\mid\gcd(M^D-1,A^D-1)$ with $D=|\det(\nu,\omega)|$ (the
+gap-determinant transport of Section~\ref{crit:fresh-prime}); for adjacent directions the
+shared gap is a fixed divisor of $\gcd(M-1,A-1)$, and for nonadjacent ones it is
+$e^{o(H)}$ by Bugeaud--Corvaja--Zannier \cite{BCZ2003}, so contact-supplied shared divisors
+are exponentially too small.  (iii) If the exact scalar criterion
+$r\log(1/(2\Delta))>\log b_F+\log\|F(1+X,1+Y)\|_1$ (with $b_F$ the \emph{reduced}
+denominator) succeeds infinitely often with subheight coefficients, then
+$\log b_{F_n}=O_x((d_n+e_n)\log q_n)$: the compression index $\log(B_F/b_F)/\log B_F$ must
+tend to one, and since $b_{F_n}=\prod_{\ell\in\mathcal P_-}\ell^{\rho_{\ell,n}}$ with
+$\rho_{\ell,n}=(d_ns_{\ell,n}+e_ns_{\ell,n+1}-v_\ell(J_{F_n}))_+$, the mask must capture a
+$1-o(1)$ fraction of the pole depth at \emph{every} stable denominator prime.
+\end{theorem}
+
+\begin{target}[Shared structural-face capture]\label{masks:target}
+Construct non-toric masks $F_k$ on adjacent pairs with subheight shifted coefficients, certified
+nonzero, whose successive initial forms \eqref{masks:eq-shared-newton} vanish deeply enough that
+$\sum_{\ell\in\mathcal P_-}\rho_{\ell,k}\log\ell=O_x((d_k+e_k)\log q_k)$; or prove the
+obstruction $\log b_F\ge c_x(d\log S_1+e\log S_2)-O_x(r\log H)$ for every such mask, which
+would eliminate the architecture.  The supports should respect the transport relations
+\eqref{masks:eq-transport}; the search is an integer program over shared Newton faces, not over
+arbitrary high-contact coefficients.
+\end{target}
+
+\section{What the five frameworks add to the frontier}
+\label{sec:frontier-update}
+
+Sections~\ref{sec:primetop}--\ref{sec:masks} came from five independent investigations.
+Read together, they make three points that the earlier material stated less sharply.
+
+\paragraph{One mechanism, four disguises.}  Prime-top stencils, factorial cocycles, centered
+traces, and moment masks all manufacture a rational number from a counterexample, make it
+archimedeanly close to a target, and then lose because the \emph{reduced} height grows
+linearly in the approximation index $q$ while Baker-type bounds cap the archimedean gain at
+$O(\log q)$ per unit of contact.  The new results identify, in each case, the exact finite
+place where the reduced denominator survives: a fresh prime of order $2\ell$
+(Lemma~\ref{primetop:lem-fresh}), an uncovered short-interval prime
+(Theorem~\ref{fc:thm-window}), an unreduced cubic defect
+(Corollary~\ref{ct:cor-no-new-support}), or a unique corner of a shared Newton face
+(\eqref{masks:eq-shared-newton}).  Every one of these survivals is a finite statement now
+checked by the kernel.  What is never available is a \emph{second} source of size---the same
+diagnosis as Section~\ref{sec:deficit}.
+
+\paragraph{Equivalences are not reductions.}  Theorem~\ref{sparsequad:thm-scs} shows that
+sparse coaction separation, like the log-product criterion restricted to the pairs that
+actually occur (Section~\ref{lp:criterion-remarks}) and the subquadratic counting bound
+(Section~\ref{cd:counting}), is the conjecture in different clothing.  Its value is the
+explicit witness $\Lambda_q=\log(3^{a_q}/2^{b_q})$ with the elementary bound
+\eqref{sparsequad:eq-elementary-lower}, not a weakening of the goal.
+
+\paragraph{Where genuinely new input could enter.}  Three targets survive all five audits and
+are not yet known to be equivalent to the conjecture: the linear-width factorial feasibility
+problem (Target~\ref{fc:target-linear}), whose dual certificates are finite integer programs;
+shared structural-face capture (Target~\ref{masks:target}), a finite-prime statement about
+repeated cancellation on fixed Newton faces coupled by \eqref{masks:eq-transport}; and the
+nonlinear prime-top problem of Section~\ref{primetop:remaining}.  Each has a concrete
+computational entry point and a precise kill criterion, and each would have to use the
+structural-prime asymmetry (\eqref{fc:eq-carry-free}, $\mathcal P_\pm$) that distinguishes a
+hypothetical primitive pair from the integer controls $(2^m,3^m)$.
+
 \appendix
 
 \section{Status matrix for major statements}
@@ -19857,6 +20746,41 @@ Every complex solution is real (principal branch) & \statuslean & \lean{ComplexS
 Gaussian-integer version is equivalent to the conjecture & \statusnew & Section~\ref{sec:variants} \\
 Multivalued branches: the log-product wall widened by $\log(-1)$ & \statusnew & Section~\ref{sec:variants} \\
 Exact cost of the rational antecedent (denominator-support lemma) & \statusnew & Section~\ref{sec:variants} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Prime-top isolation, sparse quadratic class, cocycles, traces, masks}}\\
+Fresh-prime order $2\ell$, $2\ell\mid p-1$, lower-level $p$-integrality; ultrametric
+unique-minimum lemma; coefficient-or-denominator tax & \statuslean &
+\lean{PrimeTopIsolation}; Section~\ref{sec:primetop} \\
+Orbit-uniform gcd, fresh-factor mass, reduced-denominator survival, nearest-pole product,
+growing-order prime-top stencil no-go & \statusnew; Corvaja--Zannier and two-log inputs
+\statusknown & Section~\ref{sec:primetop} \\
+Covolume conservation for restricted denominators (one prime) & \statuslean &
+\lean{RestrictedDenominatorDirichlet}; Section~\ref{primetop:covolume} \\
+External-prime derivative $\Lambda_q\ne0$ with $|\Lambda_q|\ge1/\max(3^{a_q},2^{b_q})$ &
+\statuslean & \lean{SparseCoaction}; Section~\ref{sparsequad:class} \\
+Sparse coaction separation $\Leftrightarrow$ Conjecture~\ref{conj:AE} & \statuslean &
+\lean{SparseCoaction}; Theorem~\ref{sparsequad:thm-scs} \\
+$q$-adic witness, rank-one three-logarithm normal form, arrowhead rank $\le4$ & \statusnew &
+Section~\ref{sec:sparsequad} \\
+Radical-full convergent gaps & \statusnew{}, conditional on $abc$ &
+Proposition~\ref{sparsequad:prop-abc} \\
+Mesoscopic window $\tfrac12<\log2/\log3<\tfrac23$, mode inequalities, shift identities,
+annihilator roots and expansion, carry-free Kummer bound & \statuslean &
+\lean{FactorialCocycle}; Section~\ref{sec:factorialcocycle} \\
+Factorial near-unit classification, minimal cocycle defect, prime-window denominator theorem
+(uses $x\ge12$) & \statusnew; Huxley and Brun--Titchmarsh \statusknown &
+Theorems~\ref{fc:thm-classification}, \ref{fc:thm-window} \\
+Centered-trace defect factorization, cubic reduction and valuation law, bridge identity,
+fifth-trace two-channel theorem & \statuslean & \lean{CenteredTrace};
+Section~\ref{sec:centeredtrace} \\
+Bernoulli--Jordan expansion, unique criticality, critical saturation, prime-trace
+normalization, signed-filter moment conditions & \statusnew & Section~\ref{sec:centeredtrace} \\
+One-direction gap-power theorem, cleared-value floor, adjacent valuation transport,
+unshared structural primes & \statuslean & \lean{ExponentLatticeMask};
+Section~\ref{sec:masks} \\
+Toric kernel, contact ceilings, stable structural support, shared-pole Newton law, three
+barriers, reduced-denominator endgame & \statusnew; BCZ and two-log inputs \statusknown &
+Section~\ref{sec:masks} \\
 \bottomrule
 \end{longtable}
 }
@@ -20093,6 +21017,22 @@ the synchronized slice $(2^n+1,3^n+1)$ \\
 prime logarithms, exact formal-zero classification, and Structural Rank equivalence \\
 \lean{.../TwoStarContent} & exact coefficient content of the formal two-star determinant,
 least-output content one, and nonzero reduction modulo every nontrivial modulus \\
+\lean{.../PrimeTopIsolation} & homogeneous cyclotomic factor, fresh-prime order $2\ell$ and
+$2\ell\mid p-1$, lower-level $p$-integrality, ultrametric unique-minimum lemma, and the
+coefficient-or-denominator tax \\
+\lean{.../RestrictedDenominatorDirichlet} & restricted-denominator Dirichlet and the one-prime
+covolume conservation law \\
+\lean{.../SparseCoaction} & external-prime derivative certificate with explicit lower bound;
+sparse coaction separation defined and proved equivalent to the conjecture \\
+\lean{.../FactorialCocycle} & mesoscopic window and mode inequalities, shift-evaluation
+identities, annihilator $P_*$ (roots, expansion, kills growing modes), carry-free prefix and
+Kummer bound at a structural prime \\
+\lean{.../CenteredTrace} & homogeneous geometric sums, sum-of-squares defect factorization,
+cubic reduction ($3$ is the only cancellation), valuation doubling, reciprocal-quadratic bridge,
+fifth-trace two-channel theorem, synchronized channel identities \\
+\lean{.../ExponentLatticeMask} & cleared evaluation, one-direction gap-power theorem and
+cleared-value floor, adjacent valuation transport (additive and multiplicative), unshared
+structural primes, orthogonality determinant lemma \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
@@ -20287,7 +21227,9 @@ following kernel-accepted modules:
 \lean{CaptureMultiplier}, \lean{CatalanTangentCore},
 \lean{MatchedGapAmplification}, \lean{ValuationSlopeEnergy},
 \lean{ReciprocalHalfContact}, \lean{ReciprocalMomentLatticeFinite},
-\lean{TwoStarContent}, \lean{PrimePowerKummerCoherence}.
+\lean{TwoStarContent}, \lean{PrimePowerKummerCoherence},\\
+\lean{PrimeTopIsolation}, \lean{RestrictedDenominatorDirichlet}, \lean{SparseCoaction},
+\lean{FactorialCocycle}, \lean{CenteredTrace}, \lean{ExponentLatticeMask}.
 \end{center}
 Their headline APIs are on the aggregate surface and covered by the axiom-audit module.
 
@@ -21881,6 +22823,15 @@ Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
 \newblock Mathematische Zeitschrift \textbf{243}(1) (2003), 79--84.
 \newblock DOI:
 \href{https://doi.org/10.1007/s00209-002-0449-z}{10.1007/s00209-002-0449-z}.
+
+\bibitem{Huxley1972}
+M.~N. Huxley, \emph{On the difference between consecutive primes}, Invent. Math. 15 (1972),
+164--170.
+
+\bibitem{MontgomeryVaughan2007}
+H.~L. Montgomery and R.~C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory},
+Cambridge Studies in Advanced Mathematics 97, Cambridge University Press, 2007 (Brun--Titchmarsh
+inequality, Theorem~3.9).
 
 \bibitem{CorvajaZannier2005}
 P.~Corvaja and U.~Zannier,
