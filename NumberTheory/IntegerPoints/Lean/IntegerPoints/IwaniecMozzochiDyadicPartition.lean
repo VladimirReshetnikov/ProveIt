@@ -1,9 +1,19 @@
 import IntegerPoints.IwaniecMozzochi
 import Mathlib.Algebra.Order.Archimedean.Basic
 import Mathlib.Algebra.Order.GroupWithZero.Basic
+import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 
 /-!
-# The dyadic partition identity in Iwaniec--Mozzochi
+# A canonical dyadic partition and the Iwaniec--Mozzochi identity
+
+Mathlib's smooth transition function gives a concrete witness for the smooth
+partition assumed throughout the paper.  If
+
+`g(t) = smoothTransition ((4 - t) / 2)`,
+
+then `g = 1` on `(-∞,2]` and `g = 0` on `[4,∞)`.  The telescoping
+difference `chi(t) = g(t) - g(2t)` satisfies all clauses of
+`IsDyadicPartition` globally, without any piecewise smoothness argument.
 
 The support conditions in `IsDyadicPartition` make the sum in (3.1) genuinely
 finite.  For `x > 0`, choose `n : ℤ` with `2^n < x ≤ 2^(n+1)`.  Only the
@@ -15,6 +25,71 @@ open scoped BigOperators
 open Real Finset Set
 
 namespace LeanProofs.IntegerPoints
+
+/-! ## A concrete smooth dyadic partition -/
+
+private noncomputable def dyadicCutoff (t : ℝ) : ℝ :=
+  Real.smoothTransition ((4 - t) / 2)
+
+/-- A canonical smooth dyadic partition obtained as a telescoping difference
+of two rescaled smooth cutoffs. -/
+noncomputable def canonicalDyadicPartition (t : ℝ) : ℝ :=
+  dyadicCutoff t - dyadicCutoff (2 * t)
+
+private theorem dyadicCutoff_one_of_le_two {t : ℝ} (ht : t ≤ 2) :
+    dyadicCutoff t = 1 := by
+  unfold dyadicCutoff
+  exact Real.smoothTransition.one_of_one_le (by linarith)
+
+private theorem dyadicCutoff_zero_of_four_le {t : ℝ} (ht : 4 ≤ t) :
+    dyadicCutoff t = 0 := by
+  unfold dyadicCutoff
+  exact Real.smoothTransition.zero_of_nonpos (by linarith)
+
+private theorem dyadicCutoff_pos_of_lt_four {t : ℝ} (ht : t < 4) :
+    0 < dyadicCutoff t := by
+  unfold dyadicCutoff
+  exact Real.smoothTransition.pos_of_pos (by linarith)
+
+private theorem dyadicCutoff_le_one (t : ℝ) : dyadicCutoff t ≤ 1 := by
+  exact Real.smoothTransition.le_one _
+
+/-- The canonical telescoping cutoff satisfies every smoothness, support,
+positivity, and recurrence clause required by `IsDyadicPartition`. -/
+theorem canonicalDyadicPartition_isDyadicPartition :
+    IsDyadicPartition canonicalDyadicPartition := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · unfold canonicalDyadicPartition dyadicCutoff
+    fun_prop
+  · intro t ht
+    change dyadicCutoff t - dyadicCutoff (2 * t) = 0
+    rw [dyadicCutoff_zero_of_four_le ht,
+      dyadicCutoff_zero_of_four_le (t := 2 * t) (by linarith)]
+    norm_num
+  · intro t _ht2 ht4
+    change 0 < dyadicCutoff t - dyadicCutoff (2 * t) ∧
+      dyadicCutoff t - dyadicCutoff (2 * t) ≤ 1
+    rw [dyadicCutoff_zero_of_four_le (t := 2 * t) (by linarith)]
+    simpa using
+      ⟨dyadicCutoff_pos_of_lt_four ht4, dyadicCutoff_le_one t⟩
+  · intro t _ht1 ht2
+    change dyadicCutoff t - dyadicCutoff (2 * t) =
+      1 - (dyadicCutoff (2 * t) - dyadicCutoff (2 * (2 * t)))
+    rw [dyadicCutoff_one_of_le_two ht2,
+      dyadicCutoff_zero_of_four_le (t := 2 * (2 * t)) (by linarith)]
+    ring
+  · intro t ht
+    change dyadicCutoff t - dyadicCutoff (2 * t) = 0
+    rw [dyadicCutoff_one_of_le_two (t := t) (by linarith),
+      dyadicCutoff_one_of_le_two (t := 2 * t) (by linarith)]
+    norm_num
+
+/-- There exists a smooth dyadic partition satisfying the exact assumptions
+used by the Iwaniec--Mozzochi development. -/
+theorem exists_isDyadicPartition : ∃ χ : ℝ → ℝ, IsDyadicPartition χ :=
+  ⟨canonicalDyadicPartition, canonicalDyadicPartition_isDyadicPartition⟩
+
+/-! ## The partition-of-unity identity -/
 
 private theorem eq31_prev_argument (x : ℝ) (n : ℤ) :
     x / (2 : ℝ) ^ (n - 1) = 2 * (x / (2 : ℝ) ^ n) := by
