@@ -1,0 +1,2585 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+\definecolor{provedgreen}{RGB}{16,102,70}
+\definecolor{externalblue}{RGB}{25,87,143}
+\definecolor{targetviolet}{RGB}{106,55,145}
+\definecolor{warningred}{RGB}{145,45,45}
+\definecolor{codegray}{RGB}{247,247,247}
+\definecolor{rulegray}{RGB}{100,107,115}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=externalblue,
+  citecolor=provedgreen,
+  urlcolor=externalblue,
+  pdftitle={Exponent-Lattice Moment Masks for the Alaoglu--Erdos Conjecture},
+  pdfauthor={OpenAI GPT-5.6 Pro},
+  pdfsubject={Toric reduction, moment masks, stable structural support, shared-pole Newton faces, and reduced denominators}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s progress report}
+\rhead{Exponent-lattice moment masks}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3.5em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\newtheorem{target}[theorem]{Research target}
+\newtheorem{warning}[theorem]{Warning}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\vp}{v_p}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\num}{\operatorname{num}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\cont}{\operatorname{cont}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\AEname}{Alaoglu--Erd\H{o}s}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\fall}[2]{\left(#1\right)_{\!\underline{#2}}}
+\newcommand{\normone}[1]{\left\lVert #1\right\rVert_1}
+\newcommand{\statusproved}{\textcolor{provedgreen}{\textbf{[proved here]}}}
+\newcommand{\statusexternal}{\textcolor{externalblue}{\textbf{[external theorem]}}}
+\newcommand{\statustarget}{\textcolor{targetviolet}{\textbf{[open target]}}}
+\newcommand{\statuscomp}{\textcolor{targetviolet}{\textbf{[exact computation]}}}
+\newcommand{\statuswarning}{\textcolor{warningred}{\textbf{[audit warning]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.45em}
+\textbf{Status:} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{resultbox}
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\Huge\bfseries Exponent-Lattice Moment Masks\par}
+\vspace{0.2cm}
+{\Huge\bfseries for the \AEname\ Conjecture\par}
+\vspace{0.65cm}
+{\LARGE Toric Collapse, Stable Structural Support,\par}
+\vspace{0.1cm}
+{\LARGE Shared-Pole Newton Faces, and the Reduced-Denominator Endgame\par}
+\vspace{1.0cm}
+{\large A nonduplicative progress report continuing the supplied unified manuscript\par}
+\vspace{0.35cm}
+{\large 22 August 2026\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Bottom line.}
+No unconditional proof is claimed.  The new progress is a self-contained arithmetic framework
+for a class of auxiliary constructions not developed in the supplied report: integer
+``moment masks'' in exponent-lattice near-unit coordinates.  The framework produces five
+exact conclusions.
+
+First, a collection of arbitrarily many continued-fraction near-relations has only two
+formal degrees of freedom: after quotienting by its toric lattice ideal, every mask is a
+Laurent polynomial in two adjacent near-units.  Continued-fraction recurrences themselves
+therefore produce identically zero masks at both the input and output, not small nonzero
+integers.
+
+Second, every one-direction Prouhet or Thue--Morse cancellation of order $r$ clears to an
+integer divisible by the $r$th power of the corresponding output gap.  High contact on one
+ray is thus not merely expensive; it algebraically factorizes into a large integer gap.
+
+Third, a bivariate mask of contact order $r$ clears into the ideal generated by the two
+output gaps to the $r$th power.  An exact primewise Newton functional gives the guaranteed
+integer divisor and a product-formula contradiction criterion.
+
+Fourth, the private-prime leading-face law is exact but not asymptotically decisive.
+For adjacent continued-fraction near-units, every structural prime has an eventually fixed
+sign: the reduced numerator and denominator supports stabilize, and both denominators are
+supported on the same nonempty set of primes.  Their pole depths grow linearly and satisfy
+exact determinant-one transport identities.
+
+Fifth, at each shared denominator prime the cleared mask is governed by an explicit
+two-dimensional Newton polygon.  A unique minimizing monomial survives exactly; cancellation
+requires a tied initial form to vanish, and deep compression requires this to repeat through
+successive $p$-adic layers at every stable denominator prime.  Together with effective
+two-logarithm separation, this proves that visible denominator clearing cannot become subunit
+and isolates the only surviving mechanism: near-total \emph{reduced-denominator cancellation}
+through simultaneous, prime-specific shared Newton faces.  The report ends with an exact
+sufficient criterion, a finite shared-face capture target, and a Lean-oriented dependency
+graph.
+\end{minipage}
+\vfill
+{\small Prepared by OpenAI GPT-5.6 Pro.}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, nonduplication boundary, and evidence convention}
+\label{sec:scope}
+
+The supplied unified report is exceptionally broad.  It already develops the classical
+Four Exponentials reduction; the exact conditional solution monoid; valuation lattices,
+Kummer theory and local common exponents; generalized Vandermonde and Loewner determinants;
+finite differences, Newton interpolation and Smith profiles; Sturmian and carry models;
+Mahler and special-function transfers; canonical products and Stieltjes moments; rational
+point counting; support theorems; and multiple exact failure analyses.  Repeating any of
+those surveys would add volume rather than information.
+
+This supplement therefore imposes the following boundary.
+
+\begin{itemize}
+\item The exact conditional classification, finite exclusion ranges, Four Exponentials
+  barrier, and all named results of the unified report are treated as inherited context and
+  are not reproved.
+\item The new variables are \emph{near-units attached to exponent-lattice relations}, not
+  the original smooth nodes.  The auxiliary objects are integer masks in those variables.
+\item Determinants appear only as the $2\times2$ lattice determinant controlling two
+  independent near-relations.  No new Vandermonde or interpolation determinant is proposed.
+\item The main arithmetic object is a single cleared rational value and its reduced
+  denominator.  This is intentionally scalar.
+\item Every assertion is marked as proved here, an external input, an exact computation, or
+  an open target.  The conjecture remains open at the end.
+\end{itemize}
+
+The public-claims audit in \cref{sec:public-audit} confirms that several recent machine-assisted
+mathematical results mentioned in the prompt have public records, but it found no public
+technical statement of the alleged new \AEname\ step.  Nothing from that unavailable claim is
+used below.
+
+\begin{statusbox}{\statusproved{} for the mathematical statements proved in this report;
+\statusexternal{} for explicitly cited inputs; \statuscomp{} for the small exact symbolic and
+continued-fraction computations; \statustarget{} for the proposed endgame.}
+\end{statusbox}
+
+\section{Inherited setup and the relation lattice}
+\label{sec:setup}
+
+Write
+\[
+  \thetaAE=\frac{\log 3}{\log 2}.
+\]
+Suppose, for contradiction, that a nonintegral real number $x$ satisfies
+\begin{equation}
+  M:=2^x\in\N,
+  \qquad
+  N:=3^x\in\N.
+  \label{eq:MN}
+\end{equation}
+The elementary interval argument gives $x>1$: for $x<0$ one has $0<2^x<1$, and for
+$0<x<1$ one has $1<2^x<2$.  The supplied report proves much more, including transcendence of
+$x$ and an exact primitive-generator theorem, but only the following elementary fact is
+needed here.
+
+\begin{lemma}[Output multiplicative independence]
+\label{lem:MN-independent}
+The integers $M$ and $N$ are multiplicatively independent.
+\end{lemma}
+
+\begin{proof}
+If $M^aN^b=1$ for $a,b\in\Z$, then taking real logarithms and using
+\eqref{eq:MN} gives
+\[
+  x(a\log2+b\log3)=0.
+\]
+Since $x\ne0$, unique factorization applied to $2^a3^b=1$ gives $a=b=0$.
+\end{proof}
+
+For an exponent vector $\nu=(a,b)\in\Z^2$, define its input and output characters
+\begin{equation}
+ \rho_\nu=2^a3^b,
+ \qquad
+ \sigma_\nu=M^aN^b=\rho_\nu^x,
+ \qquad
+ \delta_\nu=a\log2+b\log3.
+ \label{eq:characters}
+\end{equation}
+Thus $\rho_\nu=e^{\delta_\nu}$ and $\sigma_\nu=e^{x\delta_\nu}$.  A good rational
+approximation to $\thetaAE$ supplies a nonzero $\nu$ for which $\delta_\nu$ is small; then
+both $\rho_\nu$ and the rational number $\sigma_\nu$ are close to $1$.
+
+If $p/q$ is a convergent to $\thetaAE$, the natural vector is
+\begin{equation}
+  \nu=(-p,q),
+  \qquad
+  \delta_\nu=q\log3-p\log2.
+  \label{eq:cf-vector}
+\end{equation}
+The central question of this report is whether several such rational output near-units can
+be combined by an integer polynomial mask to produce a nonzero rational number that is too
+small for its reduced denominator.
+
+\subsection{Exact reduced-height growth}
+\label{subsec:height}
+
+The denominator cost of a rational output near-unit is controlled by the valuation geometry
+of $(M,N)$, independently of continued fractions.
+
+Let $\mathcal P$ be the finite set of primes dividing $MN$, and put
+\[
+  \mathbf m=(v_p(M))_{p\in\mathcal P},
+  \qquad
+  \mathbf n=(v_p(N))_{p\in\mathcal P}.
+\]
+For $\nu=(a,b)$ define the weighted valuation norm
+\begin{equation}
+  L_{M,N}(\nu)
+   =\sum_{p\in\mathcal P}|a v_p(M)+b v_p(N)|\log p.
+  \label{eq:valuation-norm}
+\end{equation}
+
+\begin{lemma}[Valuation norm]
+\label{lem:valuation-norm}
+The function $L_{M,N}$ extends to a norm on $\R^2$.  Consequently there is a constant
+$c_{M,N}>0$ such that
+\begin{equation}
+  L_{M,N}(a,b)\ge c_{M,N}(|a|+|b|)
+  \qquad(a,b\in\R).
+  \label{eq:norm-equivalence}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+It is a seminorm by construction.  If it vanishes at $(a,b)$, then
+$a\mathbf m+b\mathbf n=0$.  For rational $(a,b)$ this would give a multiplicative relation
+between $M$ and $N$; hence the two valuation vectors are linearly independent over $\Q$.
+Because they have integral coordinates, they are also linearly independent over $\R$.
+Thus the seminorm has trivial kernel.  Norm equivalence in the finite-dimensional space
+$\R^2$ gives \eqref{eq:norm-equivalence}.
+\end{proof}
+
+Write the rational number $\sigma_\nu$ in lowest terms as
+\[
+  \sigma_\nu=\frac{R_\nu}{S_\nu},
+  \qquad R_\nu,S_\nu\in\N,
+  \qquad \gcd(R_\nu,S_\nu)=1.
+\]
+
+\begin{proposition}[Exact numerator--denominator law]
+\label{prop:height-law}
+For every $\nu\in\Z^2$,
+\begin{align}
+ \log R_\nu+\log S_\nu&=L_{M,N}(\nu),
+ \label{eq:height-sum}\\
+ \log R_\nu-\log S_\nu&=x\delta_\nu.
+ \label{eq:height-difference}
+\end{align}
+In particular,
+\begin{equation}
+  h(\sigma_\nu):=\log\max(R_\nu,S_\nu)
+  =\frac{L_{M,N}(\nu)+|x\delta_\nu|}{2},
+  \label{eq:height-exact}
+\end{equation}
+and if $|x\delta_\nu|\le1$, then
+\begin{equation}
+ \min(\log R_\nu,\log S_\nu)
+ \ge \frac{c_{M,N}(|a|+|b|)-1}{2}.
+ \label{eq:both-sides-large}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The exponent of a prime $p$ in $\sigma_\nu$ is
+$e_p=a v_p(M)+b v_p(N)$.  Reduction separates the positive and negative parts:
+\[
+ \log R_\nu=\sum_p\max(e_p,0)\log p,
+ \qquad
+ \log S_\nu=\sum_p\max(-e_p,0)\log p.
+\]
+Their sum is \eqref{eq:height-sum}; their difference is
+$\log\sigma_\nu=x\delta_\nu$, giving \eqref{eq:height-difference}.  The final two formulas
+follow by adding and subtracting.
+\end{proof}
+
+The significance is quantitative.  A nontrivial rational output near-unit can be
+archimedeanly close to $1$, but its reduced numerator and denominator are both exponentially
+large in the exponent-vector length.  Any auxiliary mask must defeat that height, not merely
+make a Taylor series start late.
+
+\subsection{A two-direction uncertainty identity}
+\label{subsec:uncertainty}
+
+Let
+\[
+ \nu=(a,b),\qquad \omega=(c,d),\qquad
+ D=\det\begin{pmatrix}a&b\\c&d\end{pmatrix}=ad-bc.
+\]
+
+\begin{proposition}[Exact relation-lattice uncertainty]
+\label{prop:uncertainty}
+One has
+\begin{equation}
+ d\delta_\nu-b\delta_\omega=D\log2,
+ \qquad
+ a\delta_\omega-c\delta_\nu=D\log3.
+ \label{eq:uncertainty-identities}
+\end{equation}
+Consequently, if $D\ne0$ and
+$H=\normone{\nu}+\normone{\omega}$, then
+\begin{equation}
+ \max(|\delta_\nu|,|\delta_\omega|)
+ \ge \frac{|D|\max(\log2,\log3)}{H}.
+ \label{eq:uncertainty-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Substitute $\delta_\nu=a\log2+b\log3$ and
+$\delta_\omega=c\log2+d\log3$.  The cross terms cancel and give
+\eqref{eq:uncertainty-identities}.  Each right-hand side is bounded above in absolute value
+by $H\max(|\delta_\nu|,|\delta_\omega|)$.
+\end{proof}
+
+For adjacent convergents $p_n/q_n,p_{n+1}/q_{n+1}$ to $\thetaAE$, the vectors
+$\nu_n=(-p_n,q_n)$ and $\nu_{n+1}=(-p_{n+1},q_{n+1})$ have determinant $\pm1$.
+They are therefore the optimally conditioned integral basis for two-direction near-unit
+constructions.  Formula \eqref{eq:uncertainty-bound} says that even this basis cannot make
+both logarithmic errors smaller than the reciprocal exponent scale.
+
+\begin{statusbox}{\statusproved{} for \cref{lem:MN-independent,lem:valuation-norm,prop:height-law,prop:uncertainty}.
+These are elementary and independent of the deep transcendence inputs in the unified report.}
+\end{statusbox}
+
+\section{Toric reduction: many near-relations have only two formal degrees of freedom}
+\label{sec:toric}
+
+A natural reaction to the two-direction uncertainty bound is to use many convergents and
+Prouhet-type cancellations among them.  The first new structural result shows exactly what
+additional variables do and do not buy.
+
+Fix exponent vectors $\nu_i=(a_i,b_i)\in\Z^2$ for $1\le i\le k$.  Define the formal monomial
+map
+\begin{equation}
+ \Psi_\nu:\Z[T_1^{\pm1},\ldots,T_k^{\pm1}]
+ \longrightarrow \Z[U^{\pm1},V^{\pm1}],
+ \qquad
+ T_i\longmapsto U^{a_i}V^{b_i}.
+ \label{eq:monomial-map}
+\end{equation}
+For $\alpha=(\alpha_1,\ldots,\alpha_k)\in\Z^k$ write
+$T^\alpha=\prod_iT_i^{\alpha_i}$ and
+\[
+ \pi_\nu(\alpha)=\sum_i\alpha_i\nu_i\in\Z^2.
+\]
+
+\begin{definition}[Toric lattice ideal]
+\label{def:toric-ideal}
+The lattice ideal of the relation list $\nu$ is
+\begin{equation}
+ I_\nu=
+ \left\langle T^\alpha-T^\beta:
+ \pi_\nu(\alpha)=\pi_\nu(\beta)\right\rangle
+ \subset\Z[T_1^{\pm1},\ldots,T_k^{\pm1}].
+ \label{eq:toric-ideal}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Universal toric kernel]
+\label{thm:toric-kernel}
+The kernel of $\Psi_\nu$ is exactly $I_\nu$.
+\end{theorem}
+
+\begin{proof}
+Every displayed binomial has the same aggregate exponent on its two terms, so
+$I_\nu\subseteq\ker\Psi_\nu$.  Conversely, let
+$C=\sum_\alpha c_\alpha T^\alpha$ lie in the kernel.  Group its terms by the fibers of
+$\pi_\nu$.  Laurent monomials $U^rV^s$ are a free $\Z$-basis of the target ring, so in each
+fiber the sum of the coefficients is zero.  Choose one reference exponent $\alpha_0$ in a
+fiber.  Then
+\[
+ \sum_{\alpha\text{ in the fiber}}c_\alpha T^\alpha
+ =\sum_{\alpha\ne\alpha_0}c_\alpha
+   (T^\alpha-T^{\alpha_0}),
+\]
+because the coefficient of $T^{\alpha_0}$ is the negative sum of the others.  Every
+difference belongs to $I_\nu$.
+\end{proof}
+
+\begin{corollary}[Universal identities transfer to the output]
+\label{cor:toric-transfer}
+If $C\in I_\nu$, then
+\begin{equation}
+ C(\rho_{\nu_1},\ldots,\rho_{\nu_k})=0,
+ \qquad
+ C(\sigma_{\nu_1},\ldots,\sigma_{\nu_k})=0.
+ \label{eq:toric-both}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Compose \eqref{eq:monomial-map} first with $(U,V)=(2,3)$ and then with $(U,V)=(M,N)$.
+\end{proof}
+
+\begin{warning}[The theorem is formal, not a classification of numerical additive identities]
+\label{warn:numeric-kernel}
+The numerical evaluation kernel at $(2,3)$ is larger than $I_\nu$, because $3-2-1=0$ and
+similar additive identities exist.  The theorem classifies identities caused solely by
+integer dependencies of exponent vectors.  Such identities are precisely the ones that
+transfer automatically to every pair of bases.  Candidate-specific additive cancellation is
+not ruled out; it is the difficult part.
+\end{warning}
+
+\subsection{Unimodular two-variable normal form}
+
+\begin{theorem}[Two-variable normal form]
+\label{thm:two-variable-normal-form}
+Suppose two vectors $\nu_1,\nu_2$ form a unimodular basis of $\Z^2$.  For every
+$i\ge3$ there are unique integers $r_i,s_i$ such that
+$\nu_i=r_i\nu_1+s_i\nu_2$.  Modulo $I_\nu$, every mask has a unique Laurent normal form
+\begin{equation}
+ F(U,V)\in\Z[U^{\pm1},V^{\pm1}],
+ \qquad
+ T_1\mapsto U,
+ \quad T_2\mapsto V,
+ \quad T_i\mapsto U^{r_i}V^{s_i}.
+ \label{eq:two-variable-normal-form}
+\end{equation}
+In particular, adding arbitrarily many convergent variables does not increase the formal
+dimension beyond two.
+\end{theorem}
+
+\begin{proof}
+Unimodularity makes $(\nu_1,\nu_2)$ a $\Z$-basis, giving the unique coordinates.  The
+monomial map is then surjective onto a Laurent polynomial ring in the two basis monomials,
+and \cref{thm:toric-kernel} identifies its kernel.
+\end{proof}
+
+\begin{example}[Continued-fraction recurrence masks are identically zero]
+\label{ex:cf-toric-zero}
+Continued-fraction vectors satisfy
+\[
+ \nu_{n+1}=a_{n+1}\nu_n+\nu_{n-1}.
+\]
+Therefore
+\begin{equation}
+ T_{n+1}-T_n^{a_{n+1}}T_{n-1}\in I_\nu.
+ \label{eq:cf-toric-binomial}
+\end{equation}
+The corresponding input and output identities are exact.  Iterating the recurrence can
+create impressive formal cancellation, but every such recurrence-only mask evaluates to
+zero rather than to a useful nonzero small integer.
+\end{example}
+
+This is the first principal no-go result of the report.  A many-convergent construction must
+be reduced modulo $I_\nu$ before its contact order is credited.  Otherwise torically trivial
+zeros can be mistaken for high-order arithmetic cancellation.
+
+\begin{statusbox}{\statusproved{} for the universal toric kernel, its transfer to both base
+pairs, and the unimodular normal form.  The result is an elementary special case of the theory
+of lattice and binomial ideals, included with a complete proof so that no black box is needed.}
+\end{statusbox}
+
+\section{Moment masks and contact order at the identity}
+\label{sec:moment-masks}
+
+After toric reduction, the right object is a Laurent polynomial in two near-unit variables.
+Multiplying by a monomial changes neither vanishing order at $(1,1)$ nor the essential
+arithmetic problem, so we may work with an ordinary polynomial
+\[
+ F(U,V)=\sum_{(i,j)\in\Lambda}c_{ij}U^iV^j\in\Z[U,V],
+ \qquad c_{ij}\ne0.
+\]
+
+\begin{definition}[Contact order]
+\label{def:contact-order}
+The contact order of a nonzero mask $F$ at the identity is
+\begin{equation}
+ \ord_{(1,1)}F
+ =\min\{r+s:[X^rY^s]F(1+X,1+Y)\ne0\}.
+ \label{eq:contact-order}
+\end{equation}
+Equivalently, it is the largest integer $m$ such that
+$F\in(U-1,V-1)^m$ in $\Z[U,V]$.
+\end{definition}
+
+If the contact order is $r$, evaluation at $U=e^{\varepsilon_1}$,
+$V=e^{\varepsilon_2}$ begins at total degree $r$ in the two small logarithmic errors.  The
+terminology ``moment mask'' comes from the following exact characterization.
+
+\begin{proposition}[Two-dimensional Prouhet moment equations]
+\label{prop:moment-equations}
+Let
+$F(U,V)=\sum_{\ell=1}^s c_\ell U^{a_\ell}V^{b_\ell}$ with distinct exponent points
+$(a_\ell,b_\ell)$.  The following are equivalent for an integer $r\ge1$.
+\begin{enumerate}
+\item $\ord_{(1,1)}F\ge r$.
+\item For all $i,j\ge0$ with $i+j<r$,
+\begin{equation}
+  \sum_{\ell=1}^s c_\ell
+   \fall{a_\ell}{i}\fall{b_\ell}{j}=0.
+  \label{eq:falling-moments}
+\end{equation}
+\item For all $i,j\ge0$ with $i+j<r$,
+\begin{equation}
+  \sum_{\ell=1}^s c_\ell a_\ell^i b_\ell^j=0.
+  \label{eq:ordinary-moments}
+\end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The mixed derivative $\partial_U^i\partial_V^jF(1,1)$ is the left side of
+\eqref{eq:falling-moments}.  Vanishing of all derivatives of total order below $r$ is
+precisely membership in $(U-1,V-1)^r$.  Falling factorials and ordinary powers are related by
+unitriangular Stirling transforms in each variable, so the two families of moment equations
+are equivalent.
+\end{proof}
+
+Thus a contact-$r$ mask is a signed, weighted two-dimensional Prouhet--Tarry--Escott
+configuration on the exponent lattice.  The next bounds quantify the unavoidable size of
+such a configuration.
+
+\begin{theorem}[Degree and support ceilings]
+\label{thm:contact-ceilings}
+Let $F\ne0$ have bidegree $(d,e)$ and $s$ nonzero monomials.  Then
+\begin{equation}
+ \ord_{(1,1)}F\le d+e,
+ \qquad
+ \ord_{(1,1)}F\le s-1.
+ \label{eq:contact-ceilings}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The polynomial $F(1+X,1+Y)$ has total degree at most $d+e$, giving the first bound.
+For the second, write the exponent points as $(a_\ell,b_\ell)$.  Choose real numbers
+$\alpha,\beta$ so that the frequencies
+$\lambda_\ell=\alpha a_\ell+\beta b_\ell$ are distinct and so that the first nonzero
+homogeneous part of $F(1+X,1+Y)$ does not vanish on the tangent direction
+$(\alpha,\beta)$.  Then
+\[
+ g(t)=F(e^{\alpha t},e^{\beta t})
+     =\sum_{\ell=1}^s c_\ell e^{\lambda_\ell t}
+\]
+has a zero at $0$ of exactly the same order as $F$ at $(1,1)$.  If that order were at least
+$s$, then
+$g^{(m)}(0)=\sum_\ell c_\ell\lambda_\ell^m=0$ for $0\le m<s$.  The Vandermonde matrix on the
+distinct $\lambda_\ell$ is invertible, forcing every $c_\ell=0$, a contradiction.
+\end{proof}
+
+The support ceiling is a useful audit rule.  A claimed order-$r$ mask with at most $r$
+monomials is either wrong or torically zero after normalization.
+
+\subsection{A uniform local estimate}
+\label{subsec:local-estimate}
+
+Write
+\begin{equation}
+ \widetilde F(X,Y)=F(1+X,1+Y)=\sum_{i,j}\gamma_{ij}X^iY^j,
+ \qquad
+ \|\widetilde F\|_1=\sum_{i,j}|\gamma_{ij}|.
+ \label{eq:shifted-mask}
+\end{equation}
+
+\begin{lemma}[Contact estimate]
+\label{lem:contact-estimate}
+Suppose $\ord_{(1,1)}F\ge r$ and
+$|\varepsilon_1|,|\varepsilon_2|\le\tfrac14$.  Put
+$\Delta=\max(|\varepsilon_1|,|\varepsilon_2|)$.  Then
+\begin{equation}
+ |F(e^{\varepsilon_1},e^{\varepsilon_2})|
+ \le \|\widetilde F\|_1(2\Delta)^r.
+ \label{eq:contact-estimate}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $|t|\le1/4$, one has $|e^t-1|\le2|t|$.  Every nonzero term in
+\eqref{eq:shifted-mask} has $i+j\ge r$, and $2\Delta\le1$, so
+$|e^{\varepsilon_1}-1|^i|e^{\varepsilon_2}-1|^j\le(2\Delta)^r$.
+Sum the absolute values.
+\end{proof}
+
+The estimate is deliberately crude but universal.  Later we prove that this entire style of
+estimate, when followed by full denominator clearing, cannot close the conjecture on
+adjacent convergents.  Its failure identifies reduced-denominator cancellation as the only
+remaining scalar-mask mechanism.
+
+\section{One-direction Prouhet cancellation is an exact gap power}
+\label{sec:one-direction}
+
+Before using two variables, it is important to close the seemingly attractive one-variable
+route completely.
+
+\begin{theorem}[One-direction gap-power theorem]
+\label{thm:univariate-gap-power}
+Let $P(T)\in\Z[T]$ have degree $d$ and a zero of multiplicity at least $r$ at $T=1$.
+For integers $R,S$ with $S\ne0$, define
+\begin{equation}
+ I_P(R,S)=S^dP(R/S)\in\Z.
+ \label{eq:univariate-cleared}
+\end{equation}
+Then
+\begin{equation}
+ (R-S)^r\mid I_P(R,S).
+ \label{eq:gap-power-divides}
+\end{equation}
+If $P(R/S)\ne0$, then
+\begin{equation}
+ |I_P(R,S)|\ge |R-S|^r.
+ \label{eq:gap-power-floor}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Because $T-1$ is monic, repeated integral polynomial division gives
+$P(T)=(T-1)^rQ(T)$ with $Q\in\Z[T]$ and $\deg Q=d-r$.  Hence
+\[
+ S^dP(R/S)
+ =(R-S)^r S^{d-r}Q(R/S),
+\]
+and the final factor is an integer.  The lower bound follows if the product is nonzero.
+\end{proof}
+
+This theorem covers every one-dimensional Prouhet partition, finite-difference mask, and
+Thue--Morse sign pattern at once.  Coefficient cancellation cannot make the cleared integer
+smaller than the corresponding output gap power.
+
+\subsection{The Thue--Morse calibration}
+
+For $r\ge1$, define
+\begin{equation}
+ P_r(T)=\prod_{j=0}^{r-1}(1-T^{2^j})
+       =\sum_{n=0}^{2^r-1}(-1)^{s_2(n)}T^n,
+ \label{eq:thue-morse-mask}
+\end{equation}
+where $s_2(n)$ is the sum of the binary digits of $n$.  It has degree $2^r-1$, exactly
+$2^r$ coefficients of absolute value $1$, and a zero of exact multiplicity $r$ at $1$.
+The corresponding Prouhet identity equalizes power sums of degrees $0,\ldots,r-1$ between
+the even and odd Thue--Morse classes.
+
+\begin{corollary}[Exact Thue--Morse factorization]
+\label{cor:thue-morse-factorization}
+For $d=2^r-1$,
+\begin{equation}
+ S^dP_r(R/S)
+ =\prod_{j=0}^{r-1}\bigl(S^{2^j}-R^{2^j}\bigr).
+ \label{eq:thue-morse-cleared}
+\end{equation}
+Every factor on the right is divisible by $S-R$, so the cleared value is divisible by
+$(S-R)^r$.
+\end{corollary}
+
+\begin{proof}
+The exponents $2^j$ sum to $2^r-1$, so denominator clearing distributes exactly across the
+product in \eqref{eq:thue-morse-mask}.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\caption{Exact size data for the first Thue--Morse masks.}
+\label{tab:thue-morse}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+contact $r$ & degree $2^r-1$ & coefficient $\ell^1$ norm & multiplicity at $1$\\
+\midrule
+1&1&2&1\\
+2&3&4&2\\
+3&7&8&3\\
+4&15&16&4\\
+5&31&32&5\\
+6&63&64&6\\
+7&127&128&7\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The high contact is real, but the arithmetic output becomes a product of increasingly large
+integer differences.  This is the opposite of a subunit certificate.
+
+\begin{resultbox}
+\textbf{Closed route.}  No mask supported on integer powers of a single rational output
+near-unit can prove the conjecture by ``high Prouhet contact plus denominator clearing.''  If
+the cleared value is nonzero, its exact gap-power divisor grows with the contact order.
+\end{resultbox}
+
+\section{Bivariate clearing: the gap ideal and its primewise Newton functional}
+\label{sec:gap-ideal}
+
+Two independent near-unit directions can distribute contact among two gaps and thereby evade
+the individual gap power in \cref{thm:univariate-gap-power}.  The replacement is an exact
+ideal-membership statement.
+
+Let
+\[
+ z_1=\frac{R_1}{S_1},\qquad
+ z_2=\frac{R_2}{S_2},
+ \qquad
+ G_1=R_1-S_1,\qquad G_2=R_2-S_2,
+\]
+where at first no coprimality assumption is needed.  Let $F\in\Z[U,V]$ have bidegree at most
+$(d,e)$ and shifted expansion
+\begin{equation}
+ F(1+X,1+Y)=\sum_{\substack{0\le i\le d\\0\le j\le e}}\gamma_{ij}X^iY^j.
+ \label{eq:shifted-coeffs}
+\end{equation}
+Define the fully cleared integer
+\begin{equation}
+ J_F(z_1,z_2)=S_1^dS_2^eF(z_1,z_2)\in\Z.
+ \label{eq:cleared-bivariate}
+\end{equation}
+
+\begin{theorem}[Gap-ideal theorem]
+\label{thm:gap-ideal}
+If $\ord_{(1,1)}F\ge r$, then
+\begin{equation}
+ J_F(z_1,z_2)
+ =\sum_{i+j\ge r}\gamma_{ij}
+   G_1^iG_2^jS_1^{d-i}S_2^{e-j}
+ \in (G_1,G_2)^r\subset\Z.
+ \label{eq:gap-ideal-expansion}
+\end{equation}
+Consequently,
+\begin{equation}
+ \gcd(G_1,G_2)^r\mid J_F(z_1,z_2).
+ \label{eq:gcd-gap-floor}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute $X=G_1/S_1$ and $Y=G_2/S_2$ in \eqref{eq:shifted-coeffs} and multiply by
+$S_1^dS_2^e$.  Contact order removes all terms with $i+j<r$.  Every remaining monomial lies
+in $(G_1,G_2)^r$, and every one is divisible by the $r$th power of their integer gcd.
+\end{proof}
+
+The gcd lower bound is often far from the full ideal information.  Prime by prime, the
+support of the shifted mask determines a sharper guaranteed divisor.
+
+\begin{definition}[Primewise Newton floor]
+\label{def:newton-floor}
+For a prime $p$, write
+\[
+ g_{k,p}=v_p(G_k),\qquad s_{k,p}=v_p(S_k)\quad(k=1,2).
+\]
+Define
+\begin{equation}
+ \tau_p(F;z_1,z_2)
+ =\min_{\gamma_{ij}\ne0}
+ \bigl(
+ v_p(\gamma_{ij})+i g_{1,p}+j g_{2,p}
+ +(d-i)s_{1,p}+(e-j)s_{2,p}
+ \bigr).
+ \label{eq:newton-floor}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Exact guaranteed divisor]
+\label{prop:guaranteed-divisor}
+For every prime $p$,
+\begin{equation}
+ v_p(J_F(z_1,z_2))\ge\tau_p(F;z_1,z_2).
+ \label{eq:vp-guaranteed}
+\end{equation}
+Thus the finite product
+\begin{equation}
+ \mathcal D_F(z_1,z_2)=\prod_p p^{\tau_p(F;z_1,z_2)}
+ \label{eq:guaranteed-divisor}
+\end{equation}
+divides $J_F(z_1,z_2)$.
+\end{proposition}
+
+\begin{proof}
+Each term of \eqref{eq:gap-ideal-expansion} has the valuation displayed inside the minimum.
+The valuation of a sum is at least the minimum valuation of its summands.
+\end{proof}
+
+The functional in \eqref{eq:newton-floor} is the lower support function of the shifted Newton
+polygon evaluated against a prime-dependent weight vector.  Unlike a determinant valuation,
+it is a scalar certificate and can be optimized directly over the mask support.
+
+\begin{criterion}[Product-formula mask criterion]
+\label{crit:product-formula}
+Suppose $F(z_1,z_2)\ne0$.  Then
+\begin{equation}
+ \mathcal D_F(z_1,z_2)
+ \le |J_F(z_1,z_2)|
+ \le
+ \sum_{i,j}|\gamma_{ij}|
+ |G_1|^i|G_2|^jS_1^{d-i}S_2^{e-j}.
+ \label{eq:product-formula-sandwich}
+\end{equation}
+Therefore a contradiction follows if the explicit right-hand side is strictly smaller than
+$\mathcal D_F(z_1,z_2)$.
+\end{criterion}
+
+\begin{proof}
+The first inequality follows because the nonzero integer $J_F$ is divisible by
+$\mathcal D_F$; the second is the triangle inequality applied to
+\eqref{eq:gap-ideal-expansion}.
+\end{proof}
+
+\begin{example}[A positive cross-face mask]
+\label{ex:positive-cross-face}
+For $r\ge1$,
+\begin{equation}
+ Q_r(U,V)=(V+1)(U-1)^{2r}+(U+1)(V-1)^{2r}
+ \label{eq:positive-cross-face}
+\end{equation}
+has contact order $2r$ and is strictly positive for positive $(U,V)\ne(1,1)$.  For $r=2$,
+full bidegree-$(4,4)$ clearing gives the exact identity
+\begin{align}
+ S_1^4S_2^4Q_2(z_1,z_2)
+ ={}&(R_2+S_2)S_2^3G_1^4
+   +(R_1+S_1)S_1^3G_2^4.
+ \label{eq:positive-cross-cleared}
+\end{align}
+This example guarantees nonvanishing without a determinant.  It will nevertheless fail at
+private denominator primes unless the cross-face values $z_2+1$ and $z_1+1$ provide the
+necessary divisibility; \cref{sec:leading-faces} makes that statement exact.
+\end{example}
+
+\begin{statusbox}{\statusproved{} for the gap-ideal theorem, the primewise Newton floor, and
+the scalar product-formula criterion.  These statements are finite identities and valuation
+inequalities, with no conjectural input.}
+\end{statusbox}
+
+\section{Leading faces: the private-prime prototype}
+\label{sec:leading-faces}
+
+The full clearing factor $S_1^dS_2^e$ is usually much larger than the reduced denominator of
+$F(z_1,z_2)$, so a useful construction must force cancellation between that clearing factor
+and the cleared numerator.  The next theorem identifies the first obstruction exactly.
+
+Assume now that $z_1=R_1/S_1$ and $z_2=R_2/S_2$ are in lowest terms, and that $d\ge1$.  Write
+\begin{equation}
+ F(U,V)=\sum_{i=0}^d f_i(V)U^i,
+ \qquad f_i\in\Z[V],
+ \qquad \deg f_i\le e,
+ \qquad f_d\ne0.
+ \label{eq:U-slices}
+\end{equation}
+The polynomial $f_d(V)$ is the top $U$-face of the Newton polygon.  Put
+\begin{equation}
+ A_i=S_2^e f_i(z_2)\in\Z.
+ \label{eq:Ai-cleared}
+\end{equation}
+Then
+\begin{equation}
+ J_F=S_1^dS_2^eF(z_1,z_2)
+     =\sum_{i=0}^d A_iR_1^iS_1^{d-i}.
+ \label{eq:leading-face-sum}
+\end{equation}
+
+\begin{theorem}[Leading-face survival at a private prime]
+\label{thm:leading-face-survival}
+Let $p\mid S_1$ and $p\nmid S_2$, and put $s=v_p(S_1)$.  If
+\begin{equation}
+ v_p(A_d)<s,
+ \label{eq:leading-face-shallow}
+\end{equation}
+then
+\begin{equation}
+ v_p(J_F)=v_p(A_d).
+ \label{eq:leading-face-exact-vp}
+\end{equation}
+Consequently the exponent of $p$ in the reduced denominator of $F(z_1,z_2)$ is exactly
+\begin{equation}
+ d s-v_p(A_d).
+ \label{eq:reduced-den-private}
+\end{equation}
+In particular, if $p\nmid A_d$, the entire pole $p^{ds}$ survives.
+\end{theorem}
+
+\begin{proof}
+Since $z_1$ is reduced, $p\nmid R_1$.  The $i=d$ term in
+\eqref{eq:leading-face-sum} has valuation $v_p(A_d)$.  Every term with $i<d$ has valuation at
+least $(d-i)s\ge s$, because $A_i$ is an integer.  Under
+\eqref{eq:leading-face-shallow}, the top-face term is the unique term of minimal valuation,
+so the ultrametric inequality is an equality and gives
+\eqref{eq:leading-face-exact-vp}.  The full clearing denominator has $p$-valuation $ds$,
+and $p\nmid S_2$, proving \eqref{eq:reduced-den-private}.
+\end{proof}
+
+\begin{corollary}[Necessary first-layer capture]
+\label{cor:first-layer-capture}
+To reduce the $p$-part of the denominator below $p^{(d-1)s}$ at a prime satisfying
+$p\mid S_1$, $p\nmid S_2$, it is necessary that
+\begin{equation}
+ p^s\mid S_2^e f_d(z_2).
+ \label{eq:first-layer-capture}
+\end{equation}
+If the divisibility holds at every prime in the private part
+\begin{equation}
+ P_1=\prod_{p\mid S_1,\ p\nmid S_2}p^{v_p(S_1)},
+ \label{eq:private-part}
+\end{equation}
+then either $f_d(z_2)=0$ or
+\begin{equation}
+ \log P_1
+ \le e h(z_2)+\log\|f_d\|_1,
+ \label{eq:first-layer-height-budget}
+\end{equation}
+where $h(z_2)=\log\max(R_2,S_2)$ and $\|f_d\|_1$ is the coefficient $\ell^1$ norm.
+\end{corollary}
+
+\begin{proof}
+The first statement is the contrapositive of \cref{thm:leading-face-survival}.  If it holds
+for all private primes, then $P_1\mid A_d$.  Unless $A_d=0$,
+\[
+ P_1\le |A_d|=|S_2^e f_d(R_2/S_2)|
+ \le \|f_d\|_1\max(R_2,S_2)^e,
+\]
+which gives \eqref{eq:first-layer-height-budget}.
+\end{proof}
+
+This is a genuinely asymmetric statement: cancellation of the top $U$-pole layer must be
+paid for by the value of the top $U$-face at the other near-unit.  The symmetric theorem is
+obtained by exchanging $U,V$.
+
+\subsection{Monomial transport versus unit-root capture}
+\label{subsec:monomial-vs-root}
+
+Factor the top face as
+\begin{equation}
+ f_d(V)=V^m\widehat f_d(V),
+ \qquad \widehat f_d(0)\ne0.
+ \label{eq:face-factor}
+\end{equation}
+At a prime $p\nmid S_2$, the monomial $V^m$ contributes
+$m v_p(R_2)$ to $v_p(A_d)$.  This is deterministic transport of valuation from the numerator
+of $z_2$ to the denominator of $z_1$.  It is exactly the min-plus or tropical mechanism
+already audited in the supplied report.
+
+After that monomial contribution is removed, any additional valuation must come from the
+congruence
+\begin{equation}
+ \widehat f_d(z_2)\equiv0\pmod{p^k}
+ \label{eq:unit-root-capture}
+\end{equation}
+when $z_2$ is a $p$-adic unit.  We call this \emph{unit-root capture}.  It is the genuinely
+new denominator mechanism isolated by the mask framework.
+
+\begin{corollary}[Face-monic obstruction]
+\label{cor:face-monic}
+Suppose the top $U$-face is the constant $f_d(V)=\pm1$.  Then at every prime
+$p\mid S_1$ with $p\nmid S_2$, the full $p^{d v_p(S_1)}$ denominator survives.  More
+generally, if $f_d(V)=\pm V^m$ and $p\nmid R_2S_2$, the full pole survives.
+\end{corollary}
+
+\begin{proof}
+In the first case $A_d=\pm S_2^e$; in the second it is a $p$-adic unit times a power of the
+$p$-adic unit $z_2$.  Apply \cref{thm:leading-face-survival}.
+\end{proof}
+
+\begin{example}[Natural positive masks are face-monic]
+The mask
+\begin{equation}
+ F_r(U,V)=(U-1)^{2r}+(V-1)^{2r}
+ \label{eq:basic-positive-mask}
+\end{equation}
+is positive for positive $(U,V)\ne(1,1)$ and has contact order $2r$.  Its top $U$-face and
+top $V$-face are both $1$.  Hence every denominator prime private to either near-unit
+survives with full multiplicity.  Positivity solves nonvanishing but leaves the denominator
+tax untouched.
+\end{example}
+
+\subsection{The pole-layer Newton polygon}
+
+The first-layer theorem is the first edge of a more complete local picture.  At a prime
+$p\mid S_1$, $p\nmid S_2$, put $s=v_p(S_1)$ and consider the points
+\begin{equation}
+ \bigl(i,v_p(A_i)\bigr),\qquad 0\le i\le d.
+ \label{eq:pole-layer-points}
+\end{equation}
+The term with index $i$ in \eqref{eq:leading-face-sum} has valuation
+$v_p(A_i)+(d-i)s$.  Thus $v_p(J_F)$ is at least the minimum of the affine functional
+\begin{equation}
+ \ell_{p,s}(i,t)=t+(d-i)s
+ \label{eq:pole-functional}
+\end{equation}
+over the coefficient Newton polygon, with equality whenever the minimum is unique.  Full
+cancellation of successive pole layers requires the right-hand vertices to rise by at least
+$s$ per horizontal step, or requires exact cancellation among tied minimal terms.  Either
+phenomenon translates to high $p$-adic divisibility of a short list of face evaluations.
+
+\begin{target}[Iterated face-capture theorem]
+\label{target:iterated-face}
+Develop a global, coefficient-height-efficient bound for the total number of canceled pole
+layers in terms of the evaluated face chain
+\[
+ f_d(z_2),f_{d-1}(z_2),\ldots
+\]
+and the resultants of successive faces.  The desired form is a lower bound for the reduced
+denominator that remains valid even when several local minima tie and cancel.
+\end{target}
+
+The first-layer result is already enough to rule out all face-monic constructions and to
+turn cyclotomic faces into an explicit finite-order covering problem.
+
+\begin{statusbox}{\statusproved{} for leading-face survival, the private first-layer
+condition, its height budget, and the face-monic obstruction.  \Cref{target:iterated-face} is
+open and is one of the two strongest concrete follow-up problems identified here.}
+\end{statusbox}
+
+\section{Cyclotomic cross-faces: a finite private-prime prototype}
+\label{sec:cyclotomic-faces}
+
+A polynomial leading face can capture a unit-private prime only by having the other near-unit
+as a root modulo that prime.  Cyclotomic polynomials give the most structured way to enforce
+such roots while retaining positivity on the positive real axis.
+
+For a finite set $\mathcal M\subset\{2,3,\ldots\}$ define
+\begin{equation}
+ A_{\mathcal M}(T)=\prod_{m\in\mathcal M}\Phi_m(T),
+ \qquad
+ E(\mathcal M)=\deg A_{\mathcal M}=\sum_{m\in\mathcal M}\varphi(m).
+ \label{eq:cyclotomic-cover-poly}
+\end{equation}
+
+\begin{lemma}[Positivity and coefficient budget]
+\label{lem:cyclotomic-positive}
+For every $m\ge2$, $\Phi_m(t)>0$ for all $t>0$.  Moreover
+\begin{equation}
+ \|A_{\mathcal M}\|_1\le2^{E(\mathcal M)}.
+ \label{eq:cyclotomic-l1}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The polynomial $\Phi_m$ has no positive real root for $m\ge2$, has positive leading
+coefficient, and has value $1$ at $0$, so it is positive on $(0,\infty)$.  Its roots all have
+modulus $1$.  Therefore the absolute value of its coefficient of degree $j$ is at most the
+corresponding binomial coefficient, and $\|\Phi_m\|_1\le2^{\varphi(m)}$.  The $\ell^1$ norm
+is submultiplicative under polynomial multiplication.
+\end{proof}
+
+For $m\ge2$ define the homogenized cyclotomic polynomial by
+\begin{equation}
+ \Phi_m^{\mathrm{hom}}(R,S):=S^{\varphi(m)}\Phi_m(R/S)\in\Z[R,S].
+ \label{eq:hom-cyclotomic}
+\end{equation}
+
+\begin{proposition}[Cyclotomic order detection]
+\label{prop:cyclotomic-order}
+Let $z=R/S$ be reduced and let $p\nmid RS\prod_{m\in\mathcal M}m$.  Then
+\begin{equation}
+ p\mid S^{E(\mathcal M)}A_{\mathcal M}(z)
+ \quad\Longleftrightarrow\quad
+ \ord_p(RS^{-1})\in\mathcal M,
+ \label{eq:order-detection}
+\end{equation}
+where the order is in $\mathbb F_p^\times$.
+\end{proposition}
+
+\begin{proof}
+The denominator is a $p$-adic unit.  For $p\nmid m$, an element of
+$\mathbb F_p^\times$ is a root of $\Phi_m$ if and only if it has exact multiplicative order
+$m$.  The product vanishes precisely when one factor does.
+\end{proof}
+
+For finite order sets $\mathcal M,\mathcal N$ and $r\ge1$, consider
+\begin{equation}
+ \mathcal F_{r,\mathcal M,\mathcal N}(U,V)
+ =A_{\mathcal M}(V)(U-1)^{2r}
+  +A_{\mathcal N}(U)(V-1)^{2r}.
+ \label{eq:cyclotomic-face-mask}
+\end{equation}
+
+\begin{proposition}[Positive cyclotomic-face mask]
+\label{prop:positive-cyclotomic-mask}
+The mask in \eqref{eq:cyclotomic-face-mask} is strictly positive for all positive
+$(U,V)\ne(1,1)$ and has contact order exactly $2r$.  If
+$2r>E(\mathcal N)$, its top $U$-face is $A_{\mathcal M}(V)$; if
+$2r>E(\mathcal M)$, its top $V$-face is $A_{\mathcal N}(U)$.
+\end{proposition}
+
+\begin{proof}
+Both cyclotomic products are positive by \cref{lem:cyclotomic-positive}; the even powers are
+nonnegative and cannot vanish simultaneously away from $(1,1)$.  Since
+$A_{\mathcal M}(1),A_{\mathcal N}(1)>0$, the first nonzero homogeneous part has degree $2r$.
+The face statements follow by comparing degrees.
+\end{proof}
+
+Combining this proposition with \cref{thm:leading-face-survival,prop:cyclotomic-order} gives
+the following exact audit.
+
+\begin{corollary}[Order-cover necessity]
+\label{cor:order-cover-necessity}
+Assume $2r>E(\mathcal N)$.  Let $p\mid S_1$, $p\nmid R_2S_2$, and
+$p\nmid\prod_{m\in\mathcal M}m$.  For the first $p$-pole layer of the $U$-direction to
+cancel in \eqref{eq:cyclotomic-face-mask}, it is necessary that
+\begin{equation}
+ \ord_p(z_2\bmod p)\in\mathcal M.
+ \label{eq:order-cover-necessary}
+\end{equation}
+The symmetric condition holds for denominator primes of $z_2$.
+\end{corollary}
+
+\begin{proof}
+The top $U$-face is $A_{\mathcal M}(V)$.  First-layer cancellation requires it to vanish
+modulo $p$ by \cref{cor:first-layer-capture}; \cref{prop:cyclotomic-order} translates this to
+\eqref{eq:order-cover-necessary}.
+\end{proof}
+
+\subsection{Depth, not merely residue order}
+
+Covering a prime modulo $p$ cancels at most the first pole layer.  If
+$v_p(S_1)=s$ is large, the full condition is
+\begin{equation}
+ v_p\bigl(S_2^{E(\mathcal M)}A_{\mathcal M}(z_2)\bigr)\ge s.
+ \label{eq:deep-order-cover}
+\end{equation}
+For a single factor with $p\nmid m$, the left side is
+$v_p(z_2^m-1)$ once the exact order is $m$.  Lifting-the-exponent arguments and effective
+$p$-adic logarithm bounds then show that a fixed order factor usually supplies only
+logarithmic depth in the exponent-vector height, while $s$ can grow linearly.  This is where
+recent sharp bounds for two $p$-adic logarithms can be inserted.
+
+\begin{target}[Finite-pair low-cost deep order cover]
+\label{target:deep-order-cover}
+For a family of finite or nonadjacent output near-unit pairs admitting a private denominator
+prime, let $H$ be the maximum exponent-vector height.  Determine whether the private
+denominator mass of the first coordinate can be covered to full $p$-adic depth by a product
+$A_H$ evaluated at the second coordinate with
+\begin{equation}
+ \deg A_H=o(H),
+ \qquad
+ \log\normone{A_H}=o(H),
+ \label{eq:low-cost-cover}
+\end{equation}
+and analogously in the reverse direction.  Monomial factors are to be removed
+first, so the target concerns genuine unit-root capture.
+\end{target}
+
+The target is intentionally local and candidate-specific.  It can matter for finite or
+nonadjacent configurations, but \cref{thm:support-stabilization} below shows that sufficiently
+deep adjacent pairs have no private structural denominator primes.  The asymptotic endgame is
+therefore the shared-pole problem developed in \cref{sec:stable-support}.
+
+\subsection{Why the order-cover formulation is useful}
+
+It separates four effects that are easily conflated.
+
+\begin{enumerate}
+\item \textbf{Toric aliases.}  These vanish identically and are removed before any contact is
+  counted.
+\item \textbf{Monomial valuation transport.}  This is a linear cone problem on the fixed
+  valuation vectors of $M,N$ and belongs to the tropical regime already studied.
+\item \textbf{Finite private-prime unit-root capture.}  This is the order-cover mechanism
+  visible in the top faces of the cyclotomic prototype.
+\item \textbf{Shared structural-face cancellation.}  For sufficiently deep adjacent pairs,
+  the same structural primes divide both denominators; multi-term initial forms must then
+  cancel repeatedly on the shared Newton fan.
+\end{enumerate}
+
+The decomposition is exact.  The third mechanism remains a useful finite diagnostic, while
+the stable-support theorem below shows that the fourth is the asymptotic endgame.
+
+\begin{statusbox}{\statusproved{} for positivity, coefficient budget, residue-order
+detection, and the resulting necessary order-cover condition.  \Cref{target:deep-order-cover}
+is an open finite-pair prototype.  It is superseded asymptotically by the shared structural-face
+target of \cref{target:shared-face-capture}.}
+\end{statusbox}
+
+\section{Stable structural support and the shared-pole Newton fan}
+\label{sec:stable-support}
+
+The private-prime analysis above is a useful local model, but it is not the asymptotic
+geometry of the actual adjacent continued-fraction near-units.  For those pairs the numerator
+and denominator supports eventually stabilize.  Thus the two coordinates do not exchange
+fresh denominator primes; they carry the same fixed structural primes at different linear
+depths.  This changes the surviving endgame from private-prime order covering to simultaneous
+cancellation on shared $p$-adic Newton faces.
+
+Keep the convergent notation
+\[
+ \nu_k=(-p_k,q_k),\qquad
+ z_k=\frac{N^{q_k}}{M^{p_k}}=\frac{R_k}{S_k}
+ \quad\text{in lowest terms}.
+\]
+For a prime $\ell\mid MN$, put
+\begin{equation}
+ m_\ell=v_\ell(M),\qquad n_\ell=v_\ell(N),\qquad
+ u_{\ell,k}=v_\ell(z_k)=q_kn_\ell-p_km_\ell.
+ \label{eq:structural-valuation}
+\end{equation}
+Since $p_k/q_k\to\thetaAE$, one has the exact decomposition
+\begin{equation}
+ u_{\ell,k}
+ =q_k(n_\ell-\thetaAE m_\ell)
+  +m_\ell(q_k\thetaAE-p_k).
+ \label{eq:valuation-slope-decomposition}
+\end{equation}
+
+\begin{theorem}[Stable structural support]
+\label{thm:support-stabilization}
+Define
+\begin{equation}
+ \mathcal P_+=\{\ell\mid MN:n_\ell-\thetaAE m_\ell>0\},
+ \qquad
+ \mathcal P_-=\{\ell\mid MN:n_\ell-\thetaAE m_\ell<0\}.
+ \label{eq:stable-support-sets}
+\end{equation}
+Then $\mathcal P_+$ and $\mathcal P_-$ are disjoint and nonempty, and their union is
+the set of primes dividing $MN$.  For all sufficiently large $k$,
+\begin{equation}
+ R_k=\prod_{\ell\in\mathcal P_+}\ell^{u_{\ell,k}},
+ \qquad
+ S_k=\prod_{\ell\in\mathcal P_-}\ell^{-u_{\ell,k}}.
+ \label{eq:stable-reduced-support}
+\end{equation}
+Moreover, for every $\ell\mid MN$,
+\begin{equation}
+ |u_{\ell,k}|
+ =q_k|n_\ell-\thetaAE m_\ell|+O_{M,N}(q_{k+1}^{-1}),
+ \label{eq:linear-pole-depth}
+\end{equation}
+so each nonzero numerator or denominator depth is linear in $q_k$.
+In particular, for all sufficiently large adjacent pairs $(z_k,z_{k+1})$ there is no prime
+private to one reduced denominator: both denominators are supported on the same fixed set
+$\mathcal P_-$.
+\end{theorem}
+
+\begin{proof}
+If $\ell\mid MN$, then $(m_\ell,n_\ell)\ne(0,0)$.  The coefficient
+$n_\ell-\thetaAE m_\ell$ cannot vanish, because otherwise either $m_\ell=0=n_\ell$ or
+$\thetaAE=n_\ell/m_\ell\in\Q$, contradicting the irrationality of $\log3/\log2$.
+The convergent estimate $|q_k\thetaAE-p_k|<q_{k+1}^{-1}$ in
+\eqref{eq:valuation-slope-decomposition} therefore fixes the sign for all sufficiently large
+$k$ and gives \eqref{eq:linear-pole-depth}.  Reduced numerator and denominator valuations are
+the positive and negative parts of $u_{\ell,k}$, proving
+\eqref{eq:stable-reduced-support}.
+
+Finally,
+\[
+ \sum_{\ell\mid MN}(n_\ell-\thetaAE m_\ell)\log\ell
+ =\log N-\thetaAE\log M=0.
+\]
+Every summand coefficient is nonzero.  Hence they cannot all have the same sign, so both
+$\mathcal P_+$ and $\mathcal P_-$ are nonempty.
+\end{proof}
+
+The theorem is easy to miss because $z_k$ itself tends to $1$ and alternates around it.  The
+near-cancellation is not caused by small prime valuations.  It is a cancellation between two
+fixed, linearly growing valuation profiles whose logarithmic weights almost balance.
+
+\subsection{Adjacent valuation transport}
+
+Let
+\begin{equation}
+ \varepsilon_k=p_{k+1}q_k-p_kq_{k+1}\in\{\pm1\}.
+ \label{eq:convergent-orientation}
+\end{equation}
+The unimodularity of adjacent convergents gives exact transport identities at every
+structural prime.
+
+\begin{proposition}[Adjacent valuation transport and toric balance]
+\label{prop:adjacent-valuation-transport}
+For every prime $\ell\mid MN$,
+\begin{align}
+ q_{k+1}u_{\ell,k}-q_ku_{\ell,k+1}&=\varepsilon_k m_\ell,
+ \label{eq:q-valuation-transport}\\
+ p_{k+1}u_{\ell,k}-p_ku_{\ell,k+1}&=\varepsilon_k n_\ell.
+ \label{eq:p-valuation-transport}
+\end{align}
+Equivalently, in $\Q_{>0}^{\times}$,
+\begin{align}
+ \frac{z_k^{q_{k+1}}}{z_{k+1}^{q_k}}&=M^{\varepsilon_k},
+ \label{eq:q-toric-balance}\\
+ \frac{z_k^{p_{k+1}}}{z_{k+1}^{p_k}}&=N^{\varepsilon_k}.
+ \label{eq:p-toric-balance}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Insert $u_{\ell,j}=q_jn_\ell-p_jm_\ell$ and use
+$p_{k+1}q_k-p_kq_{k+1}=\varepsilon_k$.  The multiplicative identities follow by the same
+exponent calculation before taking valuations.
+\end{proof}
+
+Thus the two shared pole depths are not independent random data.  Their large linear parts
+are tied by a determinant-one defect equal to one fixed valuation of $M$ or $N$.  This exact
+coupling should be incorporated into any search rather than treated as an accidental
+correlation.
+
+\subsection{The shared-pole Newton polygon}
+
+Fix a sufficiently large adjacent pair and abbreviate
+\[
+ z_1=z_k=R_1/S_1,\qquad z_2=z_{k+1}=R_2/S_2.
+\]
+Let
+\begin{equation}
+ F(U,V)=\sum_{\substack{0\le i\le d\\0\le j\le e}}c_{ij}U^iV^j\in\Z[U,V],
+ \qquad
+ J_F=S_1^dS_2^eF(z_1,z_2)\in\Z.
+ \label{eq:shared-cleared-mask}
+\end{equation}
+For $\ell\in\mathcal P_-$ write $s_{\ell,j}=-u_{\ell,j}=v_\ell(S_j)$ for every
+sufficiently large $j$.  For the fixed adjacent pair abbreviate
+\begin{equation}
+ s_{\ell,1}=s_{\ell,k}=v_\ell(S_1),
+ \qquad
+ s_{\ell,2}=s_{\ell,k+1}=v_\ell(S_2).
+ \label{eq:shared-pole-depths}
+\end{equation}
+Both depths are positive and of order $q_k$.
+
+\begin{theorem}[Exact shared-pole Newton law]
+\label{thm:shared-pole-newton}
+For $\ell\in\mathcal P_-$ define
+\begin{equation}
+ \lambda_{ij}^{(\ell)}
+ =v_\ell(c_{ij})+(d-i)s_{\ell,1}+(e-j)s_{\ell,2}
+ \label{eq:shared-newton-weight}
+\end{equation}
+for $c_{ij}\ne0$, and let $\lambda_\ell=\min\lambda_{ij}^{(\ell)}$.  Then
+\begin{equation}
+ v_\ell(J_F)\ge\lambda_\ell.
+ \label{eq:shared-newton-lower}
+\end{equation}
+If the minimum is attained at a unique exponent pair, equality holds.
+More generally, write $S_t=\ell^{s_{\ell,t}}S_t'$ with $\ell\nmid S_t'$.  After division by
+$\ell^{\lambda_\ell}$, the residue of $J_F$ modulo $\ell$ is the sum of the residues of the
+terms on the minimizing face:
+\begin{equation}
+ \operatorname{in}_{\ell}(F;z_1,z_2)
+ =\sum_{\lambda_{ij}^{(\ell)}=\lambda_\ell}
+ \overline{\ell^{-v_\ell(c_{ij})}c_{ij}}
+ \overline{R_1}^{\,i}\overline{R_2}^{\,j}
+ \overline{S_1'}^{\,d-i}\overline{S_2'}^{\,e-j}
+ \in\mathbb F_\ell.
+ \label{eq:shared-initial-form}
+\end{equation}
+Consequently
+\begin{equation}
+ v_\ell(J_F)>\lambda_\ell
+ \quad\Longleftrightarrow\quad
+ \operatorname{in}_{\ell}(F;z_1,z_2)=0.
+ \label{eq:initial-form-cancellation}
+\end{equation}
+Iterating after division by the current power of $\ell$ gives an exact finite-depth
+cancellation cascade.
+\end{theorem}
+
+\begin{proof}
+Expand
+\[
+ J_F=\sum_{i,j}c_{ij}R_1^iR_2^jS_1^{d-i}S_2^{e-j}.
+\]
+Because $z_1,z_2$ are reduced and $\ell$ divides both denominators,
+$\ell\nmid R_1R_2S_1'S_2'$.  The valuation of each summand is exactly
+\eqref{eq:shared-newton-weight}.  The ultrametric inequality proves
+\eqref{eq:shared-newton-lower}; a unique minimum cannot cancel.  Factoring the common power
+$\ell^{\lambda_\ell}$ gives \eqref{eq:shared-initial-form} and
+\eqref{eq:initial-form-cancellation}.
+\end{proof}
+
+\begin{corollary}[Unit-corner survival]
+\label{cor:unit-corner-survival}
+If $c_{de}$ is an $\ell$-adic unit, then $(d,e)$ is the unique minimizing exponent pair,
+$v_\ell(J_F)=0$, and the full pole
+\begin{equation}
+ \ell^{d s_{\ell,1}+e s_{\ell,2}}
+ \label{eq:full-shared-pole}
+\end{equation}
+survives in the reduced denominator of $F(z_1,z_2)$.
+\end{corollary}
+
+This is the shared-prime analogue of the earlier face-monic obstruction.  It also shows why
+removing the top-right monomial is only the beginning: once the minimizing set has more than
+one term, one must force its initial form to vanish at every stable denominator prime, then
+repeat the argument at every higher $\ell$-adic layer.
+
+\begin{example}[The positive two-axis mask]
+\label{ex:positive-shared-mask}
+For
+\[
+ F_r(U,V)=(U-1)^{2r}+(V-1)^{2r}
+\]
+one has
+\begin{equation}
+ J_{F_r}=G_1^{2r}S_2^{2r}+G_2^{2r}S_1^{2r}.
+ \label{eq:positive-shared-clearing}
+\end{equation}
+At $\ell\in\mathcal P_-$ the two displayed terms have valuations
+$2rs_{\ell,2}$ and $2rs_{\ell,1}$.  If the depths are unequal, the smaller one is unique and
+\begin{equation}
+ v_\ell(J_{F_r})=2r\min(s_{\ell,1},s_{\ell,2}),
+ \label{eq:positive-shared-exact}
+\end{equation}
+so the reduced denominator retains
+$\ell^{2r\max(s_{\ell,1},s_{\ell,2})}$.  If the depths tie, cancellation is possible only
+through the explicit two-term residue in \eqref{eq:positive-shared-clearing}.  Positivity at
+the real place therefore does not by itself buy denominator compression.
+\end{example}
+
+\begin{lemma}[Two-term contact cannot vanish at the output]
+\label{lem:balanced-binomial-collapse}
+Let $z_1,z_2$ be the adjacent output near-units.  A nonzero Laurent polynomial with at most
+two monomials cannot satisfy both $F(1,1)=0$ and $F(z_1,z_2)=0$.
+\end{lemma}
+
+\begin{proof}
+The condition at $(1,1)$ makes the two coefficients opposite, so after multiplying by a
+monomial one has $F=c(U^aV^b-1)$ with $(a,b)\ne(0,0)$.  Vanishing at $(z_1,z_2)$ would give
+$z_1^az_2^b=1$.  Adjacent relation vectors form a unimodular basis of $\Z^2$, so
+$z_1,z_2$ generate the same rank-two group as $M,N$ and are multiplicatively independent.
+Thus $a=b=0$, a contradiction.
+\end{proof}
+
+The lemma does not forbid a two-term initial form from canceling modulo one prime.  It says
+that no single binomial supplies exact cancellation at every depth and every place.  A viable
+mask must use genuinely multi-term, prime-dependent Newton faces.
+
+\begin{target}[Shared structural-face capture]
+\label{target:shared-face-capture}
+Construct, for some sufficiently large adjacent pair, a nonzero mask $F_k$ with contact
+$r_k$ such that:
+\begin{enumerate}
+\item its shifted coefficient norm is subheight and its contact supplies the archimedean gain
+  required by the scalar criterion of \cref{sec:endgame};
+\item for every $\ell\in\mathcal P_-$, the successive initial forms in
+  \eqref{eq:shared-initial-form} vanish deeply enough that
+  \begin{equation}
+   \sum_{\ell\in\mathcal P_-}
+   \bigl(d_ks_{\ell,k}+e_ks_{\ell,k+1}-v_\ell(J_{F_k})\bigr)_+\log\ell
+   =O_x((d_k+e_k)\log q_k);
+   \label{eq:full-shared-face-capture}
+  \end{equation}
+\item the mask is certified nonzero at $(z_k,z_{k+1})$ and is non-toric.
+\end{enumerate}
+For a fixed hypothetical candidate, one mask satisfying these finite conditions and the
+strict scalar inequality contradicts that candidate.  A construction that works for every
+hypothetical candidate would prove the \AEname\ conjecture.
+\end{target}
+
+\begin{statusbox}{\statusproved{} for stable support, adjacent valuation transport, the
+shared-pole Newton law, unit-corner survival, the positive-mask calibration, and the two-term
+nonvanishing lemma.  \Cref{target:shared-face-capture} is the new open endgame.  The earlier
+private-prime and cyclotomic sections remain valid finite diagnostics, but
+\cref{thm:support-stabilization} shows that they are not the asymptotic adjacent-convergent
+mechanism.}
+\end{statusbox}
+
+\section{Three quantitative barriers for naive mask constructions}
+\label{sec:quantitative-barriers}
+
+The preceding sections identify the exact arithmetic objects.  We now combine them with the
+continued-fraction scale.  The conclusions are negative, but they are useful negative results:
+they rule out three broad architectures while leaving one sharply defined escape route.
+
+Let $p_n/q_n$ be the continued-fraction convergents to $\thetaAE$, and put
+\begin{equation}
+ \nu_n=(-p_n,q_n),\qquad
+ \delta_n=q_n\log3-p_n\log2,\qquad
+ z_n=\sigma_{\nu_n}=\frac{N^{q_n}}{M^{p_n}}=e^{x\delta_n}.
+ \label{eq:convergent-near-units}
+\end{equation}
+Write $z_n=R_n/S_n$ in lowest terms and set
+\begin{equation}
+ \Delta_n=\max\{|x\delta_n|,|x\delta_{n+1}|\}.
+ \label{eq:adjacent-output-error}
+\end{equation}
+For all sufficiently large $n$, $\Delta_n<1/4$.
+
+We use one standard external input.  An effective lower bound for linear forms in
+$\log2,\log3$ gives constants $C>0$ and $\kappa>1$ such that
+\begin{equation}
+ |q\thetaAE-p|\ge Cq^{-\kappa}
+ \qquad(p\in\Z,\ q\ge1).
+ \label{eq:effective-two-log}
+\end{equation}
+For convergents this implies $q_{n+1}\ll q_n^{\kappa}$ and hence
+\begin{equation}
+ \log\frac1{\Delta_n}=O_x(\log q_n).
+ \label{eq:delta-logarithmic}
+\end{equation}
+Only the existence of some effective exponent is needed; no numerical optimization enters.
+
+\subsection{The full-clearing Taylor envelope cannot become subunit}
+
+Let $F_n\in\Z[U,V]$ be nonzero, of bidegree at most $(d_n,e_n)$ and contact order
+$r_n$ at $(1,1)$.  Write
+\[
+ \widetilde F_n(X,Y)=F_n(1+X,1+Y).
+\]
+Clearing the visible denominators and applying \cref{lem:contact-estimate} gives
+\begin{equation}
+ |J_n|
+ \le S_n^{d_n}S_{n+1}^{e_n}
+       \normone{\widetilde F_n}(2\Delta_n)^{r_n},
+ \qquad
+ J_n:=S_n^{d_n}S_{n+1}^{e_n}F_n(z_n,z_{n+1})\in\Z.
+ \label{eq:full-clearing-envelope}
+\end{equation}
+
+\begin{theorem}[Full-clearing envelope barrier]
+\label{thm:full-clearing-barrier}
+Assume $d_n+e_n>0$.  Then the right side of
+\eqref{eq:full-clearing-envelope} is greater than $1$ for all sufficiently large $n$,
+uniformly over all choices of $F_n$.  Consequently the ordinary argument
+\[
+ \text{clear every visible denominator}+\text{bound by Taylor contact}
+\]
+can never prove $J_n=0$ or produce a nonzero integer of absolute value below one.
+\end{theorem}
+
+\begin{proof}
+By \cref{prop:height-law}, norm equivalence, and $p_n\asymp q_n$, there is a constant
+$c_x>0$ such that
+\[
+ \log S_n\ge c_xq_n-O_x(1),
+ \qquad
+ \log S_{n+1}\ge c_xq_{n+1}-O_x(1)
+\]
+for all large $n$.  The contact ceiling \cref{thm:contact-ceilings} gives
+$r_n\le d_n+e_n$, while $\normone{\widetilde F_n}\ge1$.  Therefore the logarithm of the
+right side in \eqref{eq:full-clearing-envelope} is at least
+\[
+ c_xq_n(d_n+e_n)-O_x(d_n+e_n)
+ -(d_n+e_n)O_x(\log q_n),
+\]
+where \eqref{eq:delta-logarithmic} was used in the last term.  This is positive for all
+sufficiently large $n$.
+\end{proof}
+
+\begin{remark}[What the theorem does not say]
+The theorem does not lower-bound the actual value $|J_n|$ by the displayed envelope.  It says
+that this particular triangle-inequality proof cannot make the integer subunit.  The two
+possible escapes are cancellation inside the archimedean sum, or cancellation in the
+\emph{reduced} denominator before clearing.  The first is an auxiliary-function problem; the second is the shared-pole
+Newton-face problem isolated in \cref{sec:stable-support}.
+\end{remark}
+
+\subsection{Imported gap transport and the new shared-gap consequence}
+
+For a relation vector $\nu=(-p,q)$ put
+\[
+ z_\nu=\frac{N^q}{M^p}=\frac{R_\nu}{S_\nu},
+ \qquad
+ G_\nu=R_\nu-S_\nu,
+\]
+where the fraction is reduced.  The supplied report already proves the determinant-transport
+law for pairs of binomial gaps.  Before importing it, there is a useful reduced-gap
+observation that removes the usual exceptional support.
+
+\begin{lemma}[Structural primes cannot be shared by independent reduced gaps]
+\label{lem:structural-primes-not-shared}
+Let $\nu,\omega\in\Z^2$ be linearly independent.  Then
+\begin{equation}
+ \gcd(G_\nu,G_\omega)\ \text{is coprime to }MN.
+ \label{eq:structural-primes-not-shared}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Suppose that a prime $\ell\mid MN$ divides $G_\nu$.  Since
+$\gcd(R_\nu,S_\nu)=1$, a prime dividing $R_\nu-S_\nu$ divides neither
+$R_\nu$ nor $S_\nu$.  Hence
+\[
+ v_\ell(z_\nu)=0,
+ \qquad
+ \nu\cdot\bigl(v_\ell(M),v_\ell(N)\bigr)=0.
+\]
+If the same prime divides $G_\omega$, then $\omega$ is orthogonal to the same nonzero
+valuation vector.  Its kernel in $\Q^2$ is one-dimensional, forcing $\nu$ and $\omega$ to be
+linearly dependent, a contradiction.
+\end{proof}
+
+\begin{lemma}[Inherited determinant transport for reduced gaps]
+\label{lem:reduced-gap-transport}
+Let $p,q,r,s\in\N$ and let $\nu=(-p,q)$ and $\omega=(-r,s)$ be
+independent, with $D=|ps-rq|$.  Then
+\begin{equation}
+ \gcd(G_\nu,G_\omega)
+ \mid \gcd(M^D-1,N^D-1).
+ \label{eq:reduced-gap-transport}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+This is the gap-determinant theorem proved in the supplied report, specialized to reduced
+output gaps.  For completeness of the specialization, a prime power dividing both reduced
+gaps is coprime to $MN$ by \cref{lem:structural-primes-not-shared}; it therefore divides the
+two unreduced gaps $N^q-M^p$ and $N^s-M^r$.  The inherited determinant transport gives
+$M^D\equiv N^D\equiv1$ modulo that prime power, proving
+\eqref{eq:reduced-gap-transport} prime by prime.
+\end{proof}
+
+For adjacent convergents, $D=1$.  Thus
+\begin{equation}
+ \gcd(G_n,G_{n+1})\mid\gcd(M-1,N-1),
+ \label{eq:adjacent-reduced-gap-fixed}
+\end{equation}
+with no exceptional structural factor.  Combined with the new gap-ideal divisor
+\eqref{eq:gcd-gap-floor}, this contributes at most $\exp(O_x(r_n))$, whereas the visible
+denominator scale is $\exp(\Omega_x(q_n(d_n+e_n)))$.  Since
+$r_n\le d_n+e_n$, adjacent shared-gap amplification is exponentially too small.
+
+The same mask-level conclusion survives nonadjacent pairs.
+
+\begin{corollary}[Shared-gap mask barrier]
+\label{cor:nonadjacent-gcd-barrier}
+Consider independent pairs $\nu_j,\omega_j\in\Z^2$ with
+\[
+ H_j=\normone{\nu_j}+\normone{\omega_j}\longrightarrow\infty,
+ \qquad
+ \max(|\delta_{\nu_j}|,|\delta_{\omega_j}|)\longrightarrow0.
+\]
+Let $g_j=\gcd(G_{\nu_j},G_{\omega_j})$ and let $r_j\ge1$ be any mask contact order.  Then
+\begin{equation}
+ \log g_j=o(H_j),
+ \qquad
+ \log(g_j^{r_j})=o(H_jr_j).
+ \label{eq:fresh-gcd-subheight}
+\end{equation}
+Consequently the universal shared-gap divisor supplied by contact cannot pay a denominator
+tax of order $H_j(d_j+e_j)$ when $r_j\le d_j+e_j$.
+\end{corollary}
+
+\begin{proof}
+Put $D_j=|\det(\nu_j,\omega_j)|$.  The exact identities
+\eqref{eq:uncertainty-identities} give
+$D_j\ll H_j\max(|\delta_{\nu_j}|,|\delta_{\omega_j}|)=o(H_j)$.
+By \cref{lem:reduced-gap-transport},
+$g_j\mid\gcd(M^{D_j}-1,N^{D_j}-1)$.  If $D_j$ is bounded, then $g_j$ is bounded.  If
+$D_j\to\infty$, the theorem of Bugeaud--Corvaja--Zannier gives
+\[
+ \log\gcd(M^{D_j}-1,N^{D_j}-1)=o(D_j),
+\]
+because $M,N$ are multiplicatively independent.  Thus $\log g_j=o(H_j)$ in either case;
+multiplication by $r_j$ proves the second estimate.
+\end{proof}
+
+\subsection{The private-prime obstruction is local; the shared-pole obstruction is asymptotic}
+
+For finite or nonadjacent pairs that possess a private denominator prime, the face-monic
+obstruction of \cref{cor:face-monic} remains exact.  It eliminates powers of one-variable
+gaps, masks with unit or monomial top faces, and generic sparse masks lacking explicit
+opposite-coordinate order control.
+
+For sufficiently deep adjacent convergents, however, \cref{thm:support-stabilization} shows
+that there are no private structural denominator primes at all.  The obstruction changes
+form: at every $\ell\in\mathcal P_-$ both coordinates have poles of linear depth, and the
+minimizing terms are selected by the shared weight
+\[
+ (i,j)\longmapsto v_\ell(c_{ij})+(d-i)s_{\ell,k}+(e-j)s_{\ell,k+1}.
+\]
+A unit top-right corner leaves the whole pole, while a missing corner creates a slanted
+Newton face whose initial form must vanish.  Near-total compression requires this vanishing
+to persist through almost the complete depth at every prime in the fixed set
+$\mathcal P_-$.  Thus the three quantitative barriers leave one architecture: multi-term,
+prime-specific cancellation on shared Newton faces, coupled by the exact transport
+identities \eqref{eq:q-valuation-transport}--\eqref{eq:p-valuation-transport}.
+
+\begin{statusbox}{\statusproved{} for the full-clearing envelope barrier, structural-prime lemma, and
+shared-gap mask corollary; the determinant-transport lemma is inherited from the supplied report; \statusexternal{} for the effective two-logarithm estimate and the
+Bugeaud--Corvaja--Zannier gcd bound.  The conclusions concern the specified proof
+architectures, not the truth of the \AEname\ conjecture.}
+\end{statusbox}
+
+\section{The reduced-denominator endgame}
+\label{sec:endgame}
+
+The preceding no-go theorem used the visible denominator
+$S_n^{d_n}S_{n+1}^{e_n}$.  That is deliberately crude.  The actual arithmetic quantity is
+the reduced denominator of the rational mask value.
+
+Let $F\in\Z[U,V]$ have contact order $r$, and suppose
+\[
+ F(z_1,z_2)=\frac{a_F}{b_F}
+ \quad\text{in lowest terms},
+ \qquad b_F>0.
+\]
+Set $\eta_i=\log z_i$ and $\Delta=\max(|\eta_1|,|\eta_2|)$.
+
+\begin{criterion}[Exact scalar mask criterion]
+\label{crit:scalar-mask}
+Assume $0<\Delta\le1/4$ and $F(z_1,z_2)\ne0$.  If
+\begin{equation}
+ r\log\frac1{2\Delta}
+ >\log b_F+\log\normone{F(1+X,1+Y)},
+ \label{eq:scalar-mask-criterion}
+\end{equation}
+then no hypothetical counterexample producing $z_1,z_2$ can exist.
+\end{criterion}
+
+\begin{proof}
+A nonzero reduced rational number satisfies $|F(z_1,z_2)|\ge1/b_F$.  On the other hand,
+\cref{lem:contact-estimate} gives
+\[
+ |F(z_1,z_2)|
+ \le\normone{F(1+X,1+Y)}(2\Delta)^r.
+\]
+Condition \eqref{eq:scalar-mask-criterion} makes the latter strictly smaller than $1/b_F$.
+\end{proof}
+
+This elementary criterion is the precise endgame.  It neither assumes nor hides a determinant.
+Every candidate construction can be audited by three numbers: contact $r$, shifted coefficient
+norm, and the \emph{actual reduced denominator} $b_F$.
+
+\subsection{The denominator-compression index}
+
+If $F$ has bidegree at most $(d,e)$, then $b_F$ divides the visible denominator
+$B_F=S_1^dS_2^e$.  Define the integer compression factor and normalized compression index
+\begin{equation}
+ K_F=\frac{B_F}{b_F},
+ \qquad
+ \mathfrak c(F;z_1,z_2)=
+ \frac{\log K_F}{d\log S_1+e\log S_2},
+ \label{eq:compression-index}
+\end{equation}
+with the convention $\mathfrak c=0$ when $B_F=1$.  Thus $0\le\mathfrak c\le1$.
+Criterion \eqref{eq:scalar-mask-criterion} becomes
+\begin{equation}
+ \log K_F>
+ d\log S_1+e\log S_2
+ +\log\normone{F(1+X,1+Y)}
+ -r\log\frac1{2\Delta}.
+ \label{eq:compression-threshold}
+\end{equation}
+
+\begin{theorem}[Near-total compression is necessary on adjacent convergents]
+\label{thm:near-total-compression}
+Let $F_n$ be masks on $(z_n,z_{n+1})$ with bidegrees $(d_n,e_n)$, contact $r_n$, and
+$F_n(z_n,z_{n+1})\ne0$.  Assume
+\begin{equation}
+ \log\normone{F_n(1+X,1+Y)}=o\bigl(q_n(d_n+e_n)\bigr).
+ \label{eq:subheight-coefficients}
+\end{equation}
+If the scalar criterion succeeds for infinitely many $n$, then
+\begin{equation}
+ \mathfrak c(F_n;z_n,z_{n+1})=1-o(1)
+ \label{eq:compression-to-one}
+\end{equation}
+along that subsequence.  More quantitatively, the uncanceled denominator obeys
+\begin{equation}
+ \log b_{F_n}
+ \le O_x\bigl((d_n+e_n)\log q_n\bigr)
+   -\log\normone{F_n(1+X,1+Y)}.
+ \label{eq:uncanceled-polyheight}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The contact ceiling gives $r_n\le d_n+e_n$, and
+\eqref{eq:delta-logarithmic} gives
+$r_n\log(1/(2\Delta_n))=O_x((d_n+e_n)\log q_n)$.  Criterion
+\eqref{eq:scalar-mask-criterion} then implies \eqref{eq:uncanceled-polyheight}.  By
+\cref{prop:height-law}, the visible denominator has logarithm
+$\Omega_x(q_n(d_n+e_n))$.  Under \eqref{eq:subheight-coefficients}, subtracting
+\eqref{eq:uncanceled-polyheight} from $\log B_{F_n}$ gives
+$\log K_{F_n}=(1-o(1))\log B_{F_n}$.
+\end{proof}
+
+Thus ``some cancellation'' is not enough.  The mask must remove all but a polynomial-height
+fraction of an exponentially large visible denominator.  Stable structural support and the
+shared-pole Newton law make that requirement exact prime by prime.
+
+\subsection{Exact primewise reduced-denominator formula}
+
+For all sufficiently large $n$, every prime divisor of $S_nS_{n+1}$ lies in the fixed set
+$\mathcal P_-$.  Put
+\[
+ J_{F_n}=S_n^{d_n}S_{n+1}^{e_n}F_n(z_n,z_{n+1})
+\]
+and, for $\ell\in\mathcal P_-$, define the uncanceled pole depth
+\begin{equation}
+ \rho_{\ell,n}(F_n)
+ =\bigl(d_ns_{\ell,n}+e_ns_{\ell,n+1}-v_\ell(J_{F_n})\bigr)_+.
+ \label{eq:uncanceled-shared-depth}
+\end{equation}
+
+\begin{proposition}[Exact shared-prime denominator law]
+\label{prop:exact-shared-denominator}
+If $F_n(z_n,z_{n+1})\ne0$ and $b_{F_n}$ is its reduced denominator, then
+\begin{equation}
+ b_{F_n}=\prod_{\ell\in\mathcal P_-}\ell^{\rho_{\ell,n}(F_n)},
+ \qquad
+ \log b_{F_n}
+ =\sum_{\ell\in\mathcal P_-}\rho_{\ell,n}(F_n)\log\ell.
+ \label{eq:exact-shared-denominator}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The unreduced rational value is $J_{F_n}/(S_n^{d_n}S_{n+1}^{e_n})$.  At a prime
+$\ell\in\mathcal P_-$ the denominator has valuation
+$d_ns_{\ell,n}+e_ns_{\ell,n+1}$; reduction against the numerator $J_{F_n}$ leaves exactly
+\eqref{eq:uncanceled-shared-depth}.  No other prime occurs in the visible denominator.
+\end{proof}
+
+\begin{corollary}[Scalar success forces simultaneous shared-face capture]
+\label{cor:primewise-capture-forced}
+Assume the subheight coefficient condition \eqref{eq:subheight-coefficients}.  If the scalar
+criterion succeeds along infinitely many adjacent pairs, then
+\begin{equation}
+ \sum_{\ell\in\mathcal P_-}\rho_{\ell,n}(F_n)\log\ell
+ =O_x((d_n+e_n)\log q_n)
+ \label{eq:shared-residual-polyheight}
+\end{equation}
+along that subsequence.  Since $\mathcal P_-$ is fixed and every visible pole depth is
+$\Theta_x(q_n)$, the mask must capture a $1-o(1)$ fraction of the pole depth at every stable
+denominator prime that contributes a positive proportion of the visible height.
+\end{corollary}
+
+\begin{proof}
+Combine \cref{prop:exact-shared-denominator} with
+\eqref{eq:uncanceled-polyheight}.  The final assertion follows from
+\eqref{eq:linear-pole-depth} and the finiteness of $\mathcal P_-$.  A primewise residual may
+be redistributed among the finitely many primes, but the weighted total is only
+polylogarithmic while each uncanceled linear fraction would contribute $\Theta(q_n)$.
+\end{proof}
+
+This is the precise surviving endgame.  At each stable denominator prime, the Newton initial
+form \eqref{eq:shared-initial-form} must cancel; after division by the first canceled layer,
+the next initial form must cancel; and so on through almost the complete linear depth.  The
+exact transport laws show that the two depth vectors differ by a determinant-one defect, so
+the required cancellations are strongly coupled across adjacent indices.
+
+\subsection{Constructive and obstructive targets}
+
+The constructive target is \cref{target:shared-face-capture}.  Cyclotomic faces remain a
+useful finite source of residue identities, but stable support means that a successful mask
+must combine them into multi-term shared faces rather than assign a private prime to the
+opposite coordinate.  Positivity, a Sturm certificate, or another exact argument must also
+keep the final rational value nonzero.
+
+The complementary obstruction target is to prove that every nonzero, non-toric mask of
+contact $r$ and subheight shifted coefficient norm leaves a positive proportion of the
+shared pole mass uncanceled:
+\begin{equation}
+ \log b_F\ge c_x(d\log S_1+e\log S_2)-O_x(r\log H)
+ \label{eq:shared-face-lower-target}
+\end{equation}
+for some $c_x>0$, where $H$ is the exponent-vector height.  Even a fixed positive $c_x$
+would contradict the necessary polyheight bound \eqref{eq:uncanceled-polyheight}.  By
+\cref{thm:shared-pole-newton}, this is a finite-prime theorem about repeated cancellation on
+shared Newton faces, not an archimedean approximation theorem.
+
+\begin{statusbox}{\statusproved{} for the scalar criterion, compression reformulation,
+near-total-compression theorem, exact shared-prime denominator law, and forced simultaneous
+capture.  \Cref{target:shared-face-capture} and \eqref{eq:shared-face-lower-target} are the
+constructive and obstructive open endgames.}
+\end{statusbox}
+
+\section{Exact and numerical reconnaissance}
+\label{sec:reconnaissance}
+
+The computations in this section are diagnostic.  None is used as an unproved premise in the
+theorems above.  Their purpose is to test constants, catch false high-contact masks that are
+actually toric, and identify the scale a constructive search must beat.
+
+\subsection{Continued-fraction near-unit bases}
+
+The first convergents to $\thetaAE=\log3/\log2$ and their logarithmic errors are shown below.
+The last column is
+\begin{equation}
+ \mathcal U_n=
+ \frac{2H_n\max(|\delta_{n-1}|,|\delta_n|)}{\log3},
+ \qquad
+ H_n=\max(p_{n-1},q_{n-1},p_n,q_n).
+ \label{eq:uncertainty-ratio}
+\end{equation}
+The determinant-one identity forces $\mathcal U_n\ge1$.  Values close to one indicate that the
+simple uncertainty bound is already near the observed scale.
+
+\begin{center}
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & $p_n/q_n$ & $\delta_n=q_n\log3-p_n\log2$ & $q_n|\delta_n|$ & $\mathcal U_n$ \\
+\midrule
+0  & $1/1$          & $ 4.0546510811\!\times10^{-1}$ & $4.0547\!\times10^{-1}$ & -- \\
+1  & $2/1$          & $-2.8768207245\!\times10^{-1}$ & $2.8768\!\times10^{-1}$ & 1.4763 \\
+2  & $3/2$          & $ 1.1778303566\!\times10^{-1}$ & $2.3557\!\times10^{-1}$ & 1.5711 \\
+3  & $8/5$          & $-5.2116001139\!\times10^{-2}$ & $2.6058\!\times10^{-1}$ & 1.7155 \\
+4  & $19/12$        & $ 1.3551033379\!\times10^{-2}$ & $1.6261\!\times10^{-1}$ & 1.8016 \\
+5  & $65/41$        & $-1.1462901003\!\times10^{-2}$ & $4.6998\!\times10^{-1}$ & 1.6037 \\
+6  & $84/53$        & $ 2.0881323758\!\times10^{-3}$ & $1.1067\!\times10^{-1}$ & 1.7532 \\
+7  & $485/306$      & $-1.0222391238\!\times10^{-3}$ & $3.1281\!\times10^{-1}$ & 1.8437 \\
+8  & $1054/665$     & $ 4.3654128136\!\times10^{-5}$ & $2.9030\!\times10^{-2}$ & 1.9615 \\
+9  & $24727/15601$  & $-1.8194176704\!\times10^{-5}$ & $2.8385\!\times10^{-1}$ & 1.9657 \\
+10 & $50508/31867$  & $ 7.2657747287\!\times10^{-6}$ & $2.3153\!\times10^{-1}$ & 1.6355 \\
+11 & $125743/79335$ & $-3.6626272464\!\times10^{-6}$ & $2.9059\!\times10^{-1}$ & 1.6630 \\
+12 & $176251/111202$& $ 3.6031474823\!\times10^{-6}$ & $4.0068\!\times10^{-1}$ & 1.1559 \\
+13 & $301994/190537$& $-5.9489764120\!\times10^{-8}$ & $1.1334\!\times10^{-2}$ & 1.9807 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The large partial quotient $55$ following the thirteenth convergent creates a spectacularly
+small single error, but the adjacent pair still obeys the determinant-one floor.  This is the
+concrete form of the geometry-of-numbers obstruction: a single exceptional direction does not
+create two independent exceptional directions.
+
+\subsection{Symbolic mask checks}
+
+The univariate Thue--Morse masks
+\[
+ P_r(T)=\prod_{j=0}^{r-1}(1-T^{2^j})
+\]
+have the following exact data.
+
+\begin{center}
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$r$ & degree & support & coefficient $\ell^1$ norm & multiplicity at $1$ \\
+\midrule
+1&1&2&2&1\\
+2&3&4&4&2\\
+3&7&8&8&3\\
+4&15&16&16&4\\
+5&31&32&32&5\\
+6&63&64&64&6\\
+7&127&128&128&7\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The growth is attractive from a moment-cancellation viewpoint, but
+\cref{thm:univariate-gap-power} shows that the cleared value is still a product of
+integer gap factors.  The computational table therefore confirms, rather than evades, the
+one-direction obstruction.
+
+For comparison, the positive transverse masks
+\begin{equation}
+ F_r(U,V)=(U-1)^{2r}+(V-1)^{2r}
+ \label{eq:positive-transverse-mask}
+\end{equation}
+have exact contact $2r$, bidegree $(2r,2r)$, and support $4r+1$.  Their ordinary
+coefficient $\ell^1$ norm is $2^{2r+1}$, while the shifted mask is simply
+$X^{2r}+Y^{2r}$ and therefore has shifted norm $2$.  The first values are
+\begin{center}
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$r$ & contact & support & ordinary $\ell^1$ & shifted $\ell^1$ \\
+\midrule
+1&2&5&8&2\\
+2&4&9&32&2\\
+3&6&13&128&2\\
+4&8&17&512&2\\
+\bottomrule
+\end{tabular}
+\end{center}
+They are nonzero by positivity and have an exceptionally small shifted norm.  At a shared
+denominator prime, however, \cref{ex:positive-shared-mask} shows that unequal pole depths leave
+the larger depth completely visible, while equal depths merely create one explicit two-term
+residue test.  This is a compact calibration of the main tradeoff: nonvanishing and contact
+are easy; repeated shared-prime denominator compression is the hard resource.
+
+The cyclotomic-faced examples
+\[
+ (V+1)(U-1)^{2r}+(U+1)(V-1)^{2r}
+\]
+were checked symbolically for $1\le r\le4$.  Their contact is exactly $2r$, and their top
+faces are $V+1$ and $U+1$ once $2r>1$.  They are among the smallest explicit positive examples in which a finite private prime can
+be canceled by a genuine order condition on the opposite coordinate.  Stable support shows
+that an asymptotic construction must combine such factors into tied multi-term faces at the
+same structural primes, rather than assign fresh primes between coordinates.
+
+\subsection{Reproducible source}
+
+The following compact script reproduces the continued-fraction and uncertainty table.  It
+uses high precision for reconnaissance; a proof-producing implementation would replace the
+floating comparisons by directed logarithm intervals.
+
+\begin{lstlisting}[style=pythonstyle,caption={Continued-fraction and uncertainty reconnaissance.}]
+import mpmath as mp
+
+mp.mp.dps = 100
+log2, log3 = mp.log(2), mp.log(3)
+theta = log3 / log2
+
+# Continued fraction and convergents.
+a = []
+y = theta
+for _ in range(18):
+    z = int(mp.floor(y))
+    a.append(z)
+    y = 1 / (y - z)
+
+p_m2, p_m1 = 0, 1
+q_m2, q_m1 = 1, 0
+conv = []
+for z in a:
+    p = z * p_m1 + p_m2
+    q = z * q_m1 + q_m2
+    delta = q * log3 - p * log2
+    conv.append((p, q, delta))
+    p_m2, p_m1 = p_m1, p
+    q_m2, q_m1 = q_m1, q
+
+for n, (p, q, delta) in enumerate(conv):
+    if n == 0:
+        ratio = None
+    else:
+        pp, qq, dd = conv[n - 1]
+        H = max(p, q, pp, qq)
+        ratio = 2 * H * max(abs(delta), abs(dd)) / log3
+    print(n, p, q, delta, q * abs(delta), ratio)
+\end{lstlisting}
+
+For symbolic contact checks, one may expand $F(1+X,1+Y)$ and find the least total degree of a
+nonzero monomial.  Toric masks must first be reduced modulo $I_{\boldsymbol\nu}$; otherwise an
+identically zero lattice relation can masquerade as arbitrarily high contact.
+
+\begin{statusbox}{\statuscomp{} for the symbolic polynomial identities; numerical
+continued-fraction values are reconnaissance only.  No theorem in the report depends on the
+printed decimals.}
+\end{statusbox}
+
+\section{Lean-oriented formalization plan}
+\label{sec:lean-plan}
+
+The new framework is unusually suitable for formalization because its core is finite algebra,
+integer valuation bookkeeping, and continued-fraction determinant identities.  No Four
+Exponentials input is needed to kernel-check the exact reductions.  A natural module split is
+as follows.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}}
+\toprule
+Proposed module & Main statements \\
+\midrule
+\endhead
+\texttt{RelationLattice} & Relation vectors, $\delta_\nu$, determinant identities
+\eqref{eq:uncertainty-identities}, adjacent-convergent orientation, and the two-direction
+uncertainty bound. \\
+\texttt{MonomialToricKernel} & Finite-support monomial map, aggregation by exponent vector,
+universal kernel equivalence, and invariance under unimodular basis changes. \\
+\texttt{ContactMoments} & Shifted-polynomial contact, falling-factorial moments, ordinary
+moment equivalence, degree ceiling, support ceiling, and the local $\ell^1$ estimate. \\
+\texttt{UnivariateGapPower} & Divisibility of $S^dP(R/S)$ by $(R-S)^r$, including Laurent
+normalization and the Thue--Morse specialization. \\
+\texttt{BivariateGapIdeal} & Cleared evaluation formula \eqref{eq:cleared-bivariate},
+membership in $(G_1,G_2)^r$, gcd-power divisibility, and the primewise tropical floor. \\
+\texttt{PrivateLeadingFace} & The finite private-prime prototype: unique-minimum leading
+face, unit-face survival, and exact first-layer cancellation. \\
+\texttt{CyclotomicFiniteFace} & Homogenized cyclotomic evaluation, finite-field order
+criterion, positivity of cross-faced masks, and finite-depth valuation conditions. \\
+\texttt{StableSupport} & Equations \eqref{eq:structural-valuation}--
+\eqref{eq:stable-reduced-support}, nonemptiness of $\mathcal P_\pm$, linear pole depths, and
+adjacent valuation transport \eqref{eq:q-valuation-transport}--
+\eqref{eq:p-valuation-transport}. \\
+\texttt{SharedPoleNewton} & Exact term weights \eqref{eq:shared-newton-weight}, unique-minimum
+equality, initial-form cancellation, unit-corner survival, and the positive-mask calibration.
+\\
+\texttt{ReducedGapTransport} & Lemma~\ref{lem:reduced-gap-transport}, structural-prime
+exclusion, and the shared-gap mask corollary. \\
+\texttt{ReducedDenominator} & Scalar criterion, compression factor, exact
+shared-prime denominator law \eqref{eq:exact-shared-denominator}, and the finite implication
+from a certified mask to contradiction. \\
+\bottomrule
+\end{longtable}
+
+A low-risk theorem order is:
+\begin{enumerate}
+\item formalize contact, gap-ideal algebra, and toric normal forms over an arbitrary
+  commutative domain;
+\item specialize to $\Z$, rational evaluations, and prime valuations;
+\item formalize continued fractions, support stabilization, and the determinant-one transport
+  laws;
+\item add the shared-pole Newton fan and exact reduced-denominator formula;
+\item only then connect the finite certificate to real powers and effective logarithmic
+  recurrence.
+\end{enumerate}
+
+The analytic interfaces can remain explicit hypotheses at first:
+\begin{itemize}
+\item $z_i=e^{\eta_i}$ and $|e^{\eta_i}-1|\le2|\eta_i|$ for $|\eta_i|\le1/4$;
+\item effective recurrence $q_{n+1}\le Cq_n^\kappa$;
+\item exact positivity or nonvanishing of the selected shared-face mask.
+\end{itemize}
+The first and third are routine real algebra/analysis once a concrete mask is given; the
+second can be imported through a named linear-forms interface.  This separation keeps the
+trust boundary visible.
+
+A proof-producing search can output a compact certificate containing:
+\begin{enumerate}
+\item the exponent support and integer coefficients of $F$;
+\item exact moment equations certifying contact and a toric normal form proving the mask is
+  not an identically vanishing lattice relation;
+\item a factorization, positivity, or Sturm certificate proving nonvanishing;
+\item exact reduced fractions $z_n=R_n/S_n$, $z_{n+1}=R_{n+1}/S_{n+1}$ and the stable sets
+  $\mathcal P_\pm$;
+\item the cleared integer $J_F$ and its valuation at every prime in $\mathcal P_-$, including
+  the successive shared-face initial-form cancellations;
+\item the exact reduced denominator $b_F$ from \eqref{eq:exact-shared-denominator};
+\item rational interval bounds verifying \eqref{eq:scalar-mask-criterion}.
+\end{enumerate}
+Every item except the final exponential estimate is finite integer arithmetic.  The final
+estimate can use directed intervals for $\log2$ and $\log3$.
+
+\begin{statusbox}{\statustarget{} only.  No new Lean files are claimed in this report.  The
+listed statements are designed as independent additions rather than modifications of the
+existing corpus.}
+\end{statusbox}
+
+\section{Public-status audit and literature placement}
+\label{sec:public-audit}
+
+The competitive framing in the prompt contains claims of very recent AI-assisted results.
+Because none of those claims is a mathematical premise for the present report, the correct
+standard is conservative: distinguish a public, inspectable result from an announcement, a
+provisional solution, or a private rumor.
+
+\subsection{What could be checked publicly on 22 August 2026}
+
+A short explicit three-dimensional counterexample to the Jacobian conjecture was publicly
+announced by Levent Alp\"oge with credit to Claude Fable, and independent expository accounts
+verify the displayed map directly; the two-dimensional case remains open
+\cite{TaoJacobian2026,GaoJacobian2026}.  This is a genuine public mathematical
+development, but it has no known implication for the logarithmic period relation studied here.
+
+Epoch AI's FrontierMath page for the twelve unresolved Hadamard orders below $2000$ reports
+that Claude Fable 5.2 Pro submitted solutions for eleven orders and that a twelfth construction
+was found but not yet fully written up; the page explicitly labels the status provisional
+\cite{EpochHadamard2026}.  The corresponding Epoch page for elliptic curves of large rank still
+listed the problem as unsolved and recorded rank at least $29$, not a publicly certified rank
+$30$ construction, when accessed for this report \cite{EpochElliptic2026}.  Public posts and
+news reports may be ahead of that page, but without a curve, independent points, and a
+checkable rank certificate, the claimed rank-$30$ development is not used here.
+
+No public paper, preprint, Lean repository, theorem statement, or inspectable proof describing
+the rumored new \AEname\ breakthrough was located in the web audit.  Absence of a search result is
+not evidence that no private work exists.  It means only that there is no public technical
+input to import.  Accordingly, every mathematical claim in this report is proved here, marked
+as an external theorem, or explicitly stated as a target.
+
+\subsection{How the new method sits relative to known work}
+
+The algebraic kernel in \cref{sec:toric} is part of the classical theory of lattice
+and binomial ideals \cite{EisenbudSturmfels1996,Sturmfels1996}.  The new point is the use of
+that kernel as a \emph{sanity filter} for continued-fraction near-unit masks: exact recurrence
+relations among many convergents are toric identities and hence vanish on both the input and
+output grids.
+
+Prouhet--Tarry--Escott and Thue--Morse constructions are classical sources of moment
+cancellation \cite{AlloucheShallit2003}.  The exact cleared-gap theorem
+\cref{thm:univariate-gap-power} identifies why every such one-direction construction is
+arithmetically inert here.  The bivariate gap ideal, stable structural-support theorem, shared-pole Newton law, exact
+primewise denominator formula, and shared-face capture target are the genuinely
+problem-specific additions.
+
+The effective recurrence estimate \eqref{eq:effective-two-log} belongs to the theory of linear
+forms in logarithms \cite{Baker1975,LaurentMignotteNesterenko1995}.  The reduced-gap estimate in
+\cref{cor:nonadjacent-gcd-barrier} uses Bugeaud--Corvaja--Zannier
+\cite{BugeaudCorvajaZannier2003}.  These theorems control the size of available near relations
+and shared divisors; they do not address the bilinear logarithmic determinant directly.
+
+The supplied unified report already explains the Four Exponentials barrier and develops
+interpolation determinants, Kummer theory, compact orbits, natural boundaries, moment
+methods, local rank, Smith profiles, and numerous other directions
+\cite{UnifiedReport2026}.  This supplement deliberately does not repeat those surveys.
+A literal source audit found no section organized around Prouhet or Thue--Morse masks,
+toric/lattice ideals, augmentation-order gap ideals, stable structural support, or the
+shared-pole Newton fan developed here.  The present report is
+therefore an extension rather than a rearrangement of that manuscript.
+
+\begin{statusbox}{\statusexternal{} for the dated public-status statements and cited
+literature.  None of the news claims is used as a proof input.}
+\end{statusbox}
+
+\section{Conclusions and prioritized next steps}
+\label{sec:conclusion}
+
+No unconditional proof of the \AEname\ conjecture is claimed.  The progress is a sharp
+reduction of a previously unseparated auxiliary-function architecture and, most importantly,
+an exact identification of the denominator mechanism that remains after the natural
+private-prime model fails.
+
+\subsection{What has been proved in this report}
+
+\begin{enumerate}
+\item \textbf{Exact height of every exponent-lattice near-unit.}
+  The reduced numerator and denominator are governed by the valuation norm $L_{M,N}$, so a
+  good real relation still has exponential rational height.
+
+\item \textbf{Toric collapse of many-convergent identities.}
+  Universal monomial identities among any number of relation coordinates form a lattice ideal
+  independent of the multiplicatively independent base pair.  Exact continued-fraction
+  recurrences therefore vanish on both the input and output grids and cannot create a nonzero
+  small integer.
+
+\item \textbf{Exact one-direction no-go theorem.}
+  Contact of order $r$ at $1$ forces a factor $(T-1)^r$; after clearing denominators, the mask
+  value contains the $r$th power of the corresponding integer output gap.  This closes all
+  one-direction Prouhet, Thue--Morse, and finite-difference masks at once.
+
+\item \textbf{Multivariate augmentation-to-gap transfer.}
+  Contact order $r$ at $(1,1)$ places every cleared bivariate value in $(G_1,G_2)^r$, with an
+  exact primewise tropical floor and a scalar product-formula criterion.
+
+\item \textbf{Stable structural support.}
+  For adjacent convergents, every prime dividing $MN$ has an eventually fixed numerator or
+  denominator sign.  Both reduced denominators are supported on the same nonempty finite set
+  $\mathcal P_-$, and every pole depth grows linearly with the convergent denominator.  Thus
+  fresh/private structural primes are not the asymptotic resource.
+
+\item \textbf{Shared-pole Newton law.}
+  At each $\ell\in\mathcal P_-$, every cleared monomial has the exact weight
+  \eqref{eq:shared-newton-weight}.  A unique minimum survives; a tied face cancels one layer
+  exactly when its explicit initial form vanishes.  Near-total compression requires this
+  cancellation to repeat through almost the full depth at every stable denominator prime.
+
+\item \textbf{Exact reduced-denominator endgame.}
+  Formula \eqref{eq:exact-shared-denominator} expresses the denominator as the sum of the
+  uncanceled shared pole depths.  The scalar criterion forces their total weighted residual to
+  be only $O((d+e)\log q)$, while the visible pole mass is $\Theta(q(d+e))$.
+
+\item \textbf{Quantitative no-go results.}
+  Full visible-denominator clearing cannot become subunit; shared reduced-gap divisibility is
+  fixed-size for adjacent directions and subheight for nonadjacent directions; unit-corner and
+  generic unique-face masks leave full pole layers.
+\end{enumerate}
+
+\subsection{The surviving research program}
+
+The highest-value next step is a structured search over shared Newton faces, not a broader
+search over arbitrary high-contact coefficients.
+
+\begin{enumerate}
+\item \textbf{Prime-coupled shared-face search.}
+  For the finite set $\mathcal P_-$, impose the exact linear congruences of
+  \cref{app:milp} so that the cleared numerator captures all but $O(\log q)$ layers at every
+  prime.  Optimize the rigorous scalar margin
+  \[
+   r\log\frac1{2\Delta}
+   -\log b_F
+   -\log\normone{F(1+X,1+Y)}.
+  \]
+  A positive interval-certified margin rules out the hypothetical candidate.
+
+\item \textbf{Exploit determinant-one transport.}
+  The depth vectors at adjacent indices satisfy
+  \eqref{eq:q-valuation-transport}--\eqref{eq:p-valuation-transport}.  Search supports should
+  be adapted to those exact affine relations, rather than treating the two pole slopes as
+  independent tropical weights.
+
+\item \textbf{Build or exclude deep initial-form cascades.}
+  Cyclotomic factors provide finite residue identities, but a successful construction must
+  combine them into multi-term faces that cancel at the same structural primes through many
+  powers.  Conversely, a resultant or height theorem proving the lower bound
+  \eqref{eq:shared-face-lower-target} would eliminate the whole mask architecture.
+
+\item \textbf{Exact certificate search and Lean replay.}
+  Contact equations, toric reduction, shared-prime congruences, valuations, and the reduced
+  denominator are finite integer data.  Directed real intervals are needed only for the final
+  strict inequality, making independent replay and kernel verification realistic.
+\end{enumerate}
+
+The conceptual lesson is now more precise than ``denominator cancellation is hard.''
+Continued fractions provide excellent near-units and Prouhet masks provide excellent contact,
+but the prime supports do not move: they stabilize.  The scarce resource is simultaneous,
+deep cancellation on a fixed collection of shared structural-prime Newton faces.  That is the
+remaining target exposed by this report.
+
+\begin{statusbox}{The conjecture remains open.  For a fixed hypothetical candidate, one
+certificate satisfying \cref{target:shared-face-capture} and
+\eqref{eq:scalar-mask-criterion} would rule it out; a construction valid for every candidate
+would prove the conjecture.  A uniform lower bound of the form
+\eqref{eq:shared-face-lower-target} would instead rule out the entire exponent-lattice mask
+architecture.}
+\end{statusbox}
+
+\appendix
+
+\section{The general \texorpdfstring{$k$}{k}-variable gap-ideal theorem}
+\label{app:k-gap}
+
+The bivariate theorem has a direct finite-dimensional extension useful for formalization and
+search.
+
+\begin{theorem}[General augmentation-to-gap transfer]
+\label{thm:k-gap-transfer}
+Let $F\in\Z[T_1,\ldots,T_k]$ have degree at most $d_i$ in $T_i$.  Suppose
+\[
+ F(1+W_1,\ldots,1+W_k)=
+ \sum_{\boldsymbol\alpha}\gamma_{\boldsymbol\alpha}W_1^{\alpha_1}\cdots W_k^{\alpha_k}
+\]
+has no nonzero term with $|\boldsymbol\alpha|<r$.  For rational points
+$z_i=R_i/S_i$ with $R_i,S_i\in\Z$, $S_i>0$, put $G_i=R_i-S_i$ and
+\[
+ J_F=\left(\prod_{i=1}^kS_i^{d_i}\right)F(z_1,\ldots,z_k).
+\]
+Then $J_F\in\Z$ and
+\begin{equation}
+ J_F=\sum_{|\boldsymbol\alpha|\ge r}
+ \gamma_{\boldsymbol\alpha}
+ \prod_{i=1}^kG_i^{\alpha_i}S_i^{d_i-\alpha_i}
+ \in(G_1,\ldots,G_k)^r.
+ \label{eq:k-gap-expansion}
+\end{equation}
+Consequently
+\begin{equation}
+ \gcd(G_1,\ldots,G_k)^r\mid J_F.
+ \label{eq:k-gap-gcd}
+\end{equation}
+For every prime $p$,
+\begin{equation}
+ v_p(J_F)\ge
+ \min_{\gamma_{\boldsymbol\alpha}\ne0}
+ \left(v_p(\gamma_{\boldsymbol\alpha})+
+ \sum_{i=1}^k\bigl(\alpha_iv_p(G_i)+(d_i-\alpha_i)v_p(S_i)\bigr)\right).
+ \label{eq:k-gap-tropical}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute $W_i=G_i/S_i$ into the shifted expansion and multiply by
+$\prod S_i^{d_i}$.  Every exponent satisfies $0\le\alpha_i\le d_i$, so each term is integral.
+The total gap degree is at least $r$, proving ideal membership and
+\eqref{eq:k-gap-gcd}.  The valuation of a sum is at least the minimum valuation of its terms,
+which gives \eqref{eq:k-gap-tropical}.
+\end{proof}
+
+This theorem separates two phenomena.  Contact controls total membership in a gap ideal;
+primewise cancellation can improve the tropical minimum only through ties.  A proof search
+must therefore record both the Newton support and the residue of every tied initial form.
+
+\section{Weighted contact and tropical duality}
+\label{app:weighted-contact}
+
+Let $\boldsymbol\lambda=(\lambda_1,\ldots,\lambda_k)\in\R_{\ge0}^k$.  Define the weighted
+contact of a shifted mask by
+\begin{equation}
+ \ord_{\boldsymbol\lambda}(F)=
+ \min_{\gamma_{\boldsymbol\alpha}\ne0}
+ \boldsymbol\lambda\cdot\boldsymbol\alpha.
+ \label{eq:weighted-contact}
+\end{equation}
+If $|z_i-1|\le e^{-t\lambda_i}$, then
+\begin{equation}
+ |F(z_1,\ldots,z_k)|
+ \le\normone{F(1+\mathbf W)}e^{-t\ord_{\boldsymbol\lambda}(F)}.
+ \label{eq:weighted-archimedean}
+\end{equation}
+At a prime $p\nmid S_1\cdots S_k$, taking
+$\lambda_i=v_p(G_i)$ makes the same Newton support produce the lower bound
+\begin{equation}
+ v_p(J_F)\ge
+ \min_{\gamma_{\boldsymbol\alpha}\ne0}
+ \left(v_p(\gamma_{\boldsymbol\alpha})+
+ \boldsymbol\lambda\cdot\boldsymbol\alpha\right).
+ \label{eq:weighted-padic}
+\end{equation}
+Thus the archimedean gain and the nonarchimedean floor are two evaluations of the same Newton
+polyhedron.  Automatic termwise divisibility cannot create a contradiction by itself; the
+only surplus can come from different faces being active at different places, or from residue
+cancellation on tied faces.  In the present setting, the leading-face theorem identifies the
+finite places at which such a change of active face is compulsory.
+
+\section{Integer-programming formulation of the mask search}
+\label{app:milp}
+
+Fix a finite exponent support
+$E=\{(a_\ell,b_\ell):1\le\ell\le L\}\subset\Z_{\ge0}^2$ and unknown coefficients
+$c_\ell\in\Z$.  Contact at least $r$ is the homogeneous integer system
+\begin{equation}
+ \sum_{\ell=1}^L c_\ell
+ \binom{a_\ell}{i}\binom{b_\ell}{j}=0
+ \qquad(i+j<r).
+ \label{eq:milp-contact}
+\end{equation}
+The objective $\sum|c_\ell|$ is linearized with auxiliary variables.  A nonzero normalization
+may fix one primitive coefficient or impose a signed face sum.  Toric reduction should be
+performed before optimization.
+
+For a fixed adjacent candidate pair, shared-face capture is also linear in the unknown
+coefficients.  Let $d=\max a_\ell$, $e=\max b_\ell$ and write
+\begin{equation}
+ J_F=\sum_{\ell=1}^L c_\ell
+ R_1^{a_\ell}R_2^{b_\ell}
+ S_1^{d-a_\ell}S_2^{e-b_\ell}.
+ \label{eq:milp-cleared-linear-form}
+\end{equation}
+For every $p\in\mathcal P_-$ choose an allowed residual depth $B_p$ and impose
+\begin{equation}
+ J_F\equiv0
+ \pmod{p^{d s_{p,1}+e s_{p,2}-B_p}}.
+ \label{eq:milp-shared-congruence}
+\end{equation}
+This is a linear congruence in the $c_\ell$; Chinese remaindering combines the finitely many
+structural primes.  Taking $B_p=O(\log q)$ encodes the near-total capture forced by
+\eqref{eq:shared-residual-polyheight}.  Positivity can be enforced by a cyclotomic or
+sum-of-squares ansatz, or checked afterward by an exact Sturm procedure.
+
+A practical search should not maximize contact alone.  Its exact target is the scalar margin
+\begin{equation}
+ \mathcal M(F)=
+ r\log\frac1{2\Delta}
+ -\log b_F
+ -\log\normone{F(1+X,1+Y)}.
+ \label{eq:search-margin}
+\end{equation}
+A positive rigorously bounded margin is already a proof certificate.  Negative margins reveal
+which prime layers dominate the failure and can guide the next face support.
+
+\section{Notation crosswalk}
+\label{app:notation}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$x$ & Hypothetical nonintegral exponent. \\
+$M,N$ & Integer outputs $2^x,3^x$. \\
+$\thetaAE$ & $\log3/\log2$. \\
+$\nu=(a,b)$ & Exponent-lattice relation vector. \\
+$\delta_\nu$ & $a\log2+b\log3$. \\
+$\rho_\nu,\sigma_\nu$ & Input/output near-units $2^a3^b$ and $M^aN^b$. \\
+$R_\nu/S_\nu$ & Reduced form of $\sigma_\nu$. \\
+$G_\nu$ & Gap $R_\nu-S_\nu$. \\
+$u_{\ell,k}$ & Structural valuation $q_kn_\ell-p_km_\ell$ of the $k$th near-unit. \\
+$\mathcal P_\pm$ & Stable numerator/denominator prime supports. \\
+$s_{\ell,k}$ & Stable denominator depth $-u_{\ell,k}$ for $\ell\in\mathcal P_-$. \\
+$I_{\boldsymbol\nu}$ & Universal toric/lattice kernel of the monomial coordinate map. \\
+$\ord_{\mathbf1}(F)$ & Contact order of a mask at $(1,1)$. \\
+$J_F$ & Fully cleared integer mask value. \\
+$\rho_{\ell,k}(F)$ & Uncanceled shared pole depth in the reduced denominator. \\
+$b_F$ & Actual reduced denominator of the rational mask value. \\
+$K_F$ & Compression factor from visible to reduced denominator. \\
+$\mathfrak c$ & Normalized denominator-compression index. \\
+$\Phi_m^{\mathrm{hom}}$ & Homogenized cyclotomic polynomial. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{LaurentMignotteNesterenko1995}
+M.~Laurent, M.~Mignotte, and Yu.~Nesterenko,
+\newblock \emph{Formes lin\'eaires en deux logarithmes et d\'eterminants d'interpolation},
+\newblock Journal of Number Theory \textbf{55} (1995), 285--321.
+
+\bibitem{BugeaudCorvajaZannier2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\newblock \emph{An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$},
+\newblock Mathematische Zeitschrift \textbf{243} (2003), 79--84.
+\newblock DOI: \href{https://doi.org/10.1007/s00209-002-0449-z}{10.1007/s00209-002-0449-z}.
+
+\bibitem{EisenbudSturmfels1996}
+D.~Eisenbud and B.~Sturmfels,
+\newblock \emph{Binomial ideals},
+\newblock Duke Mathematical Journal \textbf{84} (1996), 1--45.
+\newblock DOI: \href{https://doi.org/10.1215/S0012-7094-96-08401-X}{10.1215/S0012-7094-96-08401-X}.
+
+\bibitem{Sturmfels1996}
+B.~Sturmfels,
+\newblock \emph{Gr\"obner Bases and Convex Polytopes},
+\newblock University Lecture Series 8, American Mathematical Society, 1996.
+
+\bibitem{AlloucheShallit2003}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{Khinchin1964}
+A.~Ya.~Khinchin,
+\newblock \emph{Continued Fractions},
+\newblock University of Chicago Press, 1964.
+
+\bibitem{TaoJacobian2026}
+T.~Tao,
+\newblock \emph{A digestion of the Jacobian conjecture counterexample},
+\newblock 21 July 2026,
+\newblock \url{https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/}.
+
+\bibitem{GaoJacobian2026}
+S.~Gao,
+\newblock \emph{Counterexamples to the Jacobian conjecture in dimensions greater than two},
+\newblock arXiv:2608.00222, 2026.
+
+\bibitem{EpochHadamard2026}
+Epoch AI,
+\newblock \emph{Hadamard Matrices of Orders $n<2000$}, FrontierMath open-problem page,
+\newblock accessed 22 August 2026,
+\newblock \url{https://epoch.ai/frontiermath/open-problems/hadamard-matrices}.
+
+\bibitem{EpochElliptic2026}
+Epoch AI,
+\newblock \emph{Elliptic Curves over $\mathbb Q$ of Large Rank}, FrontierMath open-problem page,
+\newblock accessed 22 August 2026,
+\newblock \url{https://epoch.ai/frontiermath/open-problems/elliptic-curve-rank}.
+
+\bibitem{UnifiedReport2026}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified Report},
+\newblock manuscript supplied with the present task, 22 August 2026.
+
+\end{thebibliography}
+
+\end{document}

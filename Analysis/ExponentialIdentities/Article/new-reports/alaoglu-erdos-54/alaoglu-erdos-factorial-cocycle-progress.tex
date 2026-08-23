@@ -1,0 +1,1825 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=1in,headheight=15pt}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+\definecolor{theoremblue}{RGB}{29,78,121}
+\definecolor{newgreen}{RGB}{18,103,75}
+\definecolor{warningred}{RGB}{148,46,42}
+\definecolor{computeviolet}{RGB}{92,61,145}
+\definecolor{softgray}{RGB}{245,246,247}
+\definecolor{rulegray}{RGB}{96,104,112}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=theoremblue,
+  citecolor=newgreen,
+  urlcolor=theoremblue,
+  pdftitle={Alaoglu--Erdos Progress: Mesoscopic Factorial Cocycles and Prime-Window Obstructions},
+  pdfauthor={OpenAI GPT-5.6 Pro, prepared for Vladimir Reshetnikov},
+  pdfsubject={A new factorial-cocycle attack on the Alaoglu--Erdos integer-exponent conjecture}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s: factorial-cocycle supplement}
+\rhead{August 22, 2026}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.3em,topsep=0.45em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.3em,topsep=0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Exact experiment}
+\newtheorem{warning}[theorem]{Audit warning}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\vp}{v_p}
+\newcommand{\fall}[2]{\left(#1\right)_{\!\underline{#2}}}
+\newcommand{\EF}{\mathsf E}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\statusnew}{\textcolor{newgreen}{\textbf{[proved in this report]}}}
+\newcommand{\statuscomp}{\textcolor{computeviolet}{\textbf{[exact computation]}}}
+\newcommand{\statusext}{\textcolor{theoremblue}{\textbf{[external theorem]}}}
+\newcommand{\statusopen}{\textcolor{warningred}{\textbf{[open bridge]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.45em}
+\textbf{Status.} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\newenvironment{resultbox}
+{\begin{center}\begin{minipage}{0.94\textwidth}\hrule\vspace{0.45em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.65cm}
+{\Huge\bfseries The Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.28cm}
+{\LARGE\bfseries Mesoscopic Factorial Cocycles,\par}
+\vspace{0.12cm}
+{\LARGE\bfseries Prime-Window Obstructions, and a Linear-Width Escape Target\par}
+\vspace{0.85cm}
+{\large A nonduplicative supplemental progress report\par}
+\vspace{0.1cm}
+{\large to the unified ProveIt report supplied on August 22, 2026\par}
+\vfill
+\begin{minipage}{0.91\textwidth}
+\small
+\textbf{Bottom line.}
+I did not obtain a complete proof of
+\[
+ 2^x,3^x\in\Z\quad\Longrightarrow\quad x\in\Z.
+\]
+I did obtain a new, exact attack that is not developed in the supplied report, together with
+an essentially complete diagnosis of its fixed-width and subcritical-width forms.
+For a hypothetical counterexample put $M=2^x$, $A=3^x$, and
+$N_n=A^n$, $K_n=M^n$.  The universal identity
+\[
+ K_n=N_n^{\log 2/\log 3},\qquad
+ \frac12<\frac{\log2}{\log3}<\frac23
+\]
+places the falling-factorial probability
+\[
+ R_n=\frac{(A^n)_{M^n}}{(A^n)^{M^n}}
+\]
+in a uniquely favorable ``birthday'' regime: pair collisions diverge as
+$(M^2/A)^n=(4/3)^{xn}$, while triple collisions vanish as
+$(M^3/A^2)^n=(8/9)^{xn}$.  A finite shift polynomial can cancel the sole growing
+collision mode exactly.
+
+For every integer polynomial $P$, the signed factorial cocycle
+\[
+ \cF_{P,n}=\prod_j\left(\frac{A^{n+j}!}{(A^{n+j}-M^{n+j})!}\right)^{[T^j]P}
+\]
+tends to $1$ precisely when
+\[
+ P(M)=P'(M)=P(M^2/A)=0.
+\]
+The primitive minimal annihilator is
+\[
+ P_*(T)=(T-M)^2\left(\frac{A}{g}T-\frac{M^2}{g}\right),
+ \qquad g=\gcd(A,M^2),
+\]
+and its cocycle satisfies the sharp asymptotic
+\[
+ \log\cF_{P_*,n}\sim
+ \frac{M^2(A-M)}{6gA}
+ \left(M-\frac{M^3}{A^2}\right)^2
+ \left(\frac{M^3}{A^2}\right)^n>0.
+\]
+Thus it is a positive rational number converging exponentially to $1$.
+
+The arithmetic side is hostile in an equally exact way.  Using the inherited exclusion
+$x\ge12$, Huxley's prime number theorem in short intervals, and Brun--Titchmarsh covering,
+I prove that every such cocycle whose shifts extend less than
+\[
+ \bigl(\log_2 3-1-\varepsilon\bigr)n
+ =\bigl(0.5849625007\ldots-\varepsilon\bigr)n
+\]
+beyond its highest negative coefficient has a reduced denominator with logarithm
+$\gg M^n$.  In particular, every fixed-shift factorial or binomial cocycle fails by an
+exponentially large prime-window denominator.  The first possible escape is therefore not
+``improve a constant'' but a sharply specified linear-width prime-transport problem.  I give
+its exact valuation inequalities, two phase thresholds, a finite optimization formulation,
+and a Lean-oriented decomposition.
+\end{minipage}
+\vfill
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.12cm}
+{\large August 22, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+Let $x>0$ and suppose that $M=2^x$ and $A=3^x$ are integers.  The supplied unified report
+already develops the exact conditional solution monoid, local and global transcendence
+barriers, generalized Vandermonde determinants, $p$-adic and Kummer diagnostics, compact-orbit
+models, entire interpolation, Stieltjes moments, carry languages, and numerous quantified
+no-go theorems.  This supplement deliberately avoids repeating those constructions.
+
+The new object is the mesoscopic falling factorial
+$F_n=(A^n)_{M^n}$ and its normalized no-collision probability
+$R_n=F_n/(A^n)^{M^n}$.  Since
+$\alpha=\log M/\log A=\log2/\log3\in(1/2,2/3)$, one has
+$M^{2n}/A^n\to\infty$ but $M^{3n}/A^{2n}\to0$.  An explicit logarithmic expansion gives
+\[
+ \log F_n=nM^n\log A-\frac12\left(\frac{M^2}{A}\right)^n
+ +\frac12\left(\frac MA\right)^n
+ -\frac16\left(\frac{M^3}{A^2}\right)^n
+ +O\!\left(\left(\frac{M^4}{A^3}\right)^n\right).
+\]
+For a polynomial $P(T)=\sum c_jT^j$, the cocycle
+$\cF_{P,n}=\prod_jF_{n+j}^{c_j}$ therefore tends to one if and only if
+$P$ has a double zero at $M$ and a zero at $M^2/A$.  This yields a canonical minimal
+near-unit and a complete fixed-shift classification.
+
+The denominator is analyzed prime by prime through exact factorial-valuation floor sums.
+Every annihilator has at least three coefficient sign variations.  If $k$ is its highest
+negative shift, primes in the interval
+$(A^{n+k}-M^{n+k},A^{n+k}]$ enter the denominator unless a higher positive factorial interval
+captures a multiple.  A Brun--Titchmarsh covering estimate shows that, for the least
+hypothetical counterexample (hence $x\ge12$), higher shifts of total span below
+$(\log_2 3-1-\varepsilon)(n+k)$ can capture less than a fixed fraction of the short-interval
+prime mass.  Huxley's theorem supplies total logarithmic prime mass asymptotic to $M^{n+k}$,
+so the reduced denominator has exponential logarithmic size.  The same obstruction applies
+to binomial cocycles; their near-unit classification adds a double zero at $1$.
+
+The resulting research target is concrete: construct a linearly widening signed factorial
+ratio, satisfying three archimedean annihilation constraints and all prime-power valuation
+inequalities, with shift span at least $(\log_2 3-1)n$ but sufficiently small coefficient
+height.  This is expressed as an exact integer linear feasibility problem and separated into
+finite, analytic, and formalizable layers.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, trust boundary, and nonduplication}
+\label{sec:scope}
+
+\subsection{What is inherited}
+
+The attached unified report is treated as the baseline, not as material to be rewritten\cite{UnifiedReport2026}.
+In particular, this supplement imports the following established facts and conventions:
+\begin{enumerate}
+\item a putative nonintegral solution is positive and transcendental;
+\item after passing to the least nonintegral solution one has an exact primitive output pair
+      $(M,A)=(2^x,3^x)$ and an exact rank-two conditional solution monoid;
+\item the verified finite exclusion $2^x<4096$ implies that a least nonintegral solution
+      satisfies $x\ge12$;
+\item the two-base problem is an exact $2\times2$ four-exponentials boundary, so no assertion
+      below silently invokes four exponentials or Schanuel;
+\item determinant, $p$-adic, Kummer, compact-orbit, rational-function, entire-interpolation,
+      moment, and carry-language routes already have detailed audits in the baseline report.
+\end{enumerate}
+
+Only item 3 enters the strongest new denominator theorem.  The elementary factorial
+classification itself holds for every positive integral pair $1<M<A$ and does not use the
+real-power origin of that pair.  The historical conjecture itself originates in the work of
+Alaoglu and Erd\H{o}s on highly composite and related numbers\cite{AlaogluErdos1944}.
+
+\subsection{What is new here}
+
+The baseline report does discuss factorial divisors of interpolation determinants and Smith
+profiles.  Those are not the construction below.  Here factorials arise from the occupancy
+product
+\[
+ (N)_K=N(N-1)\cdots(N-K+1),
+\]
+with the special geometric scaling $(N,K)=(A^n,M^n)$.  The central new features are:
+\begin{enumerate}
+\item the exact mesoscopic window $K=N^{\alpha}$ with $1/2<\alpha<2/3$;
+\item a shift-polynomial calculus that classifies every fixed factorial near-unit;
+\item the primitive minimal annihilator $P_*$ and its exact leading defect;
+\item a prime-window theorem forcing denominator mass for all fixed and subcritical
+      linearly widening shifts;
+\item the universal escape width $\log_2 3-1$ and a finite valuation-feasibility target.
+\end{enumerate}
+
+\begin{statusbox}{\statusnew{} for all statements proved in Sections
+\ref{sec:mesoscopic}--\ref{sec:primewindows}, except for the explicitly cited short-interval
+prime theorem and Brun--Titchmarsh inequality.  Numerical tables are \statuscomp{}.}
+\end{statusbox}
+
+\subsection{Competitive-status note}
+
+The public material located during this run did not contain an inspectable proof text or Lean
+repository for the Alaoglu--Erd\H{o}s conjecture.  The reported competing route is therefore
+treated as unavailable information: no mathematical step below is inferred from it, and every
+claim in this report is auditable independently of the rumor.
+
+\section{The mesoscopic exponent forced by the bases two and three}
+\label{sec:mesoscopic}
+
+Assume throughout that
+\begin{equation}
+ M=2^x\in\N,\qquad A=3^x\in\N,
+ \qquad x>0.
+ \label{eq:MA}
+\end{equation}
+Then $1<M<A$ and
+\begin{equation}
+ \alpha:=\frac{\log M}{\log A}=\frac{\log2}{\log3},
+ \qquad
+ \thetaAE:=\alpha^{-1}=\log_2 3.
+ \label{eq:alpha-theta}
+\end{equation}
+The two elementary inequalities $4>3$ and $8<9$ give
+\begin{equation}
+ \frac12<\alpha<\frac23,
+ \qquad
+ 1<\thetaAE<2.
+ \label{eq:alpha-window}
+\end{equation}
+Numerically,
+\begin{align}
+ \alpha&=0.6309297535714574\ldots,\notag\\
+ 1-\alpha&=0.3690702464285426\ldots,\notag\\
+ \thetaAE-1&=0.5849625007211563\ldots,\notag\\
+ 2-\thetaAE&=0.4150374992788437\ldots.
+ \label{eq:universal-constants}
+\end{align}
+
+Put
+\begin{equation}
+ N_n=A^n,
+ \qquad K_n=M^n=N_n^{\alpha},
+ \qquad q:=\frac MA=\left(\frac23\right)^x.
+ \label{eq:NKq}
+\end{equation}
+Three ratios control everything that follows:
+\begin{equation}
+ \lambda:=\frac{M^2}{A}=\left(\frac43\right)^x>1,
+ \qquad
+ \eta:=\frac{M^3}{A^2}=\left(\frac89\right)^x<1,
+ \qquad
+ \tau:=\frac{M^4}{A^3}=\left(\frac{16}{27}\right)^x<q<\eta.
+ \label{eq:lambda-eta-tau}
+\end{equation}
+Thus
+\begin{equation}
+ \frac{K_n^2}{N_n}=\lambda^n\longrightarrow\infty,
+ \qquad
+ \frac{K_n^3}{N_n^2}=\eta^n\longrightarrow0.
+ \label{eq:mesoscopic-two-three}
+\end{equation}
+
+\begin{observation}[The one-divergent-cumulant regime]
+\label{obs:one-divergent}
+For occupancy of $K_n$ labeled balls in $N_n$ boxes, the pair-collision scale diverges while
+the triple-collision scale vanishes.  This happens because the fixed exponent
+$\alpha=\log2/\log3$ lies strictly between $1/2$ and $2/3$.  No estimate involving the
+unknown size of $x$ is needed.
+\end{observation}
+
+The inherited finite exclusion becomes useful through $q$.  For a least nonintegral
+solution, $x\ge12$, and therefore
+\begin{equation}
+ q\le q_{12}:=\left(\frac23\right)^{12}
+ =0.007707346629258934\ldots.
+ \label{eq:q12}
+\end{equation}
+This small ratio will leave almost all short-interval primes uncaptured by higher factorial
+windows.
+
+\section{The birthday product and its exact asymptotic expansion}
+\label{sec:birthday}
+
+\subsection{Falling factorial and no-collision probability}
+
+Define
+\begin{equation}
+ F_n:=\fall{A^n}{M^n}
+ =\frac{A^n!}{(A^n-M^n)!}\in\N,
+ \qquad
+ R_n:=\frac{F_n}{(A^n)^{M^n}}.
+ \label{eq:Fn-Rn}
+\end{equation}
+Equivalently,
+\begin{equation}
+ R_n=\prod_{j=0}^{M^n-1}\left(1-\frac{j}{A^n}\right).
+ \label{eq:R-product}
+\end{equation}
+It is the probability that $M^n$ independent uniform samples from an $A^n$-element set are
+all distinct.  The probability language is only mnemonic; all arguments use the exact
+finite product.
+
+\subsection{Two-term expansion with a geometric remainder}
+
+\begin{lemma}[Uniform logarithmic remainder]
+\label{lem:log-remainder}
+For $0\le u<1$,
+\begin{equation}
+ 0\le -\log(1-u)-u-\frac{u^2}{2}
+ \le \frac{u^3}{3(1-u)}.
+ \label{eq:log-remainder}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Expand $-\log(1-u)=\sum_{r\ge1}u^r/r$.  The remaining terms are nonnegative, and for
+$r\ge3$ one has $1/r\le1/3$, giving the geometric upper bound.
+\end{proof}
+
+\begin{proposition}[Exact mesoscopic expansion]
+\label{prop:Fn-expansion}
+As $n\to\infty$,
+\begin{align}
+ \log F_n
+ &=nM^n\log A
+   -\frac12\lambda^n
+   +\frac12q^n
+   -\frac16\eta^n
+   +O(\tau^n).
+ \label{eq:Fn-expansion}
+\end{align}
+More explicitly,
+\begin{align}
+ \log F_n
+ &=nM^n\log A
+ -\frac{M^n(M^n-1)}{2A^n}
+ -\frac{M^n(M^n-1)(2M^n-1)}{12A^{2n}}
+ +E_n,
+ \label{eq:Fn-expansion-exact}
+\end{align}
+where, once $q^n\le1/2$,
+\begin{equation}
+ |E_n|\le
+ \frac{M^{4n}}{12A^{3n}(1-q^n)}.
+ \label{eq:En-bound}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Take logarithms in \eqref{eq:R-product} and apply Lemma~\ref{lem:log-remainder} with
+$u=j/A^n$.  The first two power sums are
+\[
+ \sum_{j=0}^{K-1}j=\frac{K(K-1)}2,
+ \qquad
+ \sum_{j=0}^{K-1}j^2=\frac{K(K-1)(2K-1)}6.
+\]
+For the remainder, $j/A^n\le q^n$ and
+$\sum_{j<K}j^3=[K(K-1)/2]^2<K^4/4$, which gives
+\eqref{eq:En-bound}.  Expanding the two displayed polynomials in $K=M^n$ gives
+\begin{align*}
+ -\frac{K(K-1)}{2N}
+ &=-\frac12\lambda^n+\frac12q^n,\\
+ -\frac{K(K-1)(2K-1)}{12N^2}
+ &=-\frac16\eta^n+\frac14q^{2n}
+   -\frac1{12}\left(\frac{M}{A^2}\right)^n.
+\end{align*}
+Both omitted bases are smaller than $\tau=M^4/A^3$, while
+\eqref{eq:En-bound} is $O(\tau^n)$.
+\end{proof}
+
+\begin{remark}
+The expansion is unusually clean: $\lambda^n$ is the only growing correction to the bulk
+term $nM^n\log A$.  Every collision mode of order at least three decays.  This is the exact
+asymmetry that the shift operator will exploit.
+\end{remark}
+
+\section{Shift-polynomial calculus and complete fixed-shift classification}
+\label{sec:shift}
+
+\subsection{Polynomial shifts}
+
+Let $\EF$ denote the forward shift on sequences,
+$(\EF u)_n=u_{n+1}$.  For
+\begin{equation}
+ P(T)=\sum_{j=0}^{d}c_jT^j\in\Z[T]
+ \label{eq:P-def}
+\end{equation}
+define
+\begin{equation}
+ (P(\EF)u)_n:=\sum_{j=0}^{d}c_ju_{n+j}
+ \label{eq:shift-eval}
+\end{equation}
+and the positive rational factorial cocycle
+\begin{equation}
+ \cF_{P,n}:=\prod_{j=0}^{d}F_{n+j}^{c_j}.
+ \label{eq:factorial-cocycle}
+\end{equation}
+Negative coefficients mean reciprocals.  The logarithm linearizes the construction:
+\begin{equation}
+ \log\cF_{P,n}=P(\EF)(\log F)_n.
+ \label{eq:cocycle-log}
+\end{equation}
+
+Two elementary identities drive the classification.
+
+\begin{lemma}[Shift evaluation on exponential-polynomial modes]
+\label{lem:shift-modes}
+For every $\rho>0$,
+\begin{align}
+ P(\EF)(\rho^n)&=P(\rho)\rho^n,
+ \label{eq:shift-exp}\\
+ P(\EF)(n\rho^n)&=\rho^n\bigl(nP(\rho)+\rho P'(\rho)\bigr).
+ \label{eq:shift-nexp}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+The first identity is immediate.  For the second,
+\[
+ \sum_jc_j(n+j)\rho^{n+j}
+ =\rho^n\left(n\sum_jc_j\rho^j+
+                  \sum_jjc_j\rho^j\right)
+ =\rho^n\bigl(nP(\rho)+\rho P'(\rho)\bigr).
+\]
+\end{proof}
+
+\begin{theorem}[Master asymptotic for a fixed shift polynomial]
+\label{thm:master-asymptotic}
+For fixed $P\in\Z[T]$,
+\begin{align}
+ \log\cF_{P,n}
+ &=\log A\,M^n\bigl(nP(M)+MP'(M)\bigr)
+   -\frac12P(\lambda)\lambda^n
+   +\frac12P(q)q^n\notag\\
+ &\hspace{3em}
+   -\frac16P(\eta)\eta^n
+   +O_P(\tau^n).
+ \label{eq:master-asymptotic}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:shift-modes} term by term to
+Proposition~\ref{prop:Fn-expansion}.  Since $P$ is fixed, shifting a geometric
+$O(\tau^n)$ remainder through the finitely many indices $0,\ldots,d$ preserves its order.
+\end{proof}
+
+\subsection{Every fixed factorial near-unit}
+
+\begin{theorem}[Near-unit classification]
+\label{thm:near-unit-classification}
+Let $P\in\Z[T]$.  Then
+\begin{equation}
+ \cF_{P,n}\longrightarrow1
+ \qquad(n\to\infty)
+ \label{eq:near-unit-limit}
+\end{equation}
+if and only if
+\begin{equation}
+ P(M)=0,
+ \qquad P'(M)=0,
+ \qquad P\!\left(\frac{M^2}{A}\right)=0.
+ \label{eq:three-annihilation-conditions}
+\end{equation}
+Equivalently, $M$ is a double root of $P$ and $M^2/A$ is a root.
+\end{theorem}
+
+\begin{proof}
+If the three conditions hold, the first two potentially growing lines of
+\eqref{eq:master-asymptotic} vanish and all remaining terms tend to zero; hence
+$\log\cF_{P,n}\to0$.
+
+Conversely, suppose $\log\cF_{P,n}\to0$.  Since $M>\lambda>1$, a nonzero
+$nP(M)M^n$ term cannot be canceled by any later term, so $P(M)=0$.  The remaining bulk term
+is $\log A\,MP'(M)M^n$; it forces $P'(M)=0$.  The only remaining growing mode is
+$-P(\lambda)\lambda^n/2$, so $P(\lambda)=0$.
+\end{proof}
+
+\begin{observation}
+The theorem is a classification, not merely a construction.  Every finite-shift factorial
+ratio converging to one must use exactly the same three annihilations.  A different-looking
+fixed product cannot evade them.
+\end{observation}
+
+\subsection{The primitive minimal annihilator}
+
+Let
+\begin{equation}
+ g:=\gcd(A,M^2),
+ \qquad a_0:=\frac Ag,
+ \qquad b_0:=\frac{M^2}{g}.
+ \label{eq:g-a0-b0}
+\end{equation}
+Then $\gcd(a_0,b_0)=1$ and $\lambda=b_0/a_0$.  Define
+\begin{equation}
+ P_*(T):=(T-M)^2(a_0T-b_0).
+ \label{eq:Pstar}
+\end{equation}
+In coefficient order from low to high,
+\begin{equation}
+ P_*(T)=
+ -\frac{M^4}{g}
+ +\frac{M^2(A+2M)}{g}T
+ -\frac{M^2+2AM}{g}T^2
+ +\frac AgT^3.
+ \label{eq:Pstar-coefficients}
+\end{equation}
+
+\begin{proposition}[Minimality and divisibility]
+\label{prop:Pstar-minimal}
+The polynomial $P_*$ is primitive.  A polynomial $P\in\Z[T]$ satisfies
+\eqref{eq:three-annihilation-conditions} if and only if
+\begin{equation}
+ P_*(T)\mid P(T)\quad\text{in }\Z[T].
+ \label{eq:Pstar-divides}
+\end{equation}
+In particular, every nonzero fixed factorial near-unit has degree at least three.
+\end{proposition}
+
+\begin{proof}
+The factors $(T-M)^2$ and $a_0T-b_0$ are primitive and coprime in $\Q[T]$ because
+$M\ne M^2/A$.  The rational-root theorem and Gauss's lemma give the claimed divisibility.
+Primitivity follows again from Gauss's lemma.
+\end{proof}
+
+\begin{proposition}[Sharp defect of the minimal cocycle]
+\label{prop:minimal-defect}
+Put
+\begin{equation}
+ C_*:=\frac{M^2(A-M)}{6gA}
+       \left(M-\frac{M^3}{A^2}\right)^2>0.
+ \label{eq:Cstar}
+\end{equation}
+Then
+\begin{equation}
+ \log\cF_{P_*,n}
+ =C_*\eta^n+O(q^n),
+ \qquad
+ \cF_{P_*,n}-1\sim C_*\eta^n.
+ \label{eq:minimal-asymptotic}
+\end{equation}
+In particular, $\cF_{P_*,n}>1$ for all sufficiently large $n$.
+\end{proposition}
+
+\begin{proof}
+The three growing terms vanish.  Since $\eta>q>\tau$, the leading remaining term in
+\eqref{eq:master-asymptotic} is $-P_*(\eta)\eta^n/6$.  Now
+\[
+ a_0\eta-b_0
+ =\frac Ag\frac{M^3}{A^2}-\frac{M^2}{g}
+ =-\frac{M^2(A-M)}{gA},
+\]
+so $-P_*(\eta)/6=C_*$.  Finally $e^u-1\sim u$ as $u\to0$.
+\end{proof}
+
+\subsection{Three sign changes are unavoidable}
+
+\begin{proposition}[Sign-variation obstruction]
+\label{prop:sign-variation}
+Every nonzero polynomial $P\in\Z[T]$ satisfying
+\eqref{eq:three-annihilation-conditions} has at least three sign variations in its sequence
+of nonzero coefficients.  In particular it has both positive and negative coefficients.
+\end{proposition}
+
+\begin{proof}
+The polynomial has the three positive roots $M,M,M^2/A$, counted with multiplicity.
+Descartes' rule of signs gives at least three coefficient sign variations.
+\end{proof}
+
+This simple fact is arithmetically decisive.  Near-unit cancellation forces reciprocals of
+some factorial intervals, and those negative intervals expose primes which positive intervals
+must somehow transport across geometric scales.
+
+\section{Exact denominator valuations}
+\label{sec:valuations}
+
+\subsection{The floor-sum formula}
+
+For a positive rational $y$, let $\den(y)$ be the positive denominator of $y$ in lowest
+terms.  For $t\ge0$ and a prime $p$ define
+\begin{equation}
+ V_p(t):=v_p(F_t)
+ =v_p(A^t!)-v_p((A^t-M^t)!).
+ \label{eq:Vp-t}
+\end{equation}
+Legendre's formula gives
+\begin{equation}
+ V_p(t)=\sum_{r\ge1}
+ \left(
+   \left\lfloor\frac{A^t}{p^r}\right\rfloor
+  -\left\lfloor\frac{A^t-M^t}{p^r}\right\rfloor
+ \right).
+ \label{eq:Vp-floor}
+\end{equation}
+The inner difference counts multiples of $p^r$ in the terminal interval
+\begin{equation}
+ I_t:=(A^t-M^t,A^t].
+ \label{eq:It}
+\end{equation}
+
+\begin{proposition}[Exact prime-power valuation of a cocycle]
+\label{prop:cocycle-valuation}
+For $P(T)=\sum_{j=0}^dc_jT^j$,
+\begin{align}
+ v_p(\cF_{P,n})
+ &=\sum_{j=0}^dc_jV_p(n+j)\notag\\
+ &=\sum_{r\ge1}\sum_{j=0}^dc_j
+ \left(
+   \left\lfloor\frac{A^{n+j}}{p^r}\right\rfloor
+  -\left\lfloor\frac{A^{n+j}-M^{n+j}}{p^r}\right\rfloor
+ \right).
+ \label{eq:cocycle-valuation}
+\end{align}
+Consequently
+\begin{equation}
+ \log\den(\cF_{P,n})
+ =\sum_p\max\{0,-v_p(\cF_{P,n})\}\log p.
+ \label{eq:den-log}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first identity is additivity of $p$-adic valuation, the second is Legendre's formula, and
+the last is the prime factorization of a reduced denominator.
+\end{proof}
+
+\begin{remark}[Finite feasibility]
+For fixed $M,A,n,d$, all sums in \eqref{eq:cocycle-valuation} are finite and exact.  Thus the
+conditions
+\begin{equation}
+ \sum_jc_jV_p(n+j)\ge0\qquad(p\le A^{n+d})
+ \label{eq:integrality-linear-inequalities}
+\end{equation}
+are a finite system of homogeneous integer linear inequalities in the coefficient vector
+$(c_0,\ldots,c_d)$.  The archimedean annihilations are three homogeneous linear equations
+after clearing the denominator of $M^2/A$.  This will become the finite search target in
+Section~\ref{sec:search-target}.
+\end{remark}
+
+\subsection{Why the visible powers of \texorpdfstring{$A$}{A} cancel}
+
+The normalized probability $R_n$ contains the large denominator $(A^n)^{M^n}$.  For the
+minimal shift this visible denominator cancels exactly rather than merely asymptotically.
+More generally, if $P(M)=P'(M)=0$, then Lemma~\ref{lem:shift-modes} gives
+\begin{equation}
+ \sum_jc_j(n+j)M^{n+j}=0.
+ \label{eq:A-power-cancellation}
+\end{equation}
+Therefore
+\begin{equation}
+ \prod_jR_{n+j}^{c_j}=\prod_jF_{n+j}^{c_j}=\cF_{P,n}.
+ \label{eq:R-to-F-cancellation}
+\end{equation}
+The obstruction is not the obvious power of $A$.  It is the primitive prime content of the
+terminal factorial intervals themselves.
+
+\section{Prime windows and the denominator theorem}
+\label{sec:primewindows}
+
+\subsection{External analytic inputs}
+
+Write
+\begin{equation}
+ \vartheta_1(X):=\sum_{p\le X}\log p
+ \label{eq:chebyshev-theta}
+\end{equation}
+for the first Chebyshev function.  We use two classical results.
+
+\begin{enumerate}
+\item \textbf{Huxley short-interval prime number theorem.}
+For every fixed $\gamma>7/12$,
+\begin{equation}
+ \vartheta_1(X)-\vartheta_1(X-X^\gamma)\sim X^\gamma.
+ \label{eq:huxley}
+\end{equation}
+The usual statement for $\psi$ implies this form because prime powers contribute
+$o(X^\gamma)$ when $\gamma>1/2$ \cite{Huxley1972}.
+
+\item \textbf{Brun--Titchmarsh.}
+Uniformly for $2\le h<y$,
+\begin{equation}
+ \pi(y+h)-\pi(y)\le\frac{2h}{\log h}.
+ \label{eq:BT}
+\end{equation}
+Consequently, if $h\ge X^\delta$ and the interval lies below $O(X^C)$ for fixed $C$, its
+logarithmic prime mass is at most $(2C/\delta+o(1))h$\cite{MontgomeryVaughan2007}.
+\end{enumerate}
+
+The exponent in our short interval is exactly
+$\alpha=\log2/\log3=0.6309\ldots>7/12$, so Huxley's theorem applies with room to spare.
+
+\subsection{The fixed-window mechanism}
+
+Let $P(T)=\sum_{j=0}^dc_jT^j$ have at least one negative coefficient, and let
+\begin{equation}
+ k:=\max\{j:c_j<0\}.
+ \label{eq:k-highest-negative}
+\end{equation}
+At level $n+k$ set
+\begin{equation}
+ X:=A^{n+k},
+ \qquad H:=M^{n+k}=X^\alpha.
+ \label{eq:XH}
+\end{equation}
+Every prime $p\in(X-H,X]$ occurs once in $F_{n+k}$ and in no lower factorial interval once
+$n$ is large.  Because $c_k<0$, it contributes to the denominator unless a higher positive
+interval $I_{n+j}$ contains a multiple of $p$.
+
+For $j=k+\ell>k$, write
+\begin{equation}
+ Y_\ell=A^\ell X,
+ \qquad W_\ell=M^\ell H.
+ \label{eq:YW}
+\end{equation}
+A prime $p\in(X-H,X]$ divides $F_{n+k+\ell}$ exactly when some integer $m$ satisfies
+\begin{equation}
+ Y_\ell-W_\ell<mp\le Y_\ell.
+ \label{eq:multiple-capture}
+\end{equation}
+For fixed $m$, this confines $p$ to an interval of length at most
+\begin{equation}
+ \frac{W_\ell}{m}\le2Hq^\ell
+ \label{eq:capture-length}
+\end{equation}
+for large $n$, since all relevant $m$ are asymptotic to $A^\ell$.  The number of relevant
+multipliers is at most
+\begin{equation}
+ 2+2A^\ell\frac HX.
+ \label{eq:multiplier-count}
+\end{equation}
+These two elementary bounds are the geometric core of the prime-transport estimate.
+
+\subsection{A linearly widening no-go theorem}
+
+\begin{theorem}[Prime-window denominator theorem]
+\label{thm:prime-window}
+Assume that $x\ge12$.  Fix $\varepsilon>0$.  Let
+\[
+ P_n(T)=\sum_{j=0}^{d_n}c_{n,j}T^j\in\Z[T]
+\]
+be any sequence of nonzero polynomials, each having a negative coefficient, and let
+$k_n=\max\{j:c_{n,j}<0\}$.  Suppose that
+\begin{equation}
+ d_n-k_n\le
+ (\thetaAE-1-\varepsilon)(n+k_n)
+ \label{eq:subcritical-span}
+\end{equation}
+for all sufficiently large $n$.  Then
+\begin{equation}
+ \log\den(\cF_{P_n,n})
+ \ge(-c_{n,k_n})\bigl(\Delta_\varepsilon+o(1)\bigr)M^{n+k_n},
+ \label{eq:prime-window-den-lower}
+\end{equation}
+where one may take
+\begin{equation}
+ \Delta_\varepsilon
+ :=1-
+ \frac{8q}
+ {(2-\thetaAE+\varepsilon(1-\alpha))(1-q)}
+ >0.
+ \label{eq:Delta-epsilon}
+\end{equation}
+In particular, every fixed polynomial with a negative coefficient has
+\begin{equation}
+ \log\den(\cF_{P,n})\gg_{P,M,A}M^n.
+ \label{eq:fixed-den-exponential}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppress the index $n$ on $k_n,d_n,c_{n,j}$.  Put $N=n+k$, $X=A^N$, $H=M^N$, and
+$D=d-k$.  Huxley's theorem gives
+\begin{equation}
+ \sum_{X-H<p\le X}\log p=(1+o(1))H.
+ \label{eq:all-window-mass}
+\end{equation}
+Call a prime in this interval \emph{covered} if it divides some $F_{N+\ell}$ with
+$1\le\ell\le D$ and positive coefficient $c_{n,k+\ell}>0$.
+
+For a fixed $\ell$, conditions \eqref{eq:capture-length} and
+\eqref{eq:multiplier-count} cover all such primes by at most
+$2+2A^\ell H/X$ intervals, each of length at most $2Hq^\ell$.
+The span hypothesis implies
+\begin{align}
+ \frac{\log(2Hq^\ell)}{\log X}
+ &\ge 2-\thetaAE+\varepsilon(1-\alpha)+o(1)
+ =:\delta_\varepsilon+o(1)>0.
+ \label{eq:capture-exponent}
+\end{align}
+Brun--Titchmarsh therefore bounds the logarithmic prime mass in each covering interval by
+$(4/\delta_\varepsilon+o(1))Hq^\ell$.  Summing over the multipliers and then over $\ell$ gives
+\begin{align}
+ \text{covered mass}
+ &\le
+ \left(\frac8{\delta_\varepsilon}+o(1)\right)H
+ \sum_{\ell=1}^{D}
+ \left(q^\ell+q^NM^\ell\right)\notag\\
+ &\le
+ \left(\frac{8q}{\delta_\varepsilon(1-q)}+o(1)\right)H.
+ \label{eq:covered-mass}
+\end{align}
+Indeed,
+\[
+ q^NM^D
+ \le\exp(-\varepsilon N\log M),
+\]
+so the second geometric sum is negligible.
+
+For $x\ge12$, $q\le(2/3)^{12}$, and already at $\varepsilon=0$ the displayed coefficient is
+\begin{equation}
+ \frac{8(2/3)^{12}}
+ {(2-\log_2 3)(1-(2/3)^{12})}
+ =0.1497158446\ldots<1.
+ \label{eq:numeric-coverage}
+\end{equation}
+Hence the uncovered primes have logarithmic mass at least
+$(\Delta_\varepsilon+o(1))H$.
+
+An uncovered prime occurs once in $F_{N}=F_{n+k}$, occurs in no lower $F_{n+j}$ because
+$p>A^{N-1}$ for large $n$, and occurs in no higher factor with positive coefficient by
+definition.  There are no higher negative coefficients because $k$ was maximal.  Thus
+$v_p(\cF_{P_n,n})\le c_{n,k}<0$.  Summing its contribution to
+\eqref{eq:den-log} over the uncovered primes proves
+\eqref{eq:prime-window-den-lower}.
+\end{proof}
+
+\begin{corollary}[No fixed-shift factorial proof]
+\label{cor:no-fixed-factorial}
+For every nonzero fixed $P\in\Z[T]$ with
+$\cF_{P,n}\to1$, the reduced denominator satisfies
+\begin{equation}
+ \log\den(\cF_{P,n})\gg M^n.
+ \label{eq:no-fixed-factorial}
+\end{equation}
+In particular, $\cF_{P,n}$ is not an integer for all sufficiently large $n$ and cannot be
+closed by the argument ``an integer converging to one is eventually one.''
+\end{corollary}
+
+\begin{proof}
+Proposition~\ref{prop:sign-variation} supplies a negative coefficient.  A fixed degree
+satisfies \eqref{eq:subcritical-span} for every $\varepsilon<\thetaAE-1$ once $n$ is large.
+Apply Theorem~\ref{thm:prime-window}.
+\end{proof}
+
+\begin{corollary}[Minimal cocycle denominator]
+\label{cor:minimal-denominator}
+For the canonical polynomial $P_*$,
+\begin{equation}
+ \cF_{P_*,n}=1+C_*\eta^n+o(\eta^n),
+ \qquad
+ \log\den(\cF_{P_*,n})\gg M^n.
+ \label{eq:minimal-gap-den}
+\end{equation}
+Thus its archimedean distance from one is merely exponentially small in $n$, whereas its
+reduced denominator is exponentially large in $M^n$.
+\end{corollary}
+
+\subsection{Two linear phase thresholds}
+
+The proof exposes two distinct universal scales for a higher interval $I_{n+k+\ell}$.
+
+\begin{enumerate}
+\item The multiplier $m$ in \eqref{eq:multiple-capture} begins to drift across more than one
+integer when
+\begin{equation}
+ A^\ell\frac HX\asymp1,
+ \qquad
+ \frac\ell{n+k}\asymp1-\alpha
+ =0.3690702464\ldots.
+ \label{eq:drift-threshold}
+\end{equation}
+
+\item The higher interval itself becomes as long as the prime scale $X$ when
+\begin{equation}
+ \frac{M^{n+k+\ell}}{A^{n+k}}\asymp1,
+ \qquad
+ \frac\ell{n+k}\asymp\thetaAE-1
+ =0.5849625007\ldots.
+ \label{eq:thickness-threshold}
+\end{equation}
+\end{enumerate}
+
+The multiplier-drift threshold does not suffice: the covering argument survives throughout
+the intermediate regime and fails only at the thickness threshold.  Consequently a
+factorial-cocycle rescue must be genuinely linearly nonlocal.
+
+\begin{resultbox}
+\textbf{Exact escape requirement.}
+Any integer-near-one factorial-ratio proof based on shift annihilation must use, beyond its
+highest negative factor, positive factors at distance at least
+\[
+ (\log_2 3-1-o(1))n.
+\]
+Fixed order, logarithmic order, $n^\gamma$ order with $\gamma<1$, and every linear order below
+that constant are excluded.
+\end{resultbox}
+
+\section{Binomial cocycles: the same obstruction with two extra roots}
+\label{sec:binomial}
+
+The integral sequence
+\begin{equation}
+ B_n:=\binom{A^n}{M^n}=\frac{F_n}{M^n!}
+ \label{eq:Bn}
+\end{equation}
+is an obvious attempt to remove some denominator anxiety at the outset.  Signed products of
+$B_n$ still have rational denominators, but every individual factor is integral.  The
+archimedean classification changes in a precise way.
+
+\begin{proposition}[Binomial asymptotic]
+\label{prop:binomial-asymptotic}
+As $n\to\infty$,
+\begin{align}
+ \log B_n
+ &=nM^n\log\frac AM+M^n
+   -\frac12n\log M-\frac12\log(2\pi)
+   -\frac12\lambda^n+\frac12q^n
+   -\frac16\eta^n
+   +O(\tau^n+M^{-n}).
+ \label{eq:binomial-asymptotic}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Subtract Stirling's expansion
+\[
+ \log(M^n!)=nM^n\log M-M^n+\frac12n\log M+\frac12\log(2\pi)+O(M^{-n})
+\]
+from Proposition~\ref{prop:Fn-expansion}.
+\end{proof}
+
+For $P(T)=\sum c_jT^j$, put
+\begin{equation}
+ \cB_{P,n}:=\prod_jB_{n+j}^{c_j}.
+ \label{eq:binomial-cocycle}
+\end{equation}
+
+\begin{theorem}[Complete binomial near-unit classification]
+\label{thm:binomial-classification}
+For fixed $P\in\Z[T]$,
+\begin{equation}
+ \cB_{P,n}\longrightarrow1
+ \label{eq:binomial-nearunit}
+\end{equation}
+if and only if
+\begin{equation}
+ P(M)=P'(M)=P(1)=P'(1)=P(M^2/A)=0.
+ \label{eq:binomial-roots}
+\end{equation}
+The primitive minimal annihilator is
+\begin{equation}
+ P_{\mathrm{bin}}(T)=(T-1)^2P_*(T).
+ \label{eq:Pbin}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:shift-modes} to
+\eqref{eq:binomial-asymptotic}.  The $nM^n$ and $M^n$ terms force a double root at $M$.
+The $\lambda^n$ term forces the root $M^2/A$.  Finally,
+\[
+ P(\EF)n=nP(1)+P'(1),
+\]
+so the logarithmic Stirling term forces a double root at $1$.  These conditions also suffice.
+The divisibility statement follows from Gauss's lemma.
+\end{proof}
+
+\begin{theorem}[Binomial prime-window obstruction]
+\label{thm:binomial-window}
+Under the hypotheses of Theorem~\ref{thm:prime-window}, the same denominator lower bound
+holds with $\cF_{P_n,n}$ replaced by $\cB_{P_n,n}$.
+\end{theorem}
+
+\begin{proof}
+For an uncovered prime $p\asymp A^{n+k_n}$, the span condition gives
+\[
+ M^{n+d_n}/p
+ \le q^{n+k_n}M^{d_n-k_n}
+ \le e^{-\varepsilon(n+k_n)\log M}\to0.
+\]
+Thus $p$ exceeds every lower factorial $M^{n+j}!$ occurring in the binomial denominators.
+Its valuations in the $B_{n+j}$ therefore coincide with its valuations in the terminal
+products $F_{n+j}$.  The proof of Theorem~\ref{thm:prime-window} applies unchanged.
+\end{proof}
+
+The binomial version removes the visible nonintegrality of each building block but does not
+remove the signed prime transport forced by archimedean cancellation.  It also costs two
+extra positive roots and therefore at least two additional coefficient sign variations in
+typical minimal constructions.
+
+\section{Higher collision annihilation and why it is not a free rescue}
+\label{sec:higher-collision}
+
+The minimal polynomial cancels the pair-collision mode $\lambda^n$ and leaves the
+triple-collision mode $\eta^n$.  It is natural to cancel further modes.
+
+\subsection{The full mode lattice}
+
+From the absolutely convergent identity
+\begin{equation}
+ \log R_n=-\sum_{r\ge1}\frac1{rA^{rn}}
+              \sum_{j=0}^{M^n-1}j^r,
+ \label{eq:full-log-series}
+\end{equation}
+Faulhaber's formula shows that every fixed collision order $r$ contributes a finite linear
+combination of geometric modes
+\begin{equation}
+ \rho_{r,s}^n,
+ \qquad
+ \rho_{r,s}:=\frac{M^s}{A^r},
+ \qquad 1\le s\le r+1.
+ \label{eq:mode-lattice}
+\end{equation}
+The largest mode at order $r$ is
+\begin{equation}
+ \rho_{r,r+1}=\frac{M^{r+1}}{A^r}
+ =\left(2\left(\frac23\right)^r\right)^x.
+ \label{eq:leading-r-mode}
+\end{equation}
+Only the case $r=1$ is greater than one.  The descending subunit modes begin
+\begin{equation}
+ \frac{M^3}{A^2}=\left(\frac89\right)^x,
+ \quad
+ \frac MA=\left(\frac23\right)^x,
+ \quad
+ \frac{M^4}{A^3}=\left(\frac{16}{27}\right)^x,
+ \quad
+ \frac{M^2}{A^2}=\left(\frac49\right)^x,
+ \quad\ldots.
+ \label{eq:mode-order}
+\end{equation}
+
+\subsection{Finite high-order annihilators}
+
+For a finite set $S$ of rational modes, one may form the primitive integer polynomial
+\begin{equation}
+ P_S(T)=(T-M)^2\prod_{\rho=u/v\in S}(vT-u),
+ \label{eq:PS}
+\end{equation}
+after removing duplicate factors and common content.  If $M^2/A\in S$, the associated
+factorial cocycle is a near-unit; each additional root pushes its leading asymptotic to the
+next unannihilated mode.
+
+This does not address the denominator theorem.  Every nonzero $P_S$ still has mixed signs,
+and every fixed set $S$ has fixed degree.  Corollary~\ref{cor:no-fixed-factorial} therefore
+forces denominator logarithm $\gg M^n$ regardless of how many collision modes have been
+canceled.
+
+\begin{warning}[Cumulant cancellation versus arithmetic cancellation]
+\label{warn:cumulant-arithmetic}
+Adding roots can make $|\cF_{P,n}-1|$ spectacularly small while making the coefficient vector
+and denominator more complicated.  It does not turn the rational near-unit into an integer.
+The archimedean and prime-window problems are independent constraints and must be solved
+simultaneously.
+\end{warning}
+
+\subsection{A useful critical coincidence}
+
+If the triple mode $\eta$ is also canceled, the next mode is $q=M/A$ unless it too is
+annihilated.  Its decay rate is
+\begin{equation}
+ -\log q=x\log\frac32.
+ \label{eq:q-decay}
+\end{equation}
+The coefficient-growth required to move factorial mass across the thickness threshold also
+naturally involves $\log(A/M)=x\log(3/2)$.  Thus the first higher-order refinement lands on an
+exact critical boundary rather than creating abundant slack.  This coincidence is a warning
+against naive ``cancel one more term'' optimism, but it also suggests that a sharp extremal
+construction might exist exactly at the boundary.
+
+\section{The remaining linear-width problem}
+\label{sec:search-target}
+
+Theorem~\ref{thm:prime-window} does more than reject a construction.  It identifies the
+first scale at which a construction could possibly work.
+
+\subsection{Exact finite formulation}
+
+For fixed $M,A,n,d$, seek a nonzero vector
+\begin{equation}
+ c=(c_0,\ldots,c_d)\in\Z^{d+1}
+ \label{eq:c-vector}
+\end{equation}
+subject to the three archimedean equations
+\begin{align}
+ \sum_{j=0}^dc_jM^j&=0,
+ \label{eq:lin-M}\\
+ \sum_{j=0}^djc_jM^j&=0,
+ \label{eq:lin-derivative}\\
+ \sum_{j=0}^dc_jM^{2j}A^{d-j}&=0.
+ \label{eq:lin-lambda}
+\end{align}
+The last equation is $A^dP(M^2/A)=0$.  For integrality impose, for every prime
+$p\le A^{n+d}$,
+\begin{equation}
+ \sum_{j=0}^dc_jV_p(n+j)\ge0.
+ \label{eq:prime-ILP}
+\end{equation}
+A solution makes $\cF_{P,n}$ an integer and cancels all growing archimedean modes.
+For a family $c=c^{(n)}$, one must additionally control the shifted remainder, for example
+through
+\begin{equation}
+ \sum_{j=0}^{d_n}|c_{n,j}|\eta^j=o(\eta^{-n})
+ \label{eq:height-condition-crude}
+\end{equation}
+or, more sharply, through direct evaluation of $P_n$ on the ordered mode lattice.
+
+\begin{target}[Linear-width factorial feasibility]
+\label{target:linear-width}
+Decide whether there is a sequence $P_n\in\Z[T]$ such that:
+\begin{enumerate}
+\item $P_n(M)=P_n'(M)=P_n(M^2/A)=0$;
+\item $v_p(\cF_{P_n,n})\ge0$ for every prime $p$;
+\item $\cF_{P_n,n}\to1$;
+\item $\deg P_n-k_n\ge(\log_2 3-1-o(1))(n+k_n)$, where $k_n$ is the highest negative index.
+\end{enumerate}
+A positive answer, together with an eventual strict inequality
+$\cF_{P_n,n}\ne1$ (for example from a sign-controlled first surviving archimedean mode),
+would prove the conjecture: a sequence of positive integers converging to $1$ is eventually
+identically $1$.  A negative answer, proved by a dual valuation certificate, would close the
+entire factorial-cocycle family.
+\end{target}
+
+\subsection{Valuation cone and dual certificates}
+
+Let
+\begin{equation}
+ \mathbf v_p^{(n,d)}=(V_p(n),V_p(n+1),\ldots,V_p(n+d))\in\Nzero^{d+1}.
+ \label{eq:valuation-vector}
+\end{equation}
+The integrality region is the rational polyhedral cone
+\begin{equation}
+ \mathcal C_{n,d}:=
+ \{c\in\R^{d+1}:\langle c,\mathbf v_p^{(n,d)}\rangle\ge0
+ \text{ for all }p\le A^{n+d}\}.
+ \label{eq:valuation-cone}
+\end{equation}
+The archimedean constraints define a codimension-three subspace
+$\mathcal L_{M,A,d}$.  The finite question is whether
+\begin{equation}
+ \mathcal C_{n,d}\cap\mathcal L_{M,A,d}
+ \label{eq:cone-intersection}
+\end{equation}
+contains a nonzero integer point satisfying a height bound.
+
+The proof of Theorem~\ref{thm:prime-window} is already a dual certificate below the critical
+width: a positive weighted combination of the prime inequalities detects the highest
+negative coefficient.  At and above the critical width, the right search is therefore not
+blind enumeration of $c$ but computation of sparse dual certificates supported on prime
+windows and their transported multiples.
+
+\subsection{Three increasingly ambitious search layers}
+
+\begin{enumerate}
+\item \textbf{LP layer.}  Ignore integrality of $c$, normalize one linear functional, and test
+whether the real cone intersection is empty.  An infeasible LP returns a rational Farkas
+certificate which can be verified exactly.
+
+\item \textbf{ILP layer.}  If the LP is feasible, bound $\|c\|_1$ or the weighted height
+$\sum|c_j|\eta^j$ and search for integer points.  Root divisibility by $P_*$ can reduce the
+variables by writing $P_n=P_*S_n$.
+
+\item \textbf{Prime-power layer.}  Initial experiments may impose only primes
+$p>A^{n+d}/2$ and then descend through dyadic prime ranges.  Once primes are exhausted, add
+$p^r$ constraints from \eqref{eq:cocycle-valuation}; these are essential for actual
+integrality but not for the first window obstruction.
+\end{enumerate}
+
+\subsection{Primitive-output sensitivity}
+
+A successful proof must eventually distinguish hypothetical primitive outputs from the
+legitimate controls $(M,A)=(2^m,3^m)$.  The factorial asymptotic alone does not do so: it uses
+only the fixed ratio $\log M/\log A$.  The inherited finite exclusion supplies one useful
+asymmetry, namely $q\le(2/3)^{12}$, but integer controls with $m\ge12$ also satisfy it.
+
+The most promising primitive-sensitive refinement is to add local constraints at a
+structural prime $r\mid M$ with $r\ne2$, or at a prime $s\mid A$ with $s\ne3$.  Such a prime
+must exist for a nonintegral solution: if $M$ were a pure power of $2$, then
+$2^x=M=2^m$ would force $x=m$; similarly for $A$ and powers of $3$.  For $r\mid M$ and
+$r\nmid A$, Legendre's formula gives an exact low-digit cancellation in
+$\binom{A^n}{M^n}$ for all powers $r^a\mid M^n$.  This creates a long carry-free prefix in
+base $r$ and may be combined with the high-prime transport cone.  I did not complete that
+hybrid argument, but it is the first remaining direction that genuinely uses nonintegrality
+rather than merely the ratio $\log2/\log3$.
+
+\begin{target}[Hybrid high-prime/structural-prime certificate]
+\label{target:hybrid}
+Construct a dual certificate combining:
+\begin{enumerate}
+\item high primes in the terminal interval $(A^N-M^N,A^N]$, which constrain coefficient
+      signs and shift span;
+\item a structural prime dividing the odd part of $M$ or the non-$3$ part of $A$, which
+      constrains the same coefficients through long base-$p$ carry-free prefixes.
+\end{enumerate}
+The desired contradiction is that the high-prime cone requires prime mass to move forward by
+at least $(\log_2 3-1)N$ shifts, while the structural-prime valuation forces the corresponding
+coefficient mass to remain locally balanced.
+\end{target}
+
+\section{Exact computational audit}
+\label{sec:computation}
+
+The analytic argument does not depend on floating-point experimentation.  Computation is
+nevertheless useful for checking signs, transients, valuation formulas, and denominator
+scale.  The legitimate control $(M,A)=(2,3)$ is especially useful: it satisfies the same
+mesoscopic identities but cannot lead to a contradiction because $x=1$ is an allowed
+integer exponent.
+
+For this control,
+\begin{equation}
+ P_*(T)=-16+28T-16T^2+3T^3.
+ \label{eq:Pstar-23}
+\end{equation}
+The table computes $\log\cF_{P_*,n}$ by high-precision log-gamma evaluation and computes the
+reduced denominator exactly, prime by prime, using Legendre valuations.  The denominator
+column is $\log\den(\cF_{P_*,n})$.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{r@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $\log\cF_{P_*,n}$ & $\log|\cF_{P_*,n}-1|$ & $\log\den(\cF_{P_*,n})$\\
+\midrule
+2  & $-0.808212$ & $-0.586617$ & $386.87$\\
+3  & $-0.408119$ & $-1.095066$ & $914.74$\\
+4  & $-0.197859$ & $-1.718805$ & $2299.56$\\
+5  & $-0.082391$ & $-2.537378$ & $5332.50$\\
+6  & $-0.018582$ & $-3.994918$ & $11795.74$\\
+7  & $ 0.019229$ & $-3.941309$ & $25135.36$\\
+8  & $ 0.040066$ & $-3.177793$ & $52856.16$\\
+9  & $ 0.048687$ & $-2.997675$ & $109568.88$\\
+10 & $ 0.048779$ & $-2.995638$ & $224549.84$\\
+\bottomrule
+\end{tabular}
+\caption{Minimal factorial cocycle for the integer control $(M,A)=(2,3)$.  The eventual
+positive sign predicted by Proposition~\ref{prop:minimal-defect} appears at $n=7$.  The
+asymptotic decay is still in a long transient, while the exact reduced denominator is already
+enormous.}
+\label{tab:control-audit}
+\end{table}
+
+The sign transition is not a defect in the proof: the leading positive $\eta^n$ term must
+first overtake the negative $q^n$ and smaller modes.  More importantly, the denominator is
+not an artifact of retaining the visible powers $(A^n)^{M^n}$; those powers cancel exactly
+by \eqref{eq:A-power-cancellation}.  The table measures only prime factors in the terminal
+factorial intervals.
+
+\subsection{Reproducible valuation code}
+
+The following compact script reproduces the denominator column.  It avoids constructing the
+astronomically large numerator and denominator; all arithmetic defining the reduced
+denominator is exact.
+
+\begin{lstlisting}[style=pythonstyle,caption={Exact valuation audit for a factorial cocycle.}]
+from math import log
+from mpmath import mp
+from sympy import primerange
+
+
+def vp_factorial(n: int, p: int) -> int:
+    value = 0
+    while n:
+        n //= p
+        value += n
+    return value
+
+
+def falling_factorial_valuation(t: int, M: int, A: int, p: int) -> int:
+    top = A**t
+    width = M**t
+    return vp_factorial(top, p) - vp_factorial(top - width, p)
+
+
+def p_star_coefficients(M: int, A: int) -> list[int]:
+    from math import gcd
+    g = gcd(A, M*M)
+    # Coefficients from T^0 through T^3.
+    return [
+        -(M**4)//g,
+        (M*M*(A + 2*M))//g,
+        -(M*M + 2*A*M)//g,
+        A//g,
+    ]
+
+
+def log_falling_factorial(t: int, M: int, A: int):
+    top = A**t
+    width = M**t
+    return mp.loggamma(top + 1) - mp.loggamma(top - width + 1)
+
+
+def audit(M: int, A: int, n: int):
+    coefficients = p_star_coefficients(M, A)
+    degree = len(coefficients) - 1
+
+    mp.dps = 80
+    log_q = mp.fsum(
+        coefficients[j] * log_falling_factorial(n + j, M, A)
+        for j in range(degree + 1)
+    )
+    log_gap = mp.log(abs(mp.expm1(log_q)))
+
+    log_denominator = mp.mpf("0")
+    for p in primerange(2, A**(n + degree) + 1):
+        valuation = sum(
+            coefficients[j]
+            * falling_factorial_valuation(n + j, M, A, p)
+            for j in range(degree + 1)
+        )
+        if valuation < 0:
+            log_denominator += (-valuation) * mp.log(p)
+
+    return log_q, log_gap, log_denominator
+
+
+for n in range(2, 11):
+    print(n, audit(M=2, A=3, n=n))
+\end{lstlisting}
+
+\subsection{Finite certificate mode}
+
+For proof-oriented computation, numerical logarithms should be removed.  The exact kernel is:
+\begin{enumerate}
+\item generate each prime $p\le A^{n+d}$ together with a primality certificate;
+\item compute $V_p(n+j)$ by integer division;
+\item evaluate the dot product $\sum_jc_jV_p(n+j)$;
+\item record negative valuations as a factorized denominator certificate;
+\item bound $\log\cF_{P,n}$ using the rational inequalities in
+      Lemma~\ref{lem:log-remainder}, rather than log-gamma.
+\end{enumerate}
+Every output can then be checked by a small independent verifier or imported into Lean.
+
+\section{Lean formalization plan}
+\label{sec:lean}
+
+The new argument separates cleanly into an elementary formal core and an analytic-number-
+theory interface.
+
+\subsection{Elementary core}
+
+A practical file decomposition is:
+
+\begin{description}[leftmargin=3.4cm,style=nextline]
+\item[\texttt{BirthdayProduct.lean}]
+Define falling factorials, $F_n$, $R_n$, and prove positivity and the product formula.
+Formalize Lemma~\ref{lem:log-remainder} and the two power-sum identities.
+
+\item[\texttt{MesoscopicBounds.lean}]
+Prove $1/2<\log2/\log3<2/3$ from $4>3$ and $8<9$, then derive
+$M^2/A>1$, $M^3/A^2<1$, and the ordering of $q,\eta,\tau$ under
+$M=2^x$, $A=3^x$.
+
+\item[\texttt{ShiftPolynomial.lean}]
+For a finitely supported integer coefficient function, define $P(\EF)$ and prove
+\eqref{eq:shift-exp}--\eqref{eq:shift-nexp}.  Connect the implementation to
+\texttt{Polynomial.eval} and formal derivatives.
+
+\item[\texttt{FactorialCocycle.lean}]
+Define $\cF_{P,n}$ in $\Q_{>0}$ and prove the near-unit sufficiency bounds.
+For necessity, use explicit lower bounds separating $nM^n$, $M^n$, and $\lambda^n$.
+
+\item[\texttt{MinimalAnnihilator.lean}]
+Prove divisibility by $(T-M)^2(a_0T-b_0)$ using polynomial division and Gauss content.
+The asymptotic sign can be formalized as an eventual inequality without developing a general
+asymptotics framework.
+
+\item[\texttt{FactorialValuation.lean}]
+Prove Legendre's floor formula, \eqref{eq:cocycle-valuation}, and the reduced-denominator
+identity.  This part should reuse Mathlib's factorial and padic valuation infrastructure where
+available, with a local terminal-interval count lemma to avoid normalization friction.
+\end{description}
+
+\subsection{Prime-window interface}
+
+Formalizing Huxley's theorem from first principles is far beyond the sensible scope of this
+project.  Isolate it behind one statement:
+\begin{equation}
+ \forall\gamma>7/12,\quad
+ \sum_{X-X^\gamma<p\le X}\log p=(1+o(1))X^\gamma.
+ \label{eq:lean-huxley-interface}
+\end{equation}
+The Brun--Titchmarsh input should similarly be isolated.  Everything from those two
+interfaces to Theorem~\ref{thm:prime-window} is elementary real inequalities, interval
+covering, geometric sums, and valuation bookkeeping.
+
+For a fully kernel-checked finite result, replace Huxley with an explicit list of primes in
+the relevant window and replace Brun--Titchmarsh with direct enumeration.  This does not
+prove the asymptotic theorem, but it validates the combinatorial transport layer and the ILP
+encoding.
+
+\subsection{Suggested theorem order}
+
+The order that minimizes dependency churn is:
+\begin{enumerate}
+\item exact log inequalities and power sums;
+\item shift identities;
+\item explicit upper and lower bounds for $\log\cF_{P,n}$;
+\item root necessity and minimal polynomial;
+\item valuation floor sums;
+\item fixed-degree prime window using an abstract short-interval-prime hypothesis;
+\item linearly widening covering theorem;
+\item finite cone/dual-certificate checker.
+\end{enumerate}
+
+The exact polynomial identities and valuation formulas are suitable early formalization
+targets even before the external analytic interface is settled.
+
+\section{What this changes in the global proof search}
+\label{sec:global-assessment}
+
+\subsection{Progress obtained}
+
+\begin{enumerate}
+\item \textbf{A genuinely new invariant.}
+The terminal factorial interval converts the fixed exponent
+$\log2/\log3$ into a one-growing-mode collision expansion.
+
+\item \textbf{A complete local theory.}
+Every fixed-shift near-unit is classified by three polynomial roots, and the minimal one is
+explicit.
+
+\item \textbf{A quantified arithmetic obstruction.}
+The denominator is not merely ``large'' in experiments.  Its logarithm is bounded below by
+a positive multiple of $M^n$ using uncaptured short-interval primes.
+
+\item \textbf{A sharp scale for any rescue.}
+A successful factorial construction must widen linearly past
+$(\log_2 3-1)n$.  This excludes an enormous design space at once.
+
+\item \textbf{A finite next problem.}
+Above the threshold, the remaining question is an exact cone intersection with three linear
+root equations and finitely many valuation inequalities.
+\end{enumerate}
+
+\subsection{What has not been proved}
+
+No contradiction has yet been extracted from the existence of $M,A$.  A rational number may
+be extremely close to one when its denominator is enormous, and
+Corollary~\ref{cor:minimal-denominator} shows that the minimal cocycle has far more denominator
+than the elementary rational-separation bound needs.  The result is therefore not a proof in
+disguise.
+
+The unresolved bridge is one of the following:
+\begin{enumerate}
+\item find a linearly widening cocycle that is integral and still tends to one;
+\item prove, by a global dual certificate, that no such cocycle can exist;
+\item combine high-prime transport with a primitive structural prime to force incompatible
+      coefficient balances;
+\item discover a different integer-valued transform of the same birthday expansion whose
+      local prime windows cancel automatically.
+\end{enumerate}
+
+\subsection{Why the result is still strategically useful}
+
+The supplied report contains many methods whose bottleneck is ``denominator control'' in a
+broad sense.  Here the denominator has been localized: it comes from primes in explicit
+terminal intervals, and their possible cancellation is a geometric covering problem.  The
+phrase ``need better denominator control'' has been replaced by a numerical boundary, an
+exact valuation matrix, and a dual-certificate program.  That is a materially narrower
+research problem.
+
+\section{Prioritized next experiments}
+\label{sec:next}
+
+\begin{enumerate}
+\item \textbf{LP feasibility at the threshold.}
+For the controls $(M,A)=(2,3)$ and $(4,9)$, test degrees
+$d=\lceil(\log_2 3-1)n\rceil+r$ for small offsets $r$.  Use only high-prime valuation rows at
+first.  Record Farkas certificates, not just solver status.
+
+\item \textbf{Root-factor parameterization.}
+Write $P=P_*S$ and formulate valuations directly in the coefficients of $S$.  Compare sparse,
+cyclotomic, and alternating $S$ families.  Add roots at $\eta$ and $q$ only when the measured
+coefficient height warrants them.
+
+\item \textbf{Structural-prime rows.}
+Introduce symbolic rows corresponding to a prime $r\mid M$, $r\ne2$, in the cases
+$r\nmid A$ and $r\mid A$.  Search for a dual combination with high-prime rows before doing
+full Kummer digit analysis.
+
+\item \textbf{Continuous transport relaxation.}
+Scale shift index by $n$ and terminal depth by $M^n$.  Derive the limiting measure-transport
+problem for positive and negative coefficient mass.  Theorem~\ref{thm:prime-window} supplies
+the subcritical forbidden region; the goal is a continuum dual functional at and above the
+critical width.
+
+\item \textbf{Lean core.}
+Formalize Proposition~\ref{prop:Fn-expansion}, Theorem~\ref{thm:near-unit-classification},
+and Proposition~\ref{prop:cocycle-valuation}.  These are exact, self-contained, and likely to
+be reused even if the final proof leaves the factorial route.
+\end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The new factorial route begins with a favorable accident that is specific to the consecutive
+bases two and three:
+\[
+ \frac12<\frac{\log2}{\log3}<\frac23.
+\]
+It turns the terminal falling factorial $(A^n)_{M^n}$ into an asymptotic object with exactly
+one divergent collision mode.  Finite shifts can annihilate that mode and the bulk term
+perfectly, producing a canonical rational number converging exponentially to one.  The
+classification theorem shows that this is not one example among many; it is the universal
+shape of every fixed-shift factorial near-unit.
+
+The arithmetic audit is equally rigid.  Negative coefficients are forced, and their terminal
+intervals contain short-interval primes that higher positive intervals cannot absorb below a
+linear transport width.  With $x\ge12$, Brun--Titchmarsh covering leaves at least about
+$85\%$ of the logarithmic prime mass uncaptured even at the limiting constant used in the
+proof.  Huxley's theorem then forces an exponentially large reduced denominator.  The
+integer-near-one shortcut is therefore impossible for all fixed and subcritical-width
+factorial and binomial cocycles.
+
+For the integer-near-one factorial architecture, the surviving target is sharp:
+\[
+ \text{shift width}\ \ge
+ (\log_2 3-1-o(1))n.
+\]
+Above that boundary, archimedean annihilation and prime-power integrality become one finite
+integer linear problem.  Either a feasible family yields a proof, or a dual certificate can
+close a large new class of approaches.  The immediate next move should be to compute and
+formalize that boundary problem rather than to invent another unquantified denominator
+heuristic.
+
+\appendix
+
+\section{The canonical cocycle written out}
+\label{app:canonical}
+
+With $g=\gcd(A,M^2)$, the minimal polynomial coefficients from
+\eqref{eq:Pstar-coefficients} give
+\begin{align}
+ \cF_{P_*,n}
+ &=F_n^{-M^4/g}
+   F_{n+1}^{M^2(A+2M)/g}
+   F_{n+2}^{-(M^2+2AM)/g}
+   F_{n+3}^{A/g}.
+ \label{eq:canonical-expanded}
+\end{align}
+Writing out $F_t=(A^t)!/(A^t-M^t)!$ produces a pure ratio of eight ordinary factorials.
+There is no hidden nonintegral exponent.
+
+The cancellation of the powers used in $R_t$ can also be checked directly.  The exponent of
+$A$ in
+$\prod_{j=0}^3(A^{n+j})^{c_jM^{n+j}}$ is
+\begin{equation}
+ \sum_{j=0}^3c_j(n+j)M^{n+j}
+ =M^n\bigl(nP_*(M)+MP_*'(M)\bigr)=0.
+ \label{eq:canonical-A-cancel}
+\end{equation}
+The remaining distance from one is therefore entirely due to the finite-product corrections
+$1-j/A^t$.
+
+For the unreduced but visually simpler annihilator
+\begin{equation}
+ \widetilde P(T)=(T-M)^2(AT-M^2)=gP_*(T),
+ \label{eq:Ptilde}
+\end{equation}
+the first cancellation may be displayed as
+\begin{equation}
+ \frac{R_{n+1}^{A}}{R_n^{M^2}},
+ \label{eq:first-cancel}
+\end{equation}
+which kills the pair-collision mode because
+$A(M^2/A)^{n+1}=M^2(M^2/A)^n$.  Applying $(\EF-M)^2$ then kills both
+$nM^n$ and $M^n$ bulk modes.  This factorization is useful for intuition, while $P_*$ is the
+right primitive arithmetic normalization.
+
+\section{An elementary fixed-degree prime slice}
+\label{app:fixed-slice}
+
+The full covering theorem is needed for linearly growing degrees.  For a fixed polynomial one
+can see the obstruction in one contiguous interval.
+
+Let $k$ be the highest negative coefficient and define
+\begin{equation}
+ \rho:=\max\left(
+ \left\{\left(\frac MA\right)^{j-k}:j>k,\ c_j>0\right\}\cup\{0\}
+ \right).
+ \label{eq:rho-fixed}
+\end{equation}
+Then $0\le\rho\le M/A<1$.  Put $X=A^{n+k}$ and $H=M^{n+k}$.  For fixed small
+$\epsilon>0$, consider primes
+\begin{equation}
+ X-(1-\epsilon)H<p<X-(\rho+\epsilon)H.
+ \label{eq:fixed-prime-slice}
+\end{equation}
+Write $p=X-t$.  The only multiple of $p$ that can lie close to the top of the higher interval
+$I_{n+j}$ is $A^{j-k}p$, because the interval width is $o(p)$ and
+$A^{n+j}/p=A^{j-k}+o(1)$.  That multiple lies in $I_{n+j}$ only if
+\begin{equation}
+ A^{j-k}t\le M^{n+j},
+ \quad\text{equivalently}\quad
+ t\le\left(\frac MA\right)^{j-k}H\le\rho H.
+ \label{eq:fixed-capture-condition}
+\end{equation}
+The primes in \eqref{eq:fixed-prime-slice} therefore occur in the negative factor at $k$ and
+in no positive factor.  Huxley's theorem gives their logarithmic mass
+\begin{equation}
+ (1-\rho-2\epsilon+o(1))H.
+ \label{eq:fixed-slice-mass}
+\end{equation}
+Letting $\epsilon\downarrow0$ yields the sharper fixed-degree estimate
+\begin{equation}
+ \log\den(\cF_{P,n})
+ \ge(-c_k)(1-\rho+o(1))M^{n+k}.
+ \label{eq:fixed-sharp-den}
+\end{equation}
+This proof does not use $x\ge12$; that hypothesis is needed only to control the union of many
+moving capture intervals in the linearly widening theorem.
+
+\section{A structural-prime carry-free prefix}
+\label{app:structural-prime}
+
+The following exact lemma records the primitive-sensitive observation used in
+Target~\ref{target:hybrid}.
+
+\begin{lemma}[Low prime powers contribute no binomial carry]
+\label{lem:carry-free-prefix}
+Let $r$ be a prime with $r\mid M$ and $r\nmid A$, and put $e=v_r(M)$.  For every
+$1\le a\le en$,
+\begin{equation}
+ \left\lfloor\frac{A^n}{r^a}\right\rfloor
+ -\left\lfloor\frac{M^n}{r^a}\right\rfloor
+ -\left\lfloor\frac{A^n-M^n}{r^a}\right\rfloor=0.
+ \label{eq:carry-free-floor}
+\end{equation}
+Consequently
+\begin{equation}
+ v_r\binom{A^n}{M^n}
+ \le
+ \max\left\{0,
+ \left\lfloor n\log_r A\right\rfloor-en+1
+ \right\}.
+ \label{eq:binomial-r-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $a\le en$, the integer $M^n/r^a$ is integral.  Hence
+\[
+ \left\lfloor\frac{A^n-M^n}{r^a}\right\rfloor
+ =\left\lfloor\frac{A^n}{r^a}-\frac{M^n}{r^a}\right\rfloor
+ =\left\lfloor\frac{A^n}{r^a}\right\rfloor-\frac{M^n}{r^a},
+\]
+which proves \eqref{eq:carry-free-floor}.  For $a>en$, each summand in Legendre's formula for
+the binomial valuation is either zero or one.  No term remains once $r^a>A^n$, so the number
+of possible nonzero terms gives \eqref{eq:binomial-r-bound}.
+\end{proof}
+
+In Kummer language, the lowest $en$ base-$r$ digit positions create no carry when adding
+$M^n$ and $A^n-M^n$.  The high-prime obstruction is of size $M^n$, while this structural
+valuation is only $O(n)$.  That disparity may be useful in a dual argument, but a mechanism
+linking the two coefficient weightings is still missing.
+
+\section{Proof-audit checklist}
+\label{app:audit}
+
+The following points were checked explicitly because they are common failure modes in this
+problem.
+
+\begin{enumerate}
+\item \textbf{No four-exponentials assumption.}
+All identities use only $M=2^x$, $A=3^x$, elementary inequalities, factorials, and classical
+prime-distribution theorems.
+
+\item \textbf{Integer controls survive.}
+The construction applies to $(M,A)=(2^m,3^m)$ as well.  It does not claim those pairs are
+impossible; it diagnoses why the rational near-unit has enough denominator to coexist with
+them.
+
+\item \textbf{No false rational separation.}
+The bound $|a/b-1|\ge1/b$ requires an upper bound on $b$ to be useful.  The report proves a
+large lower bound instead and explicitly treats it as an obstruction, not a contradiction.
+
+\item \textbf{The shift root at $M$ is double.}
+A simple root kills $nM^n$ but leaves the $M^n$ derivative term.  This is why
+$P(M)=P'(M)=0$ is necessary.
+
+\item \textbf{The growing collision root is rational.}
+$M^2/A$ need not be integral.  The primitive factor is
+$(A/g)T-M^2/g$, not necessarily $AT-M^2$.
+
+\item \textbf{Short-interval exponent has margin.}
+$\alpha=0.630929\ldots>7/12=0.583333\ldots$, and prime powers are negligible because
+$\alpha>1/2$.
+
+\item \textbf{The linearly widening theorem uses the inherited finite exclusion.}
+The numerical coverage constant is below one because $q\le(2/3)^{12}$.  The sharper fixed-
+degree slice does not require this exclusion.
+
+\item \textbf{Positive higher factors are overcounted.}
+The covering proof marks a prime as covered if it divides any positive factor, regardless of
+whether the positive coefficient is large enough to cancel $c_k$.  This only weakens the
+lower bound and is therefore safe.
+
+\item \textbf{Prime powers are not omitted from exact integrality.}
+The finite ILP uses all $p^r$ through Legendre's formula.  The prime-window theorem needs only
+first powers because those already certify negative valuation.
+
+\item \textbf{No claim of a completed proof.}
+The remaining linear-width feasibility problem and the hybrid structural-prime bridge are
+stated as open targets.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos1944}
+L. Alaoglu and P. Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} 56 (1944), 448--469.
+
+\bibitem{UnifiedReport2026}
+V. Reshetnikov et al.,
+\newblock \emph{Unified progress report on the Alaoglu--Erd\H{o}s conjecture},
+\newblock supplied manuscript, August 22, 2026.
+
+\bibitem{Huxley1972}
+M. N. Huxley,
+\newblock On the difference between consecutive primes,
+\newblock \emph{Inventiones Mathematicae} 15 (1972), 164--170.
+
+\bibitem{MontgomeryVaughan2007}
+H. L. Montgomery and R. C. Vaughan,
+\newblock \emph{Multiplicative Number Theory I: Classical Theory},
+\newblock Cambridge Studies in Advanced Mathematics 97, Cambridge University Press, 2007.
+
+\end{thebibliography}
+
+\end{document}

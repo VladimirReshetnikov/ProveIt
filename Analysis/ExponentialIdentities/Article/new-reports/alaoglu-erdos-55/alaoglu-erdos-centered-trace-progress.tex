@@ -1,0 +1,1806 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+
+\definecolor{proofgreen}{RGB}{15,105,68}
+\definecolor{openblue}{RGB}{24,91,145}
+\definecolor{computeviolet}{RGB}{98,55,145}
+\definecolor{quietgray}{RGB}{86,92,99}
+\definecolor{codegray}{RGB}{248,248,248}
+\definecolor{rulegray}{RGB}{92,101,111}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=openblue,
+  citecolor=proofgreen,
+  urlcolor=openblue,
+  pdftitle={Centered Cyclotomic Trace Dynamics at the Alaoglu--Erdos Barrier},
+  pdfauthor={OpenAI GPT-5.6 Pro, for the ProveIt project},
+  pdfsubject={Exact rational superattraction, valuation transport, and fifth-trace cross-gap reductions}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Centered cyclotomic trace dynamics}
+\rhead{Alaoglu--Erd\H{o}s progress report}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.25em,itemsep=0.25em,topsep=0.35em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{criterion}[theorem]{Sufficient criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Exact computation}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Caution}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\height}{\operatorname{H}}
+\newcommand{\vp}[2]{v_{#1}\!\left(#2\right)}
+\newcommand{\Td}{T_d}
+\newcommand{\Tp}{T_p}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\statusproved}{\textcolor{proofgreen}{\textbf{[proved here]}}}
+\newcommand{\statuscomputed}{\textcolor{computeviolet}{\textbf{[exact computation]}}}
+\newcommand{\statusopen}{\textcolor{openblue}{\textbf{[open target]}}}
+\newcommand{\statusknown}{\textcolor{quietgray}{\textbf{[background]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.42em}
+\textbf{Status.} #1\par\vspace{0.32em}}
+{\vspace{0.32em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{1.1cm}
+{\Huge\bfseries Centered Cyclotomic Trace Dynamics\par}
+\vspace{0.2cm}
+{\Huge\bfseries at the Alaoglu--Erd\H{o}s Barrier\par}
+\vspace{0.7cm}
+{\LARGE Exact Rational Superattraction, Prime-Support Transport,\par}
+\vspace{0.12cm}
+{\LARGE and a Two-Channel Fifth-Trace Reduction\par}
+\vspace{1.2cm}
+{\large A focused progress addendum to the unified ProveIt report\par}
+\vfill
+\begin{minipage}{0.90\textwidth}
+\small
+\textbf{Main outcome.}
+Assume hypothetically that a noninteger \(\beta\) has
+\(M=2^\beta\) and \(A=3^\beta\) integral.  Every rational approximation
+\(p/q\) to \(\beta\) then gives synchronized rational near-units
+\[
+ z_2=M^q/2^p=2^{q\beta-p},\qquad
+ z_3=A^q/3^p=3^{q\beta-p}=z_2^{\log_2 3}.
+\]
+This addendum studies a new family of arithmetic amplifiers on those near-units,
+\[
+ T_{2h+1}(z)=\frac1{2h+1}\sum_{j=-h}^{h}z^j.
+\]
+The cubic trace \(T_3\) is an exact rational superattractor:
+\(T_3(z)-1=(z-1)^2/(3z)\).  On reduced fractions it squares the defect numerator,
+doubles every nonstructural prime valuation, and introduces no new defect prime.
+Its local contact order and rational height degree are both two, so iteration is
+\emph{exactly critical}: the extraordinary real contraction is paid for by equally fast
+height growth.
+
+The first higher trace, \(T_5\), introduces the positive factor
+\(F(a,b)=a^2+3ab+b^2\).  For two reduced rational branches it obeys the new identity
+\[
+ cdF(a,b)-abF(c,d)=(ad-bc)(ac-bd).
+\]
+After the structural factor \(5\) is removed, every shared prime of the two
+\(T_5\)-defect factors belongs uniquely to one of two channels: the direct cross-gap
+\(ad-bc\), or the reciprocal cross-gap \(ac-bd\).  For the Alaoglu--Erd\H{o}s
+near-units these become the explicitly synchronized binomial gaps
+\[
+ \begin{aligned}
+  &3^pM^q-2^pA^q,\\
+  &(MA)^q-6^p.
+ \end{aligned}
+\]
+Thus the first trace level capable of creating new arithmetic support does not leave an
+unstructured cancellation problem; it reduces it to two concrete gap families.
+
+No proof of the conjecture is asserted.  The gain is an exact new mechanism, a complete
+height and valuation audit showing why its critical branch stops, and a sharply localized
+next target for common-divisor, Kummer, or \(S\)-unit methods.
+\end{minipage}
+\vfill
+{\large August 22, 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+\begin{abstract}
+Let \(\thetaAE=\log_2 3\).  The Alaoglu--Erd\H{o}s conjecture asks whether
+\(2^x,3^x\in\Z\) forces \(x\in\Z\).  This report is deliberately narrower than the
+supplied unified report: it does not repeat the conditional solution monoid, determinant
+hierarchy, Kummer analysis, interpolation theory, carry languages, or finite scans.  Instead
+it develops a new centered-cyclotomic trace construction on the synchronized rational
+near-units forced by one hypothetical counterexample.
+
+For every odd \(d=2h+1\), the map
+\[
+ T_d(z)=d^{-1}\sum_{j=-h}^{h}z^j
+       =\frac{\sinh(d t/2)}{d\sinh(t/2)}\quad(z=e^t)
+\]
+has a quadratic fixed-point contact at \(z=1\), a factorization into centered cyclotomic
+polynomials, and the Bernoulli--Jordan expansion
+\[
+ \log T_d(e^t)=\sum_{r\ge1}
+ \frac{B_{2r}(d^{2r}-1)}{2r(2r)!}\,t^{2r}.
+\]
+For a reduced positive fraction \(a/b\), all cancellation in \(T_d(a/b)\) is exactly
+\(\gcd(S_d(a,b),d)\), where \(S_d=(a^d-b^d)/(a-b)\); in particular it is bounded by
+\(d\).  The exact defect factorization is
+\[
+ S_d(a,b)-d(ab)^h=(a-b)^2P_d(a,b),
+\]
+\[
+ P_d(a,b)=\sum_{j=1}^{h}(ab)^{h-j}
+ \left(\frac{a^j-b^j}{a-b}\right)^2>0.
+\]
+The rational-map degree is \(d-1\), while the local multiplicity is two.  Consequently every
+composition of positive cyclic traces has contact-to-degree ratio at most one, with equality
+only for a pure composition of \(T_3\).
+
+The critical map \(T_3\) admits a complete reduced-fraction dynamics.  If
+\(z_k=a_k/b_k\), \(u_k=a_k-b_k\), then
+\[
+ u_{k+1}=u_k^2/3^{\mathbf1_{3\mid u_k}},
+\]
+and hence, outside \(3\), every valuation doubles exactly and no new prime enters the
+defect.  At the same time \(\log H(z_k)=2^k\log H(z_0)+O(2^k)\), while
+\(T_3^{\circ k}(e^t)-1=3^{1-2^k}t^{2^k}(1+O_k(t^2))\).  Applied to the synchronized
+dyadic and triadic near-units, this produces rational approximants to
+\(\thetaAE^{2^k}\), but their relative error remains only \(O_k((q\beta-p)^2)\) and their
+height grows on the critical \(2^k\) scale.
+
+For odd primes \(p\ge5\), the structural reduction can also be determined exactly:
+\(P_p(a,b)\equiv(a-b)^{p-3}\pmod p\), and if \(p\mid a-b\) then
+\(v_p(P_p(a,b))=1\).  Removing that one factor leaves a \(p\)-free new defect factor.
+At \(p=5\), this factor is the reciprocal quadratic \(a^2+3ab+b^2\), and the identity above
+splits every common prime between two rational branches into direct and reciprocal channels,
+with no overlap after structural normalization.  This is the first nontrivial trace level
+and the principal new arithmetic reduction of the report.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Scope, notation, and the synchronized rational germ}
+\label{sec:scope}
+
+\subsection{The conjecture and the narrow purpose of this addendum}
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s]
+For every real \(x\),
+\[
+ 2^x\in\Z\quad\hbox{and}\quad3^x\in\Z
+ \qquad\Longrightarrow\qquad x\in\Z.
+\]
+\end{conjecture}
+
+The supplied unified report already gives an extensive conditional structure theory and
+pushes determinant, interpolation, valuation, Kummer, compact-orbit, digit, special-function,
+and finite-verification methods to explicit barriers.  Repeating those reductions would add
+bulk rather than information.  The present report starts from only the minimal hypothetical
+data
+\begin{equation}
+ \beta\notin\Z,\qquad M=2^\beta\in\N,\qquad A=3^\beta\in\N,
+ \label{eq:hypothesis}
+\end{equation}
+and asks whether one can turn rational approximants to \(\beta\) into an arithmetic
+contraction stronger than ordinary secants or determinants.
+
+The answer is two-sided.  A centered trace map gives spectacular exact contraction and an
+unexpectedly rigid prime-valuation law.  The same exact formulas prove that the best positive
+trace is only critical, not supercritical.  The next trace then reveals a new common-divisor
+interface which is arithmetically nontrivial but sharply localized.
+
+\begin{statusbox}{All theorem statements labeled \statusproved{} below have complete
+self-contained proofs in this document.  Computer tables are independently regenerated by
+the exact-integer script in Appendix~\ref{app:code}.  Statements explicitly called targets
+are not used as theorems.}
+\end{statusbox}
+
+\subsection{A counterexample supplies rational points approaching one}
+
+A nonintegral rational \(\beta=r/s\) in lowest terms cannot satisfy
+\(2^\beta\in\Z\): from \((2^\beta)^s=2^r\), unique factorization forces \(s\mid r\).
+Thus every hypothetical \(\beta\) in~\eqref{eq:hypothesis} is irrational, without invoking
+transcendence theory.
+
+For integers \(q\ge1\) and \(p\), put
+\begin{equation}
+ \delta_{p,q}=q\beta-p,
+ \qquad z_{2;p,q}=\frac{M^q}{2^p},
+ \qquad z_{3;p,q}=\frac{A^q}{3^p}.
+ \label{eq:synchronized-germ}
+\end{equation}
+
+\begin{proposition}[Synchronized rational germ]
+\label{prop:germ}
+Under~\eqref{eq:hypothesis},
+\begin{equation}
+ z_{2;p,q}=2^{\delta_{p,q}}\in\Q_{>0},\qquad
+ z_{3;p,q}=3^{\delta_{p,q}}\in\Q_{>0},\qquad
+ z_{3;p,q}=z_{2;p,q}^{\thetaAE},
+ \quad \thetaAE=\frac{\log3}{\log2}.
+ \label{eq:germ-relations}
+\end{equation}
+Along the continued-fraction convergents \(p/q\) to \(\beta\), both rational numbers tend to
+one, from alternating sides, and they use the same infinitesimal parameter \(\delta_{p,q}\).
+\end{proposition}
+
+\begin{proof}
+The first two identities follow from \(M=2^\beta\) and \(A=3^\beta\).  The third is
+\((2^\delta)^{\log_2 3}=3^\delta\).  Convergents satisfy
+\(q\beta-p\to0\), with alternating sign for an irrational \(\beta\).
+\end{proof}
+
+The essential point is arithmetic, not merely analytic: the same small real parameter is
+encoded by two rational numbers whose reduced denominators are supported at the structural
+primes two and three.  We shall apply rational maps to the pair
+\((z_{2;p,q},z_{3;p,q})\) and audit both the real contraction and the exact reduced
+numerators.
+
+\subsection{How this differs from the existing secant construction}
+
+The unified report studies the rational symmetric secant
+\(\sinh(xh)/\sinh h\), where the unknown exponent \(x\) occupies the dilation slot and the
+small parameter is a \(2,3\)-unit.  Here the dilation is an auxiliary \emph{odd integer}
+\(d\), while the rational near-unit \(z\) is the dynamical variable.  This reversal has two
+consequences absent from the secant formulation:
+\begin{enumerate}
+\item the map can be iterated as a rational self-map of \(\mathbb P^1\);
+\item reduction of every iterate can be followed prime by prime using integer polynomial
+identities.
+\end{enumerate}
+The analytic kernel is related, but the arithmetic problem and the resulting recurrences are
+different.
+
+\section{Centered cyclic traces and their cyclotomic resolution}
+\label{sec:trace}
+
+\subsection{Definition and elementary real geometry}
+
+\begin{definition}[Centered cyclic trace]
+For an odd integer \(d=2h+1\ge3\), define
+\begin{equation}
+ T_d(z)=\frac1d\sum_{j=-h}^{h}z^j
+ =\frac{z^{-h}(z^d-1)}{d(z-1)},
+ \label{eq:Td-definition}
+\end{equation}
+with the removable value \(T_d(1)=1\).
+\end{definition}
+
+The terminology comes from averaging the characters of the \(d\)-dimensional cyclic weight
+string \(-h,-h+1,\ldots,h\).  It is also a normalized, centered \(q\)-integer.
+
+\begin{proposition}[Reciprocity, positivity, and hyperbolic form]
+\label{prop:basic-trace}
+For \(z>0\),
+\begin{align}
+ T_d(z^{-1})&=T_d(z),\label{eq:reciprocity}\
+ T_d(z)&\ge1,\quad\hbox{with equality exactly at }z=1,\label{eq:AMGM}\
+ T_d(e^t)&=\frac{\sinh(dt/2)}{d\sinh(t/2)}.\label{eq:hyperbolic}
+\end{align}
+In particular, \(z=1\) is a fixed point of local multiplicity two.
+\end{proposition}
+
+\begin{proof}
+Reciprocity reverses the summation index.  The product of the \(d\) positive summands
+\(z^{-h},\ldots,z^h\) is one, so their arithmetic mean is at least one, with equality
+only when every summand is one.  Summing the finite geometric progression after writing
+\(z=e^t\) gives~\eqref{eq:hyperbolic}.  The right side is an even analytic function of
+\(t\), with nonzero quadratic term by Theorem~\ref{thm:bernoulli-trace} below.
+\end{proof}
+
+For \(d=3\) there are two identities worth displaying immediately:
+\begin{equation}
+ T_3(z)=\frac{z^2+z+1}{3z},
+ \qquad
+ T_3(z)-1=\frac{(z-1)^2}{3z}.
+ \label{eq:T3-exact}
+\end{equation}
+Thus the fixed point is not merely quadratic in a Taylor approximation: its defect is an
+exact square in the rational function field.
+
+\subsection{The Bernoulli expansion}
+
+Let \(B_n\) denote the Bernoulli numbers with \(B_2=1/6\), \(B_4=-1/30\).
+
+\begin{theorem}[Exact logarithmic expansion]
+\label{thm:bernoulli-trace}
+As a convergent expansion for \(|t|<2\pi/d\), and also as a formal power series,
+\begin{equation}
+ \boxed{
+ \log T_d(e^t)=\sum_{r\ge1}
+ \frac{B_{2r}(d^{2r}-1)}{2r(2r)!}\,t^{2r}.}
+ \label{eq:Bernoulli-trace}
+\end{equation}
+In particular,
+\begin{equation}
+ \log T_d(e^t)=\frac{d^2-1}{24}t^2
+ -\frac{d^4-1}{2880}t^4+O_d(t^6).
+ \label{eq:trace-first-terms}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The classical formal identity
+\[
+ \log\frac{e^u-1}{u}=\frac u2+
+ \sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}u^{2r}
+\]
+gives
+\[
+ \log T_d(e^t)=-\frac{d-1}{2}t
+ +\log\frac{e^{dt}-1}{dt}-\log\frac{e^t-1}{t}.
+\]
+The linear terms cancel, and the even coefficients are exactly those in
+\eqref{eq:Bernoulli-trace}.
+\end{proof}
+
+The cancellation of the linear term is the analytic source of the quadratic defect.  The
+next subsection identifies its arithmetic source.
+
+\subsection{Centered cyclotomic factors and Jordan totients}
+
+For \(n>1\), define the centered cyclotomic factor
+\begin{equation}
+ \mathscr C_n(z)=z^{-\varphi(n)/2}\Phi_n(z).
+ \label{eq:centered-cyclotomic}
+\end{equation}
+When \(n\) is odd, \(\varphi(n)\) is even and this is a rational Laurent polynomial invariant
+under \(z\mapsto z^{-1}\).
+
+\begin{theorem}[Cyclotomic resolution of the trace]
+\label{thm:cyclotomic-resolution}
+For every odd \(d\ge3\),
+\begin{equation}
+ \boxed{
+ T_d(z)=\frac1d\prod_{\substack{n\mid d\\n>1}}\mathscr C_n(z).}
+ \label{eq:trace-cyclotomic-factorization}
+\end{equation}
+Moreover, with the Jordan totient
+\[
+ J_m(n)=\sum_{e\mid n}\mu(n/e)e^m,
+\]
+one has
+\begin{equation}
+ \log\mathscr C_n(e^t)
+ =\log\Phi_n(1)+
+ \sum_{r\ge1}\frac{B_{2r}J_{2r}(n)}{2r(2r)!}t^{2r}.
+ \label{eq:Jordan-cyclotomic-expansion}
+\end{equation}
+Summing~\eqref{eq:Jordan-cyclotomic-expansion} over \(n\mid d\), \(n>1\), recovers
+Theorem~\ref{thm:bernoulli-trace} from the divisor identity
+\(\sum_{n\mid d}J_m(n)=d^m\).
+\end{theorem}
+
+\begin{proof}
+The ordinary factorization
+\(z^d-1=(z-1)\prod_{n\mid d,n>1}\Phi_n(z)\), together with
+\(\sum_{n\mid d,n>1}\varphi(n)=d-1\), gives
+\eqref{eq:trace-cyclotomic-factorization}.  For the expansion, use
+\[
+ \Phi_n(e^t)=\prod_{e\mid n}(e^{et}-1)^{\mu(n/e)}.
+\]
+Because \(n>1\), the sum of the M\"obius exponents is zero.  The constant product is
+\(\Phi_n(1)\), the centered linear term is canceled by
+\(-\varphi(n)t/2\), and the coefficient of \(t^{2r}\) is the M\"obius sum
+\(J_{2r}(n)\).  Finally, summing Jordan totients over divisors gives \(d^{2r}-1\) after
+removing the divisor one.
+\end{proof}
+
+\begin{remark}[Why this is a Witt/necklace-adjacent construction]
+The necklace polynomial
+\[
+ \mathcal N_n(X)=\frac1n\sum_{e\mid n}\mu(e)X^{n/e}
+\]
+is integer-valued on integers and is a standard coordinate in the necklace/Witt formalism
+\cite{MetropolisRota1983}.  But for \(n>1\),
+\[
+ \mathcal N_n(1)=0,
+ \qquad \mathcal N_n'(1)=\sum_{e\mid n}\frac{\mu(e)}e=\frac{\varphi(n)}n\ne0.
+\]
+Raw necklace coordinates therefore have only first-order contact at one.  Centering by
+reciprocity is exactly what removes that first-order term.  The trace maps are not being
+presented as a new construction of the Witt ring; rather, the Witt/necklace factorization
+explains why the cyclotomic pieces and Jordan totients appear, and why ordinary ghost
+coordinates do not supply the desired superattraction.
+\end{remark}
+
+\section{Exact rational arithmetic of the trace maps}
+\label{sec:rational-arithmetic}
+
+\subsection{All denominator cancellation is structural}
+
+For odd \(d=2h+1\), put
+\begin{equation}
+ S_d(a,b)=\frac{a^d-b^d}{a-b}
+ =a^{d-1}+a^{d-2}b+\cdots+b^{d-1}.
+ \label{eq:Sd}
+\end{equation}
+
+\begin{theorem}[Exact reduced denominator]
+\label{thm:exact-denominator}
+Let \(a,b\in\N\) be coprime.  Then
+\begin{equation}
+ T_d(a/b)=\frac{S_d(a,b)}{d(ab)^h}.
+ \label{eq:rational-Td}
+\end{equation}
+Furthermore
+\begin{equation}
+ \gcd(S_d(a,b),ab)=1,
+ \qquad
+ \gcd\bigl(S_d(a,b),d(ab)^h\bigr)=g_d(a,b),
+ \label{eq:exact-gd}
+\end{equation}
+where
+\begin{equation}
+ g_d(a,b)=\gcd(S_d(a,b),d)\mid d.
+ \label{eq:gd-definition}
+\end{equation}
+Thus reduction of \(T_d(a/b)\) can cancel only a divisor of the fixed integer \(d\); no
+prime carried by \(a\) or \(b\) cancels.
+\end{theorem}
+
+\begin{proof}
+Substitution into~\eqref{eq:Td-definition} gives~\eqref{eq:rational-Td}.  Modulo \(a\), the
+sum \(S_d(a,b)\) is \(b^{d-1}\), and modulo \(b\) it is \(a^{d-1}\).  Coprimality of
+\(a,b\) therefore gives the first identity in~\eqref{eq:exact-gd}; the second follows
+immediately.
+\end{proof}
+
+This exact audit is stronger than a generic height estimate.  In particular, any hoped-for
+large cancellation in the trace denominator must occur only after two branches are compared;
+it cannot be hidden inside one trace value.
+
+\subsection{A positive sum-of-squares defect factor}
+
+\begin{theorem}[Exact defect factorization]
+\label{thm:defect-factorization}
+For odd \(d=2h+1\ge3\), define
+\begin{equation}
+ P_d(a,b)=\sum_{j=1}^{h}(ab)^{h-j}
+ \left(\frac{a^j-b^j}{a-b}\right)^2.
+ \label{eq:Pd-sos}
+\end{equation}
+Then \(P_d\in\Z[a,b]\) is a symmetric, positive homogeneous polynomial of degree \(d-3\),
+and
+\begin{equation}
+ \boxed{
+ S_d(a,b)-d(ab)^h=(a-b)^2P_d(a,b).}
+ \label{eq:defect-factorization}
+\end{equation}
+If \(T_d(a/b)=a'/b'\) is reduced and \(u=a-b\), then
+\begin{equation}
+ a'-b'=\frac{u^2P_d(a,b)}{g_d(a,b)}.
+ \label{eq:reduced-defect-general}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From reciprocity,
+\begin{align*}
+ T_d(z)-1
+ &=\frac1d\sum_{j=1}^{h}(z^j+z^{-j}-2)\\
+ &=\frac1d\sum_{j=1}^{h}\frac{(z^j-1)^2}{z^j}.
+\end{align*}
+Substituting \(z=a/b\), extracting \((a-b)^2\), and putting the terms over the common
+denominator \((ab)^h\) gives
+\[
+ T_d(a/b)-1=\frac{(a-b)^2P_d(a,b)}{d(ab)^h}.
+\]
+Comparison with~\eqref{eq:rational-Td} proves~\eqref{eq:defect-factorization}; division by
+the exact reduction factor \(g_d\) proves~\eqref{eq:reduced-defect-general}.  Positivity on
+positive \(a,b\) is manifest in~\eqref{eq:Pd-sos}.
+\end{proof}
+
+Expanding the sum of squares gives a useful coefficient formula:
+\begin{equation}
+ P_{2h+1}(a,b)=
+ \sum_{r=0}^{2h-2}
+ \binom{\min(r,2h-2-r)+2}{2}a^{2h-2-r}b^r.
+ \label{eq:Pd-coefficients}
+\end{equation}
+The first cases are
+\begin{align}
+ P_3(a,b)&=1,\label{eq:P3}\
+ P_5(a,b)&=a^2+3ab+b^2,\label{eq:P5}\
+ P_7(a,b)&=a^4+3a^3b+6a^2b^2+3ab^3+b^4.\label{eq:P7}
+\end{align}
+Thus \(T_3\) is the unique member of the family whose defect is a pure square up to the
+fixed structural reduction.
+
+\subsection{Exact height degree}
+
+For a reduced positive rational \(z=a/b\), write
+\(H(z)=\max(a,b)\) and \(h(z)=\log H(z)\).
+
+\begin{theorem}[Height growth of one trace]
+\label{thm:height-growth}
+For coprime positive \(a,b\) and odd \(d\ge3\),
+\begin{equation}
+ \frac{H(a/b)^{d-1}}d
+ \le H\bigl(T_d(a/b)\bigr)
+ \le dH(a/b)^{d-1}.
+ \label{eq:height-growth}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \left|h(T_d(z))-(d-1)h(z)\right|\le\log d.
+ \label{eq:log-height-growth}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The \(d\) monomials in \(S_d\) have geometric mean \((ab)^h\), hence
+\(S_d\ge d(ab)^h\).  The reduced numerator therefore dominates the reduced denominator, so
+\(H(T_d(a/b))=S_d/g_d\).  If \(H=\max(a,b)\), then
+\(H^{d-1}\le S_d\le dH^{d-1}\), while \(1\le g_d\le d\).
+\end{proof}
+
+The analytic contact at one is always two; the arithmetic degree is \(d-1\).  This gives a
+sharp global comparison.
+
+\begin{theorem}[Unique criticality of the cubic trace]
+\label{thm:criticality}
+Let
+\[
+ \Psi=T_{d_m}\circ\cdots\circ T_{d_1},
+ \qquad d_i\ge3\text{ odd}.
+\]
+Then the local multiplicity of \(\Psi(z)-1\) at \(z=1\) is \(2^m\), while the degree of
+\(\Psi\) as a rational map of \(\mathbb P^1\) is
+\begin{equation}
+ \deg\Psi=\prod_{i=1}^{m}(d_i-1)\ge2^m.
+ \label{eq:composition-degree}
+\end{equation}
+Equality holds exactly when \(d_1=\cdots=d_m=3\).
+\end{theorem}
+
+\begin{proof}
+Each \(T_d(z)-1\) has a zero of exact order two by
+Theorem~\ref{thm:bernoulli-trace}; local multiplicities multiply under composition.  The
+reduced rational function \(T_d\) has numerator degree \(d-1\), denominator degree \(h\),
+and no common factor, so its map degree is \(d-1\).  Rational-map degrees also multiply.
+Since every \(d_i-1\ge2\), the final assertion follows.
+\end{proof}
+
+\begin{remark}[The contact/height verdict]
+A rational number differing from one is separated from one by at least the reciprocal of its
+reduced denominator.  Theorem~\ref{thm:criticality} says that no composition of positive
+cyclic traces can make local contact grow faster than rational degree.  The all-cubic
+composition reaches equality, so it deserves a complete arithmetic analysis; every use of a
+higher positive trace is subcritical before any cross-branch cancellation is considered.
+\end{remark}
+
+\section{The exact arithmetic dynamics of \texorpdfstring{$T_3$}{T3}}
+\label{sec:T3}
+
+\subsection{Reduced recurrence}
+
+Let \(z_0=a_0/b_0\in\Q_{>0}\) be reduced and define
+\(z_{k+1}=T_3(z_k)=a_{k+1}/b_{k+1}\) in lowest terms.  Put
+\begin{equation}
+ u_k=a_k-b_k,
+ \qquad
+ g_k=\gcd(a_k^2+a_kb_k+b_k^2,3).
+ \label{eq:T3-data}
+\end{equation}
+
+\begin{theorem}[Exact reduced cubic-trace dynamics]
+\label{thm:T3-recurrence}
+For every \(k\ge0\),
+\begin{align}
+ a_{k+1}&=\frac{a_k^2+a_kb_k+b_k^2}{g_k},
+ &b_{k+1}&=\frac{3a_kb_k}{g_k},\label{eq:T3-ab-recurrence}\\
+ u_{k+1}&=\frac{u_k^2}{g_k},
+ &g_k&=3^{\mathbf1_{3\mid u_k}}.\label{eq:T3-u-recurrence}
+\end{align}
+In particular, after the first step \(u_k\ge0\), and it is positive unless \(z_0=1\).
+\end{theorem}
+
+\begin{proof}
+The first line is Theorem~\ref{thm:exact-denominator} at \(d=3\).  Subtracting the two
+reduced coordinates and using
+\[
+ a_k^2+a_kb_k+b_k^2-3a_kb_k=(a_k-b_k)^2
+\]
+gives the defect recurrence.  Finally,
+\[
+ a_k^2+a_kb_k+b_k^2=(a_k-b_k)^2+3a_kb_k,
+\]
+so the numerator is divisible by three exactly when \(u_k\) is.
+\end{proof}
+
+\subsection{Closed-form valuation transport}
+
+\begin{theorem}[Exact prime-valuation law]
+\label{thm:T3-valuations}
+Let \(u_0\ne0\).  For every prime \(\ell\ne3\),
+\begin{equation}
+ v_\ell(u_k)=2^k v_\ell(u_0).
+ \label{eq:non3-valuations}
+\end{equation}
+At the structural prime three,
+\begin{equation}
+ v_3(u_k)=
+ \begin{cases}
+ 0,&v_3(u_0)=0,\\
+ 1+2^k\bigl(v_3(u_0)-1\bigr),&v_3(u_0)\ge1.
+ \end{cases}
+ \label{eq:3-valuation}
+\end{equation}
+Equivalently, for \(k\ge1\),
+\begin{equation}
+ |u_k|=
+ \begin{cases}
+ |u_0|^{2^k},&3\nmid u_0,\\
+ 3\left(|u_0|/3\right)^{2^k},&3\mid u_0.
+ \end{cases}
+ \label{eq:T3-closed-form}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For \(\ell\ne3\), equation~\eqref{eq:T3-u-recurrence} doubles the valuation.  If the
+initial three-adic valuation is zero, it remains zero and no factor three is removed.  If it
+is positive, the recurrence is \(s_{k+1}=2s_k-1\), whose solution is
+\(s_k=1+2^k(s_0-1)\).  Recombining all prime valuations gives
+\eqref{eq:T3-closed-form}.
+\end{proof}
+
+This law is unusually rigid.  Outside three, the support of the numerator defect is exactly
+constant and each existing valuation doubles.  At three, the support is again constant and
+only one valuation unit is lost at each squaring stage.
+
+\begin{corollary}[No new cross-orbit support]
+\label{cor:no-new-support}
+Let \(u_k\) and \(v_k\) be the defect numerators of two reduced \(T_3\)-orbits.  Then
+\begin{equation}
+ \rad_{\ne3}\gcd(u_k,v_k)
+ =\rad_{\ne3}\gcd(u_0,v_0),
+ \label{eq:radical-invariance}
+\end{equation}
+and for every \(\ell\ne3\),
+\begin{equation}
+ v_\ell\bigl(\gcd(u_k,v_k)\bigr)
+ =2^k v_\ell\bigl(\gcd(u_0,v_0)\bigr).
+ \label{eq:gcd-valuation-doubling}
+\end{equation}
+The structural prime three has the corresponding explicit law obtained by taking the minimum
+in~\eqref{eq:3-valuation}.
+\end{corollary}
+
+\begin{proof}
+Take the minimum of the two valuation formulas in
+Theorem~\ref{thm:T3-valuations}.
+\end{proof}
+
+Thus cubic iteration can magnify common arithmetic support already present in the two initial
+gaps, but it cannot manufacture a new common prime.  This is the exact reason that the most
+attractive trace map cannot by itself create the missing cross-base cancellation.
+
+\subsection{Real superattraction versus height growth}
+
+For \(z>1\), equation~\eqref{eq:T3-exact} gives \(T_3(z)>1\), while
+\begin{equation}
+ T_3(z)-z=-\frac{(2z+1)(z-1)}{3z}<0.
+ \label{eq:T3-monotone}
+\end{equation}
+Every positive real point other than one is therefore mapped above one and then decreases to
+one.
+
+\begin{theorem}[Archimedean basin and arithmetic escape]
+\label{thm:basin-height}
+For every \(z_0\in\Q_{>0}\setminus\{1\}\),
+\begin{equation}
+ T_3^{\circ k}(z_0)\longrightarrow1
+ \qquad(k\to\infty),
+ \label{eq:real-convergence}
+\end{equation}
+but its rational height tends to infinity doubly exponentially in the iteration count.  More
+precisely, if \(H_k=H(z_k)\), then
+\begin{equation}
+ \frac{H_k^2}{3}\le H_{k+1}\le3H_k^2,
+ \label{eq:T3-height-recurrence}
+\end{equation}
+and
+\begin{equation}
+ 2^k\log H_0-(2^k-1)\log3
+ \le\log H_k\le
+ 2^k\log H_0+(2^k-1)\log3.
+ \label{eq:T3-height-iterate}
+\end{equation}
+The limit
+\begin{equation}
+ \widehat h_3(z_0)=\lim_{k\to\infty}2^{-k}\log H_k
+ \label{eq:canonical-height}
+\end{equation}
+exists, is positive for \(z_0\ne1\), and satisfies
+\begin{equation}
+ \left|\widehat h_3(z_0)-\log H_0\right|
+ \le \log 3.
+ \label{eq:canonical-height-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The real convergence follows from~\eqref{eq:T3-monotone} and the positive fixed-point
+equation.  The height recurrence is Theorem~\ref{thm:height-growth} at \(d=3\), and its
+iteration gives~\eqref{eq:T3-height-iterate}.  The bounded difference
+\(|\log H_{k+1}-2\log H_k|\le\log3\) makes \(2^{-k}\log H_k\) Cauchy and proves the
+bound on its limit.  For a nontrivial reduced positive fraction, the first image has height at
+least seven; applying the lower recurrence from that point gives a positive limiting lower
+bound.
+\end{proof}
+
+The map is therefore an explicit arithmetic-dynamical paradox only in appearance: it is a
+superattractor at the real place, while its global height escapes with exactly the map degree.
+The product formula pays for the real contraction at other places and in the growing
+numerator/denominator support.
+
+\subsection{Exact error recurrence and critical saturation}
+
+Put \(\varepsilon_k=z_k-1\) after the first iterate, so \(\varepsilon_k>0\).  Then
+\begin{equation}
+ \varepsilon_{k+1}=\frac{\varepsilon_k^2}{3(1+\varepsilon_k)}.
+ \label{eq:epsilon-recurrence}
+\end{equation}
+If \(0<\varepsilon_k\le1\),
+\begin{equation}
+ \frac{\varepsilon_k^2}{6}
+ \le\varepsilon_{k+1}\le
+ \frac{\varepsilon_k^2}{3}.
+ \label{eq:epsilon-bounds}
+\end{equation}
+At the same time, because \(\varepsilon_k=(a_k-b_k)/b_k\) is reduced as a rational
+difference,
+\begin{equation}
+ \varepsilon_k\ge\frac1{b_k}\ge\frac1{H_k}.
+ \label{eq:rational-separation}
+\end{equation}
+The superattraction and the rational-separation floor therefore live on the same \(2^k\)
+logarithmic scale.
+
+\begin{proposition}[Leading local iterate]
+\label{prop:T3-local-iterate}
+For every fixed \(k\ge1\),
+\begin{equation}
+ T_3^{\circ k}(e^t)-1
+ =3^{1-2^k}t^{2^k}\bigl(1+O_k(t^2)\bigr).
+ \label{eq:T3-local-iterate}
+\end{equation}
+More precisely, if the relative quadratic correction is denoted by \(\alpha_k\), then
+\begin{equation}
+ \alpha_1=\frac1{12},
+ \qquad
+ \alpha_k=-\frac{2^{k-3}}3\quad(k\ge2).
+ \label{eq:alpha-k}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The first step is
+\[
+ T_3(e^t)-1=\frac{t^2}{3}\left(1+\frac{t^2}{12}+O(t^4)\right).
+\]
+Substitute an expansion \(c_kt^{2^k}(1+\alpha_kt^2+O_k(t^4))\) into
+\eqref{eq:epsilon-recurrence}.  The leading constants satisfy
+\(c_{k+1}=c_k^2/3\), giving \(c_k=3^{1-2^k}\).  At the transition from \(k=1\) to
+\(k=2\), the denominator contributes at relative order \(t^2\), producing
+\(\alpha_2=-1/6\); afterward that denominator correction starts at order at least \(t^4\),
+so \(\alpha_{k+1}=2\alpha_k\).
+\end{proof}
+
+\subsection{Exact numerical illustration}
+
+Table~\ref{tab:T3-orbits} was generated using only integer recurrence
+\eqref{eq:T3-ab-recurrence}.  The first orbit begins with unit defect and nearly saturates
+\(-\log_{10}|z_k-1|\le\log_{10}H_k\) at every stage.  The second begins with defect three;
+Theorem~\ref{thm:T3-valuations} keeps the reduced defect equal to three forever.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}c r r r r@{}}
+\toprule
+Initial fraction & \(k\) & \(\log_{10}H_k\) &
+\(-\log_{10}|z_k-1|\) & \(|u_k|\)\\
+\midrule
+\(1000001/1000000\) &0&6.000000&6.000000&1\\
+&1&12.477122&12.477121&1\\
+&2&25.431364&25.431364&1\\
+&3&51.339849&51.339849&1\\
+&4&103.156819&103.156819&1\\
+\addlinespace
+\(1000003/1000000\) &0&6.000001&5.522879&3\\
+&1&12.477124&12.000002&3\\
+&2&25.431369&24.954247&3\\
+&3&51.339858&50.862737&3\\
+&4&103.156837&102.679716&3\\
+\bottomrule
+\end{tabular}
+\caption{Exact cubic-trace orbits.  The decimal columns are displays of exact integer
+fractions, not floating-point evidence for any theorem.}
+\label{tab:T3-orbits}
+\end{table}
+
+\section{Applying the cubic trace to a hypothetical counterexample}
+\label{sec:synchronized-T3}
+
+Fix \(p,q\) and abbreviate the synchronized germ of Proposition~\ref{prop:germ} by
+\[
+ z_2=2^\delta,\qquad z_3=3^\delta,
+ \qquad \delta=q\beta-p.
+\]
+For \(k\ge1\), put
+\begin{equation}
+ E_{2,k}=T_3^{\circ k}(z_2)-1,
+ \qquad
+ E_{3,k}=T_3^{\circ k}(z_3)-1.
+ \label{eq:synchronized-errors}
+\end{equation}
+Both are positive rationals, even when \(\delta<0\), because the first trace is reciprocal
+and strictly above one off the fixed point.
+
+\subsection{A tower of rational approximants to powers of \texorpdfstring{$\thetaAE$}{theta}}
+
+\begin{theorem}[Trace-tower approximants]
+\label{thm:tower-approximants}
+For every fixed \(k\ge1\),
+\begin{equation}
+ R_{k;p,q}:=\frac{E_{3,k}}{E_{2,k}}\in\Q_{>0},
+ \label{eq:Rkpq}
+\end{equation}
+and, as \(\delta\to0\),
+\begin{equation}
+ R_{k;p,q}
+ =\thetaAE^{2^k}
+ \left(1+\alpha_k\bigl((\log3)^2-(\log2)^2\bigr)\delta^2
+ +O_k(\delta^4)\right),
+ \label{eq:tower-approximation}
+\end{equation}
+where \(\alpha_k\) is given by~\eqref{eq:alpha-k}.
+\end{theorem}
+
+\begin{proof}
+Rationality follows because \(T_3\in\Q(z)\).  Apply
+Proposition~\ref{prop:T3-local-iterate} first with \(t=\delta\log3\) and then with
+\(t=\delta\log2\); the leading constants cancel in the ratio.
+\end{proof}
+
+The striking contact \(2^k\) in each individual error does \emph{not} give approximation
+order \(2^k\) for the ratio.  The first relative correction is always quadratic in
+\(\delta\).  Increasing \(k\) changes the target from \(\thetaAE^2\) to
+\(\thetaAE^{2^k}\), and eventually enlarges the correction coefficient; it does not turn a
+continued-fraction error into a super-Dirichlet approximation.
+
+\subsection{Height accounting}
+
+For convergents \(p/q\), the logarithmic heights of \(z_2,z_3\) are \(O_{M,A}(q)\).  By
+Theorem~\ref{thm:basin-height},
+\begin{equation}
+ h\bigl(T_3^{\circ k}(z_i)\bigr)=O_{M,A}(2^kq)
+ \qquad(i=2,3).
+ \label{eq:tower-height}
+\end{equation}
+The same upper scale holds for the rational ratio \(R_{k;p,q}\).  Continued fractions give
+\(|\delta|<1/q_{\mathrm{next}}\), but the trace tower has improved neither the order in
+\(\delta\) nor the exponential height scale.  More decisively, for fixed \(M\), a standard
+linear-form-in-logarithms estimate applied to \(q\log M-p\log2\) gives an effective lower
+bound \(|\delta|\gg_{M}q^{-C_M}\) for some constant \(C_M\)
+\cite{BakerWustholz2007}.  Thus the error in~\eqref{eq:tower-approximation} is only of
+polynomial scale in \(q\), whereas the value height is exponential in \(q\) and in \(2^k\).
+No ordinary rational-separation argument closes that gap.
+
+There is an even more exact obstruction.  Write the initial reduced defect numerators of
+\(z_2,z_3\) as \(u_2,u_3\).  Corollary~\ref{cor:no-new-support} says that cubic iteration
+creates no common prime outside three.  Hence any exceptional cancellation in
+\(R_{k;p,q}\) must already be encoded in the original synchronized binomial gaps.  Iteration
+only raises their common valuations to powers.
+
+\begin{target}[What would make the cubic trace useful]
+A successful cubic-trace argument must supply a genuinely cross-branch theorem about the
+initial reduced gaps of \(M^q/2^p\) and \(A^q/3^p\).  Neither the real superattraction nor
+the iteration itself can create that theorem: the exact valuation law proves that all
+nonstructural shared support is inherited from stage zero.
+\end{target}
+
+This negative conclusion is useful because it is exact.  It rules out an entire class of
+``iterate until the rational number is too close to one'' arguments without relying on a
+loose height estimate.
+
+\section{Odd prime traces and structural-prime normalization}
+\label{sec:prime-traces}
+
+The cubic trace is exceptional, but the prime traces admit another exact theorem which
+prepares the fifth-trace bridge.
+
+Let \(p=2h+1\) be an odd prime.  Keep the notation \(S_p,P_p,g_p\) from
+Sections~\ref{sec:rational-arithmetic}--\ref{sec:T3}.
+
+\begin{theorem}[Prime-trace congruence]
+\label{thm:prime-trace-congruence}
+In \(\mathbb F_p[a,b]\),
+\begin{equation}
+ \boxed{P_p(a,b)\equiv(a-b)^{p-3}\pmod p.}
+ \label{eq:Pp-mod-p}
+\end{equation}
+For coprime positive integers \(a,b\),
+\begin{equation}
+ g_p(a,b)=
+ \begin{cases}
+ p,&p\mid a-b,\\
+ 1,&p\nmid a-b.
+ \end{cases}
+ \label{eq:gp-prime}
+\end{equation}
+If \(p\ge5\) and \(p\mid a-b\), then
+\begin{equation}
+ v_p(P_p(a,b))=1.
+ \label{eq:Pp-exact-valuation}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Freshman's dream gives
+\[
+ S_p(a,b)=\frac{a^p-b^p}{a-b}\equiv(a-b)^{p-1}\pmod p.
+\]
+Reducing~\eqref{eq:defect-factorization} modulo \(p\) and canceling the polynomial
+\((a-b)^2\) proves~\eqref{eq:Pp-mod-p}.  The same congruence for \(S_p\) proves
+\eqref{eq:gp-prime}.
+
+Suppose now \(p\ge5\) and \(a\equiv b\pmod p\).  Coprimality makes \(b\) a \(p\)-adic
+unit.  At the diagonal,
+\begin{align*}
+ P_p(b,b)
+ &=b^{p-3}\sum_{j=1}^{h}j^2
+ =b^{p-3}\frac{h(h+1)(2h+1)}6\\
+ &=p\,b^{p-3}\frac{p^2-1}{24},
+\end{align*}
+which has exact \(p\)-adic valuation one.  By~\eqref{eq:Pp-mod-p}, the first derivative of
+\(P_p(a,b)\) with respect to \(a\) vanishes on the diagonal modulo \(p\) (the exponent
+\(p-3\) is at least two).  Hence replacing \(a=b\) by any \(a\equiv b\pmod p\) changes
+\(P_p\) only modulo \(p^2\).  Its valuation remains exactly one.
+\end{proof}
+
+\begin{corollary}[Normalized new prime-trace factor]
+\label{cor:normalized-prime-factor}
+For \(p\ge5\), define
+\begin{equation}
+ C_p(a,b)=\frac{P_p(a,b)}{p^{\mathbf1_{p\mid a-b}}}.
+ \label{eq:Cp}
+\end{equation}
+Then \(C_p(a,b)\in\N\), \(p\nmid C_p(a,b)\), and if
+\(T_p(a/b)=a'/b'\) is reduced, its defect satisfies
+\begin{equation}
+ a'-b'=(a-b)^2C_p(a,b).
+ \label{eq:prime-reduced-defect}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:prime-trace-congruence} shows that the structural reduction factor
+\(g_p\) is precisely the one factor of \(p\) carried by \(P_p\).  Substitute into
+\eqref{eq:reduced-defect-general}.
+\end{proof}
+
+At \(p=3\), \(P_3=1\) and the structural factor is instead removed directly from the square
+\((a-b)^2\), producing the exceptional recurrence of Section~\ref{sec:T3}.  At every prime
+\(p\ge5\), the structural prime is canceled out of the new factor, leaving the old defect
+valuation to double without loss.
+
+\subsection{The first three levels}
+
+The prime-trace hierarchy now has a clean interpretation:
+\begin{center}
+\small
+\begin{tabular}{@{}c c c c@{}}
+\toprule
+Trace & Map degree & New normalized factor & Arithmetic character\\
+\midrule
+\(T_3\)&2&1&pure defect squaring; no new support\\
+\(T_5\)&4&normalized \(a^2+3ab+b^2\)&one reciprocal quadratic; two channels\\
+\(T_7\)&6&normalized reciprocal quartic&extension-field channels already appear\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The fifth trace is therefore the first place where a positive trace can introduce new defect
+primes, and also the last place where the new factor is a single rational reciprocal
+quadratic.  That combination makes it the natural next object to audit exactly.
+
+\section{The fifth trace and the two cross-gap channels}
+\label{sec:T5}
+
+\subsection{The normalized fifth-trace factor}
+
+Set
+\begin{equation}
+ F(a,b)=a^2+3ab+b^2,
+ \qquad
+ C(a,b)=\frac{F(a,b)}{5^{\mathbf1_{5\mid a-b}}}.
+ \label{eq:F-C}
+\end{equation}
+By Corollary~\ref{cor:normalized-prime-factor}, \(C(a,b)\) is an integer not divisible by
+five.  The exact fifth-trace defect is
+\begin{equation}
+ T_5(a/b)-1
+ =\frac{(a-b)^2F(a,b)}{5a^2b^2},
+ \label{eq:T5-defect-unreduced}
+\end{equation}
+and after fraction reduction,
+\begin{equation}
+ a'-b'=(a-b)^2C(a,b).
+ \label{eq:T5-defect-reduced}
+\end{equation}
+
+Thus \(C(a,b)\) is precisely the genuinely new prime-support contribution of the first
+noncritical trace.
+
+\subsection{A reciprocal-quadratic identity}
+
+The key algebraic identity is more general than the coefficient three.
+
+\begin{lemma}[Reciprocal quadratic bridge]
+\label{lem:quadratic-bridge}
+For
+\[
+ F_\lambda(a,b)=a^2+\lambda ab+b^2
+\]
+and arbitrary commutative-ring elements \(a,b,c,d,\lambda\),
+\begin{equation}
+ \boxed{
+ cdF_\lambda(a,b)-abF_\lambda(c,d)
+ =(ad-bc)(ac-bd).}
+ \label{eq:quadratic-bridge}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put formally \(r=a/b\), \(s=c/d\).  The identity is the homogeneous clearing of
+\[
+ s(r^2+\lambda r+1)-r(s^2+\lambda s+1)
+ =(r-s)(rs-1).
+\]
+A direct expansion proves it over an arbitrary commutative ring, without requiring division.
+\end{proof}
+
+The coefficient \(\lambda\) disappears.  Geometrically, two roots of the same reciprocal
+quadratic are either equal or reciprocal.  Arithmetically, the two possibilities become the
+two factors on the right of~\eqref{eq:quadratic-bridge}.
+
+\subsection{Exact channel separation}
+
+\begin{theorem}[Fifth-trace common-content decomposition]
+\label{thm:T5-channel-decomposition}
+Let \(a,b,c,d\in\N\) with \(\gcd(a,b)=\gcd(c,d)=1\).  Put
+\begin{align}
+ C_1&=C(a,b),& C_2&=C(c,d),&G&=\gcd(C_1,C_2),\label{eq:channel-G}\\
+ D_-&=ad-bc,&D_+&=ac-bd,\label{eq:channel-D}
+\end{align}
+and
+\begin{equation}
+ G_-:=\gcd(G,D_-),
+ \qquad
+ G_+:=\gcd(G,D_+).
+ \label{eq:Gpm}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{G=G_-G_+,\qquad\gcd(G_-,G_+)=1.}
+ \label{eq:channel-product}
+\end{equation}
+Consequently every prime power common to the two normalized fifth-trace factors belongs, with
+its full valuation, to exactly one of the two channels
+\[
+ D_-=ad-bc\quad\text{or}\quad D_+=ac-bd.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(\ell^e\mid G\).  Because \(F(a,b)\) is coprime to \(ab\) and \(F(c,d)\) is
+coprime to \(cd\), all four coordinates are nonzero modulo \(\ell\).  Identity
+\eqref{eq:quadratic-bridge} with \(\lambda=3\) gives
+\[
+ e\le v_\ell(D_-)+v_\ell(D_+).
+\]
+If \(\ell\) divided both channels, then in \(\mathbb F_\ell\) the ratios
+\(r=a/b\), \(s=c/d\) would satisfy \(r=s\) and \(rs=1\), hence \(r^2=1\).  The equation
+\(r^2+3r+1=0\) excludes \(r=-1\), while \(r=1\) forces \(\ell=5\).  But the normalized
+factors \(C_1,C_2\) are not divisible by five.  Therefore \(\ell\) divides exactly one of
+\(D_-,D_+\), and its full exponent \(e\) lies in that factor.  Taking all primes proves
+\eqref{eq:channel-product}.
+\end{proof}
+
+Before structural normalization one obtains a compact lcm form.
+
+\begin{corollary}[Unnormalized lcm bound]
+\label{cor:T5-lcm}
+With \(F(a,b)=a^2+3ab+b^2\),
+\begin{equation}
+ \boxed{
+ \gcd(F(a,b),F(c,d))
+ \mid\lcm\bigl(|ad-bc|,|ac-bd|\bigr).}
+ \label{eq:T5-lcm}
+\end{equation}
+Here \(\lcm(0,n)=|n|\), including \(\lcm(0,0)=0\).
+\end{corollary}
+
+\begin{proof}
+The proof above applies prime by prime except possibly at five.  If five divides
+\(F(a,b)\), then \(a\equiv b\pmod5\), and
+\[
+ F(a,b)=5\left(b^2+5b\frac{a-b}{5}+5\left(\frac{a-b}{5}\right)^2\right).
+\]
+It automatically has exact five-adic valuation one.  Thus even when both channels are divisible
+by five, the lcm contains the full common five-part.
+\end{proof}
+
+The product bound follows immediately from Lemma~\ref{lem:quadratic-bridge}; the lcm bound
+and the coprime normalized decomposition are the sharper content.  They say that there is no
+third, hidden fifth-trace cancellation channel.
+
+\subsection{Specialization to the Alaoglu--Erd\H{o}s germ}
+
+For any sufficiently large convergent, so that \(p,q>0\), write the synchronized rational
+near-units in lowest terms as
+\begin{equation}
+ \begin{aligned}
+ z_2&=\frac ab=\frac{M^q/g_2}{2^p/g_2},\\
+ z_3&=\frac cd=\frac{A^q/g_3}{3^p/g_3}.
+ \end{aligned}
+ \label{eq:reduced-germ}
+\end{equation}
+where
+\begin{equation}
+ g_2=\gcd(M^q,2^p),
+ \qquad
+ g_3=\gcd(A^q,3^p).
+ \label{eq:g2g3}
+\end{equation}
+Then the two channels of Theorem~\ref{thm:T5-channel-decomposition} are exactly
+\begin{align}
+ D_-&=\frac{3^pM^q-2^pA^q}{g_2g_3},
+ \label{eq:AE-direct-gap}\\
+ D_+&=\frac{(MA)^q-6^p}{g_2g_3}.
+ \label{eq:AE-reciprocal-gap}
+\end{align}
+Using \(\delta=q\beta-p\), the cleared gaps have the analytic forms
+\begin{align}
+ 3^pM^q-2^pA^q
+ &=6^p(2^\delta-3^\delta)
+ =-6^p\log(3/2)\,\delta+O(6^p\delta^2),
+ \label{eq:direct-asymptotic}\\
+ (MA)^q-6^p
+ &=6^p(6^\delta-1)
+ =6^p\log6\,\delta+O(6^p\delta^2).
+ \label{eq:reciprocal-asymptotic}
+\end{align}
+
+\begin{theorem}[Two-channel reduction for a counterexample]
+\label{thm:AE-two-channel}
+Under the hypothetical counterexample~\eqref{eq:hypothesis}, every common prime power of the
+new normalized fifth-trace factors
+\[
+ C(M^q/g_2,2^p/g_2),
+ \qquad
+ C(A^q/g_3,3^p/g_3)
+\]
+is carried, with its full valuation, by exactly one of the two explicit integers
+\eqref{eq:AE-direct-gap} and~\eqref{eq:AE-reciprocal-gap}.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:T5-channel-decomposition} to the reduced fractions
+\eqref{eq:reduced-germ}; equations~\eqref{eq:AE-direct-gap}--\eqref{eq:AE-reciprocal-gap}
+are direct substitutions.
+\end{proof}
+
+This is the central new reduction.  The first trace capable of introducing new defect primes
+reduces all shared new support to two synchronized binomial gaps.  Those gaps are still large in absolute value: the same linear-form estimate used above
+makes \(|\delta|\) at worst polynomially small in \(q\), while \(6^p\) is exponential.
+Thus the theorem is not by itself a contradiction.  It does, however,
+replace an amorphous cross-gcd problem by two named and structurally different channels:
+\begin{itemize}
+\item \(D_-\) compares the two branches in the same direction, \(z_2-z_3\);
+\item \(D_+\) compares a branch with the reciprocal of the other, \(z_2z_3-1\).
+\end{itemize}
+Any Kummer, support, or \(S\)-unit theorem applied to the fifth trace can now be tested against
+these exact channels rather than against the full trace factors.
+
+\subsection{Small exact examples}
+
+Table~\ref{tab:T5-channels} illustrates all three possibilities: purely reciprocal, purely
+direct, and a split common factor.  Every entry is an exact integer calculation.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{@{}c c r r r@{}}
+\toprule
+\(a/b\) & \(c/d\) & \(\gcd(C_1,C_2)\) & \(D_-=ad-bc\) & \(D_+=ac-bd\)\\
+\midrule
+\(37/38\)&\(41/42\)&\(79\)&\(-4\)&\(-79\)\\
+\(38/37\)&\(41/42\)&\(79\)&\(79\)&\(4\)\\
+\(35/37\)&\(64/65\)&\(11\cdot31\)&\(-3\cdot31\)&\(-3\cdot5\cdot11\)\\
+\(18/19\)&\(101/105\)&\(29\cdot59\)&\(-29\)&\(-3\cdot59\)\\
+\bottomrule
+\end{tabular}
+\caption{Exact fifth-trace channel allocation.  The normalized factors equal the displayed
+quadratics in these examples because none is divisible by five.}
+\label{tab:T5-channels}
+\end{table}
+
+For example,
+\[
+ F(35,37)=6479=11\cdot19\cdot31,
+ \qquad
+ F(64,65)=20801=11\cdot31\cdot61.
+\]
+The common prime \(31\) is direct and the common prime \(11\) is reciprocal.  Theorem
+\ref{thm:T5-channel-decomposition} predicts this allocation with full valuations, not merely
+at the radical level.
+
+\subsection{What remains missing}
+
+Theorem~\ref{thm:AE-two-channel} is an upper-structure theorem: it identifies where common
+trace content is allowed to go.  It does not force the dyadic and triadic trace factors to
+have a large common divisor in the first place.  A complete proof by this route needs a second
+ingredient of one of the following types.
+
+\begin{target}[Forced shared trace content]
+Prove, along a suitable infinite sequence of approximants \((p,q)\), a lower bound for the
+common part of the two normalized fifth-trace factors that cannot be accommodated by the
+direct and reciprocal gap channels.
+\end{target}
+
+\begin{target}[Channel-specific incompatibility]
+Prove that primes generated by one of the two normalized reciprocal quadratics have a local
+or Kummer signature incompatible with both
+\(3^pM^q-2^pA^q\) and \((MA)^q-6^p\), except for a quantitatively insufficient exceptional
+set.
+\end{target}
+
+\begin{target}[Higher trace with controlled resultants]
+For \(p\ge7\), common roots of \(P_p(X,1)\) have more than the equal/reciprocal alternatives.
+Compute the corresponding bivariate resultants and determine whether their additional
+channels carry stronger order or splitting restrictions than the fifth-trace pair.
+\end{target}
+
+The first target is the hardest: real synchronization alone does not transparently force
+modular synchronization.  The second and third are more local and may be accessible to exact
+finite-field, resultant, or Chebotarev analysis.  The fifth trace is valuable because it
+provides the smallest complete test case for that program.
+
+\section{Signed trace filters: higher contact and its exact cost}
+\label{sec:signed-filters}
+
+Positive traces cannot beat the contact/degree barrier.  Signed products can cancel initial
+Bernoulli moments, so it is natural to test them separately.
+
+Let \(d_1,\ldots,d_m\ge3\) be distinct odd integers and
+\(c_1,\ldots,c_m\in\Z\).  Define the rational function
+\begin{equation}
+ \mathcal F(z)=\prod_{i=1}^{m}T_{d_i}(z)^{c_i}.
+ \label{eq:signed-filter}
+\end{equation}
+By Theorem~\ref{thm:bernoulli-trace},
+\begin{equation}
+ \log\mathcal F(e^t)=
+ \sum_{r\ge1}\frac{B_{2r}}{2r(2r)!}
+ \left(\sum_{i=1}^{m}c_i(d_i^{2r}-1)\right)t^{2r}.
+ \label{eq:signed-moments}
+\end{equation}
+
+\begin{proposition}[Moment conditions and support floor]
+\label{prop:signed-support}
+The filter has contact order at least \(2R\) at one exactly when
+\begin{equation}
+ \sum_{i=1}^{m}c_i(d_i^{2r}-1)=0
+ \qquad(1\le r<R).
+ \label{eq:moment-conditions}
+\end{equation}
+If the coefficients are not all zero, these conditions require \(m\ge R\).
+\end{proposition}
+
+\begin{proof}
+The first assertion is~\eqref{eq:signed-moments}.  If \(m<R\), take the first \(m\)
+conditions.  With \(x_i=d_i^2\), their coefficient matrix is
+\((x_i^r-1)_{1\le r,i\le m}\).  Factoring \(x_i-1\) from column \(i\) leaves an ordinary
+Vandermonde-type evaluation matrix for polynomials of degrees zero through \(m-1\), hence an
+invertible matrix.  All \(c_i\) would vanish.
+\end{proof}
+
+The cyclotomic factorization makes cancellation among trace factors exact.  If
+\begin{equation}
+ e_n=\sum_{i:n\mid d_i}c_i,
+ \label{eq:cyclotomic-exponents}
+\end{equation}
+then, up to a rational scalar,
+\begin{equation}
+ \mathcal F(z)=\prod_{n>1}\mathscr C_n(z)^{e_n}.
+ \label{eq:signed-cyclotomic}
+\end{equation}
+Thus the fully reduced cyclotomic degree budget is measured by
+\begin{equation}
+ \mathcal D(\mathcal F)=\sum_{n>1}|e_n|\varphi(n).
+ \label{eq:cyclotomic-degree-budget}
+\end{equation}
+The exact rational contact theorem in the supplied report already implies that fixed rational
+filters cannot create unbounded order for free; formulas
+\eqref{eq:moment-conditions}--\eqref{eq:cyclotomic-degree-budget} identify the cost inside this
+specific trace family.
+
+Two low-order examples are instructive:
+\begin{align}
+ \log\frac{T_3(e^t)^3}{T_5(e^t)}
+ &=\frac{2}{15}t^4-\frac{2}{27}t^6+O(t^8),
+ &\mathcal D&=10,
+ \label{eq:filter-order4}\\
+ \log\frac{T_3(e^t)^8T_9(e^t)}{T_7(e^t)^3}
+ &=\frac{64}{63}t^6+O(t^8),
+ &\mathcal D&=42.
+ \label{eq:filter-order6}
+\end{align}
+The contact rises from two to four and six, but the exact cyclotomic degree budget rises much
+faster.  Signed filters therefore reproduce, in multiplicative trace language, the same
+finite-order height obstruction found by rational Pad\'e and Richardson constructions in the
+unified report.  Their value here is diagnostic: the Bernoulli moment equations and
+cyclotomic degree reveal exactly where the cost enters.
+
+\begin{warning}
+No universal lower bound for the \emph{reduced value height} of every signed filter is claimed
+here; special evaluations can have accidental arithmetic cancellation.  The exact statements
+are the moment conditions, the support floor, and the cyclotomic factorization.  Any proposed
+signed filter must still exhibit a branch-specific cancellation theorem rather than relying
+on formal contact alone.
+\end{warning}
+
+\section{Synthesis: what has been gained and what has not}
+\label{sec:synthesis}
+
+\subsection{The new exact statements}
+
+The trace investigation produces the following chain of results, none of which is a restatement
+of the determinant or secant arguments in the supplied report.
+
+\begin{enumerate}
+\item \textbf{Centered cyclotomic resolution.}
+The positive trace \(T_d\) factors into centered cyclotomic factors and has an exact
+Bernoulli--Jordan expansion.
+
+\item \textbf{Complete rational reduction.}
+For a reduced fraction, cancellation in one trace is bounded by the fixed integer \(d\), and
+the defect has the positive sum-of-squares factor \(P_d\).
+
+\item \textbf{Unique criticality.}
+The local contact/degree ratio of every positive trace composition is at most one, with equality
+only for pure \(T_3\) iteration.
+
+\item \textbf{Closed cubic dynamics.}
+The \(T_3\) defect numerator has a complete prime-valuation formula; no new nonstructural prime
+can enter, and rational height grows on exactly the contact scale.
+
+\item \textbf{Synchronized tower diagnosis.}
+A counterexample would generate rational approximants to \(\thetaAE^{2^k}\), but their
+relative error remains quadratic in the original logarithmic gap, while height grows like
+\(2^kq\).
+
+\item \textbf{Prime-trace structural normalization.}
+For every odd prime \(p\ge5\), the unique structural factor \(p\) can be removed from
+\(P_p\), leaving a \(p\)-free new defect factor.
+
+\item \textbf{Two-channel fifth-trace theorem.}
+Every prime power shared by the two new normalized fifth-trace factors belongs uniquely to the
+direct cross-gap or the reciprocal cross-gap.  In the counterexample specialization these are
+\(3^pM^q-2^pA^q\) and \((MA)^q-6^p\).
+\end{enumerate}
+
+\subsection{Why this does not yet prove the conjecture}
+
+The cubic map is too perfect in the wrong way: its real contraction and height growth are
+exactly balanced, and its valuation law proves that it cannot create missing shared support.
+The fifth map creates new support, but no present theorem forces the two branches to share a
+large part of that support.  The channel decomposition tells us where a forced common factor
+would have to land, not that one exists.
+
+This is not merely the generic four-exponentials wall stated in new notation.  It is a finer
+arithmetic diagnosis inside a concrete rational dynamical system.  A future argument can now
+fail or succeed at one of three explicit interfaces:
+\begin{enumerate}
+\item force common normalized trace support;
+\item forbid that support in both cross-gap channels;
+\item move to a higher prime trace and exploit a genuinely stronger resultant channel.
+\end{enumerate}
+There is no longer any ambiguity about what repeated cubic contraction or a single fifth
+trace can accomplish by themselves.
+
+\subsection{Prioritized continuation}
+
+\begin{target}[Priority A: formalize the exact trace core]
+The elementary core consists of
+Theorems~\ref{thm:exact-denominator} and \ref{thm:defect-factorization}, the cubic results
+\ref{thm:T3-recurrence} and \ref{thm:T3-valuations}, the prime-trace result
+\ref{thm:prime-trace-congruence}, and the fifth-trace result
+\ref{thm:T5-channel-decomposition}.  These use only finite sums, gcds, polynomial identities,
+and elementary valuations.  They are suitable for immediate Lean
+formalization, independent of any unformalized transcendence theorem.
+\end{target}
+
+\begin{target}[Priority B: exact gcd reconnaissance on the two AE channels]
+For candidate-like integer pairs \((M,A)\) chosen near \(A=M^{\thetaAE}\), compute the
+normalized fifth-trace factors and their direct/reciprocal allocation over many convergents.
+The purpose is not probabilistic evidence for the conjecture; it is to identify whether one
+channel has a stable valuation or splitting signature worth proving.
+\end{target}
+
+\begin{target}[Priority C: the seventh-trace resultant]
+Factor \(P_7(X,1)=X^4+3X^3+6X^2+3X+1\) over its natural quadratic field, compute the
+bivariate common-root resultant, and classify the finite-field channels by Frobenius type.
+The fifth trace has only equal/reciprocal channels; the seventh is the first test of whether
+extension-field channels impose stronger prime-order conditions.
+\end{target}
+
+\begin{target}[Priority D: channel-sensitive \(S\)-unit bounds]
+The direct and reciprocal gaps have different multiplicative shapes.  Seek gcd or primitive-
+divisor estimates which distinguish
+\(3^pM^q-2^pA^q\) from \((MA)^q-6^p\), rather than applying a symmetric generic bound to
+their product.  The channel theorem shows that such an asymmetric estimate would be used
+without loss.
+\end{target}
+
+\section{Lean-oriented dependency map}
+\label{sec:lean}
+
+The elementary core can be formalized in small layers.  Suggested theorem names are included
+only as an implementation blueprint.
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.33\textwidth}p{0.31\textwidth}@{}}
+\caption{Suggested formalization order.}\label{tab:lean-map}\\
+\toprule
+Module & Principal statements & Dependencies\\
+\midrule
+\endfirsthead
+\toprule
+Module & Principal statements & Dependencies\\
+\midrule
+\endhead
+\texttt{CenteredTrace.Basic}
+& \texttt{centeredTrace}, reciprocity, geometric-sum form, positivity
+& finite sums, ordered fields, AM--GM for a finite positive list\\
+\addlinespace
+\texttt{CenteredTrace.Rational}
+& exact formula \eqref{eq:rational-Td}, \texttt{gcd\_Sd\_mul}, reduction factor
+& gcd and modular arithmetic for naturals\\
+\addlinespace
+\texttt{CenteredTrace.Defect}
+& sum-of-squares \(P_d\), factorization \eqref{eq:defect-factorization}, positivity
+& polynomial identities, finite reindexing\\
+\addlinespace
+\texttt{CenteredTrace.Cubic}
+& reduced recurrence, \(g_k=3\iff3\mid u_k\), closed valuation law
+& previous module, elementary \(p\)-adic valuations\\
+\addlinespace
+\texttt{CenteredTrace.Height}
+& bounds \eqref{eq:height-growth}, iterate bounds, canonical-height limit
+& integer inequalities, geometric sequences, Cauchy criterion\\
+\addlinespace
+\texttt{CenteredTrace.Prime}
+& \(P_p\equiv(a-b)^{p-3}\), exact structural normalization
+& finite-field Frobenius, sum of squares formula\\
+\addlinespace
+\texttt{CenteredTrace.Fifth}
+& bridge identity, lcm bound, normalized coprime channel decomposition
+& gcd valuations and finite-field division by units\\
+\addlinespace
+\texttt{CenteredTrace.Cyclotomic}
+& factorization \eqref{eq:trace-cyclotomic-factorization}
+& cyclotomic polynomial API; can be postponed\\
+\bottomrule
+\end{longtable}
+
+The critical proof engineering choice is to formalize the homogeneous integer identities
+before introducing rational numbers.  For example, the fifth-trace bridge should first be
+entered literally as
+\[
+ cd(a^2+3ab+b^2)-ab(c^2+3cd+d^2)=(ad-bc)(ac-bd),
+\]
+then specialized to fractions only after all divisibility consequences are available.
+Likewise, the cubic recurrence is cleaner as a theorem about coprime coordinate pairs than as
+a theorem about normalized rationals.
+
+\begin{statusbox}{No Lean acceptance is claimed for this addendum.  The map is intentionally
+split into elementary lemmas whose statements avoid analytic branches, real logarithms, and
+external transcendence inputs.}
+\end{statusbox}
+
+\section{Conclusion}
+
+The centered trace family began as an attempt to exploit the synchronized rational near-units
+produced by a hypothetical Alaoglu--Erd\H{o}s counterexample.  It succeeded in producing an
+exact superattractor, but the arithmetic audit is as important as the contraction:
+\begin{itemize}
+\item \(T_3\) squares the defect exactly and doubles its valuations, yet its rational height
+has exactly the same dynamical degree;
+\item iteration cannot manufacture a missing common prime between the dyadic and triadic
+branches;
+\item \(T_5\) is the first level that introduces new defect support, and that support has a
+complete two-channel common-divisor law;
+\item all shared normalized fifth-trace content is carried by two explicit synchronized
+binomial gaps.
+\end{itemize}
+
+The conjecture remains unclosed, but the route has not merely been tried and abandoned.  It
+has been reduced to an exact arithmetic interface.  Any future trace-based proof must obtain
+new information about shared support or about the two channel gaps; no amount of unaudited
+iteration, higher local contact, or hidden single-branch denominator cancellation can replace
+that information.
+
+\appendix
+
+\section{Exact verification script}
+\label{app:code}
+
+The following standard-library Python program checks the finite polynomial identities,
+reduced cubic recurrence, valuation formulas on a test box, and the fifth-trace channel
+decomposition.  It uses no floating-point arithmetic for theorem checks.  The decimal orbit
+displays are derived only after the exact fractions have been formed.
+
+\begin{lstlisting}[style=pythonstyle,caption={Exact centered-trace verifier.}]
+from fractions import Fraction
+from itertools import product
+from math import gcd, lcm, log10
+
+
+def S(d: int, a: int, b: int) -> int:
+    return sum(a ** (d - 1 - j) * b ** j for j in range(d))
+
+
+def P(d: int, a: int, b: int) -> int:
+    h = (d - 1) // 2
+    total = 0
+    for j in range(1, h + 1):
+        q = sum(a ** (j - 1 - r) * b ** r for r in range(j))
+        total += (a * b) ** (h - j) * q * q
+    return total
+
+
+def trace_step(d: int, a: int, b: int) -> tuple[int, int, int]:
+    h = (d - 1) // 2
+    num = S(d, a, b)
+    den = d * (a * b) ** h
+    g = gcd(num, den)
+    return num // g, den // g, g
+
+
+def vp(n: int, p: int) -> int:
+    n = abs(n)
+    out = 0
+    while n and n % p == 0:
+        n //= p
+        out += 1
+    return out
+
+
+# General defect and exact-denominator identities.
+for d in range(3, 20, 2):
+    h = (d - 1) // 2
+    for a, b in product(range(1, 30), repeat=2):
+        if gcd(a, b) != 1:
+            continue
+        assert gcd(S(d, a, b), a * b) == 1
+        assert S(d, a, b) - d * (a * b) ** h == (a - b) ** 2 * P(d, a, b)
+        aa, bb, g = trace_step(d, a, b)
+        assert g == gcd(S(d, a, b), d)
+        assert aa - bb == (a - b) ** 2 * P(d, a, b) // g
+
+
+# Cubic closed form and valuation transport.
+for a, b in product(range(1, 80), repeat=2):
+    if gcd(a, b) != 1 or a == b:
+        continue
+    u0 = a - b
+    aa, bb = a, b
+    for k in range(1, 7):
+        aa, bb, g = trace_step(3, aa, bb)
+        uk = aa - bb
+        if u0 % 3:
+            assert abs(uk) == abs(u0) ** (2 ** k)
+        else:
+            assert abs(uk) == 3 * (abs(u0) // 3) ** (2 ** k)
+        for ell in (2, 5, 7, 11, 13):
+            assert vp(uk, ell) == (2 ** k) * vp(u0, ell)
+
+
+# Fifth-trace bridge and lcm/channel theorem.
+def F(a: int, b: int) -> int:
+    return a * a + 3 * a * b + b * b
+
+
+def C5(a: int, b: int) -> int:
+    return F(a, b) // (5 if (a - b) % 5 == 0 else 1)
+
+
+for a, b, c, d in product(range(1, 45), repeat=4):
+    if gcd(a, b) != 1 or gcd(c, d) != 1:
+        continue
+    dm = a * d - b * c
+    dp = a * c - b * d
+    assert c * d * F(a, b) - a * b * F(c, d) == dm * dp
+
+    raw = gcd(F(a, b), F(c, d))
+    assert lcm(abs(dm), abs(dp)) % raw == 0
+
+    common = gcd(C5(a, b), C5(c, d))
+    gm = gcd(common, abs(dm))
+    gp = gcd(common, abs(dp))
+    assert gcd(gm, gp) == 1
+    assert gm * gp == common
+
+print("all exact checks passed")
+\end{lstlisting}
+
+\section{Proof details for the coefficient formula}
+\label{app:coefficients}
+
+For completeness, expand
+\[
+ P_{2h+1}(a,b)=\sum_{j=1}^{h}(ab)^{h-j}
+ \left(\sum_{s=0}^{j-1}a^{j-1-s}b^s\right)^2.
+\]
+Fix the exponent \(r\) of \(b\), with \(0\le r\le2h-2\).  In the \(j\)-th summand, the
+base factor contributes \(h-j\), and the square contributes the number of ordered pairs
+\((s,t)\in\{0,\ldots,j-1\}^2\) with
+\(s+t=r-h+j\).  Summing this triangular count over \(j\) gives
+\[
+ \binom{\min(r,2h-2-r)+2}{2},
+\]
+which proves~\eqref{eq:Pd-coefficients}.  The coefficient sequence is therefore
+\[
+ 1,3,6,10,\ldots,\binom{h+1}{2},\ldots,10,6,3,1.
+\]
+The positivity visible in the sum-of-squares form is thus also coefficientwise.
+
+\section{Status matrix}
+\label{app:status}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.55\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.21\textwidth}@{}}
+\caption{Logical status of the principal claims.}\label{tab:status}\\
+\toprule
+Statement & Status & Location\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Location\\
+\midrule
+\endhead
+Synchronized rational near-unit pair from a hypothetical counterexample
+&\statusproved&Proposition~\ref{prop:germ}\\
+Centered trace positivity, reciprocity, and hyperbolic form
+&\statusproved&Proposition~\ref{prop:basic-trace}\\
+Bernoulli expansion and centered cyclotomic/Jordan factorization
+&\statusproved&Theorems \ref{thm:bernoulli-trace} and \ref{thm:cyclotomic-resolution}\\
+Exact rational denominator and positive defect factorization
+&\statusproved&Theorems \ref{thm:exact-denominator} and \ref{thm:defect-factorization}\\
+Unique contact/degree criticality of pure cubic compositions
+&\statusproved&Theorem~\ref{thm:criticality}\\
+Closed cubic recurrence and all-prime valuation law
+&\statusproved&Theorems \ref{thm:T3-recurrence} and \ref{thm:T3-valuations}\\
+Real convergence, height escape, and local iterate asymptotic
+&\statusproved&Theorem \ref{thm:basin-height}; Proposition \ref{prop:T3-local-iterate}\\
+Rational approximants to \(\thetaAE^{2^k}\) with quadratic relative error
+&\statusproved&Theorem~\ref{thm:tower-approximants}\\
+Odd-prime structural normalization
+&\statusproved&Theorem \ref{thm:prime-trace-congruence}; Corollary \ref{cor:normalized-prime-factor}\\
+Fifth-trace lcm and coprime two-channel decomposition
+&\statusproved&Theorem \ref{thm:T5-channel-decomposition}; Corollary \ref{cor:T5-lcm}\\
+Exact finite test tables and regression checks
+&\statuscomputed&Table~\ref{tab:T3-orbits}; Appendix~\ref{app:code}\\
+A lower bound forcing shared fifth-trace support
+&\statusopen&Section~\ref{sec:T5}\\
+A channel-specific Kummer or \(S\)-unit contradiction
+&\statusopen&Section~\ref{sec:synthesis}\\
+Lean formalization of the new elementary core
+&\statusopen&Section~\ref{sec:lean}\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{UnifiedReport2026}
+The ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial
+Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+\newblock unified working report, August 22, 2026.
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+
+\bibitem{MetropolisRota1983}
+N.~Metropolis and G.-C.~Rota,
+\newblock \emph{Witt vectors and the algebra of necklaces},
+\newblock Advances in Mathematics \textbf{50} (1983), 95--125.
+
+\bibitem{Silverman2007}
+J.~H.~Silverman,
+\newblock \emph{The Arithmetic of Dynamical Systems},
+\newblock Graduate Texts in Mathematics 241, Springer, 2007.
+
+\bibitem{BakerWustholz2007}
+A.~Baker and G.~W\"ustholz,
+\newblock \emph{Logarithmic Forms and Diophantine Geometry},
+\newblock New Mathematical Monographs 9, Cambridge University Press, 2007.
+
+\bibitem{BCZ2003}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\newblock \emph{An upper bound for the G.C.D. of \(a^n-1\) and \(b^n-1\)},
+\newblock Mathematische Zeitschrift \textbf{243} (2003), 79--84.
+
+\end{thebibliography}
+
+\end{document}
