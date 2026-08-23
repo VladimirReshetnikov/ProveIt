@@ -75,6 +75,11 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     and normalises the result to
     `log(F N⁻¹ + 2) + F⁻¹⁄² N`; a separate `F < 1` argument closes the
     scale where the raw asymptotic estimate alone is too coarse.
+  - `IntegerPoints.GKEq234` — **proved**: Graham–Kolesnik equation (2.3.4),
+    the Weyl–van der Corput inequality in the integer-shift form used by §3.3
+    (`gk_eq234_holds`).  It specializes the general differencing engine,
+    separates the zero correlation, and reindexes the remaining shifts as
+    `1 ≤ h ≤ H`.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

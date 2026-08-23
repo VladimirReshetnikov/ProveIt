@@ -44,6 +44,7 @@ import IntegerPoints.PoissonIntegrals
 import IntegerPoints.PoissonTail
 import IntegerPoints.GKLemma35
 import IntegerPoints.GKLemma36
+import IntegerPoints.GKEq234
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -71,6 +72,8 @@ Zhai–Cao's Lemma 9 by Heath-Brown's method from Lemmas 1 and 6.
 `IntegerPoints.GKLemma31` through `IntegerPoints.GKLemma36` prove
 Graham–Kolesnik's Lemmas 3.1–3.6, including both curvature forms of the
 stationary-phase Lemma 3.4 and the B-process transformation of Lemma 3.6.
+`IntegerPoints.GKEq234` proves the Weyl–van der Corput inequality in the
+integer-shift form used in §3.3.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
