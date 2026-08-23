@@ -142,6 +142,108 @@ theorem integral_sawtooth_mul_e_int (k : ℤ) :
       ring]
     ring
 
+/-- A finite trigonometric polynomial with the repository's `e(x)` convention. -/
+noncomputable def fourierPoly (S : Finset ℕ) (a : ℕ → ℂ) (x : ℝ) : ℂ :=
+  ∑ n ∈ S, a n * e ((n : ℝ) * x)
+
+/-- A finite trigonometric polynomial is continuous. -/
+theorem continuous_fourierPoly (S : Finset ℕ) (a : ℕ → ℂ) :
+    Continuous (fourierPoly S a) := by
+  unfold fourierPoly
+  refine continuous_finsetSum _ fun n _ => continuous_const.mul ?_
+  unfold e
+  fun_prop
+
+/-- Expand the squared modulus of a finite trigonometric polynomial into its
+double Fourier sum.  Integer differences avoid truncated natural subtraction. -/
+theorem fourierPoly_mul_conj (S : Finset ℕ) (a : ℕ → ℂ) (x : ℝ) :
+    fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x) =
+      ∑ m ∈ S, ∑ n ∈ S,
+        a m * starRingEnd ℂ (a n) *
+          e (((m : ℤ) - (n : ℤ) : ℤ) * x) := by
+  unfold fourierPoly
+  rw [map_sum, Finset.sum_mul_sum]
+  refine Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => ?_
+  rw [map_mul, ← KL.e_neg]
+  calc
+    (a m * e ((m : ℝ) * x)) *
+        (starRingEnd ℂ (a n) * e (-((n : ℝ) * x))) =
+      a m * starRingEnd ℂ (a n) *
+        (e ((m : ℝ) * x) * e (-((n : ℝ) * x))) := by ring
+    _ = a m * starRingEnd ℂ (a n) *
+        e (((m : ℤ) - (n : ℤ) : ℤ) * x) := by
+      rw [← KL.e_add]
+      congr 2
+      push_cast
+      ring
+
+/-- Complex-valued finite Parseval identity for `fourierPoly`. -/
+theorem integral_fourierPoly_mul_conj (S : Finset ℕ) (a : ℕ → ℂ) :
+    (∫ x in (0 : ℝ)..1,
+        fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x)) =
+      ∑ n ∈ S, a n * starRingEnd ℂ (a n) := by
+  simp_rw [fourierPoly_mul_conj]
+  have hterm (m n : ℕ) : IntervalIntegrable
+      (fun x : ℝ =>
+        a m * starRingEnd ℂ (a n) *
+          e (((m : ℤ) - (n : ℤ) : ℤ) * x)) volume 0 1 := by
+    apply Continuous.intervalIntegrable
+    unfold e
+    fun_prop
+  have hinner (m : ℕ) : IntervalIntegrable
+      (fun x : ℝ => ∑ n ∈ S,
+        a m * starRingEnd ℂ (a n) *
+          e (((m : ℤ) - (n : ℤ) : ℤ) * x)) volume 0 1 := by
+    rw [show (fun x : ℝ => ∑ n ∈ S,
+        a m * starRingEnd ℂ (a n) *
+          e (((m : ℤ) - (n : ℤ) : ℤ) * x)) =
+      ∑ n ∈ S, (fun x : ℝ =>
+        a m * starRingEnd ℂ (a n) *
+          e (((m : ℤ) - (n : ℤ) : ℤ) * x)) by
+        funext x
+        simp]
+    exact IntervalIntegrable.sum S (fun n _ => hterm m n)
+  rw [intervalIntegral.integral_finsetSum
+    (f := fun m x => ∑ n ∈ S,
+      a m * starRingEnd ℂ (a n) *
+        e (((m : ℤ) - (n : ℤ) : ℤ) * x))
+    (fun m _ => hinner m)]
+  refine Finset.sum_congr rfl fun m hm => ?_
+  rw [intervalIntegral.integral_finsetSum
+    (f := fun n x => a m * starRingEnd ℂ (a n) *
+      e (((m : ℤ) - (n : ℤ) : ℤ) * x))
+    (fun n _ => hterm m n)]
+  rw [Finset.sum_eq_single_of_mem m hm]
+  · rw [intervalIntegral.integral_const_mul, integral_e_int_mul]
+    simp
+  · intro n hn hnm
+    rw [intervalIntegral.integral_const_mul, integral_e_int_mul]
+    have hk : (m : ℤ) - (n : ℤ) ≠ 0 := by omega
+    rw [if_neg hk, mul_zero]
+
+/-- Finite Parseval identity on `[0,1]`. -/
+theorem finite_parseval (S : Finset ℕ) (a : ℕ → ℂ) :
+    (∫ x in (0 : ℝ)..1, ‖fourierPoly S a x‖ ^ 2) =
+      ∑ n ∈ S, ‖a n‖ ^ 2 := by
+  refine Complex.ofReal_injective ?_
+  calc
+    (((∫ x in (0 : ℝ)..1, ‖fourierPoly S a x‖ ^ 2) : ℝ) : ℂ) =
+        ∫ x in (0 : ℝ)..1, ((‖fourierPoly S a x‖ ^ 2 : ℝ) : ℂ) :=
+      (intervalIntegral.integral_ofReal).symm
+    _ = ∫ x in (0 : ℝ)..1,
+        fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x) := by
+      apply intervalIntegral.integral_congr
+      intro x _
+      change ((‖fourierPoly S a x‖ ^ 2 : ℝ) : ℂ) =
+        fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x)
+      push_cast
+      exact (Complex.mul_conj' (fourierPoly S a x)).symm
+    _ = ∑ n ∈ S, a n * starRingEnd ℂ (a n) :=
+      integral_fourierPoly_mul_conj S a
+    _ = (((∑ n ∈ S, ‖a n‖ ^ 2) : ℝ) : ℂ) := by
+      push_cast
+      exact Finset.sum_congr rfl fun n _ => Complex.mul_conj' (a n)
+
 end FiniteHilbert
 
 end LeanProofs.IntegerPoints
