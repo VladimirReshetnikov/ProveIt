@@ -92,12 +92,6 @@ theorem rpow_half_facts {lam₂ : ℝ} (h : 0 < lam₂) :
   · rw [Real.sqrt_eq_rpow, show (-(1 : ℝ) / 2) = -(1 / 2) by ring, Real.rpow_neg h.le]
     simp only [one_div]
 
-theorem minInv_nonneg {D t : ℝ} (hD : 0 ≤ D) (ht : 0 ≤ t) : 0 ≤ minInv D t := by
-  unfold minInv
-  split_ifs
-  · exact hD
-  · exact le_min hD (by positivity)
-
 /-- When `t ≥ 1/D`, `minInv D t = 1/t`. -/
 theorem minInv_eq_inv {D t : ℝ} (hD : 0 < D) (ht : 1 / D ≤ t) : minInv D t = 1 / t := by
   unfold minInv

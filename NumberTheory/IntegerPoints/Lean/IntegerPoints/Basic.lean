@@ -68,6 +68,26 @@ noncomputable def nearestIntDist (t : ℝ) : ℝ := |t - round t|
 when `t = 0`. -/
 noncomputable def minInv (D t : ℝ) : ℝ := if t = 0 then D else min D (1 / t)
 
+/-- `minInv` preserves nonnegativity when both of its inputs are nonnegative. -/
+theorem minInv_nonneg {D t : ℝ} (hD : 0 ≤ D) (ht : 0 ≤ t) : 0 ≤ minInv D t := by
+  unfold minInv
+  split_ifs
+  · exact hD
+  · exact le_min hD (one_div_nonneg.mpr ht)
+
+/-- The capped reciprocal `minInv D t` is at most its cap `D`. -/
+theorem minInv_le_left (D t : ℝ) : minInv D t ≤ D := by
+  unfold minInv
+  split_ifs
+  · exact le_rfl
+  · exact min_le_left _ _
+
+/-- For a positive denominator, `minInv D t` is at most `1 / t`. -/
+theorem minInv_le_inv {D t : ℝ} (ht : 0 < t) : minInv D t ≤ 1 / t := by
+  unfold minInv
+  rw [if_neg ht.ne']
+  exact min_le_right _ _
+
 /-- `P(x)`: the number of integer points `(a, b)` with `a² + b² ≤ x`. -/
 noncomputable def latticeCount (x : ℝ) : ℕ :=
   Set.ncard {p : ℤ × ℤ | ((p.1 : ℝ) ^ 2 + (p.2 : ℝ) ^ 2) ≤ x}

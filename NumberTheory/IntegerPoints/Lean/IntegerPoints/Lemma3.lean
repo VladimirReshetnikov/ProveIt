@@ -21,19 +21,6 @@ namespace LeanProofs.IntegerPoints
 
 namespace Lemma3
 
-/-- The summand is at most `D`. -/
-theorem minInv_le_left (D t : ℝ) : minInv D t ≤ D := by
-  unfold minInv
-  split_ifs
-  · exact le_rfl
-  · exact min_le_left _ _
-
-/-- The summand is at most `1/t` for `t > 0`. -/
-theorem minInv_le_inv {D t : ℝ} (ht : 0 < t) : minInv D t ≤ 1 / t := by
-  unfold minInv
-  rw [if_neg ht.ne']
-  exact min_le_right _ _
-
 /-- The shell bound for a family of `δ`-separated values in `[-1/2, 1/2)`. -/
 theorem shell_bound (s : Finset ℕ) (u : ℕ → ℝ) (D δ : ℝ) (hD : 0 < D) (hδ : 0 < δ)
     (hu : ∀ n ∈ s, |u n| ≤ 1 / 2)
