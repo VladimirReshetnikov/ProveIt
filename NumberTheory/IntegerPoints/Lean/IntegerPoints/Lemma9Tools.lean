@@ -43,18 +43,24 @@ theorem hfun_pos (u : ℝ) : 0 < hfun u := by
     have h1 := Real.smoothTransition.le_one (4 * u - 1)
     nlinarith [mul_nonneg h0 (by linarith : (0 : ℝ) ≤ u - 1 / 4)]
 
-theorem hfun_contDiff : ContDiff ℝ 2 hfun := by
-  have hg : ContDiff ℝ 2 (fun u : ℝ => 4 * u - 1) :=
+theorem hfun_contDiff_nat (P : ℕ) : ContDiff ℝ P hfun := by
+  have hg : ContDiff ℝ P (fun u : ℝ => 4 * u - 1) :=
     (contDiff_const.mul contDiff_id).sub contDiff_const
-  have hτ : ContDiff ℝ 2 (fun u : ℝ => Real.smoothTransition (4 * u - 1)) :=
-    (Real.smoothTransition.contDiff (n := 2)).comp hg
+  have hτ : ContDiff ℝ P (fun u : ℝ => Real.smoothTransition (4 * u - 1)) :=
+    (Real.smoothTransition.contDiff (n := P)).comp hg
   exact (hτ.mul contDiff_id).add ((contDiff_const.sub hτ).mul contDiff_const)
+
+theorem hfun_contDiff : ContDiff ℝ 2 hfun :=
+  hfun_contDiff_nat 2
 
 /-- The test function `u ↦ c / hfun u`, equal to `c/u` on `[1/2, ∞)`. -/
 noncomputable def ftest (c u : ℝ) : ℝ := c / hfun u
 
+theorem ftest_contDiff_nat (c : ℝ) (P : ℕ) : ContDiff ℝ P (ftest c) :=
+  contDiff_const.div (hfun_contDiff_nat P) fun u => (hfun_pos u).ne'
+
 theorem ftest_contDiff (c : ℝ) : ContDiff ℝ 2 (ftest c) :=
-  contDiff_const.div hfun_contDiff fun u => (hfun_pos u).ne'
+  ftest_contDiff_nat c 2
 
 theorem ftest_eventuallyEq {c u : ℝ} (hu : 1 / 2 < u) :
     ftest c =ᶠ[nhds u] fun v => c / v := by
