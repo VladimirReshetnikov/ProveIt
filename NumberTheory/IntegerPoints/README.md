@@ -31,6 +31,34 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     is `≪ (yN^{−s})^κ N^λ + y⁻¹N^s` for all `y > 0`, exactly as in
     Graham–Kolesnik §3.3, which is the form the A-process needs).
   - `IntegerPoints.ZhaiCao` — (1.1)–(1.4), Lemmas 9–10, Propositions 1–2.
+  - `IntegerPoints.GKLemma31`, `GKLemma32`, `GKLemma33` — **proved**:
+    Graham–Kolesnik Lemmas 3.1–3.3 (`gk_lemma31_holds`, `gk_lemma32_holds`,
+    `gk_lemma33_holds`): the first-derivative test for integrals
+    (integration by parts with `u = g/f'`, `∫|u'| = |u(b) − u(a)|` by
+    monotonicity), the second-derivative test (split at `f' = ±√λ₂` by the
+    intermediate value theorem), and the Fresnel integral
+    `∫_{-X}^{X} e(Ax²) = e(1/8)/√(2A) + O(1/(AX))` (by Gaussian regularisation
+    `b = ε − 2πiA → −2πiA` with Mathlib's complex Gaussian integral, tails
+    `≤ 1/(|b|X)` by parts, and the value `(i/(2A))^{1/2}` from `cpow`).
+  - `IntegerPoints.GKLemma35` — **proved**: Graham–Kolesnik Lemma 3.5
+    (truncated Poisson summation, `gk_lemma35_holds`, absolute constant 55),
+    on top of `IntegerPoints.Sawtooth` (the truncated Fourier series
+    `S_N(x) = Σ_{h≤N} sin(2πhx)/(πh)` of the sawtooth, with the explicit error
+    `|ψ(x) + S_N(x)| ≤ 4/(N·min(x, 1−x))` via the Dirichlet kernel and `Si`),
+    `IntegerPoints.EulerMaclaurin` (the first-order Euler–Maclaurin formula
+    `Σ_{a<n≤b} F(n) = ∫F + ψ(a)F(a) − ψ(b)F(b) + ∫ψF'`),
+    `IntegerPoints.Poisson` (the exact identity
+    `Σ_{a<n≤b} e(f(n)) = Σ_{|k|≤N} ∫ e(f − kx) + boundary_N + error_N`),
+    `IntegerPoints.PoissonBounds` (`|S_N| ≤ 4`, the Dirichlet kernel bounds
+    `‖K‖ ≤ H + 1`, `‖K(x)‖ ≤ 2/‖x‖`, alternating series, `Σ 1/(k+u)²`),
+    `IntegerPoints.PoissonIntegrals` (`∫_0^1 |ψ + S_N| ≤ (9 + 8 log N)/N`, the
+    `L¹` bound `4 + 4 log(H+1)` of the kernel over a unit window, the sign of
+    `f''`, integration by parts for `∫ e(φ)`), and `IntegerPoints.PoissonTail`
+    (the tail `Σ_{h ∉ [H₁,H₂]} ∫ e(f − hx) ≤ 4/π + (2/π) log(H+1)` at
+    half-integer endpoints).  The proof trims `[a, b]` to half-integer
+    endpoints so that the conditionally convergent boundary sums become
+    alternating series — the textbook argument does not give `O(log H)`
+    uniformly near integer endpoints.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

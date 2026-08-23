@@ -32,6 +32,16 @@ import IntegerPoints.IwaniecMozzochi
 import IntegerPoints.Hirschhorn
 import IntegerPoints.LittlewoodWalfisz
 import IntegerPoints.BerndtKimZaharescu
+import IntegerPoints.GKLemma31
+import IntegerPoints.GKLemma32
+import IntegerPoints.GKLemma33
+import IntegerPoints.Sawtooth
+import IntegerPoints.EulerMaclaurin
+import IntegerPoints.Poisson
+import IntegerPoints.PoissonBounds
+import IntegerPoints.PoissonIntegrals
+import IntegerPoints.PoissonTail
+import IntegerPoints.GKLemma35
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
