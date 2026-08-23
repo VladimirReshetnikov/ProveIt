@@ -147,7 +147,8 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     Lemmas 2–9), `IntegerPoints.GKStatements` (Graham–Kolesnik Ch. 3:
     the statement definitions and remaining unproved material),
     `IntegerPoints.Kolesnik` (Kolesnik 1985: the classes `E_n`, Lemmas 1–2,
-    A, B, Theorems 1–5, the numerical corollaries),
+    A, B, Theorems 1–5, the numerical corollaries; the trivial tuple is
+    proved separately as noted below),
     `IntegerPoints.HeathBrown` (Heath-Brown 1992: Theorems 1–6, Lemmas 1–6,
     the truncated Voronoi formulas), `IntegerPoints.HuxleyStatements`
     (Huxley 2003: Hypothesis H, Propositions 1–6, Theorems 1–6, Lemmas
@@ -158,6 +159,12 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     `IntegerPoints.LittlewoodWalfisz` (the theorem `37/112`, Lemmas 1–6,
     Landau's note), `IntegerPoints.BerndtKimZaharescu` (the survey's
     identities, Ω-results, moment asymptotics and the table of exponents).
+  - `IntegerPoints.KolesnikTrivialTuple` — **proved**: Kolesnik's starting
+    tuple `kolesnik_trivialTuple_holds`, namely `(0 | 1, …, 1) ∈ E_n` in
+    every dimension.  Every lattice point of an admissible domain lies in an
+    explicit product of integer intervals with at most `3X_j` choices per
+    coordinate, so the triangle inequality gives the exponent-class bound
+    with the uniform constant `3^n`.
   - `IntegerPoints.Wu` — Theorem 1, Nowak's formula, the reduction to
     `ℛ(M, N)`, the regions `𝒜, ℬ, 𝒞, 𝒟`, Propositions 1–4, and the exact
     Vaughan identity behind Lemma 4.1.

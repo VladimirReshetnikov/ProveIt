@@ -26,6 +26,7 @@ import IntegerPoints.Lemma9
 import IntegerPoints.GKStatements
 import IntegerPoints.FouvryIwaniecStatements
 import IntegerPoints.Kolesnik
+import IntegerPoints.KolesnikTrivialTuple
 import IntegerPoints.HeathBrown
 import IntegerPoints.HuxleyStatements
 import IntegerPoints.IwaniecMozzochi
@@ -109,6 +110,9 @@ Graham--Kolesnik class used by the B-process;
 Theorem 3.10, the B-process `(k, l) ↦ (l - 1/2, k + 1/2)`, and
 `IntegerPoints.GKProcessWords` combines it with the A-process to prove that
 every finite word in `A` and `B` sends `(0, 1)` to an exponent pair.
+`IntegerPoints.KolesnikTrivialTuple` begins the several-variable exponent-tuple
+development by proving `(0 | 1, ..., 1) ∈ E_n` in every dimension from an
+explicit lattice-box cardinality bound.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
