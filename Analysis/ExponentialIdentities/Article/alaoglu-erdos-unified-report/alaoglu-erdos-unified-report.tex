@@ -219,8 +219,9 @@ decoder bounds, exact height entropy, and the limits of fixed observables.  Anal
 cover canonical products, natural boundaries, Mellin and special-function transfer,
 Hausdorff moments, and an explicit critical Stieltjes interpolant.
 
-Three especially sharp interfaces survive.  A nonnegative-coefficient entire interpolant
-would close the conjecture from the four values at $1,2,3,6$.  A balanced Newton exhaustion
+Three especially sharp interfaces survive.  Pointwise-positive rational entire interpolants
+are flexible, but geometric log-convexity or log-concavity would close the conjecture from
+$1,2,3$, and nonnegative Taylor coefficients would close it from $1,2,3,6$.  A balanced Newton exhaustion
 would need an output-specific denominator \emph{upper} bound despite nested fresh-prime
 exhaustions having asymptotically maximal denominator mass.  And a Kummer operation would
 have to preserve signed cross-base cancellation through exceptional cross-conjugate ideal
@@ -283,7 +284,10 @@ canonical entire $q$-Newton completion realizes the exact boundary defect.  In t
 cross-coprime determinant branch, the former $7/10$ ceiling is sharpened to the identity
 $7/10-\mathcal E_{\rm val}/20$, with an explicit arithmetic deficit of order $x^{-4}$.
 A four-value covariance theorem closes any nonnegative-coefficient representative, while
-finite positive-scale filters cannot remove the canonical alternating tail; normally
+pointwise-positive rational sum-of-squares representatives always exist.  One-signed
+geometric curvature nevertheless closes the problem from the three values at $1,2,3$, and
+every globally positive nonintegral representative pays the full refined critical growth.
+Finite positive-scale filters cannot remove the canonical alternating tail; normally
 convergent power-substitution families have a supercubic coefficient threshold, and the
 basic four-dilation rank-one defect remains exactly critical after division by the node
 product.  Reciprocal
@@ -292,11 +296,17 @@ alternant dominates the input Vandermonde for every node set and whose exact $T^
 remains strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
 into reduced denominators, in the direction opposite to closure.  Uniform
 Corvaja--Zannier estimates show that pairwise gap synchronization for one fixed hypothetical
-output table has only subcubic mass; beyond structural-prime effects, collective barycentric
-root concentration remains the unresolved cancellation mechanism.  A shifted higher
+output table has only subcubic mass.  An exact collision-tree initial form proves transfer
+for a unique simple affine cluster, but the first complete triangle already exhibits
+collective cancellation and fixed four-node smooth supports have unbounded collective
+excess at one prime.  The unresolved full-triangle mechanism is therefore the capacity of
+tied, deeper, or non-affine maximal clusters.  A shifted higher
 Newton--Kummer cocycle gives an exponentially small algebraic integer, while character
 projections, the exact common-ideal norm, and signed-orbit augmentation expose both a
-one-factor partial-norm deficit and a conditional unit/divisor obstruction.
+one-factor partial-norm deficit and a conditional unit/divisor obstruction.  At fixed
+$\ell$ and Newton order one, an exact Fermat-like resultant splitting reduces the missing
+private-prime radical to the standard number-field $abc$ conjecture; known unconditional
+squarefree-factor estimates remain sublinear.
 Complete synchronized gap products give integer orbit polynomials, exact
 discriminants, and a universal quadratic surplus
 $\kappa=0.7079245703208558\ldots$ between the triadic and dyadic products.  The same audit
@@ -16280,7 +16290,10 @@ rational interpolation polynomial by
  \qquad k_n\ge n,
 \]
 and choosing $k_n$ to make the correction at most $2^{-n}$ on $|z|\le n$ constructs an
-entire rational-coefficient interpolant.  Formal division by $E\in1+z\Q[[z]]$ then makes
+entire rational-coefficient interpolant.  The same construction works verbatim for any
+prescribed rational values at the nodes: the correction $d_n$ remains rational, and
+$k_n\ge n$ ensures that each Taylor coefficient receives only finitely many corrections.
+Formal division by $E\in1+z\Q[[z]]$ then makes
 $U,V,R_2,R_3$ rational-coefficient entire functions.  This construction gives no useful
 growth or denominator bound; rather, it isolates the exact missing simultaneous estimate.
 
@@ -16456,6 +16469,116 @@ with $\mathcal M(3)<\infty$, strict Jensen convexity gives
 \end{equation}
 with equality only for a point mass.  The four-value identity is more useful arithmetically
 because its defect is rational or integral.
+
+\paragraph{Geometric curvature, sums of squares, and the positivity tax.}
+There is a broader three-value closure that does not refer to Taylor coefficients.
+
+\begin{proposition}[Three-value geometric-curvature closure]
+\label{crit:prop-geometric-curvature}
+Let $H$ be real entire, positive on $[1,3]$, and suppose
+\[
+ H(1)=1,\qquad H(2)=2^x,\qquad H(3)=3^x
+\]
+for some $x\in\R$.  If $u\mapsto\log H(e^u)$ is convex or concave on
+$[0,\log3]$, then $x=N\in\Nzero$ and $H(z)=z^N$.
+\end{proposition}
+
+\begin{proof}
+Put $a=\log2$, $b=\log3$, and
+$\phi(u)=\log H(e^u)-xu$.  Then $\phi(0)=\phi(a)=\phi(b)=0$, with
+$0<a<b$.  Equality at the interior point of the endpoint chord forces a convex or concave
+function to be affine on the whole segment, so $\phi=0$ on $[0,b]$.  Hence
+$zH'(z)-xH(z)$ vanishes on $(1,3)$ and therefore identically.  Comparing coefficients in
+$H(z)=\sum_nc_nz^n$ gives $(n-x)c_n=0$ for every $n$; since $H(1)=1$, exactly one
+coefficient survives, at an index $N=x\in\Nzero$, and it equals one.
+\end{proof}
+
+Equivalently, monotonicity of the elasticity $tH'(t)/H(t)$ on $[1,3]$ already closes the
+problem.  The proposition includes positive Mellin mixtures, for which log convexity follows
+from H\"older's inequality.  It also includes a positive $H$ whose multiplicative Hankel
+kernel $K(s,t)=H(st)$ is positive semidefinite on $[1,\sqrt3]$: its $2\times2$ Gram
+inequalities give midpoint log convexity.  The corresponding $\mathrm{TP}_2$ condition gives
+convexity, and reverse $\mathrm{TP}_2$ gives concavity.  Likewise, complete monotonicity of
+$t\mapsto H(3e^{-t})$ makes its logarithm convex, while a Bernstein log-coordinate is
+concave.
+
+Pointwise positivity itself is completely flexible.
+
+\begin{proposition}[Positive rational sum-of-squares interpolation]
+\label{crit:prop-positive-sos}
+For every pair $M,A\in\N_{>0}$ there is an entire
+$H_+\in\Q[[z]]$ such that
+\[
+ H_+(t)\ge1\quad(t\in\R),\qquad
+ H_+(2^a3^b)=M^aA^b\quad(a,b\in\Nzero).
+\]
+Indeed $H_+$ can be the diagonal of a positive semidefinite kernel on $\R$ of rank at most
+five.
+\end{proposition}
+
+\begin{proof}
+For each smooth node $s=2^a3^b$, Lagrange's four-square theorem supplies integers
+$r_{1,s},\ldots,r_{4,s}$ with
+$M^aA^b-1=\sum_{j=1}^4r_{j,s}^2$.  Apply the arbitrary-rational-value interpolation
+construction above separately to the four data sequences, obtaining entire
+$F_j\in\Q[[z]]$ with $F_j(s)=r_{j,s}$.  Then
+\[
+ H_+(z)=1+\sum_{j=1}^4F_j(z)^2
+ \quad\text{and}\quad
+ K_+(s,t)=1+\sum_{j=1}^4F_j(s)F_j(t)
+\]
+have the asserted properties.  The construction supplies no useful growth or denominator
+bound.
+\end{proof}
+
+Global positivity nevertheless has an exact growth cost.
+
+\begin{proposition}[Elasticity oscillation and refined positivity tax]
+\label{crit:prop-positive-growth-tax}
+Let $x\notin\Nzero$, and let $H$ be an entire interpolant of
+$H(2^a3^b)=(2^a3^b)^x$ that is positive on $[1,\infty)$.  If
+$\lambda_0<\lambda_1<\cdots$ are the smooth nodes and
+\[
+ L_xH(z):=zH'(z)-xH(z),
+\]
+then $L_xH$ has a zero in every interval
+$(\lambda_j,\lambda_{j+1})$, and
+\begin{equation}
+ \log M_H(e^T)\ge \tau T^3+c_ET^2+o(T^2).
+ \label{crit:eq-positive-growth-tax}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Writing $\chi(t)=tH'(t)/H(t)$, consecutive interpolation values give
+\[
+ \int_{\lambda_j}^{\lambda_{j+1}}(\chi(t)-x)\,\frac{dt}{t}=0.
+\]
+The integrand cannot vanish identically on one gap, since the identity theorem would then
+give $L_xH\equiv0$ and Proposition~\ref{crit:prop-geometric-curvature} would force
+$x\in\Nzero$.  It therefore takes both signs and has a zero in the gap.  Jensen's formula,
+the interlacing, and~\eqref{crit:eq-refined-count} give, after removing a possible zero at
+the origin,
+\[
+ \log M_{L_xH}(e^T)
+ \ge\sum_{\lambda_{j+1}\le e^T}\log\frac{e^T}{\lambda_{j+1}}-O_H(T)
+ =\tau T^3+c_ET^2+o(T^2).
+\]
+For $\delta=T^{-2}$, Cauchy's estimate on the concentric disks of radii $e^T$ and
+$e^{T+\delta}$ gives
+\[
+ M_{L_xH}(e^T)
+ \le(2T^2+|x|)M_H(e^{T+\delta})
+\]
+for large $T$.  Replacing $T+\delta$ by the outer logarithmic radius preserves both displayed
+leading terms and proves~\eqref{crit:eq-positive-growth-tax}.
+\end{proof}
+
+Thus positivity, real zero-freeness, rational Taylor coefficients, and even a finite-rank
+kernel diagonal can all be imposed without resolving the conjecture.  The rigid extra input
+is one-signed geometric curvature; absent that curvature, a positive representative must
+oscillate in elasticity at every node scale and pay at least the full refined critical
+growth.
 
 There is an explicit linear separator for the discrete moment cone.  If $k<x<k+1$, put
 \begin{equation}
@@ -16642,10 +16765,9 @@ In particular infinitely many Maclaurin coefficients are negative.  Similarly,
 \[
  H_x(t)-t^x=\frac{\sin\pi x}{\pi}E(t)J_x(t),\qquad J_x(t)>0,
 \]
-alternates sign between consecutive smooth nodes.  If $H_x$ is positive on all of
-$(0,\infty)$, then $\log H_x(e^u)-xu$ is neither convex nor concave; if positivity fails,
-global geometric log-convexity or log-concavity is unavailable already.  Node-only total
-positivity cannot select a representative because $H$ and $H+EG$ have identical node data.
+alternates sign between consecutive smooth nodes.  This is the canonical sign-level
+manifestation of the general curvature and elasticity obstruction in
+Propositions~\ref{crit:prop-geometric-curvature} and~\ref{crit:prop-positive-growth-tax}.
 
 The miss is also quantitative at the boundary.  For the canonical quotients
 $H_x(2z)-2^xH_x(z)=E(z)U_x(z)$ and
@@ -16872,16 +16994,155 @@ one has the exact isolated-collision formula
  =\min\{h_p,v_p(y_i-y_j)\}.
  \label{crit:eq-isolated-collision-cancellation}
 \end{equation}
-Thus every cancellation at an isolated collision prime is already charged to the
-subcubic budget.  Multiple collisions can instead cancel collectively in the barycentric
-sum; the excess
+Thus every cancellation at an isolated collision prime is already charged to the subcubic
+budget.  The exact mechanism for multiple collisions can also be exposed.  For a general
+finite exponent set $E$, retain $D_e,L_E,R_E$ from
+\eqref{crit:eq-rank-one-fixed-divisor}; for an arbitrary output vector
+$y=(y_e)_{e\in E}$ also write
+$R_E(y)=\sum_e(L_E/D_e)y_e$, and define $\kappa_p$ by
+\eqref{crit:eq-pairwise-overlap-budget} with $\mathcal J_T$ replaced by $E$.
+Fix a prime $p$ and put
 \[
- \left(\min\{\lambda_p,v_p(R_{\mathcal J_T}(M,A))\}-\kappa_p\right)_+
+ d_e=v_p(D_e),\qquad \lambda=\max_ed_e,\qquad
+ \omega_p=p^{-\lambda}L_E\in\Z_{(p)}^\times,\qquad
+ u_e=p^{-d_e}D_e\in\Z_{(p)}^\times.
 \]
-is the exact uncontrolled root-concentration term.  No denominator conclusion is inferred
-from~\eqref{crit:eq-pairwise-overlap-ceiling}.
+Then, exactly over $\Q_p$,
+\begin{equation}
+ R_E(U,V)=\omega_p\sum_{e=(a,b)\in E}
+ p^{\lambda-d_e}u_e^{-1}U^aV^b,
+ \qquad
+ \overline{R}_E
+ =\overline{\omega}_p\sum_{d_e=\lambda}\overline{u}_e^{-1}U^aV^b.
+ \label{crit:eq-cluster-initial-form}
+\end{equation}
+There is no hidden sign: it is contained in $u_e$.
 
-Two calibrations make the scope sharp.  For every fixed $p\ge5$, elementary order lifting
+The coefficients in~\eqref{crit:eq-cluster-initial-form} are read directly from the
+collision tree.  Let
+\[
+ C_k(e)=\{f\in E:s_f\equiv s_e\pmod {p^k}\},\qquad C_0(e)=E.
+\]
+Then
+\begin{equation}
+ d_e=\sum_{k\ge1}(|C_k(e)|-1).
+ \label{crit:eq-cluster-depth-sum}
+\end{equation}
+For a depth-$k$ cluster $C$, choose a common residue $\rho_C$ modulo $p^k$ and label each
+child $B$ by
+$\xi_B=(s_b-\rho_C)/p^k\bmod p$, $b\in B$.  The labels are defined up to common
+translation.  If $B_k(e)$ is the child containing $e$, then
+\begin{equation}
+ \overline u_e
+ =\prod_{k\ge0}\ \prod_{\substack{B\text{ child of }C_k(e)\\B\ne B_k(e)}}
+   \bigl(\xi_{B_k(e)}-\xi_B\bigr)^{|B|}.
+ \label{crit:eq-cluster-angular-unit}
+\end{equation}
+Each other node contributes its valuation to
+\eqref{crit:eq-cluster-depth-sum} and its angular difference at the unique level where its
+branch separates from $e$, which proves both formulas.
+
+There is a useful transfer theorem for the simplest geometry.  Assume no pair that is
+congruent modulo $p$ remains congruent modulo $p^2$.  For each residue class $C$, let
+$m_C=|C|$, let $r_C$ be its residue, choose an integer lift $r_C^*$, and write
+$t_e=(s_e-r_C^*)/p\bmod p$ for $e\in C$.  If $m=\max_Cm_C$, then
+$\lambda=m-1$ and
+\begin{equation}
+ \overline\omega_p^{-1}\overline R_E(y)
+ =\sum_{m_C=m}
+ \left(\prod_{C'\ne C}(r_C-r_{C'})^{-m_{C'}}\right)
+ \sum_{e\in C}\frac{\overline y_e}
+ {\prod_{f\in C\setminus\{e\}}(t_e-t_f)}.
+ \label{crit:eq-simple-cluster-confluent}
+\end{equation}
+These summands are precisely the top confluent coordinates of the largest local Smith
+blocks; the $p$-primary Vandermonde factors within a class of size $m_C$ are
+$1,p,\ldots,p^{m_C-1}$.
+
+\begin{proposition}[Unique affine cluster transfer]
+\label{crit:prop-affine-cluster-transfer}
+Assume $p\nmid6MA$, the preceding simple-cluster hypothesis, and a unique largest class
+$C=\{e_0+kd:0\le k<m\}$, where $2\le m\le p$ and $d=(r,s)\in\Z^2$.
+Then the collective excess at $p$ is zero:
+\[
+ \left(\min\{\lambda,v_p(R_E(M,A))\}-\kappa_p\right)_+=0
+\]
+for every maximizing node used to define $\kappa_p$.
+\end{proposition}
+
+\begin{proof}
+Put $q=2^r3^s$ and $\varrho=M^rA^s$.  The source collision gives
+$q\equiv1\pmod p$ and, by simplicity,
+$c=(q-1)/p\in\Z_p^\times$.  With $s_k=s_0q^k$ and
+$y_k=y_0\varrho^k$, the last sum in
+\eqref{crit:eq-simple-cluster-confluent} is
+\[
+ \frac{\overline y_0(\overline\varrho-1)^{m-1}}
+ {(\overline s_0\overline c)^{m-1}(m-1)!},
+ \]
+using the elementary $(m-1)$st divided difference of $T^k$; the factorial is a unit because
+$m\le p$.  Since the largest class is unique, $p\mid R_E(M,A)$ exactly when
+$\varrho\equiv1\pmod p$.  In that case all $m-1=\lambda$ source collisions from a maximizing
+node transfer to the output, so $\kappa_p=\lambda$; otherwise the capped cancellation is
+zero.
+\end{proof}
+
+The hypotheses are sharp.  The first complete size triangle,
+\[
+ \mathcal J_{\log8}
+ =\{(0,0),(1,0),(0,1),(2,0),(1,1),(3,0)\},
+\]
+has $F=\{1,2,3,4,6,8\}$ and
+\begin{equation}
+ R_F(U,V)=U^3+35U^2+35U-7UV-56V-8.
+ \label{crit:eq-first-collective-polynomial}
+\end{equation}
+At $p=5$, $\lambda=1$ and
+\[
+ \overline R_F=(U-2)(U^2+2U+4+3V).
+\]
+For the fixed specialization $(M,A)=(7,6)$,
+$R_F(7,6)=1665$ has $5$-adic valuation one, while the two collision pairs
+$\{1,6\}$ and $\{3,8\}$ have output gaps $41$ and $337$.  Hence
+$\kappa_5=0$: even a full triangle has collective excess one.
+
+The excess is unbounded on arbitrary smooth supports while keeping both the prime and the
+rank-one pair fixed.  For $h\ge1$, put $n=2\cdot5^{h-1}$ and
+\[
+ E_h=\{(0,0),(0,n),(n,n),(n,2n)\},\qquad
+ \{s_e:e\in E_h\}=\{1,b,q,bq\},
+ \quad b=3^n,\quad q=6^n.
+\]
+LTE gives two collision pairs $\{1,q\}$ and $\{b,bq\}$, each of depth $h$, so
+$\lambda_5=h$.  For $(M,A)=(7,6)$ the output vector is congruent modulo $5^h$ to
+\[
+ (1,-b,-q,bq).
+\]
+For arbitrary distinct $1,b,q,bq$, these four values lie on the quadratic
+\[
+ \frac{2X^2-(b+1)(q+1)X+2bq}{(b-1)(q-1)}.
+\]
+Their third divided difference is therefore zero, and the integral cleared numerator gives
+$5^h\mid R_{E_h}(7,6)$.  On both colliding pairs the output ratio is $-1$ modulo $5$, so
+$\kappa_5=0$ and the collective excess equals $h$.
+
+Accordingly no bound from the collision tree, local Smith form, support size, rank-one law,
+or a fixed multiplicatively independent output pair alone can improve the trivial
+$\lambda_p$ ceiling for collective cancellation.  For the full triangles, call a prime
+geometrically bad if it has a deeper
+collision, tied largest classes, or a non-affine largest class.  The preceding proposition
+reduces the remaining capacity exactly to
+\begin{equation}
+ \sum_{p\nmid6MA}\min\{\lambda_p,v_p(R_{\mathcal J_T}(M,A))\}\log p
+ \le o(T^3)+\sum_{p\ {\rm geometrically\ bad}}\lambda_p\log p.
+ \label{crit:eq-bad-cluster-capacity}
+\end{equation}
+No smallness of the last sum is asserted.  The four-node family shows that any such estimate
+must use the downward-closed geometry of $\mathcal J_T$ or the real common-power relation,
+not smoothness or cluster data alone.
+
+Two global calibrations further delimit the remaining capacity.  For every fixed $p\ge5$,
+elementary order lifting
 gives $\lambda_p=O_p(T^2)$, so no fixed set of nonstructural primes carries cubic mass.
 Also $R_{\mathcal J_T}$ is primitive of degree $O(T)$, whence
 \[
@@ -18064,22 +18325,106 @@ its only torus singularities are the finitely many ordinary double points
  \right),\qquad a,b\in\mathbf F_\ell^\times,\ a\ne b.
 \]
 Corvaja--Zannier~\cite{CorvajaZannier2005} bounds the radical supported at this finite node
-locus by $\exp(o(t))$.
-Consequently the explicit truncated-radical hypothesis
+locus by $\exp(o(t))$.  The complementary radical has a standard conditional lower bound,
+rather than requiring a separate truncated-radical hypothesis.  Take
+$K=F=\Q(\zeta_\ell,P,Q)$, which contains the coefficients and all nodes, put
+$D=[K:\Q]$, and enlarge
+$\mathcal S_\ell$ to contain every prime above $6\ell c\mu\nu$ together with the fixed
+coefficient and bad-reduction primes.  Let $h_K$ denote the absolute logarithmic projective
+height normalized by $D^{-1}$, and write
+\[
+ \operatorname{rad}_K(\alpha)
+ =\frac1D\sum_{\mathfrak q\mid(\alpha)}\log N\mathfrak q
+ \qquad(0\ne\alpha\in\mathcal O_K),
+\]
+while $\operatorname{rad}_K(a:b:r)$ is $D^{-1}$ times the sum of $\log N\mathfrak q$
+over primes at which $v_{\mathfrak q}(a),v_{\mathfrak q}(b),v_{\mathfrak q}(r)$ are not all
+equal.
+For odd $\ell$ set $W=X-Y+c^\ell$.  There is a polynomial
+$G_\ell\in\Z[X,Y,Z]$, homogeneous of degree $\ell-3$, such that
 \begin{equation}
- \sum_{\substack{\mathfrak q\notin\mathcal S_\ell\\ \mathfrak q\mid R_t}}
- \log N\mathfrak q\ge\eta t
- \quad\text{for some $\eta>0$ and all sufficiently large $t$}
- \label{crit:eq-private-prime-truncated}
+ \boxed{\mathcal C_\ell(X,Y;c)
+ =W^\ell+c^\ell XYG_\ell(X,Y,c^\ell).}
+ \label{crit:eq-private-prime-fermat-splitting}
 \end{equation}
-would leave a smooth divisor.  Its unique normalization preimage is Frobenius-fixed, so in
-the full rank-four branch it yields a free private prime for one conjugate difference and
-rules out nontrivial integral augmentation-zero operations for every sufficiently large
-shifted $m=1$ instance at that fixed $\ell$.  The hypothesis would follow from an appropriate
-truncated-radical conjecture; ordinary norm growth and ordinary gcd bounds do not imply it,
-because high prime powers can carry a linear norm while the radical remains sublinear.  This
-conditional fixed-$\ell$ statement is not uniform in $\ell$ and therefore does not reach the
-original unshifted instance or the adaptive $m=\ell-1$ cocycle.
+Indeed, $\mathcal C_\ell$ and $W^\ell$ agree when $X=0$, $Y=0$, or $c=0$.
+Moreover $\mathcal C_\ell$ is invariant under $c\mapsto\zeta_\ell c$ and is weighted
+homogeneous of weight $\ell^2$ when $X,Y,c$ have weights $\ell,\ell,1$.  Their difference is
+therefore divisible in $\Z[X,Y,c]$ by $XYc^\ell$, and the quotient has the asserted integral
+homogeneity.  Irreducibility of $\mathcal C_\ell$ gives
+\[
+ \gcd\bigl(X-Y+Z,G_\ell(X,Y,Z)\bigr)=1.
+\]
+Homogeneity and $c\ne0$ preserve this coprimality after the specialization $Z=c^\ell$;
+this is the coprime pair used below.
+
+Put $W_t=2^t\mu-3^t\nu+c^\ell$ and
+$G_t=G_\ell(2^t\mu,3^t\nu,c^\ell)$.  Outside $\mathcal S_\ell$, the common
+ideal of $W_t^\ell$ and $c^\ell2^t3^t\mu\nu G_t$ has local order
+\[
+ \min\{\ell v_{\mathfrak q}(W_t),v_{\mathfrak q}(G_t)\}
+ \le \ell\min\{v_{\mathfrak q}(W_t),v_{\mathfrak q}(G_t)\},
+\]
+so Corvaja--Zannier gives logarithmic norm $o(t)$.  The same estimate at the finitely many
+primes in $\mathcal S_\ell$ follows by applying the fixed-$S$ theorem of
+Bugeaud--Evertse~\cite{BugeaudEvertse2017} to the simple nondegenerate integer recurrence
+$N_{K/\Q}(W_t)$.  Its support contains the root $1$, so no rational prime divides all of its
+recurrence coefficients, and its fixed-$S$ part is $\exp(o(t))$.  With projective radicals
+normalized by $D^{-1}$ as above, this gives
+\begin{align}
+ h_K\bigl(W_t^\ell:c^\ell2^t3^t\mu\nu G_t:R_t\bigr)
+   &=\ell t\log3+o(t),\nonumber\\
+ \operatorname{rad}_K(W_t)&\le t\log3+O(1),\nonumber\\
+ \operatorname{rad}_K(G_t)&\le(\ell-3)t\log3+O(1),
+ \label{crit:eq-private-prime-abc-inputs}
+\end{align}
+while $2^t3^t\mu\nu c$ has fixed radical.  The number-field $abc$ conjecture over this fixed
+$K$, in the form
+\[
+ h_K(a:b:a+b)
+ \le(1+\varepsilon)\operatorname{rad}_K(a:b:a+b)+O_{K,\varepsilon}(1),
+\]
+therefore gives
+\begin{equation}
+ \operatorname{rad}_K(R_t)
+ \ge\left(\frac{\ell}{1+\varepsilon}-(\ell-2)\right)t\log3-o(t).
+ \label{crit:eq-private-prime-abc-radical}
+\end{equation}
+Consequently, conditionally on number-field $abc$, for every $\delta>0$,
+\[
+ \operatorname{rad}_K(R_t)\ge(2\log3-\delta)t
+\]
+for all sufficiently large $t$.  The node-supported radical is $o(t)$, so a divisor remains
+at a smooth point.  Its unique normalization preimage is Frobenius-fixed and, in the good
+full rank-four branch, gives a free private prime for one conjugate difference.  Thus no
+nontrivial integral augmentation-zero operation exists for any sufficiently large shifted
+$m=1$ instance at that fixed $\ell$.
+
+For $\ell=3$ the splitting is the concrete identity
+\[
+ \mathcal C_3(X,Y;c)=(X-Y+c^3)^3+27c^3XY.
+\]
+Away from the structural primes, its unique torus singularity is the ordinary node
+$(c^3,-c^3)$.  This checks the sign, the coefficient $G_3=27$, and the absence of moving
+common content in the second summand.  Unconditionally, $N_{K/\Q}(R_t)$ is a simple
+nondegenerate integer recurrence with a unique dominant root, but Stewart's general
+squarefree-factor estimate gives only
+\[
+ \log\operatorname{rad}_{\Q}|N_{K/\Q}(R_t)|
+ \gg_{K,\ell,\mu,\nu,c}
+ \frac{\log t\,\log\log t}{\log\log\log t}
+ \qquad\text{\cite{Stewart2008Squarefree}},
+\]
+which is $o(t)$ and does not dominate the $o(t)$ node bound.  Classical Zsigmondy theorems
+do not apply to this nonbinary, nondivisibility recurrence.
+
+The conclusion uses the full output-twist group.  Shifting multiplies $U,V$ by
+$P^t,Q^t\in F$, so it leaves the Kummer extension and its saturation unchanged.  For an
+integral control $x=k$, however, $U=P^k$ and $V=Q^k$ already lie in $F$; the output extension
+collapses, the formal resultant is not an $\ell^2$-degree Galois norm, and a smooth divisor
+supplies no free output orbit.  The same caveat applies at a bad rank-collapsed prime
+$\ell$.  The fixed-$\ell$ conditional result is not uniform in $\ell$ and reaches neither
+the original unshifted instance nor the adaptive $m=\ell-1$ cocycle.
 
 The extracted common ideal $\mathfrak I_{\ell,m}$ cancels from every
 augmentation-zero ratio.  Multiplication by
@@ -18093,7 +18438,10 @@ The product/cocycle identities and integral-exponent calibrations are \statuslea
 \lean{RankOneNewtonKummer}.  The finite signed-orbit augmentation identity, mixed additive
 cancellation, and two-by-two minor factorization are \statuslean{} in
 \lean{SignedOrbitNormFinite}; the divisor, integrality, private-prime, asymptotic,
-Kummer-degree, norm, ideal, and trace analyses are paper mathematics.
+Kummer-degree, norm, ideal, and trace analyses are paper mathematics.  The resultant
+splitting~\eqref{crit:eq-private-prime-fermat-splitting} and its local consequences are
+unconditional paper results; the linear radical and resulting private prime use the
+number-field $abc$ conjecture explicitly.
 
 \subsection{Adjacent-smooth cyclic resultants and finite-logarithm descent}
 \label{crit:adjacent-resultants}
@@ -18475,12 +18823,14 @@ tangent algebra are \statuslean{} in \lean{DyadicPrivateSupport},
 asymptotic, Kummer-field, density, and resultant extensions remain explicitly
 \statusnew{} paper arguments.  Together with the refined Stieltjes/Jensen, Hermite,
 reciprocal-Hankel, BCZ, and pure-denominator results, they leave three narrower interfaces:
-a genuinely different positive arithmetic interpolant; an output-specific denominator upper
-bound on a balanced exhaustion, rather than more fresh divisors; or exceptional
+a positive arithmetic interpolant lying in a rigid cone such as nonnegative coefficients or
+one-signed geometric curvature; an output-specific denominator upper bound on a balanced
+exhaustion, rather than more fresh divisors; or exceptional
 cross-conjugate ideal overlap that makes a signed Kummer operation integral.  The natural
 Stieltjes transfer family, finite positive-dilation filters, finite and one-ray infinite
 power-substitution corrections, four-dilation rank-one defect, sparse-spike aggregation,
-pairwise triangular gap synchronization,
+pairwise triangular gap synchronization, and collision-tree/Smith control without
+downward-closed triangle geometry,
 reciprocal Hankel determinants, ordinary traces, character projections, common ideals,
 signed augmentation-zero ratios absent exceptional overlap, and subgroup output partial
 norms do not improve the relevant bounds at their exact scales.  None of the surviving
@@ -18994,7 +19344,8 @@ two residue relations, and a conditional residual cross identity & \statuslean &
 Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, positive reduced
 denominator target, universal rank-one fixed-divisor ceiling, and fixed-pair triangular
-synchronization ceiling & \statusnew{} paper deductions; Corvaja--Zannier input
+synchronization ceiling; exact collision-tree initial form, simple affine-cluster transfer,
+and sharp collective-cancellation examples & \statusnew{} paper deductions; Corvaja--Zannier input
 \statusknown & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
 One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice,
@@ -19003,8 +19354,9 @@ scale audit & finite arithmetic and common-content core \statuslean; HCIZ/altern
 layer \statusnew &
 \lean{ReciprocalMomentLatticeFinite}; Section~\ref{crit:reciprocal-moment-lattice} \\
 Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
-canonical alternating tail, finite Euler--dilation, controlled infinite substitution,
-Prouhet-composition, and four-dilation node-defect no-gos,
+three-value geometric-curvature closure, rational sum-of-squares positivity, refined
+positive-interpolant growth tax, canonical alternating tail, finite Euler--dilation,
+controlled infinite substitution, Prouhet-composition, and four-dilation node-defect no-gos,
 boundary-quotient lower bounds, and Stieltjes-transfer no-go & \statusnew &
 Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
@@ -19031,9 +19383,9 @@ Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs class
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
 Shifted Newton--Kummer exponential smallness, character-projection ceiling, exact common-ideal
-norm, one-factor partial-norm deficit, private-prime resultant criterion, and conditional
-truncated-radical bridge &
-\statusnew & Section~\ref{crit:newton-kummer} \\
+norm, one-factor partial-norm deficit, private-prime resultant criterion, Fermat-like
+resultant splitting, and number-field-$abc$ radical bridge &
+\statusnew & Section~\ref{crit:newton-kummer}; radical conclusion conditional on $abc$ \\
 Adjacent-smooth cyclic resultant, boundary law, balanced gcd target, and conditional
 Frobenius descent & \statusnew & Section~\ref{crit:adjacent-resultants} \\
 Half-density algebraic first jet and exact higher-jet/infinite-order ceiling & \statusnew &
@@ -21137,6 +21489,20 @@ P.~Corvaja and U.~Zannier,
 \newblock \emph{A lower bound for the height of a rational function at $S$-unit points},
 \newblock Monatshefte f\"ur Mathematik \textbf{144} (2005), 203--224.
 \newblock \href{https://arxiv.org/abs/math/0311030}{arXiv:math/0311030}.
+
+\bibitem{BugeaudEvertse2017}
+Y.~Bugeaud and J.-H.~Evertse,
+\newblock \emph{$S$-parts of terms of integer linear recurrence sequences},
+\newblock Mathematika \textbf{63}(3) (2017), 840--851.
+\newblock DOI:
+\href{https://doi.org/10.1112/S0025579317000298}{10.1112/S0025579317000298}.
+\newblock \href{https://arxiv.org/abs/1611.00485}{arXiv:1611.00485}.
+
+\bibitem{Stewart2008Squarefree}
+C.~L.~Stewart,
+\newblock \emph{On the greatest square-free factor of terms of a linear recurrence sequence},
+\newblock in \emph{Diophantine Equations}, edited by N.~Saradha,
+Narosa Publishing House, New Delhi, 2008, 257--264.
 
 \bibitem{Boshernitzan1994}
 M.~D.~Boshernitzan,

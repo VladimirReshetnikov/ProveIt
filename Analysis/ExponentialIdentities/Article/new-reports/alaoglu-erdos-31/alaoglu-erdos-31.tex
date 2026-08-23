@@ -1977,10 +1977,10 @@ def lift32 (n : Nat) : Nat :=
   (Nat.digits 3 n).eval 2
 
 theorem lift23_le_rpow (m : Nat) :
-  (lift23 m : Real) <= (m : Real) ^ (Real.log 3 / Real.log 2)
+  (lift23 m : Real) <= (m : Real) ^ (Real.logb 2 3)
 
 theorem lift32_ge_rpow (n : Nat) :
-  (n : Real) ^ (Real.log 2 / Real.log 3) <= (lift32 n : Real)
+  (n : Real) ^ (Real.logb 3 2) <= (lift32 n : Real)
 
 theorem lift23_mul_super (a b : Nat) :
   lift23 a * lift23 b <= lift23 (a*b)
