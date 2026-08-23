@@ -265,11 +265,14 @@ for `0 ≤ p ≤ P - 1` and `α ≤ ν ≤ β`.  The inverse function `x` (deter
 on `[α, β]` by `f'(x_ν) = ν`, since `f'` is strictly decreasing there; it is
 only `C^{P-1}`, so no regularity is imposed on it) and `φ`, quantified as a
 globally `C^P` function on `ℝ`, agree with the book's `x_ν`, `φ(ν)` on
-`[α, β]`. -/
+`[α, β]`.  The interval is required to be nondegenerate: if `a = b`, the
+displayed value identities constrain `φ` at only one point and cannot imply
+anything about its derivatives there. -/
 def gk_lemma39 : Prop :=
   ∀ (s : ℝ) (P : ℕ), 0 < s → 2 ≤ P →
     ∃ C : ℝ, ∀ (N y ε a b : ℝ) (f x φ : ℝ → ℝ), 0 < N → 0 < y → 0 < ε → ε < 1 / 2 →
       InGKClass N P s y ε a b f →
+      a < b →
       ContDiff ℝ P φ →
       (∀ ν ∈ Set.Icc (deriv f b) (deriv f a), x ν ∈ Set.Icc a b ∧ deriv f (x ν) = ν) →
       (∀ ν ∈ Set.Icc (deriv f b) (deriv f a), φ ν = ν * x ν - f (x ν)) →
@@ -281,11 +284,13 @@ def gk_lemma39 : Prop :=
 /-- **Graham–Kolesnik, §3.5** (the remark after Lemma 3.9, in terms of the
 class `F`): under the hypotheses of Lemma 3.9, for every `J` with
 `α ≤ J ≤ β` the restriction of `φ` to `[α, β] ∩ [J, 2J]` lies in
-`F(J, P, σ, η, Cε)`. -/
+`F(J, P, σ, η, Cε)`.  As in Lemma 3.9, `a < b` is essential for the inverse
+data to determine derivatives of `φ`. -/
 def gk_lemma39_class : Prop :=
   ∀ (s : ℝ) (P : ℕ), 0 < s → 2 ≤ P →
     ∃ C : ℝ, ∀ (N y ε a b : ℝ) (f x φ : ℝ → ℝ), 0 < N → 0 < y → 0 < ε → ε < 1 / 2 →
       InGKClass N P s y ε a b f →
+      a < b →
       ContDiff ℝ P φ →
       (∀ ν ∈ Set.Icc (deriv f b) (deriv f a), x ν ∈ Set.Icc a b ∧ deriv f (x ν) = ν) →
       (∀ ν ∈ Set.Icc (deriv f b) (deriv f a), φ ν = ν * x ν - f (x ν)) →
