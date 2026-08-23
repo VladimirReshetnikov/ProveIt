@@ -1,0 +1,584 @@
+ \documentclass[reqno,final,12pt]{amsart}
+\usepackage{amssymb,amsthm,amsmath,color,fullpage,url,stmaryrd,thm-restate}
+%\usepackage[notref,notcite,color]{showkeys}
+%\usepackage[dvips]{graphicx}
+%\usepackage{MnSymbol}
+%\usepackage{lscape,array}
+%\usepackage[T1]{fontenc}
+%\usepackage{color}
+%\renewcommand{\thefootnote}{\alph{footnote}}
+%\numberwithin{equation}{section}
+%\usepackage{textcomp}
+%\usepackage{amsbsy}
+\usepackage{comment}
+\usepackage[noabbrev,capitalise]{cleveref}
+
+\newcommand{\subsetsim}{\mathrel{\substack{\textstyle\subset\\[-0.2ex]\textstyle\sim}}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{obs}[thm]{Observation}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{fact}[thm]{Fact}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{claim}{Claim}[thm]
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\mf}[1]{\mathfrak{#1}} 
+\newcommand{\mc}[1]{\mathcal{#1}} 
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\brm}[1]{\operatorname{#1}}
+\newcommand{\bl}[1]{\boldsymbol{#1}}
+\newcommand{\abs}[1]{| #1 |_1}
+%%
+\usepackage[noabbrev,capitalise]{cleveref}
+\renewcommand{\v}{\textup{\textsf{v}}}
+\newcommand{\e}{\textup{\textsf{e}}}
+\renewcommand{\d}{\textup{\textsf{d}}}
+
+\newcommand{\fs}[2]{\left(\frac{#1}{#2}\right)}
+\newcommand{\s}[1]{\left(#1\right)}
+\begin{document}	
+\title{Optimizing the CGMS upper bound on Ramsey numbers}
+\author{Parth Gupta,		
+Ndiam\'e Ndiaye,
+Sergey Norin,	
+ and Louis Wei }
+\address{Department of Mathematics and Statistics, McGill University, Montr\'{e}al, QC, Canada.}
+\thanks{PG, NN and SN were partially supported by NSERC Discovery Grant. PG was also supported by an ISM Undergraduate Research Scholarship.
+}
+\begin{abstract} 
+	In a recent breakthrough Campos, Griffiths, Morris and Sahasrabudhe obtained the first exponential improvement of the upper bound on the diagonal Ramsey numbers since 1935. We shorten their proof, replacing the underlying \emph{book algorithm} with a simple inductive statement. This modification allows us to \begin{itemize} \item give a very short proof of an improved upper bound on the off-diagonal Ramsey numbers, which extends to the multicolor setting,
+		\item clarify the dependence of the bounds on underlying parameters and optimize these parameters, obtaining, in particular, an upper bound
+		$$R(k,k) \leq (3.8)^{k+o(k)}$$ 
+		on the diagonal Ramsey numbers.
+		\end{itemize}  
+\end{abstract}
+	\maketitle
+	
+	
+\section{Introduction} The \emph{Ramsey number} $R(k, \ell)$ is the smallest positive integer $N$ such that
+in any red-blue coloring of the edges of the complete graph on $N$ vertices there exists either a complete subgraph on $k$ vertices with all edges colored red (\emph{a red $K_k$}) or a complete subgraph on $\ell$ vertices with all edges colored blue (\emph{a blue $K_{\ell}$}).
+Ramsey numbers were introduced by Ramsey ~\cite{R30} in 1930, and the problem of estimating their value has been one of the central questions in extremal combinatorics ever since, with particular attention paid to the \emph{diagonal} Ramsey numbers $R(k,k)$.
+	
+Erd\H{o}s and Szekeres ~\cite{ES35} proved that $R(k,k) \leq 4^k$ in 1935. Despite a series of important improvements ~\cite{C09,S20,T88} throughout the years, based on the quasirandomness properties of colorings close to the upper bound, the first exponential improvement of the Erd\H{o}s-Szekeres bound was obtained only very recently in a breakthrough result by Campos, Griffiths, Morris and Sahasrabudhe ~\cite{CGMS23}.
+They proved that that there exists $\eps > 0$ such that 
+\begin{equation}\label{e:CGMS}
+R(k,k) \leq (4-\eps)^k
+\end{equation} for sufficiently large $k \in \mathbb{N}$. While they mention that they have not attempted to seriously optimize  the value of $\eps$, focusing instead on a relatively simply proof, they show that \eqref{e:CGMS} is satisfied with $\eps = 2^{-7}$.   For the off-diagonal Ramsey numbers, Campos, Griffiths, Morris and Sahasrabudhe ~\cite{CGMS23} establish
+\begin{equation}\label{e:CGMS2}
+R(k, \ell) \leq e^{-\ell/400 + o(k)}\binom{k + \ell}{\ell}
+\end{equation} for all $k, \ell \in \mathbb{N}$ with $\ell \leq k$, which again improves the best previously  known bound ~\cite{S20} by an exponential factor. 
+
+The approach of~\cite{CGMS23} diverts from the previous methods and does not involve any notion of quasirandomness. Instead, it centres on the \emph{book algorithm}, which works with a pair of disjoint sets of vertices $(X,Y)$ with high density of red edges between them. Perhaps the most technical part of the algorithm is the way the changes in this density are controlled, regulated by a certain discrete logarithmic gradation of the interval $[p,1]$, where $p$ is approximately the initial density.
+
+In an attempt to clarify the extent of applications of the approach of~\cite{CGMS23}, as well as the underlying optimization involved, we present a simpler proof of improved upper bound on Ramsey numbers, based on a reinterpretation of their method. We don't introduce any new combinatorial ideas. (In fact, we show that for $\ell < 0.69k$ one can abandon most of them and get an exponential improvement using a bare minimum of ingredients from~\cite{CGMS23}.) We do, however, change the way we package and optimize applications of these ideas, replacing the CGMS book algorithm by a fairly simple induction, perhaps  closer paralleling the original Erd\H{o}s-Szekeres approach. In particular, we don't explicitly bound allowed changes in density of red edges, eliminating the technicality mentioned above.   
+
+Using these modifications we obtain the following improved bounds. 
+
+\vskip 5pt
+
+In \cref{s:easy} we give a short proof of the following explicit bound on
+Ramsey numbers
+\begin{equation}\label{e:easy1}R(k,\ell) \leq 4(k+\ell)\fs{\left(\sqrt{5}+1\right) (k+2 \ell)}{4 \ell}^\ell \fs{k + 2\ell}{k}^{k/2}\end{equation}
+for all positive integers $\ell \leq k$. (See \cref{c:easy}.)
+The main idea of the proof is to inductively maintain a lower bound on the \emph{excess} number of red edges between the two sets of vertices $X$ and $Y$ under consideration, as compared to some fixed density $p$ , i.e. a bound on  $e_R(X,Y)-p|X||Y|$ where $e_R(X,Y)$ denotes the number of red edges with one end in $X$ and another in $Y$.
+
+It is not hard to verify that \eqref{e:easy1} gives an exponential improvement of the Erd\H{o}s-Szekeres bound for large enough $\ell$ and $k$, as long as $\ell \leq 0.69k$. It is meaningful even in the $\ell=o(k)$ regime, while~\cite{CGMS23} focuses on the regime $\ell=\Theta(k)$. Moreover, the results of \cref{s:easy} straightforwardly extend to the multicolor Ramsey numbers, as shown in \cref{s:multi}, while extending the whole book algorithm seems to require overcoming non-trivial technical obstacles.
+
+\vskip 5pt
+In \cref{s:book} we present our interpretation of the full power of the CGMS book algorithm, optimizing some of the parameters involved. We replace the quantity maintained inductively by a more involved one, which  essentially corresponds to a higher moment of the above mentioned excess number of edges. In \cref{s:opt} we optimize the initial value of density of red edges at which we can start our induction and prove our main result, the following. 
+
+\begin{restatable}{thm}{Main}\label{t:main} 
+	For all positive integers $\ell \leq k$	$$ R(k,\ell) \leq e^{G(\ell/k)k+o(k)}\binom{k+\ell}{\ell},  $$
+	where $G(\lambda)= \s{-0.25\lambda + 0.03 \lambda^2 + 0.08\lambda^3}e^{-\lambda}.$
+\end{restatable}
+
+In particular, \cref{t:main} implies that $$R(k,k) \leq e^{-0.14e^{-1}k+o(k)}\binom{2k}{k} = (4e^{-0.14e^{-1}})^{k+o(k)}=(3.7992\ldots)^{k+o(k)}, $$
+and, more generally, that
+$$R(k,\ell) \leq e^{-0.14e^{-1}\ell+o(k)}\binom{k+\ell}{\ell} \leq e^{-\ell/20+o(k)}\binom{k+\ell}{\ell},$$
+significantly improving \eqref{e:CGMS} and \eqref{e:CGMS2}. 
+
+
+
+\subsection{Notation} As mentioned earlier we denote by $e_R(X,Y)$ the number of red edges with one end in a set  $X$  and another in $Y$. Given a color $C$ and a vertex $v$ of our graph, we denote by  $N_C(v)$  the set of vertices $u$ such that the edge $uv$ is colored in color $C$. (Throughout the bulk of the paper we work with two colors: red denoted by $R$, and blue denoted by $B$, but in \cref{s:multi} we introduce additional colors.) 
+
+\section{Easy bound far from the diagonal}\label{s:easy}
+
+In this section we present a very short inductive argument yielding an exponential improvement to the Erd\H{o}s-Szekeres upper bound on $R(k,\ell)$ for $\ell < 0.69k.$ 
+
+The main object of our investigation is the same as in~\cite{CGMS23}: a pair of disjoint sets of vertices, the density of red edges between which is the critical parameter controlled during the inductive argument. We formalize the setting in the following definitions.
+
+Let $X,Y$ be two non-empty disjoint subsets of vertices of a complete graph with edges colored red and blue. We say that $(X,Y)$ is a \emph{candidate}. We say that a candidate $(X,Y)$ is \emph{$(k,\ell,t)$-good} if $X \cup Y$ contains a red $K_k$ or $X$ contains a blue $K_t$ or $Y$ contains a blue $K_\ell$. The \emph{density of $(X,Y)$} is  $d(X,Y) = \frac{e_R(X,Y)}{|X|||Y|}$. 
+Let $f_{p}(X,Y)=e_R(X,Y) - p|X||Y|$ denote the excess amount of red edges between $X$ and $Y$ when compared to density $p$. 
+The following lemma shows that replacing $Y$  by $N_R(v) \cap Y$ for $v \in X$ on average  reduces $f_p$ by a factor at most $p$. It is essentially a restatement ~\cite[Observation 5.5]{CGMS23}.   
+
+ \begin{lem}\label{l:FpAvg}
+	Let $(X,Y)$ be a candidate. Then \begin{equation}
+	\sum_{v\in X}f_p(X,N_R(v) \cap Y) \geq p|X|f_p(X,Y).
+	\end{equation}
+	
+\end{lem}
+\begin{proof}
+	We have
+	\begin{align*}
+	\sum_{v\in X}&f_p(X,N_R(v) \cap Y) - p|X|f_p(X,Y) \\&= \sum_{v \in X} \s{\sum_{y \in N_R(v) \cap Y} |N_R(y) \cap X| - p|X| } -p|X|e_R(X,Y)+p^2|X|^2|Y| \\
+	&= \sum_{y \in Y}\s{\s{\sum_{v \in N_R(y) \cap X} |N_R(y) \cap X| -p|X|} -p|X||N_R(y) \cap X| +p^2|X|} \\&=\sum_{y \in Y} \s{ |N_R(y) \cap X| -p|X|}^2 \geq 0.
+	\end{align*}
+\end{proof}	
+
+Next we need the following form of the Erd\H{o}s-Szekeres upper bound on Ramsey numbers.
+
+
+\begin{obs}\label{o:easybound}For all $0<x<1$ and all positive integers $k$ and $\ell$
+$$R(k,\ell) \leq x^{-k+1}(1-x)^{-\ell+1}.$$	
+\end{obs}
+\begin{proof}
+	By induction on $k+\ell$. If $k=1$ or $\ell=1$ the statement clearly holds, and the induction step follows ,as
+	$R(k,\ell) \leq R(k,\ell-1)+R(k-1,\ell).$
+\end{proof}
+
+The following lemma contains the main inductive argument we use to replace the book algorithm.
+
+\begin{lem}\label{l:easy}
+	Let $0<x<p<1$, let $k,\ell$ and $t$ be positive integers and let   $(X,Y)$ be a candidate such that 
+	\begin{equation}\label{e:easy}
+	f_{p}(X,Y) \geq  (k+t)x^{-k+1}(1-x)^{-\ell+1}(p-x)^{-t+1}
+	\end{equation}	
+	then $(X,Y)$ is $(k,\ell,t)$-good.
+\end{lem}
+\begin{proof}
+	The proof is by induction on $k+t$. If $k=1$ or $t=1$ then  every candidate is $(k,\ell,t)$-good. This implies the base case of induction and allows us to assume $k,t \geq 2$ in the induction step. 
+	% Thus $$f_p(X,Y) \geq x^{-k}(1-x)^{-\ell}z^{-t } + (\delta_{k+t}-\delta_{k+t-1})|X||Y|$$ by \eqref{e:easy}
+	
+	By \cref{l:FpAvg} there exists $v \in X$ such that  $f_p(X,N_R(v) \cap Y) \geq p \cdot f_p(X,Y)$. Let $Y' = N_R(v) \cap Y, X_B=  N_B(v) \cap X, X_R=  N_R(v) \cap X$.
+	If $$f_p(X_R,Y') \geq \frac{k+t-1}{k+t} x f_p(X,Y) \geq (k+t-1)x^{-(k-1)+1}(1-x)^{-\ell+1}(p-x)^{-t+1 }$$ then by the induction hypothesis $(X_R,Y')$ is  $(k-1,\ell,t)$-good, i.e. $X_R \cup Y'$ contains a red $K_{k-1}$ or $X_R$ contains a blue $K_t$ or $Y'$ contains a blue $K_\ell$. In the first case,  $X_R \cup Y' \cup \{v\} \subseteq X \cup Y$ contains a red $K_k$, as $X_R \cup Y' \subseteq N_R(v).$ It follows that in each case  $(X,Y)$ is  $(k,\ell,t)$-good, as desired, and so we may assume that $f_p(X_R,Y') < \frac{k+t-1}{k+t} x f_p(X,Y)$.
+	
+Symmetrically, we may assume that $f_p(X_B,Y') <\frac{k+t-1}{k+t}(p-x) f_p(X,Y)$.
+It follows that
+
+\begin{align*}
+ 	 p  f_p(X,Y) &\leq f_p(X,Y') = f_p(X_R,Y') + f_p(X_B,Y') + f_p(\{x\},Y') \\ &< \frac{k+t-1}{k+t}pf_p(X,Y) + |Y|,
+	\end{align*}
+and so $\frac{1}{{k+t}}f_p(X,Y) \leq |Y|$.
+Thus, 
+$$
+|Y| \geq  x^{-k+1}(1-x)^{-\ell+1}(p-x)^{-t+1} \geq x^{-k+1}(1-x)^{-\ell+1} \geq  R(k,\ell),
+$$	
+where the last inequality uses \cref{o:easybound}, implying that $(X,Y)$ is  $(k,\ell,t)$-good. 
+\end{proof}	
+
+Finally, we derive from~\cref{l:easy} the promised bound on the Ramsey numbers by induction on $\ell$, applying~\cref{l:easy}, if the density of red edges is sufficiently high, and, otherwise, applying the induction hypothesis to the blue neighborhood of an arbitrary vertex.  
+
+\begin{thm}\label{t:easy}
+	For all $\frac{\sqrt{5}-1}{\sqrt{5}+1}< p <1$ and all positive integers $k$ and  $\ell$ $$R(k,\ell) \leq 4(k+\ell)\s{\frac{1+\sqrt{5}}{2}p+\frac{1-\sqrt{5}}{2}}^{-k/2}(1-p)^{-\ell}.$$
+\end{thm}
+\begin{proof}
+	By induction on $\ell$. Note that the theorem trivially holds if $k=1$ or $\ell =1 $. In particular, the base case $\ell=1$ trivially holds and we assume $k, l \geq 2$ in the induction step.
+	
+	Let $x = \frac{1+\sqrt{5}}{2}p+\frac{1-\sqrt{5}}{2} >0$ and note that 	\begin{equation}\label{e:PEquation}
+(1-p)^2=(1-x)(p-x).
+	\end{equation} Consider a red-blue coloring of edges of a complete graph on $n \geq 4(k+\ell)x^{-k/2}(1-p)^{-\ell}$ vertices. 
+	In particular, as $x \leq p$, we have \begin{equation}\label{e:nLower} n \geq 4(k+ \ell)x^{-1} (1-p)^{-1} \geq \frac{4(k+\ell)}{p(1-p)}  \end{equation}
+	 If $|N_B(v)|\geq \frac{k+\ell-1}{k+\ell}(1-p)n \geq 4(k+\ell-1)x^{-k/2}(1-p)^{-\ell+1}$ for some vertex $v$ then the coloring of $N_B(v)$ contains a red $K_k$ or a blue $K_{\ell-1}$ by the induction hypothesis, and so our  coloring contains a red $K_k$ or a blue $K_\ell$. 
+	
+	Thus we may assume that $|N_B(v)|< \frac{k+\ell-1}{k+\ell}(1-p)n$ for every $v$, i.e. $$|N_R(v)|> n-1 - \frac{k+\ell-1}{k+\ell}(1-p)n = \s{p +\frac{(1-p)}{k+\ell}}n -1.$$ Let $(X,Y)$ be a uniformly random partition of the vertices of our graph. Then
+	$$\bb{E}[e_R(X,Y)] = \frac{1}{4}\sum_{v}|N_R(v)| >  \s{p +\frac{(1-p)}{k+\ell}}\frac{n^2}{4} -\frac{n}{4}$$ 
+	It follows that 
+	\begin{align*}\bb{E}[f_p(X,Y)] &\geq \bb{E}[e_R(X,Y)] -\frac{pn^2}{4} \geq \frac{(1-p)}{k+\ell}\frac{n^2}{4} -\frac{n}{4}\\& \geq \frac{(1-p)^2}{k+\ell}\frac{n^2}{4}	\geq (k+\ell)x^{-k}(1-p)^{-2\ell+2}\\&=  (k+\ell)x^{-k}(1-x)^{-\ell+1}(p-x)^{-\ell+1},
+	\end{align*}
+	where the second inequality holds by \eqref{e:nLower}, and the last equality uses \eqref{e:PEquation}. Thus $(X,Y)$ is $(k,\ell,\ell)$-good by \cref{l:easy}, implying that  our  coloring contains a red $K_k$ or a blue $K_\ell$, as desired.
+\end{proof}	
+
+Substituting $$p=\frac{(\sqrt{5}+1) k+(2\sqrt{5}-2)\ell}{\left(\sqrt{5}+1\right) (k+2 \ell)}$$ in \cref{t:easy} yields the following corollary, mentioned in the introduction.
+
+\begin{cor}\label{c:easy}
+	For all positive integers $k \geq \ell$ $$R(k,\ell) \leq 4(k+\ell)\fs{\left(\sqrt{5}+1\right) (k+2 \ell)}{4 \ell}^\ell \fs{k + 2\ell}{k}^{k/2} $$
+\end{cor}
+
+Let $ES(k,\ell)=\binom{k+\ell-2}{k-1}$ denote the Erd\H{o}s-Szekeres upper bound on the Ramsey numbers. Then $ES(k,\ell)=e^{O(\log k)}\fs{k+\ell}{k}^{k}\fs{k+\ell}{\ell}^{\ell},$  and so \cref{c:easy} implies
+\begin{align*} \frac{R(k,\ell)}{ES(k,\ell)} &\leq e^{O(\log k)}\fs{(\sqrt{5}+1)(k+2\ell)}{4(k+\ell)}^{\ell}\fs{(k+2\ell)k}{(k+\ell)^2}^{k/2} 
+	%\\	 & \leq \fs{(\sqrt{5}+1)(k+2\ell)}{4(k+\ell)}^{\ell+o(1)}.
+\end{align*}
+Thus \cref{c:easy} yields an exponential improvement of the Erd\H{o}s-Szekeres bound whenever $\ell/k < 0.6989,$ and for $\ell=o(k)$ the improvement is of the order $e^{O(\log k)}\fs{\sqrt{5}+1}{4}^{\ell} < e^{-0.21\ell+O(\log k)}$.
+For comparison, the strongest bound for moderately small $\ell$ given in \cite{CGMS23} is of the form $$R(k,\ell) \leq e^{-0.05\frac{k}{k+\ell}\cdot\ell+o(k)}ES(k,\ell)$$
+for $\ell \leq k/9$ (see ~[Theorem 9.1]\cite{CGMS23}).
+Meanwhile, in the same regime ($\ell \leq k/9$) \cref{c:easy} implies 
+$$R(k,\ell) \leq e^{-0.16\ell+O(\log k)}ES(k,\ell).$$
+In the following section, using the full power of the book algorithm, we further improve on this bound and extend the improvement to the diagonal case.
+
+\section{Optimizing the book algorithm}\label{s:book}	
+
+In this section we present extensions of \cref{l:easy} and \cref{t:easy},  which we use to give an upper bound $R(k,\ell)$ that improves on the bounds from ~\cite{CGMS23}. Just like in \cref{l:easy} the main graph theoretical ideas are borrowed from~\cite{CGMS23}, but now we need refine our inductive statement and to use every trick in the book from~\cite{CGMS23} making the argument substantially more technical. Namely:
+\begin{itemize}
+	\item instead of $e_R(X,Y) - p|X||Y|$ we lower bound ``higher moments'' of density $$(e_R(X,Y) - p|X||Y|)^r|X|^{1-r}|Y|^{1-r}$$ in the regime $r \to \infty$,
+	\item we implement the arguments corresponding to \emph{big blue steps} and \emph{degree regularization} steps of the~\cite{CGMS23} book algorithm, which we did not need in~\cref{l:easy}.  
+\end{itemize}	
+
+Instead of \cref{l:FpAvg}   we will need the following variant of ``the convexity of density'' bound.
+ 
+ \begin{lem}\label{l:FpAvg2}
+ 	Let $(X,Y)$ be a candidate. Then \begin{equation}
+ 	\sum_{v\in X}d(X,N_R(v) \cap Y)|N_R(v) \cap Y| \geq e_R(X,Y)d(X,Y).
+ 	\end{equation}
+ \end{lem}
+ \begin{proof}
+We have
+ 	\begin{align*}
+ |X|&\s{\sum_{v\in X}d(X,N_R(v) \cap Y)|N_R(v) \cap Y|} = \sum_{v\in X} \s{\sum_{y \in N_R(x) \cap Y} |N_R(y) \cap X|} \\
+ \\
+ 		 &= \sum_{y \in Y}|N_R(y) \cap X|^2 \geq  |Y|\fs{\sum_{y \in Y}|N_R(y) \cap X|}{|Y|}^2 \\ &=\frac{(e_R(X,Y))^2}{|Y|}  =|X| e_R(X,Y)d(X,Y),
+ 	\end{align*}
+ 	where the inequality holds by convexity of the square function.
+ \end{proof}	
+
+The next lemma allows us to extract a large blue book from $X$ if we find sufficiently many vertices with large blue neighborhood. It is essentially ~\cite[Lemma 4.1]{CGMS23} with a different choice of parameters. The proof is exactly the same, but we reproduce it for completeness.  
+
+\begin{lem}\label{l:BBook}
+	Let $0< \mu < 1$, let $b,k,m$ be positive integers  with $m \geq 5\mu^{-1}b^2$. Let $(X,Y)$ be a candidate such that $X \geq 5m^2$, and there exist at least $R(k,m)$ vertices $v \in X$ such that 
+	$$ |N_B(v) \cap X| \geq \mu|X|.$$
+	Then $X$ contains a red $K_k$ or a blue book $(S,T)$ with $|S| \geq b$ and $|T| \geq  \frac{\mu^b}{2}|X|$.
+\end{lem}
+
+\begin{proof}
+	Let $W$ be the set of vertices $v \in X$ such that 	$ |N_B(v) \cap X| \geq \mu|X|.$ As $|W| \geq R(k,m)$, $W$ contains a  red $K_k$ or a blue $K_m$. In the first case the lemma holds, so we assume the second, and  let $U$ be the set of vertices of the blue $K_m$  in $W$. Let $$ \sigma = \frac{e_B(U,X\setminus U)}{|U||X \setminus U|} \geq \frac{\mu|X|-m}{|X|}  \geq \mu \s{1- \frac{1}{5b}}.$$
+	Let $S$ be a subset of $U$ of size $b$ chosen uniformly at random, and let $T=|N_B(S) \cap (X \setminus U)|$ then \begin{align*}\bb{E}[T] &=\binom{m}{b}^{-1}\sum_{v \in X \setminus U}\binom{|N_B(v) \cap U|}{b} \geq \binom{m}{b}^{-1}\binom{\sigma m}{b}|X \setminus U| \\ & \geq \sigma^b\exp\s{-\frac{b^2}{\sigma m}}|X \setminus U| \geq \mu^b\s{1- \frac{1}{5b}}^b  e^{-1/5}\s{1-\frac{b}{|X|}}|X| \\ &\geq \frac{4}{5}e^{-2/5} \mu^b|X| \geq \frac{\mu^b}{2}|X| .\\ & \end{align*}
+	As $(S,T)$ is a blue book, there exists a desired choice of $T$.
+\end{proof}	
+%%%%%%
+
+
+In \cref{s:easy} we used \cref{o:easybound} to upper bound Ramsey numbers in what was essentially the base case of the book algorithm, or, more precisely, the case when we consider a candidate $(X,Y)$ with $|X|$ small. In this section we tighten all aspects of our argument and, in  particular, instead of \cref{o:easybound} we would like to apply increasingly stronger upper bounds of the same form, which we iteratively obtain.
+
+We use the following slightly technical setup to encode the bounds we can use. 
+Let $\mc{R}$ be the closure of the set of all pairs $(x,y) \in (0,1)^2$ such that there exists $N_0=N_0(x,y)$ such that $R(k,\ell) \leq x^{-k}y^{-\ell}$ for all $k+\ell \geq N_0$. Let $\mc{R_*}$ be the interior of $\mc{R}$.
+
+The next easy observation records the properties of $\mc{R}$ and $\mc{R_*}$.
+
+\begin{obs}\label{o:r}
+	\begin{enumerate}
+		\item $(x,1-x) \in \mc{R}$ for all $0<x<1$,
+		\item if  $(x,y) \in \mc{R}$, $0 < x' \leq x, 0 < y' \leq y$  then $(x',y') \in \mc{R}$,
+		\item if  $(x,y) \in \mc{R}$, $0 < x' < x, 0 < y'< y$  then $(x',y') \in \mc{R}_*$,
+		\item if $R(k,l) \leq x^{-k+o(k)}y^{-\ell+o(\ell)}$ for all positive integers $k$ and $\ell$ then $(x,y) \in \mc{R}$.
+	\end{enumerate}	
+\end{obs}	
+
+\begin{proof}
+\cref{o:easybound} implies (1). As $ (x')^{-k}(y')^{-\ell} \leq x^{-k}y^{-ell}$ for $0 < x' \leq x, 0 < y' \leq y$, (2) holds and implies (3). 
+
+Finally, (4) holds as the condition $R(k,l) \leq x^{-k+o(k)}y^{-\ell+o(\ell)}$ implies that for all $x'<x,y'<y$ there exists $N_0$ such that for all positive integers $k$ and $\ell$ with $k+\ell \geq N_0$ we have $R(k,l) \leq (x')^{-k}(y')^{-\ell}$.
+\end{proof}
+
+Finally, we need the following straightforward limit evaluation.
+
+\begin{lem}\label{l:limit} 
+	For all $1>  p >  \mu >0$ 
+	\begin{equation}\label{e:limit} \lim_{r \to \infty}(p^{1/r}-\mu)^r(1-\mu)^{1-r}=p^{\frac{1}{1-\mu}}(1-\mu)
+	\end{equation} 
+\end{lem}
+
+
+\begin{proof}
+	We have
+	\begin{align*} \lim_{r \to \infty}&\log\s{(p^{1/r}-\mu)^r(1-\mu)^{-r}} \\&=\lim_{r \to \infty} \s{r \log\s{1+\frac{p^{1/r}-1}{1-\mu}}} =\frac{\lim_{r \to \infty} \s{r(p^{1/r}-1)}}{1-\mu}=\frac{\log p}{1-\mu},
+	\end{align*}
+	implying \eqref{e:limit}.
+\end{proof}	
+
+We are now ready for the main technical result of this section, which tightens~\cref{l:easy}.
+
+\begin{lem}\label{t:bookmain}  For all $0< \mu_0,x_0,y_0,p <1$ such that $x_0 < p^{\frac{1}{1-\mu_0}}(1-\mu_0)$ and $(x_0,y_0) \in \mc{R_*}$ there exists $L_0$ such that for all positive integers $k,\ell,t$ with $\ell \geq L_0$  the following holds.
+			Let $(X,Y)$ be a candidate such that $d(X,Y) \geq p$ and  \begin{equation}\label{e:bookmain} |X||Y| \geq x_0^{-k}y_0^{-\ell}\mu_0^{-t }\end{equation} 
+			then $(X,Y)$ is $(k,\ell,t)$-good.
+\end{lem}
+
+\begin{proof} We start by quantifying the ``extra room'' implicit in the strict inequality $x_0 < p^{\frac{1}{1-\mu_0}}(1-\mu_0)$ and the condition $(x_0,y_0) \in \mc{R_*}$. More precisely, using \cref{l:limit} and the condition $x_0 < p^{\frac{1}{1-\mu_0}}(1-\mu_0)$, which, in particular, implies $x_0+\mu_0<1$, as well as the conditions $(x_0,y_0) \in \mc{R_*}$, and $\mu_0<1$, we deduce that   there exist $\eps > 0, r \geq 1$ such that $$ (1+\eps)(\mu_0+\eps) \leq 1, \qquad \mu_0+x_0+2\eps \leq 1, \qquad (x_0+2\eps, y_0 +2\eps) \in \mc{R}, \qquad p \geq 2\eps $$
+ \begin{equation}\label{e:xx} \qquad \mathrm{and} \qquad x_0  \leq  ((p-\eps)^{1/r} -  \mu_0-3\eps)^{r}(1-\mu_0-\eps)^{1-r} -\eps.\end{equation} 
+
+ We choose $L_0$ implicitly to be sufficiently large as a function of $\eps$ and $r$ to satisfy the  inequalities throughout the proof.
+ Let $x=x_0 +\eps$, $y=y_0+\eps, \mu = \mu_0+\eps$,	$\delta_{n}=\frac{\eps}{n}$. Note that by \eqref{e:xx} we have $x < 1$ and so $x_0 = x-\eps \leq \frac{x}{1+\eps}$. Similarly, $y_0  \leq \frac{x}{1+\eps}$ and  $\mu_0 \leq \frac{\mu}{1+\eps}$. 
+Note that
+\begin{align} (d(X,Y) &+ \delta_{k+t} - p)^r |X||Y| \stackrel{\eqref{e:bookmain}}{\geq} 
+	 \frac{\eps^r}{(k+t)^r}x_0^{-k}y_0^{-\ell}\mu_0^{-t } \notag\\ &\geq \frac{\eps^r}{(k+t)^r}(1+\eps)^{k+\ell+t} x^{-k}y^{-\ell}\mu^{-t } \geq x^{-k}y^{-\ell}\mu^{-t },\label{e:moment0}
+\end{align}
+where the last inequality holds as long as $L_0$ is sufficiently large as a function of $\eps$ and $r$.
+
+We will prove by induction on $k+ t$ for fixed $\ell \geq L_0$  that if $(X,Y)$ is a candidate with $d(X,Y) \geq p -\delta_{k+t}$ such that \begin{equation}\label{e:moment}
+(d(X,Y) + \delta_{k+t} - p)^r |X||Y| \geq x^{-k}y^{-\ell}\mu^{-t }
+\end{equation}  then 
+ $(X,Y)$ is $(k,\ell,t)$-good. 	By \eqref{e:moment0} this  implies the theorem. 
+ 
+ If $k=1$ or $t=1$ then $(X,Y)$ is trivially $(k,\ell,t)$-good, implying, in particular the base case of our statement. Thus we move on to the induction step and assume $k,t \geq 2$.
+ 
+We assume without loss of generality that $|N_R(v) \cap Y| \geq (p-\delta_{k+t})|Y|$ for every $v \in X$, as otherwise we can replace $X$ by $X \setminus v$ increasing the left side of \eqref{e:moment} as  $$(d(X,Y) + \delta_{k+t} - p)^r |X||Y| = (d(X,Y) + \delta_{k+t} - p)^{r-1}(e_R(X,Y)-(p-\delta_{k+t})|X||Y|),$$
+and both terms on the right side of this identity increase after the replacement. Thus   \begin{equation}\label{e:degreg}d(X',Y) \geq p-\delta_{k+t}\end{equation}  for every $X' \subseteq X, X' \neq \emptyset.$ For readers familiar with~\cite{CGMS23} we will indicate  how the steps in our proof  correspond to steps of  their book algorithm. The observation in this paragraph corresponds to the \textbf{degree regularization step} of the book algorithm.
+
+Next we use \eqref{e:moment} to obtain a lower bound on $|X|$ by first upper bounding $|Y|$. 
+If $|Y| \geq (x+\eps)^{-k} (y + \eps)^{-\ell}$ then $Y$ contains a red $K_k$ or a blue $K_{\ell}$  as $(x+\eps, y +\eps) \in \mc{R_*}$ by \cref{o:r} (3) and so  $(X,Y)$ is $(k,\ell,t)$-good.
+Thus we may assume that \begin{align} \label{e:x}|X| &\stackrel{\eqref{e:moment}}{\geq}  \frac{ x^{-k}y^{-\ell}\mu^{-t }}{(d(X,Y) + \delta_{k+t} - p)^r|Y|} \geq \frac{ x^{-k}y^{-\ell}\mu^{-t }}{ (x+\eps)^{-k} (y +\eps)^{-\ell}} \notag\\& \geq \fs{x+\eps}{x}^k\fs{y+\eps}{y}^{\ell}\mu^{-t} \geq (1+\eps)^{k +\ell+t}.\end{align}
+
+Our next goal is to show that most of the vertices of $X$ have blue degree at most $(\mu+\eps)|X|$ as otherwise using \cref{l:BBook}  we can apply the induction hypothesis to the candidate $(T,X)$ where $(S,T)$ is a large blue book in $X$ guaranteed by 
+\cref{l:BBook} and \eqref{e:x}. This part of the proof corresponds to the \textbf{big blue step}.
+
+Let $$b =\left\lceil \frac{2r \log(k+t)- r\log{\eps} + \log{2}}{\log(1+\eps)}\right \rceil,  m = \lceil  5\mu^{-1}b^2 \rceil, \qquad \mathrm{and} \qquad w=R(k,m) $$
+with the first two being the parameters we will use in  \cref{l:BBook}.
+Note that $m \leq C\log^2(k+t),$ where $C$ is a constant depending only on $r$ and $\eps$.  As $R(k,m) \leq k^m \leq \exp(C\log^3(k+t))$, by \eqref{e:x} we can choose $L_0$ large enough so that \begin{equation}\label{e:x2}|X| \geq 5m^2 \qquad \mathrm{and} \qquad
+w \leq \frac{\eps(p-\eps)}{(k+t)^3}|X|\end{equation}
+
+Let  $W =\{ x \in X \: | \:  |N_B(x) \cap X| \geq (\mu + \eps)|X|\}$. Suppose first that $|W| \geq w$. Then by \cref{l:BBook}, $X$ contains a red $K_k$ or a blue book $(S,T)$ with $|S| \geq b$ and $|T| \geq  \frac{ (\mu + \eps)^b}{2}|X|$. In the first case $(X,Y)$ is $(k,\ell,t)$-good, and thus we may assume that the second case holds. 
+As $d(T,Y) \geq p-\delta_{k+t}$ by \eqref{e:degreg}, we have $d(T,Y) + \delta_{k+t-b} -p \geq \delta_{k+t-1}-\delta_{k+t} \geq \frac{\eps}{(k+t)^2}.$
+Thus \begin{align*} 
+(d(T,Y) + \delta_{k+t-b} - p)^r |T||Y| &\geq \fs{\eps }{(k+t)^2}^r \frac{(\mu + \eps)^b}{2}|X||Y| \\ &\stackrel{\eqref{e:moment}}{\geq}  \fs{\eps }{(k+t)^2}^r\frac{(\mu + \eps)^b}{2}x^{-k}y^{-\ell}\mu^{-t } \\& = \frac{1}{2}\fs{\eps}{(k+t)^2}^r\fs{\mu + \eps}{\mu}^b x^{-k}y^{-\ell}\mu^{-t+b} \\&\geq x^{-k}y^{-\ell}\mu^{-t+b},
+\end{align*}
+where the last inequality holds by the choice of $b$ as
+$$ \fs{\mu + \eps}{\mu}^b \geq (1+\eps)^b \geq 2\fs{(k+t)^{2}}{\eps}^r.$$ 
+Thus $(T,Y)$ is $(k,\ell,t-b)$-good by the induction hypothesis, implying that   $(X,Y)$ is $(k,\ell,t)$-good. 
+
+Thus we may assume that $|W| \leq w$. We now move on to the last part of the argument, corresponding to either the \textbf{red step} or the \textbf{density increment step} of the book algorithm, which are treated in the same way in our implementation. 
+
+Let $p'= p-\delta_{k+t-1} \geq p-\eps.$ By \cref{l:FpAvg2}, we have \begin{equation}
+\sum_{v\in X}d(X,N_R(v) \cap Y)|N_R(v) \cap Y| \geq e_R(X,Y)d(X,Y).
+\end{equation}
+
+As $$\sum_{v\in W}d(X,N_R(x) \cap Y)|N_R(v) \cap Y| \leq w|Y| \stackrel{\eqref{e:x2}}{\leq}\frac{\eps}{(k+t)^3}(p -\eps)|X||Y|  \leq  \frac{\eps}{(k+t)^3} e_R(X,Y)$$
+we have  \begin{equation*}
+\sum_{v\in X - W}d(X,N_R(v) \cap Y)|N_R(x) \cap Y| \geq \s{d(X,Y)-\frac{\eps}{(k+t)^3}}e_R(X,Y).
+\end{equation*}
+
+ 
+Thus there exists $v\in X$ such that $|N_B(v) \cap X| \leq (\mu+\eps)|X|$ and  \begin{equation}\label{e:alpha}d(X,N_R(v) \cap Y) \geq d(X,Y)-\frac{\eps}{(k+t)^3}.\end{equation}  
+
+Let \begin{align*} &X_R = N_{R}(v) \cap X,\qquad &X_B =N_{B}(v) \cap X,\qquad  &Y'=N_{R}(v) \cap Y, \\ &\alpha = d(X,Y')-p', \qquad &\alpha_R = d(X_R,Y')-p', \qquad &\alpha_B = d(X_B,Y')-p'.\end{align*} Note that $|Y'| \geq (p-\eps)|Y|$ by \eqref{e:degreg}, and 
+\begin{align*} 
+(\alpha_R&|X_R|+\alpha_B|X_B| + 1)|Y'|\\ &=(e_R(X_R,Y')+e_R(X_B,Y')+e_R(\{v\},Y'))-p'(|X_R|+|X_B|)|Y'|\\ &\geq e_R(X,Y')-p'|X||Y'| = \alpha|X|||Y'|,
+\end{align*}
+implying
+\begin{equation}\label{e:moment2}
+\frac{\alpha_R}{\alpha}\frac{|X_R|}{|X|} +\frac{\alpha_B}{\alpha}\frac{|X_B|}{|X|} + \frac{1}{\alpha|X|}\geq 1.
+\end{equation} 
+If $\alpha_R \geq 0$ and 
+$\alpha_R^r|X_R| \geq \frac{x\alpha^r|X|}{p-\eps}$ then \begin{align*} (d(X_R,Y')-p')^r|X_R||Y'| &=\alpha_R^r|X_R||Y'|  \geq x(d(X,Y')  - p')^r|X|\frac{|Y'|}{p-\eps} \\&\stackrel{\eqref{e:alpha}}{\geq} x\s{d(X,Y) -\frac{\eps}{(k+t)^3}+ \delta_{k+t-1} - p}^r|X||Y| \\ &\geq x(d(X,Y) + \delta_{k+t} - p)^r|X||Y| {\geq} x^{-k+1}y^{-\ell}\mu^{-t}.\end{align*}
+This implies that $(X_R,Y')$ is $(k-1,\ell,t)$-good by the induction hypothesis, and so $(X,Y)$ is $(k,\ell,t)$-good.
+
+Thus we may assume that either $\alpha_R < 0$ or  $\alpha_R^r|X_R| < \frac{x\alpha^r|X|}{p-\eps}$, i.e. $$\frac{\alpha_R}{\alpha} < x^{1/r}(p-\eps)^{-1/r}\fs{|X|}{|X_R|}^{1/r}.$$ Symmetrically, we also have $$\frac{\alpha_B}{\alpha} <  \mu^{1/r}(p-\eps)^{-1/r}\fs{|X|}{|X_B|}^{1/r}.$$
+It follows from \eqref{e:moment2} that
+\begin{equation}\label{e:moment3}
+x^{1/r}\fs{|X_R|}{|X|}^{1-1/r}+\mu^{1/r}\fs{|X_B|}{|X|}^{1-1/r}+ \frac{(p-\eps)^{1/r}}{\alpha|X|} >(p-\eps)^{1/r}. 
+\end{equation}
+
+The remainder of the proof is occupied with showing that \eqref{e:moment3} contradicts \eqref{e:xx}.
+As $\frac{|X_R|}{|X|}+\frac{|X_B|}{|X|}\leq |X|$, $\frac{|X_B|}{|X|} \leq (\mu+\eps)$, the function $\lambda \to x^{1/r}(1-\lambda)^{1-1/r} + \mu^{1/r}\lambda^{1-1/r} $ increases for $0 \leq \lambda \leq \frac{\mu}{\mu+x}$ and $ \mu+\eps \leq \frac{\mu}{\mu+x}$ we can lower bound the left side of \eqref{e:moment3} by replacing $\frac{|X_B|}{|X|} $ by $\mu+\eps$  and $\frac{|X_R|}{|X|} $ by $1-\mu$, implying
+\begin{equation}\label{e:moment4}
+x^{1/r}(1-\mu)^{1-1/r}+\mu+ \eps + \frac{(p-\eps)^{1/r}}{\alpha|X|} \geq (p-\eps)^{1/r}. 
+\end{equation}
+Note that \begin{align*} \alpha &= d(X,Y')-p' \stackrel{\eqref{e:alpha}}{\geq} d(X,Y) -\frac{\eps}{(k+t)^3}+ \delta_{k+t-1} - p \\ &\geq  \delta_{k+t-1} - \delta_{k+t}  -\frac{\eps}{(k+t)^3} =  \frac{\eps}{(k+t)(k+t-1)}-\frac{\eps}{(k+t)^3} \geq \frac{\eps}{(k+t)^2},\end{align*}
+and so $$ \frac{(p-\eps)^{1/r}}{\alpha|X|}  \stackrel{\eqref{e:x}}{\leq} \frac{(k+t)^2}{\eps(1+\eps)^{k+\ell+t}} \leq \eps,$$
+where the last inequality holds whenever $L_0$ (and thus $\ell$) is large enough as a function of $\eps$.
+It follows that \eqref{e:moment4} in turn implies
+$x^{1/r}(1-\mu)^{1-1/r}+\mu+ 2\eps  \geq (p-\eps)^{1/r}, $ i.e.
+$$ x \geq  ((p-\eps)^{1/r} - \mu- 2\eps)^r(1-\mu)^{1-r} $$
+contradicting \eqref{e:xx}.
+\end{proof}
+
+The main result of this section follows immediately from \cref{t:bookmain}.
+
+\begin{thm}\label{t:bookCor}
+For all $0< \mu,x,y,p <1$ such that $x < p^{\frac{1}{1-\mu}}(1-\mu)$ and $(x,y) \in \mc{R_*}$  there exists $L_0$ such that for all positive integers $k,\ell$ with $\ell \geq L_0$ the following holds. Every red-blue coloring of edges the complete graph on $N \geq x^{-k/2}(\mu y)^{-\ell/2}$ with the density of red edges  at least $p$ contains a red $K_k$ or a blue $K_{\ell}$. 
+\end{thm}
+\begin{proof}
+Let $y_0 > y$ such that  $(x,y_0) \in \mc{R_*}$  and let $L_0$ be chosen sufficiently large to satisfy the requirements below including the condition $(y_0/y)^{\ell/2} \geq 3$ for $\ell\geq L_0$. Then $N  \geq x^{-k/2}(\mu y)^{-\ell/2} \geq 2x^{-k/2}(\mu y_0)^{-\ell/2} + 1$, and so $\lfloor N/2 \rfloor \geq x^{-k/2}(\mu y_0)^{-\ell/2}$. Let $X$ and $Y$ be two disjoint subsets of vertices of our graph each of size $\lfloor N/2 \rfloor$ chosen to maximize $d(X,Y)$. Then $d(X,Y) \geq p$ and $|X||Y| = (\lfloor N/2 \rfloor)^2 \geq x^{-k}y_0^{-\ell}\mu^{-\ell}$. The theorem follows by applying \cref{t:bookmain} to the candidate $(X,Y)$ with $x_0=x,\mu_0=\mu$.   
+\end{proof}
+
+\section{Optimizing descent to a candidate}\label{s:opt}
+
+
+In this section we derive our main result from \cref{t:bookCor} in the same manner that \cref{t:easy} was derived from \cref{l:easy} in \cref{s:easy}: By using induction on $\ell$ with the induction hypothesis applied to the blue neighborhood of a vertex, if the density of red edges is insufficiently high to apply  \cref{t:bookCor}.
+
+We express our upper bound on Ramsey numbers $R(k,\ell)$ with $\ell \leq k$ in the form $e^{F(\ell/k)k~+~o(k)}$ and seek to minimize $F$. As $e^{F((\ell-1)/k)k~+~o(k)}/e^{F(\ell/k)k~+~o(k)} \approx e^{-F'(\ell/k)},$ we can use the induction hypothesis  if the density of blue edges is about $e^{-F'(\ell/k)}$. Thus we will be applying  \cref{t:bookCor} when the density of red edges is at least $1 - e^{-F'(\ell/k)}$. The parameters $x, y$ and $m$ are then chosen as functions of $\ell/k$ to satisfy the requirements in \cref{t:bookCor}. We formalize this strategy in the following theorem.
+
+\begin{thm}\label{t:general}
+	Let $F:(0,1] \to \bb{R}_+$ be smooth and let $M,X,Y:(0,1] \to (0,1)$ be such that  
+	\begin{align*} &F'(\lambda) <0, \qquad  X(\lambda) = (1 - e^{-F'(\lambda)})^{\frac{1}{1-M(\lambda)}}(1-M(\lambda)), \qquad (X(\lambda),Y(\lambda)) \in \mc{R},
+\\ & and  \qquad F(\lambda) > -\frac{1}{2} \s{\log X(\lambda)+ \lambda \log M(\lambda) + \lambda\log Y(\lambda)} \end{align*}
+for all $0< \lambda \leq 1$. 
+Then $$R(k,\ell) \leq e^{F(\ell/k)k + o(k)},$$	
+	for all $k \geq \ell$.
+\end{thm}
+
+\begin{proof} We need to show that for every $\eps > 0$ we have \begin{equation}\label{e:epsBound}R(k,\ell) \leq e^{(F(\ell/k)+\eps)k}\end{equation} for all $k$ sufficiently large as the function of $\eps,F,M,X$ and $Y$ and $\ell \leq k$. As $R(k,\ell) = e^{o(k)}$ for  $\ell=o(k)$, it suffices to establish \eqref{e:epsBound} for $\ell > \eps'k$ for some $\eps'>0$ depending only on $\eps$.
+	
+	
+Our goal is to prove the theorem by induction on $\ell$. We need, however, to resolve a technical issue arising from the fact that \cref{t:bookCor} is only applicable for $\ell$ large enough as a function of parameters of the theorem, which we have not made explicit. We obtain a uniform lower bound on the size of $\ell$ for any given $\eps$ by applying  \cref{t:bookCor} for finitely many choices of parameters  in the following claim.
+
+\begin{claim}\label{c:gen}
+	There exist $\delta, L >0$  such that for all positive integers  $k \geq \ell \geq \max\{ L, \eps' k \}$ the following holds.  Every red-blue coloring of edges the complete graph on $N \geq e^{(F(\ell/k)+\eps)k}$ with the density of red edges at least $(1 - e^{-F'(\ell/k)+\delta})$ contains a red $K_k$ or a blue $K_{\ell}$. 
+\end{claim}
+
+\begin{proof}  %Let $\eps''= \min_{\lambda \in I} F(\lambda)+\frac{1}{2} \s{\log X(\lambda)+\lambda  \log M(\lambda) +\lambda\log Y(\lambda)}$.
+	Let $\delta > 0$ be such that $e^{-\delta}\fs{1 - e^{-F'(\lambda)+2\delta}}{1-e^{-F'(\lambda)}}^{\frac{1}{1-\mu}} \geq e^{-\eps}$ for all $\lambda \in [\eps',1]$, and let $\eps''$ be such that $|F'(\lambda)-F'(\lambda')| \leq \delta$ and $|F(\lambda)-F(\lambda')| \leq \eps/2$ for all $\lambda,\lambda' \in [\eps',1]$ such that $|\lambda-\lambda'| \leq \eps''$.
+	
+	Let $\Lambda=\{1 - i\eps'' \: |: i=0,1,\ldots, \lfloor (1-\eps')/\eps''\rfloor\} $.
+	By  \cref{t:bookCor} there exist $L$ such that for every $\lambda \in \Lambda$ the outcome of \cref{t:bookCor}  applied with parameters $p_\lambda=1 - e^{-F'(\lambda)+2\delta}$,  $\mu_{\lambda}=M(\lambda)$, $x_{\lambda} = e^{-\delta}p^{\frac{1}{1-\mu}}(1-\mu)$ and $y_{\lambda} = Y(\lambda)$ holds for all  positive integers $k,\ell$ with $\ell \geq L.$ Note that \begin{align*} X(\lambda) \geq x_{\lambda} \geq  e^{-\delta}X(\lambda)\fs{1 - e^{-F'(\lambda)+2\delta}}{1-e^{-F'(\lambda)}}^{\frac{1}{1-\mu}} \geq e^{-\eps}X(\lambda). \end{align*} 
+	
+	Given  $k \geq \ell \geq \max\{ L, \eps' k \}$ let $\lambda \in \Lambda$ be such that $\ell/k \leq \lambda \leq \ell/k + \eps''$. The density of red edges in the coloring we consider is at least $ 1 - e^{-F'(\ell/k)+\delta} \geq 1 - e^{-F'(\lambda)+2\delta}$ by the choice of $\delta$. Thus by the choice of $L$  the claim holds by \cref{t:bookCor}  applied with parameters corresponding to $\lambda$ as \begin{align*} N &\geq \exp\s{F(\ell/k)+\eps)k} \geq \exp\s{(F(\lambda)+\eps/2)k} \\ &\geq    \exp\s{-\frac{1}{2} \s{k\log X(\lambda)+ \lambda k \log M(\lambda) + \lambda k \log Y(\lambda)}+\eps k/2} \\& \geq (e^{-\eps}X(\lambda))^{-k/2}(\mu_{\lambda} y_{\lambda})^{-\ell/2} \geq  x_{\lambda}^{-k/2}(\mu_{\lambda} y_{\lambda})^{-\ell/2}.\end{align*} 	
+\end{proof}
+
+
+With \cref{c:gen} in hand it is not hard to finish the proof by induction on $\ell$. The base case $\ell \leq \eps'k$ holds as noted above.
+For the induction step consider a red-blue coloring of edges the complete graph on $N \geq e^{(F(\ell/k)+\eps)k}$ vertices. If the density of red edges is at least $(1 - e^{-F'(\ell/k)+\delta})$ then the coloring contains a red $K_k$ or a blue $K_{\ell}$ by \cref{c:gen}. Otherwise there exists a vertex $v$ with $$\deg_B(v) \geq e^{-F'(\ell/k)+\delta}N -1 \geq e^{-F'(\ell/k)+\delta/2}N  \geq \exp\s{F(\ell/k)k+\eps k-F'(\ell/k)+\delta/2},$$ 
+where the second inequality holds  as $N \geq e^{\eps  k} \geq e^{F'(\ell/k)}(e^{\delta/2}-1)$ for sufficiently large $k$.
+Thus it suffices to show that $\exp\s{F(\ell/k)k+\eps k-F'(\ell/k)+\delta/2} \geq R(k,\ell-1)$. By the induction hypothesis, this is implied by \begin{equation}\label{e:gen2}F(\ell/k)k+\delta/2-F'(\ell/k) \geq F((\ell-1)k)k.\end{equation} As $F$ is smooth there exists $\lambda \in \left[\frac{\ell-1}{k},\frac{\ell}{k}\right]$ such that
+$k(F(\ell/k)-F((\ell-1)/k)) = F'(\lambda)$, and so \eqref{e:gen2} can be rewritten as $\delta/2 \geq F'(\ell/k) -F'(\lambda).$ This last inequality holds for sufficiently large $k$, as $F'(\ell/k) -F'(\lambda) \leq \frac{1}{k}\max_{x \in [\eps'/2,1]}F''(x) \leq \delta/2.$
+\end{proof}
+
+We now approximate the optimal parameters to use in \cref{t:general} in stages. These were obtained by first finding continuous, piece-wise linear $F(\lambda)$ and piece-wise constant $M(\lambda)$ so that $F$ and $M$ satisfy the conditions of \cref{t:general} with $X(\lambda)= (1 - e^{-F'(\lambda)})^{\frac{1}{1-M(\lambda)}}(1-M(\lambda))$ and $Y(\lambda)=1-X(\lambda)$. (Except, of course, the condition that $F$ is smooth.)
+Such $F$ and $M$  are build iteratively, respectively linear and constant, on intervals $[i/N,(i+1)/N]$ for $i=0,1,\ldots, N-1$, where we used $N=10$. The resulting $F$ and $M$ are approximated by reasonably simple smooth functions, and $M(\lambda)= \lambda  e^{-\lambda}$ turns out to be a reasonably good choice and, in fact, the behavior of $F$ is not too sensitive to small changes in $M$. This is already sufficient to obtain a bound $R(k) \leq (3.87)^{k+o(k)}$.
+
+To improve this bound further we use the following lemma, which leverages our improved upper bounds on $R(k, \ell)$, allowing us to increase $Y(\lambda)$, while maintaining the condition $(X(\lambda),Y_i(\lambda)) \in \mc{R}$.  We obtain our final bound in \cref{t:main} by iterating this procedure  three times.
+
+
+\begin{lem}\label{l:y} Let $\alpha \geq 0$, $\phi(\lambda)= (\lambda+1) \log (\lambda+1)-\lambda \log (\lambda) -\alpha\lambda$  be such that
+	$$ R(k,l) \leq e^{\phi(\ell/k)k+o(k)}$$
+	for all $\ell \leq k$. Then \begin{itemize}
+		\item $(x,e^{\alpha}(1-x)) \in \mc{R}$ for all $0< x <1/2$,
+		\item $(x,1-xe^{-\alpha}) \in \mc{R}$ for all $0<x \leq 1$.
+	\end{itemize} 
+\end{lem}
+	
+\begin{proof}
+Note that for all positive integers $\ell,k$ the function $ \lambda \to k\log \lambda + \ell \log(1-\lambda)$ is maximized on the interval $(0,1)$ at $\lambda=\frac{k}{\ell+k}$.
+Thus for $\ell \leq k$ we have \begin{align*} \log R(k,\ell) &\leq \phi(\ell/k)k+o(k) \\&= -{\ell}\log \fs{\ell}{\ell +k} - k \log \fs{k}{\ell +k} -\alpha \ell+o(k) \\&\leq 
+-{\ell}\log(e^{\alpha}(1-x)) - (k+o(k)) \log(x), 
+\end{align*} 
+i.e. $R(k,\ell) \leq x^{-k-o(k)}(e^{\alpha}(1-x))^{-\ell}.$
+
+For $0< x \leq e^{\alpha}(1-x)$ we further have $x^{-k-o(k)}(e^{\alpha}(1-x))^{-\ell} \leq x^{-\ell}(e^{\alpha}(1-x))^{-k-o(k)}$, implying $(x,e^{\alpha}(1-x)) \in \mc{R}$ by \cref{o:r} (4) and thus the first claim of the lemma. 
+
+If $x > e^{\alpha}(1-x)$, let $y=1 -  xe^{-\alpha}$. Then $x=e^{\alpha}(1-y)$ and $y < x$, so by the above $(x,1-xe^{-\alpha})=(e^{\alpha}(1-y),y) \in \mc{R}$. As
+$1-xe^{-\alpha} \leq e^{\alpha}(1-x)$ the second claim follows.
+\end{proof}
+
+We are now ready to prove our main result, which we restate for convenience.
+
+\Main*
+
+\begin{proof}
+	We apply \cref{t:general} to obtain increasingly strong upper bounds on $R(k,\ell)$ as follows.
+	In all our applications we will have
+	\begin{align*} F(\lambda)& = F_i(\lambda)  =(\lambda+1) \log (\lambda+1)-\lambda \log (\lambda)+  \s{-0.25\lambda + \beta_i \lambda^2+0.08\lambda^3}e^{-\lambda},\\ M(\lambda)&=\lambda  e^{-\lambda}, \qquad X(\lambda) \leq (1 - e^{-F'(\lambda)})^{\frac{1}{1-M(\lambda)}}(1-M(\lambda)), \\ \qquad Y(\lambda)&=  Y_i(\lambda)= \begin{cases}
+	 e^{\alpha_i}(1-X(\lambda)), \; \mathrm{if} \; X(\lambda) \leq 1/2,\\
+	1-X(\lambda)e^{-\alpha_i}, \; \mathrm{if} \; X(\lambda) > 1/2,
+	 \end{cases}
+	 \end{align*} 
+	for some pair $(\alpha_i,\beta_i)$ with $i=0,1,2,3$, in order. 
+	In each iteration we need to verify that 
+	\begin{align} &(X(\lambda),Y_i(\lambda)) \in \mc{R}, \label{e:condition1}\\ F_i(\lambda) &> -\frac{1}{2} \s{\log X(\lambda)+ \lambda \log M(\lambda) + \lambda\log Y_i(\lambda)}. \label{e:condition2}\end{align}
+	We start with  $(\alpha_0,\beta_0)=(0,0.08)$. In this instance \eqref{e:condition1} holds by \cref{o:r} (1), and \eqref{e:condition2} is verified by Mathematica.\footnote{Let us note that \eqref{e:condition2} holds with some amount of slack and so is unlikely to be affected by numerical errors. More precisely, letting $\psi_i(\lambda)=F_i(\lambda) + \frac{1}{2} \s{\log X(\lambda)+ \lambda \log M(\lambda) + \lambda\log Y_i(\lambda)}$ for $\lambda \in (0,1]$ and $\psi_i(0)=0$, we have $\psi_i(\lambda) \geq 0.0001$ for $0.05 \leq \lambda \leq 1$ and $\psi_i'(\lambda) \geq 0.01$ for  $0 \leq \lambda \leq 0.05$.}
+	
+	Thus by \cref{t:general} we have $R(k,\ell) \leq e^{F_0(\ell/k)k + o(k)}$ for all positive integers $\ell \leq k$. 
+	
+	 As $\s{-0.25\lambda + \beta \lambda^2+0.08\lambda^3}e^{-\lambda}$ is convex on $[0,1]$ for $0 \leq \beta \leq 0.1$ we have $$\s{-0.25\lambda + \beta \lambda^2+0.08\lambda^3}e^{-\lambda} \leq (\beta-0.17)e^{-1}\lambda,$$
+	for $0 \leq \lambda \leq 1$.
+	Thus \eqref{e:condition1} is satisfied for $i=1$ when $\alpha_1=0.09e^{-1}$ and \eqref{e:condition2} holds a with this $\alpha_1$ and  $\beta_1=0.045$ which once again is verified by Mathematica.
+	
+	We continue in this manner for two more iterations once again taking $\alpha_i = (0.17-\beta_{i-1})e^{-1}$ for $i=2,3$, and verifying that \eqref{e:condition2} is satisfied $\beta_2 =0.033$ and $\beta_3=0.03$ with the last result establishing the theorem. 	
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Multicolor Ramsey numbers}\label{s:multi}
+
+In this section we  present extensions of the results in \cref{s:easy}  to multicolor Ramsey numbers. The techniques translate straightforwardly to the multicolor setting. In fact, the main reason that we present the bounds for two colors separately is to avoid complicating the notation.   
+
+It will be convenient for us to use the following additional notation to encode the parameters of multicolor Ramsey numbers. Let $\bl{x} \in \bb{R}^c$ be a vector. (We will use bold letters for vectors.) Then we denote its components by $x_1,\ldots,x_c$ and use the convention $x = \abs{\bl{x}}=\sum_{i=1}^cx_i$. Similarly $\bl{\ell}=(\ell_1,\ldots,\ell_c),$ and $\ell = \sum_{i=1}^c\ell_i$, etc. 
+
+We will always distinguish a single color red ($R$) in the colorings we consider and  label the rest as $(B_1,\dots,B_c)$. For $k \in \bb{N}$ and  $\bl{\ell}\in \bb{N}^c$
+\emph{the multicolor Ramsey number} $R(k,\bl{\ell})$ is the minimum integer $N$ such that every coloring of edges of the complete graph on $N$ vertices in $c+1$ colors $R,B_1,\dots,B_c$ contains a complete subgraph on $k$ vertices with all edges colored $R$ or a complete subgraph on $\ell_i$ vertices with all edges colored $B_i$ for some $1 \leq i \leq c$.
+
+The Erd\H{o}s-Szekeres argument to bound classical two-color Ramsey numbers naturally extends to multicolor ones, giving an upper bound on $R(k,\bl{\ell})$ of the form $$ES(k,\bl{\ell}) = e^{o(k+\ell)}\frac{(k+\ell)^{k+\ell}}{k^k \ell_1^{\ell_1}\cdots\ell_c^{\ell_c}} =  e^{o(k+\ell)} ES(k,\ell)\cdot \frac{\ell^{\ell}}{\ell_1^{\ell_1}\cdots\ell_c^{\ell_c}}.$$
+The main change between our results in the two color and multicolor cases is the introduction of the same factor  $\frac{\ell^{\ell}}{\ell_1^{\ell_1}\cdots\ell_c^{\ell_c}}$, which we denote by $\Theta(\bl{\ell})$.
+
+\cref{o:easybound} extends as follows.
+
+\begin{obs}\label{o:easybound2} For all  $k \in \bb{N}$, $\bl{\ell}\in \bb{N}^c$, $0>x>1$ and $\bl{y}\in \bb{R}_{>0}^c$ such that $x+y \leq 1$  we have
+	$$R(k,\bl{\ell}) \leq x^{-k+1}\prod_{i=1}^{c}y_i^{-\ell_i+1}.$$	
+\end{obs}
+\begin{proof}
+	We will prove this by induction on $\ell$.
+	For the induction step, we may assume that $\ell_i \geq 2$ for every $i$, as otherwise the statement trivially holds. (In particular, the base case is trivial.) Let $\bl{\ell^{-,i}}=(\ell_1,\ldots,\ell_{i-1},\ell_{i}-1,\ell_{i+1},\ldots)$ be obtained from $\bl{\ell}$ by subtracting one from $i$th component. Then we have $$ R(k,\bl{\ell})\leq R(k-1,\bl{\ell}) + \sum_{i=1}^{c}R(k,\bl{\ell^{-,i}})$$
+and	applying the induction hypothesis to the terms on the right side we obtain the desired bound. 
+\end{proof}
+
+The definitions related to candidates extend as follows.
+Let $X$ and $Y$ be two disjoint subsets of vertices of a complete graph with edges colored in $c+1$ colors.  We say that $(X,Y)$ is a \emph{$c$-candidate}. For $k \in \bb{N}$ and $\bl{\ell},\bl{t} \in \bb{N}^c$ 
+we say that a candidate $(X,Y)$ is \emph{$(k,\bl{\ell},\bl{t})$-good} if $X \cup Y$ contains a red $K_k$ or $X$ contains a monochromatic $K_{t_i}$ colored $B_i$ or $Y$ contains a monochromatic $K_{\ell_i}$ colored $B_i$ for some $i$.  
+
+%Recall that  the density of $(X,Y)$ is  $d(X,Y) = \frac{e_R(X,Y)}{|X|||Y|}$ and  $f_{p}(X,Y)=e_R(X,Y) - p|X||Y|$. \cref{l:FpAvg} 
+The following lemma extends \cref{l:easy} to multiple colors. The proof is essentially the same, but we include it for completeness. Recall that  $f_{p}(X,Y)=e_R(X,Y) - p|X||Y|$.
+
+\begin{lem}\label{l:easy2}
+	Let  $0<x<p<1$, let $\bl{\theta} \in  \bb{R}_{>0}^c$  be such that $\sum_{i=1}^c \theta_i=1$.  Let $k \in \bb{N}$ and  $\bl{\ell},\bl{t} \in \bb{N}^c$, and let $(X,Y)$ be a $c$-candidate such that 
+	\begin{equation}\label{e:easy}
+	f_{p}(X,Y) \geq  (k+t)x^{-k+1}(1-x)^{-\ell+c}(p-x)^{-t+c}\cdot \prod_{i=1}^c\theta_i^{-\ell_i-t_i} 
+	\end{equation}	
+	then $(X,Y)$ is $(k,\bl{\ell},\bl{t})$-good.
+\end{lem}
+
+\begin{proof} 
+	We prove the lemma by induction on $k+t$. The base case is trivial. 
+	
+For the induction step, note that by  
+ \cref{l:FpAvg}, which still applies in the multicolor setting, there exists $v \in X$ such that  $f_p(X,N_R(v) \cap Y) \geq p \cdot f_p(X,Y)$. Let $Y' = N_R(v) \cap Y, X_  {B_i}=  N_{B_i}(v) \cap X$ and $X_R=  N_R(v) \cap X$.
+	
+	Just as in the proof of \cref{l:easy}, if either $f_p(X_R,Y') \geq \frac{k+t-1}{k+t} x f_p(X,Y)$ or  $f_p(X_{B_i},Y') \geq 
+	\theta_i\frac{k+t-1}{k+t}(p-x) f_p(X,Y)$ for some $i$, then applying the induction hypothesis to  $(X_R,Y')$ or  $(X_{B_i},Y')$, respectively, yields the lemma. Thus we assume that none of these inequalities hold and so
+	\begin{align*}
+		p \cdot f_p(X,Y) &\leq f_p(X,Y') = f_p(X_R,Y') + \sum_{i=1}^c f_p(X_{B_i},Y') + f_p(\{x\},Y') \\ &< \frac{k+t-1}{k+t}pf_p(X,Y) + |Y|,
+	\end{align*}
+implying
+ $\frac{1}{{k+t}}f_p(X,Y) \leq |Y|$.
+	Thus, using \cref{o:easybound2},
+\begin{align*}
+	|Y| &\geq  x^{-k+1}(1-x)^{-\ell+c}(p-x)^{-t+c}\cdot \prod_{i=1}^c\theta_i^{-\ell_i-t_i}  \geq x^{-k+1}\prod_{i=1}^c\s{ {\underbrace{\theta_i(1-x)}_{=y_i}}}^{-\ell_i+1} \geq  R(k,\bl{\ell}),
+\end{align*}	
+	implying that $(X,Y)$ is$(k,\bl{\ell},\bl{t})$-good, as desired. 
+\end{proof}	
+
+We are ready to prove the multicolor analogue of \cref{t:easy}, which as promised differs from it only by the introduction of the $\Theta(\bl{\ell})$ factor.
+
+\begin{thm}\label{t:easy2}
+	For every $0< p <1$ and all $k \in \bb{N}$ and  $\bl{\ell} \in \bb{N}^c$ we have $$R(k,\bl{\ell}) \leq 4(k+\ell)\s{\frac{1+\sqrt{5}}{2}p+\frac{1-\sqrt{5}}{2}}^{-k/2}(1-p)^{-\ell} \cdot \Theta(\bl{\ell}).$$
+\end{thm}
+\begin{proof} Let $\theta_i~=~\ell_i/\ell$ then $\Theta(\bl{\ell}) = \prod_{i=1}^c \theta_i^{-\ell_i}$. As in \cref{t:easy} the proof is by induction on $\ell$ and we set 
+$x = \frac{1+\sqrt{5}}{2}p+\frac{1-\sqrt{5}}{2}$.
+Consider a  coloring of edges of a complete graph on $n \geq 4(k+\ell)x^{-k/2}(1-p)^{-\ell}  \prod_{i=1}^c \theta_i^{-\ell_i}$ vertices.  As in the proof of \cref{t:easy}  we may assume that $|N_{B_i}(v)|< \theta_i\frac{k+\ell-1}{k+\ell}(1-p)n$ for every vertex $v$ and every $i$, as otherwise the theorem follows by applying the induction hypothesis to $N_{B_i(v)}$. Thus $|N_R(v)| \geq n-1 - \frac{k+\ell-1}{k+\ell}(1-p)n$ for every $v$. As in \cref{t:easy}  we consider a uniformly random partition $(X,Y)$ of the vertices of our graph and following the same steps derive
+	$$\bb{E}[f_p(X,Y)] \geq (k+\ell)x^{-k}(1-x)^{-\ell}(p-x)^{-\ell}\cdot \prod_{i=1}^c\theta_i^{-2\ell_i} .
+	$$ Thus $(X,Y)$ is a $(k,\bl{\ell},\bl{\ell})$-good $c$-candidate by \cref{l:easy2}, implying that  our  coloring contains a red $K_k$ or $K_{\ell_i}$ in color $B_i$ for some $i$, as desired.
+\end{proof}	
+
+Substituting the same value of $p$ as in \cref{s:easy} into \cref{t:easy2}   yields the following
+\begin{cor}\label{c:easy2}
+	For all $k \in \bb{N}$ and  $\bl{\ell} \in \bb{N}^c$ we have $$R(k,\bl{\ell}) \leq 2(k+\ell)\s{\frac{k+2 \ell}{k}}^{k/2}\fs{\left(\sqrt{5}+1\right) (k+2 \ell)}{4\ell}^{\ell}\cdot \Theta(\bl{\ell}).$$
+\end{cor}
+
+Just as   in \cref{s:easy}, comparing the bound given in \cref{c:easy2} with the Erd\H{o}s-Szekeres bound we obtain a similar  conclusion
+\begin{align*} \frac{R(k,\bl{\ell})}{ES(k,\bl{\ell})} &\leq e^{o(k+\ell)} \fs{(\sqrt{5}+1)(k+2\ell)}{4(k+\ell)}^{\ell}\fs{(k+2\ell)k}{(k+\ell)^2}^{k/2}, 
+	%\\	 & \leq \fs{(\sqrt{5}+1)(k+2\ell)}{4(k+\ell)}^{\ell+o(1)}.
+\end{align*}
+and thus still an exponential improvement for $\ell < 0.69 k$. 
+
+\vskip 10pt
+
+Initially, we expected that the results in \cref{s:book} similarly would translate to the multicolor setting, but so far we were unable to overcome the following technical issue. Naively applying a multicolor analogue of \cref{l:BBook} in an extension of \cref{t:bookmain} requires $|X|$ to be sufficiently large compared to $R(k, m_1, t_2,\ldots,t_c) + R(k,t_1,m_2,\ldots,t_c) + \ldots$, where $m_i$ is logarithmic in $k+t$.
+Meanwhile, the analogue of \eqref{e:x} gives us a lower bound of the form $|X| \geq (1+\eps)^{k+\ell+t}\Theta(\bl{\ell})$, which is not quite sufficient. 
+
+
+\bibliographystyle{halpha}
+\bibliography{snorin2}
+
+\end{document}
