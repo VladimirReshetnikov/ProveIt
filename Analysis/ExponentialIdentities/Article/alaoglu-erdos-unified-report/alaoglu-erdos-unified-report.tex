@@ -283,12 +283,17 @@ canonical entire $q$-Newton completion realizes the exact boundary defect.  In t
 cross-coprime determinant branch, the former $7/10$ ceiling is sharpened to the identity
 $7/10-\mathcal E_{\rm val}/20$, with an explicit arithmetic deficit of order $x^{-4}$.
 A four-value covariance theorem closes any nonnegative-coefficient representative, while
-finite positive-scale filters cannot remove the canonical alternating tail and finite
-power-substitution node defects are strongly supercritical.  Reciprocal
+finite positive-scale filters cannot remove the canonical alternating tail; normally
+convergent power-substitution families have a supercubic coefficient threshold, and the
+basic four-dilation rank-one defect remains exactly critical after division by the node
+product.  Reciprocal
 Stieltjes moments give a full Vandermonde-divisible Hankel determinant whose residual
 alternant dominates the input Vandermonde for every node set and whose exact $T^5$ asymptotic
 remains strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
-into reduced denominators, in the direction opposite to closure.  A shifted higher
+into reduced denominators, in the direction opposite to closure.  Uniform
+Corvaja--Zannier estimates show that pairwise gap synchronization for one fixed hypothetical
+output table has only subcubic mass; beyond structural-prime effects, collective barycentric
+root concentration remains the unresolved cancellation mechanism.  A shifted higher
 Newton--Kummer cocycle gives an exponentially small algebraic integer, while character
 projections, the exact common-ideal norm, and signed-orbit augmentation expose both a
 one-factor partial-norm deficit and a conditional unit/divisor obstruction.
@@ -16531,7 +16536,107 @@ index.  Since $W=EG$ for an entire $G$,
 \]
 Thus every nonzero finite correction of this form is strongly supercritical.  The
 interpolant $H_x+W$ also cannot have nonnegative coefficients for nonintegral $x$, by the
-four-value closure theorem.  Infinite nonlinear corrections remain outside this no-go.
+four-value closure theorem.
+
+Infinite scalar combinations have an exact convergence threshold.  Put
+$a_r=-\log|c_r|$, with $a_r=+\infty$ when $c_r=0$.  The maximum-modulus comparison
+\[
+ M_{H_x}(e^{rT})-M_{H_x}(e^T)^r
+ \le M_{V_r}(e^T)
+ \le M_{H_x}(e^{rT})+M_{H_x}(e^T)^r
+\]
+gives, for every fixed $T>0$, as $r\to\infty$,
+\[
+ \log M_{V_r}(e^T)=\tau r^3T^3+O_T(r^2).
+\]
+Consequently
+\begin{equation}
+ \sum_{r\ge2}c_rV_r\ \hbox{converges normally (absolutely locally uniformly)}
+ \quad\Longleftrightarrow\quad
+ \frac{a_r}{r^3}\longrightarrow+\infty.
+ \label{crit:eq-nonlinear-normal-series}
+\end{equation}
+An infinite support therefore has an absolute maximum-modulus majorant of infinite cubic
+type.  Cancellation in an arbitrary normally convergent signed series remains open, but one
+large class is rigid: if such a series has infinite support, all its indices have one fixed
+$2$-adic valuation $k$, and all nonzero $c_r$ lie on one complex ray, evaluation at
+$z=e^T\exp(i\pi/2^k)$ sends every $z^r$ to $-e^{rT}$.
+The asymptotic $H_x(-t)\sim\mathfrak c_xE(-t)/t$, $\mathfrak c_x\ne0$, puts all dominant terms in
+one shrinking cone and proves that the sum itself has infinite cubic type.
+
+Nor does multiplicative renormalization help.  For integers $q,s\ge2$, the quotients
+\[
+ \mathfrak A_q(z)=\frac{H_x(z^q)}{H_x(z)^q}
+\]
+obey
+\begin{equation}
+ \mathfrak A_{qs}(z)=\mathfrak A_s(z^q)\mathfrak A_q(z)^s
+ =\mathfrak A_q(z^s)\mathfrak A_s(z)^q.
+ \label{crit:eq-power-substitution-cocycle}
+\end{equation}
+With a local logarithm at the origin, their natural rooted tower telescopes:
+\[
+ \prod_{j=0}^{n-1}\mathfrak A_q(z^{q^j})^{q^{-j-1}}
+ =\frac{H_x(z^{q^n})^{q^{-n}}}{H_x(z)}\longrightarrow\frac1{H_x(z)}.
+\]
+Globally each unrooted factor $\mathfrak A_q$ equals one at every smooth node.  On the other
+hand, the pointwise modulus ratio
+\[
+ \frac{|H_x(z^{q^n})|^{q^{-n}}}{|H_x(z)|}
+\]
+has supremum on $|z|=e^T$, for every $T>0$, whose logarithm grows at least like
+$\tau q^{2n}T^3$.  Hence the local rooted telescope cannot extend to a globally
+normally convergent holomorphic product.  The dyadic and triadic towers are the same
+coboundary rather than independent constraints.
+
+Finite Prouhet cancellation also fails beyond the polynomial asymptotic.  For distinct
+finite multisets $\mathcal U,\mathcal V$ of positive substitution indices in one $2$-adic
+class, assume $\sum_{r\in\mathcal U}r=\sum_{r\in\mathcal V}r$ and set
+\[
+ \mathcal W_{\mathcal U,\mathcal V}(z)
+ =\prod_{r\in\mathcal U}H_x(z^r)-\prod_{r\in\mathcal V}H_x(z^r).
+\]
+This function vanishes on the smooth nodes, but
+\begin{equation}
+ \tau_3(\mathcal W_{\mathcal U,\mathcal V})
+ =\tau\max\left\{\sum_{r\in\mathcal U}r^3,\sum_{r\in\mathcal V}r^3\right\}.
+ \label{crit:eq-prouhet-composition-type}
+\end{equation}
+Indeed Mellin inversion and Baker separation~\cite{Baker1975} write $\log E(-e^T)$ as a
+cubic polynomial plus two absolutely convergent Fourier series with frequencies in
+$2\pi(\log2)^{-1}\Z$ and
+$2\pi(\log3)^{-1}\Z$, up to an exponentially small remainder.  If the polynomial moments tie,
+the least index whose multiplicities differ contributes a nonzero frequency that no larger
+index can reproduce; the two frequency lattices cannot collide because $\log_2 3$ is
+irrational.  Hence the product ratio stays away from one along an unbounded sequence.  Even
+an eight-against-eight Thue--Morse pair matching power sums through degree three retains
+type $65408\tau$.
+
+There is a complementary defect using only smooth dilations:
+\begin{equation}
+ \mathcal R_x(z)=H_x(z)H_x(6z)-H_x(2z)H_x(3z)=E(z)\mathcal G_x(z).
+ \label{crit:eq-four-dilation-defect}
+\end{equation}
+The rank-one table law gives the node zeros and hence the entire quotient $\mathcal G_x$.
+The exact product identity
+\[
+ E(z)E(6z)=(1-6z)E(2z)E(3z)
+\]
+and the negative-axis Stieltjes asymptotic give
+\begin{equation}
+ \mathcal R_x(-R)\sim
+ \frac{\mathfrak c_x^2}{R}E(-2R)E(-3R),
+ \qquad
+ \log|\mathcal G_x(-e^T)|
+ =\tau T^3+3c_ET^2+o(T^2).
+ \label{crit:eq-four-dilation-growth}
+\end{equation}
+The Stieltjes formula supplies the matching global upper bound, so
+$\tau_3(\mathcal G_x)=\tau$: the most elementary four-dilation determinant produces another
+exactly critical multiple of $E$, not a subcritical one.  At every integral control
+$x\in\Nzero$, all the nonlinear and dilation defects above vanish identically.  General
+signed infinite cancellation and mixed
+$2$-adic supports remain outside these results.
 
 In particular infinitely many Maclaurin coefficients are negative.  Similarly,
 \[
@@ -16651,7 +16756,8 @@ target with no unspecified analytic constant in its leading scale.
 
 Node-only denominator theory cannot prove that saving.  For the size triangle
 \[
- F_T=\{2^a3^b:a\alpha+b\gamma\le T\},\qquad
+ \mathcal J_T=\{(a,b)\in\Nzero^2:a\alpha+b\gamma\le T\},\qquad
+ F_T=\{2^a3^b:(a,b)\in\mathcal J_T\},\qquad
  P_T=\prod_{s\in F_T}s,
 \]
 put
@@ -16714,6 +16820,80 @@ congruence identities can force $\mathfrak d_T=o(P_T)$ for all rank-one speciali
 does not rule out exceptional root concentration for the one fixed
 hypothetical pair $(M,A)$.  Such concentration would have to account for logarithmic mass
 $\Theta(T^3)$, whereas universal fixed-divisor content contributes only $O(T\log T)$.
+
+For one fixed hypothetical pair, ordinary gap synchronization is also too sparse.  Let
+\[
+ \mathrm{Dir}_T=(\mathcal J_T-\mathcal J_T)\setminus\{(0,0)\}.
+\]
+For $d=(r,s)\in\mathrm{Dir}_T$, write in lowest terms
+\[
+ 2^r3^s=\frac{P_d}{Q_d},\qquad
+ M^rA^s=\frac{R_d}{S_d},\qquad
+ g_d=\gcd(|P_d-Q_d|,|R_d-S_d|).
+\]
+Then the uniform triangular estimate is
+\begin{equation}
+ \boxed{\sum_{d\in\mathrm{Dir}_T}\log g_d=o(T^3).}
+ \label{crit:eq-triangular-gap-gcd}
+\end{equation}
+The point is that all directions lie in the one fixed finitely generated group
+$\Gamma=\langle(2,M),(3,A)\rangle\subset\mathbb G_m^2(\Q)$.  For $d\ne0$, put
+$u_d=2^r3^s$ and $v_d=M^rA^s=u_d^x$.  Since $u_d\ne1$ and $x$ is irrational, $u_d,v_d$
+are multiplicatively independent.  Corollary~1 of the Corvaja--Zannier $S$-unit gcd
+theorem~\cite{CorvajaZannier2005} says that, for every $\varepsilon>0$, all but finitely
+many multiplicatively independent $(u,v)\in\Gamma$ have generalized gcd at most
+$\varepsilon\max\{h(u),h(v)\}$.  The quantity $\log g_d$ is its finite-place part, so the
+same bound holds for $g_d$.  There are $O(T^2)$ directions and every height is $O_x(T)$;
+summing and then sending $\varepsilon$ to zero proves~\eqref{crit:eq-triangular-gap-gcd}.
+In particular the endpoint sum
+\[
+ \sum_{(a,b)\in\mathcal J_T\setminus\{(0,0)\}}
+ \log\gcd(2^a3^b-1,M^aA^b-1)=o(T^3).
+\]
+
+This has a precise local interpretation.  Put $y_e=M^aA^b$ for $e=(a,b)$ and
+$\lambda_p=\max_e v_p(D_e)$.  For $p\nmid6MA$, choose a maximizing node $i_p$ and define
+\begin{equation}
+ \kappa_p=\sum_{j\ne i_p}
+ \min\{v_p(s_{i_p}-s_j),v_p(y_{i_p}-y_j)\}.
+ \label{crit:eq-pairwise-overlap-budget}
+\end{equation}
+Distinct $j$ give distinct directions, so~\eqref{crit:eq-triangular-gap-gcd} implies
+\begin{equation}
+ \sum_{p\nmid6MA}\kappa_p\log p=o(T^3).
+ \label{crit:eq-pairwise-overlap-ceiling}
+\end{equation}
+Define the collision graph modulo $p$ to have the nodes as vertices and an edge $\{i,j\}$
+exactly when $s_i\equiv s_j\pmod p$.  If this graph has exactly one edge $\{i,j\}$ and
+$h_p=v_p(s_i-s_j)$, the two active barycentric coefficients are opposite modulo $p^{h_p}$ and
+one has the exact isolated-collision formula
+\begin{equation}
+ \min\{h_p,v_p(R_{\mathcal J_T}(M,A))\}
+ =\min\{h_p,v_p(y_i-y_j)\}.
+ \label{crit:eq-isolated-collision-cancellation}
+\end{equation}
+Thus every cancellation at an isolated collision prime is already charged to the
+subcubic budget.  Multiple collisions can instead cancel collectively in the barycentric
+sum; the excess
+\[
+ \left(\min\{\lambda_p,v_p(R_{\mathcal J_T}(M,A))\}-\kappa_p\right)_+
+\]
+is the exact uncontrolled root-concentration term.  No denominator conclusion is inferred
+from~\eqref{crit:eq-pairwise-overlap-ceiling}.
+
+Two calibrations make the scope sharp.  For every fixed $p\ge5$, elementary order lifting
+gives $\lambda_p=O_p(T^2)$, so no fixed set of nonstructural primes carries cubic mass.
+Also $R_{\mathcal J_T}$ is primitive of degree $O(T)$, whence
+\[
+ \#\{(u,v)\bmod p^e:R_{\mathcal J_T}(u,v)\equiv0\pmod{p^e}\}
+ \le O(T)p^{2e-1};
+\]
+this is only a density bound and cannot exclude one fixed exceptional pair.  At every fixed
+integral control $x\in\Nzero$, by contrast, the endpoint gcd sum has the full cubic scale and
+$R_{\mathcal J_T}(2^x,3^x)=0$ once the table is large enough.  Thus
+\eqref{crit:eq-triangular-gap-gcd} shows that, among nonstructural primes, any cancellation
+beyond the subcubic pairwise ratio-gap budget must be collective.  The CRT specializations
+above evade it because their group changes with $T$.
 
 Finally, $E\in\Q[[z]]$: its reciprocal-zero power sums are
 \[
@@ -17568,8 +17748,9 @@ has
 If $x=k\in\N$, by contrast, $s=r^k$ and $G_n$ is an integer.  Dependence of $r,s$
 would make $x$ rational and therefore integral by the elementary rational-exponent
 reduction.  Thus every fixed direction has an exact zero-versus-exponential denominator
-dichotomy.  The direction must remain fixed: the cited theorem supplies no uniformity as
-$(u,v)$ varies~\cite{CorvajaZannier2005}.
+dichotomy.  The fixed-group refinement in~\eqref{crit:eq-triangular-gap-gcd} sums the
+corresponding gcd bounds over the triangular direction set; it still supplies denominator
+mass, not the denominator upper bound required for closure.
 
 There is also an exact group-theoretic measure of how far a source gap is from being
 captured by a target gap.  Remove from $U_n=P^n-Q^n$ every prime power supported on $RS$,
@@ -17864,6 +18045,41 @@ This criterion does not prove existence: the available bounds for the logarithms
 absolute norms of both the resultant and the discriminant--minor product are
 $O_x(\ell^5)$ for fixed $m$ and $O_x(\ell^6)$ for $m=\ell-1$.  A squarefree divisor outside this potentially
 same-scale exceptional factor is precisely the missing arithmetic input.
+
+At $m=1$ that missing input has a particularly explicit form.  Put
+$d_2=P-1$, $d_3=Q-1$, $c=P-Q$, $\mu=d_3^\ell M$, and
+$\nu=d_2^\ell A$.  Shifting the exponent from $x$ to $x+t$ replaces the resultant by
+\[
+ R_t=\mathcal C_\ell(2^t\mu,3^t\nu;c),\qquad
+ \mathcal C_\ell(X,Y;c)
+ =\operatorname{Res}_z(z^\ell-X,(z+c)^\ell-Y).
+\]
+The curve $\mathcal C_\ell=0$ is the irreducible rational image
+$z\mapsto(z^\ell,(z+c)^\ell)$.  Away from a fixed finite set $\mathcal S_\ell$ of primes,
+its only torus singularities are the finitely many ordinary double points
+\[
+ (X,Y)=c^\ell\left(
+  \left(\frac{\zeta_\ell^b-1}{\zeta_\ell^a-\zeta_\ell^b}\right)^\ell,
+  \left(\frac{\zeta_\ell^a-1}{\zeta_\ell^a-\zeta_\ell^b}\right)^\ell
+ \right),\qquad a,b\in\mathbf F_\ell^\times,\ a\ne b.
+\]
+Corvaja--Zannier~\cite{CorvajaZannier2005} bounds the radical supported at this finite node
+locus by $\exp(o(t))$.
+Consequently the explicit truncated-radical hypothesis
+\begin{equation}
+ \sum_{\substack{\mathfrak q\notin\mathcal S_\ell\\ \mathfrak q\mid R_t}}
+ \log N\mathfrak q\ge\eta t
+ \quad\text{for some $\eta>0$ and all sufficiently large $t$}
+ \label{crit:eq-private-prime-truncated}
+\end{equation}
+would leave a smooth divisor.  Its unique normalization preimage is Frobenius-fixed, so in
+the full rank-four branch it yields a free private prime for one conjugate difference and
+rules out nontrivial integral augmentation-zero operations for every sufficiently large
+shifted $m=1$ instance at that fixed $\ell$.  The hypothesis would follow from an appropriate
+truncated-radical conjecture; ordinary norm growth and ordinary gcd bounds do not imply it,
+because high prime powers can carry a linear norm while the radical remains sublinear.  This
+conditional fixed-$\ell$ statement is not uniform in $\ell$ and therefore does not reach the
+original unshifted instance or the adaptive $m=\ell-1$ cocycle.
 
 The extracted common ideal $\mathfrak I_{\ell,m}$ cancels from every
 augmentation-zero ratio.  Multiplication by
@@ -18262,8 +18478,9 @@ reciprocal-Hankel, BCZ, and pure-denominator results, they leave three narrower 
 a genuinely different positive arithmetic interpolant; an output-specific denominator upper
 bound on a balanced exhaustion, rather than more fresh divisors; or exceptional
 cross-conjugate ideal overlap that makes a signed Kummer operation integral.  The natural
-Stieltjes transfer family, finite positive-dilation and power-substitution corrections,
-sparse-spike aggregation,
+Stieltjes transfer family, finite positive-dilation filters, finite and one-ray infinite
+power-substitution corrections, four-dilation rank-one defect, sparse-spike aggregation,
+pairwise triangular gap synchronization,
 reciprocal Hankel determinants, ordinary traces, character projections, common ideals,
 signed augmentation-zero ratios absent exceptional overlap, and subgroup output partial
 norms do not improve the relevant bounds at their exact scales.  None of the surviving
@@ -18776,7 +18993,9 @@ two residue relations, and a conditional residual cross identity & \statuslean &
 \lean{CatalanTangentCore};
 Section~\ref{crit:adjacent-resultants} \\
 Canonical critical Stieltjes interpolant, refined quadratic threshold, positive reduced
-denominator target, and universal rank-one fixed-divisor ceiling & \statusnew & Sections~\ref{crit:critical-interpolant} and
+denominator target, universal rank-one fixed-divisor ceiling, and fixed-pair triangular
+synchronization ceiling & \statusnew{} paper deductions; Corvaja--Zannier input
+\statusknown & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
 One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice,
 common-content floors, full alternant divisor, shape-free HCIZ dominance, and sharp $T^5$
@@ -18784,7 +19003,8 @@ scale audit & finite arithmetic and common-content core \statuslean; HCIZ/altern
 layer \statusnew &
 \lean{ReciprocalMomentLatticeFinite}; Section~\ref{crit:reciprocal-moment-lattice} \\
 Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
-canonical alternating tail, finite Euler--dilation and nonlinear node-defect no-gos,
+canonical alternating tail, finite Euler--dilation, controlled infinite substitution,
+Prouhet-composition, and four-dilation node-defect no-gos,
 boundary-quotient lower bounds, and Stieltjes-transfer no-go & \statusnew &
 Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
@@ -18811,7 +19031,8 @@ Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs class
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
 Shifted Newton--Kummer exponential smallness, character-projection ceiling, exact common-ideal
-norm, one-factor partial-norm deficit, and private-prime resultant criterion &
+norm, one-factor partial-norm deficit, private-prime resultant criterion, and conditional
+truncated-radical bridge &
 \statusnew & Section~\ref{crit:newton-kummer} \\
 Adjacent-smooth cyclic resultant, boundary law, balanced gcd target, and conditional
 Frobenius descent & \statusnew & Section~\ref{crit:adjacent-resultants} \\
