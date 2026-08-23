@@ -84,6 +84,11 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     (`gk_eq234_holds`).  It specializes the general differencing engine,
     separates the zero correlation, and reindexes the remaining shifts as
     `1 ≤ h ≤ H`.
+  - `IntegerPoints.GKTheorem21` — **proved**: Graham–Kolesnik Theorem 2.1 in
+    the form invoked in §3.3 (`gk_theorem21_invoked_holds`).  The `p = 0`
+    class estimate keeps `f'` uniformly away from the integers, the `p = 1`
+    estimate makes it antitone, and Kuz'min–Landau gives
+    `≪ y⁻¹Nˢ` when `yN⁻ˢ < 1/2`.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

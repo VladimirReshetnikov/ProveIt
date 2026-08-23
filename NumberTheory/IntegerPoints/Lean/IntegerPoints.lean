@@ -46,6 +46,7 @@ import IntegerPoints.GKLemma35
 import IntegerPoints.GKLemma36
 import IntegerPoints.GKLemma37
 import IntegerPoints.GKEq234
+import IntegerPoints.GKTheorem21
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -76,6 +77,8 @@ stationary-phase Lemma 3.4, the B-process transformation of Lemma 3.6, and
 the exact book form of the differencing Lemma 3.7.
 `IntegerPoints.GKEq234` proves the Weyl–van der Corput inequality in the
 integer-shift form used in §3.3.
+`IntegerPoints.GKTheorem21` proves the reciprocal-scale exponential-sum bound
+quoted from Graham–Kolesnik Theorem 2.1 and invoked in §3.3.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
