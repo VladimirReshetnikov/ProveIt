@@ -411,6 +411,37 @@ theorem log_normalize {y M H : ℝ} (hy : 0 < y) (hM2 : 2 ≤ M) (hH0 : 0 < H)
       add_le_add hlogM_absorb le_rfl
     _ = (1 + Real.log M / Real.log 2) * Real.log (y + 2) := by ring
 
+/-- Normalize a harmonic number against `log (y + 2)` through an auxiliary width `H`.
+The proof treats `n = 0` separately because `Real.log_le_log` requires a positive left input. -/
+theorem harmonic_normalize {n : ℕ} {y M H : ℝ} (hy : 0 < y) (hM2 : 2 ≤ M)
+    (hH0 : 0 < H) (hH1 : 1 ≤ H) (hHM : H ≤ M * (y + 2)) (hnH : (n : ℝ) ≤ H) :
+    (harmonic n : ℝ) ≤
+      (1 / Real.log 2 + (1 + Real.log M / Real.log 2)) * Real.log (y + 2) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog2L : Real.log 2 ≤ Real.log (y + 2) :=
+    Real.log_le_log (by norm_num) (by linarith)
+  have hlogH : Real.log H ≤
+      (1 + Real.log M / Real.log 2) * Real.log (y + 2) :=
+    log_normalize hy hM2 hH0 hHM
+  have hlognH : Real.log (n : ℝ) ≤ Real.log H := by
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · rw [hn, Nat.cast_zero, Real.log_zero]
+      exact Real.log_nonneg hH1
+    · exact Real.log_le_log (by exact_mod_cast hn) hnH
+  have hone : (1 : ℝ) ≤ 1 / Real.log 2 * Real.log (y + 2) := by
+    calc
+      (1 : ℝ) ≤ Real.log (y + 2) / Real.log 2 := by
+        rw [le_div_iff₀ hlog2]
+        simpa using hlog2L
+      _ = 1 / Real.log 2 * Real.log (y + 2) := by ring
+  calc
+    (harmonic n : ℝ) ≤ 1 + Real.log n := harmonic_le_one_add_log n
+    _ ≤ 1 / Real.log 2 * Real.log (y + 2) +
+        (1 + Real.log M / Real.log 2) * Real.log (y + 2) :=
+      add_le_add hone (hlognH.trans hlogH)
+    _ = (1 / Real.log 2 + (1 + Real.log M / Real.log 2)) *
+        Real.log (y + 2) := by ring
+
 /-! ### Raw B-process estimate -/
 
 /-- The analytic core of Lemma 3.6, before the `F,N` scale is substituted.
@@ -637,5 +668,394 @@ theorem raw_bound :
           (J.card : ℝ) * gkR₂ lam₂ lam₃ lam₄ a b) := by ring
 
 end GK36
+
+open GK36 in
+set_option maxHeartbeats 2000000 in
+/-- **Graham–Kolesnik, Lemma 3.6** (the `B`-process transformation). -/
+theorem gk_lemma36_holds : gk_lemma36 := by
+  obtain ⟨K₃₅, K₃₂, K₃₄, hK₃₅, hK₃₂, hK₃₄, hraw⟩ := raw_bound
+  intro c₁ c₂ c₃ c₄ hc₁ hc₂ hc₃ hc₄
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  set r : ℝ := c₁ ^ (-(1 : ℝ) / 2) with hr
+  set q : ℝ := c₂ / c₁ with hq
+  set d : ℝ := c₄ * c₁ ^ (-(2 : ℝ)) + c₃ ^ 2 * c₁ ^ (-(3 : ℝ)) with hd
+  set W : ℝ := max c₂ 2 with hW
+  set Klog : ℝ := 1 + Real.log W / Real.log 2 with hKlog
+  set Kharm : ℝ := 1 / Real.log 2 + Klog with hKharm
+  set Alog : ℝ := K₃₅ * Klog + K₃₄ * (2 * q * Kharm + d * c₂ / Real.log 2) with hAlog
+  set Atime : ℝ := 4 * K₃₂ * r + K₃₄ * (2 * r + d) with hAtime
+  set Clarge : ℝ := Alog + Atime with hClarge
+  set Csmall : ℝ := 3 + r + c₂ * r / Real.log 2 with hCsmall
+  set C : ℝ := Clarge + Csmall with hC
+  have hr0 : 0 < r := by rw [hr]; positivity
+  have hq0 : 0 < q := by rw [hq]; positivity
+  have hd0 : 0 < d := by rw [hd]; positivity
+  have hW2 : (2 : ℝ) ≤ W := by rw [hW]; exact le_max_right _ _
+  have hlogW0 : 0 ≤ Real.log W := Real.log_nonneg (by linarith)
+  have hKlog0 : 0 ≤ Klog := by
+    rw [hKlog]
+    exact add_nonneg zero_le_one (div_nonneg hlogW0 hlog2.le)
+  have hKharm0 : 0 ≤ Kharm := by
+    rw [hKharm]
+    exact add_nonneg (div_nonneg zero_le_one hlog2.le) hKlog0
+  have hAlog0 : 0 ≤ Alog := by rw [hAlog]; positivity
+  have hAtime0 : 0 ≤ Atime := by rw [hAtime]; positivity
+  have hClarge0 : 0 ≤ Clarge := by rw [hClarge]; positivity
+  have hCsmall0 : 0 ≤ Csmall := by rw [hCsmall]; positivity
+  have hC0 : 0 ≤ C := by rw [hC]; positivity
+  refine ⟨C, ?_⟩
+  intro N F a b f xν hN hF hNa hab hb2N hf h₂ h₃ h₄ hxν
+
+  set lam₂ : ℝ := c₁ * F * N ^ (-(2 : ℝ)) with hlam₂
+  set lam₃ : ℝ := c₃ * F * N ^ (-(3 : ℝ)) with hlam₃
+  set lam₄ : ℝ := c₄ * F * N ^ (-(4 : ℝ)) with hlam₄
+  set M₂ : ℝ := c₂ * F * N ^ (-(2 : ℝ)) with hM₂
+  set y : ℝ := F * N⁻¹ with hy
+  set L : ℝ := Real.log (y + 2) with hL
+  set T : ℝ := F ^ (-(1 : ℝ) / 2) * N with hT
+  set s : ℝ := lam₂ ^ (-(1 : ℝ) / 2) with hs
+  have hlam₂0 : 0 < lam₂ := by rw [hlam₂]; positivity
+  have hlam₃0 : 0 < lam₃ := by rw [hlam₃]; positivity
+  have hlam₄0 : 0 < lam₄ := by rw [hlam₄]; positivity
+  have hM₂0 : 0 < M₂ := by rw [hM₂]; positivity
+  have hy0 : 0 < y := by rw [hy]; positivity
+  have hL0 : 0 ≤ L := by
+    rw [hL]
+    exact Real.log_nonneg (by linarith)
+  have hT0 : 0 < T := by rw [hT]; positivity
+  have hs0 : 0 < s := by rw [hs]; positivity
+  have hsScale : s = r * T := by
+    rw [hs, hlam₂, hr, hT]
+    simpa only [mul_assoc] using inverse_sqrt_scale hc₁ hF hN
+  have hratio : M₂ / lam₂ = q := by
+    rw [div_eq_iff hlam₂0.ne', hM₂, hq, hlam₂]
+    field_simp [hc₁.ne']
+  have hlog2L : Real.log 2 ≤ L := by
+    rw [hL]
+    exact Real.log_le_log (by norm_num) (by linarith [hy0])
+  have honeL : (1 : ℝ) ≤ L / Real.log 2 := by
+    rw [le_div_iff₀ hlog2]
+    simpa using hlog2L
+
+  have hf₂ : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hMbound : ∀ z ∈ Set.Icc a b, -iteratedDeriv 2 f z ≤ M₂ := by
+    intro z hz
+    simpa [hM₂] using (h₂ z hz).2
+  have hanti : AntitoneOn (deriv f) (Set.Icc a b) :=
+    deriv_antitoneOn hf₂ (fun z hz => by linarith [(h₂ z hz).1])
+  set α : ℝ := deriv f b with hα
+  set β : ℝ := deriv f a with hβ
+  have haI : a ∈ Set.Icc a b := ⟨le_rfl, hab⟩
+  have hbI : b ∈ Set.Icc a b := ⟨hab, le_rfl⟩
+  have hαβ : α ≤ β := by
+    rw [hα, hβ]
+    exact hanti haI hbI hab
+  set A₀ : ℤ := ⌈α⌉ with hA₀
+  set B₀ : ℤ := ⌊β⌋ with hB₀
+  have hAB : A₀ ≤ B₀ + 1 := by
+    rw [hA₀, hB₀]
+    exact (Int.ceil_le_ceil hαβ).trans (Int.ceil_le_floor_add_one β)
+  set J : Finset ℤ := Finset.Icc A₀ B₀ with hJ
+  set S : ℂ := ∑ n ∈ intRange a b, e (f n) with hS
+  set Main : ℂ := ∑ ν ∈ J,
+    e (f (xν ν) - (ν : ℝ) * xν ν - 1 / 8) /
+      ((Real.sqrt |iteratedDeriv 2 f (xν ν)| : ℝ) : ℂ) with hMain
+  have hxJ : ∀ ν ∈ J, xν ν ∈ Set.Icc a b ∧ deriv f (xν ν) = ν := by
+    intro ν hν
+    have hν' := hν
+    rw [hJ, Finset.mem_Icc] at hν'
+    apply hxν ν
+    · calc
+        deriv f b = α := hα.symm
+        _ ≤ (A₀ : ℝ) := by rw [hA₀]; exact Int.le_ceil _
+        _ ≤ (ν : ℝ) := by exact_mod_cast hν'.1
+    · calc
+        (ν : ℝ) ≤ (B₀ : ℝ) := by exact_mod_cast hν'.2
+        _ ≤ β := by rw [hB₀]; exact Int.floor_le _
+        _ = deriv f a := hβ
+  have hgapLeft : ∀ ν ∈ J,
+      (B₀ : ℝ) - (ν : ℝ) ≤ M₂ * (xν ν - a) := by
+    intro ν hν
+    obtain ⟨hxroot, hcrit⟩ := hxJ ν hν
+    have hends := deriv_endpoint_gaps hf₂ hMbound hab hxroot
+    rw [hcrit] at hends
+    have hBfloor : (B₀ : ℝ) ≤ deriv f a := by rw [hB₀, hβ]; exact Int.floor_le _
+    linarith [hends.1]
+  have hgapRight : ∀ ν ∈ J,
+      (ν : ℝ) - (A₀ : ℝ) ≤ M₂ * (b - xν ν) := by
+    intro ν hν
+    obtain ⟨hxroot, hcrit⟩ := hxJ ν hν
+    have hends := deriv_endpoint_gaps hf₂ hMbound hab hxroot
+    rw [hcrit] at hends
+    have hAceil : deriv f b ≤ (A₀ : ℝ) := by rw [hA₀, hα]; exact Int.le_ceil _
+    linarith [hends.2]
+  have hR₁raw : ∑ ν ∈ J, gkR₁ lam₂ a b (xν ν) ≤
+      2 * s + 2 * (M₂ / lam₂) * (harmonic (B₀ - A₀).toNat : ℝ) := by
+    rw [hJ, hs]
+    exact sum_gkR₁_le_of_gaps xν hlam₂0 hM₂0
+      (by simpa [hJ] using hgapLeft) (by simpa [hJ] using hgapRight)
+
+  have hspan : β - α ≤ M₂ * (b - a) := by
+    rw [hα, hβ]
+    exact deriv_sub_deriv_le hf₂ hMbound haI hbI hab
+  have hbaN : b - a ≤ N := by linarith
+  have hNm2N : N ^ (-(2 : ℝ)) * N = N⁻¹ := by
+    calc
+      N ^ (-(2 : ℝ)) * N = N ^ (-(2 : ℝ)) * N ^ (1 : ℝ) := by rw [Real.rpow_one]
+      _ = N ^ (-(2 : ℝ) + (1 : ℝ)) := by rw [← Real.rpow_add hN]
+      _ = N ^ (-(1 : ℝ)) := by norm_num
+      _ = N⁻¹ := Real.rpow_neg_one N
+  have hMspan : M₂ * (b - a) ≤ c₂ * y := by
+    calc
+      M₂ * (b - a) ≤ M₂ * N := mul_le_mul_of_nonneg_left hbaN hM₂0.le
+      _ = c₂ * y := by
+        rw [hM₂, hy]
+        rw [show c₂ * F * N ^ (-(2 : ℝ)) * N =
+          c₂ * F * (N ^ (-(2 : ℝ)) * N) by ring, hNm2N]
+        ring
+  have hspanY : β - α ≤ c₂ * y := hspan.trans hMspan
+  have hcardSpan : (J.card : ℝ) ≤ β - α + 1 := by
+    rw [hJ, hA₀, hB₀]
+    exact card_Icc_ceil_floor_le hαβ
+  have hcard : (J.card : ℝ) ≤ c₂ * y + 1 := hcardSpan.trans (by linarith)
+
+  set H : ℝ := (B₀ : ℝ) - A₀ + 4 with hH
+  set n : ℕ := (B₀ - A₀).toNat with hn
+  have hH3 : (3 : ℝ) ≤ H := by
+    have hAB' : (A₀ : ℝ) ≤ B₀ + 1 := by exact_mod_cast hAB
+    rw [hH]
+    linarith
+  have hH0 : 0 < H := by linarith
+  have hH1 : (1 : ℝ) ≤ H := by linarith
+  have hBAround : (B₀ : ℝ) - A₀ ≤ β - α := by
+    rw [hA₀, hB₀]
+    exact sub_le_sub (Int.floor_le β) (Int.le_ceil α)
+  have hHrough : H ≤ c₂ * y + 4 := by rw [hH]; linarith
+  have hc₂W : c₂ ≤ W := by rw [hW]; exact le_max_left _ _
+  have hHW : H ≤ W * (y + 2) := by
+    calc
+      H ≤ c₂ * y + 4 := hHrough
+      _ ≤ W * y + W * 2 := add_le_add
+        (mul_le_mul_of_nonneg_right hc₂W hy0.le) (by nlinarith [hW2])
+      _ = W * (y + 2) := by ring
+  have hnH : (n : ℝ) ≤ H := by
+    by_cases hBA0 : 0 ≤ B₀ - A₀
+    · have hnCast : (n : ℤ) = B₀ - A₀ := by rw [hn, Int.toNat_of_nonneg hBA0]
+      have hnReal := congrArg (fun z : ℤ => (z : ℝ)) hnCast
+      push_cast at hnReal
+      rw [hH]
+      linarith
+    · have hBAle : B₀ - A₀ ≤ 0 := le_of_not_ge hBA0
+      have hn0 : n = 0 := by rw [hn, Int.toNat_of_nonpos hBAle]
+      rw [hn0, Nat.cast_zero]
+      linarith
+  have hlogH : Real.log H ≤ Klog * L := by
+    rw [hKlog, hL]
+    exact log_normalize hy0 hW2 hH0 hHW
+  have hharm : (harmonic n : ℝ) ≤ Kharm * L := by
+    rw [hKharm, hL]
+    exact harmonic_normalize hy0 hW2 hH0 hH1 hHW hnH
+  have hR₁ : ∑ ν ∈ J, gkR₁ lam₂ a b (xν ν) ≤
+      2 * r * T + (2 * q * Kharm) * L := by
+    calc
+      _ ≤ 2 * s + 2 * (M₂ / lam₂) * (harmonic (B₀ - A₀).toNat : ℝ) := hR₁raw
+      _ = 2 * r * T + 2 * q * (harmonic n : ℝ) := by
+        rw [hsScale, hratio, hn]
+        ring
+      _ ≤ 2 * r * T + 2 * q * (Kharm * L) := by
+        have hscaled :
+            2 * q * (harmonic n : ℝ) ≤ 2 * q * (Kharm * L) :=
+          mul_le_mul_of_nonneg_left hharm (mul_nonneg (by norm_num) hq0.le)
+        exact add_le_add le_rfl hscaled
+      _ = 2 * r * T + (2 * q * Kharm) * L := by ring
+
+  have hR₂eq : gkR₂ lam₂ lam₃ lam₄ a b = (b - a) * d / F := by
+    unfold gkR₂
+    calc
+      (b - a) * lam₄ * lam₂ ^ (-(2 : ℝ)) +
+          (b - a) * lam₃ ^ 2 * lam₂ ^ (-(3 : ℝ)) =
+        (b - a) * (lam₄ * lam₂ ^ (-(2 : ℝ)) +
+          lam₃ ^ 2 * lam₂ ^ (-(3 : ℝ))) := by ring
+      _ = (b - a) * d / F := by
+        rw [hlam₂, hlam₃, hlam₄, fourth_scale hc₁ hF hN,
+          third_scale hc₁ hF hN, hd, Real.rpow_neg_one]
+        ring
+  have hR₂0 : 0 ≤ gkR₂ lam₂ lam₃ lam₄ a b := by
+    unfold gkR₂
+    have : 0 ≤ b - a := sub_nonneg.mpr hab
+    positivity
+  have hR₂N : gkR₂ lam₂ lam₃ lam₄ a b ≤ N * d / F := by
+    rw [hR₂eq]
+    exact div_le_div_of_nonneg_right
+      (mul_le_mul_of_nonneg_right hbaN hd0.le) hF.le
+
+  change ‖S - Main‖ ≤ C * (L + T)
+  by_cases hFlarge : 1 ≤ F
+  · have hconstR₂ : c₂ * d ≤ (d * c₂ / Real.log 2) * L := by
+      calc
+        c₂ * d = d * c₂ * 1 := by ring
+        _ ≤ d * c₂ * (L / Real.log 2) :=
+          mul_le_mul_of_nonneg_left honeL (mul_nonneg hd0.le hc₂.le)
+        _ = (d * c₂ / Real.log 2) * L := by ring
+    have hcardR₂ : (J.card : ℝ) * gkR₂ lam₂ lam₃ lam₄ a b ≤
+        d * T + (d * c₂ / Real.log 2) * L := by
+      calc
+        (J.card : ℝ) * gkR₂ lam₂ lam₃ lam₄ a b ≤
+            (c₂ * y + 1) * gkR₂ lam₂ lam₃ lam₄ a b :=
+          mul_le_mul_of_nonneg_right hcard hR₂0
+        _ ≤ (c₂ * y + 1) * (N * d / F) :=
+          mul_le_mul_of_nonneg_left hR₂N (by positivity)
+        _ = c₂ * d + d * (N / F) := by
+          rw [hy]
+          field_simp [hF.ne', hN.ne']
+        _ ≤ c₂ * d + d * T := by
+          have hNF : N / F ≤ T := by
+            rw [hT]
+            exact div_le_inverse_sqrt_mul hFlarge hN.le
+          exact add_le_add le_rfl (mul_le_mul_of_nonneg_left hNF hd0.le)
+        _ ≤ (d * c₂ / Real.log 2) * L + d * T := add_le_add hconstR₂ le_rfl
+        _ = d * T + (d * c₂ / Real.log 2) * L := by ring
+    have hraw' := hraw a b lam₂ lam₃ lam₄ f xν (by linarith) hab
+      hlam₂0 hlam₃0 hlam₄0 hf
+      (fun z hz => by rw [hlam₂]; linarith [(h₂ z hz).1])
+      (fun z hz => by simpa [hlam₃] using h₃ z hz)
+      (fun z hz => by simpa [hlam₄] using h₄ z hz)
+      hxν
+    change ‖S - Main‖ ≤ K₃₅ * Real.log H + 4 * K₃₂ * s +
+      K₃₄ * ((∑ ν ∈ J, gkR₁ lam₂ a b (xν ν)) +
+        (J.card : ℝ) * gkR₂ lam₂ lam₃ lam₄ a b) at hraw'
+    calc
+      ‖S - Main‖ ≤ K₃₅ * Real.log H + 4 * K₃₂ * s +
+          K₃₄ * ((∑ ν ∈ J, gkR₁ lam₂ a b (xν ν)) +
+            (J.card : ℝ) * gkR₂ lam₂ lam₃ lam₄ a b) := hraw'
+      _ ≤ K₃₅ * (Klog * L) + 4 * K₃₂ * (r * T) +
+          K₃₄ * ((2 * r * T + (2 * q * Kharm) * L) +
+            (d * T + (d * c₂ / Real.log 2) * L)) := by
+        exact add_le_add (add_le_add
+          (mul_le_mul_of_nonneg_left hlogH hK₃₅)
+          (mul_le_mul_of_nonneg_left hsScale.le (by positivity)))
+          (mul_le_mul_of_nonneg_left (add_le_add hR₁ hcardR₂) hK₃₄)
+      _ = Alog * L + Atime * T := by rw [hAlog, hAtime]; ring
+      _ ≤ Clarge * (L + T) := by
+        calc
+          Alog * L + Atime * T ≤
+              Alog * (L + T) + Atime * (L + T) :=
+            add_le_add
+              (mul_le_mul_of_nonneg_left
+                (le_add_of_nonneg_right hT0.le) hAlog0)
+              (mul_le_mul_of_nonneg_left
+                (le_add_of_nonneg_left hL0) hAtime0)
+          _ = Clarge * (L + T) := by rw [hClarge]; ring
+      _ ≤ C * (L + T) := by
+        apply mul_le_mul_of_nonneg_right _ (add_nonneg hL0 hT0.le)
+        rw [hC]
+        exact le_add_of_nonneg_right hCsmall0
+  · have hFsmall : F < 1 := lt_of_not_ge hFlarge
+    have hFhalf : F ^ ((1 : ℝ) / 2) ≤ 1 :=
+      Real.rpow_le_one hF.le hFsmall.le (by norm_num)
+    have honeFinv : 1 ≤ F ^ (-(1 : ℝ) / 2) :=
+      Real.one_le_rpow_of_pos_of_le_one_of_nonpos hF hFsmall.le (by norm_num)
+    have hNleT : N ≤ T := by
+      rw [hT]
+      calc
+        N = 1 * N := by ring
+        _ ≤ F ^ (-(1 : ℝ) / 2) * N :=
+          mul_le_mul_of_nonneg_right honeFinv hN.le
+    have hFmul : F * F ^ (-(1 : ℝ) / 2) = F ^ ((1 : ℝ) / 2) := by
+      calc
+        F * F ^ (-(1 : ℝ) / 2) = F ^ (1 : ℝ) * F ^ (-(1 : ℝ) / 2) := by
+          rw [Real.rpow_one]
+        _ = F ^ ((1 : ℝ) + (-(1 : ℝ) / 2)) := by rw [← Real.rpow_add hF]
+        _ = F ^ ((1 : ℝ) / 2) := by ring_nf
+    have hyT : y * T = F ^ ((1 : ℝ) / 2) := by
+      rw [hy, hT]
+      calc
+        (F * N⁻¹) * (F ^ (-(1 : ℝ) / 2) * N) =
+            (F * F ^ (-(1 : ℝ) / 2)) * (N⁻¹ * N) := by ring
+        _ = F ^ ((1 : ℝ) / 2) * 1 := by rw [hFmul, inv_mul_cancel₀ hN.ne']
+        _ = F ^ ((1 : ℝ) / 2) := by ring
+    have hS3N : ‖S‖ ≤ 3 * N := by
+      rw [hS]
+      calc
+        ‖∑ n ∈ intRange a b, e (f n)‖ ≤
+            ∑ n ∈ intRange a b, ‖e (f n)‖ := norm_sum_le _ _
+        _ = (intRange a b).card := by simp [norm_e]
+        _ ≤ 3 * N := card_intRange_le hN hNa hab hb2N
+    have hterm (ν : ℤ) (hν : ν ∈ J) :
+        ‖e (f (xν ν) - (ν : ℝ) * xν ν - 1 / 8) /
+          ((Real.sqrt |iteratedDeriv 2 f (xν ν)| : ℝ) : ℂ)‖ ≤ s := by
+      obtain ⟨hxroot, _⟩ := hxJ ν hν
+      have hlo : lam₂ ≤ -iteratedDeriv 2 f (xν ν) := by
+        rw [hlam₂]
+        exact (h₂ (xν ν) hxroot).1
+      have hneg : iteratedDeriv 2 f (xν ν) < 0 := by linarith
+      have habs : lam₂ ≤ |iteratedDeriv 2 f (xν ν)| := by
+        simpa only [abs_of_neg hneg] using hlo
+      have habs0 : 0 < |iteratedDeriv 2 f (xν ν)| := hlam₂0.trans_le habs
+      have hsqrt : s = 1 / Real.sqrt lam₂ := by
+        rw [hs]
+        exact (GK34.rpow_half_facts hlam₂0).2.2
+      rw [norm_div, PS.norm_e_one, Complex.norm_real, Real.norm_eq_abs,
+        abs_of_pos (Real.sqrt_pos.2 habs0), hsqrt]
+      exact one_div_le_one_div_of_le (Real.sqrt_pos.2 hlam₂0) (Real.sqrt_le_sqrt habs)
+    have hMainCard : ‖Main‖ ≤ (J.card : ℝ) * s := by
+      rw [hMain]
+      calc
+        ‖∑ ν ∈ J, e (f (xν ν) - (ν : ℝ) * xν ν - 1 / 8) /
+            ((Real.sqrt |iteratedDeriv 2 f (xν ν)| : ℝ) : ℂ)‖ ≤
+          ∑ ν ∈ J, ‖e (f (xν ν) - (ν : ℝ) * xν ν - 1 / 8) /
+            ((Real.sqrt |iteratedDeriv 2 f (xν ν)| : ℝ) : ℂ)‖ := norm_sum_le _ _
+        _ ≤ ∑ _ν ∈ J, s := Finset.sum_le_sum (fun ν hν => hterm ν hν)
+        _ = (J.card : ℝ) * s := by rw [Finset.sum_const, nsmul_eq_mul]
+    have hMainBound : ‖Main‖ ≤ r * c₂ + r * T := by
+      calc
+        ‖Main‖ ≤ (J.card : ℝ) * s := hMainCard
+        _ ≤ (c₂ * y + 1) * s := mul_le_mul_of_nonneg_right hcard hs0.le
+        _ = r * (c₂ * (y * T) + T) := by rw [hsScale]; ring
+        _ = r * (c₂ * F ^ ((1 : ℝ) / 2) + T) := by rw [hyT]
+        _ ≤ r * (c₂ + T) := by
+          apply mul_le_mul_of_nonneg_left _ hr0.le
+          have hc₂half : c₂ * F ^ ((1 : ℝ) / 2) ≤ c₂ := by
+            simpa only [mul_one] using
+              (mul_le_mul_of_nonneg_left hFhalf hc₂.le)
+          exact add_le_add hc₂half le_rfl
+        _ = r * c₂ + r * T := by ring
+    have hconstSmall : r * c₂ ≤ (c₂ * r / Real.log 2) * L := by
+      calc
+        r * c₂ = c₂ * r * 1 := by ring
+        _ ≤ c₂ * r * (L / Real.log 2) :=
+          mul_le_mul_of_nonneg_left honeL (mul_nonneg hc₂.le hr0.le)
+        _ = (c₂ * r / Real.log 2) * L := by ring
+    calc
+      ‖S - Main‖ ≤ ‖S‖ + ‖Main‖ := norm_sub_le _ _
+      _ ≤ 3 * N + (r * c₂ + r * T) := add_le_add hS3N hMainBound
+      _ ≤ r * c₂ + (3 + r) * T := by
+        have h3N : 3 * N ≤ 3 * T :=
+          mul_le_mul_of_nonneg_left hNleT (by norm_num)
+        calc
+          3 * N + (r * c₂ + r * T) = r * c₂ + (3 * N + r * T) := by ring
+          _ ≤ r * c₂ + (3 * T + r * T) :=
+            add_le_add le_rfl (add_le_add h3N le_rfl)
+          _ = r * c₂ + (3 + r) * T := by ring
+      _ ≤ (c₂ * r / Real.log 2) * L + (3 + r) * T :=
+        add_le_add hconstSmall le_rfl
+      _ ≤ Csmall * (L + T) := by
+        have hsmallLog : 0 ≤ c₂ * r / Real.log 2 :=
+          div_nonneg (mul_nonneg hc₂.le hr0.le) hlog2.le
+        have hsmallTime : 0 ≤ 3 + r := by positivity
+        calc
+          (c₂ * r / Real.log 2) * L + (3 + r) * T ≤
+              (c₂ * r / Real.log 2) * (L + T) +
+                (3 + r) * (L + T) :=
+            add_le_add
+              (mul_le_mul_of_nonneg_left
+                (le_add_of_nonneg_right hT0.le) hsmallLog)
+              (mul_le_mul_of_nonneg_left
+                (le_add_of_nonneg_left hL0) hsmallTime)
+          _ = Csmall * (L + T) := by rw [hCsmall]; ring
+      _ ≤ C * (L + T) := by
+        apply mul_le_mul_of_nonneg_right _ (add_nonneg hL0 hT0.le)
+        rw [hC]
+        exact le_add_of_nonneg_left hClarge0
 
 end LeanProofs.IntegerPoints
