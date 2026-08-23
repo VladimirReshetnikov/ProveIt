@@ -1,4 +1,4 @@
-import IntegerPoints.Lemma1
+import IntegerPoints.GKHighCurvature
 
 /-!
 # The exponent pair `(1/2, 1/2)`
@@ -20,16 +20,11 @@ set_option maxHeartbeats 800000 in
 theorem isExponentPair_half_half : IsExponentPair (1 / 2) (1 / 2) := by
   refine ⟨by norm_num, le_rfl, le_rfl, by norm_num, fun s hs => ?_⟩
   -- the constants
-  set κ : ℝ := Real.sqrt (3 / 4 * s * (2 : ℝ) ^ (-(s + 1))) with hκ
-  have hκ0 : 0 < κ := Real.sqrt_pos.2 (by positivity)
-  have hκ2 : κ ^ 2 = 3 / 4 * s * (2 : ℝ) ^ (-(s + 1)) := Real.sq_sqrt (by positivity)
-  set α : ℝ := 5 / 3 * (2 : ℝ) ^ (s + 1) with hα
-  have hα0 : 0 ≤ α := by positivity
-  set CA : ℝ := 36 * α * κ + 48 / κ + 6 * κ with hCA
+  obtain ⟨CA, hCA0, hhigh⟩ := gk_high_curvature_bound s hs
   set CB : ℝ := 16 / 3 * (2 : ℝ) ^ s with hCB
-  have hCA0 : 0 ≤ CA := by rw [hCA]; positivity
   have hCB0 : 0 ≤ CB := by rw [hCB]; positivity
   refine ⟨2, 1 / 4, max CA CB, by norm_num, by norm_num, fun N y a b f hN hy hf => ?_⟩
+  have hfClass := hf
   obtain ⟨hNa, hab, hb2N, hf2, hcls⟩ := hf
   -- `z = y N^{-s}`
   set z : ℝ := y * N ^ (-s) with hz
@@ -68,9 +63,6 @@ theorem isExponentPair_half_half : IsExponentPair (1 / 2) (1 / 2) := by
   have haA : a < A + 1 := Nat.lt_floor_add_one a
   have hBb : (B : ℝ) ≤ b := Nat.floor_le (by linarith)
   have hsub : Set.Icc (A + 1 : ℝ) B ⊆ Set.Icc a b := Set.Icc_subset_Icc haA.le hBb
-  have hBA : ((B - A : ℕ) : ℝ) ≤ 3 * N := by
-    have := card_intRange_le hN hNa hab hb2N
-    rwa [intRange, Nat.card_Ioc] at this
   -- the target
   have htarget : (y * N ^ (-s)) ^ ((1 : ℝ) / 2) * N ^ ((1 : ℝ) / 2) =
       Real.sqrt z * Real.sqrt N := by
@@ -79,120 +71,10 @@ theorem isExponentPair_half_half : IsExponentPair (1 / 2) (1 / 2) := by
   have hT0 : 0 ≤ Real.sqrt z * Real.sqrt N + z⁻¹ := by positivity
   rcases le_or_gt (1 / 2) z with hzhalf | hzhalf
   · -- `z ≥ 1/2`: the second-derivative test
-    have hbound : ‖∑ n ∈ Finset.Ioc A B, e (f n)‖ ≤ CA * (Real.sqrt z * Real.sqrt N) := by
-      set lam2 : ℝ := κ ^ 2 * z / N with hlam2
-      have hlam2pos : 0 < lam2 := by positivity
-      have hpow : ∀ t ∈ Set.Icc a b, lam2 ≤ 3 / 4 * (s * y * t ^ (-s - 1)) ∧
-          5 / 4 * (s * y * t ^ (-s - 1)) ≤ α * lam2 := by
-        intro t ht
-        have ht0 : 0 < t := lt_of_lt_of_le hN (hNa.trans ht.1)
-        have htN : N ≤ t := hNa.trans ht.1
-        have ht2N : t ≤ 2 * N := ht.2.trans hb2N
-        have h1 : (2 * N) ^ (-s - 1) ≤ t ^ (-s - 1) :=
-          Real.rpow_le_rpow_of_nonpos ht0 ht2N (by linarith)
-        have h2 : t ^ (-s - 1) ≤ N ^ (-s - 1) :=
-          Real.rpow_le_rpow_of_nonpos hN htN (by linarith)
-        have hsy : 0 < s * y := by positivity
-        have hsplit : (2 * N) ^ (-s - 1) = (2 : ℝ) ^ (-(s + 1)) * N ^ (-s - 1) := by
-          rw [Real.mul_rpow (by norm_num) hN.le]
-          congr 1
-          congr 1
-          ring
-        have hNs : N ^ (-s - 1) = N ^ (-s) * N⁻¹ := by
-          rw [show (-s - 1 : ℝ) = -s + (-1) by ring, Real.rpow_add hN, Real.rpow_neg_one]
-        have hlam2' : lam2 = 3 / 4 * (s * y * (2 * N) ^ (-s - 1)) := by
-          rw [hlam2, hκ2, hsplit, hNs, hz]
-          ring
-        have h2pow : (2 : ℝ) ^ (s + 1) * (2 : ℝ) ^ (-(s + 1)) = 1 := by
-          rw [← Real.rpow_add (by norm_num), add_neg_cancel, Real.rpow_zero]
-        constructor
-        · rw [hlam2']
-          have := mul_le_mul_of_nonneg_left h1 hsy.le
-          linarith
-        · rw [hlam2', hα, hsplit]
-          have := mul_le_mul_of_nonneg_left h2 hsy.le
-          calc 5 / 4 * (s * y * t ^ (-s - 1)) ≤ 5 / 4 * (s * y * N ^ (-s - 1)) := by linarith
-            _ = 5 / 3 * 2 ^ (s + 1) * (3 / 4 * (s * y * (2 ^ (-(s + 1)) * N ^ (-s - 1)))) := by
-                have : (5 : ℝ) / 4 * (s * y * N ^ (-s - 1)) =
-                    5 / 3 * (2 ^ (s + 1) * 2 ^ (-(s + 1))) * (3 / 4 * (s * y * N ^ (-s - 1))) := by
-                  rw [h2pow]
-                  ring
-                rw [this]
-                ring
-      have hsqrt : Real.sqrt lam2 = κ * Real.sqrt z / Real.sqrt N := by
-        rw [hlam2, Real.sqrt_div (by positivity), Real.sqrt_mul (by positivity),
-          Real.sqrt_sq hκ0.le]
-      have hC1 : 36 * α * κ + 48 / κ ≤ CA := by
-        rw [hCA]
-        have : 0 ≤ 6 * κ := by positivity
-        linarith
-      have hC2 : 6 * κ ≤ CA := by
-        rw [hCA]
-        have : 0 ≤ 36 * α * κ := by positivity
-        have : 0 ≤ 48 / κ := by positivity
-        linarith
-      have hinvz : 1 / Real.sqrt z ≤ 2 * Real.sqrt z := by
-        rw [div_le_iff₀ hsz0]
-        have := Real.mul_self_sqrt hz0.le
-        nlinarith
-      rcases le_or_gt lam2 (1 / 4) with hsmall | hbig
-      · have hg2 := Lemma1.deriv2_neg f
-        have hvdc := VdC.second_derivative (fun t => -f t) hf2'.neg A B lam2 α hlam2pos hsmall
-          hα0 fun t ht => by
-            rw [hg2]
-            simp only
-            have hb := hd2 t (hsub ht)
-            have hp := hpow t (hsub ht)
-            rw [abs_le] at hb
-            constructor <;> linarith [hb.1, hb.2, hp.1, hp.2]
-        rw [Lemma1.norm_sum_e_neg] at hvdc
-        have hterm1 : 12 * α * ((B - A : ℕ) : ℝ) * Real.sqrt lam2 ≤
-            36 * α * κ * (Real.sqrt z * Real.sqrt N) := by
-          rw [hsqrt]
-          have hNs : N / Real.sqrt N = Real.sqrt N := by
-            rw [div_eq_iff hsN.ne']
-            exact (Real.mul_self_sqrt hN.le).symm
-          calc 12 * α * ((B - A : ℕ) : ℝ) * (κ * Real.sqrt z / Real.sqrt N)
-              ≤ 12 * α * (3 * N) * (κ * Real.sqrt z / Real.sqrt N) := by gcongr
-            _ = 36 * α * κ * Real.sqrt z * (N / Real.sqrt N) := by ring
-            _ = 36 * α * κ * (Real.sqrt z * Real.sqrt N) := by rw [hNs]; ring
-        have hterm2 : 24 / Real.sqrt lam2 ≤ 48 / κ * (Real.sqrt z * Real.sqrt N) := by
-          rw [hsqrt]
-          have : 24 / (κ * Real.sqrt z / Real.sqrt N) =
-              24 / κ * Real.sqrt N * (1 / Real.sqrt z) := by
-            field_simp
-          rw [this]
-          calc 24 / κ * Real.sqrt N * (1 / Real.sqrt z)
-              ≤ 24 / κ * Real.sqrt N * (2 * Real.sqrt z) :=
-                mul_le_mul_of_nonneg_left hinvz (by positivity)
-            _ = 48 / κ * (Real.sqrt z * Real.sqrt N) := by ring
-        calc ‖∑ n ∈ Finset.Ioc A B, e (f n)‖
-            ≤ 12 * α * ((B - A : ℕ) : ℝ) * Real.sqrt lam2 + 24 / Real.sqrt lam2 := hvdc
-          _ ≤ (36 * α * κ + 48 / κ) * (Real.sqrt z * Real.sqrt N) := by
-              rw [add_mul]
-              exact add_le_add hterm1 hterm2
-          _ ≤ CA * (Real.sqrt z * Real.sqrt N) :=
-              mul_le_mul_of_nonneg_right hC1 (by positivity)
-      · have hcard : ‖∑ n ∈ Finset.Ioc A B, e (f n)‖ ≤ ((B - A : ℕ) : ℝ) := by
-          calc ‖∑ n ∈ Finset.Ioc A B, e (f n)‖ ≤ ∑ n ∈ Finset.Ioc A B, ‖e (f n)‖ :=
-                norm_sum_le _ _
-            _ = ((B - A : ℕ) : ℝ) := by simp [norm_e]
-        have hN4 : N < 4 * κ ^ 2 * z := by
-          rw [hlam2, lt_div_iff₀ hN] at hbig
-          linarith
-        have hsqN : Real.sqrt N ≤ 2 * κ * Real.sqrt z := by
-          have : Real.sqrt N ≤ Real.sqrt (4 * κ ^ 2 * z) := Real.sqrt_le_sqrt hN4.le
-          rw [Real.sqrt_mul (by positivity), Real.sqrt_mul (by norm_num), Real.sqrt_sq hκ0.le,
-            show Real.sqrt 4 = 2 by
-              rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]] at this
-          linarith
-        calc ‖∑ n ∈ Finset.Ioc A B, e (f n)‖ ≤ ((B - A : ℕ) : ℝ) := hcard
-          _ ≤ 3 * N := hBA
-          _ = 3 * (Real.sqrt N * Real.sqrt N) := by rw [Real.mul_self_sqrt hN.le]
-          _ ≤ 3 * ((2 * κ * Real.sqrt z) * Real.sqrt N) := by gcongr
-          _ = 6 * κ * (Real.sqrt z * Real.sqrt N) := by ring
-          _ ≤ CA * (Real.sqrt z * Real.sqrt N) :=
-              mul_le_mul_of_nonneg_right hC2 (by positivity)
+    have hLhalf : 1 / 2 ≤ y * N ^ (-s) := by simpa [hz] using hzhalf
+    have hbound := hhigh (1 / 4) N y a b f (by norm_num) (by norm_num)
+      hN hy hfClass hLhalf
+    rw [hrange] at hbound
     calc ‖∑ n ∈ Finset.Ioc A B, e (f n)‖ ≤ CA * (Real.sqrt z * Real.sqrt N) := hbound
       _ ≤ max CA CB * (Real.sqrt z * Real.sqrt N + z⁻¹) :=
           mul_le_mul (le_max_left _ _) (by linarith [inv_pos.2 hz0]) (by positivity)
