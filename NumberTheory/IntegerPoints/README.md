@@ -96,6 +96,15 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     second-derivative estimate gives `≪ √L√N` for `L = yN⁻ˢ ≥ 1/2`; the
     ranges `L < 1` and `L < log N` yield `≪ √N` and `≪ √(N log N)`.
     `IntegerPoints.ExponentPairHalf` now reuses the same high-curvature core.
+  - `IntegerPoints.FiniteHilbert`, `GKAppendixATheorem2` — **proved**:
+    the sharp finite Hilbert inequality and Graham–Kolesnik Appendix A,
+    Theorem 2 (`gk_appendixA_theorem2_invoked_holds`).  The Hilbert inequality
+    follows from finite Parseval and the exact Fourier coefficients of
+    `1/2 - x` on `[0,1]`; the Appendix proof expands
+    `∫_T^{2T} |Σ_{N<n≤2N} e(t/n)|² dt`, retains the diagonal `TN`, writes
+    the residual as a difference of two Hilbert forms, and uses
+    `Σ_{N<n≤2N} n² ≤ 4N³` to obtain `(T - 4N²)N` with the book's
+    exact constant.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

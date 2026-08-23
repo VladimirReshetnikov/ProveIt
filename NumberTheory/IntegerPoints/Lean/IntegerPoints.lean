@@ -49,6 +49,8 @@ import IntegerPoints.GKEq234
 import IntegerPoints.GKTheorem21
 import IntegerPoints.GKHighCurvature
 import IntegerPoints.GKTheorem22
+import IntegerPoints.FiniteHilbert
+import IntegerPoints.GKAppendixATheorem2
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -83,6 +85,10 @@ integer-shift form used in §3.3.
 quoted from Graham–Kolesnik Theorem 2.1 and invoked in §3.3.
 `IntegerPoints.GKHighCurvature` supplies the reusable second-derivative bound
 used by `IntegerPoints.GKTheorem22` to prove both invoked forms of Theorem 2.2.
+`IntegerPoints.FiniteHilbert` proves the sharp finite Hilbert inequality from
+finite Parseval and the centered-sawtooth Fourier coefficients;
+`IntegerPoints.GKAppendixATheorem2` applies it to prove the reciprocal-phase
+mean-square lower bound quoted from Graham--Kolesnik Appendix A.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
