@@ -181,14 +181,21 @@ def sawtooth_fourierExpansion : Prop :=
     |sawtooth t + ∑ h ∈ upTo y, Real.sin (2 * π * h * t) / (π * h)| ≤
       C * (1 + nearestIntDist t * y)⁻¹
 
-/-- **§3, partial summation**: `ψ(t) = -∑_{1 ≤ H < y} ψ_H(t) + O((1 + ‖t‖ y)⁻¹)`,
-`H` over powers of two.  (The sign follows from `sawtooth_fourierExpansion`
-and the plus sign in `psiH`; the paper prints `ψ = ∑ ψ_H`, cf. the `ed.`
-notes of §3 in the tex.) -/
+/-- **§3, partial summation**:
+`ψ(t) = -ψ_{1/2}(t) - ∑_{1 ≤ H < y} ψ_H(t) + O((1 + ‖t‖ y)⁻¹)`,
+with `H = 2^j`, `j : ℕ`, in the sum.
+
+The separate `H = 1/2` block is forced by the partition (3.1): its `h = 1`
+term has weight `χ(2) = 1`, whereas the first block indexed by `j : ℕ` has
+`H = 1` and weight `χ(1) = 0` at `h = 1`.  Thus omitting `ψ_{1/2}` loses the
+first Fourier mode.  The sign follows from `sawtooth_fourierExpansion` and the
+plus sign in `psiH`; the paper prints `ψ = ∑ ψ_H`, cf. the `ed.` notes of §3 in
+the tex. -/
 def iwaniecMozzochi_section3_psiDecomposition : Prop :=
   ∀ χ : ℝ → ℝ, IsDyadicPartition χ →
     ∃ C : ℝ, ∀ t y : ℝ, 1 ≤ y →
-      |sawtooth t + ∑ j ∈ Finset.range ⌈Real.logb 2 y⌉₊, psiH χ ((2 : ℝ) ^ j) t| ≤
+      |sawtooth t + psiH χ (1 / 2 : ℝ) t +
+          ∑ j ∈ Finset.range ⌈Real.logb 2 y⌉₊, psiH χ ((2 : ℝ) ^ j) t| ≤
         C * (1 + nearestIntDist t * y)⁻¹
 
 /-- `Δ(x, H, M) = ∑_{m ∼ M} ψ_H(x/m)`. -/
@@ -211,15 +218,26 @@ def DeltaHMBound (χ : ℝ → ℝ) (θ : ℝ) : Prop :=
     1 ≤ x → x ^ θ < M → M < x ^ ((1 : ℝ) / 2) → (2 : ℝ) ^ j ≤ M * x ^ (-θ) →
     |deltaHM χ x ((2 : ℝ) ^ j) M| ≤ C * x ^ (θ + ε)
 
+/-- The bound required for the separate `H = 1/2` Fourier block omitted by
+the `H = 2^j`, `j : ℕ`, range in (3.2).  It is deliberately not folded into
+`DeltaHMBound`: that definition continues to express exactly the paper's range
+`H = 2^j`, `j : ℕ`, hence `H ≥ 1`. -/
+def DeltaHalfHMBound (χ : ℝ → ℝ) (θ : ℝ) : Prop :=
+  ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, ∀ x M : ℝ,
+    1 ≤ x → x ^ θ < M → M < x ^ ((1 : ℝ) / 2) →
+    |deltaHM χ x (1 / 2 : ℝ) M| ≤ C * x ^ (θ + ε)
+
 /-- **(3.2)** with `θ = 7/22`. -/
 def iwaniecMozzochi_eq32 : Prop :=
   ∀ χ : ℝ → ℝ, IsDyadicPartition χ → DeltaHMBound χ theta0
 
-/-- **§3, reduction**: (3.2) for all `H` in (3.3) implies (2.1), for any
+/-- **§3, reduction**: (3.2) for all `H` in (3.3), together with the separate
+`H = 1/2` block forced by the dyadic partition, implies (2.1), for any
 `0 < θ < 1/2` (take `y = M x^{-θ}`). -/
 def iwaniecMozzochi_reduction_eq32 : Prop :=
   ∀ χ : ℝ → ℝ, IsDyadicPartition χ →
-    ∀ θ : ℝ, 0 < θ → θ < 1 / 2 → DeltaHMBound χ θ → DeltaMBound θ
+    ∀ θ : ℝ, 0 < θ → θ < 1 / 2 →
+      DeltaHMBound χ θ → DeltaHalfHMBound χ θ → DeltaMBound θ
 
 /-! ### §4: the van der Corput method -/
 
