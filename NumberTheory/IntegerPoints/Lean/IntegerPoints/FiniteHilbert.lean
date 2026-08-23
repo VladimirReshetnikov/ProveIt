@@ -244,6 +244,215 @@ theorem finite_parseval (S : Finset ℕ) (a : ℕ → ℂ) :
       push_cast
       exact Finset.sum_congr rfl fun n _ => Complex.mul_conj' (a n)
 
+/-- The sawtooth coefficient in the natural-index difference form used by the
+finite Hilbert kernel.  The reversed denominator is the consequence of the
+positive coefficient in `integral_sawtooth_mul_e_int`. -/
+theorem integral_sawtooth_nat_sub (m n : ℕ) :
+    (∫ x in (0 : ℝ)..1,
+        (((1 / 2 - x : ℝ) : ℂ) *
+          e (((m : ℝ) - (n : ℝ)) * x))) =
+      if m = n then 0 else
+        1 / ((2 * π * Complex.I) * ((n : ℂ) - (m : ℂ))) := by
+  have hphase (x : ℝ) :
+      e (((m : ℝ) - (n : ℝ)) * x) =
+        e (((m : ℤ) - (n : ℤ) : ℤ) * x) := by
+    congr 1
+    push_cast
+    ring
+  simp_rw [hphase]
+  rw [integral_sawtooth_mul_e_int]
+  by_cases hmn : m = n
+  · subst n
+    simp
+  · have hk : (m : ℤ) - (n : ℤ) ≠ 0 := by omega
+    rw [if_neg hk, if_neg hmn]
+    have hdiff : ((n : ℂ) - (m : ℂ)) ≠ 0 := by
+      rw [sub_ne_zero]
+      exact_mod_cast Ne.symm hmn
+    have hdiff' : ((m : ℂ) - (n : ℂ)) ≠ 0 := by
+      rw [sub_ne_zero]
+      exact_mod_cast hmn
+    have hkreal : (((m : ℤ) - (n : ℤ) : ℤ) : ℝ) ≠ 0 := by
+      exact_mod_cast hk
+    have hπ : ((π : ℝ) : ℂ) ≠ 0 := by
+      exact_mod_cast Real.pi_ne_zero
+    push_cast
+    field_simp [hdiff, hdiff', hkreal, hπ, Complex.I_ne_zero]
+    rw [Complex.I_sq]
+    ring
+
+/-- Exact sawtooth representation of the finite Hilbert form. -/
+theorem finite_hilbert_identity (S : Finset ℕ) (a : ℕ → ℂ) :
+    (∑ m ∈ S, ∑ n ∈ S.filter (fun n => n ≠ m),
+        a m * starRingEnd ℂ (a n) / ((n : ℂ) - (m : ℂ))) =
+      (2 * π * Complex.I) *
+        ∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x))) := by
+  classical
+  let weightedTerm : ℕ → ℕ → ℝ → ℂ := fun m n x =>
+    (((1 / 2 - x : ℝ) : ℂ) *
+      (a m * starRingEnd ℂ (a n) *
+        e (((m : ℤ) - (n : ℤ) : ℤ) * x)))
+  have hphase (m n : ℕ) (x : ℝ) :
+      e (((m : ℤ) - (n : ℤ) : ℤ) * x) =
+        e (((m : ℝ) - (n : ℝ)) * x) := by
+    congr 1
+    push_cast
+    ring
+  have hcoefficient (m n : ℕ) :
+      (∫ x in (0 : ℝ)..1, weightedTerm m n x) =
+        a m * starRingEnd ℂ (a n) *
+          (if m = n then 0 else
+            1 / ((2 * π * Complex.I) * ((n : ℂ) - (m : ℂ)))) := by
+    calc
+      (∫ x in (0 : ℝ)..1, weightedTerm m n x) =
+          ∫ x in (0 : ℝ)..1,
+            (a m * starRingEnd ℂ (a n)) *
+              (((1 / 2 - x : ℝ) : ℂ) *
+                e (((m : ℝ) - (n : ℝ)) * x)) := by
+        apply intervalIntegral.integral_congr
+        intro x _
+        simp only [weightedTerm]
+        rw [hphase]
+        ring
+      _ = (a m * starRingEnd ℂ (a n)) *
+          ∫ x in (0 : ℝ)..1,
+            (((1 / 2 - x : ℝ) : ℂ) *
+              e (((m : ℝ) - (n : ℝ)) * x)) := by
+        rw [intervalIntegral.integral_const_mul]
+      _ = _ := by rw [integral_sawtooth_nat_sub]
+  have hterm (m n : ℕ) : IntervalIntegrable (weightedTerm m n) volume 0 1 := by
+    apply Continuous.intervalIntegrable
+    simp only [weightedTerm]
+    unfold e
+    fun_prop
+  have hinner (m : ℕ) : IntervalIntegrable
+      (fun x : ℝ => ∑ n ∈ S, weightedTerm m n x) volume 0 1 := by
+    rw [show (fun x : ℝ => ∑ n ∈ S, weightedTerm m n x) =
+      ∑ n ∈ S, weightedTerm m n by
+        funext x
+        simp]
+    exact IntervalIntegrable.sum S (fun n _ => hterm m n)
+  have hexpand (x : ℝ) :
+      (((1 / 2 - x : ℝ) : ℂ) *
+          (fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x))) =
+        ∑ m ∈ S, ∑ n ∈ S, weightedTerm m n x := by
+    rw [fourierPoly_mul_conj, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun m _ => ?_
+    rw [Finset.mul_sum]
+  have hintegral :
+      (∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x)))) =
+        ∑ m ∈ S, ∑ n ∈ S,
+          a m * starRingEnd ℂ (a n) *
+            (if m = n then 0 else
+              1 / ((2 * π * Complex.I) * ((n : ℂ) - (m : ℂ)))) := by
+    calc
+      (∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x)))) =
+          ∫ x in (0 : ℝ)..1,
+            ∑ m ∈ S, ∑ n ∈ S, weightedTerm m n x := by
+        apply intervalIntegral.integral_congr
+        intro x _
+        exact hexpand x
+      _ = ∑ m ∈ S, ∫ x in (0 : ℝ)..1,
+          ∑ n ∈ S, weightedTerm m n x := by
+        rw [intervalIntegral.integral_finsetSum
+          (f := fun m x => ∑ n ∈ S, weightedTerm m n x)
+          (fun m _ => hinner m)]
+      _ = ∑ m ∈ S, ∑ n ∈ S,
+          ∫ x in (0 : ℝ)..1, weightedTerm m n x := by
+        refine Finset.sum_congr rfl fun m _ => ?_
+        rw [intervalIntegral.integral_finsetSum
+          (f := fun n x => weightedTerm m n x)
+          (fun n _ => hterm m n)]
+      _ = _ := by
+        refine Finset.sum_congr rfl fun m _ => ?_
+        exact Finset.sum_congr rfl fun n _ => hcoefficient m n
+  rw [hintegral, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun m _ => ?_
+  rw [Finset.mul_sum, Finset.sum_filter]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  by_cases hmn : m = n
+  · subst n
+    simp
+  · rw [if_pos (Ne.symm hmn), if_neg hmn]
+    have hdiff : ((n : ℂ) - (m : ℂ)) ≠ 0 := by
+      rw [sub_ne_zero]
+      exact_mod_cast Ne.symm hmn
+    have hπ : ((π : ℝ) : ℂ) ≠ 0 := by
+      exact_mod_cast Real.pi_ne_zero
+    field_simp [hdiff, hπ, Complex.I_ne_zero]
+
+/-- The sharp finite Hilbert inequality for integer indices. -/
+theorem finite_hilbert (S : Finset ℕ) (a : ℕ → ℂ) :
+    ‖∑ m ∈ S, ∑ n ∈ S.filter (fun n => n ≠ m),
+        a m * starRingEnd ℂ (a n) / ((n : ℂ) - (m : ℂ))‖ ≤
+      π * ∑ n ∈ S, ‖a n‖ ^ 2 := by
+  let P : ℝ → ℂ := fourierPoly S a
+  have hPcont : Continuous P := by
+    exact continuous_fourierPoly S a
+  have hweighted : Continuous (fun x : ℝ =>
+      (((1 / 2 - x : ℝ) : ℂ) *
+        (P x * starRingEnd ℂ (P x)))) := by
+    fun_prop
+  have hmajorant : Continuous (fun x : ℝ =>
+      (1 / 2 : ℝ) * ‖P x‖ ^ 2) :=
+    continuous_const.mul (hPcont.norm.pow 2)
+  have hintegral :
+      ‖∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (P x * starRingEnd ℂ (P x)))‖ ≤
+        (1 / 2 : ℝ) * ∑ n ∈ S, ‖a n‖ ^ 2 := by
+    calc
+      ‖∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (P x * starRingEnd ℂ (P x)))‖ ≤
+          ∫ x in (0 : ℝ)..1,
+            ‖(((1 / 2 - x : ℝ) : ℂ) *
+              (P x * starRingEnd ℂ (P x)))‖ :=
+        intervalIntegral.norm_integral_le_integral_norm zero_le_one
+      _ ≤ ∫ x in (0 : ℝ)..1, (1 / 2 : ℝ) * ‖P x‖ ^ 2 := by
+        apply intervalIntegral.integral_mono_on zero_le_one
+          (hweighted.norm.intervalIntegrable 0 1)
+          (hmajorant.intervalIntegrable 0 1)
+        intro x hx
+        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+          norm_mul, Complex.norm_conj]
+        have hsaw : |1 / 2 - x| ≤ (1 / 2 : ℝ) := by
+          rw [abs_le]
+          constructor <;> linarith [hx.1, hx.2]
+        calc
+          |1 / 2 - x| * (‖P x‖ * ‖P x‖) ≤
+              (1 / 2 : ℝ) * (‖P x‖ * ‖P x‖) :=
+            mul_le_mul_of_nonneg_right hsaw
+              (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+          _ = (1 / 2 : ℝ) * ‖P x‖ ^ 2 := by ring
+      _ = (1 / 2 : ℝ) *
+          ∫ x in (0 : ℝ)..1, ‖P x‖ ^ 2 := by
+        rw [intervalIntegral.integral_const_mul]
+      _ = (1 / 2 : ℝ) * ∑ n ∈ S, ‖a n‖ ^ 2 := by
+        rw [show P = fourierPoly S a by rfl, finite_parseval]
+  rw [finite_hilbert_identity, norm_mul]
+  have hfactor : ‖(2 * π * Complex.I : ℂ)‖ = 2 * π := by
+    rw [norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs,
+      Complex.norm_I, mul_one, abs_of_pos (by positivity)]
+    norm_num
+  rw [hfactor]
+  calc
+    (2 * π) *
+        ‖∫ x in (0 : ℝ)..1,
+          (((1 / 2 - x : ℝ) : ℂ) *
+            (fourierPoly S a x * starRingEnd ℂ (fourierPoly S a x)))‖ ≤
+        (2 * π) * ((1 / 2 : ℝ) * ∑ n ∈ S, ‖a n‖ ^ 2) := by
+      apply mul_le_mul_of_nonneg_left
+      · simpa only [P] using hintegral
+      · positivity
+    _ = π * ∑ n ∈ S, ‖a n‖ ^ 2 := by ring
+
 end FiniteHilbert
 
 end LeanProofs.IntegerPoints
