@@ -105,6 +105,11 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     the residual as a difference of two Hilbert forms, and uses
     `Σ_{N<n≤2N} n² ≤ 4N³` to obtain `(T - 4N²)N` with the book's
     exact constant.
+  - `IntegerPoints.GKSec33LGeHalf` — **proved**: Graham–Kolesnik's §3.3
+    restriction `gk_sec33_l_ge_half_holds`.  A smooth phase equal to `-t/x`
+    on `[N,2N]` belongs to the exponent-pair class at every finite derivative
+    order.  Its bound on `8N² ≤ t ≤ 16N²`, combined with Appendix A, forces
+    `N ≤ K(N^(2l) + 1)`; real-power decay rules this out when `l < 1/2`.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,

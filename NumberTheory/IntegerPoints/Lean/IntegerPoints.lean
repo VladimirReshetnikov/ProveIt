@@ -51,6 +51,7 @@ import IntegerPoints.GKHighCurvature
 import IntegerPoints.GKTheorem22
 import IntegerPoints.FiniteHilbert
 import IntegerPoints.GKAppendixATheorem2
+import IntegerPoints.GKSec33LGeHalf
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -88,7 +89,9 @@ used by `IntegerPoints.GKTheorem22` to prove both invoked forms of Theorem 2.2.
 `IntegerPoints.FiniteHilbert` proves the sharp finite Hilbert inequality from
 finite Parseval and the centered-sawtooth Fourier coefficients;
 `IntegerPoints.GKAppendixATheorem2` applies it to prove the reciprocal-phase
-mean-square lower bound quoted from Graham--Kolesnik Appendix A.
+mean-square lower bound quoted from Graham--Kolesnik Appendix A, and
+`IntegerPoints.GKSec33LGeHalf` uses that lower bound to prove the §3.3
+restriction `l ≥ 1/2` from the exponential-sum estimate alone.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
