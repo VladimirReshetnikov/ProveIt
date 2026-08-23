@@ -282,7 +282,7 @@ theorem rvachevFourier_differentiable (F : BoundedFabius) (hF : IsFabius F) :
 theorem complexGeneratingFunction_eq_series
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     complexGeneratingFunction F z = halfMomentGeneratingSeries z := by
-  sorry
+  exact complexGeneratingFunction_eq_series_formula F hF z
 
 /-- The second equality in equation (20), expressed using the Fourier transform. -/
 theorem complexGeneratingFunction_eq_fourier

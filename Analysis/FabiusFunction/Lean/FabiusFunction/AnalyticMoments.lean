@@ -2,6 +2,7 @@ import FabiusFunction.Differential
 import FabiusFunction.DyadicAnalytic
 import FabiusFunction.MomentPowerSeries
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 /-!
@@ -848,5 +849,121 @@ theorem proposition_two_real_formula
   rw [htwo, complexGeneratingFunction_ofReal F (2 * x),
     complexExpm1Div_ofReal x, complexGeneratingFunction_ofReal F x] at h
   exact_mod_cast h
+
+private lemma norm_rvachevUp_le_one
+    (F : BoundedFabius) (t : ℝ) : ‖(rvachevUp F t : ℂ)‖ ≤ 1 := by
+  have hnonneg : 0 ≤ rvachevUp F t := by
+    rw [rvachevUp]
+    split_ifs <;> exact fabiusReal_nonneg F _
+  have hle : rvachevUp F t ≤ 1 := by
+    rw [rvachevUp]
+    split_ifs <;> exact fabiusReal_le_one F _
+  simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hnonneg] using hle
+
+private lemma complexExp_integral_hasSum
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    HasSum
+      (fun n : ℕ => ∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          ((z * (t : ℂ)) ^ n / (n.factorial : ℂ)))
+      (∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) * Complex.exp (z * t)) := by
+  let term : ℕ → ℝ → ℂ := fun n t =>
+    (rvachevUp F t : ℂ) *
+      ((z * (t : ℂ)) ^ n / (n.factorial : ℂ))
+  let bound : ℕ → ℝ → ℝ := fun n _ =>
+    ‖z ^ n / (n.factorial : ℂ)‖
+  apply intervalIntegral.hasSum_integral_of_dominated_convergence bound
+  · intro n
+    exact ((Complex.continuous_ofReal.comp (rvachev_contDiff F hF).continuous).mul
+      (((continuous_const.mul Complex.continuous_ofReal).pow n).div_const _)).aestronglyMeasurable
+  · intro n
+    filter_upwards with t
+    intro ht
+    have ht0 : 0 ≤ t := by simpa using ht.1.le
+    have ht1 : t ≤ 1 := by simpa using ht.2
+    have ht_norm : ‖(t : ℂ)‖ ≤ 1 := by
+      rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ht0]
+      exact ht1
+    have ht_pow : ‖((t : ℂ) ^ n)‖ ≤ 1 := by
+      rw [norm_pow]
+      exact pow_le_one₀ (norm_nonneg _) ht_norm
+    have hinner :
+        ‖(z * (t : ℂ)) ^ n / (n.factorial : ℂ)‖ ≤
+          ‖z ^ n / (n.factorial : ℂ)‖ := by
+      rw [show (z * (t : ℂ)) ^ n / (n.factorial : ℂ) =
+          (z ^ n / (n.factorial : ℂ)) * (t : ℂ) ^ n by
+        rw [mul_pow]
+        ring]
+      rw [norm_mul]
+      exact mul_le_of_le_one_right (norm_nonneg _) ht_pow
+    dsimp [term, bound]
+    rw [norm_mul]
+    exact (mul_le_of_le_one_left (norm_nonneg _)
+      (norm_rvachevUp_le_one F t)).trans hinner
+  · filter_upwards with t
+    intro _ht
+    exact NormedSpace.norm_expSeries_div_summable z
+  · have hconst : IntervalIntegrable
+        (fun _ : ℝ => ∑' n : ℕ, ‖z ^ n / (n.factorial : ℂ)‖)
+        volume 0 1 := intervalIntegrable_const
+    simpa only [bound] using hconst
+  · filter_upwards with t
+    intro _ht
+    simpa [term, Complex.exp_eq_exp_ℂ] using
+      (NormedSpace.expSeries_div_hasSum_exp (z * (t : ℂ))).mul_left
+        (rvachevUp F t : ℂ)
+
+private lemma halfMoment_succ_seriesTerm_eq_integral
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) (n : ℕ) :
+    (halfMoment (n + 1) : ℂ) / ((n + 1).factorial : ℂ) * z ^ (n + 1) =
+      z * ∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          ((z * (t : ℂ)) ^ n / (n.factorial : ℂ)) := by
+  have hm := halfMoment_eq_integral_formula F hF (n + 1) (by omega)
+  rw [halfMomentIntegral_succ] at hm
+  have hmc : (halfMoment (n + 1) : ℂ) =
+      (n + 1 : ℂ) *
+        (∫ t in (0 : ℝ)..1, t ^ n * rvachevUp F t : ℝ) := by
+    exact_mod_cast hm
+  have hint :
+      (∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) *
+          ((z * (t : ℂ)) ^ n / (n.factorial : ℂ))) =
+      (z ^ n / (n.factorial : ℂ)) *
+        (∫ t in (0 : ℝ)..1, (t ^ n * rvachevUp F t : ℂ)) := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro t _ht
+    push_cast
+    rw [mul_pow]
+    ring
+  have hcast :
+      (∫ t in (0 : ℝ)..1, (t ^ n * rvachevUp F t : ℂ)) =
+        ((∫ t in (0 : ℝ)..1, t ^ n * rvachevUp F t : ℝ) : ℂ) := by
+    simpa only [Complex.ofReal_mul, Complex.ofReal_pow] using
+      (intervalIntegral.integral_ofReal
+        (f := fun t : ℝ => t ^ n * rvachevUp F t) (a := 0) (b := 1))
+  rw [hmc, hint, hcast, Nat.factorial_succ, pow_succ]
+  push_cast
+  field_simp
+
+/-- Equation (17): the half moments are the Taylor coefficients of the
+complex generating function. -/
+theorem complexGeneratingFunction_eq_series_formula
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    complexGeneratingFunction F z = halfMomentGeneratingSeries z := by
+  let coeff : ℕ → ℂ := fun n =>
+    (halfMoment n : ℂ) / (n.factorial : ℂ) * z ^ n
+  have htail : HasSum (fun n : ℕ => coeff (n + 1))
+      (z * ∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) * Complex.exp (z * t)) := by
+    apply (complexExp_integral_hasSum F hF z).mul_left z |>.congr_fun
+    intro n
+    exact halfMoment_succ_seriesTerm_eq_integral F hF z n
+  have hfull : HasSum coeff (complexGeneratingFunction F z) := by
+    simpa [coeff, complexGeneratingFunction, halfMoment_zero] using htail.zero_add
+  rw [halfMomentGeneratingSeries]
+  exact hfull.tsum_eq.symm
 
 end Fabius

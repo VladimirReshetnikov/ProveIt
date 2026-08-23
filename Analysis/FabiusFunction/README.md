@@ -5,11 +5,11 @@ de Reyna, [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487
 version 3.
 
 The development contains executable exact arithmetic and is now in its proof
-completion phase.  The structural evaluator proofs, moment/half-moment
-power-series bridge, normalized half-moment formula, monotonicity and strict
-positivity, support calculations, and several paper results are checked
-without `sorry`; the remaining analytic and arithmetic statements are being
-discharged incrementally.
+completion phase.  The evaluator, its analytic correctness at every dyadic,
+the moment and denominator arithmetic, the global differential identities,
+Taylor reduction, and every numbered result of the paper are checked without
+`sorry`.  The remaining frontier consists of the canonical function's
+existence theorem and the Fourier/entire-series identities.
 
 ## Design
 
@@ -60,9 +60,10 @@ reduces inputs such as `10/32` to `5/16`.
 `DyadicCorrectness.lean` proves termination, clamping, table-prefix stability,
 refinement invariance, and representation independence.  The inverse-power
 table is connected axiom-cleanly to the executable moment recurrences in
-`MomentPowerSeries.lean`.  The remaining exact evaluator step is the general
-highest-bit Taylor identity connecting the fast recursion to equation (32),
-followed by the analytic bridge from equation (32) to `fabiusReal`.
+`MomentPowerSeries.lean`; `DyadicClosedForm.lean` proves the highest-bit Taylor
+identity, and `DyadicAnalytic.lean` proves equality with every bounded analytic
+Fabius function.  `GlobalDyadic.lean` supplies the corresponding proofs for
+the signed global extension and for equation (32) on its full `[0,2]` range.
 
 ```lean
 #eval Fabius.fabiusDyadicValue 4 5
