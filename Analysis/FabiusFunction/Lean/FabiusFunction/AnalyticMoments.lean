@@ -1,0 +1,852 @@
+import FabiusFunction.Differential
+import FabiusFunction.DyadicAnalytic
+import FabiusFunction.MomentPowerSeries
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+
+/-!
+# Analytic moment identities for the Fabius function
+
+This module proves the integral interpretations of the exact moment sequences,
+their inverse-power specializations, and the generating-function dilation
+identity from Proposition 2 of *Arithmetic of the Fabius function*.
+-/
+
+set_option autoImplicit false
+
+open scoped BigOperators ContDiff Interval
+open Set Finset MeasureTheory
+
+namespace Fabius
+
+private lemma rvachev_eq_zero_of_le_neg_one (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
+  exact hF.zero_of_nonpos _ (by linarith)
+
+private lemma rvachev_eq_zero_of_one_le (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
+  exact hF.zero_of_nonpos _ (by linarith)
+
+private lemma rvachev_zero (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevUp F 0 = 1 := by
+  rw [rvachevUp, if_pos le_rfl]
+  simpa using hF.one_of_one_le 1 le_rfl
+
+private lemma rvachev_continuous (F : BoundedFabius) (hF : IsFabius F) :
+    Continuous (rvachevUp F) :=
+  (rvachev_contDiff F hF).continuous
+
+private lemma rvachev_intervalIntegrable (F : BoundedFabius) (hF : IsFabius F)
+    (a b : ℝ) : IntervalIntegrable (rvachevUp F) volume a b :=
+  (rvachev_continuous F hF).intervalIntegrable a b
+
+private lemma pow_mul_rvachev_continuous (F : BoundedFabius) (hF : IsFabius F)
+    (m : ℕ) : Continuous (fun x : ℝ => x ^ m * rvachevUp F x) :=
+  (continuous_id.pow m).mul (rvachev_continuous F hF)
+
+private lemma pow_mul_rvachev_intervalIntegrable
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) (a b : ℝ) :
+    IntervalIntegrable (fun x : ℝ => x ^ m * rvachevUp F x) volume a b :=
+  (pow_mul_rvachev_continuous F hF m).intervalIntegrable a b
+
+private lemma integral_pow_mul_rvachev_symm
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
+    (∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x) =
+      (((-1 : ℝ) ^ m) + 1) *
+        ∫ x in (0 : ℝ)..1, x ^ m * rvachevUp F x := by
+  let f : ℝ → ℝ := fun x => x ^ m * rvachevUp F x
+  have hneg := intervalIntegral.integral_comp_neg
+    (f := f) (a := (0 : ℝ)) (b := 1)
+  have hreflect : (∫ x in (0 : ℝ)..1, f (-x)) =
+      (-1 : ℝ) ^ m * ∫ x in (0 : ℝ)..1, f x := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro x _hx
+    dsimp [f]
+    rw [rvachev_even F hF x]
+    rw [neg_pow]
+    ring
+  have hsplit := intervalIntegral.integral_add_adjacent_intervals
+    (pow_mul_rvachev_intervalIntegrable F hF m (-1) 0)
+    (pow_mul_rvachev_intervalIntegrable F hF m 0 1)
+  change (∫ x in (-1 : ℝ)..1, f x) = _
+  change (∫ x in (-1 : ℝ)..0, f x) +
+      (∫ x in (0 : ℝ)..1, f x) =
+        (∫ x in (-1 : ℝ)..1, f x) at hsplit
+  have hneg' : (∫ x in (0 : ℝ)..1, f (-x)) =
+      ∫ x in (-1 : ℝ)..0, f x := by
+    convert hneg using 1 <;> norm_num
+  rw [← hneg', hreflect] at hsplit
+  linarith
+
+private lemma integral_pow_mul_rvachev_eq_interval
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
+    (∫ x : ℝ, x ^ m * rvachevUp F x) =
+      ∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x := by
+  have hwhole : (∫ x : ℝ, x ^ m * rvachevUp F x) =
+      ∫ x : ℝ in Icc (-1 : ℝ) 1, x ^ m * rvachevUp F x := by
+    rw [← integral_indicator measurableSet_Icc]
+    apply integral_congr_ae
+    filter_upwards with x
+    by_cases hmem : x ∈ Icc (-1 : ℝ) 1
+    · simp [hmem]
+    · have hout : x ≤ -1 ∨ 1 ≤ x := by
+        simp only [Set.mem_Icc, not_and_or, not_le] at hmem
+        rcases hmem with hx | hx
+        · exact Or.inl hx.le
+        · exact Or.inr hx.le
+      rcases hout with hx | hx
+      · rw [rvachev_eq_zero_of_le_neg_one F hF hx]
+        simp [hmem]
+      · rw [rvachev_eq_zero_of_one_le F hF hx]
+        simp [hmem]
+  calc
+    (∫ x : ℝ, x ^ m * rvachevUp F x) =
+        ∫ x : ℝ in Icc (-1 : ℝ) 1, x ^ m * rvachevUp F x := hwhole
+    _ = ∫ x : ℝ in Ioc (-1 : ℝ) 1, x ^ m * rvachevUp F x :=
+      integral_Icc_eq_integral_Ioc
+    _ = ∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x := by
+      rw [intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
+
+private lemma integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
+    (∫ x : ℝ, rvachevUp F x) = 1 := by
+  have hderiv : ∀ x ∈ [[(0 : ℝ), 1]],
+      HasDerivAt (rvachevUp F) (-2 * rvachevUp F (2 * x - 1)) x := by
+    intro x hx
+    have hxmem : x ∈ Icc (0 : ℝ) 1 := by
+      simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
+    have hfar : rvachevUp F (2 * x + 1) = 0 :=
+      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+    convert rvachev_hasDerivAt F hF x using 1 <;> rw [hfar] <;> ring
+  have hint : IntervalIntegrable
+      (fun x : ℝ => -2 * rvachevUp F (2 * x - 1)) volume 0 1 := by
+    exact (continuous_const.mul ((rvachev_continuous F hF).comp
+      (continuous_const.mul continuous_id |>.sub continuous_const))).intervalIntegrable 0 1
+  have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint
+  have hsub := intervalIntegral.mul_integral_comp_mul_sub
+    (f := rvachevUp F) (a := (0 : ℝ)) (b := 1) 2 1
+  have hends : rvachevUp F 1 - rvachevUp F 0 = -1 := by
+    rw [rvachev_eq_zero_of_one_le F hF le_rfl, rvachev_zero F hF]
+    norm_num
+  rw [intervalIntegral.integral_const_mul] at hftc
+  rw [hends] at hftc
+  have hsub' : 2 * (∫ x in (0 : ℝ)..1, rvachevUp F (2 * x - 1)) =
+      ∫ x in (-1 : ℝ)..1, rvachevUp F x := by
+    convert hsub using 1 <;> norm_num
+  have hinter : (∫ x in (-1 : ℝ)..1, rvachevUp F x) = 1 := by
+    linarith [hsub']
+  calc
+    (∫ x : ℝ, rvachevUp F x) =
+        ∫ x in (-1 : ℝ)..1, rvachevUp F x := by
+      simpa using integral_pow_mul_rvachev_eq_interval F hF 0
+    _ = 1 := hinter
+
+private lemma scaled_half_moment_identity
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) (hr : 1 ≤ r) :
+    (2 : ℝ) ^ r * (r : ℝ) *
+        (∫ x in (0 : ℝ)..1, x ^ (r - 1) * rvachevUp F x) =
+      ∫ x in (-1 : ℝ)..1, (x + 1) ^ r * rvachevUp F x := by
+  let u : ℝ → ℝ := fun x => x ^ r
+  let u' : ℝ → ℝ := fun x => (r : ℝ) * x ^ (r - 1)
+  let v' : ℝ → ℝ := fun x => -2 * rvachevUp F (2 * x - 1)
+  have hu : ∀ x ∈ [[(0 : ℝ), 1]], HasDerivAt u (u' x) x := by
+    intro x _hx
+    exact hasDerivAt_pow r x
+  have hv : ∀ x ∈ [[(0 : ℝ), 1]], HasDerivAt (rvachevUp F) (v' x) x := by
+    intro x hx
+    have hxmem : x ∈ Icc (0 : ℝ) 1 := by
+      simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
+    have hfar : rvachevUp F (2 * x + 1) = 0 :=
+      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+    dsimp [v']
+    convert rvachev_hasDerivAt F hF x using 1 <;> rw [hfar] <;> ring
+  have hu_int : IntervalIntegrable u' volume 0 1 := by
+    exact (continuous_const.mul (continuous_id.pow (r - 1))).intervalIntegrable 0 1
+  have hv_int : IntervalIntegrable v' volume 0 1 := by
+    exact (continuous_const.mul ((rvachev_continuous F hF).comp
+      (continuous_const.mul continuous_id |>.sub continuous_const))).intervalIntegrable 0 1
+  have hparts := intervalIntegral.integral_mul_deriv_eq_deriv_mul hu hv hu_int hv_int
+  have hu_zero : u 0 = 0 := by simp [u, Nat.ne_zero_of_lt hr]
+  have hv_zero : rvachevUp F 1 = 0 := rvachev_eq_zero_of_one_le F hF le_rfl
+  have hbyParts : (r : ℝ) *
+      (∫ x in (0 : ℝ)..1, x ^ (r - 1) * rvachevUp F x) =
+        2 * ∫ x in (0 : ℝ)..1, x ^ r * rvachevUp F (2 * x - 1) := by
+    dsimp [u, u', v'] at hparts
+    have hleft : (∫ x in (0 : ℝ)..1,
+        x ^ r * (-2 * rvachevUp F (2 * x - 1))) =
+        -2 * ∫ x in (0 : ℝ)..1, x ^ r * rvachevUp F (2 * x - 1) := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro x _hx
+      ring
+    have hright : (∫ x in (0 : ℝ)..1,
+        (r : ℝ) * x ^ (r - 1) * rvachevUp F x) =
+        (r : ℝ) * ∫ x in (0 : ℝ)..1, x ^ (r - 1) * rvachevUp F x := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro x _hx
+      ring
+    rw [hleft, hright] at hparts
+    have hr0 : r ≠ 0 := by omega
+    simp only [hv_zero, one_pow, mul_zero, zero_pow hr0, zero_mul, sub_zero,
+      zero_sub] at hparts
+    linarith
+  let g : ℝ → ℝ := fun t => ((t + 1) / 2) ^ r * rvachevUp F t
+  have hsub0 := intervalIntegral.mul_integral_comp_mul_sub
+    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
+  have hsub : 2 * (∫ x in (0 : ℝ)..1,
+      x ^ r * rvachevUp F (2 * x - 1)) =
+      ∫ t in (-1 : ℝ)..1, g t := by
+    have hcongr : (∫ x in (0 : ℝ)..1, g (2 * x - 1)) =
+        ∫ x in (0 : ℝ)..1, x ^ r * rvachevUp F (2 * x - 1) := by
+      apply intervalIntegral.integral_congr
+      intro x _hx
+      dsimp [g]
+      congr 2
+      ring
+    rw [hcongr] at hsub0
+    convert hsub0 using 1 <;> norm_num
+  have hscale : (2 : ℝ) ^ r * (∫ t in (-1 : ℝ)..1, g t) =
+      ∫ t in (-1 : ℝ)..1, (t + 1) ^ r * rvachevUp F t := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro t _ht
+    dsimp [g]
+    rw [div_pow]
+    field_simp
+  rw [mul_assoc, hbyParts, hsub]
+  exact hscale
+
+private lemma integral_add_one_pow_mul_rvachev
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℕ) :
+    (∫ x in (-1 : ℝ)..1, (x + 1) ^ r * rvachevUp F x) =
+      ∑ j ∈ range (r + 1), (Nat.choose r j : ℝ) *
+        (∫ x in (-1 : ℝ)..1, x ^ j * rvachevUp F x) := by
+  have hpoint : ∀ x : ℝ,
+      (x + 1) ^ r * rvachevUp F x =
+        ∑ j ∈ range (r + 1),
+          ((Nat.choose r j : ℝ) * (x ^ j * rvachevUp F x)) := by
+    intro x
+    rw [add_pow]
+    simp only [one_pow, mul_one]
+    rw [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro j hj
+    ring
+  rw [intervalIntegral.integral_congr (fun x _hx => hpoint x)]
+  rw [intervalIntegral.integral_finsetSum]
+  · apply Finset.sum_congr rfl
+    intro j hj
+    rw [intervalIntegral.integral_const_mul]
+  · intro j hj
+    exact (continuous_const.mul (pow_mul_rvachev_continuous F hF j)).intervalIntegrable
+      (-1) 1
+
+private lemma sum_range_two_mul {R : Type*} [AddCommMonoid R]
+    (f : ℕ → R) (n : ℕ) :
+    (∑ j ∈ range (2 * n), f j) =
+      ∑ k ∈ range n, (f (2 * k) + f (2 * k + 1)) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [show 2 * (n + 1) = (2 * n + 1) + 1 by omega]
+      simp only [sum_range_succ]
+      rw [ih]
+      abel
+
+private lemma integral_add_one_odd_pow_mul_rvachev
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (∫ x in (-1 : ℝ)..1, (x + 1) ^ (2 * n + 1) * rvachevUp F x) =
+      ∑ k ∈ range (n + 1), (Nat.choose (2 * n + 1) (2 * k) : ℝ) *
+        (∫ x in (-1 : ℝ)..1, x ^ (2 * k) * rvachevUp F x) := by
+  rw [integral_add_one_pow_mul_rvachev F hF]
+  rw [show 2 * n + 1 + 1 = 2 * (n + 1) by omega]
+  rw [sum_range_two_mul]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hodd := integral_pow_mul_rvachev_symm F hF (2 * k + 1)
+  have hodd0 : (∫ x in (-1 : ℝ)..1,
+      x ^ (2 * k + 1) * rvachevUp F x) = 0 := by
+    simpa [pow_succ] using hodd
+  rw [hodd0]
+  ring
+
+private lemma integral_odd_pow_mul_rvachev_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    (∫ x in (-1 : ℝ)..1, x ^ (2 * k + 1) * rvachevUp F x) = 0 := by
+  have h := integral_pow_mul_rvachev_symm F hF (2 * k + 1)
+  simpa [pow_succ] using h
+
+private lemma binomial_integral_sum_eq_even
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (∑ j ∈ range (n + 1), (Nat.choose n j : ℝ) *
+        (∫ x in (-1 : ℝ)..1, x ^ j * rvachevUp F x)) =
+      ∑ k ∈ range (n / 2 + 1), (Nat.choose n (2 * k) : ℝ) *
+        (∫ x in (-1 : ℝ)..1, x ^ (2 * k) * rvachevUp F x) := by
+  obtain ⟨m, hm | hm⟩ := Nat.even_or_odd' n
+  · subst n
+    have hdiv : 2 * m / 2 + 1 = m + 1 := by omega
+    rw [hdiv]
+    rw [show 2 * m + 1 = 2 * m + 1 by rfl, sum_range_succ]
+    rw [sum_range_two_mul]
+    rw [sum_range_succ]
+    congr 1
+    · apply Finset.sum_congr rfl
+      intro k hk
+      rw [integral_odd_pow_mul_rvachev_eq_zero F hF]
+      ring
+  · subst n
+    have hdiv : (2 * m + 1) / 2 + 1 = m + 1 := by omega
+    rw [hdiv]
+    rw [show 2 * m + 1 + 1 = 2 * (m + 1) by omega]
+    rw [sum_range_two_mul]
+    apply Finset.sum_congr rfl
+    intro k hk
+    rw [integral_odd_pow_mul_rvachev_eq_zero F hF]
+    ring
+
+private lemma momentIntegral_recurrence_all
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    ((2 * n + 1 : ℕ) : ℝ) * (2 : ℝ) ^ (2 * n) * momentIntegral F n =
+      ∑ k ∈ range (n + 1), (Nat.choose (2 * n + 1) (2 * k) : ℝ) *
+        momentIntegral F k := by
+  have hscaled := scaled_half_moment_identity F hF (2 * n + 1) (by omega)
+  have hsym0 := integral_pow_mul_rvachev_symm F hF (2 * n)
+  have hsym : (∫ x in (-1 : ℝ)..1, x ^ (2 * n) * rvachevUp F x) =
+      2 * ∫ x in (0 : ℝ)..1, x ^ (2 * n) * rvachevUp F x := by
+    convert hsym0 using 1 <;> norm_num [pow_mul]
+  have hloc : momentIntegral F n =
+      ∫ x in (-1 : ℝ)..1, x ^ (2 * n) * rvachevUp F x := by
+    exact integral_pow_mul_rvachev_eq_interval F hF (2 * n)
+  have hleft : (2 : ℝ) ^ (2 * n + 1) * ((2 * n + 1 : ℕ) : ℝ) *
+      (∫ x in (0 : ℝ)..1, x ^ (2 * n + 1 - 1) * rvachevUp F x) =
+      ((2 * n + 1 : ℕ) : ℝ) * (2 : ℝ) ^ (2 * n) *
+        momentIntegral F n := by
+    rw [show 2 * n + 1 - 1 = 2 * n by omega]
+    rw [hloc, hsym, pow_succ]
+    ring
+  have hrhs : (∫ x in (-1 : ℝ)..1,
+      (x + 1) ^ (2 * n + 1) * rvachevUp F x) =
+      ∑ k ∈ range (n + 1), (Nat.choose (2 * n + 1) (2 * k) : ℝ) *
+        momentIntegral F k := by
+    rw [integral_add_one_odd_pow_mul_rvachev F hF n]
+    apply Finset.sum_congr rfl
+    intro k hk
+    have hlock := integral_pow_mul_rvachev_eq_interval F hF (2 * k)
+    rw [← hlock]
+    rfl
+  rw [← hleft]
+  exact hscaled.trans hrhs
+
+private lemma momentIntegral_original_recurrence
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    ((2 * n + 1 : ℕ) : ℝ) * ((2 : ℝ) ^ (2 * n) - 1) *
+        momentIntegral F n =
+      ∑ k ∈ range n, (Nat.choose (2 * n + 1) (2 * k) : ℝ) *
+        momentIntegral F k := by
+  have h := momentIntegral_recurrence_all F hF n
+  rw [sum_range_succ] at h
+  have hchoose : (2 * n + 1).choose (2 * n) = 2 * n + 1 := by
+    exact Nat.choose_succ_self_right (2 * n)
+  rw [hchoose] at h
+  push_cast at h
+  push_cast
+  linear_combination h
+
+theorem moment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (moment n : ℝ) = momentIntegral F n := by
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+      cases n with
+      | zero =>
+          rw [moment_zero]
+          norm_num [momentIntegral, integral_rvachev_eq_one F hF]
+      | succ n =>
+          rw [moment_succ]
+          rw [Fin.sum_univ_eq_sum_range
+            (fun k => (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℚ) * moment k)
+            (n + 1)]
+          push_cast
+          have hrec := momentIntegral_original_recurrence F hF (n + 1)
+          have hden : (((2 * (n + 1) + 1 : ℕ) : ℝ) *
+              ((2 : ℝ) ^ (2 * (n + 1)) - 1)) ≠ 0 := by
+            apply mul_ne_zero
+            · positivity
+            · exact sub_ne_zero.mpr (ne_of_gt
+                (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) (by omega)))
+          have hsolve : momentIntegral F (n + 1) =
+              (∑ k ∈ range (n + 1),
+                (Nat.choose (2 * (n + 1) + 1) (2 * k) : ℝ) *
+                  momentIntegral F k) /
+                (((2 * (n + 1) + 1 : ℕ) : ℝ) *
+                  ((2 : ℝ) ^ (2 * (n + 1)) - 1)) := by
+            apply (eq_div_iff hden).2
+            simpa [mul_comm] using hrec
+          rw [hsolve]
+          push_cast
+          congr 1
+          apply Finset.sum_congr rfl
+          intro k hk
+          rw [ih k (by simp only [Finset.mem_range] at hk; omega)]
+
+private lemma halfMomentIntegral_eq_evenMoment_sum
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
+    halfMomentIntegral F n =
+      (∑ k ∈ range (n / 2 + 1), (Nat.choose n (2 * k) : ℝ) *
+        momentIntegral F k) / (2 : ℝ) ^ n := by
+  cases n with
+  | zero => omega
+  | succ m =>
+      have hscaled := scaled_half_moment_identity F hF (m + 1) (by omega)
+      have hrhs : (∫ x in (-1 : ℝ)..1,
+          (x + 1) ^ (m + 1) * rvachevUp F x) =
+          ∑ k ∈ range ((m + 1) / 2 + 1),
+            (Nat.choose (m + 1) (2 * k) : ℝ) * momentIntegral F k := by
+        rw [integral_add_one_pow_mul_rvachev F hF]
+        rw [binomial_integral_sum_eq_even F hF]
+        apply Finset.sum_congr rfl
+        intro k hk
+        have hloc := integral_pow_mul_rvachev_eq_interval F hF (2 * k)
+        rw [← hloc]
+        rfl
+      have hmain := hscaled.trans hrhs
+      simp only [halfMomentIntegral_succ]
+      apply (eq_div_iff (pow_ne_zero _ (by norm_num : (2 : ℝ) ≠ 0))).2
+      simpa [mul_assoc, mul_comm, mul_left_comm] using hmain
+
+theorem halfMoment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (hn : 1 ≤ n) :
+    (halfMoment n : ℝ) = halfMomentIntegral F n := by
+  rw [halfMoment_eq_evenMomentSum]
+  push_cast
+  rw [halfMomentIntegral_eq_evenMoment_sum F hF n hn]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [moment_eq_integral_formula F hF k]
+
+theorem halfMoment_eq_fabius_formula (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (halfMoment n : ℝ) =
+      n.factorial * 2 ^ n.choose 2 * fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
+  have h := fabiusDyadic_cast F hF n 1 Nat.one_le_two_pow
+  change (fabiusAtInverseTwoPow n : ℝ) = _ at h
+  rw [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue] at h
+  push_cast at h
+  have hden : ((n.factorial : ℝ) * (2 : ℝ) ^ n.choose 2) ≠ 0 := by
+    positivity
+  rw [div_eq_iff hden] at h
+  simpa [one_div, mul_comm, mul_left_comm, mul_assoc] using h
+
+private lemma rvachev_one_sub_inverse_pow_eq_fabius
+    (F : BoundedFabius) (_hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
+    rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) = fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
+  have hpow : (2 : ℝ) ≤ (2 : ℝ) ^ n := by
+    obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+    rw [pow_add, pow_one]
+    have hm : (1 : ℝ) ≤ 2 ^ m := one_le_pow₀ (by norm_num)
+    nlinarith
+  have hinv : ((2 : ℝ) ^ n)⁻¹ < 1 := by
+    have hp : (0 : ℝ) < 2 ^ n := by positivity
+    rw [inv_lt_one₀ hp]
+    linarith
+  rw [rvachevUp, if_neg (not_le.mpr (by linarith : 0 < 1 - ((2 : ℝ) ^ n)⁻¹))]
+  congr 1
+  ring
+
+theorem halfIntegral_eq_rvachev_dyadic_formula
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
+    (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t =
+      n.factorial * 2 ^ n.choose 2 *
+        rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) := by
+  have hint : halfMomentIntegral F n =
+      (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t := by
+    cases n with
+    | zero => omega
+    | succ m => rfl
+  calc
+    (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t =
+        halfMomentIntegral F n := hint.symm
+    _ = (halfMoment n : ℝ) := (halfMoment_eq_integral_formula F hF n hn).symm
+    _ = n.factorial * 2 ^ n.choose 2 *
+        fabiusReal F (((2 : ℝ) ^ n)⁻¹) := halfMoment_eq_fabius_formula F hF n
+    _ = n.factorial * 2 ^ n.choose 2 *
+        rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) := by
+      rw [rvachev_one_sub_inverse_pow_eq_fabius F hF n hn]
+
+theorem moment_halfIntegral_eq_rvachev_dyadic_formula
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (moment n : ℝ) / 2 =
+        ∫ t in (0 : ℝ)..1, t ^ (2 * n) * rvachevUp F t ∧
+    (∫ t in (0 : ℝ)..1, t ^ (2 * n) * rvachevUp F t) =
+      (Nat.factorial (2 * n) : ℝ) * 2 ^ (2 * n + 1).choose 2 *
+        rvachevUp F (1 - ((2 : ℝ) ^ (2 * n + 1))⁻¹) := by
+  constructor
+  · rw [moment_eq_integral_formula F hF n]
+    change (∫ x : ℝ, x ^ (2 * n) * rvachevUp F x) / 2 = _
+    have hloc := integral_pow_mul_rvachev_eq_interval F hF (2 * n)
+    have hsym0 := integral_pow_mul_rvachev_symm F hF (2 * n)
+    have hsym : (∫ x in (-1 : ℝ)..1, x ^ (2 * n) * rvachevUp F x) =
+        2 * ∫ x in (0 : ℝ)..1, x ^ (2 * n) * rvachevUp F x := by
+      convert hsym0 using 1 <;> norm_num [pow_mul]
+    rw [hloc, hsym]
+    ring
+  · have h := halfIntegral_eq_rvachev_dyadic_formula F hF (2 * n + 1) (by omega)
+    rw [show 2 * n + 1 - 1 = 2 * n by omega] at h
+    rw [Nat.factorial_succ] at h
+    push_cast at h
+    have hpos : (0 : ℝ) < 2 * n + 1 := by positivity
+    nlinarith
+
+private noncomputable def rvachevLaplace (F : BoundedFabius) (z : ℂ) : ℂ :=
+  ∫ t in (-1 : ℝ)..1, (rvachevUp F t : ℂ) * Complex.exp (z * t)
+
+private lemma rvachev_complex_continuous
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Continuous (fun t : ℝ => (rvachevUp F t : ℂ)) :=
+  Complex.continuous_ofReal.comp (rvachev_continuous F hF)
+
+private lemma complex_exp_mul_continuous (z : ℂ) :
+    Continuous (fun t : ℝ => Complex.exp (z * t)) := by
+  fun_prop
+
+private lemma rvachev_complex_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    HasDerivAt (fun t : ℝ => (rvachevUp F t : ℂ))
+      (2 * ((rvachevUp F (2 * x + 1) : ℂ) -
+        (rvachevUp F (2 * x - 1) : ℂ))) x := by
+  simpa using (rvachev_hasDerivAt F hF x).ofReal_comp
+
+private lemma complex_exp_mul_hasDerivAt (z : ℂ) (x : ℝ) :
+    HasDerivAt (fun t : ℝ => Complex.exp (z * t))
+      (Complex.exp (z * x) * z) x := by
+  have hlin : HasDerivAt (fun t : ℝ => z * t) z x := by
+    simpa only [mul_one] using!
+      ((hasDerivAt_id (x : ℂ)).const_mul z).comp_ofReal
+  exact hlin.cexp
+
+private lemma complexGeneratingFunction_eq_exp_mul_laplace
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    complexGeneratingFunction F z =
+      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
+  let uc : ℝ → ℂ := fun t => (rvachevUp F t : ℂ)
+  let e : ℝ → ℂ := fun t => Complex.exp (z * t)
+  let u' : ℝ → ℂ := fun t => -2 * (rvachevUp F (2 * t - 1) : ℂ)
+  let e' : ℝ → ℂ := fun t => Complex.exp (z * t) * z
+  have hu : ∀ x ∈ [[(0 : ℝ), 1]], HasDerivAt uc (u' x) x := by
+    intro x hx
+    have hxmem : x ∈ Icc (0 : ℝ) 1 := by
+      simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using hx
+    have hfar : rvachevUp F (2 * x + 1) = 0 :=
+      rvachev_eq_zero_of_one_le F hF (by linarith [hxmem.1])
+    dsimp [uc, u']
+    convert rvachev_complex_hasDerivAt F hF x using 1 <;> rw [hfar] <;> norm_num
+  have he : ∀ x ∈ [[(0 : ℝ), 1]], HasDerivAt e (e' x) x := by
+    intro x _hx
+    exact complex_exp_mul_hasDerivAt z x
+  have hu'_int : IntervalIntegrable u' volume 0 1 := by
+    exact (continuous_const.mul ((rvachev_complex_continuous F hF).comp
+      (continuous_const.mul continuous_id |>.sub continuous_const))).intervalIntegrable 0 1
+  have he'_int : IntervalIntegrable e' volume 0 1 := by
+    exact ((complex_exp_mul_continuous z).mul continuous_const).intervalIntegrable 0 1
+  have hparts := intervalIntegral.integral_deriv_mul_eq_sub hu he hu'_int he'_int
+  have hfirst_int : IntervalIntegrable (fun t => u' t * e t) volume 0 1 := by
+    exact ((continuous_const.mul ((rvachev_complex_continuous F hF).comp
+      (continuous_const.mul continuous_id |>.sub continuous_const))).mul
+        (complex_exp_mul_continuous z)).intervalIntegrable 0 1
+  have hsecond_int : IntervalIntegrable (fun t => uc t * e' t) volume 0 1 := by
+    exact ((rvachev_complex_continuous F hF).mul
+      ((complex_exp_mul_continuous z).mul continuous_const)).intervalIntegrable 0 1
+  rw [intervalIntegral.integral_add hfirst_int hsecond_int] at hparts
+  have hfirst : (∫ t in (0 : ℝ)..1, u' t * e t) =
+      -2 * ∫ t in (0 : ℝ)..1,
+        (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro t _ht
+    dsimp [u', e]
+    ring
+  have hsecond : (∫ t in (0 : ℝ)..1, uc t * e' t) =
+      (∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) * Complex.exp (z * t)) * z := by
+    rw [← intervalIntegral.integral_mul_const]
+    apply intervalIntegral.integral_congr
+    intro t _ht
+    dsimp [uc, e']
+    ring
+  rw [hfirst, hsecond] at hparts
+  have hboundary : uc 1 * e 1 - uc 0 * e 0 = -1 := by
+    dsimp [uc, e]
+    rw [rvachev_eq_zero_of_one_le F hF le_rfl, rvachev_zero F hF]
+    norm_num
+  rw [hboundary] at hparts
+  have hgen : complexGeneratingFunction F z =
+      2 * ∫ t in (0 : ℝ)..1,
+        (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+    rw [complexGeneratingFunction]
+    linear_combination hparts
+  let g : ℝ → ℂ := fun y =>
+    (rvachevUp F y : ℂ) * Complex.exp (z * ((y + 1) / 2))
+  have hsub0 := intervalIntegral.smul_integral_comp_mul_sub
+    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
+  have hsub : 2 * (∫ t in (0 : ℝ)..1,
+      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+      ∫ y in (-1 : ℝ)..1, g y := by
+    have hcongr : (∫ t in (0 : ℝ)..1, g (2 * t - 1)) =
+        ∫ t in (0 : ℝ)..1,
+          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+      apply intervalIntegral.integral_congr
+      intro t _ht
+      dsimp [g]
+      congr 2
+      congr 1
+      push_cast
+      ring
+    rw [hcongr] at hsub0
+    convert hsub0 using 1 <;> norm_num
+  have hfactor : (∫ y in (-1 : ℝ)..1, g y) =
+      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
+    rw [rvachevLaplace, ← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro y _hy
+    dsimp [g]
+    have hz : z * (((y : ℂ) + 1) / 2) = z / 2 + (z / 2) * y := by ring
+    rw [hz, Complex.exp_add]
+    ring
+  rw [hgen, hsub, hfactor]
+
+private lemma shifted_laplace_plus
+    (F : BoundedFabius) (z : ℂ) :
+    2 * (∫ t in (0 : ℝ)..1,
+      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
+  let g : ℝ → ℂ := fun y =>
+    (rvachevUp F y : ℂ) * Complex.exp (z * ((y + 1) / 2))
+  have hsub0 := intervalIntegral.smul_integral_comp_mul_sub
+    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
+  have hsub : 2 * (∫ t in (0 : ℝ)..1,
+      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+      ∫ y in (-1 : ℝ)..1, g y := by
+    have hcongr : (∫ t in (0 : ℝ)..1, g (2 * t - 1)) =
+        ∫ t in (0 : ℝ)..1,
+          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+      apply intervalIntegral.integral_congr
+      intro t _ht
+      dsimp [g]
+      congr 2
+      congr 1
+      push_cast
+      ring
+    rw [hcongr] at hsub0
+    convert hsub0 using 1 <;> norm_num
+  rw [hsub, rvachevLaplace, ← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro y _hy
+  dsimp [g]
+  have hz : z * (((y : ℂ) + 1) / 2) = z / 2 + (z / 2) * y := by ring
+  rw [hz, Complex.exp_add]
+  ring
+
+private lemma shifted_laplace_minus
+    (F : BoundedFabius) (z : ℂ) :
+    2 * (∫ t in (-1 : ℝ)..0,
+      (rvachevUp F (2 * t + 1) : ℂ) * Complex.exp (z * t)) =
+      Complex.exp (-z / 2) * rvachevLaplace F (z / 2) := by
+  let g : ℝ → ℂ := fun y =>
+    (rvachevUp F y : ℂ) * Complex.exp (z * ((y - 1) / 2))
+  have hsub0 := intervalIntegral.smul_integral_comp_mul_add
+    (f := g) (a := (-1 : ℝ)) (b := 0) 2 1
+  have hsub : 2 * (∫ t in (-1 : ℝ)..0,
+      (rvachevUp F (2 * t + 1) : ℂ) * Complex.exp (z * t)) =
+      ∫ y in (-1 : ℝ)..1, g y := by
+    have hcongr : (∫ t in (-1 : ℝ)..0, g (2 * t + 1)) =
+        ∫ t in (-1 : ℝ)..0,
+          (rvachevUp F (2 * t + 1) : ℂ) * Complex.exp (z * t) := by
+      apply intervalIntegral.integral_congr
+      intro t _ht
+      dsimp [g]
+      congr 2
+      congr 1
+      push_cast
+      ring
+    rw [hcongr] at hsub0
+    convert hsub0 using 1 <;> norm_num
+  rw [hsub, rvachevLaplace, ← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro y _hy
+  dsimp [g]
+  have hz : z * (((y : ℂ) - 1) / 2) = -z / 2 + (z / 2) * y := by ring
+  rw [hz, Complex.exp_add]
+  ring
+
+private lemma rvachevLaplace_scaling
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    z * rvachevLaplace F z =
+      (Complex.exp (z / 2) - Complex.exp (-z / 2)) *
+        rvachevLaplace F (z / 2) := by
+  let uc : ℝ → ℂ := fun t => (rvachevUp F t : ℂ)
+  let e : ℝ → ℂ := fun t => Complex.exp (z * t)
+  let u' : ℝ → ℂ := fun t =>
+    2 * ((rvachevUp F (2 * t + 1) : ℂ) -
+      (rvachevUp F (2 * t - 1) : ℂ))
+  let e' : ℝ → ℂ := fun t => Complex.exp (z * t) * z
+  have hu : ∀ x ∈ [[(-1 : ℝ), 1]], HasDerivAt uc (u' x) x := by
+    intro x _hx
+    exact rvachev_complex_hasDerivAt F hF x
+  have he : ∀ x ∈ [[(-1 : ℝ), 1]], HasDerivAt e (e' x) x := by
+    intro x _hx
+    exact complex_exp_mul_hasDerivAt z x
+  have hu'_cont : Continuous u' := by
+    exact continuous_const.mul
+      (((rvachev_complex_continuous F hF).comp
+        (continuous_const.mul continuous_id |>.add continuous_const)).sub
+       ((rvachev_complex_continuous F hF).comp
+        (continuous_const.mul continuous_id |>.sub continuous_const)))
+  have he'_cont : Continuous e' :=
+    (complex_exp_mul_continuous z).mul continuous_const
+  have hparts := intervalIntegral.integral_deriv_mul_eq_sub hu he
+    (hu'_cont.intervalIntegrable (-1) 1) (he'_cont.intervalIntegrable (-1) 1)
+  have hfirst_int : IntervalIntegrable (fun t => u' t * e t) volume (-1) 1 :=
+    (hu'_cont.mul (complex_exp_mul_continuous z)).intervalIntegrable (-1) 1
+  have hsecond_int : IntervalIntegrable (fun t => uc t * e' t) volume (-1) 1 :=
+    ((rvachev_complex_continuous F hF).mul he'_cont).intervalIntegrable (-1) 1
+  rw [intervalIntegral.integral_add hfirst_int hsecond_int] at hparts
+  have hsecond : (∫ t in (-1 : ℝ)..1, uc t * e' t) =
+      rvachevLaplace F z * z := by
+    rw [rvachevLaplace, ← intervalIntegral.integral_mul_const]
+    apply intervalIntegral.integral_congr
+    intro t _ht
+    dsimp [uc, e']
+    ring
+  rw [hsecond] at hparts
+  have hboundary : uc 1 * e 1 - uc (-1) * e (-1) = 0 := by
+    dsimp [uc, e]
+    rw [rvachev_eq_zero_of_one_le F hF le_rfl,
+      rvachev_eq_zero_of_le_neg_one F hF le_rfl]
+    norm_num
+  rw [hboundary] at hparts
+  have hderiv : (∫ t in (-1 : ℝ)..1, u' t * e t) =
+      (Complex.exp (-z / 2) - Complex.exp (z / 2)) *
+        rvachevLaplace F (z / 2) := by
+    have hint_neg : IntervalIntegrable (fun t => u' t * e t) volume (-1) 0 :=
+      (hu'_cont.mul (complex_exp_mul_continuous z)).intervalIntegrable (-1) 0
+    have hint_pos : IntervalIntegrable (fun t => u' t * e t) volume 0 1 :=
+      (hu'_cont.mul (complex_exp_mul_continuous z)).intervalIntegrable 0 1
+    have hsplit := intervalIntegral.integral_add_adjacent_intervals hint_neg hint_pos
+    have hneg : (∫ t in (-1 : ℝ)..0, u' t * e t) =
+        2 * ∫ t in (-1 : ℝ)..0,
+          (rvachevUp F (2 * t + 1) : ℂ) * Complex.exp (z * t) := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro t ht
+      have htmem : t ∈ Icc (-1 : ℝ) 0 := by
+        simpa [Set.uIcc_of_le (by norm_num : (-1 : ℝ) ≤ 0)] using ht
+      have hfar : rvachevUp F (2 * t - 1) = 0 :=
+        rvachev_eq_zero_of_le_neg_one F hF (by linarith [htmem.2])
+      dsimp [u', e]
+      rw [hfar]
+      norm_num
+      ring
+    have hpos : (∫ t in (0 : ℝ)..1, u' t * e t) =
+        -2 * ∫ t in (0 : ℝ)..1,
+          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro t ht
+      have htmem : t ∈ Icc (0 : ℝ) 1 := by
+        simpa [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] using ht
+      have hfar : rvachevUp F (2 * t + 1) = 0 :=
+        rvachev_eq_zero_of_one_le F hF (by linarith [htmem.1])
+      dsimp [u', e]
+      rw [hfar]
+      norm_num
+      ring
+    rw [hneg, hpos, shifted_laplace_minus F z] at hsplit
+    have hplus := shifted_laplace_plus F z
+    have hnegPlus :
+        -2 * (∫ t in (0 : ℝ)..1,
+          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+          -(2 * (∫ t in (0 : ℝ)..1,
+            (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t))) := by
+      ring
+    rw [hnegPlus, hplus] at hsplit
+    rw [← hsplit]
+    ring
+  rw [hderiv] at hparts
+  linear_combination hparts
+
+theorem proposition_two_formula (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    complexGeneratingFunction F (2 * z) =
+      complexExpm1Div z * complexGeneratingFunction F z := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexGeneratingFunction]
+  rw [complexGeneratingFunction_eq_exp_mul_laplace F hF (2 * z),
+    complexGeneratingFunction_eq_exp_mul_laplace F hF z,
+    complexExpm1Div_of_ne hz]
+  have htwo : 2 * z / 2 = z := by ring
+  rw [htwo]
+  have hscale := rvachevLaplace_scaling F hF z
+  have hexp : Complex.exp z *
+      (Complex.exp (z / 2) - Complex.exp (-z / 2)) =
+      (Complex.exp z - 1) * Complex.exp (z / 2) := by
+    rw [mul_sub, sub_mul, one_mul, ← Complex.exp_add, ← Complex.exp_add]
+    congr 2
+    ring
+  rw [div_mul_eq_mul_div]
+  apply (eq_div_iff hz).2
+  calc
+    Complex.exp z * rvachevLaplace F z * z =
+        Complex.exp z * (z * rvachevLaplace F z) := by ring
+    _ = Complex.exp z *
+        ((Complex.exp (z / 2) - Complex.exp (-z / 2)) *
+          rvachevLaplace F (z / 2)) := by rw [hscale]
+    _ = (Complex.exp z - 1) *
+        (Complex.exp (z / 2) * rvachevLaplace F (z / 2)) := by
+      calc
+        Complex.exp z *
+            ((Complex.exp (z / 2) - Complex.exp (-z / 2)) *
+              rvachevLaplace F (z / 2)) =
+            (Complex.exp z *
+              (Complex.exp (z / 2) - Complex.exp (-z / 2))) *
+                rvachevLaplace F (z / 2) := by ring
+        _ = _ := by rw [hexp]; ring
+
+private lemma complexGeneratingFunction_ofReal
+    (F : BoundedFabius) (x : ℝ) :
+    complexGeneratingFunction F (x : ℂ) =
+      (generatingFunction F x : ℂ) := by
+  unfold complexGeneratingFunction generatingFunction
+  push_cast
+  congr 1
+  congr 1
+  rw [← intervalIntegral.integral_ofReal]
+  apply intervalIntegral.integral_congr
+  intro t _ht
+  push_cast
+  rfl
+
+private lemma complexExpm1Div_ofReal (x : ℝ) :
+    complexExpm1Div (x : ℂ) = (expm1Div x : ℂ) := by
+  by_cases hx : x = 0
+  · subst x
+    simp
+  rw [complexExpm1Div_of_ne (by exact_mod_cast hx), expm1Div_of_ne hx]
+  push_cast
+  rfl
+
+/-- The real-axis restriction of the complex dilation identity. -/
+theorem proposition_two_real_formula
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    generatingFunction F (2 * x) =
+      expm1Div x * generatingFunction F x := by
+  have h := proposition_two_formula F hF (x : ℂ)
+  have htwo : 2 * (x : ℂ) = ((2 * x : ℝ) : ℂ) := by
+    push_cast
+    rfl
+  rw [htwo, complexGeneratingFunction_ofReal F (2 * x),
+    complexExpm1Div_ofReal x, complexGeneratingFunction_ofReal F x] at h
+  exact_mod_cast h
+
+end Fabius

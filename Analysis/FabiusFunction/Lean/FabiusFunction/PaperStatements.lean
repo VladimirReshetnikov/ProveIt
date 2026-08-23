@@ -1,4 +1,5 @@
 import FabiusFunction.Basic
+import FabiusFunction.AnalyticMoments
 import FabiusFunction.BernoulliRecurrences
 import FabiusFunction.DenominatorBound
 import FabiusFunction.Differential
@@ -294,19 +295,19 @@ theorem complexGeneratingFunction_eq_fourier
 /-- Equation (8): `moment n` is the `2n`-th moment of `rvachev`. -/
 theorem moment_eq_integral (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) = momentIntegral F n := by
-  sorry
+  exact moment_eq_integral_formula F hF n
 
 /-- Equation (21), whose integral form starts at `n = 1`. -/
 theorem halfMoment_eq_integral (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
     (halfMoment n : ℝ) = halfMomentIntegral F n := by
-  sorry
+  exact halfMoment_eq_integral_formula F hF n hn
 
 /-- Equations (21)--(22), connecting `d_n` to the bounded Fabius function. -/
 theorem halfMoment_eq_fabius (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (halfMoment n : ℝ) =
       n.factorial * 2 ^ n.choose 2 * fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
-  sorry
+  exact halfMoment_eq_fabius_formula F hF n
 
 /-- Equation (14), directly relating a half integral to a dyadic `up` value. -/
 theorem halfIntegral_eq_rvachev_dyadic
@@ -314,7 +315,7 @@ theorem halfIntegral_eq_rvachev_dyadic
     (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t =
       n.factorial * 2 ^ n.choose 2 *
         rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) := by
-  sorry
+  exact halfIntegral_eq_rvachev_dyadic_formula F hF n hn
 
 /-- Equation (15), specializing equation (14) to an even moment. -/
 theorem moment_halfIntegral_eq_rvachev_dyadic
@@ -324,7 +325,7 @@ theorem moment_halfIntegral_eq_rvachev_dyadic
     (∫ t in (0 : ℝ)..1, t ^ (2 * n) * rvachevUp F t) =
       (Nat.factorial (2 * n) : ℝ) * 2 ^ (2 * n + 1).choose 2 *
         rvachevUp F (1 - ((2 : ℝ) ^ (2 * n + 1))⁻¹) := by
-  sorry
+  exact moment_halfIntegral_eq_rvachev_dyadic_formula F hF n
 
 /-- Equation (16), the odd inverse-power value in terms of `F_n`. -/
 theorem fabiusAtInverseTwoPow_odd (n : ℕ) :
@@ -357,7 +358,7 @@ theorem fabiusDyadic_cast_extended (F : BoundedFabius) (hF : IsFabius F)
     (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) :
     (fabiusDyadic n a : ℝ) =
       extendedFabius F (a / (2 : ℝ) ^ n) := by
-  sorry
+  exact fabiusDyadic_cast_extended_formula F hF n a ha
 
 /-- The total signed-numerator evaluator computes the bounded Fabius function. -/
 theorem fabiusDyadicValue_cast (F : BoundedFabius) (hF : IsFabius F)
@@ -532,12 +533,12 @@ theorem proposition_one :
 theorem proposition_two (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     complexGeneratingFunction F (2 * z) =
       complexExpm1Div z * complexGeneratingFunction F z := by
-  sorry
+  exact proposition_two_formula F hF z
 
 /-- The real restriction of Proposition 2. -/
 theorem proposition_two_real (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     generatingFunction F (2 * x) = expm1Div x * generatingFunction F x := by
-  sorry
+  exact proposition_two_real_formula F hF x
 
 /-- Proposition 3: the half moments in terms of the even moments. -/
 theorem proposition_three (n : ℕ) :

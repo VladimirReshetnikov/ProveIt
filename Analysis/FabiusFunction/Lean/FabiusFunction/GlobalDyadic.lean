@@ -17,6 +17,80 @@ namespace Fabius
 
 set_option autoImplicit false
 
+/-! ## The closed formula on the first signed block -/
+
+/-- Across the leading dyadic block, the two closed-form values add to one.
+This includes the right endpoint `r = 2^n`, where the value at `2` vanishes. -/
+theorem fabiusDyadic_add_pow_eq_one (n r : ℕ) (hr : r ≤ 2 ^ n) :
+    fabiusDyadic n (2 ^ n + r) + fabiusDyadic n r = 1 := by
+  rw [fabiusDyadic_add_remainder_eq_block n n r hr]
+  have hblock := dyadicBlock_eq_taylor_sum n n le_rfl (r : ℚ)
+  convert hblock using 1
+  · congr 1
+    apply Finset.sum_congr rfl
+    intro h hh
+    congr 2
+    ring
+  · simp [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue]
+
+/-- On `[0,1]`, the second half of the signed extension is the reflected
+bounded Fabius function. -/
+theorem extendedFabius_one_add (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Set.Icc (0 : ℝ) 1) :
+    extendedFabius F (1 + y) = 1 - fabiusReal F y := by
+  have hylo : 0 ≤ y := hy.1
+  have hyhi : y ≤ 1 := hy.2
+  have hext := extendedFabius_eq_single_translate F hF 0
+    (x := 1 + y) (by norm_num; linarith) (by norm_num; linarith)
+  rw [hext]
+  norm_num [binaryWeight]
+  change rvachevUp F y = 1 - fabiusReal F y
+  by_cases hy0 : y ≤ 0
+  · have : y = 0 := le_antisymm hy0 hy.1
+    subst y
+    simp [rvachevUp, hF.one_of_one_le, hF.zero_of_nonpos]
+  · rw [rvachevUp, if_neg hy0, hF.symmetry y hy]
+
+/-- Equation (32) on its full `[0,2]` range, using the signed extension. -/
+theorem fabiusDyadic_cast_extended_formula
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) :
+    (fabiusDyadic n a : ℝ) =
+      extendedFabius F (a / (2 : ℝ) ^ n) := by
+  by_cases hunit : a ≤ 2 ^ n
+  · rw [fabiusDyadic_cast F hF n a hunit]
+    apply (extendedFabius_eq_fabiusReal F hF ?_).symm
+    constructor
+    · positivity
+    · apply (div_le_one (by positivity)).2
+      exact_mod_cast hunit
+  · have hpowle : 2 ^ n ≤ a := (Nat.lt_of_not_ge hunit).le
+    let r := a - 2 ^ n
+    have haeq : a = 2 ^ n + r := by
+      dsimp only [r]
+      omega
+    have hr : r ≤ 2 ^ n := by
+      dsimp only [r]
+      rw [pow_succ] at ha
+      omega
+    have hreflect := fabiusDyadic_add_pow_eq_one n r hr
+    have hreflectCast := congrArg (fun q : ℚ => (q : ℝ)) hreflect
+    push_cast at hreflectCast
+    have hrCast := fabiusDyadic_cast F hF n r hr
+    have hry : (r : ℝ) / (2 : ℝ) ^ n ∈ Set.Icc (0 : ℝ) 1 := by
+      constructor
+      · positivity
+      · apply (div_le_one (by positivity)).2
+        exact_mod_cast hr
+    have harg : (a : ℝ) / (2 : ℝ) ^ n =
+        1 + (r : ℝ) / (2 : ℝ) ^ n := by
+      rw [haeq]
+      push_cast
+      field_simp
+    rw [harg, extendedFabius_one_add F hF hry, ← hrCast]
+    rw [haeq]
+    linarith
+
 /-- The total signed-numerator evaluator computes the signed global extension. -/
 theorem extendedFabiusDyadicValue_cast (F : BoundedFabius)
     (hF : IsFabius F) (n : ℕ) (a : ℤ) :
