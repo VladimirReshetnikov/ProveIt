@@ -73,8 +73,10 @@ import ExponentialIdentities.TwoBaseIntegerExponent.CarryPath
 import ExponentialIdentities.TwoBaseIntegerExponent.DfiniteExponentCore
 import ExponentialIdentities.TwoBaseIntegerExponent.LambertCocycleFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.PositiveCoefficientClosure
+import ExponentialIdentities.TwoBaseIntegerExponent.FiniteDilationAlternation
 import ExponentialIdentities.TwoBaseIntegerExponent.NewtonCollisionCore
 import ExponentialIdentities.TwoBaseIntegerExponent.RankOneNewtonKummer
+import ExponentialIdentities.TwoBaseIntegerExponent.SignedOrbitNormFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.MixedGapKummerFinite
 import ExponentialIdentities.TwoBaseIntegerExponent.DyadicPrivateSupport
 import ExponentialIdentities.TwoBaseIntegerExponent.CatalanTangentCore
@@ -551,6 +553,15 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms PositiveCoefficientClosure.finite_nonnegative_rankOne_atMostOne
 #print axioms PositiveCoefficientClosure.finite_nonnegative_rankOne_eq_single
 
+-- Finite positive/signed dilation filters preserve strict coefficient alternation
+#print axioms FiniteDilationAlternation.dilationMultiplier_pos_of_nonnegative
+#print axioms FiniteDilationAlternation.eventually_strictAlternating_positiveDilation
+#print axioms FiniteDilationAlternation.not_eventually_nonnegative_of_strictAlternating
+#print axioms FiniteDilationAlternation.dilationMultiplier_normalized_tendsto
+#print axioms FiniteDilationAlternation.eventually_dilationMultiplier_sameSign_of_uniqueMax
+#print axioms FiniteDilationAlternation.eventually_strictAlternating_finiteDilation_uniqueMax
+#print axioms FiniteDilationAlternation.not_eventually_nonnegative_finiteDilation_uniqueMax
+
 -- Newton append, collision, and translated-table algebra
 #print axioms NewtonCollisionCore.appendPolynomial_eval_new
 #print axioms NewtonCollisionCore.appendPolynomial_eval_old
@@ -566,6 +577,11 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms RankOneNewtonKummer.newtonCocycle_natPower_eq_zero
 #print axioms RankOneNewtonKummer.calibration_two
 #print axioms RankOneNewtonKummer.calibration_three
+
+-- Finite signed-orbit augmentation and axis-separable difference-grid identities
+#print axioms SignedOrbitNormFinite.signedOrbit_fullProduct_eq_augmentation
+#print axioms SignedOrbitNormFinite.mixedDifference_eq_zero
+#print axioms SignedOrbitNormFinite.differenceGrid_twoMinor
 
 -- Finite mixed-gap Kummer determinant and denominator retention
 #print axioms MixedGapKummerFinite.mixedGap_determinant_identity

@@ -223,8 +223,10 @@ Three especially sharp interfaces survive.  A nonnegative-coefficient entire int
 would close the conjecture from the four values at $1,2,3,6$.  A balanced Newton exhaustion
 would need an output-specific denominator \emph{upper} bound despite nested fresh-prime
 exhaustions having asymptotically maximal denominator mass.  And a Kummer operation would
-have to preserve signed cross-base cancellation beyond ordinary traces, character
-projections, ideal gcds, and output partial norms, all of which now have exact deficits.
+have to preserve signed cross-base cancellation through exceptional cross-conjugate ideal
+overlap: ordinary traces, character projections, ideal gcds, and partial norms have exact
+deficits, while augmentation-zero signed ratios satisfy an exact unit/divisor obstruction
+unless such overlap occurs.
 None of these bridges follows from the present hypotheses, and the four-exponentials barrier
 remains intact.
 \end{minipage}
@@ -280,13 +282,16 @@ Jensen barriers and a rational-coefficient uncertainty law $4\sigma_2\delta_2\ge
 canonical entire $q$-Newton completion realizes the exact boundary defect.  In the
 cross-coprime determinant branch, the former $7/10$ ceiling is sharpened to the identity
 $7/10-\mathcal E_{\rm val}/20$, with an explicit arithmetic deficit of order $x^{-4}$.
-A four-value covariance theorem closes any
-nonnegative-coefficient representative; reciprocal Stieltjes moments give a full
-Vandermonde-divisible Hankel determinant whose exact $T^5$ asymptotic nevertheless remains
-strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
+A four-value covariance theorem closes any nonnegative-coefficient representative, while
+finite positive-scale filters cannot remove the canonical alternating tail and finite
+power-substitution node defects are strongly supercritical.  Reciprocal
+Stieltjes moments give a full Vandermonde-divisible Hankel determinant whose residual
+alternant dominates the input Vandermonde for every node set and whose exact $T^5$ asymptotic
+remains strictly positive; and sparse fresh-prime spikes can force almost the full node-product mass
 into reduced denominators, in the direction opposite to closure.  A shifted higher
 Newton--Kummer cocycle gives an exponentially small algebraic integer, while character
-projections and the exact common-ideal norm expose a one-factor partial-norm deficit.
+projections, the exact common-ideal norm, and signed-orbit augmentation expose both a
+one-factor partial-norm deficit and a conditional unit/divisor obstruction.
 Complete synchronized gap products give integer orbit polynomials, exact
 discriminants, and a universal quadratic surplus
 $\kappa=0.7079245703208558\ldots$ between the triadic and dyadic products.  The same audit
@@ -16478,7 +16483,57 @@ coefficients in the Newton basis and the locally uniform interpolation limit, gi
  \boxed{(-1)^{k-m-1}h_k>0\qquad(k\ge m+1).}
  \label{crit:eq-alternating-tail}
 \end{equation}
-Thus infinitely many Maclaurin coefficients are negative.  Similarly,
+This obstruction survives every finite positive-scale diagonal filter.  If
+$0<s_1<\cdots<s_J$ and $p_j\in\R[T]$, then for the Euler operator
+$\mathcal D=z\,d/dz$ the coefficient of $z^k$ in
+\begin{equation}
+ \mathcal T H_x(z)=\sum_{j=1}^Jp_j(\mathcal D)H_x(s_jz)
+ \quad\text{is}\quad
+ h_kR(k),\qquad R(k)=\sum_{j=1}^Jp_j(k)s_j^k.
+ \label{crit:eq-dilation-tail-filter}
+\end{equation}
+If $\mathcal T\ne0$, choose the largest scale with nonzero combined polynomial.  After
+division by that scale to the $k$th power and by the leading power of $k$, $R(k)$ tends to
+the nonzero leading coefficient.  Hence $R(k)$ has a fixed sign eventually, so the filtered
+coefficients still alternate strictly.  Adding a polynomial changes only finitely many
+coefficients.  Thus no nonzero finite linear combination of positive smooth dilations---even
+with Euler multipliers---turns the canonical representative into the nonnegative-coefficient
+interpolant required by~\eqref{crit:eq-positive-closure}.  The constant-multiplier finite
+core, including arbitrary signed weights with a unique largest active scale, is
+\statuslean{} in \lean{FiniteDilationAlternation}; the Euler extension is a paper argument.
+Infinite filters, arbitrary nonlinear operations, and arbitrary representatives $H_x+EG$
+remain outside this linear result.
+
+The most direct nonlinear node-preserving corrections also miss by an exact cubic margin.
+For every integer $r\ge2$,
+\begin{equation}
+ V_r(z):=H_x(z)^r-H_x(z^r)
+ \label{crit:eq-nonlinear-node-defect}
+\end{equation}
+vanishes at every smooth node.  Moreover $V_r\equiv0$ if and only if $H_x$ is a monomial:
+factoring $H_x=z^du$ at the origin and taking the local logarithm of $u/u(0)$ reduces the
+identity to $L(z^r)=rL(z)$, whose least nonzero Taylor term is impossible.  Since
+$H_x(1)=1$, the monomial is $z^d$.  For $r,s\ge2$, the composition identity
+\[
+ V_{rs}=V_r\sum_{j=0}^{s-1}H_x^{r(s-1-j)}H_x(z^r)^j+V_s(z^r)
+\]
+also shows that the dyadic tower is generated recursively by $V_2$ and its substitutions;
+it supplies no independent compatibility conditions.  For a nonzero finite combination
+$W=\sum_{r=2}^Rc_rV_r$ with $c_R\ne0$, maximum-modulus comparison gives
+\begin{equation}
+ \log M_W(e^T)=\tau R^3T^3+c_ER^2T^2+o(T^2).
+ \label{crit:eq-nonlinear-node-defect-growth}
+\end{equation}
+Indeed, $H_x(z^R)$ has that growth and exponentially dominates $H_x(z)^R$ and every lower
+index.  Since $W=EG$ for an entire $G$,
+\[
+ \log M_G(e^T)\ge (R^3-1)\tau T^3+(R^2-1)c_ET^2+o(T^2).
+\]
+Thus every nonzero finite correction of this form is strongly supercritical.  The
+interpolant $H_x+W$ also cannot have nonnegative coefficients for nonintegral $x$, by the
+four-value closure theorem.  Infinite nonlinear corrections remain outside this no-go.
+
+In particular infinitely many Maclaurin coefficients are negative.  Similarly,
 \[
  H_x(t)-t^x=\frac{\sin\pi x}{\pi}E(t)J_x(t),\qquad J_x(t)>0,
 \]
@@ -16621,6 +16676,45 @@ Stieltjes requirement.  Any proof of the needed $o(P_T)$ upper bound must exploi
 cancellation for the \emph{one fixed} rank-one value table $M^aA^b$; no Vandermonde,
 $p$-ordering, or node-only Smith theorem can supply it.
 
+There is a precise fixed-divisor ceiling on any argument using only the abstract rank-one
+law.  For a finite $E\subset\Nzero^2$, put $s_{(a,b)}=2^a3^b$ and define $D_e,L_E$ as
+above.  The top divided difference of the table $s_{(a,b)}\mapsto U^aV^b$ is
+\begin{equation}
+ [E]y=\frac{R_E(U,V)}{L_E},\qquad
+ R_E(U,V)=\sum_{(a,b)\in E}\frac{L_E}{D_{(a,b)}}U^aV^b\in\Z[U,V].
+ \label{crit:eq-rank-one-fixed-divisor}
+\end{equation}
+The coefficients of $R_E$ are primitive.  If $r_E=\max_Ea$, $s_E=\max_Eb$, and
+$\delta_E=\gcd\{R_E(u,v):u,v\in\Z\}$, then the binomial-basis finite-difference formula
+gives
+\begin{equation}
+ \boxed{\delta_E\mid r_E!s_E!.}
+ \label{crit:eq-rank-one-fixed-divisor-bound}
+\end{equation}
+Indeed, $\delta_E$ divides every integral binomial-basis coefficient, while returning to
+the monomial basis costs at most $r_E!s_E!$; primitivity proves the claim.  Conversely, for
+every modulus $q$, local pairs attaining the $p$-adic minima defining $\delta_E$ can be
+combined by the Chinese remainder theorem.  Thus arbitrarily large positive $U,V$ satisfy
+\[
+ \gcd(R_E(U,V),q)=\gcd(\delta_E,q).
+\]
+If $n=|E|-1$, the integral controls calibrate exactly:
+$R_E(2^k,3^k)=0$ for $k<n$, while $R_E(2^n,3^n)=L_E$.
+For the size triangles, take $q=L_T$ and combine
+\eqref{crit:eq-away-capacity}--\eqref{crit:eq-smooth-capacity}.  Suitable rank-one integer
+specializations then have
+\begin{equation}
+ \log\mathfrak d_T\ge2\log P_T-O(T\log T),
+ \qquad \mathfrak d_T\ge P_T^{2-o(1)}.
+ \label{crit:eq-rank-one-fixed-divisor-no-go}
+\end{equation}
+The pair $(U,V)$ here may vary with $T$ and need not lie on a common real power curve.
+Accordingly no universal bound obtained from adjugate, Sylvester, subresultant, or rank-one
+congruence identities can force $\mathfrak d_T=o(P_T)$ for all rank-one specializations; this
+does not rule out exceptional root concentration for the one fixed
+hypothetical pair $(M,A)$.  Such concentration would have to account for logarithmic mass
+$\Theta(T^3)$, whereas universal fixed-divisor content contributes only $O(T\log T)$.
+
 Finally, $E\in\Q[[z]]$: its reciprocal-zero power sums are
 \[
  \sum_{a,b\ge0}2^{-ak}3^{-bk}
@@ -16704,15 +16798,86 @@ then $G_F$ divides every $k_r$.  The normalized quadratic floor in
 \eqref{crit:eq-reciprocal-lattice-floor} can therefore be strengthened from $1/k_0$ to
 $G_F/k_0=1/(L_Fh_0)$.
 
-These stronger floors still miss at the exact leading scale.  Take the complete input
-triangle
+In fact no choice of nodes or matrix size can make the residual alternant small.  Let
+$q_0<\cdots<q_{N-1}$ be the increasing rearrangement of
+\[
+ \{xk:0\le k<N-m\}\cup\{1+xk:0\le k<m\},
+ \qquad G(N+1)=\prod_{r=1}^{N-1}r!.
+\]
+For every $x\ge2$, $1\le m<N$, and distinct integers
+$1\le v_0<\cdots<v_{N-1}$, the HCIZ identity gives the shape-free estimate
+\begin{equation}
+ \boxed{
+ |\det\mathcal B|
+ \ge \frac{\prod_{i<j}(q_j-q_i)}{G(N+1)}
+       \prod_{i<j}(v_j-v_i)
+ \ge \prod_{i<j}(v_j-v_i)
+ \ge G(N+1).}
+ \label{crit:eq-reciprocal-shape-free}
+\end{equation}
+Indeed, the sorted exponent list begins with the pairs $kx,kx+1$ and then continues with
+the unused tail of the longer block.  Thus $q_j-j$ is nonnegative and nondecreasing, so
+$\prod_{i<j}(q_j-q_i)\ge G(N+1)$.  Put $a_i=\log v_i$.  In the HCIZ integral the diagonal
+matrices $\operatorname{diag}(a_i)$ and
+$\operatorname{diag}(q_j-j)$ are positive semidefinite; hence every integrand for the
+$q$-spectrum is at least the corresponding integrand for $0,1,\ldots,N-1$.  Dividing the
+two HCIZ identities proves the first inequality.  The last follows from
+$v_j-v_i\ge j-i$.  This proof uses real exponents, so it applies directly to a hypothetical
+nonintegral $x>12$; it also covers $m>N/2$, where the Stieltjes integrals themselves cease
+to converge.
+
+There is a matching free-energy law for arbitrary node geometries in the convergent range.
+Let $t_{i,T}=\log v_{i,T}$ with $0\le t_{1,T}<\cdots<t_{N,T}\le CT$, let
+$N=N_T\to\infty$ and $m=m_T$ satisfy $2m\le N$ for every $T$ and
+$m/N\to\varrho\in(0,1/2]$, and suppose the empirical quantiles
+$\mathcal Q_T(s)=T^{-1}t_{\lceil Ns\rceil,T}$, $0<s\le1$, converge in $L^1(0,1)$ to a nondecreasing
+$\mathcal Q\ge0$.  With $\log^-y=\max\{0,-\log y\}$, assume also $\log(NT)=o(T)$ and the
+microscopic separation condition
+\[
+ \sum_{i<j}\log^-|t_{j,T}-t_{i,T}|=o(TN^2).
+\]
+Writing
+\[
+ \mathsf M_{\mathcal Q}=\int_0^1\mathcal Q(s)\,ds,\qquad
+ \mathsf A_{\mathcal Q}=\int_0^1s\mathcal Q(s)\,ds,
+\]
+Andr\'eief's identity and the HCIZ variational formula yield
+\begin{align}
+ \frac{\log\Delta_T}{xTN^2}&\longrightarrow\mathsf A_{\mathcal Q},
+ &\frac{\log h_{0,T}}{xTN}&\longrightarrow-\mathsf M_{\mathcal Q},\nonumber\\
+ \frac{\log\det G_d}{xTN^2}&\longrightarrow
+ \frac12\int_0^{2\varrho}(2\varrho-s)\mathcal Q(s)\,ds,
+ &\frac{\log|\det\mathcal B|}{xTN^2}&\longrightarrow
+ \Phi_{\varrho}(\mathcal Q),
+ \label{crit:eq-reciprocal-quantile-law}
+\end{align}
+where
+\begin{equation}
+ \Phi_{\varrho}(\mathcal Q)
+ =\frac12\int_0^{2\varrho}s\mathcal Q(s)\,ds
+  +\int_{2\varrho}^1(s-\varrho)\mathcal Q(s)\,ds.
+ \label{crit:eq-reciprocal-quantile-functional}
+\end{equation}
+The particle optimizer has quantile $Z(r)=\mathcal Q(2r)$ for
+$0\le r\le\varrho$.  Moreover
+\begin{equation}
+ \Phi_{\varrho}(\mathcal Q)
+ \ge\left(\frac12-\varrho+\varrho^2\right)\mathsf M_{\mathcal Q}
+ \ge\frac14\mathsf M_{\mathcal Q};
+ \label{crit:eq-reciprocal-quantile-positive}
+\end{equation}
+it decreases with $\varrho$ and equals $\mathsf A_{\mathcal Q}/2$ at
+$\varrho=1/2$.  Hence every noncollapsed limiting shape has a strictly positive residual
+exponent.  A collapsed scale cannot help either, by the exact superfactorial bound
+\eqref{crit:eq-reciprocal-shape-free}.
+
+For calibration, take the complete input triangle
 \[
  \mathcal S_T=\{v=2^a3^b:\log v\le T\},\qquad u=v^x,
- \qquad \mathcal L=\log2\log3,
+ \qquad \mathcal L=\log2\log3.
 \]
-and let $m/N\to\varrho\in(0,1/2]$.  With $\Delta_T,h_{0,T}$ and
-$G_d=(h_{i+j}/h_0)_{0\le i,j< m}$ attached to this table, lattice integration and
-Andr\'eief's identity give
+Here $N\sim T^2/(2\mathcal L)$ and $\mathcal Q(s)=\sqrt s$, so
+\eqref{crit:eq-reciprocal-quantile-law} becomes
 \begin{align}
  \log\Delta_T&=\frac{x}{10\mathcal L^2}T^5+o(T^5),
  &\log h_{0,T}&=-\frac{x}{3\mathcal L}T^3+o(T^3),\nonumber\\
@@ -16720,7 +16885,7 @@ Andr\'eief's identity give
    \frac{x\varrho^{5/2}}{\mathcal L^2}T^5+o(T^5),
  \label{crit:eq-reciprocal-triangle-asymptotics}
 \end{align}
-and hence
+and
 \begin{equation}
  \log|\det\mathcal B|
  =\frac{xT^5}{\mathcal L^2}
@@ -16728,31 +16893,16 @@ and hence
        +\frac{2\sqrt2}{15}\varrho^{5/2}\right)+o(T^5).
  \label{crit:eq-reciprocal-alternant-growth}
 \end{equation}
-The function in parentheses decreases on $[0,1/2]$ and has minimum $1/20$ at
-$\varrho=1/2$.  Thus the supposedly dangerous integer alternant instead grows at a strictly
-positive $T^5$ rate for every admissible matrix size.  At the endpoint,
-$\log\det G_d\sim xT^5/(30\mathcal L^2)$, whereas the logarithm of the lower floor in
-\eqref{crit:eq-reciprocal-strong-floor} is
-$-xT^5/(60\mathcal L^2)+o(T^5)$.  At the exact endpoint $N=2m$, for the control $x=2$ the columns in
-\eqref{crit:eq-reciprocal-alternant} become the consecutive powers of $v$, so
-$|\det\mathcal B|$ is exactly the ordinary Vandermonde in the input nodes; this realizes the
-$1/20$ coefficient.  At the same endpoint, the case $x=3$ is the Vandermonde times a
-positive Schur factor.
-
-The first two estimates in~\eqref{crit:eq-reciprocal-triangle-asymptotics} follow from
-triangular lattice integration.  After writing $s=e^{xt}$, the normalized Andr\'eief
-integral has ordered-particle exponent
-$x(2jt-t^3/(6\mathcal L))$; its maximizer is
-$t_j=2\sqrt{\mathcal Lj}$, which stays inside the triangle precisely for
-$\varrho\le1/2$ and yields the displayed $2\sqrt2/15$ constant.  Boundary and separation
-errors are $o(T^5)$.  This converts the reversed integer table into an entire
-positive-definite lattice and closes the most direct determinant attack negatively: neither
-the full Vandermonde divisor nor the optimal smooth triangle becomes subunit.
+The coefficient decreases to $1/20$ at $\varrho=1/2$.  At the exact endpoint $N=2m$,
+$x=2$ makes $\mathcal B$ the ordinary input Vandermonde, while $x=3$ gives that
+Vandermonde times a positive Schur factor.  Thus the triangle calculation is the sharp
+$x=2$ calibration of the universal no-go, not a peculiarity of that exhaustion.
 
 The finite cofactor, integral-Hankel, quadratic-lattice transport, node--LCM content
 divisibility, and common-content amplification are \statuslean{} in
 \lean{ReciprocalMomentLatticeFinite}; the gcd characterization, alternant identity,
-Stieltjes representation, positivity, and asymptotic audit are paper results.
+Stieltjes representation, positivity, shape-free HCIZ comparison, and asymptotic audit are
+paper results.
 
 \subsection{Cyclotomic defect cascades and familywise private support}
 \label{crit:cyclotomic-defects}
@@ -17642,12 +17792,92 @@ when $m=\ell-1$.  The normalized cross-base difference in
 exponential smallness comes from the distinguished values of $D_m(P)D_m(Q)$, exactly where
 the projective denominator is largest.  Thus ordinary traces, character projections, ideal
 gcds, and subgroup output partial norms do not improve these bounds at their exact scales.
-A successful algebraic operation would have to retain signed cross-base cancellation among
-nontrivial characters, not merely a distinguished branch or a common ideal.
+A signed group-ring operation faces a sharper integrality obstruction.  Continue in the
+good rank-four branch over $F=\Q(\zeta_\ell,P,Q)$ and write
+\[
+ \mathcal A_a=D_m(Q)F_m(\zeta_\ell^aU,P),\qquad
+ \mathcal B_b=D_m(P)F_m(\zeta_\ell^bV,Q),\qquad
+ \mathcal X_{a,b}=\mathcal A_a-\mathcal B_b.
+\]
+The output-twist group $G\simeq\mathbf F_\ell^2$ translates the two indices.  Its smallest mixed
+additive projection vanishes identically,
+\[
+ \mathcal X_{0,0}-\mathcal X_{1,0}-\mathcal X_{0,1}+\mathcal X_{1,1}=0,
+\]
+whereas the corresponding multiplicative operation, wherever defined, is the genuine
+cross-ratio
+\begin{equation}
+ \mathcal C=
+ \frac{\mathcal X_{0,0}\mathcal X_{1,1}}
+      {\mathcal X_{1,0}\mathcal X_{0,1}},
+ \qquad
+ N_{F(U,V)/F}(\mathcal C)=1,
+ \qquad
+ \mathcal C-1=
+ \frac{(\mathcal A_0-\mathcal A_1)(\mathcal B_0-\mathcal B_1)}
+      {\mathcal X_{1,0}\mathcal X_{0,1}}.
+ \label{crit:eq-signed-kummer-cross-ratio}
+\end{equation}
+Thus an integral $\mathcal C$ would necessarily be a unit; otherwise it pays exactly the
+displayed denominator.  Clearing that denominator leaves a product of one-axis differences
+and loses the distinguished cross-base subtraction.  After specializing the formal
+cross-ratio to an integral rank-collapsed calibration with $\mathcal X_{0,0}=0$ and nonzero
+denominator, $\mathcal C-1=-1$, not a small residual.
+
+More generally, for $\Theta=\sum_{g\in G}n_gg\in\Z[G]$ and
+$\mathcal X=\mathcal X_{0,0}$,
+\begin{equation}
+ v_{\mathfrak p}(\mathcal X^\Theta)
+ =\sum_gn_gv_{g^{-1}\mathfrak p}(\mathcal X),\qquad
+ N_{F(U,V)/F}(\mathcal X^\Theta)
+ =N_{F(U,V)/F}(\mathcal X)^{\operatorname{aug}\Theta}.
+ \label{crit:eq-signed-kummer-divisor}
+\end{equation}
+These are the exact divisor-convolution and augmentation tests.  Zero augmentation plus
+integrality forces a unit.  If a prime divisor of $\mathcal X$ has a free private
+$G$-orbit, the first formula forces every $n_g\ge0$; zero augmentation then forces
+$\Theta=0$, while positive augmentation retains ordinary norm mass.  Establishing such a
+private prime for the primitive part of $\mathcal X$ would require a new
+cross-conjugate primitive-divisor theorem.
+
+The missing statement has an exact resultant form.  Let
+$\mathfrak J=\mathfrak I_{\ell,m}\mathcal O_F$,
+$\mathfrak a=(\mathcal X_{0,0})(\mathfrak J\mathcal O_{F(U,V)})^{-1}$, and
+\[
+ \Phi_A(T)=\prod_{a\in\mathbf F_\ell}(T-\mathcal A_a),\qquad
+ \Phi_B(T)=\prod_{b\in\mathbf F_\ell}(T-\mathcal B_b).
+\]
+Then
+\begin{equation}
+ R_{\ell,m}:=\operatorname{Res}(\Phi_A,\Phi_B)
+ =N_{F(U,V)/F}(\mathcal X_{0,0}),\qquad
+ N_{F(U,V)/F}\mathfrak a=(R_{\ell,m})\mathfrak J^{-\ell^2}.
+ \label{crit:eq-private-prime-resultant}
+\end{equation}
+Choose a nonzero submaximal minor $S_{\ell,m}$ of the Sylvester matrix.  If a prime dividing
+the primitive ideal on the right avoids ramification, $\mathfrak J$, the two discriminants,
+and $S_{\ell,m}$, then the reduced orbit polynomials have a separable gcd of degree one.
+The unique common pair is Frobenius-fixed, so the prime splits in both output directions and
+gives a free private divisor of one conjugate difference.  Thus absence of a private prime
+confines the radical of the primitive resultant to this explicit exceptional product.
+This criterion does not prove existence: the available bounds for the logarithms of the
+absolute norms of both the resultant and the discriminant--minor product are
+$O_x(\ell^5)$ for fixed $m$ and $O_x(\ell^6)$ for $m=\ell-1$.  A squarefree divisor outside this potentially
+same-scale exceptional factor is precisely the missing arithmetic input.
+
+The extracted common ideal $\mathfrak I_{\ell,m}$ cancels from every
+augmentation-zero ratio.  Multiplication by
+cyclotomic units does not change valuations, and a Stickelberger class-group annihilator
+can principalize the resulting fractional ideal without removing its negative valuations.
+Consequently a successful algebraic operation must create exceptional cross-conjugate ideal
+overlap; changing the group-ring element alone cannot preserve the signed cancellation as an
+algebraic integer.
 
 The product/cocycle identities and integral-exponent calibrations are \statuslean{} in
-\lean{RankOneNewtonKummer}; the sign, asymptotic, Kummer-degree, norm, and trace analysis is
-\statusnew{} paper mathematics, as are the ideal-norm and projection calculations above.
+\lean{RankOneNewtonKummer}.  The finite signed-orbit augmentation identity, mixed additive
+cancellation, and two-by-two minor factorization are \statuslean{} in
+\lean{SignedOrbitNormFinite}; the divisor, integrality, private-prime, asymptotic,
+Kummer-degree, norm, ideal, and trace analyses are paper mathematics.
 
 \subsection{Adjacent-smooth cyclic resultants and finite-logarithm descent}
 \label{crit:adjacent-resultants}
@@ -18021,19 +18251,23 @@ formal cores and exact paper-level advances.  The universal Lambert identity is 
 no-go.  The finite positivity/covariance core, Newton append/collision algebra, and higher
 Newton--Kummer integral-exponent calibration are \statuslean{} in
 \lean{PositiveCoefficientClosure}, \lean{NewtonCollisionCore}, and
-\lean{RankOneNewtonKummer}.  Private dyadic order, cleaned-gap capture, and adjacent-smooth
+\lean{RankOneNewtonKummer}.  Finite dilation-tail preservation and signed-orbit augmentation
+are \statuslean{} in \lean{FiniteDilationAlternation} and \lean{SignedOrbitNormFinite}.
+Private dyadic order, cleaned-gap capture, and adjacent-smooth
 tangent algebra are \statuslean{} in \lean{DyadicPrivateSupport},
 \lean{CaptureMultiplier}, and \lean{CatalanTangentCore}.  Their infinite-series, valuation,
 asymptotic, Kummer-field, density, and resultant extensions remain explicitly
 \statusnew{} paper arguments.  Together with the refined Stieltjes/Jensen, Hermite,
 reciprocal-Hankel, BCZ, and pure-denominator results, they leave three narrower interfaces:
 a genuinely different positive arithmetic interpolant; an output-specific denominator upper
-bound on a balanced exhaustion, rather than more fresh divisors; or a signed Kummer operation
-that couples nontrivial characters across both bases.  The natural Stieltjes transfer family,
-sparse-spike aggregation, reciprocal Hankel determinants, ordinary traces, character
-projections, common ideals, and subgroup output partial norms do not improve the relevant
-bounds at their exact scales.  None of the surviving bridges is supplied by the original
-hypotheses.}
+bound on a balanced exhaustion, rather than more fresh divisors; or exceptional
+cross-conjugate ideal overlap that makes a signed Kummer operation integral.  The natural
+Stieltjes transfer family, finite positive-dilation and power-substitution corrections,
+sparse-spike aggregation,
+reciprocal Hankel determinants, ordinary traces, character projections, common ideals,
+signed augmentation-zero ratios absent exceptional overlap, and subgroup output partial
+norms do not improve the relevant bounds at their exact scales.  None of the surviving
+bridges is supplied by the original hypotheses.}
 \end{statusbox}
 
 \appendix
@@ -18523,10 +18757,16 @@ Universal finite Lambert cocycle and base-$(2,3)$ mixed double-difference no-go 
 \statuslean & \lean{LambertCocycleFinite}; Section~\ref{crit:lambert-hankel} \\
 Finite positive-coefficient covariance identity and single-support closure & \statuslean &
 \lean{PositiveCoefficientClosure}; Section~\ref{crit:positive-closure} \\
+Finite constant-weight positive-dilation filters preserve strict alternating tails and cannot
+produce eventual coefficient nonnegativity & \statuslean &
+\lean{FiniteDilationAlternation}; Section~\ref{crit:positive-closure} \\
 Newton append/collision identities and barycentric translation covariance & \statuslean &
 \lean{NewtonCollisionCore}; Section~\ref{crit:fresh-prime} \\
 Higher Newton--Kummer product identities and integral-exponent calibration & \statuslean &
 \lean{RankOneNewtonKummer}; Section~\ref{crit:newton-kummer} \\
+Finite signed-orbit augmentation identity, mixed additive cancellation, and difference-grid
+minor factorization & \statuslean &
+\lean{SignedOrbitNormFinite}; Section~\ref{crit:newton-kummer} \\
 Private odd-prime order and dyadic-level separation & \statuslean &
 \lean{DyadicPrivateSupport}; Section~\ref{crit:cyclotomic-defects} \\
 Finite cleaned-gap capture-multiplier criterion & \statuslean &
@@ -18535,15 +18775,17 @@ Adjacent-smooth tangent identities, conditional balance and tangent-lattice para
 two residue relations, and a conditional residual cross identity & \statuslean &
 \lean{CatalanTangentCore};
 Section~\ref{crit:adjacent-resultants} \\
-Canonical critical Stieltjes interpolant, refined quadratic threshold, and positive reduced
-denominator target & \statusnew & Sections~\ref{crit:critical-interpolant} and
+Canonical critical Stieltjes interpolant, refined quadratic threshold, positive reduced
+denominator target, and universal rank-one fixed-divisor ceiling & \statusnew & Sections~\ref{crit:critical-interpolant} and
 \ref{crit:denominator-target} \\
 One-Vandermonde reciprocal moments, integral positive-definite Hankel lattice,
-common-content floors, full alternant divisor, and sharp $T^5$ scale audit & finite arithmetic
-and common-content core \statuslean; alternant/asymptotic layer \statusnew &
+common-content floors, full alternant divisor, shape-free HCIZ dominance, and sharp $T^5$
+scale audit & finite arithmetic and common-content core \statuslean; HCIZ/alternant/asymptotic
+layer \statusnew &
 \lean{ReciprocalMomentLatticeFinite}; Section~\ref{crit:reciprocal-moment-lattice} \\
 Infinite positive-series closure, concentration/mesh gap, Jensen and separator rigidity,
-canonical alternating tail, boundary-quotient lower bounds, and Stieltjes-transfer no-go & \statusnew &
+canonical alternating tail, finite Euler--dilation and nonlinear node-defect no-gos,
+boundary-quotient lower bounds, and Stieltjes-transfer no-go & \statusnew &
 Section~\ref{crit:positive-closure} \\
 Cyclotomic defect partitions, private-support critical slope, and fixed-polynomial contact
 ceiling & \statusnew & Section~\ref{crit:cyclotomic-defects} \\
@@ -18569,7 +18811,7 @@ Section~\ref{crit:support-defects}; support, Kummer, and Chebotarev inputs class
 Directional quotient dichotomy, exact capture cost, and recurrence criterion &
 \statusnew & Section~\ref{crit:directional-capture}; external gcd and recurrence inputs cited \\
 Shifted Newton--Kummer exponential smallness, character-projection ceiling, exact common-ideal
-norm, and one-factor partial-norm deficit &
+norm, one-factor partial-norm deficit, and private-prime resultant criterion &
 \statusnew & Section~\ref{crit:newton-kummer} \\
 Adjacent-smooth cyclic resultant, boundary law, balanced gcd target, and conditional
 Frobenius descent & \statusnew & Section~\ref{crit:adjacent-resultants} \\
@@ -18846,6 +19088,9 @@ parameters; the base-$(2,3)$ specialization uses no common-exponent hypothesis \
 \lean{.../PositiveCoefficientClosure} & finite covariance identity for the increasing
 base-two/base-three kernels; nonnegative rank-one coefficient vectors have exactly one
 positive unit mass \\
+\lean{.../FiniteDilationAlternation} & finite positive-scale coefficient multipliers;
+positive filters and signed filters with a unique largest active scale preserve strict
+alternating tails and cannot produce eventual nonnegativity \\
 \lean{.../NewtonCollisionCore} & one-step Newton append and evaluation preservation,
 residue-collision mismatch, and exact barycentric scaling under simultaneous node/value
 dilation \\
@@ -18857,6 +19102,9 @@ and the transverse-hyperplane count, with the zero-source case included \\
 unit-transverse post-scalar rank-three normal-form count over prime-power residue rings \\
 \lean{.../RankOneNewtonKummer} & higher geometric Newton product and cross-base cocycle;
 exact vanishing for every common natural exponent at or below the interpolation order \\
+\lean{.../SignedOrbitNormFinite} & full signed-orbit product as the ordinary orbit product
+to the augmentation; mixed additive cancellation and the factorization of a two-by-two
+difference-grid minor \\
 \lean{.../DyadicPrivateSupport} & exact odd-prime order, congruence, and level privacy for
 dyadic cyclotomic factors \\
 \lean{.../CaptureMultiplier} & exact finite-group divisibility criterion for the least
@@ -19066,8 +19314,9 @@ following kernel-accepted modules:
 \lean{SmithProfileCore}, \lean{ContentNormalizedProfileFinite},
 \lean{DeepSubresultantCost},
 \lean{CompoundEndpointRate}, \lean{LambertCocycleFinite},\\
-\lean{PositiveCoefficientClosure}, \lean{NewtonCollisionCore},
-\lean{RankOneNewtonKummer}, \lean{DyadicPrivateSupport},
+\lean{PositiveCoefficientClosure}, \lean{FiniteDilationAlternation},
+\lean{NewtonCollisionCore}, \lean{RankOneNewtonKummer},
+\lean{SignedOrbitNormFinite}, \lean{DyadicPrivateSupport},
 \lean{CaptureMultiplier}, \lean{CatalanTangentCore},
 \lean{MatchedGapAmplification}, \lean{ValuationSlopeEnergy},
 \lean{ReciprocalHalfContact}, \lean{ReciprocalMomentLatticeFinite},
@@ -19244,7 +19493,7 @@ DPS = 40
 mp.iv.dps = DPS
 ln2 = mp.iv.log(2)
 ln3 = mp.iv.log(3)
-theta_float = math.log(3.0) / math.log(2.0)
+theta_float = math.log2(3.0)
 
 checked = 0
 failures = []
@@ -20370,7 +20619,7 @@ def is_power_of_two(n: int) -> bool:
 
 def main() -> None:
     start = time.monotonic()
-    rho_approx = math.log(3.0) / math.log(2.0)
+    rho_approx = math.log2(3.0)
     min_abs_endpoint = Decimal('Infinity')
     max_repairs = 0
     checked = 0
