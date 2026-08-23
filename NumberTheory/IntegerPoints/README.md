@@ -123,11 +123,20 @@ circle problem**: the asymptotic count `V(x)` of coprime integer pairs
     equals `e(-1/8)`, the dual interval has at least `H/4` terms, and its norm
     is at least `RQ/4`; a diagonal choice of `Q` and the factorial multiplier
     contradicts every `k < 1/2`.
+  - `IntegerPoints.GKLemma39`, `GKLemma39Class` — **proved**:
+    Graham–Kolesnik's Lemma 3.9 (`gk_lemma39_holds`) and its class-form
+    corollary (`gk_lemma39_class_holds`).  The proof constructs the local
+    inverse calculus from negative curvature, derives the exact normalized
+    Faà di Bruno recurrence, proves finite-order inverse-jet stability, and
+    compares the inverse point with the power-model scale.  The derivative
+    estimate is extended from the open frequency interval to both endpoints
+    by continuity; restricting it to `[J, 2J]` then gives the dual phase class
+    needed by the B-process.
   - Statement modules for the other papers in `Papers/` (statements and
     auxiliary definitions only): `IntegerPoints.FouvryIwaniecStatements`
     (Fouvry–Iwaniec 1989: Proposition 1, Corollary 1, Theorems 1–7,
     Lemmas 2–9), `IntegerPoints.GKStatements` (Graham–Kolesnik Ch. 3:
-    Lemmas 3.1–3.6, 3.7, 3.9, Theorem 3.10, the §3.3 remarks),
+    Theorem 3.10 and the remaining statement-level material),
     `IntegerPoints.Kolesnik` (Kolesnik 1985: the classes `E_n`, Lemmas 1–2,
     A, B, Theorems 1–5, the numerical corollaries),
     `IntegerPoints.HeathBrown` (Heath-Brown 1992: Theorems 1–6, Lemmas 1–6,

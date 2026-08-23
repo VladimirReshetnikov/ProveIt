@@ -54,6 +54,7 @@ import IntegerPoints.GKAppendixATheorem2
 import IntegerPoints.GKSec33LGeHalf
 import IntegerPoints.GKSec33KNonneg
 import IntegerPoints.GKSec33Boundary
+import IntegerPoints.GKLemma39Class
 
 /-!
 Integer points in circles: formal statements of the results of Zhai–Cao
@@ -98,7 +99,11 @@ restriction `l ≥ 1/2` from the exponential-sum estimate alone;
 and the boundary implication `k = 0 → l ≥ 1`;
 `IntegerPoints.GKSec33Boundary` combines the square-root exponent-pair bound,
 the exact Lemma-3.6 transform, and a factorially resonant dual sum to prove
-the remaining boundary implication `(k, 1/2) exponent pair → k = 1/2`.
+the remaining boundary implication `(k, 1/2) exponent pair → k = 1/2`;
+`IntegerPoints.GKLemma39` proves the quantitative inverse-function estimate
+for every derivative order through `P`, including the endpoint frequencies,
+and `IntegerPoints.GKLemma39Class` packages it as the dyadically restricted
+Graham--Kolesnik class used by the B-process.
 Every statement is a `Prop`-valued definition; proved ones have a companion
 `…_holds` theorem.
 -/
