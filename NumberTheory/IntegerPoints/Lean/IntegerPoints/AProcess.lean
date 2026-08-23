@@ -4,17 +4,18 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 /-!
 # The A-process for exponent pairs, part I: Graham–Kolesnik Lemma 3.7
 
-`f ∈ F(N, P+1, s, y, ε)` on `[a, b]`, `0 < h ≤ b - a`, `h < εN/(s+P+1)` ⇒
+`f ∈ F(N, P+1, s, y, ε)` on `[a, b]`, `0 < h ≤ b - a`, `h < 2εN/(s+P+1)` ⇒
 `f₁(x) = f(x) - f(x+h)` lies in `F(N, P, s+1, shy, 3ε)` on `[a, b-h]`.
 
 This is Lemma 3.7 of Graham–Kolesnik, *Van der Corput's Method of Exponential
-Sums*, §3.4, with the slightly stronger hypothesis `h < εN/(s+P+1)` (instead of
-`2εN/(s+P)`): we bound `∫_x^{x+h} (x^{-q} - u^{-q}) du ≤ q x^{-q-1} h²` by the
-mean value theorem instead of `½ q x^{-q-1} h²` by a double integral.
+Sums*, §3.4.  The affine tangent bound for `u ↦ u⁻ᵠ` is integrated
+exactly, giving the sharp remainder `½ q x⁻ᵠ⁻¹h²` and hence the book's
+factor `2` in the admissible shift range.
 
 Proof.  With `D = f^{(p+2)}` and `A(u) = (-1)^{p+1} (s)_{p+1} y u^{-q}`,
 `q = s + p + 1`, the class condition for `f` at index `p+1` gives
@@ -22,7 +23,7 @@ Proof.  With `D = f^{(p+2)}` and `A(u) = (-1)^{p+1} (s)_{p+1} y u^{-q}`,
 calculus `f₁^{(p+1)}(x) = -∫_x^{x+h} D`, so
 `f₁^{(p+1)}(x) - (-1)^p (s)_{p+1} y h x^{-q}
   = -∫_x^{x+h} (D - A) - (-1)^p (s)_{p+1} y (h x^{-q} - ∫_x^{x+h} u^{-q} du)`,
-and `0 ≤ h x^{-q} - ∫_x^{x+h} u^{-q} du ≤ q x^{-q-1} h² < ε h x^{-q}`.
+  and `0 ≤ h x^{-q} - ∫_x^{x+h} u^{-q} du ≤ ½ q x^{-q-1} h² < ε h x^{-q}`.
 -/
 
 open Real Finset intervalIntegral
@@ -66,20 +67,55 @@ theorem rpow_neg_lower {t u q : ℝ} (ht : 0 < t) (htu : t ≤ u) (hq : 0 ≤ q)
   have := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hcle hq) hut
   linarith
 
-/-- **Graham–Kolesnik, Lemma 3.7** (variant).  If `f ∈ F(N, P+1, s, y, ε)` on `[a, b]`,
-`0 < h ≤ b - a` and `h < εN/(s+P+1)`, then `x ↦ f(x) - f(x+h)` lies in
+/-- Integrating the affine tangent lower bound for `u ↦ u⁻ᵠ` produces the
+sharp quadratic remainder `q t⁻ᵠ⁻¹ h² / 2`. -/
+theorem integral_rpow_neg_lower {t h q : ℝ} (ht : 0 < t) (hh : 0 ≤ h)
+    (hq : 0 ≤ q) :
+    h * t ^ (-q) - q * t ^ (-q - 1) * h ^ 2 / 2 ≤
+      ∫ u in t..t + h, u ^ (-q) := by
+  have hrp : IntervalIntegrable (fun u : ℝ => u ^ (-q))
+      MeasureTheory.volume t (t + h) := by
+    apply ContinuousOn.intervalIntegrable
+    apply ContinuousOn.rpow_const continuousOn_id
+    intro v hv
+    rw [Set.uIcc_of_le (by linarith)] at hv
+    exact Or.inl (show v ≠ 0 by linarith [hv.1])
+  have hlin : IntervalIntegrable
+      (fun u : ℝ => t ^ (-q) - q * t ^ (-q - 1) * (u - t))
+      MeasureTheory.volume t (t + h) := by
+    exact (by fun_prop : Continuous
+      (fun u : ℝ => t ^ (-q) - q * t ^ (-q - 1) * (u - t))).intervalIntegrable _ _
+  have hmono := intervalIntegral.integral_mono_on (a := t) (b := t + h)
+    (by linarith) hlin hrp (fun u hu => rpow_neg_lower ht hu.1 hq)
+  have heval :
+      (∫ u in t..t + h, t ^ (-q) - q * t ^ (-q - 1) * (u - t)) =
+        h * t ^ (-q) - q * t ^ (-q - 1) * h ^ 2 / 2 := by
+    rw [intervalIntegral.integral_sub intervalIntegrable_const
+      ((intervalIntegrable_id.sub intervalIntegrable_const).const_mul _)]
+    rw [intervalIntegral.integral_const, intervalIntegral.integral_const_mul]
+    rw [intervalIntegral.integral_sub intervalIntegrable_id intervalIntegrable_const]
+    rw [integral_id, intervalIntegral.integral_const]
+    simp only [smul_eq_mul]
+    ring
+  rw [heval] at hmono
+  exact hmono
+
+/-- **Graham–Kolesnik, Lemma 3.7**, with the derivative count shifted by one.
+If `f ∈ F(N, P+1, s, y, ε)` on `[a, b]`, `0 < h ≤ b - a`, and
+`h < 2εN/(s+P+1)`, then `x ↦ f(x) - f(x+h)` lies in
 `F(N, P, s+1, shy, 3ε)` on `[a, b-h]`. -/
-theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
+theorem lemma37_sharp {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
     (hs : 0 < s) (hy : 0 < y) (hε : 0 < ε)
     (hf : InGKClass N (P + 1) s y ε a b f) (hh0 : 0 < h) (hhb : h ≤ b - a)
-    (hhN : h < ε * N / (s + P + 1)) :
+    (hhN : h < 2 * ε * N / (s + P + 1)) :
     InGKClass N P (s + 1) (s * h * y) (3 * ε) a (b - h) (fun x => f x - f (x + h)) := by
   obtain ⟨hNa, hab, hb2N, hcd, hcond⟩ := hf
   have hN : 0 < N := by
     by_contra hN
     push Not at hN
-    have : ε * N / (s + P + 1) ≤ 0 :=
-      div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonneg_of_nonpos hε.le hN) (by positivity)
+    have : 2 * ε * N / (s + P + 1) ≤ 0 :=
+      div_nonpos_of_nonpos_of_nonneg
+        (mul_nonpos_of_nonneg_of_nonpos (by positivity) hN) (by positivity)
     linarith
   refine ⟨hNa, by linarith, by linarith, ?_, ?_⟩
   · have h1 : ContDiff ℝ P f := hcd.of_le (by exact_mod_cast Nat.le_succ P)
@@ -158,16 +194,9 @@ theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
     rw [Real.norm_eq_abs, add_sub_cancel_left, abs_of_pos hh0] at this
     exact this
   -- bounds for `I`
-  have h2 : h * (t ^ (-q) - q * t ^ (-q - 1) * h) ≤ I := by
-    have := integral_mono_on (a := t) (b := t + h) (by linarith)
-      (intervalIntegrable_const (c := t ^ (-q) - q * t ^ (-q - 1) * h)) hrp (fun u hu => by
-        have := rpow_neg_lower ht0 hu.1 hq0.le (u := u)
-        have hut : u - t ≤ h := by linarith [hu.2]
-        have : q * t ^ (-q - 1) * (u - t) ≤ q * t ^ (-q - 1) * h :=
-          mul_le_mul_of_nonneg_left hut (by positivity)
-        linarith)
-    rw [integral_const, add_sub_cancel_left, smul_eq_mul] at this
-    exact this
+  have h2 : h * t ^ (-q) - q * t ^ (-q - 1) * h ^ 2 / 2 ≤ I := by
+    rw [hI]
+    exact integral_rpow_neg_lower ht0 hh0.le hq0.le
   have h3 : I ≤ h * t ^ (-q) := by
     have := integral_mono_on (a := t) (b := t + h) (by linarith) hrp
       (intervalIntegrable_const (c := t ^ (-q))) (fun u hu =>
@@ -192,7 +221,7 @@ theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
   rw [hmain]
   have hBpos : 0 < c * y * h * t ^ (-q) := by positivity
   have hw : 0 ≤ h * t ^ (-q) - I := by linarith
-  have hqh : q * h < ε * t := by
+  have hqh : q * h < 2 * ε * t := by
     have hq' : q ≤ s + P + 1 := by
       rw [hq]
       have : ((p + 1 : ℕ) : ℝ) ≤ P := by exact_mod_cast (by omega : p + 1 ≤ P)
@@ -201,18 +230,20 @@ theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
     rw [lt_div_iff₀ hsP] at hhN
     calc q * h ≤ (s + P + 1) * h := mul_le_mul_of_nonneg_right hq' hh0.le
       _ = h * (s + P + 1) := mul_comm _ _
-      _ < ε * N := hhN
-      _ ≤ ε * t := mul_le_mul_of_nonneg_left (by linarith) hε.le
+      _ < 2 * ε * N := hhN
+      _ ≤ 2 * ε * t := mul_le_mul_of_nonneg_left (by linarith) (by positivity)
   have h4 : c * y * (h * t ^ (-q) - I) < ε * (c * y * h * t ^ (-q)) := by
-    have hle : h * t ^ (-q) - I ≤ q * t ^ (-q - 1) * h ^ 2 := by nlinarith
+    have hle : h * t ^ (-q) - I ≤ q * t ^ (-q - 1) * h ^ 2 / 2 := by linarith
     have e : t ^ (-q - 1) = t ^ (-q) / t := Real.rpow_sub_one ht0.ne' _
-    calc c * y * (h * t ^ (-q) - I) ≤ c * y * (q * t ^ (-q - 1) * h ^ 2) :=
+    calc c * y * (h * t ^ (-q) - I) ≤ c * y * (q * t ^ (-q - 1) * h ^ 2 / 2) :=
           mul_le_mul_of_nonneg_left hle (by positivity)
-      _ = (c * y * h * t ^ (-q)) * (q * h / t) := by
+      _ = (c * y * h * t ^ (-q)) * (q * h / (2 * t)) := by
           rw [e]
-          first | (field_simp; done) | (field_simp; ring)
+          ring
       _ < (c * y * h * t ^ (-q)) * ε :=
-          mul_lt_mul_of_pos_left ((div_lt_iff₀ ht0).2 hqh) hBpos
+          mul_lt_mul_of_pos_left (by
+            rw [div_lt_iff₀ (by positivity : 0 < 2 * t)]
+            nlinarith) hBpos
       _ = ε * (c * y * h * t ^ (-q)) := by ring
   calc |-(∫ u in t..t + h, (D u - A u)) - (-1) ^ p * c * y * (h * t ^ (-q) - I)|
       ≤ |-(∫ u in t..t + h, (D u - A u))| + |(-1) ^ p * c * y * (h * t ^ (-q) - I)| :=
@@ -224,6 +255,22 @@ theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
         have : ε * c * y * t ^ (-q) * h = ε * (c * y * h * t ^ (-q)) := by ring
         rw [this] at h1
         linarith [mul_pos hε hBpos]
+
+/-- Compatibility form of Lemma 3.7 with the formerly used stronger shift
+restriction.  New proofs should normally use `lemma37_sharp`. -/
+theorem lemma37 {N : ℝ} {P : ℕ} {s y ε a b h : ℝ} {f : ℝ → ℝ}
+    (hs : 0 < s) (hy : 0 < y) (hε : 0 < ε)
+    (hf : InGKClass N (P + 1) s y ε a b f) (hh0 : 0 < h) (hhb : h ≤ b - a)
+    (hhN : h < ε * N / (s + P + 1)) :
+    InGKClass N P (s + 1) (s * h * y) (3 * ε) a (b - h)
+      (fun x => f x - f (x + h)) := by
+  have hcut0 : 0 < ε * N / (s + P + 1) := hh0.trans hhN
+  apply lemma37_sharp hs hy hε hf hh0 hhb
+  exact hhN.trans (calc
+    ε * N / (s + P + 1) <
+        ε * N / (s + P + 1) + ε * N / (s + P + 1) :=
+      lt_add_of_pos_right _ hcut0
+    _ = 2 * ε * N / (s + P + 1) := by ring)
 
 end AP
 
