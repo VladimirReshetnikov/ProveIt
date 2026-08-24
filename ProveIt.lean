@@ -20,6 +20,10 @@ import A290268
 import SquaredSquare
 import KlarnerConstant
 import GowersSzemeredi
+import DavisEntringerGrahamSimmons1977
+import Sharma2012
+import LeSaulnierVijay2010
+import LeSaulnierVijay2011
 import FirstOrder
 import ArbitraryLanguageCompactness
 import QuantifierCommutation
@@ -47,6 +51,7 @@ Iota universality chain, the faithful Iota-to-lambda operational embedding,
 and their assumption audit.
 The Turing-degree facade develops the set degrees, their least element and
 join-semilattice structure, and the c.e.-complete halting degree.
-The Gowers--Szemerédi facade records the corrected statement catalogue and
-auxiliary definitions for Gowers's quantitative proof of Szemerédi's theorem.
+The Ramsey facades record corrected statement catalogues and auxiliary
+definitions for four papers on progression-avoiding permutations, as well as
+Gowers's quantitative proof of Szemerédi's theorem.
 -/

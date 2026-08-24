@@ -29,7 +29,7 @@
 
 Let $M(n)$ denote the number of permutations of $\{1,2,\ldots,n\}$ that do 
 not contain a $3$-term arithmetic progression as a subsequence. For 
-example, $M(4)=10$, corresponding to the permutations $(1243), \, 
+example, $M(4)=10$, corresponding to the permutations $(1342), \,
 (1324), \, (2143), \, (2413), \, (4213)$ and their reversals. In 1977, 
 Davis, Entringer, Graham and Simmons \cite{Dav77} established the 
 following bounds on $M(n)$: $$2^{n-1} \le M(n) \le \lfloor (n+1)/2 \rfloor 
@@ -38,8 +38,8 @@ Sharma \cite{Sha09}, who showed that $$M(n) \le \frac{2.7^n}{21} \mbox{
 for } n \ge 11$$ and that $$\lim_{n \to \infty} \frac{M(n)}{2^n \: 
 n^k} = \infty \mbox { for any fixed } k.$$
 
-In \cite{Sha09} the question whether $\lim_{_{{}_{\! \! \! \! \! \! \! \! 
-\! \! \! \! \! \!  n \to \infty}}} \frac{M(n+1)}{M(n)} = 2$ was attributed 
+In \cite{Sha09} the question whether $\lim_{n \to \infty}
+\frac{M(n+1)}{M(n)} = 2$ was attributed
 to the Editor of the Problem Section of the American Mathematical Monthly 
 (where the function $M(n)$ made its earliest known appearance, in 1975), 
 and was mentioned as still open. We begin with an observation that settles 
@@ -59,7 +59,7 @@ terms of any 3AP have the same parity. Note that these recurrences imply
 the stronger lower bound $M(n) \ge (1/2)c^n$ for $n \ge 8$, where 
 $c=(2M(10))^{1/10}=2.152...$. Since $M(8)=282, \, M(9)=496, \, M(10)=1066, 
 \, M(11)=2460, \, M(12)=6128, \, M(13)=12840, \, M(14)=29380$ and 
-$M(15)=73904$ (see \cite{Dav77}), the inequality holds for $8 \le n \le 
+$M(15)=74904$ (see \cite{Dav77}), the inequality holds for $8 \le n \le
 15$. We can now use induction on $k$ to show that it also holds for 
 $2^k \le n < 2^{k+1}, \, k \ge 4$. \eop \\
 
@@ -78,16 +78,20 @@ AP with odd common difference as a subsequence. Furthermore, there exists
 a permutation of the positive integers in which no $4$-term AP with odd 
 common difference occurs as a subsequence.
 
-\proof We first show that any 3AP-free permutation 
+\proof We first show that any permutation
 $\sigma=(t_1,t_2,\ldots,t_{11})$ of $\{1,2,\ldots,11\}$ with $t_1=2$ and 
-$t_2=1$ must contain a $3$-term AP with odd common difference as a 
-subsequence. Indeed, $4$ must appear in $\sigma$ before $3$, $5$ after 
-$4$, $7$ after $4$, $6$ before $7$, $11$ before $6$, and $8$ before $11$. 
-Now we have the subsequence $(8,9,10)$ if $9$ occurs before $10$ in 
-$\sigma$ and the subsequence $(11,10,9)$ otherwise. This proves our claim. \\
+$t_2=1$ must contain a $3$-term AP with odd common difference as a
+subsequence. Indeed, $4$ must appear in $\sigma$ before $3$ to avoid the
+$3$-term AP $(2,3,4)$; similar considerations force $4$ before $5$, $7$
+before $4$, $6$ before $5$, $6$ before $7$, $11$ before $6$, $8$ before
+$11$, $8$ before $9$, and $7$ before $10$. Thus, both $8$ and $11$ appear
+in $\sigma$ before either $9$ or $10$ appears. Now we have the subsequence
+$(8,9,10)$ if $9$ occurs before $10$ in $\sigma$ and the subsequence
+$(11,10,9)$ otherwise. This proves our claim. \\
 
-Let $a_1,a_2,\ldots$ be a permutation of the positive integers. Ignoring 
-terms less than $a_1$ if necessary, we can assume that $a_1=1$. Let $k$ be 
+Let $a_1,a_2,\ldots$ be a permutation of the positive integers. Subtracting
+$a_1-1$ from every term and ignoring nonpositive terms, we can assume that
+$a_1=1$. Let $k$ be
 the least index such that $a_k$ is even, and let 
 $a_j=\max(a_1,a_2,\ldots,a_{k-1})$. If $a_j < 2a_k - 1$, then we have 
 $(a_1,a_k,2a_k-1)$ as a subsequence. If $a_j \ge 2a_k - 1 > a_k$, let 
@@ -98,11 +102,11 @@ difference. \\
 
 We now exhibit a permutation of the positive integers that contains no 
 $4$-term AP with odd common difference as a subsequence. For $i \ge 1$, 
-let $\sigma_i$ be a 3AP-free permutation of the following set of $2^i$ 
+let $\sigma_i$ be a 3AP-free permutation of the following set of $2^{2i-1}$
 consecutive even numbers: $$\{(4^i+2)/3, (4^i+8)/3, \ldots, 
 (4^{i+1}-4)/3\}$$ Similarly, let $\pi_i$ be a 3AP-free permutation of the 
-following set of $2^{i-1}$ consecutive odd numbers: $$\{(4^i+2)/6, 
-(4^i+14)/6, \ldots, (4^{i+1}-6)/6\}$$ Observe that the concatenated 
+following set of $2^{2i-2}$ consecutive odd numbers: $$\{(4^i+2)/6,
+(4^i+14)/6, \ldots, (4^{i+1}-10)/6\}$$ Observe that the concatenated
 sequence $\sigma_1 \pi_1 \sigma_2 \pi_2 \sigma_3 \pi_3 \cdots$ is a 
 permutation of the positive integers. By virtue of our construction, if an 
 odd number $x$ occurs in this sequence before an even number $y$, then $2x 
@@ -115,7 +119,7 @@ subsequence. Given a subset $S$ of the positive integers, let
 $\overline{d}(S)$ and $\underline{d}(S)$ denote, respectively, the upper 
 and lower densities of $S$. In other words, $$\overline{d}(S) = \limsup_{n 
 \rightarrow \infty} \frac{A(n)}{n} \; \mbox{ and } \; \underline{d}(S) = 
-\liminf_{n \rightarrow \infty} \frac{A(n)}{n} \mbox{ where } A(n)=|A \cap 
+\liminf_{n \rightarrow \infty} \frac{A(n)}{n} \mbox{ where } A(n)=|S \cap
 [1,n]|. $$ Define, for $n \ge 3$, $$\alpha(n)= \sup_S \, 
 \{\overline{d}(S): S \mbox{ is $n$-free} \} \; \mbox{ and } \; \beta(n)= 
 \sup_S \, \{\underline{d}(S): S \mbox{ is $n$-free} \}. $$ Since the set 
@@ -148,7 +152,7 @@ $3$-term AP as a subsequence. Indeed, if the (increasing) 3AP $x_1, x_2,
 x_3$ occurs as a subsequence, with $x_2$ and $x_3$ belonging to different 
 sets $T_k$ and $T_{\ell}$, then $x_3 \ge 2x_2$, so $x_1 \le 0$, yielding a 
 contradiction. If $x_2$ and $x_3$ belong to the same set $T_k$, then $x_1 
-\in T_{\ell}$ with $\ell < k$. But $x_3 - x_2 < q_k \le x_2 - x_1$, 
+\in T_{\ell}$ with $\ell < k$. But $x_3 - x_2 < q_{k-1} \le x_2 - x_1$,
 contradicting our assumption that $x_1, x_2, x_3$ is a 3AP. Therefore, $T$ 
 is $3$-free. Thus $\alpha(3) \ge 1/2$ and $\beta(3) \ge 1/4$. \eop \\
 
@@ -166,7 +170,7 @@ Simmons, {\em {On Permutations Containing No Long Arithmetic
 Progressions}}, Acta Arithmetica 34 (1977), 81-90.
 
 \bibitem{Erd80} P. Erd\H{o}s and R. L. Graham, {\em {Old and New Problems 
-and Results in Combinatorial Number Theory}}, L'Enseignment Mathematique, 
+and Results in Combinatorial Number Theory}}, L'Enseignement Mathematique,
 Monograph No. 28, Geneva, 1980.
 
 \bibitem{Sha09} A. Sharma, {\em {Enumerating Permutations That Avoid Three 
@@ -175,17 +179,4 @@ Term Arithmetic Progressions}}, The Electronic Journal of Combinatorics 16
 
 \end{thebibliography}
 
-
 \end{document}
-
-
-
-
-
-\title{On Permutations Avoiding Arithmetic Progressions}
-\author{Timothy D. LeSaulnier \footnote{ Department of Mathematics,
-University of Illinois, Urbana, IL 61801, tlesaul2@math.uiuc.edu} \and
-Sujith Vijay\footnote{Department of Mathematics, University of Illinois,
-Urbana, IL 61801, sujith@math.uiuc.edu}}
-
-
