@@ -30,6 +30,7 @@ import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07DRC
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07ProgressionLinearity
