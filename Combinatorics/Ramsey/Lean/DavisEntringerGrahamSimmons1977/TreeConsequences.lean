@@ -247,4 +247,196 @@ theorem computational_tree_bound_holds : computational_tree_bound := by
   rw [computedTreeLevel_empty_of_eighteen_le k hk] at hmem
   simp at hmem
 
+def blockMidpointFree (B : Block) : Prop :=
+  ∀ i j k : Fin B.length, (i : Nat) < j → (j : Nat) < k →
+    B.get i + B.get k ≠ 2 * B.get j
+
+def blockMidpointFreeDecidable (B : Block) : Decidable (blockMidpointFree B) := by
+  unfold blockMidpointFree
+  exact Fintype.decidableForallFintype
+
+def blockMidpointFreeCheck (B : Block) : Bool :=
+  @decide (blockMidpointFree B) (blockMidpointFreeDecidable B)
+
+@[simp] theorem blockMidpointFreeCheck_eq_true (B : Block) :
+    blockMidpointFreeCheck B = true ↔ blockMidpointFree B := by
+  simp [blockMidpointFreeCheck]
+
+theorem blockAPFree_three_of_midpointFree {B : Block}
+    (hmid : blockMidpointFree B) : BlockAPFree B 3 := by
+  intro hap
+  obtain ⟨pos, hpos, a, d, hd, hvalues⟩ := hap
+  have h01 : pos 0 < pos 1 := hpos (by decide)
+  have h12 : pos 1 < pos 2 := hpos (by decide)
+  apply hmid (pos 0) (pos 1) (pos 2) h01 h12
+  have h0 := hvalues (0 : Fin 3)
+  have h1 := hvalues (1 : Fin 3)
+  have h2 := hvalues (2 : Fin 3)
+  norm_num [blockSequence] at h0 h1 h2
+  simp only [List.get_eq_getElem]
+  omega
+
+theorem treeVertex_length_three_le {B : Block} (htree : IsTreeVertex B) :
+    3 ≤ B.length := by
+  induction htree with
+  | root132 => norm_num
+  | root213 => norm_num
+  | root231 => norm_num
+  | root312 => norm_num
+  | extend _ _ _ _ _ hlen ih => omega
+
+private theorem value_le_length_of_inSpan {B : Block} {x : Nat}
+    (horder : IsIntervalOrdering B 1 B.length) (hlen : 3 ≤ B.length)
+    (hspan : InSpanOfOneTwoThree B x) : x ≤ B.length := by
+  have hmem (z : Nat) (hz : 1 ≤ z) (hz' : z ≤ B.length) : z ∈ B := by
+    rw [← List.mem_toFinset, horder.2, Finset.mem_Icc]
+    exact ⟨hz, hz'⟩
+  have hidx1 : blockIndex B 1 < B.length :=
+    List.idxOf_lt_length_iff.mpr (hmem 1 (by omega) (by omega))
+  have hidx2 : blockIndex B 2 < B.length :=
+    List.idxOf_lt_length_iff.mpr (hmem 2 (by omega) (by omega))
+  have hidx3 : blockIndex B 3 < B.length :=
+    List.idxOf_lt_length_iff.mpr (hmem 3 (by omega) (by omega))
+  have hxidx : blockIndex B x < B.length := by
+    unfold InSpanOfOneTwoThree at hspan
+    omega
+  have hxmem : x ∈ B := List.idxOf_lt_length_iff.mp hxidx
+  have hxIcc : x ∈ Finset.Icc 1 B.length := by
+    rw [← horder.2]
+    exact List.mem_toFinset.mpr hxmem
+  exact (Finset.mem_Icc.mp hxIcc).2
+
+theorem treeIsSpecial_complete_of_intervalOrdering {B : Block}
+    (horder : IsIntervalOrdering B 1 B.length) (hlen : 3 ≤ B.length)
+    (hspecial : IsSpecialVertex B) : treeIsSpecial B = true := by
+  rw [treeIsSpecial, decide_eq_true_eq]
+  obtain ⟨a, d, hd, hbase, ha, had, ha2d⟩ := hspecial
+  have haBound := value_le_length_of_inSpan horder hlen ha
+  have hadBound := value_le_length_of_inSpan horder hlen had
+  have ha2dBound := value_le_length_of_inSpan horder hlen ha2d
+  let af : Fin (B.length + 1) := ⟨a, by omega⟩
+  let df : Fin (B.length + 1) := ⟨d, by omega⟩
+  have hadLt : a + d < B.length + 1 := by omega
+  have ha2dLt : a + 2 * d < B.length + 1 := by omega
+  have hbase' : a ≠ 1 ∨ d ≠ 1 := by
+    rcases hbase with ha1 | hd1
+    · exact Or.inl (bne_iff_ne.mp ha1)
+    · exact Or.inr (bne_iff_ne.mp hd1)
+  refine ⟨af, df, hd, hbase', hadLt, ha2dLt, ?_, ?_, ?_⟩
+  · simpa [af, InSpanOfOneTwoThree] using ha
+  · simpa [af, df, InSpanOfOneTwoThree] using had
+  · simpa [af, df, InSpanOfOneTwoThree] using ha2d
+
+theorem treeIsSpecial_false_iff_of_treeVertex {B : Block}
+    (htree : IsTreeVertex B) :
+    treeIsSpecial B = false ↔ ¬ IsSpecialVertex B := by
+  constructor
+  · intro hcheck hspecial
+    have htrue := treeIsSpecial_complete_of_intervalOrdering
+      (treeVertex_interval_ordering htree) (treeVertex_length_three_le htree) hspecial
+    rw [hcheck] at htrue
+    simp at htrue
+  · exact treeIsSpecial_false_of_not_special B
+
+private theorem intervalOrdering_insert_next {B : Block}
+    (horder : IsIntervalOrdering B 1 B.length) (i : Nat) (hi : i ≤ B.length) :
+    IsIntervalOrdering (B.insertIdx i (B.length + 1)) 1
+      (B.insertIdx i (B.length + 1)).length := by
+  have hlength : (B.insertIdx i (B.length + 1)).length = B.length + 1 :=
+    List.length_insertIdx_of_le_length hi _
+  constructor
+  · have hnotmem : B.length + 1 ∉ B := by
+      rw [← List.mem_toFinset, horder.2, Finset.mem_Icc]
+      omega
+    have hcons : ((B.length + 1) :: B).Nodup := horder.1.cons hnotmem
+    exact (List.perm_insertIdx (B.length + 1) B hi).symm.nodup hcons
+  · ext x
+    rw [List.mem_toFinset, List.mem_insertIdx hi, Finset.mem_Icc, hlength]
+    have hBmem : x ∈ B ↔ 1 ≤ x ∧ x ≤ B.length := by
+      rw [← List.mem_toFinset, horder.2, Finset.mem_Icc]
+    rw [hBmem]
+    omega
+
+def checkedTreePath : Block → List Nat → Block
+  | B, [] => B
+  | B, i :: is =>
+      let B' := B.insertIdx i (B.length + 1)
+      checkedTreePath B' is
+
+def checkedTreePathCheck : Block → List Nat → Bool
+  | _, [] => true
+  | B, i :: is =>
+      let B' := B.insertIdx i (B.length + 1)
+      decide (i ≤ B.length) && !treeIsSpecial B &&
+        blockMidpointFreeCheck B' && checkedTreePathCheck B' is
+
+theorem checkedTreePathCheck_sound {B : Block} {is : List Nat}
+    (htree : IsTreeVertex B) (hcheck : checkedTreePathCheck B is = true) :
+    IsTreeVertex (checkedTreePath B is) := by
+  induction is generalizing B with
+  | nil => simpa [checkedTreePath]
+  | cons i is ih =>
+      simp only [checkedTreePathCheck, Bool.and_eq_true, decide_eq_true_eq,
+        blockMidpointFreeCheck_eq_true] at hcheck
+      rcases hcheck with ⟨⟨⟨hi, hspecialCheck⟩, hmid⟩, htail⟩
+      let B' := B.insertIdx i (B.length + 1)
+      have hspecialCheck' : treeIsSpecial B = false :=
+        Bool.eq_false_of_not_eq_true' hspecialCheck
+      have hspecial : ¬ IsSpecialVertex B :=
+        (treeIsSpecial_false_iff_of_treeVertex htree).mp hspecialCheck'
+      have horder := intervalOrdering_insert_next
+        (treeVertex_interval_ordering htree) i hi
+      have hfree : BlockAPFree B' 3 := blockAPFree_three_of_midpointFree hmid
+      have hsub : B.Sublist B' := by simp [B']
+      have hlength : B'.length = B.length + 1 := by
+        simpa [B'] using
+          (List.length_insertIdx_of_le_length hi (B.length + 1))
+      have htree' : IsTreeVertex B' :=
+        IsTreeVertex.extend htree hspecial horder hfree hsub hlength
+      exact ih htree' htail
+
+def maximumTreeInsertionPositions : List Nat :=
+  [3, 0, 3, 3, 6, 1, 7, 2, 10, 0, 4, 4, 12, 3, 7, 5, 18]
+
+def maximumTreeWitness : Block :=
+  checkedTreePath [1, 3, 2] maximumTreeInsertionPositions
+
+theorem maximumTreeWitness_certificate :
+    checkedTreePathCheck [1, 3, 2] maximumTreeInsertionPositions = true := by
+  native_decide
+
+theorem maximumTreeWitness_isTreeVertex : IsTreeVertex maximumTreeWitness := by
+  apply checkedTreePathCheck_sound IsTreeVertex.root132 maximumTreeWitness_certificate
+
+theorem maximumTreeWitness_value : maximumTreeWitness =
+    [13, 5, 9, 17, 11, 19, 15, 14, 18, 1, 3, 7, 6, 2, 10, 16, 8, 12, 20, 4] := by
+  native_decide
+
+theorem maximumTreeWitness_length : maximumTreeWitness.length = 20 := by
+  native_decide
+
+theorem maximumTreeWitness_mem_computedLevel :
+    maximumTreeWitness ∈ computedTreeLevel 17 := by
+  obtain ⟨k, hlength, hmem⟩ :=
+    treeVertex_mem_computedLevel maximumTreeWitness_isTreeVertex
+  have hk : k = 17 := by
+    rw [maximumTreeWitness_length] at hlength
+    omega
+  subst k
+  exact hmem
+
+theorem computational_tree_exact_maximum :
+    (∀ B : Block, IsTreeVertex B → B.length ≤ 20) ∧
+      ∃ B : Block, IsTreeVertex B ∧ B.length = 20 := by
+  refine ⟨computational_tree_bound_holds, maximumTreeWitness, ?_, ?_⟩
+  · exact maximumTreeWitness_isTreeVertex
+  · exact maximumTreeWitness_length
+
+theorem computational_tree_bound_seventeen_false :
+    ¬ (∀ B : Block, IsTreeVertex B → B.length ≤ 17) := by
+  intro hbound
+  have := hbound maximumTreeWitness maximumTreeWitness_isTreeVertex
+  rw [maximumTreeWitness_length] at this
+  omega
+
 end LeanProofs.DavisEntringerGrahamSimmons1977

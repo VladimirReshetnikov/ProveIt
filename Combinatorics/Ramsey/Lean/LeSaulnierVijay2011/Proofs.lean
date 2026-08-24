@@ -3,6 +3,7 @@ import DavisEntringerGrahamSimmons1977.Proofs
 import DavisEntringerGrahamSimmons1977.CountingRecurrences
 import RamseyPaperCommon.ThreeFreeCounting
 import RamseyPaperCommon.CountConsequences
+import Sharma2012.AsymptoticConsequences
 
 /-!
 # Proofs for LeSaulnier--Vijay (2011)
@@ -65,6 +66,18 @@ theorem davis_counting_bounds_holds : davis_counting_bounds := by
       have hdiv1 : (2 * k + 1 + 1) / 2 = k + 1 := by omega
       have hdiv2 : (2 * k + 1 + 2) / 2 = k + 1 := by omega
       simpa [harg, hdiv1, hdiv2, pow_two] using hbound
+
+/-- Sharma's superpolynomial lower bound, transported across the shared
+finite-permutation encoding. -/
+theorem sharma_superpolynomial_lower_bound_holds :
+    sharma_superpolynomial_lower_bound := by
+  intro k
+  have hk := LeanProofs.Sharma2012.theorem_3_2_holds (k : Int)
+  convert hk using 1
+  funext n
+  rw [LeanProofs.RamseyPaperCommon.sharma_theta_eq_M]
+  simp only [zpow_natCast]
+  ring
 
 theorem M_even_recurrence_holds : M_even_recurrence := by
   intro n hn
