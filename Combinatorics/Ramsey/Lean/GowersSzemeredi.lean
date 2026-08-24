@@ -20,6 +20,7 @@ import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03ProgressionAverage
 import GowersSzemeredi.Proofs03ProgressionCount
+import GowersSzemeredi.Proofs03ProgressionExistence
 import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs03GowersCS
 import GowersSzemeredi.Proofs03Minkowski
