@@ -21536,6 +21536,61 @@ products, the interpolation route needs finiteness of a two-shift difference mod
 both are finite-rank statements about the same pair $(2,3)$ acting on the same monoid.
 \statusnew{}; target \statusopen.
 
+\subsection{Where the threshold comes from: forced vanishing on an initial segment}
+\label{camp:segment}
+
+Attacking Target~\ref{camp:target-diffmodule} directly with the classical
+P\'olya--Gel'fond descent turns out to be informative in a way that neither confirms nor
+refutes it, and it explains \emph{why} a threshold of the shape $1/(C\beta^2ab)$ appears at
+all.
+
+Because $\N_0\subseteq\Sol$, the ordinary difference table
+$\Delta^kg(0)=\sum_j(-1)^{k-j}\binom kjg(j)$ consists of \emph{integers}.  Estimating it by
+Cauchy's formula on $|z|=R$ with $R=2k$ --- which is legitimate, the poles sitting at
+$0,1,\dots,k$ --- gives
+\[
+ \bigl|\Delta^kg(0)\bigr|
+ \;\le\;M(g,R)\,\frac{k!\,R}{(R-k)^{k+1}}
+ \;=\;2\,M(g,2k)\,\frac{k!}{k^{k}},
+ \qquad\text{so}\qquad
+ \log\bigl|\Delta^kg(0)\bigr|\le4\tau k^2-k+O(\log k).
+\]
+The right-hand side is negative --- indeed below $-1$ --- for every $k<1/(4\tau)$, and an
+integer of absolute value less than one is zero.  Newton's expansion on $\N_0$, in which
+$\binom nk=0$ for $k>n$, then propagates this to the values themselves.
+
+\begin{proposition}[Forced initial-segment vanishing]\label{camp:prop-segment}
+Let $g$ be entire, integer-valued on $\N_0\subseteq\Sol$, with $\tau_2(g)\le\tau$.  Then
+$\Delta^kg(0)=0$ for every $k<1/(4\tau)$, and consequently
+\[
+ g(n)=0\qquad\text{for all }n\le K:=\Bigl\lfloor\frac1{4\tau}\Bigr\rfloor .
+\]
+\end{proposition}
+
+At the self-contained threshold of Section~\ref{camp:ownthreshold},
+$\tau=\tau_{\mathrm{crit}}=1/(C\beta^2ab)$ with $C=4570$, this reads
+\[
+ K=\frac{C\,ab}{4}\,\beta^2=870\,\beta^2,
+\]
+that is $170{,}523$ at the kernel-verified $\beta\ge14$ and $634{,}240$ at $\beta>27$
+(\path{scripts/segment_vanishing.py}).  The coefficient $870=Cab/4$ is not a coincidence:
+it is the same number as the excess factor $870\beta$ of the vanishing branch, both being
+the ratio of the Jensen floor $1/(4\beta)$ to the threshold, so that $K=\beta\times$(excess
+factor).
+
+Three readings of this.  It shows the classical descent \emph{does} bite at order two ---
+contrary to what one might expect from P\'olya's theorem being an order-one statement ---
+and that it bites extremely hard, forcing a small-type integer-valued function to vanish on
+an initial segment of nearly two hundred thousand points.  It recovers the mechanism behind
+Pila's theorem from the corpus's own data, which is why the threshold has the shape it
+does.  And it locates precisely what is still missing for
+Target~\ref{camp:target-diffmodule}: vanishing on \emph{all} of $\Sol$, which would give
+$\tau_2=\infty$ by Proposition~\ref{camp:prop-inftype} and hence $g=0$.  The obstruction is
+quantitative and clean --- repeating the argument at a base point $s_0$ replaces $M(g,2k)$
+by $M(g,|s_0|+2k)$, so the forced range shrinks as $|s_0|$ grows, and the segments thin out
+before they can cover the monoid.  Closing that gap is the same difficulty as proving the
+sharp form of Pila's theorem.  \statusnew{}; numerics \statusexactcomp.
+
 \subsection{The terminal obstruction inside the Calegari--Dimitrov--Tang family}
 \label{camp:cdt}
 
@@ -23368,6 +23423,11 @@ $V_\tau$ is a $\Z[\Delta_1,\Delta_\beta]$-module; both shifts diagonal on monomi
 integer eigenvalues $2^i3^j-1$, $M^iA^j-1$; spectrum question $\equiv$ difference-module
 finiteness & \statusnew{}; target \statusopen &
 Section~\ref{camp:diffmodule}, Target~\ref{camp:target-diffmodule} \\
+Forced initial-segment vanishing: integer difference table with
+$\log|\Delta^kg(0)|\le4\tau k^2-k+O(\log k)$ vanishes for $k<1/(4\tau)$, so
+$g(n)=0$ for $n\le870\beta^2$ ($170{,}523$ at $\beta\ge14$); recovers the threshold
+mechanism and locates the residual gap & \statusnew{}; numerics \statusexactcomp &
+Proposition~\ref{camp:prop-segment} \\
 Terminal obstruction encoded in the CDT family: $\log p=\sum_{n<p}L_n$ turns the
 relation into a $\Z$-relation among $\{L_iL_j\}$; vanishing coefficients force the
 controls at $q=3,5,7$; finite independence per $q$ suffices, consuming the external prime &
