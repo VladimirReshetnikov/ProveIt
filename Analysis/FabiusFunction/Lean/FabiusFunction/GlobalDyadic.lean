@@ -1,4 +1,5 @@
 import FabiusFunction.DyadicAnalytic
+import FabiusFunction.Existence
 import FabiusFunction.GlobalExtension
 
 /-!
@@ -90,6 +91,110 @@ theorem fabiusDyadic_cast_extended_formula
     rw [harg, extendedFabius_one_add F hF hry, ← hrCast]
     rw [haeq]
     linarith
+
+private theorem fabiusDyadic_unit_reflection
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n r : ℕ) (hr : r ≤ 2 ^ n) :
+    fabiusDyadic n (2 ^ n - r) = 1 - fabiusDyadic n r := by
+  apply Rat.cast_injective (α := ℝ)
+  push_cast
+  rw [fabiusDyadic_cast F hF n (2 ^ n - r) (by omega),
+    fabiusDyadic_cast F hF n r hr]
+  have harg : ((2 ^ n - r : ℕ) : ℝ) / (2 : ℝ) ^ n =
+      1 - (r : ℝ) / (2 : ℝ) ^ n := by
+    rw [Nat.cast_sub hr]
+    push_cast
+    field_simp
+  rw [harg]
+  apply hF.symmetry
+  constructor
+  · positivity
+  · apply (div_le_one (by positivity)).2
+    exact_mod_cast hr
+
+private theorem fabiusDyadic_first_block_eq_fold
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n residue : ℕ) (hresidue : residue < 2 ^ (n + 1)) :
+    fabiusDyadic n residue =
+      let scale := 2 ^ n
+      let period := 2 * scale
+      let core := if residue ≤ scale then residue else period - residue
+      fabiusDyadicUnit n core := by
+  let scale : ℕ := 2 ^ n
+  let period : ℕ := 2 * scale
+  let core : ℕ := if residue ≤ scale then residue else period - residue
+  change fabiusDyadic n residue = fabiusDyadicUnit n core
+  have hperiod : period = 2 ^ (n + 1) := by
+    simp only [period, scale, pow_succ]
+    omega
+  have hresidue' : residue < period := by simpa only [hperiod] using hresidue
+  by_cases hfirst : residue ≤ scale
+  · have hcore : core = residue := by simp [core, hfirst]
+    rw [hcore, fabiusDyadicUnit_eq_fabiusDyadic n residue]
+    simpa only [scale] using hfirst
+  · let offset := residue - scale
+    have hscaleLe : scale ≤ residue := (Nat.lt_of_not_ge hfirst).le
+    have hresidueEq : residue = scale + offset := by
+      dsimp only [offset]
+      omega
+    have hoffsetLe : offset ≤ scale := by
+      dsimp only [offset]
+      dsimp only [period] at hresidue'
+      omega
+    have hcoreEq : core = scale - offset := by
+      dsimp only [core]
+      rw [if_neg hfirst]
+      dsimp only [period, offset]
+      omega
+    have hadd := fabiusDyadic_add_pow_eq_one n offset
+      (by simpa only [scale] using hoffsetLe)
+    have hsym := fabiusDyadic_unit_reflection F hF n offset
+      (by simpa only [scale] using hoffsetLe)
+    rw [hcoreEq, fabiusDyadicUnit_eq_fabiusDyadic n (scale - offset)]
+    · rw [hresidueEq]
+      dsimp only [scale] at hadd hsym ⊢
+      linarith
+    · exact Nat.sub_le _ _
+
+/-- Equation (32), evaluated at any natural numerator, is exactly the total
+rational evaluator for the signed global Fabius extension. -/
+theorem fabiusDyadic_eq_extendedFabiusDyadicValue_nat
+    (n m : ℕ) :
+    fabiusDyadic n m = extendedFabiusDyadicValue n (m : ℤ) := by
+  obtain ⟨F, hF, _hunique⟩ := existsUnique_fabius
+  by_cases hm : m = 0
+  · subst m
+    rw [fabiusDyadic_arg_zero]
+    exact (extendedFabiusDyadicValue_zero n).symm
+  · have hmpos : 0 < m := Nat.pos_of_ne_zero hm
+    have hmposInt' : 0 < (m : ℤ) := by exact_mod_cast hmpos
+    have hmposInt : ¬ (m : ℤ) ≤ 0 := not_le_of_gt hmposInt'
+    rw [extendedFabiusDyadicValue, if_neg hmposInt]
+    simp only [Int.toNat_natCast]
+    let scale : ℕ := 2 ^ n
+    let period : ℕ := 2 * scale
+    let block : ℕ := m / period
+    let residue : ℕ := m % period
+    let core : ℕ := if residue ≤ scale then residue else period - residue
+    change fabiusDyadic n m =
+      (thueMorseSign block : ℚ) * fabiusDyadicUnit n core
+    have hperiodPos : 0 < period := by simp [period, scale]
+    have hresidueLt : residue < period := Nat.mod_lt _ hperiodPos
+    have hperiod : period = 2 ^ (n + 1) := by
+      simp only [period, scale, pow_succ]
+      omega
+    have hmdecomp : m = block * 2 ^ (n + 1) + residue := by
+      calc
+        m = period * (m / period) + m % period :=
+          (Nat.div_add_mod m period).symm
+        _ = (m / period) * period + m % period := by ac_rfl
+        _ = block * 2 ^ (n + 1) + residue := by rw [← hperiod]
+    rw [hmdecomp, fabiusDyadic_block_translate n block residue
+      (by simpa only [← hperiod] using hresidueLt)]
+    congr 1
+    simpa only [core, scale, period] using
+      fabiusDyadic_first_block_eq_fold F hF n residue
+        (by simpa only [← hperiod] using hresidueLt)
 
 /-- The total signed-numerator evaluator computes the signed global extension. -/
 theorem extendedFabiusDyadicValue_cast (F : BoundedFabius)
@@ -189,6 +294,15 @@ theorem extendedFabiusDyadicValue_cast (F : BoundedFabius)
       rw [Nat.cast_sub hresidueLt.le, hperiod]
       field_simp
       ring
+
+/-- Equation (32) computes the signed global Fabius extension at every
+nonnegative dyadic numerator, with no unit-interval restriction. -/
+theorem fabiusDyadic_cast_extended_nat
+    (F : BoundedFabius) (hF : IsFabius F) (n m : ℕ) :
+    (fabiusDyadic n m : ℝ) =
+      extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) := by
+  rw [fabiusDyadic_eq_extendedFabiusDyadicValue_nat]
+  simpa using extendedFabiusDyadicValue_cast F hF n (m : ℤ)
 
 /-- The exact integer-numerator dyadic evaluator agrees with Rvachev's function. -/
 theorem rvachevDyadic_cast (F : BoundedFabius) (hF : IsFabius F)

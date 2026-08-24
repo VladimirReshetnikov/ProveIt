@@ -1,0 +1,2898 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{needspace}
+
+\definecolor{provedgreen}{RGB}{17,102,72}
+\definecolor{correctionred}{RGB}{150,39,39}
+\definecolor{classicalblue}{RGB}{35,82,130}
+\definecolor{openviolet}{RGB}{102,55,145}
+\definecolor{codegray}{RGB}{247,247,247}
+\definecolor{rulegray}{RGB}{95,102,110}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=classicalblue,
+  citecolor=provedgreen,
+  urlcolor=classicalblue,
+  pdftitle={Alaoglu--Erdos Progress Report 7: Rotational Regularization and the Exact Quadratic-Type Barrier},
+  pdfauthor={Research progress report},
+  pdfsubject={Alaoglu--Erdos conjecture, entire interpolation, Carlson--Carleman uniqueness, difference algebra}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s progress report 7}
+\rhead{Quadratic type and translation rank}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{4em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.28em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.28em,topsep=0.4em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{target}[theorem]{Research target}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{warning}[theorem]{Warning}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Abar}{\overline{\mathbb Q}}
+\newcommand{\Sbeta}{\mathcal S_\beta}
+\newcommand{\Zset}{\mathcal Z}
+\newcommand{\Eclass}{\mathcal E}
+\newcommand{\Tclass}{\mathcal T}
+\newcommand{\Vclass}{\mathcal V}
+\newcommand{\M}{\mathcal M}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\type}{\operatorname{type}}
+\newcommand{\DC}{\mathfrak D_{\!C}}
+\newcommand{\Cbeta}{C_\beta}
+\newcommand{\TP}{T_{\mathrm P}(\beta)}
+\newcommand{\Tsh}[1]{T_{#1}}
+\newcommand{\Del}[1]{\Delta_{#1}}
+\newcommand{\statusproved}{\textcolor{provedgreen}{\textbf{[proved here]}}}
+\newcommand{\statuscorrection}{\textcolor{correctionred}{\textbf{[correction]}}}
+\newcommand{\statusclassical}{\textcolor{classicalblue}{\textbf{[classical input]}}}
+\newcommand{\statusopen}{\textcolor{openviolet}{\textbf{[open target]}}}
+\newcommand{\statuscomputed}{\textcolor{openviolet}{\textbf{[exact computation]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.45em}\textbf{Status:} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  numbers=left,
+  numberstyle=\tiny\color{rulegray},
+  numbersep=7pt,
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.65cm}
+{\Huge\bfseries The Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.22cm}
+{\LARGE\bfseries Progress Report 7\par}
+\vspace{0.75cm}
+{\LARGE Rotational Regularization, the Exact Quadratic-Type Barrier,\par}
+\vspace{0.12cm}
+{\LARGE and a New Translation-Rank Route\par}
+\vspace{0.9cm}
+{\large A corrective and forward-looking continuation of\par}
+\vspace{0.1cm}
+{\large \texttt{alaoglu-erdos-unified-report-6.zip}\par}
+\vfill
+\begin{minipage}{0.92\textwidth}
+\small
+\textbf{Bottom line.}
+The conjecture
+\[
+  2^x,3^x\in\Z\quad\Longrightarrow\quad x\in\Z
+\]
+is not proved here.  A substantial analytic part of the previous frontier is, however,
+replaced by an exact theorem.  Conditional on a counterexample with least generator
+$\beta$, the solution monoid is $\Sbeta=\Nzero+\beta\Nzero$ and has quadratic density
+$1/(2\beta)$.  The preceding report asserted that every entire function vanishing on
+$\Sbeta$ has infinite quadratic type.  That assertion is false.  The explicit product
+\[
+ H_\beta(z)=z\prod_{s\in\Sbeta\setminus\{0\}}
+                 \left(1-\frac{z^4}{s^4}\right)
+\]
+is entire, vanishes on $\Sbeta$, and has the exact finite quadratic type
+\[
+  \tau_2(H_\beta)=\frac{\pi}{2\beta}.
+\]
+A Carlson--Carleman half-plane argument proves that no nonzero entire function vanishing
+on $\Sbeta$ can have smaller type.  In fact the complete finite vanishing spectrum is
+$[\pi/(2\beta),\infty)$.
+
+This exact threshold sharpens the Pila interpolation programme.  It proves that
+subcritical interpolation on $\Sbeta$ is unique, quantifies how many values or templates a
+Pila-small integer-valued function must use, excludes polynomial coordinate decoders and
+finite constant-coefficient recurrences, and shows that no null-function perturbation can
+come remotely close to Pila's sufficient threshold.  A second new route comes from Pila's
+multi-function theorem: a sufficiently small integer-valued interpolant has a quantitatively
+finite algebraic translation rank under the two commuting shifts $1$ and $\beta$.  Thus a
+proof may be sought through the classification of finite-order, transformally algebraic
+entire functions for two incommensurable shifts.  The linear and polynomial-decoder cases
+are closed here; the genuinely nonlinear difference-algebraic case is the new surviving
+target.
+\end{minipage}
+\vfill
+{\large August 24, 2026\par}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\begin{abstract}
+Assume, for contradiction, that the Alaoglu--Erd\H{o}s conjecture fails.  The exact
+conditional structure developed in the predecessor report supplies a unique least
+nonintegral solution $\beta$ and the free additive monoid
+$\Sbeta=\{n+k\beta:n,k\in\Nzero\}$.  Its counting function is
+$R^2/(2\beta)+O_\beta(R)$.  This report solves the associated zero-set problem at order
+$2$.  For every integer $m\ge3$ the rotationally regularized product
+\[
+ H_{m,\beta}(z)=z\prod_{s\in\Sbeta\setminus\{0\}}
+                    \left(1-\frac{z^m}{s^m}\right)
+\]
+is entire and satisfies
+\[
+ \log M(H_{m,\beta},r)
+ =\frac{\pi}{2\beta\sin(2\pi/m)}r^2+O_{\beta,m}(r+\log r).
+\]
+The unique optimal integer rotation order is $m=4$.  Conversely, if a nonzero entire
+function of finite quadratic type vanishes on $\Sbeta$, composing with the principal
+square root turns it into a right-half-plane function of exponential type with zeros of
+linear density $1/(2\beta)$.  Carleman's formula gives the sharp lower bound
+$\tau_2\ge\pi/(2\beta)$.  Hence the exact finite vanishing spectrum is
+$[\pi/(2\beta),\infty)$, and the report's earlier infinite-type proposition is corrected.
+
+Let $\Tclass_\beta$ be the set of finite quadratic types of entire functions integer-valued
+on $\Sbeta$.  We prove
+\[
+ \{0\}\cup\left[\frac{\pi}{2\beta},\infty\right)\subseteq\Tclass_\beta,
+\]
+whereas Pila's theorem and the algebraic-dependence growth lemma exclude the interval
+\[
+  \left(0,\frac{1}{832\beta^2\log2\log3}\right].
+\]
+The only unresolved type range is therefore a finite
+middle interval, not the existence of positive finite type.  A Carleman-density covering
+theorem yields quantitative template, alphabet, and coincidence bounds.  It implies that
+a function at Pila's threshold must use at least approximately
+$416\pi\beta\log2\log3$ distinct states in any finite-value decoder unless the decoder
+collapses to a global identity.  We also prove that a subcritical polynomial decoder
+$g(n+k\beta)=P(n,k)$ must factor through $n+k\beta$; for algebraic-coefficient $P$ it is
+constant.  Two constant-coefficient recurrences in the coordinate directions force an
+exponential polynomial and hence quadratic type zero.
+
+Finally, specializing Pila's multi-function theorem gives an explicit weighted-simplex
+criterion for several integer-valued entire functions.  Applied to translates
+$g(z+h)$, $h\in\Sbeta$, it bounds the relative transcendence degree of the full translation
+orbit whenever $2\beta\tau_2(g)<29/75$.  This identifies a new proof programme in partial
+difference algebra.  Every assertion is labelled as proved here, classical input, exact
+computation, correction, or open target; no competitive announcement is used as a
+mathematical premise.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Scope, inherited structure, and the new frontier}
+\label{sec:scope}
+
+\subsection{The conjecture and the conditional monoid}
+
+Write
+\[
+ \vartheta=\frac{\log3}{\log2}.
+\]
+The Alaoglu--Erd\H{o}s conjecture is equivalently the assertion that
+$m^\vartheta\in\Z$ for $m\in\N$ forces $m$ to be a power of two.  It is also the special
+positive-integral $2\times2$ case of the four exponentials conjecture obtained from the two
+$\Q$-independent pairs $(1,x)$ and $(\log2,\log3)$.
+
+The present report does not repeat the large structural corpus of the predecessor~\cite{Unified6}.  It uses
+the following conditional package as input.
+
+\begin{itemize}
+\item If a nonintegral solution exists, there is a unique least one, denoted $\beta>0$.
+\item The complete solution set is the free additive monoid
+\[
+ \Sbeta=\{n+k\beta:n,k\in\Nzero\}.
+\]
+\item The representation $n+k\beta$ is unique because $\beta$ is irrational; indeed
+$\beta$ is transcendental by Gelfond--Schneider.
+\item Every $s\in\Sbeta$ satisfies $2^s,3^s\in\Z$.
+\item The predecessor's kernel-checked finite region gives $\beta\ge14$; its wider
+software scan gives $\beta>27$ under the stated computational trust boundary.
+\end{itemize}
+
+Only the first four items are needed for the proofs below.  The numerical lower bounds on
+$\beta$ are used solely to illustrate the size of the resulting constants.
+
+\subsection{What is corrected}
+
+The predecessor report contains the following claim:
+
+\begin{quote}
+Every entire function vanishing on all of $\Sbeta$ has infinite quadratic type.
+\end{quote}
+
+Its supporting calculation correctly detects that the genus-two canonical product having
+\emph{exactly} the positive zeros $\Sbeta$ has growth of order $r^2\log r$ in a bad
+direction.  The logical leap from that specific product to all entire functions vanishing
+on $\Sbeta$ is incorrect.  At integer order, angular Lindel\"of cancellation matters.
+Additional zeros can cancel the divergent reciprocal-square moment and reduce the maximum
+modulus from $r^2\log r$ to exact finite quadratic type.  The fourfold rotational product
+$H_\beta$ on the title page does precisely this.
+
+\begin{statusbox}{\statuscorrection.  The counterexample is explicit, its convergence is
+absolute on compact sets, and its exact type is proved in Section~\ref{sec:rotprod}.}
+\end{statusbox}
+
+\subsection{Main theorems of this report}
+
+For an entire function $f$, set
+\[
+ M(f,r)=\max_{|z|=r}|f(z)|,
+ \qquad
+ \tau_2(f)=\limsup_{r\to\infty}\frac{\log M(f,r)}{r^2}
+ \in[0,\infty].
+\]
+The report establishes the following new statements.
+
+\begin{enumerate}
+\item \textbf{Exact rotational products.}  For every integer $m\ge3$,
+\[
+ \tau_2(H_{m,\beta})
+ =\frac{\pi}{2\beta\sin(2\pi/m)}.
+\]
+The minimum over $m$ is attained uniquely at $m=4$.
+
+\item \textbf{Sharp zero-set threshold.}  If $f\not\equiv0$ is entire, vanishes on
+$\Sbeta$, and has finite quadratic type, then
+\[
+ \tau_2(f)\ge \Cbeta:=\frac{\pi}{2\beta}.
+\]
+Equality is attained by $H_\beta=H_{4,\beta}$.
+
+\item \textbf{Complete vanishing spectrum.}
+\[
+ \Vclass_\beta
+ :=\{\tau_2(f):f\not\equiv0,\ f|_{\Sbeta}=0,\ \tau_2(f)<\infty\}
+ = [\Cbeta,\infty).
+\]
+
+\item \textbf{Corrected integer-valued spectrum.}  If
+\[
+ \Tclass_\beta
+ :=\{\tau_2(g):g\text{ entire},\ g(\Sbeta)\subseteq\Z,
+                       \ \tau_2(g)<\infty\},
+\]
+then
+\[
+ \{0\}\cup[\Cbeta,\infty)\subseteq\Tclass_\beta.
+\]
+Pila's theorem conditionally excludes a small interval immediately above zero.  Thus the
+unknown range is finite.
+
+\item \textbf{Carleman-density covering.}  If finitely many zero sets of entire functions
+cover $\Sbeta$, the sum of their quadratic types is at least $\Cbeta$.  This yields exact
+finite-template and finite-alphabet complexity lower bounds.
+
+\item \textbf{Decoder rigidity.}  Below $\Cbeta$, polynomial coordinate decoders and two
+constant-coefficient recurrences collapse to type zero.  At Pila's much smaller threshold,
+any finite-state description must have a state count on the order of $10^4$ already at
+$\beta=14$.
+
+\item \textbf{Multi-function and translation-rank gate.}  Pila's general theorem for
+several additional functions gives a weighted-simplex criterion.  Applied to the translates
+of one interpolant, it forces finite transformal transcendence degree under the shifts
+$1$ and $\beta$.  This is the principal new open route.
+\end{enumerate}
+
+\subsection{What is not claimed}
+
+No theorem below excludes the middle type interval
+\[
+ \left(\frac{1}{832\beta^2\log2\log3},\frac{\pi}{2\beta}\right).
+\]
+No construction in that interval is supplied.  The conjecture therefore remains open.  The
+progress is instead an exact correction, a solved extremal problem, several new rigidity
+theorems, and a narrower difference-algebraic target.
+
+\section{Counting the conditional solution monoid}
+\label{sec:counting}
+
+Throughout the rest of the report we work conditionally: assume a counterexample exists and
+let $\beta$ be its canonical least generator.  Put
+\[
+ \Sbeta=\{n+k\beta:n,k\in\Nzero\},
+ \qquad
+ N_\beta(R)=\#\bigl(\Sbeta\cap(0,R]\bigr).
+\]
+
+\begin{proposition}[Quadratic counting law]
+\label{prop:counting}
+As $R\to\infty$,
+\[
+ N_\beta(R)=\frac{R^2}{2\beta}+O_\beta(R).
+\]
+More explicitly, if $K=\lfloor R/\beta\rfloor$, then
+\[
+ N_\beta(R)=
+ \sum_{k=0}^{K}\bigl(\lfloor R-k\beta\rfloor+1\bigr)-1.
+\]
+\end{proposition}
+
+\begin{proof}
+Irrationality of $\beta$ gives unique coordinates.  For a fixed $k$, the admissible values
+of $n$ are $0\le n\le R-k\beta$, hence the displayed exact sum.  Replacing every floor by
+its argument creates an error bounded by $K+1=O_\beta(R)$, and
+\[
+ \sum_{k=0}^{K}(R-k\beta+1)
+ =(K+1)(R+1)-\frac{\beta K(K+1)}2
+ =\frac{R^2}{2\beta}+O_\beta(R).
+\]
+Removing the origin changes the result by one.
+\end{proof}
+
+Set
+\[
+ d_\beta:=\frac1{2\beta}.
+\]
+Thus $N_\beta(R)=d_\beta R^2+O_\beta(R)$.
+
+\begin{corollary}[Reciprocal-power sums]
+\label{cor:reciprocal}
+As $R\to\infty$,
+\[
+ \sum_{\substack{s\in\Sbeta\\0<s\le R}}\frac1{s^2}
+ =\frac1\beta\log R+O_\beta(1)
+ =2d_\beta\log R+O_\beta(1).
+\]
+For every $m>2$,
+\[
+ \sum_{s\in\Sbeta\setminus\{0\}}\frac1{s^m}<\infty.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Stieltjes partial summation to $N_\beta(t)$.  For the critical exponent,
+\[
+ \sum_{s\le R}s^{-2}
+ =\frac{N_\beta(R)}{R^2}+2\int_{1^-}^{R}\frac{N_\beta(t)}{t^3}\,dt
+ =2d_\beta\log R+O_\beta(1).
+\]
+For $m>2$, the corresponding integral has integrand $O(t^{1-m})$ and converges.
+\end{proof}
+
+\begin{corollary}[The squared sequence]
+\label{cor:squared}
+Let
+\[
+ \Lambda_\beta=\{s^2:s\in\Sbeta\setminus\{0\}\}.
+\]
+Its counting function satisfies
+\[
+ N_{\Lambda_\beta}(T)=d_\beta T+O_\beta(\sqrt T).
+\]
+\end{corollary}
+
+\begin{proof}
+This is Proposition~\ref{prop:counting} with $R=\sqrt T$.
+\end{proof}
+
+The passage from quadratic density on a ray to linear density after squaring is the source
+of the exact constant $\pi d_\beta$ below.
+
+\section{Why the exact-zero canonical product has infinite type}
+\label{sec:audit}
+
+The erroneous proposition in the predecessor report arose from a true calculation applied
+to the wrong class of functions.  It is useful to preserve the true part.
+
+Let
+\[
+ E_2(w)=(1-w)\exp\left(w+\frac{w^2}{2}\right)
+\]
+be the genus-two primary factor, and define the canonical product with \emph{exactly} the
+prescribed positive zeros
+\[
+ P_\beta(z)=z\prod_{s\in\Sbeta\setminus\{0\}}E_2(z/s).
+\]
+The product converges because $\sum s^{-3}<\infty$.
+
+\begin{proposition}[The one-ray exact-zero product is of infinite quadratic type]
+\label{prop:oneray}
+Along the negative real axis,
+\[
+ \log|P_\beta(-r)|\ge d_\beta r^2\log r-O_\beta(r^2).
+\]
+Consequently $\tau_2(P_\beta)=+\infty$.
+\end{proposition}
+
+\begin{proof}
+For $x\ge0$,
+\[
+ \log E_2(-x)=\log(1+x)-x+\frac{x^2}{2}.
+\]
+The expression is nonnegative because its derivative is $x^2/(1+x)$.  Hence the factors
+with $s>r$ contribute nonnegatively.  For $s\le r$, discard the nonnegative logarithm and
+sum the remaining terms:
+\[
+ \begin{aligned}
+ \log|P_\beta(-r)|
+ &\ge \log r-r\sum_{s\le r}\frac1s
+       +\frac{r^2}{2}\sum_{s\le r}\frac1{s^2}.
+ \end{aligned}
+\]
+Partial summation gives $\sum_{s\le r}s^{-1}=2d_\beta r+O_\beta(\log r)$, while
+Corollary~\ref{cor:reciprocal} gives
+$\sum_{s\le r}s^{-2}=2d_\beta\log r+O_\beta(1)$.  Substitution proves the claim.
+\end{proof}
+
+\begin{warning}[The precise logical failure]
+Proposition~\ref{prop:oneray} concerns the canonical product whose zero divisor is exactly
+$\Sbeta$.  An arbitrary entire function that vanishes on $\Sbeta$ may have additional
+zeros.  At integer order two, those extra zeros can cancel the divergent reciprocal-square
+angular moment.  It is therefore false that the exact-zero product minimizes maximum-modulus
+growth over all zero divisors containing $\Sbeta$.
+\end{warning}
+
+The next section gives the elementary regularization.  Its factor has no quadratic term at
+all:
+\[
+ \log\left(1-\frac{z^4}{s^4}\right)
+ =-\frac{z^4}{s^4}+O\left(\frac{|z|^8}{s^8}\right).
+\]
+Thus the divergent sum $\sum s^{-2}$ never appears.
+
+\section{Rotational regularization and exact type}
+\label{sec:rotprod}
+
+\subsection{The cyclotomic products}
+
+For an integer $m\ge3$, define
+\begin{equation}
+ H_{m,\beta}(z)
+ :=z\prod_{s\in\Sbeta\setminus\{0\}}
+          \left(1-\frac{z^m}{s^m}\right).
+ \label{eq:Hm}
+\end{equation}
+Each factor adds the full $m$-fold root-of-unity orbit of $s$ to the zero set.  In
+particular, every positive $s\in\Sbeta$ remains a zero.
+
+\begin{lemma}[Local uniform convergence]
+\label{lem:convergence}
+For every integer $m\ge3$, the product in \eqref{eq:Hm} converges locally uniformly and
+defines an entire function.
+\end{lemma}
+
+\begin{proof}
+Corollary~\ref{cor:reciprocal} gives $\sum_s s^{-m}<\infty$.  On a compact disk
+$|z|\le R$, the series $\sum_s|z|^m/s^m$ converges uniformly.  The standard infinite-product
+criterion applies.
+\end{proof}
+
+\begin{lemma}[Exact maximum modulus]
+\label{lem:maxmod}
+For every $r>0$,
+\[
+ M(H_{m,\beta},r)
+ =r\prod_{s\in\Sbeta\setminus\{0\}}
+       \left(1+\frac{r^m}{s^m}\right).
+\]
+Equality is attained at every ray satisfying $z^m=-r^m$.
+\end{lemma}
+
+\begin{proof}
+For $|z|=r$,
+\[
+ \left|1-\frac{z^m}{s^m}\right|
+ \le1+\frac{r^m}{s^m}.
+\]
+All these inequalities become equalities simultaneously when $z^m=-r^m$.
+\end{proof}
+
+\begin{theorem}[Exact type of the rotational products]
+\label{thm:Hmtype}
+For every integer $m\ge3$,
+\begin{equation}
+ \log M(H_{m,\beta},r)
+ =\pi d_\beta\csc\left(\frac{2\pi}{m}\right)r^2
+   +O_{\beta,m}(r+\log r).
+ \label{eq:Hmasymp}
+\end{equation}
+Equivalently,
+\begin{equation}
+ \tau_2(H_{m,\beta})
+ =\frac{\pi}{2\beta\sin(2\pi/m)}.
+ \label{eq:Hmtype}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:maxmod} and Stieltjes integration,
+\[
+ \begin{aligned}
+ \log M(H_{m,\beta},r)-\log r
+ &=\int_{0^+}^{\infty}\log\left(1+\frac{r^m}{t^m}\right)\,dN_\beta(t)\\
+ &=m r^m\int_{0^+}^{\infty}
+       \frac{N_\beta(t)}{t(t^m+r^m)}\,dt.
+ \end{aligned}
+\]
+Insert $N_\beta(t)=d_\beta t^2+O_\beta(t+1)$.  The main term is
+\[
+ m d_\beta r^m\int_0^\infty\frac{t}{t^m+r^m}\,dt
+ =m d_\beta r^2\int_0^\infty\frac{u}{1+u^m}\,du.
+\]
+The beta-integral identity
+\[
+ \int_0^\infty\frac{u^{a-1}}{1+u^m}\,du
+ =\frac{\pi}{m}\csc\left(\frac{\pi a}{m}\right)
+ \qquad(0<a<m)
+\]
+with $a=2$ gives the coefficient in \eqref{eq:Hmasymp}.  The $O(t)$ part of the counting
+error contributes $O_{\beta,m}(r)$; the bounded part contributes $O_{\beta,m}(\log r)$.
+\end{proof}
+
+\begin{corollary}[The optimal rotational order]
+\label{cor:m4}
+Among integers $m\ge3$, the type in \eqref{eq:Hmtype} is minimized uniquely at $m=4$.
+Thus
+\begin{equation}
+ H_\beta(z):=H_{4,\beta}(z)
+ =z\prod_{s\in\Sbeta\setminus\{0\}}
+       \left(1-\frac{z^4}{s^4}\right)
+ \label{eq:H4}
+\end{equation}
+satisfies
+\begin{equation}
+ \tau_2(H_\beta)=\Cbeta:=\frac{\pi}{2\beta}.
+ \label{eq:Cbeta}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For $m\ge3$, the quantity $\sin(2\pi/m)$ is at most $1$, with equality exactly for
+$m=4$.
+\end{proof}
+
+\begin{remark}[Why four rotations are natural]
+The exponent of convergence of $\Sbeta$ is two.  A genus-zero cyclotomic factor must begin
+at degree strictly larger than two, so $m\ge3$.  The type constant is controlled by the
+angle of a maximum-modulus ray.  The fourth roots place that ray at $\pi/4$, exactly the
+balanced direction for the squaring map used in the sharp lower bound.
+\end{remark}
+
+\begin{statusbox}{The convergence, exact maximum-modulus identity, asymptotic, and optimality
+are \statusproved.  They provide an explicit counterexample to the predecessor's
+infinite-type proposition.}
+\end{statusbox}
+
+\section{A sharp quadratic Carlson--Carleman theorem}
+\label{sec:carleman}
+
+The product $H_\beta$ gives an upper bound for the least possible type of a function
+vanishing on $\Sbeta$.  The lower bound comes from a half-plane zero-density theorem.  The
+proof is a quadratic-order version of Carlson's theorem: square the variable, then apply
+Carleman's formula in a half-plane.
+
+\subsection{Carleman's half-plane inequality}
+
+We record only the form needed here.  A derivation from Green's identity appears in
+Appendix~\ref{app:carleman}.
+
+\begin{lemma}[Carleman inequality]
+\label{lem:carleman}
+Let $F$ be holomorphic in the open right half-plane and suppose that for every
+$\varepsilon>0$,
+\[
+ \log^+|F(w)|\le(\sigma+\varepsilon)|w|+O_\varepsilon(1)
+ \qquad(\Re w>0).
+\]
+Let $\{\lambda_j\}$ be the positive real zeros of $F$, counted with multiplicity.  Then,
+for boundary-regular radii $R\to\infty$,
+\begin{equation}
+ \sum_{1<\lambda_j<R}
+ \left(\frac1{\lambda_j}-\frac{\lambda_j}{R^2}\right)
+ \le \frac{\sigma+\varepsilon}{\pi}\log R+O_{F,\varepsilon}(1).
+ \label{eq:carlemanineq}
+\end{equation}
+The same asymptotic inequality holds for arbitrary $R$ after harmless one-sided limiting.
+\end{lemma}
+
+\begin{remark}
+For zeros at all positive integers, the left side is $\log R+O(1)$, so
+Lemma~\ref{lem:carleman} gives $\sigma\ge\pi$.  This is the classical Carlson constant.
+The modern uniqueness-set literature formulates the same phenomenon through angular density
+and trigonometrically convex indicators; see Grishin--Sodin and the recent series of
+Kononova cited in Section~\ref{sec:literature}.
+\end{remark}
+
+\subsection{The general ray-density theorem}
+
+\begin{theorem}[Quadratic ray-density lower bound]
+\label{thm:raydensity}
+Let $A\subset(0,\infty)$ be discrete and suppose
+\[
+ N_A(r):=\#(A\cap(0,r])=d r^2+o(r^2)
+\]
+for some $d>0$.  If $f\not\equiv0$ is entire, $f|_A=0$, and $\tau_2(f)<\infty$, then
+\begin{equation}
+ \tau_2(f)\ge\pi d.
+ \label{eq:raylower}
+\end{equation}
+If the counting error is $O(r)$, the proof gives an $O(1)$ error after the leading
+$d\log R$ Carleman term.
+\end{theorem}
+
+\begin{proof}
+Choose the principal square root on the right half-plane and put
+\[
+ F(w)=f(\sqrt w).
+\]
+If necessary, divide $f$ by a power of $z$ so that behavior at the boundary point $w=0$
+does not enter.  The function $F$ is holomorphic for $\Re w>0$.  By the definition of
+quadratic type, for every $\varepsilon>0$,
+\[
+ \log^+|F(w)|
+ \le(\tau_2(f)+\varepsilon)|w|+O_\varepsilon(1).
+\]
+Its positive real zeros include
+\[
+ \Lambda_A=\{a^2:a\in A\},
+\]
+whose counting function is $N_{\Lambda_A}(T)=dT+o(T)$.
+
+Apply Lemma~\ref{lem:carleman}.  Partial summation gives
+\[
+ \begin{aligned}
+ \sum_{\substack{a\in A\\1<a^2<R}}
+ \left(\frac1{a^2}-\frac{a^2}{R^2}\right)
+ &=d\log R+o(\log R).
+ \end{aligned}
+\]
+Indeed,
+\[
+ \sum_{\lambda<R}\frac1\lambda
+ =\frac{N_{\Lambda_A}(R)}R+
+   \int_{1^-}^{R}\frac{N_{\Lambda_A}(t)}{t^2}\,dt
+ =d\log R+O(1)+o(\log R),
+\]
+whereas
+\[
+ \frac1{R^2}\sum_{\lambda<R}\lambda
+ =\frac1{R^2}\left(RN_{\Lambda_A}(R)-
+   \int_{1^-}^{R}N_{\Lambda_A}(t)\,dt\right)
+ =\frac d2+o(1).
+\]
+Comparing with \eqref{eq:carlemanineq}, dividing by $\log R$, and letting
+$\varepsilon\downarrow0$ yields $d\le\tau_2(f)/\pi$.
+\end{proof}
+
+\subsection{The exact threshold for the solution monoid}
+
+\begin{theorem}[Sharp quadratic zero-set threshold]
+\label{thm:sharpthreshold}
+If $f\not\equiv0$ is entire, $f(s)=0$ for all $s\in\Sbeta$, and
+$\tau_2(f)<\infty$, then
+\begin{equation}
+ \tau_2(f)\ge\Cbeta=\frac{\pi}{2\beta}.
+ \label{eq:sharpthreshold}
+\end{equation}
+The constant is sharp, attained by $H_\beta$.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:counting} gives density $d_\beta=1/(2\beta)$, so
+Theorem~\ref{thm:raydensity} gives the lower bound.  Corollary~\ref{cor:m4} gives equality.
+\end{proof}
+
+\begin{corollary}[Subcritical uniqueness]
+\label{cor:uniqueness}
+If entire functions $f$ and $g$ satisfy
+\[
+ \max\{\tau_2(f),\tau_2(g)\}<\Cbeta
+\]
+and agree on $\Sbeta$, then $f\equiv g$.
+\end{corollary}
+
+\begin{proof}
+The difference $f-g$ has type at most the maximum of the two types and vanishes on
+$\Sbeta$.  Theorem~\ref{thm:sharpthreshold} forces it to be zero.
+\end{proof}
+
+\begin{remark}[A true minimal-growth statement]
+The false assertion ``every vanishing function has infinite type'' is replaced by a sharp
+and complete statement: $\Sbeta$ is a uniqueness set for the open quadratic-type ball
+$\tau_2<\pi/(2\beta)$, and it ceases to be a uniqueness set exactly at the boundary.
+\end{remark}
+
+\begin{statusbox}{Theorem~\ref{thm:raydensity} is \statusproved from the classical
+Carleman formula \statusclassical.  The exactness for $\Sbeta$ is \statusproved.}
+\end{statusbox}
+
+\section{The complete finite vanishing spectrum}
+\label{sec:vanishingspectrum}
+
+Define
+\[
+ \Vclass_\beta=
+ \left\{\tau_2(f):
+ f\not\equiv0,\ f|_{\Sbeta}=0,\ \tau_2(f)<\infty\right\}.
+\]
+The sharp threshold identifies the left endpoint.  A simple rotated Gaussian factor fills
+the whole remaining half-line.
+
+\begin{theorem}[Exact vanishing spectrum]
+\label{thm:vanishingspectrum}
+One has
+\begin{equation}
+ \Vclass_\beta=[\Cbeta,\infty).
+ \label{eq:vanishingspectrum}
+\end{equation}
+More explicitly, for every $a\ge0$ the function
+\begin{equation}
+ H_{\beta,a}(z)=\exp(-ia z^2)H_\beta(z)
+ \label{eq:Hba}
+\end{equation}
+vanishes on $\Sbeta$ and satisfies
+\[
+ \tau_2(H_{\beta,a})=\Cbeta+a.
+\]
+\end{theorem}
+
+\begin{proof}
+The lower inclusion follows from Theorem~\ref{thm:sharpthreshold}.  For the reverse
+inclusion, the upper bound
+\[
+ M(H_{\beta,a},r)\le \ee^{a r^2}M(H_\beta,r)
+\]
+gives $\tau_2(H_{\beta,a})\le a+\Cbeta$.  On the ray
+$z=r\ee^{i\pi/4}$ one has $z^4=-r^4$, so Lemma~\ref{lem:maxmod} gives
+$|H_\beta(z)|=M(H_\beta,r)$.  Also $z^2=ir^2$, hence
+\[
+ |\exp(-ia z^2)|=\ee^{a r^2}.
+\]
+Therefore equality holds in the type estimate.
+\end{proof}
+
+\begin{corollary}[No spectral gap above the zero-set threshold]
+Finite positive types of vanishing functions are not exceptional: every type at or above
+$\pi/(2\beta)$ occurs.  What is exceptional is the entire open interval below that value,
+where the only vanishing function is zero.
+\end{corollary}
+
+\begin{remark}[No appeal to complete regularity is needed]
+Recent angular-density theory predicts the same critical value and describes extremal
+indicators geometrically.  The special fourfold product here is simpler: the exact
+maximum-modulus ray and the rotated Gaussian prove the full spectrum without invoking a
+classification of completely regular growth.
+\end{remark}
+
+\section{The corrected integer-valued type spectrum and the Pila gap}
+\label{sec:pilagap}
+
+\subsection{The spectrum of integer-valued entire functions}
+
+Let
+\[
+ \Tclass_\beta=
+ \left\{\tau_2(g):
+ g\text{ entire},\ g(\Sbeta)\subseteq\Z,\ \tau_2(g)<\infty\right\}.
+\]
+The predecessor report suggested that natural constructions might realize only type zero
+or infinite type.  The rotational products show otherwise.
+
+\begin{theorem}[A large explicit part of the integer-valued spectrum]
+\label{thm:integerspectrum}
+One has
+\begin{equation}
+ \{0\}\cup[\Cbeta,\infty)\subseteq\Tclass_\beta.
+ \label{eq:integerspectrum}
+\end{equation}
+For $\tau\ge\Cbeta$, an explicit representative is
+\begin{equation}
+ g_\tau(z)=2^z+
+ \exp\bigl(-i(\tau-\Cbeta)z^2\bigr)H_\beta(z).
+ \label{eq:gtau}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Type zero is represented by constants, polynomials in $2^z$ and $3^z$, and many other
+order-one functions.  For $s\in\Sbeta$, $H_\beta(s)=0$ and $2^s\in\Z$, so
+$g_\tau(s)\in\Z$.  The second summand has type $\tau$ by
+Theorem~\ref{thm:vanishingspectrum}; the first has order one.  Along the maximum ray of the
+second summand its magnitude is $\exp(\tau r^2+o(r^2))$, while $|2^z|=\exp(O(r))$, so no
+leading cancellation is possible.  Hence $\tau_2(g_\tau)=\tau$.
+\end{proof}
+
+\subsection{Pila's sufficient threshold}
+
+Pila's theorem on entire functions sharing arguments of integrality specializes to the
+following conditional statement.  It is a classical input, not reproved here.
+
+\begin{theorem}[Pila, specialized]
+\label{thm:pila}
+Assume $\beta$ is a counterexample generator.  If an entire function $g$ is integer-valued
+on $\Sbeta$ and
+\begin{equation}
+ 0<\tau_2(g)\le
+ \TP:=\frac{1}{832\beta^2\log2\log3},
+ \label{eq:TP}
+\end{equation}
+then $2^z,3^z,g(z)$ are algebraically dependent.
+\end{theorem}
+
+The predecessor report also proves the following growth consequence.
+
+\begin{proposition}[Algebraic dependence forces quadratic type zero]
+\label{prop:algdepzero}
+If an entire $g$ is algebraic over $\C(2^z,3^z)$, then $g$ has order at most one in the
+Nevanlinna sense and in particular $\tau_2(g)=0$.
+\end{proposition}
+
+Combining the two gives the contradiction sought by the Pila programme: any construction
+with \eqref{eq:TP} proves the Alaoglu--Erd\H{o}s conjecture.
+
+\begin{corollary}[The true unresolved type interval]
+\label{cor:trueinterval}
+Conditional on a counterexample,
+\begin{equation}
+ \Tclass_\beta\cap(0,\TP]=\varnothing,
+ \qquad
+ [\Cbeta,\infty)\subseteq\Tclass_\beta.
+ \label{eq:trueinterval}
+\end{equation}
+Thus the only unknown finite positive types lie in
+\begin{equation}
+ \boxed{
+ \left(\frac{1}{832\beta^2\log2\log3},
+       \frac{\pi}{2\beta}\right).}
+ \label{eq:middleinterval}
+\end{equation}
+\end{corollary}
+
+\subsection{The exact size of the gap}
+
+The ratio between the least vanishing type and Pila's threshold is
+\begin{equation}
+ \frac{\Cbeta}{\TP}
+ =416\pi\beta\log2\log3
+ =995.206300791\ldots\,\beta.
+ \label{eq:gapratio}
+\end{equation}
+The reciprocal is
+\[
+ \frac{\TP}{\Cbeta}
+ =\frac1{416\pi\beta\log2\log3}.
+\]
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$\beta$ & $\Cbeta$ & $\TP$ & $\Cbeta/\TP$ & $\TP/\Cbeta$\\
+\midrule
+$14$ & $1.1219973763\times10^{-1}$ & $8.0528700100\times10^{-6}$
+     & $1.3932888211\times10^4$ & $7.1772627818\times10^{-5}$\\
+$27$ & $5.8177641733\times10^{-2}$ & $2.1651063401\times10^{-6}$
+     & $2.6870570121\times10^4$ & $3.7215436646\times10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Comparison with the earlier Jensen estimate]
+The predecessor's elementary Jensen lower bound for a vanishing function was
+$1/(4\beta)$.  The exact value $\pi/(2\beta)$ is larger by the factor $2\pi$.  More
+importantly, the earlier claim of an infinite separation is replaced by the finite and exact
+ratio \eqref{eq:gapratio}.
+\end{remark}
+
+\subsection{A decisive methodological consequence}
+
+\begin{corollary}[Null-function correction cannot enter the Pila regime]
+\label{cor:nullcorrection}
+Let $F$ be any entire function and let $H\not\equiv0$ vanish on $\Sbeta$.  If both have
+finite quadratic type, then $\tau_2(H)\ge\Cbeta$.  In particular, adding a nonzero null
+function to an interpolant cannot preserve any type bound below $\Cbeta$, let alone Pila's
+threshold $\TP$.
+\end{corollary}
+
+This closes a broad class of strategies: one cannot first build a convenient small function
+with approximately integral values and then repair all values by adding a low-growth entire
+function vanishing on the grid.  Below $\Cbeta$, interpolation data determine the function
+uniquely.
+
+\begin{statusbox}{The spectrum inclusion and exact gap are \statusproved.  The exclusion
+$(0,\TP]$ uses Pila's theorem \statusclassical and the inherited algebraic-growth lemma.}
+\end{statusbox}
+
+\section{Carleman density and finite zero covers}
+\label{sec:cover}
+
+The sharp threshold has a local form that measures subsets of the monoid.  It is the right
+tool for finite templates, alphabets, and decoder complexity.
+
+\begin{definition}[Quadratic Carleman density]
+For a discrete set $A\subset(1,\infty)$, define
+\begin{equation}
+ \DC(A)=\limsup_{R\to\infty}\frac1{\log R}
+ \sum_{\substack{a\in A\\a^2<R}}
+ \left(\frac1{a^2}-\frac{a^2}{R^2}\right).
+ \label{eq:DC}
+\end{equation}
+\end{definition}
+
+For a set with $N_A(r)=d r^2+O(r)$, the calculation in
+Theorem~\ref{thm:raydensity} gives $\DC(A)=d$.  In particular,
+\begin{equation}
+ \DC(\Sbeta\setminus\{0,1\})=d_\beta=\frac1{2\beta}.
+ \label{eq:DCS}
+\end{equation}
+Removing or adding finitely many points does not change the density.
+
+\begin{theorem}[Zero-density bound]
+\label{thm:DCzero}
+If $h\not\equiv0$ is entire of finite quadratic type $\tau$ and $A\subset(1,\infty)$ is a
+subset of its positive real zeros, then
+\begin{equation}
+ \DC(A)\le\frac{\tau}{\pi}.
+ \label{eq:DCzero}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Repeat the proof of Theorem~\ref{thm:raydensity} without assuming an asymptotic counting
+law.  Lemma~\ref{lem:carleman} directly gives \eqref{eq:DCzero}.
+\end{proof}
+
+\begin{theorem}[Finite zero-cover inequality]
+\label{thm:zerocover}
+Let $h_1,\dots,h_K$ be nonzero entire functions of finite quadratic types
+$\tau_1,\dots,\tau_K$.  If
+\[
+ \Sbeta\subseteq\bigcup_{j=1}^{K}\{s\in\R:h_j(s)=0\},
+\]
+then
+\begin{equation}
+ \boxed{\Cbeta\le\sum_{j=1}^{K}\tau_j.}
+ \label{eq:coverineq}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+At every finite $R$, the nonnegative Carleman weight contributed by $\Sbeta$ is at most the
+sum of the corresponding weights over the positive zeros of the $h_j$.  Divide by
+$\log R$, take limsups, use Theorem~\ref{thm:DCzero}, and multiply by $\pi$.
+\end{proof}
+
+\begin{corollary}[Multiplicity form]
+If every $s\in\Sbeta$ is a zero of total multiplicity at least $q$ across the functions
+$h_1,\dots,h_K$, then
+\[
+ q\Cbeta\le\sum_{j=1}^{K}\tau_j.
+\]
+In particular, a single function vanishing to multiplicity at least $q$ on $\Sbeta$ has
+type at least $q\Cbeta$.
+\end{corollary}
+
+\subsection{Template and coincidence bounds}
+
+\begin{theorem}[Finite-template bound]
+\label{thm:templates}
+Let $g,F_1,\dots,F_K$ be entire functions of finite quadratic type.  Assume
+$g\not\equiv F_j$ for every $j$ and that, for every $s\in\Sbeta$, one has
+\[
+ g(s)\in\{F_1(s),\dots,F_K(s)\}.
+\]
+Then
+\begin{equation}
+ \Cbeta\le
+ \sum_{j=1}^{K}\max\{\tau_2(g),\tau_2(F_j)\}.
+ \label{eq:templatebound}
+\end{equation}
+If all $F_j$ have type zero and $\tau_2(g)=\tau>0$, then
+\begin{equation}
+ K\tau\ge\Cbeta.
+ \label{eq:Ktau}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The nonzero residuals $h_j=g-F_j$ have type at most the displayed maxima, and their zero
+sets cover $\Sbeta$.  Apply Theorem~\ref{thm:zerocover}.
+\end{proof}
+
+\begin{corollary}[Coincidence density with one model]
+\label{cor:coincidence}
+Let $F$ have type zero and let $g\not\equiv F$ have type $\tau<\infty$.  Then the
+coincidence set
+\[
+ A_F=\{s\in\Sbeta:g(s)=F(s)\}
+\]
+satisfies
+\[
+ \DC(A_F)\le\frac{\tau}{\pi}.
+\]
+Relative to the full monoid Carleman density, the proportion is at most
+\[
+ \frac{\DC(A_F)}{\DC(\Sbeta)}\le\frac{\tau}{\Cbeta}.
+\]
+\end{corollary}
+
+At Pila's threshold this relative upper bound is
+\[
+ \frac{\TP}{\Cbeta}
+ =\frac1{416\pi\beta\log2\log3}.
+\]
+For $\beta=14$ it is approximately $7.18\times10^{-5}$, or $0.00718\%$.
+Thus a Pila-killing function cannot be a sparse perturbation of any fixed type-zero model:
+it must disagree with that model on more than $99.9928\%$ of the monoid in Carleman density.
+
+\begin{statusbox}{The zero-density, cover, template, and coincidence inequalities are
+\statusproved.}
+\end{statusbox}
+
+\section{Finite alphabets, carries, and local decoder complexity}
+\label{sec:alphabet}
+
+The cover theorem is especially effective when the covering functions are obtained by
+subtracting finitely many possible values from one type-preserving observable.
+
+\subsection{A general alphabet lemma}
+
+For $h\in\C$, let $\Tsh{h}$ denote translation:
+\[
+ (\Tsh{h}g)(z)=g(z+h).
+\]
+A finite translation operator is an expression
+\[
+ L=\sum_{\nu=1}^{r}c_\nu\Tsh{h_\nu},
+ \qquad c_\nu,h_\nu\in\C.
+\]
+Translations and finite linear combinations do not increase quadratic type.
+
+\begin{theorem}[Finite-alphabet dichotomy]
+\label{thm:alphabet}
+Let $g$ be entire with finite quadratic type $\tau$, let $L$ be a finite translation
+operator, and let $A\subset\C$ be finite.  Suppose
+\[
+ (Lg)(s)\in A\qquad(s\in\Sbeta).
+\]
+Then either
+\begin{enumerate}
+\item $Lg\equiv a$ for some $a\in A$, or
+\item $|A|\tau\ge\Cbeta$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For $a\in A$, put $h_a=Lg-a$.  The zero sets of the $h_a$ cover $\Sbeta$.  Each nonzero
+$h_a$ has type at most $\tau$.  If none is identically zero, apply
+Theorem~\ref{thm:zerocover}.
+\end{proof}
+
+\begin{corollary}[Value alphabet]
+\label{cor:valuealphabet}
+Let $g$ be a nonconstant entire function of positive finite quadratic type $\tau$ and
+suppose $g(\Sbeta)\subseteq A$ for a finite set $A$.  Then
+\[
+ |A|\ge\frac{\Cbeta}{\tau}.
+\]
+If $g$ is integer-valued, the same statement applies to any finite integer value alphabet.
+\end{corollary}
+
+\begin{corollary}[Pila-scale state explosion]
+\label{cor:stateexplosion}
+If $0<\tau\le\TP$, every finite value alphabet for a nonconstant integer-valued $g$ has
+cardinality at least
+\begin{equation}
+ \left\lceil\frac{\Cbeta}{\tau}\right\rceil
+ \ge
+ \left\lceil416\pi\beta\log2\log3\right\rceil.
+ \label{eq:states}
+\end{equation}
+At $\beta=14$, the right side is $13{,}933$; at $\beta=27$, it is $26{,}871$.
+\end{corollary}
+
+\subsection{Coordinate increments}
+
+For the sample array
+\[
+ u_{n,k}=g(n+k\beta),
+\]
+the two coordinate increments are
+\[
+ \Del{1}g=\Tsh{1}g-g,
+ \qquad
+ \Del{\beta}g=\Tsh{\beta}g-g.
+\]
+If $g$ is integer-valued on $\Sbeta$, both increments are integer-valued there.
+
+\begin{corollary}[Increment-alphabet dichotomy]
+\label{cor:incrementalphabet}
+Suppose $\Del{1}g(\Sbeta)$ is contained in a finite set $A_1$ and
+$\Del{\beta}g(\Sbeta)$ is contained in a finite set $A_\beta$.  Then, for each
+$h\in\{1,\beta\}$, either
+\[
+ \Del{h}g\equiv a_h\quad\text{for some }a_h\in A_h,
+\]
+or
+\[
+ |A_h|\tau_2(g)\ge\Cbeta.
+\]
+\end{corollary}
+
+\begin{proposition}[Two globally constant increments force constancy]
+\label{prop:twoconstantincrements}
+Let $g$ be entire and integer-valued on $\Sbeta$.  If
+\[
+ \Del{1}g\equiv a,
+ \qquad
+ \Del{\beta}g\equiv b
+\]
+for constants $a,b$, then $g$ is a constant integer.
+\end{proposition}
+
+\begin{proof}
+The values of the increments on $\Sbeta$ show $a,b\in\Z$.  Put $h(z)=g(z)-az$.
+Then $h$ is $1$-periodic and
+\[
+ h(z+\beta)-h(z)=b-a\beta=:c.
+\]
+On the real line, $h$ is bounded because it is continuous and $1$-periodic.  Iterating the
+last identity gives $h(x+k\beta)=h(x)+kc$, so $c=0$.  Thus $h$ has the two real periods
+$1$ and $\beta$.  Their integer span is dense in $\R$, hence continuity makes $h$ constant
+on every horizontal line and the identity theorem makes it constant on $\C$.  Finally,
+$b=a\beta$ with $a,b\in\Z$ and irrational $\beta$ forces $a=b=0$.
+\end{proof}
+
+\begin{corollary}[At least one coordinate has a large alphabet]
+\label{cor:oneaxislarge}
+Let $g$ be integer-valued on $\Sbeta$ with $0<\tau_2(g)=\tau<\Cbeta$.  If both coordinate
+increment alphabets are finite, then at least one has cardinality at least
+$\lceil\Cbeta/\tau\rceil$.
+\end{corollary}
+
+\begin{proof}
+If both alphabets had cardinality strictly below $\Cbeta/\tau$, Corollary
+~\ref{cor:incrementalphabet} would make both increments globally constant, contradicting
+Proposition~\ref{prop:twoconstantincrements} and positive type.
+\end{proof}
+
+\subsection{Interpretation for carry languages}
+
+Many attempted constructions encode $g(n+k\beta)$ by a finite-state carry process.  A local
+observable of such a process typically has a finite alphabet after applying a fixed
+translation operator: a first difference, a short stencil, a carry defect, or a residue
+correction.  Theorem~\ref{thm:alphabet} gives a universal test.
+
+\begin{itemize}
+\item If the alphabet is smaller than $\Cbeta/\tau$, the observable is not merely simple
+on the monoid: it is a global entire identity.
+\item If the global identity is incompatible with irrationality or integrality, the
+construction is impossible.
+\item At Pila type, a surviving finite-state observable needs on the order of
+$10^4$ states even before any arithmetic height or denominator cost is imposed.
+\end{itemize}
+
+This is stronger than a Shannon-entropy heuristic.  It is an exact zero-cover obstruction
+coming from the angular concentration of the interpolation nodes.
+
+\begin{statusbox}{All alphabet and increment statements are \statusproved.}
+\end{statusbox}
+
+\section{Polynomial coordinate decoders are rigid}
+\label{sec:polydecoder}
+
+A natural attempt is to prescribe the integer values of $g$ by a low-complexity formula in
+the unique coordinates $(n,k)$ of $s=n+k\beta$.  Below the exact zero-set threshold, this
+is impossible except when the formula already comes from a one-variable polynomial in
+$s$.
+
+\subsection{Two finite-difference equations}
+
+Write
+\[
+ \Del{h}f(z)=f(z+h)-f(z),
+ \qquad
+ \Del{h}^{r}=\underbrace{\Del{h}\circ\cdots\circ\Del{h}}_{r\text{ times}}.
+\]
+
+\begin{lemma}[Two incommensurable polynomial-difference equations]
+\label{lem:twodifference}
+Let $\beta\notin\Q$.  If an entire function $G$ satisfies
+\[
+ \Del{1}^{p+1}G\equiv0,
+ \qquad
+ \Del{\beta}^{q+1}G\equiv0
+\]
+for nonnegative integers $p,q$, then $G$ is a polynomial of degree at most
+$\min\{p,q\}$.
+\end{lemma}
+
+\begin{proof}
+The equation $\Del{1}^{p+1}G=0$ has the standard Floquet--Newton form
+\begin{equation}
+ G(z)=\sum_{j=0}^{p}z^j P_j(z),
+ \label{eq:floquetpoly}
+\end{equation}
+where every $P_j$ is entire and $1$-periodic.  This follows by induction: the $p$th first
+difference is periodic, subtract a suitable binomial polynomial times that periodic
+function, and descend.
+
+Each $P_j$ has a locally normally convergent Fourier--Laurent expansion
+\[
+ P_j(z)=\sum_{m\in\Z}c_{j,m}\ee^{2\pi i m z}.
+\]
+Collecting powers of $z$ gives
+\[
+ G(z)=\sum_{m\in\Z}\ee^{2\pi i m z}Q_m(z),
+ \qquad \deg Q_m\le p.
+\]
+On the $m$th mode, $\Del{\beta}$ acts on polynomials by
+\[
+ Q(z)\longmapsto
+ \ee^{2\pi i m\beta}Q(z+\beta)-Q(z).
+\]
+For $m\ne0$, irrationality gives $\ee^{2\pi i m\beta}\ne1$.  The last operator is a
+nonzero scalar multiple of the identity plus a nilpotent operator on the finite-dimensional
+space of polynomials of degree at most $p$; it is therefore invertible.  The equation
+$\Del{\beta}^{q+1}G=0$ forces every $Q_m$ with $m\ne0$ to vanish.  The remaining mode
+$Q_0$ is a polynomial, and $\Del{\beta}^{q+1}Q_0=0$ gives $\deg Q_0\le q$.
+\end{proof}
+
+\subsection{The decoder theorem}
+
+\begin{theorem}[Polynomial decoder rigidity]
+\label{thm:polydecoder}
+Let $G$ be entire with
+\[
+ \tau_2(G)<\Cbeta.
+\]
+Suppose there is a polynomial $P(X,Y)\in\C[X,Y]$ such that
+\begin{equation}
+ G(n+k\beta)=P(n,k)
+ \qquad(n,k\in\Nzero).
+ \label{eq:decoder}
+\end{equation}
+Then there is a one-variable polynomial $Q\in\C[Z]$ for which
+\begin{equation}
+ G(z)=Q(z),
+ \qquad
+ P(X,Y)=Q(X+\beta Y).
+ \label{eq:factorline}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $p=\deg_XP$ and $q=\deg_YP$.  Evaluating the $(p+1)$st first difference at
+$s=n+k\beta$ gives
+\[
+ (\Del{1}^{p+1}G)(s)=0
+ \qquad(s\in\Sbeta).
+\]
+This entire residual has type at most $\tau_2(G)<\Cbeta$, so subcritical uniqueness makes
+it identically zero.  Similarly $\Del{\beta}^{q+1}G\equiv0$.  Lemma
+~\ref{lem:twodifference} gives $G=Q$ for a polynomial $Q$.
+
+The polynomial
+\[
+ R(X,Y)=P(X,Y)-Q(X+\beta Y)
+\]
+vanishes on $\Nzero^2$.  Fixing $Y=k$ shows $R(X,k)$ has infinitely many zeros in $X$,
+so it is zero.  Its coefficients as polynomials in $X$ then vanish at infinitely many $k$,
+therefore $R\equiv0$.
+\end{proof}
+
+\begin{corollary}[Algebraic-coefficient decoders are constant]
+\label{cor:algdecoder}
+Assume, as in the conditional structure theorem, that $\beta$ is transcendental.  In
+Theorem~\ref{thm:polydecoder}, if $P\in\Abar[X,Y]$, then $P$ and $G$ are constant.  If
+$G(\Sbeta)\subseteq\Z$, the constant is an integer.
+\end{corollary}
+
+\begin{proof}
+Suppose $Q$ in \eqref{eq:factorline} has degree $d\ge1$ and leading coefficient $c\ne0$.
+Then the coefficient of $X^d$ in $P$ is $c$, while the coefficient of $X^{d-1}Y$ is
+$dc\beta$.  Their ratio is $d\beta$, which cannot be algebraic.  Hence $d=0$.
+\end{proof}
+
+\begin{corollary}[No rational affine coordinate code]
+A subcritical entire function cannot satisfy
+\[
+ G(n+k\beta)=an+bk+c
+\]
+with $a,b,c\in\Q$ unless $a=b=0$ and $G\equiv c$.
+\end{corollary}
+
+\begin{remark}
+The theorem is not a statement that every low-type integer-valued function is polynomial.
+It says that if its values admit a polynomial decoder in the hidden coordinates $(n,k)$,
+then the decoder must forget those coordinates and depend only on the actual complex
+argument $n+k\beta$.  Transcendence of $\beta$ then kills every algebraic-coefficient
+nonconstant decoder.
+\end{remark}
+
+\begin{statusbox}{The finite-difference lemma and polynomial decoder theorem are
+\statusproved.}
+\end{statusbox}
+
+\section{Constant-coefficient recurrences and Hankel-rank collapse}
+\label{sec:recurrence}
+
+A second common low-complexity model is that each row and each column of the sample array
+satisfies a fixed linear recurrence.  In the entire-function setting, two incommensurable
+recurrences leave only exponential polynomials.
+
+\subsection{From sample recurrences to global equations}
+
+Let
+\[
+ A(U)=\sum_{j=0}^{r}a_jU^j,
+ \qquad
+ B(V)=\sum_{\ell=0}^{s}b_\ell V^\ell
+\]
+be nonzero polynomials.  The array $u_{n,k}=G(n+k\beta)$ satisfies the corresponding
+coordinate recurrences if
+\begin{align}
+ \sum_{j=0}^{r}a_j u_{n+j,k}&=0,
+ \label{eq:nrec}\\
+ \sum_{\ell=0}^{s}b_\ell u_{n,k+\ell}&=0
+ \label{eq:krec}
+\end{align}
+for all $n,k\ge0$.  Equivalently, the residual entire functions
+$A(\Tsh{1})G$ and $B(\Tsh{\beta})G$ vanish on $\Sbeta$.
+
+\begin{lemma}[Two incommensurable linear difference equations]
+\label{lem:twoCfinite}
+Let $\beta\notin\Q$.  If an entire function $G$ satisfies
+\[
+ A(\Tsh{1})G\equiv0,
+ \qquad
+ B(\Tsh{\beta})G\equiv0
+\]
+for nonzero constant-coefficient polynomials $A,B$, then $G$ is an exponential polynomial:
+\begin{equation}
+ G(z)=\sum_{\nu=1}^{N}P_\nu(z)\ee^{\lambda_\nu z}
+ \label{eq:exppoly}
+\end{equation}
+with polynomials $P_\nu$.  In particular, $G$ has order at most one and
+$\tau_2(G)=0$.
+\end{lemma}
+
+\begin{proof}
+Factor $A$.  Standard one-step difference theory writes the solutions of
+$A(\Tsh{1})G=0$ as a finite sum of terms
+\[
+ \ee^{\lambda z}\sum_{j=0}^{m-1}z^jP_j(z),
+\]
+where $\ee^\lambda$ is a root of $A$, $m$ is its multiplicity, and each $P_j$ is entire and
+$1$-periodic.  Expand the $P_j$ into Fourier modes $\ee^{2\pi i n z}$.
+
+For a fixed root branch $\lambda$ and Fourier index $n$, the second shift has multiplier
+\[
+ \ee^{\beta(\lambda+2\pi i n)}.
+\]
+The equation $B(\Tsh{\beta})G=0$ permits only multipliers that are roots of $B$, with a
+bounded polynomial multiplicity.  For fixed $\lambda$, the numbers
+$\ee^{\beta(\lambda+2\pi i n)}$ are pairwise distinct because $\beta$ is irrational.
+Since $B$ has finitely many roots, only finitely many Fourier indices survive.  This gives
+\eqref{eq:exppoly}.
+\end{proof}
+
+\begin{theorem}[C-finite sample arrays have type zero]
+\label{thm:Cfinite}
+Let $G$ be entire, integer-valued on $\Sbeta$, and satisfy
+\[
+ \tau_2(G)<\Cbeta.
+\]
+If its sample array satisfies nontrivial constant-coefficient recurrences
+\eqref{eq:nrec} and \eqref{eq:krec}, then $\tau_2(G)=0$.
+\end{theorem}
+
+\begin{proof}
+The two residuals have type at most $\tau_2(G)$ and vanish on $\Sbeta$.  Subcritical
+uniqueness makes both global equations.  Lemma~\ref{lem:twoCfinite} finishes the proof.
+\end{proof}
+
+\begin{corollary}[Positive subcritical type forces infinite recurrence complexity]
+\label{cor:infiniteHankel}
+If $0<\tau_2(G)<\Cbeta$, then the sample array cannot have finite constant-coefficient
+recurrence rank in both coordinate directions.  Equivalently, at least one family of
+one-dimensional coordinate sequences has unbounded Hankel rank.
+\end{corollary}
+
+\subsection{A nonlinear first-order no-go}
+
+The same uniqueness mechanism globalizes sufficiently low-degree polynomial recursions.
+
+\begin{proposition}[Polynomial iteration of degree at least two]
+\label{prop:polyiteration}
+Let $P\in\C[X]$ have degree $d\ge2$.  A nonconstant entire function of finite order cannot
+satisfy
+\[
+ G(z+h)=P(G(z))
+\]
+for a nonzero $h\in\C$.
+\end{proposition}
+
+\begin{proof}
+Choose $w_0=G(z_0)$ sufficiently large.  For large $|w|$, one has
+$|P(w)|\ge c|w|^d$ with $c>0$.  Iterating along $z_0+nh$ gives
+\[
+ \log|G(z_0+nh)|\ge c_1d^n-c_2.
+\]
+Since $|z_0+nh|=O(n)$, the maximum modulus has infinite order, a contradiction.
+\end{proof}
+
+\begin{corollary}[Sample polynomial iteration]
+\label{cor:samplepolyiteration}
+Let $G$ be entire with finite quadratic type $\tau$, and suppose
+\[
+ G(s+h)=P(G(s))
+\]
+for every $s\in\Sbeta$, where $h\in\{1,\beta\}$ and $P$ has degree $d\ge2$.  If
+$d\tau<\Cbeta$, then $G$ is constant.
+\end{corollary}
+
+\begin{proof}
+The residual $G(z+h)-P(G(z))$ has type at most $d\tau$, vanishes on $\Sbeta$, and is
+therefore identically zero.  Proposition~\ref{prop:polyiteration} forces constancy.
+\end{proof}
+
+\begin{remark}
+Affine one-shift equations are not excluded: finite-order periodic functions can have
+quadratic growth.  The second incommensurable recurrence is essential in
+Theorem~\ref{thm:Cfinite}.  This accurately marks where the nonlinear difference-algebra
+problem begins.
+\end{remark}
+
+\begin{statusbox}{The recurrence and polynomial-iteration results are \statusproved.}
+\end{statusbox}
+
+\section{Pila's multi-function theorem and a many-interpolant gate}
+\label{sec:multipila}
+
+The one-function Pila threshold is extremely small because one additional function must
+supply all of the auxiliary-monomial volume.  Pila's general theorem allows several
+additional integer-valued functions.  Specializing that theorem to $\Sbeta$ produces a
+family of less severe, higher-dimensional targets that does not appear in the predecessor
+report.
+
+\subsection{Normalization on the ordered monoid}
+
+Let
+\[
+ 0=x_0<x_1<x_2<\cdots
+\]
+be the increasing enumeration of $\Sbeta$.  Proposition~\ref{prop:counting} gives
+\begin{equation}
+ x_n\sim\sqrt{2\beta n}.
+ \label{eq:xnasymp}
+\end{equation}
+For an entire $g$ of finite quadratic type $\tau$, define the convenient upper normalized
+rate
+\begin{equation}
+ \lambda_\beta(g):=2\beta\tau.
+ \label{eq:lambdanorm}
+\end{equation}
+Then
+\[
+ \limsup_{n\to\infty}\frac{\log M(g,x_n)}n
+ \le\lambda_\beta(g).
+\]
+For the two basic functions, Pila's scale-growth constants are
+\[
+ \omega_1=\sqrt{2\beta}\log2,
+ \qquad
+ \omega_2=\sqrt{2\beta}\log3,
+ \qquad
+ \omega_1\omega_2=2\beta\log2\log3.
+\]
+
+Pila's scale-separation constant obeys
+\[
+ \chi(\Sbeta,2)\ge\chi_2(2),
+\]
+where
+\begin{equation}
+ \chi_2(2)=
+ 1-\sqrt2+\log2-\log(\sqrt2-1)
+ =1.1603072052\ldots.
+ \label{eq:chi2}
+\end{equation}
+We fix the rational safety margin
+\begin{equation}
+ A_0:=\frac{29}{75}=0.386666\ldots
+ <\frac{\chi_2(2)}3.
+ \label{eq:A0}
+\end{equation}
+
+\subsection{The weighted-simplex criterion}
+
+\begin{theorem}[Multi-function Pila gate]
+\label{thm:multipila}
+Assume a counterexample generator $\beta$ exists.  Let
+$g_1,\dots,g_q$ be entire functions integer-valued on $\Sbeta$, with finite quadratic
+types $\tau_1,\dots,\tau_q$, and put
+\[
+ \lambda_i=2\beta\tau_i.
+\]
+If
+\begin{equation}
+ \sum_{\substack{\mathbf j\in\Nzero^q\\
+                  \mathbf j\cdot\boldsymbol\lambda\le A_0}}
+ \bigl(A_0-\mathbf j\cdot\boldsymbol\lambda\bigr)^2
+ >8\beta\log2\log3,
+ \label{eq:multipilacriterion}
+\end{equation}
+then the entire functions
+\[
+ 2^z,\ 3^z,\ g_1(z),\dots,g_q(z)
+\]
+are algebraically dependent over $\C$.
+\end{theorem}
+
+\begin{proof}
+Apply Pila's Theorem~4.1 with two base functions, $t=2$, $s=2$, and $A=A_0$.  The
+right side of Pila's monomial-count inequality is
+\[
+ s\,2!\,\omega_1\omega_2
+ =2\cdot2\cdot2\beta\log2\log3
+ =8\beta\log2\log3,
+\]
+which gives \eqref{eq:multipilacriterion}.  Pila's construction yields a nonzero integral
+polynomial relation on the set $\Sbeta$, with every occurring monomial
+$g_1^{j_1}\cdots g_q^{j_q}$ satisfying
+$\mathbf j\cdot\boldsymbol\lambda\le A_0$.
+
+After composition, the resulting entire residual has quadratic type at most
+$A_0/(2\beta)$.  Since $A_0<\pi$, this is strictly smaller than
+$\Cbeta=\pi/(2\beta)$.  The residual vanishes on $\Sbeta$, so
+Corollary~\ref{cor:uniqueness} makes it identically zero.  Thus the dependence is an
+identity of entire functions, not merely a relation on the interpolation set.
+\end{proof}
+
+\begin{remark}[Why the sharp zero threshold matters]
+Pila's original proof already used a weaker Jensen uniqueness estimate to promote the
+relation to an entire identity in the one-function case.  Theorem~\ref{thm:sharpthreshold}
+shows conceptually that every weighted auxiliary polynomial produced with budget
+$A_0<\pi$ lies safely inside the exact uniqueness region.  No separate case-by-case Jensen
+calculation is needed for several additional functions.
+\end{remark}
+
+\subsection{Equal-type functions}
+
+If all $g_i$ have the same type $\tau$, put
+\[
+ \lambda=2\beta\tau,
+ \qquad
+ L=\left\lfloor\frac{A_0}{\lambda}\right\rfloor.
+\]
+The left side of \eqref{eq:multipilacriterion} becomes the exact finite sum
+\begin{equation}
+ \Phi_q(A_0,\lambda)
+ =\sum_{\ell=0}^{L}
+   \binom{\ell+q-1}{q-1}(A_0-\ell\lambda)^2.
+ \label{eq:Phiq}
+\end{equation}
+Indeed, the number of $q$-tuples of nonnegative integers with coordinate sum $\ell$ is
+$\binom{\ell+q-1}{q-1}$.
+
+\begin{corollary}[Exact equal-type gate]
+\label{cor:equaltypegate}
+If $g_1,\dots,g_q$ are algebraically independent together with $2^z,3^z$, then necessarily
+\begin{equation}
+ \Phi_q(A_0,2\beta\tau)
+ \le8\beta\log2\log3.
+ \label{eq:equaltypenecessary}
+\end{equation}
+Consequently, constructing algebraically independent functions for which the reverse strict
+inequality holds proves the Alaoglu--Erd\H{o}s conjecture.
+\end{corollary}
+
+For fixed $q$ and $\lambda\downarrow0$, a simplex Riemann sum gives
+\begin{equation}
+ \Phi_q(A_0,\lambda)
+ =\frac{2A_0^{q+2}}{(q+2)!\lambda^q}
+  +O_{A_0,q}(\lambda^{1-q}).
+ \label{eq:Phiqasymp}
+\end{equation}
+Thus the natural equal-type target scale is
+\begin{equation}
+ \tau
+ \asymp_q
+ \frac1{2\beta}
+ \left(
+  \frac{A_0^{q+2}}
+       {4(q+2)!\,\beta\log2\log3}
+ \right)^{1/q}
+ \asymp_q\beta^{-1-1/q}.
+ \label{eq:qscale}
+\end{equation}
+For $q=1$ this is the familiar $\beta^{-2}$ scale.  For two or more algebraically
+independent functions, the power of $\beta$ improves.
+
+\subsection{Numerical thresholds}
+
+The following table solves the exact inequality \eqref{eq:Phiq} by bisection.  Each entry
+is the supremal common quadratic type $\tau$ for which the strict Pila inequality holds;
+a rigorous application uses any slightly smaller value.
+
+\begin{center}
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$q$ & supremal $\tau$ at $\beta=14$ & supremal $\tau$ at $\beta=27$\\
+\midrule
+$1$ & $8.07651\times10^{-6}$ & $2.17055\times10^{-6}$\\
+$2$ & $1.71057\times10^{-4}$ & $6.34265\times10^{-5}$\\
+$3$ & $4.61028\times10^{-4}$ & $1.88916\times10^{-4}$\\
+$4$ & $7.55746\times10^{-4}$ & $3.24386\times10^{-4}$\\
+$5$ & $1.02034\times10^{-3}$ & $4.49547\times10^{-4}$\\
+$8$ & $1.63138\times10^{-3}$ & $7.45529\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $q=1$ entry is close to, and slightly improves on, the conservative
+$1/832$ constant because \eqref{eq:Phiq} uses the exact finite monomial sum rather than an
+integral lower bound.  The gain from several functions is substantial: at $\beta=14$, two
+independent functions may each be about twenty-one times larger than the one-function Pila
+threshold; eight may each be about two hundred times larger.
+
+\begin{statusbox}{The specialization and exact finite-sum criterion use Pila's theorem
+\statusclassical; the normalization, promotion to an entire identity, asymptotic, and
+numerical evaluation are \statusproved and \statuscomputed.}
+\end{statusbox}
+
+\section{Translation orbits and finite transformal rank}
+\label{sec:translationrank}
+
+The multi-function gate becomes especially natural when all additional functions are
+translates of one integer-valued interpolant.
+
+\subsection{The translate family}
+
+For $h\in\Sbeta$, define
+\[
+ g_h(z)=g(z+h).
+\]
+Because $\Sbeta+h\subseteq\Sbeta$, every $g_h$ is integer-valued on $\Sbeta$.  Translation
+preserves quadratic type.  Moreover, the base field
+\begin{equation}
+ K_0=\C(2^z,3^z)
+ \label{eq:K0}
+\end{equation}
+is stable under all shifts by $h\in\Sbeta$: the multipliers $2^h$ and $3^h$ are integers.
+
+\begin{theorem}[Quantitative algebraic translation-rank bound]
+\label{thm:translationrank}
+Let $g$ be entire and integer-valued on $\Sbeta$, with positive finite quadratic type $\tau$, and
+put
+\[
+ \lambda=2\beta\tau.
+\]
+Assume $\lambda<A_0$.  Let $q_*(\beta,\lambda)$ be the least positive integer $q$ such that
+\begin{equation}
+ \Phi_q(A_0,\lambda)>8\beta\log2\log3.
+ \label{eq:qstar}
+\end{equation}
+Then
+\begin{equation}
+ \trdeg_{K_0}
+ K_0\bigl(g(z+h):h\in\Sbeta\bigr)
+ \le q_*(\beta,\lambda)-1.
+ \label{eq:trdegbound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If the relative transcendence degree were at least $q_*$, one could choose
+$h_1,\dots,h_{q_*}\in\Sbeta$ so that the translates $g_{h_i}$ are algebraically
+independent over $K_0$.  Then $2^z,3^z,g_{h_1},\dots,g_{h_{q_*}}$ would be algebraically
+independent over $\C$, contradicting Theorem~\ref{thm:multipila} and
+\eqref{eq:qstar}.
+\end{proof}
+
+A simpler explicit, though often weaker, bound uses only the zero vector and the $q$ unit
+vectors in the weighted simplex.
+
+\begin{corollary}[Unit-vector translation bound]
+\label{cor:unittranslation}
+If $\lambda<A_0$ and
+\begin{equation}
+ q>
+ \frac{8\beta\log2\log3-A_0^2}{(A_0-\lambda)^2},
+ \label{eq:unitq}
+\end{equation}
+then every $q$ translates of $g$ are algebraically dependent over $K_0$.
+\end{corollary}
+
+\begin{proof}
+The sum \eqref{eq:Phiq} contains the contribution
+$A_0^2+q(A_0-\lambda)^2$ from total degrees zero and one.
+\end{proof}
+
+\subsection{Exact sample bounds}
+
+The exact $q_*$ from \eqref{eq:qstar} can be much smaller than the unit-vector estimate
+when $A_0/\lambda$ permits higher total degrees.
+
+\begin{center}
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+& \multicolumn{4}{c}{$\lambda/A_0$}\\
+\cmidrule(l){2-5}
+$\beta$ & $0.05$ & $0.10$ & $0.25$ & $0.50$\\
+\midrule
+$14$ & $4$ & $7$ & $34$ & $2278$\\
+$27$ & $5$ & $8$ & $43$ & $4397$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For example, at $\beta=14$ and normalized rate $\lambda=0.1A_0$, seven suitably chosen
+translates cannot remain algebraically independent over $K_0$.
+
+\subsection{The difference-algebraic consequence}
+
+Let $\sigma_1$ and $\sigma_\beta$ be the commuting automorphisms induced by translation by
+$1$ and $\beta$.  For type zero, Pila's theorem may be applied with arbitrarily small positive upper rates and already gives algebraicity over $K_0$; hence the genuinely new case is $\tau>0$.
+
+The field generated by all transforms
+\[
+ \sigma_1^n\sigma_\beta^k(g)=g(z+n+k\beta)
+\]
+has finite transcendence degree over the shift-stable base field $K_0$ whenever
+$2\beta\tau<A_0$.  In the language of difference algebra, $g$ is transformally algebraic
+for the two-shift action.
+
+\begin{corollary}[Existence of an algebraic partial-difference equation]
+\label{cor:algdifference}
+Under the hypotheses of Theorem~\ref{thm:translationrank}, there is a nonzero polynomial
+$P$ over $K_0$ and finitely many pairs $(n_j,k_j)\in\Nzero^2$ such that
+\begin{equation}
+ P\bigl(g(z+n_1+k_1\beta),\dots,
+       g(z+n_r+k_r\beta)\bigr)\equiv0.
+ \label{eq:partialdifference}
+\end{equation}
+The number of transforms needed may be bounded in terms of
+$q_*(\beta,2\beta\tau)$.
+\end{corollary}
+
+\begin{proof}
+Finite relative transcendence degree means that any sufficiently large finite set of
+transforms is algebraically dependent over $K_0$.
+\end{proof}
+
+\begin{target}[Two-shift finite-order classification]
+\label{target:differenceclassification}
+Prove that an entire function $g$ satisfying all of the following conditions must be
+algebraic over $K_0=\C(2^z,3^z)$:
+\begin{enumerate}
+\item $g(\Sbeta)\subseteq\Z$;
+\item $0<2\beta\tau_2(g)<A_0$;
+\item the translation field
+$K_0(g(z+n+k\beta):n,k\in\Nzero)$ has finite relative transcendence degree.
+\end{enumerate}
+Such a theorem, combined with Proposition~\ref{prop:algdepzero}, would prove the
+Alaoglu--Erd\H{o}s conjecture.
+\end{target}
+
+The linear portion of this target is already closed by
+Theorem~\ref{thm:Cfinite}; the polynomial coordinate-decoder portion is closed by
+Theorem~\ref{thm:polydecoder}.  What remains is a genuinely nonlinear algebraic
+partial-difference equation with two incommensurable real shifts.
+
+\subsection{Why this route is not a disguised null-function construction}
+
+The translate field uses channel information unavailable to $H_\beta$.  A null function
+has type at least $\Cbeta$, so its normalized rate is at least
+\[
+ 2\beta\Cbeta=\pi>A_0.
+\]
+It lies completely outside Theorem~\ref{thm:translationrank}.  The new target concerns a
+direct integer-valued interpolant of normalized type less than $0.3867$, whereas the least
+nonzero null function has normalized type $\pi\approx3.1416$.  The separation is intrinsic,
+not a weak numerical constant.
+
+\begin{statusbox}{The translation-rank theorem and partial-difference consequence are
+\statusproved from the multi-function Pila gate.  Target~\ref{target:differenceclassification}
+is \statusopen.}
+\end{statusbox}
+
+\section{Closed subcases of the two-shift programme}
+\label{sec:closedsubcases}
+
+The open difference-algebra target is broad, but several natural degeneracies are already
+ruled out by elementary arguments.  These results help define the minimal genuinely
+nonlinear case.
+
+\subsection{Periodic branches}
+
+\begin{proposition}[One real period plus integrality is fatal]
+\label{prop:periodicfatal}
+If an entire function $g$ is $1$-periodic and integer-valued on $\Sbeta$, then $g$ is a
+constant integer.  The same conclusion holds if $g$ is $\beta$-periodic.
+\end{proposition}
+
+\begin{proof}
+If $g$ is $1$-periodic, then $g(k\beta)\in\Z$ for every $k\ge0$.  The set
+$\{k\beta\bmod1:k\ge0\}$ is dense in $[0,1]$.  By continuity, $g(x)$ is integer-valued
+for every real $x$.  A continuous map from a connected interval to the discrete set $\Z$
+is constant, and the identity theorem extends the constancy to $\C$.  The
+$\beta$-periodic case uses the dense set $\{n\bmod\beta:n\ge0\}$.
+\end{proof}
+
+\begin{corollary}[Finite-dimensional translation span]
+\label{cor:finitedimspan}
+If
+\[
+ \dim_\C\Span\{g(z+n+k\beta):n,k\in\Nzero\}<\infty
+\]
+and $g$ is entire, integer-valued on $\Sbeta$, and subcritical, then
+$\tau_2(g)=0$.
+\end{corollary}
+
+\begin{proof}
+The two commuting translation operators act linearly on a finite-dimensional vector space,
+so each satisfies a nonzero characteristic polynomial.  Apply
+Theorem~\ref{thm:Cfinite}.
+\end{proof}
+
+\subsection{Algebraic rank zero}
+
+\begin{proposition}[Relative algebraic rank zero]
+\label{prop:rankzero}
+If $g$ is entire and algebraic over $K_0=\C(2^z,3^z)$, then $\tau_2(g)=0$.
+Consequently a positive-type interpolant in the translation-rank regime must have positive
+relative transcendence degree.
+\end{proposition}
+
+\begin{proof}
+This is Proposition~\ref{prop:algdepzero}.
+\end{proof}
+
+\subsection{Degree growth as the next obstruction}
+
+Suppose a finite set of transforms of $g$ gives a meromorphic map
+\[
+ F:\C\longrightarrow X
+\]
+to an algebraic variety over $K_0$, and the two shifts descend to commuting dominant
+rational self-maps $\Phi_1,\Phi_\beta$ of $X$:
+\[
+ F(z+1)=\Phi_1(F(z)),
+ \qquad
+ F(z+\beta)=\Phi_\beta(F(z)).
+\]
+For a scalar polynomial map of degree at least two,
+Proposition~\ref{prop:polyiteration} shows that iteration forces infinite order.  The
+natural higher-dimensional replacement is dynamical degree.
+
+\begin{target}[Dynamical-degree reduction]
+\label{target:dynamicaldegree}
+Prove that if $F$ has finite order and Zariski-dense image, then both
+$\Phi_1$ and $\Phi_\beta$ have first dynamical degree one.  More generally, show that any
+component with dynamical degree greater than one is contained in a proper common exceptional
+subvariety.
+\end{target}
+
+If this reduction holds, the surviving maps are birationally low-entropy.  The expected
+models are translations or affine endomorphisms on algebraic groups, fibrations by such
+models, and finite quotients.  The dense real subgroup generated by $1$ and $\beta$, together
+with integer values on its positive cone, should then eliminate periodic and elliptic
+branches and force algebraicity over $K_0$.
+
+\begin{target}[Low-entropy two-shift classification]
+\label{target:lowentropy}
+Classify finite-order entire curves carrying two commuting, incommensurable real-shift
+actions of dynamical degree one.  In the integer-valued setting, prove that every such curve
+is generated by exponential polynomials and functions algebraic over $K_0$.
+\end{target}
+
+\subsection{Why one shift is not enough}
+
+A single affine difference equation can support positive quadratic type.  For example, a
+$1$-periodic entire function may have a rapidly decaying Fourier series
+\[
+ P(z)=\sum_{n\in\Z}c_n\ee^{2\pi i n z}
+\]
+whose maximum modulus grows like $\exp(O(r^2))$.  Thus finite order alone does not make one
+shift finite-dimensional.  The second irrational shift is the rigidity source: it samples
+the full Fourier spectrum through the dense multipliers $\ee^{2\pi i n\beta}$.
+
+This observation explains why Theorem~\ref{thm:Cfinite} is robust and why the nonlinear
+problem should be formulated for two commuting shifts from the outset.
+
+\section{A general integer-order ray theorem}
+\label{sec:generalray}
+
+The fourfold product and the constant $\pi/(2\beta)$ are instances of a general principle
+for positive-ray sets of integer exponent of convergence.  The proof is the same square-root
+idea with a $k$th root.
+
+\begin{definition}
+For an entire function $f$ and an integer $k\ge1$, define its order-$k$ type by
+\[
+ \tau_k(f)=\limsup_{r\to\infty}\frac{\log M(f,r)}{r^k}.
+\]
+\end{definition}
+
+\begin{theorem}[Sharp integer-order ray threshold]
+\label{thm:generalray}
+Let $k\ge1$ be an integer and let $A\subset(0,\infty)$ be discrete with
+\begin{equation}
+ N_A(r)=d r^k+O(r^{k-1})
+ \label{eq:generalcount}
+\end{equation}
+for some $d>0$.  Then:
+\begin{enumerate}
+\item every nonzero entire $f$ vanishing on $A$ and having finite order-$k$ type satisfies
+\[
+ \tau_k(f)\ge\pi d;
+\]
+\item the product
+\begin{equation}
+ H_{A,k}(z)=z^{\epsilon}
+ \prod_{a\in A}\left(1-\frac{z^{2k}}{a^{2k}}\right),
+ \label{eq:generalproduct}
+\end{equation}
+where $\epsilon$ accounts for a possible zero at the origin, is entire and satisfies
+\[
+ \log M(H_{A,k},r)=\pi d\,r^k+O(r^{k-1}+\log r);
+\]
+\item therefore the least finite order-$k$ type of a nonzero entire function vanishing on
+$A$ is exactly $\pi d$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For the lower bound, choose the principal $k$th root in the right half-plane and set
+$F(w)=f(w^{1/k})$.  It is holomorphic there, has exponential type at most $\tau_k(f)$, and
+has positive zeros $a^k$ with counting function $dT+O(T^{1-1/k})$.  Carleman's formula gives
+$\tau_k(f)\ge\pi d$ exactly as in Theorem~\ref{thm:raydensity}.
+
+For the upper bound, the product converges because $2k>k$.  Its exact maximum modulus is
+\[
+ r^{\epsilon}\prod_{a\in A}\left(1+\frac{r^{2k}}{a^{2k}}\right).
+\]
+Stieltjes integration gives the main term
+\[
+ 2k d r^k\int_0^\infty\frac{u^{k-1}}{1+u^{2k}}\,du
+ =2k d r^k\cdot\frac{\pi}{2k}=\pi d r^k.
+\]
+The counting error gives the stated lower-order term.
+\end{proof}
+
+\begin{corollary}[Higher-rank positive semigroups]
+\label{cor:rankksemigroup}
+Let $\alpha_1,\dots,\alpha_k>0$ be linearly independent over $\Q$ and define
+\[
+ \mathcal S_{\boldsymbol\alpha}
+ =\left\{n_1\alpha_1+\cdots+n_k\alpha_k:n_i\in\Nzero\right\}.
+\]
+Then
+\[
+ N_{\boldsymbol\alpha}(R)
+ =\frac{R^k}{k!\alpha_1\cdots\alpha_k}+O_{\boldsymbol\alpha}(R^{k-1}),
+\]
+and the least finite order-$k$ type of a nonzero entire function vanishing on this semigroup
+is
+\begin{equation}
+ \frac{\pi}{k!\alpha_1\cdots\alpha_k}.
+ \label{eq:rankkconstant}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The counting formula is the standard lattice-point estimate for a simplex.  Apply
+Theorem~\ref{thm:generalray}.
+\end{proof}
+
+For $k=2$, $(\alpha_1,\alpha_2)=(1,\beta)$, formula
+\eqref{eq:rankkconstant} is exactly $\pi/(2\beta)$.  This general theorem also clarifies the
+rotational order: at order $k$, the optimal genus-zero regularization uses $2k$ roots of
+unity.
+
+\begin{statusbox}{The general integer-order theorem and semigroup corollary are
+\statusproved.}
+\end{statusbox}
+
+\section{Consequences for construction strategies}
+\label{sec:strategy}
+
+The exact threshold and translation-rank theorem reorganize the analytic frontier.  Several
+classes of construction can now be rejected before any detailed coefficient calculation.
+
+\subsection{Strategies now closed}
+
+\paragraph{Vanishing correction terms.}
+Every nonzero null function has type at least $\Cbeta$, over thirteen thousand times the
+Pila threshold at the kernel lower bound $\beta=14$.  A ``build approximately, then repair
+on all nodes'' strategy cannot be subcritical.
+
+\paragraph{One fixed type-zero template.}
+A Pila-small function can coincide with a fixed order-one or type-zero template on at most
+$7.18\times10^{-5}$ of the full Carleman density when $\beta=14$.  Sparse deviations from
+$2^z$, $3^z$, a polynomial, or an exponential polynomial are therefore impossible.
+
+\paragraph{Small finite alphabets.}
+Any fixed local translation stencil with fewer than about $13{,}933$ possible outputs at
+$\beta=14$ either fails or becomes a global identity.  This rules out low-state carry
+machines and bounded-defect decoders at Pila type.
+
+\paragraph{Polynomial coordinate formulas.}
+Any algebraic-coefficient polynomial in $(n,k)$ collapses to a constant below $\Cbeta$.
+Thus a successful value table cannot be a low-degree arithmetic formula in the canonical
+coordinates.
+
+\paragraph{Finite linear recurrence rank.}
+Two coordinate recurrences force type zero.  A successful positive-type table must be
+non-C-finite in at least one direction and have unbounded Hankel complexity.
+
+\subsection{Strategies that survive}
+
+\paragraph{Direct nonholonomic interpolation.}
+The value table must be constructed directly, without a low-type null correction.  It must
+use an unbounded or very large alphabet and evade finite recurrence structure.  Candidates
+include output-sensitive Newton schemes whose denominators and signs are coupled across both
+coordinates, rather than fixed universal kernels.
+
+\paragraph{Several algebraically independent interpolants.}
+The multi-function gate permits larger types.  Instead of forcing one function below
+$O(\beta^{-2})$, one may seek $q$ algebraically independent integer-valued functions near
+the scale $O_q(\beta^{-1-1/q})$.  Their values need not encode the same observable.
+
+\paragraph{One function with a rich translate orbit.}
+A single function of normalized type below $A_0$ produces infinitely many integer-valued
+translates.  Pila then forces finite transformal rank.  Proving that this finite-rank
+alternative collapses to type zero would turn the existence of any such function into a
+contradiction.
+
+\paragraph{Nonlinear partial-difference geometry.}
+The remaining relation should be attacked as a pair of commuting algebraic dynamics rather
+than as another interpolation determinant.  Degree growth, Nevanlinna theory for differences,
+and the classification of low-entropy birational maps are natural inputs.
+
+\subsection{A concrete staged campaign}
+
+\begin{enumerate}
+\item \textbf{Formalize the exact zero threshold.}  This prevents the false infinite-type
+claim from propagating and supplies a reusable uniqueness lemma.
+
+\item \textbf{Build a two-shift difference-algebra package.}  Formalize translation fields,
+relative transcendence degree, and extraction of a polynomial partial-difference equation
+from Theorem~\ref{thm:translationrank}.
+
+\item \textbf{Classify scalar first-order equations.}  Extend
+Proposition~\ref{prop:polyiteration} from polynomials to rational and algebraic
+correspondences, keeping explicit finite-order hypotheses.
+
+\item \textbf{Prove a dynamical-degree lemma.}  Show that superlinear degree growth of a
+shift correspondence forces infinite Nevanlinna order unless the entire curve lies in an
+exceptional subvariety.
+
+\item \textbf{Analyze the degree-one cases.}  Reduce commuting low-entropy maps to additive,
+multiplicative, or elliptic group actions.  Apply the dense subgroup generated by $1$ and
+$\beta$ and the integer-value condition.
+
+\item \textbf{Parallel computational search.}  Search for finite value tables whose
+interpolants have small empirical quadratic indicator and whose translate fields exhibit
+large algebraic rank.  The purpose is not numerical evidence for the conjecture, but
+identification of a viable nonholonomic architecture.
+\end{enumerate}
+
+\begin{target}[Translation-rank closure criterion]
+\label{target:translationclosure}
+Prove the following statement for some absolute $A>0$: if $g$ is entire,
+$g(\Sbeta)\subseteq\Z$, $2\beta\tau_2(g)<A$, and the two-shift translation field has finite
+relative transcendence degree over $K_0$, then $g$ is algebraic over $K_0$.
+
+Any $A\ge A_0=29/75$ closes the multi-function route developed here.  Even a smaller
+positive $A$ would improve the one-function landscape if combined with a construction at the
+corresponding scale.
+\end{target}
+
+\section{Control tests and adversarial checks}
+\label{sec:controls}
+
+Every new mechanism was checked against the standard controls.
+
+\subsection{Integer generators}
+
+If $\beta$ is an integer, the representation $n+k\beta$ is not unique and the set
+$\Nzero+\beta\Nzero$ is simply $\Nzero$.  Its counting function is linear, not quadratic.
+Hence $d_\beta=1/(2\beta)$ is not applicable.  The exact threshold theorem relies on the
+free rank-two monoid supplied by irrationality.  It does not falsely exclude the obvious
+integer solutions.
+
+\subsection{Arbitrary irrational generators}
+
+The zero-set results themselves hold for every irrational $\beta>0$, independently of
+$2^\beta$ and $3^\beta$.  What is arithmetic is the assertion that $2^s$ and $3^s$ are
+integers for all $s\in\Sbeta$, which is used in the integer-valued spectrum and Pila
+sections.  This separation is useful: the analytic theorems can be verified without assuming
+any disputed arithmetic statement.
+
+\subsection{No contradiction from the explicit null function}
+
+The function $H_\beta$ is integer-valued on $\Sbeta$ because it is zero there, but its type
+is $\Cbeta$, far outside Pila's small-growth range.  Pila's theorem therefore does not
+produce an algebraic-dependence contradiction from $H_\beta$.  The construction corrects
+the spectrum; it does not prove the conjecture by itself.
+
+\subsection{No hidden cancellation in the type computation}
+
+The maximum-modulus formula for $H_{m,\beta}$ is exact at every radius, not merely an upper
+bound.  All factors attain equality on one common ray.  The type computation therefore
+cannot be invalidated by phase cancellation between factors.
+
+\subsection{The Carleman constant}
+
+The factor $\pi$ is calibrated by the classical model of zeros at the positive integers:
+a right-half-plane function of exponential type less than $\pi$ cannot vanish at every
+nonnegative integer unless it is zero.  Under the squaring map, the monoid density becomes
+$1/(2\beta)$, giving $\pi/(2\beta)$.  This provides an independent normalization check.
+
+\subsection{Strict inequalities in Pila's theorem}
+
+The exact numerical tables report suprema.  A proof must choose a slightly smaller type so
+that the weighted-simplex inequality is strict.  This is a harmless open-margin issue, not a
+claim of equality at the numerical boundary.
+
+\begin{statusbox}{The control checks expose no contradiction or control-pair false positive.}
+\end{statusbox}
+
+\section{Literature audit and relation to current work}
+\label{sec:literature}
+
+The new results sit at the intersection of three established subjects: integer-valued entire
+functions, uniqueness sets of prescribed angular density, and finite-order complex difference
+equations.  This section records exactly which external facts are used and which recent
+results merely provide context.
+
+\subsection{Pila's integer-valued entire-function theorem}
+
+The quantitative input is Pila's theorem on several entire functions sharing a set of
+arguments of integrality~\cite{Pila2008}.  In the notation of that paper, the increasing
+enumeration of
+\[
+ X_{\alpha,\beta}=\{i\alpha+j\beta:i,j\in\Nzero\}
+\]
+satisfies $x_n\sim(2\alpha\beta n)^{1/2}$.  Theorem~4.1 permits several additional
+functions $g_i$ with normalized rates $\lambda_i$ and produces algebraic dependence when
+\[
+ \sum_{\mathbf j\cdot\boldsymbol\lambda\le A}
+ (A-\mathbf j\cdot\boldsymbol\lambda)^k
+ >s k!\,\omega_1\cdots\omega_k,
+ \qquad
+ A<\frac{\chi(X,t)}{t+(s-1)^{-1}}.
+\]
+Our specialization $k=t=s=2$, $(\alpha,\beta)=(1,\beta)$,
+$(a,b)=(\log2,\log3)$ is literal.  The only addition in this report is the sharp promotion
+from dependence on $\Sbeta$ to an identity of entire functions, using
+Theorem~\ref{thm:sharpthreshold}, and the systematic application to a full translation
+orbit.
+
+The one-function constant $1/832$ is Pila's deliberately conservative published constant.
+The exact finite sum $\Phi_1$ gives the slightly larger numerical values in
+Section~\ref{sec:multipila}; this is not a strengthening of Schneider's method, only the
+retention of the finite monomial sum before replacing it by an integral.
+
+\subsection{Carlson, Carleman, and angular-density uniqueness}
+
+Carleman's formula in a half-plane and Carlson's theorem are classical; a standard source
+is Levin~\cite{Levin1980}.  A modern refinement of Carlson's theorem in terms of spectral
+measures is due to Vagharshakyan~\cite{Vagharshakyan2021}.  Grishin and Sodin developed the
+relation between growth on a ray, angular zero density, and uniqueness
+sets~\cite{GrishinSodin1990}.
+
+Recent work of Kononova gives a geometric theory of critical zero-set and uniqueness-set
+types for sets with angular density~\cite{KononovaI,KononovaII,KononovaIII}.  In particular,
+the order-two case is now treated explicitly from the viewpoint of type-minimizing angular
+measures.  The present monoid provides a particularly elementary test case: after the map
+$z\mapsto z^2$, its positive zeros have linear density $1/(2\beta)$, and fourfold rotational
+completion gives the extremizer directly.  Thus our value $\pi/(2\beta)$ is consistent with
+the general angular-density geometry, but the proof here requires neither a Lindelof
+condition nor a completely-regular-growth classification.
+
+\subsection{Difference Nevanlinna theory and partial difference algebra}
+
+Difference analogues of the logarithmic derivative lemma and the use of finite order to
+detect integrable difference equations were developed by Halburd and
+Korhonen~\cite{HalburdKorhonen2006,HalburdKorhonen2007} and independently in related form by
+Chiang and Feng~\cite{ChiangFeng2008}.  Those results strongly support the degree-growth
+strategy in Section~\ref{sec:closedsubcases}: nonlinear recurrences of genuinely expanding
+degree usually force excessive Nevanlinna growth.
+
+They do not, however, provide the classification needed here.  Our relation can involve
+several transforms, coefficients in $K_0=\C(2^z,3^z)$, two commuting irrationally related
+shifts, and an algebraic variety of positive dimension.  Recent partial difference algebra
+develops dimension polynomials and finite generation for several commuting operators, for
+example McGrath~\cite{McGrath2025}; this supplies an appropriate language for the translation
+field, but not yet an analytic finite-order classification.
+
+\subsection{Adjacent transcendence developments}
+
+Current work on matrices of logarithms, arithmetic holonomy, and additive relations in
+irrational powers is relevant to the wider conjectural landscape
+\cite{Dasgupta2023,CDT2025,Harrison2026}.  These works sharpen weight-one logarithmic
+independence, effective Diophantine approximation, and additive expansion under irrational
+powers.  None presently supplies the missing weight-two separation for
+\[
+ \log M\,\log3-\log A\,\log2=0,
+\]
+nor does any of them imply the two-shift classification target.  They are therefore recorded
+as adjacent techniques rather than quoted as solutions.
+
+\subsection{Evidence policy}
+
+Only theorem statements in primary mathematical sources and proofs written in this report
+are used.  Competitive announcements, press reports, and social-media claims are not
+mathematical premises.  In particular, no claimed recent machine-generated breakthrough is
+used unless a checkable proof or formal artifact is available.
+
+\begin{statusbox}{The literature audit is contextual.  The external inputs actually used in
+proofs are Pila's theorem and the classical Carleman formula; all other citations identify
+nearby theories and possible tools.}
+\end{statusbox}
+
+\section{Formalization and verification roadmap}
+\label{sec:formalization}
+
+The new results divide cleanly into an elementary algebraic layer, a classical analytic
+layer, and an external transcendence layer.  This separation is useful both for Lean and for
+ordinary refereeing.
+
+\subsection{Layer A: finite sums, products, and zero covers}
+
+The following statements require no transcendence theory.
+
+\begin{enumerate}
+\item The exact floor sum in Proposition~\ref{prop:counting} and the estimate
+$N_\beta(R)=R^2/(2\beta)+O(R)$.
+\item Convergence of $H_{m,\beta}$ from $\sum s^{-m}<\infty$.
+\item The exact maximum-modulus identity in Lemma~\ref{lem:maxmod}.
+\item The beta-integral evaluation
+\[
+ \int_0^\infty\frac{u}{1+u^m}\,du
+ =\frac\pi m\csc\frac{2\pi}{m}.
+\]
+\item Finite zero-cover, template, and alphabet deductions once the Carleman-density lemma is
+available.
+\item The finite-difference polynomial decoder and the constant-increment arguments.
+\item Exact evaluation of $\Phi_q$ and the tables in Sections~\ref{sec:multipila} and
+\ref{sec:translationrank}.
+\end{enumerate}
+
+The main formalization choices are representations of the locally finite monoid and a
+library interface for infinite products indexed by a countable discrete subset of
+$\R_{>0}$.  One can initially avoid asymptotic Stieltjes integration by proving two-sided
+Riemann-sum bounds with explicit $O(R)$ counting errors.
+
+\subsection{Layer B: the Carleman bridge}
+
+The analytic kernel is the following reusable theorem.
+
+\begin{target}[Formal Carleman-density kernel]
+For a function holomorphic in the right half-plane with
+$\log^+|F(w)|\le(\sigma+o(1))|w|$, formalize
+\[
+ \limsup_{R\to\infty}\frac1{\log R}
+ \sum_{\substack{F(a)=0\\1<a<R}}
+ \left(\frac1a-\frac a{R^2}\right)
+ \le\frac\sigma\pi
+\]
+for positive real zeros counted with multiplicity.
+\end{target}
+
+Once this theorem exists, the sharp lower bound follows from the principal square-root map
+in a few lines.  A pragmatic first formalization may state Carleman's formula as a library
+theorem and separately verify that its boundary terms have the needed bounds.  A fully
+foundational proof can follow Appendix~\ref{app:carleman} through Green's identity on a
+half-annulus with small disks removed around zeros.
+
+\subsection{Layer C: Pila as an explicit external theorem}
+
+Pila's theorem is far beyond the reasonable scope of a first formalization.  It should be
+encapsulated with all hypotheses visible:
+
+\begin{itemize}
+\item the scale property and the constant $\chi(X,2)$;
+\item the normalized growth rates $\omega_i$ and $\lambda_j$;
+\item integrality on the ordered scale;
+\item the weighted-simplex strict inequality;
+\item the conclusion of polynomial dependence on the scale, together with the weighted
+degree support needed for the growth promotion.
+\end{itemize}
+
+The promotion from a relation on $\Sbeta$ to an entire identity belongs to Layer B and can
+be kernel-checked independently.  This prevents a hidden strengthening of the cited theorem.
+
+\subsection{Suggested theorem dependency order}
+
+\begin{enumerate}
+\item \texttt{ConditionalMonoid.counting}.
+\item \texttt{ConditionalMonoid.reciprocalPowerSummable}.
+\item \texttt{RotationalProduct.converges}.
+\item \texttt{RotationalProduct.maxModulus}.
+\item \texttt{RotationalProduct.typeFormula}.
+\item \texttt{Carleman.positiveRayDensityBound}.
+\item \texttt{ConditionalMonoid.sharpVanishingType}.
+\item \texttt{ConditionalMonoid.finiteZeroCover}.
+\item \texttt{ConditionalMonoid.polynomialDecoderRigidity}.
+\item \texttt{PilaMulti.specializedGate} as an external-input wrapper.
+\item \texttt{TranslationOrbit.finiteRelativeTranscendenceDegree}.
+\end{enumerate}
+
+\subsection{Falsification tests}
+
+Every formal or paper implementation should include the following controls.
+
+\begin{longtable}{@{}p{0.31\textwidth}p{0.29\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Test & Expected result & Failure it detects\\
+\midrule
+\endfirsthead
+\toprule
+Test & Expected result & Failure it detects\\
+\midrule
+\endhead
+$A=\N$ in Theorem~\ref{thm:generalray} & minimum exponential type $\pi$ & missing factor $\pi$ or $2$ in Carleman\\
+$H_{4,\beta}$ on $z=r e^{i\pi/4}$ & exact product maximum & unjustified upper-bound-to-type equality\\
+$m=3,4,5$ in \eqref{eq:Hmtype} & unique minimum at $m=4$ & wrong beta-integral exponent\\
+Integer $\beta$ & reject free-monoid counting & accidental application to nonunique coordinates\\
+Zero function in a zero cover & remove before applying type bound & division by a nonexistent nonzero function\\
+$\lambda\downarrow0$ in $\Phi_q$ & divergence like $\lambda^{-q}$ & missing high-degree monomials\\
+Control pair $\beta=n\in\N$ in Pila specialization & hypotheses of counterexample package fail & false contradiction with obvious integer exponents\\
+One periodic shift only & positive-type examples remain possible & overclaiming from one difference equation\\
+\bottomrule
+\end{longtable}
+
+\begin{statusbox}{The dependency map and controls are proposed formalization architecture,
+not claims that a new Lean build has been completed.}
+\end{statusbox}
+
+\section{Status matrix for this report}
+\label{sec:status}
+
+\begin{longtable}{@{}p{0.43\textwidth}p{0.18\textwidth}p{0.31\textwidth}@{}}
+\toprule
+Statement & Status & Dependency\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Dependency\\
+\midrule
+\endhead
+Conditional monoid count $R^2/(2\beta)+O(R)$ & \statusproved & elementary floor sum\\
+Exact-zero genus-two product has infinite quadratic type & \statusproved & partial summation\\
+$H_{m,\beta}$ converges and has exact maximum modulus & \statusproved & infinite-product criterion\\
+$\tau_2(H_{m,\beta})=\pi/(2\beta\sin(2\pi/m))$ & \statusproved & Stieltjes integration, beta integral\\
+Predecessor's infinite-type proposition & \statuscorrection & contradicted by $H_{4,\beta}$\\
+Sharp lower bound $\tau_2\ge\pi/(2\beta)$ & \statusproved & classical Carleman formula\\
+Complete vanishing spectrum $[\pi/(2\beta),\infty)$ & \statusproved & sharp bound and rotated Gaussian\\
+Integer-valued spectrum contains $\{0\}\cup[\pi/(2\beta),\infty)$ & \statusproved & $2^z+H_{\beta,a}$\\
+Pila exclusion through $1/(832\beta^2\log2\log3)$ & \statusclassical & Pila plus inherited growth lemma\\
+Finite zero-cover and alphabet inequalities & \statusproved & Carleman density\\
+Polynomial decoder rigidity & \statusproved & subcritical uniqueness, two differences\\
+Two constant recurrences imply type zero & \statusproved & Fourier--Floquet decomposition\\
+Weighted-simplex multi-function gate & \statusproved & Pila Theorem~4.1 plus sharp promotion\\
+Finite translation transcendence degree & \statusproved & multi-function gate\\
+Two-shift finite-order classification & \statusopen & new principal target\\
+Dynamical-degree reduction & \statusopen & proposed intermediate theorem\\
+Full Alaoglu--Erd\H{o}s conjecture & \statusopen & not proved here\\
+\bottomrule
+\end{longtable}
+
+\section{Conclusions and the exact new frontier}
+\label{sec:conclusion}
+
+The investigation produced a genuine correction and a new route, but not a proof of the
+conjecture.  The correction is mathematically decisive: the zero-set branch does not fail by
+infinite quadratic type.  It has an exact, finite critical constant
+\[
+ \boxed{\Cbeta=\frac{\pi}{2\beta}}.
+\]
+This number is simultaneously
+
+\begin{itemize}
+\item the least quadratic type of a nonzero entire function vanishing on the conditional
+solution monoid;
+\item the threshold below which interpolation on that monoid is unique;
+\item the total type budget required by any finite cover of the monoid by zero sets;
+\item the state-complexity constant governing finite alphabets and templates;
+\item the order-two instance of the general ray-density constant $\pi d$.
+\end{itemize}
+
+The explicit extremizer
+\[
+ H_\beta(z)=z\prod_{s\in\Sbeta\setminus\{0\}}
+                 \left(1-\frac{z^4}{s^4}\right)
+\]
+shows exactly how the earlier argument failed: at integer order, adding three rotated copies
+of the positive zero ray cancels the critical angular moment.  The accompanying Carleman
+argument proves that this cancellation is optimal.
+
+The exact threshold does not make Pila's one-function construction easy.  The quantitative
+gap remains
+\[
+ \frac{\Cbeta}{\TP}
+ =416\pi\beta\log2\log3,
+\]
+which is already about $1.39\times10^4$ at $\beta=14$.  It does, however, turn vague
+statements about ``too many zeros'' into sharp no-go theorems.  Low-type null corrections,
+small finite alphabets, polynomial coordinate decoders, and finite recurrence rank are now
+closed with exact constants.
+
+The most promising new consequence is the translation-orbit theorem.  Pila's
+multi-function result converts any positive-type integer-valued interpolant with
+$2\beta\tau_2(g)<29/75$ into a function whose entire two-dimensional translation orbit has
+finite relative transcendence degree over $\C(2^z,3^z)$.  Therefore the next analytic
+question is not to optimize yet another universal determinant.  It is to classify
+finite-order entire solutions of algebraic partial-difference equations under two commuting
+real shifts whose ratio is irrational.
+
+A closure theorem of the following form would be sufficient:
+\[
+ \begin{gathered}
+ g(\Sbeta)\subseteq\Z,\qquad
+ 0<2\beta\tau_2(g)<29/75,\\
+ \trdeg_{\C(2^z,3^z)}
+ \C(2^z,3^z)(g(z+n+k\beta):n,k\ge0)<\infty
+ \end{gathered}
+ \quad\Longrightarrow\quad
+ g\text{ is algebraic over }\C(2^z,3^z).
+\]
+The linear, periodic, polynomial-decoder, and scalar expanding-polynomial cases are already
+closed in this report.  The surviving case is nonlinear but highly structured: finite
+transformal rank, two dense real directions, finite Nevanlinna order, and integer values on
+the positive orbit.  That package is substantially narrower than the original interpolation
+problem and is the recommended focus for the next report.
+
+\begin{statusbox}{The full conjecture remains open.  The durable progress is the corrected
+sharp type theorem, its complexity consequences, the multi-function gate, and the finite
+translation-rank reduction.}
+\end{statusbox}
+
+\appendix
+
+\section{Derivation of the half-plane Carleman inequality}
+\label{app:carleman}
+
+For completeness we derive the constant used in Lemma~\ref{lem:carleman}.  The purpose of
+the calculation is not to reproduce every regularization detail, but to make the coefficient
+$1/\pi$ auditable.
+
+Let
+\[
+ D_R^+=\{z:|z|<R,\ \Re z>0\}
+\]
+and suppose first that $F$ is holomorphic in a neighborhood of its closure, has no zeros on
+the boundary, and $F(0)\ne0$.  Apply Green's identity to $\log|F(z)|$ and the harmonic
+weight
+\[
+ v_R(z)=\Re\left(\frac1z-\frac z{R^2}\right).
+\]
+The weight vanishes on the semicircle $|z|=R$, is positive inside the right half-disk, and
+has normal derivative giving the standard Carleman kernel.  Removing small circles around
+the zeros $a_j$ and around the origin, then letting their radii tend to zero, yields
+\begin{align}
+ \sum_{|a_j|<R}
+ \left(\Re\frac1{a_j}-\frac{\Re a_j}{R^2}\right)
+ &=\frac1{2\pi}\int_{-R}^{R}
+   \log|F(iy)|\left(\frac1{y^2}-\frac1{R^2}\right)\,dy
+ \label{eq:fullcarleman}\\
+ &\quad+\frac1{\pi R}\int_{-\pi/2}^{\pi/2}
+   \log|F(Re^{i\theta})|\cos\theta\,d\theta
+ +O_F(1).
+ \nonumber
+\end{align}
+Zeros are counted with multiplicity.  The bounded term contains the contribution near the
+origin and a normalization by $F(0)$; neither affects a coefficient of $\log R$.
+
+For a positive real zero $a_j$, its summand is exactly
+\[
+ \frac1{a_j}-\frac{a_j}{R^2}.
+\]
+Discarding all other zero summands is legitimate because the full left side is nonnegative
+term by term for zeros in $D_R^+$:
+\[
+ \Re\left(\frac1a-\frac a{R^2}\right)
+ =\Re a\left(\frac1{|a|^2}-\frac1{R^2}\right)>0.
+\]
+
+Assume now that for every $\varepsilon>0$,
+\[
+ \log^+|F(z)|\le(\sigma+\varepsilon)|z|+O_\varepsilon(1)
+ \qquad(\Re z\ge0).
+\]
+On the semicircle, the second integral in \eqref{eq:fullcarleman} is $O(1)$ after division by
+$R$.  On the imaginary axis, symmetry and the positive part give
+\begin{align*}
+ &\frac1{2\pi}\int_{-R}^{R}
+   \log^+|F(iy)|\left(\frac1{y^2}-\frac1{R^2}\right)\,dy\\
+ &\qquad\le
+ \frac{\sigma+\varepsilon}{\pi}
+ \int_1^R\left(\frac1y-\frac y{R^2}\right)\,dy+O(1)\\
+ &\qquad=
+ \frac{\sigma+\varepsilon}{\pi}\log R+O(1).
+\end{align*}
+This proves \eqref{eq:carlemanineq}.  Boundary zeros and functions defined only in the open
+half-plane are handled by applying the formula to $F(z+\delta)$ at regular radii and then
+letting $\delta\downarrow0$.  Zeros at the origin are removed by dividing by a power of
+$z$.
+
+Two calibration checks are immediate.
+
+\begin{enumerate}
+\item For positive integer zeros, the left side is $\log R+O(1)$, so $\sigma\ge\pi$.
+This is Carlson's constant.
+\item For positive zeros of linear density $d$, the left side is $d\log R+O(1)$, so
+$\sigma\ge\pi d$.
+\end{enumerate}
+
+Under $F(w)=f(\sqrt w)$, a quadratic-type bound $\tau_2(f)$ becomes the exponential-type
+bound $\sigma=\tau_2(f)$, while the squared monoid has density $d=1/(2\beta)$.  The constant
+$\pi/(2\beta)$ follows with no additional factor.
+
+\section{Detailed asymptotics for the rotational product}
+\label{app:productasymptotic}
+
+This appendix makes the error in Theorem~\ref{thm:Hmtype} explicit.  Write
+\[
+ N_\beta(t)=d_\beta t^2+E_\beta(t),
+ \qquad |E_\beta(t)|\le C_\beta'(t+1)
+\]
+for $t\ge1$.  From integration by parts,
+\[
+ \log M(H_{m,\beta},r)-\log r
+ =m r^m\int_{s_0}^{\infty}
+       \frac{N_\beta(t)}{t(t^m+r^m)}\,dt,
+\]
+where $s_0=\min(\Sbeta\setminus\{0\})$.
+
+The main term is
+\[
+ m d_\beta r^2\int_0^\infty\frac{u}{1+u^m}\,du
+ =\pi d_\beta\csc(2\pi/m)r^2.
+\]
+For the $O(t)$ portion of the error, split at $t=r$:
+\begin{align*}
+ r^m\int_{s_0}^{r}\frac{dt}{t^m+r^m}&=O(r),\\
+ r^m\int_r^\infty\frac{dt}{t^m+r^m}&=O(r).
+\end{align*}
+For the bounded portion,
+\begin{align*}
+ r^m\int_{s_0}^{r}\frac{dt}{t(t^m+r^m)}&=O(\log r),\\
+ r^m\int_r^\infty\frac{dt}{t(t^m+r^m)}&=O(1).
+\end{align*}
+This proves the stated $O_{\beta,m}(r+\log r)$ error.  The exact maximum-modulus ray turns
+this asymptotic into an equality for the type, rather than only an upper estimate.
+
+The beta integral follows by $v=u^m$:
+\[
+ \int_0^\infty\frac{u}{1+u^m}\,du
+ =\frac1m\int_0^\infty\frac{v^{2/m-1}}{1+v}\,dv
+ =\frac\pi m\csc\frac{2\pi}{m},
+\]
+using Euler's reflection formula.  At $m=4$ this is $\pi/4$, and the prefactor $m d_\beta$
+gives $\pi d_\beta$.
+
+\section{Details on two incommensurable difference equations}
+\label{app:difference}
+
+We record a slightly more invariant proof of Lemma~\ref{lem:twoCfinite}.  Let $T_h$ denote
+translation by $h$.  If $A(T_1)G=0$, decompose the finite-dimensional primary spectrum of
+$T_1$ according to the roots $\mu$ of $A$.  Choosing one logarithm $\lambda$ with
+$e^\lambda=\mu$, the generalized $\mu$-component has the form
+\[
+ e^{\lambda z}\sum_{j=0}^{m_\mu-1}z^jP_j(z),
+\]
+where $P_j$ is entire and $1$-periodic.  Every entire $1$-periodic function is the pullback
+of a holomorphic function on $\C^*$ and has a locally normally convergent Laurent expansion
+\[
+ P_j(z)=\sum_{n\in\Z}c_{j,n}e^{2\pi i n z}.
+\]
+
+On the finite polynomial jet attached to the Fourier mode $n$, $T_\beta$ has generalized
+eigenvalue
+\[
+ \nu_{\lambda,n}=e^{\beta(\lambda+2\pi i n)}.
+\]
+For fixed $\lambda$, these values are pairwise distinct because $\beta\notin\Q$.  Between
+two different choices $\lambda_1,\lambda_2$, a collision
+$\nu_{\lambda_1,n}=\nu_{\lambda_2,m}$ can occur for at most one difference $n-m$; two such
+collisions would imply an integer multiple of $\beta$ is an integer.  Therefore every
+$T_\beta$ generalized eigenspace receives only finitely many Fourier modes from the finite
+set of $T_1$ branches.
+
+The equation $B(T_\beta)G=0$ permits only generalized eigenvalues among the finitely many
+roots of $B$, with bounded jet multiplicity.  Hence only finitely many Fourier modes remain,
+and $G$ is an exponential polynomial.  The same proof shows a useful extension: if the two
+right sides lie in finite-dimensional translation-invariant spaces, then $G$ lies in such a
+space as well.
+
+\section{Reproducibility code for constants and tables}
+\label{app:code}
+
+The following pure-Python script reproduces the constants, equal-type thresholds, and
+translation-rank table.  It uses only integer binomial coefficients and double-precision
+transcendental constants; replacing the final bisection by rational interval arithmetic is
+straightforward.
+
+\begin{lstlisting}[style=pythonstyle,caption={Reproduction of the numerical constants}]
+from __future__ import annotations
+
+import math
+from math import comb
+
+A0 = 29.0 / 75.0
+LOG_PRODUCT = math.log(2.0) * math.log(3.0)
+
+
+def phi(q: int, A: float, lam: float) -> float:
+    # Exact finite sum Phi_q(A, lambda) for positive lambda.
+    if q <= 0:
+        raise ValueError('q must be positive')
+    if lam <= 0.0:
+        return math.inf
+    degree = math.floor(A / lam + 1.0e-14)
+    return sum(
+        comb(ell + q - 1, q - 1) * (A - ell * lam) ** 2
+        for ell in range(degree + 1)
+    )
+
+
+def common_type_threshold(q: int, beta: float) -> float:
+    # Supremal tau for which Phi_q exceeds Pila's right side.
+    rhs = 8.0 * beta * LOG_PRODUCT
+    lo = 0.0
+    hi = A0 / (2.0 * beta)
+    for _ in range(160):
+        mid = (lo + hi) / 2.0
+        if phi(q, A0, 2.0 * beta * mid) > rhs:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def q_star(beta: float, lambda_ratio: float) -> int:
+    # Least q with Phi_q(A0, lambda_ratio*A0) above Pila's right side.
+    if not (0.0 < lambda_ratio < 1.0):
+        raise ValueError('lambda_ratio must lie in (0,1)')
+    rhs = 8.0 * beta * LOG_PRODUCT
+    lam = lambda_ratio * A0
+    q = 1
+    while phi(q, A0, lam) <= rhs:
+        q += 1
+    return q
+
+
+def report() -> None:
+    chi = (1.0 - math.sqrt(2.0) + math.log(2.0)
+           - math.log(math.sqrt(2.0) - 1.0))
+    gap_slope = 416.0 * math.pi * LOG_PRODUCT
+    print(f'chi_2(2) = {chi:.12f}')
+    print(f'A0 = {A0:.12f}; A0/chi_2(2) = {A0/chi:.12f}')
+    print(f'C_beta/T_P per beta = {gap_slope:.12f}')
+
+    for beta in (14.0, 27.0):
+        print(f'beta = {beta:g}')
+        for q in (1, 2, 3, 4, 5, 8):
+            print(q, f'{common_type_threshold(q, beta):.12e}')
+        values = [q_star(beta, r) for r in (0.05, 0.10, 0.25, 0.50)]
+        print('q*:', values)
+
+
+if __name__ == '__main__':
+    report()
+\end{lstlisting}
+
+The expected leading output is
+\begin{verbatim}
+chi_2(2) = 1.160307205206
+A0 = 0.386666666667; A0/chi_2(2) = 0.333245079348
+C_beta/T_P per beta = 995.206300791...
+\end{verbatim}
+The table values then agree with Sections~\ref{sec:multipila} and
+\ref{sec:translationrank} to the printed digits.
+
+\section{Dependency graph and next-proof checklist}
+\label{app:dependency}
+
+The logical flow of the report is
+\[
+ \boxed{\text{conditional monoid}}
+ \Longrightarrow
+ \boxed{N_\beta(R)=R^2/(2\beta)+O(R)}
+ \Longrightarrow
+ \begin{cases}
+  \boxed{H_{4,\beta}\text{ gives type }\pi/(2\beta)},\\
+  \boxed{\text{Carleman gives type }\ge\pi/(2\beta)}
+ \end{cases}
+\]
+\[
+ \Longrightarrow
+ \boxed{\text{exact subcritical uniqueness}}
+ \Longrightarrow
+ \begin{cases}
+  \boxed{\text{zero-cover/alphabet/decoder rigidity}},\\
+  \boxed{\text{promotion of Pila relations to entire identities}}
+ \end{cases}
+\]
+\[
+ \Longrightarrow
+ \boxed{\text{finite algebraic rank of the translate orbit}}
+ \Longrightarrow
+ \boxed{\text{two-shift difference-algebra target}}.
+\]
+
+A next proof attempt should answer the following questions in order.
+
+\begin{enumerate}
+\item Can every finite-order algebraic relation among transforms be replaced by one that is
+minimal and irreducible under both shifts?
+\item Does minimality force the induced correspondences on the transform variety to be
+dominant and generically finite?
+\item Can Nevanlinna growth exclude first dynamical degree greater than one?
+\item Do commuting degree-one correspondences reduce, after a finite cover, to algebraic
+group translations?
+\item Can integer values on the dense positive orbit eliminate additive, multiplicative,
+and elliptic nonconstant branches?
+\item If a branch remains, does it construct an additional exponential $e^{cz}$ with
+algebraic values at both $1$ and $\beta$, thereby invoking six exponentials?
+\end{enumerate}
+
+The final question is especially attractive: a classification need not directly prove that
+$g$ is algebraic over $K_0$.  It is enough to extract one genuinely new order-one
+exponential direction whose values at both generators are algebraic.  That would convert the
+two-shift geometry back into a three-base six-exponentials contradiction.
+
+\begin{thebibliography}{99}
+
+\bibitem{Unified6}
+V.~Reshetnikov and the ProveIt project,
+\emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial Results,
+Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+unified report, August 22, 2026; source supplied as
+\texttt{alaoglu-erdos-unified-report-6.zip}.
+
+\bibitem{Pila2008}
+J.~Pila,
+\emph{Entire functions sharing arguments of integrality, II},
+Publ. Math. Debrecen \textbf{73} (2008), no.~1--2, 215--231,
+\href{https://doi.org/10.5486/PMD.2008.4212}{doi:10.5486/PMD.2008.4212}.
+
+\bibitem{Levin1980}
+B.~Ya. Levin,
+\emph{Distribution of Zeros of Entire Functions}, revised edition,
+Translations of Mathematical Monographs, vol.~5,
+American Mathematical Society, Providence, 1980.
+
+\bibitem{Vagharshakyan2021}
+A.~Vagharshakyan,
+\emph{A refinement of Carlson's theorem},
+\href{https://arxiv.org/abs/2108.12846}{arXiv:2108.12846}, 2021.
+
+\bibitem{GrishinSodin1990}
+A.~F. Grishin and M.~L. Sodin,
+\emph{Growth along a ray, distribution of the zeros of an entire function of finite order
+with respect to the argument, and a uniqueness theorem},
+J. Soviet Math. \textbf{49} (1990), no.~6, 1269--1279.
+
+\bibitem{KononovaI}
+A.~Kononova,
+\emph{Uniqueness sets with angular density for spaces of entire functions, I: Basics},
+\href{https://arxiv.org/abs/2503.07225}{arXiv:2503.07225}, 2025; revised 2026.
+
+\bibitem{KononovaII}
+A.~Kononova,
+\emph{Uniqueness sets with angular density for spaces of entire functions, II: $\rho=1$},
+\href{https://arxiv.org/abs/2504.08116}{arXiv:2504.08116}, 2025.
+
+\bibitem{KononovaIII}
+A.~Kononova,
+\emph{Uniqueness sets with angular density for spaces of entire functions, III: how to
+minimize the type},
+\href{https://arxiv.org/abs/2605.20380}{arXiv:2605.20380}, 2026.
+
+\bibitem{HalburdKorhonen2006}
+R.~G. Halburd and R.~J. Korhonen,
+\emph{Difference analogue of the lemma on the logarithmic derivative with applications to
+difference equations},
+J. Math. Anal. Appl. \textbf{314} (2006), no.~2, 477--487,
+\href{https://doi.org/10.1016/j.jmaa.2005.04.010}{doi:10.1016/j.jmaa.2005.04.010}.
+
+\bibitem{HalburdKorhonen2007}
+R.~G. Halburd and R.~J. Korhonen,
+\emph{Finite-order meromorphic solutions and the discrete Painleve equations},
+Proc. Lond. Math. Soc. (3) \textbf{94} (2007), no.~2, 443--474,
+\href{https://doi.org/10.1112/plms/pdl012}{doi:10.1112/plms/pdl012}.
+
+\bibitem{ChiangFeng2008}
+Y.-M. Chiang and S.-J. Feng,
+\emph{On the Nevanlinna characteristic of $f(z+\eta)$ and difference equations in the
+complex plane},
+Ramanujan J. \textbf{16} (2008), 105--129,
+\href{https://doi.org/10.1007/s11139-007-9101-1}{doi:10.1007/s11139-007-9101-1}.
+
+\bibitem{McGrath2025}
+O.~McGrath,
+\emph{Dimension polynomials for affine partial difference algebraic groups},
+\href{https://arxiv.org/abs/2511.20350}{arXiv:2511.20350}, 2025.
+
+\bibitem{Dasgupta2023}
+S.~Dasgupta,
+\emph{Ranks of matrices of logarithms of algebraic numbers I: the theorems of Baker and
+Waldschmidt--Masser},
+\href{https://arxiv.org/abs/2303.02037}{arXiv:2303.02037}, 2023.
+
+\bibitem{CDT2025}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\emph{Arithmetic holonomy bounds and effective Diophantine approximation},
+\href{https://arxiv.org/abs/2510.04156}{arXiv:2510.04156}, 2025.
+
+\bibitem{Harrison2026}
+J.~Harrison,
+\emph{Additive relations in irrational powers},
+\href{https://arxiv.org/abs/2512.04081}{arXiv:2512.04081}, version~3, 2026.
+
+\end{thebibliography}
+
+\end{document}

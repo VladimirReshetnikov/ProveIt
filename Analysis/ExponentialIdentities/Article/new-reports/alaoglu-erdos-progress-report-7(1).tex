@@ -1,0 +1,1687 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!45!black,
+  urlcolor=blue!65!black,
+  pdftitle={Alaoglu--Erdos progress report: Frobenius--necklace transforms and bi-local reciprocity},
+  pdfauthor={Research progress report}
+}
+
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Open problem}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Barrier warning}
+
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\QQbar}{\overline{\mathbb Q}}
+\newcommand{\vp}{v_p}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Alt}{\operatorname{Alt}}
+\newcommand{\Span}{\operatorname{Span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\height}{\operatorname{h}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Qnm}[3]{\mathcal Q_{#1,#2}(#3)}
+\newcommand{\Dh}{\Delta_h}
+\newcommand{\Rh}{\mathcal R_h}
+\newcommand{\Ch}{\mathcal C_h}
+
+\title{\textbf{Frobenius--Necklace Transforms, Exact Smooth Exceptions,\\
+and the Necessity of Bi-Local Reciprocity}\\[0.6em]
+\large Progress toward the Alaoglu--Erd\H{o}s conjecture}
+\author{Research progress report VII}
+\date{24 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $x\in\R$ satisfy $2^x,3^x\in\Z$.  The Alaoglu--Erd\H{o}s conjecture asserts that $x\in\Z$.  This report continues the supplied unified report without repeating its determinant, interpolation, factorial, cyclotomic, $K$-theoretic, and coaction analyses.  No complete proof is claimed.  Instead, several new exact results are established.
+
+For a prime $\ell$ and $m\geq1$, introduce the integral prime-necklace transform
+\[
+  \mathcal Q_{\ell,m}(T)=\frac{T^{\ell m}-T^m}{\ell}
+  =T^m\frac{T^{(\ell-1)m}-1}{\ell}.
+\]
+For a hypothetical solution $M=2^x$, $A=3^x$, the failure of the power map to commute with this transform has a base-difference defect depending only on $h=(\ell-1)m$:
+\[
+  \Delta_h
+  =\bigl(\log\mathcal Q_{\ell,m}(M)-x\log\mathcal Q_{\ell,m}(2)\bigr)
+   -\bigl(\log\mathcal Q_{\ell,m}(A)-x\log\mathcal Q_{\ell,m}(3)\bigr).
+\]
+It is proved that $\Delta_h>0$, that $\Delta_h\sim x2^{-h}$, and that it is exactly the determinant defect of a $2\times2$ matrix of logarithms of integers.  This produces a canonical exponentially ill-conditioned family and an exact height slope.  The family also exists for genuine integer controls, so it calibrates---rather than solves---the generic quantitative matrix-of-logarithms problem.
+
+The control-sensitive step is an elementary classification.  The rational
+\[
+  \mathcal R_h=\frac{3^h-1}{2^h-1}
+\]
+has no prime factors outside $\{2,3\}$ if and only if $h\in\{1,2,4\}$.  Consequently, using the Six Exponentials Theorem, a hypothetical noninteger solution makes
+\[
+  \left(\frac{\mathcal Q_{\ell,m}(3)}{\mathcal Q_{\ell,m}(2)}\right)^x
+\]
+transcendental for every $(\ell,m)$ except six explicitly listed packages.  The three exceptional defect levels satisfy an exact second-difference identity whose exponential is a rational function of $M,A$ with a completely factored numerator gap.
+
+At an external prime $\ell\mid M$, $\ell\nmid 6A$, the same transform has the exact local slope
+\[
+  v_\ell\bigl(\mathcal Q_{\ell,m}(M)\bigr)=m v_\ell(M)-1,
+\]
+whereas the other three transformed values have only Fermat-quotient plus $v_\ell(m)$ growth.  Combining this with rational approximants $P/Q\approx x$ gives simultaneous exact archimedean and $\ell$-adic formulas.  A height audit shows why a direct product-formula argument still loses, but it isolates the needed missing theorem: correlated compression of reduced height toward the unavoidable external-prime floor, accompanied by stronger real cancellation.
+
+Finally, the symmetric prime-valuation tensor underlying
+$\log M\log3-\log A\log2=0$ is analyzed.  Alternating Steinberg symbols annihilate it by parity, while diagonal one-place symmetric pairings are blind to all external-prime edges.  Thus any reciprocity proof must be genuinely bi-local (coupling two distinct primes) or must mix places before localization.  This sharpens the earlier ``wrong-sign $K_2$'' diagnosis into a precise linear-algebraic no-go theorem and a concrete research specification.
+\end{abstract}
+
+\tableofcontents
+
+\section{Scope, status, and relation to the supplied report}
+
+\subsection{The problem and elementary reductions}
+
+We study the Alaoglu--Erd\H{o}s conjecture \cite{AlaogluErdos}:
+\begin{equation}\label{eq:AE}
+  2^x\in\Z,\qquad 3^x\in\Z
+  \quad\Longrightarrow\quad x\in\Z.
+\end{equation}
+Write
+\begin{equation}\label{eq:MA-theta}
+  M=2^x,\qquad A=3^x,\qquad
+  \vartheta=\frac{\log3}{\log2}>1.
+\end{equation}
+Throughout, $v_p$ is normalized by $v_p(p)=1$, and for a reduced rational $r=a/b$ we use the logarithmic height
+\[
+  h(r)=\log\max\{|a|,|b|\}.
+\]
+If $x<0$, then $0<2^x<1$, and if $0<x<1$, then $1<2^x<2$; hence any nontrivial noninteger candidate has $x>1$.  If $x=r/s\in\Q$ in lowest terms and $2^x=M\in\Z$, then $2^r=M^s$ and comparison of the $2$-adic valuations gives $s\mid r$, so $s=1$.  Thus a noninteger candidate is irrational.  Gelfond--Schneider then implies that it is transcendental, because an algebraic irrational $x$ would make $2^x$ transcendental.
+
+The supplied report \cite{Unified6} proves much more powerful preliminary restrictions, including a verified finite kernel that pushes a hypothetical candidate beyond the small range.  Whenever a bound below is stated for $x\ge2$, it therefore applies to the surviving frontier; the exact positivity statements need only $x>1$.
+
+\subsection{What is deliberately not repeated}
+
+The supplied manuscript already contains extensive treatments of:
+\begin{itemize}
+  \item the exact additive semigroup of solution exponents and the control/noncontrol dichotomy;
+  \item generalized Vandermonde determinants, finite-difference masks, Pad\'e and factorial constructions, and their coefficient-height conservation laws;
+  \item cyclotomic resultants, adjacent-gap ratios, centered trace dynamics, and prime-top isolation;
+  \item integer-valued entire interpolation and the critical exponential-type barrier;
+  \item formal prime-logarithm tensors, sparse coaction derivatives, Kummer realizations, and the wrong-sign obstruction for direct $K_2$ symbols;
+  \item $p$-adic Newton walls, valuation lattices, and several exact no-go theorems for local-first approaches.
+\end{itemize}
+This report uses those conclusions as boundary conditions.  In particular, the adjacent ratio $(3^h-1)/(2^h-1)$ is not itself new.  What is new here is its canonical packaging by an integral prime-necklace transform, the exact signed determinant and conditioning law, the complete elementary classification of its $\{2,3\}$-smooth levels, the exceptional triad identity, the output-sensitive Frobenius-prime valuation formula, and the bi-local reciprocity no-go theorem.
+
+\subsection{Status labels}
+
+Every major statement is one of the following:
+\begin{itemize}
+  \item \textbf{proved here}: a complete paper proof is given;
+  \item \textbf{classical input}: a named theorem such as Six Exponentials or LTE is invoked;
+  \item \textbf{conditional frontier}: a sufficient criterion is isolated but not proved;
+  \item \textbf{barrier audit}: an attractive route is shown quantitatively insufficient.
+\end{itemize}
+Competitive announcements, social-media claims, and unpublished formalizations are not used as mathematical premises.  Only verifiable arguments enter the report.
+
+\section{The prime-necklace transform}
+
+\subsection{Definition and integrality}
+
+\begin{definition}[prime-necklace/Frobenius quotient]\label{def:Q}
+For a prime $\ell$, an integer $m\ge1$, and an integer $T\ge2$, define
+\begin{equation}\label{eq:Qdef}
+  \mathcal Q_{\ell,m}(T)
+  :=\frac{T^{\ell m}-T^m}{\ell}.
+\end{equation}
+Put
+\begin{equation}\label{eq:hdef}
+  h=(\ell-1)m.
+\end{equation}
+Then
+\begin{equation}\label{eq:Qfactor}
+  \mathcal Q_{\ell,m}(T)
+  =\frac{T^m(T^h-1)}{\ell}.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[integrality and logarithmic decomposition]\label{prop:Qintegral}
+For every prime $\ell$, $m\ge1$, and $T\in\Z$, the number $\mathcal Q_{\ell,m}(T)$ is an integer.  For $T\ge2$ it is positive and
+\begin{align}
+  \log\mathcal Q_{\ell,m}(T)
+  &=\ell m\log T-\log\ell+\log(1-T^{-h})\label{eq:Qlog1}\\
+  &=m\log T+\log(T^h-1)-\log\ell.\label{eq:Qlog2}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Set $Y=T^m$.  Fermat's congruence $Y^\ell\equiv Y\pmod\ell$ gives $\ell\mid Y^\ell-Y$, proving integrality.  Positivity and the two logarithmic formulas follow from
+\[
+  T^{\ell m}-T^m=T^{\ell m}(1-T^{-h})=T^m(T^h-1).
+\]
+\end{proof}
+
+The two forms in \eqref{eq:Qlog1}--\eqref{eq:Qlog2} expose the two channels of the construction.  Formula \eqref{eq:Qlog1} gives an exponentially small archimedean correction $\log(1-T^{-h})$.  Formula \eqref{eq:Qlog2} shows that all finite-place novelty is carried by the cyclotomic support of $T^h-1$.
+
+\subsection{Necklace and Witt interpretation}
+
+Let
+\begin{equation}\label{eq:necklace}
+  N_n(T)=\frac1n\sum_{d\mid n}\mu(d)T^{n/d}
+\end{equation}
+be the classical necklace polynomial.  For a prime $\ell$,
+\[
+  N_\ell(Y)=\frac{Y^\ell-Y}{\ell},
+\]
+so
+\begin{equation}\label{eq:Qnecklace}
+  \mathcal Q_{\ell,m}(T)=N_\ell(T^m).
+\end{equation}
+In the language of big Witt vectors, the powers $T^n$ are ghost components of a Teichm\"uller element, and \eqref{eq:Qdef} is the integral quotient of a prime Frobenius ghost difference.  No deep Witt-vector theorem is needed below; the terminology records the natural origin of the transform.
+
+For $m=\ell^{r-1}$,
+\begin{equation}\label{eq:primepowernecklace}
+  \mathcal Q_{\ell,\ell^{r-1}}(T)
+  =\ell^{r-1}N_{\ell^r}(T).
+\end{equation}
+Thus the prime-power necklace levels give the same defect, up to a scalar factor that cancels from every normalized expression used here.
+
+\begin{proposition}[uniqueness of the two-term necklace levels]\label{prop:two-term}
+The necklace polynomial $N_n(T)$ has exactly two nonzero monomials if and only if $n$ is a prime power.
+\end{proposition}
+
+\begin{proof}
+In \eqref{eq:necklace}, a term is nonzero exactly for a squarefree divisor $d$ of $n$.  There are $2^{\omega(n)}$ such divisors, where $\omega(n)$ is the number of distinct prime divisors of $n$.  Hence there are exactly two terms if and only if $\omega(n)=1$.
+\end{proof}
+
+This explains why the prime-power/prime-layer construction is canonical: it is the unique necklace stratum whose logarithm has one exact lower-order factor rather than a signed cluster of competing divisor terms.
+
+\section{The universal signed defect}
+
+\subsection{Definition and exact reduction}
+
+Assume for this section that $M=2^x$ and $A=3^x$ are integers, with $x>1$.  For a prime $\ell$ and $m\ge1$, define
+\begin{align}
+  \Delta_{\ell,m}
+  :=&\,\bigl(\log\mathcal Q_{\ell,m}(M)-x\log\mathcal Q_{\ell,m}(2)\bigr)\notag\\
+  &-\bigl(\log\mathcal Q_{\ell,m}(A)-x\log\mathcal Q_{\ell,m}(3)\bigr).
+  \label{eq:Dellm}
+\end{align}
+
+\begin{theorem}[archimedean universality]\label{thm:universality}
+The quantity $\Delta_{\ell,m}$ depends on $(\ell,m)$ only through $h=(\ell-1)m$.  Writing it as $\Delta_h$, one has the equivalent exact formulas
+\begin{align}
+  \Delta_h
+  &=\log\frac{M^h-1}{A^h-1}
+    -x\log\frac{2^h-1}{3^h-1},\label{eq:Dgap}\\
+  &=\log\frac{1-M^{-h}}{1-A^{-h}}
+    +x\log\frac{1-3^{-h}}{1-2^{-h}}.\label{eq:Dnearone}
+\end{align}
+If
+\begin{equation}\label{eq:t-theta}
+  t=2^{-h},\qquad \vartheta=\frac{\log3}{\log2},
+\end{equation}
+then
+\begin{equation}\label{eq:D_G}
+  \Delta_h=G_x(t)-G_x(t^\vartheta),
+  \qquad
+  G_x(u)=\log(1-u^x)-x\log(1-u).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:Qlog2} into \eqref{eq:Dellm}.  The $m\log T$ terms cancel because $\log M=x\log2$ and $\log A=x\log3$.  The constants $(x-1)\log\ell$ are the same in the two bracketed expressions and cancel as well, yielding \eqref{eq:Dgap}.  Dividing $T^h-1$ by $T^h$ gives \eqref{eq:Dnearone}.  Finally,
+\[
+  M^{-h}=2^{-xh}=t^x,
+  \quad A^{-h}=3^{-xh}=t^{\vartheta x},
+  \quad 3^{-h}=t^\vartheta,
+\]
+which gives \eqref{eq:D_G}.
+\end{proof}
+
+The theorem separates two design variables.  The real defect is controlled solely by the depth $h$.  The factorization $h=(\ell-1)m$ is free arithmetic packaging, and can be chosen to align the Frobenius prime $\ell$ with a structural prime of a hypothetical counterexample.
+
+\subsection{Sign, integral representation, and sharp scale}
+
+\begin{theorem}[strict sign and quantitative bounds]\label{thm:sign}
+For every $x>1$ and every $h\ge1$,
+\begin{equation}\label{eq:Dpositive}
+  \Delta_h>0.
+\end{equation}
+More precisely,
+\begin{equation}\label{eq:Dintegral}
+  \Delta_h
+  =x\int_{t^\vartheta}^{t}
+  \frac{1-u^{x-1}}{(1-u)(1-u^x)}\,\dd u.
+\end{equation}
+If $x\ge2$, then
+\begin{equation}\label{eq:Dbounds}
+  x(t-t^\vartheta)
+  \le \Delta_h
+  \le \frac{x(t-t^\vartheta)}{(1-t)^2}.
+\end{equation}
+Consequently, for fixed $x>1$,
+\begin{equation}\label{eq:Dasymp}
+  \Delta_h\sim x2^{-h}
+  \qquad (h\to\infty).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiation gives
+\begin{equation}\label{eq:Gprime}
+  G_x'(u)
+  =x\frac{1-u^{x-1}}{(1-u)(1-u^x)}>0
+  \qquad(0<u<1),
+\end{equation}
+so $G_x(t)>G_x(t^\vartheta)$, proving the sign and \eqref{eq:Dintegral}.  If $x\ge2$, then $u^{x-1}\le u$ and $u^x\le u$.  Hence
+\[
+  1\le \frac{1-u^{x-1}}{(1-u)(1-u^x)}
+  \le \frac1{(1-u)^2},
+\]
+and integration gives \eqref{eq:Dbounds}.  Since $t^\vartheta=o(t)$ and $t\to0$, the asymptotic follows.  For $1<x<2$, the same asymptotic follows directly from \eqref{eq:Gprime} or the series below.
+\end{proof}
+
+\begin{proposition}[termwise-positive expansion]\label{prop:series}
+For $x>1$ and $0<t<1$,
+\begin{equation}\label{eq:Dseries}
+  \Delta_h
+  =\sum_{n\ge1}\frac{
+  x(t^n-t^{\vartheta n})-(t^{xn}-t^{\vartheta xn})}{n}.
+\end{equation}
+Every summand is strictly positive.
+\end{proposition}
+
+\begin{proof}
+Expand $-\log(1-z)=\sum_{n\ge1}z^n/n$ in \eqref{eq:D_G}.  For $0<v<u<1$, the mean-value theorem applied to $s\mapsto s^x$ gives
+\[
+  u^x-v^x=x\xi^{x-1}(u-v)<x(u-v),
+\]
+so each bracket in \eqref{eq:Dseries} is positive.
+\end{proof}
+
+\begin{remark}[what the sign does and does not mean]
+The strict sign is not a contradiction.  It holds for every real $x>1$, including integer controls $M=2^k$, $A=3^k$.  Its importance is that no cancellation estimate or numerical experiment is needed: the defect is an exact, one-sided, exponentially small period.
+\end{remark}
+
+\subsection{A logarithmic determinant and one-sided approximants}
+
+Set
+\begin{align}
+  u_{\ell,m}
+  &:=\log\frac{\mathcal Q_{\ell,m}(3)}{\mathcal Q_{\ell,m}(2)},\label{eq:u}\\
+  v_{\ell,m}
+  &:=\log\frac{\mathcal Q_{\ell,m}(A)}{\mathcal Q_{\ell,m}(M)}.\label{eq:v}
+\end{align}
+Both are positive.  From the definition of $\Delta_h$,
+\begin{equation}\label{eq:xu-v}
+  \Delta_h=xu_{\ell,m}-v_{\ell,m}.
+\end{equation}
+
+\begin{corollary}[exponentially accurate ratios of logarithms]\label{cor:logratio}
+The ratio
+\begin{equation}\label{eq:xapprox}
+  x_{\ell,m}:=\frac{v_{\ell,m}}{u_{\ell,m}}
+\end{equation}
+strictly underestimates $x$ and
+\begin{equation}\label{eq:xapproxerror}
+  x-x_{\ell,m}=\frac{\Delta_h}{u_{\ell,m}}
+  \sim \frac{x2^{-h}}{\ell m\log(3/2)}.
+\end{equation}
+If $x\ge2$, then
+\begin{equation}\label{eq:xapproxbound}
+  0<x-x_{\ell,m}
+  <\frac{x(2^{-h}-3^{-h})}
+  {(1-2^{-h})^2\,\ell m\log(3/2)}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:xu-v} and \Cref{thm:sign} give the sign.  Moreover,
+\[
+  u_{\ell,m}=\ell m\log(3/2)
+  +\log\frac{1-3^{-h}}{1-2^{-h}}
+  >\ell m\log(3/2),
+\]
+so \eqref{eq:xapproxbound} follows from \eqref{eq:Dbounds}; the asymptotic is immediate.
+\end{proof}
+
+Define the logarithm matrix
+\begin{equation}\label{eq:Lmatrix}
+  \mathbf L_{\ell,m}
+  =\begin{pmatrix}
+    \log3-\log2 & u_{\ell,m}\\
+    \log A-\log M & v_{\ell,m}
+  \end{pmatrix}.
+\end{equation}
+
+\begin{corollary}[exact signed determinant]\label{cor:det}
+One has
+\begin{equation}\label{eq:detexact}
+  \det\mathbf L_{\ell,m}
+  =-(\log3-\log2)\Delta_h<0.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:detasymp}
+  |\det\mathbf L_{\ell,m}|
+  \sim x(\log3-\log2)2^{-h}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Since $\log A-\log M=x(\log3-\log2)$, the determinant is
+\[
+  (\log3-\log2)(v_{\ell,m}-xu_{\ell,m}),
+\]
+and \eqref{eq:xu-v} completes the proof.
+\end{proof}
+
+This is the promised exact small quadratic logarithmic form.  It is not an asymptotic determinant engineered by a large stencil; it is forced by a single prime-necklace identity.
+
+\section{Exact classification of the smooth transformed levels}
+
+\subsection{The adjacent ratio and its reduced form}
+
+Define
+\begin{equation}\label{eq:Rhdef}
+  \mathcal R_h:=\frac{3^h-1}{2^h-1},
+  \qquad
+  \mathcal C_h:=\frac{1-3^{-h}}{1-2^{-h}}
+  =\left(\frac23\right)^h\mathcal R_h.
+\end{equation}
+The two rationals have the same prime support outside $\{2,3\}$.  Also
+\begin{equation}\label{eq:Bdef}
+  B_{\ell,m}
+  :=\frac{\mathcal Q_{\ell,m}(3)}{\mathcal Q_{\ell,m}(2)}
+  =\left(\frac32\right)^m\mathcal R_h
+  =\left(\frac32\right)^{\ell m}\mathcal C_h.
+\end{equation}
+Thus $B_{\ell,m}$ is $\{2,3\}$-smooth exactly when $\mathcal R_h$ is.
+
+\begin{theorem}[complete smooth-level classification]\label{thm:smoothclass}
+For $h\ge1$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathcal R_h=(3^h-1)/(2^h-1)$ has no prime divisor outside $\{2,3\}$ after reduction;
+  \item $\mathcal C_h=(1-3^{-h})/(1-2^{-h})$ is a $\{2,3\}$-unit;
+  \item $h\in\{1,2,4\}$.
+\end{enumerate}
+The three values are
+\begin{equation}\label{eq:exceptionalR}
+  \mathcal R_1=2,
+  \qquad \mathcal R_2=\frac83,
+  \qquad \mathcal R_4=\frac{16}{3},
+\end{equation}
+while
+\begin{equation}\label{eq:exceptionalC}
+  \mathcal C_1=\frac43,
+  \qquad \mathcal C_2=\frac{32}{27},
+  \qquad \mathcal C_4=\frac{256}{243}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The equivalence of (i) and (ii) follows from \eqref{eq:Rhdef}.  Let
+\[
+  g_h=\gcd(3^h-1,2^h-1).
+\]
+Because $2^h-1$ is odd and $3^h-1$ is not divisible by $3$, the reduced form of $\mathcal C_h$ is
+\begin{equation}\label{eq:Creduced}
+  \mathcal C_h
+  =\frac{2^h(3^h-1)/g_h}{3^h(2^h-1)/g_h},
+\end{equation}
+with coprime numerator and denominator.  If this is a $\{2,3\}$-unit, then necessarily
+\begin{equation}\label{eq:gparts}
+  3^h-1=2^\alpha g_h,
+  \qquad
+  2^h-1=3^\beta g_h,
+\end{equation}
+where
+\begin{equation}\label{eq:alphabeta}
+  \alpha=v_2(3^h-1),
+  \qquad
+  \beta=v_3(2^h-1).
+\end{equation}
+Consequently
+\begin{equation}\label{eq:ratioalphabeta}
+  \frac{3^h-1}{2^h-1}=\frac{2^\alpha}{3^\beta}.
+\end{equation}
+
+Suppose first that $h$ is odd.  Then $v_2(3^h-1)=1$ and $v_3(2^h-1)=0$.  Equation \eqref{eq:ratioalphabeta} becomes
+\[
+  3^h-1=2(2^h-1),
+  \quad\text{or}\quad
+  3^h+1=2^{h+1}.
+\]
+It holds for $h=1$.  For every odd $h\ge3$, one has $3^h+1>2^{h+1}$, so there are no further odd solutions.
+
+Now suppose that $h$ is even.  The lifting-the-exponent lemma gives
+\begin{equation}\label{eq:LTEvals}
+  \alpha=2+v_2(h),
+  \qquad
+  \beta=1+v_3(h).
+\end{equation}
+Therefore
+\begin{equation}\label{eq:ratioLTE}
+  \frac{3^h-1}{2^h-1}
+  =\frac{2^{2+v_2(h)}}{3^{1+v_3(h)}}
+  \le \frac{4h}{3}.
+\end{equation}
+On the other hand,
+\begin{equation}\label{eq:ratioLower}
+  \frac{3^h-1}{2^h-1}>\left(\frac32\right)^h,
+\end{equation}
+by cross-multiplication.  For even $h\ge6$,
+\[
+  \left(\frac32\right)^h>\frac{4h}{3};
+\]
+this is true at $h=6$ and the quotient of the left-to-right ratios increases when $h$ is replaced by $h+2$.  Hence $h<6$.  Direct substitution gives $h=2$ and $h=4$, and both work.  The displayed values follow immediately.
+\end{proof}
+
+\begin{remark}[why this classification is useful]
+A general gcd theorem is not required: the exceptional set is determined by elementary $2$- and $3$-adic valuations plus one exponential-versus-linear comparison.  This turns a qualitative ``fresh prime should occur'' heuristic into an exact theorem with only three exceptions.
+\end{remark}
+
+\subsection{The six exceptional prime-necklace packages}
+
+Solving $(\ell-1)m\in\{1,2,4\}$ with $\ell$ prime gives exactly six pairs.
+
+\begin{corollary}[six smooth transformed ratios]\label{cor:sixpackages}
+The rational $B_{\ell,m}$ in \eqref{eq:Bdef} is $\{2,3\}$-smooth if and only if $(\ell,m)$ is one of the following:
+\begin{center}
+\begin{tabular}{c c c c}
+\toprule
+$\ell$ & $m$ & $h=(\ell-1)m$ & $B_{\ell,m}$\\
+\midrule
+$2$ & $1$ & $1$ & $3$\\
+$2$ & $2$ & $2$ & $6$\\
+$3$ & $1$ & $2$ & $4$\\
+$2$ & $4$ & $4$ & $27$\\
+$3$ & $2$ & $4$ & $12$\\
+$5$ & $1$ & $4$ & $8$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every other $B_{\ell,m}$ contains a prime outside $\{2,3\}$ in its reduced numerator or denominator.
+\end{corollary}
+
+\subsection{The auxiliary-base spectrum and a transcendence dichotomy}
+
+We record a classical consequence of the Six Exponentials Theorem in the exact form needed below \cite{Baker,Waldschmidt}.
+
+\begin{theorem}[rational auxiliary-base spectrum]\label{thm:spectrum}
+Suppose $x\notin\Z$ and $2^x,3^x\in\Z$.  For $r\in\Q_{>0}$,
+\begin{equation}\label{eq:spectrum}
+  r^x\in\QQbar
+  \quad\Longleftrightarrow\quad
+  r\in\{2^a3^b:a,b\in\Z\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We already know that $x$ is irrational.  If $r$ has a prime outside $\{2,3\}$, then $2,3,r$ are multiplicatively independent, so $\log2,\log3,\log r$ are linearly independent over $\Q$.  The numbers $1,x$ are also linearly independent over $\Q$.  The Six Exponentials Theorem applied to these two rows and three columns says that at least one of
+\[
+  2,\ 3,\ r,\ 2^x,\ 3^x,\ r^x
+\]
+is transcendental.  The first five are algebraic by hypothesis, so $r^x$ must be transcendental.  Conversely, if $r=2^a3^b$, then $r^x=M^aA^b\in\Q$.
+\end{proof}
+
+Exponentiating \eqref{eq:Dellm} gives
+\begin{equation}\label{eq:expDwithB}
+  \e^{\Delta_h}
+  =\frac{\mathcal Q_{\ell,m}(M)}{\mathcal Q_{\ell,m}(A)}
+   B_{\ell,m}^{\,x}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:expDwithR}
+  \e^{\Delta_h}
+  =\frac{M^h-1}{A^h-1}\,\mathcal R_h^{\,x}
+  =\frac{1-M^{-h}}{1-A^{-h}}\,\mathcal C_h^{\,x}.
+\end{equation}
+
+\begin{corollary}[exact rational/transcendental split]\label{cor:split}
+Under a hypothetical noninteger solution,
+\begin{equation}\label{eq:split}
+  \e^{\Delta_h}\in\QQbar
+  \quad\Longleftrightarrow\quad
+  h\in\{1,2,4\}.
+\end{equation}
+For $h\notin\{1,2,4\}$, the positive number $\e^{\Delta_h}$ is transcendental despite satisfying
+\begin{equation}\label{eq:nearone}
+  \e^{\Delta_h}=1+x2^{-h}+o(2^{-h}).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The prefactors in \eqref{eq:expDwithB} and \eqref{eq:expDwithR} are nonzero rationals.  Apply \Cref{thm:spectrum} and \Cref{thm:smoothclass}.
+\end{proof}
+
+\begin{criterion}[one-extra-level closure]\label{crit:onelevel}
+Fix any prime-necklace package $(\ell,m)$ with $(\ell-1)m\notin\{1,2,4\}$.  The Alaoglu--Erd\H{o}s conjecture would follow from the following algebraicity statement:
+\begin{quote}
+For every real $x$ with $2^x,3^x\in\Z$, the naturality defect $\e^{\Delta_{(\ell-1)m}}$ is algebraic.
+\end{quote}
+Equivalently, it is enough to prove that one nonexceptional prime-necklace transform is transported algebraically by every integral-output exponent.
+\end{criterion}
+
+\begin{proof}
+A noninteger solution would contradict \Cref{cor:split}; integer solutions plainly give algebraic powers of all rational bases.
+\end{proof}
+
+The criterion is intentionally concrete.  It does not hide the difficulty: a hypothetical solution supplies a multiplicative character on the $\{2,3\}$-unit group, while $\mathcal Q_{\ell,m}$ contains the additive difference $T^{\ell m}-T^m$.  The missing step is precisely an additive or Frobenius-natural extension of that character.
+
+\subsection{The three exceptional rational defects}
+
+At the exceptional levels, \eqref{eq:expDwithR} simplifies completely.
+
+\begin{proposition}[explicit exceptional values]\label{prop:exceptionalD}
+Under $M=2^x$, $A=3^x$,
+\begin{align}
+  \e^{\Delta_1}
+  &=\frac{M(M-1)}{A-1},\label{eq:D1rat}\\
+  \e^{\Delta_2}
+  &=\frac{M^3(M^2-1)}{A(A^2-1)},\label{eq:D2rat}\\
+  \e^{\Delta_4}
+  &=\frac{M^4(M^4-1)}{A(A^4-1)}.\label{eq:D4rat}
+\end{align}
+All three rationals are greater than $1$.
+\end{proposition}
+
+\begin{proof}
+Use \eqref{eq:exceptionalR} in \eqref{eq:expDwithR} and the identities $2^x=M$, $3^x=A$.  Positivity follows from \Cref{thm:sign}.
+\end{proof}
+
+The three near-one factors $\mathcal C_h$ satisfy the exact multiplicative relation
+\begin{equation}\label{eq:Crelation}
+  \mathcal C_1\mathcal C_4=\mathcal C_2^2.
+\end{equation}
+Their $(v_2,v_3)$ vectors are $(2,-1),(5,-3),(8,-5)$; the first two are independent, so $(1,-2,1)$ generates the full lattice of multiplicative relations among the three factors.  Thus \eqref{eq:Crelation} is primitive and unique up to sign.  It produces a surprisingly deep finite cancellation.
+
+\begin{theorem}[the exceptional triad identity]\label{thm:triad}
+Let
+\begin{equation}\label{eq:kappa}
+  \kappa:=\Delta_1-2\Delta_2+\Delta_4.
+\end{equation}
+Then
+\begin{equation}\label{eq:kappaf}
+  \kappa=\log\frac{f(M)}{f(A)},
+  \qquad
+  f(T)=\frac{T^2+1}{T(T+1)}.
+\end{equation}
+If $M>1+\sqrt2$ and $A>M$, then $\kappa<0$.  More exactly,
+\begin{equation}\label{eq:kappaGap}
+  \e^\kappa
+  =1-\frac{(A-M)(AM-M-A-1)}{M(M+1)(A^2+1)}.
+\end{equation}
+In particular, the numerator gap is a positive, completely factored integer.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:Dnearone} into \eqref{eq:kappa}.  Relation \eqref{eq:Crelation} cancels the entire $x$-dependent input term.  The remaining factor for a variable $T$ is
+\[
+  \frac{(1-T^{-1})(1-T^{-4})}{(1-T^{-2})^2}
+  =\frac{1+T^{-2}}{1+T^{-1}}
+  =\frac{T^2+1}{T(T+1)},
+\]
+proving \eqref{eq:kappaf}.  Since
+\[
+  f'(T)=\frac{T^2-2T-1}{(T^2+T)^2},
+\]
+$f$ is increasing for $T>1+\sqrt2$; hence $f(M)<f(A)$.  Finally,
+\begin{align*}
+ &M(M+1)(A^2+1)-A(A+1)(M^2+1)\\
+ &\hspace{4em}=(A-M)(AM-M-A-1),
+\end{align*}
+which gives \eqref{eq:kappaGap}.
+\end{proof}
+
+\begin{remark}[interpretation of the triad]
+The combination $\Delta_1-2\Delta_2+\Delta_4$ cancels both the real exponent $x$ and the large powers of $M,A$, leaving a rational logarithm of size $\asymp M^{-1}$.  It is still control-blind: the identity holds for integer $x$ as well.  Its value is as an exact calibration datum and as a compact target for formalization.
+\end{remark}
+
+\section{Quantitative conditioning and the matrix-coefficient barrier}
+
+\subsection{Exact height slope}
+
+Let
+\begin{equation}\label{eq:Hdef}
+  H_{\ell,m}:=
+  \max_{T\in\{2,3,M,A\}}\log\mathcal Q_{\ell,m}(T)
+  =\log\mathcal Q_{\ell,m}(A).
+\end{equation}
+The equality holds because $T\mapsto\mathcal Q_{\ell,m}(T)$ is increasing on $T\ge2$ and, for $x>1$, one has $A>\max\{M,3,2\}$.
+
+\begin{theorem}[conditioning law]\label{thm:heightlaw}
+For fixed prime $\ell$ and fixed $x>1$, as $m\to\infty$,
+\begin{align}
+  H_{\ell,m}
+  &=\ell m x\log3+O_\ell(1),\label{eq:Hasymp}\\
+  -\log|\det\mathbf L_{\ell,m}|
+  &=(\ell-1)m\log2+O_x(1),\label{eq:detlogasymp}
+\end{align}
+so
+\begin{equation}\label{eq:slope}
+  \lim_{m\to\infty}
+  \frac{-\log|\det\mathbf L_{\ell,m}|}{H_{\ell,m}}
+  =\frac{(\ell-1)\log2}{\ell x\log3}.
+\end{equation}
+If $\sigma_{\min}(\mathbf L_{\ell,m})$ is the least singular value, then
+\begin{equation}\label{eq:singularvalue}
+  \sigma_{\min}(\mathbf L_{\ell,m})
+  =\Theta_{x,\ell}\!\left(\frac{2^{-(\ell-1)m}}{m}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Formula \eqref{eq:Hasymp} follows from \eqref{eq:Qlog1}.  Equations \eqref{eq:detlogasymp} and \eqref{eq:slope} follow from \eqref{eq:detasymp}.  The largest singular value is $\Theta_{x,\ell}(m)$ because the matrix entries in the second column grow linearly in $m$, while the product of the two singular values equals the absolute determinant.  This gives \eqref{eq:singularvalue}.
+\end{proof}
+
+Letting $\ell$ grow through the primes after taking the $m$-limit gives the limiting conditioning slope
+\begin{equation}\label{eq:elllimit}
+  \lim_{\ell\to\infty}
+  \frac{(\ell-1)\log2}{\ell x\log3}
+  =\frac{\log2}{x\log3}.
+\end{equation}
+
+\subsection{The indispensable control audit}
+
+\begin{proposition}[control family]\label{prop:controls}
+For every integer $k\ge2$, putting $x=k$, $M=2^k$, and $A=3^k$ gives the same positive defects, determinant asymptotics, and height law in \Cref{thm:sign,thm:heightlaw}.
+\end{proposition}
+
+\begin{proof}
+All formulas were proved for arbitrary real $x>1$ and use no nonintegrality assumption.
+\end{proof}
+
+\begin{warning}[generic determinant bounds cannot solve the problem]
+The control family rules out any proposed theorem asserting that a nonsingular $2\times2$ matrix of logarithms of integers must have determinant
+\[
+  |\det\mathbf L|\ge \exp(-o(H))
+\]
+in terms of the maximum logarithmic height $H$.  Linear dependence on $H$ in the exponent is genuinely necessary.  A successful quantitative theorem must incorporate a feature absent from controls, such as an external prime, a rank-two solution semigroup, or a primitive-support condition.
+\end{warning}
+
+This observation is directly relevant to quantitative versions of the Matrix Coefficient Conjecture \cite{DasguptaKakde}.  The qualitative conjecture concerns exact singularity and rationally visible zero coefficients; the matrices above are nonsingular.  They show that a stability theorem near the singular locus must permit exponential conditioning in logarithmic height.  Likewise, recent arithmetic-holonomy methods give powerful effective linear-independence and approximation results on $\mathbb G_m$ \cite{CDTHolonomy}, but no currently available theorem directly supplies a lower bound for the structured weight-two determinant
+\begin{equation}\label{eq:weighttwo}
+  \log M\,\log B_{\ell,m}
+  -\log2\,\log\frac{\mathcal Q_{\ell,m}(A)}{\mathcal Q_{\ell,m}(M)}
+  =\log2\,\Delta_h
+\end{equation}
+that beats the control slope.
+
+\subsection{A numerical calibration}
+
+For the first surviving control-scale example $x=14$, the limiting slopes in \eqref{eq:slope} and selected finite values are as follows.  The table is only a consistency check; all statements above are exact.
+
+\begin{center}
+\begin{tabular}{c c c c}
+\toprule
+$\ell$ & $m$ & $\Delta_{(\ell-1)m}$ &
+$-\log|\det\mathbf L_{\ell,m}|/H_{\ell,m}$\\
+\midrule
+$2$ & $8$  & $5.266\times10^{-2}$ & $1.568\times10^{-2}$\\
+$2$ & $16$ & $2.133\times10^{-4}$ & $1.904\times10^{-2}$\\
+$2$ & $32$ & $3.260\times10^{-9}$ & $2.078\times10^{-2}$\\
+$3$ & $8$  & $2.133\times10^{-4}$ & $2.542\times10^{-2}$\\
+$5$ & $8$  & $3.260\times10^{-9}$ & $3.332\times10^{-2}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For comparison, the limiting values are approximately $0.02253$, $0.03004$, and $0.03605$ for $\ell=2,3,5$, respectively.
+
+\section{Multi-scale masks: an exact specialized height tax}
+
+The supplied report proves broad conservation laws for finite-difference masks and generalized Vandermonde determinants.  The necklace family admits a particularly transparent specialization, with every term available in closed form.
+
+\subsection{Generating-polynomial identity}
+
+Fix $H\ge1$ and write
+\begin{equation}\label{eq:maskalphabeta}
+  \alpha=2^{-H},\qquad \beta=3^{-H}.
+\end{equation}
+For a polynomial $P(z)=\sum_{j=1}^L c_jz^j$ with integer coefficients, set
+\begin{equation}\label{eq:maskedD}
+  \mathfrak D_P(H):=\sum_{j=1}^L c_j\Delta_{jH}.
+\end{equation}
+
+\begin{proposition}[exact mask identity]\label{prop:maskidentity}
+For $x>1$,
+\begin{equation}\label{eq:maskseries}
+  \mathfrak D_P(H)
+  =\sum_{n\ge1}\frac{
+  x\bigl(P(\alpha^n)-P(\beta^n)\bigr)
+  -\bigl(P(\alpha^{xn})-P(\beta^{xn})\bigr)}{n}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply \eqref{eq:Dseries} to each $\Delta_{jH}$ and interchange the finite sum over $j$ with the absolutely convergent sum over $n$.
+\end{proof}
+
+Thus cancellation of the first $R$ archimedean layers requires the interpolation conditions
+\begin{equation}\label{eq:maskconditions}
+  P(\alpha^n)=P(\beta^n),
+  \qquad 1\le n\le R.
+\end{equation}
+The second, candidate-dependent term in \eqref{eq:maskseries} remains, and integer coefficients needed to enforce \eqref{eq:maskconditions} carry the familiar height tax.
+
+\subsection{The primitive two-scale cancellation}
+
+For $R=1$ and $L=2$, the coefficient tax can be computed exactly.
+
+\begin{theorem}[minimal first-layer mask]\label{thm:firstmask}
+The primitive nonzero integer pairs $(c_1,c_2)$ satisfying
+\begin{equation}\label{eq:firstcondition}
+  c_1(2^{-H}-3^{-H})
+  +c_2(2^{-2H}-3^{-2H})=0
+\end{equation}
+are, up to sign,
+\begin{equation}\label{eq:firstcoeffs}
+  (c_1,c_2)=(2^H+3^H,-6^H).
+\end{equation}
+For fixed $x>2$, the corresponding masked defect
+\begin{equation}\label{eq:muH}
+  \mu_H:=(2^H+3^H)\Delta_H-6^H\Delta_{2H}
+\end{equation}
+satisfies
+\begin{equation}\label{eq:muasymp}
+  \mu_H\sim \frac{x}{2}\left(\frac34\right)^H
+  \qquad(H\to\infty).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:masktaxratio}
+  \lim_{H\to\infty}
+  \frac{-\log\mu_H}{\log\max\{|c_1|,|c_2|\}}
+  =\frac{\log(4/3)}{\log6}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Factor
+\[
+  2^{-2H}-3^{-2H}
+  =(2^{-H}-3^{-H})(2^{-H}+3^{-H}).
+\]
+After canceling the nonzero first factor, \eqref{eq:firstcondition} becomes
+\[
+  c_1+c_2\frac{2^H+3^H}{6^H}=0.
+\]
+Because $\gcd(2^H+3^H,6^H)=1$, the primitive solution is \eqref{eq:firstcoeffs}.
+
+Apply \Cref{prop:maskidentity} with
+\[
+  P_H(z)=(2^H+3^H)z-6^Hz^2.
+\]
+By construction, $P_H(2^{-H})=P_H(3^{-H})=1$, so the $n=1$ ordinary-power contribution vanishes.  At $n=2$,
+\begin{align*}
+ P_H(2^{-2H})-P_H(3^{-2H})
+  =\left(\frac34\right)^H+o\!\left(\left(\frac34\right)^H\right).
+\end{align*}
+All $n\ge3$ terms are $O((3/8)^H)$, while the candidate-dependent $n=1$ term is $O((3/2^x)^H)$, which is $o((3/4)^H)$ for $x>2$.  Formula \eqref{eq:muasymp} follows, and \eqref{eq:masktaxratio} uses $\max|c_j|=6^H$.
+\end{proof}
+
+\begin{warning}[cancellation reverses the absolute gain]
+The unmasked defect has size $\Delta_H\asymp2^{-H}$, whereas the coefficient-minimal first-layer cancellation has size $\mu_H\asymp(3/4)^H$, which is larger.  The enormous integer coefficient $6^H$ has amplified the next layer more than the cancellation removed the first.  This is a completely explicit instance of the coefficient-height conservation principle.
+\end{warning}
+
+\section{External-prime specialization and exact adelic formulas}
+
+\subsection{Finite-place decomposition of the transform}
+
+Let $V=\bigoplus_q\Q e_q$ be the rational vector space on the set of primes, and let
+\begin{equation}\label{eq:nu}
+  \nu(n)=\sum_q v_q(n)e_q
+  \qquad(n\in\Q_{>0}).
+\end{equation}
+From \eqref{eq:Qfactor},
+\begin{equation}\label{eq:nuQ}
+  \nu\bigl(\mathcal Q_{\ell,m}(T)\bigr)
+  =m\nu(T)+\nu(T^h-1)-e_\ell.
+\end{equation}
+This is the finite-place companion to \eqref{eq:Qlog1}.  The original support contributes a linear ray $m\nu(T)$, while every fresh prime is contained in the cyclotomic increment $\nu(T^h-1)$.
+
+Assume now that a primitive hypothetical counterexample has an unshared external prime in the branch
+\begin{equation}\label{eq:externalbranch}
+  \ell\mid M,
+  \qquad \ell\nmid 6A,
+  \qquad \ell\ge5.
+\end{equation}
+Write
+\begin{equation}\label{eq:aell}
+  a_\ell=v_\ell(M)>0.
+\end{equation}
+Choose this same $\ell$ as the Frobenius prime in $\mathcal Q_{\ell,m}$.
+
+\begin{theorem}[exact external-prime slope]\label{thm:localslope}
+Let $\ell$ satisfy \eqref{eq:externalbranch}.  For every $m\ge1$,
+\begin{equation}\label{eq:localM}
+  v_\ell\bigl(\mathcal Q_{\ell,m}(M)\bigr)
+  =ma_\ell-1.
+\end{equation}
+For every $T\in\{2,3,A\}$,
+\begin{equation}\label{eq:localunit}
+  v_\ell\bigl(\mathcal Q_{\ell,m}(T)\bigr)
+  =v_\ell(T^{\ell-1}-1)+v_\ell(m)-1.
+\end{equation}
+Consequently, if
+\begin{equation}\label{eq:cT}
+  c_T:=v_\ell(T^{\ell-1}-1),
+  \qquad T\in\{2,3,A\},
+\end{equation}
+then
+\begin{align}
+  v_\ell\frac{\mathcal Q_{\ell,m}(M)}{\mathcal Q_{\ell,m}(A)}
+  &=ma_\ell-c_A-v_\ell(m),\label{eq:localoutputratio}\\
+  v_\ell B_{\ell,m}
+  &=c_3-c_2.\label{eq:localB}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+If $\ell\mid M$, then $M^h-1\equiv-1\pmod\ell$.  Formula \eqref{eq:Qfactor} therefore gives
+\[
+ v_\ell(\mathcal Q_{\ell,m}(M))
+ =m v_\ell(M)-1.
+\]
+If $\ell\nmid T$, Fermat gives $\ell\mid T^{\ell-1}-1$, and the odd-prime LTE formula yields
+\[
+  v_\ell(T^{(\ell-1)m}-1)
+  =v_\ell(T^{\ell-1}-1)+v_\ell(m).
+\]
+Insert this into \eqref{eq:Qfactor}; the quotient by $\ell$ subtracts one.  The ratio formulas follow by subtraction.
+\end{proof}
+
+\begin{remark}[two channels in one object]
+The same integer $\mathcal Q_{\ell,m}(T)$ has an archimedean correction of size $T^{-h}$ and, at an external Frobenius prime, a valuation of size $m a_\ell$.  This is the first construction in the present line of attack that supplies exact exponential contraction and exact primitive-support growth simultaneously.
+\end{remark}
+
+\subsection{Rationalization by approximants to the exponent}
+
+The defect $\Delta_h$ is a logarithm of a transcendental number at nonexceptional levels, so the ordinary rational product formula does not apply directly.  A rational approximation $P/Q$ to $x$ removes the real exponent.
+
+\begin{definition}[rationalized Frobenius quotient]\label{def:rationalized}
+For positive integers $P,Q$, define
+\begin{equation}\label{eq:RationalR}
+  \mathscr R_{\ell,m}(P,Q)
+  :=
+  \frac{\mathcal Q_{\ell,m}(M)^Q\,
+        \mathcal Q_{\ell,m}(3)^P}
+       {\mathcal Q_{\ell,m}(A)^Q\,
+        \mathcal Q_{\ell,m}(2)^P}
+  \in\Q_{>0}.
+\end{equation}
+\end{definition}
+
+\begin{theorem}[simultaneous archimedean and local identities]\label{thm:adelicidentities}
+With $u_{\ell,m}$ as in \eqref{eq:u},
+\begin{equation}\label{eq:archR}
+  \log\mathscr R_{\ell,m}(P,Q)
+  =Q\Delta_h+(P-Qx)u_{\ell,m}.
+\end{equation}
+Under the external-prime hypothesis \eqref{eq:externalbranch},
+\begin{equation}\label{eq:localR}
+  v_\ell\bigl(\mathscr R_{\ell,m}(P,Q)\bigr)
+  =Q\bigl(ma_\ell-c_A-v_\ell(m)\bigr)
+   +P(c_3-c_2).
+\end{equation}
+If $P/Q$ remains in a fixed compact interval about $x$, then
+\begin{equation}\label{eq:localRasymp}
+  v_\ell\bigl(\mathscr R_{\ell,m}(P,Q)\bigr)
+  =Qma_\ell+O_{\ell,M,A,x}(Q\log m)
+  \qquad(m\to\infty).
+\end{equation}
+In particular, $\mathscr R_{\ell,m}(P,Q)\ne1$ for all sufficiently large $m$.
+\end{theorem}
+
+\begin{proof}
+Take logarithms in \eqref{eq:RationalR}.  Since
+\[
+  \log\frac{\mathcal Q_{\ell,m}(M)}{\mathcal Q_{\ell,m}(A)}
+  =-v_{\ell,m}
+  =\Delta_h-xu_{\ell,m},
+\]
+formula \eqref{eq:archR} follows.  Formula \eqref{eq:localR} follows from \eqref{eq:localoutputratio} and \eqref{eq:localB}.  The remaining statements are immediate because $v_\ell(m)=O(\log m)$.
+\end{proof}
+
+This is a genuinely adelic nonvanishing certificate: continued-fraction tuning can make the real logarithm small, but the external valuation prevents exact equality with $1$.
+
+\subsection{The direct height audit}
+
+Define the unreduced word height
+\begin{align}
+  \mathscr H_{\ell,m}(P,Q)
+  :=&\,Q\bigl(\log\mathcal Q_{\ell,m}(M)
+              +\log\mathcal Q_{\ell,m}(A)\bigr)\notag\\
+     &+P\bigl(\log\mathcal Q_{\ell,m}(2)
+              +\log\mathcal Q_{\ell,m}(3)\bigr).
+  \label{eq:wordheight}
+\end{align}
+The logarithmic height of the reduced rational number in \eqref{eq:RationalR} is at most $\mathscr H_{\ell,m}(P,Q)$, with equality only in the absence of cross-cancellation.
+
+\begin{proposition}[external-prime share of unreduced height]\label{prop:heightshare}
+Suppose $P/Q\to x$ and $m\to\infty$.  Under \eqref{eq:externalbranch},
+\begin{equation}\label{eq:wordheightasymp}
+  \mathscr H_{\ell,m}(P,Q)
+  \sim 2Qx\ell m(\log2+\log3),
+\end{equation}
+and
+\begin{equation}\label{eq:heightsharelimit}
+  \frac{v_\ell(\mathscr R_{\ell,m}(P,Q))\log\ell}
+       {\mathscr H_{\ell,m}(P,Q)}
+  \longrightarrow
+  \frac{a_\ell\log\ell}
+       {2x\ell(\log2+\log3)}.
+\end{equation}
+Because $a_\ell\log\ell\le\log M=x\log2$,
+\begin{equation}\label{eq:heightshareceiling}
+  \limsup
+  \frac{v_\ell(\mathscr R_{\ell,m}(P,Q))\log\ell}
+       {\mathscr H_{\ell,m}(P,Q)}
+  \le
+  \frac{\log2}{2\ell(\log2+\log3)}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Use \eqref{eq:Qlog1} in \eqref{eq:wordheight}; the first line contributes
+$Q\ell m x(\log2+\log3)+o(Qm)$ and the second contributes the same asymptotically because $P/Q\to x$.  Combine this with \eqref{eq:localRasymp}.  The final inequality follows because $\ell^{a_\ell}\mid M$.
+\end{proof}
+
+\begin{warning}[why the naive product formula still loses]
+The external valuation is linear and control-sensitive, but it occupies only an $O(1/\ell)$ share of the unreduced word height.  Therefore a term-by-term height estimate cannot convert \eqref{eq:archR} and \eqref{eq:localR} into a contradiction.  Any success must show that the \emph{reduced} numerator and denominator of $\mathscr R_{\ell,m}(P,Q)$ are dramatically smaller than the four separate factors suggest, while the external $\ell$-adic slope survives that reduction.
+\end{warning}
+
+\subsection{Continued-fraction tuning and its present ceiling}
+
+Let $P/Q$ be a continued-fraction convergent to $x$, so
+\begin{equation}\label{eq:CF}
+  |P-Qx|<\frac1Q.
+\end{equation}
+For fixed $\ell$,
+\begin{equation}\label{eq:archsizes}
+  Q\Delta_h\asymp Qx2^{-(\ell-1)m},
+  \qquad
+  |P-Qx|u_{\ell,m}
+  =O\!\left(\frac{\ell m}{Q}\right).
+\end{equation}
+The two terms balance around
+\begin{equation}\label{eq:mtune}
+  2^{-(\ell-1)m}\asymp\frac{m}{Q^2},
+  \qquad
+  m\asymp\frac{2\log Q}{(\ell-1)\log2}.
+\end{equation}
+At that scale, the unreduced height is $O_\ell(Q\log Q)$, while the natural archimedean residual is only polynomially small in $Q$.  The elementary rational separation bound
+\begin{equation}\label{eq:rationalseparation}
+  0<|\log R|\quad\Longrightarrow\quad
+  -\log|\log R|\le h(R)+O(1)
+  \qquad(R\in\Q_{>0},\ R\ne1)
+\end{equation}
+Indeed, if $R=a/b$ is reduced and $1/2<R<2$, then $|R-1|\ge1/\max\{a,b\}$ and $|\log R|\ge|R-1|/2$; outside that interval the estimate is trivial after enlarging the absolute constant.
+It is therefore much too weak: its right-hand side is of order $Q\log Q$.  The local nonvanishing in \Cref{thm:adelicidentities} prevents an accidental equality but does not improve this separation scale.
+
+\begin{problem}[correlated reduced-height compression]\label{prob:heightcollapse}
+Find a sequence of triples $(P_j,Q_j,m_j)$, with $P_j/Q_j\to x$ and $m_j\to\infty$, and constants $\gamma>\eta>0$, for which
+\begin{enumerate}[label=(\roman*)]
+  \item the two terms in \eqref{eq:archR} cancel so strongly that
+  \[
+    -\log\bigl|\log\mathscr R_{\ell,m_j}(P_j,Q_j)\bigr|
+    \ge (\gamma+o(1))Q_jm_j;
+  \]
+  \item cross-cancellation among the four transformed integers compresses the reduced height to
+  \[
+    h\bigl(\mathscr R_{\ell,m_j}(P_j,Q_j)\bigr)
+    \le(\eta+o(1))Q_jm_j;
+  \]
+  \item the external valuation remains nonzero, thereby certifying
+  $\mathscr R_{\ell,m_j}(P_j,Q_j)\ne1$.
+\end{enumerate}
+Necessarily $\eta\ge a_\ell\log\ell$, up to the normalization implicit in the limit, because
+$h(R)\ge |v_\ell(R)|\log\ell$ for every rational $R$.  Thus the feasible goal is not height
+$o(Qm)$: it is compression from the much larger four-factor word height down toward the
+unavoidable external-prime floor, together with a real cancellation exponent exceeding that
+floor.  Since $\gamma>\eta$, any such sequence would contradict \eqref{eq:rationalseparation}.  The present report proves the exact identities needed to test this target but does
+not prove that such compression occurs.
+\end{problem}
+
+\section{The symmetric two-prime tensor and a reciprocity no-go theorem}
+
+\subsection{The obstruction tensor}
+
+Let $V=\bigoplus_p\Q e_p$ as above, and define the logarithmic functional
+\begin{equation}\label{eq:lambda}
+  \lambda:V\longrightarrow\R,
+  \qquad \lambda(e_p)=\log p.
+\end{equation}
+Then $\lambda(\nu(n))=\log n$ for $n\in\Q_{>0}$.
+
+Define the symmetric tensor
+\begin{equation}\label{eq:Sigma}
+  \Sigma(M,A)
+  :=\nu(M)\otimes e_3+e_3\otimes\nu(M)
+    -\nu(A)\otimes e_2-e_2\otimes\nu(A)
+  \in V\otimes V.
+\end{equation}
+It is invariant under interchange of the two tensor factors.  We call an integral finite-support two-star tensor \emph{primitive} when the greatest common divisor of its coefficients in the basis $e_p\otimes e_q$ is $1$.  Every nonzero integral two-star tensor has a unique primitive representative on its positive rational ray.
+
+\begin{proposition}[real regulator and formal rigidity]\label{prop:Sigma}
+One has
+\begin{equation}\label{eq:regSigma}
+  \frac12(\lambda\otimes\lambda)(\Sigma(M,A))
+  =\log M\log3-\log A\log2.
+\end{equation}
+Hence a solution of \eqref{eq:AE} satisfies
+\begin{equation}\label{eq:regzero}
+  (\lambda\otimes\lambda)(\Sigma(M,A))=0.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Sigmaformalzero}
+  \Sigma(M,A)=0
+  \quad\Longleftrightarrow\quad
+  M=2^k,\ A=3^k
+  \text{ for some }k\in\Z_{\ge0}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The regulator formula is immediate.  For formal rigidity, write
+\[
+  \nu(M)=\sum_p a_pe_p,
+  \qquad
+  \nu(A)=\sum_p b_pe_p.
+\]
+For every $q\notin\{2,3\}$, the coefficients of the independent symmetric edges $e_q\otimes e_3+e_3\otimes e_q$ and $e_q\otimes e_2+e_2\otimes e_q$ are $a_q$ and $-b_q$, so formal vanishing forces $a_q=b_q=0$.  The coefficients of $e_3\otimes e_3$, $e_2\otimes e_2$, and $e_2\otimes e_3+e_3\otimes e_2$ then force
+\[
+  a_3=0,
+  \qquad b_2=0,
+  \qquad a_2=b_3=k.
+\]
+The converse is immediate.
+\end{proof}
+
+Thus a noninteger counterexample would be exactly a nonzero symmetric prime tensor in the kernel of its archimedean product regulator.
+
+\subsection{External derivatives as edge boundaries}
+
+For a prime $q\notin\{2,3\}$, contract the first tensor factor against the coordinate functional $e_q^*$.  Then
+\begin{equation}\label{eq:contraction}
+  (e_q^*\otimes\mathrm{id})(\Sigma(M,A))
+  =a_qe_3-b_qe_2.
+\end{equation}
+Applying $\lambda$ gives
+\begin{equation}\label{eq:Lambdaq}
+  \Lambda_q=a_q\log3-b_q\log2
+  =\log\frac{3^{a_q}}{2^{b_q}}.
+\end{equation}
+If $(a_q,b_q)\ne(0,0)$, then $\Lambda_q\ne0$ by unique factorization.  This is the tensor version of the external-prime derivative already isolated in the supplied report.
+
+Graphically, $\Sigma(M,A)$ is a signed two-star: every prime in $M$ is joined to the center $3$, while every prime in $A$ is joined with opposite sign to the center $2$.  The regulator weights an edge $\{p,q\}$ by $\log p\log q$.
+
+\subsection{Why alternating symbols have the wrong parity}
+
+Let
+\begin{equation}\label{eq:Altmap}
+  \operatorname{Alt}:V\otimes V\longrightarrow\bigwedge^2V,
+  \qquad u\otimes v\longmapsto u\wedge v.
+\end{equation}
+
+\begin{theorem}[alternating-symbol no-go]\label{thm:alternatingnogo}
+One has
+\begin{equation}\label{eq:AltSigma}
+  \operatorname{Alt}(\Sigma(M,A))=0
+\end{equation}
+for all $M,A$.  Consequently, every alternating bilinear invariant of prime-valuation vectors annihilates the obstruction tensor.  In particular, no construction whose leading valuation data factors only through an ordinary Steinberg or Milnor-$K_2$ symbol \cite{Milnor,Weibel} can distinguish a nonzero $\Sigma(M,A)$ from zero.
+\end{theorem}
+
+\begin{proof}
+Each summand of \eqref{eq:Sigma} has the form $u\otimes v+v\otimes u$, whose alternation is $u\wedge v+v\wedge u=0$.  The universal property of $\bigwedge^2V$ says that every alternating bilinear map factors through \eqref{eq:Altmap}.
+\end{proof}
+
+This makes the earlier wrong-sign observation structural rather than accidental.  The desired period lies in $\Sym^2V$; ordinary $K_2$ is alternating.
+
+\subsection{Why one-place symmetric pairings have the wrong locality}
+
+A natural repair is to replace alternating symbols by symmetric local pairings.  If they remain one-place, they still cannot see the needed data.
+
+\begin{definition}[diagonal one-place pairing]\label{def:diagonal}
+For coefficients $c_p$ with finite support, define
+\begin{equation}\label{eq:diagonalpairing}
+  D_c(u,v)=\sum_pc_pu_pv_p,
+  \qquad
+  u=\sum_pu_pe_p,
+  \quad v=\sum_pv_pe_p.
+\end{equation}
+Equivalently, $D_c$ is a functional supported only on diagonal tensors $e_p\otimes e_p$.
+\end{definition}
+
+\begin{theorem}[diagonal-locality no-go]\label{thm:diagonalnogo}
+Every diagonal one-place functional applied to $\Sigma(M,A)$ depends only on $v_3(M)$ and $v_2(A)$.  It is completely blind to every external coefficient $a_q,b_q$ with $q\notin\{2,3\}$.
+\end{theorem}
+
+\begin{proof}
+The only diagonal entries of \eqref{eq:Sigma} are
+\[
+  2v_3(M)e_3\otimes e_3
+  -2v_2(A)e_2\otimes e_2.
+\]
+Every external-prime contribution is an off-diagonal edge $e_q\otimes e_3+e_3\otimes e_q$ or $e_q\otimes e_2+e_2\otimes e_q$.
+\end{proof}
+
+\begin{corollary}[necessary shape of a reciprocity proof]\label{cor:bilocalnecessity}
+A local-to-global invariant capable of detecting the symmetric obstruction must do at least one of the following:
+\begin{enumerate}[label=(\roman*)]
+  \item contain genuinely bi-local terms indexed by two distinct finite primes $(p,q)$;
+  \item mix prime coordinates globally before localization;
+  \item use a nonlinear refinement whose linearization is not alternating and not diagonal.
+\end{enumerate}
+Ordinary tame-symbol reciprocity and sums of diagonal local height pairings are insufficient.
+\end{corollary}
+
+\subsection{A precise bi-local research specification}
+
+The no-go theorem suggests the following target rather than a vague appeal to ``higher $K$-theory.''
+
+\begin{problem}[bi-local symmetric reciprocity]\label{prob:bilocal}
+Construct an arithmetic invariant $\mathscr B$ on the finite-support symmetric tensors in $V\otimes V$ with a decomposition
+\begin{equation}\label{eq:bilocaldecomp}
+  \mathscr B(S)=\sum_{p\le q}\mathscr B_{p,q}(S),
+\end{equation}
+subject to the following requirements:
+\begin{enumerate}[label=(\roman*)]
+  \item $\mathscr B_{p,q}$ genuinely detects the coefficient of the off-diagonal edge $e_p\otimes e_q+e_q\otimes e_p$;
+  \item a global reciprocity law forces $\mathscr B(S)=0$ whenever $(\lambda\otimes\lambda)(S)=0$ for a two-star tensor;
+  \item for a primitive two-star tensor $S=\Sigma(M,A)$, at least one external edge has a noncancellable sign, valuation, or height contribution;
+  \item control tensors $\Sigma(2^k,3^k)=0$ are annihilated identically.
+\end{enumerate}
+A solution with an effective noncancellation statement would prove the conjecture.
+\end{problem}
+
+Potential sources of such a structure include quadratic refinements of Kummer biextensions, depth-two polylogarithmic regulators, and genuinely two-place height pairings.  These are research directions, not claims that an existing theory already supplies \eqref{eq:bilocaldecomp} with the required positivity.
+
+\section{A control-sensitive approximation family}
+
+The smooth classification converts the defect into a family of explicit rational approximations to transcendental powers at every nonexceptional level.
+
+\begin{theorem}[one-sided rational approximation to a transcendental power]\label{thm:transapprox}
+Assume a hypothetical noninteger solution and let $h\notin\{1,2,4\}$.  Put
+\begin{equation}\label{eq:Sh}
+  S_h:=\frac{A^h-1}{M^h-1}\in\Q_{>0}.
+\end{equation}
+Then $\mathcal R_h^x$ is transcendental and
+\begin{equation}\label{eq:approxexact}
+  \mathcal R_h^x=S_h\e^{\Delta_h}>S_h.
+\end{equation}
+Its relative approximation error satisfies
+\begin{equation}\label{eq:relativeerror}
+  \frac{\mathcal R_h^x-S_h}{S_h}
+  =\e^{\Delta_h}-1
+  \sim x2^{-h}.
+\end{equation}
+If $x\ge2$, then for every $h\ge1$,
+\begin{equation}\label{eq:relativebounds}
+  x(2^{-h}-3^{-h})
+  \le \frac{\mathcal R_h^x-S_h}{S_h}
+  \le
+  \exp\!\left(\frac{x(2^{-h}-3^{-h})}{(1-2^{-h})^2}\right)-1.
+\end{equation}
+Moreover, with $h(\cdot)$ denoting logarithmic height on $\Q$,
+\begin{equation}\label{eq:heightupperRS}
+  h(\mathcal R_h)\le h\log3,
+  \qquad
+  h(S_h)\le hx\log3.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Transcendence follows from \Cref{thm:spectrum,thm:smoothclass}.  Rearranging \eqref{eq:expDwithR} gives \eqref{eq:approxexact}; positivity and the asymptotic follow from \Cref{thm:sign}.  Since $y\le e^y-1\le e^Y-1$ for $0\le y\le Y$, \eqref{eq:relativebounds} follows from \eqref{eq:Dbounds}.  The unreduced numerator and denominator of $\mathcal R_h$ are bounded by $3^h$, and those of $S_h$ are bounded by $A^h$, proving \eqref{eq:heightupperRS}.
+\end{proof}
+
+\begin{remark}[quantitative target]
+The approximation exponent is linear in the logarithmic heights.  A theorem excluding \eqref{eq:relativeerror} would have to exploit the special dependence among $M,A,\mathcal R_h,S_h$; a generic irrationality measure for a varying transcendental number cannot suffice.  Multiplying the logarithmic relation by $\log2$ gives the structured period
+\begin{equation}\label{eq:LambdaH}
+  \Lambda_h
+  :=\log M\log\mathcal R_h-\log2\log S_h
+  =\log2\,\Delta_h
+  \sim x\log2\,2^{-h}.
+\end{equation}
+Thus the exact threshold in the depth variable is $\log2$: any nonintegrality-sensitive lower bound with
+\[
+  -\log|\Lambda_h|\le(\log2-\varepsilon)h+O(1)
+\]
+for some $\varepsilon>0$ would settle the conjecture.
+\end{remark}
+
+\section{Synthesis: what the necklace construction changes}
+
+\subsection{A single transform, four exact outputs}
+
+For each prime package $(\ell,m)$, the construction supplies four pieces of information:
+\begin{enumerate}[label=(\arabic*)]
+  \item \textbf{Integral functorial input:}
+  $\mathcal Q_{\ell,m}(2),\mathcal Q_{\ell,m}(3),
+   \mathcal Q_{\ell,m}(M),\mathcal Q_{\ell,m}(A)$ are positive integers.
+  \item \textbf{Archimedean contraction:}
+  the determinant defect is positive and $\asymp2^{-h}$.
+  \item \textbf{Transcendence switch:}
+  the defect exponential is algebraic exactly at $h=1,2,4$ under a noninteger candidate.
+  \item \textbf{Finite-place tunability:}
+  choosing $\ell$ to be an external divisor gives a local valuation slope $ma_\ell$.
+\end{enumerate}
+No previous single construction in the supplied report combined all four features in this exact form.  The first two alone are control-blind; the third and fourth are control-sensitive.
+
+\subsection{The two missing bridges}
+
+The work narrows the remaining task to two possible bridges.
+
+\paragraph{Bridge A: algebraic transport.}
+Show that the integral polynomial operation $T\mapsto\mathcal Q_{\ell,m}(T)$ forces $\e^{\Delta_h}$ to be algebraic at one nonexceptional level.  By \Cref{crit:onelevel}, this would immediately contradict the auxiliary-base spectrum.  Conceptually, this asks for a finite fragment of an additive/Frobenius-natural extension of the multiplicative character
+\[
+  2\longmapsto M,
+  \qquad 3\longmapsto A.
+\]
+The obstruction is that $T^{\ell m}-T^m$ is additive data, whereas the hypothesis controls only powers of $2$ and $3$ multiplicatively.
+
+\paragraph{Bridge B: adelic height collapse.}
+Use the exact identities \eqref{eq:archR} and \eqref{eq:localR} to construct a rational number extremely close to $1$ at the real place, while the external finite place certifies that the number is not exactly $1$, and prove that its reduced global height is too small for rational separation.  This requires correlated cancellation across the four transformed integers; termwise height estimates provably lose.
+
+The bi-local reciprocity program in \Cref{prob:bilocal} can be viewed as a structural mechanism for either bridge.  It would mix the external support edge with the cyclotomic support generated by $T^h-1$, rather than summing independent one-place data.
+
+\subsection{Four precise conditional closure statements}
+
+\begin{criterion}[quantitative period closure]\label{crit:period}
+Suppose there is an $\varepsilon>0$ such that every noninteger candidate satisfies, for infinitely many $h\notin\{1,2,4\}$,
+\begin{equation}\label{eq:periodcriterion}
+  |\log M\log\mathcal R_h-\log2\log S_h|
+  \ge \exp\bigl(- (\log2-\varepsilon)h\bigr).
+\end{equation}
+Then the Alaoglu--Erd\H{o}s conjecture holds.
+\end{criterion}
+
+\begin{proof}
+Equation \eqref{eq:LambdaH} gives an upper bound asymptotic to a constant times $\exp(-h\log2)$, contradicting \eqref{eq:periodcriterion} for large $h$.
+\end{proof}
+
+\begin{criterion}[Frobenius algebraicity closure]\label{crit:algebraicity}
+If for one pair $(\ell,m)$ with $(\ell-1)m\notin\{1,2,4\}$ the number in \eqref{eq:expDwithB} is algebraic for every integral-output exponent, then the conjecture holds.
+\end{criterion}
+
+This is \Cref{crit:onelevel}, restated to emphasize that only one level is needed.
+
+\begin{criterion}[adelic reduced-height closure]\label{crit:adelic}
+Assume an external branch \eqref{eq:externalbranch}.  If there are $P_j/Q_j\to x$ and $m_j\to\infty$ such that
+\begin{align}
+  -\log\bigl|\log\mathscr R_{\ell,m_j}(P_j,Q_j)\bigr|
+  -h\bigl(\mathscr R_{\ell,m_j}(P_j,Q_j)\bigr)
+  &\longrightarrow+\infty,\label{eq:adeliccontradiction}\\
+  v_\ell\bigl(\mathscr R_{\ell,m_j}(P_j,Q_j)\bigr)&\ne0
+  \quad\text{for all sufficiently large $j$},
+\end{align}
+then the conjecture holds.
+\end{criterion}
+
+\begin{proof}
+The second condition ensures that the rational number is not $1$, while the first contradicts the uniform elementary separation estimate \eqref{eq:rationalseparation}.
+\end{proof}
+
+\begin{criterion}[bi-local reciprocity closure]\label{crit:bilocalclosure}
+If an invariant satisfying \Cref{prob:bilocal} is constructed with the property that
+\[
+  (\lambda\otimes\lambda)(S)=0
+  \quad\Longrightarrow\quad
+  \mathscr B(S)=0
+\]
+for all two-star tensors, while primitive nonzero two-stars have $\mathscr B(S)\ne0$, then the conjecture holds.
+\end{criterion}
+
+\begin{proof}
+Apply the statement to $S=\Sigma(M,A)$ and use \Cref{prop:Sigma}.
+\end{proof}
+
+\subsection{Priority order}
+
+The most promising order of attack is now:
+\begin{enumerate}[label=\textbf{P\arabic*.}]
+  \item \textbf{Search for reduced-height collapse in the external Frobenius family.}  The identities are exact, testable, and primitive-sensitive.
+  \item \textbf{Study algebraicity/naturality of one nonexceptional necklace defect.}  Only one successful level is required.
+  \item \textbf{Develop a symmetric bi-local regulator.}  The parity and locality requirements are now explicit enough to reject unsuitable theories early.
+  \item \textbf{Seek a quantitative weight-two period theorem at the exact slope.}  Any proposed bound must be audited against the integer-control family in \Cref{prop:controls}.
+\end{enumerate}
+
+\section{Audit of nearby modern transcendence directions}
+
+\subsection{Matrix coefficients of logarithms}
+
+Dasgupta and Kakde formulate the Matrix Coefficient Conjecture for matrices of logarithms of algebraic numbers \cite{DasguptaKakde}: an exactly singular logarithm matrix should admit rational row and column operations producing a zero coefficient.  This framework is conceptually close to the formal-versus-real rank gap in \Cref{prop:Sigma}.  However, the present matrices $\mathbf L_{\ell,m}$ are never singular; their determinant is explicitly negative.  The new contribution is therefore a stability calibration: any quantitative extension of the matrix-coefficient philosophy must tolerate least singular values of order $2^{-h}/m$ at logarithmic height $\asymp m$ even in the control branch.
+
+A potentially useful refinement would be a \emph{primitive-support stability theorem}: an exponentially ill-conditioned logarithm matrix whose rows carry incompatible external support should either be exactly singular for a rationally visible reason or satisfy a stronger lower bound than the controls.  No theorem of this form is presently available.
+
+\subsection{Arithmetic holonomy}
+
+The arithmetic-holonomy program of Calegari, Dimitrov, and Tang \cite{CDTHolonomy} develops effective Diophantine approximation and linear-independence results on $\mathbb G_m$, including regimes involving high-order roots of algebraic numbers.  The necklace family has a superficially related feature: $\mathcal C_h$ is a rational point exponentially close to $1$ with height linear in $h$.  The obstruction is that the exponent $x$ is a fixed candidate-dependent transcendental number, and the critical relation is a product of logarithms, not a linear form with fixed algebraic coefficients.  A useful adaptation would need to retain the external-prime support of $M,A$ while controlling the varying rational base $\mathcal R_h$.
+
+\subsection{Linear forms in two and three logarithms}
+
+Classical and modern lower bounds for linear forms in two or three logarithms remain essential \cite{LMN,Matveev} for the external derivatives
+\[
+  \Lambda_q=a_q\log3-b_q\log2.
+\]
+They do not directly control the global cancellation
+\[
+  \sum_q\log q\,\Lambda_q=0
+\]
+or the weight-two form \eqref{eq:LambdaH}.  The necklace construction does not remove this barrier; it repackages it into a family with exact sign, exact scale, and tunable local slope.
+
+\subsection{Witt vectors and necklace rings}
+
+The Witt/necklace language is not decorative \cite{MetropolisRota,Hazewinkel}.  It identifies $\mathcal Q_{\ell,m}$ as the simplest integral Frobenius difference and explains the prime-power uniqueness in \Cref{prop:two-term}.  A future categorical proof would likely need a statement of the following kind:
+\begin{quote}
+A multiplicative character on the Teichm\"uller subgroup generated by $2$ and $3$, taking those generators to integers, cannot be compatible with one nontrivial integral Frobenius-difference operation unless its exponent is an integer.
+\end{quote}
+The present report proves the numerical defect and its exceptional spectrum, but not such a categorical rigidity theorem.
+
+\subsection{Literature conclusion}
+
+The literature audit found strong qualitative tools around exact logarithmic rank, effective tools for linear forms and arithmetic approximation on $\mathbb G_m$, and the classical algebra of necklace/Witt operations.  It did not identify a theorem that simultaneously handles:
+\begin{enumerate}[label=(\roman*)]
+  \item a candidate-dependent transcendental exponent $x$;
+  \item a varying rational base $\mathcal R_h$ with controlled fresh prime support;
+  \item a weight-two product-of-logarithms relation of size $\asymp2^{-h}$;
+  \item an external finite-place slope that is absent from integer controls.
+\end{enumerate}
+That four-way conjunction is the precise novelty and the remaining difficulty.
+
+\section{Formalization blueprint}
+
+Most of the new paper proofs are suitable for direct Lean formalization.  The sole major classical input not expected to be readily available in a standard library is the Six Exponentials Theorem.
+
+\subsection{Dependency ledger}
+
+\begin{center}
+\begin{longtable}{p{0.24\textwidth}p{0.48\textwidth}p{0.20\textwidth}}
+\toprule
+Result & Main ingredients & Formalization status\\
+\midrule
+\endhead
+Integrality of $\mathcal Q_{\ell,m}$ & Fermat congruence for $T^m$ modulo $\ell$ & elementary\\
+Universal defect formula & logarithm algebra and $M=2^x$, $A=3^x$ & elementary real analysis\\
+Strict positivity & derivative of $G_x$ on $(0,1)$ & elementary calculus\\
+Bounds and asymptotics & monotonicity, squeeze estimates & elementary calculus\\
+Smooth-level classification & gcd reduction, $v_2$, $v_3$, LTE, finite check $h=1,2,4$ & elementary number theory\\
+Six-package table & finite arithmetic & decidable computation\\
+Exceptional triad & rational-function simplification and polynomial factorization & ring normalization\\
+External-prime slope & factorization plus odd-prime LTE & elementary number theory\\
+Adelic identities & exponent arithmetic and valuations & elementary\\
+Tensor no-go theorems & finite-support linear algebra & elementary\\
+Transcendence split & Six Exponentials Theorem & external classical axiom/theorem\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Suggested theorem interfaces}
+
+A practical formal development can be organized around the following interfaces.
+
+\begin{verbatim}
+def primeNecklace (ell m T : Nat) : Nat :=
+  (T^(ell*m) - T^m) / ell
+
+-- under ell.Prime
+ theorem prime_dvd_frobenius_diff :
+   ell | T^(ell*m) - T^m
+
+ theorem log_primeNecklace
+   (hT : 2 <= T) :
+   Real.log (primeNecklace ell m T) =
+     (ell*m : Real) * Real.log T - Real.log ell
+       + Real.log (1 - T^(-((ell-1)*m : Real)))
+
+ def defect (x : Real) (h : Nat) : Real :=
+   G x (2^(-h : Real)) - G x (3^(-h : Real))
+
+ theorem defect_pos (hx : 1 < x) (hh : 1 <= h) :
+   0 < defect x h
+
+ theorem smooth_ratio_iff :
+   supportOutside23 ((3^h - 1) / (2^h - 1)) = emptyset <->
+   h = 1 or h = 2 or h = 4
+\end{verbatim}
+
+The displayed code is an interface sketch, not a claim that it compiles verbatim.  In particular, natural-number subtraction, casts, rational reduction, and real powers should be handled with library-appropriate definitions rather than copied literally.
+
+\subsection{Proof decomposition for the smooth classification}
+
+The formal proof of \Cref{thm:smoothclass} should be split into small lemmas:
+\begin{enumerate}[label=(\arabic*)]
+  \item the fraction in \eqref{eq:Creduced} is reduced;
+  \item smoothness forces \eqref{eq:gparts};
+  \item for odd $h$, $v_2(3^h-1)=1$ and $v_3(2^h-1)=0$;
+  \item for even $h$, the valuations are \eqref{eq:LTEvals};
+  \item $(3/2)^h<(3^h-1)/(2^h-1)$;
+  \item $(3/2)^h>4h/3$ for even $h\ge6$;
+  \item direct normalization at $h=1,2,4$.
+\end{enumerate}
+This decomposition avoids any need for factorization algorithms or primitive-divisor theorems.
+
+\subsection{Recommended formalization order}
+
+The highest-value sequence is:
+\begin{enumerate}[label=(\arabic*)]
+  \item formalize \Cref{thm:universality,thm:sign};
+  \item formalize \Cref{thm:smoothclass,cor:sixpackages};
+  \item formalize the exceptional triad \Cref{thm:triad};
+  \item formalize the local slope and rationalization identities;
+  \item formalize the tensor no-go theorems;
+  \item add the transcendence split as a theorem parameterized by a formal statement of Six Exponentials.
+\end{enumerate}
+This yields a useful checked artifact even before the classical transcendence theorem is imported.
+
+\section{Conclusions}
+
+The present investigation does not prove the Alaoglu--Erd\H{o}s conjecture, but it materially narrows the frontier.
+
+The prime-necklace quotient
+\[
+  \mathcal Q_{\ell,m}(T)=\frac{T^{\ell m}-T^m}{\ell}
+\]
+produces an exact positive defect $\Delta_h$, an exponentially small determinant of logarithms of integers, and a sharp conditioning slope.  The integer-control audit proves that no generic near-singularity theorem can be enough.
+
+The complete classification
+\[
+  \frac{3^h-1}{2^h-1}\text{ is $\{2,3\}$-smooth}
+  \quad\Longleftrightarrow\quad h\in\{1,2,4\}
+\]
+is the crucial control-sensitive advance.  It turns every other necklace level into a structured transcendental-power approximation under a hypothetical noninteger solution and leaves only six smooth prime packages.  The three exceptional levels themselves satisfy a unique deep cancellation with a fully factored integer gap.
+
+Choosing the Frobenius prime to be an external divisor of an output gives an exact nonarchimedean slope and an exact rationalization formula.  The accompanying audit shows that one-place gain is not enough: the missing phenomenon is reduced-height cancellation correlated across the four transformed values.
+
+Finally, the symmetric tensor analysis proves that two broad classes of proposed reciprocity arguments are structurally incapable of success.  Alternating symbols have the wrong parity, and diagonal local pairings have the wrong locality.  A successful reciprocity theorem must couple distinct primes or mix places before localization.
+
+The most concrete next experiment is therefore not another generic determinant or Pad\'e construction.  It is a systematic study of the reduced numerator and denominator of
+\[
+  \mathscr R_{\ell,m}(P,Q)=
+  \frac{\mathcal Q_{\ell,m}(M)^Q\mathcal Q_{\ell,m}(3)^P}
+       {\mathcal Q_{\ell,m}(A)^Q\mathcal Q_{\ell,m}(2)^P}
+\]
+with $P/Q$ a convergent to $x$ and $\ell$ an external prime.  Any unexpectedly large cross-cancellation that preserves the $\ell$-adic slope would be a genuine route to contradiction.  In parallel, the one-extra-level algebraicity criterion and the bi-local regulator specification provide two sharply formulated theoretical targets.
+
+\appendix
+
+\section{Proof details for the asymptotic mask}
+
+For completeness, we expand the estimate in \Cref{thm:firstmask}.  Let
+\[
+  P_H(z)=(2^H+3^H)z-6^Hz^2,
+  \quad \alpha=2^{-H},\quad\beta=3^{-H}.
+\]
+Then
+\[
+  P_H(\alpha)=P_H(\beta)=1.
+\]
+At the next layer,
+\begin{align}
+  P_H(\alpha^2)
+  &=2^{-H}+\left(\frac34\right)^H-
+    \left(\frac38\right)^H,\label{eq:Palpha2}\\
+  P_H(\beta^2)
+  &=\left(\frac29\right)^H+3^{-H}-
+    \left(\frac{2}{27}\right)^H.\label{eq:Pbeta2}
+\end{align}
+Hence
+\begin{equation}\label{eq:Pdiff2}
+  P_H(\alpha^2)-P_H(\beta^2)
+  =\left(\frac34\right)^H
+   +O\!\left(\left(\frac38\right)^H+2^{-H}\right).
+\end{equation}
+For $n\ge3$,
+\[
+  |P_H(\alpha^n)|+|P_H(\beta^n)|
+  \ll \left(\frac{3}{2^n}\right)^H+
+       \left(\frac{2}{3^n}\right)^H,
+\]
+so the total ordinary-power tail is $O((3/8)^H)$.  The candidate-dependent term at $n=1$ is
+\[
+  P_H(\alpha^x)-P_H(\beta^x)
+  =O\!\left(\left(\frac3{2^x}\right)^H\right),
+\]
+and all its later layers are smaller.  If $x>2$, both error bases are below $3/4$, proving \eqref{eq:muasymp}.
+
+\section{A short verification script for the exceptional levels}
+
+The proof of \Cref{thm:smoothclass} is elementary and complete.  The following short Python fragment was also used as an independent finite sanity check through $h=2000$; it returns $[1,2,4]$.
+
+\begin{verbatim}
+from math import gcd
+
+ans = []
+for h in range(1, 2001):
+    a, b = 3**h - 1, 2**h - 1
+    g = gcd(a, b)
+    a //= g
+    b //= g
+    while a % 2 == 0: a //= 2
+    while a % 3 == 0: a //= 3
+    while b % 2 == 0: b //= 2
+    while b % 3 == 0: b //= 3
+    if a == 1 and b == 1:
+        ans.append(h)
+print(ans)
+\end{verbatim}
+
+\section{Theorem ledger}
+
+\begin{longtable}{p{0.06\textwidth}p{0.40\textwidth}p{0.16\textwidth}p{0.24\textwidth}}
+\toprule
+ID & Statement & Status & Main use\\
+\midrule
+\endhead
+N1 & $\mathcal Q_{\ell,m}(T)\in\Z$ and has the two exact logarithmic decompositions & proved here & integral packaging\\
+N2 & prime powers are the unique two-term necklace levels & proved here & canonicality\\
+D1 & $\Delta_h=G_x(2^{-h})-G_x(3^{-h})$ & proved here & universality\\
+D2 & $\Delta_h>0$ and $\Delta_h\sim x2^{-h}$ & proved here & signed small form\\
+D3 & $\det\mathbf L_{\ell,m}=-(\log3-\log2)\Delta_h$ & proved here & matrix form\\
+S1 & $\mathcal R_h$ is $\{2,3\}$-smooth iff $h=1,2,4$ & proved here & exact exceptions\\
+S2 & exactly six $(\ell,m)$ packages are smooth & proved here & finite classification\\
+T1 & $\e^{\Delta_h}$ is transcendental outside the three levels & Six Exponentials + S1 & control sensitivity\\
+E1 & exceptional triad identity and factored gap & proved here & deep finite cancellation\\
+H1 & exact determinant/height slope & proved here & quantitative calibration\\
+M1 & primitive two-scale mask has coefficients $(2^H+3^H,-6^H)$ and loses & proved here & mask no-go\\
+P1 & external-prime local slope & proved here & primitive support\\
+P2 & exact rationalized real and local identities & proved here & adelic target\\
+K1 & alternating symbols annihilate $\Sigma(M,A)$ & proved here & parity no-go\\
+K2 & diagonal local pairings miss external edges & proved here & locality no-go\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{Unified6}
+Alaoglu--Erd\H{o}s working report,
+\emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture},
+unified report, version 6, supplied manuscript (2026).
+
+\bibitem{AlaogluErdos}
+L.~Alaoglu and P.~Erd\H{o}s,
+On highly composite and similar numbers,
+\emph{Transactions of the American Mathematical Society} \textbf{56} (1944), 448--469.
+
+\bibitem{Baker}
+A.~Baker,
+\emph{Transcendental Number Theory},
+Cambridge University Press, 1975.
+
+\bibitem{Waldschmidt}
+M.~Waldschmidt,
+\emph{Diophantine Approximation on Linear Algebraic Groups},
+Springer, 2000.
+
+\bibitem{MetropolisRota}
+N.~Metropolis and G.-C.~Rota,
+Witt vectors and the algebra of necklaces,
+\emph{Advances in Mathematics} \textbf{50} (1983), 95--125.
+
+\bibitem{Hazewinkel}
+M.~Hazewinkel,
+Witt vectors. Part 1,
+in \emph{Handbook of Algebra}, Vol.~6, Elsevier, 2009, 319--472.
+
+\bibitem{DasguptaKakde}
+S.~Dasgupta and M.~Kakde,
+Ranks of matrices of logarithms of algebraic numbers II: the Matrix Coefficient Conjecture,
+\emph{Advances in Mathematics} \textbf{487} (2026), Article 110753; arXiv:2408.08178.
+
+\bibitem{CDTHolonomy}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+Arithmetic holonomy bounds and effective Diophantine approximation,
+in \emph{Proceedings of the International Congress of Mathematicians 2026}, vol.~3, pp.~356--376; arXiv:2510.04156.
+
+\bibitem{LMN}
+M.~Laurent, M.~Mignotte, and Yu.~Nesterenko,
+Formes lin\'eaires en deux logarithmes et d\'eterminants d'interpolation,
+\emph{Journal of Number Theory} \textbf{55} (1995), 285--321.
+
+\bibitem{Matveev}
+E.~M.~Matveev,
+An explicit lower bound for a homogeneous rational linear form in logarithms of algebraic numbers. II,
+\emph{Izvestiya: Mathematics} \textbf{64} (2000), 1217--1269.
+
+\bibitem{Milnor}
+J.~Milnor,
+\emph{Introduction to Algebraic K-Theory},
+Princeton University Press, 1971.
+
+\bibitem{Weibel}
+C.~A.~Weibel,
+\emph{The K-book: An Introduction to Algebraic K-theory},
+American Mathematical Society, 2013.
+
+\end{thebibliography}
+
+\end{document}

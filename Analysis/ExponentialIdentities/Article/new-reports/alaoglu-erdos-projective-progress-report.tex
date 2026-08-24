@@ -1,0 +1,2096 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!40!black,
+  urlcolor=blue!60!black,
+  pdftitle={Reciprocal Symmetrization, Projective Gap Invariants, and Complementary Rank-Four Rigidity},
+  pdfauthor={OpenAI GPT-5.6 Pro}
+}
+
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Alaoglu--Erd\H{o}s progress report}
+\fancyhead[R]{24 August 2026}
+\fancyfoot[C]{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Closing criterion}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Calibration warning}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Gm}{\mathbb{G}_{m}}
+\newcommand{\den}{\operatorname{den}}
+\newcommand{\htn}{\operatorname{H}}
+\newcommand{\Htimes}{\operatorname{H}_{\!\times}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vp}{v}
+\newcommand{\crat}{\operatorname{cr}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\PhiHom}{\boldsymbol{\Phi}}
+\newcommand{\defect}{\mathfrak{D}}
+\newcommand{\projdef}{\mathfrak{J}}
+
+\setlist[itemize]{topsep=3pt,itemsep=2pt,parsep=1pt}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt,parsep=1pt}
+\allowdisplaybreaks
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  showstringspaces=false
+}
+
+\title{\bfseries Reciprocal Symmetrization, Projective Gap Invariants,\\
+and Complementary Rank--Four Rigidity\\[4pt]
+\large A new attack report on the Alaoglu--Erd\H{o}s conjecture}
+\author{OpenAI GPT-5.6 Pro}
+\date{24 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Assume that a nonintegral real number $x$ satisfies $2^x,3^x\in\Z$.  The unified report supplied with this assignment already develops the conditional monoid structure, finite exclusion, determinant and interpolation methods, $p$-adic and Kummer methods, Loewner and Stieltjes kernels, Pad\'e constructions, dynamical encodings, and the reduction to unresolved logarithmic-product or four-exponentials phenomena.  The present report does not repeat that material.  Instead it develops a new, tightly connected package of exact invariants built from the complementary exponents $\alpha$ and $1-\alpha$, where $\alpha$ is the fractional part of the least hypothetical counterexample.
+
+The first new object is the reciprocal defect
+\[
+ \Delta_p(z)=p+1-z-\frac pz=\frac{(z-1)(p-z)}z.
+\]
+For the normalized orbit value $z=p^{\{k\beta\}}=P/p^q$ in lowest terms, its reduced denominator is \emph{exactly} $Pp^q$, the full product height of the reduced fraction (quadratic in the usual height on this compact interval).  This is a canonical consequence of the involution $z\mapsto p/z$, and it exposes a precise tradeoff: reciprocal symmetrization gives endpoint sensitivity but necessarily transfers every external numerator prime into the denominator.
+
+The second object is the complementary displacement kernel
+\[
+ G_\alpha(r,s)=(r^\alpha-s^\alpha)(r^{1-\alpha}-s^{1-\alpha}).
+\]
+On the dense $2$--$3$ smooth subgroup it is rational.  For any packet of nodes its matrix has an exact indefinite Gram factorization and rank four.  Every principal $4\times4$ minor is a rational square, every $5\times5$ minor vanishes, and the unique five-node circuit annihilates the four channels $1,r,r^\alpha,r^{1-\alpha}$ with alternating signs.
+
+The third object is projective.  An equal-step four-point packet has cross-ratio
+\[
+ C(z)=\frac{(1+z)^2}{1+z+z^2},\qquad
+ J(z)=4-3C(z)=\frac{(z-1)^2}{z^2+z+1}.
+\]
+Writing $z=A/B$ in lowest terms makes the denominator the Eisenstein norm $A^2+AB+B^2$, up to one factor of $3$.  For synchronized dyadic and triadic returns $r=A/B=2^\delta$ and $s=C/D=3^\delta$, an exact factorization holds:
+\[
+ J(s)-J(r)
+ =\frac{3(BC-AD)(AC-BD)}{(A^2+AB+B^2)(C^2+CD+D^2)}.
+\]
+Thus the projective discrepancy factors into two positive synchronized integer gaps.  More importantly, all cancellation in the two cyclotomic denominators is localized: away from $3$, a common prime must match one of the two cubic-root orientations, and extra cancellation below the local least-common-multiple exponent is possible only when the two cyclotomic depths tie exactly.  The excess is the number of additional coincident Hensel digits in an explicit local unit expression.
+
+Two extensions sharpen the audit.  The complementary Loewner product becomes a stationary positive kernel whose off-diagonal values are rational on square-coset orbit nodes and whose common diagonal is $\alpha(1-\alpha)$, producing an exact arithmetic diagonal-completion problem.  At every odd prime packet order $q$, the reciprocal projective defect has an exact reduced denominator supported on primes $1\pmod q$; packet primes lying in one dyadic interval give pairwise coprime cyclotomic denominators, and products of one-coordinate defects have exactly multiplicative reduced denominators.  Exceptional tied primes are order-tagged and cannot be recycled across distinct packet orders.
+
+No complete proof is claimed.  The report proves the new identities and denominator laws, derives strict concavity and Schwarzian monotonicity statements, quantifies why every one-return rational filter still loses the height-versus-contact race, and isolates several formal, sharply stated closing criteria.  The most promising new interface is a multi-cyclotomic tied-depth cascade: a proof that simultaneous deep orientation matching across sufficiently many projective packet orders forces a forbidden algebraic dependence would settle the conjecture.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\section{Scope, baseline, and truth status}
+\label{sec:scope}
+
+\subsection{The conjecture and what is imported}
+
+The Alaoglu--Erd\H{o}s conjecture in the form considered here is
+\begin{equation}\label{eq:AE}
+  2^x,3^x\in\Z \quad\Longrightarrow\quad x\in\Z.
+\end{equation}
+The supplied unified report is already a large research document.  The present report uses, without reproducing their proofs, the following conditional consequences established there.
+
+\begin{enumerate}
+\item If \eqref{eq:AE} fails, there is a least positive nonintegral solution $\beta$.
+\item With $M=2^\beta$ and $A=3^\beta$, the full solution set is the additive monoid
+\[
+ \{n+k\beta:n,k\in\N_0\}.
+\]
+Equivalently, all integral input--output pairs are
+\[
+ (2^nM^k,\,3^nA^k),\qquad n,k\in\N_0.
+\]
+\item The least generator is primitive in the affine sense, and if
+\[
+ a=v_2(M),\qquad b=v_3(A),
+\]
+then
+\begin{equation}\label{eq:min-depth-zero}
+ \min(a,b)=0.
+\end{equation}
+\item The hypothetical $\beta$ is transcendental.  In particular its fractional part is neither $0$ nor $1/2$.
+\end{enumerate}
+
+The new work begins after these reductions.  It deliberately avoids repeating the determinant hierarchies, Kummer transport, matrix-coefficient reductions, Loewner positivity results, and Pad\'e estimates already present in the unified report.
+
+\subsection{What is proved here and what remains open}
+
+For clarity, the logical status of the main outputs is as follows.
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}X@{}}
+\toprule
+Status & Content \\
+\midrule
+Unconditional algebra & Reciprocal-invariant field, exact product-height denominators, complementary rank-four and stationary-kernel factorizations, projective two-gap identity, tied-depth Hensel law, prime-order denominator formulas, and dyadic order orthogonality. \\
+Unconditional real analysis & Monotonicity and strict concavity of the reciprocal-defect curve; cross-ratio monotonicity in the logarithmic scale; Taylor and Schwarzian expansions. \\
+Conditional on a counterexample & Rationality of every object evaluated on the normalized $2$--$3$ orbit, exact formulas for its numerators and denominators, and the tied-depth constraints. \\
+Not proved & A global theorem forcing enough cancellation, divisibility, or algebraic dependence to contradict the positive rational projective discrepancies. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The word ``progress'' below therefore means new exact structure and a narrowed final obstruction, not a claimed resolution.
+
+\section{Normalization as a rational character on a dense subgroup}
+\label{sec:normalization}
+
+Assume henceforth, for contradiction, that a least nonintegral solution $\beta$ exists.  Write
+\begin{equation}\label{eq:beta-alpha}
+ \beta=m+\alpha,\qquad m=\lfloor\beta\rfloor,\qquad 0<\alpha<1.
+\end{equation}
+Then
+\begin{equation}\label{eq:u-v}
+ u:=2^\alpha=\frac{M}{2^m}\in\Q_{>0},\qquad
+ v:=3^\alpha=\frac{A}{3^m}\in\Q_{>0}.
+\end{equation}
+The number $\alpha$ is transcendental: if it were algebraic irrational, the Gelfond--Schneider theorem would make $2^\alpha$ transcendental, and if it were rational then rationality of $2^\alpha$ would force $\alpha\in\Z$.
+
+Let
+\[
+ \Gamma=\{2^r3^s:r,s\in\Z\}\subset\Q_{>0}.
+\]
+Because $\log2/\log3$ is irrational, $\Gamma$ is dense in $\R_{>0}$.  The map
+\begin{equation}\label{eq:chi}
+ \chi_\alpha:\Gamma\longrightarrow\Q_{>0},\qquad
+ \chi_\alpha(2^r3^s)=u^rv^s=(2^r3^s)^\alpha
+\end{equation}
+ is a rational-valued multiplicative character.  Its complementary character is not independent:
+\begin{equation}\label{eq:compchar}
+ \chi_{1-\alpha}(r)=\frac{r}{\chi_\alpha(r)}\in\Q_{>0}.
+\end{equation}
+This elementary identity is the source of both the new denominator symmetry and the eventual limitation: the complementary branch supplies a second rational channel, but not a second transcendence degree.
+
+\subsection{Exact normalized orbit coordinates}
+
+Factor the hypothetical generator as
+\begin{equation}\label{eq:primitive-parts}
+ M=2^aW,\qquad W\ \text{odd},
+ \qquad
+ A=3^bV,\qquad 3\nmid V.
+\end{equation}
+Neither $W$ nor $V$ equals $1$, for that would make $\beta$ integral.  For $k\ge1$ put
+\begin{equation}\label{eq:delta-q}
+ \delta_k=\{k\beta\},\qquad
+ q_{2,k}=\lfloor k\beta\rfloor-ak,
+ \qquad
+ q_{3,k}=\lfloor k\beta\rfloor-bk.
+\end{equation}
+The exponents $q_{2,k},q_{3,k}$ are nonnegative.  Indeed, if for example $ak\ge\lfloor k\beta\rfloor+1$, then the positive integer $M^k$ would be divisible by $2^{\lfloor k\beta\rfloor+1}$ and hence at least that large, contradicting $M^k=2^{k\beta}<2^{\lfloor k\beta\rfloor+1}$.  Therefore
+\begin{equation}\label{eq:normalized-orbit}
+ R_k:=2^{\delta_k}=\frac{W^k}{2^{q_{2,k}}}\in(1,2),
+ \qquad
+ S_k:=3^{\delta_k}=\frac{V^k}{3^{q_{3,k}}}\in(1,3),
+\end{equation}
+with both fractions reduced.  Notice that $q_{2,k}\ge1$, because a reduced integer strictly between $1$ and $2$ does not exist.  The triadic exponent can be $0$ only in the exceptional possibility $S_k=2$.
+
+The exact logarithmic sizes are
+\begin{align}
+ \log W&=(\beta-a)\log2, &
+ \log V&=(\beta-b)\log3,\label{eq:logWV}\\
+ q_{2,k}&=k(\beta-a)-\delta_k, &
+ q_{3,k}&=k(\beta-b)-\delta_k.\label{eq:qexact}
+\end{align}
+The equal fractional part $\delta_k$ is the only archimedean coupling between the two reduced fractions; all of the arithmetic difficulty lies in exploiting it without paying their full exponential heights.
+
+\section{Reciprocal symmetrization and exact full-height transfer}
+\label{sec:reciprocal}
+
+\subsection{The canonical reciprocal defect}
+
+Fix an integer $p\ge2$ and consider the involution
+\begin{equation}\label{eq:involution}
+ \iota_p(z)=\frac pz
+\end{equation}
+ on $\Q(z)$.  Its basic invariant is
+\begin{equation}\label{eq:trace-invariant}
+ \sigma_p(z)=z+\frac pz.
+\end{equation}
+The endpoint-sensitive normalization is
+\begin{equation}\label{eq:Delta-def}
+ \Delta_p(z)=p+1-\sigma_p(z)
+ =p+1-z-\frac pz
+ =\frac{(z-1)(p-z)}z.
+\end{equation}
+Thus $\Delta_p$ is invariant under $z\mapsto p/z$, vanishes at both endpoints $1,p$, and is strictly positive for $1<z<p$.
+
+\begin{proposition}[Invariant-field and canonicity statement]\label{prop:invariant-field}
+The fixed field of $\iota_p$ is
+\[
+ \Q(z)^{\iota_p}=\Q\!\left(z+\frac pz\right).
+\]
+Consequently every reciprocal-invariant rational function regular at $z=1$ and $z=p$ is a rational function of $\sigma_p(z)$.  Among affine functions of $\sigma_p$, the nonzero functions vanishing at both endpoints form the one-dimensional space $\Q\Delta_p$.
+\end{proposition}
+
+\begin{proof}
+The element $z$ satisfies
+\[
+ T^2-\sigma_p(z)T+p=0
+\]
+over $\Q(\sigma_p(z))$.  Hence $[\Q(z):\Q(\sigma_p(z))]\le2$.  The involution is nontrivial and fixes $\sigma_p$, so the extension has degree two and the displayed field is the full fixed field.  At $z=1$ and $z=p$ the invariant $\sigma_p$ has the common value $p+1$.  An affine function $c_1\sigma+c_0$ therefore vanishes at both exactly when $c_0=-c_1(p+1)$, giving a scalar multiple of $-\Delta_p$.
+\end{proof}
+
+This proposition explains why \eqref{eq:Delta-def} is not an arbitrary trick.  It is the first possible reciprocal-invariant detector of non-endpoint behavior.
+
+\subsection{Exact denominator theorem}
+
+\begin{theorem}[Full-height denominator transfer]\label{thm:full-height}
+Let $p$ be prime and let
+\[
+ z=\frac{P}{Q},\qquad Q=p^q,\qquad \gcd(P,p)=1,
+ \qquad 1<z<p,
+\]
+be in lowest terms.  Then
+\begin{equation}\label{eq:Delta-PQ}
+ \Delta_p(z)=\frac{(P-Q)(pQ-P)}{PQ}
+\end{equation}
+ is already in lowest terms.  In particular
+\begin{equation}\label{eq:den-Delta}
+ \den\Delta_p(z)=PQ=:\Htimes(z),
+\end{equation}
+where $\Htimes(P/Q):=PQ$ denotes the product height of the reduced fraction.
+\end{theorem}
+
+\begin{proof}
+The two factors in the numerator are positive.  Because $\gcd(P,Q)=1$ and $p\nmid P$,
+\begin{align*}
+ \gcd(P,P-Q)&=\gcd(P,Q)=1,\\
+ \gcd(P,pQ-P)&=\gcd(P,pQ)=1,\\
+ \gcd(Q,P-Q)&=\gcd(Q,P)=1,\\
+ \gcd(Q,pQ-P)&=\gcd(Q,P)=1.
+\end{align*}
+Thus the numerator is coprime to $PQ$.
+\end{proof}
+
+\begin{remark}[A necessary terminology correction]
+The standard absolute multiplicative height is $\htn(P/Q)=\max(P,Q)$.  On the compact interval $(1,p)$ one has $P\asymp Q$ and therefore $\Htimes(P/Q)=PQ\asymp\htn(P/Q)^2$.  Thus \cref{thm:full-height} says that reciprocal symmetrization transfers the complete product height---including every external numerator prime---into the reduced denominator.
+\end{remark}
+
+The numerator has an elementary but useful lower bound.  Writing $t=P-Q$, one has
+\[
+ 1\le t\le(p-1)Q-1,
+ \qquad
+ (P-Q)(pQ-P)=t((p-1)Q-t),
+\]
+so
+\begin{equation}\label{eq:numer-lower}
+ (P-Q)(pQ-P)\ge(p-1)Q-1.
+\end{equation}
+This improves the vacuous rational lower bound $\Delta_p\ge1/(PQ)$ to a bound of order $1/P$ near an endpoint, but it remains exponentially weaker than the polynomial recurrence information supplied by continued fractions.
+
+\subsection{Application to every multiple of the hypothetical generator}
+
+Applying \cref{thm:full-height} to \eqref{eq:normalized-orbit} gives the following exact arithmetic data.
+
+\begin{corollary}[Exact reciprocal-defect orbit]\label{cor:defect-orbit}
+For every $k\ge1$ define
+\begin{equation}\label{eq:Deltapk}
+ \Delta_{2,k}=3-R_k-\frac2{R_k},
+ \qquad
+ \Delta_{3,k}=4-S_k-\frac3{S_k}.
+\end{equation}
+Then
+\begin{align}
+ \Delta_{2,k}
+ &=\frac{(W^k-2^{q_{2,k}})(2^{q_{2,k}+1}-W^k)}
+ {W^k2^{q_{2,k}}},\label{eq:D2exact}\\
+ \Delta_{3,k}
+ &=\frac{(V^k-3^{q_{3,k}})(3^{q_{3,k}+1}-V^k)}
+ {V^k3^{q_{3,k}}},\label{eq:D3exact}
+\end{align}
+with both fractions reduced.  Therefore
+\begin{align}
+ D_{2,k}:=\den(\Delta_{2,k})&=W^k2^{q_{2,k}},\label{eq:D2den}\\
+ D_{3,k}:=\den(\Delta_{3,k})&=V^k3^{q_{3,k}}.\label{eq:D3den}
+\end{align}
+Their logarithms are exactly
+\begin{align}
+ \log D_{2,k}&=\bigl(2k(\beta-a)-\delta_k\bigr)\log2,\label{eq:D2log}\\
+ \log D_{3,k}&=\bigl(2k(\beta-b)-\delta_k\bigr)\log3.\label{eq:D3log}
+\end{align}
+If $a=0$, then $D_{2,k}=M^k2^{\lfloor k\beta\rfloor}$; if $b=0$, then $D_{3,k}=A^k3^{\lfloor k\beta\rfloor}$.  By \eqref{eq:min-depth-zero}, at least one of these two strongest formulas holds for every hypothetical least generator.
+\end{corollary}
+
+The local content is equally exact.  If $\ell\mid W$, then
+\begin{equation}\label{eq:local-W}
+ v_\ell(\Delta_{2,k})=-k v_\ell(W),
+ \qquad
+ v_2(\Delta_{2,k})=-q_{2,k},
+\end{equation}
+with no cancellation.  Analogous formulas hold for $V$ and $3$.  Thus the reciprocal defect has a rigid two-sided denominator: the structural prime contributes the Beatty exponent, while every external prime contributes a perfectly linear ray in $k$.
+
+\subsection{Folded phase, injectivity, and sharp elementary bounds}
+
+Set
+\begin{equation}\label{eq:folded}
+ e_k=\min(\delta_k,1-\delta_k)\in(0,1/2).
+\end{equation}
+Since $\Delta_p(p^t)$ is invariant under $t\mapsto1-t$,
+\begin{equation}\label{eq:delta-folded}
+ \Delta_{p,k}=d_p(e_k),
+ \qquad
+ d_p(e)=p+1-p^e-p^{1-e}.
+\end{equation}
+On $0<e<1/2$,
+\begin{align}
+ d_p'(e)&=(\log p)(p^{1-e}-p^e)>0,\label{eq:dpprime}\\
+ d_p''(e)&=-(\log p)^2(p^{1-e}+p^e)<0.\label{eq:dpsecond}
+\end{align}
+Hence $d_p$ is increasing and strictly concave.  The chord and tangent bounds give
+\begin{equation}\label{eq:defect-fold-bounds}
+ 2(\sqrt p-1)^2e
+ \ \le\ d_p(e)\ \le\
+ (p-1)(\log p)e,
+ \qquad 0\le e\le\frac12.
+\end{equation}
+
+\begin{proposition}[Injectivity of one defect coordinate]\label{prop:injectivity}
+For either $p=2$ or $p=3$, the rational numbers $\Delta_{p,k}$ are pairwise distinct as $k$ ranges over $\N$.
+\end{proposition}
+
+\begin{proof}
+Equality of defects implies $e_k=e_\ell$.  Thus either $\delta_k=\delta_\ell$, which would make $(k-\ell)\beta\in\Z$, or $\delta_k+\delta_\ell=1$, which would make $(k+\ell)\beta\in\Z$.  Irrationality of $\beta$ excludes both possibilities unless $k=\ell$ in the first case.
+\end{proof}
+
+Combining distinctness with rational spacing gives, for $k\ne\ell$,
+\begin{equation}\label{eq:defect-spacing}
+ |\Delta_{p,k}-\Delta_{p,\ell}|
+ \ge\frac1{D_{p,k}D_{p,\ell}}.
+\end{equation}
+Using the upper derivative in \eqref{eq:dpprime} yields the folded-orbit repulsion
+\begin{equation}\label{eq:folded-spacing}
+ |e_k-e_\ell|
+ \ge
+ \frac1{(p-1)(\log p)D_{p,k}D_{p,\ell}}.
+\end{equation}
+This is exact but exponentially weak.  Its value is diagnostic: it records precisely how much arithmetic separation is available before any deeper transcendence input.
+
+\subsection{Strict concavity of the two-base defect arc}
+
+Consider the compact analytic arc
+\begin{equation}\label{eq:defect-arc}
+ \mathcal C_\Delta:
+ e\longmapsto(X(e),Y(e))=(d_2(e),d_3(e)),
+ \qquad 0<e<\frac12.
+\end{equation}
+Every hypothetical counterexample supplies infinitely many rational points
+\[
+ (\Delta_{2,k},\Delta_{3,k})\in\mathcal C_\Delta(\Q)
+\]
+with exact denominators \eqref{eq:D2den}--\eqref{eq:D3den}.
+
+\begin{theorem}[Strict concavity]\label{thm:defect-concavity}
+The arc $\mathcal C_\Delta$ is the graph of a strictly increasing, strictly concave function $Y=F(X)$.
+\end{theorem}
+
+\begin{proof}
+Monotonicity follows from \eqref{eq:dpprime}.  Put $a=\log2$, $b=\log3$, and $t=1/2-e>0$.  Then
+\begin{align*}
+ X'&=2a\sqrt2\sinh(at), & X''&=-2a^2\sqrt2\cosh(at),\\
+ Y'&=2b\sqrt3\sinh(bt), & Y''&=-2b^2\sqrt3\cosh(bt).
+\end{align*}
+A direct calculation gives
+\begin{equation}\label{eq:curvature-num}
+ X'Y''-Y'X''
+ =4ab\sqrt6\cosh(at)\cosh(bt)
+ \bigl(a\tanh(bt)-b\tanh(at)\bigr).
+\end{equation}
+The function $x\mapsto\tanh x/x$ is strictly decreasing on $(0,\infty)$.  Since $b>a$, one has
+\[
+ a\tanh(bt)<b\tanh(at),
+\]
+so \eqref{eq:curvature-num} is negative.  As $X'>0$,
+\[
+ \frac{d^2Y}{dX^2}=\frac{X'Y''-Y'X''}{(X')^3}<0.
+\]
+\end{proof}
+
+Consequently no three distinct orbit points on the folded arc are collinear.  Clearing their exact row denominators turns every three-point area into a nonzero integer.  The resulting lower bounds are again exponential and do not close the conjecture, but strict concavity gives a clean determinant target for any future denominator-sensitive counting theorem.
+
+\subsection{The support-transfer obstruction}
+
+The gain from reciprocal symmetrization is endpoint sensitivity and a single folded parameter.  The cost is severe: the denominator of $R_k$ itself is supported only at $2$, whereas the denominator of $\Delta_{2,k}$ contains every prime of $W$ as well.  This is not an artifact of the chosen formula.
+
+\begin{proposition}[Canonical support transfer]\label{prop:support-transfer}
+Let $z=P/p^q$ be as in \cref{thm:full-height}.  The generator
+\[
+ \sigma_p(z)=z+\frac pz=\frac{P^2+p^{2q+1}}{Pp^q}
+\]
+also has reduced denominator $Pp^q$.  Hence every nonconstant affine reciprocal invariant imports the complete numerator support of $z$ into its denominator.  More generally, a polynomial of degree $d$ in $\sigma_p$ has raw denominator $(Pp^q)^d$, and cancellation can occur only through its coefficients or a special congruence of $P$.
+\end{proposition}
+
+\begin{proof}
+The numerator $P^2+p^{2q+1}$ is coprime to $P$ and to $p^q$: modulo $P$ it is a power of $p$, and modulo $p$ it is $P^2$.  The remaining assertions follow by writing an invariant polynomial in the generator $\sigma_p$.
+\end{proof}
+
+\begin{warning}
+The map $z\mapsto\Delta_p(z)$ therefore does not by itself solve the denominator-sensitive rational-point problem identified in the unified report.  It gives much cleaner arithmetic, but the clean arithmetic is the \emph{full} height rather than the sparse structural denominator.  Any successful use must exploit cancellation between several reciprocal or projective invariants, not a single defect value.
+\end{warning}
+
+\section{The complementary displacement kernel and exact rank four}
+\label{sec:complementary-rank}
+
+\subsection{Definition and rationality}
+
+For $r,s>0$ define
+\begin{equation}\label{eq:Gkernel}
+ G_\alpha(r,s)
+ =(r^\alpha-s^\alpha)(r^{1-\alpha}-s^{1-\alpha}).
+\end{equation}
+On $\Gamma\times\Gamma$, both factors are rational by \eqref{eq:chi}--\eqref{eq:compchar}, so
+\begin{equation}\label{eq:G-rational}
+ G_\alpha(r,s)\in\Q.
+\end{equation}
+Expanding the product gives the useful complementary form
+\begin{equation}\label{eq:Gexpanded}
+ G_\alpha(r,s)
+ =r+s-r^\alpha s^{1-\alpha}-r^{1-\alpha}s^\alpha.
+\end{equation}
+For $0<\alpha<1$ it is positive when $r\ne s$, because both power functions are strictly increasing.  At the special pair $(p,1)$,
+\begin{equation}\label{eq:GDelta}
+ G_\alpha(p,1)=p+1-p^\alpha-p^{1-\alpha}
+ =\Delta_p(p^\alpha).
+\end{equation}
+Thus the reciprocal defect is the two-node boundary value of a complementary Loewner-product kernel.
+
+One can also write
+\begin{equation}\label{eq:Loewner-product}
+ G_\alpha(r,s)
+ =(r-s)^2L_\alpha(r,s)L_{1-\alpha}(r,s),
+ \qquad
+ L_t(r,s)=\frac{r^t-s^t}{r-s}.
+\end{equation}
+The Schur product $L_\alpha\circ L_{1-\alpha}$ is positive semidefinite because each Loewner matrix is positive semidefinite for exponents in $(0,1)$.  Multiplication by $(r_i-r_j)^2$ destroys positive semidefiniteness but reveals a much stronger finite-rank identity.
+
+\subsection{Indefinite Gram factorization}
+
+Choose distinct nodes $r_1,\dots,r_n\in\Gamma$ and set
+\begin{equation}\label{eq:xyz}
+ y_i=r_i^\alpha,\qquad z_i=r_i^{1-\alpha}=\frac{r_i}{y_i}.
+\end{equation}
+Let $X$ be the $n\times4$ rational matrix
+\begin{equation}\label{eq:Xmatrix}
+ X=
+ \begin{pmatrix}
+  1&r_1&y_1&z_1\\
+  \vdots&\vdots&\vdots&\vdots\\
+  1&r_n&y_n&z_n
+ \end{pmatrix}
+\end{equation}
+and let
+\begin{equation}\label{eq:Jmatrix}
+ \mathcal J=
+ \begin{pmatrix}
+ 0&1&0&0\\
+ 1&0&0&0\\
+ 0&0&0&-1\\
+ 0&0&-1&0
+ \end{pmatrix}.
+\end{equation}
+Then $\det\mathcal J=1$ and $\mathcal J$ has inertia $(2,2)$.
+
+\begin{theorem}[Complementary rank-four factorization]\label{thm:rankfour}
+The matrix $G=(G_\alpha(r_i,r_j))_{1\le i,j\le n}$ satisfies
+\begin{equation}\label{eq:Gfactor}
+ G=X\mathcal JX^{\mathsf T}.
+\end{equation}
+If $n\ge4$, then $\rank X=4$ and hence
+\begin{equation}\label{eq:rankG}
+ \rank G=4.
+\end{equation}
+For every two four-element index sets $I,J$,
+\begin{equation}\label{eq:mixedminor}
+ \det G_{I,J}=\det X_I\det X_J.
+\end{equation}
+In particular every principal $4\times4$ minor is a positive rational square,
+\begin{equation}\label{eq:principal-square}
+ \det G_{I,I}=(\det X_I)^2>0,
+\end{equation}
+and every $5\times5$ minor of $G$ vanishes.
+\end{theorem}
+
+\begin{proof}
+The $(i,j)$ entry of $X\mathcal JX^{\mathsf T}$ is
+\[
+ r_i+r_j-y_iz_j-z_iy_j,
+\]
+which is \eqref{eq:Gexpanded}.  The four columns of $X$ are the evaluations of the power functions
+\[
+ 1,\quad t,\quad t^\alpha,\quad t^{1-\alpha}.
+\]
+Their exponents are distinct because $\alpha\ne1/2$.  After the change of variable $t=e^u$, these become exponentials $e^{\lambda u}$ with distinct real $\lambda$.  Their Wronskian is
+\[
+ e^{(\lambda_1+\cdots+\lambda_4)u}
+ \prod_{i<j}(\lambda_j-\lambda_i),
+\]
+which never vanishes.  Hence they form an extended complete Chebyshev system and their evaluation matrix at four distinct positive nodes is nonsingular.  Thus $\rank X=4$.
+
+For four-element sets, $G_{I,J}=X_I\mathcal JX_J^{\mathsf T}$ is a product of square matrices, so
+\[
+ \det G_{I,J}=\det X_I\det\mathcal J\det X_J^{\mathsf T}
+ =\det X_I\det X_J.
+\]
+The remaining assertions follow.
+\end{proof}
+
+\begin{remark}[Inertia]
+For four nodes, congruence by the invertible matrix $X$ shows that $G$ has inertia $(2,2)$.  Thus the square determinant in \eqref{eq:principal-square} is not a hidden positive-definite Gram determinant; it is the determinant of an indefinite four-channel geometry.  The zero diagonal and positive off-diagonal entries are consistent with this inertia.
+\end{remark}
+
+\subsection{The five-node alternating circuit}
+
+Let $0<r_1<\cdots<r_5$ be nodes in $\Gamma$.  The nullspace of $X^{\mathsf T}$ is one-dimensional.  A cofactor vector is
+\begin{equation}\label{eq:circuit-coeff}
+ c_i=(-1)^{i+1}\det X_{\widehat{i}},
+\end{equation}
+where $X_{\widehat{i}}$ deletes row $i$.
+
+\begin{proposition}[Rational four-channel circuit]\label{prop:circuit}
+The coefficients $c_i$ are nonzero rational numbers with alternating signs, and
+\begin{equation}\label{eq:four-annihilations}
+ \sum_{i=1}^5c_i
+ =\sum_{i=1}^5c_ir_i
+ =\sum_{i=1}^5c_ir_i^\alpha
+ =\sum_{i=1}^5c_ir_i^{1-\alpha}=0.
+\end{equation}
+After multiplication by one common denominator, they give a primitive alternating integer relation in all four channels.
+
+For every real $\lambda\notin\{0,1,\alpha,1-\alpha\}$,
+\begin{equation}\label{eq:fifth-residual}
+ \sum_{i=1}^5c_ir_i^\lambda\ne0.
+\end{equation}
+Its sign is determined by the location of $\lambda$ among the four ordered exponents.
+\end{proposition}
+
+\begin{proof}
+The cofactor vector lies in the left kernel and gives \eqref{eq:four-annihilations}.  Strict total positivity of generalized Vandermonde matrices, after sorting the exponent columns, makes the four-row minors have a common nonzero sign; the factor $(-1)^{i+1}$ therefore forces alternation.  Appending the fifth exponent $\lambda$, the left side of \eqref{eq:fifth-residual} is, up to a fixed sign, the generalized $5\times5$ Vandermonde determinant.  Distinct exponentials again form a Chebyshev system, so it is nonzero and its sign is the sign of the corresponding exponent permutation.
+\end{proof}
+
+Particularly natural fifth channels are $r^{2\alpha}$, $r^{2-2\alpha}$, $r^{1+\alpha}$, or an ordinary polynomial power $r^2$.  Every one is rational on $\Gamma$.  Therefore \cref{prop:circuit} manufactures a nonzero rational residual with a rigorously controlled sign from any five rational nodes.  This is a finite, formalizable obstruction object.
+
+\subsection{Cluster order and the fixed-rank limitation}
+
+Suppose
+\[
+ r_i=r_0e^{h\xi_i},\qquad h\to0,
+\]
+with distinct fixed $\xi_i$.  For distinct exponents $\lambda_1,\dots,\lambda_n$, the standard confluent expansion is
+\begin{equation}\label{eq:exp-vandermonde-asymptotic}
+ \det(e^{h\xi_i\lambda_j})_{i,j=1}^n
+ =h^{n(n-1)/2}
+ \frac{\prod_{i<j}(\xi_j-\xi_i)\prod_{i<j}(\lambda_j-\lambda_i)}
+ {\prod_{m=0}^{n-1}m!}
+ +O\!\left(h^{n(n-1)/2+1}\right).
+\end{equation}
+Thus a five-channel determinant has order $h^{10}$, while each four-channel cofactor has order $h^6$.  The normalized fifth residual has fourth-order contact.  This is useful, but it is still fixed-order contact.  If the nodes arise from a return of index $k$, Baker theory gives only $h\gg k^{-C}$, whereas clearing the rational denominators costs $e^{ck}$.  The fourth-order gain is polynomial and cannot by itself overcome the exponential arithmetic cost.
+
+\begin{warning}[No new transcendence rank]
+The rank-four theorem is exact, but the fourth channel $r^{1-\alpha}=r/r^\alpha$ is algebraically generated by the first three.  Therefore the factorization does not evade the four-exponentials barrier by creating an independent period.  Its genuine contribution is a rigid square-minor and circuit structure that can be combined with local denominator information.
+\end{warning}
+
+\section{The Cayley transform and quadratic acceleration of return ratios}
+\label{sec:cayley}
+
+\subsection{Exact rational Cayley coordinates}
+
+For $z>0$ define
+\begin{equation}\label{eq:Cayley}
+ \tau(z)=\frac{z-1}{z+1}.
+\end{equation}
+If $z=P/Q$ in lowest terms, then
+\begin{equation}\label{eq:Cayley-PQ}
+ \tau(z)=\frac{P-Q}{P+Q},
+ \qquad
+ \gcd(P-Q,P+Q)\mid2.
+\end{equation}
+For the dyadic orbit $P=W^k$ is odd and $Q=2^{q_{2,k}}$ is even, so both $P-Q$ and $P+Q$ are odd and the fraction is reduced.  Thus
+\begin{equation}\label{eq:Cayley-den2}
+ \den\tau(R_k)=W^k+2^{q_{2,k}}.
+\end{equation}
+For the triadic orbit the only possible cancellation is one factor of $2$.
+
+Since
+\[
+ \tau(e^t)=\tanh(t/2),
+\]
+we have
+\begin{equation}\label{eq:taupk}
+ x_k:=\tau(R_k)=\tanh\!\left(\frac{\delta_k\log2}{2}\right),
+ \qquad
+ y_k:=\tau(S_k)=\tanh\!\left(\frac{\delta_k\log3}{2}\right).
+\end{equation}
+Writing
+\begin{equation}\label{eq:theta}
+ \theta=\frac{\log3}{\log2},
+\end{equation}
+these points lie on the odd analytic curve
+\begin{equation}\label{eq:Cayley-curve}
+ y=\mathcal T_\theta(x)
+ :=\tanh\!\bigl(\theta\operatorname{artanh}x\bigr).
+\end{equation}
+Every hypothetical counterexample supplies infinitely many rational points $(x_k,y_k)$ on this curve.
+
+\subsection{Differential equation and Taylor structure}
+
+Differentiating \eqref{eq:Cayley-curve} gives the rational differential equation
+\begin{equation}\label{eq:Cayley-ODE}
+ (1-x^2)y'=\theta(1-y^2),
+ \qquad y(0)=0.
+\end{equation}
+The Taylor series is
+\begin{equation}\label{eq:Cayley-series}
+ \mathcal T_\theta(x)
+ =\theta x
+ +\frac{\theta(1-\theta^2)}3x^3
+ +\frac{\theta(3-5\theta^2+2\theta^4)}{15}x^5
+ +O(x^7).
+\end{equation}
+The absence of even powers is the key local gain.  Along a return $\delta_k\to0$,
+\begin{equation}\label{eq:Cayley-ratio-exp}
+ \frac{y_k}{x_k}
+ =\theta\left(
+ 1-\frac{(\log^23-\log^22)}{12}\delta_k^2
+ +O(\delta_k^4)
+ \right).
+\end{equation}
+The unsymmetrized gap ratio $(3^{\delta}-1)/(2^{\delta}-1)$ approaches $\theta$ with a linear error in $\delta$; the Cayley ratio improves this to a quadratic error without any transcendental coefficients in the rational approximant.
+
+An exact rational expression is
+\begin{equation}\label{eq:Cayley-ratio-arith}
+ \frac{y_k}{x_k}
+ =
+ \frac{(V^k-3^{q_{3,k}})(W^k+2^{q_{2,k}})}
+ {(V^k+3^{q_{3,k}})(W^k-2^{q_{2,k}})},
+\end{equation}
+up to at most a harmless common factor of $2$ in the triadic Cayley coordinate.
+
+\subsection{Addition laws and long rational packets}
+
+The Cayley coordinate turns multiplication into the rational hyperbolic addition law
+\begin{equation}\label{eq:tanh-add}
+ \tau(zw)=\frac{\tau(z)+\tau(w)}{1+\tau(z)\tau(w)}.
+\end{equation}
+Consequently, if $\delta_h$ is a small one-sided return and $j\delta_h<1$, then
+\begin{equation}\label{eq:redei}
+ \tau(p^{j\delta_h})=\mathcal R_j(\tau(p^{\delta_h})),
+\end{equation}
+where $\mathcal R_j$ is the $j$th R\'edei rational function, obtained by iterating \eqref{eq:tanh-add}.  A single small return therefore creates a long exact packet of rational points on \eqref{eq:Cayley-curve}.  This packet structure is stronger than a list of unrelated rational points, but its denominators grow as the sums of two exponential terms and the standard subunit strategy still loses.
+
+\subsection{Height-versus-contact calibration}
+
+Let $h$ be a return denominator and let
+\[
+ \eps_h=\|h\beta\|.
+\]
+Continued fractions give infinitely many $h$ with $\eps_h<1/h$.  A linear-form estimate for
+\[
+ h\log W-q\log2
+ \quad\text{or}\quad
+ h\log V-s\log3
+\]
+provides an effective lower bound $\eps_h\gg h^{-C}$ for some constant depending on the hypothetical generator.  Hence
+\begin{equation}\label{eq:poly-return}
+ \log\frac1{\eps_h}=O(\log h).
+\end{equation}
+On the other hand, the numerator and denominator in \eqref{eq:Cayley-ratio-arith} have logarithmic size $\asymp h$ before cross-cancellation.  Therefore the quadratic approximation \eqref{eq:Cayley-ratio-exp}, expressed in terms of its raw rational height $H$, has only polylogarithmic quality:
+\begin{equation}\label{eq:polylog-approx}
+ \left|\frac{y_h}{x_h}-\theta\right|
+ \ll (\log H)^{-2}.
+\end{equation}
+This is much larger than any negative power of $H$.  Standard irrationality-measure lower bounds for ratios of logarithms therefore do not conflict with these approximants.  The only possible escape is a systematic, very large reduction of the raw denominator.  The projective construction in the next section identifies exactly where such reduction can occur.
+
+\section{Cross-ratios, Schwarzian monotonicity, and the cubic projective defect}
+\label{sec:crossratio}
+
+\subsection{Cross-ratio of an exponential packet}
+
+For four ordered real numbers $t_1<t_2<t_3<t_4$, use the convention
+\begin{equation}\label{eq:crossratio}
+ \crat(x_1,x_2;x_3,x_4)
+ =\frac{(x_1-x_3)(x_2-x_4)}{(x_1-x_4)(x_2-x_3)}.
+\end{equation}
+For $x_i=e^{Lt_i}$, cancellation of the exponential prefactors gives
+\begin{equation}\label{eq:cross-sinh}
+ \mathcal C_L(t_1,t_2,t_3,t_4)
+ =\frac{
+ \sinh\!\left(\frac L2(t_1-t_3)\right)
+ \sinh\!\left(\frac L2(t_2-t_4)\right)}{
+ \sinh\!\left(\frac L2(t_1-t_4)\right)
+ \sinh\!\left(\frac L2(t_2-t_3)\right)}.
+\end{equation}
+It is greater than $1$.
+
+\begin{theorem}[Monotonicity in logarithmic scale]\label{thm:cross-monotone}
+For fixed $t_1<t_2<t_3<t_4$, the function $L\mapsto\mathcal C_L$ is strictly decreasing on $(0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+Write the consecutive gaps as $A=t_2-t_1$, $B=t_3-t_2$, and $C=t_4-t_3$.  Then
+\[
+ \mathcal C_L=
+ \frac{\sinh(L(A+B)/2)\sinh(L(B+C)/2)}
+ {\sinh(L(A+B+C)/2)\sinh(LB/2)}.
+\]
+Let $h(x)=x\coth x$.  Multiplying the logarithmic derivative by $L$ gives
+\[
+ h(x+y)+h(y+z)-h(x+y+z)-h(y),
+\]
+where $x=LA/2$, $y=LB/2$, and $z=LC/2$.  Now
+\[
+ h''(x)=2\operatorname{csch}^2x\,(x\coth x-1)>0.
+\]
+Thus $h$ is strictly convex, and the displayed expression is the negative mixed forward difference $-\Delta_x\Delta_zh(y)$, hence is negative.
+\end{proof}
+
+Consequently, for any ordered phase packet, because $\log3>\log2$,
+\begin{equation}\label{eq:cross-distortion-range}
+ 0<\frac{\mathcal C_{\log3}}{\mathcal C_{\log2}}<1.
+\end{equation}
+Under a hypothetical counterexample every exponential node in both packets is rational, so the ratio in \eqref{eq:cross-distortion-range} is a positive rational number strictly below $1$.
+
+\subsection{Schwarzian expansion}
+
+Put $t_i=t_0+\eps\lambda_i$.  From
+\[
+ \log\sinh z=\log z+\frac{z^2}{6}-\frac{z^4}{180}+O(z^6)
+\]
+one obtains
+\begin{align}
+ \log\mathcal C_L
+ &=\log\mathcal C_0
+ +\frac{L^2\eps^2}{24}Q_2
+ -\frac{L^4\eps^4}{2880}Q_4
+ +O(\eps^6),\label{eq:cross-expansion}\\
+ Q_m&=(\lambda_1-\lambda_3)^m+(\lambda_2-\lambda_4)^m
+ -(\lambda_1-\lambda_4)^m-(\lambda_2-\lambda_3)^m.
+\end{align}
+In particular
+\begin{equation}\label{eq:Q2}
+ Q_2=-2(\lambda_2-\lambda_1)(\lambda_4-\lambda_3)<0.
+\end{equation}
+The first distortion term is therefore governed by $\log^23-\log^22$ and the Schwarzian derivative
+\[
+ S(e^{Lt})=-\frac{L^2}{2}.
+\]
+
+For the symmetric packet $(-3t,-t,t,3t)$,
+\begin{equation}\label{eq:symmetric-cross}
+ \mathcal C_L(t)=
+ \frac{\sinh^2(2Lt)}{\sinh(3Lt)\sinh(Lt)},
+\end{equation}
+with
+\begin{equation}\label{eq:symmetric-exp}
+ \log\mathcal C_L(t)
+ =\log\frac43-\frac{L^2t^2}{3}+\frac{5L^4t^4}{18}+O(t^6).
+\end{equation}
+This provides rational approximants to a Schwarzian coefficient, but division by $t^2$ is not rational.  The equal-step construction below rationalizes the local scale automatically.
+
+\subsection{The equal-step packet and its projective deficit}
+
+For four geometric nodes $1,z,z^2,z^3$, direct simplification gives
+\begin{equation}\label{eq:Cz}
+ C(z):=\crat(1,z;z^2,z^3)
+ =\frac{(1+z)^2}{1+z+z^2}.
+\end{equation}
+Its additive-limit value is $4/3$.  Define the normalized deficit
+\begin{equation}\label{eq:Jz}
+ J(z):=4-3C(z)=\frac{(z-1)^2}{z^2+z+1}.
+\end{equation}
+This function is reciprocal,
+\[
+ J(z^{-1})=J(z),
+\]
+and for $z=e^t$ it has the even expansion
+\begin{equation}\label{eq:Jseries}
+ J(e^t)=\frac{t^2}{3}-\frac{t^4}{12}+\frac{7t^6}{360}+O(t^8).
+\end{equation}
+The projective packet therefore squares the small return gap without introducing logarithms into the rational expression.
+
+\subsection{Exact Eisenstein denominator}
+
+For coprime positive integers $A,B$, set
+\begin{equation}\label{eq:Phi3}
+ \Phi_3(A,B)=A^2+AB+B^2.
+\end{equation}
+Then
+\begin{equation}\label{eq:CJAB}
+ C(A/B)=\frac{(A+B)^2}{\Phi_3(A,B)},
+ \qquad
+ J(A/B)=\frac{(A-B)^2}{\Phi_3(A,B)}.
+\end{equation}
+
+\begin{theorem}[Exact cubic projective denominators]\label{thm:Phi3-den}
+If $\gcd(A,B)=1$, then $C(A/B)$ is in lowest terms and
+\begin{equation}\label{eq:Cden}
+ \den C(A/B)=\Phi_3(A,B).
+\end{equation}
+Moreover
+\begin{equation}\label{eq:Jden}
+ \den J(A/B)=
+ \begin{cases}
+ \Phi_3(A,B),&3\nmid A-B,\\
+ \Phi_3(A,B)/3,&3\mid A-B.
+ \end{cases}
+\end{equation}
+Every prime divisor $\ell\ne3$ of this denominator satisfies $\ell\equiv1\pmod3$.
+\end{theorem}
+
+\begin{proof}
+If a prime divides both $A+B$ and $\Phi_3(A,B)$, substituting $A\equiv-B$ gives $B^2\equiv0$, contradicting coprimality.  Hence the cross-ratio fraction is reduced.
+
+If a prime divides both $A-B$ and $\Phi_3(A,B)$, substituting $A\equiv B$ gives $3B^2\equiv0$, so the prime is $3$.  If $3\mid A-B$ and $3\nmid AB$, the factorization
+\[
+ A^3-B^3=(A-B)\Phi_3(A,B)
+\]
+and the lifting-the-exponent lemma give $v_3(\Phi_3(A,B))=1$.  Thus precisely one factor $3$ cancels from $J$.
+
+Finally, if $\ell\ne3$ divides $\Phi_3(A,B)$, then $A/B$ is a nontrivial cube root of unity modulo $\ell$.  Its multiplicative order is $3$, so $3\mid\ell-1$.
+\end{proof}
+
+The homogeneous form $\Phi_3(A,B)$ is the norm of $A-B\zeta_3$ in the Eisenstein field.  The projective deficit has therefore converted a small real return into a rational number whose denominator is a cyclotomic norm supported, away from $3$, only on split primes.
+
+\section{The synchronized projective factorization}
+\label{sec:synchronized-factorization}
+
+\subsection{Return packets}
+
+Let $h$ be a positive return index with $0<\delta_h<1/3$.  Then
+\[
+ \{jh\beta\}=j\delta_h,
+ \qquad j=0,1,2,3,
+\]
+so the four normalized dyadic nodes are
+\[
+ 1,r,r^2,r^3,
+ \qquad
+ r=2^{\delta_h}=\frac{A_h}{B_h},
+ \quad
+ A_h=W^h,
+ \quad
+ B_h=2^{q_{2,h}},
+\]
+and the triadic nodes are
+\[
+ 1,s,s^2,s^3,
+ \qquad
+ s=3^{\delta_h}=\frac{C_h}{D_h},
+ \quad
+ C_h=V^h,
+ \quad
+ D_h=3^{q_{3,h}}.
+\]
+For a return on the other side of the unit interval one replaces $r$ by $2/r$ and $s$ by $3/s$; the reciprocal invariance of $J$ gives the same projective deficit with $\delta_h$ replaced by $\|h\beta\|$.  Thus no one-sided recurrence assumption is essential.
+
+For readability, in the next identities write simply
+\begin{equation}\label{eq:ABCD}
+ r=\frac AB,
+ \qquad
+ s=\frac CD,
+ \qquad
+ \gcd(A,B)=\gcd(C,D)=1.
+\end{equation}
+
+\subsection{A two-gap factorization}
+
+\begin{theorem}[Projective two-gap factorization]\label{thm:two-gap}
+For arbitrary nonzero rationals $r=A/B$ and $s=C/D$ as in \eqref{eq:ABCD},
+\begin{equation}\label{eq:Jdiff-analytic}
+ J(s)-J(r)
+ =\frac{3(s-r)(rs-1)}{(s^2+s+1)(r^2+r+1)}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:Jdiff-integer}
+ J(C/D)-J(A/B)
+ =\frac{3(BC-AD)(AC-BD)}
+ {\Phi_3(A,B)\Phi_3(C,D)}.
+\end{equation}
+In particular, for $r=2^\delta$ and $s=3^\delta$ with $0<\delta<1$,
+\begin{equation}\label{eq:Jdiff-positive}
+ J(3^\delta)-J(2^\delta)>0,
+\end{equation}
+and the numerator in \eqref{eq:Jdiff-integer} is the product of the two positive integer gaps
+\begin{equation}\label{eq:HK}
+ H=BC-AD=BD(3^\delta-2^\delta),
+ \qquad
+ K=AC-BD=BD(6^\delta-1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+A direct subtraction gives
+\begin{align*}
+ &(s-1)^2(r^2+r+1)-(r-1)^2(s^2+s+1)\\
+ &\hspace{25mm}=3(s-r)(rs-1).
+\end{align*}
+Dividing by the two denominators proves \eqref{eq:Jdiff-analytic}; substituting $r=A/B$ and $s=C/D$ proves \eqref{eq:Jdiff-integer}.  For $0<\delta<1$, one has $3^\delta>2^\delta>1$, so both factors in \eqref{eq:HK} are positive.
+\end{proof}
+
+For the normalized orbit this becomes the fully explicit identity
+\begin{align}
+ &J\!\left(\frac{V^h}{3^{q_{3,h}}}\right)
+ -J\!\left(\frac{W^h}{2^{q_{2,h}}}\right)\notag\\
+ &\quad=
+ \frac{3\bigl(2^{q_{2,h}}V^h-3^{q_{3,h}}W^h\bigr)
+ \bigl((WV)^h-2^{q_{2,h}}3^{q_{3,h}}\bigr)}
+ {\Phi_3(W^h,2^{q_{2,h}})\Phi_3(V^h,3^{q_{3,h}})}.
+ \label{eq:orbit-two-gap}
+\end{align}
+The first integer gap compares $3^\delta$ with $2^\delta$; the second compares $6^\delta$ with $1$.  The quadratic archimedean vanishing has therefore split into two independent first-order synchronized gaps.  This is more informative than a Taylor expansion because it exposes every possible local cancellation.
+
+\subsection{Taylor consequences}
+
+From \eqref{eq:Jseries},
+\begin{align}
+ J(3^\delta)-J(2^\delta)
+ &=\frac{\log^23-\log^22}{3}\,\delta^2
+ -\frac{\log^43-\log^42}{12}\,\delta^4
+ +O(\delta^6),\label{eq:Jdiff-series}\\
+ \frac{J(3^\delta)}{J(2^\delta)}
+ &=\theta^2\left(
+ 1-\frac{\log^23-\log^22}{4}\,\delta^2
+ +O(\delta^4)
+ \right).
+ \label{eq:Jratio-series}
+\end{align}
+Thus the rational numbers
+\begin{equation}\label{eq:theta2-approximants}
+ \frac{J(S_h)}{J(R_h)}
+\end{equation}
+approach the transcendental number $\theta^2$ with quadratic return error.  The exact numerator and denominator are built from squared primitive gaps and Eisenstein norms.  The approximation is structurally sharper than the ordinary synchronized-gap ratio, but its raw height is still exponential in $h$.
+
+\subsection{Common Eisenstein divisors are forced into the two gaps}
+
+The next theorem is the main local arithmetic result of this report.
+
+\begin{theorem}[Cyclotomic cancellation localization]\label{thm:localization}
+Let $A,B,C,D\in\Z$ satisfy
+\[
+ \gcd(A,B)=\gcd(C,D)=1,
+\]
+and put
+\[
+ \Phi_1=\Phi_3(A,B),\qquad
+ \Phi_2=\Phi_3(C,D),
+\]
+\[
+ H=BC-AD,
+ \qquad
+ K=AC-BD.
+\]
+Then
+\begin{equation}\label{eq:gcd-divides-HK}
+ \gcd(\Phi_1,\Phi_2)\mid 3HK.
+\end{equation}
+More precisely, let $\ell\ne3$ be prime and set
+\[
+ e=v_\ell(\Phi_1),\qquad
+ f=v_\ell(\Phi_2),\qquad
+ h=v_\ell(HK).
+\]
+Then:
+\begin{enumerate}
+\item if exactly one of $e,f$ is positive, then $h=0$;
+\item if $e,f>0$, then $h\ge\min(e,f)$;
+\item if $e,f>0$ and $e\ne f$, then
+\begin{equation}\label{eq:unequal-depth-exact}
+ h=\min(e,f);
+\end{equation}
+\item extra cancellation $h>\min(e,f)$ is possible only in the tied-depth case $e=f$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+If $\ell\mid\Phi_3(A,B)$, then $\ell\nmid AB$ and the residue
+\[
+ r=A/B\in\mathbb F_\ell^\times
+\]
+is a nontrivial cube root of unity.  Since $\ell\ne3$, the polynomial $T^2+T+1$ has simple roots.  The same applies to $s=C/D$ when $\ell\mid\Phi_2$.
+
+At the residue-field level there are only two possibilities: $r=s$ or $rs=1$.  In the first case $\ell\mid H=BD(s-r)$; in the second $\ell\mid K=BD(rs-1)$.  This proves the radical statement and, together with the fact that the $3$-part of each primitive Eisenstein norm has exponent at most one, gives \eqref{eq:gcd-divides-HK}.
+
+For valuations, work in $\Z_\ell$.  The two roots $\omega,\omega^{-1}$ of $T^2+T+1$ lift uniquely because the discriminant $-3$ is an $\ell$-adic unit.  If $e>0$, exactly one factor in
+\[
+ r^2+r+1=(r-\omega)(r-\omega^{-1})
+\]
+has valuation $e$.  Thus $r$ is $\ell$-adically close to one of the two roots to depth $e$; similarly $s$ has a root orientation and depth $f$.
+
+If the orientations agree, then $K$ is an $\ell$-adic unit and
+\[
+ v_\ell(H)=v_\ell(r-s)\ge\min(e,f).
+\]
+If they are opposite, then $H$ is a unit and
+\[
+ v_\ell(K)=v_\ell(rs-1)\ge\min(e,f).
+\]
+When $e\ne f$, the ultrametric inequality makes the relevant difference have valuation exactly $\min(e,f)$.  When $e=f$, the leading terms can cancel and produce an excess.  If one of $e,f$ is zero, divisibility of either $H$ or $K$ together with the other cyclotomic relation would force the missing cyclotomic relation, a contradiction; hence $h=0$.
+\end{proof}
+
+\subsection{Local denominator formula and the tied-depth excess}
+
+Let
+\begin{equation}\label{eq:projective-diff}
+ \mathscr P=J(C/D)-J(A/B)=\frac{3HK}{\Phi_1\Phi_2}.
+\end{equation}
+For $\ell\ne3$, its reduced denominator exponent is
+\begin{equation}\label{eq:den-local}
+ v_\ell(\den\mathscr P)
+ =\max(0,e+f-h).
+\end{equation}
+If $e\ne f$, \cref{thm:localization} gives
+\begin{equation}\label{eq:lcm-survival}
+ v_\ell(\den\mathscr P)=\max(e,f),
+\end{equation}
+exactly the $\ell$-adic exponent in $\lcm(\Phi_1,\Phi_2)$.  If $e=f$, define the orientation excess
+\begin{equation}\label{eq:orientation-excess}
+ E_\ell=h-e\ge0.
+\end{equation}
+Then
+\begin{equation}\label{eq:tied-den}
+ v_\ell(\den\mathscr P)=\max(0,e-E_\ell).
+\end{equation}
+Hence a prime can disappear below the local least-common-multiple depth only when
+\begin{enumerate}
+\item it divides both Eisenstein norms to exactly the same depth;
+\item the corresponding cubic-root orientations match to a depth exceeding that common cyclotomic depth.
+\end{enumerate}
+This is an exact tropical tie law.  The bulk of the projective denominator survives automatically; the entire exceptional set is concentrated in tied local layers.
+
+\begin{corollary}[Private primes survive]\label{cor:private-survive}
+Every prime $\ell\ne3$ dividing exactly one of $\Phi_1,\Phi_2$ survives in the reduced denominator of $\mathscr P$ with its full exponent.  More generally, every common prime of unequal cyclotomic depth survives with the larger exponent.
+\end{corollary}
+
+The theorem does not itself prove that the reduced denominator is large or small enough to settle the conjecture.  It does something more targeted: it removes all ambiguity about \emph{where} unexpected cancellation could hide.
+
+\subsection{Eisenstein interpretation}
+
+Let $\zeta_3$ be a primitive cube root of unity.  Then
+\[
+ \Phi_3(A,B)=N_{\Q(\zeta_3)/\Q}(A-B\zeta_3).
+\]
+A split prime $\ell$ chooses one of the two embeddings $\zeta_3\mapsto\omega$ or $\omega^{-1}$.  The two alternatives in \cref{thm:localization} are exactly the two ways of matching the prime ideals over $\ell$ for $A-B\zeta_3$ and $C-D\zeta_3$:
+\begin{itemize}
+\item same orientation, producing $BC-AD$;
+\item conjugate orientation, producing $AC-BD$.
+\end{itemize}
+The factorization \eqref{eq:Jdiff-integer} is therefore a norm-compatible projective identity, not a coincidental polynomial factorization.
+
+\section{A cyclotomic hierarchy of projective return defects}
+\label{sec:cyclotomic-hierarchy}
+
+The cubic packet is only the first useful layer.  Let $m\ge2$ and let
+\begin{equation}\label{eq:homPhi}
+ \PhiHom_m(A,B)=B^{\varphi(m)}\Phi_m(A/B)
+\end{equation}
+be the homogeneous $m$th cyclotomic polynomial.  For a reduced rational $z=A/B$ near $1$, define the raw $m$-projective defect
+\begin{equation}\label{eq:Jm}
+ J_m(A,B)=\frac{(A-B)^{\varphi(m)}}{\PhiHom_m(A,B)}.
+\end{equation}
+Up to a fixed factor $\Phi_m(1)$ and lower Taylor terms,
+\begin{equation}\label{eq:Jm-asympt}
+ J_m(A,B)\asymp (\log z)^{\varphi(m)}
+ \qquad (z\to1).
+\end{equation}
+Its denominator primes have strong residue restrictions.
+
+\begin{proposition}[Primitive-root support]\label{prop:primitive-root-support}
+Suppose $\ell\nmid mAB$ and $\ell\mid\PhiHom_m(A,B)$.  Then $A/B$ has multiplicative order exactly $m$ modulo $\ell$.  In particular
+\begin{equation}\label{eq:ellmodm}
+ \ell\equiv1\pmod m.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+This is the defining property of the cyclotomic factor away from primes dividing $m$ and the numerator or denominator.
+\end{proof}
+
+The common-divisor localization also generalizes.
+
+\begin{proposition}[General cyclotomic orientation matching]\label{prop:general-orientation}
+Let $\ell\nmid mABCD$ divide both $\PhiHom_m(A,B)$ and $\PhiHom_m(C,D)$.  Then there exists
+\[
+ j\in(\Z/m\Z)^\times
+\]
+such that
+\begin{equation}\label{eq:general-cross-gap}
+ A D^j\equiv B C^j\pmod\ell.
+\end{equation}
+For simple $\ell$-adic cyclotomic roots, unequal local depths again force exact minimum-depth divisibility of one of these finitely many cross gaps; extra divisibility requires a tied depth.
+\end{proposition}
+
+\begin{proof}
+The residues $r=A/B$ and $s=C/D$ are primitive $m$th roots.  The cyclic group of primitive $m$th roots is a torsor under $(\Z/m\Z)^\times$, so $r=s^j$ for some unit $j$.  Clearing denominators gives \eqref{eq:general-cross-gap}.  The valuation statement follows from simple-root Hensel lifting exactly as in \cref{thm:localization}.
+\end{proof}
+
+This produces a hierarchy of finite orientation sets.  At order $m=3$ there are only two orientations, giving the two gaps $H,K$.  At larger $m$, simultaneous cancellation requires compatible orientation choices in $(\Z/m\Z)^\times$.  A future proof could attempt to show that deep matching for enough pairwise incompatible orders forces an actual algebraic relation between the two torus coordinates $2^\delta$ and $3^\delta$, which is impossible unless $\delta=0$.
+
+\begin{problem}[Multi-cyclotomic tied-depth rigidity]\label{prob:multi-cyclo}
+Prove that there is a finite set of orders $\mathcal M$ and a constant $c>0$ such that, for every nonzero synchronized return $\delta$ and corresponding reduced rationals
+\[
+ 2^\delta=A/B,
+ \qquad
+ 3^\delta=C/D,
+\]
+the total tied-depth excess over $m\in\mathcal M$ is at most
+\[
+ (1-c)\sum_{m\in\mathcal M}
+ \log\lcm\bigl(\PhiHom_m(A,B),\PhiHom_m(C,D)\bigr)+O(1).
+\]
+An inequality of this shape would certify a positive density of private projective denominator.  To turn it into a proof of the conjecture one would still need a companion construction whose archimedean contact uses that private denominator with the opposite sign in the height budget.
+\end{problem}
+
+\section{A precise one-return height barrier}
+\label{sec:height-barrier}
+
+The new projective identities are exact, but exactness alone does not guarantee a successful subunit argument.  This section records the barrier in a form that prevents overclaiming.
+
+\subsection{Raw degree versus order of contact}
+
+Let
+\[
+ z_h=\frac{A_h}{B_h}=p^{\eps_h},
+ \qquad
+ \eps_h=\|h\beta\|,
+\]
+where $A_h,B_h$ are coprime and
+\begin{equation}\label{eq:AB-growth}
+ \log A_h,\log B_h\asymp h.
+\end{equation}
+Consider an integer polynomial $P_h(X)$ of degree at most $d_h$ and coefficient height at most $e^{o(d_hh)}$.  Suppose $P_h$ has a zero of order $m_h$ at $X=1$.  Necessarily
+\begin{equation}\label{eq:order-degree}
+ m_h\le d_h.
+\end{equation}
+After evaluation and clearing $B_h^{d_h}$, one obtains an integer
+\begin{equation}\label{eq:cleared-integer}
+ N_h=B_h^{d_h}P_h(A_h/B_h).
+\end{equation}
+If it is nonzero, $|N_h|\ge1$.  Analytically,
+\begin{equation}\label{eq:Nh-upper}
+ |N_h|
+ \le
+ \exp(O(d_hh)+o(d_hh))\,\eps_h^{m_h}
+\end{equation}
+for a packet remaining in a fixed compact neighborhood of $1$.  Baker's lower bound gives
+\[
+ \log(1/\eps_h)=O(\log h).
+\]
+Even in the best case $m_h=d_h$, the logarithm of the right side in \eqref{eq:Nh-upper} is
+\begin{equation}\label{eq:budget-loss}
+ O(d_hh)-O(d_h\log h),
+\end{equation}
+which is positive for large $h$.  Thus the standard estimate can never force $|N_h|<1$.
+
+The same calculation applies to rational functions after multiplying by their evaluated denominators.  It also applies to $J_m$: both its degree and vanishing order are $\varphi(m)$, while the homogeneous cyclotomic denominator has logarithmic size $\asymp\varphi(m)h$.
+
+\begin{proposition}[One-return projective budget obstruction]\label{prop:one-return-barrier}
+Using only
+\begin{enumerate}
+\item a single return coordinate $z_h=p^{\eps_h}$;
+\item rational functions of degree $d_h$ and subexponential coefficient height $e^{o(d_hh)}$;
+\item denominator clearing by the raw powers of $A_h,B_h$; and
+\item the known polynomial lower bound $\eps_h\gg h^{-C}$,
+\end{enumerate}
+no degree choice $d_h\ge1$ makes the standard integer upper bound subunit for all sufficiently large $h$.
+\end{proposition}
+
+\begin{proof}
+The order of vanishing is $O(d_h)$, so the archimedean gain is at most $O(d_h\log h)$ in the logarithm.  The denominator cost is $\Omega(d_hh)$.  Their ratio tends to zero independently of the growth of $d_h$.
+\end{proof}
+
+\begin{remark}
+This proposition is a budget obstruction for a proof strategy, not a theorem that every possible rational function value is large.  Exceptional arithmetic cancellation could dramatically reduce the denominator.  The point is that such cancellation must be proved as a separate theorem; it cannot be hidden inside a degree increase or a higher-order Taylor expansion.
+\end{remark}
+
+\subsection{The exact necessary denominator inequality}
+
+Let
+\begin{equation}\label{eq:Qh}
+ Q_h=\den\bigl(J(3^{\eps_h})-J(2^{\eps_h})\bigr).
+\end{equation}
+The positive rational lower bound and \eqref{eq:Jdiff-series} give
+\begin{equation}\label{eq:Qnecessary}
+ 1\le Q_h\bigl(J(3^{\eps_h})-J(2^{\eps_h})\bigr)
+ \le C Q_h\eps_h^2
+\end{equation}
+for small returns.  Therefore every hypothetical counterexample necessarily satisfies
+\begin{equation}\label{eq:Qlower}
+ Q_h\ge c\eps_h^{-2}
+\end{equation}
+for all sufficiently small returns.
+
+\begin{criterion}[Projective denominator collapse]\label{crit:den-collapse}
+The conjecture follows if one can prove, from the exact orbit arithmetic, that along infinitely many return indices
+\begin{equation}\label{eq:collapse-condition}
+ Q_h=o(\eps_h^{-2}).
+\end{equation}
+By \cref{thm:localization}, such an upper bound can arise only from nearly total tied-depth cancellation in the paired Eisenstein norms.
+\end{criterion}
+
+The criterion is intentionally sharp and perhaps counterintuitive: the projective discrepancy becomes contradictory only if its reduced denominator is much \emph{smaller} than the raw cyclotomic denominator.  The local theorem turns this global requirement into a concrete question about orientation-tied primes.
+
+\begin{criterion}[Compressed moving-order packet]\label{crit:moving-order}
+More generally, suppose one constructs rational invariants $\mathcal I_h$ with
+\[
+ 0<|\mathcal I_h|\le e^{-L_h},
+ \qquad
+ \log\den(\mathcal I_h)=o(L_h).
+\]
+Then rationality is impossible for large $h$.  Within a projective packet hierarchy, the only plausible way to obtain this inequality is to make the order of contact grow while proving that cyclotomic orientation matching compresses the denominator from $\asymp d_hh$ to $o(d_h\log h)$.
+\end{criterion}
+
+This is the central quantitative target left by the present approach.
+
+
+\section{The stationary complementary Loewner kernel}
+\label{sec:stationary-kernel}
+
+The rank--four displacement matrix of \cref{sec:complementary-rank} is algebraic in the four channels
+$1,r,r^\alpha,r^{1-\alpha}$.  There is a second normalization that sacrifices finite rank but gains positivity and translation invariance on logarithmic coordinates.  It packages the two complementary Loewner matrices into one scalar kernel whose diagonal is the single transcendental parameter $\alpha(1-\alpha)$ and whose off-diagonal entries are rational on a suitable square coset of $\Gamma$.
+
+\subsection{Complementary divided differences}
+
+For $0<\alpha<1$ and $r,s>0$, define
+\begin{equation}\label{eq:Loewner-alpha}
+ L_\alpha(r,s)=
+ \begin{cases}
+ \dfrac{r^\alpha-s^\alpha}{r-s},&r\ne s,\\[6pt]
+ \alpha r^{\alpha-1},&r=s.
+ \end{cases}
+\end{equation}
+The classical Stieltjes representation is
+\begin{equation}\label{eq:Loewner-integral}
+ L_\alpha(r,s)
+ =\frac{\sin(\pi\alpha)}{\pi}
+ \int_0^\infty \frac{t^\alpha}{(r+t)(s+t)}\,dt.
+\end{equation}
+Consequently every matrix $(L_\alpha(r_i,r_j))_{i,j}$ at distinct positive nodes is positive definite.  The same is true with $\alpha$ replaced by $1-\alpha$.  By the Schur product theorem,
+\begin{equation}\label{eq:Schur-Loewner}
+ \mathcal K_\alpha(r_i,r_j)
+ :=\sqrt{r_ir_j}\,L_\alpha(r_i,r_j)L_{1-\alpha}(r_i,r_j)
+\end{equation}
+is positive definite as well.
+
+Put $t=\log(r/s)$.  A direct calculation removes the absolute scale:
+\begin{equation}\label{eq:stationary-kernel}
+ \mathcal K_\alpha(r,s)=\kappa_\alpha(t),
+ \qquad
+ \kappa_\alpha(t)
+ =\frac{\sinh(\alpha t/2)\sinh((1-\alpha)t/2)}{\sinh^2(t/2)}.
+\end{equation}
+Thus $\kappa_\alpha$ is an even, positive-definite function on the additive logarithmic line.  At the diagonal,
+\begin{equation}\label{eq:kappa-zero}
+ \kappa_\alpha(0)=s_\alpha:=\alpha(1-\alpha).
+\end{equation}
+For $r\ne s$, \eqref{eq:stationary-kernel} is simply the complementary displacement divided by the squared node gap and normalized by geometric mean:
+\begin{equation}\label{eq:kappa-G}
+ \kappa_\alpha(\log(r/s))
+ =\frac{\sqrt{rs}\,G_\alpha(r,s)}{(r-s)^2}.
+\end{equation}
+
+\begin{theorem}[Strict stationary decay]\label{thm:kappa-decay}
+For every $0<\alpha<1$, the function $t\mapsto\kappa_\alpha(t)$ is strictly decreasing on $(0,\infty)$, tends to $0$ as $t\to\infty$, and has the expansion
+\begin{equation}\label{eq:kappa-series}
+ \kappa_\alpha(t)
+ =s_\alpha
+ -\frac{s_\alpha(1+2s_\alpha)}{24}t^2
+ +\frac{s_\alpha(16s_\alpha^2+28s_\alpha+7)}{5760}t^4
+ +O_\alpha(t^6).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $t>0$, multiplication of the logarithmic derivative by $t$ gives
+\[
+ h(\alpha t/2)+h((1-\alpha)t/2)-2h(t/2),
+ \qquad h(x)=x\coth x.
+\]
+The function $h$ is strictly increasing on $(0,\infty)$, and each of the first two arguments is strictly smaller than $t/2$.  Hence the expression is negative.  The limit at infinity follows immediately from the hyperbolic form.  The Taylor series follows by expanding $\sinh$; symmetry under $\alpha\leftrightarrow1-\alpha$ makes every coefficient a polynomial in $s_\alpha$.
+\end{proof}
+
+\subsection{A rational diagonal-completion problem}
+
+Take nodes in one square coset,
+\begin{equation}\label{eq:square-nodes}
+ r_i=q_i^2,
+ \qquad q_i\in\Gamma.
+\end{equation}
+Then $\sqrt{r_ir_j}=q_iq_j\in\Q$, and under a hypothetical counterexample all off-diagonal entries of the matrix
+\begin{equation}\label{eq:K-matrix}
+ K_I=\bigl(\mathcal K_\alpha(r_i,r_j)\bigr)_{i,j\in I}
+\end{equation}
+are rational.  Its diagonal entries all equal the same number $s_\alpha$.  Thus
+\begin{equation}\label{eq:K-completion}
+ K_I=s_\alpha I+B_I,
+ \qquad B_I\in M_{|I|}(\Q),
+ \qquad \operatorname{diag}B_I=0,
+ \qquad K_I\succ0.
+\end{equation}
+This is an exact positive-semidefinite diagonal-completion problem with one unknown scalar.  If $\lambda_{\min}(B_I)$ is the least eigenvalue, positivity gives the algebraic lower bound
+\begin{equation}\label{eq:spectral-lower}
+ s_\alpha>-\lambda_{\min}(B_I).
+\end{equation}
+For a two-node reciprocal packet $r=q$, $s=q^{-1}$, the bound is simply
+\begin{equation}\label{eq:kappa-rational-lower}
+ 0<\kappa_\alpha(2\log q)<s_\alpha,
+\end{equation}
+and the left side is rational whenever $q\in\Gamma$.  As $q\to1$ inside the dense group, it approaches $s_\alpha$ quadratically.
+
+\begin{proposition}[Spectral approach to the diagonal]\label{prop:spectral-approach}
+Fix distinct real offsets $\xi_1,\dots,\xi_n$.  Let $r_i(T)=\exp(2T\xi_i)$ and let $B_T$ be the zero-diagonal matrix with off-diagonal entries $\kappa_\alpha(2T(\xi_i-\xi_j))$.  Then
+\begin{equation}\label{eq:spectral-approach}
+ -\lambda_{\min}(B_T)=s_\alpha+O_{\alpha,\xi}(T^2)
+ \qquad(T\to0).
+\end{equation}
+If the $r_i(T)$ are replaced by square-coset rational orbit nodes with the same logarithmic asymptotics, the right side of \eqref{eq:spectral-lower} is an algebraic number computed from a rational matrix and converges to $s_\alpha$ at the same rate.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:kappa-series}, $B_T=s_\alpha(\mathbf 1\mathbf 1^T-I)+O(T^2)$ entrywise.  The limiting matrix has eigenvalue $s_\alpha(n-1)$ on the all-ones vector and eigenvalue $-s_\alpha$ on its orthogonal complement.  Standard eigenvalue perturbation gives the claim.
+\end{proof}
+
+This construction is genuinely arithmetic in that every off-diagonal entry is rational, yet it does not close the conjecture.  The number $s_\alpha$ is transcendental---otherwise $\alpha$ would satisfy $T^2-T+s_\alpha=0$ over an algebraic field---but no lower bound is known for its approximation by the algebraic eigenvalues in \eqref{eq:spectral-lower}.  Moreover the raw heights of the rational orbit nodes remain exponential while the convergence in \eqref{eq:spectral-approach} is polynomial in the return index.  The construction is therefore best viewed as a new diagonal-completion interface: a denominator-sensitive spectral theorem for these special rational matrices would be needed.
+
+\begin{criterion}[Arithmetic diagonal-completion rigidity]\label{crit:diag-completion}
+The conjecture would follow from a theorem asserting that, for the square-coset orbit matrices $B_I$ above, the algebraic boundary $-\lambda_{\min}(B_I)$ cannot approach a transcendental diagonal completion $s_\alpha$ at the return rate forced by the synchronized $2$--$3$ orbit, unless $\alpha=0$.
+\end{criterion}
+
+The criterion is intentionally not presented as an easier statement: it is a spectral repackaging of the same missing denominator sensitivity.  Its advantage is that it uses a single scalar diagonal and rational off-diagonal data, which may be friendlier to Smith-form, interlacing, or modular methods than a general Loewner determinant.
+
+\section{Prime-order projective packets and order orthogonality}
+\label{sec:prime-order}
+
+The general hierarchy of \cref{sec:cyclotomic-hierarchy} becomes particularly rigid at odd prime orders.  In that case both the analytic contact and the exact reduced denominator have closed forms, and packet orders in one dyadic interval have disjoint denominator support.  This gives a definitive negative result for one natural moving-order strategy: stacking one-coordinate projective defects cannot create hidden denominator compression.
+
+\subsection{Exact reduced denominator at prime order}
+
+Let $q$ be an odd prime.  For a reduced positive rational $z=A/B$, define
+\begin{equation}\label{eq:Jq-def}
+ J_q(z)
+ :=\frac{(z-1)^{q-1}}{\Phi_q(z)}
+ =\frac{(z-1)^q}{z^q-1}.
+\end{equation}
+The second expression makes reciprocal invariance transparent:
+\begin{equation}\label{eq:Jq-reciprocal}
+ J_q(z^{-1})=J_q(z).
+\end{equation}
+Its homogeneous form is
+\begin{equation}\label{eq:Jq-hom}
+ J_q(A/B)=\frac{(A-B)^{q-1}}{\PhiHom_q(A,B)},
+ \qquad
+ \PhiHom_q(A,B)=\frac{A^q-B^q}{A-B}.
+\end{equation}
+Near $z=1$,
+\begin{equation}\label{eq:Jq-local}
+ J_q(e^t)=\frac{t^{q-1}}q\bigl(1+O_q(t)\bigr).
+\end{equation}
+
+\begin{theorem}[Prime-order denominator theorem]\label{thm:prime-order-den}
+Let $q$ be an odd prime and $\gcd(A,B)=1$.  Then
+\begin{equation}\label{eq:Jq-den}
+ \den J_q(A/B)=
+ \begin{cases}
+ \PhiHom_q(A,B),&q\nmid A-B,\\
+ \PhiHom_q(A,B)/q,&q\mid A-B.
+ \end{cases}
+\end{equation}
+Every prime $\ell\ne q$ in this denominator satisfies
+\begin{equation}\label{eq:ell-one-mod-q}
+ \ell\equiv1\pmod q.
+\end{equation}
+Furthermore the reduced denominator in \eqref{eq:Jq-den} is coprime to $A-B$.
+\end{theorem}
+
+\begin{proof}
+Suppose a prime $\ell$ divides both $A-B$ and $\PhiHom_q(A,B)$.  If $\ell\ne q$, reduction modulo $\ell$ gives
+\[
+ \PhiHom_q(A,B)\equiv qB^{q-1}\not\equiv0\pmod\ell,
+\]
+a contradiction.  If $q\mid A-B$, the lifting-the-exponent lemma gives
+\[
+ v_q(A^q-B^q)-v_q(A-B)=1,
+\]
+so $v_q(\PhiHom_q(A,B))=1$.  This proves the exact cancellation statement and the final coprimality.  If $\ell\ne q$ divides the remaining denominator, then $A/B$ has exact order $q$ modulo $\ell$, yielding $q\mid\ell-1$.
+\end{proof}
+
+For $q=3$, \cref{thm:prime-order-den} is precisely \cref{thm:Phi3-den}.  The family therefore extends the cubic projective deficit without changing its basic arithmetic character: order-$q$ contact comes with an order-$q$ cyclotomic norm whose nonstructural primes are all $1$ modulo $q$.
+
+\subsection{Cyclotomic values in one dyadic prime block are pairwise coprime}
+
+The next statement is stronger than the usual observation that a prime has only one multiplicative order.
+
+\begin{theorem}[Dyadic prime-order orthogonality]\label{thm:dyadic-order-orthogonality}
+Let $Q>2$, let $\mathcal Q$ be any set of odd primes contained in $[Q,2Q]$, and let $\gcd(A,B)=1$.  Then the integers
+\begin{equation}\label{eq:Phi-q-family}
+ \bigl\{\PhiHom_q(A,B):q\in\mathcal Q\bigr\}
+\end{equation}
+are pairwise coprime.  Consequently their reduced projective denominators
+\begin{equation}\label{eq:Dq}
+ D_q(A,B):=\den J_q(A/B)
+\end{equation}
+are pairwise coprime as well.
+\end{theorem}
+
+\begin{proof}
+Take distinct $q,q'\in\mathcal Q$ and suppose a prime $\ell$ divides both homogeneous cyclotomic values.  Since $\ell\nmid AB$, if $\ell\notin\{q,q'\}$ then $A/B$ has exact orders both $q$ and $q'$ modulo $\ell$, impossible.
+
+Suppose $\ell=q$.  Because $q\ne q'$, divisibility of $\PhiHom_{q'}(A,B)$ would make the order of $A/B$ modulo $q$ equal to $q'$, so $q'\mid q-1$.  But $q,q'\in[Q,2Q]$ gives $0<q-1<2q'$.  The only possible positive multiple of $q'$ is therefore $q'$ itself, which would say $q-1=q'$.  This is impossible because $q-1$ is even and $q'$ is odd.  The case $\ell=q'$ is symmetric.  Finally $\ell=2$ cannot divide a homogeneous odd-prime cyclotomic value at coprime $A,B$.  Hence no common prime exists.
+\end{proof}
+
+\begin{corollary}[Exact denominator multiplication]\label{cor:exact-den-product}
+Under the hypotheses of \cref{thm:dyadic-order-orthogonality}, for arbitrary nonnegative integers $c_q$,
+\begin{equation}\label{eq:product-Jq}
+ \den\left(\prod_{q\in\mathcal Q}J_q(A/B)^{c_q}\right)
+ =\prod_{q\in\mathcal Q}D_q(A,B)^{c_q}.
+\end{equation}
+In particular there is no cancellation at all between the numerator of one prime-order defect and the reduced denominator of another.
+\end{corollary}
+
+\begin{proof}
+The denominators are pairwise coprime.  By \cref{thm:prime-order-den}, every $D_q(A,B)$ is coprime to $A-B$, while every numerator is a power of $A-B$.  Thus cross-cancellation is impossible.
+\end{proof}
+
+This is a clean closure theorem for a class of proposed constructions.  Increasing the number of prime packet orders inside one dyadic interval cannot secretly improve the one-coordinate height budget; the exact reduced denominator is the full product of the cyclotomic denominators.
+
+\subsection{The moving-order budget becomes exact}
+
+Let $z_h=A_h/B_h=e^{L\eps_h}$ be a one-return coordinate, with $\log A_h,\log B_h\asymp h$.  Assume the mesoscopic condition $Q|L\eps_h|\le1/10$.  For $q\in[Q,2Q]$ prime,
+\begin{align}
+ -\log J_q(z_h)&=(q-1)\log(1/\eps_h)+O(q+\log q),\label{eq:Jq-small}\\
+ \log D_q(A_h,B_h)&=(q-1)\log B_h+O(q|\log z_h|+\log q).
+ \label{eq:Dq-large}
+\end{align}
+Summing over primes in a block and using \cref{cor:exact-den-product}, the logarithmic archimedean gain is of order
+\begin{equation}\label{eq:prime-block-gain}
+ \left(\sum_{q\in\mathcal Q}(q-1)\right)\log(1/\eps_h),
+\end{equation}
+whereas the exact denominator cost is
+\begin{equation}\label{eq:prime-block-cost}
+ \left(\sum_{q\in\mathcal Q}(q-1)\right)\log B_h+O(Q^2).
+\end{equation}
+For continued-fraction returns, $\log(1/\eps_h)=O(\log h)$ while $\log B_h\asymp h$.  The common factor $\sum(q-1)$ cancels from the comparison, leaving the same fatal ratio $\log h/h$ as at fixed order.  Unlike the soft argument of \cref{prop:one-return-barrier}, this conclusion now uses the \emph{exact reduced denominator}: no hidden one-coordinate cancellation is available.
+
+\begin{theorem}[No self-compression by prime packet stacking]\label{thm:no-self-compression}
+Fix a hypothetical counterexample and one normalized orbit coordinate $z_h$.  Any product of nonnegative powers of prime-order defects $J_q(z_h)$ with all packet primes in a common dyadic interval has exactly the product denominator in \eqref{eq:product-Jq}.  Therefore increasing the packet-order set cannot turn the one-return construction into a subunit integer by denominator cancellation internal to that coordinate.
+\end{theorem}
+
+The word ``internal'' is essential.  Cross-base subtraction, such as $J_q(3^{\eps_h})-J_q(2^{\eps_h})$, can still create orientation-dependent numerator factors and hence cross-coordinate cancellation.  The theorem says that this is the only remaining place to look.
+
+\subsection{Exceptional prime sets cannot be recycled across orders}
+
+For a synchronized pair $r=A/B$, $s=C/D$, define the tied set at order $m$ by
+\begin{equation}\label{eq:tied-set-m}
+ \mathcal T_m(r,s)=
+ \left\{\ell:\ \ell\nmid mABCD,\quad
+ v_\ell(\PhiHom_m(A,B))=v_\ell(\PhiHom_m(C,D))>0\right\}.
+\end{equation}
+
+\begin{proposition}[Order-tagged tied primes]\label{prop:tied-disjoint}
+If $m\ne n$, then
+\begin{equation}\label{eq:tied-disjoint}
+ \mathcal T_m(r,s)\cap\mathcal T_n(r,s)=\varnothing.
+\end{equation}
+In particular, for prime packet orders in one dyadic interval, every nonstructural prime capable of tied-depth cancellation belongs to exactly one packet order.
+\end{proposition}
+
+\begin{proof}
+A prime in $\mathcal T_m$ makes $r$ and $s$ primitive $m$th roots modulo that prime.  Membership in $\mathcal T_n$ would give them order $n$ as well.
+\end{proof}
+
+The multi-cyclotomic program therefore has a strict resource accounting: each new order demands a fresh exceptional prime set.  It cannot repeatedly amplify one unusually favorable local congruence.  This does not rule out a global density of tied primes, but it makes the required phenomenon more rigid and more testable.
+
+\section{Hensel digits and the exact anatomy of tied-depth excess}
+\label{sec:hensel-excess}
+
+The local theorem \cref{thm:localization} identifies tied cyclotomic depths as the only source of exceptional cancellation.  The excess itself can be written explicitly in terms of the first unequal Hensel digit.  This turns an abstract valuation event into a concrete local collision problem.
+
+\subsection{Same and opposite cubic orientations}
+
+Fix a prime $\ell\ne3$ with $\ell\equiv1\pmod3$, and let $\omega,\omega^{-1}\in\Z_\ell$ be the two roots of $T^2+T+1$.  Let
+\[
+ r=A/B,
+ \qquad s=C/D
+\]
+be $\ell$-adic units satisfying
+\[
+ v_\ell(r^2+r+1)=v_\ell(s^2+s+1)=e>0.
+\]
+There are two orientation cases.
+
+\begin{proposition}[Exact Hensel-digit excess]\label{prop:Hensel-excess}
+In the same-orientation case, write
+\begin{equation}\label{eq:same-Hensel}
+ r=\omega+\ell^e u,
+ \qquad
+ s=\omega+\ell^e v,
+ \qquad u,v\in\Z_\ell^\times.
+\end{equation}
+Then
+\begin{equation}\label{eq:same-excess}
+ v_\ell(r-s)=e+v_\ell(u-v).
+\end{equation}
+In the opposite-orientation case, write
+\begin{equation}\label{eq:opp-Hensel}
+ r=\omega+\ell^e u,
+ \qquad
+ s=\omega^{-1}+\ell^e v.
+\end{equation}
+Then
+\begin{equation}\label{eq:opp-excess}
+ v_\ell(rs-1)
+ =e+v_\ell\!\left(\omega v+\omega^{-1}u+\ell^euv\right).
+\end{equation}
+Thus the orientation excess $E_\ell$ is exactly the number of additional coincident Hensel digits in one explicit unit expression.
+\end{proposition}
+
+\begin{proof}
+The same-orientation formula follows by subtraction.  In the opposite case,
+\[
+ rs-1
+ =\ell^e(\omega v+\omega^{-1}u)+\ell^{2e}uv,
+\]
+and factoring $\ell^e$ gives the result.
+\end{proof}
+
+This proposition gives a precise finite-level target.  To cancel one additional power of $\ell$, two first Hensel digits must satisfy one nontrivial linear congruence; every further power imposes one additional digit condition.  For independent random unit digits the heuristic tail would be
+\begin{equation}\label{eq:excess-heuristic}
+ \Pr(E_\ell\ge j)\approx\ell^{-j},
+ \qquad
+ \mathbb E E_\ell\approx\frac1{\ell-1}.
+\end{equation}
+No randomness theorem of this strength is known for the synchronized orbit, and \eqref{eq:excess-heuristic} is not used in any proof.  It does, however, explain why near-total global denominator collapse would require an extreme systematic correlation rather than ordinary local coincidence.
+
+\subsection{A finite-depth congruence formulation}
+
+For $N\ge1$, let $\omega_N$ be a root of $T^2+T+1$ modulo $\ell^N$.  The tied same-orientation condition through depth $N$ is
+\begin{equation}\label{eq:finite-same}
+ A\equiv B\omega_N\pmod{\ell^N},
+ \qquad
+ C\equiv D\omega_N\pmod{\ell^N};
+\end{equation}
+and the opposite condition is
+\begin{equation}\label{eq:finite-opposite}
+ A\equiv B\omega_N\pmod{\ell^N},
+ \qquad
+ C\equiv D\omega_N^{-1}\pmod{\ell^N}.
+\end{equation}
+The excess $E_\ell\ge j$ means that the appropriate two congruence classes continue to agree through $e+j$ rather than merely through $e$.  All data are therefore finite and exactly checkable.
+
+For the normalized orbit $A=W^h$, $B=2^{q_{2,h}}$, $C=V^h$, $D=3^{q_{3,h}}$, these conditions become simultaneous discrete-log congruences involving the same return index $h$ and the two Beatty exponents.  A large-sieve theorem for these four exponential sequences, uniform in the moving modulus $\ell^{e+j}$, would directly bound total tied-depth excess.  Existing large-sieve and multiplicative-order estimates do not provide the required uniformity, but the target is now explicit.
+
+\begin{problem}[Tied-digit large sieve]\label{prob:tied-digit-sieve}
+Prove that for every hypothetical primitive pair $(M,A)$ and every $H\to\infty$, the logarithmically weighted sum
+\begin{equation}\label{eq:tied-sieve-target}
+ \sum_{h\le H}\ \sum_{\ell\ne3} E_{\ell,h}\log\ell
+\end{equation}
+is $o(H^2)$, or more sharply is a fixed proportion smaller than the corresponding sum of common cyclotomic depths.  Here $E_{\ell,h}$ is the excess in the cubic synchronized packet at return index $h$.
+\end{problem}
+
+The scale in \eqref{eq:tied-sieve-target} is deliberately provisional: a closing application must compare the bound with the exact archimedean packet budget.  The point is that the quantity itself is no longer vague.
+
+\section{Exact computational reconnaissance}
+\label{sec:computation}
+
+The main identities are symbolic and do not depend on numerical evidence.  Exact computation is nevertheless useful for checking edge cases, validating valuation conventions, and measuring how often tied-depth excess occurs in an unrestricted rational laboratory.
+
+\subsection{Exhaustive cubic check}
+
+The verifier in \cref{app:code} performs two tasks with integer arithmetic only.
+
+\begin{enumerate}
+\item It symbolically verifies
+\begin{equation}\label{eq:symbolic-verify}
+ (C-D)^2\Phi_3(A,B)-(A-B)^2\Phi_3(C,D)
+ =3(BC-AD)(AC-BD).
+\end{equation}
+\item It exhaustively checks \cref{thm:localization} for every ordered nondegenerate pair of reduced positive fractions $A/B,C/D$ with
+\[
+ 1\le A,B,C,D\le24,
+ \qquad A\ne B,
+ \qquad C\ne D.
+\]
+\end{enumerate}
+
+There are $358$ reduced nonunit fractions in this box, giving $127{,}448$ nondegenerate ordered pairs after removing the $716$ cases with $H K=0$.  Across these pairs, the verifier inspected $13{,}672$ common non-$3$ local cyclotomic layers: $10{,}856$ had tied depths and $2{,}816$ had unequal depths.  Of the tied layers, $1{,}184$ had positive excess.  The number of violations of the local theorem was zero.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact statistic & Count\\
+\midrule
+Reduced nonunit fractions & $358$\\
+Nondegenerate ordered pairs & $127{,}448$\\
+Common non-$3$ local layers & $13{,}672$\\
+Tied-depth layers & $10{,}856$\\
+Unequal-depth layers & $2{,}816$\\
+Tied layers with positive excess & $1{,}184$\\
+Theorem violations & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These counts are not a model of a counterexample: arbitrary rational pairs do not satisfy the synchronized logarithmic relation.  The experiment serves only as an exact regression test and as evidence that the distinction between tied and unequal depths is visible at very small heights.
+
+\subsection{What should be computed next}
+
+A useful next experiment must preserve more of the hypothetical structure.  Since no counterexample is known, there are three honest substitutes.
+
+\begin{enumerate}
+\item \textbf{Control pairs.}  Set $(M,A)=(2^n,3^n)$.  Every normalized return collapses to an endpoint, so all projective defects vanish.  This checks control sensitivity but supplies no nontrivial excess data.
+\item \textbf{Rational-character mocks.}  Choose rational $u,v$ and study the character $2^r3^s\mapsto u^rv^s$.  This preserves rationality and multiplicativity but not the real logarithmic synchronization.  It is appropriate for testing denominator identities and detecting universal no-go phenomena.
+\item \textbf{Near-synchronized integer pairs.}  Choose integers $(M,A)$ minimizing $|\log M\log3-\log A\log2|$ in a height box.  Their return packets approximate the real geometry while remaining explicitly nonzero.  Any empirical excess seen here must be interpreted as reconnaissance, never as evidence for the existence of a counterexample.
+\end{enumerate}
+
+The prime-order orthogonality theorem suggests a focused computation: for a dyadic block of packet primes, tabulate the cross-base tied sets $\mathcal T_q(r,s)$ and verify their forced disjointness; then measure the distribution of the Hensel excess $E_{\ell,q}$.  This directly probes the only local channel not closed by \cref{thm:no-self-compression}.
+
+\section{Control calibration and relation to the transcendence frontier}
+\label{sec:calibration}
+
+A new invariant is useful only if it distinguishes a hypothetical counterexample from the obvious integral controls and if it does not silently assume the desired transcendence statement.  The present package passes the first test but not, by itself, the second.
+
+\subsection{Integral controls}
+
+For an integral exponent $\beta=n$, the fractional parameter is $\alpha=0$ and every normalized return is an endpoint.  Consequently
+\begin{equation}\label{eq:control-vanish}
+ \Delta_p=0,
+ \qquad
+ G_\alpha=0,
+ \qquad
+ J_q=0.
+\end{equation}
+The complementary rank drops, the stationary kernel has diagonal $s_\alpha=0$, and every projective discrepancy vanishes.  The invariants are therefore control-sensitive in the strongest elementary sense.
+
+An integer shift of a hypothetical exponent changes $M,A$ but leaves $\alpha$ and the normalized projective orbit unchanged.  This is appropriate: the conjecture is about the presence or absence of a nonzero fractional exponent, and the least-generator normalization has already removed irrelevant integral translates.
+
+\subsection{Universal algebra versus synchronized arithmetic}
+
+Several of the strongest theorems here---the two-gap factorization, local cancellation law, Hensel excess formula, and order orthogonality---hold for arbitrary rational pairs.  They do not themselves use
+\begin{equation}\label{eq:sync-log}
+ \log r\,\log3=\log s\,\log2.
+\end{equation}
+The synchronization enters in three places only:
+\begin{enumerate}
+\item the same small return parameter $\delta$ controls $r=2^\delta$ and $s=3^\delta$;
+\item both coordinates are rational for every orbit return;
+\item the exact numerator gaps in \eqref{eq:HK} have correlated archimedean sizes.
+\end{enumerate}
+A complete proof must consume at least one of these three facts in a way that arbitrary rational controls cannot imitate.  The local algebra narrows the channel, but a global synchronization theorem is still missing.
+
+\subsection{Why the four-exponentials wall remains}
+
+The original relation can be written as the vanishing determinant
+\begin{equation}\label{eq:four-exp-matrix}
+ \det\begin{pmatrix}
+ \log2&\log M\\
+ \log3&\log A
+ \end{pmatrix}=0,
+\end{equation}
+with all four exponentials algebraic.  This is the integral specialization of the unresolved $2\times2$ four-exponentials problem.  The Matrix Coefficient Conjecture of Dasgupta and Kakde provides a modern sparse-polynomial formulation whose $2\times2$ case is equivalent to four exponentials \cite{DasguptaKakde}.  Kawashima's recent work on linear independence of polylogarithmic periods gives powerful criteria in a broader period setting but, under the present height specializations, still demands an efficiency not supplied by the rational return packets \cite{Kawashima}.
+
+The new invariants do not manufacture a third independent algebraic exponential.  They transform the same rational character by reciprocal involution, divided differences, cross-ratios, and cyclotomic norms.  Their value is arithmetic localization: they show that a successful projective proof must produce one of the following genuinely new inputs.
+
+\begin{enumerate}
+\item A denominator-sensitive theorem forcing strong compression of paired cyclotomic norms.
+\item A real-to-local transfer theorem forcing many tied Hensel digits from the real synchronization, followed by a contradiction with order orthogonality.
+\item A sparse auxiliary polynomial whose matrix-coefficient height beats the exact prime-order denominator multiplication theorem.
+\item A new weight-two period theorem that turns the formal prime-logarithm relation into a motivic or coaction-stable relation.
+\end{enumerate}
+
+No such input is currently proved here.  The report therefore advances the frontier by replacing several diffuse hopes with exact local and global obstructions, not by bypassing four exponentials.
+
+\section{A prioritized research program}
+\label{sec:program}
+
+The projective framework leaves a finite list of sharply formulated attacks.  They are ordered by the amount of genuinely new mathematics required and by how directly a positive result would feed a contradiction.
+
+\subsection{Priority A: paired prime-order denominator collapse}
+
+For an odd prime $q$, define the synchronized discrepancy
+\begin{equation}\label{eq:Pqh}
+ \mathscr P_{q,h}=J_q(3^{\eps_h})-J_q(2^{\eps_h})>0.
+\end{equation}
+Each discrepancy has archimedean order $q-1$ with a nonzero leading coefficient; obtaining still higher contact would require a further calibrated linear combination across packet orders.  The cubic case has the exact two-gap factorization.  The first task is to derive, for general prime $q$, an explicit orientation factorization of the cleared numerator into the finitely many gaps
+\begin{equation}\label{eq:q-orientation-gaps}
+ A D^j-B C^j,
+ \qquad j\in(\Z/q\Z)^\times,
+\end{equation}
+plus a primitive residual whose local valuations are controlled.  A successful factorization would extend \cref{thm:localization} from a two-orientation law to a full prime-order law.
+
+\begin{problem}[Prime-order projective localization]\label{prob:prime-localization}
+Determine the exact $\ell$-adic valuation of the reduced denominator of $\mathscr P_{q,h}$ in terms of the two cyclotomic depths, the orientation $j$, and a finite Hensel excess.  Prove that unequal depths force least-common-multiple survival, uniformly in $q$.
+\end{problem}
+
+\subsection{Priority B: incompatibility of deep orientations across packet orders}
+
+By \cref{prop:tied-disjoint}, exceptional primes cannot be reused across orders.  The next question is whether the orientations themselves can be globally coherent.  For each packet order $m$, a tied prime records a residue relation $r\equiv s^{j_m}$.  The real relation says $s=r^\theta$ at the distinguished archimedean place.  A sufficiently rich family of congruence exponents $j_m$ might force a rational approximation to $\theta$ that is too coherent across coprime moduli.
+
+\begin{problem}[Orientation incompatibility]\label{prob:orientation-incompat}
+Show that for some finite or slowly growing family of pairwise coprime packet orders, the total logarithmic mass of primes admitting deep compatible orientations is a fixed proportion smaller than the total paired cyclotomic mass.
+\end{problem}
+
+This is the most promising route because it uses all three new ingredients at once: synchronized real ordering, cyclotomic order tags, and tied Hensel digits.
+
+\subsection{Priority C: denominator-sensitive counting on the defect arc}
+
+The folded defect arc $\mathcal C_\Delta$ is strictly concave and carries infinitely many rational points with completely known coordinate denominators.  Existing determinant counting treats the denominators by coarse height.  Here one can ask for a theorem using their split shape
+\begin{equation}\label{eq:split-den-shape}
+ D_{2,k}=W^k2^{q_{2,k}},
+ \qquad
+ D_{3,k}=V^k3^{q_{3,k}},
+\end{equation}
+and the fact that the same folded phase generates both coordinates.
+
+\begin{problem}[Split-height rational points]\label{prob:split-height}
+Bound the number of points on a fixed strictly concave analytic arc whose two reduced denominators factor into independent external rays times prescribed Beatty powers at two distinct structural primes.  Obtain a bound smaller than the exact conditional orbit count.
+\end{problem}
+
+A generic rational-point theorem is unlikely to see this structure; a successful result would have to combine curvature with local denominator colors.
+
+\subsection{Priority D: arithmetic diagonal completion}
+
+The stationary kernel reduces complementary Loewner positivity to rational matrices with one common transcendental diagonal.  Possible tools include:
+\begin{itemize}
+\item interlacing across nested return packets;
+\item determinantal divisors after clearing off-diagonal denominators;
+\item modular constraints on the characteristic polynomial of $B_I$;
+\item quantitative separation of $s_\alpha$ from the algebraic spectral boundary.
+\end{itemize}
+The obstacle is fundamental: no general irrationality measure is known for $s_\alpha$.  Any useful theorem must exploit the special origin of the rational entries, not arbitrary rational matrices.
+
+\subsection{Priority E: exact formalization and certificate extraction}
+
+The new algebra is well suited to Lean because most statements reduce to polynomial identities, gcd calculations, or finite valuation lemmas.  Formalization should proceed before larger computations, both to eliminate sign/orientation mistakes and to provide reusable local certificates.
+
+\subsection{Priority F: matrix-coefficient bridge}
+
+The exact prime-order denominator multiplication theorem supplies a new adversarial benchmark for auxiliary-polynomial constructions.  Any proposed sparse matrix coefficient should be specialized to the projective packets and compared against \eqref{eq:product-Jq}.  If its coefficient budget cannot overcome the exact product denominator, the family can be retired early; if it can, the specialization identifies the first genuinely promising auxiliary function.
+
+\section{Lean-oriented formalization blueprint}
+\label{sec:lean}
+
+The following module plan separates elementary algebra from analytic and transcendence interfaces.  Names are suggestions rather than claims about an existing repository build.
+
+\begin{center}
+\begin{tabularx}{0.98\textwidth}{@{}p{0.28\textwidth}X@{}}
+\toprule
+Suggested module & Principal contents\\
+\midrule
+\texttt{ReciprocalDefect} & Involution $z\mapsto p/z$, fixed-field generator, exact reduced denominator, product-height transfer, folded monotonicity.\\
+\texttt{ComplementaryDisplacement} & Four-channel factorization $G=XJX^T$, rank-four theorem, $4\times4$ square minors, five-node cofactor circuit.\\
+\texttt{ProjectivePacket} & Cross-ratio simplification, $J(z)$, Eisenstein denominator, two-gap polynomial identity, positivity.\\
+\texttt{EisensteinCancellation} & Cube-root orientations, local depth comparison, exact unequal-depth minimum, tied Hensel excess.\\
+\texttt{PrimeOrderPacket} & $J_q$, prime-order denominator theorem, order support, dyadic-block pairwise coprimality, exact denominator multiplication.\\
+\texttt{ProjectiveVerifier} & Bounded exhaustive enumeration and certificate checking for local valuation statements.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Dependency skeleton}
+
+A minimal theorem order is:
+\begin{enumerate}
+\item prove the four elementary gcd lemmas used in \cref{thm:full-height};
+\item prove the polynomial matrix identity $G=XJX^T$ entrywise;
+\item import or prove the generalized Vandermonde nonvanishing for exponents $0,1,\alpha,1-\alpha$;
+\item normalize the cubic identity in the polynomial ring $\Z[A,B,C,D]$;
+\item formalize the finite-field dichotomy for nontrivial cube roots;
+\item lift the dichotomy to valuations using a simple-root lemma;
+\item prove prime-order support by multiplicative order;
+\item prove dyadic-block orthogonality by interval arithmetic and parity.
+\end{enumerate}
+
+Only two pieces need substantial library interfaces: the Chebyshev-system rank theorem over $\R$, and the $\ell$-adic simple-root valuation statement.  Both can initially be isolated behind explicit hypotheses while the algebraic core is accepted.
+
+\subsection{Finite certificate shape}
+
+For fixed integers $A,B,C,D$ and prime $\ell$, a local certificate consists of
+\begin{equation}\label{eq:certificate-shape}
+ (e,f,h,\eta),
+\end{equation}
+where $e=v_\ell\Phi_1$, $f=v_\ell\Phi_2$, $h=v_\ell(HK)$, and $\eta\in\{\text{same},\text{opposite}\}$ records which gap is divisible by $\ell$.  Verification requires only modular exponentiation, exact division, and the theorem
+\[
+ e\ne f\Longrightarrow h=\min(e,f).
+\]
+The bounded Python experiment can therefore be replaced by a proof-producing generator whose output is replayed in Lean with no trust in the search code.
+
+\section{Conclusions and current truth status}
+\label{sec:conclusion}
+
+The conjecture remains unproved in this report.  The new progress is the following coherent package.
+
+\begin{enumerate}
+\item \textbf{Canonical reciprocal detector.}  The involution $z\mapsto p/z$ has a unique affine endpoint defect, and its value at a normalized orbit point has reduced denominator equal to the complete product height.  This proves that reciprocal symmetrization cannot retain sparse denominators: it necessarily imports every external numerator prime.
+
+\item \textbf{Complementary rank four.}  The two rational branches $r^\alpha$ and $r^{1-\alpha}$ generate an exact indefinite Gram kernel of rank four.  Four-point minors are rational squares and five-point packets carry a unique alternating circuit.  The complementary branch adds geometry but no new transcendence degree.
+
+\item \textbf{Rational positive diagonal completion.}  After Loewner normalization on square-coset nodes, all off-diagonal entries are rational and every diagonal equals $\alpha(1-\alpha)$.  Positivity supplies algebraic spectral approximants, isolating a new arithmetic diagonal-completion problem.
+
+\item \textbf{Projective two-gap factorization.}  The cubic equal-step cross-ratio produces the reciprocal deficit $J(z)=(z-1)^2/(z^2+z+1)$.  The synchronized dyadic--triadic difference factors exactly into the gap $3^\delta-2^\delta$ and the gap $6^\delta-1$ after integer clearing.
+
+\item \textbf{Tied-depth localization.}  Away from $3$, every common Eisenstein prime chooses one of two root orientations.  Unequal cyclotomic depths force exact least-depth numerator cancellation and leave the larger denominator exponent intact.  Extra cancellation occurs only at a depth tie and is exactly a Hensel-digit collision.
+
+\item \textbf{Order orthogonality.}  Prime-order projective denominators for packet primes in one dyadic interval are pairwise coprime, and products of one-coordinate defects have exactly multiplicative reduced denominators.  Exceptional tied primes cannot be reused across distinct packet orders.  This closes the natural hope that merely stacking higher projective orders will compress the denominator.
+
+\item \textbf{A sharp remaining interface.}  The only projective route left is cross-base: prove that real synchronization forces an impossible abundance or coherence of tied local orientations, or prove a denominator-sensitive counting theorem exploiting the split structural/external denominator rays.  Neither theorem follows from current Baker, $S$-unit, or generic rational-point bounds.
+\end{enumerate}
+
+The strongest prospective attack is therefore not ``take a higher determinant'' or ``use more cyclotomic factors.''  Those operations now have exact denominator audits showing why they fail in isolation.  The viable target is a \emph{local-to-global orientation theorem}: the same real return phase would have to control many disjoint cyclotomic prime sets, each with its own exact Hensel digit constraints.  Establishing that such coherence is impossible would break the rank-two-to-rank-one wall in a genuinely arithmetic way.
+
+\appendix
+
+\section{Algebraic identities used in the report}
+\label{app:identities}
+
+For convenient independent checking, the central identities are collected here.
+
+\subsection{Reciprocal defect}
+
+For $z=P/Q$,
+\[
+ p+1-z-p/z
+ =\frac{(P-Q)(pQ-P)}{PQ}.
+\]
+The four pairwise gcds of the numerator factors with $P,Q$ are $1$ when $Q$ is a power of $p$ and $p\nmid P$.
+
+\subsection{Complementary displacement}
+
+With $y_i=r_i^\alpha$ and $z_i=r_i^{1-\alpha}$,
+\[
+ G_{ij}=r_i+r_j-y_iz_j-z_iy_j
+ =\begin{pmatrix}1&r_i&y_i&z_i\end{pmatrix}
+ \begin{pmatrix}
+ 0&1&0&0\\
+ 1&0&0&0\\
+ 0&0&0&-1\\
+ 0&0&-1&0
+ \end{pmatrix}
+ \begin{pmatrix}1\\r_j\\y_j\\z_j\end{pmatrix}.
+\]
+
+\subsection{Cubic projective identity}
+
+Writing $\Phi_3(A,B)=A^2+AB+B^2$,
+\[
+ (C-D)^2\Phi_3(A,B)-(A-B)^2\Phi_3(C,D)
+ =3(BC-AD)(AC-BD).
+\]
+
+\subsection{Prime-order reciprocal defect}
+
+For odd prime $q$,
+\[
+ J_q(z)=\frac{(z-1)^{q-1}}{1+z+\cdots+z^{q-1}}
+ =\frac{(z-1)^q}{z^q-1},
+ \qquad J_q(z^{-1})=J_q(z).
+\]
+
+\section{Exact verification code}
+\label{app:code}
+
+The following script is the complete source used for the bounded check in \cref{sec:computation}.  It requires Python~3 and SymPy.
+
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python3
+from math import gcd
+from sympy import factor, factorint, symbols
+
+BOUND = 24
+
+def phi3(a, b):
+    return a*a + a*b + b*b
+
+def valuation(n, p):
+    n = abs(n)
+    e = 0
+    while n and n % p == 0:
+        n //= p
+        e += 1
+    return e
+
+A, B, C, D = symbols("A B C D")
+lhs = (C-D)**2 * phi3(A, B) - (A-B)**2 * phi3(C, D)
+rhs = 3 * (B*C-A*D) * (A*C-B*D)
+assert factor(lhs-rhs) == 0
+
+fractions = [
+    (a, b)
+    for a in range(1, BOUND+1)
+    for b in range(1, BOUND+1)
+    if a != b and gcd(a, b) == 1
+]
+facts = {(a, b): factorint(phi3(a, b)) for a, b in fractions}
+
+stats = {
+    "fractions": len(fractions),
+    "nondegenerate_ordered_pairs": 0,
+    "degenerate_ordered_pairs": 0,
+    "common_non3_local_layers": 0,
+    "tied_layers": 0,
+    "unequal_layers": 0,
+    "tied_layers_with_excess": 0,
+    "violations": 0,
+}
+
+for A, B in fractions:
+    f1 = facts[(A, B)]
+    for C, D in fractions:
+        H = B*C - A*D
+        K = A*C - B*D
+        if H*K == 0:
+            stats["degenerate_ordered_pairs"] += 1
+            continue
+        stats["nondegenerate_ordered_pairs"] += 1
+        f2 = facts[(C, D)]
+        for ell in set(f1) | set(f2):
+            if ell == 3:
+                continue
+            e = f1.get(ell, 0)
+            f = f2.get(ell, 0)
+            h = valuation(H*K, ell)
+            if (e > 0) != (f > 0):
+                if h != 0:
+                    stats["violations"] += 1
+            elif e > 0:
+                stats["common_non3_local_layers"] += 1
+                if e == f:
+                    stats["tied_layers"] += 1
+                    if h > e:
+                        stats["tied_layers_with_excess"] += 1
+                    if h < e:
+                        stats["violations"] += 1
+                else:
+                    stats["unequal_layers"] += 1
+                    if h != min(e, f):
+                        stats["violations"] += 1
+
+for key, value in stats.items():
+    print(f"{key}={value}")
+assert stats["violations"] == 0
+\end{lstlisting}
+
+\section{Status matrix}
+\label{app:status}
+
+\begin{longtable}{@{}p{0.36\textwidth}p{0.16\textwidth}p{0.39\textwidth}@{}}
+\toprule
+Statement & Status & Main dependency\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Main dependency\\
+\midrule
+\endhead
+Reciprocal fixed field and affine canonicity & proved here & quadratic invariant theory\\
+Exact full product-height denominator & proved here & elementary gcds\\
+Folded defect injectivity and strict concavity & proved here & calculus and irrationality\\
+Complementary displacement rank four & proved here & Chebyshev generalized Vandermonde\\
+Four-point square minors and five-node circuit & proved here & matrix factorization and cofactors\\
+Cayley ODE and quadratic return acceleration & proved here & rational identities and Taylor expansion\\
+Cross-ratio monotonicity & proved here & strict convexity of $x\coth x$\\
+Cubic Eisenstein denominator & proved here & LTE and multiplicative order\\
+Synchronized two-gap factorization & proved here & polynomial identity\\
+Unequal-depth exact local cancellation & proved here & simple-root Hensel lifting\\
+Tied-depth Hensel excess formula & proved here & explicit $\ell$-adic expansion\\
+Prime-order exact denominator & proved here & LTE and order $q$\\
+Dyadic prime-order pairwise coprimality & proved here & order uniqueness and parity\\
+Exact denominator multiplication for stacked packets & proved here & pairwise coprimality\\
+Bounded exhaustive verification & exact computation & integer arithmetic, SymPy factorization\\
+Projective denominator collapse & open closing criterion & global tied-depth compression\\
+Multi-order orientation incompatibility & open & new local-to-global arithmetic\\
+Split-height rational-point bound & open & denominator-sensitive counting\\
+Arithmetic diagonal-completion rigidity & open & special algebraic approximation\\
+Alaoglu--Erd\H{o}s conjecture & open & none of the open criteria is discharged\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{AlaogluErdos}
+L.~Alaoglu and P.~Erd\H{o}s,
+\emph{On highly composite and similar numbers},
+Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+
+\bibitem{BakerWustholz}
+A.~Baker and G.~W\"ustholz,
+\emph{Logarithmic Forms and Diophantine Geometry},
+Cambridge University Press, 2007.
+
+\bibitem{Bhatia}
+R.~Bhatia,
+\emph{Matrix Analysis},
+Springer, 1997.
+
+\bibitem{BCZ}
+Y.~Bugeaud, P.~Corvaja, and U.~Zannier,
+\emph{An upper bound for the G.C.D. of $a^n-1$ and $b^n-1$},
+Mathematische Zeitschrift \textbf{243} (2003), 79--84.
+
+\bibitem{DasguptaKakde}
+S.~Dasgupta and M.~Kakde,
+\emph{Ranks of matrices of logarithms of algebraic numbers II: the Matrix Coefficient Conjecture},
+arXiv:2408.08178.
+
+\bibitem{Gelfond}
+A.~O.~Gelfond,
+\emph{Transcendental and Algebraic Numbers},
+Dover, 1960.
+
+\bibitem{Kawashima}
+M.~Kawashima,
+\emph{Linear independence of periods related to polylogarithms},
+arXiv:2605.17756.
+
+\bibitem{Loewner}
+K.~L\"owner,
+\emph{\"Uber monotone Matrixfunktionen},
+Mathematische Zeitschrift \textbf{38} (1934), 177--216.
+
+\bibitem{Waldschmidt}
+M.~Waldschmidt,
+\emph{Diophantine Approximation on Linear Algebraic Groups},
+Springer, 2000.
+
+\end{thebibliography}
+
+\end{document}

@@ -36,4 +36,12 @@ for T in (500, 1000, 2000, 4000, 8000):
     print(f"{T:8} {c:10} {T*T/(2*beta):12.1f} {s2:12.5f} {inc:>10} {s3:11.6f}")
     prev = s2
 print("\nincrement per doubling -> 1/beta confirms sum 1/s^2 ~ (1/beta) log r (divergent);")
-print("sum 1/s^3 converges.  Genus = order = 2, divergent sum => tau_2 = +infinity.")
+print("sum 1/s^3 converges.  Genus = order = 2 with divergent sum, so the canonical
+"
+      "product over EXACTLY Sol has tau_2 = +infinity.  NOTE: this says nothing about
+"
+      "other functions vanishing on Sol -- a symmetric enlargement of the divisor
+"
+      "cancels the divergence, since (i s)^-2 = -s^-2, and z^4 prod (1 - z^4/s^4) has
+"
+      "tau_2 = pi/(2 beta) < infinity.  The earlier inference to ALL vanishers was wrong.")

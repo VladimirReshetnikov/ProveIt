@@ -1,4 +1,9 @@
-"""Forced initial-segment vanishing for small-type integer-valued functions on Sol.
+"""Window of vanishing differences (the initial-segment conclusion is RETRACTED).
+
+RETRACTION: g(z) = 2^z is integer-valued on Sol with tau_2 = 0, yet Delta^k g(0) = 1 for
+every k.  The limsup hypothesis tau_2 <= tau controls log M(g,r) only for r >= r_0, while
+the Cauchy contour used here is R = 2k; the two ranges are disjoint.  And k = 0 is never
+constrained, so Newton would give g(n) = g(0), not 0.  Only the ESTIMATE below survives.
 
 Since N_0 is contained in Sol, the ordinary difference table Delta^k g(0) consists of
 INTEGERS.  Cauchy on |z| = R with R = 2k (poles at 0..k) gives

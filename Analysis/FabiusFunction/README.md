@@ -80,7 +80,9 @@ table is connected axiom-cleanly to the executable moment recurrences in
 `MomentPowerSeries.lean`; `DyadicClosedForm.lean` proves the highest-bit Taylor
 identity, and `DyadicAnalytic.lean` proves equality with every bounded analytic
 Fabius function.  `GlobalDyadic.lean` supplies the corresponding proofs for
-the signed global extension and for equation (32) on its full `[0,2]` range.
+the signed global extension and for equation (32) at every nonnegative dyadic
+argument `m / 2^n`, with no restriction that the representation be reduced or
+that `m ≤ 2^n`.
 
 ```lean
 #eval Fabius.fabiusDyadicValue 4 5
@@ -139,12 +141,47 @@ The zeroth coefficient is zero, and the first explicit correction is
 formula keeps the oscillatory coefficient functions at the exact Lambert
 phase; it does not silently replace them by a lower-order phase approximation.
 
-The asymptotic aggregate also audits three linked Stack Exchange discussions.
+The asymptotic aggregate also audits four linked Stack Exchange discussions.
 The recurrence sequence is exposed directly as
 `fabiusRecurrenceSequence n = halfMoment n / n!`, with its displayed
 recurrence, Bernoulli recurrence, inverse-dyadic bridge, generating series,
-and product all proved; its fixed-constant heuristic omits the nonconstant
-periodic correction.  The elementary small-`x` expression from
+and product all proved.  The
+[conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
+is proved exactly in its full stated scope: for all natural `m,n`, its
+half-shifted Thue--Morse sum is the signed global Fabius value at `m / 2^n`.
+No condition `m ≤ 2^n` or irreducibility of the dyadic representation is
+needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
+function satisfying `IsFabius`.  The rational expression is independent of
+the representation of `m / 2^n` (in particular, it is unchanged by
+`(m,n) ↦ (2m,n+1)`) and is invariant under any common rational translation
+of its inner powers.  More explicitly, for every `q : ℚ` the fully displayed
+sum with inner power `(j - m * 2^k + q)^(n+k)` has that same value; literal
+rational, signed-global, and bounded-unit-interval theorems are public.
+Thus the source's `+1/2` formula and the centered form agree, while its
+`QPochhammer`/`QBinomial` factors retain notation-faithful public definitions.
+For the inverse-power specialization, dyadic reflection additionally proves
+for every `q : ℚ` the raw-coordinate formula with inner power
+`(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses
+the zero-one `thueMorseBit`; at `n = q = 0`, the sole inner power is `0^0`
+and evaluates to one.
+
+The global binary-reduction series is also formalized.  Its correct outer
+index starts at `m = 0`, where `Floor[2^(m-1)x]` is genuinely `Floor[x/2]`.
+For every real `x ≥ 0`, the series converges absolutely to the signed global
+Fabius extension.  This specializes to the bounded Fabius function on
+`0 ≤ x ≤ 1`.  The complete finite inner expression is a constant polynomial
+in its common translation, so the theorem holds not only for rational `q`,
+but for every real or complex `q`.  The missing `m = 0` term is zero on
+`0 ≤ x < 1` and equals one at `x = 1`; this explains both why the former
+one-indexed formula worked on the half-open interval and why it failed at the
+right endpoint.  The primary public endpoints are
+`Fabius.hasSum_qBinomialFabiusGlobalSummand`,
+`Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real`, and
+`Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_complex`.
+
+The recurrence sequence's fixed-constant heuristic
+omits the nonconstant periodic correction.  The elementary small-`x`
+expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
 formalized verbatim and corrected by adding that term at the exact
 lower-Lambert phase.  The uncorrected claimed error is formally disproved.
@@ -158,7 +195,9 @@ an asymptotic equivalent despite its good compact-interval plot.
 `PaperKFoldThueMorse.lean` is the public aggregate for the second local
 draft.  It contains the exact prefix-sum, zero-run, convolution, and
 generating-series identities; the intended real polygonal interpolation; and a
-proved corrected pointwise approximation scheme.  The Stirling estimate used
+proved corrected pointwise approximation scheme.  It also exposes the
+zero-one sequence `thueMorseBit` and proves the exact identity expressing it
+through `Log2` of the signed binomial-parity sum.  The Stirling estimate used
 by the draft is proved in its precise `O(log n)` form.  The aggregate also
 exposes formal counterexamples to the literal normalization, the claimed local
 and global error estimates, the unbounded “maximum” proxy, and the omitted

@@ -8,6 +8,9 @@ import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusFullAsymptoticExpansion
 import FabiusFunction.FabiusLambertAllOrderSmallArgument
 import FabiusFunction.FabiusRecurrenceSequence
+import FabiusFunction.FabiusQBinomialFormula
+import FabiusFunction.FabiusRawQBinomialFormula
+import FabiusFunction.FabiusGlobalQBinomialSeries
 import FabiusFunction.FabiusFirstSaddleCorrection
 import FabiusFunction.FabiusSaddleCoefficientRecurrence
 import FabiusFunction.PeriodicSmooth
@@ -43,6 +46,26 @@ formula to all orders.  For every `N`, the exact lower-Lambert expansion has
 an `O(lambda^-N)` remainder; the lower-Lambert phase itself also has a
 separate all-orders expansion in `-log x` and `log (-log x)`.
 The related Mathematica Stack Exchange quotient is also proved not to be an
-endpoint asymptotic equivalent.  See `PAPER_COVERAGE.md` for the exact claim
-matrix.
+endpoint asymptotic equivalent.  The finite q-binomial/Thue--Morse formula
+conjectured at
+https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function
+is formalized in its full scope: for every `m,n : ℕ`, including zero and
+unreduced dyadic representations, the source's half-shifted rational sum is
+the signed global Fabius value at `m / 2^n`.  No assumption `m ≤ 2^n` is
+needed for that theorem.  Under `m ≤ 2^n`, a separate corollary identifies
+the same sum with every bounded function satisfying `IsFabius`.  The formula
+is invariant both under equal representations of a nonnegative dyadic
+rational (in particular `(m,n) ↦ (2m,n+1)`) and under every common rational
+translation of its inner powers.  Explicitly, for every `q : ℚ` the fully
+displayed sum containing `(j - m * 2^k + q)^(n+k)` computes the same dyadic
+value; this includes both the centered and source-faithful `+1/2` versions.
+For `m = 1`, dyadic reflection also gives the arbitrary-`q` raw-coordinate
+form with inner power `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.
+The corresponding infinite binary-reduction formula is proved after restoring
+its missing scale-zero term.  For every `x ≥ 0` and every real or complex
+translation `q`, the literal nested series is absolutely convergent and equals
+the signed global Fabius extension.  On `[0,1]` it equals the bounded Fabius
+function.  Polynomial constancy, rather than density alone, makes the
+extension from rational to real and complex `q` exact.
+See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/

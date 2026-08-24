@@ -43,6 +43,12 @@ theorem zhaiCao_theorem_of_wu_theorem1 : wu_theorem1 → zhaiCao_theorem :=
 theorem nowak_of_zhaiCao_theorem : zhaiCao_theorem → nowak_primitiveCircleBound :=
   fun h hRH => primitiveCircleError_bound_mono (by norm_num) (h hRH)
 
+/-- Wu's Theorem 1 (`221/608`) directly implies Nowak's earlier
+`15/38` bound.  This is the transitive closure of the two exponent-monotonicity
+steps above, exposed as a public catalogue route. -/
+theorem nowak_of_wu_theorem1 : wu_theorem1 → nowak_primitiveCircleBound :=
+  fun h => nowak_of_zhaiCao_theorem (zhaiCao_theorem_of_wu_theorem1 h)
+
 /-- Wu's unconditional bound (with `(log log x)^{-1/5}`) implies the form
 printed by Zhai–Cao (with `(log log x)^{-2/5}`). -/
 theorem zhaiCao_unconditionalBound_of_wu : wu_unconditionalBound → zhaiCao_unconditionalBound := by
@@ -117,13 +123,52 @@ theorem RSumBoundOnSquare_of_regions (θ : ℝ)
   exact (hB x M N hx ⟨hM, hN, hA'.le, hMx, hC'.le, hNx⟩).trans
     (mul_le_mul_of_nonneg_right hCB hxpos)
 
-/-- **Wu's Theorem 1 follows from Propositions 1–4 and the reduction of §1.** -/
-theorem wu_theorem1_of_props (h1 : wu_prop1) (h2 : wu_prop2) (h3 : wu_prop3) (h4 : wu_prop4)
+/-- The reduction of §1 at Wu's target exponent needs only the square-wide
+bound (1.3).  This separates the analytic square bound from the elementary
+region-covering argument. -/
+theorem wu_theorem1_of_squareBound
+    (hsq : RSumBoundOnSquare (221 / 608))
     (hred : wu_reductionToRSum) : wu_theorem1 := by
   intro hRH ε hε
-  have hsq : RSumBoundOnSquare (221 / 608) :=
-    RSumBoundOnSquare_of_regions _ (h1 _ (by norm_num) (by norm_num))
-      (h2 _ (by norm_num) (by norm_num)) (h3 _ (by norm_num) (by norm_num)) h4
   exact hred _ (by norm_num) (by norm_num) hsq hRH ε hε
+
+/-- Bounds on the four regions at `221/608`, together with Wu's reduction,
+imply Theorem 1. -/
+theorem wu_theorem1_of_regionBounds
+    (hA : RSumBoundOn (221 / 608) regionA)
+    (hB : RSumBoundOn (221 / 608) regionB)
+    (hC : RSumBoundOn (221 / 608) regionC)
+    (hD : RSumBoundOn (221 / 608) regionD)
+    (hred : wu_reductionToRSum) : wu_theorem1 :=
+  wu_theorem1_of_squareBound
+    (RSumBoundOnSquare_of_regions _ hA hB hC hD) hred
+
+/-- Wu's four propositions provide the square-wide form of (1.3) at the
+target exponent, independently of the later §1 reduction. -/
+theorem RSumBoundOnSquare_of_wu_props
+    (h1 : wu_prop1) (h2 : wu_prop2) (h3 : wu_prop3) (h4 : wu_prop4) :
+    RSumBoundOnSquare (221 / 608) :=
+  RSumBoundOnSquare_of_regions _
+    (h1 _ (by norm_num) (by norm_num))
+    (h2 _ (by norm_num) (by norm_num))
+    (h3 _ (by norm_num) (by norm_num)) h4
+
+/-- **Wu's Theorem 1 follows from Propositions 1–4 and the reduction of §1.** -/
+theorem wu_theorem1_of_props (h1 : wu_prop1) (h2 : wu_prop2) (h3 : wu_prop3) (h4 : wu_prop4)
+    (hred : wu_reductionToRSum) : wu_theorem1 :=
+  wu_theorem1_of_squareBound (RSumBoundOnSquare_of_wu_props h1 h2 h3 h4) hred
+
+/-- Wu's Propositions 1–4 and the §1 reduction also imply the weaker
+Zhai–Cao main theorem. -/
+theorem zhaiCao_theorem_of_wu_props
+    (h1 : wu_prop1) (h2 : wu_prop2) (h3 : wu_prop3) (h4 : wu_prop4)
+    (hred : wu_reductionToRSum) : zhaiCao_theorem :=
+  zhaiCao_theorem_of_wu_theorem1 (wu_theorem1_of_props h1 h2 h3 h4 hred)
+
+/-- The same Wu inputs imply Nowak's still weaker `15/38` endpoint. -/
+theorem nowak_of_wu_props
+    (h1 : wu_prop1) (h2 : wu_prop2) (h3 : wu_prop3) (h4 : wu_prop4)
+    (hred : wu_reductionToRSum) : nowak_primitiveCircleBound :=
+  nowak_of_wu_theorem1 (wu_theorem1_of_props h1 h2 h3 h4 hred)
 
 end LeanProofs.IntegerPoints
