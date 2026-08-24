@@ -3070,6 +3070,397 @@ theorem theorem_2_3_holds : theorem_2_3 := by
           exact (lemma_2_1_holds m k (j + 1) hmPos hkPos (by omega) hkBound
             hmCong hmOneCong).2 word hword
 
+lemma binaryCongruenceDegree_evenBase {a b : Nat} (ha : Even a) (hb : Even b) (hne : a != b) :
+    binaryCongruenceDegree (a / 2) (b / 2) + 1 = binaryCongruenceDegree a b := by
+  rcases ha with ⟨A, ha⟩
+  rcases hb with ⟨B, hb⟩
+  have hdist : Nat.dist (a / 2) (b / 2) = Nat.dist a b / 2 := by
+    unfold Nat.dist
+    omega
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := by
+    intro hzero
+    apply hne'
+    exact Nat.eq_of_dist_eq_zero hzero
+  have hdvd : 2 ∣ Nat.dist a b := by
+    unfold Nat.dist
+    omega
+  unfold binaryCongruenceDegree
+  rw [hdist]
+  rw [Nat.factorization_div hdvd]
+  have htwo : (Nat.factorization 2) 2 = 1 := by norm_num
+  change (Nat.dist a b).factorization 2 - (Nat.factorization 2) 2 + 1 =
+    (Nat.dist a b).factorization 2
+  rw [htwo]
+  have hone : 1 <= (Nat.dist a b).factorization 2 :=
+    (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+  omega
+
+lemma binaryCongruenceDegree_oddBase {a b : Nat} (ha : Odd a) (hb : Odd b) (hne : a != b) :
+    binaryCongruenceDegree ((a + 1) / 2) ((b + 1) / 2) + 1 =
+      binaryCongruenceDegree a b := by
+  rcases ha with ⟨A, ha⟩
+  rcases hb with ⟨B, hb⟩
+  have hdist : Nat.dist ((a + 1) / 2) ((b + 1) / 2) = Nat.dist a b / 2 := by
+    unfold Nat.dist
+    omega
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := by
+    intro hzero
+    exact hne' (Nat.eq_of_dist_eq_zero hzero)
+  have hdvd : 2 ∣ Nat.dist a b := by
+    unfold Nat.dist
+    omega
+  unfold binaryCongruenceDegree
+  rw [hdist, Nat.factorization_div hdvd]
+  have htwo : (Nat.factorization 2) 2 = 1 := by norm_num
+  change (Nat.dist a b).factorization 2 - (Nat.factorization 2) 2 + 1 =
+    (Nat.dist a b).factorization 2
+  rw [htwo]
+  have hone : 1 <= (Nat.dist a b).factorization 2 :=
+    (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+  omega
+
+lemma occursLeftOf_map {word : List Nat} {x y : Nat} (f : Nat -> Nat)
+    (h : OccursLeftOf word x y) : OccursLeftOf (word.map f) (f x) (f y) := by
+  rcases h with ⟨i, j, hij, hi, hj⟩
+  exact ⟨i, j, hij, by simp [hi], by simp [hj]⟩
+
+lemma occursLeftOf_of_sublist {small large : List Nat} {x y : Nat}
+    (hsub : small.Sublist large) (h : OccursLeftOf small x y) :
+    OccursLeftOf large x y := by
+  obtain ⟨embedding, hembedding⟩ :=
+    List.sublist_iff_exists_orderEmbedding_getElem?_eq.mp hsub
+  rcases h with ⟨i, j, hij, hi, hj⟩
+  refine ⟨embedding i, embedding j, embedding.strictMono hij, ?_, ?_⟩
+  · rw [← hembedding]
+    exact hi
+  · rw [← hembedding]
+    exact hj
+
+lemma startsWith_evenBase {word : List Nat} {a : Nat}
+    (h : StartsWith word a) (ha : Even a) : StartsWith (evenBase word) (a / 2) := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using h
+      subst first
+      simp [StartsWith, evenBase, evenTrace, trace, decide_eq_true ha]
+
+lemma startsWith_oddBase {word : List Nat} {a : Nat}
+    (h : StartsWith word a) (ha : Odd a) : StartsWith (oddBase word) ((a + 1) / 2) := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using h
+      subst first
+      simp [StartsWith, oddBase, oddTrace, trace, decide_eq_true ha]
+
+lemma sameParity_of_binaryCongruenceDegree_pos {a b : Nat}
+    (hpos : 0 < binaryCongruenceDegree a b) :
+    (Even a /\ Even b) \/ (Odd a /\ Odd b) := by
+  have hdvd : 2 ∣ Nat.dist a b := by
+    apply Nat.dvd_of_factorization_pos
+    simpa [binaryCongruenceDegree] using hpos.ne'
+  rcases Nat.even_or_odd a with haEven | haOdd
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exact Or.inl ⟨haEven, hbEven⟩
+    · rcases haEven with ⟨A, ha⟩
+      rcases hbOdd with ⟨B, hb⟩
+      exfalso
+      unfold Nat.dist at hdvd
+      omega
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · rcases haOdd with ⟨A, ha⟩
+      rcases hbEven with ⟨B, hb⟩
+      exfalso
+      unfold Nat.dist at hdvd
+      omega
+    · exact Or.inr ⟨haOdd, hbOdd⟩
+
+lemma oppositeParity_of_binaryCongruenceDegree_zero {a b : Nat} (hne : a != b)
+    (hzero : binaryCongruenceDegree a b = 0) :
+    (Even a /\ Odd b) \/ (Odd a /\ Even b) := by
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := fun h => hne' (Nat.eq_of_dist_eq_zero h)
+  rcases Nat.even_or_odd a with haEven | haOdd
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exfalso
+      have hdvd : 2 ∣ Nat.dist a b := by
+        rcases haEven with ⟨A, ha⟩
+        rcases hbEven with ⟨B, hb⟩
+        unfold Nat.dist
+        omega
+      have hpos : 1 <= (Nat.dist a b).factorization 2 :=
+        (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+      simp [binaryCongruenceDegree] at hzero
+      omega
+    · exact Or.inl ⟨haEven, hbOdd⟩
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exact Or.inr ⟨haOdd, hbEven⟩
+    · exfalso
+      have hdvd : 2 ∣ Nat.dist a b := by
+        rcases haOdd with ⟨A, ha⟩
+        rcases hbOdd with ⟨B, hb⟩
+        unfold Nat.dist
+        omega
+      have hpos : 1 <= (Nat.dist a b).factorization 2 :=
+        (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+      simp [binaryCongruenceDegree] at hzero
+      omega
+
+lemma occursLeftOf_of_evenBase {word : List Nat} {x y : Nat}
+    (hx : Even x) (hy : Even y)
+    (h : OccursLeftOf (evenBase word) (x / 2) (y / 2)) :
+    OccursLeftOf word x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z) h
+  change OccursLeftOf (evenLift (evenBase word)) (2 * (x / 2)) (2 * (y / 2)) at hlift
+  rw [evenLift_evenBase] at hlift
+  have htrace : OccursLeftOf (evenTrace word) x y := by
+    simpa [Nat.two_mul_div_two_of_even hx, Nat.two_mul_div_two_of_even hy] using hlift
+  exact occursLeftOf_of_sublist List.filter_sublist htrace
+
+lemma occursLeftOf_of_oddBase {word : List Nat} {x y : Nat}
+    (hx : Odd x) (hy : Odd y)
+    (h : OccursLeftOf (oddBase word) ((x + 1) / 2) ((y + 1) / 2)) :
+    OccursLeftOf word x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z - 1) h
+  change OccursLeftOf (oddLift (oddBase word))
+    (2 * ((x + 1) / 2) - 1) (2 * ((y + 1) / 2) - 1) at hlift
+  rw [oddLift_oddBase] at hlift
+  rcases hx with ⟨X, hx⟩
+  rcases hy with ⟨Y, hy⟩
+  have htrace : OccursLeftOf (oddTrace word) x y := by
+    convert hlift using 1 <;> omega
+  exact occursLeftOf_of_sublist List.filter_sublist htrace
+
+lemma sameParity_endpoints_of_mean {x y z : Nat} (hmean : x + y = 2 * z) :
+    (Even x /\ Even y) \/ (Odd x /\ Odd y) := by
+  rcases Nat.even_or_odd x with hxEven | hxOdd
+  · rcases Nat.even_or_odd y with hyEven | hyOdd
+    · exact Or.inl ⟨hxEven, hyEven⟩
+    · rcases hxEven with ⟨X, hx⟩
+      rcases hyOdd with ⟨Y, hy⟩
+      exfalso
+      omega
+  · rcases Nat.even_or_odd y with hyEven | hyOdd
+    · rcases hxOdd with ⟨X, hx⟩
+      rcases hyEven with ⟨Y, hy⟩
+      exfalso
+      omega
+    · exact Or.inr ⟨hxOdd, hyOdd⟩
+
+lemma evenHalf_mem_segment {n x : Nat} (hx : x ∈ segment n) (heven : Even x) :
+    x / 2 ∈ segment (n / 2) := by
+  simp only [segment, Finset.mem_Icc] at hx ⊢
+  rcases heven with ⟨X, hX⟩
+  omega
+
+lemma oddHalf_mem_segment {n x : Nat} (hx : x ∈ segment n) (hodd : Odd x) :
+    (x + 1) / 2 ∈ segment ((n + 1) / 2) := by
+  simp only [segment, Finset.mem_Icc] at hx ⊢
+  rcases hodd with ⟨X, hX⟩
+  omega
+
+lemma binaryCongruence_forcing (e : Nat) :
+    forall (n : Nat) (gamma : List Nat) (a1 x y z : Nat),
+      IsTheta n gamma -> StartsWith gamma a1 ->
+      x ∈ segment n -> y ∈ segment n -> z ∈ segment n ->
+      x + y = 2 * z -> a1 != z -> a1 != x ->
+      binaryCongruenceDegree a1 x = e ->
+      binaryCongruenceDegree a1 x < binaryCongruenceDegree a1 z ->
+        OccursLeftOf gamma z x /\ OccursLeftOf gamma z y := by
+  induction e with
+  | zero =>
+      intro n gamma a1 x y z htheta hstart hxSegment hySegment hzSegment
+        hmean haz hax hdegree hlt
+      have hax' : a1 ≠ x := by simpa using hax
+      have haz' : a1 ≠ z := by simpa using haz
+      have hxy : x ≠ y := by
+        intro hxy
+        have hxz : x = z := by omega
+        subst z
+        exact (Nat.lt_irrefl _ hlt)
+      have hxz : x ≠ z := by
+        intro hxz
+        subst z
+        have hyx : y = x := by omega
+        exact hxy hyx.symm
+      have hxyBool : x != y := by simpa using hxy
+      have hsameAZ := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := z) (by omega)
+      have hoppAX := oppositeParity_of_binaryCongruenceDegree_zero hax hdegree
+      rcases hoppAX with ⟨haEven, hxOdd⟩ | ⟨haOdd, hxEven⟩
+      · have hzEven : Even z := by
+          rcases hsameAZ with hEven | hOdd
+          · exact hEven.2
+          · rcases haEven with ⟨A, ha⟩
+            rcases hOdd.1 with ⟨B, hb⟩
+            exfalso
+            omega
+        have hyOdd : Odd y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · rcases hxOdd with ⟨X, hx⟩
+            rcases hEven.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hnTwo : 2 <= n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hzSegment
+          omega
+        obtain ⟨first, last, hfirst, hlast, hparity⟩ :=
+          proposition_2_1_holds n gamma hnTwo htheta
+        have hfirstEq : first = a1 := by
+          unfold StartsWith at hfirst hstart
+          exact Option.some.inj (hfirst.symm.trans hstart)
+        subst first
+        have hlastOdd : Odd last := by
+          rcases Nat.even_or_odd last with hlastEven | hlastOdd
+          · exfalso
+            apply hparity
+            rcases haEven with ⟨A, ha⟩
+            rcases hlastEven with ⟨B, hb⟩
+            unfold Nat.ModEq
+            omega
+          · exact hlastOdd
+        have hreverse12 : IsTheta12 n (reversal gamma) :=
+          ⟨isTheta_reversal htheta,
+            ⟨last, startsWith_reversal_of_endsWith hlast, hlastOdd⟩⟩
+        have hforced := (theorem_2_1_holds n (reversal gamma) hreverse12
+          x y z hxSegment hySegment hzSegment hxyBool hmean).1
+          ⟨hxOdd, hyOdd, hzEven⟩
+        exact ⟨occursLeftOf_of_occursLeftOf_reversal hforced.1,
+          occursLeftOf_of_occursLeftOf_reversal hforced.2⟩
+      · have hzOdd : Odd z := by
+          rcases hsameAZ with hEven | hOdd
+          · rcases haOdd with ⟨A, ha⟩
+            rcases hEven.1 with ⟨B, hb⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hyEven : Even y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · exact hEven.2
+          · rcases hxEven with ⟨X, hx⟩
+            rcases hOdd.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+        have htheta12 : IsTheta12 n gamma := ⟨htheta, ⟨a1, hstart, haOdd⟩⟩
+        exact (theorem_2_1_holds n gamma htheta12 x y z hxSegment hySegment
+          hzSegment hxyBool hmean).2 ⟨hxEven, hyEven, hzOdd⟩
+  | succ e ih =>
+      intro n gamma a1 x y z htheta hstart hxSegment hySegment hzSegment
+        hmean haz hax hdegree hlt
+      have hsameAX := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := x) (by omega)
+      have hsameAZ := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := z) (by omega)
+      rcases hsameAX with ⟨haEven, hxEven⟩ | ⟨haOdd, hxOdd⟩
+      · have hzEven : Even z := by
+          rcases hsameAZ with hEven | hOdd
+          · exact hEven.2
+          · rcases haEven with ⟨A, ha⟩
+            rcases hOdd.1 with ⟨B, hb⟩
+            exfalso
+            omega
+        have hyEven : Even y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · exact hEven.2
+          · rcases hxEven with ⟨X, hx⟩
+            rcases hOdd.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+        have hthetaBase := isTheta_evenBase htheta
+        have hstartBase := startsWith_evenBase hstart haEven
+        have hxBase := evenHalf_mem_segment hxSegment hxEven
+        have hyBase := evenHalf_mem_segment hySegment hyEven
+        have hzBase := evenHalf_mem_segment hzSegment hzEven
+        have hmeanBase : x / 2 + y / 2 = 2 * (z / 2) := by
+          rcases hxEven with ⟨X, hx⟩
+          rcases hyEven with ⟨Y, hy⟩
+          rcases hzEven with ⟨Z, hz⟩
+          omega
+        have hazBase : a1 / 2 != z / 2 := by
+          have haz' : a1 ≠ z := by simpa using haz
+          have : a1 / 2 ≠ z / 2 := by
+            intro h
+            rcases haEven with ⟨A, ha⟩
+            rcases hzEven with ⟨Z, hz⟩
+            exact haz' (by omega)
+          simpa using this
+        have haxBase : a1 / 2 != x / 2 := by
+          have hax' : a1 ≠ x := by simpa using hax
+          have : a1 / 2 ≠ x / 2 := by
+            intro h
+            rcases haEven with ⟨A, ha⟩
+            rcases hxEven with ⟨X, hx⟩
+            exact hax' (by omega)
+          simpa using this
+        have hdegreeX := binaryCongruenceDegree_evenBase haEven hxEven hax
+        have hdegreeZ := binaryCongruenceDegree_evenBase haEven hzEven haz
+        have hdegreeBase : binaryCongruenceDegree (a1 / 2) (x / 2) = e := by
+          omega
+        have hltBase : binaryCongruenceDegree (a1 / 2) (x / 2) <
+            binaryCongruenceDegree (a1 / 2) (z / 2) := by omega
+        have hforced := ih (n / 2) (evenBase gamma) (a1 / 2) (x / 2) (y / 2)
+          (z / 2) hthetaBase hstartBase hxBase hyBase hzBase hmeanBase hazBase
+          haxBase hdegreeBase hltBase
+        exact ⟨occursLeftOf_of_evenBase hzEven hxEven hforced.1,
+          occursLeftOf_of_evenBase hzEven hyEven hforced.2⟩
+      · have hzOdd : Odd z := by
+          rcases hsameAZ with hEven | hOdd
+          · rcases haOdd with ⟨A, ha⟩
+            rcases hEven.1 with ⟨B, hb⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hyOdd : Odd y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · rcases hxOdd with ⟨X, hx⟩
+            rcases hEven.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hthetaBase := isTheta_oddBase htheta
+        have hstartBase := startsWith_oddBase hstart haOdd
+        have hxBase := oddHalf_mem_segment hxSegment hxOdd
+        have hyBase := oddHalf_mem_segment hySegment hyOdd
+        have hzBase := oddHalf_mem_segment hzSegment hzOdd
+        have hmeanBase : (x + 1) / 2 + (y + 1) / 2 = 2 * ((z + 1) / 2) := by
+          rcases hxOdd with ⟨X, hx⟩
+          rcases hyOdd with ⟨Y, hy⟩
+          rcases hzOdd with ⟨Z, hz⟩
+          omega
+        have hazBase : (a1 + 1) / 2 != (z + 1) / 2 := by
+          have haz' : a1 ≠ z := by simpa using haz
+          have : (a1 + 1) / 2 ≠ (z + 1) / 2 := by
+            intro h
+            rcases haOdd with ⟨A, ha⟩
+            rcases hzOdd with ⟨Z, hz⟩
+            exact haz' (by omega)
+          simpa using this
+        have haxBase : (a1 + 1) / 2 != (x + 1) / 2 := by
+          have hax' : a1 ≠ x := by simpa using hax
+          have : (a1 + 1) / 2 ≠ (x + 1) / 2 := by
+            intro h
+            rcases haOdd with ⟨A, ha⟩
+            rcases hxOdd with ⟨X, hx⟩
+            exact hax' (by omega)
+          simpa using this
+        have hdegreeX := binaryCongruenceDegree_oddBase haOdd hxOdd hax
+        have hdegreeZ := binaryCongruenceDegree_oddBase haOdd hzOdd haz
+        have hdegreeBase : binaryCongruenceDegree ((a1 + 1) / 2) ((x + 1) / 2) = e := by
+          omega
+        have hltBase : binaryCongruenceDegree ((a1 + 1) / 2) ((x + 1) / 2) <
+            binaryCongruenceDegree ((a1 + 1) / 2) ((z + 1) / 2) := by omega
+        have hforced := ih ((n + 1) / 2) (oddBase gamma) ((a1 + 1) / 2)
+          ((x + 1) / 2) ((y + 1) / 2) ((z + 1) / 2) hthetaBase hstartBase
+          hxBase hyBase hzBase hmeanBase hazBase haxBase hdegreeBase hltBase
+        exact ⟨occursLeftOf_of_oddBase hzOdd hxOdd hforced.1,
+          occursLeftOf_of_oddBase hzOdd hyOdd hforced.2⟩
+
+theorem theorem_2_4_holds : theorem_2_4 := by
+  intro n gamma a1 x y z htheta hstart hx hy hz hmean haz hax hlt
+  exact binaryCongruence_forcing (binaryCongruenceDegree a1 x) n gamma a1 x y z
+    htheta hstart hx hy hz hmean haz hax rfl hlt
+
 lemma prefixCongruent_evenLift_of_base {word : List Nat} {k m : Nat}
     (h : PrefixCongruent word k m) :
     PrefixCongruent (evenLift word) k (2 * m) := by
