@@ -1,5 +1,6 @@
 import LeSaulnierVijay2011.Statements
 import DavisEntringerGrahamSimmons1977.Proofs
+import RamseyPaperCommon.ThreeFreeCounting
 
 /-!
 # Proofs for LeSaulnier--Vijay (2011)
@@ -103,6 +104,16 @@ private theorem shifted_interval_is_three_avoidable (lo len : Nat) (hlen : 0 < l
       push_cast
       simp only [Finset.mem_Icc] at hxi
       omega
+
+private theorem positive_interval_is_three_avoidable (lo hi : Nat)
+    (hlo : 0 < lo) (hlohi : lo <= hi) :
+    IsKAvoidable 3 (Finset.Icc lo hi : Set Nat) := by
+  let len := hi - lo + 1
+  have hlen : 0 < len := by simp [len]
+  have h := shifted_interval_is_three_avoidable (lo - 1) len hlen
+  have hstart : lo - 1 + 1 = lo := by omega
+  have hend : lo - 1 + len = hi := by simp only [len]; omega
+  simpa [hstart, hend] using h
 
 private lemma compressedRank_lt_iff (s : Finset Nat) (localRank : Nat -> Nat)
     (hinj : Set.InjOn localRank (s : Set Nat)) {x y : Nat} (hx : x ∈ s) (hy : y ∈ s) :
@@ -363,6 +374,51 @@ private lemma three_ap_relation {x : Fin 3 -> Nat} (hx : IsArithmeticProgression
   have h2 := hformula (2 : Fin 3)
   norm_num at h0 h1 h2
   omega
+
+private def affineNatSet (offset scale : Nat) (S : Set Nat) : Set Nat :=
+  {y | exists z, z ∈ S /\ y = offset + scale * z}
+
+private theorem affineNatSet_is_three_avoidable (offset scale : Nat)
+    (hscale : 0 < scale) (S : Set Nat) (hS : IsKAvoidable 3 S) :
+    IsKAvoidable 3 (affineNatSet offset scale S) := by
+  classical
+  obtain ⟨rankS, hrankS, hfreeS⟩ := hS
+  let source : Nat -> Nat := fun y =>
+    if hy : y ∈ affineNatSet offset scale S then Classical.choose hy else 0
+  have source_spec (y : Nat) (hy : y ∈ affineNatSet offset scale S) :
+      source y ∈ S /\ y = offset + scale * source y := by
+    simp only [source, dif_pos hy]
+    exact Classical.choose_spec hy
+  let rank : Nat -> Nat := fun y => rankS (source y)
+  refine ⟨rank, ?_, ?_⟩
+  · intro x hx y hy hxy
+    have hxspec := source_spec x hx
+    have hyspec := source_spec y hy
+    have hsource : source x = source y := hrankS hxspec.1 hyspec.1 hxy
+    rw [hxspec.2, hyspec.2, hsource]
+  · rintro ⟨y, hymem, hymono, hyAP⟩
+    apply hfreeS
+    let z : Fin 3 -> Nat := fun i => source (y i)
+    have hzspec (i : Fin 3) : z i ∈ S /\ y i = offset + scale * z i :=
+      source_spec (y i) (hymem i)
+    refine ⟨z, fun i => (hzspec i).1, ?_, ?_⟩
+    · intro i j hij
+      exact hymono hij
+    · have hyRelation := three_ap_relation hyAP
+      have hyRelationNat : y 0 + y 2 = 2 * y 1 := by exact_mod_cast hyRelation
+      have hscaled : scale * (z 0 + z 2) = scale * (2 * z 1) := by
+        rw [(hzspec 0).2, (hzspec 1).2, (hzspec 2).2] at hyRelationNat
+        nlinarith
+      have hzRelation : z 0 + z 2 = 2 * z 1 := Nat.mul_left_cancel hscale hscaled
+      have hyEndsNe : y 0 ≠ y 2 :=
+        (LeanProofs.RamseyPaperCommon.isArithmeticProgression_three_iff y).mp hyAP |>.2
+      have hzEndsNe : z 0 ≠ z 2 := by
+        intro hz
+        apply hyEndsNe
+        rw [(hzspec 0).2, (hzspec 2).2, hz]
+      exact
+        (LeanProofs.RamseyPaperCommon.isArithmeticProgression_three_iff z).mpr
+          ⟨hzRelation, hzEndsNe⟩
 
 private lemma four_ap_relations {x : Fin 4 -> Nat} (hx : IsArithmeticProgression x) :
     ((x 0 : Int) + x 2 = 2 * x 1) /\ ((x 1 : Int) + x 3 = 2 * x 2) := by
@@ -1221,6 +1277,149 @@ private lemma theorem2OddBlock_nonempty (i : Nat) (hi : 1 <= i) :
   simp only [Finset.mem_filter, Finset.mem_Icc]
   exact ⟨by omega, odd_iff_exists_bit1.mpr ⟨fourthGeometricSum k, rfl⟩⟩
 
+private lemma theorem2EvenBlock_eq_affine (k : Nat) :
+    (theorem2EvenBlock (k + 1) : Set Nat) =
+      affineNatSet 0 2
+        (Finset.Icc (2 * fourthGeometricSum k + 1)
+          (8 * fourthGeometricSum k + 2) : Set Nat) := by
+  ext x
+  rw [theorem2EvenBlock_succ]
+  simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Icc,
+    affineNatSet, Set.mem_setOf_eq, zero_add]
+  constructor
+  · rintro ⟨⟨hxlo, hxhi⟩, hxeven⟩
+    obtain ⟨z, rfl⟩ := even_iff_exists_two_mul.mp hxeven
+    exact ⟨z, by omega, rfl⟩
+  · rintro ⟨z, ⟨hzlo, hzhi⟩, rfl⟩
+    exact ⟨by omega, even_iff_exists_two_mul.mpr ⟨z, rfl⟩⟩
+
+private lemma theorem2OddBlock_eq_affine (k : Nat) :
+    (theorem2OddBlock (k + 1) : Set Nat) =
+      affineNatSet 1 2
+        (Finset.Icc (fourthGeometricSum k) (4 * fourthGeometricSum k) : Set Nat) := by
+  ext x
+  rw [theorem2OddBlock_succ]
+  simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Icc,
+    affineNatSet, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨⟨hxlo, hxhi⟩, hxodd⟩
+    obtain ⟨z, hz⟩ := odd_iff_exists_bit1.mp hxodd
+    refine ⟨z, by omega, ?_⟩
+    omega
+  · rintro ⟨z, ⟨hzlo, hzhi⟩, rfl⟩
+    exact ⟨by omega, odd_iff_exists_bit1.mpr ⟨z, by omega⟩⟩
+
+private theorem singleton_is_three_avoidable (a : Nat) :
+    IsKAvoidable 3 ({a} : Set Nat) := by
+  refine ⟨id, Set.injOn_id _, ?_⟩
+  rintro ⟨x, hxmem, hxmono, hxAP⟩
+  have hx0 : x 0 = a := by simpa using hxmem 0
+  have hx1 : x 1 = a := by simpa using hxmem 1
+  have hlt := hxmono (show (0 : Fin 3) < 1 by decide)
+  simp only [id_eq] at hlt
+  omega
+
+private theorem theorem2EvenBlock_is_three_avoidable (i : Nat) (hi : 1 <= i) :
+    IsKAvoidable 3 (theorem2EvenBlock i : Set Nat) := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  rw [theorem2EvenBlock_eq_affine]
+  apply affineNatSet_is_three_avoidable 0 2 (by omega)
+  apply positive_interval_is_three_avoidable
+  · omega
+  · omega
+
+private theorem theorem2OddBlock_is_three_avoidable (i : Nat) (hi : 1 <= i) :
+    IsKAvoidable 3 (theorem2OddBlock i : Set Nat) := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  by_cases hk : k = 0
+  · subst k
+    rw [theorem2OddBlock_succ]
+    convert singleton_is_three_avoidable 1 using 1
+    ext x
+    simp [fourthGeometricSum, Nat.odd_iff]
+    omega
+  · rw [theorem2OddBlock_eq_affine]
+    apply affineNatSet_is_three_avoidable 1 2 (by omega)
+    apply positive_interval_is_three_avoidable
+    · have := fourthGeometricSum_strictMono (Nat.pos_of_ne_zero hk)
+      simp only [fourthGeometricSum] at this
+      omega
+    · omega
+
+private def theorem2AlternatingBlock (stage : Nat) : Finset Nat :=
+  if Even stage then theorem2EvenBlock (stage / 2 + 1)
+  else theorem2OddBlock (stage / 2 + 1)
+
+private lemma theorem2AlternatingBlock_even (k : Nat) :
+    theorem2AlternatingBlock (2 * k) = theorem2EvenBlock (k + 1) := by
+  rw [theorem2AlternatingBlock, if_pos (even_two_mul k)]
+  congr 2
+  omega
+
+private lemma theorem2AlternatingBlock_odd (k : Nat) :
+    theorem2AlternatingBlock (2 * k + 1) = theorem2OddBlock (k + 1) := by
+  have hodd : Odd (2 * k + 1) := odd_iff_exists_bit1.mpr ⟨k, rfl⟩
+  rw [theorem2AlternatingBlock, if_neg (Nat.not_even_iff_odd.mpr hodd)]
+  congr 2
+  omega
+
+private lemma theorem2AlternatingBlocks_pairwise_disjoint :
+    forall i j : Nat, i ≠ j ->
+      Disjoint (theorem2AlternatingBlock i) (theorem2AlternatingBlock j) := by
+  intro i j hij
+  unfold theorem2AlternatingBlock
+  by_cases hi : Even i <;> by_cases hj : Even j
+  · rw [if_pos hi, if_pos hj]
+    apply theorem2EvenBlocks_disjoint (by omega) (by omega)
+    intro hindices
+    have hiReconstruct := Nat.two_mul_div_two_of_even hi
+    have hjReconstruct := Nat.two_mul_div_two_of_even hj
+    omega
+  · rw [if_pos hi, if_neg hj]
+    exact theorem_2_blocks_pairwise_disjoint_holds.2 _ _ (by omega) (by omega)
+  · rw [if_neg hi, if_pos hj]
+    exact (theorem_2_blocks_pairwise_disjoint_holds.2 _ _ (by omega) (by omega)).symm
+  · rw [if_neg hi, if_neg hj]
+    apply theorem2OddBlocks_disjoint (by omega) (by omega)
+    intro hindices
+    have hiOdd : Odd i := Nat.not_even_iff_odd.mp hi
+    have hjOdd : Odd j := Nat.not_even_iff_odd.mp hj
+    have hiReconstruct := Nat.two_mul_div_two_add_one_of_odd hiOdd
+    have hjReconstruct := Nat.two_mul_div_two_add_one_of_odd hjOdd
+    omega
+
+private lemma theorem2AlternatingBlocks_union :
+    {x | exists stage : Nat, x ∈ theorem2AlternatingBlock stage} =
+      positiveIntegers := by
+  ext x
+  constructor
+  · rintro ⟨stage, hx⟩
+    apply (theorem_2_blocks_cover_positive_integers_holds x).mpr
+    unfold theorem2AlternatingBlock at hx
+    by_cases hstage : Even stage
+    · rw [if_pos hstage] at hx
+      exact ⟨stage / 2 + 1, by omega, Or.inl hx⟩
+    · rw [if_neg hstage] at hx
+      exact ⟨stage / 2 + 1, by omega, Or.inr hx⟩
+  · intro hx
+    obtain ⟨i, hi, hEven | hOdd⟩ :=
+      (theorem_2_blocks_cover_positive_integers_holds x).mp hx
+    · refine ⟨2 * (i - 1), ?_⟩
+      rw [theorem2AlternatingBlock_even, Nat.sub_add_cancel hi]
+      exact hEven
+    · refine ⟨2 * (i - 1) + 1, ?_⟩
+      rw [theorem2AlternatingBlock_odd, Nat.sub_add_cancel hi]
+      exact hOdd
+
+private theorem theorem2AlternatingBlock_is_three_avoidable (stage : Nat) :
+    IsKAvoidable 3 (theorem2AlternatingBlock stage : Set Nat) := by
+  unfold theorem2AlternatingBlock
+  by_cases hstage : Even stage
+  · rw [if_pos hstage]
+    exact theorem2EvenBlock_is_three_avoidable _ (by omega)
+  · rw [if_neg hstage]
+    exact theorem2OddBlock_is_three_avoidable _ (by omega)
+
 private lemma theorem2_even_before_even (rank : Nat -> Nat)
     (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
     (hi : 1 <= i) (hij : i < j)
@@ -1395,6 +1594,331 @@ theorem theorem_2_block_concatenation_is_odd_four_avoiding_holds :
     have hgap := theorem_2_odd_even_separation_holds i2 i3 (x 2) (x 3)
       hi2 hi23 hx2 hx3
     omega
+
+private theorem positive_integers_are_odd_four_avoidable :
+    IsOddKAvoidable 4 positiveIntegers := by
+  obtain ⟨rank, hrank, hblocks, hlocal⟩ :=
+    exists_ordered_block_concatenation theorem2AlternatingBlock
+      theorem2AlternatingBlocks_pairwise_disjoint
+      theorem2AlternatingBlock_is_three_avoidable
+  rw [theorem2AlternatingBlocks_union] at hrank
+  have hconstructionOrder : Theorem2BlocksInOrder rank := by
+    intro i hi
+    let k := i - 1
+    have hk : k + 1 = i := by simp only [k]; omega
+    constructor
+    · intro x hx y hy
+      have hxStage : x ∈ theorem2AlternatingBlock (2 * k) := by
+        rw [theorem2AlternatingBlock_even, hk]
+        exact hx
+      have hyStage : y ∈ theorem2AlternatingBlock (2 * k + 1) := by
+        rw [theorem2AlternatingBlock_odd, hk]
+        exact hy
+      exact hblocks (2 * k) (2 * k + 1) (by omega) x hxStage y hyStage
+    · intro x hx y hy
+      have hxStage : x ∈ theorem2AlternatingBlock (2 * k + 1) := by
+        rw [theorem2AlternatingBlock_odd, hk]
+        exact hx
+      have hyStage : y ∈ theorem2AlternatingBlock (2 * i) := by
+        rw [theorem2AlternatingBlock_even]
+        exact hy
+      exact hblocks (2 * k + 1) (2 * i) (by simp only [k]; omega)
+        x hxStage y hyStage
+  have hlocalBlocks : forall i : Nat, 1 <= i ->
+      IsKAvoidingRanking 3 (theorem2EvenBlock i : Set Nat) rank /\
+        IsKAvoidingRanking 3 (theorem2OddBlock i : Set Nat) rank := by
+    intro i hi
+    let k := i - 1
+    have hk : k + 1 = i := by simp only [k]; omega
+    constructor
+    · have h := hlocal (2 * k)
+      rw [theorem2AlternatingBlock_even, hk] at h
+      exact h
+    · have h := hlocal (2 * k + 1)
+      rw [theorem2AlternatingBlock_odd, hk] at h
+      exact h
+  exact ⟨rank, theorem_2_block_concatenation_is_odd_four_avoiding_holds
+    rank hrank hconstructionOrder hlocalBlocks⟩
+
+private theorem positive_integers_have_odd_three_AP
+    (rank : Nat -> Nat) (hrank : IsPermutationRanking positiveIntegers rank) :
+    HasOddAPInRanking 3 positiveIntegers rank := by
+  classical
+  obtain ⟨a, haPos, haMin⟩ :=
+    exists_rank_minimizer positiveIntegers rank ⟨1, by simp [positiveIntegers]⟩
+  let oppositeAbove : Set Nat :=
+    {x | a < x /\ Odd ((x : Int) - a)}
+  have hOppositeNonempty : oppositeAbove.Nonempty := by
+    refine ⟨a + 1, ?_⟩
+    simp only [oppositeAbove, Set.mem_setOf_eq]
+    constructor
+    · omega
+    · refine ⟨0, ?_⟩
+      push_cast
+      ring
+  obtain ⟨b, hbOpposite, hbMin⟩ :=
+    exists_rank_minimizer oppositeAbove rank hOppositeNonempty
+  have hab : a < b := hbOpposite.1
+  have hbOdd : Odd ((b : Int) - a) := hbOpposite.2
+  have hbPos : b ∈ positiveIntegers := by
+    simp only [positiveIntegers, Set.mem_Ioi]
+    have : 0 < a := by simpa [positiveIntegers] using haPos
+    omega
+  have hrankAB : rank a < rank b := by
+    have hne : rank a ≠ rank b := fun h => hab.ne (hrank haPos hbPos h)
+    exact lt_of_le_of_ne (haMin b hbPos) hne
+  let prior : Set Nat := {x | a <= x /\ rank x < rank b}
+  have hpriorSubsetPos : prior ⊆ positiveIntegers := by
+    intro x hx
+    simp only [prior, Set.mem_setOf_eq] at hx
+    simp only [positiveIntegers, Set.mem_Ioi]
+    have : 0 < a := by simpa [positiveIntegers] using haPos
+    omega
+  have hpriorFinite : prior.Finite := by
+    apply Set.Finite.of_finite_image
+    · apply (Finset.finite_toSet (Finset.range (rank b))).subset
+      rintro r ⟨x, hx, rfl⟩
+      simp only [Finset.mem_coe, Finset.mem_range]
+      exact hx.2
+    · intro x hx y hy hxy
+      exact hrank (hpriorSubsetPos hx) (hpriorSubsetPos hy) hxy
+  have haPrior : a ∈ prior := ⟨le_rfl, hrankAB⟩
+  let priorFinset := hpriorFinite.toFinset
+  have hpriorFinsetNonempty : priorFinset.Nonempty := by
+    rw [Set.Finite.toFinset_nonempty]
+    exact ⟨a, haPrior⟩
+  let m := priorFinset.max' hpriorFinsetNonempty
+  have hmPrior : m ∈ prior := by
+    have hm : m ∈ priorFinset := Finset.max'_mem _ _
+    simpa only [priorFinset, Set.Finite.mem_toFinset] using hm
+  have hpriorLe (x : Nat) (hx : x ∈ prior) : x <= m := by
+    apply Finset.le_max' priorFinset x
+    simpa only [priorFinset, Set.Finite.mem_toFinset] using hx
+  have hpriorSameParity (x : Nat) (hx : x ∈ prior) :
+      Even ((x : Int) - a) := by
+    change a <= x /\ rank x < rank b at hx
+    apply (Int.not_odd_iff_even).mp
+    intro hxOdd
+    have hax : a < x := by
+      have haxle := hx.1
+      by_contra hnot
+      have hxa : x = a := by omega
+      subst x
+      simp at hxOdd
+    have hxOpposite : x ∈ oppositeAbove := ⟨hax, hxOdd⟩
+    have := hbMin x hxOpposite
+    omega
+  let c := 2 * b - a
+  by_cases hmc : m < c
+  · have hbc : b < c := by simp only [c]; omega
+    have hcPos : c ∈ positiveIntegers := by
+      simp only [positiveIntegers, Set.mem_Ioi, c]
+      omega
+    have hnotPrior : ¬ rank c < rank b := by
+      intro hcb
+      have hcPrior : c ∈ prior := ⟨by simp only [c]; omega, hcb⟩
+      have := hpriorLe c hcPrior
+      omega
+    have hrankBC : rank b < rank c := by
+      have hle : rank b <= rank c := Nat.le_of_not_gt hnotPrior
+      have hne : rank b ≠ rank c := fun h => hbc.ne (hrank hbPos hcPos h)
+      exact lt_of_le_of_ne hle hne
+    let x : Fin 3 -> Nat := ![a, b, c]
+    refine ⟨x, ?_, ?_, ?_⟩
+    · intro i
+      fin_cases i
+      · exact haPos
+      · exact hbPos
+      · exact hcPos
+    · apply (Fin.strictMono_iff_lt_succ).2
+      intro i
+      fin_cases i
+      · simpa [x] using hrankAB
+      · simpa [x] using hrankBC
+    · refine ⟨(a : Int), (b : Int) - a, ?_, hbOdd, ?_⟩
+      · apply bne_iff_ne.mpr
+        exact sub_ne_zero.mpr (by exact_mod_cast hab.ne')
+      · intro i
+        fin_cases i
+        · simp [x]
+        · simp [x]
+        · simp only [x]
+          simp only [c]
+          push_cast [Nat.cast_sub (by omega : a <= 2 * b)]
+          ring
+  · have hcm : c <= m := Nat.le_of_not_gt hmc
+    have hbm : b < m := by simp only [c] at hcm; omega
+    let d := m - b
+    have hdPos : 0 < d := by simp only [d]; omega
+    have hmEven : Even ((m : Int) - a) := hpriorSameParity m hmPrior
+    have hdOddInt : Odd (d : Int) := by
+      have hdiff : Odd (((m : Int) - a) - ((b : Int) - a)) :=
+        hmEven.sub_odd hbOdd
+      have hdCast : (d : Int) = ((m : Int) - a) - ((b : Int) - a) := by
+        simp only [d]
+        push_cast [Nat.cast_sub hbm.le]
+        ring
+      rwa [hdCast]
+    let point : Fin 11 -> Nat := fun u => b + (u : Nat) * d
+    have point_zero : point 0 = b := by simp [point]
+    have point_one : point 1 = m := by simp [point, d]; omega
+    have pointPos (u : Fin 11) : point u ∈ positiveIntegers := by
+      simp only [positiveIntegers, Set.mem_Ioi, point]
+      have : 0 < b := by simpa [positiveIntegers] using hbPos
+      omega
+    have pointBeyondMax (u : Fin 11) (hu : 2 <= (u : Nat)) : m < point u := by
+      have hdEq : b + d = m := by simp only [d]; omega
+      have hmul : 2 * d <= (u : Nat) * d := Nat.mul_le_mul_right d hu
+      simp only [point]
+      omega
+    have rankB_lt_point (u : Fin 11) (hu : 2 <= (u : Nat)) :
+        rank b < rank (point u) := by
+      have hpoint := pointBeyondMax u hu
+      have hnot : ¬ rank (point u) < rank b := by
+        intro hbefore
+        have hpPrior : point u ∈ prior := ⟨by
+          have := pointPos u
+          simp only [positiveIntegers, Set.mem_Ioi] at this
+          omega, hbefore⟩
+        have := hpriorLe (point u) hpPrior
+        omega
+      have hle : rank b <= rank (point u) := Nat.le_of_not_gt hnot
+      have hne : rank b ≠ rank (point u) := fun h =>
+        (show b ≠ point u by omega) (hrank hbPos (pointPos u) h)
+      exact lt_of_le_of_ne hle hne
+    have pointInjective : Function.Injective point := by
+      intro u v huv
+      apply Fin.ext
+      simp only [point] at huv
+      have hmul : (u : Nat) * d = (v : Nat) * d := Nat.add_left_cancel huv
+      exact Nat.mul_right_cancel hdPos hmul
+    let f : Fin 11 -> Nat := fun u => rank (point u)
+    have fInjective : Function.Injective f := by
+      intro u v huv
+      exact pointInjective (hrank (pointPos u) (pointPos v) huv)
+    have fOne_lt_zero : f 1 < f 0 := by
+      simpa only [f, point_one, point_zero] using hmPrior.2
+    have fZero_lt_of_two_le (u : Fin 11) (hu : 2 <= (u : Nat)) : f 0 < f u := by
+      simpa only [f, point_zero] using rankB_lt_point u hu
+    have fOne_lt_of_ne (u : Fin 11) (hu : u ≠ 1) : f 1 < f u := by
+      by_cases hu0 : u = 0
+      · subst u
+        exact fOne_lt_zero
+      · exact fOne_lt_zero.trans (fZero_lt_of_two_le u (by omega))
+    let sigma : Equiv.Perm (Fin 11) := Tuple.sort f
+    have hsorted : StrictMono (f ∘ sigma) :=
+      (Tuple.monotone_sort f).strictMono_of_injective
+        (fInjective.comp sigma.injective)
+    have hsigmaZero : sigma 0 = 1 := by
+      by_contra hsigma
+      let posOne : Fin 11 := sigma.symm 1
+      have hposImage : sigma posOne = 1 := sigma.apply_symm_apply 1
+      have hpos : (0 : Fin 11) < posOne := by
+        have hne : posOne ≠ 0 := by
+          intro hzero
+          rw [hzero] at hposImage
+          exact hsigma hposImage
+        omega
+      have hforward := hsorted hpos
+      change f (sigma 0) < f (sigma posOne) at hforward
+      rw [hposImage] at hforward
+      have hbackward := fOne_lt_of_ne (sigma 0) hsigma
+      omega
+    have hsigmaOne : sigma 1 = 0 := by
+      let posZero : Fin 11 := sigma.symm 0
+      have hposImage : sigma posZero = 0 := sigma.apply_symm_apply 0
+      have hposZero : posZero ≠ 0 := by
+        intro hzero
+        rw [hzero, hsigmaZero] at hposImage
+        exact Fin.zero_ne_one hposImage.symm
+      have hpos : (0 : Fin 11) < posZero := by omega
+      have hposOne : posZero = 1 := by
+        by_contra hneOne
+        have honePos : (1 : Fin 11) < posZero := by omega
+        have hforward := hsorted honePos
+        change f (sigma 1) < f (sigma posZero) at hforward
+        rw [hposImage] at hforward
+        have hsigmaOneNeZero : sigma 1 ≠ 0 := by
+          intro hzero
+          have hidx : (1 : Fin 11) = posZero :=
+            sigma.injective (hzero.trans hposImage.symm)
+          exact hneOne hidx.symm
+        have hsigmaOneNeOne : sigma 1 ≠ 1 := by
+          intro hone
+          have hidx : (1 : Fin 11) = 0 :=
+            sigma.injective (hone.trans hsigmaZero.symm)
+          exact Fin.zero_ne_one hidx.symm
+        have hbackward := fZero_lt_of_two_le (sigma 1) (by omega)
+        omega
+      rw [← hposOne]
+      exact hposImage
+    have hfinite : HasOddAPSubsequence 3 (finitePermutationValue sigma) :=
+      theorem_2_finite_claim_holds sigma (by
+        simp [finitePermutationValue, hsigmaZero]) (by
+        simp [finitePermutationValue, hsigmaOne])
+    obtain ⟨indices, hindices, hlabelsAP⟩ := hfinite
+    let x : Fin 3 -> Nat := fun i => point (sigma (indices i))
+    refine ⟨x, fun i => pointPos _, ?_, ?_⟩
+    · intro i j hij
+      exact hsorted (hindices hij)
+    · obtain ⟨base, step, hstep, hstepOdd, hlabelFormula⟩ := hlabelsAP
+      have hnewStepOdd : Odd ((d : Int) * step) :=
+        Odd.mul hdOddInt hstepOdd
+      refine ⟨(b : Int) - d + (d : Int) * base, (d : Int) * step, ?_,
+        hnewStepOdd, ?_⟩
+      · apply bne_iff_ne.mpr
+        intro hzero
+        rw [hzero] at hnewStepOdd
+        exact Int.not_odd_zero hnewStepOdd
+      · intro i
+        have hi := hlabelFormula i
+        simp only [finitePermutationValue] at hi
+        push_cast at hi
+        simp only [x, point]
+        push_cast
+        calc
+          (b : Int) + (sigma (indices i) : Nat) * d =
+              (b : Int) - d + (d : Int) *
+                ((sigma (indices i) : Nat) + 1) := by ring
+          _ = (b : Int) - d + (d : Int) *
+              (base + ((i : Nat) : Int) * step) := by rw [hi]
+          _ = (b : Int) - d + (d : Int) * base +
+              ((i : Nat) : Int) * ((d : Int) * step) := by ring
+
+/-- **Theorem 2.** Both the unavoidable odd three-term progression and the
+odd-four-avoiding construction hold. -/
+theorem theorem_2_holds : theorem_2 :=
+  ⟨positive_integers_have_odd_three_AP, positive_integers_are_odd_four_avoidable⟩
+
+/-- Davis et al.'s singly-infinite construction induces a ranking witnessing
+five-avoidability in the journal catalogue's representation. -/
+theorem positive_integers_are_five_avoidable_holds :
+    positive_integers_are_five_avoidable := by
+  classical
+  have hne : LeanProofs.DavisEntringerGrahamSimmons1977.S 5 ≠ ∅ :=
+    bne_iff_ne.mp
+      LeanProofs.DavisEntringerGrahamSimmons1977.fact_4_holds
+  obtain ⟨p, hp⟩ := Set.nonempty_iff_ne_empty.mpr hne
+  let rank : Nat -> Nat := fun x =>
+    if hx : 0 < x then p.symm ⟨x, hx⟩ else 0
+  refine ⟨rank, ?_, ?_⟩
+  · intro x hx y hy hxy
+    have hxPos : 0 < x := by simpa [positiveIntegers] using hx
+    have hyPos : 0 < y := by simpa [positiveIntegers] using hy
+    simp only [rank, dif_pos hxPos, dif_pos hyPos] at hxy
+    exact congrArg Subtype.val (p.symm.injective hxy)
+  · intro hAP
+    apply hp
+    obtain ⟨x, hxmem, hxmono, a, d, hd, hstep, hformula⟩ := hAP
+    let pos : Fin 5 -> Nat := fun i => rank (x i)
+    refine ⟨pos, hxmono, a, d, hd, ?_⟩
+    intro i
+    have hxiPos : 0 < x i := by simpa [positiveIntegers] using hxmem i
+    have hpValue : (p (pos i) : Nat) = x i := by
+      simp only [pos, rank, dif_pos hxiPos, Equiv.apply_symm_apply]
+    change ((p (pos i) : Nat) : Int) = a + ((i : Nat) : Int) * d
+    rw [hpValue]
+    exact hformula i
 
 /-! ## General density facts used in the concluding obstruction -/
 

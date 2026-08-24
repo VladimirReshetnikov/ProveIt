@@ -60,6 +60,10 @@ theorem theorem_2_block_concatenation_is_odd_four_avoiding_holds :
     Theorem2BlocksInOrder, LeanProofs.LeSaulnierVijay2011.Theorem2BlocksInOrder] using
     LeanProofs.LeSaulnierVijay2011.theorem_2_block_concatenation_is_odd_four_avoiding_holds
 
+theorem theorem_2_holds : theorem_2 := by
+  simpa [theorem_2, LeanProofs.LeSaulnierVijay2011.theorem_2] using
+    LeanProofs.LeSaulnierVijay2011.theorem_2_holds
+
 theorem geometricBlock_cross_gap_holds : geometricBlock_cross_gap := by
   simpa [geometricBlock_cross_gap,
     LeanProofs.LeSaulnierVijay2011.geometricBlock_cross_gap] using
