@@ -55,8 +55,9 @@ theorem coeff_thueMorseBlockPolynomial (r n : ℕ) (hn : n < 2 ^ r) :
   simp [thueMorseBlockPolynomial, Polynomial.coeff_monomial, hn]
 
 /-- Precise coefficientwise meaning of the infinite product in equation (6):
-once the finite product contains the factor through degree `2^r`, every
-coefficient below `2^r` is already the corresponding Thue--Morse sign. -/
+once the finite product contains all factors of degree below `2^r` (ending
+with the factor of degree `2^(r-1)`), every coefficient below `2^r` is already
+the corresponding Thue--Morse sign. -/
 theorem coeff_finite_thueMorse_product (r n : ℕ) (hn : n < 2 ^ r) :
     PowerSeries.coeff n
         ((↑(∏ j ∈ Finset.range r,

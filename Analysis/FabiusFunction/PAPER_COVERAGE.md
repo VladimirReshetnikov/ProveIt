@@ -90,7 +90,7 @@ aggregate is `FabiusFunction.PaperFabiusAsymptotic`.
 | Equation (9), size of the explicit main-term defect | Corrected result proved: the residual is `O((log t / t)^2)` | `Fabius.logMainDefect_isBigO_logScaleSquaredRate` |
 | Equation (10)'s replacement of that residual by `O(t^-2)` | **False**; formally refuted, with its nonzero leading coefficient identified | `Fabius.logMainDefect_sub_lead_isLittleO`, `Fabius.logMainDefect_not_isBigO_one_div_sq` |
 | Equation (11), bounded one-periodic remainder with `E(t) = O(log t / t)` | **Unsupported and not asserted in Lean.** The printed proof uses the false preceding residual estimate. | No declaration claims this refinement. |
-| Final sharp formula obtained from equations (8) and (11) | **Not advertised as proved.** It depends on the unsupported periodic refinement. | No declaration claims this formula. |
+| Final sharp formula obtained from equations (8) and (11) | **Not advertised as proved.** It depends on the unsupported periodic refinement; moreover, negating the displayed `H = Ψ + E` gives `-Ψ`, whereas the draft prints `+Ψ` without explicitly renaming the periodic function. | No declaration claims this formula. |
 | Rigorous coarse small-argument replacement | Proved: explicit dyadic error, eventual full-real bound, and `O(t log t)` error | `Fabius.abs_dyadicLogError_le`, `Fabius.eventually_abs_fabiusLogProfile_sub_quadratic_le`, `Fabius.fabiusLogProfile_sub_quadratic_isBigO`, `Fabius.log_fabiusLogPhi_add_quadratic_isBigO` |
 
 The source's intermediate coefficient matching is not a proof about an
@@ -112,7 +112,7 @@ environments.  Its public Lean aggregate is
 | Thue--Morse sign definition and self-similarity | Proved | `Fabius.binaryWeight`, `Fabius.thueMorseSign`, `Fabius.thueMorseSign_two_mul`, `Fabius.thueMorseSign_two_mul_add_one` |
 | Inclusive iterated prefix sums and odd first-prefix zeros | Proved | `Fabius.iteratedPrefix`, `Fabius.iteratedPrefix_succ`, `Fabius.iteratedPrefix_succ_sub`, `Fabius.iteratedPrefix_one_two_mul_add_one` |
 | Equation (1), literal normalized grid | Defined exactly | `Fabius.paperPrefixGridValue`, `Fabius.prefixGridPoint` |
-| Equation (1), instruction to join consecutive grid points | Defined as the intended polygon, distinct from the contradictory floor/step wording | `Fabius.paperPrefixPolygon`, `Fabius.paperPrefixPolygon_grid`, `Fabius.paperPrefixPolygon_one` |
+| Equation (1), instruction to join consecutive grid points | Defined on rational arguments as the intended polygon, distinct from the contradictory floor/step wording | `Fabius.paperPrefixPolygon`, `Fabius.paperPrefixPolygon_grid`, `Fabius.paperPrefixPolygon_one` |
 | Equation (2), discrete functional equation | Proved with the omitted unit-interval index condition made explicit | `Fabius.paperPrefixGridValue_equation`, `Fabius.paperPrefixGridValue_equation_of_pos`, `Fabius.prefixGridPoint_lower_argument_mem` |
 | Equation (3), Fabius characterization | Repaired: the bounded derivative equation holds only on `[0,1/2]` and symmetry is required | `Fabius.IsFabius`, `Fabius.existsUnique_fabius` |
 | Claimed convergence of the literal equation-(1) normalization | **False**, even pointwise at `x = 1`; the intended polygon has the same obstruction | `Fabius.paperPrefixGridValue_endpoint`, `Fabius.paperPrefixGridValue_endpoint_not_tendsto_one`, `Fabius.paperPrefixPolygon_endpoint_not_tendsto_one` |

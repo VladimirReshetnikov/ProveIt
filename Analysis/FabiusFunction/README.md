@@ -122,7 +122,8 @@ claimed `O(log t / t)` remainder are deliberately not advertised as proved.
 
 `PaperKFoldThueMorse.lean` is the public aggregate for the second local
 draft.  It contains the exact prefix-sum, zero-run, convolution, and
-generating-series identities; the intended polygonal interpolation; and a
+generating-series identities; a rational-argument realization of the intended
+polygonal interpolation; and a
 proved corrected pointwise approximation scheme.  It also exposes formal
 counterexamples to the literal normalization, the claimed local and global
 error estimates, the unbounded “maximum” proxy, and the omitted linear term
