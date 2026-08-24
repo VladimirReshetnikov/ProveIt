@@ -19,6 +19,11 @@ exponential generating series is divisible by `X^k`.  After removing this
 forced zero, its coefficient of degree `n` is precisely
 
 `thueMorseCenteredPowerSum k (n + k) / (n + k)!`.
+
+The translated variants show, more generally, that replacing the inner
+power by `(r - 2^k + c)^m` multiplies the normalized series by `exp(cX)`.
+In particular, this covers the `c = 1/2` normalization occurring in an
+alternative q-binomial formula for dyadic Fabius values.
 -/
 
 set_option autoImplicit false
@@ -179,6 +184,140 @@ theorem X_pow_mul_thueMorseShiftedPowerSeries (k : ℕ) :
   · rw [if_neg hkm, coeff_thueMorseCenteredPowerSeries,
       thueMorseCenteredPowerSum_eq_zero_of_lt k m (Nat.lt_of_not_ge hkm)]
     norm_num
+
+/-! ## Rational translations of the centered sums -/
+
+/-- The centered Thue--Morse power sum translated by a rational constant
+`c`.  Taking `c = 1/2` gives the inner sum in the half-shifted Wolfram
+Language formula. -/
+def thueMorseTranslatedPowerSum (c : ℚ) (k m : ℕ) : ℚ :=
+  ∑ r : Fin (2 ^ k),
+    (thueMorseSign r.val : ℚ) *
+      ((r.val : ℚ) - (2 : ℚ) ^ k + c) ^ m
+
+/-- Range-indexed form of the translated power sum. -/
+theorem thueMorseTranslatedPowerSum_eq_sum_range
+    (c : ℚ) (k m : ℕ) :
+    thueMorseTranslatedPowerSum c k m =
+      ∑ r ∈ Finset.range (2 ^ k),
+        (thueMorseSign r : ℚ) *
+          ((r : ℚ) - (2 : ℚ) ^ k + c) ^ m := by
+  rw [thueMorseTranslatedPowerSum,
+    Fin.sum_univ_eq_sum_range
+      (fun r : ℕ =>
+        (thueMorseSign r : ℚ) *
+          ((r : ℚ) - (2 : ℚ) ^ k + c) ^ m)
+      (2 ^ k)]
+
+/-- Translation does not affect Prouhet cancellation below degree `k`. -/
+theorem thueMorseTranslatedPowerSum_eq_zero_of_lt
+    (c : ℚ) (k m : ℕ) (hm : m < k) :
+    thueMorseTranslatedPowerSum c k m = 0 := by
+  have hzero := thueMorse_affine_power_sum_eq_zero k m hm
+    (-(2 : ℚ) ^ k + c) 1
+  rw [thueMorseTranslatedPowerSum]
+  simpa only [one_mul, sub_eq_add_neg, add_comm, add_left_comm, add_assoc]
+    using hzero
+
+/-- The full exponential generating series of the translated sums. -/
+noncomputable def thueMorseTranslatedPowerSeries
+    (c : ℚ) (k : ℕ) : PowerSeries ℚ :=
+  ∑ r : Fin (2 ^ k), (thueMorseSign r.val : ℚ) •
+    PowerSeries.rescale
+      ((r.val : ℚ) - (2 : ℚ) ^ k + c)
+      (PowerSeries.exp ℚ)
+
+/-- Coefficients of the full translated exponential series. -/
+@[simp] theorem coeff_thueMorseTranslatedPowerSeries
+    (c : ℚ) (k m : ℕ) :
+    PowerSeries.coeff m (thueMorseTranslatedPowerSeries c k) =
+      thueMorseTranslatedPowerSum c k m / m.factorial := by
+  rw [thueMorseTranslatedPowerSum]
+  simp only [thueMorseTranslatedPowerSeries, map_sum,
+    PowerSeries.coeff_rescale, PowerSeries.coeff_exp, map_smul]
+  rw [Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  simp only [smul_eq_mul]
+  norm_num
+  ring
+
+private theorem translated_exp_term
+    (c : ℚ) (k : ℕ) (r : Fin (2 ^ k)) :
+    (thueMorseSign r.val : ℚ) •
+        ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k + c) =
+      ratExpSeries c *
+        ((thueMorseSign r.val : ℚ) •
+          ratExpSeries ((r.val : ℚ) - (2 : ℚ) ^ k)) := by
+  rw [mul_smul_comm, PowerSeries.exp_mul_exp_eq_exp_add]
+  congr 2
+  ring
+
+/-- Translation of the finite sum multiplies its exponential generating
+series by `exp(cX)`. -/
+theorem thueMorseTranslatedPowerSeries_eq_exp_mul
+    (c : ℚ) (k : ℕ) :
+    thueMorseTranslatedPowerSeries c k =
+      PowerSeries.rescale c (PowerSeries.exp ℚ) *
+        thueMorseCenteredPowerSeries k := by
+  rw [thueMorseTranslatedPowerSeries,
+    thueMorseCenteredPowerSeries, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  exact translated_exp_term c k r
+
+/-- The translated coefficient series with the forced order-`k` zero
+removed. -/
+noncomputable def thueMorseTranslatedShiftedPowerSeries
+    (c : ℚ) (k : ℕ) : PowerSeries ℚ :=
+  PowerSeries.mk fun n =>
+    thueMorseTranslatedPowerSum c k (n + k) / (n + k).factorial
+
+@[simp] theorem coeff_thueMorseTranslatedShiftedPowerSeries
+    (c : ℚ) (k n : ℕ) :
+    PowerSeries.coeff n (thueMorseTranslatedShiftedPowerSeries c k) =
+      thueMorseTranslatedPowerSum c k (n + k) /
+        (n + k).factorial := by
+  simp [thueMorseTranslatedShiftedPowerSeries]
+
+/-- Multiplying by `X^k` recovers the full translated exponential
+generating series. -/
+theorem X_pow_mul_thueMorseTranslatedShiftedPowerSeries
+    (c : ℚ) (k : ℕ) :
+    PowerSeries.X ^ k * thueMorseTranslatedShiftedPowerSeries c k =
+      thueMorseTranslatedPowerSeries c k := by
+  ext m
+  rw [PowerSeries.coeff_X_pow_mul']
+  by_cases hkm : k ≤ m
+  · rw [if_pos hkm,
+      coeff_thueMorseTranslatedShiftedPowerSeries,
+      coeff_thueMorseTranslatedPowerSeries,
+      Nat.sub_add_cancel hkm]
+  · rw [if_neg hkm,
+      coeff_thueMorseTranslatedPowerSeries,
+      thueMorseTranslatedPowerSum_eq_zero_of_lt c k m
+        (Nat.lt_of_not_ge hkm)]
+    norm_num
+
+/-- Translating the inner sum by `c` multiplies its normalized shifted
+series by `exp(cX)`. -/
+theorem thueMorseTranslatedShiftedPowerSeries_eq_exp_mul
+    (c : ℚ) (k : ℕ) :
+    thueMorseTranslatedShiftedPowerSeries c k =
+      PowerSeries.rescale c (PowerSeries.exp ℚ) *
+        thueMorseShiftedPowerSeries k := by
+  apply PowerSeries.X_pow_mul_cancel (k := k)
+  rw [X_pow_mul_thueMorseTranslatedShiftedPowerSeries,
+    thueMorseTranslatedPowerSeries_eq_exp_mul,
+    ← X_pow_mul_thueMorseShiftedPowerSeries k]
+  ring
+
+/-- The `c = 1/2` specialization used by the half-shifted formula. -/
+theorem thueMorseTranslatedShiftedPowerSeries_half (k : ℕ) :
+    thueMorseTranslatedShiftedPowerSeries (1 / 2) k =
+      PowerSeries.rescale (1 / 2 : ℚ) (PowerSeries.exp ℚ) *
+        thueMorseShiftedPowerSeries k :=
+  thueMorseTranslatedShiftedPowerSeries_eq_exp_mul (1 / 2) k
 
 /-- Product factorization of the centered Thue--Morse exponential series. -/
 theorem thueMorseCenteredPowerSeries_eq_product (k : ℕ) :
