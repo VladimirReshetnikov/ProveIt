@@ -180,4 +180,43 @@ theorem lemma_10_1_holds : lemma_10_1 := by
     fun x => totalWeight_le D alpha M hcard hfibre x,
     total_differenceWeight_lower D alpha M hcard⟩
 
+private lemma differenceWeight_translation_bound {N : Nat} [NeZero N]
+    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
+    (B : Finset (ZMod N)) (alpha sigma : Real) (M : Nat)
+    (hcard : (Fintype.card X : Real) = alpha * M * N)
+    (hinvariant : DomainInvariant D B (sigma * M))
+    (x y z : X) (hd : D.index z - D.index y ∈ B) :
+    |(domainDifferenceWeight D x z : Real) - domainDifferenceWeight D x y| ≤
+      sigma * alpha * M ^ 2 * N := by
+  rw [differenceWeight_eq_sum_fibre, differenceWeight_eq_sum_fibre,
+    ← Finset.sum_sub_distrib]
+  calc
+    |∑ t : X,
+        (((D.fibre (D.index t + (D.index z - D.index x))).card : Real) -
+          (D.fibre (D.index t + (D.index y - D.index x))).card)| ≤
+        ∑ t : X,
+          |((D.fibre (D.index t + (D.index z - D.index x))).card : Real) -
+            (D.fibre (D.index t + (D.index y - D.index x))).card| :=
+      Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ _t : X, sigma * M := by
+      apply Finset.sum_le_sum
+      intro t _
+      have harg :
+          D.index t + (D.index z - D.index x) =
+            (D.index t + (D.index y - D.index x)) + (D.index z - D.index y) := by
+        ring
+      rw [harg]
+      exact hinvariant (D.index t + (D.index y - D.index x))
+        (D.index z - D.index y) hd
+    _ = (Fintype.card X : Real) * (sigma * M) := by simp
+    _ = sigma * alpha * M ^ 2 * N := by rw [hcard]; ring
+
+/-- **Gowers, Lemma 10.4.** -/
+theorem lemma_10_4_holds : lemma_10_4 := by
+  intro N _ X _ _ D phi B alpha M sigma eta hsetup x y z hd
+  rcases hsetup with
+    ⟨⟨_halpha, _halpha_one, _hM, hcard, _hfibre⟩, _hsigma,
+      _heta, _heta_one, _hsymmetric, hinvariant, _happrox⟩
+  exact differenceWeight_translation_bound D B alpha sigma M hcard hinvariant x y z hd
+
 end LeanProofs.GowersSzemeredi
