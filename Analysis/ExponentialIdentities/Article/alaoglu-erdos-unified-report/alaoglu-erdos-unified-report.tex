@@ -21496,16 +21496,44 @@ Calegari--Dimitrov--Tang theorems.  Expanding the counterexample relation
 $\log2\cdot\log A-\log3\cdot\log M=0$ in these generators turns the terminal obstruction
 into a $\Z$-linear relation among the weight-two products $L_iL_j$.
 
+\begin{statusbox}{\textbf{Erratum} --- the generators $L_n$ are dependent}
+An earlier version of this subsection asserted the encoding in the products $L_iL_j$ and
+concluded that $\Q$-linear independence of the occurring products would exclude
+counterexamples.  That is \emph{false, not open}, for every $q\ge5$: the generators satisfy
+\[
+ L_1=L_2+L_3,\qquad\text{i.e.}\qquad \log2=\log\tfrac32+\log\tfrac43,
+\]
+so $L_1^2-L_1L_2-L_1L_3=0$ is a nonzero $\Q$-relation lying inside the $q=5$ support.  The
+relation space of $L_1,\dots,L_{q-1}$ has dimension $0,1,2,5,6$ at $q=3,5,7,11,13$
+(computed exactly by reducing each $L_n$ in the prime basis).  The telescoping identity
+$\log p=\sum_{n<p}L_n$ is correct, and the encoding \emph{into} $\Z[\{L_iL_j\}]$ is
+correct; what fails is the passage from ``the relation holds'' to ``its coefficients
+vanish''.  The corrected statement below works in the prime basis, which \emph{is}
+independent by unique factorization, and the $q=3$ quadratic form and its conclusion are
+unaffected.
+\end{statusbox}
+
 \begin{proposition}[Finite weight-two encoding]\label{camp:prop-cdt}
-Let $q$ be a prime and suppose $MA$ is $q$-smooth.  Then the relation
-$\log2\cdot\log A=\log3\cdot\log M$ is a $\Z$-linear relation among the products
-$\{L_iL_j:1\le i\le j\le q-1\}$, and the vanishing of all of its coefficients forces
-$M=2^t$, $A=3^t$ --- the integer controls.  Consequently, $\Q$-linear independence of the
-finitely many products that occur excludes every counterexample with $q$-smooth outputs.
+Let $q$ be a prime and suppose $MA$ is $q$-smooth.  Expanding $\log M=\sum_pm_p\log p$ and
+$\log A=\sum_pa_p\log p$ over the primes $p\le q$, the relation
+$\log2\cdot\log A=\log3\cdot\log M$ reads
+\[
+ \sum_{p\le q}a_p\,(\log2\cdot\log p)\;-\;\sum_{p\le q}m_p\,(\log3\cdot\log p)\;=\;0,
+\]
+a $\Z$-linear relation among the $2\pi(q)-1$ distinct weight-two products
+$\{\log2\cdot\log p\}\cup\{\log3\cdot\log p\}$ (the product $\log2\log3$ occurring in both
+families).  If those products are $\Q$-linearly independent then $a_p=0$ for $p\ne3$,
+$m_p=0$ for $p\ne2$, and $a_3=m_2$, i.e.\ $M=2^t$, $A=3^t$: the integer controls.
+Consequently such independence excludes every counterexample with $q$-smooth outputs.
 \end{proposition}
 
-The coefficient system was computed symbolically and solved exactly.  For $q=3$ the
-relation is the quadratic form
+The count is $2\pi(q)-1=5,7,9,11$ at $q=5,7,11,13$.  It is worth noting that these are
+exactly the dimensions computed for the image subspace $C$ below --- the earlier table's
+numbers were right, for this reason, even though the basis in which they were derived was
+not.
+
+The coefficient system was computed symbolically and solved exactly in the prime basis.
+For $q=3$ the relation is the quadratic form
 \[
  (c+d-a-b)\,L_1^2+(d-a-2b)\,L_1L_2-b\,L_2^2=0,
  \qquad M=2^a3^b,\quad A=2^c3^d,
@@ -21515,10 +21543,10 @@ $3$-smooth case therefore follows from $\Q$-linear independence of just the thre
 $(\log2)^2$, $\log2\log\tfrac32$, $(\log\tfrac32)^2$.  (That case is already known by
 transcendence of $\thetaq$, so this is a calibration rather than a new result.)  The first
 genuinely new instance is $q=5$, since a counterexample must have an external prime
-$\ge5$: there the system has $7$ equations in the $10$ products with $i\le j\le4$, and its
-only solution is again $M=2^t$, $A=3^t$.  At $q=7$ the system has $11$ equations and the
-same conclusion.  \statusexactcomp{} (exact symbolic solve at $q=3,5,7$); the encoding
-itself \statusnew.
+$\ge5$: there the relation involves the $5$ products
+$\log2\log2,\log2\log3,\log2\log5,\log3\log3,\log3\log5$, and independence forces
+$M=2^t$, $A=3^t$.  \statusexactcomp{} (exact symbolic solve); the encoding itself
+\statusnew.
 
 Three consequences are worth stating.  First, the obstruction is not merely
 \emph{analogous} to the Calegari--Dimitrov--Tang setting; it lives in literally the same
@@ -21538,33 +21566,47 @@ have \emph{no} relations, but only that
 \[
  R\cap C=0,
 \]
-where $R$ is their true relation space.  Computing the map exactly gives a uniform picture:
-its kernel is \emph{exactly} the control line $\{m_2=a_3=t\}$ in every case --- so the
-encoding is faithful, its only degeneracy being the controls themselves --- and its image
-has dimension $2\pi(q)-1$:
+where $R$ is their true relation space.  Computing the map exactly in the prime basis gives a uniform picture: its kernel is
+\emph{exactly} the control line $\{m_2=a_3=t\}$ in every case --- so the encoding is
+faithful, its only degeneracy being the controls themselves --- and its image has dimension
+$2\pi(q)-1$, which is the full span of the occurring products:
 \begin{center}
 \begin{tabular}{@{}ccccc@{}}
 \toprule
-$q$ & products $\binom q2$ & occurring & $\dim C$ & kernel \\
+$q$ & $2\pi(q)-1$ products & $\dim C$ & kernel & consequence \\
 \midrule
-$5$ & $10$ & $7$ & $5$ & control line \\
-$7$ & $21$ & $11$ & $7$ & control line \\
-$11$ & $55$ & $19$ & $9$ & control line \\
+$5$ & $5$ & $5$ & control line & independence suffices \\
+$7$ & $7$ & $7$ & control line & independence suffices \\
+$11$ & $9$ & $9$ & control line & independence suffices \\
 \bottomrule
 \end{tabular}
 \end{center}
-So it suffices that no nonzero relation among the occurring products lie in a subspace of
-dimension $2\pi(q)-1$, against an ambient of size $\asymp q^2/2$ --- a requirement that
-becomes relatively weaker as $q$ grows.  \statusexactcomp{}
+Since $C$ is the full span of the occurring products, the subspace weakening $R\cap C=0$
+coincides here with independence of those $2\pi(q)-1$ products; the weakening bites only if
+one enlarges the generating set beyond the prime basis.  \statusexactcomp{}
 (\path{scripts/cdt_weight_two_encoding.py}).
 
 \emph{What this does and does not deliver.}  It does not prove anything: weight-two
 independence is open even for a single product, which is exactly why
 Calegari--Dimitrov--Tang is notable.  What it delivers is the missing bridge the survey
 asked for.  The research question ceases to be ``can the lattice be encoded in an
-arithmetic holonomic family?'' and becomes the concrete one: \emph{extend the
-Calegari--Dimitrov--Tang independence technology from its near-diagonal admissible pairs to
-the triangular array $\{L_iL_j:i\le j\le q-1\}$ for a single prime $q\ge5$.}  Any such
+arithmetic holonomic family?'' and becomes the concrete one: \emph{obtain $\Q$-linear
+independence of the $2\pi(q)-1$ products $\{\log2\log p\}\cup\{\log3\log p\}$, $p\le q$,
+for a single prime $q\ge5$.}  A calibration against the source is in order here.
+Calegari--Dimitrov--Tang's admissibility is a near-equality condition
+$|m/n-1|<10^{-6}$ on the parameters of $\log(1+1/m)\log(1+1/n)$, with the correct statistic
+$\min(|m|,|n|)$ rather than $\min(m,n)$ (negative parameters are allowed, since
+$\log(1+1/(-(k+1)))=-\log(1+1/k)$, so each product has several representations).  Among the
+$3$-smooth products relevant to the $q=3$ fragment --- where $m$ and $m+1$ must both be
+$3$-smooth, so $m\in\{1,2,3,8\}$ by the kernel-verified pair classification of
+Section~\ref{ai:isolation} --- the smallest defect is $\tfrac14$, attained by
+$\log\tfrac32\cdot\log\tfrac43$.  That fragment is precisely the $q=3$ calibration, already
+known.  Crucially, the route is \emph{not} closed by admissibility: a counterexample's
+external prime is unbounded, so any counterexample carrying a prime $q>10^6+1$ places
+genuinely admissible pairs $(i,i+1)$, $i\ge10^6$, inside its own weight-two encoding.  What
+is missing is not admissibility but the \emph{joint} statement --- their theorem gives
+independence within one product's four-element family, whereas one needs injectivity on the
+whole symmetric square.  Any such
 extension excludes all counterexamples with $q$-smooth outputs, and does so by consuming
 the external prime --- channel~(i) of the control principle --- since a control has no
 prime $\ge5$ in its support at all.  \statusopen{} target.
@@ -21593,11 +21635,13 @@ bound for a monic-after-division polynomial gives, wherever $a_d(z)\ne0$,
 \]
 and this bound is exactly attained in the worst case (checked numerically on $2\times10^4$
 random instances, worst ratio $1.0000$).  Each $a_k$ has order one, so
-$\log|a_k(z)|=O(r)$ on $|z|=r$; and $a_d$, being a nonzero function of order one, satisfies
-$\log|1/a_d|=O(r\log r)$ on circles avoiding an exceptional set of small measure, by the
-classical minimum-modulus theorem (\statusknown).  Choosing for each $r$ a radius
-$r'\in[r,2r]$ whose circle avoids that set gives $\log M(g,r)\le\log M(g,r')=O(r\log r)$,
-since $g$ is entire.  Hence $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.
+$\log|a_k(z)|=O(r)$ on $|z|=r$; and $\log^+|1/a_d|$ is bounded \emph{in mean} by
+$O(r)$ through the Nevanlinna first main theorem applied to the order-one function $a_d$
+(\statusknown), which avoids any exceptional-set argument.  Hence
+$\log M(g,r)=O(r)$ and in particular $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.  (An earlier
+version used the classical minimum-modulus theorem on circles avoiding an exceptional set
+and obtained the weaker $O(r\log r)$; the conclusion $\tau_2=0$ is the same, and the
+Nevanlinna route is both stronger and cleaner.)
 \end{proof}
 
 Combining Proposition~\ref{camp:prop-order} with Pila's theorem in the specialization
@@ -21665,6 +21709,15 @@ corner values are $2,M,3,A$ and $X_{1,\beta}=\Sol$.  In this specialization an e
 integer-valued on $\Sol$ with
 $\tau_2(g):=\limsup r^{-2}\log M(g,r)\le1/(832\beta^2\log2\log3)$ is algebraically
 dependent on $2^z$ and $3^z$, which turns the interpolation idea into a measured target.
+\emph{Dependency to be audited.}  Pila's precise hypotheses and the
+constant $832$ are quoted from the survey and have not been checked against the source
+here; that they must contain more than is stated is visible from the control side, where
+$\Sol=\N_0$ and $g(z)=\sin(\pi z)e^{cz^2}$ is entire, integer-valued on $\Sol$, and has
+$\tau_2=c$ arbitrarily small --- so some hypothesis must exclude it.  Note that this
+construction cannot cross to the conditional world: by
+Proposition~\ref{camp:prop-inftype} every function vanishing on an irrational-$\beta$
+monoid has $\tau_2=\infty$.  Every occurrence of the factor $208\beta\log2\log3$ below is
+conditional on that unaudited input.
 We settle that measurement.  Any $g$ forced to be independent of $2^z,3^z$ by vanishing on
 the monoid pays, by Jensen's formula against the exact density
 $\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$,
@@ -21688,8 +21741,10 @@ it is both sharper and simpler than the Jensen estimate.  The monoid has countin
 $T^2/(2\beta)+O(T)$ and \emph{all its points are real and positive}, so
 $\sum_{s\in\Sol}s^{-3}$ converges while $\sum_{s\in\Sol,\,s\le r}s^{-2}$ diverges, at the
 exact rate $\beta^{-1}\log r$: measured increments per doubling are $0.0719$ against
-$1/\beta=0.0714$, with $\sum s^{-3}=1.20647$ stable to six digits
-(\path{scripts/sol_canonical_type.py}).  Hence the Hadamard genus equals the order, both
+$1/\beta=0.0714$, with $\sum s^{-3}=1.20647$ at $\beta=14+\sqrt2/1000$, converged to six digits in $T$
+(\path{scripts/sol_canonical_type.py}); that constant is $\beta$-dependent --- it is
+$1.20628$ at $\beta=14.3178$ and $1.20321$ at $\beta=27.1$ --- and only its finiteness
+matters here.  Hence the Hadamard genus equals the order, both
 being $2$, with divergent coefficient sum, and the canonical product --- which has minimal
 growth among all entire functions vanishing on $\Sol$ --- satisfies
 $\log M(r)\asymp\beta^{-1}r^2\log r$.  Therefore:
@@ -21700,10 +21755,15 @@ Every entire function vanishing on all of $\Sol$ has $\tau_2=+\infty$.
 
 So no function that is independent of $2^z,3^z$ by virtue of vanishing on the monoid comes
 within any finite factor of Pila's threshold, and \eqref{camp:eq-pila} is merely the
-elementary shadow of this.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}; the
-numerical check of the Jensen sum against the closed form converges from above
-($1.219,1.109,1.054$ at $T=140,280,560$ for $\beta=14$), confirming the bound is valid and
-slightly conservative.  The remaining way to use Pila's theorem therefore requires small type produced by
+elementary shadow of this.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
+quoted earlier were computed at $\beta=14$ --- an \emph{integer}, hence a control, where
+$\Sol$ collapses to $\N_0$ and the quadratic density fails --- and over the pair multiset
+rather than the point set.  At an admissible irrational $\beta$ the two coincide and the
+figures are correct: recomputed at $\beta=14+\sqrt2/1000$ the ratios are
+$1.2193,1.1086,1.0540,1.0269$ at $T=140,280,560,1120$, and at $\beta=14.3178$ they are
+$1.2244,1.1110,1.0552,1.0275$ --- converging to $1$ from above, so the bound is valid and
+slightly conservative.  At the control $\beta=14$ itself the true ratios instead tend to
+zero ($0.390,0.197,0.099,0.050$), exactly as the degeneration of the density predicts.  The remaining way to use Pila's theorem therefore requires small type produced by
 controlled interpolation rather than by zeros; transcendence itself is then automatic, and
 the precise statement is the conditional type gap of Theorem~\ref{camp:thm-typegap} with
 its construction target~\ref{camp:target-construct}.  The survey's other four clusters
