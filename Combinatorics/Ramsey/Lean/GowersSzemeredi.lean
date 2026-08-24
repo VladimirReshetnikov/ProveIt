@@ -32,6 +32,8 @@ import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
 import GowersSzemeredi.Proofs14Product
 import GowersSzemeredi.Proofs15LevelSets
+import GowersSzemeredi.Proofs15Walsh
+import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
 import GowersSzemeredi.Proofs17FinitePatterns
 
