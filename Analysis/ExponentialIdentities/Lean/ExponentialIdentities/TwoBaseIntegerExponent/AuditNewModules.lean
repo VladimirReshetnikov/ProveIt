@@ -112,6 +112,8 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RationalHankelTriple
 import ExponentialIdentities.TwoBaseIntegerExponent.SmoothSemigroupCore
 import ExponentialIdentities.TwoBaseIntegerExponent.ExternalPrimeNewtonWall
 import ExponentialIdentities.TwoBaseIntegerExponent.CriticalWindowContraction
+import ExponentialIdentities.TwoBaseIntegerExponent.CompactChartArea
+import ExponentialIdentities.TwoBaseIntegerExponent.ToricMonomialRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
@@ -836,6 +838,12 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms CriticalWindow.kappa_mul_lt
 #print axioms CriticalWindow.no_balanced_transport
 #print axioms CriticalWindow.exponent_gap_dvd
+#print axioms CompactChart.area_eq_div
+#print axioms CompactChart.abs_area_ge
+#print axioms CompactChart.coord_diff
+#print axioms CompactChart.codimension_lock
+#print axioms ToricRigidity.eigenvalue_eq_of_ne_zero
+#print axioms ToricRigidity.toric_eigen_support_unique
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384
