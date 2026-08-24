@@ -8088,4 +8088,280 @@ theorem oneSidedActiveEntries_of_lengths {n : Nat} {gamma : List Nat}
       hc3ModTwo := hevenTwo.2 0 (by norm_num) 2 (by norm_num)
         c1 c3 hc1Get hc3Get }
 
+
+lemma two_distinct_modEq_successors_force_double_gap {m a x y N : Nat}
+    (hax : a <= x) (hay : a <= y)
+    (haxNe : a ≠ x) (hayNe : a ≠ y) (hxy : x ≠ y)
+    (hmodX : Nat.ModEq m a x) (hmodY : Nat.ModEq m a y)
+    (hxN : x <= N) (hyN : y <= N) :
+    a + 2 * m <= N := by
+  obtain ⟨dx, hdx⟩ := (Nat.modEq_iff_exists_eq_add hax).mp hmodX
+  obtain ⟨dy, hdy⟩ := (Nat.modEq_iff_exists_eq_add hay).mp hmodY
+  have hdxPos : 0 < dx := by
+    by_contra h
+    have : dx = 0 := by omega
+    subst dx
+    simp only [Nat.mul_zero, Nat.add_zero] at hdx
+    exact haxNe hdx.symm
+  have hdyPos : 0 < dy := by
+    by_contra h
+    have : dy = 0 := by omega
+    subst dy
+    simp only [Nat.mul_zero, Nat.add_zero] at hdy
+    exact hayNe hdy.symm
+  have hdxdy : dx ≠ dy := by
+    intro h
+    subst dy
+    exact hxy (by nlinarith)
+  have hlarge : 2 <= dx ∨ 2 <= dy := by omega
+  rcases hlarge with hlarge | hlarge <;> nlinarith
+
+lemma middle_case_successor_values {q b c1 c2 c3 n : Nat}
+    (hq : 0 < q) (hbEight : 8 * q < b)
+    (hcLower : 2 * b <= c1) (hnUpper : n < b + 14 * q)
+    (hc1Two : c1 <= c2) (hc1Three : c1 <= c3)
+    (hc12 : c1 ≠ c2) (hc13 : c1 ≠ c3) (hc23 : c2 ≠ c3)
+    (hc2N : c2 <= n) (hc3N : c3 <= n)
+    (hmod2 : Nat.ModEq (4 * q) c1 c2)
+    (hmod3 : Nat.ModEq (2 * q) c1 c3) :
+    c2 = c1 + 4 * q ∧ c3 = c1 + 2 * q := by
+  obtain ⟨d2, hd2⟩ := (Nat.modEq_iff_exists_eq_add hc1Two).mp hmod2
+  obtain ⟨d3, hd3⟩ := (Nat.modEq_iff_exists_eq_add hc1Three).mp hmod3
+  have hd2Pos : 0 < d2 := by
+    by_contra h
+    have : d2 = 0 := by omega
+    subst d2
+    simp only [Nat.mul_zero, Nat.add_zero] at hd2
+    exact hc12 hd2.symm
+  have hd3Pos : 0 < d3 := by
+    by_contra h
+    have : d3 = 0 := by omega
+    subst d3
+    simp only [Nat.mul_zero, Nat.add_zero] at hd3
+    exact hc13 hd3.symm
+  have hd2One : d2 = 1 := by nlinarith
+  have hd3Le : d3 <= 2 := by nlinarith
+  have hc2Eq : c2 = c1 + 4 * q := by
+    subst d2
+    nlinarith
+  have hd3NeTwo : d3 ≠ 2 := by
+    intro h
+    subst d3
+    apply hc23
+    nlinarith
+  have hd3One : d3 = 1 := by omega
+  constructor
+  · exact hc2Eq
+  · subst d3
+    nlinarith
+
+/-- The numeric three-case core of the first implication in Theorem 2.6,
+given the seven boundary entries. -/
+lemma oddEpilogue_four_evenPrologue_three_impossible_of_entries
+    {n : Nat} {gamma : List Nat} {b1 b2 b3 b4 c1 c2 c3 : Nat}
+    (hgamma : IsTheta n gamma)
+    (hdata : OneSidedActiveEntries n gamma b1 b2 b3 b4 c1 c2 c3) : False := by
+  let q := dyadicQ n
+  have hbEnd := hdata.hbEnd
+  have hcStart := hdata.hcStart
+  have hbLower := hdata.hb1Lower
+  have hb1At := hdata.hb1Get
+  have hb2At := hdata.hb2Get
+  have hb3At := hdata.hb3Get
+  have hb4At := hdata.hb4Get
+  have hc1At := hdata.hc1Get
+  have hc2At := hdata.hc2Get
+  have hc3At := hdata.hc3Get
+  have hv : 3 <= (prologue n (evenTrace gamma)).length := by
+    obtain ⟨hbound, _⟩ := List.getElem?_eq_some_iff.mp hc3At
+    have hbound' : 2 < (prologue n (evenTrace gamma)).length := by
+      simpa only [evenBoundaryActiveList] using hbound
+    omega
+  have hb1Mem := hdata.hb1Mem
+  have hb2Mem := hdata.hb2Mem
+  have hb3Mem := hdata.hb3Mem
+  have hb4Mem := hdata.hb4Mem
+  have hqPos : 0 < q := by simpa only [q] using hdata.hqPos
+  have hb12 := hdata.hb12
+  have hb13 := hdata.hb13
+  have hb14 := hdata.hb14
+  have hb23 := hdata.hb23
+  have hb24 := hdata.hb24
+  have hb34 := hdata.hb34
+  have hc12 := hdata.hc12
+  have hc13 := hdata.hc13
+  have hc23 := hdata.hc23
+  have hb1Odd := hdata.hb1Odd
+  have hc1Even := hdata.hc1Even
+  have hb1Half := hdata.hb1Lower
+  have hb2Pos : 0 < b2 := by
+    have h := hdata.hb2Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb3Pos : 0 < b3 := by
+    have h := hdata.hb3Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb4Pos : 0 < b4 := by
+    have h := hdata.hb4Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hc2N : c2 <= n := by
+    have h := hdata.hc2Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hc3N : c3 <= n := by
+    have h := hdata.hc3Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb2Le := hdata.hb2Le
+  have hb3Le := hdata.hb3Le
+  have hb4Le := hdata.hb4Le
+  have hc1Le2 := hdata.hc2Ge
+  have hc1Le3 := hdata.hc3Ge
+  have hbc := hdata.hseparated
+  have hSixteen : 16 * q <= n := by simpa only [q] using hdata.hthreshold
+  have hnSixteen : 16 <= n := by nlinarith
+  have hnThirtyTwo : n < 32 * q := by
+    simpa only [q] using thirty_two_dyadicQ_gt hnSixteen
+  have hb2Mod : Nat.ModEq (2 * q) b2 b1 := by simpa only [q] using hdata.hb2ModTwo
+  have hb3Mod : Nat.ModEq (2 * q) b3 b1 := by simpa only [q] using hdata.hb3ModTwo
+  have hb4Mod : Nat.ModEq (2 * q) b4 b1 := by simpa only [q] using hdata.hb4ModTwo
+  have hc2ModFour : Nat.ModEq (4 * q) c1 c2 := by
+    simpa only [q] using hdata.hc2ModFour
+  have hc3ModTwo : Nat.ModEq (2 * q) c1 c3 := by
+    simpa only [q] using hdata.hc3ModTwo
+  have hbSix : 6 * q < b1 := six_mul_lt_of_three_distinct_predecessors
+    hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+    hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod
+  by_cases hbEight : b1 < 8 * q
+  · have hwhich := first_predecessor_among_three hbEight hb2Pos hb3Pos hb4Pos
+      hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm hb23 hb24 hb34
+      hb2Mod hb3Mod hb4Mod
+    have hsubTwoMem : b1 - 2 * q ∈ epilogue n (oddTrace gamma) := by
+      rcases hwhich with h | h | h
+      · simpa only [oddBoundaryActiveList, h] using hb2Mem
+      · simpa only [oddBoundaryActiveList, h] using hb3Mem
+      · simpa only [oddBoundaryActiveList, h] using hb4Mem
+    have hnUpper := ambient_lt_b_add_ten_of_sub_two_mem hgamma hbEnd hbLower hb1Odd
+      (by omega) (by simpa only [q] using hsubTwoMem)
+    have hc1Lt2 : c1 < c2 := lt_of_le_of_ne hc1Le2 hc12
+    have hc2Gap := add_modulus_le_of_modEq_of_lt (by omega : 0 < 4 * q)
+      hc2ModFour hc1Lt2
+    omega
+  · have hbEightStrict : 8 * q < b1 := by
+      rcases hb1Odd with ⟨B, hb⟩
+      omega
+    by_cases hbTen : b1 < 10 * q
+    · have hbSixteen : b1 < 16 * q := by
+        simp only [lowerHalf, Finset.mem_Icc] at hb1Half
+        omega
+      have hnotPred := dyadic_predecessor_not_mem_oddEpilogue hgamma hbEnd hbLower
+        hb1Odd hbEightStrict (by simpa only [q] using hbSixteen)
+      have hb2Not : b2 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb2Mem
+      have hb3Not : b3 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb3Mem
+      have hb4Not : b4 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb4Mem
+      have hwhich := third_predecessor_among_three_without_first hbTen
+        hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+        hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod hb2Not hb3Not hb4Not
+      have hsubSixMem : b1 - 6 * q ∈ epilogue n (oddTrace gamma) := by
+        rcases hwhich with h | h | h
+        · simpa only [oddBoundaryActiveList, h] using hb2Mem
+        · simpa only [oddBoundaryActiveList, h] using hb3Mem
+        · simpa only [oddBoundaryActiveList, h] using hb4Mem
+      have hnUpper := ambient_lt_b_add_fourteen_of_sub_six_mem hgamma hbEnd hbLower
+        hb1Odd (by simpa only [q] using hbSix) (by simpa only [q] using hsubSixMem)
+      have hvalues := middle_case_successor_values hqPos hbEightStrict hbc
+        (by simpa only [q] using hnUpper) hc1Le2 hc1Le3 hc12 hc13 hc23 hc2N hc3N
+        hc2ModFour hc3ModTwo
+      have hc1Trace := hdata.hc1TraceGet
+      have hc2Trace := hdata.hc2TraceGet
+      have hc3Trace := hdata.hc3TraceGet
+      exact evenTrace_middle_case_impossible hgamma rfl hcStart hc1Trace hc2Trace hc3Trace
+        hc1Even hvalues.1 hvalues.2 (by omega)
+    · have hbTenStrict : 10 * q < b1 := by
+        rcases hb1Odd with ⟨B, hb⟩
+        omega
+      have hc1Lt2 : c1 < c2 := lt_of_le_of_ne hc1Le2 hc12
+      have hc2GapFour := add_modulus_le_of_modEq_of_lt (by omega : 0 < 4 * q)
+        hc2ModFour hc1Lt2
+      have hTwentyTwo : 22 * q <= n := by omega
+      have hTraceThreeFour := evenTrace_prefix_three_mod_four_of_twenty_two hgamma
+        (by simpa only [q] using hSixteen) (by simpa only [q] using hTwentyTwo)
+      have hCThreeFour := evenBoundaryActiveList_prefixCongruent_of_evenTrace
+        (n := n) (gamma := gamma) (k := 3) (m := 4 * q)
+        (by omega) (by simpa only [q] using hTraceThreeFour)
+      have hc3ModFour : Nat.ModEq (4 * q) c1 c3 :=
+        hCThreeFour.2 0 (by omega) 2 (by omega) c1 c3 hc1At hc3At
+      have hcDoubleGap := two_distinct_modEq_successors_force_double_gap
+        hc1Le2 hc1Le3 hc12 hc13 hc23 hc2ModFour hc3ModFour hc2N hc3N
+      have hTwentyEight : 28 * q <= n := by omega
+      have hTraceTwoEight := evenTrace_prefix_two_mod_eight_of_twenty_eight hgamma
+        (by simpa only [q] using hSixteen) (by simpa only [q] using hTwentyEight)
+      have hCTwoEight := evenBoundaryActiveList_prefixCongruent_of_evenTrace
+        (n := n) (gamma := gamma) (k := 2) (m := 8 * q)
+        (by omega) (by simpa only [q] using hTraceTwoEight)
+      have hc2ModEight : Nat.ModEq (8 * q) c1 c2 :=
+        hCTwoEight.2 0 (by omega) 1 (by omega) c1 c2 hc1At hc2At
+      have hc2GapEight := add_modulus_le_of_modEq_of_lt (by omega : 0 < 8 * q)
+        hc2ModEight hc1Lt2
+      have hbTwelve : b1 < 12 * q := by omega
+      have hbSixteen : b1 < 16 * q := by omega
+      have hnotPred := dyadic_predecessor_not_mem_oddEpilogue hgamma hbEnd hbLower
+        hb1Odd hbEightStrict (by simpa only [q] using hbSixteen)
+      have hb2Not : b2 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb2Mem
+      have hb3Not : b3 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb3Mem
+      have hb4Not : b4 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb4Mem
+      have hwhich := third_or_fifth_predecessor_among_three_without_first hbTwelve
+        hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+        hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod hb2Not hb3Not hb4Not
+      rcases hwhich with hsubSix | hsubTen
+      · have hsubSixMem : b1 - 6 * q ∈ epilogue n (oddTrace gamma) := by
+          rcases hsubSix with h | h | h
+          · simpa only [oddBoundaryActiveList, h] using hb2Mem
+          · simpa only [oddBoundaryActiveList, h] using hb3Mem
+          · simpa only [oddBoundaryActiveList, h] using hb4Mem
+        have hnUpper := ambient_lt_b_add_fourteen_of_sub_six_mem hgamma hbEnd hbLower
+          hb1Odd (by simpa only [q] using hbSix) (by simpa only [q] using hsubSixMem)
+        omega
+      · have hsubTenMem : b1 - 10 * q ∈ epilogue n (oddTrace gamma) := by
+          rcases hsubTen with h | h | h
+          · simpa only [oddBoundaryActiveList, h] using hb2Mem
+          · simpa only [oddBoundaryActiveList, h] using hb3Mem
+          · simpa only [oddBoundaryActiveList, h] using hb4Mem
+        have hnUpper := ambient_lt_b_add_eighteen_of_sub_ten_mem hgamma hbEnd hbLower
+          hb1Odd (by simpa only [q] using hbTenStrict)
+          (by simpa only [q] using hsubTenMem)
+        omega
+
+/-- The first implication of Theorem 2.6: four active odd entries force the
+active even prefix to have length at most two. -/
+theorem theorem_2_6_left {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hu : 4 <= (epilogue n (oddTrace gamma)).length) :
+    (prologue n (evenTrace gamma)).length <= 2 := by
+  by_contra hv
+  have hvThree : 3 <= (prologue n (evenTrace gamma)).length := by omega
+  rcases oneSidedActiveEntries_of_lengths hstanding hu hvThree with
+    ⟨b1, b2, b3, b4, c1, c2, c3, hdata⟩
+  exact oddEpilogue_four_evenPrologue_three_impossible_of_entries hstanding.1.1 hdata
+
 end LeanProofs.Sharma2012
