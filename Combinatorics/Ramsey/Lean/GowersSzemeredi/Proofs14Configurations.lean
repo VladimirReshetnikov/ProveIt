@@ -540,6 +540,7 @@ private lemma prop144_first_moment {N n : Nat} [NeZero N]
       _ ≤ ∑ r : ZMod N, d r ^ a := hmean0
   have hG : 0 ≤ G := by
     dsimp only [G]
+    rw [Nat.mul_assoc 2 n a, pow_mul]
     positivity
   calc
     beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) *
