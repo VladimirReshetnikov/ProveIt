@@ -386,5 +386,18 @@ theorem fabiusLogProfile_sub_quadratic_isBigO
   rw [abs_of_nonneg hrate]
   exact hbound
 
+/-- Equation (11) in the draft's original sign convention: the logarithm of
+`F(2⁻ᵗ)` differs from `-(log 2)t²/2` by `O(t log t)`. -/
+theorem log_fabiusLogPhi_add_quadratic_isBigO
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun t : ℝ => Real.log (fabiusLogPhi F t) + Real.log 2 / 2 * t ^ 2)
+      =O[atTop] (fun t : ℝ => t * Real.log t) := by
+  have h := (fabiusLogProfile_sub_quadratic_isBigO F hF).neg_left
+  apply h.congr'
+  · exact Filter.Eventually.of_forall fun t => by
+      unfold fabiusLogProfile
+      ring
+  · exact EventuallyEq.rfl
+
 
 end Fabius
