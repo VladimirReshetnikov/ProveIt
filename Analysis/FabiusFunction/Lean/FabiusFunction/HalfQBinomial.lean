@@ -132,6 +132,32 @@ theorem two_pow_sq_mul_halfQPochhammer (n : ℕ) :
   rw [halfQPochhammer_eq_mersenne_div, square_eq_choose_sum, pow_add]
   field_simp
 
+/-- The same normalization, with the Wolfram expression `n^2` transcribed
+literally as a natural-number square. -/
+theorem two_pow_nat_sq_mul_halfQPochhammer (n : ℕ) :
+    (2 : ℚ) ^ (n ^ 2) * halfQPochhammer n =
+      (2 : ℚ) ^ (n.choose 2) * halfMersenneProduct n := by
+  simpa [pow_two] using two_pow_sq_mul_halfQPochhammer n
+
+/-- Normalization of the reciprocal prefactor in the requested formula. -/
+theorem one_div_two_pow_nat_sq_mul_halfQPochhammer (n : ℕ) :
+    1 / ((2 : ℚ) ^ (n ^ 2) * halfQPochhammer n) =
+      1 / ((2 : ℚ) ^ (n.choose 2) * halfMersenneProduct n) := by
+  rw [two_pow_nat_sq_mul_halfQPochhammer]
+
+/-- The Wolfram denominator `4^Binomial[k,2]` as a pure power of two. -/
+theorem four_pow_choose_two (k : ℕ) :
+    (4 : ℚ) ^ (k.choose 2) = (2 : ℚ) ^ (k * (k - 1)) := by
+  have htwo : 2 * k.choose 2 = k * (k - 1) := by
+    cases k with
+    | zero => simp
+    | succ k =>
+        simpa [mul_comm] using two_mul_choose_succ_two k
+  calc
+    (4 : ℚ) ^ (k.choose 2) = ((2 : ℚ) ^ 2) ^ (k.choose 2) := by norm_num
+    _ = (2 : ℚ) ^ (2 * k.choose 2) := by rw [pow_mul]
+    _ = (2 : ℚ) ^ (k * (k - 1)) := by rw [htwo]
+
 /-- `QBinomial[n,k,1/2]`, extended by zero for `k > n`. -/
 noncomputable def halfQBinomial (n k : ℕ) : ℚ :=
   if k ≤ n then
