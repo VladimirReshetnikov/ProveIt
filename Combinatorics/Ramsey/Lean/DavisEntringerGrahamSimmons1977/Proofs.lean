@@ -1,5 +1,6 @@
 import DavisEntringerGrahamSimmons1977.Statements
 import Mathlib.Data.List.NodupEquivFin
+import Mathlib.GroupTheory.Perm.Fin
 import RamseyPaperCommon.CountConsequences
 
 /-!
@@ -4388,5 +4389,479 @@ theorem fact_6_holds : fact_6 := by
   rw [bne_iff_ne]
   exact Set.nonempty_iff_ne_empty.mp
     ⟨p, dyadic_construction_avoids_four_holds p hpconcat⟩
+
+/-! ## Insertion counting and Fact 2 -/
+
+private abbrev ICFreePermutation (n : Nat) :=
+  {p : FinitePermutation n // FiniteAPFree p 3}
+
+private instance icFreePermutation_finite (n : Nat) :
+    Finite (ICFreePermutation n) :=
+  Finite.of_injective Subtype.val Subtype.val_injective
+
+private noncomputable def icEmbeddingFinOfNatCardLE {alpha : Type} [Finite alpha]
+    (r : Nat) (h : Nat.card alpha ≤ r) : alpha ↪ Fin r :=
+  Classical.choice (Cardinal.lift_mk_le'.mp (by
+    simp only [Cardinal.lift_id]
+    rw [← Nat.cast_card, Cardinal.mk_fin]
+    exact Nat.cast_le.mpr h))
+
+private def icInsertMaxFun {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) (i : Fin (n + 1)) : Fin (n + 1) :=
+  Fin.insertNth (α := fun _ => Fin (n + 1)) s (Fin.last n)
+    (fun j => Fin.castSucc (p j)) i
+
+private theorem icInsertMaxFun_same {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) :
+    icInsertMaxFun s p s = Fin.last n := by
+  simp [icInsertMaxFun]
+
+private theorem icInsertMaxFun_succAbove {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) (i : Fin n) :
+    icInsertMaxFun s p (s.succAbove i) = Fin.castSucc (p i) := by
+  simp [icInsertMaxFun]
+
+private theorem icInsertMaxFun_injective {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) : Function.Injective (icInsertMaxFun s p) := by
+  intro i j hij
+  rcases Fin.eq_self_or_eq_succAbove s i with hi | ⟨i', hi⟩
+  · subst i
+    rcases Fin.eq_self_or_eq_succAbove s j with hj | ⟨j', hj⟩
+    · exact hj.symm
+    · subst j
+      rw [icInsertMaxFun_same, icInsertMaxFun_succAbove] at hij
+      exact ((Fin.castSucc_ne_last (p j')) hij.symm).elim
+  · subst i
+    rcases Fin.eq_self_or_eq_succAbove s j with hj | ⟨j', hj⟩
+    · subst j
+      rw [icInsertMaxFun_succAbove, icInsertMaxFun_same] at hij
+      exact ((Fin.castSucc_ne_last (p i')) hij).elim
+    · subst j
+      rw [icInsertMaxFun_succAbove, icInsertMaxFun_succAbove] at hij
+      have hp : p i' = p j' := (Fin.castSucc_injective n) hij
+      exact congrArg s.succAbove (p.injective hp)
+
+private def icInsertMaxPermutation {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) : FinitePermutation (n + 1) :=
+  Equiv.ofBijective (icInsertMaxFun s p)
+    ((Fintype.bijective_iff_injective_and_card _).2
+      ⟨icInsertMaxFun_injective s p, rfl⟩)
+
+private theorem icInsertMaxPermutation_apply {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) (i : Fin (n + 1)) :
+    icInsertMaxPermutation s p i = icInsertMaxFun s p i := by
+  rfl
+
+private theorem icInsertMaxPermutation_symm_last {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n) :
+    (icInsertMaxPermutation s p).symm (Fin.last n) = s := by
+  rw [Equiv.symm_apply_eq]
+  exact (icInsertMaxFun_same s p).symm
+
+private def icInsertionMap (n : Nat) :
+    Fin (n + 1) × FinitePermutation n → FinitePermutation (n + 1) :=
+  fun sp => icInsertMaxPermutation sp.1 sp.2
+
+private theorem icInsertionMap_injective (n : Nat) :
+    Function.Injective (icInsertionMap n) := by
+  rintro ⟨s, p⟩ ⟨t, q⟩ heq
+  have hsvalue := congrArg
+    (fun e : FinitePermutation (n + 1) => e.symm (Fin.last n)) heq
+  have hs : s = t := by
+    simpa [icInsertionMap, icInsertMaxPermutation_symm_last] using hsvalue
+  subst t
+  have hp : p = q := by
+    apply Equiv.ext
+    intro i
+    have hvalue := congrArg
+      (fun e : FinitePermutation (n + 1) => e (s.succAbove i)) heq
+    simpa [icInsertionMap, icInsertMaxPermutation_apply,
+      icInsertMaxFun_succAbove] using hvalue
+  subst q
+  rfl
+
+private def icInsertionEquiv (n : Nat) :
+    (Fin (n + 1) × FinitePermutation n) ≃ FinitePermutation (n + 1) :=
+  Equiv.ofBijective (icInsertionMap n)
+    ((Fintype.bijective_iff_injective_and_card _).2
+      ⟨icInsertionMap_injective n, by
+        simp [Fintype.card_perm, Nat.factorial_succ]⟩)
+
+private theorem icInsertionEquiv_apply (n : Nat)
+    (sp : Fin (n + 1) × FinitePermutation n) :
+    icInsertionEquiv n sp = icInsertMaxPermutation sp.1 sp.2 := by
+  rfl
+
+private theorem icInsertMax_free_component {n : Nat} (s : Fin (n + 1))
+    (p : FinitePermutation n)
+    (hfree : FiniteAPFree (icInsertMaxPermutation s p) 3) :
+    FiniteAPFree p 3 := by
+  intro hap
+  apply hfree
+  obtain ⟨pos, hpos, a, d, hd, hvalues⟩ := hap
+  refine ⟨fun i => s.succAbove (pos i), ?_, a, d, hd, ?_⟩
+  · exact (Fin.strictMono_succAbove s).comp hpos
+  · intro i
+    simpa [finitePermutationSequence, icInsertMaxPermutation_apply,
+      icInsertMaxFun_succAbove] using hvalues i
+
+private def icLowValue (n : Nat) (d : Fin (n / 2)) : Fin n :=
+  ⟨n - 2 * ((d : Nat) + 1), by have := d.isLt; omega⟩
+
+private def icMidValue (n : Nat) (d : Fin (n / 2)) : Fin n :=
+  ⟨n - ((d : Nat) + 1), by have := d.isLt; omega⟩
+
+private theorem icLowValue_ne_midValue (n : Nat) (d : Fin (n / 2)) :
+    icLowValue n d ≠ icMidValue n d := by
+  intro h
+  have hval := congrArg Fin.val h
+  simp only [icLowValue, icMidValue] at hval
+  have := d.isLt
+  omega
+
+private theorem icMidValue_injective (n : Nat) :
+    Function.Injective (icMidValue n) := by
+  intro d e h
+  apply Fin.ext
+  have hval := congrArg Fin.val h
+  simp only [icMidValue] at hval
+  have hd := d.isLt
+  have he := e.isLt
+  omega
+
+private def icLowPosition {n : Nat} (p : FinitePermutation n)
+    (d : Fin (n / 2)) : Fin n :=
+  p.symm (icLowValue n d)
+
+private def icMidPosition {n : Nat} (p : FinitePermutation n)
+    (d : Fin (n / 2)) : Fin n :=
+  p.symm (icMidValue n d)
+
+private theorem icLowPosition_ne_midPosition {n : Nat}
+    (p : FinitePermutation n) (d : Fin (n / 2)) :
+    icLowPosition p d ≠ icMidPosition p d := by
+  intro h
+  exact icLowValue_ne_midValue n d (p.symm.injective h)
+
+private theorem icMidPosition_injective {n : Nat} (p : FinitePermutation n) :
+    Function.Injective (icMidPosition p) := by
+  intro d e h
+  exact icMidValue_injective n (p.symm.injective h)
+
+private def icInsertionSafe {n : Nat} (p : FinitePermutation n)
+    (s : Fin (n + 1)) : Prop :=
+  FiniteAPFree (icInsertMaxPermutation s p) 3
+
+private instance icInsertionSafe_finite {n : Nat} (p : FinitePermutation n) :
+    Finite {s : Fin (n + 1) // icInsertionSafe p s} :=
+  Finite.of_injective Subtype.val Subtype.val_injective
+
+private instance icInsertionNotSafe_finite {n : Nat} (p : FinitePermutation n) :
+    Finite {s : Fin (n + 1) // ¬ icInsertionSafe p s} :=
+  Finite.of_injective Subtype.val Subtype.val_injective
+
+private theorem icInsertionSafe_le_mid_of_low_before {n : Nat}
+    (p : FinitePermutation n) (s : Fin (n + 1)) (d : Fin (n / 2))
+    (hfree : icInsertionSafe p s)
+    (horder : icLowPosition p d < icMidPosition p d) :
+    s ≤ (icMidPosition p d).castSucc := by
+  by_contra hle
+  have hmid : (icMidPosition p d).castSucc < s := Fin.not_le.mp hle
+  apply hfree
+  let pos : Fin 3 → Fin (n + 1) := fun i =>
+    if i = 0 then s.succAbove (icLowPosition p d)
+    else if i = 1 then s.succAbove (icMidPosition p d)
+    else s
+  refine ⟨pos, ?_, ((icLowValue n d : Nat) + 1 : Int),
+    (((d : Nat) + 1 : Nat) : Int), ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp [pos] at hij ⊢
+    · exact horder
+    · exact lt_trans (Fin.strictMono_succAbove s horder)
+        ((Fin.succAbove_lt_iff_castSucc_lt s (icMidPosition p d)).2 hmid)
+    · exact (Fin.succAbove_lt_iff_castSucc_lt s (icMidPosition p d)).2 hmid
+  · rw [bne_iff_ne]
+    exact_mod_cast Nat.succ_ne_zero (d : Nat)
+  · intro i
+    fin_cases i
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_succAbove, icLowPosition]
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_succAbove, icMidPosition, icLowValue, icMidValue]
+      have := d.isLt
+      omega
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_same, icLowValue]
+      have := d.isLt
+      omega
+
+private theorem icMid_lt_insertionSafe_of_mid_before_low {n : Nat}
+    (p : FinitePermutation n) (s : Fin (n + 1)) (d : Fin (n / 2))
+    (hfree : icInsertionSafe p s)
+    (horder : icMidPosition p d < icLowPosition p d) :
+    (icMidPosition p d).castSucc < s := by
+  by_contra hlt
+  have hs : s ≤ (icMidPosition p d).castSucc := Fin.not_lt.mp hlt
+  apply hfree
+  let pos : Fin 3 → Fin (n + 1) := fun i =>
+    if i = 0 then s
+    else if i = 1 then s.succAbove (icMidPosition p d)
+    else s.succAbove (icLowPosition p d)
+  refine ⟨pos, ?_, ((n + 1 : Nat) : Int),
+    -((((d : Nat) + 1 : Nat) : Int)), ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp [pos] at hij ⊢
+    · exact (Fin.lt_succAbove_iff_le_castSucc s (icMidPosition p d)).2 hs
+    · exact lt_trans
+        ((Fin.lt_succAbove_iff_le_castSucc s (icMidPosition p d)).2 hs)
+        (Fin.strictMono_succAbove s horder)
+    · exact horder
+  · rw [bne_iff_ne, neg_ne_zero]
+    exact_mod_cast Nat.succ_ne_zero (d : Nat)
+  · intro i
+    fin_cases i
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_same]
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_succAbove, icMidPosition, icMidValue]
+      have := d.isLt
+      omega
+    · simp [pos, finitePermutationSequence, icInsertMaxPermutation_apply,
+        icInsertMaxFun_succAbove, icLowPosition, icLowValue]
+      have := d.isLt
+      omega
+
+private theorem icMidPosition_lt_lowPosition_of_not_lt {n : Nat}
+    (p : FinitePermutation n) (d : Fin (n / 2))
+    (h : ¬ icLowPosition p d < icMidPosition p d) :
+    icMidPosition p d < icLowPosition p d := by
+  exact lt_of_le_of_ne (Fin.not_lt.mp h)
+    (Ne.symm (icLowPosition_ne_midPosition p d))
+
+private def icForbiddenSlot {n : Nat} (p : FinitePermutation n)
+    (d : Fin (n / 2)) : Fin (n + 1) :=
+  if icLowPosition p d < icMidPosition p d then
+    (icMidPosition p d).succ
+  else
+    (icMidPosition p d).castSucc
+
+private theorem icForbiddenSlot_not_safe {n : Nat} (p : FinitePermutation n)
+    (d : Fin (n / 2)) :
+    ¬ icInsertionSafe p (icForbiddenSlot p d) := by
+  by_cases horder : icLowPosition p d < icMidPosition p d
+  · intro hsafe
+    have hle := icInsertionSafe_le_mid_of_low_before p
+      (icForbiddenSlot p d) d hsafe horder
+    simp only [icForbiddenSlot, if_pos horder] at hle
+    exact (not_le_of_gt Fin.castSucc_lt_succ) hle
+  · intro hsafe
+    have hlt := icMid_lt_insertionSafe_of_mid_before_low p
+      (icForbiddenSlot p d) d hsafe
+      (icMidPosition_lt_lowPosition_of_not_lt p d horder)
+    simp only [icForbiddenSlot, if_neg horder] at hlt
+    exact (lt_irrefl _ hlt)
+
+private theorem icForbiddenSlot_injective_of_safe {n : Nat}
+    (p : FinitePermutation n) (anchor : Fin (n + 1))
+    (hanchor : icInsertionSafe p anchor) :
+    Function.Injective (icForbiddenSlot p) := by
+  intro d e hslot
+  by_cases hd : icLowPosition p d < icMidPosition p d
+  · by_cases he : icLowPosition p e < icMidPosition p e
+    · simp only [icForbiddenSlot, if_pos hd, if_pos he] at hslot
+      apply icMidPosition_injective p
+      exact Fin.succ_injective n hslot
+    · have had : anchor < icForbiddenSlot p d := by
+        have hle := icInsertionSafe_le_mid_of_low_before p anchor d hanchor hd
+        have hstep : (icMidPosition p d).castSucc < (icMidPosition p d).succ :=
+          Fin.castSucc_lt_succ
+        simpa only [icForbiddenSlot, if_pos hd] using lt_of_le_of_lt hle hstep
+      have hae : icForbiddenSlot p e < anchor := by
+        have hlt := icMid_lt_insertionSafe_of_mid_before_low p anchor e hanchor
+          (icMidPosition_lt_lowPosition_of_not_lt p e he)
+        simpa only [icForbiddenSlot, if_neg he] using hlt
+      rw [hslot] at had
+      exact ((not_lt_of_ge had.le) hae).elim
+  · by_cases he : icLowPosition p e < icMidPosition p e
+    · have had : icForbiddenSlot p d < anchor := by
+        have hlt := icMid_lt_insertionSafe_of_mid_before_low p anchor d hanchor
+          (icMidPosition_lt_lowPosition_of_not_lt p d hd)
+        simpa only [icForbiddenSlot, if_neg hd] using hlt
+      have hae : anchor < icForbiddenSlot p e := by
+        have hle := icInsertionSafe_le_mid_of_low_before p anchor e hanchor he
+        have hstep : (icMidPosition p e).castSucc < (icMidPosition p e).succ :=
+          Fin.castSucc_lt_succ
+        simpa only [icForbiddenSlot, if_pos he] using lt_of_le_of_lt hle hstep
+      rw [hslot] at had
+      exact ((not_lt_of_ge had.le) hae).elim
+    · simp only [icForbiddenSlot, if_neg hd, if_neg he] at hslot
+      apply icMidPosition_injective p
+      exact (Fin.castSucc_injective n) hslot
+
+private def icForbiddenEmbedding {n : Nat} (p : FinitePermutation n)
+    (anchor : {s : Fin (n + 1) // icInsertionSafe p s}) :
+    Fin (n / 2) ↪ {s : Fin (n + 1) // ¬ icInsertionSafe p s} where
+  toFun d := ⟨icForbiddenSlot p d, icForbiddenSlot_not_safe p d⟩
+  inj' := by
+    intro d e h
+    exact icForbiddenSlot_injective_of_safe p anchor anchor.property
+      (congrArg Subtype.val h)
+
+private theorem icInsertionSafe_card_le {n : Nat} (p : FinitePermutation n) :
+    Nat.card {s : Fin (n + 1) // icInsertionSafe p s} ≤ (n + 3) / 2 := by
+  classical
+  letI : Fintype {s : Fin (n + 1) // icInsertionSafe p s} := Fintype.ofFinite _
+  letI : Fintype {s : Fin (n + 1) // ¬ icInsertionSafe p s} := Fintype.ofFinite _
+  rw [Nat.card_eq_fintype_card]
+  by_cases hexists : ∃ s : Fin (n + 1), icInsertionSafe p s
+  · obtain ⟨s, hs⟩ := hexists
+    have hforbidden : n / 2 ≤
+        Fintype.card {s : Fin (n + 1) // ¬ icInsertionSafe p s} := by
+      simpa only [Fintype.card_fin] using
+        Fintype.card_le_of_injective (icForbiddenEmbedding p ⟨s, hs⟩)
+          (icForbiddenEmbedding p ⟨s, hs⟩).injective
+    rw [Fintype.card_subtype_compl] at hforbidden
+    simp only [Fintype.card_fin] at hforbidden
+    have htotal : Fintype.card {s : Fin (n + 1) // icInsertionSafe p s} ≤ n + 1 := by
+      simpa only [Fintype.card_fin] using
+        Fintype.card_subtype_le (icInsertionSafe p)
+    have hsafe : Fintype.card {s : Fin (n + 1) // icInsertionSafe p s} ≤
+        n + 1 - n / 2 := by
+      omega
+    have hidentity : n + 1 - n / 2 = (n + 3) / 2 := by
+      omega
+    simpa only [hidentity] using hsafe
+  · have hempty : IsEmpty {s : Fin (n + 1) // icInsertionSafe p s} :=
+      ⟨fun s => hexists ⟨s, s.property⟩⟩
+    letI := hempty
+    rw [Fintype.card_eq_zero]
+    exact Nat.zero_le _
+
+private abbrev ICInsertionCode (n : Nat) :=
+  Σ p : ICFreePermutation n,
+    {s : Fin (n + 1) // icInsertionSafe p s}
+
+private def icEncodeFreeInsertion (n : Nat) :
+    ICFreePermutation (n + 1) → ICInsertionCode n := fun q => by
+  let sp := (icInsertionEquiv n).symm q.1
+  have heq : icInsertMaxPermutation sp.1 sp.2 = q.1 := by
+    simpa only [icInsertionEquiv_apply] using
+      (icInsertionEquiv n).apply_symm_apply q.1
+  have hinsertFree : FiniteAPFree (icInsertMaxPermutation sp.1 sp.2) 3 := by
+    rw [heq]
+    exact q.2
+  exact ⟨⟨sp.2, icInsertMax_free_component sp.1 sp.2 hinsertFree⟩,
+    ⟨sp.1, hinsertFree⟩⟩
+
+private def icDecodeFreeInsertion (n : Nat) :
+    ICInsertionCode n → ICFreePermutation (n + 1) :=
+  fun code => ⟨icInsertMaxPermutation code.2 code.1, code.2.property⟩
+
+private theorem icDecode_encode_freeInsertion (n : Nat)
+    (q : ICFreePermutation (n + 1)) :
+    icDecodeFreeInsertion n (icEncodeFreeInsertion n q) = q := by
+  apply Subtype.ext
+  exact (icInsertionEquiv n).apply_symm_apply q.1
+
+private theorem icEncodeFreeInsertion_injective (n : Nat) :
+    Function.Injective (icEncodeFreeInsertion n) :=
+  Function.LeftInverse.injective (icDecode_encode_freeInsertion n)
+
+private noncomputable def icSafeSlotEmbedding {n : Nat}
+    (p : ICFreePermutation n) :
+    {s : Fin (n + 1) // icInsertionSafe p s} ↪ Fin ((n + 3) / 2) :=
+  @icEmbeddingFinOfNatCardLE
+    {s : Fin (n + 1) // icInsertionSafe (p : FinitePermutation n) s}
+    (icInsertionSafe_finite (p : FinitePermutation n))
+    ((n + 3) / 2) (icInsertionSafe_card_le (p : FinitePermutation n))
+
+private abbrev icUniformInsertionCode (n : Nat) :=
+  ICFreePermutation n × Fin ((n + 3) / 2)
+
+private noncomputable def icUniformizeInsertionCode (n : Nat) :
+    ICInsertionCode n ↪ icUniformInsertionCode n where
+  toFun code := ⟨code.1, icSafeSlotEmbedding code.1 code.2⟩
+  inj' := by
+    rintro ⟨p, s⟩ ⟨q, t⟩ h
+    have hp : p = q := congrArg Prod.fst h
+    subst q
+    have hs : s = t := by
+      apply (icSafeSlotEmbedding p).injective
+      exact congrArg Prod.snd h
+    subst t
+    rfl
+
+private noncomputable def icUniformEncodeFreeInsertion (n : Nat) :
+    ICFreePermutation (n + 1) → icUniformInsertionCode n :=
+  fun q => icUniformizeInsertionCode n (icEncodeFreeInsertion n q)
+
+private theorem icUniformEncodeFreeInsertion_injective (n : Nat) :
+    Function.Injective (icUniformEncodeFreeInsertion n) :=
+  (icUniformizeInsertionCode n).injective.comp
+    (icEncodeFreeInsertion_injective n)
+
+private theorem icNatCard_free_eq_M (n : Nat) :
+    Nat.card (ICFreePermutation n) = M n := by
+  classical
+  unfold ICFreePermutation M
+  rw [Nat.card_eq_fintype_card]
+
+theorem insertion_count_upper_bound_holds : insertion_count_upper_bound := by
+  intro n _hn
+  have hencode : Nat.card (ICFreePermutation (n + 1)) ≤
+      Nat.card (icUniformInsertionCode n) :=
+    Nat.card_le_card_of_injective (icUniformEncodeFreeInsertion n)
+      (icUniformEncodeFreeInsertion_injective n)
+  rw [icNatCard_free_eq_M] at hencode
+  simpa only [icUniformInsertionCode, Nat.card_prod, Nat.card_fin, Nat.mul_comm,
+    icNatCard_free_eq_M] using hencode
+
+theorem fact_2_holds : fact_2 := by
+  have htable := table_1_holds
+  have hM1 : M 1 = 1 := by
+    unfold table_1 at htable
+    have hentry := congrArg (fun xs : List Nat => xs[0]?) htable
+    norm_num at hentry ⊢
+    exact hentry
+  have hM2 : M 2 = 2 := initial_count_values_holds.1
+  intro n hn
+  refine Nat.le_induction ?_ ?_ n hn
+  · norm_num [hM1, hM2]
+  · intro k hk ih
+    have hinsEven := insertion_count_upper_bound_holds (2 * k - 1) (by omega)
+    have hinsOdd := insertion_count_upper_bound_holds (2 * k) (by omega)
+    have hinsNextEven := insertion_count_upper_bound_holds (2 * k + 1) (by omega)
+    have heven : M (2 * k) ≤ (k + 1) * M (2 * k - 1) := by
+      have hindex : 2 * k - 1 + 1 = 2 * k := by omega
+      have hfactor : (2 * k - 1 + 3) / 2 = k + 1 := by omega
+      simpa [hindex, hfactor] using hinsEven
+    have hodd : M (2 * k + 1) ≤ (k + 1) * M (2 * k) := by
+      have hfactor : (2 * k + 3) / 2 = k + 1 := by omega
+      simpa [hfactor] using hinsOdd
+    have hnextEven : M (2 * k + 2) ≤ (k + 2) * M (2 * k + 1) := by
+      have hindex : 2 * k + 1 + 1 = 2 * k + 2 := by omega
+      have hfactor : (2 * k + 1 + 3) / 2 = k + 2 := by omega
+      simpa [hindex, hfactor] using hinsNextEven
+    have hfirst : M (2 * (k + 1) - 1) ≤ Nat.factorial (k + 1) ^ 2 := by
+      calc
+        M (2 * (k + 1) - 1) = M (2 * k + 1) :=
+          congrArg M (by omega)
+        _ ≤ (k + 1) * M (2 * k) := hodd
+        _ ≤ (k + 1) * ((k + 1) * M (2 * k - 1)) :=
+          Nat.mul_le_mul_left (k + 1) heven
+        _ ≤ (k + 1) * ((k + 1) * Nat.factorial k ^ 2) :=
+          Nat.mul_le_mul_left (k + 1) (Nat.mul_le_mul_left (k + 1) ih.1)
+        _ = Nat.factorial (k + 1) ^ 2 := by
+          rw [Nat.factorial_succ]
+          ring
+    have hfirst' : M (2 * k + 1) ≤ Nat.factorial (k + 1) ^ 2 := by
+      have hindex : 2 * (k + 1) - 1 = 2 * k + 1 := by omega
+      simpa only [hindex] using hfirst
+    refine ⟨hfirst, ?_⟩
+    calc
+      M (2 * (k + 1)) = M (2 * k + 2) := congrArg M (by omega)
+      _ ≤ (k + 2) * M (2 * k + 1) := hnextEven
+      _ ≤ (k + 2) * Nat.factorial (k + 1) ^ 2 :=
+        Nat.mul_le_mul_left (k + 2) hfirst'
 
 end LeanProofs.DavisEntringerGrahamSimmons1977
