@@ -4864,4 +4864,516 @@ theorem fact_2_holds : fact_2 := by
       _ ≤ (k + 2) * Nat.factorial (k + 1) ^ 2 :=
         Nat.mul_le_mul_left (k + 2) hfirst'
 
+/-! ## The three-set construction from concluding remark 3 -/
+
+private theorem concludingIntervalLength_ge_hundred : ∀ k : Nat,
+    100 ≤ concludingIntervalLength k := by
+  intro k
+  induction k with
+  | zero => simp [concludingIntervalLength]
+  | succ k ih =>
+      rw [concludingIntervalLength]
+      omega
+
+private theorem concludingIntervalLength_two_step (k : Nat) :
+    2 * concludingIntervalLength k ≤ concludingIntervalLength (k + 2) := by
+  rw [show k + 2 = (k + 1) + 1 by omega, concludingIntervalLength,
+    concludingIntervalLength]
+  have hk := concludingIntervalLength_ge_hundred k
+  omega
+
+private theorem concludingIntervalLength_triangle (k : Nat) :
+    concludingIntervalLength (k + 2) <
+      concludingIntervalLength k + concludingIntervalLength (k + 1) := by
+  rw [show k + 2 = (k + 1) + 1 by omega, concludingIntervalLength,
+    concludingIntervalLength]
+  have hk := concludingIntervalLength_pos k
+  omega
+
+private theorem concludingIntervalStart_le_next_two_lengths : ∀ k : Nat,
+    concludingIntervalStart k ≤
+      concludingIntervalLength k + concludingIntervalLength (k + 1) := by
+  intro k
+  induction k with
+  | zero => norm_num [concludingIntervalStart, concludingIntervalLength]
+  | succ k ih =>
+      rw [concludingIntervalStart_succ]
+      have htwo := concludingIntervalLength_two_step k
+      norm_num only [Nat.add_assoc, Nat.reduceAdd] at htwo ⊢
+      omega
+
+private theorem concludingNextSelected_above_twice_end (k : Nat) :
+    2 * (concludingIntervalStart (k + 1) - 1) <
+      concludingIntervalStart (k + 3) := by
+  rw [show k + 3 = (k + 2) + 1 by omega,
+    concludingIntervalStart_succ (k + 2)]
+  have hstart := concludingIntervalStart_le_next_two_lengths (k + 1)
+  have hsucc := concludingIntervalStart_succ (k + 1)
+  norm_num only [Nat.add_assoc, Nat.reduceAdd] at hstart hsucc ⊢
+  have hpos : 0 < concludingIntervalStart (k + 1) := by
+    simp only [concludingIntervalStart]
+    omega
+  omega
+
+private theorem concludingNextSelected_gap_exceeds_length (k : Nat) :
+    concludingIntervalStart (k + 1) - 1 +
+        concludingIntervalLength (k + 3) <
+      concludingIntervalStart (k + 3) := by
+  have htri := concludingIntervalLength_triangle (k + 1)
+  have hs1 := concludingIntervalStart_succ k
+  have hs2 := concludingIntervalStart_succ (k + 1)
+  have hs3 := concludingIntervalStart_succ (k + 2)
+  norm_num only [Nat.add_assoc, Nat.reduceAdd] at htri hs1 hs2 hs3 ⊢
+  have hpos : 0 < concludingIntervalStart (k + 1) := by
+    simp only [concludingIntervalStart]
+    omega
+  omega
+
+private theorem concludingParts_cover :
+    (⋃ r : Fin 3, concludingPart r) = Set.univ := by
+  ext x
+  simp only [Set.mem_iUnion, Set.mem_univ, iff_true]
+  obtain ⟨k, hk, _⟩ := concluding_intervals_partition_holds.2.2 x
+  refine ⟨⟨k % 3, Nat.mod_lt k (by omega)⟩, k, ?_, hk⟩
+  rfl
+
+private theorem concludingParts_pairwiseDisjoint (r s : Fin 3) (hrs : r ≠ s) :
+    Disjoint (concludingPart r) (concludingPart s) := by
+  rw [Set.disjoint_left]
+  intro x hxr hxs
+  rcases hxr with ⟨k, hkr, hk⟩
+  rcases hxs with ⟨l, hls, hl⟩
+  obtain ⟨_, _, hunique⟩ := concluding_intervals_partition_holds.2.2 x
+  have hkl : k = l := (hunique k hk).trans (hunique l hl).symm
+  subst l
+  apply hrs
+  apply Fin.ext
+  exact hkr.symm.trans hls
+
+private def IsSubsetBlockConcatenation {A : Set PositiveNat}
+    (e : Nat ≃ A) (blocks : Nat → Block) : Prop :=
+  ∀ (k j : Nat) (hj : j < (blocks k).length),
+    subsetEnumerationSequence e (blockPrefixLength blocks k + j) =
+      blockSequence (blocks k) ⟨j, hj⟩
+
+private theorem subsetBlockConcatenation_exists
+    (A : Set PositiveNat) (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length)
+    (hnodup : ∀ k, (blocks k).Nodup)
+    (hpos : ∀ k x, x ∈ blocks k → 0 < x)
+    (hmem : ∀ k x (hx : x ∈ blocks k),
+      (show PositiveNat from ⟨x, hpos k x hx⟩) ∈ A)
+    (howner : ∀ i j x, x ∈ blocks i → x ∈ blocks j → i = j)
+    (hcover : ∀ x : A, ∃ k, ((x.1 : PositiveNat) : Nat) ∈ blocks k) :
+    ∃ e : Nat ≃ A, IsSubsetBlockConcatenation e blocks := by
+  let f : Nat → A := fun n =>
+    let k := positionBlock blocks hlen n
+    let j : Fin (blocks k).length :=
+      ⟨n - blockPrefixLength blocks k, positionBlock_index_lt blocks hlen n⟩
+    ⟨⟨concatenatedValue blocks hlen n,
+        hpos k _ (List.get_mem (blocks k) j)⟩,
+      hmem k _ (List.get_mem (blocks k) j)⟩
+  have hinj : Function.Injective f := by
+    intro n m hnm
+    have hvalue : concatenatedValue blocks hlen n =
+        concatenatedValue blocks hlen m :=
+      congrArg (fun y : A => ((y.1 : PositiveNat) : Nat)) hnm
+    let kn := positionBlock blocks hlen n
+    let km := positionBlock blocks hlen m
+    have hnmem : concatenatedValue blocks hlen n ∈ blocks kn := by
+      dsimp only [concatenatedValue, kn]
+      exact List.get_mem _ _
+    have hmmem : concatenatedValue blocks hlen m ∈ blocks km := by
+      dsimp only [concatenatedValue, km]
+      exact List.get_mem _ _
+    have hk : kn = km := howner kn km _ hnmem (hvalue ▸ hmmem)
+    let jn : Fin (blocks kn).length :=
+      ⟨n - blockPrefixLength blocks kn, positionBlock_index_lt blocks hlen n⟩
+    let jm : Fin (blocks km).length :=
+      ⟨m - blockPrefixLength blocks km, positionBlock_index_lt blocks hlen m⟩
+    have hnidx : (blocks kn).idxOf (concatenatedValue blocks hlen n) =
+        (jn : Nat) := by
+      simpa only [jn, concatenatedValue, kn] using List.get_idxOf (hnodup kn) jn
+    have hmidx : (blocks km).idxOf (concatenatedValue blocks hlen m) =
+        (jm : Nat) := by
+      simpa only [jm, concatenatedValue, km] using List.get_idxOf (hnodup km) jm
+    have hjval : n - blockPrefixLength blocks kn =
+        m - blockPrefixLength blocks km := by
+      change (jn : Nat) = (jm : Nat)
+      rw [← hnidx, ← hmidx, hvalue, hk]
+    have hnlow := positionBlock_lower blocks hlen n
+    have hmlow := positionBlock_lower blocks hlen m
+    change blockPrefixLength blocks kn ≤ n at hnlow
+    change blockPrefixLength blocks km ≤ m at hmlow
+    have hprefix : blockPrefixLength blocks kn = blockPrefixLength blocks km := by
+      rw [hk]
+    omega
+  have hsurj : Function.Surjective f := by
+    intro x
+    obtain ⟨k, hx⟩ := hcover x
+    obtain ⟨j, hj⟩ := List.mem_iff_get.mp hx
+    let n := blockPrefixLength blocks k + (j : Nat)
+    refine ⟨n, ?_⟩
+    apply Subtype.ext
+    apply Subtype.ext
+    change concatenatedValue blocks hlen n = ((x.1 : PositiveNat) : Nat)
+    simpa only [n, concatenatedValue_at blocks hlen k (j : Nat) j.isLt] using hj
+  let e : Nat ≃ A := Equiv.ofBijective f ⟨hinj, hsurj⟩
+  refine ⟨e, ?_⟩
+  intro k j hj
+  simp only [subsetEnumerationSequence, blockSequence]
+  norm_cast
+  change concatenatedValue blocks hlen (blockPrefixLength blocks k + j) = _
+  exact concatenatedValue_at blocks hlen k j hj
+
+private theorem subsetBlockSequence_at_position {A : Set PositiveNat}
+    (blocks : Nat → Block) (hlen : ∀ k, 0 < (blocks k).length)
+    (e : Nat ≃ A) (hconcat : IsSubsetBlockConcatenation e blocks) (n : Nat) :
+    subsetEnumerationSequence e n =
+      blockSequence (blocks (positionBlock blocks hlen n))
+        ⟨n - blockPrefixLength blocks (positionBlock blocks hlen n),
+          positionBlock_index_lt blocks hlen n⟩ := by
+  have hlower := positionBlock_lower blocks hlen n
+  have hdecomp : blockPrefixLength blocks (positionBlock blocks hlen n) +
+      (n - blockPrefixLength blocks (positionBlock blocks hlen n)) = n := by
+    omega
+  simpa only [hdecomp] using hconcat (positionBlock blocks hlen n)
+    (n - blockPrefixLength blocks (positionBlock blocks hlen n))
+    (positionBlock_index_lt blocks hlen n)
+
+private theorem subsetValue_mem_position_block {A : Set PositiveNat}
+    (blocks : Nat → Block) (hlen : ∀ k, 0 < (blocks k).length)
+    (e : Nat ≃ A) (hconcat : IsSubsetBlockConcatenation e blocks) (n : Nat) :
+    (((e n).1 : PositiveNat) : Nat) ∈
+      blocks (positionBlock blocks hlen n) := by
+  have hseq := subsetBlockSequence_at_position blocks hlen e hconcat n
+  have hnat : (((e n).1 : PositiveNat) : Nat) =
+      (blocks (positionBlock blocks hlen n)).get
+        ⟨n - blockPrefixLength blocks (positionBlock blocks hlen n),
+          positionBlock_index_lt blocks hlen n⟩ := by
+    change (((((e n).1 : PositiveNat) : Nat) : Nat) : Int) =
+      (((blocks (positionBlock blocks hlen n)).get
+        ⟨n - blockPrefixLength blocks (positionBlock blocks hlen n),
+          positionBlock_index_lt blocks hlen n⟩ : Nat) : Int) at hseq
+    exact_mod_cast hseq
+  rw [hnat]
+  exact List.get_mem _ _
+
+private theorem subsetThree_same_block_impossible {A : Set PositiveNat}
+    (blocks : Nat → Block) (hlen : ∀ k, 0 < (blocks k).length)
+    (hfree : ∀ k, BlockAPFree (blocks k) 3)
+    (e : Nat ≃ A) (hconcat : IsSubsetBlockConcatenation e blocks)
+    (pos : Fin 3 → Nat) (hpos : StrictMono pos)
+    (hprogression : IsArithmeticProgression
+      (fun i => subsetEnumerationSequence e (pos i)))
+    (b : Nat)
+    (hb : ∀ i : Fin 3, positionBlock blocks hlen (pos i) = b) : False := by
+  let q : Fin 3 → Fin (blocks b).length := fun i =>
+    ⟨pos i - blockPrefixLength blocks b, by
+      have hi := positionBlock_index_lt blocks hlen (pos i)
+      rw [hb i] at hi
+      exact hi⟩
+  have hq : StrictMono q := by
+    intro i j hij
+    change pos i - blockPrefixLength blocks b <
+      pos j - blockPrefixLength blocks b
+    have hij' := hpos hij
+    have hlower := positionBlock_lower blocks hlen (pos i)
+    rw [hb i] at hlower
+    omega
+  apply hfree b
+  refine ⟨q, hq, ?_⟩
+  obtain ⟨a, d, hd, hvalues⟩ := hprogression
+  refine ⟨a, d, hd, ?_⟩
+  intro i
+  have hseq := subsetBlockSequence_at_position blocks hlen e hconcat (pos i)
+  have hsame : blockSequence (blocks b) (q i) =
+      subsetEnumerationSequence e (pos i) := by
+    rw [hseq]
+    simp only [blockSequence, List.get_eq_getElem, q]
+    simp only [hb i]
+  change blockSequence (blocks b) (q i) = _
+  rw [hsame]
+  exact hvalues i
+
+private def concludingSelectedIndex (r : Fin 3) (m : Nat) : Nat :=
+  3 * m + r
+
+private theorem concludingSelectedIndex_injective (r : Fin 3) :
+    Function.Injective (concludingSelectedIndex r) := by
+  intro i j hij
+  simp only [concludingSelectedIndex] at hij
+  omega
+
+private theorem concludingSelectedIndex_mono (r : Fin 3) :
+    Monotone (concludingSelectedIndex r) := by
+  intro i j hij
+  simp only [concludingSelectedIndex]
+  omega
+
+private theorem concludingPart_blocks_exist (r : Fin 3) :
+    ∃ blocks : Nat → Block, ∀ m : Nat,
+      IsIntervalOrdering (blocks m)
+        (concludingIntervalStart (concludingSelectedIndex r m))
+        (concludingIntervalStart (concludingSelectedIndex r m) +
+          concludingIntervalLength (concludingSelectedIndex r m) - 1) ∧
+      BlockAPFree (blocks m) 3 := by
+  classical
+  choose base hbase using fun m : Nat =>
+    apFreeIntervalBlock_exists
+      (concludingIntervalLength (concludingSelectedIndex r m))
+  let blocks : Nat → Block := fun m =>
+    shiftBlock (concludingIntervalStart (concludingSelectedIndex r m) - 1)
+      (base m)
+  refine ⟨blocks, ?_⟩
+  intro m
+  have hstart : 0 < concludingIntervalStart (concludingSelectedIndex r m) := by
+    simp only [concludingIntervalStart]
+    omega
+  have horder := shiftBlock_interval_ordering
+    (concludingIntervalStart (concludingSelectedIndex r m) - 1)
+    (concludingIntervalLength (concludingSelectedIndex r m))
+    (base m) (hbase m).1
+  have horder' : IsIntervalOrdering (blocks m)
+      (concludingIntervalStart (concludingSelectedIndex r m))
+      (concludingIntervalStart (concludingSelectedIndex r m) +
+        concludingIntervalLength (concludingSelectedIndex r m) - 1) := by
+    dsimp only [blocks]
+    convert horder using 1 <;> omega
+  exact ⟨horder', shiftBlock_ap_free _ _ (hbase m).2⟩
+
+private theorem concludingPart_blockConcatenation_exists (r : Fin 3) :
+    ∃ (blocks : Nat → Block) (e : Nat ≃ concludingPart r),
+      (∀ m : Nat,
+        IsIntervalOrdering (blocks m)
+          (concludingIntervalStart (concludingSelectedIndex r m))
+          (concludingIntervalStart (concludingSelectedIndex r m) +
+            concludingIntervalLength (concludingSelectedIndex r m) - 1) ∧
+        BlockAPFree (blocks m) 3) ∧
+      IsSubsetBlockConcatenation e blocks := by
+  classical
+  obtain ⟨blocks, hblocks⟩ := concludingPart_blocks_exist r
+  have horder (m : Nat) := (hblocks m).1
+  have hfree (m : Nat) := (hblocks m).2
+  have hlen : ∀ m, 0 < (blocks m).length := by
+    intro m
+    have hcard := congrArg Finset.card (horder m).2
+    rw [List.toFinset_card_of_nodup (horder m).1, Nat.card_Icc] at hcard
+    have hL := concludingIntervalLength_pos (concludingSelectedIndex r m)
+    omega
+  have hnodup : ∀ m, (blocks m).Nodup := fun m => (horder m).1
+  have hpos : ∀ m x, x ∈ blocks m → 0 < x := by
+    intro m x hx
+    have hx' : x ∈ Finset.Icc
+        (concludingIntervalStart (concludingSelectedIndex r m))
+        (concludingIntervalStart (concludingSelectedIndex r m) +
+          concludingIntervalLength (concludingSelectedIndex r m) - 1) := by
+      rw [← (horder m).2]
+      simpa only [List.mem_toFinset] using hx
+    have hstart : 0 < concludingIntervalStart (concludingSelectedIndex r m) := by
+      simp only [concludingIntervalStart]
+      omega
+    exact lt_of_lt_of_le hstart (Finset.mem_Icc.mp hx').1
+  have hmem : ∀ m x (hx : x ∈ blocks m),
+      (show PositiveNat from ⟨x, hpos m x hx⟩) ∈ concludingPart r := by
+    intro m x hx
+    refine ⟨concludingSelectedIndex r m, ?_, ?_⟩
+    · simp only [concludingSelectedIndex]
+      omega
+    · have hx' : x ∈ Finset.Icc
+          (concludingIntervalStart (concludingSelectedIndex r m))
+          (concludingIntervalStart (concludingSelectedIndex r m) +
+            concludingIntervalLength (concludingSelectedIndex r m) - 1) := by
+        rw [← (horder m).2]
+        simpa only [List.mem_toFinset] using hx
+      simpa only [concludingInterval] using hx'
+  have howner : ∀ i j x, x ∈ blocks i → x ∈ blocks j → i = j := by
+    intro i j x hxi hxj
+    let px : PositiveNat := ⟨x, hpos i x hxi⟩
+    obtain ⟨_, _, hunique⟩ := concluding_intervals_partition_holds.2.2 px
+    have hxi' : (px : Nat) ∈ concludingInterval (concludingSelectedIndex r i) := by
+      have hxfin : x ∈ Finset.Icc
+          (concludingIntervalStart (concludingSelectedIndex r i))
+          (concludingIntervalStart (concludingSelectedIndex r i) +
+            concludingIntervalLength (concludingSelectedIndex r i) - 1) := by
+        rw [← (horder i).2]
+        simpa only [List.mem_toFinset] using hxi
+      simpa only [px, concludingInterval] using hxfin
+    have hxj' : (px : Nat) ∈ concludingInterval (concludingSelectedIndex r j) := by
+      have hxfin : x ∈ Finset.Icc
+          (concludingIntervalStart (concludingSelectedIndex r j))
+          (concludingIntervalStart (concludingSelectedIndex r j) +
+            concludingIntervalLength (concludingSelectedIndex r j) - 1) := by
+        rw [← (horder j).2]
+        simpa only [List.mem_toFinset] using hxj
+      simpa only [px, concludingInterval] using hxfin
+    apply concludingSelectedIndex_injective r
+    exact (hunique _ hxi').trans (hunique _ hxj').symm
+  have hcover : ∀ x : concludingPart r,
+      ∃ m, ((x.1 : PositiveNat) : Nat) ∈ blocks m := by
+    intro x
+    rcases x.property with ⟨k, hkr, hk⟩
+    let m := k / 3
+    have hkindex : concludingSelectedIndex r m = k := by
+      simp only [concludingSelectedIndex, m]
+      have hdiv := Nat.mod_add_div k 3
+      omega
+    refine ⟨m, ?_⟩
+    have hxfin : ((x.1 : PositiveNat) : Nat) ∈ (blocks m).toFinset := by
+      rw [(horder m).2]
+      simpa only [concludingInterval, hkindex] using hk
+    simpa only [List.mem_toFinset] using hxfin
+  obtain ⟨e, hconcat⟩ := subsetBlockConcatenation_exists
+    (concludingPart r) blocks hlen hnodup hpos hmem howner hcover
+  exact ⟨blocks, e, hblocks, hconcat⟩
+
+private theorem concludingPart_blockConcatenation_apFree
+    (r : Fin 3) (blocks : Nat → Block) (e : Nat ≃ concludingPart r)
+    (hblocks : ∀ m : Nat,
+      IsIntervalOrdering (blocks m)
+        (concludingIntervalStart (concludingSelectedIndex r m))
+        (concludingIntervalStart (concludingSelectedIndex r m) +
+          concludingIntervalLength (concludingSelectedIndex r m) - 1) ∧
+      BlockAPFree (blocks m) 3)
+    (hconcat : IsSubsetBlockConcatenation e blocks) :
+    ¬ HasMonotoneAP (subsetEnumerationSequence e) 3 := by
+  have horder (m : Nat) := (hblocks m).1
+  have hfree (m : Nat) := (hblocks m).2
+  have hlen : ∀ m, 0 < (blocks m).length := by
+    intro m
+    have hcard := congrArg Finset.card (horder m).2
+    rw [List.toFinset_card_of_nodup (horder m).1, Nat.card_Icc] at hcard
+    have hL := concludingIntervalLength_pos (concludingSelectedIndex r m)
+    omega
+  rintro ⟨pos, hpos, a, d, hd, hvalues⟩
+  let b : Fin 3 → Nat := fun i => positionBlock blocks hlen (pos i)
+  let x : Fin 3 → Nat := fun i => (((e (pos i)).1 : PositiveNat) : Nat)
+  have hmem : ∀ i : Fin 3, x i ∈ blocks (b i) := by
+    intro i
+    exact subsetValue_mem_position_block blocks hlen e hconcat (pos i)
+  have hbounds : ∀ i : Fin 3,
+      concludingIntervalStart (concludingSelectedIndex r (b i)) ≤ x i ∧
+      x i ≤ concludingIntervalStart (concludingSelectedIndex r (b i)) +
+        concludingIntervalLength (concludingSelectedIndex r (b i)) - 1 := by
+    intro i
+    have hxfin : x i ∈ (blocks (b i)).toFinset := by
+      simpa only [List.mem_toFinset] using hmem i
+    rw [(horder (b i)).2] at hxfin
+    exact Finset.mem_Icc.mp hxfin
+  have hbmono : Monotone b := by
+    intro i j hij
+    exact positionBlock_mono blocks hlen (hpos.monotone hij)
+  have hb01 : b 0 ≤ b 1 := hbmono (by decide)
+  have hb12 : b 1 ≤ b 2 := hbmono (by decide)
+  have h0 := hvalues (0 : Fin 3)
+  have h1 := hvalues (1 : Fin 3)
+  have h2 := hvalues (2 : Fin 3)
+  change ((x 0 : Nat) : Int) = a + 0 * d at h0
+  change ((x 1 : Nat) : Int) = a + 1 * d at h1
+  change ((x 2 : Nat) : Int) = a + 2 * d at h2
+  have hapInt : ((x 0 : Nat) : Int) + (x 2 : Nat) = 2 * (x 1 : Nat) := by
+    rw [h0, h1, h2]
+    ring
+  have hapNat : x 0 + x 2 = 2 * x 1 := by
+    exact_mod_cast hapInt
+  by_cases hb12eq : b 1 = b 2
+  · by_cases hb01eq : b 0 = b 1
+    · apply subsetThree_same_block_impossible blocks hlen hfree e hconcat
+        pos hpos ⟨a, d, hd, hvalues⟩ (b 0)
+      intro i
+      fin_cases i
+      · rfl
+      · exact hb01eq.symm
+      · exact (hb01eq.trans hb12eq).symm
+    · have hb01lt : b 0 < b 1 := lt_of_le_of_ne hb01 hb01eq
+      have hb1pos : 0 < b 1 := by omega
+      let k := concludingSelectedIndex r (b 1 - 1)
+      have hkNext : k + 3 = concludingSelectedIndex r (b 1) := by
+        simp only [k, concludingSelectedIndex]
+        omega
+      have hidx0 : concludingSelectedIndex r (b 0) ≤ k := by
+        apply concludingSelectedIndex_mono r
+        omega
+      have hstartMono :
+          concludingIntervalStart (concludingSelectedIndex r (b 0) + 1) ≤
+            concludingIntervalStart (k + 1) := by
+        exact concludingIntervalStart_strictMono.monotone
+          (Nat.add_le_add_right hidx0 1)
+      have hx0Next : x 0 <
+          concludingIntervalStart (concludingSelectedIndex r (b 0) + 1) := by
+        rw [concludingIntervalStart_succ]
+        have hx0 := hbounds 0
+        have hL := concludingIntervalLength_pos
+          (concludingSelectedIndex r (b 0))
+        omega
+      have hgap := concludingNextSelected_gap_exceeds_length k
+      rw [hkNext] at hgap
+      have hx0gap : x 0 + concludingIntervalLength
+          (concludingSelectedIndex r (b 1)) <
+          concludingIntervalStart (concludingSelectedIndex r (b 1)) := by
+        omega
+      have hx1 := hbounds 1
+      have hx2 := hbounds 2
+      rw [← hb12eq] at hx2
+      omega
+  · have hb12lt : b 1 < b 2 := lt_of_le_of_ne hb12 hb12eq
+    let k := concludingSelectedIndex r (b 1)
+    have hkNext : k + 3 = concludingSelectedIndex r (b 1 + 1) := by
+      simp only [k, concludingSelectedIndex]
+      omega
+    have hidx2 : concludingSelectedIndex r (b 1 + 1) ≤
+        concludingSelectedIndex r (b 2) := by
+      apply concludingSelectedIndex_mono r
+      omega
+    have hstartMono : concludingIntervalStart (k + 3) ≤
+        concludingIntervalStart (concludingSelectedIndex r (b 2)) := by
+      rw [hkNext]
+      exact concludingIntervalStart_strictMono.monotone hidx2
+    have hgap := concludingNextSelected_above_twice_end k
+    have hx1 := hbounds 1
+    have hx2 := hbounds 2
+    have hkSucc : concludingIntervalStart (k + 1) =
+        concludingIntervalStart k + concludingIntervalLength k :=
+      concludingIntervalStart_succ k
+    have hx1end : x 1 ≤ concludingIntervalStart (k + 1) - 1 := by
+      dsimp only [k] at hkSucc ⊢
+      omega
+    have hx2start : concludingIntervalStart (k + 3) ≤ x 2 := by
+      exact le_trans hstartMono hx2.1
+    have hx2large : 2 * x 1 < x 2 := by
+      omega
+    have hx0pos : 0 < x 0 := (e (pos 0)).1.property
+    omega
+
+theorem three_set_interval_construction_holds :
+    three_set_interval_construction := by
+  refine ⟨concludingParts_cover, ?_, ?_⟩
+  · intro r s hrs
+    apply concludingParts_pairwiseDisjoint r s
+    intro heq
+    subst s
+    simp at hrs
+  intro r
+  obtain ⟨blocks, e, hblocks, hconcat⟩ :=
+    concludingPart_blockConcatenation_exists r
+  exact ⟨e,
+    concludingPart_blockConcatenation_apFree r blocks e hblocks hconcat⟩
+
+theorem three_set_partition_holds : three_set_partition := by
+  rcases three_set_interval_construction_holds with
+    ⟨hcover, hdisjoint, hfree⟩
+  refine ⟨concludingPart 0, concludingPart 1, concludingPart 2, ?_,
+    hdisjoint 0 1 (by decide), hdisjoint 0 2 (by decide),
+    hdisjoint 1 2 (by decide), hfree 0, hfree 1, hfree 2⟩
+  rw [← hcover]
+  ext x
+  simp only [Set.mem_union, Set.mem_iUnion]
+  constructor
+  · rintro ((hx | hx) | hx)
+    · exact ⟨0, hx⟩
+    · exact ⟨1, hx⟩
+    · exact ⟨2, hx⟩
+  · rintro ⟨r, hr⟩
+    fin_cases r <;> simp_all
+
 end LeanProofs.DavisEntringerGrahamSimmons1977
