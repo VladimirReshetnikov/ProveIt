@@ -4,6 +4,7 @@ import DavisEntringerGrahamSimmons1977.Proofs
 import DavisEntringerGrahamSimmons1977.ModularConsequences
 import DavisEntringerGrahamSimmons1977.CountingRecurrences
 import DavisEntringerGrahamSimmons1977.IntegerConsequences
+import DavisEntringerGrahamSimmons1977.Nathanson
 
 /-!
 # Davis--Entringer--Graham--Simmons (1977)
