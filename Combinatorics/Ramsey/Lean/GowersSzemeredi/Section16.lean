@@ -484,10 +484,10 @@ noncomputable def section16FinsetUnion {ι X : Type*} [Fintype ι]
   classical
   exact Finset.univ.biUnion A
 
-/-- **Lemma 16.8.** Finite unions of multiply-linear relations and finite
-sums of multiply-linear partial functions preserve the property, multiplying
-the iteration parameter by the number of terms. -/
-def lemma_16_8 : Prop :=
+/-- The uncorrected printed form of Lemma 16.8.  It is retained so that the
+zero-iteration counterexample can be stated independently of the repaired
+theorem. -/
+def lemma_16_8_without_positive_iteration : Prop :=
   (∀ (N k r : Nat) [NeZero N] (gamma s : Real)
       (Gamma : Fin r → Finset (Point N (k + 1) × ZMod N)),
       (∀ i, MultiplyLinear gamma s (Gamma i)) →
@@ -496,6 +496,38 @@ def lemma_16_8 : Prop :=
       (B : Finset (Point N (k + 1)))
       (phi : Fin r → Point N (k + 1) → ZMod N),
     (∀ i, MultiplyLinearFunction gamma s B (phi i)) →
+    MultiplyLinearFunction gamma ((r : Real) * s) B
+      (fun x => ∑ i, phi i x)
+
+/-- The still-insufficient variant obtained by requiring only a positive real
+iteration parameter.  Arbitrarily small positive values do not leave enough
+room in the real graph-count bound for a union of two constant graphs. -/
+def lemma_16_8_with_positive_iteration : Prop :=
+  (∀ (N k r : Nat) [NeZero N] (gamma s : Real)
+      (Gamma : Fin r → Finset (Point N (k + 1) × ZMod N)),
+      0 < s → (∀ i, MultiplyLinear gamma s (Gamma i)) →
+      MultiplyLinear gamma ((r : Real) * s) (section16FinsetUnion Gamma)) ∧
+  ∀ (N k r : Nat) [NeZero N] (gamma s : Real)
+      (B : Finset (Point N (k + 1)))
+      (phi : Fin r → Point N (k + 1) → ZMod N),
+    0 < s → (∀ i, MultiplyLinearFunction gamma s B (phi i)) →
+    MultiplyLinearFunction gamma ((r : Real) * s) B
+      (fun x => ∑ i, phi i x)
+
+/-- **Lemma 16.8.** Finite unions of multiply-linear relations and finite
+sums of multiply-linear partial functions preserve the property, multiplying
+the iteration parameter by the number of terms.  The paper uses `s` as an
+iteration count, so its faithful real-valued formulation requires `1 ≤ s`.
+The assertion fails both at zero and at sufficiently small positive `s`. -/
+def lemma_16_8 : Prop :=
+  (∀ (N k r : Nat) [NeZero N] (gamma s : Real)
+      (Gamma : Fin r → Finset (Point N (k + 1) × ZMod N)),
+      1 ≤ s → (∀ i, MultiplyLinear gamma s (Gamma i)) →
+      MultiplyLinear gamma ((r : Real) * s) (section16FinsetUnion Gamma)) ∧
+  ∀ (N k r : Nat) [NeZero N] (gamma s : Real)
+      (B : Finset (Point N (k + 1)))
+      (phi : Fin r → Point N (k + 1) → ZMod N),
+    1 ≤ s → (∀ i, MultiplyLinearFunction gamma s B (phi i)) →
     MultiplyLinearFunction gamma ((r : Real) * s) B
       (fun x => ∑ i, phi i x)
 

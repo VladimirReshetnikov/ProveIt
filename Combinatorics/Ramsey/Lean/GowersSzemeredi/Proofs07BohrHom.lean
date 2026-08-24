@@ -520,9 +520,9 @@ private structure Lemma78Representation {N : Nat}
   he : e ∈ A
   relation : a + e - b - c = d
 
-private def Lemma78Representation.value {N : Nat}
-    {A : Finset (ZMod N)} {d : ZMod N}
-    (phi : ZMod N -> ZMod N) (q : Lemma78Representation A d) : ZMod N :=
+private def Lemma78Representation.value {N : Nat} {G : Type*}
+    [AddCommGroup G] {A : Finset (ZMod N)} {d : ZMod N}
+    (phi : ZMod N -> G) (q : Lemma78Representation A d) : G :=
   phi q.a + phi q.e - phi q.b - phi q.c
 
 private lemma lemma78_pairCorrelation_star {N : Nat} [NeZero N]
@@ -588,8 +588,8 @@ private lemma lemma78_representation_of_mem_bohr {N : Nat} [NeZero N]
   lemma78_representation_of_fourCorrelation_ne_zero A d
     (lemma78_fourCorrelation_ne_zero_of_mem_bohr A alpha halpha hcard d hd)
 
-private lemma lemma78_freiman8_fin_sum {N : Nat}
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private lemma lemma78_freiman8_fin_sum {N : Nat} {G : Type*}
+    [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (hphi : FreimanHom 8 A phi) (x y : Fin 8 -> ZMod N)
     (hx : ∀ i, x i ∈ A) (hy : ∀ i, y i ∈ A)
     (hsum : (∑ i, x i) = ∑ i, y i) :
@@ -613,8 +613,8 @@ private lemma lemma78_freiman8_fin_sum {N : Nat}
   have hmap := hphi.map_sum_eq_map_sum hsA htA hsCard htCard hsEq
   simpa [sx, sy, Fin.sum_univ_succ] using hmap
 
-private lemma lemma78_representation_value_wellDefined {N : Nat}
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private lemma lemma78_representation_value_wellDefined {N : Nat} {G : Type*}
+    [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (hphi : FreimanHom 8 A phi) {d : ZMod N}
     (q q' : Lemma78Representation A d) :
     q.value phi = q'.value phi := by
@@ -636,10 +636,17 @@ private lemma lemma78_representation_value_wellDefined {N : Nat}
   have himage := lemma78_freiman8_fin_sum A phi hphi x y hx hy hsum
   simp [x, y, Fin.sum_univ_succ] at himage
   unfold Lemma78Representation.value
-  linear_combination himage
+  rw [show phi q.a + phi q.e - phi q.b - phi q.c =
+      (phi q.a + phi q.e) - (phi q.b + phi q.c) by abel]
+  rw [show phi q'.a + phi q'.e - phi q'.b - phi q'.c =
+      (phi q'.a + phi q'.e) - (phi q'.b + phi q'.c) by abel]
+  apply sub_eq_sub_iff_add_eq_add.mpr
+  apply add_right_cancel (b := 4 • phi q.a)
+  abel_nf at himage ⊢
+  exact himage
 
-private lemma lemma78_representation_value_additive {N : Nat}
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private lemma lemma78_representation_value_additive {N : Nat} {G : Type*}
+    [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (hphi : FreimanHom 8 A phi) {d1 d2 d3 d4 : ZMod N}
     (q1 : Lemma78Representation A d1) (q2 : Lemma78Representation A d2)
     (q3 : Lemma78Representation A d3) (q4 : Lemma78Representation A d4)
@@ -667,7 +674,19 @@ private lemma lemma78_representation_value_additive {N : Nat}
   have himage := lemma78_freiman8_fin_sum A phi hphi x y hx hy hsum
   simp [x, y, Fin.sum_univ_succ] at himage
   unfold Lemma78Representation.value
-  linear_combination himage
+  rw [show
+    (phi q1.a + phi q1.e - phi q1.b - phi q1.c) +
+        (phi q2.a + phi q2.e - phi q2.b - phi q2.c) =
+      (phi q1.a + phi q1.e + phi q2.a + phi q2.e) -
+        (phi q1.b + phi q1.c + phi q2.b + phi q2.c) by abel]
+  rw [show
+    (phi q3.a + phi q3.e - phi q3.b - phi q3.c) +
+        (phi q4.a + phi q4.e - phi q4.b - phi q4.c) =
+      (phi q3.a + phi q3.e + phi q4.a + phi q4.e) -
+        (phi q3.b + phi q3.c + phi q4.b + phi q4.c) by abel]
+  apply sub_eq_sub_iff_add_eq_add.mpr
+  abel_nf at himage ⊢
+  exact himage
 
 private noncomputable def lemma78ChosenRepresentation {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
@@ -676,16 +695,17 @@ private noncomputable def lemma78ChosenRepresentation {N : Nat} [NeZero N]
     Lemma78Representation A d :=
   Classical.choice (lemma78_representation_of_mem_bohr A alpha halpha hcard d hd)
 
-private noncomputable def lemma78InducedMap {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private noncomputable def lemma78InducedMap {N : Nat} {G : Type*}
+    [NeZero N] [AddCommGroup G] (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
-    (hcard : (A.card : Real) = alpha * N) : ZMod N -> ZMod N :=
+    (hcard : (A.card : Real) = alpha * N) : ZMod N -> G :=
   fun d => if hd : d ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi))
     then (lemma78ChosenRepresentation A alpha halpha hcard d hd).value phi
     else 0
 
-private lemma lemma78_induced_freiman {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private lemma lemma78_induced_freiman {N : Nat} {G : Type*}
+    [NeZero N] [AddCommGroup G]
+    (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) (hphi : FreimanHom 8 A phi) :
     FreimanHom 2 (bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)))
@@ -715,8 +735,9 @@ private lemma lemma78_induced_freiman {N : Nat} [NeZero N]
     rw [haMap, hbMap, hcMap, hdMap]
     exact hadd
 
-private lemma lemma78_induced_agrees {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (phi : ZMod N -> ZMod N)
+private lemma lemma78_induced_agrees {N : Nat} {G : Type*}
+    [NeZero N] [AddCommGroup G]
+    (A : Finset (ZMod N)) (phi : ZMod N -> G)
     (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) (hphi : FreimanHom 8 A phi)
     (x : ZMod N) (hx : x ∈ A) (y : ZMod N) (hy : y ∈ A)
@@ -738,7 +759,30 @@ private lemma lemma78_induced_agrees {N : Nat} [NeZero N]
   unfold lemma78InducedMap
   rw [dif_pos hxy]
   change phi x + phi x - phi y - phi x = q'.value phi at hvalue
-  linear_combination hvalue
+  abel_nf at hvalue ⊢
+  exact hvalue
+
+/-- The general-abelian-codomain form of Lemma 7.8 mentioned immediately
+after its proof in the paper.  The Bohr neighborhood lives in the cyclic
+domain; the induced Freiman map may take values in any additive commutative
+group. -/
+theorem lemma_7_8_group_holds {G : Type*} [AddCommGroup G]
+    (N : Nat) [NeZero N] (A : Finset (ZMod N))
+    (phi : ZMod N -> G) (alpha : Real) (halpha : 0 < alpha)
+    (hcard : (A.card : Real) = alpha * N) (hphi : FreimanHom 8 A phi) :
+    let K := section7Spectrum A alpha
+    (K.card : Real) <= 16 * alpha ^ (-(2 : Real)) /\
+      exists psi : ZMod N -> G,
+        FreimanHom 2 (bohr K (alpha / (32 * Real.pi))) psi /\
+        forall x, x ∈ A -> forall y, y ∈ A ->
+          x - y ∈ bohr K (alpha / (32 * Real.pi)) ->
+          phi x - phi y = psi (x - y) := by
+  dsimp only
+  constructor
+  · exact lemma78_spectrum_card_bound A alpha halpha hcard
+  · exact ⟨lemma78InducedMap A phi alpha halpha hcard,
+      lemma78_induced_freiman A phi alpha halpha hcard hphi,
+      lemma78_induced_agrees A phi alpha halpha hcard hphi⟩
 
 /-- **Gowers, Lemma 7.8.** -/
 theorem lemma_7_8_holds : lemma_7_8 := by

@@ -21474,6 +21474,249 @@ the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but
 constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
 \statusexactcomp{}.
 
+\subsection{A first certificate search, and the conditioning barrier in practice}
+\label{camp:searchrun}
+
+The near-curve route of Section~\ref{nc:budgets} is the corpus's only
+falsifiable-by-computation path: certified covers of total defect $o(L)$ would prove the
+conjecture.  We ran the first search.
+
+The set-up is exact.  Integer points of $y=x^{\thetaq}$ are precisely
+$\{(2^u,3^u):u\in\Sol\}$ --- writing $x=2^u$, integrality of both coordinates says exactly
+$u\in\Sol$ --- so a dyadic block $2^L\le x<2^{L+1}$ carries
+$\#\bigl(\Sol\cap[L,L+1)\bigr)$ of them: one under the conjecture, and
+$1+\lfloor(L+1)/\beta\rfloor$ under failure, which is the orbit pressure of
+Section~\ref{nc:budgets}.  Normalising $z=x/2^L\in[1,2]$, a polynomial
+$P=\sum c_{ij}X^iY^j$ restricts to
+\[
+ F(z)=\sum_{(i,j)\in S}c_{ij}\,2^{Li}3^{Lj}\,z^{\,i+j\thetaq},
+\]
+and the certificate condition is $\sup_{[1,2]}|F|<1$.  We expanded each basis function in
+Chebyshev polynomials on $[1,2]$ at $80$ digits, formed the lattice
+$\bigl[\,e_{ij}\mid\lfloor\sigma\cdot\mathrm{cheb}(\varphi_{ij})\rceil\,\bigr]$ and
+LLL-reduced it (\path{scripts/near_curve_search.py}).
+
+The outcome is negative and instructive: for every $L\le10$ and every total degree
+$d\le5$, the reduced basis contains nothing better than the trivial $P=1$, whose supremum
+is exactly $1$ --- never below it.  The diagnosis is quantitative.  The simplest vanishing
+choice $P=3^LX-2^LY$ gives $F(z)=6^L(z-z^{\thetaq})$ with supremum exactly $6^L$
+($6$, $36$, $1296$, $1679616$ at $L=1,2,4,8$), so a certificate must cancel about $6^{Ld}$
+using integer coefficients; pigeonhole says coefficients of size $6^{2L/d}$ suffice on a
+degree-$d$ support, which is the $d\asymp\sqrt L$ corridor of Section~\ref{bb:ceilings}
+seen from the constructive side.  Meanwhile the basis functions $z^{i+j\thetaq}$ are all
+smooth and nearly parallel on $[1,2]$, so their Gram matrix is severely ill-conditioned
+while the lattice entries already span some $47$ orders of magnitude at $L=10$, $d=5$.
+Plain LLL on that basis cannot exploit the near-degeneracy.
+
+This is a small independent confirmation of the conditioning barrier and of the extinction
+of fixed supports, from the constructive rather than the obstructive side.  It also fixes
+what a serious attempt requires, and the requirement is now concrete: the
+Brisebarre--Hanrot rounded Chebyshev--Bernstein matrix \emph{with tail columns}, directed
+rounding for a rigorous rather than measured supremum, and working precision exceeding the
+dynamic range --- rather than a plain Chebyshev basis and floating LLL.
+\statusexactcomp{} (measured suprema; no rigorous certificate is claimed).
+
+\subsection{The spectrum question is a difference-module finiteness question}
+\label{camp:diffmodule}
+
+The sharp form of what remains --- is $V_\tau=V_0$ for every finite $\tau$? --- has
+structure that was not visible when it was posed.  The monoid is closed under both of its
+generators,
+\[
+ \Sol+1\subseteq\Sol,
+ \qquad
+ \Sol+\beta\subseteq\Sol
+ \qquad(s=n+k\beta\mapsto(n{+}1)+k\beta,\ n+(k{+}1)\beta),
+\]
+so the two difference operators
+\[
+ (\Delta_1g)(z)=g(z+1)-g(z),
+ \qquad
+ (\Delta_\beta g)(z)=g(z+\beta)-g(z)
+\]
+carry integer-valued functions on $\Sol$ to integer-valued functions on $\Sol$.  They also
+preserve finite quadratic type, since $M(g(\cdot+h),r)\le M(g,r+h)$ leaves
+$\lim r^{-2}\log M$ unchanged.  Hence \emph{each $V_\tau$ is a module over the commutative
+ring $\Z[\Delta_1,\Delta_\beta]$}.
+
+On the monomials $e_{ij}(z)=2^{iz}3^{jz}$ both operators are diagonal, and --- this is the
+point --- with \emph{integer} eigenvalues:
+\[
+ \Delta_1e_{ij}=(2^i3^j-1)\,e_{ij},
+ \qquad
+ \Delta_\beta e_{ij}=(M^iA^j-1)\,e_{ij},
+\]
+the second being an integer precisely because $M=2^\beta$ and $A=3^\beta$ are integers under
+the counterexample hypothesis.  So $V_0\supseteq\Z[2^z,3^z]$ is spanned by joint
+eigenvectors with integer eigenvalue pairs, and the two operators separate them: the pair
+$(2^i3^j,M^iA^j)$ determines $(i,j)$, by the kernel-verified injectivity of
+$(i,j)\mapsto2^i3^j$ (\lean{SmoothSemigroupCore}).
+
+This turns the spectrum question into a finiteness question.  If for some $g\in V_\tau$ the
+$\Z[\Delta_1,\Delta_\beta]$-orbit of $g$ is finitely generated, then $g$ satisfies a linear
+difference equation with integer coefficients in the two commuting shifts; its entire
+solutions are combinations of exponentials $e_{ij}$, forcing $g\in V_0$ and $\tau_2(g)=0$.
+Consequently:
+
+\begin{target}[Difference-module finiteness]\label{camp:target-diffmodule}
+Decide whether, for every $g$ that is entire, integer-valued on $\Sol$, and of finite
+quadratic type, the $\Z$-span of $\{\Delta_1^i\Delta_\beta^jg:i,j\ge0\}$ has finite rank
+--- equivalently, whether $g$ satisfies a linear recurrence in the two shifts.  A positive
+answer gives $V_\tau=V_0$ for all finite $\tau$, hence a type spectrum
+$\{0\}\cup\{\infty\}$, and closes Target~\ref{camp:target-construct} \emph{negatively}.  A
+negative answer produces a candidate for the construction that would settle the conjecture.
+\end{target}
+
+\begin{statusbox}{\textbf{Correction} --- the condition is finite $\Z$-rank}
+An earlier phrasing asked whether $g$ ``generates a finitely generated
+$\Z[\Delta_1,\Delta_\beta]$-module''.  That is vacuous: a cyclic module is finitely
+generated by definition.  The intended --- and stated above --- condition is finite rank as
+a $\Z$-module.  The check on $2^z$ is the right sanity test:
+$\Delta_1(2^z)=2^z$ and $\Delta_\beta(2^z)=(M-1)2^z$, so its $\Z$-span is $\Z\cdot2^z$, of
+rank one, consistent with $\tau_2(2^z)=0$.
+\end{statusbox}
+
+A first probe of this target is instructive, because the obvious candidate for a function
+of positive finite type separates the conditional world from the controls exactly.  Take
+\[
+ g(z)=2^{z^2}=e^{z^2\log2},
+\]
+entire of order two and type $\log2=0.6931\ldots$.  On the monoid,
+$s=n+k\beta$ gives $s^2=n^2+2nk\beta+k^2\beta^2$ and hence
+\[
+ 2^{s^2}=2^{n^2}\cdot M^{2nk}\cdot2^{k^2\beta^2}.
+\]
+The first two factors are integers supplied by the counterexample data; the third requires
+$2^{\beta^2}\in\Z$, which that data does \emph{not} supply --- and $\beta^2\notin\Sol$,
+since $\beta^2=n+k\beta$ would make $\beta$ quadratic, contradicting the kernel-verified
+transcendence of $\beta$.  So the construction is unavailable under failure.
+
+At an integer control it is available.  There $\Sol=\N_0$, every $2^{n^2}$ is an integer,
+and $\tau_2(2^{z^2})=\log2>0$, whereas every element of
+$V_0=\operatorname{span}\{2^{iz}3^{jz}\}$ has order one.  Hence \emph{at controls the
+achievable spectrum does meet $(0,\infty)$}: $V_{\log2}\supsetneq V_0$.
+
+That is the first concrete evidence that the answer to
+Target~\ref{camp:target-diffmodule} differs between the two worlds, and it names the
+mechanism: the obvious construction is killed under failure by transcendence of $\beta$
+alone, which places $\beta^2$ outside the monoid.  Any resolution must therefore consume
+channel~(ii) of the control principle, and the probe shows exactly where that consumption
+happens.  \statusnew.
+
+The control side can be pinned down further, and the sharper example replaces $2^{z^2}$ by
+a function of half its type.  At a control, $\Sol=\N_0$ and the integer-valued quadratics
+are exactly the $\Z$-combinations of $1$, $z$, $\binom z2$, so a leading coefficient is
+$c/2$ with $c\in\N$; taking $g=u^{Q(z)}$ with $u\in\N_{\ge2}$ gives
+$\tau_2(g)=(c/2)\log u$.  The minimum over this family is attained at $u=2$,
+$Q=\binom z2$:
+\[
+ g(z)=2^{\binom z2}=\exp\Bigl(\tfrac{\log2}2z(z-1)\Bigr),
+ \qquad
+ \tau_2(g)=\tfrac{\log2}2=0.34657\ldots,
+\]
+integer-valued on $\N_0$ ($1,1,2,8,64,1024,32768,\dots$) and entire of order two --- half
+the type of the $2^{z^2}$ probe.  So at controls
+\[
+ V_{(\log2)/2}\supsetneq V_0,
+\]
+and the achievable spectrum there contains $\{(c/2)\log u:c\ge1,\ u\ge2\}$.  Whether
+controls admit still \emph{smaller} positive types is the classical question about
+integer-valued entire functions of order two and is not claimed here, \statusknown.
+
+The point of the sharper example is that the obstruction under failure is unchanged, and now
+visibly applies to the whole family: $\binom s2=\tfrac{n^2-n}2+k\beta\tfrac{2n-1}2
++\tfrac{k^2\beta^2}2$, so $2^{\binom s2}$ again requires a power of $2^{\beta^2}$ to be an
+integer.  Every member of the family $u^{Q(z)}$ with $\deg Q=2$ dies under failure for the
+same reason --- the quadratic term drags in $\beta^2$, and $\beta^2\notin\Sol$ by
+transcendence.  This is what makes the separation structural rather than an accident of one
+function.  \statusnew.
+
+Two remarks make this the natural next step rather than a reformulation.  It is
+control-sensitive in the right way: at an integer control $\Sol=\N_0$ is closed under $+1$
+alone, the second operator degenerates to $\Delta_\beta=\Delta_1^{\,\text{(iterated)}}$
+composition and the two-variable structure --- the whole content --- disappears.  And it is
+of exactly the shape the literature survey singled out: a finite-rank statement for a
+system of difference equations in two independent shifts, which is the discrete counterpart
+of the arithmetic-holonomy programme of Section~\ref{camp:cdt}.  The corpus's two surviving
+routes therefore meet here: the transcendence route needs independence of weight-two
+products, the interpolation route needs finiteness of a two-shift difference module, and
+both are finite-rank statements about the same pair $(2,3)$ acting on the same monoid.
+\statusnew{}; target \statusopen.
+
+\subsection{Where the threshold comes from: forced vanishing on an initial segment}
+\label{camp:segment}
+
+Attacking Target~\ref{camp:target-diffmodule} directly with the classical
+P\'olya--Gel'fond descent turns out to be informative in a way that neither confirms nor
+refutes it, and it explains \emph{why} a threshold of the shape $1/(C\beta^2ab)$ appears at
+all.
+
+Because $\N_0\subseteq\Sol$, the ordinary difference table
+$\Delta^kg(0)=\sum_j(-1)^{k-j}\binom kjg(j)$ consists of \emph{integers}.  Estimating it by
+Cauchy's formula on $|z|=R$ with $R=2k$ --- which is legitimate, the poles sitting at
+$0,1,\dots,k$ --- gives
+\[
+ \bigl|\Delta^kg(0)\bigr|
+ \;\le\;M(g,R)\,\frac{k!\,R}{(R-k)^{k+1}}
+ \;=\;2\,M(g,2k)\,\frac{k!}{k^{k}},
+ \qquad\text{so}\qquad
+ \log\bigl|\Delta^kg(0)\bigr|\le4\tau k^2-k+O(\log k).
+\]
+The right-hand side is negative --- indeed below $-1$ --- for every $k<1/(4\tau)$, and an
+integer of absolute value less than one is zero.  Newton's expansion on $\N_0$, in which
+$\binom nk=0$ for $k>n$, then propagates this to the values themselves.
+
+\begin{statusbox}{\textbf{Retraction} --- the initial-segment proposition is false}
+An earlier version of this subsection asserted: \emph{if $g$ is entire, integer-valued on
+$\N_0\subseteq\Sol$, with $\tau_2(g)\le\tau$, then $\Delta^kg(0)=0$ for every $k<1/(4\tau)$
+and hence $g(n)=0$ for $n\le K=\lfloor1/(4\tau)\rfloor$.}  That is \emph{false}, and
+$g(z)=2^z$ is a counterexample: it is integer-valued on all of $\Sol$ (since
+$2^{n+k\beta}=2^nM^k$), it has $\tau_2=0\le\tau$ for every $\tau>0$, and yet
+$\Delta^kg(0)=(2-1)^k=1$ for every $k$, with $g(n)=2^n\ne0$.
+
+Two independent errors produced it.  First, $\tau_2(g)\le\tau$ is a \emph{limsup}
+statement: it gives $\log M(g,r)\le(\tau+\varepsilon)r^2$ only for $r\ge r_0(g,\varepsilon)$,
+not for all $r$.  The Cauchy estimate below takes the contour radius $R=2k$, so it is
+available only for $k\ge r_0/2$, whereas the vanishing range claimed was $k<1/(4\tau)$; for
+$2^z$ with $\tau=10^{-6}$ these are $k\ge346{,}574$ against $k<250{,}000$ --- disjoint, so
+the estimate was never valid where it was invoked.  Second, $k=0$ is never constrained
+($|g(0)|\le M(g,0)$ is vacuous), so even granting the bound, Newton's expansion yields
+$g(n)=g(0)$ on the segment --- the function is \emph{constant} there, not zero.
+\end{statusbox}
+
+What survives is the estimate itself, and a lesson about why this problem is hard.
+
+\begin{proposition}[Window of vanishing differences]\label{camp:prop-segment}
+Let $g$ be entire and integer-valued on $\N_0\subseteq\Sol$, and suppose
+$\log M(g,2k)\le\tau(2k)^2$.  Then
+\[
+ \log\bigl|\Delta^kg(0)\bigr|\;\le\;4\tau k^2-k+O(\log k),
+\]
+so $\Delta^kg(0)=0$ whenever $k<1/(4\tau)$ and $k$ is large enough for the $O(\log k)$ to
+be dominated.  Under the limsup hypothesis $\tau_2(g)\le\tau$ this applies exactly on the
+window $r_0/2\le k<1/(4\tau)$, which is empty unless $r_0<1/(2\tau)$.
+\end{proposition}
+
+A window of vanishing differences that does not begin at $k=0$ says nothing about the
+values, so no conclusion about $g$ follows; and requiring the bound at \emph{all} radii,
+$M(g,r)\le e^{\tau r^2}$ for every $r$, defines a class so small that it excludes $2^z$ and
+indeed every function of positive exponential type, since $e^{cr}>e^{\tau r^2}$ for
+$r<c/\tau$.  Either way the descent gives nothing.
+
+The lesson is worth more than the failed proposition, and it is precisely the
+methodological point the literature survey makes about this problem.  At order one
+P\'olya's theorem works because $M(g,r)=o(2^r)$ constrains \emph{every} radius, so the
+difference table is controlled from $k=0$ upward and integrality can be cashed in
+immediately.  At order two the natural hypothesis is a limsup, which says nothing at small
+radii, exactly where the difference table lives; and the constant term is free.  This is
+why a P\'olya-style descent cannot substitute for Pila's theorem, why that theorem needs
+interpolation determinants over the full two-dimensional monoid rather than a
+one-variable table, and why the constant in it is hard-won rather than elementary.  It also
+retrospectively explains the shape of Section~\ref{camp:ownthreshold}: the determinant
+derivation there succeeds precisely because it uses \emph{many} points of $\Sol$ at a
+single large radius, never needing control at small ones.  \statusnew{} for the estimate;
+the retracted conclusion is withdrawn.
+
 \subsection{The terminal obstruction inside the Calegari--Dimitrov--Tang family}
 \label{camp:cdt}
 
@@ -21496,16 +21739,72 @@ Calegari--Dimitrov--Tang theorems.  Expanding the counterexample relation
 $\log2\cdot\log A-\log3\cdot\log M=0$ in these generators turns the terminal obstruction
 into a $\Z$-linear relation among the weight-two products $L_iL_j$.
 
+\begin{statusbox}{\textbf{Erratum} --- the generators $L_n$ are dependent}
+An earlier version of this subsection asserted the encoding in the products $L_iL_j$ and
+concluded that $\Q$-linear independence of the occurring products would exclude
+counterexamples.  That is \emph{false, not open}, for every $q\ge5$: the generators satisfy
+\[
+ L_1=L_2+L_3,\qquad\text{i.e.}\qquad \log2=\log\tfrac32+\log\tfrac43,
+\]
+so $L_1^2-L_1L_2-L_1L_3=0$ is a nonzero $\Q$-relation lying inside the $q=5$ support.  The
+relation space of $L_1,\dots,L_{q-1}$ has dimension $0,1,2,5,6$ at $q=3,5,7,11,13$
+(computed exactly by reducing each $L_n$ in the prime basis).  The telescoping identity
+$\log p=\sum_{n<p}L_n$ is correct, and the encoding \emph{into} $\Z[\{L_iL_j\}]$ is
+correct; what fails is the passage from ``the relation holds'' to ``its coefficients
+vanish''.  The corrected statement below works in the prime basis, which \emph{is}
+independent by unique factorization, and the $q=3$ quadratic form and its conclusion are
+unaffected.
+\end{statusbox}
+
 \begin{proposition}[Finite weight-two encoding]\label{camp:prop-cdt}
-Let $q$ be a prime and suppose $MA$ is $q$-smooth.  Then the relation
-$\log2\cdot\log A=\log3\cdot\log M$ is a $\Z$-linear relation among the products
-$\{L_iL_j:1\le i\le j\le q-1\}$, and the vanishing of all of its coefficients forces
-$M=2^t$, $A=3^t$ --- the integer controls.  Consequently, $\Q$-linear independence of the
-finitely many products that occur excludes every counterexample with $q$-smooth outputs.
+Let $q$ be a prime and suppose $MA$ is $q$-smooth.  Expanding $\log M=\sum_pm_p\log p$ and
+$\log A=\sum_pa_p\log p$ over the primes $p\le q$, the relation
+$\log2\cdot\log A=\log3\cdot\log M$ reads
+\[
+ \sum_{p\le q}a_p\,(\log2\cdot\log p)\;-\;\sum_{p\le q}m_p\,(\log3\cdot\log p)\;=\;0,
+\]
+a $\Z$-linear relation among the $2\pi(q)-1$ distinct weight-two products
+$\{\log2\cdot\log p\}\cup\{\log3\cdot\log p\}$ (the product $\log2\log3$ occurring in both
+families).  If those products are $\Q$-linearly independent then $a_p=0$ for $p\ne3$,
+$m_p=0$ for $p\ne2$, and $a_3=m_2$, i.e.\ $M=2^t$, $A=3^t$: the integer controls.
+Consequently such independence excludes every counterexample with $q$-smooth outputs.
 \end{proposition}
 
-The coefficient system was computed symbolically and solved exactly.  For $q=3$ the
-relation is the quadratic form
+The count is $2\pi(q)-1=5,7,9,11$ at $q=5,7,11,13$.  It is worth noting that these are
+exactly the dimensions computed for the image subspace $C$ below --- the earlier table's
+numbers were right, for this reason, even though the basis in which they were derived was
+not.
+
+There is a better observation to make.  The coefficient array of the corrected relation is
+\emph{literally} the two-star tensor of Section~\ref{ts:detector}: the coefficient of the
+unordered product $\{x,y\}$ in
+$\sum_pa_p(\log2\log p)-\sum_pm_p(\log3\log p)$ is
+\[
+ [x{=}2]\,a_y+[y{=}2]\,a_x-[x{=}3]\,m_y-[y{=}3]\,m_x,
+\]
+which is exactly $\Sigma(m,a)=e_2\circledast a-e_3\circledast m$ evaluated at $\{x,y\}$
+(verified with zero mismatches over three thousand random coefficient pairs and all prime
+pairs).  Consequently the finite core of Proposition~\ref{camp:prop-cdt} requires no new
+formalization: it \emph{is} the kernel-verified
+\lean{TwoStarControl.twoStarCoeff_eq_zero_iff}, which states precisely that the array
+vanishes iff $m$ is supported at $2$, $a$ at $3$, and $m_2=a_3$ --- the controls.
+
+This unifies two strands developed independently in this report.  The two-star detector
+arrived from the saturated divisor lattice (Section~\ref{sec:twostarlattice}) as an exact
+\emph{control detector}: $\Sigma\ne0$ is equivalent to primitivity, and is kernel-verified.
+The weight-two encoding arrives from the transcendence side as the terminal obstruction.
+They are the same object viewed twice, and putting them together isolates the missing
+ingredient exactly:
+\begin{center}
+\emph{a counterexample makes $\Sigma(m,a)\ne0$ (kernel-verified), yet the corresponding
+$\Q$-linear combination of weight-two products vanishes; so what is missing is precisely
+enough independence among $\{\log2\log p\}\cup\{\log3\log p\}$ to see a nonzero tensor.}
+\end{center}
+The algebra is finished and formalized; the entire remaining content of this route is the
+transcendence input.  \statusexactcomp{} for the identification; core \statuslean.
+
+The coefficient system was computed symbolically and solved exactly in the prime basis.
+For $q=3$ the relation is the quadratic form
 \[
  (c+d-a-b)\,L_1^2+(d-a-2b)\,L_1L_2-b\,L_2^2=0,
  \qquad M=2^a3^b,\quad A=2^c3^d,
@@ -21515,10 +21814,10 @@ $3$-smooth case therefore follows from $\Q$-linear independence of just the thre
 $(\log2)^2$, $\log2\log\tfrac32$, $(\log\tfrac32)^2$.  (That case is already known by
 transcendence of $\thetaq$, so this is a calibration rather than a new result.)  The first
 genuinely new instance is $q=5$, since a counterexample must have an external prime
-$\ge5$: there the system has $7$ equations in the $10$ products with $i\le j\le4$, and its
-only solution is again $M=2^t$, $A=3^t$.  At $q=7$ the system has $11$ equations and the
-same conclusion.  \statusexactcomp{} (exact symbolic solve at $q=3,5,7$); the encoding
-itself \statusnew.
+$\ge5$: there the relation involves the $5$ products
+$\log2\log2,\log2\log3,\log2\log5,\log3\log3,\log3\log5$, and independence forces
+$M=2^t$, $A=3^t$.  \statusexactcomp{} (exact symbolic solve); the encoding itself
+\statusnew.
 
 Three consequences are worth stating.  First, the obstruction is not merely
 \emph{analogous} to the Calegari--Dimitrov--Tang setting; it lives in literally the same
@@ -21538,36 +21837,113 @@ have \emph{no} relations, but only that
 \[
  R\cap C=0,
 \]
-where $R$ is their true relation space.  Computing the map exactly gives a uniform picture:
-its kernel is \emph{exactly} the control line $\{m_2=a_3=t\}$ in every case --- so the
-encoding is faithful, its only degeneracy being the controls themselves --- and its image
-has dimension $2\pi(q)-1$:
+where $R$ is their true relation space.  Computing the map exactly in the prime basis gives a uniform picture: its kernel is
+\emph{exactly} the control line $\{m_2=a_3=t\}$ in every case --- so the encoding is
+faithful, its only degeneracy being the controls themselves --- and its image has dimension
+$2\pi(q)-1$, which is the full span of the occurring products:
 \begin{center}
 \begin{tabular}{@{}ccccc@{}}
 \toprule
-$q$ & products $\binom q2$ & occurring & $\dim C$ & kernel \\
+$q$ & $2\pi(q)-1$ products & $\dim C$ & kernel & consequence \\
 \midrule
-$5$ & $10$ & $7$ & $5$ & control line \\
-$7$ & $21$ & $11$ & $7$ & control line \\
-$11$ & $55$ & $19$ & $9$ & control line \\
+$5$ & $5$ & $5$ & control line & independence suffices \\
+$7$ & $7$ & $7$ & control line & independence suffices \\
+$11$ & $9$ & $9$ & control line & independence suffices \\
 \bottomrule
 \end{tabular}
 \end{center}
-So it suffices that no nonzero relation among the occurring products lie in a subspace of
-dimension $2\pi(q)-1$, against an ambient of size $\asymp q^2/2$ --- a requirement that
-becomes relatively weaker as $q$ grows.  \statusexactcomp{}
+Since $C$ is the full span of the occurring products, the subspace weakening $R\cap C=0$
+coincides here with independence of those $2\pi(q)-1$ products; the weakening bites only if
+one enlarges the generating set beyond the prime basis.  \statusexactcomp{}
 (\path{scripts/cdt_weight_two_encoding.py}).
 
 \emph{What this does and does not deliver.}  It does not prove anything: weight-two
 independence is open even for a single product, which is exactly why
 Calegari--Dimitrov--Tang is notable.  What it delivers is the missing bridge the survey
 asked for.  The research question ceases to be ``can the lattice be encoded in an
-arithmetic holonomic family?'' and becomes the concrete one: \emph{extend the
-Calegari--Dimitrov--Tang independence technology from its near-diagonal admissible pairs to
-the triangular array $\{L_iL_j:i\le j\le q-1\}$ for a single prime $q\ge5$.}  Any such
+arithmetic holonomic family?'' and becomes the concrete one: \emph{obtain $\Q$-linear
+independence of the $2\pi(q)-1$ products $\{\log2\log p\}\cup\{\log3\log p\}$, $p\le q$,
+for a single prime $q\ge5$.}  A calibration against the source is in order here.
+Calegari--Dimitrov--Tang's admissibility is a near-equality condition
+$|m/n-1|<10^{-6}$ on the parameters of $\log(1+1/m)\log(1+1/n)$, with the correct statistic
+$\min(|m|,|n|)$ rather than $\min(m,n)$ (negative parameters are allowed, since
+$\log(1+1/(-(k+1)))=-\log(1+1/k)$, so each product has several representations).  Among the
+$3$-smooth products relevant to the $q=3$ fragment --- where $m$ and $m+1$ must both be
+$3$-smooth, so $m\in\{1,2,3,8\}$ by the kernel-verified pair classification of
+Section~\ref{ai:isolation} --- the smallest defect is $\tfrac14$, attained by
+$\log\tfrac32\cdot\log\tfrac43$.  That fragment is precisely the $q=3$ calibration, already
+known.  Crucially, the route is \emph{not} closed by admissibility: a counterexample's
+external prime is unbounded, so any counterexample carrying a prime $q>10^6+1$ places
+genuinely admissible pairs $(i,i+1)$, $i\ge10^6$, inside its own weight-two encoding.  What
+is missing is not admissibility but the \emph{joint} statement --- their theorem gives
+independence within one product's four-element family, whereas one needs injectivity on the
+whole symmetric square.  Any such
 extension excludes all counterexamples with $q$-smooth outputs, and does so by consuming
 the external prime --- channel~(i) of the control principle --- since a control has no
 prime $\ge5$ in its support at all.  \statusopen{} target.
+
+\subsection{A self-contained threshold, independent of the quoted constant}
+\label{camp:ownthreshold}
+
+The dependency flagged above --- that Pila's constant $832$ and his exact hypotheses are
+quoted rather than checked --- can be removed, at the cost of a weaker constant, by running
+the interpolation-determinant argument directly against the corpus's own data.  The point
+is not to beat the literature but to make the corpus's conclusions self-supporting.
+
+Set $a=\log2$, $b=\log3$.  Suppose $g$ is entire, integer-valued on $\Sol$, with
+$\tau_2(g)\le\tau$, and consider the square matrix with rows indexed by $L$ points of
+$\Sol\cap[0,T]$ and columns by the functions
+\[
+ \varphi_{i,j,k}(z)=2^{iz}3^{jz}g(z)^k,
+ \qquad ia+jb\le\Lambda,\quad 0\le k\le d .
+\]
+Every entry is an \emph{integer}, because $2^s,3^s,g(s)\in\Z$ for $s\in\Sol$; so if $g$ is
+not algebraic of degree $\le d$ over the field generated by $2^z,3^z$ the determinant
+$\Delta$ is a nonzero integer and $|\Delta|\ge1$.  Against this stands the Gel'fond-type
+analytic bound
+\[
+ |\Delta|\le L!\,(T/R)^{L(L-1)/2}\prod_{i,j,k}\max_{|z|\le R}|\varphi_{i,j,k}| ,
+\]
+in which $\log\max|\varphi_{i,j,k}|=R(ia+jb)+\tau R^2k+o(\cdot)$.  Two exact inputs of this
+report enter here: the monoid density $\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$, which bounds
+the number of available rows; and the greedy-support mean frequency $\tfrac23\Lambda$ of
+Section~\ref{camp:traps}, which evaluates $\sum(ia+jb)$.  Taking all available rows,
+$L=T^2/(2\beta)$ and $\Lambda^2(d+1)=T^2ab/\beta$, and writing $R=cT$, the contradiction
+$|\Delta|\ge1$ versus the upper bound reduces after dividing by $T^2$ to
+\begin{equation}
+ \frac{\log c}{4\beta}
+ \;>\;
+ \frac{2c}{3}\sqrt{\frac{ab}{\beta(d+1)}}\;+\;\frac{\tau c^2d}{2},
+ \label{camp:eq-own}
+\end{equation}
+the remaining terms ($\log L!$ and the endpoint corrections) being $O(T^2\log T)$ against
+the $T^4$ scale and hence negligible.  Optimising \eqref{camp:eq-own} over the dilation $c$
+and the degree $d$ gives a threshold of exactly the same shape as the quoted one:
+\[
+ \tau<\tau_{\mathrm{crit}}(\beta)=\frac1{C\,\beta^2\log2\log3},
+ \qquad
+ C=4570 .
+\]
+The constant $C$ is stable to $0.063\%$ over $\beta\in\{14,20,27,50,100\}$ --- i.e.\ the
+$\beta^{-2}$ scaling is exact, not fitted --- and the resulting $\tau_{\mathrm{crit}}$ is
+$1.4667\times10^{-6}$ at $\beta=14$ and $3.9420\times10^{-7}$ at $\beta=27$.
+\statusexactcomp{} (\path{scripts/own_type_threshold.py}).
+
+Three consequences.  First, $C=4570$ against the quoted $832$: our version is $5.49$ times
+more conservative, exactly as expected from a crude determinant estimate that uses all rows
+and does not optimise the vanishing order --- which is what makes it safe to rely on, since
+a smaller threshold yields a \emph{weaker but self-contained} statement.  Second, every
+statement in this section may therefore be re-read with $832$ replaced by $4570$ and
+becomes independent of the unaudited input: in particular
+Theorem~\ref{camp:thm-typegap} holds unconditionally on the literature in the form
+\emph{no entire function integer-valued on $\Sol$ has
+$0<\tau_2\le1/(4570\,\beta^2\log2\log3)$}, and
+Target~\ref{camp:target-construct} correspondingly asks for a construction inside the
+smaller interval.  Third, and most usefully, the \emph{qualitative} conclusions do not
+depend on the constant at all: the excess factor of the vanishing branch is
+$C\beta\,ab/4$, which is $158\beta$ with the quoted constant and $870\beta$ with ours, but
+is \emph{linear in $\beta$} either way.  The finding that improving the zero-free region
+makes this gate harder is thus robust.
 
 \subsection{The conditional type gap, and a construction that would settle the conjecture}
 \label{camp:typegap}
@@ -21593,11 +21969,13 @@ bound for a monic-after-division polynomial gives, wherever $a_d(z)\ne0$,
 \]
 and this bound is exactly attained in the worst case (checked numerically on $2\times10^4$
 random instances, worst ratio $1.0000$).  Each $a_k$ has order one, so
-$\log|a_k(z)|=O(r)$ on $|z|=r$; and $a_d$, being a nonzero function of order one, satisfies
-$\log|1/a_d|=O(r\log r)$ on circles avoiding an exceptional set of small measure, by the
-classical minimum-modulus theorem (\statusknown).  Choosing for each $r$ a radius
-$r'\in[r,2r]$ whose circle avoids that set gives $\log M(g,r)\le\log M(g,r')=O(r\log r)$,
-since $g$ is entire.  Hence $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.
+$\log|a_k(z)|=O(r)$ on $|z|=r$; and $\log^+|1/a_d|$ is bounded \emph{in mean} by
+$O(r)$ through the Nevanlinna first main theorem applied to the order-one function $a_d$
+(\statusknown), which avoids any exceptional-set argument.  Hence
+$\log M(g,r)=O(r)$ and in particular $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.  (An earlier
+version used the classical minimum-modulus theorem on circles avoiding an exceptional set
+and obtained the weaker $O(r\log r)$; the conclusion $\tau_2=0$ is the same, and the
+Nevanlinna route is both stronger and cleaner.)
 \end{proof}
 
 Combining Proposition~\ref{camp:prop-order} with Pila's theorem in the specialization
@@ -21665,6 +22043,17 @@ corner values are $2,M,3,A$ and $X_{1,\beta}=\Sol$.  In this specialization an e
 integer-valued on $\Sol$ with
 $\tau_2(g):=\limsup r^{-2}\log M(g,r)\le1/(832\beta^2\log2\log3)$ is algebraically
 dependent on $2^z$ and $3^z$, which turns the interpolation idea into a measured target.
+\emph{Dependency to be audited.}  Pila's precise hypotheses and the
+constant $832$ are quoted from the survey and have not been checked against the source
+here; that they must contain more than is stated is visible from the control side, where
+$\Sol=\N_0$ and $g(z)=\sin(\pi z)e^{cz^2}$ is entire, integer-valued on $\Sol$, and has
+$\tau_2=c$ arbitrarily small --- so some hypothesis must exclude it.  Note that this
+construction cannot cross to the conditional world: by
+Proposition~\ref{camp:prop-inftype} every function vanishing on an irrational-$\beta$
+monoid has $\tau_2=\infty$.  Every occurrence of the factor $208\beta\log2\log3$ below is
+conditional on that unaudited input --- and Section~\ref{camp:ownthreshold} removes the
+dependency altogether by deriving a threshold of the same shape from the corpus's own
+data.
 We settle that measurement.  Any $g$ forced to be independent of $2^z,3^z$ by vanishing on
 the monoid pays, by Jensen's formula against the exact density
 $\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$,
@@ -21688,8 +22077,10 @@ it is both sharper and simpler than the Jensen estimate.  The monoid has countin
 $T^2/(2\beta)+O(T)$ and \emph{all its points are real and positive}, so
 $\sum_{s\in\Sol}s^{-3}$ converges while $\sum_{s\in\Sol,\,s\le r}s^{-2}$ diverges, at the
 exact rate $\beta^{-1}\log r$: measured increments per doubling are $0.0719$ against
-$1/\beta=0.0714$, with $\sum s^{-3}=1.20647$ stable to six digits
-(\path{scripts/sol_canonical_type.py}).  Hence the Hadamard genus equals the order, both
+$1/\beta=0.0714$, with $\sum s^{-3}=1.20647$ at $\beta=14+\sqrt2/1000$, converged to six digits in $T$
+(\path{scripts/sol_canonical_type.py}); that constant is $\beta$-dependent --- it is
+$1.20628$ at $\beta=14.3178$ and $1.20321$ at $\beta=27.1$ --- and only its finiteness
+matters here.  Hence the Hadamard genus equals the order, both
 being $2$, with divergent coefficient sum, and the canonical product --- which has minimal
 growth among all entire functions vanishing on $\Sol$ --- satisfies
 $\log M(r)\asymp\beta^{-1}r^2\log r$.  Therefore:
@@ -21700,10 +22091,42 @@ Every entire function vanishing on all of $\Sol$ has $\tau_2=+\infty$.
 
 So no function that is independent of $2^z,3^z$ by virtue of vanishing on the monoid comes
 within any finite factor of Pila's threshold, and \eqref{camp:eq-pila} is merely the
-elementary shadow of this.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}; the
-numerical check of the Jensen sum against the closed form converges from above
-($1.219,1.109,1.054$ at $T=140,280,560$ for $\beta=14$), confirming the bound is valid and
-slightly conservative.  The remaining way to use Pila's theorem therefore requires small type produced by
+elementary shadow of this.
+
+Proposition~\ref{camp:prop-inftype} has an immediate consequence which is of independent
+interest, because it says the conditional monoid is a \emph{uniqueness set} for the whole
+finite-type class.
+
+\begin{corollary}[Monoid rigidity]\label{camp:cor-rigidity}
+Assume Conjecture~\ref{conj:AE} fails, with generator $\beta$.  If $g_1,g_2$ are entire,
+both of finite quadratic type, and $g_1=g_2$ on $\Sol$, then $g_1=g_2$ identically.
+\end{corollary}
+
+\begin{proof}
+$g_1-g_2$ vanishes on $\Sol$ and satisfies
+$\tau_2(g_1-g_2)\le\max\bigl(\tau_2(g_1),\tau_2(g_2)\bigr)<\infty$, since
+$M(g_1-g_2,r)\le2\max\bigl(M(g_1,r),M(g_2,r)\bigr)$.  By
+Proposition~\ref{camp:prop-inftype} a \emph{nonzero} entire function vanishing on $\Sol$
+has infinite type, so $g_1-g_2=0$.
+\end{proof}
+
+Writing $V_\tau$ for the set of entire functions that are integer-valued on $\Sol$ and have
+$\tau_2\le\tau$, the situation is therefore this: $V_0$ contains every $\Z$-polynomial in
+$2^z$ and $3^z$; the type gap (Theorem~\ref{camp:thm-typegap}) says
+$V_{1/(832\beta^2\log2\log3)}=V_0$; and evaluation on $\Sol$ is \emph{injective} on
+$\bigcup_{\tau<\infty}V_\tau$ by Corollary~\ref{camp:cor-rigidity}, so each such function is
+pinned by its integer values alone.  Whether $V_\tau=V_0$ for \emph{every} finite $\tau$ ---
+equivalently, whether the achievable type spectrum is exactly $\{0\}\cup\{\infty\}$ --- is
+the sharp form of the open question, and a positive answer would close
+Target~\ref{camp:target-construct} negatively rather than leaving it open.  \statusnew.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
+quoted earlier were computed at $\beta=14$ --- an \emph{integer}, hence a control, where
+$\Sol$ collapses to $\N_0$ and the quadratic density fails --- and over the pair multiset
+rather than the point set.  At an admissible irrational $\beta$ the two coincide and the
+figures are correct: recomputed at $\beta=14+\sqrt2/1000$ the ratios are
+$1.2193,1.1086,1.0540,1.0269$ at $T=140,280,560,1120$, and at $\beta=14.3178$ they are
+$1.2244,1.1110,1.0552,1.0275$ --- converging to $1$ from above, so the bound is valid and
+slightly conservative.  At the control $\beta=14$ itself the true ratios instead tend to
+zero ($0.390,0.197,0.099,0.050$), exactly as the degeneration of the density predicts.  The remaining way to use Pila's theorem therefore requires small type produced by
 controlled interpolation rather than by zeros; transcendence itself is then automatic, and
 the precise statement is the conditional type gap of Theorem~\ref{camp:thm-typegap} with
 its construction target~\ref{camp:target-construct}.  The survey's other four clusters
@@ -23107,6 +23530,38 @@ Section~\ref{camp:traps} \\
 Pila integrality gate measured: $\tau_2\ge1/(4\beta)$ by Jensen against the monoid density,
 failing the threshold by $208\beta\log2\log3\approx158\beta$ (linear in $\beta$) &
 \statusnew & Section~\ref{camp:literature}, \eqref{camp:eq-pila} \\
+Self-contained threshold $\tau_{\mathrm{crit}}=1/(4570\beta^2\log2\log3)$ from the
+interpolation determinant against the exact monoid density and greedy mean frequency;
+$\beta^{-2}$ scaling exact to $0.063\%$; conclusions independent of the quoted constant &
+\statusnew{}; optimisation \statusexactcomp & Section~\ref{camp:ownthreshold},
+\eqref{camp:eq-own} \\
+Monoid rigidity: a finite-type entire function is determined by its values on $\Sol$;
+spectrum question $V_\tau=V_0$ &
+\statusnew{}/\statusopen & Corollary~\ref{camp:cor-rigidity} \\
+Weight-two encoding \emph{is} the two-star tensor; its finite core is already
+kernel-verified & \statuslean{} core; identification \statusexactcomp &
+\lean{TwoStarControlCharacterization}; Section~\ref{camp:cdt} \\
+Weight-two collapse in divisor-vector form: vanishing coefficients produce a single $t$
+with $M=2^t$, $A=3^t$; the control pair satisfies the relation, so the vanishing locus is
+exactly the control line & \statuslean & \lean{WeightTwoCollapse};
+Section~\ref{camp:cdt} \\
+$V_\tau$ is a $\Z[\Delta_1,\Delta_\beta]$-module; both shifts diagonal on monomials with
+integer eigenvalues $2^i3^j-1$, $M^iA^j-1$; spectrum question $\equiv$ finite $\Z$-rank of
+the shift span & \statusnew{}; target \statusopen &
+Section~\ref{camp:diffmodule}, Target~\ref{camp:target-diffmodule} \\
+Control-sensitivity of the spectrum: at controls $2^{\binom z2}$ has
+$\tau_2=(\log2)/2=0.34657$ and is integer-valued, so $V_{(\log2)/2}\supsetneq V_0$ there,
+and the spectrum contains $\{(c/2)\log u\}$; under failure the whole family $u^{Q}$,
+$\deg Q=2$, dies because the quadratic term needs $2^{\beta^2}\in\Z$ while
+$\beta^2\notin\Sol$ by transcendence & \statusnew & Section~\ref{camp:diffmodule} \\
+First certificate search: integer points of the curve are exactly
+$\{(2^u,3^u):u\in\Sol\}$; no subunit polynomial found for $L\le10$, $d\le5$; cancellation
+of $6^{Ld}$ required against a severely ill-conditioned basis & \statusexactcomp{}
+(negative) & Section~\ref{camp:searchrun}; \path{scripts/near_curve_search.py} \\
+Window of vanishing differences $\log|\Delta^kg(0)|\le4\tau k^2-k+O(\log k)$; the
+initial-segment conclusion drawn from it is \emph{retracted} ($2^z$ is a counterexample:
+limsup type does not control small radii, and $k=0$ is unconstrained) & estimate
+\statusnew{}; conclusion withdrawn & Proposition~\ref{camp:prop-segment} \\
 Terminal obstruction encoded in the CDT family: $\log p=\sum_{n<p}L_n$ turns the
 relation into a $\Z$-relation among $\{L_iL_j\}$; vanishing coefficients force the
 controls at $q=3,5,7$; finite independence per $q$ suffices, consuming the external prime &
@@ -23414,6 +23869,9 @@ valuation of a signed nested-slice factorial product \\
 \lean{.../CrossSliceContraction} & exact transport-weight exponent identity; conversion
 of the per-prime rescue bound into balance weights ($\Phi^-A^{m+j'}\le3\Phi^+M^{n+i}$);
 admissibility contraction factor $M^{n+i}A\le A^{m+j'}$ \\
+\lean{.../WeightTwoCollapse} & the weight-two coefficient array of the terminal relation
+is definitionally the two-star tensor; vanishing produces a single $t$ with $m=t\delta_2$,
+$a=t\delta_3$; the control pair satisfies the relation \\
 \lean{.../AdelicWedgeDecoupling} & exact multiplicativity of the Fermat quotient;
 control-direction invariance of the Fermat-quotient wedge; rank drop at $p$ characterized
 as collinearity of $(q_pM,q_pA)$ with $(q_p2,q_p3)$ \\

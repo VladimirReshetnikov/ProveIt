@@ -286,7 +286,9 @@ def corollary_7_10 : Prop :=
 
 /-- **Corollary 7.11.** Simultaneously partition an integer progression so
 that every one of a finite family of order-eight Freiman homomorphisms is
-affine-linear on each cell of its domain. -/
+affine-linear on each cell of its domain.  The explicit lower-size inequality
+repairs a hypothesis omitted from the printed statement: it is what makes the
+nonzero-element conclusion of Lemma 7.7 applicable in the proof. -/
 def corollary_7_11 : Prop :=
   forall (N q m : Nat) [NeZero N] (R : IntAP)
       (A : Fin q -> Finset Int) (phi : Fin q -> Int -> ZMod N)
@@ -295,6 +297,9 @@ def corollary_7_11 : Prop :=
     (forall i, A i ⊆ R.carrier /\ alpha * R.length <= (A i).card /\
       FreimanHom 8 (A i) (phi i)) ->
     (m : Real) <=
+      (R.length : Real) ^
+        ((2 : Real) ^ (-(14 : Real)) * alpha ^ 2 * (q : Real)⁻¹) ->
+    1024 * Real.pi / alpha <
       (R.length : Real) ^
         ((2 : Real) ^ (-(14 : Real)) * alpha ^ 2 * (q : Real)⁻¹) ->
     exists M : Nat, exists S : Fin M -> IntAP,

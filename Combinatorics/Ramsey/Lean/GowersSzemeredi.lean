@@ -15,6 +15,7 @@ import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.Proofs02PhasePartition
 import GowersSzemeredi.Proofs02DensityIncrement
+import GowersSzemeredi.Proofs02Roth
 import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
@@ -37,6 +38,7 @@ import GowersSzemeredi.Proofs07FreimanRestriction
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
+import GowersSzemeredi.Proofs07SimultaneousLinearity
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs10Counting
@@ -55,6 +57,7 @@ import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs12Combination
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
@@ -64,12 +67,16 @@ import GowersSzemeredi.Proofs14Product
 import GowersSzemeredi.Proofs14ProductToArrangements
 import GowersSzemeredi.Proofs15DegenerateArrangements
 import GowersSzemeredi.Proofs15LevelSets
+import GowersSzemeredi.Proofs15Restriction
+import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
 import GowersSzemeredi.Proofs16Closure
+import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval
+import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
 
