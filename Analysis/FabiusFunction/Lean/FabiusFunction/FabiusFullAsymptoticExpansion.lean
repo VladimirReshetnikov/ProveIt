@@ -175,8 +175,10 @@ noncomputable def fabiusSharpLambertExpansion (N : ℕ) (x : ℝ) : ℝ :=
   fabiusSharpLambertMain x +
     fabiusSaddleLogPartialSum N (fabiusLambertPhase x)
 
-/-- The first nonzero finite saddle correction is the closed coefficient
-`fabiusFirstSaddleCorrection / lambda`. -/
+/-- The first explicit finite saddle correction is the closed coefficient
+`fabiusFirstSaddleCorrection / lambda`.  The theorem identifies the
+coefficient; it does not assert that this periodic function is nowhere zero
+or nonzero as a function. -/
 theorem fabiusSaddleLogPartialSum_two (lam : ℝ) :
     fabiusSaddleLogPartialSum 2 lam =
       fabiusFirstSaddleCorrection lam / lam := by

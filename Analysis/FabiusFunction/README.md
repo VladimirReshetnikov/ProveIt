@@ -133,7 +133,7 @@ log F(x) = fabiusSharpLambertMain x
   + O(lambda^(-N)).
 ```
 
-The zeroth coefficient is zero, and the first nonzero term is the explicit
+The zeroth coefficient is zero, and the first explicit correction is
 `fabiusFirstSaddleCorrection lambda / lambda`.  A separate theorem expands
 `lambda` itself to arbitrary order in `-log x` and `log (-log x)`.  The full
 formula keeps the oscillatory coefficient functions at the exact Lambert
@@ -170,6 +170,8 @@ branch, its equation-(9) solution, and its standard two-term expansion are
 proved separately.
 
 The exact source-to-Lean map is in [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).
+The requirement-by-requirement asymptotic evidence is recorded in
+[`ASYMPTOTIC_COMPLETION_AUDIT.md`](ASYMPTOTIC_COMPLETION_AUDIT.md).
 
 The two arXiv sources contain a few statements that are not literally correct.  The
 formalization records the mathematically valid versions next to their proofs.
