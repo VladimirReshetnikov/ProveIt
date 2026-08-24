@@ -205,6 +205,63 @@ private theorem hasSum_rvachevEvenLegendreSeries_uniform_of_properties
     rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_smul])
   simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
 
+private theorem hasSum_canonical_rvachevLegendreSeries_formula_of_properties
+    (hpEigen : ∀ n x,
+      legendreSturmLiouville
+          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
+        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
+    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
+      |(legendrePolynomial n).eval x| ≤ 1)
+    (hpNorm : ∀ n,
+      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
+        2 / (((2 * n + 1 : ℕ) : ℝ)))
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    HasSum (fun n ↦
+      ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
+        (∑ k ∈ Finset.range (n + 1),
+          (-1 : ℝ) ^ (n + k) *
+            (2 * n).choose (n + k) *
+            (2 * n + 2 * k).choose (2 * n) *
+            (Nat.factorial (2 * k) : ℝ) *
+            2 ^ (2 * k + 1).choose 2 *
+            fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹)) *
+        (legendrePolynomial (2 * n)).eval x)) (rvachevUp fabius x) := by
+  have hseries := hasSum_rvachevEvenLegendreSeries_of_properties
+    fabius fabius_spec hpEigen hpBound hpNorm x hx
+  convert hseries using 1
+  funext n
+  rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]
+
+private theorem hasSum_canonical_rvachevLegendreSeries_formula_uniform_of_properties
+    (hpEigen : ∀ n x,
+      legendreSturmLiouville
+          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
+        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
+    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
+      |(legendrePolynomial n).eval x| ≤ 1)
+    (hpNorm : ∀ n,
+      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
+        2 / (((2 * n + 1 : ℕ) : ℝ))) :
+    HasSum (fun n ↦
+      ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
+        (∑ k ∈ Finset.range (n + 1),
+          (-1 : ℝ) ^ (n + k) *
+            (2 * n).choose (n + k) *
+            (2 * n + 2 * k).choose (2 * n) *
+            (Nat.factorial (2 * k) : ℝ) *
+            2 ^ (2 * k + 1).choose 2 *
+            fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹))) •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial (2 * n)).eval x)
+          (legendrePolynomial_contDiff (2 * n)).continuous)
+      (continuousMapOnLegendreInterval
+        (rvachevUp fabius) (rvachev_contDiff fabius fabius_spec).continuous) := by
+  have hseries := hasSum_rvachevEvenLegendreSeries_uniform_of_properties
+    fabius fabius_spec hpEigen hpBound hpNorm
+  convert hseries using 1
+  funext n
+  rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]
+
 end
 
 end Fabius
