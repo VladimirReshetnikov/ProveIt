@@ -398,6 +398,8 @@ def lemma_10_12 : Prop :=
       (K : Finset (ZMod N)) (delta theta : Real) (W : Finset X)
       (B' : Finset (ZMod N)) (psi psi1 : ZMod N -> ZMod N),
     K.Nonempty -> 0 < delta -> delta <= 1 -> Real.sqrt theta <= 1 / 8 ->
+    (forall w, w ∈ W -> forall d, d ∈ B' ->
+      (D.fibre (D.index w + d)).Nonempty) ->
     let k := K.card
     let B := bohr K delta
     let zeta := (2 : Real) ^ (-((k : Real) + 4)) * delta ^ k / k
