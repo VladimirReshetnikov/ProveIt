@@ -78,6 +78,7 @@ import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16BaseCaseCore
 import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
