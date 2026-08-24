@@ -21474,6 +21474,48 @@ the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but
 constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
 \statusexactcomp{}.
 
+\subsection{A first certificate search, and the conditioning barrier in practice}
+\label{camp:searchrun}
+
+The near-curve route of Section~\ref{nc:budgets} is the corpus's only
+falsifiable-by-computation path: certified covers of total defect $o(L)$ would prove the
+conjecture.  We ran the first search.
+
+The set-up is exact.  Integer points of $y=x^{\thetaq}$ are precisely
+$\{(2^u,3^u):u\in\Sol\}$ --- writing $x=2^u$, integrality of both coordinates says exactly
+$u\in\Sol$ --- so a dyadic block $2^L\le x<2^{L+1}$ carries
+$\#\bigl(\Sol\cap[L,L+1)\bigr)$ of them: one under the conjecture, and
+$1+\lfloor(L+1)/\beta\rfloor$ under failure, which is the orbit pressure of
+Section~\ref{nc:budgets}.  Normalising $z=x/2^L\in[1,2]$, a polynomial
+$P=\sum c_{ij}X^iY^j$ restricts to
+\[
+ F(z)=\sum_{(i,j)\in S}c_{ij}\,2^{Li}3^{Lj}\,z^{\,i+j\thetaq},
+\]
+and the certificate condition is $\sup_{[1,2]}|F|<1$.  We expanded each basis function in
+Chebyshev polynomials on $[1,2]$ at $80$ digits, formed the lattice
+$\bigl[\,e_{ij}\mid\lfloor\sigma\cdot\mathrm{cheb}(\varphi_{ij})\rceil\,\bigr]$ and
+LLL-reduced it (\path{scripts/near_curve_search.py}).
+
+The outcome is negative and instructive: for every $L\le10$ and every total degree
+$d\le5$, the reduced basis contains nothing better than the trivial $P=1$, whose supremum
+is exactly $1$ --- never below it.  The diagnosis is quantitative.  The simplest vanishing
+choice $P=3^LX-2^LY$ gives $F(z)=6^L(z-z^{\thetaq})$ with supremum exactly $6^L$
+($6$, $36$, $1296$, $1679616$ at $L=1,2,4,8$), so a certificate must cancel about $6^{Ld}$
+using integer coefficients; pigeonhole says coefficients of size $6^{2L/d}$ suffice on a
+degree-$d$ support, which is the $d\asymp\sqrt L$ corridor of Section~\ref{bb:ceilings}
+seen from the constructive side.  Meanwhile the basis functions $z^{i+j\thetaq}$ are all
+smooth and nearly parallel on $[1,2]$, so their Gram matrix is severely ill-conditioned
+while the lattice entries already span some $47$ orders of magnitude at $L=10$, $d=5$.
+Plain LLL on that basis cannot exploit the near-degeneracy.
+
+This is a small independent confirmation of the conditioning barrier and of the extinction
+of fixed supports, from the constructive rather than the obstructive side.  It also fixes
+what a serious attempt requires, and the requirement is now concrete: the
+Brisebarre--Hanrot rounded Chebyshev--Bernstein matrix \emph{with tail columns}, directed
+rounding for a rigorous rather than measured supremum, and working precision exceeding the
+dynamic range --- rather than a plain Chebyshev basis and floating LLL.
+\statusexactcomp{} (measured suprema; no rigorous certificate is claimed).
+
 \subsection{The spectrum question is a difference-module finiteness question}
 \label{camp:diffmodule}
 
@@ -23483,6 +23525,10 @@ Control-sensitivity of the spectrum: $2^{z^2}$ has $\tau_2=\log2>0$ and is integ
 on $\Sol$ \emph{at controls}, so $V_{\log2}\supsetneq V_0$ there; under failure the same
 construction dies because $\beta^2\notin\Sol$ by transcendence & \statusnew &
 Section~\ref{camp:diffmodule} \\
+First certificate search: integer points of the curve are exactly
+$\{(2^u,3^u):u\in\Sol\}$; no subunit polynomial found for $L\le10$, $d\le5$; cancellation
+of $6^{Ld}$ required against a severely ill-conditioned basis & \statusexactcomp{}
+(negative) & Section~\ref{camp:searchrun}; \path{scripts/near_curve_search.py} \\
 Window of vanishing differences $\log|\Delta^kg(0)|\le4\tau k^2-k+O(\log k)$; the
 initial-segment conclusion drawn from it is \emph{retracted} ($2^z$ is a counterexample:
 limsup type does not control small radii, and $k=0$ is unconstrained) & estimate
