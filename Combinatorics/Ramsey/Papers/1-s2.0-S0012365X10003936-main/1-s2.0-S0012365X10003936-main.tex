@@ -1,0 +1,296 @@
+\documentclass[10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\hypersetup{hidelinks}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\udens}{\overline{d}}
+\newcommand{\ldens}{\underline{d}}
+
+\title{\normalsize Note\\[1ex]
+  \LARGE On permutations avoiding arithmetic progressions}
+\author{Timothy D. LeSaulnier, Sujith Vijay\thanks{Corresponding author. E-mail address: \href{mailto:sujith@math.uiuc.edu}{sujith@math.uiuc.edu} (S. Vijay).}\\
+  \small Department of Mathematics, University of Illinois at Urbana-Champaign,\\
+  \small Urbana, IL 61801, USA}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\noindent
+\textbf{Article history:}\par
+\noindent
+Received 2 June 2010\\
+Received in revised form 14 August 2010\\
+Accepted 11 October 2010\\
+Available online 6 November 2010
+
+\medskip
+\noindent
+\textbf{Keywords:}\par
+\noindent
+Arithmetic progressions\\
+Permutations
+
+\begin{abstract}
+We improve the lower bound on the number of permutations of
+$\{1,2,\ldots,n\}$ in which no 3-term arithmetic progression occurs as a
+subsequence, and derive lower bounds on the upper and lower densities of
+subsets of the positive integers that can be permuted to avoid 3-term and
+4-term APs. We also show that any permutation of the positive integers must
+contain a 3-term AP with odd common difference as a subsequence, and construct
+a permutation of the positive integers that does not contain any 4-term AP
+with odd common difference.
+\end{abstract}
+
+\begin{flushright}
+\textcopyright{} 2010 Elsevier B.V. All rights reserved.
+\end{flushright}
+
+Let $S$ be a subset of the positive integers, and let $\sigma$ be a permutation
+of $S$. We say that $\sigma$ is a $k$-avoiding permutation of $S$ if $\sigma$
+does not contain any $k$-term AP as a subsequence. Similarly, the set $S$ is
+said to be $k$-avoidable if there exists a $k$-avoiding permutation of $S$.
+
+Let $M(n)$ denote the number of 3-avoiding permutations of
+$\{1,2,\ldots,n\}$. For example, $M(4)=10$, corresponding to the permutations
+$(1,3,4,2)$, $(1,3,2,4)$, $(2,1,4,3)$, $(2,4,1,3)$, $(4,2,1,3)$ and their
+reversals. In 1977, Davis et al.\ [1] established the following bounds on
+$M(n)$:
+\[
+  2^{n-1}
+  \leq M(n)
+  \leq \left\lfloor\frac{n+1}{2}\right\rfloor!
+         \left\lceil\frac{n+1}{2}\right\rceil!.
+\]
+These bounds were recently improved by Sharma [3], who showed that
+\[
+  M(n) \leq \frac{2.7^n}{21}
+  \qquad\text{for } n\geq 11,
+\]
+and that
+\[
+  \lim_{n\to\infty}\frac{M(n)}{2^n n^k}=\infty
+  \qquad\text{for any fixed } k.
+\]
+In [3] the question whether
+$\lim_{n\to\infty} M(n+1)/M(n)=2$ was attributed to the Editor of the Problem
+Section of the \emph{American Mathematical Monthly} (where the function
+$M(n)$ made its earliest known appearance, in 1975), and was mentioned as
+still open. We begin with an observation that settles this question in the
+negative. Indeed, we establish the following stronger lower bound on $M(n)$.
+
+\begin{theorem}
+$M(n)\geq (1/2)c^n$ for $n\geq 8$, where
+$c=(2132)^{1/10}=2.152\ldots$.
+\end{theorem}
+
+\begin{proof}
+The following inequalities were proved in [1] to show that
+$M(n)\geq 2^{n-1}$:
+\[
+  M(2n)\geq 2[M(n)]^2;
+  \qquad
+  M(2n+1)\geq 2M(n)M(n+1).
+\]
+These recurrences follow from the observation that if $\sigma_1$ and
+$\sigma_2$ are 3-avoiding permutations of $\{2,4,\ldots,2n\}$ and
+$\{1,3,\ldots,2n-1\}$, respectively, concatenating them in either order
+yields 3-avoiding permutations $\sigma_1\sigma_2$ and
+$\sigma_2\sigma_1$ of $\{1,2,\ldots,2n\}$, since the first and third terms of
+any arithmetic progression have the same parity. Note that these recurrences
+imply the stronger lower bound $M(n)\geq (1/2)c^n$ for $n\geq 8$, where
+$c=(2M(10))^{1/10}=2.152\ldots$. Since
+\[
+\begin{gathered}
+  M(8)=282,\quad M(9)=496,\quad M(10)=1066,\quad M(11)=2460,\\
+  M(12)=6128,\quad M(13)=12{,}840,\quad M(14)=29{,}380,\quad
+  M(15)=74{,}904
+\end{gathered}
+\]
+(see [1]), the inequality holds for $8\leq n\leq 15$. We can now use
+induction on $k$ to show that it also holds for
+$2^k\leq n<2^{k+1}$, $k\geq 4$.
+\end{proof}
+
+We now look at permutations of infinite subsets of the positive integers.
+Davis et al.\ [1] observed that any permutation of the positive integers
+contains a 3-term AP as a subsequence. (Let $a_1$ be the first term, and let
+$k$ be the least integer such that $a_k>a_1$. Then $2a_k-a_1$ occurs to the
+right of both $a_1$ and $a_k$.) They also constructed a 5-avoiding permutation
+of the positive integers. The 4-avoidability of the positive integers remains
+a fascinating open problem. However, if we restrict our attention to
+arithmetic progressions with odd common difference, the question can be
+answered.
+
+\begin{theorem}
+Any permutation of the positive integers must contain a 3-term AP with odd
+common difference as a subsequence. Furthermore, there exists a permutation
+of the positive integers in which no 4-term AP with odd common difference
+occurs as a subsequence.
+\end{theorem}
+
+\begin{proof}
+We first show that any permutation
+$\sigma=(t_1,t_2,\ldots,t_{11})$ of $\{1,2,\ldots,11\}$ with $t_1=2$ and
+$t_2=1$ must contain a 3-term AP with odd common difference as a subsequence.
+Indeed, 4 must appear in $\sigma$ before 3 to avoid the 3-term AP $(2,3,4)$;
+similar considerations force 4 before 5, 7 before 4, 6 before 5, 6 before 7,
+11 before 6, 8 before 11, 8 before 9 and 7 before 10. Thus, both 8 and 11
+appear in $\sigma$ before either 9 or 10 appears. Now we have the 3-term AP
+$(8,9,10)$ if 9 appears before 10 in $\sigma$ and the 3-term AP $(11,10,9)$
+otherwise. This proves our claim.
+
+Let $a_1,a_2,\ldots$ be a permutation of the positive integers. We may assume
+without loss of generality (subtracting $a_1-1$ from each term and ignoring
+non-positive terms) that $a_1=1$. Let $k$ be the least index such that $a_k$
+is even, and let
+\[
+  a_j=\max(a_1,a_2,\ldots,a_{k-1}).
+\]
+If $a_j<2a_k-1$, then we have $(1,a_k,2a_k-1)$ as a subsequence. If
+$a_j\geq 2a_k-1>a_k$, then let $d=a_j-a_k$. Note that $d$ is odd. Since
+$a_j$ occurs before $a_k=a_j-d$ and they both occur before any of
+$a_j+d,a_j+2d,\ldots,a_j+9d$, it follows from the above claim (via shifting
+and scaling) that the permutation contains a 3-term AP with odd common
+difference.
+
+Now we exhibit a permutation of the positive integers that contains no
+4-term AP with odd common difference as a subsequence. For $i\geq 1$, let
+$\sigma_i$ be a 3-avoiding permutation of the following set of
+$2^{2i-1}$ consecutive even numbers:
+\[
+  \left\{
+    \frac{4^i+2}{3},\frac{4^i+8}{3},\ldots,
+    \frac{4^{i+1}-4}{3}
+  \right\}.
+\]
+Similarly, let $\pi_i$ be a 3-avoiding permutation of the following set of
+$4^{i-1}$ consecutive odd numbers:
+\[
+  \left\{
+    \frac{4^i+2}{6},\frac{4^i+14}{6},\ldots,
+    \frac{4^{i+1}-10}{6}
+  \right\}.
+\]
+Observe that the concatenated sequence
+$\sigma_1\pi_1\sigma_2\pi_2\sigma_3\pi_3\cdots$ is a permutation of the
+positive integers. By virtue of our construction, if an odd number $x$
+occurs in this sequence before an even number $y$, then $2x-y<0$. It follows
+that no 4-term AP with odd common difference occurs as a subsequence.
+\end{proof}
+
+Given a subset $S$ of the positive integers, let $\udens(S)$ and $\ldens(S)$
+denote, respectively, the upper and lower densities of $S$. In other words,
+\[
+  \udens(S)=\limsup_{n\to\infty}\frac{S(n)}{n}
+  \qquad\text{and}\qquad
+  \ldens(S)=\liminf_{n\to\infty}\frac{S(n)}{n},
+  \qquad
+  S(n)=\lvert S\cap[1,n]\rvert.
+\]
+Define, for $k\geq 3$,
+\[
+\begin{aligned}
+  \alpha(k)&=\sup_S\{\udens(S):S\text{ is }k\text{-avoidable}\},\\
+  \beta(k)&=\sup_S\{\ldens(S):S\text{ is }k\text{-avoidable}\}.
+\end{aligned}
+\]
+Since the set of positive integers is 5-avoidable,
+$\alpha(k)=\beta(k)=1$ for $k\geq 5$. Bounds for $\alpha(3)$ and $\beta(3)$
+were sought in [1]. We show the following.
+
+\begin{theorem}
+$\alpha(4)=1$, $\alpha(3)\geq 1/2$, $\beta(4)\geq 1/3$ and
+$\beta(3)\geq 1/4$.
+\end{theorem}
+
+\begin{proof}
+For integers $a\geq 2$ and $i\geq 0$, define
+\[
+  S_i^{(a)}=\{a^{2i},a^{2i}+1,\ldots,a^{2i+1}\},
+\]
+and let $\sigma_i^a$ be a 3-avoiding permutation of $S_i^{(a)}$. Define
+\[
+  S^{(a)}=\bigcup_{i\geq 0}S_i^{(a)}.
+\]
+We claim that $S^{(a)}$ is 4-avoidable. Clearly, the concatenated sequence
+$\sigma_0^a\sigma_1^a\cdots$ does not contain a decreasing 3-term AP. Suppose
+it contains an increasing 4-term AP $x_1,x_2,x_3,x_4$. Since $x_2,x_3$ and
+$x_4$ cannot all belong to the same set $S_i^{(a)}$, we must have
+$x_4\geq 2x_3$ or $x_3\geq 2x_2$. But then $x_2\leq 0$ or $x_1\leq 0$,
+yielding a contradiction. Note that
+\[
+\begin{aligned}
+  \udens\bigl(S^{(a)}\bigr)
+    &=\frac{a-1}{a}\sum_{i=0}^{\infty}a^{-2i}
+      =\frac{a}{a+1},\\
+  \ldens\bigl(S^{(a)}\bigr)
+    &=\frac{a-1}{a^2}\sum_{i=0}^{\infty}a^{-2i}
+      =\frac{1}{a+1}.
+\end{aligned}
+\]
+Since $a$ can be arbitrarily large, it follows that $\alpha(4)=1$. Taking
+$a=2$, we get $\beta(4)\geq 1/3$.
+
+Let $p_0=1$, $q_0=2$, and, for $k\geq 1$, define
+$p_k=2q_{k-1}$ and $q_k=3q_{k-1}-1$. Let $\tau_k$ be a 3-avoiding
+permutation of
+\[
+  T_k=\{p_k,p_k+1,\ldots,q_k\},
+\]
+and let
+\[
+  T=\bigcup_{k\geq 0}T_k.
+\]
+Since $p_k=3^k+1=2q_{k-1}$ for $k\geq 1$, it follows that
+$\udens(T)=1/2$ and $\ldens(T)=1/4$. We claim that the concatenated sequence
+$\tau_0\tau_1\cdots$ is a 3-avoiding permutation of $T$. Indeed, if the
+(increasing) 3-term AP $x_1,x_2,x_3$ occurs as a subsequence, with $x_2$ and
+$x_3$ belonging to different sets $T_k$ and $T_\ell$, then $x_3\geq 2x_2$,
+so $x_1\leq 0$, yielding a contradiction. If $x_2$ and $x_3$ belong to the
+same set $T_k$, then $x_1\in T_\ell$ with $\ell<k$. But
+\[
+  x_3-x_2<q_{k-1}\leq x_2-x_1,
+\]
+contradicting our assumption that $x_1,x_2,x_3$ is a 3-term AP. Therefore,
+$T$ is 3-avoidable. Thus $\alpha(3)\geq 1/2$ and $\beta(3)\geq 1/4$.
+\end{proof}
+
+Erd\H{o}s and Graham [2] (see also [1]) asked if the positive integers can be
+partitioned into two 3-avoidable sets. Clearly, the answer is negative if
+$\alpha(3)+\beta(3)<1$. We believe this to be the case, and conjecture that
+the lower bounds in the above theorem are optimal, i.e., $\alpha(3)=1/2$ and
+$\beta(3)=1/4$. However, we have not even been able to show that
+$\beta(3)<1$.
+
+\section*{Acknowledgements}
+
+We thank the referees for several valuable suggestions, which improved the
+overall readability of the paper.
+
+\section*{References}
+
+\begin{enumerate}
+\item J.A. Davis, R.C. Entringer, R.L. Graham, G.J. Simmons,
+  On permutations containing no long arithmetic progressions,
+  \emph{Acta Arithmetica} 34 (1977), 81--90.
+
+\item P. Erd\H{o}s, R.L. Graham,
+  \emph{Old and New Problems and Results in Combinatorial Number Theory},
+  Monographie No.~28 de L'Enseignement Math\'ematique, Geneva, 1980.
+
+\item A. Sharma,
+  Enumerating permutations that avoid three term arithmetic progressions,
+  \emph{Electronic Journal of Combinatorics} 16 (2009), \#R63.
+\end{enumerate}
+
+\end{document}

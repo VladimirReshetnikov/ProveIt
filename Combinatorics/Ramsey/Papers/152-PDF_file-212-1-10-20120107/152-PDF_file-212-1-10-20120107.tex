@@ -1,0 +1,373 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\newcommand{\proofend}{\hfill\(\diamond\)}
+
+\title{Enumerating permutations that avoid three term arithmetic progressions}
+
+\author{Arun Sharma\\
+Department of Mathematics\\
+University of California, Berkeley\\
+Berkeley, CA 94720\\
+asharma@math.berkeley.edu}
+\date{}
+
+
+\begin{document}
+\maketitle
+Submitted: Aug 15, 2008; Accepted: May 4, 2009; Published: May 15, 2009\\
+Mathematics Subject Classifications: 05A15, 05C55
+
+\begin{abstract}
+It is proved that the number of permutations of the set $\{1,2,3, \ldots, n\}$ that avoid three term arithmetic progressions is at most $\frac{(2.7)^{n}}{21}$ for $n \geq 11$ and at each end of any such permutation, at least $\left\lfloor\frac{n}{2}\right\rfloor-6$ entries have the same parity.
+\end{abstract}
+
+\section*{1. Introduction}
+Let $S$ be an $n$-element set of positive integers. By a permutation of $S$, we mean a one-to-one sequence $\left(a_{1}, a_{2}, \ldots, a_{n}\right)$, where $a_{i} \in S$ for each $i, 1 \leq i \leq n$. We use letters from the Greek alphabet to denote permutations. A permutation $\alpha=\left(a_{1}, a_{2}, \ldots, a_{n}\right)$ of $S$ is said to contain a $k$-term arithmetic progression (briefly, a $k$-progression) if there exists a set of indices $\left\{i_{1}<i_{2}<\cdots<i_{k}\right\}$ such that the subsequence $\left(a_{i_{1}}, a_{i_{2}}, \ldots, a_{i_{k}}\right)$ is either an increasing or a decreasing arithmetic progression. If $\alpha$ contains no $k$-progression, we say it is $k$-free. The main goal of this paper is to examine the following
+
+Problem. How many permutations of the segment $[n]=\{1,2,3, \ldots, n\}$ are 3-free?\\[0pt]
+This avoidance problem in Ramsey Theory on the integers was first raised in [4] where after a ``prodigious expenditure of computer time'', the number (call it $\theta(n)$ ) of such permutations was computed for $n \leq 20$ (see Appendix). Deeming the task of finding a formula for $\theta(n)$ to be hopelessly difficult, the editor of the Problem Section of the Monthly observed that several conjectures concerning the behavior of the function $\theta(n)$ suggested themselves. In particular, he asked if it were true that $\lim _{n \rightarrow \infty} \frac{\theta(n+1)}{\theta(n)}=2$. More recently, another intriguing question about $\theta(n)$ has been raised (see [1] Problem 7.12), asking whether $\lim _{n \rightarrow \infty}(\theta(n))^{\frac{1}{n}}$ exists. These questions are still open, and apart from the bounds for $\theta(n)$ found in [2], not much else is known about the behavior of $\theta(n)$. In this paper, the method applied in [2] to obtain the lower bound therein is refined to improve the known upper bound.
+
+Given a permutation $\alpha=\left(a_{1}, a_{2}, \ldots, a_{n}\right)$, we call each $a_{i}$ a term or an entry of $\alpha$. The set of all permutations of $S$ can be put in one-to-one correspondence with each of the following two sets: the set of all linear orderings (also called the linear arrangements) of $S$, and the set of all the words of length $n$ on $S$ such that each symbol of $S$ (treating $S$ as the alphabet) appears in each word exactly once. In the first case the permutation $\left(a_{1}, a_{2}, \ldots, a_{n}\right)$ corresponds to the linear ordering $a_{1}<a_{2}<\cdots<a_{n}$ and in the second it corresponds to the word $a_{1} a_{2} \cdots a_{n}$. With these two correspondences in mind we may treat a permutation as a sequence, a linear order, or a word, whichever is convenient to the context.
+
+The problem of determining $\theta(n)$ for various $n$ can be viewed as one of a triplet of Ramsey-type problems about $[n]$ that all have somewhat the same flavor; the other two problems in this triplet are about determining the least number of partitions of $[n]$. In one problem the partitions are required to be sum-free, and in the other they must all be 3-free. These two problems are, of course, related to the well-known Schur numbers and van der Waerden numbers, respectively. A detailed account of these two types of numbers and an extensive list of references relating to them can be found in [3].
+
+Following the terminology used in [1], we call a 3-free permutation on a set $S$ of positive integers a $\Theta$ permutation. We let $\Theta(n)$ denote the set of all $\Theta$ permutations on $[n]$; whence we have $\theta(n)=|\Theta(n)|$.
+
+Of the two bounds $2^{n-1} \leq \theta(n) \leq\left\lfloor\frac{n+1}{2}\right\rfloor!\left\lceil\frac{n+1}{2}\right\rceil!$ for $\theta(n)$ found in [2], the lower bound is an exponential function while the upper bound is a factorial function. Therefore the two bounds do not tell us whether $\theta(n)$ grows like an exponential function, a factorial function, or some other function. In this regard, when we examine the known values of $\theta(n)$ (see Appendix), we discover that the inequality $\theta(n)<3^{n}$ holds for all initial values of $n$. This raises the question of whether $\theta(n)$ grows exponentially like $3^{n}$ itself or perhaps like $c^{n}$ for some $c$ even smaller than 3. In this paper we prove this to be, indeed, the case. Specifically, we show that $\theta(n) \leq \frac{(2.7)^{n}}{21}$ for all $n \geq 11$. This new upper bound for $\theta(n)$ partially settles the question in [1] stated earlier. In [2], it is shown that if $n=2^{k}$ for some $k$, then $\theta(n) \geq \frac{1}{2} \times(2.248)^{n}$. It is not known whether this lower bound eventually holds for all $n$. In this regard, we are only able to prove that $\theta(n) \geq \frac{1}{10} \times n \times 2^{n}$ for all $n$. To prove these results, we introduce a number of new concepts which also help to clarify the structure of $\Theta$ permutations in general. For example, we show that at least $\left\lfloor\frac{n}{2}\right\rfloor-6$ entries at each end of a $\Theta$ permutation on $[n]$ have the same parity. To properly motivate the new concepts introduced here, we will briefly sketch a proof of the lower bound for $\theta(n)$ given in [1]. But, before proceeding with that proof, we introduce some terminology.
+
+Notation 1.1. Let $\alpha=\left(p_{1}, p_{2}, \ldots, p_{k}\right)$ be a permutation of a $k$-element set $P$ of integers. For integers $a$, $b$, and $c$, with $a$ and $c$ nonzero, we let $\frac{a P+b}{c}$ be the set $\left\{\frac{a x+b}{c}: x \in P\right\}$ and $\frac{a \alpha+b}{c}$ the permutation on $\frac{a P+b}{c}$ obtained by replacing each entry $x$ in $\alpha$ by $\frac{a x+b}{c}$. If $T$ is a subset of $P$, then the restriction of the order $\alpha$ to $T$ is called the trace of $\alpha$ on $T$. If $Q$ is a finite set of integers disjoint from $P$ and if $\beta$ is a permutation on $Q$,\\
+then $(\alpha, \beta)$ denotes the word $\alpha \beta$ on $P \cup Q$. To avoid ambiguity, the notation $\langle\alpha, \beta\rangle$ will denote the ordered pair formed by $\alpha$ and $\beta$.
+
+Theorem 1.1. For all $n \in \mathbb{Z}^{+}$, $\theta(n) \geq 2^{n-1}$.\\
+Proof. Since $\theta(1)=1$ and $\theta(2)=2$, the theorem holds for $n=1$ and $n=2$. We now show that if the theorem holds for $n=k$ and $n=k+1$, then it holds for $n=2 k$ and $n=2 k+1$. Observe that if $\alpha$ and $\beta$ are two $\Theta$ permutations on $[k]$, then due to parity considerations $(2 \alpha, 2 \beta-1)$ and $(2 \beta-1,2 \alpha)$ are $\Theta$ permutations on $[2 k]$; since there are $[\theta(k)]^{2}$ such ordered pairs $\langle\alpha, \beta\rangle$, we have
+
+
+\begin{equation*}
+\theta(2 k) \geq 2 \times[\theta(k)]^{2} . \tag{1}
+\end{equation*}
+
+
+Similarly, if $\alpha$ and $\beta$ are $\Theta$ permutations on $[k]$ and $[k+1]$, respectively, then $(2 \alpha, 2 \beta-1)$ and $(2 \beta-1,2 \alpha)$ are $\Theta$ permutations on $[2 k+1]$. Now, an argument similar to the one just given yields
+
+
+\begin{equation*}
+\theta(2 k+1) \geq 2 \times \theta(k) \times \theta(k+1) . \tag{2}
+\end{equation*}
+
+
+Thus if the theorem holds for $n=k$ and $n=k+1$, then
+
+$$
+\begin{aligned}
+& \theta(2 k) \geq 2 \times[\theta(k)]^{2} \geq 2 \times\left(2^{k-1}\right)^{2}=2^{2 k-1}, \text { and } \\
+& \theta(2 k+1) \geq 2 \times \theta(k) \times \theta(k+1) \geq 2 \times 2^{k-1} \times 2^{k}=2^{2 k},
+\end{aligned}
+$$
+
+and the inductive argument proves that the theorem holds for all $n \in \mathbb{Z}^{+}$. \proofend
+
+\section*{2. Structural Properties of $\Theta$ permutations}
+We begin by introducing a number of new terms that help illuminate certain properties of $\Theta$ permutations. The properties that can be easily derived from the definitions are detailed as propositions, and those requiring longer proofs are presented as lemmas or theorems.
+
+Definitions 2.1. Throughout this paper, we use the following notation:
+
+\begin{itemize}
+  \item[(i)] $n$ denotes an arbitrary but fixed positive integer.
+  \item[(ii)] $\gamma=\left(a_{1}, a_{2}, \ldots, a_{n}\right)$ generally denotes an arbitrary member of $\Theta(n)$; any additional restrictions on $\gamma$, whenever needed, will be stated explicitly.
+  \item[(iii)] $\gamma_{o}$ and $\gamma_{e}$ represent the traces of $\gamma$ on the odd and even integers in $[n]$, respectively. Obviously any arbitrary $\Theta$ permutations $\alpha$ and $\beta$ on the odd and even integers in $[n]$ can be realized as $\gamma_{o}$ and $\gamma_{e}$ by letting $\gamma=(\alpha, \beta)$.
+  \item[(iv)] $\gamma^{*}$ is the $\Theta$ permutation on $[n]$ obtained by replacing in $\gamma$ each entry $x$ by $n+1-x$.
+  \item[(v)] For $n \geq 2$, the intervals $\left[1,\left\lfloor\frac{n}{2}\right\rfloor\right]$ and $\left[\left\lfloor\frac{n}{2}\right\rfloor+1, n\right]$ are the lower and upper halves of $[n]$.
+\end{itemize}
+
+Definition 2.2. The permutation obtained by writing the entries of a given permutation $\alpha$ in reverse order is called the reversal of $\alpha$ and is denoted by $\rho(\alpha)$. Equivalently, $\rho(\alpha)$ is the inverse of the order relation $\alpha$.
+
+Definition 2.3. For any $\Theta$ permutation $\alpha=\left(d_{1}, d_{2}, \ldots, d_{r}\right)$ on a subset of $[n]$, the prologue of $\alpha$, denoted $\operatorname{pro}(\alpha)$, is the sequence $\left(d_{1}, d_{2}, \ldots, d_{i}\right)$ where $i$ is the largest index for which $d_{1}, d_{2}, \ldots, d_{i}$ all lie in the same half of $[n]$. The length of $\operatorname{pro}(\alpha)$, denoted as $|\operatorname{pro}(\alpha)|$, is the number of terms in the sequence $\operatorname{pro}(\alpha)$. The notations $\operatorname{pro}\left(\alpha_{o}\right)$, $\operatorname{pro}\left(\alpha_{e}\right)$, etc. are defined similarly. The epilogue of $\alpha$, denoted $\operatorname{epi}(\alpha)$, is defined as $\operatorname{pro}(\rho(\alpha))$.
+
+Proposition 2.1. For $n \geq 2$, the first and last entries of $\gamma$ have different parities.\\
+Proof. If not, then these two entries together with their arithmetic mean would be a 3-progression in $\gamma$. \proofend
+
+The property of $\Theta$ permutations in the preceding proposition induces a natural partition of $\Theta(n)$ into two subsets which we denote as follows:
+
+Notation 2.1. $\Theta_{12}(n)$ (respectively, $\Theta_{21}(n)$ ) consists of the members of $\Theta(n)$ that begin with an odd (resp., even) entry.
+
+In view of the natural one-to-one correspondence created by $\rho$ between the sets $\Theta_{12}(n)$ and $\Theta_{21}(n)$, it is sufficient to focus on the study of $\Theta_{12}$ permutations.
+
+Proposition 2.2. If 1 occurs to the left of 2 in $\gamma$, then $\gamma$ is a $\Theta_{12}$ permutation.\\
+Proof. Suppose 1 occurs to the left of 2 in $\gamma$. Then to avoid the 3-progression 123, 3 must occur to the left of 2 in $\gamma$; then to avoid the 3-progression 432, 3 must occur in $\gamma$ to the left of 4. Thus, 1 and 3 are both to the left of 2 and both 2 and 4 to the right of 3. Continuing like this, we can show that 3 and 5 must both occur in $\gamma$ to the left of 4, and then both 4 and 6 to the right of 5 and so on. Hence we conclude that any two odd elements $2 j-1$ and $2 j+1$ of $[n]$ must both occur in $\gamma$ to the left of $2 j$, and any two even elements $2 j$ and $2 j+2$ of $[n]$ must both occur to the right of $2 j+1$. Thus, in particular, the first entry of $\gamma$ must be odd. This proves that $\gamma \in \Theta_{12}(n)$. \proofend
+
+The preceding proof, in particular, establishes the following:
+Proposition 2.3. Of any two consecutive elements $x$ and $x+1$ in $[n]$, the odd one must occur in all $\Theta_{12}$ permutations to the left of the even one.
+
+Definition 2.4. Suppose $n \geq 2$. Then $\gamma_{o} \otimes \gamma_{e}$ denotes the set of all $\Theta$ permutations on $[n]$ whose traces on the odd and even integers in $[n]$ are $\gamma_{o}$ and $\gamma_{e}$ and whose first entry is in $\gamma_{o}$ (define $\gamma_{e} \otimes \gamma_{o}$ similarly).
+
+Definition 2.5. Whenever two elements $x, y \in[n]$ with $x$ odd and $y$ even are such that $x$ is to the left of $y$ in every $\Theta_{12}$ permutation on $[n]$, we say that $x$ and $y$ do not commute in $[n]$; on the other hand, if there does exist a $\Theta_{12}$ permutation on $[n]$ which has $x$ to the right of $y$, we say that $x$ and $y$ commute in $[n]$.
+
+Observe that if the last entry of $\gamma_{o}$ does not commute with the first entry of $\gamma_{e}$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=1$.
+
+Proposition 2.4. For any $j \in[n]$, there exists a $\Theta$ permutation on $[n]$ that begins with $j$.
+
+Proof. This is obvious for $n=1$ and $n=2$. To prove the proposition inductively, suppose it holds for $n=k$ and $n=k+1$. We show that it also holds for $n=2 k$ and $n=2 k+1$. Let $j \in[2 k]$. If $j$ is even, choose a $\Theta$ permutation $\delta$ on $[k]$ with first entry $\frac{j}{2}$ (such a permutation on $[k]$ exists by the induction hypothesis). Then $(2 \delta, 2 \delta-1)$ is a $\Theta$ permutation on $[2 k]$ with first entry $j$. If $j$ is odd (and thus $j+1 \leq 2 k$ ), choose a $\Theta$ permutation $\delta$ on $[k]$ with first entry $\frac{j+1}{2}$, then $(2 \delta-1,2 \delta)$ is a $\Theta$ permutation on $[2 k]$ with first entry $j$. This proves that the proposition holds for $n=2 k$. The proof that the proposition holds for $n=2 k+1$ is similar and will be omitted. \proofend
+
+Proposition 2.5. $|\operatorname{pro}(\gamma)|=\left|\operatorname{pro}\left(\gamma^{*}\right)\right|$ except when $n$ is odd and $\frac{n+1}{2} \in \operatorname{pro}(\gamma)$.\\
+Proof. This follows from the definition of $\operatorname{pro}(\gamma)$ and the fact that for any even $n$ the bijection $c:[n] \to [n]$ given by $c(x)=n+1-x$ maps each half of $[n]$ onto the other and for any odd $n$ the same function fixes $\frac{n+1}{2}$ but is a bijection between the lower half of $[n]$ and the remainder of the upper half of $[n]$. \proofend
+
+Proposition 2.6. For the $\Theta$ permutation $\delta=(2 \gamma, 2 \gamma-1)$ on $[2n]$, $|\operatorname{pro}(\gamma)|=|\operatorname{pro}(\delta)|=\left|\operatorname{pro}\left(\delta^{*}\right)\right|$.
+
+Proof. The first equality follows easily from the definition of prologue, and the second follows from Proposition 2.5 because $2 n$ is even. \proofend
+
+Recall that Theorem 1.1 derives the lower bound for $\theta(n)$ by associating with each ordered pair $\langle\alpha, \beta\rangle$ of $\Theta$ permutations on $[k]$ (or $\alpha$ on $[k+1]$ and $\beta$ on $[k]$ ) a single $\Theta_{12}$ permutation on $[2 k]$ (or on $[2 k+1]$ ). In contrast to this, we associate with each such ordered pair the class of $\Theta_{12}$ permutations on $[2 k]$ (resp., $[2 k+1]$ ) given by $(2 \alpha-1) \otimes(2 \beta)$. It is easy to see that this association is a one-to-one correspondence between the set of all such ordered pairs $\langle\alpha, \beta\rangle$ and the set of all classes $(2 \alpha-1) \otimes(2 \beta)$. These classes therefore form a partition of $\Theta_{12}(2 k)$ (or $\Theta_{12}(2 k+1)$ ). We will prove that each such class has at most twenty members. This result is the basis of our proof of the new upper bound.
+
+Theorem 2.1. Any two odd elements of $[n]$ with an even arithmetic mean must both occur in all $\Theta_{12}$ permutations on $[n]$ to the left of their mean (and similarly any two even elements with an odd arithmetic mean must both be to the right of their mean).
+
+Proof. Take any $\delta \in \Theta_{12}(n)$ and let $x, y \in[n], x<y$, be two odd integers with even arithmetic mean $2 s$. Then there exists a positive integer $t$ such that $x=2 s-2 t+1$ and $y=2 s+2 t-1$. We show, by induction on $t$, that both $x$ and $y$ lie in $\delta$ to the left of $2 s$. By Proposition 2.3, this is true for $t=1$. Assume that there is some integer $v>1$ such that the proposition is true for all $t<v$ but is false for $t=v$. This then means that not both $2 s-2 v+1$ and $2 s+2 v-1$ lie in $\delta$ to the left of $2 s$. As the two cannot lie in $\delta$ on opposite sides of $2 s$ (because $\delta$ must avoid the progression formed by these two together with $2 s$ ), they must, therefore, both lie in $\delta$ to the right of $2 s$. Thus the first and last terms of the sequence $L=(2 s-2 v+1,2 s-2 v+3, \ldots, 2 s+2 v-3,2 s+2 v-1)$ both lie in $\delta$ to the right of $2 s$ while all of the remaining terms of $L$ lie in $\delta$ to the left of $2 s$. Note that the sequence $L$ has $2 v$ terms, which is an even number $\geq 4$ (since $v \geq 2$ ). For convenience, we denote the term occupying the $i$-th place in $L$ by $c_{i}, 1 \leq i \leq 2 v$. Now let us examine the relative order in which the terms of $L$ must appear in $\delta$. We already know that both $c_{1}$ and $c_{2 v}$ appear in $\delta$ to the right of $2 s$ while all of the remaining $c_i$'s appear in $\delta$ to the left of $2 s$. Observe that of any three consecutive terms $c_{i-1}, c_{i}$, and $c_{i+1}$ in $L$, $c_{i-1}$ and $c_{i+1}$ must both appear in $\delta$ on the same side of their mean $c_{i}$ (to ensure that $\delta$ avoids the 3-progression $\left(c_{i-1}, c_{i}, c_{i+1}\right)$ ). Applying this condition repeatedly, we find that both $c_{1}$ and $c_{3}$ appear in $\delta$ to the right of $c_{2}$ (because $c_{1}$ is to the right of $2 s$ whereas $c_{2}$ and $c_{3}$ are to the left of $2 s$ ); both $c_{2}$ and $c_{4}$ to the left of $c_{3}$; both $c_{3}$ and $c_{5}$ to the right of $c_{4}$ and so on. It is thus easily seen that both $c_{i-1}$ and $c_{i+1}$ lie in $\delta$ to the right (resp., left) of $c_{i}$ for $i$ even (resp., odd). Thus, in particular, both $c_{2 v-2}$ and $c_{2 v}$ appear in $\delta$ to the left of $c_{2 v-1}$. But that is impossible because we already know that $c_{2 v-1}$ appears in $\delta$ to the left of $2 s$ whereas $c_{2 v}$ appears in it to the right of $2 s$. This completes the proof. \proofend
+
+Theorem 2.2. Let $x, y \in[n]$ with $x$ odd and $y$ even. Then $x$ and $y$ do not commute iff at least one of $2 x-y$ and $2 y-x$ is in $[n]$.
+
+Proof. Suppose $2 x-y \in[n]$. Then $2 x-y$ and $y$ are both even while their mean $x$ is odd. Therefore, by Theorem 2.1, both $2 x-y$ and $y$ (and thus, in particular $y$ ) must be to the right of $x$ in all $\Theta_{12}$ permutations. A similar argument applies when $2 y-x \in[n]$. This proves the ``if'' part of the theorem. Now, suppose neither of $2 x-y$ and $2 y-x$ is in $[n]$. Take a $\Theta$ permutation $\delta$ on the odds in $[n]$ which ends in $x$ and a $\Theta$ permutation $\epsilon$ on the evens in $[n]$ that begins with $y$ (which both exist by Proposition 2.4). Then $(\delta, \epsilon)$ is a $\Theta$ permutation on $[n]$ such that if we switch the adjacent entries $x$ and $y$ in $(\delta, \epsilon)$, the resulting arrangement is still a $\Theta$ permutation. This is due to the fact that neither $2 x-y$ nor $2 y-x$ is in $[n]$, and so the stated interchange cannot create a 3-progression. Hence we have constructed a $\Theta_{12}$ permutation where $x$ is to the right of $y$, and the proof is complete. \proofend
+
+Proposition 2.7. Suppose $x, y \in[n]$ with $x$ odd and $y$ even. If $x$ and $y$ commute and if there exists a $\Theta_{12}$ permutation $\alpha$ on $[n]$ in which $x$ is immediately to the left of $y$, then the permutation $\beta$ obtained from $\alpha$ by swapping $x$ and $y$ is also a $\Theta_{12}$ permutation on $[n]$.
+
+Proof. Since $x$ and $y$ are consecutive terms in both $\alpha$ and $\beta$, the only possible 3-progression in $\beta$ would necessarily have $x$ and $y$ as two of its consecutive terms. However any 3-progression in which $x$ and $y$ are consecutive terms must necessarily have $2 x-y$ or $2 y-x$ as the remaining term in the progression. But as $x$ and $y$ commute, neither of $2 x-y$ and $2 y-x$ is in $[n]$. This completes the proof. \proofend
+
+Corollary 2.2.1. If $x, y \in[n]$ are of opposite parities and lie in the same half of $[n]$, then they do not commute.
+
+Proof. If $x$ and $y$ are in the same half of $[n]$, then obviously one of $2 x-y$ and $2 y-x$ must be in $[n]$. The desired conclusion now follows from Theorem 2.2. \proofend
+
+Corollary 2.2.2. The first $\left\lfloor\frac{n+1}{4}\right\rfloor$ entries of $\gamma$ are congruent $(\bmod 2)$.\\
+We omit the proof of this corollary as it can be easily completed by considering the four cases $n=4 j, 4 j+1,4 j+2$, and $4 j+3$ and applying Theorem 2.2 and Corollary 2.2.1 in each case.
+
+Lemma 2.1. Suppose there are positive integers $k \leq \frac{n+1}{4}$ and $j$ such that each $\Theta$ permutation on $[n]$ and each $\Theta$ permutation on $[n+1]$ has its first $k$ entries congruent to each other $\left(\bmod 2^{j}\right)$. Then each $\Theta$ permutation on $[2 n]$ and each $\Theta$ permutation on $[2 n+1]$ has its first $k$ entries congruent to each other $\left(\bmod 2^{j+1}\right)$.\\
+Proof. Take any $\mu \in \Theta(2 n)$. We assume that $\mu$ is a $\Theta_{12}$ permutation. Let $\delta=\frac{1+\mu_{o}}{2}$ and $\epsilon=\frac{\mu_{e}}{2}$. Then, clearly $\mu \in(2 \delta-1) \otimes(2 \epsilon)$. Since $k \leq \frac{n+1}{4}<\frac{2n+1}{4}$, Corollary 2.2.2 implies that the first $k$ entries of $\mu$ all have the same parity, and thus they all correspond to the first $k$ entries of $\delta$. Hence the desired congruence relation between the first $k$ entries of $\mu$ follows from the assumed congruence of the first $k$ entries of $\delta$, since $\delta \in \Theta(n)$. When $\mu$ is a $\Theta_{21}$, we can reason in a similar way as the first $k$ entries of $\mu$ would be the first $k$ entries of $2 \epsilon$ instead of those of $2 \delta$. For $\mu \in \Theta(2 n+1)$, the proof is similar and will be omitted. \proofend
+
+Theorem 2.3. For any integer $j \geq 0$, the first $\left\lfloor\frac{\left\lfloor\frac{n}{2^{j}}\right\rfloor+1}{4}\right\rfloor$ entries of $\gamma$ must be congruent to each other $\left(\bmod 2^{j+1}\right)$.
+
+Proof. Let $N$ denote the set of positive integers. By Corollary 2.2.2 the statement is true for $j=0$ and for all $n \in N$. Suppose there exists a positive integer $p$ such that the statement is true for all $j \leq p$ and all $n \in N$. We show that the statement holds for $j=p+1$ and for each $n \in N$. Take $n \in N$ and suppose $n$ is even, say $n=2 m$. By our supposition, this statement holds for $j=p$ and $n=m$. This means that any $\Theta$ permutation $\delta$ on $[m]$ has its first $\left\lfloor\frac{\left\lfloor\frac{m}{2^{p}}\right\rfloor+1}{4}\right\rfloor$ entries congruent to each other $\left(\bmod 2^{p+1}\right)$. Hence by Lemma 2.1, each $\Theta$ permutation on $[2 m]$ has its first $\left\lfloor\frac{\left\lfloor\frac{2m}{2^{p+1}}\right\rfloor+1}{4}\right\rfloor$ entries congruent to each other $\left(\bmod 2^{p+2}\right)$. This proves that the given statement holds for $j=p+1$ and any $n$ even. The verification for $j=p+1$ and $n$ odd is almost identical and will be omitted. This induction argument proves the theorem. \proofend
+
+Definition 2.6. The degree of binary congruence between two distinct integers $a$ and $b$ is the largest integer $j$ such that $2^{j}$ divides $a-b$.
+
+Theorem 2.4. Let $x, y, z \in[n]$, and suppose $z$ is the arithmetic mean of $x$ and $y$. If the degree of binary congruence between $a_{1}$ and $z$ is higher than that between $a_{1}$ and $x$, then both $x$ and $y$ lie in $\gamma$ to the right of $z$.
+
+Proof. Let the degree of binary congruence between $x$ and $y$ be $j$. Then in view of the given hypotheses, there exist nonnegative integers $r, s$, and $t$ such that $x=s \times 2^{j}+r$, $y=t \times 2^{j}+r$, and $a_{1}=b_{1} \times 2^{j-1}+r$ with both $b_{1}$ and $s+t$ odd. Now, let $\gamma^{\prime}$ be the trace of $\gamma$ on $\left\{a_{1}, x, y, z\right\}$. Then the $\Theta$ permutation $\beta=\frac{\gamma^{\prime}-r}{2^{j-1}}$ has the four entries $b_{1}$, $2 s, 2 t$, and $s+t$, with $b_{1}$ as the first entry. By Theorem 2.2, $s+t$ must be to the left of both $2 s$ and $2 t$ in $\beta$. Since the order of these entries in $\beta$ is the same as that of the corresponding entries $a_{1}, x, y$, and $z$ in $\gamma$, the desired conclusion follows. \proofend
+
+Lemma 2.2. If $a_{1}$ is from the lower half of $[n]$, then $a_{1}$ is the largest entry in $\operatorname{pro}(\gamma)$. Likewise if the entries of $\operatorname{pro}(\gamma)$ are from the upper half of $[n]$, then $a_{1}$ is the smallest amongst them.
+
+Proof. The first assertion must be true, for otherwise the very first $a_{i} \in \operatorname{pro}(\gamma)$ greater than $a_{1}$ will yield the 3-progression $\left(a_{1}, a_{i}, 2 a_{i}-a_{1}\right)$ in $\gamma$. The second assertion follows similarly by considering $\gamma^{*}$. \proofend
+
+Lemma 2.3. Suppose $a_{1}>4$. Let $t$ be the largest integer such that $2^{t}<a_{1}$ and let $u=2^{t-2}$. Then the following are true:
+
+\begin{itemize}
+  \item[(i)] $a_{1}, a_{1}-4 u, a_{1}-2 u, a_{1}-u$ occur in $\gamma$, relative to each other, in the order just listed.
+  \item[(ii)] If $n \geq a_{1}+2 u$, then $a_{1}+2 u$ occurs in $\gamma$ to the left of $a_{1}-u$.
+  \item[(iii)] If $n \geq a_{1}+7 u$, then $a_{1}+2 u$ occurs in $\gamma$ to the left of both $a_{1}-3 u$ and $a_{1}+7 u$.
+\end{itemize}
+
+Proof. Since $\gamma$ must avoid the two 3-progressions
+\[
+\left(a_{1},a_{1}-u,a_{1}-2u\right)
+\quad\text{and}\quad
+\left(a_{1},a_{1}-2u,a_{1}-4u\right),
+\]
+assertion (i) holds. Similarly, (ii) follows because $\gamma$ must avoid
+\[
+\left(a_{1}-4u,a_{1}-u,a_{1}+2u\right).
+\]
+Finally, $a_{1}+2u$ is the arithmetic mean of $a_{1}-3u$ and $a_{1}+7u$. Moreover, $a_{1}+2u$ has a higher degree of binary congruence with $a_{1}$ than $a_{1}-3u$ does, so (iii) follows. \proofend
+
+Recall that by Theorem 2.3, certain initial blocks of the entries of $\gamma$ satisfy some specific congruence conditions. Since $\operatorname{pro}(\gamma)$ is, by definition, an initial block of $\gamma$, it must satisfy the congruence conditions imposed on $\gamma$ by Theorem 2.3. We use this fact in the proof of the following:
+
+Lemma 2.4. If $a_{1}$ is in the lower half of $[n]$, then $|\operatorname{pro}(\gamma)| \leq 6$.\\
+Proof. Since $a_{1}$ is the largest entry in $\operatorname{pro}(\gamma)$, we can assume that $a_{1} \geq 7$, for otherwise the desired result is obvious. Choose $t$ and $u$ as defined in Lemma 2.3 and note that $4 u<a_{1} \leq 8 u$. Then by Lemma 2.3, $a_{1}+2 u$ must be to the left of $a_{1}-u$ which then precludes $a_{1}-u$ from being a term in $\operatorname{pro}(\gamma)$. Take any $x \in[n]$ such that $x<a_{1}$ and $x \not\equiv a_{1} \pmod{u}$. Then $y=2 a_{1}-2 u-x$ is obviously in $[n]$. Observe that the arithmetic mean of $x$ and $y$ is $a_{1}-u$. Since the degree of binary congruence between $a_{1}$ and $a_{1}-u$ is higher than that between $a_{1}$ and $x$, Theorem 2.4 implies that $x$ and $y$ must both be to the right of $a_{1}-u$. Thus, neither of $x$ and $y$ can be in $\operatorname{pro}(\gamma)$. Hence the entries of $\operatorname{pro}(\gamma)$ must all come from the set $\left\{a_{1}, a_{1}-2u, a_{1}-3u, a_{1}-4u, a_{1}-5u, a_{1}-6u, a_{1}-7u\right\}$. Now, if $a_{1} \leq 7 u$, then obviously $a_{1}-7 u$ cannot be in $\operatorname{pro}(\gamma)$, and the desired result immediately follows; if $a_{1}>7 u$, then $n \geq 2 a_{1}>a_{1}+7 u$ whence by Lemma 2.3, $a_{1}+2 u$ must be to the left of $a_{1}-3 u$ which prevents $a_{1}-3 u$ from being in $\operatorname{pro}(\gamma)$. This completes the proof. \proofend
+
+The following result also plays an important role in the derivation of the new upper bound for $\theta(n)$.
+
+Theorem 2.5. For all $n$, $|\operatorname{pro}(\gamma)| \leq 6$.\\
+Proof. We have already proved this statement for $a_{1}$ in the lower half of $[n]$. If $a_{1}$ is in the upper half of $[n]$, then as was done in Proposition 2.6, consider the $\Theta$ permutation $\delta=(2 \gamma, 2 \gamma-1)$ on $[2 n]$. Clearly the entries of $\operatorname{pro}\left(\delta^{*}\right)$ are from the lower half of $[2 n]$ and so $\left|\operatorname{pro}\left(\delta^{*}\right)\right| \leq 6$. By Proposition 2.6, $|\operatorname{pro}(\gamma)|=\left|\operatorname{pro}(\delta^{*})\right|$ and hence the desired conclusion follows. \proofend
+
+In the following example, $|\operatorname{pro}(\gamma)|$ attains the upper bound six.\\
+Example 2.1. Choose $n=26$, $\gamma_{o}=(13,5,9,1,7,3,21,25,17,23,15,19,11)$, and $\gamma_{e}=(26,10,18,2,22,6,14,12,20,4,24,8,16)$.
+
+Notation 2.2. For the remainder of this section, we adopt the following notation:\\
+(1) The letter $q$ denotes the following function of $n$. Determine the integer $k$ for which $2^{k} \leq n<2^{k+1}$ (and so $k=\left\lfloor\log _{2} n\right\rfloor$ ) and let $q=2^{k-4}$. We will usually take $n \geq 32$ whence we will have $16 q \leq n<32 q$.\\
+(2) Since in the ensuing discussion we will repeatedly refer to the right-end entries of $\gamma_{o}$ and the left-end entries of $\gamma_{e}$, for convenience we write
+\[
+\begin{aligned}
+\gamma_{o}&=\left(b_{\left\lceil n/2\right\rceil},\ldots,b_{2},b_{1}\right),\\
+\gamma_{e}&=\left(c_{1},c_{2},\ldots,c_{\left\lfloor n/2\right\rfloor}\right).
+\end{aligned}
+\]
+How large can $\left|\gamma_{o} \otimes \gamma_{e}\right|$ be? We already know that if $b_{1}$ does not commute with $c_{1}$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=1$. Thus, to answer the question just posed, we make the following assumptions for the remainder of this section.\\
+(3) $b_{1}$ commutes with $c_{1}$, $b_{1}$ is from the lower half of $[n]$, and $c_{1}$ is from the upper half.
+
+Lemma 2.5. If $\left|\operatorname{epi}\left(\gamma_{o}\right)\right|=u$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|=v$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=\binom{u+v}{v}$.
+Proof. Recall that $b_{1}$ is the largest entry of $\operatorname{epi}\left(\gamma_{o}\right)$ while $c_{1}$ is the smallest in $\operatorname{pro}\left(\gamma_{e}\right)$. Clearly the rightmost entry of $\gamma_{o}$ which is not in $\operatorname{epi}\left(\gamma_{o}\right)$ must lie in the same half of $[n]$ as $c_{1}$ and so cannot commute with $c_{1}$. Likewise, the leftmost entry of $\gamma_{e}$ which is not in $\operatorname{pro}\left(\gamma_{e}\right)$ cannot commute with $b_{1}$. Thus, by Proposition 2.7, there are precisely as many elements in $\gamma_{o} \otimes \gamma_{e}$ as there are permutations of the union of the sets of entries of $\operatorname{epi}\left(\gamma_{o}\right)$ and $\operatorname{pro}\left(\gamma_{e}\right)$ such that the entries of each of $\operatorname{epi}\left(\gamma_{o}\right)$ and $\operatorname{pro}\left(\gamma_{e}\right)$ maintain their relative order. \proofend
+
+For $n \geq 32$, the following congruence relations hold (by Theorem 2.3) among the entries of $\gamma$ (and also amongst the entries of each of $\gamma_{o}$ and $\gamma_{e}$). In the theorems that follow, we will make use of these relations.
+
+Proposition 2.8. If $n \geq 16 q$, the first two entries of $\gamma$ are congruent $(\bmod 4 q)$, the first four are congruent $(\bmod 2 q)$, and the first eight are congruent $(\bmod q)$.
+
+Proposition 2.9. If $n \geq 22 q$, the first three entries of $\gamma$ are congruent $(\bmod 4 q)$, the first five are congruent $(\bmod 2 q)$, and the first eleven are congruent $(\bmod q)$.
+
+Proposition 2.10. If $n \geq 28 q$, the first two entries of $\gamma$ are congruent $(\bmod 8 q)$, the first three are congruent $(\bmod 4 q)$, the first seven are congruent $(\bmod 2 q)$, and the first fourteen are congruent $(\bmod q)$.
+
+The following two theorems tell us to what extent the assumption that $b_{1}$ commutes with $c_{1}$ prevents $\operatorname{epi}\left(\gamma_{o}\right)$ and $\operatorname{pro}\left(\gamma_{e}\right)$ from impinging on each other.
+
+Theorem 2.6. If one of $\left|\operatorname{epi}\left(\gamma_{o}\right)\right|$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|$ is at least four, then the other is at most two.
+
+Proof. Suppose that for some $n$ there exists a permutation $\gamma$ on $[n]$ such that $\left|\operatorname{epi}(\gamma_o)\right| \geq 4$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right| \geq 3$. Since $b_{1}, b_{2}, b_{3}$, and $b_{4}$ are congruent $(\bmod 2q)$ and $b_{1}$ is the largest among these four $b_i$'s, we have $b_{1}>6q$. Consider the various possible choices of $b_{1}$.\\
+(i) Suppose $b_{1}=6 q+z$ for some $0<z<2 q$. Since $|\operatorname{epi}(\gamma_o)| \geq 4$, this choice of $b_{1}$ forces $b_{2}=2 q+z, b_{3}=4 q+z$, and $b_{4}=z$. Now, if $n \geq 16 q+z$, then by Theorem 2.4, both $4 q+z$ and $16 q+z$ must occur in $\gamma_{o}$ to the left of $10 q+z$, implying that $b_{3}=4 q+z$ cannot be in $\operatorname{epi}\left(\gamma_{o}\right)$. Thus, we must have $n<16 q+z$. This then means that $c_{1}$ and $c_{2}$ are both $<16 q+z$; now since $c_{1}$ and $c_{2}$ are congruent $(\bmod 4 q)$ with $c_{1}<c_{2}$, we have $c_{1}<12q+z$, which we know does not commute with $b_{1}=6q+z$; this contradicts our assumption that $b_{1}$ and $c_{1}$ commute. Hence $b_{1}=6 q+z$ with $0<z<2 q$ is not possible.\\
+(ii) Suppose $b_{1}=8 q+z$ for some $0<z<2 q$. This choice of $b_{1}$ forces $b_{2}=z, b_{3}=4 q+z$, and $b_{4}=2 q+z$. Reasoning as in $(i)$, we conclude that $n<22 q+z$ for otherwise $22 q+z$ and $2 q+z$ would have to appear in $\gamma_{o}$ to the left of $12 q+z$ by Theorem 2.4, which would then prevent $b_{4}=2 q+z$ from being a term in $\operatorname{epi}\left(\gamma_{o}\right)$. Thus, $c_{1}, c_{2}$, and $c_{3}$ must all lie in $[16 q+2 z, 22 q+z)$. This interval has length $<6 q$. For convenience, let $c_{1}=y$. Now the values $c_{2}=y+4 q$ and $c_{3}=y+2 q$ are forced. As these are the first three entries in $\gamma_{e}$, we discover that the entries $y-8 q, y-4 q, y-6 q$, and $y-2 q$ must appear in $\gamma_{e}$ in this very order. But then we cannot place $y-10 q$ anywhere in $\gamma_{e}$ for $\gamma_{e}$ must avoid both of the 3-progressions $(y+2 q, y-4 q, y-10 q)$ and $(y-10 q, y-6 q, y-2 q)$. Hence $b_{1}=8 q+z$ is likewise impossible.\\
+(iii) If $b_{1} \geq 10 q$, then $c_{1}, c_{2}$, and $c_{3}$ must all be in $\left[2 b_{1}, n\right]$, and since $c_{1}$ and $c_{2}$ are congruent $(\bmod 4 q)$, we have $n \geq 24 q$. But then, by Proposition 2.9, $c_{1}, c_{2}$ and $c_{3}$ must be congruent $(\bmod 4 q)$, which forces $n \geq 28 q$. Now, it is impossible that $b_{1}>12 q$ because then $c_{1}$ and $c_{2}$ being congruent to each other $(\bmod 8 q)$ cannot both be placed in the interval $\left[2 b_{1}, 32 q\right)$ because its length is less than $8 q$. If instead $b_{1}=10 q+z$ for some $0<z<2 q$, then by similar reasoning as in (i) and (ii), we can show that $n<28 q+z$. But since $c_{1}, c_{2}$ and $c_{3}$ are congruent $(\bmod 4 q)$, it is obviously impossible to place all three of them in the interval $\left[2 b_{1}, n\right]$. This completes the proof. \proofend
+
+In the proof of the following theorem, some details that are similar to those in the proof of the preceding theorem will be omitted.
+
+Theorem 2.7. If the length of one of $\operatorname{epi}\left(\gamma_{o}\right)$ and $\operatorname{pro}\left(\gamma_{e}\right)$ is at least five, then the length of the other is one.
+
+Proof. Suppose we have $\gamma_{o}$ and $\gamma_{e}$ such that $\left|\operatorname{epi}\left(\gamma_{o}\right)\right| \geq 5$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right| \geq 2$. Due to the congruence conditions on $c_{1}$ and $c_{2}$, we have $n-2 b_{1} \geq 4 q$ and when $28 q \leq n<32 q$, $n-2 b_{1} \geq 8 q$. We now consider some cases to show $\gamma_{o}$ and $\gamma_{e}$ of the supposed kind do not exist.
+
+Case 1: $n=16 q$ or $n=16 q+1$. If $b_{1}>6 q$, then $n-2 b_{1}<4 q$, a contradiction. If $b_{1}<6 q$, then since the last four entries of $\gamma_{o}$ must be congruent $(\bmod 2 q)$, they could only come from $\left\{b_{1}, b_{1}-2 q, b_{1}-4 q\right\}$, a contradiction.
+
+Case 2: $n>16q+1$. In this case the entries of $\operatorname{epi}(\gamma_o)$ can only come from the set
+\[
+\left\{b_1,b_1-4q,b_1-6q,b_1-8q,b_1-10q,b_1-12q,b_1-14q\right\}.
+\]
+Observe that $b_1-2q$ may not be amongst them due to Theorem 2.4.
+(i) $16 q+1<n<20 q$. Here $b_{1}<10 q$ so $\left|\operatorname{epi}\left(\gamma_{o}\right)\right| \leq 4$ for any such $n$, contradicting $\left|\operatorname{epi}\left(\gamma_{o}\right)\right| \geq 5$.\\
+(ii) $20 q \leq n<24 q$. Since $n-2b_{1} \geq 4q$, we have $b_{1}<10q$. But then the entries of $\operatorname{epi}\left(\gamma_{o}\right)$ could only be from $\left\{b_{1}, b_{1}-4 q, b_{1}-6 q, b_{1}-8 q\right\}$, again contradicting $\left|\operatorname{epi}\left(\gamma_{o}\right)\right| \geq 5$.\\
+(iii) $24q \leq n<28q$. Here the entries of $\operatorname{epi}(\gamma_o)$ must be exactly
+\[
+\left\{b_1,b_1-4q,b_1-6q,b_1-8q,b_1-10q\right\},
+\]
+because if $b_1>12q$, then $n-2b_1<4q$, which contradicts the inequality $n-2b_1 \geq 4q$ established earlier in the proof. Using the fact that $b_1$ and $b_2$ are congruent $(\bmod 4q)$, this forces
+\[
+\operatorname{epi}(\gamma_o)=\left(b_1-10q,b_1-6q,b_1-4q,b_1-8q,b_1\right).
+\]
+Now, as we attempt to place in $\gamma_o$ the elements of the set $\{b_1-2q,b_1+2q,b_1+4q,\ldots\}$, we see that the only possible order up to $b_1+12q$ is
+\[
+\begin{aligned}
+(&b_1-2q,b_1+6q,b_1+2q,b_1+10q,\\
+ &b_1+4q,b_1+12q,b_1+8q).
+\end{aligned}
+\]
+But then $b_1+14q$ cannot be placed anywhere in $\gamma_o$, as we must avoid both the progressions $\left(b_1+14q,b_1+4q,b_1-6q\right)$ and $\left(b_1-2q,b_1+6q,b_1+14q\right)$. This implies that $n<b_1+14q$. Combining this inequality with $n-2b_1 \geq 4q$ yields $b_1<10q$, which contradicts the fact that $b_1-10q \in \operatorname{epi}(\gamma_o)$.
+(iv) $28q \leq n<32q$. Once again, the entries of $\operatorname{epi}(\gamma_o)$ would have to be exactly
+\[
+\left\{b_1,b_1-4q,b_1-6q,b_1-8q,b_1-10q\right\}.
+\]
+Indeed, if $b_1>12q$, then $n-2b_1<8q$, which contradicts the inequality $n-2b_1 \geq 8q$ established for this case earlier in the proof. Now, reasoning as in (iii), we conclude that $n<b_1+14q$, whence $n<26q$, an obvious contradiction.
+
+Hence there is no $n$ for which there exist $\gamma_{o}$ and $\gamma_{e}$ of the supposed kind. The proof is now complete. \proofend
+
+We note that in Example 2.1, $\left|\operatorname{epi}\left(\rho\left(\gamma_{o}\right)\right)\right|=6$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|=1$.\\
+In view of Theorems 2.5, 2.6, and 2.7 and Lemma 2.5, the maximum possible value of $\left|\gamma_{o} \otimes \gamma_{e}\right|$ is the largest of the three numbers $\binom{4+2}{4},\binom{3+3}{3}$, and $\binom{6+1}{6}$. Thus we have
+
+Corollary 2.7.1. $\left|\gamma_{o} \otimes \gamma_{e}\right| \leq 20$.\\
+The following example shows that the upper bound of 20 for $\left|\gamma_{o} \otimes \gamma_{e}\right|$ can be attained.\\
+Example 2.2. Let $n=14$ and choose $\gamma_{o}$ and $\gamma_{e}$ to be: $\gamma_{o}=(7,11,9,13,3,1,5)$ and $\gamma_{e}=(10,14,12,2,6,4,8)$.
+
+Corollary 2.2.1 and Theorem 2.5 together imply the following result mentioned in the Introduction.
+
+Corollary 2.7.2. At least the first $\left\lfloor\frac{n}{2}\right\rfloor-6$ entries of any $\gamma$ are of the same parity.\\
+We can now use Corollary 2.7.1 to bound the total number of $\Theta$ permutations on $[n]$ as they arise from those on $\left\lceil\frac{n}{2}\right\rceil$ and $\left\lfloor\frac{n}{2}\right\rfloor$. For any $\gamma_{o}$, let $\widehat{\gamma}_{o}$ be the $\Theta$ permutation on the odd integers in $[n]$ given by $(n+1)-\gamma_{o}$ or $n-\gamma_{o}$, depending on whether $n$ is odd or even. Whenever $b_{1} \neq \widehat{b}_{1}$, $b_{1}$ and $\widehat{b}_{1}$ do not lie in the same half of $[n]$ and so $c_{1}$ cannot commute with both (by Corollary 2.2.1). For such a $\gamma_{o}$ and for any $\gamma_{e}$, $\left|\gamma_{o} \otimes \gamma_{e}\right|=1$ or $\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right|=1$ and so $\left|\gamma_{o} \otimes \gamma_{e}\right|+\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right| \leq 21$. Now suppose $b_{1}=\widehat{b}_{1}$. Then $n$ must be of the form $4 j+2$ with $b_{1}=\widehat{b}_{1}=2 j+1$. For such $n$, if $c_{1} \neq 4 j+2$, then by Theorem 2.2, $c_{1}$ commutes with neither $b_{1}$ nor $\widehat{b}_{1}$ and so $\left|\gamma_{o} \otimes \gamma_{e}\right|=\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right|=1$. Hence $\left|\gamma_{o} \otimes \gamma_{e}\right|+\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right|=2$ in this case. If $c_{1}=4 j+2$, then obviously $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|=1$. Thus by Theorem 2.5 and Lemma 2.5, both $\left|\gamma_{o} \otimes \gamma_{e}\right|$ and $\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right|$ are $\leq 7$ and hence $\left|\gamma_{o} \otimes \gamma_{e}\right|+\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right| \leq 14$. Thus, we have shown that in all cases $\left|\gamma_{o} \otimes \gamma_{e}\right|+\left|\widehat{\gamma}_{o} \otimes \gamma_{e}\right| \leq 21$. Since the total number of distinct pairs $\left\langle\gamma_{o}, \gamma_{e}\right\rangle$ is $\theta\left(\left\lceil\frac{n}{2}\right\rceil\right) \times \theta\left(\left\lfloor\frac{n}{2}\right\rfloor\right)$, and as $\left|\Theta_{12}(n)\right|=\left|\Theta_{21}(n)\right|$, we have
+
+Theorem 2.8. For each $n \geq 3$, $\theta(n) \leq 21 \times \theta\left(\left\lceil\frac{n}{2}\right\rceil\right) \times \theta\left(\left\lfloor\frac{n}{2}\right\rfloor\right)$.\\
+It can be easily verified that the inequality $\theta(n) \leq \frac{(2.7)^{n}}{21}$ holds for all $n$ in $[11,20]$. To assist the proof of the next theorem, we now show that this inequality also holds for $n=21$. Set $n=20$ in the inequality $\theta(n+1) \leq\left\lfloor\frac{n+3}{2}\right\rfloor \theta(n)$ given in [2] and use the value of $\theta(20)$ from the Appendix to obtain $\theta(21) \leq 11 \times \theta(20) \leq \frac{(2.7)^{21}}{21}$. Now, use the fact that the inequality holds for $11 \leq n \leq 21$ as a basis for an inductive argument similar to the one given in Theorem 1.1 and apply Theorem 2.8 to obtain
+
+Theorem 2.9. For all $n \geq 11$, $\theta(n) \leq \frac{(2.7)^{n}}{21}$.\\
+It is possible that in the preceding theorem the base 2.7 for the exponent $n$ could be made even smaller with knowledge of more initial values of $\theta(n)$. For example, we can already verify that the inequality $\theta(n) \leq \frac{(2.62)^{n}}{21}$ holds for $n \in [13,20]$, and thus if it were also true for $n \in [21,25]$, then an inductive argument would show that it holds for all $n \geq 13$. Similarly, the inequality $\theta(n) \leq \frac{(2.5)^{n}}{21}$ holds for $n \in [18,20]$ so if it were also true for $n \in [21,35]$, then it would hold for all $n \geq 18$. In any case, we have shown that
+
+Theorem 2.10. $\displaystyle \limsup_{n \to \infty} \theta(n)^{1/n} \leq 2.7$.\\[0pt]
+This theorem partially settles Question 7.12 in [1].
+
+\section*{3. Extending the Domain of the Lower Bound}
+Using the value $\theta(16)=212,728$ along with inequality (1) of Section 1, it is shown in [2] that for all $n \geq 4$, $\theta\left(2^{n}\right) \geq \frac{1}{2} \times(2.248)^{2^{n}}$. In this section we find a lower bound for $\theta(n)$ which is asymptotically weaker than the one just stated but has the virtue that it holds for all $n \geq 4$. The lower bound we find is based on the following two observations:
+(a) If for some $n$, $\theta(n) \geq 2^{n}$ and $\theta(n+1) \geq 2^{n+1}$, then by inequalities (1) and (2) of Section 1, $\theta(2 n) \geq 2^{2 n+1}$ and $\theta(2 n+1) \geq 2^{2 n+2}$.\\
+(b) More generally (using the same logic as (a)), if there exist positive integers $n$ and $p$ such that $\theta(n) \geq 2^{n+p}$ and $\theta(n+1) \geq 2^{n+p+1}$, then $\theta(2 n) \geq 2^{2 n+2 p+1}$ and $\theta(2 n+1) \geq 2^{2 n+2 p+2}$.
+
+From the values of $\theta(n)$ listed in the Appendix, we observe that $\theta(n) \geq 2^{n}$ for all $n \in [10,19]$. Thus by (a), $\theta(n) \geq 2^{n+1}$ for all $n \in [20,39]$. Now, applying (b) to this inequality with $p=1$ we obtain $\theta(n) \geq 2^{n+3}$ for $n \in [40,79]$. An inductive argument yields the following:
+
+Theorem 3.1. For every nonnegative integer $p$,
+
+$$
+\theta(n) \geq 2^{n+2^{p}-1} \text{ for all } n \in\left[5 \times 2^{p+1}, 5 \times 2^{p+2}-1\right] .
+$$
+
+Proof. The case $p=0$ is exactly the inequality $\theta(n) \geq 2^{n}$ for $10 \leq n \leq 19$ noted above. Suppose the statement holds for $p=l-1$, where $l$ is a positive integer, and set $L=5 \times 2^{l+1}$. First let $n$ be even with $L \leq n \leq 2L-1$. Then $n/2 \in \left[5 \times 2^{l}, 5 \times 2^{l+1}-1\right]$, so the induction hypothesis and inequality (1) of Section 1 give $\theta(n) \geq 2\left(2^{n/2+2^{l-1}-1}\right)^{2}=2^{n+2^{l}-1}$. Now let $n$ be odd. If $n<2L-1$, then both $(n-1)/2$ and $(n+1)/2$ lie in the preceding interval, and the induction hypothesis together with inequality (2) gives $\theta(n) \geq 2^{n+2^{l}-1}$. For the remaining endpoint $n=2L-1$, the induction hypothesis applies to $(n-1)/2=L-1$, while the even case just proved applies to $(n+1)/2=L$; substituting those two bounds into inequality (2) again yields at least $2^{n+2^{l}-1}$. Thus the statement holds for $p=l$. \proofend
+
+The bound for $\theta(n)$ given in this theorem is asymptotically equivalent to that of Theorem 1.1. However, exploiting the idea used in obtaining the bound in that theorem, we obtain another lower bound for $\theta(n)$ which is asymptotically better than the bound of Theorem 1.1. We first prove
+
+Theorem 3.2. For any fixed integer $p$, $\displaystyle \lim_{n \to \infty} \frac{\theta(n)}{n^{p} \times 2^{n}}=\infty$.\\
+Proof. It is enough to consider $p \geq 0$, since the result for $p<0$ follows from the case $p=0$. Set $L=5 \times 2^{p+1}$ and define
+$a_n=\frac{\theta(n)}{n^{p+1} \times 2^n}$ for $n \geq L$. By Theorem 3.1, every $n \geq L$ belongs to one of the theorem's intervals with index at least $p$, and hence
+$\theta(n) \geq 2^{n+2^p-1} \geq 2^{n+p}$. Therefore
+\[
+a_{2n}=\frac{\theta(2n)}{(2n)^{p+1} \times 2^{2n}}
+ \geq \frac{2[\theta(n)]^2}{(2n)^{p+1} \times 2^{2n}}
+ =a_n\frac{\theta(n)}{2^{n+p}} \geq a_n
+\]
+for every $n \geq L$. Similarly, inequality (2) of Section 1 and $(2n+2)^{p+1} \geq (2n+1)^{p+1}$ give
+\[
+a_{2n+1}
+ \geq \frac{2\theta(n)\theta(n+1)}{(2n+2)^{p+1} \times 2^{2n+1}}
+ =a_{n+1}\frac{\theta(n)}{2^{n+p}}
+ \geq a_{n+1}.
+\]
+Let $\gamma=\min\{a_n:L \leq n \leq 2L-1\}$. Repeatedly replacing an index $m \geq 2L$ by $m/2$ when $m$ is even and by $(m+1)/2$ when $m$ is odd eventually sends it into $[L,2L-1]$. The two inequalities above therefore imply that $a_n \geq \gamma$ for every $n \geq L$. Consequently,
+$\frac{\theta(n)}{n^p \times 2^n}=n a_n \geq n\gamma \to \infty$ as $n \to \infty$. \proofend
+
+Corollary 3.2.1. For all $n \in \mathbb{Z}^{+}$, $\theta(n) \geq \frac{1}{10} \times n \times 2^{n}$.\\
+Proof. Let $a_{n}=\frac{\theta(n)}{n \times 2^{n}}$. From the values of $\theta(n)$ listed in the Appendix, we note that $a_{n} \geq \frac{1}{10}$ for all $n \in [1,19]$. Since $\theta(n) \geq 2^{n}$ for all $n \geq 10$ (Theorem 3.1), reasoning as in the proof of Theorem 3.2 shows that $a_{2 n} \geq a_{n}$ and $a_{2 n+1} \geq a_{n+1}$ for all $n \geq 10$. This proves that $a_{n} \geq \frac{1}{10}$ for all $n \in \mathbb{Z}^{+}$. \proofend
+
+The following open problems are closely related to the content of this paper and a resolution of any one of them would greatly increase our understanding of the function $\theta(n)$:
+
+\begin{itemize}
+  \item[(1)] Is $\theta(n)$ monotone?
+  \item[(2)] Does $\lim _{n \rightarrow \infty}(\theta(n))^{\frac{1}{n}}$ exist?
+  \item[(3)] Does $\theta(n+1)<3 \times \theta(n)$ hold for all $n$?
+\end{itemize}
+
+The author wishes to thank Professor Ronald Graham for his advice and encouragement. The author also wishes to express his gratitude to the referee whose suggestions were valuable in improving this presentation.
+
+\section*{Appendix}
+The following values of $\theta(n)$ were computed by G. J. Simmons and appear in [4].
+
+\begin{center}
+\begin{tabular}[t]{|l|l|l|l|}
+\hline
+$n$ & $\theta(n)$ & $n$ & $\theta(n)$ \\
+\hline
+1 & 1 & 11 & 2460 \\
+\hline
+2 & 2 & 12 & 6128 \\
+\hline
+3 & 4 & 13 & 12840 \\
+\hline
+4 & 10 & 14 & 29380 \\
+\hline
+5 & 20 & 15 & 74904 \\
+\hline
+6 & 48 & 16 & 212728 \\
+\hline
+7 & 104 & 17 & 368016 \\
+\hline
+8 & 282 & 18 & 659296 \\
+\hline
+9 & 496 & 19 & 1371056 \\
+\hline
+10 & 1066 & 20 & 2937136 \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage\section*{References}
+\small
+[1] B. Landman and A. Robertson, Ramsey Theory on the Integers, American Mathematical Society (2004), 191--198.\\[0pt]
+[2] J. Davis, R. Entringer, R. Graham, and G. Simmons, On permutations containing no long arithmetic progressions, Acta Arithmetica 34 (1977), 81--90.\\[0pt]
+[3] R. L. Graham, B. L. Rothschild, and J. H. Spencer, Ramsey Theory (2nd Ed.), Wiley-Interscience Series in Discrete Mathematics and Optimization, 1990.\\[0pt]
+[4] G. J. Simmons, Comment, American Mathematical Monthly 82 (1975), 76--77.
+
+
+\end{document}

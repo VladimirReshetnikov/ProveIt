@@ -1,0 +1,300 @@
+import FabiusFunction.ThueMorsePrefix
+import Mathlib.RingTheory.PowerSeries.WellKnown
+import Mathlib.Topology.Instances.Rat
+
+set_option autoImplicit false
+
+open scoped BigOperators
+open Finset
+
+namespace Fabius
+
+/-- The signed Thue--Morse polynomial on the first dyadic block. -/
+noncomputable def thueMorseBlockPolynomial (r : ℕ) : Polynomial ℤ :=
+  ∑ n ∈ Finset.range (2 ^ r), Polynomial.monomial n (thueMorseSign n)
+
+theorem thueMorseBlockPolynomial_succ (r : ℕ) :
+    thueMorseBlockPolynomial (r + 1) =
+      thueMorseBlockPolynomial r * (1 - Polynomial.X ^ (2 ^ r)) := by
+  rw [thueMorseBlockPolynomial, show 2 ^ (r + 1) = 2 ^ r + 2 ^ r by
+    rw [pow_succ]
+    omega]
+  rw [Finset.sum_range_add]
+  rw [thueMorseBlockPolynomial]
+  rw [mul_sub, mul_one, Finset.sum_mul]
+  congr 1
+  rw [← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro n hn
+  have hnlt : n < 2 ^ r := Finset.mem_range.mp hn
+  rw [thueMorseSign_add_pow_two r n hnlt]
+  rw [Polynomial.X_pow_eq_monomial, Polynomial.monomial_mul_monomial]
+  simp [add_comm]
+
+/-- Finite version of the first product in equation (6). -/
+theorem thueMorseBlockPolynomial_eq_product (r : ℕ) :
+    thueMorseBlockPolynomial r =
+      ∏ j ∈ Finset.range r, (1 - Polynomial.X ^ (2 ^ j) : Polynomial ℤ) := by
+  induction r with
+  | zero =>
+      norm_num [thueMorseBlockPolynomial, thueMorseSign, binaryWeight]
+  | succ r ih =>
+      rw [show r + 1 = r.succ by omega, thueMorseBlockPolynomial_succ, ih,
+        Finset.prod_range_succ]
+
+/-- The formal power series whose coefficients are the signed Thue--Morse sequence. -/
+def thueMorseSeries : PowerSeries ℤ :=
+  PowerSeries.mk thueMorseSign
+
+@[simp] theorem coeff_thueMorseSeries (n : ℕ) :
+    PowerSeries.coeff n thueMorseSeries = thueMorseSign n := by
+  simp [thueMorseSeries]
+
+theorem coeff_thueMorseBlockPolynomial (r n : ℕ) (hn : n < 2 ^ r) :
+    (thueMorseBlockPolynomial r).coeff n = thueMorseSign n := by
+  simp [thueMorseBlockPolynomial, Polynomial.coeff_monomial, hn]
+
+/-- Precise coefficientwise meaning of the infinite product in equation (6):
+once the finite product contains the factor through degree `2^r`, every
+coefficient below `2^r` is already the corresponding Thue--Morse sign. -/
+theorem coeff_finite_thueMorse_product (r n : ℕ) (hn : n < 2 ^ r) :
+    PowerSeries.coeff n
+        ((↑(∏ j ∈ Finset.range r,
+          (1 - Polynomial.X ^ (2 ^ j) : Polynomial ℤ)) : PowerSeries ℤ)) =
+      PowerSeries.coeff n thueMorseSeries := by
+  rw [← thueMorseBlockPolynomial_eq_product]
+  simp [Polynomial.coeff_coe, coeff_thueMorseBlockPolynomial r n hn]
+
+/-- Formal generating series of the `k`-fold inclusive prefix sums. -/
+def iteratedPrefixSeries (k : ℕ) : PowerSeries ℤ :=
+  PowerSeries.mk (iteratedPrefix k)
+
+@[simp] theorem coeff_iteratedPrefixSeries (k n : ℕ) :
+    PowerSeries.coeff n (iteratedPrefixSeries k) = iteratedPrefix k n := by
+  simp [iteratedPrefixSeries]
+
+/-- The convolution half of equation (6), stated as an identity of formal
+power series. No analytic hypothesis on a complex variable is needed. -/
+theorem iteratedPrefixSeries_succ_eq (k : ℕ) :
+    iteratedPrefixSeries (k + 1) =
+      thueMorseSeries * (PowerSeries.invOneSubPow ℤ (k + 1)).val := by
+  ext n
+  rw [coeff_iteratedPrefixSeries, iteratedPrefix_convolution]
+  rw [PowerSeries.invOneSubPow_val_succ_eq_mk_add_choose]
+  simp only [PowerSeries.coeff_mul, PowerSeries.coeff_mk, coeff_thueMorseSeries]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+  apply Finset.sum_congr rfl
+  intro m hm
+  have hmn : m ≤ n := by
+    have : m < n + 1 := Finset.mem_range.mp hm
+    omega
+  rw [show k + (n - m) = n - m + k by omega]
+  ring
+
+/-- Equation (6)'s second series identity for every iteration order,
+including order zero. -/
+theorem iteratedPrefixSeries_eq (k : ℕ) :
+    iteratedPrefixSeries k =
+      thueMorseSeries * (PowerSeries.invOneSubPow ℤ k).val := by
+  cases k with
+  | zero =>
+      ext n
+      simp [iteratedPrefixSeries, thueMorseSeries,
+        PowerSeries.invOneSubPow_zero]
+  | succ k => simpa [Nat.succ_eq_add_one] using iteratedPrefixSeries_succ_eq k
+
+/-- Denominator-cleared formal-series form of equation (6). -/
+theorem one_sub_X_pow_mul_iteratedPrefixSeries (k : ℕ) :
+    (1 - PowerSeries.X) ^ k * iteratedPrefixSeries k = thueMorseSeries := by
+  rw [iteratedPrefixSeries_eq]
+  calc
+    (1 - PowerSeries.X) ^ k *
+        (thueMorseSeries * (PowerSeries.invOneSubPow ℤ k).val) =
+      thueMorseSeries *
+        ((1 - PowerSeries.X) ^ k * (PowerSeries.invOneSubPow ℤ k).val) := by
+          ring
+    _ = thueMorseSeries := by
+      have hunit :
+          (1 - PowerSeries.X) ^ k * (PowerSeries.invOneSubPow ℤ k).val = 1 := by
+        simpa [PowerSeries.invOneSubPow_zero] using
+          (PowerSeries.one_sub_pow_mul_invOneSubPow_val_add_eq_invOneSubPow_val
+            (S := ℤ) (d := 0) k)
+      rw [hunit, mul_one]
+
+/-- A finite, directly checkable coefficient form of both identities in (6). -/
+theorem coeff_eq6_finite (k r n : ℕ) (hn : n < 2 ^ r) :
+    PowerSeries.coeff n
+        ((1 - PowerSeries.X) ^ k * iteratedPrefixSeries k) =
+      PowerSeries.coeff n
+        ((↑(∏ j ∈ Finset.range r,
+          (1 - Polynomial.X ^ (2 ^ j) : Polynomial ℤ)) : PowerSeries ℤ)) := by
+  rw [one_sub_X_pow_mul_iteratedPrefixSeries]
+  exact (coeff_finite_thueMorse_product r n hn).symm
+
+private lemma choose_succ_two_grid (q : ℕ) :
+    (q + 1).choose 2 = q.choose 2 + q := by
+  rw [show q + 1 = Nat.succ q by omega, Nat.choose_succ_succ]
+  simp [Nat.choose_one_right, add_comm]
+
+/-- Equation (1), interpreted literally at its dyadic grid points. -/
+def paperPrefixGridValue (k j : ℕ) : ℚ :=
+  (iteratedPrefix k j : ℚ) / (2 : ℚ) ^ k.choose 2
+
+/-- The one-index-shift correction suggested by the inclusive-prefix
+convention: use `S^(k+1)` with the normalization printed for level `k`. -/
+def correctedPrefixGridValue (k j : ℕ) : ℚ :=
+  (iteratedPrefix (k + 1) j : ℚ) / (2 : ℚ) ^ k.choose 2
+
+/-- Dyadic abscissa belonging to a grid index. -/
+def prefixGridPoint (k j : ℕ) : ℚ :=
+  (j : ℚ) / (2 : ℚ) ^ k
+
+/-- Unscaled forward difference for the literal normalization. -/
+theorem paperPrefixGridValue_succ_sub (q j : ℕ) :
+    paperPrefixGridValue (q + 1) (j + 1) - paperPrefixGridValue (q + 1) j =
+      paperPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
+  rw [paperPrefixGridValue, paperPrefixGridValue, paperPrefixGridValue]
+  rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
+  rw [choose_succ_two_grid, pow_add, div_div]
+
+/-- The corrected grid obeys the same normalization recurrence, with each
+prefix order shifted up by one. -/
+theorem correctedPrefixGridValue_succ_sub (q j : ℕ) :
+    correctedPrefixGridValue (q + 1) (j + 1) -
+        correctedPrefixGridValue (q + 1) j =
+      correctedPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
+  rw [correctedPrefixGridValue, correctedPrefixGridValue,
+    correctedPrefixGridValue]
+  rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
+  rw [choose_succ_two_grid, pow_add, div_div]
+
+/-- The exact forward-difference identity, before restricting the argument of
+the lower-level grid value to `[0,1]`. -/
+theorem paperPrefixGridValue_scaledDifference (q j : ℕ) :
+    (2 : ℚ) ^ (q + 1) *
+        (paperPrefixGridValue (q + 1) (j + 1) -
+          paperPrefixGridValue (q + 1) j) =
+      2 * paperPrefixGridValue q (j + 1) := by
+  rw [paperPrefixGridValue_succ_sub, pow_succ]
+  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
+  field_simp
+
+/-- Corrected-grid version of the exact scaled forward difference. -/
+theorem correctedPrefixGridValue_scaledDifference (q j : ℕ) :
+    (2 : ℚ) ^ (q + 1) *
+        (correctedPrefixGridValue (q + 1) (j + 1) -
+          correctedPrefixGridValue (q + 1) j) =
+      2 * correctedPrefixGridValue q (j + 1) := by
+  rw [correctedPrefixGridValue_succ_sub, pow_succ]
+  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
+  field_simp
+
+/-- Arithmetic identification of the lower-level argument appearing in the
+paper's equation (2). -/
+theorem prefixGridPoint_lower_argument (q j : ℕ) :
+    prefixGridPoint q (j + 1) =
+      2 * prefixGridPoint (q + 1) j + 1 / (2 : ℚ) ^ q := by
+  rw [prefixGridPoint, prefixGridPoint, pow_succ]
+  have hpow : (2 : ℚ) ^ q ≠ 0 := by positivity
+  field_simp
+  norm_num
+
+/-- The omitted domain condition in equation (2): `j < 2^q` is exactly what
+keeps the argument of the level-`q` grid in the unit interval. -/
+theorem prefixGridPoint_lower_argument_mem (q j : ℕ) (hj : j < 2 ^ q) :
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  constructor
+  · unfold prefixGridPoint
+    positivity
+  · unfold prefixGridPoint
+    rw [div_le_one (by positivity : (0 : ℚ) < (2 : ℚ) ^ q)]
+    norm_cast
+
+/-- Equation (2) for the literal grid, with the indexing and unit-interval
+domain made explicit. Its level is `k=q+1`, and its admissible indices are
+exactly `j < 2^q`. -/
+theorem paperPrefixGridValue_equation (q j : ℕ) (hj : j < 2 ^ q) :
+    (2 : ℚ) ^ (q + 1) *
+        (paperPrefixGridValue (q + 1) (j + 1) -
+          paperPrefixGridValue (q + 1) j) =
+      2 * paperPrefixGridValue q (j + 1) ∧
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 :=
+  ⟨paperPrefixGridValue_scaledDifference q j,
+    prefixGridPoint_lower_argument_mem q j hj⟩
+
+/-- The corresponding exact equation for the corrected grid. -/
+theorem correctedPrefixGridValue_equation (q j : ℕ) (hj : j < 2 ^ q) :
+    (2 : ℚ) ^ (q + 1) *
+        (correctedPrefixGridValue (q + 1) (j + 1) -
+          correctedPrefixGridValue (q + 1) j) =
+      2 * correctedPrefixGridValue q (j + 1) ∧
+    prefixGridPoint q (j + 1) ∈ Set.Icc (0 : ℚ) 1 :=
+  ⟨correctedPrefixGridValue_scaledDifference q j,
+    prefixGridPoint_lower_argument_mem q j hj⟩
+
+/-- Literal equation (2) in the paper's own positive-level indexing. -/
+theorem paperPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
+    (hj : j < 2 ^ (k - 1)) :
+    (2 : ℚ) ^ k *
+        (paperPrefixGridValue k (j + 1) - paperPrefixGridValue k j) =
+      2 * paperPrefixGridValue (k - 1) (j + 1) ∧
+    prefixGridPoint (k - 1) (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  cases k with
+  | zero => omega
+  | succ q =>
+      simpa [Nat.succ_eq_add_one] using paperPrefixGridValue_equation q j hj
+
+/-- Corrected equation in the paper's own positive-level indexing. -/
+theorem correctedPrefixGridValue_equation_of_pos (k j : ℕ) (hk : 0 < k)
+    (hj : j < 2 ^ (k - 1)) :
+    (2 : ℚ) ^ k *
+        (correctedPrefixGridValue k (j + 1) - correctedPrefixGridValue k j) =
+      2 * correctedPrefixGridValue (k - 1) (j + 1) ∧
+    prefixGridPoint (k - 1) (j + 1) ∈ Set.Icc (0 : ℚ) 1 := by
+  cases k with
+  | zero => omega
+  | succ q =>
+      simpa [Nat.succ_eq_add_one] using correctedPrefixGridValue_equation q j hj
+
+/-- The literal endpoint has the wrong sign and scale: at `x=1` it is the
+negative reciprocal of the printed normalization. -/
+theorem paperPrefixGridValue_endpoint (k : ℕ) :
+    paperPrefixGridValue k (2 ^ k) =
+      -(1 / (2 : ℚ) ^ k.choose 2) := by
+  rw [paperPrefixGridValue, iteratedPrefix_at_dyadic k k le_rfl]
+  ring
+
+/-- Consequently its endpoint error from the Fabius boundary value `F(1)=1`
+is not small: it is strictly greater than one at every level. -/
+theorem paperPrefixGridValue_endpoint_error (k : ℕ) :
+    |paperPrefixGridValue k (2 ^ k) - 1| =
+      1 + 1 / (2 : ℚ) ^ k.choose 2 := by
+  rw [paperPrefixGridValue_endpoint]
+  have hpow : 0 < (2 : ℚ) ^ k.choose 2 := by positivity
+  have hrecip : 0 < 1 / (2 : ℚ) ^ k.choose 2 := one_div_pos.mpr hpow
+  rw [abs_of_neg (by linarith)]
+  ring
+
+theorem one_lt_paperPrefixGridValue_endpoint_error (k : ℕ) :
+    1 < |paperPrefixGridValue k (2 ^ k) - 1| := by
+  rw [paperPrefixGridValue_endpoint_error]
+  have hrecip : 0 < 1 / (2 : ℚ) ^ k.choose 2 := by positivity
+  linarith
+
+/-- Literal equation (1) cannot even converge pointwise at the endpoint to a
+function with value one there. Hence its claimed uniform convergence to the
+Fabius function is impossible. -/
+theorem paperPrefixGridValue_endpoint_not_tendsto_one :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixGridValue k (2 ^ k))
+      Filter.atTop (nhds (1 : ℚ)) := by
+  intro h
+  have hnonpos : ∀ k : ℕ, paperPrefixGridValue k (2 ^ k) ≤ 0 := by
+    intro k
+    rw [paperPrefixGridValue_endpoint]
+    have hrecip : 0 < 1 / (2 : ℚ) ^ k.choose 2 := by positivity
+    linarith
+  have hone : (1 : ℚ) ≤ 0 :=
+    le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
+  norm_num at hone
+
+end Fabius
