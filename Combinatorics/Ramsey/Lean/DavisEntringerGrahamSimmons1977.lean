@@ -5,6 +5,7 @@ import DavisEntringerGrahamSimmons1977.ModularConsequences
 import DavisEntringerGrahamSimmons1977.CountingRecurrences
 import DavisEntringerGrahamSimmons1977.IntegerConsequences
 import DavisEntringerGrahamSimmons1977.Nathanson
+import DavisEntringerGrahamSimmons1977.TreeConsequences
 
 /-!
 # Davis--Entringer--Graham--Simmons (1977)
