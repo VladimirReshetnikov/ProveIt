@@ -744,6 +744,124 @@ lemma fabiusDyadic_eq_scale_sum (n a : ℕ) :
         dyadicKernel n ((2 : ℚ) * a - 2 * h.val - 1) := by
   rfl
 
+private theorem thueMorseSign_block_concat
+    (k h r : ℕ) (hr : r < 2 ^ k) :
+    thueMorseSign (h * 2 ^ k + r) =
+      thueMorseSign h * thueMorseSign r := by
+  induction k generalizing h r with
+  | zero =>
+      have : r = 0 := by omega
+      subst r
+      norm_num [thueMorseSign, binaryWeight]
+  | succ k ih =>
+      rcases r.even_or_odd with ⟨r, rfl⟩ | ⟨r, rfl⟩
+      · have hr' : r < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        rw [show r + r = 2 * r by omega]
+        rw [show h * 2 ^ (k + 1) + 2 * r =
+            2 * (h * 2 ^ k + r) by rw [pow_succ]; ring,
+          thueMorseSign_two_mul, thueMorseSign_two_mul, ih h r hr']
+      · have hr' : r < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        rw [show h * 2 ^ (k + 1) + (2 * r + 1) =
+            2 * (h * 2 ^ k + r) + 1 by rw [pow_succ]; ring,
+          thueMorseSign_two_mul_add_one,
+          thueMorseSign_two_mul_add_one, ih h r hr']
+        ring
+
+private lemma sum_range_block_decomposition
+    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
+    (∑ j ∈ Finset.range (m * p), f j) =
+      ∑ h ∈ Finset.range m, ∑ r ∈ Finset.range p, f (h * p + r) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+      rw [Nat.succ_mul, Finset.sum_range_add, ih,
+        Finset.sum_range_succ]
+
+private lemma sum_range_block_decomposition_with_remainder
+    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p r : ℕ) :
+    (∑ j ∈ Finset.range (m * p + r), f j) =
+      (∑ h ∈ Finset.range m,
+        ∑ j ∈ Finset.range p, f (h * p + j)) +
+      ∑ j ∈ Finset.range r, f (m * p + j) := by
+  rw [Finset.sum_range_add, sum_range_block_decomposition]
+
+/-- Equation (32) transforms by the Thue--Morse sign when its numerator is
+translated by a complete length-`2^(n+1)` block. -/
+theorem fabiusDyadic_block_translate (n block residue : ℕ)
+    (hresidue : residue < 2 ^ (n + 1)) :
+    fabiusDyadic n (block * 2 ^ (n + 1) + residue) =
+      (thueMorseSign block : ℚ) * fabiusDyadic n residue := by
+  rw [fabiusDyadic_eq_scale_sum, fabiusDyadic_eq_scale_sum]
+  let scale : ℚ := dyadicScale n
+  let period : ℕ := 2 ^ (n + 1)
+  let a : ℕ := block * period + residue
+  let f : ℕ → ℚ := fun h =>
+    (thueMorseSign h : ℚ) *
+      dyadicKernel n ((2 : ℚ) * a - 2 * h - 1)
+  change scale * (∑ h : Fin a, f h.val) =
+    (thueMorseSign block : ℚ) *
+      (scale * ∑ h : Fin residue,
+        (thueMorseSign h.val : ℚ) *
+          dyadicKernel n ((2 : ℚ) * residue - 2 * h.val - 1))
+  rw [Fin.sum_univ_eq_sum_range f a,
+    sum_range_block_decomposition_with_remainder f block period residue]
+  have hfull :
+      (∑ q ∈ Finset.range block,
+        ∑ j ∈ Finset.range period, f (q * period + j)) = 0 := by
+    apply Finset.sum_eq_zero
+    intro q hq
+    have hblockzero := thueMorse_kernel_block_eq_zero n (n + 1)
+      (Nat.lt_succ_self n)
+      ((2 : ℚ) * a - 2 * (q * period : ℕ) - 1)
+    calc
+      (∑ j ∈ Finset.range period, f (q * period + j)) =
+          (thueMorseSign q : ℚ) *
+            ∑ j ∈ Finset.range period,
+              (thueMorseSign j : ℚ) *
+                dyadicKernel n
+                  ((2 : ℚ) * a - 2 * (q * period : ℕ) - 1 - 2 * j) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro j hj
+        have hjlt : j < period := Finset.mem_range.mp hj
+        dsimp only [f]
+        rw [thueMorseSign_block_concat (n + 1) q j
+          (by simpa [period] using hjlt)]
+        push_cast
+        ring
+      _ = 0 := by
+        rw [← Fin.sum_univ_eq_sum_range
+          (fun j => (thueMorseSign j : ℚ) *
+            dyadicKernel n
+              ((2 : ℚ) * a - 2 * (q * period : ℕ) - 1 - 2 * j)) period,
+          hblockzero, mul_zero]
+  rw [hfull, zero_add]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun h => (thueMorseSign h : ℚ) *
+      dyadicKernel n ((2 : ℚ) * residue - 2 * h - 1)) residue]
+  calc
+    scale * ∑ j ∈ Finset.range residue, f (block * period + j) =
+        scale * ((thueMorseSign block : ℚ) *
+          ∑ j ∈ Finset.range residue,
+            (thueMorseSign j : ℚ) *
+              dyadicKernel n ((2 : ℚ) * residue - 2 * j - 1)) := by
+      congr 1
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j hj
+      have hjlt : j < period := (Finset.mem_range.mp hj).trans hresidue
+      dsimp only [f, a]
+      rw [thueMorseSign_block_concat (n + 1) block j
+        (by simpa [period] using hjlt)]
+      push_cast
+      dsimp only [period]
+      ring
+    _ = _ := by ring
+
 lemma fabiusDyadic_refine_of_kernel (hk : DyadicKernelHasRefinement)
     (n a : ℕ) :
     fabiusDyadic (n + 1) (2 * a) = fabiusDyadic n a := by
