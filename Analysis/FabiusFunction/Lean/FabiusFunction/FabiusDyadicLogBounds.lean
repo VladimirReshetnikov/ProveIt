@@ -7,8 +7,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 # Coarse logarithmic bounds at dyadic arguments
 
 This module proves a rigorous natural-index anchor for the log-squared decay
-claimed in equation (11) of the draft *Fabius Asymptotic*.  It does not use the
-draft's unsupported periodic ansatz.  Instead, the exact identity
+claimed in equation (11) of the K-fold Thue--Morse draft.  It does not use the
+separate asymptotic draft's unsupported periodic ansatz.  Instead, the exact identity
 
 `halfMoment n = n! * 2^(choose n 2) * F(2⁻ⁿ)`
 

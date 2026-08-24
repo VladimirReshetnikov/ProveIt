@@ -8,6 +8,14 @@ Juan Arias de Reyna:
 - [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
   version 3.
 
+It also gives a claim-level formal audit of the two local TeX drafts under
+`Papers/`: *Fabius Asymptotic* and *K-fold summation over the signed
+Thue-Morse sequence*.  Neither local draft contains a formal theorem, lemma,
+proposition, or corollary environment, so their coverage is indexed by
+numbered equations and substantive prose claims.  Some of those claims are
+false or unsupported; the development records counterexamples and corrected
+statements rather than asserting them.
+
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
@@ -104,9 +112,31 @@ Propositions 1, 2, 3, 4, 6, 8, 10, 15, 18, 19, and 22; Theorems 7, 9, 13,
 and Conjecture 16.  `Paper06487Supplement.lean` proves assertions made in the
 surrounding prose and inside proofs.
 
+`PaperFabiusAsymptotic.lean` is the public aggregate for the first local
+draft.  It proves the exact logarithmic delay equation, the elementary log
+expansions, explicit dyadic bounds, the full-real quadratic leading term, and
+the coarse `O(t * log t)` error.  It also proves that the draft's proposed
+sharp main term has a nonzero `(log t / t)^2` equation residual and therefore
+is not `O(t^-2)`.  The unsupported bounded one-periodic refinement and its
+claimed `O(log t / t)` remainder are deliberately not advertised as proved.
+
+`PaperKFoldThueMorse.lean` is the public aggregate for the second local
+draft.  It contains the exact prefix-sum, zero-run, convolution, and
+generating-series identities; the intended real polygonal interpolation; and a
+proved corrected pointwise approximation scheme.  The Stirling estimate used
+by the draft is proved in its precise `O(log n)` form.  The aggregate also
+exposes formal counterexamples to the literal normalization, the claimed local
+and global error estimates, the unbounded “maximum” proxy, and the omitted
+linear term in the subsequent Stirling calculation.  Both qualitative decay
+comparisons are proved: the Fabius function is smaller than every power at
+zero, while `exp (-c/x)` is little-o of it for every `c > 0`.  No Lambert-W
+theorem is used to justify the false proxy chain; instead, the repaired lower
+branch, its equation-(9) solution, and its standard two-term expansion are
+proved separately.
+
 The exact source-to-Lean map is in [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).
 
-The source contains a few statements that are not literally correct.  The
+The two arXiv sources contain a few statements that are not literally correct.  The
 formalization records the mathematically valid versions next to their proofs.
 Among them:
 

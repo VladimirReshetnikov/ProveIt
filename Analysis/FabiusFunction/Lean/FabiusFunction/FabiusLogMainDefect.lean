@@ -108,6 +108,28 @@ noncomputable def logMainDefect (t : ℝ) : ℝ :=
       (1 - t) * Real.log 2) -
     (logMainTerm t - logMainTerm (t - 1))
 
+/--
+Exact repaired form of equation (9) in the local asymptotic draft.  For the
+actual remainder `g - G`, its finite difference is the difference of the two
+logarithmic derivatives plus the explicitly defined defect of `G`.
+-/
+theorem fabiusLogRemainder_difference_eq
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 1 < t) :
+    ((fabiusLogProfile F t - logMainTerm t) -
+        (fabiusLogProfile F (t - 1) - logMainTerm (t - 1))) =
+      Real.log (deriv (fabiusLogProfile F) t) -
+        Real.log (deriv logMainTerm t) + logMainDefect t := by
+  have ht0 : t ≠ 0 := ne_of_gt (lt_trans zero_lt_one ht)
+  rw [(logMainTerm_hasDerivAt ht0).deriv]
+  rw [show
+      (fabiusLogProfile F t - logMainTerm t) -
+          (fabiusLogProfile F (t - 1) - logMainTerm (t - 1)) =
+        (fabiusLogProfile F t - fabiusLogProfile F (t - 1)) -
+          (logMainTerm t - logMainTerm (t - 1)) by ring]
+  rw [fabiusLogProfile_difference_eq_log_deriv F hF ht.le]
+  unfold logMainDefect
+  ring
+
 lemma logMainDerivative_factor {t : ℝ} (ht : t ≠ 0) :
     logMainDerivative t = Real.log 2 * t * (1 + logMainDerivativePerturbation t) := by
   unfold logMainDerivative logMainDerivativePerturbation

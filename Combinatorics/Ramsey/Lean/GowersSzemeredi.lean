@@ -17,6 +17,9 @@ import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs10Counting
+import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs17FinitePatterns
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

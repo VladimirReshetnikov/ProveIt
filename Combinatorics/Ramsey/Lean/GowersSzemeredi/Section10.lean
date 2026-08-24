@@ -185,12 +185,16 @@ def IsSection10RegularComponent {N : Nat} {X : Type*}
     (forall y, y ∈ W -> alpha ^ 2 * M / 16 <= D.fibreSize y) /\
     forall d, d ∈ B -> (1 - eta) * W.card <= (W ∩ D.shift W d).card
 
-/-- The part of Lemma 10.5 used by the shifting lemma: comparable fibre
-sizes and large overlap with all `B`-translates. -/
+/-- The part of the running Section 10 setup used by the shifting lemma:
+`W` is a union of fibres, `B` is symmetric, fibre sizes are comparable on
+`W`, and `W` has large overlap with all `B`-translates.  Fibre saturation
+and symmetry are necessary in Lemma 10.8: without them, an almost-everywhere
+property on `W` need not control the full shifted fibres. -/
 def IsSection10ShiftRegular {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (W : Finset X) (B : Finset (ZMod N)) (eta : Real) : Prop :=
-  VariesByFactorAtMostTwo W D.fibreSize /\
+  D.FibreSaturated W /\ IsSymmetricModSet B /\
+    VariesByFactorAtMostTwo W D.fibreSize /\
     forall d, d ∈ B -> (1 - eta) * W.card <= (W ∩ D.shift W d).card
 
 /-- The four thin boundary bands in the averaging proof of Lemma 10.5.
