@@ -13,9 +13,12 @@ import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
 import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Partition
+import GowersSzemeredi.Proofs02PhasePartition
+import GowersSzemeredi.Proofs02DensityIncrement
 import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
+import GowersSzemeredi.Proofs03ProgressionAverage
 import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs03GowersCS
 import GowersSzemeredi.Proofs03Minkowski
