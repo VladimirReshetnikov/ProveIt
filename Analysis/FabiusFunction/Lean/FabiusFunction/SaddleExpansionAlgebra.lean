@@ -357,6 +357,64 @@ theorem HasAsymptoticExpansion.congr
     · filter_upwards [hscale] with x hxscale
       rw [hxscale]
 
+/-- Pull a full expansion back along a map tending to its source filter. -/
+theorem HasAsymptoticExpansion.comp_tendsto
+    {β : Type*} {l : Filter α} {l' : Filter β}
+    {scale : α → 𝕜} {f : α → ℰ} {coeff : ℕ → α → ℰ}
+    (h : HasAsymptoticExpansion l scale f coeff)
+    (g : β → α) (hg : Tendsto g l' l) :
+    HasAsymptoticExpansion l' (scale ∘ g) (f ∘ g)
+      (fun k => coeff k ∘ g) := by
+  constructor
+  · intro k
+    apply ((h.1 k).comp_tendsto hg).congr'
+    · filter_upwards with x
+      rfl
+    · filter_upwards with x
+      rfl
+  · intro N
+    apply ((h.2 N).comp_tendsto hg).congr'
+    · filter_upwards with x
+      rfl
+    · filter_upwards with x
+      rfl
+
+/-- Full expansions with a common scale add coefficientwise. -/
+theorem HasAsymptoticExpansion.add
+    {l : Filter α} {scale : α → 𝕜} {f g : α → ℰ}
+    {coeff coeff' : ℕ → α → ℰ}
+    (hf : HasAsymptoticExpansion l scale f coeff)
+    (hg : HasAsymptoticExpansion l scale g coeff') :
+    HasAsymptoticExpansion l scale (fun x => f x + g x)
+      (fun k x => coeff k x + coeff' k x) := by
+  constructor
+  · intro k
+    exact (hf.1 k).add (hg.1 k)
+  · intro N
+    apply (hf.2 N).add (hg.2 N) |>.congr'
+    · filter_upwards with x
+      simp only [partialSum, smul_add, Finset.sum_add_distrib]
+      abel
+    · rfl
+
+/-- Full expansions with a common scale subtract coefficientwise. -/
+theorem HasAsymptoticExpansion.sub
+    {l : Filter α} {scale : α → 𝕜} {f g : α → ℰ}
+    {coeff coeff' : ℕ → α → ℰ}
+    (hf : HasAsymptoticExpansion l scale f coeff)
+    (hg : HasAsymptoticExpansion l scale g coeff') :
+    HasAsymptoticExpansion l scale (fun x => f x - g x)
+      (fun k x => coeff k x - coeff' k x) := by
+  constructor
+  · intro k
+    exact (hf.1 k).sub (hg.1 k)
+  · intro N
+    apply (hf.2 N).sub (hg.2 N) |>.congr'
+    · filter_upwards with x
+      simp only [partialSum, smul_sub, Finset.sum_sub_distrib]
+      abel
+    · rfl
+
 end AsymptoticExpansion
 
 end
