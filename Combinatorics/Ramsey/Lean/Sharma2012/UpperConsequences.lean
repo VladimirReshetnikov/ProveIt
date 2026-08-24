@@ -16,6 +16,25 @@ open Filter
 
 namespace LeanProofs.Sharma2012
 
+/-- Sum a pointwise bound over the pairs induced by a finite equivalence.
+No fixed-point-free hypothesis is needed: fixed points simply contribute
+twice their own weight. -/
+theorem twice_sum_le_of_equiv_pair_bound
+    {α : Type*} [Fintype α] (pair : α ≃ α)
+    (weight : α → Nat) (bound : Nat)
+    (hpair : ∀ x, weight x + weight (pair x) ≤ bound) :
+    2 * ∑ x, weight x ≤ bound * Fintype.card α := by
+  have hreindex : (∑ x, weight (pair x)) = ∑ x, weight x :=
+    pair.sum_comp weight
+  calc
+    2 * ∑ x, weight x = (∑ x, weight x) + ∑ x, weight (pair x) := by
+      rw [hreindex]
+      omega
+    _ = ∑ x, (weight x + weight (pair x)) := by
+      rw [Finset.sum_add_distrib]
+    _ ≤ ∑ _x : α, bound := Finset.sum_le_sum fun x _hx => hpair x
+    _ = bound * Fintype.card α := by simp [Nat.mul_comm]
+
 /-- The certified table gives Sharma's `2.7` upper bound on the finite
 interval from `11` through `20`. -/
 theorem theta_le_twenty_seven_tenths_pow_on_eleven_twenty (n : Nat)
