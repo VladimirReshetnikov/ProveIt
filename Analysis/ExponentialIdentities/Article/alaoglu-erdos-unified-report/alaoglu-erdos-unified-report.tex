@@ -21474,6 +21474,72 @@ the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but
 constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
 \statusexactcomp{}.
 
+\subsection{The terminal obstruction inside the Calegari--Dimitrov--Tang family}
+\label{camp:cdt}
+
+The survey's strongest methodological observation is that Calegari--Dimitrov--Tang is the
+only existing technology obtaining arithmetic control over a \emph{product of two}
+logarithms, which is precisely the weight at which this problem sits
+(Section~\ref{camp:kummer}).  It leaves open the question of whether the
+Alaoglu--Erd\H{o}s lattice can be encoded in that family at all.  It can, exactly, and the
+encoding is finite.
+
+Write
+\[
+ L_n:=\log\Bigl(1+\frac1n\Bigr)=\log\frac{n+1}{n},
+ \qquad\text{so that}\qquad
+ \log p=\sum_{n=1}^{p-1}L_n
+\]
+for every prime $p$ --- every logarithm of an integer is a finite sum of logarithms of
+consecutive-integer ratios, which are exactly the generators appearing in the
+Calegari--Dimitrov--Tang theorems.  Expanding the counterexample relation
+$\log2\cdot\log A-\log3\cdot\log M=0$ in these generators turns the terminal obstruction
+into a $\Z$-linear relation among the weight-two products $L_iL_j$.
+
+\begin{proposition}[Finite weight-two encoding]\label{camp:prop-cdt}
+Let $q$ be a prime and suppose $MA$ is $q$-smooth.  Then the relation
+$\log2\cdot\log A=\log3\cdot\log M$ is a $\Z$-linear relation among the products
+$\{L_iL_j:1\le i\le j\le q-1\}$, and the vanishing of all of its coefficients forces
+$M=2^t$, $A=3^t$ --- the integer controls.  Consequently, $\Q$-linear independence of the
+finitely many products that occur excludes every counterexample with $q$-smooth outputs.
+\end{proposition}
+
+The coefficient system was computed symbolically and solved exactly.  For $q=3$ the
+relation is the quadratic form
+\[
+ (c+d-a-b)\,L_1^2+(d-a-2b)\,L_1L_2-b\,L_2^2=0,
+ \qquad M=2^a3^b,\quad A=2^c3^d,
+\]
+in $L_1=\log2$ and $L_2=\log\tfrac32$, whose vanishing gives $b=c=0$ and $a=d$: the
+$3$-smooth case therefore follows from $\Q$-linear independence of just the three products
+$(\log2)^2$, $\log2\log\tfrac32$, $(\log\tfrac32)^2$.  (That case is already known by
+transcendence of $\thetaq$, so this is a calibration rather than a new result.)  The first
+genuinely new instance is $q=5$, since a counterexample must have an external prime
+$\ge5$: there the system has $7$ equations in the $10$ products with $i\le j\le4$, and its
+only solution is again $M=2^t$, $A=3^t$.  At $q=7$ the system has $11$ equations and the
+same conclusion.  \statusexactcomp{} (exact symbolic solve at $q=3,5,7$); the encoding
+itself \statusnew.
+
+Three consequences are worth stating.  First, the obstruction is not merely
+\emph{analogous} to the Calegari--Dimitrov--Tang setting; it lives in literally the same
+family of logarithms, with the number of generators bounded by the largest prime dividing
+$MA$.  Second, the required independence statement is \emph{finite} for each $q$ --- at
+most $\binom q2$ products, and in fact only the $O(q)$ of them that actually occur --- so
+this is a sequence of well-posed finite problems rather than a single infinite one.  Third,
+the system is heavily overdetermined (equations grow like $q$, monomials like $q^2$), which
+is why its solution set collapses so cleanly onto the controls.
+
+\emph{What this does and does not deliver.}  It does not prove anything: weight-two
+independence is open even for a single product, which is exactly why
+Calegari--Dimitrov--Tang is notable.  What it delivers is the missing bridge the survey
+asked for.  The research question ceases to be ``can the lattice be encoded in an
+arithmetic holonomic family?'' and becomes the concrete one: \emph{extend the
+Calegari--Dimitrov--Tang independence technology from its near-diagonal admissible pairs to
+the triangular array $\{L_iL_j:i\le j\le q-1\}$ for a single prime $q\ge5$.}  Any such
+extension excludes all counterexamples with $q$-smooth outputs, and does so by consuming
+the external prime --- channel~(i) of the control principle --- since a control has no
+prime $\ge5$ in its support at all.  \statusopen{} target.
+
 \subsection{The conditional type gap, and a construction that would settle the conjecture}
 \label{camp:typegap}
 
@@ -21610,7 +21676,11 @@ interpolant of Target~\ref{camp:target-construct}, which is moreover control-cle
 the monoid's quadratic density --- together with the two output-sensitive cancellation
 targets (Sections~\ref{sec:masks}, \ref{bh:localized}) that have survived every campaign so
 far.  Of these the interpolant target is the sharpest, being a single explicit inequality
-whose satisfaction would settle the conjecture outright.
+whose satisfaction would settle the conjecture outright.  Alongside them sits the
+weight-two encoding of Proposition~\ref{camp:prop-cdt}, which is the only target that
+attacks the terminal obstruction head-on rather than routing around it, and which reduces
+it --- for each prime $q$ separately --- to a finite independence statement inside the one
+family where products of two logarithms have ever been controlled.
 
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
@@ -22986,6 +23056,11 @@ Section~\ref{camp:traps} \\
 Pila integrality gate measured: $\tau_2\ge1/(4\beta)$ by Jensen against the monoid density,
 failing the threshold by $208\beta\log2\log3\approx158\beta$ (linear in $\beta$) &
 \statusnew & Section~\ref{camp:literature}, \eqref{camp:eq-pila} \\
+Terminal obstruction encoded in the CDT family: $\log p=\sum_{n<p}L_n$ turns the
+relation into a $\Z$-relation among $\{L_iL_j\}$; vanishing coefficients force the
+controls at $q=3,5,7$; finite independence per $q$ suffices, consuming the external prime &
+\statusexactcomp{} solves; encoding \statusnew{}; target \statusopen &
+Proposition~\ref{camp:prop-cdt} \\
 Algebraic dependence with $2^z,3^z$ forces $\log M(g,r)=O(r\log r)$, hence $\tau_2=0$;
 conditional type gap (no integer-valued entire $g$ on $\Sol$ with $0<\tau_2\le$ threshold);
 small-type interpolant target, control-clean via the monoid's quadratic density &
