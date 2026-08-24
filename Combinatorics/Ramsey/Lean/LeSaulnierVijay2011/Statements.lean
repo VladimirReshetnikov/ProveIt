@@ -23,6 +23,26 @@ namespace LeanProofs.LeSaulnierVijay2011
 
 /-! ## Previously known counting results -/
 
+/-- The small value used to illustrate the definition of `M`.  The published
+journal PDF's representative `(1,2,4,3)` is corrected to `(1,3,4,2)`. -/
+def M_four_value : Prop :=
+  M 4 = 10
+
+/-- The corrected exhaustive list behind the example `M(4) = 10`: the five
+displayed representatives and their reversals. -/
+def M_four_representatives : Prop :=
+  forall sigma : Equiv.Perm (Fin 4), IsFiniteKAvoiding 3 sigma <->
+    finitePermutationValue sigma = ![1, 3, 4, 2] \/
+    finitePermutationValue sigma = ![2, 4, 3, 1] \/
+    finitePermutationValue sigma = ![1, 3, 2, 4] \/
+    finitePermutationValue sigma = ![4, 2, 3, 1] \/
+    finitePermutationValue sigma = ![2, 1, 4, 3] \/
+    finitePermutationValue sigma = ![3, 4, 1, 2] \/
+    finitePermutationValue sigma = ![2, 4, 1, 3] \/
+    finitePermutationValue sigma = ![3, 1, 4, 2] \/
+    finitePermutationValue sigma = ![4, 2, 1, 3] \/
+    finitePermutationValue sigma = ![3, 1, 2, 4]
+
 /-- The Davis--Entringer--Graham--Simmons bounds quoted at the start of the
 paper.  Natural-number division gives the floor and ceiling in the printed
 upper bound. -/
@@ -61,6 +81,25 @@ def M_even_recurrence : Prop :=
 /-- The odd recurrence from Davis et al. used in the proof of Theorem 1. -/
 def M_odd_recurrence : Prop :=
   forall n : Nat, 1 <= n -> 2 * M n * M (n + 1) <= M (2 * n + 1)
+
+/-- The parity-concatenation observation behind the recurrences: preserving
+the orders within the even and odd blocks and concatenating those blocks in
+either order gives a 3-avoiding permutation of `{1, ..., 2n}`. -/
+def parity_concatenation_is_three_avoiding : Prop :=
+  forall (n : Nat) (rankEven rankOdd : Nat -> Nat), 1 <= n ->
+    IsKAvoidingRanking 3 (evenIntervalPart n : Set Nat) rankEven ->
+    IsKAvoidingRanking 3 (oddIntervalPart n : Set Nat) rankOdd ->
+    exists evenFirst oddFirst : Nat -> Nat,
+      IsKAvoidingRanking 3 (Finset.Icc 1 (2 * n) : Set Nat) evenFirst /\
+      SameOrderOn (evenIntervalPart n : Set Nat) rankEven evenFirst /\
+      SameOrderOn (oddIntervalPart n : Set Nat) rankOdd evenFirst /\
+      (forall x, x ∈ evenIntervalPart n ->
+        forall y, y ∈ oddIntervalPart n -> evenFirst x < evenFirst y) /\
+      IsKAvoidingRanking 3 (Finset.Icc 1 (2 * n) : Set Nat) oddFirst /\
+      SameOrderOn (evenIntervalPart n : Set Nat) rankEven oddFirst /\
+      SameOrderOn (oddIntervalPart n : Set Nat) rankOdd oddFirst /\
+      (forall x, x ∈ oddIntervalPart n ->
+        forall y, y ∈ evenIntervalPart n -> oddFirst x < oddFirst y)
 
 /-- The finite values quoted from Davis et al. to initialize the induction in
 Theorem 1.  The published journal PDF's `73,904` is corrected to `74,904`, the
@@ -140,6 +179,26 @@ def theorem_2_odd_even_separation : Prop :=
   forall i j x y : Nat, 1 <= i -> i < j ->
     x ∈ theorem2OddBlock i -> y ∈ theorem2EvenBlock j -> 2 * x < y
 
+/-- A rank orders the even and odd blocks as in
+`sigma_1 pi_1 sigma_2 pi_2 ...`. -/
+def Theorem2BlocksInOrder (rank : Nat -> Nat) : Prop :=
+  forall i : Nat, 1 <= i ->
+    (forall x, x ∈ theorem2EvenBlock i -> forall y, y ∈ theorem2OddBlock i ->
+      rank x < rank y) /\
+    (forall x, x ∈ theorem2OddBlock i ->
+      forall y, y ∈ theorem2EvenBlock (i + 1) -> rank x < rank y)
+
+/-- The full concatenation claim in the second half of Theorem 2: ordering
+3-avoiding permutations of the displayed blocks alternately produces an
+odd-difference 4-avoiding permutation of the positive integers. -/
+def theorem_2_block_concatenation_is_odd_four_avoiding : Prop :=
+  forall rank : Nat -> Nat, IsPermutationRanking positiveIntegers rank ->
+    Theorem2BlocksInOrder rank ->
+    (forall i : Nat, 1 <= i ->
+      IsKAvoidingRanking 3 (theorem2EvenBlock i : Set Nat) rank /\
+        IsKAvoidingRanking 3 (theorem2OddBlock i : Set Nat) rank) ->
+    IsOddKAvoidingRanking 4 positiveIntegers rank
+
 /-! ## Densities and Theorem 3 -/
 
 /-- The consequence of the known 5-avoidability result noted after the
@@ -158,6 +217,24 @@ def geometricSet_densities : Prop :=
     upperDensity (geometricSet a) = (a : Real) / (a + 1) /\
       lowerDensity (geometricSet a) = 1 / (a + 1 : Nat)
 
+/-- The gap between distinct geometric blocks used in the 4-avoidability
+argument: an entry of a later block is at least twice every entry of an
+earlier block. -/
+def geometricBlock_cross_gap : Prop :=
+  forall a i j x y : Nat, 2 <= a -> i < j ->
+    x ∈ geometricBlock a i -> y ∈ geometricBlock a j -> 2 * x <= y
+
+/-- The explicit concatenation claim in the first half of Theorem 3.  Any
+block-ordered concatenation of 3-avoiding permutations of the geometric
+blocks is 4-avoiding. -/
+def geometricBlock_concatenation_is_four_avoiding : Prop :=
+  forall (a : Nat) (rank : Nat -> Nat), 2 <= a ->
+    IsPermutationRanking (geometricSet a) rank ->
+    BlocksInOrder (geometricBlock a) rank ->
+    (forall i : Nat,
+      IsKAvoidingRanking 3 (geometricBlock a i : Set Nat) rank) ->
+    IsKAvoidingRanking 4 (geometricSet a) rank
+
 /-- The endpoint identity for the interval construction `T_k`. -/
 def p_closed_form : Prop :=
   forall k : Nat, 1 <= k -> p k = 3 ^ k + 1 /\ p k = 2 * q (k - 1)
@@ -169,6 +246,27 @@ def TSet_is_three_avoidable : Prop :=
 /-- The density calculation for the set `T`. -/
 def TSet_densities : Prop :=
   upperDensity TSet = (1 : Real) / 2 /\ lowerDensity TSet = (1 : Real) / 4
+
+/-- Entries in different `T`-blocks have the factor-two separation used in
+the first case of the 3-avoidability argument. -/
+def TBlock_cross_gap : Prop :=
+  forall k l x y : Nat, k < l ->
+    x ∈ TBlock k -> y ∈ TBlock l -> 2 * x <= y
+
+/-- The same-block gap estimate in the proof that `T` is 3-avoidable. -/
+def TBlock_same_block_gap : Prop :=
+  forall k l x1 x2 x3 : Nat, 1 <= k -> l < k ->
+    x1 ∈ TBlock l -> x2 ∈ TBlock k -> x3 ∈ TBlock k -> x2 < x3 ->
+      x3 - x2 < q (k - 1) /\ q (k - 1) <= x2 - x1
+
+/-- The explicit concatenation claim in the second half of Theorem 3.  Any
+block-ordered concatenation of 3-avoiding permutations of the intervals
+`T_k` is itself 3-avoiding. -/
+def TBlock_concatenation_is_three_avoiding : Prop :=
+  forall rank : Nat -> Nat, IsPermutationRanking TSet rank ->
+    BlocksInOrder TBlock rank ->
+    (forall k : Nat, IsKAvoidingRanking 3 (TBlock k : Set Nat) rank) ->
+    IsKAvoidingRanking 3 TSet rank
 
 /-- **Theorem 3.** The four bounds for the extremal density parameters. -/
 def theorem_3 : Prop :=
@@ -182,6 +280,16 @@ two 3-avoidable sets? -/
 def erdos_graham_partition_question : Prop :=
   exists A B : Set Nat, IsKAvoidable 3 A /\ IsKAvoidable 3 B /\
     Disjoint A B /\ A ∪ B = positiveIntegers
+
+/-- The density obstruction stated immediately after the Erdos--Graham
+question. -/
+def alpha_beta_sum_obstructs_partition : Prop :=
+  alpha 3 + beta 3 < 1 -> ¬ erdos_graham_partition_question
+
+/-- The strict density inequality that the authors say they believe.  It is
+also a consequence of their sharper numerical conjecture below. -/
+def conjectured_alpha_beta_sum_bound : Prop :=
+  alpha 3 + beta 3 < 1
 
 /-- The still-open inequality singled out in the last sentence of the paper. -/
 def beta_three_strictly_less_than_one : Prop :=

@@ -61,6 +61,11 @@ change the induced order. -/
 def IsPermutationRanking (S : Set Nat) (rank : Nat -> Nat) : Prop :=
   Set.InjOn rank S
 
+/-- Two rankings induce the same permutation order on `S`. -/
+def SameOrderOn (S : Set Nat) (rank₁ rank₂ : Nat -> Nat) : Prop :=
+  forall x, x ∈ S -> forall y, y ∈ S ->
+    (rank₁ x < rank₁ y <-> rank₂ x < rank₂ y)
+
 /-- A `k`-term arithmetic progression occurs in the order induced by `rank`. -/
 def HasAPInRanking (k : Nat) (S : Set Nat) (rank : Nat -> Nat) : Prop :=
   exists x : Fin k -> Nat, (forall i, x i ∈ S) /\
@@ -116,6 +121,16 @@ noncomputable def M (n : Nat) : Nat := by
   classical
   exact Fintype.card {sigma : Equiv.Perm (Fin n) // IsFiniteKAvoiding 3 sigma}
 
+/-- The even members of `{1, ..., 2n}` used in the parity construction for
+the recurrences for `M`. -/
+def evenIntervalPart (n : Nat) : Finset Nat :=
+  (Finset.Icc 1 (2 * n)).filter Even
+
+/-- The odd members of `{1, ..., 2n}` used in the parity construction for
+the recurrences for `M`. -/
+def oddIntervalPart (n : Nat) : Finset Nat :=
+  (Finset.Icc 1 (2 * n)).filter Odd
+
 /-! ## Density parameters -/
 
 /-- `S(n) = |S ∩ [1,n]|`. -/
@@ -156,6 +171,12 @@ def geometricBlock (a i : Nat) : Finset Nat :=
 /-- The set `S^(a)`, the union of the even-indexed geometric blocks. -/
 def geometricSet (a : Nat) : Set Nat :=
   {n | exists i : Nat, n ∈ geometricBlock a i}
+
+/-- Every entry of an earlier block precedes every entry of a later block in
+the order induced by `rank`. -/
+def BlocksInOrder (blocks : Nat -> Finset Nat) (rank : Nat -> Nat) : Prop :=
+  forall i j : Nat, i < j -> forall x, x ∈ blocks i ->
+    forall y, y ∈ blocks j -> rank x < rank y
 
 /-- The upper endpoint `q_k` of the `k`th block in the 3-avoiding density
 construction. -/
