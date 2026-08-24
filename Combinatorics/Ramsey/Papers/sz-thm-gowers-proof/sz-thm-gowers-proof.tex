@@ -2079,18 +2079,22 @@ $$
 \left(\left(1-\theta^{1 / 2}\right) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r(w)+d}\right) \quad \phi(z)-\phi(w)=\psi(d) .
 $$
 
-If $\theta^{1 / 2} \leqslant 1 / 8$ (as we shall assume), then Lemma 10.7 implies that $W_{1}$ has cardinality at least $7|W| / 8$.
+Lemma 10.7 implies that $W_{1}$ has cardinality at least $(1-\theta^{1/2})|W|$; in particular, this is at least $7|W|/8$ if $\theta^{1/2}\leqslant1/8$.
 
 % ed.: The final existence step in the proof also needs the translated fibres
 % $X_{r(w)+d}$ to be nonempty; this follows from the earlier Section 10 setup
 % and quantitative fibre bounds but must be explicit in the standalone lemma.
-Lemma 10.12. Assume that $\theta^{1 / 2} \leqslant 1 / 8$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Assume also that $X_{r(w)+d}$ is nonempty whenever $w\in W$ and $d\in B^{\prime}$. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
+% ed.: The printed bound $\theta^{1/2}\leqslant1/8$ is unnecessarily strong
+% and is not met by the parameters of Theorem 10.13.  Its proof only needs
+% $\theta^{1/2}<5/16$: after the $5/8$ overlap, two exceptional sets of
+% relative size at most $\theta^{1/2}$ must leave a point.
+Lemma 10.12. Assume that $\theta^{1 / 2} < 5 / 16$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Assume also that $X_{r(w)+d}$ is nonempty whenever $w\in W$ and $d\in B^{\prime}$. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
 
-Proof. By the definition of $W_{1}$ and the assumption that $\theta^{1 / 2} \leqslant 1 / 8$, we have the statements
+Proof. By the definition of $W_{1}$, we have the statements
 
 
 \begin{equation*}
-\text { (7/8 a.e. } \left.d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{1}\right)+d}\right) \quad \phi(z)-\phi\left(w_{1}\right)=\psi(d) \tag{1}
+\left((1-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{1}\right)+d}\right) \quad \phi(z)-\phi\left(w_{1}\right)=\psi(d) \tag{1}
 \end{equation*}
 
 
@@ -2098,7 +2102,7 @@ and
 
 
 \begin{equation*}
-\text { (7/8 a.e. } \left.d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{2}\right)+d}\right) \quad \phi(z)-\phi\left(w_{2}\right)=\psi(d) \text {. } \tag{2}
+\left((1-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{2}\right)+d}\right) \quad \phi(z)-\phi\left(w_{2}\right)=\psi(d) \text {. } \tag{2}
 \end{equation*}
 
 
@@ -2114,18 +2118,18 @@ Because $r\left(w_{1}\right)-r\left(w_{2}\right) \in C$, we know from the proof 
 
 
 \begin{gather*}
-\left(1 / 2 \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{d+r\left(w_{1}\right)}\right)  \tag{4}\\
+\left((5/8-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{d+r\left(w_{1}\right)}\right)  \tag{4}\\
 \phi(z)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right) .
 \end{gather*}
 
 
-From (1) and (4) it follows that for 3/8-almost every $d \in B^{\prime}$, for $(1-\theta)$ -almost every $z \in X_{r\left(w_{1}\right)+d}$ we have both
+From (1) and (4) it follows that for $(5/8-2\theta^{1/2})$-almost every $d \in B^{\prime}$, for $(1-2\theta)$-almost every $z \in X_{r\left(w_{1}\right)+d}$ we have both
 
 $$
 \phi(z)-\phi\left(w_{1}\right)=\psi(d) \text { and } \phi(z)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right) .
 $$
 
-In particular, there exist $d$ and $z$ such that both equations hold, which implies that
+Since $\theta^{1/2}<5/16$ (and hence $\theta<1/2$), and the relevant fibre is nonempty, there exist $d$ and $z$ such that both equations hold, which implies that
 
 $$
 \phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right)-\psi(d)=\psi(d+c)-\psi(d)=\psi_{1}(c) .

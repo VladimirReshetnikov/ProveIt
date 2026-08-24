@@ -173,18 +173,18 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   have hsqrtNonneg : 0 ≤ Real.sqrt theta := Real.sqrt_nonneg _
   have hsqrtSq : (Real.sqrt theta) ^ 2 = theta :=
     Real.sq_sqrt hthetaNonneg
-  have hthetaLe : theta ≤ (1 / 64 : Real) := by
+  have hthetaLe : theta ≤ (1 / 8 : Real) := by
     nlinarith
-  have hthetaB : theta * (B.card : Real) ≤ (1 / 64 : Real) * B.card :=
+  have hthetaB : theta * (B.card : Real) ≤ (1 / 8 : Real) * B.card :=
     mul_le_mul_of_nonneg_right hthetaLe hBcardPos.le
-  have hsqrtB' : Real.sqrt theta * (B'.card : Real) ≤
-      (1 / 8 : Real) * B'.card :=
-    mul_le_mul_of_nonneg_right hsqrt (by positivity)
-  have hB'dense : (63 / 64 : Real) * B.card ≤ B'.card := by
+  have hB'dense : (7 / 8 : Real) * B.card ≤ B'.card := by
     have hdense := hlocal.2.1
     nlinarith
   have hB'cardPos : (0 : Real) < B'.card := by
     nlinarith
+  have hsqrtB' : Real.sqrt theta * (B'.card : Real) <
+      (5 / 16 : Real) * B'.card :=
+    mul_lt_mul_of_pos_right hsqrt hB'cardPos
 
   rw [section10RegularSet, Finset.mem_filter] at hw1 hw2
   let Good (w : X) (d : ZMod N) : Prop :=
@@ -255,12 +255,12 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     nlinarith
   have hpartU : ((U \ U').card : Real) + U'.card = U.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hU'sub
-  have hU'lowerB : (27 / 32 : Real) * B.card ≤ U'.card := by
+  have hU'lowerB : (5 / 8 : Real) * B.card ≤ U'.card := by
     change (7 / 8 : Real) * B.card ≤ U.card at hoverlap
     nlinarith
-  have hU'lowerB' : (27 / 32 : Real) * B'.card ≤ U'.card := by
+  have hU'lowerB' : (5 / 8 : Real) * B'.card ≤ U'.card := by
     have hscale := mul_le_mul_of_nonneg_left hB'cardLe
-      (by norm_num : (0 : Real) ≤ 27 / 32)
+      (by norm_num : (0 : Real) ≤ 5 / 8)
     exact hscale.trans hU'lowerB
 
   let TG1 : Finset (ZMod N) := section10Translate G1 c
@@ -318,13 +318,10 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     nlinarith only [hdiffHReal, hG2def, hTG1def]
   have hpartH : ((U' \ H).card : Real) + H.card = U'.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hHsub
-  have hHlower : (19 / 32 : Real) * B'.card ≤ H.card := by
+  have hHposReal : (0 : Real) < H.card := by
     nlinarith only [hpartH, hU'lowerB', hdiffH, hsqrtB']
   have hHpos : 0 < H.card := by
-    have hscaled : (0 : Real) < (19 / 32 : Real) * B'.card :=
-      mul_pos (by norm_num) hB'cardPos
-    exact_mod_cast (show (0 : Real) < H.card by
-      nlinarith only [hscaled, hHlower])
+    exact_mod_cast hHposReal
   obtain ⟨x, hxH⟩ := Finset.card_pos.mp hHpos
   have hxU' : x ∈ U' := (Finset.mem_inter.mp (Finset.mem_inter.mp hxH).1).1
   have hxG2 : x ∈ G2 := (Finset.mem_inter.mp (Finset.mem_inter.mp hxH).1).2
@@ -360,7 +357,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     simpa only [F, Tz] using hGood2
   have hFcardPos : (0 : Real) < F.card := by
     exact_mod_cast Finset.card_pos.mpr hFne
-  have hthetaF : theta * (F.card : Real) ≤ (1 / 64 : Real) * F.card :=
+  have hthetaF : theta * (F.card : Real) ≤ (1 / 8 : Real) * F.card :=
     mul_le_mul_of_nonneg_right hthetaLe hFcardPos.le
   have hinter := inter_card_lower_of_subsets S Tz F
     (Finset.filter_subset _ _) (Finset.filter_subset _ _)
