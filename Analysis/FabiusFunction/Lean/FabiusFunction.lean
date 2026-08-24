@@ -4,6 +4,7 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.PeriodicCorrection
+import FabiusFunction.MellinBose
 
 /-!
 # Fabius function
