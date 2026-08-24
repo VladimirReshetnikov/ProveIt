@@ -21603,6 +21603,34 @@ alone, which places $\beta^2$ outside the monoid.  Any resolution must therefore
 channel~(ii) of the control principle, and the probe shows exactly where that consumption
 happens.  \statusnew.
 
+The control side can be pinned down further, and the sharper example replaces $2^{z^2}$ by
+a function of half its type.  At a control, $\Sol=\N_0$ and the integer-valued quadratics
+are exactly the $\Z$-combinations of $1$, $z$, $\binom z2$, so a leading coefficient is
+$c/2$ with $c\in\N$; taking $g=u^{Q(z)}$ with $u\in\N_{\ge2}$ gives
+$\tau_2(g)=(c/2)\log u$.  The minimum over this family is attained at $u=2$,
+$Q=\binom z2$:
+\[
+ g(z)=2^{\binom z2}=\exp\Bigl(\tfrac{\log2}2z(z-1)\Bigr),
+ \qquad
+ \tau_2(g)=\tfrac{\log2}2=0.34657\ldots,
+\]
+integer-valued on $\N_0$ ($1,1,2,8,64,1024,32768,\dots$) and entire of order two --- half
+the type of the $2^{z^2}$ probe.  So at controls
+\[
+ V_{(\log2)/2}\supsetneq V_0,
+\]
+and the achievable spectrum there contains $\{(c/2)\log u:c\ge1,\ u\ge2\}$.  Whether
+controls admit still \emph{smaller} positive types is the classical question about
+integer-valued entire functions of order two and is not claimed here, \statusknown.
+
+The point of the sharper example is that the obstruction under failure is unchanged, and now
+visibly applies to the whole family: $\binom s2=\tfrac{n^2-n}2+k\beta\tfrac{2n-1}2
++\tfrac{k^2\beta^2}2$, so $2^{\binom s2}$ again requires a power of $2^{\beta^2}$ to be an
+integer.  Every member of the family $u^{Q(z)}$ with $\deg Q=2$ dies under failure for the
+same reason --- the quadratic term drags in $\beta^2$, and $\beta^2\notin\Sol$ by
+transcendence.  This is what makes the separation structural rather than an accident of one
+function.  \statusnew.
+
 Two remarks make this the natural next step rather than a reformulation.  It is
 control-sensitive in the right way: at an integer control $\Sol=\N_0$ is closed under $+1$
 alone, the second operator degenerates to $\Delta_\beta=\Delta_1^{\,\text{(iterated)}}$
@@ -23521,10 +23549,11 @@ $V_\tau$ is a $\Z[\Delta_1,\Delta_\beta]$-module; both shifts diagonal on monomi
 integer eigenvalues $2^i3^j-1$, $M^iA^j-1$; spectrum question $\equiv$ finite $\Z$-rank of
 the shift span & \statusnew{}; target \statusopen &
 Section~\ref{camp:diffmodule}, Target~\ref{camp:target-diffmodule} \\
-Control-sensitivity of the spectrum: $2^{z^2}$ has $\tau_2=\log2>0$ and is integer-valued
-on $\Sol$ \emph{at controls}, so $V_{\log2}\supsetneq V_0$ there; under failure the same
-construction dies because $\beta^2\notin\Sol$ by transcendence & \statusnew &
-Section~\ref{camp:diffmodule} \\
+Control-sensitivity of the spectrum: at controls $2^{\binom z2}$ has
+$\tau_2=(\log2)/2=0.34657$ and is integer-valued, so $V_{(\log2)/2}\supsetneq V_0$ there,
+and the spectrum contains $\{(c/2)\log u\}$; under failure the whole family $u^{Q}$,
+$\deg Q=2$, dies because the quadratic term needs $2^{\beta^2}\in\Z$ while
+$\beta^2\notin\Sol$ by transcendence & \statusnew & Section~\ref{camp:diffmodule} \\
 First certificate search: integer points of the curve are exactly
 $\{(2^u,3^u):u\in\Sol\}$; no subunit polynomial found for $L\le10$, $d\le5$; cancellation
 of $6^{Ld}$ required against a severely ill-conditioned basis & \statusexactcomp{}
