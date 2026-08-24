@@ -23199,11 +23199,21 @@ shows that a structural prime gives a linear gain per point.  A mechanism that m
 $r$-adic divisibility grow like $k^2$ (for example, values at $z_{n,k}$ divisible by
 $r^{e\binom{k}{2}}$) would change the bookkeeping; $r$-adic Kummer congruences for
 $\binom{A^n}{M^n}$ (Section~\ref{fc:target}) are the one place such growth has been seen.
-\item \textbf{Thirteen doublings.}  Closing the gap between the kernel region and the
-directed-rounding scan is mechanical with the semiconvergent device; it converts
-\statuscomp{} into \statuslean{} for every exponent bound used in the descent constants.
-(Deliberately not pursued further in this session: the marginal value of each doubling is
-small, and the work is pure arithmetic replay.)
+\item \textbf{Doublings: withdrawn as a research direction.}  This entry previously read
+that closing the gap between the kernel region and the directed-rounding scan is mechanical
+with the semiconvergent device, converting \statuscomp{} into \statuslean{} for every
+exponent bound used in the descent constants.  One further doubling was carried out
+(\lean{FiniteCheck32768}, $2^x<32768$, so $x\ge15$), and it confirmed the mechanism: the
+generator is unchanged in principle and the hardest enclosure was the predicted
+$10^7$-denominator one.  What it also produced is Proposition~\ref{co:prop-cost}, which
+shows the entry's conclusion was wrong.  The route costs
+$\widetilde{\mathrm O}(N^{1+\log_43})$, a factor $2\sqrt3$ per doubling asymptotically and a
+measured factor near $2.8$; the twelve doublings still separating $2^{15}$ from the scan
+frontier $2^{27}$ therefore cost between $10^5$ and $3\cdot10^6$ times a run that already
+takes $22.7$ minutes.  ``Mechanical'' was true and ``feasible'' was not, and the two were
+being conflated.  Further doublings should be undertaken only for a specific descent
+constant that genuinely needs a larger kernel bound, never as a route to the scan frontier;
+reaching that frontier needs a certificate that retires an interval of $m$ at once.
 \end{enumerate}
 
 \section{What the integrated frameworks add to the frontier}
@@ -23247,10 +23257,14 @@ The one literal advance on the conjecture itself made during this integration is
 the kernel-verified zero-free region moved from $2^x<4096$ to $2^x<16384$
 (Theorem~\ref{co:thm-finite4096}), and in a later session to $2^x<32768$, so a counterexample
 now has $x\ge15$ with kernel trust.  The software scans already reach $x>27$; the gap between
-the two is engineering, not mathematics, and the semiconvergent device makes each further
-doubling a routine table.  The cost is nonetheless $\Theta(N)$ certificates for the region
-$2^x<N$, so this route reaches the software frontier only through a genuinely different
-device, not through further doublings.
+the two is engineering rather than mathematics, and the semiconvergent device does make each
+further doubling a routine table to \emph{write}.  It does not make one routine to
+\emph{run}: by Proposition~\ref{co:prop-cost} the route costs
+$\widetilde{\mathrm O}(N^{1+\log_43})$ for the region $2^x<N$, a measured factor near $2.8$
+and an asymptotic $2\sqrt3$ per doubling, so the twelve doublings to $2^{27}$ cost between
+$10^5$ and $3\cdot10^6$ times the present run.  This route reaches the software frontier only
+through a genuinely different device --- one certificate retiring an interval of $m$ --- not
+through further doublings.
 
 \paragraph{Where genuinely new input could enter.}  Three targets survive all five audits and
 are not yet known to be equivalent to the conjecture: shared structural-face capture
