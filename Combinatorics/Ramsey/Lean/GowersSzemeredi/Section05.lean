@@ -4,8 +4,9 @@ import GowersSzemeredi.Definitions
 # Gowers (2001), Section 5: consequences of Weyl's inequality
 
 This file records, as `Prop`-valued definitions, the statements of all fifteen
-numbered results in Section 5 of "A new proof of Szemeredi's theorem".  No
-result is asserted here.
+numbered results in Section 5 of "A new proof of Szemeredi's theorem", together
+with elementary monotonicity facts about their explicit thresholds.  No
+numbered result is asserted here.
 
 The transcription is corrected where the printed statement conflicts with
 its proof.  In particular, Lemma 5.2 has the factor `1 / 4`; the polynomial
@@ -49,13 +50,54 @@ Weyl's inequality. -/
 def weylThreshold (k : Nat) : Nat :=
   2 ^ (2 ^ (40 * k ^ 3))
 
-/-- The threshold `2^(2^(40 k^3))` for one-polynomial partitioning. -/
+/-- The one-polynomial partition threshold.  The square is needed by the
+square-root recurrence auxiliary used in the degree induction. -/
 def polynomialPartitionThreshold (k : Nat) : Nat :=
-  2 ^ (2 ^ (40 * k ^ 3))
+  weylThreshold k ^ 2
 
-/-- The threshold in the simultaneous polynomial partition lemma. -/
+/-- The rounding-safe threshold in the simultaneous polynomial partition
+lemma.  The factor `2` leaves room for the possible target-minus-one cell at
+each of the `q - 1` refinements. -/
 def simultaneousPolynomialThreshold (k q : Nat) : Nat :=
-  2 ^ ((2 ^ (40 * k ^ 3)) * polynomialPartitionConstant k ^ (q - 1))
+  (2 * polynomialPartitionThreshold k) ^
+    (polynomialPartitionConstant k ^ (q - 1))
+
+lemma weylThreshold_pos (k : Nat) : 0 < weylThreshold k := by
+  unfold weylThreshold
+  exact pow_pos (by norm_num) _
+
+lemma polynomialPartitionThreshold_positive (k : Nat) :
+    0 < polynomialPartitionThreshold k := by
+  unfold polynomialPartitionThreshold
+  exact pow_pos (weylThreshold_pos k) _
+
+lemma weylThreshold_le_polynomialPartitionThreshold (k : Nat) :
+    weylThreshold k ≤ polynomialPartitionThreshold k := by
+  unfold polynomialPartitionThreshold
+  simpa only [pow_one] using
+    pow_le_pow_right₀ (show 1 ≤ weylThreshold k by
+        have := weylThreshold_pos k
+        omega)
+      (by norm_num : (1 : Nat) ≤ 2)
+
+lemma polynomialPartitionThreshold_le_simultaneousPolynomialThreshold
+    (k q : Nat) :
+    polynomialPartitionThreshold k ≤ simultaneousPolynomialThreshold k q := by
+  have hTPos := polynomialPartitionThreshold_positive k
+  have hCPos : 0 < polynomialPartitionConstant k := by
+    unfold polynomialPartitionConstant
+    positivity
+  have hbaseOne : 1 ≤ 2 * polynomialPartitionThreshold k := by omega
+  have hexponentOne :
+      1 ≤ polynomialPartitionConstant k ^ (q - 1) :=
+    one_le_pow₀ (by omega)
+  rw [simultaneousPolynomialThreshold]
+  calc
+    polynomialPartitionThreshold k ≤ 2 * polynomialPartitionThreshold k := by omega
+    _ = (2 * polynomialPartitionThreshold k) ^ 1 := by rw [pow_one]
+    _ ≤ (2 * polynomialPartitionThreshold k) ^
+        (polynomialPartitionConstant k ^ (q - 1)) :=
+      pow_le_pow_right₀ hbaseOne hexponentOne
 
 /-- The constant `k^2 2^(k+3)` used for multilinear partitioning. -/
 def multilinearPartitionConstant (k : Nat) : Nat :=
@@ -65,9 +107,12 @@ def multilinearPartitionConstant (k : Nat) : Nat :=
 def multilinearPartitionExponent (k q : Nat) : Real :=
   ((multilinearPartitionConstant k : Real) ^ (2 ^ k * q))⁻¹
 
-/-- The corrected lower threshold in the `q`-map multilinear partition result. -/
+/-- The rounding-safe lower threshold in the `q`-map multilinear partition
+result.  The factor `2` absorbs the target-minus-one losses in the repeated
+height/refinement argument. -/
 def multilinearPartitionThreshold (k q : Nat) : Nat :=
-  2 ^ (multilinearPartitionConstant k ^ (2 ^ k * q) * 2 ^ (40 * k ^ 3 + 1))
+  (2 * polynomialPartitionThreshold k) ^
+    (multilinearPartitionConstant k ^ (2 ^ k * q))
 
 /-- The real exponential `e(x) = exp(2 pi i x)`. -/
 def realExponential (x : Real) : Complex :=
@@ -139,11 +184,13 @@ def lemma_5_5 : Prop :=
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) <=
         (t : Real) ^ (-((k : Real) * (2 : Real) ^ (k + 1))⁻¹) * N
 
-/-- The square-root-size strengthening obtained inside the proof of Lemma
-5.5 and needed by the induction in Corollary 5.6.  The integral inequality
-`p ^ 2 <= t` is the rounding-safe meaning of the proof's `p <= t^(1/2)`. -/
+/-- The square-root-size recurrence needed by the induction in Corollary 5.6.
+The printed proof does not logically extract this strengthening from Lemma
+5.5: a direct argument at length `floor (sqrt t)` requires that length to
+meet the Weyl threshold, hence the squared threshold below.  The integral
+inequality `p ^ 2 <= t` is the rounding-safe meaning of `p <= t^(1/2)`. -/
 def lemma_5_5_square_root_auxiliary : Prop :=
-  forall (k t N : Nat) [NeZero N], 2 <= k -> weylThreshold k <= t -> t <= N ->
+  forall (k t N : Nat) [NeZero N], 2 <= k -> weylThreshold k ^ 2 <= t -> t <= N ->
     forall a : ZMod N, exists p : Nat, 1 <= p /\ p ^ 2 <= t /\
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) <=
         (t : Real) ^ (-((k : Real) * (2 : Real) ^ (k + 1))⁻¹) * N

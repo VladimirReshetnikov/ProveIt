@@ -80,10 +80,11 @@ def section16RecurrenceExponent (k q : Nat) : Real :=
   (section16K k : Real) ^
     (-((((2 : Nat) ^ (k + 1) * q : Nat) : Int)))
 
-/-- The explicit lower threshold for `m` in Lemma 16.1. -/
+/-- The explicit rounding-safe lower threshold for `m` in Lemma 16.1,
+derived from the multilinear threshold in degree `k + 1`. -/
 def section16WidthThreshold (k q : Nat) : Nat :=
-  2 ^ ((section16K k) ^ ((2 : Nat) ^ (k + 1) * q) *
-    2 ^ (40 * (k + 1) ^ 3 + 1))
+  (2 * polynomialPartitionThreshold (k + 1)) ^
+    ((section16K k) ^ ((2 : Nat) ^ (k + 1) * q))
 
 /-- **Lemma 16.1.** The OCR-lost exponent is
 `K^(-2^(k+1)*q)`.  The undefined proof constant `C_(k+1)` is omitted: the
