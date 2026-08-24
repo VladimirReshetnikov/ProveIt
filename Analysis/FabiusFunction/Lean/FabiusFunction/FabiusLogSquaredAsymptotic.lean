@@ -168,4 +168,223 @@ theorem fabiusLogProfile_normalized_tendsto
   exact neg_nonneg.mpr (Real.log_nonpos (fabiusReal_nonneg F _)
     (fabiusReal_le_one F _))
 
+/-- The dyadic logarithmic error bound, stated for the negative-log profile. -/
+lemma fabiusLogProfile_natCast_error_le
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
+    |fabiusLogProfile F (n : ℝ) - Real.log 2 / 2 * (n : ℝ) ^ 2| ≤
+      3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) := by
+  have h := abs_dyadicLogError_le F hF n hn
+  rw [fabiusLogProfile_natCast]
+  convert h using 1
+  rw [← abs_neg]
+  congr 1
+  ring
+
+/-- A concrete full-real-scale version of the coarse error estimate. -/
+theorem eventually_abs_fabiusLogProfile_sub_quadratic_le
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ∀ᶠ t : ℝ in atTop,
+      |fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2| ≤
+        16 * (t * Real.log t) := by
+  filter_upwards [eventually_ge_atTop (2 : ℝ)] with t ht
+  let n : ℕ := ⌊t⌋₊
+  have ht0 : 0 ≤ t := by linarith
+  have htpos : 0 < t := by linarith
+  have hlogt : 0 ≤ Real.log t := Real.log_nonneg (by linarith)
+  have hlogtwo_le : Real.log 2 ≤ Real.log t :=
+    Real.log_le_log (by norm_num) ht
+  have hnle : (n : ℝ) ≤ t := by
+    dsimp [n]
+    exact Nat.floor_le ht0
+  have htlt : t < ((n + 1 : ℕ) : ℝ) := by
+    dsimp [n]
+    simpa using Nat.lt_floor_add_one t
+  have hn_one : 1 ≤ n := by
+    apply Nat.le_floor
+    norm_num
+    linarith
+  have hnsucc_one : 1 ≤ n + 1 := by omega
+  have hn0 : 0 ≤ (n : ℝ) := by positivity
+  have hnsucc0 : 0 ≤ ((n + 1 : ℕ) : ℝ) := by positivity
+  have hn1pos : 0 < ((n + 1 : ℕ) : ℝ) := by positivity
+  have hn2pos : 0 < ((n + 2 : ℕ) : ℝ) := by positivity
+  have hmono := fabiusLogProfile_monotone F hF
+  have hprofLower : fabiusLogProfile F (n : ℝ) ≤ fabiusLogProfile F t :=
+    hmono hnle
+  have hprofUpper : fabiusLogProfile F t ≤ fabiusLogProfile F (n + 1 : ℕ) :=
+    hmono htlt.le
+  have hnerr := fabiusLogProfile_natCast_error_le F hF n hn_one
+  have hnsuccerr := fabiusLogProfile_natCast_error_le F hF (n + 1) hnsucc_one
+  have hnerrBounds := (abs_le.mp hnerr)
+  have hnsuccerrBounds := (abs_le.mp hnsuccerr)
+  have herrorLower :
+      -(3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ)) -
+          Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+        fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 := by
+    calc
+      -(3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ)) -
+          Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+          (fabiusLogProfile F (n : ℝ) - Real.log 2 / 2 * (n : ℝ) ^ 2) -
+            Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) :=
+        sub_le_sub_right hnerrBounds.1 _
+      _ = fabiusLogProfile F (n : ℝ) - Real.log 2 / 2 * t ^ 2 := by ring
+      _ ≤ fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 :=
+        sub_le_sub_right hprofLower _
+  have herrorUpper :
+      fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 ≤
+        3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) := by
+    calc
+      fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 ≤
+          fabiusLogProfile F (n + 1 : ℕ) - Real.log 2 / 2 * t ^ 2 :=
+        sub_le_sub_right hprofUpper _
+      _ = (fabiusLogProfile F (n + 1 : ℕ) -
+            Real.log 2 / 2 * ((n + 1 : ℕ) : ℝ) ^ 2) +
+          Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) := by ring
+      _ ≤ 3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) :=
+        by
+          simpa [Nat.add_assoc] using add_le_add_right hnsuccerrBounds.2
+            (Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2))
+  have hcastSucc : ((n + 1 : ℕ) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+  have hcastSuccSucc : ((n + 2 : ℕ) : ℝ) = (n : ℝ) + 2 := by push_cast; ring
+  have hn1_le_tsq : ((n + 1 : ℕ) : ℝ) ≤ t ^ 2 := by
+    have hn1_le : ((n + 1 : ℕ) : ℝ) ≤ t + 1 := by
+      rw [hcastSucc]
+      linarith
+    have ht1_le : t + 1 ≤ t ^ 2 := by nlinarith [sq_nonneg (t - 1)]
+    exact hn1_le.trans ht1_le
+  have hn2_le_tsq : ((n + 2 : ℕ) : ℝ) ≤ t ^ 2 := by
+    have hn2_le : ((n + 2 : ℕ) : ℝ) ≤ t + 2 := by
+      rw [hcastSuccSucc]
+      linarith
+    have ht2_le : t + 2 ≤ t ^ 2 := by
+      have hprod : 0 ≤ (t - 2) * (t + 1) :=
+        mul_nonneg (sub_nonneg.mpr ht) (by linarith)
+      nlinarith
+    exact hn2_le.trans ht2_le
+  have hlogn1 : Real.log ((n + 1 : ℕ) : ℝ) ≤ 2 * Real.log t := by
+    calc
+      Real.log ((n + 1 : ℕ) : ℝ) ≤ Real.log (t ^ 2) :=
+        Real.log_le_log hn1pos hn1_le_tsq
+      _ = 2 * Real.log t := by rw [Real.log_pow]; norm_num
+  have hlogn2 : Real.log ((n + 2 : ℕ) : ℝ) ≤ 2 * Real.log t := by
+    calc
+      Real.log ((n + 2 : ℕ) : ℝ) ≤ Real.log (t ^ 2) :=
+        Real.log_le_log hn2pos hn2_le_tsq
+      _ = 2 * Real.log t := by rw [Real.log_pow]; norm_num
+  have hlogn1nonneg : 0 ≤ Real.log ((n + 1 : ℕ) : ℝ) :=
+    Real.log_nonneg (by exact_mod_cast hnsucc_one)
+  have hlogn2nonneg : 0 ≤ Real.log ((n + 2 : ℕ) : ℝ) :=
+    Real.log_nonneg (by exact_mod_cast (show 1 ≤ n + 2 by omega))
+  have hnTerm :
+      3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) ≤
+        6 * (t * Real.log t) := by
+    have hmul := mul_le_mul hnle hlogn1 hlogn1nonneg ht0
+    nlinarith
+  have hnsucc_le : ((n + 1 : ℕ) : ℝ) ≤ 2 * t := by
+    rw [hcastSucc]
+    linarith
+  have hnsuccTerm :
+      3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) ≤
+        12 * (t * Real.log t) := by
+    have hmul := mul_le_mul hnsucc_le hlogn2 hlogn2nonneg (by positivity)
+    nlinarith
+  have hnsq_le_tsq : (n : ℝ) ^ 2 ≤ t ^ 2 := by
+    simpa [pow_two] using mul_self_le_mul_self hn0 hnle
+  have htsq_le_succsq : t ^ 2 ≤ ((n + 1 : ℕ) : ℝ) ^ 2 := by
+    exact (sq_le_sq₀ ht0 hn1pos.le).mpr htlt.le
+  have hlowerGap : t ^ 2 - (n : ℝ) ^ 2 ≤ 3 * t := by
+    calc
+      t ^ 2 - (n : ℝ) ^ 2 ≤ ((n + 1 : ℕ) : ℝ) ^ 2 - (n : ℝ) ^ 2 :=
+        sub_le_sub_right htsq_le_succsq _
+      _ = 2 * (n : ℝ) + 1 := by rw [hcastSucc]; ring
+      _ ≤ 3 * t := by linarith
+  have hupperGap : ((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2 ≤ 3 * t := by
+    calc
+      ((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2 ≤
+          ((n + 1 : ℕ) : ℝ) ^ 2 - (n : ℝ) ^ 2 :=
+        sub_le_sub_left hnsq_le_tsq _
+      _ = 2 * (n : ℝ) + 1 := by rw [hcastSucc]; ring
+      _ ≤ 3 * t := by linarith
+  have hlogcoeff :
+      Real.log 2 / 2 * (3 * t) ≤ 2 * (t * Real.log t) := by
+    calc
+      Real.log 2 / 2 * (3 * t) = (3 * t / 2) * Real.log 2 := by ring
+      _ ≤ (3 * t / 2) * Real.log t :=
+        mul_le_mul_of_nonneg_left hlogtwo_le (by positivity)
+      _ ≤ 2 * (t * Real.log t) := by
+        have := mul_le_mul_of_nonneg_right (show 3 * t / 2 ≤ 2 * t by linarith) hlogt
+        nlinarith
+  have hlowerGapBound :
+      Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+        2 * (t * Real.log t) := by
+    calc
+      Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+          Real.log 2 / 2 * (3 * t) :=
+        mul_le_mul_of_nonneg_left hlowerGap (by positivity)
+      _ ≤ 2 * (t * Real.log t) := hlogcoeff
+  have hupperGapBound :
+      Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) ≤
+        2 * (t * Real.log t) := by
+    calc
+      Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) ≤
+          Real.log 2 / 2 * (3 * t) :=
+        mul_le_mul_of_nonneg_left hupperGap (by positivity)
+      _ ≤ 2 * (t * Real.log t) := hlogcoeff
+  have hrate : 0 ≤ t * Real.log t := mul_nonneg ht0 hlogt
+  have hlowerSum :
+      3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+        8 * (t * Real.log t) := by
+    calc
+      3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) ≤
+          6 * (t * Real.log t) + 2 * (t * Real.log t) :=
+        add_le_add hnTerm hlowerGapBound
+      _ = 8 * (t * Real.log t) := by ring
+  have hupperSum :
+      3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) ≤
+        14 * (t * Real.log t) := by
+    calc
+      3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) +
+          Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) ≤
+          12 * (t * Real.log t) + 2 * (t * Real.log t) :=
+        add_le_add hnsuccTerm hupperGapBound
+      _ = 14 * (t * Real.log t) := by ring
+  rw [abs_le]
+  constructor
+  · calc
+      -(16 * (t * Real.log t)) ≤ -(8 * (t * Real.log t)) := by
+        exact neg_le_neg (mul_le_mul_of_nonneg_right (by norm_num : (8 : ℝ) ≤ 16) hrate)
+      _ ≤ -(3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ)) -
+          Real.log 2 / 2 * (t ^ 2 - (n : ℝ) ^ 2) := by
+        simpa [neg_add] using neg_le_neg hlowerSum
+      _ ≤ fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 := herrorLower
+  · calc
+      fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2 ≤
+          3 * ((n + 1 : ℕ) : ℝ) * Real.log ((n + 2 : ℕ) : ℝ) +
+            Real.log 2 / 2 * (((n + 1 : ℕ) : ℝ) ^ 2 - t ^ 2) := herrorUpper
+      _ ≤ 14 * (t * Real.log t) := hupperSum
+      _ ≤ 16 * (t * Real.log t) :=
+        mul_le_mul_of_nonneg_right (by norm_num) hrate
+
+/-- The full logarithmic profile has the coarse equation-(11) error rate. -/
+theorem fabiusLogProfile_sub_quadratic_isBigO
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun t : ℝ => fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2) =O[atTop]
+      (fun t : ℝ => t * Real.log t) := by
+  rw [isBigO_iff]
+  refine ⟨16, ?_⟩
+  filter_upwards [eventually_abs_fabiusLogProfile_sub_quadratic_le F hF,
+    eventually_ge_atTop (2 : ℝ)] with t hbound ht
+  have hrate : 0 ≤ t * Real.log t :=
+    mul_nonneg (by linarith) (Real.log_nonneg (by linarith))
+  change |fabiusLogProfile F t - Real.log 2 / 2 * t ^ 2| ≤
+    16 * |t * Real.log t|
+  rw [abs_of_nonneg hrate]
+  exact hbound
+
+
 end Fabius
