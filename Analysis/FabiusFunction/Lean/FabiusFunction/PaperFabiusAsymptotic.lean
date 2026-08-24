@@ -11,6 +11,7 @@ import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.FabiusQBinomialFormula
 import FabiusFunction.FabiusRawQBinomialFormula
 import FabiusFunction.FabiusGlobalQBinomialSeries
+import FabiusFunction.FabiusParityPowerSeries
 import FabiusFunction.FabiusDiscreteLimitIntegration
 import FabiusFunction.FabiusFirstSaddleCorrection
 import FabiusFunction.FabiusSaddleCoefficientRecurrence
@@ -68,6 +69,12 @@ translation `q`, the literal nested series is absolutely convergent and equals
 the signed global Fabius extension.  On `[0,1]` it equals the bounded Fabius
 function.  Polynomial constancy, rather than density alone, makes the
 extension from rational to real and complex `q` exact.
+The related parity-power series is also corrected and proved.  Its all-`x`
+version starts at scale `m = 0`, uses the signed integer exponent
+`((n + 2) * (n - 1)) / 2`, and sums to the signed global Fabius extension
+for every `x ≥ 0`.  On `[0,1]` it gives the bounded Fabius function.  The
+source's original one-indexed series remains valid on the half-open interval
+`0 ≤ x < 1`; no all-`x` claim is made for that indexing.
 A separate generalized `DiscreteLimit` theorem proves that, for every real
 `x ≥ 0` and fixed `q : ℂ`, the proposed finite q-binomial/Thue--Morse
 approximants converge to the signed global Fabius extension; on `[0,1]` they

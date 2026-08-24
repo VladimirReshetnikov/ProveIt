@@ -179,6 +179,18 @@ right endpoint.  The primary public endpoints are
 `Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real`, and
 `Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_complex`.
 
+The parity-power form of the binary-reduction series is proved as well, with
+one necessary correction: the all-`x` sum begins at `m = 0`.  For every real
+`x ≥ 0`, `Fabius.globalFabius_eq_tsum_fabiusParityPower_literal` is the fully
+expanded source-style identity and targets the signed global extension.  Its
+exponent is interpreted in `ℤ`, so the `n = 0` exponent is genuinely `-1`:
+`Fabius.fabiusParityPowerExponent_eq_choose_sub_one` records the exact
+normalization.  On `[0,1]`,
+`Fabius.fabiusReal_eq_tsum_fabiusParityPowerSummand` gives the bounded Fabius
+function.  The original sum starting at `m = 1` is retained, with its correct
+domain `0 ≤ x < 1`, as
+`Fabius.globalFabius_eq_tsum_fabiusParityPowerSummand_succ`.
+
 The generalized Wolfram `DiscreteLimit` formula is proved as well.  For every
 real `x ≥ 0` and every `q : ℂ`, its finite q-binomial/Thue--Morse
 approximants converge to the signed global Fabius value; on `[0,1]` the limit
