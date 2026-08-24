@@ -142,7 +142,9 @@ private lemma stdAddChar_neg_eq_exp_valMinAbs {N : Nat} [NeZero N]
       push_cast
       ring
 
-private lemma character_denominator_lower_bound {N : Nat} [NeZero N]
+/-- Jordan's inequality gives a uniform lower bound for the denominator in a
+finite geometric character sum. -/
+lemma character_denominator_lower_bound {N : Nat} [NeZero N]
     (r : ZMod N) :
     4 * (centeredAbs r : Real) / N <= ‖ZMod.stdAddChar (-r) - 1‖ := by
   let y : Real := -(2 * Real.pi * (r.valMinAbs : Real) / N)

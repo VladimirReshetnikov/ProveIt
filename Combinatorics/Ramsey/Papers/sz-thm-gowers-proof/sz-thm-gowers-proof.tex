@@ -455,7 +455,11 @@ $$
 
 which, by the equivalence of properties (i) and (ii) in Lemma 3.1, proves the lemma. \(\square\)
 
-Lemma 3.5. Let $A$ be an $\alpha$-uniform subset of $\mathbb{Z}_{N}$ of cardinality $\delta N$, and let $P$ be an interval of the form $\{a+1, \ldots, a+M\}$, where $M=\beta N$. Then $||A \cap P|-\beta \delta N| \leqslant \alpha^{1 / 4} N$.
+% ed.: The modular interval must have M\leq N; otherwise its carrier repeats while the
+% displayed main term continues to grow.  Also, the proof's subsequent estimate
+% \sum_{r\ne0}|\hat P(r)|^{4/3}\leq N^{4/3} is false in general.  The same decay
+% argument and the integral test give the safe bound 4N^{4/3}, hence the factor 3 below.
+Lemma 3.5. Let $A$ be an $\alpha$-uniform subset of $\mathbb{Z}_{N}$ of cardinality $\delta N$, and let $P$ be an interval of the form $\{a+1, \ldots, a+M\}$, where $M\leq N$ and $M=\beta N$. Then $||A \cap P|-\beta \delta N| \leqslant 3\alpha^{1 / 4} N$.
 
 Proof. First, we can easily estimate the Fourier coefficients of the set $P$. Indeed,
 
@@ -468,13 +472,13 @@ $$
 
 (We also know that it is at most $M$, but will not need to use this fact.)
 
-This estimate implies that $\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3} \leqslant N^{4 / 3}$. Therefore,
+This estimate and the integral test imply that $\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3} \leqslant 4N^{4 / 3}$. Therefore,
 
 $$
 \begin{aligned}
 ||A \cap P|-\beta \delta N| & =N^{-1}\left|\sum_{r \neq 0} \hat{A}(r) \hat{P}(r)\right| \\
 & \leqslant N^{-1}\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4}\left(\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3}\right)^{3 / 4} \\
-& \leqslant\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4} \leqslant \alpha^{1 / 4} N,
+& \leqslant 3\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4} \leqslant 3\alpha^{1 / 4} N,
 \end{aligned}
 $$
 

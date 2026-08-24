@@ -19,6 +19,7 @@ import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs03GowersCS
 import GowersSzemeredi.Proofs03Minkowski
 import GowersSzemeredi.Proofs03CubeUpper
+import GowersSzemeredi.Proofs03Interval
 import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Progressions
