@@ -17,6 +17,7 @@ import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs12
 
 /-!
