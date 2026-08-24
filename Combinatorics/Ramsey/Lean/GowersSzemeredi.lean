@@ -89,6 +89,7 @@ import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16InducedCounting
 import GowersSzemeredi.Proofs16BaseCaseCore
 import GowersSzemeredi.Proofs16BaseCaseRestriction
 import GowersSzemeredi.Proofs16BaseCaseExtraction
