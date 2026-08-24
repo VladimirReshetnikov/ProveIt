@@ -11,6 +11,7 @@ import GowersSzemeredi.Section16
 import GowersSzemeredi.Sections17_18
 import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
+import GowersSzemeredi.Proofs01QuantitativeHeadline
 import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.Proofs02PhasePartition
