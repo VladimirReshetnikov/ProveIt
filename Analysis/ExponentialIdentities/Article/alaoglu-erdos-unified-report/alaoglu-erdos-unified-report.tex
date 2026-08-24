@@ -19766,7 +19766,10 @@ the conjecture; a negative answer by a dual valuation certificate closes the fam
 Corollary~\ref{log:cor-target-dead} shows conditions (2) and (3) already force $P_n=0$ for
 any mesoscopic pair, so this target is resolved negatively; only integrality without
 convergence to $1$ remains, and the LP computation of Section~\ref{log:lp-experiment}
-indicates that it is empty too.}
+indicates that it is empty too.  Final update: the residue is also gone --- the global
+terminal-prime contraction (Theorem~\ref{cw:thm-contraction}) closes bare integrality for
+every nonzero $P$ with $P(M)=0$, uniformly in degree and span; see
+Section~\ref{sec:criticalwindow}.}
 \end{target}
 
 For fixed $(M,A,n,d)$ the conditions are three homogeneous linear equations plus the finite
@@ -20570,6 +20573,346 @@ two layers, the same missing coupling as everywhere else in this report.  \statu
 throughout this subsection; the elementary saturation and normalization layers of the
 external report duplicate kernel-verified corpus modules and were not re-integrated.
 
+\section{The external-prime Newton wall and nonarchimedean ray rigidity}
+\label{sec:newtonwall}
+
+A further external report opens the first genuinely $p$-adic \emph{analytic} layer of the
+corpus: it works at an external prime of a hypothetical counterexample, where the sampled
+input geometry acquires an accumulation point that the real picture lacks.  Its elementary
+preliminaries (positivity, irrationality, and transcendence of a nonintegral $x$;
+multiplicative independence of $2,M$ and of $3,A$; existence of an external prime $p\ge5$
+dividing $MA$) are kernel-verified corpus facts (Sections~\ref{sec:smooth}
+and~\ref{sec:spectrum}) and were not re-integrated.  Everything below consumes the external
+prime itself, so the control principle of Section~\ref{log:control} is passed \emph{by
+construction}: for an integer control $(2^d,3^d)$ no prime $p\ge5$ divides $MA$ and the
+package cannot even be formed.
+
+\subsection{Oriented data and nonarchimedean ray rigidity}
+\label{nw:rigidity}
+
+Orient the data at an external prime $p\ge5$: if $p\mid M$ set
+$(Q,R;\alpha,\lambda)=(M,A;2,3)$, otherwise $(A,M;3,2)$; in both cases
+\[
+ m=\vpp p{Q}>0,\qquad a=\vpp p{R}\ge0,\qquad
+ F(Q^k)=R^k,\qquad F(\alpha Q^k)=\lambda R^k
+\]
+are the two rows of sampling data that any local interpolation $F$ of the conditional grid
+would have to satisfy near the $p$-adic accumulation point $Q^k\to0$.  Because $p\ge5$, the
+numbers $2,3,\alpha,\lambda,\alpha-1$ are all $p$-adic units.  The report proves:
+
+\begin{theorem}[Geometric-ray rigidity and the edge law]\label{nw:thm-rigidity}
+Let $K$ be a complete nonarchimedean field of characteristic zero and $0<|t|<1$.
+\begin{enumerate}
+\item If an analytic germ $F$ at $0$ satisfies $F(t^k)=s^k$ for all large $k$, then
+$s=t^d$ and $F(z)=z^d$ for a unique $d\in\Nzero$.  A meromorphic germ forces $s=t^d$ with
+$d\in\Z$; a germ on a finite ramified cover $z=w^e$ forces $s^e=t^d$.
+\item If $F$ is analytic on a disk $D$ with $qD\subseteq D$ and $F(qt^k)=\mu F(t^k)$ for
+infinitely many $k$, then the Taylor support of $F$ lies in the spectrum
+$\{n:q^n=\mu\}$; if the spectrum is empty, then $F\equiv0$.
+\end{enumerate}
+Consequently no nonzero analytic, meromorphic, or finite-Puiseux germ at $0$ can carry even
+the single row $F(Q^k)=R^k$ (the forced relation $R=Q^d$ contradicts the kernel-verified
+multiplicative independence of the outputs), and none can carry both rows: the edge pairs
+$(\alpha,\lambda)=(2,3)$ and $(3,2)$ have empty spectrum.
+\end{theorem}
+
+The two arithmetic pivots are kernel-checked in the new module
+\lean{ExternalPrimeNewtonWall}.  First, \emph{unit-convergence rigidity}: in any normed
+division ring, a unit-norm element whose power sequence converges equals $1$
+(\lean{eq_one_of_tendsto_pow}); this is the step that turns ``the powers of the unit
+$R/Q^d$ converge to the nonzero leading coefficient'' into the exact equality $R=Q^d$.
+Second, the \emph{formal edge law}: for formal power series over any commutative ring the
+dilation-eigenvalue identity $F(qz)=\mu F(z)$ forces $(q^n-\mu)\cdot c_n=0$ for every $n$
+(\lean{edge_spectrum}); over a field the support lies in the spectrum
+(\lean{eq_zero_of_edge_law}); and for the Alaoglu--Erd\H{o}s edge pairs the spectrum is
+empty over $\Q$ --- $2^n\ne3$ and $3^n\ne2$ --- so the only formal solution is zero
+(\lean{no_formal_edge_realization}).  What remains of the analytic statements beyond these
+cores is the classical nonarchimedean identity theorem for accumulating zeros
+(Strassmann), \statusknown.
+
+\subsection{The quantitative wall: exact valuations and last-term dominance}
+\label{nw:wall}
+
+Rigidity says that no exact local model exists; the report's central computation measures
+\emph{how} every polynomial approximation fails.  Let
+\[
+ c_n(Q,R)=\frac{\prod_{j<n}(R-Q^j)}{Q^{\binom n2}\prod_{j=1}^n(Q^j-1)}
+\]
+be the $q$-Newton coefficients of the native row, so that
+$P_N(z)=\sum_{n\le N}c_n\prod_{j<n}(z-Q^j)$ is the unique interpolant of degree at most $N$
+through $(Q^k,R^k)_{0\le k\le N}$.  With the threshold $q_*=\lfloor(a-1)/m\rfloor$ and a
+single tie excess $\varepsilon$ (nonzero only when $m\mid a$, where
+$\varepsilon=\vpp p{R-Q^{a/m}}-a$), the report computes the valuation of \emph{every}
+coefficient exactly: $\vpp p{c_n}=\vpp p{R-1}-m\binom n2$ when $a=0$, and
+\[
+ \vpp p{c_n}
+ =m\binom{q_*+1}2+a(n-1-q_*)+\varepsilon-m\binom n2
+ =-\frac m2\,n^2+\Bigl(a+\frac m2\Bigr)n+O(1)
+ \qquad(n\ge q_*+2)
+\]
+when $a>0$.  Three consequences form the wall:
+\begin{enumerate}
+\item \emph{Universal quadratic denominator escape.}  The least $D_n$ with
+$D_nc_n\in\Z_{(p)}$ has $\vpp p{D_n}=\frac m2n^2-O(n)$; and by a Gauss-norm division
+argument this is not a Newton-basis artifact: \emph{every} rational polynomial of arbitrary
+degree agreeing with the native values at $Q^0,\dots,Q^N$ has a coefficient of $p$-adic
+denominator exponent at least $-\vpp p{c_N}=\frac m2N^2-O(N)$.
+\item \emph{Off-ray explosion with last-term dominance.}  At an adjacent-row point
+$z=uQ^k$ ($u\in\Z_p^\times$, $u\ne1$, fixed $k$) the Newton terms have exact eventual ratio
+valuation $\vpp p{T_{n+1}/T_n}=a+mk-mn<0$, so the term valuations strictly decrease and the
+partial sum inherits the valuation of its \emph{last} term --- the same ultrametric
+unique-minimum mechanism as the coefficient tax of \lean{PrimeTopIsolation} --- giving
+$\vpp p{P_N(uQ^k)}=-\frac m2N^2+\bigl(a+m(k+\tfrac12)\bigr)N+O(1)\to-\infty$.
+\item \emph{Adjacent-row repulsion.}  Hence, for all large $N$,
+$\vpp p{P_N(\alpha Q^k)-\lambda R^k}=\vpp p{P_N(\alpha Q^k)}$: the native interpolants are
+not merely inaccurate at the second row, they are quadratically $p$-adically
+\emph{repelled} from the prescribed integers.
+\end{enumerate}
+An exact rational audit (\texttt{fractions.Fraction}, no floating point; script with
+pinned SHA-256 digest reproduced in the source report) confirms the formulas in three
+exemplar regimes, including the delicate valuation-tie case.  \statusnew{} for the exact
+ledger; the valuation layer is Lean-ready $q$-binomial bookkeeping and is recorded as a
+pending target in Section~\ref{sec:formalization-inventory}.
+
+\emph{Why the wall is not yet a contradiction.}  The wall shows that the canonical
+archimedean completion of the native data has no $p$-adic convergence off the ray.  It does
+not show that the complex value at an off-ray rational point equals a $p$-adic sum of the
+same terms: a series of rationals may converge in two completions to different limits, and
+at the adjacent row the series does not truncate, so equality is not place-independent.
+The product formula does not close the gap either: a nonzero rational residual may carry a
+$p$-denominator of size $p^{\Theta(N^2)}$ while being only geometrically small
+archimedeanly, so the elementary denominator lower bound $\exp(-\Theta(N^2))$ sits far
+below the archimedean error $\exp(-\Theta(N))$.  Quadratic escape therefore \emph{defeats}
+naive unit-locking rather than helping it --- the shortcut ``the entire function has
+rational data, so evaluate it $p$-adically'' is closed, and any repair needs a separate
+overconvergence or algebraicity theorem.  This is the $p$-adic face of the coupling
+problem diagnosed throughout this report.
+
+\subsection{Tate edge operator, finite-strip defects, and overconvergence}
+\label{nw:tate}
+
+On polynomials the edge law is diagonal and quantitative.  For
+$\LL_{\alpha,\lambda}P(z)=P(\alpha z)-\lambda P(z)$ the monomial eigenvalues are
+$\alpha^n-\lambda$, so on degrees $\le d$ the operator has the finite spectral gap
+\[
+ \sigma_{p,d}(\alpha,\lambda)=\min_{0\le j\le d}|\alpha^j-\lambda|_p>0 ,
+\]
+positive precisely because $2^j\ne3$ and $3^j\ne2$ --- the same finite fact as the empty
+edge spectrum, kernel-checked in \lean{ExternalPrimeNewtonWall}.  The report proves the
+resulting weighted-Gauss-norm inequality
+$\lVert\LL_{\alpha,\lambda}P\rVert_\rho\ge\sigma_{p,d}(\alpha,\lambda)\lVert P\rVert_\rho$,
+extends it to Tate algebras on dilation-stable disks when the resonance statistic
+$\mu_{p,d}=\max_{j\le d}\vpp p{\alpha^j-\lambda}$ stays bounded, and derives a
+\emph{finite-strip defect theorem}: if a polynomial of degree $\le d$ satisfies the second-row
+law on a strip $K\le k\le N$ and one native value, then in the forced factorization
+$\LL_{\alpha,\lambda}P=\Phi_{K,N}S$ the quotient obeys
+$\lVert S\rVert_\rho\ge\sigma_{p,d}(\alpha,\lambda)\,|R|_p^K\rho^{-(N-K+1)}$.  For the
+canonical two-row interpolants the defect quotient thus grows at least geometrically at
+nonresonant external primes: there is \emph{no tame defect quotient}.  A diagonal
+compactness argument upgrades this to: no family $F_N$ analytic on one common disk of
+radius $\rho>1$ can match even the one-row prefixes with bounded norms
+(\emph{no uniformly overconvergent interpolation family}).  The report closes this layer
+with two explicitly open interfaces --- a removable-singularity (Robba-to-Tate) bridge and
+a coefficient-growth criterion --- either of which would convert the wall into a
+contradiction; both are recorded as targets, \statusopen.
+
+\subsection{The finite-rank two-dilation target}
+\label{nw:qdiff}
+
+A genuine interpolation of the conditional grid would satisfy two dilation laws at once,
+\[
+ F(2z)=3F(z),\qquad F(Mz)=AF(z),
+\]
+with multiplicatively independent dilation parameters.  The formal obstruction is the edge
+law again: a Laurent series solving the first equation alone is already zero
+($(2^n-3)c_n=0$), while on the universal cover of $\C^\times$ the nonzero solution
+$z^{x}$ exists --- the gap is local regularity and monodromy, not consistency.  Rigidity
+theorems for consistent pairs of independent $q$-difference systems
+\cite{Bezivin1992,BezivinBoutabaa1992,SchaefkeSinger2019} reduce sufficiently regular
+finite-rank systems to rational or constant normal forms, which the finite-Puiseux
+rigidity of Theorem~\ref{nw:thm-rigidity} would then exclude; but the integer table is a
+discrete semigroup of values, not a difference module over $\Qbar(z)$, and the geometric
+Newton completion satisfies only a one-axis \emph{inhomogeneous} law with a $q$-product
+defect.  The report therefore formulates the precise missing object as a target: a finite
+vector $Y$ of arithmetic interpolation functions with rational transition matrices
+$B_2(z),B_M(z)$ obeying the cocycle consistency $B_2(Mz)B_M(z)=B_M(2z)B_2(z)$, one
+coordinate carrying the exact conditional grid, and regular-singular or overconvergent
+behavior at an external prime.  \statusopen; the current defect family contains
+nonrational infinite $q$-products and is not known to close in finite rank.
+
+\subsection{Assessment}
+\label{nw:assessment}
+
+The external-prime report adds the corpus's first quantitative nonarchimedean analytic
+layer, and it is control-clean by construction.  Its permanent content is threefold: the
+ray-rigidity/edge-law pair, whose finite cores are now kernel-checked
+(\lean{ExternalPrimeNewtonWall}) and whose analytic completions are classical; the exact
+valuation ledger, which shows that every polynomial or overconvergent model of the
+conditional data pays a quadratic $p$-adic price ($\frac m2N^2-O(N)$) precisely where the
+archimedean models converge geometrically; and the sharpened statement of the obstruction
+--- sampling is not regularity, and the two completions are decoupled at exactly the
+quadratic-versus-geometric scale.  It does not advance the four-exponentials barrier: the
+wall excludes local models but produces no equality between completions, and its author is
+explicit that transferring the complex completion into a $p$-adic germ without a new
+arithmetic compatibility theorem would be circular.  What it contributes to the frontier
+of Section~\ref{sec:frontier-update} is a pair of well-posed interfaces (overconvergence
+bridge, finite-rank edge cocycle) that are \emph{output-sensitive} in the required sense:
+both consume the external prime, and both would, if closed, terminate the conjecture
+through the kernel-verified rigidity layer rather than through counting.
+
+\section{The global terminal-prime contraction: the factorial route is closed}
+\label{sec:criticalwindow}
+
+A further external report resolves the central open question of the factorial-cocycle
+program (Section~\ref{sec:factorialcocycle}) --- and it resolves it \emph{negatively, in
+full generality}.  Where the session log had emptied the constructive branch
+(Corollary~\ref{log:cor-target-dead}) and the LP layer for the control
+(Section~\ref{log:lp-experiment}), the new report closes the entire family in one stroke:
+no nonzero integer polynomial with $P(M)=0$ ever makes the terminal factorial cocycle
+integral, uniformly in degree, span, height, and sign pattern.
+
+\subsection{The contraction theorem}
+\label{cw:contraction}
+
+Recall the objects of Section~\ref{sec:factorialcocycle}: $F_t=(A^t)_{\underline{M^t}}$ is
+the terminal falling factorial, $\mathcal F_{P,n}=\prod_jF_{n+j}^{c_j}$ for
+$P=\sum_jc_jT^j\in\Z[T]$, and $I_t=(A^t-M^t,A^t]$ is the terminal prime window, whose
+relative length exponent $\log2/\log3=0.6309\ldots>7/12$ makes Huxley's theorem
+applicable: $I_t$ contains $(1+o(1))M^t$ of logarithmic prime mass.  A prime $p\in I_t$
+has $V_p(t):=v_p(F_t)=1$ and $V_p(s)=0$ for $s<t$ (both kernel-verified,
+\lean{TerminalFactorialIndependence}), while at higher levels Legendre's interval formula
+gives the uniform transport bound
+\begin{equation}
+ V_p(t+\ell)\le 2q^tM^\ell+2\Bigl(1+\frac\ell t\Bigr),
+ \qquad q=\frac MA<1 .
+ \label{cw:eq-transport}
+\end{equation}
+
+\begin{theorem}[Global terminal-prime contraction]\label{cw:thm-contraction}
+Let $(M,A)$ arise from a hypothetical counterexample (so $M\ge2^{14}$ by the
+kernel-verified region of Section~\ref{co:finite}).  There is $n_0(M,A)$ such that for
+every $n\ge n_0$ and every nonzero $P\in\Z[T]$ with $P(M)=0$,
+\[
+ \mathcal F_{P,n}\notin\Z ;
+\]
+indeed for some negative coefficient index $k$ every prime of $I_{n+k}$ divides the reduced
+denominator, so $\log\operatorname{den}(\mathcal F_{P,n})\ge(1-o(1))M^{n+k}$.
+\end{theorem}
+
+\begin{proof}
+Write $c_j^\pm$ for the positive and negative parts and
+$S_\pm=\sum_jc_j^\pm M^j$; the single archimedean input $P(M)=0$ is exactly the mass
+balance $S_+=S_->0$.  Suppose $\mathcal F_{P,n}\in\Z$.  For each $k$ with $c_k<0$ pick
+$p\in I_{n+k}$ (Huxley).  Since $V_p(n+k)=1$, lower levels vanish, and other negative
+coefficients only help, integrality forces
+\[
+ c_k^-\le\sum_{j>k}c_j^+V_p(n+j)
+ \le 2q^{n+k}\sum_{j>k}c_j^+M^{j-k}
+ +2\sum_{j>k}c_j^+\Bigl(1+\frac{j-k}{n+k}\Bigr)
+\]
+by \eqref{cw:eq-transport}.  Multiply by $M^k$ and sum over all negative $k$.  The
+transported-multiple kernel telescopes against the geometric series $\sum_kq^{n+k}$, and
+the prime-power allowance kernel against $\sum_{\ell\ge1}M^{-\ell}$ and
+$\sum_{\ell\ge1}\ell M^{-\ell}$:
+\[
+ S_-\;\le\;\Bigl(\frac{2q^n}{1-q}
+ +\frac2{M-1}+\frac{2M}{n(M-1)^2}\Bigr)S_+ .
+\]
+With $S_+=S_-$ this is $1\le\kappa_n$, and $\kappa_n<0.008$ for $M\ge2^{14}$,
+$q\le(2/3)^{14}$ --- a contradiction.  No factor of the degree or of the number of negative
+coefficients ever appears: that is the decisive feature of the $M$-weighting.  For the
+quantitative form, if the displayed inequality failed for every negative $k$ the same
+summation would reproduce $1\le\kappa_n$; hence it fails for some $k$, and the transport
+bound is uniform over $p\in I_{n+k}$.
+\end{proof}
+
+\begin{corollary}[Negative resolution of factorial feasibility]\label{cw:cor-closed}
+Target~\ref{fc:target-linear} is closed unconditionally: for all large $n$ the conjunction
+$P_n\ne0$, $P_n(M)=0$, $v_p(\mathcal F_{P_n,n})\ge0$ for every prime $p$ is impossible ---
+the span condition, the near-unit condition, the further annihilations
+$P_n'(M)=P_n(M^2/A)=0$, and any additional exact mode cancellations are all superfluous.
+The binomial-cocycle and no-collision variants close identically.
+\end{corollary}
+
+The report also proves the sharp boundary statement \emph{before} the mass balance is
+used: if the span satisfies $D_n\le(\log_23-1)\,t_n-h_n$ with $h_n\to\infty$
+($t_n=n+k_n$), then the denominator retains
+$(-c_{n,k_n})(\Delta_0-o(1))M^{t_n}$ of logarithmic prime mass with
+$\Delta_0=1-8q/(\delta_0(1-q))\ge0.9337$, $\delta_0=2-\log_23$ (Brun--Titchmarsh at
+relative thickness $\delta_0$; Huxley for the total) --- so an integral cocycle would need
+$D_n\ge(\log_23-1)\,t_n-O(1)$, and canonical Hermite stencils at first appear to live in
+exactly that bounded strip.  A complete-homogeneous remainder identity
+($T^N-H_{\mathcal R}(T^N)=D_{\mathcal R}(T)h_{N-d}(T,\mathcal R)$, all tail coefficients
+positive) then shows the stencils have a unique negative coefficient of the wrong
+multiplicity, and the contraction supersedes the whole phase diagram anyway.  The
+mesoscopic inequality $\tfrac12<\log2/\log3<\tfrac23$ (kernel-verified,
+\lean{FactorialCocycle}) silently underlies both windows.
+
+\subsection{Kernel verification of the contraction core}
+\label{cw:kernel}
+
+The new module \lean{CriticalWindowContraction} kernel-checks the complete finite skeleton
+of Theorem~\ref{cw:thm-contraction} in division-free form:
+\begin{itemize}
+\item \lean{mass_balance}, \lean{sum_cpos_pos}: the sign-mass identity
+$S_+=S_->0$ from $\sum_jc_jM^j=0$, $P\ne0$;
+\item \lean{geom_mul_le_one}, \lean{geom_pow_mul_le}, \lean{weighted_geom_pow_mul_le}: the
+two summable kernels $\sum_ku^k$ and $\sum_\ell\ell M^{-\ell}$ as exact polynomial
+inequalities;
+\item \lean{sum_Ioc_swap}: the exchange of window and coefficient summations;
+\item \lean{contraction_mul}: the abstract contraction --- for any coefficient vector that
+is $M$-balanced, nonzero, and obeys the transport inequalities with parameters
+$(\varepsilon,u,\beta,\gamma)$, necessarily
+$(1-u)(M-1)(M-2)\le\varepsilon(M-1)(M-2)+\beta(1-u)(M-2)+\gamma(1-u)(M-1)$;
+\item \lean{kappa_mul_lt} and \lean{no_balanced_transport}: with the Legendre
+parameters $\varepsilon=2q^n$, $\beta=\gamma=2$ the opposite strict inequality holds
+whenever $M\ge2^{14}$ and $q\le(2/3)^{14}$, so \emph{no such coefficient vector exists};
+\item \lean{exponent_gap_dvd}: the rational-root exponent-gap divisibility
+$v^{N-b}\mid a$ used by the report's Hermite-stencil diagnostics.
+\end{itemize}
+The regime constants are exactly the corpus's kernel-verified zero-free region: a
+counterexample has $x\ge14$, hence $M=2^x\ge2^{14}$ and $q=(2/3)^x\le(2/3)^{14}$
+(\lean{FiniteCheck16384}).  What remains outside the kernel is the arithmetic instantiation
+of the transport inequalities at window primes: $V_p(t)=1$ and vanishing below the window
+are already kernel-verified (\lean{TerminalFactorialIndependence}); the Legendre-interval
+upper bound \eqref{cw:eq-transport} is elementary and Lean-ready; Huxley's prime-window
+theorem stays \statusknown.
+
+\subsection{What survives: inflation-scale hybrids and two-dimensional transport}
+\label{cw:survivors}
+
+The contraction has four essential hypotheses: a one-parameter shift family, unit window
+multiplicity, geometric transport, and the same-base balance $P(M)=0$.  The report
+formulates the surviving interfaces as precise targets.  First, a \emph{two-dimensional
+coefficient transport}: archimedean cancellations
+$\sum_{ij}c_{ij}M^iA^j=0$ with a two-parameter terminal product, where the transport
+kernel becomes a genuinely two-dimensional operator whose $M^iA^j$-weighted norm may or
+may not contract --- either outcome is informative.  Second, a \emph{coefficient-inflated
+Kummer dual}: the contraction shows that any near-feasible vector must carry
+exponentially inflated positive tails, which changes the comparison scale for the
+structural-prime route --- a carry-free Kummer valuation of size $O(n)$
+(\eqref{fc:eq-carry-free}, kernel-verified) multiplied by inflated coefficients is no
+longer negligible against a terminal window, so a hybrid dual combining terminal-window
+rows with one structural row deserves a fresh Farkas search \emph{without} a span bound.
+Third, the report independently adopts the control principle of
+Section~\ref{log:control} as a design rule and confirms that the contraction itself is
+satisfied by the controls $(2^m,3^m)$: it closes a method, and a proof of the conjecture
+must consume the external prime, the least-generator decomposition, or spectrum
+saturation.
+
+\emph{Assessment.}  This merge upgrades the corpus in the strongest sense available for a
+negative result: a named open target (Target~\ref{fc:target-linear}) becomes a theorem
+with a kernel-checked finite core, and two session-log partial closures
+(Corollary~\ref{log:cor-target-dead}, the LP experiment) are subsumed and explained ---
+the critical constant $\log_23-1$ was never the true obstacle; the $M$-weighted mass
+balance was.  The conceptual residue is permanently useful: any auxiliary-integer
+construction whose archimedean cancellation shares a base with its coefficient weighting
+is subject to the same contraction, so future designs must either decouple the bases
+(two-dimensional transport) or exploit coefficient inflation at a structural prime.  The
+conjecture itself is untouched --- the closure holds for controls too --- but the search
+region left to the factorial idea is now exactly two well-posed interfaces, both
+primitive-sensitive only through the standard three channels.
+
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
 
@@ -20826,12 +21169,13 @@ complete no-go; the dual data above is the template for its proof.
 \label{log:directions}
 
 \begin{enumerate}
-\item \textbf{Negative closure of the linear-width family.}  Done: the constructive
-branch (integrality plus convergence to $1$) is empty for every mesoscopic pair
-(Corollary~\ref{log:cor-target-dead}), and the LP layer is empty for the control even
-without the convergence condition (Section~\ref{log:lp-experiment}).  What remains is the
-cosmetic residue: a certificate theorem excluding integer cocycle values $\ge2$ for all
-$(n,d)$, for which the dense-plus-capture dual is the template.
+\item \textbf{Negative closure of the linear-width family.}  Done, and subsequently
+completed in full generality: the constructive branch is empty for every mesoscopic pair
+(Corollary~\ref{log:cor-target-dead}), the LP layer is empty for the control
+(Section~\ref{log:lp-experiment}), and the global terminal-prime contraction
+(Theorem~\ref{cw:thm-contraction}, kernel core \lean{CriticalWindowContraction}) closes
+bare integrality itself --- the certificate theorem anticipated here exists and is
+uniform in $(n,d)$.
 \item \textbf{Shared-face masks on the actual stable support.}  Target~\ref{masks:target}
 is a finite integer program once $(M,A)$ is fixed; run it on control pairs to learn the
 shape of near-optimal masks, then test whether that shape consumes (i) above.
@@ -20895,8 +21239,9 @@ are not yet known to be equivalent to the conjecture: shared structural-face cap
 (Target~\ref{masks:target}), a finite-prime statement about repeated cancellation on fixed
 Newton faces coupled by \eqref{masks:eq-transport}; and the nonlinear prime-top problem of
 Section~\ref{primetop:remaining}.  (The third such target at the time of integration, the
-linear-width factorial feasibility problem, was resolved negatively during the session:
-Corollary~\ref{log:cor-target-dead}.)  Each has a concrete
+linear-width factorial feasibility problem, was resolved negatively during the session ---
+Corollary~\ref{log:cor-target-dead} --- and then closed in full generality by the global
+terminal-prime contraction of Section~\ref{sec:criticalwindow}.)  Each has a concrete
 computational entry point and a precise kill criterion, and each would have to use the
 structural-prime asymmetry (\eqref{fc:eq-carry-free}, $\mathcal P_\pm$) that distinguishes a
 hypothetical primitive pair from the integer controls $(2^m,3^m)$.
@@ -21608,6 +21953,37 @@ algebraicity classification & \statusnew & Section~\ref{ai:series} \\
 LP layer of the linear-width factorial target empty for the control; dense-plus-capture
 Farkas mechanism & \statusexactcomp &
 Section~\ref{log:lp-experiment}; \path{scripts/linear_width_lp.py} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{External-prime Newton wall}}\\
+Unit-convergence rigidity in normed division rings; formal edge law, spectrum support,
+empty spectrum for the pairs $(2,3),(3,2)$, no formal edge realization & \statuslean &
+\lean{ExternalPrimeNewtonWall}; Section~\ref{nw:rigidity} \\
+Geometric-ray, meromorphic, and finite-Puiseux rigidity; accumulating edge law
+(analytic completions via Strassmann) & \statusnew{}; identity theorem \statusknown &
+Section~\ref{nw:rigidity} \\
+Exact Newton coefficient valuations (both branches, tie excess), universal Gauss-norm
+lower bound, quadratic denominator escape, last-term dominance, adjacent-row repulsion &
+\statusnew{}; audit \statusexactcomp & Section~\ref{nw:wall} \\
+Tate spectral gap $\sigma_{p,d}$, finite-strip defect growth, no tame defect quotient,
+no uniformly overconvergent family & \statusnew & Section~\ref{nw:tate} \\
+Arithmetic compatibility bridge (Robba-to-Tate, coefficient-growth criterion) and
+finite-rank edge cocycle with consistency $B_2(Mz)B_M(z)=B_M(2z)B_2(z)$ &
+\statusopen{} targets & Sections~\ref{nw:tate}, \ref{nw:qdiff} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Global terminal-prime contraction (critical window)}}\\
+Abstract $M$-weighted contraction (mass balance + transport $\Rightarrow$
+$\kappa\ge1$), candidate-regime numerics $\kappa<1$ at $M\ge2^{14}$, $q\le(2/3)^{14}$,
+impossibility of balanced transport vectors, exponent-gap divisibility & \statuslean &
+\lean{CriticalWindowContraction}; Section~\ref{cw:kernel} \\
+Global contraction theorem: $\mathcal F_{P,n}\notin\Z$ for every nonzero $P$ with
+$P(M)=0$; negative resolution of Target~\ref{fc:target-linear}; binomial and no-collision
+closures & \statusnew{}; window inputs Huxley/Legendre \statusknown &
+Theorem~\ref{cw:thm-contraction}; Corollary~\ref{cw:cor-closed} \\
+Additive critical-window sharpening $D_n\ge(\log_23-1)t_n-O(1)$ with density
+$\Delta_0\ge0.9337$; Hermite remainder identity and positive-tail no-go &
+\statusnew{}; Brun--Titchmarsh/Huxley \statusknown & Section~\ref{cw:contraction} \\
+Two-dimensional transport norm; coefficient-inflated Kummer hybrid dual &
+\statusopen{} targets & Section~\ref{cw:survivors} \\
 \bottomrule
 \end{longtable}
 }
@@ -21872,7 +22248,16 @@ parametrization of $m_1^2=m_0m_2$, Hankel-ray cross-determinant identity and
 classification, transcendence bridge to coefficient identities \\
 \lean{.../SmoothSemigroupCore} & pigeonhole modulus cutoff for distinct residues, injectivity
 of $(a,b)\mapsto2^a3^b$, square-box cutoff, and the classification of consecutive
-three-smooth triples \\
+three-smooth triples and pairs (Catalan-free) \\
+\lean{.../ExternalPrimeNewtonWall} & unit-convergence rigidity in normed division rings
+(convergent unit-norm powers force $u=1$); formal edge law $(q^n-\mu)c_n=0$, spectral
+support, empty spectrum of the edge pairs over $\Q$, and vanishing of every formal edge
+solution \\
+\lean{.../CriticalWindowContraction} & sign-mass identity from $P(M)=0$; division-free
+geometric and weighted-geometric kernel bounds; window/coefficient summation exchange;
+abstract $M$-weighted contraction theorem; candidate-regime numerics
+($M\ge2^{14}$, $q\le(2/3)^{14}$) and impossibility of balanced transport vectors;
+rational-root exponent-gap divisibility \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
@@ -23840,6 +24225,21 @@ A.~Baker and G.~W\"ustholz,
 \newblock \emph{Logarithmic forms and group varieties},
 \newblock Journal f\"ur die reine und angewandte Mathematik \textbf{442} (1993), 19--62.
 \newblock DOI: \href{https://doi.org/10.1515/crll.1993.442.19}{10.1515/crll.1993.442.19}.
+
+\bibitem{Bezivin1992}
+J.-P. B\'ezivin,
+\newblock \emph{Sur les \'equations fonctionnelles aux $q$-diff\'erences},
+\newblock Aequationes Mathematicae \textbf{43} (1992), 159--176.
+
+\bibitem{BezivinBoutabaa1992}
+J.-P. B\'ezivin and A. Boutabaa,
+\newblock \emph{Sur les \'equations fonctionnelles $p$-adiques aux $q$-diff\'erences},
+\newblock Collectanea Mathematica \textbf{43} (1992), 125--140.
+
+\bibitem{SchaefkeSinger2019}
+R. Sch\"afke and M. Singer,
+\newblock \emph{Consistent systems of linear differential and difference equations},
+\newblock Journal of the European Mathematical Society \textbf{21} (2019), 2751--2792.
 
 \bibitem{Matveev2000}
 E.~M.~Matveev,
