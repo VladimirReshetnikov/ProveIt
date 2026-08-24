@@ -752,7 +752,14 @@ $$
 \left|\sum_{s=1}^{t} e\left(\alpha s^{k}\right)\right| \leqslant C_{\epsilon} t^{1+\epsilon}\left(q^{-1}+t^{-1}+q t^{-k}\right)^{1 / 2^{k-1}} .
 $$
 
-Moreover, if $t \geqslant 2^{2^{32 k^{2}}}$, then the above inequality is valid with $\epsilon=1 / k 2^{k+1}$ and $C_{\epsilon}=1000$. \(\square\)
+Moreover, if $t \geqslant 2^{2^{40 k^{3}}}$, then the above inequality is valid with $\epsilon=1 / k 2^{k+1}$ and $C_{\epsilon}=1000$. \(\square\)
+
+% ed.: Vaughan's cited proof absorbs a generalized-divisor multiplicity into
+% an unspecified t^epsilon and does not justify the printed uniform constants
+% at the original 2^(2^(32k^2)) threshold.  Keeping that multiplicity explicit
+% with divisor parameter m=8k^3 proves the stated constant 1000 at the safe
+% threshold 2^(2^(40k^3)).  The dependent thresholds below are raised
+% coherently; the displayed 500-bound is retained as the printed claim.
 
 The above estimate for $C_{\epsilon}$ is important because we wish to use the inequality to obtain explicit bounds. Unfortunately, I have not managed to find in the literature any presentation of Weyl's inequality that bothers to estimate $C_{\epsilon}$. If one follows the proof given by Vaughan [V] and keeps\\
 track of everything that is swallowed up by the $t^{\epsilon}$, one can replace the $C_{\epsilon} t^{\epsilon}$ in the right-hand side of the inequality by
@@ -767,7 +774,7 @@ The next lemma is very standard, and is due to Dirichlet.\\
 Lemma 5.4. Let $\alpha$ be a real number. For every integer $u \geqslant 1$ there exist integers $a$ and $q$ with $(a, q)=1,1 \leqslant q \leqslant u$ and $|\alpha-a / q| \leqslant 1 / q u$. \(\square\)
 
 The next lemma is also due to Weyl. Since it is again hard to find in the literature in the quantitative form we need, we give a complete proof.\\
-Lemma 5.5. Let $k \geqslant 2$, let $t \geqslant 2^{2^{32 k^{2}}}$, let $N \geqslant t$ and let $a \in \mathbb{Z}_{N}$. Then there exists $p$ with $1\leqslant p \leqslant t$ such that $\left|p^{k} a\right| \leqslant t^{-1 / k 2^{k+1}} N$.\\
+Lemma 5.5. Let $k \geqslant 2$, let $t \geqslant 2^{2^{40 k^{3}}}$, let $N \geqslant t$ and let $a \in \mathbb{Z}_{N}$. Then there exists $p$ with $1\leqslant p \leqslant t$ such that $\left|p^{k} a\right| \leqslant t^{-1 / k 2^{k+1}} N$.\\
 % ed.: The displayed collection A below must be read with multiplicity.  As a
 % set it can have fewer than t elements when two polynomial values collide,
 % and then both |A|=t and the displayed Fourier identity are false.  The
@@ -792,7 +799,7 @@ $$
 2000 t^{1 / k 2^{k}}\left(q^{-1}+t^{-1}+q^{1-k}\right)^{1 / 2^{k-1}} \geqslant 1
 $$
 
-which implies, after a small calculation (using the assumption that $t \geqslant$ $2^{2^{32 k^{2}}}$ ), that $q \leqslant 2 t^{1 / 2 k}$.
+which implies, after a small calculation (using the assumption that $t \geqslant$ $2^{2^{40 k^{3}}}$ ), that $q \leqslant 2 t^{1 / 2 k}$.
 
 We may now argue directly. We know that $|\alpha-b / q| \leqslant 1 / q t$. Multiplying both sides by $(r q)^{k} N / r$ we find that
 
@@ -808,7 +815,7 @@ so we can set $p=r q$ (contradicting the initial assumption that the result was 
 % a prescribed target length $v-1$ or $v$; we state that form here.  The
 % proof also invokes Lemma 5.5 with $t=r$, so its required bound $r\leqslant N$
 % is made explicit rather than supplying an unprinted periodic case.
-Corollary 5.6. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be any polynomial of degree $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r$ be an integer exceeding $2^{2^{40 k^{2}}}$ with $r\leqslant N$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi\left(P_{j}\right)$ is at most $r^{-1 / K} N$ for every $j$.
+Corollary 5.6. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be any polynomial of degree $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r$ be an integer exceeding $2^{2^{40 k^{3}}}$ with $r\leqslant N$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi\left(P_{j}\right)$ is at most $r^{-1 / K} N$ for every $j$.
 
 % ed.: The base case uses the linear partition lemma, Lemma 2.3, not the
 % uniformity equivalence in Lemma 2.2.  The next two exponents are corrected
@@ -837,11 +844,11 @@ $$
 \operatorname{diam}(\phi(P)) \leqslant u^{k} r^{-1 / k 2^{k+1}} N+\operatorname{diam}\left(\phi_{j}(P)\right) .
 $$
 
-Let us choose $u=r^{1 / k^{2} 2^{k+2}}$, with the result that $u^{k} r^{-1 / k 2^{k+1}}=r^{-1 / k 2^{k+2}}$. It is easy to check that $u \geqslant 2^{2^{40(k-1)^{2}}}$. Therefore, by induction, if $v \leqslant u^{1 / L}$, where $L=((k-1)!)^{2} 2^{k^{2}}$, then every $Q_{j}$ can be partitioned into arithmetic progressions $P_{j t}$ of length $v-1$ or $v$ in such a way that $\operatorname{diam}\left(\phi_{j}\left(P_{j t}\right)\right) \leqslant$ $u^{-1 / L} N$ for every $t$. It is not hard to check that this, with our choice of $u$ above, gives us the inductive hypothesis for $k$. \(\square\)
+Let us choose $u=r^{1 / k^{2} 2^{k+2}}$, with the result that $u^{k} r^{-1 / k 2^{k+1}}=r^{-1 / k 2^{k+2}}$. It is easy to check that $u \geqslant 2^{2^{40(k-1)^{3}}}$. Therefore, by induction, if $v \leqslant u^{1 / L}$, where $L=((k-1)!)^{2} 2^{k^{2}}$, then every $Q_{j}$ can be partitioned into arithmetic progressions $P_{j t}$ of length $v-1$ or $v$ in such a way that $\operatorname{diam}\left(\phi_{j}\left(P_{j t}\right)\right) \leqslant$ $u^{-1 / L} N$ for every $t$. It is not hard to check that this, with our choice of $u$ above, gives us the inductive hypothesis for $k$. \(\square\)
 
 % ed.: Corollary 5.7 uses the target-length form of Corollary 5.6, with an
 % emergent positive number of nonempty cells.
-Corollary 5.7. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be a polynomial of degree $k$, let $K=$ $(k!)^{2} 2^{(k+1)^{2}}$, let $\alpha>0$ and let $r\leqslant N$ be an integer exceeding $\max \left\{2^{2^{40 k^{2}}},(4 \pi / \alpha)^{K}\right\}$. Then, for any integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$, there is a partition of the set $\{0,1, \ldots, r-1\}$ into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, and if $f: \mathbb{Z}_{N} \rightarrow D$ is any function such that
+Corollary 5.7. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be a polynomial of degree $k$, let $K=$ $(k!)^{2} 2^{(k+1)^{2}}$, let $\alpha>0$ and let $r\leqslant N$ be an integer exceeding $\max \left\{2^{2^{40 k^{3}}},(4 \pi / \alpha)^{K}\right\}$. Then, for any integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$, there is a partition of the set $\{0,1, \ldots, r-1\}$ into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, and if $f: \mathbb{Z}_{N} \rightarrow D$ is any function such that
 
 $$
 \left|\sum_{s=0}^{r-1} f(s) \omega^{-\phi(s)}\right| \geqslant \alpha r,
@@ -890,9 +897,9 @@ We continue the section with three results that generalize Lemma 5.5 and Corolla
 
 % ed.: As in Corollary 5.6, the proof supports a prescribed target length and
 % an emergent cell count, not the printed prescribed exact number of cells.
-Lemma 5.9. Let $\phi_{1}, \ldots, \phi_{q}$ be polynomials from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ of degree at most $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r\leqslant N$ be an integer exceeding $2^{2^{40 k^{2}} K^{q-1}}$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 /(2 K^{q})}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{q}} N$ for every $i$ and every $j$.
+Lemma 5.9. Let $\phi_{1}, \ldots, \phi_{q}$ be polynomials from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ of degree at most $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r\leqslant N$ be an integer exceeding $2^{2^{40 k^{3}} K^{q-1}}$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 /(2 K^{q})}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{q}} N$ for every $i$ and every $j$.
 
-Proof. First we prove by induction that for every $p \leqslant q$ we can partition the set $\{0,1, \ldots, r-1\}$ into some positive number of nonempty arithmetic progressions of size at least $r^{1 / K^{p}}$ such that $\operatorname{diam} \phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{p}} N$ for every $i \leqslant p$ and every cell $P_j$. When $p=1$ this follows immediately from Corollary 5.6. If we know it for $p-1$, let $Q_{1}, \ldots, Q_{l}$ be the arithmetic progressions obtained. The size of each $Q_{i}$ is at least $r^{1 / K^{p-1}} \geqslant 2^{2^{40 k^{2}}}$, so by Corollary 5.6 each $Q_{i}$ can be partitioned into further arithmetic progressions $P_{j}$ of cardinality at least $\left(r^{1 / K^{p-1}}\right)^{1 / K}=r^{1 / K^{p}}$, such that, for every $j$, the diameter of $\phi_{p}\left(P_{j}\right)$ is at most $\left(r^{-1 / K^{p-1}}\right)^{1 / K} N=r^{-1 / K^{p}} N$. This is clearly enough to give us the statement for $p$.
+Proof. First we prove by induction that for every $p \leqslant q$ we can partition the set $\{0,1, \ldots, r-1\}$ into some positive number of nonempty arithmetic progressions of size at least $r^{1 / K^{p}}$ such that $\operatorname{diam} \phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{p}} N$ for every $i \leqslant p$ and every cell $P_j$. When $p=1$ this follows immediately from Corollary 5.6. If we know it for $p-1$, let $Q_{1}, \ldots, Q_{l}$ be the arithmetic progressions obtained. The size of each $Q_{i}$ is at least $r^{1 / K^{p-1}} \geqslant 2^{2^{40 k^{3}}}$, so by Corollary 5.6 each $Q_{i}$ can be partitioned into further arithmetic progressions $P_{j}$ of cardinality at least $\left(r^{1 / K^{p-1}}\right)^{1 / K}=r^{1 / K^{p}}$, such that, for every $j$, the diameter of $\phi_{p}\left(P_{j}\right)$ is at most $\left(r^{-1 / K^{p-1}}\right)^{1 / K} N=r^{-1 / K^{p}} N$. This is clearly enough to give us the statement for $p$.
 
 In particular, we have the statement when $p=q$. To obtain the lemma, use the elementary fact that if $a^{2} \leqslant b$, then an arithmetic progression of length $b$ can be partitioned into nonempty subprogressions each of which has length $a$ or $a+1$, and take $a=v-1$. \(\square\)
 
@@ -904,8 +911,8 @@ $$
 
 Define a box in $\mathbb{Z}_{N}^{k}$ of common difference $d$ to be a product $P=Q_{1} \times \ldots \times Q_{k}$, where each $Q_{i}$ is an arithmetic progression in $\mathbb{Z}_{N}$ (even when $\mathbb{Z}_{N}$ is\\
 embedded into $\mathbb{Z}$ ) of common difference $d$. The width of $P$ is defined to be $\min \left|Q_{i}\right|$.\\
-Lemma 5.10. Let $k \geqslant 2$, let $K=k^{2} 2^{k+3}$, let $m \geqslant 2^{K^{2^{k}} 2^{32 k^{2}+1}}$, let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m$ and let $\mu$ be a $k$-linear function from $P$ to $\mathbb{Z}_{N}$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$, such that each $P_{j}$ has width at least $m^{K^{-2^{k}}}$ and the diameter of $\mu\left(P_{j}\right)$ is at most $2 m^{-K^{-2^{k}}} N$ for every $j$.\\
-Proof. As noted above, $\mu$ can be written as a sum of terms of the form $c_{A} \prod_{j \in A} x_{j}$. Take any total ordering on the subsets of $[k]$ which extends the partial ordering by inclusion, and define the height of $\mu$ to be the largest position in this ordering of a set $A$ such that the coefficient $c_{A}$ is non-zero. We shall prove the result by induction on the height. The precise inductive hypothesis is that if $\mu$ has height at most $p$, then any box $Q$ of width $t \geqslant 2^{K^{p} 2^{32 k^{2}+1}}$ can be partitioned into boxes $Q_{j}$ of width at least $t^{K^{-p}}$ such that for every $j$ the diameter of $\mu\left(Q_{j}\right)$ is at most $\left(1+2^{-k} p\right) t^{-K^{-p}} N$.
+Lemma 5.10. Let $k \geqslant 2$, let $K=k^{2} 2^{k+3}$, let $m \geqslant 2^{K^{2^{k}} 2^{40 k^{3}+1}}$, let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m$ and let $\mu$ be a $k$-linear function from $P$ to $\mathbb{Z}_{N}$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$, such that each $P_{j}$ has width at least $m^{K^{-2^{k}}}$ and the diameter of $\mu\left(P_{j}\right)$ is at most $2 m^{-K^{-2^{k}}} N$ for every $j$.\\
+Proof. As noted above, $\mu$ can be written as a sum of terms of the form $c_{A} \prod_{j \in A} x_{j}$. Take any total ordering on the subsets of $[k]$ which extends the partial ordering by inclusion, and define the height of $\mu$ to be the largest position in this ordering of a set $A$ such that the coefficient $c_{A}$ is non-zero. We shall prove the result by induction on the height. The precise inductive hypothesis is that if $\mu$ has height at most $p$, then any box $Q$ of width $t \geqslant 2^{K^{p} 2^{40 k^{3}+1}}$ can be partitioned into boxes $Q_{j}$ of width at least $t^{K^{-p}}$ such that for every $j$ the diameter of $\mu\left(Q_{j}\right)$ is at most $\left(1+2^{-k} p\right) t^{-K^{-p}} N$.
 
 First, if the height is zero or one, then $\mu$ is constant and the result is trivial. Now let $Q$ be a box of width $t$ and common difference $d_{0}$, let $\mu: Q \rightarrow \mathbb{Z}_{N}$ be a $k$-linear function of height $p$ and suppose that the result is true for all multilinear functions of height less than $p$. Let $A$ be the $p^{\text {th }}$ set in the ordering on the subsets of $[k]$, and let $c_{A}$ be the corresponding coefficient of $\mu$.
 
@@ -939,7 +946,7 @@ $$
 we have proved the inductive hypothesis for $p$ and hence the whole lemma. \(\square\)
 
 It is now not hard to deduce a multiple version of the above lemma.\\
-Corollary 5.11. Let $k \geqslant 2$, let $K=k^{2} 2^{k+3}$, let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m \geqslant 2^{K^{2^{k}q} 2^{32 k^{2}+1}}$ and let $\mu_{1}, \ldots, \mu_{q}$ be $k$-linear functions from $P$ to $\mathbb{Z}_{N}$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$, such that each $P_{j}$ has width at least $m^{K^{-2^{k}q}}$ and the diameter of $\mu_{i}\left(P_{j}\right)$ is at most $2 m^{-K^{-2^{k}q}} N$ for every $i$ and $j$.
+Corollary 5.11. Let $k \geqslant 2$, let $K=k^{2} 2^{k+3}$, let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m \geqslant 2^{K^{2^{k}q} 2^{40 k^{3}+1}}$ and let $\mu_{1}, \ldots, \mu_{q}$ be $k$-linear functions from $P$ to $\mathbb{Z}_{N}$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$, such that each $P_{j}$ has width at least $m^{K^{-2^{k}q}}$ and the diameter of $\mu_{i}\left(P_{j}\right)$ is at most $2 m^{-K^{-2^{k}q}} N$ for every $i$ and $j$.
 
 Proof. We can apply Lemma $5.10 q$ times, obtaining a sequence of finer and finer partitions into boxes, such that for each refinement another of the $\mu_{i}$ satisfies the conclusion of that lemma. The width of the boxes at the final stage of this process is at least the number obtained by raising $m$ to the power $K^{-2^{k}} q$ times, which is $m^{K^{-2^{k}} q}$. The worst estimate for the diameter comes at the last refinement, and gives $2 m^{-K^{-2^{k} q}} N$. \(\square\)
 
@@ -3270,7 +3277,7 @@ $$
 
 \section*{16 Finding a Multilinear Piece}
 This section is, as its title suggests, a generalization of §13. As with the last two sections, there will be no major new ideas over and above those needed for bilinearity (and hence progressions of length five) but it is not quite true that there is an obvious one-to-one correspondence between the lemmas that are needed. We begin with a simple consequence of Corollary 5.11. It is the appropriate generalization of Lemma 13.5.\\
-Lemma 16.1. Let $k$ be an integer, let $K=(k+1)^{2} 2^{k+4}$ and let $m \geqslant$ $2^{K^{2^{k+1} q} 2^{32(k+1)^{2}+1}}$. Let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m$, and let $\mu_{1}, \ldots, \mu_{q}$ be $k$-linear functions defined on $P$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{K^{-2^{k+1} q}}$ with the following property. For every $i$ and $j$ and every $x \in P_{j}$ we have the inequality $\left|\mu_{i}(x) d_{j}\right| \leqslant$ $2 m^{-K^{-2^{k+1} q}} N$, where $d_{j}$ is the common difference of the box $P_{j}$.\\
+Lemma 16.1. Let $k$ be an integer, let $K=(k+1)^{2} 2^{k+4}$ and let $m \geqslant$ $2^{K^{2^{k+1} q} 2^{40(k+1)^{3}+1}}$. Let $P$ be a box in $\mathbb{Z}_{N}^{k}$ of width at least $m$, and let $\mu_{1}, \ldots, \mu_{q}$ be $k$-linear functions defined on $P$. Then $P$ can be partitioned into boxes $P_{1}, \ldots, P_{M}$ of width at least $m^{K^{-2^{k+1} q}}$ with the following property. For every $i$ and $j$ and every $x \in P_{j}$ we have the inequality $\left|\mu_{i}(x) d_{j}\right| \leqslant$ $2 m^{-K^{-2^{k+1} q}} N$, where $d_{j}$ is the common difference of the box $P_{j}$.\\
 Proof. Let $d$ be the common difference of $P$ and let $I \subset \mathbb{Z}_{N}$ be an arithmetic progression (in $\mathbb{Z}$ ) of common difference $d$ and size at least $m$. Then $Q=$ $P \times I$ is a box in $\mathbb{Z}_{N}^{k+1}$ of gap $d$ and width at least $m$. Define $(k+1)$-linear functions $\nu_{i}: Q \rightarrow \mathbb{Z}_{N}$ by $\nu_{i}(x, y)=\mu_{i}(x) y$. By Corollary 5.11, we can partition $Q$ into boxes $Q_{j}$ of width at least $m^{K^{-2^{k+1} q}}$ in such a way that the diameter of every set $\nu_{i}\left(Q_{j}\right)$ is at most $2 m^{-K^{-2^{k+1} q}} N$. Let $y$ be the minimal element of $I$ and define an equivalence relation on $P$ by setting $x_{1} \sim x_{2}$ if ( $x_{1}, y$ ) and ( $x_{2}, y$ ) lie in the same box $Q_{j}$. The equivalence classes are clearly boxes of width at least $m^{K^{-2^{k+1} q}}$, and the common difference $d_{j}$ of one of these boxes $P_{j}$ is the common difference of the box $Q_{j^{\prime}}$ containing\\
 $P_{j} \times\{y\}$. The result now follows from the observation that, given $x \in P_{j}$,
 

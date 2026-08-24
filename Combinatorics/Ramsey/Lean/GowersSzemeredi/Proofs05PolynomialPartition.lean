@@ -661,13 +661,14 @@ private lemma twice_floor_quarter_bounds {x : Real} (hx : 8 ≤ x) :
 
 private lemma weylThreshold_sixtyFour_le {k : Nat} (hk : 2 ≤ k) :
     64 ≤ weylThreshold k := by
-  have hinnerExponent : 3 ≤ 32 * k ^ 2 := by nlinarith
-  have houterExponent : 6 ≤ 2 ^ (32 * k ^ 2) := by
-    have hpow : 2 ^ 3 ≤ 2 ^ (32 * k ^ 2) :=
+  have hkCubePos : 0 < k ^ 3 := by positivity
+  have hinnerExponent : 3 ≤ 40 * k ^ 3 := by omega
+  have houterExponent : 6 ≤ 2 ^ (40 * k ^ 3) := by
+    have hpow : 2 ^ 3 ≤ 2 ^ (40 * k ^ 3) :=
       pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : Nat)) hinnerExponent
     norm_num at hpow ⊢
     omega
-  have hpow : 2 ^ 6 ≤ 2 ^ (2 ^ (32 * k ^ 2)) :=
+  have hpow : 2 ^ 6 ≤ 2 ^ (2 ^ (40 * k ^ 3)) :=
     pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : Nat)) houterExponent
   simpa [weylThreshold] using hpow
 

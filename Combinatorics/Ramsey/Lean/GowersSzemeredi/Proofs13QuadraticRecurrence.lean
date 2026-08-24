@@ -28,13 +28,14 @@ namespace LeanProofs.GowersSzemeredi
 
 /-! ### Audited numerical gap in the printed case split -/
 
+set_option exponentiation.threshold 400 in
 /-- At `q = 1`, the cutoff used for the "small" case in the printed proof is
 strictly below the threshold required by the repaired Lemma 5.9. -/
 theorem lemma135_small_cutoff_lt_lemma59_threshold :
     2 ^ (2 ^ 12) < simultaneousPolynomialThreshold 2 1 := by
-  have hexp : 2 ^ 12 < 2 ^ 160 :=
+  have hexp : 2 ^ 12 < 2 ^ 320 :=
     Nat.pow_lt_pow_right (by norm_num) (by norm_num)
-  rw [show simultaneousPolynomialThreshold 2 1 = 2 ^ (2 ^ 160) by
+  rw [show simultaneousPolynomialThreshold 2 1 = 2 ^ (2 ^ 320) by
     norm_num [simultaneousPolynomialThreshold, polynomialPartitionConstant]]
   exact Nat.pow_lt_pow_right (by norm_num) hexp
 

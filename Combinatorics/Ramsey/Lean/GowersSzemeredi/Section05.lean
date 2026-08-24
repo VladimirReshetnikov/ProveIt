@@ -44,17 +44,18 @@ def NatAPLengthsDifferAtMostOne {m : Nat} (P : Fin m -> NatAP) : Prop :=
 def polynomialPartitionConstant (k : Nat) : Nat :=
   (Nat.factorial k) ^ 2 * 2 ^ ((k + 1) ^ 2)
 
-/-- The threshold `2^(2^(32 k^2))` in the explicit form of Weyl's inequality. -/
+/-- The proof-supported threshold `2^(2^(40 k^3))` in the explicit form of
+Weyl's inequality. -/
 def weylThreshold (k : Nat) : Nat :=
-  2 ^ (2 ^ (32 * k ^ 2))
+  2 ^ (2 ^ (40 * k ^ 3))
 
-/-- The threshold `2^(2^(40 k^2))` for one-polynomial partitioning. -/
+/-- The threshold `2^(2^(40 k^3))` for one-polynomial partitioning. -/
 def polynomialPartitionThreshold (k : Nat) : Nat :=
-  2 ^ (2 ^ (40 * k ^ 2))
+  2 ^ (2 ^ (40 * k ^ 3))
 
 /-- The threshold in the simultaneous polynomial partition lemma. -/
 def simultaneousPolynomialThreshold (k q : Nat) : Nat :=
-  2 ^ ((2 ^ (40 * k ^ 2)) * polynomialPartitionConstant k ^ (q - 1))
+  2 ^ ((2 ^ (40 * k ^ 3)) * polynomialPartitionConstant k ^ (q - 1))
 
 /-- The constant `k^2 2^(k+3)` used for multilinear partitioning. -/
 def multilinearPartitionConstant (k : Nat) : Nat :=
@@ -66,7 +67,7 @@ def multilinearPartitionExponent (k q : Nat) : Real :=
 
 /-- The corrected lower threshold in the `q`-map multilinear partition result. -/
 def multilinearPartitionThreshold (k q : Nat) : Nat :=
-  2 ^ (multilinearPartitionConstant k ^ (2 ^ k * q) * 2 ^ (32 * k ^ 2 + 1))
+  2 ^ (multilinearPartitionConstant k ^ (2 ^ k * q) * 2 ^ (40 * k ^ 3 + 1))
 
 /-- The real exponential `e(x) = exp(2 pi i x)`. -/
 def realExponential (x : Real) : Complex :=
@@ -102,7 +103,7 @@ def lemma_5_2 : Prop :=
 
 /-- **Lemma 5.3 (Weyl's inequality).** The first conjunct records the usual
 constant depending on `k` and `epsilon`; the second records the paper's
-explicit constant `1000` above its stated threshold. -/
+explicit constant `1000` above the proof-supported threshold. -/
 def lemma_5_3 : Prop :=
   forall k : Nat, 1 <= k ->
     (forall epsilon : Real, 0 < epsilon -> exists C : Real, 0 <= C /\
@@ -229,7 +230,7 @@ def lemma_5_9 : Prop :=
 /-! ## Multilinear partitioning -/
 
 /-- **Lemma 5.10.** Small-diameter partitioning for one multilinear map.
-The threshold is `2^(K^(2^k) * 2^(32 k^2+1))`, and the scale exponent is
+The threshold is `2^(K^(2^k) * 2^(40 k^3+1))`, and the scale exponent is
 `K^(-2^k)`, as dictated by the height induction. -/
 def lemma_5_10 : Prop :=
   forall (N k m : Nat) [NeZero N] (P : Box N k) (mu : Point N k -> ZMod N),

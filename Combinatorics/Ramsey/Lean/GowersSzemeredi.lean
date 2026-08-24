@@ -29,6 +29,7 @@ import GowersSzemeredi.Proofs03Minkowski
 import GowersSzemeredi.Proofs03CubeUpper
 import GowersSzemeredi.Proofs03Interval
 import GowersSzemeredi.Proofs05FourierInterval
+import GowersSzemeredi.Proofs05Weyl
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Downstream
 import GowersSzemeredi.Proofs05Lemma14
