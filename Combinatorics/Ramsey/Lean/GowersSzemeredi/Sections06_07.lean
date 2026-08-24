@@ -98,10 +98,13 @@ def HasFreimanCover (A : Finset Int) (d0 : Nat) (K : Real) : Prop :=
     A ⊆ P.carrier
 
 /-- **Theorem 7.1 (Freiman).** Both the small-sumset and small-difference-set
-forms stated in the paper are included. -/
+forms stated in the paper are included.  Nonemptiness makes explicit the
+paper's convention `m > 0`; without it the positive-size progression bound is
+false for the empty set. -/
 def theorem_7_1 : Prop :=
   forall C : Real, 0 < C ->
     exists d0 : Nat, exists K : Real, 0 < K /\ forall A : Finset Int,
+      A.Nonempty ->
       ((((A + A).card : Real) <= C * A.card) -> HasFreimanCover A d0 K) /\
       ((((A - A).card : Real) <= C * A.card) -> HasFreimanCover A d0 K)
 
@@ -116,12 +119,14 @@ def HasBalogSzemerediProgression {D : Nat} (A : Finset (Fin D -> Int))
     c * A.card <= ((A ∩ P.carrier).card : Real)
 
 /-- **Theorem 7.2 (Balog--Szemeredi).** Large additive energy forces a
-positive proportion of the set into a bounded-dimensional generalized
-progression of comparable formal size. -/
+positive proportion of a nonempty set into a bounded-dimensional generalized
+progression of comparable formal size.  Nonemptiness is necessary because the
+conclusion asks for a progression of positive formal size. -/
 def theorem_7_2 : Prop :=
   forall c0 : Real, 0 < c0 ->
     exists c K : Real, exists d0 : Nat, 0 < c /\ 0 < K /\
       forall (D : Nat) (A : Finset (Fin D -> Int)),
+        A.Nonempty ->
         c0 * (A.card : Real) ^ 3 <= Finset.addEnergy A A ->
         HasBalogSzemerediProgression A c K d0
 
