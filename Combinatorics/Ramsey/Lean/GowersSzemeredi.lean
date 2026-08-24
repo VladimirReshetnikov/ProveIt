@@ -59,6 +59,7 @@ import GowersSzemeredi.Proofs14Arrangements
 import GowersSzemeredi.Proofs14HigherArrangements
 import GowersSzemeredi.Proofs14Product
 import GowersSzemeredi.Proofs14ProductToArrangements
+import GowersSzemeredi.Proofs15DegenerateArrangements
 import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
