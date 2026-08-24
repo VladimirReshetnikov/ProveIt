@@ -87,6 +87,7 @@ import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
+import GowersSzemeredi.Proofs18Consequences
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
