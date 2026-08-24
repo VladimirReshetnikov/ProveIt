@@ -21474,6 +21474,68 @@ the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but
 constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
 \statusexactcomp{}.
 
+\subsection{The spectrum question is a difference-module finiteness question}
+\label{camp:diffmodule}
+
+The sharp form of what remains --- is $V_\tau=V_0$ for every finite $\tau$? --- has
+structure that was not visible when it was posed.  The monoid is closed under both of its
+generators,
+\[
+ \Sol+1\subseteq\Sol,
+ \qquad
+ \Sol+\beta\subseteq\Sol
+ \qquad(s=n+k\beta\mapsto(n{+}1)+k\beta,\ n+(k{+}1)\beta),
+\]
+so the two difference operators
+\[
+ (\Delta_1g)(z)=g(z+1)-g(z),
+ \qquad
+ (\Delta_\beta g)(z)=g(z+\beta)-g(z)
+\]
+carry integer-valued functions on $\Sol$ to integer-valued functions on $\Sol$.  They also
+preserve finite quadratic type, since $M(g(\cdot+h),r)\le M(g,r+h)$ leaves
+$\lim r^{-2}\log M$ unchanged.  Hence \emph{each $V_\tau$ is a module over the commutative
+ring $\Z[\Delta_1,\Delta_\beta]$}.
+
+On the monomials $e_{ij}(z)=2^{iz}3^{jz}$ both operators are diagonal, and --- this is the
+point --- with \emph{integer} eigenvalues:
+\[
+ \Delta_1e_{ij}=(2^i3^j-1)\,e_{ij},
+ \qquad
+ \Delta_\beta e_{ij}=(M^iA^j-1)\,e_{ij},
+\]
+the second being an integer precisely because $M=2^\beta$ and $A=3^\beta$ are integers under
+the counterexample hypothesis.  So $V_0\supseteq\Z[2^z,3^z]$ is spanned by joint
+eigenvectors with integer eigenvalue pairs, and the two operators separate them: the pair
+$(2^i3^j,M^iA^j)$ determines $(i,j)$, by the kernel-verified injectivity of
+$(i,j)\mapsto2^i3^j$ (\lean{SmoothSemigroupCore}).
+
+This turns the spectrum question into a finiteness question.  If for some $g\in V_\tau$ the
+$\Z[\Delta_1,\Delta_\beta]$-orbit of $g$ is finitely generated, then $g$ satisfies a linear
+difference equation with integer coefficients in the two commuting shifts; its entire
+solutions are combinations of exponentials $e_{ij}$, forcing $g\in V_0$ and $\tau_2(g)=0$.
+Consequently:
+
+\begin{target}[Difference-module finiteness]\label{camp:target-diffmodule}
+Decide whether every $g$ that is entire, integer-valued on $\Sol$, and of finite quadratic
+type generates a finitely generated $\Z[\Delta_1,\Delta_\beta]$-module.  A positive answer
+gives $V_\tau=V_0$ for all finite $\tau$, hence a type spectrum $\{0\}\cup\{\infty\}$, and
+closes Target~\ref{camp:target-construct} \emph{negatively}.  A negative answer produces a
+candidate for the construction that would settle the conjecture.
+\end{target}
+
+Two remarks make this the natural next step rather than a reformulation.  It is
+control-sensitive in the right way: at an integer control $\Sol=\N_0$ is closed under $+1$
+alone, the second operator degenerates to $\Delta_\beta=\Delta_1^{\,\text{(iterated)}}$
+composition and the two-variable structure --- the whole content --- disappears.  And it is
+of exactly the shape the literature survey singled out: a finite-rank statement for a
+system of difference equations in two independent shifts, which is the discrete counterpart
+of the arithmetic-holonomy programme of Section~\ref{camp:cdt}.  The corpus's two surviving
+routes therefore meet here: the transcendence route needs independence of weight-two
+products, the interpolation route needs finiteness of a two-shift difference module, and
+both are finite-rank statements about the same pair $(2,3)$ acting on the same monoid.
+\statusnew{}; target \statusopen.
+
 \subsection{The terminal obstruction inside the Calegari--Dimitrov--Tang family}
 \label{camp:cdt}
 
@@ -23298,6 +23360,14 @@ spectrum question $V_\tau=V_0$ &
 Weight-two encoding \emph{is} the two-star tensor; its finite core is already
 kernel-verified & \statuslean{} core; identification \statusexactcomp &
 \lean{TwoStarControlCharacterization}; Section~\ref{camp:cdt} \\
+Weight-two collapse in divisor-vector form: vanishing coefficients produce a single $t$
+with $M=2^t$, $A=3^t$; the control pair satisfies the relation, so the vanishing locus is
+exactly the control line & \statuslean & \lean{WeightTwoCollapse};
+Section~\ref{camp:cdt} \\
+$V_\tau$ is a $\Z[\Delta_1,\Delta_\beta]$-module; both shifts diagonal on monomials with
+integer eigenvalues $2^i3^j-1$, $M^iA^j-1$; spectrum question $\equiv$ difference-module
+finiteness & \statusnew{}; target \statusopen &
+Section~\ref{camp:diffmodule}, Target~\ref{camp:target-diffmodule} \\
 Terminal obstruction encoded in the CDT family: $\log p=\sum_{n<p}L_n$ turns the
 relation into a $\Z$-relation among $\{L_iL_j\}$; vanishing coefficients force the
 controls at $q=3,5,7$; finite independence per $q$ suffices, consuming the external prime &
@@ -23605,6 +23675,9 @@ valuation of a signed nested-slice factorial product \\
 \lean{.../CrossSliceContraction} & exact transport-weight exponent identity; conversion
 of the per-prime rescue bound into balance weights ($\Phi^-A^{m+j'}\le3\Phi^+M^{n+i}$);
 admissibility contraction factor $M^{n+i}A\le A^{m+j'}$ \\
+\lean{.../WeightTwoCollapse} & the weight-two coefficient array of the terminal relation
+is definitionally the two-star tensor; vanishing produces a single $t$ with $m=t\delta_2$,
+$a=t\delta_3$; the control pair satisfies the relation \\
 \lean{.../AdelicWedgeDecoupling} & exact multiplicativity of the Fermat quotient;
 control-direction invariance of the Fermat-quotient wedge; rank drop at $p$ characterized
 as collinearity of $(q_pM,q_pA)$ with $(q_p2,q_p3)$ \\
