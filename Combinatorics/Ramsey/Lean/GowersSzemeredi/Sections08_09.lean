@@ -27,7 +27,8 @@ noncomputable def translate {N : Nat} (A : Finset (ZMod N)) (s : ZMod N) :
 /-- **Proposition 8.1.** A linearly varying large Fourier coefficient of the
 first differences produces quadratic phase bias on translates of `P`. -/
 def proposition_8_1 : Prop :=
-  forall (N : Nat) [NeZero N] (A : Finset (ZMod N)) (P : ModAP N)
+  forall (N : Nat) [NeZero N] (_hNodd : Odd N)
+      (A : Finset (ZMod N)) (P : ModAP N)
       (beta : Real),
     (exists lambda mu : ZMod N,
       beta * (N : Real) ^ 2 * P.carrier.card <=

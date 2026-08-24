@@ -12,6 +12,7 @@ import GowersSzemeredi.Sections17_18
 import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
 import GowersSzemeredi.Proofs01_03
+import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
@@ -27,6 +28,7 @@ import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07DRC
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07ProgressionLinearity
+import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs10Bohr
