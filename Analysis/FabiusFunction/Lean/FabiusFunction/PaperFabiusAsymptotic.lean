@@ -4,7 +4,14 @@ import FabiusFunction.FabiusDyadicLogBounds
 import FabiusFunction.FabiusLogSquaredAsymptotic
 import FabiusFunction.FabiusFlatness
 import FabiusFunction.FabiusSharpAsymptotic
+import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusRecurrenceSequence
+import FabiusFunction.FabiusFirstSaddleCorrection
+import FabiusFunction.FabiusSaddleCoefficientRecurrence
+import FabiusFunction.PeriodicSmooth
+import FabiusFunction.SaddleExpansionAlgebra
+import FabiusFunction.SaddleAllOrders
+import FabiusFunction.NegativeLaplaceVerticalSmooth
 
 /-!
 # Claim-level audit of the local *Fabius Asymptotic* draft
@@ -27,6 +34,10 @@ Laplace-product, Mellin, and quantitative saddle analysis does prove the
 correct sharp formula: its genuine nonconstant periodic correction is sampled
 at the lower-Lambert phase, and the literal elementary expression printed in
 the linked Math Stack Exchange discussion is proved to be missing that term.
+The public aggregate also exposes the generic formal exponential recurrence,
+the concrete periodic saddle jets, arbitrary-order Gaussian integration
+machinery, and branch-safe vertical Taylor estimates used to refine this
+formula to all orders.
 The related Mathematica Stack Exchange quotient is also proved not to be an
 endpoint asymptotic equivalent.  See `PAPER_COVERAGE.md` for the exact claim
 matrix.
