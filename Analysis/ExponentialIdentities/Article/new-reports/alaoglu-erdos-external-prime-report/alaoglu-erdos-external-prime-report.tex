@@ -1,0 +1,1989 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[final]{microtype}
+\usepackage[a4paper,margin=30mm,headheight=14pt]{geometry}
+\usepackage{booktabs,array,longtable,tabularx,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{pdflscape}
+
+\definecolor{deepblue}{RGB}{31,57,94}
+\definecolor{softblue}{RGB}{238,244,250}
+\definecolor{softgray}{RGB}{246,246,246}
+\definecolor{softgreen}{RGB}{239,248,241}
+\definecolor{softamber}{RGB}{253,247,232}
+\definecolor{softred}{RGB}{252,240,240}
+\definecolor{rulegray}{RGB}{105,105,105}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=deepblue,
+  citecolor=deepblue,
+  urlcolor=deepblue,
+  pdftitle={External-Prime Accumulation and the p-adic Newton Wall},
+  pdfauthor={OpenAI GPT-5.6 Pro},
+  pdfsubject={Progress report on the Alaoglu--Erdos integer-exponent conjecture}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small External-prime accumulation and the $p$-adic Newton wall}
+\fancyhead[R]{\small 23 August 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{target}[theorem]{Target}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newtcolorbox{resultbox}[1]{
+  enhanced,breakable,colback=softgreen,colframe=deepblue,
+  boxrule=0.55pt,arc=1.5pt,left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{statusbox}[1]{
+  enhanced,breakable,colback=softblue,colframe=deepblue,
+  boxrule=0.45pt,arc=1.5pt,left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{warningbox}[1]{
+  enhanced,breakable,colback=softamber,colframe=rulegray,
+  boxrule=0.45pt,arc=1.5pt,left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={#1},fonttitle=\bfseries
+}
+\newtcolorbox{deadbox}[1]{
+  enhanced,breakable,colback=softred,colframe=rulegray,
+  boxrule=0.45pt,arc=1.5pt,left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={#1},fonttitle=\bfseries
+}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Qp}{\mathbb Q_p}
+\newcommand{\Cp}{\mathbb C_p}
+\newcommand{\vp}{v_p}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Sol}{\operatorname{Sol}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Gauss}{\lVert\,\cdot\,\rVert}
+\newcommand{\bigO}{\mathrm O}
+\newcommand{\littleo}{\mathrm o}
+\newcommand{\AEconj}{Alaoglu--Erd\H{o}s}
+
+\lstdefinestyle{pseudocode}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{rulegray},
+  backgroundcolor=\color{softgray},
+  breaklines=true,
+  showstringspaces=false,
+  xleftmargin=0.5em,
+  xrightmargin=0.5em
+}
+
+\title{\textbf{External-Prime Accumulation and the $p$-Adic Newton Wall}\\[0.35em]
+\large A nonduplicative progress report on the \AEconj{} integer-exponent conjecture}
+\author{OpenAI GPT-5.6 Pro}
+\date{23 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let
+\[
+ 2^x\in\Z,\qquad 3^x\in\Z.
+\]
+The conjecture of Alaoglu and Erd\H{o}s asserts that $x\in\Z$.  The supplied unified report
+already develops a very large corpus around the exact solution monoid, transcendence
+reductions, determinant and interpolation methods, structural-prime residuals, $p$-adic
+valuation lattices, Sturmian and carry encodings, canonical products, and geometric Newton
+interpolation.  This report deliberately does not reproduce that corpus.  It opens a new
+local direction at a prime $p\ge5$ dividing a hypothetical output.
+
+The first result is a rigidity theorem for geometric sampling in a nonarchimedean field.  If
+$|Q|_p<1$ and an analytic germ $F$ at zero satisfies
+$F(Q^k)=R^k$ for every sufficiently large $k$, then $F(z)=z^d$ and $R=Q^d$ for some
+$d\in\Nzero$.  A flexible two-row version says that
+$F(\alpha Q^k)=\lambda F(Q^k)$ on an accumulating geometric ray forces the Taylor support of
+$F$ into the exact eigenspectrum $\{n:\alpha^n=\lambda\}$.  In the \AEconj{} setting the edge
+pairs are $(\alpha,\lambda)=(2,3)$ or $(3,2)$, so no nonzero analytic, meromorphic, or
+finite-Puiseux germ can realize even one adjacent strip of the conditional integer grid.
+
+The second result analyzes, at the same external prime, the geometric Newton coefficients
+already identified in the companion report.  Their valuations are computed exactly.  The
+leading coefficient of the unique degree-$N$ interpolation remainder forces every rational
+polynomial interpolating the first $N+1$ native ray values to contain a coefficient with an
+intrinsic denominator of order
+\[
+ p^{\frac12 v_p(Q)N^2+\mathrm O(N)}.
+\]
+On any off-ray unit multiple $uQ^k$, the Newton terms have valuations tending quadratically
+to $-\infty$; eventually the last term uniquely dominates every partial sum.  Thus the
+canonical Newton completion converges geometrically over $\C$, truncates exactly on its
+native geometric ray in every completion, but diverges maximally over $\Qp$ at the adjacent
+\AEconj{} row.  This is the \emph{$p$-adic Newton wall}.
+
+The report then gives a Tate-algebra formulation of the edge operator
+$F(z)\mapsto F(\alpha z)-\lambda F(z)$, an exact finite-strip defect lower bound, a normal-family
+obstruction to uniformly overconvergent interpolants, a finite-rank $q$-difference research
+interface, a computational audit, and a Lean formalization plan.  These are genuine new
+lemmas and closure criteria, not a proof of the conjecture.  The remaining bridge is sharply
+identified: one must derive nonarchimedean regularity, overconvergence, or finite-rank
+$q$-difference structure from the global arithmetic data without assuming the desired power
+branch is already regular at the accumulation point.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Mandate, status, and separation from the supplied report}
+
+\subsection{The problem and the standard conditional notation}
+
+The problem is
+\begin{conjecture}[Alaoglu--Erd\H{o}s]\label{conj:AE}
+For every real $x$,
+\[
+ 2^x,3^x\in\Z \quad\Longrightarrow\quad x\in\Z.
+\]
+\end{conjecture}
+It originates in the study of highly composite and related numbers
+\cite{AE1944}.  It is a special instance of the still-open Four Exponentials boundary;
+see, for example, Waldschmidt's survey \cite{Waldschmidt2023}.
+
+Assume throughout the mathematical core that a nonintegral solution exists, and put
+\begin{equation}\label{eq:MA}
+ M=2^x\in\N,\qquad A=3^x\in\N,
+ \qquad
+ \theta=\frac{\log3}{\log2}.
+\end{equation}
+Then $A=M^\theta$ in the ordinary real sense.  The companion report
+\cite{Unified2026} establishes much more conditional structure.  Only the small package
+explicitly restated in \cref{sec:minimal-package} is imported here.
+
+\subsection{What is new here}
+
+The supplied report already contains the complex entire completion of the geometric Newton
+interpolants and exact formulas for their coefficients.  What it does not contain is the
+external-prime accumulation analysis carried out below.  The new material is:
+
+\begin{enumerate}[label=\textbf{N\arabic*.}]
+\item a geometric-ray classification theorem for analytic and meromorphic nonarchimedean
+  germs;
+\item an edge-law spectral theorem from zeros accumulating at the origin;
+\item the corresponding exclusion of analytic, meromorphic, and finite-Puiseux realizations
+  of an adjacent conditional \AEconj{} strip;
+\item exact external-prime valuations of every geometric Newton coefficient, including the
+  resonant valuation-tie correction;
+\item a basis-independent quadratic lower bound for the $p$-adic Gauss norm of \emph{every}
+  polynomial interpolant through a native geometric prefix;
+\item exact off-ray valuations, an exact term-ratio formula, and eventual last-term dominance
+  for Newton partial sums;
+\item a Tate-algebra spectral-gap estimate for the dilation edge operator and a finite-strip
+  quotient lower bound;
+\item a compactness theorem showing that exact finite interpolants cannot have a uniformly
+  overconvergent $p$-adic subsequence;
+\item a concrete Robba-to-Tate and finite-rank $q$-difference research interface;
+\item a reproducible exact-arithmetic audit and a staged Lean formalization plan.
+\end{enumerate}
+
+\begin{statusbox}{Status convention}
+\textbf{Proved here} means that a complete conventional proof is included.  \textbf{Imported}
+means that the statement is taken from the supplied unified report or a cited classical
+source and used only as an input.  \textbf{Conditional target} means that the implication is
+proved but the additional hypothesis has not been derived from a hypothetical
+counterexample.  \textbf{Audit/no-go} records a rigorously identified obstruction and is not
+presented as progress on the truth of the conjecture itself.
+\end{statusbox}
+
+\section{Public-state check as of 23 August 2026}
+\label{sec:public-state}
+
+The user's competitive premise is substantially grounded, but two headlines need precise
+qualification.
+
+\begin{enumerate}
+\item Anthropic publicly launched Claude Fable 5 on 9 June 2026 and describes it as its most
+  capable generally available model for long-horizon work \cite{AnthropicFable}.
+\item The Jacobian development is an explicit Fable-assisted counterexample in dimension
+  three, hence in every dimension at least three.  The two-dimensional Jacobian conjecture
+  remains open.  Tao gives the explicit degree-seven map and a short verification
+  \cite{TaoJacobian}.  Thus ``resolved the Jacobian conjecture'' is accurate only if it is
+  understood as disproving the unrestricted conjecture, not settling the remaining planar
+  case.
+\item A curve with thirty exhibited independent rational points was posted to the ICARM
+  leaderboard and attributed to Claude working with Levent Alp\H{o}ge and Ava Howell.  This
+  proves an unconditional rank lower bound of $30$; an unconditional proof that the exact
+  rank equals $30$ has not been claimed \cite{ICARM30,MathWorldRank30}.
+\item The reported Hadamard construction supplies matrices for all twelve previously missing
+  admissible orders below $2000$, including order $668$.  Epoch AI records the result and its
+  human/AI attribution provisionally; OEIS records the twelve orders and attribution
+  \cite{EpochHadamard,OEISHadamard}.  This closes that finite table, not the general Hadamard
+  conjecture.
+\end{enumerate}
+
+Exact web searches for ``Alaoglu--Erd\H{o}s'', the integer-exponent statement, Fable, and Lean
+found no public preprint, repository, announcement, or indexed social post describing the
+rumored new route as of the date of this report.  I therefore treat the rival team's message
+as unverified tactical information rather than as a mathematical input.  The search below is
+independent of any claimed method.
+
+\section{Minimal counterexample package and the external orientation}
+\label{sec:minimal-package}
+
+\subsection{Elementary consequences}
+
+\begin{lemma}\label{lem:x-positive-trans}
+Under \eqref{eq:MA}, a nonintegral solution $x$ is positive, irrational, and transcendental.
+Moreover, $M$ is not a power of $2$, $A$ is not a power of $3$, and $2,M$ are
+multiplicatively independent, as are $3,A$.
+\end{lemma}
+
+\begin{proof}
+If $x<0$, then $0<2^x<1$, contradicting integrality; $x=0$ is integral.  If
+$x=a/b\in\Q$ in lowest terms with $b>0$, then $2^a=M^b$.  Comparing the exponent of the
+prime $2$ gives $b\mid a$, hence $b=1$.  Thus a nonintegral solution is irrational.  If it
+were algebraic irrational, Gelfond--Schneider applied to $2^x=M\in\overline\Q$ would be a
+contradiction, so it is transcendental.  The remaining statements follow immediately: for
+example $M=2^m$ gives $x=m$, and $2^rM^s=1$ gives $r+sx=0$, forcing $r=s=0$ because $x$ is
+irrational.
+\end{proof}
+
+The next fact is imported by the supplied corpus, but its short proof is included because it
+is the control-sensitive hinge of this report.
+
+\begin{lemma}[External-prime lemma]\label{lem:external-prime}
+If \eqref{eq:MA} holds with $x\notin\Z$, then some prime $p\ge5$ divides $MA$.
+\end{lemma}
+
+\begin{proof}
+Suppose instead that both $M$ and $A$ are $\{2,3\}$-smooth.  Write
+\[
+ M=2^a3^b,\qquad A=2^c3^d
+ \qquad(a,b,c,d\in\Nzero).
+\]
+With $\theta=\log3/\log2$, the two logarithmic identities give
+\[
+ x=a+b\theta,\qquad x\theta=c+d\theta,
+\]
+so
+\[
+ b\theta^2+(a-d)\theta-c=0.
+\]
+The number $\theta$ is transcendental: it is not rational by unique factorization, and if it
+were algebraic irrational then $2^\theta=3$ would contradict Gelfond--Schneider.  Therefore
+$b=c=0$ and $a=d$, whence $x=a\in\Z$, a contradiction.
+\end{proof}
+
+\subsection{Oriented external-prime notation}
+
+Choose an external prime $p\ge5$ from \cref{lem:external-prime}.  At least one of $M,A$ is
+$p$-adically contracting.  We orient the data as follows:
+\begin{equation}\label{eq:orientation}
+ (Q,R;\alpha,\lambda,\gamma)=
+ \begin{cases}
+  (M,A;2,3,\theta),&p\mid M,\\
+  (A,M;3,2,\theta^{-1}),&p\mid A.
+ \end{cases}
+\end{equation}
+If $p$ divides both, either orientation may be used.  In both cases
+\begin{equation}\label{eq:oriented-data}
+ p\mid Q,
+ \qquad Q^\gamma=R,
+ \qquad \alpha^\gamma=\lambda,
+ \qquad
+ (Q^k)^\gamma=R^k,
+ \qquad
+ (\alpha Q^k)^\gamma=\lambda R^k.
+\end{equation}
+Set
+\begin{equation}\label{eq:ma-local}
+ m=\vp(Q)>0,
+ \qquad
+ a=\vp(R)\ge0.
+\end{equation}
+Because $p\ge5$, all of $2,3,\alpha,\lambda,$ and $\alpha-1$ are $p$-adic units.
+The points $Q^k$ and $\alpha Q^k$ tend to $0$ in $\Qp$, giving a genuine
+nonarchimedean accumulation point that is absent from the ordinary real geometry.
+
+\begin{resultbox}{The control-sensitive feature}
+For an integer control $x=d$, one has $(M,A)=(2^d,3^d)$, so no prime $p\ge5$ divides $MA$.
+The oriented external-prime package \eqref{eq:orientation} therefore cannot even be formed for
+controls.  This does not by itself prove the conjecture, but it passes the supplied report's
+control-principle test: every theorem below visibly consumes a fact unavailable to the
+integer controls.
+\end{resultbox}
+
+\section{Geometric rays at a nonarchimedean accumulation point}
+\label{sec:analytic-rigidity}
+
+\subsection{One-ray analytic classification}
+
+The following elementary theorem is the cleanest new structural result in this report.
+
+\begin{theorem}[Geometric-ray rigidity]\label{thm:ray-rigidity}
+Let $K$ be a complete nonarchimedean field of characteristic zero.  Let $t,s\in K^\times$
+with $0<|t|<1$, and let $F$ be analytic on a neighborhood of $0$.  If
+\begin{equation}\label{eq:ray-values}
+ F(t^k)=s^k
+\end{equation}
+for every sufficiently large integer $k$, then there is a unique $d\in\Nzero$ such that
+\[
+ s=t^d,
+ \qquad
+ F(z)=z^d
+\]
+on a neighborhood of $0$.
+\end{theorem}
+
+\begin{proof}
+The values in \eqref{eq:ray-values} are nonzero, so $F$ is not identically zero.  Write
+\[
+ F(z)=z^dG(z),
+ \qquad d=\ord_0F\in\Nzero,
+ \qquad G(0)=c\ne0.
+\]
+Then
+\begin{equation}\label{eq:u-powers-converge}
+ \left(\frac{s}{t^d}\right)^k=G(t^k)\longrightarrow c.
+\end{equation}
+Put $u=s/t^d$.  Since the limit is nonzero, $|u|=1$.  A convergent sequence $u^k$ with
+$|u|=1$ can converge to a nonzero limit only if $u=1$: indeed
+\[
+ u^{k+1}-u^k=u^k(u-1)\longrightarrow0,
+\]
+and $|u^k|=1$ forces $u-1=0$.  Hence $s=t^d$ and $G(t^k)=1$ for all sufficiently large
+$k$.  The analytic function $G-1$ has infinitely many zeros tending to the interior point
+$0$, so the nonarchimedean identity theorem gives $G\equiv1$.
+\end{proof}
+
+\begin{corollary}[One-ray obstruction for a hypothetical counterexample]
+\label{cor:one-ray-AE}
+In the oriented setting \eqref{eq:orientation}, no analytic germ $F$ at $0$ can satisfy
+$F(Q^k)=R^k$ for every sufficiently large $k$.
+\end{corollary}
+
+\begin{proof}
+By \cref{thm:ray-rigidity}, such a germ would give $R=Q^d$ for some $d\in\Nzero$.  In the
+first orientation this is $3^x=(2^x)^d$, hence $3=2^d$ because $x>0$.  In the second it is
+$2=3^d$.  Both are impossible.
+\end{proof}
+
+\begin{remark}[Newton-polygon reading]\label{rem:newton-slope}
+The proof separates two obstructions.  First, an analytic germ has an integral order $d$ at
+zero, so valuation comparison along the ray forces
+\[
+ \frac{\vp(R)}{\vp(Q)}=\frac am=d\in\Nzero.
+\]
+If $a/m$ is not an integer, the Newton slope already rules out analyticity.  If $a=dm$, the
+unit quotient $R/Q^d$ must also have all of its powers converging; this forces the quotient to
+be exactly $1$, not merely a root of unity or a principal unit.  Thus the valuation slope is
+only the first layer; the unit mismatch is decisive in the resonant case.
+\end{remark}
+
+\subsection{The edge-law spectral theorem}
+
+The two-row formulation no longer assumes that the native values themselves form a geometric
+progression.
+
+\begin{theorem}[Accumulating edge law]\label{thm:edge-law}
+Let $K$ be as above, let $0<|t|<1$, and let $q,\mu\in K^\times$.  Suppose $F$ is analytic on
+a disk $D$ centered at $0$ such that $qD\subseteq D$.  If
+\begin{equation}\label{eq:edge-samples}
+ F(qt^k)=\mu F(t^k)
+\end{equation}
+for infinitely many $k$ tending to infinity, then
+\begin{equation}\label{eq:edge-spectrum}
+ F(z)=\sum_{\substack{n\ge0\\q^n=\mu}}c_nz^n
+\end{equation}
+on $D$.  In particular, if $q^n\ne\mu$ for every $n\in\Nzero$, then $F\equiv0$.
+\end{theorem}
+
+\begin{proof}
+The analytic function
+\[
+ H(z)=F(qz)-\mu F(z)
+\]
+has the zeros $t^k$ accumulating at the interior point $0$, so $H\equiv0$.  If
+$F(z)=\sum_{n\ge0}c_nz^n$, coefficient comparison in $F(qz)=\mu F(z)$ gives
+$(q^n-\mu)c_n=0$ for every $n$.
+\end{proof}
+
+\begin{corollary}[No analytic adjacent strip]\label{cor:no-analytic-strip}
+In the oriented \AEconj{} setting, no nonzero analytic germ at $0$ can satisfy
+\begin{equation}\label{eq:two-row-data}
+ F(Q^k)=R^k,
+ \qquad
+ F(\alpha Q^k)=\lambda R^k
+\end{equation}
+for every sufficiently large $k$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:edge-law} with $(t,q,\mu)=(Q,\alpha,\lambda)$.  There is no
+$n\in\Nzero$ with $2^n=3$ and no $n\in\Nzero$ with $3^n=2$, so $F\equiv0$, contradicting
+$F(Q^k)=R^k\ne0$.
+\end{proof}
+
+\begin{remark}
+The edge-law theorem is strictly more flexible than \cref{thm:ray-rigidity}: it uses only the
+ratio between adjacent rows and does not use the formula $R^k$.  Conversely, the one-ray
+theorem gives a contradiction before the adjacent row is introduced.  The two versions are
+kept because they lead to different finite and functional-analytic targets later.
+\end{remark}
+
+\subsection{Continuity, meromorphic germs, and finite ramification}
+
+Analyticity is genuinely stronger than continuity.  The support pattern of $Q$ and $R$
+controls the first regularity wall.
+
+\begin{proposition}[Continuity stratification]\label{prop:continuity}
+Let $p\mid Q$.
+\begin{enumerate}[label=(\roman*)]
+\item If $p\nmid R$, no function continuous at $0$ can satisfy $F(Q^k)=R^k$ for all large
+  $k$.
+\item If $p\mid R$, the assignment $F(0)=0$, $F(Q^k)=R^k$ is continuous on the closed subset
+  $\{0,Q^k:k\ge0\}$, but by \cref{cor:one-ray-AE} it has no analytic extension in the
+  \AEconj{} setting.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+If $p\nmid R$ and $R^k$ converged in $\Qp$, then its limit would be nonzero and the same
+successive-difference argument as in \cref{thm:ray-rigidity} would force $R=1$, impossible.
+If $p\mid R$, then both $Q^k$ and $R^k$ tend to zero, so the displayed assignment is
+continuous on that subset.
+\end{proof}
+
+This gives a useful local taxonomy.  An external prime lying in the symmetric difference of
+$\supp(M)$ and $\supp(A)$ creates a \emph{continuity wall} in one orientation.  An external
+prime common to both supports allows continuity but still creates an \emph{analyticity wall}.
+The common-support case is therefore not locally invisible; it merely moves the obstruction
+one rung up the regularity ladder.
+
+\begin{theorem}[Meromorphic and finite-Puiseux rigidity]\label{thm:puiseux}
+Let $K,t,s$ be as in \cref{thm:ray-rigidity}.
+\begin{enumerate}[label=(\roman*)]
+\item If a meromorphic germ $F$ at $0$ satisfies $F(t^k)=s^k$ for all sufficiently large
+  $k$, then $F(z)=z^d$ and $s=t^d$ for some $d\in\Z$.
+\item If, after a finite ramified cover $z=w^e$, a meromorphic germ realizes those values on
+  a compatible branch, then $s^e=t^d$ for some $d\in\Z$.
+\end{enumerate}
+Consequently, the oriented \AEconj{} ray admits neither a meromorphic germ nor a finite-Puiseux
+germ at $0$.
+\end{theorem}
+
+\begin{proof}
+For (i), write the Laurent germ as $F(z)=z^dG(z)$ with $d\in\Z$ and $G(0)\ne0$; the proof of
+\cref{thm:ray-rigidity} is unchanged.  For (ii), work in a complete algebraic closure and
+choose $\tau$ with $\tau^e=t$.  Applying (i) to the pullback germ in $w$ gives
+$s=\tau^d$, hence $s^e=t^d$.  In the \AEconj{} setting, $R^e=Q^d$ would imply
+$3^e=2^d$ or $2^e=3^d$ after raising the defining real identities to the positive power
+$1/x$, impossible by unique factorization.
+\end{proof}
+
+\begin{resultbox}{First frontier statement}
+A hypothetical counterexample cannot be represented at its external accumulation point by
+any ordinary analytic, meromorphic, or finitely ramified algebraic branch.  Therefore every
+successful interpolation of the conditional grid must be essentially singular at zero,
+infinitely ramified, nonlocal, or tied to a summation procedure that is not a convergent
+$p$-adic germ.  The next sections show that the canonical geometric Newton interpolation
+chooses precisely the last option: an archimedean sum whose $p$-adic terms explode.
+\end{resultbox}
+
+\section{The external-prime Newton wall}
+\label{sec:newton-wall}
+
+\subsection{The imported geometric Newton coefficients}
+
+For integers $Q\ge2$ and $R\ge1$, let
+\begin{equation}\label{eq:phi-cn}
+ \phi_n(z)=\prod_{j=0}^{n-1}(z-Q^j),
+ \qquad
+ c_n(Q,R)=
+ \frac{\prod_{j=0}^{n-1}(R-Q^j)}
+ {Q^{\binom n2}\prod_{j=1}^{n}(Q^j-1)},
+ \qquad c_0=1.
+\end{equation}
+The degree-$N$ Newton interpolant is
+\begin{equation}\label{eq:PN}
+ P_N^{Q,R}(z)=\sum_{n=0}^{N}c_n(Q,R)\phi_n(z).
+\end{equation}
+The supplied report proves the exact identity
+\begin{equation}\label{eq:native-interpolation}
+ P_N^{Q,R}(Q^k)=R^k
+ \qquad(0\le k\le N),
+\end{equation}
+and constructs a locally uniformly convergent complex entire completion from the same
+series.  Those facts are imported; the new point here is to inspect the rational coefficients
+and summands in the completion $\Qp$ selected by an external prime.
+
+The denominator in \eqref{eq:phi-cn} is obtained from
+\[
+ \prod_{j=0}^{n-1}(Q^n-Q^j)
+ =Q^{\binom n2}\prod_{h=1}^n(Q^h-1).
+\]
+When $p\mid Q$, every $Q^h-1$ is a $p$-adic unit.  Thus the entire local problem is governed
+by the numerator gaps $R-Q^j$ against the explicit quadratic denominator
+$Q^{\binom n2}$.
+
+\subsection{Exact valuation of every Newton coefficient}
+
+We keep the oriented notation \eqref{eq:ma-local}: $m=\vp(Q)>0$ and
+$a=\vp(R)\ge0$.
+Because $(Q,R)$ is an oriented hypothetical \AEconj{} pair,
+$R\ne Q^h$ for every $h\in\Nzero$; otherwise the defining positive real
+identities would give $3=2^h$ or $2=3^h$.  Thus all numerator gaps below
+are nonzero and their valuations are finite.
+
+\begin{theorem}[Exact external-prime coefficient law]\label{thm:coeff-valuation}
+For $n\ge1$, the following hold.
+
+\begin{enumerate}[label=(\alph*)]
+\item If $a=0$, then
+\begin{equation}\label{eq:coeff-a0}
+ \vp\bigl(c_n(Q,R)\bigr)
+ =\vp(R-1)-m\binom n2.
+\end{equation}
+
+\item Suppose $a>0$.  Put
+\begin{equation}\label{eq:qstar-epsilon}
+ q_* =\left\lfloor\frac{a-1}{m}\right\rfloor,
+ \qquad
+ \varepsilon=
+ \begin{cases}
+  \vp\bigl(R-Q^{a/m}\bigr)-a,&m\mid a,\\
+  0,&m\nmid a.
+ \end{cases}
+\end{equation}
+Then, for every $n\ge q_*+2$,
+\begin{equation}\label{eq:coeff-a-pos}
+ \vp\bigl(c_n(Q,R)\bigr)
+ =m\binom{q_*+1}{2}
+  +a(n-1-q_*)+\varepsilon
+  -m\binom n2.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:coeff-asymptotic}
+ \vp\bigl(c_n(Q,R)\bigr)
+ =-\frac m2n^2+\left(a+\frac m2\right)n+\bigO_{Q,R,p}(1).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Because $p\mid Q$, one has $\vp(Q^h-1)=0$ for $h\ge1$, and hence
+\begin{equation}\label{eq:coeff-val-start}
+ \vp(c_n)=\sum_{j=0}^{n-1}\vp(R-Q^j)-m\binom n2.
+\end{equation}
+If $a=0$, the term $j=0$ is $\vp(R-1)$, while for every $j\ge1$ the two terms $R$ and
+$Q^j$ have distinct valuations $0$ and $mj>0$, so $\vp(R-Q^j)=0$.  This proves
+\eqref{eq:coeff-a0}.
+
+Now let $a>0$.  The $j=0$ gap $R-1$ is a unit.  For $j\ge1$ and $mj\ne a$, the
+ultrametric inequality is strict and gives
+\[
+ \vp(R-Q^j)=\min(a,mj).
+\]
+The positive integers $j$ with $mj<a$ are exactly $1,\ldots,q_*$.  Their contribution is
+$m\binom{q_*+1}{2}$.  Every later index contributes $a$, except that if $a=mh$ there is one
+tie at $j=h$, whose excess above $a$ is exactly $\varepsilon$.  The range
+$n\ge q_*+2$ includes the first index at or above the tie threshold.  Substitution into
+\eqref{eq:coeff-val-start} gives \eqref{eq:coeff-a-pos}; expansion of the binomial coefficient
+gives \eqref{eq:coeff-asymptotic}.
+\end{proof}
+
+\begin{remark}[The tie correction is finite but indispensable]
+The term $\varepsilon$ records the case in which the valuation ray of $R$ meets the valuation
+ray of $Q^j$.  It can be arbitrarily large for unrelated integer pairs.  In a hypothetical
+\AEconj{} pair the equality $R=Q^{a/m}$ is impossible, so $\varepsilon$ is always finite, but it
+cannot simply be discarded from exact finite statements.
+\end{remark}
+
+\begin{corollary}[Quadratic denominator escape]\label{cor:quadratic-denominator}
+Let $D_n$ be the least positive integer such that $D_nc_n(Q,R)\in\Z_{(p)}$, where
+$\Z_{(p)}$ is the localization away from $p$.  Then
+\begin{equation}\label{eq:Dn-asymptotic}
+ \vp(D_n)
+ =\frac m2n^2-\left(a+\frac m2\right)n+\bigO_{Q,R,p}(1).
+\end{equation}
+In particular, the $p$-part of the denominator grows quadratically in $n$.
+\end{corollary}
+
+\subsection{The quadratic loss is intrinsic, not a Newton-basis artifact}
+
+A change of interpolation basis cannot remove the local denominator.  The following theorem
+applies to every polynomial that realizes the same finite data, regardless of its degree.
+
+For a polynomial $P(z)=\sum b_jz^j\in\Qp[z]$, write
+\[
+ \lVert P\rVert_{\mathrm G}=\max_j|b_j|_p
+\]
+for the unit-disk Gauss norm.
+
+\begin{theorem}[Universal Gauss-norm lower bound]\label{thm:universal-gauss}
+Fix $N\ge0$.  Let $P\in\Qp[z]$ be any polynomial, of arbitrary degree, satisfying
+\begin{equation}\label{eq:any-interpolant}
+ P(Q^k)=R^k\qquad(0\le k\le N).
+\end{equation}
+Then
+\begin{equation}\label{eq:gauss-lower}
+ \lVert P\rVert_{\mathrm G}
+ \ge |c_N(Q,R)|_p.
+\end{equation}
+Consequently, every rational polynomial satisfying \eqref{eq:any-interpolant} has at least
+one coefficient whose reduced denominator has $p$-adic exponent at least
+$\max\{0,-\vp(c_N)\}$.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ \Phi_{N+1}(z)=\prod_{k=0}^{N}(z-Q^k)\in\Z_p[z].
+\]
+It is monic.  Divide $P$ by $\Phi_{N+1}$ in $\Qp[z]$:
+\[
+ P=S\Phi_{N+1}+T,
+ \qquad \deg T\le N.
+\]
+Because the divisor is monic with coefficients in $\Z_p$, the ordinary long-division
+algorithm is nonexpanding for the Gauss norm: at each step one subtracts a multiple whose
+coefficients have norm no larger than the current leading coefficient.  Hence
+$\lVert T\rVert_{\mathrm G}\le\lVert P\rVert_{\mathrm G}$.
+
+At every node $Q^k$, the divisor vanishes, so $T(Q^k)=P(Q^k)=R^k$.  By uniqueness of
+interpolation in degree at most $N$, $T=P_N^{Q,R}$.  Its leading coefficient is precisely
+$c_N(Q,R)$, because $\phi_N$ is monic and all preceding Newton terms have smaller degree.
+Thus
+\[
+ |c_N|_p\le\lVert T\rVert_{\mathrm G}
+ \le\lVert P\rVert_{\mathrm G}.
+\]
+\end{proof}
+
+\begin{corollary}[No bounded exact polynomial family]\label{cor:no-bounded-polys}
+For any sequence of rational polynomials $P_N$ satisfying
+$P_N(Q^k)=R^k$ for $0\le k\le N$,
+\[
+ \log_p\lVert P_N\rVert_{\mathrm G}
+ \ge \frac m2N^2-\bigO(N).
+\]
+Thus exact interpolation through longer native prefixes forces quadratic coefficient escape
+in every polynomial model, not only in the canonical Newton one.
+\end{corollary}
+
+\begin{remark}
+This lower bound is control-sensitive only through the choice of an external prime.  Similar
+blow-up can occur at $2$ or $3$ for integer controls, but a prime $p\ge5$ contracting one of
+the conditional outputs exists only in the nonintegral branch.  Any finishing argument still
+has to use the fact that $p\nmid6$, not merely the existence of a contracting prime.
+\end{remark}
+
+\subsection{Exact valuation off the native ray}
+
+Let $u\in\Z_p^\times$ and $k\in\Nzero$.  The point $uQ^k$ lies on the same valuation circle
+as the native node $Q^k$ but is off the ray when $u\ne1$.
+
+\begin{lemma}[Off-ray Newton-basis valuation]\label{lem:phi-offray}
+For $n>k$,
+\begin{equation}\label{eq:phi-offray}
+ \vp\bigl(\phi_n(uQ^k)\bigr)
+ =m\left(kn-\binom{k+1}{2}\right)+\vp(u-1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+In
+\[
+ \phi_n(uQ^k)=\prod_{j=0}^{n-1}(uQ^k-Q^j),
+\]
+the factor $j=0$ is a unit when $k\ge1$; the formula also covers $k=0$ directly.  For
+$1\le j<k$, the valuation is $mj$; at $j=k$ it is $mk+\vp(u-1)$; and for $j>k$ it is
+$mk$.  Summing gives
+\[
+ m\sum_{j=1}^{k-1}j+mk+\vp(u-1)+mk(n-k-1)
+ =m\left(kn-\frac{k(k+1)}2\right)+\vp(u-1).
+\]
+\end{proof}
+
+Put
+\begin{equation}\label{eq:Tn}
+ T_n(z)=c_n(Q,R)\phi_n(z).
+\end{equation}
+Combining \cref{thm:coeff-valuation,lem:phi-offray} immediately gives:
+
+\begin{corollary}[Quadratic off-ray explosion]\label{cor:term-explosion}
+For fixed $u\in\Z_p^\times$, $u\ne1$, and fixed $k$, one has
+\begin{equation}\label{eq:Tn-asymptotic}
+ \vp\bigl(T_n(uQ^k)\bigr)
+ =-\frac m2n^2+
+ \left(a+m\left(k+\frac12\right)\right)n
+ +\bigO_{Q,R,p,u,k}(1).
+\end{equation}
+Hence $T_n(uQ^k)$ does not tend to zero in $\Qp$; its $p$-adic absolute value tends to
+infinity at a quadratic-exponential rate.
+\end{corollary}
+
+For the adjacent \AEconj{} row, $u=\alpha\in\{2,3\}$ and $p\ge5$, so
+$\vp(u-1)=0$.  The formula is then especially clean.
+
+\subsection{The exact term ratio and last-term dominance}
+
+The two quadratic formulas above can be compressed into one exact first-order identity.
+
+\begin{proposition}[Exact Newton-term ratio]\label{prop:term-ratio}
+For every $n\ge0$ for which $T_n(z)\ne0$,
+\begin{equation}\label{eq:term-ratio}
+ \frac{T_{n+1}(z)}{T_n(z)}
+ =\frac{(R-Q^n)(z-Q^n)}{Q^n(Q^{n+1}-1)}.
+\end{equation}
+For $z=uQ^k$, once $n>k$ and $mn>a$,
+\begin{equation}\label{eq:term-ratio-vp}
+ \vp\left(\frac{T_{n+1}(uQ^k)}{T_n(uQ^k)}\right)
+ =a+mk-mn.
+\end{equation}
+For fixed complex $z$ in the ordinary absolute value,
+\begin{equation}\label{eq:term-ratio-complex}
+ \frac{T_{n+1}(z)}{T_n(z)}\longrightarrow\frac1Q.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The quotient $c_{n+1}/c_n$ is
+\[
+ \frac{R-Q^n}{Q^n(Q^{n+1}-1)},
+\]
+and $\phi_{n+1}/\phi_n=z-Q^n$, giving \eqref{eq:term-ratio}.  At the external prime, for
+$n>k$ one has $\vp(uQ^k-Q^n)=mk$, while $mn>a$ gives
+$\vp(R-Q^n)=a$; $Q^{n+1}-1$ is a unit.  This proves
+\eqref{eq:term-ratio-vp}.  In the ordinary absolute value, both numerator factors are
+asymptotic to $-Q^n$, whereas the denominator is asymptotic to $Q^{2n+1}$.
+\end{proof}
+
+Equation \eqref{eq:term-ratio-complex} is the local reason for the complex entire convergence
+proved in the companion report.  Equation \eqref{eq:term-ratio-vp} points in exactly the
+opposite direction: its right side tends linearly to $-\infty$.
+
+\begin{theorem}[Eventual last-term domination]\label{thm:last-term}
+Fix $u\in\Z_p^\times$, $u\ne1$, and $k\in\Nzero$.  Then there exists $N_0$ such that for all
+$N\ge N_0$,
+\begin{equation}\label{eq:last-term}
+ \vp\bigl(P_N^{Q,R}(uQ^k)\bigr)
+ =\vp\bigl(T_N(uQ^k)\bigr).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:PN-offray-asymptotic}
+ \vp\bigl(P_N^{Q,R}(uQ^k)\bigr)
+ =-\frac m2N^2+
+ \left(a+m\left(k+\frac12\right)\right)N+\bigO(1).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:term-ratio-vp}, the valuations of successive terms are strictly decreasing once
+$n>k+a/m$.  By \eqref{eq:Tn-asymptotic}, they tend to $-\infty$.  Therefore, for all
+sufficiently large $N$, the final term $T_N$ has valuation strictly smaller than every
+preceding term.  In a nonarchimedean field a sum with a unique term of least valuation has the
+same valuation as that term, proving \eqref{eq:last-term}; the asymptotic follows from
+\cref{cor:term-explosion}.
+\end{proof}
+
+\begin{corollary}[Adjacent-row repulsion]\label{cor:adjacent-repulsion}
+In the oriented \AEconj{} setting, fix $k\in\Nzero$ and put $z=\alpha Q^k$.  Then, for all
+sufficiently large $N$,
+\begin{align}
+ \vp\bigl(P_N^{Q,R}(z)-\lambda R^k\bigr)
+ &=\vp\bigl(P_N^{Q,R}(z)\bigr)\label{eq:residual-equals-P}\\
+ &=-\frac m2N^2+
+ \left(a+m\left(k+\frac12\right)\right)N+\bigO(1).
+ \label{eq:adjacent-residual-asymptotic}
+\end{align}
+Thus the native-ray interpolants become not merely inaccurate but quadratically
+$p$-adically repelled from the prescribed adjacent-row integer.
+\end{corollary}
+
+\begin{proof}
+The target $\lambda R^k$ has fixed finite valuation $ka$, because $\lambda$ is a $p$-adic
+unit.  The valuation in \eqref{eq:PN-offray-asymptotic} tends to $-\infty$, so eventually it
+is strictly smaller than $ka$.  The ultrametric inequality then gives
+\eqref{eq:residual-equals-P}.
+\end{proof}
+
+\begin{resultbox}{The $p$-adic Newton wall}
+The same rational Newton series exhibits three mutually compatible behaviors.
+\begin{enumerate}[label=(\roman*)]
+\item At a native node $z=Q^k$, every term with $n>k$ vanishes identically, so the value
+  $R^k$ is a finite algebraic identity valid in every completion.
+\item At a fixed complex point, the term ratio tends to $1/Q$, so the series converges
+  geometrically and defines the entire function constructed in the supplied report.
+\item At every off-ray point $z=uQ^k$ with $u$ a $p$-adic unit different from $1$, the term
+  valuations tend to $-\infty$ quadratically, and the partial sums are eventually dominated
+  by their last term.
+\end{enumerate}
+The native ray is therefore a set of exact truncation points surrounded, in the external
+$p$-adic geometry, by maximal divergence.  This is not a numerical accident and not a
+choice of summation order; it follows from the exact ratio \eqref{eq:term-ratio}.
+\end{resultbox}
+
+\subsection{Why the wall is not yet a contradiction}
+
+The wall says that the canonical \emph{archimedean} completion of the native interpolation
+data has no corresponding $p$-adic convergence off the ray.  It does not say that the
+complex value at an off-ray rational point must equal a $p$-adic sum of the same terms.  An
+infinite sum of rational numbers may converge in one completion and diverge in another; even
+when it converges in both, the two limits need not be the same rational number.
+
+At native nodes, equality is place-independent only because the series truncates.  At the
+adjacent row it does not truncate, and \cref{cor:adjacent-repulsion} shows exactly how the
+place dependence enters.  Any proof that transfers the complex entire completion into a
+$p$-adic analytic germ without an additional arithmetic compatibility theorem would be
+circular.
+
+The product formula also does not close the gap.  A nonzero rational residual can have a
+$p$-denominator of size $p^{\Theta(N^2)}$ while being only geometrically small in the
+ordinary absolute value.  The elementary lower bound supplied by its denominator is then of
+order $\exp(-\Theta(N^2))$, far below an archimedean error of order $\exp(-\Theta(N))$.
+Quadratic denominator escape therefore defeats, rather than helps, a naive unit-locking
+argument.
+
+\begin{deadbox}{Closed shortcut: ``the entire function has rational data, so evaluate it $p$-adically''}
+The Taylor coefficients of the complex completion are not obtained by a coefficientwise
+finite rational operation; each fixed Taylor coefficient receives infinitely many Newton
+contributions.  The complex convergence that defines those coefficients is itself
+place-dependent.  Rational values at the native nodes come from exact truncation and do not
+supply an adelic Taylor expansion.  This shortcut cannot be repaired without a separate
+overconvergence or algebraicity theorem.
+\end{deadbox}
+
+\section{The Tate-algebra edge operator and finite-strip defects}
+\label{sec:tate-edge}
+
+The analytic contradiction in \cref{thm:edge-law} is qualitative.  On finite polynomials the
+same mechanism is diagonal and quantitative.
+
+\subsection{The edge spectrum}
+
+For a radius $\rho>0$ and a polynomial $P(z)=\sum_{j=0}^db_jz^j\in\Qp[z]$, put
+\begin{equation}\label{eq:weighted-gauss}
+ \lVert P\rVert_\rho=\max_{0\le j\le d}|b_j|_p\rho^j.
+\end{equation}
+Define the edge operator
+\begin{equation}\label{eq:edge-operator}
+ \mathcal L_{\alpha,\lambda}P(z)=P(\alpha z)-\lambda P(z).
+\end{equation}
+Since $p\ge5$, $|\alpha|_p=|\lambda|_p=1$, and
+\begin{equation}\label{eq:edge-diagonal}
+ \mathcal L_{\alpha,\lambda}P
+ =\sum_{j=0}^d(\alpha^j-\lambda)b_jz^j.
+\end{equation}
+
+\begin{definition}[Finite edge gap]\label{def:finite-gap}
+For $d\in\Nzero$, set
+\begin{equation}\label{eq:sigma-d}
+ \sigma_{p,d}(\alpha,\lambda)
+ =\min_{0\le j\le d}|\alpha^j-\lambda|_p.
+\end{equation}
+It is positive because no ordinary integer power of $2$ equals $3$, and no ordinary integer
+power of $3$ equals $2$.
+\end{definition}
+
+\begin{proposition}[Finite spectral inequality]\label{prop:finite-spectral}
+For every $P\in\Qp[z]$ of degree at most $d$,
+\begin{equation}\label{eq:finite-spectral}
+ \lVert\mathcal L_{\alpha,\lambda}P\rVert_\rho
+ \ge \sigma_{p,d}(\alpha,\lambda)\lVert P\rVert_\rho.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+This is coefficientwise from \eqref{eq:edge-diagonal}:
+\[
+ \max_j |\alpha^j-\lambda|_p|b_j|_p\rho^j
+ \ge\left(\min_j|\alpha^j-\lambda|_p\right)
+      \max_j|b_j|_p\rho^j.
+\]
+\end{proof}
+
+For the full Tate algebra, define
+\begin{equation}\label{eq:sigma-infty}
+ \sigma_p(\alpha,\lambda)
+ =\inf_{j\ge0}|\alpha^j-\lambda|_p.
+\end{equation}
+The closure of the cyclic semigroup $\{\alpha^j:j\ge0\}$ is compact in $\Z_p^\times$, so
+\begin{equation}\label{eq:closure-criterion}
+ \sigma_p(\alpha,\lambda)>0
+ \quad\Longleftrightarrow\quad
+ \lambda\notin\overline{\{\alpha^j:j\ge0\}}.
+\end{equation}
+If $\lambda$ is not even a power of $\alpha$ modulo $p$, then every
+$\alpha^j-\lambda$ is a $p$-adic unit and $\sigma_p=1$.
+
+\begin{proposition}[Tate spectral gap]\label{prop:tate-gap}
+If $\sigma_p(\alpha,\lambda)>0$, then on every Tate algebra on a disk stable under
+$z\mapsto\alpha z$,
+\begin{equation}\label{eq:tate-gap}
+ \lVert\mathcal L_{\alpha,\lambda}F\rVert_\rho
+ \ge\sigma_p(\alpha,\lambda)\lVert F\rVert_\rho.
+\end{equation}
+The operator is injective and has a bounded coefficientwise inverse on its image.
+\end{proposition}
+
+\begin{proof}
+The proof of \cref{prop:finite-spectral} passes to convergent series.  Injectivity also follows
+from the absence of an exact eigenvalue $\alpha^j=\lambda$.
+\end{proof}
+
+\begin{remark}[Resonant primes]
+When $\lambda$ lies in the $p$-adic closure of powers of $\alpha$, the infinite gap vanishes,
+but every finite gap \eqref{eq:sigma-d} remains positive.  The quantities
+\[
+ \mu_{p,d}(\alpha,\lambda)
+ :=-\log_p\sigma_{p,d}(\alpha,\lambda)
+ =\max_{0\le j\le d}\vp(\alpha^j-\lambda)
+\]
+measure the exact small-divisor loss.  This separates two local branches:
+\emph{nonresonant} external primes, for which the edge operator is uniformly bounded below,
+and \emph{resonant} external primes, where increasingly accurate congruences
+$\alpha^j\equiv\lambda\pmod{p^r}$ may occur.  Any argument using a Tate inverse must keep this
+branch distinction explicit.
+\end{remark}
+
+\subsection{A finite-strip quotient lower bound}
+
+Let $K\le N$ and define the tail-node polynomial
+\begin{equation}\label{eq:PhiKN}
+ \Phi_{K,N}(z)=\prod_{k=K}^{N}(z-Q^k).
+\end{equation}
+If a polynomial $P$ satisfies the adjacent-row identity at those nodes, then
+$\mathcal L_{\alpha,\lambda}P$ is divisible by $\Phi_{K,N}$.
+
+\begin{theorem}[Finite-strip defect theorem]\label{thm:finite-strip}
+Let $P\in\Qp[z]$ have degree at most $d$ and suppose
+\begin{equation}\label{eq:finite-strip-hyp}
+ P(\alpha Q^k)=\lambda P(Q^k)
+ \qquad(K\le k\le N).
+\end{equation}
+Write
+\begin{equation}\label{eq:defect-factorization}
+ \mathcal L_{\alpha,\lambda}P(z)
+ =\Phi_{K,N}(z)\,S(z).
+\end{equation}
+Fix $0<\rho<1$ such that $|Q|_p^K\le\rho$.  If additionally
+$P(Q^K)=R^K$, then
+\begin{equation}\label{eq:defect-lower}
+ \lVert S\rVert_\rho
+ \ge
+ \sigma_{p,d}(\alpha,\lambda)
+ |R|_p^K\rho^{-(N-K+1)}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The roots in \eqref{eq:finite-strip-hyp} give the factorization
+\eqref{eq:defect-factorization}.  The weighted Gauss norm is multiplicative, and because
+$|Q|_p^k\le|Q|_p^K\le\rho$ for every $k\ge K$,
+\begin{equation}\label{eq:Phi-norm}
+ \lVert\Phi_{K,N}\rVert_\rho
+ =\prod_{k=K}^{N}\max(\rho,|Q|_p^k)
+ =\rho^{N-K+1}.
+\end{equation}
+Evaluation inside the disk gives
+\[
+ |R|_p^K=|P(Q^K)|_p\le\lVert P\rVert_\rho.
+\]
+Apply \cref{prop:finite-spectral} and multiplicativity:
+\[
+ \rho^{N-K+1}\lVert S\rVert_\rho
+ =\lVert\mathcal L_{\alpha,\lambda}P\rVert_\rho
+ \ge\sigma_{p,d}\lVert P\rVert_\rho
+ \ge\sigma_{p,d}|R|_p^K.
+\]
+\end{proof}
+
+\begin{corollary}[No tame defect quotient]\label{cor:no-tame-defect}
+Let $P_N$ be the unique polynomial of degree at most $2N+1$ interpolating both rows
+\[
+ P_N(Q^k)=R^k,
+ \qquad
+ P_N(\alpha Q^k)=\lambda R^k
+ \qquad(0\le k\le N).
+\]
+Fix $K$ with $|Q|_p^K\le\rho<1$.  In the factorization
+\[
+ \mathcal L_{\alpha,\lambda}P_N=\Phi_{K,N}S_{K,N},
+\]
+one has
+\begin{equation}\label{eq:SKN-growth}
+ \lVert S_{K,N}\rVert_\rho
+ \ge
+ \sigma_{p,2N+1}(\alpha,\lambda)
+ |R|_p^K\rho^{-(N-K+1)}.
+\end{equation}
+At a nonresonant external prime, the quotient norm therefore grows at least geometrically
+like $\rho^{-N}$.
+\end{corollary}
+
+The zeros forced by a long adjacent strip make the defect small on a strict disk, but the
+edge spectral inequality prevents the whole polynomial from becoming small.  The quotient
+$S_{K,N}$ must absorb the difference.  This is the finite analogue of the essential
+singularity forced by \cref{cor:no-analytic-strip}.
+
+\begin{target}[Subexponential defect quotient]\label{target:defect-quotient}
+Find an arithmetic construction of exact finite two-row interpolants for which, at some
+external prime and some fixed $\rho<1$,
+\[
+ \log\lVert S_{K,N}\rVert_\rho=o(N)
+ \quad\text{and}\quad
+ -\log\sigma_{p,\deg P_N}(\alpha,\lambda)=o(N).
+\]
+Then \eqref{eq:defect-lower} is impossible for large $N$, proving the conjecture in that
+branch.
+\end{target}
+
+The first requirement is the substantive one.  Canonical polynomial interpolation generally
+has much larger local height, and \cref{thm:universal-gauss} shows that no native-ray exact
+interpolant can be uniformly bounded.  Nevertheless, \cref{target:defect-quotient} is a
+precise finite target: it asks for control of the \emph{edge quotient}, not of every
+coefficient of the interpolant.
+
+\section{Overconvergence, compactness, and a Robba-to-Tate bridge}
+\label{sec:overconvergence}
+
+\subsection{A normal-family obstruction}
+
+The local classification theorem can be reached from finite data by compactness, provided
+one has genuine overconvergence.
+For a convergent series $F(z)=\sum_{j\ge0}b_jz^j$ on the closed disk of radius
+$\rho$, write $\lVert F\rVert_\rho=\sup_j |b_j|_p\rho^j$.
+
+\begin{theorem}[No uniformly overconvergent interpolation family]
+\label{thm:no-overconvergent-family}
+Let $\rho>1$.  Suppose $F_N(z)=\sum_{j\ge0}b_{N,j}z^j$ is analytic on the closed
+$p$-adic disk of radius $\rho$, and suppose
+\begin{equation}\label{eq:FN-prefix}
+ F_N(Q^k)=R^k\qquad(0\le k\le N).
+\end{equation}
+Then the norms $\lVert F_N\rVert_\rho$ are unbounded as $N\to\infty$.
+The same conclusion holds if \eqref{eq:FN-prefix} is replaced by the two-row prefix.
+\end{theorem}
+
+\begin{proof}
+Assume $\lVert F_N\rVert_\rho\le C$.  Then
+$|b_{N,j}|_p\le C\rho^{-j}$.  Closed bounded subsets of $\Qp$ are compact, so a diagonal
+subsequence makes every coefficient $b_{N,j}$ converge.  The geometric bound on the tails
+makes that subsequence converge uniformly on the unit disk to an analytic function
+$F(z)=\sum b_jz^j$.  For each fixed $k$, the equality $F_N(Q^k)=R^k$ holds eventually, so
+uniform convergence gives $F(Q^k)=R^k$.  This contradicts
+\cref{cor:one-ray-AE}.  The two-row version is immediate as well.
+\end{proof}
+
+\begin{remark}
+Boundedness on the unit disk alone is not enough for this compactness argument: coefficient
+bounds need not give a uniformly small tail.  The strict radius gain $\rho>1$ is exactly the
+overconvergence input.  This is why a Robba-ring or punctured-disk construction is not yet a
+solution; it must be shown to descend through the puncture with a quantitative radius margin.
+\end{remark}
+
+\begin{corollary}[Coefficient escape for any overconvergent model]
+Any sequence of exact finite-prefix models analytic on one common disk of radius
+$\rho>1$ must have
+\[
+ \limsup_{N\to\infty}\lVert F_N\rVert_\rho=\infty.
+\]
+For polynomial models, \cref{thm:universal-gauss} gives the stronger explicit lower bound
+$p^{mN^2/2-\bigO(N)}$ already on the unit disk.
+\end{corollary}
+
+\subsection{The removable-singularity interface}
+
+The grid values themselves naturally live on a punctured set converging to zero.  It is easy
+to imagine functions on a punctured disk that realize arbitrary values there while having an
+essential singularity at zero.  The useful theorem would not be another interpolation
+existence statement, but a descent theorem that makes the singularity removable.
+
+\begin{target}[Robba-to-Tate descent]\label{target:robba-tate}
+Construct, from the integer grid alone, a function or finite-rank difference module over a
+Robba ring at an external prime with all three properties:
+\begin{enumerate}[label=(\roman*)]
+\item it realizes the native and adjacent row values in \eqref{eq:two-row-data};
+\item its slopes, denominators, or Frobenius structure satisfy an arithmetic boundedness
+  condition derived from $M,A\in\Z$;
+\item that boundedness forces descent to a Tate algebra, a meromorphic germ, or a finite
+  Puiseux extension at zero.
+\end{enumerate}
+Any such descent proves the conjecture by
+\cref{cor:no-analytic-strip,thm:puiseux}.
+\end{target}
+
+This target is deliberately modular.  It does not demand that the power branch itself be
+postulated $p$-adically.  It asks for an arithmetic object first and regularity second.  The
+Newton wall says what the descent theorem must defeat: the obvious one-axis completion has
+quadratically escaping denominators and no off-ray $p$-adic summation.
+
+\subsection{A coefficient-growth criterion}
+
+Let $F(z)=\sum_{n\ge n_0}b_nz^n$ be a formal Laurent series over $\Qp$.  It defines a
+meromorphic germ on a punctured neighborhood of zero whenever the positive tail has positive
+radius of convergence and the negative tail is finite.  By \cref{thm:puiseux}, no such series
+can realize the oriented ray.
+
+Thus any formal object carrying the data must satisfy at least one of:
+\begin{enumerate}
+\item infinitely many negative powers;
+\item zero $p$-adic radius for the positive tail;
+\item exponents with unbounded denominators, so that no finite ramified cover turns the object
+  into a Laurent series;
+\item failure of the formal values to agree with the integer samples under convergent
+  evaluation.
+\end{enumerate}
+This four-way escape list is useful when auditing proposed constructions.  For example, a
+$G$-function-style series with algebraic coefficients, controlled denominators, and positive
+$p$-adic radius at almost every prime would immediately be incompatible with an external
+\AEconj{} ray, provided its sample equalities were algebraic identities rather than purely
+archimedean limits.
+
+\begin{target}[Adelic positive-radius criterion]\label{target:adelic-radius}
+Produce a series $F(z)=\sum b_nz^n$ with coefficients in one number field such that:
+\begin{enumerate}[label=(\roman*)]
+\item the equalities $F(Q^k)=R^k$ and $F(\alpha Q^k)=\lambda R^k$ are certified by finite
+  algebraic identities or by a summation theorem valid in every completion;
+\item at every prime outside a fixed set, and in particular at an external $p$, the
+  coefficients have at most exponential denominator growth, so the $p$-adic radius is
+  positive.
+\end{enumerate}
+Then the external-prime edge theorem closes the conjecture.
+\end{target}
+
+The first clause is essential.  Complex equality of an infinite sum to an integer is not an
+adelic identity.
+
+\section{A finite-rank \texorpdfstring{$q$}{q}-difference route}
+\label{sec:q-difference}
+
+\subsection{Why two independent dilations are structurally promising}
+
+A genuine interpolation of the conditional grid would carry two dilation laws,
+\begin{equation}\label{eq:two-dilations}
+ F(2z)=3F(z),
+ \qquad
+ F(Mz)=AF(z).
+\end{equation}
+Under a nonintegral solution, $2$ and $M$ are multiplicatively independent by
+\cref{lem:x-positive-trans}.  Systems of linear $q$-difference equations for two
+multiplicatively independent dilation parameters are highly rigid under rationality,
+finite-rank, and consistency hypotheses.  Results of B\'ezivin and Boutabaa, and the later
+unified treatment of Sch\"afke and Singer, show that common formal or meromorphic solutions
+of sufficiently regular independent difference systems often reduce to rational or constant
+normal forms \cite{Bezivin1992,BezivinBoutabaa1992,SchaefkeSinger2019}.
+
+The present scalar equations are already consistent: the constants commute and
+$3A=A3$.  Their formal Laurent obstruction is immediate.  If
+$F(z)=\sum_{n\in\Z}c_nz^n$ has only finitely many negative powers, then the first equation in
+\eqref{eq:two-dilations} gives
+\[
+ (2^n-3)c_n=0
+\]
+for every $n$, hence $F=0$.  On the universal cover of $\C^\times$, however, the nonzero
+solution $z^\theta$ exists.  The gap is exactly local regularity and monodromy, not
+consistency.
+
+\subsection{Why existing two-\texorpdfstring{$q$}{q} theorems do not apply automatically}
+
+The integer table gives values at a discrete semigroup, not a finite-dimensional difference
+module over $\overline\Q(z)$.  The complex geometric Newton completion satisfies a one-axis
+\emph{inhomogeneous} equation with a $q$-product defect; it does not satisfy both homogeneous
+laws in \eqref{eq:two-dilations}.  The external-prime Newton wall further shows that this
+completion has no off-ray $p$-adic germ from which one could read a local difference module.
+
+Therefore it would be an overstatement to invoke a two-$q$ rationality theorem directly.
+One first needs a finite-rank closure of the arithmetic defects.
+
+\begin{target}[Finite-rank edge cocycle]\label{target:finite-rank-cocycle}
+Construct a vector $Y(z)$ of finitely many arithmetic interpolation functions and rational
+matrices $B_2(z),B_M(z)\in\operatorname{GL}_r(\overline\Q(z))$ such that
+\begin{equation}\label{eq:finite-rank-system}
+ Y(2z)=B_2(z)Y(z),
+ \qquad
+ Y(Mz)=B_M(z)Y(z),
+\end{equation}
+with the consistency identity
+\begin{equation}\label{eq:consistency}
+ B_2(Mz)B_M(z)=B_M(2z)B_2(z),
+\end{equation}
+and with one coordinate of $Y$ carrying the exact conditional integer grid.  Prove that the
+system is regular singular or overconvergent at an external prime.  A reduction theorem for
+consistent independent $q$-difference systems would then place the coordinate in a
+Laurent/Puiseux class, contradicted by \cref{thm:puiseux}.
+\end{target}
+
+This target is narrower than ``find an analytic interpolation.''  Finite rank can sometimes
+be proved from recurrences among defects even when no scalar completion is regular.  The
+companion report's exact endpoint defect and two-axis connection formulas provide raw
+material, but their current defect family contains nonrational infinite $q$-products and is
+not known to close in finite rank.
+
+\subsection{A practical search protocol}
+
+A computational search for \cref{target:finite-rank-cocycle} should not fit values blindly.
+It should:
+\begin{enumerate}
+\item choose a small list of canonical one-axis completions and endpoint defects from the
+  supplied report;
+\item apply both dilation operators repeatedly and reduce every expression in a fixed
+  symbolic basis of $q$-products and Newton kernels;
+\item compute the rank of the span over $\Q(z)$ at increasing truncation order;
+\item reject bases whose rank grows with the truncation order;
+\item for any apparently stable rank, solve the exact rational-function consistency equations
+  and verify them symbolically;
+\item only then analyze local slopes at primes $p\mid MA$, with external primes separated
+  from $2$ and $3$.
+\end{enumerate}
+A stable finite rank would be a substantive new structure theorem.  Failure with rank growth
+would close another route without pretending that numerical near-dependence is a proof.
+
+\section{Adelic and control audits}
+\label{sec:audits}
+
+\subsection{The integer controls remain an important trap}
+
+For a control exponent $x=d\in\N$, the real branch $z^\theta$ still has no $2$-adic analytic
+germ interpolating $(2^{dk},3^{dk})$.  Therefore the mere statement ``the irrational power
+branch is not $p$-adically analytic'' is control-blind.  The external-prime program becomes
+potentially discriminating only when a construction uses $p\nmid6$ to obtain regularity,
+bounded denominators, an edge spectral gap, or a finite-rank local module.  Any proposed
+bridge should answer the concrete question:
+
+\begin{quote}
+Which step works at a prime $p\ge5$ dividing a hypothetical output but has no analogue at the
+structural primes $2$ and $3$ of the integer controls?
+\end{quote}
+
+The exact valuation formulas provide one possible answer: at an external prime, the
+quadratic denominator lies outside $\Z[1/6]$ and directly interacts with an edge operator
+whose two multipliers are units.  At present that interaction diagnoses singularity; it does
+not yet reverse it into regularity.
+
+\subsection{No contradiction from the product formula at current scales}
+
+The canonical off-ray term has
+\[
+ \log|T_n(uQ^k)|_p
+ =\frac m2n^2\log p+\bigO(n),
+\]
+while in the ordinary absolute value its ratio tends to $1/Q$, so
+$\log|T_n|_\infty=-n\log Q+\bigO(1)$ at fixed $z$ away from accidental zeros.  These two
+scales do not oppose one another: the remaining finite places absorb the quadratic balance.
+A useful product-formula object would need either
+\begin{enumerate}
+\item quadratic archimedean smallness matching the external denominator;
+\item cancellation of the external denominator in the \emph{reduced} rational residual; or
+\item simultaneous positive valuation at enough other places to exceed the global height.
+\end{enumerate}
+None follows from the one-axis Newton formula.
+
+\subsection{Sampling is not regularity}
+
+The points $Q^k$ accumulate at zero $p$-adically, but a function specified only on those
+points need not be continuous, let alone analytic.  Integrality of the values does not change
+that.  \Cref{thm:ray-rigidity,thm:edge-law} should therefore be read as
+\emph{closure theorems}: once a regular germ exists, the conjecture closes immediately.  The
+construction of that germ, or of a finite-rank object forced to become one, is the missing
+arithmetic theorem.
+
+\begin{warningbox}{Logical boundary}
+No argument in this report infers $p$-adic continuity from real continuity, infers a $p$-adic
+sum from a complex sum, or treats integer-valued sampling as an analytic extension theorem.
+Those three inferences are precisely where several attractive one-page ``proofs'' fail.
+\end{warningbox}
+
+\section{Exact computational audit}
+\label{sec:computational-audit}
+
+The new valuation statements are symbolic, but an exact audit is useful for detecting index
+errors, especially in the valuation-tie case.  The audit uses Python's
+\texttt{fractions.Fraction}; no floating-point arithmetic is involved.  For each test case it
+constructs $c_n$, $\phi_n(uQ^k)$, the Newton term $T_n$, and the partial sum $P_N$ as exact
+rational numbers, then compares directly computed valuations with the formulas in
+\cref{thm:coeff-valuation,lem:phi-offray}.
+
+The test script used for this report has SHA-256 digest
+\begin{center}
+\ttfamily\small
+20458cc7e3174c8a7d30f009e8259eba1f6629b044fdc33a997b495a6bdd49fe.
+\end{center}
+Its complete source is reproduced in \cref{app:audit-code}.
+
+\subsection{Case I: unit output at the contracting prime}
+
+Take
+\[
+ Q=35,\qquad R=22,\qquad p=5,\qquad u=2,\qquad k=2.
+\]
+Here $m=1$, $a=0$, and $\vp(R-1)=0$.  Thus
+\[
+ \vp(c_n)=-\binom n2,
+ \qquad
+ \vp\bigl(\phi_n(2Q^2)\bigr)=2n-3\quad(n>2),
+\]
+so
+\begin{equation}\label{eq:case1-term}
+ \vp(T_n(2Q^2))=-\frac{(n-2)(n-3)}2
+ \qquad(n>2).
+\end{equation}
+The exact audit is:
+
+\begin{table}[H]
+\centering
+\caption{Case I: exact valuations.}
+\label{tab:case1}
+\begin{tabular}{r@{\qquad}r@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $\vp(c_n)$ & $\vp(\phi_n)$ & $\vp(T_n)$ & $\vp(P_n)$\\
+\midrule
+0&0&0&0&0\\
+1&0&0&0&0\\
+2&-1&1&0&0\\
+3&-3&3&0&1\\
+4&-6&5&-1&-1\\
+5&-10&7&-3&-3\\
+6&-15&9&-6&-6\\
+7&-21&11&-10&-10\\
+8&-28&13&-15&-15\\
+9&-36&15&-21&-21\\
+10&-45&17&-28&-28\\
+11&-55&19&-36&-36\\
+12&-66&21&-45&-45\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+From $n=4$ onward, the final term is already the unique term of least valuation, so the
+partial sum has exactly the predicted last-term valuation.
+
+\subsection{Case II: a genuine valuation tie}
+
+Take
+\[
+ Q=10,\qquad R=110,\qquad p=5,\qquad u=2,\qquad k=1.
+\]
+Now $m=a=1$, and the tie occurs at $j=1$:
+\[
+ \varepsilon=\vp(110-10)-1=\vp(100)-1=1.
+\]
+Formula \eqref{eq:coeff-a-pos} gives, for $n\ge2$,
+\[
+ \vp(c_n)=n-\binom n2.
+\]
+The audit confirms that omitting $\varepsilon$ would shift every coefficient valuation from
+$n=2$ onward.
+
+\begin{table}[H]
+\centering
+\caption{Case II: exact valuations with a nonzero tie correction.}
+\label{tab:case2}
+\begin{tabular}{r@{\qquad}r@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $\vp(c_n)$ & $\vp(\phi_n)$ & $\vp(T_n)$ & $\vp(P_n)$\\
+\midrule
+0&0&0&0&0\\
+1&0&0&0&1\\
+2&1&1&2&1\\
+3&0&2&2&1\\
+4&-2&3&1&1\\
+5&-5&4&-1&-1\\
+6&-9&5&-4&-4\\
+7&-14&6&-8&-8\\
+8&-20&7&-13&-13\\
+9&-27&8&-19&-19\\
+10&-35&9&-26&-26\\
+11&-44&10&-34&-34\\
+12&-54&11&-43&-43\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Case III: integral valuation slope but unit mismatch}
+
+Take
+\[
+ Q=25,\qquad R=75,\qquad p=5,\qquad u=2,\qquad k=1.
+\]
+Here $m=a=2$, so $a/m=1$ is an integral candidate order.  Nevertheless
+$R/Q=3\ne1$, exactly the unit obstruction in \cref{rem:newton-slope}.  The tie excess is zero,
+and
+\[
+ \vp(c_n)=-(n-1)(n-2)\qquad(n\ge2).
+\]
+
+\begin{table}[H]
+\centering
+\caption{Case III: an integral slope does not prevent quadratic escape.}
+\label{tab:case3}
+\begin{tabular}{r@{\qquad}r@{\qquad}r@{\qquad}r@{\qquad}r}
+\toprule
+$n$ & $\vp(c_n)$ & $\vp(\phi_n)$ & $\vp(T_n)$ & $\vp(P_n)$\\
+\midrule
+0&0&0&0&0\\
+1&0&0&0&2\\
+2&0&2&2&2\\
+3&-2&4&2&2\\
+4&-6&6&0&0\\
+5&-12&8&-4&-4\\
+6&-20&10&-10&-10\\
+7&-30&12&-18&-18\\
+8&-42&14&-28&-28\\
+9&-56&16&-40&-40\\
+10&-72&18&-54&-54\\
+11&-90&20&-70&-70\\
+12&-110&22&-88&-88\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All formula checks through $n=12$ pass exactly in the three branches.  The cases are not
+intended as candidate \AEconj{} outputs; they are local unit tests covering $a=0$, a positive
+valuation with nonzero tie excess, and an integral slope with unit mismatch.
+
+\subsection{What to compute next}
+
+The next computational experiment should not scan arbitrary integer pairs for a false
+counterexample.  It should test the finite-rank and defect-quotient targets:
+
+\begin{enumerate}
+\item For many pairs $(Q,R)$ and external primes $p\mid Q$, construct the exact two-row
+  interpolant through $Q^k,\alpha Q^k$ for $0\le k\le N$.
+\item Factor $\mathcal L_{\alpha,\lambda}P_N$ by the largest forced tail product
+  $\Phi_{K,N}$ and record the weighted Gauss norm of the quotient.
+\item Separate primes by the resonance statistic $\mu_{p,d}(\alpha,\lambda)$.
+\item Compare actual pairs arising from the supplied finite search with integer controls and
+  with random pairs having the same valuation profile.
+\item Apply repeated $2$- and $Q$-dilations to the canonical defect family and compute exact
+  ranks over $\Q(z)$, looking for stabilization rather than numerical singular values.
+\end{enumerate}
+
+A stable finite rank or subexponential defect quotient would be a positive discovery.  Growth
+linear in $N$ for the rank, or geometric growth saturating \eqref{eq:SKN-growth}, would be a
+clean negative closure.
+
+\section{Lean formalization plan}
+\label{sec:lean-plan}
+
+The new package splits naturally into finite algebra, elementary valuation combinatorics, and
+nonarchimedean analysis.  The first two layers are substantially easier to formalize than the
+full analytic identity theorem and should be completed first.
+
+\subsection{Proposed module graph}
+
+\begingroup\small
+\begin{longtable}{@{}p{0.35\textwidth}p{0.16\textwidth}p{0.41\textwidth}@{}}
+\caption{Proposed Lean modules and trust boundary.}\label{tab:lean-modules}\\
+\toprule
+Module & Initial status & Main content\\
+\midrule
+\endfirsthead
+\toprule
+Module & Initial status & Main content\\
+\midrule
+\endhead
+\texttt{ExternalPrimeOrientation} & finite / elementary & The external-prime lemma; orientation data; unit facts for $p\ge5$; impossibility of $R=Q^d$ in either \AEconj{} orientation.\\
+\texttt{QNewtonCoeffValuation} & Lean-ready & Formula \eqref{eq:coeff-val-start}; $a=0$ branch; threshold $q_*$; unique tie and excess $\varepsilon$; exact formula \eqref{eq:coeff-a-pos}.\\
+\texttt{OffRayNewtonBasis} & Lean-ready & Factor-by-factor proof of \eqref{eq:phi-offray}; exact term ratio \eqref{eq:term-ratio}; eventual negative ratio valuation.\\
+\texttt{NewtonLastTermDominance} & Lean-ready & Strictly decreasing valuations, unique-minimum valuation of a finite sum, and \eqref{eq:PN-offray-asymptotic}.\\
+\texttt{InterpolationGaussLowerBound} & finite polynomial & Monic division over $\Qp$; nonexpansion of Gauss norm; uniqueness of the interpolation remainder; \cref{thm:universal-gauss}.\\
+\texttt{EdgeOperatorSpectrum} & finite polynomial & Diagonal coefficient action, finite gap $\sigma_{p,d}$, and inequality \eqref{eq:finite-spectral}.\\
+\texttt{FiniteStripDefect} & finite polynomial & Root factorization, weighted Gauss norm of $\Phi_{K,N}$, and \cref{thm:finite-strip}.\\
+\texttt{GeometricRayAnalytic} & analysis layer & Order of an analytic germ, convergence of powers, the nonarchimedean identity theorem, and \cref{thm:ray-rigidity}.\\
+\texttt{EdgeLawAnalytic} & analysis layer & Strassmann/identity theorem for accumulating zeros and coefficient-spectrum theorem \cref{thm:edge-law}.\\
+\texttt{OverconvergentCompactness} & analysis/topology & Diagonal compactness of bounded coefficient balls, uniform-tail convergence, and \cref{thm:no-overconvergent-family}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Finite theorem signatures}
+
+The valuation layer can be stated without committing to a particular analytic API.  A
+possible pseudocode interface is:
+
+\begin{lstlisting}[style=pseudocode,language={}] 
+-- Q, R, p, n are natural numbers; p is prime and p | Q.
+def qNewtonCoeff (Q R n : N) : Q :=
+  (prod j in range n, (R : Z) - Q^j) /
+  (Q^(n.choose 2) * prod j in Icc 1 n, (Q^j : Z) - 1)
+
+theorem padicVal_qNewtonCoeff_of_val_eq_zero
+    (hpQ : p | Q) (hR : padicValNat p R = 0) (hn : 1 <= n) :
+  padicValRat p (qNewtonCoeff Q R n) =
+    padicValInt p (R - 1) - padicValNat p Q * n.choose 2
+
+theorem padicVal_qNewtonCoeff_eventually
+    (hpQ : p | Q) (ha : 0 < padicValNat p R)
+    (hn : qStar Q R p + 2 <= n) :
+  padicValRat p (qNewtonCoeff Q R n) =
+    exactLocalFormula Q R p n
+
+theorem padicVal_qNewtonTerm_offRay
+    (hpQ : p | Q) (hpu : not p | u) (hk : k < n) :
+  padicValRat p
+    (qNewtonCoeff Q R n * prod j in range n, (u*Q^k : Z) - Q^j) =
+  exactTermFormula Q R p u k n
+\end{lstlisting}
+
+The actual Mathlib valuation types may favor additive valuations into
+$\mathbb Z_{\mathrm m\infty}$ rather than the schematic integer-valued functions above.
+The important design choice is to isolate all infinity cases ($R-Q^j=0$) at the boundary.
+For an \AEconj{} orientation those equalities are impossible, but the generic library theorem
+should either assume them away or state the valuation in an extended codomain.
+
+\subsection{Recommended proof order}
+
+\begin{enumerate}
+\item Formalize the denominator valuation
+$\vp(Q^{\binom n2}\prod_{j=1}^n(Q^j-1))=m\binom n2$.
+\item Formalize the finite minimum sum
+$\sum_{j=1}^{n-1}\min(a,mj)$ with the threshold $q_*$.  Keep the tie correction as a
+separate lemma rather than burying it in case splits.
+\item Prove the off-ray factor valuations by partitioning the index range into
+$j<k$, $j=k$, and $j>k$.
+\item Prove the exact term ratio algebraically before any asymptotics.
+\item Derive eventual strict decrease using ordinary integer inequalities; then use the
+unique-minimum valuation lemma for finite sums.
+\item Formalize monic-division nonexpansion and the universal Gauss bound.
+\item Add the edge-operator finite spectrum and finite-strip factorization.
+\item Only after the finite package is kernel-accepted, connect to Mathlib's
+nonarchimedean analytic-function and power-series APIs for the identity theorem.
+\end{enumerate}
+
+This order produces useful machine-checked artifacts even if the analytic library work takes
+longer.  In particular, \cref{thm:coeff-valuation,thm:universal-gauss,thm:last-term} are finite
+statements with no reliance on compactness, choice of branch, or complex analysis.
+
+\subsection{Formal status that should be claimed}
+
+Until code is compiled by Lean with no \texttt{sorry}, the report should retain the following
+status:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Statement & Current status\\
+\midrule
+External-prime analytic rigidity & proved here, paper level\\
+Exact coefficient valuation & proved here, exact Python audit\\
+Universal Gauss lower bound & proved here, paper level\\
+Off-ray valuation and last-term dominance & proved here, exact Python audit\\
+Finite edge spectrum and strip defect & proved here, paper level\\
+Robba-to-Tate and finite-rank interfaces & conditional research targets\\
+Full \AEconj{} conjecture & open\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Priority research program}
+\label{sec:priorities}
+
+\subsection{Priority 1: formalize the finite Newton wall}
+
+The finite local package is exact, short enough for independent checking, and directly
+usable in later experiments.  Formalization should include the resonant tie correction and
+last-term dominance, not only the quadratic asymptotic.  This is the fastest route to a
+kernel-certified contribution distinct from the supplied report.
+
+\subsection{Priority 2: measure the edge-defect quotient}
+
+For exact two-row interpolation polynomials, compute
+\[
+ S_{K,N}(z)=
+\frac{P_N(\alpha z)-\lambda P_N(z)}
+ {\prod_{k=K}^{N}(z-Q^k)}
+\]
+at external primes.  The decisive statistic is
+\[
+ \frac1N\log\lVert S_{K,N}\rVert_\rho
+ +\log\rho
+ -\frac1N\log\sigma_{p,\deg P_N}.
+\]
+A limit bounded away from zero confirms saturation of the finite-strip lower bound.  A limit
+at or below zero would signal exactly the subexponential quotient needed by
+\cref{target:defect-quotient} and should be investigated symbolically.
+
+\subsection{Priority 3: search for finite-rank closure of defects}
+
+The supplied report contains several exact one-axis and two-axis defect identities.  Treat
+them as generators of a module under the two dilation operators, not as isolated special
+functions.  Rank stabilization over $\Q(z)$ is the positive signal.  Every candidate relation
+must be reconstructed exactly and then verified by symbolic polynomial identities.
+
+\subsection{Priority 4: classify external-prime resonance}
+
+For a candidate pair $(M,A)$, label every external prime by:
+\[
+ p\mid M:\quad 3\in\overline{\langle2\rangle}\subset\Z_p^\times?
+ \qquad
+ p\mid A:\quad 2\in\overline{\langle3\rangle}\subset\Z_p^\times?
+\]
+At nonresonant primes the Tate edge operator has a uniform inverse bound.  At resonant primes,
+record $\mu_{p,d}$ and compare it with the degree and defect growth.  A theorem forcing at
+least one nonresonant external orientation would materially strengthen the route; no such
+theorem is currently known.
+
+\subsection{Priority 5: look for an arithmetic overconvergence theorem}
+
+The best possible bridge would start from a globally defined arithmetic object: a diagonal of
+a rational function, a $G$-function, a finite-rank $q$-difference module, or another class
+with controlled denominators at almost every prime.  If the exact integer samples were
+certified within that class, an external prime would force positive radius and the local
+rigidity theorem would finish.  The construction must be genuinely algebraic across places;
+an archimedean interpolation with rational sample values is not enough.
+
+\subsection{Explicit kill criteria}
+
+To avoid reopening closed avenues, each program has a finite kill criterion:
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.30\textwidth}p{0.32\textwidth}@{}}
+\caption{Positive signals and kill criteria.}\label{tab:kill-criteria}\\
+\toprule
+Program & Positive signal & Kill criterion\\
+\midrule
+\endfirsthead
+\toprule
+Program & Positive signal & Kill criterion\\
+\midrule
+\endhead
+Defect quotient & $\log\lVert S_{K,N}\rVert_\rho=o(N)$ after the finite spectral loss & exact growth $\ge(c+o(1))N$ with $c> -\log\rho$ in every admissible construction\\
+Finite-rank cocycle & rank over $\Q(z)$ stabilizes & exact rank grows unboundedly with truncation order\\
+External resonance & one external orientation has $\sigma_p>0$ & all external orientations are resonant, with small divisors matching every gain\\
+Overconvergence & one number-field series has positive radius and place-independent samples & coefficient denominators have quadratic escape at every external orientation\\
+Product formula & reduced residual has matching quadratic archimedean decay & reduced height remains quadratic while decay is only linear\\
+\bottomrule
+\end{longtable}
+
+\section{Honest bottom line}
+\label{sec:bottom-line}
+
+No proof of \cref{conj:AE} has been obtained in this report.  The Four Exponentials barrier
+has not been bypassed, and the rival team's rumored Lean development could not be verified
+from public sources.
+
+There is nevertheless a concrete advance relative to the supplied corpus.  A hypothetical
+counterexample has an external nonarchimedean accumulation point, and at that point:
+
+\begin{enumerate}
+\item one geometric ray already excludes every analytic or meromorphic germ unless the two
+  output integers are exact integral powers of one another;
+\item one adjacent row excludes every finite-Puiseux germ by a coefficient-spectrum argument;
+\item every exact finite polynomial interpolation of the native ray incurs an intrinsic
+  quadratic external-prime denominator, independent of basis;
+\item the canonical geometric Newton terms diverge quadratically at every off-ray unit
+  multiple, and the partial sums are eventually equal in valuation to their final term;
+\item every exact finite adjacent strip forces an exponentially large edge-defect quotient on
+  a strict disk, up to the explicitly isolated small-divisor factor;
+\item any uniformly overconvergent family of finite-prefix interpolants would compactify to the
+  forbidden analytic germ.
+\end{enumerate}
+
+The remaining problem is no longer ``find some interpolation.''  Interpolation is abundant.
+The sharp bridge is:
+
+\begin{resultbox}{The new finishing interface}
+Derive, from the global arithmetic relation $M=2^x$, $A=3^x$ and the integer semigroup alone,
+either
+\begin{enumerate}[label=(\roman*)]
+\item a place-independent positive-radius interpolation at one external prime;
+\item a Robba-ring object forced to descend to a Tate or finite-Puiseux germ;
+\item a finite-rank consistent two-dilation module regular at the external accumulation point;
+  or
+\item a subexponential finite-strip edge quotient contradicting
+  \eqref{eq:defect-lower}.
+\end{enumerate}
+Any one of these closes the conjecture immediately.  The exact Newton-wall theorems explain
+why the most obvious completion fails and quantify the denominator growth that a successful
+construction must cancel.
+\end{resultbox}
+
+This is a narrower and more testable frontier than the initial statement.  It also suggests a
+useful interpretation of any genuine rival breakthrough: unless it introduces new
+transcendence input, it should be possible to locate its decisive step as an adelic
+regularity theorem, a finite-rank difference closure, or an external-prime denominator
+cancellation.  Those are now explicit interfaces rather than vague hopes.
+
+\appendix
+
+\section{Exact audit code}
+\label{app:audit-code}
+
+\begin{lstlisting}[style=pseudocode,language=Python]
+from fractions import Fraction
+from math import prod
+
+
+def vp_int(n, p):
+    if n == 0:
+        return 10**9            # infinity sentinel; excluded in assertions
+    n = abs(n)
+    e = 0
+    while n % p == 0:
+        e += 1
+        n //= p
+    return e
+
+
+def vp_frac(x, p):
+    return vp_int(x.numerator, p) - vp_int(x.denominator, p)
+
+
+def c_n(Q, R, n):
+    if n == 0:
+        return Fraction(1)
+    num = prod(R - Q**j for j in range(n))
+    den = Q**(n*(n-1)//2) * prod(Q**j - 1 for j in range(1, n+1))
+    return Fraction(num, den)
+
+
+def phi(Q, z, n):
+    return prod(z - Q**j for j in range(n))
+
+
+def predicted_c_val(Q, R, p, n):
+    m = vp_int(Q, p)
+    a = vp_int(R, p)
+    if n == 0:
+        return 0
+    if a == 0:
+        return vp_int(R - 1, p) - m*n*(n-1)//2
+    qstar = (a - 1)//m
+    epsilon = 0
+    if a % m == 0:
+        h = a//m
+        if n - 1 >= h:
+            epsilon = vp_int(R - Q**h, p) - a
+    if n < qstar + 2:
+        return (sum(vp_int(R - Q**j, p) for j in range(n))
+                - m*n*(n-1)//2)
+    return (m*qstar*(qstar+1)//2
+            + a*(n - 1 - qstar)
+            + epsilon
+            - m*n*(n-1)//2)
+
+
+def predicted_phi_val(Q, u, k, p, n):
+    m = vp_int(Q, p)
+    if n <= k:
+        return vp_int(phi(Q, u*Q**k, n), p)
+    return m*(k*n - k*(k+1)//2) + vp_int(u - 1, p)
+
+
+cases = [
+    (35, 22, 5, 2, 2, "unit-output case"),
+    (10, 110, 5, 2, 1, "resonant valuation tie"),
+    (25, 75, 5, 2, 1, "integral slope, unit mismatch"),
+]
+
+for Q, R, p, u, k, label in cases:
+    partial = Fraction(0)
+    for n in range(13):
+        coeff = c_n(Q, R, n)
+        basis = phi(Q, u*Q**k, n)
+        term = coeff*basis
+        partial += term
+        assert vp_frac(coeff, p) == predicted_c_val(Q, R, p, n)
+        assert vp_int(basis, p) == predicted_phi_val(Q, u, k, p, n)
+        print(label, n, vp_frac(coeff, p), vp_int(basis, p),
+              vp_frac(term, p), vp_frac(partial, p))
+\end{lstlisting}
+
+\section{Proof details for monic division and weighted Gauss norms}
+\label{app:gauss-details}
+
+For completeness, this appendix records the two standard norm facts used in
+\cref{thm:universal-gauss,thm:finite-strip}.
+
+\begin{lemma}[Monic division is nonexpanding]\label{lem:monic-division}
+Let $K$ be nonarchimedean, let $G\in\mathcal O_K[z]$ be monic, and divide
+$P=QG+R$ with $\deg R<\deg G$.  Then
+\[
+ \lVert Q\rVert_{\mathrm G},\lVert R\rVert_{\mathrm G}
+ \le\lVert P\rVert_{\mathrm G}.
+\]
+\end{lemma}
+
+\begin{proof}
+Run long division from the highest degree downward.  At each step the quotient coefficient is
+the current leading coefficient, whose norm is at most the current polynomial norm.  Since
+all coefficients of $G$ have norm at most one, subtracting that coefficient times a shift of
+$G$ cannot increase the norm by the ultrametric inequality.  Induction proves the claim.
+\end{proof}
+
+\begin{lemma}[Norm of a linear factor]\label{lem:linear-factor-norm}
+For the weighted Gauss norm \eqref{eq:weighted-gauss},
+\[
+ \lVert z-a\rVert_\rho=\max(\rho,|a|).
+\]
+The weighted Gauss norm is multiplicative on polynomials, so
+\[
+ \left\lVert\prod_i(z-a_i)\right\rVert_\rho
+ =\prod_i\max(\rho,|a_i|).
+\]
+\end{lemma}
+
+\begin{proof}
+The first formula is immediate from the two coefficients.  Multiplicativity is the Gauss
+lemma for a nonarchimedean norm, after rescaling the variable when $\rho$ lies in the value
+group.  For arbitrary real $\rho>0$, extend scalars to a complete algebraic closure, whose
+value group is dense in $\mathbb R_{>0}$, approximate $\rho$ by value-group radii, and use
+continuity of the finite maximum defining the polynomial norm.  Only the polynomial case is
+used here.
+\end{proof}
+
+\section{Compact theorem inventory}
+\label{app:inventory}
+
+\begingroup\small
+\begin{longtable}{@{}p{0.32\textwidth}p{0.18\textwidth}p{0.42\textwidth}@{}}
+\caption{Inventory of the new package.}\label{tab:inventory}\\
+\toprule
+Statement & Status & Mathematical role\\
+\midrule
+\endfirsthead
+\toprule
+Statement & Status & Mathematical role\\
+\midrule
+\endhead
+Geometric-ray rigidity, \cref{thm:ray-rigidity} & proved here & Classifies every analytic germ on a contracting geometric ray.\\
+Accumulating edge law, \cref{thm:edge-law} & proved here & Converts adjacent-row data into an exact Taylor-spectrum condition.\\
+Meromorphic/Puiseux exclusion, \cref{thm:puiseux} & proved here & Shows finite ramification cannot hide the nonintegral exponent.\\
+Exact coefficient law, \cref{thm:coeff-valuation} & proved and audited & Gives the full quadratic local denominator, including ties.\\
+Universal Gauss bound, \cref{thm:universal-gauss} & proved here & Makes the denominator loss independent of interpolation basis and degree.\\
+Off-ray valuation, \cref{lem:phi-offray} & proved and audited & Computes the exact local cost of moving from the native ray.\\
+Term ratio and last-term dominance, \cref{prop:term-ratio,thm:last-term} & proved and audited & Establishes maximal $p$-adic divergence and adjacent-row repulsion.\\
+Finite edge spectrum, \cref{prop:finite-spectral} & proved here & Isolates the exact small-divisor loss.\\
+Finite-strip defect, \cref{thm:finite-strip} & proved here & Forces a large quotient behind every long exact adjacent strip.\\
+No overconvergent family, \cref{thm:no-overconvergent-family} & proved here & Turns any uniform radius gain into the forbidden analytic germ.\\
+Robba-to-Tate descent, \cref{target:robba-tate} & open target & Most direct local finishing bridge.\\
+Finite-rank edge cocycle, \cref{target:finite-rank-cocycle} & open target & Connects the arithmetic grid to independent-$q$ rigidity theory.\\
+Subexponential defect quotient, \cref{target:defect-quotient} & open target & Finite, computationally testable finishing criterion.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\begin{thebibliography}{99}
+\small
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock \emph{On highly composite and similar numbers},
+\newblock Transactions of the American Mathematical Society \textbf{56} (1944), 448--469.
+\newblock \href{https://doi.org/10.1090/S0002-9947-1944-0011087-2}{doi:10.1090/S0002-9947-1944-0011087-2}.
+
+\bibitem{Unified2026}
+V.~Reshetnikov and collaborators,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Machine-Checked Partial Results, Exact Conditional Structure, Determinant Methods, and the Remaining Barrier},
+\newblock working report supplied as \texttt{alaoglu-erdos-unified-report.tex}, 22 August 2026.
+
+\bibitem{Waldschmidt2023}
+M.~Waldschmidt,
+\newblock \emph{The Four Exponentials Problem and Schanuel's Conjecture},
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics, Springer, 2023,
+579--592.
+\newblock \href{https://doi.org/10.1007/978-3-031-12244-6_39}{doi:10.1007/978-3-031-12244-6\_39}.
+
+\bibitem{Robert2000}
+A.~M. Robert,
+\newblock \emph{A Course in $p$-adic Analysis},
+\newblock Graduate Texts in Mathematics 198, Springer, 2000.
+
+\bibitem{Schikhof1984}
+W.~H. Schikhof,
+\newblock \emph{Ultrametric Calculus: An Introduction to $p$-Adic Analysis},
+\newblock Cambridge Studies in Advanced Mathematics 4, Cambridge University Press, 1984.
+
+\bibitem{BGR1984}
+S.~Bosch, U.~G\"untzer, and R.~Remmert,
+\newblock \emph{Non-Archimedean Analysis: A Systematic Approach to Rigid Analytic Geometry},
+\newblock Grundlehren der mathematischen Wissenschaften 261, Springer, 1984.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Encyclopedia of Mathematics and its Applications 96, Cambridge University Press, 2004.
+
+\bibitem{Bezivin1992}
+J.-P. B\'ezivin,
+\newblock \emph{Sur les \`equations fonctionnelles aux $q$-diff\'erences},
+\newblock Aequationes Mathematicae \textbf{43} (1992), 159--176.
+
+\bibitem{BezivinBoutabaa1992}
+J.-P. B\'ezivin and A.~Boutabaa,
+\newblock \emph{Sur les \`equations fonctionnelles $p$-adiques aux $q$-diff\'erences},
+\newblock Collectanea Mathematica \textbf{43} (1992), 125--140.
+
+\bibitem{SchaefkeSinger2019}
+R.~Sch\"afke and M.~F. Singer,
+\newblock \emph{Consistent systems of linear differential and difference equations},
+\newblock Journal of the European Mathematical Society \textbf{21} (2019), 2751--2792.
+\newblock Preprint: \url{https://arxiv.org/abs/1605.02616}.
+
+\bibitem{AnthropicFable}
+Anthropic,
+\newblock \emph{Claude Fable 5 and Claude Mythos 5}, 9 June 2026,
+\newblock \url{https://www.anthropic.com/news/claude-fable-5-mythos-5}, accessed 23 August 2026.
+
+\bibitem{TaoJacobian}
+T.~Tao,
+\newblock \emph{A digestion of the Jacobian conjecture counterexample}, 21 July 2026,
+\newblock \url{https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/}, accessed 23 August 2026.
+
+\bibitem{ICARM30}
+ICARM Elliptic Curve Rank Leaderboard,
+\newblock \emph{Curve 273}, August 2026,
+\newblock \url{https://elliptic-rank.icarm.cloud/curve/273}, accessed 23 August 2026.
+
+\bibitem{MathWorldRank30}
+E.~W. Weisstein,
+\newblock \emph{Elliptic Curve Rank}, MathWorld, updated August 2026,
+\newblock \url{https://mathworld.wolfram.com/EllipticCurveRank.html}, accessed 23 August 2026.
+
+\bibitem{EpochHadamard}
+Epoch AI,
+\newblock \emph{Hadamard Matrix of Order 668}, FrontierMath: Open Problems, updated 12 August 2026,
+\newblock \url{https://epoch.ai/frontiermath/open-problems/hadamard}, accessed 23 August 2026.
+
+\bibitem{OEISHadamard}
+OEIS Foundation,
+\newblock \emph{A007299: orders associated with the Hadamard matrix existence record}, updated 2026,
+\newblock \url{https://oeis.org/A007299}, accessed 23 August 2026.
+
+\end{thebibliography}
+
+\end{document}
