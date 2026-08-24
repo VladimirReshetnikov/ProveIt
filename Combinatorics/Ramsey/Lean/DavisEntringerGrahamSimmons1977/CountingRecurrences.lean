@@ -541,4 +541,58 @@ theorem fact_1_holds : fact_1 := by
               gcongr
             _ ≤ M (2 * k + 1) := hrec
 
+private theorem iterated_even_count_bound (r : Nat) :
+    (2 * M 16) ^ (2 ^ r) ≤ 2 * M (16 * 2 ^ r) := by
+  induction r with
+  | zero => simp
+  | succ r ih =>
+      have hrec := even_count_recurrence_holds (16 * 2 ^ r) (by positivity)
+      calc
+        (2 * M 16) ^ (2 ^ (r + 1)) =
+            ((2 * M 16) ^ (2 ^ r)) ^ 2 := by
+              rw [pow_succ, pow_mul]
+        _ ≤ (2 * M (16 * 2 ^ r)) ^ 2 := by gcongr
+        _ = 2 * (2 * M (16 * 2 ^ r) ^ 2) := by ring
+        _ ≤ 2 * M (16 * 2 ^ (r + 1)) := by
+          simpa [pow_succ, Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm]
+            using Nat.mul_le_mul_left 2 hrec
+
+theorem power_of_two_count_lower_bound_holds :
+    power_of_two_count_lower_bound := by
+  intro t ht
+  let r := t - 4
+  have ht_eq : t = 4 + r := by
+    dsimp [r]
+    omega
+  have hM16 : M 16 = 212728 := by
+    have h := table_1_holds
+    unfold table_1 at h
+    have hentry := congrArg (fun xs : List Nat => xs[15]?) h
+    norm_num at hentry ⊢
+    exact hentry
+  have hbase : ((2248 : Real) / 1000) ^ 16 < 2 * (212728 : Real) := by
+    norm_num
+  have hexponent : 2 ^ t = 16 * 2 ^ r := by
+    rw [ht_eq, pow_add]
+    norm_num
+  have hpow : (((2248 : Real) / 1000) ^ 16) ^ (2 ^ r) <
+      ((2 * 212728 : Nat) : Real) ^ (2 ^ r) := by
+    gcongr
+    norm_num
+  have hiter := iterated_even_count_bound r
+  rw [hM16] at hiter
+  have hiterReal : (((2 * 212728 : Nat) ^ (2 ^ r) : Nat) : Real) ≤
+      (2 * M (16 * 2 ^ r) : Nat) := by
+    exact_mod_cast hiter
+  rw [hexponent, pow_mul]
+  norm_num only [show (16 : Nat) = 2 ^ 4 by norm_num]
+  have hleft : ((2248 / 1000 : Real) ^ 16) ^ (2 ^ r) <
+      (2 : Real) * M (16 * 2 ^ r) := by
+    calc
+      ((2248 / 1000 : Real) ^ 16) ^ (2 ^ r) <
+          ((2 * 212728 : Nat) : Real) ^ (2 ^ r) := hpow
+      _ = (((2 * 212728 : Nat) ^ (2 ^ r) : Nat) : Real) := by norm_num
+      _ ≤ (2 : Real) * M (16 * 2 ^ r) := by exact_mod_cast hiter
+  nlinarith
+
 end LeanProofs.DavisEntringerGrahamSimmons1977
