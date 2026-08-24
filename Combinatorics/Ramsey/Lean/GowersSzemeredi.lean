@@ -18,6 +18,7 @@ import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs07DRC
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12

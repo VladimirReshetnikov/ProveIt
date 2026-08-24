@@ -156,11 +156,13 @@ def HasDenseIntersectionCore {X : Type*} [DecidableEq X] {n : Nat}
       largeIntersectionPairCount A K (delta ^ 2 * m / 2)
 
 /-- **Lemma 7.4.** The final conjunct records the paper's "in particular"
-clause as well as its main implication. -/
+clause as well as its main implication.  We make explicit the standard density
+bound `delta <= 1`; without it the conclusion is false (for example, take one
+empty set and `delta > 1`). -/
 def lemma_7_4 : Prop :=
   forall (X : Type*) [DecidableEq X] (m n : Nat) (V : Finset X)
       (A : Fin n -> Finset X) (delta : Real),
-    V.card = m -> (forall i, A i ⊆ V) -> 0 < delta ->
+    V.card = m -> (forall i, A i ⊆ V) -> 0 < delta -> delta <= 1 ->
     ((delta ^ 2 * m * (n : Real) ^ 2 <=
         ∑ x, ∑ y, (((A x ∩ A y).card : Nat) : Real)) ->
       HasDenseIntersectionCore m A delta) /\
