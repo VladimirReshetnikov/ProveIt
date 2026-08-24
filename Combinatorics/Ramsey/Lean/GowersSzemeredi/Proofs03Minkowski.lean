@@ -126,10 +126,11 @@ private lemma minkowski_binomial_sum {N d : Nat} [NeZero N]
       simp [Fintype.card_fin, Fintype.card_bool]
     _ = (gowersNorm d f + gowersNorm d g) ^ ((2 : Nat) ^ d) := by rfl
 
-/-- **Gowers, Lemma 3.9.** The Gowers norm satisfies Minkowski's
-inequality. -/
-theorem lemma_3_9_holds : lemma_3_9 := by
-  intro N d _ _hd f g
+/-- The homogeneous argument proving Lemma 3.9 does not use the paper's
+`2 ≤ d` convention, so Minkowski's inequality is valid in every dimension. -/
+theorem gowersNorm_add_le {N d : Nat} [NeZero N]
+    (f g : ZMod N → Complex) :
+    gowersNorm d (f + g) ≤ gowersNorm d f + gowersNorm d g := by
   let A : Real := gowersNorm d f
   let B : Real := gowersNorm d g
   let m : Nat := (2 : Nat) ^ d
@@ -166,5 +167,11 @@ theorem lemma_3_9_holds : lemma_3_9 := by
   apply le_of_pow_le_pow_left₀ hm (add_nonneg hA hB)
   rw [Real.rpow_inv_natCast_pow (norm_nonneg _) hm]
   exact hnorm
+
+/-- **Gowers, Lemma 3.9.** The Gowers norm satisfies Minkowski's
+inequality. -/
+theorem lemma_3_9_holds : lemma_3_9 := by
+  intro N d _ _hd f g
+  exact gowersNorm_add_le f g
 
 end LeanProofs.GowersSzemeredi
