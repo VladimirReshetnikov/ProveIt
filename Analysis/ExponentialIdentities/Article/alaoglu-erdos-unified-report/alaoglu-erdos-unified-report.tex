@@ -21529,6 +21529,35 @@ this is a sequence of well-posed finite problems rather than a single infinite o
 the system is heavily overdetermined (equations grow like $q$, monomials like $q^2$), which
 is why its solution set collapses so cleanly onto the controls.
 
+The independence hypothesis can moreover be weakened substantially, which matters because
+full $\Q$-linear independence of a triangular array of weight-two products is far beyond
+current technology.  The relation's coefficient vector depends linearly on the exponent
+vector $(m_p,a_p)_{p\le q}$; write $C$ for the image of that linear map inside the space
+spanned by the occurring products.  Then what is actually needed is not that the products
+have \emph{no} relations, but only that
+\[
+ R\cap C=0,
+\]
+where $R$ is their true relation space.  Computing the map exactly gives a uniform picture:
+its kernel is \emph{exactly} the control line $\{m_2=a_3=t\}$ in every case --- so the
+encoding is faithful, its only degeneracy being the controls themselves --- and its image
+has dimension $2\pi(q)-1$:
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$q$ & products $\binom q2$ & occurring & $\dim C$ & kernel \\
+\midrule
+$5$ & $10$ & $7$ & $5$ & control line \\
+$7$ & $21$ & $11$ & $7$ & control line \\
+$11$ & $55$ & $19$ & $9$ & control line \\
+\bottomrule
+\end{tabular}
+\end{center}
+So it suffices that no nonzero relation among the occurring products lie in a subspace of
+dimension $2\pi(q)-1$, against an ambient of size $\asymp q^2/2$ --- a requirement that
+becomes relatively weaker as $q$ grows.  \statusexactcomp{}
+(\path{scripts/cdt_weight_two_encoding.py}).
+
 \emph{What this does and does not deliver.}  It does not prove anything: weight-two
 independence is open even for a single product, which is exactly why
 Calegari--Dimitrov--Tang is notable.  What it delivers is the missing bridge the survey
