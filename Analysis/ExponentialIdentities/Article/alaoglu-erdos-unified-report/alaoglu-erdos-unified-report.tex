@@ -21340,6 +21340,278 @@ well-posed primitive-sensitive target sitting exactly on the frontier channel (i
 (external prime).  \statusnew{} for the tensor normal form and orbit obstruction;
 detector core \statuslean.
 
+\section{Frontier campaign: parallel attack on the five surviving targets}
+\label{sec:campaign}
+
+The frontier left by the eleven integrated reports consisted of five targets: the
+two-parameter transport interface (Section~\ref{cw:survivors}), certified near-curve
+covers (Section~\ref{nc:budgets}), the Kummer period orbit (Section~\ref{ts:orbit}), the
+adelic wedge transfer (Section~\ref{sg:mismatch}), and the search for a new mechanism.
+Each was attacked independently and each surviving claim was then subjected to adversarial
+refereeing (a referee instructed to refute, to re-run every computation in exact
+arithmetic, and to apply the control test).  Four of the five produced results; the
+near-curve lattice computation did not complete.  What follows records only what survived
+refereeing or what was independently re-verified here.
+
+\subsection{The two-parameter interface is closed}
+\label{camp:twodim}
+
+Theorem~\ref{log:thm-topheavy} was obtained independently, in the equivalent and more
+suggestive form ``the archimedean balance says exactly that positive and negative
+slice-tail mass agree, $P=N$'', which makes visible \emph{why} no primes, no size
+hypothesis and no integrality are needed to empty the top-heavy class.  That same identity
+also supplies the loop-closer the $\Phi$-starvation bound of
+Section~\ref{log:two-dim-transport} was missing: substituting $P=N$ into the starvation
+estimate yields $N\le 16Z(m+j^*)(\log A)N/A$ on the admissible grid, hence $c\equiv0$
+whenever $A>16Z(m+j^*)\log A$ --- comfortably true in the candidate regime, where
+$A\ge3^{14}$ against a threshold of order $10^4$.  Subject to a prime in every annulus and
+strict mesoscopic admissibility, the general (not merely top-heavy) two-parameter cocycle
+is therefore also forced to vanish.  Exhaustive exact search agrees: in two independent
+full-integrality laboratories --- $(M,A)=(5,11)$ testing all $14{,}773$ primes below
+$161{,}051$, and $(M,A)=(7,19)$ testing all $181{,}449$ primes below $2{,}476{,}099$ ---
+no nonzero balanced pattern is integral among $3{,}251{,}860$ exactly enumerated
+candidates.  \statusnew{}, with the top-heavy core \statuslean{} and the searches
+\statusexactcomp{}.
+
+The one non-elementary hypothesis is the prime supply, and its failure mode is now exactly
+located: for cells with $\theta_{ij}=(n+i)\log M/((m+j)\log A)<7/12$ the annulus is
+shorter than $N_j^{7/12}$ and Huxley supplies nothing (the exponent improves to $0.525$
+with Baker--Harman--Pintz and to $1/2$ under RH).  Every such annulus in both laboratories
+does contain many primes, so the obstruction is a gap in available prime-gap technology
+rather than a real arithmetic phenomenon --- and, being ratio-only, it applies verbatim to
+the controls.  \emph{Control status.}  The whole package holds at $(M,A)=(2^m,3^m)$: it
+closes the two-parameter \emph{method} and leaves the conjecture where it was.  The first
+of the two surviving interfaces of Section~\ref{cw:survivors} is thus retired.
+
+\subsection{The adelic wedge route is closed, quantitatively}
+\label{camp:adelic}
+
+Three facts, each re-verified here in exact integer arithmetic, settle the adelic
+programme of Section~\ref{sg:mismatch}.
+
+\emph{Control-direction blindness.}  The Fermat-quotient wedge is invariant under
+multiplication by a control: $\Delta_p(2^ab,3^ac)=\Delta_p(b,c)$ for every $a$ and every
+pair prime to $p$ (verified with zero mismatches over four thousand exact instances, and
+kernel-checked in the new module \lean{AdelicWedgeDecoupling}, whose
+\lean{fermatQuotientDeterminant_control_shift} and
+\lean{fermatQuotientDeterminant_eq_zero_iff_line} also identify rank drop at $p$ with
+$(q_pM,q_pA)$ lying on the line spanned by $(q_p2,q_p3)$).  The finite wedge therefore
+sees the pair only modulo the control orbit, and every value in $\mathbb F_p$ is realised inside
+every control orbit.
+
+\emph{The density is off by three orders of magnitude.}  Writing $I=G^\kappa$ for the
+exponent-lattice index, the tax exponent is exactly
+$\kappa=2-\bigl(\sum_p\tau_p\log p\bigr)/\bigl(\sum_pk_p\log p\bigr)$; reaching the
+$\kappa\le1$ needed to beat the square-root tax requires rank drop at some $90\%$ of the
+primes below the cutoff.  Measured drop density for candidate-shaped pairs matches the
+exact heuristic $\sum_p(1-1/p)^2/p$: an independent run here found $452$ drops in
+$359{,}068$ exact $(p,\text{pair})$ tests against a heuristic expectation of $443.2$, a
+rate of $0.126\%$.  The controls, by contrast, drop at $100\%$ of primes ($6000/6000$
+tested) --- indeed $\det B_p=0$ exactly in $\Q_p$ there.  So the statistic separates
+controls from candidates sharply while falling short of the requirement by a factor of
+order $10^3$.
+
+\emph{No product formula, and a hardness transfer.}  A bilinear-in-logarithms local
+pairing reproducing $D_p$ modulo $p$ is a norm-residue symbol over $\Q(\zeta_p)$, whose
+reciprocity has identically trivial archimedean terms because that field is totally
+complex for $p\ge3$; so no reciprocity law can tie the finite wedges to the vanishing
+archimedean wedge.  Moreover the finite wedge data are \emph{decoupled} from archimedean
+alignment: for any finite $S$, any depth, and any $\varepsilon>0$ there are pairs with
+$|\log2\log A-\log3\log M|<\varepsilon$ and arbitrarily prescribed wedges on $S$.  Any
+unconditional theorem bounding the rank-drop count of candidate-shaped pairs below $Y$
+would imply the existence of non-Wieferich primes below $Y$ --- a hardness transfer that
+explains why the route resists.  \statusnew{} throughout; decoupling core \statuslean{}.
+The surviving suggestion is to abandon the unit-level wedge for the valuation identity
+$\sum_p\bigl(v_p(A)\log2-v_p(M)\log3\bigr)\log p=0$, which \emph{is} control-sensitive
+because a counterexample has external prime support and a control has none.
+
+\subsection{The Kummer orbit hypothesis is equivalent to the conjecture}
+\label{camp:kummer}
+
+The proposed conditional closure of Section~\ref{ts:orbit} splits into two halves, and
+both are now understood.  The Kummer action on the divisor lattice is the \emph{unipotent}
+period translation $x\mapsto x+\Omega n$, not a diagonal dilation; consequently the
+relevant rigidity is polynomial interpolation of a quadratic, not the Vandermonde
+elimination of \lean{ConsecutiveDilationRigidity}, and the sharp threshold is a single
+orbit point per external prime.  On the external sublattice the quadratic term drops out
+identically, so the orbit period is the \emph{linear} form
+$\Omega\sum_qn_q\Lambda_q$ with $\Lambda_q=a_q\log3-b_q\log2$.  The first half of the
+closure --- that the period cannot vanish along the whole orbit at an external prime ---
+is then unconditional with a two-line proof from unique factorization, and is already the
+corpus's \lean{external_derivative_ne_zero}; it carries no new arithmetic.  The second
+half is an \statusopen{} obstruction of the sharpest kind: the hypothesis ``the period
+vanishes at the one-step orbit points for every external prime in the support'' is, term
+by term, sparse coaction separation (Definition~\ref{sparsequad:def-scs}), which
+Theorem~\ref{sparsequad:thm-scs} shows is \emph{equivalent} to
+Conjecture~\ref{conj:AE}.  The orbit route is therefore not a weaker foothold but a
+restatement, and the underlying deficit is one of \emph{weight}: the counterexample
+relation is a $\Q$-linear relation among the weight-two products
+$\{\log p\log q\}$, whereas Baker--W\"ustholz and Matveev are weight-one theorems.
+A related structural fact closes a natural hope: the two-star tensor is \emph{monoid
+blind}, since $\Sigma(je_2+ka,\,je_3+kb)=k\,\Sigma(a,b)$ places every element of $\Sol$
+on the same ray, so the tensor cannot consume channel~(ii) of the control principle.
+
+\subsection{What the trap architecture can and cannot do}
+\label{camp:traps}
+
+The block-bound machinery of Section~\ref{sec:blockbound} was rebuilt from scratch and its
+published constants independently reproduced to full printed precision
+($32\log2\log3/9=2.70755559$, $\kappa_*=5.08726658$ with $t_0\tanh t_0=2$, and the corank
+thresholds $0.98595934$ and $0.99271966$).  Three exact conclusions follow.  The optimal
+support is the greedy set $\{2^i3^j\le X\}$ with mean frequency
+$\tfrac23\sqrt{2abq}-\log\sqrt6+o(1)$, so $32ab/9$ is the exact optimum of the
+support-shape problem and cannot be improved by reshaping.  A certified short-vector rank
+fraction $f$ yields \emph{exactly} the implication $\beta\ge1/((1-f)\kappa_*)$ and nothing
+stronger: the architecture is a zero-free-region generator, and the published thresholds
+are precisely this dictionary.  And the one control-clean input available to a trap --- the
+external prime, which makes $p^{ek}$ divide every solution value and so relaxes the
+archimedean target --- is worth only $\Theta(\log H/H)$ in the required support size
+($4.9\times10^{-3}$ at $H=10^3$, $8.9\times10^{-5}$ at $H=10^5$), and is strictly
+dominated, by a factor $1.43$ to $1.52$, by the control-\emph{blind} lattice-discreteness
+term $-\log\sqrt6$.  Raising the monomial floor to amplify the $p$-adic gain is a strict
+net loss.  Finally, the unit block is the \emph{worst} scale at which to state the bound:
+the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but only the
+constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
+\statusexactcomp{}.
+
+\subsection{The conditional type gap, and a construction that would settle the conjecture}
+\label{camp:typegap}
+
+The measurement \eqref{camp:eq-pila} kills the branch in which $g$ is made independent of
+$2^z,3^z$ by vanishing on the monoid.  The remaining branch --- \emph{designed}
+transcendence --- turns out to need no design at all, and the resulting statement is
+sharper than the original lead.
+
+\begin{proposition}[Algebraic dependence forces vanishing quadratic type]
+\label{camp:prop-order}
+Let $g$ be entire and algebraically dependent with $2^z$ and $3^z$, i.e.\
+$P(2^z,3^z,g(z))\equiv0$ for some nonzero $P\in\Z[X,Y,Z]$.  Then
+$\log M(g,r)=O(r\log r)$, and in particular $\tau_2(g)=0$.
+\end{proposition}
+
+\begin{proof}
+Clearing the $Z$-degree, $g$ satisfies $\sum_{k=0}^da_k(z)g(z)^k=0$ with
+$a_k\in\Z[2^z,3^z]$ exponential polynomials and $a_d\not\equiv0$.  The elementary root
+bound for a monic-after-division polynomial gives, wherever $a_d(z)\ne0$,
+\[
+ |g(z)|\le\max\Bigl(1,\ \sum_{k<d}\bigl|a_k(z)/a_d(z)\bigr|\Bigr),
+\]
+and this bound is exactly attained in the worst case (checked numerically on $2\times10^4$
+random instances, worst ratio $1.0000$).  Each $a_k$ has order one, so
+$\log|a_k(z)|=O(r)$ on $|z|=r$; and $a_d$, being a nonzero function of order one, satisfies
+$\log|1/a_d|=O(r\log r)$ on circles avoiding an exceptional set of small measure, by the
+classical minimum-modulus theorem (\statusknown).  Choosing for each $r$ a radius
+$r'\in[r,2r]$ whose circle avoids that set gives $\log M(g,r)\le\log M(g,r')=O(r\log r)$,
+since $g$ is entire.  Hence $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.
+\end{proof}
+
+Combining Proposition~\ref{camp:prop-order} with Pila's theorem in the specialization
+$a=\log2$, $b=\log3$, $\alpha=1$, $\gamma=\beta$ gives a conditional \emph{gap}.
+
+\begin{theorem}[Conditional type gap]\label{camp:thm-typegap}
+Assume Conjecture~\ref{conj:AE} fails, with canonical generator $\beta$.  Then no entire
+function $g$ that is integer-valued on $\Sol$ satisfies
+\[
+ 0<\tau_2(g)\le\frac1{832\,\beta^2\log2\log3}.
+\]
+\end{theorem}
+
+\begin{proof}
+If $\tau_2(g)$ were at most the threshold, Pila's theorem would make $g$ algebraically
+dependent with $2^z$ and $3^z$, whence $\tau_2(g)=0$ by
+Proposition~\ref{camp:prop-order} --- contradicting $\tau_2(g)>0$.
+\end{proof}
+
+\begin{target}[Small-type integer-valued interpolant]\label{camp:target-construct}
+Exhibit an entire function $g$, integer-valued on $\Sol$, with
+$0<\tau_2(g)\le1/(832\beta^2\log2\log3)$, constructed from data available under a
+hypothetical counterexample.  By Theorem~\ref{camp:thm-typegap} any such construction
+\emph{proves} Conjecture~\ref{conj:AE}.
+\end{target}
+
+Two features make this the most attractive of the surviving targets.  First, it is
+\emph{control-clean in the strong sense}: the quadratic density
+$\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$ is the exact signature of the least-generator monoid,
+so at an integer control $\Sol=\N_0$ has \emph{linear} density and the entire quadratic-type
+analysis is vacuous.  The route therefore consumes channel~(ii) of the control principle
+(Section~\ref{log:control}) --- which most of the corpus's machinery does not.  Second, it
+converts an open-ended search into a single explicit inequality.  What
+\eqref{camp:eq-pila} rules out is only the \emph{vanishing} construction, whose Jensen
+floor $1/(4\beta)$ exceeds the threshold by $208\beta\log2\log3\approx158\beta$; a
+construction whose small type comes from controlled interpolation rather than from zeros is
+untouched by that bound.  \statusnew{}; Pila's theorem and the minimum-modulus input
+\statusknown{}; target \statusopen.
+
+\subsection{Literature synthesis: five clusters, and one gate measured}
+\label{camp:literature}
+
+A parallel survey of the published literature (retained in the repository as
+\path{alaoglu-erdos-literature-synthesis}) identifies five clusters bearing on the
+problem, and confirms that none contains an off-the-shelf theorem: every route meets the
+same terminal obstruction, a nontrivial integer relation among products of logarithms of
+primes.  Its negative audit is worth recording, since each item has been proposed at some
+point in this corpus: a counterexample is necessarily irrational, so results about
+rational $x$ add nothing; $\{(2^t,3^t)\}$ is a transcendental arc, so
+Bombieri--Masser--Zannier, Maurin and Zilber--Pink do not apply merely because orbit
+points are $S$-integral; Baker theory controls linear forms with \emph{algebraic}
+coefficients and not the terminal coefficients $m_p\log3-a_p\log2$, which are themselves
+logarithmic; $(1-z)^{\thetaq}$ is not a $G$-function, since its coefficients are not
+algebraic, so arithmetic algebraization cannot be invoked without an arithmetic
+replacement; and generic rational-point counting tolerates far more points than the
+compact orbit produces.
+
+The most valuable positive lead is the closest published program: Pila's theorems on entire
+functions sharing arguments of integrality apply to \emph{exactly} the semigroup forced by
+a counterexample, since with $a=\log2$, $b=\log3$, $\alpha=1$, $\gamma=\beta$ the four
+corner values are $2,M,3,A$ and $X_{1,\beta}=\Sol$.  In this specialization an entire $g$
+integer-valued on $\Sol$ with
+$\tau_2(g):=\limsup r^{-2}\log M(g,r)\le1/(832\beta^2\log2\log3)$ is algebraically
+dependent on $2^z$ and $3^z$, which turns the interpolation idea into a measured target.
+We settle that measurement.  Any $g$ forced to be independent of $2^z,3^z$ by vanishing on
+the monoid pays, by Jensen's formula against the exact density
+$\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$,
+\[
+ \tau_2(g)\;\ge\;\sup_{c>0}\frac{2\log c+1}{4\beta c^2}=\frac1{4\beta}
+ \qquad(\text{optimum at }c=1),
+\]
+so the gate fails by the factor
+\begin{equation}
+ \frac{1/(4\beta)}{1/(832\beta^2\log2\log3)}
+ =208\,\beta\log2\log3
+ =158.392\ldots\times\beta,
+ \label{camp:eq-pila}
+\end{equation}
+that is by $2217.5$ at the kernel-verified $\beta\ge14$, by $4276.6$ at the computational
+$\beta>27$, and \emph{growing linearly in $\beta$} --- so every improvement of the
+zero-free region makes this particular gate harder, not easier.  \statusnew{}; the
+numerical check of the Jensen sum against the closed form converges from above
+($1.219,1.109,1.054$ at $T=140,280,560$ for $\beta=14$), confirming the bound is valid and
+slightly conservative.  The remaining way to use Pila's theorem therefore requires small type produced by
+controlled interpolation rather than by zeros; transcendence itself is then automatic, and
+the precise statement is the conditional type gap of Theorem~\ref{camp:thm-typegap} with
+its construction target~\ref{camp:target-construct}.  The survey's other four clusters
+--- arithmetic holonomy for products of logarithms (Calegari--Dimitrov--Tang, which
+notably does \emph{not} cover $\log2\log3$ and must not be quoted as if it did),
+multivariate and adelic generalized factorials, global determinant architecture
+(Heath-Brown, Salberger, Walsh), and conjugate control via Schinzel--Zassenhaus and
+transfinite diameter --- are templates and mechanisms rather than plug-ins, and are
+recorded there with the concrete stop conditions the survey supplies.
+
+\emph{Assessment of the campaign.}  Two of the five frontier targets are now closed as
+methods (two-parameter transport, adelic wedge), one is revealed to be a restatement of
+the conjecture rather than a foothold (Kummer orbit), one is exactly calibrated as a
+zero-free-region generator with a measured and unfavourable dictionary (trap
+architecture), and the literature's closest published program has had its single numerical
+gate measured and found to fail by a linearly growing factor.  Nothing here moves the
+four-exponentials barrier.  What the campaign buys is precision: the surviving frontier is
+now two routes with \emph{proven sufficient conditions} --- the certified sparse near-curve
+search ($\mathrm{Cap}_L=o(L)$, verification finite) and the small-type integer-valued
+interpolant of Target~\ref{camp:target-construct}, which is moreover control-clean through
+the monoid's quadratic density --- together with the two output-sensitive cancellation
+targets (Sections~\ref{sec:masks}, \ref{bh:localized}) that have survived every campaign so
+far.  Of these the interpolant target is the sharpest, being a single explicit inequality
+whose satisfaction would settle the conjecture outright.
+
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
 
@@ -21683,13 +21955,12 @@ survive the dense-rescue mass test.  Conclusion for the two-dimensional interfac
 Section~\ref{cw:survivors}: there is no cheap escape (all rescues are
 $\Phi$-starved or prime-starved) and no blanket contraction theorem either ---
 \emph{top-heavy} patterns, with every slice tail essentially nonnegative, satisfy the
-entire window layer.  The two-parameter route thus reduces, exactly as the
-one-parameter route did after the global contraction, to the sub-window primes of
-top-heavy patterns; the difference is that this reduction is now proved for the
-strictly larger two-parameter design space.
+entire window layer, so the window layer alone would leave the two-parameter route open at
+the sub-window primes of top-heavy patterns.
 
-That reduction can now be pushed to a sharp theorem, which removes the top-heavy corridor
-entirely.
+That apparent residue is illusory, and the window layer is not in fact the last word: once
+the archimedean balance is imposed as well, the top-heavy class is \emph{empty}, so the
+sub-window primes and the structural primes are never reached.
 
 \begin{theorem}[Top-heavy collapse]\label{log:thm-topheavy}
 Let $c=(c_{ij})$ be integer coefficients on an admissible two-parameter grid, with strictly
@@ -22694,6 +22965,33 @@ Section~\ref{bb:dilation} \\
 \multicolumn{3}{@{}l}{\emph{Saturated divisor lattice (two-star tensor)}}\\
 Two-star tensor vanishes exactly at the controls; symmetric coefficient identities &
 \statuslean & \lean{TwoStarControlCharacterization}; Section~\ref{ts:detector} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Frontier campaign}}\\
+Two-parameter interface closed: $P=N$ closes the $\Phi$-starvation loop, $c\equiv0$ once
+$A>16Z(m+j^*)\log A$; sub-mesoscopic prime supply the only residue &
+\statusnew{}; core \statuslean; searches \statusexactcomp{} ($3.25$M patterns) &
+Section~\ref{camp:twodim} \\
+Adelic wedge closed: control-direction blindness, drop density $0.126\%$ versus $90\%$
+required, norm-residue no-go, non-Wieferich hardness transfer & \statusnew{}; decoupling
+\statuslean{} (\lean{AdelicWedgeDecoupling}); statistics \statusexactcomp &
+Section~\ref{camp:adelic} \\
+Kummer orbit hypothesis $\equiv$ sparse coaction separation $\equiv$
+Conjecture~\ref{conj:AE}; unipotent (interpolation, not Vandermonde); two-star tensor is
+monoid blind; weight-two versus weight-one deficit & \statusnew{}/\statusopen &
+Section~\ref{camp:kummer} \\
+Trap dictionary $\beta\ge1/((1-f)\kappa_*)$; greedy-support optimality with mean frequency
+$\tfrac23\sqrt{2abq}-\log\sqrt6$; external prime worth $\Theta(\log H/H)$ and dominated by
+discreteness; unit block the worst scale & \statusnew{}; constants \statusexactcomp &
+Section~\ref{camp:traps} \\
+Pila integrality gate measured: $\tau_2\ge1/(4\beta)$ by Jensen against the monoid density,
+failing the threshold by $208\beta\log2\log3\approx158\beta$ (linear in $\beta$) &
+\statusnew & Section~\ref{camp:literature}, \eqref{camp:eq-pila} \\
+Algebraic dependence with $2^z,3^z$ forces $\log M(g,r)=O(r\log r)$, hence $\tau_2=0$;
+conditional type gap (no integer-valued entire $g$ on $\Sol$ with $0<\tau_2\le$ threshold);
+small-type interpolant target, control-clean via the monoid's quadratic density &
+\statusnew{}; Pila and minimum modulus \statusknown{}; target \statusopen &
+Proposition~\ref{camp:prop-order}, Theorem~\ref{camp:thm-typegap},
+Target~\ref{camp:target-construct} \\
 Primitive tensor normal form (period zero, content one, external coefficient)
 $\Leftrightarrow$ counterexample; Kummer period-orbit obstruction and conditional
 closure; determinant design checklist & \statusnew{}/\statusopen &
@@ -22990,6 +23288,9 @@ valuation of a signed nested-slice factorial product \\
 \lean{.../CrossSliceContraction} & exact transport-weight exponent identity; conversion
 of the per-prime rescue bound into balance weights ($\Phi^-A^{m+j'}\le3\Phi^+M^{n+i}$);
 admissibility contraction factor $M^{n+i}A\le A^{m+j'}$ \\
+\lean{.../AdelicWedgeDecoupling} & exact multiplicativity of the Fermat quotient;
+control-direction invariance of the Fermat-quotient wedge; rank drop at $p$ characterized
+as collinearity of $(q_pM,q_pA)$ with $(q_p2,q_p3)$ \\
 \lean{.../AbelSliceMass} & Abel summation identity for slice tails, telescoping of weight
 increments, slice-mass positivity from nonnegative tails, the sharp collapse (a vanishing
 weighted mass with nonnegative tails and strictly increasing positive weights forces every
