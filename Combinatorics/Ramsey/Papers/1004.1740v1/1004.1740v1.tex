@@ -29,7 +29,7 @@
 
 Let $M(n)$ denote the number of permutations of $\{1,2,\ldots,n\}$ that do 
 not contain a $3$-term arithmetic progression as a subsequence. For 
-example, $M(4)=10$, corresponding to the permutations $(1243), \, 
+example, $M(4)=10$, corresponding to the permutations $(1342)$, \,
 (1324), \, (2143), \, (2413), \, (4213)$ and their reversals. In 1977, 
 Davis, Entringer, Graham and Simmons \cite{Dav77} established the 
 following bounds on $M(n)$: $$2^{n-1} \le M(n) \le \lfloor (n+1)/2 \rfloor 
@@ -80,14 +80,18 @@ common difference occurs as a subsequence.
 
 \proof We first show that any permutation
 $\sigma=(t_1,t_2,\ldots,t_{11})$ of $\{1,2,\ldots,11\}$ with $t_1=2$ and 
-$t_2=1$ must contain a $3$-term AP with odd common difference as a 
-subsequence. Indeed, $4$ must appear in $\sigma$ before $3$, $5$ after 
-$4$, $7$ after $4$, $6$ before $7$, $11$ before $6$, and $8$ before $11$. 
-Now we have the subsequence $(8,9,10)$ if $9$ occurs before $10$ in 
-$\sigma$ and the subsequence $(11,10,9)$ otherwise. This proves our claim. \\
+$t_2=1$ must contain a $3$-term AP with odd common difference as a
+subsequence. Indeed, $4$ must appear in $\sigma$ before $3$ to avoid the
+$3$-term AP $(2,3,4)$; similar considerations force $4$ before $5$, $7$
+before $4$, $6$ before $5$, $6$ before $7$, $11$ before $6$, $8$ before
+$11$, $8$ before $9$, and $7$ before $10$. Thus, both $8$ and $11$ appear
+in $\sigma$ before either $9$ or $10$ appears. Now we have the subsequence
+$(8,9,10)$ if $9$ occurs before $10$ in $\sigma$ and the subsequence
+$(11,10,9)$ otherwise. This proves our claim. \\
 
-Let $a_1,a_2,\ldots$ be a permutation of the positive integers. Ignoring 
-terms less than $a_1$ if necessary, we can assume that $a_1=1$. Let $k$ be 
+Let $a_1,a_2,\ldots$ be a permutation of the positive integers. Subtracting
+$a_1-1$ from every term and ignoring nonpositive terms, we can assume that
+$a_1=1$. Let $k$ be
 the least index such that $a_k$ is even, and let 
 $a_j=\max(a_1,a_2,\ldots,a_{k-1})$. If $a_j < 2a_k - 1$, then we have 
 $(a_1,a_k,2a_k-1)$ as a subsequence. If $a_j \ge 2a_k - 1 > a_k$, let 
@@ -148,7 +152,7 @@ $3$-term AP as a subsequence. Indeed, if the (increasing) 3AP $x_1, x_2,
 x_3$ occurs as a subsequence, with $x_2$ and $x_3$ belonging to different 
 sets $T_k$ and $T_{\ell}$, then $x_3 \ge 2x_2$, so $x_1 \le 0$, yielding a 
 contradiction. If $x_2$ and $x_3$ belong to the same set $T_k$, then $x_1 
-\in T_{\ell}$ with $\ell < k$. But $x_3 - x_2 < q_k \le x_2 - x_1$, 
+\in T_{\ell}$ with $\ell < k$. But $x_3 - x_2 < q_{k-1} \le x_2 - x_1$,
 contradicting our assumption that $x_1, x_2, x_3$ is a 3AP. Therefore, $T$ 
 is $3$-free. Thus $\alpha(3) \ge 1/2$ and $\beta(3) \ge 1/4$. \eop \\
 
@@ -166,7 +170,7 @@ Simmons, {\em {On Permutations Containing No Long Arithmetic
 Progressions}}, Acta Arithmetica 34 (1977), 81-90.
 
 \bibitem{Erd80} P. Erd\H{o}s and R. L. Graham, {\em {Old and New Problems 
-and Results in Combinatorial Number Theory}}, L'Enseignment Mathematique, 
+and Results in Combinatorial Number Theory}}, L'Enseignement Mathematique,
 Monograph No. 28, Geneva, 1980.
 
 \bibitem{Sha09} A. Sharma, {\em {Enumerating Permutations That Avoid Three 
@@ -175,15 +179,4 @@ Term Arithmetic Progressions}}, The Electronic Journal of Combinatorics 16
 
 \end{thebibliography}
 
-
 \end{document}
-
-
-
-
-
-\title{On Permutations Avoiding Arithmetic Progressions}
-\author{Timothy D. LeSaulnier \footnote{ Department of Mathematics,
-University of Illinois, Urbana, IL 61801, tlesaul2@math.uiuc.edu} \and
-Sujith Vijay\footnote{Department of Mathematics, University of Illinois,
-Urbana, IL 61801, sujith@math.uiuc.edu}}
