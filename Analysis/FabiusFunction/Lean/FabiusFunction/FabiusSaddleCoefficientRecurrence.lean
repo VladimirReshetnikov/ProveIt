@@ -135,7 +135,6 @@ lemma negativeLaplaceExponentCoefficient_two (t v : ℝ) :
   norm_num [negativeLaplaceJetSlope]
   ring
 
-set_option maxRecDepth 4000 in
 lemma negativeLaplaceExponentCoefficient_parity
     (m : ℕ) (t v : ℝ) :
     negativeLaplaceExponentCoefficient m t (-v) =
@@ -153,7 +152,8 @@ lemma negativeLaplaceExponentCoefficient_parity
       rw [show (-1 : ℂ) ^ (n + 3) = (-1 : ℂ) ^ (n + 1) by
         rw [show n + 3 = (n + 1) + 2 by omega, pow_add]
         norm_num]
-      ring
+      rw [mul_add]
+      congr 1 <;> simp only [div_eq_mul_inv] <;> ac_rfl
 
 lemma negativeLaplacePeriodicJet_zero_periodic :
     Periodic (negativeLaplacePeriodicJet 0) 1 := by
