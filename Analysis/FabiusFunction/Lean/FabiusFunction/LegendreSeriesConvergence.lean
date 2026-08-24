@@ -1,5 +1,8 @@
 import FabiusFunction.Differential
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.PSeries
 import Mathlib.Algebra.Polynomial.Sequence
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
@@ -26,6 +29,8 @@ open Set MeasureTheory
 
 namespace Fabius
 
+open Polynomial
+
 /-- The Legendre Sturm--Liouville operator `-((1 - x²) f')'`. -/
 noncomputable def legendreSturmLiouville (f : ℝ → ℝ) (x : ℝ) : ℝ :=
   -deriv (fun y : ℝ ↦ (1 - y ^ 2) * deriv f y) x
@@ -46,6 +51,118 @@ theorem ContDiff.legendreSturmLiouville {f : ℝ → ℝ}
   change ContDiff ℝ ∞
     (fun x : ℝ ↦ -deriv (fun y : ℝ ↦ (1 - y ^ 2) * deriv f y) x)
   exact (contDiff_infty_iff_deriv.mp hweighted).2.neg
+
+/-- Sonin's energy estimate: a polynomial solution of Legendre's differential
+equation whose endpoint values have square one is bounded by one on
+`[-1,1]`.  The energy is antitone on `[-1,0]` and monotone on `[0,1]`. -/
+theorem abs_eval_le_one_of_legendre_ode
+    (p : ℝ[X]) (n : ℕ) (hn : 0 < n)
+    (hODE : ∀ x : ℝ,
+      (1 - x ^ 2) * (derivative (derivative p)).eval x -
+          2 * x * (derivative p).eval x +
+          ((n : ℝ) * (n + 1 : ℝ)) * p.eval x = 0)
+    (hleft : (p.eval (-1)) ^ 2 = 1)
+    (hright : (p.eval 1) ^ 2 = 1)
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    |p.eval x| ≤ 1 := by
+  let y : ℝ → ℝ := fun z ↦ p.eval z
+  let dy : ℝ → ℝ := fun z ↦ (derivative p).eval z
+  let ddy : ℝ → ℝ := fun z ↦ (derivative (derivative p)).eval z
+  let eigenvalue : ℝ := (n : ℝ) * (n + 1 : ℝ)
+  let weight : ℝ → ℝ := fun z ↦ (1 - z ^ 2) / eigenvalue
+  let energy : ℝ → ℝ := y ^ 2 + weight * dy ^ 2
+  let energy' : ℝ → ℝ := fun z ↦
+    (2 * z) / eigenvalue * dy z ^ 2
+  have hnReal : 0 < (n : ℝ) := by exact_mod_cast hn
+  have heigenvalue : 0 < eigenvalue := by
+    dsimp [eigenvalue]
+    positivity
+  have henergyDeriv (z : ℝ) : HasDerivAt energy (energy' z) z := by
+    have hy : HasDerivAt y (dy z) z := by
+      dsimp [y, dy]
+      exact p.hasDerivAt z
+    have hdy : HasDerivAt dy (ddy z) z := by
+      dsimp [dy, ddy]
+      exact (derivative p).hasDerivAt z
+    have hweight : HasDerivAt weight (-2 * z / eigenvalue) z := by
+      dsimp [weight]
+      have hbase : HasDerivAt (fun w : ℝ ↦ 1 - w ^ 2) (-2 * z) z := by
+        simpa using ((hasDerivAt_pow 2 z).const_sub 1)
+      exact hbase.div_const eigenvalue
+    have hraw := (hy.pow 2).add (hweight.mul (hdy.pow 2))
+    change HasDerivAt energy
+      (2 * y z ^ 1 * dy z +
+        (-2 * z / eigenvalue * dy z ^ 2 +
+          weight z * (2 * dy z ^ 1 * ddy z))) z at hraw
+    have hderivEq :
+        2 * y z ^ 1 * dy z +
+            (-2 * z / eigenvalue * dy z ^ 2 +
+              weight z * (2 * dy z ^ 1 * ddy z)) =
+          energy' z := by
+      dsimp [y, dy, ddy, weight, energy', eigenvalue]
+      field_simp [ne_of_gt heigenvalue]
+      linear_combination (derivative p).eval z * hODE z
+    rw [hderivEq] at hraw
+    exact hraw
+  have henergyContinuous : Continuous energy := by
+    rw [continuous_iff_continuousAt]
+    exact fun z ↦ (henergyDeriv z).continuousAt
+  have hanti : AntitoneOn energy (Icc (-1 : ℝ) 0) := by
+    apply antitoneOn_of_hasDerivWithinAt_nonpos
+      (D := Icc (-1 : ℝ) 0) (f' := energy') (convex_Icc (-1) 0)
+      henergyContinuous.continuousOn
+      (fun z _hz ↦ (henergyDeriv z).hasDerivWithinAt)
+    intro z hz
+    have hzle : z ≤ 0 := by
+      have hz' : z ∈ Ioo (-1 : ℝ) 0 := by
+        simpa only [interior_Icc] using hz
+      exact hz'.2.le
+    dsimp [energy']
+    exact mul_nonpos_of_nonpos_of_nonneg
+      (div_nonpos_of_nonpos_of_nonneg (by linarith) heigenvalue.le)
+      (sq_nonneg _)
+  have hmono : MonotoneOn energy (Icc (0 : ℝ) 1) := by
+    apply monotoneOn_of_hasDerivWithinAt_nonneg
+      (D := Icc (0 : ℝ) 1) (f' := energy') (convex_Icc 0 1)
+      henergyContinuous.continuousOn
+      (fun z _hz ↦ (henergyDeriv z).hasDerivWithinAt)
+    intro z hz
+    have hzge : 0 ≤ z := by
+      have hz' : z ∈ Ioo (0 : ℝ) 1 := by
+        simpa only [interior_Icc] using hz
+      exact hz'.1.le
+    dsimp [energy']
+    positivity
+  have henergyLeft : energy (-1) = 1 := by
+    dsimp [energy, weight]
+    rw [hleft]
+    norm_num
+  have henergyRight : energy 1 = 1 := by
+    dsimp [energy, weight]
+    rw [hright]
+    norm_num
+  have henergyLe : energy x ≤ 1 := by
+    rcases le_total x 0 with hx0 | h0x
+    · have hxLeft : x ∈ Icc (-1 : ℝ) 0 := ⟨hx.1, hx0⟩
+      have hbound := hanti (show (-1 : ℝ) ∈ Icc (-1 : ℝ) 0 by norm_num)
+        hxLeft hx.1
+      rwa [henergyLeft] at hbound
+    · have hxRight : x ∈ Icc (0 : ℝ) 1 := ⟨h0x, hx.2⟩
+      have hbound := hmono hxRight (show (1 : ℝ) ∈ Icc (0 : ℝ) 1 by norm_num)
+        hx.2
+      rwa [henergyRight] at hbound
+  have hweightNonneg : 0 ≤ (1 - x ^ 2) / eigenvalue * dy x ^ 2 := by
+    have hxSq : x ^ 2 ≤ 1 := by
+      rw [sq_le_one_iff_abs_le_one]
+      exact abs_le.mpr ⟨by linarith [hx.1], hx.2⟩
+    exact mul_nonneg (div_nonneg (sub_nonneg.mpr hxSq) heigenvalue.le) (sq_nonneg _)
+  rw [← sq_le_one_iff_abs_le_one]
+  calc
+    (p.eval x) ^ 2 = y x ^ 2 := rfl
+    _ ≤ energy x := by
+      dsimp [energy, weight]
+      linarith
+    _ ≤ 1 := henergyLe
 
 private lemma legendre_weight_at_neg_one :
     (1 - (-1 : ℝ) ^ 2) = 0 := by norm_num

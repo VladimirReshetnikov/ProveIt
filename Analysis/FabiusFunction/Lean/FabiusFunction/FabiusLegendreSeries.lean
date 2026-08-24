@@ -20,6 +20,8 @@ namespace Fabius
 
 noncomputable section
 
+open Polynomial
+
 /-! ## Orthogonality from the Sturm--Liouville equation -/
 
 /-- Distinct members of a smooth polynomial eigenfamily for the Legendre
@@ -102,6 +104,47 @@ theorem legendreSeriesCoefficientOf_rvachevUp
 private theorem legendrePolynomial_contDiff_infty (n : ℕ) :
     ContDiff ℝ ∞ (fun x : ℝ ↦ (legendrePolynomial n).eval x) :=
   (legendrePolynomial_contDiff n).of_le (by simp)
+
+/-- The pointwise Sturm--Liouville equation in the notation used by the
+generic convergence layer. -/
+theorem legendreSturmLiouville_eval_legendrePolynomial (n : ℕ) (x : ℝ) :
+    legendreSturmLiouville
+        (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
+      ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x := by
+  simpa only [legendreSturmLiouville] using
+    legendrePolynomial_sturm_liouville n x
+
+/-- Distinct ordinary Legendre polynomials are orthogonal on `[-1,1]`. -/
+theorem integral_eval_legendrePolynomial_mul_eq_zero_of_ne
+    {m n : ℕ} (hmn : m ≠ n) :
+    (∫ x in (-1 : ℝ)..1,
+      (legendrePolynomial m).eval x * (legendrePolynomial n).eval x) = 0 := by
+  exact integral_eigenpolynomial_mul_eq_zero_of_ne legendrePolynomial
+    legendrePolynomial_contDiff_infty
+    legendreSturmLiouville_eval_legendrePolynomial hmn
+
+/-- The ordinary Legendre polynomial has absolute value at most one on its
+natural interval. -/
+theorem abs_eval_legendrePolynomial_le_one (n : ℕ) (x : ℝ)
+    (hx : x ∈ Icc (-1 : ℝ) 1) :
+    |(legendrePolynomial n).eval x| ≤ 1 := by
+  cases n with
+  | zero => simp
+  | succ n =>
+      apply abs_eval_le_one_of_legendre_ode
+        (legendrePolynomial (n + 1)) (n + 1) (by omega) ?_ ?_ ?_ x hx
+      · intro z
+        have h := congrArg (fun p : ℝ[X] ↦ p.eval z)
+          (legendrePolynomial_sturm_polynomial (n + 1))
+        simp only [eval_add, eval_mul, eval_sub, eval_pow, eval_X, eval_one,
+          eval_C] at h
+        linear_combination -h
+      · rw [eval_legendrePolynomial_neg, eval_legendrePolynomial_one, mul_one]
+        rw [pow_two, ← pow_add,
+          show (n + 1) + (n + 1) = 2 * (n + 1) by omega]
+        rw [pow_mul]
+        norm_num
+      · simp
 
 private theorem hasSum_rvachevFullLegendreSeries_of_properties
     (F : BoundedFabius) (hF : IsFabius F)
@@ -205,16 +248,104 @@ private theorem hasSum_rvachevEvenLegendreSeries_uniform_of_properties
     rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_smul])
   simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
 
-private theorem hasSum_canonical_rvachevLegendreSeries_formula_of_properties
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ)))
+/-- The full Fourier--Legendre series of Rvachev's up function converges
+pointwise on `[-1,1]`, including both endpoints. -/
+theorem hasSum_rvachevFullLegendreSeries
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    HasSum (fun n ↦
+      rvachevFullLegendreCoefficient F n * (legendrePolynomial n).eval x)
+      (rvachevUp F x) := by
+  exact hasSum_rvachevFullLegendreSeries_of_properties F hF
+    legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
+
+/-- Tsum form of `hasSum_rvachevFullLegendreSeries`. -/
+theorem tsum_rvachevFullLegendreSeries
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    (∑' n,
+      rvachevFullLegendreCoefficient F n * (legendrePolynomial n).eval x) =
+      rvachevUp F x :=
+  (hasSum_rvachevFullLegendreSeries F hF x hx).tsum_eq
+
+/-- The full Fourier--Legendre series converges uniformly on `[-1,1]`.
+The `ContinuousMap` norm is the supremum norm on that compact interval. -/
+theorem hasSum_rvachevFullLegendreSeries_uniform
+    (F : BoundedFabius) (hF : IsFabius F) :
+    HasSum (fun n ↦
+      rvachevFullLegendreCoefficient F n •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial n).eval x)
+          (legendrePolynomial_contDiff n).continuous)
+      (continuousMapOnLegendreInterval
+        (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
+  exact hasSum_rvachevFullLegendreSeries_uniform_of_properties F hF
+    legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
+
+/-- Tsum form of `hasSum_rvachevFullLegendreSeries_uniform`. -/
+theorem tsum_rvachevFullLegendreSeries_uniform
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (∑' n,
+      rvachevFullLegendreCoefficient F n •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial n).eval x)
+          (legendrePolynomial_contDiff n).continuous) =
+      continuousMapOnLegendreInterval
+        (rvachevUp F) (rvachev_contDiff F hF).continuous :=
+  (hasSum_rvachevFullLegendreSeries_uniform F hF).tsum_eq
+
+/-- Since Rvachev's up function is even, its Legendre series contains only
+the even-indexed polynomials. -/
+theorem hasSum_rvachevLegendreSeries
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    HasSum (fun n ↦
+      rvachevLegendreCoefficient F n *
+        (legendrePolynomial (2 * n)).eval x) (rvachevUp F x) := by
+  exact hasSum_rvachevEvenLegendreSeries_of_properties F hF
+    legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
+
+/-- Tsum form of `hasSum_rvachevLegendreSeries`. -/
+theorem tsum_rvachevLegendreSeries
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    (∑' n,
+      rvachevLegendreCoefficient F n *
+        (legendrePolynomial (2 * n)).eval x) = rvachevUp F x :=
+  (hasSum_rvachevLegendreSeries F hF x hx).tsum_eq
+
+/-- The even-only Legendre series converges uniformly on `[-1,1]`. -/
+theorem hasSum_rvachevLegendreSeries_uniform
+    (F : BoundedFabius) (hF : IsFabius F) :
+    HasSum (fun n ↦
+      rvachevLegendreCoefficient F n •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial (2 * n)).eval x)
+          (legendrePolynomial_contDiff (2 * n)).continuous)
+      (continuousMapOnLegendreInterval
+        (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
+  exact hasSum_rvachevEvenLegendreSeries_uniform_of_properties F hF
+    legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
+
+/-- Tsum form of `hasSum_rvachevLegendreSeries_uniform`. -/
+theorem tsum_rvachevLegendreSeries_uniform
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (∑' n,
+      rvachevLegendreCoefficient F n •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial (2 * n)).eval x)
+          (legendrePolynomial_contDiff (2 * n)).continuous) =
+      continuousMapOnLegendreInterval
+        (rvachevUp F) (rvachev_contDiff F hF).continuous :=
+  (hasSum_rvachevLegendreSeries_uniform F hF).tsum_eq
+
+/-- The screenshot formula: the exact Fabius-value coefficients give the
+pointwise Legendre expansion of the canonical up function on `[-1,1]`. -/
+theorem hasSum_canonical_rvachevLegendreSeries_formula
     (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
     HasSum (fun n ↦
       ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
@@ -227,21 +358,29 @@ private theorem hasSum_canonical_rvachevLegendreSeries_formula_of_properties
             fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹)) *
         (legendrePolynomial (2 * n)).eval x)) (rvachevUp fabius x) := by
   have hseries := hasSum_rvachevEvenLegendreSeries_of_properties
-    fabius fabius_spec hpEigen hpBound hpNorm x hx
+    fabius fabius_spec legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
   convert hseries using 1
   funext n
   rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]
 
-private theorem hasSum_canonical_rvachevLegendreSeries_formula_uniform_of_properties
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ))) :
+/-- Tsum equality for the screenshot formula. -/
+theorem tsum_canonical_rvachevLegendreSeries_formula
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    (∑' n,
+      ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
+        (∑ k ∈ Finset.range (n + 1),
+          (-1 : ℝ) ^ (n + k) *
+            (2 * n).choose (n + k) *
+            (2 * n + 2 * k).choose (2 * n) *
+            (Nat.factorial (2 * k) : ℝ) *
+            2 ^ (2 * k + 1).choose 2 *
+            fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹)) *
+        (legendrePolynomial (2 * n)).eval x)) = rvachevUp fabius x :=
+  (hasSum_canonical_rvachevLegendreSeries_formula x hx).tsum_eq
+
+/-- The screenshot formula converges uniformly on `[-1,1]`. -/
+theorem hasSum_canonical_rvachevLegendreSeries_formula_uniform :
     HasSum (fun n ↦
       ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
         (∑ k ∈ Finset.range (n + 1),
@@ -257,10 +396,30 @@ private theorem hasSum_canonical_rvachevLegendreSeries_formula_uniform_of_proper
       (continuousMapOnLegendreInterval
         (rvachevUp fabius) (rvachev_contDiff fabius fabius_spec).continuous) := by
   have hseries := hasSum_rvachevEvenLegendreSeries_uniform_of_properties
-    fabius fabius_spec hpEigen hpBound hpNorm
+    fabius fabius_spec legendreSturmLiouville_eval_legendrePolynomial
+    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
   convert hseries using 1
   funext n
   rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]
+
+/-- Uniform tsum equality for the screenshot formula. -/
+theorem tsum_canonical_rvachevLegendreSeries_formula_uniform :
+    (∑' n,
+      ((4 : ℝ)⁻¹ ^ n * ((4 * n + 1 : ℕ) : ℝ) *
+        (∑ k ∈ Finset.range (n + 1),
+          (-1 : ℝ) ^ (n + k) *
+            (2 * n).choose (n + k) *
+            (2 * n + 2 * k).choose (2 * n) *
+            (Nat.factorial (2 * k) : ℝ) *
+            2 ^ (2 * k + 1).choose 2 *
+            fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹))) •
+        continuousMapOnLegendreInterval
+          (fun x : ℝ ↦ (legendrePolynomial (2 * n)).eval x)
+          (legendrePolynomial_contDiff (2 * n)).continuous) =
+      continuousMapOnLegendreInterval
+        (rvachevUp fabius)
+        (rvachev_contDiff fabius fabius_spec).continuous :=
+  hasSum_canonical_rvachevLegendreSeries_formula_uniform.tsum_eq
 
 end
 
