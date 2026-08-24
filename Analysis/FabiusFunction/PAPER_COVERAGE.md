@@ -132,6 +132,7 @@ environments.  Its public Lean aggregate is
 | Source claim | Status | Lean declaration(s) |
 | --- | --- | --- |
 | Thue--Morse sign definition and self-similarity | Proved | `Fabius.binaryWeight`, `Fabius.thueMorseSign`, `Fabius.thueMorseSign_two_mul`, `Fabius.thueMorseSign_two_mul_add_one` |
+| Additional requested identity (not in the draft): zero-one `ThueMorse[n]` binomial/`Log2` formula | Proved for every natural `n`, with the integer inside `Log2` first identified exactly as `2^(binaryWeight n + 1)` and the final division interpreted in `ℚ` | `Fabius.thueMorseBit`, `Fabius.signedBinomialParitySum`, `Fabius.thueMorseLogIntegerArgument_eq_two_pow`, `Fabius.log2_thueMorseLog2Argument`, `Fabius.thueMorseBit_eq_log2_binomialParity_formula` |
 | Inclusive iterated prefix sums and odd first-prefix zeros | Proved | `Fabius.iteratedPrefix`, `Fabius.iteratedPrefix_succ`, `Fabius.iteratedPrefix_succ_sub`, `Fabius.iteratedPrefix_one_two_mul_add_one` |
 | Equation (1), literal normalized grid | Defined exactly | `Fabius.paperPrefixGridValue`, `Fabius.prefixGridPoint` |
 | Equation (1), instruction to join consecutive grid points | Defined as the intended real polygon (with a rational companion), distinct from the contradictory floor/step wording | `Fabius.paperPrefixPolygonReal`, `Fabius.paperPrefixPolygonReal_grid`, `Fabius.paperPrefixPolygon`, `Fabius.paperPrefixPolygon_grid` |
