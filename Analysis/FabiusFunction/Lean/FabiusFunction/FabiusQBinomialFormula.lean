@@ -14,6 +14,11 @@ This module proves the Wolfram Language identity
 
 The inner subtraction is performed in `ℚ`, as it is in Wolfram Language.
 The theorem includes `n = 0`.
+
+More generally, the module proves that translating every inner power by the
+same `c : ℚ` leaves the complete q-binomial numerator unchanged.  The
+specialization `c = 1/2` therefore proves the variant with
+`(r - 2^k + 1/2)^(n+k)` requested alongside the centered formula.
 -/
 
 set_option autoImplicit false
@@ -421,6 +426,187 @@ theorem fabius_inverse_two_pow_eq_qBinomialThueMorseFormula (n : ℕ) :
       (qBinomialThueMorseFormula n : ℝ) :=
   fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula
     fabius fabius_spec n
+
+/-! ## Rational translations of the inner sums -/
+
+/-- The outer numerator after translating every centered Thue--Morse block
+by the same rational constant `c`. -/
+noncomputable def qBinomialThueMorseTranslatedNumerator
+    (c : ℚ) (n : ℕ) : ℚ :=
+  ∑ k ∈ Finset.range (n + 1),
+    qBinomial n k (1 / 2) /
+        ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+      thueMorseTranslatedPowerSum c k (n + k)
+
+/-- The q-binomial--Thue--Morse expression with a common rational
+translation `c` in every inner power sum. -/
+noncomputable def qBinomialThueMorseTranslatedFormula
+    (c : ℚ) (n : ℕ) : ℚ :=
+  (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+    qBinomialThueMorseTranslatedNumerator c n
+
+private theorem rawWeight_mul_coeff_shifted_eq
+    (n k d : ℕ) :
+    halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+        PowerSeries.coeff d (thueMorseShiftedPowerSeries k) =
+      qWeight n k * PowerSeries.coeff d (refinementFactorSeries k) := by
+  rw [coeff_shiftedSeries]
+  unfold qWeight
+  rw [four_pow_choose_mul, div_pow]
+  norm_num
+  field_simp
+
+private theorem weighted_shifted_coeff_eq_zero
+    {n d : ℕ} (hd : d < n) :
+    (∑ k ∈ Finset.range (n + 1),
+      halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+        PowerSeries.coeff d (thueMorseShiftedPowerSeries k)) = 0 := by
+  simp_rw [rawWeight_mul_coeff_shifted_eq]
+  rw [weighted_factor_coefficient (s := Finset.range (n + 1))
+    (weight := qWeight n) (node := dyadicNode) (P := refinementFactorSeries)
+    (hP := fun k _hk => refinementFactorSeries_mul k) d
+    (fun e he => qWeight_nodes_zero (he.trans hd))]
+  rw [qWeight_nodes_zero hd, zero_mul]
+
+/-- Translating all centered Thue--Morse blocks by the same rational number
+does not change the q-binomial outer numerator. -/
+theorem qBinomialThueMorseTranslatedNumerator_eq_centered
+    (c : ℚ) (n : ℕ) :
+    qBinomialThueMorseTranslatedNumerator c n =
+      qBinomialThueMorseNumerator n := by
+  rw [qBinomialThueMorseTranslatedNumerator,
+    qBinomialThueMorseNumerator]
+  simp only [qBinomial_half_eq]
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        halfQBinomial n k /
+            ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+          thueMorseTranslatedPowerSum c k (n + k)) =
+        ∑ k ∈ Finset.range (n + 1),
+          halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+            PowerSeries.coeff n
+              (thueMorseTranslatedShiftedPowerSeries c k) := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [coeff_thueMorseTranslatedShiftedPowerSeries]
+      field_simp
+    _ = ∑ k ∈ Finset.range (n + 1),
+          halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+            PowerSeries.coeff n
+              (PowerSeries.rescale c (PowerSeries.exp ℚ) *
+                thueMorseShiftedPowerSeries k) := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [thueMorseTranslatedShiftedPowerSeries_eq_exp_mul]
+    _ = ∑ k ∈ Finset.range (n + 1),
+          halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+            PowerSeries.coeff n (thueMorseShiftedPowerSeries k) := by
+      simp only [PowerSeries.coeff_mul,
+        Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+      simp_rw [Finset.mul_sum]
+      rw [Finset.sum_comm, Finset.sum_eq_single 0]
+      · simp [PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
+      · intro d hd hd0
+        have hdle : d ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hd)
+        have hnpos : 0 < n :=
+          (Nat.pos_of_ne_zero hd0).trans_le hdle
+        have hdlt : n - d < n :=
+          Nat.sub_lt hnpos (Nat.pos_of_ne_zero hd0)
+        calc
+          (∑ k ∈ Finset.range (n + 1),
+              halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+                (PowerSeries.coeff d
+                    (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
+                  PowerSeries.coeff (n - d)
+                    (thueMorseShiftedPowerSeries k))) =
+              PowerSeries.coeff d
+                  (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
+                ∑ k ∈ Finset.range (n + 1),
+                  halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+                    PowerSeries.coeff (n - d)
+                      (thueMorseShiftedPowerSeries k) := by
+            rw [Finset.mul_sum]
+            apply Finset.sum_congr rfl
+            intro k _hk
+            ring
+          _ = 0 := by
+            rw [weighted_shifted_coeff_eq_zero hdlt, mul_zero]
+      · simp
+    _ = ∑ k ∈ Finset.range (n + 1),
+          halfQBinomial n k /
+              ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+            thueMorseCenteredPowerSum k (n + k) := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [coeff_thueMorseShiftedPowerSeries]
+      field_simp
+
+/-- The complete rational expression is invariant under a common rational
+translation of its inner sums. -/
+theorem qBinomialThueMorseTranslatedFormula_eq_centered
+    (c : ℚ) (n : ℕ) :
+    qBinomialThueMorseTranslatedFormula c n =
+      qBinomialThueMorseFormula n := by
+  rw [qBinomialThueMorseTranslatedFormula,
+    qBinomialThueMorseFormula,
+    qBinomialThueMorseTranslatedNumerator_eq_centered]
+
+/-- Every rationally translated version gives the same exact dyadic Fabius
+value. -/
+theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorseTranslatedFormula
+    (c : ℚ) (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      qBinomialThueMorseTranslatedFormula c n := by
+  rw [qBinomialThueMorseTranslatedFormula_eq_centered,
+    fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula]
+
+/-- Real-valued translated identity for every function satisfying the
+Fabius characterization. -/
+theorem fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseTranslatedFormula
+    (F : BoundedFabius) (hF : IsFabius F) (c : ℚ) (n : ℕ) :
+    fabiusReal F (((2 : ℝ) ^ n)⁻¹) =
+      (qBinomialThueMorseTranslatedFormula c n : ℝ) := by
+  rw [qBinomialThueMorseTranslatedFormula_eq_centered,
+    fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula F hF]
+
+/-- The rational formula requested in the question, with translation
+`c = 1/2`. -/
+noncomputable def qBinomialThueMorseHalfShiftFormula (n : ℕ) : ℚ :=
+  qBinomialThueMorseTranslatedFormula (1 / 2) n
+
+/-- Exact rational half-shifted q-binomial formula. -/
+theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorseHalfShiftFormula
+    (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      qBinomialThueMorseHalfShiftFormula n :=
+  fabiusAtInverseTwoPow_eq_qBinomialThueMorseTranslatedFormula (1 / 2) n
+
+/-- The half-shifted real-valued identity for the canonical Fabius
+function. -/
+theorem fabius_inverse_two_pow_eq_qBinomialThueMorseHalfShiftFormula
+    (n : ℕ) :
+    fabiusReal fabius (((2 : ℝ) ^ n)⁻¹) =
+      (qBinomialThueMorseHalfShiftFormula n : ℝ) :=
+  fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseTranslatedFormula
+    fabius fabius_spec (1 / 2) n
+
+/-- The rational half-shifted theorem with both sums displayed literally.
+This is the direct Lean transcription of the requested Wolfram Language
+statement, including `n = 0`. -/
+theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorse_halfShift_sum (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+            ∑ r ∈ Finset.range (2 ^ k),
+              (thueMorseSign r : ℚ) *
+                ((r : ℚ) - (2 : ℚ) ^ k + (1 / 2 : ℚ)) ^ (n + k) := by
+  rw [fabiusAtInverseTwoPow_eq_qBinomialThueMorseHalfShiftFormula]
+  simp only [qBinomialThueMorseHalfShiftFormula,
+    qBinomialThueMorseTranslatedFormula,
+    qBinomialThueMorseTranslatedNumerator,
+    thueMorseTranslatedPowerSum_eq_sum_range]
 
 end
 
