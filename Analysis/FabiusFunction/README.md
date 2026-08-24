@@ -99,6 +99,33 @@ Under the bounded convention, nonpositive inputs evaluate to `0` and inputs
 at least `1` evaluate to `1`.  The separate global evaluator retains the
 paper's oscillating continuation, for example `F(3) = -1`.
 
+## Fourier--Legendre expansion of `up`
+
+The ordinary Legendre polynomials are constructed from Rodrigues' formula in
+`LegendrePolynomial.lean`.  The development proves their parity, degree,
+Sturm--Liouville equation, endpoint values, sharp bound `|P_n(x)| ≤ 1` on
+`[-1,1]`, orthogonality, and exact squared norm `2 / (2n+1)`.
+
+`FabiusLegendreCoefficients.lean` evaluates the even Fourier--Legendre
+coefficients of Rvachev's up function in terms of dyadic Fabius values.  The
+result is the exact finite sum
+
+```text
+u_n = 4^(-n) (4n+1) sum (k = 0..n),
+  (-1)^(n+k) * choose(2n,n+k) * choose(2n+2k,2n)
+  * (2k)! * 2^choose(2k+1,2) * F(2^(-2k-1)).
+```
+
+Finally, `FabiusLegendreSeries.lean` proves
+`up(x) = ∑' n, u_n P_(2n)(x)` for every `x ∈ [-1,1]`.  The convergence
+is absolute and uniform on that closed interval, so the equality includes
+both endpoints.  The primary public results are
+`Fabius.canonical_rvachevLegendreCoefficient_eq_fabius_sum`,
+`Fabius.hasSum_canonical_rvachevLegendreSeries_formula`, and
+`Fabius.hasSum_canonical_rvachevLegendreSeries_formula_uniform`, with `tsum`
+forms available for both.  No corresponding equality is asserted outside
+the natural Legendre interval.
+
 ## Paper coverage
 
 `Paper05442.lean` is the public import for the first paper.  It includes all

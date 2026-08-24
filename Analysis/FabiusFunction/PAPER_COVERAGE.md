@@ -71,6 +71,12 @@ the doubled half-moment recurrence, multiplier divisibility and valuations,
 the shifted dyadic-grid formula, the reordered sum, and the conditional
 post-Conjecture-16 denominator formulas.
 
+## Additional requested identities
+
+| Claim | Status | Lean declaration(s) |
+| --- | --- | --- |
+| Fourier--Legendre expansion of Rvachev's up function, with the displayed finite formula for the coefficient of `P_(2n)` | Proved exactly on the natural domain `x ∈ [-1,1]`.  All odd coefficients vanish, and the even series converges absolutely and uniformly on the closed interval, hence pointwise at both endpoints. | `Fabius.rvachevFullLegendreCoefficient_odd_eq_zero`, `Fabius.canonical_rvachevLegendreCoefficient_eq_fabius_sum`, `Fabius.hasSum_canonical_rvachevLegendreSeries_formula`, `Fabius.tsum_canonical_rvachevLegendreSeries_formula`, `Fabius.hasSum_canonical_rvachevLegendreSeries_formula_uniform`, `Fabius.tsum_canonical_rvachevLegendreSeries_formula_uniform` |
+
 ## Local draft: *Fabius Asymptotic*
 
 The file `Papers/Fabius Asymptotic/Fabius Asymptotic.tex` contains **zero**
