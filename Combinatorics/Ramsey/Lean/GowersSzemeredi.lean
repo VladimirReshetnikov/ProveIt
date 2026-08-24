@@ -16,6 +16,8 @@ import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
+import GowersSzemeredi.Proofs03GowersCS
+import GowersSzemeredi.Proofs03Minkowski
 import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Progressions
@@ -27,8 +29,12 @@ import GowersSzemeredi.Proofs10Bohr
 import GowersSzemeredi.Proofs10Error
 import GowersSzemeredi.Proofs10Induced
 import GowersSzemeredi.Proofs10Selection
+import GowersSzemeredi.Proofs10Regular
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs12Parallelograms
+import GowersSzemeredi.Proofs12HigherArrangements
+import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs13Basic
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
@@ -40,6 +46,8 @@ import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs17Phase
+import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
 
 /-!
