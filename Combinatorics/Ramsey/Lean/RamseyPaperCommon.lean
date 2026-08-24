@@ -1,4 +1,5 @@
 import RamseyPaperCommon.FiniteBridges
+import RamseyPaperCommon.ThreeFreeCounting
 
 /-!
 # Shared infrastructure for the Ramsey-paper formalizations
