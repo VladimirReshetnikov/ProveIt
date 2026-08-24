@@ -25,6 +25,27 @@ theorem M_four_representatives_holds : M_four_representatives :=
 theorem M_initial_values_holds : M_initial_values :=
   LeanProofs.RamseyPaperCommon.lesaulnier2010_M_initial_values
 
+theorem M_even_recurrence_holds : M_even_recurrence := by
+  simpa [M_even_recurrence,
+    LeanProofs.LeSaulnierVijay2011.M_even_recurrence] using
+    LeanProofs.LeSaulnierVijay2011.M_even_recurrence_holds
+
+theorem M_odd_recurrence_holds : M_odd_recurrence := by
+  simpa [M_odd_recurrence,
+    LeanProofs.LeSaulnierVijay2011.M_odd_recurrence] using
+    LeanProofs.LeSaulnierVijay2011.M_odd_recurrence_holds
+
+theorem theorem_1_holds : theorem_1 := by
+  simpa [theorem_1, theorem1Constant,
+    LeanProofs.LeSaulnierVijay2011.theorem_1,
+    LeanProofs.LeSaulnierVijay2011.theorem1Constant] using
+    LeanProofs.LeSaulnierVijay2011.theorem_1_holds
+
+theorem M_ratio_does_not_tend_to_two_holds : M_ratio_does_not_tend_to_two := by
+  simpa [M_ratio_does_not_tend_to_two,
+    LeanProofs.LeSaulnierVijay2011.M_ratio_does_not_tend_to_two] using
+    LeanProofs.LeSaulnierVijay2011.M_ratio_does_not_tend_to_two_holds
+
 theorem every_permutation_of_positives_has_three_AP_holds :
     every_permutation_of_positives_has_three_AP := by
   simpa [every_permutation_of_positives_has_three_AP,

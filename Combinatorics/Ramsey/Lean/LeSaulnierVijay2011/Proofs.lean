@@ -1,5 +1,6 @@
 import LeSaulnierVijay2011.Statements
 import DavisEntringerGrahamSimmons1977.Proofs
+import DavisEntringerGrahamSimmons1977.CountingRecurrences
 import RamseyPaperCommon.ThreeFreeCounting
 import RamseyPaperCommon.CountConsequences
 
@@ -31,6 +32,210 @@ theorem M_four_representatives_holds : M_four_representatives :=
 
 theorem M_initial_values_holds : M_initial_values :=
   LeanProofs.RamseyPaperCommon.lesaulnier_M_initial_values
+
+theorem M_even_recurrence_holds : M_even_recurrence := by
+  intro n hn
+  have h :=
+    LeanProofs.DavisEntringerGrahamSimmons1977.even_count_recurrence_holds n hn
+  simpa only [LeanProofs.RamseyPaperCommon.davis_M_eq_lesaulnier_M] using h
+
+theorem M_odd_recurrence_holds : M_odd_recurrence := by
+  intro n hn
+  have h :=
+    LeanProofs.DavisEntringerGrahamSimmons1977.odd_count_recurrence_holds n hn
+  simpa only [LeanProofs.RamseyPaperCommon.davis_M_eq_lesaulnier_M,
+    Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using h
+
+private lemma theorem1Constant_pos : 0 < theorem1Constant := by
+  unfold theorem1Constant
+  exact Real.rpow_pos_of_pos (by norm_num) _
+
+private lemma theorem1Constant_pow_ten : theorem1Constant ^ 10 = 2132 := by
+  unfold theorem1Constant
+  have h := Real.rpow_inv_natCast_pow (x := (2132 : Real)) (n := 10)
+    (by norm_num) (by norm_num)
+  norm_num at h ⊢
+  exact h
+
+private lemma theorem1Constant_lower : (43 : Real) / 20 <= theorem1Constant := by
+  apply (pow_le_pow_iff_left₀ (by norm_num : (0 : Real) <= 43 / 20)
+    theorem1Constant_pos.le (by norm_num : (10 : Nat) ≠ 0)).mp
+  rw [theorem1Constant_pow_ten]
+  norm_num
+
+private lemma theorem1Constant_upper : theorem1Constant <= (2153 : Real) / 1000 := by
+  apply (pow_le_pow_iff_left₀ theorem1Constant_pos.le
+    (by norm_num : (0 : Real) <= 2153 / 1000) (by norm_num : (10 : Nat) ≠ 0)).mp
+  rw [theorem1Constant_pow_ten]
+  norm_num
+
+private lemma theorem_1_base (n : Nat) (hn8 : 8 <= n) (hn15 : n <= 15) :
+    ((1 : Real) / 2) * theorem1Constant ^ n <= M n := by
+  obtain ⟨h8, h9, h10, h11, h12, h13, h14, h15⟩ := M_initial_values_holds
+  interval_cases n
+  · rw [h8]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 8
+    norm_num at hp ⊢
+    linarith
+  · rw [h9]
+    have hmul : ((43 : Real) / 20) * theorem1Constant ^ 9 <=
+        theorem1Constant * theorem1Constant ^ 9 :=
+      mul_le_mul_of_nonneg_right theorem1Constant_lower
+        (pow_nonneg theorem1Constant_pos.le _)
+    have heq : theorem1Constant * theorem1Constant ^ 9 = theorem1Constant ^ 10 := by
+      rw [pow_succ]
+      ring
+    rw [heq, theorem1Constant_pow_ten] at hmul
+    norm_num at hmul ⊢
+    linarith
+  · rw [h10, theorem1Constant_pow_ten]
+    norm_num
+  · rw [h11]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 11
+    norm_num at hp ⊢
+    linarith
+  · rw [h12]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 12
+    norm_num at hp ⊢
+    linarith
+  · rw [h13]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 13
+    norm_num at hp ⊢
+    linarith
+  · rw [h14]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 14
+    norm_num at hp ⊢
+    linarith
+  · rw [h15]
+    have hp := pow_le_pow_left₀ theorem1Constant_pos.le theorem1Constant_upper 15
+    norm_num at hp ⊢
+    linarith
+
+/-- The parity recurrences propagate the eight certified base values to the
+paper's improved exponential lower bound. -/
+theorem theorem_1_holds : theorem_1 := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+      intro hn
+      by_cases hn15 : n <= 15
+      · exact theorem_1_base n hn hn15
+      · have hn16 : 16 <= n := by omega
+        rcases Nat.even_or_odd n with heven | hodd
+        · obtain ⟨m, hm⟩ := heven
+          have hm8 : 8 <= m := by omega
+          have hmn : m < n := by omega
+          have ihm := ih m hmn hm8
+          have hrecNat := M_even_recurrence_holds m (by omega)
+          have hrec : (2 : Real) * (M m : Real) ^ 2 <= M (2 * m) := by
+            exact_mod_cast hrecNat
+          have hpow : theorem1Constant ^ n = (theorem1Constant ^ m) ^ 2 := by
+            rw [hm, show m + m = m * 2 by omega, ← pow_mul]
+          have hlowNonneg : 0 <= (1 / 2 : Real) * theorem1Constant ^ m :=
+            mul_nonneg (by norm_num) (pow_nonneg theorem1Constant_pos.le _)
+          rw [hpow, hm]
+          calc
+            (1 / 2 : Real) * (theorem1Constant ^ m) ^ 2 =
+                2 * ((1 / 2 : Real) * theorem1Constant ^ m) ^ 2 := by ring
+            _ <= 2 * (M m : Real) ^ 2 := by gcongr
+            _ <= (M (m + m) : Nat) := by simpa only [two_mul] using hrec
+        · obtain ⟨m, hm⟩ := hodd
+          have hm8 : 8 <= m := by omega
+          have hm1Eight : 8 <= m + 1 := by omega
+          have hmn : m < n := by omega
+          have hm1n : m + 1 < n := by omega
+          have ihm := ih m hmn hm8
+          have ihm1 := ih (m + 1) hm1n hm1Eight
+          have hrecNat := M_odd_recurrence_holds m (by omega)
+          have hrec : (2 : Real) * M m * M (m + 1) <= M (2 * m + 1) := by
+            exact_mod_cast hrecNat
+          have hpow : theorem1Constant ^ n =
+              theorem1Constant ^ m * theorem1Constant ^ (m + 1) := by
+            rw [hm, ← pow_add]
+            congr 1
+            omega
+          have hlowNonneg : 0 <= (1 / 2 : Real) * theorem1Constant ^ m :=
+            mul_nonneg (by norm_num) (pow_nonneg theorem1Constant_pos.le _)
+          have hlowSuccNonneg : 0 <=
+              (1 / 2 : Real) * theorem1Constant ^ (m + 1) :=
+            mul_nonneg (by norm_num) (pow_nonneg theorem1Constant_pos.le _)
+          rw [hpow, hm]
+          calc
+            (1 / 2 : Real) * (theorem1Constant ^ m * theorem1Constant ^ (m + 1)) =
+                2 * ((1 / 2 : Real) * theorem1Constant ^ m) *
+                  ((1 / 2 : Real) * theorem1Constant ^ (m + 1)) := by ring
+            _ <= 2 * (M m : Real) * M (m + 1) := by gcongr
+            _ <= (M (2 * m + 1) : Nat) := hrec
+
+/-- A hypothetical ratio limit of two would give an eventual exponential
+upper bound with base strictly below `theorem1Constant`, contradicting
+Theorem 1. -/
+theorem M_ratio_does_not_tend_to_two_holds : M_ratio_does_not_tend_to_two := by
+  intro hratio
+  have hcTwo : (2 : Real) < theorem1Constant :=
+    (by norm_num : (2 : Real) < 43 / 20).trans_le theorem1Constant_lower
+  let b : Real := (2 + theorem1Constant) / 2
+  have hTwoB : (2 : Real) < b := by
+    dsimp only [b]
+    linarith
+  have hBC : b < theorem1Constant := by
+    dsimp only [b]
+    linarith
+  have hBPos : 0 < b := (by norm_num : (0 : Real) < 2).trans hTwoB
+  have hevent : ∀ᶠ n : Nat in atTop, (M (n + 1) : Real) / M n < b :=
+    (tendsto_order.mp hratio).2 b hTwoB
+  obtain ⟨N, hN⟩ := eventually_atTop.mp hevent
+  let K := max N 8
+  have hKN : N <= K := le_max_left _ _
+  have hK8 : 8 <= K := le_max_right _ _
+  have hupper : forall t : Nat, (M (K + t) : Real) <= M K * b ^ t := by
+    intro t
+    induction t with
+    | zero => simp
+    | succ t ih =>
+        have hratioStep := le_of_lt (hN (K + t) (by omega))
+        have hlowerStep := theorem_1_holds (K + t) (by omega)
+        have hdenPos : (0 : Real) < M (K + t) :=
+          lt_of_lt_of_le
+            (mul_pos (by norm_num) (pow_pos theorem1Constant_pos _)) hlowerStep
+        have hstep : (M (K + t + 1) : Real) <= b * M (K + t) :=
+          (div_le_iff₀ hdenPos).mp hratioStep
+        calc
+          (M (K + (t + 1)) : Real) = M (K + t + 1) := rfl
+          _ <= b * M (K + t) := hstep
+          _ <= b * (M K * b ^ t) := mul_le_mul_of_nonneg_left ih hBPos.le
+          _ = M K * b ^ (t + 1) := by rw [pow_succ]; ring
+  let r : Real := b / theorem1Constant
+  have hRNonneg : 0 <= r := div_nonneg hBPos.le theorem1Constant_pos.le
+  have hROne : r < 1 := (div_lt_one₀ theorem1Constant_pos).mpr hBC
+  have htend := tendsto_pow_atTop_nhds_zero_of_lt_one hRNonneg hROne
+  have hMKLower := theorem_1_holds K hK8
+  have hMKPos : (0 : Real) < M K :=
+    lt_of_lt_of_le (mul_pos (by norm_num) (pow_pos theorem1Constant_pos _)) hMKLower
+  let delta : Real := theorem1Constant ^ K / (2 * M K)
+  have hdelta : 0 < delta :=
+    div_pos (pow_pos theorem1Constant_pos _) (mul_pos (by norm_num) hMKPos)
+  have hevSmall : ∀ᶠ t : Nat in atTop, r ^ t < delta :=
+    (tendsto_order.mp htend).2 delta hdelta
+  obtain ⟨T, hT⟩ := eventually_atTop.mp hevSmall
+  have hsmall := hT T le_rfl
+  have hcross : b ^ T * (2 * (M K : Real)) <
+      theorem1Constant ^ K * theorem1Constant ^ T := by
+    apply (div_lt_div_iff₀ (pow_pos theorem1Constant_pos T)
+      (mul_pos (by norm_num) hMKPos)).mp
+    simpa only [r, delta, div_pow] using hsmall
+  have hstrict : (M K : Real) * b ^ T <
+      (1 / 2 : Real) * theorem1Constant ^ (K + T) := by
+    rw [pow_add]
+    calc
+      (M K : Real) * b ^ T = (b ^ T * (2 * M K)) / 2 := by ring
+      _ < (theorem1Constant ^ K * theorem1Constant ^ T) / 2 :=
+        div_lt_div_of_pos_right hcross (by norm_num)
+      _ = (1 / 2 : Real) *
+          (theorem1Constant ^ K * theorem1Constant ^ T) := by ring
+  have hlowerFinal := theorem_1_holds (K + T) (by omega)
+  have hupperFinal := hupper T
+  linarith
 
 /-! ## Elementary facts about rankings and the block endpoints -/
 
