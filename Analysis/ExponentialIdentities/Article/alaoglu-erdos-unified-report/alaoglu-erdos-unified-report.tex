@@ -840,14 +840,48 @@ and the re-verification script checks exactly those two things.
 
 The report has so far described the distance between the kernel region and the software
 frontier $2^{27}$ as ``engineering, not mathematics'', and has called each further doubling a
-routine table.  Both statements are true, and both are too kind.  The cost is worth making
-quantitative, because it decides whether further doublings are a plan or a distraction.
+routine table.  Both statements are true, and both are too kind.  This subsection makes the
+cost quantitative.  It also records a correction: an earlier version of it asserted an
+unconditional growth exponent, and the argument for that was wrong in a way worth preserving,
+because the reason it was wrong is the terminal obstruction of Section~\ref{sec:fourexp}
+reappearing where one does not expect it --- inside the cost analysis of the brute-force
+search itself.
+
+\subsubsection*{The cost of one row}
+
+Let $m\in[N,2N)$, $a=\lfloor m^{\thetaq}\rfloor$ and $\delta_m=m^{\thetaq}-a\in(0,1)$.  The
+lower enclosure must satisfy $\log_m a<L_p/L_q<\thetaq$, and
+\[
+  \thetaq-\log_m a=\frac{\log(1+\delta_m/a)}{\log m}\asymp\frac{\delta_m}{a\log m},
+\]
+so it must approximate $\thetaq$ from below to within $\asymp\delta_m/(a\log m)$.  The upper
+enclosure must satisfy $\thetaq<U_p/U_q<\log_m(a+1)$, an interval of length
+$\asymp(1-\delta_m)/(a\log m)$, so the two halves of a row are governed by $\delta_m$ and
+$1-\delta_m$ respectively.  Writing $\eps$ for the required accuracy, a rational attaining it
+has denominator $q\asymp\eps^{-1/2}$ when $\thetaq$ is badly approximable at that height, and
+the certificate compares $m^{L_p}$ with $a^{L_q}$, integers of $L_p\log_2m\asymp\thetaq
+q\log_2N$ bits.  With $a\asymp N^{\thetaq}$ this gives
+\begin{equation}
+  \text{cost of row }m\;\asymp\;\bigl(\delta_m^{-1/2}+(1-\delta_m)^{-1/2}\bigr)\,
+  N^{\thetaq/2}
+  \label{co:eq-rowcost}
+\end{equation}
+bit operations, up to logarithmic factors.
+
+Two features of \eqref{co:eq-rowcost} matter.  It is two-sided, which the measurements below
+confirm: for $[16384,32768)$ the split is $9.530$ gigabits on the lower enclosures against
+$8.389$ on the upper.  And it is singular as $\delta_m\to0$ or $1$, which is where the
+difficulty lies.
+
+\subsubsection*{The estimate, and the hypothesis it really needs}
 
 \begin{proposition}[Cost of the per-value certificate route]
 \label{co:prop-cost}
-Suppose the partial quotients of $\thetaq$ occurring below height $N^{\thetaq/2}$ are
-bounded.  Then replaying the zero-free region $2^x<N$ by the architecture of
-Section~\ref{co:finite} costs
+Suppose \textup{(i)} the partial quotients of $\thetaq$ below height
+$N^{(1+\thetaq)/2}$ are bounded, and \textup{(ii)} there is $c>0$ with
+$\min_{m<N}\min(\delta_m,1-\delta_m)\gg N^{-c}$ for all large $N$, the mean of
+$\delta^{-1/2}$ over $m<N$ being $\mathrm O(1)$.  Then replaying the zero-free region
+$2^x<N$ by the architecture of Section~\ref{co:finite} costs
 \[
   \widetilde{\mathrm O}\bigl(N^{\,1+\log_4 3}\bigr),
   \qquad 1+\log_43=1.79248\ldots,
@@ -857,82 +891,142 @@ $2^{\,1+\log_43}=2\sqrt3=3.46410\ldots$
 \end{proposition}
 
 \begin{proof}
-Let $m\in[N,2N)$, $a=\lfloor m^{\thetaq}\rfloor$ and $\delta=m^{\thetaq}-a\in(0,1)$.  The
-lower enclosure must satisfy $L_p/L_q>\log_m a$, and
-\[
-  \thetaq-\log_m a=\frac{\log(1+\delta/a)}{\log m}\asymp\frac{\delta}{a\log m},
-\]
-so it must approximate $\thetaq$ to within $\asymp\delta/(a\log m)$.  Best rational
-approximations satisfy $|\thetaq-p/q|\asymp q^{-2}$, whence $q\asymp(a\log m/\delta)^{1/2}$.
-The certificate compares $m^{L_p}$ with $a^{L_q}$, integers of $L_p\log_2m\asymp\thetaq
-q\log_2N$ bits, and binary powering with FFT multiplication costs $\widetilde{\mathrm O}$ of
-that many bit operations.  As $a\asymp N^{\thetaq}$, one row costs
-$\widetilde{\mathrm O}(\delta^{-1/2}N^{\thetaq/2})$.
-
-Two facts finish it.  First, the required $q$ is genuinely $\mathrm O(\eps^{-1/2})$ under
-the stated hypothesis: writing $p_n/q_n$ for the convergents, $|\thetaq-p_n/q_n|<1/(q_nq_{n+1})$
-and $q_{n+1}>q_n$, so the first $n$ with $q_n\ge\eps^{-1/2}$ already achieves error below
-$\eps$, and that $q_n\le(a_n+1)q_{n-1}<(a_n+1)\eps^{-1/2}$.
-
-Second, the distribution of $\delta$ is not an assumption but a theorem.  The sequence
-$(m^{\sigma})_{m\ge1}$ is uniformly distributed modulo one for every real $\sigma>0$ that is
-not an integer, and $\thetaq=\log_23$ is irrational.  For $0<\sigma<1$ this is Fej\'er's
-criterion, since $f(x)=x^{\sigma}$ has $f'(x)\to0$ monotonically and $xf'(x)=\sigma
-x^{\sigma}\to\infty$; for $\sigma>1$ apply van der Corput's difference theorem, whose
-hypothesis is that $g_h(x)=(x+h)^{\sigma}-x^{\sigma}$ gives a uniformly distributed sequence
-for each $h\ge1$, and $g_h$ satisfies Fej\'er's criterion because $g_h'\to0$ monotonically
-while $xg_h'(x)\asymp\sigma(\sigma-1)h\,x^{\sigma-1}\to\infty$.  See
-\cite{KuipersNiederreiter1974}.  Hence $\delta$ equidistributes on $(0,1)$ and the mean row
-cost is proportional to $\int_0^1\delta^{-1/2}\,d\delta=2$, a convergent integral.
-
-Summing over the $\Theta(N)$ values of $m$ gives $\widetilde{\mathrm O}(N^{1+\thetaq/2})$, and
+Under (i) the accuracy $\eps$ is attained at denominator $\mathrm O(\eps^{-1/2})$: writing
+$p_n/q_n$ for the convergents, $|\thetaq-p_n/q_n|<1/(q_nq_{n+1})$ and $q_{n+1}>q_n$, so the
+first $n$ with $q_n\ge\eps^{-1/2}$ achieves error below $\eps$, and
+$q_n\le(a_n+1)q_{n-1}<(a_n+1)\eps^{-1/2}$; the one-sidedness costs a further bounded factor,
+since consecutive same-side records satisfy $q_{n+2}\le A^2q_n$ when the partial quotients are
+bounded by $A$.  Summing \eqref{co:eq-rowcost} over $m<N$ and using (ii) to bound the mean of
+the singular factor by $\mathrm O(1)$ gives $\widetilde{\mathrm O}(N^{1+\thetaq/2})$, and
 $\thetaq/2=\tfrac12\log_23=\log_43$.  For the doubling factor,
 $2^{\log_43}=(2^{\log_23})^{1/2}=\sqrt3$.
 \end{proof}
 
-The partial-quotient hypothesis is the only unproved input, no bound on the irrationality
-measure of $\log_23$ being strong enough to supply it, and it is worth being clear about
-which way it can fail.  A \emph{large} partial quotient makes one convergent unusually good,
-so it lowers the cost; boundedness is the expensive case, and the proposition is therefore an
-upper bound of the right shape rather than a lower bound.  That is exactly what the
-measurements below show, and it is why they come in under the model rather than over it.
+Hypothesis (ii) is where an earlier version of this subsection went wrong, and the error is
+instructive.  That version derived the $\mathrm O(1)$ mean from equidistribution of
+$(m^{\thetaq})$ modulo one --- which is a genuine theorem, $(m^{\sigma})$ being uniformly
+distributed mod $1$ for non-integral $\sigma>0$ by Fej\'er's criterion for $0<\sigma<1$ and by
+one application of van der Corput's difference theorem for $1<\sigma<2$, the case
+$\sigma=\thetaq=1.58496\ldots$ needed here \cite{KuipersNiederreiter1974}; for $\sigma>2$ the
+difference theorem must be iterated $\lceil\sigma\rceil-1$ times, which that version did not
+say.  But equidistribution controls Riemann-integrable, hence \emph{bounded}, test functions,
+and $\delta^{-1/2}$ is unbounded.  For a non-negative unbounded $f$ with $\int f<\infty$,
+uniform distribution gives only $\liminf\frac1M\sum f\ge\int f$ --- the wrong direction --- and
+the $\limsup$ may be infinite.  Concretely, displace one point of each block $[N,2N)$ to
+within $N^{-3}$ of an integer: the sequence is still equidistributed, but the block mean of
+$\delta^{-1/2}$ exceeds $N^{1/2}$.  Convergence of $\int_0^1\delta^{-1/2}\,d\delta$ is
+therefore not a substitute for (ii).
 
-The convergence of $\int_0^1\delta^{-1/2}\,d\delta$ is the reason the tables are affordable at
-all: the handful of rows needing $10^7$-denominator enclosures costs no more in total than the
-bulk, so one never has to budget for the worst row.  That is visible in the tier populations
-of Section~\ref{co:finite}, where the expensive tiers hold one or two values each.
+\begin{remark}[The cost analysis meets the terminal obstruction]
+\label{co:rem-selfref}
+Hypothesis (ii) is not a technicality that better analysis will remove.  It asks for an
+effective lower bound on $\|m^{\thetaq}\|$, and
+\[
+  \|m^{\thetaq}\|=0
+  \iff m^{\thetaq}\in\Z
+  \iff \log m\log3=\log a\log2 \text{ for some }a\in\Z,
+\]
+which is a weight-two relation among products of logarithms of integers --- exactly the
+terminal obstruction of Section~\ref{sec:fourexp}.  Even the qualitative statement
+$\delta_m\ne0$ for all non-powers $m$ \emph{is} the conjecture; the effective form
+$\delta_m\gg m^{-c}$ is further out of reach still, Baker and Matveev bounding only weight-one
+forms.  So the running time of the brute-force verification cannot be bounded above without
+solving the problem the verification is attacking.  This is the only place in the report where
+the obstruction appears inside a complexity estimate rather than inside a proof attempt, and
+it is worth recording: the finite route is not merely expensive, it is not even analysable by
+the means available.
+\end{remark}
 
-\paragraph{Measured against the tables, the constant is smaller and the exponent is not yet
-visible.}  Summing $(L_p+U_p)\log_2m$ over the rows actually used gives $2.485$, $6.273$ and
-$17.918$ gigabits for the ranges $[4096,8192)$, $[8192,16384)$ and $[16384,32768)$, so the
-measured factors per doubling are $2.52$ and $2.86$, not $3.46$.  The gap is a genuine
-feature of $\thetaq$ rather than noise.  Its continued fraction
-$[1;1,1,2,2,3,1,5,2,23,2,2,1,1,55,\ldots]$ has large partial quotients, so the enclosure
-ladder has long gaps and a single strong convergent --- $25781/16266$ here --- keeps serving
-the bulk of the rows across more than one doubling.  This is precisely the failure mode identified after the
-proof: the partial quotient $55$ makes $25781/16266$ far better than a bounded-quotient model
-predicts, so these ranges sit inside one favourable stretch and come in cheaper.  The
-proposition's constant is an asymptotic average, approached only over many doublings.  Wall-clock is a third measurement again, since binary powering carries a
-$\log$ factor the bit count omits and cache behaviour is linear in neither: the $8192$ table
-replays in about two minutes, the $16384$ table in about eight, and the $32768$ table in
-$22.7$ minutes, factors of about $4$ and then $2.8$.  Neither sequence is yet long enough to
-exhibit an exponent; what they do establish is that the factor is comfortably above $2$,
-which is all the conclusion below needs.
+\subsubsection*{What large partial quotients actually do}
 
-\paragraph{The conclusion is robust to that constant.}  Reaching the software frontier
-$2^{x}<2^{27}$ from the present $2^{x}<2^{15}$ is twelve doublings.  At the measured factor
-$2.8$ --- the wall-clock ratio; the bit-count ratios are $2.52$ and $2.86$ --- that is
-$2.8^{12}\approx2.3\cdot10^{5}$; at the asymptotic $2\sqrt3$ it is
-$(2\sqrt3)^{12}=2^{12}3^{6}=2\,985\,984\approx3\cdot10^{6}$.  The $32768$ table replays in
-$22.7$ minutes, so the $2^{27}$ table would take of order a decade of the same computation at
-the measured rate, and of order a century at the asymptotic one.  The kernel frontier and the software frontier are not
-separated by patience.  Closing that gap requires a certificate whose cost is not
-$\Theta(N^{\thetaq/2})$ \emph{per excluded value} --- for instance one algebraic identity
-retiring a whole interval of $m$ at once --- and no such scheme is known here.
-Section~\ref{sec:attempts} reaches the same conclusion qualitatively; the exponent
-$1+\log_43$ is what makes it quantitative, and it is the reason this route should not be
-listed among the ways the conjecture might actually be settled.
+The earlier version also had the direction of hypothesis (i) backwards, claiming that a large
+partial quotient makes a convergent unusually good and so makes the route cheaper.  For a
+two-sided approximation that is the right intuition; for this certificate it is wrong, because
+the ladder is \emph{one-sided}.  The kernel checks $2^{L_p}<3^{L_q}$, which is exactly
+$L_p/L_q<\thetaq$, so only fractions approaching $\thetaq$ from below are usable, and a large
+partial quotient opens a long gap in that one-sided ladder which must be bridged by
+semiconvergents of steadily worse quality.  Measuring quality as $q^2|\thetaq-p/q|$, over the
+enclosures the $32768$ table actually uses:
+\begin{center}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+enclosure & denominator & $q^2|\thetaq-p/q|$ \\
+\midrule
+$25781/16266$ & $16266$ & $0.5975$ \\
+$50508/31867$ & $31867$ & $0.3340$ \\
+$176251/111202$ & $111202$ & $0.5776$ \\
+$478245/301739$ & $301739$ & $1.5392$ \\
+$1988215/1254424$ & $1254424$ & $5.8150$ \\
+$6216131/3921942$ & $3921942$ & $13.0707$ \\
+$10444047/6589460$ & $6589460$ & $13.3754$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+A generic convergent of $\thetaq$ has quality between $0.02$ and $0.8$.  The expensive
+enclosures are therefore up to $3.7$ times dearer than an $\eps^{-1/2}$ model predicts, and
+they are precisely the semiconvergents bridging the gap that $a_{14}=55$ opens between
+$q_{13}=190537$ and $q_{14}=10590737$.  The earlier version attributed the cheapness of the
+common enclosure $25781/16266$ to that same partial quotient; that was wrong twice over.  The
+fraction is a semiconvergent, $16266=15601+665$, sitting ten indices below where $a_{14}$ acts,
+and its quality $0.5975$ is ordinary --- slightly worse than the average convergent.  The
+fractions $a_9=23$ and $a_{14}=55$ do make unusually good, namely $1054/665$ at $0.0419$ and
+$301994/190537$ at $0.0177$, but those are two-sided facts that the one-sided ladder cannot
+always use.
 
+Hypothesis (i) was also stated at the wrong height.  At $N=32768$ one has
+$N^{\thetaq/2}=3788$, while the table already uses denominators up to $6\,589\,460$; the
+governing height is that of the extreme rows, $N^{(1+\thetaq)/2}$, and
+$(1+\thetaq)/2=1.29248\ldots$ is the exponent the measurement script reports.
+
+\subsubsection*{Measurement}
+
+Summing $(L_p+U_p)\log_2m$ over the rows actually used gives $2.485$, $6.273$ and $17.918$
+gigabits for the ranges $[4096,8192)$, $[8192,16384)$ and $[16384,32768)$, hence factors
+$2.52$ and $2.86$ per doubling against the model's $3.46$.  These three are not measured under
+a common policy: the $8192$ table restricts its \emph{upper} ladder to three true convergents
+and never uses a semiconvergent on that side, which inflates it relative to an
+optimal-ladder table, so the first factor is not like-for-like.  Recomputed on a uniform
+optimal ladder the factors are nearer $3.1$ and $2.9$.  Wall-clock is a third measurement
+again, since binary powering carries a $\log$ factor the bit count omits: the $8192$, $16384$
+and $32768$ tables replay in about two minutes, about eight, and $22.7$ minutes, factors of
+about $4$ and then $2.8$.  No sequence here is long enough to exhibit an exponent.  What they
+agree on is that the factor is comfortably above $2$, which is all the conclusion needs.
+
+\subsubsection*{The operative conclusion is memory, not time}
+
+Time estimates for this route inherit hypothesis (ii) and are therefore not theorems.  The
+space requirement does not, and it is the binding constraint.  A single row forms the integer
+$m^{L_p}$ of $\asymp\thetaq L_p\log_2 N$ bits, and that is one object: it cannot be amortised
+across rows, streamed, or traded against the convergence of any integral.  Calibrating the
+worst-row denominator at the observed $6\,589\,460$ for $N=2^{15}$ and scaling by
+$N^{(1+\thetaq)/2}$:
+\begin{center}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+$N$ & worst denominator & one integer \\
+\midrule
+$2^{15}$ & $6.6\cdot10^{6}$ & $20$ MB \\
+$2^{18}$ & $9.7\cdot10^{7}$ & $0.35$ GB \\
+$2^{20}$ & $5.8\cdot10^{8}$ & $2.3$ GB \\
+$2^{22}$ & $3.5\cdot10^{9}$ & $15$ GB \\
+$2^{27}$ & $3.1\cdot10^{11}$ & $1.6$ TB \\
+\bottomrule
+\end{tabular}
+\end{center}
+The wall arrives at $N\approx2^{21}$ to $2^{22}$ on a workstation, six doublings short of the
+software frontier, and at $2^{27}$ the kernel would have to hold a single integer of about
+$1.6$ terabytes.  That conclusion needs no Diophantine hypothesis beyond the observed
+behaviour of $\delta_m$, and it is not softened by faster hardware in the way a time estimate
+would be.
+
+The kernel frontier and the software frontier are therefore not separated by patience.
+Closing that gap requires a certificate whose cost is not one enclosure per excluded value ---
+for instance one algebraic identity retiring a whole interval of $m$ --- and no such scheme is
+known here.  Section~\ref{sec:attempts} reaches the same conclusion qualitatively; what this
+subsection adds is that the obvious route is blocked by memory well before it is blocked by
+time, and that its running time cannot be bounded at all without weight-two information.
 \subsection{Arithmetic descent}
 \label{co:descent}
 
@@ -7573,10 +7667,12 @@ $2^{27}$ (\statuscomp{}) in Section~\ref{sec:finite27}.  Each further doubling i
 generated, kernel-replayed table; the semiconvergent device of \lean{FiniteCheck8192} and
 \lean{FiniteCheck16384} keeps the exponents manageable.  Every descent constant
 improves by bookkeeping once the region grows, so the payoff is broad but shallow.
-Proposition~\ref{co:prop-cost} says what it costs: $\widetilde{\mathrm O}(N^{1+\log_43})$, a
-measured factor near $2.8$ per doubling, so the twelve doublings to $2^{27}$ are infeasible.
-This priority is therefore worth pursuing only for a specific descent constant that needs a
-larger kernel bound, and never as a route to the scan frontier.  The
+Section~\ref{co:cost} says what it costs.  The time estimate,
+$\widetilde{\mathrm O}(N^{1+\log_43})$ with a measured factor near $2.8$ per doubling, is
+conditional; the space requirement is not, and it stops the route near $2^{21}$--$2^{22}$,
+six doublings short of $2^{27}$.  This priority is therefore worth pursuing only for a
+specific descent constant that needs a larger kernel bound, and never as a route to the scan
+frontier.  The
 bottleneck is a compact kernel-replayable proof object: adaptive convergent enclosures,
 chunked certificate modules, and tiers shared along ranges.  In the same vein, effective
 irrationality measures for $\thetaq$ from P\'ade or hypergeometric methods would replace
@@ -22899,8 +22995,8 @@ the hardest rows need semiconvergent enclosures rather than the next convergent.
 $16384$ table has $8191$ rows, its hardest value $m=9329$ uses the enclosure
 $5914137/3731405$ (ten seconds in the kernel, a hundred in exact Python), and the whole table
 replays in under eight minutes.  The remaining gap from $2^{15}$ to the software frontier
-$2^{27}$ is twelve further doublings, which Proposition~\ref{co:prop-cost} shows to be
-mechanical to write and infeasible to run.
+$2^{27}$ is twelve further doublings, which Section~\ref{co:cost} shows to be
+mechanical to write and infeasible to run --- on space before time.
 
 \subsection{Channel reconnaissance on near-$\thetaq$ pairs (computed)}
 \label{log:channel-recon}
@@ -23262,12 +23358,15 @@ with the semiconvergent device, converting \statuscomp{} into \statuslean{} for 
 exponent bound used in the descent constants.  One further doubling was carried out
 (\lean{FiniteCheck32768}, $2^x<32768$, so $x\ge15$), and it confirmed the mechanism: the
 generator is unchanged in principle and the hardest enclosure was the predicted
-$10^7$-denominator one.  What it also produced is Proposition~\ref{co:prop-cost}, which
-shows the entry's conclusion was wrong.  The route costs
-$\widetilde{\mathrm O}(N^{1+\log_43})$, a factor $2\sqrt3$ per doubling asymptotically and a
-measured factor near $2.8$; the twelve doublings still separating $2^{15}$ from the scan
-frontier $2^{27}$ therefore cost between $2\cdot10^5$ and $3\cdot10^6$ times a run that already
-takes $22.7$ minutes.  ``Mechanical'' was true and ``feasible'' was not, and the two were
+$10^7$-denominator one.  What it also produced is Section~\ref{co:cost}, which
+shows the entry's conclusion was wrong.  On the time side,
+Proposition~\ref{co:prop-cost} gives $\widetilde{\mathrm O}(N^{1+\log_43})$, a factor
+$2\sqrt3$ per doubling, but only under a Diophantine hypothesis that
+Remark~\ref{co:rem-selfref} shows to be the terminal obstruction itself, so it is not a
+theorem one may lean on.  The space side needs no such hypothesis and is the binding
+constraint: the worst row forms a single integer of about $2.3$ gigabytes at $N=2^{20}$ and
+$1.6$ terabytes at $2^{27}$, so the route stops around $2^{21}$--$2^{22}$, six doublings short
+of the scan frontier.  ``Mechanical'' was true and ``feasible'' was not, and the two were
 being conflated.  Further doublings should be undertaken only for a specific descent
 constant that genuinely needs a larger kernel bound, never as a route to the scan frontier;
 reaching that frontier needs a certificate that retires an interval of $m$ at once.
@@ -23316,10 +23415,11 @@ the kernel-verified zero-free region moved from $2^x<4096$ to $2^x<16384$
 now has $x\ge15$ with kernel trust.  The software scans already reach $x>27$; the gap between
 the two is engineering rather than mathematics, and the semiconvergent device does make each
 further doubling a routine table to \emph{write}.  It does not make one routine to
-\emph{run}: by Proposition~\ref{co:prop-cost} the route costs
-$\widetilde{\mathrm O}(N^{1+\log_43})$ for the region $2^x<N$, a measured factor near $2.8$
-and an asymptotic $2\sqrt3$ per doubling, so the twelve doublings to $2^{27}$ cost between
-$2\cdot10^5$ and $3\cdot10^6$ times the present run.  This route reaches the software frontier only
+\emph{run}: Proposition~\ref{co:prop-cost} estimates the time at
+$\widetilde{\mathrm O}(N^{1+\log_43})$, a measured factor near $2.8$ and an asymptotic
+$2\sqrt3$ per doubling, though only conditionally (Remark~\ref{co:rem-selfref}), while the
+unconditional space requirement --- one integer of about $1.6$ terabytes at $2^{27}$ ---
+stops the route near $2^{21}$--$2^{22}$.  This route reaches the software frontier only
 through a genuinely different device --- one certificate retiring an interval of $m$ --- not
 through further doublings.
 
@@ -25755,8 +25855,12 @@ $2^x<4096\Rightarrow x\in\Z$\ \ (so $x\ge12$) & \statuslean & \lean{FiniteCheck4
 $2^x<8192\Rightarrow x\in\Z$\ \ (so $x\ge13$) & \statuslean & \lean{FiniteCheck8192} \\
 $2^x<16384\Rightarrow x\in\Z$\ \ (so $x\ge14$) & \statuslean & \lean{FiniteCheck16384} \\
 $2^x<32768\Rightarrow x\in\Z$\ \ (so $x\ge15$) & \statuslean & \lean{FiniteCheck32768} \\
-Certificate route costs $\widetilde{\mathrm O}(N^{1+\log_43})$ & \statusnew &
-Proposition~\ref{co:prop-cost} \\
+Certificate route costs $\widetilde{\mathrm O}(N^{1+\log_43})$, conditionally &
+\statusnew & Proposition~\ref{co:prop-cost} \\
+Its hypothesis is the terminal obstruction itself & \statusnew &
+Remark~\ref{co:rem-selfref} \\
+Certificate route stops near $2^{21}$--$2^{22}$ on space & \statusexactcomp &
+Section~\ref{co:cost} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp &
 Section~\ref{sec:finitecheck}, Appendix~\ref{app:interval} \\
 No nonintegral candidate with $2^x<2^{27}$ & \statuscomp &
