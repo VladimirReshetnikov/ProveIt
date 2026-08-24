@@ -423,14 +423,20 @@ private lemma compressedRank_lt_iff (s : Finset Nat) (localRank : Nat -> Nat)
     omega
   · exact forward hx hy
 
-private theorem exists_ordered_block_concatenation
+/-- Pairwise-disjoint finite blocks with `k`-avoiding orders can be compressed
+and concatenated into one ranking.  The global ranking preserves every local
+order and places the blocks in increasing index order.
+
+Unlike the paper applications, which use `k = 3`, the construction is
+independent of the forbidden progression length. -/
+theorem exists_ordered_block_concatenation {k : Nat}
     (blocks : Nat -> Finset Nat)
     (hdisjoint : forall i j : Nat, i ≠ j -> Disjoint (blocks i) (blocks j))
-    (havoidable : forall i : Nat, IsKAvoidable 3 (blocks i : Set Nat)) :
+    (havoidable : forall i : Nat, IsKAvoidable k (blocks i : Set Nat)) :
     exists rank : Nat -> Nat,
       IsPermutationRanking {x | exists i : Nat, x ∈ blocks i} rank /\
       BlocksInOrder blocks rank /\
-      forall i : Nat, IsKAvoidingRanking 3 (blocks i : Set Nat) rank := by
+      forall i : Nat, IsKAvoidingRanking k (blocks i : Set Nat) rank := by
   classical
   choose localRank hlocal using havoidable
   let offsets : Nat -> Nat := fun i => (Finset.range i).sum fun j => (blocks j).card
@@ -2327,12 +2333,16 @@ private lemma positiveIntegers_densities :
       rw [hratio _ (le_max_right _ _)]
       linarith
 
-private lemma avoidingRanking_mono_length {small large : Nat} {S : Set Nat}
+/-- Avoidance is monotone in the progression length: an order avoiding a
+`small`-term progression also avoids every `large`-term progression when
+`small ≤ large`.  A hypothetical longer progression is restricted to its
+initial `small` entries. -/
+theorem isKAvoidingRanking_mono_length {small large : Nat} {S : Set Nat}
     {rank : Nat -> Nat} (hsmalllarge : small <= large)
     (h : IsKAvoidingRanking small S rank) :
     IsKAvoidingRanking large S rank := by
   refine ⟨h.1, ?_⟩
-  rintro ⟨x, hxmem, hxmono, a, d, hd, hstep, hformula⟩
+  rintro ⟨x, hxmem, hxmono, a, d, hd, _, hformula⟩
   apply h.2
   let embed : Fin small -> Fin large := Fin.castLE hsmalllarge
   let y : Fin small -> Nat := fun i => x (embed i)
@@ -2343,13 +2353,29 @@ private lemma avoidingRanking_mono_length {small large : Nat} {S : Set Nat}
   · intro i
     exact hformula (embed i)
 
+/-- Set avoidability is monotone in the forbidden progression length. -/
+theorem isKAvoidable_mono_length {small large : Nat} {S : Set Nat}
+    (hsmalllarge : small <= large) (h : IsKAvoidable small S) :
+    IsKAvoidable large S := by
+  obtain ⟨rank, hrank⟩ := h
+  exact ⟨rank, isKAvoidingRanking_mono_length hsmalllarge hrank⟩
+
+/-- The empty set is `k`-avoidable for every positive progression length. -/
+theorem empty_is_k_avoidable (k : Nat) (hk : 1 <= k) :
+    IsKAvoidable k (∅ : Set Nat) := by
+  refine ⟨id, ?_, ?_⟩
+  · intro x hx
+    simp at hx
+  · rintro ⟨x, hxmem, _, _⟩
+    simpa using hxmem ⟨0, hk⟩
+
 /-- The known five-avoiding ranking also avoids every longer progression, so
 both extremal densities equal one for `k >= 5`. -/
 theorem alpha_beta_of_five_or_more_holds : alpha_beta_of_five_or_more := by
   intro k hk
   obtain ⟨rank, hrank⟩ := positive_integers_are_five_avoidable_holds
   have hkAvoid : IsKAvoidable k positiveIntegers :=
-    ⟨rank, avoidingRanking_mono_length hk hrank⟩
+    ⟨rank, isKAvoidingRanking_mono_length hk hrank⟩
   obtain ⟨hupper, hlower⟩ := positiveIntegers_densities
   let U : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
     IsKAvoidable k S /\ upperDensity S = d}
@@ -3219,6 +3245,68 @@ private lemma lowerDensity_le_beta {k : Nat} {S : Set Nat}
   change lowerDensity S <= sSup L
   exact le_csSup hLbdd ⟨S, hsub, havoid, rfl⟩
 
+/-- On the meaningful positive progression lengths, the supremal upper
+density of avoidable sets is monotone in the forbidden length. -/
+theorem alpha_mono_of_one_le {small large : Nat} (hsmall : 1 <= small)
+    (hsmalllarge : small <= large) : alpha small <= alpha large := by
+  let U : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+    IsKAvoidable small S /\ upperDensity S = d}
+  have hUnonempty : U.Nonempty :=
+    ⟨upperDensity ∅, ∅, Set.empty_subset _, empty_is_k_avoidable small hsmall, rfl⟩
+  change sSup U <= alpha large
+  apply csSup_le hUnonempty
+  rintro d ⟨S, hsub, havoid, rfl⟩
+  exact upperDensity_le_alpha hsub
+    (isKAvoidable_mono_length hsmalllarge havoid)
+
+/-- On positive progression lengths, the supremal lower density of avoidable
+sets is monotone in the forbidden length. -/
+theorem beta_mono_of_one_le {small large : Nat} (hsmall : 1 <= small)
+    (hsmalllarge : small <= large) : beta small <= beta large := by
+  let L : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+    IsKAvoidable small S /\ lowerDensity S = d}
+  have hLnonempty : L.Nonempty :=
+    ⟨lowerDensity ∅, ∅, Set.empty_subset _, empty_is_k_avoidable small hsmall, rfl⟩
+  change sSup L <= beta large
+  apply csSup_le hLnonempty
+  rintro d ⟨S, hsub, havoid, rfl⟩
+  exact lowerDensity_le_beta hsub
+    (isKAvoidable_mono_length hsmalllarge havoid)
+
+/-- The extremal upper-density parameter always lies in `[0,1]` at positive
+progression lengths. -/
+theorem alpha_bounds_of_one_le (k : Nat) (hk : 1 <= k) :
+    0 <= alpha k /\ alpha k <= 1 := by
+  have hempty := empty_is_k_avoidable k hk
+  constructor
+  · exact (upperDensity_bounds ∅).1.trans
+      (upperDensity_le_alpha (Set.empty_subset _) hempty)
+  · let U : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+      IsKAvoidable k S /\ upperDensity S = d}
+    have hUnonempty : U.Nonempty :=
+      ⟨upperDensity ∅, ∅, Set.empty_subset _, hempty, rfl⟩
+    change sSup U <= 1
+    apply csSup_le hUnonempty
+    rintro d ⟨S, hsub, havoid, rfl⟩
+    exact (upperDensity_bounds S).2
+
+/-- The extremal lower-density parameter always lies in `[0,1]` at positive
+progression lengths. -/
+theorem beta_bounds_of_one_le (k : Nat) (hk : 1 <= k) :
+    0 <= beta k /\ beta k <= 1 := by
+  have hempty := empty_is_k_avoidable k hk
+  constructor
+  · exact (lowerDensity_bounds ∅).1.trans
+      (lowerDensity_le_beta (Set.empty_subset _) hempty)
+  · let L : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+      IsKAvoidable k S /\ lowerDensity S = d}
+    have hLnonempty : L.Nonempty :=
+      ⟨lowerDensity ∅, ∅, Set.empty_subset _, hempty, rfl⟩
+    change sSup L <= 1
+    apply csSup_le hLnonempty
+    rintro d ⟨S, hsub, havoid, rfl⟩
+    exact (lowerDensity_bounds S).2
+
 /-- The four extremal-density bounds follow from the two explicit avoidable
 sets and the family of geometric constructions. -/
 theorem theorem_3_holds : theorem_3 := by
@@ -3275,6 +3363,33 @@ theorem theorem_3_holds : theorem_3 := by
     linarith
   exact ⟨le_antisymm hAlphaFourLe hAlphaFourGe, hAlphaThree,
     hBetaFour, hBetaThree⟩
+
+/-! ## Monotone consequences strengthening Theorem 3 -/
+
+/-- Theorem 3's upper-density lower bound at length three persists at every
+longer forbidden progression length. -/
+theorem one_half_le_alpha_of_three_le (k : Nat) (hk : 3 <= k) :
+    (1 : Real) / 2 <= alpha k :=
+  theorem_3_holds.2.1.trans (alpha_mono_of_one_le (by omega) hk)
+
+/-- Theorem 3's lower-density lower bound at length three persists at every
+longer forbidden progression length. -/
+theorem one_fourth_le_beta_of_three_le (k : Nat) (hk : 3 <= k) :
+    (1 : Real) / 4 <= beta k :=
+  theorem_3_holds.2.2.2.trans (beta_mono_of_one_le (by omega) hk)
+
+/-- The sharper lower-density bound at length four persists at every longer
+forbidden progression length. -/
+theorem one_third_le_beta_of_four_le (k : Nat) (hk : 4 <= k) :
+    (1 : Real) / 3 <= beta k :=
+  theorem_3_holds.2.2.1.trans (beta_mono_of_one_le (by omega) hk)
+
+/-- The paper proves `alpha 4 = 1`; monotonicity and the universal density
+bound strengthen this to `alpha k = 1` for every `k >= 4`. -/
+theorem alpha_eq_one_of_four_le (k : Nat) (hk : 4 <= k) : alpha k = 1 := by
+  apply le_antisymm (alpha_bounds_of_one_le k (by omega)).2
+  rw [← theorem_3_holds.1]
+  exact alpha_mono_of_one_le (by omega) hk
 
 private lemma countingFunction_add_of_partition (A B : Set Nat)
     (hdisjoint : Disjoint A B) (hunion : A ∪ B = positiveIntegers) (n : Nat) :
