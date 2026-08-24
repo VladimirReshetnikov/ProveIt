@@ -20,6 +20,7 @@ import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs12
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs17FinitePatterns
 
 /-!
