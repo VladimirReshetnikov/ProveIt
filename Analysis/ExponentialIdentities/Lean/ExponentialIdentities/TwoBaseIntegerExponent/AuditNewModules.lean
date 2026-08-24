@@ -110,6 +110,8 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RestrictedDenominatorDirichl
 import ExponentialIdentities.TwoBaseIntegerExponent.TerminalFactorialIndependence
 import ExponentialIdentities.TwoBaseIntegerExponent.RationalHankelTriple
 import ExponentialIdentities.TwoBaseIntegerExponent.SmoothSemigroupCore
+import ExponentialIdentities.TwoBaseIntegerExponent.ExternalPrimeNewtonWall
+import ExponentialIdentities.TwoBaseIntegerExponent.CriticalWindowContraction
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
@@ -821,6 +823,19 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms SmoothSemigroup.modulus_lt_of_card_image_lt
 #print axioms SmoothSemigroup.smooth_box_cutoff
 #print axioms SmoothSemigroup.consecutive_threeSmooth_triples
+#print axioms SmoothSemigroup.pow_two_eq_pow_three_add_one
+#print axioms SmoothSemigroup.pow_three_eq_pow_two_add_one
+#print axioms SmoothSemigroup.consecutive_threeSmooth_pairs
+#print axioms NewtonWall.eq_one_of_tendsto_pow
+#print axioms NewtonWall.edge_spectrum
+#print axioms NewtonWall.eq_zero_of_edge_law
+#print axioms NewtonWall.edge_pairs_empty_spectrum
+#print axioms NewtonWall.no_formal_edge_realization
+#print axioms CriticalWindow.mass_balance
+#print axioms CriticalWindow.contraction_mul
+#print axioms CriticalWindow.kappa_mul_lt
+#print axioms CriticalWindow.no_balanced_transport
+#print axioms CriticalWindow.exponent_gap_dvd
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384

@@ -55,8 +55,9 @@ theorem coeff_thueMorseBlockPolynomial (r n : ℕ) (hn : n < 2 ^ r) :
   simp [thueMorseBlockPolynomial, Polynomial.coeff_monomial, hn]
 
 /-- Precise coefficientwise meaning of the infinite product in equation (6):
-once the finite product contains the factor through degree `2^r`, every
-coefficient below `2^r` is already the corresponding Thue--Morse sign. -/
+once the finite product contains all `r` factors of degree below `2^r`, every
+coefficient below `2^r` is already the corresponding Thue--Morse sign.  For
+`r > 0`, its last factor has degree `2^(r-1)`; for `r = 0`, it is empty. -/
 theorem coeff_finite_thueMorse_product (r n : ℕ) (hn : n < 2 ^ r) :
     PowerSeries.coeff n
         ((↑(∏ j ∈ Finset.range r,
@@ -294,6 +295,86 @@ theorem paperPrefixGridValue_endpoint_not_tendsto_one :
     have hrecip : 0 < 1 / (2 : ℚ) ^ k.choose 2 := by positivity
     linarith
   have hone : (1 : ℚ) ≤ 0 :=
+    le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
+  norm_num at hone
+
+/-- The piecewise-linear interpolation intended by equation (1), as opposed
+to the step function obtained by reading its displayed `floor` literally. -/
+def paperPrefixPolygon (k : ℕ) (x : ℚ) : ℚ :=
+  let u := x * (2 : ℚ) ^ k
+  let j := ⌊u⌋₊
+  paperPrefixGridValue k j +
+    (u - (j : ℚ)) *
+      (paperPrefixGridValue k (j + 1) - paperPrefixGridValue k j)
+
+/-- The polygonal interpolation agrees with every dyadic grid value. -/
+theorem paperPrefixPolygon_grid (k j : ℕ) :
+    paperPrefixPolygon k ((j : ℚ) / (2 : ℚ) ^ k) =
+      paperPrefixGridValue k j := by
+  unfold paperPrefixPolygon
+  have hpow : (2 : ℚ) ^ k ≠ 0 := by positivity
+  rw [div_mul_cancel₀ _ hpow]
+  simp
+
+/-- In particular, the polygon agrees with the literal grid at `x = 1`. -/
+theorem paperPrefixPolygon_one (k : ℕ) :
+    paperPrefixPolygon k 1 = paperPrefixGridValue k (2 ^ k) := by
+  have h := paperPrefixPolygon_grid k (2 ^ k)
+  norm_num at h ⊢
+  exact h
+
+/-- Passing from the contradictory floor wording to the intended polygonal
+interpolation does not repair the endpoint obstruction. -/
+theorem paperPrefixPolygon_endpoint_not_tendsto_one :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygon k 1)
+      Filter.atTop (nhds (1 : ℚ)) := by
+  rw [show (fun k : ℕ => paperPrefixPolygon k 1) =
+      fun k : ℕ => paperPrefixGridValue k (2 ^ k) by
+    funext k
+    exact paperPrefixPolygon_one k]
+  exact paperPrefixGridValue_endpoint_not_tendsto_one
+
+/-- The source's intended real polygon obtained by joining consecutive
+literal dyadic grid values. -/
+noncomputable def paperPrefixPolygonReal (k : ℕ) (x : ℝ) : ℝ :=
+  let u := x * (2 : ℝ) ^ k
+  let j := ⌊u⌋₊
+  (paperPrefixGridValue k j : ℝ) +
+    (u - (j : ℝ)) *
+      ((paperPrefixGridValue k (j + 1) : ℝ) - paperPrefixGridValue k j)
+
+/-- The real polygon agrees with every dyadic grid value. -/
+theorem paperPrefixPolygonReal_grid (k j : ℕ) :
+    paperPrefixPolygonReal k ((j : ℝ) / (2 : ℝ) ^ k) =
+      (paperPrefixGridValue k j : ℝ) := by
+  unfold paperPrefixPolygonReal
+  have hpow : (2 : ℝ) ^ k ≠ 0 := by positivity
+  rw [div_mul_cancel₀ _ hpow]
+  simp
+
+/-- In particular, the real polygon agrees with the literal grid at `x = 1`. -/
+theorem paperPrefixPolygonReal_one (k : ℕ) :
+    paperPrefixPolygonReal k 1 = (paperPrefixGridValue k (2 ^ k) : ℝ) := by
+  have h := paperPrefixPolygonReal_grid k (2 ^ k)
+  norm_num at h ⊢
+  exact h
+
+/-- The intended real polygon has the same endpoint obstruction as the
+rational grid and therefore cannot converge pointwise to a function with
+value one at the right endpoint. -/
+theorem paperPrefixPolygonReal_endpoint_not_tendsto_one :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygonReal k 1)
+      Filter.atTop (nhds (1 : ℝ)) := by
+  rw [show (fun k : ℕ => paperPrefixPolygonReal k 1) =
+      fun k : ℕ => (paperPrefixGridValue k (2 ^ k) : ℝ) by
+    funext k
+    exact paperPrefixPolygonReal_one k]
+  intro h
+  have hnonpos : ∀ k : ℕ, (paperPrefixGridValue k (2 ^ k) : ℝ) ≤ 0 := by
+    intro k
+    rw [paperPrefixGridValue_endpoint]
+    norm_num
+  have hone : (1 : ℝ) ≤ 0 :=
     le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
   norm_num at hone
 
