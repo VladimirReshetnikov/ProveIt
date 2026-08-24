@@ -314,7 +314,9 @@ private theorem natDegree_fabiusSaddleReferencePolynomial_le
     (fun j _hj => Nat.zero_le
       (expCoeff negativeLaplaceExponentPolynomialContinuous' j).natDegree) hk
 
-private theorem gaussianPolynomialTailWeight_isBigO_of_degree_coeff
+/-- A fixed-degree polynomial family with uniformly bounded coefficients has
+uniformly bounded factorial Gaussian coefficient weight. -/
+theorem gaussianPolynomialTailWeight_isBigO_of_degree_coeff
     {α : Type*} (l : Filter α) (D : ℕ) (p : α → Polynomial ℂ)
     (hdeg : ∀ i, (p i).natDegree ≤ D)
     (hcoeff : ∀ d ≤ D,
