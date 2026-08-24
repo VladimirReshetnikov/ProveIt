@@ -31,6 +31,7 @@ import GowersSzemeredi.Proofs03Interval
 import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Downstream
+import GowersSzemeredi.Proofs05Lemma14
 import GowersSzemeredi.Proofs05PhaseRemoval
 import GowersSzemeredi.Proofs05PolynomialPartition
 import GowersSzemeredi.Proofs05Progressions
