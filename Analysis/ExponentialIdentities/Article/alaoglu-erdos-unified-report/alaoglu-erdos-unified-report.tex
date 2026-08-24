@@ -823,9 +823,9 @@ quantitative, because it decides whether further doublings are a plan or a distr
 
 \begin{proposition}[Cost of the per-value certificate route]
 \label{co:prop-cost}
-Under the heuristic that the fractional parts $m^{\thetaq}\bmod1$ equidistribute and that
-enclosures of every required quality are available, replaying the zero-free region $2^x<N$ by
-the architecture of Section~\ref{co:finite} costs
+Suppose the partial quotients of $\thetaq$ occurring below height $N^{\thetaq/2}$ are
+bounded.  Then replaying the zero-free region $2^x<N$ by the architecture of
+Section~\ref{co:finite} costs
 \[
   \widetilde{\mathrm O}\bigl(N^{\,1+\log_4 3}\bigr),
   \qquad 1+\log_43=1.79248\ldots,
@@ -847,12 +847,33 @@ q\log_2N$ bits, and binary powering with FFT multiplication costs $\widetilde{\m
 that many bit operations.  As $a\asymp N^{\thetaq}$, one row costs
 $\widetilde{\mathrm O}(\delta^{-1/2}N^{\thetaq/2})$.
 
-The extreme rows do not dominate: with $\delta$ equidistributed the mean row cost is
-proportional to $\int_0^1\delta^{-1/2}\,d\delta=2$, a convergent integral.  Summing over the
-$\Theta(N)$ values of $m$ gives $\widetilde{\mathrm O}(N^{1+\thetaq/2})$, and
+Two facts finish it.  First, the required $q$ is genuinely $\mathrm O(\eps^{-1/2})$ under
+the stated hypothesis: writing $p_n/q_n$ for the convergents, $|\thetaq-p_n/q_n|<1/(q_nq_{n+1})$
+and $q_{n+1}>q_n$, so the first $n$ with $q_n\ge\eps^{-1/2}$ already achieves error below
+$\eps$, and that $q_n\le(a_n+1)q_{n-1}<(a_n+1)\eps^{-1/2}$.
+
+Second, the distribution of $\delta$ is not an assumption but a theorem.  The sequence
+$(m^{\sigma})_{m\ge1}$ is uniformly distributed modulo one for every real $\sigma>0$ that is
+not an integer, and $\thetaq=\log_23$ is irrational.  For $0<\sigma<1$ this is Fej\'er's
+criterion, since $f(x)=x^{\sigma}$ has $f'(x)\to0$ monotonically and $xf'(x)=\sigma
+x^{\sigma}\to\infty$; for $\sigma>1$ apply van der Corput's difference theorem, whose
+hypothesis is that $g_h(x)=(x+h)^{\sigma}-x^{\sigma}$ gives a uniformly distributed sequence
+for each $h\ge1$, and $g_h$ satisfies Fej\'er's criterion because $g_h'\to0$ monotonically
+while $xg_h'(x)\asymp\sigma(\sigma-1)h\,x^{\sigma-1}\to\infty$.  See
+\cite{KuipersNiederreiter1974}.  Hence $\delta$ equidistributes on $(0,1)$ and the mean row
+cost is proportional to $\int_0^1\delta^{-1/2}\,d\delta=2$, a convergent integral.
+
+Summing over the $\Theta(N)$ values of $m$ gives $\widetilde{\mathrm O}(N^{1+\thetaq/2})$, and
 $\thetaq/2=\tfrac12\log_23=\log_43$.  For the doubling factor,
 $2^{\log_43}=(2^{\log_23})^{1/2}=\sqrt3$.
 \end{proof}
+
+The partial-quotient hypothesis is the only unproved input, no bound on the irrationality
+measure of $\log_23$ being strong enough to supply it, and it is worth being clear about
+which way it can fail.  A \emph{large} partial quotient makes one convergent unusually good,
+so it lowers the cost; boundedness is the expensive case, and the proposition is therefore an
+upper bound of the right shape rather than a lower bound.  That is exactly what the
+measurements below show, and it is why they come in under the model rather than over it.
 
 The convergence of $\int_0^1\delta^{-1/2}\,d\delta$ is the reason the tables are affordable at
 all: the handful of rows needing $10^7$-denominator enclosures costs no more in total than the
@@ -866,9 +887,10 @@ measured factors per doubling are $2.53$ and $2.86$, not $3.46$.  The gap is a g
 feature of $\thetaq$ rather than noise.  Its continued fraction
 $[1;1,1,2,2,3,1,5,2,23,2,2,1,1,55,\ldots]$ has large partial quotients, so the enclosure
 ladder has long gaps and a single strong convergent --- $25781/16266$ here --- keeps serving
-the bulk of the rows across more than one doubling.  The proposition's constant is therefore
-an asymptotic average, approached only over many doublings, and these ranges sit inside one
-favourable stretch.  Wall-clock is a third measurement again, since binary powering carries a
+the bulk of the rows across more than one doubling.  This is precisely the failure mode identified after the
+proof: the partial quotient $55$ makes $25781/16266$ far better than a bounded-quotient model
+predicts, so these ranges sit inside one favourable stretch and come in cheaper.  The
+proposition's constant is an asymptotic average, approached only over many doublings.  Wall-clock is a third measurement again, since binary powering carries a
 $\log$ factor the bit count omits and cache behaviour is linear in neither: the $8192$ table
 replays in about two minutes, the $16384$ table in about eight, and the $32768$ table in
 $22.7$ minutes, factors of about $4$ and then $2.8$.  Neither sequence is yet long enough to
@@ -29366,6 +29388,13 @@ G.~W\"ustholz.
 W.~Zudilin.
 \newblock An essay on irrationality measures of $\pi$ and other logarithms.
 \newblock arXiv:math/0404523.
+
+\bibitem{KuipersNiederreiter1974}
+L.~Kuipers and H.~Niederreiter,
+\emph{Uniform Distribution of Sequences},
+Wiley, New York, 1974.
+(Fej\'er's criterion and van der Corput's difference theorem; uniform distribution of
+$(n^{\sigma})$ for non-integral $\sigma>0$.)
 
 \end{thebibliography}
 \end{document}
