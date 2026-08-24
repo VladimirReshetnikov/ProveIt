@@ -14,6 +14,10 @@ the draft's definitions literally.
   zero.  Its successive-term ratio is `x * 2^(n+1) / (n+1)`, which tends to
   infinity for every `x > 0`.  Thus the displayed terms are unbounded and the
   proposed maximum does not exist (even if the index `n = 0` is omitted).
+* Even after treating the optimization index as real, equations (8)--(10)
+  contain a separate algebraic defect.  Substituting the printed stationary
+  equation into the draft's approximate logarithmic proxy leaves a linear
+  `+n` term, which cannot be absorbed into the claimed `O(log n)` remainder.
 * Section 3 claims a uniform local error bounded by `4h` for the normalized
   polygonal curves from equation (1).  With the stated inclusive prefix sums,
   at `k = 2`, `j = 1` the grid slope is `-2`, whereas every bounded Fabius
@@ -138,6 +142,31 @@ theorem paperProxyTerm_has_no_maximum {x : ℝ} (hx : 0 < x) :
   rintro ⟨n, hnpos, hn⟩
   rcases paperProxyTerm_unbounded hx (paperProxyTerm x n) with ⟨m, hmpos, hm⟩
   exact (not_lt_of_ge (hn m hmpos)) hm
+
+/-- The approximate logarithmic proxy `Phi` displayed immediately before
+equation (8) of the K-fold draft, with its optimization index regarded as a
+real variable. -/
+noncomputable def paperStirlingPhi (x n : ℝ) : ℝ :=
+  Real.log 2 / 2 * n ^ 2 + n * Real.log x - n * Real.log n + n
+
+/-- Under the stationary equation printed as equation (8), the draft's own
+proxy retains a linear `+n` term. -/
+theorem paperStirlingPhi_of_stationary (x n : ℝ)
+    (hstationary : n * Real.log 2 + Real.log x = Real.log n) :
+    paperStirlingPhi x n = -(Real.log 2) / 2 * n ^ 2 + n := by
+  unfold paperStirlingPhi
+  linear_combination n * hstationary
+
+/-- The linear term omitted in equation (10) cannot be absorbed into the
+claimed logarithmic remainder. -/
+theorem paperStirlingOmittedTerm_not_isBigO_log :
+    ¬ (fun n : ℝ => n) =O[Filter.atTop] Real.log := by
+  intro hlinear
+  have hself : (fun n : ℝ => n) =o[Filter.atTop] (fun n : ℝ => n) :=
+    hlinear.trans_isLittleO Real.isLittleO_log_id_atTop
+  have hnonzero : ∀ᶠ n : ℝ in Filter.atTop, n ≠ 0 :=
+    Filter.eventually_ne_atTop 0
+  exact Asymptotics.isLittleO_irrefl hnonzero.frequently hself
 
 /-- Equation (1)'s literal normalized value at the `j`-th dyadic grid point. -/
 def literalPrefixGrid (k j : ℕ) : ℚ :=
