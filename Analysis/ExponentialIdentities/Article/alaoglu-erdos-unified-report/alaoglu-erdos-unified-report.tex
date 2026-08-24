@@ -21181,6 +21181,165 @@ the toric no-go that explains, in operator language, why every naive lift has fa
 \statusnew{} throughout; near-curve algorithm, Carlitz rigidity, and additive-energy
 inputs \statusknown; toric core \statuslean.
 
+\section{Chebyshev trap lattices and the unconditional block bound}
+\label{sec:blockbound}
+
+A further external report develops the near-curve certificate frame of
+Section~\ref{sec:nearcurve} into a quantitative theory and extracts from it the corpus's
+first \emph{unconditional} counting theorem about the solution set itself.
+
+\subsection{Rank--codimension traps and the Chebyshev lattice}
+\label{bb:traps}
+
+Strict total positivity of exponential systems ($\det(e^{\lambda_jt_i})>0$ for increasing
+nodes and frequencies) upgrades the fewnomial budget of Section~\ref{nc:budgets} from one
+polynomial to a family: $r$ linearly independent integer polynomials supported on a
+common $q$-element support, all of absolute value $<1$ on a curve segment, leave at most
+$q-r$ integer points on that segment (\emph{rank--codimension trap}); certified covers of
+$[0,1]$ with total defect $o(H)$ for infinitely many $H$ would prove the conjecture,
+matching the capacity criterion of Section~\ref{nc:budgets}.  Short trap polynomials are
+produced from a \emph{Chebyshev lattice}: coefficient rows from Bernstein-ellipse
+expansions of $z\mapsto P(2^{H+z},3^{H+z})$ on the block, diagonal tail rows to control
+truncation, covolume bounded through Cauchy--Binet by
+\[
+ \log\Delta\le(H+R(\rho))\sum_{e\in E}\lambda_e-\frac{q(q-1)}2\log\rho+O(q\log q)
+\]
+uniformly in the support (diagonal tail rows never weaken the Chebyshev decay), and
+Minkowski producing $r$ independent short vectors at fixed $r$.  The optimal supports are
+weighted simplices (smallest frequency sums), and optimizing the ellipse against the
+simplex yields the report's headline.
+
+\subsection{The unconditional block bound}
+\label{bb:theorem}
+
+\begin{theorem}[Unconditional integer-point bound in a logarithmic unit block]
+\label{bb:thm-block}
+With $I(H):=\#\{x\in[H,H+1):2^x\in\Z,\ 3^x\in\Z\}$,
+\[
+ \limsup_{H\to\infty}I(H)\,\frac{(\log H)^2}{H^2}
+ \le\frac{32\log2\log3}{9}=2.70755559\ldots,
+\]
+via supports of size $(32\log2\log3/9+\varepsilon)H^2/(\log H)^2$ (outer frequency scale
+$L=(8ab/3)H/\log H$, ellipse $\rho=3L/(2ab)$, $a=\log2$, $b=\log3$); the same argument
+gives $32\log u\log v/9$ for any multiplicatively independent bases $u,v>1$.
+\end{theorem}
+
+The inputs are only multiplicative independence, Bernstein--Chebyshev decay,
+Cauchy--Binet, Minkowski, and total positivity --- no conditional monoid.  This is a
+\emph{pointwise} per-block bound, complementing the cumulative $O(T^2)$ ceiling of six
+exponentials (Section~\ref{cc:charts}), which controls only block averages; under a
+counterexample the true count is $I(H)=H/\beta+O(1)$, so the theorem is a
+$H/(\log H)^2$-factor short of a contradiction --- the first unconditional statement in
+the corpus to come within a quantified polynomial factor of the conjecture.
+\statusnew{}; the constant checks numerically and the mechanism is elementary throughout.
+
+\subsection{The two ceilings: rank tax and the conservation law}
+\label{bb:ceilings}
+
+The report then audits, with unusual honesty, why its own mechanism stops there.  The
+macroscopic-window optimization has exact constant
+$\kappa_*=\tfrac{64\log2\log3}9\cosh(t_0)/t_0^2=5.08726658\ldots$ with $t_0\tanh t_0=2$,
+and a \emph{closing} trap must certify a short-vector rank fraction
+$R_H/q>0.98596$ --- a threshold computed directly from the corpus's kernel-verified
+zero-free region $\beta\ge14$ (Section~\ref{co:finite}; the software exclusion
+$\beta>27$ raises it to $0.99272$).  Against this stand two proved ceilings.  The
+\emph{rank-tax inequality} shows the covolume-plus-Minkowski mechanism carries a
+$(r-1)q\log\rho$ penalty, so it cannot certify any rank fraction beyond $1/2$ --- volume
+is not spectrum, and near-full short rank is a shape statement requiring genuine
+successive-minima or transference input.  And a \emph{conservation law}: trading support
+size against rank fraction leaves the leading block constant invariant at $32ab/9$ ---
+within the volume method, fixed-rank and fractional-rank optimization are exactly
+equally strong.  The surviving routes are therefore structural: parametric geometry of
+numbers for the trap lattices (switch-density as a finite combinatorial target), the
+compound-matrix spectrum of the $H$-independent Bessel core ($A=D_{\mathrm{row}}
+K_N(E)D_H$ with $K_{n,e}=I_n(\lambda_e/2)$, all $H$-dependence diagonal), and arithmetic
+rows tied to a primitive pair --- the only channel that could be control-sensitive.
+
+\subsection{Dilation rigidity and the certificate program}
+\label{bb:dilation}
+
+Two supporting layers round out the framework.  First, \emph{consecutive-dilation
+rigidity}: a $q$-monomial polynomial vanishing at $q$ consecutive diagonal dilations
+$(2^nX,3^nY)$ of one positive point is identically zero, so no fixed sparse trap retires
+a persistent normalized orbit point --- traps must move with the block.  The finite core
+is kernel-checked in the new module \lean{ConsecutiveDilationRigidity}
+(\lean{eq_zero_of_consecutive_vanishing}, Vandermonde elimination of the largest node;
+wrapper \lean{consecutive_dilation_rigidity}), the $q$-shift upgrade of the one-shift
+toric rigidity of \lean{ToricMonomialRigidity}; the report's classification of
+finite-dimensional dilation-invariant subspaces (all spanned by monomials) is its
+Lagrange-interpolation companion.  A Hermite-multiplicity variant of the traps is
+audited and blocked by a row-reset obstruction: derivative rows restart the Chebyshev
+decay and are not free.  Second, the report specifies \emph{proof-producing
+certificates}: directed-rounding interval enclosures of the Chebyshev rows, an explicit
+finite verifier (Phase I/II of its Lean plan is exact algebra plus a certificate
+checker, matching this corpus's decide-table philosophy), and a discovery algorithm
+that beats point scanning.  \emph{Assessment}: this merge contributes the corpus's
+first unconditional quantitative theorem about $\mathcal S$ itself, two honest ceilings
+that calibrate every future volume-based attempt, and a concrete verifier
+architecture; the conjecture-shaped residue is exactly the $98.6\%$-versus-$50\%$ rank
+gap, to be attacked by lattice shape (not volume) or by primitive-sensitive arithmetic
+rows.  \statusnew{} throughout; dilation core \statuslean; constants
+\statusexactcomp{} (re-verified numerically during integration).
+
+\section{The saturated divisor lattice and the two-star control detector}
+\label{sec:twostarlattice}
+
+A further external report recasts the conditional framework in the divisor-lattice
+language of the free abelian group on the primes.  Most of its unconditional layer is an
+independent re-derivation of kernel-verified corpus results and is deduplicated by
+citation: the six-exponentials rank cap and the free-semigroup dichotomy
+$\Sol=\N_0$ or $\N_0+\N_0\xi$ are the canonical monoid
+(Theorem~\ref{cd:generator}, \statuslean); the saturation index and explicit root
+descent are the corpus's radical normalization (Section~\ref{sec:radical}); the rank
+window $\rho\in\{3,4\}$ with its M\"obius normal form is Section~\ref{sec:rank-geometry};
+the polylogarithmic counting gap and the $o((\log H)^2)$ sufficiency target are the
+height-scale form of the compact-chart certificate package (Section~\ref{cc:charts});
+and mod-$\ell$ Kummer primitivity for every $\ell$ is the mod-$\ell$ independence of the
+pair lattice (Section~\ref{sec:ranktwo}).  The independent derivations agree with the
+corpus at every point of contact --- a useful external audit.  Two layers are genuinely
+new and are integrated.
+
+\subsection{The two-star tensor as an exact control detector}
+\label{ts:detector}
+
+The report packages a conditional pair into the symmetric tensor
+$\Sigma(a,b)=e_2\circledast b-e_3\circledast a\in\operatorname{Sym}^2(V)$, where $a,b$ are the
+divisor vectors of $(A,B)$ and $\circledast$ is the symmetrized product, and proves that
+\emph{formal zeroes are exactly the controls}: $\Sigma(a,b)=0$ iff
+$(A,B)=(2^m,3^m)$.  A hypothetical counterexample is equivalent to a \emph{primitive
+tensor}: $\Sigma\ne0$, formal period $\operatorname{per}_2\Sigma=0$, coefficient content
+one, $\min(a_2,b_3)=0$, and a positive external coefficient --- and any such tensor
+reconstructs the solution through $\xi=\ell(a)/\log2$.  The content layer of this object
+is the corpus's kernel-verified two-star quadratic (\lean{TwoStarContent}: content equals
+the simultaneous coordinate gcd, content one at the least solution); the control
+characterization is now also kernel-checked, in the new module
+\lean{TwoStarControlCharacterization} (\lean{twoStarCoeff_eq_zero_iff}: the tensor
+vanishes identically iff $a$ is supported at $2$, $b$ at $3$, and $a_2=b_3$;
+\lean{twoStarCoeff_control}).  This gives the control principle of
+Section~\ref{log:control} its cleanest algebraic form to date: the nonvanishing tensor
+$\Sigma$ \emph{is} the difference between a candidate and the control locus, so any
+argument that consumes $\Sigma\ne0$ is control-clean by construction.
+
+\subsection{The Kummer period orbit and the design checklist}
+\label{ts:orbit}
+
+At an external prime $q$ in the support, the independent Kummer translation moves a
+primitive relation: the first orbit derivative of the two-star period is the nonzero
+logarithmic form $\Omega(b_q\log2-a_q\log3)$, so the primitive tensor is \emph{not}
+orbit-invariant --- precisely the asymmetry a proof should consume.  The report's
+conditional closure states that a positive answer to its Kummer-orbit problem for the
+two-star quadratics $F=X_2L_B-X_3L_A$ proves the conjecture (\statusopen{} target), and
+it distills a determinant design checklist --- gauge invariance, root-descent
+invariance, control annihilation (a factor of $\Sigma$), external-prime sensitivity, and
+grids rather than lines --- that matches the session-log control tests item for item.
+\emph{Assessment}: a consolidation report whose independent lattice derivations
+cross-check the corpus, plus one durable new object.  The two-star control detector does
+not move the four-exponentials barrier, but it upgrades the control principle from a
+methodological test to kernel-checked algebra, and the Kummer-orbit problem is a
+well-posed primitive-sensitive target sitting exactly on the frontier channel (i)
+(external prime).  \statusnew{} for the tensor normal form and orbit obstruction;
+detector core \statuslean.
+
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
 
@@ -22342,6 +22501,27 @@ equals the slice tail sum on nested annuli; integrality forces all top-slice tai
 $\ge0$) & \statusexactcomp{}; tail-sum theorem \statusnew{} (elementary + Huxley) &
 Section~\ref{log:two-dim-transport};
 \path{scripts/two_dim_transport.py} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Chebyshev trap lattices (block bound)}}\\
+Unconditional block bound $\limsup I(H)(\log H)^2/H^2\le32\log2\log3/9$; two-base
+version; rank--codimension traps; Cauchy--Binet covolume; frequency-simplex optimality &
+\statusnew & Theorem~\ref{bb:thm-block}; Section~\ref{bb:traps} \\
+Macroscopic constant $\kappa_*=5.0873$ ($t_0\tanh t_0=2$); corank frontier $98.596\%$
+(from kernel $\beta\ge14$); rank-tax one-half ceiling; $32ab/9$ conservation law &
+\statusnew{}; constants \statusexactcomp & Section~\ref{bb:ceilings} \\
+Consecutive-dilation rigidity (no fixed trap for a persistent orbit point) &
+\statuslean & \lean{ConsecutiveDilationRigidity}; Section~\ref{bb:dilation} \\
+Bessel factorization, compound-matrix bottleneck, proof-producing certificate verifier,
+parametric-geometry and arithmetic-row targets & \statusnew{}/\statusopen &
+Section~\ref{bb:dilation} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Saturated divisor lattice (two-star tensor)}}\\
+Two-star tensor vanishes exactly at the controls; symmetric coefficient identities &
+\statuslean & \lean{TwoStarControlCharacterization}; Section~\ref{ts:detector} \\
+Primitive tensor normal form (period zero, content one, external coefficient)
+$\Leftrightarrow$ counterexample; Kummer period-orbit obstruction and conditional
+closure; determinant design checklist & \statusnew{}/\statusopen &
+Sections~\ref{ts:detector}, \ref{ts:orbit} \\
 \bottomrule
 \end{longtable}
 }
@@ -22621,6 +22801,13 @@ the oriented area of three Farey-chart marked points; exact chart spacing; squar
 the relation-counting coefficient--codimension lock \\
 \lean{.../ToricMonomialRigidity} & toric eigenvalue equation determines the eigenvalue at
 every support index; diagonal $(2X,3Y)$-semi-invariants are supported on one monomial \\
+\lean{.../ConsecutiveDilationRigidity} & Vandermonde elimination for exponential sums at
+consecutive shifts: strictly increasing positive nodes and $q$ consecutive vanishing
+sums force all coefficients to zero; $q$-monomial dilation-rigidity wrapper on the
+two-power curve \\
+\lean{.../TwoStarControlCharacterization} & symmetric two-star coefficient array; the
+tensor vanishes identically iff the divisor vectors are those of an integer control
+$(2^m,3^m)$; vanishing at every control pair \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
