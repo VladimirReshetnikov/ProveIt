@@ -37,6 +37,7 @@ import GowersSzemeredi.Proofs07FreimanRestriction
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
+import GowersSzemeredi.Proofs07SimultaneousLinearity
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs10Counting
