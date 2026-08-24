@@ -601,4 +601,72 @@ theorem paired_normalizedInterleavingClass_card_le_twenty_one
         interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
       omega
 
+theorem normalizedInterleavingClass_double_sum_bound
+    (h20 : corollary_2_7_1) {n : Nat} (hn : 3 ≤ n) :
+    2 * (∑ oddIndex : ThetaPermutation ((n + 1) / 2),
+      ∑ evenIndex : ThetaPermutation (n / 2),
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+      21 * theta ((n + 1) / 2) * theta (n / 2) := by
+  let m := (n + 1) / 2
+  let k := n / 2
+  have hperEven : ∀ evenIndex : ThetaPermutation k,
+      2 * (∑ oddIndex : ThetaPermutation m,
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+        21 * Fintype.card (ThetaPermutation m) := by
+    intro evenIndex
+    apply twice_sum_le_of_equiv_pair_bound
+      (thetaComplementEquiv m)
+      (fun oddIndex => (normalizedInterleavingClass n oddIndex evenIndex).card) 21
+    intro oddIndex
+    exact paired_normalizedInterleavingClass_card_le_twenty_one
+      h20 hn oddIndex evenIndex
+  have hsum :
+      ∑ evenIndex : ThetaPermutation k,
+          2 * (∑ oddIndex : ThetaPermutation m,
+            (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+        ∑ _evenIndex : ThetaPermutation k,
+          21 * Fintype.card (ThetaPermutation m) :=
+    Finset.sum_le_sum fun evenIndex _ => hperEven evenIndex
+  change 2 * (∑ oddIndex : ThetaPermutation m,
+      ∑ evenIndex : ThetaPermutation k,
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+    21 * Fintype.card (ThetaPermutation m) * Fintype.card (ThetaPermutation k)
+  calc
+    2 * (∑ oddIndex : ThetaPermutation m,
+        ∑ evenIndex : ThetaPermutation k,
+          (normalizedInterleavingClass n oddIndex evenIndex).card) =
+        ∑ oddIndex : ThetaPermutation m,
+          ∑ evenIndex : ThetaPermutation k,
+            2 * (normalizedInterleavingClass n oddIndex evenIndex).card := by
+      simp_rw [Finset.mul_sum]
+    _ = ∑ evenIndex : ThetaPermutation k,
+          ∑ oddIndex : ThetaPermutation m,
+            2 * (normalizedInterleavingClass n oddIndex evenIndex).card := by
+      rw [Finset.sum_comm]
+    _ = ∑ evenIndex : ThetaPermutation k,
+          2 * (∑ oddIndex : ThetaPermutation m,
+            (normalizedInterleavingClass n oddIndex evenIndex).card) := by
+      simp_rw [Finset.mul_sum]
+    _ ≤ ∑ _evenIndex : ThetaPermutation k,
+          21 * Fintype.card (ThetaPermutation m) := hsum
+    _ = 21 * Fintype.card (ThetaPermutation m) *
+          Fintype.card (ThetaPermutation k) := by
+      simp [Nat.mul_comm]
+
+/-- Corollary 2.7.1 supplies the sole class-size input needed for the
+recursive upper bound. -/
+theorem theorem_2_8_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_8 := by
+  intro n hn
+  have hsplit := theta_card_le_twice_theta12 (by omega : 2 ≤ n)
+  have hencode := theta12_card_le_sum_interleavingClasses n
+  have hclasses := normalizedInterleavingClass_double_sum_bound h20 hn
+  calc
+    theta n ≤ 2 * Fintype.card (Theta12Finite n) := hsplit
+    _ ≤ 2 * (∑ oddIndex : ThetaPermutation ((n + 1) / 2),
+        ∑ evenIndex : ThetaPermutation (n / 2),
+          (normalizedInterleavingClass n oddIndex evenIndex).card) :=
+      Nat.mul_le_mul_left 2 hencode
+    _ ≤ 21 * theta ((n + 1) / 2) * theta (n / 2) := hclasses
+
 end LeanProofs.Sharma2012
