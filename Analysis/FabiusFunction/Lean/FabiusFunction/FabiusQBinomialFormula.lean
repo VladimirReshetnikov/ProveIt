@@ -1,24 +1,25 @@
 import FabiusFunction.FabiusRecurrenceSequence
+import FabiusFunction.GlobalDyadic
 import FabiusFunction.HalfQBinomial
 import FabiusFunction.ThueMorseExponential
 
 /-!
 # A q-binomial--Thue--Morse formula for dyadic Fabius values
 
-This module proves the Wolfram Language identity
+This module first proves the inverse-power (`m = 1`) q-binomial formula and
+then its full arbitrary-numerator form.  The source formula has inner sum
 
-`FabiusF[2^(-n)] = 1 / (2^(n^2) QPochhammer[1/2,1/2,n])` times
+`Sum[(-1)^ThueMorse[r] (r-m 2^k+1/2)^(n+k), {r,0,m 2^k-1}]`.
 
-`Sum[QBinomial[n,k,1/2] / (4^Binomial[k,2] (n+k)!)` times
-`Sum[(-1)^ThueMorse[r] (r-2^k)^(n+k), {r,0,2^k-1}], {k,0,n}]`.
+It equals the signed global Fabius extension at `m/2^n` for every natural
+`m,n`, including zero.  On the unit interval (`m ≤ 2^n`) it also equals the
+bounded Fabius function.  All subtractions are performed in `ℚ`, as in
+Wolfram Language.
 
-The inner subtraction is performed in `ℚ`, as it is in Wolfram Language.
-The theorem includes `n = 0`.
-
-More generally, the module proves that translating every inner power by the
-same `c : ℚ` leaves the complete q-binomial numerator unchanged.  The
-specialization `c = 1/2` therefore proves the variant with
-`(r - 2^k + 1/2)^(n+k)` requested alongside the centered formula.
+The proof is stronger: translating every inner power by the same `c : ℚ`
+leaves the complete q-binomial numerator unchanged.  Thus the source's
+mandatory `c = 1/2` expression and the centered/unshifted `c = 0` expression
+have the same value.
 -/
 
 set_option autoImplicit false
@@ -607,6 +608,869 @@ theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorse_halfShift_sum (n : ℕ) :
     qBinomialThueMorseTranslatedFormula,
     qBinomialThueMorseTranslatedNumerator,
     thueMorseTranslatedPowerSum_eq_sum_range]
+
+/-! ## Arbitrary nonnegative dyadic numerators -/
+
+/-- The centered/unshifted auxiliary Thue--Morse power sum for the dyadic
+numerator `m`.  Subtraction takes place in `ℚ`, so this also covers
+numerators larger than the denominator. -/
+def thueMorseDyadicNumeratorPowerSum (m k d : ℕ) : ℚ :=
+  ∑ r ∈ Finset.range (m * 2 ^ k),
+    (thueMorseSign r : ℚ) *
+      ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k) ^ d
+
+/-- The centered/unshifted rational q-binomial expression for an arbitrary
+natural numerator `m`. -/
+noncomputable def qBinomialThueMorseDyadicFormula (m n : ℕ) : ℚ :=
+  (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+    ∑ k ∈ Finset.range (n + 1),
+      qBinomial n k (1 / 2) /
+          ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+        thueMorseDyadicNumeratorPowerSum m k (n + k)
+
+private theorem thueMorseSign_mul_pow_two_add
+    (k h r : ℕ) (hr : r < 2 ^ k) :
+    thueMorseSign (h * 2 ^ k + r) =
+      thueMorseSign h * thueMorseSign r := by
+  induction k generalizing h r with
+  | zero =>
+      have : r = 0 := by omega
+      subst r
+      norm_num [thueMorseSign, binaryWeight]
+  | succ k ih =>
+      rcases r.even_or_odd with ⟨r, rfl⟩ | ⟨r, rfl⟩
+      · have hr' : r < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        rw [pow_succ]
+        rw [← two_mul r]
+        rw [show h * (2 ^ k * 2) + 2 * r =
+          2 * (h * 2 ^ k + r) by ring]
+        rw [thueMorseSign_two_mul, ih h r hr', thueMorseSign_two_mul]
+      · have hr' : r < 2 ^ k := by
+          rw [pow_succ] at hr
+          omega
+        rw [pow_succ]
+        rw [show h * (2 ^ k * 2) + (2 * r + 1) =
+          2 * (h * 2 ^ k + r) + 1 by ring]
+        rw [thueMorseSign_two_mul_add_one, ih h r hr',
+          thueMorseSign_two_mul_add_one]
+        ring
+
+private theorem sum_range_mul_blocks
+    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
+    (∑ j ∈ Finset.range (m * p), f j) =
+      ∑ h ∈ Finset.range m, ∑ r ∈ Finset.range p, f (h * p + r) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+      rw [Nat.succ_mul, Finset.sum_range_add, ih,
+        Finset.sum_range_succ]
+
+private noncomputable def dyadicNumeratorPrefixSeries (m : ℕ) :
+    PowerSeries ℚ :=
+  ∑ h ∈ Finset.range m, (thueMorseSign h : ℚ) •
+    PowerSeries.rescale ((m : ℚ) - 1 - h) (PowerSeries.exp ℚ)
+
+private theorem rescale_smul_rat
+    (a c : ℚ) (P : PowerSeries ℚ) :
+    PowerSeries.rescale a (c • P) =
+      c • PowerSeries.rescale a P := by
+  ext d
+  simp only [PowerSeries.coeff_rescale, map_smul, smul_eq_mul]
+  ring
+
+private noncomputable def thueMorseDyadicNumeratorPowerSeries
+    (m k : ℕ) : PowerSeries ℚ :=
+  ∑ r ∈ Finset.range (m * 2 ^ k), (thueMorseSign r : ℚ) •
+    PowerSeries.rescale
+      ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k)
+      (PowerSeries.exp ℚ)
+
+private theorem coeff_thueMorseDyadicNumeratorPowerSeries
+    (m k d : ℕ) :
+    PowerSeries.coeff d (thueMorseDyadicNumeratorPowerSeries m k) =
+      thueMorseDyadicNumeratorPowerSum m k d / d.factorial := by
+  rw [thueMorseDyadicNumeratorPowerSeries,
+    thueMorseDyadicNumeratorPowerSum]
+  simp only [map_sum, PowerSeries.coeff_rescale,
+    PowerSeries.coeff_exp, map_smul, smul_eq_mul]
+  rw [Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  norm_num
+  ring
+
+private theorem thueMorseDyadicNumeratorPowerSeries_factor
+    (m k : ℕ) :
+    thueMorseDyadicNumeratorPowerSeries m k =
+      PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+        thueMorseCenteredPowerSeries k := by
+  rw [thueMorseDyadicNumeratorPowerSeries,
+    sum_range_mul_blocks (fun r => (thueMorseSign r : ℚ) •
+      PowerSeries.rescale
+        ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k)
+        (PowerSeries.exp ℚ)) m (2 ^ k)]
+  rw [dyadicNumeratorPrefixSeries, map_sum]
+  rw [thueMorseCenteredPowerSeries,
+    Fin.sum_univ_eq_sum_range
+      (fun r : ℕ => (thueMorseSign r : ℚ) •
+        PowerSeries.rescale ((r : ℚ) - (2 : ℚ) ^ k)
+          (PowerSeries.exp ℚ)) (2 ^ k)]
+  rw [Finset.sum_mul]
+  simp_rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro h hh
+  apply Finset.sum_congr rfl
+  intro r hr
+  have hrlt : r < 2 ^ k := Finset.mem_range.mp hr
+  rw [thueMorseSign_mul_pow_two_add k h r hrlt]
+  push_cast
+  rw [rescale_smul_rat, PowerSeries.rescale_rescale,
+    smul_mul_assoc, mul_smul_comm, smul_smul,
+    PowerSeries.exp_mul_exp_eq_exp_add]
+  congr 2
+  unfold dyadicNode
+  ring
+
+private noncomputable def dyadicNumeratorRefinementFactorSeries
+    (m k : ℕ) : PowerSeries ℚ :=
+  PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+    refinementFactorSeries k
+
+private theorem coeff_dyadicNumeratorRefinementFactorSeries
+    (m k n : ℕ) :
+    thueMorseDyadicNumeratorPowerSum m k (n + k) /
+        ((n + k).factorial : ℚ) =
+      (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        PowerSeries.coeff n
+          (dyadicNumeratorRefinementFactorSeries m k) := by
+  have hfull := thueMorseDyadicNumeratorPowerSeries_factor m k
+  have hshift :
+      PowerSeries.X ^ k *
+          (PowerSeries.rescale (dyadicNode k)
+              (dyadicNumeratorPrefixSeries m) *
+            thueMorseShiftedPowerSeries k) =
+        thueMorseDyadicNumeratorPowerSeries m k := by
+    rw [hfull, ← X_pow_mul_thueMorseShiftedPowerSeries k]
+    ring
+  have hc := congrArg (PowerSeries.coeff (n + k)) hshift
+  rw [PowerSeries.coeff_X_pow_mul', if_pos (by omega), Nat.add_sub_cancel_right,
+    coeff_thueMorseDyadicNumeratorPowerSeries] at hc
+  rw [shiftedSeries_eq_scalar_mul] at hc
+  rw [show
+      PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+            refinementFactorSeries k) =
+        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+          dyadicNumeratorRefinementFactorSeries m k by
+      rw [dyadicNumeratorRefinementFactorSeries]
+      ring,
+    PowerSeries.coeff_C_mul] at hc
+  exact hc.symm
+
+private theorem weighted_dyadicNumeratorRefinementFactorSeries (m n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      qWeight n k * PowerSeries.coeff n
+        (dyadicNumeratorRefinementFactorSeries m k)) =
+      ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
+        PowerSeries.coeff n (dyadicNumeratorPrefixSeries m * recurrenceSeries) := by
+  simp only [dyadicNumeratorRefinementFactorSeries,
+    PowerSeries.coeff_mul,
+    Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
+    PowerSeries.coeff_rescale]
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  simp only [recurrenceSeries, PowerSeries.coeff_mk]
+  apply Finset.sum_congr rfl
+  intro i hi
+  have hile : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
+  have hann (e : ℕ) (he : e < n - i) :
+      (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) = 0 := by
+    have hie : i + e < n := by omega
+    rw [show (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) =
+      ∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ (i + e) by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [pow_add]
+      ring]
+    exact qWeight_nodes_zero hie
+  have hweighted := weighted_factor_coefficient
+    (s := Finset.range (n + 1))
+    (weight := fun k => qWeight n k * dyadicNode k ^ i)
+    (node := dyadicNode) (P := refinementFactorSeries)
+    (hP := fun k _hk => refinementFactorSeries_mul k)
+    (n - i) hann
+  have hnode :
+      (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) *
+          dyadicNode k ^ (n - i)) =
+        (2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n := by
+    rw [show (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ (n - i)) =
+      ∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ n by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      calc
+        qWeight n k * dyadicNode k ^ i * dyadicNode k ^ (n - i) =
+            qWeight n k *
+              (dyadicNode k ^ i * dyadicNode k ^ (n - i)) := by ring
+        _ = qWeight n k * dyadicNode k ^ n := by
+          rw [← pow_add, Nat.add_sub_of_le hile]]
+    exact qWeight_nodes_self n
+  rw [hnode] at hweighted
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        qWeight n k *
+          (dyadicNode k ^ i *
+            PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+              PowerSeries.coeff (n - i) (refinementFactorSeries k))) =
+      PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+        ∑ k ∈ Finset.range (n + 1),
+          (qWeight n k * dyadicNode k ^ i) *
+            PowerSeries.coeff (n - i) (refinementFactorSeries k) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro k _hk
+        ring
+    _ = PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+        (((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
+          fabiusRecurrenceSequence (n - i)) := by rw [hweighted]
+    _ = ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
+        (PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+          fabiusRecurrenceSequence (n - i)) := by ring
+
+private theorem qBinomialThueMorseDyadicNumerator_eq_weighted (m n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      qBinomial n k (1 / 2) /
+          ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+        thueMorseDyadicNumeratorPowerSum m k (n + k)) =
+      ∑ k ∈ Finset.range (n + 1),
+        qWeight n k * PowerSeries.coeff n
+          (dyadicNumeratorRefinementFactorSeries m k) := by
+  simp only [qBinomial_half_eq]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  rw [show
+      halfQBinomial n k /
+            ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+          thueMorseDyadicNumeratorPowerSum m k (n + k) =
+        halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+          (thueMorseDyadicNumeratorPowerSum m k (n + k) /
+            ((n + k).factorial : ℚ)) by field_simp,
+    coeff_dyadicNumeratorRefinementFactorSeries]
+  unfold qWeight
+  rw [four_pow_choose_mul, div_pow]
+  norm_num
+  field_simp
+
+/-- The arbitrary-numerator q-binomial expression is the coefficient of its
+finite Thue--Morse prefix series, with the same dyadic normalization as in
+the inverse-power formula. -/
+theorem qBinomialThueMorseDyadicFormula_eq_prefixCoefficient (m n : ℕ) :
+    qBinomialThueMorseDyadicFormula m n =
+      ((2 : ℚ) ^ n.choose 2)⁻¹ *
+        PowerSeries.coeff n (dyadicNumeratorPrefixSeries m * recurrenceSeries) := by
+  rw [qBinomialThueMorseDyadicFormula, qPochhammer_half_eq,
+    qBinomialThueMorseDyadicNumerator_eq_weighted,
+    weighted_dyadicNumeratorRefinementFactorSeries]
+  simp only [pow_two]
+  rw [
+    choose_square_split, pow_add]
+  have hp := halfQPochhammer_ne_zero n
+  field_simp
+
+private theorem recurrenceSeries_eq_expHalf_mul_centeredMomentPowerSeries :
+    recurrenceSeries =
+      PowerSeries.rescale (1 / 2) (PowerSeries.exp ℚ) *
+        centeredMomentPowerSeries := by
+  ext n
+  rw [coeff_expHalf_mul_centeredMomentPowerSeries]
+  simp only [recurrenceSeries, PowerSeries.coeff_mk,
+    fabiusRecurrenceSequence, halfMoment_eq_evenMomentSum]
+  field_simp
+
+private theorem fabiusDyadic_eq_range_sum (n m : ℕ) :
+    fabiusDyadic n m =
+      (2 : ℚ) ^ (-(Nat.choose (n + 1) 2 : ℤ)) / n.factorial *
+        ∑ h ∈ Finset.range m, (thueMorseSign h : ℚ) *
+          ∑ k ∈ Finset.range (n / 2 + 1),
+            (Nat.choose n (2 * k) : ℚ) *
+              ((2 : ℚ) * m - 2 * h - 1) ^ (n - 2 * k) * moment k := by
+  rw [fabiusDyadic,
+    Fin.sum_univ_eq_sum_range
+      (fun h : ℕ => (thueMorseSign h : ℚ) *
+        ∑ k : Fin (n / 2 + 1),
+          (Nat.choose n (2 * k.val) : ℚ) *
+            ((2 : ℚ) * m - 2 * h - 1) ^ (n - 2 * k.val) *
+              moment k.val) m]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro h _hh
+  congr 1
+  rw [Fin.sum_univ_eq_sum_range
+    (fun k : ℕ =>
+      (Nat.choose n (2 * k) : ℚ) *
+        ((2 : ℚ) * m - 2 * h - 1) ^ (n - 2 * k) * moment k)
+    (n / 2 + 1)]
+
+/-- The coefficient isolated by the q-binomial weights is exactly the
+closed rational dyadic Fabius value. -/
+theorem coeff_dyadicNumeratorPrefixSeries_mul_recurrenceSeries
+    (m n : ℕ) :
+    PowerSeries.coeff n (dyadicNumeratorPrefixSeries m * recurrenceSeries) =
+      (2 : ℚ) ^ n.choose 2 * fabiusDyadic n m := by
+  rw [recurrenceSeries_eq_expHalf_mul_centeredMomentPowerSeries,
+    dyadicNumeratorPrefixSeries, Finset.sum_mul]
+  simp only [smul_mul_assoc]
+  have hterm (h : ℕ) :
+      PowerSeries.rescale ((m : ℚ) - 1 - h) (PowerSeries.exp ℚ) *
+          (PowerSeries.rescale (1 / 2) (PowerSeries.exp ℚ) *
+            centeredMomentPowerSeries) =
+        PowerSeries.rescale ((m : ℚ) - h - 1 / 2) (PowerSeries.exp ℚ) *
+          centeredMomentPowerSeries := by
+    rw [← mul_assoc, PowerSeries.exp_mul_exp_eq_exp_add]
+    congr 2
+    ring
+  simp_rw [hterm]
+  simp only [map_sum, map_smul, smul_eq_mul,
+    coeff_exp_mul_centeredMomentPowerSeries]
+  rw [fabiusDyadic_eq_range_sum]
+  have hchoose : (n + 1).choose 2 = n + n.choose 2 := by
+    simp [Nat.choose_succ_succ, Nat.choose_one_right]
+  have hzpow :
+      (2 : ℚ) ^ (-(Nat.choose (n + 1) 2 : ℤ)) =
+        ((2 : ℚ) ^ Nat.choose (n + 1) 2)⁻¹ := by
+    rw [zpow_neg]
+    norm_num [zpow_natCast]
+  rw [hzpow, hchoose, pow_add]
+  field_simp
+  rw [← Finset.sum_div]
+  field_simp
+
+/-- Exact rational arbitrary-numerator q-binomial--Thue--Morse formula. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadicFormula (m n : ℕ) :
+    fabiusDyadic n m = qBinomialThueMorseDyadicFormula m n := by
+  rw [qBinomialThueMorseDyadicFormula_eq_prefixCoefficient,
+    coeff_dyadicNumeratorPrefixSeries_mul_recurrenceSeries]
+  field_simp
+
+private theorem weighted_dyadicNumeratorRefinementFactorSeries_eq_zero
+    {m n d : ℕ} (hd : d < n) :
+    (∑ k ∈ Finset.range (n + 1),
+      qWeight n k * PowerSeries.coeff d
+        (dyadicNumeratorRefinementFactorSeries m k)) = 0 := by
+  simp only [dyadicNumeratorRefinementFactorSeries,
+    PowerSeries.coeff_mul,
+    Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
+    PowerSeries.coeff_rescale]
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_eq_zero
+  intro i hi
+  have hile : i ≤ d := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
+  have hann (e : ℕ) (he : e < d - i) :
+      (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) = 0 := by
+    have hie : i + e < n := by omega
+    rw [show (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) =
+      ∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ (i + e) by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [pow_add]
+      ring]
+    exact qWeight_nodes_zero hie
+  have hweighted := weighted_factor_coefficient
+    (s := Finset.range (n + 1))
+    (weight := fun k => qWeight n k * dyadicNode k ^ i)
+    (node := dyadicNode) (P := refinementFactorSeries)
+    (hP := fun k _hk => refinementFactorSeries_mul k)
+    (d - i) hann
+  have hnode :
+      (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) *
+          dyadicNode k ^ (d - i)) = 0 := by
+    rw [show (∑ k ∈ Finset.range (n + 1),
+        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ (d - i)) =
+      ∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ d by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      calc
+        qWeight n k * dyadicNode k ^ i * dyadicNode k ^ (d - i) =
+            qWeight n k *
+              (dyadicNode k ^ i * dyadicNode k ^ (d - i)) := by ring
+        _ = qWeight n k * dyadicNode k ^ d := by
+          rw [← pow_add, Nat.add_sub_of_le hile]]
+    exact qWeight_nodes_zero hd
+  rw [hnode, zero_mul] at hweighted
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        qWeight n k *
+          (dyadicNode k ^ i *
+            PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+              PowerSeries.coeff (d - i) (refinementFactorSeries k))) =
+      PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
+        ∑ k ∈ Finset.range (n + 1),
+          (qWeight n k * dyadicNode k ^ i) *
+            PowerSeries.coeff (d - i) (refinementFactorSeries k) := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro k _hk
+        ring
+    _ = 0 := by rw [hweighted, mul_zero]
+
+private noncomputable def dyadicNumeratorShiftedPowerSeries
+    (m k : ℕ) : PowerSeries ℚ :=
+  PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+    thueMorseShiftedPowerSeries k
+
+private theorem coeff_dyadicNumeratorShiftedPowerSeries
+    (m k n : ℕ) :
+    PowerSeries.coeff n (dyadicNumeratorShiftedPowerSeries m k) =
+      thueMorseDyadicNumeratorPowerSum m k (n + k) /
+        ((n + k).factorial : ℚ) := by
+  rw [dyadicNumeratorShiftedPowerSeries, shiftedSeries_eq_scalar_mul]
+  rw [show
+      PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+            refinementFactorSeries k) =
+        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+          dyadicNumeratorRefinementFactorSeries m k by
+      rw [dyadicNumeratorRefinementFactorSeries]
+      ring,
+    PowerSeries.coeff_C_mul,
+    ← coeff_dyadicNumeratorRefinementFactorSeries]
+
+private theorem rawWeight_mul_coeff_dyadicNumeratorShifted_eq
+    (m n k d : ℕ) :
+    halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+        PowerSeries.coeff d (dyadicNumeratorShiftedPowerSeries m k) =
+      qWeight n k * PowerSeries.coeff d
+        (dyadicNumeratorRefinementFactorSeries m k) := by
+  rw [dyadicNumeratorShiftedPowerSeries, shiftedSeries_eq_scalar_mul]
+  rw [show
+      PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
+          (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+            refinementFactorSeries k) =
+        PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+          dyadicNumeratorRefinementFactorSeries m k by
+      rw [dyadicNumeratorRefinementFactorSeries]
+      ring,
+    PowerSeries.coeff_C_mul]
+  unfold qWeight
+  rw [four_pow_choose_mul, div_pow]
+  norm_num
+  field_simp
+
+private theorem weighted_dyadicNumeratorShifted_coeff_eq_zero
+    {m n d : ℕ} (hd : d < n) :
+    (∑ k ∈ Finset.range (n + 1),
+      halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+        PowerSeries.coeff d (dyadicNumeratorShiftedPowerSeries m k)) = 0 := by
+  simp_rw [rawWeight_mul_coeff_dyadicNumeratorShifted_eq]
+  exact weighted_dyadicNumeratorRefinementFactorSeries_eq_zero hd
+
+/-- The arbitrary-numerator inner sum after a common rational translation. -/
+def thueMorseDyadicNumeratorTranslatedPowerSum
+    (c : ℚ) (m k d : ℕ) : ℚ :=
+  ∑ r ∈ Finset.range (m * 2 ^ k),
+    (thueMorseSign r : ℚ) *
+      ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + c) ^ d
+
+private noncomputable def thueMorseDyadicNumeratorTranslatedPowerSeries
+    (c : ℚ) (m k : ℕ) : PowerSeries ℚ :=
+  ∑ r ∈ Finset.range (m * 2 ^ k), (thueMorseSign r : ℚ) •
+    PowerSeries.rescale
+      ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + c)
+      (PowerSeries.exp ℚ)
+
+private theorem coeff_thueMorseDyadicNumeratorTranslatedPowerSeries
+    (c : ℚ) (m k d : ℕ) :
+    PowerSeries.coeff d
+        (thueMorseDyadicNumeratorTranslatedPowerSeries c m k) =
+      thueMorseDyadicNumeratorTranslatedPowerSum c m k d /
+        d.factorial := by
+  rw [thueMorseDyadicNumeratorTranslatedPowerSeries,
+    thueMorseDyadicNumeratorTranslatedPowerSum]
+  simp only [map_sum, PowerSeries.coeff_rescale,
+    PowerSeries.coeff_exp, map_smul, smul_eq_mul]
+  rw [Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  norm_num
+  ring
+
+private theorem thueMorseDyadicNumeratorTranslatedPowerSeries_eq_exp_mul
+    (c : ℚ) (m k : ℕ) :
+    thueMorseDyadicNumeratorTranslatedPowerSeries c m k =
+      PowerSeries.rescale c (PowerSeries.exp ℚ) *
+        thueMorseDyadicNumeratorPowerSeries m k := by
+  rw [thueMorseDyadicNumeratorTranslatedPowerSeries,
+    thueMorseDyadicNumeratorPowerSeries, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  rw [mul_smul_comm, PowerSeries.exp_mul_exp_eq_exp_add]
+  congr 2
+  ring
+
+private theorem X_pow_mul_dyadicNumeratorShiftedPowerSeries
+    (m k : ℕ) :
+    PowerSeries.X ^ k * dyadicNumeratorShiftedPowerSeries m k =
+      thueMorseDyadicNumeratorPowerSeries m k := by
+  rw [dyadicNumeratorShiftedPowerSeries,
+    thueMorseDyadicNumeratorPowerSeries_factor,
+    ← X_pow_mul_thueMorseShiftedPowerSeries k]
+  ring
+
+private noncomputable def dyadicNumeratorTranslatedShiftedPowerSeries
+    (c : ℚ) (m k : ℕ) : PowerSeries ℚ :=
+  PowerSeries.rescale c (PowerSeries.exp ℚ) *
+    dyadicNumeratorShiftedPowerSeries m k
+
+private theorem X_pow_mul_dyadicNumeratorTranslatedShiftedPowerSeries
+    (c : ℚ) (m k : ℕ) :
+    PowerSeries.X ^ k *
+        dyadicNumeratorTranslatedShiftedPowerSeries c m k =
+      thueMorseDyadicNumeratorTranslatedPowerSeries c m k := by
+  calc
+    PowerSeries.X ^ k *
+        dyadicNumeratorTranslatedShiftedPowerSeries c m k =
+      PowerSeries.rescale c (PowerSeries.exp ℚ) *
+        (PowerSeries.X ^ k * dyadicNumeratorShiftedPowerSeries m k) := by
+          rw [dyadicNumeratorTranslatedShiftedPowerSeries]
+          ring
+    _ = PowerSeries.rescale c (PowerSeries.exp ℚ) *
+        thueMorseDyadicNumeratorPowerSeries m k := by
+          rw [X_pow_mul_dyadicNumeratorShiftedPowerSeries]
+    _ = _ :=
+      (thueMorseDyadicNumeratorTranslatedPowerSeries_eq_exp_mul c m k).symm
+
+private theorem coeff_dyadicNumeratorTranslatedShiftedPowerSeries
+    (c : ℚ) (m k n : ℕ) :
+    PowerSeries.coeff n
+        (dyadicNumeratorTranslatedShiftedPowerSeries c m k) =
+      thueMorseDyadicNumeratorTranslatedPowerSum c m k (n + k) /
+        ((n + k).factorial : ℚ) := by
+  have h := congrArg (PowerSeries.coeff (n + k))
+    (X_pow_mul_dyadicNumeratorTranslatedShiftedPowerSeries c m k)
+  rw [PowerSeries.coeff_X_pow_mul', if_pos (by omega),
+    Nat.add_sub_cancel_right,
+    coeff_thueMorseDyadicNumeratorTranslatedPowerSeries] at h
+  exact h
+
+/-- The arbitrary-numerator q-binomial formula with a common rational
+translation `c` in every inner power. -/
+noncomputable def qBinomialThueMorseDyadicTranslatedFormula
+    (c : ℚ) (m n : ℕ) : ℚ :=
+  (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+    ∑ k ∈ Finset.range (n + 1),
+      qBinomial n k (1 / 2) /
+          ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+        thueMorseDyadicNumeratorTranslatedPowerSum c m k (n + k)
+
+private theorem qBinomialThueMorseDyadicTranslatedNumerator_eq
+    (c : ℚ) (m n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      qBinomial n k (1 / 2) /
+          ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+        thueMorseDyadicNumeratorTranslatedPowerSum c m k (n + k)) =
+      ∑ k ∈ Finset.range (n + 1),
+        qBinomial n k (1 / 2) /
+            ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+          thueMorseDyadicNumeratorPowerSum m k (n + k) := by
+  simp only [qBinomial_half_eq]
+  calc
+    (∑ k ∈ Finset.range (n + 1),
+        halfQBinomial n k /
+            ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+          thueMorseDyadicNumeratorTranslatedPowerSum c m k (n + k)) =
+      ∑ k ∈ Finset.range (n + 1),
+        halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+          PowerSeries.coeff n
+            (dyadicNumeratorTranslatedShiftedPowerSeries c m k) := by
+        apply Finset.sum_congr rfl
+        intro k _hk
+        rw [coeff_dyadicNumeratorTranslatedShiftedPowerSeries]
+        field_simp
+    _ = ∑ k ∈ Finset.range (n + 1),
+        halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+          PowerSeries.coeff n (dyadicNumeratorShiftedPowerSeries m k) := by
+        simp only [dyadicNumeratorTranslatedShiftedPowerSeries,
+          PowerSeries.coeff_mul,
+          Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
+        simp_rw [Finset.mul_sum]
+        rw [Finset.sum_comm, Finset.sum_eq_single 0]
+        · simp [PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
+        · intro d hd hd0
+          have hdle : d ≤ n :=
+            Nat.le_of_lt_succ (Finset.mem_range.mp hd)
+          have hnpos : 0 < n :=
+            (Nat.pos_of_ne_zero hd0).trans_le hdle
+          have hdlt : n - d < n :=
+            Nat.sub_lt hnpos (Nat.pos_of_ne_zero hd0)
+          calc
+            (∑ k ∈ Finset.range (n + 1),
+                halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+                  (PowerSeries.coeff d
+                      (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
+                    PowerSeries.coeff (n - d)
+                      (dyadicNumeratorShiftedPowerSeries m k))) =
+              PowerSeries.coeff d
+                  (PowerSeries.rescale c (PowerSeries.exp ℚ)) *
+                ∑ k ∈ Finset.range (n + 1),
+                  halfQBinomial n k / (4 : ℚ) ^ k.choose 2 *
+                    PowerSeries.coeff (n - d)
+                      (dyadicNumeratorShiftedPowerSeries m k) := by
+                rw [Finset.mul_sum]
+                apply Finset.sum_congr rfl
+                intro k _hk
+                ring
+            _ = 0 := by
+              rw [weighted_dyadicNumeratorShifted_coeff_eq_zero hdlt,
+                mul_zero]
+        · simp
+    _ = ∑ k ∈ Finset.range (n + 1),
+        halfQBinomial n k /
+            ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+          thueMorseDyadicNumeratorPowerSum m k (n + k) := by
+        apply Finset.sum_congr rfl
+        intro k _hk
+        rw [coeff_dyadicNumeratorShiftedPowerSeries]
+        field_simp
+
+/-- A common rational translation of every inner power leaves the complete
+arbitrary-numerator q-binomial formula unchanged. -/
+theorem qBinomialThueMorseDyadicTranslatedFormula_eq_centered
+    (c : ℚ) (m n : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormula c m n =
+      qBinomialThueMorseDyadicFormula m n := by
+  rw [qBinomialThueMorseDyadicTranslatedFormula,
+    qBinomialThueMorseDyadicFormula,
+    qBinomialThueMorseDyadicTranslatedNumerator_eq]
+
+/-- Exact rational arbitrary-numerator formula for every common rational
+translation. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    (c : ℚ) (m n : ℕ) :
+    fabiusDyadic n m =
+      qBinomialThueMorseDyadicTranslatedFormula c m n := by
+  rw [qBinomialThueMorseDyadicTranslatedFormula_eq_centered,
+    fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
+
+/-- The source formula, with the mandatory common translation `c = 1/2`. -/
+noncomputable def qBinomialThueMorseDyadicHalfShiftFormula
+    (m n : ℕ) : ℚ :=
+  qBinomialThueMorseDyadicTranslatedFormula (1 / 2) m n
+
+/-- Exact rational arbitrary-numerator half-shifted formula. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    (m n : ℕ) :
+    fabiusDyadic n m =
+      qBinomialThueMorseDyadicHalfShiftFormula m n :=
+  fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula (1 / 2) m n
+
+/-- The fully displayed rational identity from the source.  It is valid for
+all natural `m,n`; in particular no assumption `m ≤ 2^n` is made. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadic_halfShift_sum
+    (m n : ℕ) :
+    fabiusDyadic n m =
+      (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ r ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign r : ℚ) *
+                ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k +
+                  (1 / 2 : ℚ)) ^ (n + k) := by
+  rw [fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula]
+  simp only [qBinomialThueMorseDyadicHalfShiftFormula,
+    qBinomialThueMorseDyadicTranslatedFormula,
+    thueMorseDyadicNumeratorTranslatedPowerSum,
+    four_pow_choose_two]
+
+/-- The fully displayed unshifted rational identity. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadic_sum
+    (m n : ℕ) :
+    fabiusDyadic n m =
+      (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ r ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign r : ℚ) *
+                ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k) ^
+                  (n + k) := by
+  rw [fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
+  simp only [qBinomialThueMorseDyadicFormula,
+    thueMorseDyadicNumeratorPowerSum, four_pow_choose_two]
+
+/-- Global real-valued form for every bounded function satisfying the
+Fabius characterization. -/
+theorem extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    (F : BoundedFabius) (hF : IsFabius F) (m n : ℕ) :
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) := by
+  calc
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) :=
+      (fabiusDyadic_cast_extended_nat F hF n m).symm
+    _ = (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula]
+
+/-- Canonical signed-global Fabius identity at every nonnegative dyadic
+argument. -/
+theorem extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula_canonical
+    (m n : ℕ) :
+    extendedFabius fabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) :=
+  extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    fabius fabius_spec m n
+
+/-- Source-facing canonical signed-global half-shifted formula. -/
+theorem globalFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    (m n : ℕ) :
+    globalFabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) := by
+  rw [globalFabius]
+  exact
+    extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula_canonical
+      m n
+
+/-- On the unit dyadic interval, the same expression evaluates the bounded
+Fabius function. -/
+theorem fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    (F : BoundedFabius) (hF : IsFabius F) (m n : ℕ)
+    (hm : m ≤ 2 ^ n) :
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) := by
+  calc
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) := (fabiusDyadic_cast F hF n m hm).symm
+    _ = (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula]
+
+/-- Canonical bounded-function corollary on `0 ≤ m/2^n ≤ 1`. -/
+theorem fabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    (m n : ℕ) (hm : m ≤ 2 ^ n) :
+    fabiusReal fabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicHalfShiftFormula m n : ℝ) :=
+  fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula
+    fabius fabius_spec m n hm
+
+/-- Global real-valued formula with an arbitrary common translation. -/
+theorem extendedFabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    (F : BoundedFabius) (hF : IsFabius F) (c : ℚ) (m n : ℕ) :
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) := by
+  calc
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) :=
+      (fabiusDyadic_cast_extended_nat F hF n m).symm
+    _ = (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
+
+/-- Canonical signed-global arbitrary-translation formula. -/
+theorem globalFabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    (c : ℚ) (m n : ℕ) :
+    globalFabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) := by
+  simpa only [globalFabius] using
+    extendedFabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+      fabius fabius_spec c m n
+
+/-- Bounded-function arbitrary-translation formula on the unit interval. -/
+theorem fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    (F : BoundedFabius) (hF : IsFabius F) (c : ℚ) (m n : ℕ)
+    (hm : m ≤ 2 ^ n) :
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) := by
+  calc
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) := (fabiusDyadic_cast F hF n m hm).symm
+    _ = (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
+
+/-- Canonical bounded arbitrary-translation formula on the unit interval. -/
+theorem fabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    (c : ℚ) (m n : ℕ) (hm : m ≤ 2 ^ n) :
+    fabiusReal fabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) :=
+  fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    fabius fabius_spec c m n hm
+
+/-- Global real-valued unshifted formula. -/
+theorem extendedFabius_dyadic_eq_qBinomialThueMorseDyadicFormula
+    (F : BoundedFabius) (hF : IsFabius F) (m n : ℕ) :
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicFormula m n : ℝ) := by
+  calc
+    extendedFabius F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) :=
+      (fabiusDyadic_cast_extended_nat F hF n m).symm
+    _ = (qBinomialThueMorseDyadicFormula m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
+
+/-- Canonical signed-global unshifted formula. -/
+theorem globalFabius_dyadic_eq_qBinomialThueMorseDyadicFormula
+    (m n : ℕ) :
+    globalFabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicFormula m n : ℝ) := by
+  simpa only [globalFabius] using
+    extendedFabius_dyadic_eq_qBinomialThueMorseDyadicFormula
+      fabius fabius_spec m n
+
+/-- Bounded-function unshifted formula on the unit interval. -/
+theorem fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicFormula
+    (F : BoundedFabius) (hF : IsFabius F) (m n : ℕ)
+    (hm : m ≤ 2 ^ n) :
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicFormula m n : ℝ) := by
+  calc
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+        (fabiusDyadic n m : ℝ) := (fabiusDyadic_cast F hF n m hm).symm
+    _ = (qBinomialThueMorseDyadicFormula m n : ℝ) := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
+
+/-- Canonical bounded unshifted formula on the unit interval. -/
+theorem fabius_dyadic_eq_qBinomialThueMorseDyadicFormula
+    (m n : ℕ) (hm : m ≤ 2 ^ n) :
+    fabiusReal fabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (qBinomialThueMorseDyadicFormula m n : ℝ) :=
+  fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicFormula
+    fabius fabius_spec m n hm
+
+/-- Doubling numerator and denominator leaves the source half-shifted
+expression unchanged. -/
+theorem qBinomialThueMorseDyadicHalfShiftFormula_refine (m n : ℕ) :
+    qBinomialThueMorseDyadicHalfShiftFormula (2 * m) (n + 1) =
+      qBinomialThueMorseDyadicHalfShiftFormula m n := by
+  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
+    ← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula]
+  exact fabiusDyadic_refine_of_kernel dyadicKernel_has_refinement n m
+
+/-- The half-shifted expression depends only on the represented dyadic
+rational, not on the chosen numerator and denominator exponent. -/
+theorem qBinomialThueMorseDyadicHalfShiftFormula_eq_of_rat_eq
+    (n₁ n₂ m₁ m₂ : ℕ)
+    (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
+      (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
+    qBinomialThueMorseDyadicHalfShiftFormula m₁ n₁ =
+      qBinomialThueMorseDyadicHalfShiftFormula m₂ n₂ := by
+  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
+    ← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
+    fabiusDyadic_eq_extendedFabiusDyadicValue_nat,
+    fabiusDyadic_eq_extendedFabiusDyadicValue_nat]
+  apply extendedFabiusDyadicValue_eq_of_rat_eq n₁ n₂ (m₁ : ℤ) (m₂ : ℤ)
+  norm_num only [Int.cast_natCast]
+  exact h
+
 
 end
 
