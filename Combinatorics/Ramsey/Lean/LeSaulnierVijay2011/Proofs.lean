@@ -4,6 +4,7 @@ import DavisEntringerGrahamSimmons1977.CountingRecurrences
 import RamseyPaperCommon.ThreeFreeCounting
 import RamseyPaperCommon.CountConsequences
 import Sharma2012.AsymptoticConsequences
+import Sharma2012.FinalConsequences
 
 /-!
 # Proofs for LeSaulnier--Vijay (2011)
@@ -85,6 +86,10 @@ theorem sharma_upper_bound_from_theorem_2_9
     (h : LeanProofs.Sharma2012.theorem_2_9) : sharma_upper_bound := by
   intro n hn
   simpa only [LeanProofs.RamseyPaperCommon.sharma_theta_eq_M] using h n hn
+
+theorem sharma_upper_bound_holds : sharma_upper_bound :=
+  sharma_upper_bound_from_theorem_2_9
+    LeanProofs.Sharma2012.theorem_2_9_holds
 
 theorem M_even_recurrence_holds : M_even_recurrence := by
   intro n hn

@@ -43,6 +43,10 @@ theorem sharma_upper_bound_from_2011
   simpa only [sharma_upper_bound,
     LeanProofs.LeSaulnierVijay2011.sharma_upper_bound] using h
 
+theorem sharma_upper_bound_holds : sharma_upper_bound :=
+  sharma_upper_bound_from_2011
+    LeanProofs.LeSaulnierVijay2011.sharma_upper_bound_holds
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   simpa [M_even_recurrence,
     LeanProofs.LeSaulnierVijay2011.M_even_recurrence] using
