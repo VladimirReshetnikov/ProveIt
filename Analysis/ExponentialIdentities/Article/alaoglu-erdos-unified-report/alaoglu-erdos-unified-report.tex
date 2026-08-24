@@ -797,9 +797,13 @@ just $(a,e)$ naming one entry of it by index, and the two base facts for that en
 \emph{inside the same} \lean{decide} as the two row comparisons, so the accepted predicate is
 the single uniform conjunction
 \[
-  0<a,\quad 2^{L_p}<3^{L_q},\quad 3^{U_q}<2^{U_p},\quad
+  0<a,\quad 0<L_q,\quad 0<U_q,\quad 2^{L_p}<3^{L_q},\quad 3^{U_q}<2^{U_p},\quad
   a^{L_q}<m^{L_p},\quad m^{U_p}<(a+1)^{U_q}.
 \]
+The two positivity guards on the denominators are not decoration.  They are what makes an
+out-of-range enclosure index harmless: the lookup is a \lean{getD} whose default is
+$(0,0,0,0)$, and $0<L_q$ rejects it, so a corrupt index fails closed rather than certifying
+vacuously.  They are also the side conditions the final cancellation consumes.
 There is then no tier \lean{match}, no per-tier base theorem and no disjunctive specification,
 and the specification lemma is one \lean{simp} call whose statement does not grow with the
 table.  Splitting the exponents out of the rows rather than repeating them in each row is what

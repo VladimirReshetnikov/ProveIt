@@ -10,8 +10,9 @@ with `2 ^ x` and `3 ^ x` both integral and `2 ^ x < 32768` is an integer, so a n
 solution must satisfy `x ≥ 15`.
 
 For each `m` with `16384 ≤ m < 32768` the table records a pair `(a, e)`, where
-`a = ⌊m ^ (log 3 / log 2)⌋` and `e` indexes `encl32768`, the list of the `37` enclosure
-quadruples `(Lp, Lq, Up, Uq)` the range needs.  Each names a pair of rational enclosures
+`a = ⌊m ^ (log 3 / log 2)⌋` and `e` indexes `encl32768`.  That list holds `37` enclosure
+quadruples `(Lp, Lq, Up, Uq)`, of which the certified rows use `36`; the remaining one is
+attached to the exempt row `m = 16384`, whose check short-circuits before reading it.  Each names a pair of rational enclosures
 `Lp / Lq < log 3 / log 2 < Up / Uq` drawn from the continued-fraction convergent and
 semiconvergent ladder.  Splitting the exponents out of the rows this way keeps the row
 literals small, which matters: the elaborator holds all four chunk tables at once.  The row
