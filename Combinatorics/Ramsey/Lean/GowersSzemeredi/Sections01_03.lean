@@ -304,10 +304,13 @@ def lemma_3_5 : Prop :=
     |((A ∩ (modInterval N (a + 1) M).carrier).card : Real) - beta * delta * N| <=
       3 * alpha ^ ((1 : Real) / 4) * N
 
-/-- **Corollary 3.6.** -/
+/-- **Corollary 3.6 (corrected hypotheses).** Primality and `k ≤ N` are
+inherited from Corollary 3.3.  Positive density excludes the empty-set edge
+case, for which the displayed size hypothesis is vacuous under `Real.rpow`. -/
 def corollary_3_6 : Prop :=
-  forall (N k : Nat) [NeZero N] (A : Finset (ZMod N)) (alpha delta : Real),
-    2 <= k -> (A.card : Real) = delta * N ->
+  forall (N k : Nat) [NeZero N] [Fact N.Prime], k <= N ->
+    forall (A : Finset (ZMod N)) (alpha delta : Real),
+    0 < delta -> 2 <= k -> (A.card : Real) = delta * N ->
     UniformSetOfDegree A alpha (k - 2) ->
     alpha <= (delta / 2) ^ ((k : Real) * 2 ^ k) ->
     32 * (k : Real) ^ 2 * delta ^ (-(k : Real)) <= N ->

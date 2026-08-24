@@ -179,9 +179,9 @@ def lemma_12_5 : Prop :=
           (1 - eta) * arrangementCount 8 B' ≤ respectedArrangementCount 8 B' phi
 
 /-- **Lemma 12.6.** The source's implicit sufficiently-large condition is made
-explicit. -/
+explicit.  As in Lemma 12.5, `eta ≤ 1` is necessary. -/
 def lemma_12_6 : Prop :=
-  ∀ beta gamma eta : Real, 0 < beta → 0 < gamma → 0 < eta →
+  ∀ beta gamma eta : Real, 0 < beta → 0 < gamma → 0 < eta → eta ≤ 1 →
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
       ∀ (f : ZMod N → Complex) (B : Finset (Pair N))
           (phi : Pair N → ZMod N),

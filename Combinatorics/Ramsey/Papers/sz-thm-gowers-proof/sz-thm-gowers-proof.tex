@@ -503,11 +503,25 @@ $$
 
 using property (v) of Lemma 3.1. \(\square\)
 
-Corollary 3.6. Let $A \subset \mathbb{Z}_{N}$ be $\alpha$-uniform of degree $k-2$ and have cardinality $\delta N$. If $\alpha \leqslant(\delta / 2)^{k 2^{k}}$ and $N \geqslant 32 k^{2} \delta^{-k}$, then $A$ contains an arithmetic progression of length $k$.
+% ed.: Primality and k\leq N are required by the corrected Corollary 3.3, and
+% positive density is needed to exclude the empty-set edge case.  The printed
+% interval proof also contains a false numerical inference: for delta=1 and
+% k=3, the hypotheses allow eta=alpha^{1/2^{k-1}}=1/64, so 2^k eta=1/8,
+% whereas the claimed error allowance delta^k/(32k^2) is only 1/288.  Moreover,
+% the corrected constant 3 in Lemma 3.5 invalidates the stated interval-size
+% deduction from eta\leq delta/(4k).  For the modular conclusion here, taking
+% every A_i=A gives the following stronger direct count and repairs the proof.
+Corollary 3.6. Let $N$ be prime, let $2\leqslant k\leqslant N$, and let $A \subset \mathbb{Z}_{N}$ be $\alpha$-uniform of degree $k-2$ and have cardinality $\delta N$, where $\delta>0$. If $\alpha \leqslant(\delta / 2)^{k 2^{k}}$ and $N \geqslant 32 k^{2} \delta^{-k}$, then $A$ contains a nonconstant modular arithmetic progression of length $k$.
 
-Proof. Let $A_{1}=A_{2}=A \cap[(k-2) N /(2 k-3),(k-1) N /(2 k-3)]$, and let $A_{3}=\cdots=A_{k}=A$. By Lemma 3.4, $A$ is $\alpha^{1 / 2^{k-3}}$-uniform (of degree one), so by Lemma 3.5 the sets $A_{1}$ and $A_{2}$ both have cardinality at least $\delta N / 4 k$ since, by the first inequality we have assumed, we know that $\alpha^{1 / 2^{k-1}} \leqslant \delta / 4 k$.
+Proof. Put $\eta=\alpha^{1/2^{k-1}}$. Repeated application of Lemma 3.4 shows that, for every $i\geqslant3$, $A$ is $\eta^{2^{i-1}}$-uniform of degree $i-2$. Apply Corollary 3.3 with $A_{1}=\cdots=A_{k}=A$. Since $0<\delta\leqslant1$, the first assumed inequality gives
 
-Therefore, by Corollary 3.3, $A$ contains at least $\left(\left(\frac{\delta^{k}}{16 k^{2}}\right)-2^{k} \alpha^{1 / 2^{k-1}}\right) N^{2}$ arithmetic progressions modulo $N$ with the first two terms belonging to the interval $[(k-2) N /(2 k-3),(k-1) N /(2 k-3)]$. The only way such a progression can fail to be genuine is if the common difference is zero, and there are at most $\delta N$ such degenerate progressions. Thus the corollary is proved, since the two inequalities we have assumed imply that $\left(\delta^{k} / 16 k^{2}\right)-2^{k} \alpha^{1 / 2^{k-1}} \geqslant \delta^{k} / 32 k^{2}$ and $\delta^{k} N^{2} / 32 k^{2}>\delta N$. \(\square\)
+$$
+ \eta\leqslant(\delta/2)^{2k}
+ \quad\hbox{and hence}\quad
+ 2^{k}\eta\leqslant\delta^{k}/2.
+$$
+
+Thus there are at least $\delta^{k}N^{2}/2$ modular progressions in $A$. The second assumed inequality gives $\delta^{k}N\geqslant32k^{2}$, so this count is at least $16k^{2}N>N$. At most $N$ of the counted pairs have common difference zero. Consequently at least one has nonzero common difference, as required. \(\square\)
 
 Remark. Notice that the proof of Corollary 3.6 did not use Fourier coefficients. This shows that in the proof of Theorem 2.6, the Fourier analysis was not really needed for the analysis of case 3 . However, it was used in a more essential way for case 2.
 
@@ -2408,8 +2422,16 @@ If $N$ is large enough that $(\alpha \eta / 4)^{2^{36}} \beta^{15} N \geqslant 6
 
 If we combine Lemmas 12.4 and 12.5 we obtain the main result of this section.
 
-Lemma 12.6. Let $\beta, \gamma, \eta>0$. Let $f: \mathbb{Z}_{N} \rightarrow D$, let $B \subset \mathbb{Z}_{N}^{2}$ be a set of cardinality at least $\beta N^{2}$ and let $\phi: B \rightarrow \mathbb{Z}_{N}$ be such that $\left|\Delta(f ; k, l)^{\wedge}(\phi(k, l))\right| \geqslant \gamma N$ for every $(k, l) \in B$. If $N$ is sufficiently large in terms of $\beta,\gamma,\eta$, then there is a subset $B^{\prime} \subset B$ containing at least $2^{-2^{37}} \beta^{2^{43}} \gamma^{2^{45}} \eta^{2^{36}} N^{32}$ 8-arrangements, such that the proportion of them respected by $\phi$ is at least $1-\eta$.\\
-Proof. By Lemma 12.4 there are at least $\beta^{112} \gamma^{336} N^{32}$ 8-arrangements respected by $\phi$. This allows us to take $\alpha=\beta^{97} \gamma^{336}$ in Lemma 12.5. It is not hard to check that $\left(\beta^{97} \gamma^{336} \eta / 4\right)^{2^{36}} \beta^{15} \geqslant 2^{-2^{37}} \beta^{2^{43}} \gamma^{2^{45}} \eta^{2^{36}}$, so the lemma is proved. \(\square\)
+% ed.: The necessary restriction eta <= 1, omitted in the article, is explicit;
+% the sufficiently-large threshold is uniform over all densities at least beta.
+Lemma 12.6. Let $\beta, \gamma>0$ and let $0<\eta\leqslant 1$. Let $f: \mathbb{Z}_{N} \rightarrow D$, let $B \subset \mathbb{Z}_{N}^{2}$ be a set of cardinality at least $\beta N^{2}$ and let $\phi: B \rightarrow \mathbb{Z}_{N}$ be such that $\left|\Delta(f ; k, l)^{\wedge}(\phi(k, l))\right| \geqslant \gamma N$ for every $(k, l) \in B$. If $N$ is sufficiently large in terms of $\beta,\gamma,\eta$, then there is a subset $B^{\prime} \subset B$ containing at least $2^{-2^{37}} \beta^{2^{43}} \gamma^{2^{45}} \eta^{2^{36}} N^{32}$ 8-arrangements, such that the proportion of them respected by $\phi$ is at least $1-\eta$.\\
+Proof. Write $|B|=\delta N^{2}$, so that $\delta\geqslant\beta$.  Lemma 12.4 gives at least $\delta^{112}\gamma^{336}N^{32}\geqslant\beta^{112}\gamma^{336}N^{32}$ respected 8-arrangements.  Apply the density-uniform form of the argument in Lemma 12.5 with lower bound $\alpha_{0}=\beta^{112}\gamma^{336}$; its sufficiently-large threshold now depends only on $\beta,\gamma,\eta$, not on the exact value of $\delta$.  It produces a subset containing at least
+
+$$
+ \left(\beta^{112}\gamma^{336}\eta/4\right)^{2^{36}}N^{32}
+$$
+
+8-arrangements, of which a proportion at least $1-\eta$ are respected.  The hypotheses imply $0<\beta,\gamma\leqslant1$: the first inequality follows from $B\subset\mathbb Z_N^2$, while the second follows from the unit-disc bound on the Fourier coefficient.  Hence the displayed quantity is at least $2^{-2^{37}}\beta^{2^{43}}\gamma^{2^{45}}\eta^{2^{36}}N^{32}$, as required. \(\square\)
 
 \section*{13 Finding a Bilinear Piece}
 We shall now use the results of the previous two sections to prove that if $A \subset \mathbb{Z}_{N}$ is a set with balanced function $f, B$ is a large subset of $A$ and $\phi: B \rightarrow \mathbb{Z}_{N}$ has the property that $\Delta(f ; x, y)^{\wedge}(\phi(x, y))$ is large for every $(x, y) \in B$, then $\phi$ exhibits a small (but not too small) amount of bilinearity,\\
