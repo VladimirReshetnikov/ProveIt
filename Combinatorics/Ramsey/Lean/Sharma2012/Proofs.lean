@@ -3070,4 +3070,435 @@ theorem theorem_2_3_holds : theorem_2_3 := by
           exact (lemma_2_1_holds m k (j + 1) hmPos hkPos (by omega) hkBound
             hmCong hmOneCong).2 word hword
 
+lemma prefixCongruent_evenLift_of_base {word : List Nat} {k m : Nat}
+    (h : PrefixCongruent word k m) :
+    PrefixCongruent (evenLift word) k (2 * m) := by
+  refine ⟨by simpa [evenLift] using h.1, ?_⟩
+  intro i hi j hj x y hx hy
+  obtain ⟨a, ha, hax⟩ := exists_of_getElem?_map_eq_some hx
+  obtain ⟨b, hb, hby⟩ := exists_of_getElem?_map_eq_some hy
+  have hab := h.2 i hi j hj a b ha hb
+  subst x
+  subst y
+  exact hab.mul_left' 2
+
+lemma prefixCongruent_oddLift_of_base {word : List Nat} {k m : Nat}
+    (hpositive : forall x : Nat, x ∈ word -> 0 < x)
+    (h : PrefixCongruent word k m) :
+    PrefixCongruent (oddLift word) k (2 * m) := by
+  refine ⟨by simpa [oddLift] using h.1, ?_⟩
+  intro i hi j hj x y hx hy
+  obtain ⟨a, ha, hax⟩ := exists_of_getElem?_map_eq_some hx
+  obtain ⟨b, hb, hby⟩ := exists_of_getElem?_map_eq_some hy
+  have haPos := hpositive a (List.mem_iff_getElem?.mpr ⟨i, ha⟩)
+  have hbPos := hpositive b (List.mem_iff_getElem?.mpr ⟨j, hb⟩)
+  have hab := h.2 i hi j hj a b ha hb
+  have hscaled := hab.mul_left' 2
+  rw [← hax, ← hby]
+  apply Nat.ModEq.add_left_cancel' 1
+  convert hscaled using 1 <;> omega
+
+lemma forcedPrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hN : 0 < N) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= N) (hk : 4 * k <= r + 1) :
+    PrefixCongruent word k (2 ^ (j + 1)) := by
+  apply PrefixCongruent.mono (theorem_2_3_holds N j hN word hword)
+  have hquot : r <= N / 2 ^ j := by
+    exact (Nat.le_div_iff_mul_le (pow_pos (by norm_num) j)).2 hdenom
+  exact (Nat.le_div_iff_mul_le (by norm_num : 0 < 4)).2 (by omega)
+
+lemma forcedEvenTracePrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hEvenN : 0 < N / 2) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= N / 2) (hk : 4 * k <= r + 1) :
+    PrefixCongruent (evenTrace word) k (2 * 2 ^ (j + 1)) := by
+  have hbase := forcedPrefixCongruent (word := evenBase word)
+    (N := N / 2) (j := j) (r := r) hEvenN (isTheta_evenBase hword) hdenom hk
+  have hlift := prefixCongruent_evenLift_of_base hbase
+  rw [evenLift_evenBase] at hlift
+  exact hlift
+
+lemma forcedOddTracePrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hN : 0 < N) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= (N + 1) / 2) (hk : 4 * k <= r + 1) :
+    PrefixCongruent (oddTrace word) k (2 * 2 ^ (j + 1)) := by
+  have hbaseTheta := isTheta_oddBase hword
+  have hbase := forcedPrefixCongruent (word := oddBase word)
+    (N := (N + 1) / 2) (j := j) (r := r) (by omega) hbaseTheta hdenom hk
+  have hpositive : forall x : Nat, x ∈ oddBase word -> 0 < x := by
+    intro x hx
+    exact positive_of_mem_of_isTheta hbaseTheta hx
+  have hlift := prefixCongruent_oddLift_of_base hpositive hbase
+  rw [oddLift_oddBase] at hlift
+  exact hlift
+
+lemma log_two_five_le {n : Nat} (hn : 32 <= n) : 5 <= Nat.log 2 n := by
+  rw [Nat.le_log_iff_pow_le (by norm_num) (by omega)]
+  norm_num
+  exact hn
+
+lemma dyadicQ_pos (n : Nat) : 0 < dyadicQ n := by
+  exact pow_pos (by norm_num) _
+
+lemma dyadic_modulus_two {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 4) + 1) = 2 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 := by omega
+  rw [← hexponent, show Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 by omega,
+    pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_modulus_four {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 3) + 1) = 4 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 2 = (Nat.log 2 n - 4) + 2 := by omega
+  rw [show (Nat.log 2 n - 3) + 1 = Nat.log 2 n - 2 by omega,
+    hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_modulus_eight {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 2) + 1) = 8 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 1 = (Nat.log 2 n - 4) + 3 := by omega
+  rw [show (Nat.log 2 n - 2) + 1 = Nat.log 2 n - 1 by omega,
+    hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_modulus_one {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 5) + 1) = dyadicQ n := by
+  have hlog := log_two_five_le hn
+  rw [show (Nat.log 2 n - 5) + 1 = Nat.log 2 n - 4 by omega]
+  rfl
+
+lemma dyadic_denominator_two {n : Nat} (hn : 32 <= n) :
+    2 ^ (Nat.log 2 n - 3) = 2 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  rw [show Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 by omega, pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_denominator_four {n : Nat} (hn : 32 <= n) :
+    2 ^ (Nat.log 2 n - 2) = 4 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  simpa only [show (Nat.log 2 n - 3) + 1 = Nat.log 2 n - 2 by omega] using
+    dyadic_modulus_four hn
+
+lemma dyadic_denominator_half {n : Nat} (hn : 32 <= n) :
+    2 * 2 ^ (Nat.log 2 n - 5) = dyadicQ n := by
+  have hlog := log_two_five_le hn
+  simp only [dyadicQ]
+  rw [show Nat.log 2 n - 4 = (Nat.log 2 n - 5) + 1 by omega, pow_add]
+  simp [Nat.mul_comm]
+
+lemma dyadic_denominator_quarter {n : Nat} (hlog : 6 <= Nat.log 2 n) :
+    4 * 2 ^ (Nat.log 2 n - 6) = dyadicQ n := by
+  simp only [dyadicQ]
+  rw [show Nat.log 2 n - 4 = (Nat.log 2 n - 6) + 2 by omega, pow_add]
+  norm_num
+  ring
+
+lemma prefixCongruent_one_of_le_length {word : List Nat} {k : Nat}
+    (hk : k <= word.length) : PrefixCongruent word k 1 := by
+  refine ⟨hk, ?_⟩
+  intro i hi j hj x y hx hy
+  simp only [Nat.ModEq, Nat.mod_one]
+
+/-- **Proposition 2.8.** The first dyadic-threshold congruence blocks, for the
+word and for both of its parity traces. -/
+theorem proposition_2_8_holds : proposition_2_8 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hlog : 5 <= Nat.log 2 n := log_two_five_le hn
+  have hhalf : 8 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 8 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordFour : PrefixCongruent word 2 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 8) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 4 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 4) (r := 16) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 8 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 8) (r := 32) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddFour : PrefixCongruent (oddTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 4 (2 * dyadicQ n) := by
+    have hdenom : 16 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 4) (r := 16) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 4 (2 * dyadicQ n) := by
+    have hdenom : 16 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 4) (r := 16) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne :
+      PrefixCongruent (oddTrace word) 8 (dyadicQ n) ∧
+        PrefixCongruent (evenTrace word) 8 (dyadicQ n) := by
+    by_cases hlogSix : 6 <= Nat.log 2 n
+    · have hoddDenom :
+          32 * 2 ^ (Nat.log 2 n - 6) <= (n + 1) / 2 := by
+        have hh := dyadic_denominator_quarter (n := n) hlogSix
+        nlinarith
+      have hevenDenom : 32 * 2 ^ (Nat.log 2 n - 6) <= n / 2 := by
+        have hh := dyadic_denominator_quarter (n := n) hlogSix
+        nlinarith
+      have hodd := forcedOddTracePrefixCongruent (N := n)
+        (j := Nat.log 2 n - 6) (k := 8) (r := 32) hnPos hword hoddDenom
+        (by norm_num)
+      have heven := forcedEvenTracePrefixCongruent (N := n)
+        (j := Nat.log 2 n - 6) (k := 8) (r := 32) (by omega) hword hevenDenom
+        (by norm_num)
+      have hexponent : (Nat.log 2 n - 6) + 1 = Nat.log 2 n - 5 := by omega
+      rw [hexponent, dyadic_denominator_half hn] at hodd heven
+      exact ⟨hodd, heven⟩
+    · have hlogEq : Nat.log 2 n = 5 := by omega
+      have hqEq : dyadicQ n = 2 := by simp [dyadicQ, hlogEq]
+      have hoddTheta := isTheta_oddBase hword
+      have hevenTheta := isTheta_evenBase hword
+      have hoddLength : 8 <= (oddBase word).length := by
+        rw [isTheta_length hoddTheta]
+        have hqPos := dyadicQ_pos n
+        omega
+      have hevenLength : 8 <= (evenBase word).length := by
+        rw [isTheta_length hevenTheta]
+        have hqPos := dyadicQ_pos n
+        omega
+      have hoddBase := prefixCongruent_one_of_le_length hoddLength
+      have hevenBase := prefixCongruent_one_of_le_length hevenLength
+      have hodd := prefixCongruent_oddLift_of_base
+        (fun x hx => positive_of_mem_of_isTheta hoddTheta hx) hoddBase
+      have heven := prefixCongruent_evenLift_of_base hevenBase
+      rw [oddLift_oddBase] at hodd
+      rw [evenLift_evenBase] at heven
+      constructor
+      · simpa only [hqEq] using hodd
+      · simpa only [hqEq] using heven
+  exact ⟨⟨hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
+lemma dyadicQ_trace_prefixes {n k s : Nat} {word : List Nat}
+    (hn : 32 <= n) (hword : IsTheta n word)
+    (hhalf : s * dyadicQ n <= n / 2) (hk : k <= s) :
+    PrefixCongruent (oddTrace word) k (dyadicQ n) ∧
+      PrefixCongruent (evenTrace word) k (dyadicQ n) := by
+  have hnPos : 0 < n := by omega
+  have hhalfOdd : s * dyadicQ n <= (n + 1) / 2 := by omega
+  by_cases hlogSix : 6 <= Nat.log 2 n
+  · have hoddDenom :
+        (4 * s) * 2 ^ (Nat.log 2 n - 6) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_quarter (n := n) hlogSix
+      nlinarith
+    have hevenDenom : (4 * s) * 2 ^ (Nat.log 2 n - 6) <= n / 2 := by
+      have hh := dyadic_denominator_quarter (n := n) hlogSix
+      nlinarith
+    have hodd := forcedOddTracePrefixCongruent (N := n)
+      (j := Nat.log 2 n - 6) (k := k) (r := 4 * s) hnPos hword hoddDenom
+      (by omega)
+    have heven := forcedEvenTracePrefixCongruent (N := n)
+      (j := Nat.log 2 n - 6) (k := k) (r := 4 * s) (by omega) hword hevenDenom
+      (by omega)
+    have hlog := log_two_five_le hn
+    have hexponent : (Nat.log 2 n - 6) + 1 = Nat.log 2 n - 5 := by omega
+    rw [hexponent, dyadic_denominator_half hn] at hodd heven
+    exact ⟨hodd, heven⟩
+  · have hlog := log_two_five_le hn
+    have hlogEq : Nat.log 2 n = 5 := by omega
+    have hqEq : dyadicQ n = 2 := by simp [dyadicQ, hlogEq]
+    have hqPos := dyadicQ_pos n
+    have hsQ : s <= s * dyadicQ n := Nat.le_mul_of_pos_right s hqPos
+    have hoddTheta := isTheta_oddBase hword
+    have hevenTheta := isTheta_evenBase hword
+    have hoddLength : k <= (oddBase word).length := by
+      rw [isTheta_length hoddTheta]
+      omega
+    have hevenLength : k <= (evenBase word).length := by
+      rw [isTheta_length hevenTheta]
+      omega
+    have hoddBase := prefixCongruent_one_of_le_length hoddLength
+    have hevenBase := prefixCongruent_one_of_le_length hevenLength
+    have hodd := prefixCongruent_oddLift_of_base
+      (fun x hx => positive_of_mem_of_isTheta hoddTheta hx) hoddBase
+    have heven := prefixCongruent_evenLift_of_base hevenBase
+    rw [oddLift_oddBase] at hodd
+    rw [evenLift_evenBase] at heven
+    constructor
+    · simpa only [hqEq] using hodd
+    · simpa only [hqEq] using heven
+
+/-- **Proposition 2.9.** The second dyadic-threshold congruence blocks. -/
+theorem proposition_2_9_holds : proposition_2_9 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hhalf : 11 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 11 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordFour : PrefixCongruent word 3 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 3) (r := 11) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 5 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 5) (r := 22) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 11 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 11) (r := 44) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddFour : PrefixCongruent (oddTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 11) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 11) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 5 (2 * dyadicQ n) := by
+    have hdenom : 22 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 5) (r := 22) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 5 (2 * dyadicQ n) := by
+    have hdenom : 22 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 5) (r := 22) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne := dyadicQ_trace_prefixes (n := n) (word := word)
+    (k := 11) (s := 11) hn hword hhalf (by norm_num)
+  exact ⟨⟨hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
+/-- **Proposition 2.10.** The third dyadic-threshold congruence blocks. -/
+theorem proposition_2_10_holds : proposition_2_10 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hhalf : 14 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 14 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordEight : PrefixCongruent word 2 (8 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 2)
+      (k := 2) (r := 7) hnPos hword (by
+        rw [dyadic_denominator_four hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_eight hn] at h
+    exact h
+  have hwordFour : PrefixCongruent word 3 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 3) (r := 14) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 7 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 7) (r := 28) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 14 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 14) (r := 56) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddEight : PrefixCongruent (oddTrace word) 2 (8 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 7) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    convert h using 1 <;> omega
+  have hevenEight : PrefixCongruent (evenTrace word) 2 (8 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 7) (by omega) hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    convert h using 1 <;> omega
+  have hoddFour : PrefixCongruent (oddTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 14) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 14) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 7 (2 * dyadicQ n) := by
+    have hdenom : 28 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 7) (r := 28) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 7 (2 * dyadicQ n) := by
+    have hdenom : 28 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 7) (r := 28) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne := dyadicQ_trace_prefixes (n := n) (word := word)
+    (k := 14) (s := 14) hn hword hhalf (by norm_num)
+  exact ⟨⟨hwordEight, hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddEight, hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenEight, hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
 end LeanProofs.Sharma2012
