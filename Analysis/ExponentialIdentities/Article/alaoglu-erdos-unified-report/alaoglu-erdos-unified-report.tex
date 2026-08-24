@@ -20887,7 +20887,8 @@ formulates the surviving interfaces as precise targets.  First, a \emph{two-dime
 coefficient transport}: archimedean cancellations
 $\sum_{ij}c_{ij}M^iA^j=0$ with a two-parameter terminal product, where the transport
 kernel becomes a genuinely two-dimensional operator whose $M^iA^j$-weighted norm may or
-may not contract --- either outcome is informative.  Second, a \emph{coefficient-inflated
+may not contract --- either outcome is informative (a first finite exploration and a
+reduction to a top-cell pivot: Section~\ref{log:two-dim-transport}).  Second, a \emph{coefficient-inflated
 Kummer dual}: the contraction shows that any near-feasible vector must carry
 exponentially inflated positive tails, which changes the comparison scale for the
 structural-prime route --- a carry-free Kummer valuation of size $O(n)$
@@ -20912,6 +20913,273 @@ is subject to the same contraction, so future designs must either decouple the b
 conjecture itself is untouched --- the closure holds for controls too --- but the search
 region left to the factorial idea is now exactly two well-posed interfaces, both
 primitive-sensitive only through the standard three channels.
+
+\section{Compact charts, the exponent-two ceiling, and the relation-counting lock}
+\label{sec:compactcharts}
+
+A further external report recasts the conjecture as a rational-point counting problem on a
+\emph{fixed compact curve}, and audits the strongest counting technology available against
+it.  Its foundational layer --- the canonical least generator $\beta$, the conditional
+monoid $\Sol=\N_0+\N_0\beta$, and the shell counts
+$\#(\Sol\cap[N,N+1))=1+\lfloor(N+1)/\beta\rfloor$ --- is the kernel-verified corpus monoid
+(Section~\ref{cd:generator}) and is inherited, not re-proved.  What is new is the geometry
+built on top of it and two sharp negative ledgers.
+
+\subsection{Two rational charts and the counting dichotomy}
+\label{cc:charts}
+
+The \emph{reciprocal chart} sends $t\mapsto(2^{-t},3^{-t})$, compactifying the power curve
+$y=x^{\thetaq}$ into the unit square with a cusp at the origin; solutions land exactly on
+the points with unit numerators.  The \emph{logistic (Farey) chart} sends
+$t\mapsto\bigl(\tfrac m{m+1},\tfrac n{n+1}\bigr)$ with $(m,n)=(2^t,3^t)$; solutions land
+exactly on the unit-gap points, and the two charts are rationally conjugate.  Both closures
+are $C^1$ but not $C^2$ at the cusp, with curvature blowing up like $s^{\thetaq-2}$ ---
+the entire difficulty of the counting problem concentrates at one non-smooth boundary
+point.  On either chart the conjecture becomes a \emph{dichotomy on a single fixed compact
+curve}: marked-point counts of height $\le T$ grow like $T/\log3$ under the conjecture and
+like $T^2/(2\beta(\log3)^2)$ under failure, so
+\[
+ \text{Conjecture~\ref{conj:AE}}
+ \iff N_{\mathrm{marked}}(T)=o(T^2)
+ \iff Z_{\mathrm{unit}}(s)=o(s^{-2})\ (s\downarrow0)
+ \iff\#\mathcal S_N=o(N),
+\]
+where $Z_{\mathrm{unit}}$ is the height zeta function of the marked points and
+$\mathcal S_N$ the shell occupancy.  The report assembles an eight-item certificate
+package of such equivalences (marked counts on either chart, zeta pole order, shell
+occupancy, a one-sided $S$-integral identity, absence of a second diagonal contraction,
+two-sided foreign valuations in a rank-two group), together with strictly stronger
+sufficient statements: any $o(T^2)$ bound for \emph{all} rational points on the compact
+cusp, or $o(N)$ points per shell, proves the conjecture, while six exponentials gives the
+unconditional ceiling $O(T^2)$ --- the rank of the full rational-point group
+$\Gamma_{\thetaq}$ of $y=x^{\thetaq}$ is at most two, and the count is $O(T^r)$ for rank
+$r$.  Subquadratic all-rational counting is therefore \emph{exactly} the four-exponentials
+rank drop in counting clothes: it is equivalent to
+$\Gamma_{\thetaq}=\langle(2,3)\rangle$, the specialized four-exponentials statement of
+Section~\ref{sec:barrier}.  The cleanest member of the package is the \emph{one-point
+$S$-integral target}: the conjecture is equivalent to
+\[
+ \Gamma_{\thetaq}\cap\bigl(\Z[1/2]_{>0}\times\Z[1/3]_{>0}\bigr)
+ =\langle(2,3)\rangle,
+\]
+so it suffices to exclude a \emph{single} noncyclic rational point whose denominators are
+concentrated on the structural primes.  All of this consumes the canonical monoid (channel
+(ii) of the control principle, Section~\ref{log:control}); the equivalences cannot even be
+stated for the integer controls.
+
+\subsection{The integer-area certificate and the marked three-point ledger}
+\label{cc:area}
+
+On the Farey chart the marked points have unit-gap coordinates, and the oriented area of
+any three of them is a rational number with an \emph{integer numerator} over the six unit
+denominators: $\Delta=D/\prod_i(m_i+1)(n_i+1)$ with $D\in\Z$, so three genuinely
+non-collinear marked points obey
+$|\Delta|\ge\prod_i(m_i+1)^{-1}(n_i+1)^{-1}$, against the exact geometric value
+$\Delta=\tfrac12F''(\xi)\prod_{i<j}(X_j-X_i)$ and the spacing identity
+$X_j-X_i=(m_j-m_i)/((m_i+1)(m_j+1))$.  The arithmetic ledger is kernel-checked in the new
+module \lean{CompactChartArea} (\lean{area_eq_div}, \lean{abs_area_ge},
+\lean{coord_diff}); the curvature side is classical.  The certificate is a local exclusion
+tool adapted to the compactification --- near the cusp the curvature blow-up compensates
+part of the small spacing, so it does not close anything by itself, but it iterates in
+higher-order determinants without undoing the chart, and a two-logarithm bound gives
+polynomial shell separation ($e^{-N^\rho}$-balls contain at most one marked point).
+
+\subsection{The alternant deficit and the relation-counting lock}
+\label{cc:lock}
+
+Two negative ledgers quantify why the two most plausible counting technologies fall short.
+First, for plain two-variable exponential alternants
+$\det(m_i^{p_j}n_i^{q_j})$ on $D$ marked points of one shell, the report proves a strict
+sign-regularity theorem (no such determinant vanishes at distinct curve points), an exact
+unit-numerator lower bound, and a Harish-Chandra--Itzykson--Zuber upper bound, whose
+combination forces the \emph{shell ledger}: a monomial determinant can exclude $D$ shell
+points only if some extra arithmetic divisibility compensates a loss of size
+$N\mathfrak d(\Lambda)$, and the minimal monomial deficit obeys
+\[
+ \delta_D=\tfrac{2^{3/2}}3\sqrt{ab}\,D^{3/2}+O(D).
+\]
+Every plain monomial-determinant route therefore pays an unavoidable $ND^{3/2}$; the
+required compensation is exactly the output-sensitive divisibility that the corpus
+identifies as the frontier everywhere else (Sections~\ref{sec:masks},
+\ref{bh:localized}).  Second, the report audits the 2026 relation-counting theorem
+(small-ball covering for algebraic points near trajectories of polynomial vector fields,
+admissible codimension $k<\sqrt n-1$): a planar coefficient obstruction shows no nonzero
+polynomial vector field over a number field is tangent to either chart (so the plane is
+unusable), while the natural parameter and jet lifts to $n=3$ represent the arithmetic
+event by codimension-two varieties, and
+\[
+ n-2<\sqrt n-1
+ \quad\Longleftrightarrow\quad
+ n=2
+\]
+--- the \emph{coefficient--codimension lock}, kernel-checked in squared form as
+\lean{codimension_lock}.  An invariant-prime trichotomy closes the redundant-coordinate
+escapes, and even a repaired covering theorem would need its polynomial exponent pushed
+below one before the shell-separation lemma could convert coverings into cardinality
+bounds.  The route through relation counting is thus locked for structural reasons, not
+technical ones; the lock identifies precisely which two improvements (admissible
+codimension, covering exponent) would change the situation.
+
+\emph{Assessment.}  The compact-chart frame adds no new unconditional theorem about the
+conjecture --- its dichotomies consume the kernel-verified monoid and reprove the
+$O(T^2)$ ceiling from six exponentials --- but it is the corpus's cleanest common
+coordinate system for the counting family of approaches, and its two ledgers are
+permanent: the $D^{3/2}$ alternant deficit quantifies the determinant wall on shells, and
+the codimension lock retires the hope that the 2026 relation-counting theorem applies
+off the shelf.  The surviving interfaces it leaves are the one-point $S$-integral target
+(the sharpest known restatement of the four-exponentials special case) and
+determinant-with-divisibility hybrids, which reconnect to the shared-face mask target.
+\statusnew{} for the charts, dichotomies, ledgers, and lock analysis; monoid, counting,
+and rank inputs \statuslean{}/\statusknown{} as cited.
+
+\section{Synchronized gaps: global gcd rigidity against local congruence cost}
+\label{sec:syncgap}
+
+A further external report studies the synchronized gaps
+$D_2(r,s)=M^s-2^r$, $D_3(r,s)=A^s-3^r$ of a hypothetical counterexample, with
+$\delta_{r,s}=s\beta-r$ and the exact identities $D_2=2^r(2^{\delta}-1)$,
+$D_3=3^r(3^{\delta}-1)$: along $r/s\to\beta$ both gaps are simultaneously small relative
+to their ambient powers, so their common divisors are the natural place to look for a
+contradiction.  The report proves matching global and local theorems whose \emph{gap} is
+the finding.
+
+\subsection{Global rigidity and the closed approximation route}
+\label{sg:global}
+
+The global theorem is the \emph{full synchronized-gap rigidity}: under a counterexample,
+\[
+ \log\gcd\bigl(M^s-2^r,\;A^s-3^r\bigr)=o(r+s),
+\]
+by a Bugeaud--Corvaja--Zannier-type subexponential bound away from the structural primes
+\cite{BCZ2003} plus an $O((\log(r+s))^2)$ bound at $2$ and $3$; the two-logarithm input
+$|\delta_{r,s}|\ge c\max(r,s)^{-C}$ \cite{BakerWustholz1993} is exactly where
+irrationality of $\beta$ enters, so the statement is control-sensitive (for an integer
+control the gcd explodes on the diagonal $r=ms$).  Two consequences are permanent.
+First, with $M_0=M/2^{v_2(M)}$, $A_0=A/3^{v_3(A)}$ (both $>1$ precisely because
+$\beta\notin\Z$), the synchronized quotient
+$R_{r,s}=(3^{\delta}-1)/(2^{\delta}-1)\in\Q$ converges to $\log_23$ but has exact height
+$\log\operatorname{height}(R_{r,s})=s\log(M_0A_0)+o(s)$: the gcd is too small to cancel
+the primitive exponential mass, so
+\[
+ \frac{-\log|R_{r,s}-\log_23|}{\log\operatorname{height}(R_{r,s})}\longrightarrow0 .
+\]
+The \emph{rational-approximation route is quantitatively closed}: these approximants have
+logarithmic quality relative to height, and no improvement of the irrationality measure
+of $\log_23$ can rescue them --- a closed door, recorded in the ledger next to the
+factorial closure of Section~\ref{sec:criticalwindow}.
+
+\subsection{The local congruence lattices and the square-root tax}
+\label{sg:local}
+
+The local theorem is an exact Smith-index law for the principal-unit congruence lattices
+$\Lambda_p(k)=\{(r,s):M^s\equiv2^r,\ A^s\equiv3^r\pmod{p^{k+1}}\text{ on units}\}$: with
+Smith invariants $p^{\alpha_p}\mid p^{\gamma_p}$ of the local logarithm matrix $B_p$,
+\[
+ [\Z^2:\Lambda_p(k)]=p^{(k-\alpha_p)_++(k-\gamma_p)_+},
+\]
+stably $p^{2k-\tau_p}$; the mod-$p$ shadow is the Fermat-quotient determinant
+$\det B_p\equiv q_p(M)q_p(3)-q_p(A)q_p(2)\pmod p$, whose kernel-verified form the corpus
+already holds (\lean{FermatQuotientDeterminant}, Section~\ref{fp:fermat}); the
+finite-place product law multiplies the indices, giving $I=G^2/E$ where $G$ is the
+enforced principal-unit precision and $E=\prod p^{\tau_p}$ the aggregate determinant
+credit.  Against this, a \emph{constrained Dirichlet theorem} (Minkowski applied to the
+sheared lattice, Lean-ready) finds $(r,s)\in\Lambda$ with $0<s\le H$ and
+$|s\beta-r|\le(1+\eta)I/H$: any symmetric convex-body use of finite-index information
+conserves the product $H\cdot|s\beta-r|\asymp I$.  Generic local precision therefore
+costs a \emph{square} ($I=G^2$): the corpus's one-prime covolume conservation law
+(\lean{RestrictedDenominatorDirichlet}) is exactly the $|S|=1$ case of this tax.
+
+\subsection{The mismatch, the phase diagram, and the wedge}
+\label{sg:mismatch}
+
+The synthesis is a precise mismatch: the global theorem forbids forced moduli
+$N=\exp(cH)$ at exponent height $H$, while generic local lifting produces only $N$
+polynomial in $H$ because the congruence lattice has index $\approx N^2$.  Between
+polynomial and exponential lies the entire gap; a proof must change the local cost
+\emph{exponent}, not constants.  The report's phase diagram makes the necessary
+structural shift explicit --- essentially rank-one behavior at many places
+simultaneously ($I\approx G$), plus cross-prime coherence of the short directions ---
+and organizes the missing principle adelically: the counterexample is the vanishing of
+the archimedean wedge $(\log2,\log3)\wedge(\log M,\log A)$, the local data are the
+finite-place wedges $-p^2\det B_p$, and there is no product formula tying them together
+because each is bilinear in logarithms rather than a valuation of one algebraic number.
+Its five targets (adelic defect transfer; projective coherence of rank-one places; a
+second-order Fermat law; an auxiliary wedge with a product formula; the gcd
+contrapositive) are all forms of one question --- transfer the archimedean rank loss to
+aggregate finite-place rank loss --- which is the corpus's coupling problem
+(Sections~\ref{ai:series}, \ref{nw:wall}) in adelic form.  \emph{Assessment}: nothing
+moves the four-exponentials barrier; the durable additions are the closed approximation
+route, the exact square-cost benchmark that any lattice-based strategy must beat, and
+the cleanest adelic statement so far of what a decisive principle must do.  \statusnew{}
+throughout; BCZ/Baker inputs \statusknown; mod-$p$ shadow and one-prime covolume law
+already \statuslean{} in the corpus.
+
+\section{Near-curve certificates: orbit pressure against fewnomial budgets}
+\label{sec:nearcurve}
+
+A further external report builds a computational front end for the conjecture from three
+elementary components, then audits the 2026 near-curve algorithm against it.
+
+\subsection{Pressure, locking, and budgets}
+\label{nc:budgets}
+
+\emph{Orbit pressure}: a counterexample $x$ places at least $\lceil(L+1)/x\rceil$ integer
+points of $Y=X^{\theta}$ ($\theta=\log_23$) in every dyadic block $2^L\le X<2^{L+1}$ ---
+linearly many per block, by the conditional monoid.  \emph{Subunit locking}: if
+$P\in\Z[X,Y]$ satisfies $\sup_{z\in[1,2]}|P(2^Lz,3^Lz^{\theta})|<1$, every integer curve
+point of the block is a zero of $P$ (an integer of modulus $<1$ vanishes).
+\emph{Fewnomial budget}: for irrational $\theta$ the monomials $X^iY^j$ restrict to the
+curve as $X^{i+j\theta}$ with pairwise distinct exponents, a Chebyshev system, so a
+nonzero $P$ with support size $T(P)$ has at most $T(P)-1$ zeros on the curve.  Combining
+the three: every global subunit certificate for block $L$ has
+$T(P_L)\ge\lceil(L+1)/x\rceil+1$, hence degree $d_L\gg\sqrt{L/x}$, and every certified
+cover of capacity $\mathrm{Cap}_L$ has $\mathrm{Cap}_L\ge\lceil(L+1)/x\rceil$.
+Contrapositively --- and this is the report's central sufficient criterion --- exhibiting
+certified covers with $\mathrm{Cap}_L=o(L)$ along an unbounded block sequence
+\emph{proves} the conjecture.  Two conditioning barriers calibrate the search: no fixed
+support is subunit for arbitrarily large $L$ (finite support libraries become extinct
+effectively), and an unconditional near-critical degree barrier $L\le Cd^2\log(d+1)$
+shows certificates cannot be cheap --- the hunt lives in the narrow corridor
+$d\asymp\sqrt L$ up to logarithms.  The report specializes the Brisebarre--Hanrot
+near-curve algorithm \cite{BrisebarreHanrot2026} into a proof-oriented certificate: a
+single verified short-vector inequality for the rounded Chebyshev--Bernstein matrix
+implies the uniform subunit bound, for dense or arbitrary sparse supports, giving a
+machine-checkable route (Priority~A of its program) whose success criterion is a proven
+sufficient condition.  The dense asymptotics do not yet meet the capacity criterion; the
+open question is whether near-resonant sparse supports do.
+
+\subsection{The toric no-go and the Carlitz model}
+\label{nc:toric}
+
+Why is a certificate search needed at all, rather than an operator argument?  The report
+isolates the obstruction: the diagonal scaling $(X,Y)\mapsto(2X,3Y)$ admits only
+\emph{monomial} polynomial semi-invariants --- $P(2X,3Y)=cP(X,Y)$ forces a single
+monomial, since the eigenvalues $2^i3^j$ are pairwise distinct.  The coefficientwise
+kernel core is verified in the new module \lean{ToricMonomialRigidity}
+(\lean{toric_eigen_support_unique}, on top of the kernel-verified injectivity of
+$(i,j)\mapsto2^i3^j$): geometric scaling never creates a coupled finite-rank system, so
+any relation-lifting theorem must introduce a semilinear or inhomogeneous action --- the
+same conclusion as the finite-rank cocycle target of Section~\ref{nw:qdiff}, reached
+operator-theoretically.  As a model for what the missing rigidity would look like, the
+report assembles the Carlitz-module picture: in positive characteristic the full relation
+ideal of Carlitz logarithms is generated by $k$-linear relations
+\cite{Papanikolas2008}, the two-direction multiplier rigidity ($c\lambda_1,c\lambda_2$
+both Carlitz logarithms forces $c\in k$) is a theorem, and Estienne's 2026 Mahler-method
+proof \cite{Estienne2026} shows the rigidity can be reached through functional equations
+alone; the exact characteristic-zero analogue (its ``quadratic target'') would settle
+the conjecture.  The differential lift of fixed-endpoint logarithm germs has the right
+relation ideal but specializes incorrectly --- a defect the report exhibits already at
+integral controls, and its route triage includes an exact mod-$7$ counterexample to
+same-prime congruence transfer at the control $x=2$, applying the control principle of
+Section~\ref{log:control} as a falsification tool.  Harrison's bounds on additive
+relations in irrational powers \cite{Harrison2026} bound the additive energy of the
+smooth grid and the exponential boundary fiber, quantifying additive isolation
+(Section~\ref{ai:isolation}) at grid scale.  \emph{Assessment}: the durable additions
+are the certified-search interface with its proven sufficiency threshold
+$\mathrm{Cap}_L=o(L)$ --- the corpus's first falsifiable-by-computation route --- and
+the toric no-go that explains, in operator language, why every naive lift has failed.
+\statusnew{} throughout; near-curve algorithm, Carlitz rigidity, and additive-energy
+inputs \statusknown; toric core \statuslean.
 
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
@@ -21164,6 +21432,59 @@ capture primes, valid for all $(n,d)$ and for every pair $(M,A)$ in the mesoscop
 Such a theorem would close the entire factorial-cocycle architecture unconditionally,
 converting Section~\ref{sec:factorialcocycle} from ``one escape width left open'' to a
 complete no-go; the dual data above is the template for its proof.
+
+\subsection{The two-dimensional transport kernel: first finite exploration (computed)}
+\label{log:two-dim-transport}
+
+Following the contraction-evasion target of Section~\ref{cw:survivors}, we computed both
+natural transport kernels for the two-parameter terminal products
+$G_{i,j}=\bigl(A^{m+j}\bigr)_{\!\underline{M^{n+i}}}$, windows
+$I_{i,j}=(A^{m+j}-M^{n+i},A^{m+j}]$, on truncated admissible grids
+(\path{scripts/two_dim_transport.py}; log-space, $x=14$ scales, several base offsets).
+Two structural facts emerge.  First, the \emph{per-prime} sup kernel does not contract:
+$M^iA^j$-weighted column sums reach $10^{46}$, and the escaping direction is exact ---
+same-top pairs ($j=j'$) with a long-window source against a short-factor target
+($i\gg i'$), whose weight ratio $M^{i-i'}$ is unbounded.  The one-dimensional
+contraction of Section~\ref{sec:criticalwindow} survived because its single shift index
+totally orders windows below tails; a second parameter destroys that total order.
+Second, the escape is an artifact of per-prime worst-casing.  A same-top shorter level
+captures only its sub-window, hence only the fraction $M^{i'-i}\ll1$ of the window
+primes, and in the divisor-counting model (an integer of size $A^{m+j'}$ has at most
+$(m+j')/(m+j)$ prime factors of window size) triangularity is restored in both indices.
+On every grid tested the counting model then has \emph{exactly one} cell whose window no
+single other level can cover: the top cell of the support (maximal $j$, then maximal
+$i$).  For that cell the union bound is even stronger --- all other levels together
+capture at most a $\sum_{i'<i}M^{i'-i}\le1/(M-1)$ fraction of its window --- so a
+negative coefficient at the top cell of its own support makes the two-parameter cocycle
+nonintegral outright, while every other cell can in principle be covered by the top
+level.  The two-dimensional route therefore reduces to a lexicographic pivot: any viable
+sign pattern must keep the top cell positive and route all rescues through the top
+levels, and the question is the multiplicity bookkeeping of those rescues against the
+two archimedean balances $\sum_{ij}c_{ij}M^iA^j=0$ and its derivative.  Neither a
+two-dimensional contraction theorem nor an escaping construction falls out cheaply; the
+pivot sharpens the open target to a concrete combinatorial question on sign patterns.
+
+The pivot upgrades to an \emph{exact partial rigidity theorem} on the top slice.  Fix
+the maximal $j^*$ of the support and list its cells $i_1<\cdots<i_s=i^*$.  The windows
+of one slice are nested, so the annulus
+$\mathcal A_k=(A^{m+j^*}-M^{n+i_k},\,A^{m+j^*}-M^{n+i_{k-1}}]$ is met by the levels
+$(i_l,j^*)$ with $l\ge k$ and by nothing else in the support; and for a prime
+$p\in\mathcal A_k$ each such level captures $p$ \emph{exactly once to first order} (the
+unique multiple in range is $p$ itself, and $p^2>A^{m+j^*}$), while all lower slices
+miss $p$ and no higher slice exists.  Hence
+\[
+ v_p(\mathcal F)=\sum_{l\ge k}c_{i_l,j^*}
+ \qquad(p\in\mathcal A_k)
+\]
+\emph{exactly}, and integrality of the two-parameter cocycle forces every tail sum of
+the top slice to be nonnegative --- with Huxley supplying primes in each annulus (the
+annulus has the same length exponent as its window) whenever the cells are mesoscopic.
+In particular a negative top-cell coefficient is impossible, and the top slice of any
+viable sign pattern is constrained by $s$ exact linear inequalities before any transport
+estimate is invoked.  \statusexactcomp{} for the kernel computations; the triangularity
+statements, the nested-annulus bookkeeping, and the exact first-order capture are
+elementary and Lean-ready (the one-window case is already kernel-verified in
+\lean{TerminalFactorialIndependence}).
 
 \subsection{Directions not yet exhausted}
 \label{log:directions}
@@ -21984,6 +22305,43 @@ $\Delta_0\ge0.9337$; Hermite remainder identity and positive-tail no-go &
 \statusnew{}; Brun--Titchmarsh/Huxley \statusknown & Section~\ref{cw:contraction} \\
 Two-dimensional transport norm; coefficient-inflated Kummer hybrid dual &
 \statusopen{} targets & Section~\ref{cw:survivors} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Compact charts and counting (reciprocal / Farey)}}\\
+Integer-area certificate on the Farey chart: integer numerator, area floor, spacing
+identity; coefficient--codimension lock $(n-1)^2<n\iff n=2$ & \statuslean &
+\lean{CompactChartArea}; Section~\ref{cc:area} \\
+Chart dichotomies and certificate package (counts, zeta pole order, shells, $S$-integral
+one-point target, contraction semigroup); cusp regularity $C^1$ not $C^2$ &
+\statusnew{} (monoid and rank inputs \statuslean/\statusknown) &
+Section~\ref{cc:charts} \\
+Alternant shell ledger: sign-regularity, unit-numerator floor, HCIZ ceiling, optimal
+monomial deficit $\delta_D=\tfrac{2^{3/2}}3\sqrt{ab}\,D^{3/2}+O(D)$ & \statusnew &
+Section~\ref{cc:lock} \\
+Planar coefficient obstruction; parameter/jet lift equivalence; invariant-prime
+trichotomy; relation-counting lock analysis & \statusnew{}; covering theorem \statusknown &
+Section~\ref{cc:lock} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Synchronized gaps and near-curve certificates}}\\
+Full synchronized-gap rigidity $\log\gcd(M^s-2^r,A^s-3^r)=o(r+s)$; exact height of the
+synchronized quotient; zero power-of-height exponent (approximation route closed) &
+\statusnew{}; BCZ and two-log inputs \statusknown & Section~\ref{sg:global} \\
+Smith-index law for principal-unit congruence lattices; finite-place product law
+$I=G^2/E$; constrained Dirichlet and the square-root tax; adelic wedge program &
+\statusnew{}; mod-$p$ shadow and one-prime covolume \statuslean &
+Sections~\ref{sg:local}, \ref{sg:mismatch} \\
+Orbit pressure per dyadic block; subunit locking; fewnomial budget $T-1$; capacity
+criterion $\mathrm{Cap}_L=o(L)$ suffices; degree barriers $L\le Cd^2\log d$ &
+\statusnew{}; Chebyshev/Rolle \statusknown & Section~\ref{nc:budgets} \\
+Toric monomial rigidity (semi-invariants are monomials) & \statuslean &
+\lean{ToricMonomialRigidity}; Section~\ref{nc:toric} \\
+Carlitz-model rigidity and quadratic target; certified sparse near-curve search program &
+\statusknown{} inputs; program \statusnew & Section~\ref{nc:toric} \\
+Two-dimensional transport kernels: sup-kernel escape direction, counting-model
+triangularity, top-cell pivot; exact top-slice tail-sum rigidity ($v_p(\mathcal F)$
+equals the slice tail sum on nested annuli; integrality forces all top-slice tail sums
+$\ge0$) & \statusexactcomp{}; tail-sum theorem \statusnew{} (elementary + Huxley) &
+Section~\ref{log:two-dim-transport};
+\path{scripts/two_dim_transport.py} \\
 \bottomrule
 \end{longtable}
 }
@@ -22258,6 +22616,11 @@ geometric and weighted-geometric kernel bounds; window/coefficient summation exc
 abstract $M$-weighted contraction theorem; candidate-regime numerics
 ($M\ge2^{14}$, $q\le(2/3)^{14}$) and impossibility of balanced transport vectors;
 rational-root exponent-gap divisibility \\
+\lean{.../CompactChartArea} & integer-numerator identity and reciprocal-product floor for
+the oriented area of three Farey-chart marked points; exact chart spacing; squared form of
+the relation-counting coefficient--codimension lock \\
+\lean{.../ToricMonomialRigidity} & toric eigenvalue equation determines the eigenvalue at
+every support index; diagonal $(2X,3Y)$-semi-invariants are supported on one monomial \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
@@ -24240,6 +24603,32 @@ J.-P. B\'ezivin and A. Boutabaa,
 R. Sch\"afke and M. Singer,
 \newblock \emph{Consistent systems of linear differential and difference equations},
 \newblock Journal of the European Mathematical Society \textbf{21} (2019), 2751--2792.
+
+\bibitem{BHKKS2026}
+G. Binyamini, N. Hirata-Kohno, M. Kawashima, and Y. Salant,
+\newblock \emph{Counting theorems for algebraic relations},
+\newblock arXiv:2604.15189 (2026).
+
+\bibitem{BrisebarreHanrot2026}
+N.~Brisebarre and G.~Hanrot,
+\newblock \emph{Integer points close to a transcendental curve: an algorithmic approach},
+\newblock arXiv:2606.04858 (2026).
+
+\bibitem{Estienne2026}
+G.~Estienne,
+\newblock \emph{Mahler's method and Carlitz logarithm},
+\newblock arXiv:2603.18832 (2026).
+
+\bibitem{Harrison2026}
+J.~Harrison,
+\newblock \emph{Additive relations in irrational powers},
+\newblock arXiv:2512.04081 (2026).
+
+\bibitem{Papanikolas2008}
+M.~A.~Papanikolas,
+\newblock \emph{Tannakian duality for Anderson--Drinfeld motives and algebraic
+independence of Carlitz logarithms},
+\newblock Inventiones Mathematicae \textbf{171} (2008), 123--174.
 
 \bibitem{Matveev2000}
 E.~M.~Matveev,
