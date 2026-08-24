@@ -406,4 +406,29 @@ theorem corollary_2_7_2_holds : corollary_2_7_2 := by
         unfold Nat.ModEq
         omega
 
+/-- The two end-block theorems already imply the sharp class-size bound for
+every interleaving class satisfying the paper's standing hypotheses.  This
+separates the finite binomial calculation from the remaining endpoint cases
+needed for Corollary 2.7.1. -/
+theorem standing_interleavingClass_card_le_twenty
+    (h26 : theorem_2_6) (h27 : theorem_2_7)
+    {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    (interleavingClass n (oddTrace gamma) (evenTrace gamma)).card ≤ 20 := by
+  let u := (epilogue n (oddTrace gamma)).length
+  let v := (prologue n (evenTrace gamma)).length
+  have hcard :
+      (interleavingClass n (oddTrace gamma) (evenTrace gamma)).card =
+        Nat.choose (u + v) v := by
+    simpa only [u, v] using lemma_2_5_holds n gamma hstanding
+  have hu : u ≤ 6 := epilogue_oddTrace_length_le_six hstanding.1.1
+  have hv : v ≤ 6 := prologue_evenTrace_length_le_six hstanding.1.1
+  have h26' : (4 ≤ u → v ≤ 2) ∧ (4 ≤ v → u ≤ 2) := by
+    simpa only [u, v] using h26 n gamma hstanding
+  have h27' : (5 ≤ u → v = 1) ∧ (5 ≤ v → u = 1) := by
+    simpa only [u, v] using h27 n gamma hstanding
+  rw [hcard]
+  interval_cases u <;> interval_cases v <;>
+    first | omega | norm_num [Nat.choose]
+
 end LeanProofs.Sharma2012
