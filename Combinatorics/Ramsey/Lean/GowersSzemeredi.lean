@@ -95,6 +95,7 @@ import GowersSzemeredi.Proofs16BaseCaseCoarsePartition
 import GowersSzemeredi.Proofs16BaseCaseCoarseCover
 import GowersSzemeredi.Proofs16BaseCaseLongBoxTransport
 import GowersSzemeredi.Proofs16BaseCaseLongBoxCover
+import GowersSzemeredi.Proofs16BaseCaseSingleGraph
 import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
