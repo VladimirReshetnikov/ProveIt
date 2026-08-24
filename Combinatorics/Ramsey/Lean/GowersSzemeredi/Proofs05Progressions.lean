@@ -1,4 +1,5 @@
 import GowersSzemeredi.Section05
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.GroupTheory.OrderOfElement
 
 /-!
@@ -146,5 +147,83 @@ theorem lemma_5_12_holds : lemma_5_12 := by
           simpa only [mul_one] using
             mul_le_mul_of_nonneg_left hsqrt (show (0 : Real) ≤ 4 by norm_num)
       simpa only [Nat.cast_one] using hbound
+
+/-- Lemma 5.13 follows by deleting empty cells and normalizing every
+remaining modular progression. -/
+theorem lemma_5_13_holds : lemma_5_13 := by
+  classical
+  intro N M _ Q hpartition
+  let I : Finset (Fin M) := Finset.univ.filter fun i => (Q i).carrier.Nonempty
+  let idx : Fin I.card → Fin M := fun j => (I.equivFin.symm j).1
+  let R : Fin I.card → ModAP N := fun j => normalizedModAP (Q (idx j))
+  have hidx_mem (j : Fin I.card) : idx j ∈ I := (I.equivFin.symm j).2
+  have hrefinement :
+      IsRefinement (fun j => (R j).carrier) (fun i => (Q i).carrier) := by
+    refine ⟨?_, ?_, ?_⟩
+    · intro x
+      constructor
+      · rintro ⟨j, hj⟩
+        refine ⟨idx j, ?_⟩
+        simpa only [R, normalizedModAP_carrier] using hj
+      · rintro ⟨i, hi⟩
+        have hiI : i ∈ I := by
+          change i ∈ Finset.univ.filter fun i => (Q i).carrier.Nonempty
+          rw [Finset.mem_filter]
+          exact ⟨Finset.mem_univ _, ⟨x, hi⟩⟩
+        let ii : I := ⟨i, hiI⟩
+        let j : Fin I.card := I.equivFin ii
+        have hidx : idx j = i := by
+          change (I.equivFin.symm (I.equivFin ii)).1 = i
+          simp only [Equiv.symm_apply_apply, ii]
+        refine ⟨j, ?_⟩
+        simpa only [R, normalizedModAP_carrier, hidx] using hi
+    · intro j
+      refine ⟨idx j, ?_⟩
+      simpa only [R, normalizedModAP_carrier] using
+        (Finset.Subset.rfl : (Q (idx j)).carrier ⊆ (Q (idx j)).carrier)
+    · intro j l hjl
+      have hjl' : j ≠ l := bne_iff_ne.mp hjl
+      have hidx : idx j ≠ idx l := by
+        intro heq
+        apply hjl'
+        apply I.equivFin.symm.injective
+        exact Subtype.ext heq
+      simpa only [R, normalizedModAP_carrier] using
+        hpartition.2 (idx j) (idx l) (bne_iff_ne.mpr hidx)
+  have hproper : ∀ j, (R j).IsProper := fun _ => normalizedModAP_isProper _
+  have hIcardM : I.card ≤ M := by
+    calc
+      I.card ≤ (Finset.univ : Finset (Fin M)).card := by
+        change (Finset.univ.filter fun i : Fin M => (Q i).carrier.Nonempty).card ≤
+          (Finset.univ : Finset (Fin M)).card
+        exact Finset.card_filter_le (Finset.univ : Finset (Fin M))
+          (fun i => (Q i).carrier.Nonempty)
+      _ = M := by simp
+  let pick : I → ZMod N := fun i => Classical.choose ((Finset.mem_filter.mp i.2).2)
+  have pick_mem (i : I) : pick i ∈ (Q i.1).carrier :=
+    Classical.choose_spec ((Finset.mem_filter.mp i.2).2)
+  have pick_injective : Function.Injective pick := by
+    intro i j hpick
+    apply Subtype.ext
+    by_contra hij
+    have hd := hpartition.2 i.1 j.1 (bne_iff_ne.mpr hij)
+    have hjmem := pick_mem j
+    rw [← hpick] at hjmem
+    exact (Finset.disjoint_left.mp hd (pick_mem i) hjmem).elim
+  have hIcardN : I.card ≤ N := by
+    have hcard := Fintype.card_le_of_injective pick pick_injective
+    simpa only [Fintype.card_coe, ZMod.card] using hcard
+  have hsqNat : I.card * I.card ≤ N * M := Nat.mul_le_mul hIcardN hIcardM
+  have hsqReal : (I.card : Real) ^ 2 ≤ (N : Real) * M := by
+    rw [pow_two]
+    exact_mod_cast hsqNat
+  have hroot : (I.card : Real) ≤ Real.sqrt ((N : Real) * M) :=
+    Real.le_sqrt_of_sq_le hsqReal
+  have hcount : (I.card : Real) ≤ 4 * Real.sqrt ((N : Real) * M) := by
+    calc
+      (I.card : Real) ≤ Real.sqrt ((N : Real) * M) := hroot
+      _ ≤ 4 * Real.sqrt ((N : Real) * M) := by
+        nlinarith [Real.sqrt_nonneg ((N : Real) * M)]
+  exact ⟨I.card, R, hrefinement, hproper, hcount⟩
 
 end LeanProofs.GowersSzemeredi
