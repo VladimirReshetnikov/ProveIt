@@ -16,6 +16,7 @@ import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
+import GowersSzemeredi.Proofs03GowersCS
 import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Progressions
