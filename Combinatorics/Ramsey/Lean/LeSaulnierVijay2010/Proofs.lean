@@ -30,6 +30,12 @@ theorem davis_counting_bounds_holds : davis_counting_bounds := by
     LeanProofs.LeSaulnierVijay2011.davis_counting_bounds] using
     LeanProofs.LeSaulnierVijay2011.davis_counting_bounds_holds
 
+theorem sharma_superpolynomial_lower_bound_holds :
+    sharma_superpolynomial_lower_bound := by
+  simpa [sharma_superpolynomial_lower_bound,
+    LeanProofs.LeSaulnierVijay2011.sharma_superpolynomial_lower_bound] using
+    LeanProofs.LeSaulnierVijay2011.sharma_superpolynomial_lower_bound_holds
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   simpa [M_even_recurrence,
     LeanProofs.LeSaulnierVijay2011.M_even_recurrence] using

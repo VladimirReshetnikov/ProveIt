@@ -2,6 +2,7 @@ import Sharma2012.Definitions
 import Sharma2012.Statements
 import Sharma2012.Proofs
 import Sharma2012.CountingConsequences
+import Sharma2012.AsymptoticConsequences
 
 /-!
 # Sharma's progression-free permutations
