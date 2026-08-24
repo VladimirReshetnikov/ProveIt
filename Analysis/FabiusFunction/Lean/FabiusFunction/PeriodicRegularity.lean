@@ -3,6 +3,7 @@ import FabiusFunction.NegativeLaplaceDerivatives
 import FabiusFunction.Existence
 import Mathlib.Analysis.Calculus.SmoothSeries
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.Analysis.Calculus.Taylor
 
 /-!
 # Higher regularity of the negative-Laplace periodic correction
@@ -752,5 +753,60 @@ theorem exists_bound_abs_secondDeriv_negativeLaplacePsi :
   refine ⟨C, hC0, ?_⟩
   intro t
   simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
+
+/-- A global quadratic Taylor bound for the zero-mean periodic correction. -/
+theorem exists_negativeLaplacePsi_first_order_remainder_bound :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ x h : ℝ,
+      |negativeLaplacePsi (x + h) - negativeLaplacePsi x -
+          deriv negativeLaplacePsi x * h| ≤ C * h ^ 2 := by
+  rcases exists_bound_abs_secondDeriv_negativeLaplacePsi with ⟨C, hC0, hC⟩
+  refine ⟨C, hC0, ?_⟩
+  intro x h
+  by_cases hh : h = 0
+  · subst h
+    simp
+  have hx : x ≠ x + h := by
+    intro heq
+    apply hh
+    linarith
+  have hsmooth : ContDiffOn ℝ (1 + 1) negativeLaplacePsi (uIcc x (x + h)) :=
+    contDiff_negativeLaplacePsi.contDiffOn.of_le (by norm_num)
+  obtain ⟨y, hy, hrem⟩ :=
+    taylor_mean_remainder_lagrange_iteratedDeriv hx hsmooth
+  have hu : UniqueDiffOn ℝ (uIcc x (x + h)) := uniqueDiffOn_Icc (by grind)
+  have hxmem : x ∈ uIcc x (x + h) := left_mem_uIcc
+  have hfirst :
+      iteratedDerivWithin 1 negativeLaplacePsi (uIcc x (x + h)) x =
+        deriv negativeLaplacePsi x := by
+    rw [iteratedDerivWithin_eq_iteratedDeriv hu
+      (contDiff_negativeLaplacePsi.contDiffAt.of_le (by norm_num)) hxmem]
+    simp [iteratedDeriv_succ]
+  have htaylor :
+      taylorWithinEval negativeLaplacePsi 1 (uIcc x (x + h)) x (x + h) =
+        negativeLaplacePsi x + deriv negativeLaplacePsi x * h := by
+    rw [show (1 : ℕ) = 0 + 1 by norm_num, taylorWithinEval_succ,
+      taylor_within_zero_eval, hfirst]
+    simp
+    ring
+  have hsecond :
+      iteratedDeriv 2 negativeLaplacePsi y =
+        deriv (deriv negativeLaplacePsi) y := by
+    simp [iteratedDeriv_succ]
+  rw [htaylor, hsecond, show x + h - x = h by ring] at hrem
+  have habs := congrArg abs hrem
+  rw [abs_div, abs_mul, abs_pow] at habs
+  norm_num at habs
+  rw [show negativeLaplacePsi (x + h) - negativeLaplacePsi x -
+      deriv negativeLaplacePsi x * h =
+        negativeLaplacePsi (x + h) -
+          (negativeLaplacePsi x + deriv negativeLaplacePsi x * h) by ring,
+    habs]
+  have hbound : |deriv (deriv negativeLaplacePsi) y| ≤ C := hC y
+  have hh2 : 0 ≤ h ^ 2 := sq_nonneg h
+  calc
+    |deriv (deriv negativeLaplacePsi) y| * h ^ 2 / 2 ≤
+        C * h ^ 2 / 2 := by gcongr
+    _ ≤ C * h ^ 2 := by
+      nlinarith
 
 end Fabius
