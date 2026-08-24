@@ -6953,4 +6953,1415 @@ lemma evenTrace_middle_case_impossible {n : Nat} {gamma : List Nat}
     (occursLeftOf_trans hnodup hl2BeforeL3 hl3BeforeTarget) htBeforeL2
   exact (occursLeftOf_asymm hnodup hcycle) hcycle
 
+/-- The largest even integer at most `n`. -/
+def reflectedActiveAmbient (n : Nat) : Nat :=
+  2 * (n / 2)
+
+/-- Reflection in the odd center immediately above `reflectedActiveAmbient n`.
+This swaps parity whether `n` is even or odd. -/
+def activeReflection (n x : Nat) : Nat :=
+  reflectedActiveAmbient n + 1 - x
+
+/-- The active odd list, oriented from its boundary endpoint. -/
+def oddBoundaryActiveList (n : Nat) (gamma : List Nat) : List Nat :=
+  epilogue n (oddTrace gamma)
+
+/-- The active even list, oriented from its boundary endpoint. -/
+def evenBoundaryActiveList (n : Nat) (gamma : List Nat) : List Nat :=
+  prologue n (evenTrace gamma)
+
+/-- The even active list reflected into the odd, lower-half role. -/
+def reflectedOddActiveList (n : Nat) (gamma : List Nat) : List Nat :=
+  (evenBoundaryActiveList n gamma).map (activeReflection n)
+
+/-- The odd active list reflected into the even, upper-half role. -/
+def reflectedEvenActiveList (n : Nat) (gamma : List Nat) : List Nat :=
+  (oddBoundaryActiveList n gamma).map (activeReflection n)
+
+lemma reflectedActiveAmbient_le (n : Nat) : reflectedActiveAmbient n ≤ n := by
+  simp only [reflectedActiveAmbient]
+  omega
+
+lemma reflectedActiveAmbient_eq_self_or_pred (n : Nat) :
+    reflectedActiveAmbient n = n ∨ reflectedActiveAmbient n + 1 = n := by
+  simp only [reflectedActiveAmbient]
+  omega
+
+lemma activeReflection_involutive_of_mem_segment {n x : Nat}
+    (hx : x ∈ segment (reflectedActiveAmbient n)) :
+    activeReflection n (activeReflection n x) = x := by
+  simp only [segment, Finset.mem_Icc] at hx
+  simp only [activeReflection]
+  omega
+
+lemma activeReflection_injective_on_segment (n : Nat) :
+    Set.InjOn (activeReflection n) (segment (reflectedActiveAmbient n)) := by
+  intro x hx y hy hxy
+  change x ∈ segment (reflectedActiveAmbient n) at hx
+  change y ∈ segment (reflectedActiveAmbient n) at hy
+  simp only [segment, Finset.mem_Icc] at hx hy
+  simp only [activeReflection] at hxy
+  omega
+
+lemma activeReflection_of_even_upper {n y : Nat}
+    (hyUpper : y ∈ upperHalf n) (hyEven : Even y) :
+    activeReflection n y ∈ lowerHalf (reflectedActiveAmbient n) ∧
+      Odd (activeReflection n y) := by
+  rcases hyEven with ⟨k, hk⟩
+  simp only [upperHalf, lowerHalf, Finset.mem_Icc] at hyUpper ⊢
+  simp only [activeReflection, reflectedActiveAmbient]
+  constructor
+  · constructor <;> omega
+  · refine ⟨n / 2 - k, ?_⟩
+    omega
+
+lemma activeReflection_of_odd_lower {n x : Nat}
+    (hxLower : x ∈ lowerHalf n) (hxOdd : Odd x) :
+    activeReflection n x ∈ upperHalf (reflectedActiveAmbient n) ∧
+      Even (activeReflection n x) := by
+  rcases hxOdd with ⟨k, hk⟩
+  simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxLower ⊢
+  simp only [activeReflection, reflectedActiveAmbient]
+  constructor
+  · constructor <;> omega
+  · refine ⟨n / 2 - k, ?_⟩
+    omega
+
+lemma activeReflection_separated {n x y : Nat}
+    (hxLower : x ∈ lowerHalf n) (hxOdd : Odd x)
+    (hyUpper : y ∈ upperHalf n) (hyEven : Even y)
+    (hxy : 2 * x ≤ y) (hreflection : n < 2 * y - x) :
+    2 * activeReflection n y ≤ activeReflection n x ∧
+      reflectedActiveAmbient n <
+        2 * activeReflection n x - activeReflection n y := by
+  have hxData := activeReflection_of_odd_lower hxLower hxOdd
+  have hyData := activeReflection_of_even_upper hyUpper hyEven
+  simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxLower hyUpper
+  simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxData hyData
+  simp only [activeReflection, reflectedActiveAmbient] at *
+  constructor <;> omega
+
+/-- At the original ambient `n`, reflected strict separation can fail only in
+the odd-ambient equality case `y = 2x`. -/
+lemma activeReflection_originalAmbient_separation {n x y : Nat}
+    (hxLower : x ∈ lowerHalf n) (hxOdd : Odd x)
+    (hyUpper : y ∈ upperHalf n) (hyEven : Even y)
+    (hxy : 2 * x ≤ y) :
+    n ≤ 2 * activeReflection n x - activeReflection n y ∧
+      (n < 2 * activeReflection n x - activeReflection n y ↔
+        Even n ∨ 2 * x < y) := by
+  have hxData := activeReflection_of_odd_lower hxLower hxOdd
+  have hyData := activeReflection_of_even_upper hyUpper hyEven
+  rcases Nat.even_or_odd n with hnEven | hnOdd
+  · rcases hnEven with ⟨k, hk⟩
+    simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxLower hyUpper
+    simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxData hyData
+    simp only [activeReflection, reflectedActiveAmbient]
+    constructor
+    · omega
+    · constructor
+      · exact fun _ => Or.inl ⟨k, hk⟩
+      · intro _
+        omega
+  · rcases hnOdd with ⟨k, hk⟩
+    have hnNotEven : ¬ Even n := Nat.not_even_iff_odd.mpr ⟨k, hk⟩
+    simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxLower hyUpper
+    simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hxData hyData
+    simp only [activeReflection, reflectedActiveAmbient]
+    constructor
+    · omega
+    · constructor
+      · intro hstrict
+        exact Or.inr (by omega)
+      · rintro (heven | hstrict)
+        · exact False.elim (hnNotEven heven)
+        · omega
+
+lemma activeReflection_originalAmbient_dichotomy {n x y : Nat}
+    (hxLower : x ∈ lowerHalf n) (hxOdd : Odd x)
+    (hyUpper : y ∈ upperHalf n) (hyEven : Even y)
+    (hxy : 2 * x ≤ y) :
+    n < 2 * activeReflection n x - activeReflection n y ∨
+      (Odd n ∧ y = 2 * x) := by
+  have hcharacterization := activeReflection_originalAmbient_separation
+    hxLower hxOdd hyUpper hyEven hxy
+  by_cases hstrict : n < 2 * activeReflection n x - activeReflection n y
+  · exact Or.inl hstrict
+  · right
+    have hnotEven : ¬ Even n := by
+      intro hnEven
+      exact hstrict (hcharacterization.2.2 (Or.inl hnEven))
+    have hnotSourceStrict : ¬ 2 * x < y := by
+      intro hsource
+      exact hstrict (hcharacterization.2.2 (Or.inr hsource))
+    exact ⟨Nat.not_even_iff_odd.mp hnotEven, by omega⟩
+
+lemma oddBoundaryActiveList_length (n : Nat) (gamma : List Nat) :
+    (oddBoundaryActiveList n gamma).length =
+      (epilogue n (oddTrace gamma)).length := rfl
+
+lemma evenBoundaryActiveList_length (n : Nat) (gamma : List Nat) :
+    (evenBoundaryActiveList n gamma).length =
+      (prologue n (evenTrace gamma)).length := rfl
+
+lemma reflectedOddActiveList_length (n : Nat) (gamma : List Nat) :
+    (reflectedOddActiveList n gamma).length =
+      (prologue n (evenTrace gamma)).length := by
+  simp [reflectedOddActiveList, evenBoundaryActiveList]
+
+lemma reflectedEvenActiveList_length (n : Nat) (gamma : List Nat) :
+    (reflectedEvenActiveList n gamma).length =
+      (epilogue n (oddTrace gamma)).length := by
+  simp [reflectedEvenActiveList, oddBoundaryActiveList]
+
+/-- The list-level data used by the numeric part of the active-block
+argument.  It deliberately does not assert that the lists arise as traces of
+a reflected full `Theta_12` word. -/
+structure BoundaryActiveListProfile (N : Nat) (oddList evenList : List Nat) : Prop where
+  oddNodup : oddList.Nodup
+  evenNodup : evenList.Nodup
+  oddLower : ∀ x ∈ oddList, x ∈ lowerHalf N
+  evenUpper : ∀ y ∈ evenList, y ∈ upperHalf N
+  oddParity : ∀ x ∈ oddList, Odd x
+  evenParity : ∀ y ∈ evenList, Even y
+  separated : ∀ x ∈ oddList, ∀ y ∈ evenList,
+    2 * x ≤ y ∧ N < 2 * y - x
+
+lemma oddBoundaryActiveList_nodup {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) :
+    (oddBoundaryActiveList n gamma).Nodup := by
+  have hactive := oddActiveBlock_nodup hgamma
+  simpa [oddBoundaryActiveList, oddActiveBlock] using hactive
+
+lemma evenBoundaryActiveList_nodup {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) :
+    (evenBoundaryActiveList n gamma).Nodup := by
+  simpa [evenBoundaryActiveList, evenActiveBlock] using
+    evenActiveBlock_nodup hgamma
+
+lemma oddBoundaryActiveList_mem_lowerHalf {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ oddBoundaryActiveList n gamma, x ∈ lowerHalf n := by
+  rcases hstanding.2 with ⟨b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  intro x hx
+  have hstart : StartsWith (reversal (oddTrace gamma)) b1 :=
+    startsWith_reversal_of_endsWith hbEnd
+  apply mem_lowerHalf_of_mem_prologue hstart hbLower
+  simpa [oddBoundaryActiveList, epilogue] using hx
+
+lemma evenBoundaryActiveList_mem_upperHalf {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ y ∈ evenBoundaryActiveList n gamma, y ∈ upperHalf n := by
+  rcases hstanding.2 with ⟨b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  intro y hy
+  apply mem_upperHalf_of_mem_prologue hcStart hcUpper
+  simpa [evenBoundaryActiveList] using hy
+
+lemma oddBoundaryActiveList_odd {n : Nat} {gamma : List Nat} {x : Nat}
+    (hx : x ∈ oddBoundaryActiveList n gamma) : Odd x := by
+  have hxActive : x ∈ oddActiveBlock n (oddTrace gamma) := by
+    simpa [oddBoundaryActiveList, oddActiveBlock] using hx
+  exact of_decide_eq_true
+    (List.mem_filter.mp (oddActiveBlock_mem_oddTrace hxActive)).2
+
+lemma evenBoundaryActiveList_even {n : Nat} {gamma : List Nat} {y : Nat}
+    (hy : y ∈ evenBoundaryActiveList n gamma) : Even y := by
+  have hyActive : y ∈ evenActiveBlock n (evenTrace gamma) := by
+    simpa [evenBoundaryActiveList, evenActiveBlock] using hy
+  exact of_decide_eq_true
+    (List.mem_filter.mp (evenActiveBlock_mem_evenTrace hyActive)).2
+
+lemma oddBoundaryActiveList_mem_oddActiveBlock {n : Nat} {gamma : List Nat}
+    {x : Nat} (hx : x ∈ oddBoundaryActiveList n gamma) :
+    x ∈ oddActiveBlock n (oddTrace gamma) := by
+  simpa [oddBoundaryActiveList, oddActiveBlock] using hx
+
+lemma evenBoundaryActiveList_mem_evenActiveBlock {n : Nat} {gamma : List Nat}
+    {y : Nat} (hy : y ∈ evenBoundaryActiveList n gamma) :
+    y ∈ evenActiveBlock n (evenTrace gamma) := by
+  simpa [evenBoundaryActiveList, evenActiveBlock] using hy
+
+lemma activeReflection_source_even_mem_segment {n y : Nat}
+    (hyUpper : y ∈ upperHalf n) (hyEven : Even y) :
+    y ∈ segment (reflectedActiveAmbient n) := by
+  rcases hyEven with ⟨k, hk⟩
+  simp only [upperHalf, segment, Finset.mem_Icc] at hyUpper ⊢
+  simp only [reflectedActiveAmbient]
+  omega
+
+lemma activeReflection_source_odd_mem_segment {n x : Nat}
+    (hxLower : x ∈ lowerHalf n) :
+    x ∈ segment (reflectedActiveAmbient n) := by
+  simp only [lowerHalf, segment, Finset.mem_Icc] at hxLower ⊢
+  simp only [reflectedActiveAmbient]
+  omega
+
+lemma activeReflection_modEq {n m x y : Nat}
+    (hx : x ∈ segment (reflectedActiveAmbient n))
+    (hy : y ∈ segment (reflectedActiveAmbient n))
+    (hxy : Nat.ModEq m x y) :
+    Nat.ModEq m (activeReflection n x) (activeReflection n y) := by
+  have hxBound : x ≤ reflectedActiveAmbient n + 1 := by
+    simp only [segment, Finset.mem_Icc] at hx
+    omega
+  have hyBound : y ≤ reflectedActiveAmbient n + 1 := by
+    simp only [segment, Finset.mem_Icc] at hy
+    omega
+  exact Nat.ModEq.sub hxBound hyBound Nat.ModEq.rfl hxy
+
+lemma activeReflection_dist {n x y : Nat}
+    (hx : x ∈ segment (reflectedActiveAmbient n))
+    (hy : y ∈ segment (reflectedActiveAmbient n)) :
+    Nat.dist (activeReflection n x) (activeReflection n y) = Nat.dist x y := by
+  simp only [segment, Finset.mem_Icc] at hx hy
+  simp only [activeReflection]
+  unfold Nat.dist
+  omega
+
+lemma binaryCongruenceDegree_activeReflection {n x y : Nat}
+    (hx : x ∈ segment (reflectedActiveAmbient n))
+    (hy : y ∈ segment (reflectedActiveAmbient n)) :
+    binaryCongruenceDegree (activeReflection n x) (activeReflection n y) =
+      binaryCongruenceDegree x y := by
+  unfold binaryCongruenceDegree
+  rw [activeReflection_dist hx hy]
+
+lemma PrefixCongruent.map_activeReflection {n k m : Nat} {word : List Nat}
+    (hword : ∀ x ∈ word, x ∈ segment (reflectedActiveAmbient n))
+    (hprefix : PrefixCongruent word k m) :
+    PrefixCongruent (word.map (activeReflection n)) k m := by
+  refine ⟨by simpa using hprefix.1, ?_⟩
+  intro i hi j hj x y hx hy
+  obtain ⟨x0, hx0, hxEq⟩ := exists_of_getElem?_map_eq_some hx
+  obtain ⟨y0, hy0, hyEq⟩ := exists_of_getElem?_map_eq_some hy
+  subst x
+  subst y
+  apply activeReflection_modEq (hword x0 (List.mem_iff_getElem?.mpr ⟨i, hx0⟩))
+    (hword y0 (List.mem_iff_getElem?.mpr ⟨j, hy0⟩))
+  exact hprefix.2 i hi j hj x0 y0 hx0 hy0
+
+lemma reflectedOddActiveList_nodup {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    (reflectedOddActiveList n gamma).Nodup := by
+  unfold reflectedOddActiveList
+  apply List.Nodup.map_on _ (evenBoundaryActiveList_nodup hstanding.1.1)
+  intro x hx y hy hxy
+  apply activeReflection_injective_on_segment n
+  · exact activeReflection_source_even_mem_segment
+      (evenBoundaryActiveList_mem_upperHalf hstanding x hx)
+      (evenBoundaryActiveList_even hx)
+  · exact activeReflection_source_even_mem_segment
+      (evenBoundaryActiveList_mem_upperHalf hstanding y hy)
+      (evenBoundaryActiveList_even hy)
+  · exact hxy
+
+lemma reflectedEvenActiveList_nodup {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    (reflectedEvenActiveList n gamma).Nodup := by
+  unfold reflectedEvenActiveList
+  apply List.Nodup.map_on _ (oddBoundaryActiveList_nodup hstanding.1.1)
+  intro x hx y hy hxy
+  apply activeReflection_injective_on_segment n
+  · exact activeReflection_source_odd_mem_segment
+      (oddBoundaryActiveList_mem_lowerHalf hstanding x hx)
+  · exact activeReflection_source_odd_mem_segment
+      (oddBoundaryActiveList_mem_lowerHalf hstanding y hy)
+  · exact hxy
+
+lemma reflectedOddActiveList_mem_lowerHalf {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ reflectedOddActiveList n gamma,
+      x ∈ lowerHalf (reflectedActiveAmbient n) := by
+  intro x hx
+  rcases List.mem_map.mp hx with ⟨y, hy, rfl⟩
+  exact (activeReflection_of_even_upper
+    (evenBoundaryActiveList_mem_upperHalf hstanding y hy)
+    (evenBoundaryActiveList_even hy)).1
+
+lemma reflectedEvenActiveList_mem_upperHalf {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ y ∈ reflectedEvenActiveList n gamma,
+      y ∈ upperHalf (reflectedActiveAmbient n) := by
+  intro y hy
+  rcases List.mem_map.mp hy with ⟨x, hx, rfl⟩
+  exact (activeReflection_of_odd_lower
+    (oddBoundaryActiveList_mem_lowerHalf hstanding x hx)
+    (oddBoundaryActiveList_odd hx)).1
+
+lemma reflectedOddActiveList_odd {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ reflectedOddActiveList n gamma, Odd x := by
+  intro x hx
+  rcases List.mem_map.mp hx with ⟨y, hy, rfl⟩
+  exact (activeReflection_of_even_upper
+    (evenBoundaryActiveList_mem_upperHalf hstanding y hy)
+    (evenBoundaryActiveList_even hy)).2
+
+lemma reflectedEvenActiveList_even {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ y ∈ reflectedEvenActiveList n gamma, Even y := by
+  intro y hy
+  rcases List.mem_map.mp hy with ⟨x, hx, rfl⟩
+  exact (activeReflection_of_odd_lower
+    (oddBoundaryActiveList_mem_lowerHalf hstanding x hx)
+    (oddBoundaryActiveList_odd hx)).2
+
+lemma reflectedActiveLists_separated {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ reflectedOddActiveList n gamma,
+      ∀ y ∈ reflectedEvenActiveList n gamma,
+        2 * x ≤ y ∧
+          reflectedActiveAmbient n < 2 * y - x := by
+  intro reflectedOdd hreflectedOdd reflectedEven hreflectedEven
+  rcases List.mem_map.mp hreflectedOdd with ⟨evenSource, hevenSource, rfl⟩
+  rcases List.mem_map.mp hreflectedEven with ⟨oddSource, hoddSource, rfl⟩
+  have hsource := activeBlocks_separated hstanding oddSource
+    (oddBoundaryActiveList_mem_oddActiveBlock hoddSource) evenSource
+    (evenBoundaryActiveList_mem_evenActiveBlock hevenSource)
+  exact activeReflection_separated
+    (oddBoundaryActiveList_mem_lowerHalf hstanding oddSource hoddSource)
+    (oddBoundaryActiveList_odd hoddSource)
+    (evenBoundaryActiveList_mem_upperHalf hstanding evenSource hevenSource)
+    (evenBoundaryActiveList_even hevenSource) hsource.1 hsource.2
+
+lemma reflectedActivePair_originalAmbient_separation
+    {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    {oddSource evenSource : Nat}
+    (hodd : oddSource ∈ oddBoundaryActiveList n gamma)
+    (heven : evenSource ∈ evenBoundaryActiveList n gamma) :
+    n ≤ 2 * activeReflection n oddSource - activeReflection n evenSource ∧
+      (n < 2 * activeReflection n oddSource - activeReflection n evenSource ↔
+        Even n ∨ 2 * oddSource < evenSource) := by
+  have hsource := activeBlocks_separated hstanding oddSource
+    (oddBoundaryActiveList_mem_oddActiveBlock hodd) evenSource
+    (evenBoundaryActiveList_mem_evenActiveBlock heven)
+  exact activeReflection_originalAmbient_separation
+    (oddBoundaryActiveList_mem_lowerHalf hstanding oddSource hodd)
+    (oddBoundaryActiveList_odd hodd)
+    (evenBoundaryActiveList_mem_upperHalf hstanding evenSource heven)
+    (evenBoundaryActiveList_even heven) hsource.1
+
+lemma reflectedActivePair_originalAmbient_dichotomy
+    {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    {oddSource evenSource : Nat}
+    (hodd : oddSource ∈ oddBoundaryActiveList n gamma)
+    (heven : evenSource ∈ evenBoundaryActiveList n gamma) :
+    n < 2 * activeReflection n oddSource - activeReflection n evenSource ∨
+      (Odd n ∧ evenSource = 2 * oddSource) := by
+  have hsource := activeBlocks_separated hstanding oddSource
+    (oddBoundaryActiveList_mem_oddActiveBlock hodd) evenSource
+    (evenBoundaryActiveList_mem_evenActiveBlock heven)
+  exact activeReflection_originalAmbient_dichotomy
+    (oddBoundaryActiveList_mem_lowerHalf hstanding oddSource hodd)
+    (oddBoundaryActiveList_odd hodd)
+    (evenBoundaryActiveList_mem_upperHalf hstanding evenSource heven)
+    (evenBoundaryActiveList_even heven) hsource.1
+
+/-- The reflected active lists satisfy exactly the parity, half, uniqueness,
+and separation data used by the numeric active-block argument. -/
+theorem reflectedActiveLists_profile {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    BoundaryActiveListProfile (reflectedActiveAmbient n)
+      (reflectedOddActiveList n gamma) (reflectedEvenActiveList n gamma) := by
+  exact ⟨reflectedOddActiveList_nodup hstanding,
+    reflectedEvenActiveList_nodup hstanding,
+    reflectedOddActiveList_mem_lowerHalf hstanding,
+    reflectedEvenActiveList_mem_upperHalf hstanding,
+    reflectedOddActiveList_odd hstanding,
+    reflectedEvenActiveList_even hstanding,
+    reflectedActiveLists_separated hstanding⟩
+
+lemma reflectedOddActiveList_prefixCongruent {n k m : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hprefix : PrefixCongruent (evenBoundaryActiveList n gamma) k m) :
+    PrefixCongruent (reflectedOddActiveList n gamma) k m := by
+  unfold reflectedOddActiveList
+  apply hprefix.map_activeReflection
+  intro y hy
+  exact activeReflection_source_even_mem_segment
+    (evenBoundaryActiveList_mem_upperHalf hstanding y hy)
+    (evenBoundaryActiveList_even hy)
+
+lemma reflectedEvenActiveList_prefixCongruent {n k m : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hprefix : PrefixCongruent (oddBoundaryActiveList n gamma) k m) :
+    PrefixCongruent (reflectedEvenActiveList n gamma) k m := by
+  unfold reflectedEvenActiveList
+  apply hprefix.map_activeReflection
+  intro x hx
+  exact activeReflection_source_odd_mem_segment
+    (oddBoundaryActiveList_mem_lowerHalf hstanding x hx)
+
+lemma evenBoundaryActiveList_prefixCongruent_of_evenTrace
+    {n k m : Nat} {gamma : List Nat}
+    (hk : k ≤ (prologue n (evenTrace gamma)).length)
+    (htrace : PrefixCongruent (evenTrace gamma) k m) :
+    PrefixCongruent (evenBoundaryActiveList n gamma) k m := by
+  apply PrefixCongruent.of_prefix (prologue_prefix n (evenTrace gamma)) htrace
+  simpa [evenBoundaryActiveList] using hk
+
+lemma oddBoundaryActiveList_prefixCongruent_of_reversal
+    {n k m : Nat} {gamma : List Nat}
+    (hk : k ≤ (epilogue n (oddTrace gamma)).length)
+    (htrace : PrefixCongruent (reversal (oddTrace gamma)) k m) :
+    PrefixCongruent (oddBoundaryActiveList n gamma) k m := by
+  change PrefixCongruent (prologue n (reversal (oddTrace gamma))) k m
+  apply PrefixCongruent.of_prefix
+    (prologue_prefix n (reversal (oddTrace gamma))) htrace
+  simpa [epilogue] using hk
+
+lemma reflectedOddActiveList_prefixCongruent_of_evenTrace
+    {n k m : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hk : k ≤ (prologue n (evenTrace gamma)).length)
+    (htrace : PrefixCongruent (evenTrace gamma) k m) :
+    PrefixCongruent (reflectedOddActiveList n gamma) k m :=
+  reflectedOddActiveList_prefixCongruent hstanding
+    (evenBoundaryActiveList_prefixCongruent_of_evenTrace hk htrace)
+
+lemma reflectedEvenActiveList_prefixCongruent_of_reversal
+    {n k m : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hk : k ≤ (epilogue n (oddTrace gamma)).length)
+    (htrace : PrefixCongruent (reversal (oddTrace gamma)) k m) :
+    PrefixCongruent (reflectedEvenActiveList n gamma) k m :=
+  reflectedEvenActiveList_prefixCongruent hstanding
+    (oddBoundaryActiveList_prefixCongruent_of_reversal hk htrace)
+
+lemma startsWith_map_activeReflection {n : Nat} {word : List Nat} {x : Nat}
+    (h : StartsWith word x) :
+    StartsWith (word.map (activeReflection n)) (activeReflection n x) := by
+  unfold StartsWith at h ⊢
+  simp only [List.head?_map, h, Option.map_some]
+
+/-- Reflection swaps the two boundary endpoints while preserving their
+boundary-oriented list positions. -/
+lemma reflectedActiveLists_endpoints {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∃ b c : Nat,
+      EndsWith (oddTrace gamma) b ∧ StartsWith (evenTrace gamma) c ∧
+      StartsWith (reflectedOddActiveList n gamma) (activeReflection n c) ∧
+      StartsWith (reflectedEvenActiveList n gamma) (activeReflection n b) := by
+  rcases hstanding.2 with ⟨b, c, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  refine ⟨b, c, hbEnd, hcStart, ?_, ?_⟩
+  · apply startsWith_map_activeReflection
+    exact startsWith_prologue_of_startsWith hcStart
+  · apply startsWith_map_activeReflection
+    apply startsWith_prologue_of_startsWith
+    exact startsWith_reversal_of_endsWith hbEnd
+
+
+lemma coefficient_pos_of_modEq_le_of_ne {q b x d : Nat}
+    (hxb : x ≠ b)
+    (heq : b = x + (2 * q) * d) : 0 < d := by
+  by_contra hd
+  have : d = 0 := by omega
+  subst d
+  simp only [Nat.mul_zero, Nat.add_zero] at heq
+  exact hxb heq.symm
+
+lemma coefficient_ne_of_values_ne {q b x y dx dy : Nat}
+    (hx : b = x + (2 * q) * dx) (hy : b = y + (2 * q) * dy)
+    (hxy : x ≠ y) : dx ≠ dy := by
+  intro h
+  subst dy
+  exact hxy (by omega)
+
+lemma values_ne_of_getElem?_ne_index {word : List Nat} {i j x y : Nat}
+    (hword : word.Nodup) (hi : word[i]? = some x) (hj : word[j]? = some y)
+    (hij : i ≠ j) : x ≠ y := by
+  intro hxy
+  subst y
+  exact hij (getElem?_index_unique_of_nodup hword hi hj)
+
+lemma six_mul_lt_of_three_distinct_predecessors {q b x₁ x₂ x₃ : Nat}
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b) : 6 * q < b := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hlarge : 3 <= d₁ ∨ 3 <= d₂ ∨ 3 <= d₃ := by omega
+  rcases hlarge with hlarge | hlarge | hlarge <;> nlinarith
+
+lemma first_predecessor_among_three {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 8 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b) :
+    x₁ = b - 2 * q ∨ x₂ = b - 2 * q ∨ x₃ = b - 2 * q := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 3 := by nlinarith
+  have hd₂Le : d₂ <= 3 := by nlinarith
+  have hd₃Le : d₃ <= 3 := by nlinarith
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 1 ∨ d₂ = 1 ∨ d₃ = 1 := by omega
+  rcases hcover with h | h | h
+  · left
+    subst d₁
+    omega
+  · right; left
+    subst d₂
+    omega
+  · right; right
+    subst d₃
+    omega
+
+lemma third_predecessor_among_three_without_first {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 10 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b)
+    (hnotFirst₁ : x₁ ≠ b - 2 * q)
+    (hnotFirst₂ : x₂ ≠ b - 2 * q)
+    (hnotFirst₃ : x₃ ≠ b - 2 * q) :
+    x₁ = b - 6 * q ∨ x₂ = b - 6 * q ∨ x₃ = b - 6 * q := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 4 := by nlinarith
+  have hd₂Le : d₂ <= 4 := by nlinarith
+  have hd₃Le : d₃ <= 4 := by nlinarith
+  have hd₁NeOne : d₁ ≠ 1 := by intro h; subst d₁; apply hnotFirst₁; omega
+  have hd₂NeOne : d₂ ≠ 1 := by intro h; subst d₂; apply hnotFirst₂; omega
+  have hd₃NeOne : d₃ ≠ 1 := by intro h; subst d₃; apply hnotFirst₃; omega
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 3 ∨ d₂ = 3 ∨ d₃ = 3 := by omega
+  rcases hcover with h | h | h
+  · left; subst d₁; omega
+  · right; left; subst d₂; omega
+  · right; right; subst d₃; omega
+
+lemma third_or_fifth_predecessor_among_three_without_first {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 12 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b)
+    (hnotFirst₁ : x₁ ≠ b - 2 * q)
+    (hnotFirst₂ : x₂ ≠ b - 2 * q)
+    (hnotFirst₃ : x₃ ≠ b - 2 * q) :
+    (x₁ = b - 6 * q ∨ x₂ = b - 6 * q ∨ x₃ = b - 6 * q) ∨
+      (x₁ = b - 10 * q ∨ x₂ = b - 10 * q ∨ x₃ = b - 10 * q) := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 5 := by nlinarith
+  have hd₂Le : d₂ <= 5 := by nlinarith
+  have hd₃Le : d₃ <= 5 := by nlinarith
+  have hd₁NeOne : d₁ ≠ 1 := by intro h; subst d₁; apply hnotFirst₁; omega
+  have hd₂NeOne : d₂ ≠ 1 := by intro h; subst d₂; apply hnotFirst₂; omega
+  have hd₃NeOne : d₃ ≠ 1 := by intro h; subst d₃; apply hnotFirst₃; omega
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 3 ∨ d₂ = 3 ∨ d₃ = 3 ∨ d₁ = 5 ∨ d₂ = 5 ∨ d₃ = 5 := by
+    omega
+  rcases hcover with h | h | h | h | h | h
+  · left; left; subst d₁; omega
+  · left; right; left; subst d₂; omega
+  · left; right; right; subst d₃; omega
+  · right; left; subst d₁; omega
+  · right; right; left; subst d₂; omega
+  · right; right; right; subst d₃; omega
+
+/-- The order-theoretic core of the odd-end forcing step common to the three
+numeric cases in Theorem 2.6. -/
+lemma ambient_lt_of_oddEpilogue_forcing {n : Nat} {gamma : List Nat}
+    {b x y z : Nat}
+    (hgamma : IsTheta n gamma)
+    (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n)
+    (hbOdd : Odd b) (hxOdd : Odd x) (hyOdd : Odd y) (hzOdd : Odd z)
+    (hx : x ∈ epilogue n (oddTrace gamma))
+    (hmean : x + y = 2 * z)
+    (hbZ : b ≠ z) (hbX : b ≠ x)
+    (hdegree : binaryCongruenceDegree ((b + 1) / 2) ((x + 1) / 2) <
+      binaryCongruenceDegree ((b + 1) / 2) ((z + 1) / 2))
+    (hyPos : 0 < y) (hzPos : 0 < z) (hzLeY : z <= y) (hbLtZ : b < z) :
+    n < y := by
+  have hxTrace : x ∈ oddTrace gamma := by
+    apply oddActiveBlock_mem_oddTrace (n := n)
+    simpa only [oddActiveBlock, List.mem_reverse] using hx
+  have hxGamma : x ∈ gamma := (List.mem_filter.mp hxTrace).1
+  have hxSegment := mem_segment_of_mem_of_isTheta hgamma hxGamma
+  by_contra hnot
+  have hySegment : y ∈ segment n := by
+    simp only [segment, Finset.mem_Icc]
+    omega
+  have hzSegment : z ∈ segment n := by
+    simp only [segment, Finset.mem_Icc] at hySegment ⊢
+    omega
+  have hzEpilogue := oddEpilogue_forced_middle hgamma hbEnd hxSegment hySegment
+    hzSegment hbOdd hxOdd hyOdd hzOdd hmean hbZ hbX hdegree hx
+  have hzLe := oddEpilogue_entry_le_last hgamma hbEnd hbLower hzEpilogue
+  omega
+
+lemma ambient_lt_b_add_ten_of_sub_two_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbTwo : 2 * dyadicQ n < b)
+    (hx : b - 2 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 10 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 2 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - q, by omega⟩
+  have hyOdd : Odd (b + 10 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 5 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 2 * q + 1) / 2 = (b + 1) / 2 - q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 2 * q + 1) / 2) = q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorQ : q.factorization 2 = Nat.log 2 n - 4 := by
+    exact Nat.factorization_pow_self Nat.prime_two
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorQ, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma ambient_lt_b_add_fourteen_of_sub_six_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbSix : 6 * dyadicQ n < b)
+    (hx : b - 6 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 14 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 6 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - 3 * q, by omega⟩
+  have hyOdd : Odd (b + 14 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 7 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 6 * q + 1) / 2 = (b + 1) / 2 - 3 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 6 * q + 1) / 2) = 3 * q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorThree : (3 * q).factorization 2 = Nat.log 2 n - 4 := by
+    simpa only [q, dyadicQ] using factorization_three_mul_pow_two (Nat.log 2 n - 4)
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorThree, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma ambient_lt_b_add_eighteen_of_sub_ten_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbTen : 10 * dyadicQ n < b)
+    (hx : b - 10 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 18 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 10 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - 5 * q, by omega⟩
+  have hyOdd : Odd (b + 18 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 9 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 10 * q + 1) / 2 = (b + 1) / 2 - 5 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 10 * q + 1) / 2) = 5 * q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorFive : (5 * q).factorization 2 = Nat.log 2 n - 4 := by
+    simpa only [q, dyadicQ] using factorization_five_mul_pow_two (Nat.log 2 n - 4)
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorFive, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma evenTrace_prefix_three_mod_four_of_twenty_two {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) (hSixteen : 16 * dyadicQ n <= n)
+    (hTwentyTwo : 22 * dyadicQ n <= n) :
+    PrefixCongruent (evenTrace gamma) 3 (4 * dyadicQ n) := by
+  have hlog := log_two_four_le_of_dyadic_threshold hSixteen
+  have hhalf : 11 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+    (k := 3) (r := 11) (by nlinarith [dyadicQ_pos n]) hgamma hhalf (by norm_num)
+  rw [dyadic_modulus_two_of_log_four hlog] at h
+  convert h using 1 <;> omega
+
+lemma evenTrace_prefix_two_mod_eight_of_twenty_eight {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) (hSixteen : 16 * dyadicQ n <= n)
+    (hTwentyEight : 28 * dyadicQ n <= n) :
+    PrefixCongruent (evenTrace gamma) 2 (8 * dyadicQ n) := by
+  have hlog := log_two_four_le_of_dyadic_threshold hSixteen
+  have hhalf : 14 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+    (k := 2) (r := 7) (by nlinarith [dyadicQ_pos n]) hgamma (by
+      rw [dyadic_denominator_two_of_log_four hlog]
+      nlinarith) (by norm_num)
+  rw [dyadic_modulus_four_of_log_four hlog] at h
+  convert h using 1 <;> omega
+
+/-- The boundary-oriented entries and congruence data used by the one-sided
+numeric argument in Sharma's Theorem 2.6. -/
+structure OneSidedActiveEntries (n : Nat) (gamma : List Nat)
+    (b1 b2 b3 b4 c1 c2 c3 : Nat) : Prop where
+  hbEnd : EndsWith (oddTrace gamma) b1
+  hcStart : StartsWith (evenTrace gamma) c1
+  hcommute : Commute n b1 c1
+  hb1Lower : b1 ∈ lowerHalf n
+  hc1Upper : c1 ∈ upperHalf n
+  hb1Get : (oddBoundaryActiveList n gamma)[0]? = some b1
+  hb2Get : (oddBoundaryActiveList n gamma)[1]? = some b2
+  hb3Get : (oddBoundaryActiveList n gamma)[2]? = some b3
+  hb4Get : (oddBoundaryActiveList n gamma)[3]? = some b4
+  hc1Get : (evenBoundaryActiveList n gamma)[0]? = some c1
+  hc2Get : (evenBoundaryActiveList n gamma)[1]? = some c2
+  hc3Get : (evenBoundaryActiveList n gamma)[2]? = some c3
+  hc1TraceGet : (evenTrace gamma)[0]? = some c1
+  hc2TraceGet : (evenTrace gamma)[1]? = some c2
+  hc3TraceGet : (evenTrace gamma)[2]? = some c3
+  hb1Mem : b1 ∈ oddBoundaryActiveList n gamma
+  hb2Mem : b2 ∈ oddBoundaryActiveList n gamma
+  hb3Mem : b3 ∈ oddBoundaryActiveList n gamma
+  hb4Mem : b4 ∈ oddBoundaryActiveList n gamma
+  hc1Mem : c1 ∈ evenBoundaryActiveList n gamma
+  hc2Mem : c2 ∈ evenBoundaryActiveList n gamma
+  hc3Mem : c3 ∈ evenBoundaryActiveList n gamma
+  hb1Odd : Odd b1
+  hb2Odd : Odd b2
+  hb3Odd : Odd b3
+  hb4Odd : Odd b4
+  hc1Even : Even c1
+  hc2Even : Even c2
+  hc3Even : Even c3
+  hb1Segment : b1 ∈ segment n
+  hb2Segment : b2 ∈ segment n
+  hb3Segment : b3 ∈ segment n
+  hb4Segment : b4 ∈ segment n
+  hc1Segment : c1 ∈ segment n
+  hc2Segment : c2 ∈ segment n
+  hc3Segment : c3 ∈ segment n
+  hb12 : b1 ≠ b2
+  hb13 : b1 ≠ b3
+  hb14 : b1 ≠ b4
+  hb23 : b2 ≠ b3
+  hb24 : b2 ≠ b4
+  hb34 : b3 ≠ b4
+  hc12 : c1 ≠ c2
+  hc13 : c1 ≠ c3
+  hc23 : c2 ≠ c3
+  hb2Le : b2 ≤ b1
+  hb3Le : b3 ≤ b1
+  hb4Le : b4 ≤ b1
+  hc2Ge : c1 ≤ c2
+  hc3Ge : c1 ≤ c3
+  hseparated : 2 * b1 ≤ c1
+  hreflectionAbove : n < 2 * c1 - b1
+  hqPos : 0 < dyadicQ n
+  hthreshold : 16 * dyadicQ n ≤ n
+  hb2ModFour : Nat.ModEq (4 * dyadicQ n) b2 b1
+  hb2ModTwo : Nat.ModEq (2 * dyadicQ n) b2 b1
+  hb3ModTwo : Nat.ModEq (2 * dyadicQ n) b3 b1
+  hb4ModTwo : Nat.ModEq (2 * dyadicQ n) b4 b1
+  hc2ModFour : Nat.ModEq (4 * dyadicQ n) c1 c2
+  hc2ModTwo : Nat.ModEq (2 * dyadicQ n) c1 c2
+  hc3ModTwo : Nat.ModEq (2 * dyadicQ n) c1 c3
+
+/-- Extract the first four boundary-oriented odd entries and first three even
+entries from the long-active-list branch. -/
+theorem oneSidedActiveEntries_of_lengths {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hu : 4 ≤ (epilogue n (oddTrace gamma)).length)
+    (hv : 3 ≤ (prologue n (evenTrace gamma)).length) :
+    ∃ b1 b2 b3 b4 c1 c2 c3,
+      OneSidedActiveEntries n gamma b1 b2 b3 b4 c1 c2 c3 := by
+  let oddList := oddBoundaryActiveList n gamma
+  let evenList := evenBoundaryActiveList n gamma
+  have hoddLength : 4 ≤ oddList.length := by
+    simpa only [oddList, oddBoundaryActiveList_length] using hu
+  have hevenLength : 3 ≤ evenList.length := by
+    simpa only [evenList, evenBoundaryActiveList_length] using hv
+  rcases hstanding.2 with
+    ⟨b1, c1, hbEnd, hcStart, hcommute, hb1Lower, hc1Upper⟩
+  have hbStart : StartsWith oddList b1 := by
+    simp only [oddList, oddBoundaryActiveList, epilogue]
+    exact startsWith_prologue_of_startsWith
+      (startsWith_reversal_of_endsWith hbEnd)
+  have hcBoundaryStart : StartsWith evenList c1 := by
+    simp only [evenList, evenBoundaryActiveList]
+    exact startsWith_prologue_of_startsWith hcStart
+  have hb1Get : oddList[0]? = some b1 := by
+    rw [← List.head?_eq_getElem?]
+    exact hbStart
+  have hc1Get : evenList[0]? = some c1 := by
+    rw [← List.head?_eq_getElem?]
+    exact hcBoundaryStart
+  let b2 := oddList[1]'(by omega)
+  let b3 := oddList[2]'(by omega)
+  let b4 := oddList[3]'(by omega)
+  let c2 := evenList[1]'(by omega)
+  let c3 := evenList[2]'(by omega)
+  have hb2Get : oddList[1]? = some b2 := by
+    simpa only [b2] using List.getElem?_eq_getElem (l := oddList) (i := 1) (by omega)
+  have hb3Get : oddList[2]? = some b3 := by
+    simpa only [b3] using List.getElem?_eq_getElem (l := oddList) (i := 2) (by omega)
+  have hb4Get : oddList[3]? = some b4 := by
+    simpa only [b4] using List.getElem?_eq_getElem (l := oddList) (i := 3) (by omega)
+  have hc2Get : evenList[1]? = some c2 := by
+    simpa only [c2] using List.getElem?_eq_getElem (l := evenList) (i := 1) (by omega)
+  have hc3Get : evenList[2]? = some c3 := by
+    simpa only [c3] using List.getElem?_eq_getElem (l := evenList) (i := 2) (by omega)
+  have hb1Mem : b1 ∈ oddList := List.mem_iff_getElem?.mpr ⟨0, hb1Get⟩
+  have hb2Mem : b2 ∈ oddList := List.mem_iff_getElem?.mpr ⟨1, hb2Get⟩
+  have hb3Mem : b3 ∈ oddList := List.mem_iff_getElem?.mpr ⟨2, hb3Get⟩
+  have hb4Mem : b4 ∈ oddList := List.mem_iff_getElem?.mpr ⟨3, hb4Get⟩
+  have hc1Mem : c1 ∈ evenList := List.mem_iff_getElem?.mpr ⟨0, hc1Get⟩
+  have hc2Mem : c2 ∈ evenList := List.mem_iff_getElem?.mpr ⟨1, hc2Get⟩
+  have hc3Mem : c3 ∈ evenList := List.mem_iff_getElem?.mpr ⟨2, hc3Get⟩
+  have hoddNodup : oddList.Nodup := by
+    simpa only [oddList] using oddBoundaryActiveList_nodup hstanding.1.1
+  have hevenNodup : evenList.Nodup := by
+    simpa only [evenList] using evenBoundaryActiveList_nodup hstanding.1.1
+  have hb12 : b1 ≠ b2 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb2Get (by norm_num)
+  have hb13 : b1 ≠ b3 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb3Get (by norm_num)
+  have hb14 : b1 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb4Get (by norm_num)
+  have hb23 : b2 ≠ b3 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb2Get hb3Get (by norm_num)
+  have hb24 : b2 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb2Get hb4Get (by norm_num)
+  have hb34 : b3 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb3Get hb4Get (by norm_num)
+  have hc12 : c1 ≠ c2 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc1Get hc2Get (by norm_num)
+  have hc13 : c1 ≠ c3 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc1Get hc3Get (by norm_num)
+  have hc23 : c2 ≠ c3 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc2Get hc3Get (by norm_num)
+  have hb1Odd : Odd b1 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb1Mem)
+  have hb2Odd : Odd b2 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb2Mem)
+  have hb3Odd : Odd b3 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb3Mem)
+  have hb4Odd : Odd b4 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb4Mem)
+  have hc1Even : Even c1 := evenBoundaryActiveList_even (by simpa only [evenList] using hc1Mem)
+  have hc2Even : Even c2 := evenBoundaryActiveList_even (by simpa only [evenList] using hc2Mem)
+  have hc3Even : Even c3 := evenBoundaryActiveList_even (by simpa only [evenList] using hc3Mem)
+  have hoddGamma : ∀ x ∈ oddList, x ∈ gamma := by
+    intro x hx
+    have hxActive := oddBoundaryActiveList_mem_oddActiveBlock
+      (by simpa only [oddList] using hx)
+    exact (List.mem_filter.mp (oddActiveBlock_mem_oddTrace hxActive)).1
+  have hevenGamma : ∀ x ∈ evenList, x ∈ gamma := by
+    intro x hx
+    have hxActive := evenBoundaryActiveList_mem_evenActiveBlock
+      (by simpa only [evenList] using hx)
+    exact (List.mem_filter.mp (evenActiveBlock_mem_evenTrace hxActive)).1
+  have hb1Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b1 hb1Mem)
+  have hb2Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b2 hb2Mem)
+  have hb3Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b3 hb3Mem)
+  have hb4Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b4 hb4Mem)
+  have hc1Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c1 hc1Mem)
+  have hc2Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c2 hc2Mem)
+  have hc3Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c3 hc3Mem)
+  have hb2Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb2Mem)
+  have hb3Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb3Mem)
+  have hb4Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb4Mem)
+  have hc2Ge := evenPrologue_first_le_entry hstanding.1.1 hcStart hc1Upper (by
+    simpa only [evenList, evenBoundaryActiveList] using hc2Mem)
+  have hc3Ge := evenPrologue_first_le_entry hstanding.1.1 hcStart hc1Upper (by
+    simpa only [evenList, evenBoundaryActiveList] using hc3Mem)
+  have hseparation := activeBlocks_separated hstanding b1
+    (oddBoundaryActiveList_mem_oddActiveBlock (by simpa only [oddList] using hb1Mem)) c1
+    (evenBoundaryActiveList_mem_evenActiveBlock (by simpa only [evenList] using hc1Mem))
+  have hthreshold := sixteen_mul_dyadicQ_le
+    (sixteen_le_of_active_lengths hstanding hu hv)
+  have hpatterns := dyadic_pattern_sixteen hstanding.1.1 hthreshold
+  have hreversePatterns :=
+    dyadic_pattern_sixteen (isTheta_reversal hstanding.1.1) hthreshold
+  have hoddFourTrace :
+      PrefixCongruent (reversal (oddTrace gamma)) 2 (4 * dyadicQ n) := by
+    simpa only [oddTrace_reversal_eq] using hreversePatterns.2.1.1
+  have hoddTwoTrace :
+      PrefixCongruent (reversal (oddTrace gamma)) 4 (2 * dyadicQ n) := by
+    simpa only [oddTrace_reversal_eq] using hreversePatterns.2.1.2.1
+  have hoddFour : PrefixCongruent oddList 2 (4 * dyadicQ n) := by
+    simpa only [oddList] using
+      oddBoundaryActiveList_prefixCongruent_of_reversal (by omega) hoddFourTrace
+  have hoddTwo : PrefixCongruent oddList 4 (2 * dyadicQ n) := by
+    simpa only [oddList] using
+      oddBoundaryActiveList_prefixCongruent_of_reversal hu hoddTwoTrace
+  have hevenFour : PrefixCongruent evenList 2 (4 * dyadicQ n) := by
+    simpa only [evenList] using
+      evenBoundaryActiveList_prefixCongruent_of_evenTrace (by omega) hpatterns.2.2.1
+  have hevenTwo : PrefixCongruent evenList 3 (2 * dyadicQ n) := by
+    have htrace : PrefixCongruent (evenTrace gamma) 3 (2 * dyadicQ n) :=
+      PrefixCongruent.mono hpatterns.2.2.2.1 (by norm_num)
+    simpa only [evenList] using
+      evenBoundaryActiveList_prefixCongruent_of_evenTrace hv htrace
+  have hEvenPrefix : evenList <+: evenTrace gamma := by
+    simpa only [evenList, evenBoundaryActiveList] using prologue_prefix n (evenTrace gamma)
+  have hgetEvenTrace : ∀ (i x : Nat), i < evenList.length →
+      evenList[i]? = some x → (evenTrace gamma)[i]? = some x := by
+    intro i x hi hx
+    have hiTrace : i < (evenTrace gamma).length :=
+      hi.trans_le hEvenPrefix.length_le
+    calc
+      (evenTrace gamma)[i]? = some (evenTrace gamma)[i] :=
+        List.getElem?_eq_getElem hiTrace
+      _ = some evenList[i] := congrArg some (hEvenPrefix.getElem hi).symm
+      _ = some x := by simpa only [List.getElem?_eq_getElem hi] using hx
+  have hc1TraceGet : (evenTrace gamma)[0]? = some c1 :=
+    hgetEvenTrace 0 c1 (by omega) hc1Get
+  have hc2TraceGet : (evenTrace gamma)[1]? = some c2 :=
+    hgetEvenTrace 1 c2 (by omega) hc2Get
+  have hc3TraceGet : (evenTrace gamma)[2]? = some c3 :=
+    hgetEvenTrace 2 c3 (by omega) hc3Get
+  refine ⟨b1, b2, b3, b4, c1, c2, c3, ?_⟩
+  refine
+    { hbEnd := hbEnd
+      hcStart := hcStart
+      hcommute := hcommute
+      hb1Lower := hb1Lower
+      hc1Upper := hc1Upper
+      hb1Get := by simpa only [oddList] using hb1Get
+      hb2Get := by simpa only [oddList] using hb2Get
+      hb3Get := by simpa only [oddList] using hb3Get
+      hb4Get := by simpa only [oddList] using hb4Get
+      hc1Get := by simpa only [evenList] using hc1Get
+      hc2Get := by simpa only [evenList] using hc2Get
+      hc3Get := by simpa only [evenList] using hc3Get
+      hc1TraceGet := hc1TraceGet
+      hc2TraceGet := hc2TraceGet
+      hc3TraceGet := hc3TraceGet
+      hb1Mem := by simpa only [oddList] using hb1Mem
+      hb2Mem := by simpa only [oddList] using hb2Mem
+      hb3Mem := by simpa only [oddList] using hb3Mem
+      hb4Mem := by simpa only [oddList] using hb4Mem
+      hc1Mem := by simpa only [evenList] using hc1Mem
+      hc2Mem := by simpa only [evenList] using hc2Mem
+      hc3Mem := by simpa only [evenList] using hc3Mem
+      hb1Odd := hb1Odd
+      hb2Odd := hb2Odd
+      hb3Odd := hb3Odd
+      hb4Odd := hb4Odd
+      hc1Even := hc1Even
+      hc2Even := hc2Even
+      hc3Even := hc3Even
+      hb1Segment := hb1Segment
+      hb2Segment := hb2Segment
+      hb3Segment := hb3Segment
+      hb4Segment := hb4Segment
+      hc1Segment := hc1Segment
+      hc2Segment := hc2Segment
+      hc3Segment := hc3Segment
+      hb12 := hb12
+      hb13 := hb13
+      hb14 := hb14
+      hb23 := hb23
+      hb24 := hb24
+      hb34 := hb34
+      hc12 := hc12
+      hc13 := hc13
+      hc23 := hc23
+      hb2Le := hb2Le
+      hb3Le := hb3Le
+      hb4Le := hb4Le
+      hc2Ge := hc2Ge
+      hc3Ge := hc3Ge
+      hseparated := hseparation.1
+      hreflectionAbove := hseparation.2
+      hqPos := dyadicQ_pos n
+      hthreshold := hthreshold
+      hb2ModFour := (hoddFour.2 0 (by norm_num) 1 (by norm_num)
+        b1 b2 hb1Get hb2Get).symm
+      hb2ModTwo := (hoddTwo.2 0 (by norm_num) 1 (by norm_num)
+        b1 b2 hb1Get hb2Get).symm
+      hb3ModTwo := (hoddTwo.2 0 (by norm_num) 2 (by norm_num)
+        b1 b3 hb1Get hb3Get).symm
+      hb4ModTwo := (hoddTwo.2 0 (by norm_num) 3 (by norm_num)
+        b1 b4 hb1Get hb4Get).symm
+      hc2ModFour := hevenFour.2 0 (by norm_num) 1 (by norm_num)
+        c1 c2 hc1Get hc2Get
+      hc2ModTwo := hevenTwo.2 0 (by norm_num) 1 (by norm_num)
+        c1 c2 hc1Get hc2Get
+      hc3ModTwo := hevenTwo.2 0 (by norm_num) 2 (by norm_num)
+        c1 c3 hc1Get hc3Get }
+
+
+lemma two_distinct_modEq_successors_force_double_gap {m a x y N : Nat}
+    (hax : a <= x) (hay : a <= y)
+    (haxNe : a ≠ x) (hayNe : a ≠ y) (hxy : x ≠ y)
+    (hmodX : Nat.ModEq m a x) (hmodY : Nat.ModEq m a y)
+    (hxN : x <= N) (hyN : y <= N) :
+    a + 2 * m <= N := by
+  obtain ⟨dx, hdx⟩ := (Nat.modEq_iff_exists_eq_add hax).mp hmodX
+  obtain ⟨dy, hdy⟩ := (Nat.modEq_iff_exists_eq_add hay).mp hmodY
+  have hdxPos : 0 < dx := by
+    by_contra h
+    have : dx = 0 := by omega
+    subst dx
+    simp only [Nat.mul_zero, Nat.add_zero] at hdx
+    exact haxNe hdx.symm
+  have hdyPos : 0 < dy := by
+    by_contra h
+    have : dy = 0 := by omega
+    subst dy
+    simp only [Nat.mul_zero, Nat.add_zero] at hdy
+    exact hayNe hdy.symm
+  have hdxdy : dx ≠ dy := by
+    intro h
+    subst dy
+    exact hxy (by nlinarith)
+  have hlarge : 2 <= dx ∨ 2 <= dy := by omega
+  rcases hlarge with hlarge | hlarge <;> nlinarith
+
+lemma middle_case_successor_values {q b c1 c2 c3 n : Nat}
+    (hq : 0 < q) (hbEight : 8 * q < b)
+    (hcLower : 2 * b <= c1) (hnUpper : n < b + 14 * q)
+    (hc1Two : c1 <= c2) (hc1Three : c1 <= c3)
+    (hc12 : c1 ≠ c2) (hc13 : c1 ≠ c3) (hc23 : c2 ≠ c3)
+    (hc2N : c2 <= n) (hc3N : c3 <= n)
+    (hmod2 : Nat.ModEq (4 * q) c1 c2)
+    (hmod3 : Nat.ModEq (2 * q) c1 c3) :
+    c2 = c1 + 4 * q ∧ c3 = c1 + 2 * q := by
+  obtain ⟨d2, hd2⟩ := (Nat.modEq_iff_exists_eq_add hc1Two).mp hmod2
+  obtain ⟨d3, hd3⟩ := (Nat.modEq_iff_exists_eq_add hc1Three).mp hmod3
+  have hd2Pos : 0 < d2 := by
+    by_contra h
+    have : d2 = 0 := by omega
+    subst d2
+    simp only [Nat.mul_zero, Nat.add_zero] at hd2
+    exact hc12 hd2.symm
+  have hd3Pos : 0 < d3 := by
+    by_contra h
+    have : d3 = 0 := by omega
+    subst d3
+    simp only [Nat.mul_zero, Nat.add_zero] at hd3
+    exact hc13 hd3.symm
+  have hd2One : d2 = 1 := by nlinarith
+  have hd3Le : d3 <= 2 := by nlinarith
+  have hc2Eq : c2 = c1 + 4 * q := by
+    subst d2
+    nlinarith
+  have hd3NeTwo : d3 ≠ 2 := by
+    intro h
+    subst d3
+    apply hc23
+    nlinarith
+  have hd3One : d3 = 1 := by omega
+  constructor
+  · exact hc2Eq
+  · subst d3
+    nlinarith
+
+/-- The numeric three-case core of the first implication in Theorem 2.6,
+given the seven boundary entries. -/
+lemma oddEpilogue_four_evenPrologue_three_impossible_of_entries
+    {n : Nat} {gamma : List Nat} {b1 b2 b3 b4 c1 c2 c3 : Nat}
+    (hgamma : IsTheta n gamma)
+    (hdata : OneSidedActiveEntries n gamma b1 b2 b3 b4 c1 c2 c3) : False := by
+  let q := dyadicQ n
+  have hbEnd := hdata.hbEnd
+  have hcStart := hdata.hcStart
+  have hbLower := hdata.hb1Lower
+  have hb1At := hdata.hb1Get
+  have hb2At := hdata.hb2Get
+  have hb3At := hdata.hb3Get
+  have hb4At := hdata.hb4Get
+  have hc1At := hdata.hc1Get
+  have hc2At := hdata.hc2Get
+  have hc3At := hdata.hc3Get
+  have hv : 3 <= (prologue n (evenTrace gamma)).length := by
+    obtain ⟨hbound, _⟩ := List.getElem?_eq_some_iff.mp hc3At
+    have hbound' : 2 < (prologue n (evenTrace gamma)).length := by
+      simpa only [evenBoundaryActiveList] using hbound
+    omega
+  have hb1Mem := hdata.hb1Mem
+  have hb2Mem := hdata.hb2Mem
+  have hb3Mem := hdata.hb3Mem
+  have hb4Mem := hdata.hb4Mem
+  have hqPos : 0 < q := by simpa only [q] using hdata.hqPos
+  have hb12 := hdata.hb12
+  have hb13 := hdata.hb13
+  have hb14 := hdata.hb14
+  have hb23 := hdata.hb23
+  have hb24 := hdata.hb24
+  have hb34 := hdata.hb34
+  have hc12 := hdata.hc12
+  have hc13 := hdata.hc13
+  have hc23 := hdata.hc23
+  have hb1Odd := hdata.hb1Odd
+  have hc1Even := hdata.hc1Even
+  have hb1Half := hdata.hb1Lower
+  have hb2Pos : 0 < b2 := by
+    have h := hdata.hb2Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb3Pos : 0 < b3 := by
+    have h := hdata.hb3Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb4Pos : 0 < b4 := by
+    have h := hdata.hb4Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hc2N : c2 <= n := by
+    have h := hdata.hc2Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hc3N : c3 <= n := by
+    have h := hdata.hc3Segment
+    simp only [segment, Finset.mem_Icc] at h
+    omega
+  have hb2Le := hdata.hb2Le
+  have hb3Le := hdata.hb3Le
+  have hb4Le := hdata.hb4Le
+  have hc1Le2 := hdata.hc2Ge
+  have hc1Le3 := hdata.hc3Ge
+  have hbc := hdata.hseparated
+  have hSixteen : 16 * q <= n := by simpa only [q] using hdata.hthreshold
+  have hnSixteen : 16 <= n := by nlinarith
+  have hnThirtyTwo : n < 32 * q := by
+    simpa only [q] using thirty_two_dyadicQ_gt hnSixteen
+  have hb2Mod : Nat.ModEq (2 * q) b2 b1 := by simpa only [q] using hdata.hb2ModTwo
+  have hb3Mod : Nat.ModEq (2 * q) b3 b1 := by simpa only [q] using hdata.hb3ModTwo
+  have hb4Mod : Nat.ModEq (2 * q) b4 b1 := by simpa only [q] using hdata.hb4ModTwo
+  have hc2ModFour : Nat.ModEq (4 * q) c1 c2 := by
+    simpa only [q] using hdata.hc2ModFour
+  have hc3ModTwo : Nat.ModEq (2 * q) c1 c3 := by
+    simpa only [q] using hdata.hc3ModTwo
+  have hbSix : 6 * q < b1 := six_mul_lt_of_three_distinct_predecessors
+    hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+    hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod
+  by_cases hbEight : b1 < 8 * q
+  · have hwhich := first_predecessor_among_three hbEight hb2Pos hb3Pos hb4Pos
+      hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm hb23 hb24 hb34
+      hb2Mod hb3Mod hb4Mod
+    have hsubTwoMem : b1 - 2 * q ∈ epilogue n (oddTrace gamma) := by
+      rcases hwhich with h | h | h
+      · simpa only [oddBoundaryActiveList, h] using hb2Mem
+      · simpa only [oddBoundaryActiveList, h] using hb3Mem
+      · simpa only [oddBoundaryActiveList, h] using hb4Mem
+    have hnUpper := ambient_lt_b_add_ten_of_sub_two_mem hgamma hbEnd hbLower hb1Odd
+      (by omega) (by simpa only [q] using hsubTwoMem)
+    have hc1Lt2 : c1 < c2 := lt_of_le_of_ne hc1Le2 hc12
+    have hc2Gap := add_modulus_le_of_modEq_of_lt (by omega : 0 < 4 * q)
+      hc2ModFour hc1Lt2
+    omega
+  · have hbEightStrict : 8 * q < b1 := by
+      rcases hb1Odd with ⟨B, hb⟩
+      omega
+    by_cases hbTen : b1 < 10 * q
+    · have hbSixteen : b1 < 16 * q := by
+        simp only [lowerHalf, Finset.mem_Icc] at hb1Half
+        omega
+      have hnotPred := dyadic_predecessor_not_mem_oddEpilogue hgamma hbEnd hbLower
+        hb1Odd hbEightStrict (by simpa only [q] using hbSixteen)
+      have hb2Not : b2 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb2Mem
+      have hb3Not : b3 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb3Mem
+      have hb4Not : b4 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb4Mem
+      have hwhich := third_predecessor_among_three_without_first hbTen
+        hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+        hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod hb2Not hb3Not hb4Not
+      have hsubSixMem : b1 - 6 * q ∈ epilogue n (oddTrace gamma) := by
+        rcases hwhich with h | h | h
+        · simpa only [oddBoundaryActiveList, h] using hb2Mem
+        · simpa only [oddBoundaryActiveList, h] using hb3Mem
+        · simpa only [oddBoundaryActiveList, h] using hb4Mem
+      have hnUpper := ambient_lt_b_add_fourteen_of_sub_six_mem hgamma hbEnd hbLower
+        hb1Odd (by simpa only [q] using hbSix) (by simpa only [q] using hsubSixMem)
+      have hvalues := middle_case_successor_values hqPos hbEightStrict hbc
+        (by simpa only [q] using hnUpper) hc1Le2 hc1Le3 hc12 hc13 hc23 hc2N hc3N
+        hc2ModFour hc3ModTwo
+      have hc1Trace := hdata.hc1TraceGet
+      have hc2Trace := hdata.hc2TraceGet
+      have hc3Trace := hdata.hc3TraceGet
+      exact evenTrace_middle_case_impossible hgamma rfl hcStart hc1Trace hc2Trace hc3Trace
+        hc1Even hvalues.1 hvalues.2 (by omega)
+    · have hbTenStrict : 10 * q < b1 := by
+        rcases hb1Odd with ⟨B, hb⟩
+        omega
+      have hc1Lt2 : c1 < c2 := lt_of_le_of_ne hc1Le2 hc12
+      have hc2GapFour := add_modulus_le_of_modEq_of_lt (by omega : 0 < 4 * q)
+        hc2ModFour hc1Lt2
+      have hTwentyTwo : 22 * q <= n := by omega
+      have hTraceThreeFour := evenTrace_prefix_three_mod_four_of_twenty_two hgamma
+        (by simpa only [q] using hSixteen) (by simpa only [q] using hTwentyTwo)
+      have hCThreeFour := evenBoundaryActiveList_prefixCongruent_of_evenTrace
+        (n := n) (gamma := gamma) (k := 3) (m := 4 * q)
+        (by omega) (by simpa only [q] using hTraceThreeFour)
+      have hc3ModFour : Nat.ModEq (4 * q) c1 c3 :=
+        hCThreeFour.2 0 (by omega) 2 (by omega) c1 c3 hc1At hc3At
+      have hcDoubleGap := two_distinct_modEq_successors_force_double_gap
+        hc1Le2 hc1Le3 hc12 hc13 hc23 hc2ModFour hc3ModFour hc2N hc3N
+      have hTwentyEight : 28 * q <= n := by omega
+      have hTraceTwoEight := evenTrace_prefix_two_mod_eight_of_twenty_eight hgamma
+        (by simpa only [q] using hSixteen) (by simpa only [q] using hTwentyEight)
+      have hCTwoEight := evenBoundaryActiveList_prefixCongruent_of_evenTrace
+        (n := n) (gamma := gamma) (k := 2) (m := 8 * q)
+        (by omega) (by simpa only [q] using hTraceTwoEight)
+      have hc2ModEight : Nat.ModEq (8 * q) c1 c2 :=
+        hCTwoEight.2 0 (by omega) 1 (by omega) c1 c2 hc1At hc2At
+      have hc2GapEight := add_modulus_le_of_modEq_of_lt (by omega : 0 < 8 * q)
+        hc2ModEight hc1Lt2
+      have hbTwelve : b1 < 12 * q := by omega
+      have hbSixteen : b1 < 16 * q := by omega
+      have hnotPred := dyadic_predecessor_not_mem_oddEpilogue hgamma hbEnd hbLower
+        hb1Odd hbEightStrict (by simpa only [q] using hbSixteen)
+      have hb2Not : b2 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb2Mem
+      have hb3Not : b3 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb3Mem
+      have hb4Not : b4 ≠ b1 - 2 * q := by
+        intro h
+        apply hnotPred
+        simpa only [oddBoundaryActiveList, q, h] using hb4Mem
+      have hwhich := third_or_fifth_predecessor_among_three_without_first hbTwelve
+        hb2Pos hb3Pos hb4Pos hb2Le hb3Le hb4Le hb12.symm hb13.symm hb14.symm
+        hb23 hb24 hb34 hb2Mod hb3Mod hb4Mod hb2Not hb3Not hb4Not
+      rcases hwhich with hsubSix | hsubTen
+      · have hsubSixMem : b1 - 6 * q ∈ epilogue n (oddTrace gamma) := by
+          rcases hsubSix with h | h | h
+          · simpa only [oddBoundaryActiveList, h] using hb2Mem
+          · simpa only [oddBoundaryActiveList, h] using hb3Mem
+          · simpa only [oddBoundaryActiveList, h] using hb4Mem
+        have hnUpper := ambient_lt_b_add_fourteen_of_sub_six_mem hgamma hbEnd hbLower
+          hb1Odd (by simpa only [q] using hbSix) (by simpa only [q] using hsubSixMem)
+        omega
+      · have hsubTenMem : b1 - 10 * q ∈ epilogue n (oddTrace gamma) := by
+          rcases hsubTen with h | h | h
+          · simpa only [oddBoundaryActiveList, h] using hb2Mem
+          · simpa only [oddBoundaryActiveList, h] using hb3Mem
+          · simpa only [oddBoundaryActiveList, h] using hb4Mem
+        have hnUpper := ambient_lt_b_add_eighteen_of_sub_ten_mem hgamma hbEnd hbLower
+          hb1Odd (by simpa only [q] using hbTenStrict)
+          (by simpa only [q] using hsubTenMem)
+        omega
+
+/-- The first implication of Theorem 2.6: four active odd entries force the
+active even prefix to have length at most two. -/
+theorem theorem_2_6_left {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hu : 4 <= (epilogue n (oddTrace gamma)).length) :
+    (prologue n (evenTrace gamma)).length <= 2 := by
+  by_contra hv
+  have hvThree : 3 <= (prologue n (evenTrace gamma)).length := by omega
+  rcases oneSidedActiveEntries_of_lengths hstanding hu hvThree with
+    ⟨b1, b2, b3, b4, c1, c2, c3, hdata⟩
+  exact oddEpilogue_four_evenPrologue_three_impossible_of_entries hstanding.1.1 hdata
+
 end LeanProofs.Sharma2012
