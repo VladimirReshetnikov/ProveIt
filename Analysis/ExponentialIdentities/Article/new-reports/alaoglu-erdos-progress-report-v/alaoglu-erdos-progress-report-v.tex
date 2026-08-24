@@ -1,0 +1,2205 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{needspace}
+
+\definecolor{provedgreen}{RGB}{15,105,68}
+\definecolor{conditionalblue}{RGB}{24,91,145}
+\definecolor{opengray}{RGB}{85,92,99}
+\definecolor{computeviolet}{RGB}{98,55,145}
+\definecolor{codegray}{RGB}{248,248,248}
+\definecolor{rulegray}{RGB}{92,101,111}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=conditionalblue,
+  citecolor=provedgreen,
+  urlcolor=conditionalblue,
+  pdftitle={Algebraic Traps on the Power Curve: New Progress Toward the Alaoglu--Erdos Conjecture},
+  pdfauthor={Research progress report},
+  pdfsubject={Coppersmith--Chebyshev certificates, total positivity, and successive-minimum targets}
+}
+\urlstyle{same}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s progress report V}
+\rhead{Algebraic traps on the power curve}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.75em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.75em}{}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.28em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.28em,topsep=0.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{target}[theorem]{Research target}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Computational experiment}
+\newtheorem{warning}[theorem]{Caution}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathcal E}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\fract}[1]{\left\{#1\right\}}
+\newcommand{\thetaAE}{\vartheta}
+\newcommand{\statusproved}{\textcolor{provedgreen}{\textbf{[proved here]}}}
+\newcommand{\statusconditional}{\textcolor{conditionalblue}{\textbf{[conditional on a counterexample]}}}
+\newcommand{\statusopen}{\textcolor{opengray}{\textbf{[open target]}}}
+\newcommand{\statuscompute}{\textcolor{computeviolet}{\textbf{[proposed computation]}}}
+\newcommand{\statusimported}{\textcolor{conditionalblue}{\textbf{[imported from Report IV]}}}
+
+\newenvironment{statusbox}[1]
+{\begin{center}\begin{minipage}{0.94\textwidth}\raggedright\hrule\vspace{0.45em}\textbf{Status:} #1\par\vspace{0.35em}}
+{\vspace{0.35em}\hrule\end{minipage}\end{center}}
+
+\lstdefinestyle{pseudocode}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  showstringspaces=false,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2
+}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{titlepage}
+\centering
+\vspace*{0.6cm}
+{\Huge\bfseries Algebraic Traps on the Power Curve\par}
+\vspace{0.35cm}
+{\LARGE New Progress Toward the Alaoglu--Erd\H{o}s Conjecture\par}
+\vspace{0.8cm}
+{\Large Deterministic Coppersmith--Chebyshev Certificates,\par}
+\vspace{0.12cm}
+{\Large Sparse Total Positivity, and the High-Corank Frontier\par}
+\vspace{1.0cm}
+{\large Progress report V --- 23 August 2026\par}
+\vfill
+\begin{minipage}{0.92\textwidth}
+\small
+\textbf{Bottom line.}
+This report does not claim a proof of the Alaoglu--Erd\H{o}s conjecture.  It develops a new
+and fully quantitative route prompted by the June 2026 work of Brisebarre and Hanrot on
+Coppersmith-style detection of integer points near transcendental curves.  A hypothetical
+counterexample supplies, in every logarithmic unit block, an initial segment of an irrational
+rotation orbit on the fixed arc $y=x^{\log_2 3}$, sampled on the rational grid with denominators
+$2^H$ and $3^H$.  On this particular curve, the usual ``two auxiliary polynomials must be
+coprime'' heuristic can be removed: restrictions of sparse bivariate polynomials are
+exponential sums with distinct real frequencies, hence form a strictly totally positive
+Chebyshev system.  If $r$ linearly independent auxiliary polynomials with a common $q$-monomial
+support are uniformly smaller than one, then the block contains at most $q-r$ exact integer
+points.
+
+A one-dimensional Chebyshev lattice, optimized over the $q$ lowest frequencies
+$i\log 2+j\log 3$, then gives the unconditional block estimate
+\[
+ \#\{x\in[H,H+1):2^x,3^x\in\Z\}
+ \le \left(\frac{32\log2\log3}{9}+o(1)\right)
+       \frac{H^2}{(\log H)^2}.
+\]
+The logarithmic-square saving over a quadratic block bound is genuine new progress, but it
+still does not contradict the linear block population forced by a counterexample.  Optimizing
+macroscopic windows makes the residual barrier exact: with the current kernel-level lower
+bound $\beta\ge14$ for a least counterexample, a closing trap would need to certify more than
+$98.59\%$ of the entire coefficient space as uniformly short.  The remaining problem is thus
+not ``find one clever auxiliary polynomial'' but ``prove a near-full-rank collapse of a
+structured diagonal-flow lattice.''  The report formulates this as a parametric-geometry-of-
+numbers problem, proves a dilation-rigidity theorem that constrains multiscale reuse, and gives
+a proof-producing finite-certificate design suitable for exact arithmetic and Lean replay.
+\end{minipage}
+\vfill
+{\small All new assertions are explicitly tagged.  No numerical reconnaissance is promoted to a theorem.\par}
+\end{titlepage}
+
+\clearpage
+\pagenumbering{roman}
+\begin{abstract}
+Let
+\[
+ I(H):=\#\{x\in[H,H+1):2^x\in\Z,\ 3^x\in\Z\}.
+\]
+The attached unified report already develops the standard transcendence reductions, the exact
+conditional solution monoid, determinant and $p$-adic methods, Kummer and cyclotomic
+reformulations, compact-orbit dynamics, rational-point counting, and a large collection of
+quantified no-go theorems.  The present document deliberately imports rather than repeats that
+material.
+
+Its first new observation is algorithmic: after rescaling the $H$th block by $(2^H,3^H)$,
+all exact points lie on one fixed analytic arc and fit the rational-grid problem studied by
+Brisebarre--Hanrot.  Its second observation is structural: for any finite monomial support
+$E\subset\Nzero^2$, the functions
+$e^{(i\log2+j\log3)t}$, $(i,j)\in E$, form an extended complete Chebyshev system.  This turns
+short auxiliary vectors directly into deterministic point-counting certificates and replaces
+coprimality by linear algebra.  Its third observation is asymptotic: a one-variable Chebyshev
+expansion along the exact curve, combined with Cauchy--Binet and Minkowski's second theorem,
+produces short integer polynomials.  The asymptotically optimal support is the weighted simplex
+of the lowest frequencies, not the usual total-degree triangle.  This yields
+\[
+ \limsup_{H\to\infty} I(H)\frac{(\log H)^2}{H^2}
+ \le \frac{32\log2\log3}{9}=2.7075555926\ldots.
+\]
+
+For a window $[H,(1+r)H]$, the same calculation has a sharp variational constant.  Writing
+$t_0$ for the positive root of $t\tanh t=2$, the best coefficient-space-to-counterexample
+population ratio is
+\[
+ \kappa_*=\frac{64\log2\log3}{9}\frac{\cosh t_0}{t_0^2}
+ =5.0872665807\ldots.
+\]
+Thus a least counterexample $\beta\ge14$ would require certified short-vector rank fraction
+strictly exceeding $1-1/(14\kappa_*)=0.9859593\ldots$.  This high-corank requirement is the
+principal new frontier.  We connect it to Schmidt--Summerer--Roy parametric geometry of numbers,
+prove exact dilation rigidity for sparse trap spaces, analyze why naive Hermite multiplicity is
+not free, and specify a deterministic certificate format whose verification uses only integer
+linear algebra and interval bounds.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Executive summary and status ledger}
+
+\subsection{What is new in this report}
+
+The mathematical contributions are the following.
+
+\begin{enumerate}
+\item \textbf{Exact curve-grid interface.}  Each logarithmic block is identified with exact
+integer points on a fixed power arc sampled at the rational grid $(2^{-H}\Z)\times(3^{-H}\Z)$.
+This is the precise interface with the 2026 Coppersmith--Chebyshev method.
+
+\item \textbf{Sparse Chebyshev rigidity.}  A $q$-monomial polynomial restricts to an
+exponential sum with $q$ distinct real frequencies and therefore has at most $q-1$ zeros on
+the positive power curve, counted with multiplicity.
+
+\item \textbf{Rank--codimension certificates.}  If $r$ independent integer polynomials with
+one $q$-monomial support are uniformly smaller than one on an interval of the curve, then that
+interval contains at most $q-r$ exact integer points.  No resultant and no coprimality
+assumption is required.
+
+\item \textbf{An optimized unconditional block theorem.}  A one-dimensional Chebyshev lattice
+and a weighted-frequency simplex give
+\[
+ I(H)\le\left(\frac{32\log2\log3}{9}+o(1)\right)\frac{H^2}{(\log H)^2}.
+\]
+This is a paper proof, not a numerical heuristic.
+
+\item \textbf{A sharp high-corank threshold.}  The best macroscopic-window constants are
+solved explicitly.  The current finite exclusion $\beta\ge14$ forces any closing certificate
+of this type to find at least $98.59\%$ of all coefficient directions below the shortness
+threshold.
+
+\item \textbf{A multiscale rigidity package.}  Trap spaces cannot recur exactly under the
+$(X,Y)\mapsto(2X,3Y)$ dilation unless they are monomial.  This identifies the precise amount
+of approximate covariance that a parametric-geometry argument would need.
+
+\item \textbf{A deterministic certificate design.}  The report gives an exact output format
+for interval-arithmetic Chebyshev bounds, integer coefficient vectors, and rank checks.  Such a
+certificate proves a finite block bound without trusting the LLL implementation that found it.
+\end{enumerate}
+
+\subsection{What is not claimed}
+
+No theorem below proves that a counterexample cannot exist.  In particular:
+
+\begin{itemize}
+\item the new $H^2/(\log H)^2$ block bound is still much larger than the conditional
+$H/\beta+O(1)$ population;
+\item no near-full-rank successive-minimum theorem is proved;
+\item the proposed finite verifier has not been used here to enlarge the kernel-verified
+zero-free region;
+\item the 2026 AI breakthroughs discussed in the public record are motivational context only
+and are not mathematical inputs.
+\end{itemize}
+
+\subsection{Status convention}
+
+\begin{longtable}{p{0.24\textwidth}p{0.68\textwidth}}
+\toprule
+Tag & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Tag & Meaning \\
+\midrule
+\endhead
+\statusproved & A complete conventional proof is given in this report. \\
+\statusimported & Used from the attached unified report and not reproved here. \\
+\statusconditional & Deduced under the assumption that a nonintegral solution exists. \\
+\statuscompute & A concrete exact computation or implementation is proposed, but no output is
+asserted as a theorem. \\
+\statusopen & A precisely stated missing theorem or quantitative target. \\
+\bottomrule
+\end{longtable}
+
+\section{Scope, nonduplication, and the 2026 trigger}
+
+\subsection{The inherited frontier}
+
+The attached Report IV is approximately twenty-four thousand lines of LaTeX.  It already
+contains the elementary and transcendence reductions, kernel-verified finite exclusions, the
+canonical primitive generator, exact block counts, radical and Kummer reformulations, auxiliary
+base spectra, finite differences, generalized Vandermonde determinants, $p$-adic and tropical
+ceilings, compact-orbit dynamics, o-minimal counting, Loewner and Pad\'e certificates, Mahler
+systems, cyclotomic and Frobenius constructions, factorial cocycles, moment masks, Bhargava
+factorials, and a detailed formalization inventory.  Repeating any of those developments would
+make this report longer without moving the frontier.
+
+Accordingly, only one interface theorem is imported: if the conjecture fails, all solutions
+form the free additive monoid generated by $1$ and a unique least noninteger solution $\beta$.
+Everything after Section~\ref{sec:imported-interface} is organized around a method absent from
+Report IV: exact algebraic trapping of the power curve by short vectors in a Chebyshev lattice.
+
+\subsection{Why the June 2026 paper matters}
+
+Brisebarre and Hanrot introduced an algorithmic Coppersmith-style method for locating integer
+points near a transcendental analytic curve, with Chebyshev interpolation controlling the
+analytic error and lattice reduction producing auxiliary integer polynomials
+\cite{BrisebarreHanrot2026}.  Their general algorithm is heuristic at one explicit point: two
+short auxiliary polynomials can have a common factor, so a resultant computation may fail to
+isolate the points.
+
+The Alaoglu--Erd\H{o}s curve has extra structure that removes that difficulty.  A polynomial
+restricted to $(2^t,3^t)$ becomes an exponential polynomial with pairwise distinct real
+frequencies.  Such functions are strictly totally positive, so a single nonzero auxiliary
+polynomial has a sharp zero bound, and several independent polynomials give an exact
+rank--codimension bound.  The general Coppersmith machinery is therefore not merely applicable;
+it simplifies in a way specific to multiplicatively independent bases.
+
+A second 2026 input, due to Wang and Xiao, develops degeneracy theorems for families of unit
+equations via integral points and new gcd estimates for exponential Diophantine problems
+\cite{WangXiao2026}.  We use it only to motivate the stable-factor program of
+Section~\ref{sec:stable-factors}; none of the unconditional results depends on it.
+
+\subsection{Competitive context is not evidence}
+
+The public 2026 record does substantiate striking AI-assisted mathematics, including an
+explicit three-dimensional counterexample to the Jacobian conjecture discussed in detail by
+Tao, and reported constructions covering previously unresolved Hadamard orders below $2000$
+\cite{TaoJacobian2026,EpochHadamard2026}.  Those events justify urgency, not lowered standards.
+Every claimed advance in this report is proved independently of model attribution, and every
+remaining gap is stated rather than hidden.
+
+\section{The imported conditional interface}
+\label{sec:imported-interface}
+
+Set
+\[
+ \cS:=\{x\in\R:2^x\in\N,\ 3^x\in\N\}.
+\]
+
+\begin{conjecture}[Alaoglu--Erd\H{o}s]
+\label{conj:AE}
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+The report uses the following exact conditional package.
+
+\begin{theorem}[Primitive solution monoid; imported]
+\label{thm:primitive-monoid}
+\statusimported\quad
+If Conjecture~\ref{conj:AE} is false, there is a unique least noninteger
+$\beta\in\cS$ and integers
+\[
+ M=2^\beta,\qquad A=3^\beta
+\]
+such that
+\[
+ \cS=\{n+k\beta:n,k\in\Nzero\},
+\]
+and every representation is unique.  Consequently
+\[
+ (2^{n+k\beta},3^{n+k\beta})=(2^nM^k,3^nA^k).
+\]
+The attached report also gives the kernel-level finite exclusion $\beta\ge14$ and a
+software-level exclusion $\beta>27$.
+\end{theorem}
+
+We shall use the exact unit-block count, also imported:
+\begin{equation}
+ \#(\cS\cap[H,H+1))=1+\left\lfloor\frac{H+1}{\beta}\right\rfloor
+ \qquad(H\in\Nzero).
+ \label{eq:exact-block-count}
+\end{equation}
+The $1$ is the integral solution $H$.
+
+\subsection{Normalized block points}
+
+Fix an integer $H\ge0$ and define
+\[
+ K_H:=\left\lfloor\frac{H+1}{\beta}\right\rfloor.
+\]
+For $1\le k\le K_H$, the unique solution in the block with second coordinate $k$ is
+\[
+ z_{H,k}=\lceil H-k\beta\rceil+k\beta=H+\fract{k\beta}.
+\]
+Its integer output pair is
+\begin{align}
+ X_{H,k}&=2^{z_{H,k}}=2^{H-\lfloor k\beta\rfloor}M^k,\label{eq:XHk}\\
+ Y_{H,k}&=3^{z_{H,k}}=3^{H-\lfloor k\beta\rfloor}A^k.\label{eq:YHk}
+\end{align}
+After dividing by the block scales,
+\begin{equation}
+ \left(\frac{X_{H,k}}{2^H},\frac{Y_{H,k}}{3^H}\right)
+ =\left(2^{\fract{k\beta}},3^{\fract{k\beta}}\right).
+ \label{eq:normalized-orbit}
+\end{equation}
+Thus the normalized block is the initial orbit segment
+\begin{equation}
+ \cC_H=\{(1,1)\}\cup
+ \left\{\left(2^{\fract{k\beta}},3^{\fract{k\beta}}\right):1\le k\le K_H\right\}
+ \subset\{(2^t,3^t):0\le t<1\}.
+ \label{eq:CH}
+\end{equation}
+The sets are nested: $\cC_H\subseteq\cC_{H+1}$, and at most one new nonintegral point is
+inserted at each step.
+
+\subsection{The exact rational-grid formulation}
+
+Put
+\[
+ \thetaAE:=\frac{\log3}{\log2}.
+\]
+For $X=2^{H+t}$ and $Y=3^{H+t}$ one has
+\[
+ \frac{Y}{3^H}=\left(\frac{X}{2^H}\right)^{\thetaAE}.
+\]
+Therefore every exact point in the $H$th block is an integer pair $(X,Y)$ satisfying
+\begin{equation}
+ 2^H\le X<2^{H+1},\qquad
+ \frac{Y}{3^H}=f\!\left(\frac{X}{2^H}\right),
+ \qquad f(u)=u^{\thetaAE},\quad 1\le u<2.
+ \label{eq:grid-formulation}
+\end{equation}
+This is the Brisebarre--Hanrot rational-grid problem with fixed denominators
+$u=2^H$, $v=3^H$ and zero vertical error.  Exactness is crucial: an auxiliary polynomial
+$P\in\Z[X,Y]$ satisfying
+\[
+ \sup_{0\le t\le1}|P(2^{H+t},3^{H+t})|<1
+\]
+must vanish at every block point because its value there is an integer.
+
+\begin{statusbox}{\statusconditional}
+Equations~\eqref{eq:XHk}--\eqref{eq:CH} use the imported primitive-generator theorem.  The
+rational-grid identity~\eqref{eq:grid-formulation} is unconditional and applies to every exact
+integer point of the power curve, whether or not a primitive generator exists.
+\end{statusbox}
+
+\section{Sparse total positivity on the power curve}
+\label{sec:total-positivity}
+
+Let $E\subset\Nzero^2$ be finite.  Write
+\[
+ q:=|E|,\qquad \lambda_{i,j}:=i\log2+j\log3.
+\]
+The frequencies $\lambda_{i,j}$ are pairwise distinct: equality of two frequencies would give
+$2^{i-i'}3^{j-j'}=1$, hence $i=i'$ and $j=j'$.
+
+\subsection{The exponential Chebyshev system}
+
+\begin{theorem}[Strict total positivity]
+\label{thm:strict-total-positivity}
+Let
+\[
+ \lambda_1<\cdots<\lambda_q,
+ \qquad t_1<\cdots<t_m.
+\]
+The matrix
+\[
+ V=(e^{\lambda_jt_i})_{1\le i\le m,\ 1\le j\le q}
+\]
+has rank $\min(m,q)$.  More strongly, every minor obtained from increasing row and column
+indices is strictly positive.
+\end{theorem}
+
+\begin{proof}
+It is enough to prove that every square generalized Vandermonde determinant
+\[
+ \det(e^{\mu_j s_i})_{1\le i,j\le r}
+\]
+is positive for $s_1<\cdots<s_r$ and $\mu_1<\cdots<\mu_r$.  Divide column $j$ by
+$e^{\mu_1s_j}$ after transposing if desired; equivalently, use the classical fact that the
+Wronskian of $e^{\mu_1t},\ldots,e^{\mu_rt}$ is
+\[
+ e^{(\mu_1+\cdots+\mu_r)t}\prod_{1\le i<j\le r}(\mu_j-\mu_i)>0.
+\]
+A family of $C^{r-1}$ functions whose initial Wronskians are everywhere positive is an
+extended complete Chebyshev system.  Its collocation determinants at increasing nodes are
+positive.  For completeness, this last implication can be proved inductively: divide a
+nontrivial linear combination by the first exponential, differentiate, and apply Rolle's
+theorem.  It follows that no nontrivial combination of $r$ functions can have $r$ real zeros
+counted with multiplicity; expansion of a collocation determinant along a hypothetical linear
+dependence would contradict that zero bound.  The sign is fixed by coalescing the nodes, where
+the determinant tends to the positive Wronskian times the positive confluent Vandermonde
+factor.
+\end{proof}
+
+\begin{corollary}[Sparse zero bound]
+\label{cor:sparse-zero-bound}
+Let
+\[
+ P(X,Y)=\sum_{(i,j)\in E}c_{i,j}X^iY^j\in\R[X,Y]
+\]
+be nonzero.  Then
+\[
+ F_P(t):=P(2^t,3^t)
+       =\sum_{(i,j)\in E}c_{i,j}e^{\lambda_{i,j}t}
+\]
+has at most $q-1$ real zeros, counted with multiplicity.
+\end{corollary}
+
+\begin{proof}
+Order the distinct frequencies and apply the extended Chebyshev property from
+Theorem~\ref{thm:strict-total-positivity}.
+\end{proof}
+
+\begin{remark}[Why this is stronger than B\'ezout here]
+B\'ezout controls common zeros of two coprime algebraic curves.  Corollary~\ref{cor:sparse-zero-bound}
+controls the intersection of a \emph{single} sparse polynomial with the transcendental power
+curve and remains valid even if several auxiliary polynomials share factors.  The relevant
+complexity is the number of occupied monomials, not the total algebraic degree.
+\end{remark}
+
+\subsection{Multiplicity and evaluation rank}
+
+For distinct real nodes $t_1,\ldots,t_m$, let
+\[
+ \operatorname{ev}_{\mathbf t}:\R^E\longrightarrow\R^m,
+ \qquad
+ (c_e)_{e\in E}\longmapsto
+ \left(\sum_{e\in E}c_e e^{\lambda_e t_a}\right)_{a=1}^m.
+\]
+
+\begin{corollary}[Exact evaluation rank]
+\label{cor:evaluation-rank}
+For distinct nodes, $\rank(\operatorname{ev}_{\mathbf t})=\min(m,q)$.  Hence, when $m<q$,
+\[
+ \dim\ker(\operatorname{ev}_{\mathbf t})=q-m.
+\]
+\end{corollary}
+
+This elementary dimension identity is the engine behind the deterministic trap theorem.
+
+\section{Rank--codimension algebraic traps}
+\label{sec:rank-codim}
+
+\subsection{A deterministic replacement for coprimality}
+
+\begin{theorem}[Rank--codimension trap]
+\label{thm:rank-codim}
+Fix a finite support $E\subset\Nzero^2$ of size $q$, a real interval $J$, and a scale $H$.
+Suppose
+\[
+ P_1,\ldots,P_r\in\Z[X,Y]
+\]
+have coefficient vectors supported in $E$, those vectors are linearly independent over
+$\R$, and
+\begin{equation}
+ \sup_{t\in J}|P_a(2^{H+t},3^{H+t})|<1
+ \qquad(1\le a\le r).
+ \label{eq:trap-shortness}
+\end{equation}
+Then the curve segment
+\[
+ \{(2^{H+t},3^{H+t}):t\in J\}
+\]
+contains at most $q-r$ points of $\Z^2$.
+\end{theorem}
+
+\begin{proof}
+Let $t_1,\ldots,t_m\in J$ be the parameters of distinct integer points.  Since each
+$P_a(2^{H+t_b},3^{H+t_b})$ is an integer of absolute value less than one, it is zero.  Thus the
+$r$ coefficient vectors lie in the kernel of the evaluation map at the $m$ nodes.  By
+Corollary~\ref{cor:evaluation-rank}, this kernel has dimension $q-m$ (and is zero if $m\ge q$).
+Therefore $r\le q-m$, or $m\le q-r$.
+\end{proof}
+
+\begin{statusbox}{\statusproved}
+Theorem~\ref{thm:rank-codim} is exact and deterministic.  It needs neither a resultant nor a
+coprimality test.  The only numerical statement to certify is the strict bound
+\eqref{eq:trap-shortness}; the rank of the integer coefficient vectors is checked exactly.
+\end{statusbox}
+
+\begin{corollary}[One polynomial]
+\label{cor:one-polynomial}
+A single nonzero $q$-monomial polynomial satisfying~\eqref{eq:trap-shortness} bounds the number
+of exact integer points by $q-1$.
+\end{corollary}
+
+\begin{corollary}[Several supports]
+\label{cor:union-support}
+Suppose $P_1,\ldots,P_r$ have possibly different supports.  Let $E$ be their union and let
+$r'$ be the rank of their coefficient vectors after padding by zero in $\R^E$.  Then the same
+segment contains at most $|E|-r'$ integer points.
+\end{corollary}
+
+\subsection{Piecewise certificates}
+
+Global uniform approximation is not mandatory.  Let $J_1,\ldots,J_s$ be intervals with
+disjoint interiors covering $J$.  On $J_\nu$, let $E_\nu$ be a support of size $q_\nu$ and
+let $r_\nu$ be the rank of certified short polynomials.
+
+\begin{criterion}[Cover certificate]
+\label{crit:cover}
+The number of exact integer points with parameter in $J$ is at most
+\begin{equation}
+ \sum_{\nu=1}^s(q_\nu-r_\nu),
+ \label{eq:cover-defect}
+\end{equation}
+with endpoints assigned to one neighboring interval to avoid double counting.
+\end{criterion}
+
+The quantity $q_\nu-r_\nu$ is the \emph{local coefficient defect}.  Formula
+\eqref{eq:cover-defect} turns the search for points into a search for low total defect.
+
+\begin{corollary}[Conditional closing criterion]
+\label{cor:conditional-closing}
+Assume a counterexample exists with primitive generator $\beta$.  If, for infinitely many
+integers $H$, one can cover $[0,1]$ by certified traps whose total defect is
+$o(H)$, then Conjecture~\ref{conj:AE} follows.
+\end{corollary}
+
+\begin{proof}
+The exact block count~\eqref{eq:exact-block-count} is $H/\beta+O(1)$, while the cover
+certificate gives $o(H)$.
+\end{proof}
+
+\subsection{Successive minima are the correct invariant}
+
+Every analytic construction below associates to $(H,J,E)$ a lattice $\cL_{H,J,E}$ whose
+short vectors are coefficient vectors of uniformly small integer polynomials.  Let
+\[
+ 0<\mu_1\le\cdots\le\mu_q
+\]
+be its successive minima relative to the norm that dominates the curve sup norm, and let
+$\tau$ be the strict threshold corresponding to ``supremum $<1$.''
+
+\begin{criterion}[Successive-minimum point bound]
+\label{crit:successive-minima}
+If $\mu_r<\tau$, then the interval contains at most $q-r$ exact integer points.  Conversely,
+if the interval contains $m$ exact integer points, then
+\[
+ \mu_{q-m+1}\ge\tau.
+\]
+\end{criterion}
+
+Thus the problem is spectral.  Finding the first short vector proves a $q-1$ bound; closing the
+conjecture requires control near the \emph{top} of the successive-minimum spectrum.
+
+\section{A one-dimensional Chebyshev lattice on the exact curve}
+\label{sec:cheb-lattice}
+
+The general Brisebarre--Hanrot construction approximates a two-dimensional strip around a
+curve.  Exact equality permits a leaner object: expand each monomial directly along
+\[
+ \Phi_H(t)=(2^{H+t},3^{H+t}),\qquad 0\le t\le1.
+\]
+This reduces the analytic part to one variable and exposes the frequency geometry.
+
+\subsection{Bernstein ellipses and coefficient bounds}
+
+Map $t\in[0,1]$ to $u=2t-1\in[-1,1]$.  For $\rho>1$, let $\mathscr E_\rho$ be the Bernstein
+ellipse in the $u$-plane and put
+\begin{equation}
+ R(\rho):=\frac12+\frac{\rho+\rho^{-1}}4.
+ \label{eq:Rrho}
+\end{equation}
+The maximum real part of $t=(1+u)/2$ on $\mathscr E_\rho$ is $R(\rho)$.
+
+For $e=(i,j)\in E$ define
+\[
+ \lambda_e=i\log2+j\log3,
+ \qquad
+ f_e(t)=e^{\lambda_e(H+t)}.
+\]
+Write its Chebyshev expansion
+\[
+ f_e(t)=\sum_{n\ge0}' a_{n,e}T_n(2t-1),
+\]
+where the prime only changes the conventional normalization of the constant coefficient.
+Standard contour estimates give, after harmless adjustment of the $n=0$ factor,
+\begin{equation}
+ |a_{n,e}|\le 2M_e\rho^{-n},
+ \qquad
+ M_e:=e^{\lambda_e(H+R(\rho))}.
+ \label{eq:cheb-coeff-bound}
+\end{equation}
+Consequently the tail after $q$ terms is bounded by
+\begin{equation}
+ \sum_{n\ge q}|a_{n,e}|
+ \le \tau_e,
+ \qquad
+ \tau_e:=\frac{2M_e\rho^{-q}}{1-\rho^{-1}}.
+ \label{eq:tail-weight}
+\end{equation}
+
+\subsection{The coefficient-and-tail matrix}
+
+Let $A$ be the $q\times q$ real matrix with entries $A_{n,e}=a_{n,e}$,
+$0\le n<q$, and let $D=\operatorname{diag}(\tau_e)$.  Define the $2q\times q$ matrix
+\begin{equation}
+ B=B(H,E,\rho):=\begin{pmatrix}A\\D\end{pmatrix}
+ \label{eq:Bmatrix}
+\end{equation}
+and the rank-$q$ lattice
+\[
+ \cL(H,E,\rho):=B\Z^E\subset\R^{2q}.
+\]
+For $c=(c_e)\in\Z^E$, let
+\[
+ P_c(X,Y)=\sum_{e=(i,j)\in E}c_eX^iY^j.
+\]
+
+\begin{lemma}[Norm-to-supremum transfer]
+\label{lem:norm-to-sup}
+For every $c\in\Z^E$,
+\begin{equation}
+ \sup_{0\le t\le1}|P_c(2^{H+t},3^{H+t})|
+ \le \sqrt{2q}\,\|Bc\|_2.
+ \label{eq:norm-to-sup}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The first $q$ Chebyshev coefficients of the linear combination are $Ac$.  Their absolute sum
+is at most $\sqrt q\|Ac\|_2$.  By~\eqref{eq:tail-weight}, the tail is at most
+$\sum_e|c_e|\tau_e\le\sqrt q\|Dc\|_2$.  Since $|T_n(u)|\le1$ on $[-1,1]$, the sum of these
+bounds is at most $\sqrt{2q}\|Bc\|_2$.
+\end{proof}
+
+Thus a lattice vector shorter than $(2q)^{-1/2}$ is a valid algebraic trap.
+
+\subsection{Covolume by Cauchy--Binet}
+
+Let
+\[
+ \Delta(H,E,\rho):=\sqrt{\det(B^TB)}
+\]
+be the covolume of $\cL(H,E,\rho)$ in its span.
+
+\begin{lemma}[Universal covolume bound]
+\label{lem:covolume}
+Assume $\rho\ge2$.  Uniformly over all finite supports $E$ of size $q$,
+\begin{equation}
+ \log\Delta(H,E,\rho)
+ \le (H+R(\rho))\sum_{e\in E}\lambda_e
+      -\frac{q(q-1)}2\log\rho+O(q\log q),
+ \label{eq:covolume-bound}
+\end{equation}
+where the implied constant is absolute.
+\end{lemma}
+
+\begin{proof}
+Cauchy--Binet writes $\det(B^TB)$ as the sum of squares of all $q\times q$ minors of $B$.
+Choose $k$ rows from $A$ and $q-k$ diagonal rows from $D$.  A nonzero minor factors into a
+$k\times k$ coefficient minor and $q-k$ diagonal weights.  By
+\eqref{eq:cheb-coeff-bound}, Hadamard's inequality bounds its absolute value by
+\[
+ e^{(H+R)\sum_{e\in E}\lambda_e}\,
+ \rho^{-\sum_{n\in S}n-q(q-k)}\,e^{O(q\log q)},
+\]
+where $S$ is the chosen $k$-set of Chebyshev indices.  The smallest possible exponent of
+$\rho^{-1}$ is obtained from $S=\{0,\ldots,k-1\}$, and
+\begin{align*}
+ q(q-k)+\frac{k(k-1)}2
+ &=\frac{q(q-1)}2+\frac{(q-k)(q-k+1)}2\\
+ &\ge\frac{q(q-1)}2.
+\end{align*}
+The number of minors and all factors $2$, $(1-\rho^{-1})^{-1}$, and Hadamard constants
+contribute $e^{O(q\log q)}$.  Taking the square root of the Cauchy--Binet sum gives
+\eqref{eq:covolume-bound}.
+\end{proof}
+
+The identity in the proof is important: diagonal tail rows never reduce the full
+$q(q-1)/2$ Chebyshev decay.  They only add further decay.
+
+\subsection{Minkowski and fixed-rank short vectors}
+
+Let $\mu_1\le\cdots\le\mu_q$ be the Euclidean successive minima of $\cL(H,E,\rho)$.
+Minkowski's second theorem gives
+\[
+ \mu_1\cdots\mu_q\,\vol(B_2^q)\le2^q\Delta(H,E,\rho).
+\]
+In particular,
+\begin{equation}
+ \log\mu_1
+ \le \frac{H+R(\rho)}q\sum_{e\in E}\lambda_e
+      -\frac{q-1}{2}\log\rho+O(\log q).
+ \label{eq:first-minimum}
+\end{equation}
+
+To obtain several vectors, note that every nonzero $c\in\Z^E$ obeys
+\[
+ \|Bc\|_2\ge\min_e\tau_e.
+\]
+When $(0,0)\in E$, the minimum is at least $2\rho^{-q}$ for $\rho\ge2$.  Therefore, for each
+fixed $r$,
+\begin{equation}
+ \log\mu_r
+ \le \frac{H+R(\rho)}q\sum_{e\in E}\lambda_e
+      -\frac q2\log\rho+O_r(\log q+\log\rho).
+ \label{eq:fixed-r-minimum}
+\end{equation}
+The difference between $q/2$ and $(q-1)/2$ is absorbed in the error.
+
+\begin{theorem}[Fixed-rank Chebyshev trap]
+\label{thm:fixed-rank-trap}
+Let $r$ be fixed.  Suppose $(0,0)\in E_H$, $q_H=|E_H|\to\infty$, and there are parameters
+$\rho_H\ge2$ such that
+\begin{equation}
+ \frac{H+R(\rho_H)}{q_H}\sum_{e\in E_H}\lambda_e
+ -\frac{q_H}{2}\log\rho_H\longrightarrow-\infty
+ \label{eq:shortness-criterion}
+\end{equation}
+faster than $\log q_H+\log\rho_H$.  Then, for all sufficiently large $H$, there are $r$
+linearly independent polynomials in $\Z[X,Y]$, supported in $E_H$, whose absolute values on
+$\Phi_H([0,1])$ are strictly less than one.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:fixed-r-minimum} makes $\mu_r<(2q_H)^{-1/2}$ for large $H$.  Choose $r$
+independent lattice vectors below that threshold and apply Lemma~\ref{lem:norm-to-sup}.
+\end{proof}
+
+\begin{statusbox}{\statusproved}
+Theorem~\ref{thm:fixed-rank-trap} is an existence theorem in the exact real Chebyshev lattice.
+A proof-producing implementation replaces the real coefficients by outward-rounded rational
+intervals and verifies the final sup-norm inequality independently; see
+Section~\ref{sec:certificate-design}.
+\end{statusbox}
+
+\section{Frequency-simplex optimization and a new block bound}
+\label{sec:block-bound}
+
+The choice of monomial support determines both sides of
+\eqref{eq:shortness-criterion}.  For fixed cardinality $q$, the negative Chebyshev term depends
+only on $q$, while the positive growth term is
+$\sum_{e\in E}\lambda_e$.  The optimal support is therefore obtained by taking the $q$
+smallest frequencies.
+
+Put
+\[
+ a:=\log2,
+ \qquad b:=\log3.
+\]
+For $L>0$, define the weighted frequency simplex
+\begin{equation}
+ E_L:=\{(i,j)\in\Nzero^2:ai+bj\le L\}.
+ \label{eq:weighted-simplex}
+\end{equation}
+Let
+\[
+ Q(L):=|E_L|,
+ \qquad
+ S(L):=\sum_{(i,j)\in E_L}(ai+bj).
+\]
+
+\subsection{Lattice-point asymptotics}
+
+\begin{lemma}[Weighted simplex count and first moment]
+\label{lem:simplex-asymptotics}
+As $L\to\infty$,
+\begin{align}
+ Q(L)&=\frac{L^2}{2ab}+O(L),\label{eq:QL}\\
+ S(L)&=\frac{L^3}{3ab}+O(L^2),\label{eq:SL}\\
+ \frac{S(L)}{Q(L)}&=\frac{2L}{3}+O(1).\label{eq:average-frequency}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Summing vertical fibers gives
+\[
+ Q(L)=\sum_{0\le i\le L/a}
+ \left(1+\left\lfloor\frac{L-ai}{b}\right\rfloor\right).
+\]
+Replacing each floor by its argument incurs $O(L)$, and the remaining arithmetic progression
+is the area $L^2/(2ab)$ plus $O(L)$.  For the first moment, sum
+\[
+ \sum_i\sum_{0\le j\le(L-ai)/b}(ai+bj).
+\]
+Replacing the inner sum by its integral incurs $O(L^2)$.  The integral over the triangle
+$ai+bj\le L$ is
+\[
+ \int_0^{L/a}\int_0^{(L-ai)/b}(ai+bj)\,dj\,di=\frac{L^3}{3ab}.
+\]
+Division yields~\eqref{eq:average-frequency}.
+\end{proof}
+
+\begin{proposition}[Asymptotic support optimality]
+\label{prop:support-optimality}
+Among all $q$-element subsets of $\Nzero^2$, the sum of frequencies is minimized by the
+$q$ lattice points with smallest values of $ai+bj$.  Hence weighted simplices are
+asymptotically optimal for the Chebyshev covolume problem.
+\end{proposition}
+
+\begin{proof}
+This is the rearrangement principle: if a support contains a frequency larger than an omitted
+one, swapping the two decreases the sum without changing $q$.
+\end{proof}
+
+The usual total-degree triangle $i+j\le d$ has average frequency
+$d(a+b)/3$.  At the same cardinality, the weighted simplex has asymptotic average
+$2\sqrt{2abq}/3$, improving the leading constant by the factor
+\[
+ \frac{2\sqrt{ab}}{a+b}=0.973\ldots.
+\]
+The gain is modest but exact and costs nothing.
+
+\subsection{Choice of the Bernstein ellipse}
+
+Insert $E_L$ into~\eqref{eq:first-minimum}.  By
+Lemma~\ref{lem:simplex-asymptotics},
+\begin{equation}
+ \log\mu_1
+ \le \frac{2L}{3}\bigl(H+R(\rho)\bigr)
+      -\frac{L^2}{4ab}\log\rho
+      +O(L^2+\log L).
+ \label{eq:weighted-minimum}
+\end{equation}
+The $O(L^2)$ term absorbs the boundary errors from $Q(L)$ and $S(L)$.
+
+For the unit block, the optimal ellipse grows with $L$.  Since
+$R(\rho)=\rho/4+1/2+O(\rho^{-1})$, differentiating the two $\rho$-dependent leading terms
+suggests
+\begin{equation}
+ \rho=\frac{3L}{2ab}.
+ \label{eq:rho-optimal-unit}
+\end{equation}
+With this choice,
+\begin{equation}
+ \log\mu_1
+ \le \frac{2LH}{3}-\frac{L^2}{4ab}\log L+O(L^2).
+ \label{eq:unit-minimum-final}
+\end{equation}
+The same leading estimate holds for every fixed successive minimum $\mu_r$ by
+\eqref{eq:fixed-r-minimum}.
+
+\subsection{The logarithmic-square saving}
+
+\begin{theorem}[Unconditional integer-point bound in a logarithmic unit block]
+\label{thm:block-bound}
+Let
+\[
+ I(H):=\#\{x\in[H,H+1):2^x\in\Z,\ 3^x\in\Z\}.
+\]
+Then
+\begin{equation}
+ \boxed{
+ \limsup_{H\to\infty}
+ I(H)\frac{(\log H)^2}{H^2}
+ \le \frac{32\log2\log3}{9}}
+ \label{eq:block-bound-main}
+\end{equation}
+and
+\[
+ \frac{32\log2\log3}{9}=2.70755559260021\ldots.
+\]
+More precisely, for every $\varepsilon>0$ and every fixed $r\ge1$, all sufficiently large
+$H$ admit $r$ independent uniformly short integer polynomials supported on a set of size
+\begin{equation}
+ \left(\frac{32\log2\log3}{9}+\varepsilon+o(1)\right)
+ \frac{H^2}{(\log H)^2},
+ \label{eq:q-size}
+\end{equation}
+so Theorem~\ref{thm:rank-codim} subtracts $r$ from that bound.
+\end{theorem}
+
+\begin{proof}
+Fix $\delta>0$ and choose
+\begin{equation}
+ L=\left(\frac{8ab}{3}+\delta\right)\frac{H}{\log H},
+ \qquad
+ \rho=\frac{3L}{2ab}.
+ \label{eq:Lchoice}
+\end{equation}
+Since $\log L=\log H+O(\log\log H)$, the two leading terms in
+\eqref{eq:unit-minimum-final} equal
+\begin{align*}
+ \frac{2LH}{3}-\frac{L^2}{4ab}\log L
+ &=-c_\delta\frac{H^2}{\log H}
+   +O\!\left(\frac{H^2\log\log H}{(\log H)^2}\right)
+\end{align*}
+for some $c_\delta>0$.  Thus the fixed-rank shortness criterion
+\eqref{eq:shortness-criterion} holds with a margin tending to $-\infty$.  Theorem
+\ref{thm:fixed-rank-trap} and then Theorem~\ref{thm:rank-codim} give
+$I(H)\le Q(L)-r$.
+
+Finally,
+\[
+ Q(L)=\frac{L^2}{2ab}+O(L)
+ =\left(\frac{32ab}{9}+O(\delta)\right)
+   \frac{H^2}{(\log H)^2}.
+\]
+Let $\delta\downarrow0$.
+\end{proof}
+
+\begin{statusbox}{\statusproved}
+Theorem~\ref{thm:block-bound} is the principal unconditional advance of this report.  It is
+not a reformulation of the conjecture and does not assume the primitive solution monoid.  Its
+input is only multiplicative independence of $2$ and $3$, Chebyshev coefficient decay,
+Cauchy--Binet, Minkowski's theorem, and strict total positivity.
+\end{statusbox}
+
+\subsection{Why the theorem still falls short}
+
+Under a counterexample,~\eqref{eq:exact-block-count} gives
+\[
+ I(H)=\frac{H}{\beta}+O(1).
+\]
+The new upper bound is
+\[
+ I(H)\ll\frac{H^2}{(\log H)^2},
+\]
+which is smaller than a quadratic bound by a logarithmic square but still larger than the
+conditional linear count by the factor $H/(\log H)^2$.  This is not a matter of constants.
+A proof needs either:
+
+\begin{itemize}
+\item a much smaller coefficient support;
+\item a rank $r$ so close to $q$ that the defect $q-r$ becomes $o(H)$; or
+\item an additional arithmetic mechanism that forces multiplicity or shared factors without
+paying the full coefficient-space dimension.
+\end{itemize}
+
+The next sections quantify the second possibility and audit the third.
+
+\section{Macroscopic windows and the exact high-corank threshold}
+\label{sec:window-optimization}
+
+The unit-block theorem uses an ellipse whose radius grows like $H/\log H$.  To compare the
+trap dimension directly with the quadratic cumulative population forced by a counterexample,
+consider a macroscopic exponent window
+\begin{equation}
+ \mathcal I_{H,r}:=[H,(1+r)H],\qquad r>0.
+ \label{eq:macro-window}
+\end{equation}
+Parameterize it by $z=H(1+rs)$, $0\le s\le1$.
+
+\subsection{Trap dimension in a fixed-ratio window}
+
+For a weighted simplex with $q$ monomials, its average frequency is
+\begin{equation}
+ \frac1q\sum_{e\in E}\lambda_e
+ =\frac{2}{3}\sqrt{2abq}+o(\sqrt q).
+ \label{eq:average-q}
+\end{equation}
+On a Bernstein ellipse of fixed parameter $\rho>1$, the largest real exponent is
+$H(1+rR(\rho))$.  The first-minimum inequality becomes negative when
+\begin{equation}
+ \sqrt q>
+ \frac{4\sqrt{2ab}}{3}
+ \frac{1+rR(\rho)}{\log\rho}\,H+o(H).
+ \label{eq:macro-q-threshold}
+\end{equation}
+Thus a fixed-rank trap can be built with
+\begin{equation}
+ q=\left(
+ \frac{32ab}{9}\frac{(1+rR(\rho))^2}{(\log\rho)^2}+o(1)
+ \right)H^2.
+ \label{eq:macro-q}
+\end{equation}
+
+\subsection{Population supplied by a counterexample}
+
+The cumulative conditional count below exponent $T$ is
+$T^2/(2\beta)+O(T)$.  Therefore the window~\eqref{eq:macro-window} contains
+\begin{equation}
+ \left(\frac{r+r^2/2}{\beta}+o(1)\right)H^2
+ \label{eq:macro-population}
+\end{equation}
+solutions.  The ratio between the fixed-rank trap dimension and this population is
+asymptotically
+\begin{equation}
+ \beta\,\kappa(r,\rho),
+ \qquad
+ \kappa(r,\rho):=
+ \frac{32ab}{9}
+ \frac{(1+rR(\rho))^2}{(r+r^2/2)(\log\rho)^2}.
+ \label{eq:kappa-r-rho}
+\end{equation}
+
+\subsection{Exact optimization}
+
+\begin{theorem}[Optimal macroscopic-window constant]
+\label{thm:kappa-opt}
+Let $t_0>0$ be the unique solution of
+\begin{equation}
+ t\tanh t=2.
+ \label{eq:t0}
+\end{equation}
+Then
+\begin{equation}
+ \kappa_*:=\inf_{r>0,\rho>1}\kappa(r,\rho)
+ =\frac{64\log2\log3}{9}\frac{\cosh t_0}{t_0^2}
+ =5.08726658072721\ldots.
+ \label{eq:kappa-star}
+\end{equation}
+The minimizers are
+\begin{align}
+ t_0&=2.06533813897470\ldots,\label{eq:t0-num}\\
+ \rho_0=e^{t_0}&=7.88796467504653\ldots,\label{eq:rho0}\\
+ r_0&=0.665032892479158\ldots.
+ \label{eq:r0}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+For fixed $\rho$, write $R=R(\rho)$.  Differentiating
+$(1+rR)^2/(r+r^2/2)$ gives the unique minimum
+\[
+ r=\frac1{R-1}.
+\]
+At this value,
+\[
+ \frac{(1+rR)^2}{r+r^2/2}=2(2R-1).
+\]
+Put $t=\log\rho$.  Since
+\[
+ 2R(\rho)-1=\frac{\rho+\rho^{-1}}2=\cosh t,
+\]
+we obtain
+\[
+ \inf_r\kappa(r,e^t)=\frac{64ab}{9}\frac{\cosh t}{t^2}.
+\]
+The derivative vanishes exactly when $t\sinh t=2\cosh t$, or
+$t\tanh t=2$.  The left side is strictly increasing from $0$ to infinity, so the root is
+unique.  Substitution gives the numerical values.
+\end{proof}
+
+\subsection{The required rank fraction}
+
+If a trap space has dimension $q$ and certified short rank $R_H$, its point bound is
+$q-R_H$.  In the optimized macroscopic window, contradiction with
+\eqref{eq:macro-population} requires
+\begin{equation}
+ \frac{R_H}{q}>1-\frac1{\kappa_*\beta}+o(1).
+ \label{eq:rank-fraction}
+\end{equation}
+
+\begin{corollary}[Numerical high-corank frontier]
+\label{cor:rank-frontier}
+Using the imported kernel-level bound $\beta\ge14$, a closing trap must certify
+\begin{equation}
+ \frac{R_H}{q}>0.985959341761414\ldots,
+ \label{eq:rank-kernel}
+\end{equation}
+that is, more than $98.59\%$ of all coefficient directions.  Using the existing
+software-level exclusion $\beta>27$, the threshold becomes
+\begin{equation}
+ \frac{R_H}{q}>0.992719658691104\ldots.
+ \label{eq:rank-software}
+\end{equation}
+\end{corollary}
+
+\begin{statusbox}{\statusproved}
+The constants in Theorem~\ref{thm:kappa-opt} and Corollary~\ref{cor:rank-frontier} are analytic,
+not fitted numerically.  The only numerical operation is evaluation of the unique root of
+$t\tanh t=2$.
+\end{statusbox}
+
+\subsection{Interpretation}
+
+A two-polynomial Coppersmith calculation is nowhere near the required regime.  Even a theorem
+producing ten, one hundred, or a fixed positive number of independent short vectors would not
+change the asymptotic comparison.  The needed statement is qualitatively different: the
+lattice must have only about $1.4\%$ of its directions above threshold at the kernel frontier,
+and less than $0.73\%$ at the software frontier.  This is why the next natural language is
+parametric geometry of numbers rather than ordinary LLL output.
+
+\section{What determinant volume can and cannot say about rank}
+\label{sec:volume-rank}
+
+Minkowski's second theorem controls the product of all successive minima.  Turning that product
+into a bound for a high individual minimum requires lower bounds for the earlier minima.  The
+diagonal tail rows provide such a lower bound, but it is exponentially small and therefore
+expensive when used repeatedly.
+
+\subsection{A general rank-tax inequality}
+
+Assume $(0,0)\in E$ and $\rho\ge2$.  From~\eqref{eq:tail-weight}, every nonzero lattice vector
+has norm at least $2\rho^{-q}$.  If $1\le r\le q$, then
+\[
+ \mu_1\cdots\mu_q
+ \ge (2\rho^{-q})^{r-1}\mu_r^{q-r+1}.
+\]
+Combining this with Minkowski's second theorem and Lemma~\ref{lem:covolume} yields
+\begin{align}
+ (q-r+1)\log\mu_r
+ &\le (H+R(\rho))\sum_{e\in E}\lambda_e
+      -\frac{q(q-1)}2\log\rho\notag\\
+ &\quad +(r-1)q\log\rho+O(q\log q).
+ \label{eq:rank-tax}
+\end{align}
+The term $(r-1)q\log\rho$ is the \emph{rank tax}.  It is absent for the first minimum and
+lower order for fixed $r$, but it is quadratic in $q$ when $r$ is a positive fraction of the
+dimension.
+
+\subsection{The one-half ceiling of this proof mechanism}
+
+Ignore the positive archimedean term in~\eqref{eq:rank-tax}; this only makes short vectors
+easier.  If $r=\alpha q+o(q)$, the leading $\log\rho$ coefficient in the numerator is
+\[
+ \left(-\frac12+\alpha\right)q^2.
+\]
+Therefore this determinant-plus-universal-lower-bound argument cannot prove
+$\mu_r<1$ for any fixed $\alpha>1/2$, even in the fictitious case where all monomial growth
+vanishes.  This is a ceiling of the \emph{argument}, not a lower bound on the actual minima.
+It shows that the $98.59\%$ target in~\eqref{eq:rank-kernel} cannot be reached by feeding the
+same covolume estimate into Minkowski more aggressively.
+
+\begin{warning}[Volume is not spectrum]
+A small determinant can coexist with a few extremely short directions and many long ones.
+Conversely, near-full short rank is a statement about the shape of the lattice, not merely its
+covolume.  Any future claim that ``the determinant is tiny, hence almost every basis vector is
+short'' must supply a genuine condition-number, transference, or successive-minimum theorem.
+\end{warning}
+
+\subsection{A conservation law in the unit-block asymptotic}
+
+For the unit-block weighted simplex, let the outer frequency scale be
+$L=cH/\log H$.  The determinant margin permits, through~\eqref{eq:rank-tax}, a rank fraction no
+larger than approximately
+\[
+ \alpha(c)<\frac12-\frac{4ab}{3c},
+ \qquad c>\frac{8ab}{3}.
+\]
+The residual coefficient defect has leading size
+\[
+ (1-\alpha(c))Q(L)
+ \gtrsim
+ \left(\frac12+\frac{4ab}{3c}\right)
+ \frac{c^2}{2ab}\frac{H^2}{(\log H)^2}.
+\]
+The right side is minimized at the threshold $c=8ab/3$, where $\alpha=0$, and reproduces
+exactly $32ab/9$.  Increasing the support makes more rank available, but the larger ambient
+dimension cancels the gain.  Within this coarse volume method, fixed-rank and fractional-rank
+optimization have the same leading point-count constant.
+
+\section{Parametric geometry of the trap lattices}
+\label{sec:pgn}
+
+The scale $H$ enters each monomial column through
+\[
+ e^{\lambda_eH}.
+\]
+After separating the $H$-independent Chebyshev data, the family is a diagonal flow with weight
+vector $(\lambda_e)_{e\in E}$.  This is the natural setting of Schmidt--Summerer parametric
+geometry of numbers and Roy's rigid-system realization theory
+\cite{SchmidtSummerer2009,SchmidtSummerer2013,Roy2015}.
+
+\subsection{Successive-minimum functions}
+
+For a fixed support and a fixed normalized interval, write
+\[
+ L_i(H):=\log\mu_i(H),\qquad 1\le i\le q.
+\]
+The columns of the defining lattice are multiplied by $e^{\lambda_eH}$ as $H$ varies.
+Standard parametric-geometry heuristics predict piecewise-linear behavior for the ordered
+functions $L_i(H)$, with slopes drawn from finite sums of the weights $\lambda_e$ and switch
+points at which distinct short-vector supports exchange order.
+
+Two features make this family more structured than a generic diagonal flow:
+
+\begin{enumerate}
+\item the weights are the two-dimensional semigroup $i\log2+j\log3$;
+\item the analytic rows are Chebyshev coefficients of the same exponentials, so their
+$H$-independent part is strictly totally positive.
+\end{enumerate}
+
+A high-corank theorem would follow from a strong upper bound on the upper tail of
+$L_i(H)$, not from control of their sum alone.
+
+\begin{target}[Trap-spectrum theorem]
+\label{target:trap-spectrum}
+For weighted-simplex supports in the optimized macroscopic window, prove one of the following:
+\begin{enumerate}
+\item at least $(1-1/(\kappa_*\beta)+\eta)q$ successive minima lie below the exact trap
+threshold for infinitely many $H$;
+\item the set of indices above threshold has cardinality $o(q)$;
+\item a transference inequality bounds the long tail by arithmetic data at primes dividing
+$6MA$ and forces the same conclusion under a hypothetical primitive pair $(M,A)$.
+\end{enumerate}
+Any one of these statements, with the first using $\beta\ge14$, proves the conjecture.
+\end{target}
+
+\subsection{Switch density as a finite combinatorial target}
+
+The coefficient vector of a short polynomial has a support pattern, sign pattern, and a
+leading Chebyshev cancellation pattern.  If only $o(q)$ directions are long, then almost all
+patterns must persist over substantial $H$-intervals.  Conversely, if patterns switch too
+often, pairs of nearly equal exponential weights arise.  Their gaps are integer linear forms
+in $\log2$ and $\log3$:
+\[
+ |(i-i')\log2+(j-j')\log3|.
+\]
+Baker's theorem gives explicit lower bounds for nonzero gaps.  This suggests a concrete
+program:
+
+\begin{target}[Switch-count bound]
+\label{target:switch-count}
+Show that the number of changes in the ordered short-vector support data over an $H$-interval
+of length $T$ is $o(qT)$, with an explicit defect small enough to force either a stable
+subspace or a contradiction with the rank threshold.
+\end{target}
+
+This target uses Baker theory in a role different from direct approximation: not to exclude a
+single counterexample, but to limit how rapidly the lattice spectrum can reorganize.
+
+\section{Dilation rigidity and multiscale persistence}
+\label{sec:dilation-rigidity}
+
+The normalized orbit sets are nested, while unnormalized points evolve by
+\[
+ (X,Y)\longmapsto(2X,3Y).
+\]
+Exact reuse of an auxiliary polynomial across scales is severely rigid.
+
+\subsection{A sparse dilation theorem}
+
+\begin{theorem}[Consecutive-dilation rigidity]
+\label{thm:dilation-rigidity}
+Let
+\[
+ P(X,Y)=\sum_{e=(i,j)\in E}c_eX^iY^j
+\]
+have $q$ nonzero monomials, and let $X,Y>0$.  If
+\begin{equation}
+ P(2^nX,3^nY)=0
+ \qquad(n=n_0,n_0+1,\ldots,n_0+q-1),
+ \label{eq:q-dilations}
+\end{equation}
+then $P=0$.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:q-dilations} is the square linear system
+\[
+ \sum_{e=(i,j)\in E}(c_eX^iY^j)(2^i3^j)^n=0.
+\]
+The bases $2^i3^j$ are distinct.  After factoring their $n_0$th powers, the coefficient matrix
+is an ordinary Vandermonde matrix and is invertible.  Hence every $c_eX^iY^j$ is zero, so every
+$c_e$ is zero.
+\end{proof}
+
+\begin{corollary}[No fixed trap for a persistent orbit point]
+A nonzero $q$-monomial polynomial cannot vanish at $q$ consecutive unnormalized incarnations
+of the same normalized orbit point.
+\end{corollary}
+
+This matters because a fixed orbit index $k$ persists: once $k\le K_H$,
+\[
+ (X_{H+1,k},Y_{H+1,k})=(2X_{H,k},3Y_{H,k}).
+\]
+A multiscale proof cannot simply discover one polynomial and replay it indefinitely.
+
+\subsection{Invariant subspaces of the dilation operator}
+
+Define
+\[
+ \mathscr D(P)(X,Y):=P(2X,3Y).
+\]
+On monomials,
+\[
+ \mathscr D(X^iY^j)=2^i3^jX^iY^j.
+\]
+The eigenvalues are simple.
+
+\begin{proposition}[Invariant-space classification]
+\label{prop:invariant-spaces}
+Every finite-dimensional $\mathscr D$-invariant subspace of $\R[X,Y]$ is spanned by
+monomials.
+\end{proposition}
+
+\begin{proof}
+The operator is diagonal in the monomial basis with pairwise distinct eigenvalues.  Every
+invariant subspace of a diagonal operator with simple spectrum is the span of a subset of its
+eigenvectors.
+\end{proof}
+
+A monomial never vanishes on the positive curve.  Therefore an exactly invariant trap space
+cannot solve the problem.
+
+\subsection{The viable replacement: controlled covariance}
+
+Exact invariance is too rigid, but adjacent trap lattices are not unrelated.  The coefficient
+weights are multiplied by $2^i3^j$, while the normalized point set changes by at most one
+orbit insertion.  A useful theorem would permit a low-rank error:
+
+\begin{target}[Approximate dilation covariance]
+\label{target:approx-covariance}
+Construct trap subspaces $W_H\subset\R^{E_H}$ and transport maps
+$T_H:W_H\to W_{H+1}$ such that
+\begin{enumerate}
+\item $\dim W_H=(1-o(1))|E_H|$;
+\item the uniformly short property is preserved by $T_H$;
+\item $\dim(W_{H+1}/T_HW_H)=o(H)$;
+\item the accumulated transport defect is incompatible with
+Theorem~\ref{thm:dilation-rigidity} unless no nonintegral orbit is present.
+\end{enumerate}
+\end{target}
+
+The fourth clause is essential: without it, a new basis can be chosen independently at every
+scale and nesting supplies no leverage.
+
+\section{Stable factors and unit-equation degeneration}
+\label{sec:stable-factors}
+
+If two short polynomials share a factor, the general Brisebarre--Hanrot algorithm may return
+``fail.''  On the power curve, common factors are not an obstacle to point counting, but they
+may contain useful multiscale information.
+
+\subsection{Finite recurrence is impossible}
+
+\begin{proposition}[Finite projective recurrence]
+\label{prop:finite-recurrence}
+Let $V\subset\R[X,Y]$ be finite dimensional.  Suppose that for infinitely many $H$ there is a
+nonzero $P_H\in V$ vanishing on the entire normalized set $\cC_H$, and suppose the projective
+classes $[P_H]\in\mathbb P(V)$ take only finitely many values.  Then no counterexample exists.
+\end{proposition}
+
+\begin{proof}
+One projective class occurs for infinitely many $H$.  Since the sets $\cC_H$ are nested and
+their cardinalities tend to infinity under a counterexample, the corresponding fixed
+polynomial vanishes at infinitely many points of the power arc.  Corollary
+\ref{cor:sparse-zero-bound} forces it to be zero, a contradiction.
+\end{proof}
+
+The proposition remains true when ``finitely many values'' is replaced by any condition that
+forces a fixed nonzero limit polynomial and controls convergence strongly enough to pass zeros
+to the limit.
+
+\subsection{Where unit-equation theory may enter}
+
+Factor coefficients produced by trap lattices are large integers with structured prime
+content.  If a bounded-degree factor recurs after the dilation rescaling
+$(X,Y)\mapsto(2X,3Y)$, its coefficients satisfy exponential recurrences.  Relations among
+several such factors become one-parameter families of unit equations.  The 2026 results of
+Wang--Xiao show that, under transverse boundary-divisor hypotheses, such families are forced
+into proper algebraic subsets and yield new gcd estimates for exponential Diophantine
+problems~\cite{WangXiao2026}.
+
+The missing bridge is explicit:
+
+\begin{target}[Stable-factor degeneration]
+\label{target:stable-factor}
+Show that a common factor occurring in a positive-density set of optimized trap spaces must,
+after monomial normalization, belong to a fixed algebraic family whose coefficient evolution
+is governed by a unit equation.  Prove that every degenerate family is monomial or binomial.
+The monomial case has no positive zeros; the binomial case would force a rational relation
+between $\log2$ and $\log3$.
+\end{target}
+
+This route is secondary to the successive-minimum target, but it is the correct response if
+large common factors repeatedly appear in exact computations.
+
+\section{Hermite multiplicity: a tempting route and its row-reset obstruction}
+\label{sec:jets}
+
+Multiplicity appears to offer an immediate improvement.  If an integer polynomial and all its
+partial derivatives of total order below $s$ are uniformly smaller than one, then all those
+integer values vanish at every exact point.  Each point becomes a zero of multiplicity at least
+$s$ on the restricted exponential polynomial.
+
+\begin{proposition}[Hermite trap bound]
+\label{prop:hermite-trap}
+Let $P\in\Z[X,Y]$ have $q$ nonzero monomials.  Suppose that for every
+$\alpha=(\alpha_1,\alpha_2)\in\Nzero^2$ with $|\alpha|<s$,
+\begin{equation}
+ \sup_{t\in J}
+ \left|\partial_X^{\alpha_1}\partial_Y^{\alpha_2}
+ P(2^{H+t},3^{H+t})\right|<1.
+ \label{eq:jet-short}
+\end{equation}
+Then the segment contains at most $(q-1)/s$ exact integer points.
+\end{proposition}
+
+\begin{proof}
+Every derivative value in~\eqref{eq:jet-short} is an integer at an integer point, hence zero.
+Thus $P$ has algebraic multiplicity at least $s$ there.  Composing with the analytic curve
+preserves at least that order of vanishing.  Corollary~\ref{cor:sparse-zero-bound} bounds the
+total zero multiplicity by $q-1$.
+\end{proof}
+
+If $s$ could grow like the square root of $q$ at negligible cost, this would reduce a quadratic
+coefficient budget to a linear point bound and might prove the conjecture.  The cost is not
+negligible.
+
+\subsection{Why derivatives are not free}
+
+For one derivative family, high-order Chebyshev modes carry the decay $\rho^{-n}$.  Adding all
+jets of order below $s$ creates
+\[
+ J_s=\binom{s+1}{2}
+\]
+new families, each with its own low Chebyshev modes.  A Cauchy--Binet minor can replace a very
+expensive mode $n\asymp q$ by mode $0$ from a derivative family.  The derivative contributes a
+scale penalty roughly
+\[
+ 2^{-H\alpha_1}3^{-H\alpha_2}
+\]
+but saves a Chebyshev penalty $\rho^{-n}$.  In the relevant regime,
+$q\log\rho\asymp H^2/\log H$ is much larger than $H$, so these row resets dominate the naive
+entrywise smallness of derivatives.
+
+There is also an exact algebraic calibration.
+
+\begin{lemma}[Jet matrix nondegeneracy]
+\label{lem:jet-matrix}
+Let
+\[
+ \mathcal T_s:=\{(i,j)\in\Nzero^2:i+j<s\}.
+\]
+At any point $(X_0,Y_0)$ with $X_0Y_0\ne0$, the square matrix
+\[
+ \left(\partial_X^{\alpha_1}\partial_Y^{\alpha_2}X^iY^j
+       \big|_{(X_0,Y_0)}\right)_{
+       \alpha\in\mathcal T_s,\ (i,j)\in\mathcal T_s}
+\]
+is invertible.
+\end{lemma}
+
+\begin{proof}
+If a polynomial of total degree below $s$ has all jets of total order below $s$ equal to zero
+at $(X_0,Y_0)$, its Taylor polynomial there is identically zero; hence the polynomial is zero.
+Thus the jet evaluation map is injective between vector spaces of the same dimension.
+\end{proof}
+
+Lemma~\ref{lem:jet-matrix} says that $J_s$ zero-mode jet rows can consume $J_s$ coefficient
+directions before any Chebyshev decay is used.  Multiplicity has a quadratic interpolation
+tax.
+
+\begin{target}[Subcritical Hermite regime]
+\label{target:subcritical-hermite}
+Determine the largest $s=s(q,H)$ for which the combined jet--Chebyshev lattice still has a
+short nonzero vector.  The interesting range is
+\[
+ \frac{H}{(\log H)^2}\ll s\ll\frac{H}{\log H},
+\]
+where multiplicity would reduce $q/s$ to $o(H)$ but the jet count
+$J_s$ is still $o(q)$.  A positive result in this range would prove the conjecture; a matching
+negative result would close the most direct multiplicity escape.
+\end{target}
+
+The target is concrete: it is a min-plus assignment problem between derivative order and
+Chebyshev mode, followed by one covolume estimate.  No transcendence theorem is hidden in its
+statement.
+
+\section{Exact Bessel factorization of the analytic lattice}
+\label{sec:bessel}
+
+The generic Bernstein-ellipse estimate is sufficient for asymptotics, but the present curve
+has an exact Chebyshev expansion.  With $u=2t-1$,
+\[
+ e^{\lambda(H+t)}=e^{\lambda(H+1/2)}e^{(\lambda/2)u}.
+\]
+The classical generating formula for modified Bessel functions is
+\begin{equation}
+ e^{zu}=I_0(z)+2\sum_{n\ge1}I_n(z)T_n(u).
+ \label{eq:bessel-cheb}
+\end{equation}
+Therefore
+\begin{equation}
+ a_{n,e}=\epsilon_n e^{\lambda_e(H+1/2)}I_n(\lambda_e/2),
+ \qquad
+ \epsilon_0=1,\quad\epsilon_n=2\ (n\ge1).
+ \label{eq:exact-cheb-coeff}
+\end{equation}
+
+\begin{proposition}[Diagonal-flow factorization]
+\label{prop:bessel-factorization}
+For the first $N$ Chebyshev rows and a support $E$, the coefficient matrix factors as
+\begin{equation}
+ A_N(H,E)=D_{\rm row}\,K_N(E)\,D_H,
+ \label{eq:bessel-factorization}
+\end{equation}
+where
+\[
+ (D_{\rm row})_{n,n}=\epsilon_n,
+ \qquad
+ K_N(E)_{n,e}=I_n(\lambda_e/2),
+ \qquad
+ (D_H)_{e,e}=e^{\lambda_e(H+1/2)}.
+\]
+All dependence on $H$ is in the final diagonal matrix.
+\end{proposition}
+
+This makes the parametric-geometry structure exact rather than heuristic.  It also gives a
+clean finite-verification route: interval enclosures for $\log2$, $\log3$, $e^x$, and
+$I_n(x)$ produce certified enclosures for every matrix entry, while the Bessel series gives a
+positive tail bound.
+
+\subsection{Compound matrices as the spectral bottleneck}
+
+The $k$th exterior power satisfies
+\[
+ \bigwedge^k A_N(H,E)=
+ (\bigwedge^kD_{\rm row})(\bigwedge^kK_N(E))(\bigwedge^kD_H).
+\]
+The last factor is explicit: its diagonal entries are
+$e^{H\sum_{e\in F}\lambda_e}$ over $k$-subsets $F\subset E$.  Thus every nontrivial
+condition-number question is concentrated in the fixed Bessel matrix $K_N(E)$.
+
+\begin{target}[Bessel compound bounds]
+\label{target:bessel-compounds}
+For weighted-simplex frequency sets, obtain uniform lower and upper bounds for a
+$1-o(1)$ fraction of the singular values of $K_q(E)$, or equivalently for the bulk of its
+compound minors.  Bounds strong enough to prevent concentration of covolume in $o(q)$ singular
+directions would convert the determinant estimate into the high-corank conclusion required by
+Corollary~\ref{cor:rank-frontier}.
+\end{target}
+
+The entries of $K$ are positive and the underlying exponential kernel is strictly totally
+positive.  This makes total-positivity techniques, oscillatory matrices, and variation-
+diminishing factorizations natural tools.  The report does not assume that the finite Bessel
+matrix is uniformly well conditioned; establishing or refuting precisely that assertion is
+the point of Target~\ref{target:bessel-compounds}.
+
+\subsection{An exact tail formula}
+
+For $z\ge0$, every $I_n(z)$ is positive and
+\[
+ I_n(z)=\sum_{k\ge0}\frac{(z/2)^{n+2k}}{k!(n+k)!}.
+\]
+Hence a rational interval upper bound for $z$ gives a monotone, proof-producing upper bound on
+\[
+ 2e^{\lambda(H+1/2)}\sum_{n\ge N}I_n(\lambda/2).
+\]
+One may bound this series either termwise or by the Bernstein estimate
+\eqref{eq:tail-weight}.  In a finite certificate, the smaller of the two bounds can be stored.
+No numerical quadrature is required.
+
+\section{General multiplicatively independent bases}
+\label{sec:general-bases}
+
+The method is not special to $2$ and $3$.  Let $u,v>1$ be multiplicatively independent
+integers and put
+\[
+ a_u=\log u,
+ \qquad b_v=\log v.
+\]
+Define
+\[
+ I_{u,v}(H):=\#\{x\in[H,H+1):u^x,v^x\in\Z\}.
+\]
+Every monomial restricts to the frequency $i\log u+j\log v$, and the exact block scales
+$u^H,v^H$ are integers.
+
+\begin{theorem}[Two-base block theorem]
+\label{thm:general-bases}
+For multiplicatively independent integers $u,v>1$,
+\begin{equation}
+ \limsup_{H\to\infty}
+ I_{u,v}(H)\frac{(\log H)^2}{H^2}
+ \le\frac{32\log u\log v}{9}.
+ \label{eq:general-base-bound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Repeat Sections~\ref{sec:total-positivity}--\ref{sec:block-bound} with frequencies
+$i\log u+j\log v$ and the weighted simplex
+$i\log u+j\log v\le L$.
+\end{proof}
+
+The constant is smallest when the logarithms are unbalanced, but the conjectural structure of
+counterexamples also changes.  The theorem is best viewed as a general sparse-curve counting
+principle rather than evidence that one pair of bases is intrinsically easier.
+
+\section{Proof-producing finite certificates}
+\label{sec:certificate-design}
+
+The asymptotic theorem is useful conceptually, but a finite verifier can extend zero-free
+regions and provide data about the full successive-minimum spectrum.  The essential principle
+is separation of \emph{discovery} from \emph{verification}: LLL, floating-point Bessel values,
+and support heuristics may discover a candidate; the final certificate is checked by exact
+integer arithmetic plus outward-rounded intervals.
+
+\subsection{Certificate contents}
+
+For each interval $J=[\alpha,\beta]\subset[0,1]$, store:
+
+\begin{enumerate}
+\item the integer scale $H$ and rational endpoints $\alpha,\beta$;
+\item the ordered monomial support $E$;
+\item integer coefficient vectors $c^{(1)},\ldots,c^{(r)}$;
+\item an exact nonzero $r\times r$ minor certifying their rank;
+\item rational intervals enclosing the first $N$ Chebyshev coefficients of every restricted
+monomial;
+\item rational upper bounds for all tails;
+\item a rational number $U_a<1$ satisfying
+\[
+ \sum_{n<N}\left|\sum_ec^{(a)}_e a_{n,e}\right|
+ +\sum_e|c^{(a)}_e|\operatorname{Tail}_e\le U_a.
+\]
+\end{enumerate}
+
+The verifier never needs to reproduce the LLL reduction.  It checks the integer minor, the
+coefficient enclosures, and the displayed rational inequality.  Theorem
+\ref{thm:rank-codim} then returns the point bound $|E|-r$.
+
+\subsection{Directed rounding}
+
+The only transcendental constants are $\log2$, $\log3$, exponentials, and Bessel values at
+positive arguments.  All admit rapidly convergent monotone series or standard interval-library
+implementations.  A robust verifier can use either:
+
+\begin{itemize}
+\item MPFR/Arb directed rounding to produce rational dyadic endpoints; or
+\item a small standalone rational checker for truncated Taylor/Bessel series with a proved
+remainder.
+\end{itemize}
+
+The second option is slower but minimizes the trusted code base and is well suited to Lean
+replay.
+
+\subsection{Discovery algorithm}
+
+A practical search can use the following pipeline.
+
+\begin{lstlisting}[style=pseudocode]
+INPUT: scale H, interval J, target defect d_target
+1. Choose a weighted-frequency support E and Chebyshev cutoff N >= |E|.
+2. Compute high-precision enclosures for the Bessel coefficient matrix.
+3. Build an integer-scaled approximation lattice, including tail rows.
+4. Run LLL/BKZ to obtain many candidate coefficient vectors.
+5. Sort candidates by rigorously verified curve sup bound.
+6. Retain vectors with bound < 1 and compute their exact Z-rank.
+7. If |E| - rank <= d_target, emit a certificate for J.
+8. Otherwise split J or modify E, N, and the lattice scaling.
+OUTPUT: exact certificate or a diagnostic successive-minimum profile.
+\end{lstlisting}
+
+For finite exclusion of a nonintegral point in a unit block, one can account separately for
+the known integral point $(2^H,3^H)$.  A cover defect of at most one proves that there is no
+additional point.  A defect of zero on the open interval $(0,1)$ is even cleaner.
+
+\subsection{Why this can outperform point scanning}
+
+A direct scan examines candidate integers one at a time.  A trap certificate excludes an
+entire continuum interval at once.  The cost is shifted from the number of possible $X$ values
+to the dimension of a structured lattice, which grows polynomially in $H$.  The asymptotic
+theorem does not yet make this polynomial small enough for a proof, but for finite $H$ the
+constant and the observed rank can be far better than the worst-case estimates.
+
+\begin{experiment}[Certificate reconnaissance]
+\label{exp:recon}
+\statuscompute\quad
+For each $14\le H\le40$, compute the full verified rank curve
+\[
+ r\longmapsto\mu_r(H)
+\]
+for several weighted-simplex and thin-shell supports.  Record:
+\begin{enumerate}
+\item the certified defect $q-r$ at threshold;
+\item the distribution of coefficient supports and signs;
+\item common factors among short polynomials;
+\item the change under $H\mapsto H+1$;
+\item the singular spectrum of the fixed Bessel matrix.
+\end{enumerate}
+The aim is not merely to enlarge a finite bound, but to decide empirically which of
+Targets~\ref{target:trap-spectrum}, \ref{target:bessel-compounds},
+\ref{target:approx-covariance}, or \ref{target:stable-factor} has the right shape.
+\end{experiment}
+
+\section{Lean formalization plan}
+\label{sec:lean-plan}
+
+The core deterministic theorem is unusually formalization-friendly.  It separates into small
+modules with few analytic dependencies.
+
+\subsection{Phase I: exact algebra}
+
+\begin{enumerate}
+\item \texttt{ExpFrequency}: prove injectivity of
+$(i,j)\mapsto i\log2+j\log3$ from unique factorization.
+\item \texttt{ExpVandermonde}: formalize rank of
+$(e^{\lambda_jt_i})$ for ordered distinct nodes and frequencies.  A Rolle-theorem proof avoids
+heavy total-positivity libraries.
+\item \texttt{CurveEvaluationRank}: package Corollary~\ref{cor:evaluation-rank}.
+\item \texttt{RankCodimensionTrap}: prove Theorem~\ref{thm:rank-codim} from integer-valuedness
+and matrix rank.
+\item \texttt{DilationRigidity}: formalize Theorem~\ref{thm:dilation-rigidity} as an ordinary
+Vandermonde argument over $\R$.
+\end{enumerate}
+
+\subsection{Phase II: certificate checker}
+
+The checker need not formalize LLL or Minkowski.  Its input is a finite list of integer vectors
+and rational interval bounds.  Required modules are:
+
+\begin{enumerate}
+\item rational interval arithmetic;
+\item exact determinant/rank checking over $\Z$;
+\item a verified bound for Chebyshev polynomials on $[-1,1]$;
+\item a verified exponential/Bessel tail inequality;
+\item interval cover bookkeeping.
+\end{enumerate}
+
+This phase can certify concrete finite exclusions independently of the asymptotic existence
+proof.
+
+\subsection{Phase III: asymptotic theorem}
+
+Formalizing Theorem~\ref{thm:block-bound} requires:
+
+\begin{enumerate}
+\item Bernstein-ellipse coefficient bounds;
+\item Cauchy--Binet and Hadamard estimates;
+\item Minkowski's second theorem for Euclidean lattices;
+\item the weighted-simplex lattice-point asymptotics;
+\item routine logarithmic asymptotics for the choice~\eqref{eq:Lchoice}.
+\end{enumerate}
+
+This is substantial but modular.  The recommended order is to formalize the rank--codimension
+checker first, because it can validate computational certificates long before the general
+Minkowski theorem is available in the repository.
+
+\section{Comparison with the inherited methods}
+\label{sec:comparison}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}@{}}
+\toprule
+Method & Arithmetic object & Best scale exposed & Remaining obstruction \\
+\midrule
+\endfirsthead
+\toprule
+Method & Arithmetic object & Best scale exposed & Remaining obstruction \\
+\midrule
+\endhead
+Four exponentials & $2\times2$ exponential matrix & Exact qualitative barrier & Conjectural transcendence theorem \\
+Determinant/$p$-adic methods in Report IV & Integer semigroup determinants & Sharp termwise and cancellation ceilings & Missing second source of size \\
+O-minimal counting & Rational points on fixed arc & Polylogarithmic upper bounds & Exponent too large; denominator support ignored \\
+Brisebarre--Hanrot general algorithm & Two small auxiliary polynomials & Efficient local point isolation & Possible common factor \\
+This report: one sparse trap & Exponential Chebyshev sum & $H^2/(\log H)^2$ block bound & Still superlinear \\
+This report: rank--codimension & Full short-vector subspace & Exact defect $q-r$ & Need $>98.59\%$ rank \\
+This report: Bessel/PGN & Successive-minimum spectrum & Exact diagonal-flow factorization & Bulk singular-value theorem missing \\
+Hermite jets & Partial-derivative trap & Potential multiplicity gain & Quadratic jet-row reset tax \\
+Stable factors & Dilation-covariant factor families & Could convert failure into rigidity & Unit-equation bridge not yet built \\
+\bottomrule
+\end{longtable}
+
+The new route is complementary to Report IV's determinant program.  Both manufacture small
+integer-valued analytic objects, but they organize arithmetic differently.  The previous
+program studies determinants of values at many semigroup points; the present program studies
+many coefficient vectors small on an entire curve segment.  Their shared barrier is now
+visible as a rank statement: local volume decay is easy, while broad, correlated cancellation
+across almost all directions is hard.
+
+\section{Prioritized research program}
+\label{sec:research-program}
+
+The calculations above narrow the next work to five testable programs.  They are ordered by
+expected information gain, not by apparent elegance.
+
+\subsection{Priority A: build the deterministic finite verifier}
+
+Implement Section~\ref{sec:certificate-design} first.  This has three immediate payoffs:
+
+\begin{enumerate}
+\item it can extend the finite zero-free region without enumerating every integer candidate;
+\item it measures the actual rank at the strict threshold, which the asymptotic covolume cannot
+predict;
+\item it reveals whether common factors, stable supports, or Bessel condition numbers are the
+real finite-scale phenomenon.
+\end{enumerate}
+
+\textbf{Kill criterion.}  If optimized supports through the feasible range consistently have
+rank defect comparable to $q$, then near-full-rank closure is implausible without new
+arithmetic rows.  If the defect is small or decreases rapidly with $H$, the PGN program becomes
+the highest priority.
+
+\subsection{Priority B: analyze the fixed Bessel matrix}
+
+The factorization~\eqref{eq:bessel-factorization} isolates the only non-diagonal analytic
+object.  Compute and prove:
+
+\begin{itemize}
+\item signs and magnitudes of all contiguous minors;
+\item asymptotic singular-value density for weighted-simplex frequencies;
+\item variation-diminishing or Neville-elimination factorizations;
+\item compound-matrix bounds uniform in $q$.
+\end{itemize}
+
+\textbf{Kill criterion.}  An exponentially broad singular-value distribution with a positive
+fraction above the trap threshold would show that analytic total positivity alone cannot meet
+the high-corank target.
+
+\subsection{Priority C: add arithmetic rows tied to a primitive pair}
+
+The unconditional lattice sees only the curve and therefore treats the integral branch and a
+hypothetical second generator symmetrically.  A closing proof must likely add rows that exist
+only when integer coordinates have the fixed semigroup form
+$(2^nM^k,3^nA^k)$.  Candidate rows include:
+
+\begin{itemize}
+\item congruences at structural primes dividing $MA$ but not $6$;
+\item common-factor data from adjacent normalized orbit points;
+\item exact valuation constraints on coefficients evaluated over a whole nested block;
+\item transported factors under $(X,Y)\mapsto(2X,3Y)$.
+\end{itemize}
+
+The objective is not more covolume in a few directions.  It is to lift the bottom of the
+successive-minimum spectrum, so that a determinant bound forces the remaining directions to be
+short.
+
+\textbf{Kill criterion.}  If every added arithmetic row is supported on only $o(q)$ coefficient
+directions or contributes only $O(H)$ total logarithmic weight, it cannot alter the
+$98.59\%$ rank requirement.
+
+\subsection{Priority D: solve the jet min-plus problem}
+
+Target~\ref{target:subcritical-hermite} is the only route in this report that could change the
+point-count exponent directly.  Form the combined derivative--Chebyshev matrix, assign to a row
+$(\alpha,n)$ the leading cost
+\[
+ H(\alpha_1\log2+\alpha_2\log3)+n\log\rho,
+\]
+and compute the minimum total cost of a full-rank row selection.  The exact falling-factorial
+minors decide which assignments are admissible.
+
+\textbf{Positive outcome.}  A multiplicity
+$s\gg H/(\log H)^2$ with a support of size $O(H^2/(\log H)^2)$ proves the conjecture.
+
+\textbf{Negative outcome.}  A matching assignment lower bound showing
+$s=O(H/(\log H)^2)$ closes the most direct Hermite escape and supplies a reusable no-go theorem.
+
+\subsection{Priority E: stable factors and unit equations}
+
+Run factorization on every certified short polynomial and track factors after dilation
+normalization.  If a bounded-complexity factor family recurs, attempt the Wang--Xiao
+integral-point degeneration route.  If factors do not recur, the data supports a pure PGN
+model instead.
+
+\section{Conclusion}
+
+The attached report showed that the conjecture lies exactly on the four-exponentials frontier
+and closed many plausible determinant, $p$-adic, cyclotomic, and dynamical shortcuts.  The new
+2026 Coppersmith--Chebyshev input does not magically cross that frontier, but it changes the
+shape of the search in four concrete ways.
+
+First, the problem is now an exact rational-grid problem on one fixed analytic arc.  Second,
+strict total positivity removes the generic coprimality heuristic and turns every independent
+short vector into one unit of point-count codimension.  Third, optimizing the frequency support
+and the Chebyshev ellipse gives a new unconditional logarithmic-square saving:
+\[
+ I(H)\le(2.7075555926\ldots+o(1))\frac{H^2}{(\log H)^2}.
+\]
+Fourth, optimizing over macroscopic windows converts the residual gap into a precise spectral
+target: at the present kernel frontier, more than $98.59\%$ of the coefficient space must be
+certified short.
+
+That target is difficult, but it is neither vague nor equivalent to simply restating the
+conjecture.  It can be attacked computationally, through Bessel compound matrices, through
+parametric geometry of numbers, through structural-prime rows, or through controlled
+multiscale covariance.  Each attack has an exact success criterion and an exact failure mode.
+The next decisive experiment is therefore clear: build the proof-producing verifier, measure
+the full successive-minimum spectrum, and let the observed defect determine which theorem to
+pursue.
+
+\appendix
+
+\section{A Rolle-theorem proof of the sparse zero bound}
+\label{app:rolle}
+
+For formalization it is useful to avoid invoking the general theory of total positivity.
+We record the elementary induction.
+
+\begin{theorem}[Exponential sums have few zeros]
+Let $\lambda_1<\cdots<\lambda_q$ and
+\[
+ F(t)=\sum_{j=1}^q c_je^{\lambda_jt}
+\]
+be nonzero.  Then $F$ has at most $q-1$ real zeros counted with multiplicity.
+\end{theorem}
+
+\begin{proof}
+Induct on $q$.  The assertion is clear for $q=1$.  Suppose it holds for $q-1$ and divide by
+the first exponential:
+\[
+ G(t)=e^{-\lambda_1t}F(t)
+     =c_1+\sum_{j=2}^q c_je^{(\lambda_j-\lambda_1)t}.
+\]
+If $G$ has $m$ zeros counted with multiplicity, then $G'$ has at least $m-1$ zeros counted with
+multiplicity.  This follows by applying Rolle between distinct zeros and reducing each positive
+multiplicity by one at the same location.  But
+\[
+ G'(t)=\sum_{j=2}^q c_j(\lambda_j-\lambda_1)e^{(\lambda_j-\lambda_1)t}
+\]
+is either zero or a nontrivial sum of at most $q-1$ exponentials.  If it is nonzero, induction
+gives $m-1\le q-2$.  If it is zero, then all $c_j$ for $j\ge2$ vanish and $G$ is a nonzero
+constant, so $m=0$.  Thus $m\le q-1$.
+\end{proof}
+
+The same induction proves nonsingularity of every square evaluation matrix: a nonzero kernel
+vector would give a nontrivial sum with at least as many distinct zeros as terms.
+
+\section{Detailed fixed-rank successive-minimum estimate}
+\label{app:fixed-rank}
+
+Let $B$ be the matrix~\eqref{eq:Bmatrix}, let $\Delta=\sqrt{\det(B^TB)}$, and let
+$\mu_1\le\cdots\le\mu_q$ be the Euclidean successive minima.  The volume of the unit ball is
+\[
+ \omega_q=\frac{\pi^{q/2}}{\Gamma(q/2+1)},
+ \qquad
+ -\log\omega_q=\frac q2\log q+O(q).
+\]
+Minkowski gives
+\begin{equation}
+ \mu_1\cdots\mu_q\le\frac{2^q\Delta}{\omega_q}.
+ \label{eq:minkowski-product}
+\end{equation}
+Because $(0,0)\in E$, the smallest diagonal tail weight is
+\[
+ \tau_{0,0}=\frac{2\rho^{-q}}{1-\rho^{-1}}\ge2\rho^{-q}.
+\]
+For every nonzero $c\in\Z^E$,
+$\|Bc\|_2\ge2\rho^{-q}$.  Hence, for fixed $r$,
+\[
+ (2\rho^{-q})^{r-1}\mu_r^{q-r+1}
+ \le\mu_1\cdots\mu_q.
+\]
+Together with~\eqref{eq:minkowski-product},
+\begin{align*}
+ \log\mu_r
+ &\le\frac{1}{q-r+1}
+ \left(\log\Delta+(r-1)q\log\rho+O(q\log q)\right)\\
+ &\le\frac{H+R}{q-r+1}\sum_e\lambda_e
+ -\frac{q(q-1)}{2(q-r+1)}\log\rho
+ +\frac{(r-1)q}{q-r+1}\log\rho+O_r(\log q).
+\end{align*}
+For fixed $r$, replacing $q-r+1$ by $q$ in the leading terms changes the expression by
+$O_r((H\bar\lambda)/q+\log\rho)$, which is lower order in the applications.  This yields
+\eqref{eq:fixed-r-minimum}.
+
+\section{Numerical constants and optimization data}
+\label{app:constants}
+
+All logarithms in this report are natural.  The constants are:
+\begin{align*}
+ \log2&=0.6931471805599453094\ldots,\\
+ \log3&=1.0986122886681096914\ldots,\\
+ \frac{32\log2\log3}{9}&=2.707555592600207\ldots.
+\end{align*}
+The root of $t\tanh t=2$ is
+\[
+ t_0=2.065338138974704728\ldots,
+ \qquad
+ \rho_0=e^{t_0}=7.887964675046528\ldots.
+\]
+Then
+\begin{align*}
+ R(\rho_0)&=2.503685361986428\ldots,\\
+ r_0&=\frac1{R(\rho_0)-1}=0.665032892479158\ldots,\\
+ \kappa_*&=5.087266580727214\ldots.
+\end{align*}
+The rank thresholds are summarized below.
+
+\begin{center}
+\small\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
+\toprule
+Input on least generator & $\kappa_*\beta$ & Required rank fraction & Maximum defect fraction \\
+\midrule
+Kernel level $\beta\ge14$ & $71.221732\ldots$ & $0.98595934\ldots$ & $0.01404066\ldots$ \\
+Software level $\beta>27$ & $137.356198\ldots$ & $0.99271966\ldots$ & $0.00728034\ldots$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For comparison, using the unweighted total-degree triangle would give the larger window
+constant
+\[
+ \frac{16(\log6)^2}{9}\frac{\cosh t_0}{t_0^2}
+ =5.361841943267\ldots.
+\]
+The weighted simplex reduces it by the exact factor
+$4\log2\log3/(\log6)^2=0.948\ldots$.
+
+\section{A machine-checkable certificate schema}
+\label{app:schema}
+
+A compact textual schema can be organized as follows.
+
+\begin{lstlisting}[style=pseudocode]
+certificate_version: 1
+scale_H: integer
+intervals:
+  - left: rational
+    right: rational
+    support: [[i_1,j_1],...,[i_q,j_q]]
+    chebyshev_cutoff: N
+    polynomials:
+      - coefficients: [c_1,...,c_q]
+        rank_minor_row: optional
+        verified_upper_bound: rational < 1
+    rank_minor:
+      row_indices: [...]
+      column_indices: [...]
+      determinant: nonzero integer
+    coefficient_intervals:
+      # interval enclosure for each n,e
+    tail_bounds:
+      # nonnegative rational for each e
+claimed_point_bound: sum(q-r)
+\end{lstlisting}
+
+A checker performs no search.  It verifies:
+
+\begin{enumerate}
+\item every support exponent is nonnegative;
+\item coefficient vectors and the stored minor agree;
+\item the minor determinant is nonzero;
+\item interval arithmetic proves each displayed upper bound;
+\item intervals cover the requested parameter range;
+\item the claimed point bound equals the sum of local defects.
+\end{enumerate}
+
+The mathematical kernel is Theorem~\ref{thm:rank-codim}; all other operations are finite.
+
+\section{Dependency graph of the new results}
+\label{app:dependency}
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}p{0.27\textwidth}X@{}}
+\toprule
+Result & Dependencies \\
+\midrule
+Sparse zero bound & Multiplicative independence of $2,3$; Rolle's theorem \\
+Rank--codimension trap & Sparse evaluation rank; integer-valuedness \\
+Norm-to-sup transfer & Chebyshev expansion; Cauchy--Schwarz \\
+Covolume bound & Bernstein coefficient bound; Cauchy--Binet; Hadamard \\
+Fixed-rank trap & Covolume bound; Minkowski's second theorem \\
+Weighted block theorem & Fixed-rank trap; weighted simplex count and first moment \\
+Window constant & Weighted threshold; elementary two-variable optimization \\
+Dilation rigidity & Ordinary Vandermonde determinant \\
+Hermite trap & Integer derivatives; sparse zero multiplicity \\
+Finite certificate checker & Rank--codimension theorem; rational interval arithmetic \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} \textbf{56} (1944),
+448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{BrisebarreHanrot2026}
+N.~Brisebarre and G.~Hanrot,
+\newblock Integer points close to a transcendental curve: an algorithmic approach,
+\newblock arXiv:2606.04858, 2026.
+
+\bibitem{Cassels1959}
+J.~W.~S.~Cassels,
+\newblock \emph{An Introduction to the Geometry of Numbers},
+\newblock Springer, 1959.
+
+\bibitem{Karlin1968}
+S.~Karlin,
+\newblock \emph{Total Positivity}, Vol.~I,
+\newblock Stanford University Press, 1968.
+
+\bibitem{Pinkus2010}
+A.~Pinkus,
+\newblock \emph{Totally Positive Matrices},
+\newblock Cambridge University Press, 2010.
+
+\bibitem{ReportIV}
+V.~Reshetnikov and the ProveIt project,
+\newblock \emph{The Alaoglu--Erd\H{o}s Integer-Exponent Conjecture: Unified Report},
+\newblock attached Report IV, 2026.
+
+\bibitem{Roy2015}
+D.~Roy,
+\newblock On Schmidt and Summerer parametric geometry of numbers,
+\newblock \emph{Annals of Mathematics} \textbf{182} (2015), 739--786.
+
+\bibitem{SchmidtSummerer2009}
+W.~M.~Schmidt and L.~Summerer,
+\newblock Parametric geometry of numbers and applications,
+\newblock \emph{Acta Arithmetica} \textbf{140} (2009), 67--91.
+
+\bibitem{SchmidtSummerer2013}
+W.~M.~Schmidt and L.~Summerer,
+\newblock Diophantine approximation and parametric geometry of numbers,
+\newblock \emph{Monatshefte f\"ur Mathematik} \textbf{169} (2013), 51--104.
+
+\bibitem{TaoJacobian2026}
+T.~Tao,
+\newblock A digestion of the Jacobian conjecture counterexample,
+\newblock blog article, 21 July 2026,
+\newblock \url{https://terrytao.wordpress.com/2026/07/21/a-digestion-of-the-jacobian-conjecture-counterexample/}.
+
+\bibitem{EpochHadamard2026}
+Epoch AI,
+\newblock Hadamard matrix of order 668,
+\newblock research announcement, 2026,
+\newblock \url{https://epoch.ai/frontiermath/open-problems/hadamard}.
+
+\bibitem{Waldschmidt2000}
+M.~Waldschmidt,
+\newblock \emph{Diophantine Approximation on Linear Algebraic Groups},
+\newblock Springer, 2000.
+
+\bibitem{WangXiao2026}
+J.~T.-Y.~Wang and Z.~Xiao,
+\newblock Families of unit equations and exponential Diophantine problems via integral points,
+\newblock arXiv:2604.26497, 2026.
+
+\end{thebibliography}
+
+\end{document}
