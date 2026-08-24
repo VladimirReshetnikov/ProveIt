@@ -1272,4 +1272,177 @@ theorem negativeLaplacePsi_not_constant :
       rw [intervalIntegral_negativeLaplaceFourierWeight_eq_zero 1 one_ne_zero,
         mul_zero]
 
+lemma negativeLaplacePsiFourierCoeff_eq_secondDerivCoeff
+    (k : ℤ) (hk : k ≠ 0) :
+    negativeLaplacePsiFourierCoeff k =
+      (1 / (-2 * (Real.pi : ℂ) * I * (k : ℂ))) ^ 2 *
+        fourierCoeffOn zero_lt_one
+          (fun t : ℝ => ((deriv (deriv negativeLaplacePsi) t : ℝ) : ℂ)) k := by
+  have hfirst := fourierCoeffOn_of_hasDerivAt zero_lt_one hk
+    (f := fun t : ℝ => (negativeLaplacePsi t : ℂ))
+    (f' := fun t : ℝ => ((deriv negativeLaplacePsi t : ℝ) : ℂ))
+    (fun x hx => (negativeLaplacePsi_hasDerivAt x).ofReal_comp)
+    ((continuous_ofReal.comp continuous_deriv_negativeLaplacePsi).intervalIntegrable 0 1)
+  have hsecond := fourierCoeffOn_of_hasDerivAt zero_lt_one hk
+    (f := fun t : ℝ => ((deriv negativeLaplacePsi t : ℝ) : ℂ))
+    (f' := fun t : ℝ => ((deriv (deriv negativeLaplacePsi) t : ℝ) : ℂ))
+    (fun x hx => (negativeLaplacePsi_deriv_hasDerivAt x).ofReal_comp)
+    ((continuous_ofReal.comp continuous_secondDeriv_negativeLaplacePsi).intervalIntegrable 0 1)
+  have hpend : negativeLaplacePsi 1 = negativeLaplacePsi 0 := by
+    simpa using negativeLaplacePsi_add_one 0
+  have hderivend : deriv negativeLaplacePsi 1 = deriv negativeLaplacePsi 0 := by
+    simpa using negativeLaplacePsi_deriv_add_one 0
+  rw [hpend] at hfirst
+  rw [hderivend] at hsecond
+  norm_num at hfirst hsecond
+  unfold negativeLaplacePsiFourierCoeff
+  rw [hfirst, hsecond]
+  have hpi : (Real.pi : ℂ) ≠ 0 := ofReal_ne_zero.mpr Real.pi_ne_zero
+  have hkC : (k : ℂ) ≠ 0 := Int.cast_ne_zero.mpr hk
+  field_simp [hpi, hkC, I_ne_zero]
+  rw [show I ^ 4 = (1 : ℂ) by norm_num [pow_succ], one_mul]
+
+lemma exists_bound_negativeLaplacePsi_secondDerivFourierCoeff :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ k : ℤ,
+      ‖fourierCoeffOn zero_lt_one
+        (fun t : ℝ => ((deriv (deriv negativeLaplacePsi) t : ℝ) : ℂ)) k‖ ≤ C := by
+  rcases exists_bound_abs_secondDeriv_negativeLaplacePsi with ⟨C, hC0, hC⟩
+  refine ⟨C, hC0, fun k => ?_⟩
+  rw [fourierCoeffOn_zero_one_eq_weight_integral]
+  have hbound := intervalIntegral.norm_integral_le_of_norm_le_const
+    (f := fun t : ℝ => negativeLaplaceFourierWeight k t *
+      ((deriv (deriv negativeLaplacePsi) t : ℝ) : ℂ))
+      (a := 0) (b := 1) (C := C) (by
+      intro t ht
+      rw [norm_mul, norm_negativeLaplaceFourierWeight, one_mul,
+        norm_real, Real.norm_eq_abs]
+      exact hC t)
+  norm_num at hbound ⊢
+  exact hbound
+
+lemma norm_fourierDenominator_inv_sq (k : ℤ) :
+    ‖(1 / (-2 * (Real.pi : ℂ) * I * (k : ℂ)))‖ ^ 2 =
+      (1 / (4 * Real.pi ^ 2)) * (1 / (k : ℝ) ^ 2) := by
+  simp only [norm_div, norm_one, norm_mul, norm_neg, norm_ofNat,
+    norm_real, norm_I, norm_intCast, mul_one]
+  rw [Real.norm_eq_abs]
+  rw [div_pow]
+  rw [show (2 * |Real.pi| * |(k : ℝ)|) ^ 2 =
+      4 * Real.pi ^ 2 * (k : ℝ) ^ 2 by
+    rw [abs_of_pos Real.pi_pos]
+    nlinarith [sq_abs (k : ℝ)]
+  ]
+  ring
+
+theorem summable_negativeLaplacePsiFourierCoeff :
+    Summable negativeLaplacePsiFourierCoeff := by
+  rcases exists_bound_negativeLaplacePsi_secondDerivFourierCoeff with
+    ⟨C, hC0, hC⟩
+  let A : ℝ := C * (1 / (4 * Real.pi ^ 2))
+  have hmajor : Summable (fun k : ℤ =>
+      A * (1 / (k : ℝ) ^ 2)) := by
+    exact (Real.summable_one_div_int_pow.mpr (by norm_num)).mul_left A
+  apply Summable.of_norm_bounded hmajor
+  intro k
+  by_cases hk : k = 0
+  · subst k
+    simp [negativeLaplacePsiFourierCoeff_zero, A]
+  · rw [negativeLaplacePsiFourierCoeff_eq_secondDerivCoeff k hk,
+      norm_mul, norm_pow, norm_fourierDenominator_inv_sq]
+    calc
+      (1 / (4 * Real.pi ^ 2) * (1 / (k : ℝ) ^ 2)) *
+          ‖fourierCoeffOn zero_lt_one
+            (fun t : ℝ => ((deriv (deriv negativeLaplacePsi) t : ℝ) : ℂ)) k‖ ≤
+        (1 / (4 * Real.pi ^ 2) * (1 / (k : ℝ) ^ 2)) * C := by
+          exact mul_le_mul_of_nonneg_left (hC k) (by positivity)
+      _ = A * (1 / (k : ℝ) ^ 2) := by
+        dsimp [A]
+        ring
+
+lemma negativeLaplacePsi_complex_periodic :
+    Function.Periodic (fun t : ℝ => (negativeLaplacePsi t : ℂ)) 1 := by
+  intro t
+  change (negativeLaplacePsi (t + 1) : ℂ) =
+    (negativeLaplacePsi t : ℂ)
+  rw [negativeLaplacePsi_add_one]
+
+/-- The normalized correction as a continuous function on the unit circle. -/
+noncomputable def negativeLaplacePsiCircle : C(AddCircle (1 : ℝ), ℂ) where
+  toFun := negativeLaplacePsi_complex_periodic.lift
+  continuous_toFun := continuous_coinduced_dom.mpr (by
+    change Continuous (fun t : ℝ => (negativeLaplacePsi t : ℂ))
+    exact continuous_ofReal.comp continuous_negativeLaplacePsi)
+
+@[simp] lemma negativeLaplacePsiCircle_coe (t : ℝ) :
+    negativeLaplacePsiCircle (t : AddCircle (1 : ℝ)) =
+      (negativeLaplacePsi t : ℂ) := by
+  rfl
+
+lemma fourierCoeff_negativeLaplacePsiCircle (k : ℤ) :
+    fourierCoeff negativeLaplacePsiCircle k =
+      negativeLaplacePsiFourierCoeff k := by
+  rw [fourierCoeff_eq_intervalIntegral negativeLaplacePsiCircle k 0]
+  rw [negativeLaplacePsiFourierCoeff_eq_integral]
+  norm_num only [zero_add, one_div, inv_one, one_smul, smul_eq_mul]
+  apply intervalIntegral.integral_congr
+  intro t ht
+  dsimp only
+  rw [negativeLaplacePsiCircle_coe]
+  rw [fourier_coe_apply]
+  unfold negativeLaplaceFourierWeight
+  congr 2
+  push_cast
+  norm_num
+
+theorem summable_fourierCoeff_negativeLaplacePsiCircle :
+    Summable (fourierCoeff negativeLaplacePsiCircle) :=
+  summable_negativeLaplacePsiFourierCoeff.congr
+    (fun k => (fourierCoeff_negativeLaplacePsiCircle k).symm)
+
+theorem hasSum_negativeLaplacePsi_fourierSeries_circle
+    (x : AddCircle (1 : ℝ)) :
+    HasSum (fun k : ℤ =>
+      negativeLaplacePsiFourierCoeff k • fourier k x)
+      (negativeLaplacePsiCircle x) := by
+  simpa only [fourierCoeff_negativeLaplacePsiCircle] using
+    has_pointwise_sum_fourier_series_of_summable
+      summable_fourierCoeff_negativeLaplacePsiCircle x
+
+/-- Absolutely convergent Fourier reconstruction on the real line. -/
+theorem hasSum_negativeLaplacePsi_fourierSeries (t : ℝ) :
+    HasSum (fun k : ℤ =>
+      negativeLaplacePsiFourierCoeff k *
+        exp (2 * (Real.pi : ℂ) * I * (k : ℂ) * (t : ℂ)))
+      (negativeLaplacePsi t : ℂ) := by
+  simpa only [smul_eq_mul, fourier_coe_apply, ofReal_one, div_one,
+    negativeLaplacePsiCircle_coe] using
+    hasSum_negativeLaplacePsi_fourierSeries_circle
+      (t : AddCircle (1 : ℝ))
+
+/-- The closed-form coefficient sequence, including the zero mode. -/
+noncomputable def negativeLaplacePsiGammaZetaFourierCoeff (k : ℤ) : ℂ :=
+  if k = 0 then 0 else
+    -Gamma (-negativeLaplaceFourierFrequency k) *
+        riemannZeta (1 - negativeLaplaceFourierFrequency k) /
+      (Real.log 2 : ℂ)
+
+theorem negativeLaplacePsiGammaZetaFourierCoeff_eq (k : ℤ) :
+    negativeLaplacePsiGammaZetaFourierCoeff k =
+      negativeLaplacePsiFourierCoeff k := by
+  by_cases hk : k = 0
+  · subst k
+    simp [negativeLaplacePsiGammaZetaFourierCoeff,
+      negativeLaplacePsiFourierCoeff_zero]
+  · rw [negativeLaplacePsiGammaZetaFourierCoeff, if_neg hk,
+      negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta k hk]
+
+/-- The explicit `Γζ` Fourier series of the zero-mean periodic correction. -/
+theorem hasSum_negativeLaplacePsi_gammaZeta_fourierSeries (t : ℝ) :
+    HasSum (fun k : ℤ =>
+      negativeLaplacePsiGammaZetaFourierCoeff k *
+        exp (2 * (Real.pi : ℂ) * I * (k : ℂ) * (t : ℂ)))
+      (negativeLaplacePsi t : ℂ) := by
+  exact (hasSum_negativeLaplacePsi_fourierSeries t).congr_fun
+    (fun k => by rw [negativeLaplacePsiGammaZetaFourierCoeff_eq])
+
 end Fabius
