@@ -1111,7 +1111,10 @@ Let $A$ be a subset of $\mathbb{Z}$ of cardinality $m$. It is easy to see that $
 
 It is clear that $A+A$ will be small when $A$ is a subset of an arithmetic progression of length not much greater than $m$. After a moment's thought, one realises that there are other examples. For instance, one can take a "progression of progressions" such as $\{a M+b: 0 \leqslant a<h, 0 \leqslant b<k\}$ where $M \gg k$ and $h k=m$. This example can then be generalized to a large subset of a " $d$-dimensional" arithmetic progression, provided that $d$ is reasonably small. A beautiful and famous result of Freiman asserts that these simple examples exhaust all possibilities. A precise statement of the theorem is as follows.
 
-Theorem 7.1. Let $C$ be a constant. There exist constants $d_{0}$ and $K$ depending only on $C$ such that whenever $A$ is a subset of $\mathbb{Z}$ with $|A|=m$ and $|A+A| \leqslant C m$, there exist $d \leqslant d_{0}$, an integer $x_{0}$ and positive integers $x_{1}, \ldots, x_{d}$ and $k_{1}, \ldots, k_{d}$ such that $k_{1} k_{2} \ldots k_{d} \leqslant K m$ and
+% ed.: The conclusion has positive formal size, so the empty set is an
+% immediate counterexample unless the paper's implicit convention $m>0$ is
+% made explicit.
+Theorem 7.1. Let $C$ be a constant. There exist constants $d_{0}$ and $K$ depending only on $C$ such that whenever $A$ is a nonempty subset of $\mathbb{Z}$ with $|A|=m$ and $|A+A| \leqslant C m$, there exist $d \leqslant d_{0}$, an integer $x_{0}$ and positive integers $x_{1}, \ldots, x_{d}$ and $k_{1}, \ldots, k_{d}$ such that $k_{1} k_{2} \ldots k_{d} \leqslant K m$ and
 
 $$
 A \subset\left\{x_{0}+\sum_{i=1}^{d} a_{i} x_{i}: 0 \leqslant a_{i}<k_{i}(i=1,2, \ldots, d)\right\} .
@@ -1138,7 +1141,10 @@ $$
 
 with equality if and only if $A$ is an arithmetic progression of length $m$. The Balog-Szemerédi theorem is the following result.
 
-Theorem 7.2. Let $A$ be a subset of $\mathbb{Z}^{D}$ of cardinality $m$ and suppose that $\|A * A\|_{2}^{2} \geqslant c_{0} m^{3}$. Then there are constants $c, K$ and $d_{0}$ depending only on $c_{0}$ and an arithmetic progression $P$ of dimension $d \leqslant d_{0}$ and size at most $K m$ such that $|A \cap P| \geqslant c m$.
+% ed.: As in Theorem 7.1, nonemptiness is necessary: for $A=\varnothing$
+% the hypothesis is vacuous while a positive-size progression cannot have
+% size at most $K|A|=0$.
+Theorem 7.2. Let $A$ be a nonempty subset of $\mathbb{Z}^{D}$ of cardinality $m$ and suppose that $\|A * A\|_{2}^{2} \geqslant c_{0} m^{3}$. Then there are constants $c, K$ and $d_{0}$ depending only on $c_{0}$ and an arithmetic progression $P$ of dimension $d \leqslant d_{0}$ and size at most $K m$ such that $|A \cap P| \geqslant c m$.
 
 This result states that if $\|A * A\|_{2}^{2}$ is, to within a constant, as big as possible, then $A$ has a proportional subset satisfying the conclusion of Freiman's theorem. Notice that, qualitatively at least, the conclusion of Theorem 7.2 cannot be strengthened, since if $A$ has a proportional subset $B$ with $\|B * B\|_{2}^{2}$ large, then $\|A * A\|_{2}^{2}$ is large whatever $A \backslash B$ is. To see that the new hypothesis is weaker, notice that if $|A-A| \leqslant C m$, then $A \cap(A+k)$ is empty except for at most $C m$ values of $k$, while $\sum_{k \in \mathbb{Z}}|A \cap(A+k)|=m^{2}$. It follows from the Cauchy-Schwarz inequality that $\sum_{k \in \mathbb{Z}}|A \cap(A+k)|^{2} \geqslant m^{3} / C$.
 

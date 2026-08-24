@@ -36,6 +36,7 @@ import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
 import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07DRC
+import GowersSzemeredi.Proofs07FreimanTheorems
 import GowersSzemeredi.Proofs07FreimanRestriction
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07AffineRestriction
