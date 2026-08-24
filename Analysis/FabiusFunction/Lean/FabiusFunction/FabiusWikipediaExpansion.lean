@@ -1,5 +1,7 @@
 import FabiusFunction.FabiusLambertHigherExpansion
+import FabiusFunction.FabiusLambertRates
 import FabiusFunction.FabiusSharpLambertMain
+import FabiusFunction.FabiusWikipediaMain
 
 /-!
 # Explicit corrected Wikipedia expansion on the dyadic logarithmic scale
@@ -165,5 +167,109 @@ theorem fabiusSharpLambertMain_dyadic_sub_realWikipediaMain_isBigO :
       eventually_dyadicLambertPhase_domain] with t ht hsmall
     exact (sharpLambert_dyadic_sub_realMain_eq ht hsmall).symm
   · exact Filter.EventuallyEq.rfl
+
+/-- The elementary, nonperiodic expression in the Wikipedia small-argument
+display, including its Euler--Stieltjes constant exactly as printed. -/
+noncomputable def fabiusWikipediaElementaryMain (x : ℝ) : ℝ :=
+  let lx := Real.log x;
+  let llx := Real.log (-lx);
+  let llog2 := Real.log (Real.log 2);
+  -lx ^ 2 / (2 * Real.log 2) + lx * llx / Real.log 2 -
+      (1 / 2 + (1 + llog2) / Real.log 2) * lx -
+    llx ^ 2 / (2 * Real.log 2) + llog2 * llx / Real.log 2 +
+    ((6 * Real.eulerMascheroniConstant ^ 2 + 12 * firstStieltjesConstant -
+        Real.pi ^ 2 - 6 * llog2 ^ 2) / (12 * Real.log 2) -
+      7 * Real.log 2 / 12 - Real.log Real.pi / 2) +
+    llx ^ 2 / (2 * Real.log 2 * lx) -
+      llog2 * llx / (Real.log 2 * lx)
+
+/-- The corrected literal Wikipedia main: the printed elementary expression
+plus the centered periodic term at the exact lower-Lambert phase. -/
+noncomputable def fabiusExplicitCorrectedWikipediaMain (x : ℝ) : ℝ :=
+  fabiusWikipediaElementaryMain x +
+    negativeLaplacePsi (fabiusLambertPhase x)
+
+/-- Substitution `x = 2⁻ᵗ` in the literal Wikipedia expression.  The
+last two source terms leave the explicit `O(1/t)` difference shown here from
+the source's separately displayed dyadic expression. -/
+theorem fabiusWikipediaElementaryMain_dyadic_eq {t : ℝ} (ht : 0 < t) :
+    fabiusWikipediaElementaryMain ((2 : ℝ) ^ (-t)) =
+      dyadicRealWikipediaElementaryMain t +
+        Real.log (Real.log 2) ^ 2 / (2 * (Real.log 2) ^ 2 * t) := by
+  have hLpos : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : Real.log 2 ≠ 0 := hLpos.ne'
+  have ht0 : t ≠ 0 := ht.ne'
+  have hlogx : Real.log ((2 : ℝ) ^ (-t)) = -t * Real.log 2 := by
+    rw [Real.log_rpow (by norm_num : (0 : ℝ) < 2)]
+  have hneglogx : -Real.log ((2 : ℝ) ^ (-t)) = Real.log 2 * t := by
+    rw [hlogx]
+    ring
+  have hlogneg : Real.log (-Real.log ((2 : ℝ) ^ (-t))) =
+      Real.log (Real.log 2) + Real.log t := by
+    rw [hneglogx, Real.log_mul hL ht0]
+  unfold fabiusWikipediaElementaryMain dyadicRealWikipediaElementaryMain
+  dsimp
+  rw [hlogneg, hlogx]
+  unfold fabiusSharpAsymptoticConstant gammaZetaConstant
+  field_simp [hL, ht0]
+  ring
+
+/-- The corrected literal and dyadic Wikipedia main terms differ by the same
+explicit `O(1/t)` source-conversion term. -/
+theorem fabiusExplicitCorrectedWikipediaMain_dyadic_eq {t : ℝ} (ht : 0 < t) :
+    fabiusExplicitCorrectedWikipediaMain ((2 : ℝ) ^ (-t)) =
+      dyadicRealCorrectedWikipediaMain t +
+        Real.log (Real.log 2) ^ 2 / (2 * (Real.log 2) ^ 2 * t) := by
+  unfold fabiusExplicitCorrectedWikipediaMain dyadicRealCorrectedWikipediaMain
+  rw [fabiusWikipediaElementaryMain_dyadic_eq ht]
+  rw [fabiusLambertPhase_dyadic]
+  ring
+
+/-- On the dyadic logarithmic scale, the compact corrected main differs from
+the literal corrected Wikipedia expression by `O(1/t)`. -/
+theorem fabiusCorrectedWikipediaMain_dyadic_sub_explicit_isBigO :
+    (fun t : ℝ => fabiusCorrectedWikipediaMain ((2 : ℝ) ^ (-t)) -
+      fabiusExplicitCorrectedWikipediaMain ((2 : ℝ) ^ (-t))) =O[atTop]
+        (fun t : ℝ => t⁻¹) := by
+  have hconversion :
+      (fun t : ℝ => -(Real.log (Real.log 2) ^ 2 /
+          (2 * (Real.log 2) ^ 2)) * t⁻¹) =O[atTop]
+        (fun t : ℝ => t⁻¹) :=
+    (isBigO_refl (fun t : ℝ => t⁻¹) atTop).const_mul_left _
+  have hsum := fabiusSharpLambertMain_dyadic_sub_realWikipediaMain_isBigO.add
+    hconversion
+  apply hsum.congr' ?_ Filter.EventuallyEq.rfl
+  filter_upwards [eventually_gt_atTop (0 : ℝ),
+      eventually_dyadicLambertPhase_domain] with t ht hsmall
+  rw [fabiusCorrectedWikipediaMain_eq_sharpLambertMain
+      (Real.rpow_pos_of_pos (by norm_num) _) hsmall,
+    fabiusExplicitCorrectedWikipediaMain_dyadic_eq ht]
+  field_simp [ht.ne', (Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne']
+  ring
+
+/-- At `x → 0⁺`, the compact lower-Lambert main and the literal corrected
+Wikipedia expression differ by the stated `O(1/(-log x))` rate. -/
+theorem fabiusCorrectedWikipediaMain_sub_explicit_isBigO :
+    (fun x : ℝ => fabiusCorrectedWikipediaMain x -
+      fabiusExplicitCorrectedWikipediaMain x) =O[nhdsWithin 0 (Set.Ioi 0)]
+        (fun x : ℝ => (-Real.log x)⁻¹) := by
+  let f : ℝ → ℝ := fun x => fabiusCorrectedWikipediaMain x -
+    fabiusExplicitCorrectedWikipediaMain x
+  have hlog : (fun t => f (fabiusLogArgument t)) =O[atTop]
+      (fun t : ℝ => (fabiusSmallArgumentLog (fabiusLogArgument t))⁻¹) := by
+    apply fabiusCorrectedWikipediaMain_dyadic_sub_explicit_isBigO.congr'
+    · filter_upwards with t
+      rfl
+    · filter_upwards with t
+      rw [fabiusSmallArgumentLog_logArgument]
+  have hs := isBigO_smallArgument_of_logScale f
+    (fun x => (fabiusSmallArgumentLog x)⁻¹) hlog
+  have htarget : (fun x : ℝ => (fabiusSmallArgumentLog x)⁻¹) =O[
+      nhdsWithin 0 (Set.Ioi 0)] (fun x => (-Real.log x)⁻¹) := by
+    apply IsBigO.of_bound (Real.log 2)
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    rw [smallArgumentLog_inv_eq hx, norm_mul, Real.norm_eq_abs,
+      abs_of_pos (Real.log_pos (by norm_num))]
+  exact hs.trans htarget
 
 end Fabius
