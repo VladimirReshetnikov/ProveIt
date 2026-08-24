@@ -1,0 +1,683 @@
+import Sharma2012.CorollaryConsequences
+import Sharma2012.UpperConsequences
+
+/-!
+# Finite class counting for Sharma's upper bound
+
+This module encodes Theta words as finite permutations, splits them by the
+parity of their first entry, and injects the odd-first words into normalized
+odd/even interleaving classes.
+-/
+set_option autoImplicit false
+
+noncomputable section
+
+open Finset
+
+namespace LeanProofs.Sharma2012
+
+local instance classCountingDecidableProp (p : Prop) : Decidable p :=
+  Classical.propDecidable p
+
+abbrev Theta12Finite (n : Nat) :=
+  {sigma : Equiv.Perm (Fin n) // IsTheta12 n (permutationWord sigma)}
+
+abbrev Theta21Finite (n : Nat) :=
+  {sigma : Equiv.Perm (Fin n) // IsTheta21 n (permutationWord sigma)}
+
+lemma permutationWord_toFinset {n : Nat} (sigma : Equiv.Perm (Fin n)) :
+    (permutationWord sigma).toFinset = segment n := by
+  apply Finset.ext
+  intro x
+  simp only [List.mem_toFinset, segment, Finset.mem_Icc]
+  constructor
+  · intro hx
+    obtain ⟨i, hi⟩ := List.mem_iff_getElem.mp hx
+    have hi' := hi
+    simp [permutationWord] at hi'
+    omega
+  · intro hx
+    let y : Fin n := ⟨x - 1, by omega⟩
+    obtain ⟨i, hi⟩ := sigma.surjective y
+    apply List.mem_iff_getElem.mpr
+    refine ⟨i, ?_⟩
+    simp [permutationWord, y, hi]
+    omega
+
+lemma isTheta_permutationWord_iff {n : Nat} (sigma : Equiv.Perm (Fin n)) :
+    IsTheta n (permutationWord sigma) ↔ IsThetaPermutation sigma := by
+  constructor
+  · exact fun h => h.2
+  · intro h
+    have hnodup : (permutationWord sigma).Nodup := by
+      apply List.nodup_ofFn_ofInjective
+      intro i j hij
+      apply sigma.injective
+      exact Fin.ext (Nat.add_right_cancel hij)
+    exact ⟨⟨hnodup, permutationWord_toFinset sigma⟩, h⟩
+
+def reversePermutation {n : Nat} (sigma : Equiv.Perm (Fin n)) :
+    Equiv.Perm (Fin n) :=
+  Fin.revPerm.trans sigma
+
+lemma permutationWord_reversePermutation {n : Nat}
+    (sigma : Equiv.Perm (Fin n)) :
+    permutationWord (reversePermutation sigma) =
+      reversal (permutationWord sigma) := by
+  apply List.ext_getElem
+  · simp [permutationWord, reversal]
+  · intro i hi hri
+    simp only [permutationWord, List.length_ofFn] at hi
+    simp only [permutationWord, reversal, List.length_reverse, List.length_ofFn] at hri
+    simp [permutationWord, reversePermutation, reversal,
+      List.getElem_reverse]
+    apply congr_arg Fin.val
+    apply congr_arg sigma
+    apply Fin.ext
+    simp
+    omega
+
+def complementPermutation {n : Nat} (sigma : Equiv.Perm (Fin n)) :
+    Equiv.Perm (Fin n) :=
+  sigma.trans Fin.revPerm
+
+lemma permutationWord_complementPermutation {n : Nat}
+    (sigma : Equiv.Perm (Fin n)) :
+    permutationWord (complementPermutation sigma) =
+      complement n (permutationWord sigma) := by
+  apply List.ext_getElem
+  · simp [permutationWord, complement]
+  · intro i hi hci
+    simp only [permutationWord, List.length_ofFn] at hi
+    simp only [permutationWord, complement, List.length_map, List.length_ofFn] at hci
+    simp [permutationWord, complementPermutation, complement]
+    omega
+
+lemma reversePermutation_involutive {n : Nat} :
+    Function.Involutive (@reversePermutation n) := by
+  intro sigma
+  apply permutationWord_injective
+  simp only [permutationWord_reversePermutation, reversal]
+  simp
+
+lemma complementPermutation_involutive {n : Nat} :
+    Function.Involutive (@complementPermutation n) := by
+  intro sigma
+  apply Equiv.ext
+  intro i
+  simp [complementPermutation]
+
+def thetaWordEquiv (n : Nat) :
+    ThetaPermutation n ≃ {sigma : Equiv.Perm (Fin n) // IsTheta n (permutationWord sigma)} :=
+  Equiv.subtypeEquiv (Equiv.refl _) fun sigma =>
+    (isTheta_permutationWord_iff sigma).symm
+
+lemma card_thetaWords (n : Nat) :
+    Fintype.card {sigma : Equiv.Perm (Fin n) // IsTheta n (permutationWord sigma)} =
+      theta n := by
+  rw [← Fintype.card_congr (thetaWordEquiv n)]
+  rfl
+
+lemma isTheta21_reversal_of_isTheta12 {n : Nat} {word : List Nat}
+    (hn : 2 ≤ n) (hword : IsTheta12 n word) :
+    IsTheta21 n (reversal word) := by
+  rcases hword.2 with ⟨first, hfirst, hfirstOdd⟩
+  obtain ⟨first', last, hfirst', hlast, hfirstLast⟩ :=
+    proposition_2_1_holds n word hn hword.1
+  have hfirstEq : first' = first := by
+    unfold StartsWith at hfirst hfirst'
+    exact Option.some.inj (hfirst'.symm.trans hfirst)
+  subst first'
+  have hlastEven : Even last := by
+    rcases Nat.even_or_odd last with hlastEven | hlastOdd
+    · exact hlastEven
+    · exact False.elim (hfirstLast (by
+        rcases hfirstOdd with ⟨a, ha⟩
+        rcases hlastOdd with ⟨b, hb⟩
+        unfold Nat.ModEq
+        omega))
+  exact ⟨isTheta_reversal hword.1,
+    ⟨last, startsWith_reversal_of_endsWith hlast, hlastEven⟩⟩
+
+def theta21Theta12Equiv (n : Nat) (hn : 2 ≤ n) :
+    Theta21Finite n ≃ Theta12Finite n where
+  toFun sigma :=
+    ⟨reversePermutation sigma.1, by
+      rw [permutationWord_reversePermutation]
+      exact isTheta12_reversal_of_isTheta21 hn sigma.2⟩
+  invFun sigma :=
+    ⟨reversePermutation sigma.1, by
+      rw [permutationWord_reversePermutation]
+      exact isTheta21_reversal_of_isTheta12 hn sigma.2⟩
+  left_inv sigma := by
+    apply Subtype.ext
+    exact reversePermutation_involutive sigma.1
+  right_inv sigma := by
+    apply Subtype.ext
+    exact reversePermutation_involutive sigma.1
+
+lemma startsOdd_or_startsEven_of_isTheta {n : Nat} {word : List Nat}
+    (hn : 1 ≤ n) (hword : IsTheta n word) :
+    StartsOdd word ∨ StartsEven word := by
+  cases word with
+  | nil =>
+      have := isTheta_length hword
+      simp at this
+      omega
+  | cons first tail =>
+      rcases Nat.even_or_odd first with hfirst | hfirst
+      · exact Or.inr ⟨first, by simp [StartsWith], hfirst⟩
+      · exact Or.inl ⟨first, by simp [StartsWith], hfirst⟩
+
+noncomputable def thetaSplit {n : Nat} (hn : 1 ≤ n) :
+    ThetaPermutation n → Theta12Finite n ⊕ Theta21Finite n :=
+  fun sigma =>
+    let htheta : IsTheta n (permutationWord sigma.1) :=
+      (isTheta_permutationWord_iff sigma.1).2 sigma.2
+    if hodd : StartsOdd (permutationWord sigma.1) then
+      Sum.inl ⟨sigma.1, htheta, hodd⟩
+    else
+      Sum.inr ⟨sigma.1, htheta,
+        (startsOdd_or_startsEven_of_isTheta hn htheta).resolve_left hodd⟩
+
+lemma thetaSplit_injective {n : Nat} (hn : 1 ≤ n) :
+    Function.Injective (thetaSplit hn) := by
+  intro sigma tau h
+  apply Subtype.ext
+  have hproj (rho : ThetaPermutation n) :
+      Sum.elim Subtype.val Subtype.val (thetaSplit hn rho) = rho.1 := by
+    simp only [thetaSplit]
+    split <;> rfl
+  have hraw := congr_arg (Sum.elim Subtype.val Subtype.val) h
+  simpa only [hproj] using hraw
+
+lemma theta_card_le_twice_theta12 {n : Nat} (hn : 2 ≤ n) :
+    theta n ≤ 2 * Fintype.card (Theta12Finite n) := by
+  have hcard := Fintype.card_le_of_injective (thetaSplit (by omega))
+    (thetaSplit_injective (by omega : 1 ≤ n))
+  have heq : Fintype.card (Theta21Finite n) =
+      Fintype.card (Theta12Finite n) :=
+    Fintype.card_congr (theta21Theta12Equiv n hn)
+  change Fintype.card (ThetaPermutation n) ≤ _
+  simpa [heq, Nat.two_mul] using hcard
+
+def thetaComplementEquiv (n : Nat) :
+    ThetaPermutation n ≃ ThetaPermutation n where
+  toFun sigma :=
+    ⟨complementPermutation sigma.1, by
+      apply (isTheta_permutationWord_iff _).1
+      rw [permutationWord_complementPermutation]
+      exact isTheta_complement
+        ((isTheta_permutationWord_iff sigma.1).2 sigma.2)⟩
+  invFun sigma :=
+    ⟨complementPermutation sigma.1, by
+      apply (isTheta_permutationWord_iff _).1
+      rw [permutationWord_complementPermutation]
+      exact isTheta_complement
+        ((isTheta_permutationWord_iff sigma.1).2 sigma.2)⟩
+  left_inv sigma := by
+    apply Subtype.ext
+    exact complementPermutation_involutive sigma.1
+  right_inv sigma := by
+    apply Subtype.ext
+    exact complementPermutation_involutive sigma.1
+
+noncomputable def permutationOfTheta {n : Nat} (word : List Nat)
+    (hword : IsTheta n word) : Equiv.Perm (Fin n) :=
+  Classical.choose (exists_permutationWord_eq_of_isTheta hword)
+
+lemma permutationWord_permutationOfTheta {n : Nat} (word : List Nat)
+    (hword : IsTheta n word) :
+    permutationWord (permutationOfTheta word hword) = word :=
+  Classical.choose_spec (exists_permutationWord_eq_of_isTheta hword)
+
+noncomputable def oddTraceIndex {n : Nat} (sigma : Theta12Finite n) :
+    ThetaPermutation ((n + 1) / 2) := by
+  let hbase : IsTheta ((n + 1) / 2) (oddBase (permutationWord sigma.1)) :=
+    isTheta_oddBase sigma.2.1
+  let pi := permutationOfTheta (oddBase (permutationWord sigma.1)) hbase
+  exact ⟨pi, (isTheta_permutationWord_iff pi).1 (by
+    rw [permutationWord_permutationOfTheta]
+    exact hbase)⟩
+
+noncomputable def evenTraceIndex {n : Nat} (sigma : Theta12Finite n) :
+    ThetaPermutation (n / 2) := by
+  let hbase : IsTheta (n / 2) (evenBase (permutationWord sigma.1)) :=
+    isTheta_evenBase sigma.2.1
+  let pi := permutationOfTheta (evenBase (permutationWord sigma.1)) hbase
+  exact ⟨pi, (isTheta_permutationWord_iff pi).1 (by
+    rw [permutationWord_permutationOfTheta]
+    exact hbase)⟩
+
+lemma permutationWord_oddTraceIndex {n : Nat} (sigma : Theta12Finite n) :
+    permutationWord (oddTraceIndex sigma).1 =
+      oddBase (permutationWord sigma.1) := by
+  simp only [oddTraceIndex]
+  apply permutationWord_permutationOfTheta
+
+lemma permutationWord_evenTraceIndex {n : Nat} (sigma : Theta12Finite n) :
+    permutationWord (evenTraceIndex sigma).1 =
+      evenBase (permutationWord sigma.1) := by
+  simp only [evenTraceIndex]
+  apply permutationWord_permutationOfTheta
+
+noncomputable def normalizedInterleavingClass (n : Nat)
+    (oddIndex : ThetaPermutation ((n + 1) / 2))
+    (evenIndex : ThetaPermutation (n / 2)) : Finset (Equiv.Perm (Fin n)) :=
+  interleavingClass n
+    (oddLift (permutationWord oddIndex.1))
+    (evenLift (permutationWord evenIndex.1))
+
+noncomputable def theta12Encoding (n : Nat) :
+    Theta12Finite n →
+      Σ oddIndex : ThetaPermutation ((n + 1) / 2),
+        Σ evenIndex : ThetaPermutation (n / 2),
+          {sigma : Equiv.Perm (Fin n) //
+            sigma ∈ normalizedInterleavingClass n oddIndex evenIndex} :=
+  fun sigma =>
+    ⟨oddTraceIndex sigma, evenTraceIndex sigma,
+      ⟨sigma.1, by
+        simp only [normalizedInterleavingClass, interleavingClass,
+          Finset.mem_filter, Finset.mem_univ, true_and]
+        refine ⟨sigma.2, ?_, ?_⟩
+        · rw [permutationWord_oddTraceIndex, oddLift_oddBase]
+        · rw [permutationWord_evenTraceIndex, evenLift_evenBase]⟩⟩
+
+lemma theta12Encoding_injective (n : Nat) :
+    Function.Injective (theta12Encoding n) := by
+  intro sigma tau h
+  apply Subtype.ext
+  have hraw := congr_arg (fun encoded => encoded.2.2.1) h
+  simpa only [theta12Encoding] using hraw
+
+lemma theta12_card_le_sum_interleavingClasses (n : Nat) :
+    Fintype.card (Theta12Finite n) ≤
+      ∑ oddIndex : ThetaPermutation ((n + 1) / 2),
+        ∑ evenIndex : ThetaPermutation (n / 2),
+          (normalizedInterleavingClass n oddIndex evenIndex).card := by
+  have hcard := Fintype.card_le_of_injective (theta12Encoding n)
+    (theta12Encoding_injective n)
+  simpa only [Fintype.card_sigma, Fintype.card_coe] using hcard
+
+
+lemma evenPrologue_length_le_one_of_startsWith_last
+    {n : Nat} {word : List Nat} (hn : 2 ≤ n)
+    (hword : IsTheta n word) (hstart : StartsWith (evenTrace word) n) :
+    (prologue n (evenTrace word)).length ≤ 1 := by
+  have hnUpper : n ∈ upperHalf n := by
+    simp only [upperHalf, Finset.mem_Icc]
+    omega
+  have hproNodup : (prologue n (evenTrace word)).Nodup :=
+    (prologue_prefix n (evenTrace word)).sublist.nodup
+      ((isTheta_nodup hword).filter _)
+  have hsubset : (prologue n (evenTrace word)).toFinset ⊆ {n} := by
+    intro y hy
+    have hyPro : y ∈ prologue n (evenTrace word) := by simpa using hy
+    have hny := evenPrologue_first_le_entry hword hstart hnUpper hyPro
+    have hyTrace := (prologue_prefix n (evenTrace word)).mem hyPro
+    have hyWord := (List.mem_filter.mp hyTrace).1
+    have hySegment := mem_segment_of_mem_of_isTheta hword hyWord
+    simp only [segment, Finset.mem_Icc] at hySegment
+    simp only [Finset.mem_singleton]
+    omega
+  calc
+    (prologue n (evenTrace word)).length =
+        (prologue n (evenTrace word)).toFinset.card :=
+      (List.toFinset_card_of_nodup hproNodup).symm
+    _ ≤ ({n} : Finset Nat).card := Finset.card_le_card hsubset
+    _ = 1 := by simp
+
+lemma interleavingClass_card_le_seven_of_midpoint_last
+    {n : Nat} {gammaOdd gammaEven : List Nat}
+    (hn : 3 ≤ n)
+    (hbEnd : EndsWith gammaOdd (n / 2))
+    (hcStart : StartsWith gammaEven n)
+    (hcommute : Commute n (n / 2) n) :
+    (interleavingClass n gammaOdd gammaEven).card ≤ 7 := by
+  by_cases hempty : interleavingClass n gammaOdd gammaEven = ∅
+  · simp [hempty]
+  · obtain ⟨sigma, hsigma⟩ := Finset.nonempty_iff_ne_empty.mpr hempty
+    have hsigmaData : IsTheta12 n (permutationWord sigma) ∧
+        oddTrace (permutationWord sigma) = gammaOdd ∧
+        evenTrace (permutationWord sigma) = gammaEven := by
+      simpa [interleavingClass] using hsigma
+    let word := permutationWord sigma
+    have hoddEndWord : EndsWith (oddTrace word) (n / 2) := by
+      rw [show oddTrace word = gammaOdd by exact hsigmaData.2.1]
+      exact hbEnd
+    have hevenStartWord : StartsWith (evenTrace word) n := by
+      rw [show evenTrace word = gammaEven by exact hsigmaData.2.2]
+      exact hcStart
+    have hmidLower : n / 2 ∈ lowerHalf n := by
+      simp only [lowerHalf, Finset.mem_Icc]
+      omega
+    have hnUpper : n ∈ upperHalf n := by
+      simp only [upperHalf, Finset.mem_Icc]
+      omega
+    have hstanding : StandingInterleavingHypotheses n word :=
+      ⟨hsigmaData.1, n / 2, n, hoddEndWord, hevenStartWord,
+        hcommute, hmidLower, hnUpper⟩
+    let u := (epilogue n (oddTrace word)).length
+    let v := (prologue n (evenTrace word)).length
+    have hu : u ≤ 6 := by
+      simpa only [u] using
+        epilogue_oddTrace_length_le_six hsigmaData.1.1
+    have hv : v ≤ 1 := by
+      simpa only [v] using
+        evenPrologue_length_le_one_of_startsWith_last (by omega)
+          hsigmaData.1.1 hevenStartWord
+    have hcard : (interleavingClass n gammaOdd gammaEven).card =
+        Nat.choose (u + v) v := by
+      have hlemma := lemma_2_5_holds n word hstanding
+      have hoddEq : oddTrace word = gammaOdd := hsigmaData.2.1
+      have hevenEq : evenTrace word = gammaEven := hsigmaData.2.2
+      calc
+        (interleavingClass n gammaOdd gammaEven).card =
+            (interleavingClass n (oddTrace word) (evenTrace word)).card := by
+          rw [hoddEq, hevenEq]
+        _ = Nat.choose (u + v) v := by simpa only [u, v] using hlemma
+    rw [hcard]
+    interval_cases v <;> simp_all [Nat.choose]
+    all_goals omega
+
+lemma exists_endsWith_permutationWord {m : Nat}
+    (hm : 1 ≤ m) (sigma : Equiv.Perm (Fin m)) :
+    ∃ a : Nat, EndsWith (permutationWord sigma) a := by
+  have hne : permutationWord sigma ≠ [] := by
+    intro hnil
+    have hlength : (permutationWord sigma).length = m := by
+      simp [permutationWord]
+    rw [hnil] at hlength
+    simp at hlength
+    omega
+  exact ⟨(permutationWord sigma).getLast hne,
+    List.getLast?_eq_getLast_of_ne_nil hne⟩
+
+lemma exists_startsWith_permutationWord {m : Nat}
+    (hm : 1 ≤ m) (sigma : Equiv.Perm (Fin m)) :
+    ∃ a : Nat, StartsWith (permutationWord sigma) a := by
+  have hne : permutationWord sigma ≠ [] := by
+    intro hnil
+    have hlength : (permutationWord sigma).length = m := by
+      simp [permutationWord]
+    rw [hnil] at hlength
+    simp at hlength
+    omega
+  exact ⟨(permutationWord sigma).head hne,
+    List.head?_eq_some_head hne⟩
+
+lemma endsWith_complement {m : Nat} {word : List Nat} {a : Nat}
+    (h : EndsWith word a) :
+    EndsWith (complement m word) (m + 1 - a) := by
+  simpa [EndsWith, complement] using
+    congr_arg (Option.map fun z : Nat => m + 1 - z) h
+
+lemma paired_endpoints_opposite_halves
+    {n b bStar : Nat}
+    (hbSegment : b ∈ segment n) (hbStarSegment : bStar ∈ segment n)
+    (hsum : b + bStar = 2 * ((n + 1) / 2)) (hne : b ≠ bStar) :
+    (b ∈ lowerHalf n ∧ bStar ∈ upperHalf n) ∨
+      (b ∈ upperHalf n ∧ bStar ∈ lowerHalf n) := by
+  simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hbSegment hbStarSegment ⊢
+  by_cases hbLower : b ≤ n / 2
+  · left
+    constructor
+    · exact ⟨hbSegment.1, hbLower⟩
+    · constructor <;> omega
+  · right
+    constructor
+    · constructor <;> omega
+    · constructor <;> omega
+
+lemma normalizedOddTrace_paired_endpoints {n : Nat} (hn : 3 ≤ n)
+    (oddIndex : ThetaPermutation ((n + 1) / 2)) :
+    ∃ b bStar : Nat,
+      EndsWith (oddLift (permutationWord oddIndex.1)) b ∧
+      EndsWith (oddLift
+        (permutationWord (thetaComplementEquiv ((n + 1) / 2) oddIndex).1)) bStar ∧
+      b ∈ segment n ∧ bStar ∈ segment n ∧ Odd b ∧ Odd bStar ∧
+      b + bStar = 2 * ((n + 1) / 2) := by
+  let m := (n + 1) / 2
+  have hm : 1 ≤ m := by omega
+  obtain ⟨a, haEnd⟩ := exists_endsWith_permutationWord hm oddIndex.1
+  have haMem : a ∈ permutationWord oddIndex.1 := mem_of_endsWith haEnd
+  have haSegment : a ∈ segment m := by
+    rw [← permutationWord_toFinset oddIndex.1]
+    exact List.mem_toFinset.mpr haMem
+  have haPos : 0 < a := by
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  let aStar := m + 1 - a
+  have haStarEnd : EndsWith
+      (permutationWord (thetaComplementEquiv m oddIndex).1) aStar := by
+    change EndsWith (permutationWord (complementPermutation oddIndex.1)) aStar
+    rw [permutationWord_complementPermutation]
+    exact endsWith_complement haEnd
+  let b := 2 * a - 1
+  let bStar := 2 * aStar - 1
+  have hbEnd : EndsWith (oddLift (permutationWord oddIndex.1)) b := by
+    simpa only [b] using endsWith_oddLift haEnd
+  have hbStarEnd : EndsWith
+      (oddLift (permutationWord (thetaComplementEquiv m oddIndex).1)) bStar := by
+    simpa only [bStar] using endsWith_oddLift haStarEnd
+  have hbSegment : b ∈ segment n := by
+    simp only [segment, Finset.mem_Icc, b]
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  have hbStarSegment : bStar ∈ segment n := by
+    simp only [segment, Finset.mem_Icc, bStar, aStar]
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  have hbOdd : Odd b := by
+    refine ⟨a - 1, ?_⟩
+    simp only [b]
+    omega
+  have hbStarOdd : Odd bStar := by
+    refine ⟨aStar - 1, ?_⟩
+    simp only [bStar]
+    have : 1 ≤ aStar := by
+      simp only [aStar]
+      simp only [segment, Finset.mem_Icc] at haSegment
+      omega
+    omega
+  refine ⟨b, bStar, hbEnd, hbStarEnd, hbSegment, hbStarSegment,
+    hbOdd, hbStarOdd, ?_⟩
+  simp only [b, bStar, aStar, m]
+  simp only [segment, Finset.mem_Icc] at haSegment
+  omega
+
+lemma normalizedEvenTrace_start {n : Nat} (hn : 3 ≤ n)
+    (evenIndex : ThetaPermutation (n / 2)) :
+    ∃ c : Nat, StartsWith (evenLift (permutationWord evenIndex.1)) c ∧
+      c ∈ segment n ∧ Even c := by
+  have hm : 1 ≤ n / 2 := by omega
+  obtain ⟨d, hdStart⟩ := exists_startsWith_permutationWord hm evenIndex.1
+  have hdMem : d ∈ permutationWord evenIndex.1 := mem_of_startsWith hdStart
+  have hdSegment : d ∈ segment (n / 2) := by
+    rw [← permutationWord_toFinset evenIndex.1]
+    exact List.mem_toFinset.mpr hdMem
+  refine ⟨2 * d, startsWith_evenLift hdStart, ?_, ⟨d, by omega⟩⟩
+  simp only [segment, Finset.mem_Icc] at hdSegment ⊢
+  omega
+
+theorem paired_normalizedInterleavingClass_card_le_twenty_one
+    (h20 : corollary_2_7_1) {n : Nat} (hn : 3 ≤ n)
+    (oddIndex : ThetaPermutation ((n + 1) / 2))
+    (evenIndex : ThetaPermutation (n / 2)) :
+    (normalizedInterleavingClass n oddIndex evenIndex).card +
+      (normalizedInterleavingClass n
+        (thetaComplementEquiv ((n + 1) / 2) oddIndex) evenIndex).card ≤ 21 := by
+  let gammaOdd := oddLift (permutationWord oddIndex.1)
+  let oddStar := thetaComplementEquiv ((n + 1) / 2) oddIndex
+  let gammaOddStar := oddLift (permutationWord oddStar.1)
+  let gammaEven := evenLift (permutationWord evenIndex.1)
+  obtain ⟨b, bStar, hbEnd, hbStarEnd, hbSegment, hbStarSegment,
+      hbOdd, hbStarOdd, hsum⟩ := normalizedOddTrace_paired_endpoints hn oddIndex
+  obtain ⟨c, hcStart, hcSegment, hcEven⟩ := normalizedEvenTrace_start hn evenIndex
+  change (interleavingClass n gammaOdd gammaEven).card +
+    (interleavingClass n gammaOddStar gammaEven).card ≤ 21
+  by_cases hfixed : b = bStar
+  · have hbMid : b = (n + 1) / 2 := by omega
+    have hstarMid : bStar = (n + 1) / 2 := by omega
+    by_cases hcommute : Commute n b c
+    · have hcEq : c = n := by
+        by_contra hcNe
+        have hcLt : c < n := by
+          simp only [segment, Finset.mem_Icc] at hcSegment
+          omega
+        have hreflect : c ≤ 2 * b ∧ 2 * b - c ∈ segment n := by
+          have htwo : 2 * b = 2 * ((n + 1) / 2) := by omega
+          have hcLe : c ≤ 2 * b := by omega
+          have hsubEq : 2 * b - c + c = 2 * b := Nat.sub_add_cancel hcLe
+          have hcPos : 1 ≤ c := by
+            simp only [segment, Finset.mem_Icc] at hcSegment
+            omega
+          have hcStrict : c < 2 * b := by omega
+          have hsubPos : 0 < 2 * b - c := Nat.sub_pos_of_lt hcStrict
+          have hsubUpper : 2 * b - c ≤ n := by
+            exact (Nat.sub_le_sub_left hcPos (2 * b)).trans (by omega)
+          constructor
+          · exact hcLe
+          · simp only [segment, Finset.mem_Icc]
+            exact ⟨by omega, hsubUpper⟩
+        have hforced : DoNotCommute n b c :=
+          (theorem_2_2_holds n b c hn hbSegment hcSegment hbOdd hcEven).2
+            (Or.inl hreflect)
+        exact (doNotCommute_not_commute hforced) hcommute
+      have hnEven : Even n := by simpa only [← hcEq] using hcEven
+      have hmidFloor : (n + 1) / 2 = n / 2 := by
+        rcases hnEven with ⟨k, hk⟩
+        omega
+      have hbFloor : b = n / 2 := hbMid.trans hmidFloor
+      have hstarFloor : bStar = n / 2 := hstarMid.trans hmidFloor
+      have hcommuteStar : Commute n bStar c := by
+        simpa only [← hfixed] using hcommute
+      have hleft : (interleavingClass n gammaOdd gammaEven).card ≤ 7 := by
+        apply interleavingClass_card_le_seven_of_midpoint_last hn
+        · simpa only [hbFloor] using hbEnd
+        · simpa only [hcEq] using hcStart
+        · simpa only [hbFloor, hcEq] using hcommute
+      have hright : (interleavingClass n gammaOddStar gammaEven).card ≤ 7 := by
+        apply interleavingClass_card_le_seven_of_midpoint_last hn
+        · simpa only [hstarFloor] using hbStarEnd
+        · simpa only [hcEq] using hcStart
+        · simpa only [hstarFloor, hcEq] using hcommuteStar
+      omega
+    · have hforced := doNotCommute_of_not_commute hbSegment hcSegment hbOdd hcEven hcommute
+      have hleft : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      have hright : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute
+          hbStarEnd hcStart (by simpa only [← hfixed] using hforced)
+      omega
+  · have hopposite := paired_endpoints_opposite_halves hbSegment hbStarSegment hsum hfixed
+    have hcHalf : c ∈ lowerHalf n ∨ c ∈ upperHalf n := by
+      simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hcSegment ⊢
+      omega
+    have hleft20 : (interleavingClass n gammaOdd gammaEven).card ≤ 20 :=
+      h20 n gammaOdd gammaEven
+    have hright20 : (interleavingClass n gammaOddStar gammaEven).card ≤ 20 :=
+      h20 n gammaOddStar gammaEven
+    rcases hopposite with ⟨hbLower, hbStarUpper⟩ | ⟨hbUpper, hbStarLower⟩ <;>
+      rcases hcHalf with hcLower | hcUpper
+    · have hforced := (corollary_2_2_1_holds n b c hbSegment hcSegment
+          (Or.inl ⟨hbLower, hcLower⟩)).1 hbOdd hcEven
+      have hleftOne : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n bStar c hbStarSegment hcSegment
+          (Or.inr ⟨hbStarUpper, hcUpper⟩)).1 hbStarOdd hcEven
+      have hrightOne : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbStarEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n bStar c hbStarSegment hcSegment
+          (Or.inl ⟨hbStarLower, hcLower⟩)).1 hbStarOdd hcEven
+      have hrightOne : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbStarEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n b c hbSegment hcSegment
+          (Or.inr ⟨hbUpper, hcUpper⟩)).1 hbOdd hcEven
+      have hleftOne : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      omega
+
+theorem normalizedInterleavingClass_double_sum_bound
+    (h20 : corollary_2_7_1) {n : Nat} (hn : 3 ≤ n) :
+    2 * (∑ oddIndex : ThetaPermutation ((n + 1) / 2),
+      ∑ evenIndex : ThetaPermutation (n / 2),
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+      21 * theta ((n + 1) / 2) * theta (n / 2) := by
+  let m := (n + 1) / 2
+  let k := n / 2
+  have hperEven : ∀ evenIndex : ThetaPermutation k,
+      2 * (∑ oddIndex : ThetaPermutation m,
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+        21 * Fintype.card (ThetaPermutation m) := by
+    intro evenIndex
+    apply twice_sum_le_of_equiv_pair_bound
+      (thetaComplementEquiv m)
+      (fun oddIndex => (normalizedInterleavingClass n oddIndex evenIndex).card) 21
+    intro oddIndex
+    exact paired_normalizedInterleavingClass_card_le_twenty_one
+      h20 hn oddIndex evenIndex
+  have hsum :
+      ∑ evenIndex : ThetaPermutation k,
+          2 * (∑ oddIndex : ThetaPermutation m,
+            (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+        ∑ _evenIndex : ThetaPermutation k,
+          21 * Fintype.card (ThetaPermutation m) :=
+    Finset.sum_le_sum fun evenIndex _ => hperEven evenIndex
+  change 2 * (∑ oddIndex : ThetaPermutation m,
+      ∑ evenIndex : ThetaPermutation k,
+        (normalizedInterleavingClass n oddIndex evenIndex).card) ≤
+    21 * Fintype.card (ThetaPermutation m) * Fintype.card (ThetaPermutation k)
+  calc
+    2 * (∑ oddIndex : ThetaPermutation m,
+        ∑ evenIndex : ThetaPermutation k,
+          (normalizedInterleavingClass n oddIndex evenIndex).card) =
+        ∑ oddIndex : ThetaPermutation m,
+          ∑ evenIndex : ThetaPermutation k,
+            2 * (normalizedInterleavingClass n oddIndex evenIndex).card := by
+      simp_rw [Finset.mul_sum]
+    _ = ∑ evenIndex : ThetaPermutation k,
+          ∑ oddIndex : ThetaPermutation m,
+            2 * (normalizedInterleavingClass n oddIndex evenIndex).card := by
+      rw [Finset.sum_comm]
+    _ = ∑ evenIndex : ThetaPermutation k,
+          2 * (∑ oddIndex : ThetaPermutation m,
+            (normalizedInterleavingClass n oddIndex evenIndex).card) := by
+      simp_rw [Finset.mul_sum]
+    _ ≤ ∑ _evenIndex : ThetaPermutation k,
+          21 * Fintype.card (ThetaPermutation m) := hsum
+    _ = 21 * Fintype.card (ThetaPermutation m) *
+          Fintype.card (ThetaPermutation k) := by
+      simp [Nat.mul_comm]
+
+/-- Corollary 2.7.1 supplies the sole class-size input needed for the
+recursive upper bound. -/
+theorem theorem_2_8_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_8 := by
+  intro n hn
+  have hsplit := theta_card_le_twice_theta12 (by omega : 2 ≤ n)
+  have hencode := theta12_card_le_sum_interleavingClasses n
+  have hclasses := normalizedInterleavingClass_double_sum_bound h20 hn
+  calc
+    theta n ≤ 2 * Fintype.card (Theta12Finite n) := hsplit
+    _ ≤ 2 * (∑ oddIndex : ThetaPermutation ((n + 1) / 2),
+        ∑ evenIndex : ThetaPermutation (n / 2),
+          (normalizedInterleavingClass n oddIndex evenIndex).card) :=
+      Nat.mul_le_mul_left 2 hencode
+    _ ≤ 21 * theta ((n + 1) / 2) * theta (n / 2) := hclasses
+
+/-- The global class bound already contains every combinatorial input for
+Sharma's exponential estimate. -/
+theorem theorem_2_9_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_9 :=
+  theorem_2_9_of_theorem_2_8 (theorem_2_8_of_corollary_2_7_1 h20)
+
+/-- The global class bound also implies the stated limit-superior bound. -/
+theorem theorem_2_10_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_10 :=
+  theorem_2_10_of_theorem_2_9 (theorem_2_9_of_corollary_2_7_1 h20)
+
+end LeanProofs.Sharma2012

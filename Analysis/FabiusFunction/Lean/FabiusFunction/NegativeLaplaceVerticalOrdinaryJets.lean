@@ -1,0 +1,215 @@
+import FabiusFunction.NegativeLaplaceVerticalAllOrderBound
+import FabiusFunction.NegativeLaplaceAllOrderJets
+
+set_option autoImplicit false
+
+open Filter Set
+open scoped Topology
+
+namespace Fabius
+
+/-- Holomorphic logarithmic derivative of the negative Laplace transform on
+the open right half-plane. -/
+noncomputable def negativeLaplaceComplexLogFirst
+    (F : BoundedFabius) (z : ℂ) : ℂ :=
+  -(iteratedDeriv 1 (complexGeneratingFunction F) (-z) /
+    complexGeneratingFunction F (-z))
+
+theorem differentiableOn_negativeLaplaceComplexLogFirst
+    (F : BoundedFabius) (hF : IsFabius F) :
+    DifferentiableOn ℂ (negativeLaplaceComplexLogFirst F)
+      {z : ℂ | 0 < z.re} := by
+  intro z hz
+  have harg : HasDerivAt (fun w : ℂ => -w) (-1) z := by
+    exact (hasDerivAt_id z).neg.congr_of_eventuallyEq <| by
+      filter_upwards with w
+      rfl
+  have hsmooth : ContDiff ℂ (↑(⊤ : ℕ∞))
+      (iteratedDeriv 1 (complexGeneratingFunction F)) := by
+    rw [iteratedDeriv_eq_iterate]
+    exact ContDiff.iterate_deriv (𝕜 := ℂ) 1
+      ((contDiff_complexGeneratingFunction F hF).of_le (by simp))
+  have hnum :=
+    (hsmooth.differentiable (by simp) (-z)).hasDerivAt.comp z harg
+  have hden :=
+    (differentiable_complexGeneratingFunction F hF (-z)).hasDerivAt.comp z harg
+  have hdenNe : complexGeneratingFunction F (-z) ≠ 0 :=
+    complexGeneratingFunction_neg_ne_zero F hF hz
+  exact (hnum.div hden hdenNe).neg.differentiableAt.differentiableWithinAt
+
+theorem negativeLaplaceComplexLogFirst_ofReal
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    negativeLaplaceComplexLogFirst F s =
+      (negativeLaplaceLogOrdinaryDeriv 1 s : ℂ) := by
+  have h1 := negativeLaplaceVerticalMoment_at_zero F hF 1 s
+  have h0 := negativeLaplaceVerticalMoment_at_zero F hF 0 s
+  simp only [negativeLaplaceVerticalMoment, Complex.ofReal_zero, zero_mul,
+    add_zero, mul_one] at h1 h0
+  have h0' : complexGeneratingFunction F (-s) =
+      (fabiusLaplaceMoment F 0 s : ℂ) := by
+    simpa only [iteratedDeriv_zero] using h0
+  rw [negativeLaplaceComplexLogFirst, h1, h0']
+  have hord := negativeLaplaceLogOrdinaryDeriv_hasDerivAt 0 hs
+  have hfirst := negativeLaplaceLog_hasDerivAt F hF hs
+  have heq : negativeLaplaceLogOrdinaryDeriv 1 s =
+      negativeLaplaceLogFirst F s := hord.unique hfirst
+  rw [heq]
+  unfold negativeLaplaceLogFirst normalizedLaplaceMoment
+  push_cast
+  ring
+
+private theorem iteratedDeriv_negativeLaplaceComplexLogFirst_ofReal
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ)
+    {s : ℝ} (hs : 0 < s) :
+    iteratedDeriv n (fun x : ℝ => negativeLaplaceComplexLogFirst F x) s =
+      (negativeLaplaceLogOrdinaryDeriv (n + 1) s : ℂ) := by
+  induction n generalizing s with
+  | zero => exact negativeLaplaceComplexLogFirst_ofReal F hF hs
+  | succ n ih =>
+      rw [iteratedDeriv_succ]
+      have heq : iteratedDeriv n
+          (fun x : ℝ => negativeLaplaceComplexLogFirst F x) =ᶠ[nhds s]
+          fun x => (negativeLaplaceLogOrdinaryDeriv (n + 1) x : ℂ) := by
+        filter_upwards [Ioi_mem_nhds hs] with x hx
+        exact ih hx
+      rw [heq.deriv_eq]
+      exact ((negativeLaplaceLogOrdinaryDeriv_hasDerivAt (n + 1) hs).ofReal_comp).deriv
+
+/-- Complexification of the first vertical logarithmic derivative. -/
+noncomputable def negativeLaplaceComplexVerticalFirst
+    (F : BoundedFabius) (r : ℝ) (z : ℂ) : ℂ :=
+  ((r : ℂ) * Complex.I) *
+    negativeLaplaceComplexLogFirst F
+      ((r : ℂ) + ((r : ℂ) * Complex.I) * z)
+
+@[simp] theorem negativeLaplaceComplexVerticalFirst_ofReal
+    (F : BoundedFabius) (r θ : ℝ) :
+    negativeLaplaceComplexVerticalFirst F r θ =
+      negativeLaplaceVerticalLogFirst F r θ := by
+  rw [← negativeLaplaceVerticalLogFirstComplex_ofReal]
+  unfold negativeLaplaceComplexVerticalFirst negativeLaplaceComplexLogFirst
+    negativeLaplaceVerticalLogFirstComplex
+  have harg :
+      -((r : ℂ) + (r : ℂ) * Complex.I * (θ : ℂ)) =
+        -((r : ℂ) * (1 + (θ : ℂ) * Complex.I)) := by ring
+  rw [harg]
+  ring
+
+private theorem differentiableOn_negativeLaplaceComplexVerticalFirst
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    DifferentiableOn ℂ (negativeLaplaceComplexVerticalFirst F r)
+      {z : ℂ | 0 < ((r : ℂ) + ((r : ℂ) * Complex.I) * z).re} := by
+  intro z hz
+  have harg : HasDerivAt
+      (fun w : ℂ => (r : ℂ) + ((r : ℂ) * Complex.I) * w)
+      ((r : ℂ) * Complex.I) z := by
+    exact (((hasDerivAt_id z).const_mul
+      ((r : ℂ) * Complex.I)).const_add (r : ℂ)).congr_deriv (by ring)
+  have hV : IsOpen {w : ℂ | 0 < w.re} :=
+    isOpen_lt continuous_const Complex.continuous_re
+  have hargMem : (r : ℂ) + ((r : ℂ) * Complex.I) * z ∈
+      {w : ℂ | 0 < w.re} := hz
+  have houterWithin := (differentiableOn_negativeLaplaceComplexLogFirst F hF)
+    _ hargMem
+  have houter := houterWithin.differentiableAt
+    (hV.mem_nhds hargMem)
+  exact ((houter.hasDerivAt.comp z harg).const_mul
+    ((r : ℂ) * Complex.I)).differentiableAt.differentiableWithinAt
+
+private theorem iteratedDeriv_negativeLaplaceComplexVerticalFirst
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) (n : ℕ)
+    {z : ℂ} (hz : 0 < ((r : ℂ) + ((r : ℂ) * Complex.I) * z).re) :
+    iteratedDeriv n (negativeLaplaceComplexVerticalFirst F r) z =
+      ((r : ℂ) * Complex.I) ^ (n + 1) *
+        iteratedDeriv n (negativeLaplaceComplexLogFirst F)
+          ((r : ℂ) + ((r : ℂ) * Complex.I) * z) := by
+  let U : Set ℂ :=
+    {w : ℂ | 0 < ((r : ℂ) + ((r : ℂ) * Complex.I) * w).re}
+  let V : Set ℂ := {w : ℂ | 0 < w.re}
+  have hU : IsOpen U := by
+    dsimp [U]
+    exact isOpen_lt continuous_const (by fun_prop)
+  have hV : IsOpen V := by
+    exact isOpen_lt continuous_const Complex.continuous_re
+  have hHdiff := differentiableOn_negativeLaplaceComplexLogFirst F hF
+  induction n generalizing z with
+  | zero => simp [negativeLaplaceComplexVerticalFirst]
+  | succ n ih =>
+      rw [iteratedDeriv_succ]
+      have heq : iteratedDeriv n (negativeLaplaceComplexVerticalFirst F r) =ᶠ[nhds z]
+          fun w => ((r : ℂ) * Complex.I) ^ (n + 1) *
+            iteratedDeriv n (negativeLaplaceComplexLogFirst F)
+              ((r : ℂ) + ((r : ℂ) * Complex.I) * w) := by
+        filter_upwards [hU.mem_nhds (show z ∈ U from hz)] with w hw
+        exact ih hw
+      rw [heq.deriv_eq]
+      let arg : ℂ := (r : ℂ) + ((r : ℂ) * Complex.I) * z
+      have hargV : arg ∈ V := hz
+      have harg : HasDerivAt
+          (fun w : ℂ => (r : ℂ) + ((r : ℂ) * Complex.I) * w)
+          ((r : ℂ) * Complex.I) z := by
+        exact (((hasDerivAt_id z).const_mul
+          ((r : ℂ) * Complex.I)).const_add (r : ℂ)).congr_deriv (by ring)
+      have han : AnalyticAt ℂ
+          (iteratedDeriv n (negativeLaplaceComplexLogFirst F)) arg := by
+        rw [iteratedDeriv_eq_iterate]
+        exact ((hHdiff.analyticOnNhd hV).iterated_deriv n) arg hargV
+      have hout : HasDerivAt
+          (iteratedDeriv n (negativeLaplaceComplexLogFirst F))
+          (iteratedDeriv (n + 1) (negativeLaplaceComplexLogFirst F) arg) arg := by
+        rw [iteratedDeriv_succ]
+        exact han.differentiableAt.hasDerivAt
+      have hcomp := (hout.comp z harg).const_mul
+        (((r : ℂ) * Complex.I) ^ (n + 1))
+      have hcomp' : HasDerivAt
+          (fun w => ((r : ℂ) * Complex.I) ^ (n + 1) *
+            iteratedDeriv n (negativeLaplaceComplexLogFirst F)
+              ((r : ℂ) + ((r : ℂ) * Complex.I) * w))
+          (((r : ℂ) * Complex.I) ^ (n + 1) *
+            (iteratedDeriv (n + 1) (negativeLaplaceComplexLogFirst F) arg *
+              ((r : ℂ) * Complex.I))) z :=
+        hcomp.congr_of_eventuallyEq <| by
+          filter_upwards with w
+          rfl
+      rw [hcomp'.deriv]
+      dsimp only [arg]
+      ring
+
+/-- Every zero-axis vertical logarithmic jet is the corresponding ordinary
+negative-Laplace jet multiplied by the expected complex chain-rule factor. -/
+theorem iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ)
+    {r : ℝ} (hr : 0 < r) :
+    iteratedDeriv (n + 1) (negativeLaplaceVerticalLog F r) 0 =
+      (((r : ℂ) * Complex.I) ^ (n + 1)) *
+        ((iteratedDeriv (𝕜 := ℝ) (n + 1) negativeLaplaceLog r : ℝ) : ℂ) := by
+  have hderiv : deriv (negativeLaplaceVerticalLog F r) =
+      fun θ : ℝ => negativeLaplaceComplexVerticalFirst F r θ := by
+    funext θ
+    rw [(negativeLaplaceVerticalLog_hasDerivAt_cumulant F hF hr θ).deriv]
+    exact (negativeLaplaceComplexVerticalFirst_ofReal F r θ).symm
+  rw [iteratedDeriv_succ', hderiv]
+  let U : Set ℂ :=
+    {z : ℂ | 0 < ((r : ℂ) + ((r : ℂ) * Complex.I) * z).re}
+  have hU : IsOpen U := by
+    dsimp [U]
+    exact isOpen_lt continuous_const (by fun_prop)
+  have hzeroU : (0 : ℂ) ∈ U := by
+    change 0 < ((r : ℂ) + ((r : ℂ) * Complex.I) * (0 : ℂ)).re
+    simpa using hr
+  rw [iteratedDeriv_comp_ofReal_eq_of_differentiableOn
+    (negativeLaplaceComplexVerticalFirst F r) hU
+    (differentiableOn_negativeLaplaceComplexVerticalFirst F hF r) n 0 hzeroU]
+  change iteratedDeriv n (negativeLaplaceComplexVerticalFirst F r) (0 : ℂ) = _
+  rw [iteratedDeriv_negativeLaplaceComplexVerticalFirst F hF r n hzeroU]
+  simp only [mul_zero, add_zero]
+  let V : Set ℂ := {z : ℂ | 0 < z.re}
+  have hV : IsOpen V := isOpen_lt continuous_const Complex.continuous_re
+  have hrV : (r : ℂ) ∈ V := by simpa only [V, Complex.ofReal_re]
+  rw [← iteratedDeriv_comp_ofReal_eq_of_differentiableOn
+    (negativeLaplaceComplexLogFirst F) hV
+    (differentiableOn_negativeLaplaceComplexLogFirst F hF) n r hrV]
+  rw [iteratedDeriv_negativeLaplaceComplexLogFirst_ofReal F hF n hr]
+  rw [iteratedDeriv_negativeLaplaceLog_eq_ordinaryDeriv (n + 1) hr]
+
+end Fabius

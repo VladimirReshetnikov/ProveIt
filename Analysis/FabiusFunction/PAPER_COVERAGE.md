@@ -89,15 +89,34 @@ aggregate is `FabiusFunction.PaperFabiusAsymptotic`.
 | Equation (9), exact remainder-difference identity | Proved with the actual remainder `g - G` and the repaired domain `1 < t` | `Fabius.fabiusLogRemainder_difference_eq` |
 | Equation (9), size of the explicit main-term defect | Corrected result proved: the residual is `O((log t / t)^2)` | `Fabius.logMainDefect_isBigO_logScaleSquaredRate` |
 | Equation (10)'s replacement of that residual by `O(t^-2)` | **False**; formally refuted, with its nonzero leading coefficient identified | `Fabius.logMainDefect_sub_lead_isLittleO`, `Fabius.logMainDefect_not_isBigO_one_div_sq` |
-| Equation (11), bounded one-periodic remainder with `E(t) = O(log t / t)` | **Unsupported and not asserted in Lean.** The printed proof uses the false preceding residual estimate. | No declaration claims this refinement. |
-| Final sharp formula obtained from equations (8) and (11) | **Not advertised as proved.** It depends on the unsupported periodic refinement; moreover, negating the displayed `H = Ψ + E` gives `-Ψ`, whereas the draft prints `+Ψ` without explicitly renaming the periodic function. | No declaration claims this formula. |
+| Equation (11), bounded one-periodic-in-`t` remainder with `E(t) = O(log t / t)` | **Unsupported and not asserted in Lean.** The printed proof uses the false preceding residual estimate. | No declaration claims this particular phase/refinement. |
+| Final sharp formula as derived from equations (8) and (11) | The draft's derivation and phase are invalid.  A separate rigorous saddle analysis proves the corrected Lambert-phase formula below. | `Fabius.log_fabius_sub_correctedWikipediaMain_isBigO`, `Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO` |
 | Rigorous coarse small-argument replacement | Proved: explicit dyadic error, eventual full-real bound, and `O(t log t)` error | `Fabius.abs_dyadicLogError_le`, `Fabius.eventually_abs_fabiusLogProfile_sub_quadratic_le`, `Fabius.fabiusLogProfile_sub_quadratic_isBigO`, `Fabius.log_fabiusLogPhi_add_quadratic_isBigO` |
+| Rigorous sharp periodic correction | Proved: continuous periodic correction, exact mean, every nonzero-frequency Gamma--zeta Fourier coefficient is nonzero, absolute Fourier reconstruction, and `O(1 / (-log x))` corrected error | `Fabius.negativeLaplacePeriodicMean_eq`, `Fabius.hasSum_negativeLaplacePsi_gammaZeta_fourierSeries`, `Fabius.negativeLaplacePsiFourierCoeff_ne_zero`, `Fabius.negativeLaplacePsi_not_constant`, `Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO` |
+| Full sharp expansion to every order | Proved at the exact lower-Lambert phase: after the first `N` periodic saddle coefficients, the remainder is `O(lambda^-N)`; `N = 2` exposes the first explicit correction after the identically zero zeroth coefficient | `Fabius.log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `Fabius.log_fabius_sub_sharpLambertExpansion_isBigO`, `Fabius.fabiusSharpLambertExpansion_two` |
+| Lower-Lambert phase to every order | Proved separately in literal `-log x` and `log (-log x)` variables | `Fabius.fabiusLambertLiteralApproximation`, `Fabius.fabiusLambertPhase_sub_literalApproximation_isBigO` |
+| Literal elementary formula with the periodic term omitted | **False at the claimed error scale.** | `Fabius.log_fabius_sub_WikipediaElementaryMain_not_isBigO` |
 
 The source's intermediate coefficient matching is not a proof about an
 arbitrary remainder: its equation (4) drops `R(t)-R(t-1)`, and equation (6)
 uses a bound on `R'` that was never assumed.  The Lean development therefore
 checks the displayed explicit term through its exact residual instead of
 formalizing those circular steps as theorems.
+
+## Linked Stack Exchange discussions
+
+| Web claim | Status | Lean declaration(s) |
+| --- | --- | --- |
+| [Recurrence sequence](https://math.stackexchange.com/questions/4354350/extracting-an-asymptotic-from-a-sequence-defined-by-a-recurrence-relation) and its connection to `F(2^-n)` | Proved with the source normalization `a_n = d_n / n!` | `Fabius.fabiusRecurrenceSequence`, `Fabius.fabiusRecurrenceSequence_recurrence`, `Fabius.fabius_inverse_two_pow_eq_recurrenceSequence` |
+| Bernoulli recurrence and generating-function equation/product | Proved in source-facing coefficient and analytic forms | `Fabius.fabiusRecurrenceSequence_bernoulli_recurrence`, `Fabius.complexGeneratingFunction_eq_fabiusRecurrenceSequence_series`, `Fabius.fabiusRecurrenceSequence_series_neg_eq_tprod` |
+| Fixed-constant asymptotic conjecture for the recurrence sequence | Corrected: the sharp dyadic formula has a genuine nonconstant periodic term and `O(1/n)` error | `Fabius.log_fabius_dyadic_sub_lambertMain_isBigO`, `Fabius.negativeLaplacePsi_not_constant` |
+| [Explicit logarithmic small-`x` formula](https://math.stackexchange.com/a/3925650/19661) | Transcribed exactly, but corrected by adding the nonconstant periodic term at the exact lower-Lambert phase | `Fabius.fabiusWikipediaElementaryMain`, `Fabius.fabiusExplicitCorrectedWikipediaMain` |
+| Corrected general formula with `O(1 / (-log x))`, and the resulting asymptotic equivalent | Proved unconditionally by the quantitative Bromwich saddle argument | `Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO`, `Fabius.fabius_isEquivalent_exp_explicitCorrectedWikipediaMain` |
+| Complete corrected asymptotic expansion | Proved for every order `N`: `log F - main - sum_{j<N} lambda^{-j} c_j(lambda) = O(lambda^{-N})`, where `c_j` is continuous, bounded, and one-periodic | `Fabius.fabiusSaddleLogCoefficient`, `Fabius.log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `Fabius.log_fabius_sub_sharpLambertExpansion_isBigO` |
+| First term beyond the linked formula | Identified explicitly as `fabiusFirstSaddleCorrection(lambda) / lambda`, with an `O(lambda^-2)` remainder after insertion | `Fabius.fabiusSaddleLogPartialSum_two`, `Fabius.fabiusSharpLambertExpansion_two`, `Fabius.log_fabius_sub_sharpLambertExpansion_isBigO` |
+| All-orders elementary expansion of the exact phase | Proved independently; the oscillatory saddle coefficients in the full formula remain evaluated at the exact phase | `Fabius.fabiusLambertLiteralApproximation`, `Fabius.fabiusLambertPhase_sub_literalApproximation_isBigO` |
+| Uncorrected formula with the same error | **False** because the omitted periodic correction cannot be absorbed into a vanishing remainder | `Fabius.negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO`, `Fabius.log_fabius_sub_WikipediaElementaryMain_not_isBigO` |
+| [Quotient-of-exponentials approximation](https://mathematica.stackexchange.com/questions/285919/approximation-of-the-fabius-function-with-a-quotient-of-exponentials) | Formally refuted as an endpoint asymptotic: it is little-o of the true displaced bump | `Fabius.mathematicaFabiusQuotientCandidate_isLittleO_fabiusLogPhi`, `Fabius.mathematicaFabiusQuotientCandidate_not_isEquivalent_fabiusLogPhi` |
 
 ## Local draft: *K-fold summation over the signed Thue--Morse sequence*
 
