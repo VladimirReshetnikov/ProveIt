@@ -5,7 +5,11 @@ import Sharma2012.CountingConsequences
 import Sharma2012.AsymptoticConsequences
 import Sharma2012.UpperConsequences
 import Sharma2012.CorollaryConsequences
+import Sharma2012.OppositeClassConsequences
 import Sharma2012.ClassCountingConsequences
+import Sharma2012.ReflectionConsequences
+import Sharma2012.EndBlockConsequences
+import Sharma2012.FinalConsequences
 
 /-!
 # Sharma's progression-free permutations

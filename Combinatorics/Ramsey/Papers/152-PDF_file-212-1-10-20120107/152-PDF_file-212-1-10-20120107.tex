@@ -199,7 +199,7 @@ Notation 2.2. For the remainder of this section, we adopt the following notation
 \gamma_{e}&=\left(c_{1},c_{2},\ldots,c_{\left\lfloor n/2\right\rfloor}\right).
 \end{aligned}
 \]
-How large can $\left|\gamma_{o} \otimes \gamma_{e}\right|$ be? We already know that if $b_{1}$ does not commute with $c_{1}$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=1$. Thus, to answer the question just posed, we make the following assumptions for the remainder of this section.\\
+How large can $\left|\gamma_{o} \otimes \gamma_{e}\right|$ be? We already know that if $b_{1}$ does not commute with $c_{1}$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=1$. Thus, we first make the following assumptions; the other commuting orientation will be reduced to this one before Corollary 2.7.1.\\
 (3) $b_{1}$ commutes with $c_{1}$, $b_{1}$ is from the lower half of $[n]$, and $c_{1}$ is from the upper half.
 
 Lemma 2.5. If $\left|\operatorname{epi}\left(\gamma_{o}\right)\right|=u$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|=v$, then $\left|\gamma_{o} \otimes \gamma_{e}\right|=\binom{u+v}{v}$.
@@ -229,6 +229,8 @@ Theorem 2.7. If the length of one of $\operatorname{epi}\left(\gamma_{o}\right)$
 Proof. Suppose we have $\gamma_{o}$ and $\gamma_{e}$ such that $\left|\operatorname{epi}\left(\gamma_{o}\right)\right| \geq 5$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right| \geq 2$. Due to the congruence conditions on $c_{1}$ and $c_{2}$, we have $n-2 b_{1} \geq 4 q$ and when $28 q \leq n<32 q$, $n-2 b_{1} \geq 8 q$. We now consider some cases to show $\gamma_{o}$ and $\gamma_{e}$ of the supposed kind do not exist.
 
 Case 1: $n=16 q$ or $n=16 q+1$. If $b_{1}>6 q$, then $n-2 b_{1}<4 q$, a contradiction. If $b_{1}<6 q$, then since the last four entries of $\gamma_{o}$ must be congruent $(\bmod 2 q)$, they could only come from $\left\{b_{1}, b_{1}-2 q, b_{1}-4 q\right\}$, a contradiction.
+
+We also dispose of a boundary range omitted from the printed case split. Suppose $6q<b_{1}<8q$, and write $b_{1}=6q+z$, where $0<z<2q$. Four distinct positive terminal entries, all congruent to $b_{1}$ modulo $2q$ and at most $b_{1}$, force $b_{1}-2q=4q+z$ to belong to $\operatorname{epi}(\gamma_o)$. If $16q+z\leq n$, Theorem 2.4 applied to $4q+z,10q+z,16q+z$ forces $10q+z$ into $\operatorname{epi}(\gamma_o)$, contradicting the maximality of $b_{1}$. Hence $n<16q+z$. On the other hand, the first two entries $c_{1}<c_{2}$ of $\operatorname{pro}(\gamma_e)$ are congruent modulo $4q$, while the commuting boundary conditions give $2b_{1}\leq c_{1}$. Consequently $n\geq c_{2}\geq2b_{1}+4q=16q+2z$, again a contradiction. (The equality $b_{1}=8q$ is excluded by parity.)
 
 Case 2: $n>16q+1$. In this case the entries of $\operatorname{epi}(\gamma_o)$ can only come from the set
 \[
@@ -260,6 +262,14 @@ But then $b_1+14q$ cannot be placed anywhere in $\gamma_o$, as we must avoid bot
 Indeed, if $b_1>12q$, then $n-2b_1<8q$, which contradicts the inequality $n-2b_1 \geq 8q$ established for this case earlier in the proof. Now, reasoning as in (iii), we conclude that $n<b_1+14q$, whence $n<26q$, an obvious contradiction.
 
 Hence there is no $n$ for which there exist $\gamma_{o}$ and $\gamma_{e}$ of the supposed kind. The proof is now complete. \proofend
+
+It remains to justify the commuting orientation overlooked by assumption (3). Suppose that $b_{1}$ is in the upper half and $c_{1}$ is in the lower half. Mirror the odd and even traces separately in their normalized intervals, sending each odd entry $x$ and even entry $y$, respectively, to
+\[
+2\left(\left\lceil\frac n2\right\rceil+1-\frac{x+1}{2}\right)-1
+\quad\text{and}\quad
+2\left(\left\lfloor\frac n2\right\rfloor+1-\frac y2\right).
+\]
+Complementation preserves the $\Theta$ property of each normalized trace, so concatenating the mirrored odd trace and mirrored even trace gives a $\Theta_{12}$ permutation. Its boundary entries commute by Theorem 2.2 and have the orientation in (3). If $u',v'$ are its active end-block lengths, then the corresponding original lengths satisfy $u\leq u'$ and $v\leq v'$. The bounds in Theorems 2.6 and 2.7 therefore transfer to the original pair (both original end blocks are nonempty). Finally, the fixed-block argument in Lemma 2.5 gives the general upper bound $\left|\gamma_o\otimes\gamma_e\right|\leq\binom{u+v}{v}$. Together with $u,v\leq6$ and the transferred bounds, this is at most $20$. Thus the opposite commuting orientation gives the same bound.
 
 We note that in Example 2.1, $\left|\operatorname{epi}\left(\rho\left(\gamma_{o}\right)\right)\right|=6$ and $\left|\operatorname{pro}\left(\gamma_{e}\right)\right|=1$.\\
 In view of Theorems 2.5, 2.6, and 2.7 and Lemma 2.5, the maximum possible value of $\left|\gamma_{o} \otimes \gamma_{e}\right|$ is the largest of the three numbers $\binom{4+2}{4},\binom{3+3}{3}$, and $\binom{6+1}{6}$. Thus we have
