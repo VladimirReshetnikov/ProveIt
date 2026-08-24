@@ -339,6 +339,19 @@ private lemma prop172_energy_expansion {N k : Nat} [NeZero N]
         (fun z => ∑ s : ZMod N, cubeDifference f z s *
           exponential (-(z 0 * sigma (Fin.tail z))))).symm
 
+/-- A constant family in the multilinear cube form is the usual iterated
+difference sum. -/
+theorem constant_cubeForm_eq_sum_cubeDifference {N d : Nat} [NeZero N]
+    (g : ZMod N → Complex) :
+    cubeForm (d := d) (fun (_ : Fin d → Bool) => g) =
+      ∑ x : Point N d, ∑ s : ZMod N, cubeDifference g x s := by
+  unfold cubeForm
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro s _
+  exact (prop172_cubeDifference_product g x s).symm
+
 private lemma prop172_phased_discValued {N d : Nat} [NeZero N]
     (f : ZMod N → Complex) (hf : DiscValued f)
     (phi : (Fin d → Bool) → ZMod N → ZMod N) (e : Fin d → Bool) :
@@ -351,16 +364,7 @@ private lemma prop172_constantCubeForm_norm {N k : Nat} [NeZero N]
     (g : ZMod N → Complex) :
     ‖cubeForm (d := k + 1) (fun (_ : Fin (k + 1) → Bool) => g)‖ =
       ∑ x : Point N k, ‖∑ s : ZMod N, cubeDifference g x s‖ ^ 2 := by
-  have hform :
-      cubeForm (d := k + 1) (fun (_ : Fin (k + 1) → Bool) => g) =
-        ∑ z : Point N (k + 1), ∑ s : ZMod N, cubeDifference g z s := by
-    unfold cubeForm
-    apply Finset.sum_congr rfl
-    intro z _
-    apply Finset.sum_congr rfl
-    intro s _
-    exact (prop172_cubeDifference_product g z s).symm
-  rw [hform, sum_cube_succ_eq_sum_norm_sq]
+  rw [constant_cubeForm_eq_sum_cubeDifference, sum_cube_succ_eq_sum_norm_sq]
   rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
   exact Finset.sum_nonneg fun _ _ => sq_nonneg _
 

@@ -480,9 +480,13 @@ private lemma cubeForm_power_le_product {N d : Nat} [NeZero N]
   simpa only [prefixProduct_zero, prefixProduct_full] using
     prefixProduct_power_le f (le_refl d)
 
-/-- **Lemma 3.8 (Gowers--Cauchy--Schwarz).** -/
-theorem lemma_3_8_holds : lemma_3_8 := by
-  intro N d _ f _
+/-- The homogeneous form of Gowers--Cauchy--Schwarz.  The paper states the
+result for disc-valued functions, but the proof does not use that bound. -/
+theorem gowers_cauchy_schwarz {N d : Nat} [NeZero N]
+    (f : (Fin d → Bool) → ZMod N → Complex) :
+    ‖cubeForm f‖ ≤ ∏ e : Fin d → Bool,
+      ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
+        ((1 : Real) / (2 : Real) ^ d) := by
   let G : (Fin d → Bool) → Real := fun e =>
     ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖
   let R : Real := ∏ e : Fin d → Bool, G e
@@ -504,5 +508,10 @@ theorem lemma_3_8_holds : lemma_3_8 := by
         ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
           ((1 : Real) / (2 : Real) ^ d) := by
       simp only [G, m, one_div, Nat.cast_pow, Nat.cast_ofNat]
+
+/-- **Lemma 3.8 (Gowers--Cauchy--Schwarz).** -/
+theorem lemma_3_8_holds : lemma_3_8 := by
+  intro N d _ f _
+  exact gowers_cauchy_schwarz f
 
 end LeanProofs.GowersSzemeredi
