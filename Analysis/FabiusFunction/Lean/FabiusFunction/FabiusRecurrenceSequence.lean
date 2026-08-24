@@ -1,0 +1,221 @@
+import FabiusFunction.FabiusDyadicLogBounds
+import FabiusFunction.NegativeLaplaceVertical
+
+/-!
+# The recurrence sequence attached to the Fabius function
+
+The sequence called `a_n` in the linked recurrence discussion is the
+factorially normalized half-moment sequence
+
+`a_n = halfMoment n / n!`.
+
+This module records its displayed elementary recurrence, its exact relation
+to `F(2⁻ⁿ)`, the Bernoulli-number recurrence from the generating-function
+argument, and the corresponding entire series and dyadic product.
+-/
+
+set_option autoImplicit false
+
+open scoped BigOperators
+open Finset
+
+namespace Fabius
+
+noncomputable section
+
+/-- The sequence `a_n = d_n / n!` from the recurrence discussion, where
+`d_n = halfMoment n`. -/
+def fabiusRecurrenceSequence (n : ℕ) : ℚ :=
+  halfMoment n / (n.factorial : ℚ)
+
+@[simp]
+theorem fabiusRecurrenceSequence_zero : fabiusRecurrenceSequence 0 = 1 := by
+  norm_num [fabiusRecurrenceSequence, halfMoment]
+
+/-- Every term of the recurrence sequence is positive. -/
+theorem fabiusRecurrenceSequence_pos (n : ℕ) :
+    0 < fabiusRecurrenceSequence n := by
+  exact div_pos (halfMoment_pos n) (by positivity)
+
+/-- The simple factorial majorant behind the faster-than-exponential decay. -/
+theorem fabiusRecurrenceSequence_cast_le_inv_factorial (n : ℕ) :
+    (fabiusRecurrenceSequence n : ℝ) ≤ ((n.factorial : ℝ))⁻¹ := by
+  cases n with
+  | zero => norm_num [fabiusRecurrenceSequence, halfMoment]
+  | succ n =>
+      simp only [fabiusRecurrenceSequence]
+      push_cast
+      rw [div_le_iff₀ (by positivity)]
+      have hfac : ((n + 1).factorial : ℝ) ≠ 0 := by positivity
+      rw [inv_mul_cancel₀ hfac]
+      exact halfMoment_real_le_one fabius fabius_spec (n + 1) (by omega)
+
+/-- In particular, `a_n` decays faster than every exponential: multiplying
+it by `c^n`, for any fixed real `c`, still gives a sequence tending to zero. -/
+theorem fabiusRecurrenceSequence_faster_than_exponential (c : ℝ) :
+    Filter.Tendsto
+      (fun n : ℕ => c ^ n * (fabiusRecurrenceSequence n : ℝ))
+      Filter.atTop (nhds 0) := by
+  apply squeeze_zero_norm
+    (a := fun n : ℕ => |c| ^ n / (n.factorial : ℝ))
+  intro n
+  have hpos : 0 < (fabiusRecurrenceSequence n : ℝ) := by
+    exact_mod_cast fabiusRecurrenceSequence_pos n
+  rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_pos hpos]
+  calc
+    |c| ^ n * (fabiusRecurrenceSequence n : ℝ) ≤
+        |c| ^ n * ((n.factorial : ℝ))⁻¹ :=
+      mul_le_mul_of_nonneg_left
+        (fabiusRecurrenceSequence_cast_le_inv_factorial n)
+        (pow_nonneg (abs_nonneg c) n)
+    _ = |c| ^ n / (n.factorial : ℝ) := by rw [div_eq_mul_inv]
+  exact FloorSemiring.tendsto_pow_div_factorial_atTop |c|
+
+/-- Successor-index form of the elementary recurrence for `a_n`. -/
+theorem fabiusRecurrenceSequence_succ_recurrence (n : ℕ) :
+    fabiusRecurrenceSequence (n + 1) =
+      (∑ k : Fin (n + 1),
+          fabiusRecurrenceSequence k /
+            (((n + 2 - k : ℕ).factorial : ℕ) : ℚ)) /
+        ((2 : ℚ) ^ (n + 1) - 1) := by
+  rw [fabiusRecurrenceSequence, halfMoment_succ]
+  calc
+    ((∑ k : Fin (n + 1),
+          (Nat.choose (n + 2) k.val : ℚ) * halfMoment k.val) /
+          (((n + 2 : ℕ) : ℚ) * ((2 : ℚ) ^ (n + 1) - 1))) /
+        (((n + 1).factorial : ℕ) : ℚ) =
+      (∑ k : Fin (n + 1),
+          ((Nat.choose (n + 2) k.val : ℚ) * halfMoment k.val) /
+            (((n + 2 : ℕ) : ℚ) *
+              (((n + 1).factorial : ℕ) : ℚ))) /
+        ((2 : ℚ) ^ (n + 1) - 1) := by
+          rw [← Finset.sum_div]
+          have hn2 : (((n + 2 : ℕ) : ℚ)) ≠ 0 := by positivity
+          have hfac : ((((n + 1).factorial : ℕ) : ℚ)) ≠ 0 := by
+            positivity
+          have hpow : (2 : ℚ) ^ (n + 1) - 1 ≠ 0 := by
+            exact ne_of_gt (sub_pos.mpr
+              (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+          field_simp
+    _ =
+      (∑ k : Fin (n + 1),
+          (halfMoment k.val / ((k.val.factorial : ℕ) : ℚ)) /
+            (((n + 2 - k.val : ℕ).factorial : ℕ) : ℚ)) /
+        ((2 : ℚ) ^ (n + 1) - 1) := by
+          congr 1
+          apply Finset.sum_congr rfl
+          intro k _hk
+          have hk : k.val ≤ n + 2 := by omega
+          rw [Nat.cast_choose ℚ hk]
+          rw [Nat.factorial_succ]
+          field_simp
+          push_cast
+          ring
+
+/-- The recurrence displayed in the source:
+
+`a_n = (sum k < n, a_k / (n-k+1)!) / (2^n - 1)` for `n ≥ 1`.
+-/
+theorem fabiusRecurrenceSequence_recurrence (n : ℕ) (hn : 1 ≤ n) :
+    fabiusRecurrenceSequence n =
+      (∑ k ∈ range n,
+          fabiusRecurrenceSequence k /
+            (((n - k + 1).factorial : ℕ) : ℚ)) /
+        ((2 : ℚ) ^ n - 1) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+  rw [add_comm 1 m]
+  rw [fabiusRecurrenceSequence_succ_recurrence]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun k => fabiusRecurrenceSequence k /
+      (((m + 2 - k).factorial : ℕ) : ℚ)) (m + 1)]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hklt : k < m + 1 := mem_range.1 hk
+  congr 3
+  omega
+
+/-- The exact rational dyadic value in terms of the recurrence sequence. -/
+theorem halfMomentFabiusValue_eq_fabiusRecurrenceSequence (n : ℕ) :
+    halfMomentFabiusValue n =
+      ((2 : ℚ) ^ n.choose 2)⁻¹ * fabiusRecurrenceSequence n := by
+  rw [halfMomentFabiusValue, fabiusRecurrenceSequence]
+  field_simp
+
+/-- The source identity `F(2⁻ⁿ) = (2^(choose n 2))⁻¹ a_n`. -/
+theorem fabius_inverse_two_pow_eq_recurrenceSequence
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusReal F (((2 : ℝ) ^ n)⁻¹) =
+      ((2 : ℝ) ^ n.choose 2)⁻¹ * (fabiusRecurrenceSequence n : ℝ) := by
+  simp only [fabiusRecurrenceSequence]
+  push_cast
+  rw [halfMoment_eq_fabius_formula F hF n]
+  field_simp
+
+/-- The Bernoulli convolution before reflecting the finite sum. -/
+theorem fabiusRecurrenceSequence_bernoulli_convolution (n : ℕ) :
+    (∑ k ∈ range (n + 1),
+        bernoulli k / ((k.factorial : ℕ) : ℚ) *
+          (2 : ℚ) ^ (n - k) * fabiusRecurrenceSequence (n - k)) =
+      fabiusRecurrenceSequence n := by
+  have h := congrArg (fun q : ℚ => q / ((n.factorial : ℕ) : ℚ))
+    (halfMoment_bernoulli_convolution n)
+  rw [Finset.sum_div] at h
+  simp only [fabiusRecurrenceSequence]
+  rw [← h]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hkle : k ≤ n := Nat.le_of_lt_succ (mem_range.1 hk)
+  rw [Nat.cast_choose ℚ hkle]
+  field_simp
+
+/-- The source-oriented Bernoulli recurrence
+
+`a_n = sum k ≤ n, B_(n-k) 2^k a_k / (n-k)!`.
+-/
+theorem fabiusRecurrenceSequence_bernoulli_recurrence (n : ℕ) :
+    fabiusRecurrenceSequence n =
+      ∑ k ∈ range (n + 1),
+        bernoulli (n - k) / (((n - k).factorial : ℕ) : ℚ) *
+          (2 : ℚ) ^ k * fabiusRecurrenceSequence k := by
+  rw [← fabiusRecurrenceSequence_bernoulli_convolution n]
+  rw [← Finset.sum_range_reflect
+    (fun k => bernoulli k / ((k.factorial : ℕ) : ℚ) *
+      (2 : ℚ) ^ (n - k) * fabiusRecurrenceSequence (n - k)) (n + 1)]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hkle : k ≤ n := Nat.le_of_lt_succ (mem_range.1 hk)
+  simp only [Nat.add_sub_cancel, Nat.sub_sub_self hkle]
+
+/-- The half-moment generating series is the ordinary generating series of
+the factorially normalized recurrence sequence. -/
+theorem halfMomentGeneratingSeries_eq_fabiusRecurrenceSequence_series
+    (z : ℂ) :
+    halfMomentGeneratingSeries z =
+      ∑' n : ℕ, (fabiusRecurrenceSequence n : ℂ) * z ^ n := by
+  apply tsum_congr
+  intro n
+  simp only [fabiusRecurrenceSequence]
+  push_cast
+  rfl
+
+/-- The Fabius analytic generating function has coefficients `a_n`. -/
+theorem complexGeneratingFunction_eq_fabiusRecurrenceSequence_series
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    complexGeneratingFunction F z =
+      ∑' n : ℕ, (fabiusRecurrenceSequence n : ℂ) * z ^ n := by
+  rw [complexGeneratingFunction_eq_series F hF z]
+  exact halfMomentGeneratingSeries_eq_fabiusRecurrenceSequence_series z
+
+/-- The alternating ordinary generating series of `a_n` is the canonical
+dyadic product. -/
+theorem fabiusRecurrenceSequence_series_neg_eq_tprod
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    (∑' n : ℕ, (fabiusRecurrenceSequence n : ℂ) * (-z) ^ n) =
+      ∏' n : ℕ, negativeLaplaceDyadicFactor z n := by
+  rw [← complexGeneratingFunction_eq_fabiusRecurrenceSequence_series F hF (-z)]
+  exact complexGeneratingFunction_neg_eq_tprod F hF z
+
+end
+
+end Fabius
