@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Analysis.Calculus.ContDiff.Polynomial
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Algebra.Polynomial.Eval.SMul
@@ -35,6 +36,13 @@ noncomputable def legendrePolynomial (n : ℕ) : ℝ[X] :=
   ext k
   norm_num [legendrePolynomial, derivative_sub, coeff_X]
 
+/-- Evaluation of a Legendre polynomial is smooth. -/
+theorem legendrePolynomial_contDiff (n : ℕ) :
+    ContDiff ℝ ⊤ (fun x : ℝ ↦ (legendrePolynomial n).eval x) := by
+  induction legendrePolynomial n using Polynomial.induction_on' with
+  | add p q hp hq => simpa using hp.add hq
+  | monomial m a => simpa using contDiff_const.mul (contDiff_id.pow m)
+
 private lemma sq_sub_one_pow_expansion (N : ℕ) :
     ((X ^ 2 - 1) ^ N : ℝ[X]) =
       ∑ j ∈ range (N + 1),
@@ -50,6 +58,68 @@ private lemma sq_sub_one_pow_expansion (N : ℕ) :
     hsign]
   simp only [C_mul, ← C_eq_natCast]
   ring
+
+private lemma coeff_sq_sub_one_pow_top (n : ℕ) :
+    ((X ^ 2 - 1) ^ n : ℝ[X]).coeff (2 * n) = 1 := by
+  rw [sq_sub_one_pow_expansion, finsetSum_coeff]
+  simp_rw [coeff_C_mul_X_pow]
+  rw [sum_eq_single n]
+  · norm_num
+  · intro j hj hne
+    simp only [ite_eq_right_iff]
+    intro h
+    omega
+  · simp
+
+/-- The leading coefficient of `P_n` in the Rodrigues normalization. -/
+theorem coeff_legendrePolynomial_self (n : ℕ) :
+    (legendrePolynomial n).coeff n =
+      (2 : ℝ)⁻¹ ^ n * (2 * n).choose n := by
+  rw [legendrePolynomial, coeff_smul, coeff_iterate_derivative,
+    show n + n = 2 * n by omega, coeff_sq_sub_one_pow_top]
+  rw [Nat.descFactorial_eq_factorial_mul_choose]
+  simp only [smul_eq_mul, nsmul_eq_mul, Nat.cast_mul, Nat.cast_factorial,
+    mul_one]
+  have hf : (n.factorial : ℝ) ≠ 0 := by positivity
+  rw [inv_pow, mul_inv_rev]
+  field_simp
+  have hf' : (ascPochhammer ℝ n).eval 1 ≠ 0 := by
+    rw [ascPochhammer_eval_one]
+    exact hf
+  exact mul_div_cancel_left₀ _ hf'
+
+/-- The ordinary Legendre polynomial `P_n` has degree exactly `n`. -/
+@[simp] theorem natDegree_legendrePolynomial (n : ℕ) :
+    (legendrePolynomial n).natDegree = n := by
+  apply le_antisymm
+  · calc
+      (legendrePolynomial n).natDegree ≤
+          (derivative^[n] ((X ^ 2 - 1) ^ n : ℝ[X])).natDegree :=
+        natDegree_smul_le _ _
+      _ ≤ ((X ^ 2 - 1) ^ n : ℝ[X]).natDegree - n :=
+        natDegree_iterate_derivative _ _
+      _ = n := by
+        rw [show (1 : ℝ[X]) = C 1 by simp, natDegree_pow,
+          natDegree_X_pow_sub_C]
+        omega
+  · apply le_natDegree_of_ne_zero
+    rw [coeff_legendrePolynomial_self]
+    apply mul_ne_zero
+    · positivity
+    · exact_mod_cast Nat.ne_of_gt (Nat.choose_pos (show n ≤ 2 * n by omega))
+
+/-- Degree form of `natDegree_legendrePolynomial`. -/
+@[simp] theorem degree_legendrePolynomial (n : ℕ) :
+    (legendrePolynomial n).degree = n := by
+  have hp : legendrePolynomial n ≠ 0 := by
+    intro h
+    have hc := congr_arg (fun p : ℝ[X] ↦ p.coeff n) h
+    rw [coeff_legendrePolynomial_self] at hc
+    simp only [coeff_zero] at hc
+    have hchoose : ((2 * n).choose n : ℝ) ≠ 0 := by
+      exact_mod_cast Nat.ne_of_gt (Nat.choose_pos (show n ≤ 2 * n by omega))
+    exact (mul_ne_zero (by positivity) hchoose) hc
+  rw [degree_eq_natDegree hp, natDegree_legendrePolynomial]
 
 private lemma iterate_derivative_sq_sub_one_even (n : ℕ) :
     derivative^[2 * n] ((X ^ 2 - 1) ^ (2 * n) : ℝ[X]) =
