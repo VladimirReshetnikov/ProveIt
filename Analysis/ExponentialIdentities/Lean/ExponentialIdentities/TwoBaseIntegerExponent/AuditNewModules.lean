@@ -119,6 +119,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.TwoStarControlCharacterizati
 import ExponentialIdentities.TwoBaseIntegerExponent.TopSliceTailSum
 import ExponentialIdentities.TwoBaseIntegerExponent.CrossSliceContraction
 import ExponentialIdentities.TwoBaseIntegerExponent.AbelSliceMass
+import ExponentialIdentities.TwoBaseIntegerExponent.AdelicWedgeDecoupling
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
@@ -863,6 +864,11 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms AbelSlice.slice_mass_nonneg
 #print axioms AbelSlice.tail_sub_tail
 #print axioms AbelSlice.slice_vanishes_of_mass_zero
+#print axioms AbelSlice.neg_le_pos_above
+#print axioms AbelSlice.neg_weighted_le
+#print axioms fermatQuotientResidue_mul
+#print axioms fermatQuotientDeterminant_control_shift
+#print axioms fermatQuotientDeterminant_eq_zero_iff_line
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384
