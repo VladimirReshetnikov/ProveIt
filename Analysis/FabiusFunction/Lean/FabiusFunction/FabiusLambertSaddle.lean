@@ -69,4 +69,44 @@ theorem fabiusLambertRadius_dyadic (t : ℝ) :
       (2 : ℝ) ^ dyadicLambertPhase t :=
   rfl
 
+/-- The lower-Lambert phase tends to infinity along the dyadic logarithmic scale. -/
+theorem tendsto_dyadicLambertPhase_atTop :
+    Filter.Tendsto dyadicLambertPhase Filter.atTop Filter.atTop := by
+  have hL : 0 < Real.log (2 : ℝ) := Real.log_pos (by norm_num)
+  have hlog : Filter.Tendsto
+      (fun t : ℝ => Real.log t / Real.log 2) Filter.atTop Filter.atTop :=
+    (Real.tendsto_log_atTop.atTop_mul_const (inv_pos.mpr hL)).congr'
+      (Filter.Eventually.of_forall fun t => by simp [div_eq_mul_inv])
+  have hmain : Filter.Tendsto
+      (fun t : ℝ => t + Real.log t / Real.log 2) Filter.atTop Filter.atTop :=
+    Filter.tendsto_id.atTop_add_atTop hlog
+  have hrem := dyadicLambertPhase_sub_main_tendsto_zero
+  have hsum : Filter.Tendsto
+      (fun t : ℝ =>
+        (dyadicLambertPhase t - (t + Real.log t / Real.log 2)) +
+          (t + Real.log t / Real.log 2)) Filter.atTop Filter.atTop :=
+    hrem.add_atTop hmain
+  simpa only [sub_add_cancel] using hsum
+
+/-- The explicit dyadic Laplace radius tends to infinity. -/
+theorem tendsto_fabiusLambertRadius_dyadic_atTop :
+    Filter.Tendsto
+      (fun t : ℝ => fabiusLambertRadius ((2 : ℝ) ^ (-t)))
+      Filter.atTop Filter.atTop := by
+  rw [show (fun t : ℝ => fabiusLambertRadius ((2 : ℝ) ^ (-t))) =
+      fun t => (2 : ℝ) ^ dyadicLambertPhase t by
+    funext t
+    exact fabiusLambertRadius_dyadic t]
+  have hexp : Filter.Tendsto
+      (fun y : ℝ => (2 : ℝ) ^ y) Filter.atTop Filter.atTop := by
+    have hL : 0 < Real.log (2 : ℝ) := Real.log_pos (by norm_num)
+    have hlin : Filter.Tendsto
+        (fun y : ℝ => Real.log 2 * y) Filter.atTop Filter.atTop :=
+      Filter.tendsto_id.const_mul_atTop hL
+    refine (Real.tendsto_exp_atTop.comp hlin).congr' ?_
+    filter_upwards with y
+    rw [Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
+    rfl
+  exact hexp.comp tendsto_dyadicLambertPhase_atTop
+
 end Fabius
