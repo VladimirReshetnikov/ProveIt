@@ -175,7 +175,9 @@ an asymptotic equivalent despite its good compact-interval plot.
 `PaperKFoldThueMorse.lean` is the public aggregate for the second local
 draft.  It contains the exact prefix-sum, zero-run, convolution, and
 generating-series identities; the intended real polygonal interpolation; and a
-proved corrected pointwise approximation scheme.  The Stirling estimate used
+proved corrected pointwise approximation scheme.  It also exposes the
+zero-one sequence `thueMorseBit` and proves the exact identity expressing it
+through `Log2` of the signed binomial-parity sum.  The Stirling estimate used
 by the draft is proved in its precise `O(log n)` form.  The aggregate also
 exposes formal counterexamples to the literal normalization, the claimed local
 and global error estimates, the unbounded “maximum” proxy, and the omitted
