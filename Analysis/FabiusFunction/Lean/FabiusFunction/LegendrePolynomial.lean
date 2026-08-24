@@ -121,6 +121,31 @@ theorem coeff_legendrePolynomial_self (n : ℕ) :
     exact (mul_ne_zero (by positivity) hchoose) hc
   rw [degree_eq_natDegree hp, natDegree_legendrePolynomial]
 
+/-- The Rodrigues normalization fixes the value at the right endpoint. -/
+@[simp] theorem eval_legendrePolynomial_one (n : ℕ) :
+    (legendrePolynomial n).eval 1 = 1 := by
+  have hfactor : ((X ^ 2 - 1) ^ n : ℝ[X]) =
+      (X + C (-1)) ^ n * (X + C 1) ^ n := by
+    rw [← mul_pow]
+    norm_num
+    ring
+  rw [legendrePolynomial, eval_smul, hfactor, iterate_derivative_mul,
+    eval_finsetSum]
+  simp_rw [iterate_derivative_X_add_pow]
+  rw [sum_eq_single 0]
+  · simp only [Nat.choose_zero_right, tsub_zero, Nat.descFactorial_self,
+      eval_mul, eval_pow, eval_add, eval_X, eval_C,
+      Nat.descFactorial_zero, one_smul,
+      smul_eq_mul, Nat.sub_self, pow_zero, nsmul_one]
+    rw [show (1 + 1 : ℝ) = 2 by norm_num]
+    field_simp
+    rw [eval_natCast]
+  · intro k hk hk0
+    have hk_le : k ≤ n := by simpa using Nat.lt_succ_iff.mp (mem_range.mp hk)
+    rw [show n - (n - k) = k by omega]
+    simp [hk0]
+  · simp
+
 private lemma iterate_derivative_sq_sub_one_even (n : ℕ) :
     derivative^[2 * n] ((X ^ 2 - 1) ^ (2 * n) : ℝ[X]) =
       ((2 * n).factorial : ℝ) •
