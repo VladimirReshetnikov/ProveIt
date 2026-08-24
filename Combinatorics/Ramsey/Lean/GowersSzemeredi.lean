@@ -36,6 +36,7 @@ import GowersSzemeredi.Proofs05Downstream
 import GowersSzemeredi.Proofs05Lemma14
 import GowersSzemeredi.Proofs05PhaseRemoval
 import GowersSzemeredi.Proofs05PolynomialPartition
+import GowersSzemeredi.Proofs05Lemma9
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
