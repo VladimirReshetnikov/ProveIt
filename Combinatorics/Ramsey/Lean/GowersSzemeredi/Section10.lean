@@ -327,14 +327,15 @@ def lemma_10_8 : Prop :=
         AlmostEvery (1 - 2 * Real.sqrt theta) (D.fibre (D.index w + d)) P
 
 /-- **Lemma 10.9.** The locally constructed difference map is a Freiman
-homomorphism. -/
+homomorphism.  Nonemptiness of `W`, inherited from Lemma 10.5 in the paper,
+is explicit: otherwise both nested almost-everywhere assertions are vacuous. -/
 def lemma_10_9 : Prop :=
   forall (N : Nat) [NeZero N] (X : Type*) [Fintype X] [DecidableEq X]
       (D : MultifunctionDomain N X) (phi : X -> ZMod N)
       (W : Finset X) (B B' : Finset (ZMod N)) (psi : ZMod N -> ZMod N)
       (eta : Real),
     let theta := 10 * eta ^ ((1 : Real) / 5)
-    IsSection10ShiftRegular D W B eta ->
+    W.Nonempty -> IsSection10ShiftRegular D W B eta ->
     IsSection10LocalDifferenceModel D phi W B B' psi theta ->
     6 * Real.sqrt theta < 1 -> FreimanHom 2 B' psi
 

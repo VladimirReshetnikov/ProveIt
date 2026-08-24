@@ -19,6 +19,7 @@ import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs10Counting
+import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
 import GowersSzemeredi.Proofs13Basic
 import GowersSzemeredi.Proofs15LevelSets
