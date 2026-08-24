@@ -1441,10 +1441,10 @@ block index,
 \[
  \#\bigl(\Cand\cap[X,2X]\bigr)\asymp\log X ,
 \]
-and the kernel-verified zero-free region gives $\beta\ge12$, hence $\beta>12$ because $\beta$ is
+and the kernel-verified zero-free region gives $\beta\ge15$, hence $\beta>15$ because $\beta$ is
 irrational.  The number of \emph{nonintegral} solutions in the block is therefore at most
-$\lfloor N/12\rfloor$, while the full solution count --- equivalently the dyadic candidate
-count --- is at most $1+\lfloor N/12\rfloor$.  Under the directed-rounding scan these bounds
+$\lfloor N/15\rfloor$, while the full solution count --- equivalently the dyadic candidate
+count --- is at most $1+\lfloor N/15\rfloor$.  Under the directed-rounding scan these bounds
 improve respectively to $\lfloor N/27\rfloor$ and $1+\lfloor N/27\rfloor$, at the weaker
 \statuscomp{} trust level.  Summing over blocks,
 the cumulative candidate count below $2^T$ is
@@ -5476,7 +5476,8 @@ which already makes the ratio exceed $12\log3=13.1833\ldots$; the interval scan 
 Section~\ref{sec:finitecheck} raises it past $20\log3=21.9722\ldots$, and the extended
 directed-rounding scan through $2^{27}$ raises it past $27\log3=29.6625\ldots$.  The last two
 improvements are \statuscomp{} and do not enter any kernel-verified statement; the exponent
-bound the kernel actually certifies remains $x\ge12$.
+bound the kernel actually certifies is $x\ge15$ (Theorem~\ref{co:thm-finite4096}), which
+already puts the ratio past $15\log3=16.4791\ldots$.
 
 The same constant governs a second, purely cardinal comparison, which is the more telling of
 the two.  The configuration forbidden by Theorem~\ref{od:thm-optimized} consists of
@@ -5487,8 +5488,8 @@ candidates arranged in one structured pattern, while the whole dyadic block cont
 $\sim\log X/(\beta\log2)$ candidates by \eqref{od:eq-dyadic-count}.  The ratio is again
 exactly $\beta\log3$: the optimized theorem asks a block to supply about $\beta\log3$ times
 as many candidates as it can possibly hold.  Concretely, at $X=2^{100}$ the block $[X,2X)$
-holds $100/\beta+O(1)$ candidates --- about eight if $\beta$ were as small as its
-kernel-certified floor, and about three under the $2^{27}$ scan --- while the shortest
+holds $100/\beta+O(1)$ candidates --- about seven if $\beta$ were as small as its
+kernel-certified floor $15$, and about three under the $2^{27}$ scan --- while the shortest
 progression the theorem forbids at that height already needs $r_n+1\approx111$ terms.
 
 \begin{remark}[Quantified barrier]
@@ -19829,8 +19830,10 @@ $\tfrac12<\alpha<\tfrac23$ (\statuslean{}).  Put $N_n=A^n$, $K_n=M^n=N_n^\alpha$
 \end{equation}
 For $K_n$ balls in $N_n$ boxes the pair-collision scale $K_n^2/N_n=\lambda^n$ diverges while
 the triple-collision scale $K_n^3/N_n^2=\eta^n$ vanishes; no information about the size of
-$x$ is needed.  The kernel bound $x\ge12$ (\lean{FiniteCheck4096}; now $x\ge13$ by
-\lean{FiniteCheck8192}) enters only through $q\le(2/3)^{12}=0.0077\ldots$.
+$x$ is needed.  The kernel bound enters only through $q\le(2/3)^{12}=0.0077\ldots$, which
+uses $x\ge12$ (\lean{FiniteCheck4096}); the kernel now gives $x\ge15$
+(\lean{FiniteCheck32768}) and hence $q\le(2/3)^{15}=0.0023\ldots$, so the constant quoted is
+conservative and nothing below depends on its sharpness.
 
 \subsection{Exact expansion and fixed-shift classification}
 \label{fc:classification}
