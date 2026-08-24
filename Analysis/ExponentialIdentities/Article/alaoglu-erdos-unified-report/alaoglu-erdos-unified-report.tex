@@ -21601,11 +21601,14 @@ $\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$ is the exact signature of the least-genera
 so at an integer control $\Sol=\N_0$ has \emph{linear} density and the entire quadratic-type
 analysis is vacuous.  The route therefore consumes channel~(ii) of the control principle
 (Section~\ref{log:control}) --- which most of the corpus's machinery does not.  Second, it
-converts an open-ended search into a single explicit inequality.  What
-\eqref{camp:eq-pila} rules out is only the \emph{vanishing} construction, whose Jensen
-floor $1/(4\beta)$ exceeds the threshold by $208\beta\log2\log3\approx158\beta$; a
-construction whose small type comes from controlled interpolation rather than from zeros is
-untouched by that bound.  \statusnew{}; Pila's theorem and the minimum-modulus input
+converts an open-ended search into a single explicit inequality.  What is ruled out is only the \emph{vanishing} construction, and by
+Proposition~\ref{camp:prop-inftype} that branch fails by an infinite margin rather than the
+finite one of \eqref{camp:eq-pila}; a construction whose small type comes from controlled
+interpolation rather than from zeros is untouched.  The natural constructions therefore
+realise only the two extremes $\tau_2=0$ (any $\Z$-polynomial in $2^z,3^z$, which is
+integer-valued on $\Sol$) and $\tau_2=\infty$ (anything vanishing on $\Sol$), while
+Theorem~\ref{camp:thm-typegap} forbids the interval $(0,1/(832\beta^2\log2\log3)]$.
+Whether the achievable spectrum meets $(0,\infty)$ at all is exactly the open question.  \statusnew{}; Pila's theorem and the minimum-modulus input
 \statusknown{}; target \statusopen.
 
 \subsection{Literature synthesis: five clusters, and one gate measured}
@@ -21649,7 +21652,26 @@ so the gate fails by the factor
 \end{equation}
 that is by $2217.5$ at the kernel-verified $\beta\ge14$, by $4276.6$ at the computational
 $\beta>27$, and \emph{growing linearly in $\beta$} --- so every improvement of the
-zero-free region makes this particular gate harder, not easier.  \statusnew{}; the
+zero-free region makes this particular gate harder, not easier.
+
+In fact the vanishing branch fails by an infinite margin, which is worth recording because
+it is both sharper and simpler than the Jensen estimate.  The monoid has counting function
+$T^2/(2\beta)+O(T)$ and \emph{all its points are real and positive}, so
+$\sum_{s\in\Sol}s^{-3}$ converges while $\sum_{s\in\Sol,\,s\le r}s^{-2}$ diverges, at the
+exact rate $\beta^{-1}\log r$: measured increments per doubling are $0.0719$ against
+$1/\beta=0.0714$, with $\sum s^{-3}=1.20647$ stable to six digits
+(\path{scripts/sol_canonical_type.py}).  Hence the Hadamard genus equals the order, both
+being $2$, with divergent coefficient sum, and the canonical product --- which has minimal
+growth among all entire functions vanishing on $\Sol$ --- satisfies
+$\log M(r)\asymp\beta^{-1}r^2\log r$.  Therefore:
+
+\begin{proposition}[Vanishing on the monoid forces infinite type]\label{camp:prop-inftype}
+Every entire function vanishing on all of $\Sol$ has $\tau_2=+\infty$.
+\end{proposition}
+
+So no function that is independent of $2^z,3^z$ by virtue of vanishing on the monoid comes
+within any finite factor of Pila's threshold, and \eqref{camp:eq-pila} is merely the
+elementary shadow of this.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}; the
 numerical check of the Jensen sum against the closed form converges from above
 ($1.219,1.109,1.054$ at $T=140,280,560$ for $\beta=14$), confirming the bound is valid and
 slightly conservative.  The remaining way to use Pila's theorem therefore requires small type produced by
