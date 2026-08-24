@@ -17,7 +17,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma sum_difference_eq_norm_sum_sq {N : Nat} [NeZero N]
+lemma sum_difference_eq_norm_sum_sq {N : Nat} [NeZero N]
     (g : ZMod N → Complex) :
     ∑ a : ZMod N, ∑ s : ZMod N, difference g a s =
       ((‖∑ s : ZMod N, g s‖ ^ 2 : Real) : Complex) := by
@@ -37,14 +37,14 @@ private lemma sum_difference_eq_norm_sum_sq {N : Nat} [NeZero N]
     _ = ((‖∑ s : ZMod N, g s‖ ^ 2 : Real) : Complex) := by
       rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
 
-private lemma cubeDifference_cons {N n : Nat} (f : ZMod N → Complex)
+lemma cubeDifference_cons {N n : Nat} (f : ZMod N → Complex)
     (r : ZMod N) (a : Point N n) :
     cubeDifference f (Fin.cons r a) = difference (cubeDifference f a) r := by
   funext s
   simp only [cubeDifference, List.ofFn_cons, iteratedDifference]
 
-private lemma sum_point_succ {N n : Nat} [NeZero N]
-    (F : Point N (n + 1) → Complex) :
+lemma sum_point_succ {N n : Nat} [NeZero N] {M : Type*} [AddCommMonoid M]
+    (F : Point N (n + 1) → M) :
     ∑ b : Point N (n + 1), F b =
       ∑ r : ZMod N, ∑ a : Point N n, F (Fin.cons r a) := by
   let e := Fin.consEquiv (fun _ : Fin (n + 1) => ZMod N)
@@ -55,7 +55,7 @@ private lemma sum_point_succ {N n : Nat} [NeZero N]
       rw [Fintype.sum_prod_type]
       rfl
 
-private lemma sum_cube_succ_eq_sum_norm_sq {N n : Nat} [NeZero N]
+lemma sum_cube_succ_eq_sum_norm_sq {N n : Nat} [NeZero N]
     (f : ZMod N → Complex) :
     ∑ b : Point N (n + 1), ∑ s : ZMod N, cubeDifference f b s =
       ((∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2 : Real) :
@@ -82,7 +82,7 @@ private lemma sum_cube_succ_eq_sum_norm_sq {N n : Nat} [NeZero N]
           Complex) := by
       rw [Complex.ofReal_sum]
 
-private lemma previousUniformEnergy_sq_le {N n : Nat} [NeZero N]
+lemma previousUniformEnergy_sq_le {N n : Nat} [NeZero N]
     (f : ZMod N → Complex) :
     (∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2) ^ 2 ≤
       (N : Real) ^ (n + 1) *

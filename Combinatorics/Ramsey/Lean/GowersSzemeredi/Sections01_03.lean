@@ -231,7 +231,7 @@ def lemma_3_1 : Prop :=
         higherUniformConditionvi f c2 d) /\
       (2 * c2 <= c1 -> higherUniformConditionvi f c2 d ->
         higherUniformConditioniii f c1 d) /\
-      (c2 ^ ((1 : Real) / 4) <= c3 -> higherUniformConditionvi f c2 d ->
+      (c2 ^ ((1 : Real) / 4) < c3 -> higherUniformConditionvi f c2 d ->
         higherUniformConditionvii f c3 d) /\
       (c3 <= c2 -> higherUniformConditionvii f c3 d ->
         higherUniformConditionvi f c2 d)
