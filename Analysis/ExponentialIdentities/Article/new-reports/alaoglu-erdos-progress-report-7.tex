@@ -1,0 +1,1603 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=green!40!black,
+  urlcolor=blue!65!black,
+  pdftitle={New structural progress on the Alaoglu--Erdos conjecture},
+  pdfauthor={Research progress report}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Alaoglu--Erd\H{o}s progress report}
+\rhead{24 August 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{observation}[theorem]{Observation}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{experiment}[theorem]{Experiment}
+\newtheorem{target}[theorem]{Target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\AEconj}{\textsc{AE}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Gm}{\mathbb G_m}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\Norm}{\operatorname{N}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\content}{\operatorname{cont}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ellr}{\ell}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\vct}[1]{\bm{#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\angles}[1]{\left\langle#1\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false
+}
+
+\title{\textbf{New Structural Progress on the Alaoglu--Erd\H{o}s Conjecture}\\[0.35em]
+\large A uniform staircase lattice, fixed-rank holonomy, and a diagonal Kummer supernorm}
+\author{Research progress report continuing \texttt{alaoglu-erdos-unified-report-6}}
+\date{24 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Alaoglu--Erd\H{o}s conjecture asserts that a real number $x$ satisfying
+$2^x,3^x\in\Z$ must be an integer.  This report is a deliberately non-duplicative
+continuation of the large unified report supplied with the problem.  It does
+\emph{not} claim a proof of the conjecture.  It supplies two new exact pieces of
+structure and uses them to sharpen the remaining research targets.
+
+First, the earlier finite computations in the consecutive-log basis are upgraded
+to a theorem valid for every prime smoothness cutoff $q$.  The map from the
+$2\pi(q)$ prime-exponent coordinates of a candidate pair $(M,A)$ to the
+$2q-3$ coefficients of its sparse weight-two period relation has kernel exactly
+the one-dimensional control direction $(M,A)\mapsto(2^tM,3^tA)$, rank
+$2\pi(q)-1$, and saturated image.  An explicit integral decoder recovers every
+external valuation and the residual structural coordinate.  Equivalently, every
+nonzero Smith invariant is $1$.  This turns the finite data observed at
+$q=3,5,7,11$ into a uniform theorem and yields a fixed-rank, rank-six unipotent
+connection whose length-two holonomy coefficient is precisely the
+Alaoglu--Erd\H{o}s determinant.
+
+Second, the elementary Kummer cocycle from the supplied report admits an exact
+diagonal orbit product.  If $N\ge2$ and $P=2^{1/N}$, $Q=3^{1/N}$,
+$U=M^{1/N}$, $V=A^{1/N}$, then with
+$R=UQ-VP$ and $S=U+Q-V-P$ one has
+\[
+ \prod_{\zeta^N=1}
+ \bigl((\zeta U-1)(\zeta Q-1)-(\zeta V-1)(\zeta P-1)\bigr)
+ =R^N-S^N.
+\]
+At the distinguished real embedding this nonzero algebraic integer is not merely
+$O(N^{-3})$: its absolute value is
+$\exp(-N\log N+O_x(N))$, with an explicit asymptotic constant.  A complete
+conjugate audit then explains why this striking gain is not yet a proof.  The
+leading root-of-unity phase polynomial
+\[
+ F(p,q,u,v)=(u-1)(q-1)-(v-1)(p-1)
+\]
+has strictly positive logarithmic Mahler measure.  Thus the simple cocycle has
+positive phase entropy, and multiplication by cyclotomic Kummer units cannot
+remove it.  This gives a precise design condition for a successor cocycle: its
+leading phase symbol must be generalized cyclotomic, while a later term must
+still retain a nonzero external-prime descendant.
+
+The report includes full proofs of the new lattice and asymptotic statements,
+a reproducible numerical Mahler-measure computation, a Lean formalization
+blueprint, and a prioritized set of sharply stated theorem targets.  The current
+frontier is thereby narrowed from a broad collection of transcendence ideas to
+two interfaces: restricted arithmetic holonomy on a saturated two-star residue
+lattice, and construction of a control-sensitive Kummer cocycle with zero leading
+phase entropy.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Problem, status, and scope}
+
+\subsection{The conjecture and the counterexample package}
+
+The conjecture under study is the classical question of Alaoglu and Erd\H{o}s~\cite{AE1944}.
+\begin{conjecture}[Alaoglu--Erd\H{o}s]
+If $x\in\R$ and $2^x,3^x\in\Z$, then $x\in\Z$.
+\end{conjecture}
+
+Assume for contradiction that a nonintegral counterexample exists and put
+\begin{equation}\label{eq:MA}
+ M=2^x\in\N,\qquad A=3^x\in\N.
+\end{equation}
+Then
+\begin{equation}\label{eq:detzero}
+ \log 2\,\log A-\log 3\,\log M=0.
+\end{equation}
+The rational case is elementary: if $x=r/s$ in lowest terms and $2^{r/s}$ is an
+integer, unique factorization gives $s=1$.  The algebraic irrational case is
+excluded by the Gelfond--Schneider theorem~\cite{Baker1975}.  Consequently any counterexample is
+transcendental.  It is also positive, and current finite verification in the
+supplied report places it beyond the range already checked there.
+
+For all $n,k\in\N_0$, the same $x$ gives the semigroup of integer pairs
+\begin{equation}\label{eq:semigrouppairs}
+ 2^{n+kx}=2^nM^k,\qquad 3^{n+kx}=3^nA^k.
+\end{equation}
+The supplied unified report~\cite{Unified6} develops this package from many viewpoints: valuation lattices,
+compact irrational rotations, carry words, real and $p$-adic approximation,
+Kummer extensions, arithmetic holonomy, matrix coefficients (including the recent advances of Dasgupta--Kakde~\cite{DasguptaKakdeII}), and small-type
+entire interpolation.  The present document assumes that package and focuses on
+claims not proved there.
+
+\subsection{What is genuinely new here}
+
+The supplied report already contains computational coefficient matrices for a
+few small cutoffs and already identifies the finite weight-two period relation as
+a plausible interface with the work of Calegari--Dimitrov--Tang.  It also already
+constructs a small Kummer determinant and explains why a naively taken full field
+norm loses the distinguished cancellation.  The following statements are the
+new contributions of this continuation.
+
+\begin{enumerate}[label=\textbf{N\arabic*.},leftmargin=3.6em]
+\item \textbf{Uniform staircase theorem.}  The rank, kernel, saturation, Smith
+normal form, and integral inverse of the consecutive-log coefficient map are
+proved for every prime cutoff $q$, not merely checked by computer for selected
+$q$.
+
+\item \textbf{Prime-jump tomography.}  Every external prime valuation is an
+explicit first difference of two residue coordinates.  The only invisible
+integer direction is the control line.  This gives a complete local description
+of the image lattice.
+
+\item \textbf{Fixed-rank holonomy realization.}  The entire $q$-dependent
+period relation is realized as one matrix coefficient of a rank-six unipotent
+Fuchsian connection.  The number of punctures grows with $q$, but the rank does
+not.
+
+\item \textbf{Exact diagonal Kummer norm.}  The common root-of-unity orbit of
+the elementary determinant is evaluated in closed form as $R^N-S^N$.
+
+\item \textbf{Superexponential distinguished asymptotic.}  The exact leading
+asymptotic of this algebraic integer is established.  Its logarithm is
+$-N\log N+O_x(N)$.
+
+\item \textbf{Phase-entropy obstruction.}  The leading torus symbol is proved
+to have positive Mahler measure.  This turns the old qualitative warning about
+``bad conjugates'' into a precise obstruction stable under cyclotomic-unit
+renormalization.
+\end{enumerate}
+
+\subsection{Honest status}
+
+None of the new theorems proves \AEconj.  The staircase theorem is a structural
+advance: it replaces finite experimentation by a complete lattice theorem and
+compresses the transcendence target to a fixed-rank holonomy problem.  The
+Kummer theorem is an archimedean advance: it manufactures a much smaller
+algebraic integer than the elementary cocycle.  The Mahler calculation then
+shows exactly why the obvious norm completion fails.  A proof must add a new
+mechanism at one of two places:
+\begin{itemize}
+\item a nonvanishing theorem for the restricted saturated coefficient lattice;
+\item or a new Kummer cocycle whose leading phase symbol has zero Mahler measure
+but whose first nontrivial descendant still detects an external valuation.
+\end{itemize}
+
+\section{The consecutive-log staircase}
+
+\subsection{Telescoping coordinates}
+
+Fix a prime $q\ge3$ and suppose that $M$ and $A$ are $q$-smooth.  Write
+\begin{equation}\label{eq:valuations}
+ M=\prod_{p\le q}p^{a_p},\qquad
+ A=\prod_{p\le q}p^{b_p},
+ \qquad a_p,b_p\in\N_0,
+\end{equation}
+where $p$ always denotes a prime.  For $1\le r\le q-1$ define
+\begin{equation}\label{eq:Lr}
+ L_r=\log\frac{r+1}{r}.
+\end{equation}
+The elementary telescoping identity
+\begin{equation}\label{eq:logptelescope}
+ \log p=\sum_{r=1}^{p-1}L_r
+\end{equation}
+turns prime valuations into tail counts.  Define
+\begin{equation}\label{eq:tails}
+ \alpha_r=\sum_{\substack{p\le q\\p>r}}a_p,
+ \qquad
+ \beta_r=\sum_{\substack{p\le q\\p>r}}b_p
+ \qquad(1\le r\le q-1).
+\end{equation}
+Then
+\begin{equation}\label{eq:logtail}
+ \log M=\sum_{r=1}^{q-1}\alpha_rL_r,
+ \qquad
+ \log A=\sum_{r=1}^{q-1}\beta_rL_r.
+\end{equation}
+The sequences $(\alpha_r)$ and $(\beta_r)$ are nonnegative, nonincreasing,
+integer-valued staircase functions.  Their jumps occur only at primes:
+\begin{equation}\label{eq:jump}
+ a_p=\alpha_{p-1}-\alpha_p,
+ \qquad
+ b_p=\beta_{p-1}-\beta_p,
+\end{equation}
+where $\alpha_q=\beta_q=0$ by convention.
+
+The structural logarithms are
+\begin{equation}\label{eq:structuralL}
+ \log2=L_1,
+ \qquad
+ \log3=L_1+L_2.
+\end{equation}
+Substituting \eqref{eq:logtail} and \eqref{eq:structuralL} into
+\eqref{eq:detzero} gives
+\begin{equation}\label{eq:stairrelation}
+ L_1\sum_{r=1}^{q-1}\beta_rL_r
+ -(L_1+L_2)\sum_{r=1}^{q-1}\alpha_rL_r=0.
+\end{equation}
+This relation uses only the two stars through $L_1$ and $L_2$.
+
+\subsection{The formal coefficient map}
+
+Let $X_1,\ldots,X_{q-1}$ be independent variables and define
+\begin{equation}\label{eq:formalQ}
+ \cQ_q(X)=X_1\sum_{r=1}^{q-1}\beta_rX_r
+ -(X_1+X_2)\sum_{r=1}^{q-1}\alpha_rX_r.
+\end{equation}
+We record its coefficients in the order
+\begin{equation}\label{eq:monomialorder}
+ X_1^2,\ X_1X_2,\ X_2^2,
+ \quad X_1X_r,\ X_2X_r\quad(3\le r\le q-1).
+\end{equation}
+There are $2q-3$ coordinates.  Write them as
+$c_{11},c_{12},c_{22},c_{1r},c_{2r}$.  Direct expansion gives
+\begin{align}
+ c_{11}&=\beta_1-\alpha_1,\label{eq:c11}\\
+ c_{12}&=\beta_2-\alpha_2-\alpha_1,\label{eq:c12}\\
+ c_{22}&=-\alpha_2,\label{eq:c22}\\
+ c_{1r}&=\beta_r-\alpha_r\qquad(3\le r\le q-1),\label{eq:c1r}\\
+ c_{2r}&=-\alpha_r\qquad(3\le r\le q-1).\label{eq:c2r}
+\end{align}
+Thus we have an integral linear map
+\begin{equation}\label{eq:Tq}
+ T_q:\Z^{2\pi(q)}\longrightarrow\Z^{2q-3},
+ \qquad
+ ((a_p)_{p\le q},(b_p)_{p\le q})\longmapsto(c_{ij}).
+\end{equation}
+The old computations suggested that $T_q$ always has one-dimensional kernel and
+that its nonzero Smith invariants are all $1$.  We now prove this uniformly.
+
+\subsection{Uniform kernel, rank, and saturation}
+
+\begin{theorem}[Uniform staircase lattice]\label{thm:uniformstaircase}
+Let $q\ge3$ be prime and let $T_q$ be the map in \eqref{eq:Tq}.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item
+\[
+ \ker T_q
+ =\Z\cdot\bigl(e_{a_2}+e_{b_3}\bigr).
+\]
+In other words, the only formal invisibility is
+$a_2\mapsto a_2+t$, $b_3\mapsto b_3+t$, corresponding to
+$(M,A)\mapsto(2^tM,3^tA)$.
+
+\item $\rank T_q=2\pi(q)-1$.
+
+\item $\im T_q$ is a saturated sublattice of $\Z^{2q-3}$.
+
+\item Every nonzero invariant factor in the Smith normal form of $T_q$ equals
+$1$; explicitly,
+\[
+ \operatorname{SNF}(T_q)
+ =\diag(\underbrace{1,\ldots,1}_{2\pi(q)-1},0,\ldots,0).
+\]
+\end{enumerate}
+\end{theorem}
+
+The proof is constructive.  It gives an integral decoder, which is more useful
+than rank alone.
+
+\begin{proof}
+We first determine the kernel.  If all coefficients vanish, then
+$c_{22}=0$ gives $\alpha_2=0$, hence $a_p=0$ for every $p\ge3$.
+For $r\ge3$, equations $c_{2r}=c_{1r}=0$ give $\alpha_r=\beta_r=0$, so
+$b_p=0$ for every $p\ge5$.  The remaining equations reduce to
+\[
+ c_{12}=b_3-a_2=0,
+ \qquad
+ c_{11}=b_2+b_3-a_2=0.
+\]
+Thus $b_2=0$ and $b_3=a_2$.  Conversely, adding the same integer $t$ to
+$a_2$ and $b_3$ adds $tL_1$ to $\log M$ and $t(L_1+L_2)$ to $\log A$, so
+\eqref{eq:formalQ} is unchanged.  This proves (i), and (ii) follows.
+
+For saturation we exhibit quotient coordinates and an integral inverse.  Put
+\begin{equation}\label{eq:dcoords}
+ d_2=c_{22},\qquad d_r=c_{2r}\ (3\le r\le q-1),\qquad d_q=0.
+\end{equation}
+For $q\ge5$ also put
+\begin{equation}\label{eq:ecoords}
+ e_r=c_{1r}-c_{2r}\ (3\le r\le q-1),\qquad e_q=0.
+\end{equation}
+Equations \eqref{eq:c22} and \eqref{eq:c2r} say $d_r=-\alpha_r$;
+therefore, for every prime $p\ge3$,
+\begin{equation}\label{eq:adec}
+ a_p=d_p-d_{p-1}.
+\end{equation}
+Similarly $e_r=\beta_r$, and for every prime $p\ge5$,
+\begin{equation}\label{eq:bdec}
+ b_p=e_{p-1}-e_p.
+\end{equation}
+The two remaining quotient coordinates are
+\begin{equation}\label{eq:b2dec}
+ b_2=c_{11}-c_{12}+c_{22}
+\end{equation}
+and
+\begin{equation}\label{eq:deltadec}
+ \delta:=b_3-a_2=
+ \begin{cases}
+ c_{12}-2c_{22},&q=3,\\[0.3em]
+ c_{12}-(c_{13}-c_{23})-2c_{22},&q\ge5.
+ \end{cases}
+\end{equation}
+All formulas are integral.  Conversely, from arbitrary integer data
+\[
+ (a_p)_{3\le p\le q},\quad
+ (b_p)_{5\le p\le q},\quad b_2,\quad\delta
+\]
+choose the gauge $a_2=0$, $b_3=\delta$, reconstruct all tails, and then use
+\eqref{eq:c11}--\eqref{eq:c2r}.  This gives an integral section of the quotient
+map
+\[
+ \Z^{2\pi(q)}\longrightarrow
+ \Z^{2\pi(q)-1},
+ \quad
+ (a,b)\longmapsto
+ \bigl((a_p)_{p\ge3},(b_p)_{p\ge5},b_2,b_3-a_2\bigr).
+\]
+
+Now suppose $k\vct c\in\im T_q$ for a nonzero integer $k$.  Apply the decoder
+to $\vct c$.  Since the decoded quotient coordinates of $k\vct c$ are divisible
+by $k$, the exponent vector producing $k\vct c$ differs from $k$ times the
+integral gauge-fixed reconstruction by a kernel vector.  Applying $T_q$ and
+cancelling $k$ in the torsion-free target gives $\vct c\in\im T_q$.  Hence the
+image is saturated.  A rank-$r$ integral matrix has saturated image precisely
+when all its nonzero Smith invariant factors equal $1$, proving (iii) and (iv).
+\end{proof}
+
+\begin{remark}[The $q=3$ endpoint]
+When $q=3$ there are four exponent variables and three coefficients.  The same
+proof gives rank $3$ and no cokernel torsion.  The special formula in
+\eqref{eq:deltadec} is simply the boundary case $\beta_3=0$.
+\end{remark}
+
+\subsection{Complete image description}
+
+The decoder yields a local characterization of the image without reference to
+prime exponents.
+
+\begin{proposition}[Prime-jump tomography]\label{prop:tomography}
+Let $q\ge5$ be prime and let $\vct c\in\Z^{2q-3}$.  Define $d_r,e_r$ by
+\eqref{eq:dcoords}--\eqref{eq:ecoords}.  Then $\vct c\in\im T_q$ if and only if
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $d_r=d_{r+1}$ whenever $r+1$ is composite and $2\le r\le q-1$;
+\item $e_r=e_{r+1}$ whenever $r+1$ is composite and $3\le r\le q-1$;
+\item the remaining coordinates $b_2$ and $\delta$ defined by
+\eqref{eq:b2dec}--\eqref{eq:deltadec} are integral, which is automatic in the
+ambient integer lattice.
+\end{enumerate}
+For an actual candidate pair, one must add the cone inequalities
+\[
+ -d_2\ge-d_3\ge\cdots\ge-d_q=0,
+ \qquad
+ e_3\ge e_4\ge\cdots\ge e_q=0,
+\]
+and nonnegativity of all reconstructed valuations.
+\end{proposition}
+
+\begin{proof}
+The tails can jump only at primes, giving the necessity of (a) and (b).  Under
+these conditions, \eqref{eq:adec} and \eqref{eq:bdec} define integer prime
+valuations, while \eqref{eq:b2dec} and \eqref{eq:deltadec} complete a gauge-fixed
+preimage.  The cone conditions are exactly the statement that tail jumps are
+nonnegative.
+\end{proof}
+
+The term ``tomography'' is literal: a prime exponent is recovered from the
+first difference of two adjacent residue coordinates.  No global matrix
+inversion is needed.
+
+\subsection{Dimensions and the disappearance of finite-case ambiguity}
+
+For orientation, the relevant dimensions are shown below.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$q$ & $2\pi(q)$ & $2q-3$ & $\rank T_q$ & $\operatorname{codim}(\im T_q)$\\
+\midrule
+3  & 4  & 3  & 3  & 0\\
+5  & 6  & 7  & 5  & 2\\
+7  & 8  & 11 & 7  & 4\\
+11 & 10 & 19 & 9  & 10\\
+13 & 12 & 23 & 11 & 12\\
+17 & 14 & 31 & 13 & 18\\
+31 & 22 & 59 & 21 & 38\\
+\bottomrule
+\end{tabular}
+\end{center}
+The codimension grows quickly because most adjacent locations are composite and
+therefore carry no independent jump.  This sparsity is not numerical accident;
+it is the exact prime-boundary geometry of the coefficient lattice.
+
+\subsection{The restricted period relation}
+
+Let $\vct P_q$ denote the vector of real periods in the monomial order
+\eqref{eq:monomialorder}:
+\begin{equation}\label{eq:Pq}
+ \vct P_q=
+ \bigl(L_1^2,L_1L_2,L_2^2,(L_1L_r)_{r\ge3},(L_2L_r)_{r\ge3}\bigr).
+\end{equation}
+Let
+\begin{equation}\label{eq:Cqdef}
+ \cC_q=\im T_q\subseteq\Z^{2q-3},
+ \qquad
+ \cC_q^+=T_q(\N_0^{2\pi(q)}).
+\end{equation}
+Then a $q$-smooth candidate gives
+\begin{equation}\label{eq:Cqrelation}
+ \vct c\cdot\vct P_q=0,
+ \qquad
+ \vct c\in\cC_q^+.
+\end{equation}
+The zero vector corresponds exactly to a control pair $(M,A)=(2^t,3^t)$.
+Thus:
+
+\begin{corollary}[Finite smoothness criterion]\label{cor:smoothcriterion}
+There is no noncontrol $q$-smooth counterexample if and only if
+\[
+ \set{\vct c\in\cC_q^+:\vct c\cdot\vct P_q=0}=\set{0}.
+\]
+Because $\cC_q$ is saturated, any nonzero relation in $\cC_q$ has a primitive
+representative in $\cC_q$.
+\end{corollary}
+
+The last sentence is operationally important.  A future arithmetic-holonomy
+argument may work modulo an auxiliary prime without paying an unnoticed lattice
+index: there is no hidden torsion between the exponent lattice modulo controls
+and the coefficient lattice.
+
+\section{A fixed-rank unipotent holonomy model}
+
+\subsection{Iterated integrals of the consecutive forms}
+
+For $1\le r\le q-1$ put
+\begin{equation}\label{eq:omegar}
+ \omega_r=\frac{\dd t}{r+t}
+ \qquad(0\le t\le1).
+\end{equation}
+Then
+\begin{equation}\label{eq:intomega}
+ \int_0^1\omega_r=L_r.
+\end{equation}
+Define the two tail forms
+\begin{equation}\label{eq:tailforms}
+ \Omega_M=\sum_{r=1}^{q-1}\alpha_r\omega_r,
+ \qquad
+ \Omega_A=\sum_{r=1}^{q-1}\beta_r\omega_r.
+\end{equation}
+They satisfy
+\[
+ \int_0^1\Omega_M=\log M,
+ \qquad
+ \int_0^1\Omega_A=\log A.
+\]
+For one-forms $\eta,\nu$ on $[0,1]$, write
+\begin{equation}\label{eq:iterated}
+ I(\eta,\nu)=
+ \int_{0<t_1<t_2<1}\eta(t_1)\nu(t_2).
+\end{equation}
+The shuffle identity gives
+\begin{equation}\label{eq:shuffle}
+ \left(\int_0^1\eta\right)\left(\int_0^1\nu\right)
+ =I(\eta,\nu)+I(\nu,\eta).
+\end{equation}
+Consequently the determinant \eqref{eq:detzero} equals
+\begin{align}
+ D(M,A)={}&I(\omega_1,\Omega_A)+I(\Omega_A,\omega_1)\notag\\
+ &-I(\omega_1+\omega_2,\Omega_M)
+  -I(\Omega_M,\omega_1+\omega_2).
+ \label{eq:Diterated}
+\end{align}
+
+\subsection{A rank-six connection}
+
+Let $E_{ij}$ be the $6\times6$ matrix unit, with indices $0,1,2,3,4,5$.
+Consider the strictly upper triangular matrix-valued one-form
+\begin{align}
+ \boldsymbol\Omega={}&
+ E_{01}\omega_1+E_{15}\Omega_A
+ +E_{02}\Omega_A+E_{25}\omega_1\notag\\
+ &-E_{03}(\omega_1+\omega_2)+E_{35}\Omega_M
+ -E_{04}\Omega_M+E_{45}(\omega_1+\omega_2).
+ \label{eq:rank6connection}
+\end{align}
+The directed graph of nonzero entries has only paths
+$0\to\{1,2,3,4\}\to5$.  Hence the path-ordered exponential has no contribution
+of length greater than two to its $(0,5)$ entry.
+
+\begin{proposition}[Fixed-rank holonomy realization]\label{prop:rank6}
+Let $H$ be the parallel transport of $\dd-\boldsymbol\Omega$ from $0$ to $1$.
+Then
+\begin{equation}\label{eq:holonomyentry}
+ H_{05}=D(M,A)
+ =\log2\,\log A-\log3\,\log M.
+\end{equation}
+The connection is unipotent of rank six and Fuchsian on
+\[
+ \mathbf P^1\setminus\{-1,-2,\ldots,-(q-1),\infty\}.
+\]
+Its residue matrices have integer entries.
+\end{proposition}
+
+\begin{proof}
+The four length-two directed paths contribute, respectively,
+\[
+ I(\omega_1,\Omega_A),\quad I(\Omega_A,\omega_1),\quad
+ -I(\omega_1+\omega_2,\Omega_M),\quad
+ -I(\Omega_M,\omega_1+\omega_2).
+\]
+Equation \eqref{eq:Diterated} proves the first assertion.  Every form
+$\omega_r$ has a simple pole at $-r$ with residue $1$, and all coefficients in
+\eqref{eq:tailforms} are integers.
+\end{proof}
+
+\begin{remark}
+The connection rank is independent of $q$.  The difficulty is not a growing
+matrix rank but a growing set of rational punctures and unbounded integral
+residues.  This is a substantially narrower arithmetic-holonomy target than an
+arbitrary weight-two relation among all products $L_iL_j$.
+\end{remark}
+
+\subsection{Residue jumps recover prime exponents}
+
+Let $\rho_r^M=\Res_{t=-r}\Omega_M=\alpha_r$ and
+$\rho_r^A=\Res_{t=-r}\Omega_A=\beta_r$, with
+$\rho_q^M=\rho_q^A=0$.  Then
+\begin{equation}\label{eq:resjump}
+ a_p=\rho_{p-1}^M-\rho_p^M,
+ \qquad
+ b_p=\rho_{p-1}^A-\rho_p^A.
+\end{equation}
+Thus every external valuation is a local jump between two adjacent punctures.
+The control direction is the residue gauge transformation
+\begin{equation}\label{eq:resgauge}
+ (\Omega_M,\Omega_A)\longmapsto
+ (\Omega_M+t\omega_1,\ \Omega_A+t(\omega_1+\omega_2)).
+\end{equation}
+It leaves \eqref{eq:Diterated} unchanged.
+
+This gives a useful restatement of the conjecture.
+
+\begin{target}[Restricted arithmetic holonomy]\label{target:holonomy}
+Prove that if the integer residue data of \eqref{eq:rank6connection} have at least
+one nonzero prime jump after quotienting by \eqref{eq:resgauge}, then
+$H_{05}\ne0$.
+\end{target}
+
+Restricted to the nonnegative candidate cone, \cref{target:holonomy} is
+equivalent to excluding a $q$-smooth counterexample.  Stated on the full
+integer residue lattice it is stronger.  In either form, the formulation matters:
+it asks for nonvanishing on a saturated network-flow lattice of residues, not for
+linear independence of an arbitrary family of $(2q-3)$ periods.  The strongest currently available
+arithmetic-holonomy results prove remarkable near-diagonal cases, but they do
+not yet cover this two-star, long-puncture configuration.  The new lattice theorem
+shows that there is no further finite-dimensional algebra left to discover at
+this interface: any remaining obstruction is genuinely period-theoretic.
+
+\section{The diagonal Kummer supernorm}
+
+\subsection{The elementary determinant cocycle}
+
+Continue to assume a counterexample $x=\beta>1$, and set
+\begin{equation}\label{eq:ab}
+ a=\log2,\qquad b=\log3.
+\end{equation}
+For an integer $N\ge2$, choose the positive real roots
+\begin{equation}\label{eq:roots}
+ P=2^{1/N}=\e^{a/N},\quad
+ Q=3^{1/N}=\e^{b/N},\quad
+ U=M^{1/N}=\e^{\beta a/N},\quad
+ V=A^{1/N}=\e^{\beta b/N}.
+\end{equation}
+The supplied report studies the algebraic integer
+\begin{equation}\label{eq:Xi}
+ \Xi_N=(U-1)(Q-1)-(V-1)(P-1).
+\end{equation}
+Put
+\begin{equation}\label{eq:RS}
+ R_N=UQ-VP,
+ \qquad
+ S_N=U+Q-V-P.
+\end{equation}
+Then
+\begin{equation}\label{eq:XiRS}
+ \Xi_N=R_N-S_N.
+\end{equation}
+
+\begin{proposition}[Third-order distinguished contact]\label{prop:Xiasymp}
+As $N\to\infty$,
+\begin{equation}\label{eq:Xiasymp}
+ \Xi_N=
+ \frac{\beta(\beta-1)ab(a-b)}{2N^3}+O_\beta(N^{-4}).
+\end{equation}
+In particular, $\Xi_N\ne0$ for all sufficiently large $N$.
+\end{proposition}
+
+\begin{proof}
+Expand every exponential in \eqref{eq:roots}.  The constant and linear terms of
+both products in \eqref{eq:Xi} vanish.  The quadratic terms are both
+$\beta ab/N^2$ and cancel because $\log M=\beta a$ and
+$\log A=\beta b$.  The cubic difference is
+\[
+ \frac{1}{2N^3}
+ \bigl((\beta a)^2b+\beta ab^2-(\beta b)^2a-\beta ba^2\bigr)
+ =\frac{\beta(\beta-1)ab(a-b)}{2N^3}.
+\]
+Since $a\ne b$ and $\beta>1$, the coefficient is nonzero.
+\end{proof}
+
+\subsection{Exact common-twist product}
+
+For $\zeta^N=1$, twist all four roots simultaneously and define
+\begin{equation}\label{eq:Xizeta}
+ \Xi_N(\zeta)=
+ (\zeta U-1)(\zeta Q-1)-(\zeta V-1)(\zeta P-1).
+\end{equation}
+The following identity is the central new Kummer calculation.
+
+\begin{theorem}[Diagonal Kummer norm identity]\label{thm:diagnorm}
+For every $N\ge2$,
+\begin{equation}\label{eq:diagnorm}
+ \Delta_N:=\prod_{\zeta^N=1}\Xi_N(\zeta)
+ =R_N^N-S_N^N.
+\end{equation}
+Consequently $\Delta_N$ is an algebraic integer.  In the full Kummer-rank branch,
+\eqref{eq:diagnorm} is the relative norm of $\Xi_N$ along the common diagonal
+root-of-unity subgroup.
+\end{theorem}
+
+\begin{proof}
+Expanding \eqref{eq:Xizeta} gives
+\[
+ \Xi_N(\zeta)=\zeta^2R_N-\zeta S_N
+ =\zeta(\zeta R_N-S_N).
+\]
+Now
+\[
+ \prod_{\zeta^N=1}\zeta=(-1)^{N-1}
+\]
+and
+\[
+ \prod_{\zeta^N=1}(\zeta R_N-S_N)
+ =(-1)^N(S_N^N-R_N^N).
+\]
+Multiplying the signs yields $R_N^N-S_N^N$.  Algebraic integrality also follows
+directly from \eqref{eq:RS}, because $P,Q,U,V$ are algebraic integers.
+\end{proof}
+
+A useful degree-reducing form of the same identity is obtained by dividing all
+roots by $P$.  Put
+\begin{equation}\label{eq:rst}
+ r=\frac UP=\left(\frac M2\right)^{1/N},
+ \qquad
+ s=\frac QP=\left(\frac32\right)^{1/N},
+ \qquad
+ t=\frac VP=\left(\frac A2\right)^{1/N}.
+\end{equation}
+Since $P^N=2$,
+\begin{equation}\label{eq:reducedDelta}
+ \Delta_N=4(rs-t)^N-2(r+s-t-1)^N.
+\end{equation}
+Thus the common twist has genuinely removed one Kummer direction: $\Delta_N$
+lives in a field generated by three radical ratios rather than four independent
+roots.
+
+\subsection{Superexponential asymptotic}
+
+The common first two Taylor coefficients of $R_N$ and $S_N$ are
+\begin{align}
+ c&=(\beta-1)(a-b),\label{eq:cconst}\\
+ \gamma&=\frac{(\beta^2-1)(a^2-b^2)}{2}
+ =\frac{c(\beta+1)(a+b)}{2}.
+ \label{eq:gammaconst}
+\end{align}
+More precisely,
+\begin{equation}\label{eq:RSexpansion}
+ R_N=\frac cN+\frac\gamma{N^2}+O_\beta(N^{-3}),
+ \qquad
+ S_N=\frac cN+\frac\gamma{N^2}+O_\beta(N^{-3}).
+\end{equation}
+Let
+\begin{equation}\label{eq:dconst}
+ d=\frac{\beta(\beta-1)ab(a-b)}2.
+\end{equation}
+Then $R_N-S_N=dN^{-3}+O(N^{-4})$.
+
+\begin{theorem}[Diagonal supernorm asymptotic]\label{thm:supernorm}
+For a fixed nonintegral candidate $\beta>1$,
+\begin{equation}\label{eq:supernormasymp}
+ \abs{\Delta_N}
+ \sim
+ \abs d\,
+ \exp\!\left(\frac{(\beta+1)(a+b)}2\right)
+ \abs c^{N-1}N^{-N-1}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:supernormlog}
+ \log\abs{\Delta_N}
+ =-N\log N+N\log\abs c-\log N+O_\beta(1),
+\end{equation}
+and
+\begin{equation}\label{eq:supernormlimit}
+ \lim_{N\to\infty}
+ \frac{\log\abs{\Delta_N}+N\log N}{N}
+ =\log\bigl((\beta-1)(b-a)\bigr).
+\end{equation}
+In particular, $\Delta_N$ is nonzero and tends to zero faster than
+$C^{-N}$ for every fixed $C>1$ once $N$ is sufficiently large.
+\end{theorem}
+
+\begin{proof}
+For large $N$, $R_N$ and $S_N$ have the same nonzero sign because
+$N R_N,N S_N\to c\ne0$.  The real mean value theorem applied to $z\mapsto z^N$
+gives a number $\xi_N$ between $R_N$ and $S_N$ such that
+\begin{equation}\label{eq:mvt}
+ \Delta_N=N\xi_N^{N-1}(R_N-S_N).
+\end{equation}
+By \eqref{eq:RSexpansion},
+\[
+ \xi_N=\frac cN\left(1+\frac{\gamma/c}{N}+O_\beta(N^{-2})\right).
+\]
+Therefore
+\[
+ \xi_N^{N-1}
+ =\left(\frac cN\right)^{N-1}
+ \exp\!\left(\frac\gamma c+o(1)\right).
+\]
+Using $R_N-S_N=dN^{-3}(1+o(1))$ in \eqref{eq:mvt} gives
+\eqref{eq:supernormasymp}; the logarithmic statements follow.
+\end{proof}
+
+\begin{remark}[What has actually improved]
+The original determinant has only polynomial smallness $N^{-3}$.  The common
+orbit product turns the shared first-order scale $c/N$ into $N$ powers while
+retaining the third-order difference once.  The gain is therefore the factor
+$N^{-N}$, not an unexplained numerical accident.
+\end{remark}
+
+\subsection{Numerical calibration and reproducibility}
+
+The asymptotic is numerically stable when $R_N^N-S_N^N$ is evaluated through
+\[
+ \log|R_N^N-S_N^N|
+ =N\log|S_N|+\log\left|\exp\!\left(N\log\frac{|R_N|}{|S_N|}\right)-1\right|,
+\]
+rather than by direct subtraction of two close floating-point powers.  A
+high-precision implementation is included in \cref{app:code}.  Numerical tests
+for several real values of $\beta>1$ verify both limits
+$N^3\Xi_N\to d$ and \eqref{eq:supernormlimit}.  These tests are calibration only;
+the result itself is the exact argument in \cref{thm:supernorm}.
+
+\section{Why the supernorm is not yet a proof}
+
+\subsection{One tiny embedding is inexpensive in a Kummer field}
+
+The element $\Delta_N$ lies in the field generated by the three radical ratios
+in \eqref{eq:rst}, so a crude degree bound is $N^3$.  Every conjugate of
+$R_N^N-S_N^N$ has absolute value at most $C_\beta^N$ for a constant depending on
+the fixed candidate.  The product formula therefore permits one embedding to be
+as small as
+\begin{equation}\label{eq:liouvillebudget}
+ \exp(-O_\beta(N^4)).
+\end{equation}
+The actual smallness $\exp(-N\log N+O(N))$ is spectacular analytically but is far
+above this algebraic lower budget.  A degree collapse by only one Kummer
+direction is nowhere near enough.
+
+This can be formulated as a general partial-norm ceiling.
+
+\begin{proposition}[Partial-norm ceiling]\label{prop:partialnormceiling}
+Suppose a Kummer family has phase rank $\rho$, and let $H_N$ be a subgroup of
+size $N^d$ with $d<\rho$.  Let $\Phi_N$ be an algebraic-integer cocycle whose
+complex conjugates are bounded by a fixed constant $C>1$.  If at the
+distinguished embedding every factor in the $H_N$-orbit is
+$O(N^{-r})$, then the relative norm has size at most
+\[
+ \exp\bigl(-rN^d\log N+O(N^d)\bigr).
+\]
+On the other hand, its remaining conjugates can each have size
+$C^{N^d}$, and there are on the order of $N^{\rho-d}$ such conjugates.  A bare
+product-formula argument therefore allows a negative logarithm of order
+$N^\rho$.  Since
+\[
+ N^d\log N=o(N^\rho)\qquad(d<\rho),
+\]
+polynomial contact along a proper phase subgroup cannot by itself close the
+norm argument.
+\end{proposition}
+
+\begin{proof}
+The first estimate is the product of $N^d$ factors of size $O(N^{-r})$.  The
+house bound for a relative norm is $C^{N^d}$.  Multiplying the distinguished
+embedding with the remaining $O(N^{\rho-d})$ embeddings gives the stated
+product-formula budget.  The final asymptotic comparison is elementary.
+\end{proof}
+
+The proposition isolates what an ideal-divisibility argument would have to do:
+it must reduce the generic conjugate budget by an entire power of $N$, not merely
+improve the distinguished Taylor order.
+
+\subsection{The root-of-unity phase symbol}
+
+Let $p,q,u,v\in\mathbb S^1$ be independent phases attached to $P,Q,U,V$.
+As $N\to\infty$, the corresponding conjugate of \eqref{eq:Xi} tends to
+\begin{equation}\label{eq:phasesymbol}
+ F(p,q,u,v)=(u-1)(q-1)-(v-1)(p-1).
+\end{equation}
+Expanded as a Laurent polynomial,
+\begin{equation}\label{eq:Fexpanded}
+ F=uq-vp-u-q+v+p.
+\end{equation}
+For the diagonal product, the two leading coefficients are
+\begin{equation}\label{eq:r0s0}
+ r_0=uq-vp,
+ \qquad
+ s_0=u+q-v-p.
+\end{equation}
+The simultaneous zero locus of these coefficients is completely elementary but
+important.
+
+\begin{lemma}[Two-axis simultaneous-zero locus]\label{lem:twoaxis}
+For nonzero complex numbers $p,q,u,v$, the equations
+\[
+ uq=vp,
+ \qquad
+ u+q=v+p
+\]
+hold if and only if one of the following alternatives holds:
+\begin{equation}\label{eq:axes}
+ u=p,\ v=q,
+ \qquad\text{or}\qquad
+ q=p,\ v=u.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Substitute $v=u+q-p$ into $uq=vp$.  One obtains
+\[
+ 0=uq-p(u+q-p)=(u-p)(q-p).
+\]
+If $u=p$, then $vp=uq=pq$ gives $v=q$.  If $q=p$, then $vp=up$ gives $v=u$.
+The converse is immediate.
+\end{proof}
+
+Thus only two natural phase axes make both bases of the diagonal difference
+start at order $N^{-1}$.  The distinguished common diagonal is their
+intersection.  This explains geometrically why a second relative norm does not
+automatically repeat the first gain: most quotient phases leave at least one of
+$r_0,s_0$ nonzero.
+
+\subsection{Mahler measure and positive phase entropy}
+
+For a Laurent polynomial $G$ in $m$ variables, write
+\begin{equation}\label{eq:mahlerdef}
+ m(G)=\frac1{(2\pi)^m}
+ \int_{[0,2\pi]^m}\log\abs{G(\e^{i\theta_1},\ldots,\e^{i\theta_m})}
+ \dd\theta_1\cdots\dd\theta_m
+\end{equation}
+for its logarithmic Mahler measure.  The multivariable Kronecker theorem~\cite{Boyd1981,Lawton1983,Smyth1981} says
+that a primitive integral Laurent polynomial has $m(G)\ge0$, with equality only
+for a monomial times a product of cyclotomic polynomials in monomials.
+
+\begin{theorem}[Positive phase entropy]\label{thm:positiveMahler}
+The phase polynomial $F$ in \eqref{eq:phasesymbol} has
+\begin{equation}\label{eq:mFpositive}
+ m(F)>0.
+\end{equation}
+Numerically,
+\begin{equation}\label{eq:mFnumeric}
+ m(F)\approx0.54807.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Regard $F$ as a polynomial in $u$ over $\Q[p,q,v]$:
+\[
+ F=(q-1)u-\bigl(q-1+(v-1)(p-1)\bigr).
+\]
+The two coefficients are coprime, so Gauss's lemma shows that $F$ is irreducible.
+Its Newton polytope is not a line segment: the six exponent vectors in
+\eqref{eq:Fexpanded} have affine span of dimension greater than one.  If
+$m(F)=0$, multivariable Kronecker would force the irreducible polynomial $F$ to
+be cyclotomic in a single monomial, whose Newton polytope is a line segment.
+This contradiction proves strict positivity.
+
+For the numerical value, integrate first in $v$.  Jensen's formula gives
+\begin{equation}\label{eq:mFjensen}
+ m(F)=\frac1{(2\pi)^3}\int
+ \log\max\bigl(\abs{uq-u-q+p},\abs{1-p}\bigr)
+ \dd\theta_u\dd\theta_q\dd\theta_p.
+\end{equation}
+A scrambled Sobol computation with $2^{22}$ points gives the value in
+\eqref{eq:mFnumeric}; code appears in \cref{app:code}.
+\end{proof}
+
+\begin{remark}[What strict positivity means]
+The geometric mean of the leading conjugate magnitudes is
+$\exp(m(F))>1$.  Therefore a full root-of-unity norm of the unnormalized simple
+cocycle is phase-expansive at leading order.  The sparse set of very small
+conjugates cannot be treated as representative of the full orbit.
+\end{remark}
+
+\subsection{Cyclotomic units cannot erase the entropy}
+
+Kummer fields contain many units whose distinguished absolute value is tiny;
+for example, differences of radicals can have norm $1$ in a suitable relative
+extension.  Multiplying by such a unit can make one embedding arbitrarily
+smaller while making other embeddings larger.  At the phase-symbol level these
+normalizations multiply $F$ by generalized cyclotomic Laurent polynomials, all
+of Mahler measure zero.  Hence
+\begin{equation}\label{eq:unitinvariance}
+ m(FG)=m(F)+m(G)=m(F)>0
+\end{equation}
+for every generalized cyclotomic $G$.
+
+This is why the Mahler calculation is stronger than a crude conjugate bound.
+It is invariant under the obvious unit rebalancings.  A successor cocycle must
+alter the noncyclotomic phase symbol itself.
+
+\begin{criterion}[Zero-entropy Kummer design criterion]\label{crit:zeroentropy}
+A plausible full-norm Kummer proof should construct algebraic integers
+$\Phi_N$ satisfying all of the following.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item At the distinguished embedding, $\Phi_N$ has high-order contact forced by
+\eqref{eq:detzero}.
+\item Its leading root-of-unity phase symbol $G$ has $m(G)=0$, hence is
+generalized cyclotomic.
+\item After removing the cyclotomic leading term, the first nonzero descendant is
+control-sensitive: in staircase coordinates it contains a nonzero prime jump
+$a_p$ or $b_p$ with $p\ge5$.
+\item The required normalization is integral or is backed by a certified ideal
+divisibility whose norm pays for every denominator.
+\end{enumerate}
+\end{criterion}
+
+Condition (ii) suppresses the phase entropy; condition (iii) prevents the
+construction from collapsing to a tautology on the control pair.  The supplied
+report had versions of (i) and (iv) separately.  The new Mahler audit shows that
+(ii) and (iii) must be enforced simultaneously.
+
+\section{A unifying two-star viewpoint}
+
+\subsection{The same determinant appears twice}
+
+The staircase period polynomial is
+\begin{equation}\label{eq:twostarperiod}
+ X_1B(X)-(X_1+X_2)A(X),
+\end{equation}
+where $A$ and $B$ are tail-linear forms.  The Kummer phase symbol is
+\begin{equation}\label{eq:twostarphase}
+ (u-1)(q-1)-(v-1)(p-1).
+\end{equation}
+Both are rank-two determinants with two distinguished structural directions and
+two output directions.  In the period model, taking discrete residue differences
+recovers external prime exponents.  In the Kummer model, taking a common phase
+norm amplifies the distinguished cancellation but exposes a positive-entropy
+torus polynomial.
+
+This suggests that the next construction should not be sought as an unrelated
+large determinant.  It should be a \emph{filtered two-star cocycle}: the leading
+phase layer should factor cyclotomically, while the next layer should equal a
+prime-jump functional from \cref{prop:tomography}.
+
+\subsection{A concrete hybrid ansatz}
+
+Let $\vct c\in\cC_q$ be a primitive staircase coefficient vector and let
+$J_p(\vct c)$ denote one of the decoded jumps in
+\eqref{eq:adec}--\eqref{eq:bdec}.  A useful hybrid construction would be a family
+of Laurent polynomials
+\begin{equation}\label{eq:hybridPhi}
+ \Phi_{N,\vct c}(\vct z;N^{-1})
+ =G_0(\vct z)^{N}
+ +\frac1N G_{1,\vct c}(\vct z)
+ +\frac1{N^2}G_{2,\vct c}(\vct z)+\cdots
+\end{equation}
+with the following properties:
+\begin{itemize}
+\item $G_0$ is generalized cyclotomic;
+\item the first coefficient not divisible by $G_0$ contains
+$J_p(\vct c)$ for some external prime $p$;
+\item evaluation at the positive radical point is an algebraic integer and has
+superexponential decay;
+\item the degree and coefficient height grow slowly enough for a full norm.
+\end{itemize}
+The ansatz is intentionally algebraic.  It translates the transcendence problem
+into a finite symbolic search at each support size.  The uniform decoder makes
+control sensitivity machine-checkable: a candidate cocycle that annihilates all
+$J_p$ can be rejected before any analytic estimate.
+
+\subsection{Why a larger Taylor order alone is insufficient}
+
+Suppose a cocycle has order-$r$ contact along a $d$-dimensional phase subgroup.
+Its partial norm gains $rN^d\log N$ in the negative logarithm.  If $d$ is smaller
+than the ambient phase rank, \cref{prop:partialnormceiling} shows that increasing
+$r$ by any fixed amount does not change the exponent of $N$ and therefore cannot
+beat the remaining conjugates.  A successful construction must do at least one
+of the following:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item make the low-order cancellation valid on the full relevant phase torus;
+\item force a degree collapse to $N^{d+o(1)}$;
+\item divide by a genuinely large common ideal whose norm cancels the generic
+conjugate budget;
+\item or replace a norm argument by a trace or matrix coefficient with certified
+sign/cancellation control.
+\end{enumerate}
+The Mahler criterion is the cleanest version of (a).
+
+\section{Further directions audited in this continuation}
+
+\subsection{Restricted Calegari--Dimitrov--Tang input}
+
+The recent arithmetic-holonomy results of Calegari--Dimitrov--Tang~\cite{CDT2024,CDTsurvey2026} prove
+linear independence for striking families of logarithmic periods, including
+near-diagonal consecutive logarithms.  The staircase relation here is different:
+it uses the fixed hubs $L_1,L_2$ and all tails $L_r$.  The coefficient lattice is
+far smaller than the full integer lattice, but its coefficients are unbounded.
+
+The uniform theorem suggests a realistic specialization of the general theory.
+One does not need arbitrary linear independence of all products in
+\eqref{eq:Pq}.  It is enough to prove nonvanishing on the network lattice
+$\cC_q$, or even on its nonnegative cone $\cC_q^+$.  A proof may exploit:
+\begin{itemize}
+\item the consecutive poles $-1,-2,\ldots,-(q-1)$;
+\item the tail monotonicity of actual candidates;
+\item the fact that every noncontrol vector has a nonzero prime jump;
+\item the rank-six realization \eqref{eq:rank6connection};
+\item and the absence of cokernel torsion.
+\end{itemize}
+No theorem presently available to the author establishes this restricted
+nonvanishing, but the target is now exact enough to formalize and test.
+
+\subsection{Rank-three multiplicative branch}
+
+Let $\rho$ be the multiplicative rank of $2,3,M,A$.  The supplied report reduces
+the difficult Kummer geometry to $\rho\in\{3,4\}$.  In rank four, all independent
+root-of-unity phases are present, so \cref{thm:positiveMahler} directly describes
+the leading full phase space.  In rank three, the phases lie on a codimension-one
+subtorus determined by a primitive multiplicative relation
+\begin{equation}\label{eq:rank3relation}
+ 2^r3^sM^uA^v=1.
+\end{equation}
+The leading symbol becomes the restriction of $F$ to that subtorus.
+
+A potentially decisive classification problem is therefore:
+
+\begin{problem}[Rank-three zero-entropy classification]\label{prob:rank3entropy}
+Classify primitive $(r,s,u,v)\in\Z^4$ for which the restriction of
+$F=(u_0-1)(q_0-1)-(v_0-1)(p_0-1)$ to the subtorus
+$p_0^rq_0^su_0^uv_0^v=1$ has Mahler measure zero.  Show, if true, that every such
+case is incompatible with a noncontrol candidate.
+\end{problem}
+
+This is a finite Newton-polytope and cyclotomic-factorization problem before any
+transcendence estimate is used.  It appears more tractable than a direct analysis
+of all rank-three Kummer conjugates.  I have not completed the classification,
+so it is recorded as a target rather than a theorem.
+
+\subsection{The Sturmian/automatic route}
+
+The carry word
+\begin{equation}\label{eq:carry}
+ c_n=\floor{(n+1)x}-\floor{nx}
+\end{equation}
+is Sturmian for nonintegral $x$.  The integer recurrences
+\[
+ 2^{\{(n+1)x\}}=\frac{M}{2^{c_n}}2^{\{nx\}},
+ \qquad
+ 3^{\{(n+1)x\}}=\frac{A}{3^{c_n}}3^{\{nx\}}
+\]
+realize the same word in dyadic and triadic arithmetic.  A proof that this word
+were both $2$-automatic and $3$-automatic would finish the problem by Cobham's
+theorem, because an aperiodic Sturmian word is not automatic.  The missing step
+is still missing: integrality of the two recurrences does not by itself provide
+a finite automaton reading the index $n$.  The state variables are rational but
+their denominator exponents grow without bound.  No honest finite-state
+compression was found in this continuation.
+
+\subsection{Small-type entire interpolation}
+
+The supplied report identifies a powerful sufficient condition: a nonconstant
+entire function of sufficiently small positive quadratic type, integer-valued on
+$\N_0+x\N_0$, would contradict a counterexample through a Pila-style counting
+argument.  Canonical products that vanish on the semigroup have infinite
+quadratic type, and standard Barnes double-gamma or double-sine constructions
+inherit the same boundary-density cost.  I examined whether one could avoid
+zeros and impose only integer values through a rapidly convergent Newton series.
+The obstruction remains the inverse of the near-collision Vandermonde matrix:
+small gaps in $\N_0+x\N_0$ force coefficient growth at the same critical order.
+No subcritical construction was obtained.
+
+The new Kummer supernorm does, however, suggest an interpolation analogue:
+replace exact cardinal functions by orbit products whose leading potential has
+zero logarithmic energy.  In the entire-function language this is again a
+zero-Mahler/zero-capacity condition.  The parallel is conceptually useful, but it
+has not yet produced a function meeting the required type bound.
+
+\subsection{Prime distribution and external descendants}
+
+The decoder \eqref{eq:adec}--\eqref{eq:bdec} means that the largest external
+prime need not be tracked through a global factorization.  It is a boundary jump
+of the tail connection.  A possible use of prime distribution is therefore not
+to locate a prime in a short interval, but to produce many long composite
+stretches on which residues are constant and then compare holonomy across their
+endpoints.  Existing prime-gap bounds are too weak by themselves, because the
+residue heights can be arbitrarily large.  A useful theorem would need an
+output-sensitive estimate whose gain depends on the nonzero jump and whose loss
+depends only logarithmically on the tail height.
+
+\section{Sharply stated next theorem targets}
+
+\subsection{Target A: two-star holonomy nonvanishing}
+
+\begin{target}[Saturated two-star nonvanishing]\label{target:A}
+For every prime $q\ge5$ and every nonzero primitive
+$\vct c\in\cC_q$, prove
+\[
+ \vct c\cdot\vct P_q\ne0.
+\]
+A weaker but still sufficient version may restrict to the cone $\cC_q^+$.
+\end{target}
+
+This is the most direct continuation of current arithmetic-holonomy technology.
+The lattice theorem removes all algebraic ambiguity from its statement.
+
+\subsection{Target B: cyclotomic leading Kummer symbol}
+
+\begin{target}[Control-sensitive zero-entropy cocycle]\label{target:B}
+Construct an algebraic-integer Kummer cocycle whose leading phase symbol is a
+product of cyclotomic polynomials in monomials, while its first noncyclotomic
+Taylor coefficient is a nonzero decoded prime jump from
+\cref{prop:tomography}.
+\end{target}
+
+The requirement that the first surviving coefficient be a decoded jump is
+stronger than merely asking the cocycle to be nonzero at a generic point.  It
+prevents a construction from detecting only the control shift.
+
+\subsection{Target C: rank-three entropy classification}
+
+\begin{target}[Rank-three restricted Mahler positivity]\label{target:C}
+Prove that for every rank-three relation compatible with a noncontrol candidate,
+the restriction of $F$ in \eqref{eq:phasesymbol} to the corresponding Kummer
+subtorus has positive Mahler measure.
+\end{target}
+
+This would close the leading-symbol audit in both possible multiplicative-rank
+branches.  It would not prove \AEconj by itself, but it would rule out an entire class
+of low-order Kummer norms uniformly.
+
+\subsection{Target D: ideal normalization with the correct exponent}
+
+\begin{target}[Norm-paying common ideal]\label{target:D}
+For a zero-entropy cocycle as in \cref{target:B}, find a common ideal
+$\mathfrak d_N$ dividing all phase conjugates such that
+\[
+ \log\Norm(\mathfrak d_N)
+\]
+pays the full generic conjugate budget, of order $N^\rho$, while division by
+$\mathfrak d_N$ preserves a nonzero external-prime descendant.
+\end{target}
+
+The exponent is essential.  Divisibility of size $\exp(O(N^{\rho-1}\log N))$
+will not suffice against $\exp(O(N^\rho))$ generic conjugates.
+
+\subsection{Priority ordering}
+
+The recommended order of attack is:
+\begin{enumerate}
+\item Formalize \cref{thm:uniformstaircase,prop:rank6,thm:diagnorm,lem:twoaxis}.
+This gives a trusted algebraic substrate and prevents future computational
+experiments from drifting into the control kernel.
+\item Search symbolically for low-support cocycles satisfying
+\cref{target:B}.  Reject candidates by Mahler measure and the prime-jump decoder
+before performing any field-norm calculation.
+\item In parallel, ask whether the arithmetic-holonomy machinery can exploit the
+rank-six connection and monotone tail cone, rather than arbitrary coefficient
+vectors.
+\item Treat the rank-three Mahler classification as a finite combinatorial
+subproject.  Its output will clarify whether rank three offers a genuinely softer
+Kummer branch.
+\end{enumerate}
+
+\section{Lean formalization blueprint}
+
+The new exact statements were chosen to separate cleanly into finite algebra and
+analysis.  The following module plan should be practical in Mathlib.
+
+\subsection{Module \texttt{StaircaseTail}}
+
+Define finite prime-indexed exponent functions and tails
+\[
+ \alpha(r)=\sum_{p\in\cP_q,\ r<p}a(p).
+\]
+Prove the finite-sum jump lemma
+\[
+ \alpha(p-1)-\alpha(p)=a(p)
+\]
+for prime $p$, and constancy across composite boundaries.  This module is purely
+combinatorial.
+
+\subsection{Module \texttt{StaircaseCoefficient}}
+
+Define $T_q$ by the explicit formulas
+\eqref{eq:c11}--\eqref{eq:c2r}.  Formalize:
+\begin{lstlisting}
+theorem kernel_Tq : LinearMap.ker (Tq q) =
+  Submodule.span Z {controlVector q}
+
+ theorem rank_Tq : finrank Z (LinearMap.range (Tq q)) = 2 * pi q - 1
+\end{lstlisting}
+Rather than formalizing Smith normal form first, prove saturation from the
+explicit decoder and section.  Smith invariants can be added as a corollary.
+
+\subsection{Module \texttt{RankSixPathAlgebra}}
+
+Represent the directed acyclic graph with four length-two paths.  The identity
+$H_{05}=D(M,A)$ follows from finite path enumeration and the shuffle identity.
+One need not formalize analytic differential equations initially; a formal Chen
+series in a noncommutative path algebra is enough.
+
+\subsection{Module \texttt{DiagonalNormIdentity}}
+
+The key polynomial identity is independent of transcendence:
+\begin{lstlisting}
+theorem prod_roots_mul_sub (R S : C) (N : N) :
+  (prod z in rootsOfUnity N, z * (z * R - S)) = R^N - S^N
+\end{lstlisting}
+In practice it is cleaner to prove the universal polynomial identity using
+$X^N-Y^N$ and then specialize to roots of unity.
+
+\subsection{Module \texttt{PhaseAxes}}
+
+The two-axis lemma is a short integral-domain proof:
+\begin{lstlisting}
+theorem phase_axes
+  (hp : p != 0) (h1 : u*q = v*p) (h2 : u+q = v+p) :
+  (u = p /\ v = q) \/ (q = p /\ v = u)
+\end{lstlisting}
+The factorization $(u-p)(q-p)=0$ is the core step.
+
+\subsection{Analytic asymptotics}
+
+The asymptotic theorem can be postponed until the algebraic identities are
+verified.  A first formal milestone is to prove the limits
+\[
+ NR_N\to c,\quad N^2(R_N-c/N)\to\gamma,
+ \quad N^3(R_N-S_N)\to d.
+\]
+The mean-value proof of \cref{thm:supernorm} then uses real analysis already
+available in Mathlib, although managing $N$-dependent powers will require some
+auxiliary logarithm lemmas.
+
+\section{Conclusions}
+
+The work in this continuation changes the shape of the problem in two concrete
+ways.
+
+On the period side, there is no longer an unresolved finite-rank pattern.  The
+consecutive-log coefficient map is completely understood for every cutoff.  It
+is a split, saturated encoding of all prime valuations modulo exactly one
+control line.  Every external prime is a local residue jump, and the complete
+period obstruction is one matrix coefficient of a rank-six unipotent
+connection.
+
+On the Kummer side, the elementary determinant is more powerful than its
+$N^{-3}$ Taylor estimate suggests.  Its common diagonal orbit is an explicit
+nonzero algebraic integer of size $\exp(-N\log N+O(N))$.  The failure of the norm
+route is correspondingly more informative: it is not caused by insufficient
+smallness at the distinguished place, but by positive Mahler entropy of the
+leading phase symbol.  Cyclotomic units cannot remove that entropy.
+
+The strongest honest statement at present is therefore not a proof but a
+sharp bifurcation.  A successful proof must either establish restricted
+arithmetic-holonomy nonvanishing on the saturated two-star lattice, or construct
+a new Kummer cocycle with cyclotomic leading phase and an external-prime first
+descendant.  Both targets are finite enough to support symbolic search and Lean
+formalization, and both expose exactly where any purported breakthrough must do
+something unavailable in the current report.
+
+\appendix
+
+\section{Explicit small-cutoff matrices}\label{app:matrices}
+
+For $q=3$, order the exponent variables as
+$(a_2,a_3,b_2,b_3)$ and coefficients as $(c_{11},c_{12},c_{22})$.  Then
+\[
+ T_3=
+ \begin{pmatrix}
+ -1&-1&1&1\\
+ -1&-2&0&1\\
+ 0&-1&0&0
+ \end{pmatrix}.
+\]
+Its kernel is generated by $(1,0,0,1)$, and its determinant minors have gcd $1$.
+
+For $q=5$, order variables as
+$(a_2,a_3,a_5,b_2,b_3,b_5)$ and coefficients as
+$(c_{11},c_{12},c_{22},c_{13},c_{23},c_{14},c_{24})$.  The tail formulas give
+\[
+ T_5=
+ \begin{pmatrix}
+ -1&-1&-1&1&1&1\\
+ -1&-2&-2&0&1&1\\
+ 0&-1&-1&0&0&0\\
+ 0&0&-1&0&0&1\\
+ 0&0&-1&0&0&0\\
+ 0&0&-1&0&0&1\\
+ 0&0&-1&0&0&0
+ \end{pmatrix}.
+\]
+The repeated rows reflect the composite boundary $4$: tails cannot jump between
+$r=3$ and $r=4$.  The rank is $5$, the kernel is again the control line, and the
+image has codimension $2$ with no torsion.
+
+\section{Taylor details for the Kummer supernorm}\label{app:taylor}
+
+Set $t=1/N$.  Then
+\begin{align*}
+ R_N&=\e^{(\beta a+b)t}-\e^{(\beta b+a)t},\\
+ S_N&=\e^{\beta at}+\e^{bt}-\e^{\beta bt}-\e^{at}.
+\end{align*}
+The first coefficient of each is
+\[
+ (\beta a+b)-(\beta b+a)=(\beta-1)(a-b)=c.
+\]
+The second coefficient of $R_N$ is
+\[
+ \frac{(\beta a+b)^2-(\beta b+a)^2}{2}
+ =\frac{(\beta^2-1)(a^2-b^2)}2=\gamma,
+\]
+and the second coefficient of $S_N$ is the same.  Their cubic difference is
+\begin{align*}
+ 6[t^3](R_N-S_N)
+ ={}&(\beta a+b)^3-(\beta b+a)^3\\
+ &-(\beta a)^3-b^3+(\beta b)^3+a^3\\
+ ={}&3\beta(\beta-1)ab(a-b),
+\end{align*}
+which gives $d$ in \eqref{eq:dconst}.  The refined asymptotic constant in
+\eqref{eq:supernormasymp} comes from
+\[
+ \left(1+\frac{\gamma/c}{N}+O(N^{-2})\right)^{N-1}
+ \longrightarrow\e^{\gamma/c}.
+\]
+
+\section{Reproducible computations}\label{app:code}
+
+The following Python code estimates $m(F)$ after the exact Jensen reduction
+\eqref{eq:mFjensen}.  It requires NumPy and SciPy.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+from scipy.stats import qmc
+
+
+def mahler_F(power=22, seed=12345):
+    sampler = qmc.Sobol(d=3, scramble=True, seed=seed)
+    x = sampler.random_base2(m=power)
+    theta = 2.0 * np.pi * x
+
+    u = np.exp(1j * theta[:, 0])
+    q = np.exp(1j * theta[:, 1])
+    p = np.exp(1j * theta[:, 2])
+
+    a = u * q - u - q + p
+    b = 1.0 - p
+    values = np.log(np.maximum(np.abs(a), np.abs(b)))
+    return float(values.mean())
+
+
+print(mahler_F())  # approximately 0.54807
+\end{lstlisting}
+
+The next routine checks the diagonal asymptotic with arbitrary real $\beta>1$.
+It is an analytic calibration and does not assume that the chosen $\beta$ gives
+integer powers.
+
+\begin{lstlisting}[language=Python]
+import mpmath as mp
+
+
+def diagonal_data(beta, N, digits=200):
+    mp.mp.dps = digits
+    beta = mp.mpf(beta)
+    N = int(N)
+    a, b = mp.log(2), mp.log(3)
+
+    P = mp.e ** (a / N)
+    Q = mp.e ** (b / N)
+    U = mp.e ** (beta * a / N)
+    V = mp.e ** (beta * b / N)
+
+    R = U * Q - V * P
+    S = U + Q - V - P
+    Xi = R - S
+
+    # Stable evaluation for large N, when R and S have the same sign.
+    z = N * mp.log(abs(R) / abs(S))
+    log_abs_Delta = N * mp.log(abs(S)) + mp.log(abs(mp.expm1(z)))
+
+    c = (beta - 1) * (a - b)
+    renormalized = (log_abs_Delta + N * mp.log(N)) / N
+    return N**3 * Xi, log_abs_Delta, renormalized, mp.log(abs(c))
+\end{lstlisting}
+
+For the staircase theorem, direct matrix construction is useful only as a test;
+the proof is the decoder in \cref{thm:uniformstaircase}.  A short SymPy check is:
+
+\begin{lstlisting}[language=Python]
+import sympy as sp
+from sympy import primerange
+from sympy.matrices.normalforms import smith_normal_form
+from sympy.polys.domains import ZZ
+
+
+def staircase_matrix(q):
+    primes = list(primerange(2, q + 1))
+    columns = []
+
+    for side in (0, 1):       # 0 = M exponents, 1 = A exponents
+        for p in primes:
+            a = {r: int(side == 0 and p > r) for r in range(1, q)}
+            b = {r: int(side == 1 and p > r) for r in range(1, q)}
+            col = [b[1] - a[1], b[2] - a[2] - a[1], -a[2]]
+            for r in range(3, q):
+                col += [b[r] - a[r], -a[r]]
+            columns.append(col)
+
+    return sp.Matrix.hstack(*[sp.Matrix(c) for c in columns])
+
+
+for q in (3, 5, 7, 11, 13):
+    T = staircase_matrix(q)
+    S = smith_normal_form(T, domain=ZZ)
+    nonzero = [S[i, i] for i in range(min(S.shape)) if S[i, i] != 0]
+    print(q, T.rank(), nonzero)
+\end{lstlisting}
+
+\section{Selected references}
+
+\begin{thebibliography}{99}
+
+\bibitem{AE1944}
+L.~Alaoglu and P.~Erd\H{o}s,
+\newblock On highly composite and similar numbers,
+\newblock \emph{Transactions of the American Mathematical Society} 56 (1944),
+448--469.
+
+\bibitem{Baker1975}
+A.~Baker,
+\newblock \emph{Transcendental Number Theory},
+\newblock Cambridge University Press, 1975.
+
+\bibitem{Boyd1981}
+D.~W.~Boyd,
+\newblock Kronecker's theorem and Lehmer's problem for polynomials in several
+variables,
+\newblock \emph{Journal of Number Theory} 13 (1981), 116--121.
+
+\bibitem{CDT2024}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\newblock The linear independence of $1$, $\zeta(2)$, and
+$L(2,\chi_{-3})$,
+\newblock arXiv:2408.15403, 2024--2026.
+
+\bibitem{CDTsurvey2026}
+F.~Calegari, V.~Dimitrov, and Y.~Tang,
+\newblock Arithmetic holonomy bounds and effective Diophantine approximation,
+\newblock ICM survey, arXiv:2510.04156, revised 2026.
+
+\bibitem{DasguptaKakdeII}
+S.~Dasgupta and M.~Kakde,
+\newblock On the ranks of matrices of logarithms of algebraic numbers, II,
+\newblock \emph{Advances in Mathematics}, 2026; arXiv:2408.08178.
+
+\bibitem{Cobham1969}
+A.~Cobham,
+\newblock On the base-dependence of sets of numbers recognizable by finite automata,
+\newblock \emph{Mathematical Systems Theory} 3 (1969), 186--192.
+
+\bibitem{Lawton1983}
+W.~M.~Lawton,
+\newblock A problem of Boyd concerning geometric means of polynomials,
+\newblock \emph{Journal of Number Theory} 16 (1983), 356--362.
+
+\bibitem{Smyth1981}
+C.~J.~Smyth,
+\newblock On measures of polynomials in several variables,
+\newblock \emph{Bulletin of the Australian Mathematical Society} 23 (1981),
+49--63.
+
+\bibitem{Unified6}
+\emph{Alaoglu--Erd\H{o}s Unified Report 6},
+\newblock supplied research report, 22--24 August 2026.
+
+\bibitem{Waldschmidt}
+M.~Waldschmidt,
+\newblock The four exponentials problem and Schanuel's conjecture,
+\newblock in \emph{Mathematics Going Forward}, Lecture Notes in Mathematics,
+Springer, 2023, 579--592.
+
+\end{thebibliography}
+
+\end{document}
