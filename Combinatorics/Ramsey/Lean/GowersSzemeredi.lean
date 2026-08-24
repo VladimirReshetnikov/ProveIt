@@ -15,6 +15,7 @@ import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.Proofs02PhasePartition
 import GowersSzemeredi.Proofs02DensityIncrement
+import GowersSzemeredi.Proofs02Roth
 import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
