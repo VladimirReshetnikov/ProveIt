@@ -199,6 +199,106 @@ theorem iwaniecMozzochi_eq115_truncatedChangeOfVariables_holds :
       rw [intervalIntegral.integral_of_le (upper_pos ha hδ).le,
         integral_Ioc_eq_integral_Ioo]
 
+/-! Before specializing the sign of the linear frequency, the same
+substitution gives a reciprocal-quadratic phase.  This normalized form is the
+one used by the uniform oscillatory estimate in Lemma 11.1. -/
+
+private theorem tau_phase_reciprocal {a c u : ℝ} (ha : 0 < a) (hu : 0 < u) :
+    -a / tau a u - c * tau a u =
+      -(u ^ 2) - (a * c) / u ^ 2 := by
+  unfold tau
+  field_simp [ha.ne', hu.ne']
+
+private theorem tau_integrand_reciprocal {a c u : ℝ}
+    (ha : 0 < a) (hu : 0 < u) :
+    |-2 * a / u ^ 3| •
+        (((tau a u ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) *
+          e (-a / tau a u - c * tau a u)) =
+      (((2 / Real.sqrt a : ℝ) : ℂ) *
+        e (-(u ^ 2) - (a * c) / u ^ 2)) := by
+  rw [Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul,
+    jacobian_mul_tau_rpow ha hu, tau_phase_reciprocal ha hu]
+
+/-- Exact finite-cutoff normalization at an arbitrary real linear frequency:
+
+`integral_delta^infinity t^(-3/2) e(-a/t-c*t) dt`
+is `2/sqrt(a)` times the partial integral of
+`e(-u^2-(a*c)/u^2)` from zero to `sqrt(a/delta)`. -/
+theorem iwaniecMozzochi_eq112_truncatedChangeOfVariables
+    {a c δ : ℝ} (ha : 0 < a) (hδ : 0 < δ) :
+    (∫ t in Set.Ioi δ,
+      ((t ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) * e (-a / t - c * t)) =
+      (((2 / Real.sqrt a : ℝ) : ℂ) *
+        (∫ u in (0 : ℝ)..Real.sqrt (a / δ),
+          e (-(u ^ 2) - (a * c) / u ^ 2))) := by
+  let g : ℝ → ℂ := fun t =>
+    ((t ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) * e (-a / t - c * t)
+  have hraw := integral_tau ha hδ g
+  change (∫ t in Set.Ioi δ, g t) = _
+  rw [hraw]
+  let K : ℂ := ((2 / Real.sqrt a : ℝ) : ℂ)
+  calc
+    (∫ u in Set.Ioo 0 (Real.sqrt (a / δ)),
+        |-2 * a / u ^ 3| • g (tau a u)) =
+        ∫ u in Set.Ioo 0 (Real.sqrt (a / δ)),
+          K * e (-(u ^ 2) - (a * c) / u ^ 2) := by
+      apply setIntegral_congr_fun measurableSet_Ioo
+      intro u hu
+      dsimp only [g, K]
+      exact tau_integrand_reciprocal ha hu.1
+    _ = K * (∫ u in Set.Ioo 0 (Real.sqrt (a / δ)),
+          e (-(u ^ 2) - (a * c) / u ^ 2)) := by
+      rw [MeasureTheory.integral_const_mul]
+    _ = K * (∫ u in (0 : ℝ)..Real.sqrt (a / δ),
+          e (-(u ^ 2) - (a * c) / u ^ 2)) := by
+      rw [intervalIntegral.integral_of_le (upper_pos ha hδ).le,
+        integral_Ioc_eq_integral_Ioo]
+
+/-! The zero linear-frequency endpoint, used by the generalized transform in
+Lemma 11.1, needs no reciprocal-phase straightening. -/
+
+private theorem tau_phase_zero {a u : ℝ} (ha : 0 < a) (hu : 0 < u) :
+    -a / tau a u = -(u ^ 2) := by
+  unfold tau
+  field_simp [ha.ne', hu.ne']
+
+private theorem tau_integrand_zero {a u : ℝ} (ha : 0 < a) (hu : 0 < u) :
+    |-2 * a / u ^ 3| •
+        (((tau a u ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) *
+          e (-a / tau a u)) =
+      (((2 / Real.sqrt a : ℝ) : ℂ) * e (-(u ^ 2))) := by
+  rw [Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul,
+    jacobian_mul_tau_rpow ha hu, tau_phase_zero ha hu]
+
+/-- Exact finite-cutoff substitution at zero linear frequency:
+
+`integral_delta^infinity t^(-3/2) e(-a/t) dt`
+is `2/sqrt(a)` times the negative half-Fresnel partial integral. -/
+theorem iwaniecMozzochi_eq115_truncatedChangeOfVariables_zero
+    {a δ : ℝ} (ha : 0 < a) (hδ : 0 < δ) :
+    (∫ t in Set.Ioi δ,
+      ((t ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) * e (-a / t)) =
+      (((2 / Real.sqrt a : ℝ) : ℂ) *
+        (∫ u in Set.Ioc 0 (Real.sqrt (a / δ)), e (-(u ^ 2)))) := by
+  let g : ℝ → ℂ := fun t =>
+    ((t ^ (-(3 : ℝ) / 2) : ℝ) : ℂ) * e (-a / t)
+  have hraw := integral_tau ha hδ g
+  change (∫ t in Set.Ioi δ, g t) = _
+  rw [hraw]
+  let K : ℂ := ((2 / Real.sqrt a : ℝ) : ℂ)
+  calc
+    (∫ u in Set.Ioo 0 (Real.sqrt (a / δ)),
+        |-2 * a / u ^ 3| • g (tau a u))
+        = ∫ u in Set.Ioo 0 (Real.sqrt (a / δ)), K * e (-(u ^ 2)) := by
+      apply setIntegral_congr_fun measurableSet_Ioo
+      intro u hu
+      dsimp only [g, K]
+      exact tau_integrand_zero ha hu.1
+    _ = K * (∫ u in Set.Ioo 0 (Real.sqrt (a / δ)), e (-(u ^ 2))) := by
+      rw [MeasureTheory.integral_const_mul]
+    _ = K * (∫ u in Set.Ioc 0 (Real.sqrt (a / δ)), e (-(u ^ 2))) := by
+      rw [integral_Ioc_eq_integral_Ioo]
+
 end Eq115Change
 
 end LeanProofs.IntegerPoints
