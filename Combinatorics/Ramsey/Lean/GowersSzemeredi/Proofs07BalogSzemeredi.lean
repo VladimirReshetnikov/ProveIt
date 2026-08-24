@@ -850,11 +850,16 @@ private lemma sum_eightReps_card_le {G : Type*} [DecidableEq G]
       Finset.card_le_card (Finset.filter_subset _ _)
     _ = A.card ^ 8 := by simp
 
-/-- **Gowers, Proposition 7.3.** Large additive energy contains a large
-subset with quantitatively small difference set. -/
-theorem proposition_7_3_holds : proposition_7_3 := by
+/-- The group-valued form of Proposition 7.3 used for modular graphs. -/
+theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
+    [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
+    (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
+    ∃ A'' : Finset G,
+      A'' ⊆ A ∧
+      (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤ A''.card ∧
+      ((A'' - A'').card : Real) ≤
+        (2 : Real) ^ (38 : Nat) * c ^ (-(24 : Real)) * A.card := by
   classical
-  intro n A c hc henergy
   by_cases hAempty : A = ∅
   · subst A
     refine ⟨∅, by simp, ?_, ?_⟩
@@ -868,7 +873,7 @@ theorem proposition_7_3_holds : proposition_7_3 := by
   obtain ⟨K, hVcard, hKcard, hKdense⟩ := exists_bsg_drc_core A c hc henergy
   let threshold := delta ^ 2 * A.card / 2
   let L := highGoodDegree F K threshold
-  let A'' : Finset (Fin n → Int) := L.image (centerAt V)
+  let A'' : Finset G := L.image (centerAt V)
   have hdelta : 0 < delta := bsg_delta_pos c hc
   have hKstrong :
       (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card ≤ K.card :=
@@ -917,7 +922,7 @@ theorem proposition_7_3_holds : proposition_7_3 := by
   let repLower : Real :=
     (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 10 * c ^ 4 *
       (A.card : Real) ^ 7 / 120
-  have hrep (x : Fin n → Int) (hx : x ∈ D) :
+  have hrep (x : G) (hx : x ∈ D) :
       repLower ≤ (eightReps A x).card := by
     have hx' : x ∈ A'' - A'' := hx
     obtain ⟨u, hu, v, hv, huv⟩ := Finset.mem_sub.mp hx'
@@ -985,5 +990,11 @@ theorem proposition_7_3_holds : proposition_7_3 := by
     _ ≤ (2 : Real) ^ (38 : Nat) * (c ^ 24)⁻¹ * A.card := by
       gcongr
     _ = _ := rfl
+
+/-- **Gowers, Proposition 7.3.** Large additive energy contains a large
+subset with quantitatively small difference set. -/
+theorem proposition_7_3_holds : proposition_7_3 := by
+  intro n A c hc henergy
+  exact proposition_7_3_group_holds A c hc henergy
 
 end LeanProofs.GowersSzemeredi
