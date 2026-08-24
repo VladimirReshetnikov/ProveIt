@@ -126,11 +126,13 @@ generating-series identities; the intended real polygonal interpolation; and a
 proved corrected pointwise approximation scheme.  The Stirling estimate used
 by the draft is proved in its precise `O(log n)` form.  The aggregate also
 exposes formal counterexamples to the literal normalization, the claimed local
-and global error estimates, the unbounded “maximum” proxy, and the omitted linear term
-in the subsequent Stirling calculation.  Both qualitative decay comparisons
-are proved: the Fabius function is smaller than every power at zero, while
-`exp (-c/x)` is little-o of it for every `c > 0`.  No Lambert-W theorem is
-claimed.
+and global error estimates, the unbounded “maximum” proxy, and the omitted
+linear term in the subsequent Stirling calculation.  Both qualitative decay
+comparisons are proved: the Fabius function is smaller than every power at
+zero, while `exp (-c/x)` is little-o of it for every `c > 0`.  No Lambert-W
+theorem is used to justify the false proxy chain; instead, the repaired lower
+branch, its equation-(9) solution, and its standard two-term expansion are
+proved separately.
 
 The exact source-to-Lean map is in [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).
 
