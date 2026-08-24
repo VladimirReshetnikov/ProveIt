@@ -714,6 +714,21 @@ private theorem shiftBlock_ap_free (s : Nat) (B : Block)
     ring
   rwa [heq] at hprogression
 
+/-- Every nonempty interval of positive natural numbers has an ordering with
+no monotone three-term arithmetic progression. -/
+theorem positiveInterval_apFreeOrdering_exists (a b : Nat)
+    (ha : 0 < a) (hab : a ≤ b) :
+    ∃ B : Block, IsIntervalOrdering B a b ∧ BlockAPFree B 3 := by
+  obtain ⟨B, horder, hfree⟩ :=
+    apFreeIntervalBlock_exists (b + 1 - a)
+  let B' := shiftBlock (a - 1) B
+  refine ⟨B', ?_, ?_⟩
+  · have horder' := shiftBlock_interval_ordering
+      (a - 1) (b + 1 - a) B horder
+    dsimp only [B']
+    convert horder' using 1 <;> omega
+  · exact shiftBlock_ap_free (a - 1) B hfree
+
 theorem decimal_block_choices_exist_holds : decimal_block_choices_exist := by
   classical
   choose B hB using fun k : Nat => apFreeIntervalBlock_exists (10 ^ k)
