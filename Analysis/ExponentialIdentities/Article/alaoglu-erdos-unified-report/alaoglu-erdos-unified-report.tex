@@ -21532,6 +21532,34 @@ exactly the dimensions computed for the image subspace $C$ below --- the earlier
 numbers were right, for this reason, even though the basis in which they were derived was
 not.
 
+There is a better observation to make.  The coefficient array of the corrected relation is
+\emph{literally} the two-star tensor of Section~\ref{ts:detector}: the coefficient of the
+unordered product $\{x,y\}$ in
+$\sum_pa_p(\log2\log p)-\sum_pm_p(\log3\log p)$ is
+\[
+ [x{=}2]\,a_y+[y{=}2]\,a_x-[x{=}3]\,m_y-[y{=}3]\,m_x,
+\]
+which is exactly $\Sigma(m,a)=e_2\circledast a-e_3\circledast m$ evaluated at $\{x,y\}$
+(verified with zero mismatches over three thousand random coefficient pairs and all prime
+pairs).  Consequently the finite core of Proposition~\ref{camp:prop-cdt} requires no new
+formalization: it \emph{is} the kernel-verified
+\lean{TwoStarControl.twoStarCoeff_eq_zero_iff}, which states precisely that the array
+vanishes iff $m$ is supported at $2$, $a$ at $3$, and $m_2=a_3$ --- the controls.
+
+This unifies two strands developed independently in this report.  The two-star detector
+arrived from the saturated divisor lattice (Section~\ref{sec:twostarlattice}) as an exact
+\emph{control detector}: $\Sigma\ne0$ is equivalent to primitivity, and is kernel-verified.
+The weight-two encoding arrives from the transcendence side as the terminal obstruction.
+They are the same object viewed twice, and putting them together isolates the missing
+ingredient exactly:
+\begin{center}
+\emph{a counterexample makes $\Sigma(m,a)\ne0$ (kernel-verified), yet the corresponding
+$\Q$-linear combination of weight-two products vanishes; so what is missing is precisely
+enough independence among $\{\log2\log p\}\cup\{\log3\log p\}$ to see a nonzero tensor.}
+\end{center}
+The algebra is finished and formalized; the entire remaining content of this route is the
+transcendence input.  \statusexactcomp{} for the identification; core \statuslean.
+
 The coefficient system was computed symbolically and solved exactly in the prime basis.
 For $q=3$ the relation is the quadratic form
 \[
@@ -21755,7 +21783,34 @@ Every entire function vanishing on all of $\Sol$ has $\tau_2=+\infty$.
 
 So no function that is independent of $2^z,3^z$ by virtue of vanishing on the monoid comes
 within any finite factor of Pila's threshold, and \eqref{camp:eq-pila} is merely the
-elementary shadow of this.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
+elementary shadow of this.
+
+Proposition~\ref{camp:prop-inftype} has an immediate consequence which is of independent
+interest, because it says the conditional monoid is a \emph{uniqueness set} for the whole
+finite-type class.
+
+\begin{corollary}[Monoid rigidity]\label{camp:cor-rigidity}
+Assume Conjecture~\ref{conj:AE} fails, with generator $\beta$.  If $g_1,g_2$ are entire,
+both of finite quadratic type, and $g_1=g_2$ on $\Sol$, then $g_1=g_2$ identically.
+\end{corollary}
+
+\begin{proof}
+$g_1-g_2$ vanishes on $\Sol$ and satisfies
+$\tau_2(g_1-g_2)\le\max\bigl(\tau_2(g_1),\tau_2(g_2)\bigr)<\infty$, since
+$M(g_1-g_2,r)\le2\max\bigl(M(g_1,r),M(g_2,r)\bigr)$.  By
+Proposition~\ref{camp:prop-inftype} a \emph{nonzero} entire function vanishing on $\Sol$
+has infinite type, so $g_1-g_2=0$.
+\end{proof}
+
+Writing $V_\tau$ for the set of entire functions that are integer-valued on $\Sol$ and have
+$\tau_2\le\tau$, the situation is therefore this: $V_0$ contains every $\Z$-polynomial in
+$2^z$ and $3^z$; the type gap (Theorem~\ref{camp:thm-typegap}) says
+$V_{1/(832\beta^2\log2\log3)}=V_0$; and evaluation on $\Sol$ is \emph{injective} on
+$\bigcup_{\tau<\infty}V_\tau$ by Corollary~\ref{camp:cor-rigidity}, so each such function is
+pinned by its integer values alone.  Whether $V_\tau=V_0$ for \emph{every} finite $\tau$ ---
+equivalently, whether the achievable type spectrum is exactly $\{0\}\cup\{\infty\}$ --- is
+the sharp form of the open question, and a positive answer would close
+Target~\ref{camp:target-construct} negatively rather than leaving it open.  \statusnew.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
 quoted earlier were computed at $\beta=14$ --- an \emph{integer}, hence a control, where
 $\Sol$ collapses to $\N_0$ and the quadratic density fails --- and over the pair multiset
 rather than the point set.  At an admissible irrational $\beta$ the two coincide and the
