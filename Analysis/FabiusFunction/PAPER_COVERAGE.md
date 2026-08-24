@@ -86,7 +86,8 @@ aggregate is `FabiusFunction.PaperFabiusAsymptotic`.
 | Equation (2), both logarithm expansions | Proved | `Fabius.log_sub_one_sub_log_second_order_isBigO`, `Fabius.log_div_sub_one_second_order_isBigO` |
 | Equations (3)–(8), proposed explicit main term | Formalized as a candidate and checked against the exact equation; not assumed to be the true sharp expansion | `Fabius.logMainTerm`, `Fabius.logMainDerivative`, `Fabius.logMainTerm_hasDerivAt`, `Fabius.logMainDefect_eq`, `Fabius.logMainDefect_decomposition` |
 | Quadratic leading coefficient | Proved first on dyadic scales and then for all real scales | `Fabius.normalized_log_fabius_inverse_two_pow_tendsto`, `Fabius.fabiusLogProfile_normalized_tendsto` |
-| Equation (9) residual bookkeeping | Corrected result proved: the residual is `O((log t / t)^2)` | `Fabius.logMainDefect_isBigO_logScaleSquaredRate` |
+| Equation (9), exact remainder-difference identity | Proved with the actual remainder `g - G` and the repaired domain `1 < t` | `Fabius.fabiusLogRemainder_difference_eq` |
+| Equation (9), size of the explicit main-term defect | Corrected result proved: the residual is `O((log t / t)^2)` | `Fabius.logMainDefect_isBigO_logScaleSquaredRate` |
 | Equation (10)'s replacement of that residual by `O(t^-2)` | **False**; formally refuted, with its nonzero leading coefficient identified | `Fabius.logMainDefect_sub_lead_isLittleO`, `Fabius.logMainDefect_not_isBigO_one_div_sq` |
 | Equation (11), bounded one-periodic remainder with `E(t) = O(log t / t)` | **Unsupported and not asserted in Lean.** The printed proof uses the false preceding residual estimate. | No declaration claims this refinement. |
 | Final sharp formula obtained from equations (8) and (11) | **Not advertised as proved.** It depends on the unsupported periodic refinement. | No declaration claims this formula. |
