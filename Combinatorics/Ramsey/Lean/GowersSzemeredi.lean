@@ -25,6 +25,7 @@ import GowersSzemeredi.Proofs05MissingInterval
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07DRC
+import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs10Bohr
