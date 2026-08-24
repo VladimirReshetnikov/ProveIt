@@ -813,6 +813,24 @@ runner-up $m=30329$ requires $10142053/6398923$.  The largest integers compared 
 $1.6\cdot10^8$ bits.  Every row, base enclosures included, was re-verified with exact GMP
 big-integer arithmetic before being replayed by the kernel.  No \lean{native_decide}.
 
+Three scripts make this reproducible.  \path{scripts/gen_finitecheck32768.py} builds the
+ladder, assigns enclosures, verifies every row exactly and emits the Lean module.
+\path{scripts/reverify_finitecheck32768.py} is the independent check: it does not trust the
+generator, but parses the four chunk tables and the enclosure list back out of the committed
+\lean{.lean} source, reconstructs each $m$ from its position exactly as the Lean dispatch
+does, and re-checks all four inequalities with exact arithmetic, together with coverage and
+the absence of \lean{sorry} and \lean{native_decide} from the code.  It reports every $m$ in
+$[16384,32768)$ present exactly once with the sole exempt row $m=16384=2^{14}$.
+\path{scripts/certificate_cost_measurement.py} produces the gigabit totals quoted in
+Section~\ref{co:cost}.
+
+One robustness point deserves stating, because it is what makes the format trustworthy.  The
+certificate does not depend on $a$ having been computed correctly.  If the four inequalities
+hold then $a<m^{\thetaq}<a+1$ follows whatever $a$ was intended to be, so a mistake in the
+floor computation cannot produce a false certificate --- it can only produce a row that fails
+to verify.  The two ways the table could be wrong are a false inequality and a coverage gap,
+and the re-verification script checks exactly those two things.
+
 \subsection{What the certificate route costs}
 \label{co:cost}
 
