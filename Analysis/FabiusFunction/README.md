@@ -57,7 +57,7 @@ complex exponential generating function are also represented explicitly.
 ## Exact dyadic evaluation
 
 The executable evaluator follows
-[Reshetnikov's algorithm](https://mathematica.stackexchange.com/a/137749),
+[a well-known algorithm](https://mathematica.stackexchange.com/a/137749),
 which is Proposition 10 of the paper in computational form.  It precomputes
 the values `F(2^-k)`, removes one highest set bit from the numerator at each
 step, and evaluates the resulting Taylor polynomial in Horner form.  Thus it
