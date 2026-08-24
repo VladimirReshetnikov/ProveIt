@@ -21559,37 +21559,56 @@ The right-hand side is negative --- indeed below $-1$ --- for every $k<1/(4\tau)
 integer of absolute value less than one is zero.  Newton's expansion on $\N_0$, in which
 $\binom nk=0$ for $k>n$, then propagates this to the values themselves.
 
-\begin{proposition}[Forced initial-segment vanishing]\label{camp:prop-segment}
-Let $g$ be entire, integer-valued on $\N_0\subseteq\Sol$, with $\tau_2(g)\le\tau$.  Then
-$\Delta^kg(0)=0$ for every $k<1/(4\tau)$, and consequently
+\begin{statusbox}{\textbf{Retraction} --- the initial-segment proposition is false}
+An earlier version of this subsection asserted: \emph{if $g$ is entire, integer-valued on
+$\N_0\subseteq\Sol$, with $\tau_2(g)\le\tau$, then $\Delta^kg(0)=0$ for every $k<1/(4\tau)$
+and hence $g(n)=0$ for $n\le K=\lfloor1/(4\tau)\rfloor$.}  That is \emph{false}, and
+$g(z)=2^z$ is a counterexample: it is integer-valued on all of $\Sol$ (since
+$2^{n+k\beta}=2^nM^k$), it has $\tau_2=0\le\tau$ for every $\tau>0$, and yet
+$\Delta^kg(0)=(2-1)^k=1$ for every $k$, with $g(n)=2^n\ne0$.
+
+Two independent errors produced it.  First, $\tau_2(g)\le\tau$ is a \emph{limsup}
+statement: it gives $\log M(g,r)\le(\tau+\varepsilon)r^2$ only for $r\ge r_0(g,\varepsilon)$,
+not for all $r$.  The Cauchy estimate below takes the contour radius $R=2k$, so it is
+available only for $k\ge r_0/2$, whereas the vanishing range claimed was $k<1/(4\tau)$; for
+$2^z$ with $\tau=10^{-6}$ these are $k\ge346{,}574$ against $k<250{,}000$ --- disjoint, so
+the estimate was never valid where it was invoked.  Second, $k=0$ is never constrained
+($|g(0)|\le M(g,0)$ is vacuous), so even granting the bound, Newton's expansion yields
+$g(n)=g(0)$ on the segment --- the function is \emph{constant} there, not zero.
+\end{statusbox}
+
+What survives is the estimate itself, and a lesson about why this problem is hard.
+
+\begin{proposition}[Window of vanishing differences]\label{camp:prop-segment}
+Let $g$ be entire and integer-valued on $\N_0\subseteq\Sol$, and suppose
+$\log M(g,2k)\le\tau(2k)^2$.  Then
 \[
- g(n)=0\qquad\text{for all }n\le K:=\Bigl\lfloor\frac1{4\tau}\Bigr\rfloor .
+ \log\bigl|\Delta^kg(0)\bigr|\;\le\;4\tau k^2-k+O(\log k),
 \]
+so $\Delta^kg(0)=0$ whenever $k<1/(4\tau)$ and $k$ is large enough for the $O(\log k)$ to
+be dominated.  Under the limsup hypothesis $\tau_2(g)\le\tau$ this applies exactly on the
+window $r_0/2\le k<1/(4\tau)$, which is empty unless $r_0<1/(2\tau)$.
 \end{proposition}
 
-At the self-contained threshold of Section~\ref{camp:ownthreshold},
-$\tau=\tau_{\mathrm{crit}}=1/(C\beta^2ab)$ with $C=4570$, this reads
-\[
- K=\frac{C\,ab}{4}\,\beta^2=870\,\beta^2,
-\]
-that is $170{,}523$ at the kernel-verified $\beta\ge14$ and $634{,}240$ at $\beta>27$
-(\path{scripts/segment_vanishing.py}).  The coefficient $870=Cab/4$ is not a coincidence:
-it is the same number as the excess factor $870\beta$ of the vanishing branch, both being
-the ratio of the Jensen floor $1/(4\beta)$ to the threshold, so that $K=\beta\times$(excess
-factor).
+A window of vanishing differences that does not begin at $k=0$ says nothing about the
+values, so no conclusion about $g$ follows; and requiring the bound at \emph{all} radii,
+$M(g,r)\le e^{\tau r^2}$ for every $r$, defines a class so small that it excludes $2^z$ and
+indeed every function of positive exponential type, since $e^{cr}>e^{\tau r^2}$ for
+$r<c/\tau$.  Either way the descent gives nothing.
 
-Three readings of this.  It shows the classical descent \emph{does} bite at order two ---
-contrary to what one might expect from P\'olya's theorem being an order-one statement ---
-and that it bites extremely hard, forcing a small-type integer-valued function to vanish on
-an initial segment of nearly two hundred thousand points.  It recovers the mechanism behind
-Pila's theorem from the corpus's own data, which is why the threshold has the shape it
-does.  And it locates precisely what is still missing for
-Target~\ref{camp:target-diffmodule}: vanishing on \emph{all} of $\Sol$, which would give
-$\tau_2=\infty$ by Proposition~\ref{camp:prop-inftype} and hence $g=0$.  The obstruction is
-quantitative and clean --- repeating the argument at a base point $s_0$ replaces $M(g,2k)$
-by $M(g,|s_0|+2k)$, so the forced range shrinks as $|s_0|$ grows, and the segments thin out
-before they can cover the monoid.  Closing that gap is the same difficulty as proving the
-sharp form of Pila's theorem.  \statusnew{}; numerics \statusexactcomp.
+The lesson is worth more than the failed proposition, and it is precisely the
+methodological point the literature survey makes about this problem.  At order one
+P\'olya's theorem works because $M(g,r)=o(2^r)$ constrains \emph{every} radius, so the
+difference table is controlled from $k=0$ upward and integrality can be cashed in
+immediately.  At order two the natural hypothesis is a limsup, which says nothing at small
+radii, exactly where the difference table lives; and the constant term is free.  This is
+why a P\'olya-style descent cannot substitute for Pila's theorem, why that theorem needs
+interpolation determinants over the full two-dimensional monoid rather than a
+one-variable table, and why the constant in it is hard-won rather than elementary.  It also
+retrospectively explains the shape of Section~\ref{camp:ownthreshold}: the determinant
+derivation there succeeds precisely because it uses \emph{many} points of $\Sol$ at a
+single large radius, never needing control at small ones.  \statusnew{} for the estimate;
+the retracted conclusion is withdrawn.
 
 \subsection{The terminal obstruction inside the Calegari--Dimitrov--Tang family}
 \label{camp:cdt}
@@ -23423,11 +23442,10 @@ $V_\tau$ is a $\Z[\Delta_1,\Delta_\beta]$-module; both shifts diagonal on monomi
 integer eigenvalues $2^i3^j-1$, $M^iA^j-1$; spectrum question $\equiv$ difference-module
 finiteness & \statusnew{}; target \statusopen &
 Section~\ref{camp:diffmodule}, Target~\ref{camp:target-diffmodule} \\
-Forced initial-segment vanishing: integer difference table with
-$\log|\Delta^kg(0)|\le4\tau k^2-k+O(\log k)$ vanishes for $k<1/(4\tau)$, so
-$g(n)=0$ for $n\le870\beta^2$ ($170{,}523$ at $\beta\ge14$); recovers the threshold
-mechanism and locates the residual gap & \statusnew{}; numerics \statusexactcomp &
-Proposition~\ref{camp:prop-segment} \\
+Window of vanishing differences $\log|\Delta^kg(0)|\le4\tau k^2-k+O(\log k)$; the
+initial-segment conclusion drawn from it is \emph{retracted} ($2^z$ is a counterexample:
+limsup type does not control small radii, and $k=0$ is unconstrained) & estimate
+\statusnew{}; conclusion withdrawn & Proposition~\ref{camp:prop-segment} \\
 Terminal obstruction encoded in the CDT family: $\log p=\sum_{n<p}L_n$ turns the
 relation into a $\Z$-relation among $\{L_iL_j\}$; vanishing coefficients force the
 controls at $q=3,5,7$; finite independence per $q$ suffices, consuming the external prime &
