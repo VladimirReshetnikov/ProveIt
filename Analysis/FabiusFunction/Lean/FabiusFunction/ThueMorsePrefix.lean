@@ -35,6 +35,17 @@ theorem iteratedPrefix_succ_sub (k n : ℕ) :
   rw [Finset.sum_range_succ]
   ring
 
+/-- The first prefix sum vanishes at every odd index. -/
+@[simp] theorem iteratedPrefix_one_two_mul_add_one (m : ℕ) :
+    iteratedPrefix 1 (2 * m + 1) = 0 := by
+  rw [iteratedPrefix_succ]
+  have h := thueMorse_sum_two_mul (m + 1) (fun _ => (1 : ℚ))
+  simp only [mul_one, sub_self, mul_zero, Finset.sum_const_zero] at h
+  rw [show 2 * m + 1 + 1 = 2 * (m + 1) by omega]
+  rw [← Fin.sum_univ_eq_sum_range]
+  simp only [iteratedPrefix_zero]
+  exact_mod_cast h
+
 /-- The binomial convolution formula, indexed without a predecessor operation on `k`. -/
 theorem iteratedPrefix_convolution (k n : ℕ) :
     iteratedPrefix (k + 1) n =
@@ -282,4 +293,3 @@ theorem iteratedPrefix_at_dyadic (k r : ℕ) (hkr : k ≤ r) :
       linarith
 
 end Fabius
-
