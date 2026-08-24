@@ -64,6 +64,7 @@ import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16Closure
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
