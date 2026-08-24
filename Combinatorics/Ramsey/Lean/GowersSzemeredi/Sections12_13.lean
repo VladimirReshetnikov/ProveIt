@@ -368,10 +368,15 @@ def IsStage134Data {N : Nat} [NeZero N] (S : Section13Context N)
     ∃ i, r = D.a i * h + D.b i
 
 /-- **Lemma 13.4.** The large-coefficient threshold is corrected to
-`theta*N^2`, consistently with Corollary 13.3 and Parseval. -/
+`theta*N^2`, consistently with Corollary 13.3 and Parseval.  Primality makes
+the paper's standing convention explicit.  The bound `theta ≤ alpha^32/4`
+is also necessary for the displayed exceptional-height estimate in the
+printed proof (and, independently, rules out the impossible positive-`q`
+conclusion for arbitrarily large `theta`). -/
 def lemma_13_4 : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (theta : Real),
-    0 < theta → ∃ D : Stage134Data N, IsStage134Data S theta D
+    Nat.Prime N → 0 < theta → theta ≤ S.alpha ^ 32 / 4 →
+    ∃ D : Stage134Data N, IsStage134Data S theta D
 
 /-- Data produced by Lemma 13.5. -/
 structure Stage135Data (N : Nat) where

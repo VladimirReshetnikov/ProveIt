@@ -57,6 +57,7 @@ import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs12Combination
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
