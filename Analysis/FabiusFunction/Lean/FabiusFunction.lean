@@ -8,6 +8,7 @@ import FabiusFunction.MellinBose
 import FabiusFunction.MellinFinitePart
 import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
+import FabiusFunction.PeriodicRegularity
 
 /-!
 # Fabius function
