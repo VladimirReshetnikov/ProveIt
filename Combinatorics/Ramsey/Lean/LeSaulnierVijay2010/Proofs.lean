@@ -25,6 +25,11 @@ theorem M_four_representatives_holds : M_four_representatives :=
 theorem M_initial_values_holds : M_initial_values :=
   LeanProofs.RamseyPaperCommon.lesaulnier2010_M_initial_values
 
+theorem davis_counting_bounds_holds : davis_counting_bounds := by
+  simpa [davis_counting_bounds,
+    LeanProofs.LeSaulnierVijay2011.davis_counting_bounds] using
+    LeanProofs.LeSaulnierVijay2011.davis_counting_bounds_holds
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   simpa [M_even_recurrence,
     LeanProofs.LeSaulnierVijay2011.M_even_recurrence] using
