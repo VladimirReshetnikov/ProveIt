@@ -248,23 +248,26 @@ We remark that our definition of an $\alpha$-uniform set coincides with the defi
 Lemma 2.3. Let $r, s$ and $N$ be positive integers with $r, s \leqslant N$ and $r s \geqslant N$, and let $\phi:\{0,1, \ldots, r-1\} \rightarrow \mathbb{Z}_{N}$ be linear (i.e., of the form $\phi(x)=a x+b$ ). Then the set $\{0,1, \ldots, r-1\}$ can be partitioned into arithmetic progressions $P_{1}, \ldots, P_{M}$ such that for each $j$ the diameter of $\phi\left(P_{j}\right)$ is at most $s$ and the length of $P_{j}$ lies between $(r s / 16 N)^{1 / 2}$ and $(r s / N)^{1 / 2}$.\\
 Proof. Let $t=\left\lceil(r N / 4 s)^{1 / 2}\right\rceil$. Of the numbers $\phi(0), \phi(1), \ldots, \phi(t)$, at least two must be within $N / t$. Therefore, by the linearity of $\phi$, we can find a non-zero $u \leqslant t$ such that $|\phi(u)-\phi(0)| \leqslant N / t$. Split $\{0,1, \ldots, r-1\}$ into congruence classes $\bmod u$. Each congruence class is an arithmetic progression of cardinality either $\lfloor r / u\rfloor$ or $\lceil r / u\rceil$. If $P$ is any set of at most $s t / N$ consecutive elements of a congruence class, then $\operatorname{diam} \phi(P) \leqslant s$. It is easy to check first that $s t / N \leqslant r / 3 t \leqslant(1 / 2)\lfloor r / u\rfloor$, next that this implies that the congruence classes can be partitioned into sets $P_{j}$ of consecutive elements with every $P_{j}$ of cardinality between $\lceil s t / 2 N\rceil$ and $\lfloor s t / N\rfloor$, and finally that this proves the lemma. \(\square\)
 
-% ed.: The summation variable is $x$, not the free symbol $s$.  The proof
-% chooses $m=(16\pi r/\alpha)^{1/2}$, so the printed factor 8 is corrected too.
-Corollary 2.4. Let $f$ be a function from the set $\{0,1, \ldots, r-1\}$ to the closed unit disc in $\mathbb{C}$, let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be linear and let $\alpha>0$. If
+% ed.: The summation variable is $x$, not the free symbol $s$.  For an exact
+% finite statement we make the proof's implicit assumptions $r\leqslant N$ and
+% $\alpha r\geqslant4\pi$ explicit.  A singleton fallback handles the first
+% rounding range; choosing an integral diameter parameter above it
+% and propagating the rounding-corrected Lemma 2.3 gives the constants below.
+Corollary 2.4. Let $r\leqslant N$, let $f$ be a function from the set $\{0,1, \ldots, r-1\}$ to the closed unit disc in $\mathbb{C}$, let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be linear and let $\alpha>0$, with $\alpha r\geqslant4\pi$. If
 
 $$
 \left|\sum_{x=0}^{r-1} f(x) \omega^{-\phi(x)}\right| \geqslant \alpha r
 $$
 
-then there is a partition of $\{0,1, \ldots, r-1\}$ into $m \leqslant(16 \pi r / \alpha)^{1 / 2}$ arithmetic\\
+then there is a partition of $\{0,1, \ldots, r-1\}$ into $m \leqslant(128 \pi r / \alpha)^{1 / 2}$ arithmetic\\
 progressions $P_{1}, \ldots, P_{m}$ such that
 
 $$
 \sum_{j=1}^{m}\left|\sum_{x \in P_{j}} f(x)\right| \geqslant(\alpha / 2) r
 $$
 
-and such that the lengths of the $P_{j}$ all lie between $(\alpha r / \pi)^{\frac{1}{2}} / 4$ and $(\alpha r / \pi)^{\frac{1}{2}} / 2$.\\
-Proof. Let $s \leqslant \alpha N / 4 \pi$ and let $m=(16 \pi r / \alpha)^{1 / 2}$. By Lemma 2.3 we can find a partition of $\{0,1, \ldots, r-1\}$ into arithmetic progressions $P_{1}, \ldots, P_{m}$ such that the diameter of $\phi\left(P_{j}\right)$ is at most $s$ for every $j$ and the length of each $P_{j}$ lies between $r / m$ and $2 r / m$. By the triangle inequality,
+and such that the lengths of the $P_{j}$ all lie between $(\alpha r / 128\pi)^{\frac{1}{2}}$ and $(\alpha r / 4\pi)^{\frac{1}{2}}$.\\
+Proof. If $4\pi\leqslant\alpha r<8\pi$, take the singleton partition.  Otherwise let $s=\lceil\alpha N/8\pi\rceil$.  Then $s\leqslant\alpha N/4\pi$, and Lemma 2.3 gives a partition of $\{0,1, \ldots, r-1\}$ into arithmetic progressions $P_{1}, \ldots, P_{m}$ whose images have diameter at most $s$ and whose lengths lie between $(\alpha r/128\pi)^{1/2}$ and $(\alpha r/4\pi)^{1/2}$.  Summing their lengths gives $m\leqslant(128\pi r/\alpha)^{1/2}$. By the triangle inequality,
 
 $$
 \sum_{j=1}^{m}\left|\sum_{x \in P_{j}} f(x) \omega^{-\phi(x)}\right| \geqslant \alpha r .
@@ -284,7 +287,10 @@ as claimed. \(\square\)
 
 Corollary 2.5. Let $A \subset \mathbb{Z}_{N}$ have cardinality $\delta N$ and suppose that $|\hat{A}(r)| \geqslant \alpha N$ for some $r \neq 0$. Then there exists an arithmetic progression $P \subset\{0,1, \ldots, N-1\}$ of length at least $\left(\alpha^{3} N / 128 \pi\right)^{1 / 2}$ such that $|A \cap P| \geqslant(\delta+\alpha / 8)|P|$.
 
-Proof. Define $\phi(x)=r x$ and let $f$ be the balanced function of $A$ (regarded as a function on $\{0,1, \ldots, N-1\}$ ). By Corollary 2.4 we can partition the set $\{0,1, \ldots, N-1\}$ into $m \leqslant(16 \pi N / \alpha)^{1 / 2}$ arithmetic progressions $P_{1}, \ldots, P_{m}$ of lengths between $N / m$ and $2 N / m$ such that
+% ed.: The printed proof invokes the unrounded bounds of Corollary 2.4.  The
+% weighted averaging below works with its corrected bounds and is stronger;
+% a singleton deals with the remaining small finite scale.
+Proof. Define $\phi(x)=r x$ and let $f$ be the balanced function of $A$ (regarded as a function on $\{0,1, \ldots, N-1\}$ ).  Suppose first that $\alpha N\geqslant4\pi$.  By Corollary 2.4 we can partition $\{0,1, \ldots, N-1\}$ into arithmetic progressions $P_{1}, \ldots, P_{m}$, every one of length at least $(\alpha N/128\pi)^{1/2}$, such that
 
 $$
 \sum_{j=1}^{m}\left|\sum_{x \in P_{j}} f(x)\right| \geqslant \alpha N / 2 .
@@ -296,7 +302,9 @@ $$
 \sum_{j \in J} \sum_{x \in P_{j}} f(x) \geqslant \alpha N / 4 .
 $$
 
-Therefore, we can find $j$ such that $\sum_{x \in P_{j}} f(x) \geqslant \alpha N / 4 m$. But $\left|P_{j}\right| \leqslant 2 N / m$, so $\sum_{x \in P_{j}} f(x) \geqslant \alpha\left|P_{j}\right| / 8$, which implies that $\left|A \cap P_{j}\right| \geqslant(\delta+\alpha / 8)\left|P_{j}\right|$. \(\square\)
+As $\sum_{j\in J}|P_j|\leqslant N$, weighted averaging gives a $j\in J$ such that $\sum_{x\in P_j}f(x)\geqslant(\alpha/4)|P_j|$.  This is twice the asserted density increment.  Also $\alpha\leqslant1$, so the lower length bound $(\alpha N/128\pi)^{1/2}$ is at least $(\alpha^3N/128\pi)^{1/2}$.
+
+If $\alpha N<4\pi$, choose a singleton $P=\{a\}$ with $a\in A$.  The nonzero Fourier coefficient is bounded both by $|A|$ and by $N-|A|$, whence $\alpha\leqslant\min(\delta,1-\delta)$ and $1\geqslant\delta+\alpha/8$.  Moreover $(\alpha^3N/128\pi)^{1/2}<1$.  Thus this singleton has all the required properties. \(\square\)
 
 We can now give Roth's proof of his theorem on arithmetic progressions of length three.\\
 Theorem 2.6. Let $\delta>0$, let $N \geqslant \exp \exp \left(C \delta^{-1}\right)$ (where $C$ is an absolute constant) and let $A \subset\{1,2, \ldots, N\}$ be a set of size at least $\delta N$. Then $A$ contains an arithmetic progression of length three.
@@ -384,7 +392,11 @@ Notice that properties (i) and (ii) above make sense even when $d=0$. Therefore,
 
 The next result is the main one of this section. Although it will not be applied directly, it easily implies the results that are needed for later.
 
-Theorem 3.2. Let $k \geqslant 2$ and let $f_{1}, \ldots, f_{k}$ be functions from $\mathbb{Z}_{N}$ to $D$ such that $f_{k}$ is $\alpha$-uniform of degree $k-2$. Then
+% ed.: The induction reindexes a sum by multiplication by $k-1$.  This is not
+% valid for an arbitrary modulus (and the assertion is false, for example,
+% when $N=3$ and $k=4$).  We therefore state the paper's intended
+% prime-modulus version and make the implicit range $k\leqslant N$ explicit.
+Theorem 3.2. Let $N$ be prime, let $2\leqslant k\leqslant N$, and let $f_{1}, \ldots, f_{k}$ be functions from $\mathbb{Z}_{N}$ to $D$ such that $f_{k}$ is $\alpha$-uniform of degree $k-2$. Then
 
 $$
 \left|\sum_{r} \sum_{s} f_{1}(s) f_{2}(s-r) \ldots f_{k}(s-(k-1) r)\right| \leqslant \alpha^{1 / 2^{k-1}} N^{2} .
@@ -410,7 +422,7 @@ $$
 \end{aligned}
 $$
 
-Since $\Delta\left(f_{k} ;(k-1) u\right)$ is $\alpha((k-1) u)$-uniform of degree $k-3$, our inductive hypothesis implies that this is at most $N \sum_{u} \alpha((k-1) u)^{1 / 2^{k-2}} N^{2}$, and since $\sum_{u} \alpha((k-1) u) \leqslant \alpha N$, this is at most $\alpha^{1 / 2^{k-2}} N^{4}$, which proves the result for $k$. \(\square\)
+Since $\Delta\left(f_{k} ;(k-1) u\right)$ is $\alpha((k-1) u)$-uniform of degree $k-3$, our inductive hypothesis implies that this is at most $N \sum_{u} \alpha((k-1) u)^{1 / 2^{k-2}} N^{2}$.  Multiplication by $k-1$ permutes $\mathbb Z_N$ because $N$ is prime and $1\leqslant k-1<N$.  Thus $\sum_{u} \alpha((k-1) u)=\alpha N$, and concavity gives that the preceding expression is at most $\alpha^{1 / 2^{k-2}} N^{4}$, which proves the result for $k$. \(\square\)
 
 The interest in Theorem 3.2 is of course that the expression on the lefthand side can be used to count arithmetic progressions. Let us now define a set $A \subset \mathbb{Z}_{N}$ to be $\alpha$-uniform of degree $d$ if its balanced function is. (This definition makes sense when $d=0$, but only because it applies to all sets.) The next result implies that a set $A$ which is $\alpha$-uniform of degree $d-2$ for some small $\alpha$ contains about the number of arithmetic progressions of length $d$ that a random set of the same cardinality would have, where this means arithmetic progressions $\bmod N$. We shall then show how to obtain genuine progressions, which turns out to be a minor technicality, similar to the corresponding technicality in the proof of Roth's theorem.\\
 Corollary 3.3. Let $A_{1}, \ldots, A_{k}$ be subsets of $\mathbb{Z}_{N}$, such that $A_{i}$ has cardinality $\delta_{i} N$ for every $i$, and is $\alpha^{2^{i-1}}$-uniform of degree $i-2$ for every $i \geqslant 3$. Then

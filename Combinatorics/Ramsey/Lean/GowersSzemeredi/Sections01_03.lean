@@ -148,18 +148,26 @@ def lemma_2_3 : Prop :=
           ((P j).length : Real) <= Real.sqrt ((r : Real) * s / N))
 
 /-- **Corollary 2.4.** The OCR's `phi(s)` in the hypothesis is corrected to
-`phi(x)`, as required by the bound and by the proof. -/
+`phi(x)`, as required by the bound and by the proof.  For an exact finite
+statement, `r ≤ N` and the scale condition `4π ≤ αr` ensure that positive
+integer progression lengths can meet the asserted upper bound.  Above the
+next rounding threshold an integer diameter parameter exists; below it the
+singleton partition applies.  Lemma 2.3's rounding-corrected lower length
+bound propagates the constant `128` below.  Properness is recorded explicitly,
+as it is needed when the cell lengths are used in Corollary 2.5. -/
 def corollary_2_4 : Prop :=
   forall (N r : Nat) [NeZero N] (f : Nat -> Complex) (phi : ZMod N -> ZMod N)
       (alpha : Real),
+    r <= N -> 4 * Real.pi <= alpha * r ->
     (∀ x, x < r → ‖f x‖ <= 1) -> LinearOn Finset.univ phi -> 0 < alpha ->
     alpha * r <= ‖∑ x ∈ Finset.range r, f x * exponential (-(phi x))‖ ->
     exists m : Nat, exists P : Fin m -> NatAP,
       IsNatAPPartition P (Finset.range r) /\
-      (m : Real) <= Real.sqrt (16 * Real.pi * r / alpha) /\
+      (m : Real) <= Real.sqrt (128 * Real.pi * r / alpha) /\
       (alpha / 2) * r <= ∑ j, ‖∑ x ∈ (P j).carrier, f x‖ /\
-      (forall j, Real.sqrt (alpha * r / Real.pi) / 4 <= (P j).length /\
-        ((P j).length : Real) <= Real.sqrt (alpha * r / Real.pi) / 2)
+      (forall j, (P j).IsProper /\
+        Real.sqrt (alpha * r / (128 * Real.pi)) <= (P j).length /\
+        ((P j).length : Real) <= Real.sqrt (alpha * r / (4 * Real.pi)))
 
 /-- The pullback of a modular set to the standard representatives `0,...,N-1`. -/
 noncomputable def standardRepresentatives {N : Nat} [NeZero N]
@@ -245,9 +253,10 @@ def progressionAverage {N k : Nat} [NeZero N]
     (f : Fin k -> ZMod N -> Complex) : Complex :=
   ∑ r : ZMod N, ∑ s : ZMod N, ∏ i, f i (s - (i : Nat) * r)
 
-/-- **Theorem 3.2.** -/
+/-- **Theorem 3.2.** The prime-modulus hypothesis and `k ≤ N` make every
+nonzero progression coefficient occurring in the induction invertible. -/
 def theorem_3_2 : Prop :=
-  forall (N k : Nat) [NeZero N], 2 <= k ->
+  forall (N k : Nat) [NeZero N] [Fact N.Prime], 2 <= k -> k <= N ->
     forall f : Fin k -> ZMod N -> Complex, (forall i, DiscValued (f i)) ->
       forall alpha : Real, 0 <= alpha ->
         (forall i : Fin k, (i : Nat) + 1 = k ->
