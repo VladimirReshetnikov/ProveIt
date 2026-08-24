@@ -101,10 +101,12 @@ def theorem_2_1 : Prop :=
 
 The side conditions before each natural-number subtraction state literally
 that the corresponding integer reflection belongs to `[n]`; they avoid any
-truncated-subtraction ambiguity.
+truncated-subtraction ambiguity.  We also require `3 <= n`, correcting a
+boundary omission in the printed statement: for `n = 2`, `x = 1`, and
+`y = 2`, the left-hand side holds but neither reflection lies in `[2]`.
 -/
 def theorem_2_2 : Prop :=
-  forall (n x y : Nat), x ∈ segment n -> y ∈ segment n -> Odd x -> Even y ->
+  forall (n x y : Nat), 3 <= n -> x ∈ segment n -> y ∈ segment n -> Odd x -> Even y ->
     (DoNotCommute n x y <->
       (y <= 2 * x /\ 2 * x - y ∈ segment n) \/
       (x <= 2 * y /\ 2 * y - x ∈ segment n))
