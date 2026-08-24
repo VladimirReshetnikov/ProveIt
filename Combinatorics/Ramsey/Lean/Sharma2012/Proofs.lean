@@ -6703,4 +6703,254 @@ lemma dyadic_predecessor_not_mem_oddEpilogue {n : Nat} {gamma : List Nat}
   have hhighLe := oddEpilogue_entry_le_last hgamma hbEnd hbLower hhighEpi
   omega
 
+
+lemma occursLeftOf_evenTrace_of_evenBase {word : List Nat} {x y : Nat}
+    (hx : Even x) (hy : Even y)
+    (h : OccursLeftOf (evenBase word) (x / 2) (y / 2)) :
+    OccursLeftOf (evenTrace word) x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z) h
+  change OccursLeftOf (evenLift (evenBase word)) (2 * (x / 2)) (2 * (y / 2)) at hlift
+  rw [evenLift_evenBase] at hlift
+  simpa [Nat.two_mul_div_two_of_even hx, Nat.two_mul_div_two_of_even hy] using hlift
+
+lemma startsWith_evenBase_of_evenTrace {word : List Nat} {a : Nat}
+    (h : StartsWith (evenTrace word) a) : StartsWith (evenBase word) (a / 2) := by
+  unfold StartsWith at h ⊢
+  simp only [evenBase, List.head?_map, h, Option.map_some]
+
+lemma add_modulus_le_of_modEq_of_lt {m a b : Nat} (_hm : 0 < m)
+    (hmod : Nat.ModEq m a b) (hab : a < b) : a + m <= b := by
+  have hdvd : m ∣ b - a := (Nat.modEq_iff_dvd' hab.le).mp hmod
+  have hdiff : 0 < b - a := by omega
+  have hmLe : m <= b - a := Nat.le_of_dvd hdiff hdvd
+  omega
+
+lemma modulus_gap_or_gap {m a b : Nat} (hm : 0 < m)
+    (hmod : Nat.ModEq m a b) (hne : a ≠ b) :
+    a + m <= b \/ b + m <= a := by
+  rcases lt_or_gt_of_ne hne with hab | hba
+  · exact Or.inl (add_modulus_le_of_modEq_of_lt hm hmod hab)
+  · exact Or.inr (add_modulus_le_of_modEq_of_lt hm hmod.symm hba)
+
+lemma thirty_two_dyadicQ_gt {n : Nat} (hn : 16 <= n) :
+    n < 32 * dyadicQ n := by
+  have hnPos : n ≠ 0 := by omega
+  have hlog : 4 <= Nat.log 2 n := by
+    rw [Nat.le_log_iff_pow_le (by norm_num) hnPos]
+    norm_num
+    exact hn
+  have h := Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) n
+  rw [show 2 ^ (Nat.log 2 n + 1) = 32 * dyadicQ n by
+    simp only [dyadicQ]
+    rw [show Nat.log 2 n + 1 = (Nat.log 2 n - 4) + 5 by omega, pow_add]
+    norm_num
+    ring] at h
+  exact h
+
+lemma startsWith_prologue_of_startsWith {n : Nat} {word : List Nat} {a : Nat}
+    (h : StartsWith word a) : StartsWith (prologue n word) a := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using h
+      subst first
+      simp [prologue, StartsWith]
+
+lemma PrefixCongruent.of_prefix {small large : List Nat} {k m : Nat}
+    (hsmall : small <+: large) (hlarge : PrefixCongruent large k m)
+    (hk : k <= small.length) : PrefixCongruent small k m := by
+  obtain ⟨tail, rfl⟩ := hsmall
+  refine ⟨hk, ?_⟩
+  intro i hi j hj x y hx hy
+  apply hlarge.2 i hi j hj x y
+  · rw [List.getElem?_append_left (hi.trans_le hk)]
+    exact hx
+  · rw [List.getElem?_append_left (hj.trans_le hk)]
+    exact hy
+
+lemma left_endpoint_left_of_middle_of_right_endpoint_of_free
+    {word : List Nat} (hnodup : word.Nodup) (hfree : ThreeFree word)
+    {a d : Nat} (hd : 0 < d)
+    (ha : a ∈ word) (hm : a + d ∈ word) (_hc : a + 2 * d ∈ word)
+    (hcm : OccursLeftOf word (a + 2 * d) (a + d)) :
+    OccursLeftOf word a (a + d) := by
+  rcases occursLeftOf_total_of_mem hnodup ha hm (by omega) with ham | hma
+  · exact ham
+  · rcases hcm with ⟨i, j, hij, hi, hj⟩
+    rcases hma with ⟨j', k, hjk, hj', hk⟩
+    have hjEq : j = j' := getElem?_index_unique_of_nodup hnodup hj hj'
+    subst j'
+    exfalso
+    exact hfree (containsThreeAP_of_decreasing_positions hij hjk hd hi hj hk)
+
+lemma right_endpoint_left_of_middle_of_left_endpoint_of_free
+    {word : List Nat} (hnodup : word.Nodup) (hfree : ThreeFree word)
+    {a d : Nat} (hd : 0 < d)
+    (_ha : a ∈ word) (hm : a + d ∈ word) (hc : a + 2 * d ∈ word)
+    (ham : OccursLeftOf word a (a + d)) :
+    OccursLeftOf word (a + 2 * d) (a + d) := by
+  rcases occursLeftOf_total_of_mem hnodup hc hm (by omega) with hcm | hmc
+  · exact hcm
+  · rcases ham with ⟨i, j, hij, hi, hj⟩
+    rcases hmc with ⟨j', k, hjk, hj', hk⟩
+    have hjEq : j = j' := getElem?_index_unique_of_nodup hnodup hj hj'
+    subst j'
+    exfalso
+    exact hfree (containsThreeAP_of_increasing_positions hij hjk hd hi hj hk)
+
+lemma third_entry_occursLeftOf_of_mem {word : List Nat} {a b c x : Nat}
+    (ha : word[0]? = some a) (hb : word[1]? = some b) (hc : word[2]? = some c)
+    (hx : x ∈ word) (hxa : x ≠ a) (hxb : x ≠ b) (hxc : x ≠ c) :
+    OccursLeftOf word c x := by
+  obtain ⟨j, hj⟩ := List.mem_iff_getElem?.mp hx
+  obtain ⟨hjLength, _⟩ := List.getElem?_eq_some_iff.mp hj
+  have hjZero : j ≠ 0 := by
+    intro h
+    subst j
+    exact hxa (Option.some.inj (hj.symm.trans ha))
+  have hjOne : j ≠ 1 := by
+    intro h
+    subst j
+    exact hxb (Option.some.inj (hj.symm.trans hb))
+  have hjTwo : j ≠ 2 := by
+    intro h
+    subst j
+    exact hxc (Option.some.inj (hj.symm.trans hc))
+  exact ⟨2, j, by omega, hc, hj⟩
+
+/-- The local even-trace obstruction used in the middle case of Theorem 2.6. -/
+lemma evenTrace_middle_case_impossible {n : Nat} {gamma : List Nat}
+    {c1 c2 c3 q : Nat}
+    (hgamma : IsTheta n gamma)
+    (hq : q = dyadicQ n)
+    (hcStart : StartsWith (evenTrace gamma) c1)
+    (hc1 : (evenTrace gamma)[0]? = some c1)
+    (hc2 : (evenTrace gamma)[1]? = some c2)
+    (hc3 : (evenTrace gamma)[2]? = some c3)
+    (hc1Even : Even c1)
+    (hc2Eq : c2 = c1 + 4 * q) (hc3Eq : c3 = c1 + 2 * q)
+    (hcLower : 16 * q < c1) : False := by
+  have hqPos : 0 < q := by simpa only [hq] using dyadicQ_pos n
+  let traceWord := evenTrace gamma
+  have hnodup : traceWord.Nodup := (isTheta_nodup hgamma).filter _
+  have hfree : ThreeFree traceWord := evenTrace_threeFree hgamma
+  have hthetaBase := isTheta_evenBase hgamma
+  have hstartBase : StartsWith (evenBase gamma) (c1 / 2) :=
+    startsWith_evenBase_of_evenTrace hcStart
+  let l1 := c1 - 2 * q
+  let l2 := c1 - 4 * q
+  let l3 := c1 - 6 * q
+  let target := c1 - 10 * q
+  have hvalues : ∀ z ∈ [l1, l2, l3, target], z ∈ evenTrace gamma := by
+    intro z hz
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hz
+    rcases hz with rfl | rfl | rfl | rfl
+    all_goals
+      apply List.mem_filter.mpr
+      constructor
+      · apply mem_of_mem_segment_of_isTheta hgamma
+        simp only [segment, Finset.mem_Icc, l1, l2, l3, target]
+        have hc1Mem : c1 ∈ gamma := (List.mem_filter.mp (mem_of_startsWith hcStart)).1
+        have hc1Segment := mem_segment_of_mem_of_isTheta hgamma hc1Mem
+        simp only [segment, Finset.mem_Icc] at hc1Segment
+        omega
+      · apply decide_eq_true
+        rcases hc1Even with ⟨C, hc⟩
+        simp only [l1, l2, l3, target]
+        first
+        | exact ⟨C - q, by omega⟩
+        | exact ⟨C - 2 * q, by omega⟩
+        | exact ⟨C - 3 * q, by omega⟩
+        | exact ⟨C - 5 * q, by omega⟩
+  have hl1 := hvalues l1 (by simp)
+  have hl2 := hvalues l2 (by simp)
+  have hl3 := hvalues l3 (by simp)
+  have ht := hvalues target (by simp)
+  have hc3BeforeL2 : OccursLeftOf traceWord c3 l2 := by
+    apply third_entry_occursLeftOf_of_mem hc1 hc2 hc3 hl2
+    all_goals simp only [l2, hc2Eq, hc3Eq] <;> omega
+  have hc3BeforeL1 : OccursLeftOf traceWord c3 l1 := by
+    apply third_entry_occursLeftOf_of_mem hc1 hc2 hc3 hl1
+    all_goals simp only [l1, hc2Eq, hc3Eq] <;> omega
+  have hl2BeforeL3 : OccursLeftOf traceWord l2 l3 := by
+    have hl1Even : Even l1 := by
+      rcases hc1Even with ⟨C, hc⟩
+      exact ⟨C - q, by simp only [l1]; omega⟩
+    have hl2Even : Even l2 := by
+      rcases hc1Even with ⟨C, hc⟩
+      exact ⟨C - 2 * q, by simp only [l2]; omega⟩
+    have hl3Even : Even l3 := by
+      rcases hc1Even with ⟨C, hc⟩
+      exact ⟨C - 3 * q, by simp only [l3]; omega⟩
+    have hl1Segment := evenHalf_mem_segment
+      (mem_segment_of_mem_of_isTheta hgamma (List.mem_filter.mp hl1).1) hl1Even
+    have hl2Segment := evenHalf_mem_segment
+      (mem_segment_of_mem_of_isTheta hgamma (List.mem_filter.mp hl2).1) hl2Even
+    have hl3Segment := evenHalf_mem_segment
+      (mem_segment_of_mem_of_isTheta hgamma (List.mem_filter.mp hl3).1) hl3Even
+    have hmean : l3 / 2 + l1 / 2 = 2 * (l2 / 2) := by
+      rcases hc1Even with ⟨C, hc⟩
+      simp only [l1, l2, l3]
+      omega
+    have hdistX : Nat.dist (c1 / 2) (l3 / 2) = 3 * q := by
+      rcases hc1Even with ⟨C, hc⟩
+      simp only [l3]
+      unfold Nat.dist
+      omega
+    have hdistZ : Nat.dist (c1 / 2) (l2 / 2) = 2 * q := by
+      rcases hc1Even with ⟨C, hc⟩
+      simp only [l2]
+      unfold Nat.dist
+      omega
+    have hdegree : binaryCongruenceDegree (c1 / 2) (l3 / 2) <
+        binaryCongruenceDegree (c1 / 2) (l2 / 2) := by
+      simp only [binaryCongruenceDegree, hdistX, hdistZ, hq, dyadicQ]
+      rw [factorization_three_mul_pow_two, factorization_two_mul_pow_two]
+      omega
+    have hforced := theorem_2_4_holds (n / 2) (evenBase gamma) (c1 / 2)
+      (l3 / 2) (l1 / 2) (l2 / 2) hthetaBase hstartBase
+      hl3Segment hl1Segment hl2Segment hmean (by
+        have hne : c1 / 2 ≠ l2 / 2 := by
+          rcases hc1Even with ⟨C, hc⟩
+          simp only [l2]
+          omega
+        simpa using hne) (by
+          have hne : c1 / 2 ≠ l3 / 2 := by
+            rcases hc1Even with ⟨C, hc⟩
+            simp only [l3]
+            omega
+          simpa using hne) hdegree
+    exact occursLeftOf_evenTrace_of_evenBase hl2Even hl3Even hforced.1
+  have htBeforeL2 : OccursLeftOf traceWord target l2 := by
+    have h := left_endpoint_left_of_middle_of_right_endpoint_of_free
+      hnodup hfree (a := target) (d := 6 * q) (by omega) ht
+      (by convert hl2 using 1 <;> simp only [target, l2] <;> omega)
+      (by convert (show c3 ∈ traceWord from List.mem_iff_getElem?.mpr ⟨2, hc3⟩)
+          using 1 <;> simp only [target, hc3Eq] <;> omega)
+      (by convert hc3BeforeL2 using 1 <;> simp only [target, l2, hc3Eq] <;> omega)
+    convert h using 1 <;> simp only [target, l2] <;> omega
+  have hl3BeforeL1 : OccursLeftOf traceWord l3 l1 := by
+    have h := left_endpoint_left_of_middle_of_right_endpoint_of_free
+      hnodup hfree (a := l3) (d := 4 * q) (by omega) hl3
+      (by convert hl1 using 1 <;> simp only [l3, l1] <;> omega)
+      (by convert (show c3 ∈ traceWord from List.mem_iff_getElem?.mpr ⟨2, hc3⟩)
+          using 1 <;> simp only [l3, hc3Eq] <;> omega)
+      (by convert hc3BeforeL1 using 1 <;> simp only [l3, l1, hc3Eq] <;> omega)
+    convert h using 1 <;> simp only [l3, l1] <;> omega
+  have hl3BeforeTarget : OccursLeftOf traceWord l3 target := by
+    rcases occursLeftOf_total_of_mem hnodup hl3 ht (by
+      simp only [l3, target]
+      omega) with h | h
+    · exact h
+    · have hright := right_endpoint_left_of_middle_of_left_endpoint_of_free
+        hnodup hfree (a := target) (d := 4 * q) (by omega) ht
+        (by convert hl3 using 1 <;> simp only [target, l3] <;> omega)
+        (by convert hl1 using 1 <;> simp only [target, l1] <;> omega) (by
+          convert h using 1 <;> simp only [target, l3] <;> omega)
+      exact False.elim ((occursLeftOf_asymm hnodup hl3BeforeL1) (by
+        convert hright using 1 <;> simp only [target, l3, l1] <;> omega))
+  have hcycle := occursLeftOf_trans hnodup
+    (occursLeftOf_trans hnodup hl2BeforeL3 hl3BeforeTarget) htBeforeL2
+  exact (occursLeftOf_asymm hnodup hcycle) hcycle
+
 end LeanProofs.Sharma2012
