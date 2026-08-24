@@ -122,11 +122,11 @@ claimed `O(log t / t)` remainder are deliberately not advertised as proved.
 
 `PaperKFoldThueMorse.lean` is the public aggregate for the second local
 draft.  It contains the exact prefix-sum, zero-run, convolution, and
-generating-series identities; a rational-argument realization of the intended
-polygonal interpolation; and a
-proved corrected pointwise approximation scheme.  It also exposes formal
-counterexamples to the literal normalization, the claimed local and global
-error estimates, the unbounded “maximum” proxy, and the omitted linear term
+generating-series identities; the intended real polygonal interpolation; and a
+proved corrected pointwise approximation scheme.  The Stirling estimate used
+by the draft is proved in its precise `O(log n)` form.  The aggregate also
+exposes formal counterexamples to the literal normalization, the claimed local
+and global error estimates, the unbounded “maximum” proxy, and the omitted linear term
 in the subsequent Stirling calculation.  Both qualitative decay comparisons
 are proved: the Fabius function is smaller than every power at zero, while
 `exp (-c/x)` is little-o of it for every `c > 0`.  No Lambert-W theorem is

@@ -1,5 +1,6 @@
 import FabiusFunction.ThueMorseApproximation
 import FabiusFunction.DraftCounterexamples
+import FabiusFunction.StirlingAsymptotics
 import FabiusFunction.FabiusLogSquaredAsymptotic
 import FabiusFunction.FabiusFlatness
 import FabiusFunction.FabiusDecayComparison

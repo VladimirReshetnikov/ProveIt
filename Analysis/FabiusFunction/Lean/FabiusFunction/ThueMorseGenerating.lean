@@ -334,4 +334,48 @@ theorem paperPrefixPolygon_endpoint_not_tendsto_one :
     exact paperPrefixPolygon_one k]
   exact paperPrefixGridValue_endpoint_not_tendsto_one
 
+/-- The source's intended real polygon obtained by joining consecutive
+literal dyadic grid values. -/
+noncomputable def paperPrefixPolygonReal (k : ℕ) (x : ℝ) : ℝ :=
+  let u := x * (2 : ℝ) ^ k
+  let j := ⌊u⌋₊
+  (paperPrefixGridValue k j : ℝ) +
+    (u - (j : ℝ)) *
+      ((paperPrefixGridValue k (j + 1) : ℝ) - paperPrefixGridValue k j)
+
+/-- The real polygon agrees with every dyadic grid value. -/
+theorem paperPrefixPolygonReal_grid (k j : ℕ) :
+    paperPrefixPolygonReal k ((j : ℝ) / (2 : ℝ) ^ k) =
+      (paperPrefixGridValue k j : ℝ) := by
+  unfold paperPrefixPolygonReal
+  have hpow : (2 : ℝ) ^ k ≠ 0 := by positivity
+  rw [div_mul_cancel₀ _ hpow]
+  simp
+
+/-- In particular, the real polygon agrees with the literal grid at `x = 1`. -/
+theorem paperPrefixPolygonReal_one (k : ℕ) :
+    paperPrefixPolygonReal k 1 = (paperPrefixGridValue k (2 ^ k) : ℝ) := by
+  have h := paperPrefixPolygonReal_grid k (2 ^ k)
+  norm_num at h ⊢
+  exact h
+
+/-- The intended real polygon has the same endpoint obstruction as the
+rational grid and therefore cannot converge pointwise to a function with
+value one at the right endpoint. -/
+theorem paperPrefixPolygonReal_endpoint_not_tendsto_one :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygonReal k 1)
+      Filter.atTop (nhds (1 : ℝ)) := by
+  rw [show (fun k : ℕ => paperPrefixPolygonReal k 1) =
+      fun k : ℕ => (paperPrefixGridValue k (2 ^ k) : ℝ) by
+    funext k
+    exact paperPrefixPolygonReal_one k]
+  intro h
+  have hnonpos : ∀ k : ℕ, (paperPrefixGridValue k (2 ^ k) : ℝ) ≤ 0 := by
+    intro k
+    rw [paperPrefixGridValue_endpoint]
+    norm_num
+  have hone : (1 : ℝ) ≤ 0 :=
+    le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
+  norm_num at hone
+
 end Fabius
