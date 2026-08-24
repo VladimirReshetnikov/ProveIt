@@ -143,8 +143,11 @@ The asymptotic aggregate also audits three linked Stack Exchange discussions.
 The recurrence sequence is exposed directly as
 `fabiusRecurrenceSequence n = halfMoment n / n!`, with its displayed
 recurrence, Bernoulli recurrence, inverse-dyadic bridge, generating series,
-and product all proved; its fixed-constant heuristic omits the nonconstant
-periodic correction.  The elementary small-`x` expression from
+and product all proved.  The linked finite q-binomial formula for `F(2^-n)`
+is also proved exactly: its inner sum is the centered signed Thue--Morse power
+sum, and its `QPochhammer`/`QBinomial` factors have notation-faithful public
+definitions.  The recurrence sequence's fixed-constant heuristic omits the
+nonconstant periodic correction.  The elementary small-`x` expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
 formalized verbatim and corrected by adding that term at the exact
 lower-Lambert phase.  The uncorrected claimed error is formally disproved.

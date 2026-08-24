@@ -389,6 +389,21 @@ theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula (n : ℕ) :
     fabiusAtInverseTwoPow_eq_halfMoment,
     halfMomentFabiusValue_eq_fabiusRecurrenceSequence]
 
+/-- The rational theorem with both finite sums displayed literally.  This is
+the direct Lean transcription of the requested Wolfram Language statement. -/
+theorem fabiusAtInverseTwoPow_eq_qBinomialThueMorse_sum (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
+            ∑ r ∈ Finset.range (2 ^ k),
+              (thueMorseSign r : ℚ) *
+                ((r : ℚ) - (2 : ℚ) ^ k) ^ (n + k) := by
+  rw [fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula]
+  simp only [qBinomialThueMorseFormula, qBinomialThueMorseNumerator,
+    thueMorseCenteredPowerSum_eq_sum_range]
+
 /-- Real-valued form for any bounded function satisfying the Fabius
 characterization. -/
 theorem fabiusFunction_inverse_two_pow_eq_qBinomialThueMorseFormula

@@ -165,8 +165,10 @@ noncomputable def halfQBinomial (n k : ℕ) : ℚ :=
       (halfQPochhammer k * halfQPochhammer (n - k))
   else 0
 
-/-- Wolfram Language's `QBinomial[n,k,q]` over `ℚ`, extended by zero when
-`k > n`. -/
+/-- The q-Pochhammer quotient presentation of Wolfram Language's
+`QBinomial[n,k,q]` over `ℚ`, extended by zero when `k > n`.  This agrees with
+the polynomial continuation whenever the denominator is nonzero; in
+particular, it is exact at the specialization `q = 1/2` used below. -/
 noncomputable def qBinomial (n k : ℕ) (q : ℚ) : ℚ :=
   if k ≤ n then
     qPochhammer q q n /
