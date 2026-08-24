@@ -126,8 +126,10 @@ with error `O(1 / (-log x))`.  Its centered periodic correction is reconstructed
 as an absolutely summable Gamma--zeta Fourier series and proved nonconstant.
 
 The asymptotic aggregate also audits three linked Stack Exchange discussions.
-The recurrence sequence is exposed through the exact half-moment and
-generating-function APIs; its fixed-constant heuristic omits the nonconstant
+The recurrence sequence is exposed directly as
+`fabiusRecurrenceSequence n = halfMoment n / n!`, with its displayed
+recurrence, Bernoulli recurrence, inverse-dyadic bridge, generating series,
+and product all proved; its fixed-constant heuristic omits the nonconstant
 periodic correction.  The elementary small-`x` expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
 formalized verbatim and corrected by adding that term at the exact

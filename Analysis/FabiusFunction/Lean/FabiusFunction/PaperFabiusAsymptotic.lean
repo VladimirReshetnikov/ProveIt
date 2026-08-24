@@ -4,6 +4,7 @@ import FabiusFunction.FabiusDyadicLogBounds
 import FabiusFunction.FabiusLogSquaredAsymptotic
 import FabiusFunction.FabiusFlatness
 import FabiusFunction.FabiusSharpAsymptotic
+import FabiusFunction.FabiusRecurrenceSequence
 
 /-!
 # Claim-level audit of the local *Fabius Asymptotic* draft
