@@ -16,13 +16,17 @@ import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
+import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs07DRC
 import GowersSzemeredi.Proofs10Counting
+import GowersSzemeredi.Proofs10Bohr
 import GowersSzemeredi.Proofs10Shift
 import GowersSzemeredi.Proofs12
 import GowersSzemeredi.Proofs13Basic
 import GowersSzemeredi.Proofs14Fourier
+import GowersSzemeredi.Proofs14Product
 import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs16Basic
 import GowersSzemeredi.Proofs17FinitePatterns
