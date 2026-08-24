@@ -79,6 +79,13 @@ theorem sharma_superpolynomial_lower_bound_holds :
   simp only [zpow_natCast]
   ring
 
+/-- Sharma's finite upper bound transports directly to the counting
+function used by LeSaulnier--Vijay. -/
+theorem sharma_upper_bound_from_theorem_2_9
+    (h : LeanProofs.Sharma2012.theorem_2_9) : sharma_upper_bound := by
+  intro n hn
+  simpa only [LeanProofs.RamseyPaperCommon.sharma_theta_eq_M] using h n hn
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   intro n hn
   have h :=
