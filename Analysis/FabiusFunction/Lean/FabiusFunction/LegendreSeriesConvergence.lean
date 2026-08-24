@@ -1,6 +1,8 @@
 import FabiusFunction.Differential
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.PSeries
+import Mathlib.Algebra.Polynomial.Sequence
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Topology.ContinuousMap.Compact
 import Mathlib.Topology.ContinuousMap.Weierstrass
@@ -488,5 +490,223 @@ theorem eq_zero_on_legendreInterval_of_integral_mul_polynomial_eq_zero
       (fun y _hy ↦ sq_nonneg (h y)) ⟨x, hx, hsq_pos⟩
     simpa using hlt
   exact hxne (by nlinarith [hA_zero, hpositive])
+
+/-! ## Identification of the uniform sum -/
+
+/-- Abstract Fourier--Legendre completeness theorem.
+
+Once a polynomial sequence has degree `n`, the standard orthogonality and
+norm, the Sturm eigenvalue, and the unit bound on `[-1,1]`, its normalized
+series for a smooth function has that function as its pointwise sum.  The
+proof first uses dominated convergence to identify every coefficient of the
+uniform sum, then `Polynomial.Sequence.span` and Weierstrass density to prove
+equality.
+-/
+theorem hasSum_legendrePolynomialSeries_eq
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f)
+    (P : ℕ → ℝ[X])
+    (hdegree : ∀ n, (P n).degree = n)
+    (hpSmooth : ∀ n, ContDiff ℝ ∞ (fun x : ℝ ↦ (P n).eval x))
+    (hpEigen : ∀ n x,
+      legendreSturmLiouville (fun y : ℝ ↦ (P n).eval y) x =
+        ((n : ℝ) * (n + 1 : ℝ)) * (P n).eval x)
+    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 → |(P n).eval x| ≤ 1)
+    (horthogonal : ∀ m n, m ≠ n →
+      (∫ x in (-1 : ℝ)..1, (P m).eval x * (P n).eval x) = 0)
+    (hnorm : ∀ n,
+      (∫ x in (-1 : ℝ)..1, (P n).eval x ^ 2) =
+        2 / (((2 * n + 1 : ℕ) : ℝ)))
+    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
+    HasSum (fun n ↦
+      legendreSeriesCoefficientOf f (fun y : ℝ ↦ (P n).eval y) n *
+        (P n).eval x) (f x) := by
+  let p : ℕ → ℝ → ℝ := fun n y ↦ (P n).eval y
+  let a : ℕ → ℝ := fun n ↦ legendreSeriesCoefficientOf f (p n) n
+  have hpSmooth' : ∀ n, ContDiff ℝ ∞ (p n) := by
+    intro n
+    simpa [p] using hpSmooth n
+  have hpEigen' : ∀ n y,
+      legendreSturmLiouville (p n) y =
+        ((n : ℝ) * (n + 1 : ℝ)) * p n y := by
+    intro n y
+    simpa [p] using hpEigen n y
+  have hpBound' : ∀ n y, y ∈ Icc (-1 : ℝ) 1 → |p n y| ≤ 1 := by
+    intro n y hy
+    simpa [p] using hpBound n y hy
+  have ha : Summable fun n ↦ |a n| := by
+    simpa [a] using
+      summable_abs_legendreSeriesCoefficientOf f hf p hpSmooth' hpEigen' hpBound'
+  let S : C(Icc (-1 : ℝ) 1, ℝ) :=
+    ∑' n, a n • continuousMapOnLegendreInterval (p n) (hpSmooth' n).continuous
+  let s : ℝ → ℝ := fun y ↦ ∑' n, a n * p n y
+  have hs_eq_S (y : ℝ) (hy : y ∈ Icc (-1 : ℝ) 1) : s y = S ⟨y, hy⟩ := by
+    have hsum := hasSum_eval_continuousMapOnLegendreInterval_smul
+      p (fun n ↦ (hpSmooth' n).continuous) hpBound' a ha y hy
+    exact hsum.tsum_eq
+  have hsContinuousOn : ContinuousOn s (Icc (-1 : ℝ) 1) := by
+    rw [continuousOn_iff_continuous_restrict]
+    have heq : Set.restrict (Icc (-1 : ℝ) 1) s = S := by
+      funext y
+      exact hs_eq_S y y.property
+    rw [heq]
+    exact S.continuous
+  have hsIntegralCoefficient : ∀ r : ℕ,
+      (∫ y in (-1 : ℝ)..1, s y * p r y) =
+        ∫ y in (-1 : ℝ)..1, f y * p r y := by
+    intro r
+    let term : ℕ → C(ℝ, ℝ) := fun n ↦
+      ⟨fun y ↦ a n * p n y * p r y, by
+        dsimp [p]
+        fun_prop⟩
+    let K : TopologicalSpace.Compacts ℝ := ⟨uIcc (-1 : ℝ) 1, isCompact_uIcc⟩
+    have htermNorm : ∀ n, ‖(term n).restrict K‖ ≤ |a n| := by
+      intro n
+      rw [ContinuousMap.norm_le _ (abs_nonneg (a n))]
+      intro y
+      have hymem : (y : ℝ) ∈ Icc (-1 : ℝ) 1 := by
+        have hy := y.property
+        norm_num [K, min_def, max_def] at hy
+        exact hy
+      change ‖a n * p n y * p r y‖ ≤ |a n|
+      rw [Real.norm_eq_abs, abs_mul, abs_mul]
+      calc
+        |a n| * |p n y| * |p r y| ≤ |a n| * 1 * 1 := by
+          gcongr
+          · exact hpBound' n y hymem
+          · exact hpBound' r y hymem
+        _ = |a n| := by ring
+    have htermSummable : Summable fun n ↦ ‖(term n).restrict K‖ :=
+      Summable.of_nonneg_of_le (fun n ↦ norm_nonneg _) htermNorm ha
+    have hint := intervalIntegral.hasSum_intervalIntegral_of_summable_norm
+      (a := (-1 : ℝ)) (b := 1) htermSummable
+    have htarget :
+        (∫ y in (-1 : ℝ)..1, ∑' n, term n y) =
+          ∫ y in (-1 : ℝ)..1, s y * p r y := by
+      apply intervalIntegral.integral_congr
+      intro y _hy
+      change (∑' n, a n * p n y * p r y) = s y * p r y
+      simpa [s] using
+        (tsum_mul_right (f := fun n ↦ a n * p n y) (a := p r y))
+    rw [htarget] at hint
+    have hsingle : HasSum (fun n ↦ ∫ y in (-1 : ℝ)..1, term n y)
+        (∫ y in (-1 : ℝ)..1, f y * p r y) := by
+      convert hasSum_ite_eq r (∫ y in (-1 : ℝ)..1, f y * p r y) using 1
+      funext n
+      by_cases hnr : n = r
+      · subst n
+        rw [if_pos rfl]
+        change (∫ y in (-1 : ℝ)..1, a r * p r y * p r y) = _
+        have hfactor :
+            (∫ y in (-1 : ℝ)..1, a r * p r y * p r y) =
+              a r * ∫ y in (-1 : ℝ)..1, p r y ^ 2 := by
+          calc
+            _ = ∫ y in (-1 : ℝ)..1, a r * (p r y ^ 2) := by
+              apply intervalIntegral.integral_congr
+              intro y _hy
+              ring
+            _ = _ := intervalIntegral.integral_const_mul (a r) (fun y ↦ p r y ^ 2)
+        rw [hfactor]
+        rw [show (∫ y in (-1 : ℝ)..1, p r y ^ 2) =
+            2 / (((2 * r + 1 : ℕ) : ℝ)) by simpa [p] using hnorm r]
+        dsimp [a, legendreSeriesCoefficientOf]
+        have hden : (((2 * r + 1 : ℕ) : ℝ)) ≠ 0 := by positivity
+        field_simp
+      · rw [if_neg hnr]
+        change (∫ y in (-1 : ℝ)..1, a n * p n y * p r y) = 0
+        have hfactor :
+            (∫ y in (-1 : ℝ)..1, a n * p n y * p r y) =
+              a n * ∫ y in (-1 : ℝ)..1, p n y * p r y := by
+          calc
+            _ = ∫ y in (-1 : ℝ)..1, a n * (p n y * p r y) := by
+              apply intervalIntegral.integral_congr
+              intro y _hy
+              ring
+            _ = _ := intervalIntegral.integral_const_mul (a n) (fun y ↦ p n y * p r y)
+        rw [hfactor]
+        have hortho : (∫ y in (-1 : ℝ)..1, p n y * p r y) = 0 := by
+          simpa [p] using horthogonal n r hnr
+        rw [hortho, mul_zero]
+    exact HasSum.unique hint hsingle
+  have hdiffContinuous : ContinuousOn (fun y ↦ f y - s y) (Icc (-1 : ℝ) 1) :=
+    hf.continuous.continuousOn.sub hsContinuousOn
+  have hdiffOrthogonal : ∀ n,
+      (∫ y in (-1 : ℝ)..1, (f y - s y) * (P n).eval y) = 0 := by
+    intro n
+    have hfInt : IntervalIntegrable (fun y : ℝ ↦ f y * p n y) volume (-1) 1 :=
+      (hf.continuous.mul (hpSmooth' n).continuous).intervalIntegrable _ _
+    have hsInt : IntervalIntegrable (fun y : ℝ ↦ s y * p n y) volume (-1) 1 :=
+      (hsContinuousOn.mul (hpSmooth' n).continuous.continuousOn)
+        |>.intervalIntegrable_of_Icc (by norm_num)
+    rw [show (∫ y in (-1 : ℝ)..1, (f y - s y) * (P n).eval y) =
+        (∫ y in (-1 : ℝ)..1, f y * p n y) -
+          ∫ y in (-1 : ℝ)..1, s y * p n y by
+      rw [← intervalIntegral.integral_sub hfInt hsInt]
+      apply intervalIntegral.integral_congr
+      intro y _hy
+      simp only [p]
+      ring]
+    rw [hsIntegralCoefficient n, sub_self]
+  let T : ℝ[X] →ₗ[ℝ] ℝ := {
+    toFun := fun q ↦ ∫ y in (-1 : ℝ)..1, (f y - s y) * q.eval y
+    map_add' := by
+      intro q₁ q₂
+      have hq₁ : IntervalIntegrable
+          (fun y : ℝ ↦ (f y - s y) * q₁.eval y) volume (-1) 1 := by
+        have hq₁Continuous : Continuous fun y : ℝ ↦ q₁.eval y := by fun_prop
+        apply ContinuousOn.intervalIntegrable_of_Icc (by norm_num)
+        exact hdiffContinuous.mul hq₁Continuous.continuousOn
+      have hq₂ : IntervalIntegrable
+          (fun y : ℝ ↦ (f y - s y) * q₂.eval y) volume (-1) 1 := by
+        have hq₂Continuous : Continuous fun y : ℝ ↦ q₂.eval y := by fun_prop
+        apply ContinuousOn.intervalIntegrable_of_Icc (by norm_num)
+        exact hdiffContinuous.mul hq₂Continuous.continuousOn
+      rw [← intervalIntegral.integral_add hq₁ hq₂]
+      apply intervalIntegral.integral_congr
+      intro y _hy
+      simp only [Polynomial.eval_add]
+      ring
+    map_smul' := by
+      intro c q
+      rw [RingHom.id_apply]
+      rw [show (∫ y in (-1 : ℝ)..1, (f y - s y) * (c • q).eval y) =
+          ∫ y in (-1 : ℝ)..1, c * ((f y - s y) * q.eval y) by
+        apply intervalIntegral.integral_congr
+        intro y _hy
+        simp only [Polynomial.eval_smul, smul_eq_mul]
+        ring]
+      rw [intervalIntegral.integral_const_mul]
+      simp only [smul_eq_mul]
+  }
+  let sequence : Polynomial.Sequence ℝ := {
+    elems' := P
+    degree_eq' := hdegree
+  }
+  have hleadingUnit : ∀ n, IsUnit (sequence n).leadingCoeff := by
+    intro n
+    rw [isUnit_iff_ne_zero]
+    exact Polynomial.leadingCoeff_ne_zero.mpr (sequence.ne_zero n)
+  have hspan : Submodule.span ℝ (Set.range P) = ⊤ := by
+    simpa [sequence] using sequence.span hleadingUnit
+  have hTzero : ∀ q : ℝ[X], T q = 0 := by
+    intro q
+    have hrange : Set.range P ⊆ T.ker := by
+      rintro q ⟨n, rfl⟩
+      change T (P n) = 0
+      exact hdiffOrthogonal n
+    have hle : Submodule.span ℝ (Set.range P) ≤ T.ker :=
+      Submodule.span_le.mpr hrange
+    rw [hspan] at hle
+    exact LinearMap.mem_ker.mp (hle trivial)
+  have hdiffZero := eq_zero_on_legendreInterval_of_integral_mul_polynomial_eq_zero
+    (fun y ↦ f y - s y) hdiffContinuous (by
+      intro q
+      exact hTzero q)
+  have hsx : s x = f x := by
+    have := hdiffZero x hx
+    linarith
+  have hpoint := hasSum_eval_continuousMapOnLegendreInterval_smul
+    p (fun n ↦ (hpSmooth' n).continuous) hpBound' a ha x hx
+  rw [← hs_eq_S x hx, hsx] at hpoint
+  simpa [a, p] using hpoint
 
 end Fabius
