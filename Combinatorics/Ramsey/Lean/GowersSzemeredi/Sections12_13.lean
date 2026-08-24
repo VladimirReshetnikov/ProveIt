@@ -120,7 +120,7 @@ def proposition_12_1 : Prop :=
   ∀ (N p : Nat) [NeZero N] (lambda : ZMod N → Real)
       (f : Fin p → ZMod N → Complex) (phi : Fin p → ZMod N → ZMod N)
       (alpha : Real),
-    (∀ k, 0 ≤ lambda k) → (∀ i, DiscValued (f i)) →
+    0 < alpha → (∀ k, 0 ≤ lambda k) → (∀ i, DiscValued (f i)) →
     alpha * (N : Real) ^ (2 * p + 1) ≤
       ∑ k : ZMod N, lambda k *
         ∏ i : Fin p, ‖fourier (difference (f i) k) (phi i k)‖ ^ 2 →
