@@ -7,6 +7,7 @@ import Sharma2012.UpperConsequences
 import Sharma2012.CorollaryConsequences
 import Sharma2012.OppositeClassConsequences
 import Sharma2012.ClassCountingConsequences
+import Sharma2012.ReflectionConsequences
 
 /-!
 # Sharma's progression-free permutations
