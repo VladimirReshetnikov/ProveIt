@@ -412,5 +412,149 @@ theorem logMainDefect_isBigO_logScaleSquaredRate :
     rw [logMainDefect_decomposition ht]
   · exact EventuallyEq.rfl
 
-end Fabius
+lemma one_div_isLittleO_logScaleRate :
+    (fun t : ℝ => 1 / t) =o[atTop] logScaleRate := by
+  have h := (Real.isLittleO_const_log_atTop (c := (1 : ℝ))).mul_isBigO
+    (isBigO_refl (fun t : ℝ => 1 / t) atTop)
+  exact h.congr'
+    (Filter.Eventually.of_forall fun t => by simp)
+    (Filter.Eventually.of_forall fun t => by simp [logScaleRate, div_eq_mul_inv])
 
+lemma one_div_sq_isLittleO_logScaleSquaredRate :
+    (fun t : ℝ => (1 / t) ^ 2) =o[atTop] logScaleSquaredRate := by
+  exact (one_div_isLittleO_logScaleRate.pow (by omega : 0 < 2)).congr'
+    EventuallyEq.rfl
+    (Filter.Eventually.of_forall fun t => by rfl)
+
+lemma logScaleRate_isLittleO_one :
+    logScaleRate =o[atTop] (fun _ : ℝ => (1 : ℝ)) := by
+  rw [isLittleO_const_iff (one_ne_zero : (1 : ℝ) ≠ 0)]
+  exact tendsto_logScaleRate
+
+lemma logScaleRate_cube_isLittleO_logScaleSquaredRate :
+    (fun t : ℝ => (logScaleRate t) ^ 3) =o[atTop] logScaleSquaredRate := by
+  have h := ((isBigO_refl logScaleRate atTop).pow 2).mul_isLittleO
+    logScaleRate_isLittleO_one
+  exact h.congr'
+    (Filter.Eventually.of_forall fun t => by ring)
+    (Filter.Eventually.of_forall fun t => by simp [logScaleSquaredRate])
+
+lemma logMainDerivativeLogRemainder_isLittleO :
+    logMainDerivativeLogRemainder =o[atTop] logScaleSquaredRate := by
+  have hcubic := logMainDerivative_log_second_order_isBigO.trans
+    (logMainDerivativePerturbation_isBigO.pow 3)
+  exact (hcubic.trans_isLittleO logScaleRate_cube_isLittleO_logScaleSquaredRate).congr'
+    (Filter.Eventually.of_forall fun t => by rfl)
+    EventuallyEq.rfl
+
+lemma logMainDefectMultiplier_mul_shiftRemainder_isLittleO :
+    (fun t : ℝ =>
+      (t - 1 + Real.log t / Real.log 2) * logMainShiftRemainder t) =o[atTop]
+        logScaleSquaredRate := by
+  have hprod := logMainDefectMultiplier_isBigO.mul logMainShiftRemainder_isBigO
+  have hsq :
+      (fun t : ℝ =>
+        (t - 1 + Real.log t / Real.log 2) * logMainShiftRemainder t) =O[atTop]
+          (fun t : ℝ => (1 / t) ^ 2) := by
+    apply hprod.congr'
+    · exact EventuallyEq.rfl
+    · filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
+      field_simp [ht]
+  exact hsq.trans_isLittleO one_div_sq_isLittleO_logScaleSquaredRate
+
+lemma logMainShift_sq_div_isLittleO :
+    (fun t : ℝ => (logMainShift t) ^ 2 / (2 * Real.log 2)) =o[atTop]
+      logScaleSquaredRate := by
+  have hsq := (logMainShift_isBigO.pow 2).trans_isLittleO
+    one_div_sq_isLittleO_logScaleSquaredRate
+  exact (hsq.const_mul_left (2 * Real.log 2)⁻¹).congr'
+    (Filter.Eventually.of_forall fun t => by ring)
+    EventuallyEq.rfl
+
+lemma one_div_sq_div_two_isLittleO :
+    (fun t : ℝ => (1 / t) ^ 2 / 2) =o[atTop] logScaleSquaredRate := by
+  exact (one_div_sq_isLittleO_logScaleSquaredRate.const_mul_left (2 : ℝ)⁻¹).congr'
+    (Filter.Eventually.of_forall fun t => by ring)
+    EventuallyEq.rfl
+
+lemma logMainDefect_crossTerm_isLittleO :
+    (fun t : ℝ =>
+      ((Real.log 2)⁻¹ ^ 2 - (2 * Real.log 2)⁻¹) * logScaleRate t * (1 / t))
+        =o[atTop] logScaleSquaredRate := by
+  have hprod := (isBigO_refl logScaleRate atTop).mul_isLittleO
+    one_div_isLittleO_logScaleRate
+  have hsq : (fun t : ℝ => logScaleRate t * (1 / t)) =o[atTop]
+      logScaleSquaredRate := hprod.congr'
+    EventuallyEq.rfl
+    (Filter.Eventually.of_forall fun t => by simp [logScaleSquaredRate, pow_two])
+  exact (hsq.const_mul_left
+    ((Real.log 2)⁻¹ ^ 2 - (2 * Real.log 2)⁻¹)).congr'
+      (Filter.Eventually.of_forall fun t => by ring)
+      EventuallyEq.rfl
+
+lemma logMainDerivativePerturbation_sub_lead_isLittleO :
+    (fun t : ℝ =>
+      logMainDerivativePerturbation t - (Real.log 2)⁻¹ * logScaleRate t) =o[atTop]
+        logScaleRate := by
+  have hinvOne : (fun t : ℝ => 1 / t) =o[atTop] (fun _ : ℝ => (1 : ℝ)) := by
+    rw [isLittleO_const_iff (one_ne_zero : (1 : ℝ) ≠ 0)]
+    simpa [one_div] using (tendsto_inv_atTop_zero (𝕜 := ℝ))
+  have hsecond := one_div_isLittleO_logScaleRate.const_mul_left (-(2 : ℝ)⁻¹)
+  have hthird :
+      (fun t : ℝ => (Real.log 2)⁻¹ ^ 2 * logScaleRate t * (1 / t)) =o[atTop]
+        logScaleRate := by
+    have hprod := (isBigO_refl logScaleRate atTop).mul_isLittleO hinvOne
+    exact (hprod.const_mul_left ((Real.log 2)⁻¹ ^ 2)).congr'
+      (Filter.Eventually.of_forall fun t => by ring)
+      (Filter.Eventually.of_forall fun t => by simp)
+  apply (hsecond.add hthird).congr'
+  · filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
+    rw [logMainDerivativePerturbation_eq ht]
+    ring
+  · exact EventuallyEq.rfl
+
+lemma logMainDerivativePerturbation_sq_sub_lead_isLittleO :
+    (fun t : ℝ =>
+      (logMainDerivativePerturbation t) ^ 2 -
+        (Real.log 2)⁻¹ ^ 2 * (logScaleRate t) ^ 2) =o[atTop]
+          logScaleSquaredRate := by
+  have hsum :
+      (fun t : ℝ =>
+        logMainDerivativePerturbation t + (Real.log 2)⁻¹ * logScaleRate t) =O[atTop]
+          logScaleRate :=
+    logMainDerivativePerturbation_isBigO.add
+      ((isBigO_refl logScaleRate atTop).const_mul_left (Real.log 2)⁻¹)
+  have hprod := logMainDerivativePerturbation_sub_lead_isLittleO.mul_isBigO hsum
+  exact hprod.congr'
+    (Filter.Eventually.of_forall fun t => by ring)
+    (Filter.Eventually.of_forall fun t => by simp [logScaleSquaredRate, pow_two])
+
+/-- The residual has a nonzero leading logarithm-squared coefficient. -/
+theorem logMainDefect_sub_lead_isLittleO :
+    (fun t : ℝ =>
+      logMainDefect t - (-(2 * (Real.log 2) ^ 2)⁻¹) * logScaleSquaredRate t) =o[atTop]
+        logScaleSquaredRate := by
+  have hu :
+      (fun t : ℝ =>
+        -(logMainDerivativePerturbation t) ^ 2 / 2 -
+          (-(2 * (Real.log 2) ^ 2)⁻¹) * logScaleSquaredRate t) =o[atTop]
+            logScaleSquaredRate := by
+    have h := logMainDerivativePerturbation_sq_sub_lead_isLittleO.const_mul_left
+      (-(2 : ℝ)⁻¹)
+    exact h.congr'
+      (Filter.Eventually.of_forall fun t => by
+        unfold logScaleSquaredRate
+        ring)
+      EventuallyEq.rfl
+  have hsum := ((((logMainDerivativeLogRemainder_isLittleO.add
+      logMainDefectMultiplier_mul_shiftRemainder_isLittleO).add
+        logMainShift_sq_div_isLittleO).add one_div_sq_div_two_isLittleO).add
+          logMainDefect_crossTerm_isLittleO).add hu
+  apply hsum.congr'
+  · filter_upwards [eventually_gt_atTop (1 : ℝ)] with t ht
+    rw [logMainDefect_decomposition ht]
+    ring
+  · exact EventuallyEq.rfl
+
+
+end Fabius
