@@ -1,6 +1,7 @@
 import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusLambertPhase
 import FabiusFunction.FabiusSmallArgumentScale
+import FabiusFunction.SaddleExpansionAlgebra
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-!
@@ -81,6 +82,23 @@ theorem negativeLaplaceTailError_lambert_isBigO_inv_pow
   apply isBigO_smallArgument_of_logScale
   simpa only [fabiusLogArgument, fabiusLambertRadius_dyadic,
     fabiusLambertPhase_dyadic] using
+      negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow N
+
+/-- In the generic Poincare-expansion API the forward product tail has the
+identically-zero coefficient sequence: it is flat to all orders. -/
+theorem negativeLaplaceTailError_dyadicLambert_hasAsymptoticExpansion :
+    SaddleExpansion.HasAsymptoticExpansion atTop
+      (fun t : ℝ => (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹)
+      (fun t : ℝ => negativeLaplaceTailError
+        (fabiusLambertRadius ((2 : ℝ) ^ (-t))))
+      (fun _ _ => (0 : ℝ)) := by
+  constructor
+  · intro _k
+    apply IsBigO.of_bound 0
+    filter_upwards with _t
+    norm_num
+  · intro N
+    simpa [SaddleExpansion.partialSum] using
       negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow N
 
 end Fabius
