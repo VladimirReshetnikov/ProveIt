@@ -199,6 +199,10 @@ primary endpoints are
 `Fabius.fabiusDiscreteLimit_literal_complex_tendsto_globalFabius`,
 `Fabius.fabiusDiscreteLimitApproximationComplex_tendsto_fabiusReal`, and
 `Fabius.fabiusDiscreteLimitApproximationComplex_tendsto_literal_tsum`.
+The exact finite-remainder telescope is exposed both generically as
+`Fabius.extendedFabius_eq_qBinomial_telescope_add_remainder` and with every
+nested sum displayed as
+`Fabius.globalFabius_eq_qBinomialThueMorse_telescope_add_remainder_complex`.
 
 The recurrence sequence's fixed-constant heuristic
 omits the nonconstant periodic correction.  The elementary small-`x`

@@ -244,6 +244,66 @@ theorem globalFabius_eq_binary_telescope_add_remainder
   exact extendedFabius_eq_globalBinaryReductionSum_add_remainder
     fabius fabius_spec x hx N
 
+/-- Exact finite telescope written directly with the literal q-binomial--
+Thue--Morse summand.  This simultaneously covers real and complex
+translations; the remainder is the same signed binary-tail term as in the
+analytic telescope. -/
+theorem extendedFabius_eq_qBinomial_telescope_add_remainder
+    (K : Type*) [RCLike K]
+    (F : BoundedFabius) (hF : IsFabius F)
+    (q : K) (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
+    (extendedFabius F x : K) =
+      (∑ m ∈ Finset.range (N + 1),
+        qBinomialFabiusGlobalSummand K q x m) +
+      (binaryReductionRemainder F x N : K) := by
+  have h := congrArg (fun z : ℝ => (z : K))
+    (extendedFabius_eq_globalBinaryReductionSum_add_remainder
+      F hF x hx N)
+  push_cast at h
+  simpa only [qBinomialFabiusGlobalSummand_eq] using h
+
+/-- Canonical complex finite telescope for the user's translation `q`. -/
+theorem globalFabius_eq_qBinomial_telescope_add_remainder_complex
+    (q : ℂ) (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
+    (globalFabius x : ℂ) =
+      (∑ m ∈ Finset.range (N + 1),
+        qBinomialFabiusGlobalSummand ℂ q x m) +
+      (binaryReductionRemainder fabius x N : ℂ) := by
+  exact extendedFabius_eq_qBinomial_telescope_add_remainder
+    ℂ fabius fabius_spec q x hx N
+
+/-- Fully expanded finite q-binomial--Thue--Morse telescope. -/
+theorem globalFabius_eq_qBinomialThueMorse_telescope_add_remainder_complex
+    (q : ℂ) (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
+    (globalFabius x : ℂ) =
+      (∑ m ∈ Finset.range (N + 1),
+        (-1 : ℂ) ^ thueMorseBit (binaryPrefix x m) *
+          (2 * (binaryPreviousPrefix x m : ℂ) -
+            (binaryPrefix x m : ℂ)) *
+          ((∑ n ∈ Finset.range (m + 1),
+              (((((2 : ℝ) ^ (m + 1) * x -
+                      2 * (binaryPrefix x m : ℝ) : ℝ) : ℂ) ^ (m - n) /
+                  ((m - n).factorial : ℂ)) *
+                ((∑ k ∈ Finset.range (n + 1),
+                    algebraMap ℚ ℂ
+                      (qBinomial n k (1 / 2) /
+                        ((4 : ℚ) ^ k.choose 2 *
+                          ((n + k).factorial : ℚ))) *
+                      ∑ r ∈ Finset.range (2 ^ k),
+                        (-1 : ℂ) ^ thueMorseBit r *
+                          ((r : ℂ) - (2 : ℂ) ^ k + q) ^ (n + k)) /
+                  algebraMap ℚ ℂ
+                    ((2 : ℚ) ^ n.choose 2 *
+                      qPochhammer (1 / 2) (1 / 2) n)))) /
+            (2 : ℂ) ^ (m + 1).choose 2)) +
+      (binaryReductionRemainder fabius x N : ℂ) := by
+  change (globalFabius x : ℂ) =
+    (∑ m ∈ Finset.range (N + 1),
+      qBinomialFabiusGlobalSummand ℂ q x m) +
+    (binaryReductionRemainder fabius x N : ℂ)
+  exact globalFabius_eq_qBinomial_telescope_add_remainder_complex
+    q x hx N
+
 /-- The finite telescopes converge to the same target as the discrete limit. -/
 theorem binary_telescope_tendsto_globalFabius
     (x : ℝ) (hx : 0 ≤ x) :

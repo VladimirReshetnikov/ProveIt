@@ -78,8 +78,8 @@ equivalent to the source's inclusive Wolfram `Floor` cutoff, including the
 empty case.  A finite approximant need not be independent of `q`: the proof
 instead reindexes it exactly as a Toeplitz average of centered finite splines,
 then combines uniform spline convergence with a decaying complex Taylor-shift
-bound.  Telescope and `tsum` theorems identify the resulting q-independent
-limit, rather than the individual finite rows, with the binary-reduction
-series above.
+bound.  Exact finite-remainder q-binomial telescopes and infinite `tsum`
+theorems identify the resulting q-independent limit, rather than the
+individual finite rows, with the binary-reduction series above.
 See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/
