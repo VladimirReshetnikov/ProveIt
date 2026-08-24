@@ -61,6 +61,35 @@ theorem checkedTreePathCheck_take_eq_true {B : Block} {is : List Nat}
   exact (checkedTreePathCheck_append_eq_true_iff
     B (is.take n) (is.drop n)).mp hcheck |>.1
 
+/-- Success of a path certificate also transports to the remaining suffix,
+provided that suffix is started from the block reached by the prefix. -/
+theorem checkedTreePathCheck_drop_eq_true {B : Block} {is : List Nat}
+    (hcheck : checkedTreePathCheck B is = true) (n : Nat) :
+    checkedTreePathCheck (checkedTreePath B (is.take n)) (is.drop n) = true := by
+  rw [← List.take_append_drop n is] at hcheck
+  exact (checkedTreePathCheck_append_eq_true_iff
+    B (is.take n) (is.drop n)).mp hcheck |>.2
+
+/-- Executing the insertion positions between offsets `m` and `n` from the
+`m`-th prefix endpoint produces exactly the `n`-th prefix endpoint. -/
+theorem checkedTreePath_segment_eq {B : Block} {is : List Nat} {m n : Nat}
+    (hmn : m ≤ n) :
+    checkedTreePath (checkedTreePath B (is.take m))
+        ((is.drop m).take (n - m)) =
+      checkedTreePath B (is.take n) := by
+  rw [← checkedTreePath_append, ← List.take_add]
+  congr 2
+  omega
+
+/-- Every segment of a successful path is a successful certificate when
+translated to the block reached at the start of that segment. -/
+theorem checkedTreePathCheck_segment_eq_true {B : Block} {is : List Nat}
+    (hcheck : checkedTreePathCheck B is = true) (m n : Nat) :
+    checkedTreePathCheck (checkedTreePath B (is.take m))
+      ((is.drop m).take (n - m)) = true := by
+  exact checkedTreePathCheck_take_eq_true
+    (checkedTreePathCheck_drop_eq_true hcheck m) (n - m)
+
 /-- Every successful insertion in a checked path increases the block length
 by one, so the endpoint length is determined solely by the path length. -/
 theorem checkedTreePath_length_of_check {B : Block} {is : List Nat}
@@ -108,6 +137,30 @@ theorem checkedTreePath_take_mem_computedLevel {B : Block} {is : List Nat}
   have hprefix := checkedTreePathCheck_take_eq_true hcheck n
   have hmem := checkedTreePath_mem_computedLevel htree hlength hprefix
   simpa [List.length_take, Nat.min_eq_left hn] using hmem
+
+/-- Exact segment transport for a checked path.  For any `m ≤ n` within a
+successful path, the intervening slice is certified from the `m`-th ancestor,
+reaches the `n`-th ancestor, and lands in the globally correct level `k + n`.
+This permits independently replaying and checking arbitrary pieces of one
+long insertion certificate. -/
+theorem checkedTreePath_segment_transport {B : Block} {is : List Nat}
+    {k m n : Nat} (htree : IsTreeVertex B) (hlength : B.length = 3 + k)
+    (hcheck : checkedTreePathCheck B is = true) (hmn : m ≤ n)
+    (hn : n ≤ is.length) :
+    checkedTreePath B (is.take m) ∈ computedTreeLevel (k + m) ∧
+      checkedTreePathCheck (checkedTreePath B (is.take m))
+          ((is.drop m).take (n - m)) = true ∧
+        checkedTreePath (checkedTreePath B (is.take m))
+            ((is.drop m).take (n - m)) = checkedTreePath B (is.take n) ∧
+          checkedTreePath (checkedTreePath B (is.take m))
+              ((is.drop m).take (n - m)) ∈ computedTreeLevel (k + n) := by
+  have hm : m ≤ is.length := hmn.trans hn
+  have hstart := checkedTreePath_take_mem_computedLevel htree hlength hcheck hm
+  have hsegment := checkedTreePathCheck_segment_eq_true hcheck m n
+  have heq := checkedTreePath_segment_eq (B := B) (is := is) hmn
+  refine ⟨hstart, hsegment, heq, ?_⟩
+  rw [heq]
+  exact checkedTreePath_take_mem_computedLevel htree hlength hcheck hn
 
 /-- The published maximum-length witness certificate also certifies every
 one of its first `n` ancestors at executable level `n`. -/
