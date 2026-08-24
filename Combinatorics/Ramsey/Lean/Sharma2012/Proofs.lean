@@ -6133,4 +6133,190 @@ theorem lemma_2_5_holds : lemma_2_5 := by
     List.toFinset_card_of_nodup (nodup_admissibleInterleavingWords hstanding.1.1),
     length_admissibleInterleavingWords]
 
+lemma log_two_four_le_of_dyadic_threshold {n : Nat}
+    (hthreshold : 16 * dyadicQ n <= n) : 4 <= Nat.log 2 n := by
+  have hn : 16 <= n := by
+    have hq := dyadicQ_pos n
+    nlinarith
+  rw [Nat.le_log_iff_pow_le (by norm_num) (by omega)]
+  norm_num
+  exact hn
+
+lemma dyadic_modulus_two_of_log_four {n : Nat} (_hlog : 4 <= Nat.log 2 n) :
+    2 ^ ((Nat.log 2 n - 4) + 1) = 2 * dyadicQ n := by
+  rw [pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_modulus_four_of_log_four {n : Nat} (hlog : 4 <= Nat.log 2 n) :
+    2 ^ ((Nat.log 2 n - 3) + 1) = 4 * dyadicQ n := by
+  have hexponent : (Nat.log 2 n - 3) + 1 = (Nat.log 2 n - 4) + 2 := by omega
+  rw [hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_modulus_eight_of_log_four {n : Nat} (hlog : 4 <= Nat.log 2 n) :
+    2 ^ ((Nat.log 2 n - 2) + 1) = 8 * dyadicQ n := by
+  have hexponent : (Nat.log 2 n - 2) + 1 = (Nat.log 2 n - 4) + 3 := by omega
+  rw [hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_denominator_two_of_log_four {n : Nat} (hlog : 4 <= Nat.log 2 n) :
+    2 ^ (Nat.log 2 n - 3) = 2 * dyadicQ n := by
+  have hexponent : Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 := by omega
+  rw [hexponent, pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_denominator_four_of_log_four {n : Nat} (hlog : 4 <= Nat.log 2 n) :
+    2 ^ (Nat.log 2 n - 2) = 4 * dyadicQ n := by
+  have hexponent : Nat.log 2 n - 2 = (Nat.log 2 n - 4) + 2 := by omega
+  rw [hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadicQ_eq_one_of_log_eq_four {n : Nat} (hlog : Nat.log 2 n = 4) :
+    dyadicQ n = 1 := by simp [dyadicQ, hlog]
+
+lemma dyadicQ_word_prefix {n k s : Nat} {word : List Nat}
+    (hthreshold : 16 * dyadicQ n <= n) (hword : IsTheta n word)
+    (hscale : 4 * k <= 2 * s + 1) (hs : s * dyadicQ n <= n) :
+    PrefixCongruent word k (dyadicQ n) := by
+  have hlogFour := log_two_four_le_of_dyadic_threshold hthreshold
+  have hnPos : 0 < n := by
+    have hq := dyadicQ_pos n
+    nlinarith
+  by_cases hlogFive : 5 <= Nat.log 2 n
+  · have hdenom : (2 * s) * 2 ^ (Nat.log 2 n - 5) <= n := by
+      have hhalf := dyadic_denominator_half (n := n) (by
+        rw [Nat.le_log_iff_pow_le (by norm_num) (Nat.ne_of_gt hnPos)] at hlogFive
+        norm_num at hlogFive
+        exact hlogFive)
+      nlinarith
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := k) (r := 2 * s) hnPos hword hdenom hscale
+    rw [show (Nat.log 2 n - 5) + 1 = Nat.log 2 n - 4 by omega]
+      at h
+    exact h
+  · have hlogEq : Nat.log 2 n = 4 := by omega
+    rw [dyadicQ_eq_one_of_log_eq_four hlogEq]
+    apply prefixCongruent_one_of_le_length
+    rw [isTheta_length hword]
+    have hk : k <= s := by omega
+    have hs' : s <= n := by
+      simpa [dyadicQ_eq_one_of_log_eq_four hlogEq] using hs
+    omega
+
+lemma dyadicQ_trace_prefixes_of_threshold {n k s : Nat} {word : List Nat}
+    (hthreshold : 16 * dyadicQ n <= n) (hword : IsTheta n word)
+    (hhalf : s * dyadicQ n <= n / 2) (hk : k <= s) :
+    PrefixCongruent (oddTrace word) k (dyadicQ n) ∧
+      PrefixCongruent (evenTrace word) k (dyadicQ n) := by
+  have hlogFour := log_two_four_le_of_dyadic_threshold hthreshold
+  have hnPos : 0 < n := by
+    have hq := dyadicQ_pos n
+    nlinarith
+  by_cases hlogFive : 5 <= Nat.log 2 n
+  · have hn : 32 <= n := by
+      rw [Nat.le_log_iff_pow_le (by norm_num) (Nat.ne_of_gt hnPos)] at hlogFive
+      norm_num at hlogFive
+      exact hlogFive
+    exact dyadicQ_trace_prefixes hn hword hhalf hk
+  · have hlogEq : Nat.log 2 n = 4 := by omega
+    have hqEq : dyadicQ n = 1 := dyadicQ_eq_one_of_log_eq_four hlogEq
+    have hoddTheta := isTheta_oddBase hword
+    have hevenTheta := isTheta_evenBase hword
+    have hsBound : s <= n / 2 := by simpa only [hqEq, Nat.mul_one] using hhalf
+    have hoddLength : k <= (oddTrace word).length := by
+      have hlength := isTheta_length hoddTheta
+      simp only [oddBase, List.length_map] at hlength
+      omega
+    have hevenLength : k <= (evenTrace word).length := by
+      have hlength := isTheta_length hevenTheta
+      simp only [evenBase, List.length_map] at hlength
+      omega
+    rw [hqEq]
+    exact ⟨prefixCongruent_one_of_le_length hoddLength,
+      prefixCongruent_one_of_le_length hevenLength⟩
+
+lemma dyadic_pattern_sixteen {n : Nat} {word : List Nat}
+    (hword : IsTheta n word) (hthreshold : 16 * dyadicQ n <= n) :
+    let pattern := fun w : List Nat =>
+      PrefixCongruent w 2 (4 * dyadicQ n) ∧
+      PrefixCongruent w 4 (2 * dyadicQ n) ∧
+      PrefixCongruent w 8 (dyadicQ n)
+    pattern word ∧ pattern (oddTrace word) ∧ pattern (evenTrace word) := by
+  dsimp only
+  have hnPos : 0 < n := by
+    have hq := dyadicQ_pos n
+    nlinarith
+  have hnSixteen : 16 <= n := by
+    have hq := dyadicQ_pos n
+    nlinarith
+  have hlog := log_two_four_le_of_dyadic_threshold hthreshold
+  have hhalf : 8 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 8 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordFour : PrefixCongruent word 2 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 8) hnPos hword (by
+        rw [dyadic_denominator_two_of_log_four hlog]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four_of_log_four hlog] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 4 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 4) (r := 16) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two_of_log_four hlog] at h
+    exact h
+  have hwordOne : PrefixCongruent word 8 (dyadicQ n) :=
+    dyadicQ_word_prefix hthreshold hword (s := 16) (by norm_num) hthreshold
+  have hoddFour : PrefixCongruent (oddTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two_of_log_four hlog] at h
+    convert h using 1
+    all_goals omega
+  have hevenFour : PrefixCongruent (evenTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two_of_log_four hlog] at h
+    convert h using 1
+    all_goals omega
+  have traceTwo : PrefixCongruent (oddTrace word) 4 (2 * dyadicQ n) ∧
+      PrefixCongruent (evenTrace word) 4 (2 * dyadicQ n) := by
+    by_cases hlogFive : 5 <= Nat.log 2 n
+    · have hn : 32 <= n := by
+        rw [Nat.le_log_iff_pow_le (by norm_num) (Nat.ne_of_gt hnPos)] at hlogFive
+        norm_num at hlogFive
+        exact hlogFive
+      exact ⟨(proposition_2_8_holds n word hn hword hthreshold).2.1.2.1,
+        (proposition_2_8_holds n word hn hword hthreshold).2.2.2.1⟩
+    · have hlogEq : Nat.log 2 n = 4 := by omega
+      have hqEq := dyadicQ_eq_one_of_log_eq_four hlogEq
+      have hoddTheta := isTheta_oddBase hword
+      have hevenTheta := isTheta_evenBase hword
+      have hoddLength : 4 <= (oddBase word).length := by
+        rw [isTheta_length hoddTheta]
+        omega
+      have hevenLength : 4 <= (evenBase word).length := by
+        rw [isTheta_length hevenTheta]
+        omega
+      have hodd := prefixCongruent_oddLift_of_base
+        (fun x hx => positive_of_mem_of_isTheta hoddTheta hx)
+        (prefixCongruent_one_of_le_length hoddLength)
+      have heven := prefixCongruent_evenLift_of_base
+        (prefixCongruent_one_of_le_length hevenLength)
+      rw [oddLift_oddBase] at hodd
+      rw [evenLift_evenBase] at heven
+      constructor
+      · simpa only [hqEq] using hodd
+      · simpa only [hqEq] using heven
+  have traceOne := dyadicQ_trace_prefixes_of_threshold
+    hthreshold hword (k := 8) (s := 8) hhalf (by norm_num)
+  exact ⟨⟨hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddFour, traceTwo.1, traceOne.1⟩,
+      ⟨hevenFour, traceTwo.2, traceOne.2⟩⟩⟩
+
 end LeanProofs.Sharma2012
