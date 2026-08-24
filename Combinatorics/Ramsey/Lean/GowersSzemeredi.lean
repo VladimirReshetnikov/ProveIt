@@ -15,6 +15,7 @@ import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
+import GowersSzemeredi.Proofs03Cubes
 import GowersSzemeredi.Proofs05_10
 
 /-!
