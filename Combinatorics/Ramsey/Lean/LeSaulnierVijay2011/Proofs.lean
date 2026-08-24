@@ -2571,6 +2571,448 @@ theorem geometricSet_densities_holds : geometricSet_densities := by
       simpa only [Nat.cast_add, Nat.cast_one] using
         (geometric_trough_ratio_bounds a k ha).2.trans hsum
 
+/-! ## Density of the ternary interval construction -/
+
+private lemma p_mono : Monotone p := by
+  intro k l hkl
+  cases k with
+  | zero =>
+      simp only [p]
+      exact p_pos l
+  | succ k =>
+      cases l with
+      | zero => omega
+      | succ l =>
+          simp only [p]
+          exact Nat.mul_le_mul_left 2 (q_mono (by omega))
+
+private def TPrefix (k : Nat) : Finset Nat :=
+  (Finset.range (k + 1)).biUnion TBlock
+
+private lemma countingFunction_TSet_eq_prefix {k n : Nat}
+    (hpeak : q k <= n) (hnext : n < p (k + 1)) :
+    countingFunction TSet n = (TPrefix k).card := by
+  classical
+  unfold countingFunction
+  apply congrArg Finset.card
+  ext x
+  constructor
+  · intro hx
+    obtain ⟨hxIcc, hxSet⟩ := Finset.mem_filter.mp hx
+    have hxn : x <= n := (Finset.mem_Icc.mp hxIcc).2
+    change exists i : Nat, x ∈ TBlock i at hxSet
+    obtain ⟨i, hi⟩ := hxSet
+    apply Finset.mem_biUnion.mpr
+    refine ⟨i, Finset.mem_range.mpr ?_, hi⟩
+    by_contra hik
+    have hki : k + 1 <= i := by omega
+    have hpki : p (k + 1) <= p i := p_mono hki
+    have hpix : p i <= x := (Finset.mem_Icc.mp hi).1
+    omega
+  · intro hx
+    obtain ⟨i, hiRange, hi⟩ := Finset.mem_biUnion.mp hx
+    have hik : i <= k := by
+      have : i < k + 1 := Finset.mem_range.mp hiRange
+      omega
+    obtain ⟨hixLow, hixHigh⟩ := Finset.mem_Icc.mp hi
+    apply Finset.mem_filter.mpr
+    refine ⟨Finset.mem_Icc.mpr ⟨?_, ?_⟩, ⟨i, hi⟩⟩
+    · have := p_pos i
+      omega
+    · exact hixHigh.trans ((q_mono hik).trans hpeak)
+
+private lemma TBlock_card (k : Nat) :
+    (TBlock k).card = if k = 0 then 2 else q (k - 1) := by
+  cases k with
+  | zero => norm_num [TBlock, p, q, Nat.card_Icc]
+  | succ j =>
+      simp only [TBlock, p, q, Nat.card_Icc]
+      have hq := q_pos j
+      simp
+      omega
+
+private lemma TPrefix_card_identity (k : Nat) :
+    (4 : Real) * (TPrefix k).card =
+      (3 : Real) ^ (k + 1) + 2 * (k : Real) + 5 := by
+  classical
+  have hpair :
+      ((Finset.range (k + 1) : Finset Nat) : Set Nat).PairwiseDisjoint TBlock := by
+    intro i hi j hj hij
+    exact TBlocks_pairwise_disjoint i j hij
+  rw [TPrefix, Finset.card_biUnion hpair]
+  push_cast
+  induction k with
+  | zero => norm_num [TBlock_card]
+  | succ k ih =>
+      have hpairPrev :
+          ((Finset.range (k + 1) : Finset Nat) : Set Nat).PairwiseDisjoint TBlock := by
+        intro i hi j hj hij
+        exact TBlocks_pairwise_disjoint i j hij
+      have ih' := ih hpairPrev
+      rw [Finset.sum_range_succ]
+      rw [TBlock_card]
+      simp only [Nat.succ_ne_zero, if_false, Nat.succ_sub_one]
+      have hqReal : (2 : Real) * q k = (3 : Real) ^ (k + 1) + 1 := by
+        exact_mod_cast two_mul_q k
+      rw [pow_succ]
+      push_cast
+      nlinarith [ih']
+
+private lemma T_peak_count_identity (k : Nat) :
+    (4 : Real) * countingFunction TSet (q k) =
+      (3 : Real) ^ (k + 1) + 2 * (k : Real) + 5 := by
+  rw [countingFunction_TSet_eq_prefix le_rfl (by
+    simp only [p]
+    have := q_pos k
+    omega)]
+  exact TPrefix_card_identity k
+
+private lemma T_trough_count_identity (k : Nat) :
+    (4 : Real) * countingFunction TSet (3 ^ (k + 1)) =
+      (3 : Real) ^ (k + 1) + 2 * (k : Real) + 5 := by
+  have hq := two_mul_q k
+  rw [countingFunction_TSet_eq_prefix (k := k) (n := 3 ^ (k + 1))
+    (by have := q_pos k; omega) (by simp only [p]; omega)]
+  exact TPrefix_card_identity k
+
+private lemma T_peak_ratio_eq (k : Nat) :
+    densityRatio TSet (q k) = (1 : Real) / 2 +
+      (k + 2 : Nat) / ((3 : Real) ^ (k + 1) + 1) := by
+  have hcount := T_peak_count_identity k
+  have hq : (2 : Real) * q k = (3 : Real) ^ (k + 1) + 1 := by
+    exact_mod_cast two_mul_q k
+  have hqne : (q k : Real) ≠ 0 := by exact_mod_cast (q_pos k).ne'
+  have hpne : (3 : Real) ^ (k + 1) + 1 ≠ 0 := by positivity
+  unfold densityRatio
+  push_cast at hcount ⊢
+  field_simp [hqne, hpne]
+  nlinarith
+
+private lemma T_trough_ratio_eq (k : Nat) :
+    densityRatio TSet (3 ^ (k + 1)) = (1 : Real) / 4 +
+      (2 * k + 5 : Nat) / (4 * (3 : Real) ^ (k + 1)) := by
+  have hcount := T_trough_count_identity k
+  have hpne : (3 : Real) ^ (k + 1) ≠ 0 := by positivity
+  unfold densityRatio
+  push_cast at hcount ⊢
+  field_simp [hpne]
+  ring_nf at hcount ⊢
+  nlinarith
+
+private lemma T_peak_ratio_bounds (k : Nat) :
+    (1 : Real) / 2 <= densityRatio TSet (q k) /\
+      densityRatio TSet (q k) <= (1 : Real) / 2 +
+        (2 * k + 5 : Nat) / (3 : Real) ^ (k + 1) := by
+  rw [T_peak_ratio_eq k]
+  have hpow : 0 < (3 : Real) ^ (k + 1) := by positivity
+  have hnum : ((k + 2 : Nat) : Real) <= (2 * k + 5 : Nat) := by
+    push_cast
+    linarith
+  have hden : (3 : Real) ^ (k + 1) <= (3 : Real) ^ (k + 1) + 1 := by linarith
+  have hfirst : ((k + 2 : Nat) : Real) / ((3 : Real) ^ (k + 1) + 1) <=
+      (k + 2 : Nat) / (3 : Real) ^ (k + 1) :=
+    div_le_div_of_nonneg_left (by positivity) hpow hden
+  have hsecond : ((k + 2 : Nat) : Real) / (3 : Real) ^ (k + 1) <=
+      (2 * k + 5 : Nat) / (3 : Real) ^ (k + 1) :=
+    (div_le_div_iff_of_pos_right hpow).mpr hnum
+  constructor
+  · exact le_add_of_nonneg_right (by positivity)
+  · simpa only [add_comm] using
+      add_le_add_left (hfirst.trans hsecond) ((1 : Real) / 2)
+
+private lemma T_trough_ratio_bounds (k : Nat) :
+    (1 : Real) / 4 <= densityRatio TSet (3 ^ (k + 1)) /\
+      densityRatio TSet (3 ^ (k + 1)) <= (1 : Real) / 4 +
+        (2 * k + 5 : Nat) / (3 : Real) ^ (k + 1) := by
+  rw [T_trough_ratio_eq k]
+  have hpow : 0 < (3 : Real) ^ (k + 1) := by positivity
+  have hnum : (0 : Real) <= (2 * k + 5 : Nat) := by positivity
+  have hden : (3 : Real) ^ (k + 1) <= 4 * (3 : Real) ^ (k + 1) := by
+    nlinarith
+  have herr : ((2 * k + 5 : Nat) : Real) / (4 * (3 : Real) ^ (k + 1)) <=
+      (2 * k + 5 : Nat) / (3 : Real) ^ (k + 1) :=
+    div_le_div_of_nonneg_left hnum hpow hden
+  constructor
+  · exact le_add_of_nonneg_right (by positivity)
+  · simpa only [add_comm] using add_le_add_left herr ((1 : Real) / 4)
+
+private lemma T_error_tendsto :
+    Tendsto (fun k : Nat => (2 * k + 5 : Real) / (3 : Real) ^ (k + 1))
+      atTop (nhds 0) := by
+  have hbase : (1 : Real) < 3 := by norm_num
+  have hlinear := tendsto_pow_const_div_const_pow_of_one_lt 1 hbase
+  have hconstant := tendsto_pow_const_div_const_pow_of_one_lt 0 hbase
+  have htwo := hlinear.const_mul 2
+  have hfive := hconstant.const_mul 5
+  have hadd := htwo.add hfive
+  have hdiv := hadd.div_const 3
+  convert hdiv using 1
+  · funext k
+    norm_num
+    rw [pow_succ]
+    field_simp
+  · norm_num
+
+private lemma exists_T_scale (n : Nat) (hn : 1 <= n) :
+    exists k : Nat, p k <= n /\ n < p (k + 1) := by
+  classical
+  have hex : exists k : Nat, n < p (k + 1) := by
+    refine ⟨n, ?_⟩
+    rw [show p (n + 1) = 3 ^ (n + 1) + 1 by
+      simp only [p]
+      exact two_mul_q n]
+    have hlt : n < 3 ^ n := Nat.lt_pow_self (by norm_num : 1 < 3)
+    have hpow : 3 ^ n <= 3 ^ (n + 1) :=
+      Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+  refine ⟨Nat.find hex, ?_, Nat.find_spec hex⟩
+  by_cases hk : Nat.find hex = 0
+  · rw [hk]
+    simpa only [p] using hn
+  · obtain ⟨t, ht⟩ := Nat.exists_eq_succ_of_ne_zero hk
+    have hnot := Nat.find_min hex (show t < Nat.find hex by omega)
+    have hle : p (t + 1) <= n := Nat.le_of_not_gt hnot
+    simpa [ht] using hle
+
+private lemma mem_TSet_of_between {k x : Nat} (hlo : p k <= x) (hhi : x <= q k) :
+    x ∈ TSet := ⟨k, Finset.mem_Icc.mpr ⟨hlo, hhi⟩⟩
+
+private lemma not_mem_TSet_of_gap {k x : Nat} (hlo : q k < x) (hhi : x < p (k + 1)) :
+    x ∉ TSet := by
+  rintro ⟨i, hi⟩
+  obtain ⟨hpi, hqi⟩ := Finset.mem_Icc.mp hi
+  by_cases hik : i <= k
+  · have hqik : q i <= q k := q_mono hik
+    omega
+  · have hpki : p (k + 1) <= p i := p_mono (by omega)
+    omega
+
+private lemma T_ratio_one : densityRatio TSet 1 = 1 := by
+  classical
+  unfold densityRatio countingFunction
+  have hm : 1 ∈ TSet := by
+    refine ⟨0, ?_⟩
+    norm_num [TBlock, p, q]
+  simp only [Finset.Icc_self, Finset.filter_singleton, if_pos hm,
+    Finset.card_singleton, Nat.cast_one, div_one]
+
+private lemma T_ratio_sandwich_at_scale (k n : Nat) (hn : 1 <= n)
+    (hstart : p k <= n) (hnext : n < p (k + 1)) :
+    (1 : Real) / 4 <= densityRatio TSet n /\
+      densityRatio TSet n <= densityRatio TSet (q k) := by
+  by_cases hnPeak : n <= q k
+  · have hupper : densityRatio TSet n <= densityRatio TSet (q k) :=
+      densityRatio_le_right_endpoint_of_mem_interval TSet hn hnPeak
+        (fun t hnt htpeak => mem_TSet_of_between (hstart.trans (le_of_lt hnt)) htpeak)
+    refine ⟨?_, hupper⟩
+    by_cases hk : k = 0
+    · subst k
+      have hmono : densityRatio TSet 1 <= densityRatio TSet n :=
+        densityRatio_le_right_endpoint_of_mem_interval TSet le_rfl hn
+          (fun t hOne htN => mem_TSet_of_between
+            (by simp only [p]; omega) (htN.trans hnPeak))
+      rw [T_ratio_one] at hmono
+      norm_num at hmono ⊢
+      linarith
+    · have hkPos : 1 <= k := by omega
+      have hpclosed := (p_closed_form_holds k hkPos).1
+      have hprevOne : 1 <= p k - 1 := by
+        rw [hpclosed]
+        have hpos : 0 < 3 ^ k := pow_pos (by norm_num) _
+        omega
+      have hprevMono : densityRatio TSet (p k - 1) <= densityRatio TSet n :=
+        densityRatio_le_right_endpoint_of_mem_interval TSet hprevOne (by omega)
+          (fun t htPrev htN => mem_TSet_of_between (by omega) (htN.trans hnPeak))
+      have htrough := (T_trough_ratio_bounds (k - 1)).1
+      have hexp : (k - 1) + 1 = k := by omega
+      rw [hexp, ← show p k - 1 = 3 ^ k by omega] at htrough
+      exact htrough.trans hprevMono
+  · have hpeakN : q k <= n := by omega
+    have hupper : densityRatio TSet n <= densityRatio TSet (q k) :=
+      densityRatio_right_endpoint_le_of_not_mem_interval TSet
+        (by have := q_pos k; omega) hpeakN
+        (fun t htPeak htN => not_mem_TSet_of_gap htPeak (htN.trans_lt hnext))
+    have hpclosed : p (k + 1) = 3 ^ (k + 1) + 1 := by
+      simp only [p]
+      exact two_mul_q k
+    have htroughMono : densityRatio TSet (p (k + 1) - 1) <= densityRatio TSet n :=
+      densityRatio_right_endpoint_le_of_not_mem_interval TSet hn (by omega)
+        (fun t htN htTrough => not_mem_TSet_of_gap
+          (k := k) (x := t) (by omega) (by omega))
+    have htrough := (T_trough_ratio_bounds k).1
+    rw [← show p (k + 1) - 1 = 3 ^ (k + 1) by omega] at htrough
+    exact ⟨htrough.trans htroughMono, hupper⟩
+
+private lemma index_le_q (k : Nat) : k <= q k := by
+  induction k with
+  | zero => norm_num [q]
+  | succ k ih =>
+      simp only [q]
+      have := q_pos k
+      omega
+
+/-- The interval-union construction has upper density `1/2` and lower
+density `1/4`. -/
+theorem TSet_densities_holds : TSet_densities := by
+  have herr := T_error_tendsto
+  have hbounds := densityRatio_bounds TSet
+  constructor
+  · unfold upperDensity
+    apply sInf_eventualUpper_eq _ _ (fun n => (hbounds n).1) (fun n => (hbounds n).2)
+    · intro ε hε
+      obtain ⟨K, hK⟩ := Metric.tendsto_atTop.mp herr ε hε
+      refine ⟨p K, ?_⟩
+      intro n hnThreshold
+      have hn : 1 <= n := (p_pos K).trans_le hnThreshold
+      obtain ⟨k, hstart, hnext⟩ := exists_T_scale n hn
+      have hKk : K <= k := by
+        by_contra hnot
+        have hp : p (k + 1) <= p K := p_mono (by omega)
+        omega
+      have herrorDist := hK k hKk
+      have herrorNonneg : 0 <= (2 * k + 5 : Real) / (3 : Real) ^ (k + 1) :=
+        div_nonneg (by positivity) (by positivity)
+      have herror : (2 * k + 5 : Real) / (3 : Real) ^ (k + 1) < ε := by
+        simpa only [Real.dist_eq, sub_zero, abs_of_nonneg herrorNonneg] using herrorDist
+      have hsum : (1 : Real) / 2 + ((2 * k + 5 : Nat) : Real) /
+          (3 : Real) ^ (k + 1) <= (1 : Real) / 2 + ε := by
+        have herror' : ((2 * k + 5 : Nat) : Real) / (3 : Real) ^ (k + 1) < ε := by
+          push_cast
+          exact herror
+        linarith
+      exact (T_ratio_sandwich_at_scale k n hn hstart hnext).2.trans
+        ((T_peak_ratio_bounds k).2.trans hsum)
+    · intro N
+      exact ⟨q N, index_le_q N, (T_peak_ratio_bounds N).1⟩
+  · unfold lowerDensity
+    apply sSup_eventualLower_eq _ _ (fun n => (hbounds n).1) (fun n => (hbounds n).2)
+    · refine ⟨1, ?_⟩
+      intro n hn
+      obtain ⟨k, hstart, hnext⟩ := exists_T_scale n hn
+      exact (T_ratio_sandwich_at_scale k n hn hstart hnext).1
+    · intro N ε hε
+      obtain ⟨K, hK⟩ := Metric.tendsto_atTop.mp herr ε hε
+      let k := max N K
+      let n := 3 ^ (k + 1)
+      have hKk : K <= k := le_max_right _ _
+      have herrorDist := hK k hKk
+      have herrorNonneg : 0 <= (2 * k + 5 : Real) / (3 : Real) ^ (k + 1) :=
+        div_nonneg (by positivity) (by positivity)
+      have herror : (2 * k + 5 : Real) / (3 : Real) ^ (k + 1) < ε := by
+        simpa only [Real.dist_eq, sub_zero, abs_of_nonneg herrorNonneg] using herrorDist
+      have hNn : N <= n := by
+        have hNk : N <= k := le_max_left _ _
+        have hlt : k < 3 ^ k := Nat.lt_pow_self (by norm_num : 1 < 3)
+        have hpow : 3 ^ k <= 3 ^ (k + 1) :=
+          Nat.pow_le_pow_right (by norm_num) (by omega)
+        exact hNk.trans (le_of_lt (hlt.trans_le hpow))
+      refine ⟨n, hNn, ?_⟩
+      have hsum : (1 : Real) / 4 + ((2 * k + 5 : Nat) : Real) /
+          (3 : Real) ^ (k + 1) <= (1 : Real) / 4 + ε := by
+        have herror' : ((2 * k + 5 : Nat) : Real) / (3 : Real) ^ (k + 1) < ε := by
+          push_cast
+          exact herror
+        linarith
+      exact (T_trough_ratio_bounds k).2.trans hsum
+
+private lemma geometricSet_subset_positiveIntegers (a : Nat) (ha : 2 <= a) :
+    geometricSet a ⊆ positiveIntegers := by
+  intro x hx
+  obtain ⟨k, hk⟩ := hx
+  have hlow := (Finset.mem_Icc.mp hk).1
+  have hpos : 0 < a ^ (2 * k) := pow_pos (by omega) _
+  simp only [positiveIntegers, Set.mem_Ioi]
+  omega
+
+private lemma TSet_subset_positiveIntegers : TSet ⊆ positiveIntegers := by
+  intro x hx
+  obtain ⟨k, hk⟩ := hx
+  have hlow := (Finset.mem_Icc.mp hk).1
+  simp only [positiveIntegers, Set.mem_Ioi]
+  have := p_pos k
+  omega
+
+private lemma upperDensity_le_alpha {k : Nat} {S : Set Nat}
+    (hsub : S ⊆ positiveIntegers) (havoid : IsKAvoidable k S) :
+    upperDensity S <= alpha k := by
+  let U : Set Real := {d | exists A : Set Nat, A ⊆ positiveIntegers /\
+    IsKAvoidable k A /\ upperDensity A = d}
+  have hUbdd : BddAbove U := by
+    refine ⟨1, ?_⟩
+    rintro d ⟨A, hAsub, hAavoid, rfl⟩
+    exact (upperDensity_bounds A).2
+  change upperDensity S <= sSup U
+  exact le_csSup hUbdd ⟨S, hsub, havoid, rfl⟩
+
+private lemma lowerDensity_le_beta {k : Nat} {S : Set Nat}
+    (hsub : S ⊆ positiveIntegers) (havoid : IsKAvoidable k S) :
+    lowerDensity S <= beta k := by
+  let L : Set Real := {d | exists A : Set Nat, A ⊆ positiveIntegers /\
+    IsKAvoidable k A /\ lowerDensity A = d}
+  have hLbdd : BddAbove L := by
+    refine ⟨1, ?_⟩
+    rintro d ⟨A, hAsub, hAavoid, rfl⟩
+    exact (lowerDensity_bounds A).2
+  change lowerDensity S <= sSup L
+  exact le_csSup hLbdd ⟨S, hsub, havoid, rfl⟩
+
+/-- The four extremal-density bounds follow from the two explicit avoidable
+sets and the family of geometric constructions. -/
+theorem theorem_3_holds : theorem_3 := by
+  have hTavoid : IsKAvoidable 3 TSet := TSet_is_three_avoidable_holds
+  have hTdensity := TSet_densities_holds
+  have hAlphaThree : (1 : Real) / 2 <= alpha 3 := by
+    rw [← hTdensity.1]
+    exact upperDensity_le_alpha TSet_subset_positiveIntegers hTavoid
+  have hBetaThree : (1 : Real) / 4 <= beta 3 := by
+    rw [← hTdensity.2]
+    exact lowerDensity_le_beta TSet_subset_positiveIntegers hTavoid
+  have hGeoTwoAvoid := geometricSet_is_four_avoidable_holds 2 (by omega)
+  have hGeoTwoDensity := geometricSet_densities_holds 2 (by omega)
+  have hBetaFour : (1 : Real) / 3 <= beta 4 := by
+    have hcand := lowerDensity_le_beta (geometricSet_subset_positiveIntegers 2 (by omega))
+      hGeoTwoAvoid
+    rw [hGeoTwoDensity.2] at hcand
+    norm_num at hcand ⊢
+    exact hcand
+  have hAlphaFourLe : alpha 4 <= 1 := by
+    let U : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+      IsKAvoidable 4 S /\ upperDensity S = d}
+    have hnonempty : U.Nonempty := by
+      refine ⟨upperDensity (geometricSet 2), geometricSet 2,
+        geometricSet_subset_positiveIntegers 2 (by omega), hGeoTwoAvoid, rfl⟩
+    change sSup U <= 1
+    apply csSup_le hnonempty
+    rintro d ⟨S, hSsub, hSavoid, rfl⟩
+    exact (upperDensity_bounds S).2
+  have hAlphaFourGe : (1 : Real) <= alpha 4 := by
+    apply le_of_forall_pos_le_add
+    intro ε hε
+    obtain ⟨n, hn⟩ := exists_nat_one_div_lt hε
+    let a := n + 2
+    have ha : 2 <= a := by simp [a]
+    have hinv : 1 / ((a : Real) + 1) < ε := by
+      have hden : (n : Real) + 1 <= (a : Real) + 1 := by
+        simp only [a, Nat.cast_add, Nat.cast_ofNat]
+        linarith
+      have hpos : (0 : Real) < (n : Real) + 1 := by positivity
+      have hle : 1 / ((a : Real) + 1) <= 1 / ((n : Real) + 1) :=
+        one_div_le_one_div_of_le hpos hden
+      exact hle.trans_lt hn
+    have havoid := geometricSet_is_four_avoidable_holds a ha
+    have hdensity := (geometricSet_densities_holds a ha).1
+    have hcand := upperDensity_le_alpha (geometricSet_subset_positiveIntegers a ha) havoid
+    rw [hdensity] at hcand
+    have hidentity : (a : Real) / ((a : Real) + 1) =
+        1 - 1 / ((a : Real) + 1) := by
+      have hden : (a : Real) + 1 ≠ 0 := by positivity
+      field_simp [hden]
+      ring
+    rw [hidentity] at hcand
+    linarith
+  exact ⟨le_antisymm hAlphaFourLe hAlphaFourGe, hAlphaThree,
+    hBetaFour, hBetaThree⟩
+
 private lemma countingFunction_add_of_partition (A B : Set Nat)
     (hdisjoint : Disjoint A B) (hunion : A ∪ B = positiveIntegers) (n : Nat) :
     countingFunction A n + countingFunction B n = n := by

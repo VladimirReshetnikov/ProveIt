@@ -101,6 +101,11 @@ theorem geometricSet_is_four_avoidable_holds : geometricSet_is_four_avoidable :=
     LeanProofs.LeSaulnierVijay2011.geometricSet_is_four_avoidable] using
     LeanProofs.LeSaulnierVijay2011.geometricSet_is_four_avoidable_holds
 
+theorem geometricSet_densities_holds : geometricSet_densities := by
+  simpa [geometricSet_densities,
+    LeanProofs.LeSaulnierVijay2011.geometricSet_densities] using
+    LeanProofs.LeSaulnierVijay2011.geometricSet_densities_holds
+
 theorem p_closed_form_holds : p_closed_form := by
   simpa [p_closed_form, LeanProofs.LeSaulnierVijay2011.p_closed_form] using
     LeanProofs.LeSaulnierVijay2011.p_closed_form_holds
@@ -125,6 +130,14 @@ theorem TSet_is_three_avoidable_holds : TSet_is_three_avoidable := by
   simpa [TSet_is_three_avoidable,
     LeanProofs.LeSaulnierVijay2011.TSet_is_three_avoidable] using
     LeanProofs.LeSaulnierVijay2011.TSet_is_three_avoidable_holds
+
+theorem TSet_densities_holds : TSet_densities := by
+  simpa [TSet_densities, LeanProofs.LeSaulnierVijay2011.TSet_densities] using
+    LeanProofs.LeSaulnierVijay2011.TSet_densities_holds
+
+theorem theorem_3_holds : theorem_3 := by
+  simpa [theorem_3, LeanProofs.LeSaulnierVijay2011.theorem_3] using
+    LeanProofs.LeSaulnierVijay2011.theorem_3_holds
 
 theorem alpha_beta_sum_obstructs_partition_holds : alpha_beta_sum_obstructs_partition := by
   simpa [alpha_beta_sum_obstructs_partition,
