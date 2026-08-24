@@ -3800,6 +3800,235 @@ theorem lemma_2_3_holds : lemma_2_3 := by
       (by simpa using (show a1 ≠ a1 - 3 * u by omega)) (by omega)
     exact hforced
 
+lemma mem_prologue_of_occursLeftOf_mem_prologue {n : Nat} {word : List Nat}
+    {x y : Nat} (hword : word.Nodup) (hy : y ∈ prologue n word)
+    (hxy : OccursLeftOf word x y) :
+    x ∈ prologue n word := by
+  obtain ⟨j, hjPro⟩ := List.mem_iff_getElem?.mp hy
+  obtain ⟨hjBound, _⟩ := List.getElem?_eq_some_iff.mp hjPro
+  rcases hxy with ⟨i, j', hij, hiWord, hjWord⟩
+  have hprefix := prologue_prefix n word
+  obtain ⟨suffix, hwordEq⟩ := hprefix
+  have hjWord' : word[j]? = some y := by
+    rw [← hwordEq, List.getElem?_append_left hjBound]
+    exact hjPro
+  have hjEq : j' = j := by
+    exact getElem?_index_unique_of_nodup hword hjWord hjWord'
+  subst j'
+  have hiBound : i < (prologue n word).length := hij.trans hjBound
+  have hiPro : (prologue n word)[i]? = some x := by
+    rw [← hwordEq, List.getElem?_append_left hiBound] at hiWord
+    exact hiWord
+  exact List.mem_iff_getElem?.mpr ⟨i, hiPro⟩
+
+theorem lemma_2_4_holds : lemma_2_4 := by
+  intro n gamma a1 htheta hstart haLower
+  have hproNodup : (prologue n gamma).Nodup :=
+    List.Nodup.sublist (prologue_prefix n gamma).sublist (isTheta_nodup htheta)
+  have hextreme := (lemma_2_2_holds n gamma a1 htheta hstart).1 haLower
+  by_cases haSmall : a1 <= 6
+  · have hsubset : (prologue n gamma).toFinset ⊆ segment a1 := by
+      intro x hx
+      have hxPro : x ∈ prologue n gamma := by simpa using hx
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      simp only [segment, Finset.mem_Icc] at hxSegment ⊢
+      exact ⟨hxSegment.1, hextreme x hxPro⟩
+    calc
+      (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+        (List.toFinset_card_of_nodup hproNodup).symm
+      _ <= (segment a1).card := Finset.card_le_card hsubset
+      _ = a1 := by simp [segment]
+      _ <= 6 := haSmall
+  · have haSeven : 7 <= a1 := by omega
+    let t := Nat.log 2 (a1 - 1)
+    let u := 2 ^ (t - 2)
+    have haPredNe : a1 - 1 ≠ 0 := by omega
+    have htLower : 2 ^ t < a1 := by
+      have h := Nat.pow_log_le_self 2 haPredNe
+      dsimp [t] at h ⊢
+      omega
+    have htUpper : a1 <= 2 ^ (t + 1) := by
+      have h := Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) (a1 - 1)
+      dsimp [t] at h ⊢
+      omega
+    have htTwo : 2 <= t := by
+      by_contra ht
+      have htCases : t = 0 \/ t = 1 := by omega
+      rcases htCases with htZero | htOne
+      · rw [htZero] at htUpper
+        norm_num at htUpper
+        omega
+      · rw [htOne] at htUpper
+        norm_num at htUpper
+        omega
+    have huPos : 0 < u := pow_pos (by norm_num) _
+    have hfourU : 4 * u = 2 ^ t := by
+      dsimp [u]
+      conv_rhs => rw [show t = (t - 2) + 2 by omega]
+      rw [pow_add]
+      norm_num [Nat.mul_comm]
+    have heightU : 8 * u = 2 ^ (t + 1) := by
+      dsimp [u]
+      conv_rhs => rw [show t + 1 = (t - 2) + 3 by omega]
+      rw [pow_add]
+      norm_num [Nat.mul_comm]
+    have hfourLess : 4 * u < a1 := by omega
+    have haEight : a1 <= 8 * u := by omega
+    have haSegment : a1 ∈ segment n := by
+      have haMem : a1 ∈ gamma := by
+        cases gamma with
+        | nil => simp [StartsWith] at hstart
+        | cons first tail =>
+            have hfirst : first = a1 := by simpa [StartsWith] using hstart
+            simp [hfirst]
+      exact mem_segment_of_mem_of_isTheta htheta haMem
+    have hnTwoA : 2 * a1 <= n := by
+      simp only [lowerHalf, Finset.mem_Icc] at haLower
+      simpa [Nat.mul_comm] using
+        (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).mp haLower.2
+    have hlemma := lemma_2_3_holds n gamma a1 t htheta hstart (by omega)
+      htLower htUpper
+    dsimp only at hlemma
+    rcases hlemma with ⟨hstartFour, hfourTwo, htwoOne, hpartTwo, hpartThree⟩
+    have hnPlusTwo : a1 + 2 * u <= n := by omega
+    have hplusTwoBeforeOne := hpartTwo hnPlusTwo
+    have hsubOneNotPro : a1 - u ∉ prologue n gamma := by
+      intro hsubOne
+      have hplusTwoPro := mem_prologue_of_occursLeftOf_mem_prologue
+        (isTheta_nodup htheta) hsubOne hplusTwoBeforeOne
+      have hplusTwoLe := hextreme (a1 + 2 * u) hplusTwoPro
+      omega
+    have hcongruent : forall x : Nat, x ∈ prologue n gamma -> Nat.ModEq u x a1 := by
+      intro x hxPro
+      have hxLe := hextreme x hxPro
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      by_contra hnotMod
+      have hxa : x < a1 := by
+        by_contra hnot
+        have hxaEq : x = a1 := by omega
+        subst x
+        exact hnotMod (Nat.ModEq.refl a1)
+      let y := 2 * a1 - 2 * u - x
+      let z := a1 - u
+      have hzSegment : z ∈ segment n := by
+        simp only [z, segment, Finset.mem_Icc] at haSegment ⊢
+        omega
+      have hySegment : y ∈ segment n := by
+        simp only [y, segment, Finset.mem_Icc] at hxSegment haSegment ⊢
+        omega
+      have hdistX : Nat.dist a1 x = a1 - x := by
+        rw [Nat.dist_comm, Nat.dist_eq_sub_of_le hxa.le]
+      have hdistXNe : Nat.dist a1 x ≠ 0 := by
+        rw [hdistX]
+        omega
+      have hdegreeX : binaryCongruenceDegree a1 x < t - 2 := by
+        by_contra hnotLess
+        have hpowDvd : 2 ^ (t - 2) ∣ Nat.dist a1 x :=
+          (Nat.prime_two.pow_dvd_iff_le_factorization hdistXNe).2 (by
+            unfold binaryCongruenceDegree at hnotLess
+            omega)
+        have hmod : Nat.ModEq u x a1 := by
+          apply (Nat.modEq_iff_dvd' hxa.le).2
+          simpa only [u, hdistX] using hpowDvd
+        exact hnotMod hmod
+      have hdistZ : Nat.dist a1 z = u := by
+        simp only [z]
+        unfold Nat.dist
+        omega
+      have hdegreeZ : binaryCongruenceDegree a1 z = t - 2 := by
+        unfold binaryCongruenceDegree
+        rw [hdistZ]
+        dsimp only [u]
+        exact Nat.factorization_pow_self Nat.prime_two
+      have haz : a1 != z := by
+        have : a1 ≠ z := by simp only [z]; omega
+        simpa using this
+      have hax : a1 != x := by simpa using hxa.ne'
+      have hforced := theorem_2_4_holds n gamma a1 x y z htheta hstart
+        hxSegment hySegment hzSegment (by simp only [y, z]; omega) haz hax (by omega)
+      have hzPro := mem_prologue_of_occursLeftOf_mem_prologue
+        (isTheta_nodup htheta) hxPro hforced.1
+      exact hsubOneNotPro (by simpa only [z] using hzPro)
+    have hparameter : forall x : Nat, x ∈ prologue n gamma ->
+        exists d : Nat, d <= 7 /\ x = a1 - d * u := by
+      intro x hxPro
+      have hxLe := hextreme x hxPro
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      obtain ⟨d, had⟩ := (Nat.modEq_iff_exists_eq_add hxLe).mp (hcongruent x hxPro)
+      have had' : a1 = x + d * u := by simpa [Nat.mul_comm] using had
+      have hd : d <= 7 := by
+        by_contra hd
+        have h8d : 8 <= d := by omega
+        have hmul : 8 * u <= d * u := Nat.mul_le_mul_right u h8d
+        simp only [segment, Finset.mem_Icc] at hxSegment
+        omega
+      refine ⟨d, hd, ?_⟩
+      omega
+    by_cases haSevenU : a1 <= 7 * u
+    · let candidates :=
+        [a1, a1 - 2 * u, a1 - 3 * u, a1 - 4 * u, a1 - 5 * u, a1 - 6 * u]
+      have hsubset : (prologue n gamma).toFinset ⊆ candidates.toFinset := by
+        intro x hx
+        have hxPro : x ∈ prologue n gamma := by simpa using hx
+        obtain ⟨d, hd, hxd⟩ := hparameter x hxPro
+        have hxWord := (prologue_prefix n gamma).mem hxPro
+        have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+        have hdOne : d ≠ 1 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubOneNotPro hxPro
+        have hdSeven : d ≠ 7 := by
+          intro hdEq
+          subst d
+          simp only [segment, Finset.mem_Icc] at hxSegment
+          omega
+        interval_cases d <;> simp [candidates] at * <;> omega
+      calc
+        (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+          (List.toFinset_card_of_nodup hproNodup).symm
+        _ <= candidates.toFinset.card := Finset.card_le_card hsubset
+        _ <= candidates.length := List.toFinset_card_le candidates
+        _ = 6 := by simp [candidates]
+    · have haSevenLess : 7 * u < a1 := by omega
+      have hnPlusSeven : a1 + 7 * u <= n := by omega
+      have hplusTwoBeforeThree := (hpartThree hnPlusSeven).1
+      have hsubThreeNotPro : a1 - 3 * u ∉ prologue n gamma := by
+        intro hsubThree
+        have hplusTwoPro := mem_prologue_of_occursLeftOf_mem_prologue
+          (isTheta_nodup htheta) hsubThree hplusTwoBeforeThree
+        have hplusTwoLe := hextreme (a1 + 2 * u) hplusTwoPro
+        omega
+      let candidates :=
+        [a1, a1 - 2 * u, a1 - 4 * u, a1 - 5 * u, a1 - 6 * u, a1 - 7 * u]
+      have hsubset : (prologue n gamma).toFinset ⊆ candidates.toFinset := by
+        intro x hx
+        have hxPro : x ∈ prologue n gamma := by simpa using hx
+        obtain ⟨d, hd, hxd⟩ := hparameter x hxPro
+        have hdOne : d ≠ 1 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubOneNotPro hxPro
+        have hdThree : d ≠ 3 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - 3 * u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubThreeNotPro hxPro
+        interval_cases d <;> simp [candidates] at * <;> omega
+      calc
+        (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+          (List.toFinset_card_of_nodup hproNodup).symm
+        _ <= candidates.toFinset.card := Finset.card_le_card hsubset
+        _ <= candidates.length := List.toFinset_card_le candidates
+        _ = 6 := by simp [candidates]
+
 lemma prefixCongruent_evenLift_of_base {word : List Nat} {k m : Nat}
     (h : PrefixCongruent word k m) :
     PrefixCongruent (evenLift word) k (2 * m) := by
