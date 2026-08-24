@@ -27,6 +27,39 @@ theorem theorem_2_finite_claim_holds : theorem_2_finite_claim := by
     LeanProofs.LeSaulnierVijay2011.theorem_2_finite_claim] using
     LeanProofs.LeSaulnierVijay2011.theorem_2_finite_claim_holds
 
+theorem theorem_2_block_cardinalities_holds : theorem_2_block_cardinalities := by
+  intro i hi
+  obtain ⟨heven, hodd⟩ :=
+    LeanProofs.LeSaulnierVijay2011.theorem_2_block_cardinalities_holds i hi
+  constructor
+  · exact heven
+  · rw [hodd, show 2 * i - 2 = 2 * (i - 1) by omega, pow_mul]
+    norm_num
+
+theorem theorem_2_blocks_cover_positive_integers_holds :
+    theorem_2_blocks_cover_positive_integers := by
+  simpa [theorem_2_blocks_cover_positive_integers,
+    LeanProofs.LeSaulnierVijay2011.theorem_2_blocks_cover_positive_integers] using
+    LeanProofs.LeSaulnierVijay2011.theorem_2_blocks_cover_positive_integers_holds
+
+theorem theorem_2_blocks_pairwise_disjoint_holds :
+    theorem_2_blocks_pairwise_disjoint := by
+  simpa [theorem_2_blocks_pairwise_disjoint,
+    LeanProofs.LeSaulnierVijay2011.theorem_2_blocks_pairwise_disjoint] using
+    LeanProofs.LeSaulnierVijay2011.theorem_2_blocks_pairwise_disjoint_holds
+
+theorem theorem_2_odd_even_separation_holds : theorem_2_odd_even_separation := by
+  simpa [theorem_2_odd_even_separation,
+    LeanProofs.LeSaulnierVijay2011.theorem_2_odd_even_separation] using
+    LeanProofs.LeSaulnierVijay2011.theorem_2_odd_even_separation_holds
+
+theorem theorem_2_block_concatenation_is_odd_four_avoiding_holds :
+    theorem_2_block_concatenation_is_odd_four_avoiding := by
+  simpa [theorem_2_block_concatenation_is_odd_four_avoiding,
+    LeanProofs.LeSaulnierVijay2011.theorem_2_block_concatenation_is_odd_four_avoiding,
+    Theorem2BlocksInOrder, LeanProofs.LeSaulnierVijay2011.Theorem2BlocksInOrder] using
+    LeanProofs.LeSaulnierVijay2011.theorem_2_block_concatenation_is_odd_four_avoiding_holds
+
 theorem geometricBlock_cross_gap_holds : geometricBlock_cross_gap := by
   simpa [geometricBlock_cross_gap,
     LeanProofs.LeSaulnierVijay2011.geometricBlock_cross_gap] using

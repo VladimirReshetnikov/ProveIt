@@ -268,7 +268,7 @@ theorem isThetaPermutation_iff_finiteAvoiding {n : Nat}
 
 /-- Native implementation of the backtracking counter.  A state records the
 entries already used and the entries forbidden as the third member of an AP.
-Memo tables are scoped to the first two entries, keeping the verification of
+Memo tables are scoped to the first three entries, keeping the verification of
 the largest table values within a predictable memory bound.  Complementing
 every value proves that only half of the possible first entries need be
 searched. -/
@@ -277,6 +277,8 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
     return 1
   if n = 1 then
     return 1
+  if n = 2 then
+    return 2
   let full := (1 <<< n) - 1
   let cache : IO.Ref (Std.HashMap Nat Nat) ← IO.mkRef {}
   let rec visit (used forbidden : Nat) : BaseIO Nat := do
@@ -303,14 +305,24 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
     let mut branchTotal := 0
     for second in [0:n] do
       if second ≠ first then
-        cache.set {}
         let mut initialForbidden := 0
         if first ≤ 2 * second then
           let z := 2 * second - first
           if z < n then
             initialForbidden := 1 <<< z
-        branchTotal := branchTotal +
-          (← visit ((1 <<< first) ||| (1 <<< second)) initialForbidden)
+        let usedTwo := (1 <<< first) ||| (1 <<< second)
+        for third in [0:n] do
+          if !usedTwo.testBit third && !initialForbidden.testBit third then
+            cache.set {}
+            let mut nextForbidden := initialForbidden
+            for a in [0:n] do
+              if usedTwo.testBit a then
+                if a ≤ 2 * third then
+                  let z := 2 * third - a
+                  if z < n then
+                    nextForbidden := nextForbidden ||| (1 <<< z)
+            branchTotal := branchTotal +
+              (← visit (usedTwo ||| (1 <<< third)) nextForbidden)
     if 2 * first + 1 = n then
       grandTotal := grandTotal + branchTotal
     else

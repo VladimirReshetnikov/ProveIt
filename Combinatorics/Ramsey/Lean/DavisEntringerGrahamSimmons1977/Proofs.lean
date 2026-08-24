@@ -719,4 +719,278 @@ theorem decimal_block_choices_exist_holds : decimal_block_choices_exist := by
     shiftBlock_interval_ordering (tenBStart k) (10 ^ k) (B k) (hB k).1,
     shiftBlock_ap_free (tenBStart k) (B k) (hB k).2⟩
 
+private theorem blockPrefixLength_succ (blocks : Nat → Block) (k : Nat) :
+    blockPrefixLength blocks (k + 1) =
+      blockPrefixLength blocks k + (blocks k).length := by
+  simp [blockPrefixLength, Finset.sum_range_succ]
+
+private theorem index_le_blockPrefixLength (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (k : Nat) :
+    k ≤ blockPrefixLength blocks k := by
+  induction k with
+  | zero => simp [blockPrefixLength]
+  | succ k ih =>
+      rw [blockPrefixLength_succ]
+      have hk := hlen k
+      omega
+
+private theorem blockPrefixLength_unbounded (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) :
+    ∃ k, n < blockPrefixLength blocks (k + 1) := by
+  refine ⟨n, ?_⟩
+  have h := index_le_blockPrefixLength blocks hlen (n + 1)
+  omega
+
+private def positionBlock (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) : Nat :=
+  Nat.find (blockPrefixLength_unbounded blocks hlen n)
+
+private theorem positionBlock_spec (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) :
+    n < blockPrefixLength blocks (positionBlock blocks hlen n + 1) := by
+  exact Nat.find_spec (blockPrefixLength_unbounded blocks hlen n)
+
+private theorem positionBlock_lower (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) :
+    blockPrefixLength blocks (positionBlock blocks hlen n) ≤ n := by
+  by_cases hk : positionBlock blocks hlen n = 0
+  · simp [hk, blockPrefixLength]
+  · have hkpos : 0 < positionBlock blocks hlen n := Nat.pos_of_ne_zero hk
+    have hmin := Nat.find_min (blockPrefixLength_unbounded blocks hlen n)
+      (show positionBlock blocks hlen n - 1 < positionBlock blocks hlen n by omega)
+    have hpred : positionBlock blocks hlen n - 1 + 1 =
+        positionBlock blocks hlen n := by omega
+    rw [hpred] at hmin
+    omega
+
+private theorem positionBlock_index_lt (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) :
+    n - blockPrefixLength blocks (positionBlock blocks hlen n) <
+      (blocks (positionBlock blocks hlen n)).length := by
+  have hu := positionBlock_spec blocks hlen n
+  rw [blockPrefixLength_succ] at hu
+  have hl := positionBlock_lower blocks hlen n
+  omega
+
+private theorem positionBlock_at (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (k j : Nat)
+    (hj : j < (blocks k).length) :
+    positionBlock blocks hlen (blockPrefixLength blocks k + j) = k := by
+  apply le_antisymm
+  · apply Nat.find_min'
+    rw [blockPrefixLength_succ]
+    omega
+  · by_contra hnot
+    have hlt : positionBlock blocks hlen (blockPrefixLength blocks k + j) < k := by
+      omega
+    have hmono : blockPrefixLength blocks
+        (positionBlock blocks hlen (blockPrefixLength blocks k + j) + 1) ≤
+        blockPrefixLength blocks k := by
+      apply Finset.sum_le_sum_of_subset
+      exact Finset.range_mono (by omega)
+    have hspec := positionBlock_spec blocks hlen
+      (blockPrefixLength blocks k + j)
+    omega
+
+private def concatenatedValue (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (n : Nat) : Nat :=
+  (blocks (positionBlock blocks hlen n)).get
+    ⟨n - blockPrefixLength blocks (positionBlock blocks hlen n),
+      positionBlock_index_lt blocks hlen n⟩
+
+private theorem concatenatedValue_at (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length) (k j : Nat)
+    (hj : j < (blocks k).length) :
+    concatenatedValue blocks hlen (blockPrefixLength blocks k + j) =
+      (blocks k).get ⟨j, hj⟩ := by
+  simp only [concatenatedValue, List.get_eq_getElem]
+  simp only [positionBlock_at blocks hlen k j hj, Nat.add_sub_cancel_left]
+
+private theorem singlyBlockConcatenation_exists
+    (blocks : Nat → Block)
+    (hlen : ∀ k, 0 < (blocks k).length)
+    (hnodup : ∀ k, (blocks k).Nodup)
+    (hpos : ∀ k x, x ∈ blocks k → 0 < x)
+    (howner : ∀ i j x, x ∈ blocks i → x ∈ blocks j → i = j)
+    (hcover : ∀ x : PositiveNat, ∃ k, (x : Nat) ∈ blocks k) :
+    ∃ p : SinglyInfinitePermutation, IsSinglyBlockConcatenation p blocks := by
+  let f : Nat → PositiveNat := fun n =>
+    ⟨concatenatedValue blocks hlen n,
+      by
+        dsimp only [concatenatedValue]
+        exact hpos (positionBlock blocks hlen n) _
+          (List.get_mem (blocks (positionBlock blocks hlen n))
+            ⟨n - blockPrefixLength blocks (positionBlock blocks hlen n),
+              positionBlock_index_lt blocks hlen n⟩)⟩
+  have hinj : Function.Injective f := by
+    intro n m hnm
+    have hvalue : concatenatedValue blocks hlen n =
+        concatenatedValue blocks hlen m := congrArg Subtype.val hnm
+    let kn := positionBlock blocks hlen n
+    let km := positionBlock blocks hlen m
+    have hnmem : concatenatedValue blocks hlen n ∈ blocks kn := by
+      dsimp only [concatenatedValue, kn]
+      exact List.get_mem _ _
+    have hmmem : concatenatedValue blocks hlen m ∈ blocks km := by
+      dsimp only [concatenatedValue, km]
+      exact List.get_mem _ _
+    have hk : kn = km := howner kn km _ hnmem (hvalue ▸ hmmem)
+    let jn : Fin (blocks kn).length :=
+      ⟨n - blockPrefixLength blocks kn, positionBlock_index_lt blocks hlen n⟩
+    let jm : Fin (blocks km).length :=
+      ⟨m - blockPrefixLength blocks km, positionBlock_index_lt blocks hlen m⟩
+    have hnidx : (blocks kn).idxOf (concatenatedValue blocks hlen n) = (jn : Nat) := by
+      simpa only [jn, concatenatedValue, kn] using List.get_idxOf (hnodup kn) jn
+    have hmidx : (blocks km).idxOf (concatenatedValue blocks hlen m) = (jm : Nat) := by
+      simpa only [jm, concatenatedValue, km] using List.get_idxOf (hnodup km) jm
+    have hjval : n - blockPrefixLength blocks kn =
+        m - blockPrefixLength blocks km := by
+      change (jn : Nat) = (jm : Nat)
+      rw [← hnidx, ← hmidx, hvalue, hk]
+    have hnlow := positionBlock_lower blocks hlen n
+    have hmlow := positionBlock_lower blocks hlen m
+    change blockPrefixLength blocks kn ≤ n at hnlow
+    change blockPrefixLength blocks km ≤ m at hmlow
+    have hprefix : blockPrefixLength blocks kn = blockPrefixLength blocks km := by
+      rw [hk]
+    omega
+  have hsurj : Function.Surjective f := by
+    intro x
+    obtain ⟨k, hx⟩ := hcover x
+    obtain ⟨j, hj⟩ := List.mem_iff_get.mp hx
+    let n := blockPrefixLength blocks k + (j : Nat)
+    refine ⟨n, Subtype.ext ?_⟩
+    change concatenatedValue blocks hlen n = (x : Nat)
+    simpa only [n, concatenatedValue_at blocks hlen k (j : Nat) j.isLt] using hj
+  let p : SinglyInfinitePermutation := Equiv.ofBijective f ⟨hinj, hsurj⟩
+  refine ⟨p, ?_⟩
+  intro k j hj
+  simp only [singlyPermutationSequence, blockSequence]
+  norm_cast
+  change concatenatedValue blocks hlen (blockPrefixLength blocks k + j) = _
+  exact concatenatedValue_at blocks hlen k j hj
+
+private def tenStreamAddress (i : Nat) : Nat × Bool :=
+  (i / 2, if Even i then false else true)
+
+private theorem tenStreamAddress_injective : Function.Injective tenStreamAddress := by
+  intro i j hij
+  have hscale : i / 2 = j / 2 := congrArg Prod.fst hij
+  have hflag : (if Even i then false else true) =
+      (if Even j then false else true) := congrArg Prod.snd hij
+  by_cases hi : Even i <;> by_cases hj : Even j
+  · have hi' := Nat.two_mul_div_two_of_even hi
+    have hj' := Nat.two_mul_div_two_of_even hj
+    omega
+  · simp [hi, hj] at hflag
+  · simp [hi, hj] at hflag
+  · have hi' := Nat.two_mul_div_two_add_one_of_odd (Nat.not_even_iff_odd.mp hi)
+    have hj' := Nat.two_mul_div_two_add_one_of_odd (Nat.not_even_iff_odd.mp hj)
+    omega
+
+private theorem tenBlockStream_mem_address
+    (choice : Nat → Block × Block) (hchoice : IsTenBlockChoice choice)
+    {i x : Nat} (hx : x ∈ tenBlockStream choice i) :
+    if (tenStreamAddress i).2 then x ∈ tenA (tenStreamAddress i).1
+      else x ∈ tenB (tenStreamAddress i).1 := by
+  by_cases hi : Even i
+  · have hx' : x ∈ (choice (i / 2)).2 := by
+      simpa [tenBlockStream, hi] using hx
+    have horder := (hchoice (i / 2)).2.2.1
+    have hmem : x ∈ (choice (i / 2)).2.toFinset := by
+      simpa only [List.mem_toFinset] using hx'
+    rw [horder.2] at hmem
+    change x ∈ tenB (i / 2) at hmem
+    simpa [tenStreamAddress, hi] using hmem
+  · have hx' : x ∈ (choice (i / 2)).1 := by
+      simpa [tenBlockStream, hi] using hx
+    have horder := (hchoice (i / 2)).1
+    have hmem : x ∈ (choice (i / 2)).1.toFinset := by
+      simpa only [List.mem_toFinset] using hx'
+    rw [horder.2] at hmem
+    change x ∈ tenA (i / 2) at hmem
+    simpa [tenStreamAddress, hi] using hmem
+
+theorem decimal_concatenation_exists_holds : decimal_concatenation_exists := by
+  intro choice hchoice
+  let blocks := tenBlockStream choice
+  have hlen : ∀ i, 0 < (blocks i).length := by
+    intro i
+    by_cases hi : Even i
+    · have horder := (hchoice (i / 2)).2.2.1
+      have hcard := List.toFinset_card_of_nodup horder.1
+      rw [horder.2] at hcard
+      have hpow : 0 < 10 ^ (i / 2) := pow_pos (by omega) _
+      have hBcard := (decimal_intervals_partition_holds.1 (i / 2)).2.1
+      have hlength : (choice (i / 2)).2.length = 10 ^ (i / 2) := by
+        change (tenB (i / 2)).card = (choice (i / 2)).2.length at hcard
+        omega
+      change 0 < (tenBlockStream choice i).length
+      rw [tenBlockStream, if_pos hi, hlength]
+      exact hpow
+    · have horder := (hchoice (i / 2)).1
+      have hcard := List.toFinset_card_of_nodup horder.1
+      rw [horder.2] at hcard
+      have hpow : 0 < 10 ^ (i / 2) := pow_pos (by omega) _
+      have hAcard := (decimal_intervals_partition_holds.1 (i / 2)).1
+      have hlength : (choice (i / 2)).1.length = 10 ^ (i / 2) := by
+        change (tenA (i / 2)).card = (choice (i / 2)).1.length at hcard
+        omega
+      change 0 < (tenBlockStream choice i).length
+      rw [tenBlockStream, if_neg hi, hlength]
+      exact hpow
+  have hnodup : ∀ i, (blocks i).Nodup := by
+    intro i
+    by_cases hi : Even i
+    · simpa [blocks, tenBlockStream, hi] using
+        (hchoice (i / 2)).2.2.1.1
+    · simpa [blocks, tenBlockStream, hi] using
+        (hchoice (i / 2)).1.1
+  have hpos : ∀ i x, x ∈ blocks i → 0 < x := by
+    intro i x hx
+    have haddr := tenBlockStream_mem_address choice hchoice hx
+    by_cases hi : Even i
+    · have hmem : x ∈ tenB (i / 2) := by
+        simpa [tenStreamAddress, hi] using haddr
+      simp only [tenB, mem_Icc] at hmem
+      omega
+    · have hmem : x ∈ tenA (i / 2) := by
+        simpa [tenStreamAddress, hi] using haddr
+      simp only [tenA, mem_Icc] at hmem
+      omega
+  have howner : ∀ i j x, x ∈ blocks i → x ∈ blocks j → i = j := by
+    intro i j x hxi hxj
+    have hxipos : 0 < x := hpos i x hxi
+    obtain ⟨q, hq, hunique⟩ := decimal_intervals_partition_holds.2 ⟨x, hxipos⟩
+    have hiMem := tenBlockStream_mem_address choice hchoice hxi
+    have hjMem := tenBlockStream_mem_address choice hchoice hxj
+    have hiq : tenStreamAddress i = q := hunique (tenStreamAddress i) hiMem
+    have hjq : tenStreamAddress j = q := hunique (tenStreamAddress j) hjMem
+    exact tenStreamAddress_injective (hiq.trans hjq.symm)
+  have hcover : ∀ x : PositiveNat, ∃ i, (x : Nat) ∈ blocks i := by
+    intro x
+    obtain ⟨q, hq, _⟩ := decimal_intervals_partition_holds.2 x
+    rcases q with ⟨k, flag⟩
+    cases flag
+    · have horder := (hchoice k).2.2.1
+      refine ⟨2 * k, ?_⟩
+      dsimp only [blocks, tenBlockStream]
+      have hmem : (x : Nat) ∈ (choice k).2.toFinset := by
+        rw [horder.2]
+        exact hq
+      have heven : Even (2 * k) := ⟨k, by omega⟩
+      have hdiv : (2 * k) / 2 = k := by omega
+      simpa [tenBlockStream, heven, hdiv] using hmem
+    · have horder := (hchoice k).1
+      refine ⟨2 * k + 1, ?_⟩
+      dsimp only [blocks, tenBlockStream]
+      have hmem : (x : Nat) ∈ (choice k).1.toFinset := by
+        rw [horder.2]
+        exact hq
+      have hodd : ¬ Even (2 * k + 1) := by
+        exact Nat.not_even_iff_odd.mpr ⟨k, by omega⟩
+      have hdiv : (2 * k + 1) / 2 = k := by omega
+      simpa [tenBlockStream, hodd, hdiv] using hmem
+  exact singlyBlockConcatenation_exists blocks hlen hnodup hpos howner hcover
+
 end LeanProofs.DavisEntringerGrahamSimmons1977

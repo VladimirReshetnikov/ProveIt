@@ -1357,4 +1357,331 @@ theorem proposition_2_6_holds : proposition_2_6 := by
         simpa [delta] using prologue_doubledEvenOdd_length (n := n) hgamma
   · exact proposition_2_5_holds (2 * n) delta hdelta (by simp)
 
+lemma occursLeftOf_trans {word : List Nat} (hword : word.Nodup) {x y z : Nat}
+    (hxy : OccursLeftOf word x y) (hyz : OccursLeftOf word y z) :
+    OccursLeftOf word x z := by
+  rcases hxy with ⟨i, j, hij, hi, hj⟩
+  rcases hyz with ⟨j', k, hjk, hj', hk⟩
+  have hjEq : j = j' := getElem?_index_unique_of_nodup hword hj hj'
+  subst j'
+  exact ⟨i, k, by omega, hi, hk⟩
+
+lemma occursLeftOf_asymm {word : List Nat} (hword : word.Nodup) {x y : Nat}
+    (hxy : OccursLeftOf word x y) : ¬ OccursLeftOf word y x := by
+  intro hyx
+  rcases hxy with ⟨i, j, hij, hi, hj⟩
+  rcases hyx with ⟨j', i', hji, hj', hi'⟩
+  have hjEq : j = j' := getElem?_index_unique_of_nodup hword hj hj'
+  have hiEq : i = i' := getElem?_index_unique_of_nodup hword hi hi'
+  omega
+
+lemma alternating_stepTwo_pairs_backward {n a count : Nat} {word : List Nat}
+    (hword : IsTheta n word)
+    (hmem : forall i : Nat, i <= count + 1 -> a + 2 * i ∈ word)
+    (hstart : OccursLeftOf word (a + 2) a) :
+    forall i : Nat, i <= count ->
+      (Even i -> OccursLeftOf word (a + 2 * (i + 1)) (a + 2 * i)) /\
+      (Odd i -> OccursLeftOf word (a + 2 * i) (a + 2 * (i + 1))) := by
+  intro i hi
+  induction i with
+  | zero =>
+      constructor
+      · intro _
+        simpa using hstart
+      · intro hzeroOdd
+        norm_num at hzeroOdd
+  | succ i ih =>
+      have hiPrev : i <= count := by omega
+      have hih := ih hiPrev
+      have ha := hmem i (by omega)
+      have hm := hmem (i + 1) (by omega)
+      have hc := hmem (i + 2) (by omega)
+      constructor
+      · intro hsuccEven
+        have hiOdd : Odd i := by grind
+        have hleft := hih.2 hiOdd
+        have hresult := right_endpoint_left_of_middle_of_left_endpoint hword
+          (a := a + 2 * i) (d := 2) (by omega) ha (by convert hm using 1 <;> omega)
+          (by convert hc using 1 <;> omega) (by convert hleft using 1 <;> omega)
+        convert hresult using 1 <;> omega
+      · intro hsuccOdd
+        have hiEven : Even i := by grind
+        have hmiddle := hih.1 hiEven
+        have hresult := middle_left_of_right_endpoint_of_middle_left hword
+          (a := a + 2 * i) (d := 2) (by omega) ha (by convert hm using 1 <;> omega)
+          (by convert hc using 1 <;> omega) (by convert hmiddle using 1 <;> omega)
+        convert hresult using 1 <;> omega
+
+lemma alternating_stepTwo_pairs_forward {n a count : Nat} {word : List Nat}
+    (hword : IsTheta n word)
+    (hmem : forall i : Nat, i <= count + 1 -> a + 2 * i ∈ word)
+    (hstart : OccursLeftOf word a (a + 2)) :
+    forall i : Nat, i <= count ->
+      (Even i -> OccursLeftOf word (a + 2 * i) (a + 2 * (i + 1))) /\
+      (Odd i -> OccursLeftOf word (a + 2 * (i + 1)) (a + 2 * i)) := by
+  intro i hi
+  induction i with
+  | zero =>
+      constructor
+      · intro _
+        simpa using hstart
+      · intro hzeroOdd
+        norm_num at hzeroOdd
+  | succ i ih =>
+      have hiPrev : i <= count := by omega
+      have hih := ih hiPrev
+      have ha := hmem i (by omega)
+      have hm := hmem (i + 1) (by omega)
+      have hc := hmem (i + 2) (by omega)
+      constructor
+      · intro hsuccEven
+        have hiOdd : Odd i := by grind
+        have hmiddle := hih.2 hiOdd
+        have hresult := middle_left_of_right_endpoint_of_middle_left hword
+          (a := a + 2 * i) (d := 2) (by omega) ha (by convert hm using 1 <;> omega)
+          (by convert hc using 1 <;> omega) (by convert hmiddle using 1 <;> omega)
+        convert hresult using 1 <;> omega
+      · intro hsuccOdd
+        have hiEven : Even i := by grind
+        have hleft := hih.1 hiEven
+        have hresult := right_endpoint_left_of_middle_of_left_endpoint hword
+          (a := a + 2 * i) (d := 2) (by omega) ha (by convert hm using 1 <;> omega)
+          (by convert hc using 1 <;> omega) (by convert hleft using 1 <;> omega)
+        convert hresult using 1 <;> omega
+
+lemma odd_ordered_endpoints_left_of_even_mean {n : Nat} {word : List Nat}
+    (hword12 : IsTheta12 n word) {x y m : Nat}
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hmSegment : m ∈ segment n) (hxy : x < y)
+    (hxOdd : Odd x) (hyOdd : Odd y) (hmEven : Even m)
+    (hmean : x + y = 2 * m) :
+    OccursLeftOf word x m /\ OccursLeftOf word y m := by
+  generalize hd : Nat.dist x y = distance
+  induction distance using Nat.strong_induction_on generalizing x y m with
+  | h distance ih =>
+      rcases hxOdd with ⟨a, ha⟩
+      rcases hyOdd with ⟨b, hb⟩
+      rcases hmEven with ⟨s, hs⟩
+      let steps := b - a
+      have hab : a < b := by omega
+      have hstepsPos : 0 < steps := by simp [steps, hab]
+      have hyAsSteps : y = x + 2 * steps := by
+        dsimp [steps]
+        omega
+      have hstepsOdd : Odd steps := by
+        refine ⟨s - a - 1, ?_⟩
+        dsimp [steps]
+        omega
+      by_cases hstepsOne : steps = 1
+      · have hmEq : m = x + 1 := by omega
+        have hyEq : y = m + 1 := by omega
+        have hxNextSegment : x + 1 ∈ segment n := by simpa [hmEq] using hmSegment
+        have hmNextSegment : m + 1 ∈ segment n := by simpa [hyEq] using hySegment
+        have hxOrientation := proposition_2_3_holds n word x hword12 hxSegment hxNextSegment
+        have hmOrientation := proposition_2_3_holds n word m hword12 hmSegment hmNextSegment
+        refine ⟨?_, ?_⟩
+        · simpa [hmEq] using hxOrientation.1 (by exact ⟨a, ha⟩)
+        · simpa [hyEq] using hmOrientation.2 (by exact ⟨s, hs⟩)
+      · have hstepsThree : 3 <= steps := by grind
+        have hinnerXSegment : x + 2 ∈ segment n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+          omega
+        have hinnerYSegment : y - 2 ∈ segment n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+          omega
+        have hinnerOrder : x + 2 < y - 2 := by omega
+        have hinnerXOdd : Odd (x + 2) := by grind
+        have hinnerYOdd : Odd (y - 2) := by grind
+        have hinnerMean : x + 2 + (y - 2) = 2 * m := by omega
+        have hinnerDist : Nat.dist (x + 2) (y - 2) < distance := by
+          rw [Nat.dist_eq_sub_of_le hinnerOrder.le, ← hd,
+            Nat.dist_eq_sub_of_le hxy.le]
+          omega
+        have hinner := ih (Nat.dist (x + 2) (y - 2)) hinnerDist
+          hinnerXSegment hinnerYSegment hmSegment hinnerOrder hinnerXOdd hinnerYOdd
+          (by exact ⟨s, hs⟩) hinnerMean rfl
+        have hxMem := mem_of_mem_segment_of_isTheta hword12.1 hxSegment
+        have hmMem := mem_of_mem_segment_of_isTheta hword12.1 hmSegment
+        have hyMem := mem_of_mem_segment_of_isTheta hword12.1 hySegment
+        let gap := m - x
+        have hgapPos : 0 < gap := by
+          dsimp [gap]
+          omega
+        have hmidEq : x + gap = m := by
+          dsimp [gap]
+          omega
+        have hrightEq : x + 2 * gap = y := by
+          dsimp [gap]
+          omega
+        rcases occursLeftOf_total_of_mem (isTheta_nodup hword12.1) hxMem hmMem
+            (by omega) with hxm | hmx
+        · have hym := right_endpoint_left_of_middle_of_left_endpoint hword12.1
+            (a := x) (d := gap) hgapPos hxMem
+            (by simpa [hmidEq] using hmMem) (by simpa [hrightEq] using hyMem)
+            (by simpa [hmidEq] using hxm)
+          exact ⟨hxm, by simpa [hmidEq, hrightEq] using hym⟩
+        · have hmy := middle_left_of_right_endpoint_of_middle_left hword12.1
+            (a := x) (d := gap) hgapPos hxMem
+            (by simpa [hmidEq] using hmMem) (by simpa [hrightEq] using hyMem)
+            (by simpa [hmidEq] using hmx)
+          have hmy' : OccursLeftOf word m y := by
+            simpa [hmidEq, hrightEq] using hmy
+          have hstart : OccursLeftOf word (x + 2) x :=
+            occursLeftOf_trans (isTheta_nodup hword12.1) hinner.1 hmx
+          have hmemSteps : forall i : Nat, i <= (steps - 1) + 1 ->
+              x + 2 * i ∈ word := by
+            intro i hi
+            apply mem_of_mem_segment_of_isTheta hword12.1
+            simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+            omega
+          have hlastPair := alternating_stepTwo_pairs_backward
+            (n := n) (a := x) (count := steps - 1) hword12.1 hmemSteps hstart
+            (steps - 1) (by omega)
+          have hlastEven : Even (steps - 1) := by grind
+          have hyBeforeInner : OccursLeftOf word y (y - 2) := by
+            have := hlastPair.1 hlastEven
+            convert this using 1 <;> omega
+          have hinnerBeforeY : OccursLeftOf word (y - 2) y :=
+            occursLeftOf_trans (isTheta_nodup hword12.1) hinner.2 hmy'
+          exact False.elim ((occursLeftOf_asymm (isTheta_nodup hword12.1)
+            hinnerBeforeY) hyBeforeInner)
+
+lemma odd_endpoints_left_of_even_mean {n : Nat} {word : List Nat}
+    (hword12 : IsTheta12 n word) {x y m : Nat}
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hmSegment : m ∈ segment n) (hxyNe : x ≠ y)
+    (hxOdd : Odd x) (hyOdd : Odd y) (hmEven : Even m)
+    (hmean : x + y = 2 * m) :
+    OccursLeftOf word x m /\ OccursLeftOf word y m := by
+  rcases lt_or_gt_of_ne hxyNe with hxy | hyx
+  · exact odd_ordered_endpoints_left_of_even_mean hword12 hxSegment hySegment
+      hmSegment hxy hxOdd hyOdd hmEven hmean
+  · have h := odd_ordered_endpoints_left_of_even_mean hword12 hySegment hxSegment
+      hmSegment hyx hyOdd hxOdd hmEven (by omega)
+    exact ⟨h.2, h.1⟩
+
+lemma even_ordered_endpoints_right_of_odd_mean {n : Nat} {word : List Nat}
+    (hword12 : IsTheta12 n word) {x y m : Nat}
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hmSegment : m ∈ segment n) (hxy : x < y)
+    (hxEven : Even x) (hyEven : Even y) (hmOdd : Odd m)
+    (hmean : x + y = 2 * m) :
+    OccursLeftOf word m x /\ OccursLeftOf word m y := by
+  generalize hd : Nat.dist x y = distance
+  induction distance using Nat.strong_induction_on generalizing x y m with
+  | h distance ih =>
+      rcases hxEven with ⟨a, ha⟩
+      rcases hyEven with ⟨b, hb⟩
+      rcases hmOdd with ⟨s, hs⟩
+      let steps := b - a
+      have hab : a < b := by omega
+      have hstepsPos : 0 < steps := by simp [steps, hab]
+      have hyAsSteps : y = x + 2 * steps := by
+        dsimp [steps]
+        omega
+      have hstepsOdd : Odd steps := by
+        refine ⟨s - a, ?_⟩
+        dsimp [steps]
+        omega
+      by_cases hstepsOne : steps = 1
+      · have hmEq : m = x + 1 := by omega
+        have hyEq : y = m + 1 := by omega
+        have hxNextSegment : x + 1 ∈ segment n := by simpa [hmEq] using hmSegment
+        have hmNextSegment : m + 1 ∈ segment n := by simpa [hyEq] using hySegment
+        have hxOrientation := proposition_2_3_holds n word x hword12 hxSegment hxNextSegment
+        have hmOrientation := proposition_2_3_holds n word m hword12 hmSegment hmNextSegment
+        refine ⟨?_, ?_⟩
+        · simpa [hmEq] using hxOrientation.2 (by exact ⟨a, ha⟩)
+        · simpa [hyEq] using hmOrientation.1 (by exact ⟨s, hs⟩)
+      · have hstepsThree : 3 <= steps := by grind
+        have hinnerXSegment : x + 2 ∈ segment n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+          omega
+        have hinnerYSegment : y - 2 ∈ segment n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+          omega
+        have hinnerOrder : x + 2 < y - 2 := by omega
+        have hinnerXEven : Even (x + 2) := by grind
+        have hinnerYEven : Even (y - 2) := by grind
+        have hinnerMean : x + 2 + (y - 2) = 2 * m := by omega
+        have hinnerDist : Nat.dist (x + 2) (y - 2) < distance := by
+          rw [Nat.dist_eq_sub_of_le hinnerOrder.le, ← hd,
+            Nat.dist_eq_sub_of_le hxy.le]
+          omega
+        have hinner := ih (Nat.dist (x + 2) (y - 2)) hinnerDist
+          hinnerXSegment hinnerYSegment hmSegment hinnerOrder hinnerXEven hinnerYEven
+          (by exact ⟨s, hs⟩) hinnerMean rfl
+        have hxMem := mem_of_mem_segment_of_isTheta hword12.1 hxSegment
+        have hmMem := mem_of_mem_segment_of_isTheta hword12.1 hmSegment
+        have hyMem := mem_of_mem_segment_of_isTheta hword12.1 hySegment
+        let gap := m - x
+        have hgapPos : 0 < gap := by
+          dsimp [gap]
+          omega
+        have hmidEq : x + gap = m := by
+          dsimp [gap]
+          omega
+        have hrightEq : x + 2 * gap = y := by
+          dsimp [gap]
+          omega
+        rcases occursLeftOf_total_of_mem (isTheta_nodup hword12.1) hxMem hmMem
+            (by omega) with hxm | hmx
+        · have hym := right_endpoint_left_of_middle_of_left_endpoint hword12.1
+            (a := x) (d := gap) hgapPos hxMem
+            (by simpa [hmidEq] using hmMem) (by simpa [hrightEq] using hyMem)
+            (by simpa [hmidEq] using hxm)
+          have hym' : OccursLeftOf word y m := by
+            simpa [hmidEq, hrightEq] using hym
+          have hstart : OccursLeftOf word x (x + 2) :=
+            occursLeftOf_trans (isTheta_nodup hword12.1) hxm hinner.1
+          have hmemSteps : forall i : Nat, i <= (steps - 1) + 1 ->
+              x + 2 * i ∈ word := by
+            intro i hi
+            apply mem_of_mem_segment_of_isTheta hword12.1
+            simp only [segment, Finset.mem_Icc] at hxSegment hySegment ⊢
+            omega
+          have hlastPair := alternating_stepTwo_pairs_forward
+            (n := n) (a := x) (count := steps - 1) hword12.1 hmemSteps hstart
+            (steps - 1) (by omega)
+          have hlastEven : Even (steps - 1) := by grind
+          have hinnerBeforeY : OccursLeftOf word (y - 2) y := by
+            have := hlastPair.1 hlastEven
+            convert this using 1 <;> omega
+          have hyBeforeInner : OccursLeftOf word y (y - 2) :=
+            occursLeftOf_trans (isTheta_nodup hword12.1) hym' hinner.2
+          exact False.elim ((occursLeftOf_asymm (isTheta_nodup hword12.1)
+            hinnerBeforeY) hyBeforeInner)
+        · have hmy := middle_left_of_right_endpoint_of_middle_left hword12.1
+            (a := x) (d := gap) hgapPos hxMem
+            (by simpa [hmidEq] using hmMem) (by simpa [hrightEq] using hyMem)
+            (by simpa [hmidEq] using hmx)
+          exact ⟨hmx, by simpa [hmidEq, hrightEq] using hmy⟩
+
+lemma even_endpoints_right_of_odd_mean {n : Nat} {word : List Nat}
+    (hword12 : IsTheta12 n word) {x y m : Nat}
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hmSegment : m ∈ segment n) (hxyNe : x ≠ y)
+    (hxEven : Even x) (hyEven : Even y) (hmOdd : Odd m)
+    (hmean : x + y = 2 * m) :
+    OccursLeftOf word m x /\ OccursLeftOf word m y := by
+  rcases lt_or_gt_of_ne hxyNe with hxy | hyx
+  · exact even_ordered_endpoints_right_of_odd_mean hword12 hxSegment hySegment
+      hmSegment hxy hxEven hyEven hmOdd hmean
+  · have h := even_ordered_endpoints_right_of_odd_mean hword12 hySegment hxSegment
+      hmSegment hyx hyEven hxEven hmOdd (by omega)
+    exact ⟨h.2, h.1⟩
+
+/-- **Theorem 2.1.** Same-parity endpoints lie on the side of their
+opposite-parity mean forced by a `Theta_12` ordering. -/
+theorem theorem_2_1_holds : theorem_2_1 := by
+  intro n gamma hgamma x y m hxSegment hySegment hmSegment hxyNe hmean
+  have hxyNe' : x ≠ y := by simpa using hxyNe
+  constructor
+  · rintro ⟨hxOdd, hyOdd, hmEven⟩
+    exact odd_endpoints_left_of_even_mean hgamma hxSegment hySegment hmSegment
+      hxyNe' hxOdd hyOdd hmEven hmean
+  · rintro ⟨hxEven, hyEven, hmOdd⟩
+    exact even_endpoints_right_of_odd_mean hgamma hxSegment hySegment hmSegment
+      hxyNe' hxEven hyEven hmOdd hmean
+
 end LeanProofs.Sharma2012

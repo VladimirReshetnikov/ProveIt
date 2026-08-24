@@ -924,6 +924,478 @@ theorem theorem_2_finite_claim_holds : theorem_2_finite_claim := by
       intro i
       fin_cases i <;> norm_num)
 
+/-! ## The alternating blocks in Theorem 2 -/
+
+/-- The geometric sum `(4^k - 1) / 3`, defined recursively so that the
+divisions in the displayed block endpoints can be eliminated before doing
+interval arithmetic. -/
+private def fourthGeometricSum : Nat -> Nat
+  | 0 => 0
+  | k + 1 => 4 * fourthGeometricSum k + 1
+
+private lemma four_pow_eq_three_mul_fourthGeometricSum_add_one (k : Nat) :
+    4 ^ k = 3 * fourthGeometricSum k + 1 := by
+  induction k with
+  | zero => simp [fourthGeometricSum]
+  | succ k ih =>
+      rw [pow_succ, ih]
+      simp only [fourthGeometricSum]
+      ring
+
+private lemma fourthGeometricSum_lt_succ (k : Nat) :
+    fourthGeometricSum k < fourthGeometricSum (k + 1) := by
+  simp only [fourthGeometricSum]
+  omega
+
+private lemma fourthGeometricSum_strictMono : StrictMono fourthGeometricSum :=
+  strictMono_nat_of_lt_succ fourthGeometricSum_lt_succ
+
+private lemma fourthGeometricSum_ge_id (k : Nat) : k <= fourthGeometricSum k := by
+  induction k with
+  | zero => simp [fourthGeometricSum]
+  | succ k ih =>
+      simp only [fourthGeometricSum]
+      omega
+
+private lemma fourthGeometricSum_eq_four_mul_pred_add_one (k : Nat) (hk : 0 < k) :
+    fourthGeometricSum k = 4 * fourthGeometricSum (k - 1) + 1 := by
+  obtain ⟨l, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hk.ne'
+  simp [fourthGeometricSum]
+
+private lemma theorem2EvenBlock_succ (k : Nat) :
+    theorem2EvenBlock (k + 1) =
+      (Finset.Icc (4 * fourthGeometricSum k + 2)
+        (16 * fourthGeometricSum k + 4)).filter Even := by
+  have hpow := four_pow_eq_three_mul_fourthGeometricSum_add_one k
+  have hpowOne : 4 ^ (k + 1) = 12 * fourthGeometricSum k + 4 := by
+    rw [pow_succ, hpow]
+    ring
+  have hpowTwo : 4 ^ (k + 1 + 1) = 48 * fourthGeometricSum k + 16 := by
+    rw [pow_succ, hpowOne]
+    ring
+  unfold theorem2EvenBlock
+  rw [hpowOne, hpowTwo]
+  congr 2 <;> omega
+
+private lemma theorem2OddBlock_succ (k : Nat) :
+    theorem2OddBlock (k + 1) =
+      (Finset.Icc (2 * fourthGeometricSum k + 1)
+        (8 * fourthGeometricSum k + 1)).filter Odd := by
+  have hpow := four_pow_eq_three_mul_fourthGeometricSum_add_one k
+  have hpowOne : 4 ^ (k + 1) = 12 * fourthGeometricSum k + 4 := by
+    rw [pow_succ, hpow]
+    ring
+  have hpowTwo : 4 ^ (k + 1 + 1) = 48 * fourthGeometricSum k + 16 := by
+    rw [pow_succ, hpowOne]
+    ring
+  unfold theorem2OddBlock
+  rw [hpowOne, hpowTwo]
+  congr 2 <;> omega
+
+private lemma card_even_Icc_two_mul (lo hi : Nat) :
+    ((Finset.Icc (2 * lo) (2 * hi)).filter Even).card = hi + 1 - lo := by
+  have hcard :
+      (Finset.Icc lo hi).card =
+        ((Finset.Icc (2 * lo) (2 * hi)).filter Even).card := by
+    apply Finset.card_bij (fun x _ => 2 * x)
+    · intro x hx
+      simp only [Finset.mem_Icc] at hx
+      simp only [Finset.mem_filter, Finset.mem_Icc]
+      exact ⟨by omega, even_iff_exists_two_mul.mpr ⟨x, rfl⟩⟩
+    · intro x hx y hy hxy
+      omega
+    · intro x hx
+      simp only [Finset.mem_filter, Finset.mem_Icc] at hx
+      obtain ⟨y, rfl⟩ := even_iff_exists_two_mul.mp hx.2
+      refine ⟨y, ?_, rfl⟩
+      simp only [Finset.mem_Icc]
+      omega
+  rw [← hcard, Nat.card_Icc]
+
+private lemma card_odd_Icc_two_mul_add_one (lo hi : Nat) :
+    ((Finset.Icc (2 * lo + 1) (2 * hi + 1)).filter Odd).card = hi + 1 - lo := by
+  have hcard :
+      (Finset.Icc lo hi).card =
+        ((Finset.Icc (2 * lo + 1) (2 * hi + 1)).filter Odd).card := by
+    apply Finset.card_bij (fun x _ => 2 * x + 1)
+    · intro x hx
+      simp only [Finset.mem_Icc] at hx
+      simp only [Finset.mem_filter, Finset.mem_Icc]
+      exact ⟨by omega, odd_iff_exists_bit1.mpr ⟨x, rfl⟩⟩
+    · intro x hx y hy hxy
+      omega
+    · intro x hx
+      simp only [Finset.mem_filter, Finset.mem_Icc] at hx
+      obtain ⟨y, rfl⟩ := odd_iff_exists_bit1.mp hx.2
+      refine ⟨y, ?_, rfl⟩
+      simp only [Finset.mem_Icc]
+      omega
+  rw [← hcard, Nat.card_Icc]
+
+/-- The displayed even and odd blocks have the cardinalities claimed in the
+paper. -/
+theorem theorem_2_block_cardinalities_holds : theorem_2_block_cardinalities := by
+  intro i hi
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  let r := fourthGeometricSum k
+  have hpow := four_pow_eq_three_mul_fourthGeometricSum_add_one k
+  have heven : (theorem2EvenBlock (k + 1)).card = 6 * r + 2 := by
+    rw [theorem2EvenBlock_succ]
+    rw [show 4 * fourthGeometricSum k + 2 = 2 * (2 * r + 1) by simp only [r]; omega,
+      show 16 * fourthGeometricSum k + 4 = 2 * (8 * r + 2) by simp only [r]; omega,
+      card_even_Icc_two_mul]
+    omega
+  have hodd : (theorem2OddBlock (k + 1)).card = 3 * r + 1 := by
+    rw [theorem2OddBlock_succ]
+    rw [show 2 * fourthGeometricSum k + 1 = 2 * r + 1 by rfl,
+      show 8 * fourthGeometricSum k + 1 = 2 * (4 * r) + 1 by simp only [r]; omega,
+      card_odd_Icc_two_mul_add_one]
+    omega
+  constructor
+  · rw [heven]
+    have hpowTwo : 2 ^ (2 * k + 1) = 2 * 4 ^ k := by
+      rw [pow_succ, pow_mul]
+      norm_num [mul_comm]
+    rw [show 2 * (k + 1) - 1 = 2 * k + 1 by omega, hpowTwo, hpow]
+    simp only [r]
+    omega
+  · rw [hodd, show k + 1 - 1 = k by omega, hpow]
+
+/-- The alternating even and odd blocks cover every positive integer. -/
+theorem theorem_2_blocks_cover_positive_integers_holds :
+    theorem_2_blocks_cover_positive_integers := by
+  intro n
+  constructor
+  · intro hn
+    have hnpos : 0 < n := by simpa [positiveIntegers] using hn
+    by_cases heven : Even n
+    · let P : Nat -> Prop := fun k => n <= 16 * fourthGeometricSum k + 4
+      have hexists : exists k, P k := by
+        refine ⟨n, ?_⟩
+        dsimp only [P]
+        have := fourthGeometricSum_ge_id n
+        omega
+      let k := Nat.find hexists
+      have hupper : n <= 16 * fourthGeometricSum k + 4 := by
+        exact Nat.find_spec hexists
+      have hlower : 4 * fourthGeometricSum k + 2 <= n := by
+        by_cases hk : k = 0
+        · rw [hk, fourthGeometricSum]
+          have hnmod : n % 2 = 0 := Nat.even_iff.mp heven
+          omega
+        · have hkpos : 0 < k := Nat.pos_of_ne_zero hk
+          have hminimal := Nat.find_min hexists (show k - 1 < k by omega)
+          have hr := fourthGeometricSum_eq_four_mul_pred_add_one k hkpos
+          dsimp only [P] at hminimal
+          have hnmod : n % 2 = 0 := Nat.even_iff.mp heven
+          omega
+      refine ⟨k + 1, by omega, Or.inl ?_⟩
+      rw [theorem2EvenBlock_succ]
+      simp only [Finset.mem_filter, Finset.mem_Icc]
+      exact ⟨⟨hlower, hupper⟩, heven⟩
+    · have hodd : Odd n := Nat.not_even_iff_odd.mp heven
+      let P : Nat -> Prop := fun k => n <= 8 * fourthGeometricSum k + 1
+      have hexists : exists k, P k := by
+        refine ⟨n, ?_⟩
+        dsimp only [P]
+        have := fourthGeometricSum_ge_id n
+        omega
+      let k := Nat.find hexists
+      have hupper : n <= 8 * fourthGeometricSum k + 1 := by
+        exact Nat.find_spec hexists
+      have hlower : 2 * fourthGeometricSum k + 1 <= n := by
+        by_cases hk : k = 0
+        · rw [hk, fourthGeometricSum]
+          omega
+        · have hkpos : 0 < k := Nat.pos_of_ne_zero hk
+          have hminimal := Nat.find_min hexists (show k - 1 < k by omega)
+          have hr := fourthGeometricSum_eq_four_mul_pred_add_one k hkpos
+          dsimp only [P] at hminimal
+          have hnmod : n % 2 = 1 := Nat.odd_iff.mp hodd
+          omega
+      refine ⟨k + 1, by omega, Or.inr ?_⟩
+      rw [theorem2OddBlock_succ]
+      simp only [Finset.mem_filter, Finset.mem_Icc]
+      exact ⟨⟨hlower, hupper⟩, hodd⟩
+  · rintro ⟨i, hi, hmem | hmem⟩
+    · obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+      rw [theorem2EvenBlock_succ] at hmem
+      simp only [Finset.mem_filter, Finset.mem_Icc] at hmem
+      simp only [positiveIntegers, Set.mem_Ioi]
+      omega
+    · obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+      rw [theorem2OddBlock_succ] at hmem
+      simp only [Finset.mem_filter, Finset.mem_Icc] at hmem
+      simp only [positiveIntegers, Set.mem_Ioi]
+      omega
+
+private lemma theorem2EvenBlocks_disjoint {i j : Nat} (hi : 1 <= i) (hj : 1 <= j)
+    (hij : i ≠ j) : Disjoint (theorem2EvenBlock i) (theorem2EvenBlock j) := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  obtain ⟨l, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : j ≠ 0)
+  apply Finset.disjoint_left.mpr
+  intro x hxk hxl
+  rw [theorem2EvenBlock_succ] at hxk hxl
+  simp only [Finset.mem_filter, Finset.mem_Icc] at hxk hxl
+  have hkl : k ≠ l := by
+    intro h
+    subst l
+    simp at hij
+  rcases lt_or_gt_of_ne hkl with hkl | hlk
+  · have hr := fourthGeometricSum_strictMono hkl
+    have hrsucc := fourthGeometricSum_strictMono.monotone (show k + 1 <= l by omega)
+    simp only [fourthGeometricSum] at hrsucc
+    omega
+  · have hrsucc := fourthGeometricSum_strictMono.monotone (show l + 1 <= k by omega)
+    simp only [fourthGeometricSum] at hrsucc
+    omega
+
+private lemma theorem2OddBlocks_disjoint {i j : Nat} (hi : 1 <= i) (hj : 1 <= j)
+    (hij : i ≠ j) : Disjoint (theorem2OddBlock i) (theorem2OddBlock j) := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  obtain ⟨l, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : j ≠ 0)
+  apply Finset.disjoint_left.mpr
+  intro x hxk hxl
+  rw [theorem2OddBlock_succ] at hxk hxl
+  simp only [Finset.mem_filter, Finset.mem_Icc] at hxk hxl
+  have hkl : k ≠ l := by
+    intro h
+    subst l
+    simp at hij
+  rcases lt_or_gt_of_ne hkl with hkl | hlk
+  · have hrsucc := fourthGeometricSum_strictMono.monotone (show k + 1 <= l by omega)
+    simp only [fourthGeometricSum] at hrsucc
+    omega
+  · have hrsucc := fourthGeometricSum_strictMono.monotone (show l + 1 <= k by omega)
+    simp only [fourthGeometricSum] at hrsucc
+    omega
+
+/-- The even blocks, odd blocks, and the two parity families are pairwise
+disjoint. -/
+theorem theorem_2_blocks_pairwise_disjoint_holds :
+    theorem_2_blocks_pairwise_disjoint := by
+  constructor
+  · intro i j hi hj hij
+    have hij' : i ≠ j := bne_iff_ne.mp hij
+    exact ⟨theorem2EvenBlocks_disjoint hi hj hij',
+      theorem2OddBlocks_disjoint hi hj hij'⟩
+  · intro i j hi hj
+    apply Finset.disjoint_left.mpr
+    intro x hxe hxo
+    have heven : Even x := by
+      unfold theorem2EvenBlock at hxe
+      exact (Finset.mem_filter.mp hxe).2
+    have hodd : Odd x := by
+      unfold theorem2OddBlock at hxo
+      exact (Finset.mem_filter.mp hxo).2
+    exact (Nat.not_even_iff_odd.mpr hodd) heven
+
+/-- An odd entry from an earlier odd block is less than half every even entry
+of a later even block. -/
+theorem theorem_2_odd_even_separation_holds : theorem_2_odd_even_separation := by
+  intro i j x y hi hij hx hy
+  have hj : 1 <= j := by omega
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  obtain ⟨l, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : j ≠ 0)
+  rw [theorem2OddBlock_succ] at hx
+  rw [theorem2EvenBlock_succ] at hy
+  simp only [Finset.mem_filter, Finset.mem_Icc] at hx hy
+  have hrsucc := fourthGeometricSum_strictMono.monotone (show k + 1 <= l by omega)
+  simp only [fourthGeometricSum] at hrsucc
+  omega
+
+private lemma theorem2EvenBlock_nonempty (i : Nat) (hi : 1 <= i) :
+    (theorem2EvenBlock i).Nonempty := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  rw [theorem2EvenBlock_succ]
+  refine ⟨4 * fourthGeometricSum k + 2, ?_⟩
+  simp only [Finset.mem_filter, Finset.mem_Icc]
+  exact ⟨by omega, even_iff_exists_two_mul.mpr
+    ⟨2 * fourthGeometricSum k + 1, by omega⟩⟩
+
+private lemma theorem2OddBlock_nonempty (i : Nat) (hi : 1 <= i) :
+    (theorem2OddBlock i).Nonempty := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
+  rw [theorem2OddBlock_succ]
+  refine ⟨2 * fourthGeometricSum k + 1, ?_⟩
+  simp only [Finset.mem_filter, Finset.mem_Icc]
+  exact ⟨by omega, odd_iff_exists_bit1.mpr ⟨fourthGeometricSum k, rfl⟩⟩
+
+private lemma theorem2_even_before_even (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (hi : 1 <= i) (hij : i < j)
+    (hx : x ∈ theorem2EvenBlock i) (hy : y ∈ theorem2EvenBlock j) :
+    rank x < rank y := by
+  have core : forall j : Nat, 1 <= j -> forall i : Nat, 1 <= i -> i < j ->
+      forall x, x ∈ theorem2EvenBlock i ->
+        forall y, y ∈ theorem2EvenBlock j -> rank x < rank y := by
+    intro j
+    induction j using Nat.strong_induction_on with
+    | h j ih =>
+        intro hj i hi hij x hx y hy
+        let m := j - 1
+        have hm : 1 <= m := by simp only [m]; omega
+        have hmj : m + 1 = j := by simp only [m]; omega
+        obtain ⟨w, hw⟩ := theorem2OddBlock_nonempty m hm
+        have hwy : rank w < rank y := by
+          have := (horder m hm).2 w hw y
+          rw [hmj] at this
+          exact this hy
+        by_cases him : i = m
+        · subst i
+          exact ((horder m hm).1 x hx w hw).trans hwy
+        · have himlt : i < m := by simp only [m] at him ⊢; omega
+          obtain ⟨z, hz⟩ := theorem2EvenBlock_nonempty m hm
+          have hxz := ih m (by simp only [m]; omega) hm i hi himlt x hx z hz
+          exact hxz.trans (((horder m hm).1 z hz w hw).trans hwy)
+  exact core j (by omega) i hi hij x hx y hy
+
+private lemma theorem2_even_before_odd (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (hi : 1 <= i) (hj : 1 <= j) (hij : i <= j)
+    (hx : x ∈ theorem2EvenBlock i) (hy : y ∈ theorem2OddBlock j) :
+    rank x < rank y := by
+  rcases hij.eq_or_lt with rfl | hij
+  · exact (horder i hi).1 x hx y hy
+  · obtain ⟨z, hz⟩ := theorem2EvenBlock_nonempty j hj
+    exact (theorem2_even_before_even rank horder hi hij hx hz).trans
+      ((horder j hj).1 z hz y hy)
+
+private lemma theorem2_odd_before_even (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (hi : 1 <= i) (hij : i < j)
+    (hx : x ∈ theorem2OddBlock i) (hy : y ∈ theorem2EvenBlock j) :
+    rank x < rank y := by
+  by_cases hijSucc : j = i + 1
+  · subst j
+    exact (horder i hi).2 x hx y hy
+  · have hiSucc : 1 <= i + 1 := by omega
+    have hiSuccJ : i + 1 < j := by omega
+    obtain ⟨z, hz⟩ := theorem2EvenBlock_nonempty (i + 1) hiSucc
+    exact ((horder i hi).2 x hx z hz).trans
+      (theorem2_even_before_even rank horder hiSucc hiSuccJ hz hy)
+
+private lemma theorem2_odd_before_odd (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (hi : 1 <= i) (hj : 1 <= j) (hij : i < j)
+    (hx : x ∈ theorem2OddBlock i) (hy : y ∈ theorem2OddBlock j) :
+    rank x < rank y := by
+  obtain ⟨z, hz⟩ := theorem2EvenBlock_nonempty j hj
+  exact (theorem2_odd_before_even rank horder hi hij hx hz).trans
+    ((horder j hj).1 z hz y hy)
+
+private lemma theorem2_even_odd_index_le_of_rank_lt (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (_hi : 1 <= i) (hj : 1 <= j)
+    (hx : x ∈ theorem2EvenBlock i) (hy : y ∈ theorem2OddBlock j)
+    (hxy : rank x < rank y) : i <= j := by
+  by_contra hij
+  have hreverse := theorem2_odd_before_even rank horder hj (by omega) hy hx
+  omega
+
+private lemma theorem2_odd_even_index_lt_of_rank_lt (rank : Nat -> Nat)
+    (horder : Theorem2BlocksInOrder rank) {i j x y : Nat}
+    (hi : 1 <= i) (hj : 1 <= j)
+    (hx : x ∈ theorem2OddBlock i) (hy : y ∈ theorem2EvenBlock j)
+    (hxy : rank x < rank y) : i < j := by
+  by_contra hij
+  have hreverse := theorem2_even_before_odd rank horder hj hi (by omega) hy hx
+  omega
+
+private lemma odd_four_ap_parities {x : Fin 4 -> Nat}
+    (hx : IsOddArithmeticProgression x) :
+    (Even (x 0) /\ Odd (x 1) /\ Even (x 2) /\ Odd (x 3)) \/
+      (Odd (x 0) /\ Even (x 1) /\ Odd (x 2) /\ Even (x 3)) := by
+  obtain ⟨a, d, hd, hdOdd, hformula⟩ := hx
+  have h0 := hformula (0 : Fin 4)
+  have h1 := hformula (1 : Fin 4)
+  have h2 := hformula (2 : Fin 4)
+  have h3 := hformula (3 : Fin 4)
+  norm_num at h0 h1 h2 h3
+  have h01 : (x 1 : Int) = x 0 + d := by omega
+  have h12 : (x 2 : Int) = x 1 + d := by omega
+  have h23 : (x 3 : Int) = x 2 + d := by omega
+  by_cases he0 : Even (x 0)
+  · left
+    have he0Int : Even (x 0 : Int) := (Int.even_coe_nat (x 0)).mpr he0
+    have ho1Int : Odd (x 1 : Int) := by
+      rw [h01]
+      exact he0Int.add_odd hdOdd
+    have he2Int : Even (x 2 : Int) := by
+      rw [h12]
+      exact ho1Int.add_odd hdOdd
+    have ho3Int : Odd (x 3 : Int) := by
+      rw [h23]
+      exact he2Int.add_odd hdOdd
+    exact ⟨he0, (Int.odd_coe_nat (x 1)).mp ho1Int,
+      (Int.even_coe_nat (x 2)).mp he2Int, (Int.odd_coe_nat (x 3)).mp ho3Int⟩
+  · right
+    have ho0 : Odd (x 0) := Nat.not_even_iff_odd.mp he0
+    have ho0Int : Odd (x 0 : Int) := (Int.odd_coe_nat (x 0)).mpr ho0
+    have he1Int : Even (x 1 : Int) := by
+      rw [h01]
+      exact ho0Int.add_odd hdOdd
+    have ho2Int : Odd (x 2 : Int) := by
+      rw [h12]
+      exact he1Int.add_odd hdOdd
+    have he3Int : Even (x 3 : Int) := by
+      rw [h23]
+      exact ho2Int.add_odd hdOdd
+    exact ⟨ho0, (Int.even_coe_nat (x 1)).mp he1Int,
+      (Int.odd_coe_nat (x 2)).mp ho2Int, (Int.even_coe_nat (x 3)).mp he3Int⟩
+
+private lemma positive_member_even_block {n : Nat} (hn : n ∈ positiveIntegers)
+    (heven : Even n) :
+    exists i : Nat, 1 <= i /\ n ∈ theorem2EvenBlock i := by
+  obtain ⟨i, hi, hEven | hOdd⟩ :=
+    (theorem_2_blocks_cover_positive_integers_holds n).mp hn
+  · exact ⟨i, hi, hEven⟩
+  · have hodd : Odd n := by
+      unfold theorem2OddBlock at hOdd
+      exact (Finset.mem_filter.mp hOdd).2
+    exact ((Nat.not_even_iff_odd.mpr hodd) heven).elim
+
+private lemma positive_member_odd_block {n : Nat} (hn : n ∈ positiveIntegers)
+    (hodd : Odd n) :
+    exists i : Nat, 1 <= i /\ n ∈ theorem2OddBlock i := by
+  obtain ⟨i, hi, hEven | hOdd⟩ :=
+    (theorem_2_blocks_cover_positive_integers_holds n).mp hn
+  · have heven : Even n := by
+      unfold theorem2EvenBlock at hEven
+      exact (Finset.mem_filter.mp hEven).2
+    exact ((Nat.not_even_iff_odd.mpr hodd) heven).elim
+  · exact ⟨i, hi, hOdd⟩
+
+/-- The alternating block concatenation contains no odd-difference four-term
+arithmetic progression. -/
+theorem theorem_2_block_concatenation_is_odd_four_avoiding_holds :
+    theorem_2_block_concatenation_is_odd_four_avoiding := by
+  intro rank hrank horder _hlocal
+  refine ⟨hrank, ?_⟩
+  rintro ⟨x, hxmem, hxrank, hxAP⟩
+  have hr01 : rank (x 0) < rank (x 1) := hxrank (by decide)
+  have hr12 : rank (x 1) < rank (x 2) := hxrank (by decide)
+  have hr23 : rank (x 2) < rank (x 3) := hxrank (by decide)
+  obtain ⟨a, d, hd, hdOdd, hformula⟩ := hxAP
+  have hxOrdinary : IsArithmeticProgression x := ⟨a, d, hd, trivial, hformula⟩
+  obtain ⟨hrel012Int, hrel123Int⟩ := four_ap_relations hxOrdinary
+  have hrel012 : x 0 + x 2 = 2 * x 1 := by exact_mod_cast hrel012Int
+  have hrel123 : x 1 + x 3 = 2 * x 2 := by exact_mod_cast hrel123Int
+  rcases odd_four_ap_parities ⟨a, d, hd, hdOdd, hformula⟩ with
+      ⟨he0, ho1, he2, ho3⟩ | ⟨ho0, he1, ho2, he3⟩
+  · obtain ⟨i1, hi1, hx1⟩ := positive_member_odd_block (hxmem 1) ho1
+    obtain ⟨i2, hi2, hx2⟩ := positive_member_even_block (hxmem 2) he2
+    have hi12 := theorem2_odd_even_index_lt_of_rank_lt rank horder hi1 hi2 hx1 hx2 hr12
+    have hgap := theorem_2_odd_even_separation_holds i1 i2 (x 1) (x 2)
+      hi1 hi12 hx1 hx2
+    omega
+  · obtain ⟨i2, hi2, hx2⟩ := positive_member_odd_block (hxmem 2) ho2
+    obtain ⟨i3, hi3, hx3⟩ := positive_member_even_block (hxmem 3) he3
+    have hi23 := theorem2_odd_even_index_lt_of_rank_lt rank horder hi2 hi3 hx2 hx3 hr23
+    have hgap := theorem_2_odd_even_separation_holds i2 i3 (x 2) (x 3)
+      hi2 hi23 hx2 hx3
+    omega
+
 /-! ## General density facts used in the concluding obstruction -/
 
 private lemma countingFunction_le (S : Set Nat) (n : Nat) : countingFunction S n <= n := by
