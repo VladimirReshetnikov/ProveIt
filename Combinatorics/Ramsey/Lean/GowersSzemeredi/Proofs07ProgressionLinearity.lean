@@ -145,7 +145,9 @@ private lemma freiman_map_nat_multiple {N : Nat} [NeZero N]
       push_cast
       ring_nf
 
-private lemma freiman_map_int_multiple {N : Nat} [NeZero N]
+/-- A Freiman map that vanishes at zero agrees with integer scalar
+multiplication throughout a symmetric progression contained in its domain. -/
+lemma freiman_map_int_multiple_of_zero {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (psi : ZMod N → ZMod N)
     (hpsi : FreimanHom 2 B psi) (hpsiZero : psi 0 = 0)
     (d : ZMod N) (m : Nat) (hm : 0 < m)
@@ -231,7 +233,7 @@ theorem corollary_7_9_holds : corollary_7_9 := by
     have hag := hagree x hx y hy (hshort hxy)
     rw [symmetricMultiples, Finset.mem_image] at hxy
     obtain ⟨j, hj, hjxy⟩ := hxy
-    have hlin := freiman_map_int_multiple B psi hpsi hpsiZero d m hm hshort j hj
+    have hlin := freiman_map_int_multiple_of_zero B psi hpsi hpsiZero d m hm hshort j hj
     rw [← hjxy, hlin] at hag
     rw [← hjxy]
     calc
