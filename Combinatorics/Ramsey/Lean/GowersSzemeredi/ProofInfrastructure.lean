@@ -17,6 +17,39 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+@[simp] theorem countWhere_true {X : Type*} [Fintype X] :
+    countWhere (fun _ : X => True) = Fintype.card X := by
+  classical
+  simp [countWhere]
+
+@[simp] theorem countWhere_false {X : Type*} [Fintype X] :
+    countWhere (fun _ : X => False) = 0 := by
+  classical
+  simp [countWhere]
+
+theorem countWhere_congr {X : Type*} [Fintype X] {p q : X → Prop}
+    (h : ∀ x, p x ↔ q x) : countWhere p = countWhere q := by
+  classical
+  simp only [countWhere]
+  congr 1
+  ext x
+  simp [h x]
+
+theorem countWhere_mono {X : Type*} [Fintype X] {p q : X → Prop}
+    (h : ∀ x, p x → q x) : countWhere p ≤ countWhere q := by
+  classical
+  simp only [countWhere]
+  apply Finset.card_le_card
+  intro x hx
+  rw [Finset.mem_filter] at hx ⊢
+  exact ⟨Finset.mem_univ x, h x hx.2⟩
+
+theorem countWhere_le_card {X : Type*} [Fintype X] (p : X → Prop) :
+    countWhere p ≤ Fintype.card X := by
+  classical
+  simpa [countWhere] using
+    Finset.card_le_card (Finset.filter_subset (s := Finset.univ) p)
+
 theorem IsPartition.mem_iff {X : Type*} [DecidableEq X] {m : Nat}
     {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) (x : X) :
     x ∈ S ↔ ∃ i, x ∈ P i :=
