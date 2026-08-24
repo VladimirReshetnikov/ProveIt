@@ -2359,4 +2359,2235 @@ theorem proposition_2_7_holds : proposition_2_7 := by
       (proposition_2_3_holds n gamma 1 hgamma12 honeSegment htwoSegment).1 (by norm_num)
     exact False.elim ((occursLeftOf_asymm (isTheta_nodup hgamma12.1) honeTwo) htwoOne)
 
+/-- **Corollary 2.2.1.** Opposite-parity entries in one half have their
+order forced in every `Theta_12` word. -/
+theorem corollary_2_2_1_holds : corollary_2_2_1 := by
+  intro n x y hxSegment hySegment hsame
+  have hreflections :
+      (y <= 2 * x /\ 2 * x - y ∈ segment n) \/
+        (x <= 2 * y /\ 2 * y - x ∈ segment n) := by
+    simp only [segment, SameHalf, lowerHalf, upperHalf, Finset.mem_Icc] at hxSegment hySegment hsame ⊢
+    omega
+  constructor
+  · intro hxOdd hyEven
+    by_cases hn : 3 <= n
+    · exact (theorem_2_2_holds n x y hn hxSegment hySegment hxOdd hyEven).2
+        hreflections
+    · simp only [segment, SameHalf, lowerHalf, upperHalf, Finset.mem_Icc] at hxSegment hySegment hsame
+      rcases hxOdd with ⟨a, ha⟩
+      rcases hyEven with ⟨b, hb⟩
+      omega
+  · intro hxEven hyOdd
+    by_cases hn : 3 <= n
+    · have hreflections' :
+          (x <= 2 * y /\ 2 * y - x ∈ segment n) \/
+            (y <= 2 * x /\ 2 * x - y ∈ segment n) := by
+          rcases hreflections with hleft | hright
+          · exact Or.inr hleft
+          · exact Or.inl hright
+      exact (theorem_2_2_holds n y x hn hySegment hxSegment hyOdd hxEven).2
+        hreflections'
+    · simp only [segment, SameHalf, lowerHalf, upperHalf, Finset.mem_Icc] at hxSegment hySegment hsame
+      rcases hxEven with ⟨a, ha⟩
+      rcases hyOdd with ⟨b, hb⟩
+      omega
+
+lemma index_lower_bound_of_occursLeftOf_family {word : List Nat} {k i y : Nat}
+    (hword : word.Nodup) (hy : word[i]? = some y)
+    (f : Fin k → Nat) (hf : Function.Injective f)
+    (hbefore : forall t : Fin k, OccursLeftOf word (f t) y) :
+    k <= i := by
+  let position : Fin k → Fin i := fun t =>
+    ⟨(hbefore t).choose, by
+      rcases (hbefore t).choose_spec with ⟨j, hlt, _, hj⟩
+      have hji := getElem?_index_unique_of_nodup hword hj hy
+      omega⟩
+  have hpositionValue (t : Fin k) :
+      word[(position t : Nat)]? = some (f t) := by
+    exact (hbefore t).choose_spec.choose_spec.2.1
+  have hpositionInjective : Function.Injective position := by
+    intro a b hab
+    apply hf
+    apply Option.some.inj
+    calc
+      some (f a) = word[(position a : Nat)]? := (hpositionValue a).symm
+      _ = word[(position b : Nat)]? := by rw [hab]
+      _ = some (f b) := hpositionValue b
+  simpa only [Fintype.card_fin] using
+    Fintype.card_le_of_injective position hpositionInjective
+
+lemma startsWith_reversal_of_endsWith {word : List Nat} {x : Nat}
+    (h : EndsWith word x) : StartsWith (reversal word) x := by
+  simpa [StartsWith, EndsWith, reversal] using h
+
+lemma occursLeftOf_of_occursLeftOf_reversal {word : List Nat} {x y : Nat}
+    (h : OccursLeftOf (reversal word) x y) : OccursLeftOf word y x := by
+  rcases h with ⟨i, j, hij, hi, hj⟩
+  have hi' : word[word.length - 1 - i]? = some x := by
+    exact getElem?_original_of_reverse (by simpa [reversal] using hi)
+  have hj' : word[word.length - 1 - j]? = some y := by
+    exact getElem?_original_of_reverse (by simpa [reversal] using hj)
+  obtain ⟨hiLen, _⟩ := List.getElem?_eq_some_iff.mp hi
+  obtain ⟨hjLen, _⟩ := List.getElem?_eq_some_iff.mp hj
+  have hiBound : i < word.length := by simpa [reversal] using hiLen
+  have hjBound : j < word.length := by simpa [reversal] using hjLen
+  exact ⟨word.length - 1 - j, word.length - 1 - i, by omega, hj', hi'⟩
+
+lemma quarter_le_index_of_even_of_isTheta12 {n : Nat} {word : List Nat}
+    {i y : Nat} (hword : IsTheta12 n word) (hy : word[i]? = some y)
+    (hyEven : Even y) :
+    (n + 1) / 4 <= i := by
+  have hyMem : y ∈ word := List.mem_iff_getElem?.mpr ⟨i, hy⟩
+  have hySegment := mem_segment_of_mem_of_isTheta hword.1 hyMem
+  by_cases hyLower : y ∈ lowerHalf n
+  · let f : Fin ((n + 1) / 4) → Nat := fun t => 2 * (t : Nat) + 1
+    apply index_lower_bound_of_occursLeftOf_family (isTheta_nodup hword.1) hy f
+    · intro a b hab
+      apply Fin.ext
+      simp only [f] at hab
+      omega
+    · intro t
+      have hfSegment : f t ∈ segment n := by
+        simp only [f, segment, Finset.mem_Icc]
+        omega
+      have hfLower : f t ∈ lowerHalf n := by
+        simp only [f, lowerHalf, Finset.mem_Icc]
+        omega
+      have hfOdd : Odd (f t) := by
+        exact ⟨t, by simp [f, Nat.mul_comm]⟩
+      exact (corollary_2_2_1_holds n (f t) y hfSegment hySegment
+        (Or.inl ⟨hfLower, hyLower⟩)).1 hfOdd hyEven word hword
+  · have hyUpper : y ∈ upperHalf n := by
+      simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hySegment hyLower ⊢
+      omega
+    let f : Fin ((n + 1) / 4) → Nat := fun t =>
+      2 * ((n + 1) / 2 - (n + 1) / 4 + (t : Nat)) + 1
+    apply index_lower_bound_of_occursLeftOf_family (isTheta_nodup hword.1) hy f
+    · intro a b hab
+      apply Fin.ext
+      simp only [f] at hab
+      omega
+    · intro t
+      have hfSegment : f t ∈ segment n := by
+        simp only [f, segment, Finset.mem_Icc]
+        omega
+      have hfUpper : f t ∈ upperHalf n := by
+        simp only [f, upperHalf, Finset.mem_Icc]
+        omega
+      have hfOdd : Odd (f t) := by
+        exact ⟨(n + 1) / 2 - (n + 1) / 4 + (t : Nat), by
+          simp [f, Nat.mul_comm]⟩
+      exact (corollary_2_2_1_holds n (f t) y hfSegment hySegment
+        (Or.inr ⟨hfUpper, hyUpper⟩)).1 hfOdd hyEven word hword
+
+lemma quarter_le_index_of_odd_of_isTheta21 {n : Nat} {word : List Nat}
+    {i y : Nat} (hword : IsTheta21 n word) (hy : word[i]? = some y)
+    (hyOdd : Odd y) :
+    (n + 1) / 4 <= i := by
+  by_cases hk : (n + 1) / 4 = 0
+  · omega
+  have hn : 3 <= n := by omega
+  rcases hword.2 with ⟨first, hfirst, hfirstEven⟩
+  obtain ⟨first', last, hfirst', hlast, hfirstLast⟩ :=
+    proposition_2_1_holds n word (by omega) hword.1
+  have hfirstEq : first' = first := by
+    unfold StartsWith at hfirst hfirst'
+    exact Option.some.inj (hfirst'.symm.trans hfirst)
+  subst first'
+  have hlastOdd : Odd last := by
+    rcases Nat.even_or_odd last with hlastEven | hlastOdd
+    · exact False.elim (hfirstLast (by
+        rcases hfirstEven with ⟨a, ha⟩
+        rcases hlastEven with ⟨b, hb⟩
+        unfold Nat.ModEq
+        omega))
+    · exact hlastOdd
+  have hreverse12 : IsTheta12 n (reversal word) :=
+    ⟨isTheta_reversal hword.1,
+      ⟨last, startsWith_reversal_of_endsWith hlast, hlastOdd⟩⟩
+  have hyMem : y ∈ word := List.mem_iff_getElem?.mpr ⟨i, hy⟩
+  have hySegment := mem_segment_of_mem_of_isTheta hword.1 hyMem
+  by_cases hyLower : y ∈ lowerHalf n
+  · let f : Fin ((n + 1) / 4) → Nat := fun t => 2 * ((t : Nat) + 1)
+    apply index_lower_bound_of_occursLeftOf_family (isTheta_nodup hword.1) hy f
+    · intro a b hab
+      apply Fin.ext
+      simp only [f] at hab
+      omega
+    · intro t
+      have hfSegment : f t ∈ segment n := by
+        simp only [f, segment, Finset.mem_Icc]
+        omega
+      have hfEven : Even (f t) := ⟨(t : Nat) + 1, by simp only [f]; omega⟩
+      have hforced : DoNotCommute n y (f t) := by
+        by_cases hfLower : f t ∈ lowerHalf n
+        · exact (corollary_2_2_1_holds n y (f t) hySegment hfSegment
+            (Or.inl ⟨hyLower, hfLower⟩)).1 hyOdd hfEven
+        · apply (theorem_2_2_holds n y (f t) hn hySegment hfSegment hyOdd hfEven).2
+          right
+          simp only [f, segment, lowerHalf, Finset.mem_Icc] at hySegment hyLower hfLower ⊢
+          rcases hyOdd with ⟨a, ha⟩
+          omega
+      exact occursLeftOf_of_occursLeftOf_reversal (hforced (reversal word) hreverse12)
+  · have hyUpper : y ∈ upperHalf n := by
+      simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hySegment hyLower ⊢
+      omega
+    let f : Fin ((n + 1) / 4) → Nat := fun t =>
+      2 * (n / 2 - (n + 1) / 4 + (t : Nat) + 1)
+    apply index_lower_bound_of_occursLeftOf_family (isTheta_nodup hword.1) hy f
+    · intro a b hab
+      apply Fin.ext
+      simp only [f] at hab
+      omega
+    · intro t
+      have hfSegment : f t ∈ segment n := by
+        simp only [f, segment, Finset.mem_Icc]
+        omega
+      have hfUpper : f t ∈ upperHalf n := by
+        simp only [f, upperHalf, Finset.mem_Icc]
+        omega
+      have hfEven : Even (f t) :=
+        ⟨n / 2 - (n + 1) / 4 + (t : Nat) + 1, by simp only [f]; omega⟩
+      have hforced := (corollary_2_2_1_holds n y (f t) hySegment hfSegment
+        (Or.inr ⟨hyUpper, hfUpper⟩)).1 hyOdd hfEven
+      exact occursLeftOf_of_occursLeftOf_reversal (hforced (reversal word) hreverse12)
+
+/-- **Corollary 2.2.2.** The first quarter-block of every `Theta` word has a
+single parity. -/
+theorem corollary_2_2_2_holds : corollary_2_2_2 := by
+  intro n word hword
+  constructor
+  · rw [isTheta_length hword]
+    omega
+  · intro i hi j hj x y hx hy
+    have hne : word ≠ [] := by
+      intro hnil
+      subst word
+      simp at hx
+    let first := word.head hne
+    have hfirst : StartsWith word first := List.head?_eq_some_head hne
+    rcases Nat.even_or_odd first with hfirstEven | hfirstOdd
+    · have hword21 : IsTheta21 n word := ⟨hword, ⟨first, hfirst, hfirstEven⟩⟩
+      have hxEven : Even x := by
+        rcases Nat.even_or_odd x with hxEven | hxOdd
+        · exact hxEven
+        · have := quarter_le_index_of_odd_of_isTheta21 hword21 hx hxOdd
+          omega
+      have hyEven : Even y := by
+        rcases Nat.even_or_odd y with hyEven | hyOdd
+        · exact hyEven
+        · have := quarter_le_index_of_odd_of_isTheta21 hword21 hy hyOdd
+          omega
+      rcases hxEven with ⟨a, ha⟩
+      rcases hyEven with ⟨b, hb⟩
+      unfold Nat.ModEq
+      omega
+    · have hword12 : IsTheta12 n word := ⟨hword, ⟨first, hfirst, hfirstOdd⟩⟩
+      have hxOdd : Odd x := by
+        rcases Nat.even_or_odd x with hxEven | hxOdd
+        · have := quarter_le_index_of_even_of_isTheta12 hword12 hx hxEven
+          omega
+        · exact hxOdd
+      have hyOdd : Odd y := by
+        rcases Nat.even_or_odd y with hyEven | hyOdd
+        · have := quarter_le_index_of_even_of_isTheta12 hword12 hy hyEven
+          omega
+        · exact hyOdd
+      rcases hxOdd with ⟨a, ha⟩
+      rcases hyOdd with ⟨b, hb⟩
+      unfold Nat.ModEq
+      omega
+
+/-! ## Normalized parity traces -/
+
+/-- Divide the even trace by two, as in the proof of Lemma 2.1. -/
+def evenBase (word : List Nat) : List Nat :=
+  (evenTrace word).map fun x => x / 2
+
+/-- Apply `x ↦ (x + 1) / 2` to the odd trace, as in Lemma 2.1. -/
+def oddBase (word : List Nat) : List Nat :=
+  (oddTrace word).map fun x => (x + 1) / 2
+
+lemma threeFree_of_sublist {small large : List Nat} (hlarge : ThreeFree large)
+    (hsub : small.Sublist large) : ThreeFree small := by
+  intro hsmall
+  obtain ⟨embedding, hembedding⟩ :=
+    List.sublist_iff_exists_orderEmbedding_getElem?_eq.mp hsub
+  rcases hsmall with ⟨indices, hindices, a, d, hd, hvalues⟩
+  apply hlarge
+  refine ⟨fun t => embedding (indices t), embedding.strictMono.comp hindices,
+    a, d, hd, ?_⟩
+  rcases hvalues with hvalues | hvalues
+  · left
+    intro t
+    rw [← hembedding]
+    exact hvalues t
+  · right
+    intro t
+    rw [← hembedding]
+    exact hvalues t
+
+lemma threeFree_of_evenLift_threeFree {word : List Nat}
+    (hword : ThreeFree (evenLift word)) : ThreeFree word := by
+  intro hap
+  rcases hap with ⟨indices, hindices, a, d, hd, hvalues | hvalues⟩
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    apply hword
+    refine containsThreeAP_of_increasing_positions (a := 2 * a) (d := 2 * d)
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) (by omega) ?_ ?_ ?_
+    · simp only [evenLift, List.getElem?_map, h0, Option.map_some]
+    · simp only [evenLift, List.getElem?_map, h1, Option.map_some]
+      congr 2
+      omega
+    · simp only [evenLift, List.getElem?_map, h2, Option.map_some]
+      congr 2
+      omega
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    apply hword
+    refine containsThreeAP_of_decreasing_positions (a := 2 * a) (d := 2 * d)
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) (by omega) ?_ ?_ ?_
+    · simp only [evenLift, List.getElem?_map, h0, Option.map_some]
+      congr 2
+      omega
+    · simp only [evenLift, List.getElem?_map, h1, Option.map_some]
+      congr 2
+      omega
+    · simp only [evenLift, List.getElem?_map, h2, Option.map_some]
+
+lemma threeFree_of_oddLift_threeFree {word : List Nat}
+    (hword : ThreeFree (oddLift word))
+    (hpositive : forall x : Nat, x ∈ word -> 0 < x) : ThreeFree word := by
+  intro hap
+  rcases hap with ⟨indices, hindices, a, d, hd, hvalues | hvalues⟩
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    have haPos : 0 < a := hpositive a (List.mem_iff_getElem?.mpr ⟨indices 0, h0⟩)
+    apply hword
+    refine containsThreeAP_of_increasing_positions (a := 2 * a - 1) (d := 2 * d)
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) (by omega) ?_ ?_ ?_
+    · simp only [oddLift, List.getElem?_map, h0, Option.map_some]
+    · simp only [oddLift, List.getElem?_map, h1, Option.map_some]
+      congr 2
+      omega
+    · simp only [oddLift, List.getElem?_map, h2, Option.map_some]
+      congr 2
+      omega
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    have haPos : 0 < a := hpositive a (List.mem_iff_getElem?.mpr ⟨indices 2, h2⟩)
+    apply hword
+    refine containsThreeAP_of_decreasing_positions (a := 2 * a - 1) (d := 2 * d)
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) (by omega) ?_ ?_ ?_
+    · simp only [oddLift, List.getElem?_map, h0, Option.map_some]
+      congr 2
+      omega
+    · simp only [oddLift, List.getElem?_map, h1, Option.map_some]
+      congr 2
+      omega
+    · simp only [oddLift, List.getElem?_map, h2, Option.map_some]
+
+lemma evenLift_evenBase (word : List Nat) : evenLift (evenBase word) = evenTrace word := by
+  simp only [evenLift, evenBase, List.map_map]
+  have hmap :
+      List.map ((fun x => 2 * x) ∘ fun x => x / 2) (evenTrace word) =
+        List.map id (evenTrace word) := by
+    apply List.map_congr_left
+    intro x hx
+    have hxEven : Even x := by
+      exact of_decide_eq_true (List.mem_filter.mp hx).2
+    exact Nat.two_mul_div_two_of_even hxEven
+  simpa only [List.map_id] using hmap
+
+lemma oddLift_oddBase (word : List Nat) : oddLift (oddBase word) = oddTrace word := by
+  simp only [oddLift, oddBase, List.map_map]
+  have hmap :
+      List.map ((fun x => 2 * x - 1) ∘ fun x => (x + 1) / 2) (oddTrace word) =
+        List.map id (oddTrace word) := by
+    apply List.map_congr_left
+    intro x hx
+    have hxOdd : Odd x := by
+      exact of_decide_eq_true (List.mem_filter.mp hx).2
+    rcases hxOdd with ⟨a, ha⟩
+    change 2 * ((x + 1) / 2) - 1 = x
+    omega
+  simpa only [List.map_id] using hmap
+
+lemma evenBase_toFinset {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    (evenBase word).toFinset = segment (n / 2) := by
+  apply Finset.ext
+  intro x
+  simp only [List.mem_toFinset]
+  constructor
+  · intro hx
+    rcases List.mem_map.mp hx with ⟨z, hz, hzx⟩
+    have hzFilter := List.mem_filter.mp hz
+    have hzEven : Even z := of_decide_eq_true hzFilter.2
+    have hzSegment := mem_segment_of_mem_of_isTheta hword hzFilter.1
+    simp only [segment, Finset.mem_Icc] at hzSegment ⊢
+    rw [← hzx]
+    rcases hzEven with ⟨a, ha⟩
+    omega
+  · intro hx
+    have hxBounds : 1 <= x ∧ x <= n / 2 := by
+      simpa only [segment, Finset.mem_Icc] using hx
+    let z := 2 * x
+    have hzSegment : z ∈ segment n := by
+      simp only [z, segment, Finset.mem_Icc]
+      omega
+    have hzMem := mem_of_mem_segment_of_isTheta hword hzSegment
+    have hzEven : Even z := ⟨x, by simp only [z]; omega⟩
+    have hzTrace : z ∈ evenTrace word := by
+      exact List.mem_filter.mpr ⟨hzMem, decide_eq_true hzEven⟩
+    exact List.mem_map.mpr ⟨z, hzTrace, by simp [z]⟩
+
+lemma oddBase_toFinset {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    (oddBase word).toFinset = segment ((n + 1) / 2) := by
+  apply Finset.ext
+  intro x
+  simp only [List.mem_toFinset]
+  constructor
+  · intro hx
+    rcases List.mem_map.mp hx with ⟨z, hz, hzx⟩
+    have hzFilter := List.mem_filter.mp hz
+    have hzOdd : Odd z := of_decide_eq_true hzFilter.2
+    have hzSegment := mem_segment_of_mem_of_isTheta hword hzFilter.1
+    simp only [segment, Finset.mem_Icc] at hzSegment ⊢
+    rw [← hzx]
+    rcases hzOdd with ⟨a, ha⟩
+    omega
+  · intro hx
+    have hxBounds : 1 <= x ∧ x <= (n + 1) / 2 := by
+      simpa only [segment, Finset.mem_Icc] using hx
+    let z := 2 * x - 1
+    have hzSegment : z ∈ segment n := by
+      simp only [z, segment, Finset.mem_Icc]
+      omega
+    have hzMem := mem_of_mem_segment_of_isTheta hword hzSegment
+    have hzOdd : Odd z := ⟨x - 1, by simp only [z]; omega⟩
+    have hzTrace : z ∈ oddTrace word := by
+      exact List.mem_filter.mpr ⟨hzMem, decide_eq_true hzOdd⟩
+    exact List.mem_map.mpr ⟨z, hzTrace, by simp only [z]; omega⟩
+
+lemma isTheta_evenBase {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    IsTheta (n / 2) (evenBase word) := by
+  refine ⟨⟨?_, evenBase_toFinset hword⟩, ?_⟩
+  · have htrace : (evenTrace word).Nodup := (isTheta_nodup hword).filter _
+    rw [← evenLift_evenBase] at htrace
+    exact (List.nodup_map_iff (by intro x y hxy; simp only at hxy; omega)).mp htrace
+  · apply threeFree_of_evenLift_threeFree
+    rw [evenLift_evenBase]
+    exact threeFree_of_sublist (isTheta_threeFree hword) List.filter_sublist
+
+lemma isTheta_oddBase {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    IsTheta ((n + 1) / 2) (oddBase word) := by
+  refine ⟨⟨?_, oddBase_toFinset hword⟩, ?_⟩
+  · have htrace : (oddTrace word).Nodup := (isTheta_nodup hword).filter _
+    rw [← oddLift_oddBase] at htrace
+    exact (List.nodup_map_iff oddLiftValue_injective).mp htrace
+  · apply threeFree_of_oddLift_threeFree
+    · rw [oddLift_oddBase]
+      exact threeFree_of_sublist (isTheta_threeFree hword) List.filter_sublist
+    · intro x hx
+      have hxSegment : x ∈ segment ((n + 1) / 2) := by
+        rw [← oddBase_toFinset hword, List.mem_toFinset]
+        exact hx
+      have hxOne := (Finset.mem_Icc.mp
+        (show x ∈ Finset.Icc 1 ((n + 1) / 2) from hxSegment)).1
+      omega
+
+lemma getElem?_filter_of_prefix {p : Nat → Bool} {word : List Nat}
+    {k i x : Nat} (hk : k <= word.length)
+    (hp : forall r, r < k -> forall z : Nat, word[r]? = some z -> p z = true)
+    (hi : i < k) (hx : word[i]? = some x) :
+    (word.filter p)[i]? = some x := by
+  have hfilterTake : (word.take k).filter p = word.take k := by
+    apply List.filter_eq_self.mpr
+    intro z hz
+    obtain ⟨r, hr⟩ := List.mem_iff_getElem?.mp hz
+    obtain ⟨hrLen, _⟩ := List.getElem?_eq_some_iff.mp hr
+    have hrk : r < k := by
+      simpa [List.length_take, hk] using hrLen
+    have hrWord : word[r]? = some z := by
+      simpa [List.getElem?_take, hrk] using hr
+    exact hp r hrk z hrWord
+  calc
+    (word.filter p)[i]? =
+        ((word.take k ++ word.drop k).filter p)[i]? := by
+          rw [List.take_append_drop]
+    _ = ((word.take k).filter p ++ (word.drop k).filter p)[i]? := by
+          rw [List.filter_append]
+    _ = ((word.take k).filter p)[i]? := by
+          rw [List.getElem?_append_left]
+          simpa [hfilterTake, List.length_take, hk] using hi
+    _ = (word.take k)[i]? := by rw [hfilterTake]
+    _ = word[i]? := by simp [List.getElem?_take, hi]
+    _ = some x := hx
+
+lemma prefixCongruent_even_of_base {word : List Nat} {k m first : Nat}
+    (hk : 0 < k) (hfirst : StartsWith word first) (hfirstEven : Even first)
+    (hparity : PrefixCongruent word k 2)
+    (hbase : PrefixCongruent (evenBase word) k m) :
+    PrefixCongruent word k (2 * m) := by
+  have hfirstAt : word[0]? = some first := by
+    rw [← List.head?_eq_getElem?]
+    exact hfirst
+  have hprefixEven : forall r, r < k -> forall z : Nat,
+      word[r]? = some z -> Even z := by
+    intro r hr z hz
+    have hmod := hparity.2 0 hk r hr first z hfirstAt hz
+    rcases Nat.even_or_odd z with hzEven | hzOdd
+    · exact hzEven
+    · exfalso
+      rcases hfirstEven with ⟨a, ha⟩
+      rcases hzOdd with ⟨b, hb⟩
+      unfold Nat.ModEq at hmod
+      omega
+  refine ⟨hparity.1, ?_⟩
+  intro i hi j hj x y hx hy
+  have hxEven := hprefixEven i hi x hx
+  have hyEven := hprefixEven j hj y hy
+  have hxTrace : (evenTrace word)[i]? = some x := by
+    exact getElem?_filter_of_prefix hparity.1
+      (fun r hr z hz => decide_eq_true (hprefixEven r hr z hz)) hi hx
+  have hyTrace : (evenTrace word)[j]? = some y := by
+    exact getElem?_filter_of_prefix hparity.1
+      (fun r hr z hz => decide_eq_true (hprefixEven r hr z hz)) hj hy
+  have hxBase : (evenBase word)[i]? = some (x / 2) := by
+    simp only [evenBase, List.getElem?_map, hxTrace, Option.map_some]
+  have hyBase : (evenBase word)[j]? = some (y / 2) := by
+    simp only [evenBase, List.getElem?_map, hyTrace, Option.map_some]
+  have hmod := hbase.2 i hi j hj (x / 2) (y / 2) hxBase hyBase
+  simpa [Nat.two_mul_div_two_of_even hxEven,
+    Nat.two_mul_div_two_of_even hyEven] using hmod.mul_left' 2
+
+lemma prefixCongruent_odd_of_base {word : List Nat} {k m first : Nat}
+    (hk : 0 < k) (hfirst : StartsWith word first) (hfirstOdd : Odd first)
+    (hparity : PrefixCongruent word k 2)
+    (hbase : PrefixCongruent (oddBase word) k m) :
+    PrefixCongruent word k (2 * m) := by
+  have hfirstAt : word[0]? = some first := by
+    rw [← List.head?_eq_getElem?]
+    exact hfirst
+  have hprefixOdd : forall r, r < k -> forall z : Nat,
+      word[r]? = some z -> Odd z := by
+    intro r hr z hz
+    have hmod := hparity.2 0 hk r hr first z hfirstAt hz
+    rcases Nat.even_or_odd z with hzEven | hzOdd
+    · exfalso
+      rcases hfirstOdd with ⟨a, ha⟩
+      rcases hzEven with ⟨b, hb⟩
+      unfold Nat.ModEq at hmod
+      omega
+    · exact hzOdd
+  refine ⟨hparity.1, ?_⟩
+  intro i hi j hj x y hx hy
+  have hxOdd := hprefixOdd i hi x hx
+  have hyOdd := hprefixOdd j hj y hy
+  have hxTrace : (oddTrace word)[i]? = some x := by
+    exact getElem?_filter_of_prefix hparity.1
+      (fun r hr z hz => decide_eq_true (hprefixOdd r hr z hz)) hi hx
+  have hyTrace : (oddTrace word)[j]? = some y := by
+    exact getElem?_filter_of_prefix hparity.1
+      (fun r hr z hz => decide_eq_true (hprefixOdd r hr z hz)) hj hy
+  have hxBase : (oddBase word)[i]? = some ((x + 1) / 2) := by
+    simp only [oddBase, List.getElem?_map, hxTrace, Option.map_some]
+  have hyBase : (oddBase word)[j]? = some ((y + 1) / 2) := by
+    simp only [oddBase, List.getElem?_map, hyTrace, Option.map_some]
+  have hmod := hbase.2 i hi j hj ((x + 1) / 2) ((y + 1) / 2) hxBase hyBase
+  have hscaled := hmod.mul_left' 2
+  apply Nat.ModEq.add_left_cancel' 1
+  rcases hxOdd with ⟨a, ha⟩
+  rcases hyOdd with ⟨b, hb⟩
+  convert hscaled using 1 <;> omega
+
+lemma PrefixCongruent.mono {word : List Nat} {k K m : Nat}
+    (h : PrefixCongruent word K m) (hk : k <= K) :
+    PrefixCongruent word k m := by
+  refine ⟨hk.trans h.1, ?_⟩
+  intro i hi j hj x y hx hy
+  exact h.2 i (hi.trans_le hk) j (hj.trans_le hk) x y hx hy
+
+lemma prefixCongruent_double_step {N k j : Nat} {word : List Nat}
+    (hk : 0 < k) (hkQuarter : k <= (N + 1) / 4) (hword : IsTheta N word)
+    (hodd : PrefixCongruent (oddBase word) k (2 ^ j))
+    (heven : PrefixCongruent (evenBase word) k (2 ^ j)) :
+    PrefixCongruent word k (2 ^ (j + 1)) := by
+  have hparity := PrefixCongruent.mono (corollary_2_2_2_holds N word hword) hkQuarter
+  have hne : word ≠ [] := by
+    intro hnil
+    subst word
+    simp [PrefixCongruent] at hparity
+    omega
+  let first := word.head hne
+  have hfirst : StartsWith word first := List.head?_eq_some_head hne
+  rcases Nat.even_or_odd first with hfirstEven | hfirstOdd
+  · have hresult := prefixCongruent_even_of_base hk hfirst hfirstEven hparity heven
+    simpa [pow_succ, Nat.mul_comm] using hresult
+  · have hresult := prefixCongruent_odd_of_base hk hfirst hfirstOdd hparity hodd
+    simpa [pow_succ, Nat.mul_comm] using hresult
+
+/-- **Lemma 2.1.** Congruence of the normalized parity traces lifts through
+doubling the ambient interval. -/
+theorem lemma_2_1_holds : lemma_2_1 := by
+  intro n k j hn hk hj hkBound hnCong hnOneCong
+  constructor
+  · intro word hword
+    have hoddTheta : IsTheta n (oddBase word) := by
+      have h := isTheta_oddBase hword
+      convert h using 1 <;> omega
+    have hevenTheta : IsTheta n (evenBase word) := by
+      have h := isTheta_evenBase hword
+      convert h using 1 <;> omega
+    apply prefixCongruent_double_step hk (hword := hword)
+    · omega
+    · exact hnCong (oddBase word) hoddTheta
+    · exact hnCong (evenBase word) hevenTheta
+  · intro word hword
+    have hoddTheta : IsTheta (n + 1) (oddBase word) := by
+      have h := isTheta_oddBase hword
+      convert h using 1 <;> omega
+    have hevenTheta : IsTheta n (evenBase word) := by
+      have h := isTheta_evenBase hword
+      convert h using 1 <;> omega
+    apply prefixCongruent_double_step hk (hword := hword)
+    · omega
+    · exact hnOneCong (oddBase word) hoddTheta
+    · exact hnCong (evenBase word) hevenTheta
+
+lemma prefixCongruent_zero (word : List Nat) (m : Nat) :
+    PrefixCongruent word 0 m := by
+  refine ⟨Nat.zero_le _, ?_⟩
+  intro i hi
+  omega
+
+lemma two_mul_div_pow_succ (m j : Nat) :
+    2 * m / 2 ^ (j + 1) = m / 2 ^ j := by
+  rw [pow_succ]
+  simpa [Nat.mul_comm] using
+    Nat.mul_div_mul_right m (2 ^ j) (by norm_num : 0 < 2)
+
+lemma two_mul_add_one_div_pow_succ (m j : Nat) :
+    (2 * m + 1) / 2 ^ (j + 1) = m / 2 ^ j := by
+  rw [pow_succ]
+  have hp : 0 < 2 ^ j := pow_pos (by norm_num) _
+  have hquot : (2 * m + 1) / (2 * 2 ^ j) = m / 2 ^ j := by
+    apply Nat.div_eq_of_lt_le
+    · have h := Nat.div_mul_le_self m (2 ^ j)
+      nlinarith
+    · have h := Nat.lt_mul_div_succ m hp
+      nlinarith
+  simpa [Nat.mul_comm] using hquot
+
+/-- **Theorem 2.3.** Iterating Lemma 2.1 yields the forced initial
+congruence block modulo every power of two. -/
+theorem theorem_2_3_holds : theorem_2_3 := by
+  intro n j hn
+  induction j generalizing n with
+  | zero =>
+      intro word hword
+      simpa using corollary_2_2_2_holds n word hword
+  | succ j ih =>
+      intro word hword
+      rcases Nat.even_or_odd n with hnEven | hnOdd
+      · rcases hnEven with ⟨m, hm⟩
+        have hnEq : n = 2 * m := by omega
+        rw [hnEq] at hn hword ⊢
+        let k := ((m / 2 ^ j) + 1) / 4
+        have htarget : ((2 * m / 2 ^ (j + 1)) + 1) / 4 = k := by
+          simp only [two_mul_div_pow_succ, k]
+        rw [htarget]
+        by_cases hkZero : k = 0
+        · simpa only [hkZero] using
+            prefixCongruent_zero word (2 ^ (j + 1 + 1))
+        · have hmPos : 0 < m := by omega
+          have hkPos : 0 < k := Nat.pos_of_ne_zero hkZero
+          have hkBound : 4 * k <= m + 1 := by
+            have hmul := Nat.div_mul_le_self (m / 2 ^ j + 1) 4
+            have hdiv := Nat.div_le_self m (2 ^ j)
+            dsimp [k]
+            omega
+          have hmCong : forall gamma : List Nat, IsTheta m gamma ->
+              PrefixCongruent gamma k (2 ^ (j + 1)) := by
+            intro gamma hgamma
+            simpa only [k] using ih m hmPos gamma hgamma
+          have hmOneCong : forall gamma : List Nat, IsTheta (m + 1) gamma ->
+              PrefixCongruent gamma k (2 ^ (j + 1)) := by
+            intro gamma hgamma
+            apply PrefixCongruent.mono (ih (m + 1) (by omega) gamma hgamma)
+            have hdiv : m / 2 ^ j <= (m + 1) / 2 ^ j :=
+              Nat.div_le_div_right (by omega)
+            dsimp [k]
+            omega
+          exact (lemma_2_1_holds m k (j + 1) hmPos hkPos (by omega) hkBound
+            hmCong hmOneCong).1 word hword
+      · rcases hnOdd with ⟨m, hm⟩
+        have hnEq : n = 2 * m + 1 := by omega
+        rw [hnEq] at hn hword ⊢
+        let k := ((m / 2 ^ j) + 1) / 4
+        have htarget : (((2 * m + 1) / 2 ^ (j + 1)) + 1) / 4 = k := by
+          simp only [two_mul_add_one_div_pow_succ, k]
+        rw [htarget]
+        by_cases hkZero : k = 0
+        · simpa only [hkZero] using
+            prefixCongruent_zero word (2 ^ (j + 1 + 1))
+        · have hkPos : 0 < k := Nat.pos_of_ne_zero hkZero
+          have hmPos : 0 < m := by
+            by_contra hmZero
+            have hmEq : m = 0 := Nat.eq_zero_of_not_pos hmZero
+            subst m
+            simp [k] at hkZero
+          have hkBound : 4 * k <= m + 1 := by
+            have hmul := Nat.div_mul_le_self (m / 2 ^ j + 1) 4
+            have hdiv := Nat.div_le_self m (2 ^ j)
+            dsimp [k]
+            omega
+          have hmCong : forall gamma : List Nat, IsTheta m gamma ->
+              PrefixCongruent gamma k (2 ^ (j + 1)) := by
+            intro gamma hgamma
+            simpa only [k] using ih m hmPos gamma hgamma
+          have hmOneCong : forall gamma : List Nat, IsTheta (m + 1) gamma ->
+              PrefixCongruent gamma k (2 ^ (j + 1)) := by
+            intro gamma hgamma
+            apply PrefixCongruent.mono (ih (m + 1) (by omega) gamma hgamma)
+            have hdiv : m / 2 ^ j <= (m + 1) / 2 ^ j :=
+              Nat.div_le_div_right (by omega)
+            dsimp [k]
+            omega
+          exact (lemma_2_1_holds m k (j + 1) hmPos hkPos (by omega) hkBound
+            hmCong hmOneCong).2 word hword
+
+lemma binaryCongruenceDegree_evenBase {a b : Nat} (ha : Even a) (hb : Even b) (hne : a != b) :
+    binaryCongruenceDegree (a / 2) (b / 2) + 1 = binaryCongruenceDegree a b := by
+  rcases ha with ⟨A, ha⟩
+  rcases hb with ⟨B, hb⟩
+  have hdist : Nat.dist (a / 2) (b / 2) = Nat.dist a b / 2 := by
+    unfold Nat.dist
+    omega
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := by
+    intro hzero
+    apply hne'
+    exact Nat.eq_of_dist_eq_zero hzero
+  have hdvd : 2 ∣ Nat.dist a b := by
+    unfold Nat.dist
+    omega
+  unfold binaryCongruenceDegree
+  rw [hdist]
+  rw [Nat.factorization_div hdvd]
+  have htwo : (Nat.factorization 2) 2 = 1 := by norm_num
+  change (Nat.dist a b).factorization 2 - (Nat.factorization 2) 2 + 1 =
+    (Nat.dist a b).factorization 2
+  rw [htwo]
+  have hone : 1 <= (Nat.dist a b).factorization 2 :=
+    (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+  omega
+
+lemma binaryCongruenceDegree_oddBase {a b : Nat} (ha : Odd a) (hb : Odd b) (hne : a != b) :
+    binaryCongruenceDegree ((a + 1) / 2) ((b + 1) / 2) + 1 =
+      binaryCongruenceDegree a b := by
+  rcases ha with ⟨A, ha⟩
+  rcases hb with ⟨B, hb⟩
+  have hdist : Nat.dist ((a + 1) / 2) ((b + 1) / 2) = Nat.dist a b / 2 := by
+    unfold Nat.dist
+    omega
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := by
+    intro hzero
+    exact hne' (Nat.eq_of_dist_eq_zero hzero)
+  have hdvd : 2 ∣ Nat.dist a b := by
+    unfold Nat.dist
+    omega
+  unfold binaryCongruenceDegree
+  rw [hdist, Nat.factorization_div hdvd]
+  have htwo : (Nat.factorization 2) 2 = 1 := by norm_num
+  change (Nat.dist a b).factorization 2 - (Nat.factorization 2) 2 + 1 =
+    (Nat.dist a b).factorization 2
+  rw [htwo]
+  have hone : 1 <= (Nat.dist a b).factorization 2 :=
+    (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+  omega
+
+lemma occursLeftOf_map {word : List Nat} {x y : Nat} (f : Nat -> Nat)
+    (h : OccursLeftOf word x y) : OccursLeftOf (word.map f) (f x) (f y) := by
+  rcases h with ⟨i, j, hij, hi, hj⟩
+  exact ⟨i, j, hij, by simp [hi], by simp [hj]⟩
+
+lemma occursLeftOf_of_sublist {small large : List Nat} {x y : Nat}
+    (hsub : small.Sublist large) (h : OccursLeftOf small x y) :
+    OccursLeftOf large x y := by
+  obtain ⟨embedding, hembedding⟩ :=
+    List.sublist_iff_exists_orderEmbedding_getElem?_eq.mp hsub
+  rcases h with ⟨i, j, hij, hi, hj⟩
+  refine ⟨embedding i, embedding j, embedding.strictMono hij, ?_, ?_⟩
+  · rw [← hembedding]
+    exact hi
+  · rw [← hembedding]
+    exact hj
+
+lemma startsWith_evenBase {word : List Nat} {a : Nat}
+    (h : StartsWith word a) (ha : Even a) : StartsWith (evenBase word) (a / 2) := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using h
+      subst first
+      simp [StartsWith, evenBase, evenTrace, trace, decide_eq_true ha]
+
+lemma startsWith_oddBase {word : List Nat} {a : Nat}
+    (h : StartsWith word a) (ha : Odd a) : StartsWith (oddBase word) ((a + 1) / 2) := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using h
+      subst first
+      simp [StartsWith, oddBase, oddTrace, trace, decide_eq_true ha]
+
+lemma sameParity_of_binaryCongruenceDegree_pos {a b : Nat}
+    (hpos : 0 < binaryCongruenceDegree a b) :
+    (Even a /\ Even b) \/ (Odd a /\ Odd b) := by
+  have hdvd : 2 ∣ Nat.dist a b := by
+    apply Nat.dvd_of_factorization_pos
+    simpa [binaryCongruenceDegree] using hpos.ne'
+  rcases Nat.even_or_odd a with haEven | haOdd
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exact Or.inl ⟨haEven, hbEven⟩
+    · rcases haEven with ⟨A, ha⟩
+      rcases hbOdd with ⟨B, hb⟩
+      exfalso
+      unfold Nat.dist at hdvd
+      omega
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · rcases haOdd with ⟨A, ha⟩
+      rcases hbEven with ⟨B, hb⟩
+      exfalso
+      unfold Nat.dist at hdvd
+      omega
+    · exact Or.inr ⟨haOdd, hbOdd⟩
+
+lemma oppositeParity_of_binaryCongruenceDegree_zero {a b : Nat} (hne : a != b)
+    (hzero : binaryCongruenceDegree a b = 0) :
+    (Even a /\ Odd b) \/ (Odd a /\ Even b) := by
+  have hne' : a ≠ b := by simpa using hne
+  have hdistNe : Nat.dist a b ≠ 0 := fun h => hne' (Nat.eq_of_dist_eq_zero h)
+  rcases Nat.even_or_odd a with haEven | haOdd
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exfalso
+      have hdvd : 2 ∣ Nat.dist a b := by
+        rcases haEven with ⟨A, ha⟩
+        rcases hbEven with ⟨B, hb⟩
+        unfold Nat.dist
+        omega
+      have hpos : 1 <= (Nat.dist a b).factorization 2 :=
+        (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+      simp [binaryCongruenceDegree] at hzero
+      omega
+    · exact Or.inl ⟨haEven, hbOdd⟩
+  · rcases Nat.even_or_odd b with hbEven | hbOdd
+    · exact Or.inr ⟨haOdd, hbEven⟩
+    · exfalso
+      have hdvd : 2 ∣ Nat.dist a b := by
+        rcases haOdd with ⟨A, ha⟩
+        rcases hbOdd with ⟨B, hb⟩
+        unfold Nat.dist
+        omega
+      have hpos : 1 <= (Nat.dist a b).factorization 2 :=
+        (Nat.prime_two.dvd_iff_one_le_factorization hdistNe).mp hdvd
+      simp [binaryCongruenceDegree] at hzero
+      omega
+
+lemma occursLeftOf_of_evenBase {word : List Nat} {x y : Nat}
+    (hx : Even x) (hy : Even y)
+    (h : OccursLeftOf (evenBase word) (x / 2) (y / 2)) :
+    OccursLeftOf word x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z) h
+  change OccursLeftOf (evenLift (evenBase word)) (2 * (x / 2)) (2 * (y / 2)) at hlift
+  rw [evenLift_evenBase] at hlift
+  have htrace : OccursLeftOf (evenTrace word) x y := by
+    simpa [Nat.two_mul_div_two_of_even hx, Nat.two_mul_div_two_of_even hy] using hlift
+  exact occursLeftOf_of_sublist List.filter_sublist htrace
+
+lemma occursLeftOf_of_oddBase {word : List Nat} {x y : Nat}
+    (hx : Odd x) (hy : Odd y)
+    (h : OccursLeftOf (oddBase word) ((x + 1) / 2) ((y + 1) / 2)) :
+    OccursLeftOf word x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z - 1) h
+  change OccursLeftOf (oddLift (oddBase word))
+    (2 * ((x + 1) / 2) - 1) (2 * ((y + 1) / 2) - 1) at hlift
+  rw [oddLift_oddBase] at hlift
+  rcases hx with ⟨X, hx⟩
+  rcases hy with ⟨Y, hy⟩
+  have htrace : OccursLeftOf (oddTrace word) x y := by
+    convert hlift using 1 <;> omega
+  exact occursLeftOf_of_sublist List.filter_sublist htrace
+
+lemma sameParity_endpoints_of_mean {x y z : Nat} (hmean : x + y = 2 * z) :
+    (Even x /\ Even y) \/ (Odd x /\ Odd y) := by
+  rcases Nat.even_or_odd x with hxEven | hxOdd
+  · rcases Nat.even_or_odd y with hyEven | hyOdd
+    · exact Or.inl ⟨hxEven, hyEven⟩
+    · rcases hxEven with ⟨X, hx⟩
+      rcases hyOdd with ⟨Y, hy⟩
+      exfalso
+      omega
+  · rcases Nat.even_or_odd y with hyEven | hyOdd
+    · rcases hxOdd with ⟨X, hx⟩
+      rcases hyEven with ⟨Y, hy⟩
+      exfalso
+      omega
+    · exact Or.inr ⟨hxOdd, hyOdd⟩
+
+lemma evenHalf_mem_segment {n x : Nat} (hx : x ∈ segment n) (heven : Even x) :
+    x / 2 ∈ segment (n / 2) := by
+  simp only [segment, Finset.mem_Icc] at hx ⊢
+  rcases heven with ⟨X, hX⟩
+  omega
+
+lemma oddHalf_mem_segment {n x : Nat} (hx : x ∈ segment n) (hodd : Odd x) :
+    (x + 1) / 2 ∈ segment ((n + 1) / 2) := by
+  simp only [segment, Finset.mem_Icc] at hx ⊢
+  rcases hodd with ⟨X, hX⟩
+  omega
+
+lemma binaryCongruence_forcing (e : Nat) :
+    forall (n : Nat) (gamma : List Nat) (a1 x y z : Nat),
+      IsTheta n gamma -> StartsWith gamma a1 ->
+      x ∈ segment n -> y ∈ segment n -> z ∈ segment n ->
+      x + y = 2 * z -> a1 != z -> a1 != x ->
+      binaryCongruenceDegree a1 x = e ->
+      binaryCongruenceDegree a1 x < binaryCongruenceDegree a1 z ->
+        OccursLeftOf gamma z x /\ OccursLeftOf gamma z y := by
+  induction e with
+  | zero =>
+      intro n gamma a1 x y z htheta hstart hxSegment hySegment hzSegment
+        hmean haz hax hdegree hlt
+      have hax' : a1 ≠ x := by simpa using hax
+      have haz' : a1 ≠ z := by simpa using haz
+      have hxy : x ≠ y := by
+        intro hxy
+        have hxz : x = z := by omega
+        subst z
+        exact (Nat.lt_irrefl _ hlt)
+      have hxz : x ≠ z := by
+        intro hxz
+        subst z
+        have hyx : y = x := by omega
+        exact hxy hyx.symm
+      have hxyBool : x != y := by simpa using hxy
+      have hsameAZ := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := z) (by omega)
+      have hoppAX := oppositeParity_of_binaryCongruenceDegree_zero hax hdegree
+      rcases hoppAX with ⟨haEven, hxOdd⟩ | ⟨haOdd, hxEven⟩
+      · have hzEven : Even z := by
+          rcases hsameAZ with hEven | hOdd
+          · exact hEven.2
+          · rcases haEven with ⟨A, ha⟩
+            rcases hOdd.1 with ⟨B, hb⟩
+            exfalso
+            omega
+        have hyOdd : Odd y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · rcases hxOdd with ⟨X, hx⟩
+            rcases hEven.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hnTwo : 2 <= n := by
+          simp only [segment, Finset.mem_Icc] at hxSegment hzSegment
+          omega
+        obtain ⟨first, last, hfirst, hlast, hparity⟩ :=
+          proposition_2_1_holds n gamma hnTwo htheta
+        have hfirstEq : first = a1 := by
+          unfold StartsWith at hfirst hstart
+          exact Option.some.inj (hfirst.symm.trans hstart)
+        subst first
+        have hlastOdd : Odd last := by
+          rcases Nat.even_or_odd last with hlastEven | hlastOdd
+          · exfalso
+            apply hparity
+            rcases haEven with ⟨A, ha⟩
+            rcases hlastEven with ⟨B, hb⟩
+            unfold Nat.ModEq
+            omega
+          · exact hlastOdd
+        have hreverse12 : IsTheta12 n (reversal gamma) :=
+          ⟨isTheta_reversal htheta,
+            ⟨last, startsWith_reversal_of_endsWith hlast, hlastOdd⟩⟩
+        have hforced := (theorem_2_1_holds n (reversal gamma) hreverse12
+          x y z hxSegment hySegment hzSegment hxyBool hmean).1
+          ⟨hxOdd, hyOdd, hzEven⟩
+        exact ⟨occursLeftOf_of_occursLeftOf_reversal hforced.1,
+          occursLeftOf_of_occursLeftOf_reversal hforced.2⟩
+      · have hzOdd : Odd z := by
+          rcases hsameAZ with hEven | hOdd
+          · rcases haOdd with ⟨A, ha⟩
+            rcases hEven.1 with ⟨B, hb⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hyEven : Even y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · exact hEven.2
+          · rcases hxEven with ⟨X, hx⟩
+            rcases hOdd.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+        have htheta12 : IsTheta12 n gamma := ⟨htheta, ⟨a1, hstart, haOdd⟩⟩
+        exact (theorem_2_1_holds n gamma htheta12 x y z hxSegment hySegment
+          hzSegment hxyBool hmean).2 ⟨hxEven, hyEven, hzOdd⟩
+  | succ e ih =>
+      intro n gamma a1 x y z htheta hstart hxSegment hySegment hzSegment
+        hmean haz hax hdegree hlt
+      have hsameAX := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := x) (by omega)
+      have hsameAZ := sameParity_of_binaryCongruenceDegree_pos (a := a1) (b := z) (by omega)
+      rcases hsameAX with ⟨haEven, hxEven⟩ | ⟨haOdd, hxOdd⟩
+      · have hzEven : Even z := by
+          rcases hsameAZ with hEven | hOdd
+          · exact hEven.2
+          · rcases haEven with ⟨A, ha⟩
+            rcases hOdd.1 with ⟨B, hb⟩
+            exfalso
+            omega
+        have hyEven : Even y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · exact hEven.2
+          · rcases hxEven with ⟨X, hx⟩
+            rcases hOdd.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+        have hthetaBase := isTheta_evenBase htheta
+        have hstartBase := startsWith_evenBase hstart haEven
+        have hxBase := evenHalf_mem_segment hxSegment hxEven
+        have hyBase := evenHalf_mem_segment hySegment hyEven
+        have hzBase := evenHalf_mem_segment hzSegment hzEven
+        have hmeanBase : x / 2 + y / 2 = 2 * (z / 2) := by
+          rcases hxEven with ⟨X, hx⟩
+          rcases hyEven with ⟨Y, hy⟩
+          rcases hzEven with ⟨Z, hz⟩
+          omega
+        have hazBase : a1 / 2 != z / 2 := by
+          have haz' : a1 ≠ z := by simpa using haz
+          have : a1 / 2 ≠ z / 2 := by
+            intro h
+            rcases haEven with ⟨A, ha⟩
+            rcases hzEven with ⟨Z, hz⟩
+            exact haz' (by omega)
+          simpa using this
+        have haxBase : a1 / 2 != x / 2 := by
+          have hax' : a1 ≠ x := by simpa using hax
+          have : a1 / 2 ≠ x / 2 := by
+            intro h
+            rcases haEven with ⟨A, ha⟩
+            rcases hxEven with ⟨X, hx⟩
+            exact hax' (by omega)
+          simpa using this
+        have hdegreeX := binaryCongruenceDegree_evenBase haEven hxEven hax
+        have hdegreeZ := binaryCongruenceDegree_evenBase haEven hzEven haz
+        have hdegreeBase : binaryCongruenceDegree (a1 / 2) (x / 2) = e := by
+          omega
+        have hltBase : binaryCongruenceDegree (a1 / 2) (x / 2) <
+            binaryCongruenceDegree (a1 / 2) (z / 2) := by omega
+        have hforced := ih (n / 2) (evenBase gamma) (a1 / 2) (x / 2) (y / 2)
+          (z / 2) hthetaBase hstartBase hxBase hyBase hzBase hmeanBase hazBase
+          haxBase hdegreeBase hltBase
+        exact ⟨occursLeftOf_of_evenBase hzEven hxEven hforced.1,
+          occursLeftOf_of_evenBase hzEven hyEven hforced.2⟩
+      · have hzOdd : Odd z := by
+          rcases hsameAZ with hEven | hOdd
+          · rcases haOdd with ⟨A, ha⟩
+            rcases hEven.1 with ⟨B, hb⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hyOdd : Odd y := by
+          rcases sameParity_endpoints_of_mean hmean with hEven | hOdd
+          · rcases hxOdd with ⟨X, hx⟩
+            rcases hEven.1 with ⟨Y, hy⟩
+            exfalso
+            omega
+          · exact hOdd.2
+        have hthetaBase := isTheta_oddBase htheta
+        have hstartBase := startsWith_oddBase hstart haOdd
+        have hxBase := oddHalf_mem_segment hxSegment hxOdd
+        have hyBase := oddHalf_mem_segment hySegment hyOdd
+        have hzBase := oddHalf_mem_segment hzSegment hzOdd
+        have hmeanBase : (x + 1) / 2 + (y + 1) / 2 = 2 * ((z + 1) / 2) := by
+          rcases hxOdd with ⟨X, hx⟩
+          rcases hyOdd with ⟨Y, hy⟩
+          rcases hzOdd with ⟨Z, hz⟩
+          omega
+        have hazBase : (a1 + 1) / 2 != (z + 1) / 2 := by
+          have haz' : a1 ≠ z := by simpa using haz
+          have : (a1 + 1) / 2 ≠ (z + 1) / 2 := by
+            intro h
+            rcases haOdd with ⟨A, ha⟩
+            rcases hzOdd with ⟨Z, hz⟩
+            exact haz' (by omega)
+          simpa using this
+        have haxBase : (a1 + 1) / 2 != (x + 1) / 2 := by
+          have hax' : a1 ≠ x := by simpa using hax
+          have : (a1 + 1) / 2 ≠ (x + 1) / 2 := by
+            intro h
+            rcases haOdd with ⟨A, ha⟩
+            rcases hxOdd with ⟨X, hx⟩
+            exact hax' (by omega)
+          simpa using this
+        have hdegreeX := binaryCongruenceDegree_oddBase haOdd hxOdd hax
+        have hdegreeZ := binaryCongruenceDegree_oddBase haOdd hzOdd haz
+        have hdegreeBase : binaryCongruenceDegree ((a1 + 1) / 2) ((x + 1) / 2) = e := by
+          omega
+        have hltBase : binaryCongruenceDegree ((a1 + 1) / 2) ((x + 1) / 2) <
+            binaryCongruenceDegree ((a1 + 1) / 2) ((z + 1) / 2) := by omega
+        have hforced := ih ((n + 1) / 2) (oddBase gamma) ((a1 + 1) / 2)
+          ((x + 1) / 2) ((y + 1) / 2) ((z + 1) / 2) hthetaBase hstartBase
+          hxBase hyBase hzBase hmeanBase hazBase haxBase hdegreeBase hltBase
+        exact ⟨occursLeftOf_of_oddBase hzOdd hxOdd hforced.1,
+          occursLeftOf_of_oddBase hzOdd hyOdd hforced.2⟩
+
+theorem theorem_2_4_holds : theorem_2_4 := by
+  intro n gamma a1 x y z htheta hstart hx hy hz hmean haz hax hlt
+  exact binaryCongruence_forcing (binaryCongruenceDegree a1 x) n gamma a1 x y z
+    htheta hstart hx hy hz hmean haz hax rfl hlt
+
+lemma prologue_prefix (n : Nat) (word : List Nat) :
+    prologue n word <+: word := by
+  cases word with
+  | nil => simp [prologue]
+  | cons first tail =>
+      simp only [prologue]
+      exact (List.prefix_cons_inj first).2 (List.takeWhile_prefix _)
+
+lemma mem_lowerHalf_of_mem_prologue {n : Nat} {word : List Nat} {a x : Nat}
+    (hstart : StartsWith word a) (haLower : a ∈ lowerHalf n)
+    (hx : x ∈ prologue n word) : x ∈ lowerHalf n := by
+  cases word with
+  | nil => simp [StartsWith] at hstart
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using hstart
+      subst first
+      simp only [prologue, List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact haLower
+      · have hsame : SameHalf n a x := by
+          have hp := List.mem_takeWhile_imp
+            (p := fun y : Nat => decide (SameHalf n a y)) (l := tail) hx
+          exact of_decide_eq_true hp
+        rcases hsame with hLower | hUpper
+        · exact hLower.2
+        · simp only [lowerHalf, upperHalf, Finset.mem_Icc] at haLower hUpper
+          omega
+
+lemma lowerPrologue_entry_le_first {n : Nat} {word : List Nat} {a : Nat}
+    (htheta : IsTheta n word) (hstart : StartsWith word a)
+    (haLower : a ∈ lowerHalf n) {i x : Nat}
+    (hi : i < (prologue n word).length) (hx : (prologue n word)[i]? = some x) :
+    x <= a := by
+  induction i using Nat.strong_induction_on generalizing x with
+  | h i ih =>
+      by_contra hle
+      have hax : a < x := by omega
+      have hprefix := prologue_prefix n word
+      obtain ⟨suffix, hwordEq⟩ := hprefix
+      have hxWord : word[i]? = some x := by
+        rw [← hwordEq, List.getElem?_append_left]
+        exact hx
+        exact hi
+      have hxMemPro : x ∈ prologue n word := List.mem_iff_getElem?.mpr ⟨i, hx⟩
+      have hxLower := mem_lowerHalf_of_mem_prologue hstart haLower hxMemPro
+      have haSegment : a ∈ segment n := by
+        have haMem : a ∈ word := by
+          cases word with
+          | nil => simp [StartsWith] at hstart
+          | cons first tail =>
+              have hfirst : first = a := by simpa [StartsWith] using hstart
+              simp [hfirst]
+        exact mem_segment_of_mem_of_isTheta htheta haMem
+      let r := 2 * x - a
+      have hrSegment : r ∈ segment n := by
+        simp only [r, segment, lowerHalf, Finset.mem_Icc] at haSegment hxLower ⊢
+        omega
+      have hrMem := mem_of_mem_segment_of_isTheta htheta hrSegment
+      obtain ⟨j, hjWord⟩ := List.mem_iff_getElem?.mp hrMem
+      have hzero : word[0]? = some a := by
+        rw [← List.head?_eq_getElem?]
+        exact hstart
+      have hiPos : 0 < i := by
+        by_contra hiZero
+        have hiEq : i = 0 := by omega
+        subst i
+        have haxEq : a = x := Option.some.inj (hzero.symm.trans hxWord)
+        omega
+      have hrEq : r = a + 2 * (x - a) := by
+        dsimp [r]
+        omega
+      have hxEq : x = a + (x - a) := by omega
+      have hji : j < i := by
+        by_contra hnot
+        have hij : i < j := by
+          obtain ⟨hjLen, _⟩ := List.getElem?_eq_some_iff.mp hjWord
+          have hjiNe : j ≠ i := by
+            intro hji
+            subst j
+            have hrx : r = x := Option.some.inj (hjWord.symm.trans hxWord)
+            dsimp [r] at hrx
+            omega
+          omega
+        apply isTheta_threeFree htheta
+        apply containsThreeAP_of_increasing_positions hiPos hij (by omega : 0 < x - a)
+          hzero
+        · rw [← hxEq]
+          exact hxWord
+        · rw [← hrEq]
+          exact hjWord
+      have hjProBound : j < (prologue n word).length := hji.trans hi
+      have hjPro : (prologue n word)[j]? = some r := by
+        rw [← hwordEq, List.getElem?_append_left hjProBound] at hjWord
+        exact hjWord
+      have hrLe := ih j hji hjProBound hjPro
+      dsimp [r] at hrLe
+      omega
+
+lemma first_le_upperPrologue_entry {n : Nat} {word : List Nat} {a : Nat}
+    (htheta : IsTheta n word) (hstart : StartsWith word a)
+    (hupper : forall x : Nat, x ∈ prologue n word -> x ∈ upperHalf n)
+    {i x : Nat} (hi : i < (prologue n word).length)
+    (hx : (prologue n word)[i]? = some x) : a <= x := by
+  induction i using Nat.strong_induction_on generalizing x with
+  | h i ih =>
+      by_contra hle
+      have hxa : x < a := by omega
+      have hprefix := prologue_prefix n word
+      obtain ⟨suffix, hwordEq⟩ := hprefix
+      have hxWord : word[i]? = some x := by
+        rw [← hwordEq, List.getElem?_append_left]
+        exact hx
+        exact hi
+      have hxMemPro : x ∈ prologue n word := List.mem_iff_getElem?.mpr ⟨i, hx⟩
+      have hxUpper := hupper x hxMemPro
+      have haSegment : a ∈ segment n := by
+        have haMem : a ∈ word := by
+          cases word with
+          | nil => simp [StartsWith] at hstart
+          | cons first tail =>
+              have hfirst : first = a := by simpa [StartsWith] using hstart
+              simp [hfirst]
+        exact mem_segment_of_mem_of_isTheta htheta haMem
+      let r := 2 * x - a
+      have hrSegment : r ∈ segment n := by
+        simp only [r, segment, upperHalf, Finset.mem_Icc] at haSegment hxUpper ⊢
+        omega
+      have hrMem := mem_of_mem_segment_of_isTheta htheta hrSegment
+      obtain ⟨j, hjWord⟩ := List.mem_iff_getElem?.mp hrMem
+      have hzero : word[0]? = some a := by
+        rw [← List.head?_eq_getElem?]
+        exact hstart
+      have hiPos : 0 < i := by
+        by_contra hiZero
+        have hiEq : i = 0 := by omega
+        subst i
+        have haxEq : a = x := Option.some.inj (hzero.symm.trans hxWord)
+        omega
+      have haTwoX : a <= 2 * x := by
+        simp only [segment, upperHalf, Finset.mem_Icc] at haSegment hxUpper
+        omega
+      have haEq : a = r + 2 * (a - x) := by
+        dsimp [r]
+        omega
+      have hxEq : x = r + (a - x) := by
+        dsimp [r]
+        omega
+      have hji : j < i := by
+        by_contra hnot
+        have hij : i < j := by
+          obtain ⟨hjLen, _⟩ := List.getElem?_eq_some_iff.mp hjWord
+          have hjiNe : j ≠ i := by
+            intro hji
+            subst j
+            have hrx : r = x := Option.some.inj (hjWord.symm.trans hxWord)
+            dsimp [r] at hrx
+            omega
+          omega
+        apply isTheta_threeFree htheta
+        apply containsThreeAP_of_decreasing_positions hiPos hij (by omega : 0 < a - x)
+        · rw [← haEq]
+          exact hzero
+        · rw [← hxEq]
+          exact hxWord
+        · exact hjWord
+      have hjProBound : j < (prologue n word).length := hji.trans hi
+      have hjPro : (prologue n word)[j]? = some r := by
+        rw [← hwordEq, List.getElem?_append_left hjProBound] at hjWord
+        exact hjWord
+      have haLeR := ih j hji hjProBound hjPro
+      dsimp [r] at haLeR
+      omega
+
+theorem lemma_2_2_holds : lemma_2_2 := by
+  intro n gamma a htheta hstart
+  constructor
+  · intro haLower x hx
+    obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hx
+    obtain ⟨hiLen, _⟩ := List.getElem?_eq_some_iff.mp hi
+    exact lowerPrologue_entry_le_first htheta hstart haLower hiLen hi
+  · intro hupper x hx
+    obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hx
+    obtain ⟨hiLen, _⟩ := List.getElem?_eq_some_iff.mp hi
+    exact first_le_upperPrologue_entry htheta hstart hupper hiLen hi
+
+lemma occursLeftOf_of_startsWith_of_mem {word : List Nat} {first x : Nat}
+    (hword : word.Nodup) (hstart : StartsWith word first) (hx : x ∈ word)
+    (hne : first ≠ x) : OccursLeftOf word first x := by
+  have hfirstMem : first ∈ word := by
+    cases word with
+    | nil => simp [StartsWith] at hstart
+    | cons a tail =>
+        have ha : a = first := by simpa [StartsWith] using hstart
+        simp [ha]
+  rcases occursLeftOf_total_of_mem hword hfirstMem hx hne with hleft | hright
+  · exact hleft
+  · have hfirstAt : word[0]? = some first := by
+      rw [← List.head?_eq_getElem?]
+      exact hstart
+    exact False.elim ((not_occursLeftOf_to_head hword hfirstAt) hright)
+
+lemma left_endpoint_left_of_middle_of_right_endpoint {n : Nat} {word : List Nat}
+    (hword : IsTheta n word) {a d : Nat} (hd : 0 < d)
+    (ha : a ∈ word) (hm : a + d ∈ word) (_hc : a + 2 * d ∈ word)
+    (hcm : OccursLeftOf word (a + 2 * d) (a + d)) :
+    OccursLeftOf word a (a + d) := by
+  rcases occursLeftOf_total_of_mem (isTheta_nodup hword) ha hm (by omega) with ham | hma
+  · exact ham
+  · rcases hcm with ⟨i, j, hij, hi, hj⟩
+    rcases hma with ⟨j', k, hjk, hj', hk⟩
+    have hjEq : j = j' :=
+      getElem?_index_unique_of_nodup (isTheta_nodup hword) hj hj'
+    subst j'
+    exfalso
+    exact (isTheta_threeFree hword)
+      (containsThreeAP_of_decreasing_positions hij hjk hd hi hj hk)
+
+lemma factorization_three_mul_pow_two (k : Nat) :
+    (3 * 2 ^ k).factorization 2 = k := by
+  rw [Nat.factorization_mul (by norm_num : 3 ≠ 0)
+    (pow_ne_zero k (by norm_num : 2 ≠ 0))]
+  norm_num [Nat.factorization_pow]
+
+lemma factorization_two_mul_pow_two (k : Nat) :
+    (2 * 2 ^ k).factorization 2 = k + 1 := by
+  rw [Nat.factorization_mul (by norm_num : 2 ≠ 0)
+    (pow_ne_zero k (by norm_num : 2 ≠ 0))]
+  norm_num [Nat.factorization_pow]
+  omega
+
+theorem lemma_2_3_holds : lemma_2_3 := by
+  intro n gamma a1 t htheta hstart ha1Four htLower htUpper
+  dsimp only
+  let u := 2 ^ (t - 2)
+  have htTwo : 2 <= t := by
+    by_contra ht
+    have htCases : t = 0 \/ t = 1 := by omega
+    rcases htCases with rfl | rfl
+    · norm_num at htUpper
+      omega
+    · norm_num at htUpper
+      omega
+  have huPos : 0 < u := by exact pow_pos (by norm_num) _
+  have hfourU : 4 * u = 2 ^ t := by
+    dsimp [u]
+    conv_rhs => rw [show t = (t - 2) + 2 by omega]
+    rw [pow_add]
+    norm_num [Nat.mul_comm]
+  have heightU : 8 * u = 2 ^ (t + 1) := by
+    dsimp [u]
+    conv_rhs => rw [show t + 1 = (t - 2) + 3 by omega]
+    rw [pow_add]
+    norm_num [Nat.mul_comm]
+  have hfourLess : 4 * u < a1 := by omega
+  have ha1Eight : a1 <= 8 * u := by omega
+  have ha1Mem : a1 ∈ gamma := by
+    cases gamma with
+    | nil => simp [StartsWith] at hstart
+    | cons first tail =>
+        have hfirst : first = a1 := by simpa [StartsWith] using hstart
+        simp [hfirst]
+  have ha1Segment := mem_segment_of_mem_of_isTheta htheta ha1Mem
+  have hsubFourSegment : a1 - 4 * u ∈ segment n := by
+    simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+    omega
+  have hsubTwoSegment : a1 - 2 * u ∈ segment n := by
+    simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+    omega
+  have hsubOneSegment : a1 - u ∈ segment n := by
+    simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+    omega
+  have hsubFourMem := mem_of_mem_segment_of_isTheta htheta hsubFourSegment
+  have hsubTwoMem := mem_of_mem_segment_of_isTheta htheta hsubTwoSegment
+  have hsubOneMem := mem_of_mem_segment_of_isTheta htheta hsubOneSegment
+  have hstartSubFour := occursLeftOf_of_startsWith_of_mem
+    (isTheta_nodup htheta) hstart hsubFourMem (by omega)
+  have hstartSubTwo := occursLeftOf_of_startsWith_of_mem
+    (isTheta_nodup htheta) hstart hsubTwoMem (by omega)
+  have hstartSubOne := occursLeftOf_of_startsWith_of_mem
+    (isTheta_nodup htheta) hstart hsubOneMem (by omega)
+  have hsubTwoSubOne : OccursLeftOf gamma (a1 - 2 * u) (a1 - u) := by
+    have hforced := left_endpoint_left_of_middle_of_right_endpoint htheta
+      (a := a1 - 2 * u) (d := u) huPos hsubTwoMem
+      (by convert hsubOneMem using 1 <;> omega)
+      (by convert ha1Mem using 1; omega)
+      (by convert hstartSubOne using 1 <;> omega)
+    convert hforced using 1; omega
+  have hsubFourSubTwo : OccursLeftOf gamma (a1 - 4 * u) (a1 - 2 * u) := by
+    have hforced := left_endpoint_left_of_middle_of_right_endpoint htheta
+      (a := a1 - 4 * u) (d := 2 * u) (by omega) hsubFourMem
+      (by convert hsubTwoMem using 1 <;> omega)
+      (by convert ha1Mem using 1; omega)
+      (by convert hstartSubTwo using 1 <;> omega)
+    convert hforced using 1; omega
+  refine ⟨hstartSubFour, hsubFourSubTwo, hsubTwoSubOne, ?_, ?_⟩
+  · intro hnPlusTwo
+    have hplusTwoSegment : a1 + 2 * u ∈ segment n := by
+      simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+      omega
+    have hplusTwoMem := mem_of_mem_segment_of_isTheta htheta hplusTwoSegment
+    have hforced := right_endpoint_left_of_middle_of_left_endpoint htheta
+      (a := a1 - 4 * u) (d := 3 * u) (by omega) hsubFourMem
+      (by convert hsubOneMem using 1; omega)
+      (by convert hplusTwoMem using 1; omega)
+      (by
+        have hchain := occursLeftOf_trans (isTheta_nodup htheta)
+          hsubFourSubTwo hsubTwoSubOne
+        convert hchain using 1; omega)
+    convert hforced using 1 <;> omega
+  · intro hnPlusSeven
+    have hplusTwoSegment : a1 + 2 * u ∈ segment n := by
+      simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+      omega
+    have hsubThreeSegment : a1 - 3 * u ∈ segment n := by
+      simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+      omega
+    have hplusSevenSegment : a1 + 7 * u ∈ segment n := by
+      simp only [segment, Finset.mem_Icc] at ha1Segment ⊢
+      omega
+    have hdistX : Nat.dist a1 (a1 - 3 * u) = 3 * u := by
+      unfold Nat.dist
+      omega
+    have hdistZ : Nat.dist a1 (a1 + 2 * u) = 2 * u := by
+      unfold Nat.dist
+      omega
+    have hdegreeX : binaryCongruenceDegree a1 (a1 - 3 * u) = t - 2 := by
+      unfold binaryCongruenceDegree
+      rw [hdistX]
+      exact factorization_three_mul_pow_two (t - 2)
+    have hdegreeZ : binaryCongruenceDegree a1 (a1 + 2 * u) = (t - 2) + 1 := by
+      unfold binaryCongruenceDegree
+      rw [hdistZ]
+      exact factorization_two_mul_pow_two (t - 2)
+    have hforced := theorem_2_4_holds n gamma a1 (a1 - 3 * u) (a1 + 7 * u)
+      (a1 + 2 * u) htheta hstart hsubThreeSegment hplusSevenSegment hplusTwoSegment
+      (by omega) (by simpa using (show a1 ≠ a1 + 2 * u by omega))
+      (by simpa using (show a1 ≠ a1 - 3 * u by omega)) (by omega)
+    exact hforced
+
+lemma mem_prologue_of_occursLeftOf_mem_prologue {n : Nat} {word : List Nat}
+    {x y : Nat} (hword : word.Nodup) (hy : y ∈ prologue n word)
+    (hxy : OccursLeftOf word x y) :
+    x ∈ prologue n word := by
+  obtain ⟨j, hjPro⟩ := List.mem_iff_getElem?.mp hy
+  obtain ⟨hjBound, _⟩ := List.getElem?_eq_some_iff.mp hjPro
+  rcases hxy with ⟨i, j', hij, hiWord, hjWord⟩
+  have hprefix := prologue_prefix n word
+  obtain ⟨suffix, hwordEq⟩ := hprefix
+  have hjWord' : word[j]? = some y := by
+    rw [← hwordEq, List.getElem?_append_left hjBound]
+    exact hjPro
+  have hjEq : j' = j := by
+    exact getElem?_index_unique_of_nodup hword hjWord hjWord'
+  subst j'
+  have hiBound : i < (prologue n word).length := hij.trans hjBound
+  have hiPro : (prologue n word)[i]? = some x := by
+    rw [← hwordEq, List.getElem?_append_left hiBound] at hiWord
+    exact hiWord
+  exact List.mem_iff_getElem?.mpr ⟨i, hiPro⟩
+
+theorem lemma_2_4_holds : lemma_2_4 := by
+  intro n gamma a1 htheta hstart haLower
+  have hproNodup : (prologue n gamma).Nodup :=
+    List.Nodup.sublist (prologue_prefix n gamma).sublist (isTheta_nodup htheta)
+  have hextreme := (lemma_2_2_holds n gamma a1 htheta hstart).1 haLower
+  by_cases haSmall : a1 <= 6
+  · have hsubset : (prologue n gamma).toFinset ⊆ segment a1 := by
+      intro x hx
+      have hxPro : x ∈ prologue n gamma := by simpa using hx
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      simp only [segment, Finset.mem_Icc] at hxSegment ⊢
+      exact ⟨hxSegment.1, hextreme x hxPro⟩
+    calc
+      (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+        (List.toFinset_card_of_nodup hproNodup).symm
+      _ <= (segment a1).card := Finset.card_le_card hsubset
+      _ = a1 := by simp [segment]
+      _ <= 6 := haSmall
+  · have haSeven : 7 <= a1 := by omega
+    let t := Nat.log 2 (a1 - 1)
+    let u := 2 ^ (t - 2)
+    have haPredNe : a1 - 1 ≠ 0 := by omega
+    have htLower : 2 ^ t < a1 := by
+      have h := Nat.pow_log_le_self 2 haPredNe
+      dsimp [t] at h ⊢
+      omega
+    have htUpper : a1 <= 2 ^ (t + 1) := by
+      have h := Nat.lt_pow_succ_log_self (by norm_num : 1 < 2) (a1 - 1)
+      dsimp [t] at h ⊢
+      omega
+    have htTwo : 2 <= t := by
+      by_contra ht
+      have htCases : t = 0 \/ t = 1 := by omega
+      rcases htCases with htZero | htOne
+      · rw [htZero] at htUpper
+        norm_num at htUpper
+        omega
+      · rw [htOne] at htUpper
+        norm_num at htUpper
+        omega
+    have huPos : 0 < u := pow_pos (by norm_num) _
+    have hfourU : 4 * u = 2 ^ t := by
+      dsimp [u]
+      conv_rhs => rw [show t = (t - 2) + 2 by omega]
+      rw [pow_add]
+      norm_num [Nat.mul_comm]
+    have heightU : 8 * u = 2 ^ (t + 1) := by
+      dsimp [u]
+      conv_rhs => rw [show t + 1 = (t - 2) + 3 by omega]
+      rw [pow_add]
+      norm_num [Nat.mul_comm]
+    have hfourLess : 4 * u < a1 := by omega
+    have haEight : a1 <= 8 * u := by omega
+    have haSegment : a1 ∈ segment n := by
+      have haMem : a1 ∈ gamma := by
+        cases gamma with
+        | nil => simp [StartsWith] at hstart
+        | cons first tail =>
+            have hfirst : first = a1 := by simpa [StartsWith] using hstart
+            simp [hfirst]
+      exact mem_segment_of_mem_of_isTheta htheta haMem
+    have hnTwoA : 2 * a1 <= n := by
+      simp only [lowerHalf, Finset.mem_Icc] at haLower
+      simpa [Nat.mul_comm] using
+        (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).mp haLower.2
+    have hlemma := lemma_2_3_holds n gamma a1 t htheta hstart (by omega)
+      htLower htUpper
+    dsimp only at hlemma
+    rcases hlemma with ⟨hstartFour, hfourTwo, htwoOne, hpartTwo, hpartThree⟩
+    have hnPlusTwo : a1 + 2 * u <= n := by omega
+    have hplusTwoBeforeOne := hpartTwo hnPlusTwo
+    have hsubOneNotPro : a1 - u ∉ prologue n gamma := by
+      intro hsubOne
+      have hplusTwoPro := mem_prologue_of_occursLeftOf_mem_prologue
+        (isTheta_nodup htheta) hsubOne hplusTwoBeforeOne
+      have hplusTwoLe := hextreme (a1 + 2 * u) hplusTwoPro
+      omega
+    have hcongruent : forall x : Nat, x ∈ prologue n gamma -> Nat.ModEq u x a1 := by
+      intro x hxPro
+      have hxLe := hextreme x hxPro
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      by_contra hnotMod
+      have hxa : x < a1 := by
+        by_contra hnot
+        have hxaEq : x = a1 := by omega
+        subst x
+        exact hnotMod (Nat.ModEq.refl a1)
+      let y := 2 * a1 - 2 * u - x
+      let z := a1 - u
+      have hzSegment : z ∈ segment n := by
+        simp only [z, segment, Finset.mem_Icc] at haSegment ⊢
+        omega
+      have hySegment : y ∈ segment n := by
+        simp only [y, segment, Finset.mem_Icc] at hxSegment haSegment ⊢
+        omega
+      have hdistX : Nat.dist a1 x = a1 - x := by
+        rw [Nat.dist_comm, Nat.dist_eq_sub_of_le hxa.le]
+      have hdistXNe : Nat.dist a1 x ≠ 0 := by
+        rw [hdistX]
+        omega
+      have hdegreeX : binaryCongruenceDegree a1 x < t - 2 := by
+        by_contra hnotLess
+        have hpowDvd : 2 ^ (t - 2) ∣ Nat.dist a1 x :=
+          (Nat.prime_two.pow_dvd_iff_le_factorization hdistXNe).2 (by
+            unfold binaryCongruenceDegree at hnotLess
+            omega)
+        have hmod : Nat.ModEq u x a1 := by
+          apply (Nat.modEq_iff_dvd' hxa.le).2
+          simpa only [u, hdistX] using hpowDvd
+        exact hnotMod hmod
+      have hdistZ : Nat.dist a1 z = u := by
+        simp only [z]
+        unfold Nat.dist
+        omega
+      have hdegreeZ : binaryCongruenceDegree a1 z = t - 2 := by
+        unfold binaryCongruenceDegree
+        rw [hdistZ]
+        dsimp only [u]
+        exact Nat.factorization_pow_self Nat.prime_two
+      have haz : a1 != z := by
+        have : a1 ≠ z := by simp only [z]; omega
+        simpa using this
+      have hax : a1 != x := by simpa using hxa.ne'
+      have hforced := theorem_2_4_holds n gamma a1 x y z htheta hstart
+        hxSegment hySegment hzSegment (by simp only [y, z]; omega) haz hax (by omega)
+      have hzPro := mem_prologue_of_occursLeftOf_mem_prologue
+        (isTheta_nodup htheta) hxPro hforced.1
+      exact hsubOneNotPro (by simpa only [z] using hzPro)
+    have hparameter : forall x : Nat, x ∈ prologue n gamma ->
+        exists d : Nat, d <= 7 /\ x = a1 - d * u := by
+      intro x hxPro
+      have hxLe := hextreme x hxPro
+      have hxWord := (prologue_prefix n gamma).mem hxPro
+      have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+      obtain ⟨d, had⟩ := (Nat.modEq_iff_exists_eq_add hxLe).mp (hcongruent x hxPro)
+      have had' : a1 = x + d * u := by simpa [Nat.mul_comm] using had
+      have hd : d <= 7 := by
+        by_contra hd
+        have h8d : 8 <= d := by omega
+        have hmul : 8 * u <= d * u := Nat.mul_le_mul_right u h8d
+        simp only [segment, Finset.mem_Icc] at hxSegment
+        omega
+      refine ⟨d, hd, ?_⟩
+      omega
+    by_cases haSevenU : a1 <= 7 * u
+    · let candidates :=
+        [a1, a1 - 2 * u, a1 - 3 * u, a1 - 4 * u, a1 - 5 * u, a1 - 6 * u]
+      have hsubset : (prologue n gamma).toFinset ⊆ candidates.toFinset := by
+        intro x hx
+        have hxPro : x ∈ prologue n gamma := by simpa using hx
+        obtain ⟨d, hd, hxd⟩ := hparameter x hxPro
+        have hxWord := (prologue_prefix n gamma).mem hxPro
+        have hxSegment := mem_segment_of_mem_of_isTheta htheta hxWord
+        have hdOne : d ≠ 1 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubOneNotPro hxPro
+        have hdSeven : d ≠ 7 := by
+          intro hdEq
+          subst d
+          simp only [segment, Finset.mem_Icc] at hxSegment
+          omega
+        interval_cases d <;> simp [candidates] at * <;> omega
+      calc
+        (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+          (List.toFinset_card_of_nodup hproNodup).symm
+        _ <= candidates.toFinset.card := Finset.card_le_card hsubset
+        _ <= candidates.length := List.toFinset_card_le candidates
+        _ = 6 := by simp [candidates]
+    · have haSevenLess : 7 * u < a1 := by omega
+      have hnPlusSeven : a1 + 7 * u <= n := by omega
+      have hplusTwoBeforeThree := (hpartThree hnPlusSeven).1
+      have hsubThreeNotPro : a1 - 3 * u ∉ prologue n gamma := by
+        intro hsubThree
+        have hplusTwoPro := mem_prologue_of_occursLeftOf_mem_prologue
+          (isTheta_nodup htheta) hsubThree hplusTwoBeforeThree
+        have hplusTwoLe := hextreme (a1 + 2 * u) hplusTwoPro
+        omega
+      let candidates :=
+        [a1, a1 - 2 * u, a1 - 4 * u, a1 - 5 * u, a1 - 6 * u, a1 - 7 * u]
+      have hsubset : (prologue n gamma).toFinset ⊆ candidates.toFinset := by
+        intro x hx
+        have hxPro : x ∈ prologue n gamma := by simpa using hx
+        obtain ⟨d, hd, hxd⟩ := hparameter x hxPro
+        have hdOne : d ≠ 1 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubOneNotPro hxPro
+        have hdThree : d ≠ 3 := by
+          intro hdEq
+          subst d
+          have hxEq : x = a1 - 3 * u := by simpa using hxd
+          rw [hxEq] at hxPro
+          exact hsubThreeNotPro hxPro
+        interval_cases d <;> simp [candidates] at * <;> omega
+      calc
+        (prologue n gamma).length = (prologue n gamma).toFinset.card :=
+          (List.toFinset_card_of_nodup hproNodup).symm
+        _ <= candidates.toFinset.card := Finset.card_le_card hsubset
+        _ <= candidates.length := List.toFinset_card_le candidates
+        _ = 6 := by simp [candidates]
+
+lemma threeFree_complement {n : Nat} {word : List Nat}
+    (hword : IsTheta n word) : ThreeFree (complement n word) := by
+  intro hap
+  rcases hap with ⟨indices, hindices, a, d, hd, hvalues | hvalues⟩
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    obtain ⟨x0, hx0, hx0Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h0)
+    obtain ⟨x1, hx1, hx1Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h1)
+    obtain ⟨x2, hx2, hx2Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h2)
+    have hx0Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 0, hx0⟩)
+    have hx1Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 1, hx1⟩)
+    have hx2Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 2, hx2⟩)
+    have hx0Eq : x0 = x2 + 2 * d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    have hx1Eq : x1 = x2 + d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    apply isTheta_threeFree hword
+    apply containsThreeAP_of_decreasing_positions
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) hd
+    · rw [← hx0Eq]
+      exact hx0
+    · rw [← hx1Eq]
+      exact hx1
+    · exact hx2
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    obtain ⟨x0, hx0, hx0Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h0)
+    obtain ⟨x1, hx1, hx1Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h1)
+    obtain ⟨x2, hx2, hx2Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h2)
+    have hx0Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 0, hx0⟩)
+    have hx1Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 1, hx1⟩)
+    have hx2Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 2, hx2⟩)
+    have hx1Eq : x1 = x0 + d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    have hx2Eq : x2 = x0 + 2 * d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    apply isTheta_threeFree hword
+    apply containsThreeAP_of_increasing_positions
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) hd hx0
+    · rw [← hx1Eq]
+      exact hx1
+    · rw [← hx2Eq]
+      exact hx2
+
+lemma isTheta_complement {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    IsTheta n (complement n word) := by
+  refine ⟨⟨?_, ?_⟩, threeFree_complement hword⟩
+  · apply List.Nodup.map_on _ (isTheta_nodup hword)
+    intro x hx y hy hxy
+    have hxSegment := mem_segment_of_mem_of_isTheta hword hx
+    have hySegment := mem_segment_of_mem_of_isTheta hword hy
+    simp only [segment, Finset.mem_Icc] at hxSegment hySegment
+    omega
+  · apply Finset.ext
+    intro z
+    simp only [List.mem_toFinset, complement, List.mem_map]
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      exact complementValue_mem_segment (mem_segment_of_mem_of_isTheta hword hx)
+    · intro hzSegment
+      let x := n + 1 - z
+      have hxSegment : x ∈ segment n := complementValue_mem_segment hzSegment
+      have hxMem := mem_of_mem_segment_of_isTheta hword hxSegment
+      refine ⟨x, hxMem, ?_⟩
+      simp only [segment, Finset.mem_Icc] at hzSegment
+      omega
+
+lemma startsWith_complement {n : Nat} {word : List Nat} {x : Nat}
+    (hstart : StartsWith word x) : StartsWith (complement n word) (n + 1 - x) := by
+  unfold StartsWith at hstart ⊢
+  simp only [complement, List.head?_map, hstart, Option.map_some]
+
+theorem theorem_2_5_holds : theorem_2_5 := by
+  intro n gamma htheta
+  cases gamma with
+  | nil => simp [prologue]
+  | cons a tail =>
+      have hstart : StartsWith (a :: tail) a := by simp [StartsWith]
+      have haSegment : a ∈ segment n :=
+        mem_segment_of_mem_of_isTheta htheta (by simp)
+      by_cases haLower : a ∈ lowerHalf n
+      · exact lemma_2_4_holds n (a :: tail) a htheta hstart haLower
+      · have haUpper : a ∈ upperHalf n := by
+          simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at haSegment haLower ⊢
+          omega
+        let delta := doubledEvenOdd (a :: tail)
+        have hconstruction := proposition_2_6_holds n (a :: tail) htheta
+        have hdelta : IsTheta (2 * n) delta := by simpa only [delta] using hconstruction.1
+        have hdeltaStart : StartsWith delta (2 * a) := by
+          apply StartsWith.append
+          exact startsWith_evenLift hstart
+        let deltaStar := complement (2 * n) delta
+        have hstarTheta : IsTheta (2 * n) deltaStar := by
+          exact isTheta_complement hdelta
+        have hstarStart : StartsWith deltaStar (2 * n + 1 - 2 * a) := by
+          exact startsWith_complement hdeltaStart
+        have hstarLower : 2 * n + 1 - 2 * a ∈ lowerHalf (2 * n) := by
+          simp only [segment, upperHalf, lowerHalf, Finset.mem_Icc] at haSegment haUpper ⊢
+          omega
+        have hstarBound := lemma_2_4_holds (2 * n) deltaStar (2 * n + 1 - 2 * a)
+          hstarTheta hstarStart hstarLower
+        calc
+          (prologue n (a :: tail)).length = (prologue (2 * n) delta).length := by
+            simpa only [delta] using hconstruction.2.1
+          _ = (prologue (2 * n) deltaStar).length := by
+            simpa only [delta, deltaStar] using hconstruction.2.2
+          _ <= 6 := hstarBound
+
+lemma prefixCongruent_evenLift_of_base {word : List Nat} {k m : Nat}
+    (h : PrefixCongruent word k m) :
+    PrefixCongruent (evenLift word) k (2 * m) := by
+  refine ⟨by simpa [evenLift] using h.1, ?_⟩
+  intro i hi j hj x y hx hy
+  obtain ⟨a, ha, hax⟩ := exists_of_getElem?_map_eq_some hx
+  obtain ⟨b, hb, hby⟩ := exists_of_getElem?_map_eq_some hy
+  have hab := h.2 i hi j hj a b ha hb
+  subst x
+  subst y
+  exact hab.mul_left' 2
+
+lemma prefixCongruent_oddLift_of_base {word : List Nat} {k m : Nat}
+    (hpositive : forall x : Nat, x ∈ word -> 0 < x)
+    (h : PrefixCongruent word k m) :
+    PrefixCongruent (oddLift word) k (2 * m) := by
+  refine ⟨by simpa [oddLift] using h.1, ?_⟩
+  intro i hi j hj x y hx hy
+  obtain ⟨a, ha, hax⟩ := exists_of_getElem?_map_eq_some hx
+  obtain ⟨b, hb, hby⟩ := exists_of_getElem?_map_eq_some hy
+  have haPos := hpositive a (List.mem_iff_getElem?.mpr ⟨i, ha⟩)
+  have hbPos := hpositive b (List.mem_iff_getElem?.mpr ⟨j, hb⟩)
+  have hab := h.2 i hi j hj a b ha hb
+  have hscaled := hab.mul_left' 2
+  rw [← hax, ← hby]
+  apply Nat.ModEq.add_left_cancel' 1
+  convert hscaled using 1 <;> omega
+
+lemma forcedPrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hN : 0 < N) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= N) (hk : 4 * k <= r + 1) :
+    PrefixCongruent word k (2 ^ (j + 1)) := by
+  apply PrefixCongruent.mono (theorem_2_3_holds N j hN word hword)
+  have hquot : r <= N / 2 ^ j := by
+    exact (Nat.le_div_iff_mul_le (pow_pos (by norm_num) j)).2 hdenom
+  exact (Nat.le_div_iff_mul_le (by norm_num : 0 < 4)).2 (by omega)
+
+lemma forcedEvenTracePrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hEvenN : 0 < N / 2) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= N / 2) (hk : 4 * k <= r + 1) :
+    PrefixCongruent (evenTrace word) k (2 * 2 ^ (j + 1)) := by
+  have hbase := forcedPrefixCongruent (word := evenBase word)
+    (N := N / 2) (j := j) (r := r) hEvenN (isTheta_evenBase hword) hdenom hk
+  have hlift := prefixCongruent_evenLift_of_base hbase
+  rw [evenLift_evenBase] at hlift
+  exact hlift
+
+lemma forcedOddTracePrefixCongruent {N j k r : Nat} {word : List Nat}
+    (hN : 0 < N) (hword : IsTheta N word)
+    (hdenom : r * 2 ^ j <= (N + 1) / 2) (hk : 4 * k <= r + 1) :
+    PrefixCongruent (oddTrace word) k (2 * 2 ^ (j + 1)) := by
+  have hbaseTheta := isTheta_oddBase hword
+  have hbase := forcedPrefixCongruent (word := oddBase word)
+    (N := (N + 1) / 2) (j := j) (r := r) (by omega) hbaseTheta hdenom hk
+  have hpositive : forall x : Nat, x ∈ oddBase word -> 0 < x := by
+    intro x hx
+    exact positive_of_mem_of_isTheta hbaseTheta hx
+  have hlift := prefixCongruent_oddLift_of_base hpositive hbase
+  rw [oddLift_oddBase] at hlift
+  exact hlift
+
+lemma log_two_five_le {n : Nat} (hn : 32 <= n) : 5 <= Nat.log 2 n := by
+  rw [Nat.le_log_iff_pow_le (by norm_num) (by omega)]
+  norm_num
+  exact hn
+
+lemma dyadicQ_pos (n : Nat) : 0 < dyadicQ n := by
+  exact pow_pos (by norm_num) _
+
+lemma dyadic_modulus_two {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 4) + 1) = 2 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 := by omega
+  rw [← hexponent, show Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 by omega,
+    pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_modulus_four {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 3) + 1) = 4 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 2 = (Nat.log 2 n - 4) + 2 := by omega
+  rw [show (Nat.log 2 n - 3) + 1 = Nat.log 2 n - 2 by omega,
+    hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_modulus_eight {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 2) + 1) = 8 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  have hexponent : Nat.log 2 n - 1 = (Nat.log 2 n - 4) + 3 := by omega
+  rw [show (Nat.log 2 n - 2) + 1 = Nat.log 2 n - 1 by omega,
+    hexponent, pow_add]
+  norm_num [dyadicQ]
+  ring
+
+lemma dyadic_modulus_one {n : Nat} (hn : 32 <= n) :
+    2 ^ ((Nat.log 2 n - 5) + 1) = dyadicQ n := by
+  have hlog := log_two_five_le hn
+  rw [show (Nat.log 2 n - 5) + 1 = Nat.log 2 n - 4 by omega]
+  rfl
+
+lemma dyadic_denominator_two {n : Nat} (hn : 32 <= n) :
+    2 ^ (Nat.log 2 n - 3) = 2 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  rw [show Nat.log 2 n - 3 = (Nat.log 2 n - 4) + 1 by omega, pow_add]
+  simp [dyadicQ, Nat.mul_comm]
+
+lemma dyadic_denominator_four {n : Nat} (hn : 32 <= n) :
+    2 ^ (Nat.log 2 n - 2) = 4 * dyadicQ n := by
+  have hlog := log_two_five_le hn
+  simpa only [show (Nat.log 2 n - 3) + 1 = Nat.log 2 n - 2 by omega] using
+    dyadic_modulus_four hn
+
+lemma dyadic_denominator_half {n : Nat} (hn : 32 <= n) :
+    2 * 2 ^ (Nat.log 2 n - 5) = dyadicQ n := by
+  have hlog := log_two_five_le hn
+  simp only [dyadicQ]
+  rw [show Nat.log 2 n - 4 = (Nat.log 2 n - 5) + 1 by omega, pow_add]
+  simp [Nat.mul_comm]
+
+lemma dyadic_denominator_quarter {n : Nat} (hlog : 6 <= Nat.log 2 n) :
+    4 * 2 ^ (Nat.log 2 n - 6) = dyadicQ n := by
+  simp only [dyadicQ]
+  rw [show Nat.log 2 n - 4 = (Nat.log 2 n - 6) + 2 by omega, pow_add]
+  norm_num
+  ring
+
+lemma prefixCongruent_one_of_le_length {word : List Nat} {k : Nat}
+    (hk : k <= word.length) : PrefixCongruent word k 1 := by
+  refine ⟨hk, ?_⟩
+  intro i hi j hj x y hx hy
+  simp only [Nat.ModEq, Nat.mod_one]
+
+/-- **Proposition 2.8.** The first dyadic-threshold congruence blocks, for the
+word and for both of its parity traces. -/
+theorem proposition_2_8_holds : proposition_2_8 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hlog : 5 <= Nat.log 2 n := log_two_five_le hn
+  have hhalf : 8 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 8 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordFour : PrefixCongruent word 2 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 8) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 4 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 4) (r := 16) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 8 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 8) (r := 32) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddFour : PrefixCongruent (oddTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 2 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 2) (r := 8) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 4 (2 * dyadicQ n) := by
+    have hdenom : 16 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 4) (r := 16) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 4 (2 * dyadicQ n) := by
+    have hdenom : 16 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 4) (r := 16) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne :
+      PrefixCongruent (oddTrace word) 8 (dyadicQ n) ∧
+        PrefixCongruent (evenTrace word) 8 (dyadicQ n) := by
+    by_cases hlogSix : 6 <= Nat.log 2 n
+    · have hoddDenom :
+          32 * 2 ^ (Nat.log 2 n - 6) <= (n + 1) / 2 := by
+        have hh := dyadic_denominator_quarter (n := n) hlogSix
+        nlinarith
+      have hevenDenom : 32 * 2 ^ (Nat.log 2 n - 6) <= n / 2 := by
+        have hh := dyadic_denominator_quarter (n := n) hlogSix
+        nlinarith
+      have hodd := forcedOddTracePrefixCongruent (N := n)
+        (j := Nat.log 2 n - 6) (k := 8) (r := 32) hnPos hword hoddDenom
+        (by norm_num)
+      have heven := forcedEvenTracePrefixCongruent (N := n)
+        (j := Nat.log 2 n - 6) (k := 8) (r := 32) (by omega) hword hevenDenom
+        (by norm_num)
+      have hexponent : (Nat.log 2 n - 6) + 1 = Nat.log 2 n - 5 := by omega
+      rw [hexponent, dyadic_denominator_half hn] at hodd heven
+      exact ⟨hodd, heven⟩
+    · have hlogEq : Nat.log 2 n = 5 := by omega
+      have hqEq : dyadicQ n = 2 := by simp [dyadicQ, hlogEq]
+      have hoddTheta := isTheta_oddBase hword
+      have hevenTheta := isTheta_evenBase hword
+      have hoddLength : 8 <= (oddBase word).length := by
+        rw [isTheta_length hoddTheta]
+        have hqPos := dyadicQ_pos n
+        omega
+      have hevenLength : 8 <= (evenBase word).length := by
+        rw [isTheta_length hevenTheta]
+        have hqPos := dyadicQ_pos n
+        omega
+      have hoddBase := prefixCongruent_one_of_le_length hoddLength
+      have hevenBase := prefixCongruent_one_of_le_length hevenLength
+      have hodd := prefixCongruent_oddLift_of_base
+        (fun x hx => positive_of_mem_of_isTheta hoddTheta hx) hoddBase
+      have heven := prefixCongruent_evenLift_of_base hevenBase
+      rw [oddLift_oddBase] at hodd
+      rw [evenLift_evenBase] at heven
+      constructor
+      · simpa only [hqEq] using hodd
+      · simpa only [hqEq] using heven
+  exact ⟨⟨hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
+lemma dyadicQ_trace_prefixes {n k s : Nat} {word : List Nat}
+    (hn : 32 <= n) (hword : IsTheta n word)
+    (hhalf : s * dyadicQ n <= n / 2) (hk : k <= s) :
+    PrefixCongruent (oddTrace word) k (dyadicQ n) ∧
+      PrefixCongruent (evenTrace word) k (dyadicQ n) := by
+  have hnPos : 0 < n := by omega
+  have hhalfOdd : s * dyadicQ n <= (n + 1) / 2 := by omega
+  by_cases hlogSix : 6 <= Nat.log 2 n
+  · have hoddDenom :
+        (4 * s) * 2 ^ (Nat.log 2 n - 6) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_quarter (n := n) hlogSix
+      nlinarith
+    have hevenDenom : (4 * s) * 2 ^ (Nat.log 2 n - 6) <= n / 2 := by
+      have hh := dyadic_denominator_quarter (n := n) hlogSix
+      nlinarith
+    have hodd := forcedOddTracePrefixCongruent (N := n)
+      (j := Nat.log 2 n - 6) (k := k) (r := 4 * s) hnPos hword hoddDenom
+      (by omega)
+    have heven := forcedEvenTracePrefixCongruent (N := n)
+      (j := Nat.log 2 n - 6) (k := k) (r := 4 * s) (by omega) hword hevenDenom
+      (by omega)
+    have hlog := log_two_five_le hn
+    have hexponent : (Nat.log 2 n - 6) + 1 = Nat.log 2 n - 5 := by omega
+    rw [hexponent, dyadic_denominator_half hn] at hodd heven
+    exact ⟨hodd, heven⟩
+  · have hlog := log_two_five_le hn
+    have hlogEq : Nat.log 2 n = 5 := by omega
+    have hqEq : dyadicQ n = 2 := by simp [dyadicQ, hlogEq]
+    have hqPos := dyadicQ_pos n
+    have hsQ : s <= s * dyadicQ n := Nat.le_mul_of_pos_right s hqPos
+    have hoddTheta := isTheta_oddBase hword
+    have hevenTheta := isTheta_evenBase hword
+    have hoddLength : k <= (oddBase word).length := by
+      rw [isTheta_length hoddTheta]
+      omega
+    have hevenLength : k <= (evenBase word).length := by
+      rw [isTheta_length hevenTheta]
+      omega
+    have hoddBase := prefixCongruent_one_of_le_length hoddLength
+    have hevenBase := prefixCongruent_one_of_le_length hevenLength
+    have hodd := prefixCongruent_oddLift_of_base
+      (fun x hx => positive_of_mem_of_isTheta hoddTheta hx) hoddBase
+    have heven := prefixCongruent_evenLift_of_base hevenBase
+    rw [oddLift_oddBase] at hodd
+    rw [evenLift_evenBase] at heven
+    constructor
+    · simpa only [hqEq] using hodd
+    · simpa only [hqEq] using heven
+
+/-- **Proposition 2.9.** The second dyadic-threshold congruence blocks. -/
+theorem proposition_2_9_holds : proposition_2_9 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hhalf : 11 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 11 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordFour : PrefixCongruent word 3 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 3) (r := 11) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 5 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 5) (r := 22) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 11 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 11) (r := 44) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddFour : PrefixCongruent (oddTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 11) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 11) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 5 (2 * dyadicQ n) := by
+    have hdenom : 22 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 5) (r := 22) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 5 (2 * dyadicQ n) := by
+    have hdenom : 22 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 5) (r := 22) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne := dyadicQ_trace_prefixes (n := n) (word := word)
+    (k := 11) (s := 11) hn hword hhalf (by norm_num)
+  exact ⟨⟨hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
+/-- **Proposition 2.10.** The third dyadic-threshold congruence blocks. -/
+theorem proposition_2_10_holds : proposition_2_10 := by
+  intro n word hn hword
+  dsimp only
+  intro hthreshold
+  have hnPos : 0 < n := by omega
+  have hhalf : 14 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have hhalfOdd : 14 * dyadicQ n <= (n + 1) / 2 := by omega
+  have hwordEight : PrefixCongruent word 2 (8 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 2)
+      (k := 2) (r := 7) hnPos hword (by
+        rw [dyadic_denominator_four hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_eight hn] at h
+    exact h
+  have hwordFour : PrefixCongruent word 3 (4 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 3) (r := 14) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    exact h
+  have hwordTwo : PrefixCongruent word 7 (2 * dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 7) (r := 28) hnPos hword (by
+        simpa only [dyadicQ] using hthreshold) (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    exact h
+  have hwordOne : PrefixCongruent word 14 (dyadicQ n) := by
+    have h := forcedPrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 14) (r := 56) hnPos hword (by
+        have hh := dyadic_denominator_half hn
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hoddEight : PrefixCongruent (oddTrace word) 2 (8 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 7) hnPos hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    convert h using 1 <;> omega
+  have hevenEight : PrefixCongruent (evenTrace word) 2 (8 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+      (k := 2) (r := 7) (by omega) hword (by
+        rw [dyadic_denominator_two hn]
+        nlinarith) (by norm_num)
+    rw [dyadic_modulus_four hn] at h
+    convert h using 1 <;> omega
+  have hoddFour : PrefixCongruent (oddTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 14) hnPos hword hhalfOdd (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hevenFour : PrefixCongruent (evenTrace word) 3 (4 * dyadicQ n) := by
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+      (k := 3) (r := 14) (by omega) hword hhalf (by norm_num)
+    rw [dyadic_modulus_two hn] at h
+    convert h using 1 <;> omega
+  have hoddTwo : PrefixCongruent (oddTrace word) 7 (2 * dyadicQ n) := by
+    have hdenom : 28 * 2 ^ (Nat.log 2 n - 5) <= (n + 1) / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedOddTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 7) (r := 28) hnPos hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have hevenTwo : PrefixCongruent (evenTrace word) 7 (2 * dyadicQ n) := by
+    have hdenom : 28 * 2 ^ (Nat.log 2 n - 5) <= n / 2 := by
+      have hh := dyadic_denominator_half hn
+      nlinarith
+    have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 5)
+      (k := 7) (r := 28) (by omega) hword hdenom (by norm_num)
+    rw [dyadic_modulus_one hn] at h
+    exact h
+  have traceOne := dyadicQ_trace_prefixes (n := n) (word := word)
+    (k := 14) (s := 14) hn hword hhalf (by norm_num)
+  exact ⟨⟨hwordEight, hwordFour, hwordTwo, hwordOne⟩,
+    ⟨⟨hoddEight, hoddFour, hoddTwo, traceOne.1⟩,
+      ⟨hevenEight, hevenFour, hevenTwo, traceOne.2⟩⟩⟩
+
 end LeanProofs.Sharma2012
