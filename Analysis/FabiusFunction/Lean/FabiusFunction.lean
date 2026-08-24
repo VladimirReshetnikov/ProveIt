@@ -9,6 +9,7 @@ import FabiusFunction.MellinFinitePart
 import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
+import FabiusFunction.LaplacePeriodicSecondOrder
 
 /-!
 # Fabius function
