@@ -406,6 +406,125 @@ theorem corollary_2_7_2_holds : corollary_2_7_2 := by
         unfold Nat.ModEq
         omega
 
+lemma interleaving_word_eq_odd_append_even_of_doNotCommute
+    {n b c : Nat} {gammaOdd gammaEven word : List Nat}
+    (hword12 : IsTheta12 n word)
+    (hoddTrace : oddTrace word = gammaOdd)
+    (hevenTrace : evenTrace word = gammaEven)
+    (hbEnd : EndsWith gammaOdd b) (hcStart : StartsWith gammaEven c)
+    (hforced : DoNotCommute n b c) :
+    word = gammaOdd ++ gammaEven := by
+  have hwordNodup := isTheta_nodup hword12.1
+  have hoddNodup : gammaOdd.Nodup := by
+    rw [← hoddTrace]
+    exact hwordNodup.filter _
+  have hevenNodup : gammaEven.Nodup := by
+    rw [← hevenTrace]
+    exact hwordNodup.filter _
+  have hbefore : ∀ x ∈ gammaOdd, ∀ y ∈ gammaEven,
+      OccursLeftOf word x y := by
+    intro x hx y hy
+    have hxb : x = b ∨ OccursLeftOf word x b := by
+      by_cases hxbEq : x = b
+      · exact Or.inl hxbEq
+      · right
+        have htrace := occursLeftOf_of_mem_of_endsWith hoddNodup hbEnd hx hxbEq
+        apply occursLeftOf_of_sublist
+          (small := oddTrace word) (large := word) List.filter_sublist
+        rw [hoddTrace]
+        exact htrace
+    have hcy : c = y ∨ OccursLeftOf word c y := by
+      by_cases hcyEq : c = y
+      · exact Or.inl hcyEq
+      · right
+        have htrace := occursLeftOf_of_startsWith_of_mem
+          hevenNodup hcStart hy hcyEq
+        apply occursLeftOf_of_sublist
+          (small := evenTrace word) (large := word) List.filter_sublist
+        rw [hevenTrace]
+        exact htrace
+    have hbc := hforced word hword12
+    rcases hxb with rfl | hxb <;> rcases hcy with rfl | hcy
+    · exact hbc
+    · exact occursLeftOf_trans hwordNodup hbc hcy
+    · exact occursLeftOf_trans hwordNodup hxb hbc
+    · exact occursLeftOf_trans hwordNodup
+        (occursLeftOf_trans hwordNodup hxb hbc) hcy
+  let p : Nat → Bool := fun z => decide (Odd z)
+  obtain ⟨middle, hmiddle, hdecomp⟩ :=
+    eq_fixedPrefix_interleaving_fixedSuffix
+      (p := p) (oddFixed := gammaOdd) (oddActive := [])
+      (evenActive := []) (evenFixed := gammaEven) (word := word)
+      hwordNodup
+      (by
+        intro x hx
+        have hx' : x ∈ oddTrace word := by rw [hoddTrace]; exact hx
+        exact (List.mem_filter.mp hx').2)
+      (by simp)
+      (by simp)
+      (by
+        intro y hy
+        have hy' : y ∈ evenTrace word := by rw [hevenTrace]; exact hy
+        have hyEven : Even y := of_decide_eq_true (List.mem_filter.mp hy').2
+        exact decide_eq_false (Nat.not_odd_iff_even.mpr hyEven))
+      (by
+        change oddTrace word = gammaOdd ++ []
+        simpa using hoddTrace)
+      (by
+        change word.filter (fun z => !(decide (Odd z))) = [] ++ gammaEven
+        rw [filter_not_odd_eq_evenTrace]
+        simpa using hevenTrace)
+      (by simpa using hbefore)
+      (by simpa using hbefore)
+  have hmiddleNil : middle = [] := by
+    simpa [listInterleavings] using hmiddle
+  subst middle
+  simpa using hdecomp
+
+lemma interleavingClass_card_le_one_of_doNotCommute
+    {n b c : Nat} {gammaOdd gammaEven : List Nat}
+    (hbEnd : EndsWith gammaOdd b) (hcStart : StartsWith gammaEven c)
+    (hforced : DoNotCommute n b c) :
+    (interleavingClass n gammaOdd gammaEven).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro sigma hsigma tau htau
+  have hsigmaData : IsTheta12 n (permutationWord sigma) ∧
+      oddTrace (permutationWord sigma) = gammaOdd ∧
+      evenTrace (permutationWord sigma) = gammaEven := by
+    simpa [interleavingClass] using hsigma
+  have htauData : IsTheta12 n (permutationWord tau) ∧
+      oddTrace (permutationWord tau) = gammaOdd ∧
+      evenTrace (permutationWord tau) = gammaEven := by
+    simpa [interleavingClass] using htau
+  apply permutationWord_injective
+  rw [interleaving_word_eq_odd_append_even_of_doNotCommute
+      hsigmaData.1 hsigmaData.2.1 hsigmaData.2.2 hbEnd hcStart hforced,
+    interleaving_word_eq_odd_append_even_of_doNotCommute
+      htauData.1 htauData.2.1 htauData.2.2 hbEnd hcStart hforced]
+
+lemma doNotCommute_of_not_commute {n x y : Nat}
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hxOdd : Odd x) (hyEven : Even y) (hnot : ¬ Commute n x y) :
+    DoNotCommute n x y := by
+  intro word hword12
+  have hxMem := mem_of_mem_segment_of_isTheta hword12.1 hxSegment
+  have hyMem := mem_of_mem_segment_of_isTheta hword12.1 hySegment
+  have hxy : x ≠ y := by
+    rcases hxOdd with ⟨a, ha⟩
+    rcases hyEven with ⟨b, hb⟩
+    omega
+  rcases occursLeftOf_total_of_mem (isTheta_nodup hword12.1)
+      hxMem hyMem hxy with hleft | hright
+  · exact hleft
+  · exact False.elim (hnot ⟨word, hword12, hright⟩)
+
+lemma doNotCommute_not_commute {n x y : Nat}
+    (hforced : DoNotCommute n x y) : ¬ Commute n x y := by
+  rintro ⟨word, hword12, hright⟩
+  exact (occursLeftOf_asymm (isTheta_nodup hword12.1)
+    (hforced word hword12)) hright
+
+
 /-- The two end-block theorems already imply the sharp class-size bound for
 every interleaving class satisfying the paper's standing hypotheses.  This
 separates the finite binomial calculation from the remaining endpoint cases
