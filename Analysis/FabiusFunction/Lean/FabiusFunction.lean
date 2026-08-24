@@ -5,6 +5,7 @@ import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.PeriodicCorrection
 import FabiusFunction.MellinBose
+import FabiusFunction.MellinFinitePart
 
 /-!
 # Fabius function
