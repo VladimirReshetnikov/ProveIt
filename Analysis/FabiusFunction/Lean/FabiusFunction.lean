@@ -6,6 +6,8 @@ import FabiusFunction.NegativeLaplace
 import FabiusFunction.PeriodicCorrection
 import FabiusFunction.MellinBose
 import FabiusFunction.MellinFinitePart
+import FabiusFunction.BoseFinitePartIntegral
+import FabiusFunction.PeriodicMean
 
 /-!
 # Fabius function
