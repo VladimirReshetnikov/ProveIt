@@ -132,6 +132,8 @@ periodic correction.  The elementary small-`x` expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
 formalized verbatim and corrected by adding that term at the exact
 lower-Lambert phase.  The uncorrected claimed error is formally disproved.
+Exponentiating the corrected formula gives a proved asymptotic equivalent for
+the Fabius function itself.
 Finally, the proposed
 [quotient-of-exponentials fit](https://mathematica.stackexchange.com/questions/285919/approximation-of-the-fabius-function-with-a-quotient-of-exponentials)
 is little-o of the true displaced Fabius bump at the endpoint, so it cannot be
