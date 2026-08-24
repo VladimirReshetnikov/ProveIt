@@ -76,6 +76,39 @@ theorem choose_le_twenty_of_sharma_endblock_constraints
         _ ≤ Nat.choose 6 (6 / 2) := Nat.choose_le_middle v 6
         _ = 20 := by norm_num [Nat.choose]
 
+/-- Equality in the twenty-element numerical bound occurs exactly at the
+balanced active blocks `(3, 3)` or at one of the two extreme pairs `(19, 1)`
+and `(1, 19)`.  The classification needs only the length caps and the
+`length ≥ 5` implications; the stronger `length ≥ 4` implications used for
+the upper bound are unnecessary here. -/
+theorem choose_eq_twenty_iff_of_sharma_large_endblock_constraints
+    {u v : Nat} (hu : u ≤ 19) (hv : v ≤ 19)
+    (hfive : (5 ≤ u → v ≤ 1) ∧ (5 ≤ v → u ≤ 1)) :
+    Nat.choose (u + v) v = 20 ↔
+      (u = 3 ∧ v = 3) ∨ (u = 19 ∧ v = 1) ∨ (u = 1 ∧ v = 19) := by
+  constructor
+  · intro hchoose
+    by_cases huFive : 5 ≤ u
+    · have hvOne : v ≤ 1 := hfive.1 huFive
+      interval_cases v
+      · norm_num at hchoose
+      · simp only [Nat.choose_one_right] at hchoose
+        exact Or.inr (Or.inl ⟨by omega, rfl⟩)
+    · by_cases hvFive : 5 ≤ v
+      · have huOne : u ≤ 1 := hfive.2 hvFive
+        interval_cases u
+        · norm_num at hchoose
+        · have hchoose' : v + 1 = 20 := by
+            simpa only [Nat.add_comm, Nat.choose_succ_self_right] using hchoose
+          exact Or.inr (Or.inr ⟨rfl, by omega⟩)
+      · have huFour : u ≤ 4 := by omega
+        have hvFour : v ≤ 4 := by omega
+        interval_cases u <;> interval_cases v
+        all_goals norm_num [Nat.choose] at hchoose
+        all_goals simp
+  · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩) <;>
+      norm_num [Nat.choose]
+
 /-- The numerical bound is optimal under the weakened end-block constraints:
 the pair `(3, 3)` satisfies them and has exactly twenty interleavings. -/
 theorem sharma_endblock_constraints_twenty_is_sharp :
