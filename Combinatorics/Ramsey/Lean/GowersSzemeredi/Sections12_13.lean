@@ -165,9 +165,10 @@ def lemma_12_4 : Prop :=
       respectedArrangementCount 8 B phi
 
 /-- **Lemma 12.5.** The paper's sufficiently-large hypothesis is represented
-by the threshold `N0`. -/
+by the threshold `N0`.  The necessary range condition `eta ≤ 1`, omitted in
+the article, is explicit; without it the claimed lower bound is false. -/
 def lemma_12_5 : Prop :=
-  ∀ alpha beta eta : Real, 0 < alpha → 0 < beta → 0 < eta →
+  ∀ alpha beta eta : Real, 0 < alpha → 0 < beta → 0 < eta → eta ≤ 1 →
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
       ∀ (B : Finset (Pair N)) (phi : Pair N → ZMod N),
         (B.card : Real) = beta * (N : Real) ^ 2 →
