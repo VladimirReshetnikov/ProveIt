@@ -21657,6 +21657,145 @@ of the mass-balance boundary --- the coefficient-inflated top-routing predicted 
 Section~\ref{cw:survivors}, now with its scale pinned.  The two-dimensional escape
 corridor, if it exists at all, is exactly this razor-thin inflated channel.
 
+The analysis closes further.  For a negative tail $T^{(j)}_k<0$ at \emph{any} slice
+there is a trichotomy: either the annulus primes make the cocycle nonintegral outright;
+or some higher-slice level is a \emph{dense capturer}
+($M^{n+i'}\ge A^{m+j}$: every annulus prime is hit, with uniform count
+$\approx M^{n+i'}/A^{m+j}$); or the sparse capturers must cover the whole annulus, which
+the incidence bound blocks outside a thin near-dense boundary layer.  The dense channel
+is then starved by the balance weight itself: writing $\Phi=c\,M^iA^j$ for the $B_0$
+weight, the per-prime rescue bound $c^-A^{m+j}\le3c^+M^{n+i'}$ converts through the
+exact exponent identity
+$M^{n+i'}(M^iA^j)A^{m+j'}=(M^{i'}A^{j'})M^{n+i}A^{m+j}$ into
+\[
+ \Phi^-\,A^{m+j'}\le3\,\Phi^+\,M^{n+i},
+ \qquad\text{while admissibility gives}\qquad
+ M^{n+i}\,A\le A^{m+j'} :
+\]
+every cross-slice rescue costs at least one factor $A$ of $\Phi$-mass, the summed source
+kernel stays geometric, and hence the total $\Phi$-mass of negative slice tails is
+$O(1/A)$ of the positive mass.  The finite core is kernel-checked in the new module
+\lean{CrossSliceContraction} (\lean{phi_transport_identity}, \lean{phi_transport},
+\lean{phi_contraction_factor}), and a targeted exact experiment
+(\path{scripts/two_dim_dense_check.py}) confirms the starvation: on grids containing
+dense (capturer, slice) pairs, \emph{zero} of $27{,}000$ balance-nullspace directions
+survive the dense-rescue mass test.  Conclusion for the two-dimensional interface of
+Section~\ref{cw:survivors}: there is no cheap escape (all rescues are
+$\Phi$-starved or prime-starved) and no blanket contraction theorem either ---
+\emph{top-heavy} patterns, with every slice tail essentially nonnegative, satisfy the
+entire window layer.  The two-parameter route thus reduces, exactly as the
+one-parameter route did after the global contraction, to the sub-window primes of
+top-heavy patterns; the difference is that this reduction is now proved for the
+strictly larger two-parameter design space.
+
+That reduction can now be pushed to a sharp theorem, which removes the top-heavy corridor
+entirely.
+
+\begin{theorem}[Top-heavy collapse]\label{log:thm-topheavy}
+Let $c=(c_{ij})$ be integer coefficients on an admissible two-parameter grid, with strictly
+increasing window weights inside each slice, satisfying the balance
+$\sum_{i,j}c_{ij}M^iA^j=0$.  If \emph{every} slice tail sum is nonnegative
+($T^{(j)}_k=\sum_{l\ge k}c_{i_l,j}\ge0$ for all $j$ and all $k$), then $c\equiv0$.
+\end{theorem}
+
+\begin{proof}
+Fix a slice $j$ and write $w_l=M^{n+i_l}$ for its window weights, which are positive and
+strictly increasing.  Abel summation gives the exact decomposition
+\begin{equation}
+ S_j:=\sum_lc_{i_l,j}w_l
+ =T^{(j)}_0w_0+\sum_{k\ge1}T^{(j)}_k\bigl(w_k-w_{k-1}\bigr),
+ \label{log:eq-abel}
+\end{equation}
+in which every term is a product of a nonnegative tail with a nonnegative weight increment;
+hence $S_j\ge0$ for every slice.  The balance reads $\sum_jA^{j}S_j=0$ with $A^{j}>0$, so a
+sum of nonnegative terms vanishes and therefore $S_j=0$ for \emph{every} $j$.  Returning to
+\eqref{log:eq-abel} with $S_j=0$: a nonnegative decomposition summing to zero is termwise
+zero, so $T^{(j)}_0w_0=0$ and $T^{(j)}_k(w_k-w_{k-1})=0$ for all $k$; since $w_0>0$ and the
+increments are strictly positive, all tails of the slice vanish.  Finally
+$c_{i_l,j}=T^{(j)}_l-T^{(j)}_{l+1}=0$.
+\end{proof}
+
+Theorem~\ref{log:thm-topheavy} has a quantitative refinement that explains \emph{why} the
+collapse is forced, and locates where any surviving pattern must put its mass.  If a slice
+has all tails nonnegative, then a negative coefficient at index $l$ satisfies
+$c_l^-\le\sum_{l'>l}c_{l'}^+$ (immediately from $T_l\ge0$), while the window weights obey
+$w_{l'}\ge Mw_l$ for $l'>l$; hence
+\[
+ c_l^-w_l\;\le\;\frac1M\sum_{l'>l}c^+_{l'}w_{l'},
+ \qquad\text{so}\qquad
+ N_j\le\frac{s_j}{M}\,U_j,
+ \qquad
+ S_j\;\ge\;\Bigl(1-\frac{s_j}{M}\Bigr)U_j,
+\]
+where $U_j,N_j$ are the positive and negative window-weighted masses of the slice and
+$s_j$ its number of cells.  Since $M\ge2^{14}$, a top-heavy slice has mass essentially
+equal to its \emph{entire} positive mass: cancellation inside a top-heavy slice is
+impossible up to a factor $1-s_j/M$.  Feeding this into the balance shows that a surviving
+pattern must concentrate its weighted mass at \emph{low} slices, since the top slice then
+obeys $U_JA^J\le\bigl(s\,(m+J)\log A/(A-1)\bigr)\sum_{j}U_jA^{j}$ with a prefactor of order
+$10^{-5}$.
+
+Both nontrivial steps are kernel-verified in the new module \lean{AbelSliceMass}: the Abel
+identity and the resulting slice-mass positivity (\lean{abel_identity},
+\lean{slice_mass_nonneg}), and the sharp collapse from a vanishing mass
+(\lean{slice_vanishes_of_mass_zero}, with \lean{tail_sub_tail} and \lean{telescope}), together
+with the quantitative weight-gap bounds (\lean{neg_le_pos_above}, \lean{neg_weighted_le}).  An
+exact experiment (\path{scripts/two_dim_allslice.py}) confirms the theorem on truncated
+grids: imposing the all-slice tail condition on the exact balance nullspace leaves
+\emph{zero} survivors out of $14{,}787$ directions tested, whereas imposing it on the top
+slice alone leaves $68$.
+
+Theorem~\ref{log:thm-topheavy} closes the corridor that the sign-pattern search had
+isolated.  Combining it with the dichotomy and the $\Phi$-contraction gives the exact
+structure of what remains: \emph{a nonzero balanced integral two-parameter cocycle must
+carry a negative tail at a non-top slice, sustained entirely by cross-slice rescues, each
+of which loses at least a factor $A$ of $\Phi$-mass.}  The surviving question is therefore
+purely the multiplicity bookkeeping of those starved rescues --- a single, sharply posed
+finite question, in place of the open-ended ``design a two-dimensional construction''
+target of Section~\ref{cw:survivors}.
+
+Two exact facts sharpen that residual bookkeeping and are worth recording, because they
+replace the crude Legendre allowance by something rigid.
+
+\emph{Multiplicity one.}  A level $(i',j')$ can contribute a prime power to an annulus
+prime $p\asymp A^{m+j}$ only if $p^2\le A^{m+j'}$, i.e.\ only if $j'\ge m+2j$.  Throughout
+the mesoscopic range --- and on every grid inspected
+(\path{scripts/annulus_starvation.py}) --- every higher slice satisfies $j'<m+2j$, so
+\emph{the prime-power allowance vanishes identically}: each higher level either misses $p$
+or captures it exactly once.  The transport bound's additive term
+$2\bigl(1+\ell/t\bigr)$, which is what defeats naive counting in the one-parameter
+setting, is simply absent here.
+
+\emph{Exact double counting.}  Consequently, for a negative tail at slice $j$, index $k$,
+every annulus prime must be covered by a set of higher levels whose positive coefficients
+already sum to $-T^{(j)}_k$; and a level $(i',j')$ can cover at most $M^{n+i'}$ annulus
+primes, since an integer of size $A^{m+j'}$ has at most one prime factor of annulus size.
+Summing the covering requirement over all $P^{(j)}_k$ annulus primes gives the exact,
+coefficient-weighted necessity
+\begin{equation}
+ -T^{(j)}_k\;\cdot\;P^{(j)}_k
+ \;\le\;\sum_{j'>j}\sum_{i'}c^+_{i'j'}\,M^{n+i'},
+ \qquad
+ P^{(j)}_k\sim\frac{M^{n+i_k}-M^{n+i_{k-1}}}{(m+j)\log A},
+ \label{log:eq-doublecount}
+\end{equation}
+which is the rigorous form of the valuation-mass filter used in the sign-pattern search.
+Coefficient-free counting alone does \emph{not} close the lower slices --- the capacity
+$\sum_{j'>j,i'}M^{n+i'}$ exceeds the annulus prime count by some fifteen orders of
+magnitude on the grids inspected, while it is $-\infty$ at the top slice, recovering
+Theorem~\ref{log:thm-topheavy} --- so \eqref{log:eq-doublecount} must be run against the
+balances rather than alone.  That is exactly the remaining finite question.  (Control status: like the one-parameter global
+contraction, this argument holds verbatim for the integer controls, so it closes the
+two-parameter \emph{method}; it is not a route to the conjecture.)  A third exact layer is transversal to both:
+at the structural primes, Legendre gives exactly
+$v_2(\mathcal G)=\sum_{ij}c_{ij}\bigl(M^{n+i}+s_2(A^{m+j}-M^{n+i})-s_2(A^{m+j})\bigr)$
+(and its $v_3$ analogue), whose leading weight $M^{n+i}$ is independent of the slice ---
+a constraint neither the balances nor the window layer sees.  Adding the exact
+$v_2,v_3\ge0$ filter to the sign-pattern search leaves the marginal same-top corridor
+unchanged (its dominant coefficients are positive, so $\sigma$-positivity is automatic
+there) while excluding the opposite corner, where large negative coefficients sit at
+long windows.
+
 \statusexactcomp{} for the kernel computations.  The tail-sum theorem's finite core is
 now kernel-verified in \lean{TopSliceTailSum}: the exact window valuation
 $v_p\bigl((A)_{\underline K}\bigr)=1$ for $A-K<p\le A<2p$ (the unique multiple among the
@@ -22523,6 +22662,21 @@ $\ge0$) & tail-sum core \statuslean{} (\lean{TopSliceTailSum}); prime supply
 \statusknown{}; kernels \statusexactcomp &
 Section~\ref{log:two-dim-transport};
 \path{scripts/two_dim_transport.py} \\
+All-slice tail dichotomy; $\Phi$-contraction of cross-slice rescues (factor $\ge A$
+per rescue); dense-rescue starvation ($0/27{,}000$ directions survive) &
+$\Phi$-core \statuslean{} (\lean{CrossSliceContraction});
+\statusexactcomp{} experiment & Section~\ref{log:two-dim-transport};
+\path{scripts/two_dim_dense_check.py} \\
+Top-heavy collapse: all-slice nonnegative tails $+$ balance $\Rightarrow$ the two-parameter
+cocycle vanishes identically; remaining case is exactly cross-slice-rescued negative tails
+below the top slice & \statuslean{} core (\lean{AbelSliceMass}); experiment
+\statusexactcomp{} ($0/14{,}787$) & Theorem~\ref{log:thm-topheavy};
+\path{scripts/two_dim_allslice.py} \\
+Multiplicity one in the mesoscopic range (no prime-power allowance for $j'<m+2j$); exact
+double-counting necessity $-T^{(j)}_kP^{(j)}_k\le\sum_{j'>j}c^+M^{n+i'}$; counting alone
+starves only the top slice & \statusnew{}; grids \statusexactcomp &
+Section~\ref{log:two-dim-transport};
+\path{scripts/annulus_starvation.py} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Chebyshev trap lattices (block bound)}}\\
 Unconditional block bound $\limsup I(H)(\log H)^2/H^2\le32\log2\log3/9$; two-base
@@ -22833,6 +22987,14 @@ $(2^m,3^m)$; vanishing at every control pair \\
 \lean{.../TopSliceTailSum} & exact window valuation of a falling factorial at a prime
 above half the top ($v_p=1$ in the window, $0$ below, no error terms); exact tail-sum
 valuation of a signed nested-slice factorial product \\
+\lean{.../CrossSliceContraction} & exact transport-weight exponent identity; conversion
+of the per-prime rescue bound into balance weights ($\Phi^-A^{m+j'}\le3\Phi^+M^{n+i}$);
+admissibility contraction factor $M^{n+i}A\le A^{m+j'}$ \\
+\lean{.../AbelSliceMass} & Abel summation identity for slice tails, telescoping of weight
+increments, slice-mass positivity from nonnegative tails, the sharp collapse (a vanishing
+weighted mass with nonnegative tails and strictly increasing positive weights forces every
+coefficient to vanish), and the geometric weight-gap bounds crushing the negative mass of a
+top-heavy slice by a factor $1/M$ \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal

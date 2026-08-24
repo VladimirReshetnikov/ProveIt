@@ -29,38 +29,27 @@ private theorem eq63_rpow_identity {x : ℝ} (hx : 0 < x) :
   rw [ha, hb, hc]
   norm_num
 
-/-- **Iwaniec--Mozzochi (6.3), second part.**  On the main range, every
-Farey interval has length at least `x^(3/44)`.  Thus the implicit absolute
-constant in the stated lower bound may be chosen to be exactly one. -/
-theorem iwaniecMozzochi_eq63_holds : iwaniecMozzochi_eq63 := by
-  refine ⟨1, zero_lt_one, ?_⟩
-  intro x H M a c hmain hfarey
-  rcases hmain with ⟨hx, hxM, _, hH, hHupper, _, _, hMlower⟩
-  rcases hfarey with ⟨hc, hcH, _, _, _⟩
-  have hx0 : 0 < x := zero_lt_one.trans_le hx
-  have hM0 : 0 < M := (Real.rpow_pos_of_pos hx0 theta0).trans hxM
-  have hH0 : 0 < H := zero_lt_one.trans_le hH
-  have hc0 : 0 < (c : ℝ) := by exact_mod_cast (zero_lt_one.trans_le hc)
-  have hHupper' : H ≤ M * x ^ (-(7 : ℝ) / 22) := by
-    convert hHupper using 1
-    norm_num [theta0]
-  have hMlower' : x ^ ((19 : ℝ) / 44) < M := by
-    convert hMlower using 1
-    norm_num [theta0]
-  have hxneg0 : 0 ≤ x ^ (-(7 : ℝ) / 22) :=
-    (Real.rpow_pos_of_pos hx0 _).le
-  have hB0 : 0 ≤ M * x ^ (-(7 : ℝ) / 22) := mul_nonneg hM0.le hxneg0
+/-- An assumption-minimal numeric form of the constant-one lower bound in
+Iwaniec--Mozzochi (6.3).  It isolates the two scale comparisons used by the
+argument from the `InMainRange` and `InFareySet` packaging. -/
+theorem fareyLength_ge_rpow
+    (x H M : ℝ) (c : ℕ)
+    (hx : 0 < x) (hH : 0 < H) (hc : 0 < (c : ℝ))
+    (hcH : (c : ℝ) ≤ H)
+    (hHupper : H ≤ M * x ^ (-(7 : ℝ) / 22))
+    (hMlower : x ^ ((19 : ℝ) / 44) ≤ M) :
+    x ^ ((3 : ℝ) / 44) ≤ fareyLength x H M c := by
+  have hB0 : 0 ≤ M * x ^ (-(7 : ℝ) / 22) := hH.le.trans hHupper
   have hcH' : (c : ℝ) * H ≤ H * H :=
-    mul_le_mul_of_nonneg_right hcH hH0.le
+    mul_le_mul_of_nonneg_right hcH hH.le
   have hHsq : H * H ≤
       (M * x ^ (-(7 : ℝ) / 22)) * (M * x ^ (-(7 : ℝ) / 22)) :=
-    mul_le_mul hHupper' hHupper' hH0.le hB0
+    mul_le_mul hHupper hHupper hH.le hB0
   have hfactor0 : 0 ≤ x ^ ((3 : ℝ) / 44) * x :=
-    mul_nonneg (Real.rpow_nonneg hx0.le _) hx0.le
+    mul_nonneg (Real.rpow_nonneg hx.le _) hx.le
   have hMtwo0 : 0 ≤ M ^ 2 := sq_nonneg M
   unfold fareyLength
-  simp only [one_mul]
-  apply (le_div_iff₀ (mul_pos (mul_pos hx0 hc0) hH0)).2
+  apply (le_div_iff₀ (mul_pos (mul_pos hx hc) hH)).2
   calc
     x ^ ((3 : ℝ) / 44) * (x * (c : ℝ) * H) =
         (x ^ ((3 : ℝ) / 44) * x) * ((c : ℝ) * H) := by ring
@@ -72,11 +61,35 @@ theorem iwaniecMozzochi_eq63_holds : iwaniecMozzochi_eq63 := by
     _ = ((x ^ ((3 : ℝ) / 44) * x) *
           (x ^ (-(7 : ℝ) / 22) * x ^ (-(7 : ℝ) / 22))) * M ^ 2 := by
       ring
-    _ = x ^ ((19 : ℝ) / 44) * M ^ 2 := by rw [eq63_rpow_identity hx0]
-    _ ≤ M * M ^ 2 := mul_le_mul_of_nonneg_right hMlower'.le hMtwo0
+    _ = x ^ ((19 : ℝ) / 44) * M ^ 2 := by rw [eq63_rpow_identity hx]
+    _ ≤ M * M ^ 2 := mul_le_mul_of_nonneg_right hMlower hMtwo0
     _ = M ^ 3 := by ring
 
-private theorem shiftLength_eq_mul_rpow {x M : ℝ} :
+/-- **Iwaniec--Mozzochi (6.3), second part.**  On the main range, the
+representative scale `M^3 / (x c H)` is at least `x^(3/44)`.  Thus the
+implicit absolute constant in this scale lower bound may be chosen to be
+exactly one.  Comparing this proxy with the length of an actual Farey cell is
+a separate geometric obligation. -/
+theorem iwaniecMozzochi_eq63_holds : iwaniecMozzochi_eq63 := by
+  refine ⟨1, zero_lt_one, ?_⟩
+  intro x H M a c hmain hfarey
+  rcases hmain with ⟨hx, _, _, hH, hHupper, _, _, hMlower⟩
+  rcases hfarey with ⟨hc, hcH, _, _, _⟩
+  have hx0 : 0 < x := zero_lt_one.trans_le hx
+  have hH0 : 0 < H := zero_lt_one.trans_le hH
+  have hc0 : 0 < (c : ℝ) := by exact_mod_cast (zero_lt_one.trans_le hc)
+  simp only [one_mul]
+  apply fareyLength_ge_rpow x H M c hx0 hH0 hc0 hcH
+  · convert hHupper using 1
+    norm_num [theta0]
+  · calc
+      x ^ ((19 : ℝ) / 44) = x ^ ((9 : ℝ) / 2 * theta0 - 1) := by
+        congr 1
+        norm_num [theta0]
+      _ ≤ M := hMlower.le
+
+/-- The paper's Weyl-shift scale has the normalized exponent `-3/11`. -/
+theorem shiftLength_eq_mul_rpow {x M : ℝ} :
     shiftLength x M = M * x ^ (-(3 : ℝ) / 11) := by
   unfold shiftLength
   congr 1
