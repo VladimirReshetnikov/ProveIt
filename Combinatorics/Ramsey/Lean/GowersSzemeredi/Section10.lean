@@ -287,7 +287,9 @@ def IsSection10LocalDifferenceModel {N : Nat} {X : Type*}
       AlmostEvery (1 - theta) (D.fibre (D.index w + d)) fun z =>
         phi z - phi w = psi d
 
-/-- **Lemma 10.6.** Construction of a difference map on almost all of `B`. -/
+/-- **Lemma 10.6.** Construction of a difference map on almost all of `B`.
+The smallness bound on `rho`, inherited from the application of Lemma 10.5,
+is explicit: it is needed to compare translated fibres with the anchor fibre. -/
 def lemma_10_6 : Prop :=
   forall (N : Nat) [NeZero N] (X : Type*) [Fintype X] [DecidableEq X]
       (D : MultifunctionDomain N X) (phi : X -> ZMod N)
@@ -296,6 +298,7 @@ def lemma_10_6 : Prop :=
     Section10Setup D phi B alpha M sigma eta ->
     IsSection10Anchor D phi B alpha M N eta x ->
     IsSection10RegularComponent D phi B x alpha eta rho M N W ->
+    rho <= alpha ^ 2 / 32 ->
     sigma <= eta * rho * alpha ^ 2 / 16 ->
       exists B' : Finset (ZMod N), exists psi : ZMod N -> ZMod N,
         IsSection10LocalDifferenceModel D phi W B B' psi

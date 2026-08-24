@@ -31,6 +31,7 @@ import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs10Bohr
 import GowersSzemeredi.Proofs10Error
+import GowersSzemeredi.Proofs10Extraction
 import GowersSzemeredi.Proofs10Induced
 import GowersSzemeredi.Proofs10Selection
 import GowersSzemeredi.Proofs10Regular
