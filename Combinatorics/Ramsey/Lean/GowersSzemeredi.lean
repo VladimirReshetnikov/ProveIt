@@ -13,6 +13,7 @@ import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
 import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Uniformity
+import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs05_10
 
 /-!
