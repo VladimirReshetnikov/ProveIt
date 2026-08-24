@@ -669,4 +669,15 @@ theorem theorem_2_8_of_corollary_2_7_1
       Nat.mul_le_mul_left 2 hencode
     _ ≤ 21 * theta ((n + 1) / 2) * theta (n / 2) := hclasses
 
+/-- The global class bound already contains every combinatorial input for
+Sharma's exponential estimate. -/
+theorem theorem_2_9_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_9 :=
+  theorem_2_9_of_theorem_2_8 (theorem_2_8_of_corollary_2_7_1 h20)
+
+/-- The global class bound also implies the stated limit-superior bound. -/
+theorem theorem_2_10_of_corollary_2_7_1
+    (h20 : corollary_2_7_1) : theorem_2_10 :=
+  theorem_2_10_of_theorem_2_9 (theorem_2_9_of_corollary_2_7_1 h20)
+
 end LeanProofs.Sharma2012
