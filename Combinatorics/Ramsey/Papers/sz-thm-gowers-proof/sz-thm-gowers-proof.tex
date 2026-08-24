@@ -2785,23 +2785,68 @@ Let us now show that we can achieve the hypotheses that we have been assuming in
 
 % ed.: The proof applies Lemma 12.6 with $\eta=2^{-44}$; the printed
 % exponent $-73$ is inconsistent with that proof and with the standing
-% hypotheses used in Lemmas 13.4--13.10.
+% hypotheses used in Lemmas 13.4--13.10.  The proof below also retains the
+% Fourier-threshold losses omitted in the printed fibre-restriction argument.
+% The resulting weaker arrangement bound still gives the stated set-size
+% bound via the sharp estimate that the number of 8-arrangements in $A$ is at
+% most $|A|^{15}N^2$.
 Lemma 13.11. Let $f: \mathbb{Z}_{N} \rightarrow D$ be a function which fails to be cubically $\alpha$-uniform. Then there exists a set $A \subset \mathbb{Z}_{N}^{2}$ of size at least $(\alpha / 2)^{2^{66}} N^{2}$ and a function $\phi: A \rightarrow \mathbb{Z}_{N}$ such that, for every fixed $x, \phi(x, y)$ is a Freiman homomorphism of order 8 in $y$, for every fixed $y$ it is a homomorphism of order 8 in $x$, the proportion of all 8-arrangements in $A$ respected by $\phi$ is at least $1-2^{-44}$ and $\left|\Delta(f ; k, l)^{\wedge}(\phi(k, l))\right| \geqslant \alpha N / 2$ for every $(k, l) \in A$.
 
-Proof. By Lemma 3.1 (the easy implication of (ii) from (vi)) there is a set $A_{0} \subset \mathbb{Z}_{N}^{2}$ of size at least $\alpha N^{2} / 2$ and a function $\phi: A_{0} \rightarrow \mathbb{Z}_{N}$ such\\
+Proof. By Lemma 3.1 (using the implications (vii)$\Rightarrow$(vi)$\Rightarrow$(iii)$\Rightarrow$(ii)) there is a set $A_{0} \subset \mathbb{Z}_{N}^{2}$ of size at least $\alpha N^{2} / 2$ and a function $\phi: A_{0} \rightarrow \mathbb{Z}_{N}$ such\\
 that $\left|\Delta(f ; k, l)^{\wedge}(\phi(k, l))\right| \geqslant \alpha N / 2$ for every $(k, l) \in A_{0}$. For each $k$, let $A_{0, k}$ be the cross-section $\left\{l:(k, l) \in A_{0}\right\}$, let $\left|A_{0, k}\right|=\alpha_{k} N$ and define $\phi_{k}: A_{0, k} \rightarrow \mathbb{Z}_{N}$ by $\phi_{k}(l)=\phi(k, l)$.
 
-Fixing $k$ and applying Proposition 6.1 to the functions $\Delta(f ; k): \mathbb{Z}_{N} \rightarrow$ $D$ and $\phi_{k}: A_{0, k} \rightarrow \mathbb{Z}_{N}$, we find that there are at least $\alpha_{k}^{4} N^{3} \phi_{k}$-additive quadruples in $A_{0, k}$. Applying Corollary 7.6 with $B_{0}=A_{0, k}, \phi=\phi_{k}$ and $\alpha=\gamma=\alpha_{k}$, we obtain a subset $A_{1, k} \subset A_{0, k}$ of size at least $2^{-1882} \alpha_{k}^{1165} N$ such that the restriction of $\phi_{k}$ to $A_{1, k}$ is a Freiman homomorphism of order 8. Since the average of $\alpha_{k}$ is at least $\alpha / 2$, the union of the sets $A_{1, k}$ is a set $A_{1}$ of cardinality $\zeta N^{2}$, where $\zeta \geqslant 2^{-1882}(\alpha / 2)^{1165}=2^{-3047} \alpha^{1165}$. The restriction of $\phi(k, l)$ to $A_{1}$ is a homomorphism of order 8 in $l$ for any fixed $k$.
+Put $a=\alpha/2$.  Fixing $k$, the Fourier lower bound gives
 
-Repeating this argument for the second variable, we can pass to a further subset $A_{2} \subset A_{1}$ of cardinality at least $2^{-3047} \zeta^{1165} N^{2} \geqslant(\alpha / 2)^{2^{22}} N^{2}$ such that the restriction of $\phi$ to $A_{2}$ is a homomorphism of order 8 in each variable separately. Let $\beta=(\alpha / 2)^{2^{22}}$.
+$$
+\sum_{l\in A_{0,k}}\left|\Delta(f;k,l)^{\wedge}(\phi_k(l))\right|^2
+ \geqslant \alpha_k a^2N^3.
+$$
+
+Thus Proposition 6.1, applied to $\Delta(f;k)$ with parameter
+$\tau_k=\alpha_k a^2$, gives at least
+$\tau_k^4N^3=\alpha_k^4a^8N^3$ $\phi_k$-additive quadruples.  Corollary 7.6
+must therefore be applied with density $\alpha_k$ and additive parameter
+$\gamma_k=\alpha_ka^8$.  It produces $A_{1,k}\subset A_{0,k}$ of size at
+least
+
+$$
+2^{-1882}a^{9312}\alpha_k^{1165}N
+$$
+
+on which $\phi_k$ is a Freiman homomorphism of order 8.  Since the average
+of the $\alpha_k$ is at least $a$, convexity shows that the union $A_1$ of
+these sets has density at least $2^{-1882}a^{10477}$.  As $a\leqslant1/2$,
+this is at least $a^{12359}$.  The restriction of $\phi(k,l)$ to $A_1$ is a
+homomorphism of order 8 in $l$ for every fixed $k$.
+
+Repeating the corrected argument in the second variable, and using that
+subsets preserve the Freiman property already obtained in the first
+variable, gives a further subset $A_2\subset A_1$ whose density is at least
+
+$$
+2^{-1882}a^{9312}(a^{12359})^{1165}
+ \geqslant a^{14409429}\geqslant a^{2^{24}}.
+$$
+
+The restriction of $\phi$ to $A_2$ is therefore a homomorphism of order 8 in
+each variable separately.  Let $\beta=a^{2^{24}}$.
 
 We now apply Lemma 12.6 with $B=A_{2}, \gamma=\alpha / 2$ and $\eta=2^{-44}$. This yields a set $A$ with at least
 
 $$
-2^{-2^{37}} \beta^{2^{43}} \gamma^{2^{45}} \eta^{2^{36}} N^{32} \geqslant(\alpha / 2)^{2^{66}} N^{32}
+2^{-2^{37}} \beta^{2^{43}} \gamma^{2^{45}} \eta^{2^{36}} N^{32}
+ \geqslant a^{2^{68}}N^{32}
 $$
 
-8-arrangements, such that the proportion respected by $\phi$ is at least $1-2^{-44}$. Since the cardinality of such a set must be at least $(\alpha / 2)^{2^{66}} N^{2}$, the lemma is proved. \(\square\)
+8-arrangements, such that the proportion respected by $\phi$ is at least
+$1-2^{-44}$.  Here the displayed estimate follows from
+$2^{-2^{37}}\geqslant a^{2^{37}}$, $\eta^{2^{36}}\geqslant
+a^{44\cdot2^{36}}$, and
+$2^{67}+2^{45}+44\cdot2^{36}+2^{37}<2^{68}$.  Finally, the number of
+8-arrangements in any $A$ is at most $|A|^{15}N^2$.  If
+$|A|<a^{2^{66}}N^2$, this upper bound is strictly less than
+$a^{15\cdot2^{66}}N^{32}\leqslant a^{2^{68}}N^{32}$, a contradiction.
+Thus $|A|\geqslant(\alpha/2)^{2^{66}}N^2$, and the lemma is proved. \(\square\)
 
 We are now ready for the main result of this section.\\
 Theorem 13.12. Let $f$ be a function from $\mathbb{Z}_{N}$ to the closed unit disc. If $f$ is not cubically $\alpha$-uniform then there exist arithmetic progressions $P$ and $Q$ of size at least $N^{(1 / 2)^{(1 / \alpha)^{2^{70}}}}$ and with the same common difference, a subset $B \subset P \times Q$ of size at least $(\alpha / 2)^{2^{76}}|P||Q|$ and a bilinear function $\phi: P \times Q \rightarrow \mathbb{Z}_{N}$, such that $\left|\Delta(f ; k, l)^{\wedge}(\phi(k, l))\right| \geqslant \alpha N / 2$ for every $(k, l) \in B$.\\
