@@ -632,4 +632,104 @@ theorem eval_legendrePolynomial_neg (n : ℕ) (x : ℝ) :
       omega
     simp [hzero]
 
+/-! ## Translation to the shifted Legendre normalization -/
+
+private lemma iterate_derivative_comp_affine
+    (p : ℝ[X]) (a b : ℝ) (n : ℕ) :
+    derivative^[n] (p.comp (C a * X + C b)) =
+      a ^ n • (derivative^[n] p).comp (C a * X + C b) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih,
+        derivative_smul, derivative_comp]
+      simp only [derivative_add, derivative_mul, derivative_C, derivative_X,
+        zero_mul, mul_one, zero_add]
+      rw [pow_succ]
+      simp [smul_eq_C_mul]
+      ring
+
+/-- The ordinary and shifted Legendre conventions agree after the affine
+change of variables `x ↦ 1 - 2x`.  Mathlib's `shiftedLegendre` has integer
+coefficients, so its right-hand side is mapped coefficientwise to `ℝ`. -/
+theorem legendrePolynomial_comp_one_sub_two_X (n : ℕ) :
+    (legendrePolynomial n).comp (1 - C 2 * X) =
+      (Polynomial.shiftedLegendre n).map (Int.castRingHom ℝ) := by
+  apply mul_left_cancel₀ (show C (n.factorial : ℝ) ≠ 0 by
+    rw [C_ne_zero]
+    exact_mod_cast Nat.factorial_ne_zero n)
+  rw [show C (n.factorial : ℝ) *
+      (Polynomial.shiftedLegendre n).map (Int.castRingHom ℝ) =
+      derivative^[n] (X ^ n * (1 - X) ^ n : ℝ[X]) by
+    have h := congrArg (Polynomial.map (Int.castRingHom ℝ))
+      (Polynomial.factorial_mul_shiftedLegendre_eq n)
+    rw [← Polynomial.iterate_derivative_map] at h
+    simpa using h]
+  rw [legendrePolynomial, smul_comp]
+  have hcompose :
+      (((X ^ 2 - 1) ^ n : ℝ[X]).comp (1 - C 2 * X)) =
+        (-4 : ℝ) ^ n • (X ^ n * (1 - X) ^ n : ℝ[X]) := by
+    simp
+    rw [← mul_pow, ← smul_pow]
+    simp only [smul_eq_C_mul, map_neg, map_ofNat]
+    ring
+  have hderiv := iterate_derivative_comp_affine
+    ((X ^ 2 - 1) ^ n : ℝ[X]) (-2) 1 n
+  rw [show C (-2 : ℝ) * X + C 1 = 1 - C 2 * X by
+    simp only [map_neg, map_ofNat, C_1]
+    ring] at hderiv
+  have hscaled := congrArg (fun p : ℝ[X] ↦ derivative^[n] p) hcompose
+  rw [Polynomial.iterate_derivative_smul] at hscaled
+  rw [hderiv] at hscaled
+  calc
+    C (n.factorial : ℝ) * (2 ^ n * (n.factorial : ℝ))⁻¹ •
+        (derivative^[n] ((X ^ 2 - 1) ^ n : ℝ[X])).comp (1 - C 2 * X) =
+      ((-4 : ℝ) ^ n)⁻¹ •
+        ((-2 : ℝ) ^ n •
+          (derivative^[n] ((X ^ 2 - 1) ^ n : ℝ[X])).comp (1 - C 2 * X)) := by
+        simp only [smul_eq_C_mul]
+        repeat' rw [← mul_assoc]
+        rw [← C_mul, ← C_mul]
+        congr 2
+        field_simp
+        rw [← mul_pow]
+        norm_num
+    _ = ((-4 : ℝ) ^ n)⁻¹ •
+        ((-4 : ℝ) ^ n •
+          derivative^[n] (X ^ n * (1 - X) ^ n : ℝ[X])) := by rw [hscaled]
+    _ = derivative^[n] (X ^ n * (1 - X) ^ n : ℝ[X]) := by
+      rw [smul_smul]
+      field_simp
+      simp
+
+/-- The translated even Legendre polynomial in increasing monomial order:
+`P_(2n)(x - 1) = ∑_{j=0}^{2n} (-1)^j 2⁻ʲ C(2n,j) C(2n+j,j) x^j`. -/
+theorem eval_legendrePolynomial_even_sub_one (n : ℕ) (x : ℝ) :
+    (legendrePolynomial (2 * n)).eval (x - 1) =
+      ∑ j ∈ range (2 * n + 1),
+        (-1 : ℝ) ^ j * (2 : ℝ)⁻¹ ^ j *
+          (2 * n).choose j * (j + 2 * n).choose j * x ^ j := by
+  have hcomp := congrArg (fun p : ℝ[X] ↦ p.eval (x / 2))
+    (legendrePolynomial_comp_one_sub_two_X (2 * n))
+  have hparity := eval_legendrePolynomial_neg (2 * n) (1 - x)
+  have hleft : (legendrePolynomial (2 * n)).eval (x - 1) =
+      (legendrePolynomial (2 * n)).eval (1 - x) := by
+    rw [show x - 1 = -(1 - x) by ring, hparity]
+    rw [pow_mul]
+    norm_num
+  rw [hleft]
+  simp only [eval_comp, eval_sub, eval_one, eval_mul, eval_C, eval_X,
+    eval_map, Polynomial.shiftedLegendre, eval₂_finsetSum, eval₂_mul,
+    eval₂_C, eval₂_pow, eval₂_X] at hcomp
+  rw [show 1 - 2 * (x / 2) = 1 - x by ring] at hcomp
+  rw [hcomp]
+  apply sum_congr rfl
+  intro j hj
+  rw [show (2 * n + j).choose (2 * n) = (j + 2 * n).choose j by
+    simpa [add_comm] using
+      (Nat.choose_symm_add (a := j) (b := 2 * n)).symm]
+  simp only [map_mul, map_pow, map_neg, map_one, map_natCast]
+  rw [div_pow, div_eq_mul_inv, inv_pow]
+  ring
+
 end Fabius

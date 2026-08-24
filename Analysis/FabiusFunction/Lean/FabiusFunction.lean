@@ -10,7 +10,7 @@ import FabiusFunction.BoseFinitePartIntegral
 import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
-import FabiusFunction.FabiusLegendreSeries
+import FabiusFunction.FabiusTranslatedLegendreSeries
 
 /-!
 # Fabius function
@@ -24,5 +24,6 @@ false claims.  The public surface also includes the exact negative-Laplace
 product, its Gamma--zeta periodic correction, and the unconditional corrected
 sharp small-argument asymptotic.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
-function, with absolute uniform convergence on `[-1,1]`.
+function, with absolute uniform convergence on `[-1,1]`, and its translated
+monomial representation of the signed global Fabius function on `[0,2]`.
 -/
