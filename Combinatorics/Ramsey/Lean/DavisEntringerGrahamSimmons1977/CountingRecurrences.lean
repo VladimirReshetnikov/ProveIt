@@ -493,4 +493,52 @@ theorem odd_count_recurrence_holds : odd_count_recurrence := by
     Fintype.card (FreePermutation (2 * n + 1))
   simpa [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm] using hcard
 
+private theorem M_pos (n : Nat) (hn : 0 < n) : 0 < M n := by
+  classical
+  obtain ⟨p, hp⟩ := finite_ap_free_permutation_exists_holds n hn
+  unfold M
+  rw [Fintype.card_pos_iff]
+  exact ⟨⟨p, hp⟩⟩
+
+theorem fact_1_holds : fact_1 := by
+  intro n hn
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+      obtain ⟨k, hk | hk⟩ := Nat.even_or_odd' n
+      · subst n
+        have hkpos : 0 < k := by omega
+        have hkind : k < 2 * k := by omega
+        have hlower := ih k hkind (by omega : 1 ≤ k)
+        have hrec := even_count_recurrence_holds k hkpos
+        have hexp : 2 ^ (2 * k - 1) = 2 * (2 ^ (k - 1)) ^ 2 := by
+          rw [show 2 * k - 1 = (k - 1) + (k - 1) + 1 by omega]
+          simp only [pow_add, pow_one]
+          ring
+        rw [hexp]
+        calc
+          2 * (2 ^ (k - 1)) ^ 2 ≤ 2 * M k ^ 2 := by gcongr
+          _ ≤ M (2 * k) := hrec
+      · subst n
+        by_cases hkzero : k = 0
+        · subst k
+          norm_num
+          exact M_pos 1 Nat.one_pos
+        · have hkpos : 0 < k := Nat.pos_of_ne_zero hkzero
+          have hkind : k < 2 * k + 1 := by omega
+          have hksuccind : k + 1 < 2 * k + 1 := by omega
+          have hlower := ih k hkind (by omega : 1 ≤ k)
+          have hlowerSucc := ih (k + 1) hksuccind (by omega : 1 ≤ k + 1)
+          have hlowerSucc' : 2 ^ k ≤ M (k + 1) := by
+            simpa using hlowerSucc
+          have hrec := odd_count_recurrence_holds k hkpos
+          have hexp : 2 ^ (2 * k) = 2 * 2 ^ k * 2 ^ (k - 1) := by
+            rw [show 2 * k = k + (k - 1) + 1 by omega]
+            simp only [pow_add, pow_one]
+            ring
+          rw [show 2 * k + 1 - 1 = 2 * k by omega, hexp]
+          calc
+            2 * 2 ^ k * 2 ^ (k - 1) ≤ 2 * M (k + 1) * M k := by
+              gcongr
+            _ ≤ M (2 * k + 1) := hrec
+
 end LeanProofs.DavisEntringerGrahamSimmons1977
