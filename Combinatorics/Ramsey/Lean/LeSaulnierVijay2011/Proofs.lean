@@ -33,6 +33,39 @@ theorem M_four_representatives_holds : M_four_representatives :=
 theorem M_initial_values_holds : M_initial_values :=
   LeanProofs.RamseyPaperCommon.lesaulnier_M_initial_values
 
+/-- The Davis--Entringer--Graham--Simmons factorial bounds, transported
+across the shared finite-permutation counting function. -/
+theorem davis_counting_bounds_holds : davis_counting_bounds := by
+  intro n hn
+  have hM (m : Nat) :
+      M m = LeanProofs.DavisEntringerGrahamSimmons1977.M m :=
+    (LeanProofs.RamseyPaperCommon.davis_M_eq_lesaulnier_M m).symm
+  constructor
+  · rw [hM]
+    exact LeanProofs.DavisEntringerGrahamSimmons1977.fact_1_holds n hn
+  · rcases Nat.even_or_odd' n with ⟨k, hk | hk⟩
+    · subst n
+      have hkpos : 1 ≤ k := by omega
+      have hbound :=
+        (LeanProofs.DavisEntringerGrahamSimmons1977.fact_2_holds k hkpos).2
+      rw [← hM] at hbound
+      have hdiv1 : (2 * k + 1) / 2 = k := by omega
+      have hdiv2 : (2 * k + 2) / 2 = k + 1 := by omega
+      rw [hdiv1, hdiv2]
+      calc
+        M (2 * k) ≤ (k + 1) * Nat.factorial k ^ 2 := hbound
+        _ = Nat.factorial k * Nat.factorial (k + 1) := by
+          rw [Nat.factorial_succ]
+          ring
+    · subst n
+      have hbound :=
+        (LeanProofs.DavisEntringerGrahamSimmons1977.fact_2_holds (k + 1) (by omega)).1
+      rw [← hM] at hbound
+      have harg : 2 * (k + 1) - 1 = 2 * k + 1 := by omega
+      have hdiv1 : (2 * k + 1 + 1) / 2 = k + 1 := by omega
+      have hdiv2 : (2 * k + 1 + 2) / 2 = k + 1 := by omega
+      simpa [harg, hdiv1, hdiv2, pow_two] using hbound
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   intro n hn
   have h :=
