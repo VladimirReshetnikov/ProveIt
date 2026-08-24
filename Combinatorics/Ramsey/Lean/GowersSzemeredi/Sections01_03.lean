@@ -222,6 +222,7 @@ the proof of the paper's approximate-equivalence formulation. -/
 def lemma_3_1 : Prop :=
   forall (N d : Nat) [NeZero N] (f : ZMod N -> Complex), 1 <= d -> DiscValued f ->
     forall c1 c2 c3 : Real,
+      0 <= c1 -> c1 <= 1 -> 0 <= c2 -> c2 <= 1 -> 0 <= c3 -> c3 <= 1 ->
       (UniformOfDegree f c1 d <-> higherUniformConditionii f c1 d) /\
       (higherUniformConditionii f c1 d <-> higherUniformConditioniii f c1 d) /\
       (higherUniformConditionii f c1 d <-> higherUniformConditioniv f c1 d) /\
