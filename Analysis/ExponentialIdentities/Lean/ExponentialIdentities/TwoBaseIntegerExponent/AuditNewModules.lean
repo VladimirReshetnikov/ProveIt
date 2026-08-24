@@ -116,6 +116,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.CompactChartArea
 import ExponentialIdentities.TwoBaseIntegerExponent.ToricMonomialRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveDilationRigidity
 import ExponentialIdentities.TwoBaseIntegerExponent.TwoStarControlCharacterization
+import ExponentialIdentities.TwoBaseIntegerExponent.TopSliceTailSum
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
@@ -850,6 +851,9 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms DilationRigidity.consecutive_dilation_rigidity
 #print axioms TwoStarControl.twoStarCoeff_eq_zero_iff
 #print axioms TwoStarControl.twoStarCoeff_control
+#print axioms TopSlice.padicValNat_descFactorial_eq_one
+#print axioms TopSlice.padicValNat_descFactorial_eq_zero
+#print axioms TopSlice.top_slice_tail_sum
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384

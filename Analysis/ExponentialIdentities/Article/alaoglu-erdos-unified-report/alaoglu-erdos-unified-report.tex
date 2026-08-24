@@ -21640,10 +21640,31 @@ the top slice to be nonnegative --- with Huxley supplying primes in each annulus
 annulus has the same length exponent as its window) whenever the cells are mesoscopic.
 In particular a negative top-cell coefficient is impossible, and the top slice of any
 viable sign pattern is constrained by $s$ exact linear inequalities before any transport
-estimate is invoked.  \statusexactcomp{} for the kernel computations; the triangularity
-statements, the nested-annulus bookkeeping, and the exact first-order capture are
-elementary and Lean-ready (the one-window case is already kernel-verified in
-\lean{TerminalFactorialIndependence}).
+estimate is invoked.  A second exact experiment (\path{scripts/two_dim_signpatterns.py}) computes the
+integer nullspace of the three archimedean balances
+$\sum c_{ij}M^iA^j=\sum ic_{ij}M^iA^j=\sum jc_{ij}M^iA^j=0$ on small admissible supports
+and filters the sign patterns through the tail-sum constraint, the coverage necessity,
+and the valuation-mass necessity ($c^-\cdot\#\text{primes}\le\sum c^+\cdot\text{incidence}$).
+Two calibration lessons: instantiating the \emph{control} pair degenerates the balance
+lattice (relations of the shape $(A-3^{14})^2=0$) --- the control principle bites the
+experiment itself, so generic perturbed pairs must be used, as the external-prime
+report's protocol prescribes; and the counting bound without multiplicities is far too
+weak (it passes embedded vertical one-parameter families that the mass constraint then
+kills by factors of $10^5$).  After all exact constraints, the surviving sign patterns
+collapse to a single shape: a negative cell rescued by a \emph{same-top longer-window}
+positive with coefficient inflation ratio $\approx M^{\Delta i}$, sitting within $O(1)$
+of the mass-balance boundary --- the coefficient-inflated top-routing predicted by
+Section~\ref{cw:survivors}, now with its scale pinned.  The two-dimensional escape
+corridor, if it exists at all, is exactly this razor-thin inflated channel.
+
+\statusexactcomp{} for the kernel computations.  The tail-sum theorem's finite core is
+now kernel-verified in \lean{TopSliceTailSum}: the exact window valuation
+$v_p\bigl((A)_{\underline K}\bigr)=1$ for $A-K<p\le A<2p$ (the unique multiple among the
+factors is $p$ itself), the exact below-window vanishing for $p\le A-K$, and the exact
+tail-sum identity \lean{top_slice_tail_sum} for the signed product over a nested slice
+--- so the assertion ``integrality forces every realizable top-slice tail sum to be
+nonnegative'' rests on kernel-checked valuations, with only Huxley's prime supply in the
+annuli remaining classical.
 
 \subsection{Directions not yet exhausted}
 \label{log:directions}
@@ -22498,7 +22519,8 @@ Carlitz-model rigidity and quadratic target; certified sparse near-curve search 
 Two-dimensional transport kernels: sup-kernel escape direction, counting-model
 triangularity, top-cell pivot; exact top-slice tail-sum rigidity ($v_p(\mathcal F)$
 equals the slice tail sum on nested annuli; integrality forces all top-slice tail sums
-$\ge0$) & \statusexactcomp{}; tail-sum theorem \statusnew{} (elementary + Huxley) &
+$\ge0$) & tail-sum core \statuslean{} (\lean{TopSliceTailSum}); prime supply
+\statusknown{}; kernels \statusexactcomp &
 Section~\ref{log:two-dim-transport};
 \path{scripts/two_dim_transport.py} \\
 \midrule
@@ -22808,6 +22830,9 @@ two-power curve \\
 \lean{.../TwoStarControlCharacterization} & symmetric two-star coefficient array; the
 tensor vanishes identically iff the divisor vectors are those of an integer control
 $(2^m,3^m)$; vanishing at every control pair \\
+\lean{.../TopSliceTailSum} & exact window valuation of a falling factorial at a prime
+above half the top ($v_p=1$ in the window, $0$ below, no error terms); exact tail-sum
+valuation of a signed nested-slice factorial product \\
 \lean{.../FermatQuotientDeterminant} & exact Fermat quotient and power law modulo $p$; first
 local-log determinant interface and integral-power determinant vanishing \\
 \lean{.../ConsecutiveLogMeanBounds} & exact two-sided enclosure for the reciprocal
