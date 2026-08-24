@@ -98,6 +98,7 @@ import GowersSzemeredi.Proofs16BaseCaseLongBoxCover
 import GowersSzemeredi.Proofs16BaseCaseSingleGraph
 import GowersSzemeredi.Proofs16BaseCaseAssembly
 import GowersSzemeredi.Proofs16BaseCaseUnion
+import GowersSzemeredi.Proofs16BaseCaseEndpoint
 import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
