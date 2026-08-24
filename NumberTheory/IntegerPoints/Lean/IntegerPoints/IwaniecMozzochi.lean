@@ -325,24 +325,53 @@ def iwaniecMozzochi_eq66 : Prop :=
 /-- **(6.12)**: `A = x C M⁻²`. -/
 noncomputable def Ascale (x C M : ℝ) : ℝ := x * C / M ^ 2
 
+open Classical in
+/-- The half-open numerator interval `[A / 4, 2A)` which majorizes the
+`c`-dependent numerator ranges of the Farey fractions with `C ≤ c < 2C`.
+
+The inclusive lower endpoint is essential: (6.2) permits equality when
+`c = C`, so `A / 4 < a` would omit genuine Farey terms. -/
+noncomputable def fareyMajorantNumerators (A : ℝ) : Finset ℕ :=
+  Finset.Ico ⌈A / 4⌉₊ ⌈2 * A⌉₊
+
+open Classical in
+/-- The exact half-open denominator interval `[C, 2C)`. -/
+noncomputable def fareyDenominators (C : ℝ) : Finset ℕ :=
+  Finset.Ico ⌈C⌉₊ ⌈2 * C⌉₊
+
 /-- `F(m) = ∑_n σ(n/N) ψ_H(x/(m+n))`, the convolution of §5 specialised to
 `f(m) = ψ_H(x/m)` and `g(n) = σ(n/N)` (§6, §8). -/
 noncomputable def convF (χ σ : ℝ → ℝ) (x H N : ℝ) (m : ℕ) : ℝ :=
   ∑ᶠ n : ℕ, σ (n / N) * psiH χ H (x / (m + n))
 
-/-- **(6.11)**: `Δ(x, C, H, M) = (G/C) ∑_{C ≤ c < 2C} ∑_{A/4 < a < 2A, (a, c) = 1} |F(m(a/c))|`. -/
+open Classical in
+/-- The restricted contribution underlying **(6.11)**.  It sums only genuine
+Farey pairs from (6.2), inside the half-open rectangular range which will be
+used for the subsequent nonnegative majorization. -/
 noncomputable def deltaCHM (χ σ : ℝ → ℝ) (x C H M : ℝ) : ℝ :=
   Gscale x H M / C *
-    ∑ c ∈ Finset.Ico ⌈C⌉₊ ⌈2 * C⌉₊,
-      ∑ a ∈ (Finset.Ioo ⌊Ascale x C M / 4⌋₊ ⌈2 * Ascale x C M⌉₊).filter
+    ∑ c ∈ fareyDenominators C,
+      ∑ a ∈ (fareyMajorantNumerators (Ascale x C M)).filter
+          (fun a => InFareySet x H M a c),
+        |convF χ σ x H (shiftLength x M) (fareyPoint x a c)|
+
+/-- The rectangular nonnegative majorant in **(6.11)**.  Unlike `deltaCHM`,
+this retains every coprime pair in `[A/4, 2A) × [C, 2C)`.  Pointwise analytic
+theorems whose hypotheses contain `InFareySet` must be applied before passing
+to this larger sum, or through an explicit majorization argument. -/
+noncomputable def deltaCHMMajorant (χ σ : ℝ → ℝ) (x C H M : ℝ) : ℝ :=
+  Gscale x H M / C *
+    ∑ c ∈ fareyDenominators C,
+      ∑ a ∈ (fareyMajorantNumerators (Ascale x C M)).filter
           (fun a => Nat.Coprime a c),
         |convF χ σ x H (shiftLength x M) (fareyPoint x a c)|
 
 open Classical in
 /-- **(6.9) with (7.6)**: for the convolution weight `φ = ρ * η` of §5 with
 the nonzero kernel `ρ` supported in `[4, 5]` chosen in the paper, there are
-absolute `μ₁ > 0`, `C` such that for every `x, H, M` in the main range there is
-`s ∈ [0, 3]` with
+positive `μ₁` and a constant `C` (allowed by the quantifiers to depend on the
+fixed cutoffs `χ` and `ρ`) such that for every `x, H, M` in the main range
+there is `s ∈ [0, 3]` with
 `Δ(x, H, M) ≪ x^θ + ∑_{C = 2^j, μ₁ G < C ≤ H} Δ(x, C, H, M) + N`, where
 `Δ(x, C, H, M)` is formed with `σ = σ_s = ρ(· - s)`; the term `x^θ` is the
 bound (7.6) for the long-interval contribution `Δ₀(x, H, M)`.  Nonzeroness
@@ -523,6 +552,13 @@ noncomputable def Lscale (x C H M : ℝ) : ℝ := x * C * H * shiftLength x M / 
 /-- **(10.5)**: `K = x C N² M⁻³`. -/
 noncomputable def Kscale (x C M : ℝ) : ℝ := x * C * shiftLength x M ^ 2 / M ^ 3
 
+/-- A rational-power-free finite envelope for the integer `l`-range which can
+meet the supports of the Section 10 cutoffs.  The sharp comparison is
+`2⁻¹ᐟ² L < l < 2¹⁵ᐟ² L`; `[L/2, 256L]` is a convenient uniform
+superset shared by (10.6) and the later finite block decomposition. -/
+noncomputable def section12RelevantLRange (L : ℝ) : Finset ℤ :=
+  Finset.Icc ⌈L / 2⌉ ⌊256 * L⌋
+
 /-- **(10.4)** and **(10.7)**: `1 ≪ L ≪ C` and `x^{1/22} L ≪ K ≪ x^{1/11} L`
 for `μ₁ G < C ≤ H` on the main range. -/
 def iwaniecMozzochi_eq104_eq107 : Prop :=
@@ -540,7 +576,7 @@ def iwaniecMozzochi_eq106 : Prop :=
     ∃ μ₂ μ₃ : ℝ, 0 < μ₂ ∧ μ₂ < μ₃ ∧ ∀ j : ℕ, ∃ C₀ : ℝ,
       ∀ (x C H M : ℝ) (a c : ℕ) (k : ℝ) (l : ℤ),
         InMainRange x H M → InFareySet x H M a c → μ₁ * Gscale x H M < C → C ≤ H →
-        c ∈ Finset.Ico ⌈C⌉₊ ⌈2 * C⌉₊ → l ∈ Finset.Icc ⌈Lscale x C H M⌉ ⌊2 * Lscale x C H M⌋ →
+        c ∈ fareyDenominators C → l ∈ section12RelevantLRange (Lscale x C H M) →
         (k < μ₂ * Kscale x C M ∨ μ₃ * Kscale x C M < k) →
         ‖fourierI χ σ (gammaIM x a c) c H (shiftLength x M) k l‖ ≤
           C₀ * (x * H * shiftLength x M ^ 2 / M ^ 3 + |k| * H / C) ^ (-(j : ℝ)) ∧
@@ -560,9 +596,12 @@ noncomputable def imL2Norm (g : ℝ → ℝ) : ℝ := Real.sqrt (∫ t : ℝ, g 
 noncomputable def secondMomentFourier (f : ℝ → ℝ) : ℝ :=
   ∫ y : ℝ, y ^ 2 * ‖𝓕 (fun t : ℝ => (f t : ℂ)) y‖
 
-/-- A smooth function compactly supported in `(0, ∞)`. -/
+/-- A smooth function whose topological support is compact and contained in
+`(0, ∞)`.  Requiring only pointwise nonvanishing on positive arguments would
+not exclude `0` from the closure of the support. -/
 def IsSmoothCompactPos (f : ℝ → ℝ) : Prop :=
-  ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f ∧ HasCompactSupport f ∧ ∀ t : ℝ, f t ≠ 0 → 0 < t
+  ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f ∧ HasCompactSupport f ∧
+    tsupport f ⊆ Set.Ioi 0
 
 /-- **Lemma 11.1, (11.2)/(11.3)**: for `a, b > 0` and `f` smooth, compactly
 supported in `(0, ∞)`,
@@ -617,36 +656,81 @@ noncomputable def xCoeff (x : ℝ) (a c : ℕ) : Fin 4 → ℝ :=
     -(x ^ ((1 : ℝ) / 4) * ((a : ℝ) * c) ^ (-(3 : ℝ) / 4)),
     kappaIM x a c / 2 * x ^ ((1 : ℝ) / 4) * ((a : ℝ) * c) ^ (-(3 : ℝ) / 4)]
 
-/-- The bilinear form of (12.3),
-`𝓑_{t₁t₂}(𝐱; K, L) = ∑_{k ≍ K} ∑_{l ≍ L} k^{i(t₂-t₁)/2} l^{it₁-1} e(x₁ l + x₂ k l + x₃ k^{1/2} l + x₄ k^{-1/2} l)`. -/
+/-- The literal single-dyadic-block bilinear form of (12.3), with
+`k ∈ (K, 2K]` and `l ∈ (L, 2L]`.  The paper's comparable support is a
+finite union of such blocks; see `section12BigB`. -/
 noncomputable def imBilinearForm (x₁ x₂ x₃ x₄ t₁ t₂ K L : ℝ) : ℂ :=
   ∑ k ∈ dyadic K, ∑ l ∈ dyadic L,
     (k : ℂ) ^ (Complex.I / 2 * ((t₂ - t₁ : ℝ) : ℂ)) * (l : ℂ) ^ (Complex.I * (t₁ : ℂ) - 1) *
       e (x₁ * l + x₂ * k * l + x₃ * Real.sqrt k * l + x₄ * l / Real.sqrt k)
 
 open Classical in
-/-- `𝓑(A, C, K, L) = (G/C) ∑_{C ≤ c < 2C} ∑_{A/4 < a < 2A, (a, c) = 1} |𝓑_{t₁t₂}(𝐱(a, c); K, L)|`
-of (12.4), with the summation ranges of (6.11) (the paper prints `a ∼ A`,
-`c ∼ C`, which would omit `A/4 < a ≤ A`; cf. the `ed.` note in §12 of the tex). -/
+/-- The single-block majorant
+`𝓑(A, C, K, L) = (G/C) ∑_{C ≤ c < 2C} ∑_{A/4 ≤ a < 2A, (a, c) = 1}
+|𝓑_{t₁t₂}(𝐱(a, c); K, L)|` used in (12.4).  The inclusive lower
+endpoint corrects the endpoint inherited from (6.2). -/
 noncomputable def bigB (x G A C K L t₁ t₂ : ℝ) : ℝ :=
-  G / C * ∑ a ∈ Finset.Ioo ⌊A / 4⌋₊ ⌈2 * A⌉₊,
-    ∑ c ∈ (Finset.Ico ⌈C⌉₊ ⌈2 * C⌉₊).filter (fun c => Nat.Coprime a c),
+  G / C * ∑ a ∈ fareyMajorantNumerators A,
+    ∑ c ∈ (fareyDenominators C).filter (fun c => Nat.Coprime a c),
     ‖imBilinearForm (xCoeff x a c 0) (xCoeff x a c 1) (xCoeff x a c 2) (xCoeff x a c 3)
       t₁ t₂ K L‖
 
-/-- **(12.4)** with **(12.5)**: for `μ₁ G < C ≤ H` there are `t₁, t₂ ∈ ℝ` with
-`Δ(x, C, H, M) ≪ 𝓑(A, C, K, L) + G H M⁻² x^{45/44}`, and
-`G H M⁻² x^{45/44} ≍ x^{13/44}`. -/
-def iwaniecMozzochi_eq124_eq125 : Prop :=
+/-- The `j`-th `K` scale in the fixed comparable-block cover of Section 12. -/
+noncomputable def section12KBlockScale (K : ℝ) (j : Fin 8) : ℝ :=
+  (2 : ℝ) ^ (j : ℕ) * K
+
+/-- The `j`-th `L` scale in the fixed comparable-block cover of Section 12.
+Starting at `L/2` makes nine blocks cover `(L/2, 256L]`. -/
+noncomputable def section12LBlockScale (L : ℝ) (j : Fin 9) : ℝ :=
+  (2 : ℝ) ^ (j : ℕ) * (L / 2)
+
+open Classical in
+/-- The 72-block majorant needed by (12.4): eight `K` blocks and nine `L`
+blocks, with one common pair of Mellin parameters `t₁,t₂`. -/
+noncomputable def section12BigB (x G A C K L t₁ t₂ : ℝ) : ℝ :=
+  ∑ jK : Fin 8, ∑ jL : Fin 9,
+    bigB x G A C (section12KBlockScale K jK) (section12LBlockScale L jL) t₁ t₂
+
+/-- **(12.4)**, corrected finite-block form: for `μ₁ G < C ≤ H` there
+are common `t₁,t₂` for which the restricted Farey contribution is bounded
+by the 72-block bilinear majorant plus the lower-order remainder. -/
+def iwaniecMozzochi_eq124 : Prop :=
   ∀ (χ σ : ℝ → ℝ) (μ₁ : ℝ), IsDyadicPartition χ → IsSmoothWeight σ 4 8 → 0 < μ₁ →
-    ∃ C₀ : ℝ, ∀ x C H M : ℝ, InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
-      (∃ t₁ t₂ : ℝ, deltaCHM χ σ x C H M ≤
-        C₀ * (bigB x (Gscale x H M) (Ascale x C M) C (Kscale x C M) (Lscale x C H M) t₁ t₂ +
-          Gscale x H M * H * M ^ (-(2 : ℝ)) * x ^ ((45 : ℝ) / 44))) ∧
-      Gscale x H M * H * M ^ (-(2 : ℝ)) * x ^ ((45 : ℝ) / 44) ≤ C₀ * x ^ ((13 : ℝ) / 44) ∧
-      x ^ ((13 : ℝ) / 44) ≤ C₀ * (Gscale x H M * H * M ^ (-(2 : ℝ)) * x ^ ((45 : ℝ) / 44))
+    ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ x C H M : ℝ,
+      InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
+        ∃ t₁ t₂ : ℝ, deltaCHM χ σ x C H M ≤
+          C₀ * (section12BigB x (Gscale x H M) (Ascale x C M) C
+            (Kscale x C M) (Lscale x C H M) t₁ t₂ +
+            Gscale x H M * H * M ^ (-(2 : ℝ)) * x ^ ((45 : ℝ) / 44))
+
+/-- **(12.5)** as the exact scale identity valid on the main range. -/
+def iwaniecMozzochi_eq125 : Prop :=
+  ∀ x H M : ℝ, InMainRange x H M →
+    Gscale x H M * H * M ^ (-(2 : ℝ)) * x ^ ((45 : ℝ) / 44) =
+      x ^ ((13 : ℝ) / 44)
+
+/-- Catalogue conjunction for the corrected, logically separate equations
+(12.4) and (12.5). -/
+def iwaniecMozzochi_eq124_eq125 : Prop :=
+  iwaniecMozzochi_eq124 ∧ iwaniecMozzochi_eq125
 
 /-! ### §13: estimation of `𝓑(A, C, K, L)` -/
+
+open Classical in
+/-- The corrected majorant-range pair count associated to `𝓑₁`.  Unlike
+`fareyPairCount`, this uses the exact ranges from `bigB`: both numerators lie
+in `A / 4 ≤ a < 2A` and both denominators lie in `C ≤ c < 2C`.  Consequently
+it includes all nine ordered interactions among the three comparable
+numerator blocks, in particular the six cross-block interactions. -/
+noncomputable def fareyMajorantPairCount (Δ₁ Δ₂ A C : ℝ) : ℕ :=
+  ((((fareyMajorantNumerators A ×ˢ fareyDenominators C) ×ˢ
+      (fareyMajorantNumerators A ×ˢ fareyDenominators C)).filter
+    fun q : (ℕ × ℕ) × (ℕ × ℕ) =>
+      Nat.Coprime q.1.1 q.1.2 ∧ Nat.Coprime q.2.1 q.2.2 ∧
+        nearestIntDist ((modInv q.1.1 q.1.2 : ℝ) / q.1.2 -
+          (modInv q.2.1 q.2.2 : ℝ) / q.2.2) ≤ Δ₁ ∧
+        |((q.1.1 * q.1.2 : ℕ) : ℝ) - ((q.2.1 * q.2.2 : ℕ) : ℝ)| <
+          Δ₂ * A * C).card)
 
 open Classical in
 /-- `𝒩(Δ₁, Δ₂; A, C)`: the number of pairs `(a, c), (a₁, c₁)` with
@@ -661,7 +745,10 @@ noncomputable def fareyPairCount (Δ₁ Δ₂ A C : ℝ) : ℕ :=
 
 /-- **Theorem 4.1 of Bombieri–Iwaniec** (as quoted in §13): if `C ≪ A` and
 `Δ₁ C² ≫ 1`, then
-`𝒩(Δ₁, Δ₂; A, C) ≪ (1 + Δ₁ Δ₂ A C + Δ₁² A C)(A C)^{1+ε}`. -/
+`𝒩(Δ₁, Δ₂; A, C) ≪ (1 + Δ₁ Δ₂ A C + Δ₁² A C)(A C)^{1+ε}`.
+The source theorem uses a strict nearest-distance cutoff, whereas
+`fareyPairCount` uses `≤ Δ₁`; this standard weak-cutoff form follows by
+applying the source estimate at `2 * Δ₁` and absorbing the fixed factors. -/
 def bombieriIwaniec_theorem41 : Prop :=
   ∀ c₀ c₁ ε : ℝ, 0 < c₀ → 0 < c₁ → 0 < ε →
     ∃ C₀ : ℝ, ∀ Δ₁ Δ₂ A C : ℝ, 1 ≤ A → 1 ≤ C → 0 < Δ₁ → 0 < Δ₂ →
@@ -669,14 +756,73 @@ def bombieriIwaniec_theorem41 : Prop :=
       (fareyPairCount Δ₁ Δ₂ A C : ℝ) ≤
         C₀ * (1 + Δ₁ * Δ₂ * A * C + Δ₁ ^ 2 * A * C) * (A * C) ^ (1 + ε)
 
-/-- **(13.12)**: with `Δ₁ ≍ Y₂⁻¹ = (KL)⁻¹` and `Δ₂ ≍ x^{-1/4} (AC)^{3/4} Y₃⁻¹`,
-`𝓑₁ ≤ 𝒩(Δ₁, Δ₂; A, C) ≪ x⁻² C⁻¹ H⁻¹ N⁻⁵ M⁷ (AC)^{1+ε}`. -/
-def iwaniecMozzochi_eq1312 : Prop :=
+/-- The precise stronger spacing input needed for the corrected range in
+`bigB`.  It has the same asymptotic shape as `bombieriIwaniec_theorem41`, but
+counts the exact wide range, including cross-range numerator pairs and the
+half-open denominator endpoints.
+
+This is intentionally a separate premise.  A bound for the three diagonal
+dyadic counts alone does not bound the six cross-block counts, so this
+statement is not claimed to follow from `bombieriIwaniec_theorem41` without a
+mixed/comparable-range version of the analytic spacing theorem.  As in the
+quoted theorem, the analytic premise starts at `1 ≤ C`; the elementary
+`0 < C < 1` case is a separate finite-counting obligation. -/
+def bombieriIwaniec_theorem41_fareyMajorant : Prop :=
+  ∀ c₀ c₁ ε : ℝ, 0 < c₀ → 0 < c₁ → 0 < ε →
+    ∃ C₀ : ℝ, ∀ Δ₁ Δ₂ A C : ℝ, 1 ≤ A → 1 ≤ C → 0 < Δ₁ → 0 < Δ₂ →
+      C ≤ c₀ * A → c₁ ≤ Δ₁ * C ^ 2 →
+      (fareyMajorantPairCount Δ₁ Δ₂ A C : ℝ) ≤
+        C₀ * (1 + Δ₁ * Δ₂ * A * C + Δ₁ ^ 2 * A * C) * (A * C) ^ (1 + ε)
+
+/-- **The dyadic pair-count estimate underlying (13.12).**  With
+`Δ₁ ≍ Y₂⁻¹ = (KL)⁻¹` and
+`Δ₂ ≍ x^{-1/4} (AC)^{3/4} Y₃⁻¹`, the formal count with
+`a, a₁ ∈ (A, 2A]` is
+`≪ x⁻² C⁻¹ H⁻¹ N⁻⁵ M⁷ (AC)^{1+ε}`.  The paper's corrected `𝓑₁` uses the wider
+range `A/4 ≤ a < 2A`; covering its comparable dyadic subranges, including
+cross-range pairs, is a separate bridge and is not asserted by this
+declaration. -/
+def iwaniecMozzochi_eq1312_dyadicPairCount : Prop :=
   ∀ μ₁ μ ε : ℝ, 0 < μ₁ → 0 < μ → 0 < ε →
     ∃ C₀ : ℝ, ∀ x C H M : ℝ, InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
       (fareyPairCount (μ / (Kscale x C M * Lscale x C H M))
           (μ * x ^ (-(1 : ℝ) / 4) * (Ascale x C M * C) ^ ((3 : ℝ) / 4) *
             Kscale x C M ^ (-(1 : ℝ) / 2) / Lscale x C H M)
+          (Ascale x C M) C : ℝ) ≤
+        C₀ * (x ^ (-(2 : ℝ)) * C⁻¹ * H⁻¹ * shiftLength x M ^ (-(5 : ℝ)) * M ^ 7 *
+          (Ascale x C M * C) ^ (1 + ε))
+
+/-- The nominal-block majorant-range form of (13.12).  This is useful scale
+algebra, but does not yet quantify the finite comparable blocks required by
+the corrected Section 12 reduction. -/
+def iwaniecMozzochi_eq1312_nominalBlock : Prop :=
+  ∀ μ₁ μ ε : ℝ, 0 < μ₁ → 0 < μ → 0 < ε →
+    ∃ C₀ : ℝ, ∀ x C H M : ℝ, InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
+      (fareyMajorantPairCount (μ / (Kscale x C M * Lscale x C H M))
+          (μ * x ^ (-(1 : ℝ) / 4) * (Ascale x C M * C) ^ ((3 : ℝ) / 4) *
+            Kscale x C M ^ (-(1 : ℝ) / 2) / Lscale x C H M)
+          (Ascale x C M) C : ℝ) ≤
+        C₀ * (x ^ (-(2 : ℝ)) * C⁻¹ * H⁻¹ * shiftLength x M ^ (-(5 : ℝ)) * M ^ 7 *
+          (Ascale x C M * C) ^ (1 + ε))
+
+/-- **(13.12), corrected finite-block pair-count form.**  With
+`Δ₁ ≍ Y₂⁻¹ = (KL)⁻¹` and
+`Δ₂ ≍ x^{-1/4} (AC)^{3/4} Y₃⁻¹`, the count that actually contains `𝓑₁` has
+`A/4 ≤ a, a₁ < 2A` and `C ≤ c, c₁ < 2C`, and is
+`≪ x⁻² C⁻¹ H⁻¹ N⁻⁵ M⁷ (AC)^{1+ε}`.
+
+The constant is chosen before the `Fin 8 × Fin 9` block indices, so it is
+uniform over the full Section 12 aggregate. -/
+def iwaniecMozzochi_eq1312 : Prop :=
+  ∀ μ₁ μ ε : ℝ, 0 < μ₁ → 0 < μ → 0 < ε →
+    ∃ C₀ : ℝ, ∀ x C H M : ℝ, ∀ (jK : Fin 8) (jL : Fin 9),
+      InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
+      (fareyMajorantPairCount
+          (μ / (section12KBlockScale (Kscale x C M) jK *
+            section12LBlockScale (Lscale x C H M) jL))
+          (μ * x ^ (-(1 : ℝ) / 4) * (Ascale x C M * C) ^ ((3 : ℝ) / 4) *
+            section12KBlockScale (Kscale x C M) jK ^ (-(1 : ℝ) / 2) /
+              section12LBlockScale (Lscale x C H M) jL)
           (Ascale x C M) C : ℝ) ≤
         C₀ * (x ^ (-(2 : ℝ)) * C⁻¹ * H⁻¹ * shiftLength x M ^ (-(5 : ℝ)) * M ^ 7 *
           (Ascale x C M * C) ^ (1 + ε))
@@ -697,9 +843,9 @@ noncomputable def b2Count (μ X₃ X₄ K L : ℝ) : ℕ :=
       |(q.2 0 : ℝ) / Real.sqrt (q.1 0) + (q.2 1 : ℝ) / Real.sqrt (q.1 1) -
           (q.2 2 : ℝ) / Real.sqrt (q.1 2) - (q.2 3 : ℝ) / Real.sqrt (q.1 3)| ≤ μ / X₄).card
 
-/-- **(13.13)**: with `X₃ = X₄ = x^{1/4} (AC)^{-3/4}`, `𝓑₂ ≪ (KL)^{2+ε}` (from
-Theorem 14.1, ignoring (13.8)). -/
-def iwaniecMozzochi_eq1313 : Prop :=
+/-- The nominal-block form of (13.13), at the exact scales `Kscale` and
+`Lscale`. -/
+def iwaniecMozzochi_eq1313_nominalBlock : Prop :=
   ∀ μ₁ μ ε : ℝ, 0 < μ₁ → 0 < μ → 0 < ε →
     ∃ C₀ : ℝ, ∀ x C H M : ℝ, InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
       (b2Count μ (x ^ ((1 : ℝ) / 4) * (Ascale x C M * C) ^ (-(3 : ℝ) / 4))
@@ -707,12 +853,34 @@ def iwaniecMozzochi_eq1313 : Prop :=
           (Kscale x C M) (Lscale x C H M) : ℝ) ≤
         C₀ * (Kscale x C M * Lscale x C H M) ^ (2 + ε)
 
-/-- **§13, final bound**: `𝓑(A, C, K, L) ≪ x^{7/22 + ε}` (from
-`𝓑⁴ ≪ x^{14/11 + ε}`), uniformly in `t₁, t₂`. -/
-def iwaniecMozzochi_section13_bigBBound : Prop :=
+/-- **(13.13)**, uniformly over every block in the corrected Section 12
+cover.  The constant is chosen before the two finite block indices. -/
+def iwaniecMozzochi_eq1313 : Prop :=
+  ∀ μ₁ μ ε : ℝ, 0 < μ₁ → 0 < μ → 0 < ε →
+    ∃ C₀ : ℝ, ∀ x C H M : ℝ, ∀ (jK : Fin 8) (jL : Fin 9),
+      InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
+      (b2Count μ (x ^ ((1 : ℝ) / 4) * (Ascale x C M * C) ^ (-(3 : ℝ) / 4))
+          (x ^ ((1 : ℝ) / 4) * (Ascale x C M * C) ^ (-(3 : ℝ) / 4))
+          (section12KBlockScale (Kscale x C M) jK)
+          (section12LBlockScale (Lscale x C H M) jL) : ℝ) ≤
+        C₀ * (section12KBlockScale (Kscale x C M) jK *
+          section12LBlockScale (Lscale x C H M) jL) ^ (2 + ε)
+
+/-- The nominal single-block version of the Section 13 final estimate. -/
+def iwaniecMozzochi_section13_bigBBound_nominalBlock : Prop :=
   ∀ μ₁ ε : ℝ, 0 < μ₁ → 0 < ε →
     ∃ C₀ : ℝ, ∀ x C H M t₁ t₂ : ℝ, InMainRange x H M → μ₁ * Gscale x H M < C → C ≤ H →
       bigB x (Gscale x H M) (Ascale x C M) C (Kscale x C M) (Lscale x C H M) t₁ t₂ ≤
+        C₀ * x ^ (theta0 + ε)
+
+/-- **§13, final bound** for the full 72-block aggregate, uniformly in the
+common Mellin parameters `t₁,t₂`. -/
+def iwaniecMozzochi_section13_bigBBound : Prop :=
+  ∀ μ₁ ε : ℝ, 0 < μ₁ → 0 < ε →
+    ∃ C₀ : ℝ, ∀ x C H M t₁ t₂ : ℝ, InMainRange x H M →
+      μ₁ * Gscale x H M < C → C ≤ H →
+      section12BigB x (Gscale x H M) (Ascale x C M) C
+          (Kscale x C M) (Lscale x C H M) t₁ t₂ ≤
         C₀ * x ^ (theta0 + ε)
 
 /-- **§13, conclusion**: `Δ(x, C, H, M) ≪ x^{7/22 + ε}` for `C, H, M` in
