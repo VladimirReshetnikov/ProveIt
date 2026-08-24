@@ -6519,4 +6519,188 @@ lemma sixteen_mul_dyadicQ_le {n : Nat} (hn : 16 <= n) :
     ring]
   exact hpow
 
+
+lemma oddTrace_reversal_eq (word : List Nat) :
+    oddTrace (reversal word) = reversal (oddTrace word) := by
+  simp [oddTrace, trace, reversal]
+
+lemma startsWith_oddBase_of_oddTrace {word : List Nat} {a : Nat}
+    (h : StartsWith (oddTrace word) a) :
+    StartsWith (oddBase word) ((a + 1) / 2) := by
+  unfold StartsWith at h ⊢
+  simp only [oddBase, List.head?_map, h, Option.map_some]
+
+lemma occursLeftOf_oddTrace_of_oddBase {word : List Nat} {x y : Nat}
+    (hx : Odd x) (hy : Odd y)
+    (h : OccursLeftOf (oddBase word) ((x + 1) / 2) ((y + 1) / 2)) :
+    OccursLeftOf (oddTrace word) x y := by
+  have hlift := occursLeftOf_map (fun z : Nat => 2 * z - 1) h
+  change OccursLeftOf (oddLift (oddBase word))
+    (2 * ((x + 1) / 2) - 1) (2 * ((y + 1) / 2) - 1) at hlift
+  rw [oddLift_oddBase] at hlift
+  rcases hx with ⟨X, hx⟩
+  rcases hy with ⟨Y, hy⟩
+  convert hlift using 1 <;> omega
+
+lemma oddEpilogue_closed_left {n : Nat} {gamma : List Nat} {x z : Nat}
+    (hgamma : IsTheta n gamma)
+    (hx : x ∈ epilogue n (oddTrace gamma))
+    (hzx : OccursLeftOf (oddTrace (reversal gamma)) z x) :
+    z ∈ epilogue n (oddTrace gamma) := by
+  have htraceNodup : (oddTrace (reversal gamma)).Nodup :=
+    (isTheta_nodup (isTheta_reversal hgamma)).filter _
+  have hx' : x ∈ prologue n (oddTrace (reversal gamma)) := by
+    simpa only [epilogue, oddTrace_reversal_eq] using hx
+  have hz' := mem_prologue_of_occursLeftOf_mem_prologue htraceNodup hx' hzx
+  simpa only [epilogue, oddTrace_reversal_eq] using hz'
+
+/-- The odd-trace version of Theorem 2.4's forcing rule, oriented from the
+right endpoint of the original odd trace. -/
+lemma oddEpilogue_forced_middle {n : Nat} {gamma : List Nat}
+    {first x y z : Nat}
+    (hgamma : IsTheta n gamma)
+    (hfirst : EndsWith (oddTrace gamma) first)
+    (hxSegment : x ∈ segment n) (hySegment : y ∈ segment n)
+    (hzSegment : z ∈ segment n)
+    (hfirstOdd : Odd first) (hxOdd : Odd x) (hyOdd : Odd y) (hzOdd : Odd z)
+    (hmean : x + y = 2 * z)
+    (hfirstZ : first ≠ z) (hfirstX : first ≠ x)
+    (hdegree :
+      binaryCongruenceDegree ((first + 1) / 2) ((x + 1) / 2) <
+        binaryCongruenceDegree ((first + 1) / 2) ((z + 1) / 2))
+    (hxEpilogue : x ∈ epilogue n (oddTrace gamma)) :
+    z ∈ epilogue n (oddTrace gamma) := by
+  let word := reversal gamma
+  have hword : IsTheta n word := isTheta_reversal hgamma
+  have hbase : IsTheta ((n + 1) / 2) (oddBase word) := isTheta_oddBase hword
+  have htraceStart : StartsWith (oddTrace word) first := by
+    simpa only [word, oddTrace_reversal_eq] using startsWith_reversal_of_endsWith hfirst
+  have hbaseStart : StartsWith (oddBase word) ((first + 1) / 2) :=
+    startsWith_oddBase_of_oddTrace htraceStart
+  have hxBase := oddHalf_mem_segment hxSegment hxOdd
+  have hyBase := oddHalf_mem_segment hySegment hyOdd
+  have hzBase := oddHalf_mem_segment hzSegment hzOdd
+  have hmeanBase : (x + 1) / 2 + (y + 1) / 2 = 2 * ((z + 1) / 2) := by
+    rcases hxOdd with ⟨X, hx⟩
+    rcases hyOdd with ⟨Y, hy⟩
+    rcases hzOdd with ⟨Z, hz⟩
+    omega
+  have hfirstZBase : (first + 1) / 2 != (z + 1) / 2 := by
+    have hne : (first + 1) / 2 ≠ (z + 1) / 2 := by
+      intro heq
+      rcases hfirstOdd with ⟨F, hf⟩
+      rcases hzOdd with ⟨Z, hz⟩
+      exact hfirstZ (by omega)
+    simpa using hne
+  have hfirstXBase : (first + 1) / 2 != (x + 1) / 2 := by
+    have hne : (first + 1) / 2 ≠ (x + 1) / 2 := by
+      intro heq
+      rcases hfirstOdd with ⟨F, hf⟩
+      rcases hxOdd with ⟨X, hx⟩
+      exact hfirstX (by omega)
+    simpa using hne
+  have hforced := theorem_2_4_holds ((n + 1) / 2) (oddBase word)
+    ((first + 1) / 2) ((x + 1) / 2) ((y + 1) / 2) ((z + 1) / 2)
+    hbase hbaseStart hxBase hyBase hzBase hmeanBase hfirstZBase hfirstXBase hdegree
+  have htraceOccurs : OccursLeftOf (oddTrace word) z x :=
+    occursLeftOf_oddTrace_of_oddBase hzOdd hxOdd hforced.1
+  exact oddEpilogue_closed_left hgamma hxEpilogue (by simpa only [word] using htraceOccurs)
+
+lemma factorization_five_mul_pow_two (k : Nat) :
+    (5 * 2 ^ k).factorization 2 = k := by
+  rw [Nat.factorization_mul (by norm_num : 5 ≠ 0)
+    (pow_ne_zero k (by norm_num : 2 ≠ 0))]
+  norm_num [Nat.factorization_pow]
+
+lemma dyadicQ_four_pow (n : Nat) : 4 * dyadicQ n = 2 ^ (Nat.log 2 n - 4 + 2) := by
+  simp only [dyadicQ, pow_add]
+  norm_num
+  ring
+
+lemma dyadicQ_eight_pow (n : Nat) : 8 * dyadicQ n = 2 ^ (Nat.log 2 n - 4 + 3) := by
+  simp only [dyadicQ, pow_add]
+  norm_num
+  ring
+
+/-- Once the last odd entry lies between the fourth and sixth dyadic levels,
+its immediately preceding congruence-class value cannot remain in the odd
+epilogue. -/
+lemma dyadic_predecessor_not_mem_oddEpilogue {n : Nat} {gamma : List Nat}
+    {b1 : Nat}
+    (hgamma : IsTheta n gamma)
+    (hbEnd : EndsWith (oddTrace gamma) b1)
+    (hbLower : b1 ∈ lowerHalf n)
+    (hbOdd : Odd b1)
+    (hbEight : 8 * dyadicQ n < b1)
+    (hbSixteen : b1 < 16 * dyadicQ n) :
+    b1 - 2 * dyadicQ n ∉ epilogue n (oddTrace gamma) := by
+  let word := reversal gamma
+  let baseWord := oddBase word
+  let a1 := (b1 + 1) / 2
+  let e := Nat.log 2 n - 4
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hword : IsTheta n word := isTheta_reversal hgamma
+  have hbase : IsTheta ((n + 1) / 2) baseWord := by
+    simpa only [baseWord] using isTheta_oddBase hword
+  have htraceStart : StartsWith (oddTrace word) b1 := by
+    simpa only [word, oddTrace_reversal_eq] using startsWith_reversal_of_endsWith hbEnd
+  have hbaseStart : StartsWith baseWord a1 := by
+    simpa only [baseWord, a1] using startsWith_oddBase_of_oddTrace htraceStart
+  have haFour : 4 < a1 := by
+    simp only [a1, q] at *
+    omega
+  have hpowLower : 2 ^ (e + 2) < a1 := by
+    rw [show 2 ^ (e + 2) = 4 * q by
+      simp only [e, q, dyadicQ, pow_add]
+      norm_num
+      ring]
+    simp only [a1]
+    omega
+  have hpowUpper : a1 <= 2 ^ ((e + 2) + 1) := by
+    rw [show 2 ^ ((e + 2) + 1) = 8 * q by
+      simp only [e, q, dyadicQ]
+      rw [show (Nat.log 2 n - 4 + 2) + 1 = Nat.log 2 n - 4 + 3 by omega,
+        pow_add]
+      norm_num
+      ring]
+    simp only [a1]
+    omega
+  have hlemma := lemma_2_3_holds ((n + 1) / 2) baseWord a1 (e + 2)
+    hbase hbaseStart haFour hpowLower hpowUpper
+  dsimp only at hlemma
+  have huEq : 2 ^ (e + 2 - 2) = q := by
+    simp only [e, q, dyadicQ]
+    congr 1
+  rw [huEq] at hlemma
+  have hambient : a1 + 2 * q <= (n + 1) / 2 := by
+    simp only [lowerHalf, Finset.mem_Icc] at hbLower
+    simp only [a1]
+    omega
+  have hbefore := hlemma.2.2.2.1 hambient
+  intro hpred
+  have hpredOdd : Odd (b1 - 2 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    refine ⟨B - q, ?_⟩
+    omega
+  have hhighOdd : Odd (b1 + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hhighBase : (b1 + 4 * q + 1) / 2 = a1 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    simp only [a1]
+    omega
+  have hpredBase : (b1 - 2 * q + 1) / 2 = a1 - q := by
+    rcases hbOdd with ⟨B, hb⟩
+    simp only [a1]
+    omega
+  have htraceBefore : OccursLeftOf (oddTrace word) (b1 + 4 * q) (b1 - 2 * q) := by
+    apply occursLeftOf_oddTrace_of_oddBase hhighOdd hpredOdd
+    rw [hhighBase, hpredBase]
+    simpa only [baseWord] using hbefore
+  have hhighEpi := oddEpilogue_closed_left hgamma hpred (by
+    simpa only [word] using htraceBefore)
+  have hhighLe := oddEpilogue_entry_le_last hgamma hbEnd hbLower hhighEpi
+  omega
+
 end LeanProofs.Sharma2012
