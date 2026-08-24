@@ -28,6 +28,7 @@ import GowersSzemeredi.Proofs12
 import GowersSzemeredi.Proofs13Basic
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
+import GowersSzemeredi.Proofs14Arrangements
 import GowersSzemeredi.Proofs14Product
 import GowersSzemeredi.Proofs15LevelSets
 import GowersSzemeredi.Proofs16Basic
