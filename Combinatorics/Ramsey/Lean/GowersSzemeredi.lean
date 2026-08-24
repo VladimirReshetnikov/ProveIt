@@ -11,6 +11,7 @@ import GowersSzemeredi.Section16
 import GowersSzemeredi.Sections17_18
 import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
+import GowersSzemeredi.Proofs01QuantitativeHeadline
 import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.Proofs02PhasePartition
@@ -28,18 +29,26 @@ import GowersSzemeredi.Proofs03Minkowski
 import GowersSzemeredi.Proofs03CubeUpper
 import GowersSzemeredi.Proofs03Interval
 import GowersSzemeredi.Proofs05FourierInterval
+import GowersSzemeredi.Proofs05Weyl
 import GowersSzemeredi.Proofs05MissingInterval
+import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs05Downstream
+import GowersSzemeredi.Proofs05Lemma14
+import GowersSzemeredi.Proofs05PhaseRemoval
+import GowersSzemeredi.Proofs05PolynomialPartition
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
 import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07DRC
+import GowersSzemeredi.Proofs07FreimanTheorems
 import GowersSzemeredi.Proofs07FreimanRestriction
 import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
 import GowersSzemeredi.Proofs07SimultaneousLinearity
 import GowersSzemeredi.Proofs08QuadraticBias
+import GowersSzemeredi.Proofs08Coloring
 import GowersSzemeredi.Proofs09Moments
 import GowersSzemeredi.Proofs09Restriction
 import GowersSzemeredi.Proofs10Counting
@@ -60,8 +69,10 @@ import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs12Combination
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
+import GowersSzemeredi.Proofs13QuadraticRecurrence
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
@@ -75,12 +86,19 @@ import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16BaseCaseCore
+import GowersSzemeredi.Proofs16BaseCaseRestriction
+import GowersSzemeredi.Proofs16BaseCaseExtraction
+import GowersSzemeredi.Proofs16BaseCaseQuantitative
+import GowersSzemeredi.Proofs16BaseCaseCoarsePartition
+import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
+import GowersSzemeredi.Proofs18Consequences
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
