@@ -1,5 +1,6 @@
 import FabiusFunction.Basic
 import FabiusFunction.ThueMorsePrefix
+import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.SpecificLimits.Normed
 
 /-!
@@ -148,6 +149,43 @@ equation (8) of the K-fold draft, with its optimization index regarded as a
 real variable. -/
 noncomputable def paperStirlingPhi (x n : ℝ) : ℝ :=
   Real.log 2 / 2 * n ^ 2 + n * Real.log x - n * Real.log n + n
+
+/-- Derivative of the draft's continuous Stirling proxy away from zero. -/
+theorem paperStirlingPhi_hasDerivAt (x : ℝ) {n : ℝ} (hn : n ≠ 0) :
+    HasDerivAt (paperStirlingPhi x)
+      (n * Real.log 2 + Real.log x - Real.log n) n := by
+  have hlog := Real.hasDerivAt_log hn
+  have hraw := (((hasDerivAt_id n).pow 2).const_mul (Real.log 2 / 2)).add
+      ((hasDerivAt_id n).const_mul (Real.log x)) |>.sub
+        ((hasDerivAt_id n).mul hlog) |>.add (hasDerivAt_id n)
+  have hderiv :
+      Real.log 2 / 2 * (2 * n ^ (2 - 1) * 1) + Real.log x * 1 -
+          (1 * Real.log n + n * n⁻¹) + 1 =
+        n * Real.log 2 + Real.log x - Real.log n := by
+    norm_num
+    field_simp [hn]
+    ring
+  exact (hraw.congr_deriv hderiv).congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y => by
+      unfold paperStirlingPhi
+      simp only [id_eq, Pi.add_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply]
+      ring)
+
+/-- Repaired positive-real equivalence printed in equation (8). -/
+theorem paper_stationary_iff_mul_two_rpow_neg
+    {x n : ℝ} (hx : 0 < x) (hn : 0 < n) :
+    n * Real.log 2 + Real.log x = Real.log n ↔
+      n * (2 : ℝ) ^ (-n) = x := by
+  have hpow : 0 < (2 : ℝ) ^ (-n) := Real.rpow_pos_of_pos (by norm_num) _
+  constructor
+  · intro h
+    apply Real.log_injOn_pos (mul_pos hn hpow) hx
+    rw [Real.log_mul hn.ne' hpow.ne', Real.log_rpow (by norm_num : (0 : ℝ) < 2)]
+    linarith
+  · intro h
+    have hlog := congrArg Real.log h
+    rw [Real.log_mul hn.ne' hpow.ne', Real.log_rpow (by norm_num : (0 : ℝ) < 2)] at hlog
+    linarith
 
 /-- Under the stationary equation printed as equation (8), the draft's own
 proxy retains a linear `+n` term. -/
