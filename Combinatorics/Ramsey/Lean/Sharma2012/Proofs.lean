@@ -7798,4 +7798,294 @@ lemma evenTrace_prefix_two_mod_eight_of_twenty_eight {n : Nat} {gamma : List Nat
   rw [dyadic_modulus_four_of_log_four hlog] at h
   convert h using 1 <;> omega
 
+/-- The boundary-oriented entries and congruence data used by the one-sided
+numeric argument in Sharma's Theorem 2.6. -/
+structure OneSidedActiveEntries (n : Nat) (gamma : List Nat)
+    (b1 b2 b3 b4 c1 c2 c3 : Nat) : Prop where
+  hbEnd : EndsWith (oddTrace gamma) b1
+  hcStart : StartsWith (evenTrace gamma) c1
+  hcommute : Commute n b1 c1
+  hb1Lower : b1 ∈ lowerHalf n
+  hc1Upper : c1 ∈ upperHalf n
+  hb1Get : (oddBoundaryActiveList n gamma)[0]? = some b1
+  hb2Get : (oddBoundaryActiveList n gamma)[1]? = some b2
+  hb3Get : (oddBoundaryActiveList n gamma)[2]? = some b3
+  hb4Get : (oddBoundaryActiveList n gamma)[3]? = some b4
+  hc1Get : (evenBoundaryActiveList n gamma)[0]? = some c1
+  hc2Get : (evenBoundaryActiveList n gamma)[1]? = some c2
+  hc3Get : (evenBoundaryActiveList n gamma)[2]? = some c3
+  hc1TraceGet : (evenTrace gamma)[0]? = some c1
+  hc2TraceGet : (evenTrace gamma)[1]? = some c2
+  hc3TraceGet : (evenTrace gamma)[2]? = some c3
+  hb1Mem : b1 ∈ oddBoundaryActiveList n gamma
+  hb2Mem : b2 ∈ oddBoundaryActiveList n gamma
+  hb3Mem : b3 ∈ oddBoundaryActiveList n gamma
+  hb4Mem : b4 ∈ oddBoundaryActiveList n gamma
+  hc1Mem : c1 ∈ evenBoundaryActiveList n gamma
+  hc2Mem : c2 ∈ evenBoundaryActiveList n gamma
+  hc3Mem : c3 ∈ evenBoundaryActiveList n gamma
+  hb1Odd : Odd b1
+  hb2Odd : Odd b2
+  hb3Odd : Odd b3
+  hb4Odd : Odd b4
+  hc1Even : Even c1
+  hc2Even : Even c2
+  hc3Even : Even c3
+  hb1Segment : b1 ∈ segment n
+  hb2Segment : b2 ∈ segment n
+  hb3Segment : b3 ∈ segment n
+  hb4Segment : b4 ∈ segment n
+  hc1Segment : c1 ∈ segment n
+  hc2Segment : c2 ∈ segment n
+  hc3Segment : c3 ∈ segment n
+  hb12 : b1 ≠ b2
+  hb13 : b1 ≠ b3
+  hb14 : b1 ≠ b4
+  hb23 : b2 ≠ b3
+  hb24 : b2 ≠ b4
+  hb34 : b3 ≠ b4
+  hc12 : c1 ≠ c2
+  hc13 : c1 ≠ c3
+  hc23 : c2 ≠ c3
+  hb2Le : b2 ≤ b1
+  hb3Le : b3 ≤ b1
+  hb4Le : b4 ≤ b1
+  hc2Ge : c1 ≤ c2
+  hc3Ge : c1 ≤ c3
+  hseparated : 2 * b1 ≤ c1
+  hreflectionAbove : n < 2 * c1 - b1
+  hqPos : 0 < dyadicQ n
+  hthreshold : 16 * dyadicQ n ≤ n
+  hb2ModFour : Nat.ModEq (4 * dyadicQ n) b2 b1
+  hb2ModTwo : Nat.ModEq (2 * dyadicQ n) b2 b1
+  hb3ModTwo : Nat.ModEq (2 * dyadicQ n) b3 b1
+  hb4ModTwo : Nat.ModEq (2 * dyadicQ n) b4 b1
+  hc2ModFour : Nat.ModEq (4 * dyadicQ n) c1 c2
+  hc2ModTwo : Nat.ModEq (2 * dyadicQ n) c1 c2
+  hc3ModTwo : Nat.ModEq (2 * dyadicQ n) c1 c3
+
+/-- Extract the first four boundary-oriented odd entries and first three even
+entries from the long-active-list branch. -/
+theorem oneSidedActiveEntries_of_lengths {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hu : 4 ≤ (epilogue n (oddTrace gamma)).length)
+    (hv : 3 ≤ (prologue n (evenTrace gamma)).length) :
+    ∃ b1 b2 b3 b4 c1 c2 c3,
+      OneSidedActiveEntries n gamma b1 b2 b3 b4 c1 c2 c3 := by
+  let oddList := oddBoundaryActiveList n gamma
+  let evenList := evenBoundaryActiveList n gamma
+  have hoddLength : 4 ≤ oddList.length := by
+    simpa only [oddList, oddBoundaryActiveList_length] using hu
+  have hevenLength : 3 ≤ evenList.length := by
+    simpa only [evenList, evenBoundaryActiveList_length] using hv
+  rcases hstanding.2 with
+    ⟨b1, c1, hbEnd, hcStart, hcommute, hb1Lower, hc1Upper⟩
+  have hbStart : StartsWith oddList b1 := by
+    simp only [oddList, oddBoundaryActiveList, epilogue]
+    exact startsWith_prologue_of_startsWith
+      (startsWith_reversal_of_endsWith hbEnd)
+  have hcBoundaryStart : StartsWith evenList c1 := by
+    simp only [evenList, evenBoundaryActiveList]
+    exact startsWith_prologue_of_startsWith hcStart
+  have hb1Get : oddList[0]? = some b1 := by
+    rw [← List.head?_eq_getElem?]
+    exact hbStart
+  have hc1Get : evenList[0]? = some c1 := by
+    rw [← List.head?_eq_getElem?]
+    exact hcBoundaryStart
+  let b2 := oddList[1]'(by omega)
+  let b3 := oddList[2]'(by omega)
+  let b4 := oddList[3]'(by omega)
+  let c2 := evenList[1]'(by omega)
+  let c3 := evenList[2]'(by omega)
+  have hb2Get : oddList[1]? = some b2 := by
+    simpa only [b2] using List.getElem?_eq_getElem (l := oddList) (i := 1) (by omega)
+  have hb3Get : oddList[2]? = some b3 := by
+    simpa only [b3] using List.getElem?_eq_getElem (l := oddList) (i := 2) (by omega)
+  have hb4Get : oddList[3]? = some b4 := by
+    simpa only [b4] using List.getElem?_eq_getElem (l := oddList) (i := 3) (by omega)
+  have hc2Get : evenList[1]? = some c2 := by
+    simpa only [c2] using List.getElem?_eq_getElem (l := evenList) (i := 1) (by omega)
+  have hc3Get : evenList[2]? = some c3 := by
+    simpa only [c3] using List.getElem?_eq_getElem (l := evenList) (i := 2) (by omega)
+  have hb1Mem : b1 ∈ oddList := List.mem_iff_getElem?.mpr ⟨0, hb1Get⟩
+  have hb2Mem : b2 ∈ oddList := List.mem_iff_getElem?.mpr ⟨1, hb2Get⟩
+  have hb3Mem : b3 ∈ oddList := List.mem_iff_getElem?.mpr ⟨2, hb3Get⟩
+  have hb4Mem : b4 ∈ oddList := List.mem_iff_getElem?.mpr ⟨3, hb4Get⟩
+  have hc1Mem : c1 ∈ evenList := List.mem_iff_getElem?.mpr ⟨0, hc1Get⟩
+  have hc2Mem : c2 ∈ evenList := List.mem_iff_getElem?.mpr ⟨1, hc2Get⟩
+  have hc3Mem : c3 ∈ evenList := List.mem_iff_getElem?.mpr ⟨2, hc3Get⟩
+  have hoddNodup : oddList.Nodup := by
+    simpa only [oddList] using oddBoundaryActiveList_nodup hstanding.1.1
+  have hevenNodup : evenList.Nodup := by
+    simpa only [evenList] using evenBoundaryActiveList_nodup hstanding.1.1
+  have hb12 : b1 ≠ b2 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb2Get (by norm_num)
+  have hb13 : b1 ≠ b3 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb3Get (by norm_num)
+  have hb14 : b1 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb1Get hb4Get (by norm_num)
+  have hb23 : b2 ≠ b3 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb2Get hb3Get (by norm_num)
+  have hb24 : b2 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb2Get hb4Get (by norm_num)
+  have hb34 : b3 ≠ b4 :=
+    values_ne_of_getElem?_ne_index hoddNodup hb3Get hb4Get (by norm_num)
+  have hc12 : c1 ≠ c2 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc1Get hc2Get (by norm_num)
+  have hc13 : c1 ≠ c3 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc1Get hc3Get (by norm_num)
+  have hc23 : c2 ≠ c3 :=
+    values_ne_of_getElem?_ne_index hevenNodup hc2Get hc3Get (by norm_num)
+  have hb1Odd : Odd b1 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb1Mem)
+  have hb2Odd : Odd b2 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb2Mem)
+  have hb3Odd : Odd b3 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb3Mem)
+  have hb4Odd : Odd b4 := oddBoundaryActiveList_odd (by simpa only [oddList] using hb4Mem)
+  have hc1Even : Even c1 := evenBoundaryActiveList_even (by simpa only [evenList] using hc1Mem)
+  have hc2Even : Even c2 := evenBoundaryActiveList_even (by simpa only [evenList] using hc2Mem)
+  have hc3Even : Even c3 := evenBoundaryActiveList_even (by simpa only [evenList] using hc3Mem)
+  have hoddGamma : ∀ x ∈ oddList, x ∈ gamma := by
+    intro x hx
+    have hxActive := oddBoundaryActiveList_mem_oddActiveBlock
+      (by simpa only [oddList] using hx)
+    exact (List.mem_filter.mp (oddActiveBlock_mem_oddTrace hxActive)).1
+  have hevenGamma : ∀ x ∈ evenList, x ∈ gamma := by
+    intro x hx
+    have hxActive := evenBoundaryActiveList_mem_evenActiveBlock
+      (by simpa only [evenList] using hx)
+    exact (List.mem_filter.mp (evenActiveBlock_mem_evenTrace hxActive)).1
+  have hb1Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b1 hb1Mem)
+  have hb2Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b2 hb2Mem)
+  have hb3Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b3 hb3Mem)
+  have hb4Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hoddGamma b4 hb4Mem)
+  have hc1Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c1 hc1Mem)
+  have hc2Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c2 hc2Mem)
+  have hc3Segment := mem_segment_of_mem_of_isTheta hstanding.1.1 (hevenGamma c3 hc3Mem)
+  have hb2Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb2Mem)
+  have hb3Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb3Mem)
+  have hb4Le := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hb1Lower (by
+    simpa only [oddList, oddBoundaryActiveList] using hb4Mem)
+  have hc2Ge := evenPrologue_first_le_entry hstanding.1.1 hcStart hc1Upper (by
+    simpa only [evenList, evenBoundaryActiveList] using hc2Mem)
+  have hc3Ge := evenPrologue_first_le_entry hstanding.1.1 hcStart hc1Upper (by
+    simpa only [evenList, evenBoundaryActiveList] using hc3Mem)
+  have hseparation := activeBlocks_separated hstanding b1
+    (oddBoundaryActiveList_mem_oddActiveBlock (by simpa only [oddList] using hb1Mem)) c1
+    (evenBoundaryActiveList_mem_evenActiveBlock (by simpa only [evenList] using hc1Mem))
+  have hthreshold := sixteen_mul_dyadicQ_le
+    (sixteen_le_of_active_lengths hstanding hu hv)
+  have hpatterns := dyadic_pattern_sixteen hstanding.1.1 hthreshold
+  have hreversePatterns :=
+    dyadic_pattern_sixteen (isTheta_reversal hstanding.1.1) hthreshold
+  have hoddFourTrace :
+      PrefixCongruent (reversal (oddTrace gamma)) 2 (4 * dyadicQ n) := by
+    simpa only [oddTrace_reversal_eq] using hreversePatterns.2.1.1
+  have hoddTwoTrace :
+      PrefixCongruent (reversal (oddTrace gamma)) 4 (2 * dyadicQ n) := by
+    simpa only [oddTrace_reversal_eq] using hreversePatterns.2.1.2.1
+  have hoddFour : PrefixCongruent oddList 2 (4 * dyadicQ n) := by
+    simpa only [oddList] using
+      oddBoundaryActiveList_prefixCongruent_of_reversal (by omega) hoddFourTrace
+  have hoddTwo : PrefixCongruent oddList 4 (2 * dyadicQ n) := by
+    simpa only [oddList] using
+      oddBoundaryActiveList_prefixCongruent_of_reversal hu hoddTwoTrace
+  have hevenFour : PrefixCongruent evenList 2 (4 * dyadicQ n) := by
+    simpa only [evenList] using
+      evenBoundaryActiveList_prefixCongruent_of_evenTrace (by omega) hpatterns.2.2.1
+  have hevenTwo : PrefixCongruent evenList 3 (2 * dyadicQ n) := by
+    have htrace : PrefixCongruent (evenTrace gamma) 3 (2 * dyadicQ n) :=
+      PrefixCongruent.mono hpatterns.2.2.2.1 (by norm_num)
+    simpa only [evenList] using
+      evenBoundaryActiveList_prefixCongruent_of_evenTrace hv htrace
+  have hEvenPrefix : evenList <+: evenTrace gamma := by
+    simpa only [evenList, evenBoundaryActiveList] using prologue_prefix n (evenTrace gamma)
+  have hgetEvenTrace : ∀ (i x : Nat), i < evenList.length →
+      evenList[i]? = some x → (evenTrace gamma)[i]? = some x := by
+    intro i x hi hx
+    have hiTrace : i < (evenTrace gamma).length :=
+      hi.trans_le hEvenPrefix.length_le
+    calc
+      (evenTrace gamma)[i]? = some (evenTrace gamma)[i] :=
+        List.getElem?_eq_getElem hiTrace
+      _ = some evenList[i] := congrArg some (hEvenPrefix.getElem hi).symm
+      _ = some x := by simpa only [List.getElem?_eq_getElem hi] using hx
+  have hc1TraceGet : (evenTrace gamma)[0]? = some c1 :=
+    hgetEvenTrace 0 c1 (by omega) hc1Get
+  have hc2TraceGet : (evenTrace gamma)[1]? = some c2 :=
+    hgetEvenTrace 1 c2 (by omega) hc2Get
+  have hc3TraceGet : (evenTrace gamma)[2]? = some c3 :=
+    hgetEvenTrace 2 c3 (by omega) hc3Get
+  refine ⟨b1, b2, b3, b4, c1, c2, c3, ?_⟩
+  refine
+    { hbEnd := hbEnd
+      hcStart := hcStart
+      hcommute := hcommute
+      hb1Lower := hb1Lower
+      hc1Upper := hc1Upper
+      hb1Get := by simpa only [oddList] using hb1Get
+      hb2Get := by simpa only [oddList] using hb2Get
+      hb3Get := by simpa only [oddList] using hb3Get
+      hb4Get := by simpa only [oddList] using hb4Get
+      hc1Get := by simpa only [evenList] using hc1Get
+      hc2Get := by simpa only [evenList] using hc2Get
+      hc3Get := by simpa only [evenList] using hc3Get
+      hc1TraceGet := hc1TraceGet
+      hc2TraceGet := hc2TraceGet
+      hc3TraceGet := hc3TraceGet
+      hb1Mem := by simpa only [oddList] using hb1Mem
+      hb2Mem := by simpa only [oddList] using hb2Mem
+      hb3Mem := by simpa only [oddList] using hb3Mem
+      hb4Mem := by simpa only [oddList] using hb4Mem
+      hc1Mem := by simpa only [evenList] using hc1Mem
+      hc2Mem := by simpa only [evenList] using hc2Mem
+      hc3Mem := by simpa only [evenList] using hc3Mem
+      hb1Odd := hb1Odd
+      hb2Odd := hb2Odd
+      hb3Odd := hb3Odd
+      hb4Odd := hb4Odd
+      hc1Even := hc1Even
+      hc2Even := hc2Even
+      hc3Even := hc3Even
+      hb1Segment := hb1Segment
+      hb2Segment := hb2Segment
+      hb3Segment := hb3Segment
+      hb4Segment := hb4Segment
+      hc1Segment := hc1Segment
+      hc2Segment := hc2Segment
+      hc3Segment := hc3Segment
+      hb12 := hb12
+      hb13 := hb13
+      hb14 := hb14
+      hb23 := hb23
+      hb24 := hb24
+      hb34 := hb34
+      hc12 := hc12
+      hc13 := hc13
+      hc23 := hc23
+      hb2Le := hb2Le
+      hb3Le := hb3Le
+      hb4Le := hb4Le
+      hc2Ge := hc2Ge
+      hc3Ge := hc3Ge
+      hseparated := hseparation.1
+      hreflectionAbove := hseparation.2
+      hqPos := dyadicQ_pos n
+      hthreshold := hthreshold
+      hb2ModFour := (hoddFour.2 0 (by norm_num) 1 (by norm_num)
+        b1 b2 hb1Get hb2Get).symm
+      hb2ModTwo := (hoddTwo.2 0 (by norm_num) 1 (by norm_num)
+        b1 b2 hb1Get hb2Get).symm
+      hb3ModTwo := (hoddTwo.2 0 (by norm_num) 2 (by norm_num)
+        b1 b3 hb1Get hb3Get).symm
+      hb4ModTwo := (hoddTwo.2 0 (by norm_num) 3 (by norm_num)
+        b1 b4 hb1Get hb4Get).symm
+      hc2ModFour := hevenFour.2 0 (by norm_num) 1 (by norm_num)
+        c1 c2 hc1Get hc2Get
+      hc2ModTwo := hevenTwo.2 0 (by norm_num) 1 (by norm_num)
+        c1 c2 hc1Get hc2Get
+      hc3ModTwo := hevenTwo.2 0 (by norm_num) 2 (by norm_num)
+        c1 c3 hc1Get hc3Get }
+
 end LeanProofs.Sharma2012
