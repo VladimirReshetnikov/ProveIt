@@ -78,12 +78,12 @@ theorem choose_le_twenty_of_sharma_endblock_constraints
 
 /-- Equality in the twenty-element numerical bound occurs exactly at the
 balanced active blocks `(3, 3)` or at one of the two extreme pairs `(19, 1)`
-and `(1, 19)`.  The classification needs only the length caps and the
-`length ≥ 5` implications; the stronger `length ≥ 4` implications used for
-the upper bound are unnecessary here. -/
+and `(1, 19)`.  The equality itself forces the relevant length caps, so the
+classification needs only the `length ≥ 5` implications; both the explicit
+caps and the stronger `length ≥ 4` implications used for the upper bound are
+unnecessary here. -/
 theorem choose_eq_twenty_iff_of_sharma_large_endblock_constraints
-    {u v : Nat} (hu : u ≤ 19) (hv : v ≤ 19)
-    (hfive : (5 ≤ u → v ≤ 1) ∧ (5 ≤ v → u ≤ 1)) :
+    {u v : Nat} (hfive : (5 ≤ u → v ≤ 1) ∧ (5 ≤ v → u ≤ 1)) :
     Nat.choose (u + v) v = 20 ↔
       (u = 3 ∧ v = 3) ∨ (u = 19 ∧ v = 1) ∨ (u = 1 ∧ v = 19) := by
   constructor
@@ -135,14 +135,14 @@ theorem sharma_endblock_length_cap_nineteen_is_sharp :
   · omega
 
 /-- An arbitrary trace pair has at most twenty realizations as soon as its
-active end-block lengths satisfy Sharma's numerical constraints.  In
-particular, no endpoint witnesses, commutation orientation, or ambient
-`Theta₁₂` representative is needed at this layer.
+active end-block lengths satisfy Sharma's four implication constraints.  No
+explicit length cap is needed: a member of a nonempty class supplies an
+`IsTheta₁₂` word, whose odd epilogue and even prologue both have length at
+most six; an empty class is trivial.  In particular, no endpoint witnesses,
+commutation orientation, or ambient representative is required from callers.
 -/
 theorem interleavingClass_card_le_twenty_of_endblock_constraints
     {n : Nat} {gammaOdd gammaEven : List Nat}
-    (hu : (epilogue n gammaOdd).length ≤ 19)
-    (hv : (prologue n gammaEven).length ≤ 19)
     (hfour :
       (4 ≤ (epilogue n gammaOdd).length →
           (prologue n gammaEven).length ≤ 2) ∧
@@ -154,7 +154,22 @@ theorem interleavingClass_card_le_twenty_of_endblock_constraints
         (5 ≤ (prologue n gammaEven).length →
           (epilogue n gammaOdd).length ≤ 1)) :
     (interleavingClass n gammaOdd gammaEven).card ≤ 20 := by
-  exact (interleavingClass_card_le_choose_general n gammaOdd gammaEven).trans
-    (choose_le_twenty_of_sharma_endblock_constraints hu hv hfour hfive)
+  classical
+  by_cases hempty : interleavingClass n gammaOdd gammaEven = ∅
+  · simp [hempty]
+  · obtain ⟨sigma, hsigma⟩ := Finset.nonempty_iff_ne_empty.mpr hempty
+    have hsigmaData : IsTheta12 n (permutationWord sigma) ∧
+        oddTrace (permutationWord sigma) = gammaOdd ∧
+        evenTrace (permutationWord sigma) = gammaEven := by
+      simpa [interleavingClass] using hsigma
+    have huSix : (epilogue n gammaOdd).length ≤ 6 := by
+      simpa only [hsigmaData.2.1] using
+        epilogue_oddTrace_length_le_six hsigmaData.1.1
+    have hvSix : (prologue n gammaEven).length ≤ 6 := by
+      simpa only [hsigmaData.2.2] using
+        prologue_evenTrace_length_le_six hsigmaData.1.1
+    exact (interleavingClass_card_le_choose_general n gammaOdd gammaEven).trans
+      (choose_le_twenty_of_sharma_endblock_constraints
+        (huSix.trans (by norm_num)) (hvSix.trans (by norm_num)) hfour hfive)
 
 end LeanProofs.Sharma2012
