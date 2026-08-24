@@ -2379,7 +2379,9 @@ in the following sense: there are arithmetic progressions $P, Q \subset \mathbb{
 What we prove in this section is sufficient for finding progressions of length five, but not as strong as the corresponding case of the inductive hypothesis we shall need when generalizing the argument. Then it becomes necessary to show that almost all of the graph of $\phi$ is contained in a small number of bilinear pieces, which is not a huge extra difficulty but it makes the argument look more complicated. Another way in which the argument of this section is slightly simpler than the argument for the general case (in §16) is that we can use Lemma 7.10 to allow us to assume that $\phi(x, y)$ is a homomorphism of order 8 in $y$ for every fixed $x$ and vice versa (see the proof of Theorem 13.10 for this).
 
 The next lemma is another generalization of Proposition 6.1 with an almost identical proof. To recover the earlier proposition for the function $f: \mathbb{Z}_{N} \rightarrow D$, apply this coming lemma to the function $g(x, y)=f(x+y)$.\\
-Lemma 13.1. Let $f: \mathbb{Z}_{N}^{2} \rightarrow D$ be a function into the closed unit disc. For any $h$, define
+% ed.: Positivity of alpha is necessary (and is implicit in the proof): for
+% negative alpha the hypothesis is vacuous while the fourth-power conclusion need not hold.
+Lemma 13.1. Let $\alpha>0$ and let $f: \mathbb{Z}_{N}^{2} \rightarrow D$ be a function into the closed unit disc. For any $h$, define
 
 $$
 f_{h}(x)=\sum_{y} f(x, y+h) \overline{f(x, y)} .
@@ -2435,7 +2437,8 @@ $$
 But the left-hand side is exactly $N^{4}$ times the number of quadruples $(a, b, c, d)$ that we wish to find. \(\square\)
 
 In fact, we shall need the above lemma only in the special case of 01valued functions. The next corollary is a restatement of the lemma in the language of §10.\\
-Corollary 13.2. Let $A \subset \mathbb{Z}_{N}^{2}$. For any $h \in \mathbb{Z}_{N}$, define a domain $X_{h}=X_{h, 0} \cup X_{h, 1} \cup \cdots \cup X_{h, N-1}$ by letting $X_{h, x}$ be the set of all pairs $((x, y),(x, y+h))$, for which both $(x, y)$ and $(x, y+h)$ belong to $A$. Let $f_{h}(x)$ be the cardinality of $X_{h, x}$. Let $B \subset \mathbb{Z}_{N}$ and let $\sigma: B \rightarrow \mathbb{Z}_{N}$ be any function such that $\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2} \geqslant \alpha N^{5}$. Then there are at least $\alpha^{4} N^{3}$ quadruples $(a, b, c, d) \in B^{4}$ such that $a+b=c+d$ and $\sigma(a)+\sigma(b)=\sigma(c)+\sigma(d)$.
+% ed.: As in Lemma 13.1, the omitted positivity hypothesis on alpha is necessary.
+Corollary 13.2. Let $\alpha>0$ and let $A \subset \mathbb{Z}_{N}^{2}$. For any $h \in \mathbb{Z}_{N}$, define a domain $X_{h}=X_{h, 0} \cup X_{h, 1} \cup \cdots \cup X_{h, N-1}$ by letting $X_{h, x}$ be the set of all pairs $((x, y),(x, y+h))$, for which both $(x, y)$ and $(x, y+h)$ belong to $A$. Let $f_{h}(x)$ be the cardinality of $X_{h, x}$. Let $B \subset \mathbb{Z}_{N}$ and let $\sigma: B \rightarrow \mathbb{Z}_{N}$ be any function such that $\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2} \geqslant \alpha N^{5}$. Then there are at least $\alpha^{4} N^{3}$ quadruples $(a, b, c, d) \in B^{4}$ such that $a+b=c+d$ and $\sigma(a)+\sigma(b)=\sigma(c)+\sigma(d)$.
 
 Proof. This follows immediately from Lemma 13.1 applied to the characteristic function of $A$. \(\square\)
 

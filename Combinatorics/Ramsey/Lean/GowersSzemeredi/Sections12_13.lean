@@ -264,7 +264,7 @@ def LinearOnDomain {N : Nat} {X : Type*} (A : Finset X)
 def lemma_13_1 : Prop :=
   ∀ (N : Nat) [NeZero N] (f : Pair N → Complex) (B : Finset (ZMod N))
       (sigma : ZMod N → ZMod N) (alpha : Real),
-    DiscValued f →
+    0 < alpha → DiscValued f →
     alpha * (N : Real) ^ 5 ≤
       ∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2 →
     alpha ^ 4 * (N : Real) ^ 3 ≤ phiAdditiveCount B sigma
@@ -273,7 +273,7 @@ def lemma_13_1 : Prop :=
 def corollary_13_2 : Prop :=
   ∀ (N : Nat) [NeZero N] (A : Finset (Pair N)) (B : Finset (ZMod N))
       (sigma : ZMod N → ZMod N) (alpha : Real),
-    alpha * (N : Real) ^ 5 ≤
+    0 < alpha → alpha * (N : Real) ^ 5 ≤
       ∑ h ∈ B, ‖fourier (verticalEdgeFiberFunction A h) (sigma h)‖ ^ 2 →
     alpha ^ 4 * (N : Real) ^ 3 ≤ phiAdditiveCount B sigma
 
