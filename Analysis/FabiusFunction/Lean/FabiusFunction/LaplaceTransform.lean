@@ -1,0 +1,141 @@
+import FabiusFunction.NegativeLaplace
+import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+
+/-!
+# The Laplace transform of the Fabius distribution function
+
+This module supplies the exact analytic bridge between the entire generating
+function used in the arithmetic theory and the one-sided Laplace transform of
+the Fabius distribution function.  For `Re z > 0`, it proves
+
+`complexGeneratingFunction F (-z) / z = ∫ t in (0, ∞), F(t) exp(-zt)`.
+
+The proof first rewrites the Rvachev bump as `1 - F` on `[0, 1]`, integrates
+the constant exponential explicitly, and then uses the convention `F(t) = 1`
+for `t ≥ 1` to identify the remaining exponential with the tail integral.
+This form is suited to Fourier inversion on a vertical line and hence to the
+quantitative saddle-point framework.
+-/
+
+set_option autoImplicit false
+
+open Filter Set MeasureTheory
+open scoped Interval
+
+namespace Fabius
+
+/-- On the unit interval, the Rvachev bump is the complementary Fabius CDF. -/
+theorem rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht : t ∈ Icc (0 : ℝ) 1) :
+    rvachevUp F t = 1 - fabiusReal F t := by
+  rw [rvachevUp]
+  split_ifs with h
+  · have ht0 : t = 0 := le_antisymm h ht.1
+    subst t
+    norm_num
+    change fabiusReal F 1 = 1 - fabiusReal F 0
+    rw [hF.one_of_one_le 1 le_rfl, hF.zero_of_nonpos 0 le_rfl]
+    norm_num
+  · exact hF.symmetry t ht
+
+/-- Integration by parts in algebraic form: `G(-z)` is the endpoint
+exponential plus `z` times the finite-interval Laplace transform of `F`. -/
+theorem complexGeneratingFunction_neg_eq_exp_add_integral
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : z ≠ 0) :
+    complexGeneratingFunction F (-z) =
+      Complex.exp (-z) + z * ∫ t in (0 : ℝ)..1,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t) := by
+  let e : ℝ → ℂ := fun t => Complex.exp (-z * t)
+  let f : ℝ → ℂ := fun t => (fabiusReal F t : ℂ) * e t
+  have he : Continuous e := by
+    dsimp [e]
+    fun_prop
+  have hf : Continuous f := by
+    dsimp [f]
+    exact (Complex.continuous_ofReal.comp (hF.contDiff.continuous)).mul he
+  have hrewrite :
+      (∫ t in (0 : ℝ)..1,
+        (rvachevUp F t : ℂ) * Complex.exp (-z * t)) =
+      (∫ t in (0 : ℝ)..1, e t - f t) := by
+    apply intervalIntegral.integral_congr
+    intro t ht
+    dsimp only
+    have ht' : t ∈ Icc (0 : ℝ) 1 := by simpa [uIcc_of_le zero_le_one] using ht
+    rw [rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc F hF ht']
+    simp only [e, f]
+    push_cast
+    ring
+  have hsplit : (∫ t in (0 : ℝ)..1, e t - f t) =
+      (∫ t in (0 : ℝ)..1, e t) - ∫ t in (0 : ℝ)..1, f t := by
+    exact intervalIntegral.integral_sub (he.intervalIntegrable 0 1)
+      (hf.intervalIntegrable 0 1)
+  have hexp : (∫ t in (0 : ℝ)..1, e t) =
+      (1 - Complex.exp (-z)) / z := by
+    rw [show (∫ t in (0 : ℝ)..1, e t) =
+        (Complex.exp ((-z) * 1) - Complex.exp ((-z) * 0)) / (-z) by
+      exact integral_exp_mul_complex (neg_ne_zero.mpr hz)]
+    simp
+    ring
+  rw [complexGeneratingFunction, neg_mul, hrewrite, hsplit, hexp]
+  dsimp [f, e]
+  field_simp
+  ring
+
+/-- Finite-interval form of the one-sided Laplace-transform identity. -/
+theorem complexGeneratingFunction_neg_div_eq_interval_add_tail
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : z ≠ 0) :
+    complexGeneratingFunction F (-z) / z =
+      (∫ t in (0 : ℝ)..1,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t)) +
+        Complex.exp (-z) / z := by
+  rw [complexGeneratingFunction_neg_eq_exp_add_integral F hF hz]
+  field_simp
+  ring
+
+/-- Exact one-sided Laplace transform of the Fabius distribution function.
+
+The half-plane assumption guarantees convergence of the exponential tail. -/
+theorem complexGeneratingFunction_neg_div_eq_laplace
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ}
+    (hz : 0 < z.re) :
+    complexGeneratingFunction F (-z) / z =
+      ∫ t : ℝ in Ioi 0,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t) := by
+  have hz0 : z ≠ 0 := by
+    intro h
+    subst z
+    norm_num at hz
+  let f : ℝ → ℂ := fun t =>
+    (fabiusReal F t : ℂ) * Complex.exp (-z * t)
+  have hf : Continuous f := by
+    dsimp [f]
+    exact (Complex.continuous_ofReal.comp (hF.contDiff.continuous)).mul (by fun_prop)
+  have htail_eq : Set.EqOn f (fun t : ℝ => Complex.exp ((-z) * t)) (Ioi 1) := by
+    intro t ht
+    dsimp [f]
+    have hFt : fabiusReal F t = 1 := by
+      exact hF.one_of_one_le t ht.le
+    change (fabiusReal F t : ℂ) * Complex.exp (-z * t) = Complex.exp (-z * t)
+    rw [hFt]
+    norm_num
+  have htail_exp : IntegrableOn (fun t : ℝ => Complex.exp ((-z) * t)) (Ioi 1) :=
+    integrableOn_exp_mul_complex_Ioi (a := -z) (by simpa using hz) 1
+  have htail : IntegrableOn f (Ioi 1) :=
+    htail_exp.congr_fun htail_eq.symm measurableSet_Ioi
+  have htail_integral : (∫ t : ℝ in Ioi 1, f t) = Complex.exp (-z) / z := by
+    rw [setIntegral_congr_fun measurableSet_Ioi htail_eq,
+      integral_exp_mul_complex_Ioi (a := -z) (by simpa using hz) 1]
+    norm_num
+  calc
+    complexGeneratingFunction F (-z) / z =
+        (∫ t in (0 : ℝ)..1, f t) + Complex.exp (-z) / z := by
+      simpa [f] using complexGeneratingFunction_neg_div_eq_interval_add_tail F hF hz0
+    _ = (∫ t in (0 : ℝ)..1, f t) + ∫ t : ℝ in Ioi 1, f t := by
+      rw [htail_integral]
+    _ = ∫ t : ℝ in Ioi 0, f t :=
+      intervalIntegral.integral_interval_add_Ioi' (hf.intervalIntegrable 0 1) htail
+    _ = ∫ t : ℝ in Ioi 0,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t) := by rfl
+
+end Fabius
