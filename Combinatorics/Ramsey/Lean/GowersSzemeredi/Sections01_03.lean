@@ -133,14 +133,18 @@ def lemma_2_2 : Prop :=
 def NatToZModLinear {N : Nat} (r : Nat) (phi : Nat -> ZMod N) : Prop :=
   exists a b : ZMod N, ∀ x, x < r → phi x = a * (x : Nat) + b
 
-/-- **Lemma 2.3.** -/
+/-- **Lemma 2.3.** The printed lower bound `sqrt (r*s/(4*N))` is not
+compatible with integer rounding: for `N=r=s=5` and a constant map it would
+force a partition of five points into cells all of size two.  The denominator
+`16` is the uniform bound supported by the proof after accounting for the
+ceiling in its choice of the auxiliary step. -/
 def lemma_2_3 : Prop :=
   forall (N r s : Nat), 0 < N -> 0 < r -> 0 < s -> r <= N -> s <= N -> N <= r * s ->
     forall phi : Nat -> ZMod N, NatToZModLinear r phi ->
       exists m : Nat, exists P : Fin m -> NatAP,
         IsNatAPPartition P (Finset.range r) /\
         (forall j, (P j).IsProper /\ diameterAtMost ((P j).carrier.image phi) s /\
-          Real.sqrt ((r : Real) * s / (4 * N)) <= (P j).length /\
+          Real.sqrt ((r : Real) * s / (16 * N)) <= (P j).length /\
           ((P j).length : Real) <= Real.sqrt ((r : Real) * s / N))
 
 /-- **Corollary 2.4.** The OCR's `phi(s)` in the hypothesis is corrected to
