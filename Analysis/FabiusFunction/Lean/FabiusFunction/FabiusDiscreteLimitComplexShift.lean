@@ -1,0 +1,298 @@
+import FabiusFunction.Arithmetic
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Ring
+
+/-!
+# Complex translations of the finite Thue--Morse spline branches
+
+This module isolates the complex-analytic ingredient in the discrete-limit
+formula for the signed global Fabius function.  A branch is a normalized
+finite Thue--Morse power sum with a fixed cutoff.  Translating its argument
+has an exact finite Taylor expansion in the lower-degree branches.
+-/
+
+set_option autoImplicit false
+
+open scoped BigOperators
+open Finset
+
+namespace Fabius
+
+noncomputable section
+
+/-- The normalized degree-`p` Thue--Morse polynomial with a fixed prefix
+length `M`.  Keeping `M` separate from the evaluation point is important:
+the complex translation stays on one real spline branch. -/
+def normalizedThueMorseSplineBranch
+    (p M : ℕ) (z : ℂ) : ℂ :=
+  (∑ r ∈ Finset.range M,
+      (thueMorseSign r : ℂ) * (z - (r : ℂ)) ^ p) /
+    ((2 : ℂ) ^ p.choose 2 * (p.factorial : ℂ))
+
+@[simp] theorem normalizedThueMorseSplineBranch_zero_prefix
+    (p : ℕ) (z : ℂ) :
+    normalizedThueMorseSplineBranch p 0 z = 0 := by
+  simp [normalizedThueMorseSplineBranch]
+
+private theorem choose_div_factorial_complex
+    {p d : ℕ} (hd : d ≤ p) :
+    (p.choose d : ℂ) / (p.factorial : ℂ) =
+      1 / ((d.factorial : ℂ) * ((p - d).factorial : ℂ)) := by
+  have hnat := Nat.choose_mul_factorial_mul_factorial hd
+  have hcast :
+      (p.choose d : ℂ) * (d.factorial : ℂ) *
+          ((p - d).factorial : ℂ) = (p.factorial : ℂ) := by
+    exact_mod_cast hnat
+  have hp : (p.factorial : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero p)
+  have hd' : (d.factorial : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero d)
+  have hpd : ((p - d).factorial : ℂ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero (p - d))
+  field_simp [hp, hd', hpd]
+  exact hcast
+
+private theorem thueMorsePrefix_add_pow
+    (p M : ℕ) (z δ : ℂ) :
+    (∑ r ∈ Finset.range M,
+        (thueMorseSign r : ℂ) * (z + δ - (r : ℂ)) ^ p) =
+      ∑ d ∈ Finset.range (p + 1),
+        (p.choose d : ℂ) * δ ^ (p - d) *
+          ∑ r ∈ Finset.range M,
+            (thueMorseSign r : ℂ) * (z - (r : ℂ)) ^ d := by
+  simp_rw [show ∀ r : ℕ,
+      z + δ - (r : ℂ) = (z - (r : ℂ)) + δ by intro r; ring]
+  simp_rw [show ∀ (a b : ℂ),
+      (a + b) ^ p = ∑ m ∈ Finset.range (p + 1),
+        a ^ m * b ^ (p - m) * (p.choose m : ℂ) by
+          intro a b
+          exact (Commute.all a b).add_pow p,
+    Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro d hd
+  apply Finset.sum_congr rfl
+  intro r hr
+  ring
+
+/-- Exact finite Taylor expansion of a fixed spline branch.  The index `d`
+is the degree of the lower branch; equivalently, `p-d` is the Taylor order. -/
+theorem normalizedThueMorseSplineBranch_add
+    (p M : ℕ) (z δ : ℂ) :
+    normalizedThueMorseSplineBranch p M (z + δ) =
+      ∑ d ∈ Finset.range (p + 1),
+        ((2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))) *
+          δ ^ (p - d) * normalizedThueMorseSplineBranch d M z := by
+  rw [normalizedThueMorseSplineBranch, thueMorsePrefix_add_pow]
+  rw [Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro d hd
+  have hdp : d ≤ p := by simpa using Finset.mem_range.mp hd
+  rw [normalizedThueMorseSplineBranch]
+  field_simp [Nat.cast_ne_zero]
+  calc
+    ((p.choose d : ℂ) * δ ^ (p - d) *
+          ∑ x ∈ Finset.range M,
+            (thueMorseSign x : ℂ) * (z - (x : ℂ)) ^ d) /
+        (p.factorial : ℂ) =
+        ((p.choose d : ℂ) / (p.factorial : ℂ)) *
+          (δ ^ (p - d) *
+            ∑ x ∈ Finset.range M,
+              (thueMorseSign x : ℂ) * (z - (x : ℂ)) ^ d) := by ring
+    _ =
+        (1 / ((d.factorial : ℂ) * ((p - d).factorial : ℂ))) *
+          (δ ^ (p - d) *
+            ∑ x ∈ Finset.range M,
+              (thueMorseSign x : ℂ) * (z - (x : ℂ)) ^ d) := by
+          rw [choose_div_factorial_complex hdp]
+    _ =
+        (δ ^ (p - d) *
+          ∑ x ∈ Finset.range M,
+            (thueMorseSign x : ℂ) * (z - (x : ℂ)) ^ d) /
+          (((p - d).factorial : ℂ) * (d.factorial : ℂ)) := by ring
+
+/-- The positive Taylor orders are exactly the change under translation. -/
+theorem normalizedThueMorseSplineBranch_add_sub
+    (p M : ℕ) (z δ : ℂ) :
+    normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z =
+      ∑ d ∈ Finset.range p,
+        ((2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))) *
+          δ ^ (p - d) * normalizedThueMorseSplineBranch d M z := by
+  rw [normalizedThueMorseSplineBranch_add, Finset.sum_range_succ]
+  have hpow : (2 : ℂ) ^ p.choose 2 ≠ 0 := pow_ne_zero _ (by norm_num)
+  simp [hpow]
+
+/-- A norm bound for the translated branch, assuming that all lower real
+branches occurring in its Taylor expansion have norm at most one. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le
+    (p M : ℕ) (z δ : ℂ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      ∑ d ∈ Finset.range p,
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d) := by
+  rw [normalizedThueMorseSplineBranch_add_sub]
+  calc
+    ‖∑ d ∈ Finset.range p,
+        ((2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))) *
+          δ ^ (p - d) * normalizedThueMorseSplineBranch d M z‖ ≤
+        ∑ d ∈ Finset.range p,
+          ‖((2 : ℂ) ^ d.choose 2 /
+              ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))) *
+            δ ^ (p - d) * normalizedThueMorseSplineBranch d M z‖ :=
+      norm_sum_le _ _
+    _ ≤ ∑ d ∈ Finset.range p,
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d) := by
+      apply Finset.sum_le_sum
+      intro d hd
+      simp only [norm_mul, norm_pow]
+      let A : ℝ :=
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d)
+      change A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ A
+      calc
+        A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ A * 1 :=
+          mul_le_mul_of_nonneg_left (hbound d hd) (by positivity)
+        _ = A := mul_one A
+
+private theorem norm_complex_two_choose_factor
+    (p d : ℕ) :
+    ‖(2 : ℂ) ^ d.choose 2 /
+        ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ =
+      (2 : ℝ) ^ d.choose 2 /
+        ((2 : ℝ) ^ p.choose 2 * ((p - d).factorial : ℝ)) := by
+  simp [norm_pow]
+
+private theorem choose_two_succ (a : ℕ) :
+    (a + 1).choose 2 = a.choose 2 + a := by
+  rw [show a + 1 = a + 1 by rfl, show 2 = 1 + 1 by norm_num,
+    Nat.choose_succ_succ]
+  simp [Nat.choose_one_right, Nat.add_comm]
+
+private theorem norm_complex_two_choose_factor_le
+    {p d : ℕ} (hp : 1 ≤ p) (hd : d < p) :
+    ‖(2 : ℂ) ^ d.choose 2 /
+        ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) / ((p - d).factorial : ℝ) := by
+  cases p with
+  | zero => simp at hp
+  | succ a =>
+    rw [norm_complex_two_choose_factor]
+    have hda : d ≤ a := Nat.le_of_lt_succ hd
+    have hchoose : d.choose 2 ≤ a.choose 2 :=
+      Nat.choose_le_choose 2 hda
+    have hpow :
+        (2 : ℝ) ^ d.choose 2 ≤ (2 : ℝ) ^ a.choose 2 :=
+      pow_le_pow_right₀ (by norm_num) hchoose
+    rw [choose_two_succ]
+    have hscale :
+        (1 / 2 : ℝ) ^ (a + 1 - 1) *
+            (2 : ℝ) ^ (a.choose 2 + a) =
+          (2 : ℝ) ^ a.choose 2 := by
+      simp only [Nat.add_sub_cancel, pow_add]
+      calc
+        (1 / 2 : ℝ) ^ a *
+            ((2 : ℝ) ^ a.choose 2 * (2 : ℝ) ^ a) =
+            (2 : ℝ) ^ a.choose 2 *
+              ((1 / 2 : ℝ) ^ a * (2 : ℝ) ^ a) := by ring
+        _ = (2 : ℝ) ^ a.choose 2 := by
+          rw [← mul_pow]
+          norm_num
+    have hratio :
+        (2 : ℝ) ^ d.choose 2 / (2 : ℝ) ^ (a.choose 2 + a) ≤
+          (1 / 2 : ℝ) ^ (a + 1 - 1) := by
+      rw [div_le_iff₀ (by positivity)]
+      rw [hscale]
+      exact hpow
+    calc
+      (2 : ℝ) ^ d.choose 2 /
+            ((2 : ℝ) ^ (a.choose 2 + a) *
+              ((a + 1 - d).factorial : ℝ)) =
+          ((2 : ℝ) ^ d.choose 2 /
+            (2 : ℝ) ^ (a.choose 2 + a)) /
+              ((a + 1 - d).factorial : ℝ) := by ring
+      _ ≤ (1 / 2 : ℝ) ^ (a + 1 - 1) /
+            ((a + 1 - d).factorial : ℝ) := by
+        exact div_le_div_of_nonneg_right hratio (by positivity)
+
+private theorem reflected_factorial_sum_le_exp
+    (R : ℝ) (hR : 0 ≤ R) (p : ℕ) :
+    (∑ d ∈ Finset.range p,
+        R ^ (p - d) / ((p - d).factorial : ℝ)) ≤ Real.exp R := by
+  let f : ℕ → ℝ := fun j => R ^ j / (j.factorial : ℝ)
+  let g : ℕ → ℝ := fun j => f (j + 1)
+  have hindex {d : ℕ} (hd : d ∈ Finset.range p) :
+      p - d = (p - 1 - d) + 1 := by
+    have hpos : 0 < p - d := Nat.sub_pos_of_lt (Finset.mem_range.mp hd)
+    calc
+      p - d = (p - d - 1) + 1 :=
+        (Nat.sub_one_add_one (Nat.ne_of_gt hpos)).symm
+      _ = (p - 1 - d) + 1 := by
+        have hsub : p - d - 1 = p - 1 - d := by
+          rw [Nat.sub_sub, Nat.sub_sub, Nat.add_comm d 1]
+        rw [hsub]
+  calc
+    (∑ d ∈ Finset.range p,
+        R ^ (p - d) / ((p - d).factorial : ℝ)) =
+        ∑ d ∈ Finset.range p, g (p - 1 - d) := by
+      apply Finset.sum_congr rfl
+      intro d hd
+      rw [hindex hd]
+    _ = ∑ j ∈ Finset.range p, g j := Finset.sum_range_reflect g p
+    _ ≤ ∑ j ∈ Finset.range (p + 1), f j := by
+      rw [Finset.sum_range_succ']
+      exact le_add_of_nonneg_right (by simp [f])
+    _ ≤ Real.exp R := Real.sum_le_exp_of_nonneg hR (p + 1)
+
+/-- Uniform quantitative control of a complex translation of one branch.
+The factor `(1/2)^(p-1)` is independent of the real branch and tends to zero. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp
+    (p M : ℕ) (z δ : ℂ) (hp : 1 ≤ p)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ := by
+  calc
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      ∑ d ∈ Finset.range p,
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d) :=
+      norm_normalizedThueMorseSplineBranch_add_sub_le p M z δ hbound
+    _ ≤ ∑ d ∈ Finset.range p,
+        ((1 / 2 : ℝ) ^ (p - 1) / ((p - d).factorial : ℝ)) *
+          ‖δ‖ ^ (p - d) := by
+      apply Finset.sum_le_sum
+      intro d hd
+      exact mul_le_mul_of_nonneg_right
+        (norm_complex_two_choose_factor_le hp (Finset.mem_range.mp hd))
+        (by positivity)
+    _ = (1 / 2 : ℝ) ^ (p - 1) *
+        (∑ d ∈ Finset.range p,
+          ‖δ‖ ^ (p - d) / ((p - d).factorial : ℝ)) := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro d hd
+      ring
+    _ ≤ (1 / 2 : ℝ) ^ (p - 1) * Real.exp ‖δ‖ :=
+      mul_le_mul_of_nonneg_left
+        (reflected_factorial_sum_le_exp ‖δ‖ (norm_nonneg δ) p)
+        (by positivity)
+
+end
+
+end Fabius
