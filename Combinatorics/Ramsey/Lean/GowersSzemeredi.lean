@@ -11,6 +11,7 @@ import GowersSzemeredi.Section16
 import GowersSzemeredi.Sections17_18
 import GowersSzemeredi.ProofInfrastructure
 import GowersSzemeredi.Proofs01Headline
+import GowersSzemeredi.Proofs01_03
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
