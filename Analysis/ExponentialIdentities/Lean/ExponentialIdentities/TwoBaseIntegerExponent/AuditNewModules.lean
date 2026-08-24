@@ -124,6 +124,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.WeightTwoCollapse
 import ExponentialIdentities.TwoBaseIntegerExponent.SmoothLevelClassification
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
+import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck32768
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -881,5 +882,8 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384
 #print axioms fourteen_le_of_not_integer_of_two_three_rpow_integer
+#print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_32768
+#print axioms fifteen_le_of_not_integer_of_two_three_rpow_integer
+#print axioms le_of_twoBaseNonintegerCandidate_32768
 
 end LeanProofs.TwoBaseIntegerExponent

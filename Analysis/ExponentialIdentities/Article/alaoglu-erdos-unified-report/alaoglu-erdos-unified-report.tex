@@ -220,7 +220,7 @@ methods, and research directions}
 The conjecture --- that $2^x,3^x\in\Z$ forces $x\in\Z$ --- remains open, and the reduction to
 the four exponentials conjecture explains why no routine combination of present methods can
 close it.  What the corpus does establish is unusually complete.  Kernel-verified in Lean: a
-zero-free region $2^x<16384$; transcendence of every hypothetical counterexample; multiplicative
+zero-free region $2^x<32768$; transcendence of every hypothetical counterexample; multiplicative
 rank at most two with a canonical primitive odd core; and --- conditional on a single
 counterexample --- the \emph{exact} classification
 \[
@@ -547,7 +547,7 @@ hypothetical counterexample $x$.
 \begin{itemize}
 \item $x$ is irrational, and in fact transcendental.  \statuslean
 \item $\thetaq$ is transcendental.  \statuslean
-\item $x\ge14$, by the kernel-checked zero-free region $2^x<16384$.  \statuslean
+\item $x\ge15$, by the kernel-checked zero-free region $2^x<32768$.  \statuslean
 \item $2^x\ge2^{27}$, hence $x\ge27$, by the directed-rounding scan; this raises the
 barrier only under the stated software trust boundary and is not a kernel certificate.
 \statuscomp
@@ -717,14 +717,15 @@ exponential in the preceding denominator, with base its own output $m=2^x$.
 
 \begin{theorem}[Zero-free region]
 \label{co:thm-finite4096}
-If $2^x,3^x\in\Z$ and $2^x<16384$, then $x\in\Z$.  Equivalently, every nonintegral solution
-satisfies $x\ge14$, and every candidate that is not a power of two is at least $16384$.
+If $2^x,3^x\in\Z$ and $2^x<32768$, then $x\in\Z$.  Equivalently, every nonintegral solution
+satisfies $x\ge15$, and every candidate that is not a power of two is at least $32768$.
 \end{theorem}
 
 \begin{statusbox}{\statuslean{} ---
-\lean{integer_of_two_three_rpow_integer_of_two_rpow_lt_16384},
-\lean{fourteen_le_of_not_integer_of_two_three_rpow_integer},
-\lean{le_of_twoBaseNonintegerCandidate_16384} in \lean{FiniteCheck16384}, extending
+\lean{integer_of_two_three_rpow_integer_of_two_rpow_lt_32768},
+\lean{fifteen_le_of_not_integer_of_two_three_rpow_integer},
+\lean{le_of_twoBaseNonintegerCandidate_32768} in \lean{FiniteCheck32768}, extending
+\lean{FiniteCheck16384} ($2^x<16384$, hence $x\ge14$),
 \lean{FiniteCheck8192} ($2^x<8192$, hence $x\ge13$), \lean{FiniteCheck4096} ($x\ge12$),
 \lean{FiniteCheck256} ($x\ge8$), and \lean{FiniteCheck} ($2^x<100$).  Statements elsewhere
 in this report that quote an earlier kernel bound remain valid a fortiori; each module is an
@@ -781,6 +782,111 @@ Only the value $m=2762$, whose $\thetaq$-power is within $3\cdot10^{-9}$ of an i
 logarithmic scale, needs tier $4$; its certificate compares integers of roughly $90{,}000$
 digits, which the kernel's exact arithmetic replays without difficulty.  No axioms beyond
 the Lean kernel are involved; in particular no \lean{native_decide}.
+
+\paragraph{The $32768$ extension and a simplification of the certificate format.}
+\lean{FiniteCheck32768} raises the region to $2^x<32768$, so a counterexample has $x\ge15$
+with kernel trust.  It also changes the format, and the change is worth recording because it
+removes the bookkeeping that made the earlier tables awkward to scale.  In
+\lean{FiniteCheck4096}--\lean{FiniteCheck16384} a row stores $(a,\text{tier})$, the tier
+indexes a \lean{match} on enclosure pairs, each tier carries two separately proved base
+theorems $2^{L_p}<3^{L_q}$ and $3^{U_q}<2^{U_p}$, and the tier specification is a disjunction
+with one clause per tier --- $39$ clauses at $16384$.  In \lean{FiniteCheck32768} a row
+stores all five numbers $(a,L_p,L_q,U_p,U_q)$ and the two base facts are checked \emph{inside
+the same} \lean{decide} as the two row comparisons, so the accepted predicate is the single
+uniform conjunction
+\[
+  0<a,\quad 2^{L_p}<3^{L_q},\quad 3^{U_q}<2^{U_p},\quad
+  a^{L_q}<m^{L_p},\quad m^{U_p}<(a+1)^{U_q}.
+\]
+Every row is then self-contained: there is no tier \lean{match}, no per-tier base theorem and
+no disjunctive specification, and the specification lemma is one \lean{simp} call independent
+of how many distinct enclosures the table happens to use.  The arithmetic cost is unchanged,
+since $2^{L_p}$ is negligible beside $m^{L_p}$.  The $36$ enclosure pairs that the certified rows
+actually need are thus data rather than code.
+
+The table holds $16384$ rows split into four chunks of $4096$, each replayed by its own
+\lean{decide}, which keeps any single kernel evaluation bounded; the per-chunk length lemmas
+that defeated the earlier chunked draft (Section~\ref{sec:attempts}) are accepted with
+\lean{maxRecDepth} $400000$.  As predicted there, the range needs a $10^7$-denominator
+enclosure: the hardest value is $m=26983$, which requires $10444047/6589460$, and the
+runner-up $m=30329$ requires $10142053/6398923$.  The largest integers compared are about
+$1.6\cdot10^8$ bits.  Every row, base enclosures included, was re-verified with exact GMP
+big-integer arithmetic before being replayed by the kernel.  No \lean{native_decide}.
+
+\subsection{What the certificate route costs}
+\label{co:cost}
+
+The report has so far described the distance between the kernel region and the software
+frontier $2^{27}$ as ``engineering, not mathematics'', and has called each further doubling a
+routine table.  Both statements are true, and both are too kind.  The cost is worth making
+quantitative, because it decides whether further doublings are a plan or a distraction.
+
+\begin{proposition}[Cost of the per-value certificate route]
+\label{co:prop-cost}
+Under the heuristic that the fractional parts $m^{\thetaq}\bmod1$ equidistribute and that
+enclosures of every required quality are available, replaying the zero-free region $2^x<N$ by
+the architecture of Section~\ref{co:finite} costs
+\[
+  \widetilde{\mathrm O}\bigl(N^{\,1+\log_4 3}\bigr),
+  \qquad 1+\log_43=1.79248\ldots,
+\]
+bit operations, so each doubling of $N$ multiplies the work by
+$2^{\,1+\log_43}=2\sqrt3=3.46410\ldots$
+\end{proposition}
+
+\begin{proof}
+Let $m\in[N,2N)$, $a=\lfloor m^{\thetaq}\rfloor$ and $\delta=m^{\thetaq}-a\in(0,1)$.  The
+lower enclosure must satisfy $L_p/L_q>\log_m a$, and
+\[
+  \thetaq-\log_m a=\frac{\log(1+\delta/a)}{\log m}\asymp\frac{\delta}{a\log m},
+\]
+so it must approximate $\thetaq$ to within $\asymp\delta/(a\log m)$.  Best rational
+approximations satisfy $|\thetaq-p/q|\asymp q^{-2}$, whence $q\asymp(a\log m/\delta)^{1/2}$.
+The certificate compares $m^{L_p}$ with $a^{L_q}$, integers of $L_p\log_2m\asymp\thetaq
+q\log_2N$ bits, and binary powering with FFT multiplication costs $\widetilde{\mathrm O}$ of
+that many bit operations.  As $a\asymp N^{\thetaq}$, one row costs
+$\widetilde{\mathrm O}(\delta^{-1/2}N^{\thetaq/2})$.
+
+The extreme rows do not dominate: with $\delta$ equidistributed the mean row cost is
+proportional to $\int_0^1\delta^{-1/2}\,d\delta=2$, a convergent integral.  Summing over the
+$\Theta(N)$ values of $m$ gives $\widetilde{\mathrm O}(N^{1+\thetaq/2})$, and
+$\thetaq/2=\tfrac12\log_23=\log_43$.  For the doubling factor,
+$2^{\log_43}=(2^{\log_23})^{1/2}=\sqrt3$.
+\end{proof}
+
+The convergence of $\int_0^1\delta^{-1/2}\,d\delta$ is the reason the tables are affordable at
+all: the handful of rows needing $10^7$-denominator enclosures costs no more in total than the
+bulk, so one never has to budget for the worst row.  That is visible in the tier populations
+of Section~\ref{co:finite}, where the expensive tiers hold one or two values each.
+
+\paragraph{Measured against the tables, the constant is smaller and the exponent is not yet
+visible.}  Summing $(L_p+U_p)\log_2m$ over the rows actually used gives $2.485$, $6.273$ and
+$17.918$ gigabits for the ranges $[4096,8192)$, $[8192,16384)$ and $[16384,32768)$, so the
+measured factors per doubling are $2.53$ and $2.86$, not $3.46$.  The gap is a genuine
+feature of $\thetaq$ rather than noise.  Its continued fraction
+$[1;1,1,2,2,3,1,5,2,23,2,2,1,1,55,\ldots]$ has large partial quotients, so the enclosure
+ladder has long gaps and a single strong convergent --- $25781/16266$ here --- keeps serving
+the bulk of the rows across more than one doubling.  The proposition's constant is therefore
+an asymptotic average, approached only over many doublings, and these ranges sit inside one
+favourable stretch.  Wall-clock is a third measurement again, since binary powering carries a
+$\log$ factor the bit count omits and cache behaviour is linear in neither: the $8192$ table
+replays in about two minutes, the $16384$ table in about eight, and the $32768$ table in
+$22.7$ minutes, factors of about $4$ and then $2.8$.  Neither sequence is yet long enough to
+exhibit an exponent; what they do establish is that the factor is comfortably above $2$,
+which is all the conclusion below needs.
+
+\paragraph{The conclusion is robust to that constant.}  Reaching the software frontier
+$2^{x}<2^{27}$ from the present $2^{x}<2^{15}$ is twelve doublings.  At the measured factor
+$2.7$ that is $2.7^{12}\approx1.5\cdot10^{5}$; at the asymptotic $2\sqrt3$ it is
+$(2\sqrt3)^{12}=2^{12}3^{6}=2\,985\,984\approx3\cdot10^{6}$.  The $32768$ table replays in
+$22.7$ minutes, so the $2^{27}$ table would take of order a decade of the same computation at
+the measured rate, and of order a century at the asymptotic one.  The kernel frontier and the software frontier are not
+separated by patience.  Closing that gap requires a certificate whose cost is not
+$\Theta(N^{\thetaq/2})$ \emph{per excluded value} --- for instance one algebraic identity
+retiring a whole interval of $m$ at once --- and no such scheme is known here.
+Section~\ref{sec:attempts} reaches the same conclusion qualitatively; the exponent
+$1+\log_43$ is what makes it quantitative, and it is the reason this route should not be
+listed among the ways the conjecture might actually be settled.
 
 \subsection{Arithmetic descent}
 \label{co:descent}
@@ -7010,9 +7116,10 @@ chunk tables are not reproduced.
 \label{cp:sub-boundary}
 
 \begin{resultbox}
-\textbf{Kernel.}  $2^x<16384$ and $2^x,3^x\in\Z$ imply $x\in\Z$; a nonintegral solution has
-$x\ge14$.  \statuslean{} \lean{FiniteCheck16384} (and, independently, $2^x<8192$ and
-$2^x<4096$ in \lean{FiniteCheck8192}, \lean{FiniteCheck4096}).
+\textbf{Kernel.}  $2^x<32768$ and $2^x,3^x\in\Z$ imply $x\in\Z$; a nonintegral solution has
+$x\ge15$.  \statuslean{} \lean{FiniteCheck32768} (and, independently, $2^x<16384$,
+$2^x<8192$ and $2^x<4096$ in \lean{FiniteCheck16384}, \lean{FiniteCheck8192},
+\lean{FiniteCheck4096}).
 
 \textbf{Interval scan.}  Under CPython and \lean{mpmath} interval arithmetic, a nonintegral
 solution has $x>20$.  \statuscomp
@@ -7035,8 +7142,12 @@ Section~\ref{co:finite}); the only new ingredient is the use of semiconvergent e
 the hardest values.  An earlier chunked draft of the $16384$ region had failed on the
 per-chunk length lemmas; the unsplit table avoids the problem entirely, and the $8191$-row
 list literal and its length lemma are accepted with \lean{maxRecDepth} $200000$.  The next
-doubling, $[16384,32768)$, will need the $10^7$-denominator convergent or its
-semiconvergents for a handful of rows; the $m=9329$ timing shows this is minutes, not hours.
+doubling, $[16384,32768)$, was predicted here to need the $10^7$-denominator convergent or
+its semiconvergents for a handful of rows.  That prediction was exact:
+\lean{FiniteCheck32768} needs $10444047/6589460$ for $m=26983$ and $10142053/6398923$ for
+$m=30329$, and nothing larger.  Chunking was reinstated there and works --- four chunks of
+$4096$ rows --- because the row format changed so that a chunk's length lemma is the only
+bookkeeping left; see the certificate-format discussion in Section~\ref{co:finite}.
 
 \paragraph{From scan to kernel certificate.}
 The repository's own certificate architecture (Section~\ref{sec:corpus}) shows the stronger
@@ -7407,7 +7518,7 @@ facts the conjecture actually needs.
 \subsection{Priority H: larger kernel-replayed regions and effective measures}
 \label{at:prog-finite}
 
-The zero-free region $2^{x}<16384$ is kernel-verified, while the current software frontier is
+The zero-free region $2^{x}<32768$ is kernel-verified, while the current software frontier is
 $2^{27}$ (\statuscomp{}) in Section~\ref{sec:finite27}.  Each further doubling is one
 generated, kernel-replayed table; the semiconvergent device of \lean{FiniteCheck8192} and
 \lean{FiniteCheck16384} keeps the exponents manageable.  Every descent constant
@@ -20895,9 +21006,10 @@ whenever $M\ge2^{14}$ and $q\le(2/3)^{14}$, so \emph{no such coefficient vector 
 \item \lean{exponent_gap_dvd}: the rational-root exponent-gap divisibility
 $v^{N-b}\mid a$ used by the report's Hermite-stencil diagnostics.
 \end{itemize}
-The regime constants are exactly the corpus's kernel-verified zero-free region: a
-counterexample has $x\ge14$, hence $M=2^x\ge2^{14}$ and $q=(2/3)^x\le(2/3)^{14}$
-(\lean{FiniteCheck16384}).  What remains outside the kernel is the arithmetic instantiation
+The regime constants come from the zero-free region: a counterexample has $x\ge14$,
+hence $M=2^x\ge2^{14}$ and $q=(2/3)^x\le(2/3)^{14}$ (\lean{FiniteCheck16384}).  The kernel
+bound is now $x\ge15$ (\lean{FiniteCheck32768}), so these constants are conservative rather
+than sharp; nothing below depends on their sharpness.  What remains outside the kernel is the arithmetic instantiation
 of the transport inequalities at window primes: $V_p(t)=1$ and vanishing below the window
 are already kernel-verified (\lean{TerminalFactorialIndependence}); the Legendre-interval
 upper bound \eqref{cw:eq-transport} is elementary and Lean-ready; Huxley's prime-window
@@ -21265,9 +21377,11 @@ The report then audits, with unusual honesty, why its own mechanism stops there.
 macroscopic-window optimization has exact constant
 $\kappa_*=\tfrac{64\log2\log3}9\cosh(t_0)/t_0^2=5.08726658\ldots$ with $t_0\tanh t_0=2$,
 and a \emph{closing} trap must certify a short-vector rank fraction
-$R_H/q>0.98596$ --- a threshold computed directly from the corpus's kernel-verified
-zero-free region $\beta\ge14$ (Section~\ref{co:finite}; the software exclusion
-$\beta>27$ raises it to $0.99272$).  Against this stand two proved ceilings.  The
+$R_H/q>0.98596$ --- a threshold computed directly from the zero-free region
+$\beta\ge14$ (the kernel bound when this was written; the software exclusion
+$\beta>27$ raises it to $0.99272$, and the current kernel bound $\beta\ge15$ of
+Section~\ref{co:finite} raises it slightly, so $0.98596$ remains a valid, if no longer
+sharpest, necessary threshold).  Against this stand two proved ceilings.  The
 \emph{rank-tax inequality} shows the covolume-plus-Minkowski mechanism carries a
 $(r-1)q\log\rho$ penalty, so it cannot certify any rank fraction beyond $1/2$ --- volume
 is not spectrum, and near-full short rank is a shape statement requiring genuine
@@ -22138,9 +22252,11 @@ so the gate fails by the factor
  =158.392\ldots\times\beta,
  \label{camp:eq-pila}
 \end{equation}
-that is by $2217.5$ at the kernel-verified $\beta\ge14$, by $4276.6$ at the computational
-$\beta>27$, and \emph{growing linearly in $\beta$} --- so every improvement of the
-zero-free region makes this particular gate harder, not easier.
+that is by $2217.5$ at $\beta\ge14$, by $4276.6$ at the computational $\beta>27$, and
+\emph{growing linearly in $\beta$} --- so every improvement of the zero-free region makes
+this particular gate harder, not easier.  The kernel bound is now $\beta\ge15$
+(Section~\ref{co:finite}), which accordingly widens the gap a little beyond $2217.5$;
+the figure quoted is the conservative one.
 
 In fact the vanishing branch fails by an infinite margin, which is worth recording because
 it is both sharper and simpler than the Jensen estimate.  The monoid has counting function
@@ -22721,7 +22837,8 @@ the controls \emph{first}: if it does not visibly consume (i), (ii), or (iii), i
 The control principle has one positive consequence: the only statements in this report that
 are \emph{not} control-blind and are fully proved are the finite exclusions, which use the
 actual values of $2^x$ and $3^x$.  The kernel-verified region was raised during this session
-from $2^x<4096$ to $2^x<8192$ and then to $2^x<16384$ (Theorem~\ref{co:thm-finite4096});
+from $2^x<4096$ to $2^x<8192$ to $2^x<16384$ and now to $2^x<32768$
+(Theorem~\ref{co:thm-finite4096});
 the hardest rows need semiconvergent enclosures rather than the next convergent.  The
 $16384$ table has $8191$ rows, its hardest value $m=9329$ uses the enclosure
 $5914137/3731405$ (ten seconds in the kernel, a hundred in exact Python), and the whole table
@@ -23128,9 +23245,12 @@ residual targets below are the honest statement of what a proof would still have
 
 The one literal advance on the conjecture itself made during this integration is finite:
 the kernel-verified zero-free region moved from $2^x<4096$ to $2^x<16384$
-(Theorem~\ref{co:thm-finite4096}), so a counterexample now has $x\ge14$ with kernel trust.
-The software scans already reach $x>27$; the gap between the two is engineering, not
-mathematics, and the semiconvergent device makes each further doubling a routine table.
+(Theorem~\ref{co:thm-finite4096}), and in a later session to $2^x<32768$, so a counterexample
+now has $x\ge15$ with kernel trust.  The software scans already reach $x>27$; the gap between
+the two is engineering, not mathematics, and the semiconvergent device makes each further
+doubling a routine table.  The cost is nonetheless $\Theta(N)$ certificates for the region
+$2^x<N$, so this route reaches the software frontier only through a genuinely different
+device, not through further doublings.
 
 \paragraph{Where genuinely new input could enter.}  Three targets survive all five audits and
 are not yet known to be equivalent to the conjecture: shared structural-face capture
@@ -25564,6 +25684,9 @@ $2^x<100$ and $2^x<256\Rightarrow x\in\Z$ & \statuslean &
 $2^x<4096\Rightarrow x\in\Z$\ \ (so $x\ge12$) & \statuslean & \lean{FiniteCheck4096} \\
 $2^x<8192\Rightarrow x\in\Z$\ \ (so $x\ge13$) & \statuslean & \lean{FiniteCheck8192} \\
 $2^x<16384\Rightarrow x\in\Z$\ \ (so $x\ge14$) & \statuslean & \lean{FiniteCheck16384} \\
+$2^x<32768\Rightarrow x\in\Z$\ \ (so $x\ge15$) & \statuslean & \lean{FiniteCheck32768} \\
+Certificate route costs $\widetilde{\mathrm O}(N^{1+\log_43})$ & \statusnew &
+Proposition~\ref{co:prop-cost} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp &
 Section~\ref{sec:finitecheck}, Appendix~\ref{app:interval} \\
 No nonintegral candidate with $2^x<2^{27}$ & \statuscomp &
@@ -26300,7 +26423,7 @@ Unconditional block bound $\limsup I(H)(\log H)^2/H^2\le32\log2\log3/9$; two-bas
 version; rank--codimension traps; Cauchy--Binet covolume; frequency-simplex optimality &
 \statusnew & Theorem~\ref{bb:thm-block}; Section~\ref{bb:traps} \\
 Macroscopic constant $\kappa_*=5.0873$ ($t_0\tanh t_0=2$); corank frontier $98.596\%$
-(from kernel $\beta\ge14$); rank-tax one-half ceiling; $32ab/9$ conservation law &
+(computed at $\beta\ge14$); rank-tax one-half ceiling; $32ab/9$ conservation law &
 \statusnew{}; constants \statusexactcomp & Section~\ref{bb:ceilings} \\
 Consecutive-dilation rigidity (no fixed trap for a persistent orbit point) &
 \statuslean & \lean{ConsecutiveDilationRigidity}; Section~\ref{bb:dilation} \\
@@ -26475,6 +26598,8 @@ Module & Contents \\
 nine tiers, one semiconvergent enclosure) \\
 \lean{.../FiniteCheck16384} & zero-free region $2^x<16384$ ($8191$ rows, $39$ tiers,
 exponents to $5.9\cdot10^6$) \\
+\lean{.../FiniteCheck32768} & zero-free region $2^x<32768$ ($16383$ rows in four chunks, $36$
+enclosure pairs carried as data, exponents to $1.04\cdot10^7$) \\
 \lean{.../ZeroDensity} & AP obstruction, Roth-number counting, $o(N)$ \\
 \lean{.../NonintegerDensity} & nonintegral candidate refinement, density zero \\
 \lean{.../MultiplicativeRank} & rank $\le2$, $\thetaq$ irrational, $(\clog_2N)^2$ \\
