@@ -164,6 +164,21 @@ for every `q : ℚ` the raw-coordinate formula with inner power
 `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses
 the zero-one `thueMorseBit`; at `n = q = 0`, the sole inner power is `0^0`
 and evaluates to one.
+
+The global binary-reduction series is also formalized.  Its correct outer
+index starts at `m = 0`, where `Floor[2^(m-1)x]` is genuinely `Floor[x/2]`.
+For every real `x ≥ 0`, the series converges absolutely to the signed global
+Fabius extension.  This specializes to the bounded Fabius function on
+`0 ≤ x ≤ 1`.  The complete finite inner expression is a constant polynomial
+in its common translation, so the theorem holds not only for rational `q`,
+but for every real or complex `q`.  The missing `m = 0` term is zero on
+`0 ≤ x < 1` and equals one at `x = 1`; this explains both why the former
+one-indexed formula worked on the half-open interval and why it failed at the
+right endpoint.  The primary public endpoints are
+`Fabius.hasSum_qBinomialFabiusGlobalSummand`,
+`Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real`, and
+`Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_complex`.
+
 The recurrence sequence's fixed-constant heuristic
 omits the nonconstant periodic correction.  The elementary small-`x`
 expression from

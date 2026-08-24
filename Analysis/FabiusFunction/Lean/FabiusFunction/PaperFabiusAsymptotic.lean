@@ -10,6 +10,7 @@ import FabiusFunction.FabiusLambertAllOrderSmallArgument
 import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.FabiusQBinomialFormula
 import FabiusFunction.FabiusRawQBinomialFormula
+import FabiusFunction.FabiusGlobalQBinomialSeries
 import FabiusFunction.FabiusFirstSaddleCorrection
 import FabiusFunction.FabiusSaddleCoefficientRecurrence
 import FabiusFunction.PeriodicSmooth
@@ -60,5 +61,11 @@ displayed sum containing `(j - m * 2^k + q)^(n+k)` computes the same dyadic
 value; this includes both the centered and source-faithful `+1/2` versions.
 For `m = 1`, dyadic reflection also gives the arbitrary-`q` raw-coordinate
 form with inner power `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.
+The corresponding infinite binary-reduction formula is proved after restoring
+its missing scale-zero term.  For every `x ≥ 0` and every real or complex
+translation `q`, the literal nested series is absolutely convergent and equals
+the signed global Fabius extension.  On `[0,1]` it equals the bounded Fabius
+function.  Polynomial constancy, rather than density alone, makes the
+extension from rational to real and complex `q` exact.
 See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/
