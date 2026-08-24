@@ -21552,10 +21552,20 @@ eigenvectors with integer eigenvalue pairs, and the two operators separate them:
 $(2^i3^j,M^iA^j)$ determines $(i,j)$, by the kernel-verified injectivity of
 $(i,j)\mapsto2^i3^j$ (\lean{SmoothSemigroupCore}).
 
-This turns the spectrum question into a finiteness question.  If for some $g\in V_\tau$ the
-$\Z[\Delta_1,\Delta_\beta]$-orbit of $g$ is finitely generated, then $g$ satisfies a linear
-difference equation with integer coefficients in the two commuting shifts; its entire
-solutions are combinations of exponentials $e_{ij}$, forcing $g\in V_0$ and $\tau_2(g)=0$.
+This turns the spectrum question into a finiteness question.  If the $\Z$-span of the shifts
+of some $g\in V_\tau$ has finite rank, then $g$ satisfies a linear difference equation with
+integer coefficients in the two commuting shifts, and $\tau_2(g)=0$.
+
+\begin{statusbox}{\textbf{Correction} --- the last step needs irrationality of $\beta$}
+An earlier version justified the final implication by ``its entire solutions are
+combinations of exponentials''.  That is false over entire functions: the coefficient field
+of a difference equation in $z\mapsto z+1$ admits arbitrary $1$-periodic functions, and
+theta series are $1$-periodic with any prescribed positive quadratic type.  The correct
+argument separates Fourier modes and consumes irrationality of $\beta$ --- a nonzero mode
+surviving \emph{both} shifts forces a rational relation between $1$ and $\beta$.  With that
+repair the implication stands, and it is now visibly control-sensitive.
+\end{statusbox}
+
 Consequently:
 
 \begin{target}[Difference-module finiteness]\label{camp:target-diffmodule}
@@ -21587,9 +21597,21 @@ $s=n+k\beta$ gives $s^2=n^2+2nk\beta+k^2\beta^2$ and hence
  2^{s^2}=2^{n^2}\cdot M^{2nk}\cdot2^{k^2\beta^2}.
 \]
 The first two factors are integers supplied by the counterexample data; the third requires
-$2^{\beta^2}\in\Z$, which that data does \emph{not} supply --- and $\beta^2\notin\Sol$,
-since $\beta^2=n+k\beta$ would make $\beta$ quadratic, contradicting the kernel-verified
-transcendence of $\beta$.  So the construction is unavailable under failure.
+$2^{\beta^2}\in\Z$.
+
+\begin{statusbox}{\textbf{Correction} --- the criterion is $2^{\beta^2}\in\Z$, and it can hold}
+An earlier version dismissed this by observing $\beta^2\notin\Sol$ (true, by transcendence
+of $\beta$).  That is the wrong criterion: integrality of $2^{s^2}$ requires
+$s^2\in\log_2\N$, which is \emph{weaker} than $s^2\in\Sol$.  Worse, this report's own
+Corollary~\ref{sm:diagonal-trans} settles it: $2^{x^2}\in\N$ exactly when $2^x$ is
+three-smooth.  Since Theorem~\ref{sm:uniform-second-level} keeps ``$M$ three-smooth, $A$
+not'' as a live branch of failure, in that branch $2^{z^2}$ \emph{is} integer-valued on all
+of $\Sol$, with $\tau_2=\log2>0$ --- and the mirror statement holds for $3^{z^2}$ when $A$
+is three-smooth.  Hence $V_{\log2}\supsetneq V_0$ under failure too, the achievable spectrum
+is not $\{0\}\cup\{\infty\}$, and Target~\ref{camp:target-diffmodule} is \emph{false as
+posed}.  This does not touch Theorem~\ref{camp:thm-typegap}: $\log2$ exceeds
+$\tau_{\mathrm{crit}}$ by a factor about $4.9\times10^5$.
+\end{statusbox}
 
 At an integer control it is available.  There $\Sol=\N_0$, every $2^{n^2}$ is an integer,
 and $\tau_2(2^{z^2})=\log2>0$, whereas every element of
@@ -22008,14 +22030,15 @@ $\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$ is the exact signature of the least-genera
 so at an integer control $\Sol=\N_0$ has \emph{linear} density and the entire quadratic-type
 analysis is vacuous.  The route therefore consumes channel~(ii) of the control principle
 (Section~\ref{log:control}) --- which most of the corpus's machinery does not.  Second, it
-converts an open-ended search into a single explicit inequality.  What is ruled out is only the \emph{vanishing} construction, and by
-Proposition~\ref{camp:prop-inftype} that branch fails by an infinite margin rather than the
-finite one of \eqref{camp:eq-pila}; a construction whose small type comes from controlled
-interpolation rather than from zeros is untouched.  The natural constructions therefore
-realise only the two extremes $\tau_2=0$ (any $\Z$-polynomial in $2^z,3^z$, which is
-integer-valued on $\Sol$) and $\tau_2=\infty$ (anything vanishing on $\Sol$), while
-Theorem~\ref{camp:thm-typegap} forbids the interval $(0,1/(832\beta^2\log2\log3)]$.
-Whether the achievable spectrum meets $(0,\infty)$ at all is exactly the open question.  \statusnew{}; Pila's theorem and the minimum-modulus input
+converts an open-ended search into a single explicit inequality.  What is ruled out is the \emph{vanishing} construction, by the finite margin of
+\eqref{camp:eq-pila}: such a function has $\tau_2\ge1/(4\beta)$, which exceeds the
+threshold by $208\beta\log2\log3$.  The margin is finite, not infinite --- the symmetrised
+product of Proposition~\ref{camp:prop-inftype} shows $\tau_2=\pi/(2\beta)$ is achievable ---
+so the vanishing branch is excluded but the achievable spectrum is \emph{not} confined to
+$\{0\}\cup\{\infty\}$.  A construction whose small type comes from controlled interpolation
+rather than from zeros remains untouched, and
+Theorem~\ref{camp:thm-typegap} continues to forbid the interval
+$(0,1/(832\beta^2\log2\log3)]$.  \statusnew{}; Pila's theorem and the minimum-modulus input
 \statusknown{}; target \statusopen.
 
 \subsection{Literature synthesis: five clusters, and one gate measured}
@@ -22085,8 +22108,36 @@ being $2$, with divergent coefficient sum, and the canonical product --- which h
 growth among all entire functions vanishing on $\Sol$ --- satisfies
 $\log M(r)\asymp\beta^{-1}r^2\log r$.  Therefore:
 
-\begin{proposition}[Vanishing on the monoid forces infinite type]\label{camp:prop-inftype}
-Every entire function vanishing on all of $\Sol$ has $\tau_2=+\infty$.
+\begin{statusbox}{\textbf{Retraction} --- vanishing does \emph{not} force infinite type}
+An earlier version asserted that every entire function vanishing on all of $\Sol$ has
+$\tau_2=+\infty$.  That is \emph{false}.  The error was the supporting claim that the
+genus-two canonical product over $\Sol$ has minimal growth among functions vanishing on
+$\Sol$: Lindel\"of's finite-type criterion at order two constrains the \emph{full} divisor,
+and enlarging the divisor symmetrically \emph{cancels} the divergence, because
+$(is)^{-2}=-s^{-2}$.  Explicitly,
+\[
+ f(z)=z^4\prod_{s\in\Sol,\ s>0}\Bigl(1-\frac{z^4}{s^4}\Bigr)
+\]
+is entire --- the exponent of convergence of $\Sol$ is $2$, so $\sum s^{-4}$ converges
+($1.08248$ over $\Sol\cap(0,4000]$) --- vanishes on all of $\Sol$, and has every factor
+maximised simultaneously at $\arg z=\pi/4$, giving
+$\log M(f,r)=\sum_s\log(1+r^4/s^4)$ and hence
+\[
+ \tau_2(f)=\frac1\beta\int_0^\infty u\log\bigl(1+u^{-4}\bigr)\,du=\frac{\pi}{2\beta}<\infty
+\]
+($\int_0^\infty u\log(1+u^{-4})du=\pi/2$ exactly; the ratio $\log M(f,r)/r^2$ measured at
+$r=40,80,160$ is $0.1748,0.1429,0.1273$, descending to $\pi/(2\beta)=0.11219$ at
+$\beta=14+\sqrt2/1000$).
+\end{statusbox}
+
+What is true is the two-sided quantitative statement, whose lower half was already in this
+report and is unaffected.
+
+\begin{proposition}[Type of functions vanishing on the monoid]\label{camp:prop-inftype}
+Every nonzero entire function vanishing on all of $\Sol$ satisfies
+$\tau_2\ge1/(4\beta)$, by Jensen against the density
+$\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$.  The bound is sharp within a factor $2\pi$: the
+symmetrised product above attains $\tau_2=\pi/(2\beta)$.
 \end{proposition}
 
 So no function that is independent of $2^z,3^z$ by virtue of vanishing on the monoid comes
@@ -22097,28 +22148,30 @@ Proposition~\ref{camp:prop-inftype} has an immediate consequence which is of ind
 interest, because it says the conditional monoid is a \emph{uniqueness set} for the whole
 finite-type class.
 
-\begin{corollary}[Monoid rigidity]\label{camp:cor-rigidity}
-Assume Conjecture~\ref{conj:AE} fails, with generator $\beta$.  If $g_1,g_2$ are entire,
-both of finite quadratic type, and $g_1=g_2$ on $\Sol$, then $g_1=g_2$ identically.
-\end{corollary}
-
-\begin{proof}
-$g_1-g_2$ vanishes on $\Sol$ and satisfies
-$\tau_2(g_1-g_2)\le\max\bigl(\tau_2(g_1),\tau_2(g_2)\bigr)<\infty$, since
-$M(g_1-g_2,r)\le2\max\bigl(M(g_1,r),M(g_2,r)\bigr)$.  By
-Proposition~\ref{camp:prop-inftype} a \emph{nonzero} entire function vanishing on $\Sol$
-has infinite type, so $g_1-g_2=0$.
-\end{proof}
+\begin{statusbox}{\textbf{Retraction} --- $\Sol$ is not a uniqueness set for finite type}
+The monoid-rigidity corollary drawn from the retracted proposition --- that two entire
+functions of finite quadratic type agreeing on $\Sol$ must agree identically --- falls with
+it, and is false for the same witness: $f(z)=z^4\prod_{s>0}(1-z^4/s^4)$ is nonzero, of
+finite type $\pi/(2\beta)$, and vanishes on all of $\Sol$, so $f$ and $0$ agree on $\Sol$
+without being equal.  Evaluation on $\Sol$ is therefore \emph{not} injective on the
+finite-type class, and every statement below that used injectivity is withdrawn.
+\end{statusbox}
 
 Writing $V_\tau$ for the set of entire functions that are integer-valued on $\Sol$ and have
-$\tau_2\le\tau$, the situation is therefore this: $V_0$ contains every $\Z$-polynomial in
-$2^z$ and $3^z$; the type gap (Theorem~\ref{camp:thm-typegap}) says
-$V_{1/(832\beta^2\log2\log3)}=V_0$; and evaluation on $\Sol$ is \emph{injective} on
-$\bigcup_{\tau<\infty}V_\tau$ by Corollary~\ref{camp:cor-rigidity}, so each such function is
-pinned by its integer values alone.  Whether $V_\tau=V_0$ for \emph{every} finite $\tau$ ---
-equivalently, whether the achievable type spectrum is exactly $\{0\}\cup\{\infty\}$ --- is
-the sharp form of the open question, and a positive answer would close
-Target~\ref{camp:target-construct} negatively rather than leaving it open.  \statusnew.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
+$\tau_2\le\tau$, the situation after the retractions above is this.  $V_0$ contains every
+$\Z$-polynomial in $2^z$ and $3^z$; the type gap (Theorem~\ref{camp:thm-typegap}) says
+$V_{1/(832\beta^2\log2\log3)}=V_0$; evaluation on $\Sol$ is \emph{not} injective on
+$\bigcup_{\tau<\infty}V_\tau$, the symmetrised product of
+Proposition~\ref{camp:prop-inftype} vanishing on $\Sol$ with finite type $\pi/(2\beta)$;
+and the achievable spectrum is \emph{not} $\{0\}\cup\{\infty\}$ --- in the branch where $M$
+is three-smooth it contains $\log2$, by the correction in
+Section~\ref{camp:diffmodule}.  What survives as the sharp open question is narrower and
+better posed: the spectrum is an additive sub-semigroup of $[0,\infty]$ containing $0$ and
+$\infty$, avoiding $(0,\tau_{\mathrm{crit}}]$ by the type gap, containing $\N\log2$ in the
+$M$-smooth branch (and $\N\log3$ in the $A$-smooth branch), and \emph{completely unknown on
+the interval $(\tau_{\mathrm{crit}},(\log2)/2)$ in every branch}.  Deciding whether that
+interval is empty is what would close Target~\ref{camp:target-construct} negatively.
+\statusnew.  \statusnew{}; the divergence rate \statusexactcomp.  \statusnew{}.  \emph{Erratum on the numerical check.}  The ratios $1.219,1.109,1.054$
 quoted earlier were computed at $\beta=14$ --- an \emph{integer}, hence a control, where
 $\Sol$ collapses to $\N_0$ and the quadratic density fails --- and over the pair multiset
 rather than the point set.  At an admissible irrational $\beta$ the two coincide and the
@@ -23731,9 +23784,15 @@ interpolation determinant against the exact monoid density and greedy mean frequ
 $\beta^{-2}$ scaling exact to $0.063\%$; conclusions independent of the quoted constant &
 \statusnew{}; optimisation \statusexactcomp & Section~\ref{camp:ownthreshold},
 \eqref{camp:eq-own} \\
-Monoid rigidity: a finite-type entire function is determined by its values on $\Sol$;
-spectrum question $V_\tau=V_0$ &
-\statusnew{}/\statusopen & Corollary~\ref{camp:cor-rigidity} \\
+Vanishing on $\Sol$ forces $\tau_2\ge1/(4\beta)$, sharp within $2\pi$ (the symmetrised
+product $z^4\prod(1-z^4/s^4)$ attains $\pi/(2\beta)$); the earlier ``infinite type'' and
+``$\Sol$ is a uniqueness set'' claims are \emph{retracted} &
+Jensen bound \statusnew{}; witness \statusexactcomp &
+Proposition~\ref{camp:prop-inftype} \\
+Achievable spectrum: additive sub-semigroup of $[0,\infty]$, avoiding
+$(0,\tau_{\mathrm{crit}}]$, containing $\N\log2$ in the $M$-smooth branch; unknown on
+$(\tau_{\mathrm{crit}},(\log2)/2)$; at controls it is \emph{all} of $[0,\infty]$ &
+\statusnew{}/\statusopen & Sections~\ref{camp:typegap}, \ref{camp:diffmodule} \\
 Weight-two encoding \emph{is} the two-star tensor; its finite core is already
 kernel-verified & \statuslean{} core; identification \statusexactcomp &
 \lean{TwoStarControlCharacterization}; Section~\ref{camp:cdt} \\

@@ -48,6 +48,26 @@ cannot report success on an inconclusive enclosure.
 For extra tightness the bound is applied on Ksub equal sub-blocks of B and the maximum
 taken; that is still a rigorous bound for B, and it converges to the true sup as Ksub grows.
 
+RANK-CODIMENSION TRAP.  If r LINEARLY INDEPENDENT integer polynomials on one common support
+S are all certified subunit on B, then B carries at most |S| - r points of Sol.  Proof: all
+r vanish at every point of Z = Sol cap B, so the r-dimensional space lies in the kernel of
+c |-> (F_c(t))_{t in Z}; that evaluation matrix (exp(lambda_e t))_{t in Z, e in S} has rank
+min(|Z|, |S|) by strict total positivity of the exponential system, so the kernel has
+dimension |S| - min(|Z|,|S|), whence r <= |S| - |Z|.  This is the capacity of the block,
+and it is much smaller than the one-polynomial defect |S| - 1.
+
+BETA > L.  Both t = L and t = L+1 lie in Sol, so every certificate vanishes there and
+r <= |S| - 2 always; the trap therefore saturates at capacity 2.  A certified capacity-2
+trap on [L, L+1] PROVES that Sol cap [L, L+1] = {L, L+1}, and hence that
+
+        2^x, 3^x integers with x not an integer  ==>  x > L,
+
+because if 0 < x <= L with x not an integer then n + x lies in (L, L+1) for n = ceil(L-x)
+>= 0, and n + x lies in Sol (Sol is an additive monoid containing 1 and x) and is not an
+integer -- a third point of Sol in [L, L+1].  This is the same conclusion as the corpus's
+FiniteCheck ladder, but at cost polynomial in L instead of one certificate per integer
+below 2^L.
+
 =========================  WHAT IS ONLY MEASURED  ===========================
 
 * The SEARCH for the integer vector c is heuristic: the rows W_e kappa_{n,e} and the tail
@@ -73,19 +93,30 @@ i.e. a monomial certificate |c| 2^{iL} 3^{jL} < 1, which is impossible for L >= 
 route correctly yields no contradiction at controls.  The route is control-clean, and it
 can only ever win on a RATE (capacity o(L)), never on structure.
 
+A second control test, run by the "falsify" command, checks that the machinery is not
+vacuous: on [8, 8+d] the block contains d+1 integers, all in Sol, so the trap MUST return
+capacity >= d+1.  It returns exactly d+1 for d = 1, 2, 3 -- never less.  Setting
+BASES = [4, 9], where t = 1/2 genuinely is a solution, produces no certificate at all.
+
 Usage:
     python near_curve_certificate.py sweep  1 2 3 ...   # min |S| per unit block L
     python near_curve_certificate.py verify             # re-verify the stored certificates
     python near_curve_certificate.py shapes L q         # sparse vs dense support comparison
     python near_curve_certificate.py cover  L           # single block vs K-piece covers
     python near_curve_certificate.py long   L           # blocks of length delta = 1,2,4,8
+    python near_curve_certificate.py trap   L q1 q2 ..  # capacity-2 trap  ==>  beta > L
+    python near_curve_certificate.py falsify            # the trap never under-counts
 """
 import sys, os, math, json, time, random, itertools
 from fractions import Fraction
 from flint import fmpz_mat, arb, ctx
 
+BASES = [2, 3]          # the pair (u, v); the default is the Alaoglu-Erdos pair (2,3)
 LOG2, LOG3 = math.log(2), math.log(3)
-lam_f = lambda p: p[0]*LOG2 + p[1]*LOG3
+
+
+def lam_f(p):
+    return p[0]*math.log(BASES[0]) + p[1]*math.log(BASES[1])
 
 
 def to_int(x):
@@ -107,7 +138,7 @@ def cheb_rows(c0, h, S, N, prec):
     old = ctx.prec
     ctx.prec = prec
     try:
-        l2, l3 = arb(2).log(), arb(3).log()
+        l2, l3 = arb(BASES[0]).log(), arb(BASES[1]).log()
         C0 = arb(c0.numerator)/c0.denominator
         H = arb(h.numerator)/h.denominator
         W, K, T = [], [], []
@@ -489,6 +520,88 @@ def cmd_shapes(L, q, ntrials=200, seed=1):
         print(f"  LLL certified sup, {name:19s}: {v:.6g}   {'CERTIFIED' if v < 1 else 'no certificate'}")
 
 
+def kernel_basis(L, S):
+    """Basis of {c in Z^S : P(2^L,3^L) = P(2^{L+1},3^{L+1}) = 0}, the two conditions every
+    subunit certificate on [L,L+1] must satisfy (t = L and t = L+1 lie in Sol)."""
+    q = len(S)
+    A = fmpz_mat([[2**(L*i)*3**(L*j) for (i, j) in S],
+                  [2**((L + 1)*i)*3**((L + 1)*j) for (i, j) in S]])
+    X, nul = A.nullspace()
+    B = fmpz_mat([[int(X[r, c]) for r in range(q)] for c in range(nul)])
+    H = B.hnf()
+    return [[int(H[r, c]) for c in range(q)] for r in range(H.nrows())
+            if any(H[r, c] != 0 for c in range(q))]
+
+
+def trap_search(L, S, logsigma=200, Ksub=4, target=None):
+    """Preconditioned rank-codimension trap: LLL inside the kernel of the two forced
+    vanishing conditions.  Returns (r, certified vectors)."""
+    q = len(S)
+    B = kernel_basis(L, S)
+    k = len(B)
+    lam_max = max(lam_f(p) for p in S)
+    N = auto_N(lam_max/2, lam_max*(L + 1) + 130)
+    prec = int(300 + 1.8*lam_max*(L + 1)/LOG2 + 10*q + 2*N + logsigma)
+    prec = (prec//64 + 1)*64
+    old = ctx.prec
+    ctx.prec = prec
+    try:
+        W, K, T = cheb_rows(Fraction(2*L + 1, 2), Fraction(1, 2), S, N, prec)
+        sig = arb(2)**logsigma
+        M = fmpz_mat([[to_int(sig*W[e]*K[e][n]) for n in range(N)]
+                      + [to_int(sig*W[e]*T[e]) + 1 if f == e else 0 for f in range(q)]
+                      for e in range(q)])
+    finally:
+        ctx.prec = old
+    P = fmpz_mat([list(v) for v in B])*M
+    R = fmpz_mat([list(B[r]) + [int(P[r, c]) for c in range(N + q)]
+                  for r in range(k)]).lll()
+    target = target or q - 2
+    good = []
+    for r in range(k):
+        v = [int(R[r, c]) for c in range(q)]
+        if not any(v):
+            continue
+        if certified_sup(L, 1, S, v, Ksub=Ksub) < 1:
+            good.append(v)
+        if len(good) >= target:
+            break
+    if not good:
+        return 0, []
+    return fmpz_mat([list(v) for v in good]).rank(), good
+
+
+def cmd_trap(L, qs):
+    """A capacity-2 trap at block L PROVES beta > L: if 2^x, 3^x are integers with x not an
+    integer and x <= L, then n + x lies in (L, L+1) for n = ceil(L-x) >= 0 and is a third
+    point of Sol in [L, L+1] beyond L and L+1 -- contradicting capacity 2."""
+    print(f"{'L':>4} {'q':>5} {'r':>5} {'capacity':>9} {'time':>8}   conclusion")
+    for q in qs:
+        t = time.time()
+        r, good = trap_search(L, lam_sorted(q))
+        cap = q - r
+        print(f"{L:4d} {q:5d} {r:5d} {cap:9d} {time.time()-t:7.1f}s   "
+              f"{'beta > %d PROVED' % L if cap <= 2 else 'no trap yet'}")
+        sys.stdout.flush()
+        if cap <= 2:
+            return q
+    return None
+
+
+def cmd_falsify():
+    """Sanity: the trap must return EXACTLY the number of forced integer points, never less.
+    [L,L+d] contains d+1 integers, all in Sol, so capacity must be >= d+1."""
+    print("block [8, 8+d]: contains d+1 integers, all in Sol -> capacity must be >= d+1")
+    print(f"{'d':>3} {'q':>5} {'r':>5} {'capacity':>9} {'must be >=':>11} {'ok':>4}")
+    for d, qs in ((1, (24,)), (2, (40,)), (3, (70,))):
+        for q in qs:
+            S = lam_sorted(q)
+            r, _ = rank_profile(8, d, S, Ksub=6)
+            cap = q - r
+            print(f"{d:3d} {q:5d} {r:5d} {cap:9d} {d+1:11d} {'OK' if cap >= d+1 else 'BUG':>4}")
+            sys.stdout.flush()
+
+
 def cmd_verify(path=None):
     path = path or os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                 "near_curve_certificates.json")
@@ -520,5 +633,9 @@ if __name__ == "__main__":
         cmd_cover(int(a[0]))
     elif cmd == "long":
         cmd_long(int(a[0]))
+    elif cmd == "trap":
+        cmd_trap(int(a[0]), [int(x) for x in a[1:]])
+    elif cmd == "falsify":
+        cmd_falsify()
     else:
         print(__doc__)
