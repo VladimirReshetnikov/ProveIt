@@ -394,13 +394,16 @@ noncomputable def section10RegularSet {N : Nat} {X : Type*}
       phi z - phi w = psi d
 
 /-- **Lemma 10.12.** On `W1`, the induced map on the smaller Bohr
-neighborhood agrees with differences of `phi`. -/
+neighborhood agrees with differences of `phi`.  The printed hypothesis
+`sqrt theta <= 1 / 8` is stronger than the intersection argument needs;
+`sqrt theta < 5 / 16` is the sharp condition coming from the paper's
+`5 / 8` overlap estimate and the two exceptional sets. -/
 def lemma_10_12 : Prop :=
   forall (N : Nat) [NeZero N] (X : Type*) [Fintype X] [DecidableEq X]
       (D : MultifunctionDomain N X) (phi : X -> ZMod N)
       (K : Finset (ZMod N)) (delta theta : Real) (W : Finset X)
       (B' : Finset (ZMod N)) (psi psi1 : ZMod N -> ZMod N),
-    K.Nonempty -> 0 < delta -> delta <= 1 -> Real.sqrt theta <= 1 / 8 ->
+    K.Nonempty -> 0 < delta -> delta <= 1 -> Real.sqrt theta < 5 / 16 ->
     (forall w, w ∈ W -> forall d, d ∈ B' ->
       (D.fibre (D.index w + d)).Nonempty) ->
     let k := K.card

@@ -2079,18 +2079,22 @@ $$
 \left(\left(1-\theta^{1 / 2}\right) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r(w)+d}\right) \quad \phi(z)-\phi(w)=\psi(d) .
 $$
 
-If $\theta^{1 / 2} \leqslant 1 / 8$ (as we shall assume), then Lemma 10.7 implies that $W_{1}$ has cardinality at least $7|W| / 8$.
+Lemma 10.7 implies that $W_{1}$ has cardinality at least $(1-\theta^{1/2})|W|$; in particular, this is at least $7|W|/8$ if $\theta^{1/2}\leqslant1/8$.
 
 % ed.: The final existence step in the proof also needs the translated fibres
 % $X_{r(w)+d}$ to be nonempty; this follows from the earlier Section 10 setup
 % and quantitative fibre bounds but must be explicit in the standalone lemma.
-Lemma 10.12. Assume that $\theta^{1 / 2} \leqslant 1 / 8$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Assume also that $X_{r(w)+d}$ is nonempty whenever $w\in W$ and $d\in B^{\prime}$. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
+% ed.: The printed bound $\theta^{1/2}\leqslant1/8$ is unnecessarily strong
+% and is not met by the parameters of Theorem 10.13.  Its proof only needs
+% $\theta^{1/2}<5/16$: after the $5/8$ overlap, two exceptional sets of
+% relative size at most $\theta^{1/2}$ must leave a point.
+Lemma 10.12. Assume that $\theta^{1 / 2} < 5 / 16$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Assume also that $X_{r(w)+d}$ is nonempty whenever $w\in W$ and $d\in B^{\prime}$. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
 
-Proof. By the definition of $W_{1}$ and the assumption that $\theta^{1 / 2} \leqslant 1 / 8$, we have the statements
+Proof. By the definition of $W_{1}$, we have the statements
 
 
 \begin{equation*}
-\text { (7/8 a.e. } \left.d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{1}\right)+d}\right) \quad \phi(z)-\phi\left(w_{1}\right)=\psi(d) \tag{1}
+\left((1-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{1}\right)+d}\right) \quad \phi(z)-\phi\left(w_{1}\right)=\psi(d) \tag{1}
 \end{equation*}
 
 
@@ -2098,7 +2102,7 @@ and
 
 
 \begin{equation*}
-\text { (7/8 a.e. } \left.d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{2}\right)+d}\right) \quad \phi(z)-\phi\left(w_{2}\right)=\psi(d) \text {. } \tag{2}
+\left((1-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{r\left(w_{2}\right)+d}\right) \quad \phi(z)-\phi\left(w_{2}\right)=\psi(d) \text {. } \tag{2}
 \end{equation*}
 
 
@@ -2114,18 +2118,18 @@ Because $r\left(w_{1}\right)-r\left(w_{2}\right) \in C$, we know from the proof 
 
 
 \begin{gather*}
-\left(1 / 2 \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{d+r\left(w_{1}\right)}\right)  \tag{4}\\
+\left((5/8-\theta^{1/2}) \text { a.e. } d \in B^{\prime}\right)\left((1-\theta) \text { a.e. } z \in X_{d+r\left(w_{1}\right)}\right)  \tag{4}\\
 \phi(z)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right) .
 \end{gather*}
 
 
-From (1) and (4) it follows that for 3/8-almost every $d \in B^{\prime}$, for $(1-\theta)$ -almost every $z \in X_{r\left(w_{1}\right)+d}$ we have both
+From (1) and (4) it follows that for $(5/8-2\theta^{1/2})$-almost every $d \in B^{\prime}$, for $(1-2\theta)$-almost every $z \in X_{r\left(w_{1}\right)+d}$ we have both
 
 $$
 \phi(z)-\phi\left(w_{1}\right)=\psi(d) \text { and } \phi(z)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right) .
 $$
 
-In particular, there exist $d$ and $z$ such that both equations hold, which implies that
+Since $\theta^{1/2}<5/16$ (and hence $\theta<1/2$), and the relevant fibre is nonempty, there exist $d$ and $z$ such that both equations hold, which implies that
 
 $$
 \phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi\left(d+r\left(w_{1}\right)-r\left(w_{2}\right)\right)-\psi(d)=\psi(d+c)-\psi(d)=\psi_{1}(c) .
@@ -2605,7 +2609,14 @@ If the projection of $\Gamma_{1}$ to the $h$-axis has cardinality less than $\th
 
 We shall now prove several lemmas under the same set of hypotheses, so it is convenient to state the hypotheses first and not keep repeating them. Let $A$ be a subset of $\mathbb{Z}_{N}^{2}$ of cardinality $\alpha N^{2}$ and let $\phi: A \rightarrow \mathbb{Z}_{N}$ be a function with the following two properties. First, $\phi(x, y)$ is, for every fixed $x$, a homomorphism of order 8 in $y$ and for every fixed $y$ a homomorphism of order 8 in $x$. Second, the proportion of all 8-arrangements in $A$ respected by $\phi$ is at least $1-\eta$, where $\eta=2^{-44}$. (This second property states that $A$ satisfies the conclusion of Lemma 12.6.) For each $h \in \mathbb{Z}_{N}$, let us write $C(h)$ for the number of 8-arrangements in $A$ of height $h$ and $G(h)$ for the number of these 8-arrangements respected by $\phi$. The domains $X_{h}$ and the functions $f_{h}$ are as defined in Corollary 13.2.
 
-Lemma 13.4. Let $\theta>0, \theta_{1}=2^{-1882} \theta^{10477}, q=2^{1882} \theta^{-10479}$ and $m=$ $\left\lfloor\left(\theta_{1} / 64 \pi\right) N^{\theta_{1}^{2} / 16 q}\right\rfloor$. Then there exist an arithmetic progression $P$ of length $m_{0} \in\{m-1, m\}$ and a subset $H \subset P$ such that
+% ed.: The paper's standing convention that N is prime is used below in
+% Corollary 7.9 and in choosing a non-zero common difference.  The proof also
+% subtracts an exceptional contribution of at most theta*N^32 from a total of
+% at least alpha^32*N^32 in order to retain one quarter of the total; this
+% requires the omitted hypothesis theta <= alpha^32/4.  Without an upper bound
+% on theta the asserted positive integer q is itself impossible (for example
+% at theta=2).
+Lemma 13.4. Let $N$ be prime and let $0<\theta\leqslant\alpha^{32}/4$, $\theta_{1}=2^{-1882} \theta^{10477}, q=2^{1882} \theta^{-10479}$ and $m=$ $\left\lfloor\left(\theta_{1} / 64 \pi\right) N^{\theta_{1}^{2} / 16 q}\right\rfloor$. Then there exist an arithmetic progression $P$ of length $m_{0} \in\{m-1, m\}$ and a subset $H \subset P$ such that
 
 $$
 \sum\{C(h): h \in H, G(h) \geqslant(1-2 \eta) C(h)\} \geqslant \alpha^{32} N^{31} m_{0} / 8,
@@ -3288,9 +3299,13 @@ $$
 
 Proof. The expression given for $\phi^{\prime}(h, x)$ is valid whenever $Y_{h}(x)$ contains the cube $\left[x_{1}, \ldots, x_{k} ; h_{1}, \ldots, h_{k}\right]$. Since $\left|H_{1}\right| \geqslant\left(\theta_{1} / 8\right) N^{k}$ and $\left|X_{h}\right| \geqslant$ $\left(\theta_{1} / 4\right) N^{k+1}$ for every $h \in H_{1}$, we find that $\sum_{h \in H_{1}}\left|Y_{h}\right| \geqslant 2^{-32} \theta_{1}^{8} N^{2 k+1}=$ $\theta_{2} N^{2 k+1}$ (by the estimate for the sizes of the sets $Y_{h}$ in Lemma 16.5). Therefore, if we choose the $x_{j}$ randomly, the expected number of choices of $\left(h_{1}, \ldots, h_{k}, x\right)$ with $h \in H_{1}$ for which the equality holds is at least $\theta_{2} N^{k+1}$. The lemma follows. \(\square\)
 
-Lemma 16.8. Suppose that $\Gamma_{1}, \ldots, \Gamma_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear subsets of $\mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$. Then $\Gamma_{1} \cup \cdots \cup \Gamma_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear. If $\phi_{1}, \ldots, \phi_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear functions defined on a subset $B \subset \mathbb{Z}_{N}^{k+1}$, then $\phi_{1}+\cdots+\phi_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear.\\
-Proof. Let $P$ be a box. We can find a subset $H_{1} \subset P$ of size at least $(1-\theta / r s)|P|$ and a partition of $P$ into boxes $Q$ of width at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}}$ such that $\Gamma_{1}$ restricted to any $Q \cap H_{1}$ is contained in the union of the graphs of $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions. Now repeat this argument inside each $Q$ for the set $\Gamma_{2}$ and so on. At each of the $r$ stages of this process, the width of the boxes is raised to the power\\
-$c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$, the number of new multilinear functions introduced inside each box is at most $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ and $\theta|P| / r s$ points are thrown away. Therefore, at the end of the process we have a width of at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}}$ and $r q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions for each set $\Gamma_{i}$. The result about unions follows (and in fact we have overestimated the number of multilinear functions needed). The result for sums of functions also follows, once we notice that there are $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}$ functions of the form $\mu_{1}+\cdots+\mu_{r}$, with each $\mu_{i}$ one of the multilinear functions chosen at the $i^{\text {th }}$ stage. \(\square\)
+% ed.: Here $s$ is an iteration count, so the faithful real-valued condition
+% is $s\geqslant1$.  At $s=0$ two constant graphs give an immediate
+% counterexample; sufficiently small positive real $s$ also fails because the
+% displayed graph-count bound for their union is strictly less than two.
+Lemma 16.8. Suppose that $s\geqslant1$ and that $\Gamma_{1}, \ldots, \Gamma_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear subsets of $\mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$. Then $\Gamma_{1} \cup \cdots \cup \Gamma_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear. If $\phi_{1}, \ldots, \phi_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear functions defined on a subset $B \subset \mathbb{Z}_{N}^{k+1}$, then $\phi_{1}+\cdots+\phi_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear.\\
+Proof. Let $P$ be a box. We can find a subset $H_{1} \subset P$ of size at least $(1-\theta / r)|P|$ and a partition of $P$ into boxes $Q$ of width at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}}$ such that $\Gamma_{1}$ restricted to any $Q \cap H_{1}$ is contained in the union of the graphs of $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions. Now repeat this argument inside each $Q$ for the set $\Gamma_{2}$ and so on. At each of the $r$ stages of this process, the width of the boxes is raised to the power\\
+$c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$, the number of new multilinear functions introduced inside each box is at most $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ and $\theta|P| / r$ points are thrown away. Therefore, at the end of the process we have a width of at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}}$ and $r q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions for each set $\Gamma_{i}$. The result about unions follows (and in fact we have overestimated the number of multilinear functions needed). The result for sums of functions also follows, once we notice that there are $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}$ functions of the form $\mu_{1}+\cdots+\mu_{r}$, with each $\mu_{i}$ one of the multilinear functions chosen at the $i^{\text {th }}$ stage. \(\square\)
 
 % ed.: Solving the alternating cube identity of Lemma 16.7 for the
 % all-ones vertex introduces the following parity factors.
