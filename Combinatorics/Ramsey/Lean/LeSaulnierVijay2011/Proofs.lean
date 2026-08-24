@@ -2211,6 +2211,23 @@ private lemma countingFunction_le (S : Set Nat) (n : Nat) : countingFunction S n
       Finset.card_filter_le _ _
     _ = n := by simp
 
+/-- The finite counting function is monotone under inclusion of sets. -/
+theorem countingFunction_mono_set {S T : Set Nat} (hST : S ⊆ T) (n : Nat) :
+    countingFunction S n <= countingFunction T n := by
+  classical
+  unfold countingFunction
+  apply Finset.card_le_card
+  intro x hx
+  simp only [Finset.mem_filter] at hx ⊢
+  exact ⟨hx.1, hST hx.2⟩
+
+/-- Normalized counting functions are pointwise monotone under inclusion. -/
+theorem densityRatio_mono_set {S T : Set Nat} (hST : S ⊆ T) (n : Nat) :
+    densityRatio S n <= densityRatio T n := by
+  unfold densityRatio
+  exact div_le_div_of_nonneg_right
+    (by exact_mod_cast countingFunction_mono_set hST n) (by positivity)
+
 private lemma densityRatio_bounds (S : Set Nat) (n : Nat) :
     0 <= densityRatio S n /\ densityRatio S n <= 1 := by
   constructor
@@ -2246,6 +2263,50 @@ private lemma lowerDensity_bounds (S : Set Nat) :
   have hLbdd : BddAbove L := ⟨1, hLle⟩
   change 0 <= sSup L /\ sSup L <= 1
   exact ⟨le_csSup hLbdd hL0, csSup_le ⟨0, hL0⟩ hLle⟩
+
+/-- Upper asymptotic density is monotone under inclusion. -/
+theorem upperDensity_mono_set {S T : Set Nat} (hST : S ⊆ T) :
+    upperDensity S <= upperDensity T := by
+  let US : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> densityRatio S n <= b}
+  let UT : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> densityRatio T n <= b}
+  have hUTUS : UT ⊆ US := by
+    rintro b ⟨N, hN⟩
+    exact ⟨N, fun n hn => (densityRatio_mono_set hST n).trans (hN n hn)⟩
+  have hUSbdd : BddBelow US := by
+    refine ⟨0, ?_⟩
+    rintro b ⟨N, hN⟩
+    exact (densityRatio_bounds S (max N 1)).1.trans
+      (hN (max N 1) (le_max_left _ _))
+  have hUTnonempty : UT.Nonempty :=
+    ⟨1, 0, fun n _ => (densityRatio_bounds T n).2⟩
+  change sInf US <= sInf UT
+  apply le_csInf hUTnonempty
+  intro b hb
+  exact csInf_le hUSbdd (hUTUS hb)
+
+/-- Lower asymptotic density is monotone under inclusion. -/
+theorem lowerDensity_mono_set {S T : Set Nat} (hST : S ⊆ T) :
+    lowerDensity S <= lowerDensity T := by
+  let LS : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> b <= densityRatio S n}
+  let LT : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> b <= densityRatio T n}
+  have hLSLT : LS ⊆ LT := by
+    rintro b ⟨N, hN⟩
+    exact ⟨N, fun n hn => (hN n hn).trans (densityRatio_mono_set hST n)⟩
+  have hLSnonempty : LS.Nonempty :=
+    ⟨0, 0, fun n _ => (densityRatio_bounds S n).1⟩
+  have hLTbdd : BddAbove LT := by
+    refine ⟨1, ?_⟩
+    rintro b ⟨N, hN⟩
+    exact (hN (max N 1) (le_max_left _ _)).trans
+      (densityRatio_bounds T (max N 1)).2
+  change sSup LS <= sSup LT
+  apply csSup_le hLSnonempty
+  intro b hb
+  exact le_csSup hLTbdd (hLSLT hb)
 
 private lemma sInf_eventualUpper_eq
     (r : Nat -> Real) (c : Real)
@@ -2332,6 +2393,22 @@ private lemma positiveIntegers_densities :
       refine ⟨max N 1, le_max_left _ _, ?_⟩
       rw [hratio _ (le_max_right _ _)]
       linarith
+
+/-- Restricting an avoiding ranking to a subset preserves both injectivity
+and avoidance. -/
+theorem isKAvoidingRanking_mono_set {k : Nat} {S T : Set Nat}
+    {rank : Nat -> Nat} (hTS : T ⊆ S) (h : IsKAvoidingRanking k S rank) :
+    IsKAvoidingRanking k T rank := by
+  refine ⟨h.1.mono hTS, ?_⟩
+  rintro ⟨x, hxT, hxmono, hxAP⟩
+  exact h.2 ⟨x, fun i => hTS (hxT i), hxmono, hxAP⟩
+
+/-- Every subset of a `k`-avoidable set is `k`-avoidable, witnessed by the
+restriction of the same ranking. -/
+theorem isKAvoidable_mono_set {k : Nat} {S T : Set Nat}
+    (hTS : T ⊆ S) (h : IsKAvoidable k S) : IsKAvoidable k T := by
+  obtain ⟨rank, hrank⟩ := h
+  exact ⟨rank, isKAvoidingRanking_mono_set hTS hrank⟩
 
 /-- Avoidance is monotone in the progression length: an order avoiding a
 `small`-term progression also avoids every `large`-term progression when
@@ -3390,6 +3467,40 @@ theorem alpha_eq_one_of_four_le (k : Nat) (hk : 4 <= k) : alpha k = 1 := by
   apply le_antisymm (alpha_bounds_of_one_le k (by omega)).2
   rw [← theorem_3_holds.1]
   exact alpha_mono_of_one_le (by omega) hk
+
+/-- Every subset of the paper's set `T` remains avoiding at every progression
+length `k >= 3`.  Inclusion monotonicity of density simultaneously transfers
+the exact densities of `T` to uniform upper bounds for the whole hereditary
+family. -/
+theorem subset_TSet_is_k_avoidable_and_density_bounds {S : Set Nat}
+    (hS : S ⊆ TSet) (k : Nat) (hk : 3 <= k) :
+    IsKAvoidable k S /\ upperDensity S <= (1 : Real) / 2 /\
+      lowerDensity S <= (1 : Real) / 4 := by
+  have hAvoidThree : IsKAvoidable 3 S :=
+    isKAvoidable_mono_set hS TSet_is_three_avoidable_holds
+  refine ⟨isKAvoidable_mono_length hk hAvoidThree, ?_, ?_⟩
+  · rw [← TSet_densities_holds.1]
+    exact upperDensity_mono_set hS
+  · rw [← TSet_densities_holds.2]
+    exact lowerDensity_mono_set hS
+
+/-- Every subset of a geometric block-union is avoiding at all progression
+lengths `k >= 4`, with upper and lower densities bounded by the explicit
+values computed for the containing construction. -/
+theorem subset_geometricSet_is_k_avoidable_and_density_bounds (a : Nat)
+    (ha : 2 <= a) {S : Set Nat} (hS : S ⊆ geometricSet a)
+    (k : Nat) (hk : 4 <= k) :
+    IsKAvoidable k S /\
+      upperDensity S <= (a : Real) / (a + 1) /\
+      lowerDensity S <= 1 / (a + 1 : Nat) := by
+  have hAvoidFour : IsKAvoidable 4 S :=
+    isKAvoidable_mono_set hS (geometricSet_is_four_avoidable_holds a ha)
+  have hDensities := geometricSet_densities_holds a ha
+  refine ⟨isKAvoidable_mono_length hk hAvoidFour, ?_, ?_⟩
+  · rw [← hDensities.1]
+    exact upperDensity_mono_set hS
+  · rw [← hDensities.2]
+    exact lowerDensity_mono_set hS
 
 private lemma countingFunction_add_of_partition (A B : Set Nat)
     (hdisjoint : Disjoint A B) (hunion : A ∪ B = positiveIntegers) (n : Nat) :
