@@ -1,4 +1,5 @@
 import LeSaulnierVijay2011.Statements
+import DavisEntringerGrahamSimmons1977.Proofs
 
 /-!
 # Proofs for LeSaulnier--Vijay (2011)
@@ -32,11 +33,218 @@ private lemma exists_rank_minimizer (S : Set Nat) (rank : Nat -> Nat)
   rw [hxeq]
   exact Nat.sInf_le ⟨y, hy, rfl⟩
 
+private lemma finiteAPFree_iff_isFiniteKAvoiding {n : Nat}
+    (sigma : Equiv.Perm (Fin n)) :
+    LeanProofs.DavisEntringerGrahamSimmons1977.FiniteAPFree sigma 3 <->
+      IsFiniteKAvoiding 3 sigma := by
+  constructor
+  · intro hD hHere
+    apply hD
+    obtain ⟨indices, hmono, a, d, hd, _, hformula⟩ := hHere
+    refine ⟨indices, hmono, a, d, hd, ?_⟩
+    intro i
+    simpa [LeanProofs.DavisEntringerGrahamSimmons1977.finitePermutationSequence,
+      finitePermutationValue] using hformula i
+  · intro hHere hD
+    apply hHere
+    obtain ⟨indices, hmono, a, d, hd, hformula⟩ := hD
+    refine ⟨indices, hmono, a, d, hd, trivial, ?_⟩
+    intro i
+    simpa [LeanProofs.DavisEntringerGrahamSimmons1977.finitePermutationSequence,
+      finitePermutationValue] using hformula i
+
+private theorem finite_three_avoiding_exists (n : Nat) (hn : 0 < n) :
+    exists sigma : Equiv.Perm (Fin n), IsFiniteKAvoiding 3 sigma := by
+  obtain ⟨sigma, hsigma⟩ :=
+    LeanProofs.DavisEntringerGrahamSimmons1977.finite_ap_free_permutation_exists_holds n hn
+  exact ⟨sigma, (finiteAPFree_iff_isFiniteKAvoiding sigma).mp hsigma⟩
+
+private theorem shifted_interval_is_three_avoidable (lo len : Nat) (hlen : 0 < len) :
+    IsKAvoidable 3 (Finset.Icc (lo + 1) (lo + len) : Set Nat) := by
+  classical
+  letI : NeZero len := ⟨hlen.ne'⟩
+  obtain ⟨sigma, hsigma⟩ := finite_three_avoiding_exists len hlen
+  let intervalIndex (x : Nat) : Fin len := Fin.ofNat len (x - (lo + 1))
+  let rank : Nat -> Nat := fun x => (sigma.symm (intervalIndex x) : Nat)
+  have index_value (x : Nat) (hx : x ∈ Finset.Icc (lo + 1) (lo + len)) :
+      (intervalIndex x : Nat) = x - (lo + 1) := by
+    simp only [intervalIndex, Fin.val_ofNat]
+    apply Nat.mod_eq_of_lt
+    simp only [Finset.mem_Icc] at hx
+    omega
+  refine ⟨rank, ?_, ?_⟩
+  · intro x hx y hy hxy
+    change x ∈ Finset.Icc (lo + 1) (lo + len) at hx
+    change y ∈ Finset.Icc (lo + 1) (lo + len) at hy
+    have hfin : intervalIndex x = intervalIndex y := by
+      apply sigma.symm.injective
+      apply Fin.ext
+      exact hxy
+    have hval : x - (lo + 1) = y - (lo + 1) := by
+      simpa [index_value x hx, index_value y hy] using congrArg Fin.val hfin
+    simp only [Finset.mem_Icc] at hx hy
+    omega
+  · rintro ⟨x, hxmem, hxmono, hxAP⟩
+    apply hsigma
+    let indices : Fin 3 -> Fin len := fun i => sigma.symm (intervalIndex (x i))
+    refine ⟨indices, ?_, ?_⟩
+    · intro i j hij
+      change ((sigma.symm (intervalIndex (x i)) : Fin len) : Nat) <
+        (sigma.symm (intervalIndex (x j)) : Nat)
+      exact hxmono hij
+    · obtain ⟨a, d, hd, _, hformula⟩ := hxAP
+      refine ⟨a - lo, d, hd, trivial, ?_⟩
+      intro i
+      have hxi : x i ∈ Finset.Icc (lo + 1) (lo + len) := hxmem i
+      have hindex := index_value (x i) hxi
+      have hform := hformula i
+      simp only [finitePermutationValue, indices, Equiv.apply_symm_apply]
+      rw [hindex]
+      push_cast
+      simp only [Finset.mem_Icc] at hxi
+      omega
+
+private lemma compressedRank_lt_iff (s : Finset Nat) (localRank : Nat -> Nat)
+    (hinj : Set.InjOn localRank (s : Set Nat)) {x y : Nat} (hx : x ∈ s) (hy : y ∈ s) :
+    ((s.filter fun z => localRank z < localRank x).card <
+      (s.filter fun z => localRank z < localRank y).card) <->
+      localRank x < localRank y := by
+  have forward {u v : Nat} (hu : u ∈ s) (hv : v ∈ s)
+      (huv : localRank u < localRank v) :
+      (s.filter fun z => localRank z < localRank u).card <
+        (s.filter fun z => localRank z < localRank v).card := by
+    apply Finset.card_lt_card
+    rw [Finset.ssubset_iff_subset_ne]
+    constructor
+    · intro z hz
+      simp only [Finset.mem_filter] at hz ⊢
+      exact ⟨hz.1, lt_trans hz.2 huv⟩
+    · intro heq
+      have hvMem : u ∈ s.filter fun z => localRank z < localRank v := by
+        simp [hu, huv]
+      rw [← heq] at hvMem
+      simp at hvMem
+  constructor
+  · intro hcard
+    by_contra huv
+    have hne : localRank x ≠ localRank y := by
+      intro h
+      have hxy := hinj hx hy h
+      subst y
+      exact (lt_irrefl _ hcard)
+    have hyx : localRank y < localRank x := lt_of_le_of_ne (not_lt.mp huv) hne.symm
+    have := forward hy hx hyx
+    omega
+  · exact forward hx hy
+
+private theorem exists_ordered_block_concatenation
+    (blocks : Nat -> Finset Nat)
+    (hdisjoint : forall i j : Nat, i ≠ j -> Disjoint (blocks i) (blocks j))
+    (havoidable : forall i : Nat, IsKAvoidable 3 (blocks i : Set Nat)) :
+    exists rank : Nat -> Nat,
+      IsPermutationRanking {x | exists i : Nat, x ∈ blocks i} rank /\
+      BlocksInOrder blocks rank /\
+      forall i : Nat, IsKAvoidingRanking 3 (blocks i : Set Nat) rank := by
+  classical
+  choose localRank hlocal using havoidable
+  let offsets : Nat -> Nat := fun i => (Finset.range i).sum fun j => (blocks j).card
+  let compressed : Nat -> Nat -> Nat := fun i x =>
+    ((blocks i).filter fun y => localRank i y < localRank i x).card
+  let belongsToBlock (x : Nat) : Prop := exists i : Nat, x ∈ blocks i
+  let blockIndex (x : Nat) : Nat := if hx : belongsToBlock x then Nat.find hx else 0
+  have blockIndex_mem {x : Nat} (hx : belongsToBlock x) :
+      x ∈ blocks (blockIndex x) := by
+    simp only [blockIndex, dif_pos hx]
+    exact Nat.find_spec hx
+  have blockIndex_eq {x i : Nat} (hx : x ∈ blocks i) : blockIndex x = i := by
+    have hbelongs : belongsToBlock x := ⟨i, hx⟩
+    have hchosen := blockIndex_mem hbelongs
+    by_contra hne
+    have hd := hdisjoint (blockIndex x) i hne
+    exact (Finset.disjoint_left.mp hd hchosen hx).elim
+  have compressed_lt_card {i x : Nat} (hx : x ∈ blocks i) :
+      compressed i x < (blocks i).card := by
+    apply Finset.card_lt_card
+    exact Finset.filter_ssubset.mpr ⟨x, hx, lt_irrefl _⟩
+  have offsets_mono : Monotone offsets := by
+    intro i j hij
+    exact Finset.sum_le_sum_of_subset (Finset.range_mono hij)
+  let rank : Nat -> Nat := fun x => offsets (blockIndex x) + compressed (blockIndex x) x
+  have rank_on_block {i x : Nat} (hx : x ∈ blocks i) :
+      rank x = offsets i + compressed i x := by
+    simp [rank, blockIndex_eq hx]
+  have sameOrder (i : Nat) : SameOrderOn (blocks i : Set Nat) (localRank i) rank := by
+    intro x hx y hy
+    rw [rank_on_block hx, rank_on_block hy, Nat.add_lt_add_iff_left]
+    exact (compressedRank_lt_iff (blocks i) (localRank i) (hlocal i).1 hx hy).symm
+  have blocksOrder : BlocksInOrder blocks rank := by
+    intro i j hij x hx y hy
+    rw [rank_on_block hx, rank_on_block hy]
+    have hpos := compressed_lt_card hx
+    have hprefixSucc : offsets i + (blocks i).card = offsets (i + 1) := by
+      simp [offsets, Finset.sum_range_succ]
+    have hprefix : offsets (i + 1) <= offsets j := offsets_mono (by omega)
+    omega
+  refine ⟨rank, ?_, blocksOrder, ?_⟩
+  · intro x hx y hy hxy
+    change belongsToBlock x at hx
+    change belongsToBlock y at hy
+    have hxmem := blockIndex_mem hx
+    have hymem := blockIndex_mem hy
+    rcases lt_trichotomy (blockIndex x) (blockIndex y) with hlt | heq | hgt
+    · have := blocksOrder (blockIndex x) (blockIndex y) hlt x hxmem y hymem
+      omega
+    · have hsamerank : localRank (blockIndex x) x = localRank (blockIndex x) y := by
+        apply le_antisymm
+        · by_contra hnot
+          have hlocalLt : localRank (blockIndex x) y < localRank (blockIndex x) x :=
+            lt_of_not_ge hnot
+          have hglobalLt := (sameOrder (blockIndex x) y (heq ▸ hymem) x hxmem).mp hlocalLt
+          omega
+        · by_contra hnot
+          have hlocalLt : localRank (blockIndex x) x < localRank (blockIndex x) y :=
+            lt_of_not_ge hnot
+          have hglobalLt := (sameOrder (blockIndex x) x hxmem y (heq ▸ hymem)).mp hlocalLt
+          omega
+      exact (hlocal (blockIndex x)).1 hxmem (heq ▸ hymem) hsamerank
+    · have := blocksOrder (blockIndex y) (blockIndex x) hgt y hymem x hxmem
+      omega
+  · intro i
+    refine ⟨?_, ?_⟩
+    · intro x hx y hy hxy
+      rcases lt_trichotomy (localRank i x) (localRank i y) with hlt | heq | hgt
+      · have := (sameOrder i x hx y hy).mp hlt
+        omega
+      · exact (hlocal i).1 hx hy heq
+      · have := (sameOrder i y hy x hx).mp hgt
+        omega
+    · rintro ⟨x, hxmem, hxmono, hxAP⟩
+      apply (hlocal i).2
+      refine ⟨x, hxmem, ?_, hxAP⟩
+      intro u v huv
+      exact (sameOrder i (x u) (hxmem u) (x v) (hxmem v)).mpr (hxmono huv)
+
 private lemma q_pos (k : Nat) : 0 < q k := by
   induction k with
   | zero => simp [q]
   | succ k ih =>
       simp only [q]
+      omega
+
+private lemma p_pos (k : Nat) : 0 < p k := by
+  cases k with
+  | zero => simp [p]
+  | succ k =>
+      simp only [p]
+      have := q_pos k
+      omega
+
+private lemma p_le_q (k : Nat) : p k <= q k := by
+  cases k with
+  | zero => norm_num [p, q]
+  | succ k =>
+      simp only [p, q]
+      have := q_pos k
       omega
 
 private lemma two_mul_q (k : Nat) : 2 * q k = 3 ^ (k + 1) + 1 := by
@@ -242,6 +450,41 @@ theorem TBlock_concatenation_is_three_avoiding_holds :
       have := TBlock_member_pos hk0
       omega
 
+private lemma TBlock_is_three_avoidable (k : Nat) :
+    IsKAvoidable 3 (TBlock k : Set Nat) := by
+  let len := q k - p k + 1
+  have hlen : 0 < len := by simp [len]
+  have hav := shifted_interval_is_three_avoidable (p k - 1) len hlen
+  have hlo : p k - 1 + 1 = p k := by have := p_pos k; omega
+  have hhi : p k - 1 + len = q k := by
+    have hpq := p_le_q k
+    have hp := p_pos k
+    simp only [len]
+    omega
+  simpa [TBlock, hlo, hhi] using hav
+
+private lemma TBlocks_pairwise_disjoint :
+    forall i j : Nat, i ≠ j -> Disjoint (TBlock i) (TBlock j) := by
+  intro i j hij
+  apply Finset.disjoint_left.mpr
+  intro x hxi hxj
+  rcases lt_or_gt_of_ne hij with hij | hji
+  · have hgap := TBlock_cross_gap_holds i j x x hij hxi hxj
+    have hpos := TBlock_member_pos hxi
+    omega
+  · have hgap := TBlock_cross_gap_holds j i x x hji hxj hxi
+    have hpos := TBlock_member_pos hxi
+    omega
+
+/-- The explicitly concatenated `T`-block construction witnesses that `T` is
+3-avoidable. -/
+theorem TSet_is_three_avoidable_holds : TSet_is_three_avoidable := by
+  obtain ⟨rank, hrank, horder, hlocal⟩ :=
+    exists_ordered_block_concatenation TBlock TBlocks_pairwise_disjoint
+      TBlock_is_three_avoidable
+  change IsPermutationRanking TSet rank at hrank
+  exact ⟨rank, TBlock_concatenation_is_three_avoiding_holds rank hrank horder hlocal⟩
+
 private lemma geometricBlock_member_pos {a i x : Nat} (ha : 2 <= a)
     (hx : x ∈ geometricBlock a i) : 0 < x := by
   simp only [geometricBlock, Finset.mem_Icc] at hx
@@ -260,7 +503,7 @@ theorem geometricBlock_cross_gap_holds : geometricBlock_cross_gap := by
       2 * a ^ (2 * i + 1) <= a * a ^ (2 * i + 1) :=
         Nat.mul_le_mul_right (a ^ (2 * i + 1)) ha
       _ = a ^ ((2 * i + 1) + 1) := (Nat.pow_succ' (m := a) (n := 2 * i + 1)).symm
-      _ = a ^ (2 * i + 2) := by congr 1 <;> omega
+      _ = a ^ (2 * i + 2) := by congr 1
   calc
     2 * x <= 2 * a ^ (2 * i + 1) := Nat.mul_le_mul_left 2 hx.2
     _ <= a ^ (2 * i + 2) := hdouble
@@ -312,6 +555,44 @@ theorem geometricBlock_concatenation_is_four_avoiding_holds :
   · have hgap := geometricBlock_cross_gap_holds a k1 k2 (x 1) (x 2) ha hk12lt hk1 hk2
     have := geometricBlock_member_pos ha hk0
     omega
+
+private lemma geometricBlock_is_three_avoidable (a i : Nat) (ha : 2 <= a) :
+    IsKAvoidable 3 (geometricBlock a i : Set Nat) := by
+  let first := a ^ (2 * i)
+  let last := a ^ (2 * i + 1)
+  let len := last - first + 1
+  have hfirst : 0 < first := Nat.pow_pos (by omega)
+  have hfirstLast : first <= last := by
+    exact Nat.pow_le_pow_right (by omega) (by omega)
+  have hlen : 0 < len := by simp [len]
+  have hav := shifted_interval_is_three_avoidable (first - 1) len hlen
+  have hlo : first - 1 + 1 = first := by omega
+  have hhi : first - 1 + len = last := by simp only [len]; omega
+  simpa [geometricBlock, first, last, hlo, hhi] using hav
+
+private lemma geometricBlocks_pairwise_disjoint (a : Nat) (ha : 2 <= a) :
+    forall i j : Nat, i ≠ j -> Disjoint (geometricBlock a i) (geometricBlock a j) := by
+  intro i j hij
+  apply Finset.disjoint_left.mpr
+  intro x hxi hxj
+  rcases lt_or_gt_of_ne hij with hij | hji
+  · have hgap := geometricBlock_cross_gap_holds a i j x x ha hij hxi hxj
+    have hpos := geometricBlock_member_pos ha hxi
+    omega
+  · have hgap := geometricBlock_cross_gap_holds a j i x x ha hji hxj hxi
+    have hpos := geometricBlock_member_pos ha hxi
+    omega
+
+/-- The explicitly concatenated geometric-block construction witnesses that
+every `S^(a)` with `a >= 2` is 4-avoidable. -/
+theorem geometricSet_is_four_avoidable_holds : geometricSet_is_four_avoidable := by
+  intro a ha
+  obtain ⟨rank, hrank, horder, hlocal⟩ :=
+    exists_ordered_block_concatenation (geometricBlock a)
+      (geometricBlocks_pairwise_disjoint a ha) (fun i => geometricBlock_is_three_avoidable a i ha)
+  change IsPermutationRanking (geometricSet a) rank at hrank
+  exact ⟨rank,
+    geometricBlock_concatenation_is_four_avoiding_holds a rank ha hrank horder hlocal⟩
 
 /-! ## The parity concatenation -/
 
@@ -503,5 +784,316 @@ theorem parity_concatenation_is_three_avoiding_holds :
       hEven hOdd evenFirst_rank evenFirst_same_even evenFirst_same_odd (Or.inl evenBeforeOdd)
   · exact parity_concatenated_ranking_avoids_three n rankEven rankOdd oddFirst
       hEven hOdd oddFirst_rank oddFirst_same_even oddFirst_same_odd (Or.inr oddBeforeEven)
+
+/-! ## The finite forcing argument in Theorem 2 -/
+
+/-- The paper's forced-order argument on the eleven entries beginning `2,1`. -/
+theorem theorem_2_finite_claim_holds : theorem_2_finite_claim := by
+  intro sigma hfirst hsecond
+  let pos : Fin 11 -> Fin 11 := sigma.symm
+  have hsigma0 : sigma 0 = (1 : Fin 11) := by
+    apply Fin.ext
+    simp only [finitePermutationValue] at hfirst
+    omega
+  have hsigma1 : sigma 1 = (0 : Fin 11) := by
+    apply Fin.ext
+    simp only [finitePermutationValue] at hsecond
+    omega
+  have hpos2 : pos 1 = 0 := by simp [pos, ← hsigma0]
+  have hpos1 : pos 0 = 1 := by simp [pos, ← hsigma1]
+  have pos_ne {u v : Fin 11} (huv : u ≠ v) : pos u ≠ pos v := by
+    exact fun h => huv (sigma.symm.injective h)
+  have pos_gt_one (v : Fin 11) (hv0 : v ≠ 0) (hv1 : v ≠ 1) :
+      (1 : Fin 11) < pos v := by
+    have hne0 : pos v ≠ 0 := by rw [← hpos2]; exact pos_ne hv1
+    have hne1 : pos v ≠ 1 := by rw [← hpos1]; exact pos_ne hv0
+    omega
+  have makeAP (u v w : Fin 11) (huv : pos u < pos v) (hvw : pos v < pos w)
+      (hAP : IsOddArithmeticProgression ![(u : Nat) + 1, (v : Nat) + 1,
+        (w : Nat) + 1]) :
+      HasOddAPSubsequence 3 (finitePermutationValue sigma) := by
+    let indices : Fin 3 -> Fin 11 := ![pos u, pos v, pos w]
+    refine ⟨indices, ?_, ?_⟩
+    · apply (Fin.strictMono_iff_lt_succ).2
+      intro i
+      fin_cases i
+      · simpa [indices] using huv
+      · simpa [indices] using hvw
+    · convert hAP using 1
+      funext i
+      fin_cases i <;> simp [indices, pos, finitePermutationValue]
+  have hp2_lt (v : Fin 11) (hv : v ≠ 1) : pos 1 < pos v := by
+    rw [hpos2]
+    have := pos_ne hv
+    omega
+  have hp1_lt (v : Fin 11) (hv0 : v ≠ 0) (hv1 : v ≠ 1) : pos 0 < pos v := by
+    rw [hpos1]
+    exact pos_gt_one v hv0 hv1
+  by_cases h43 : pos 3 < pos 2
+  · by_cases h45 : pos 3 < pos 4
+    · by_cases h74 : pos 6 < pos 3
+      · by_cases h65 : pos 5 < pos 4
+        · by_cases h67 : pos 5 < pos 6
+          · by_cases h116 : pos 10 < pos 5
+            · by_cases h811 : pos 7 < pos 10
+              · by_cases h89 : pos 7 < pos 8
+                · by_cases h710 : pos 6 < pos 9
+                  · have h8_lt_10 : pos 7 < pos 9 := lt_trans h811 (lt_trans h116 (lt_trans h67 h710))
+                    have h11_lt_10 : pos 10 < pos 9 := lt_trans h116 (lt_trans h67 h710)
+                    by_cases h9_lt_10 : pos 8 < pos 9
+                    · exact makeAP 7 8 9 h89 h9_lt_10 (by
+                        refine ⟨8, 1, by decide, by norm_num [Odd], ?_⟩
+                        intro i
+                        fin_cases i <;> norm_num)
+                    · have h10_lt_9 : pos 9 < pos 8 := by
+                        have := pos_ne (show (9 : Fin 11) ≠ 8 by decide)
+                        omega
+                      exact makeAP 10 9 8 h11_lt_10 h10_lt_9 (by
+                        refine ⟨11, -1, by decide, by norm_num [Odd], ?_⟩
+                        intro i
+                        fin_cases i <;> norm_num)
+                  · have h10_lt_7 : pos 9 < pos 6 := by
+                      have := pos_ne (show (9 : Fin 11) ≠ 6 by decide)
+                      omega
+                    exact makeAP 9 6 3 h10_lt_7 h74 (by
+                      refine ⟨10, -3, by decide, by norm_num [Odd], ?_⟩
+                      intro i
+                      fin_cases i <;> norm_num)
+                · have h9_lt_8 : pos 8 < pos 7 := by
+                    have := pos_ne (show (8 : Fin 11) ≠ 7 by decide)
+                    omega
+                  exact makeAP 8 7 6 h9_lt_8 (lt_trans h811 (lt_trans h116 h67)) (by
+                    refine ⟨9, -1, by decide, by norm_num [Odd], ?_⟩
+                    intro i
+                    fin_cases i <;> norm_num)
+              · have h11_lt_8 : pos 10 < pos 7 := by
+                  have := pos_ne (show (10 : Fin 11) ≠ 7 by decide)
+                  omega
+                by_cases h5_lt_8 : pos 4 < pos 7
+                · exact makeAP 1 4 7 (hp2_lt 4 (by decide)) h5_lt_8 (by
+                    refine ⟨2, 3, by decide, by norm_num [Odd], ?_⟩
+                    intro i
+                    fin_cases i <;> norm_num)
+                · have h8_lt_5 : pos 7 < pos 4 := by
+                    have := pos_ne (show (7 : Fin 11) ≠ 4 by decide)
+                    omega
+                  exact makeAP 10 7 4 h11_lt_8 h8_lt_5 (by
+                    refine ⟨11, -3, by decide, by norm_num [Odd], ?_⟩
+                    intro i
+                    fin_cases i <;> norm_num)
+            · have h6_lt_11 : pos 5 < pos 10 := by
+                have := pos_ne (show (5 : Fin 11) ≠ 10 by decide)
+                omega
+              exact makeAP 0 5 10 (hp1_lt 5 (by decide) (by decide)) h6_lt_11 (by
+                refine ⟨1, 5, by decide, by norm_num [Odd], ?_⟩
+                intro i
+                fin_cases i <;> norm_num)
+          · have h7_lt_6 : pos 6 < pos 5 := by
+              have := pos_ne (show (6 : Fin 11) ≠ 5 by decide)
+              omega
+            exact makeAP 6 5 4 h7_lt_6 h65 (by
+              refine ⟨7, -1, by decide, by norm_num [Odd], ?_⟩
+              intro i
+              fin_cases i <;> norm_num)
+        · have h5_lt_6 : pos 4 < pos 5 := by
+            have := pos_ne (show (4 : Fin 11) ≠ 5 by decide)
+            omega
+          exact makeAP 3 4 5 h45 h5_lt_6 (by
+            refine ⟨4, 1, by decide, by norm_num [Odd], ?_⟩
+            intro i
+            fin_cases i <;> norm_num)
+      · have h4_lt_7 : pos 3 < pos 6 := by
+          have := pos_ne (show (3 : Fin 11) ≠ 6 by decide)
+          omega
+        exact makeAP 0 3 6 (hp1_lt 3 (by decide) (by decide)) h4_lt_7 (by
+          refine ⟨1, 3, by decide, by norm_num [Odd], ?_⟩
+          intro i
+          fin_cases i <;> norm_num)
+    · have h5_lt_4 : pos 4 < pos 3 := by
+        have := pos_ne (show (4 : Fin 11) ≠ 3 by decide)
+        omega
+      exact makeAP 4 3 2 h5_lt_4 h43 (by
+        refine ⟨5, -1, by decide, by norm_num [Odd], ?_⟩
+        intro i
+        fin_cases i <;> norm_num)
+  · have h3_lt_4 : pos 2 < pos 3 := by
+      have := pos_ne (show (2 : Fin 11) ≠ 3 by decide)
+      omega
+    exact makeAP 1 2 3 (hp2_lt 2 (by decide)) h3_lt_4 (by
+      refine ⟨2, 1, by decide, by norm_num [Odd], ?_⟩
+      intro i
+      fin_cases i <;> norm_num)
+
+/-! ## General density facts used in the concluding obstruction -/
+
+private lemma countingFunction_le (S : Set Nat) (n : Nat) : countingFunction S n <= n := by
+  classical
+  unfold countingFunction
+  calc
+    ((Finset.Icc 1 n).filter fun m => m ∈ S).card <= (Finset.Icc 1 n).card :=
+      Finset.card_filter_le _ _
+    _ = n := by simp
+
+private lemma densityRatio_bounds (S : Set Nat) (n : Nat) :
+    0 <= densityRatio S n /\ densityRatio S n <= 1 := by
+  constructor
+  · unfold densityRatio
+    exact div_nonneg (by positivity) (by positivity)
+  · by_cases hn : n = 0
+    · simp [hn, densityRatio, countingFunction]
+    · rw [densityRatio, div_le_one₀ (by positivity : (0 : Real) < n)]
+      exact_mod_cast countingFunction_le S n
+
+private lemma upperDensity_bounds (S : Set Nat) :
+    0 <= upperDensity S /\ upperDensity S <= 1 := by
+  let U : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> densityRatio S n <= b}
+  have hU1 : (1 : Real) ∈ U := ⟨0, fun n _ => (densityRatio_bounds S n).2⟩
+  have hUnonneg : forall b, b ∈ U -> (0 : Real) <= b := by
+    intro b hb
+    obtain ⟨N, hN⟩ := hb
+    exact (densityRatio_bounds S (max N 1)).1.trans (hN _ (le_max_left _ _))
+  have hUbdd : BddBelow U := ⟨0, hUnonneg⟩
+  change 0 <= sInf U /\ sInf U <= 1
+  exact ⟨le_csInf ⟨1, hU1⟩ hUnonneg, csInf_le hUbdd hU1⟩
+
+private lemma lowerDensity_bounds (S : Set Nat) :
+    0 <= lowerDensity S /\ lowerDensity S <= 1 := by
+  let L : Set Real :=
+    {b | exists N : Nat, forall n : Nat, N <= n -> b <= densityRatio S n}
+  have hL0 : (0 : Real) ∈ L := ⟨0, fun n _ => (densityRatio_bounds S n).1⟩
+  have hLle : forall b, b ∈ L -> b <= (1 : Real) := by
+    intro b hb
+    obtain ⟨N, hN⟩ := hb
+    exact (hN _ (le_max_left _ _)).trans (densityRatio_bounds S (max N 1)).2
+  have hLbdd : BddAbove L := ⟨1, hLle⟩
+  change 0 <= sSup L /\ sSup L <= 1
+  exact ⟨le_csSup hLbdd hL0, csSup_le ⟨0, hL0⟩ hLle⟩
+
+private lemma countingFunction_add_of_partition (A B : Set Nat)
+    (hdisjoint : Disjoint A B) (hunion : A ∪ B = positiveIntegers) (n : Nat) :
+    countingFunction A n + countingFunction B n = n := by
+  classical
+  let fA := (Finset.Icc 1 n).filter fun m => m ∈ A
+  let fB := (Finset.Icc 1 n).filter fun m => m ∈ B
+  have hd : Disjoint fA fB := by
+    apply Finset.disjoint_left.mpr
+    intro x hxA hxB
+    simp only [fA, Finset.mem_filter] at hxA
+    simp only [fB, Finset.mem_filter] at hxB
+    exact Set.disjoint_left.mp hdisjoint hxA.2 hxB.2
+  have hu : fA ∪ fB = Finset.Icc 1 n := by
+    ext x
+    simp only [fA, fB, Finset.mem_union, Finset.mem_filter]
+    constructor
+    · rintro (⟨hx, _⟩ | ⟨hx, _⟩) <;> exact hx
+    · intro hx
+      have hxpos : x ∈ positiveIntegers := by
+        simp only [Finset.mem_Icc] at hx
+        simp [positiveIntegers]
+        omega
+      rw [← hunion] at hxpos
+      rcases hxpos with hxA | hxB
+      · exact Or.inl ⟨hx, hxA⟩
+      · exact Or.inr ⟨hx, hxB⟩
+  unfold countingFunction
+  rw [← Finset.card_union_of_disjoint hd, hu]
+  simp
+
+private lemma lowerDensity_eq_one_sub_upperDensity_of_partition (A B : Set Nat)
+    (hdisjoint : Disjoint A B) (hunion : A ∪ B = positiveIntegers) :
+    lowerDensity B = 1 - upperDensity A := by
+  let U : Set Real :=
+    {u | exists N : Nat, forall n : Nat, N <= n -> densityRatio A n <= u}
+  let L : Set Real :=
+    {l | exists N : Nat, forall n : Nat, N <= n -> l <= densityRatio B n}
+  have ratio_add (n : Nat) (hn : 1 <= n) :
+      densityRatio A n + densityRatio B n = 1 := by
+    have hcount := countingFunction_add_of_partition A B hdisjoint hunion n
+    unfold densityRatio
+    calc
+      (countingFunction A n : Real) / n + (countingFunction B n : Real) / n =
+          ((countingFunction A n + countingFunction B n : Nat) : Real) / n := by
+            push_cast
+            ring
+      _ = (n : Real) / n := by rw [hcount]
+      _ = 1 := div_self (by exact_mod_cast (show n ≠ 0 by omega))
+  have hU1 : (1 : Real) ∈ U := ⟨0, fun n _ => (densityRatio_bounds A n).2⟩
+  have hL0 : (0 : Real) ∈ L := ⟨0, fun n _ => (densityRatio_bounds B n).1⟩
+  have hUnonneg : forall u, u ∈ U -> (0 : Real) <= u := by
+    intro u hu
+    obtain ⟨N, hN⟩ := hu
+    exact (densityRatio_bounds A (max N 1)).1.trans (hN _ (le_max_left _ _))
+  have hLle : forall l, l ∈ L -> l <= (1 : Real) := by
+    intro l hl
+    obtain ⟨N, hN⟩ := hl
+    exact (hN _ (le_max_left _ _)).trans (densityRatio_bounds B (max N 1)).2
+  have hUbdd : BddBelow U := ⟨0, hUnonneg⟩
+  have hLbdd : BddAbove L := ⟨1, hLle⟩
+  have mapU {u : Real} (hu : u ∈ U) : 1 - u ∈ L := by
+    obtain ⟨N, hN⟩ := hu
+    refine ⟨max N 1, ?_⟩
+    intro n hn
+    have hnN : N <= n := le_trans (le_max_left _ _) hn
+    have hn1 : 1 <= n := le_trans (le_max_right _ _) hn
+    have hsum := ratio_add n hn1
+    have hbound := hN n hnN
+    linarith
+  have mapL {l : Real} (hl : l ∈ L) : 1 - l ∈ U := by
+    obtain ⟨N, hN⟩ := hl
+    refine ⟨max N 1, ?_⟩
+    intro n hn
+    have hnN : N <= n := le_trans (le_max_left _ _) hn
+    have hn1 : 1 <= n := le_trans (le_max_right _ _) hn
+    have hsum := ratio_add n hn1
+    have hbound := hN n hnN
+    linarith
+  change sSup L = 1 - sInf U
+  apply le_antisymm
+  · apply csSup_le ⟨0, hL0⟩
+    intro l hl
+    have hinf := csInf_le hUbdd (mapL hl)
+    linarith
+  · have hinf : 1 - sSup L <= sInf U := by
+      apply le_csInf ⟨1, hU1⟩
+      intro u hu
+      have hsup := le_csSup hLbdd (mapU hu)
+      linarith
+    linarith
+
+/-- A two-set partition would force the sum of the two extremal densities to
+be at least one, proving the paper's stated obstruction. -/
+theorem alpha_beta_sum_obstructs_partition_holds : alpha_beta_sum_obstructs_partition := by
+  intro hsum
+  rintro ⟨A, B, hAavoid, hBavoid, hdisjoint, hunion⟩
+  have hAsub : A ⊆ positiveIntegers := by
+    intro x hx
+    rw [← hunion]
+    exact Or.inl hx
+  have hBsub : B ⊆ positiveIntegers := by
+    intro x hx
+    rw [← hunion]
+    exact Or.inr hx
+  let AU : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+    IsKAvoidable 3 S /\ upperDensity S = d}
+  let BL : Set Real := {d | exists S : Set Nat, S ⊆ positiveIntegers /\
+    IsKAvoidable 3 S /\ lowerDensity S = d}
+  have hAUbdd : BddAbove AU := by
+    refine ⟨1, ?_⟩
+    rintro d ⟨S, hSsub, hSavoid, rfl⟩
+    exact (upperDensity_bounds S).2
+  have hBLbdd : BddAbove BL := by
+    refine ⟨1, ?_⟩
+    rintro d ⟨S, hSsub, hSavoid, rfl⟩
+    exact (lowerDensity_bounds S).2
+  have hAlpha : upperDensity A <= alpha 3 := by
+    change upperDensity A <= sSup AU
+    exact le_csSup hAUbdd ⟨A, hAsub, hAavoid, rfl⟩
+  have hBeta : lowerDensity B <= beta 3 := by
+    change lowerDensity B <= sSup BL
+    exact le_csSup hBLbdd ⟨B, hBsub, hBavoid, rfl⟩
+  have hcomplement :=
+    lowerDensity_eq_one_sub_upperDensity_of_partition A B hdisjoint hunion
+  linarith
 
 end LeanProofs.LeSaulnierVijay2011
