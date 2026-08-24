@@ -35,6 +35,7 @@ import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07DRC
 import GowersSzemeredi.Proofs07FreimanRestriction
 import GowersSzemeredi.Proofs07BohrHom
+import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs09Moments
@@ -54,6 +55,7 @@ import GowersSzemeredi.Proofs12Amplification
 import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs12Combination
 import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements

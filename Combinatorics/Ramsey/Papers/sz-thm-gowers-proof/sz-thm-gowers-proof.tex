@@ -2565,11 +2565,38 @@ Corollary 13.2. Let $\alpha>0$ and let $A \subset \mathbb{Z}_{N}^{2}$. For any $
 
 Proof. This follows immediately from Lemma 13.1 applied to the characteristic function of $A$. \(\square\)
 
-Corollary 13.3. Let $A \subset \mathbb{Z}_{N}^{2}$, and for $h \in \mathbb{Z}_{N}$ let $X_{h}$ and $f_{h}$ be as in Corollary 13.2. Let $\theta>0$. Then there exist Freiman homomorphisms $\sigma_{1}, \ldots, \sigma_{q}$ of order eight, defined on subsets $B_{1}, \ldots, B_{q}$ of $\mathbb{Z}_{N}$, and a set $G \subset \mathbb{Z}_{N}$ of cardinality at least $(1-\theta) N$, such that whenever $h \in G$ and $\left|\hat{f}_{h}(r)\right| \geqslant \theta N^{2}$ there exists $i \leqslant q$ such that $r=\sigma_{i}(h)$. The sets $B_{i}$ have cardinality at least $2^{-1882} \theta^{10477} N$ and $q \leqslant 2^{1882} \theta^{-10479}$.
+% ed.: The paper's standing convention that $N$ is prime is needed here for
+% the invocation of Corollary 7.6 and is made explicit in the formal statement.
+Corollary 13.3. Let $N$ be prime. Let $A \subset \mathbb{Z}_{N}^{2}$, and for $h \in \mathbb{Z}_{N}$ let $X_{h}$ and $f_{h}$ be as in Corollary 13.2. Let $\theta>0$. Then there exist Freiman homomorphisms $\sigma_{1}, \ldots, \sigma_{q}$ of order eight, defined on subsets $B_{1}, \ldots, B_{q}$ of $\mathbb{Z}_{N}$, and a set $G \subset \mathbb{Z}_{N}$ of cardinality at least $(1-\theta) N$, such that whenever $h \in G$ and $\left|\hat{f}_{h}(r)\right| \geqslant \theta N^{2}$ there exists $i \leqslant q$ such that $r=\sigma_{i}(h)$. The sets $B_{i}$ have cardinality at least $2^{-1882} \theta^{10477} N$ and $q \leqslant 2^{1882} \theta^{-10479}$.
 
-Proof. Suppose that $B \subset \mathbb{Z}_{N}$ is a set of size $\theta N$ and that $\sigma: B \rightarrow \mathbb{Z}_{N}$ is a function with the property that $\left|\hat{f}_{h}(\sigma(h))\right| \geqslant \theta N^{2}$ for every $h \in B$. Then $\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2} \geqslant \theta^{3} N^{5}$. Hence, by Corollary 13.2, $B$ contains at least $\theta^{12} N^{3} \sigma$-additive quadruples. It follows from Corollary 7.6 (with $\alpha=\theta$ and $\gamma=\theta^{9}$ ) that there is a subset $C$ of $B$ of cardinality at least $2^{-1882} \theta^{10477} N$ such that the restriction of $\sigma$ to $C$ is a Freiman homomorphism of order eight.
+% ed.: The printed proof chooses a set of cardinality exactly $\theta N$,
+% which need not be an integer.  The density-sensitive argument below gives
+% the same exponent and constants without that assumption.
+Proof. Suppose that $B \subset \mathbb{Z}_{N}$ has cardinality $\delta N$,
+where $\delta\geqslant\theta$, and that
+$\sigma: B \rightarrow \mathbb{Z}_{N}$ satisfies
+$\left|\hat{f}_{h}(\sigma(h))\right| \geqslant \theta N^{2}$ for every
+$h \in B$. Then
 
-Now let $\Gamma_{0}$ be the set of all pairs $(h, r)$ such that $\left|\hat{f}_{h}(r)\right| \geqslant \theta N^{2}$. If the projection of $\Gamma_0$ to the $h$-axis has size less than $\theta N$, then we are done. Otherwise, we can choose $B$ and $\sigma$ satisfying the hypotheses of the previous paragraph and hence can find $B_{1} \subset B$ of cardinality at least $2^{-1882} \theta^{10477} N$ such that the restriction of $\sigma$ to $B_{1}$ is a homomorphism of order eight. Let $\sigma_{1}$ be this restriction and let $\Gamma_{1}=\Gamma_0 \backslash\left\{\left(h, \sigma_{1}(h)\right): h \in B_{1}\right\}$.
+$$
+\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2}
+  \geqslant \theta^{2}\delta N^{5}.
+$$
+
+Corollary 13.2, applied with parameter $\theta^{2}\delta$, therefore gives
+at least $\theta^{8}\delta^{4}N^{3}$ $\sigma$-additive quadruples.
+Corollary 7.6 may now be applied with
+$\alpha=\delta$ and $\gamma=\theta^{8}\delta$.  It produces a subset
+$C\subset B$ on which $\sigma$ is a Freiman homomorphism of order eight and
+whose cardinality is at least
+
+$$
+2^{-1882}(\theta^{8}\delta)^{1164}\delta N
+  =2^{-1882}\theta^{9312}\delta^{1165}N
+  \geqslant 2^{-1882}\theta^{10477}N.
+$$
+
+Now let $\Gamma_{0}$ be the set of all pairs $(h, r)$ such that $\left|\hat{f}_{h}(r)\right| \geqslant \theta N^{2}$. If the projection of $\Gamma_0$ to the $h$-axis has size less than $\theta N$, then we are done. Otherwise, let $B$ be that projection, write $|B|=\delta N$, and choose one value $\sigma(h)$ with $(h,\sigma(h))\in\Gamma_0$ for each $h\in B$. Then $\delta\geqslant\theta$, so the previous paragraph gives $B_{1} \subset B$ of cardinality at least $2^{-1882} \theta^{10477} N$ such that the restriction of $\sigma$ to $B_{1}$ is a homomorphism of order eight. Let $\sigma_{1}$ be this restriction and let $\Gamma_{1}=\Gamma_0 \backslash\left\{\left(h, \sigma_{1}(h)\right): h \in B_{1}\right\}$.
 
 If the projection of $\Gamma_{1}$ to the $h$-axis has cardinality less than $\theta N$, we are done. Otherwise, the above argument can be repeated. Continue the repetitions until it is no longer possible and we are then done. Now $\sum_{h, r}\left|\hat{f}_{h}(r)\right|^{2}=N \sum_{h, s} f_{h}(s)^{2}$ which is clearly at most $N^{5}$, so $\Gamma_{0}$ has cardinality at most $\theta^{-2} N$. It follows that $q \leqslant 2^{1882} \theta^{-10479}$ as stated. \(\square\)
 

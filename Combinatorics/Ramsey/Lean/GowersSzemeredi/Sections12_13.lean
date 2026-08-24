@@ -280,9 +280,12 @@ def corollary_13_2 : Prop :=
 
 /-- **Corollary 13.3.** Large Fourier coefficients are covered, away from a
 small exceptional set of heights, by finitely many order-eight Freiman graphs.
-The threshold is `theta*N^2`; one factor of `N` was lost later in the OCR. -/
+The threshold is `theta*N^2`; one factor of `N` was lost later in the OCR.
+Primality makes explicit the paper's standing convention and is required by
+the invocation of Corollary 7.6. -/
 def corollary_13_3 : Prop :=
-  ∀ (N : Nat) [NeZero N] (A : Finset (Pair N)) (theta : Real), 0 < theta →
+  ∀ (N : Nat) [NeZero N] (A : Finset (Pair N)) (theta : Real),
+    Nat.Prime N → 0 < theta →
     ∃ q : Nat, ∃ B : Fin q → Finset (ZMod N),
       ∃ sigma : Fin q → ZMod N → ZMod N, ∃ G : Finset (ZMod N),
         (1 - theta) * N ≤ G.card ∧
