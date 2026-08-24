@@ -4590,4 +4590,1547 @@ theorem proposition_2_10_holds : proposition_2_10 := by
     ⟨⟨hoddEight, hoddFour, hoddTwo, traceOne.1⟩,
       ⟨hevenEight, hevenFour, hevenTwo, traceOne.2⟩⟩⟩
 
+/-! ## Interleaving-class enumeration -/
+
+def listInterleavings {α : Type*} : List α → List α → List (List α)
+  | [], ys => [ys]
+  | xs, [] => [xs]
+  | x :: xs, y :: ys =>
+      (listInterleavings xs (y :: ys)).map (x :: ·) ++
+        (listInterleavings (x :: xs) ys).map (y :: ·)
+termination_by xs ys => xs.length + ys.length
+decreasing_by all_goals simp_wf
+
+
+lemma length_listInterleavings {α : Type*} (xs ys : List α) :
+    (listInterleavings xs ys).length = Nat.choose (xs.length + ys.length) ys.length := by
+  induction xs, ys using listInterleavings.induct with
+  | case1 ys => simp [listInterleavings]
+  | case2 xs => simp [listInterleavings]
+  | case3 x xs y ys ihLeft ihRight =>
+      simp only [listInterleavings, List.length_append, List.length_map, ihLeft, ihRight,
+        List.length_cons]
+      rw [show xs.length + (ys.length + 1) = (xs.length + ys.length) + 1 by omega,
+        show xs.length + 1 + ys.length = (xs.length + ys.length) + 1 by omega,
+        show xs.length + 1 + (ys.length + 1) = (xs.length + ys.length + 1) + 1 by omega]
+      simpa [Nat.succ_eq_add_one, Nat.add_comm] using
+        (Nat.choose_succ_succ (xs.length + ys.length + 1) ys.length).symm
+
+
+lemma filters_of_mem_listInterleavings {α : Type*} {p : α → Bool}
+    {xs ys word : List α}
+    (hxs : ∀ x ∈ xs, p x = true) (hys : ∀ y ∈ ys, p y = false)
+    (hword : word ∈ listInterleavings xs ys) :
+    word.filter p = xs ∧ word.filter (fun z => !p z) = ys := by
+  induction xs, ys using listInterleavings.induct generalizing word with
+  | case1 ys =>
+      simp only [listInterleavings, List.mem_singleton] at hword
+      subst word
+      constructor
+      · apply List.filter_eq_nil_iff.2
+        intro y hy
+        simp [hys y hy]
+      · apply List.filter_eq_self.2
+        intro y hy
+        simp [hys y hy]
+  | case2 xs =>
+      simp only [listInterleavings, List.mem_singleton] at hword
+      subst word
+      constructor
+      · exact List.filter_eq_self.2 hxs
+      · apply List.filter_eq_nil_iff.2
+        intro x hx
+        simp [hxs x hx]
+  | case3 x xs y ys ihLeft ihRight =>
+      simp only [listInterleavings, List.mem_append, List.mem_map] at hword
+      rcases hword with ⟨tail, htail, rfl⟩ | ⟨tail, htail, rfl⟩
+      · have hrec := ihLeft (fun z hz => hxs z (by simp [hz])) hys htail
+        simp [hxs x (by simp), hrec]
+      · have hrec := ihRight hxs (fun z hz => hys z (by simp [hz])) htail
+        simp [hys y (by simp), hrec]
+
+lemma mem_listInterleavings_of_filters {α : Type*} {p : α → Bool}
+    {xs ys word : List α}
+    (hxs : ∀ x ∈ xs, p x = true) (hys : ∀ y ∈ ys, p y = false)
+    (hfirst : word.filter p = xs) (hsecond : word.filter (fun z => !p z) = ys) :
+    word ∈ listInterleavings xs ys := by
+  induction xs, ys using listInterleavings.induct generalizing word with
+  | case1 ys =>
+      have hpFalse : ∀ z ∈ word, p z = false := by
+        intro z hz
+        by_contra hp
+        have hpTrue : p z = true := Bool.eq_true_of_not_eq_false hp
+        have : z ∈ word.filter p := List.mem_filter.2 ⟨hz, hpTrue⟩
+        simp [hfirst] at this
+      have hcomp : word.filter (fun z => !p z) = word := by
+        apply List.filter_eq_self.2
+        intro z hz
+        simp [hpFalse z hz]
+      have : word = ys := hcomp.symm.trans hsecond
+      subst word
+      simp [listInterleavings]
+  | case2 xs =>
+      have hpTrue : ∀ z ∈ word, p z = true := by
+        intro z hz
+        by_contra hp
+        have hpFalse : p z = false := Bool.eq_false_of_not_eq_true hp
+        have : z ∈ word.filter (fun a => !p a) := by
+          exact List.mem_filter.2 ⟨hz, by simp [hpFalse]⟩
+        simp [hsecond] at this
+      have : word = xs := (List.filter_eq_self.2 hpTrue).symm.trans hfirst
+      subst word
+      simp [listInterleavings]
+  | case3 x xs y ys ihLeft ihRight =>
+      cases word with
+      | nil => simp at hfirst
+      | cons z word =>
+          by_cases hz : p z = true
+          · simp only [List.filter_cons_of_pos hz] at hfirst
+            have hzx : z = x := by exact List.cons.inj hfirst |>.1
+            have htailFirst : word.filter p = xs := List.cons.inj hfirst |>.2
+            have htailSecond : word.filter (fun a => !p a) = y :: ys := by
+              simpa [hz] using hsecond
+            subst z
+            simp only [listInterleavings, List.mem_append, List.mem_map]
+            left
+            exact ⟨word, ihLeft (fun a ha => hxs a (by simp [ha])) hys
+              htailFirst htailSecond, rfl⟩
+          · have hzFalse : p z = false := Bool.eq_false_of_not_eq_true hz
+            have htailFirst : word.filter p = x :: xs := by
+              simpa [hzFalse] using hfirst
+            have hsecondCons : z :: word.filter (fun a => !p a) = y :: ys := by
+              simpa [hzFalse] using hsecond
+            have hzy : z = y := by exact List.cons.inj hsecondCons |>.1
+            have htailSecond : word.filter (fun a => !p a) = ys :=
+              List.cons.inj hsecondCons |>.2
+            subst z
+            simp only [listInterleavings, List.mem_append, List.mem_map]
+            right
+            exact ⟨word, ihRight hxs (fun a ha => hys a (by simp [ha]))
+              htailFirst htailSecond, rfl⟩
+
+lemma mem_listInterleavings_iff_filters {α : Type*} {p : α → Bool}
+    {xs ys word : List α}
+    (hxs : ∀ x ∈ xs, p x = true) (hys : ∀ y ∈ ys, p y = false) :
+    word ∈ listInterleavings xs ys ↔
+      word.filter p = xs ∧ word.filter (fun z => !p z) = ys :=
+  ⟨filters_of_mem_listInterleavings hxs hys,
+    fun h => mem_listInterleavings_of_filters hxs hys h.1 h.2⟩
+
+lemma nodup_listInterleavings {α : Type*} [DecidableEq α] {xs ys : List α}
+    (hxs : xs.Nodup) (hys : ys.Nodup) (hdisjoint : List.Disjoint xs ys) :
+    (listInterleavings xs ys).Nodup := by
+  revert hxs hys hdisjoint
+  induction xs, ys using listInterleavings.induct with
+  | case1 ys => intro; simp [listInterleavings]
+  | case2 xs => intro; simp [listInterleavings]
+  | case3 x xs y ys ihLeft ihRight =>
+      intro hxs hys hdisjoint
+      have hxNodup := hxs.of_cons
+      have hyNodup := hys.of_cons
+      have hxNotXs := (List.nodup_cons.1 hxs).1
+      have hyNotYs := (List.nodup_cons.1 hys).1
+      have hxNotY : x ≠ y := by
+        intro hxy
+        subst y
+        have hxMemLeft : x ∈ x :: xs := by simp
+        have hxNotRight : x ∉ x :: ys := List.disjoint_left.1 hdisjoint hxMemLeft
+        exact hxNotRight (by simp)
+      have hdisjointLeft : List.Disjoint xs (y :: ys) := by
+        apply List.disjoint_left.2
+        intro a ha hmem
+        exact List.disjoint_left.1 hdisjoint (by simp [ha]) hmem
+      have hdisjointRight : List.Disjoint (x :: xs) ys := by
+        apply List.disjoint_left.2
+        intro a hmem ha
+        exact List.disjoint_left.1 hdisjoint hmem (by simp [ha])
+      have hleft := ihLeft hxNodup hys hdisjointLeft
+      have hright := ihRight hxs hyNodup hdisjointRight
+      rw [listInterleavings]
+      apply List.nodup_append.2
+      refine ⟨hleft.map ?_, hright.map ?_, ?_⟩
+      · intro a b hab
+        exact List.cons.inj hab |>.2
+      · intro a b hab
+        exact List.cons.inj hab |>.2
+      · intro left hleftMem right hrightMem heq
+        obtain ⟨leftTail, _, rfl⟩ := List.mem_map.1 hleftMem
+        obtain ⟨rightTail, _, rfl⟩ := List.mem_map.1 hrightMem
+        exact hxNotY (List.cons.inj heq).1
+
+lemma permutationWord_injective {n : Nat} :
+    Function.Injective (@permutationWord n) := by
+  intro sigma tau hword
+  apply Equiv.ext
+  intro i
+  have hi : (sigma i : Nat) + 1 = (tau i : Nat) + 1 := by
+    simpa [permutationWord] using
+      congr_arg (fun word : List Nat => word[i.val]?) hword
+  apply Fin.ext
+  omega
+
+lemma exists_permutationWord_eq_of_isTheta {n : Nat} {word : List Nat}
+    (hword : IsTheta n word) :
+    ∃ sigma : Equiv.Perm (Fin n), permutationWord sigma = word := by
+  have hnLength : word.length = n := isTheta_length hword
+  let f : Fin word.length → Fin n := fun i =>
+    ⟨word.get i - 1, by
+      have hmem : word.get i ∈ word := List.get_mem word i
+      have hsegment := mem_segment_of_mem_of_isTheta hword hmem
+      simp only [segment, Finset.mem_Icc] at hsegment
+      omega⟩
+  have hfInjective : Function.Injective f := by
+    intro i j hij
+    apply Fin.ext
+    have hiPositive := positive_of_mem_of_isTheta hword (List.get_mem word i)
+    have hjPositive := positive_of_mem_of_isTheta hword (List.get_mem word j)
+    have hvalues : word.get i = word.get j := by
+      have := congr_arg Fin.val hij
+      dsimp only [f] at this
+      omega
+    exact congr_arg Fin.val ((isTheta_nodup hword).get_inj_iff.mp hvalues)
+  have hfSurjective : Function.Surjective f := by
+    intro z
+    have hzSegment : z.val + 1 ∈ segment n := by
+      simp only [segment, Finset.mem_Icc]
+      omega
+    have hzMem := mem_of_mem_segment_of_isTheta hword hzSegment
+    obtain ⟨i, hi⟩ := List.mem_iff_get.mp hzMem
+    refine ⟨i, ?_⟩
+    apply Fin.ext
+    dsimp only [f]
+    rw [hi]
+    omega
+  let e : Fin word.length ≃ Fin n := Equiv.ofBijective f ⟨hfInjective, hfSurjective⟩
+  let sigma : Equiv.Perm (Fin n) := (finCongr hnLength.symm).trans e
+  refine ⟨sigma, ?_⟩
+  apply List.ext_get
+  · simp [permutationWord, hnLength]
+  · intro i hiPermutation hiWord
+    have hiFin : i < n := by simpa [permutationWord] using hiPermutation
+    have hiEq : (⟨i, hiWord⟩ : Fin word.length) =
+        finCongr hnLength.symm ⟨i, hiFin⟩ := by
+      apply Fin.ext
+      simp
+    have heValue : (e (finCongr hnLength.symm ⟨i, hiFin⟩) : Nat) + 1 = word[i] := by
+      rw [← hiEq]
+      change (word.get ⟨i, hiWord⟩ - 1) + 1 = word[i]
+      have hpositive := positive_of_mem_of_isTheta hword (List.get_mem word ⟨i, hiWord⟩)
+      have hpositive' : 0 < word[i] := by
+        simpa only [List.get_eq_getElem] using hpositive
+      simp only [List.get_eq_getElem]
+      omega
+    simpa [permutationWord, sigma] using heValue
+
+lemma occursLeftOf_cons_iff_of_ne {a x y : Nat} {word : List Nat}
+    (hax : a ≠ x) :
+    OccursLeftOf (a :: word) x y ↔ OccursLeftOf word x y := by
+  constructor
+  · rintro ⟨i, j, hij, hi, hj⟩
+    cases i with
+    | zero =>
+        simp only [List.getElem?_cons_zero] at hi
+        exact False.elim (hax (Option.some.inj hi))
+    | succ i =>
+        cases j with
+        | zero => omega
+        | succ j =>
+            refine ⟨i, j, by omega, ?_, ?_⟩
+            · simpa only [List.getElem?_cons_succ] using hi
+            · simpa only [List.getElem?_cons_succ] using hj
+  · rintro ⟨i, j, hij, hi, hj⟩
+    refine ⟨i + 1, j + 1, by omega, ?_, ?_⟩
+    · simpa only [List.getElem?_cons_succ, Nat.add_eq] using hi
+    · simpa only [List.getElem?_cons_succ, Nat.add_eq] using hj
+
+lemma prefix_of_filters_of_allLeft {p : Nat → Bool}
+    {xs rest ys word : List Nat}
+    (hword : word.Nodup)
+    (hxs : ∀ x ∈ xs, p x = true)
+    (_hys : ∀ y ∈ ys, p y = false)
+    (hfirst : word.filter p = xs ++ rest)
+    (hsecond : word.filter (fun z => !p z) = ys)
+    (hleft : ∀ x ∈ xs, ∀ y ∈ ys, OccursLeftOf word x y) :
+    xs <+: word := by
+  induction xs generalizing word with
+  | nil => exact List.nil_prefix
+  | cons x xs ih =>
+      cases word with
+      | nil => simp at hfirst
+      | cons z word =>
+          have hxsTail : ∀ a ∈ xs, p a = true := fun a ha => hxs a (by simp [ha])
+          by_cases hz : p z = true
+          · have hfirstCons : z :: word.filter p = x :: (xs ++ rest) := by
+              simpa [hz] using hfirst
+            have hzx : z = x := (List.cons.inj hfirstCons).1
+            have hfirstTail : word.filter p = xs ++ rest := (List.cons.inj hfirstCons).2
+            have hxHead : p x = true := hxs x (by simp)
+            have hsecondTail : word.filter (fun a => !p a) = ys := by
+              simpa [hz] using hsecond
+            subst z
+            have hleftTail : ∀ a ∈ xs, ∀ y ∈ ys, OccursLeftOf word a y := by
+              intro a ha y hy
+              have haWord : a ∈ word := by
+                have haFilter : a ∈ word.filter p := by
+                  rw [hfirstTail]
+                  simp [ha]
+                exact (List.mem_filter.1 haFilter).1
+              have hxa : x ≠ a := by
+                intro hxa
+                subst a
+                exact (List.nodup_cons.1 hword).1 haWord
+              exact (occursLeftOf_cons_iff_of_ne hxa).1
+                (hleft a (by simp [ha]) y hy)
+            obtain ⟨tail, htail⟩ :=
+              ih hword.of_cons hxsTail hfirstTail hsecondTail hleftTail
+            exact ⟨tail, by simp [htail]⟩
+          · have hzFalse : p z = false := Bool.eq_false_of_not_eq_true hz
+            have hsecondCons : z :: word.filter (fun a => !p a) = ys := by
+              simpa [hzFalse] using hsecond
+            have hzMem : z ∈ ys := by
+              rw [← hsecondCons]
+              simp
+            have hforced := hleft x (by simp) z hzMem
+            have hzHead : (z :: word)[0]? = some z := by simp
+            exact False.elim ((not_occursLeftOf_to_head hword hzHead) hforced)
+
+lemma occursLeftOf_reversal_of_occursLeftOf {word : List Nat} {x y : Nat}
+    (h : OccursLeftOf word x y) : OccursLeftOf (reversal word) y x := by
+  apply occursLeftOf_of_occursLeftOf_reversal (word := reversal word)
+  simpa [reversal] using h
+
+lemma suffix_of_filters_of_allLeft {p : Nat → Bool}
+    {xs lead suffix word : List Nat}
+    (hword : word.Nodup)
+    (hxs : ∀ x ∈ xs, p x = true)
+    (hsuffix : ∀ y ∈ suffix, p y = false)
+    (hfirst : word.filter p = xs)
+    (hsecond : word.filter (fun z => !p z) = lead ++ suffix)
+    (hleft : ∀ x ∈ xs, ∀ y ∈ suffix, OccursLeftOf word x y) :
+    suffix <:+ word := by
+  let q : Nat → Bool := fun z => !p z
+  have hsuffixQ : ∀ y ∈ suffix.reverse, q y = true := by
+    intro y hy
+    have hy' : y ∈ suffix := by simpa using hy
+    simp [q, hsuffix y hy']
+  have hxsQ : ∀ x ∈ xs.reverse, q x = false := by
+    intro x hx
+    have hx' : x ∈ xs := by simpa using hx
+    simp [q, hxs x hx']
+  have hfilterQ : (reversal word).filter q = suffix.reverse ++ lead.reverse := by
+    simp [q, reversal, hsecond]
+  have hfilterNotQ : (reversal word).filter (fun z => !q z) = xs.reverse := by
+    simpa [q, reversal] using congr_arg List.reverse hfirst
+  have hleftReverse : ∀ y ∈ suffix.reverse, ∀ x ∈ xs.reverse,
+      OccursLeftOf (reversal word) y x := by
+    intro y hy x hx
+    apply occursLeftOf_reversal_of_occursLeftOf
+    exact hleft x (by simpa using hx) y (by simpa using hy)
+  have hpref : suffix.reverse <+: reversal word :=
+    prefix_of_filters_of_allLeft (p := q) (rest := lead.reverse) (ys := xs.reverse)
+      (by simpa [reversal] using (List.nodup_reverse.mpr hword)) hsuffixQ hxsQ hfilterQ
+      hfilterNotQ hleftReverse
+  obtain ⟨front, hfront⟩ := hpref
+  refine ⟨front.reverse, ?_⟩
+  have := congr_arg List.reverse hfront
+  simpa [reversal] using this
+
+lemma eq_fixedPrefix_interleaving_fixedSuffix {p : Nat → Bool}
+    {oddFixed oddActive evenActive evenFixed word : List Nat}
+    (hword : word.Nodup)
+    (hoddFixed : ∀ x ∈ oddFixed, p x = true)
+    (hoddActive : ∀ x ∈ oddActive, p x = true)
+    (hevenActive : ∀ y ∈ evenActive, p y = false)
+    (hevenFixed : ∀ y ∈ evenFixed, p y = false)
+    (hoddTrace : word.filter p = oddFixed ++ oddActive)
+    (hevenTrace : word.filter (fun z => !p z) = evenActive ++ evenFixed)
+    (hfixedBefore : ∀ x ∈ oddFixed, ∀ y ∈ evenActive ++ evenFixed,
+      OccursLeftOf word x y)
+    (hbeforeFixed : ∀ x ∈ oddFixed ++ oddActive, ∀ y ∈ evenFixed,
+      OccursLeftOf word x y) :
+    ∃ middle ∈ listInterleavings oddActive evenActive,
+      word = oddFixed ++ middle ++ evenFixed := by
+  have hprefix : oddFixed <+: word :=
+    prefix_of_filters_of_allLeft hword hoddFixed
+      (fun y hy => by
+        rcases List.mem_append.1 hy with hy | hy
+        · exact hevenActive y hy
+        · exact hevenFixed y hy)
+      hoddTrace hevenTrace hfixedBefore
+  have hsuffix : evenFixed <:+ word :=
+    suffix_of_filters_of_allLeft hword
+      (fun x hx => by
+        rcases List.mem_append.1 hx with hx | hx
+        · exact hoddFixed x hx
+        · exact hoddActive x hx)
+      hevenFixed hoddTrace hevenTrace hbeforeFixed
+  obtain ⟨after, hafter⟩ := hprefix
+  obtain ⟨before, hbefore⟩ := hsuffix
+  have hlengthPartition := word.length_eq_length_filter_add p
+  rw [hoddTrace, hevenTrace] at hlengthPartition
+  have hfixedLength : oddFixed.length + evenFixed.length <= word.length := by
+    simp only [List.length_append] at hlengthPartition
+    omega
+  have hbeforeLength : oddFixed.length <= before.length := by
+    have hbeforeTotal := congr_arg List.length hbefore
+    simp only [List.length_append] at hbeforeTotal
+    omega
+  have htakeBefore : before.take oddFixed.length = oddFixed := by
+    have htakeWord : word.take oddFixed.length = oddFixed := by
+      rw [← hafter]
+      simp
+    rw [← htakeWord, ← hbefore]
+    simp [List.take_append_of_le_length hbeforeLength]
+  let middle := before.drop oddFixed.length
+  have hbeforeSplit : before = oddFixed ++ middle := by
+    calc
+      before = before.take oddFixed.length ++ before.drop oddFixed.length :=
+        (List.take_append_drop oddFixed.length before).symm
+      _ = oddFixed ++ middle := by rw [htakeBefore]
+  have hwordSplit : word = oddFixed ++ middle ++ evenFixed := by
+    rw [← hbefore, hbeforeSplit, List.append_assoc]
+  have hmiddleOdd : middle.filter p = oddActive := by
+    rw [hwordSplit, List.filter_append, List.filter_append,
+      List.filter_eq_self.2 hoddFixed] at hoddTrace
+    have hevenNil : evenFixed.filter p = [] := by
+      apply List.filter_eq_nil_iff.2
+      intro y hy
+      simp [hevenFixed y hy]
+    rw [hevenNil, List.append_nil] at hoddTrace
+    exact List.append_right_injective oddFixed hoddTrace
+  have hmiddleEven : middle.filter (fun z => !p z) = evenActive := by
+    rw [hwordSplit, List.filter_append, List.filter_append] at hevenTrace
+    have hoddNil : oddFixed.filter (fun z => !p z) = [] := by
+      apply List.filter_eq_nil_iff.2
+      intro x hx
+      simp [hoddFixed x hx]
+    have hevenSelf : evenFixed.filter (fun z => !p z) = evenFixed := by
+      apply List.filter_eq_self.2
+      intro y hy
+      simp [hevenFixed y hy]
+    rw [hoddNil, List.nil_append, hevenSelf] at hevenTrace
+    exact List.append_left_injective evenFixed hevenTrace
+  refine ⟨middle, ?_, hwordSplit⟩
+  exact mem_listInterleavings_of_filters hoddActive hevenActive hmiddleOdd hmiddleEven
+
+lemma lowerPrologue_entry_le_first_of_reflection_mem {n : Nat} {word : List Nat}
+    {a : Nat} (hfree : ThreeFree word)
+    (hstart : StartsWith word a)
+    (hreflect : ∀ x ∈ prologue n word, a < x → 2 * x - a ∈ word)
+    {i x : Nat} (hi : i < (prologue n word).length)
+    (hx : (prologue n word)[i]? = some x) : x <= a := by
+  induction i using Nat.strong_induction_on generalizing x with
+  | h i ih =>
+      by_contra hle
+      have hax : a < x := by omega
+      obtain ⟨suffix, hwordEq⟩ := prologue_prefix n word
+      have hxWord : word[i]? = some x := by
+        rw [← hwordEq, List.getElem?_append_left hi]
+        exact hx
+      have hxMemPro : x ∈ prologue n word := List.mem_iff_getElem?.mpr ⟨i, hx⟩
+      let r := 2 * x - a
+      have hrMem : r ∈ word := hreflect x hxMemPro hax
+      obtain ⟨j, hjWord⟩ := List.mem_iff_getElem?.mp hrMem
+      have hzero : word[0]? = some a := by
+        rw [← List.head?_eq_getElem?]
+        exact hstart
+      have hiPos : 0 < i := by
+        by_contra hiZero
+        have hiEq : i = 0 := by omega
+        subst i
+        have haxEq : a = x := Option.some.inj (hzero.symm.trans hxWord)
+        omega
+      have hrEq : r = a + 2 * (x - a) := by
+        dsimp [r]
+        omega
+      have hxEq : x = a + (x - a) := by omega
+      have hji : j < i := by
+        by_contra hnot
+        have hij : i < j := by
+          obtain ⟨hjLen, _⟩ := List.getElem?_eq_some_iff.mp hjWord
+          have hjiNe : j ≠ i := by
+            intro hji
+            subst j
+            have hrx : r = x := Option.some.inj (hjWord.symm.trans hxWord)
+            dsimp [r] at hrx
+            omega
+          omega
+        apply hfree
+        apply containsThreeAP_of_increasing_positions hiPos hij (by omega : 0 < x - a)
+          hzero
+        · rw [← hxEq]
+          exact hxWord
+        · rw [← hrEq]
+          exact hjWord
+      have hjProBound : j < (prologue n word).length := hji.trans hi
+      have hjPro : (prologue n word)[j]? = some r := by
+        rw [← hwordEq, List.getElem?_append_left hjProBound] at hjWord
+        exact hjWord
+      have hrLe := ih j hji hjProBound hjPro
+      dsimp [r] at hrLe
+      omega
+
+lemma first_le_upperPrologue_entry_of_reflection_mem {n : Nat} {word : List Nat}
+    {a : Nat} (hfree : ThreeFree word)
+    (hstart : StartsWith word a)
+    (haLeN : a <= n)
+    (hupper : ∀ z ∈ prologue n word, z ∈ upperHalf n)
+    (hreflect : ∀ x ∈ prologue n word, x < a → a <= 2 * x → 2 * x - a ∈ word)
+    {i x : Nat} (hi : i < (prologue n word).length)
+    (hx : (prologue n word)[i]? = some x) (haTwoX : a <= 2 * x) : a <= x := by
+  induction i using Nat.strong_induction_on generalizing x with
+  | h i ih =>
+      by_contra hle
+      have hxa : x < a := by omega
+      obtain ⟨suffix, hwordEq⟩ := prologue_prefix n word
+      have hxWord : word[i]? = some x := by
+        rw [← hwordEq, List.getElem?_append_left hi]
+        exact hx
+      have hxMemPro : x ∈ prologue n word := List.mem_iff_getElem?.mpr ⟨i, hx⟩
+      let r := 2 * x - a
+      have hrMem : r ∈ word := hreflect x hxMemPro hxa haTwoX
+      obtain ⟨j, hjWord⟩ := List.mem_iff_getElem?.mp hrMem
+      have hzero : word[0]? = some a := by
+        rw [← List.head?_eq_getElem?]
+        exact hstart
+      have hiPos : 0 < i := by
+        by_contra hiZero
+        have hiEq : i = 0 := by omega
+        subst i
+        have haxEq : a = x := Option.some.inj (hzero.symm.trans hxWord)
+        omega
+      have haEq : a = r + 2 * (a - x) := by
+        dsimp [r]
+        omega
+      have hxEq : x = r + (a - x) := by
+        dsimp [r]
+        omega
+      have hji : j < i := by
+        by_contra hnot
+        have hij : i < j := by
+          obtain ⟨hjLen, _⟩ := List.getElem?_eq_some_iff.mp hjWord
+          have hjiNe : j ≠ i := by
+            intro hji
+            subst j
+            have hrx : r = x := Option.some.inj (hjWord.symm.trans hxWord)
+            dsimp [r] at hrx
+            omega
+          omega
+        apply hfree
+        apply containsThreeAP_of_decreasing_positions hiPos hij (by omega : 0 < a - x)
+        · rw [← haEq]
+          exact hzero
+        · rw [← hxEq]
+          exact hxWord
+        · exact hjWord
+      have hjProBound : j < (prologue n word).length := hji.trans hi
+      have hjPro : (prologue n word)[j]? = some r := by
+        rw [← hwordEq, List.getElem?_append_left hjProBound] at hjWord
+        exact hjWord
+      have hrUpper := hupper r (List.mem_iff_getElem?.mpr ⟨j, hjPro⟩)
+      have haLeR : a <= r := ih j hji hjProBound hjPro (by
+        simp only [upperHalf, Finset.mem_Icc] at hrUpper
+        omega)
+      dsimp [r] at haLeR
+      omega
+
+lemma mem_upperHalf_of_mem_prologue {n : Nat} {word : List Nat} {a x : Nat}
+    (hstart : StartsWith word a) (haUpper : a ∈ upperHalf n)
+    (hx : x ∈ prologue n word) : x ∈ upperHalf n := by
+  classical
+  cases word with
+  | nil => simp [StartsWith] at hstart
+  | cons first tail =>
+      have hfirst : first = a := by simpa [StartsWith] using hstart
+      subst first
+      simp only [prologue, List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact haUpper
+      · have hsame : SameHalf n a x := by
+          have hp := List.mem_takeWhile_imp
+            (p := fun y : Nat => decide (SameHalf n a y)) (l := tail) hx
+          exact of_decide_eq_true hp
+        rcases hsame with hLower | hUpper
+        · simp only [lowerHalf, upperHalf, Finset.mem_Icc] at haUpper hLower
+          omega
+        · exact hUpper.2
+
+lemma oddTrace_threeFree {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    ThreeFree (oddTrace word) := by
+  rw [← oddLift_oddBase]
+  apply threeFree_oddLift (isTheta_threeFree (isTheta_oddBase hword))
+  intro x hx
+  exact positive_of_mem_of_isTheta (isTheta_oddBase hword) hx
+
+lemma evenTrace_threeFree {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    ThreeFree (evenTrace word) := by
+  rw [← evenLift_evenBase]
+  exact threeFree_evenLift (isTheta_threeFree (isTheta_evenBase hword))
+
+lemma oddEpilogue_entry_le_last {n : Nat} {gamma : List Nat} {last x : Nat}
+    (htheta : IsTheta n gamma) (hlast : EndsWith (oddTrace gamma) last)
+    (hlastLower : last ∈ lowerHalf n) (hx : x ∈ epilogue n (oddTrace gamma)) :
+    x <= last := by
+  let word := reversal (oddTrace gamma)
+  have hstart : StartsWith word last := startsWith_reversal_of_endsWith hlast
+  have hfree : ThreeFree word := by
+    exact threeFree_reverse (oddTrace_threeFree htheta)
+  have hxWord : x ∈ prologue n word := by simpa [word, epilogue] using hx
+  obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hxWord
+  obtain ⟨hiLength, _⟩ := List.getElem?_eq_some_iff.mp hi
+  refine lowerPrologue_entry_le_first_of_reflection_mem hfree hstart
+    (i := i) ?_ hiLength hi
+  intro z hz hlz
+  have hzLower := mem_lowerHalf_of_mem_prologue hstart hlastLower hz
+  have hlastOdd : Odd last := by
+    have hlastMem : last ∈ oddTrace gamma := by
+      apply List.mem_of_mem_getLast?
+      rw [hlast]
+      simp
+    exact of_decide_eq_true (List.mem_filter.1 hlastMem).2
+  have hzOdd : Odd z := by
+    have hzReverse : z ∈ reversal (oddTrace gamma) :=
+      (prologue_prefix n word).mem (by simpa [word] using hz)
+    have hzTrace : z ∈ oddTrace gamma := by simpa [reversal] using hzReverse
+    exact of_decide_eq_true (List.mem_filter.1 hzTrace).2
+  have hreflectSegment : 2 * z - last ∈ segment n := by
+    simp only [lowerHalf, segment, Finset.mem_Icc] at hzLower hlastLower ⊢
+    omega
+  have hreflectOdd : Odd (2 * z - last) := by
+    rcases hlastOdd with ⟨a, ha⟩
+    rcases hzOdd with ⟨b, hb⟩
+    refine ⟨2 * b - a, ?_⟩
+    omega
+  have hreflectGamma := mem_of_mem_segment_of_isTheta htheta hreflectSegment
+  have hreflectTrace : 2 * z - last ∈ oddTrace gamma := by
+    exact List.mem_filter.2 ⟨hreflectGamma, decide_eq_true hreflectOdd⟩
+  dsimp only [word, reversal]
+  simpa using hreflectTrace
+
+lemma evenPrologue_first_le_entry {n : Nat} {gamma : List Nat} {first y : Nat}
+    (htheta : IsTheta n gamma) (hfirst : StartsWith (evenTrace gamma) first)
+    (hfirstUpper : first ∈ upperHalf n) (hy : y ∈ prologue n (evenTrace gamma)) :
+    first <= y := by
+  have hfree := evenTrace_threeFree htheta
+  have hupper : ∀ z ∈ prologue n (evenTrace gamma), z ∈ upperHalf n :=
+    fun z hz => mem_upperHalf_of_mem_prologue hfirst hfirstUpper hz
+  obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hy
+  obtain ⟨hiLength, _⟩ := List.getElem?_eq_some_iff.mp hi
+  have hfirstBounds := Finset.mem_Icc.1
+    (show first ∈ Finset.Icc (n / 2 + 1) n from hfirstUpper)
+  refine first_le_upperPrologue_entry_of_reflection_mem hfree hfirst
+    hfirstBounds.2 hupper ?_ (i := i) hiLength hi ?_
+  · intro z hz hzf hfirstTwo
+    have hzUpper := hupper z hz
+    have hfirstEven : Even first := by
+      have hfirstMem : first ∈ evenTrace gamma := by
+        cases h : evenTrace gamma with
+        | nil => simp [StartsWith, h] at hfirst
+        | cons a as =>
+            have ha : a = first := by simpa [StartsWith, h] using hfirst
+            simp [ha]
+      exact of_decide_eq_true (List.mem_filter.1 hfirstMem).2
+    have hzEven : Even z := by
+      have hzTrace := (prologue_prefix n (evenTrace gamma)).mem hz
+      exact of_decide_eq_true (List.mem_filter.1 hzTrace).2
+    have hreflectSegment : 2 * z - first ∈ segment n := by
+      simp only [upperHalf, segment, Finset.mem_Icc] at hzUpper hfirstUpper ⊢
+      omega
+    have hreflectEven : Even (2 * z - first) := by
+      rcases hfirstEven with ⟨a, ha⟩
+      rcases hzEven with ⟨b, hb⟩
+      refine ⟨2 * b - a, ?_⟩
+      omega
+    unfold evenTrace trace
+    exact List.mem_filter.2
+      ⟨mem_of_mem_segment_of_isTheta htheta hreflectSegment,
+        decide_eq_true hreflectEven⟩
+  · simp only [upperHalf, Finset.mem_Icc] at hfirstUpper
+    have hyUpper := hupper y hy
+    simp only [upperHalf, Finset.mem_Icc] at hyUpper
+    omega
+
+def oddFixedBlock (n : Nat) (gammaOdd : List Nat) : List Nat :=
+  ((reversal gammaOdd).drop (epilogue n gammaOdd).length).reverse
+
+def oddActiveBlock (n : Nat) (gammaOdd : List Nat) : List Nat :=
+  (epilogue n gammaOdd).reverse
+
+def evenActiveBlock (n : Nat) (gammaEven : List Nat) : List Nat :=
+  prologue n gammaEven
+
+def evenFixedBlock (n : Nat) (gammaEven : List Nat) : List Nat :=
+  gammaEven.drop (prologue n gammaEven).length
+
+def admissibleInterleavingWords (n : Nat) (gammaOdd gammaEven : List Nat) :
+    List (List Nat) :=
+  (listInterleavings (oddActiveBlock n gammaOdd) (evenActiveBlock n gammaEven)).map
+    fun middle => oddFixedBlock n gammaOdd ++ middle ++ evenFixedBlock n gammaEven
+
+lemma prologue_append_drop (n : Nat) (word : List Nat) :
+    prologue n word ++ word.drop (prologue n word).length = word := by
+  obtain ⟨suffix, hsuffix⟩ := prologue_prefix n word
+  have hdrop : word.drop (prologue n word).length = suffix := by
+    calc
+      word.drop (prologue n word).length =
+          (prologue n word ++ suffix).drop (prologue n word).length :=
+        congr_arg (fun list => list.drop (prologue n word).length) hsuffix.symm
+      _ = suffix := List.drop_left
+  rw [hdrop, hsuffix]
+
+lemma oddFixed_append_oddActive (n : Nat) (gammaOdd : List Nat) :
+    oddFixedBlock n gammaOdd ++ oddActiveBlock n gammaOdd = gammaOdd := by
+  have hsplit := prologue_append_drop n (reversal gammaOdd)
+  have hreverse := congr_arg List.reverse hsplit
+  simpa [oddFixedBlock, oddActiveBlock, epilogue, reversal] using hreverse
+
+lemma evenActive_append_evenFixed (n : Nat) (gammaEven : List Nat) :
+    evenActiveBlock n gammaEven ++ evenFixedBlock n gammaEven = gammaEven := by
+  exact prologue_append_drop n gammaEven
+
+lemma oddActiveBlock_length (n : Nat) (gammaOdd : List Nat) :
+    (oddActiveBlock n gammaOdd).length = (epilogue n gammaOdd).length := by
+  simp [oddActiveBlock]
+
+lemma evenActiveBlock_length (n : Nat) (gammaEven : List Nat) :
+    (evenActiveBlock n gammaEven).length = (prologue n gammaEven).length := by
+  rfl
+
+lemma first_after_prologue_not_sameHalf {n : Nat} {word : List Nat} {first next : Nat}
+    (hfirst : StartsWith word first)
+    (hnext : StartsWith (word.drop (prologue n word).length) next) :
+    ¬ SameHalf n first next := by
+  classical
+  cases word with
+  | nil => simp [StartsWith] at hfirst
+  | cons a tail =>
+      have ha : a = first := by simpa [StartsWith] using hfirst
+      subst a
+      let p := fun y : Nat => decide (SameHalf n first y)
+      have hdrop : (first :: tail).drop (prologue n (first :: tail)).length =
+          tail.dropWhile p := by
+        simp only [prologue, List.length_cons, List.drop_succ_cons]
+        dsimp only [p]
+        let q := fun y : Nat => decide (SameHalf n first y)
+        have hsplit : tail.takeWhile q ++ tail.dropWhile q = tail :=
+          List.takeWhile_append_dropWhile
+        have hdropTail : tail.drop (tail.takeWhile q).length = tail.dropWhile q := by
+          calc
+            tail.drop (tail.takeWhile q).length =
+                (tail.takeWhile q ++ tail.dropWhile q).drop (tail.takeWhile q).length :=
+              congr_arg (fun list => list.drop (tail.takeWhile q).length) hsplit.symm
+            _ = tail.dropWhile q := by
+              exact List.drop_left
+        simpa [q] using hdropTail
+      rw [hdrop] at hnext
+      have hzero : (tail.dropWhile p)[0]? = some next := by
+        rw [← List.head?_eq_getElem?]
+        exact hnext
+      obtain ⟨hpos, hget⟩ := List.getElem?_eq_some_iff.mp hzero
+      have hnot := List.dropWhile_get_zero_not p tail hpos
+      have hget' : (tail.dropWhile p).get ⟨0, hpos⟩ = next := by
+        simpa only [List.get_eq_getElem] using hget
+      rw [hget'] at hnot
+      intro hsame
+      exact hnot (by simpa [p] using decide_eq_true hsame)
+
+/-! ## Connectivity of binary interleavings -/
+
+inductive CrossSwapReach {α : Type*} (xs ys : List α) :
+    List α → List α → Prop
+  | refl (word : List α) : CrossSwapReach xs ys word word
+  | step {start current pre tail : List α} {x y : α} :
+      CrossSwapReach xs ys start current →
+      x ∈ xs → y ∈ ys →
+      current = pre ++ x :: y :: tail →
+      CrossSwapReach xs ys start (pre ++ y :: x :: tail)
+
+lemma CrossSwapReach.trans {α : Type*} {xs ys a b c : List α}
+    (hab : CrossSwapReach xs ys a b) (hbc : CrossSwapReach xs ys b c) :
+    CrossSwapReach xs ys a c := by
+  induction hbc with
+  | refl => exact hab
+  | step h hx hy hcurrent ih =>
+      exact CrossSwapReach.step ih hx hy hcurrent
+
+lemma CrossSwapReach.cons {α : Type*} {xs ys a b : List α} (z : α)
+    (hab : CrossSwapReach xs ys a b) :
+    CrossSwapReach xs ys (z :: a) (z :: b) := by
+  induction hab with
+  | refl => exact CrossSwapReach.refl _
+  | @step current pre tail x y h hx hy hcurrent ih =>
+      apply CrossSwapReach.step (pre := z :: pre) ih hx hy
+      simpa only [List.cons_append] using congrArg (List.cons z) hcurrent
+
+lemma CrossSwapReach.prefix {α : Type*} {xs ys a b : List α} (pre : List α)
+    (hab : CrossSwapReach xs ys a b) :
+    CrossSwapReach xs ys (pre ++ a) (pre ++ b) := by
+  induction pre with
+  | nil => simpa using hab
+  | cons z pre ih => simpa only [List.cons_append] using CrossSwapReach.cons z ih
+
+lemma CrossSwapReach.suffix {α : Type*} {xs ys a b : List α} (tail : List α)
+    (hab : CrossSwapReach xs ys a b) :
+    CrossSwapReach xs ys (a ++ tail) (b ++ tail) := by
+  induction hab with
+  | refl => exact CrossSwapReach.refl _
+  | @step current pre rest x y h hx hy hcurrent ih =>
+      have hstep := CrossSwapReach.step (pre := pre) (tail := rest ++ tail) ih hx hy (by
+        rw [hcurrent]
+        simp only [List.append_assoc, List.cons_append])
+      simpa only [List.append_assoc, List.cons_append] using hstep
+
+lemma CrossSwapReach.mono {α : Type*}
+    {xs ys xs' ys' a b : List α}
+    (hxs : ∀ x ∈ xs, x ∈ xs') (hys : ∀ y ∈ ys, y ∈ ys')
+    (hab : CrossSwapReach xs ys a b) : CrossSwapReach xs' ys' a b := by
+  induction hab with
+  | refl => exact CrossSwapReach.refl _
+  | step h hx hy hcurrent ih =>
+      exact CrossSwapReach.step ih (hxs _ hx) (hys _ hy) hcurrent
+
+lemma CrossSwapReach.bubble {α : Type*} {allXs allYs xs suffix : List α}
+    {y : α} (hxs : ∀ x ∈ xs, x ∈ allXs) (hy : y ∈ allYs) :
+    CrossSwapReach allXs allYs (xs ++ y :: suffix) (y :: xs ++ suffix) := by
+  induction xs with
+  | nil => exact CrossSwapReach.refl _
+  | cons x xs ih =>
+      have htail := CrossSwapReach.cons x
+        (ih (fun z hz => hxs z (by simp [hz])))
+      have hstep : CrossSwapReach allXs allYs
+          (x :: (xs ++ y :: suffix)) (y :: x :: xs ++ suffix) := by
+        apply CrossSwapReach.step (pre := []) htail (hxs x (by simp)) hy
+        rfl
+      simpa only [List.cons_append, List.nil_append, List.append_assoc] using hstep
+
+lemma crossSwapReach_of_mem_listInterleavings {α : Type*}
+    {xs ys word : List α} (hword : word ∈ listInterleavings xs ys) :
+    CrossSwapReach xs ys (xs ++ ys) word := by
+  induction xs, ys using listInterleavings.induct generalizing word with
+  | case1 ys =>
+      simp only [listInterleavings, List.mem_singleton] at hword
+      subst word
+      exact CrossSwapReach.refl _
+  | case2 xs =>
+      simp only [listInterleavings, List.mem_singleton] at hword
+      subst word
+      simpa using (CrossSwapReach.refl xs : CrossSwapReach xs [] xs xs)
+  | case3 x xs y ys ihLeft ihRight =>
+      simp only [listInterleavings, List.mem_append, List.mem_map] at hword
+      rcases hword with ⟨tail, htail, rfl⟩ | ⟨tail, htail, rfl⟩
+      · have hreach := CrossSwapReach.cons x
+          ((ihLeft htail).mono (fun z hz => List.mem_cons_of_mem x hz) (fun z hz => hz))
+        simpa only [List.cons_append] using hreach
+      · have hbubble : CrossSwapReach (x :: xs) (y :: ys)
+            ((x :: xs) ++ y :: ys) (y :: (x :: xs) ++ ys) :=
+          CrossSwapReach.bubble
+            (allXs := x :: xs) (allYs := y :: ys)
+            (fun z hz => hz) (by simp)
+        have htailReach := CrossSwapReach.cons y
+          ((ihRight htail).mono (fun z hz => hz) (fun z hz => List.mem_cons_of_mem y hz))
+        exact hbubble.trans htailReach
+
+lemma swapValues_adjacent_eq {pre tail : List Nat} {x y : Nat}
+    (hnodup : (pre ++ x :: y :: tail).Nodup) :
+    swapValues x y (pre ++ x :: y :: tail) =
+      pre ++ y :: x :: tail := by
+  have happ := List.nodup_append.mp hnodup
+  have htail := List.nodup_cons.mp happ.2.1
+  have hytail := List.nodup_cons.mp htail.2
+  have hxy : x ≠ y := by
+    intro h
+    apply htail.1
+    simp [h]
+  have hprefixX : ∀ z ∈ pre, z ≠ x := by
+    intro z hz
+    exact happ.2.2 z hz x (by simp)
+  have hprefixY : ∀ z ∈ pre, z ≠ y := by
+    intro z hz
+    exact happ.2.2 z hz y (by simp)
+  have hsuffixX : ∀ z ∈ tail, z ≠ x := by
+    intro z hz hzx
+    subst z
+    exact htail.1 (by simp [hz])
+  have hsuffixY : ∀ z ∈ tail, z ≠ y := by
+    intro z hz hzy
+    subst z
+    exact hytail.1 hz
+  have hprefixMap : pre.map (swapEntry x y) = pre := by
+    calc
+      pre.map (swapEntry x y) = pre.map id := by
+        apply List.map_congr_left
+        intro z hz
+        simp [swapEntry, hprefixX z hz, hprefixY z hz]
+      _ = pre := List.map_id pre
+  have hsuffixMap : tail.map (swapEntry x y) = tail := by
+    calc
+      tail.map (swapEntry x y) = tail.map id := by
+        apply List.map_congr_left
+        intro z hz
+        simp [swapEntry, hsuffixX z hz, hsuffixY z hz]
+      _ = tail := List.map_id tail
+  simp [swapValues_eq_map_swapEntry, hprefixMap, hsuffixMap, hxy]
+
+lemma isTheta12_of_crossSwapReach {n : Nat} {xs ys start word : List Nat}
+    (hreach : CrossSwapReach xs ys start word)
+    (hstart : IsTheta12 n start)
+    (hxsSegment : ∀ x ∈ xs, x ∈ segment n)
+    (hysSegment : ∀ y ∈ ys, y ∈ segment n)
+    (hxsOdd : ∀ x ∈ xs, Odd x)
+    (hysEven : ∀ y ∈ ys, Even y)
+    (hcommute : ∀ x ∈ xs, ∀ y ∈ ys, Commute n x y) :
+    IsTheta12 n word := by
+  induction hreach with
+  | refl => exact hstart
+  | @step current pre tail x y h hx hy hcurrent ih =>
+      have hadjacent : ImmediatelyLeftOf current x y := by
+        rw [hcurrent]
+        refine ⟨pre.length, ?_, ?_⟩ <;> simp
+      have hswapped := proposition_2_7_holds n x y current
+        (hxsSegment x hx) (hysSegment y hy) (hxsOdd x hx) (hysEven y hy)
+        ih (hcommute x hx y hy) hadjacent
+      have hnodupCurrent := isTheta_nodup ih.1
+      rw [hcurrent] at hnodupCurrent
+      have hswapEq : swapValues x y current = pre ++ y :: x :: tail := by
+        rw [hcurrent]
+        exact swapValues_adjacent_eq hnodupCurrent
+      rwa [hswapEq] at hswapped
+
+lemma isTheta12_of_mem_listInterleavings {n : Nat}
+    {fixedPrefix fixedSuffix xs ys word : List Nat}
+    (hcanonical : IsTheta12 n (fixedPrefix ++ (xs ++ ys) ++ fixedSuffix))
+    (hxsSegment : ∀ x ∈ xs, x ∈ segment n)
+    (hysSegment : ∀ y ∈ ys, y ∈ segment n)
+    (hxsOdd : ∀ x ∈ xs, Odd x)
+    (hysEven : ∀ y ∈ ys, Even y)
+    (hcommute : ∀ x ∈ xs, ∀ y ∈ ys, Commute n x y)
+    (hword : word ∈ listInterleavings xs ys) :
+    IsTheta12 n (fixedPrefix ++ word ++ fixedSuffix) := by
+  have hreach := (crossSwapReach_of_mem_listInterleavings hword).prefix fixedPrefix
+  have hreach' := hreach.suffix fixedSuffix
+  simpa only [List.append_assoc] using
+    isTheta12_of_crossSwapReach hreach' hcanonical hxsSegment hysSegment
+      hxsOdd hysEven hcommute
+
+lemma odd_even_not_modEq_two {x y : Nat} (hx : Odd x) (hy : Even y) :
+    ¬ Nat.ModEq 2 x y := by
+  rcases hx with ⟨a, rfl⟩
+  rcases hy with ⟨b, rfl⟩
+  unfold Nat.ModEq
+  omega
+
+lemma isTheta12_oddTrace_append_evenTrace {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta12 n gamma) :
+    IsTheta12 n (oddTrace gamma ++ evenTrace gamma) := by
+  have hoddNodup : (oddTrace gamma).Nodup := (isTheta_nodup hgamma.1).filter _
+  have hevenNodup : (evenTrace gamma).Nodup := (isTheta_nodup hgamma.1).filter _
+  have hdisjoint : ∀ x ∈ oddTrace gamma, ∀ y ∈ evenTrace gamma, x ≠ y := by
+    intro x hx y hy hxy
+    subst y
+    have hxOdd : Odd x := of_decide_eq_true (List.mem_filter.mp hx).2
+    have hxEven : Even x := of_decide_eq_true (List.mem_filter.mp hy).2
+    exact (Nat.not_even_iff_odd.mpr hxOdd) hxEven
+  have hperm : Permutes (segment n) (oddTrace gamma ++ evenTrace gamma) := by
+    constructor
+    · exact List.nodup_append.mpr ⟨hoddNodup, hevenNodup, hdisjoint⟩
+    · apply Finset.ext
+      intro z
+      simp only [List.toFinset_append, Finset.mem_union, List.mem_toFinset]
+      rw [← hgamma.1.1.2, List.mem_toFinset]
+      simp only [oddTrace, evenTrace, trace, List.mem_filter]
+      constructor
+      · rintro (⟨hz, _⟩ | ⟨hz, _⟩) <;> exact hz
+      · intro hz
+        rcases Nat.even_or_odd z with hzEven | hzOdd
+        · exact Or.inr ⟨hz, decide_eq_true hzEven⟩
+        · exact Or.inl ⟨hz, decide_eq_true hzOdd⟩
+  have hfree : ThreeFree (oddTrace gamma ++ evenTrace gamma) := by
+    apply threeFree_append_of_mod_two_separated
+    · exact oddTrace_threeFree hgamma.1
+    · exact evenTrace_threeFree hgamma.1
+    · intro x hx y hy
+      exact odd_even_not_modEq_two
+        (of_decide_eq_true (List.mem_filter.mp hx).2)
+        (of_decide_eq_true (List.mem_filter.mp hy).2)
+  refine ⟨⟨hperm, hfree⟩, ?_⟩
+  rcases hgamma.2 with ⟨first, hfirst, hfirstOdd⟩
+  have htraceFirst : StartsWith (oddTrace gamma) first := by
+    cases gamma with
+    | nil => simp [StartsWith] at hfirst
+    | cons x xs =>
+        have hx : x = first := by simpa [StartsWith] using hfirst
+        subst x
+        simp [StartsWith, oddTrace, trace, decide_eq_true hfirstOdd]
+  exact ⟨first, htraceFirst.append, hfirstOdd⟩
+
+lemma mem_of_startsWith {word : List Nat} {x : Nat} (h : StartsWith word x) :
+    x ∈ word := by
+  cases word with
+  | nil => simp [StartsWith] at h
+  | cons y ys =>
+      have hy : y = x := by simpa [StartsWith] using h
+      simp [hy]
+
+lemma mem_of_endsWith {word : List Nat} {x : Nat} (h : EndsWith word x) :
+    x ∈ word := by
+  apply List.mem_of_mem_getLast?
+  rw [h]
+  simp
+
+lemma occursLeftOf_of_mem_of_endsWith {word : List Nat} {last x : Nat}
+    (hword : word.Nodup) (hlast : EndsWith word last) (hx : x ∈ word)
+    (hne : x ≠ last) : OccursLeftOf word x last := by
+  have hreverseNodup : (reversal word).Nodup := by
+    simpa [reversal] using List.nodup_reverse.mpr hword
+  have hxReverse : x ∈ reversal word := by simpa [reversal] using hx
+  have hreverse := occursLeftOf_of_startsWith_of_mem hreverseNodup
+    (startsWith_reversal_of_endsWith hlast) hxReverse hne.symm
+  exact occursLeftOf_of_occursLeftOf_reversal hreverse
+
+lemma three_le_of_standingInterleavingHypotheses {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) : 3 ≤ n := by
+  rcases hstanding with
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  have hbSegment : b1 ∈ segment n := by
+    simp only [lowerHalf, segment, Finset.mem_Icc] at hbLower ⊢
+    omega
+  have hcSegment : c1 ∈ segment n := by
+    simp only [upperHalf, segment, Finset.mem_Icc] at hcUpper ⊢
+    omega
+  have hbOdd : Odd b1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_endsWith hbEnd)).2
+  have hcEven : Even c1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_startsWith hcStart)).2
+  by_contra hn
+  have hnTwo : n = 2 := by
+    simp only [lowerHalf, Finset.mem_Icc] at hbLower
+    omega
+  have hbOne : b1 = 1 := by
+    simp only [hnTwo, segment, Finset.mem_Icc] at hbSegment
+    rcases hbOdd with ⟨b, hb⟩
+    omega
+  have hcTwo : c1 = 2 := by
+    simp only [hnTwo, segment, Finset.mem_Icc] at hcSegment
+    rcases hcEven with ⟨c, hc⟩
+    omega
+  subst b1
+  subst c1
+  rcases hcommute with ⟨beta, hbeta12, htwoOne⟩
+  have honeSegment : 1 ∈ segment n := by simp [hnTwo, segment]
+  have htwoSegment : 2 ∈ segment n := by simp [hnTwo, segment]
+  have honeTwo :=
+    (proposition_2_3_holds n beta 1 hbeta12 honeSegment htwoSegment).1 (by norm_num)
+  exact (occursLeftOf_asymm (isTheta_nodup hbeta12.1) honeTwo) htwoOne
+
+lemma oddActiveBlock_mem_oddTrace {n : Nat} {word : List Nat} {x : Nat}
+    (hx : x ∈ oddActiveBlock n (oddTrace word)) : x ∈ oddTrace word := by
+  have hxEpilogue : x ∈ epilogue n (oddTrace word) := by
+    simpa [oddActiveBlock] using hx
+  have hxReverse : x ∈ reversal (oddTrace word) :=
+    (prologue_prefix n (reversal (oddTrace word))).mem (by
+      simpa [epilogue] using hxEpilogue)
+  simpa [reversal] using hxReverse
+
+lemma evenActiveBlock_mem_evenTrace {n : Nat} {word : List Nat} {y : Nat}
+    (hy : y ∈ evenActiveBlock n (evenTrace word)) : y ∈ evenTrace word := by
+  exact (prologue_prefix n (evenTrace word)).mem (by
+    simpa [evenActiveBlock] using hy)
+
+lemma activeBlocks_commute {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ oddActiveBlock n (oddTrace gamma),
+      ∀ y ∈ evenActiveBlock n (evenTrace gamma), Commute n x y := by
+  rcases hstanding with
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  have hn : 3 ≤ n := three_le_of_standingInterleavingHypotheses
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  have hbSegment : b1 ∈ segment n := by
+    simp only [lowerHalf, segment, Finset.mem_Icc] at hbLower ⊢
+    omega
+  have hcSegment : c1 ∈ segment n := by
+    simp only [upperHalf, segment, Finset.mem_Icc] at hcUpper ⊢
+    omega
+  have hbOdd : Odd b1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_endsWith hbEnd)).2
+  have hcEven : Even c1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_startsWith hcStart)).2
+  have hnotDoNotCommute : ¬ DoNotCommute n b1 c1 := by
+    intro hdo
+    rcases hcommute with ⟨witness, hwitness12, hreverse⟩
+    exact (occursLeftOf_asymm (isTheta_nodup hwitness12.1)
+      (hdo witness hwitness12)) hreverse
+  have hnoBoundaryReflections :
+      ¬ ((c1 ≤ 2 * b1 ∧ 2 * b1 - c1 ∈ segment n) ∨
+        (b1 ≤ 2 * c1 ∧ 2 * c1 - b1 ∈ segment n)) := by
+    intro hreflections
+    exact hnotDoNotCommute
+      ((theorem_2_2_holds n b1 c1 hn hbSegment hcSegment hbOdd hcEven).2 hreflections)
+  have hseparated : 2 * b1 ≤ c1 := by
+    by_contra hnot
+    apply hnoBoundaryReflections
+    left
+    constructor
+    · omega
+    · simp only [segment, Finset.mem_Icc]
+      simp only [lowerHalf, Finset.mem_Icc] at hbLower
+      rcases hbOdd with ⟨b, hb⟩
+      rcases hcEven with ⟨c, hc⟩
+      omega
+  have hreflectionAbove : n < 2 * c1 - b1 := by
+    by_contra hnot
+    apply hnoBoundaryReflections
+    right
+    constructor
+    · simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hbLower hcUpper
+      omega
+    · simp only [segment, Finset.mem_Icc]
+      simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hbLower hcUpper
+      omega
+  intro x hx y hy
+  have hxTrace := oddActiveBlock_mem_oddTrace hx
+  have hyTrace := evenActiveBlock_mem_evenTrace hy
+  have hxGamma : x ∈ gamma := (List.mem_filter.mp hxTrace).1
+  have hyGamma : y ∈ gamma := (List.mem_filter.mp hyTrace).1
+  have hxSegment := mem_segment_of_mem_of_isTheta hgamma12.1 hxGamma
+  have hySegment := mem_segment_of_mem_of_isTheta hgamma12.1 hyGamma
+  have hxOdd : Odd x := of_decide_eq_true (List.mem_filter.mp hxTrace).2
+  have hyEven : Even y := of_decide_eq_true (List.mem_filter.mp hyTrace).2
+  have hxLe : x ≤ b1 := oddEpilogue_entry_le_last hgamma12.1 hbEnd hbLower (by
+    simpa [oddActiveBlock] using hx)
+  have hyLe : c1 ≤ y := evenPrologue_first_le_entry hgamma12.1 hcStart hcUpper (by
+    simpa [evenActiveBlock] using hy)
+  have hnoReflections :
+      ¬ ((y ≤ 2 * x ∧ 2 * x - y ∈ segment n) ∨
+        (x ≤ 2 * y ∧ 2 * y - x ∈ segment n)) := by
+    rintro (⟨_, hreflect⟩ | ⟨_, hreflect⟩)
+    · simp only [segment, Finset.mem_Icc] at hreflect
+      omega
+    · simp only [segment, Finset.mem_Icc] at hreflect
+      omega
+  exact exists_theta12_reverse_pair_of_no_reflections hn hxSegment hySegment
+    hxOdd hyEven hnoReflections
+
+lemma admissibleInterleaving_isTheta12 {n : Nat} {gamma middle : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hmiddle : middle ∈ listInterleavings
+      (oddActiveBlock n (oddTrace gamma))
+      (evenActiveBlock n (evenTrace gamma))) :
+    IsTheta12 n
+      (oddFixedBlock n (oddTrace gamma) ++ middle ++
+        evenFixedBlock n (evenTrace gamma)) := by
+  have hgamma12 := hstanding.1
+  have hcanonicalTrace := isTheta12_oddTrace_append_evenTrace hgamma12
+  have hcanonical : IsTheta12 n
+      (oddFixedBlock n (oddTrace gamma) ++
+        (oddActiveBlock n (oddTrace gamma) ++
+          evenActiveBlock n (evenTrace gamma)) ++
+        evenFixedBlock n (evenTrace gamma)) := by
+    rw [← List.append_assoc (oddFixedBlock n (oddTrace gamma)),
+      oddFixed_append_oddActive, List.append_assoc,
+      evenActive_append_evenFixed]
+    exact hcanonicalTrace
+  apply isTheta12_of_mem_listInterleavings hcanonical
+  · intro x hx
+    have hxTrace := oddActiveBlock_mem_oddTrace hx
+    exact mem_segment_of_mem_of_isTheta hgamma12.1 (List.mem_filter.mp hxTrace).1
+  · intro y hy
+    have hyTrace := evenActiveBlock_mem_evenTrace hy
+    exact mem_segment_of_mem_of_isTheta hgamma12.1 (List.mem_filter.mp hyTrace).1
+  · intro x hx
+    exact of_decide_eq_true (List.mem_filter.mp (oddActiveBlock_mem_oddTrace hx)).2
+  · intro y hy
+    exact of_decide_eq_true (List.mem_filter.mp (evenActiveBlock_mem_evenTrace hy)).2
+  · exact activeBlocks_commute hstanding
+  · exact hmiddle
+
+lemma oddFixed_before_evenTrace {n : Nat} {gamma beta : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hbeta12 : IsTheta12 n beta)
+    (hoddTrace : oddTrace beta = oddTrace gamma)
+    (hevenTrace : evenTrace beta = evenTrace gamma) :
+    ∀ x ∈ oddFixedBlock n (oddTrace gamma),
+      ∀ y ∈ evenTrace gamma, OccursLeftOf beta x y := by
+  rcases hstanding with
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, _hcommute, hbLower, hcUpper⟩
+  intro x hx y hy
+  let remainder :=
+    (reversal (oddTrace gamma)).drop (epilogue n (oddTrace gamma)).length
+  cases hremainder : remainder with
+  | nil =>
+      have : oddFixedBlock n (oddTrace gamma) = [] := by
+        simp [oddFixedBlock, remainder, hremainder]
+      simp [this] at hx
+  | cons d ds =>
+      have hfixedEq : oddFixedBlock n (oddTrace gamma) = (d :: ds).reverse := by
+        simp [oddFixedBlock, remainder, hremainder]
+      have hdRemainder : d ∈ remainder := by simp [hremainder]
+      have hdReverse : d ∈ reversal (oddTrace gamma) :=
+        (List.drop_sublist _ _).mem (by simpa [remainder] using hdRemainder)
+      have hdTrace : d ∈ oddTrace gamma := by simpa [reversal] using hdReverse
+      have hdGamma : d ∈ gamma := (List.mem_filter.mp hdTrace).1
+      have hdSegment := mem_segment_of_mem_of_isTheta hgamma12.1 hdGamma
+      have hdOdd : Odd d := of_decide_eq_true (List.mem_filter.mp hdTrace).2
+      have hcTrace : c1 ∈ evenTrace gamma := mem_of_startsWith hcStart
+      have hcGamma : c1 ∈ gamma := (List.mem_filter.mp hcTrace).1
+      have hcSegment := mem_segment_of_mem_of_isTheta hgamma12.1 hcGamma
+      have hcEven : Even c1 := of_decide_eq_true (List.mem_filter.mp hcTrace).2
+      have hreverseStart : StartsWith (reversal (oddTrace gamma)) b1 :=
+        startsWith_reversal_of_endsWith hbEnd
+      have hremainderStart : StartsWith remainder d := by simp [hremainder, StartsWith]
+      have hnotSame : ¬ SameHalf n b1 d :=
+        first_after_prologue_not_sameHalf hreverseStart (by
+          simpa [remainder, epilogue] using hremainderStart)
+      have hdUpper : d ∈ upperHalf n := by
+        simp only [SameHalf, lowerHalf, upperHalf, segment, Finset.mem_Icc] at hnotSame hbLower hdSegment ⊢
+        omega
+      have hsameDC : SameHalf n d c1 := Or.inr ⟨hdUpper, hcUpper⟩
+      have hdBeforeC : OccursLeftOf beta d c1 :=
+        (corollary_2_2_1_holds n d c1 hdSegment hcSegment hsameDC).1 hdOdd hcEven
+          beta hbeta12
+      have hfixedNodup : (oddFixedBlock n (oddTrace gamma)).Nodup := by
+        rw [hfixedEq]
+        apply List.nodup_reverse.mpr
+        have hreverseNodup : (reversal (oddTrace gamma)).Nodup := by
+          change (oddTrace gamma).reverse.Nodup
+          apply List.nodup_reverse.mpr
+          exact (isTheta_nodup hgamma12.1).filter _
+        have hremainderNodup : remainder.Nodup := by
+          dsimp only [remainder]
+          exact (List.drop_sublist _ _).nodup hreverseNodup
+        rw [hremainder] at hremainderNodup
+        exact hremainderNodup
+      have hdEndsFixed : EndsWith (oddFixedBlock n (oddTrace gamma)) d := by
+        simp [hfixedEq, EndsWith]
+      have hxBeforeOrEq : x = d ∨ OccursLeftOf beta x d := by
+        by_cases hxd : x = d
+        · exact Or.inl hxd
+        · right
+          have hxdFixed := occursLeftOf_of_mem_of_endsWith hfixedNodup hdEndsFixed hx hxd
+          have hfixedPrefix : oddFixedBlock n (oddTrace gamma) <+: oddTrace gamma :=
+            ⟨oddActiveBlock n (oddTrace gamma),
+              oddFixed_append_oddActive n (oddTrace gamma)⟩
+          have hxdGammaTrace := occursLeftOf_of_sublist hfixedPrefix.sublist hxdFixed
+          apply occursLeftOf_of_sublist
+            (small := oddTrace beta) (large := beta) List.filter_sublist
+          rw [hoddTrace]
+          exact hxdGammaTrace
+      have hcBeforeOrEq : c1 = y ∨ OccursLeftOf beta c1 y := by
+        by_cases hcy : c1 = y
+        · exact Or.inl hcy
+        · right
+          have hcyGammaTrace := occursLeftOf_of_startsWith_of_mem
+            ((isTheta_nodup hgamma12.1).filter _) hcStart hy hcy
+          apply occursLeftOf_of_sublist
+            (small := evenTrace beta) (large := beta) List.filter_sublist
+          rw [hevenTrace]
+          exact hcyGammaTrace
+      rcases hxBeforeOrEq with rfl | hxd <;>
+        rcases hcBeforeOrEq with rfl | hcy
+      · exact hdBeforeC
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1) hdBeforeC hcy
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1) hxd hdBeforeC
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1)
+          (occursLeftOf_trans (isTheta_nodup hbeta12.1) hxd hdBeforeC) hcy
+
+lemma oddTrace_before_evenFixed {n : Nat} {gamma beta : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hbeta12 : IsTheta12 n beta)
+    (hoddTrace : oddTrace beta = oddTrace gamma)
+    (hevenTrace : evenTrace beta = evenTrace gamma) :
+    ∀ x ∈ oddTrace gamma,
+      ∀ y ∈ evenFixedBlock n (evenTrace gamma), OccursLeftOf beta x y := by
+  rcases hstanding with
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, _hcommute, hbLower, hcUpper⟩
+  intro x hx y hy
+  cases hfixed : evenFixedBlock n (evenTrace gamma) with
+  | nil => simp [hfixed] at hy
+  | cons e es =>
+      have heFixed : e ∈ evenFixedBlock n (evenTrace gamma) := by simp [hfixed]
+      have heTrace : e ∈ evenTrace gamma := by
+        have hfixedSuffix : evenFixedBlock n (evenTrace gamma) <:+ evenTrace gamma :=
+          ⟨evenActiveBlock n (evenTrace gamma),
+            evenActive_append_evenFixed n (evenTrace gamma)⟩
+        exact hfixedSuffix.sublist.mem heFixed
+      have heGamma : e ∈ gamma := (List.mem_filter.mp heTrace).1
+      have heSegment := mem_segment_of_mem_of_isTheta hgamma12.1 heGamma
+      have heEven : Even e := of_decide_eq_true (List.mem_filter.mp heTrace).2
+      have hbTrace : b1 ∈ oddTrace gamma := mem_of_endsWith hbEnd
+      have hbGamma : b1 ∈ gamma := (List.mem_filter.mp hbTrace).1
+      have hbSegment := mem_segment_of_mem_of_isTheta hgamma12.1 hbGamma
+      have hbOdd : Odd b1 := of_decide_eq_true (List.mem_filter.mp hbTrace).2
+      have heStartsFixed : StartsWith (evenFixedBlock n (evenTrace gamma)) e := by
+        simp [hfixed, StartsWith]
+      have hnotSame : ¬ SameHalf n c1 e :=
+        first_after_prologue_not_sameHalf hcStart (by
+          simpa [evenFixedBlock] using heStartsFixed)
+      have heLower : e ∈ lowerHalf n := by
+        simp only [SameHalf, lowerHalf, upperHalf, segment, Finset.mem_Icc] at hnotSame hcUpper heSegment ⊢
+        omega
+      have hsameBE : SameHalf n b1 e := Or.inl ⟨hbLower, heLower⟩
+      have hbBeforeE : OccursLeftOf beta b1 e :=
+        (corollary_2_2_1_holds n b1 e hbSegment heSegment hsameBE).1 hbOdd heEven
+          beta hbeta12
+      have hxBeforeOrEq : x = b1 ∨ OccursLeftOf beta x b1 := by
+        by_cases hxb : x = b1
+        · exact Or.inl hxb
+        · right
+          have hxbGammaTrace := occursLeftOf_of_mem_of_endsWith
+            ((isTheta_nodup hgamma12.1).filter _) hbEnd hx hxb
+          apply occursLeftOf_of_sublist
+            (small := oddTrace beta) (large := beta) List.filter_sublist
+          rw [hoddTrace]
+          exact hxbGammaTrace
+      have heBeforeOrEq : e = y ∨ OccursLeftOf beta e y := by
+        by_cases hey : e = y
+        · exact Or.inl hey
+        · right
+          have hevenFixedNodup : (evenFixedBlock n (evenTrace gamma)).Nodup := by
+            unfold evenFixedBlock
+            exact (List.drop_sublist _ _).nodup ((isTheta_nodup hgamma12.1).filter _)
+          have heyFixed := occursLeftOf_of_startsWith_of_mem
+            hevenFixedNodup heStartsFixed hy hey
+          have hfixedSuffix : evenFixedBlock n (evenTrace gamma) <:+ evenTrace gamma :=
+            ⟨evenActiveBlock n (evenTrace gamma),
+              evenActive_append_evenFixed n (evenTrace gamma)⟩
+          have heyGammaTrace := occursLeftOf_of_sublist hfixedSuffix.sublist heyFixed
+          apply occursLeftOf_of_sublist
+            (small := evenTrace beta) (large := beta) List.filter_sublist
+          rw [hevenTrace]
+          exact heyGammaTrace
+      rcases hxBeforeOrEq with rfl | hxb <;>
+        rcases heBeforeOrEq with rfl | hey
+      · exact hbBeforeE
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1) hbBeforeE hey
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1) hxb hbBeforeE
+      · exact occursLeftOf_trans (isTheta_nodup hbeta12.1)
+          (occursLeftOf_trans (isTheta_nodup hbeta12.1) hxb hbBeforeE) hey
+
+lemma oddFixedBlock_mem_oddTrace {n : Nat} {word : List Nat} {x : Nat}
+    (hx : x ∈ oddFixedBlock n (oddTrace word)) : x ∈ oddTrace word := by
+  have hprefix : oddFixedBlock n (oddTrace word) <+: oddTrace word :=
+    ⟨oddActiveBlock n (oddTrace word),
+      oddFixed_append_oddActive n (oddTrace word)⟩
+  exact hprefix.mem hx
+
+lemma evenFixedBlock_mem_evenTrace {n : Nat} {word : List Nat} {y : Nat}
+    (hy : y ∈ evenFixedBlock n (evenTrace word)) : y ∈ evenTrace word := by
+  have hsuffix : evenFixedBlock n (evenTrace word) <:+ evenTrace word :=
+    ⟨evenActiveBlock n (evenTrace word),
+      evenActive_append_evenFixed n (evenTrace word)⟩
+  exact hsuffix.mem hy
+
+lemma filter_not_odd_eq_evenTrace (word : List Nat) :
+    word.filter (fun z => !(decide (Odd z))) = evenTrace word := by
+  unfold evenTrace trace
+  apply List.filter_congr
+  intro z _hz
+  by_cases hzOdd : Odd z
+  · have hzNotEven : ¬ Even z := Nat.not_even_iff_odd.mpr hzOdd
+    simp [decide_eq_true hzOdd, decide_eq_false hzNotEven]
+  · have hzEven : Even z := Nat.not_odd_iff_even.mp hzOdd
+    simp [decide_eq_false hzOdd, decide_eq_true hzEven]
+
+lemma fixedBlocks_interleaving_decomposition {n : Nat} {gamma beta : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hbeta12 : IsTheta12 n beta)
+    (hoddTrace : oddTrace beta = oddTrace gamma)
+    (hevenTrace : evenTrace beta = evenTrace gamma) :
+    ∃ middle ∈ listInterleavings
+        (oddActiveBlock n (oddTrace gamma))
+        (evenActiveBlock n (evenTrace gamma)),
+      beta = oddFixedBlock n (oddTrace gamma) ++ middle ++
+        evenFixedBlock n (evenTrace gamma) := by
+  let p : Nat → Bool := fun z => decide (Odd z)
+  apply eq_fixedPrefix_interleaving_fixedSuffix
+    (p := p) (hword := isTheta_nodup hbeta12.1)
+  · intro x hx
+    have hxTrace := oddFixedBlock_mem_oddTrace hx
+    exact (List.mem_filter.mp hxTrace).2
+  · intro x hx
+    have hxTrace := oddActiveBlock_mem_oddTrace hx
+    exact (List.mem_filter.mp hxTrace).2
+  · intro y hy
+    have hyTrace := evenActiveBlock_mem_evenTrace hy
+    have hyEven : Even y := of_decide_eq_true (List.mem_filter.mp hyTrace).2
+    exact decide_eq_false (Nat.not_odd_iff_even.mpr hyEven)
+  · intro y hy
+    have hyTrace := evenFixedBlock_mem_evenTrace hy
+    have hyEven : Even y := of_decide_eq_true (List.mem_filter.mp hyTrace).2
+    exact decide_eq_false (Nat.not_odd_iff_even.mpr hyEven)
+  · change oddTrace beta = _
+    exact hoddTrace.trans (oddFixed_append_oddActive n (oddTrace gamma)).symm
+  · rw [filter_not_odd_eq_evenTrace, hevenTrace]
+    exact (evenActive_append_evenFixed n (evenTrace gamma)).symm
+  · intro x hx y hy
+    apply oddFixed_before_evenTrace hstanding hbeta12 hoddTrace hevenTrace x hx y
+    rw [← evenActive_append_evenFixed n (evenTrace gamma)]
+    exact hy
+  · intro x hx y hy
+    apply oddTrace_before_evenFixed hstanding hbeta12 hoddTrace hevenTrace x _ y hy
+    rw [← oddFixed_append_oddActive n (oddTrace gamma)]
+    exact hx
+
+lemma traces_of_admissibleInterleaving {n : Nat} {gammaOdd gammaEven middle : List Nat}
+    (hoddParity : ∀ x ∈ gammaOdd, Odd x)
+    (hevenParity : ∀ y ∈ gammaEven, Even y)
+    (hmiddle : middle ∈ listInterleavings
+      (oddActiveBlock n gammaOdd) (evenActiveBlock n gammaEven)) :
+    let word := oddFixedBlock n gammaOdd ++ middle ++ evenFixedBlock n gammaEven
+    oddTrace word = gammaOdd ∧ evenTrace word = gammaEven := by
+  dsimp only
+  let p : Nat → Bool := fun z => decide (Odd z)
+  have hoddFixed : ∀ x ∈ oddFixedBlock n gammaOdd, p x = true := by
+    intro x hx
+    apply decide_eq_true
+    apply hoddParity x
+    exact (show oddFixedBlock n gammaOdd <+: gammaOdd from
+      ⟨oddActiveBlock n gammaOdd, oddFixed_append_oddActive n gammaOdd⟩).mem hx
+  have hoddActive : ∀ x ∈ oddActiveBlock n gammaOdd, p x = true := by
+    intro x hx
+    apply decide_eq_true
+    apply hoddParity x
+    rw [← oddFixed_append_oddActive n gammaOdd]
+    simp [hx]
+  have hevenActive : ∀ y ∈ evenActiveBlock n gammaEven, p y = false := by
+    intro y hy
+    apply decide_eq_false
+    apply Nat.not_odd_iff_even.mpr
+    apply hevenParity y
+    rw [← evenActive_append_evenFixed n gammaEven]
+    simp [hy]
+  have hevenFixed : ∀ y ∈ evenFixedBlock n gammaEven, p y = false := by
+    intro y hy
+    apply decide_eq_false
+    apply Nat.not_odd_iff_even.mpr
+    apply hevenParity y
+    exact (show evenFixedBlock n gammaEven <:+ gammaEven from
+      ⟨evenActiveBlock n gammaEven, evenActive_append_evenFixed n gammaEven⟩).mem hy
+  have hmiddleFilters := filters_of_mem_listInterleavings
+    hoddActive hevenActive hmiddle
+  constructor
+  · unfold oddTrace trace
+    rw [List.filter_append, List.filter_append,
+      List.filter_eq_self.mpr hoddFixed, hmiddleFilters.1]
+    have hevenFixedNil : (evenFixedBlock n gammaEven).filter p = [] := by
+      apply List.filter_eq_nil_iff.mpr
+      intro y hy
+      rw [hevenFixed y hy]
+      simp
+    rw [hevenFixedNil, List.append_nil, oddFixed_append_oddActive]
+  · rw [← filter_not_odd_eq_evenTrace]
+    rw [List.filter_append, List.filter_append]
+    have hoddFixedNil : (oddFixedBlock n gammaOdd).filter (fun z => !p z) = [] := by
+      apply List.filter_eq_nil_iff.mpr
+      intro x hx
+      rw [hoddFixed x hx]
+      simp
+    have hevenFixedSelf :
+        (evenFixedBlock n gammaEven).filter (fun z => !p z) =
+          evenFixedBlock n gammaEven := by
+      apply List.filter_eq_self.mpr
+      intro y hy
+      rw [hevenFixed y hy]
+      simp
+    rw [hoddFixedNil, List.nil_append, hmiddleFilters.2,
+      hevenFixedSelf, evenActive_append_evenFixed]
+
+lemma nodup_admissibleInterleavingWords {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) :
+    (admissibleInterleavingWords n (oddTrace gamma) (evenTrace gamma)).Nodup := by
+  have hoddTraceNodup : (oddTrace gamma).Nodup := (isTheta_nodup hgamma).filter _
+  have hevenTraceNodup : (evenTrace gamma).Nodup := (isTheta_nodup hgamma).filter _
+  have hoddActiveNodup : (oddActiveBlock n (oddTrace gamma)).Nodup := by
+    unfold oddActiveBlock epilogue
+    apply List.nodup_reverse.mpr
+    exact (prologue_prefix n (reversal (oddTrace gamma))).sublist.nodup (by
+      change (oddTrace gamma).reverse.Nodup
+      exact List.nodup_reverse.mpr hoddTraceNodup)
+  have hevenActiveNodup : (evenActiveBlock n (evenTrace gamma)).Nodup := by
+    unfold evenActiveBlock
+    exact (prologue_prefix n (evenTrace gamma)).sublist.nodup hevenTraceNodup
+  have hdisjoint : List.Disjoint
+      (oddActiveBlock n (oddTrace gamma))
+      (evenActiveBlock n (evenTrace gamma)) := by
+    rw [List.disjoint_left]
+    intro x hx hy
+    have hxOdd : Odd x := of_decide_eq_true
+      (List.mem_filter.mp (oddActiveBlock_mem_oddTrace hx)).2
+    have hxEven : Even x := of_decide_eq_true
+      (List.mem_filter.mp (evenActiveBlock_mem_evenTrace hy)).2
+    exact (Nat.not_even_iff_odd.mpr hxOdd) hxEven
+  have hinterleavings := nodup_listInterleavings
+    hoddActiveNodup hevenActiveNodup hdisjoint
+  unfold admissibleInterleavingWords
+  apply hinterleavings.map
+  intro left right heq
+  have hcancelSuffix := List.append_left_injective
+    (evenFixedBlock n (evenTrace gamma)) heq
+  exact List.append_right_injective (oddFixedBlock n (oddTrace gamma)) hcancelSuffix
+
+lemma length_admissibleInterleavingWords (n : Nat) (gammaOdd gammaEven : List Nat) :
+    (admissibleInterleavingWords n gammaOdd gammaEven).length =
+      Nat.choose
+        ((epilogue n gammaOdd).length + (prologue n gammaEven).length)
+        (prologue n gammaEven).length := by
+  unfold admissibleInterleavingWords
+  rw [List.length_map, length_listInterleavings,
+    oddActiveBlock_length, evenActiveBlock_length]
+
+lemma interleavingClass_card_eq_admissibleWords {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    (interleavingClass n (oddTrace gamma) (evenTrace gamma)).card =
+      (admissibleInterleavingWords n (oddTrace gamma) (evenTrace gamma)).toFinset.card := by
+  classical
+  apply Finset.card_bij
+    (s := interleavingClass n (oddTrace gamma) (evenTrace gamma))
+    (t := (admissibleInterleavingWords n (oddTrace gamma) (evenTrace gamma)).toFinset)
+    (fun sigma _ => permutationWord sigma)
+  · intro sigma hsigma
+    have hsigmaData : IsTheta12 n (permutationWord sigma) ∧
+        oddTrace (permutationWord sigma) = oddTrace gamma ∧
+        evenTrace (permutationWord sigma) = evenTrace gamma := by
+      simpa [interleavingClass] using hsigma
+    obtain ⟨middle, hmiddle, hword⟩ := fixedBlocks_interleaving_decomposition
+      hstanding hsigmaData.1 hsigmaData.2.1 hsigmaData.2.2
+    rw [List.mem_toFinset]
+    unfold admissibleInterleavingWords
+    apply List.mem_map.mpr
+    exact ⟨middle, hmiddle, hword.symm⟩
+  · intro sigma _ tau _ heq
+    exact permutationWord_injective heq
+  · intro word hword
+    rw [List.mem_toFinset] at hword
+    unfold admissibleInterleavingWords at hword
+    rcases List.mem_map.mp hword with ⟨middle, hmiddle, hwordEq⟩
+    subst word
+    let candidate := oddFixedBlock n (oddTrace gamma) ++ middle ++
+      evenFixedBlock n (evenTrace gamma)
+    have hcandidate12 : IsTheta12 n candidate := by
+      exact admissibleInterleaving_isTheta12 hstanding hmiddle
+    have hoddParity : ∀ x ∈ oddTrace gamma, Odd x := by
+      intro x hx
+      exact of_decide_eq_true (List.mem_filter.mp hx).2
+    have hevenParity : ∀ y ∈ evenTrace gamma, Even y := by
+      intro y hy
+      exact of_decide_eq_true (List.mem_filter.mp hy).2
+    have hcandidateTraces : oddTrace candidate = oddTrace gamma ∧
+        evenTrace candidate = evenTrace gamma := by
+      simpa only [candidate] using traces_of_admissibleInterleaving
+        hoddParity hevenParity hmiddle
+    obtain ⟨sigma, hsigmaWord⟩ := exists_permutationWord_eq_of_isTheta hcandidate12.1
+    have hsigmaMem : sigma ∈ interleavingClass n (oddTrace gamma) (evenTrace gamma) := by
+      simp only [interleavingClass, Finset.mem_filter, Finset.mem_univ, true_and]
+      rw [hsigmaWord]
+      exact ⟨hcandidate12, hcandidateTraces⟩
+    exact ⟨sigma, hsigmaMem, hsigmaWord⟩
+
+/-- **Lemma 2.5.** The independent active odd/even shuffles give precisely
+the standing interleaving class, hence its binomial cardinality. -/
+theorem lemma_2_5_holds : lemma_2_5 := by
+  intro n gamma hstanding
+  dsimp only
+  rw [interleavingClass_card_eq_admissibleWords hstanding,
+    List.toFinset_card_of_nodup (nodup_admissibleInterleavingWords hstanding.1.1),
+    length_admissibleInterleavingWords]
+
 end LeanProofs.Sharma2012
