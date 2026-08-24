@@ -109,12 +109,14 @@ noncomputable def theta (n : Nat) : Nat :=
 Rational values accurately record the notation without silently imposing a
 divisibility hypothesis that the paper leaves implicit.
 -/
-noncomputable def affineImage (a b c : Int) (P : Finset Int) : Finset Rat := by
+noncomputable def affineImage (a b c : Int) (_ha : a != 0) (_hc : c != 0)
+    (P : Finset Int) : Finset Rat := by
   classical
   exact P.image fun x => (a * x + b : Rat) / c
 
 /-- The entrywise affine image `(a alpha + b) / c` from Notation 1.1. -/
-def affineWord (a b c : Int) (alpha : List Int) : List Rat :=
+def affineWord (a b c : Int) (_ha : a != 0) (_hc : c != 0)
+    (alpha : List Int) : List Rat :=
   alpha.map fun x => (a * x + b : Rat) / c
 
 /-- The concatenated word `(alpha, beta)` from Notation 1.1. -/
@@ -218,11 +220,13 @@ def Commute (n x y : Nat) : Prop :=
 def DoNotCommute (n x y : Nat) : Prop :=
   forall gamma : List Nat, IsTheta12 n gamma -> OccursLeftOf gamma x y
 
-/-- The standing hypotheses introduced in Notation 2.2(3).  The explicit
-`n >= 32` records the range announced immediately before Propositions
-2.8--2.10 and used throughout their applications. -/
+/-- The standing hypotheses introduced in Notation 2.2(3).
+
+The paper says only that it will "usually" take `n >= 32`; that range is
+introduced separately immediately before Propositions 2.8--2.10 and is not
+part of the standing hypotheses themselves. -/
 def StandingInterleavingHypotheses (n : Nat) (gamma : List Nat) : Prop :=
-  32 <= n /\ IsTheta12 n gamma /\
+  IsTheta12 n gamma /\
     exists b1 c1 : Nat,
       EndsWith (oddTrace gamma) b1 /\ StartsWith (evenTrace gamma) c1 /\
       Commute n b1 c1 /\ b1 ∈ lowerHalf n /\ c1 ∈ upperHalf n
