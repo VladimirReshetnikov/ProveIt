@@ -97,14 +97,14 @@ def analyze(n, m, D, max_support=6, verbose_limit=4):
                 c = {cell: sgn*a for cell, a in zip(supp, v) if a != 0}
                 if not c: continue
                 if not any(val < 0 for val in c.values()): continue
-                # top-slice tail-sum constraint
-                jmax = max(j for (_, j) in c)
-                slice_cells = sorted([(i,j) for (i,j) in c if j == jmax])
+                # ALL-SLICE tail-sum constraint (Theorem A hypothesis)
                 ok = True
-                # tail sums over the slice ordered by i: sum_{i' >= i} c >= 0
-                for k in range(len(slice_cells)):
-                    t = sum(c[cell] for cell in slice_cells[k:])
-                    if t < 0: ok = False; break
+                for jj in sorted({j for (_, j) in c}):
+                    slice_cells = sorted([(i,j) for (i,j) in c if j == jj])
+                    for k in range(len(slice_cells)):
+                        t = sum(c[cell] for cell in slice_cells[k:])
+                        if t < 0: ok = False; break
+                    if not ok: break
                 if not ok: continue
                 # coverage necessity for every negative cell
                 for (i,j), val in c.items():
@@ -148,6 +148,6 @@ def analyze(n, m, D, max_support=6, verbose_limit=4):
         print(f"    survivor: neg cells {neg}, pos cells {pos}, coeffs {c}")
     return survivors
 
-for (n,m,D) in [(6,4,4), (10,7,4)]:
+for (n,m,D) in [(6,4,4), (10,7,4), (6,4,5)]:
     analyze(n, m, D)
     print()
