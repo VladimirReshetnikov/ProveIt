@@ -159,6 +159,11 @@ sum with inner power `(j - m * 2^k + q)^(n+k)` has that same value; literal
 rational, signed-global, and bounded-unit-interval theorems are public.
 Thus the source's `+1/2` formula and the centered form agree, while its
 `QPochhammer`/`QBinomial` factors retain notation-faithful public definitions.
+For the inverse-power specialization, dyadic reflection additionally proves
+for every `q : ℚ` the raw-coordinate formula with inner power
+`(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses
+the zero-one `thueMorseBit`; at `n = q = 0`, the sole inner power is `0^0`
+and evaluates to one.
 The recurrence sequence's fixed-constant heuristic
 omits the nonconstant periodic correction.  The elementary small-`x`
 expression from

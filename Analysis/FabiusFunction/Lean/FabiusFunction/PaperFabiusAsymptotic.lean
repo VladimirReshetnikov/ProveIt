@@ -9,6 +9,7 @@ import FabiusFunction.FabiusFullAsymptoticExpansion
 import FabiusFunction.FabiusLambertAllOrderSmallArgument
 import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.FabiusQBinomialFormula
+import FabiusFunction.FabiusRawQBinomialFormula
 import FabiusFunction.FabiusFirstSaddleCorrection
 import FabiusFunction.FabiusSaddleCoefficientRecurrence
 import FabiusFunction.PeriodicSmooth
@@ -57,5 +58,7 @@ rational (in particular `(m,n) ↦ (2m,n+1)`) and under every common rational
 translation of its inner powers.  Explicitly, for every `q : ℚ` the fully
 displayed sum containing `(j - m * 2^k + q)^(n+k)` computes the same dyadic
 value; this includes both the centered and source-faithful `+1/2` versions.
+For `m = 1`, dyadic reflection also gives the arbitrary-`q` raw-coordinate
+form with inner power `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.
 See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/
