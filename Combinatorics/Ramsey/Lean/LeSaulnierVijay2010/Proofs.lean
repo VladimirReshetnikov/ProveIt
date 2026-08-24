@@ -16,6 +16,15 @@ noncomputable section
 
 namespace LeanProofs.LeSaulnierVijay2010
 
+theorem M_four_value_holds : M_four_value :=
+  LeanProofs.RamseyPaperCommon.lesaulnier2010_M_four_value
+
+theorem M_four_representatives_holds : M_four_representatives :=
+  LeanProofs.RamseyPaperCommon.lesaulnier2010_M_four_representatives
+
+theorem M_initial_values_holds : M_initial_values :=
+  LeanProofs.RamseyPaperCommon.lesaulnier2010_M_initial_values
+
 theorem every_permutation_of_positives_has_three_AP_holds :
     every_permutation_of_positives_has_three_AP := by
   simpa [every_permutation_of_positives_has_three_AP,
@@ -63,6 +72,17 @@ theorem theorem_2_block_concatenation_is_odd_four_avoiding_holds :
 theorem theorem_2_holds : theorem_2 := by
   simpa [theorem_2, LeanProofs.LeSaulnierVijay2011.theorem_2] using
     LeanProofs.LeSaulnierVijay2011.theorem_2_holds
+
+theorem positive_integers_are_five_avoidable_holds :
+    positive_integers_are_five_avoidable := by
+  simpa [positive_integers_are_five_avoidable,
+    LeanProofs.LeSaulnierVijay2011.positive_integers_are_five_avoidable] using
+    LeanProofs.LeSaulnierVijay2011.positive_integers_are_five_avoidable_holds
+
+theorem alpha_beta_of_five_or_more_holds : alpha_beta_of_five_or_more := by
+  simpa [alpha_beta_of_five_or_more,
+    LeanProofs.LeSaulnierVijay2011.alpha_beta_of_five_or_more] using
+    LeanProofs.LeSaulnierVijay2011.alpha_beta_of_five_or_more_holds
 
 theorem geometricBlock_cross_gap_holds : geometricBlock_cross_gap := by
   simpa [geometricBlock_cross_gap,
