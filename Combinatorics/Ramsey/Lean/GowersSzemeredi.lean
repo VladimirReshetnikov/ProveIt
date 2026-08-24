@@ -90,6 +90,7 @@ import GowersSzemeredi.Proofs16BaseCaseCore
 import GowersSzemeredi.Proofs16BaseCaseRestriction
 import GowersSzemeredi.Proofs16BaseCaseExtraction
 import GowersSzemeredi.Proofs16BaseCaseQuantitative
+import GowersSzemeredi.Proofs16BaseCaseCoarsePartition
 import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
