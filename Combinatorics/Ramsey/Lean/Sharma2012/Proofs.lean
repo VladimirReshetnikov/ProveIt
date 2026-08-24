@@ -4029,6 +4029,136 @@ theorem lemma_2_4_holds : lemma_2_4 := by
         _ <= candidates.length := List.toFinset_card_le candidates
         _ = 6 := by simp [candidates]
 
+lemma threeFree_complement {n : Nat} {word : List Nat}
+    (hword : IsTheta n word) : ThreeFree (complement n word) := by
+  intro hap
+  rcases hap with ⟨indices, hindices, a, d, hd, hvalues | hvalues⟩
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    obtain ⟨x0, hx0, hx0Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h0)
+    obtain ⟨x1, hx1, hx1Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h1)
+    obtain ⟨x2, hx2, hx2Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h2)
+    have hx0Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 0, hx0⟩)
+    have hx1Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 1, hx1⟩)
+    have hx2Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 2, hx2⟩)
+    have hx0Eq : x0 = x2 + 2 * d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    have hx1Eq : x1 = x2 + d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    apply isTheta_threeFree hword
+    apply containsThreeAP_of_decreasing_positions
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) hd
+    · rw [← hx0Eq]
+      exact hx0
+    · rw [← hx1Eq]
+      exact hx1
+    · exact hx2
+  · have h0 := hvalues (0 : Fin 3)
+    have h1 := hvalues (1 : Fin 3)
+    have h2 := hvalues (2 : Fin 3)
+    norm_num at h0 h1 h2
+    obtain ⟨x0, hx0, hx0Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h0)
+    obtain ⟨x1, hx1, hx1Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h1)
+    obtain ⟨x2, hx2, hx2Value⟩ :=
+      exists_of_getElem?_map_eq_some (f := fun x => n + 1 - x) (by simpa [complement] using h2)
+    have hx0Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 0, hx0⟩)
+    have hx1Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 1, hx1⟩)
+    have hx2Segment := mem_segment_of_mem_of_isTheta hword
+      (List.mem_iff_getElem?.mpr ⟨indices 2, hx2⟩)
+    have hx1Eq : x1 = x0 + d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    have hx2Eq : x2 = x0 + 2 * d := by
+      simp only [segment, Finset.mem_Icc] at hx0Segment hx1Segment hx2Segment
+      omega
+    apply isTheta_threeFree hword
+    apply containsThreeAP_of_increasing_positions
+      (hindices (show (0 : Fin 3) < 1 by decide))
+      (hindices (show (1 : Fin 3) < 2 by decide)) hd hx0
+    · rw [← hx1Eq]
+      exact hx1
+    · rw [← hx2Eq]
+      exact hx2
+
+lemma isTheta_complement {n : Nat} {word : List Nat} (hword : IsTheta n word) :
+    IsTheta n (complement n word) := by
+  refine ⟨⟨?_, ?_⟩, threeFree_complement hword⟩
+  · apply List.Nodup.map_on _ (isTheta_nodup hword)
+    intro x hx y hy hxy
+    have hxSegment := mem_segment_of_mem_of_isTheta hword hx
+    have hySegment := mem_segment_of_mem_of_isTheta hword hy
+    simp only [segment, Finset.mem_Icc] at hxSegment hySegment
+    omega
+  · apply Finset.ext
+    intro z
+    simp only [List.mem_toFinset, complement, List.mem_map]
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      exact complementValue_mem_segment (mem_segment_of_mem_of_isTheta hword hx)
+    · intro hzSegment
+      let x := n + 1 - z
+      have hxSegment : x ∈ segment n := complementValue_mem_segment hzSegment
+      have hxMem := mem_of_mem_segment_of_isTheta hword hxSegment
+      refine ⟨x, hxMem, ?_⟩
+      simp only [segment, Finset.mem_Icc] at hzSegment
+      omega
+
+lemma startsWith_complement {n : Nat} {word : List Nat} {x : Nat}
+    (hstart : StartsWith word x) : StartsWith (complement n word) (n + 1 - x) := by
+  unfold StartsWith at hstart ⊢
+  simp only [complement, List.head?_map, hstart, Option.map_some]
+
+theorem theorem_2_5_holds : theorem_2_5 := by
+  intro n gamma htheta
+  cases gamma with
+  | nil => simp [prologue]
+  | cons a tail =>
+      have hstart : StartsWith (a :: tail) a := by simp [StartsWith]
+      have haSegment : a ∈ segment n :=
+        mem_segment_of_mem_of_isTheta htheta (by simp)
+      by_cases haLower : a ∈ lowerHalf n
+      · exact lemma_2_4_holds n (a :: tail) a htheta hstart haLower
+      · have haUpper : a ∈ upperHalf n := by
+          simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at haSegment haLower ⊢
+          omega
+        let delta := doubledEvenOdd (a :: tail)
+        have hconstruction := proposition_2_6_holds n (a :: tail) htheta
+        have hdelta : IsTheta (2 * n) delta := by simpa only [delta] using hconstruction.1
+        have hdeltaStart : StartsWith delta (2 * a) := by
+          apply StartsWith.append
+          exact startsWith_evenLift hstart
+        let deltaStar := complement (2 * n) delta
+        have hstarTheta : IsTheta (2 * n) deltaStar := by
+          exact isTheta_complement hdelta
+        have hstarStart : StartsWith deltaStar (2 * n + 1 - 2 * a) := by
+          exact startsWith_complement hdeltaStart
+        have hstarLower : 2 * n + 1 - 2 * a ∈ lowerHalf (2 * n) := by
+          simp only [segment, upperHalf, lowerHalf, Finset.mem_Icc] at haSegment haUpper ⊢
+          omega
+        have hstarBound := lemma_2_4_holds (2 * n) deltaStar (2 * n + 1 - 2 * a)
+          hstarTheta hstarStart hstarLower
+        calc
+          (prologue n (a :: tail)).length = (prologue (2 * n) delta).length := by
+            simpa only [delta] using hconstruction.2.1
+          _ = (prologue (2 * n) deltaStar).length := by
+            simpa only [delta, deltaStar] using hconstruction.2.2
+          _ <= 6 := hstarBound
+
 lemma prefixCongruent_evenLift_of_base {word : List Nat} {k m : Nat}
     (h : PrefixCongruent word k m) :
     PrefixCongruent (evenLift word) k (2 * m) := by
