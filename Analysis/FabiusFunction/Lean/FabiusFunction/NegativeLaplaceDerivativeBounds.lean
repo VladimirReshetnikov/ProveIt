@@ -548,5 +548,130 @@ theorem negativeLaplaceLogFourth_isBigO_log_div_fourth_nat
   · intro s hs
     exact abs_fourth_mul_negativeLaplaceKernelFourth_le hs
 
-end Fabius
+/-- After removing its rational main term, the scaled second kernel derivative
+has a summable `1/x` dyadic remainder. -/
+theorem abs_sq_mul_negativeLaplaceKernelSecond_sub_one_le
+    {x : ℝ} (hx : 1 ≤ x) :
+    |x ^ 2 * negativeLaplaceKernelSecond x - 1| ≤ 24 / x := by
+  have hx0 : 0 < x := zero_lt_one.trans_le hx
+  have ht0 : 0 ≤ Real.exp (-x) := Real.exp_nonneg _
+  have hden : 0 < 1 - Real.exp (-x) := by
+    linarith [exp_neg_le_half hx]
+  have hfrac := exp_neg_div_one_sub_pow_le 2 hx
+  norm_num at hfrac
+  have hpow := pow_mul_exp_neg_le_factorial 3 hx0.le
+  norm_num at hpow
+  unfold negativeLaplaceKernelSecond
+  have heq : x ^ 2 * (-Real.exp (-x) / (1 - Real.exp (-x)) ^ 2 +
+      1 / x ^ 2) - 1 =
+      -(x ^ 2 * (Real.exp (-x) / (1 - Real.exp (-x)) ^ 2)) := by
+    field_simp [hx0.ne', hden.ne']
+    ring
+  rw [heq, abs_neg, abs_mul, abs_of_pos (pow_pos hx0 2),
+    abs_of_nonneg (div_nonneg ht0 (pow_nonneg hden.le 2))]
+  rw [le_div_iff₀ hx0]
+  calc
+    x ^ 2 * (Real.exp (-x) / (1 - Real.exp (-x)) ^ 2) * x ≤
+        x ^ 2 * (4 * Real.exp (-x)) * x := by gcongr
+    _ = 4 * (x ^ 3 * Real.exp (-x)) := by ring
+    _ ≤ 24 := by linarith
 
+/-- The second logarithmic derivative has the sharper asymptotic
+`q''(n) = log n / (log 2 * n²) + O(n⁻²)`.  The `O(log n / n²)` estimate above
+loses one logarithm because it bounds every dyadic kernel increment by a
+constant.  Here the exact rational part is removed first; the remaining
+increments are summable along a dyadic orbit. -/
+theorem negativeLaplaceLogSecond_sub_log_main_isBigO_inv_sq_nat
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun n : ℕ => negativeLaplaceLogSecond F n -
+      Real.log (n : ℝ) / (Real.log 2 * (n : ℝ) ^ 2)) =O[atTop]
+      (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) := by
+  let p : ℝ → ℝ := fun s =>
+    s ^ 2 * negativeLaplaceLogSecond F s - Real.log s / Real.log 2
+  have hpcont : ContinuousOn (fun s => |p s|) (Icc (1 : ℝ) 2) := by
+    apply ContinuousOn.abs
+    apply ContinuousOn.sub
+    · apply (continuousOn_id.pow 2).mul
+      intro s hs
+      exact (negativeLaplaceLogSecond_hasDerivAt F hF
+        (zero_lt_one.trans_le hs.1)).continuousAt.continuousWithinAt
+    · exact (Real.continuousOn_log.mono fun _ hs =>
+        (zero_lt_one.trans_le hs.1).ne').div_const _
+  obtain ⟨A₀, hA₀⟩ := bddAbove_def.mp (isCompact_Icc.bddAbove_image hpcont)
+  let A : ℝ := max A₀ 0
+  have hA : 0 ≤ A := le_max_right _ _
+  have hbase : ∀ {s : ℝ}, 1 ≤ s → s ≤ 2 → |p s| ≤ A := by
+    intro s hs1 hs2
+    exact (hA₀ _ ⟨s, ⟨hs1, hs2⟩, rfl⟩).trans (le_max_left _ _)
+  have hrec : ∀ {s : ℝ}, 0 < s →
+      p (2 * s) = p s + (s ^ 2 * negativeLaplaceKernelSecond s - 1) := by
+    intro s hs
+    dsimp [p]
+    rw [Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) hs.ne']
+    rw [show (2 * s) ^ 2 * negativeLaplaceLogSecond F (2 * s) =
+      s ^ 2 * (4 * negativeLaplaceLogSecond F (2 * s)) by ring,
+      negativeLaplaceLogSecond_two_mul F hF hs]
+    field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne']
+    ring
+  have hinterval : ∀ m : ℕ, ∀ {s : ℝ}, 1 ≤ s →
+      s ≤ (2 : ℝ) ^ (m + 1) → |p s| ≤ A + 48 - 48 / s := by
+    intro m
+    induction m with
+    | zero =>
+        intro s hs1 hs2
+        norm_num at hs2
+        calc
+          |p s| ≤ A := hbase hs1 hs2
+          _ ≤ A + 48 - 48 / s := by
+            have : 48 / s ≤ 48 := by
+              rw [div_le_iff₀ (zero_lt_one.trans_le hs1)]
+              nlinarith
+            linarith
+    | succ m ih =>
+        intro s hs1 hsupper
+        by_cases hs2 : s ≤ 2
+        · exact (hbase hs1 hs2).trans (by
+            have : 48 / s ≤ 48 := by
+              rw [div_le_iff₀ (zero_lt_one.trans_le hs1)]
+              nlinarith
+            linarith)
+        · let t : ℝ := s / 2
+          have ht1 : 1 ≤ t := by dsimp [t]; linarith
+          have htupper : t ≤ (2 : ℝ) ^ (m + 1) := by
+            dsimp [t]
+            rw [show m + 1 + 1 = (m + 1) + 1 by omega, pow_succ] at hsupper
+            nlinarith
+          have hi := ih ht1 htupper
+          have hg := abs_sq_mul_negativeLaplaceKernelSecond_sub_one_le ht1
+          have hrt := hrec (show 0 < t by linarith)
+          have hst : s = 2 * t := by dsimp [t]; ring
+          rw [hst, hrt]
+          calc
+            |p t + (t ^ 2 * negativeLaplaceKernelSecond t - 1)| ≤
+                |p t| + |t ^ 2 * negativeLaplaceKernelSecond t - 1| :=
+              abs_add_le _ _
+            _ ≤ (A + 48 - 48 / t) + 24 / t := add_le_add hi hg
+            _ = A + 48 - 48 / (2 * t) := by field_simp; ring
+  apply IsBigO.of_bound (A + 48)
+  filter_upwards [eventually_atTop.2 ⟨1, fun n hn => hn⟩] with n hn
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  have hp := hinterval (Nat.log 2 n)
+    (by exact_mod_cast hn : (1 : ℝ) ≤ n)
+    (by exact_mod_cast (Nat.lt_pow_succ_log_self (by omega : 1 < 2) n).le)
+  have hp' : |p n| ≤ A + 48 := hp.trans
+    (sub_le_self _ (div_nonneg (by norm_num) hn0.le))
+  have hA48 : 0 ≤ A + 48 := by positivity
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_pos (inv_pos.mpr (sq_pos_of_pos hn0))]
+  change |negativeLaplaceLogSecond F n -
+      Real.log (n : ℝ) / (Real.log 2 * (n : ℝ) ^ 2)| ≤
+    (A + 48) * ((n : ℝ) ^ 2)⁻¹
+  have heq : negativeLaplaceLogSecond F n -
+      Real.log (n : ℝ) / (Real.log 2 * (n : ℝ) ^ 2) =
+      p n / (n : ℝ) ^ 2 := by
+    dsimp [p]
+    field_simp [hn0.ne']
+  rw [heq, abs_div, abs_of_pos (pow_pos hn0 2), div_eq_mul_inv]
+  gcongr
+
+end Fabius
