@@ -297,4 +297,40 @@ theorem paperPrefixGridValue_endpoint_not_tendsto_one :
     le_of_tendsto h (Filter.Eventually.of_forall hnonpos)
   norm_num at hone
 
+/-- The piecewise-linear interpolation intended by equation (1), as opposed
+to the step function obtained by reading its displayed `floor` literally. -/
+def paperPrefixPolygon (k : ℕ) (x : ℚ) : ℚ :=
+  let u := x * (2 : ℚ) ^ k
+  let j := ⌊u⌋₊
+  paperPrefixGridValue k j +
+    (u - (j : ℚ)) *
+      (paperPrefixGridValue k (j + 1) - paperPrefixGridValue k j)
+
+/-- The polygonal interpolation agrees with every dyadic grid value. -/
+theorem paperPrefixPolygon_grid (k j : ℕ) :
+    paperPrefixPolygon k ((j : ℚ) / (2 : ℚ) ^ k) =
+      paperPrefixGridValue k j := by
+  unfold paperPrefixPolygon
+  have hpow : (2 : ℚ) ^ k ≠ 0 := by positivity
+  rw [div_mul_cancel₀ _ hpow]
+  simp
+
+/-- In particular, the polygon agrees with the literal grid at `x = 1`. -/
+theorem paperPrefixPolygon_one (k : ℕ) :
+    paperPrefixPolygon k 1 = paperPrefixGridValue k (2 ^ k) := by
+  have h := paperPrefixPolygon_grid k (2 ^ k)
+  norm_num at h ⊢
+  exact h
+
+/-- Passing from the contradictory floor wording to the intended polygonal
+interpolation does not repair the endpoint obstruction. -/
+theorem paperPrefixPolygon_endpoint_not_tendsto_one :
+    ¬ Filter.Tendsto (fun k : ℕ => paperPrefixPolygon k 1)
+      Filter.atTop (nhds (1 : ℚ)) := by
+  rw [show (fun k : ℕ => paperPrefixPolygon k 1) =
+      fun k : ℕ => paperPrefixGridValue k (2 ^ k) by
+    funext k
+    exact paperPrefixPolygon_one k]
+  exact paperPrefixGridValue_endpoint_not_tendsto_one
+
 end Fabius
