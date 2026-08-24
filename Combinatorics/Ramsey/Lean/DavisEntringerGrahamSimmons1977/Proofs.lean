@@ -2586,4 +2586,448 @@ theorem concluding_intervals_partition_holds : concluding_intervals_partition :=
         (show l + 1 ≤ k by omega)
       exact (not_lt_of_ge hstarts) (lt_of_le_of_lt hlower hlbounds.2)
 
+private def doublyBlockStart (blocks : Int → Block) : Int → Int
+  | Int.ofNat n => ((range n).sum fun k => (blocks (Int.ofNat k)).length : Nat)
+  | Int.negSucc n =>
+      -((range (n + 1)).sum fun k => (blocks (Int.negSucc k)).length : Nat)
+
+private theorem doublyBlockStart_zero (blocks : Int → Block) :
+    doublyBlockStart blocks 0 = 0 := by
+  simp [doublyBlockStart]
+
+private theorem doublyBlockStart_succ (blocks : Int → Block) (i : Int) :
+    doublyBlockStart blocks (i + 1) =
+      doublyBlockStart blocks i + (blocks i).length := by
+  cases i with
+  | ofNat n =>
+      have hs : (Int.ofNat n : Int) + 1 = Int.ofNat (n + 1) := by
+        change (n : Int) + 1 = ((n + 1 : Nat) : Int)
+        exact Int.ofNat_add_one_out n
+      rw [hs]
+      simp [doublyBlockStart, sum_range_succ]
+  | negSucc n =>
+      cases n with
+      | zero =>
+          have hs : Int.negSucc 0 + 1 = 0 := by
+            change (-1 : Int) + 1 = 0
+            norm_num
+          rw [hs]
+          simp [doublyBlockStart]
+      | succ n =>
+          have hs : Int.negSucc (n + 1) + 1 = Int.negSucc n := by
+            change (-((n + 2 : Nat) : Int)) + 1 = -((n + 1 : Nat) : Int)
+            push_cast
+            ring
+          rw [hs]
+          simp [doublyBlockStart, sum_range_succ]
+
+private theorem doublyBlockStart_strictMono (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length) :
+    StrictMono (doublyBlockStart blocks) := by
+  apply strictMono_int_of_lt_succ
+  intro i
+  rw [doublyBlockStart_succ]
+  have hi := hlen i
+  have hi' : (0 : Int) < ((blocks i).length : Int) := by exact_mod_cast hi
+  omega
+
+private theorem doublyBlockStart_ofNat_lower (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length) :
+    ∀ n : Nat, (n : Int) ≤ doublyBlockStart blocks (Int.ofNat n) := by
+  intro n
+  induction n with
+  | zero => simp [doublyBlockStart]
+  | succ n ih =>
+      have hs := doublyBlockStart_succ blocks (Int.ofNat n)
+      have hcast : (Int.ofNat n : Int) + 1 = Int.ofNat (n + 1) := by
+        change (n : Int) + 1 = ((n + 1 : Nat) : Int)
+        exact Int.ofNat_add_one_out n
+      rw [hcast] at hs
+      rw [hs]
+      have hlen' := hlen (Int.ofNat n)
+      have hlenInt : (0 : Int) < ((blocks (Int.ofNat n)).length : Int) := by
+        exact_mod_cast hlen'
+      omega
+
+private theorem doublyBlockStart_negSucc_upper (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length) :
+    ∀ n : Nat, doublyBlockStart blocks (Int.negSucc n) ≤ -((n + 1 : Nat) : Int) := by
+  intro n
+  simp only [doublyBlockStart]
+  have hsum : n + 1 ≤ (range (n + 1)).sum fun k => (blocks (Int.negSucc k)).length := by
+    calc
+      n + 1 = (range (n + 1)).sum (fun _ => 1) := by simp
+      _ ≤ (range (n + 1)).sum (fun k => (blocks (Int.negSucc k)).length) := by
+        apply sum_le_sum
+        intro k hk
+        exact hlen (Int.negSucc k)
+  have hsumInt : ((n + 1 : Nat) : Int) ≤
+      (((range (n + 1)).sum fun k => (blocks (Int.negSucc k)).length : Nat) : Int) := by
+    exact_mod_cast hsum
+  omega
+
+private theorem doublyPosition_exists (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length) (z : Int) :
+    ∃ (i : Int) (j : Nat), j < (blocks i).length ∧
+      z = doublyBlockStart blocks i + j := by
+  by_cases hz : 0 ≤ z
+  · let P : Nat → Prop := fun n => z < doublyBlockStart blocks (Int.ofNat (n + 1))
+    have hex : ∃ n : Nat, P n := by
+      let n : Nat := z.toNat
+      refine ⟨n, ?_⟩
+      dsimp only [P]
+      have hzcast : (n : Int) = z := by
+        dsimp only [n]
+        exact Int.toNat_of_nonneg hz
+      have hlower := doublyBlockStart_ofNat_lower blocks hlen (n + 1)
+      omega
+    let n : Nat := Nat.find hex
+    have hupper : z < doublyBlockStart blocks (Int.ofNat (n + 1)) :=
+      Nat.find_spec hex
+    have hlower : doublyBlockStart blocks (Int.ofNat n) ≤ z := by
+      by_cases hn : n = 0
+      · rw [hn]
+        change doublyBlockStart blocks 0 ≤ z
+        rw [doublyBlockStart_zero]
+        exact hz
+      · have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+        have hnot := Nat.find_min hex (show n - 1 < n by omega)
+        have hpred : n - 1 + 1 = n := by omega
+        dsimp only [P] at hnot
+        rw [hpred] at hnot
+        omega
+    let j : Nat := (z - doublyBlockStart blocks (Int.ofNat n)).toNat
+    have hjcast : (j : Int) = z - doublyBlockStart blocks (Int.ofNat n) := by
+      apply Int.toNat_of_nonneg
+      omega
+    have hsucc := doublyBlockStart_succ blocks (Int.ofNat n)
+    have hcast : (Int.ofNat n : Int) + 1 = Int.ofNat (n + 1) := by
+      change (n : Int) + 1 = ((n + 1 : Nat) : Int)
+      exact Int.ofNat_add_one_out n
+    rw [hcast] at hsucc
+    refine ⟨Int.ofNat n, j, ?_, by omega⟩
+    rw [hsucc] at hupper
+    exact_mod_cast (show (j : Int) < ((blocks (Int.ofNat n)).length : Int) by omega)
+  · have hzneg : z < 0 := by omega
+    let P : Nat → Prop := fun n => doublyBlockStart blocks (Int.negSucc n) ≤ z
+    have hex : ∃ n : Nat, P n := by
+      let n : Nat := (-z).toNat
+      refine ⟨n, ?_⟩
+      dsimp only [P]
+      have hnonneg : 0 ≤ -z := by omega
+      have hzcast : (n : Int) = -z := by
+        dsimp only [n]
+        exact Int.toNat_of_nonneg hnonneg
+      have hupper := doublyBlockStart_negSucc_upper blocks hlen n
+      omega
+    let n : Nat := Nat.find hex
+    have hlower : doublyBlockStart blocks (Int.negSucc n) ≤ z := Nat.find_spec hex
+    have hupper : z < doublyBlockStart blocks (Int.negSucc n + 1) := by
+      by_cases hn : n = 0
+      · rw [hn]
+        have hs : Int.negSucc 0 + 1 = 0 := by
+          change (-1 : Int) + 1 = 0
+          norm_num
+        rw [hs, doublyBlockStart_zero]
+        exact hzneg
+      · have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+        have hnot := Nat.find_min hex (show n - 1 < n by omega)
+        dsimp only [P] at hnot
+        have hs : Int.negSucc n + 1 = Int.negSucc (n - 1) := by
+          have hpred : n - 1 + 1 = n := by omega
+          rw [← hpred]
+          change (-((n - 1 + 2 : Nat) : Int)) + 1 =
+            -((n - 1 + 1 : Nat) : Int)
+          push_cast
+          ring
+        rw [hs]
+        omega
+    let j : Nat := (z - doublyBlockStart blocks (Int.negSucc n)).toNat
+    have hjcast : (j : Int) = z - doublyBlockStart blocks (Int.negSucc n) := by
+      apply Int.toNat_of_nonneg
+      omega
+    have hsucc := doublyBlockStart_succ blocks (Int.negSucc n)
+    refine ⟨Int.negSucc n, j, ?_, by omega⟩
+    rw [hsucc] at hupper
+    exact_mod_cast (show (j : Int) < ((blocks (Int.negSucc n)).length : Int) by omega)
+
+private theorem doublyPosition_unique (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length)
+    {z i i' : Int} {j j' : Nat}
+    (hj : j < (blocks i).length) (heq : z = doublyBlockStart blocks i + j)
+    (hj' : j' < (blocks i').length) (heq' : z = doublyBlockStart blocks i' + j') :
+    i = i' ∧ j = j' := by
+  have hmono := doublyBlockStart_strictMono blocks hlen
+  have hiLower : doublyBlockStart blocks i ≤ z := by omega
+  have hiUpper : z < doublyBlockStart blocks (i + 1) := by
+    rw [doublyBlockStart_succ]
+    have hjInt : (j : Int) < ((blocks i).length : Int) := by exact_mod_cast hj
+    omega
+  have hi'Lower : doublyBlockStart blocks i' ≤ z := by omega
+  have hi'Upper : z < doublyBlockStart blocks (i' + 1) := by
+    rw [doublyBlockStart_succ]
+    have hjInt : (j' : Int) < ((blocks i').length : Int) := by exact_mod_cast hj'
+    omega
+  have hii : i = i' := by
+    rcases lt_trichotomy i i' with hlt | he | hgt
+    · have hstep : i + 1 ≤ i' := by omega
+      have hstarts := hmono.monotone hstep
+      omega
+    · exact he
+    · have hstep : i' + 1 ≤ i := by omega
+      have hstarts := hmono.monotone hstep
+      omega
+  subst i'
+  exact ⟨rfl, by omega⟩
+
+private noncomputable def doublyValueOwner (blocks : Int → Block)
+    (hcover : ∀ x : PositiveNat, ∃! i : Int, (x : Nat) ∈ blocks i)
+    (x : PositiveNat) : Int :=
+  Classical.choose (ExistsUnique.exists (hcover x))
+
+private theorem doublyValueOwner_mem (blocks : Int → Block)
+    (hcover : ∀ x : PositiveNat, ∃! i : Int, (x : Nat) ∈ blocks i)
+    (x : PositiveNat) :
+    (x : Nat) ∈ blocks (doublyValueOwner blocks hcover x) :=
+  (Classical.choose_spec (ExistsUnique.exists (hcover x)))
+
+private theorem doublyValueOwner_unique (blocks : Int → Block)
+    (hcover : ∀ x : PositiveNat, ∃! i : Int, (x : Nat) ∈ blocks i)
+    (x : PositiveNat) {i : Int} (hi : (x : Nat) ∈ blocks i) :
+    doublyValueOwner blocks hcover x = i :=
+  (hcover x).unique (doublyValueOwner_mem blocks hcover x) hi
+
+private noncomputable def doublyValuePosition (blocks : Int → Block)
+    (hcover : ∀ x : PositiveNat, ∃! i : Int, (x : Nat) ∈ blocks i)
+    (x : PositiveNat) : Int :=
+  doublyBlockStart blocks (doublyValueOwner blocks hcover x) +
+    (blocks (doublyValueOwner blocks hcover x)).idxOf (x : Nat)
+
+private theorem doublyBlockConcatenation_exists
+    (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length)
+    (hnodup : ∀ i : Int, (blocks i).Nodup)
+    (hpos : ∀ (i : Int) (x : Nat), x ∈ blocks i → 0 < x)
+    (hcover : ∀ x : PositiveNat, ∃! i : Int, (x : Nat) ∈ blocks i) :
+    ∃ p : DoublyInfinitePermutation, IsDoublyBlockConcatenation p blocks := by
+  let inv : PositiveNat → Int := doublyValuePosition blocks hcover
+  have hinj : Function.Injective inv := by
+    intro x y hxy
+    let ix := doublyValueOwner blocks hcover x
+    let iy := doublyValueOwner blocks hcover y
+    let jx := (blocks ix).idxOf (x : Nat)
+    let jy := (blocks iy).idxOf (y : Nat)
+    have hxmem := doublyValueOwner_mem blocks hcover x
+    have hymem := doublyValueOwner_mem blocks hcover y
+    have hjx : jx < (blocks ix).length := by
+      exact List.idxOf_lt_length_iff.mpr hxmem
+    have hjy : jy < (blocks iy).length := by
+      exact List.idxOf_lt_length_iff.mpr hymem
+    have hdecomp := doublyPosition_unique blocks hlen hjx
+      (show inv x = doublyBlockStart blocks ix + jx by rfl) hjy
+      (show inv x = doublyBlockStart blocks iy + jy by
+        calc
+          inv x = inv y := hxy
+          _ = doublyBlockStart blocks iy + jy := rfl)
+    have hix : ix = iy := hdecomp.1
+    have hjxy : jx = jy := hdecomp.2
+    dsimp only [ix, iy] at hix
+    dsimp only [jx, jy, ix, iy] at hjxy
+    rw [← hix] at hjxy
+    apply Subtype.ext
+    exact (List.idxOf_inj hxmem).mp hjxy
+  have hsurj : Function.Surjective inv := by
+    intro z
+    obtain ⟨i, j, hj, hz⟩ := doublyPosition_exists blocks hlen z
+    let x : PositiveNat := ⟨(blocks i).get ⟨j, hj⟩,
+      hpos i ((blocks i).get ⟨j, hj⟩) (List.get_mem ..)⟩
+    have howner : doublyValueOwner blocks hcover x = i := by
+      apply doublyValueOwner_unique blocks hcover x
+      exact List.get_mem ..
+    have hoffset : (blocks (doublyValueOwner blocks hcover x)).idxOf (x : Nat) = j := by
+      rw [howner]
+      exact List.get_idxOf (hnodup i) ⟨j, hj⟩
+    rw [howner] at hoffset
+    refine ⟨x, ?_⟩
+    dsimp only [inv, doublyValuePosition]
+    rw [howner, hoffset]
+    omega
+  let e : PositiveNat ≃ Int := Equiv.ofBijective inv ⟨hinj, hsurj⟩
+  let p : DoublyInfinitePermutation := e.symm
+  refine ⟨p, doublyBlockStart blocks, doublyBlockStart_zero blocks,
+    doublyBlockStart_succ blocks, ?_⟩
+  intro i j hj
+  let x : PositiveNat := ⟨(blocks i).get ⟨j, hj⟩,
+    hpos i ((blocks i).get ⟨j, hj⟩) (List.get_mem ..)⟩
+  have howner : doublyValueOwner blocks hcover x = i := by
+    apply doublyValueOwner_unique blocks hcover x
+    exact List.get_mem ..
+  have hoffset : (blocks (doublyValueOwner blocks hcover x)).idxOf (x : Nat) = j := by
+    rw [howner]
+    exact List.get_idxOf (hnodup i) ⟨j, hj⟩
+  rw [howner] at hoffset
+  have hinv : e x = doublyBlockStart blocks i + j := by
+    dsimp only [e]
+    change inv x = _
+    dsimp only [inv, doublyValuePosition]
+    rw [howner, hoffset]
+  have hpvalue : p (doublyBlockStart blocks i + j) = x := by
+    apply (Equiv.symm_apply_eq e).mpr
+    exact hinv.symm
+  change (((p (doublyBlockStart blocks i + j) : PositiveNat) : Nat) : Int) =
+    ((blocks i).get ⟨j, hj⟩ : Nat)
+  rw [hpvalue]
+
+private theorem dyadicBlock_length (r : Nat) :
+    (dyadicBlock r).length = 2 ^ r := by
+  have horder := (dyadic_block_properties_holds r).1
+  have hcard := congrArg Finset.card horder.2
+  rw [List.toFinset_card_of_nodup horder.1, Nat.card_Icc] at hcard
+  rw [pow_succ] at hcard
+  have hpow : 0 < 2 ^ r := pow_pos (by omega) r
+  omega
+
+private theorem dyadicBlockIndex_injective :
+    Function.Injective dyadicBlockIndex := by
+  intro i j h
+  cases i with
+  | ofNat n =>
+      cases n with
+      | zero =>
+          cases j with
+          | ofNat m =>
+              cases m with
+              | zero => rfl
+              | succ m => simp [dyadicBlockIndex] at h
+          | negSucc m => simp [dyadicBlockIndex] at h
+      | succ n =>
+          cases j with
+          | ofNat m =>
+              cases m with
+              | zero => simp [dyadicBlockIndex] at h
+              | succ m =>
+                  simp only [dyadicBlockIndex] at h
+                  congr
+                  omega
+          | negSucc m =>
+              simp only [dyadicBlockIndex] at h
+              omega
+  | negSucc n =>
+      cases j with
+      | ofNat m =>
+          cases m with
+          | zero => simp [dyadicBlockIndex] at h
+          | succ m =>
+              simp only [dyadicBlockIndex] at h
+              omega
+      | negSucc m =>
+          simp only [dyadicBlockIndex] at h
+          congr
+          omega
+
+private theorem dyadicBlockIndex_surjective :
+    Function.Surjective dyadicBlockIndex := by
+  intro r
+  by_cases hr0 : r = 0
+  · subst r
+    exact ⟨0, rfl⟩
+  by_cases heven : Even r
+  · obtain ⟨k, hk⟩ := even_iff_exists_two_mul.mp heven
+    have hkpos : 0 < k := by omega
+    refine ⟨Int.negSucc (k - 1), ?_⟩
+    simp only [dyadicBlockIndex]
+    omega
+  · obtain ⟨k, hk⟩ := odd_iff_exists_bit1.mp (Nat.not_even_iff_odd.mp heven)
+    refine ⟨Int.ofNat (k + 1), ?_⟩
+    simp only [dyadicBlockIndex]
+    omega
+
+private theorem self_lt_two_pow_succ : ∀ n : Nat, n < 2 ^ (n + 1) := by
+  intro n
+  induction n with
+  | zero => norm_num
+  | succ n ih =>
+      rw [show n + 1 + 1 = (n + 1) + 1 by omega, pow_succ]
+      have hpow : 0 < 2 ^ (n + 1) := pow_pos (by omega) (n + 1)
+      omega
+
+private theorem positive_mem_unique_dyadic_interval (x : PositiveNat) :
+    ∃! r : Nat, (x : Nat) ∈ Icc (2 ^ r) (2 ^ (r + 1) - 1) := by
+  let P : Nat → Prop := fun r => (x : Nat) < 2 ^ (r + 1)
+  have hex : ∃ r : Nat, P r := by
+    exact ⟨(x : Nat), self_lt_two_pow_succ (x : Nat)⟩
+  let r : Nat := Nat.find hex
+  have hupper : (x : Nat) < 2 ^ (r + 1) := Nat.find_spec hex
+  have hlower : 2 ^ r ≤ (x : Nat) := by
+    by_cases hr : r = 0
+    · rw [hr]
+      norm_num
+      exact x.property
+    · have hrpos : 0 < r := Nat.pos_of_ne_zero hr
+      have hnot := Nat.find_min hex (show r - 1 < r by omega)
+      have hpred : r - 1 + 1 = r := by omega
+      dsimp only [P] at hnot
+      rw [hpred] at hnot
+      omega
+  refine ⟨r, by simp only [mem_Icc]; omega, ?_⟩
+  intro s hs
+  simp only [mem_Icc] at hs
+  apply le_antisymm
+  · by_contra hnot
+    have hrs : r < s := by omega
+    have hpow := Nat.pow_le_pow_right (by omega : 0 < 2)
+      (show r + 1 ≤ s by omega)
+    omega
+  · by_contra hnot
+    have hsr : s < r := by omega
+    have hpow := Nat.pow_le_pow_right (by omega : 0 < 2)
+      (show s + 1 ≤ r by omega)
+    omega
+
+private theorem dyadicArrangement_length_pos (i : Int) :
+    0 < (dyadicBlockArrangement i).length := by
+  rw [dyadicBlockArrangement, dyadicBlock_length]
+  exact pow_pos (by omega) _
+
+private theorem dyadicArrangement_nodup (i : Int) :
+    (dyadicBlockArrangement i).Nodup :=
+  (dyadic_block_properties_holds (dyadicBlockIndex i)).1.1
+
+private theorem dyadicArrangement_pos (i : Int) (x : Nat)
+    (hx : x ∈ dyadicBlockArrangement i) : 0 < x := by
+  have horder := (dyadic_block_properties_holds (dyadicBlockIndex i)).1
+  have hxset : x ∈ Icc (2 ^ dyadicBlockIndex i)
+      (2 ^ (dyadicBlockIndex i + 1) - 1) := by
+    rw [← horder.2]
+    simpa only [dyadicBlockArrangement, List.mem_toFinset] using hx
+  have hpow : 0 < 2 ^ dyadicBlockIndex i := pow_pos (by omega) _
+  exact lt_of_lt_of_le hpow (mem_Icc.mp hxset).1
+
+private theorem dyadicArrangement_unique_cover (x : PositiveNat) :
+    ∃! i : Int, (x : Nat) ∈ dyadicBlockArrangement i := by
+  obtain ⟨r, hr, hrunique⟩ := positive_mem_unique_dyadic_interval x
+  obtain ⟨i, hi⟩ := dyadicBlockIndex_surjective r
+  refine ⟨i, ?_, ?_⟩
+  · have horder := (dyadic_block_properties_holds r).1
+    change (x : Nat) ∈ dyadicBlock (dyadicBlockIndex i)
+    rw [hi]
+    have hxfin : (x : Nat) ∈ (dyadicBlock r).toFinset := by
+      rw [horder.2]
+      exact hr
+    simpa only [List.mem_toFinset] using hxfin
+  · intro j hj
+    have horder := (dyadic_block_properties_holds (dyadicBlockIndex j)).1
+    have hjinterval : (x : Nat) ∈ Icc (2 ^ dyadicBlockIndex j)
+        (2 ^ (dyadicBlockIndex j + 1) - 1) := by
+      rw [← horder.2]
+      simpa only [dyadicBlockArrangement, List.mem_toFinset] using hj
+    have hscale : r = dyadicBlockIndex j := (hrunique _ hjinterval).symm
+    apply dyadicBlockIndex_injective
+    omega
+
+theorem dyadic_concatenation_exists_holds : dyadic_concatenation_exists := by
+  exact doublyBlockConcatenation_exists dyadicBlockArrangement
+    dyadicArrangement_length_pos dyadicArrangement_nodup dyadicArrangement_pos
+    dyadicArrangement_unique_cover
+
 end LeanProofs.DavisEntringerGrahamSimmons1977
