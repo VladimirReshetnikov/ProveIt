@@ -229,6 +229,16 @@ theorem treeVertex_mem_computedLevel {B : Block}
       · exact List.mem_filter.mpr ⟨hmem, by simp [hspecialCheck]⟩
       · exact List.mem_filter.mpr ⟨hinsertion, by simp [hapCheck]⟩
 
+/-- A tree vertex of known length belongs to the uniquely determined
+executable level. -/
+theorem treeVertex_mem_computedLevel_of_length {B : Block} {k : Nat}
+    (htree : IsTreeVertex B) (hlength : B.length = 3 + k) :
+    B ∈ computedTreeLevel k := by
+  obtain ⟨j, hlength', hmem⟩ := treeVertex_mem_computedLevel htree
+  have hj : j = k := by omega
+  subst j
+  exact hmem
+
 theorem computedTreeLevel_eighteen_empty :
     computedTreeLevel 18 = [] := by native_decide
 
@@ -417,13 +427,9 @@ theorem maximumTreeWitness_length : maximumTreeWitness.length = 20 := by
 
 theorem maximumTreeWitness_mem_computedLevel :
     maximumTreeWitness ∈ computedTreeLevel 17 := by
-  obtain ⟨k, hlength, hmem⟩ :=
-    treeVertex_mem_computedLevel maximumTreeWitness_isTreeVertex
-  have hk : k = 17 := by
-    rw [maximumTreeWitness_length] at hlength
-    omega
-  subst k
-  exact hmem
+  apply treeVertex_mem_computedLevel_of_length
+    maximumTreeWitness_isTreeVertex
+  rw [maximumTreeWitness_length]
 
 theorem computational_tree_exact_maximum :
     (∀ B : Block, IsTreeVertex B → B.length ≤ 20) ∧
