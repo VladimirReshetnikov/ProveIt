@@ -107,6 +107,45 @@ theorem eval_legendrePolynomial_even (n : ℕ) (x : ℝ) :
             (2 * n).choose (n + k) *
             (2 * n + 2 * k).choose (2 * n) * x ^ (2 * k) := by
   rw [legendrePolynomial_even_explicit]
-  simp only [eval_smul, eval_finset_sum, eval_mul, eval_C, eval_pow, eval_X, smul_eq_mul]
+  simp only [eval_smul, eval_finsetSum, eval_mul, eval_C, eval_pow, eval_X, smul_eq_mul]
+
+/-- The ordinary Legendre polynomial has parity equal to its index. -/
+theorem eval_legendrePolynomial_neg (n : ℕ) (x : ℝ) :
+    (legendrePolynomial n).eval (-x) =
+      (-1 : ℝ) ^ n * (legendrePolynomial n).eval x := by
+  rw [legendrePolynomial]
+  simp only [eval_smul, smul_eq_mul]
+  conv_rhs => rw [mul_left_comm]
+  congr 1
+  rw [sq_sub_one_pow_expansion, iterate_derivative_sum]
+  simp_rw [iterate_derivative_C_mul, iterate_derivative_X_pow_eq_smul]
+  simp only [eval_finsetSum, eval_mul, eval_C, eval_smul, eval_pow, eval_X, smul_eq_mul]
+  rw [mul_sum]
+  apply sum_congr rfl
+  intro j hj
+  by_cases h : n ≤ 2 * j
+  · have hprod : (-1 : ℝ) ^ (2 * j - n) * (-1 : ℝ) ^ n = 1 := by
+      rw [← pow_add, Nat.sub_add_cancel h, pow_mul]
+      norm_num
+    have hsquare : (-1 : ℝ) ^ n * (-1 : ℝ) ^ n = 1 := by
+      rw [← pow_add, show n + n = 2 * n by omega, pow_mul]
+      norm_num
+    have hparity : (-1 : ℝ) ^ (2 * j - n) = (-1 : ℝ) ^ n := by
+      calc
+        (-1 : ℝ) ^ (2 * j - n) =
+            (-1 : ℝ) ^ (2 * j - n) * ((-1 : ℝ) ^ n * (-1 : ℝ) ^ n) := by
+              rw [hsquare, mul_one]
+        _ = ((-1 : ℝ) ^ (2 * j - n) * (-1 : ℝ) ^ n) * (-1 : ℝ) ^ n := by
+              ring
+        _ = (-1 : ℝ) ^ n := by rw [hprod, one_mul]
+    have hx : (-x) ^ (2 * j - n) =
+        (-1 : ℝ) ^ (2 * j - n) * x ^ (2 * j - n) := by
+      rw [show -x = (-1 : ℝ) * x by ring, mul_pow]
+    rw [hx, hparity]
+    ring
+  · have hzero : (2 * j).descFactorial n = 0 := by
+      rw [Nat.descFactorial_eq_zero_iff_lt]
+      omega
+    simp [hzero]
 
 end Fabius
