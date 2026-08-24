@@ -24,7 +24,8 @@ probability and weak-convergence constructions, polynomial step
 approximants, Poisson summation, and every theorem, lemma, corollary, and
 prose proposition in both papers are checked without `sorry`.  The asymptotic
 layer additionally proves the corrected sharp small-argument expansion with
-its nonconstant Gamma--zeta periodic term.
+its nonconstant Gamma--zeta periodic term, together with its complete
+all-orders saddle expansion.
 
 ## Design
 
@@ -124,6 +125,19 @@ used.  Independently, a negative-Laplace product, Mellin finite-part analysis,
 and quantitative Bromwich saddle proof establish a corrected sharp formula
 with error `O(1 / (-log x))`.  Its centered periodic correction is reconstructed
 as an absolutely summable Gamma--zeta Fourier series and proved nonconstant.
+More strongly, if `lambda = fabiusLambertPhase x`, then for every `N`
+
+```text
+log F(x) = fabiusSharpLambertMain x
+  + sum (j < N), lambda^(-j) * fabiusSaddleLogCoefficient j lambda
+  + O(lambda^(-N)).
+```
+
+The zeroth coefficient is zero, and the first nonzero term is the explicit
+`fabiusFirstSaddleCorrection lambda / lambda`.  A separate theorem expands
+`lambda` itself to arbitrary order in `-log x` and `log (-log x)`.  The full
+formula keeps the oscillatory coefficient functions at the exact Lambert
+phase; it does not silently replace them by a lower-order phase approximation.
 
 The asymptotic aggregate also audits three linked Stack Exchange discussions.
 The recurrence sequence is exposed directly as

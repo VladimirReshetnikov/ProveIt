@@ -188,6 +188,8 @@ theorem fabiusSaddleLogPartialSum_two (lam : ℝ) :
     fabiusSaddleLogCoefficient_one_eq_firstSaddleCorrection]
   rw [div_eq_mul_inv, mul_comm]
 
+/-- The order-two expansion is the sharp main term plus the first explicit
+periodic correction divided by the exact Lambert phase. -/
 theorem fabiusSharpLambertExpansion_two (x : ℝ) :
     fabiusSharpLambertExpansion 2 x =
       fabiusSharpLambertMain x +
@@ -229,8 +231,9 @@ theorem log_fabius_sub_sharpLambertExpansion_isBigO
     (fun x : ℝ => Real.log (fabiusReal F x) -
       fabiusSharpLambertExpansion N x) =O[nhdsWithin 0 (Ioi 0)]
         (fun x : ℝ => (fabiusLambertPhase x)⁻¹ ^ N) := by
-  have hr :=
-    (log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion F hF).remainder_isBigO N
+  have hfull :=
+    log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion F hF
+  have hr := hfull.remainder_isBigO N
   apply hr.congr_left
   intro x
   unfold fabiusSharpLambertExpansion fabiusSaddleLogPartialSum partialSum
