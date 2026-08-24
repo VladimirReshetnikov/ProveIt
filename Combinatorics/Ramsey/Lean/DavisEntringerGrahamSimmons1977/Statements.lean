@@ -163,10 +163,10 @@ def folkman_odd_order_claim : Prop :=
 def fact_5 : Prop :=
   D 3 = ∅
 
-/-- The computational assertion in the second proof of Fact 5: the tree
-`T` has no vertex of size greater than 17. -/
+/-- The corrected computational assertion in the second proof of Fact 5: the tree
+`T` has no vertex of size greater than 20. -/
 def computational_tree_bound : Prop :=
-  forall B : Block, IsTreeVertex B -> B.length <= 17
+  forall B : Block, IsTreeVertex B -> B.length <= 20
 
 /-- The basic inductive property of the blocks in the Fact 6 construction. -/
 def dyadic_block_properties : Prop :=
