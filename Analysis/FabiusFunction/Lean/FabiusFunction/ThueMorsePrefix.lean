@@ -83,6 +83,24 @@ theorem iteratedPrefix_convolution (k n : ℕ) :
           simp only [Nat.succ_eq_add_one]
           omega
 
+/-- The discrete B-spline kernel `B_k` displayed in equation (5) of the
+K-fold draft.  Its argument is nonnegative, so the source's indicator is
+implicit in the natural-number type. -/
+def iteratedPrefixKernel (k n : ℕ) : ℕ :=
+  Nat.choose (n + k - 1) (k - 1)
+
+/-- Equation (5) with the source's positive indexing of the number of prefix
+summations. -/
+theorem iteratedPrefix_eq_sum_kernel (k n : ℕ) (hk : 1 ≤ k) :
+    iteratedPrefix k n =
+      ∑ m ∈ Finset.range (n + 1),
+        (iteratedPrefixKernel k (n - m) : ℤ) * thueMorseSign m := by
+  rw [show k = (k - 1) + 1 by omega, iteratedPrefix_convolution]
+  apply Finset.sum_congr rfl
+  intro m hm
+  unfold iteratedPrefixKernel
+  congr 1
+
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
 dyadic block exponent. -/
 lemma thueMorse_polynomial_sum_eq_zero (r : ℕ) (p : Polynomial ℚ)
