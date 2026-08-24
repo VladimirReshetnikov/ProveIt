@@ -140,7 +140,7 @@ shifted cells are corrected from the OCR. -/
 def proposition_17_7 : Prop :=
   ∀ (N k m : Nat) [NeZero N] [Fact N.Prime] (f : ZMod N → Complex)
       (P : Box N k) (sigma : Point N k → ZMod N) (alpha : Real),
-    0 < k → Odd m → P.width = m →
+    0 < alpha → 0 < k → Odd m → P.width = m →
     (∀ i, (P.axis i).length = m) → P.commonDiff != 0 →
     (m : Real) ≤ Real.sqrt N → DiscValued f → IsMultilinear sigma →
     alpha * (N : Real) ^ 2 * (m : Real) ^ k ≤

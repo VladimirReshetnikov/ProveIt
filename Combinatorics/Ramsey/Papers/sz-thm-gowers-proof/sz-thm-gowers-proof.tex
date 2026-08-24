@@ -1169,42 +1169,104 @@ Equivalently, $\phi$ induces a well-defined function from $k A$ to $k B$, where 
 
 Lemma 7.5. Let $B \subset \mathbb{Z}_{N}$ and let $\phi: B \rightarrow \mathbb{Z}_{N}$ be a function with graph $\Gamma$. Suppose that $|\Gamma-\Gamma| \leqslant C|\Gamma|$. Then there is a subset $B^{\prime} \subset B$ of size at least $|B| / 8 k C^{4 k}$ such that the restriction of $\phi$ to $B^{\prime}$ is a Freiman homomorphism of order $k$.
 
-Proof. First, a theorem of Ruzsa [Ru2] (deduced from a result of Plünnecke [P] for which Ruzsa discovered a simpler proof) implies that $|4 k \Gamma-4 k \Gamma| \leqslant$ $C^{4 k}|\Gamma|$. If for some $x$ we could find more than $C^{4 k}$ distinct values of $y$ such\\
-that $(x, y) \in 2 k \Gamma-2 k \Gamma$, then for every $(z, w) \in 2 k \Gamma-2 k \Gamma$ there would be more than $C^{4 k}$ distinct values of $u$ such that $(z-x, u) \in 4 k \Gamma-4 k \Gamma$. But the number of $z$ such that $(z, w) \in 2 k \Gamma-2 k \Gamma$ for some $w$ is certainly at least $|\Gamma|$, so this would contradict the upper bound for $|4 k \Gamma-4 k \Gamma|$.
-
-Therefore, there are in particular at most $C^{4 k}$ distinct values of $y$ such that $(0, y) \in 2 k \Gamma-2 k \Gamma$. If $(x, y),\left(x, y^{\prime}\right) \in k \Gamma-k \Gamma$ then $\left(0, y-y^{\prime}\right) \in 2 k \Gamma-2 k \Gamma$. Hence, there is a set $K$ of size at most $C^{4 k}$ such that, writing $K_{x}$ for the set $\{y:(x, y) \in k \Gamma-k \Gamma\}$, we have $K_{x}-K_{x} \subset K$ for every $x$.
-
-Now let $0 \leqslant M<N / 2$ be even. For every $w \in \mathbb{Z}_{N}$, there are exactly $2 M$ non-zero values of $d$ such that
-
-$$
-w \in\{-M d,-(M-1) d, \ldots,-2 d,-d\} \cup\{d, 2 d, \ldots, M d\},
-$$
-
-since the equation $a d=w$ has a unique solution whenever $a \neq 0$. Therefore, the number of values of $d$ for which $K \cap\{d y:-M \leqslant y \leqslant M\} \neq\{0\}$ is at most $2 M C^{4 k}$.
-
-Let $d$ be such that if we define $P$ to be $\{d y:-M \leqslant y \leqslant M\}$ then $K \cap P=\{0\}$. Let $P^{\prime}=\{d y:-M / 2 \leqslant y \leqslant M / 2\}$, let $L \leqslant M / 2 k$ and let $Q=\{d y: 0 \leqslant y \leqslant L\}$. Define $\Gamma_{a}$ to be the set $\{(x, y) \in \Gamma: y \in a+Q\}$.
-
-We claim that $\Gamma_{a}$ is the graph of a homomorphism of order $k$. If not, then we can find $\left(x_{1}, y_{1}\right), \ldots,\left(x_{2 k}, y_{2 k}\right)$ and $\left(x_{1}^{\prime}, y_{1}^{\prime}\right), \ldots,\left(x_{2 k}^{\prime}, y_{2 k}^{\prime}\right) \in \Gamma_{a}$ such that
+% ed.: The printed proof applies Plünnecke--Ruzsa to
+% $4k\Gamma-4k\Gamma$ with exponent $4k$, whereas that application gives
+% exponent $8k$.  It then compares two points of $k\Gamma_a-k\Gamma_a$,
+% which proves an unnecessarily strong order-$2k$ condition.  The corrected
+% argument below works directly with the vertical fibre of
+% $k\Gamma-k\Gamma$ and uses $2k\Gamma-2k\Gamma$, preserving the statement
+% and the constants used in Corollary 7.6.
+Proof. We may suppose that $\Gamma$ is non-empty, since otherwise the result is
+immediate.  Put
 
 $$
-x_{1}+\cdots+x_{k}-x_{k+1}-\cdots-x_{2 k}=x_{1}^{\prime}+\cdots+x_{k}^{\prime}-x_{k+1}^{\prime}-\cdots-x_{2 k}^{\prime},
+ S=k\Gamma-k\Gamma
+ \quad\hbox{and}\quad
+ K=\{y:(0,y)\in S\}.
 $$
 
-but
+The Plünnecke--Ruzsa inequality gives
 
 $$
-y_{1}+\cdots+y_{k}-y_{k+1}-\cdots-y_{2 k} \neq y_{1}^{\prime}+\cdots+y_{k}^{\prime}-y_{k+1}^{\prime}-\cdots-y_{2 k}^{\prime},
+ |2k\Gamma-2k\Gamma|\leqslant C^{4k}|\Gamma|.
 $$
 
-and hence $x, y, y^{\prime}$ such that $y \neq y^{\prime}$ and $(x, y),\left(x, y^{\prime}\right) \in k \Gamma_{a}-k \Gamma_{a}$. However, $k \Gamma_{a}-k \Gamma_{a}$ is the set of all points of the form
+Fix $\gamma_{0}\in\Gamma$.  The map
 
 $$
-\left(x_{1}+\cdots+x_{k}-x_{k+1}-\cdots-x_{2 k}, y_{1}+\cdots+y_{k}-y_{k+1}-\cdots-y_{2 k}\right)
+ K\times\Gamma\longrightarrow 2k\Gamma-2k\Gamma,\qquad
+ (y,\gamma)\longmapsto(\gamma-\gamma_{0})-(0,y)
 $$
 
-such that $\left(x_{i}, y_{i}\right) \in \Gamma$ and $y_{i} \in a+Q$ for every $i$. This is a subset of $\left\{(x, y) \in k \Gamma-k \Gamma: y \in P^{\prime}\right\}=\left\{(x, y): y \in K_{x} \cap P^{\prime}\right\}$. It follows that $\left(K_{x}-K_{x}\right) \cap\left(P^{\prime}-P^{\prime}\right)$ is non-empty and hence that $K \cap P$ is non-empty, which is a contradiction.
+is well-defined: both $\gamma-\gamma_{0}$ and $(0,y)$ belong to
+$k\Gamma-k\Gamma$.  It is injective, since its first coordinate determines
+$\gamma$ (recall that $\Gamma$ is a graph), after which its second coordinate
+determines $y$.  Consequently $|K||\Gamma|\leqslant
+|2k\Gamma-2k\Gamma|$, and hence
 
-Therefore, as long as $2 M C^{4 k}<N-1$, we can find a value of $d$ such that $\Gamma_{a}$ is the graph of a homomorphism for every $a$. The average size of $\Gamma_{a}$ is $(L+1)|\Gamma| / N$, so if we choose $M$ to be at least $N / 4 C^{4 k}$ and $L$ to be at least $(M / 2 k)-1$, as we may, then we can find $a$ such that the size of $\Gamma_{a}$ is at least $|\Gamma| / 8 k C^{4 k}$. \(\square\)
+$$
+ |K|\leqslant C^{4k}.
+$$
+
+Let
+
+$$
+ L=\left\lfloor\frac{N}{4k|K|}\right\rfloor.
+$$
+
+For each non-zero integer $j$ with $|j|\leqslant kL$ and each $w\in K$, the
+equation $jd=w$ has at most one solution $d\in\mathbb Z_N$.  (Here
+$kL<N$, and $N$ is prime.)  Thus at most $2kL|K|\leqslant N/2$ values of
+$d$ are bad, in the sense that $jd\in K$ for some such $j$.  If $L>0$ this
+number is strictly smaller than $N-1$; if $L=0$ there are no bad values at
+all.  We may therefore choose $d\ne0$ such that
+
+$$
+ jd\notin K\qquad(0<|j|\leqslant kL).
+$$
+
+Colour each pair $(x,j)$, where $x\in B$ and $0\leqslant j\leqslant L$, by
+$\phi(x)-jd\in\mathbb Z_N$.  Some colour $a$ occurs at least
+$(L+1)|B|/N$ times.  For a fixed $x$ it occurs for at most one $j$, because
+$d\ne0$ and $L<N$.  Hence the set
+
+$$
+ B'=\{x\in B:\phi(x)=a+jd\text{ for some }0\leqslant j\leqslant L\}
+$$
+
+has size at least $(L+1)|B|/N$, and the definition of $L$, together with
+$|K|\leqslant C^{4k}$, gives
+
+$$
+ |B'|\geqslant\frac{|B|}{8kC^{4k}}.
+$$
+
+It remains to check the Freiman property.  For each $x\in B'$ let $j(x)$ be
+the unique integer in $[0,L]$ such that $\phi(x)=a+j(x)d$.  Suppose that
+$x_{1},\ldots,x_{k},x'_{1},\ldots,x'_{k}\in B'$ and
+
+$$
+ x_{1}+\cdots+x_{k}=x'_{1}+\cdots+x'_{k}.
+$$
+
+The difference of the corresponding sums in $\Gamma$ is
+
+$$
+ \left(0,\,
+   \bigl(j(x_{1})+\cdots+j(x_{k})
+        -j(x'_{1})-\cdots-j(x'_{k})\bigr)d\right)\in S.
+$$
+
+Its second coordinate therefore belongs to $K$.  The integer in parentheses
+has absolute value at most $kL$, so the choice of $d$ forces it to be zero.
+It follows that
+
+$$
+ \phi(x_{1})+\cdots+\phi(x_{k})
+   =\phi(x'_{1})+\cdots+\phi(x'_{k}),
+$$
+
+as required. \(\square\)
 
 Let us now collect what we have done so far into a single result, specialized to the case $k=8$.
 
@@ -3422,15 +3484,26 @@ $$
 $$
 
 we find that $g$ is not $\beta(m / p)^{k+2}$-uniform (in $\mathbb{Z}_{p}$ ) of degree $k$.\\
-Proposition 17.7. Let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that there is a product $P=P_{1} \times \cdots \times P_{k}$ of arithmetic progressions $P_{i}$ of common difference $d$ and odd length $m \leqslant N^{1 / 2}$, and a $k$-linear function $\sigma: P \rightarrow \mathbb{Z}_{N}$ such that
+% ed.: Positivity of alpha is necessary: for alpha=0 the zero function
+% satisfies the displayed hypothesis but cannot fail zero-uniformity.
+Proposition 17.7. Let $\alpha>0$ and let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that there is a product $P=P_{1} \times \cdots \times P_{k}$ of arithmetic progressions $P_{i}$ of common difference $d$ and odd length $m \leqslant N^{1 / 2}$, and a $k$-linear function $\sigma: P \rightarrow \mathbb{Z}_{N}$ such that
 
 $$
 \sum_{x \in P}\left|\Delta(f ; x)^{\wedge}(\sigma(x))\right|^{2} \geqslant \alpha N^{2} m^{k}
 $$
 
 Then there exist a polynomial $\phi$ of degree at most $k+1$ and a partition of $\mathbb{Z}_{N}$ into mod- $N$ arithmetic progressions $Q_{1}, \ldots, Q_{M}$ of size at least $m /(3 k)$ such that the function $g(x)=f(x) \omega^{-\phi(x)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform of degree $k$ with respect to the partition $Q_{1}, \ldots, Q_{M}$.\\
-Proof. Without loss of generality $d=1$. Let $2 l+1=m$ and let $w$ be a real number such that $\lfloor l / k\rfloor-1<w \leqslant\lfloor l / k\rfloor$ and $M=N / w$ is an integer. For\\
-$0 \leqslant j \leqslant M-1$ define $Q_{j}$ to be the interval $\left\{x \in \mathbb{Z}_{N}: j w \leqslant x<(j+1) w\right\}$. Notice that the cardinality of $Q_{j}$ is always $\lfloor l / k\rfloor-1$ or $\lfloor l / k\rfloor$. Let a sequence $r=\left(r_{1}, \ldots, r_{k}\right)$ be defined by $P_{i}=\left\{r_{i}-l, r_{i}-l+1, \ldots, r_{i}+l\right\}$ and let $I$ be the interval $\{-l,-l+1, \ldots, l\}$. Then any $x \in P$ can be written uniquely as $a+r$ for some $a \in I^{k}$. Given $\epsilon \in\{0,1\}^{k}$, we shall write $f_{\epsilon}$ for the function that takes $s$ to $f(s-\epsilon \cdot r)$. Let us also write $\tau(a)$ for $\sigma(a+r)$.
+Proof. Without loss of generality $d=1$. First suppose that $m\leqslant3k$.  Partition $\mathbb Z_N$ into singletons.  Cauchy--Schwarz in the Fourier sum, followed by AM--GM over the vertices of the cube, gives
+\[
+ \alpha N\leqslant\sum_{s\in\mathbb Z_N}|f(s)|^{2^{k+1}}.
+\]
+The right-hand side is exactly the sum of the $(k+1)$-cube forms of the singleton restrictions.  Since $2^{-2(k+1)^3}2^{k+2}<1$ and $\alpha>0$, the zero phase and the singleton partition give the required strict failure of uniformity.  Thus assume that $m>3k$.
+
+Write $2h+1=m$, put $q=\lceil h/k\rceil$, $M=\lfloor N/q\rfloor$, and $w=N/M$.  Since $q\leqslant m\leqslant\sqrt N$, writing $N=qM+r$ gives $0\leqslant r<q\leqslant M$.  Hence the intervals
+\[
+ Q_j=\{x\in\mathbb Z_N:jw\leqslant x<(j+1)w\}\qquad(0\leqslant j<M)
+\]
+partition $\mathbb Z_N$ and have cardinality $q$ or $q+1$.  Moreover $q\geqslant h/k\geqslant m/(3k)$.  Let a sequence $r=\left(r_{1}, \ldots, r_{k}\right)$ be defined by $P_{i}=\left\{r_{i}-h, r_{i}-h+1, \ldots, r_{i}+h\right\}$ and let $I$ be the interval $\{-h,-h+1, \ldots, h\}$. Then any $x \in P$ can be written uniquely as $a+r$ for some $a \in I^{k}$. Given $\epsilon \in\{0,1\}^{k}$, we shall write $f_{\epsilon}$ for the function that takes $s$ to $f(s-\epsilon \cdot r)$. Let us also write $\tau(a)$ for $\sigma(a+r)$.
 
 Then
 
@@ -3458,7 +3531,7 @@ where now the sum over $j$ stands for the sum over all functions $j$ : $\{0,1\}^
 
 This we can do using Corollary 17.6. If $Q_{j(\epsilon)} f_{\epsilon}(s-\epsilon \cdot a)$ is non-zero, then $s-\epsilon \cdot a \in Q_{j(\epsilon)}$, which implies that $j(\epsilon) w \leqslant s-\epsilon \cdot a<(j(\epsilon)+1)w$ and therefore that $j(\epsilon)$ is exactly the integer part of $w^{-1} s-\epsilon \cdot\left(w^{-1} a\right)$. Since $-k-1<w^{-1} a_{i}<k+1$ for every $i$, Corollary 17.6 implies that the number of functions $j$ for which the product over $\epsilon$ can ever be non-zero is at most $M \cdot 2^{2(k+1)^{4}}$.
 
-Let us define functions $j_{1}$ and $j_{2}$ (from $\{0,1\}^{k}$ to $\mathbb{Z}_{M}$ ) to be equivalent if they are translations of each other. Corollary 17.5 implies that the number of equivalence classes is at most $2^{k(k+1)^{2}}$. Let us call them $J_{1}, \ldots, J_{L}$. By the Cauchy-Schwarz inequality, we can deduce from our calculations above that
+Let us define functions $j_{1}$ and $j_{2}$ (from $\{0,1\}^{k}$ to $\mathbb{Z}_{M}$ ) to be equivalent if they are translations of each other.  Applying the hyperplane-arrangement argument of Lemma 17.4 jointly to all the relevant integer thresholds (and normalizing each function by its value at $0$) shows that the number of equivalence classes is at most $2^{k(k+1)^{2}}$.  This sharper joint count, rather than a direct substitution in the deliberately coarser displayed bound of Corollary 17.5, is what is needed here. Let us call the classes $J_{1}, \ldots, J_{L}$. By the Cauchy-Schwarz inequality, we can deduce from our calculations above that
 
 $$
 \alpha N^{2} m^{k} \leqslant L \sum_{r=1}^{L} \sum_{a \in I^{k}}\left|\sum_{s} \sum_{j \in J_{r}} \omega^{-s \tau(a)} \prod_{\epsilon}\left(Q_{j(\epsilon)} C^{|\epsilon|} f_{\epsilon}\right)(s-\epsilon \cdot a)\right|^{2} .
@@ -3527,7 +3600,7 @@ $$
 \end{aligned}
 $$
 
-This implies that the function $g$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $Q_{1}, \ldots, Q_{M}$.
+Here the last comparison is strict: $w\geqslant q\geqslant(q+1)/2$, $m\geqslant q+1$, and $L\leqslant2^{k(k+1)^2}$ leave a factor strictly larger than $2^{-2(k+1)^3}$.  Thus the function $g$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $Q_{1}, \ldots, Q_{M}$.
 
 This is not quite the statement of the proposition. To obtain it, recall that $f_{\eta}(s)=f(s-\eta \cdot r)$. Therefore, the statement about $g$ implies that the function $f(s) \omega^{-\phi_{\eta}(s+\eta \cdot r)}$ is not $2^{-2(k+1)^{3}} \alpha$-uniform with respect to the partition $\left(Q_{i}+\eta \cdot r\right)_{i=1}^{M}$. Since $\phi_{\eta}(s+\eta \cdot r)$ is still a polynomial in $s$ of degree at most $k+1$, the proposition is proved. \(\square\)
 
