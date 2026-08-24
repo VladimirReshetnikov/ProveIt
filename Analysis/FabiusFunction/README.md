@@ -80,7 +80,9 @@ table is connected axiom-cleanly to the executable moment recurrences in
 `MomentPowerSeries.lean`; `DyadicClosedForm.lean` proves the highest-bit Taylor
 identity, and `DyadicAnalytic.lean` proves equality with every bounded analytic
 Fabius function.  `GlobalDyadic.lean` supplies the corresponding proofs for
-the signed global extension and for equation (32) on its full `[0,2]` range.
+the signed global extension and for equation (32) at every nonnegative dyadic
+argument `m / 2^n`, with no restriction that the representation be reduced or
+that `m ≤ 2^n`.
 
 ```lean
 #eval Fabius.fabiusDyadicValue 4 5
@@ -139,18 +141,24 @@ The zeroth coefficient is zero, and the first explicit correction is
 formula keeps the oscillatory coefficient functions at the exact Lambert
 phase; it does not silently replace them by a lower-order phase approximation.
 
-The asymptotic aggregate also audits three linked Stack Exchange discussions.
+The asymptotic aggregate also audits four linked Stack Exchange discussions.
 The recurrence sequence is exposed directly as
 `fabiusRecurrenceSequence n = halfMoment n / n!`, with its displayed
 recurrence, Bernoulli recurrence, inverse-dyadic bridge, generating series,
-and product all proved.  The linked finite q-binomial formula for `F(2^-n)`
-is also proved exactly: its inner sum is the centered signed Thue--Morse power
-sum, and its `QPochhammer`/`QBinomial` factors have notation-faithful public
-definitions.  The alternative inner power `r - 2^k + 1/2` is proved to give
-the same result; in fact, the outer numerator is invariant under any common
-rational translation of all the centered blocks.  The recurrence sequence's
-fixed-constant heuristic omits the nonconstant periodic correction.  The
-elementary small-`x` expression from
+and product all proved.  The
+[conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
+is proved exactly in its full stated scope: for all natural `m,n`, its
+half-shifted Thue--Morse sum is the signed global Fabius value at `m / 2^n`.
+No condition `m ≤ 2^n` or irreducibility of the dyadic representation is
+needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
+function satisfying `IsFabius`.  The rational expression is independent of
+the representation of `m / 2^n` (in particular, it is unchanged by
+`(m,n) ↦ (2m,n+1)`) and is invariant under any common rational translation
+of its inner powers.  Thus the source's `+1/2` formula and the centered form
+agree, while its `QPochhammer`/`QBinomial` factors retain notation-faithful
+public definitions.  The recurrence sequence's fixed-constant heuristic
+omits the nonconstant periodic correction.  The elementary small-`x`
+expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
 formalized verbatim and corrected by adding that term at the exact
 lower-Lambert phase.  The uncorrected claimed error is formally disproved.

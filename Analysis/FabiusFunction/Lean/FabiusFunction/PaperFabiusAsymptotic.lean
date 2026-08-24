@@ -45,9 +45,16 @@ an `O(lambda^-N)` remainder; the lower-Lambert phase itself also has a
 separate all-orders expansion in `-log x` and `log (-log x)`.
 The related Mathematica Stack Exchange quotient is also proved not to be an
 endpoint asymptotic equivalent.  The finite q-binomial/Thue--Morse formula
-for every inverse-dyadic Fabius value is formalized as well.  Its outer
-numerator is proved invariant under any common rational translation of the
-centered signed power sums; this covers both the unshifted and `+1/2`
-versions, including the case `n = 0`.  See `PAPER_COVERAGE.md` for the exact
-claim matrix.
+conjectured at
+https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function
+is formalized in its full scope: for every `m,n : ℕ`, including zero and
+unreduced dyadic representations, the source's half-shifted rational sum is
+the signed global Fabius value at `m / 2^n`.  No assumption `m ≤ 2^n` is
+needed for that theorem.  Under `m ≤ 2^n`, a separate corollary identifies
+the same sum with every bounded function satisfying `IsFabius`.  The formula
+is invariant both under equal representations of a nonnegative dyadic
+rational (in particular `(m,n) ↦ (2m,n+1)`) and under every common rational
+translation of its inner powers; the latter covers both the centered and
+source-faithful `+1/2` versions.  See `PAPER_COVERAGE.md` for the exact claim
+matrix.
 -/
