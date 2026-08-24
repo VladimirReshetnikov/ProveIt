@@ -163,8 +163,8 @@ theorem log_fabius_dyadicReal_sub_sharpLambertMain_hasAsymptoticExpansion
   rw [fabiusLambertPhase_dyadic]
 
 /-- The first `N` logarithmic saddle coefficients at the exact Lambert phase.
-The zeroth coefficient vanishes, so `N = 2` is the first truncation containing
-a nonzero correction beyond the sharp main term. -/
+The zeroth coefficient vanishes, so `N = 2` is the first truncation exposing
+the explicit correction beyond the sharp main term. -/
 noncomputable def fabiusSaddleLogPartialSum (N : ℕ) (lam : ℝ) : ℝ :=
   ∑ j ∈ Finset.range N,
     lam⁻¹ ^ j * fabiusSaddleLogCoefficient j lam
