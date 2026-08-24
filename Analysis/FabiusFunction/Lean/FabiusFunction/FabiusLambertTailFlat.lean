@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusLambertPhase
+import FabiusFunction.FabiusSmallArgumentScale
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-!
@@ -70,5 +71,16 @@ theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow
   · exact Filter.EventuallyEq.rfl
   · filter_upwards [hbtop.eventually_gt_atTop 0] with t _hbt
     rw [Real.rpow_neg_eq_inv_rpow, Real.rpow_natCast]
+
+/-- Small-positive-argument form of the arbitrary-order tail estimate. -/
+theorem negativeLaplaceTailError_lambert_isBigO_inv_pow
+    (N : ℕ) :
+    (fun x : ℝ => negativeLaplaceTailError (fabiusLambertRadius x))
+      =O[nhdsWithin 0 (Set.Ioi 0)]
+        (fun x : ℝ => (fabiusLambertPhase x)⁻¹ ^ N) := by
+  apply isBigO_smallArgument_of_logScale
+  simpa only [fabiusLogArgument, fabiusLambertRadius_dyadic,
+    fabiusLambertPhase_dyadic] using
+      negativeLaplaceTailError_dyadicLambert_isBigO_inv_pow N
 
 end Fabius
