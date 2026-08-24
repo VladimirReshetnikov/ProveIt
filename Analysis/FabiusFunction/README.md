@@ -179,6 +179,27 @@ right endpoint.  The primary public endpoints are
 `Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real`, and
 `Fabius.globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_complex`.
 
+The generalized Wolfram `DiscreteLimit` formula is proved as well.  For every
+real `x ≥ 0` and every `q : ℂ`, its finite q-binomial/Thue--Morse
+approximants converge to the signed global Fabius value; on `[0,1]` the limit
+is the ordinary bounded Fabius function.  Separate public specializations
+cover rational shifts, Gaussian-rational shifts, and arbitrary real shifts,
+including irrational ones.  Lean encodes the inner sum safely with length
+`⌊2^(n+k) x + 1/2⌋₊`; `Fabius.fabiusDiscreteLimitRangeLength_eq_floor_add_one`
+proves that this is exactly the successor of the inclusive Wolfram upper
+bound `Floor[2^(n+k) x - 1/2]`, including its empty case.  A finite row can
+genuinely depend on `q` at a nondyadic `x`; it is the limit that is independent
+of every fixed complex `q`.  The proof reindexes each row as a uniformly
+bounded Toeplitz average of centered finite Thue--Morse splines, proves their
+global convergence through finite uniform-distribution CDFs, and controls a
+complex shift by a decaying Taylor bound.  Finally, exact telescope and
+`tsum` theorems identify the same limit with the binary-reduction series; they
+do not assert a termwise equality between the two finite approximations.  The
+primary endpoints are
+`Fabius.fabiusDiscreteLimit_literal_complex_tendsto_globalFabius`,
+`Fabius.fabiusDiscreteLimitApproximationComplex_tendsto_fabiusReal`, and
+`Fabius.fabiusDiscreteLimitApproximationComplex_tendsto_literal_tsum`.
+
 The recurrence sequence's fixed-constant heuristic
 omits the nonconstant periodic correction.  The elementary small-`x`
 expression from

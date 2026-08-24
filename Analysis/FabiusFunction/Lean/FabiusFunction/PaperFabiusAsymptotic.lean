@@ -11,6 +11,7 @@ import FabiusFunction.FabiusRecurrenceSequence
 import FabiusFunction.FabiusQBinomialFormula
 import FabiusFunction.FabiusRawQBinomialFormula
 import FabiusFunction.FabiusGlobalQBinomialSeries
+import FabiusFunction.FabiusDiscreteLimitIntegration
 import FabiusFunction.FabiusFirstSaddleCorrection
 import FabiusFunction.FabiusSaddleCoefficientRecurrence
 import FabiusFunction.PeriodicSmooth
@@ -67,5 +68,18 @@ translation `q`, the literal nested series is absolutely convergent and equals
 the signed global Fabius extension.  On `[0,1]` it equals the bounded Fabius
 function.  Polynomial constancy, rather than density alone, makes the
 extension from rational to real and complex `q` exact.
+A separate generalized `DiscreteLimit` theorem proves that, for every real
+`x ≥ 0` and fixed `q : ℂ`, the proposed finite q-binomial/Thue--Morse
+approximants converge to the signed global Fabius extension; on `[0,1]` they
+converge to the bounded Fabius function.  Public specializations include
+Gaussian-rational, rational, and arbitrary real shifts, so irrational real
+translations are covered directly.  The natural-valued range length is proved
+equivalent to the source's inclusive Wolfram `Floor` cutoff, including the
+empty case.  A finite approximant need not be independent of `q`: the proof
+instead reindexes it exactly as a Toeplitz average of centered finite splines,
+then combines uniform spline convergence with a decaying complex Taylor-shift
+bound.  Telescope and `tsum` theorems identify the resulting q-independent
+limit, rather than the individual finite rows, with the binary-reduction
+series above.
 See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/
