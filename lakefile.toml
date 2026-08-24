@@ -66,6 +66,20 @@ name = "RamseyPaperCommon"
 srcDir = "Combinatorics/Ramsey/Lean"
 
 [[lean_lib]]
+name = "RamseyCounterShim"
+srcDir = "Combinatorics/Ramsey/Lean"
+moreLinkArgs = [
+  "-O3",
+  "Combinatorics/Ramsey/Lean/RamseyPaperCommon/ThreeFreeCounter.c",
+]
+
+[[lean_lib]]
+name = "RamseyPaperCertificates"
+srcDir = "Combinatorics/Ramsey/Lean"
+roots = ["RamseyPaperCommon.CountCertificates"]
+dynlibs = ["RamseyCounterShim:shared"]
+
+[[lean_lib]]
 name = "DavisEntringerGrahamSimmons1977"
 srcDir = "Combinatorics/Ramsey/Lean"
 

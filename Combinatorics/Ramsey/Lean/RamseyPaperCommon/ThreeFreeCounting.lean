@@ -272,7 +272,7 @@ Memo tables are scoped to the first three entries, keeping the verification of
 the largest table values within a predictable memory bound.  Complementing
 every value proves that only half of the possible first entries need be
 searched. -/
-unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
+unsafe def fastReflectedMLean (n : Nat) : Nat := unsafeBaseIO do
   if n = 0 then
     return 1
   if n = 1 then
@@ -280,12 +280,31 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
   if n = 2 then
     return 2
   let full := (1 <<< n) - 1
-  let cache : IO.Ref (Std.HashMap Nat Nat) ← IO.mkRef {}
-  let rec visit (used forbidden : Nat) : BaseIO Nat := do
+  let capacity := 1 <<< (n + 3)
+  let mask := capacity - 1
+  let generations : IO.Ref (Array Nat) ← IO.mkRef (Array.replicate capacity 0)
+  let keys : IO.Ref (Array Nat) ← IO.mkRef (Array.replicate capacity 0)
+  let values : IO.Ref (Array Nat) ← IO.mkRef (Array.replicate capacity 0)
+  let rec locate (generation key slot fuel : Nat) : BaseIO (Nat × Option Nat) := do
+    if fuel = 0 then
+      return (capacity, none)
+    let tags ← generations.get
+    if tags[slot]! ≠ generation then
+      return (slot, none)
+    let storedKeys ← keys.get
+    if storedKeys[slot]! = key then
+      let storedValues ← values.get
+      return (slot, some storedValues[slot]!)
+    locate generation key ((slot + 1) &&& mask) (fuel - 1)
+  let rec visit (generation used forbidden : Nat) : BaseIO Nat := do
     if used = full then
       return 1
     let key := (used <<< n) ||| forbidden
-    if let some answer := (← cache.get).get? key then
+    let hash :=
+      ((UInt64.ofNat key * (11400714819323198485 : UInt64)) >>>
+        UInt64.ofNat (61 - n)).toNat &&& mask
+    let (slot, cached) ← locate generation key hash capacity
+    if let some answer := cached then
       return answer
     let mut total := 0
     for x in [0:n] do
@@ -297,10 +316,15 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
               let z := 2 * x - a
               if z < n then
                 nextForbidden := nextForbidden ||| (1 <<< z)
-        total := total + (← visit (used ||| (1 <<< x)) nextForbidden)
-    cache.modify fun table => table.insert key total
+        total := total +
+          (← visit generation (used ||| (1 <<< x)) nextForbidden)
+    if slot < capacity then
+      generations.modify fun table => table.set! slot generation
+      keys.modify fun table => table.set! slot key
+      values.modify fun table => table.set! slot total
     return total
   let mut grandTotal := 0
+  let mut generation := 0
   for first in [0:(n + 1) / 2] do
     let mut branchTotal := 0
     for second in [0:n] do
@@ -313,7 +337,7 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
         let usedTwo := (1 <<< first) ||| (1 <<< second)
         for third in [0:n] do
           if !usedTwo.testBit third && !initialForbidden.testBit third then
-            cache.set {}
+            generation := generation + 1
             let mut nextForbidden := initialForbidden
             for a in [0:n] do
               if usedTwo.testBit a then
@@ -322,12 +346,23 @@ unsafe def fastReflectedM (n : Nat) : Nat := unsafeBaseIO do
                   if z < n then
                     nextForbidden := nextForbidden ||| (1 <<< z)
             branchTotal := branchTotal +
-              (← visit (usedTwo ||| (1 <<< third)) nextForbidden)
+              (← visit generation (usedTwo ||| (1 <<< third)) nextForbidden)
     if 2 * first + 1 = n then
       grandTotal := grandTotal + branchTotal
     else
       grandTotal := grandTotal + 2 * branchTotal
   return grandTotal
+
+/-- Native version of the same prefix-extension recurrence.  The C source is
+linked only into the certificate target; keeping the Lean implementation above
+makes the executable algorithm directly reviewable inside the formalization. -/
+@[extern "lean_ramsey_fast_reflected_m"]
+unsafe opaque fastReflectedMNative (n : Nat) : Nat
+
+/-- Use the compact native table for the range certified in this development,
+and retain the Lean implementation as a total fallback. -/
+unsafe def fastReflectedM (n : Nat) : Nat :=
+  if n <= 20 then fastReflectedMNative n else fastReflectedMLean n
 
 /-- Direct finite enumeration using the executable midpoint test.  A faster
 extension-equivalent implementation is installed below; this simple version
