@@ -146,4 +146,35 @@ theorem continuous_negativeLaplacePeriodicCorrection :
   · exact (Real.continuous_const_rpow
       (by norm_num : (2 : ℝ) ≠ 0)).continuousAt
 
+/-- The mean of the exact periodic correction over one period. -/
+noncomputable def negativeLaplacePeriodicMean : ℝ :=
+  ∫ t in (0 : ℝ)..1, negativeLaplacePeriodicCorrection t
+
+/-- The zero-mean normalization of the exact periodic correction. -/
+noncomputable def negativeLaplacePsi (t : ℝ) : ℝ :=
+  negativeLaplacePeriodicCorrection t - negativeLaplacePeriodicMean
+
+/-- The normalized periodic correction remains continuous. -/
+theorem continuous_negativeLaplacePsi : Continuous negativeLaplacePsi := by
+  exact continuous_negativeLaplacePeriodicCorrection.sub continuous_const
+
+/-- The normalized correction is one-periodic. -/
+theorem negativeLaplacePsi_add_one (t : ℝ) :
+    negativeLaplacePsi (t + 1) = negativeLaplacePsi t := by
+  rw [negativeLaplacePsi, negativeLaplacePsi,
+    negativeLaplacePeriodicCorrection_add_one]
+
+/-- The normalized correction has integral zero over its defining period. -/
+theorem integral_negativeLaplacePsi_zero :
+    (∫ t in (0 : ℝ)..1, negativeLaplacePsi t) = 0 := by
+  simp_rw [negativeLaplacePsi]
+  have hR : IntervalIntegrable negativeLaplacePeriodicCorrection
+      MeasureTheory.volume 0 1 :=
+    continuous_negativeLaplacePeriodicCorrection.intervalIntegrable 0 1
+  have hc : IntervalIntegrable (fun _ : ℝ => negativeLaplacePeriodicMean)
+      MeasureTheory.volume 0 1 := intervalIntegrable_const
+  rw [intervalIntegral.integral_sub hR hc]
+  rw [intervalIntegral.integral_const]
+  simp [negativeLaplacePeriodicMean]
+
 end Fabius
