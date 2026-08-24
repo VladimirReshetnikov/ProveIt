@@ -27,9 +27,15 @@ def deletion_preserves_ap_freeness : Prop :=
   forall (A B : Block) (k : Nat), B.Sublist A -> BlockAPFree A k -> BlockAPFree B k
 
 /-- The parity construction from the opening paragraph preserves avoidance
-of monotone 3-term progressions, in either order of the parity blocks. -/
+of monotone 3-term progressions, in either order of the parity blocks.  The
+positivity hypotheses faithfully record that the paper's input blocks consist
+of positive integers; they are also necessary because `2 * 0 - 1` truncates in
+`Nat`. -/
 def parity_construction_is_ap_free : Prop :=
-  forall (A A' : Block), BlockAPFree A 3 -> BlockAPFree A' 3 ->
+  forall (A A' : Block),
+    (forall x : Nat, x ∈ A -> 0 < x) ->
+    (forall x : Nat, x ∈ A' -> 0 < x) ->
+    BlockAPFree A 3 -> BlockAPFree A' 3 ->
     BlockAPFree (parityLift A A') 3 /\ BlockAPFree (parityLiftOddFirst A A') 3
 
 /-- When its input blocks order `[1,m]`, the parity construction orders
@@ -157,10 +163,10 @@ def folkman_odd_order_claim : Prop :=
 def fact_5 : Prop :=
   D 3 = ∅
 
-/-- The computational assertion in the second proof of Fact 5: the tree
-`T` has no vertex of size greater than 17. -/
+/-- The corrected computational assertion in the second proof of Fact 5: the tree
+`T` has no vertex of size greater than 20. -/
 def computational_tree_bound : Prop :=
-  forall B : Block, IsTreeVertex B -> B.length <= 17
+  forall B : Block, IsTreeVertex B -> B.length <= 20
 
 /-- The basic inductive property of the blocks in the Fact 6 construction. -/
 def dyadic_block_properties : Prop :=

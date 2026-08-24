@@ -165,9 +165,10 @@ def lemma_12_4 : Prop :=
       respectedArrangementCount 8 B phi
 
 /-- **Lemma 12.5.** The paper's sufficiently-large hypothesis is represented
-by the threshold `N0`. -/
+by the threshold `N0`.  The necessary range condition `eta ≤ 1`, omitted in
+the article, is explicit; without it the claimed lower bound is false. -/
 def lemma_12_5 : Prop :=
-  ∀ alpha beta eta : Real, 0 < alpha → 0 < beta → 0 < eta →
+  ∀ alpha beta eta : Real, 0 < alpha → 0 < beta → 0 < eta → eta ≤ 1 →
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
       ∀ (B : Finset (Pair N)) (phi : Pair N → ZMod N),
         (B.card : Real) = beta * (N : Real) ^ 2 →
@@ -264,7 +265,7 @@ def LinearOnDomain {N : Nat} {X : Type*} (A : Finset X)
 def lemma_13_1 : Prop :=
   ∀ (N : Nat) [NeZero N] (f : Pair N → Complex) (B : Finset (ZMod N))
       (sigma : ZMod N → ZMod N) (alpha : Real),
-    DiscValued f →
+    0 < alpha → DiscValued f →
     alpha * (N : Real) ^ 5 ≤
       ∑ h ∈ B, ‖fourier (verticalCorrelation f h) (sigma h)‖ ^ 2 →
     alpha ^ 4 * (N : Real) ^ 3 ≤ phiAdditiveCount B sigma
@@ -273,7 +274,7 @@ def lemma_13_1 : Prop :=
 def corollary_13_2 : Prop :=
   ∀ (N : Nat) [NeZero N] (A : Finset (Pair N)) (B : Finset (ZMod N))
       (sigma : ZMod N → ZMod N) (alpha : Real),
-    alpha * (N : Real) ^ 5 ≤
+    0 < alpha → alpha * (N : Real) ^ 5 ≤
       ∑ h ∈ B, ‖fourier (verticalEdgeFiberFunction A h) (sigma h)‖ ^ 2 →
     alpha ^ 4 * (N : Real) ^ 3 ≤ phiAdditiveCount B sigma
 

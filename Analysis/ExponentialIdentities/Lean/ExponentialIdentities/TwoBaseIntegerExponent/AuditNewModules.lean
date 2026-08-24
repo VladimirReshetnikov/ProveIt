@@ -112,6 +112,14 @@ import ExponentialIdentities.TwoBaseIntegerExponent.RationalHankelTriple
 import ExponentialIdentities.TwoBaseIntegerExponent.SmoothSemigroupCore
 import ExponentialIdentities.TwoBaseIntegerExponent.ExternalPrimeNewtonWall
 import ExponentialIdentities.TwoBaseIntegerExponent.CriticalWindowContraction
+import ExponentialIdentities.TwoBaseIntegerExponent.CompactChartArea
+import ExponentialIdentities.TwoBaseIntegerExponent.ToricMonomialRigidity
+import ExponentialIdentities.TwoBaseIntegerExponent.ConsecutiveDilationRigidity
+import ExponentialIdentities.TwoBaseIntegerExponent.TwoStarControlCharacterization
+import ExponentialIdentities.TwoBaseIntegerExponent.TopSliceTailSum
+import ExponentialIdentities.TwoBaseIntegerExponent.CrossSliceContraction
+import ExponentialIdentities.TwoBaseIntegerExponent.AbelSliceMass
+import ExponentialIdentities.TwoBaseIntegerExponent.AdelicWedgeDecoupling
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 
@@ -836,6 +844,31 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms CriticalWindow.kappa_mul_lt
 #print axioms CriticalWindow.no_balanced_transport
 #print axioms CriticalWindow.exponent_gap_dvd
+#print axioms CompactChart.area_eq_div
+#print axioms CompactChart.abs_area_ge
+#print axioms CompactChart.coord_diff
+#print axioms CompactChart.codimension_lock
+#print axioms ToricRigidity.eigenvalue_eq_of_ne_zero
+#print axioms ToricRigidity.toric_eigen_support_unique
+#print axioms DilationRigidity.eq_zero_of_consecutive_vanishing
+#print axioms DilationRigidity.consecutive_dilation_rigidity
+#print axioms TwoStarControl.twoStarCoeff_eq_zero_iff
+#print axioms TwoStarControl.twoStarCoeff_control
+#print axioms TopSlice.padicValNat_descFactorial_eq_one
+#print axioms TopSlice.padicValNat_descFactorial_eq_zero
+#print axioms TopSlice.top_slice_tail_sum
+#print axioms CrossSlice.phi_transport_identity
+#print axioms CrossSlice.phi_transport
+#print axioms CrossSlice.phi_contraction_factor
+#print axioms AbelSlice.abel_identity
+#print axioms AbelSlice.slice_mass_nonneg
+#print axioms AbelSlice.tail_sub_tail
+#print axioms AbelSlice.slice_vanishes_of_mass_zero
+#print axioms AbelSlice.neg_le_pos_above
+#print axioms AbelSlice.neg_weighted_le
+#print axioms fermatQuotientResidue_mul
+#print axioms fermatQuotientDeterminant_control_shift
+#print axioms fermatQuotientDeterminant_eq_zero_iff_line
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_8192
 #print axioms thirteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_16384

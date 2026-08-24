@@ -16,7 +16,45 @@ import GowersSzemeredi.Proofs02Uniformity
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03Equivalences
 import GowersSzemeredi.Proofs03Cubes
+import GowersSzemeredi.Proofs03GowersCS
+import GowersSzemeredi.Proofs03Minkowski
+import GowersSzemeredi.Proofs03CubeUpper
+import GowersSzemeredi.Proofs03Interval
+import GowersSzemeredi.Proofs05FourierInterval
+import GowersSzemeredi.Proofs05MissingInterval
+import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Proofs07DRC
+import GowersSzemeredi.Proofs07BohrHom
+import GowersSzemeredi.Proofs07ProgressionLinearity
+import GowersSzemeredi.Proofs09Moments
+import GowersSzemeredi.Proofs10Counting
+import GowersSzemeredi.Proofs10Bohr
+import GowersSzemeredi.Proofs10Error
+import GowersSzemeredi.Proofs10Extraction
+import GowersSzemeredi.Proofs10Induced
+import GowersSzemeredi.Proofs10ProgressionLinearity
+import GowersSzemeredi.Proofs10Selection
+import GowersSzemeredi.Proofs10Regular
+import GowersSzemeredi.Proofs10Shift
+import GowersSzemeredi.Proofs12
+import GowersSzemeredi.Proofs12Parallelograms
+import GowersSzemeredi.Proofs12HigherArrangements
+import GowersSzemeredi.Proofs12Amplification
+import GowersSzemeredi.Proofs13Basic
+import GowersSzemeredi.Proofs14Fourier
+import GowersSzemeredi.Proofs14Configurations
+import GowersSzemeredi.Proofs14Arrangements
+import GowersSzemeredi.Proofs14HigherArrangements
+import GowersSzemeredi.Proofs14Product
+import GowersSzemeredi.Proofs14ProductToArrangements
+import GowersSzemeredi.Proofs15LevelSets
+import GowersSzemeredi.Proofs15Walsh
+import GowersSzemeredi.Proofs15Walsh2
+import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs17Phase
+import GowersSzemeredi.Proofs17PhaseRemoval
+import GowersSzemeredi.Proofs17FinitePatterns
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

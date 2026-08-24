@@ -273,14 +273,19 @@ def lemma_3_4 : Prop :=
     1 <= d -> DiscValued f -> UniformOfDegree f alpha d ->
       UniformOfDegree f (alpha ^ ((1 : Real) / 2)) (d - 1)
 
-/-- **Lemma 3.5.** -/
+/-- **Lemma 3.5 (corrected).**
+
+The interval length must be at most `N`; otherwise its modular carrier repeats while the
+right-hand main term still grows with `M`.  The printed proof also incorrectly claims that the
+`L^(4/3)` mass of the interval's nonzero Fourier coefficients is at most `N^(4/3)`.  The elementary
+decay estimate used there gives the safe constant `3` below. -/
 def lemma_3_5 : Prop :=
   forall (N : Nat) [NeZero N] (A : Finset (ZMod N)) (alpha delta beta : Real)
       (a : ZMod N) (M : Nat),
     (A.card : Real) = delta * N -> UniformSetOfDegree A alpha 1 ->
-    (M : Real) = beta * N ->
+    M <= N -> (M : Real) = beta * N ->
     |((A ∩ (modInterval N (a + 1) M).carrier).card : Real) - beta * delta * N| <=
-      alpha ^ ((1 : Real) / 4) * N
+      3 * alpha ^ ((1 : Real) / 4) * N
 
 /-- **Corollary 3.6.** -/
 def corollary_3_6 : Prop :=

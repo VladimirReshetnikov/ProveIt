@@ -455,7 +455,11 @@ $$
 
 which, by the equivalence of properties (i) and (ii) in Lemma 3.1, proves the lemma. \(\square\)
 
-Lemma 3.5. Let $A$ be an $\alpha$-uniform subset of $\mathbb{Z}_{N}$ of cardinality $\delta N$, and let $P$ be an interval of the form $\{a+1, \ldots, a+M\}$, where $M=\beta N$. Then $||A \cap P|-\beta \delta N| \leqslant \alpha^{1 / 4} N$.
+% ed.: The modular interval must have M\leq N; otherwise its carrier repeats while the
+% displayed main term continues to grow.  Also, the proof's subsequent estimate
+% \sum_{r\ne0}|\hat P(r)|^{4/3}\leq N^{4/3} is false in general.  The same decay
+% argument and the integral test give the safe bound 4N^{4/3}, hence the factor 3 below.
+Lemma 3.5. Let $A$ be an $\alpha$-uniform subset of $\mathbb{Z}_{N}$ of cardinality $\delta N$, and let $P$ be an interval of the form $\{a+1, \ldots, a+M\}$, where $M\leq N$ and $M=\beta N$. Then $||A \cap P|-\beta \delta N| \leqslant 3\alpha^{1 / 4} N$.
 
 Proof. First, we can easily estimate the Fourier coefficients of the set $P$. Indeed,
 
@@ -468,13 +472,13 @@ $$
 
 (We also know that it is at most $M$, but will not need to use this fact.)
 
-This estimate implies that $\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3} \leqslant N^{4 / 3}$. Therefore,
+This estimate and the integral test imply that $\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3} \leqslant 4N^{4 / 3}$. Therefore,
 
 $$
 \begin{aligned}
 ||A \cap P|-\beta \delta N| & =N^{-1}\left|\sum_{r \neq 0} \hat{A}(r) \hat{P}(r)\right| \\
 & \leqslant N^{-1}\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4}\left(\sum_{r \neq 0}|\hat{P}(r)|^{4 / 3}\right)^{3 / 4} \\
-& \leqslant\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4} \leqslant \alpha^{1 / 4} N,
+& \leqslant 3\left(\sum_{r \neq 0}|\hat{A}(r)|^{4}\right)^{1 / 4} \leqslant 3\alpha^{1 / 4} N,
 \end{aligned}
 $$
 
@@ -1089,7 +1093,9 @@ The most obvious approach to deducing Theorem 7.2 from Theorem 7.1 is to show th
 Proposition 7.3. Let $A$ be a subset of $\mathbb{Z}^{n}$ of cardinality $m$ such that $\|A * A\|_{2}^{2} \geqslant c_{0} m^{3}$. Then there are constants $c$ and $C$ depending only on $c_{0}$ and a subset $A^{\prime \prime} \subset A$ of cardinality at least $c m$ such that $\left|A^{\prime \prime}-A^{\prime \prime}\right| \leqslant C m$. Moreover, $c$ and $C$ can be taken as $2^{-20} c_{0}^{12}$ and $2^{38} c_{0}^{-24}$ respectively.
 
 We shall need the following lemma for the proof.\\
-Lemma 7.4. Let $V$ be a set of size $m$, let $\delta>0$ and let $A_{1}, \ldots, A_{n}$ be subsets of $V$ such that $\sum_{x=1}^{n} \sum_{y=1}^{n}\left|A_{x} \cap A_{y}\right| \geqslant \delta^{2} m n^{2}$. Then there is a subset $K \subset[n]$ of cardinality at least $2^{-1 / 2} \delta^{5} n$ such that for at least 90\% of the pairs $(x, y) \in K^{2}$ the intersection $A_{x} \cap A_{y}$ has cardinality at least $\delta^{2} m / 2$. In particular, the result holds if $\left|A_{x}\right| \geqslant \delta m$ for every $x$.
+% ed.: The implicit density bound $\delta\leq 1$ is necessary; without it the
+% conclusion is false already for a single empty set and $\delta>1$.
+Lemma 7.4. Let $V$ be a set of size $m$, let $0<\delta\leq 1$ and let $A_{1}, \ldots, A_{n}$ be subsets of $V$ such that $\sum_{x=1}^{n} \sum_{y=1}^{n}\left|A_{x} \cap A_{y}\right| \geqslant \delta^{2} m n^{2}$. Then there is a subset $K \subset[n]$ of cardinality at least $2^{-1 / 2} \delta^{5} n$ such that for at least 90\% of the pairs $(x, y) \in K^{2}$ the intersection $A_{x} \cap A_{y}$ has cardinality at least $\delta^{2} m / 2$. In particular, the result holds if $\left|A_{x}\right| \geqslant \delta m$ for every $x$.
 
 Proof. For every $j \leqslant m$ let $B_{j}=\left\{i: j \in A_{i}\right\}$ and let $E_{j}=B_{j}^{2}$. Choose five numbers $j_{1}, \ldots, j_{5} \leqslant m$ at random (uniformly and independently), and let $X=E_{j_{1}} \cap \cdots \cap E_{j_{5}}$. The probability $p_{x y}$ that a given pair $(x, y) \in[n]^{2}$ belongs to $E_{j_{r}}$ is $m^{-1}\left|A_{x} \cap A_{y}\right|$, so the probability that it belongs to $X$ is $p_{x y}^{5}$. By our assumption we have that $\sum_{x, y=1}^{n} p_{x y} \geqslant \delta^{2} n^{2}$, which implies (by Hölder's inequality) that $\sum_{x, y=1}^{n} p_{x y}^{5} \geqslant \delta^{10} n^{2}$. In other words, the expected size of $X$ is at least $\delta^{10} n^{2}$.
 
@@ -1220,7 +1226,9 @@ Remark. Notice that the same result holds, with an almost identical proof, if $\
 
 Given that $\phi$ was already a homomorphism of order 8 in the statement of Lemma 7.8, the reader may be excused for wondering what has been gained in the conclusion. The answer is that $B=B(K, \alpha / 32 \pi)$ has so much structure, in particular containing many long arithmetic progressions, that much more can be said about homomorphisms defined on $B$ than about homomorphisms on arbitrary sets. The next corollary illustrates this.
 
-Corollary 7.9. Let $A$ and $K$ be as in Lemma 7.8 and let $m$ be a positive integer. For every $d \in B(K, \alpha / 32 \pi m)$ there exists $c$ such that $\phi(x)-\phi(y)=$ $c(x-y)$ whenever $x-y$ belongs to the set $\{j d:-m \leqslant j \leqslant m\}$.
+% ed.: We retain the paper's standing assumption that $N$ is prime here.
+% It is needed to divide by a nonzero progression step when defining $c$.
+Corollary 7.9. Let $N$ be prime, let $A$ and $K$ be as in Lemma 7.8 and let $m$ be a positive integer. For every $d \in B(K, \alpha / 32 \pi m)$ there exists $c$ such that $\phi(x)-\phi(y)=$ $c(x-y)$ whenever $x-y$ belongs to the set $\{j d:-m \leqslant j \leqslant m\}$.
 
 Proof. This follows from Lemma 7.8 together with the observations that $\{j d:-m \leqslant j \leqslant m\} \subset B(K, \alpha / 32 \pi)$, that the restriction of any homomorphism to $\{j d:-m \leqslant j \leqslant m\}$ is linear and that $\psi(0)=0$. \(\square\)
 
@@ -1790,7 +1798,9 @@ Let us now set $V=V_{\lambda, \mu}$ and choose $y \in W \backslash V$. If $d \in
 All this shows that $W \backslash V \subset W \cap(W+d)$. We have shown that the cardinality of $W$ is at least $\rho^{2} \alpha^{2} M N / 16$, while the cardinality of $V$ is at most $12 \sigma \rho^{-2}(1+2 \rho) \alpha M N S_{\lambda, \mu} / S$, which is certainly at most $24 \sigma \rho^{-2} \alpha M N$. Since $\sigma \leqslant \eta \rho^{4} \alpha / 384$, we find that $|V| \leqslant \eta|W|$ and therefore obtain property (vi). \(\square\)
 
 Before we state the next lemma, it will be very useful to introduce the following shorthand notation. Given any finite set $U$ and any proposition $P(u)$ involving the elements $u$ of $U$, we shall say that for $(1-\epsilon)$-almost every $u \in U, P(u)$ if the set $\{u \in U: P(u)\}$ has cardinality at least $(1-\epsilon)|U|$. We shall further abbreviate this by writing $((1-\epsilon)$ a.e. $u \in U) P(u)$.\\
-Lemma 10.6. If $\sigma \leqslant \eta \rho \alpha^{2} / 16$ then there exist a subset $B^{\prime}$ of $B$ of cardinality at least $\left(1-10 \eta^{1 / 5}\right)|B|$ and a function $\psi: B^{\prime} \rightarrow \mathbb{Z}_{N}$ such that, for every $d \in B^{\prime}$,
+% ed.: The application of Lemma 10.5 retains the necessary inherited bound
+% $\rho\leqslant\alpha^2/32$; without it, translated fibres can be too small.
+Lemma 10.6. Assume also that $\rho \leqslant \alpha^{2} / 32$. If $\sigma \leqslant \eta \rho \alpha^{2} / 16$ then there exist a subset $B^{\prime}$ of $B$ of cardinality at least $\left(1-10 \eta^{1 / 5}\right)|B|$ and a function $\psi: B^{\prime} \rightarrow \mathbb{Z}_{N}$ such that, for every $d \in B^{\prime}$,
 
 $$
 \left(\left(1-10 \eta^{1 / 5}\right) \text { a.e. } w \in W\right)\left(\left(1-10 \eta^{1 / 5}\right) \text { a.e. } z \in X_{r(w)+d}\right) \quad \phi(z)-\phi(w)=\psi(d) .
@@ -1872,7 +1882,8 @@ Proof. Let $\Delta$ be the set of pairs $\left(w, w^{\prime}\right) \in W^{2}$ s
 
 Now Lemma 10.5 (vi) and the symmetry of $B$ imply that at most $\eta|W|$ elements of $W$ fail to belong to $W \cap(W-d)$. Therefore, if the lemma is false, then there are more than $\theta^{1 / 2}|W|$ elements $w \in W \cap(W-d)$ such that not $P\left(w^{\prime}\right)$ for at least $2 \theta^{1 / 2}\left|X_{r(w)+d}\right|$ elements of $X_{r(w)+d}$. Therefore, the cardinality of $\Delta$ is greater than $2 \theta|W| \min _{w \in W} R(w)$. By Lemma 10.5 (v), this is a contradiction, so the lemma is proved. \(\square\)
 
-Lemma 10.9. Let $\theta=10 \eta^{1 / 5}$ and assume that $6 \theta^{1 / 2}<1$. Then the function $\psi: B^{\prime} \rightarrow \mathbb{Z}_{N}$ constructed in Lemma 10.6 is a Freiman homomorphism.
+% ed.: The standalone lemma also assumes W is nonempty, as supplied by Lemma 10.5; otherwise its almost-everywhere hypotheses are vacuous.
+Lemma 10.9. Assume that $W$ is nonempty. Let $\theta=10 \eta^{1 / 5}$ and assume that $6 \theta^{1 / 2}<1$. Then the function $\psi: B^{\prime} \rightarrow \mathbb{Z}_{N}$ constructed in Lemma 10.6 is a Freiman homomorphism.
 
 Proof. Suppose that $d_{1}, d_{2}, d_{3}, d_{4} \in B^{\prime}$ are such that $d_{1}+d_{2}=d_{3}+d_{4}$. Lemma 10.6 tells us that
 
@@ -1970,7 +1981,10 @@ $$
 
 If $\theta^{1 / 2} \leqslant 1 / 8$ (as we shall assume), then Lemma 10.7 implies that $W_{1}$ has cardinality at least $7|W| / 8$.
 
-Lemma 10.12. Assume that $\theta^{1 / 2} \leqslant 1 / 8$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
+% ed.: The final existence step in the proof also needs the translated fibres
+% $X_{r(w)+d}$ to be nonempty; this follows from the earlier Section 10 setup
+% and quantitative fibre bounds but must be explicit in the standalone lemma.
+Lemma 10.12. Assume that $\theta^{1 / 2} \leqslant 1 / 8$. Let $B=B(K, \delta)$ and let $B^{\prime}$ and $\psi$ be given by Lemma 10.6. Assume also that $X_{r(w)+d}$ is nonempty whenever $w\in W$ and $d\in B^{\prime}$. Let $C$ and $\psi_{1}$ be as in Corollary 10.11 and let $w_{1}, w_{2} \in W_{1}$ with $r\left(w_{1}\right)-r\left(w_{2}\right)=c \in C$. Then $\phi\left(w_{1}\right)-\phi\left(w_{2}\right)=\psi_{1}(c)$.
 
 Proof. By the definition of $W_{1}$ and the assumption that $\theta^{1 / 2} \leqslant 1 / 8$, we have the statements
 
@@ -2067,7 +2081,9 @@ $$
 
 This proves the theorem. \(\square\)
 
-Corollary 10.14. Let $K$ be as in Theorem 10.13, let $Y$ be the set obtained there and let $m$ be a positive integer. For every $d \in B(K, \zeta / m)$ there exists $c$ such that $\phi(x)-\phi(y)=c(r(x)-r(y))$ whenever $x, y \in Y$ and $r(x)-r(y)$ belongs to the set $\{j d:-m \leqslant j \leqslant m\}$.
+% ed.: As in Corollary 7.9, the standing prime-modulus hypothesis is needed
+% to divide by a nonzero common difference when defining the scalar $c$.
+Corollary 10.14. Let $N$ be prime, let $K$ be as in Theorem 10.13, let $Y$ be the set obtained there and let $m$ be a positive integer. For every $d \in B(K, \zeta / m)$ there exists $c$ such that $\phi(x)-\phi(y)=c(r(x)-r(y))$ whenever $x, y \in Y$ and $r(x)-r(y)$ belongs to the set $\{j d:-m \leqslant j \leqslant m\}$.
 
 Proof. As with Corollary 7.8 this follows from the observations that $\{j d:$ $-m \leqslant j \leqslant m\} \subset B(K, \zeta)$, that the restriction of any homomorphism to $\{j d:-m \leqslant j \leqslant m\}$ is linear and that $\psi_{1}(0)=0$. \(\square\)
 
@@ -2308,7 +2324,9 @@ Of course, for this to happen, all the points of the $d$-arrangement must lie in
 
 Lemma 12.4 gives us, under certain hypotheses on $B$ and $\phi$, a large collection of 8-arrangements in the set $B$ that are respected by $\phi$. Indeed, since the total number of 8-arrangements cannot possibly exceed $\beta^{15} N^{32}$ if $|B|=\beta N^{2}$, it shows that the proportion of 8-arrangements respected by $\phi$ is greater than zero (and independent of $N$ ). In the rest of this section, we shall show how to choose a large subset $B^{\prime} \subset B$ such that $\phi$ respects almost all of the 8-arrangements in $B^{\prime}$. As in §9, when we restricted to an approximate homomorphism of order eight, this is done by a random selection with suitable dependences, with Riesz products to define the probabilities.
 
-Lemma 12.5. Let $\eta>0$, let $B \subset \mathbb{Z}_{N}^{2}$ be a set of size $\beta N^{2}$ and let $\phi$ : $B \rightarrow \mathbb{Z}_{N}$ be a function that respects at least $\alpha \beta^{15} N^{32}$ 8-arrangements. If $N$ is sufficiently large (depending on $\alpha$, $\beta$ and $\eta$ ) then there is a subset $B^{\prime} \subset B$ containing at least $(\alpha \eta / 4)^{2^{36}} \beta^{15} N^{32}$ 8-arrangements, such that the proportion of 8-arrangements respected by $\phi$ is at least $1-\eta$.
+% ed.: The range condition $\eta\leq 1$ is necessary: for larger $\eta$ the
+% displayed lower bound can exceed the total number of arrangements.
+Lemma 12.5. Let $0<\eta\leq 1$, let $B \subset \mathbb{Z}_{N}^{2}$ be a set of size $\beta N^{2}$ and let $\phi$ : $B \rightarrow \mathbb{Z}_{N}$ be a function that respects at least $\alpha \beta^{15} N^{32}$ 8-arrangements. If $N$ is sufficiently large (depending on $\alpha$, $\beta$ and $\eta$ ) then there is a subset $B^{\prime} \subset B$ containing at least $(\alpha \eta / 4)^{2^{36}} \beta^{15} N^{32}$ 8-arrangements, such that the proportion of 8-arrangements respected by $\phi$ is at least $1-\eta$.
 
 Proof. Choose $r_{1}, \ldots, r_{k}, s_{1}, \ldots, s_{k}, t_{1}, \ldots, t_{k} \in \mathbb{Z}_{N}$ uniformly and independently at random from $\mathbb{Z}_{N}$. Having made the choice, let each point $(x, y) \in B$ be in $B^{\prime}$ with probability
 
@@ -2379,7 +2397,9 @@ in the following sense: there are arithmetic progressions $P, Q \subset \mathbb{
 What we prove in this section is sufficient for finding progressions of length five, but not as strong as the corresponding case of the inductive hypothesis we shall need when generalizing the argument. Then it becomes necessary to show that almost all of the graph of $\phi$ is contained in a small number of bilinear pieces, which is not a huge extra difficulty but it makes the argument look more complicated. Another way in which the argument of this section is slightly simpler than the argument for the general case (in §16) is that we can use Lemma 7.10 to allow us to assume that $\phi(x, y)$ is a homomorphism of order 8 in $y$ for every fixed $x$ and vice versa (see the proof of Theorem 13.10 for this).
 
 The next lemma is another generalization of Proposition 6.1 with an almost identical proof. To recover the earlier proposition for the function $f: \mathbb{Z}_{N} \rightarrow D$, apply this coming lemma to the function $g(x, y)=f(x+y)$.\\
-Lemma 13.1. Let $f: \mathbb{Z}_{N}^{2} \rightarrow D$ be a function into the closed unit disc. For any $h$, define
+% ed.: Positivity of alpha is necessary (and is implicit in the proof): for
+% negative alpha the hypothesis is vacuous while the fourth-power conclusion need not hold.
+Lemma 13.1. Let $\alpha>0$ and let $f: \mathbb{Z}_{N}^{2} \rightarrow D$ be a function into the closed unit disc. For any $h$, define
 
 $$
 f_{h}(x)=\sum_{y} f(x, y+h) \overline{f(x, y)} .
@@ -2435,7 +2455,8 @@ $$
 But the left-hand side is exactly $N^{4}$ times the number of quadruples $(a, b, c, d)$ that we wish to find. \(\square\)
 
 In fact, we shall need the above lemma only in the special case of 01valued functions. The next corollary is a restatement of the lemma in the language of §10.\\
-Corollary 13.2. Let $A \subset \mathbb{Z}_{N}^{2}$. For any $h \in \mathbb{Z}_{N}$, define a domain $X_{h}=X_{h, 0} \cup X_{h, 1} \cup \cdots \cup X_{h, N-1}$ by letting $X_{h, x}$ be the set of all pairs $((x, y),(x, y+h))$, for which both $(x, y)$ and $(x, y+h)$ belong to $A$. Let $f_{h}(x)$ be the cardinality of $X_{h, x}$. Let $B \subset \mathbb{Z}_{N}$ and let $\sigma: B \rightarrow \mathbb{Z}_{N}$ be any function such that $\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2} \geqslant \alpha N^{5}$. Then there are at least $\alpha^{4} N^{3}$ quadruples $(a, b, c, d) \in B^{4}$ such that $a+b=c+d$ and $\sigma(a)+\sigma(b)=\sigma(c)+\sigma(d)$.
+% ed.: As in Lemma 13.1, the omitted positivity hypothesis on alpha is necessary.
+Corollary 13.2. Let $\alpha>0$ and let $A \subset \mathbb{Z}_{N}^{2}$. For any $h \in \mathbb{Z}_{N}$, define a domain $X_{h}=X_{h, 0} \cup X_{h, 1} \cup \cdots \cup X_{h, N-1}$ by letting $X_{h, x}$ be the set of all pairs $((x, y),(x, y+h))$, for which both $(x, y)$ and $(x, y+h)$ belong to $A$. Let $f_{h}(x)$ be the cardinality of $X_{h, x}$. Let $B \subset \mathbb{Z}_{N}$ and let $\sigma: B \rightarrow \mathbb{Z}_{N}$ be any function such that $\sum_{h \in B}\left|\hat{f}_{h}(\sigma(h))\right|^{2} \geqslant \alpha N^{5}$. Then there are at least $\alpha^{4} N^{3}$ quadruples $(a, b, c, d) \in B^{4}$ such that $a+b=c+d$ and $\sigma(a)+\sigma(b)=\sigma(c)+\sigma(d)$.
 
 Proof. This follows immediately from Lemma 13.1 applied to the characteristic function of $A$. \(\square\)
 
