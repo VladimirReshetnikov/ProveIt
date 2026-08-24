@@ -6319,4 +6319,204 @@ lemma dyadic_pattern_sixteen {n : Nat} {word : List Nat}
     ⟨⟨hoddFour, traceTwo.1, traceOne.1⟩,
       ⟨hevenFour, traceTwo.2, traceOne.2⟩⟩⟩
 
+/-- The boundary entries in the standing situation are separated far enough
+that neither affine reflection remains in `[n]`. -/
+lemma standing_boundary_separated {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    exists b1 c1 : Nat,
+      EndsWith (oddTrace gamma) b1 /\
+      StartsWith (evenTrace gamma) c1 /\
+      b1 ∈ lowerHalf n /\ c1 ∈ upperHalf n /\
+      2 * b1 <= c1 /\ n < 2 * c1 - b1 := by
+  rcases hstanding with
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  have hn : 3 <= n := three_le_of_standingInterleavingHypotheses
+    ⟨hgamma12, b1, c1, hbEnd, hcStart, hcommute, hbLower, hcUpper⟩
+  have hbSegment : b1 ∈ segment n := by
+    simp only [lowerHalf, segment, Finset.mem_Icc] at hbLower ⊢
+    omega
+  have hcSegment : c1 ∈ segment n := by
+    simp only [upperHalf, segment, Finset.mem_Icc] at hcUpper ⊢
+    omega
+  have hbOdd : Odd b1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_endsWith hbEnd)).2
+  have hcEven : Even c1 := by
+    exact of_decide_eq_true (List.mem_filter.mp (mem_of_startsWith hcStart)).2
+  have hnotDoNotCommute : ¬ DoNotCommute n b1 c1 := by
+    intro hdo
+    rcases hcommute with ⟨witness, hwitness12, hreverse⟩
+    exact (occursLeftOf_asymm (isTheta_nodup hwitness12.1)
+      (hdo witness hwitness12)) hreverse
+  have hnoBoundaryReflections :
+      ¬ ((c1 <= 2 * b1 /\ 2 * b1 - c1 ∈ segment n) \/
+        (b1 <= 2 * c1 /\ 2 * c1 - b1 ∈ segment n)) := by
+    intro hreflections
+    exact hnotDoNotCommute
+      ((theorem_2_2_holds n b1 c1 hn hbSegment hcSegment hbOdd hcEven).2 hreflections)
+  have hseparated : 2 * b1 <= c1 := by
+    by_contra hnot
+    apply hnoBoundaryReflections
+    left
+    constructor
+    · omega
+    · simp only [segment, Finset.mem_Icc]
+      simp only [lowerHalf, Finset.mem_Icc] at hbLower
+      rcases hbOdd with ⟨b, hb⟩
+      rcases hcEven with ⟨c, hc⟩
+      omega
+  have hreflectionAbove : n < 2 * c1 - b1 := by
+    by_contra hnot
+    apply hnoBoundaryReflections
+    right
+    constructor
+    · simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hbLower hcUpper
+      omega
+    · simp only [segment, Finset.mem_Icc]
+      simp only [lowerHalf, upperHalf, Finset.mem_Icc] at hbLower hcUpper
+      omega
+  exact ⟨b1, c1, hbEnd, hcStart, hbLower, hcUpper,
+    hseparated, hreflectionAbove⟩
+
+lemma oddActiveBlock_nodup {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) :
+    (oddActiveBlock n (oddTrace gamma)).Nodup := by
+  unfold oddActiveBlock epilogue
+  apply List.nodup_reverse.mpr
+  exact (prologue_prefix n (reversal (oddTrace gamma))).sublist.nodup (by
+    change (oddTrace gamma).reverse.Nodup
+    exact List.nodup_reverse.mpr ((isTheta_nodup hgamma).filter _))
+
+lemma evenActiveBlock_nodup {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) :
+    (evenActiveBlock n (evenTrace gamma)).Nodup := by
+  unfold evenActiveBlock
+  exact (prologue_prefix n (evenTrace gamma)).sublist.nodup
+    ((isTheta_nodup hgamma).filter _)
+
+/-- Every active odd/even pair obeys the two strict separation inequalities
+implicit in the paper's commutation cases. -/
+lemma activeBlocks_separated {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma) :
+    ∀ x ∈ oddActiveBlock n (oddTrace gamma),
+      ∀ y ∈ evenActiveBlock n (evenTrace gamma),
+        2 * x <= y /\ n < 2 * y - x := by
+  obtain ⟨b1, c1, hbEnd, hcStart, hbLower, hcUpper,
+      hboundary, hreflection⟩ := standing_boundary_separated hstanding
+  intro x hx y hy
+  have hxTrace := oddActiveBlock_mem_oddTrace hx
+  have hyTrace := evenActiveBlock_mem_evenTrace hy
+  have hxGamma : x ∈ gamma := (List.mem_filter.mp hxTrace).1
+  have hyGamma : y ∈ gamma := (List.mem_filter.mp hyTrace).1
+  have hxSegment := mem_segment_of_mem_of_isTheta hstanding.1.1 hxGamma
+  have hySegment := mem_segment_of_mem_of_isTheta hstanding.1.1 hyGamma
+  have hxLe : x <= b1 := oddEpilogue_entry_le_last hstanding.1.1 hbEnd hbLower (by
+    simpa [oddActiveBlock] using hx)
+  have hyLe : c1 <= y := evenPrologue_first_le_entry hstanding.1.1 hcStart hcUpper (by
+    simpa [evenActiveBlock] using hy)
+  simp only [segment, Finset.mem_Icc] at hxSegment hySegment
+  constructor <;> omega
+
+/-- Four active odds and three active evens already force the ambient segment
+past the first dyadic scale. -/
+lemma sixteen_le_of_active_lengths {n : Nat} {gamma : List Nat}
+    (hstanding : StandingInterleavingHypotheses n gamma)
+    (hu : 4 <= (epilogue n (oddTrace gamma)).length)
+    (hv : 3 <= (prologue n (evenTrace gamma)).length) : 16 <= n := by
+  let xs := oddActiveBlock n (oddTrace gamma)
+  let ys := evenActiveBlock n (evenTrace gamma)
+  have hxsLength : 4 <= xs.length := by
+    simpa only [xs, oddActiveBlock_length] using hu
+  have hysLength : 3 <= ys.length := by
+    simpa only [ys, evenActiveBlock_length] using hv
+  let x0 := xs[0]'(by omega)
+  let x1 := xs[1]'(by omega)
+  let x2 := xs[2]'(by omega)
+  let x3 := xs[3]'(by omega)
+  let y0 := ys[0]'(by omega)
+  let y1 := ys[1]'(by omega)
+  let y2 := ys[2]'(by omega)
+  have hx0 : x0 ∈ xs := List.getElem_mem _
+  have hx1 : x1 ∈ xs := List.getElem_mem _
+  have hx2 : x2 ∈ xs := List.getElem_mem _
+  have hx3 : x3 ∈ xs := List.getElem_mem _
+  have hy0 : y0 ∈ ys := List.getElem_mem _
+  have hy1 : y1 ∈ ys := List.getElem_mem _
+  have hy2 : y2 ∈ ys := List.getElem_mem _
+  have hxsNodup : xs.Nodup := by
+    simpa only [xs] using oddActiveBlock_nodup hstanding.1.1
+  have hysNodup : ys.Nodup := by
+    simpa only [ys] using evenActiveBlock_nodup hstanding.1.1
+  have hx01 : x0 ≠ x1 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hx02 : x0 ≠ x2 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hx03 : x0 ≠ x3 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hx12 : x1 ≠ x2 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hx13 : x1 ≠ x3 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hx23 : x2 ≠ x3 := by
+    exact mt hxsNodup.getElem_inj_iff.mp (by norm_num)
+  have hy01 : y0 ≠ y1 := by
+    exact mt hysNodup.getElem_inj_iff.mp (by norm_num)
+  have hy02 : y0 ≠ y2 := by
+    exact mt hysNodup.getElem_inj_iff.mp (by norm_num)
+  have hy12 : y1 ≠ y2 := by
+    exact mt hysNodup.getElem_inj_iff.mp (by norm_num)
+  have hxOdd : ∀ x ∈ xs, Odd x := by
+    intro x hx
+    exact of_decide_eq_true
+      (List.mem_filter.mp (oddActiveBlock_mem_oddTrace (by simpa only [xs] using hx))).2
+  have hyEven : ∀ y ∈ ys, Even y := by
+    intro y hy
+    exact of_decide_eq_true
+      (List.mem_filter.mp (evenActiveBlock_mem_evenTrace (by simpa only [ys] using hy))).2
+  have hsep := activeBlocks_separated hstanding
+  have h00 := hsep x0 (by simpa only [xs] using hx0) y0 (by simpa only [ys] using hy0)
+  have h01 := hsep x1 (by simpa only [xs] using hx1) y0 (by simpa only [ys] using hy0)
+  have h02 := hsep x2 (by simpa only [xs] using hx2) y0 (by simpa only [ys] using hy0)
+  have h03 := hsep x3 (by simpa only [xs] using hx3) y0 (by simpa only [ys] using hy0)
+  have h10 := hsep x0 (by simpa only [xs] using hx0) y1 (by simpa only [ys] using hy1)
+  have h11 := hsep x1 (by simpa only [xs] using hx1) y1 (by simpa only [ys] using hy1)
+  have h12 := hsep x2 (by simpa only [xs] using hx2) y1 (by simpa only [ys] using hy1)
+  have h13 := hsep x3 (by simpa only [xs] using hx3) y1 (by simpa only [ys] using hy1)
+  have h20 := hsep x0 (by simpa only [xs] using hx0) y2 (by simpa only [ys] using hy2)
+  have h21 := hsep x1 (by simpa only [xs] using hx1) y2 (by simpa only [ys] using hy2)
+  have h22 := hsep x2 (by simpa only [xs] using hx2) y2 (by simpa only [ys] using hy2)
+  have h23 := hsep x3 (by simpa only [xs] using hx3) y2 (by simpa only [ys] using hy2)
+  have hy0Segment := mem_segment_of_mem_of_isTheta hstanding.1.1
+    (List.mem_filter.mp (evenActiveBlock_mem_evenTrace
+      (by simpa only [ys] using hy0))).1
+  have hy1Segment := mem_segment_of_mem_of_isTheta hstanding.1.1
+    (List.mem_filter.mp (evenActiveBlock_mem_evenTrace
+      (by simpa only [ys] using hy1))).1
+  have hy2Segment := mem_segment_of_mem_of_isTheta hstanding.1.1
+    (List.mem_filter.mp (evenActiveBlock_mem_evenTrace
+      (by simpa only [ys] using hy2))).1
+  rcases hxOdd x0 hx0 with ⟨a0, ha0⟩
+  rcases hxOdd x1 hx1 with ⟨a1, ha1⟩
+  rcases hxOdd x2 hx2 with ⟨a2, ha2⟩
+  rcases hxOdd x3 hx3 with ⟨a3, ha3⟩
+  rcases hyEven y0 hy0 with ⟨b0, hb0⟩
+  rcases hyEven y1 hy1 with ⟨b1, hb1⟩
+  rcases hyEven y2 hy2 with ⟨b2, hb2⟩
+  simp only [segment, Finset.mem_Icc] at hy0Segment hy1Segment hy2Segment
+  omega
+
+lemma sixteen_mul_dyadicQ_le {n : Nat} (hn : 16 <= n) :
+    16 * dyadicQ n <= n := by
+  have hnPos : n ≠ 0 := by omega
+  have hlog : 4 <= Nat.log 2 n := by
+    rw [Nat.le_log_iff_pow_le (by norm_num) hnPos]
+    norm_num
+    exact hn
+  have hpow : 2 ^ Nat.log 2 n <= n := Nat.pow_log_le_self 2 hnPos
+  rw [show 16 * dyadicQ n = 2 ^ Nat.log 2 n by
+    simp only [dyadicQ]
+    rw [show Nat.log 2 n = (Nat.log 2 n - 4) + 4 by omega, pow_add]
+    norm_num
+    ring]
+  exact hpow
+
 end LeanProofs.Sharma2012
