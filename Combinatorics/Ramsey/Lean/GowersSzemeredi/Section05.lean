@@ -8,11 +8,12 @@ numbered results in Section 5 of "A new proof of Szemeredi's theorem".  No
 result is asserted here.
 
 The transcription is corrected where the printed statement conflicts with
-its proof.  In particular, Lemma 5.2 has the factor `1 / 4`, the polynomial
-partition results exclude more cells than points, Corollary 5.8 has density
-increment `alpha / 16`, the iterated exponents in Lemma 5.10 and Corollary
-5.11 are parenthesized according to their proofs, and Lemma 5.14 uses the
-same polynomial constant as Corollary 5.7.
+its proof.  In particular, Lemma 5.2 has the factor `1 / 4`; the polynomial
+partition results use the target-length form actually produced by their
+proofs; Corollary 5.8 has density increment `alpha / 16`; the iterated
+exponents in Lemma 5.10 and Corollary 5.11 are parenthesized according to
+their proofs; and Lemma 5.14 uses the same polynomial constant as Corollary
+5.7.
 -/
 
 set_option autoImplicit false
@@ -137,35 +138,49 @@ def lemma_5_5 : Prop :=
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) <=
         (t : Real) ^ (-((k : Real) * (2 : Real) ^ (k + 1))⁻¹) * N
 
+/-- The square-root-size strengthening obtained inside the proof of Lemma
+5.5 and needed by the induction in Corollary 5.6.  The integral inequality
+`p ^ 2 <= t` is the rounding-safe meaning of the proof's `p <= t^(1/2)`. -/
+def lemma_5_5_square_root_auxiliary : Prop :=
+  forall (k t N : Nat) [NeZero N], 2 <= k -> weylThreshold k <= t -> t <= N ->
+    forall a : ZMod N, exists p : Nat, 1 <= p /\ p ^ 2 <= t /\
+      (centeredAbs (((p : ZMod N) ^ k) * a) : Real) <=
+        (t : Real) ^ (-((k : Real) * (2 : Real) ^ (k + 1))⁻¹) * N
+
 /-! ## Polynomial partitioning -/
 
-/-- **Corollary 5.6.** Partition into almost-equal progressions on which a
-polynomial has small diameter.  The necessary restriction `m <= r` is made
-explicit. -/
+/-- **Corollary 5.6.** Partition into progressions of a prescribed target
+length on which a polynomial has small diameter.  The printed exact-cell-count
+form is false; its induction instead produces an emergent number of nonempty
+cells, each of length `v - 1` or `v`.  The proof-supported bound `r <= N`
+makes the invocation of Lemma 5.5 with scale `t = r` explicit. -/
 def corollary_5_6 : Prop :=
-  forall (N k r m : Nat) [NeZero N] (phi : ZMod N -> ZMod N),
+  forall (N k r v : Nat) [NeZero N] (phi : ZMod N -> ZMod N),
     1 <= k -> PolynomialOn k Finset.univ phi ->
-    polynomialPartitionThreshold k < r ->
-    (r : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) <= m -> m <= r ->
-      exists P : Fin m -> NatAP,
-        IsNatAPPartition P (Finset.range r) /\
-        (forall j, (P j).IsProper) /\ NatAPLengthsDifferAtMostOne P /\
+    polynomialPartitionThreshold k < r -> r <= N ->
+    1 <= v -> (v : Real) <=
+      (r : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ ->
+      exists M : Nat, exists P : Fin M -> NatAP,
+        0 < M /\ IsNatAPPartition P (Finset.range r) /\
+        (forall j, (P j).IsProper /\ 0 < (P j).length /\
+          ((P j).length = v - 1 \/ (P j).length = v)) /\
         forall j, diameterAtMostReal
           ((P j).carrier.image fun x : Nat => phi (x : ZMod N))
           ((r : Real) ^ (-(polynomialPartitionConstant k : Real)⁻¹) * N)
 
-/-- **Corollary 5.7.** Polynomial bias becomes ordinary bias on the cells of
-an almost-equal progression partition.  As in Corollary 5.6, `m <= r` is an
-implicit necessary hypothesis in the printed version. -/
+/-- **Corollary 5.7.** Polynomial bias becomes ordinary bias on the nonempty
+cells of the target-length partition supplied by Corollary 5.6. -/
 def corollary_5_7 : Prop :=
-  forall (N k r m : Nat) [NeZero N] (phi : ZMod N -> ZMod N) (alpha : Real),
+  forall (N k r v : Nat) [NeZero N] (phi : ZMod N -> ZMod N) (alpha : Real),
     1 <= k -> PolynomialOn k Finset.univ phi -> 0 < alpha ->
     max (polynomialPartitionThreshold k : Real)
         ((4 * Real.pi / alpha) ^ polynomialPartitionConstant k) < r ->
-    (r : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) <= m -> m <= r ->
-      exists P : Fin m -> NatAP,
-        IsNatAPPartition P (Finset.range r) /\
-        (forall j, (P j).IsProper) /\ NatAPLengthsDifferAtMostOne P /\
+    r <= N -> 1 <= v -> (v : Real) <=
+      (r : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ ->
+      exists M : Nat, exists P : Fin M -> NatAP,
+        0 < M /\ IsNatAPPartition P (Finset.range r) /\
+        (forall j, (P j).IsProper /\ 0 < (P j).length /\
+          ((P j).length = v - 1 \/ (P j).length = v)) /\
         forall f : ZMod N -> Complex, DiscValued f ->
           alpha * r <=
             ‖∑ s ∈ Finset.range r,
@@ -192,19 +207,20 @@ def corollary_5_8 : Prop :=
           Q.carrier.card /\
         (delta + alpha / 16) * Q.carrier.card <= (A ∩ Q.carrier).card
 
-/-- **Lemma 5.9.** Simultaneous small-diameter partitioning for finitely
-many modular polynomials.  As in the one-polynomial result, the number of
-nonempty cells is required not to exceed the number of points. -/
+/-- **Lemma 5.9.** Simultaneous small-diameter partitioning for finitely many
+modular polynomials, in the target-length form supported by its refinement
+proof. -/
 def lemma_5_9 : Prop :=
-  forall (N k q r m : Nat) [NeZero N]
+  forall (N k q r v : Nat) [NeZero N]
       (phi : Fin q -> ZMod N -> ZMod N),
     1 <= k -> 1 <= q -> (forall i, PolynomialOn k Finset.univ (phi i)) ->
-    simultaneousPolynomialThreshold k q < r ->
-    (r : Real) ^
-        (1 - (2 * (polynomialPartitionConstant k : Real) ^ q)⁻¹) <= m -> m <= r ->
-      exists P : Fin m -> NatAP,
-        IsNatAPPartition P (Finset.range r) /\
-        (forall j, (P j).IsProper) /\ NatAPLengthsDifferAtMostOne P /\
+    simultaneousPolynomialThreshold k q < r -> r <= N ->
+    1 <= v -> (v : Real) <= (r : Real) ^
+      (2 * (polynomialPartitionConstant k : Real) ^ q)⁻¹ ->
+      exists M : Nat, exists P : Fin M -> NatAP,
+        0 < M /\ IsNatAPPartition P (Finset.range r) /\
+        (forall j, (P j).IsProper /\ 0 < (P j).length /\
+          ((P j).length = v - 1 \/ (P j).length = v)) /\
         forall i j, diameterAtMostReal
           ((P j).carrier.image fun x : Nat => phi i (x : ZMod N))
           ((r : Real) ^

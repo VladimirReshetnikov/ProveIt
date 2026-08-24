@@ -768,6 +768,12 @@ Lemma 5.4. Let $\alpha$ be a real number. For every integer $u \geqslant 1$ ther
 
 The next lemma is also due to Weyl. Since it is again hard to find in the literature in the quantitative form we need, we give a complete proof.\\
 Lemma 5.5. Let $k \geqslant 2$, let $t \geqslant 2^{2^{32 k^{2}}}$, let $N \geqslant t$ and let $a \in \mathbb{Z}_{N}$. Then there exists $p$ with $1\leqslant p \leqslant t$ such that $\left|p^{k} a\right| \leqslant t^{-1 / k 2^{k+1}} N$.\\
+% ed.: The displayed collection A below must be read with multiplicity.  As a
+% set it can have fewer than t elements when two polynomial values collide,
+% and then both |A|=t and the displayed Fourier identity are false.  The
+% formal proof uses the counting function
+% g(x)=#{s in [1,t] : s^k a=x}; its total mass is t and its Fourier transform
+% is exactly the Weyl sum, with repetitions retained.
 Proof. Let $A=\left\{a, 2^{k} a, 3^{k} a, \ldots, t^{k} a\right\}$. By Lemma 5.2, if the result is false then there exists $r$ such that $0<|r| \leqslant t^{1 / k 2^{k}}$ and $|\hat{A}(r)| \geqslant \frac{1}{2} t^{1-1 / k 2^{k+1}}$. Setting $\alpha=-a r / N$, we have
 
 $$
@@ -796,9 +802,20 @@ $$
 
 so we can set $p=r q$ (contradicting the initial assumption that the result was false). \(\square\)
 
-Corollary 5.6. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be any polynomial of degree $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r$ be an integer exceeding $2^{2^{40 k^{2}}}$. Then for every integer $m$ with $r^{1-1 / K} \leqslant m \leqslant r$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into arithmetic progressions $P_{1}, \ldots, P_{m}$ such that the diameter of $\phi\left(P_{j}\right)$ is at most $r^{-1 / K} N$ for every $j$ and the lengths of any two $P_{j}$ differ by at most 1 .
+% ed.: The prescribed number $m$ of almost-equal cells is not supported by
+% the proof and is false already for the identity map modulo two.  The
+% induction instead produces an emergent positive number of nonempty cells of
+% a prescribed target length $v-1$ or $v$; we state that form here.  The
+% proof also invokes Lemma 5.5 with $t=r$, so its required bound $r\leqslant N$
+% is made explicit rather than supplying an unprinted periodic case.
+Corollary 5.6. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be any polynomial of degree $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r$ be an integer exceeding $2^{2^{40 k^{2}}}$ with $r\leqslant N$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi\left(P_{j}\right)$ is at most $r^{-1 / K} N$ for every $j$.
 
-Proof. The case $k=1$ follows immediately from Lemma 2.2. Given $k>1$, let us write $\phi(x)=a x^{k}+\psi_{1}(x)$, in such a way that $\psi_{1}$ is a polynomial of degree $k-1$. By Lemma 5.5 we can find $p \leqslant r^{1 / 2}$ such that $\left|a p^{k}\right| \leqslant$ $r^{-1 / k 2^{k+2}} N$. Then for any $s$ we have
+% ed.: The base case uses the linear partition lemma, Lemma 2.3, not the
+% uniformity equivalence in Lemma 2.2.  The next two exponents are corrected
+% from $k+2$ to $k+1$: this is the exponent supplied by Lemma 5.5 with $t=r$,
+% and it is required by the subsequent choice of $u$.  The square-root bound
+% on $p$ is the stronger estimate obtained inside the proof of Lemma 5.5.
+Proof. The case $k=1$ follows immediately from Lemma 2.3. Given $k>1$, let us write $\phi(x)=a x^{k}+\psi_{1}(x)$, in such a way that $\psi_{1}$ is a polynomial of degree $k-1$. By Lemma 5.5 we can find $p \leqslant r^{1 / 2}$ such that $\left|a p^{k}\right| \leqslant$ $r^{-1 / k 2^{k+1}} N$. Then for any $s$ we have
 
 $$
 \begin{aligned}
@@ -808,7 +825,7 @@ $$
 $$
 
 where $\psi_{2}$ is, for any fixed $x$, a polynomial of degree at most $k-1$ in $s$.\\
-For any $u$, the diameter of the set $\left\{s^{k}\left(a p^{k}\right): 0 \leqslant s<u\right\}$ is at most $u^{k}\left|a p^{k}\right| \leqslant u^{k} r^{-1 / k 2^{k+2}} N$. Therefore, for any $u \leqslant r^{1 / 4}$, we can partition the set $\{0,1, \ldots, r-1\}$ into arithmetic progressions of the form
+For any $u$, the diameter of the set $\left\{s^{k}\left(a p^{k}\right): 0 \leqslant s<u\right\}$ is at most $u^{k}\left|a p^{k}\right| \leqslant u^{k} r^{-1 / k 2^{k+1}} N$. Therefore, for any $u \leqslant r^{1 / 4}$, we can partition the set $\{0,1, \ldots, r-1\}$ into arithmetic progressions of the form
 
 $$
 Q_{j}=\left\{x_{j}, x_{j}+p, \ldots, x_{j}+\left(u_{j}-1\right) p\right\},
@@ -822,7 +839,9 @@ $$
 
 Let us choose $u=r^{1 / k^{2} 2^{k+2}}$, with the result that $u^{k} r^{-1 / k 2^{k+1}}=r^{-1 / k 2^{k+2}}$. It is easy to check that $u \geqslant 2^{2^{40(k-1)^{2}}}$. Therefore, by induction, if $v \leqslant u^{1 / L}$, where $L=((k-1)!)^{2} 2^{k^{2}}$, then every $Q_{j}$ can be partitioned into arithmetic progressions $P_{j t}$ of length $v-1$ or $v$ in such a way that $\operatorname{diam}\left(\phi_{j}\left(P_{j t}\right)\right) \leqslant$ $u^{-1 / L} N$ for every $t$. It is not hard to check that this, with our choice of $u$ above, gives us the inductive hypothesis for $k$. \(\square\)
 
-Corollary 5.7. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be a polynomial of degree $k$, let $K=$ $(k!)^{2} 2^{(k+1)^{2}}$, let $\alpha>0$ and let $r$ be an integer exceeding $\max \left\{2^{2^{40 k^{2}}},(4 \pi / \alpha)^{K}\right\}$. Then, for any integer $m$ with $r^{1-1 / K} \leqslant m \leqslant r$, there is a partition of the set $\{0,1, \ldots, r-1\}$ into arithmetic progressions $P_{1}, \ldots, P_{m}$ such that the sizes of the $P_{j}$ differ by at most one, and if $f: \mathbb{Z}_{N} \rightarrow D$ is any function such that
+% ed.: Corollary 5.7 uses the target-length form of Corollary 5.6, with an
+% emergent positive number of nonempty cells.
+Corollary 5.7. Let $\phi: \mathbb{Z}_{N} \rightarrow \mathbb{Z}_{N}$ be a polynomial of degree $k$, let $K=$ $(k!)^{2} 2^{(k+1)^{2}}$, let $\alpha>0$ and let $r\leqslant N$ be an integer exceeding $\max \left\{2^{2^{40 k^{2}}},(4 \pi / \alpha)^{K}\right\}$. Then, for any integer $v$ with $1 \leqslant v \leqslant r^{1 / K}$, there is a partition of the set $\{0,1, \ldots, r-1\}$ into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, and if $f: \mathbb{Z}_{N} \rightarrow D$ is any function such that
 
 $$
 \left|\sum_{s=0}^{r-1} f(s) \omega^{-\phi(s)}\right| \geqslant \alpha r,
@@ -831,10 +850,10 @@ $$
 then
 
 $$
-\sum_{j=1}^{m}\left|\sum_{s \in P_{j}} f(s)\right| \geqslant(\alpha / 2) r .
+\sum_{j=1}^{M}\left|\sum_{s \in P_{j}} f(s)\right| \geqslant(\alpha / 2) r .
 $$
 
-Proof. By Corollary 5.6 we can choose $P_{1}, \ldots, P_{m}$ such that $\operatorname{diam}\left(\phi\left(P_{j}\right)\right) \leqslant$ $N r^{-1 / K}$ for every $j$. By the second lower bound for $r$, this is at most $\alpha N / 4 \pi$. Exactly as in the proof of Corollary 2.4, this implies the result. \(\square\)
+Proof. By Corollary 5.6 we can choose $P_{1}, \ldots, P_{M}$ such that $\operatorname{diam}\left(\phi\left(P_{j}\right)\right) \leqslant$ $N r^{-1 / K}$ for every $j$. By the second lower bound for $r$, this is at most $\alpha N / 4 \pi$. Exactly as in the proof of Corollary 2.4, this implies the result. \(\square\)
 
 Corollary 5.8. Let $A \subset \mathbb{Z}_{N}$ be a set of cardinality $\delta N$ with balanced function $f$. Suppose that we can find disjoint arithmetic progressions $P_{1}, \ldots, P_{M}$ such that $A \subset \bigcup_{i} P_{i}$, and polynomials $\phi_{1}, \ldots, \phi_{M}$ of degree at most $k$ such that
 
@@ -869,11 +888,13 @@ arises there, since polynomial bias implies linear bias on small subprogressions
 
 We continue the section with three results that generalize Lemma 5.5 and Corollary 5.6 to statements dealing with several polynomials at once. These generalizations will not be needed for progressions of length four, but they are very important for progressions of length six or more, and the next lemma is needed for progressions of length five (in the case $k=2$ ). Our methods of proof are extremely crude, and it is quite likely that much better bounds are known. However, we have not been able to find them and the poor bounds here do not greatly affect the estimate we shall eventually obtain for Szemerédi's theorem.
 
-Lemma 5.9. Let $\phi_{1}, \ldots, \phi_{q}$ be polynomials from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ of degree at most $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r$ be an integer exceeding $2^{2^{40 k^{2}} K^{q-1}}$. Then for every integer $m$ with $r^{1-1 / 2 K^{q}} \leqslant m \leqslant r$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into arithmetic progressions $P_{1}, \ldots, P_{m}$ such that the diameter of $\phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{q}} N$ for every $i$ and every $j$, and the lengths of any two $P_{j}$ differ by at most 1.
+% ed.: As in Corollary 5.6, the proof supports a prescribed target length and
+% an emergent cell count, not the printed prescribed exact number of cells.
+Lemma 5.9. Let $\phi_{1}, \ldots, \phi_{q}$ be polynomials from $\mathbb{Z}_{N}$ to $\mathbb{Z}_{N}$ of degree at most $k$, let $K=(k!)^{2} 2^{(k+1)^{2}}$ and let $r\leqslant N$ be an integer exceeding $2^{2^{40 k^{2}} K^{q-1}}$. Then for every integer $v$ with $1 \leqslant v \leqslant r^{1 /(2 K^{q})}$ the set $\{0,1,2, \ldots, r-1\}$ can be partitioned into a positive number of nonempty arithmetic progressions $P_{1}, \ldots, P_{M}$, each of length $v-1$ or $v$, such that the diameter of $\phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{q}} N$ for every $i$ and every $j$.
 
-Proof. First we prove by induction that for every $p \leqslant q$ we can partition the set $\{0,1, \ldots, r-1\}$ into arithmetic progressions $P_{1}, \ldots, P_{m}$ of size at least $r^{1 / K^{p}}$ such that $\operatorname{diam} \phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{p}} N$ for every $i \leqslant p$ and $j \leqslant m$. When $p=1$ this follows immediately from Corollary 5.6. If we know it for $p-1$, let $Q_{1}, \ldots, Q_{l}$ be the arithmetic progressions obtained. The size of each $Q_{i}$ is at least $r^{1 / K^{p-1}} \geqslant 2^{2^{40 k^{2}}}$, so by Corollary 5.6 each $Q_{i}$ can be partitioned into further arithmetic progressions $P_{j}$ of cardinality at least $\left(r^{1 / K^{p-1}}\right)^{1 / K}=r^{1 / K^{p}}$, such that, for every $j$, the diameter of $\phi_{p}\left(P_{j}\right)$ is at most $\left(r^{-1 / K^{p-1}}\right)^{1 / K} N=r^{-1 / K^{p}} N$. This is clearly enough to give us the statement for $p$.
+Proof. First we prove by induction that for every $p \leqslant q$ we can partition the set $\{0,1, \ldots, r-1\}$ into some positive number of nonempty arithmetic progressions of size at least $r^{1 / K^{p}}$ such that $\operatorname{diam} \phi_{i}\left(P_{j}\right)$ is at most $r^{-1 / K^{p}} N$ for every $i \leqslant p$ and every cell $P_j$. When $p=1$ this follows immediately from Corollary 5.6. If we know it for $p-1$, let $Q_{1}, \ldots, Q_{l}$ be the arithmetic progressions obtained. The size of each $Q_{i}$ is at least $r^{1 / K^{p-1}} \geqslant 2^{2^{40 k^{2}}}$, so by Corollary 5.6 each $Q_{i}$ can be partitioned into further arithmetic progressions $P_{j}$ of cardinality at least $\left(r^{1 / K^{p-1}}\right)^{1 / K}=r^{1 / K^{p}}$, such that, for every $j$, the diameter of $\phi_{p}\left(P_{j}\right)$ is at most $\left(r^{-1 / K^{p-1}}\right)^{1 / K} N=r^{-1 / K^{p}} N$. This is clearly enough to give us the statement for $p$.
 
-In particular, we have the statement when $p=q$. To obtain the lemma, notice that if $k^{2} \leqslant m$, then an arithmetic progression of length $m$ can be partitioned into subprogressions each of which has length $k$ or $k+1$. \(\square\)
+In particular, we have the statement when $p=q$. To obtain the lemma, use the elementary fact that if $a^{2} \leqslant b$, then an arithmetic progression of length $b$ can be partitioned into nonempty subprogressions each of which has length $a$ or $a+1$, and take $a=v-1$. \(\square\)
 
 We are now going to prove a similar result for multilinear functions, which in this context means functions of the form
 

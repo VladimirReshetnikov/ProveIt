@@ -29,6 +29,7 @@ import GowersSzemeredi.Proofs03CubeUpper
 import GowersSzemeredi.Proofs03Interval
 import GowersSzemeredi.Proofs05FourierInterval
 import GowersSzemeredi.Proofs05MissingInterval
+import GowersSzemeredi.Proofs05PolynomialPartition
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
