@@ -3030,4 +3030,1363 @@ theorem dyadic_concatenation_exists_holds : dyadic_concatenation_exists := by
     dyadicArrangement_length_pos dyadicArrangement_nodup dyadicArrangement_pos
     dyadicArrangement_unique_cover
 
+private def f6DyadicScalePosition (r : Nat) : Int :=
+  if Even r then -((r / 2 : Nat) : Int) else (((r + 1) / 2 : Nat) : Int)
+
+private theorem f6DyadicScalePosition_two_mul (k : Nat) :
+    f6DyadicScalePosition (2 * k) = -(k : Int) := by
+  simp [f6DyadicScalePosition, even_iff_exists_two_mul]
+
+private theorem f6DyadicScalePosition_two_mul_add_one (k : Nat) :
+    f6DyadicScalePosition (2 * k + 1) = (k + 1 : Nat) := by
+  have hnot : ¬ Even (2 * k + 1) :=
+    Nat.not_even_iff_odd.mpr (odd_iff_exists_bit1.mpr ⟨k, rfl⟩)
+  simp [f6DyadicScalePosition, hnot]
+  omega
+
+private theorem f6DyadicBlockIndex_scalePosition (r : Nat) :
+    dyadicBlockIndex (f6DyadicScalePosition r) = r := by
+  by_cases hr : Even r
+  · obtain ⟨k, rfl⟩ := even_iff_exists_two_mul.mp hr
+    rw [f6DyadicScalePosition_two_mul]
+    cases k with
+    | zero => rfl
+    | succ k =>
+        change dyadicBlockIndex (Int.negSucc k) = 2 * (k + 1)
+        simp only [dyadicBlockIndex]
+  · obtain ⟨k, rfl⟩ := odd_iff_exists_bit1.mp (Nat.not_even_iff_odd.mp hr)
+    rw [f6DyadicScalePosition_two_mul_add_one]
+    change dyadicBlockIndex (Int.ofNat (k + 1)) = 2 * k + 1
+    simp only [dyadicBlockIndex]
+
+private theorem f6EarlierScale_between {j i : Nat} (hji : j < i) :
+    (f6DyadicScalePosition i < f6DyadicScalePosition j ∧
+        f6DyadicScalePosition j < f6DyadicScalePosition (i + 1)) ∨
+      (f6DyadicScalePosition (i + 1) < f6DyadicScalePosition j ∧
+        f6DyadicScalePosition j < f6DyadicScalePosition i) := by
+  by_cases hi : Even i
+  · obtain ⟨k, rfl⟩ := even_iff_exists_two_mul.mp hi
+    rw [f6DyadicScalePosition_two_mul]
+    have hnext : 2 * k + 1 = 2 * k + 1 := rfl
+    rw [f6DyadicScalePosition_two_mul_add_one]
+    left
+    by_cases hj : Even j
+    · obtain ⟨l, rfl⟩ := even_iff_exists_two_mul.mp hj
+      rw [f6DyadicScalePosition_two_mul]
+      omega
+    · obtain ⟨l, rfl⟩ := odd_iff_exists_bit1.mp (Nat.not_even_iff_odd.mp hj)
+      rw [f6DyadicScalePosition_two_mul_add_one]
+      omega
+  · obtain ⟨k, rfl⟩ := odd_iff_exists_bit1.mp (Nat.not_even_iff_odd.mp hi)
+    rw [f6DyadicScalePosition_two_mul_add_one]
+    have heq : 2 * k + 1 + 1 = 2 * (k + 1) := by omega
+    rw [heq, f6DyadicScalePosition_two_mul]
+    right
+    by_cases hj : Even j
+    · obtain ⟨l, rfl⟩ := even_iff_exists_two_mul.mp hj
+      rw [f6DyadicScalePosition_two_mul]
+      omega
+    · obtain ⟨l, rfl⟩ := odd_iff_exists_bit1.mp (Nat.not_even_iff_odd.mp hj)
+      rw [f6DyadicScalePosition_two_mul_add_one]
+      omega
+
+private def f6DyadicScale (x : PositiveNat) : Nat := Nat.log 2 (x : Nat)
+
+private theorem f6DyadicScale_bounds (x : PositiveNat) :
+    2 ^ f6DyadicScale x ≤ (x : Nat) ∧
+      (x : Nat) ≤ 2 ^ (f6DyadicScale x + 1) - 1 := by
+  have hxne : (x : Nat) ≠ 0 := Nat.ne_of_gt x.property
+  have hlower : 2 ^ Nat.log 2 (x : Nat) ≤ (x : Nat) :=
+    Nat.pow_log_le_self 2 hxne
+  have hupper : (x : Nat) < 2 ^ (Nat.log 2 (x : Nat) + 1) := by
+    apply Nat.lt_pow_of_log_lt Nat.one_lt_two
+    exact Nat.lt_succ_self _
+  constructor
+  · simpa only [f6DyadicScale] using hlower
+  · change (x : Nat) ≤ 2 ^ (Nat.log 2 (x : Nat) + 1) - 1
+    omega
+
+private theorem f6DyadicScale_mono {x y : PositiveNat}
+    (hxy : (x : Nat) ≤ (y : Nat)) : f6DyadicScale x ≤ f6DyadicScale y := by
+  exact Nat.log_mono_right hxy
+
+private theorem f6DyadicScale_mem_block (x : PositiveNat) :
+    (x : Nat) ∈ dyadicBlock (f6DyadicScale x) := by
+  have horder := (dyadic_block_properties_holds (f6DyadicScale x)).1
+  have hxset : (x : Nat) ∈ Icc (2 ^ f6DyadicScale x)
+      (2 ^ (f6DyadicScale x + 1) - 1) := by
+    simpa only [mem_Icc] using f6DyadicScale_bounds x
+  have hxfin : (x : Nat) ∈ (dyadicBlock (f6DyadicScale x)).toFinset := by
+    rw [horder.2]
+    exact hxset
+  simpa only [List.mem_toFinset] using hxfin
+
+private theorem f6DyadicScale_eq_of_mem_block (x : PositiveNat) {r : Nat}
+    (hx : (x : Nat) ∈ dyadicBlock r) : f6DyadicScale x = r := by
+  have horder := (dyadic_block_properties_holds r).1
+  have hxset : (x : Nat) ∈ Icc (2 ^ r) (2 ^ (r + 1) - 1) := by
+    rw [← horder.2]
+    simpa only [List.mem_toFinset] using hx
+  have hb := f6DyadicScale_bounds x
+  simp only [mem_Icc] at hxset
+  apply le_antisymm
+  · by_contra hnot
+    have hrlt : r < f6DyadicScale x := by omega
+    have hpow := Nat.pow_le_pow_right (by omega : 0 < 2)
+      (show r + 1 ≤ f6DyadicScale x by omega)
+    omega
+  · by_contra hnot
+    have hslt : f6DyadicScale x < r := by omega
+    have hpow := Nat.pow_le_pow_right (by omega : 0 < 2)
+      (show f6DyadicScale x + 1 ≤ r by omega)
+    omega
+
+private theorem f6ConcatStart_strictMono (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) = start i + (blocks i).length) :
+    StrictMono start := by
+  apply strictMono_int_of_lt_succ
+  intro i
+  rw [hsucc]
+  have hi : (0 : Int) < ((blocks i).length : Int) := by exact_mod_cast hlen i
+  omega
+
+private theorem f6DoublyIndex_eq_start_add_idxOf
+    (p : DoublyInfinitePermutation) (blocks : Int → Block) (start : Int → Int)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (blocks i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (blocks i) ⟨j, hj⟩)
+    (x : PositiveNat) (i : Int) (hx : (x : Nat) ∈ blocks i) :
+    doublyIndex p x = start i + (blocks i).idxOf (x : Nat) := by
+  have hj : (blocks i).idxOf (x : Nat) < (blocks i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hv := hvalues i ((blocks i).idxOf (x : Nat)) hj
+  have hget : (blocks i).get ⟨(blocks i).idxOf (x : Nat), hj⟩ = (x : Nat) :=
+    List.idxOf_get hj
+  have hp : p (start i + (blocks i).idxOf (x : Nat)) = x := by
+    apply Subtype.ext
+    exact_mod_cast (show
+      (((p (start i + (blocks i).idxOf (x : Nat)) : PositiveNat) : Nat) : Int) =
+        ((x : Nat) : Int) by
+      calc
+        (((p (start i + (blocks i).idxOf (x : Nat)) : PositiveNat) : Nat) : Int) =
+            ((blocks i).get ⟨(blocks i).idxOf (x : Nat), hj⟩ : Int) := hv
+        _ = ((x : Nat) : Int) := by rw [hget])
+  apply (Equiv.symm_apply_eq p).mpr
+  exact hp.symm
+
+private theorem f6DoublyIndex_lt_of_block_lt
+    (p : DoublyInfinitePermutation) (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length)
+    (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) = start i + (blocks i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (blocks i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (blocks i) ⟨j, hj⟩)
+    (x y : PositiveNat) (i j : Int)
+    (hx : (x : Nat) ∈ blocks i) (hy : (y : Nat) ∈ blocks j) (hij : i < j) :
+    doublyIndex p x < doublyIndex p y := by
+  rw [f6DoublyIndex_eq_start_add_idxOf p blocks start hvalues x i hx,
+    f6DoublyIndex_eq_start_add_idxOf p blocks start hvalues y j hy]
+  have hxi : (blocks i).idxOf (x : Nat) < (blocks i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hmono := f6ConcatStart_strictMono blocks hlen start hsucc
+  have hstep : i + 1 ≤ j := by omega
+  have hstarts : start (i + 1) ≤ start j := hmono.monotone hstep
+  rw [hsucc] at hstarts
+  omega
+
+private theorem f6Block_lt_of_doublyIndex_lt
+    (p : DoublyInfinitePermutation) (blocks : Int → Block)
+    (hlen : ∀ i : Int, 0 < (blocks i).length)
+    (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) = start i + (blocks i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (blocks i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (blocks i) ⟨j, hj⟩)
+    (x y : PositiveNat) (i j : Int)
+    (hx : (x : Nat) ∈ blocks i) (hy : (y : Nat) ∈ blocks j)
+    (hij : i ≠ j) (hxy : doublyIndex p x < doublyIndex p y) : i < j := by
+  rcases lt_trichotomy i j with h | h | h
+  · exact h
+  · exact (hij h).elim
+  · have hyx := f6DoublyIndex_lt_of_block_lt p blocks hlen start hsucc hvalues
+      y x j i hy hx h
+    omega
+
+private theorem f6IdxOf_lt_iff_doublyIndex_lt_same_block
+    (p : DoublyInfinitePermutation) (blocks : Int → Block) (start : Int → Int)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (blocks i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (blocks i) ⟨j, hj⟩)
+    (x y : PositiveNat) (i : Int)
+    (hx : (x : Nat) ∈ blocks i) (hy : (y : Nat) ∈ blocks i) :
+    (blocks i).idxOf (x : Nat) < (blocks i).idxOf (y : Nat) ↔
+      doublyIndex p x < doublyIndex p y := by
+  rw [f6DoublyIndex_eq_start_add_idxOf p blocks start hvalues x i hx,
+    f6DoublyIndex_eq_start_add_idxOf p blocks start hvalues y i hy]
+  omega
+
+private def f6MonotoneTriple {α : Type*} [LT α] (i0 i1 i2 : α) : Prop :=
+  (i0 < i1 ∧ i1 < i2) ∨ (i2 < i1 ∧ i1 < i0)
+
+private def f6MonotoneQuad {α : Type*} [LT α] (i0 i1 i2 i3 : α) : Prop :=
+  (i0 < i1 ∧ i1 < i2 ∧ i2 < i3) ∨
+    (i3 < i2 ∧ i2 < i1 ∧ i1 < i0)
+
+private theorem f6BlockAPFree_three_indices
+    (B : Block) (hfree : BlockAPFree B 3) (u d : Nat) (hd : 0 < d)
+    (h0 : u ∈ B) (h1 : u + d ∈ B) (h2 : u + 2 * d ∈ B) :
+    ¬ f6MonotoneTriple (B.idxOf u) (B.idxOf (u + d))
+      (B.idxOf (u + 2 * d)) := by
+  intro hord
+  have hi0 : B.idxOf u < B.length := List.idxOf_lt_length_iff.mpr h0
+  have hi1 : B.idxOf (u + d) < B.length := List.idxOf_lt_length_iff.mpr h1
+  have hi2 : B.idxOf (u + 2 * d) < B.length := List.idxOf_lt_length_iff.mpr h2
+  apply hfree
+  rcases hord with hord | hord
+  · let pos : Fin 3 → Fin B.length := fun i =>
+      if i = 0 then ⟨B.idxOf u, hi0⟩
+      else if i = 1 then ⟨B.idxOf (u + d), hi1⟩
+      else ⟨B.idxOf (u + 2 * d), hi2⟩
+    refine ⟨pos, ?_, (u : Int), (d : Int), ?_, ?_⟩
+    · intro i j hij
+      fin_cases i <;> fin_cases j <;> simp [pos] at hij ⊢ <;> omega
+    · rw [bne_iff_ne]
+      exact_mod_cast (Nat.ne_of_gt hd)
+    · intro i
+      fin_cases i
+      · simp [pos, blockSequence]
+      · simp [pos, blockSequence]
+      · simp [pos, blockSequence]
+  · let pos : Fin 3 → Fin B.length := fun i =>
+      if i = 0 then ⟨B.idxOf (u + 2 * d), hi2⟩
+      else if i = 1 then ⟨B.idxOf (u + d), hi1⟩
+      else ⟨B.idxOf u, hi0⟩
+    refine ⟨pos, ?_, ((u + 2 * d : Nat) : Int), -((d : Nat) : Int), ?_, ?_⟩
+    · intro i j hij
+      fin_cases i <;> fin_cases j <;> simp [pos] at hij ⊢ <;> omega
+    · rw [bne_iff_ne]
+      exact neg_ne_zero.mpr (by exact_mod_cast (Nat.ne_of_gt hd))
+    · intro i
+      fin_cases i
+      · simp [pos, blockSequence]
+      · simp [pos, blockSequence]
+        ring
+      · simp [pos, blockSequence]
+
+private theorem f6IdxOf_reverse_eq {α : Type*} [BEq α] [LawfulBEq α]
+    (l : List α) (hl : l.Nodup) (x : α) (hx : x ∈ l) :
+    l.reverse.idxOf x = l.length - 1 - l.idxOf x := by
+  induction l with
+  | nil => simp at hx
+  | cons a l ih =>
+      have hnodup := (List.nodup_cons.mp hl)
+      rw [List.reverse_cons]
+      by_cases hxa : x = a
+      · subst a
+        rw [List.idxOf_append_of_notMem (by simpa using hnodup.1)]
+        simp
+      · have hxl : x ∈ l := by simpa [hxa] using hx
+        rw [List.idxOf_append_of_mem (by simpa using hxl)]
+        rw [ih hnodup.2 hxl]
+        rw [List.idxOf_cons_ne l (fun h => hxa h.symm)]
+        simp only [List.length_cons]
+        have hidx : l.idxOf x < l.length := List.idxOf_lt_length_iff.mpr hxl
+        omega
+
+private theorem f6IdxOf_map_eq {α β : Type*} [BEq α] [LawfulBEq α]
+    [BEq β] [LawfulBEq β] (l : List α) (hl : l.Nodup)
+    (f : α → β) (hf : Function.Injective f) (x : α) (hx : x ∈ l) :
+    (l.map f).idxOf (f x) = l.idxOf x := by
+  have hi : l.idxOf x < l.length := List.idxOf_lt_length_iff.mpr hx
+  have hi' : l.idxOf x < (l.map f).length := by simpa using hi
+  let j : Fin (l.map f).length := ⟨l.idxOf x, hi'⟩
+  have hget : (l.map f).get j = f x := by
+    simp only [j, List.get_eq_getElem, List.getElem_map]
+    rw [List.getElem_idxOf]
+  calc
+    (l.map f).idxOf (f x) = (l.map f).idxOf ((l.map f).get j) := by rw [hget]
+    _ = (j : Nat) := List.get_idxOf (hl.map hf) j
+    _ = l.idxOf x := rfl
+
+private theorem f6IdxOf_twice_reverse (B : Block) (hB : B.Nodup)
+    (x : Nat) (hx : x ∈ B) :
+    (twiceBlock B).reverse.idxOf (2 * x) = B.length - 1 - B.idxOf x := by
+  rw [f6IdxOf_reverse_eq (twiceBlock B) (hB.map (by intro a b h; dsimp at h; omega))
+    (2 * x) (by simp [twiceBlock, hx])]
+  simp only [twiceBlock, List.length_map]
+  rw [f6IdxOf_map_eq B hB (fun z => 2 * z) (by intro a b h; dsimp at h; omega) x hx]
+
+private theorem f6IdxOf_twicePlusOne_reverse (B : Block) (hB : B.Nodup)
+    (x : Nat) (hx : x ∈ B) :
+    (twiceBlockPlusOne B).reverse.idxOf (2 * x + 1) =
+      B.length - 1 - B.idxOf x := by
+  rw [f6IdxOf_reverse_eq (twiceBlockPlusOne B) (hB.map (by intro a b h; dsimp at h; omega))
+    (2 * x + 1) (by simp [twiceBlockPlusOne, hx])]
+  simp only [twiceBlockPlusOne, List.length_map]
+  rw [f6IdxOf_map_eq B hB (fun z => 2 * z + 1)
+    (by intro a b h; dsimp at h; omega) x hx]
+
+private theorem f6DyadicBlock_even_child_mem (i x : Nat)
+    (hx : x ∈ dyadicBlock i) : 2 * x ∈ dyadicBlock (i + 1) := by
+  simp only [dyadicBlock]
+  split_ifs <;> simp [twiceBlock, hx]
+
+private theorem f6DyadicBlock_odd_child_mem (i x : Nat)
+    (hx : x ∈ dyadicBlock i) : 2 * x + 1 ∈ dyadicBlock (i + 1) := by
+  simp only [dyadicBlock]
+  split_ifs <;> simp [twiceBlockPlusOne, hx]
+
+private theorem f6DyadicBlock_even_child_idx (i x : Nat)
+    (hx : x ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x) =
+      if Even i then (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x
+      else (dyadicBlock i).length +
+        ((dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x) := by
+  have hnodup := (dyadic_block_properties_holds i).1.1
+  have hEvenMem : 2 * x ∈ (twiceBlock (dyadicBlock i)).reverse := by
+    simp [twiceBlock, hx]
+  have hOddNotMem : 2 * x ∉ (twiceBlockPlusOne (dyadicBlock i)).reverse := by
+    simp only [List.mem_reverse, twiceBlockPlusOne, List.mem_map]
+    rintro ⟨y, -, hy⟩
+    omega
+  simp only [dyadicBlock]
+  split_ifs with hi
+  · rw [List.idxOf_append_of_mem hEvenMem]
+    exact f6IdxOf_twice_reverse (dyadicBlock i) hnodup x hx
+  · rw [List.idxOf_append_of_notMem hOddNotMem]
+    simp only [twiceBlockPlusOne, List.length_reverse, List.length_map]
+    rw [f6IdxOf_twice_reverse (dyadicBlock i) hnodup x hx]
+
+private theorem f6DyadicBlock_odd_child_idx (i x : Nat)
+    (hx : x ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x + 1) =
+      if Even i then (dyadicBlock i).length +
+        ((dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x)
+      else (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x := by
+  have hnodup := (dyadic_block_properties_holds i).1.1
+  have hOddMem : 2 * x + 1 ∈ (twiceBlockPlusOne (dyadicBlock i)).reverse := by
+    simp [twiceBlockPlusOne, hx]
+  have hEvenNotMem : 2 * x + 1 ∉ (twiceBlock (dyadicBlock i)).reverse := by
+    simp only [List.mem_reverse, twiceBlock, List.mem_map]
+    rintro ⟨y, -, hy⟩
+    omega
+  simp only [dyadicBlock]
+  split_ifs with hi
+  · rw [List.idxOf_append_of_notMem hEvenNotMem]
+    simp only [twiceBlock, List.length_reverse, List.length_map]
+    rw [f6IdxOf_twicePlusOne_reverse (dyadicBlock i) hnodup x hx]
+  · rw [List.idxOf_append_of_mem hOddMem]
+    exact f6IdxOf_twicePlusOne_reverse (dyadicBlock i) hnodup x hx
+
+private theorem f6DyadicBlock_half_mem (i x : Nat)
+    (hx : x ∈ dyadicBlock (i + 1)) : x / 2 ∈ dyadicBlock i := by
+  simp only [dyadicBlock] at hx
+  split at hx <;>
+    simp only [List.mem_append, List.mem_reverse, twiceBlock, twiceBlockPlusOne,
+      List.mem_map] at hx
+  all_goals
+    rcases hx with ⟨y, hy, hxy⟩ | ⟨y, hy, hxy⟩
+    · subst x
+      convert hy using 1
+      all_goals omega
+    · subst x
+      convert hy using 1
+      all_goals omega
+
+private theorem f6DyadicBlock_even_children_reverse_order (i x y : Nat)
+    (hx : x ∈ dyadicBlock i) (hy : y ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x) <
+        (dyadicBlock (i + 1)).idxOf (2 * y) ↔
+      (dyadicBlock i).idxOf y < (dyadicBlock i).idxOf x := by
+  rw [f6DyadicBlock_even_child_idx i x hx, f6DyadicBlock_even_child_idx i y hy]
+  have hix : (dyadicBlock i).idxOf x < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hiy : (dyadicBlock i).idxOf y < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hy
+  split_ifs <;> omega
+
+private theorem f6DyadicBlock_odd_children_reverse_order (i x y : Nat)
+    (hx : x ∈ dyadicBlock i) (hy : y ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x + 1) <
+        (dyadicBlock (i + 1)).idxOf (2 * y + 1) ↔
+      (dyadicBlock i).idxOf y < (dyadicBlock i).idxOf x := by
+  rw [f6DyadicBlock_odd_child_idx i x hx, f6DyadicBlock_odd_child_idx i y hy]
+  have hix : (dyadicBlock i).idxOf x < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hiy : (dyadicBlock i).idxOf y < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hy
+  split_ifs <;> omega
+
+private theorem f6DyadicBlock_even_before_odd_iff (i x y : Nat)
+    (hx : x ∈ dyadicBlock i) (hy : y ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x) <
+        (dyadicBlock (i + 1)).idxOf (2 * y + 1) ↔ Even i := by
+  rw [f6DyadicBlock_even_child_idx i x hx, f6DyadicBlock_odd_child_idx i y hy]
+  have hix : (dyadicBlock i).idxOf x < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hiy : (dyadicBlock i).idxOf y < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hy
+  have hrx : (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x <
+      (dyadicBlock i).length := by omega
+  have hry : (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf y <
+      (dyadicBlock i).length := by omega
+  by_cases hi : Even i
+  · simp only [hi, ↓reduceIte]
+    rw [iff_true]
+    exact lt_of_lt_of_le hrx (Nat.le_add_right _ _)
+  · simp only [hi, ↓reduceIte]
+    rw [iff_false]
+    intro h
+    have hle : (dyadicBlock i).length ≤ (dyadicBlock i).length +
+        ((dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x) :=
+      Nat.le_add_right _ _
+    omega
+
+private theorem f6DyadicBlock_odd_before_even_iff (i x y : Nat)
+    (hx : x ∈ dyadicBlock i) (hy : y ∈ dyadicBlock i) :
+    (dyadicBlock (i + 1)).idxOf (2 * x + 1) <
+        (dyadicBlock (i + 1)).idxOf (2 * y) ↔ ¬ Even i := by
+  rw [f6DyadicBlock_odd_child_idx i x hx, f6DyadicBlock_even_child_idx i y hy]
+  have hix : (dyadicBlock i).idxOf x < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hx
+  have hiy : (dyadicBlock i).idxOf y < (dyadicBlock i).length :=
+    List.idxOf_lt_length_iff.mpr hy
+  have hrx : (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x <
+      (dyadicBlock i).length := by omega
+  have hry : (dyadicBlock i).length - 1 - (dyadicBlock i).idxOf y <
+      (dyadicBlock i).length := by omega
+  by_cases hi : Even i
+  · simp only [hi, ↓reduceIte, not_true_eq_false]
+    rw [iff_false]
+    intro h
+    have hle : (dyadicBlock i).length ≤ (dyadicBlock i).length +
+        ((dyadicBlock i).length - 1 - (dyadicBlock i).idxOf x) :=
+      Nat.le_add_right _ _
+    omega
+  · simp only [hi, ↓reduceIte, not_false_eq_true]
+    rw [iff_true]
+    exact lt_of_lt_of_le hrx (Nat.le_add_right _ _)
+
+private theorem f6DyadicBlock_length (r : Nat) :
+    (dyadicBlock r).length = 2 ^ r := by
+  have horder := (dyadic_block_properties_holds r).1
+  have hcard := congrArg Finset.card horder.2
+  rw [List.toFinset_card_of_nodup horder.1, Nat.card_Icc] at hcard
+  rw [pow_succ] at hcard
+  have hpow : 0 < 2 ^ r := pow_pos (by omega) r
+  omega
+
+private theorem f6DyadicArrangement_length_pos (i : Int) :
+    0 < (dyadicBlockArrangement i).length := by
+  rw [dyadicBlockArrangement, f6DyadicBlock_length]
+  exact pow_pos (by omega) _
+
+private theorem f6DyadicScale_mem_arrangement (x : PositiveNat) :
+    (x : Nat) ∈ dyadicBlockArrangement
+      (f6DyadicScalePosition (f6DyadicScale x)) := by
+  simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using
+    f6DyadicScale_mem_block x
+
+private theorem f6IdxOf_lt_iff_doublyIndex_lt_scale
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (x y : PositiveNat) (r : Nat)
+    (hx : (x : Nat) ∈ dyadicBlock r) (hy : (y : Nat) ∈ dyadicBlock r) :
+    (dyadicBlock r).idxOf (x : Nat) < (dyadicBlock r).idxOf (y : Nat) ↔
+      doublyIndex p x < doublyIndex p y := by
+  have hxarr : (x : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition r) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx
+  have hyarr : (y : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition r) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy
+  simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using
+    f6IdxOf_lt_iff_doublyIndex_lt_same_block p dyadicBlockArrangement start hvalues
+      x y (f6DyadicScalePosition r) hxarr hyarr
+
+private theorem f6NoMonotone_adjacent_scale_triple
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (x y z : PositiveNat) (j i : Nat) (hji : j < i)
+    (hx : (x : Nat) ∈ dyadicBlock j) (hy : (y : Nat) ∈ dyadicBlock i)
+    (hz : (z : Nat) ∈ dyadicBlock (i + 1)) :
+    ¬ f6MonotoneTriple (doublyIndex p x) (doublyIndex p y) (doublyIndex p z) := by
+  intro hord
+  have hxarr : (x : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition j) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx
+  have hyarr : (y : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition i) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy
+  have hzarr : (z : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition (i + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hz
+  have hqi_ne_qj : f6DyadicScalePosition j ≠ f6DyadicScalePosition i := by
+    intro h
+    have := congrArg dyadicBlockIndex h
+    simp only [f6DyadicBlockIndex_scalePosition] at this
+    omega
+  have hqi_ne_qnext : f6DyadicScalePosition i ≠
+      f6DyadicScalePosition (i + 1) := by
+    intro h
+    have := congrArg dyadicBlockIndex h
+    simp only [f6DyadicBlockIndex_scalePosition] at this
+    omega
+  have hbetween := f6EarlierScale_between hji
+  rcases hord with hord | hord
+  · have hqji : f6DyadicScalePosition j < f6DyadicScalePosition i :=
+      f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+        f6DyadicArrangement_length_pos start hsucc hvalues x y _ _ hxarr hyarr
+        hqi_ne_qj hord.1
+    have hqinext : f6DyadicScalePosition i < f6DyadicScalePosition (i + 1) :=
+      f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+        f6DyadicArrangement_length_pos start hsucc hvalues y z _ _ hyarr hzarr
+        hqi_ne_qnext hord.2
+    rcases hbetween with hbetween | hbetween <;> omega
+  · have hqnexti : f6DyadicScalePosition (i + 1) < f6DyadicScalePosition i :=
+      f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+        f6DyadicArrangement_length_pos start hsucc hvalues z y _ _ hzarr hyarr
+        hqi_ne_qnext.symm hord.1
+    have hqij : f6DyadicScalePosition i < f6DyadicScalePosition j :=
+      f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+        f6DyadicArrangement_length_pos start hsucc hvalues y x _ _ hyarr hxarr
+        hqi_ne_qj.symm hord.2
+    rcases hbetween with hbetween | hbetween <;> omega
+
+private def f6APTerm (a d : Nat) (ha : 0 < a) (k : Nat) : PositiveNat :=
+  ⟨a + k * d, by omega⟩
+
+@[simp] private theorem f6APTerm_val (a d : Nat) (ha : 0 < a) (k : Nat) :
+    (f6APTerm a d ha k : Nat) = a + k * d := rfl
+
+private theorem f6AP_scale_skips
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (a d : Nat) (ha : 0 < a) (hd : 0 < d)
+    (hord : f6MonotoneQuad
+      (doublyIndex p (f6APTerm a d ha 0))
+      (doublyIndex p (f6APTerm a d ha 1))
+      (doublyIndex p (f6APTerm a d ha 2))
+      (doublyIndex p (f6APTerm a d ha 3))) :
+    f6DyadicScale (f6APTerm a d ha 0) <
+        f6DyadicScale (f6APTerm a d ha 2) ∧
+      f6DyadicScale (f6APTerm a d ha 1) <
+        f6DyadicScale (f6APTerm a d ha 3) := by
+  let x0 := f6APTerm a d ha 0
+  let x1 := f6APTerm a d ha 1
+  let x2 := f6APTerm a d ha 2
+  let x3 := f6APTerm a d ha 3
+  change f6DyadicScale x0 < f6DyadicScale x2 ∧
+    f6DyadicScale x1 < f6DyadicScale x3
+  change f6MonotoneQuad (doublyIndex p x0) (doublyIndex p x1)
+    (doublyIndex p x2) (doublyIndex p x3) at hord
+  have hs01 : f6DyadicScale x0 ≤ f6DyadicScale x1 :=
+    f6DyadicScale_mono (by dsimp [x0, x1, f6APTerm]; omega)
+  have hs12 : f6DyadicScale x1 ≤ f6DyadicScale x2 :=
+    f6DyadicScale_mono (by dsimp [x1, x2, f6APTerm]; omega)
+  have hs23 : f6DyadicScale x2 ≤ f6DyadicScale x3 :=
+    f6DyadicScale_mono (by dsimp [x2, x3, f6APTerm]; omega)
+  constructor
+  · by_contra hnot
+    have heq01 : f6DyadicScale x0 = f6DyadicScale x1 := by omega
+    have heq12 : f6DyadicScale x1 = f6DyadicScale x2 := by omega
+    let r := f6DyadicScale x0
+    have hm0 : (x0 : Nat) ∈ dyadicBlock r := f6DyadicScale_mem_block x0
+    have hm1 : (x1 : Nat) ∈ dyadicBlock r := by
+      have := f6DyadicScale_mem_block x1
+      simpa only [r, ← heq01] using this
+    have hm2 : (x2 : Nat) ∈ dyadicBlock r := by
+      have := f6DyadicScale_mem_block x2
+      simpa only [r, ← heq01, ← heq12] using this
+    have hlocal : f6MonotoneTriple
+        ((dyadicBlock r).idxOf (x0 : Nat))
+        ((dyadicBlock r).idxOf (x1 : Nat))
+        ((dyadicBlock r).idxOf (x2 : Nat)) := by
+      rcases hord with hord | hord
+      · left
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x0 x1 r hm0 hm1).mpr hord.1,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x1 x2 r hm1 hm2).mpr hord.2.1⟩
+      · right
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x2 x1 r hm2 hm1).mpr hord.2.1,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x1 x0 r hm1 hm0).mpr hord.2.2⟩
+    apply f6BlockAPFree_three_indices (dyadicBlock r)
+      (dyadic_block_properties_holds r).2 a d hd
+    · simpa only [x0, f6APTerm_val, zero_mul, add_zero] using hm0
+    · simpa only [x1, f6APTerm_val, one_mul] using hm1
+    · simpa only [x2, f6APTerm_val] using hm2
+    · simpa only [x0, x1, x2, f6APTerm_val, zero_mul, one_mul, add_zero] using hlocal
+  · by_contra hnot
+    have heq12 : f6DyadicScale x1 = f6DyadicScale x2 := by omega
+    have heq23 : f6DyadicScale x2 = f6DyadicScale x3 := by omega
+    let r := f6DyadicScale x1
+    have hm1 : (x1 : Nat) ∈ dyadicBlock r := f6DyadicScale_mem_block x1
+    have hm2 : (x2 : Nat) ∈ dyadicBlock r := by
+      have := f6DyadicScale_mem_block x2
+      simpa only [r, ← heq12] using this
+    have hm3 : (x3 : Nat) ∈ dyadicBlock r := by
+      have := f6DyadicScale_mem_block x3
+      simpa only [r, ← heq12, ← heq23] using this
+    have hlocal : f6MonotoneTriple
+        ((dyadicBlock r).idxOf (x1 : Nat))
+        ((dyadicBlock r).idxOf (x2 : Nat))
+        ((dyadicBlock r).idxOf (x3 : Nat)) := by
+      rcases hord with hord | hord
+      · left
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x1 x2 r hm1 hm2).mpr hord.2.1,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x2 x3 r hm2 hm3).mpr hord.2.2⟩
+      · right
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x3 x2 r hm3 hm2).mpr hord.1,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x2 x1 r hm2 hm1).mpr hord.2.1⟩
+    have htwo : a + d + d = a + 2 * d := by omega
+    have hthree : a + d + 2 * d = a + 3 * d := by omega
+    apply f6BlockAPFree_three_indices (dyadicBlock r)
+      (dyadic_block_properties_holds r).2 (a + d) d hd
+    · simpa only [x1, f6APTerm_val, one_mul] using hm1
+    · simpa only [htwo, x2, f6APTerm_val] using hm2
+    · simpa only [hthree, x3, f6APTerm_val] using hm3
+    · simpa only [htwo, hthree, x1, x2, x3, f6APTerm_val, one_mul] using hlocal
+
+private theorem f6AP_late_scale_steps (a d : Nat) (ha : 0 < a) :
+    f6DyadicScale (f6APTerm a d ha 2) ≤
+        f6DyadicScale (f6APTerm a d ha 1) + 1 ∧
+      f6DyadicScale (f6APTerm a d ha 3) ≤
+        f6DyadicScale (f6APTerm a d ha 2) + 1 := by
+  let x1 := f6APTerm a d ha 1
+  let x2 := f6APTerm a d ha 2
+  let x3 := f6APTerm a d ha 3
+  change f6DyadicScale x2 ≤ f6DyadicScale x1 + 1 ∧
+    f6DyadicScale x3 ≤ f6DyadicScale x2 + 1
+  have hb1 := f6DyadicScale_bounds x1
+  have hb2 := f6DyadicScale_bounds x2
+  have hupper1 : (x1 : Nat) < 2 ^ (f6DyadicScale x1 + 1) := by omega
+  have hupper2 : (x2 : Nat) < 2 ^ (f6DyadicScale x2 + 1) := by omega
+  have hx2twice : (x2 : Nat) < 2 * (x1 : Nat) := by
+    dsimp [x1, x2, f6APTerm]
+    omega
+  have hx3twice : (x3 : Nat) < 2 * (x2 : Nat) := by
+    dsimp [x2, x3, f6APTerm]
+    omega
+  constructor
+  · have hx2pow : (x2 : Nat) < 2 ^ (f6DyadicScale x1 + 2) := by
+      rw [show f6DyadicScale x1 + 2 = (f6DyadicScale x1 + 1) + 1 by omega,
+        pow_succ]
+      omega
+    have hslt : f6DyadicScale x2 < f6DyadicScale x1 + 2 := by
+      exact Nat.log_lt_of_lt_pow (Nat.ne_of_gt x2.property) hx2pow
+    omega
+  · have hx3pow : (x3 : Nat) < 2 ^ (f6DyadicScale x2 + 2) := by
+      rw [show f6DyadicScale x2 + 2 = (f6DyadicScale x2 + 1) + 1 by omega,
+        pow_succ]
+      omega
+    have hslt : f6DyadicScale x3 < f6DyadicScale x2 + 2 := by
+      exact Nat.log_lt_of_lt_pow (Nat.ne_of_gt x3.property) hx3pow
+    omega
+
+private theorem f6AP_scale_pattern
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (a d : Nat) (ha : 0 < a) (hd : 0 < d)
+    (hord : f6MonotoneQuad
+      (doublyIndex p (f6APTerm a d ha 0))
+      (doublyIndex p (f6APTerm a d ha 1))
+      (doublyIndex p (f6APTerm a d ha 2))
+      (doublyIndex p (f6APTerm a d ha 3))) :
+    let r0 := f6DyadicScale (f6APTerm a d ha 0)
+    let r1 := f6DyadicScale (f6APTerm a d ha 1)
+    let r2 := f6DyadicScale (f6APTerm a d ha 2)
+    let r3 := f6DyadicScale (f6APTerm a d ha 3)
+    r0 = r1 ∧ r2 = r1 + 1 ∧ r3 = r2 := by
+  let x0 := f6APTerm a d ha 0
+  let x1 := f6APTerm a d ha 1
+  let x2 := f6APTerm a d ha 2
+  let x3 := f6APTerm a d ha 3
+  let r0 := f6DyadicScale x0
+  let r1 := f6DyadicScale x1
+  let r2 := f6DyadicScale x2
+  let r3 := f6DyadicScale x3
+  change r0 = r1 ∧ r2 = r1 + 1 ∧ r3 = r2
+  change f6MonotoneQuad (doublyIndex p x0) (doublyIndex p x1)
+    (doublyIndex p x2) (doublyIndex p x3) at hord
+  have hs01 : r0 ≤ r1 := f6DyadicScale_mono (by
+    dsimp [r0, r1, x0, x1, f6APTerm]
+    omega)
+  have hs12 : r1 ≤ r2 := f6DyadicScale_mono (by
+    dsimp [r1, r2, x1, x2, f6APTerm]
+    omega)
+  have hs23 : r2 ≤ r3 := f6DyadicScale_mono (by
+    dsimp [r2, r3, x2, x3, f6APTerm]
+    omega)
+  have hskips := f6AP_scale_skips p start hvalues a d ha hd hord
+  change r0 < r2 ∧ r1 < r3 at hskips
+  have hsteps := f6AP_late_scale_steps a d ha
+  change r2 ≤ r1 + 1 ∧ r3 ≤ r2 + 1 at hsteps
+  have hm0 : (x0 : Nat) ∈ dyadicBlock r0 := f6DyadicScale_mem_block x0
+  have hm1 : (x1 : Nat) ∈ dyadicBlock r1 := f6DyadicScale_mem_block x1
+  have hm2 : (x2 : Nat) ∈ dyadicBlock r2 := f6DyadicScale_mem_block x2
+  have hm3 : (x3 : Nat) ∈ dyadicBlock r3 := f6DyadicScale_mem_block x3
+  have hord012 : f6MonotoneTriple (doublyIndex p x0) (doublyIndex p x1)
+      (doublyIndex p x2) := by
+    rcases hord with hord | hord
+    · exact Or.inl ⟨hord.1, hord.2.1⟩
+    · exact Or.inr ⟨hord.2.1, hord.2.2⟩
+  have hord123 : f6MonotoneTriple (doublyIndex p x1) (doublyIndex p x2)
+      (doublyIndex p x3) := by
+    rcases hord with hord | hord
+    · exact Or.inl ⟨hord.2.1, hord.2.2⟩
+    · exact Or.inr ⟨hord.1, hord.2.1⟩
+  by_cases h01 : r0 = r1
+  · have h12 : r1 < r2 := by omega
+    have hr2 : r2 = r1 + 1 := by omega
+    by_cases h23 : r2 = r3
+    · exact ⟨h01, hr2, h23.symm⟩
+    · have hr3 : r3 = r2 + 1 := by omega
+      have hm3' : (x3 : Nat) ∈ dyadicBlock (r2 + 1) := by simpa [hr3] using hm3
+      exact (f6NoMonotone_adjacent_scale_triple p start hsucc hvalues
+        x1 x2 x3 r1 r2 h12 hm1 hm2 hm3') hord123 |>.elim
+  · have h01lt : r0 < r1 := by omega
+    by_cases h12eq : r1 = r2
+    · have h23lt : r2 < r3 := by omega
+      have hr3 : r3 = r2 + 1 := by omega
+      have hm3' : (x3 : Nat) ∈ dyadicBlock (r1 + 1) := by
+        simpa [h12eq, hr3] using hm3
+      have hord013 : f6MonotoneTriple (doublyIndex p x0) (doublyIndex p x1)
+          (doublyIndex p x3) := by
+        rcases hord with hord | hord
+        · exact Or.inl ⟨hord.1, by omega⟩
+        · exact Or.inr ⟨by omega, hord.2.2⟩
+      exact (f6NoMonotone_adjacent_scale_triple p start hsucc hvalues
+        x0 x1 x3 r0 r1 h01lt hm0 hm1 hm3') hord013 |>.elim
+    · have h12lt : r1 < r2 := by omega
+      have hr2 : r2 = r1 + 1 := by omega
+      by_cases h23 : r2 = r3
+      · have hm2' : (x2 : Nat) ∈ dyadicBlock (r1 + 1) := by simpa [hr2] using hm2
+        exact (f6NoMonotone_adjacent_scale_triple p start hsucc hvalues
+          x0 x1 x2 r0 r1 h01lt hm0 hm1 hm2') hord012 |>.elim
+      · have h23lt : r2 < r3 := by omega
+        have hr3 : r3 = r2 + 1 := by omega
+        have hm3' : (x3 : Nat) ∈ dyadicBlock (r2 + 1) := by simpa [hr3] using hm3
+        exact (f6NoMonotone_adjacent_scale_triple p start hsucc hvalues
+          x1 x2 x3 r1 r2 h12lt hm1 hm2 hm3') hord123 |>.elim
+
+private theorem f6Not_even_and_even_succ (k : Nat) :
+    ¬ (Even k ∧ Even (k + 1)) := by
+  rintro ⟨hk, hks⟩
+  exact (Nat.not_even_iff_odd.mpr hk.add_one) hks
+
+private theorem f6Not_odd_and_odd_succ (k : Nat) :
+    ¬ (¬ Even k ∧ ¬ Even (k + 1)) := by
+  rintro ⟨hk, hks⟩
+  exact hks (Nat.not_even_iff_odd.mp hk).add_one
+
+private theorem f6AP_difference_even
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (a d : Nat) (ha : 0 < a) (hd : 0 < d)
+    (hord : f6MonotoneQuad
+      (doublyIndex p (f6APTerm a d ha 0))
+      (doublyIndex p (f6APTerm a d ha 1))
+      (doublyIndex p (f6APTerm a d ha 2))
+      (doublyIndex p (f6APTerm a d ha 3))) : Even d := by
+  let x0 := f6APTerm a d ha 0
+  let x1 := f6APTerm a d ha 1
+  let x2 := f6APTerm a d ha 2
+  let x3 := f6APTerm a d ha 3
+  let r := f6DyadicScale x0
+  change f6MonotoneQuad (doublyIndex p x0) (doublyIndex p x1)
+    (doublyIndex p x2) (doublyIndex p x3) at hord
+  have hpattern := f6AP_scale_pattern p start hsucc hvalues a d ha hd hord
+  change r = f6DyadicScale x1 ∧
+    f6DyadicScale x2 = f6DyadicScale x1 + 1 ∧
+    f6DyadicScale x3 = f6DyadicScale x2 at hpattern
+  have hm0 : (x0 : Nat) ∈ dyadicBlock r := f6DyadicScale_mem_block x0
+  have hm1 : (x1 : Nat) ∈ dyadicBlock r := by
+    have := f6DyadicScale_mem_block x1
+    simpa only [hpattern.1] using this
+  have hm2 : (x2 : Nat) ∈ dyadicBlock (r + 1) := by
+    have := f6DyadicScale_mem_block x2
+    simpa only [hpattern.1, hpattern.2.1] using this
+  have hm3 : (x3 : Nat) ∈ dyadicBlock (r + 1) := by
+    have := f6DyadicScale_mem_block x3
+    simpa only [hpattern.1, hpattern.2.1, hpattern.2.2] using this
+  have hm0v : a ∈ dyadicBlock r := by simpa [x0, f6APTerm] using hm0
+  have hm1v : a + d ∈ dyadicBlock r := by simpa [x1, f6APTerm] using hm1
+  have hm2v : a + 2 * d ∈ dyadicBlock (r + 1) := by
+    simpa [x2, f6APTerm] using hm2
+  have hm3v : a + 3 * d ∈ dyadicBlock (r + 1) := by
+    simpa [x3, f6APTerm] using hm3
+  have hlocal :
+      ((dyadicBlock r).idxOf a < (dyadicBlock r).idxOf (a + d) ∧
+        (dyadicBlock (r + 1)).idxOf (a + 2 * d) <
+          (dyadicBlock (r + 1)).idxOf (a + 3 * d)) ∨
+      ((dyadicBlock r).idxOf (a + d) < (dyadicBlock r).idxOf a ∧
+        (dyadicBlock (r + 1)).idxOf (a + 3 * d) <
+          (dyadicBlock (r + 1)).idxOf (a + 2 * d)) := by
+    have hlocalX :
+        ((dyadicBlock r).idxOf (x0 : Nat) < (dyadicBlock r).idxOf (x1 : Nat) ∧
+          (dyadicBlock (r + 1)).idxOf (x2 : Nat) <
+            (dyadicBlock (r + 1)).idxOf (x3 : Nat)) ∨
+        ((dyadicBlock r).idxOf (x1 : Nat) < (dyadicBlock r).idxOf (x0 : Nat) ∧
+          (dyadicBlock (r + 1)).idxOf (x3 : Nat) <
+            (dyadicBlock (r + 1)).idxOf (x2 : Nat)) := by
+      rcases hord with hord | hord
+      · left
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x0 x1 r hm0 hm1).mpr hord.1,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x2 x3 (r + 1) hm2 hm3).mpr hord.2.2⟩
+      · right
+        exact ⟨(f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x1 x0 r hm1 hm0).mpr hord.2.2,
+          (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+            x3 x2 (r + 1) hm3 hm2).mpr hord.1⟩
+    simpa only [x0, x1, x2, x3, f6APTerm_val, zero_mul, one_mul, add_zero] using hlocalX
+  have hrpos : 0 < r := by
+    by_contra hnot
+    have hr0 : r = 0 := by omega
+    rw [hr0] at hm0v hm1v
+    simp only [dyadicBlock, List.mem_singleton] at hm0v hm1v
+    omega
+  obtain ⟨k, hk⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hrpos)
+  have hrk : r = k + 1 := by omega
+  rw [hrk] at hm0v hm1v hm2v hm3v hlocal
+  by_contra hdeven
+  have hdodd : Odd d := Nat.not_even_iff_odd.mp hdeven
+  by_cases haeven : Even a
+  · obtain ⟨A, hA⟩ := even_iff_exists_two_mul.mp haeven
+    obtain ⟨D, hD⟩ := odd_iff_exists_bit1.mp hdodd
+    have hn0 : a = 2 * A := by omega
+    have hn1 : a + d = 2 * (A + D) + 1 := by omega
+    have hn2 : a + 2 * d = 2 * (A + 2 * D + 1) := by omega
+    have hn3 : a + 3 * d = 2 * (A + 3 * D + 1) + 1 := by omega
+    rw [hn0] at hm0v
+    rw [hn1] at hm1v
+    rw [hn2] at hm2v
+    rw [hn3] at hm3v
+    rw [hn3, hn2, hn1, hn0] at hlocal
+    have hp0 : A ∈ dyadicBlock k := by
+      simpa using f6DyadicBlock_half_mem k (2 * A) hm0v
+    have hp1 : A + D ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * (A + D) + 1) hm1v using 1
+      all_goals omega
+    have hp2 : A + 2 * D + 1 ∈ dyadicBlock (k + 1) := by
+      simpa using f6DyadicBlock_half_mem (k + 1) (2 * (A + 2 * D + 1)) hm2v
+    have hp3 : A + 3 * D + 1 ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 3 * D + 1) + 1) hm3v using 1
+      all_goals omega
+    rcases hlocal with hlocal | hlocal
+    · have hkEven := (f6DyadicBlock_even_before_odd_iff k A (A + D) hp0 hp1).mp
+          hlocal.1
+      have hksEven := (f6DyadicBlock_even_before_odd_iff (k + 1)
+          (A + 2 * D + 1) (A + 3 * D + 1) hp2 hp3).mp hlocal.2
+      exact f6Not_even_and_even_succ k ⟨hkEven, hksEven⟩
+    · have hkOdd := (f6DyadicBlock_odd_before_even_iff k (A + D) A hp1 hp0).mp
+          hlocal.1
+      have hksOdd := (f6DyadicBlock_odd_before_even_iff (k + 1)
+          (A + 3 * D + 1) (A + 2 * D + 1) hp3 hp2).mp hlocal.2
+      exact f6Not_odd_and_odd_succ k ⟨hkOdd, hksOdd⟩
+  · have haodd : Odd a := Nat.not_even_iff_odd.mp haeven
+    obtain ⟨A, hA⟩ := odd_iff_exists_bit1.mp haodd
+    obtain ⟨D, hD⟩ := odd_iff_exists_bit1.mp hdodd
+    have hn0 : a = 2 * A + 1 := by omega
+    have hn1 : a + d = 2 * (A + D + 1) := by omega
+    have hn2 : a + 2 * d = 2 * (A + 2 * D + 1) + 1 := by omega
+    have hn3 : a + 3 * d = 2 * (A + 3 * D + 2) := by omega
+    rw [hn0] at hm0v
+    rw [hn1] at hm1v
+    rw [hn2] at hm2v
+    rw [hn3] at hm3v
+    rw [hn3, hn2, hn1, hn0] at hlocal
+    have hp0 : A ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * A + 1) hm0v using 1
+      all_goals omega
+    have hp1 : A + D + 1 ∈ dyadicBlock k := by
+      simpa using f6DyadicBlock_half_mem k (2 * (A + D + 1)) hm1v
+    have hp2 : A + 2 * D + 1 ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 2 * D + 1) + 1) hm2v using 1
+      all_goals omega
+    have hp3 : A + 3 * D + 2 ∈ dyadicBlock (k + 1) := by
+      simpa using f6DyadicBlock_half_mem (k + 1) (2 * (A + 3 * D + 2)) hm3v
+    rcases hlocal with hlocal | hlocal
+    · have hkOdd := (f6DyadicBlock_odd_before_even_iff k A (A + D + 1) hp0 hp1).mp
+          hlocal.1
+      have hksOdd := (f6DyadicBlock_odd_before_even_iff (k + 1)
+          (A + 2 * D + 1) (A + 3 * D + 2) hp2 hp3).mp hlocal.2
+      exact f6Not_odd_and_odd_succ k ⟨hkOdd, hksOdd⟩
+    · have hkEven := (f6DyadicBlock_even_before_odd_iff k (A + D + 1) A hp1 hp0).mp
+          hlocal.1
+      have hksEven := (f6DyadicBlock_even_before_odd_iff (k + 1)
+          (A + 3 * D + 2) (A + 2 * D + 1) hp3 hp2).mp hlocal.2
+      exact f6Not_even_and_even_succ k ⟨hkEven, hksEven⟩
+
+private theorem f6Halved_order_of_forward_blocks
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (x1 x2 y0 y1 y2 y3 : PositiveNat) (k : Nat)
+    (hx1 : (x1 : Nat) ∈ dyadicBlock (k + 1))
+    (hx2 : (x2 : Nat) ∈ dyadicBlock (k + 1 + 1))
+    (hy0 : (y0 : Nat) ∈ dyadicBlock k) (hy1 : (y1 : Nat) ∈ dyadicBlock k)
+    (hy2 : (y2 : Nat) ∈ dyadicBlock (k + 1))
+    (hy3 : (y3 : Nat) ∈ dyadicBlock (k + 1))
+    (hcross : doublyIndex p x1 < doublyIndex p x2)
+    (hlow : (dyadicBlock k).idxOf (y1 : Nat) <
+      (dyadicBlock k).idxOf (y0 : Nat))
+    (hhigh : (dyadicBlock (k + 1)).idxOf (y3 : Nat) <
+      (dyadicBlock (k + 1)).idxOf (y2 : Nat)) :
+    f6MonotoneQuad (doublyIndex p y0) (doublyIndex p y1)
+      (doublyIndex p y2) (doublyIndex p y3) := by
+  have hx1arr : (x1 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx1
+  have hx2arr : (x2 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1 + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx2
+  have hneq : f6DyadicScalePosition (k + 1) ≠
+      f6DyadicScalePosition (k + 1 + 1) := by
+    intro h
+    have := congrArg dyadicBlockIndex h
+    simp only [f6DyadicBlockIndex_scalePosition] at this
+    omega
+  have hqforward : f6DyadicScalePosition (k + 1) <
+      f6DyadicScalePosition (k + 1 + 1) :=
+    f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+      f6DyadicArrangement_length_pos start hsucc hvalues x1 x2 _ _ hx1arr hx2arr
+      hneq hcross
+  have hbetween := f6EarlierScale_between (show k < k + 1 by omega)
+  have hqshift : f6DyadicScalePosition (k + 1) < f6DyadicScalePosition k := by
+    rcases hbetween with hbetween | hbetween
+    · exact hbetween.1
+    · omega
+  have hy2arr : (y2 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy2
+  have hy1arr : (y1 : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition k) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy1
+  have hlocal10 := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+    y1 y0 k hy1 hy0).mp hlow
+  have hlocal32 := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+    y3 y2 (k + 1) hy3 hy2).mp hhigh
+  have hcross21 := f6DoublyIndex_lt_of_block_lt p dyadicBlockArrangement
+    f6DyadicArrangement_length_pos start hsucc hvalues y2 y1 _ _ hy2arr hy1arr hqshift
+  exact Or.inr ⟨hlocal32, hcross21, hlocal10⟩
+
+private theorem f6Halved_order_of_reverse_blocks
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (x1 x2 y0 y1 y2 y3 : PositiveNat) (k : Nat)
+    (hx1 : (x1 : Nat) ∈ dyadicBlock (k + 1))
+    (hx2 : (x2 : Nat) ∈ dyadicBlock (k + 1 + 1))
+    (hy0 : (y0 : Nat) ∈ dyadicBlock k) (hy1 : (y1 : Nat) ∈ dyadicBlock k)
+    (hy2 : (y2 : Nat) ∈ dyadicBlock (k + 1))
+    (hy3 : (y3 : Nat) ∈ dyadicBlock (k + 1))
+    (hcross : doublyIndex p x2 < doublyIndex p x1)
+    (hlow : (dyadicBlock k).idxOf (y0 : Nat) <
+      (dyadicBlock k).idxOf (y1 : Nat))
+    (hhigh : (dyadicBlock (k + 1)).idxOf (y2 : Nat) <
+      (dyadicBlock (k + 1)).idxOf (y3 : Nat)) :
+    f6MonotoneQuad (doublyIndex p y0) (doublyIndex p y1)
+      (doublyIndex p y2) (doublyIndex p y3) := by
+  have hx1arr : (x1 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx1
+  have hx2arr : (x2 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1 + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hx2
+  have hneq : f6DyadicScalePosition (k + 1 + 1) ≠
+      f6DyadicScalePosition (k + 1) := by
+    intro h
+    have := congrArg dyadicBlockIndex h
+    simp only [f6DyadicBlockIndex_scalePosition] at this
+    omega
+  have hqreverse : f6DyadicScalePosition (k + 1 + 1) <
+      f6DyadicScalePosition (k + 1) :=
+    f6Block_lt_of_doublyIndex_lt p dyadicBlockArrangement
+      f6DyadicArrangement_length_pos start hsucc hvalues x2 x1 _ _ hx2arr hx1arr
+      hneq hcross
+  have hbetween := f6EarlierScale_between (show k < k + 1 by omega)
+  have hqshift : f6DyadicScalePosition k < f6DyadicScalePosition (k + 1) := by
+    rcases hbetween with hbetween | hbetween
+    · omega
+    · exact hbetween.2
+  have hy1arr : (y1 : Nat) ∈ dyadicBlockArrangement (f6DyadicScalePosition k) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy1
+  have hy2arr : (y2 : Nat) ∈
+      dyadicBlockArrangement (f6DyadicScalePosition (k + 1)) := by
+    simpa only [dyadicBlockArrangement, f6DyadicBlockIndex_scalePosition] using hy2
+  have hlocal01 := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+    y0 y1 k hy0 hy1).mp hlow
+  have hlocal23 := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+    y2 y3 (k + 1) hy2 hy3).mp hhigh
+  have hcross12 := f6DoublyIndex_lt_of_block_lt p dyadicBlockArrangement
+    f6DyadicArrangement_length_pos start hsucc hvalues y1 y2 _ _ hy1arr hy2arr hqshift
+  exact Or.inl ⟨hlocal01, hcross12, hlocal23⟩
+
+private theorem f6AP_descent
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩)
+    (a d : Nat) (ha : 0 < a) (hd : 0 < d)
+    (hord : f6MonotoneQuad
+      (doublyIndex p (f6APTerm a d ha 0))
+      (doublyIndex p (f6APTerm a d ha 1))
+      (doublyIndex p (f6APTerm a d ha 2))
+      (doublyIndex p (f6APTerm a d ha 3))) :
+    ∃ (a' d' : Nat) (ha' : 0 < a'), 0 < d' ∧ d' < d ∧
+      f6MonotoneQuad
+        (doublyIndex p (f6APTerm a' d' ha' 0))
+        (doublyIndex p (f6APTerm a' d' ha' 1))
+        (doublyIndex p (f6APTerm a' d' ha' 2))
+        (doublyIndex p (f6APTerm a' d' ha' 3)) := by
+  let x0 := f6APTerm a d ha 0
+  let x1 := f6APTerm a d ha 1
+  let x2 := f6APTerm a d ha 2
+  let x3 := f6APTerm a d ha 3
+  let r := f6DyadicScale x0
+  change f6MonotoneQuad (doublyIndex p x0) (doublyIndex p x1)
+    (doublyIndex p x2) (doublyIndex p x3) at hord
+  have hpattern := f6AP_scale_pattern p start hsucc hvalues a d ha hd hord
+  change r = f6DyadicScale x1 ∧
+    f6DyadicScale x2 = f6DyadicScale x1 + 1 ∧
+    f6DyadicScale x3 = f6DyadicScale x2 at hpattern
+  have heven := f6AP_difference_even p start hsucc hvalues a d ha hd hord
+  obtain ⟨D, hD⟩ := even_iff_exists_two_mul.mp heven
+  have hDpos : 0 < D := by omega
+  have hDlt : D < d := by omega
+  subst d
+  have hm0 : (x0 : Nat) ∈ dyadicBlock r := f6DyadicScale_mem_block x0
+  have hm1 : (x1 : Nat) ∈ dyadicBlock r := by
+    have := f6DyadicScale_mem_block x1
+    simpa only [hpattern.1] using this
+  have hm2 : (x2 : Nat) ∈ dyadicBlock (r + 1) := by
+    have := f6DyadicScale_mem_block x2
+    simpa only [hpattern.1, hpattern.2.1] using this
+  have hm3 : (x3 : Nat) ∈ dyadicBlock (r + 1) := by
+    have := f6DyadicScale_mem_block x3
+    simpa only [hpattern.1, hpattern.2.1, hpattern.2.2] using this
+  have hrpos : 0 < r := by
+    by_contra hnot
+    have hr0 : r = 0 := by omega
+    have hm0v : a ∈ dyadicBlock r := by simpa [x0, f6APTerm] using hm0
+    have hm1v : a + 2 * D ∈ dyadicBlock r := by simpa [x1, f6APTerm] using hm1
+    rw [hr0] at hm0v hm1v
+    simp only [dyadicBlock, List.mem_singleton] at hm0v hm1v
+    omega
+  obtain ⟨k, hk⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hrpos)
+  have hrk : r = k + 1 := by omega
+  rw [hrk] at hm0 hm1 hm2 hm3
+  by_cases haeven : Even a
+  · obtain ⟨A, hA⟩ := even_iff_exists_two_mul.mp haeven
+    subst a
+    have hApos : 0 < A := by omega
+    let y0 := f6APTerm A D hApos 0
+    let y1 := f6APTerm A D hApos 1
+    let y2 := f6APTerm A D hApos 2
+    let y3 := f6APTerm A D hApos 3
+    have hn0 : (x0 : Nat) = 2 * A := by dsimp [x0, f6APTerm]; omega
+    have hn1 : (x1 : Nat) = 2 * (A + D) := by dsimp [x1, f6APTerm]; omega
+    have hn2 : (x2 : Nat) = 2 * (A + 2 * D) := by dsimp [x2, f6APTerm]; omega
+    have hn3 : (x3 : Nat) = 2 * (A + 3 * D) := by dsimp [x3, f6APTerm]; omega
+    have hp0 : A ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * A) (by
+        rw [← hn0]; exact hm0) using 1
+      all_goals omega
+    have hp1 : A + D ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * (A + D)) (by
+        rw [← hn1]; exact hm1) using 1
+      all_goals omega
+    have hp2 : A + 2 * D ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 2 * D)) (by
+        rw [← hn2]; exact hm2) using 1
+      all_goals omega
+    have hp3 : A + 3 * D ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 3 * D)) (by
+        rw [← hn3]; exact hm3) using 1
+      all_goals omega
+    have hy0 : (y0 : Nat) ∈ dyadicBlock k := by simpa [y0, f6APTerm] using hp0
+    have hy1 : (y1 : Nat) ∈ dyadicBlock k := by simpa [y1, f6APTerm] using hp1
+    have hy2 : (y2 : Nat) ∈ dyadicBlock (k + 1) := by
+      simpa [y2, f6APTerm] using hp2
+    have hy3 : (y3 : Nat) ∈ dyadicBlock (k + 1) := by
+      simpa [y3, f6APTerm] using hp3
+    have hordY : f6MonotoneQuad (doublyIndex p y0) (doublyIndex p y1)
+        (doublyIndex p y2) (doublyIndex p y3) := by
+      rcases hord with hord | hord
+      · have hc01X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x0 x1 (k + 1) hm0 hm1).mpr hord.1
+        have hc23X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x2 x3 (k + 1 + 1) hm2 hm3).mpr hord.2.2
+        have hc01 : (dyadicBlock (k + 1)).idxOf (2 * A) <
+            (dyadicBlock (k + 1)).idxOf (2 * (A + D)) := by
+          simpa only [hn0, hn1] using hc01X
+        have hc23 : (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 2 * D)) <
+            (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 3 * D)) := by
+          simpa only [hn2, hn3] using hc23X
+        have hlow := (f6DyadicBlock_even_children_reverse_order k A (A + D)
+          hp0 hp1).mp hc01
+        have hhigh := (f6DyadicBlock_even_children_reverse_order (k + 1)
+          (A + 2 * D) (A + 3 * D) hp2 hp3).mp hc23
+        apply f6Halved_order_of_forward_blocks p start hsucc hvalues
+          x1 x2 y0 y1 y2 y3 k hm1 hm2 hy0 hy1 hy2 hy3 hord.2.1
+        · simpa [y0, y1, f6APTerm] using hlow
+        · simpa [y2, y3, f6APTerm] using hhigh
+      · have hc10X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x1 x0 (k + 1) hm1 hm0).mpr hord.2.2
+        have hc32X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x3 x2 (k + 1 + 1) hm3 hm2).mpr hord.1
+        have hc10 : (dyadicBlock (k + 1)).idxOf (2 * (A + D)) <
+            (dyadicBlock (k + 1)).idxOf (2 * A) := by
+          simpa only [hn0, hn1] using hc10X
+        have hc32 : (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 3 * D)) <
+            (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 2 * D)) := by
+          simpa only [hn2, hn3] using hc32X
+        have hlow := (f6DyadicBlock_even_children_reverse_order k (A + D) A
+          hp1 hp0).mp hc10
+        have hhigh := (f6DyadicBlock_even_children_reverse_order (k + 1)
+          (A + 3 * D) (A + 2 * D) hp3 hp2).mp hc32
+        apply f6Halved_order_of_reverse_blocks p start hsucc hvalues
+          x1 x2 y0 y1 y2 y3 k hm1 hm2 hy0 hy1 hy2 hy3 hord.2.1
+        · simpa [y0, y1, f6APTerm] using hlow
+        · simpa [y2, y3, f6APTerm] using hhigh
+    exact ⟨A, D, hApos, hDpos, hDlt, by
+      simpa only [y0, y1, y2, y3] using hordY⟩
+
+  · have haodd : Odd a := Nat.not_even_iff_odd.mp haeven
+    obtain ⟨A, hA⟩ := odd_iff_exists_bit1.mp haodd
+    subst a
+    have hApos : 0 < A := by
+      by_contra hnot
+      have hAz : A = 0 := by omega
+      subst A
+      dsimp [r, x0, f6DyadicScale, f6APTerm] at hrpos
+      norm_num at hrpos
+    let y0 := f6APTerm A D hApos 0
+    let y1 := f6APTerm A D hApos 1
+    let y2 := f6APTerm A D hApos 2
+    let y3 := f6APTerm A D hApos 3
+    have hn0 : (x0 : Nat) = 2 * A + 1 := by dsimp [x0, f6APTerm]; omega
+    have hn1 : (x1 : Nat) = 2 * (A + D) + 1 := by dsimp [x1, f6APTerm]; omega
+    have hn2 : (x2 : Nat) = 2 * (A + 2 * D) + 1 := by dsimp [x2, f6APTerm]; omega
+    have hn3 : (x3 : Nat) = 2 * (A + 3 * D) + 1 := by dsimp [x3, f6APTerm]; omega
+    have hp0 : A ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * A + 1) (by
+        rw [← hn0]; exact hm0) using 1
+      all_goals omega
+    have hp1 : A + D ∈ dyadicBlock k := by
+      convert f6DyadicBlock_half_mem k (2 * (A + D) + 1) (by
+        rw [← hn1]; exact hm1) using 1
+      all_goals omega
+    have hp2 : A + 2 * D ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 2 * D) + 1) (by
+        rw [← hn2]; exact hm2) using 1
+      all_goals omega
+    have hp3 : A + 3 * D ∈ dyadicBlock (k + 1) := by
+      convert f6DyadicBlock_half_mem (k + 1) (2 * (A + 3 * D) + 1) (by
+        rw [← hn3]; exact hm3) using 1
+      all_goals omega
+    have hy0 : (y0 : Nat) ∈ dyadicBlock k := by simpa [y0, f6APTerm] using hp0
+    have hy1 : (y1 : Nat) ∈ dyadicBlock k := by simpa [y1, f6APTerm] using hp1
+    have hy2 : (y2 : Nat) ∈ dyadicBlock (k + 1) := by
+      simpa [y2, f6APTerm] using hp2
+    have hy3 : (y3 : Nat) ∈ dyadicBlock (k + 1) := by
+      simpa [y3, f6APTerm] using hp3
+    have hordY : f6MonotoneQuad (doublyIndex p y0) (doublyIndex p y1)
+        (doublyIndex p y2) (doublyIndex p y3) := by
+      rcases hord with hord | hord
+      · have hc01X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x0 x1 (k + 1) hm0 hm1).mpr hord.1
+        have hc23X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x2 x3 (k + 1 + 1) hm2 hm3).mpr hord.2.2
+        have hc01 : (dyadicBlock (k + 1)).idxOf (2 * A + 1) <
+            (dyadicBlock (k + 1)).idxOf (2 * (A + D) + 1) := by
+          simpa only [hn0, hn1] using hc01X
+        have hc23 : (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 2 * D) + 1) <
+            (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 3 * D) + 1) := by
+          simpa only [hn2, hn3] using hc23X
+        have hlow := (f6DyadicBlock_odd_children_reverse_order k A (A + D)
+          hp0 hp1).mp hc01
+        have hhigh := (f6DyadicBlock_odd_children_reverse_order (k + 1)
+          (A + 2 * D) (A + 3 * D) hp2 hp3).mp hc23
+        apply f6Halved_order_of_forward_blocks p start hsucc hvalues
+          x1 x2 y0 y1 y2 y3 k hm1 hm2 hy0 hy1 hy2 hy3 hord.2.1
+        · simpa [y0, y1, f6APTerm] using hlow
+        · simpa [y2, y3, f6APTerm] using hhigh
+      · have hc10X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x1 x0 (k + 1) hm1 hm0).mpr hord.2.2
+        have hc32X := (f6IdxOf_lt_iff_doublyIndex_lt_scale p start hvalues
+          x3 x2 (k + 1 + 1) hm3 hm2).mpr hord.1
+        have hc10 : (dyadicBlock (k + 1)).idxOf (2 * (A + D) + 1) <
+            (dyadicBlock (k + 1)).idxOf (2 * A + 1) := by
+          simpa only [hn0, hn1] using hc10X
+        have hc32 : (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 3 * D) + 1) <
+            (dyadicBlock (k + 1 + 1)).idxOf (2 * (A + 2 * D) + 1) := by
+          simpa only [hn2, hn3] using hc32X
+        have hlow := (f6DyadicBlock_odd_children_reverse_order k (A + D) A
+          hp1 hp0).mp hc10
+        have hhigh := (f6DyadicBlock_odd_children_reverse_order (k + 1)
+          (A + 3 * D) (A + 2 * D) hp3 hp2).mp hc32
+        apply f6Halved_order_of_reverse_blocks p start hsucc hvalues
+          x1 x2 y0 y1 y2 y3 k hm1 hm2 hy0 hy1 hy2 hy3 hord.2.1
+        · simpa [y0, y1, f6APTerm] using hlow
+        · simpa [y2, y3, f6APTerm] using hhigh
+    exact ⟨A, D, hApos, hDpos, hDlt, by
+      simpa only [y0, y1, y2, y3] using hordY⟩
+
+private theorem f6No_ordered_four
+    (p : DoublyInfinitePermutation) (start : Int → Int)
+    (hsucc : ∀ i : Int, start (i + 1) =
+      start i + (dyadicBlockArrangement i).length)
+    (hvalues : ∀ (i : Int) (j : Nat) (hj : j < (dyadicBlockArrangement i).length),
+      doublyPermutationSequence p (start i + j) =
+        blockSequence (dyadicBlockArrangement i) ⟨j, hj⟩) :
+    ∀ (d a : Nat) (ha : 0 < a) (_hd : 0 < d),
+      ¬ f6MonotoneQuad
+        (doublyIndex p (f6APTerm a d ha 0))
+        (doublyIndex p (f6APTerm a d ha 1))
+        (doublyIndex p (f6APTerm a d ha 2))
+        (doublyIndex p (f6APTerm a d ha 3)) := by
+  intro d
+  induction d using Nat.strong_induction_on with
+  | h d ih =>
+      intro a ha hd hord
+      obtain ⟨a', d', ha', hd', hd'lt, hord'⟩ :=
+        f6AP_descent p start hsucc hvalues a d ha hd hord
+      exact ih d' hd'lt a' ha' hd' hord'
+
+theorem dyadic_construction_avoids_four_holds :
+    dyadic_construction_avoids_four := by
+  intro p hconcat
+  change ¬ HasMonotoneAP (doublyPermutationSequence p) 4
+  intro hap
+  obtain ⟨start, _hzero, hsucc, hconcatValues⟩ := hconcat
+  obtain ⟨pos, hpos, a, d, hd, hvalues⟩ := hap
+  rw [bne_iff_ne] at hd
+  let v0 : PositiveNat := p (pos 0)
+  let v1 : PositiveNat := p (pos 1)
+  let v2 : PositiveNat := p (pos 2)
+  let v3 : PositiveNat := p (pos 3)
+  have heq0 : (((v0 : Nat) : Int)) = a := by
+    simpa [v0, doublyPermutationSequence] using hvalues (0 : Fin 4)
+  have heq1 : (((v1 : Nat) : Int)) = a + d := by
+    simpa [v1, doublyPermutationSequence] using hvalues (1 : Fin 4)
+  have heq2 : (((v2 : Nat) : Int)) = a + 2 * d := by
+    simpa [v2, doublyPermutationSequence] using hvalues (2 : Fin 4)
+  have heq3 : (((v3 : Nat) : Int)) = a + 3 * d := by
+    simpa [v3, doublyPermutationSequence] using hvalues (3 : Fin 4)
+  have hi01 : doublyIndex p v0 < doublyIndex p v1 := by
+    simpa [v0, v1, doublyIndex] using hpos (show (0 : Fin 4) < 1 by decide)
+  have hi12 : doublyIndex p v1 < doublyIndex p v2 := by
+    simpa [v1, v2, doublyIndex] using hpos (show (1 : Fin 4) < 2 by decide)
+  have hi23 : doublyIndex p v2 < doublyIndex p v3 := by
+    simpa [v2, v3, doublyIndex] using hpos (show (2 : Fin 4) < 3 by decide)
+  by_cases hdpos : 0 < d
+  · let A : Nat := (v0 : Nat)
+    let D : Nat := d.toNat
+    have hA : 0 < A := v0.property
+    have hDcast : (D : Int) = d := by
+      exact Int.toNat_of_nonneg (le_of_lt hdpos)
+    have hD : 0 < D := by
+      exact_mod_cast (show (0 : Int) < (D : Int) by simpa only [hDcast] using hdpos)
+    have hv0 : v0 = f6APTerm A D hA 0 := by
+      apply Subtype.ext
+      simp [A, f6APTerm]
+    have hv1nat : (v1 : Nat) = A + D := by
+      exact_mod_cast (show ((v1 : Nat) : Int) = (A : Int) + (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv2nat : (v2 : Nat) = A + 2 * D := by
+      exact_mod_cast (show ((v2 : Nat) : Int) = (A : Int) + 2 * (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv3nat : (v3 : Nat) = A + 3 * D := by
+      exact_mod_cast (show ((v3 : Nat) : Int) = (A : Int) + 3 * (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv1 : v1 = f6APTerm A D hA 1 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv1nat
+    have hv2 : v2 = f6APTerm A D hA 2 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv2nat
+    have hv3 : v3 = f6APTerm A D hA 3 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv3nat
+    apply f6No_ordered_four p start hsucc hconcatValues D A hA hD
+    simpa only [hv0, hv1, hv2, hv3] using
+      (show f6MonotoneQuad (doublyIndex p v0) (doublyIndex p v1)
+        (doublyIndex p v2) (doublyIndex p v3) from Or.inl ⟨hi01, hi12, hi23⟩)
+  · have hdneg : d < 0 := by omega
+    let A : Nat := (v3 : Nat)
+    let D : Nat := (-d).toNat
+    have hA : 0 < A := v3.property
+    have hDcast : (D : Int) = -d := by
+      exact Int.toNat_of_nonneg (by omega)
+    have hD : 0 < D := by
+      exact_mod_cast (show (0 : Int) < (D : Int) by rw [hDcast]; omega)
+    have hv3 : v3 = f6APTerm A D hA 0 := by
+      apply Subtype.ext
+      simp [A, f6APTerm]
+    have hv2nat : (v2 : Nat) = A + D := by
+      exact_mod_cast (show ((v2 : Nat) : Int) = (A : Int) + (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv1nat : (v1 : Nat) = A + 2 * D := by
+      exact_mod_cast (show ((v1 : Nat) : Int) = (A : Int) + 2 * (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv0nat : (v0 : Nat) = A + 3 * D := by
+      exact_mod_cast (show ((v0 : Nat) : Int) = (A : Int) + 3 * (D : Int) by
+        dsimp only [A]
+        omega)
+    have hv2 : v2 = f6APTerm A D hA 1 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv2nat
+    have hv1 : v1 = f6APTerm A D hA 2 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv1nat
+    have hv0 : v0 = f6APTerm A D hA 3 := by
+      apply Subtype.ext
+      simpa [f6APTerm] using hv0nat
+    apply f6No_ordered_four p start hsucc hconcatValues D A hA hD
+    simpa only [hv3, hv2, hv1, hv0] using
+      (show f6MonotoneQuad (doublyIndex p v3) (doublyIndex p v2)
+        (doublyIndex p v1) (doublyIndex p v0) from Or.inr ⟨hi01, hi12, hi23⟩)
+
+theorem fact_6_holds : fact_6 := by
+  obtain ⟨p, hpconcat⟩ := dyadic_concatenation_exists_holds
+  rw [fact_6]
+  rw [bne_iff_ne]
+  exact Set.nonempty_iff_ne_empty.mp
+    ⟨p, dyadic_construction_avoids_four_holds p hpconcat⟩
+
 end LeanProofs.DavisEntringerGrahamSimmons1977
