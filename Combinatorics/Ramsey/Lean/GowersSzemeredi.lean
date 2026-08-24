@@ -60,6 +60,7 @@ import GowersSzemeredi.Proofs16Basic
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
+import GowersSzemeredi.Proofs17Regions
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
