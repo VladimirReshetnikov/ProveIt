@@ -9,6 +9,8 @@ import GowersSzemeredi.Sections12_13
 import GowersSzemeredi.Sections14_15
 import GowersSzemeredi.Section16
 import GowersSzemeredi.Sections17_18
+import GowersSzemeredi.ProofInfrastructure
+import GowersSzemeredi.Proofs01Headline
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
@@ -16,8 +18,8 @@ import GowersSzemeredi.Sections17_18
 This facade exposes the auxiliary definitions, conjectures, and every numbered
 result in W. T. Gowers's *A new proof of Szemerédi's theorem*.
 
-Following the repository's statement-catalogue convention, results whose
-proofs have not yet been formalized are definitions with values in `Prop`.
-They record precise propositions without adding axioms or assertions to
-Lean's trusted environment.
+Following the repository's statement-catalogue convention, each paper result
+is a definition with value in `Prop`; completed formal proofs are exported as
+companion theorems with the suffix `_holds`.  The definitions themselves add
+no axioms or assertions to Lean's trusted environment.
 -/
