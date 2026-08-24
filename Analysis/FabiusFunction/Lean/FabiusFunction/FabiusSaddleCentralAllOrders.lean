@@ -127,7 +127,7 @@ noncomputable def dyadicLambertExponentTruncation
     (dyadicLambertEpsilon t : ℂ) ^ m *
       negativeLaplaceExponentCoefficient m (dyadicLambertPhase t) v
 
-private lemma negativeLaplaceVerticalTaylorSum_eq_taylorWithinEval
+theorem negativeLaplaceVerticalTaylorSum_eq_taylorWithinEval
     (F : BoundedFabius) (hF : IsFabius F)
     (K : ℕ) (t eps v : ℝ) :
     negativeLaplaceVerticalTaylorSum F K t eps v =
