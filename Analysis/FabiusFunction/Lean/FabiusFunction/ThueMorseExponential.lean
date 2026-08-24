@@ -217,4 +217,137 @@ theorem X_pow_mul_thueMorseShiftedPowerSeries_eq_product (k : ℕ) :
       PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) := by
   simpa using X_pow_mul_thueMorseShiftedPowerSeries 0
 
+/-! ## Removing the explicit powers of `X` -/
+
+/-- The rational formal series `(exp X - 1) / X`. -/
+noncomputable def rationalExpm1DivSeries : PowerSeries ℚ :=
+  PowerSeries.mk fun n => 1 / ((n + 1).factorial : ℚ)
+
+@[simp] theorem coeff_rationalExpm1DivSeries (n : ℕ) :
+    PowerSeries.coeff n rationalExpm1DivSeries =
+      1 / ((n + 1).factorial : ℚ) := by
+  simp [rationalExpm1DivSeries]
+
+/-- Denominator-cleared characterization of `(exp X - 1) / X`. -/
+theorem X_mul_rationalExpm1DivSeries :
+    (PowerSeries.X : PowerSeries ℚ) * rationalExpm1DivSeries =
+      PowerSeries.exp ℚ - 1 := by
+  ext (_ | n)
+  · simp
+  · simp [rationalExpm1DivSeries, PowerSeries.coeff_exp]
+
+/-- Each factor `1 - exp (-a X)` has one explicit factor `a X`. -/
+theorem one_sub_rescale_neg_exp_eq (a : ℚ) :
+    1 - PowerSeries.rescale (-a) (PowerSeries.exp ℚ) =
+      PowerSeries.C a * PowerSeries.X *
+        PowerSeries.rescale (-a) rationalExpm1DivSeries := by
+  have h := congrArg (PowerSeries.rescale (-a))
+    X_mul_rationalExpm1DivSeries
+  simp only [map_mul, map_sub, map_one, PowerSeries.rescale_X] at h
+  calc
+    1 - PowerSeries.rescale (-a) (PowerSeries.exp ℚ) =
+        -(PowerSeries.rescale (-a) (PowerSeries.exp ℚ) - 1) := by ring
+    _ = -(PowerSeries.C (-a) * PowerSeries.X *
+          PowerSeries.rescale (-a) rationalExpm1DivSeries) := by rw [h]
+    _ = _ := by simp
+
+/-- Extract all `X`-powers and dyadic scalar factors from the finite product. -/
+theorem prod_one_sub_rescale_neg_exp_eq (k : ℕ) :
+    (∏ j ∈ Finset.range k,
+        (1 - PowerSeries.rescale (-(2 : ℚ) ^ j) (PowerSeries.exp ℚ))) =
+      PowerSeries.C ((2 : ℚ) ^ k.choose 2) * PowerSeries.X ^ k *
+        ∏ j ∈ Finset.range k,
+          PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      have hchoose : (k + 1).choose 2 = k.choose 2 + k := by
+        rw [show k + 1 = Nat.succ k by omega, Nat.choose_succ_succ]
+        simp [Nat.choose_one_right, add_comm]
+      rw [Finset.prod_range_succ, ih,
+        one_sub_rescale_neg_exp_eq, hchoose, pow_add, pow_succ]
+      rw [Finset.prod_range_succ]
+      simp only [map_mul]
+      ring
+
+/-- Normalized factorization of the shifted inner-sum series.  The scalar
+`(-1)^k 2^(k choose 2)` is the precise normalization left after cancelling
+the forced factor `X^k`. -/
+theorem thueMorseShiftedPowerSeries_eq_expm1_product (k : ℕ) :
+    thueMorseShiftedPowerSeries k =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        (PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) *
+          ∏ j ∈ Finset.range k,
+            PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) := by
+  apply PowerSeries.X_pow_mul_cancel (k := k)
+  rw [X_pow_mul_thueMorseShiftedPowerSeries,
+    thueMorseCenteredPowerSeries_eq_product,
+    prod_one_sub_rescale_neg_exp_eq]
+  rw [Algebra.smul_def]
+  change PowerSeries.C ((-1 : ℚ) ^ k) * _ = _
+  rw [map_mul]
+  ring
+
+/-- Iterating `A(2X) = ((exp X - 1) / X) A(X)` along the negative dyadic
+orbit absorbs the finite product occurring above. -/
+theorem prod_rescale_neg_expm1_mul_rescale_neg_one
+    (A : PowerSeries ℚ)
+    (hA : PowerSeries.rescale 2 A = rationalExpm1DivSeries * A)
+    (k : ℕ) :
+    (∏ j ∈ Finset.range k,
+        PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) *
+        PowerSeries.rescale (-1 : ℚ) A =
+      PowerSeries.rescale (-(2 : ℚ) ^ k) A := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [Finset.prod_range_succ]
+      calc
+        ((∏ j ∈ Finset.range k,
+              PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) *
+            PowerSeries.rescale (-(2 : ℚ) ^ k) rationalExpm1DivSeries) *
+              PowerSeries.rescale (-1 : ℚ) A =
+            ((∏ j ∈ Finset.range k,
+                PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) *
+              PowerSeries.rescale (-1 : ℚ) A) *
+                PowerSeries.rescale (-(2 : ℚ) ^ k)
+                  rationalExpm1DivSeries := by ring
+        _ = PowerSeries.rescale (-(2 : ℚ) ^ k) A *
+              PowerSeries.rescale (-(2 : ℚ) ^ k)
+                rationalExpm1DivSeries := by rw [ih]
+        _ = PowerSeries.rescale (-(2 : ℚ) ^ k)
+              (A * rationalExpm1DivSeries) := by rw [map_mul]
+        _ = PowerSeries.rescale (-(2 : ℚ) ^ k)
+              (PowerSeries.rescale 2 A) := by rw [hA]; congr 1; ring
+        _ = PowerSeries.rescale (-(2 : ℚ) ^ (k + 1)) A := by
+          rw [PowerSeries.rescale_rescale]
+          congr 1
+          rw [pow_succ]
+          ring
+
+/-- Refinement-ready form of the inner-sum identity.  Any formal series
+satisfying the Fabius moment functional equation absorbs the entire finite
+product into one negative dyadic rescaling. -/
+theorem thueMorseShiftedPowerSeries_mul_of_rescale_two
+    (A : PowerSeries ℚ)
+    (hA : PowerSeries.rescale 2 A = rationalExpm1DivSeries * A)
+    (k : ℕ) :
+    thueMorseShiftedPowerSeries k * PowerSeries.rescale (-1 : ℚ) A =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        (PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) *
+          PowerSeries.rescale (-(2 : ℚ) ^ k) A) := by
+  rw [thueMorseShiftedPowerSeries_eq_expm1_product]
+  calc
+    (PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+          (PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) *
+            ∏ j ∈ Finset.range k,
+              PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries)) *
+        PowerSeries.rescale (-1 : ℚ) A =
+      PowerSeries.C (((-1 : ℚ) ^ k) * (2 : ℚ) ^ k.choose 2) *
+        (PowerSeries.rescale (-1 : ℚ) (PowerSeries.exp ℚ) *
+          ((∏ j ∈ Finset.range k,
+              PowerSeries.rescale (-(2 : ℚ) ^ j) rationalExpm1DivSeries) *
+            PowerSeries.rescale (-1 : ℚ) A)) := by ring
+    _ = _ := by rw [prod_rescale_neg_expm1_mul_rescale_neg_one A hA k]
+
 end Fabius
