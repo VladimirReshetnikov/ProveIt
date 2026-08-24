@@ -21474,6 +21474,74 @@ the deficiency against the conditional count is $H/(\log H)^2$ at $\delta=1$ but
 constant $\kappa_*\beta$ at every $\delta$ of order $H$.  \statusnew{}; constants
 \statusexactcomp{}.
 
+\subsection{The conditional type gap, and a construction that would settle the conjecture}
+\label{camp:typegap}
+
+The measurement \eqref{camp:eq-pila} kills the branch in which $g$ is made independent of
+$2^z,3^z$ by vanishing on the monoid.  The remaining branch --- \emph{designed}
+transcendence --- turns out to need no design at all, and the resulting statement is
+sharper than the original lead.
+
+\begin{proposition}[Algebraic dependence forces vanishing quadratic type]
+\label{camp:prop-order}
+Let $g$ be entire and algebraically dependent with $2^z$ and $3^z$, i.e.\
+$P(2^z,3^z,g(z))\equiv0$ for some nonzero $P\in\Z[X,Y,Z]$.  Then
+$\log M(g,r)=O(r\log r)$, and in particular $\tau_2(g)=0$.
+\end{proposition}
+
+\begin{proof}
+Clearing the $Z$-degree, $g$ satisfies $\sum_{k=0}^da_k(z)g(z)^k=0$ with
+$a_k\in\Z[2^z,3^z]$ exponential polynomials and $a_d\not\equiv0$.  The elementary root
+bound for a monic-after-division polynomial gives, wherever $a_d(z)\ne0$,
+\[
+ |g(z)|\le\max\Bigl(1,\ \sum_{k<d}\bigl|a_k(z)/a_d(z)\bigr|\Bigr),
+\]
+and this bound is exactly attained in the worst case (checked numerically on $2\times10^4$
+random instances, worst ratio $1.0000$).  Each $a_k$ has order one, so
+$\log|a_k(z)|=O(r)$ on $|z|=r$; and $a_d$, being a nonzero function of order one, satisfies
+$\log|1/a_d|=O(r\log r)$ on circles avoiding an exceptional set of small measure, by the
+classical minimum-modulus theorem (\statusknown).  Choosing for each $r$ a radius
+$r'\in[r,2r]$ whose circle avoids that set gives $\log M(g,r)\le\log M(g,r')=O(r\log r)$,
+since $g$ is entire.  Hence $\tau_2(g)=\lim r^{-2}\log M(g,r)=0$.
+\end{proof}
+
+Combining Proposition~\ref{camp:prop-order} with Pila's theorem in the specialization
+$a=\log2$, $b=\log3$, $\alpha=1$, $\gamma=\beta$ gives a conditional \emph{gap}.
+
+\begin{theorem}[Conditional type gap]\label{camp:thm-typegap}
+Assume Conjecture~\ref{conj:AE} fails, with canonical generator $\beta$.  Then no entire
+function $g$ that is integer-valued on $\Sol$ satisfies
+\[
+ 0<\tau_2(g)\le\frac1{832\,\beta^2\log2\log3}.
+\]
+\end{theorem}
+
+\begin{proof}
+If $\tau_2(g)$ were at most the threshold, Pila's theorem would make $g$ algebraically
+dependent with $2^z$ and $3^z$, whence $\tau_2(g)=0$ by
+Proposition~\ref{camp:prop-order} --- contradicting $\tau_2(g)>0$.
+\end{proof}
+
+\begin{target}[Small-type integer-valued interpolant]\label{camp:target-construct}
+Exhibit an entire function $g$, integer-valued on $\Sol$, with
+$0<\tau_2(g)\le1/(832\beta^2\log2\log3)$, constructed from data available under a
+hypothetical counterexample.  By Theorem~\ref{camp:thm-typegap} any such construction
+\emph{proves} Conjecture~\ref{conj:AE}.
+\end{target}
+
+Two features make this the most attractive of the surviving targets.  First, it is
+\emph{control-clean in the strong sense}: the quadratic density
+$\#(\Sol\cap[0,T])=T^2/(2\beta)+O(T)$ is the exact signature of the least-generator monoid,
+so at an integer control $\Sol=\N_0$ has \emph{linear} density and the entire quadratic-type
+analysis is vacuous.  The route therefore consumes channel~(ii) of the control principle
+(Section~\ref{log:control}) --- which most of the corpus's machinery does not.  Second, it
+converts an open-ended search into a single explicit inequality.  What
+\eqref{camp:eq-pila} rules out is only the \emph{vanishing} construction, whose Jensen
+floor $1/(4\beta)$ exceeds the threshold by $208\beta\log2\log3\approx158\beta$; a
+construction whose small type comes from controlled interpolation rather than from zeros is
+untouched by that bound.  \statusnew{}; Pila's theorem and the minimum-modulus input
+\statusknown{}; target \statusopen.
+
 \subsection{Literature synthesis: five clusters, and one gate measured}
 \label{camp:literature}
 
@@ -21518,9 +21586,10 @@ $\beta>27$, and \emph{growing linearly in $\beta$} --- so every improvement of t
 zero-free region makes this particular gate harder, not easier.  \statusnew{}; the
 numerical check of the Jensen sum against the closed form converges from above
 ($1.219,1.109,1.054$ at $T=140,280,560$ for $\beta=14$), confirming the bound is valid and
-slightly conservative.  The remaining ways to use Pila's theorem therefore require
-\emph{designed} transcendence of $g$ over $\C(2^z,3^z)$ rather than a vanishing condition,
-which is the same missing ingredient as everywhere else.  The survey's other four clusters
+slightly conservative.  The remaining way to use Pila's theorem therefore requires small type produced by
+controlled interpolation rather than by zeros; transcendence itself is then automatic, and
+the precise statement is the conditional type gap of Theorem~\ref{camp:thm-typegap} with
+its construction target~\ref{camp:target-construct}.  The survey's other four clusters
 --- arithmetic holonomy for products of logarithms (Calegari--Dimitrov--Tang, which
 notably does \emph{not} cover $\log2\log3$ and must not be quoted as if it did),
 multivariate and adelic generalized factorials, global determinant architecture
@@ -21535,10 +21604,13 @@ zero-free-region generator with a measured and unfavourable dictionary (trap
 architecture), and the literature's closest published program has had its single numerical
 gate measured and found to fail by a linearly growing factor.  Nothing here moves the
 four-exponentials barrier.  What the campaign buys is precision: the surviving frontier is
-now the certified sparse near-curve search --- the only route whose success criterion
-($\mathrm{Cap}_L=o(L)$) is a proven sufficient condition and whose verification is
-finite --- together with the two output-sensitive cancellation targets
-(Sections~\ref{sec:masks}, \ref{bh:localized}) that have survived every campaign so far.
+now two routes with \emph{proven sufficient conditions} --- the certified sparse near-curve
+search ($\mathrm{Cap}_L=o(L)$, verification finite) and the small-type integer-valued
+interpolant of Target~\ref{camp:target-construct}, which is moreover control-clean through
+the monoid's quadratic density --- together with the two output-sensitive cancellation
+targets (Sections~\ref{sec:masks}, \ref{bh:localized}) that have survived every campaign so
+far.  Of these the interpolant target is the sharpest, being a single explicit inequality
+whose satisfaction would settle the conjecture outright.
 
 \section{Direct attempts during the integration session}
 \label{sec:session-log}
@@ -22914,6 +22986,12 @@ Section~\ref{camp:traps} \\
 Pila integrality gate measured: $\tau_2\ge1/(4\beta)$ by Jensen against the monoid density,
 failing the threshold by $208\beta\log2\log3\approx158\beta$ (linear in $\beta$) &
 \statusnew & Section~\ref{camp:literature}, \eqref{camp:eq-pila} \\
+Algebraic dependence with $2^z,3^z$ forces $\log M(g,r)=O(r\log r)$, hence $\tau_2=0$;
+conditional type gap (no integer-valued entire $g$ on $\Sol$ with $0<\tau_2\le$ threshold);
+small-type interpolant target, control-clean via the monoid's quadratic density &
+\statusnew{}; Pila and minimum modulus \statusknown{}; target \statusopen &
+Proposition~\ref{camp:prop-order}, Theorem~\ref{camp:thm-typegap},
+Target~\ref{camp:target-construct} \\
 Primitive tensor normal form (period zero, content one, external coefficient)
 $\Leftrightarrow$ counterexample; Kummer period-orbit obstruction and conditional
 closure; determinant design checklist & \statusnew{}/\statusopen &
