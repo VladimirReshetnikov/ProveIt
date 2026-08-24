@@ -153,17 +153,22 @@ No condition `m ≤ 2^n` or irreducibility of the dyadic representation is
 needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
 function satisfying `IsFabius`.  The rational expression is independent of
 the representation of `m / 2^n` (in particular, it is unchanged by
-`(m,n) ↦ (2m,n+1)`) and is invariant under any common rational translation
-of its inner powers.  More explicitly, for every `q : ℚ` the fully displayed
-sum with inner power `(j - m * 2^k + q)^(n+k)` has that same value; literal
-rational, signed-global, and bounded-unit-interval theorems are public.
-Thus the source's `+1/2` formula and the centered form agree, while its
-`QPochhammer`/`QBinomial` factors retain notation-faithful public definitions.
+`(m,n) ↦ (2m,n+1)`) and is invariant under any common translation of its
+inner powers.  The finite translated expressions are constant polynomials
+over `ℚ`, so they can be evaluated in every field over `ℚ`.  In particular,
+for every real or complex `q` the fully displayed sum with inner power
+`(j - m * 2^k + q)^(n+k)` has that same value; generic, real, complex, and
+Gaussian-rational endpoints are public.  Thus the source's `+1/2` formula and
+the centered form agree, while its `QPochhammer`/`QBinomial` factors retain
+notation-faithful definitions at the fixed q-special-function base `1/2`.
 For the inverse-power specialization, dyadic reflection additionally proves
-for every `q : ℚ` the raw-coordinate formula with inner power
+for every real or complex `q` the raw-coordinate formula with inner power
 `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses
 the zero-one `thueMorseBit`; at `n = q = 0`, the sole inner power is `0^0`
-and evaluates to one.
+and evaluates to one.  The centered and raw scalar APIs are
+`Fabius.qBinomialThueMorseTranslatedFormulaIn` and
+`Fabius.qBinomialThueMorseRawTranslatedFormulaIn`; the arbitrary-numerator
+version is `Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn`.
 
 The global binary-reduction series is also formalized.  Its correct outer
 index starts at `m = 0`, where `Floor[2^(m-1)x]` is genuinely `Floor[x/2]`.
