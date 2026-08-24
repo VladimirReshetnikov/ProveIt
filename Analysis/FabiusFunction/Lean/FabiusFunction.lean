@@ -3,6 +3,7 @@ import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.NegativeLaplace
+import FabiusFunction.PeriodicCorrection
 
 /-!
 # Fabius function
