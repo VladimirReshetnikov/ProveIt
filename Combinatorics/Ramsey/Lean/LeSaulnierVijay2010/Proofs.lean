@@ -36,6 +36,13 @@ theorem sharma_superpolynomial_lower_bound_holds :
     LeanProofs.LeSaulnierVijay2011.sharma_superpolynomial_lower_bound] using
     LeanProofs.LeSaulnierVijay2011.sharma_superpolynomial_lower_bound_holds
 
+/-- The journal and preprint state the same Sharma upper bound. -/
+theorem sharma_upper_bound_from_2011
+    (h : LeanProofs.LeSaulnierVijay2011.sharma_upper_bound) :
+    sharma_upper_bound := by
+  simpa only [sharma_upper_bound,
+    LeanProofs.LeSaulnierVijay2011.sharma_upper_bound] using h
+
 theorem M_even_recurrence_holds : M_even_recurrence := by
   simpa [M_even_recurrence,
     LeanProofs.LeSaulnierVijay2011.M_even_recurrence] using
