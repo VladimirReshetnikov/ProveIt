@@ -47,6 +47,7 @@ import GowersSzemeredi.Proofs12
 import GowersSzemeredi.Proofs12Parallelograms
 import GowersSzemeredi.Proofs12HigherArrangements
 import GowersSzemeredi.Proofs12Amplification
+import GowersSzemeredi.Proofs12Restriction
 import GowersSzemeredi.Proofs13Basic
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
