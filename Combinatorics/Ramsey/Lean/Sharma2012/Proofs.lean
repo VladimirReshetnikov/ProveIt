@@ -7452,4 +7452,350 @@ lemma reflectedActiveLists_endpoints {n : Nat} {gamma : List Nat}
     apply startsWith_prologue_of_startsWith
     exact startsWith_reversal_of_endsWith hbEnd
 
+
+lemma coefficient_pos_of_modEq_le_of_ne {q b x d : Nat}
+    (hxb : x ≠ b)
+    (heq : b = x + (2 * q) * d) : 0 < d := by
+  by_contra hd
+  have : d = 0 := by omega
+  subst d
+  simp only [Nat.mul_zero, Nat.add_zero] at heq
+  exact hxb heq.symm
+
+lemma coefficient_ne_of_values_ne {q b x y dx dy : Nat}
+    (hx : b = x + (2 * q) * dx) (hy : b = y + (2 * q) * dy)
+    (hxy : x ≠ y) : dx ≠ dy := by
+  intro h
+  subst dy
+  exact hxy (by omega)
+
+lemma values_ne_of_getElem?_ne_index {word : List Nat} {i j x y : Nat}
+    (hword : word.Nodup) (hi : word[i]? = some x) (hj : word[j]? = some y)
+    (hij : i ≠ j) : x ≠ y := by
+  intro hxy
+  subst y
+  exact hij (getElem?_index_unique_of_nodup hword hi hj)
+
+lemma six_mul_lt_of_three_distinct_predecessors {q b x₁ x₂ x₃ : Nat}
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b) : 6 * q < b := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hlarge : 3 <= d₁ ∨ 3 <= d₂ ∨ 3 <= d₃ := by omega
+  rcases hlarge with hlarge | hlarge | hlarge <;> nlinarith
+
+lemma first_predecessor_among_three {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 8 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b) :
+    x₁ = b - 2 * q ∨ x₂ = b - 2 * q ∨ x₃ = b - 2 * q := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 3 := by nlinarith
+  have hd₂Le : d₂ <= 3 := by nlinarith
+  have hd₃Le : d₃ <= 3 := by nlinarith
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 1 ∨ d₂ = 1 ∨ d₃ = 1 := by omega
+  rcases hcover with h | h | h
+  · left
+    subst d₁
+    omega
+  · right; left
+    subst d₂
+    omega
+  · right; right
+    subst d₃
+    omega
+
+lemma third_predecessor_among_three_without_first {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 10 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b)
+    (hnotFirst₁ : x₁ ≠ b - 2 * q)
+    (hnotFirst₂ : x₂ ≠ b - 2 * q)
+    (hnotFirst₃ : x₃ ≠ b - 2 * q) :
+    x₁ = b - 6 * q ∨ x₂ = b - 6 * q ∨ x₃ = b - 6 * q := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 4 := by nlinarith
+  have hd₂Le : d₂ <= 4 := by nlinarith
+  have hd₃Le : d₃ <= 4 := by nlinarith
+  have hd₁NeOne : d₁ ≠ 1 := by intro h; subst d₁; apply hnotFirst₁; omega
+  have hd₂NeOne : d₂ ≠ 1 := by intro h; subst d₂; apply hnotFirst₂; omega
+  have hd₃NeOne : d₃ ≠ 1 := by intro h; subst d₃; apply hnotFirst₃; omega
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 3 ∨ d₂ = 3 ∨ d₃ = 3 := by omega
+  rcases hcover with h | h | h
+  · left; subst d₁; omega
+  · right; left; subst d₂; omega
+  · right; right; subst d₃; omega
+
+lemma third_or_fifth_predecessor_among_three_without_first {q b x₁ x₂ x₃ : Nat}
+    (hbUpper : b < 12 * q)
+    (hx₁Pos : 0 < x₁) (hx₂Pos : 0 < x₂) (hx₃Pos : 0 < x₃)
+    (hx₁Le : x₁ <= b) (hx₂Le : x₂ <= b) (hx₃Le : x₃ <= b)
+    (hx₁b : x₁ ≠ b) (hx₂b : x₂ ≠ b) (hx₃b : x₃ ≠ b)
+    (hx₁₂ : x₁ ≠ x₂) (hx₁₃ : x₁ ≠ x₃) (hx₂₃ : x₂ ≠ x₃)
+    (hmod₁ : Nat.ModEq (2 * q) x₁ b)
+    (hmod₂ : Nat.ModEq (2 * q) x₂ b)
+    (hmod₃ : Nat.ModEq (2 * q) x₃ b)
+    (hnotFirst₁ : x₁ ≠ b - 2 * q)
+    (hnotFirst₂ : x₂ ≠ b - 2 * q)
+    (hnotFirst₃ : x₃ ≠ b - 2 * q) :
+    (x₁ = b - 6 * q ∨ x₂ = b - 6 * q ∨ x₃ = b - 6 * q) ∨
+      (x₁ = b - 10 * q ∨ x₂ = b - 10 * q ∨ x₃ = b - 10 * q) := by
+  obtain ⟨d₁, hd₁⟩ := (Nat.modEq_iff_exists_eq_add hx₁Le).mp hmod₁
+  obtain ⟨d₂, hd₂⟩ := (Nat.modEq_iff_exists_eq_add hx₂Le).mp hmod₂
+  obtain ⟨d₃, hd₃⟩ := (Nat.modEq_iff_exists_eq_add hx₃Le).mp hmod₃
+  have hd₁Eq : b = x₁ + (2 * q) * d₁ := by simpa [Nat.mul_comm] using hd₁
+  have hd₂Eq : b = x₂ + (2 * q) * d₂ := by simpa [Nat.mul_comm] using hd₂
+  have hd₃Eq : b = x₃ + (2 * q) * d₃ := by simpa [Nat.mul_comm] using hd₃
+  have hd₁Pos := coefficient_pos_of_modEq_le_of_ne hx₁b hd₁Eq
+  have hd₂Pos := coefficient_pos_of_modEq_le_of_ne hx₂b hd₂Eq
+  have hd₃Pos := coefficient_pos_of_modEq_le_of_ne hx₃b hd₃Eq
+  have hd₁Le : d₁ <= 5 := by nlinarith
+  have hd₂Le : d₂ <= 5 := by nlinarith
+  have hd₃Le : d₃ <= 5 := by nlinarith
+  have hd₁NeOne : d₁ ≠ 1 := by intro h; subst d₁; apply hnotFirst₁; omega
+  have hd₂NeOne : d₂ ≠ 1 := by intro h; subst d₂; apply hnotFirst₂; omega
+  have hd₃NeOne : d₃ ≠ 1 := by intro h; subst d₃; apply hnotFirst₃; omega
+  have hd₁₂ := coefficient_ne_of_values_ne hd₁Eq hd₂Eq hx₁₂
+  have hd₁₃ := coefficient_ne_of_values_ne hd₁Eq hd₃Eq hx₁₃
+  have hd₂₃ := coefficient_ne_of_values_ne hd₂Eq hd₃Eq hx₂₃
+  have hcover : d₁ = 3 ∨ d₂ = 3 ∨ d₃ = 3 ∨ d₁ = 5 ∨ d₂ = 5 ∨ d₃ = 5 := by
+    omega
+  rcases hcover with h | h | h | h | h | h
+  · left; left; subst d₁; omega
+  · left; right; left; subst d₂; omega
+  · left; right; right; subst d₃; omega
+  · right; left; subst d₁; omega
+  · right; right; left; subst d₂; omega
+  · right; right; right; subst d₃; omega
+
+/-- The order-theoretic core of the odd-end forcing step common to the three
+numeric cases in Theorem 2.6. -/
+lemma ambient_lt_of_oddEpilogue_forcing {n : Nat} {gamma : List Nat}
+    {b x y z : Nat}
+    (hgamma : IsTheta n gamma)
+    (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n)
+    (hbOdd : Odd b) (hxOdd : Odd x) (hyOdd : Odd y) (hzOdd : Odd z)
+    (hx : x ∈ epilogue n (oddTrace gamma))
+    (hmean : x + y = 2 * z)
+    (hbZ : b ≠ z) (hbX : b ≠ x)
+    (hdegree : binaryCongruenceDegree ((b + 1) / 2) ((x + 1) / 2) <
+      binaryCongruenceDegree ((b + 1) / 2) ((z + 1) / 2))
+    (hyPos : 0 < y) (hzPos : 0 < z) (hzLeY : z <= y) (hbLtZ : b < z) :
+    n < y := by
+  have hxTrace : x ∈ oddTrace gamma := by
+    apply oddActiveBlock_mem_oddTrace (n := n)
+    simpa only [oddActiveBlock, List.mem_reverse] using hx
+  have hxGamma : x ∈ gamma := (List.mem_filter.mp hxTrace).1
+  have hxSegment := mem_segment_of_mem_of_isTheta hgamma hxGamma
+  by_contra hnot
+  have hySegment : y ∈ segment n := by
+    simp only [segment, Finset.mem_Icc]
+    omega
+  have hzSegment : z ∈ segment n := by
+    simp only [segment, Finset.mem_Icc] at hySegment ⊢
+    omega
+  have hzEpilogue := oddEpilogue_forced_middle hgamma hbEnd hxSegment hySegment
+    hzSegment hbOdd hxOdd hyOdd hzOdd hmean hbZ hbX hdegree hx
+  have hzLe := oddEpilogue_entry_le_last hgamma hbEnd hbLower hzEpilogue
+  omega
+
+lemma ambient_lt_b_add_ten_of_sub_two_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbTwo : 2 * dyadicQ n < b)
+    (hx : b - 2 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 10 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 2 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - q, by omega⟩
+  have hyOdd : Odd (b + 10 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 5 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 2 * q + 1) / 2 = (b + 1) / 2 - q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 2 * q + 1) / 2) = q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorQ : q.factorization 2 = Nat.log 2 n - 4 := by
+    exact Nat.factorization_pow_self Nat.prime_two
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorQ, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma ambient_lt_b_add_fourteen_of_sub_six_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbSix : 6 * dyadicQ n < b)
+    (hx : b - 6 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 14 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 6 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - 3 * q, by omega⟩
+  have hyOdd : Odd (b + 14 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 7 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 6 * q + 1) / 2 = (b + 1) / 2 - 3 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 6 * q + 1) / 2) = 3 * q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorThree : (3 * q).factorization 2 = Nat.log 2 n - 4 := by
+    simpa only [q, dyadicQ] using factorization_three_mul_pow_two (Nat.log 2 n - 4)
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorThree, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma ambient_lt_b_add_eighteen_of_sub_ten_mem {n : Nat} {gamma : List Nat} {b : Nat}
+    (hgamma : IsTheta n gamma) (hbEnd : EndsWith (oddTrace gamma) b)
+    (hbLower : b ∈ lowerHalf n) (hbOdd : Odd b)
+    (hbTen : 10 * dyadicQ n < b)
+    (hx : b - 10 * dyadicQ n ∈ epilogue n (oddTrace gamma)) :
+    n < b + 18 * dyadicQ n := by
+  let q := dyadicQ n
+  have hqPos : 0 < q := dyadicQ_pos n
+  have hxOdd : Odd (b - 10 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B - 5 * q, by omega⟩
+  have hyOdd : Odd (b + 18 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 9 * q, by omega⟩
+  have hzOdd : Odd (b + 4 * q) := by
+    rcases hbOdd with ⟨B, hb⟩
+    exact ⟨B + 2 * q, by omega⟩
+  have hxHalf : (b - 10 * q + 1) / 2 = (b + 1) / 2 - 5 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hzHalf : (b + 4 * q + 1) / 2 = (b + 1) / 2 + 2 * q := by
+    rcases hbOdd with ⟨B, hb⟩
+    omega
+  have hdistX : Nat.dist ((b + 1) / 2) ((b - 10 * q + 1) / 2) = 5 * q := by
+    rw [hxHalf]
+    unfold Nat.dist
+    omega
+  have hdistZ : Nat.dist ((b + 1) / 2) ((b + 4 * q + 1) / 2) = 2 * q := by
+    rw [hzHalf]
+    unfold Nat.dist
+    omega
+  have hfactorFive : (5 * q).factorization 2 = Nat.log 2 n - 4 := by
+    simpa only [q, dyadicQ] using factorization_five_mul_pow_two (Nat.log 2 n - 4)
+  have hfactorTwo : (2 * q).factorization 2 = Nat.log 2 n - 4 + 1 := by
+    simpa only [q, dyadicQ] using factorization_two_mul_pow_two (Nat.log 2 n - 4)
+  apply ambient_lt_of_oddEpilogue_forcing hgamma hbEnd hbLower hbOdd hxOdd hyOdd hzOdd
+    (by simpa only [q] using hx) (by omega) (by omega) (by omega)
+  · simp only [binaryCongruenceDegree, hdistX, hdistZ, hfactorFive, hfactorTwo]
+    omega
+  all_goals omega
+
+lemma evenTrace_prefix_three_mod_four_of_twenty_two {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) (hSixteen : 16 * dyadicQ n <= n)
+    (hTwentyTwo : 22 * dyadicQ n <= n) :
+    PrefixCongruent (evenTrace gamma) 3 (4 * dyadicQ n) := by
+  have hlog := log_two_four_le_of_dyadic_threshold hSixteen
+  have hhalf : 11 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 4)
+    (k := 3) (r := 11) (by nlinarith [dyadicQ_pos n]) hgamma hhalf (by norm_num)
+  rw [dyadic_modulus_two_of_log_four hlog] at h
+  convert h using 1 <;> omega
+
+lemma evenTrace_prefix_two_mod_eight_of_twenty_eight {n : Nat} {gamma : List Nat}
+    (hgamma : IsTheta n gamma) (hSixteen : 16 * dyadicQ n <= n)
+    (hTwentyEight : 28 * dyadicQ n <= n) :
+    PrefixCongruent (evenTrace gamma) 2 (8 * dyadicQ n) := by
+  have hlog := log_two_four_le_of_dyadic_threshold hSixteen
+  have hhalf : 14 * dyadicQ n <= n / 2 := by
+    apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).2
+    nlinarith
+  have h := forcedEvenTracePrefixCongruent (N := n) (j := Nat.log 2 n - 3)
+    (k := 2) (r := 7) (by nlinarith [dyadicQ_pos n]) hgamma (by
+      rw [dyadic_denominator_two_of_log_four hlog]
+      nlinarith) (by norm_num)
+  rw [dyadic_modulus_four_of_log_four hlog] at h
+  convert h using 1 <;> omega
+
 end LeanProofs.Sharma2012
