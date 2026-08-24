@@ -48,6 +48,42 @@ theorem rvachevFullLegendreCoefficient_even_eq
   push_cast
   ring
 
+/-- All odd Fourier--Legendre coefficients of Rvachev's even function
+vanish. -/
+theorem rvachevFullLegendreCoefficient_odd_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    rvachevFullLegendreCoefficient F (2 * n + 1) = 0 := by
+  let g : ℝ → ℝ := fun x =>
+    rvachevUp F x * (legendrePolynomial (2 * n + 1)).eval x
+  have hgOdd (x : ℝ) : g (-x) = -g x := by
+    dsimp [g]
+    rw [rvachev_even F hF, eval_legendrePolynomial_neg]
+    rw [pow_add, pow_mul]
+    norm_num
+  have hreflect := intervalIntegral.integral_comp_neg
+    (f := g) (a := (-1 : ℝ)) (b := 1)
+  have hsymmetric :
+      (∫ x in (-1 : ℝ)..1, g (-x)) =
+        ∫ x in (-1 : ℝ)..1, g x := by
+    simpa only [neg_neg] using hreflect
+  have hnegative :
+      (∫ x in (-1 : ℝ)..1, g (-x)) =
+        -∫ x in (-1 : ℝ)..1, g x := by
+    calc
+      (∫ x in (-1 : ℝ)..1, g (-x)) =
+          ∫ x in (-1 : ℝ)..1, -g x := by
+            apply intervalIntegral.integral_congr
+            intro x _hx
+            exact hgOdd x
+      _ = -∫ x in (-1 : ℝ)..1, g x :=
+        intervalIntegral.integral_neg
+  have hzero : (∫ x in (-1 : ℝ)..1, g x) = 0 := by
+    linarith
+  rw [rvachevFullLegendreCoefficient]
+  change ((2 * (2 * n + 1) + 1 : ℕ) : ℝ) / 2 *
+      (∫ x in (-1 : ℝ)..1, g x) = 0
+  rw [hzero, mul_zero]
+
 private lemma rvachev_neg_one_eq_zero
     (F : BoundedFabius) (hF : IsFabius F) :
     rvachevUp F (-1) = 0 := by
