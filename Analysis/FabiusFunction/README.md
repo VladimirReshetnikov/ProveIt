@@ -22,7 +22,9 @@ uniqueness, the moment and denominator arithmetic, the global differential
 identities, Taylor reduction, the Fourier and entire-series identities,
 probability and weak-convergence constructions, polynomial step
 approximants, Poisson summation, and every theorem, lemma, corollary, and
-prose proposition in both papers are checked without `sorry`.
+prose proposition in both papers are checked without `sorry`.  The asymptotic
+layer additionally proves the corrected sharp small-argument expansion with
+its nonconstant Gamma--zeta periodic term.
 
 ## Design
 
@@ -117,8 +119,23 @@ draft.  It proves the exact logarithmic delay equation, the elementary log
 expansions, explicit dyadic bounds, the full-real quadratic leading term, and
 the coarse `O(t * log t)` error.  It also proves that the draft's proposed
 sharp main term has a nonzero `(log t / t)^2` equation residual and therefore
-is not `O(t^-2)`.  The unsupported bounded one-periodic refinement and its
-claimed `O(log t / t)` remainder are deliberately not advertised as proved.
+is not `O(t^-2)`.  The draft's unsupported periodic-in-`t` argument is not
+used.  Independently, a negative-Laplace product, Mellin finite-part analysis,
+and quantitative Bromwich saddle proof establish a corrected sharp formula
+with error `O(1 / (-log x))`.  Its centered periodic correction is reconstructed
+as an absolutely summable Gamma--zeta Fourier series and proved nonconstant.
+
+The asymptotic aggregate also audits three linked Stack Exchange discussions.
+The recurrence sequence is exposed through the exact half-moment and
+generating-function APIs; its fixed-constant heuristic omits the nonconstant
+periodic correction.  The elementary small-`x` expression from
+[Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is
+formalized verbatim and corrected by adding that term at the exact
+lower-Lambert phase.  The uncorrected claimed error is formally disproved.
+Finally, the proposed
+[quotient-of-exponentials fit](https://mathematica.stackexchange.com/questions/285919/approximation-of-the-fabius-function-with-a-quotient-of-exponentials)
+is little-o of the true displaced Fabius bump at the endpoint, so it cannot be
+an asymptotic equivalent despite its good compact-interval plot.
 
 `PaperKFoldThueMorse.lean` is the public aggregate for the second local
 draft.  It contains the exact prefix-sum, zero-run, convolution, and
