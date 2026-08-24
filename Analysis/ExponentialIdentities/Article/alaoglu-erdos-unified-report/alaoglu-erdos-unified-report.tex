@@ -21605,12 +21605,15 @@ of $\beta$).  That is the wrong criterion: integrality of $2^{s^2}$ requires
 $s^2\in\log_2\N$, which is \emph{weaker} than $s^2\in\Sol$.  Worse, this report's own
 Corollary~\ref{sm:diagonal-trans} settles it: $2^{x^2}\in\N$ exactly when $2^x$ is
 three-smooth.  Since Theorem~\ref{sm:uniform-second-level} keeps ``$M$ three-smooth, $A$
-not'' as a live branch of failure, in that branch $2^{z^2}$ \emph{is} integer-valued on all
+not'' as a live branch of failure, \emph{in that branch} $2^{z^2}$ is integer-valued on all
 of $\Sol$, with $\tau_2=\log2>0$ --- and the mirror statement holds for $3^{z^2}$ when $A$
-is three-smooth.  Hence $V_{\log2}\supsetneq V_0$ under failure too, the achievable spectrum
-is not $\{0\}\cup\{\infty\}$, and Target~\ref{camp:target-diffmodule} is \emph{false as
-posed}.  This does not touch Theorem~\ref{camp:thm-typegap}: $\log2$ exceeds
-$\tau_{\mathrm{crit}}$ by a factor about $4.9\times10^5$.
+is three-smooth.  Hence $V_{\log2}\supsetneq V_0$ and
+Target~\ref{camp:target-diffmodule} is \emph{false as posed} --- but \emph{only in the
+$M$-smooth and $A$-smooth branches}.  The trichotomy has a third, generic branch in which
+neither output is three-smooth; there both $2^{\beta^2}$ and $3^{\beta^2}$ are
+transcendental, the probe dies, and nothing is shown.  None of this touches
+Theorem~\ref{camp:thm-typegap}: $\log2$ exceeds $\tau_{\mathrm{crit}}$ by at least
+$4.73\times10^5$ for every $\beta\ge14$.
 \end{statusbox}
 
 At an integer control it is available.  There $\Sol=\N_0$, every $2^{n^2}$ is an integer,
@@ -21618,12 +21621,14 @@ and $\tau_2(2^{z^2})=\log2>0$, whereas every element of
 $V_0=\operatorname{span}\{2^{iz}3^{jz}\}$ has order one.  Hence \emph{at controls the
 achievable spectrum does meet $(0,\infty)$}: $V_{\log2}\supsetneq V_0$.
 
-That is the first concrete evidence that the answer to
-Target~\ref{camp:target-diffmodule} differs between the two worlds, and it names the
-mechanism: the obvious construction is killed under failure by transcendence of $\beta$
-alone, which places $\beta^2$ outside the monoid.  Any resolution must therefore consume
-channel~(ii) of the control principle, and the probe shows exactly where that consumption
-happens.  \statusnew.
+The probe therefore does \emph{not} separate the two worlds, and the paragraph that once
+claimed it did is withdrawn: it reduces the separation to a condition that is open, not
+to one that fails.  Nor is any control channel consumed --- at an integer control $M=2^m$
+\emph{is} three-smooth, so the enabling hypothesis holds there too.  The honest statement
+is that the construction is available exactly in the branches where the second-iterate
+kernel meets a coordinate axis, and $\beta^2\notin\Sol$ is true but \emph{inapplicable}:
+$\beta^2\in\Sol$ is what makes $2^{\beta^2}$ \emph{and} $3^{\beta^2}$ both integral, and
+excluding a sufficient condition does not exclude the necessary one.  \statusnew.
 
 The control side can be pinned down further, and the sharper example replaces $2^{z^2}$ by
 a function of half its type.  At a control, $\Sol=\N_0$ and the integer-valued quadratics
@@ -21645,13 +21650,17 @@ and the achievable spectrum there contains $\{(c/2)\log u:c\ge1,\ u\ge2\}$.  Whe
 controls admit still \emph{smaller} positive types is the classical question about
 integer-valued entire functions of order two and is not claimed here, \statusknown.
 
-The point of the sharper example is that the obstruction under failure is unchanged, and now
-visibly applies to the whole family: $\binom s2=\tfrac{n^2-n}2+k\beta\tfrac{2n-1}2
-+\tfrac{k^2\beta^2}2$, so $2^{\binom s2}$ again requires a power of $2^{\beta^2}$ to be an
-integer.  Every member of the family $u^{Q(z)}$ with $\deg Q=2$ dies under failure for the
-same reason --- the quadratic term drags in $\beta^2$, and $\beta^2\notin\Sol$ by
-transcendence.  This is what makes the separation structural rather than an accident of one
-function.  \statusnew.
+The sharper example also sharpens the conditional question, and in a direction the earlier
+text got wrong.  Since
+$\binom s2=\tfrac{n^2-n}2+k\beta\tfrac{2n-1}2+\tfrac{k^2\beta^2}2$, integrality of
+$2^{\binom s2}$ requires $2^{\beta^2/2}\in\Z$ --- a \emph{square root} of $M^aA^d$ in the
+three-smooth branch, which is a genuinely different and still-open condition, not the same
+one.  So the family $u^{Q(z)}$, $\deg Q=2$, does not die uniformly under failure: the
+requirement varies with the leading coefficient of $Q$, sitting in the localized-radical
+circle of Section~\ref{sec:radical}.  The classification is exact:
+$\exp(Az^2+Bz+C)$ is integer-valued on $\Sol$ with $A\ne0$ only if $A$ is real,
+$q:=e^{2A}$ is a three-smooth integer $\ge2$ and $N:=q^\beta=M^iA^j$ is three-smooth, in
+which case $\tau_2=(\log q)/2\ge(\log2)/2$.  \statusnew.
 
 Two remarks make this the natural next step rather than a reformulation.  It is
 control-sensitive in the right way: at an integer control $\Sol=\N_0$ is closed under $+1$
@@ -21954,9 +21963,21 @@ $1.4667\times10^{-6}$ at $\beta=14$ and $3.9420\times10^{-7}$ at $\beta=27$.
 Three consequences.  First, $C=4570$ against the quoted $832$: our version is $5.49$ times
 more conservative, exactly as expected from a crude determinant estimate that uses all rows
 and does not optimise the vanishing order --- which is what makes it safe to rely on, since
-a smaller threshold yields a \emph{weaker but self-contained} statement.  Second, every
-statement in this section may therefore be re-read with $832$ replaced by $4570$ and
-becomes independent of the unaudited input: in particular
+a smaller threshold yields a \emph{weaker but self-contained} statement.  Second --- and this is a serious caveat added after refereeing --- the derivation has a
+gap at exactly the step where it needs one.  "If $g$ is not algebraic of degree $\le d$
+then $\Delta
+e0$" does not follow: linear independence of the $L$ functions says nothing
+about the rank of their $L	imes L$ matrix of \emph{values} on a prescribed point set, and
+taking all available rows removes the freedom to select a nonsingular minor.  The
+symmetrised product of Proposition~ef{camp:prop-inftype} is an explicit witness: it is
+integer-valued on $\Sol$ (vanishing there), has $	au_2>0$ so is not algebraic over
+$\C(2^z,3^z)$, and makes every column with $k\ge1$ identically zero, forcing $\Delta=0$
+for all $T$ and all $d\ge1$.  So $C=4570$ is \emph{not established} by this argument, and
+the claim that every statement may be re-read with $832$ replaced by $4570$ is withdrawn.
+What survives is the optimisation itself, which was reproduced independently in closed
+form ($c_*=e^{3/4}$, $C=6144e^3/27=4570.5755\ldots$, matching the numerics to four
+figures) and would give the stated threshold once the nonvanishing step is supplied by a
+genuine minor selection.  Provisionally: in particular
 Theorem~\ref{camp:thm-typegap} holds unconditionally on the literature in the form
 \emph{no entire function integer-valued on $\Sol$ has
 $0<\tau_2\le1/(4570\,\beta^2\log2\log3)$}, and
@@ -22070,10 +22091,10 @@ dependent on $2^z$ and $3^z$, which turns the interpolation idea into a measured
 constant $832$ are quoted from the survey and have not been checked against the source
 here; that they must contain more than is stated is visible from the control side, where
 $\Sol=\N_0$ and $g(z)=\sin(\pi z)e^{cz^2}$ is entire, integer-valued on $\Sol$, and has
-$\tau_2=c$ arbitrarily small --- so some hypothesis must exclude it.  Note that this
-construction cannot cross to the conditional world: by
-Proposition~\ref{camp:prop-inftype} every function vanishing on an irrational-$\beta$
-monoid has $\tau_2=\infty$.  Every occurrence of the factor $208\beta\log2\log3$ below is
+$\tau_2=c$ arbitrarily small --- so some hypothesis must exclude it.  (An earlier note here claimed such a construction cannot cross to the conditional world,
+citing the since-retracted infinite-type proposition; in fact it crosses, but only above
+$1/(4\beta)$ by Jensen, which still exceeds Pila's threshold by
+$208\beta\log2\log3$, so the gate itself is unaffected.)  Every occurrence of the factor $208\beta\log2\log3$ below is
 conditional on that unaudited input --- and Section~\ref{camp:ownthreshold} removes the
 dependency altogether by deriving a threshold of the same shape from the corpus's own
 data.

@@ -106,6 +106,7 @@ Usage:
     python near_curve_certificate.py long   L           # blocks of length delta = 1,2,4,8
     python near_curve_certificate.py trap   L q1 q2 ..  # capacity-2 trap  ==>  beta > L
     python near_curve_certificate.py falsify            # the trap never under-counts
+    python near_curve_certificate.py verify-trap FILE   # re-verify a saved trap family
 """
 import sys, os, math, json, time, random, itertools
 from fractions import Fraction
@@ -274,12 +275,20 @@ def certified_sup(t0, delta, S, c, Ksub=8, prec=None, N=None):
 # --------------------------------------------------------------------------
 #  LLL search (heuristic; every output is re-certified above)
 # --------------------------------------------------------------------------
-def build_lattice(t0, delta, S, logsigma=140):
+def auto_logsigma(S, top):
+    """The identity block records c, so the scale must exceed the coefficient size or LLL
+    minimises |c| instead of sup|F|.  Empirically log2|c|max ~ 0.8 L^2 ~ lam_max*top/log2."""
+    return int(1.3*max(lam_f(p) for p in S)*top/LOG2) + 140
+
+
+def build_lattice(t0, delta, S, logsigma=None):
     q = len(S)
     t0 = Fraction(t0)
     delta = Fraction(delta)
     lam_max = max(lam_f(p) for p in S)
     top = float(t0 + delta)
+    if logsigma is None:
+        logsigma = auto_logsigma(S, top)
     N = auto_N(lam_max*float(delta)/2, lam_max*top + 130)
     prec = int(220 + 1.6*lam_max*top/LOG2 + 8*q + 2*N + logsigma)
     prec = (prec//64 + 1)*64
@@ -299,7 +308,7 @@ def build_lattice(t0, delta, S, logsigma=140):
         ctx.prec = old
 
 
-def candidates(t0, delta, S, logsigma=140, ncomb=3):
+def candidates(t0, delta, S, logsigma=None, ncomb=3):
     q = len(S)
     R = build_lattice(t0, delta, S, logsigma).lll()
     rows = [[int(R[r, k]) for k in range(q)] for r in range(q)]
@@ -325,9 +334,12 @@ def candidates(t0, delta, S, logsigma=140, ncomb=3):
     return uniq
 
 
-def search(t0, delta, S, logsigmas=(140, 260), screen=6, Ksub=8):
+def search(t0, delta, S, logsigmas=None, screen=6, Ksub=8):
     """Best (rigorous bound, c) this search found; None if nothing nonzero came out."""
     best = None
+    if logsigmas is None:
+        a = auto_logsigma(S, float(Fraction(t0) + Fraction(delta)))
+        logsigmas = (a, a + 240)
     for ls in logsigmas:
         try:
             uniq = candidates(t0, delta, S, ls)
@@ -533,13 +545,15 @@ def kernel_basis(L, S):
             if any(H[r, c] != 0 for c in range(q))]
 
 
-def trap_search(L, S, logsigma=200, Ksub=4, target=None):
+def trap_search(L, S, logsigma=None, Ksub=4, target=None):
     """Preconditioned rank-codimension trap: LLL inside the kernel of the two forced
     vanishing conditions.  Returns (r, certified vectors)."""
     q = len(S)
     B = kernel_basis(L, S)
     k = len(B)
     lam_max = max(lam_f(p) for p in S)
+    if logsigma is None:
+        logsigma = auto_logsigma(S, L + 1.0)
     N = auto_N(lam_max/2, lam_max*(L + 1) + 130)
     prec = int(300 + 1.8*lam_max*(L + 1)/LOG2 + 10*q + 2*N + logsigma)
     prec = (prec//64 + 1)*64
@@ -584,8 +598,35 @@ def cmd_trap(L, qs):
               f"{'beta > %d PROVED' % L if cap <= 2 else 'no trap yet'}")
         sys.stdout.flush()
         if cap <= 2:
+            out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               f"near_curve_trap_L{L}.json")
+            json.dump(dict(L=L, q=q, S=[list(p) for p in lam_sorted(q)], c=good), open(out, "w"))
+            print(f"     saved to {out}")
             return q
     return None
+
+
+def cmd_verify_trap(path):
+    """Re-verify a saved rank-codimension trap and restate the beta bound it proves."""
+    d = json.load(open(path))
+    L, S, C = d["L"], [tuple(p) for p in d["S"]], d["c"]
+    q = len(S)
+    worst = None
+    for v in C:
+        b = certified_sup(L, 1, S, v, Ksub=6)
+        if not (b < 1):
+            print("FAIL: a stored vector is not certified subunit")
+            return
+        worst = b if worst is None or b > worst else worst
+    r = fmpz_mat([list(v) for v in C]).rank()
+    print(f"L = {L},  |S| = {q},  {len(C)} certified polynomials, rank r = {r}")
+    print(f"worst rigorous sup bound over the family: {worst}")
+    print(f"capacity = |S| - r = {q - r}")
+    if q - r <= 2:
+        print(f"PROVED: Sol cap [{L},{L+1}] = {{{L},{L+1}}}, hence "
+              f"2^x, 3^x integers and x not an integer imply x > {L}.")
+    else:
+        print("no capacity-2 trap in this file")
 
 
 def cmd_falsify():
@@ -637,5 +678,7 @@ if __name__ == "__main__":
         cmd_trap(int(a[0]), [int(x) for x in a[1:]])
     elif cmd == "falsify":
         cmd_falsify()
+    elif cmd == "verify-trap":
+        cmd_verify_trap(a[0])
     else:
         print(__doc__)

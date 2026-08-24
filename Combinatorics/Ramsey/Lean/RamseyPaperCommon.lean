@@ -1,5 +1,6 @@
 import RamseyPaperCommon.FiniteBridges
 import RamseyPaperCommon.FiniteMonotonicity
+import RamseyPaperCommon.EventualEnvelopes
 import RamseyPaperCommon.ThreeFreeCounting
 
 /-!
