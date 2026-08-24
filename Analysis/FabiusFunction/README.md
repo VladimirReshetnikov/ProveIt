@@ -8,14 +8,6 @@ Juan Arias de Reyna:
 - [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
   version 3.
 
-It also gives a claim-level formal audit of the two local TeX drafts under
-`Papers/`: *Fabius Asymptotic* and *K-fold summation over the signed
-Thue-Morse sequence*.  Neither local draft contains a formal theorem, lemma,
-proposition, or corollary environment, so their coverage is indexed by
-numbered equations and substantive prose claims.  Some of those claims are
-false or unsupported; the development records counterexamples and corrected
-statements rather than asserting them.
-
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
