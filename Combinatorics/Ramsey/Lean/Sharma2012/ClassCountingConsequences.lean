@@ -300,4 +300,133 @@ lemma theta12_card_le_sum_interleavingClasses (n : Nat) :
   simpa only [Fintype.card_sigma, Fintype.card_coe] using hcard
 
 
+lemma evenPrologue_length_le_one_of_startsWith_last
+    {n : Nat} {word : List Nat} (hn : 2 ≤ n)
+    (hword : IsTheta n word) (hstart : StartsWith (evenTrace word) n) :
+    (prologue n (evenTrace word)).length ≤ 1 := by
+  have hnUpper : n ∈ upperHalf n := by
+    simp only [upperHalf, Finset.mem_Icc]
+    omega
+  have hproNodup : (prologue n (evenTrace word)).Nodup :=
+    (prologue_prefix n (evenTrace word)).sublist.nodup
+      ((isTheta_nodup hword).filter _)
+  have hsubset : (prologue n (evenTrace word)).toFinset ⊆ {n} := by
+    intro y hy
+    have hyPro : y ∈ prologue n (evenTrace word) := by simpa using hy
+    have hny := evenPrologue_first_le_entry hword hstart hnUpper hyPro
+    have hyTrace := (prologue_prefix n (evenTrace word)).mem hyPro
+    have hyWord := (List.mem_filter.mp hyTrace).1
+    have hySegment := mem_segment_of_mem_of_isTheta hword hyWord
+    simp only [segment, Finset.mem_Icc] at hySegment
+    simp only [Finset.mem_singleton]
+    omega
+  calc
+    (prologue n (evenTrace word)).length =
+        (prologue n (evenTrace word)).toFinset.card :=
+      (List.toFinset_card_of_nodup hproNodup).symm
+    _ ≤ ({n} : Finset Nat).card := Finset.card_le_card hsubset
+    _ = 1 := by simp
+
+lemma interleavingClass_card_le_seven_of_midpoint_last
+    {n : Nat} {gammaOdd gammaEven : List Nat}
+    (hn : 3 ≤ n)
+    (hbEnd : EndsWith gammaOdd (n / 2))
+    (hcStart : StartsWith gammaEven n)
+    (hcommute : Commute n (n / 2) n) :
+    (interleavingClass n gammaOdd gammaEven).card ≤ 7 := by
+  by_cases hempty : interleavingClass n gammaOdd gammaEven = ∅
+  · simp [hempty]
+  · obtain ⟨sigma, hsigma⟩ := Finset.nonempty_iff_ne_empty.mpr hempty
+    have hsigmaData : IsTheta12 n (permutationWord sigma) ∧
+        oddTrace (permutationWord sigma) = gammaOdd ∧
+        evenTrace (permutationWord sigma) = gammaEven := by
+      simpa [interleavingClass] using hsigma
+    let word := permutationWord sigma
+    have hoddEndWord : EndsWith (oddTrace word) (n / 2) := by
+      rw [show oddTrace word = gammaOdd by exact hsigmaData.2.1]
+      exact hbEnd
+    have hevenStartWord : StartsWith (evenTrace word) n := by
+      rw [show evenTrace word = gammaEven by exact hsigmaData.2.2]
+      exact hcStart
+    have hmidLower : n / 2 ∈ lowerHalf n := by
+      simp only [lowerHalf, Finset.mem_Icc]
+      omega
+    have hnUpper : n ∈ upperHalf n := by
+      simp only [upperHalf, Finset.mem_Icc]
+      omega
+    have hstanding : StandingInterleavingHypotheses n word :=
+      ⟨hsigmaData.1, n / 2, n, hoddEndWord, hevenStartWord,
+        hcommute, hmidLower, hnUpper⟩
+    let u := (epilogue n (oddTrace word)).length
+    let v := (prologue n (evenTrace word)).length
+    have hu : u ≤ 6 := by
+      simpa only [u] using
+        epilogue_oddTrace_length_le_six hsigmaData.1.1
+    have hv : v ≤ 1 := by
+      simpa only [v] using
+        evenPrologue_length_le_one_of_startsWith_last (by omega)
+          hsigmaData.1.1 hevenStartWord
+    have hcard : (interleavingClass n gammaOdd gammaEven).card =
+        Nat.choose (u + v) v := by
+      have hlemma := lemma_2_5_holds n word hstanding
+      have hoddEq : oddTrace word = gammaOdd := hsigmaData.2.1
+      have hevenEq : evenTrace word = gammaEven := hsigmaData.2.2
+      calc
+        (interleavingClass n gammaOdd gammaEven).card =
+            (interleavingClass n (oddTrace word) (evenTrace word)).card := by
+          rw [hoddEq, hevenEq]
+        _ = Nat.choose (u + v) v := by simpa only [u, v] using hlemma
+    rw [hcard]
+    interval_cases v <;> simp_all [Nat.choose]
+    all_goals omega
+
+lemma exists_endsWith_permutationWord {m : Nat}
+    (hm : 1 ≤ m) (sigma : Equiv.Perm (Fin m)) :
+    ∃ a : Nat, EndsWith (permutationWord sigma) a := by
+  have hne : permutationWord sigma ≠ [] := by
+    intro hnil
+    have hlength : (permutationWord sigma).length = m := by
+      simp [permutationWord]
+    rw [hnil] at hlength
+    simp at hlength
+    omega
+  exact ⟨(permutationWord sigma).getLast hne,
+    List.getLast?_eq_getLast_of_ne_nil hne⟩
+
+lemma exists_startsWith_permutationWord {m : Nat}
+    (hm : 1 ≤ m) (sigma : Equiv.Perm (Fin m)) :
+    ∃ a : Nat, StartsWith (permutationWord sigma) a := by
+  have hne : permutationWord sigma ≠ [] := by
+    intro hnil
+    have hlength : (permutationWord sigma).length = m := by
+      simp [permutationWord]
+    rw [hnil] at hlength
+    simp at hlength
+    omega
+  exact ⟨(permutationWord sigma).head hne,
+    List.head?_eq_some_head hne⟩
+
+lemma endsWith_complement {m : Nat} {word : List Nat} {a : Nat}
+    (h : EndsWith word a) :
+    EndsWith (complement m word) (m + 1 - a) := by
+  simpa [EndsWith, complement] using
+    congr_arg (Option.map fun z : Nat => m + 1 - z) h
+
+lemma paired_endpoints_opposite_halves
+    {n b bStar : Nat}
+    (hbSegment : b ∈ segment n) (hbStarSegment : bStar ∈ segment n)
+    (hsum : b + bStar = 2 * ((n + 1) / 2)) (hne : b ≠ bStar) :
+    (b ∈ lowerHalf n ∧ bStar ∈ upperHalf n) ∨
+      (b ∈ upperHalf n ∧ bStar ∈ lowerHalf n) := by
+  simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hbSegment hbStarSegment ⊢
+  by_cases hbLower : b ≤ n / 2
+  · left
+    constructor
+    · exact ⟨hbSegment.1, hbLower⟩
+    · constructor <;> omega
+  · right
+    constructor
+    · constructor <;> omega
+    · constructor <;> omega
+
 end LeanProofs.Sharma2012
