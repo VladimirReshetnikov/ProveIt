@@ -709,4 +709,64 @@ theorem hasSum_legendrePolynomialSeries_eq
   rw [← hs_eq_S x hx, hsx] at hpoint
   simpa [a, p] using hpoint
 
+/-- Uniform form of `hasSum_legendrePolynomialSeries_eq`.  The target is the
+restriction of `f` to the closed Legendre interval, so this is convergence in
+the supremum norm and in particular includes both endpoints. -/
+theorem hasSum_legendrePolynomialSeries_eq_uniform
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f)
+    (P : ℕ → ℝ[X])
+    (hdegree : ∀ n, (P n).degree = n)
+    (hpSmooth : ∀ n, ContDiff ℝ ∞ (fun x : ℝ ↦ (P n).eval x))
+    (hpEigen : ∀ n x,
+      legendreSturmLiouville (fun y : ℝ ↦ (P n).eval y) x =
+        ((n : ℝ) * (n + 1 : ℝ)) * (P n).eval x)
+    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 → |(P n).eval x| ≤ 1)
+    (horthogonal : ∀ m n, m ≠ n →
+      (∫ x in (-1 : ℝ)..1, (P m).eval x * (P n).eval x) = 0)
+    (hnorm : ∀ n,
+      (∫ x in (-1 : ℝ)..1, (P n).eval x ^ 2) =
+        2 / (((2 * n + 1 : ℕ) : ℝ))) :
+    HasSum (fun n ↦
+      legendreSeriesCoefficientOf f (fun y : ℝ ↦ (P n).eval y) n •
+        continuousMapOnLegendreInterval
+          (fun y : ℝ ↦ (P n).eval y) (hpSmooth n).continuous)
+      (continuousMapOnLegendreInterval f hf.continuous) := by
+  let p : ℕ → ℝ → ℝ := fun n y ↦ (P n).eval y
+  have hpSmooth' : ∀ n, ContDiff ℝ ∞ (p n) := by
+    intro n
+    simpa [p] using hpSmooth n
+  have hpEigen' : ∀ n y,
+      legendreSturmLiouville (p n) y =
+        ((n : ℝ) * (n + 1 : ℝ)) * p n y := by
+    intro n y
+    simpa [p] using hpEigen n y
+  have hpBound' : ∀ n y, y ∈ Icc (-1 : ℝ) 1 → |p n y| ≤ 1 := by
+    intro n y hy
+    simpa [p] using hpBound n y hy
+  have huniform := hasSum_legendreSeriesCoefficientOf_uniform
+    f hf p hpSmooth' hpEigen' hpBound'
+  have htarget :
+      (∑' n,
+        legendreSeriesCoefficientOf f (p n) n •
+          continuousMapOnLegendreInterval (p n) (hpSmooth' n).continuous) =
+        continuousMapOnLegendreInterval f hf.continuous := by
+    apply ContinuousMap.ext
+    intro x
+    have heval := ContinuousMap.hasSum_apply huniform x
+    have hpoint := hasSum_legendrePolynomialSeries_eq f hf P hdegree hpSmooth hpEigen
+      hpBound horthogonal hnorm x x.property
+    have heval' : HasSum (fun n ↦
+        legendreSeriesCoefficientOf f (p n) n * p n x)
+        ((∑' n,
+          legendreSeriesCoefficientOf f (p n) n •
+            continuousMapOnLegendreInterval (p n) (hpSmooth' n).continuous) x) := by
+      simpa only [ContinuousMap.smul_apply, smul_eq_mul,
+        continuousMapOnLegendreInterval_apply] using heval
+    have hpoint' : HasSum (fun n ↦
+        legendreSeriesCoefficientOf f (p n) n * p n x) (f x) := by
+      simpa [p] using hpoint
+    exact HasSum.unique heval' hpoint'
+  rw [htarget] at huniform
+  simpa [p] using huniform
+
 end Fabius
