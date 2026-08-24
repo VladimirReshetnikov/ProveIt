@@ -154,9 +154,12 @@ needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
 function satisfying `IsFabius`.  The rational expression is independent of
 the representation of `m / 2^n` (in particular, it is unchanged by
 `(m,n) ↦ (2m,n+1)`) and is invariant under any common rational translation
-of its inner powers.  Thus the source's `+1/2` formula and the centered form
-agree, while its `QPochhammer`/`QBinomial` factors retain notation-faithful
-public definitions.  The recurrence sequence's fixed-constant heuristic
+of its inner powers.  More explicitly, for every `q : ℚ` the fully displayed
+sum with inner power `(j - m * 2^k + q)^(n+k)` has that same value; literal
+rational, signed-global, and bounded-unit-interval theorems are public.
+Thus the source's `+1/2` formula and the centered form agree, while its
+`QPochhammer`/`QBinomial` factors retain notation-faithful public definitions.
+The recurrence sequence's fixed-constant heuristic
 omits the nonconstant periodic correction.  The elementary small-`x`
 expression from
 [Math Stack Exchange](https://math.stackexchange.com/a/3925650/19661) is

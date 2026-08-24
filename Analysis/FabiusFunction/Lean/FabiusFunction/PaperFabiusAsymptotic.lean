@@ -54,7 +54,8 @@ needed for that theorem.  Under `m ≤ 2^n`, a separate corollary identifies
 the same sum with every bounded function satisfying `IsFabius`.  The formula
 is invariant both under equal representations of a nonnegative dyadic
 rational (in particular `(m,n) ↦ (2m,n+1)`) and under every common rational
-translation of its inner powers; the latter covers both the centered and
-source-faithful `+1/2` versions.  See `PAPER_COVERAGE.md` for the exact claim
-matrix.
+translation of its inner powers.  Explicitly, for every `q : ℚ` the fully
+displayed sum containing `(j - m * 2^k + q)^(n+k)` computes the same dyadic
+value; this includes both the centered and source-faithful `+1/2` versions.
+See `PAPER_COVERAGE.md` for the exact claim matrix.
 -/

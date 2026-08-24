@@ -1264,6 +1264,24 @@ theorem fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
   rw [qBinomialThueMorseDyadicTranslatedFormula_eq_centered,
     fabiusDyadic_eq_qBinomialThueMorseDyadicFormula]
 
+/-- The fully displayed arbitrary-rational-translation identity.  This is the
+Wolfram-language formula with its common inner translation represented by
+`q : ℚ`; it is valid for all natural `m,n`. -/
+theorem fabiusDyadic_eq_qBinomialThueMorseDyadic_translated_sum
+    (q : ℚ) (m n : ℕ) :
+    fabiusDyadic n m =
+      (1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ j ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign j : ℚ) *
+                ((j : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + q) ^
+                  (n + k) := by
+  rw [fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula q m n]
+  simp only [qBinomialThueMorseDyadicTranslatedFormula,
+    thueMorseDyadicNumeratorTranslatedPowerSum, four_pow_choose_two]
+
 /-- The source formula, with the mandatory common translation `c = 1/2`. -/
 noncomputable def qBinomialThueMorseDyadicHalfShiftFormula
     (m n : ℕ) : ℚ :=
@@ -1404,6 +1422,61 @@ theorem fabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
       (qBinomialThueMorseDyadicTranslatedFormula c m n : ℝ) :=
   fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
     fabius fabius_spec c m n hm
+
+/-- The fully displayed canonical signed-global identity for an arbitrary
+rational translation `q`. -/
+theorem globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum
+    (q : ℚ) (m n : ℕ) :
+    globalFabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (((1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ j ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign j : ℚ) *
+                ((j : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + q) ^
+                  (n + k) : ℚ) : ℝ) := by
+  rw [globalFabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    q m n]
+  simp only [qBinomialThueMorseDyadicTranslatedFormula,
+    thueMorseDyadicNumeratorTranslatedPowerSum, four_pow_choose_two]
+
+/-- The fully displayed arbitrary-rational-translation identity for every
+bounded Fabius function on the unit dyadic interval. -/
+theorem fabiusFunction_dyadic_eq_qBinomialThueMorseDyadic_translated_sum
+    (F : BoundedFabius) (hF : IsFabius F) (q : ℚ) (m n : ℕ)
+    (hm : m ≤ 2 ^ n) :
+    fabiusReal F ((m : ℝ) / (2 : ℝ) ^ n) =
+      (((1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ j ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign j : ℚ) *
+                ((j : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + q) ^
+                  (n + k) : ℚ) : ℝ) := by
+  rw [fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    F hF q m n hm]
+  simp only [qBinomialThueMorseDyadicTranslatedFormula,
+    thueMorseDyadicNumeratorTranslatedPowerSum, four_pow_choose_two]
+
+/-- Canonical bounded-Fabius specialization of the fully displayed
+arbitrary-rational-translation identity. -/
+theorem fabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum
+    (q : ℚ) (m n : ℕ) (hm : m ≤ 2 ^ n) :
+    fabiusReal fabius ((m : ℝ) / (2 : ℝ) ^ n) =
+      (((1 / ((2 : ℚ) ^ (n ^ 2) * qPochhammer (1 / 2) (1 / 2) n)) *
+        ∑ k ∈ Finset.range (n + 1),
+          qBinomial n k (1 / 2) /
+              ((2 : ℚ) ^ (k * (k - 1)) * ((n + k).factorial : ℚ)) *
+            ∑ j ∈ Finset.range (m * 2 ^ k),
+              (thueMorseSign j : ℚ) *
+                ((j : ℚ) - (m : ℚ) * (2 : ℚ) ^ k + q) ^
+                  (n + k) : ℚ) : ℝ) := by
+  rw [fabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+    q m n hm]
+  simp only [qBinomialThueMorseDyadicTranslatedFormula,
+    thueMorseDyadicNumeratorTranslatedPowerSum, four_pow_choose_two]
 
 /-- Global real-valued unshifted formula. -/
 theorem extendedFabius_dyadic_eq_qBinomialThueMorseDyadicFormula
