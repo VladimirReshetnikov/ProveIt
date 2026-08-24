@@ -41,6 +41,7 @@ import GowersSzemeredi.Proofs07ProgressionLinearity
 import GowersSzemeredi.Proofs07SimultaneousLinearity
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs09Moments
+import GowersSzemeredi.Proofs09Restriction
 import GowersSzemeredi.Proofs10Counting
 import GowersSzemeredi.Proofs10Bohr
 import GowersSzemeredi.Proofs10Error
@@ -74,7 +75,6 @@ import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
-import GowersSzemeredi.Proofs16Closure
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval

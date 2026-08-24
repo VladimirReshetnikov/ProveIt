@@ -1505,11 +1505,11 @@ private lemma selection_third_index {k : Nat}
     push Not at h₀ h₁ <;> aesop
 
 private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
-    (hprime : N.Prime) (R : GeneralArrangement N k 8)
+    (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) :
     Function.Injective (selectionVertex R) := by
   classical
-  letI : Fact N.Prime := ⟨hprime⟩
+  letI : Fact (1 < N) := ⟨by omega⟩
   intro u v huvVertex
   by_contra huv
   apply hnondegenerate
@@ -1561,12 +1561,12 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     rintro ⟨q, hq⟩
     have hqu := hq u
     have hqw := hq w
-    have hparity (z : selectionIndex k) :
-        arrangementParityCoefficient (N := N) (d := 8) z.1 z.2 ≠ 0 := by
+    have hparityUnit (z : selectionIndex k) :
+        IsUnit (arrangementParityCoefficient (N := N) (d := 8) z.1 z.2) := by
       unfold arrangementParityCoefficient parityCharacter
       split
-      · exact pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)
-      · exact neg_ne_zero.mpr (pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero))
+      · exact (isUnit_one.neg.pow _)
+      · exact (isUnit_one.neg.pow _).neg
     have hqne : q ≠ 0 := by
       intro hqzero
       rw [hqzero, zero_mul] at hqu
@@ -1574,11 +1574,13 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     have hqwzero : q *
         arrangementParityCoefficient (N := N) (d := 8) w.1 w.2 = 0 := by
       simpa [eta, hwu, hwv] using hqw.symm
-    exact (mul_ne_zero hqne (hparity w)) hqwzero
+    apply hqne
+    apply (hparityUnit w).mul_right_cancel
+    simpa using hqwzero
   exact ⟨eta, hetaTernary, hnotmultiple, hmoment⟩
 
 private lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
-    (hprime : N.Prime) (R : GeneralArrangement N k 8)
+    (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate)
     (p : Point N (k + 1) → Real) :
     (∏ z ∈ selectionCarrier R, p z) =
@@ -1586,7 +1588,7 @@ private lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
   classical
   unfold selectionCarrier
   rw [Finset.prod_image
-    (selection_injective_of_nondegenerate hprime R hnondegenerate).injOn]
+    (selection_injective_of_nondegenerate hN R hnondegenerate).injOn]
 
 /-! ## Iterating the one-stage selection -/
 
@@ -1763,6 +1765,12 @@ private noncomputable def selectionDegenerateFinset (N k : Nat) [NeZero N] :
   exact Finset.univ.filter fun R ↦
     IsAdditiveTuple R.crossSection ∧ R.IsDegenerate
 
+@[simp] private lemma mem_selectionDegenerateFinset {N k : Nat} [NeZero N]
+    (R : GeneralArrangement N k 8) :
+    R ∈ selectionDegenerateFinset N k ↔
+      IsAdditiveTuple R.crossSection ∧ R.IsDegenerate := by
+  simp [selectionDegenerateFinset]
+
 private lemma selectionDegenerateFinset_card (N k : Nat) [NeZero N] :
     (selectionDegenerateFinset N k).card =
       degenerateGeneralArrangementCount (N := N) (k := k) 8 := by
@@ -1815,7 +1823,7 @@ private lemma selectionBadNondegenerate_card_upper {N k : Nat} [NeZero N]
   exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1
 
 private lemma selection_carrier_score_lower {N k r : Nat} [NeZero N]
-    (hprime : N.Prime) (eta : Real) (heta : 0 ≤ eta)
+    (hN : 2 ≤ N) (eta : Real) (heta : 0 ≤ eta)
     (B : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N)
     (C : Fin r → SelectionPhase N k) :
@@ -1860,7 +1868,7 @@ private lemma selection_carrier_score_lower {N k r : Nat} [NeZero N]
         apply Finset.sum_congr rfl
         intro R hR
         symm
-        exact selectionCarrier_prod_of_nondegenerate hprime R
+        exact selectionCarrier_prod_of_nondegenerate hN R
           (Finset.mem_filter.mp hR).2 _
       _ ≤ ∑ R ∈ selectionGoodArrangements B phi,
           ∏ z ∈ selectionCarrier R,
@@ -1891,7 +1899,7 @@ private lemma selection_carrier_score_lower {N k r : Nat} [NeZero N]
             multiStageSelectionWeight C phi (selectionVertex R z) := by
     apply Finset.sum_congr rfl
     intro R hR
-    exact selectionCarrier_prod_of_nondegenerate hprime R
+    exact selectionCarrier_prod_of_nondegenerate hN R
       (Finset.mem_filter.mp hR).2 _
   have hbadDegenerateSum :
       (∑ R ∈ badDeg,
@@ -2072,6 +2080,613 @@ private lemma selection_exists_stage_margin (k : Nat) (alpha eta : Real)
 
 /-! ## Absorbing the degenerate arrangements -/
 
+/-! The height-zero case used by Lemma 9.3 does not need a field.  After the
+defining additive relation eliminates one coordinate, every genuinely new
+ternary relation has a nonzero coefficient in `{±1, ±2}`.  Such a coefficient
+has fibres of size at most two in every cyclic group. -/
+
+private def selectionZeroBool : Fin 0 → Bool := default
+
+private def selectionZeroCoefficient {N : Nat}
+    (eps : selectionIndex 0 → Fin 4) (j : Fin 16) : ZMod N :=
+  selectionDigit (eps (selectionZeroBool, j))
+
+private def selectionZeroReducedCoefficient {N : Nat}
+    (eps : selectionIndex 0 → Fin 4) (j : Fin 16) : ZMod N :=
+  selectionZeroCoefficient eps j -
+    selectionZeroCoefficient eps 0 * selectionIndexSign j
+
+private def selectionZeroNoncanonical {N : Nat}
+    (eps : selectionIndex 0 → Fin 4) : Prop :=
+  ¬ ∃ q : ZMod N, ∀ j,
+    selectionZeroCoefficient eps j = q * selectionIndexSign j
+
+private lemma selectionZero_parityCoefficient {N : Nat}
+    (e : Fin 0 → Bool) (j : Fin 16) :
+    arrangementParityCoefficient (N := N) (d := 8) e j =
+      selectionIndexSign j := by
+  have he : e = selectionZeroBool := Subsingleton.elim _ _
+  subst e
+  simp [selectionZeroBool, arrangementParityCoefficient, parityCharacter,
+    boolWeight, countWhere, selectionIndexSign]
+
+private lemma selectionZero_exists_reducedCoefficient {N : Nat}
+    (eps : selectionIndex 0 → Fin 4) (hnoncanonical :
+      selectionZeroNoncanonical (N := N) eps) :
+    ∃ j : Fin 16, j ≠ 0 ∧
+      selectionZeroReducedCoefficient (N := N) eps j ≠ 0 := by
+  unfold selectionZeroNoncanonical at hnoncanonical
+  push Not at hnoncanonical
+  obtain ⟨j, hj⟩ :=
+    hnoncanonical (selectionZeroCoefficient (N := N) eps 0)
+  refine ⟨j, ?_, ?_⟩
+  · intro hj0
+    subst j
+    apply hj
+    simp [selectionIndexSign]
+  · simpa [selectionZeroReducedCoefficient, sub_ne_zero] using hj
+
+private lemma selectionZero_reducedCoefficient_small {N : Nat}
+    (eps : selectionIndex 0 → Fin 4) (j : Fin 16)
+    (hne : selectionZeroReducedCoefficient (N := N) eps j ≠ 0) :
+    selectionZeroReducedCoefficient (N := N) eps j = 1 ∨
+      selectionZeroReducedCoefficient (N := N) eps j = -1 ∨
+      selectionZeroReducedCoefficient (N := N) eps j = 2 ∨
+      selectionZeroReducedCoefficient (N := N) eps j = -2 := by
+  generalize ha : eps (selectionZeroBool, (0 : Fin 16)) = a
+  generalize hb : eps (selectionZeroBool, j) = b
+  fin_cases a <;> fin_cases b <;>
+    by_cases hj : (j : Nat) < 8 <;>
+    simp [selectionZeroReducedCoefficient, selectionZeroCoefficient,
+      selectionDigit, selectionDigitInt, selectionIndexSign, ha, hb, hj]
+      at hne ⊢
+  all_goals (ring_nf at hne ⊢; simp_all)
+
+private lemma selectionZero_mulLeft_range {N : Nat} [NeZero N]
+    (h : ZMod N) :
+    (AddMonoidHom.mulLeft h).range = AddSubgroup.zmultiples h := by
+  ext z
+  constructor
+  · rintro ⟨x, rfl⟩
+    rw [show x = (x.val : ZMod N) by
+      exact (ZMod.natCast_zmod_val x).symm]
+    simpa [mul_comm] using
+      (AddSubgroup.intCast_mul_mem_zmultiples h (Int.ofNat x.val))
+  · intro hz
+    rw [AddSubgroup.mem_zmultiples_iff] at hz
+    rcases hz with ⟨k, rfl⟩
+    refine ⟨(k : ZMod N), ?_⟩
+    change h * (k : ZMod N) = k • h
+    rw [zsmul_eq_mul]
+    exact mul_comm _ _
+
+private lemma selectionZero_mul_kernel_card {N : Nat} [NeZero N]
+    (h : ZMod N) :
+    Fintype.card {x : ZMod N // h * x = 0} = N.gcd h.val := by
+  let f : ZMod N →+ ZMod N := AddMonoidHom.mulLeft h
+  have hrange : Nat.card f.range = addOrderOf h := by
+    rw [selectionZero_mulLeft_range h, Nat.card_zmultiples]
+  have hcard : Nat.card f.ker * Nat.card f.range = Nat.card (ZMod N) := by
+    rw [← AddSubgroup.index_ker f]
+    exact f.ker.card_mul_index
+  have hord : addOrderOf h = N / N.gcd h.val := by
+    calc
+      addOrderOf h = addOrderOf (h.val : ZMod N) := by
+        rw [ZMod.natCast_zmod_val]
+      _ = N / N.gcd h.val := ZMod.addOrderOf_coe h.val (NeZero.ne N)
+  have hprod : Nat.card f.ker * (N / N.gcd h.val) = N := by
+    rw [← hord, ← hrange]
+    simpa using hcard
+  have hgpos : 0 < N.gcd h.val :=
+    Nat.gcd_pos_of_pos_left _ (Nat.pos_of_ne_zero (NeZero.ne N))
+  have hdiv : N.gcd h.val ∣ N := Nat.gcd_dvd_left _ _
+  have hquotpos : 0 < N / N.gcd h.val :=
+    Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne N)) hdiv)
+      hgpos
+  have heq : N.gcd h.val * (N / N.gcd h.val) = N :=
+    Nat.mul_div_cancel' hdiv
+  have hker : Nat.card f.ker = N.gcd h.val :=
+    Nat.eq_of_mul_eq_mul_right hquotpos (hprod.trans heq.symm)
+  let e : {x : ZMod N // h * x = 0} ≃ f.ker :=
+    Equiv.subtypeEquiv (Equiv.refl _) (fun _ ↦ by rfl)
+  calc
+    Fintype.card {x : ZMod N // h * x = 0} = Fintype.card f.ker :=
+      Fintype.card_congr e
+    _ = N.gcd h.val := by
+      simpa [Nat.card_eq_fintype_card] using hker
+
+private lemma selectionZero_smallCoefficient_kernel_card_le_two {N : Nat}
+    [NeZero N] (hN : 3 ≤ N) (c : ZMod N)
+    (hc : c = 1 ∨ c = -1 ∨ c = 2 ∨ c = -2) :
+    Fintype.card {x : ZMod N // c * x = 0} ≤ 2 := by
+  rcases hc with rfl | rfl | rfl | rfl
+  · have hcard : Fintype.card {x : ZMod N // (1 : ZMod N) * x = 0} ≤ 1 := by
+      apply Fintype.card_le_one_iff.mpr
+      intro x y
+      apply Subtype.ext
+      simpa using x.2.trans y.2.symm
+    omega
+  · have hcard : Fintype.card {x : ZMod N // (-1 : ZMod N) * x = 0} ≤ 1 := by
+      apply Fintype.card_le_one_iff.mpr
+      intro x y
+      apply Subtype.ext
+      have hx : -x.1 = 0 := by simpa using x.2
+      have hy : -y.1 = 0 := by simpa using y.2
+      exact neg_injective (hx.trans hy.symm)
+    omega
+  · have hval : (2 : ZMod N).val = 2 := ZMod.val_natCast_of_lt
+      (lt_of_lt_of_le (by norm_num : 2 < 3) hN)
+    rw [selectionZero_mul_kernel_card, hval]
+    exact Nat.gcd_le_right N (by norm_num)
+  · let e : {x : ZMod N // (-2 : ZMod N) * x = 0} ≃
+        {x : ZMod N // (2 : ZMod N) * x = 0} :=
+      Equiv.subtypeEquiv (Equiv.refl _) (fun x ↦ by simp [neg_mul])
+    rw [Fintype.card_congr e]
+    have hval : (2 : ZMod N).val = 2 := ZMod.val_natCast_of_lt
+      (lt_of_lt_of_le (by norm_num : 2 < 3) hN)
+    rw [selectionZero_mul_kernel_card, hval]
+    exact Nat.gcd_le_right N (by norm_num)
+
+private def selectionZeroDoubleExceptEquiv (i j : Fin 16) (hij : i ≠ j) :
+    {q : Fin 16 // q ≠ i ∧ q ≠ j} ≃
+      {q : {q : Fin 16 // q ≠ i} // q ≠ ⟨j, hij.symm⟩} where
+  toFun q := ⟨⟨q, q.2.1⟩, by
+    intro h
+    exact q.2.2 (congrArg Subtype.val h)⟩
+  invFun q := ⟨q.1.1, q.1.2, by
+    intro h
+    apply q.2
+    apply Subtype.ext
+    exact h⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+private lemma selectionZero_doubleExcept_card (i j : Fin 16) (hij : i ≠ j) :
+    Fintype.card {q : Fin 16 // q ≠ i ∧ q ≠ j} = 14 := by
+  rw [Fintype.card_congr (selectionZeroDoubleExceptEquiv i j hij)]
+  rw [Fintype.card_subtype_compl]
+  simp
+
+private lemma selectionZero_sum_mul_sub_eq_two {N : Nat}
+    (f x y : Fin 16 → ZMod N) (i j : Fin 16) (hij : i ≠ j)
+    (hoff : ∀ q, q ≠ i → q ≠ j → x q = y q) :
+    (∑ q, f q * x q) - (∑ q, f q * y q) =
+      f i * (x i - y i) + f j * (x j - y j) := by
+  classical
+  rw [← Finset.sum_sub_distrib]
+  calc
+    (∑ q, (f q * x q - f q * y q)) =
+        ∑ q, f q * (x q - y q) := by
+      apply Finset.sum_congr rfl
+      intro q _
+      ring
+    _ = ∑ q ∈ ({i, j} : Finset (Fin 16)), f q * (x q - y q) := by
+      symm
+      apply Finset.sum_subset (by simp)
+      intro q _ hqpair
+      have hqi : q ≠ i := by
+        intro h
+        subst q
+        exact hqpair (by simp)
+      have hqj : q ≠ j := by
+        intro h
+        subst q
+        exact hqpair (by simp)
+      rw [hoff q hqi hqj, sub_self, mul_zero]
+    _ = f i * (x i - y i) + f j * (x j - y j) := by simp [hij]
+
+private abbrev SelectionZeroRelationSolutions {N : Nat} [NeZero N]
+    (eps : selectionIndex 0 → Fin 4) :=
+  {R : GeneralArrangement N 0 8 //
+    IsAdditiveTuple R.crossSection ∧
+      ∑ j, selectionZeroCoefficient eps j * R.crossSection j = 0}
+
+private noncomputable instance selectionZeroRelationSolutionsFintype
+    {N : Nat} [NeZero N] (eps : selectionIndex 0 → Fin 4) :
+    Fintype (SelectionZeroRelationSolutions (N := N) eps) := by
+  letI : Finite (SelectionZeroRelationSolutions (N := N) eps) :=
+    Finite.of_injective Subtype.val Subtype.val_injective
+  exact Fintype.ofFinite _
+
+private abbrev SelectionZeroRelationBase (N : Nat) (j : Fin 16) :=
+  {q : Fin 16 // q ≠ 0 ∧ q ≠ j} → ZMod N
+
+private def selectionZeroRelationProjection {N : Nat} [NeZero N]
+    (eps : selectionIndex 0 → Fin 4) (j : Fin 16) :
+    SelectionZeroRelationSolutions (N := N) eps →
+      SelectionZeroRelationBase N j :=
+  fun R q ↦ R.1.crossSection q
+
+private lemma selectionZero_card_le_of_fiber_le {A B : Type*}
+    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
+    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
+    Fintype.card A ≤ Fintype.card B * m := by
+  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
+  calc
+    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
+      Finset.sum_le_sum fun b _ ↦ h b
+    _ = Fintype.card B * m := by simp
+
+private lemma selectionZeroRelationSolutions_card_le {N : Nat} [NeZero N]
+    (hN : 3 ≤ N) (eps : selectionIndex 0 → Fin 4)
+    (hnoncanonical : selectionZeroNoncanonical (N := N) eps) :
+    Fintype.card (SelectionZeroRelationSolutions (N := N) eps) ≤
+      2 * N ^ 14 := by
+  classical
+  obtain ⟨j, hj0, hcne⟩ :=
+    selectionZero_exists_reducedCoefficient eps hnoncanonical
+  let c := selectionZeroReducedCoefficient (N := N) eps j
+  have hcsmall := selectionZero_reducedCoefficient_small eps j hcne
+  let proj := selectionZeroRelationProjection (N := N) eps j
+  have hfiber : ∀ b : SelectionZeroRelationBase N j,
+      Fintype.card
+        {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b} ≤ 2 := by
+    intro b
+    by_cases hex : Nonempty
+        {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b}
+    · let R₀ := Classical.choice hex
+      let enc :
+          {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b} →
+            {v : ZMod N // c * v = 0} := fun R ↦ by
+        let A := R.1.1
+        let A₀ := R₀.1.1
+        have hproj : proj R.1 = proj R₀.1 := R.2.trans R₀.2.symm
+        have hoff : ∀ q : Fin 16, q ≠ 0 → q ≠ j →
+            A.crossSection q = A₀.crossSection q := by
+          intro q hq0 hqj
+          exact congrFun hproj ⟨q, hq0, hqj⟩
+        have haddDiff :
+            selectionIndexSign (N := N) 0 *
+                (A.crossSection 0 - A₀.crossSection 0) +
+              selectionIndexSign (N := N) j *
+                (A.crossSection j - A₀.crossSection j) = 0 := by
+          rw [← selectionZero_sum_mul_sub_eq_two selectionIndexSign
+            A.crossSection A₀.crossSection 0 j hj0.symm hoff]
+          have hA := (selection_additive_iff A.crossSection).mp R.1.2.1
+          have hA₀ := (selection_additive_iff A₀.crossSection).mp R₀.1.2.1
+          rw [hA, hA₀, sub_self]
+        have hrelDiff :
+            selectionZeroCoefficient eps 0 *
+                (A.crossSection 0 - A₀.crossSection 0) +
+              selectionZeroCoefficient eps j *
+                (A.crossSection j - A₀.crossSection j) = 0 := by
+          rw [← selectionZero_sum_mul_sub_eq_two
+            (selectionZeroCoefficient eps) A.crossSection A₀.crossSection
+              0 j hj0.symm hoff]
+          rw [R.1.2.2, R₀.1.2.2, sub_self]
+        refine ⟨A.crossSection j - A₀.crossSection j, ?_⟩
+        dsimp only [c]
+        unfold selectionZeroReducedCoefficient
+        have h0lt : ((0 : Fin 16) : Nat) < 8 := by norm_num
+        by_cases hjlt : (j : Nat) < 8
+        · simp only [selectionIndexSign, if_pos h0lt, if_pos hjlt, one_mul]
+            at haddDiff ⊢
+          linear_combination hrelDiff -
+            selectionZeroCoefficient eps 0 * haddDiff
+        · simp only [selectionIndexSign, if_pos h0lt, if_neg hjlt, one_mul,
+            mul_neg, mul_one, neg_mul] at haddDiff ⊢
+          linear_combination hrelDiff -
+            selectionZeroCoefficient eps 0 * haddDiff
+      have henc : Function.Injective enc := by
+        intro R S hRS
+        have hproj : proj R.1 = proj S.1 := R.2.trans S.2.symm
+        have hoff : ∀ q : Fin 16, q ≠ 0 → q ≠ j →
+            R.1.1.crossSection q = S.1.1.crossSection q := by
+          intro q hq0 hqj
+          exact congrFun hproj ⟨q, hq0, hqj⟩
+        have hj : R.1.1.crossSection j = S.1.1.crossSection j := by
+          have hval := congrArg Subtype.val hRS
+          dsimp only [enc] at hval
+          exact sub_left_injective hval
+        have haddDiff :
+            selectionIndexSign (N := N) 0 *
+                (R.1.1.crossSection 0 - S.1.1.crossSection 0) +
+              selectionIndexSign (N := N) j *
+                (R.1.1.crossSection j - S.1.1.crossSection j) = 0 := by
+          rw [← selectionZero_sum_mul_sub_eq_two selectionIndexSign
+            R.1.1.crossSection S.1.1.crossSection 0 j hj0.symm hoff]
+          have hR := (selection_additive_iff R.1.1.crossSection).mp R.1.2.1
+          have hS := (selection_additive_iff S.1.1.crossSection).mp S.1.2.1
+          rw [hR, hS, sub_self]
+        have hzero : R.1.1.crossSection 0 = S.1.1.crossSection 0 := by
+          rw [hj, sub_self, mul_zero, add_zero] at haddDiff
+          simpa [selectionIndexSign, sub_eq_zero] using haddDiff
+        have hcross : R.1.1.crossSection = S.1.1.crossSection := by
+          funext q
+          by_cases hq0 : q = 0
+          · subst q
+            exact hzero
+          by_cases hqj : q = j
+          · subst q
+            exact hj
+          exact hoff q hq0 hqj
+        apply Subtype.ext
+        apply Subtype.ext
+        exact Prod.ext (Subsingleton.elim _ _)
+          (Prod.ext (Subsingleton.elim _ _) hcross)
+      calc
+        Fintype.card
+            {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b} ≤
+            Fintype.card {v : ZMod N // c * v = 0} :=
+          Fintype.card_le_of_injective enc henc
+        _ ≤ 2 := selectionZero_smallCoefficient_kernel_card_le_two hN c hcsmall
+    · haveI : IsEmpty
+          {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b} :=
+        ⟨fun R ↦ hex ⟨R⟩⟩
+      simp
+  have htotal := selectionZero_card_le_of_fiber_le proj 2 hfiber
+  have hbase : Fintype.card (SelectionZeroRelationBase N j) = N ^ 14 := by
+    simp only [SelectionZeroRelationBase, Fintype.card_fun, ZMod.card]
+    rw [selectionZero_doubleExcept_card 0 j hj0.symm]
+  calc
+    Fintype.card (SelectionZeroRelationSolutions (N := N) eps) ≤
+        Fintype.card (SelectionZeroRelationBase N j) * 2 := htotal
+    _ = 2 * N ^ 14 := by rw [hbase]; ring
+
+private noncomputable def selectionZeroPatternFinset (N : Nat) :
+    Finset (selectionIndex 0 → Fin 4) := by
+  classical
+  exact Finset.univ.filter (selectionZeroNoncanonical (N := N))
+
+private noncomputable def selectionZeroRelationFinset (N : Nat) [NeZero N]
+    (eps : selectionIndex 0 → Fin 4) : Finset (GeneralArrangement N 0 8) := by
+  classical
+  exact Finset.univ.filter fun R ↦
+    IsAdditiveTuple R.crossSection ∧
+      ∑ j, selectionZeroCoefficient eps j * R.crossSection j = 0
+
+@[simp] private lemma mem_selectionZeroRelationFinset
+    {N : Nat} [NeZero N] (eps : selectionIndex 0 → Fin 4)
+    (R : GeneralArrangement N 0 8) :
+    R ∈ selectionZeroRelationFinset N eps ↔
+      IsAdditiveTuple R.crossSection ∧
+        ∑ j, selectionZeroCoefficient eps j * R.crossSection j = 0 := by
+  simp [selectionZeroRelationFinset]
+
+private noncomputable def selectionZeroExceptionalFinset (N : Nat) [NeZero N] :
+    Finset (GeneralArrangement N 0 8) := by
+  classical
+  exact (selectionZeroPatternFinset N).biUnion
+    (selectionZeroRelationFinset N)
+
+private lemma selectionZeroPatternFinset_card_le (N : Nat) :
+    (selectionZeroPatternFinset N).card ≤ 4 ^ 16 := by
+  classical
+  calc
+    (selectionZeroPatternFinset N).card ≤
+        (Finset.univ : Finset (selectionIndex 0 → Fin 4)).card :=
+      Finset.card_le_card (Finset.filter_subset _ _)
+    _ = 4 ^ 16 := by
+      simp [selectionIndex]
+
+private lemma selectionZeroRelationFinset_card_le {N : Nat} [NeZero N]
+    (hN : 3 ≤ N) (eps : selectionIndex 0 → Fin 4)
+    (heps : eps ∈ selectionZeroPatternFinset N) :
+    (selectionZeroRelationFinset N eps).card ≤ 2 * N ^ 14 := by
+  classical
+  have hnoncanonical : selectionZeroNoncanonical (N := N) eps := by
+    simpa [selectionZeroPatternFinset] using heps
+  calc
+    (selectionZeroRelationFinset N eps).card =
+        Fintype.card (SelectionZeroRelationSolutions (N := N) eps) := by
+      unfold selectionZeroRelationFinset
+      rw [Finset.filter_congr_decidable]
+      exact (Fintype.card_subtype _).symm
+    _ ≤ 2 * N ^ 14 :=
+      selectionZeroRelationSolutions_card_le hN eps hnoncanonical
+
+private lemma selectionZeroExceptionalFinset_card_le {N : Nat} [NeZero N]
+    (hN : 3 ≤ N) :
+    (selectionZeroExceptionalFinset N).card ≤ (2 * 4 ^ 16) * N ^ 14 := by
+  classical
+  calc
+    (selectionZeroExceptionalFinset N).card ≤
+        ∑ eps ∈ selectionZeroPatternFinset N,
+          (selectionZeroRelationFinset N eps).card := by
+      exact Finset.card_biUnion_le
+    _ ≤ ∑ _eps ∈ selectionZeroPatternFinset N, 2 * N ^ 14 := by
+      apply Finset.sum_le_sum
+      intro eps heps
+      exact selectionZeroRelationFinset_card_le hN eps heps
+    _ = (selectionZeroPatternFinset N).card * (2 * N ^ 14) := by simp
+    _ ≤ (4 ^ 16) * (2 * N ^ 14) := by
+      exact Nat.mul_le_mul_right _ (selectionZeroPatternFinset_card_le N)
+    _ = (2 * 4 ^ 16) * N ^ 14 := by ring
+
+private def selectionZeroTernaryDigit (a : Int) : Fin 4 :=
+  if a = -1 then 3 else if a = 0 then 0 else 2
+
+private lemma selectionZeroTernaryDigit_spec (a : Int)
+    (ha : a = -1 ∨ a = 0 ∨ a = 1) :
+    selectionDigitInt (selectionZeroTernaryDigit a) = a := by
+  rcases ha with rfl | rfl | rfl <;>
+    simp [selectionZeroTernaryDigit, selectionDigitInt]
+
+private def selectionZeroEncodeEta
+    (eta : (Fin 0 → Bool) → Fin 16 → Int) : selectionIndex 0 → Fin 4 :=
+  fun z ↦ selectionZeroTernaryDigit (eta z.1 z.2)
+
+private lemma selectionZeroEncodeEta_spec
+    (eta : (Fin 0 → Bool) → Fin 16 → Int)
+    (heta : IsTernaryCoefficient
+      (fun z : (Fin 0 → Bool) × Fin 16 ↦ eta z.1 z.2)) :
+    selectionEta (selectionZeroEncodeEta eta) = eta := by
+  funext e j
+  exact selectionZeroTernaryDigit_spec (eta e j) (heta (e, j))
+
+private lemma selectionZero_moment_univ {N : Nat} [NeZero N]
+    (R : GeneralArrangement N 0 8)
+    (eta : (Fin 0 → Bool) → Fin 16 → Int) :
+    arrangementMoment R eta Finset.univ =
+      ∑ j, (eta selectionZeroBool j : ZMod N) * R.crossSection j := by
+  classical
+  unfold arrangementMoment
+  rw [Finset.sum_eq_single selectionZeroBool]
+  · apply Finset.sum_congr rfl
+    intro j _
+    rw [selection_vertex_product_split]
+    simp
+  · intro e _ he
+    exact (he (Subsingleton.elim _ _)).elim
+  · intro he
+    exact (he (Finset.mem_univ selectionZeroBool)).elim
+
+private structure SelectionZeroDegenerateData {N : Nat} [NeZero N]
+    (R : GeneralArrangement N 0 8) where
+  additive : IsAdditiveTuple R.crossSection
+  coefficient : (Fin 0 → Bool) → Fin 16 → Int
+  ternary : IsTernaryCoefficient
+    (fun z : (Fin 0 → Bool) × Fin 16 ↦ coefficient z.1 z.2)
+  notMultiple : ¬ IsModularMultiple
+    (fun z : (Fin 0 → Bool) × Fin 16 ↦ coefficient z.1 z.2)
+    (fun z ↦ arrangementParityCoefficient (N := N) (d := 8) z.1 z.2)
+  moment : ∀ A : Finset (Fin 1), arrangementMoment R coefficient A = 0
+
+set_option linter.constructorNameAsVariable false in
+set_option maxHeartbeats 1000000 in
+@[simp] private lemma mem_selectionZeroDegenerateFinset_iff_data
+    {N : Nat} [NeZero N] (R : GeneralArrangement N 0 8) :
+    R ∈ selectionDegenerateFinset N 0 ↔
+      Nonempty (SelectionZeroDegenerateData R) := by
+  rw [mem_selectionDegenerateFinset]
+  constructor
+  · rintro ⟨hadditive, eta, heta, hnotmultiple, hmoment⟩
+    exact ⟨{
+      additive := hadditive
+      coefficient := eta
+      ternary := heta
+      notMultiple := hnotmultiple
+      moment := hmoment
+    }⟩
+  · rintro ⟨hRdata⟩
+    exact ⟨hRdata.additive, hRdata.coefficient, hRdata.ternary,
+      hRdata.notMultiple, hRdata.moment⟩
+
+set_option linter.constructorNameAsVariable false in
+set_option maxHeartbeats 1000000 in
+private lemma selectionZeroDegenerateData_noncanonical
+    {N : Nat} [NeZero N] {R : GeneralArrangement N 0 8}
+    (hRdata : SelectionZeroDegenerateData R) :
+    selectionZeroNoncanonical (N := N)
+      (selectionZeroEncodeEta hRdata.coefficient) := by
+  let eta := hRdata.coefficient
+  let eps := selectionZeroEncodeEta eta
+  change selectionZeroNoncanonical (N := N) eps
+  have hetaEq : selectionEta eps = eta :=
+    selectionZeroEncodeEta_spec eta hRdata.ternary
+  rintro ⟨q, hq⟩
+  apply hRdata.notMultiple
+  refine ⟨q, ?_⟩
+  rintro ⟨e, j⟩
+  have he : e = selectionZeroBool := Subsingleton.elim _ _
+  rw [he]
+  change (eta selectionZeroBool j : ZMod N) =
+    q * arrangementParityCoefficient (N := N) (d := 8)
+      selectionZeroBool j
+  rw [← hetaEq]
+  change selectionZeroCoefficient (N := N) eps j =
+    q * arrangementParityCoefficient (N := N) (d := 8)
+      selectionZeroBool j
+  rw [selectionZero_parityCoefficient]
+  exact hq j
+
+set_option linter.constructorNameAsVariable false in
+set_option maxHeartbeats 1000000 in
+private lemma selectionZeroDegenerateData_relation
+    {N : Nat} [NeZero N] {R : GeneralArrangement N 0 8}
+    (hRdata : SelectionZeroDegenerateData R) :
+    (∑ j, selectionZeroCoefficient (N := N)
+      (selectionZeroEncodeEta hRdata.coefficient) j *
+        R.crossSection j) = 0 := by
+  let eta := hRdata.coefficient
+  let eps := selectionZeroEncodeEta eta
+  change (∑ j, selectionZeroCoefficient (N := N) eps j *
+    R.crossSection j) = 0
+  have hetaEq : selectionEta eps = eta :=
+    selectionZeroEncodeEta_spec eta hRdata.ternary
+  have h := hRdata.moment Finset.univ
+  rw [selectionZero_moment_univ] at h
+  change (∑ j, ((selectionEta eps selectionZeroBool j : Int) : ZMod N) *
+    R.crossSection j) = 0
+  rw [hetaEq]
+  exact h
+
+set_option linter.constructorNameAsVariable false in
+set_option maxHeartbeats 1000000 in
+private lemma selectionZeroDegenerateData_mem_exceptional
+    {N : Nat} [NeZero N] {R : GeneralArrangement N 0 8}
+    (hRdata : SelectionZeroDegenerateData R) :
+    R ∈ selectionZeroExceptionalFinset N := by
+  classical
+  let eps := selectionZeroEncodeEta hRdata.coefficient
+  have hnoncanonical : selectionZeroNoncanonical (N := N) eps := by
+    simpa only [eps] using
+      selectionZeroDegenerateData_noncanonical (N := N) (R := R) hRdata
+  have hrelation :
+      (∑ j, selectionZeroCoefficient (N := N) eps j *
+        R.crossSection j) = 0 := by
+    simpa only [eps] using
+      selectionZeroDegenerateData_relation (N := N) (R := R) hRdata
+  unfold selectionZeroExceptionalFinset
+  rw [Finset.mem_biUnion]
+  refine ⟨eps, ?_, ?_⟩
+  · unfold selectionZeroPatternFinset
+    exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hnoncanonical⟩
+  · rw [mem_selectionZeroRelationFinset]
+    exact ⟨hRdata.additive, hrelation⟩
+
+set_option linter.constructorNameAsVariable false in
+set_option maxHeartbeats 1000000 in
+private lemma selectionZeroDegenerate_subset_exceptional {N : Nat} [NeZero N] :
+    selectionDegenerateFinset N 0 ⊆ selectionZeroExceptionalFinset N := by
+  intro (R : GeneralArrangement N 0 8) hR
+  rw [mem_selectionZeroDegenerateFinset_iff_data] at hR
+  obtain ⟨hRdata⟩ := hR
+  exact selectionZeroDegenerateData_mem_exceptional
+    (N := N) (R := R) hRdata
+
+private lemma selectionZeroDegenerateCount_le {N : Nat} [NeZero N]
+    (hN : 3 ≤ N) :
+    degenerateGeneralArrangementCount (N := N) (k := 0) 8 ≤
+      (2 * 4 ^ 16) * N ^ 14 := by
+  rw [← selectionDegenerateFinset_card N 0]
+  exact (Finset.card_le_card selectionZeroDegenerate_subset_exceptional).trans
+    (selectionZeroExceptionalFinset_card_le hN)
+
+private lemma selectionDegenerate_real_small_zero (scale delta : Real)
+    (hscale : 0 < scale) (hdelta : 0 < delta) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
+      (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        delta * scale * (N : Real) ^ 15 := by
+  let C : Real := 2 * 4 ^ 16
+  let D : Real := delta * scale
+  have hD : 0 < D := mul_pos hdelta hscale
+  obtain ⟨Nbase : Nat, hNbase⟩ := exists_nat_ge (C / D)
+  refine ⟨max 3 Nbase, ?_⟩
+  intro N _ hN
+  have hN3 : 3 ≤ N := (le_max_left 3 Nbase).trans hN
+  have hNbase' : Nbase ≤ N := (le_max_right 3 Nbase).trans hN
+  have hNbaseReal : (Nbase : Real) ≤ N := by exact_mod_cast hNbase'
+  have hratio : C / D ≤ (N : Real) := hNbase.trans hNbaseReal
+  have hC : C ≤ D * (N : Real) := by
+    simpa [mul_comm] using (div_le_iff₀ hD).mp hratio
+  have hdegNat := selectionZeroDegenerateCount_le hN3
+  have hdeg :
+      (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        C * (N : Real) ^ 14 := by
+    simpa only [C, Nat.cast_mul, Nat.cast_ofNat, Nat.cast_pow] using
+      (show (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+          (((2 * 4 ^ 16) * N ^ 14 : Nat) : Real) by exact_mod_cast hdegNat)
+  calc
+    (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        C * (N : Real) ^ 14 := hdeg
+    _ ≤ (D * (N : Real)) * (N : Real) ^ 14 := by
+      exact mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
+    _ = delta * scale * (N : Real) ^ 15 := by
+      dsimp only [D]
+      rw [show 15 = 14 + 1 by omega, pow_succ]
+      ring
+
 private lemma selectionDegenerate_real_small (k : Nat) (scale delta : Real)
     (hk : 1 ≤ k) (hscale : 0 < scale) (hdelta : 0 < delta) :
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → N.Prime → Odd N →
@@ -2108,11 +2723,15 @@ private lemma selectionDegenerate_real_small (k : Nat) (scale delta : Real)
 /-! ## The scale-invariant selection estimate -/
 
 set_option maxHeartbeats 3000000 in
-private theorem selection_scale_estimate
-    (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+private theorem selection_scale_estimate_of_exceptional_bound
+    (valid : Nat → Prop) (k : Nat) (alpha scale eta : Real)
     (halpha : 0 < alpha) (hscale : 0 < scale)
-    (heta : 0 < eta) (heta_one : eta ≤ 1) :
-    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → N.Prime → Odd N →
+    (heta : 0 < eta) (heta_one : eta ≤ 1)
+    (hdegenerateSmall : ∀ delta : Real, 0 < delta →
+      ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → valid N →
+        (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
+          delta * scale * (N : Real) ^ (17 * k + 15)) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → valid N →
       ∀ (B : Finset (Point N (k + 1)))
           (phi : Point N (k + 1) → ZMod N),
         (generalArrangementCount 8 B : Real) ≤
@@ -2139,10 +2758,9 @@ private theorem selection_scale_estimate
       qb ^ r * (alpha * eta * amp ^ r - 1) - eta * target
     have hmargin : 0 < margin := hmargin₀
     obtain ⟨Nsmall : Nat, hsmall⟩ :=
-      selectionDegenerate_real_small k scale (margin / 2) hk hscale
-        (by positivity)
+      hdegenerateSmall (margin / 2) (by positivity)
     refine ⟨max 3 Nsmall, ?_⟩
-    intro N _ hN hprime hodd B phi harrangementUpper hrespected
+    intro N _ hN hvalid B phi harrangementUpper hrespected
     have hN3 : 3 ≤ N := (le_max_left 3 Nsmall).trans hN
     have hNsmall : Nsmall ≤ N := (le_max_right 3 Nsmall).trans hN
     let M : Real := scale * (N : Real) ^ (17 * k + 15)
@@ -2156,7 +2774,7 @@ private theorem selection_scale_estimate
     have hexceptional0 : 0 ≤ exceptional := by positivity
     have hexceptional : exceptional ≤ (margin / 2) * M := by
       simpa only [exceptional, M, mul_assoc] using
-        hsmall N hNsmall hprime hodd
+        hsmall N hNsmall hvalid
     have hgoodCardNat := selectionGoodNondegenerate_card_lower B phi
     have hgoodCard :
         (respectedGeneralArrangementCount 8 B phi : Real) ≤
@@ -2276,7 +2894,7 @@ private theorem selection_scale_estimate
       (Finset.univ_nonempty : (Finset.univ :
         Finset (Fin r → SelectionPhase N k)).Nonempty) hphaseExpected
     have hcarrierLower :=
-      selection_carrier_score_lower hprime eta heta.le B phi C
+      selection_carrier_score_lower (by omega) eta heta.le B phi C
     have hcarrierAverage :
         eta * target * M ≤
           eta * (∑ R ∈ selectionGoodArrangements B phi,
@@ -2380,7 +2998,7 @@ private theorem selection_scale_estimate
     dsimp only [target, M] at harrangementLower
     simpa only [mul_assoc] using harrangementLower
   · refine ⟨1, ?_⟩
-    intro N _ hN hprime hodd B phi harrangementUpper hrespected
+    intro N _ hN hvalid B phi harrangementUpper hrespected
     exfalso
     let M : Real := scale * (N : Real) ^ (17 * k + 15)
     have hNpos : 0 < (N : Real) := by
@@ -2395,6 +3013,74 @@ private theorem selection_scale_estimate
       exact_mod_cast hrespectedUpperNat
     have halpha_gt : 1 < alpha := lt_of_not_ge halpha_one
     nlinarith
+
+private theorem selection_scale_estimate
+    (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+    (halpha : 0 < alpha) (hscale : 0 < scale)
+    (heta : 0 < eta) (heta_one : eta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → N.Prime → Odd N →
+      ∀ (B : Finset (Point N (k + 1)))
+          (phi : Point N (k + 1) → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤
+            scale * (N : Real) ^ (17 * k + 15) →
+        alpha * scale * (N : Real) ^ (17 * k + 15) ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (alpha * eta / 4) ^ arrangementSelectionExponent k * scale *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  obtain ⟨N0, hN0⟩ := selection_scale_estimate_of_exceptional_bound
+    (fun N ↦ N.Prime ∧ Odd N) k alpha scale eta halpha hscale heta heta_one
+    (fun delta hdelta ↦ by
+      obtain ⟨Nsmall, hsmall⟩ :=
+        selectionDegenerate_real_small k scale delta hk hscale hdelta
+      exact ⟨Nsmall, fun N _ hN hvalid ↦
+        hsmall N hN hvalid.1 hvalid.2⟩)
+  refine ⟨N0, ?_⟩
+  intro N _ hN hprime hodd
+  exact hN0 N hN ⟨hprime, hodd⟩
+
+set_option maxHeartbeats 1000000 in
+/-- The height-zero specialization of the random restriction.  Unlike the
+higher-dimensional form, it is valid over every sufficiently large cyclic
+group: a second ternary relation has a coefficient in `{±1, ±2}`, whose
+fibres have uniformly bounded size even when the modulus is composite. -/
+theorem lemma_15_5_zero_dimensional_holds
+    (alpha beta eta : Real) (halpha : 0 < alpha) (hbeta : 0 < beta)
+    (heta : 0 < eta) (heta_one : eta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
+      ∀ (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N),
+        (B.card : Real) = beta * N →
+        alpha * beta ^ 15 * (N : Real) ^ 15 ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N 1), B' ⊆ B ∧
+          (alpha * eta / 4) ^ ((2 : Nat) ^ 19) * beta ^ 15 *
+              (N : Real) ^ 15 ≤ generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  obtain ⟨N0, hN0⟩ := selection_scale_estimate_of_exceptional_bound
+    (fun _ ↦ True) 0 alpha (beta ^ 15) eta halpha (pow_pos hbeta _)
+      heta heta_one
+      (fun delta hdelta ↦ by
+        obtain ⟨Nsmall, hsmall⟩ := selectionDegenerate_real_small_zero
+          (beta ^ 15) delta (pow_pos hbeta _) hdelta
+        refine ⟨Nsmall, ?_⟩
+        intro N _ hN _
+        simpa only [Nat.mul_zero, zero_add] using hsmall N hN)
+  refine ⟨N0, ?_⟩
+  intro N _ hN B phi hBcard hrespected
+  have hBcard' : (B.card : Real) = beta * (N : Real) ^ (0 + 1) := by
+    simpa using hBcard
+  obtain ⟨B', hB'B, hlower, hdensity⟩ := hN0 N hN trivial B phi
+    (selection_arrangement_real_upper beta B hBcard') hrespected
+  refine ⟨B', hB'B, ?_, ?_⟩
+  · have hE : arrangementSelectionExponent 0 = 2 ^ 19 := by
+      norm_num [arrangementSelectionExponent]
+    rw [hE] at hlower
+    exact hlower
+  · exact hdensity
 
 /-- **Lemma 15.5.** Random restriction for higher-dimensional arrangements. -/
 theorem lemma_15_5_holds : lemma_15_5 := by

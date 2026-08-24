@@ -75,7 +75,7 @@ def lemma_9_2 : Prop :=
 /-- **Lemma 9.3.** A random restriction upgrades a positive proportion of
 respected 8-relations to an approximate homomorphism of order eight. -/
 def lemma_9_3 : Prop :=
-  forall (alpha beta eta : Real), 0 < alpha -> 0 < beta -> 0 < eta ->
+  forall (alpha beta eta : Real), 0 < alpha -> 0 < beta -> 0 < eta -> eta <= 1 ->
     exists N0 : Nat, forall (N : Nat) [NeZero N], N0 <= N ->
       forall (B : Finset (ZMod N)) (phi : ZMod N -> ZMod N),
         (B.card : Real) = beta * N ->
@@ -89,7 +89,7 @@ def lemma_9_3 : Prop :=
 statement inherits the latter's sufficiently-large-`N` proviso; it is made
 explicit here. -/
 def corollary_9_4 : Prop :=
-  forall (beta gamma eta : Real), 0 < beta -> 0 < gamma -> 0 < eta ->
+  forall (beta gamma eta : Real), 0 < beta -> 0 < gamma -> 0 < eta -> eta <= 1 ->
     exists N0 : Nat, forall (N : Nat) [NeZero N], N0 <= N ->
       forall (B : Finset (ZMod N)) (phi : ZMod N -> ZMod N),
         (B.card : Real) = beta * N -> GammaAdditive B phi (gamma * beta ^ 3) ->
