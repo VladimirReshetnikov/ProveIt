@@ -270,10 +270,14 @@ noncomputable def translatedIntersectionCount {N k : Nat} [NeZero N]
   countWhere fun p : ZMod N × ZMod N =>
     forall i, p.2 - ((i : Nat) + 1) * p.1 ∈ A i
 
-/-- **Corollary 3.3.** -/
+/-- **Corollary 3.3.** The prime/range assumptions are inherited from the
+corrected Theorem 3.2; nonnegativity of `alpha` is needed even in the empty
+family edge case. -/
 def corollary_3_3 : Prop :=
-  forall (N k : Nat) [NeZero N] (A : Fin k -> Finset (ZMod N))
+  forall (N k : Nat) [NeZero N] [Fact N.Prime], k <= N ->
+    forall (A : Fin k -> Finset (ZMod N))
       (delta : Fin k -> Real) (alpha : Real),
+    0 <= alpha ->
     (forall i, (A i).card = delta i * N) ->
     (forall i : Fin k, 3 <= (i : Nat) + 1 ->
       UniformSetOfDegree (A i) (alpha ^ ((2 : Nat) ^ (i : Nat))) ((i : Nat) - 1)) ->
