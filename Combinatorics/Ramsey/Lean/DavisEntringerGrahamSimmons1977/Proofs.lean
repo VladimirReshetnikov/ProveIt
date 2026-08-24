@@ -4950,13 +4950,17 @@ private theorem concludingParts_pairwiseDisjoint (r s : Fin 3) (hrs : r ≠ s) :
   apply Fin.ext
   exact hkr.symm.trans hls
 
-private def IsSubsetBlockConcatenation {A : Set PositiveNat}
+/-- An enumeration of a subset obtained by listing the given finite blocks in
+index order and preserving the displayed order inside every block. -/
+def IsSubsetBlockConcatenation {A : Set PositiveNat}
     (e : Nat ≃ A) (blocks : Nat → Block) : Prop :=
   ∀ (k j : Nat) (hj : j < (blocks k).length),
     subsetEnumerationSequence e (blockPrefixLength blocks k + j) =
       blockSequence (blocks k) ⟨j, hj⟩
 
-private theorem subsetBlockConcatenation_exists
+/-- Pairwise disjoint, nonempty blocks of positive integers that cover `A`
+can be concatenated to give an enumeration of `A`. -/
+theorem subsetBlockConcatenation_exists
     (A : Set PositiveNat) (blocks : Nat → Block)
     (hlen : ∀ k, 0 < (blocks k).length)
     (hnodup : ∀ k, (blocks k).Nodup)
@@ -5059,6 +5063,19 @@ private theorem subsetValue_mem_position_block {A : Set PositiveNat}
   rw [hnat]
   exact List.get_mem _ _
 
+/-- A stream of blocks excludes a cross-block three-term arithmetic
+progression when no ordered choice spanning more than one block is an AP.
+The offset condition records the order forced on two chosen entries that
+belong to the same block. -/
+def CrossBlockThreeAPFree (blocks : Nat → Block) : Prop :=
+  ∀ (b : Fin 3 → Nat)
+    (q : (i : Fin 3) → Fin (blocks (b i)).length),
+    Monotone b →
+    (∀ i j : Fin 3, i < j → b i = b j → (q i : Nat) < q j) →
+    ¬ (b 0 = b 1 ∧ b 1 = b 2) →
+    ¬ IsArithmeticProgression
+      (fun i => blockSequence (blocks (b i)) (q i))
+
 private theorem subsetThree_same_block_impossible {A : Set PositiveNat}
     (blocks : Nat → Block) (hlen : ∀ k, 0 < (blocks k).length)
     (hfree : ∀ k, BlockAPFree (blocks k) 3)
@@ -5095,6 +5112,53 @@ private theorem subsetThree_same_block_impossible {A : Set PositiveNat}
   change blockSequence (blocks b) (q i) = _
   rw [hsame]
   exact hvalues i
+
+/-- Concatenating nonempty 3-AP-free blocks gives a 3-AP-free enumeration
+provided that ordered choices spanning multiple blocks are not 3-APs. -/
+theorem subsetBlockConcatenation_three_ap_free {A : Set PositiveNat}
+    (blocks : Nat → Block) (hlen : ∀ k, 0 < (blocks k).length)
+    (hfree : ∀ k, BlockAPFree (blocks k) 3)
+    (hcross : CrossBlockThreeAPFree blocks)
+    (e : Nat ≃ A) (hconcat : IsSubsetBlockConcatenation e blocks) :
+    ¬ HasMonotoneAP (subsetEnumerationSequence e) 3 := by
+  rintro ⟨pos, hpos, hprogression⟩
+  let b : Fin 3 → Nat := fun i => positionBlock blocks hlen (pos i)
+  let q : (i : Fin 3) → Fin (blocks (b i)).length := fun i =>
+    ⟨pos i - blockPrefixLength blocks (b i), by
+      exact positionBlock_index_lt blocks hlen (pos i)⟩
+  have hbmono : Monotone b := by
+    intro i j hij
+    exact positionBlock_mono blocks hlen (hpos.monotone hij)
+  have hqSame : ∀ i j : Fin 3, i < j → b i = b j →
+      (q i : Nat) < q j := by
+    intro i j hij hbij
+    change pos i - blockPrefixLength blocks (b i) <
+      pos j - blockPrefixLength blocks (b j)
+    have hposij := hpos hij
+    have hlower := positionBlock_lower blocks hlen (pos i)
+    change blockPrefixLength blocks (b i) ≤ pos i at hlower
+    have hpref : blockPrefixLength blocks (b i) =
+        blockPrefixLength blocks (b j) := congrArg _ hbij
+    omega
+  by_cases hsame : b 0 = b 1 ∧ b 1 = b 2
+  · apply subsetThree_same_block_impossible blocks hlen hfree e hconcat
+      pos hpos hprogression (b 0)
+    intro i
+    fin_cases i
+    · rfl
+    · exact hsame.1.symm
+    · exact (hsame.1.trans hsame.2).symm
+  · apply hcross b q hbmono hqSame hsame
+    obtain ⟨a, d, hd, hvalues⟩ := hprogression
+    refine ⟨a, d, hd, ?_⟩
+    intro i
+    have hseq := subsetBlockSequence_at_position blocks hlen e hconcat (pos i)
+    have heq : blockSequence (blocks (b i)) (q i) =
+        subsetEnumerationSequence e (pos i) := by
+      rw [hseq]
+    change blockSequence (blocks (b i)) (q i) = _
+    rw [heq]
+    exact hvalues i
 
 private def concludingSelectedIndex (r : Fin 3) (m : Nat) : Nat :=
   3 * m + r
