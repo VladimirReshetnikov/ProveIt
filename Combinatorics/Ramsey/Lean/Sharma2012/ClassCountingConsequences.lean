@@ -429,4 +429,176 @@ lemma paired_endpoints_opposite_halves
     · constructor <;> omega
     · constructor <;> omega
 
+lemma normalizedOddTrace_paired_endpoints {n : Nat} (hn : 3 ≤ n)
+    (oddIndex : ThetaPermutation ((n + 1) / 2)) :
+    ∃ b bStar : Nat,
+      EndsWith (oddLift (permutationWord oddIndex.1)) b ∧
+      EndsWith (oddLift
+        (permutationWord (thetaComplementEquiv ((n + 1) / 2) oddIndex).1)) bStar ∧
+      b ∈ segment n ∧ bStar ∈ segment n ∧ Odd b ∧ Odd bStar ∧
+      b + bStar = 2 * ((n + 1) / 2) := by
+  let m := (n + 1) / 2
+  have hm : 1 ≤ m := by omega
+  obtain ⟨a, haEnd⟩ := exists_endsWith_permutationWord hm oddIndex.1
+  have haMem : a ∈ permutationWord oddIndex.1 := mem_of_endsWith haEnd
+  have haSegment : a ∈ segment m := by
+    rw [← permutationWord_toFinset oddIndex.1]
+    exact List.mem_toFinset.mpr haMem
+  have haPos : 0 < a := by
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  let aStar := m + 1 - a
+  have haStarEnd : EndsWith
+      (permutationWord (thetaComplementEquiv m oddIndex).1) aStar := by
+    change EndsWith (permutationWord (complementPermutation oddIndex.1)) aStar
+    rw [permutationWord_complementPermutation]
+    exact endsWith_complement haEnd
+  let b := 2 * a - 1
+  let bStar := 2 * aStar - 1
+  have hbEnd : EndsWith (oddLift (permutationWord oddIndex.1)) b := by
+    simpa only [b] using endsWith_oddLift haEnd
+  have hbStarEnd : EndsWith
+      (oddLift (permutationWord (thetaComplementEquiv m oddIndex).1)) bStar := by
+    simpa only [bStar] using endsWith_oddLift haStarEnd
+  have hbSegment : b ∈ segment n := by
+    simp only [segment, Finset.mem_Icc, b]
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  have hbStarSegment : bStar ∈ segment n := by
+    simp only [segment, Finset.mem_Icc, bStar, aStar]
+    simp only [segment, Finset.mem_Icc] at haSegment
+    omega
+  have hbOdd : Odd b := by
+    refine ⟨a - 1, ?_⟩
+    simp only [b]
+    omega
+  have hbStarOdd : Odd bStar := by
+    refine ⟨aStar - 1, ?_⟩
+    simp only [bStar]
+    have : 1 ≤ aStar := by
+      simp only [aStar]
+      simp only [segment, Finset.mem_Icc] at haSegment
+      omega
+    omega
+  refine ⟨b, bStar, hbEnd, hbStarEnd, hbSegment, hbStarSegment,
+    hbOdd, hbStarOdd, ?_⟩
+  simp only [b, bStar, aStar, m]
+  simp only [segment, Finset.mem_Icc] at haSegment
+  omega
+
+lemma normalizedEvenTrace_start {n : Nat} (hn : 3 ≤ n)
+    (evenIndex : ThetaPermutation (n / 2)) :
+    ∃ c : Nat, StartsWith (evenLift (permutationWord evenIndex.1)) c ∧
+      c ∈ segment n ∧ Even c := by
+  have hm : 1 ≤ n / 2 := by omega
+  obtain ⟨d, hdStart⟩ := exists_startsWith_permutationWord hm evenIndex.1
+  have hdMem : d ∈ permutationWord evenIndex.1 := mem_of_startsWith hdStart
+  have hdSegment : d ∈ segment (n / 2) := by
+    rw [← permutationWord_toFinset evenIndex.1]
+    exact List.mem_toFinset.mpr hdMem
+  refine ⟨2 * d, startsWith_evenLift hdStart, ?_, ⟨d, by omega⟩⟩
+  simp only [segment, Finset.mem_Icc] at hdSegment ⊢
+  omega
+
+theorem paired_normalizedInterleavingClass_card_le_twenty_one
+    (h20 : corollary_2_7_1) {n : Nat} (hn : 3 ≤ n)
+    (oddIndex : ThetaPermutation ((n + 1) / 2))
+    (evenIndex : ThetaPermutation (n / 2)) :
+    (normalizedInterleavingClass n oddIndex evenIndex).card +
+      (normalizedInterleavingClass n
+        (thetaComplementEquiv ((n + 1) / 2) oddIndex) evenIndex).card ≤ 21 := by
+  let gammaOdd := oddLift (permutationWord oddIndex.1)
+  let oddStar := thetaComplementEquiv ((n + 1) / 2) oddIndex
+  let gammaOddStar := oddLift (permutationWord oddStar.1)
+  let gammaEven := evenLift (permutationWord evenIndex.1)
+  obtain ⟨b, bStar, hbEnd, hbStarEnd, hbSegment, hbStarSegment,
+      hbOdd, hbStarOdd, hsum⟩ := normalizedOddTrace_paired_endpoints hn oddIndex
+  obtain ⟨c, hcStart, hcSegment, hcEven⟩ := normalizedEvenTrace_start hn evenIndex
+  change (interleavingClass n gammaOdd gammaEven).card +
+    (interleavingClass n gammaOddStar gammaEven).card ≤ 21
+  by_cases hfixed : b = bStar
+  · have hbMid : b = (n + 1) / 2 := by omega
+    have hstarMid : bStar = (n + 1) / 2 := by omega
+    by_cases hcommute : Commute n b c
+    · have hcEq : c = n := by
+        by_contra hcNe
+        have hcLt : c < n := by
+          simp only [segment, Finset.mem_Icc] at hcSegment
+          omega
+        have hreflect : c ≤ 2 * b ∧ 2 * b - c ∈ segment n := by
+          have htwo : 2 * b = 2 * ((n + 1) / 2) := by omega
+          have hcLe : c ≤ 2 * b := by omega
+          have hsubEq : 2 * b - c + c = 2 * b := Nat.sub_add_cancel hcLe
+          have hcPos : 1 ≤ c := by
+            simp only [segment, Finset.mem_Icc] at hcSegment
+            omega
+          have hcStrict : c < 2 * b := by omega
+          have hsubPos : 0 < 2 * b - c := Nat.sub_pos_of_lt hcStrict
+          have hsubUpper : 2 * b - c ≤ n := by
+            exact (Nat.sub_le_sub_left hcPos (2 * b)).trans (by omega)
+          constructor
+          · exact hcLe
+          · simp only [segment, Finset.mem_Icc]
+            exact ⟨by omega, hsubUpper⟩
+        have hforced : DoNotCommute n b c :=
+          (theorem_2_2_holds n b c hn hbSegment hcSegment hbOdd hcEven).2
+            (Or.inl hreflect)
+        exact (doNotCommute_not_commute hforced) hcommute
+      have hnEven : Even n := by simpa only [← hcEq] using hcEven
+      have hmidFloor : (n + 1) / 2 = n / 2 := by
+        rcases hnEven with ⟨k, hk⟩
+        omega
+      have hbFloor : b = n / 2 := hbMid.trans hmidFloor
+      have hstarFloor : bStar = n / 2 := hstarMid.trans hmidFloor
+      have hcommuteStar : Commute n bStar c := by
+        simpa only [← hfixed] using hcommute
+      have hleft : (interleavingClass n gammaOdd gammaEven).card ≤ 7 := by
+        apply interleavingClass_card_le_seven_of_midpoint_last hn
+        · simpa only [hbFloor] using hbEnd
+        · simpa only [hcEq] using hcStart
+        · simpa only [hbFloor, hcEq] using hcommute
+      have hright : (interleavingClass n gammaOddStar gammaEven).card ≤ 7 := by
+        apply interleavingClass_card_le_seven_of_midpoint_last hn
+        · simpa only [hstarFloor] using hbStarEnd
+        · simpa only [hcEq] using hcStart
+        · simpa only [hstarFloor, hcEq] using hcommuteStar
+      omega
+    · have hforced := doNotCommute_of_not_commute hbSegment hcSegment hbOdd hcEven hcommute
+      have hleft : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      have hright : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute
+          hbStarEnd hcStart (by simpa only [← hfixed] using hforced)
+      omega
+  · have hopposite := paired_endpoints_opposite_halves hbSegment hbStarSegment hsum hfixed
+    have hcHalf : c ∈ lowerHalf n ∨ c ∈ upperHalf n := by
+      simp only [segment, lowerHalf, upperHalf, Finset.mem_Icc] at hcSegment ⊢
+      omega
+    have hleft20 : (interleavingClass n gammaOdd gammaEven).card ≤ 20 :=
+      h20 n gammaOdd gammaEven
+    have hright20 : (interleavingClass n gammaOddStar gammaEven).card ≤ 20 :=
+      h20 n gammaOddStar gammaEven
+    rcases hopposite with ⟨hbLower, hbStarUpper⟩ | ⟨hbUpper, hbStarLower⟩ <;>
+      rcases hcHalf with hcLower | hcUpper
+    · have hforced := (corollary_2_2_1_holds n b c hbSegment hcSegment
+          (Or.inl ⟨hbLower, hcLower⟩)).1 hbOdd hcEven
+      have hleftOne : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n bStar c hbStarSegment hcSegment
+          (Or.inr ⟨hbStarUpper, hcUpper⟩)).1 hbStarOdd hcEven
+      have hrightOne : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbStarEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n bStar c hbStarSegment hcSegment
+          (Or.inl ⟨hbStarLower, hcLower⟩)).1 hbStarOdd hcEven
+      have hrightOne : (interleavingClass n gammaOddStar gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbStarEnd hcStart hforced
+      omega
+    · have hforced := (corollary_2_2_1_holds n b c hbSegment hcSegment
+          (Or.inr ⟨hbUpper, hcUpper⟩)).1 hbOdd hcEven
+      have hleftOne : (interleavingClass n gammaOdd gammaEven).card ≤ 1 :=
+        interleavingClass_card_le_one_of_doNotCommute hbEnd hcStart hforced
+      omega
+
 end LeanProofs.Sharma2012
