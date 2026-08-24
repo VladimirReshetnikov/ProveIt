@@ -556,5 +556,64 @@ theorem logMainDefect_sub_lead_isLittleO :
     ring
   · exact EventuallyEq.rfl
 
+/-- The nonzero logarithm-squared leading term prevents the main defect from
+being `O(t⁻²)`. -/
+theorem logMainDefect_not_isBigO_one_div_sq :
+    ¬ logMainDefect =O[atTop] (fun t : ℝ => (1 / t) ^ 2) := by
+  intro hdefect
+  have hdefectSmall : logMainDefect =o[atTop] logScaleSquaredRate :=
+    hdefect.trans_isLittleO one_div_sq_isLittleO_logScaleSquaredRate
+  have hleadRaw := hdefectSmall.sub logMainDefect_sub_lead_isLittleO
+  let c : ℝ := -(2 * (Real.log 2) ^ 2)⁻¹
+  have hlead : (fun t : ℝ => c * logScaleSquaredRate t) =o[atTop]
+      logScaleSquaredRate := by
+    apply hleadRaw.congr'
+    · exact Filter.Eventually.of_forall fun t => by
+        dsimp [c]
+        ring
+    · exact EventuallyEq.rfl
+  have hc : c ≠ 0 := by
+    dsimp [c]
+    exact neg_ne_zero.mpr (inv_ne_zero (mul_ne_zero (by norm_num)
+      (pow_ne_zero 2 (Real.log_ne_zero_of_pos_of_ne_one (by norm_num) (by norm_num)))))
+  have hself : logScaleSquaredRate =o[atTop] logScaleSquaredRate :=
+    (isLittleO_const_mul_left_iff hc).mp hlead
+  have hnonzero : ∀ᶠ t : ℝ in atTop, logScaleSquaredRate t ≠ 0 := by
+    filter_upwards [eventually_gt_atTop (1 : ℝ)] with t ht
+    unfold logScaleSquaredRate logScaleRate
+    exact pow_ne_zero 2
+      (div_ne_zero (Real.log_pos ht).ne' (ne_of_gt (lt_trans zero_lt_one ht)))
+  exact isLittleO_irrefl hnonzero.frequently hself
+
+/-- Equation (2), first form: the second-order expansion of
+`log(t - 1) - log t`, with a cubic remainder. -/
+theorem log_sub_one_sub_log_second_order_isBigO :
+    (fun t : ℝ => Real.log (t - 1) - Real.log t + 1 / t + (1 / t) ^ 2 / 2)
+      =O[atTop] (fun t : ℝ => (1 / t) ^ 3) := by
+  apply logMainShift_second_order_isBigO.congr'
+  · filter_upwards [eventually_gt_atTop (1 : ℝ)] with t ht
+    have ht0 : t ≠ 0 := ne_of_gt (lt_trans zero_lt_one ht)
+    have honeSub : 1 - 1 / t ≠ 0 := by
+      rw [sub_ne_zero]
+      exact ne_of_gt (by simpa using one_div_lt_one_div_of_lt zero_lt_one ht)
+    have hfactor : t - 1 = t * (1 - 1 / t) := by field_simp
+    rw [hfactor, Real.log_mul ht0 honeSub]
+    unfold logMainShift
+    ring
+  · exact EventuallyEq.rfl
+
+/-- Equation (2), reciprocal form: the expansion of `log(t / (t - 1))`. -/
+theorem log_div_sub_one_second_order_isBigO :
+    (fun t : ℝ => Real.log (t / (t - 1)) - 1 / t - (1 / t) ^ 2 / 2)
+      =O[atTop] (fun t : ℝ => (1 / t) ^ 3) := by
+  have hneg := log_sub_one_sub_log_second_order_isBigO.neg_left
+  apply hneg.congr'
+  · filter_upwards [eventually_gt_atTop (1 : ℝ)] with t ht
+    have ht0 : t ≠ 0 := ne_of_gt (lt_trans zero_lt_one ht)
+    have htm10 : t - 1 ≠ 0 := ne_of_gt (sub_pos.mpr ht)
+    rw [Real.log_div ht0 htm10]
+    ring
+  · exact EventuallyEq.rfl
+
 
 end Fabius
