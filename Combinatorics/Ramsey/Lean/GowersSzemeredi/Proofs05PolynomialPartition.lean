@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05MissingInterval
+import GowersSzemeredi.Proofs05Weyl
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.ProofInfrastructure
 import Mathlib.Analysis.Normed.Group.AddCircle
@@ -839,6 +840,601 @@ private theorem polynomial_weyl_witness
           (t : Real) * M / (4 * N) := by
       simpa only [gamma] using hlower
     exact hlower'.trans hrlarge
+
+/-! ### Quantitative polynomial recurrence -/
+
+private lemma lemma55_nat_succ_le_two_pow (e : Nat) : e + 1 ≤ 2 ^ e := by
+  induction e with
+  | zero => simp
+  | succ e ih =>
+      rw [pow_succ]
+      omega
+
+private lemma lemma55_nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
+  calc
+    k = k * 1 := by simp
+    _ ≤ k * k ^ 2 := Nat.mul_le_mul_left k (one_le_pow₀ hk)
+    _ = k ^ 3 := by ring
+
+/-- A small, reusable consequence of the repaired double-exponential
+threshold.  Keeping `D` and `E` abstract lets the two constant absorptions in
+Lemma 5.5 share the same non-evaluating tower argument. -/
+private lemma lemma55_threshold_root {k t D E : Nat}
+    (hD : 0 < D) (hDE : D * E ≤ 2 ^ (40 * k ^ 3))
+    (ht : weylThreshold k ≤ t) :
+    (2 : Real) ^ E ≤ (t : Real) ^ ((D : Real)⁻¹) := by
+  let H := 2 ^ (40 * k ^ 3)
+  have hDReal : (0 : Real) < D := by exact_mod_cast hD
+  have hbase : ((2 ^ H : Nat) : Real) ≤ t := by
+    dsimp only [H]
+    exact_mod_cast (show 2 ^ (2 ^ (40 * k ^ 3)) ≤ t by
+      simpa only [weylThreshold] using ht)
+  calc
+    (2 : Real) ^ E ≤
+        ((2 : Real) ^ H) ^ ((D : Real)⁻¹) := by
+      rw [← Real.rpow_natCast,
+        ← Real.rpow_natCast_mul (by norm_num : (0 : Real) ≤ 2)]
+      apply Real.rpow_le_rpow_of_exponent_le one_le_two
+      rw [mul_comm (H : Real) ((D : Real)⁻¹)]
+      rw [le_inv_mul_iff₀ hDReal]
+      exact_mod_cast hDE
+    _ ≤ (t : Real) ^ ((D : Real)⁻¹) := by
+      apply Real.rpow_le_rpow (by positivity)
+      · simpa only [Nat.cast_pow, Nat.cast_ofNat] using hbase
+      · positivity
+
+private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
+    (ht : weylThreshold k ≤ t) :
+    (48000 : Real) < (t : Real) ^
+      (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by
+  let D := k * 2 ^ k
+  have hkpow : k ≤ 2 ^ k :=
+    (Nat.le_succ k).trans (lemma55_nat_succ_le_two_pow k)
+  have hkCube : k ≤ k ^ 3 := lemma55_nat_le_cube (by omega)
+  have hexponent : 2 * k + 4 ≤ 40 * k ^ 3 := by
+    calc
+      2 * k + 4 ≤ 4 * k := by omega
+      _ ≤ 4 * k ^ 3 := Nat.mul_le_mul_left 4 hkCube
+      _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
+  have hD : 0 < D := by dsimp only [D]; positivity
+  have hD16 : D * 16 ≤ 2 ^ (40 * k ^ 3) := by
+    calc
+      D * 16 = k * 2 ^ k * 16 := rfl
+      _ ≤ 2 ^ k * 2 ^ k * 16 :=
+        Nat.mul_le_mul_right 16 (Nat.mul_le_mul_right (2 ^ k) hkpow)
+      _ = 2 ^ (2 * k + 4) := by
+        rw [show 16 = 2 ^ 4 by norm_num, ← pow_add, ← pow_add]
+        congr 1
+        omega
+      _ ≤ 2 ^ (40 * k ^ 3) :=
+        Nat.pow_le_pow_right (by norm_num) hexponent
+  have hroot := lemma55_threshold_root hD hD16 ht
+  have hkReal : (0 : Real) < k := by positivity
+  have hpow : (2 : Real) ^ (k + 1) = 2 * (2 : Real) ^ k := by
+    rw [pow_succ]
+    ring
+  have hgamma :
+      ((D : Real)⁻¹) =
+        2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
+    dsimp only [D]
+    push_cast
+    rw [hpow]
+    field_simp [ne_of_gt hkReal]
+    <;> ring
+  calc
+    (48000 : Real) < (2 : Real) ^ 16 := by norm_num
+    _ ≤ (t : Real) ^ ((D : Real)⁻¹) := hroot
+    _ = (t : Real) ^
+        (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by rw [hgamma]
+
+private lemma lemma55_threshold_constant {k t : Nat} (hk : 2 ≤ k)
+    (ht : weylThreshold k ≤ t) :
+    (16 : Real) ^ (k - 1) ≤
+      (t : Real) ^ ((4 * (k : Real))⁻¹) := by
+  let D := 4 * k
+  let E := 4 * (k - 1)
+  have hD : 0 < D := by dsimp only [D]; positivity
+  have hkSqCube : k ^ 2 ≤ k ^ 3 :=
+    pow_le_pow_right₀ (by omega : 1 ≤ k) (by norm_num)
+  have hpoly : D * E ≤ 40 * k ^ 3 := by
+    calc
+      D * E = 16 * k * (k - 1) := by dsimp only [D, E]; ring
+      _ ≤ 16 * k * k := by gcongr; omega
+      _ = 16 * k ^ 2 := by ring
+      _ ≤ 16 * k ^ 3 := Nat.mul_le_mul_left 16 hkSqCube
+      _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
+  have hDE : D * E ≤ 2 ^ (40 * k ^ 3) :=
+    hpoly.trans <| (Nat.le_succ (40 * k ^ 3)).trans
+      (lemma55_nat_succ_le_two_pow (40 * k ^ 3))
+  have hroot := lemma55_threshold_root hD hDE ht
+  have hbase : (16 : Real) ^ (k - 1) = (2 : Real) ^ E := by
+    dsimp only [E]
+    rw [show (16 : Real) = 2 ^ 4 by norm_num, pow_mul]
+  have hDcast : (D : Real) = 4 * (k : Real) := by
+    dsimp only [D]
+    push_cast
+    rfl
+  rw [hbase, ← hDcast]
+  exact hroot
+
+private lemma lemma55_exponent_budget {k : Nat} (hk : 2 ≤ k) :
+    (4 * (k : Real))⁻¹ +
+        (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) +
+          (k : Real)⁻¹) * (k - 1) ≤
+      1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
+  have hkReal : (0 : Real) < k := by positivity
+  have hkpow : k ≤ 2 ^ (k - 1) := by
+    have h := lemma55_nat_succ_le_two_pow (k - 1)
+    rwa [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h
+  have htwok : 2 * k ≤ 2 ^ k := by
+    calc
+      2 * k ≤ 2 * 2 ^ (k - 1) := Nat.mul_le_mul_left 2 hkpow
+      _ = 2 ^ (k - 1) * 2 := by ring
+      _ = 2 ^ ((k - 1) + 1) := (pow_succ _ _).symm
+      _ = 2 ^ k := by rw [Nat.sub_add_cancel (by omega : 1 ≤ k)]
+  have hpowNat : 4 * (2 * k - 1) ≤ 3 * 2 ^ (k + 1) := by
+    calc
+      4 * (2 * k - 1) ≤ 8 * k := by omega
+      _ = 4 * (2 * k) := by ring
+      _ ≤ 4 * 2 ^ k := Nat.mul_le_mul_left 4 htwok
+      _ = 2 * 2 ^ (k + 1) := by rw [pow_succ]; ring
+      _ ≤ 3 * 2 ^ (k + 1) :=
+        Nat.mul_le_mul_right (2 ^ (k + 1)) (by norm_num)
+  have hpowReal :
+      4 * (2 * (k : Real) - 1) ≤ 3 * (2 : Real) ^ (k + 1) := by
+    have hsubCast : ((2 * k - 1 : Nat) : Real) = 2 * (k : Real) - 1 := by
+      rw [Nat.cast_sub (by omega : 1 ≤ 2 * k)]
+      push_cast
+      ring
+    rw [← hsubCast]
+    exact_mod_cast hpowNat
+  have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
+  push_cast
+  field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
+  nlinarith
+
+@[simp] private lemma lemma55_centeredAbs_neg {N : Nat} [NeZero N]
+    (x : ZMod N) : centeredAbs (-x) = centeredAbs x := by
+  unfold centeredAbs
+  exact ZMod.natAbs_valMinAbs_neg x
+
+private lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
+    centeredAbs (i : ZMod N) ≤ i := by
+  rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
+  exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
+
+private lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
+    centeredAbs (i : ZMod N) ≤ i.natAbs := by
+  cases i with
+  | ofNat n =>
+      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n)
+  | negSucc n =>
+      have hcast : ((Int.negSucc n : Int) : ZMod N) =
+          -((n + 1 : Nat) : ZMod N) := by
+        push_cast
+        ring
+      rw [hcast, lemma55_centeredAbs_neg]
+      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n + 1)
+
+private lemma lemma55_natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
+    (r : ZMod N) : (centeredAbs r : ZMod N) = r ∨
+      (centeredAbs r : ZMod N) = -r := by
+  have hcast := ZMod.natCast_natAbs_valMinAbs r
+  unfold centeredAbs
+  split at hcast
+  · exact Or.inl hcast
+  · exact Or.inr hcast
+
+private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
+    (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (hq : 1 ≤ q)
+    (hqt : q ≤ t) (alpha : Real)
+    (hlower :
+      (t : Real) ^
+          (1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) / 16 ≤
+        ‖weylSum alpha k t‖)
+    (hupper :
+      ‖weylSum alpha k t‖ ≤
+        1000 * (t : Real) ^
+            (1 + (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) *
+          (((q : Real)⁻¹ + (t : Real)⁻¹ +
+            (q : Real) * (t : Real) ^ (-(k : Real))) ^
+              ((2 : Real) ^ (k - 1))⁻¹)) :
+    (q : Real) ≤ (t : Real) ^ ((k : Real)⁻¹) := by
+  let gamma : Real := ((k : Real) * (2 : Real) ^ (k + 1))⁻¹
+  let K : Real := (2 : Real) ^ (k - 1)
+  let X : Real := (t : Real) ^ (-(k : Real)⁻¹)
+  let B : Real := (q : Real)⁻¹ + (t : Real)⁻¹ +
+    (q : Real) * (t : Real) ^ (-(k : Real))
+  have htOneNat : 1 ≤ t := (show 1 ≤ q by exact hq).trans hqt
+  have htOne : (1 : Real) ≤ t := by exact_mod_cast htOneNat
+  have htPos : (0 : Real) < t := by positivity
+  have hqPos : (0 : Real) < q := by exact_mod_cast (show 0 < q by omega)
+  have hkReal : (0 : Real) < k := by positivity
+  have hKOne : (1 : Real) ≤ K := by
+    dsimp only [K]
+    exact one_le_pow₀ (by norm_num)
+  have hKPos : (0 : Real) < K := lt_of_lt_of_le zero_lt_one hKOne
+  have hKInvNonneg : (0 : Real) ≤ K⁻¹ := by positivity
+  have hBNonneg : 0 ≤ B := by dsimp only [B]; positivity
+  by_contra hqBound
+  have hqLarge : (t : Real) ^ ((k : Real)⁻¹) < q :=
+    lt_of_not_ge hqBound
+  have hrootPos : (0 : Real) < (t : Real) ^ ((k : Real)⁻¹) :=
+    Real.rpow_pos_of_pos htPos _
+  have hqInv : (q : Real)⁻¹ ≤ X := by
+    dsimp only [X]
+    rw [Real.rpow_neg htPos.le]
+    exact (inv_le_inv₀ hqPos hrootPos).2 hqLarge.le
+  have hkInvLeOne : (k : Real)⁻¹ ≤ 1 :=
+    (inv_le_one₀ hkReal).2 (by exact_mod_cast (show 1 ≤ k by omega))
+  have htInv : (t : Real)⁻¹ ≤ X := by
+    dsimp only [X]
+    calc
+      (t : Real)⁻¹ = (t : Real) ^ (-1 : Real) :=
+        (Real.rpow_neg_one _).symm
+      _ ≤ (t : Real) ^ (-(k : Real)⁻¹) :=
+        Real.rpow_le_rpow_of_exponent_le htOne (by linarith)
+  have hexponent : (1 : Real) - k ≤ -(k : Real)⁻¹ := by
+    rw [show -(k : Real)⁻¹ = (-1 : Real) / (k : Real) by
+      simp [div_eq_mul_inv]]
+    apply (le_div_iff₀ hkReal).2
+    have hkTwo : (2 : Real) ≤ k := by exact_mod_cast hk
+    nlinarith [sq_nonneg ((k : Real) - 1)]
+  have hqTerm :
+      (q : Real) * (t : Real) ^ (-(k : Real)) ≤ X := by
+    have hqtReal : (q : Real) ≤ t := by exact_mod_cast hqt
+    calc
+      (q : Real) * (t : Real) ^ (-(k : Real)) ≤
+          (t : Real) * (t : Real) ^ (-(k : Real)) := by
+        gcongr
+      _ = (t : Real) ^ (1 - (k : Real)) := by
+        calc
+          (t : Real) * (t : Real) ^ (-(k : Real)) =
+              (t : Real) ^ (1 : Real) *
+                (t : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
+          _ = (t : Real) ^ ((1 : Real) + -(k : Real)) := by
+            rw [Real.rpow_add htPos]
+          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1 <;> ring
+      _ ≤ X := by
+        dsimp only [X]
+        exact Real.rpow_le_rpow_of_exponent_le htOne hexponent
+  have hB : B ≤ 3 * X := by
+    dsimp only [B]
+    linarith
+  have hKInvLeOne : K⁻¹ ≤ 1 := (inv_le_one₀ hKPos).2 hKOne
+  have hthree : (3 : Real) ^ K⁻¹ ≤ 3 := by
+    calc
+      (3 : Real) ^ K⁻¹ ≤ (3 : Real) ^ (1 : Real) :=
+        Real.rpow_le_rpow_of_exponent_le (by norm_num) hKInvLeOne
+      _ = 3 := Real.rpow_one 3
+  have hBroot :
+      B ^ K⁻¹ ≤ 3 *
+        (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹) := by
+    calc
+      B ^ K⁻¹ ≤ (3 * X) ^ K⁻¹ :=
+        Real.rpow_le_rpow hBNonneg hB hKInvNonneg
+      _ = (3 : Real) ^ K⁻¹ * X ^ K⁻¹ := by
+        rw [Real.mul_rpow (by norm_num) (by positivity)]
+      _ ≤ 3 * X ^ K⁻¹ := by gcongr
+      _ = 3 * (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹) := by
+        dsimp only [X]
+        rw [← Real.rpow_mul htPos.le]
+  have hpow : (2 : Real) ^ (k + 1) = 4 * K := by
+    dsimp only [K]
+    rw [show k + 1 = (k - 1) + 2 by omega, pow_add]
+    norm_num
+    <;> ring
+  have hrootExponent :
+      (-(k : Real)⁻¹) * K⁻¹ = -4 * gamma := by
+    dsimp only [gamma]
+    rw [hpow]
+    field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
+    <;> ring
+  have hupper' :
+      ‖weylSum alpha k t‖ ≤
+        3000 * (t : Real) ^ (1 - 3 * gamma) := by
+    calc
+      ‖weylSum alpha k t‖ ≤
+          1000 * (t : Real) ^ (1 + gamma) * B ^ K⁻¹ := by
+        simpa only [gamma, K, B] using hupper
+      _ ≤ 1000 * (t : Real) ^ (1 + gamma) *
+          (3 * (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹)) := by
+        exact mul_le_mul_of_nonneg_left hBroot (by positivity)
+      _ = 3000 * (t : Real) ^ (1 - 3 * gamma) := by
+        rw [hrootExponent]
+        have hcombine :
+            (t : Real) ^ (1 + gamma) * (t : Real) ^ (-4 * gamma) =
+              (t : Real) ^ (1 - 3 * gamma) := by
+          rw [← Real.rpow_add htPos]
+          congr 1
+          ring
+        calc
+          1000 * (t : Real) ^ (1 + gamma) *
+              (3 * (t : Real) ^ (-4 * gamma)) =
+              3000 * ((t : Real) ^ (1 + gamma) *
+                (t : Real) ^ (-4 * gamma)) := by ring
+          _ = 3000 * (t : Real) ^ (1 - 3 * gamma) := by rw [hcombine]
+  have hcombined :
+      (t : Real) ^ (1 - gamma) / 16 ≤
+        3000 * (t : Real) ^ (1 - 3 * gamma) := by
+    have hlower' :
+        (t : Real) ^ (1 - gamma) / 16 ≤ ‖weylSum alpha k t‖ := by
+      simpa only [gamma] using hlower
+    exact hlower'.trans hupper'
+  have hfactor :
+      (t : Real) ^ (1 - gamma) =
+        (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) := by
+    rw [← Real.rpow_add htPos]
+    congr 1
+    ring
+  have hproduct :
+      (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) ≤
+        (t : Real) ^ (1 - 3 * gamma) * 48000 := by
+    calc
+      (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) =
+          (t : Real) ^ (1 - gamma) := hfactor.symm
+      _ ≤ (3000 * (t : Real) ^ (1 - 3 * gamma)) * 16 :=
+        (div_le_iff₀ (by norm_num : (0 : Real) < 16)).1 hcombined
+      _ = (t : Real) ^ (1 - 3 * gamma) * 48000 := by ring
+  have hgapUpper : (t : Real) ^ (2 * gamma) ≤ 48000 :=
+    le_of_mul_le_mul_left hproduct
+      (Real.rpow_pos_of_pos htPos (1 - 3 * gamma))
+  have hgapLower : (48000 : Real) < (t : Real) ^ (2 * gamma) := by
+    simpa only [gamma] using lemma55_threshold_weyl_gap hk ht
+  exact (not_le_of_gt hgapLower) hgapUpper
+
+/-- Lemma 5.5, with the collision-safe weighted Fourier argument supplying
+the large Weyl sum and the repaired explicit Weyl inequality supplying the
+rational-denominator bound. -/
+theorem lemma_5_5_holds : lemma_5_5 := by
+  unfold lemma_5_5
+  intro k t N _ hk ht htN a
+  by_contra hrecurrence
+  let gamma : Real := ((k : Real) * (2 : Real) ^ (k + 1))⁻¹
+  have hno : ∀ p : Nat, 1 ≤ p → p ≤ t →
+      (t : Real) ^ (-gamma) * N <
+        (centeredAbs (((p : ZMod N) ^ k) * a) : Real) := by
+    intro p hp hpt
+    apply lt_of_not_ge
+    intro hpClose
+    apply hrecurrence
+    exact ⟨p, hp, hpt, by simpa only [gamma] using hpClose⟩
+  obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
+    polynomial_weyl_witness a hk ht htN (by
+      simpa only [gamma] using hno)
+  let c : Int := (a * r).valMinAbs
+  let alpha : Real := -(c : Real) / (N : Real)
+  have htOne : 1 ≤ t :=
+    (show 1 ≤ weylThreshold k by
+      unfold weylThreshold
+      exact one_le_pow₀ (by norm_num : 1 ≤ (2 : Nat))).trans ht
+  obtain ⟨b, q, hq, hqt, hbq, happrox⟩ :=
+    lemma_5_4_holds alpha t htOne
+  have hqPos : (0 : Real) < q := by exact_mod_cast (show 0 < q by omega)
+  have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
+  have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hqInt : (0 : Int) < q := by exact_mod_cast (show 0 < q by omega)
+  have hgcd : Int.gcd b (q : Int) = 1 := by
+    rw [Int.gcd_eq_natAbs, Int.natAbs_natCast]
+    exact hbq.gcd_eq_one
+  have happroxSq :
+      |alpha - (b : Real) / (q : Real)| ≤ ((q : Real) ^ 2)⁻¹ := by
+    have hqtReal : (q : Real) ≤ t := by exact_mod_cast hqt
+    have hden : (q : Real) ^ 2 ≤ (q : Real) * t := by
+      rw [pow_two]
+      exact mul_le_mul_of_nonneg_left hqtReal hqPos.le
+    exact happrox.trans <|
+      (inv_le_inv₀ (mul_pos hqPos htPos) (sq_pos_of_pos hqPos)).2 hden
+  have hweyl :=
+    (lemma_5_3_holds k (by omega)).2 t b (q : Int) alpha ht hqInt hgcd
+      (by simpa using happroxSq)
+  have hrlarge' :
+      (t : Real) ^ (1 - gamma) / 16 ≤ ‖weylSum alpha k t‖ := by
+    simpa only [gamma, alpha, c] using hrlarge
+  have hqBound :
+      (q : Real) ≤ (t : Real) ^ ((k : Real)⁻¹) := by
+    apply lemma55_dirichlet_denominator_le hk ht hq hqt alpha hrlarge'
+    simpa using hweyl
+  let s : Nat := centeredAbs r
+  let p : Nat := s * q
+  have hsPos : 0 < s := by
+    apply Nat.pos_of_ne_zero
+    intro hsZero
+    have hvalMin : r.valMinAbs = 0 := by
+      apply Int.natAbs_eq_zero.mp
+      simpa only [s, centeredAbs] using hsZero
+    exact hr0 ((ZMod.valMinAbs_eq_zero r).mp hvalMin)
+  have hpOne : 1 ≤ p := by
+    dsimp only [p]
+    exact Nat.one_le_iff_ne_zero.mpr
+      (mul_ne_zero (Nat.ne_of_gt hsPos) (Nat.ne_of_gt (by omega)))
+  have hsBound :
+      (s : Real) ≤ 16 * (t : Real) ^ (2 * gamma) := by
+    simpa only [s, gamma] using hrsize
+  have hpBound :
+      (p : Real) ≤
+        16 * (t : Real) ^ (2 * gamma + (k : Real)⁻¹) := by
+    calc
+      (p : Real) = (s : Real) * q := by dsimp only [p]; push_cast; rfl
+      _ ≤ (16 * (t : Real) ^ (2 * gamma)) *
+          (t : Real) ^ ((k : Real)⁻¹) :=
+        mul_le_mul hsBound hqBound (by positivity) (by positivity)
+      _ = 16 * (t : Real) ^ (2 * gamma + (k : Real)⁻¹) := by
+        rw [Real.rpow_add htPos]
+        ring
+  have hconst :
+      (16 : Real) ^ (k - 1) ≤
+        (t : Real) ^ ((4 * (k : Real))⁻¹) :=
+    lemma55_threshold_constant hk ht
+  have hbudget :
+      (4 * (k : Real))⁻¹ +
+          (2 * gamma + (k : Real)⁻¹) * (k - 1) ≤ 1 - gamma := by
+    simpa only [gamma] using lemma55_exponent_budget hk
+  have hkSubCast : ((k - 1 : Nat) : Real) = (k : Real) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ k)]
+    norm_num
+  have htpow :
+      (((t : Real) ^ (2 * gamma + (k : Real)⁻¹)) ^ (k - 1)) =
+        (t : Real) ^
+          ((2 * gamma + (k : Real)⁻¹) * ((k : Real) - 1)) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul htPos.le, hkSubCast]
+  have hpPow :
+      (p : Real) ^ (k - 1) ≤ (t : Real) ^ (1 - gamma) := by
+    calc
+      (p : Real) ^ (k - 1) ≤
+          (16 * (t : Real) ^
+            (2 * gamma + (k : Real)⁻¹)) ^ (k - 1) :=
+        pow_le_pow_left₀ (by positivity) hpBound (k - 1)
+      _ = (16 : Real) ^ (k - 1) *
+          (t : Real) ^
+            ((2 * gamma + (k : Real)⁻¹) * ((k : Real) - 1)) := by
+        rw [mul_pow, htpow]
+      _ ≤ (t : Real) ^ ((4 * (k : Real))⁻¹) *
+          (t : Real) ^
+            ((2 * gamma + (k : Real)⁻¹) * ((k : Real) - 1)) := by
+        exact mul_le_mul_of_nonneg_right hconst (by positivity)
+      _ = (t : Real) ^
+          ((4 * (k : Real))⁻¹ +
+            (2 * gamma + (k : Real)⁻¹) * ((k : Real) - 1)) := by
+        rw [Real.rpow_add htPos]
+      _ ≤ (t : Real) ^ (1 - gamma) :=
+        Real.rpow_le_rpow_of_exponent_le
+          (by exact_mod_cast htOne : (1 : Real) ≤ t) hbudget
+  have hpLeT : p ≤ t := by
+    have hpLePow : p ≤ p ^ (k - 1) := by
+      simpa only [pow_one] using
+        pow_le_pow_right₀ hpOne (by omega : 1 ≤ k - 1)
+    have hpLePowReal : (p : Real) ≤ (p : Real) ^ (k - 1) := by
+      exact_mod_cast hpLePow
+    have hgammaNonneg : 0 ≤ gamma := by dsimp only [gamma]; positivity
+    have hpowLeT : (t : Real) ^ (1 - gamma) ≤ t := by
+      calc
+        (t : Real) ^ (1 - gamma) ≤ (t : Real) ^ (1 : Real) :=
+          Real.rpow_le_rpow_of_exponent_le
+            (by exact_mod_cast htOne : (1 : Real) ≤ t) (by linarith)
+        _ = t := Real.rpow_one _
+    exact_mod_cast hpLePowReal.trans (hpPow.trans hpowLeT)
+  let e₀ : Int := -c * (q : Int) - b * (N : Int)
+  let E : Int := e₀ * (p : Int) ^ (k - 1)
+  have hfraction :
+      alpha - (b : Real) / (q : Real) =
+        (e₀ : Real) / ((N : Real) * (q : Real)) := by
+    dsimp only [alpha, e₀]
+    push_cast
+    field_simp [ne_of_gt hNPos, ne_of_gt hqPos]
+    <;> ring
+  have happrox' :
+      |(e₀ : Real)| / ((N : Real) * (q : Real)) ≤
+        ((q : Real) * t)⁻¹ := by
+    have hdenAbs : |(N : Real) * (q : Real)| =
+        (N : Real) * (q : Real) :=
+      abs_of_pos (mul_pos hNPos hqPos)
+    calc
+      |(e₀ : Real)| / ((N : Real) * (q : Real)) =
+          |(e₀ : Real)| / |(N : Real) * (q : Real)| := by rw [hdenAbs]
+      _ = |(e₀ : Real) / ((N : Real) * (q : Real))| :=
+        (abs_div _ _).symm
+      _ = |alpha - (b : Real) / (q : Real)| := by rw [hfraction]
+      _ ≤ ((q : Real) * t)⁻¹ := happrox
+  have he₀Bound : |(e₀ : Real)| ≤ (N : Real) / t := by
+    calc
+      |(e₀ : Real)| ≤
+          ((q : Real) * t)⁻¹ * ((N : Real) * (q : Real)) :=
+        (div_le_iff₀ (mul_pos hNPos hqPos)).1 happrox'
+      _ = (N : Real) / t := by
+        field_simp [ne_of_gt hqPos, ne_of_gt htPos]
+        <;> ring
+  have hEabsCast : (E.natAbs : Real) = |(E : Real)| := by
+    have hInt : (E.natAbs : Int) = |E| := by
+      rw [Int.abs_eq_natAbs]
+    calc
+      (E.natAbs : Real) = ((E.natAbs : Int) : Real) := by
+        exact (Int.cast_natCast E.natAbs).symm
+      _ = ((|E| : Int) : Real) :=
+        congrArg (fun z : Int => (z : Real)) hInt
+      _ = |(E : Real)| := by rw [Int.cast_abs]
+  have hEBound :
+      (E.natAbs : Real) ≤
+        ((N : Real) / t) * (p : Real) ^ (k - 1) := by
+    calc
+      (E.natAbs : Real) = |(e₀ : Real)| * (p : Real) ^ (k - 1) := by
+        rw [hEabsCast]
+        dsimp only [E]
+        push_cast
+        rw [abs_mul, abs_pow, abs_of_nonneg (by positivity : (0 : Real) ≤ p)]
+      _ ≤ ((N : Real) / t) * (p : Real) ^ (k - 1) := by
+        exact mul_le_mul_of_nonneg_right he₀Bound (by positivity)
+  have hcCast : (c : ZMod N) = a * r := by
+    dsimp only [c]
+    exact ZMod.coe_valMinAbs _
+  have he₀Cast : (e₀ : ZMod N) =
+      -(c : ZMod N) * (q : ZMod N) := by
+    dsimp only [e₀]
+    push_cast
+    simp
+  have hECast : (E : ZMod N) =
+      (-(c : ZMod N) * (q : ZMod N)) *
+        (p : ZMod N) ^ (k - 1) := by
+    dsimp only [E]
+    push_cast
+    rw [he₀Cast]
+  have hpCast : (p : ZMod N) =
+      (s : ZMod N) * (q : ZMod N) := by
+    dsimp only [p]
+    push_cast
+    rfl
+  have hkSplit : k = (k - 1) + 1 := by omega
+  have hpPowSplit : (p : ZMod N) ^ k =
+      (p : ZMod N) ^ (k - 1) * (p : ZMod N) := by
+    calc
+      (p : ZMod N) ^ k = (p : ZMod N) ^ ((k - 1) + 1) :=
+        congrArg (fun n : Nat => (p : ZMod N) ^ n) hkSplit
+      _ = (p : ZMod N) ^ (k - 1) * (p : ZMod N) := pow_succ _ _
+  have htarget :
+      ((p : ZMod N) ^ k) * a = (E : ZMod N) ∨
+        ((p : ZMod N) ^ k) * a = -(E : ZMod N) := by
+    rcases lemma55_natCast_centeredAbs_eq_or_neg r with hsCast | hsCast
+    · right
+      calc
+        ((p : ZMod N) ^ k) * a =
+            (((p : ZMod N) ^ (k - 1)) * (p : ZMod N)) * a := by
+          rw [hpPowSplit]
+        _ = -(E : ZMod N) := by
+          rw [hECast, hpCast, hsCast, hcCast]
+          ring
+    · left
+      calc
+        ((p : ZMod N) ^ k) * a =
+            (((p : ZMod N) ^ (k - 1)) * (p : ZMod N)) * a := by
+          rw [hpPowSplit]
+        _ = (E : ZMod N) := by
+          rw [hECast, hpCast, hsCast, hcCast]
+          ring
+  have hcenterNat :
+      centeredAbs (((p : ZMod N) ^ k) * a) ≤ E.natAbs := by
+    rcases htarget with htarget | htarget
+    · rw [htarget]
+      exact lemma55_centeredAbs_intCast_le E
+    · rw [htarget, lemma55_centeredAbs_neg]
+      exact lemma55_centeredAbs_intCast_le E
+  have hcenterReal :
+      (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤ E.natAbs := by
+    exact_mod_cast hcenterNat
+  have hfinal :
+      (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤
+        (t : Real) ^ (-gamma) * N := by
+    calc
+      (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤ E.natAbs :=
+        hcenterReal
+      _ ≤ ((N : Real) / t) * (p : Real) ^ (k - 1) := hEBound
+      _ ≤ ((N : Real) / t) * (t : Real) ^ (1 - gamma) := by
+        exact mul_le_mul_of_nonneg_left hpPow (by positivity)
+      _ = (t : Real) ^ (-gamma) * N := by
+        rw [show 1 - gamma = -gamma + 1 by ring,
+          Real.rpow_add htPos, Real.rpow_one]
+        field_simp [ne_of_gt htPos]
+        <;> ring
+  exact (not_lt_of_ge hfinal) (hno p hpOne hpLeT)
 
 /-!
 The arithmetic part of the counterexample is developed for an abstract odd
