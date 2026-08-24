@@ -269,5 +269,73 @@ theorem integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO
         _ ≤ (8 + 8 * Clinear + 48 * Ccubic) * (b i)⁻¹ := by
           gcongr
 
+/-- If a saddle kernel and the Gaussian-plus-odd reference each have an
+`O(1/b)` complementary tail, then so does their difference. -/
+theorem integral_norm_sub_gaussian_add_oddCorrection_standardRadius_isBigO
+    {α : Type*} (l : Filter α) (b a c : α → ℝ) (K : α → ℝ → ℂ)
+    (Clinear Ccubic : ℝ) (hClinear : 0 ≤ Clinear) (hCcubic : 0 ≤ Ccubic)
+    (hbinfty : Tendsto b l atTop)
+    (ha : ∀ᶠ i in l, b i * (a i) ^ 2 ≤ Clinear ^ 2)
+    (hc : ∀ᶠ i in l, b i * (c i) ^ 2 ≤ Ccubic ^ 2)
+    (hKint : ∀ᶠ i in l, Integrable (K i))
+    (hKtail :
+      (fun i => ∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
+          (fabiusSaddleCentralRadius (b i)))ᶜ, ‖K i v‖) =O[l]
+        (fun i => (b i)⁻¹)) :
+    (fun i => ∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
+        (fabiusSaddleCentralRadius (b i)))ᶜ,
+      ‖K i v - (QuantitativeSaddle.standardGaussian v +
+        oddCorrection (a i) (c i) v)‖) =O[l]
+      (fun i => (b i)⁻¹) := by
+  let reference : α → ℝ → ℂ := fun i v =>
+    QuantitativeSaddle.standardGaussian v + oddCorrection (a i) (c i) v
+  let central : α → Set ℝ := fun i =>
+    Icc (-fabiusSaddleCentralRadius (b i))
+      (fabiusSaddleCentralRadius (b i))
+  let Ktail : α → ℝ := fun i => ∫ v in (central i)ᶜ, ‖K i v‖
+  let Rtail : α → ℝ := fun i => ∫ v in (central i)ᶜ, ‖reference i v‖
+  let Dtail : α → ℝ := fun i => ∫ v in (central i)ᶜ,
+    ‖K i v - reference i v‖
+  have hRint : ∀ i, Integrable (reference i) := fun i =>
+    QuantitativeSaddle.integrable_standardGaussian.add
+      (integrable_oddCorrection (a i) (c i))
+  have hRtail : Rtail =O[l] (fun i => (b i)⁻¹) := by
+    simpa only [Rtail, reference, central] using
+      integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO
+        l b a c Clinear Ccubic hClinear hCcubic hbinfty ha hc
+  have hKtail' : Ktail =O[l] (fun i => (b i)⁻¹) := by
+    simpa only [Ktail, central] using hKtail
+  have hdom : Dtail =O[l] (fun i => Ktail i + Rtail i) := by
+    apply IsBigO.of_bound 1
+    filter_upwards [hKint] with i hKi
+    have hRi := hRint i
+    have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
+      (hKi.sub hRi).norm
+    have hsumInt : Integrable (fun v => ‖K i v‖ + ‖reference i v‖) :=
+      hKi.norm.add hRi.norm
+    have hmono : Dtail i ≤ Ktail i + Rtail i := by
+      dsimp only [Dtail, Ktail, Rtail]
+      calc
+        (∫ v in (central i)ᶜ, ‖K i v - reference i v‖) ≤
+            ∫ v in (central i)ᶜ, (‖K i v‖ + ‖reference i v‖) := by
+          apply setIntegral_mono_on hdiffInt.integrableOn hsumInt.integrableOn
+            measurableSet_Icc.compl
+          intro v _
+          exact norm_sub_le _ _
+        _ = (∫ v in (central i)ᶜ, ‖K i v‖) +
+            ∫ v in (central i)ᶜ, ‖reference i v‖ := by
+          simpa only [Pi.add_apply] using
+            (integral_add hKi.norm.integrableOn hRi.norm.integrableOn)
+    have hD0 : 0 ≤ Dtail i := integral_nonneg fun _ => norm_nonneg _
+    have hsum0 : 0 ≤ Ktail i + Rtail i := add_nonneg
+      (integral_nonneg fun _ => norm_nonneg _)
+      (integral_nonneg fun _ => norm_nonneg _)
+    rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hD0,
+      abs_of_nonneg hsum0, one_mul]
+    exact hmono
+  have hsum : (fun i => Ktail i + Rtail i) =O[l] (fun i => (b i)⁻¹) :=
+    hKtail'.add hRtail
+  simpa only [Dtail, reference, central] using hdom.trans hsum
+
 end SaddleCentral
 end Fabius
