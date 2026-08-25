@@ -1,4 +1,6 @@
 import FabiusFunction.GlobalDyadic
+import FabiusFunction.GlobalBounds
+import FabiusFunction.Regularity
 import FabiusFunction.FabiusUniformSpline
 import FabiusFunction.WeakConvergence
 import Mathlib.Analysis.Calculus.MeanValue
@@ -23,27 +25,6 @@ set_option autoImplicit false
 
 /-! ## A global effective modulus -/
 
-/-- The signed global extension has absolute value at most one. -/
-theorem abs_extendedFabius_le_one
-    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
-    |extendedFabius F x| ≤ 1 := by
-  by_cases hx : x ≤ 0
-  · rw [extendedFabius_eq_zero_of_nonpos F hF hx]
-    norm_num
-  · have hx0 : 0 ≤ x := (lt_of_not_ge hx).le
-    let block : ℕ := ⌊x / 2⌋₊
-    have hfloor : (block : ℝ) ≤ x / 2 := by
-      dsimp [block]
-      exact Nat.floor_le (div_nonneg hx0 (by norm_num))
-    have hfloor' : x / 2 < (block : ℝ) + 1 := by
-      dsimp [block]
-      exact Nat.lt_floor_add_one (x / 2)
-    have hsingle := extendedFabius_eq_single_translate F hF block
-      (x := x) (by linarith) (by linarith)
-    rw [hsingle, abs_mul, abs_pow]
-    norm_num
-    exact rvachevUp_le_one F _
-
 /-- The signed global extension is globally `2`-Lipschitz. -/
 theorem extendedFabius_lipschitzWith_two
     (F : BoundedFabius) (hF : IsFabius F) :
@@ -56,47 +37,16 @@ theorem extendedFabius_lipschitzWith_two
     rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2)]
     nlinarith [abs_extendedFabius_le_one F hF (2 * x)]
 
-/-- The bounded/CDF Fabius function is globally `2`-Lipschitz. -/
+
+/-- The bounded/CDF Fabius function is globally `2`-Lipschitz.
+
+Retained under this name for source compatibility; the statement, together
+with the proof that `2` is the *least* Lipschitz constant, lives in
+`FabiusFunction.Regularity`. -/
 theorem fabiusReal_lipschitzWith_two
     (F : BoundedFabius) (hF : IsFabius F) :
-    LipschitzWith 2 (fabiusReal F) := by
-  apply lipschitzWith_of_nnnorm_deriv_le
-  · exact hF.contDiff.differentiable (by simp)
-  · intro x
-    have hglobal : ‖deriv (extendedFabius F) x‖₊ ≤ (2 : NNReal) := by
-      rw [(extendedFabius_hasDerivAt F hF x).deriv]
-      change |2 * extendedFabius F (2 * x)| ≤ 2
-      rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2)]
-      nlinarith [abs_extendedFabius_le_one F hF (2 * x)]
-    rcases lt_trichotomy x 0 with hx0 | rfl | hx0
-    · have heq : fabiusReal F =ᶠ[nhds x] fun _ => 0 := by
-        filter_upwards [Iio_mem_nhds hx0] with y hy
-        exact hF.zero_of_nonpos y hy.le
-      rw [heq.deriv_eq]
-      simp
-    · have hmin : IsMinOn (fabiusReal F) Set.univ 0 := by
-        intro y _hy
-        rw [hF.zero_of_nonpos 0 le_rfl]
-        exact fabiusReal_nonneg F y
-      rw [(hmin.isLocalMin Filter.univ_mem).deriv_eq_zero]
-      simp
-    · rcases lt_trichotomy x 1 with hx1 | rfl | hx1
-      · have heq : fabiusReal F =ᶠ[nhds x] extendedFabius F := by
-          filter_upwards [Ioo_mem_nhds hx0 hx1] with y hy
-          exact (extendedFabius_eq_fabiusReal F hF ⟨hy.1.le, hy.2.le⟩).symm
-        rw [heq.deriv_eq]
-        exact hglobal
-      · have hmax : IsMaxOn (fabiusReal F) Set.univ 1 := by
-          intro y _hy
-          rw [hF.one_of_one_le 1 le_rfl]
-          exact fabiusReal_le_one F y
-        rw [(hmax.isLocalMax Filter.univ_mem).deriv_eq_zero]
-        simp
-      · have heq : fabiusReal F =ᶠ[nhds x] fun _ => 1 := by
-          filter_upwards [Ioi_mem_nhds hx1] with y hy
-          exact hF.one_of_one_le y hy.le
-        rw [heq.deriv_eq]
-        simp
+    LipschitzWith 2 (fabiusReal F) :=
+  lipschitzWith_fabiusReal F hF
 
 /-- The centered order-`p` uniform spline approximates the bounded Fabius
 function with the explicit error `2⁻ᵖ`. -/

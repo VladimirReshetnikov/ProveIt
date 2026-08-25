@@ -33,12 +33,6 @@ namespace Fabius
 
 noncomputable section
 
-private lemma fabius_half_value (F : BoundedFabius) (hF : IsFabius F) :
-    fabiusReal F (1 / 2) = 1 / 2 := by
-  have h := hF.symmetry (1 / 2) (by constructor <;> norm_num)
-  norm_num at h ⊢
-  linarith
-
 private lemma rvachevUp_ge_half_on_zero_half
     (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
     (ht : t ∈ Icc (0 : ℝ) (1 / 2)) :
@@ -53,12 +47,7 @@ private lemma rvachevUp_ge_half_on_zero_half
     rw [rvachevUp, if_neg (not_le.mpr htpos)]
     have hmono := fabius_monotone F hF
       (show (1 / 2 : ℝ) ≤ 1 - t by linarith [ht.2])
-    rwa [fabius_half_value F hF] at hmono
-
-private lemma pow_mul_rvachev_continuous
-    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
-    Continuous (fun t : ℝ => t ^ m * rvachevUp F t) :=
-  (continuous_id.pow m).mul (rvachev_contDiff F hF).continuous
+    rwa [fabius_half F hF] at hmono
 
 /-- The half moments are at most one. -/
 theorem halfMoment_real_le_one (F : BoundedFabius) (hF : IsFabius F)

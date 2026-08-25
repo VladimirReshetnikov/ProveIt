@@ -240,49 +240,6 @@ theorem halfMoment_bernoulli_recurrence (n : ℕ) (hn : 1 ≤ n) :
   field_simp [hpow]
   linear_combination 4 * hrel
 
-private noncomputable def momentPS22 : PowerSeries ℚ :=
-  PowerSeries.mk fun n => moment n / ((2 * n).factorial : ℚ)
-
-private noncomputable def sinhDivPS22 : PowerSeries ℚ :=
-  PowerSeries.mk fun n => 1 / ((2 * n + 1).factorial : ℚ)
-
-private lemma momentPS22_functional :
-    PowerSeries.rescale 4 momentPS22 = momentPS22 * sinhDivPS22 := by
-  ext n
-  rw [PowerSeries.coeff_rescale, PowerSeries.coeff_mul]
-  simp only [momentPS22, sinhDivPS22, PowerSeries.coeff_mk,
-    Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  have hleft :
-      (((2 * n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (2 * n) * moment n) /
-          ((2 * n + 1).factorial : ℚ) =
-        4 ^ n * (moment n / ((2 * n).factorial : ℚ)) := by
-    rw [show 2 * n + 1 = (2 * n).succ by omega, Nat.factorial_succ]
-    norm_num [pow_mul]
-    field_simp
-  have hterm (x : ℕ) (hx : x ∈ range n.succ) :
-      ((Nat.choose (2 * n + 1) (2 * x) : ℚ) * moment x) /
-          ((2 * n + 1).factorial : ℚ) =
-        moment x / ((2 * x).factorial : ℚ) *
-          (1 / ((2 * (n - x) + 1).factorial : ℚ)) := by
-    have hxle : 2 * x ≤ 2 * n + 1 := by
-      have : x ≤ n := Nat.le_of_lt_succ (mem_range.1 hx)
-      omega
-    rw [Nat.cast_choose ℚ hxle]
-    have hsub : 2 * n + 1 - 2 * x = 2 * (n - x) + 1 := by
-      have : x ≤ n := Nat.le_of_lt_succ (mem_range.1 hx)
-      omega
-    rw [hsub]
-    field_simp
-  have h := congrArg
-    (fun q : ℚ => q / ((2 * n + 1).factorial : ℚ))
-    (moment_original_recurrence n)
-  rw [hleft] at h
-  rw [Finset.sum_div] at h
-  rw [h]
-  apply Finset.sum_congr rfl
-  intro x hx
-  exact hterm x hx
-
 private noncomputable def bernoulliCoshFactorPS22 : PowerSeries ℚ :=
   PowerSeries.mk fun n =>
     ((2 : ℚ) - 4 ^ n) * bernoulli (2 * n) / ((2 * n).factorial : ℚ)
@@ -292,7 +249,7 @@ private noncomputable def fullBernoulliCoshFactorPS22 : PowerSeries ℚ :=
     PowerSeries.rescale 2 (bernoulliPowerSeries ℚ)
 
 private noncomputable def fullSinhDivPS22 : PowerSeries ℚ :=
-  PowerSeries.expand 2 (by omega) sinhDivPS22
+  PowerSeries.expand 2 (by omega) sinhDivPS
 
 private lemma expand_two_injective {P Q : PowerSeries ℚ}
     (h : PowerSeries.expand 2 (by omega) P =
@@ -331,7 +288,7 @@ private lemma two_X_mul_fullSinhDivPS22 :
     norm_num [PowerSeries.coeff_exp]
   · rw [PowerSeries.coeff_C_mul, PowerSeries.coeff_succ_X_mul]
     simp only [fullSinhDivPS22,
-      PowerSeries.coeff_expand, sinhDivPS22, PowerSeries.coeff_mk,
+      PowerSeries.coeff_expand, sinhDivPS, PowerSeries.coeff_mk,
       map_sub, PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
     rcases m.even_or_odd with ⟨k, rfl⟩ | ⟨k, rfl⟩
     · rw [← two_mul k]
@@ -411,22 +368,22 @@ private lemma fullBernoulliCoshFactorPS22_mul_fullSinhDivPS22 :
     _ = 1 * (PowerSeries.rescale 2 (PowerSeries.exp ℚ) - 1) := by ring
 
 private lemma bernoulliCoshFactorPS22_mul_sinhDivPS22 :
-    bernoulliCoshFactorPS22 * sinhDivPS22 = 1 := by
+    bernoulliCoshFactorPS22 * sinhDivPS = 1 := by
   apply expand_two_injective
   rw [map_mul, expand_bernoulliCoshFactorPS22]
   simpa [fullSinhDivPS22] using
     fullBernoulliCoshFactorPS22_mul_fullSinhDivPS22
 
 private lemma momentPS22_bernoulli_functional :
-    momentPS22 =
-      bernoulliCoshFactorPS22 * PowerSeries.rescale 4 momentPS22 := by
+    momentPS =
+      bernoulliCoshFactorPS22 * PowerSeries.rescale 4 momentPS := by
   calc
-    momentPS22 = momentPS22 * 1 := by ring
-    _ = momentPS22 * (bernoulliCoshFactorPS22 * sinhDivPS22) := by
+    momentPS = momentPS * 1 := by ring
+    _ = momentPS * (bernoulliCoshFactorPS22 * sinhDivPS) := by
       rw [bernoulliCoshFactorPS22_mul_sinhDivPS22]
-    _ = bernoulliCoshFactorPS22 * (momentPS22 * sinhDivPS22) := by ring
-    _ = bernoulliCoshFactorPS22 * PowerSeries.rescale 4 momentPS22 := by
-      rw [momentPS22_functional]
+    _ = bernoulliCoshFactorPS22 * (momentPS * sinhDivPS) := by ring
+    _ = bernoulliCoshFactorPS22 * PowerSeries.rescale 4 momentPS := by
+      rw [momentPS_functional]
 
 /-- The coefficient identity obtained by inverting the hyperbolic-sine factor
 in the moment generating-series equation. -/
@@ -439,7 +396,7 @@ theorem moment_bernoulli_convolution (n : ℕ) :
   have h := congrArg (PowerSeries.coeff n) momentPS22_bernoulli_functional
   simp only [PowerSeries.coeff_mul,
     Nat.sum_antidiagonal_eq_sum_range_succ_mk, bernoulliCoshFactorPS22,
-    PowerSeries.coeff_mk, PowerSeries.coeff_rescale, momentPS22] at h
+    PowerSeries.coeff_mk, PowerSeries.coeff_rescale, momentPS] at h
   calc
     moment n = ((2 * n).factorial : ℚ) *
         (moment n / ((2 * n).factorial : ℚ)) := by field_simp

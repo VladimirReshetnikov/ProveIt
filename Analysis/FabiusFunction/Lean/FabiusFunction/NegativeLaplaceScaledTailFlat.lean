@@ -18,14 +18,6 @@ open Filter Set Asymptotics
 
 namespace Fabius
 
-private lemma nat_succ_le_two_pow (m : ℕ) :
-    m + 1 ≤ 2 ^ m := by
-  induction m with
-  | zero => norm_num
-  | succ m ih =>
-      rw [pow_succ]
-      omega
-
 private lemma pow_mul_exp_neg_le_exp_half
     (k : ℕ) {y : ℝ} (hy : 0 ≤ y) :
     y ^ k * Real.exp (-y) ≤
@@ -194,7 +186,9 @@ theorem exists_norm_scaled_negativeLaplaceForwardTailDeriv_le_exp
           _ ≤ C * D * r ^ (m + 1) := by
             have hmA : ((m + 1 : ℕ) : ℝ) ≤ A := by
               dsimp [A]
-              exact_mod_cast nat_succ_le_two_pow m
+              have hnat : m + 1 ≤ 2 ^ m :=
+                Nat.succ_le_of_lt Nat.lt_two_pow_self
+              exact_mod_cast hnat
             have hexp : Real.exp (-((s * A) / 2)) ≤
                 Real.exp (-(s / 2)) ^ (m + 1) := by
               rw [← Real.exp_nat_mul]

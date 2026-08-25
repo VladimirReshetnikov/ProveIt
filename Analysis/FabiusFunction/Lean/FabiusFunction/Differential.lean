@@ -25,43 +25,22 @@ theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
 
 /-- Folding preserves the pointwise range `[0,1]` of a bounded candidate. -/
 theorem rvachevUp_mem_unitInterval (F : BoundedFabius) (x : ℝ) :
-    rvachevUp F x ∈ Icc (0 : ℝ) 1 := by
-  unfold rvachevUp
-  split_ifs <;> exact ⟨fabiusReal_nonneg F _, fabiusReal_le_one F _⟩
+    rvachevUp F x ∈ Icc (0 : ℝ) 1 :=
+  ⟨rvachevUp_nonneg F x, rvachevUp_le_one F x⟩
 
-/-- Rvachev's folded function is nonnegative, without any Fabius equations. -/
-theorem rvachevUp_nonneg (F : BoundedFabius) (x : ℝ) :
-    0 ≤ rvachevUp F x :=
-  (rvachevUp_mem_unitInterval F x).1
+/-- Rvachev's function vanishes at the right endpoint of its support. -/
+theorem rvachevUp_one (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevUp F 1 = 0 :=
+  rvachevUp_eq_zero_of_one_le F hF le_rfl
 
-/-- Rvachev's folded function is at most one, without any Fabius equations. -/
-theorem rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
-    rvachevUp F x ≤ 1 :=
-  (rvachevUp_mem_unitInterval F x).2
+/-- Rvachev's function vanishes at the left endpoint of its support. -/
+theorem rvachevUp_neg_one (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevUp F (-1) = 0 :=
+  rvachevUp_eq_zero_of_le_neg_one F hF le_rfl
 
-/-- Absolute values may be removed from the nonnegative folded function. -/
-@[simp]
-theorem abs_rvachevUp (F : BoundedFabius) (x : ℝ) :
-    |rvachevUp F x| = rvachevUp F x :=
-  abs_of_nonneg (rvachevUp_nonneg F x)
-
-/-- The folded function is bounded by one in absolute value. -/
-theorem abs_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
-    |rvachevUp F x| ≤ 1 := by
-  rw [abs_rvachevUp]
-  exact rvachevUp_le_one F x
-
-/-- The folded function is bounded by one in the real norm. -/
-theorem norm_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
-    ‖rvachevUp F x‖ ≤ 1 := by
-  simpa [Real.norm_eq_abs] using abs_rvachevUp_le_one F x
-
-/-- The complex coercion of the folded function is bounded by one in norm. -/
-theorem norm_coe_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
-    ‖(rvachevUp F x : ℂ)‖ ≤ 1 := by
-  simpa [Complex.norm_real, Real.norm_eq_abs] using abs_rvachevUp_le_one F x
-
-private lemma fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
+/-- The bounded Fabius function has a vanishing derivative at the right
+endpoint of the unit interval, where it attains its global maximum. -/
+theorem fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
     HasDerivAt (fabiusReal F) (0 : ℝ) (1 : ℝ) := by
   have hmax : IsMaxOn (fabiusReal F) Set.univ 1 := by
     intro y _hy
@@ -72,8 +51,8 @@ private lemma fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
   have hd := (hF.contDiff.differentiable (by simp) 1).hasDerivAt
   rwa [hderiv] at hd
 
-private lemma fabius_hasDerivAt_high (F : BoundedFabius) (hF : IsFabius F)
-    {t : ℝ} (htlow : 1 / 2 < t) (hthigh : t < 1) :
+private lemma fabius_hasDerivAt_secondHalf_aux (F : BoundedFabius)
+    (hF : IsFabius F) {t : ℝ} (htlow : 1 / 2 < t) (hthigh : t < 1) :
     HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
   have harg : 1 - t ∈ Icc (0 : ℝ) (1 / 2) := by
     constructor <;> linarith
@@ -92,73 +71,87 @@ private lemma fabius_hasDerivAt_high (F : BoundedFabius) (hF : IsFabius F)
   have hs := hF.symmetry_all (1 - y)
   convert hs using 1 <;> ring
 
+/-- To the left of the unit interval the bounded Fabius function is locally
+constant, hence has vanishing derivative. -/
+theorem fabius_hasDerivAt_of_neg (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x < 0) : HasDerivAt (fabiusReal F) 0 x := by
+  apply (hasDerivAt_const x (0 : ℝ)).congr_of_eventuallyEq
+  filter_upwards [Iio_mem_nhds hx] with y hy
+  exact hF.zero_of_nonpos y (le_of_lt hy)
+
+/-- To the right of the unit interval the bounded Fabius function is locally
+constant, hence has vanishing derivative. -/
+theorem fabius_hasDerivAt_of_one_lt (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : 1 < x) : HasDerivAt (fabiusReal F) 0 x := by
+  apply (hasDerivAt_const x (1 : ℝ)).congr_of_eventuallyEq
+  filter_upwards [Ioi_mem_nhds hx] with y hy
+  exact hF.one_of_one_le y (le_of_lt hy)
+
+/--
+The bounded Fabius function satisfies one differential equation on all of `ℝ`:
+`F'(x) = 2 up(2x - 1)`.
+
+On `[0, 1/2]` this is the defining equation `F'(x) = 2 F(2x)`, on `[1/2, 1]` it
+is its reflection `F'(x) = 2 F(2 - 2x)`, and outside `[0, 1]` both sides
+vanish.  Folding the three cases into a single identity removes the case
+analysis from every later derivative computation.
+-/
+theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    HasDerivAt (fabiusReal F) (2 * rvachevUp F (2 * x - 1)) x := by
+  by_cases hx0 : 0 ≤ x
+  · by_cases hxhalf : x ≤ 1 / 2
+    · have h := hF.hasDerivAt x ⟨hx0, hxhalf⟩
+      rwa [rvachevUp_of_nonpos F (show 2 * x - 1 ≤ 0 by linarith),
+        show 2 * x - 1 + 1 = 2 * x by ring]
+    · have hhalf : 1 / 2 < x := lt_of_not_ge hxhalf
+      rcases lt_trichotomy x 1 with hx1 | hx1 | hx1
+      · have h := fabius_hasDerivAt_secondHalf_aux F hF hhalf hx1
+        rwa [rvachevUp_of_pos F (show (0 : ℝ) < 2 * x - 1 by linarith),
+          show 1 - (2 * x - 1) = 2 - 2 * x by ring]
+      · subst hx1
+        rw [show 2 * (1 : ℝ) - 1 = 1 by norm_num, rvachevUp_one F hF, mul_zero]
+        exact fabius_hasDerivAt_one F hF
+      · rw [rvachevUp_eq_zero_of_one_le F hF (by linarith), mul_zero]
+        exact fabius_hasDerivAt_of_one_lt F hF hx1
+  · have hx : x < 0 := lt_of_not_ge hx0
+    rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith), mul_zero]
+    exact fabius_hasDerivAt_of_neg F hF hx
+
+/--
+Reflected form of the defining differential equation on the whole second half
+of the unit interval, endpoints included.
+-/
+theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (htlow : 1 / 2 ≤ t) (hthigh : t ≤ 1) :
+    HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
+  have h := fabius_hasDerivAt F hF t
+  have hup : rvachevUp F (2 * t - 1) = fabiusReal F (2 - 2 * t) := by
+    rcases eq_or_lt_of_le (show (0 : ℝ) ≤ 2 * t - 1 by linarith) with h0 | h0
+    · rw [← h0, rvachevUp_zero F hF, show (2 : ℝ) - 2 * t = 1 by linarith]
+      exact (hF.one_of_one_le 1 le_rfl).symm
+    · rw [rvachevUp_of_pos F h0]
+      congr 1
+      ring
+  rwa [hup] at h
+
+/-- Closed form for the derivative of the bounded Fabius function. -/
+theorem deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+    deriv (fabiusReal F) = fun x : ℝ => 2 * rvachevUp F (2 * x - 1) := by
+  funext x
+  exact (fabius_hasDerivAt F hF x).deriv
+
+/-- The bounded Fabius function is differentiable on all of `ℝ`. -/
+theorem fabius_differentiable (F : BoundedFabius) (hF : IsFabius F) :
+    Differentiable ℝ (fabiusReal F) :=
+  fun x => (fabius_hasDerivAt F hF x).differentiableAt
+
 private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : x ≤ 0) :
+    {x : ℝ} (_hx : x ≤ 0) :
     HasDerivAt (fun y : ℝ => fabiusReal F (y + 1))
       (2 * rvachevUp F (2 * x + 1)) x := by
-  rcases lt_trichotomy x (-1) with hxlt | hxeq | hxgt
-  · have htlt : x + 1 < 0 := by linarith
-    have hzero : HasDerivAt (fabiusReal F) 0 (x + 1) := by
-      apply (hasDerivAt_const (x := x + 1) (c := (0 : ℝ))).congr_of_eventuallyEq
-      filter_upwards [Iio_mem_nhds htlt] with y hy
-      exact hF.zero_of_nonpos y (le_of_lt hy)
-    have hshift : HasDerivAt (fun y : ℝ => fabiusReal F (y + 1)) 0 x := by
-      exact hzero.comp_add_const x 1
-    have hup : rvachevUp F (2 * x + 1) = 0 := by
-      exact rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
-    rw [hup]
-    simpa using hshift
-  · subst x
-    have hd := hF.hasDerivAt 0 (by constructor <;> norm_num)
-    have hd0 : HasDerivAt (fabiusReal F) 0 ((-1 : ℝ) + 1) := by
-      simpa [hF.zero_of_nonpos 0 le_rfl] using hd
-    have hshift := hd0.comp_add_const (-1 : ℝ) 1
-    have hup : rvachevUp F (2 * (-1 : ℝ) + 1) = 0 := by
-      exact rvachevUp_eq_zero_of_le_neg_one F hF (by norm_num)
-    rw [hup]
-    simpa using hshift
-  · rcases lt_trichotomy x (-(1 / 2 : ℝ)) with hxhalf | hxhalf | hxhalf
-    · have harg : x + 1 ∈ Icc (0 : ℝ) (1 / 2) := by
-        constructor <;> linarith
-      have hd := hF.hasDerivAt (x + 1) harg
-      have hshift := hd.comp_add_const x 1
-      have hup : rvachevUp F (2 * x + 1) = fabiusReal F (2 * (x + 1)) := by
-        rw [rvachevUp, if_pos (by linarith : 2 * x + 1 ≤ 0)]
-        congr 1
-        ring
-      rw [hup]
-      exact hshift
-    · subst x
-      have harg : (-(1 / 2 : ℝ)) + 1 ∈ Icc (0 : ℝ) (1 / 2) := by
-        constructor <;> norm_num
-      have hd := hF.hasDerivAt ((-(1 / 2 : ℝ)) + 1) harg
-      have hshift := hd.comp_add_const (-(1 / 2 : ℝ)) 1
-      have hup : rvachevUp F (2 * (-(1 / 2 : ℝ)) + 1) =
-          fabiusReal F (2 * ((-(1 / 2 : ℝ)) + 1)) := by
-        rw [rvachevUp, if_pos (by norm_num : 2 * (-(1 / 2 : ℝ)) + 1 ≤ 0)]
-        congr 1
-        ring
-      rw [hup]
-      exact hshift
-    · rcases eq_or_lt_of_le hx with rfl | hxzero
-      · have hd := fabius_hasDerivAt_one F hF
-        have hd' : HasDerivAt (fabiusReal F) 0 ((0 : ℝ) + 1) := by simpa using hd
-        have hshift := hd'.comp_add_const 0 1
-        have hup : rvachevUp F (2 * (0 : ℝ) + 1) = 0 := by
-          exact rvachevUp_eq_zero_of_one_le F hF (by norm_num)
-        rw [hup]
-        simpa using hshift
-      · have htlow : 1 / 2 < x + 1 := by linarith
-        have hthigh : x + 1 < 1 := by linarith
-        have hd := fabius_hasDerivAt_high F hF htlow hthigh
-        have hshift := hd.comp_add_const x 1
-        have hup : rvachevUp F (2 * x + 1) =
-            fabiusReal F (2 - 2 * (x + 1)) := by
-          rw [rvachevUp, if_neg (by linarith : ¬ 2 * x + 1 ≤ 0)]
-          congr 1
-          ring
-        rw [hup]
-        exact hshift
+  have h := (fabius_hasDerivAt F hF (x + 1)).comp_add_const x 1
+  rw [show 2 * (x + 1) - 1 = 2 * x + 1 by ring] at h
+  exact h
 
 private lemma rvachev_hasDerivAt_of_neg (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : x < 0) :

@@ -226,6 +226,95 @@ clamped to one there.  At `x = 0`, natural powers use the convention
 `Fabius.hasSum_globalFabius_translatedLegendre_formula` and
 `Fabius.globalFabius_eq_tsum_translatedLegendre_formula`.
 
+## Sharp global regularity
+
+The order-theoretic and metric shape of the two functions is developed in six
+modules that sit directly on top of `Differential.lean` and are independent of
+the paper-index files.
+
+`Differential.lean` proves the *single* differential equation
+
+```text
+F'(x) = 2 up(2x - 1)      for every real x,
+```
+
+`Fabius.fabius_hasDerivAt`.  It specializes to the defining equation
+`F'(x) = 2 F(2x)` on `[0, 1/2]`, to its reflection `F'(x) = 2 F(2 - 2x)` on
+`[1/2, 1]`, and to `0` outside `[0, 1]`, so no later derivative computation
+needs the case analysis.
+
+`Monotonicity.lean` collects everything order-theoretic.  Besides the
+monotonicity, positivity, and support statements that used to live inside the
+arXiv:1702.06487v3 index file, it proves the strict theory: `F` is strictly
+increasing on `[0,1]` (`Fabius.strictMonoOn_fabiusReal`), hence injective
+there, and the intermediate value theorem promotes this to a bijection of
+`[0,1]` onto itself (`Fabius.bijOn_fabiusReal`).  The support of `up` is
+*exactly* the open interval, `Fabius.support_rvachevUp`, and `up` is strictly
+increasing on `[-1,0]`, strictly decreasing on `[0,1]`, and equal to one only
+at the origin (`Fabius.rvachevUp_eq_one_iff`).  The positivity statements are
+also given in `iff` form.
+
+`Regularity.lean` proves that both `F` and `up` are `2`-Lipschitz and that the
+constant cannot be improved: `F'(1/2) = 2 up(0) = 2`, so
+`Fabius.isLeast_lipschitzWith_fabiusReal` and
+`Fabius.isLeast_lipschitzWith_rvachevUp` identify `2` as the least Lipschitz
+constant of each.  The linear majorant `F(x) ≤ 2x` holds on all of `[0, ∞)`.
+
+`Convexity.lean` shows that `F` is convex on `(-∞, 1/2]` and concave on
+`[1/2, ∞)`, strictly so on the two halves of the unit interval, so the
+midpoint is the unique inflection point.
+
+`EffectiveFlatness.lean` replaces the qualitative `o(x^n)` flatness statement
+by the effective bound
+
+```text
+F(x) ≤ 2^C(n+1,2) * x^n      whenever 0 ≤ x and 2^n x ≤ 1,
+```
+
+obtained by iterating the mean value estimate `F(x) ≤ 2x F(2x)`.  Rvachev's
+function inherits it at both ends of its support through `up(x) = F(1 - |x|)`.
+`SharpFlatness.lean` runs the same induction through the fundamental theorem
+of calculus instead of the mean value theorem, which recovers the factorial
+the pointwise estimate throws away:
+
+```text
+F(x) ≤ 2^C(n+1,2) / n! * x^n .
+```
+
+At `x = 2^(-n)` the exact value is `2^(-C(n,2)) d_n / n!` with `d_n` the half
+moment, so the remaining overshoot is exactly `1 / d_n`.
+
+`GlobalBounds.lean` proves that the signed global extension is bounded by one
+in absolute value, `Fabius.abs_extendedFabius_le_one` — the missing ingredient
+that turns equation (3) into the sharp uniform derivative bounds
+
+```text
+|F^(k)(x)| ≤ 2^C(k+1,2)      and      |up^(n)(x)| ≤ 2^C(n+1,2),
+```
+
+both attained, at `2^(-k)` and `2^(-n) - 1` respectively, so
+`Fabius.isGreatest_abs_iteratedDeriv_extendedFabius` and
+`Fabius.isGreatest_abs_iteratedDeriv_rvachevUp` are exact suprema.
+
+`BoundedDerivatives.lean` carries all of that back to the bounded, CDF-style
+function.  The two functions have the same germ at every argument below one,
+so equation (3) holds verbatim for `fabiusReal` there; above one the bounded
+function is locally constant, and the single remaining point `x = 1` is caught
+by continuity.  The consequences are flatness at the origin
+(`Fabius.iteratedDeriv_fabiusReal_zero`), the global bound
+`Fabius.abs_iteratedDeriv_fabiusReal_le`, and the exact attained supremum
+`Fabius.isGreatest_abs_iteratedDeriv_fabiusReal`.
+
+`NowhereAnalytic.lean` transfers the unnumbered non-analyticity corollary from
+`up` to `F` and determines the analytic locus exactly:
+
+```text
+AnalyticAt ℝ (fabiusReal F) x  ↔  x ∉ [0, 1].
+```
+
+The signed extension is likewise analytic at no point of the first block
+`[0, 2)`.
+
 ## Paper coverage
 
 `Paper05442.lean` is the public import for the first paper.  It includes all
