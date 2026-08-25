@@ -519,13 +519,12 @@ and module headers.
 
 Unclaimed and highest value, in this branch's estimation:
 
-1. **The bridge between the two characterizations.**
-   `canonical_isOriginalFabius` is still stated only for the canonical `fabius`,
-   although every ingredient is already `(F, hF)`-general.  The forward bridge
-   should be generalized.  A direct converse needs an explicit right-tail
-   hypothesis: `rvachevUp F` never reads `F x` for `x > 1`, so the naïve iff is
-   false.  A tail-free solution-space equivalence through the unique bounded
-   Fabius function is the clean alternative.
+1. **The bridge between the two characterizations — completed 2026-08-25.**
+   `IsFabius.isOriginalFabius_rvachevUp` supplies the general forward map, and
+   `isOriginalFabius_iff_existsUnique_isFabius` gives the exact tail-free
+   solution-space equivalence through a unique bounded Fabius witness.  This
+   deliberately avoids the false naïve iff: `rvachevUp F` does not inspect the
+   values of `F` on `(1,∞)`.
 2. **Uniform convergence with explicit rates — completed 2026-08-25.**
    `abs_fabiusUniformSpline_sub_extendedFabius_le` gives the global rate
    `2^{-p}`, while `norm_globalBinaryReductionSum_sub_extendedFabius_le` gives

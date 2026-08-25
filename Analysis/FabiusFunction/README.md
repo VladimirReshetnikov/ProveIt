@@ -111,6 +111,7 @@ points:
 | --- | --- | --- |
 | Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
+| Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsFabius.isOriginalFabius_rvachevUp`, `isOriginalFabius_iff_eq_canonical`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
@@ -370,7 +371,10 @@ The signed extension is likewise analytic at no point of the first block
 `Paper05442.lean` is the public import for the first paper.  It includes all
 seven theorems, Lemma 1, the unnumbered non-analyticity corollary, and the
 prose probability proposition.  In particular, it proves the original
-existence-and-uniqueness characterization with the initially unknown scale,
+existence-and-uniqueness characterization with the initially unknown scale.
+Every bounded Fabius solution folds to an original compact-support solution,
+and conversely every original solution has scale two and is the fold of a
+unique bounded Fabius solution.  The paper aggregate also proves
 weak-* convergence of the finite convolution measures, pointwise convergence
 of the polynomial step approximants, the infinite-product probability model,
 the differential identities, Poisson summation, moment formulas, and global

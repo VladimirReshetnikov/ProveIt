@@ -124,7 +124,7 @@ theorem abs_iteratedDeriv_fabiusReal_le (F : BoundedFabius) (hF : IsFabius F)
       rw [← closure_Iio (1 : ℝ)]
       exact hclosed.closure_subset_iff.mpr hsub
     exact hcl hx
-  · push_neg at hx
+  · push Not at hx
     match k with
     | 0 =>
         have h1 : ((0 : ℕ) + 1).choose 2 = 0 := by decide

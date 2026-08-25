@@ -1,4 +1,5 @@
 import FabiusFunction.OriginalCharacterization
+import FabiusFunction.Existence
 import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
 import Mathlib.Analysis.Fourier.FourierTransformDeriv
 import Mathlib.Analysis.Fourier.Inversion
@@ -11,6 +12,8 @@ the Fourier-refinement argument used in the paper.  The intermediate Fourier
 facts are part of the public API: every original solution has transform value
 one at the origin, satisfies the finite and infinite dyadic sinc-product
 formulas, and consequently has the same transform as every other solution.
+The final equivalence identifies these original solutions with the scale-two
+folds of unique bounded `IsFabius` witnesses.
 -/
 
 set_option autoImplicit false
@@ -64,8 +67,9 @@ theorem originalFourier_zero : originalFourier φ 0 = 1 := by
   have hcast : (∫ x : ℝ, (φ x : ℂ)) =
       Complex.ofReal (∫ x : ℝ, φ x) := by
     exact integral_ofReal (𝕜 := ℂ)
-  simpa [hcast, h.integral_eq_one]
+  simp [hcast, h.integral_eq_one]
 
+omit h in
 private theorem affine_fourier (d z : ℝ) :
     𝓕 (fun x : ℝ => complexFunction φ (2 * x + d)) z =
       (1 / 2 : ℂ) * Complex.exp (Real.pi * Complex.I * d * z) *
@@ -83,7 +87,8 @@ private theorem affine_fourier (d z : ℝ) :
       ring
   have hscale : (∫ x : ℝ, g (2 * x)) = (1 / 2 : ℂ) * ∫ u : ℝ, g u := by
     have hs := MeasureTheory.Measure.integral_comp_mul_left g (2 : ℝ)
-    convert hs using 1 <;> norm_num
+    convert hs using 1
+    all_goals norm_num
   rw [Real.fourier_real_eq_integral_exp_smul]
   change (∫ x : ℝ,
       Complex.exp (((-2 * Real.pi * x * z : ℝ) : ℂ) * Complex.I) *
@@ -135,7 +140,10 @@ private theorem complex_hasDerivAt (x : ℝ) :
     HasDerivAt (complexFunction φ)
       ((k : ℂ) * (complexFunction φ (2 * x + 1) -
         complexFunction φ (2 * x - 1))) x := by
-  convert (h.hasDerivAt x).ofReal_comp using 1 <;> push_cast <;> ring
+  convert (h.hasDerivAt x).ofReal_comp using 1
+  all_goals
+    push_cast
+    ring
 
 private theorem complex_deriv :
     deriv (complexFunction φ) = fun x : ℝ =>
@@ -207,7 +215,8 @@ theorem originalFourier_scaling (z : ℝ) :
       fun x : ℝ => complexFunction φ (2 * x + (-1)) := by
     funext x
     congr 1
-  rw [hleft, h.affine_fourier 1 z, hminus, h.affine_fourier (-1) z] at hfourier
+  rw [hleft, affine_fourier (φ := φ) 1 z, hminus,
+    affine_fourier (φ := φ) (-1) z] at hfourier
   rw [h.scale_eq_two] at hfourier
   by_cases hz : z = 0
   · subst z
@@ -234,7 +243,8 @@ theorem originalFourier_scaling (z : ℝ) :
       Complex.exp (Real.pi * Complex.I * (z : ℂ)) -
           Complex.exp (-(Real.pi * Complex.I * (z : ℂ))) =
         2 * Complex.I * Complex.sin (Real.pi * (z : ℂ)) := by
-    convert heq0 using 1 <;> ring
+    convert heq0 using 1
+    all_goals ring
   have hrefine :
       (2 * Complex.I) *
           (Complex.sin (Real.pi * (z : ℂ)) * originalFourier φ (z / 2)) =
@@ -398,6 +408,31 @@ function, and its dilation constant is `2`. -/
 theorem originalFabius_eq_canonical {φ : ℝ → ℝ} {k : ℝ}
     (h : IsOriginalFabius φ k) : φ = rvachevUp fabius ∧ k = 2 := by
   exact ⟨h.eq_canonical, h.scale_eq_two⟩
+
+/-- Exact classification of the original compact-support solutions by the
+canonical Rvachev function and the forced scale. -/
+theorem isOriginalFabius_iff_eq_canonical (φ : ℝ → ℝ) (k : ℝ) :
+    IsOriginalFabius φ k ↔ φ = rvachevUp fabius ∧ k = 2 := by
+  constructor
+  · exact originalFabius_eq_canonical
+  · rintro ⟨rfl, rfl⟩
+    exact canonical_isOriginalFabius
+
+/-- Original compact-support solutions are exactly the folds of bounded
+Fabius solutions, with scale two; the bounded witness is unique. -/
+theorem isOriginalFabius_iff_existsUnique_isFabius
+    (φ : ℝ → ℝ) (k : ℝ) :
+    IsOriginalFabius φ k ↔
+      k = 2 ∧ ∃! F : BoundedFabius,
+        IsFabius F ∧ φ = rvachevUp F := by
+  constructor
+  · intro h
+    refine ⟨h.scale_eq_two, fabius, ⟨fabius_spec, h.eq_canonical⟩, ?_⟩
+    intro G hG
+    exact hG.1.eq fabius_spec
+  · rintro ⟨hk, F, ⟨hF, hφ⟩, _⟩
+    rw [hk, hφ]
+    exact hF.isOriginalFabius_rvachevUp
 
 /-- The exact existence-and-uniqueness formulation of Theorem 1 of
 arXiv:1702.05442. -/

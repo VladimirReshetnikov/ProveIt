@@ -15,7 +15,10 @@ Properties* (arXiv:1702.05442).
 Every theorem, lemma, corollary, and prose proposition in the paper has a
 proved Lean counterpart:
 
-* Theorem 1: `Fabius.IsOriginalFabius` and
+* Theorem 1: `Fabius.IsOriginalFabius`,
+  `Fabius.IsFabius.isOriginalFabius_rvachevUp`,
+  `Fabius.isOriginalFabius_iff_eq_canonical`,
+  `Fabius.isOriginalFabius_iff_existsUnique_isFabius`, and
   `Fabius.existsUnique_originalFabius`;
 * Lemma 1: `Fabius.finiteConvolutionProbability_tendsto` and its real and
   complex bounded-continuous test-function forms;
