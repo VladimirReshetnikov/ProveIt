@@ -118,7 +118,7 @@
 \author{Proof architecture, exact computation, asymptotics, and effective approximation\\
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
-\small commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875}}
+\small commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7}}
 
 \begin{document}
 \maketitle
@@ -135,7 +135,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \section*{Scope and conventions}
 \addcontentsline{toc}{section}{Scope and conventions}
-The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
+The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -177,7 +177,7 @@ The normal build command from the project root is:
 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
-\nolinkurl{4173648faf531c1b2a012c2089764221eb975875}.  Before reproducing a
+\nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7}.  Before reproducing a
 declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
@@ -3093,7 +3093,7 @@ not against an unspecified moving branch.  A reproduction run should begin
 with:
 \begin{lstlisting}[style=pseudo,language={}]
 git rev-parse HEAD
-source_pin=4173648faf531c1b2a012c2089764221eb975875
+source_pin=9900722f892490d9fe6091c66fa31523b7b29ae7
 test "$(git rev-parse "$source_pin^{commit}")" = "$source_pin"
 git diff --exit-code "$source_pin" -- \
   Analysis/FabiusFunction/Lean
@@ -3167,7 +3167,7 @@ records its nonclaims.
 Vladimir Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction},
 GitHub repository, source tree and README inspected 25 August 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4173648faf531c1b2a012c2089764221eb975875/Analysis/FabiusFunction}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9900722f892490d9fe6091c66fa31523b7b29ae7/Analysis/FabiusFunction}
 
 \bibitem{Arias05442}
 Juan Arias de Reyna,
@@ -3199,7 +3199,7 @@ CPP 2020 and continuously maintained Lean 4 library.
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 Title & The Fabius Function in Lean: A Guided Walkthrough of the ProveIt Formalization \\
-Source snapshot & commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875} on \texttt{main}, inspected 25 August 2026 \\
+Source snapshot & commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7} on \texttt{main}, inspected 25 August 2026 \\
 Toolchain recorded by source & Lean 4.32.0; repository-pinned mathlib revision \\
 Primary path & \nolinkurl{Analysis/FabiusFunction/Lean/} \\
 Umbrella module & \nolinkurl{FabiusFunction.lean} \\
