@@ -53,7 +53,9 @@ fetching or merging.  The integrator acknowledges new claims.  To take over an
 expired claim, first ping its owner; only the integrator may reassign it, and
 no workstream should silently seize the paths.  Until the team chooses a
 different default, a lease expires 30 minutes after its last active-work
-status update.
+status update.  Before an unattended proof or review expected to exceed that
+interval, announce an explicit extended expiry of at most one active hour; the
+lease remains valid until that time without a heartbeat.
 
 When a new opportunity crosses an existing boundary, contact the current file
 owner before expanding the scope.  Prefer a new lemma in an already-owned
@@ -92,9 +94,9 @@ Synchronize:
 
 Here *synchronize* means publish or refresh the lease, fetch advertised tips,
 and review status and overlap.  It does not mean merging all branches.  A long
-unattended proof may report immediately before and after its run, but no
-claimed file should block another ready workstream for more than one active
-hour without an owner update.
+unattended proof may report immediately before and after its run only when its
+lease announced the extended expiry above.  No claimed file should block
+another ready workstream for more than one active hour without an owner update.
 
 A normal feature-branch checkpoint is:
 
@@ -231,7 +233,9 @@ For agents sharing a worktree, use this handoff pipeline:
 
 1. the source-only author freezes its scoped files and reports proof risks;
 2. an independent agent performs a read-only mathematical and API review;
-3. the build owner runs focused Lean checks and makes any elaboration fixes;
+3. the build owner runs focused Lean checks and reports failures to the writer,
+   or receives an explicit temporary file-ownership handoff before making
+   elaboration fixes;
 4. the Git mutation owner stages only the declared paths and commits them;
 5. the build owner runs the relevant downstream aggregate; and
 6. after the related batches are combined, the integration owner runs the
@@ -272,8 +276,7 @@ cherry-pick one reviewed series at a time.  The final non-force update is:
 
 ```sh
 git fetch origin
-git merge-base --is-ancestor origin/main HEAD
-git push origin HEAD:main
+git merge-base --is-ancestor origin/main HEAD && git push origin HEAD:main
 ```
 
 If the remote advances, the non-force push is rejected; fetch and review the
@@ -284,9 +287,11 @@ and report their commit IDs.
 When two branches overlap substantially, do not resolve the conflict by
 blindly taking one file.  Compare declarations theorem by theorem, preserve
 the union of nonduplicate results, retain compatibility wrappers from both
-sides, and ask the file owners to review the combined diff.  After resolving
-each conflict, explicitly re-audit theorem arities, named binders, and simp
-attributes; these API details are easy to lose in a textually clean merge.
+sides, and ask the file owners to review the combined diff.  The integrator
+must receive an explicit temporary ownership handoff for every conflicted path
+before editing it.  After resolving each conflict, explicitly re-audit theorem
+arities, named binders, and simp attributes; these API details are easy to lose
+in a textually clean merge.
 
 ## Tentative near-term plan
 
@@ -300,16 +305,17 @@ must be updated or removed at every integration checkpoint:
 | Verified | Branch and tip | Divergence from `origin/main` | Status or known overlap |
 | --- | --- | --- | --- |
 | 2026-08-24 | `origin/main` at `4bd083335f` | -- | Current integration base |
-| 2026-08-24 | `origin/codex/fabius-generalizations` at `8f47e17ef3` | 2 behind, 0 ahead | Integrated into current `main`; new work continues from this tip |
+| 2026-08-24 | `origin/codex/fabius-generalizations` at `8f47e17ef3` | 2 behind, 0 ahead | Integrated into current `main`; sync with `main` before further work |
 | 2026-08-24 | `origin/codex/fabius-theorem-refinements` at `5c528f929c` | 3 behind, 7 ahead | Active; overlaps `Basic.lean` and `Differential.lean` with the Claude branch |
 | 2026-08-24 | `origin/claude/fabius-strengthen-generalize` at `cf7b12ba19` | 9 behind, 8 ahead | Active; overlaps `Basic.lean`, `Differential.lean`, and integrated `TwoAdic.lean` work |
 
 Each branch should publish its current file scope, focused-build status, and
-review status.  Appoint one integration owner, merge the latest `origin/main`
-into each candidate, then integrate the branches one at a time while preserving
-all nonduplicate APIs.  Finish with a full build and a short combined change
-map.  This dated list is only a snapshot; update or remove entries as branches
-land.
+review status.  Appoint one integration owner.  Each branch owner should merge
+the latest `origin/main`, or the integrator should create a temporary test
+branch from the advertised tip with the owner's consent.  Then integrate the
+branches one at a time while preserving all nonduplicate APIs.  Finish with a
+full build and a short combined change map.  This dated list is only a snapshot;
+update or remove entries as branches land.
 
 ### 2. Complete cluster-by-cluster API audits
 
@@ -355,8 +361,8 @@ Please comment in the coordination channel or propose a small edit addressing
 one or more of these questions:
 
 1. Is 30 minutes the right maximum interval between synchronization reports?
-2. Where should live file claims be recorded so every worktree sees them
-   promptly?
+2. Is the proposed pinned live registry accessible enough from every worktree,
+   and what fallback should be used when it is not?
 3. Which branch and person or agent should own the next integration checkpoint?
 4. Are the compatibility and validation gates too strict or missing a common
    failure mode?
