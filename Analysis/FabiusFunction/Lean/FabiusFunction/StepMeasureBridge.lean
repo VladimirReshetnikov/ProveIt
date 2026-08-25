@@ -332,14 +332,23 @@ theorem integral_stepApproximant (n : ℕ) :
             ((approximationPolynomial n).coeff m : ℝ)) =
           (2 : ℝ) ^ ((n + 1).choose 2) := by
       norm_cast
-      rw [← approximationPolynomial_eval_one,
-        Polynomial.eval_eq_sum_range, approximationPolynomial_natDegree]
-      simp
+      exact sum_approximationPolynomial_coeff n
     rw [hcoeff]
     field_simp
   · intro m hm
     exact (halfEndpointIntervalIndicator_integrable
       (stepIntervalLeft n m) (stepIntervalRight n m)).const_mul _
+
+/-- The nonnegative histogram approximants have exact `L¹` mass one. -/
+theorem integral_abs_stepApproximant (n : ℕ) :
+    (∫ x : ℝ, |stepApproximant n x|) = 1 := by
+  calc
+    (∫ x : ℝ, |stepApproximant n x|) =
+        ∫ x : ℝ, stepApproximant n x := by
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [abs_of_nonneg (stepApproximant_nonneg n x)]
+    _ = 1 := integral_stepApproximant n
 
 noncomputable def stepOverlap (n m : ℕ) (a b : ℝ) : ℝ :=
   max (min b (stepIntervalRight n m) - max a (stepIntervalLeft n m)) 0

@@ -156,6 +156,71 @@ theorem halfEndpointIntervalIndicator_eq_zero_of_right_lt {a b x : ℝ} (hab : a
   unfold halfEndpointIntervalIndicator
   split_ifs <;> grind
 
+/-- The outer endpoints of the step approximant are symmetric about zero. -/
+theorem stepIntervalRight_degree_eq_neg_left_zero (n : ℕ) :
+    stepIntervalRight n (approximationDegree n) =
+      -stepIntervalLeft n 0 := by
+  unfold stepIntervalRight stepIntervalLeft
+  ring
+
+/-- A step approximant vanishes strictly to the left of its first cell. -/
+theorem stepApproximant_eq_zero_of_lt_left_support
+    (n : ℕ) {x : ℝ} (hx : x < stepIntervalLeft n 0) :
+    stepApproximant n x = 0 := by
+  unfold stepApproximant
+  have hsum :
+      (∑ m ∈ range (approximationDegree n + 1),
+        ((approximationPolynomial n).coeff m : ℝ) *
+          halfEndpointIntervalIndicator (stepIntervalLeft n m)
+            (stepIntervalRight n m) x) = 0 := by
+    apply Finset.sum_eq_zero
+    intro m hm
+    have hxm : x < stepIntervalLeft n m :=
+      hx.trans_le ((stepIntervalLeft_strictMono n).monotone (Nat.zero_le m))
+    rw [halfEndpointIntervalIndicator_eq_zero_of_lt_left
+      (stepIntervalLeft_lt_right n m) hxm, mul_zero]
+  rw [hsum, mul_zero]
+
+/-- A step approximant vanishes strictly to the right of its last cell. -/
+theorem stepApproximant_eq_zero_of_right_support_lt
+    (n : ℕ) {x : ℝ}
+    (hx : stepIntervalRight n (approximationDegree n) < x) :
+    stepApproximant n x = 0 := by
+  unfold stepApproximant
+  have hsum :
+      (∑ m ∈ range (approximationDegree n + 1),
+        ((approximationPolynomial n).coeff m : ℝ) *
+          halfEndpointIntervalIndicator (stepIntervalLeft n m)
+            (stepIntervalRight n m) x) = 0 := by
+    apply Finset.sum_eq_zero
+    intro m hm
+    have hmdegree : m ≤ approximationDegree n := by
+      rw [Finset.mem_range] at hm
+      omega
+    have hmright :
+        stepIntervalRight n m ≤
+          stepIntervalRight n (approximationDegree n) := by
+      simpa only [stepIntervalRight_eq_left_succ] using
+        (stepIntervalLeft_strictMono n).monotone (Nat.succ_le_succ hmdegree)
+    rw [halfEndpointIntervalIndicator_eq_zero_of_right_lt
+      (stepIntervalLeft_lt_right n m) (hmright.trans_lt hx), mul_zero]
+  rw [hsum, mul_zero]
+
+/-- Exact compact-support enclosure for every step approximant.  The closed
+endpoints are necessary because the chosen representative has half weight at
+cell boundaries. -/
+theorem support_stepApproximant_subset (n : ℕ) :
+    Function.support (stepApproximant n) ⊆
+      Icc (stepIntervalLeft n 0)
+        (stepIntervalRight n (approximationDegree n)) := by
+  intro x hx
+  change stepApproximant n x ≠ 0 at hx
+  constructor
+  · by_contra hleft
+    exact hx (stepApproximant_eq_zero_of_lt_left_support n (lt_of_not_ge hleft))
+  · by_contra hright
+    exact hx (stepApproximant_eq_zero_of_right_support_lt n (lt_of_not_ge hright))
+
 theorem halfEndpointIntervalIndicator_le_one (a b x : ℝ) :
     halfEndpointIntervalIndicator a b x ≤ 1 := by
   unfold halfEndpointIntervalIndicator

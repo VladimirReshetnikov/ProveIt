@@ -186,6 +186,16 @@ theorem splineDenPR_eq (p : ℕ) :
       rw [pow_add]
       ring
 
+/-- The natural denominator used by the exact spline code is always
+strictly positive, including in degree zero. -/
+theorem splineDenPR_pos (p : ℕ) : 0 < splineDenPR p := by
+  rw [splineDenPR_eq]
+  positivity
+
+/-- Nonvanishing form of `splineDenPR_pos`. -/
+theorem splineDenPR_ne_zero (p : ℕ) : splineDenPR p ≠ 0 :=
+  Nat.ne_of_gt (splineDenPR_pos p)
+
 abbrev SignedRatCode := (ℕ × ℕ) × ℕ
 
 def splineCodePR (p a : ℕ) : SignedRatCode :=
@@ -402,39 +412,64 @@ lemma fabiusReal_clampDyadicNumeratorPR
         field_simp
       rw [hratio, hF.one_of_one_le _ le_rfl]
 
+/-- On every matched grid, including the degree-zero grid, the signed spline
+numerator is represented without truncation by natural subtraction. -/
+lemma splineSumsPR_second_le_first_of_matched_all
+    (p a : ℕ) (ha : a ≤ 2 ^ p) :
+    (splineSumsPR p a).2 ≤ (splineSumsPR p a).1 := by
+  rcases Nat.eq_zero_or_pos p with rfl | hp
+  · have ha01 : a = 0 ∨ a = 1 := by
+      norm_num at ha
+      omega
+    rcases ha01 with rfl | rfl
+    · simp [splineSumsPR]
+    · norm_num [splineSumsPR, splineFoldStep, splineTermPR]
+  · have hx : (a : ℝ) / (2 : ℝ) ^ p ∈ Set.Icc 0 1 := by
+      constructor
+      · positivity
+      · rw [div_le_one (by positivity)]
+        exact_mod_cast ha
+    have hs := ProbabilityRepresentation.fabiusUniformSpline_mem_Icc p hp hx
+    have hcode := splineCodePR_value p a
+    rw [splineCodePR] at hcode
+    have hden : (0 : ℝ) < splineDenPR p := by
+      exact_mod_cast splineDenPR_pos p
+    have hdiff : (0 : ℝ) ≤
+        ((splineSumsPR p a).1 : ℝ) - (splineSumsPR p a).2 := by
+      have := hs.1
+      rw [← hcode] at this
+      have hmul := mul_nonneg this hden.le
+      rw [div_mul_cancel₀ _ hden.ne'] at hmul
+      exact hmul
+    exact_mod_cast (sub_nonneg.mp hdiff)
+
+/-- Positive-degree compatibility form of
+`splineSumsPR_second_le_first_of_matched_all`. -/
 lemma splineSumsPR_second_le_first_of_matched
     (p a : ℕ) (hp : 0 < p) (ha : a ≤ 2 ^ p) :
     (splineSumsPR p a).2 ≤ (splineSumsPR p a).1 := by
-  have hx : (a : ℝ) / (2 : ℝ) ^ p ∈ Set.Icc 0 1 := by
-    constructor
-    · positivity
-    · rw [div_le_one (by positivity)]
-      exact_mod_cast ha
-  have hs := ProbabilityRepresentation.fabiusUniformSpline_mem_Icc p hp hx
+  exact splineSumsPR_second_le_first_of_matched_all p a ha
+
+/-- Exact matched-grid semantics in every degree. -/
+theorem matchedSplineNatRatio_eq_uniformSpline_all (p a : ℕ)
+    (ha : a ≤ 2 ^ p) :
+    (((splineSumsPR p a).1 - (splineSumsPR p a).2 : ℕ) : ℝ) /
+        splineDenPR p =
+      fabiusUniformSpline p ((a : ℝ) / (2 : ℝ) ^ p) := by
+  have hle := splineSumsPR_second_le_first_of_matched_all p a ha
   have hcode := splineCodePR_value p a
   rw [splineCodePR] at hcode
-  have hden : (0 : ℝ) < splineDenPR p := by
-    rw [splineDenPR_eq]
-    positivity
-  have hdiff : (0 : ℝ) ≤
-      ((splineSumsPR p a).1 : ℝ) - (splineSumsPR p a).2 := by
-    have := hs.1
-    rw [← hcode] at this
-    have hmul := mul_nonneg this hden.le
-    rw [div_mul_cancel₀ _ hden.ne'] at hmul
-    exact hmul
-  exact_mod_cast (sub_nonneg.mp hdiff)
+  rw [Nat.cast_sub hle]
+  exact hcode
 
+/-- Positive-degree compatibility form of
+`matchedSplineNatRatio_eq_uniformSpline_all`. -/
 theorem matchedSplineNatRatio_eq_uniformSpline (p a : ℕ)
     (hp : 0 < p) (ha : a ≤ 2 ^ p) :
     (((splineSumsPR p a).1 - (splineSumsPR p a).2 : ℕ) : ℝ) /
         splineDenPR p =
       fabiusUniformSpline p ((a : ℝ) / (2 : ℝ) ^ p) := by
-  have hle := splineSumsPR_second_le_first_of_matched p a hp ha
-  have hcode := splineCodePR_value p a
-  rw [splineCodePR] at hcode
-  rw [Nat.cast_sub hle]
-  exact hcode
+  exact matchedSplineNatRatio_eq_uniformSpline_all p a ha
 
 /-- Half-up nearest-integer rounding of a nonnegative rational after scaling. -/
 theorem nearestNatRatio_error (N D scale : ℕ) (hD : 0 < D) (hs : 0 < scale) :
@@ -509,7 +544,6 @@ theorem fabiusSplineApproxPR_error
   let D := splineDenPR s
   let Q := (2 * (2 ^ p * N) + D) / (2 * D)
   have hs : s = p + 3 := rfl
-  have hspos : 0 < s := by omega
   have ha : a ≤ 2 ^ s := clampDyadicNumeratorPR_le c s
   have hq : (a : ℝ) / (2 : ℝ) ^ s ∈ Set.Icc 0 1 :=
     clampDyadicNumeratorPR_ratio_mem_Icc c s
@@ -517,14 +551,12 @@ theorem fabiusSplineApproxPR_error
       |fabiusUniformSpline s ((a : ℝ) / (2 : ℝ) ^ s) -
           fabiusReal F ((a : ℝ) / (2 : ℝ) ^ s)| ≤
         ((2 : ℝ) ^ s)⁻¹ :=
-    abs_fabiusUniformSpline_sub_fabiusReal_le F hF s hspos hq
+    abs_fabiusUniformSpline_sub_fabiusReal_le_all F hF s hq
   have hratio : (N : ℝ) / D =
       fabiusUniformSpline s ((a : ℝ) / (2 : ℝ) ^ s) := by
-    exact matchedSplineNatRatio_eq_uniformSpline s a hspos ha
+    exact matchedSplineNatRatio_eq_uniformSpline_all s a ha
   have hD : 0 < D := by
-    dsimp [D]
-    rw [splineDenPR_eq]
-    positivity
+    simpa [D] using splineDenPR_pos s
   have hround : |(Q : ℝ) / (2 : ℝ) ^ p - (N : ℝ) / D| ≤
       1 / (2 * ((2 : ℝ) ^ p)) := by
     simpa [Q] using nearestNatRatio_error N D (2 ^ p) hD (by positivity)

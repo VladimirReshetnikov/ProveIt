@@ -3,6 +3,15 @@ import FabiusFunction.QuantitativeSaddle
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 import Mathlib.Data.Nat.Factorial.DoubleFactorial
 
+/-!
+# Gaussian moments and polynomial contraction
+
+This module identifies normalized integration against the standard Gaussian
+with a linear functional on complex polynomials.  It also records the basic
+integrability and pointwise coefficient estimates reused by the Gaussian-tail
+modules.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Nat
@@ -12,9 +21,11 @@ namespace Fabius.SaddleExpansion
 
 noncomputable section
 
+/-- The `n`-th unnormalized moment of the standard real Gaussian kernel. -/
 def realGaussianMoment (n : ℕ) : ℝ :=
   ∫ v : ℝ, Real.exp (-(v ^ 2) / 2) * v ^ n
 
+/-- Every polynomial moment of the standard real Gaussian kernel is integrable. -/
 theorem integrable_realGaussian_mul_pow (n : ℕ) :
     Integrable (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * v ^ n) := by
   have hs : (-1 : ℝ) < (n : ℝ) := by
@@ -26,6 +37,24 @@ theorem integrable_realGaussian_mul_pow (n : ℕ) :
   funext v
   rw [Real.rpow_natCast]
   ring_nf
+
+/-- Absolute polynomial moments of the standard real Gaussian kernel are
+integrable. -/
+theorem integrable_realGaussian_mul_abs_pow (n : ℕ) :
+    Integrable (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * |v| ^ n) := by
+  have h := (integrable_realGaussian_mul_pow n).norm
+  apply h.congr
+  filter_upwards with v
+  rw [Real.norm_eq_abs, abs_mul, abs_pow,
+    abs_of_pos (Real.exp_pos _)]
+
+/-- The norm of the complex-valued standard Gaussian is its real Gaussian
+kernel. -/
+theorem norm_standardGaussian (v : ℝ) :
+    ‖QuantitativeSaddle.standardGaussian v‖ =
+      Real.exp (-(v ^ 2) / 2) := by
+  rw [QuantitativeSaddle.standardGaussian, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
 
 theorem realGaussianMoment_zero :
     realGaussianMoment 0 = Real.sqrt (2 * Real.pi) := by
@@ -236,6 +265,29 @@ theorem integrable_standardGaussian_mul_eval (p : Polynomial ℂ) :
       apply (integrable_standardGaussian_mul_pow n).mul_const c |>.congr
       filter_upwards with x
       simp only [Polynomial.eval_monomial]
+      ring
+
+/-- Pointwise coefficient bound for a polynomial multiplied by the standard
+Gaussian. -/
+theorem norm_standardGaussian_mul_eval_le (p : Polynomial ℂ) (v : ℝ) :
+    ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖ ≤
+      ∑ k ∈ p.support,
+        ‖p.coeff k‖ * (Real.exp (-(v ^ 2) / 2) * |v| ^ k) := by
+  rw [norm_mul, norm_standardGaussian, Polynomial.eval_eq_sum]
+  calc
+    Real.exp (-(v ^ 2) / 2) *
+        ‖p.sum fun k c => c * (v : ℂ) ^ k‖ ≤
+      Real.exp (-(v ^ 2) / 2) *
+        ∑ k ∈ p.support, ‖p.coeff k * (v : ℂ) ^ k‖ := by
+          gcongr
+          exact norm_sum_le _ _
+    _ = ∑ k ∈ p.support,
+        ‖p.coeff k‖ * (Real.exp (-(v ^ 2) / 2) * |v| ^ k) := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro k _hk
+      simp only [norm_mul, norm_pow, Complex.norm_real,
+        Real.norm_eq_abs]
       ring
 
 theorem integral_standardGaussian_mul_pow (n : ℕ) :

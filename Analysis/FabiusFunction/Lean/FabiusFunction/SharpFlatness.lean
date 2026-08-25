@@ -94,11 +94,15 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
             _ ≤ 1 := hx
         have hIH := ih (by linarith : (0 : ℝ) ≤ 2 * t) harg
         rw [mul_pow] at hIH
-        calc 2 * fabiusReal F (2 * t)
-            ≤ 2 * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ) * (2 ^ n * t ^ n)) := by
-              linarith
-          _ = 2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n := by
-              rw [hps]; ring
+        calc
+          2 * fabiusReal F (2 * t) ≤
+              2 * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ) *
+                (2 ^ n * t ^ n)) :=
+            mul_le_mul_of_nonneg_left hIH (by norm_num)
+          _ = 2 ^ (n + 1) *
+                (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n := by
+            rw [hps]
+            ring
       have hcontL : Continuous (fun t : ℝ => 2 * fabiusReal F (2 * t)) :=
         continuous_const.mul
           (hF.contDiff.continuous.comp (continuous_const.mul continuous_id))
@@ -118,9 +122,7 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
               (x ^ (n + 1) / (n + 1)) := by
         rw [intervalIntegral.integral_const_mul, integral_pow]
         have hzero : (0 : ℝ) ^ (n + 1) = 0 := by simp
-        rw [hzero]
-        push_cast
-        ring
+        rw [hzero, sub_zero]
       have hchoose : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
         rw [show n + 2 = (n + 1) + 1 by omega, show 2 = 1 + 1 by omega,
           Nat.choose_succ_succ]
@@ -132,10 +134,12 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
         ring
       have hne : ((n : ℝ) + 1) ≠ 0 := by positivity
       rw [fabiusReal_eq_integral F hF hx0 hhalf]
-      refine hmono.trans (le_of_eq ?_)
+      refine hmono.trans ?_
       rw [hright, show n + 1 + 1 = n + 2 by omega, hchoose, hfac, pow_add]
       field_simp
-      ring
+      rw [pow_add]
+      ring_nf
+      exact le_rfl
 
 /-- The factorial bound transferred to Rvachev's function at both ends of its
 support. -/

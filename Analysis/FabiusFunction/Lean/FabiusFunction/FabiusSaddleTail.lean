@@ -343,7 +343,7 @@ lemma norm_fabius_scaledSaddleKernel_le
   have hP : ‖complexGeneratingFunction F (-(r : ℂ))‖ =
       generatingFunction F (-r) := by
     rw [show -(r : ℂ) = ((-r : ℝ) : ℂ) by push_cast; ring,
-      complexGeneratingFunction_ofReal_vertical, Complex.norm_real,
+      complexGeneratingFunction_ofReal, Complex.norm_real,
       Real.norm_eq_abs, abs_of_pos hreal]
   have hvertical := norm_complexGeneratingFunction_neg_vertical_div_le
     F hF r θ hr (2 * m)

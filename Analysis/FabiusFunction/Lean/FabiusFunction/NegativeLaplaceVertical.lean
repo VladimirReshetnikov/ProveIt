@@ -321,19 +321,10 @@ theorem complexGeneratingFunction_neg_finite_refinement
       rw [hfactor]
       ring
 
-lemma complexGeneratingFunction_ofReal_vertical
-    (F : BoundedFabius) (x : ℝ) :
-    complexGeneratingFunction F (x : ℂ) =
-      (generatingFunction F x : ℂ) := by
-  unfold complexGeneratingFunction generatingFunction
-  push_cast
-  congr 1
-  congr 1
-  rw [← intervalIntegral.integral_ofReal]
-  apply intervalIntegral.integral_congr
-  intro t _ht
-  push_cast
-  rfl
+/-- Deprecated compatibility alias for `complexGeneratingFunction_ofReal`. -/
+@[deprecated complexGeneratingFunction_ofReal (since := "2026-08-24")]
+alias complexGeneratingFunction_ofReal_vertical :=
+  complexGeneratingFunction_ofReal
 
 theorem generatingFunction_neg_finite_refinement
     (F : BoundedFabius) (hF : IsFabius F)
@@ -350,8 +341,8 @@ theorem generatingFunction_neg_finite_refinement
         ((-(r / (2 : ℝ) ^ N) : ℝ) : ℂ) := by
     push_cast
     rfl
-  rw [hleft, complexGeneratingFunction_ofReal_vertical,
-    htail, complexGeneratingFunction_ofReal_vertical] at hc
+  rw [hleft, complexGeneratingFunction_ofReal,
+    htail, complexGeneratingFunction_ofReal] at hc
   simp_rw [negativeLaplaceDyadicFactor_ofReal r hr] at hc
   exact_mod_cast hc
 

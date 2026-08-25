@@ -1,0 +1,1475 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newtxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxmath}
+\usepackage{microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{35,77,122}
+\definecolor{darkgray}{RGB}{70,70,70}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Dyadic q-Calculus in the Theory of the Fabius Function},
+  pdfsubject={q-Pochhammer symbols, q-binomial coefficients, Thue-Morse cancellation, and exact Fabius formulas},
+  pdfkeywords={Fabius function, Rvachev up function, q-Pochhammer, Gaussian binomial, Thue-Morse, Lean}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Dyadic $q$-calculus and the Fabius function}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.15em}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Fabius}{F}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\qpoch}[3]{\left(#1;#2\right)_{#3}}
+\newcommand{\Qbin}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\coeff}[2]{\left[#1\right]#2}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\lean}[1]{\nolinkurl{#1}}
+\newcommand{\leancall}[2]{\nolinkurl{#1}\allowbreak\ \texttt{\detokenize{#2}}}
+\newcommand{\repo}{\textsc{ProveIt}}
+
+\title{\bfseries Dyadic $q$-Calculus in the Theory of the Fabius Function\\[0.35em]
+\large $q$-Pochhammer Symbols, Gaussian Coefficients, Thue--Morse Cancellation, and Exact Dyadic Formulae}
+\author{A technical exposition based on the Lean development in \repo}
+\date{Repository snapshot: commit \texttt{4bd083335f663f8c0347cf2535b10dc4dfeea286}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Fabius function is built from repeated dilation by two, and this binary self-similarity eventually forces a surprisingly rich finite $q$-calculus with base $q=1/2$.  Exact values at dyadic rational arguments, Taylor-reduction formulae, a global absolutely convergent expansion, and a discrete-limit theorem all involve the finite $q$-Pochhammer product
+\[
+  \qpoch{1/2}{1/2}{n}=\prod_{j=1}^{n}(1-2^{-j})
+\]
+and the Gaussian coefficients $\Qbin{n}{k}{1/2}$.  These objects are not decorative changes of notation.  The finite $q$-binomial theorem creates the unique geometric finite-difference stencil that annihilates powers of the dyadic nodes $-2^k$ below degree $n$ and isolates degree $n$.  Thue--Morse signed exponential sums contribute a forced zero of order $k$; after that zero is removed, the Fabius moment recurrence converts dilation by $-2^k$ into the coefficient that the Gaussian stencil extracts.  The same $q$-binomial row later becomes a regular Toeplitz kernel.
+
+This article develops the required special-function background from first principles, proves the central coefficient-extraction mechanism, derives the exact inverse-dyadic and arbitrary-dyadic Fabius formulae, explains translation invariance and the raw-coordinate variant, and describes the Taylor, global-series, and discrete-limit extensions formalized in Lean.  It also records the arithmetic meaning of the specialization $q=1/2$: the $q$-Pochhammer product is a power-of-two normalization of a product of Mersenne numbers, while $\Qbin{n}{k}{1/2}$ is a power-of-two normalization of the number of $k$-planes in $\mathbb F_2^n$.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+The Fabius function is a canonical example of an infinitely differentiable function whose local behavior is governed by a dilation equation rather than by an ordinary differential equation.  In a convenient bounded normalization it is the unique smooth function $\Fabius:\R\to[0,1]$ satisfying
+\begin{align}
+  \Fabius(x)&=0 &&(x\le 0), \\
+  \Fabius(x)&=1 &&(x\ge 1), \\
+  \Fabius(1-x)&=1-\Fabius(x), \\
+  \Fabius'(x)&=2\Fabius(2x) &&(0\le x\le \tfrac12).
+  \label{eq:fabius-characterization}
+\end{align}
+The last identity makes the binary scale intrinsic.  Differentiation does not merely change an exponent or multiply by a constant: it moves the argument to the next dyadic scale.  Iterating the relation creates powers $2^k$, triangular exponents such as $\binom{k}{2}$, and binary digit combinatorics.
+
+At first sight one might therefore expect powers of two, factorials, and perhaps the Thue--Morse sequence.  It is less obvious why the exact formulae should contain the finite $q$-Pochhammer symbol and Gaussian binomial coefficients.  The main purpose of this article is to make that appearance inevitable.
+
+The key observation is that the finite $q$-binomial theorem at base $q=1/2$ produces the polynomial
+\begin{equation}
+  \qpoch{z}{1/2}{n}
+  =\prod_{j=0}^{n-1}(1-z2^{-j})
+  =\sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
+       \Qbin{n}{k}{1/2}z^k.
+  \label{eq:half-q-binomial-preview}
+\end{equation}
+Its roots are the first $n$ dyadic nodes $1,2,\ldots,2^{n-1}$ on a geometric grid.  Consequently, substituting $z=2^d$ annihilates every $d<n$, whereas $z=2^n$ gives an explicit nonzero endpoint value.  After a harmless sign change, the coefficients in \cref{eq:half-q-binomial-preview} become weights on the nodes $-2^k$ satisfying
+\begin{equation}
+  \sum_{k=0}^{n}w_{n,k}(-2^k)^d=0\quad(d<n),
+  \qquad
+  \sum_{k=0}^{n}w_{n,k}(-2^k)^n
+  =2^{\binom{n+1}{2}}\qpoch{1/2}{1/2}{n}.
+  \label{eq:preview-moments}
+\end{equation}
+That is precisely the moment system required to extract one coefficient from a family of power series indexed by the dyadic scales $2^k$.
+
+The other half of the mechanism comes from Thue--Morse cancellation.  If
+\[
+  \eps_r=(-1)^{\wt(r)},
+\]
+where $\wt(r)$ is the number of ones in the binary expansion of $r$, then
+\begin{equation}
+  \sum_{r=0}^{2^k-1}\eps_r \e^{rz}
+  =\prod_{j=0}^{k-1}(1-\e^{2^jz}).
+  \label{eq:tm-product-preview}
+\end{equation}
+The right-hand side has a zero of exact order $k$ at $z=0$.  Removing that zero yields normalized coefficients involving the signed power sums
+\[
+  \sum_{r=0}^{2^k-1}\eps_r(r-2^k)^{n+k}.
+\]
+A generating function attached to the half-moments of Rvachev's $\Up$ function obeys a dyadic refinement identity.  Multiplying the two generating functions converts the normalized Thue--Morse block at scale $k$ into the same moment series evaluated at $-2^kz$.  The weights in \cref{eq:preview-moments} then annihilate all unwanted coefficients.
+
+This explanation also resolves a notational ambiguity.  Standard special-function notation uses $q$ for the base of a $q$-Pochhammer symbol.  Some of the source formulae use a variable also named \lean{q} for an arbitrary translation inside the Thue--Morse powers.  Throughout this article:
+\begin{itemize}[leftmargin=2em]
+  \item $\rho$ denotes a general $q$-series base, and it is specialized to $\rho=1/2$ in the Fabius formulae;
+  \item $\tau$ denotes the common translation inside the signed power sums.
+\end{itemize}
+Thus no formula asks one symbol to play two unrelated roles.
+
+The exposition follows the formal development in the directory
+\begin{center}
+  \lean{Analysis/FabiusFunction/Lean/FabiusFunction}
+\end{center}
+of the \repo\ repository.  The mathematical presentation is independent of Lean, but \cref{sec:lean-architecture} maps each conceptual layer to the corresponding modules and theorem families.
+
+\section{Binary self-similarity, Rvachev's function, and the half moments}
+\label{sec:fabius-background}
+
+\subsection{The bounded function and the compactly supported twin}
+
+The characterization \cref{eq:fabius-characterization} is convenient for the bounded Fabius function.  Rvachev's compactly supported $\Up$ function is obtained by shifting the unit interval and folding two reflected copies of $\Fabius$ about the origin:
+\begin{equation}
+  \Up(x)=
+  \begin{cases}
+    \Fabius(x+1),&x\le 0,\\
+    \Fabius(1-x),&x>0.
+  \end{cases}
+  \label{eq:up-from-fabius}
+\end{equation}
+It is even, smooth, supported in $[-1,1]$, and satisfies an equivalent two-scale refinement law.  The bounded function and the compactly supported function encode the same local object, but each is better suited to different calculations: $\Fabius$ makes the cumulative-distribution normalization transparent, while $\Up$ has integrable moments and a clean Fourier theory.
+
+The Lean development carefully distinguishes the bounded function from a signed global extension.  For the present article, the latter is needed only when arbitrary dyadic arguments $m/2^n$ or nonnegative real arguments are discussed.  On $[0,1]$ it agrees with the bounded $\Fabius$.
+
+\subsection{Half moments and a normalized recurrence sequence}
+
+Define the half moments $d_n$ by
+\begin{equation}
+  d_0=1,
+  \qquad
+  d_n=n\int_0^1 t^{n-1}\Up(t)\,\dd t\quad(n\ge1),
+  \label{eq:half-moment-definition}
+\end{equation}
+and set
+\begin{equation}
+  a_n=\frac{d_n}{n!}.
+  \label{eq:a-definition}
+\end{equation}
+The power series
+\begin{equation}
+  A(z)=\sum_{n=0}^{\infty}a_nz^n
+      =\sum_{n=0}^{\infty}\frac{d_n}{n!}z^n
+  \label{eq:A-definition}
+\end{equation}
+is entire.  Introduce the removable entire function
+\begin{equation}
+  \Phi(z)=\frac{\e^z-1}{z},
+  \qquad \Phi(0)=1.
+  \label{eq:Phi-definition}
+\end{equation}
+The moment generating function obeys the exact dilation equation
+\begin{equation}
+  A(2z)=\Phi(z)A(z).
+  \label{eq:A-refinement}
+\end{equation}
+Equating coefficients gives, for $n\ge1$,
+\begin{equation}
+  (2^n-1)a_n
+  =\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!},
+  \qquad
+  a_0=1.
+  \label{eq:a-recurrence}
+\end{equation}
+This recurrence is one of the simplest exact descriptions of the relevant Fabius constants.
+
+Replacing $z$ by $z/2$ in \cref{eq:A-refinement} and iterating yields
+\begin{equation}
+  A(z)=\prod_{j=1}^{\infty}\Phi\!\left(\frac{z}{2^j}\right).
+  \label{eq:A-infinite-product}
+\end{equation}
+The product converges locally uniformly.  Notice the geometric sequence of scales $2^{-j}$: even before the explicit Gaussian coefficients appear, $A$ is already a multiplicative object over a $q$-grid with base $1/2$.
+
+\subsection{Inverse-dyadic values}
+
+The half moments are exactly the constants that control the smallest dyadic values of $\Fabius$:
+\begin{theorem}[Half-moment evaluation]
+For every $n\ge0$,
+\begin{equation}
+  \Fabius(2^{-n})
+  =2^{-\binom{n}{2}}a_n
+  =\frac{d_n}{n!\,2^{\binom{n}{2}}}.
+  \label{eq:fabius-half-moment}
+\end{equation}
+\end{theorem}
+
+One way to view \cref{eq:fabius-half-moment} is that each differentiation moves one step up the dyadic ladder.  After $n$ steps the accumulated chain-rule factor is triangular, which accounts for $2^{\binom{n}{2}}$ after the indexing is normalized.
+
+The first few terms are shown in \cref{tab:first-values}.  They are useful checks on every later formula.
+
+\begin{table}[ht]
+\centering
+\caption{The normalized moments and inverse-dyadic values.}
+\label{tab:first-values}
+\begin{tabular}{c@{\qquad}c@{\qquad}c}
+\toprule
+$n$ & $a_n$ & $\Fabius(2^{-n})$ \\
+\midrule
+0 & $1$ & $1$ \\
+1 & $1/2$ & $1/2$ \\
+2 & $5/36$ & $5/72$ \\
+3 & $1/36$ & $1/288$ \\
+4 & $143/32400$ & $143/2073600$ \\
+5 & $19/32400$ & $19/33177600$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The rest of the article explains how the same numbers emerge from finite $q$-products and Thue--Morse sums.
+
+\section{The \texorpdfstring{$q$}{q}-Pochhammer symbol}
+\label{sec:q-pochhammer}
+
+\subsection{Finite and infinite shifted factorials}
+
+\begin{definition}
+For a base $\rho$, a parameter $a$, and $n\in\N$, the finite $q$-Pochhammer symbol, or $q$-shifted factorial, is
+\begin{equation}
+  \qpoch{a}{\rho}{n}
+  =\prod_{j=0}^{n-1}(1-a\rho^j),
+  \qquad
+  \qpoch{a}{\rho}{0}=1.
+  \label{eq:q-pochhammer-definition}
+\end{equation}
+When the product converges, one also writes
+\begin{equation}
+  \qpoch{a}{\rho}{\infty}
+  =\prod_{j=0}^{\infty}(1-a\rho^j).
+  \label{eq:q-pochhammer-infinite}
+\end{equation}
+\end{definition}
+
+The term ``shifted factorial'' is justified by the elementary step rule
+\begin{equation}
+  \qpoch{a}{\rho}{n+1}
+  =\qpoch{a}{\rho}{n}(1-a\rho^n),
+  \label{eq:q-pochhammer-step}
+\end{equation}
+which plays the role of $(n+1)!=n!(n+1)$.  The relation to the ordinary rising factorial is made precise by
+\begin{equation}
+  \lim_{\rho\to1^-}
+  \frac{\qpoch{\rho^\alpha}{\rho}{n}}{(1-\rho)^n}
+  =(\alpha)_n
+  =\alpha(\alpha+1)\cdots(\alpha+n-1),
+  \label{eq:qpoch-classical-limit}
+\end{equation}
+for fixed real $\alpha$.  Each quotient
+$(1-\rho^{\alpha+j})/(1-\rho)$ tends to $\alpha+j$.
+Other basic identities follow directly by splitting products:
+\begin{align}
+  \qpoch{a}{\rho}{m+n}
+  &=\qpoch{a}{\rho}{m}\qpoch{a\rho^m}{\rho}{n},
+  \label{eq:q-pochhammer-split}\\
+  \qpoch{a}{\rho^{-1}}{n}
+  &=(-a)^n\rho^{-\binom{n}{2}}
+    \qpoch{a^{-1}}{\rho}{n}.
+  \label{eq:q-pochhammer-inversion}
+\end{align}
+The second formula, which assumes $a\rho\ne0$, is obtained by extracting $-a\rho^{-j}$ from each factor.
+
+The finite products are polynomials in $a$ and $\rho$ and require no convergence theory.  This finite algebraic regime is exactly the one used in the Fabius identities.  Infinite $q$-products provide useful context, but the central exact formulae terminate after $n$ factors.
+
+\subsection{The special product at base one half}
+
+The specialization used throughout the Lean development is
+\begin{equation}
+  P_n:=\qpoch{1/2}{1/2}{n}
+  =\prod_{j=0}^{n-1}\left(1-\frac12\left(\frac12\right)^j\right)
+  =\prod_{j=1}^{n}(1-2^{-j}).
+  \label{eq:Pn-definition}
+\end{equation}
+Each factor is positive, so $P_n>0$.  Clearing powers of two gives the exact Mersenne-product form
+\begin{equation}
+  P_n
+  =2^{-\binom{n+1}{2}}\prod_{j=1}^{n}(2^j-1).
+  \label{eq:Pn-mersenne}
+\end{equation}
+Consequently,
+\begin{equation}
+  2^{n^2}P_n
+  =2^{\binom{n}{2}}\prod_{j=1}^{n}(2^j-1).
+  \label{eq:Pn-normalizer}
+\end{equation}
+The left side is the normalizing denominator that appears naturally in the $q$-binomial Fabius formula; the right side displays its arithmetic content as a pure power of two times an odd product.
+
+The sequence $P_n$ decreases to the positive constant
+\begin{equation}
+  P_\infty=\qpoch{1/2}{1/2}{\infty}
+  \approx 0.2887880950866024212788997219.
+  \label{eq:P-infinity}
+\end{equation}
+Only the finite $P_n$ occurs in the exact coefficient extraction, but the nonzero limit is useful when uniform bounds are needed.
+
+\section{Gaussian binomial coefficients}
+\label{sec:gaussian}
+
+\subsection{Definitions}
+
+For $\rho\ne1$, define the $q$-integer and $q$-factorial by
+\begin{equation}
+  [m]_\rho=\frac{1-\rho^m}{1-\rho},
+  \qquad
+  [m]_\rho!=\prod_{j=1}^{m}[j]_\rho.
+  \label{eq:q-factorial}
+\end{equation}
+For $0\le k\le n$, the Gaussian binomial coefficient is
+\begin{equation}
+  \Qbin{n}{k}{\rho}
+  =\frac{\qpoch{\rho}{\rho}{n}}
+         {\qpoch{\rho}{\rho}{k}\qpoch{\rho}{\rho}{n-k}}
+  =\frac{[n]_\rho!}{[k]_\rho![n-k]_\rho!}.
+  \label{eq:q-binomial-definition}
+\end{equation}
+It is set equal to zero when $k>n$; at $\rho=1$ the polynomial continuation gives the ordinary binomial coefficient.
+
+Although \cref{eq:q-binomial-definition} is written as a quotient, $\Qbin{n}{k}{\rho}$ is a polynomial in $\rho$ with nonnegative integer coefficients.  In particular,
+\begin{equation}
+  \lim_{\rho\to1}\Qbin{n}{k}{\rho}=\binom{n}{k}.
+  \label{eq:q-to-one}
+\end{equation}
+For a prime power $Q$, the integer $\Qbin{n}{k}{Q}$ counts the $k$-dimensional linear subspaces of $\mathbb F_Q^n$.  This is the source of the adjective ``Gaussian.''
+
+\subsection{Symmetry and the two Pascal recurrences}
+
+The quotient definition immediately gives
+\begin{equation}
+  \Qbin{n}{k}{\rho}=\Qbin{n}{n-k}{\rho}.
+  \label{eq:q-binomial-symmetry}
+\end{equation}
+There are two equivalent $q$-Pascal recurrences:
+\begin{align}
+  \Qbin{n+1}{k}{\rho}
+  &=\Qbin{n}{k-1}{\rho}+\rho^k\Qbin{n}{k}{\rho},
+  \label{eq:q-pascal-one}\\
+  \Qbin{n+1}{k}{\rho}
+  &=\Qbin{n}{k}{\rho}+\rho^{n+1-k}\Qbin{n}{k-1}{\rho}.
+  \label{eq:q-pascal-two}
+\end{align}
+They become the ordinary Pascal rule as $\rho\to1$.  The two forms are related by symmetry and are both useful in inductive proofs of the finite $q$-binomial theorem.
+
+\subsection{Why the coefficient at one half is still binary}
+
+The Fabius formula uses $\rho=1/2$, not the finite-field value $Q=2$.  These specializations are equivalent up to an explicit power of two.  Applying \cref{eq:q-pochhammer-inversion} to the quotient defining the Gaussian coefficient gives
+\begin{equation}
+  \Qbin{n}{k}{1/2}
+  =2^{-k(n-k)}\Qbin{n}{k}{2}.
+  \label{eq:half-vs-two-gaussian}
+\end{equation}
+Thus $\Qbin{n}{k}{1/2}$ is the number of $k$-planes in $\mathbb F_2^n$, normalized by $2^{k(n-k)}$.  Since the polynomial $\Qbin{n}{k}{q}$ has constant term one, $\Qbin{n}{k}{2}$ is odd.  Therefore
+\begin{equation}
+  v_2\!\left(\Qbin{n}{k}{1/2}\right)=-k(n-k).
+  \label{eq:half-gaussian-valuation}
+\end{equation}
+This exact denominator control is one reason the $q$-notation is arithmetically useful rather than merely compact.
+
+The first few rows are
+\begin{align*}
+  n=0:&\quad 1,\\
+  n=1:&\quad 1,\ 1,\\
+  n=2:&\quad 1,\ \frac32,\ 1,\\
+  n=3:&\quad 1,\ \frac74,\ \frac74,\ 1,\\
+  n=4:&\quad 1,\ \frac{15}{8},\ \frac{35}{16},\ \frac{15}{8},\ 1.
+\end{align*}
+The entries are symmetric, positive, and rational with power-of-two denominators.
+
+\section{The finite \texorpdfstring{$q$}{q}-binomial theorem and dyadic nodal annihilation}
+\label{sec:finite-q-binomial}
+
+\subsection{The theorem}
+
+\begin{theorem}[Finite $q$-binomial theorem]
+For every $n\ge0$,
+\begin{equation}
+  \qpoch{z}{\rho}{n}
+  =\sum_{k=0}^{n}(-1)^k\rho^{\binom{k}{2}}
+     \Qbin{n}{k}{\rho}z^k.
+  \label{eq:finite-q-binomial}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The statement is trivial for $n=0$.  Assume it for $n$.  By
+\cref{eq:q-pochhammer-step},
+\[
+  \qpoch{z}{\rho}{n+1}
+  =(1-z\rho^n)\qpoch{z}{\rho}{n}.
+\]
+Insert the induction hypothesis and compare the coefficient of $z^k$.  It is
+\[
+  (-1)^k\rho^{\binom{k}{2}}
+  \left(\Qbin{n}{k}{\rho}
+  +\rho^{n+1-k}\Qbin{n}{k-1}{\rho}\right),
+\]
+which equals
+$(-1)^k\rho^{\binom{k}{2}}\Qbin{n+1}{k}{\rho}$
+by \cref{eq:q-pascal-two}.
+\end{proof}
+
+At $\rho=1/2$, \cref{eq:finite-q-binomial} becomes
+\begin{equation}
+  \qpoch{z}{1/2}{n}
+  =\sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
+     \Qbin{n}{k}{1/2}z^k.
+  \label{eq:finite-half-q-binomial}
+\end{equation}
+The triangular exponent $\binom{k}{2}$ is not an arbitrary decoration: it is the cumulative exponent produced by multiplying the successive geometric factors.
+
+\subsection{The roots are dyadic nodes}
+
+For $0\le d<n$, substituting $z=2^d$ into the product side gives a zero, because the factor with index $j=d$ is $1-2^d2^{-d}=0$.  Hence
+\begin{equation}
+  \sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
+  \Qbin{n}{k}{1/2}(2^d)^k=0,
+  \qquad 0\le d<n.
+  \label{eq:q-node-zero}
+\end{equation}
+At the next dyadic node,
+\begin{align}
+  \qpoch{2^n}{1/2}{n}
+  &=\prod_{j=0}^{n-1}(1-2^{n-j})
+    =(-1)^n\prod_{r=1}^{n}(2^r-1)\notag\\
+  &=(-1)^n2^{\binom{n+1}{2}}P_n.
+  \label{eq:q-node-endpoint}
+\end{align}
+Therefore
+\begin{equation}
+  \sum_{k=0}^{n}(-1)^k2^{-\binom{k}{2}}
+  \Qbin{n}{k}{1/2}(2^n)^k
+  =(-1)^n2^{\binom{n+1}{2}}P_n.
+  \label{eq:q-node-endpoint-sum}
+\end{equation}
+
+\subsection{A geometric finite-difference stencil}
+
+Define
+\begin{equation}
+  w_{n,k}=(-1)^k2^{-\binom{k}{2}}\Qbin{n}{k}{1/2},
+  \qquad
+  x_k=-2^k,
+  \label{eq:q-weights-nodes}
+\end{equation}
+and
+\begin{equation}
+  C_n=2^{\binom{n+1}{2}}P_n.
+  \label{eq:Cn-definition}
+\end{equation}
+Then \cref{eq:q-node-zero,eq:q-node-endpoint-sum} imply
+\begin{equation}
+  \sum_{k=0}^{n}w_{n,k}x_k^d=
+  \begin{cases}
+    0,&0\le d<n,\\
+    C_n,&d=n.
+  \end{cases}
+  \label{eq:q-weight-moments}
+\end{equation}
+Indeed, the sign $(-1)^d$ contributed by $x_k^d=(-1)^d(2^d)^k$ cancels the endpoint sign when $d=n$.
+
+The functional
+\begin{equation}
+  \mathcal L_n[f]=\sum_{k=0}^{n}w_{n,k}f(-2^k)
+  \label{eq:Ln-definition}
+\end{equation}
+therefore annihilates every polynomial of degree less than $n$, and on a polynomial $p(x)=a_nx^n+\cdots$ of degree at most $n$ it returns $C_na_n$.  It is the geometric-grid analogue of the ordinary $n$th forward difference.  Ordinary finite differences use equally spaced nodes and binomial coefficients; the dyadic stencil uses geometrically spaced nodes and Gaussian coefficients.
+
+For example, the first rows of $w_{n,k}$ are
+\begin{align*}
+  n=0:&\quad 1,\\
+  n=1:&\quad 1,-1,\\
+  n=2:&\quad 1,-\frac32,\frac12,\\
+  n=3:&\quad 1,-\frac74,\frac78,-\frac18,\\
+  n=4:&\quad 1,-\frac{15}{8},\frac{35}{32},-\frac{15}{64},\frac1{64}.
+\end{align*}
+They are exactly the coefficients of $\qpoch{z}{1/2}{n}$, read as weights on the exponential nodes $-2^k$.
+
+\section{Thue--Morse cancellation and normalized exponential blocks}
+\label{sec:thue-morse}
+
+\subsection{The sign sequence}
+
+Let $\wt(r)$ be the number of ones in the binary expansion of $r$, and define
+\begin{equation}
+  \eps_r=(-1)^{\wt(r)}.
+  \label{eq:tm-sign}
+\end{equation}
+The binary recurrences
+\begin{equation}
+  \eps_{2r}=\eps_r,
+  \qquad
+  \eps_{2r+1}=-\eps_r
+  \label{eq:tm-recursions}
+\end{equation}
+are the algebraic reason that blocks of length $2^k$ factor.
+
+Every $0\le r<2^k$ has a unique binary expansion
+$r=\sum_{j=0}^{k-1}b_j2^j$ with $b_j\in\{0,1\}$.  Hence
+\begin{align}
+  \sum_{r=0}^{2^k-1}\eps_r\e^{rz}
+  &=\sum_{b_0,\ldots,b_{k-1}\in\{0,1\}}
+    \prod_{j=0}^{k-1}(-1)^{b_j}\e^{b_j2^jz}\notag\\
+  &=\prod_{j=0}^{k-1}(1-\e^{2^jz}).
+  \label{eq:tm-exponential-product}
+\end{align}
+This identity packages the Prouhet cancellation theorem for dyadic Thue--Morse blocks.
+
+\subsection{Power sums and the forced zero}
+
+For a common translation $\tau$, define the centered signed power sum
+\begin{equation}
+  T_{k,d}(\tau)
+  =\sum_{r=0}^{2^k-1}\eps_r
+    (r-2^k+\tau)^d.
+  \label{eq:Tkd-definition}
+\end{equation}
+Its exponential generating function is
+\begin{align}
+  S_{k,\tau}(z)
+  &=\sum_{d=0}^{\infty}\frac{T_{k,d}(\tau)}{d!}z^d\notag\\
+  &=\sum_{r=0}^{2^k-1}\eps_r
+    \e^{(r-2^k+\tau)z}.
+  \label{eq:Sk-definition}
+\end{align}
+By \cref{eq:tm-exponential-product},
+\begin{equation}
+  S_{k,0}(z)
+  =\e^{-2^kz}\prod_{j=0}^{k-1}(1-\e^{2^jz}).
+  \label{eq:Sk-product-first}
+\end{equation}
+Each factor $1-\e^{2^jz}$ has a simple zero at the origin, so $S_{k,0}$ has a zero of exact order $k$.  Equivalently,
+\begin{equation}
+  T_{k,d}(\tau)=0\quad(d<k),
+  \label{eq:prouhet-zero}
+\end{equation}
+for every translation $\tau$, and the first nonzero value is
+\begin{equation}
+  T_{k,k}(\tau)=(-1)^k2^{\binom{k}{2}}k!.
+  \label{eq:prouhet-leading}
+\end{equation}
+Translation cannot affect the leading coefficient of a degree-$k$ polynomial, which explains the independence of \cref{eq:prouhet-leading} from $\tau$.
+
+\subsection{Removing the forced zero}
+
+Using $1-\e^u=-u\Phi(u)$ in \cref{eq:Sk-product-first} gives
+\begin{equation}
+  S_{k,0}(z)
+  =(-1)^k2^{\binom{k}{2}}z^k
+    \e^{-2^kz}\prod_{j=0}^{k-1}\Phi(2^jz).
+  \label{eq:Sk-factor-positive}
+\end{equation}
+The identity
+\begin{equation}
+  \Phi(-u)=\e^{-u}\Phi(u)
+  \label{eq:Phi-reflection}
+\end{equation}
+allows the last factor to be rewritten as
+\begin{equation}
+  \Psi_k(z):=\e^{-z}\prod_{j=0}^{k-1}\Phi(-2^jz)
+  =\e^{-2^kz}\prod_{j=0}^{k-1}\Phi(2^jz).
+  \label{eq:Pk-definition}
+\end{equation}
+Thus
+\begin{equation}
+  S_{k,0}(z)=(-1)^k2^{\binom{k}{2}}z^k\Psi_k(z).
+  \label{eq:Sk-Pk}
+\end{equation}
+If
+\begin{equation}
+  \Psi_k(z)=\sum_{n=0}^{\infty}c_{k,n}z^n,
+  \label{eq:ckn-definition}
+\end{equation}
+then comparison with \cref{eq:Sk-definition} yields
+\begin{equation}
+  c_{k,n}
+  =(-1)^k2^{-\binom{k}{2}}
+    \frac{T_{k,n+k}(0)}{(n+k)!}.
+  \label{eq:ckn-T}
+\end{equation}
+This is the first appearance of the second triangular factor.  One copy of $2^{-\binom{k}{2}}$ belongs to the Gaussian finite-difference weights, and a second copy comes from removing the Thue--Morse zero.  Their product is
+\begin{equation}
+  2^{-2\binom{k}{2}}=4^{-\binom{k}{2}},
+  \label{eq:four-triangle}
+\end{equation}
+which explains the denominator $4^{\binom{k}{2}}$ in the final Fabius formula.
+
+\subsection{The bridge to the Fabius moment series}
+
+Iterating \cref{eq:A-refinement} at the arguments $-z,-2z,\ldots,-2^{k-1}z$ gives
+\begin{equation}
+  A(-2^kz)=A(-z)\prod_{j=0}^{k-1}\Phi(-2^jz).
+  \label{eq:A-negative-iterate}
+\end{equation}
+Multiplying by $\e^{-z}$ and using \cref{eq:Pk-definition} produces the crucial identity
+\begin{equation}
+  \Psi_k(z)A(-z)=\e^{-z}A(-2^kz).
+  \label{eq:Pk-A-bridge}
+\end{equation}
+The left side contains the normalized Thue--Morse block.  The right side contains the same moment series evaluated at the geometric node $-2^k$.  This is exactly the form on which the functional $\mathcal L_n$ from \cref{eq:Ln-definition} acts.
+
+\section{The geometric coefficient-extraction theorem}
+\label{sec:coefficient-extraction}
+
+The heart of the argument is an elementary but powerful formal-power-series lemma.  It explains the complete $q$-binomial numerator before any Fabius normalization is inserted.
+
+\begin{theorem}[Dyadic Gaussian coefficient extraction]
+Let $A(z)=\sum_{m\ge0}a_mz^m$ with $a_0=1$, and let $\Psi_k(z)=\sum_{m\ge0}c_{k,m}z^m$ satisfy
+\begin{equation}
+  \Psi_k(z)A(-z)=\e^{-z}A(-2^kz).
+  \label{eq:abstract-bridge}
+\end{equation}
+For the weights $w_{n,k}$ in \cref{eq:q-weights-nodes},
+\begin{equation}
+  \sum_{k=0}^{n}w_{n,k}c_{k,d}=0
+  \quad(0\le d<n),
+  \label{eq:weighted-c-lower-zero}
+\end{equation}
+and
+\begin{equation}
+  \sum_{k=0}^{n}w_{n,k}c_{k,n}=C_na_n,
+  \label{eq:weighted-c-top}
+\end{equation}
+where $C_n=2^{\binom{n+1}{2}}P_n$.
+\end{theorem}
+
+\begin{proof}
+Take the coefficient of $z^d$ in \cref{eq:abstract-bridge}:
+\begin{equation}
+  \sum_{i=0}^{d}c_{k,i}(-1)^{d-i}a_{d-i}
+  =\sum_{j=0}^{d}\frac{(-1)^j}{j!}a_{d-j}(-2^k)^{d-j}.
+  \label{eq:coefficient-identity-k}
+\end{equation}
+Multiply by $w_{n,k}$ and sum over $k=0,\ldots,n$.
+
+Suppose first that $d<n$.  Every node power on the right has degree $d-j<n$, so \cref{eq:q-weight-moments} makes the right side zero.  On the left, use induction on $d$.  The terms with $i<d$ vanish by the induction hypothesis, and the remaining term is
+\[
+  a_0\sum_{k=0}^{n}w_{n,k}c_{k,d}
+  =\sum_{k=0}^{n}w_{n,k}c_{k,d}.
+\]
+This proves \cref{eq:weighted-c-lower-zero}.
+
+Now take $d=n$.  On the right side of \cref{eq:coefficient-identity-k}, every term with $j>0$ contains a node power of degree $n-j<n$ and vanishes after weighting.  The $j=0$ term is
+\[
+  a_n\sum_{k=0}^{n}w_{n,k}(-2^k)^n=C_na_n.
+\]
+On the left, all terms with $i<n$ vanish by \cref{eq:weighted-c-lower-zero}; the remaining $i=n$ term is the left side of \cref{eq:weighted-c-top} because $a_0=1$.
+\end{proof}
+
+This proof is worth pausing over.  There are two nested cancellations:
+\begin{enumerate}[leftmargin=2.2em]
+  \item the finite $q$-binomial theorem annihilates powers of the geometric nodes below degree $n$;
+  \item the coefficient identity recursively transfers those nodal cancellations to the coefficients of the normalized Thue--Morse factors $\Psi_k$.
+\end{enumerate}
+No mysterious summation trick remains.  The Gaussian row is exactly the linear functional that the dyadic refinement identity requires.
+
+\section{Exact values at inverse powers of two}
+\label{sec:inverse-dyadic-formula}
+
+\subsection{The centered numerator}
+
+Define
+\begin{equation}
+  N_n(\tau)
+  =\sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    T_{k,n+k}(\tau),
+  \label{eq:Nn-tau}
+\end{equation}
+where $T_{k,d}(\tau)$ is the translated Thue--Morse power sum from
+\cref{eq:Tkd-definition}.  At $\tau=0$, insert \cref{eq:ckn-T} into
+\cref{eq:weighted-c-top}.  The two signs $(-1)^k$ cancel and the two triangular powers combine as in \cref{eq:four-triangle}.  The result is
+\begin{equation}
+  N_n(0)=C_na_n
+  =2^{\binom{n+1}{2}}P_na_n.
+  \label{eq:Nn-value}
+\end{equation}
+Dividing by $2^{n^2}P_n$ gives
+\begin{align}
+  \frac{N_n(0)}{2^{n^2}P_n}
+  &=2^{\binom{n+1}{2}-n^2}a_n\notag\\
+  &=2^{-\binom{n}{2}}a_n
+  =\Fabius(2^{-n}).
+  \label{eq:normalization-computation}
+\end{align}
+
+\begin{theorem}[Centered inverse-dyadic $q$-binomial formula]
+For every $n\ge0$,
+\begin{equation}
+\boxed{
+  \Fabius(2^{-n})
+  =\frac{1}{2^{n^2}\qpoch{1/2}{1/2}{n}}
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    \sum_{r=0}^{2^k-1}
+      (-1)^{\wt(r)}(r-2^k)^{n+k}.}
+  \label{eq:centered-inverse-dyadic}
+\end{equation}
+\end{theorem}
+
+The formula is valid at $n=0$.  At the centered value $\tau=0$, the sole inner term is
+$(-1)^0(0-1)^0=1$.  The translated identity also permits $\tau=1$, where the base is zero and the natural-power convention $0^0=1$ is used.  Treating the zero case uniformly is important in both symbolic computation and formalization.
+
+\subsection{A detailed check at \texorpdfstring{$n=2$}{n=2}}
+
+For $n=2$,
+\[
+  P_2=\left(1-\frac12\right)\left(1-\frac14\right)=\frac38,
+  \qquad
+  \left(\Qbin{2}{0}{1/2},\Qbin{2}{1}{1/2},\Qbin{2}{2}{1/2}\right)
+  =\left(1,\frac32,1\right).
+\]
+The required Thue--Morse sums are
+\begin{align*}
+  T_{0,2}(0)&=1,\\
+  T_{1,3}(0)&=(-2)^3-(-1)^3=-7,\\
+  T_{2,4}(0)&=160.
+\end{align*}
+Thus
+\begin{align*}
+  N_2(0)
+  &=\frac{1}{2!}
+   +\frac{(3/2)(-7)}{3!}
+   +\frac{160}{4\cdot4!}\\
+  &=\frac12-\frac74+\frac53
+   =\frac5{12}.
+\end{align*}
+Finally,
+\[
+  \Fabius(1/4)
+  =\frac{5/12}{2^4(3/8)}
+  =\frac5{72},
+\]
+in agreement with \cref{tab:first-values}.
+
+\subsection{Numerical cancellation versus exact structure}
+
+The individual signed power sums in \cref{eq:centered-inverse-dyadic} become very large.  For example, at $n=4$ the $k=4$ block contains powers of degree eight over sixteen terms, and its contribution before the outer cancellation is $1751/320$.  The complete numerator is only $1001/720$.  The formula is therefore best regarded as an exact algebraic identity or a source of arithmetic information, not as a naive floating-point algorithm.  The recurrence \cref{eq:a-recurrence} is usually better conditioned for direct numerical evaluation; exact rational arithmetic makes either route reliable.
+
+\section{Translation invariance and raw coordinates}
+\label{sec:translation}
+
+\subsection{Why a common translation disappears}
+
+From \cref{eq:Sk-definition}, translating every inner power by the same $\tau$ simply multiplies the exponential series by $\e^{\tau z}$:
+\begin{equation}
+  S_{k,\tau}(z)=\e^{\tau z}S_{k,0}(z).
+  \label{eq:translation-exponential}
+\end{equation}
+After the forced factor $z^k$ is removed, $\Psi_k(z)$ is replaced by $\e^{\tau z}\Psi_k(z)$.  The weighted degree-$n$ coefficient is
+\begin{align}
+  \sum_{k=0}^{n}w_{n,k}\coeff{z^n}{\e^{\tau z}\Psi_k(z)}
+  &=\sum_{j=0}^{n}\frac{\tau^j}{j!}
+    \sum_{k=0}^{n}w_{n,k}c_{k,n-j}.
+  \label{eq:translation-coefficient-convolution}
+\end{align}
+Every term with $j>0$ contains a coefficient of degree $n-j<n$ and vanishes by \cref{eq:weighted-c-lower-zero}.  Only $j=0$ remains.  Hence
+\begin{equation}
+  N_n(\tau)=N_n(0).
+  \label{eq:N-translation-invariance}
+\end{equation}
+
+\begin{theorem}[Translated inverse-dyadic formula]
+For every $n\ge0$ and every common translation $\tau$,
+\begin{equation}
+\boxed{
+  \Fabius(2^{-n})
+  =\frac{1}{2^{n^2}P_n}
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    \sum_{r=0}^{2^k-1}
+      \eps_r(r-2^k+\tau)^{n+k}.}
+  \label{eq:translated-inverse-dyadic}
+\end{equation}
+\end{theorem}
+
+The Lean development first proves \cref{eq:N-translation-invariance} over $\Q$.  For fixed $n$, the complete numerator is a polynomial in $\tau$ with rational coefficients.  A polynomial that takes the same value at every rational argument is constant, so it can be evaluated at an arbitrary element of any characteristic-zero field.  This yields the real and complex versions without a separate analytic argument.
+
+The important qualifier is \emph{common}.  The same $\tau$ must be used for every value of $k$.  A $k$-dependent recentering generally destroys the cancellation.
+
+\subsection{The raw-coordinate formula}
+
+Sometimes it is more convenient to use powers $(r+\tau)^{n+k}$ rather than centered powers.  Define
+\begin{equation}
+  R_{k,d}(\tau)=\sum_{r=0}^{2^k-1}\eps_r(r+\tau)^d.
+  \label{eq:raw-power-sum}
+\end{equation}
+Reflect the dyadic block by $r\mapsto2^k-1-r$.  Complementing all $k$ binary digits changes the Thue--Morse sign by $(-1)^k$, while
+\[
+  (2^k-1-r)-2^k+c=-(r+1-c).
+\]
+For $d=n+k$, the total sign is
+\[
+  (-1)^k(-1)^{n+k}=(-1)^n,
+\]
+independent of $k$.  Since $n^2\equiv n\pmod2$, the sign can be absorbed into the denominator $(-2)^{n^2}$.
+
+\begin{theorem}[Raw inverse-dyadic formula]
+For every $n\ge0$ and every common translation $\tau$,
+\begin{equation}
+\boxed{
+  \Fabius(2^{-n})
+  =\frac{1}{(-2)^{n^2}P_n}
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    \sum_{r=0}^{2^k-1}
+      \eps_r(r+\tau)^{n+k}.}
+  \label{eq:raw-inverse-dyadic}
+\end{equation}
+\end{theorem}
+
+At $\tau=0$, the $n=k=0$ term contains $0^0$ and is interpreted as one.  This is the same convention used for natural powers in Lean and in most computer algebra systems.
+
+\section{Arbitrary dyadic arguments}
+\label{sec:arbitrary-dyadic}
+
+\subsection{The signed global extension}
+
+The bounded function is constant outside $[0,1]$, whereas the arithmetic paper also uses a signed smooth global extension obtained from Thue--Morse translates of $\Up$.  Denote it by $\mathcal F$ and write it explicitly as
+\begin{equation}
+  \mathcal F(x)=\sum_{h=0}^{\infty}\eps_h\,
+  \Up(x-2h-1).
+  \label{eq:signed-global-extension}
+\end{equation}
+Because $\Up$ is supported in $[-1,1]$, this sum is pointwise finite.  On $[0,1]$,
+\begin{equation}
+  \mathcal F(x)=\Fabius(x).
+  \label{eq:global-agreement}
+\end{equation}
+The global function is the natural target for a formula valid at $m/2^n$ with no restriction on the numerator $m$.
+
+For $m,k,d\in\N$, define the longer translated block
+\begin{equation}
+  T_{m;k,d}(\tau)
+  =\sum_{r=0}^{m2^k-1}\eps_r
+    (r-m2^k+\tau)^d.
+  \label{eq:long-block}
+\end{equation}
+The inverse-dyadic block is the case $m=1$.
+
+\begin{theorem}[Arbitrary-dyadic formula]
+For all $m,n\in\N$ and every common translation $\tau$,
+\begin{equation}
+\boxed{
+  \mathcal F\!\left(\frac{m}{2^n}\right)
+  =\frac{1}{2^{n^2}P_n}
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    \sum_{r=0}^{m2^k-1}
+      \eps_r(r-m2^k+\tau)^{n+k}.}
+  \label{eq:arbitrary-dyadic-formula}
+\end{equation}
+If $0\le m\le2^n$, the left side is the bounded value $\Fabius(m/2^n)$.
+\end{theorem}
+
+\subsection{Why the same Gaussian row still works}
+
+Write $r=h2^k+s$ with $0\le s<2^k$.  The binary supports of $h2^k$ and $s$ are disjoint, so
+\begin{equation}
+  \eps_{h2^k+s}=\eps_h\eps_s.
+  \label{eq:tm-block-factor}
+\end{equation}
+This factors the long block into a prefix sum over $h<m$ and the same basic length-$2^k$ Thue--Morse block used earlier.  At the level of exponential generating functions, the new factor is a finite prefix polynomial evaluated at the same dyadic node $-2^k$.  The coefficient-extraction argument survives because multiplying by a fixed prefix series does not alter the geometric moment conditions \cref{eq:q-weight-moments}; the lower weighted coefficients are still forced to vanish.
+
+This is a useful structural point.  The Gaussian coefficients do not encode the numerator $m$.  They encode the \emph{resolution} $2^{-n}$ and the dyadic dilation geometry.  The numerator enters through the finite Thue--Morse prefix.
+
+The formula includes the boundary cases automatically.  When $m=0$, every inner range is empty and both sides are zero.  When $m=2^n$, it returns $\Fabius(1)=1$ after the complete cancellation, despite the complicated intermediate sums.
+
+\section{Taylor reduction and the global \texorpdfstring{$q$}{q}-binomial series}
+\label{sec:taylor-global}
+
+\subsection{The normalized numerator is a moment coefficient}
+
+Define the normalized translated numerator
+\begin{equation}
+  M_n(\tau)
+  =\frac{N_n(\tau)}{2^{\binom{n}{2}}P_n}.
+  \label{eq:Mn-definition}
+\end{equation}
+Using \cref{eq:Nn-value},
+\begin{equation}
+  M_n(\tau)=2^na_n
+  =2^n\frac{d_n}{n!}
+  =2^{\binom{n+1}{2}}\Fabius(2^{-n}).
+  \label{eq:Mn-value}
+\end{equation}
+Thus the elaborate finite $q$-binomial--Thue--Morse expression is exactly a familiar Taylor coefficient in a different coordinate system.
+
+\subsection{A finite reduction polynomial}
+
+For $m\ge0$, define
+\begin{equation}
+  \mathcal Q_m(\tau,y)
+  =\frac{1}{2^{\binom{m+1}{2}}}
+    \sum_{n=0}^{m}
+      \frac{(2^{m+1}y)^{m-n}}{(m-n)!}M_n(\tau).
+  \label{eq:Qm-reduction}
+\end{equation}
+Substituting \cref{eq:Mn-value} and writing $k=m-n$ gives
+\begin{equation}
+  \mathcal Q_m(\tau,y)
+  =\sum_{k=0}^{m}
+    2^{\binom{k+1}{2}-\binom{m-k}{2}}
+    \frac{d_{m-k}}{(m-k)!}
+    \frac{y^k}{k!}.
+  \label{eq:Qm-classical-reduction}
+\end{equation}
+The right side no longer contains $\tau$, $q$-Pochhammer symbols, Gaussian coefficients, or Thue--Morse sums.  It is the ordinary Fabius Taylor-reduction polynomial.  The $q$-formula is therefore an exact alternate expansion of a finite Taylor object, not a new transcendental correction.
+
+This equality is especially useful in the formal proof.  The left side can be treated as a polynomial in the translation $\tau$; rational translation invariance makes that polynomial constant, and the right side identifies the constant over any characteristic-zero scalar field.
+
+\subsection{Iteration along the binary expansion}
+
+Let $x\ge0$ and define
+\begin{equation}
+  b_m(x)=\floor{2^mx},
+  \qquad
+  y_m(x)=x-\frac{b_m(x)}{2^m}.
+  \label{eq:binary-prefix-tail}
+\end{equation}
+Then $0\le y_m(x)<2^{-m}$.  At scale zero it is useful to define the previous prefix separately by
+\begin{equation}
+  b_{-1}(x)=\floor{x/2}.
+  \label{eq:previous-prefix-zero}
+\end{equation}
+For $m\ge1$, $b_{m-1}=\floor{2^{m-1}x}$ as usual.
+
+The binary-reduction coefficient is
+\begin{equation}
+  \gamma_m(x)
+  =\eps_{b_m(x)}\bigl(2b_{m-1}(x)-b_m(x)\bigr).
+  \label{eq:gamma-binary}
+\end{equation}
+For $m\ge1$, the parenthesis is zero when the next binary digit is zero and $-1$ when it is one.  At $m=0$, the genuine half-scale prefix $\floor{x/2}$ distinguishes the even and odd unit blocks of the signed global extension.
+
+The finite Taylor reduction telescopes along the binary expansion and yields the absolutely convergent series
+\begin{equation}
+  \mathcal F(x)
+  =\sum_{m=0}^{\infty}\gamma_m(x)\,
+    \mathcal Q_m(\tau,y_m(x)),
+  \qquad x\ge0.
+  \label{eq:global-compressed-series}
+\end{equation}
+Because \cref{eq:Qm-reduction} is a finite $q$-binomial--Thue--Morse expression, \cref{eq:global-compressed-series} is a global $q$-binomial series for the Fabius extension.  It is valid for real or complex $\tau$, and each summand is already independent of $\tau$ before the outer infinite sum is taken.
+
+Expanding $M_n(\tau)$ in \cref{eq:Qm-reduction} gives
+\begin{align}
+  \mathcal Q_m(\tau,y)
+  &=\frac{1}{2^{\binom{m+1}{2}}}
+    \sum_{n=0}^{m}\frac{(2^{m+1}y)^{m-n}}{(m-n)!}
+    \frac{1}{2^{\binom{n}{2}}P_n}\notag\\
+  &\quad\times
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}
+    \sum_{r=0}^{2^k-1}\eps_r(r-2^k+\tau)^{n+k}.
+  \label{eq:global-expanded-polynomial}
+\end{align}
+Together, \cref{eq:global-compressed-series,eq:global-expanded-polynomial} are a readable compressed form of the fully literal global formula formalized in Lean.
+
+The starting index $m=0$ is essential.  Omitting it loses the contribution that distinguishes neighboring unit blocks; at $x=1$, for example, that scale-zero term contributes exactly one.
+
+\section{A discrete limit and a Toeplitz interpretation}
+\label{sec:discrete-limit}
+
+The same Gaussian row has a third role: after reindexing, it becomes a regular Toeplitz summability kernel.
+
+\subsection{The discrete approximants}
+
+For $p\ge0$ and $x\ge0$, let
+\begin{equation}
+  L_p(x)=\floor{2^px+\frac12}.
+  \label{eq:nearest-range}
+\end{equation}
+This is nearest-integer rounding with half-integers rounded upward.  Define
+\begin{align}
+  D_n(\tau,x)
+  &=\frac{1}{2^{n^2}P_n}
+    \sum_{k=0}^{n}
+    \frac{\Qbin{n}{k}{1/2}}
+         {4^{\binom{k}{2}}(n+k)!}\notag\\
+  &\qquad\times
+    \sum_{r=0}^{L_{n+k}(x)-1}
+      \eps_r\bigl(r-2^{n+k}x+\tau\bigr)^{n+k}.
+  \label{eq:Dn-definition}
+\end{align}
+The inner range is empty when $L_{n+k}(x)=0$.  This form avoids the unsafe convention of writing an inclusive upper endpoint that can be $-1$.
+
+The formalized theorem states that, for every fixed real or complex translation $\tau$,
+\begin{equation}
+  \lim_{n\to\infty}D_n(\tau,x)=\mathcal F(x)
+  \qquad(x\ge0).
+  \label{eq:discrete-limit-result}
+\end{equation}
+On $0\le x\le1$, the limit is the bounded value $\Fabius(x)$.
+
+\subsection{The reindexed Gaussian weights}
+
+Put $j=n-k$.  The outer coefficient factors into a spline normalization and the rational weight
+\begin{equation}
+  W_{n,j}
+  =\frac{(-1)^j\Qbin{n}{j}{1/2}
+          2^{-\binom{j+1}{2}}}{P_n},
+  \qquad 0\le j\le n.
+  \label{eq:Toeplitz-weight}
+\end{equation}
+The finite $q$-binomial theorem at $z=1/2$ gives
+\begin{align}
+  P_n
+  &=\sum_{j=0}^{n}(-1)^j2^{-\binom{j}{2}}
+    \Qbin{n}{j}{1/2}\left(\frac12\right)^j\notag\\
+  &=\sum_{j=0}^{n}(-1)^j\Qbin{n}{j}{1/2}
+    2^{-\binom{j+1}{2}},
+  \label{eq:Toeplitz-row-sum-proof}
+\end{align}
+so
+\begin{equation}
+  \sum_{j=0}^{n}W_{n,j}=1.
+  \label{eq:Toeplitz-row-sum}
+\end{equation}
+Replacing $z=1/2$ by $z=-1/2$ removes the alternating signs and yields
+\begin{equation}
+  \sum_{j=0}^{n}|W_{n,j}|
+  =\frac{\qpoch{-1/2}{1/2}{n}}{\qpoch{1/2}{1/2}{n}}.
+  \label{eq:Toeplitz-variation-exact}
+\end{equation}
+The Lean proof establishes the convenient uniform estimate
+\begin{equation}
+  \sum_{j=0}^{n}|W_{n,j}|\le16.
+  \label{eq:Toeplitz-variation-bound}
+\end{equation}
+Thus the row sums are one and the total variations are uniformly bounded.
+
+After the exact reindexing, $D_n$ is a weighted sum of spline approximants sampled at degrees
+\begin{equation}
+  p=2n-j\ge n.
+  \label{eq:Toeplitz-index}
+\end{equation}
+Every sampled index therefore tends uniformly into the tail as $n\to\infty$.  A finite-row Toeplitz lemma now implies \cref{eq:discrete-limit-result}: any convergent spline sequence remains convergent under these rows.
+
+This proof reveals that the Gaussian coefficients are not only coefficient-extraction weights.  In a different normalization they form a stable averaging scheme.  The two uses are algebraically related by the same finite $q$-binomial theorem.
+
+\section{Arithmetic meaning of the \texorpdfstring{$q=1/2$}{q=1/2} specialization}
+\label{sec:arithmetic}
+
+The exact formula separates three arithmetically distinct ingredients:
+\begin{enumerate}[leftmargin=2.2em]
+  \item powers of two, coming from dyadic dilation and the normalization of Gaussian coefficients;
+  \item odd Mersenne factors, coming from $P_n$ through \cref{eq:Pn-mersenne};
+  \item factorials and integer Thue--Morse power sums.
+\end{enumerate}
+Indeed,
+\begin{equation}
+  2^{n^2}P_n
+  =2^{\binom{n}{2}}\prod_{j=1}^{n}(2^j-1),
+  \label{eq:arithmetic-normalizer-repeat}
+\end{equation}
+while
+\begin{equation}
+  \Qbin{n}{k}{1/2}
+  =2^{-k(n-k)}\Qbin{n}{k}{2}
+  \label{eq:arithmetic-gaussian-repeat}
+\end{equation}
+with $\Qbin{n}{k}{2}$ an odd integer.  Thus every apparent nonintegrality in the Gaussian row is a known power of two.  The odd part is finite-field combinatorics.
+
+The endpoint evaluation \cref{eq:q-node-endpoint} explains why the same Mersenne product occurs as the coefficient-extraction normalizer.  It is not inserted after the fact to simplify denominators: it is the exact value of the annihilating polynomial at the first dyadic node that is not a root.
+
+The Thue--Morse sums are integers and exhibit strong divisibility because the first $k$ moments vanish and the leading moment equals
+$(-1)^k2^{\binom{k}{2}}k!$.  Dividing by
+$4^{\binom{k}{2}}(n+k)!$ therefore appears severe term by term, but the complete Gaussian combination restores the much smaller rational number $C_na_n$.
+
+From this viewpoint, the $q$-formalism packages a denominator audit.  It records exactly where powers of two enter, isolates the odd Mersenne product, and turns the remaining cancellation into an integer signed-power-sum problem.  This is one reason the formula is valuable even when the recurrence \cref{eq:a-recurrence} is computationally shorter.
+
+\section{Why these special functions arise}
+\label{sec:why-q}
+
+The appearance of $q$-Pochhammer symbols and Gaussian coefficients can now be summarized without mystery.
+
+\subsection{Dilation creates a geometric grid}
+
+The Fabius equation uses $x\mapsto2x$.  Its moment series is therefore evaluated at the nodes
+\[
+  -1,-2,-4,\ldots,-2^n.
+\]
+The interpolation or finite-difference operator appropriate to a geometric grid is a $q$-operator, just as the operator appropriate to an arithmetic grid uses ordinary binomial coefficients.  The reciprocal scale is $\rho=1/2$.
+
+\subsection{The annihilator is a \texorpdfstring{$q$}{q}-Pochhammer polynomial}
+
+To kill the lower node powers $2^{dk}$ for $d<n$, one needs a polynomial in $z$ with roots
+$1,2,\ldots,2^{n-1}$.  Up to normalization, that polynomial is
+\begin{equation}
+  \prod_{d=0}^{n-1}(1-z2^{-d})=\qpoch{z}{1/2}{n}.
+  \label{eq:annihilator-qpoch}
+\end{equation}
+Expanding it forces the Gaussian coefficients by the finite $q$-binomial theorem.
+
+\subsection{Thue--Morse contributes the second triangular exponent}
+
+A dyadic Thue--Morse block has a zero of order $k$, and its first surviving coefficient contains
+$2^{\binom{k}{2}}$.  Removing the zero contributes the reciprocal factor
+$2^{-\binom{k}{2}}$.  The Gaussian stencil contributes another copy.  This is why the final formula contains $4^{-\binom{k}{2}}$.
+
+\subsection{The endpoint value supplies the normalizer}
+
+The annihilator vanishes at the first $n$ dyadic nodes and is evaluated at $2^n$ for the surviving coefficient.  That endpoint value is
+\begin{equation}
+  (-1)^n2^{\binom{n+1}{2}}P_n,
+  \label{eq:endpoint-normalizer-summary}
+\end{equation}
+so the $q$-Pochhammer factor in the denominator is forced by coefficient extraction.
+
+\subsection{The same row becomes a summability kernel}
+
+After the discrete-limit reindexing, the Gaussian row is normalized by $P_n$ so that its sum is one.  Evaluation of the same $q$-binomial polynomial at $\pm1/2$ controls the row sum and total variation.  Thus the $q$-objects govern both exact finite cancellation and analytic convergence.
+
+These are four manifestations of one fact: binary dilation is ordinary linear algebra on a geometric grid, and finite $q$-calculus is the natural coordinate language for that grid.
+
+\section{Relation to basic hypergeometric series}
+\label{sec:basic-hypergeometric}
+
+The $q$-Pochhammer symbol is the elementary building block of basic hypergeometric series.  It is convenient to abbreviate
+\begin{equation}
+  (a_1,\ldots,a_r;\rho)_k
+  :=\prod_{i=1}^{r}\qpoch{a_i}{\rho}{k}.
+  \label{eq:multiple-qpoch}
+\end{equation}
+One common normalization of a unilateral basic hypergeometric series is
+\begin{align}
+ {}_r\phi_s\!\left(
+   \begin{matrix}a_1,\ldots,a_r\\ b_1,\ldots,b_s\end{matrix}
+   ;\rho,z\right)
+  :=\sum_{k=0}^{\infty}
+  \frac{(a_1,\ldots,a_r;\rho)_k}
+       {(\rho,b_1,\ldots,b_s;\rho)_k}
+  \left((-1)^k\rho^{\binom{k}{2}}\right)^{1+s-r}z^k.
+  \label{eq-basic-hypergeometric-definition}
+\end{align}
+The ratio of consecutive summands is rational in $\rho^k$.  The classical infinite $q$-binomial theorem is the case ${}_1\phi_0$:
+\begin{equation}
+  \sum_{k=0}^{\infty}
+    \frac{\qpoch{a}{\rho}{k}}{\qpoch{\rho}{\rho}{k}}z^k
+  =\frac{\qpoch{az}{\rho}{\infty}}
+         {\qpoch{z}{\rho}{\infty}},
+  \qquad |\rho|<1,\quad |z|<1.
+  \label{eq:infinite-q-binomial}
+\end{equation}
+Taking $a=\rho^{-n}$ makes the series terminate; after a rescaling of $z$, one recovers the finite polynomial identity in \cref{eq:finite-q-binomial}.  The Fabius formula needs only this terminating fragment of the general theory: the finite Gaussian row and the finite $q$-binomial theorem.
+
+For fixed $n$, the coefficient actually occurring in the Fabius formula,
+\begin{equation}
+  \frac{\Qbin{n}{k}{1/2}}{4^{\binom{k}{2}}(n+k)!},
+  \label{eq:coefficient-hypergeometric-comment}
+\end{equation}
+should not be regarded as a standard basic hypergeometric term by itself because of the ordinary factorial $(n+k)!$ and the additional Thue--Morse power sum.  The formula is a hybrid of three calculi:
+\begin{itemize}[leftmargin=2em]
+  \item finite $q$-calculus for the geometric scale index $k$;
+  \item ordinary exponential generating functions for derivatives and moments;
+  \item automatic-sequence cancellation for the binary digit signs.
+\end{itemize}
+The interaction among them is more informative than a forced rewrite as a single named hypergeometric function.
+
+The infinite product $A(z)=\prod_{j\ge1}\Phi(z/2^j)$ is also $q$-structured, but its factors are not themselves $q$-Pochhammer factors: they are exponential quotients sampled on a geometric scale.  The actual $q$-Pochhammer symbol enters when the finite geometric-node annihilator is expanded.
+
+\section{Formalization architecture in Lean}
+\label{sec:lean-architecture}
+
+The Lean development separates the argument into small algebraic and analytic layers.  This is not merely a software-engineering convenience: it mirrors the mathematical dependency graph and prevents the exact rational core from being entangled with real or complex convergence.
+
+\begin{longtable}{>{\raggedright\arraybackslash\small}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.56\textwidth}}
+\caption{Principal modules behind the $q$-binomial Fabius theory.}\label{tab:lean-modules}\\
+\toprule
+Module & Mathematical role \\
+\midrule
+\endfirsthead
+\toprule
+Module & Mathematical role \\
+\midrule
+\endhead
+\lean{Basic.lean} & Distinguishes the bounded Fabius function, Rvachev's $\Up$ function, and the signed global extension; defines the moment generating functions. \\
+\addlinespace
+\lean{FabiusRecurrenceSequence.lean} & Defines $a_n=d_n/n!$, proves the recurrence \cref{eq:a-recurrence}, the exact relation \cref{eq:fabius-half-moment}, and the entire dyadic product for $A$. \\
+\addlinespace
+\lean{HalfQBinomial.lean} & Defines finite $q$-Pochhammer products, $P_n$, Gaussian coefficients at $1/2$, the finite $q$-binomial theorem, positivity and symmetry, the Mersenne normalization, and the nodal identities \cref{eq:q-node-zero,eq:q-node-endpoint-sum}. \\
+\addlinespace
+\lean{ThueMorseGenerating.lean} and \lean{ThueMorseExponential.lean} & Formalize Prouhet cancellation, signed power sums, their exponential generating series, the exact order-$k$ zero, translation by multiplication with an exponential, and the shifted series whose coefficients are $T_{k,n+k}/(n+k)!$. \\
+\addlinespace
+\lean{FabiusQBinomialFormula.lean} & Introduces the geometric weights and nodes, proves the coefficient-isolation lemmas, derives the centered inverse-dyadic formula, establishes rational translation invariance, and extends the formula to arbitrary dyadic numerators. \\
+\addlinespace
+\lean{FabiusRawQBinomialFormula.lean} & Reflects each dyadic block to obtain the raw powers $(r+\tau)^{n+k}$ and the normalization $(-2)^{n^2}$. \\
+\addlinespace
+\lean{FabiusQBinomialTaylor.lean} & Packages the translated numerator as a polynomial in $\tau$, proves that it is constant, identifies its normalization with $2^na_n$, and proves equality with the finite Taylor-reduction polynomial. \\
+\addlinespace
+\lean{FabiusQBinomialScalarFormula.lean} and \lean{FabiusRawQBinomialScalar.lean} & Upgrade rational translations to arbitrary elements of characteristic-zero scalar fields, including all real and complex translations. \\
+\addlinespace
+\lean{FabiusDyadicQBinomialScalar.lean} & Gives the arbitrary-numerator dyadic formula over general scalar fields and its bounded and signed-global wrappers. \\
+\addlinespace
+\lean{FabiusBinaryReductionSeries.lean} & Iterates Taylor reduction along binary prefixes, includes the indispensable scale-zero term, proves a residual telescope, and establishes absolute convergence. \\
+\addlinespace
+\lean{FabiusGlobalQBinomialSeries.lean} & Replaces every Taylor-reduction polynomial in the binary telescope by its literal finite $q$-binomial--Thue--Morse expression; proves pointwise translation independence and the real/complex global series. \\
+\addlinespace
+\lean{FabiusDiscreteLimitToeplitz.lean} & Defines the reindexed weights $W_{n,j}$, proves row sum one, a uniform total-variation bound, and a finite-row Toeplitz convergence theorem. \\
+\addlinespace
+\lean{FabiusDiscreteLimitIntegration.lean} & Reindexes the proposed discrete approximants exactly, applies the Toeplitz theorem to the complex-shift spline limit, and identifies the limit with the signed global Fabius function. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Representative theorem names}
+
+Some theorem names make the mathematical organization especially visible:
+\begin{itemize}[leftmargin=2em]
+  \item \lean{qBinomial_half_theorem} is \cref{eq:finite-half-q-binomial};
+  \item \lean{halfQBinomial_two_pow_sum_eq_zero} and \lean{halfQBinomial_two_pow_sum_eq_self} are the two cases in \cref{eq:q-weight-moments};
+  \item \lean{thueMorseCenteredPowerSum_eq_zero_of_lt} and \lean{thueMorseCenteredPowerSum_self} are \cref{eq:prouhet-zero,eq:prouhet-leading};
+  \item \lean{refinementFactorSeries_mul} is the formal-power-series bridge \cref{eq:Pk-A-bridge};
+  \item \lean{qBinomialThueMorseFormula_eq_recurrenceSequence} is the core coefficient-extraction result before the final Fabius identification;
+  \item \lean{fabiusAtInverseTwoPow_eq_qBinomialThueMorseFormula} is \cref{eq:centered-inverse-dyadic};
+  \item \lean{qBinomialThueMorseTranslatedFormula_eq_centered} formalizes \cref{eq:N-translation-invariance};
+  \item \lean{fabiusDyadic_eq_qBinomialThueMorseDyadicFormula} gives \cref{eq:arbitrary-dyadic-formula};
+  \item \lean{qBinomialFabiusReductionPolynomial_eq_reductionSumIn} identifies \cref{eq:Qm-reduction} with \cref{eq:Qm-classical-reduction};
+  \item \lean{qBinomialFabiusGlobalSummand_eq} proves that each literal $q$-summand equals its translation-free analytic counterpart;
+  \item \lean{fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius} is the complex form of \cref{eq:discrete-limit-result}.
+\end{itemize}
+
+\subsection{Proof-engineering choices with mathematical content}
+
+Several design choices are mathematically significant.
+
+First, the exact core lives over $\Q$ and in formal power series.  No convergence hypothesis is needed for coefficient extraction.  Analytic convergence enters only when entire functions, the binary telescope, or the discrete limit are discussed.
+
+Second, translation invariance is promoted from a family of rational equalities to a polynomial identity.  This avoids proving the same finite algebra separately over $\R$ and $\C$.
+
+Third, the arbitrary-dyadic formula uses natural-number range lengths rather than inclusive upper endpoints.  Empty sums, including the $m=0$ and small-$x$ cases, are then represented without hidden negative bounds.
+
+Fourth, the formal statements include $n=0$ rather than silently assuming positivity.  This forces all normalizations, factorials, empty products, and $0^0$ conventions to be coherent at the base scale.  The global series likewise begins at scale zero.
+
+\section{Further perspectives}
+\label{sec:further-perspectives}
+
+\subsection{A \texorpdfstring{$q$}{q}-difference operator in disguise}
+
+The functional $\mathcal L_n$ in \cref{eq:Ln-definition} can be interpreted as a finite $q$-difference operator.  The ordinary divided difference of order $n$ is characterized by annihilating polynomials of degree less than $n$ and extracting the leading coefficient.  Here the nodes form the geometric progression $-2^k$, and the explicit barycentric-style weights collapse to Gaussian coefficients because the node ratios are constant.
+
+This viewpoint suggests a direct abstract generalization.  Replace the binary dilation factor $2$ by a base $b>1$.  The natural nodes become $-b^k$, the reciprocal $q$-base becomes $1/b$, and the geometric annihilator is
+\begin{equation}
+  \qpoch{z}{1/b}{n}=\prod_{j=0}^{n-1}(1-zb^{-j}).
+  \label{eq:base-b-annihilator}
+\end{equation}
+Whether a comparably elegant function theory results depends on having a digital cancellation sequence and a refinement equation compatible with base $b$.  The binary Fabius case is unusually tight because Thue--Morse signs, dyadic blocks, and the factor two in the differential equation all match exactly.
+
+\subsection{Translation invariance as a vanishing-moment principle}
+
+The common translation parameter disappears for the same reason that adding a lower-degree polynomial does not change an $n$th finite difference.  Expanding
+$(x+\tau)^{n+k}$ introduces lower effective coefficient degrees.  The Gaussian filter has already been engineered to kill all of them.  In this sense, translation invariance is not an extra symmetry of the Fabius function; it is a consequence of the vanishing moments of the extraction functional.
+
+\subsection{Exact evaluation and stable evaluation are different goals}
+
+The $q$-binomial formula is excellent for:
+\begin{itemize}[leftmargin=2em]
+  \item proving rationality and tracking denominators;
+  \item producing independently checkable exact certificates;
+  \item relating dyadic analysis to finite-field and $q$-combinatorial structure;
+  \item transforming finite Taylor and spline expressions.
+\end{itemize}
+For high-precision floating-point evaluation, the recurrence for $a_n$, direct spline approximation, or the Fourier product may be preferable because the signed power sums in \cref{eq:centered-inverse-dyadic} undergo severe cancellation.  A mathematically revealing formula need not be the numerically best-conditioned one.
+
+\subsection{Why no larger special-function machine is required}
+
+One could embed the Gaussian coefficients into the language of terminating basic hypergeometric series.  Doing so may be useful for automated transformations, but it can obscure the decisive fact: only the finite $q$-binomial theorem and its root set are used.  The proof is fundamentally an interpolation argument on a geometric grid, coupled to a Thue--Morse exponential factorization.  The niche notation becomes transparent once those two structures are placed side by side.
+
+\section{Conclusion}
+
+The $q$-Pochhammer symbols and Gaussian binomial coefficients in the theory of the Fabius function arise from the binary dilation itself.  The finite product
+\[
+  \qpoch{z}{1/2}{n}=\prod_{j=0}^{n-1}(1-z2^{-j})
+\]
+is the polynomial whose roots are the lower dyadic nodes.  Its Gaussian expansion supplies weights that annihilate all lower powers on the geometric grid $-2^k$.  Thue--Morse blocks provide a zero of order $k$ and a second triangular power of two.  The half-moment refinement equation turns the normalized block into the Fabius moment series at those same nodes.  Coefficient extraction then produces the exact dyadic formula, with the endpoint value of the $q$-Pochhammer polynomial supplying the normalizer.
+
+The same mechanism persists under a common translation, extends to arbitrary dyadic numerators, identifies a finite $q$-sum with the ordinary Taylor-reduction polynomial, iterates to an absolutely convergent global binary series, and reappears as a regular Toeplitz kernel in the discrete-limit theorem.  At $q=1/2$, the formalism also exposes the arithmetic decomposition into powers of two, Mersenne products, Gaussian subspace counts over $\mathbb F_2$, factorials, and integer Thue--Morse sums.
+
+The special functions are therefore not exotic visitors to the subject.  They are the exact finite algebra of binary self-similarity.
+
+\appendix
+
+\section{A compact derivation of the central formula}
+\label{app:compact-derivation}
+
+For reference, the entire inverse-dyadic derivation can be compressed into the following chain.
+
+\begin{enumerate}[leftmargin=2.4em]
+  \item Define $A(z)=\sum a_nz^n$ by $A(2z)=\Phi(z)A(z)$, with $\Phi(z)=(\e^z-1)/z$ and $a_0=1$.
+
+  \item Define
+  \[
+    \Psi_k(z)=\e^{-z}\prod_{j=0}^{k-1}\Phi(-2^jz).
+  \]
+  Then
+  \[
+    \Psi_k(z)A(-z)=\e^{-z}A(-2^kz).
+  \]
+
+  \item The centered Thue--Morse exponential block satisfies
+  \[
+    \sum_{r<2^k}\eps_r\e^{(r-2^k)z}
+    =(-1)^k2^{\binom{k}{2}}z^k\Psi_k(z),
+  \]
+  so
+  \[
+    \coeff{z^n}{\Psi_k(z)}
+    =(-1)^k2^{-\binom{k}{2}}
+      \frac{T_{k,n+k}(0)}{(n+k)!}.
+  \]
+
+  \item The finite $q$-binomial theorem at $q=1/2$ gives weights
+  \[
+    w_{n,k}=(-1)^k2^{-\binom{k}{2}}\Qbin{n}{k}{1/2}
+  \]
+  with
+  \[
+    \sum_kw_{n,k}(-2^k)^d=0\ (d<n),
+    \qquad
+    \sum_kw_{n,k}(-2^k)^n=C_n,
+  \]
+  where $C_n=2^{\binom{n+1}{2}}P_n$.
+
+  \item Weighted coefficient comparison in
+  $\Psi_k(z)A(-z)=\e^{-z}A(-2^kz)$ gives
+  \[
+    \sum_kw_{n,k}\coeff{z^n}{\Psi_k(z)}=C_na_n.
+  \]
+
+  \item Substitute the coefficient from step 3:
+  \[
+    \sum_{k=0}^{n}
+      \frac{\Qbin{n}{k}{1/2}}
+           {4^{\binom{k}{2}}(n+k)!}
+      T_{k,n+k}(0)
+    =2^{\binom{n+1}{2}}P_na_n.
+  \]
+
+  \item Divide by $2^{n^2}P_n$ and use
+  $\Fabius(2^{-n})=2^{-\binom n2}a_n$.
+\end{enumerate}
+
+\section{Notation dictionary}
+\label{app:notation-dictionary}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.21\textwidth} >{\raggedright\arraybackslash\small}p{0.44\textwidth} >{\raggedright\arraybackslash}p{0.25\textwidth}}
+\caption{Mathematical notation and its Lean counterpart.}\label{tab:notation-dictionary}\\
+\toprule
+Article notation & Lean name & Meaning \\
+\midrule
+\endfirsthead
+\toprule
+Article notation & Lean name & Meaning \\
+\midrule
+\endhead
+$\qpoch{a}{\rho}{n}$ & \leancall{qPochhammer}{a rho n} & Finite $q$-Pochhammer product. \\
+$P_n=\qpoch{1/2}{1/2}{n}$ & \leancall{halfQPochhammer}{n} & Half-base product. \\
+$\Qbin{n}{k}{\rho}$ & \leancall{qBinomial}{n k rho} & Gaussian coefficient. \\
+$\Qbin{n}{k}{1/2}$ & \leancall{halfQBinomial}{n k} & Half-base Gaussian coefficient. \\
+$\eps_r$ & \leancall{thueMorseSign}{r} & $(-1)^{\wt(r)}$. \\
+$\wt(r)\bmod2$ & \leancall{thueMorseBit}{r} & Thue--Morse bit. \\
+$T_{k,d}(0)$ & \leancall{thueMorseCenteredPowerSum}{k d} & Centered signed power sum. \\
+$T_{k,d}(\tau)$ & \leancall{thueMorseTranslatedPowerSum}{tau k d} & Common translated power sum. \\
+$\Psi_k(z)$ & \leancall{refinementFactorSeries}{k} & Shifted normalized Thue--Morse factor. \\
+$a_n$ & \leancall{fabiusRecurrenceSequence}{n} & $d_n/n!$. \\
+$\Fabius(2^{-n})$ as a rational & \leancall{fabiusAtInverseTwoPow}{n} & Exact inverse-dyadic value. \\
+$N_n(0)$ & \leancall{qBinomialThueMorseNumerator}{n} & Centered complete numerator. \\
+$N_n(\tau)$ & \leancall{qBinomialThueMorseTranslatedNumerator}{tau n} & Translated numerator. \\
+$\mathcal Q_m(\tau,y)$ & \leancall{qBinomialFabiusReductionPolynomial}{tau m y} & Finite $q$-binomial Taylor-reduction polynomial. \\
+$W_{n,j}$ & \leancall{discreteLimitWeight}{n j} & Toeplitz row weight. \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+
+\bibitem{AriasDefinition}
+J. Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and properties},
+arXiv:1702.05442, 2017.
+
+\bibitem{AriasArithmetic}
+J. Arias de Reyna,
+\emph{Arithmetic of the Fabius function},
+arXiv:1702.06487, 2017.
+
+\bibitem{AlloucheShallit}
+J.-P. Allouche and J. Shallit,
+\emph{Automatic Sequences: Theory, Applications, Generalizations},
+Cambridge University Press, 2003.
+
+\bibitem{Andrews}
+G. E. Andrews,
+\emph{The Theory of Partitions},
+Addison--Wesley, 1976.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+Chapter 17, \emph{$q$-Hypergeometric and Related Functions},
+especially Section 17.2,
+\url{https://dlmf.nist.gov/17.2}.
+
+\bibitem{Fabius1966}
+J. Fabius,
+\emph{A probabilistic example of a nowhere analytic $C^\infty$-function},
+Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete
+\textbf{5} (1966), 173--174.
+
+\bibitem{GasperRahman}
+G. Gasper and M. Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Cambridge University Press, 2004.
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt: formalized mathematics in Lean},
+Fabius-function development at commit
+\texttt{4bd083335f663f8c0347cf2535b10dc4dfeea286},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4bd083335f663f8c0347cf2535b10dc4dfeea286/Analysis/FabiusFunction}.
+
+\end{thebibliography}
+
+\end{document}
