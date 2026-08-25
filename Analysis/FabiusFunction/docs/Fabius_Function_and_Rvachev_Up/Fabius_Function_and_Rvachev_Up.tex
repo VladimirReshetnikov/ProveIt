@@ -2411,13 +2411,16 @@ for the computability proof in \cref{sec:effective-computability}.
 The same finite formula also has the correct signed global behavior.  For $x\le0$ its safe
 cutoff is empty, so $S_p(x)=\mathcal F(x)=0$.  On the nonnegative half-line, binary block
 translation and midpoint reflection extend the local identification.  Consequently, for
-every $x\in\R$,
+every $p\ge1$,
 \begin{equation}
- |S_p(x)|\le1,\qquad
- S_p(x)\longrightarrow\mathcal F(x).                     \label{eq:centered-spline-global-limit}
+ \sup_{x\in\R}|S_p(x)-\mathcal F(x)|\le2^{-p},\qquad
+ S_p\longrightarrow\mathcal F\quad\hbox{uniformly on }\R. \label{eq:centered-spline-global-limit}
 \end{equation}
-This global form is the analytic input for the complex-shift and discrete-limit results
-below; it should not be confused with uniform convergence on the whole half-line.
+Indeed, every nonnegative two-unit block is a common signed copy of the first block, and
+on the second unit cell both functions use the same complement.  Neither operation changes
+the absolute error in \eqref{eq:centered-error}; the nonpositive half-line is exact.  This
+global uniform form strengthens and packages the pointwise analytic input used by the
+complex-shift and discrete-limit results below.
 
 \section{Fourier transform, entire products, and Poisson summation}
 \label{sec:fourier}
@@ -6858,6 +6861,15 @@ $0\le\mathcal F(y)=F(y)\le2y$, so
 \begin{equation}
  |R_N(x)|\le2^{1-N}.                                     \label{eq:global-residual-bound}
 \end{equation}
+The estimate is independent of $x$.  Therefore, if $B_N(x)$ denotes the finite sum in
+\eqref{eq:global-finite-binary-telescope}, then
+\begin{equation}
+ \sup_{x\ge0}|B_N(x)-\mathcal F(x)|\le2^{1-N}.            \label{eq:global-binary-uniform-bound}
+\end{equation}
+Lean's natural-floor convention extends every $B_N$ by zero on $x\le0$, where
+$\mathcal F$ also vanishes.  In that convention \eqref{eq:global-binary-uniform-bound}
+holds with the supremum over all of $\R$, so the finite telescopes converge uniformly on
+the whole line.
 The one-step identity then gives, for $m\ge2$,
 \begin{equation}
  |\alpha_m(x)\mathcal T_m(y_m)|
@@ -11859,11 +11871,12 @@ against a continuous limit.\\
 \path{FabiusUniformSpline.lean} &
 Identifies the centered Thue--Morse power sums with distribution functions of finite
 weighted sums of independent uniform coordinates, giving support bounds, monotonicity,
-block-translation identities, and pointwise convergence.\\
+block-translation identities, and pointwise signed-global convergence.\\
 \path{FabiusComputability.lean} &
 Formalizes both clauses of computability in the sense of computable analysis: effective
 uniform continuity from the global derivative equation, and preservation of computable
-sequences by rounded dyadic spline evaluation.\\
+sequences by rounded dyadic spline evaluation.  It also proves the all-real error
+$|S_p-\mathcal F|\le2^{-p}$ and packages global uniform convergence.\\
 \path{FabiusComputableSpline.lean} &
 Certifies a primitive-recursive natural-number evaluator: clamp a signed-natural numerator,
 evaluate a finite centered spline, round half-up, and inherit the explicit error bound
@@ -12056,7 +12069,8 @@ Module & Role in the proof\\
 \path{FabiusBinaryReductionSeries.lean} &
 Iterates the finite Taylor reduction along the binary expansion, keeping the outer index at
 $m=0$ so that the even and odd unit blocks are distinguished, and upgrades the signed
-residual identity to absolute summability.\\
+residual identity to absolute summability and all-real uniform convergence with error
+$2^{1-N}$ through inclusive scale $N\ge1$.\\
 \path{FabiusParityPowerSeries.lean} &
 Formalizes the corrected scale-zero parity-power series, valid for every nonnegative real
 input; the series indexed from $m=1$ remains valid only on $0\le x<1$.\\
