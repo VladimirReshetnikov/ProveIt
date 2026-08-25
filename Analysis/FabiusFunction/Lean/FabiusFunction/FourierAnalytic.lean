@@ -207,12 +207,6 @@ private lemma rvachevUp_two_mul_add_one_eq_zero
   rw [rvachevUp, if_neg (by linarith : ¬ 2 * x + 1 ≤ 0)]
   exact hF.zero_of_nonpos _ (by linarith)
 
-/-- Rvachev's function takes its normalized value at the origin. -/
-theorem rvachevUp_zero (F : BoundedFabius) (hF : IsFabius F) :
-    rvachevUp F 0 = 1 := by
-  rw [rvachevUp, if_pos le_rfl]
-  simpa using hF.one_of_one_le 1 le_rfl
-
 private lemma rvachevUp_complex_hasDerivAt_on_unit
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : 0 ≤ x) :
     HasDerivAt (fun y : ℝ => (rvachevUp F y : ℂ))

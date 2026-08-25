@@ -869,16 +869,6 @@ theorem proposition_two_real_formula
     complexExpm1Div_ofReal x, complexGeneratingFunction_ofReal F x] at h
   exact_mod_cast h
 
-private lemma norm_rvachevUp_le_one
-    (F : BoundedFabius) (t : ℝ) : ‖(rvachevUp F t : ℂ)‖ ≤ 1 := by
-  have hnonneg : 0 ≤ rvachevUp F t := by
-    rw [rvachevUp]
-    split_ifs <;> exact fabiusReal_nonneg F _
-  have hle : rvachevUp F t ≤ 1 := by
-    rw [rvachevUp]
-    split_ifs <;> exact fabiusReal_le_one F _
-  simpa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hnonneg] using hle
-
 private lemma complexExp_integral_hasSum
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     HasSum
@@ -919,7 +909,7 @@ private lemma complexExp_integral_hasSum
     dsimp [term, bound]
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _)
-      (norm_rvachevUp_le_one F t)).trans hinner
+      (norm_ofReal_rvachevUp_le_one F t)).trans hinner
   · filter_upwards with t
     intro _ht
     exact NormedSpace.norm_expSeries_div_summable z
@@ -1055,7 +1045,7 @@ private lemma rvachevFourier_expansion_hasSum
     dsimp [term, bound]
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _)
-      (norm_rvachevUp_le_one F t)).trans hinner
+      (norm_ofReal_rvachevUp_le_one F t)).trans hinner
   · filter_upwards with t
     intro _ht
     exact NormedSpace.norm_expSeries_div_summable c

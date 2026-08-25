@@ -148,10 +148,6 @@ theorem rvachevMeasure_real_Ioc_eq_intervalIntegral
   · exact (rvachevUp_integrable F hF).integrableOn
   · exact Eventually.of_forall (rvachevUp_nonneg F)
 
-theorem rvachevUp_le_one (F : BoundedFabius) (x : ℝ) : rvachevUp F x ≤ 1 := by
-  unfold rvachevUp
-  split_ifs <;> exact fabiusReal_le_one F _
-
 theorem intervalIntegral_rvachevUp_nonneg
     (F : BoundedFabius) (a b : ℝ) (hab : a ≤ b) :
     0 ≤ ∫ x in a..b, rvachevUp F x :=
