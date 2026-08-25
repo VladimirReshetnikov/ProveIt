@@ -2,14 +2,17 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
-\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{amsmath,amssymb,mathtools,amsthm,mathrsfs}
+\usepackage{bm}
 \usepackage{booktabs,longtable,tabularx,array,multirow}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{graphicx}
+\usepackage{pgfplots}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,fit,backgrounds,calc,shapes.geometric}
 \usepackage[most]{tcolorbox}
@@ -17,7 +20,7 @@
 \usepackage{float}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{url}
+\usepackage{xurl}
 \usepackage{seqsplit}
 \usepackage{hyperref}
 \usepackage{bookmark}
@@ -30,6 +33,10 @@
 \definecolor{LeanGray}{HTML}{F3F5F7}
 \definecolor{LeanDark}{HTML}{263238}
 \definecolor{LeanPurple}{HTML}{6A4C93}
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
 
 \hypersetup{
   colorlinks=true,
@@ -71,11 +78,14 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
 
 \DeclareRobustCommand{\lean}[1]{\texorpdfstring{\texttt{\expandafter\seqsplit\expandafter{\detokenize{#1}}}}{\detokenize{#1}}}
 \DeclareRobustCommand{\file}[1]{\texorpdfstring{\texttt{\expandafter\seqsplit\expandafter{\detokenize{#1}}}}{\detokenize{#1}}}
@@ -87,12 +97,28 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
 \newcommand{\Icc}{\operatorname{Icc}}
 \newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\BigO}{\mathrm{O}}
 \newcommand{\littleo}{\mathrm{o}}
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\ii}{\mathrm{i}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 
 \lstdefinelanguage{Lean}{
   morekeywords={import,namespace,section,end,open,noncomputable,def,abbrev,structure,class,where,
@@ -130,13 +156,30 @@
   aboveskip=0.8em,
   belowskip=0.8em
 }
+\lstdefinestyle{pseudo}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{shadegray},
+  frame=single,
+  rulecolor=\color{rulegray},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  xleftmargin=0.7em,
+  xrightmargin=0.7em,
+  aboveskip=0.8em,
+  belowskip=0.8em
+}
 
 \newtcolorbox{roadmap}[1][]{
   enhanced,breakable,colback=LeanBlue!4,colframe=LeanBlue!65!black,
   title={Reader's map},fonttitle=\bfseries,#1}
-\newtcolorbox{proofidea}[1][]{
-  enhanced,breakable,colback=LeanTeal!4,colframe=LeanTeal!70!black,
-  title={Proof idea},fonttitle=\bfseries,#1}
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
 \newtcolorbox{leanpattern}[1][]{
   enhanced,breakable,colback=LeanGold!6,colframe=LeanGold!75!black,
   title={Lean pattern},fonttitle=\bfseries,#1}
@@ -164,13 +207,15 @@
 \vspace{1.1cm}
 
 {\Large Structure, dependencies, proof architecture, exact computation,\par
-Fourier analysis, asymptotics, and approximation theory\par}
+shape and inverse theory, asymptotics, and effective approximation\par}
 \vfill
 {\large Prepared from the Lean 4 development in\par}
 \vspace{0.2cm}
 {\ttfamily\large Analysis/FabiusFunction\par}
 \vspace{0.8cm}
-{\large Repository snapshot inspected 24 August 2026\par}
+{\large Repository snapshot inspected 25 August 2026\par}
+\vspace{0.15cm}
+{\small\ttfamily commit 1e371c773b387a7635fd28452512ab9eb6831abb\par}
 \vspace{0.2cm}
 {\small Lean 4.32.0; mathlib pinned by the repository manifest\par}
 \vfill
@@ -181,17 +226,17 @@ Fourier analysis, asymptotics, and approximation theory\par}
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-The Fabius function is a classical example of a smooth function with an elementary-looking self-similarity law and unexpectedly rich arithmetic, Fourier-analytic, probabilistic, and asymptotic structure.  Vladimir Reshetnikov's \texttt{ProveIt} repository contains a large Lean~4 development that formalizes both of Juan Arias de Reyna's 2017 papers on the function, proves the existence and uniqueness of a canonical bounded solution, constructs its signed global extension, verifies exact evaluation algorithms at dyadic rationals, develops moment and denominator theory, reconstructs Rvachev's Fourier characterization, and goes substantially beyond the papers through q-binomial identities, discrete-limit theorems, sharp saddle-point asymptotics, and Legendre expansions.
+The Fabius function is a classical example of a smooth function with an elementary-looking self-similarity law and unexpectedly rich arithmetic, Fourier-analytic, probabilistic, and asymptotic structure.  Vladimir Reshetnikov's \texttt{ProveIt} repository contains a large Lean~4 development that formalizes both of Juan Arias de Reyna's 2017 papers on the function, proves the existence and uniqueness of a canonical bounded solution, constructs its signed global extension, verifies exact evaluation algorithms at dyadic rationals, develops moment and denominator theory, reconstructs Rvachev's Fourier characterization, and goes substantially beyond the papers through q-binomial identities, discrete-limit theorems, sharp shape and inverse theory, computability, non-elementarity results, corrected saddle-point asymptotics, and Legendre expansions.
 
 This document is a proof-oriented walkthrough of that codebase.  Its aim is not to restate every declaration in source order.  Instead, it explains why the development is split into its present modules, which dependencies are mathematically essential, which are merely packaging dependencies, and how the principal proofs are made acceptable to Lean.  Particular attention is paid to the two parallel foundations of the project---exact rational arithmetic and analysis under an abstract \lean{IsFabius} specification---and to the bridge that identifies them.  The discussion also records source corrections that become unavoidable in a formal proof, recurring proof-engineering idioms, recommended reading paths, and practical advice for extending the library.
 
 \begin{roadmap}
-A mathematically oriented reader should begin with Chapters~\ref{ch:objects}, \ref{ch:existence}, \ref{ch:dyadic-bridge}, \ref{ch:fourier}, and \ref{ch:asymptotics}.  A Lean developer should read Chapters~\ref{ch:build}, \ref{ch:architecture}, \ref{ch:arithmetic}, \ref{ch:engineering}, and \ref{ch:extending}.  Readers interested in the two source papers can use the theorem map in Appendix~\ref{app:paper-map}; readers trying to locate a particular implementation should use the annotated module guide in Appendix~\ref{app:modules}.
+A mathematically oriented reader should begin with Chapters~\ref{ch:objects}, \ref{ch:existence}, \ref{ch:regularity}, \ref{ch:dyadic-bridge}, \ref{ch:fourier}, and \ref{ch:asymptotics}.  A Lean developer should read Chapters~\ref{ch:build}, \ref{ch:architecture}, \ref{ch:arithmetic}, \ref{ch:engineering}, and \ref{ch:extending}.  Readers interested in the two source papers can use the theorem map in Appendix~\ref{app:paper-map}; readers trying to locate a particular implementation should use the annotated module guide in Appendix~\ref{app:modules}; and readers reproducing trust checks should use Appendix~\ref{app:reproduction}.
 \end{roadmap}
 
 \chapter*{Scope and conventions}
 \addcontentsline{toc}{chapter}{Scope and conventions}
-The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to the state of the \texttt{main} branch inspected on 24 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.
+The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \texttt{1e371c773b387a7635fd28452512ab9eb6831abb} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -217,8 +262,17 @@ and the umbrella import is \file{FabiusFunction.lean}.  The Lake package declare
 
 The normal build command from the project root is:
 \begin{lstlisting}
-lake build FabiusFunction
+lake build +FabiusFunction
 \end{lstlisting}
+The source claims in this walkthrough are pinned to commit
+\texttt{1e371c773b387a7635fd28452512ab9eb6831abb}.  Before reproducing a
+declaration or module count, check the checkout with \texttt{git rev-parse
+HEAD}; a moving \texttt{main} branch is not a reproducible specification.
+After dependencies have been installed, a focused edit loop can build one
+module at a time with a Lake target such as
+\texttt{lake build +FabiusFunction.DyadicAnalytic}.  The root-module build
+remains the release check.
+
 A useful first test file is:
 \begin{lstlisting}
 import FabiusFunction
@@ -234,14 +288,57 @@ open Fabius
 Importing the umbrella module is convenient for exploration.  During development, importing a narrow leaf module is preferable: it shortens rebuilds, makes accidental dependencies visible, and helps preserve the intended layering.
 
 \section{What the umbrella module exposes}
-The top-level \file{FabiusFunction.lean} does not contain the development itself.  It is an import façade.  Its principal imports collect four broad products:
+The top-level \file{FabiusFunction.lean} does not contain the development itself.  It is an import façade.  Its principal imports collect six broad products:
 \begin{enumerate}
   \item the formalizations of the two 2017 papers, through \file{Paper05442.lean} and \file{Paper06487.lean};
-  \item the independent asymptotic project, through \file{PaperFabiusAsymptotic.lean};
-  \item the audit and repair of a k-fold Thue--Morse draft, through \file{PaperKFoldThueMorse.lean}; and
-  \item later analytic and approximation developments, including negative-Laplace periodic corrections, Mellin finite parts, translated Legendre series, and least-squares optimality.
+  \item the independent asymptotic project and the k-fold Thue--Morse audit, through \file{PaperFabiusAsymptotic.lean} and \file{PaperKFoldThueMorse.lean};
+  \item negative-Laplace, Mellin, periodic-correction, and probability-transform interfaces;
+  \item translated Legendre expansions, least-squares optimality, q-binomial binary reduction, and uniform spline approximation;
+  \item the sharp shape API---monotonicity, convexity, optimal Lipschitz and derivative bounds, exact analytic loci, and endpoint flatness; and
+  \item the totalized inverse, non-elementarity and inverse-branch obstructions, Grzegorczyk-style computability, closed saddle jets, and the explicit second saddle correction.
 \end{enumerate}
 This is a deliberate public surface.  The umbrella import answers the question ``what has the repository established?''  It is not the best answer to ``where is this theorem proved?''  For the latter, one should descend into the paper aggregators or the subject-specific module families.
+
+\section{Four kinds of source module}
+The secondary draft makes a useful architectural distinction that is worth
+retaining.  A source file usually has one of four roles:
+\begin{description}[style=nextline,leftmargin=2.8em]
+  \item[Reusable infrastructure.] Files such as \file{LegendrePolynomial.lean},
+  \file{LegendreSeriesConvergence.lean}, \file{SaddleAllOrders.lean}, and the
+  Gaussian-polynomial family develop machinery not tied to one canonical
+  Fabius term.
+  \item[Fabius-specific bridges.] Files such as \file{DyadicAnalytic.lean},
+  \file{AnalyticMoments.lean}, \file{GlobalExtension.lean}, and
+  \file{EndpointLaplaceComparison.lean} identify two representations of the
+  same object.  These are often the most informative files to read.
+  \item[Paper-facing façades.] The four \file{Paper*.lean} aggregators expose
+  source claims in source vocabulary while delegating proofs to stronger
+  internal declarations.
+  \item[Audit and correction modules.] Files such as
+  \file{DraftCounterexamples.lean}, \file{PoissonSummation.lean}, and
+  \file{FabiusWikipediaObstruction.lean} isolate a false printed claim or a
+  missing hypothesis and expose the checked correction or obstruction.
+\end{description}
+
+\section{Naming conventions that encode intent}
+Several recurring name patterns help locate the right abstraction:
+\begin{description}[style=nextline,leftmargin=2.8em]
+  \item[Generic versus canonical.] A theorem parameterized by
+  \lean{(F : BoundedFabius) (hF : IsFabius F)} applies to every implementation;
+  a \lean{canonical_} or bare \lean{fabius_} wrapper specializes it to
+  \lean{fabius} and \lean{fabius_spec}.
+  \item[Exact-to-analytic casts.] Names ending in \lean{_cast} are the
+  load-bearing bridges from rational computation to real analysis.
+  \item[Convergence forms.] A \lean{HasSum} theorem records a convergence
+  witness; a companion theorem phrased with \lean{tsum} usually provides the
+  convenient equality.  Filter and asymptotic APIs use a similar strong-core,
+  wrapper pattern.
+  \item[Integer scales.] Names containing \lean{_zpow} use an integer exponent,
+  which matters when a dyadic or asymptotic scale can cross \(1\).
+  \item[Specifications.] Predicates such as \lean{IsFabius} and
+  \lean{IsOriginalFabius} separate a characterization from a construction and
+  permit independent existence and uniqueness routes.
+\end{description}
 
 \section{A practical exploration workflow}
 A productive workflow in an editor with the Lean language server is:
@@ -301,13 +398,13 @@ with zero outside the support.  The exact Lean definition is arranged to make sy
 The up-function is the more natural object for Fourier analysis because it is even, smooth, compactly supported, and normalized to have integral one.  The bounded form is the more natural object for dyadic arithmetic because its derivative equation and boundary values generate finite Taylor recurrences.
 
 \section{The signed global extension}
-The bounded function cannot satisfy an unrestricted translation law: it is constant on both tails.  The repository therefore defines \lean{extendedFabius}, a signed global extension assembled as a locally finite sum of translated copies of \(\upf\), weighted by the Thue--Morse sign.  In informal notation it has the form
+The bounded function cannot satisfy an unrestricted translation law: it is constant on both tails.  The repository therefore defines \lean{extendedFabius}, a signed global extension assembled as a locally finite sum of odd translates of \(\upf\), weighted by the Thue--Morse sign.  In the repository's normalization,
 \[
-  \widetilde F(x)=\sum_{k\in\mathbb Z}\varepsilon(k)\,\upf(x-k),
+  \widetilde F(x)=\sum_{n\geq0}(-1)^{s_2(n)}\,\upf(x-2n-1).
 \]
-where only finitely many summands are nonzero at any given \(x\).  Lean nevertheless treats the expression through a \lean{tsum}, so the library must prove local finiteness, summability, and the reduction of the infinite sum to a finite set before elementary rearrangements are legal.
+Only finitely many summands are nonzero at any given \(x\).  Lean nevertheless treats the expression through a \lean{tsum}, so the library must prove local finiteness, summability, and the reduction of the infinite sum to a finite set before elementary rearrangements are legal.
 
-On the unit interval the extension agrees with the bounded function.  Away from that interval it carries the signs and period-two behavior needed for global dyadic formulas.  This distinction is used pervasively in \file{GlobalExtension.lean}, \file{GlobalDyadic.lean}, and the q-binomial modules.
+On the unit interval the extension agrees with the bounded function.  Away from that interval it carries the Thue--Morse block signs needed for global dyadic formulas.  This distinction is used pervasively in \file{GlobalExtension.lean}, \file{GlobalDyadic.lean}, and the q-binomial modules.
 
 \begin{warningbox}
 When an informal statement writes \(F(x)\) for all real \(x\), inspect the theorem's target.  It may refer to the bounded map, the real projection of that map, the compactly supported up-function, or the signed extension.  Several corrected statements in the repository amount precisely to choosing the right one.
@@ -467,23 +564,23 @@ For exact rational identities, the development usually proves all denominator fa
 \end{leanpattern}
 
 \section{Closed dyadic formulas}
-The exact values at inverse powers of two are represented by a sequence such as \lean{halfMomentFabiusValue}.  A more general closed expression, exposed through a name such as \lean{fabiusDyadic}, gives the value at \(a/2^n\) as a finite sum involving the inverse-power table and powers determined by the local Taylor formula.
+The exact values at inverse powers of two are represented by a sequence such as \lean{halfMomentFabiusValue}.  The source-facing formula \lean{fabiusDyadic} gives the value at \(a/2^n\) as a finite sum built from Thue--Morse signs, even binomial coefficients, and the exact moment sequence.  This closed formula is distinct from the inverse-power table used by the faster Horner evaluator.
 
 The formalization maintains a distinction between:
 \begin{itemize}
   \item a closed formula suited to mathematical theorems;
   \item a Horner form suited to evaluation;
-  \item a unit-interval evaluator that clamps or reflects inputs; and
-  \item a global evaluator that incorporates Thue--Morse signs and period-two reduction.
+  \item a unit-interval evaluator that clamps and removes highest set bits; and
+  \item a global evaluator that applies triangular reduction on two-unit cells and a Thue--Morse block sign.
 \end{itemize}
 This separation makes correctness modular.  One first proves that the Horner program computes the finite polynomial, then that recursive bit reduction computes the closed formula, then that the closed formula equals the analytic function.
 
 \section{The inverse-power table}
 The function \lean{fabiusInversePowTwoTable} computes a prefix of exact values
 \[
-  F(2^{-1}),F(2^{-2}),\ldots,F(2^{-n}).
+  F(1),F(2^{-1}),F(2^{-2}),\ldots,F(2^{-n}),
 \]
-A table-based implementation avoids recomputing the same recurrence at every recursive step.  Correctness is expressed through prefix stability: extending a table preserves all previously computed entries.  This is essential because the evaluator may request values in an order dictated by the bits of the numerator rather than by a single monotone loop.
+so the array has size (n+1).  A table-based implementation avoids recomputing the same recurrence at every recursive step.  Correctness is expressed through prefix stability: extending a table preserves all previously computed entries.  This is essential because the evaluator may request values in an order dictated by the bits of the numerator rather than by a single monotone loop.
 
 Formal prefix stability is typically a theorem about list lookup or finite-indexed entries.  It combines:
 \begin{itemize}
@@ -512,16 +609,16 @@ This is the computational counterpart of traversing the ones in the binary expan
 Lean does not accept ``the highest bit was removed'' as a termination argument.  The source proves a chain of inequalities connecting the bit logarithm, the largest power of two not exceeding \(a\), and the remainder.  This chain is packaged so the recursive definition can use a measure.  The correctness proof later reuses the very same decomposition, an example of an implementation lemma doing double duty as a mathematical induction lemma.
 
 \section{Clamping, reflection, and the global evaluator}
-The unit-interval wrapper \lean{fabiusDyadicUnit} normalizes a dyadic representative and applies the endpoint and symmetry laws.  The rational-valued \lean{fabiusDyadicValue} accepts an integer numerator and power-of-two denominator, managing negative values, inputs beyond one, and equivalent unreduced representations.
+The unit-interval wrapper \lean{fabiusDyadicUnit} clamps natural numerators at the right endpoint and delegates interior points to highest-bit recursion; it does not perform reflection.  The rational-valued \lean{fabiusDyadicValue} accepts an integer numerator and power-of-two denominator, returning (0) for nonpositive inputs and (1) at or beyond the right endpoint.  Separate refinement theorems prove that equivalent unreduced representations give the same result.
 
-For the signed extension, \lean{extendedFabiusDyadicValue} first reduces the integer part modulo the relevant period and then applies a Thue--Morse sign.  The exact theorem is stronger than a formula restricted to reduced representatives: multiplying numerator and denominator by a common power of two leaves the output unchanged.  This refinement invariance is proved explicitly rather than delegated to quotient types, because the evaluator's input is computational data, not an abstract element of a dyadic localization.
+For the signed extension, \lean{extendedFabiusDyadicValue} reduces the numerator modulo a two-unit grid length, reflects the residue into the unit cell, and applies the Thue--Morse sign of the block index.  This is triangular cell reduction, not global periodicity.  Multiplying numerator and denominator by a common power of two leaves the output unchanged.  Refinement invariance is proved explicitly rather than delegated to quotient types, because the evaluator's input is computational data, not an abstract element of a dyadic localization.
 
 \begin{proofidea}
 There are three distinct notions of normalization:
 \begin{enumerate}
   \item arithmetic normalization of a fraction by canceling powers of two;
-  \item geometric normalization into \([0,1]\) using tails and reflection; and
-  \item global normalization modulo translation, with a Thue--Morse sign.
+  \item bounded normalization into \([0,1]\) using the constant tails; and
+  \item global triangular cell reduction, with a Thue--Morse block sign.
 \end{enumerate}
 The code proves each normalization preserves the intended mathematical value before composing them.
 \end{proofidea}
@@ -675,17 +772,135 @@ These are used by approximation arguments, global extension formulas, Fourier tr
 A common Lean mistake is to rewrite an iterated derivative of a composition as though the affine map contributed only one factor of \(a\).  The library's lemmas state the full \(a^n\) factor.  Specialized powers-of-two corollaries then combine this with the triangular coefficient from the Fabius differential law.
 
 \section{Local finiteness of the translate sum}
-\file{GlobalExtension.lean} proves that the signed translate series defining \(\widetilde F\) is harmless.  Because \(\upf\) has compact support, only finitely many integers \(k\) can satisfy \(x-k\in[-1,1]\) for fixed \(x\).  More strongly, on a compact neighborhood of \(x\), a single finite set of translates contains every nonzero summand.
+\file{GlobalExtension.lean} proves that the signed translate series defining \(\widetilde F\) is harmless.  Because \(\upf\) has compact support, only finitely many natural indices \(n\) can satisfy \(x-2n-1\in[-1,1]\) for fixed \(x\).  More strongly, on a compact neighborhood of \(x\), a single finite set of odd translates contains every nonzero summand.
 
-That stronger local statement is what permits termwise continuity and differentiation.  The proof turns support inequalities into integer bounds, places all possible indices in a finite interval of \(\mathbb Z\), and proves every index outside that set contributes zero.  The \lean{tsum} can then be rewritten as a finite sum using a summability-by-finite-support lemma.
+That stronger local statement is what permits termwise continuity and differentiation.  The proof turns support inequalities into natural-number bounds and proves every index outside a finite range contributes zero.  The \lean{tsum} can then be rewritten as a finite sum using a summability-by-finite-support lemma.
 
 \section{Agreement and global identities}
-Once local finiteness is available, the signed extension is shown to agree with the bounded function on \([0,1]\).  The support of \(\upf\) reduces the sum to one or two adjacent translates, and the defining fold relation simplifies the result.
+Once local finiteness is available, the signed extension is shown to agree with the bounded function on \([0,1]\).  On every cell \(2b\leq x\leq2b+2\), exactly one translate survives and
+\[
+  \widetilde F(x)=(-1)^{s_2(b)}\,\upf(x-2b-1).
+\]
+The case \(b=0\), together with the defining fold relation, gives unit-interval agreement.
 
-Translation by an integer changes the Thue--Morse coefficient in a controlled way.  Translation by two gives a period-two relation; translation by one introduces a sign or complementary term depending on the normalization.  These identities are the setting in which unrestricted versions of the dyadic recurrence are true.  \file{GlobalDyadic.lean} combines them with exact values to remove assumptions that a numerator be reduced or lie between zero and its denominator.
+The extension is therefore a sequence of two-unit cells, not a globally periodic function: the sign of cell \(b\) is the Thue--Morse value \((-1)^{s_2(b)}\).  Scale-and-translation theorems record the precise identities on their valid blocks.  \file{GlobalDyadic.lean} combines this cell structure with exact values to remove assumptions that a numerator be reduced or lie between zero and its denominator.
 
 \section{Why use a \lean{tsum} for a locally finite expression?}
-A hand proof would define the sum over the two possible integers adjacent to \(x\).  The repository instead uses a conceptually uniform sum over all integers.  This pays off in translation arguments: shifting \(x\) corresponds to reindexing the same sum, and standard infinite-sum equivalences can be reused.  The initial cost is a local-finiteness API; the later algebra becomes much cleaner.
+A hand proof would select the unique active odd translate on each nonnegative two-unit cell.  The repository instead uses a conceptually uniform sum over all natural indices.  This pays off in translation and differentiation arguments: the same summand family can be manipulated with standard infinite-sum lemmas.  The initial cost is a local-finiteness API; the later algebra becomes much cleaner.
+
+\chapter{Sharp shape, inverse branches, and effective computation}\label{ch:regularity}
+
+This part of the public API was added after the secondary draft's pinned
+snapshot.  It turns consequences that were once scattered among paper
+wrappers into a reusable shape theory, then uses that theory to construct the
+inverse and a certified computable evaluator.
+
+\section{One global derivative equation}
+The key simplification is the identity
+\[
+  F'(x)=2\,\upf(2x-1)\qquad(x\in\R),
+\]
+proved for every \lean{IsFabius} candidate.  Since \(\upf\geq0\), the bounded
+function is globally monotone.  The strict theory in
+\file{Monotonicity.lean} proves that \(F\) is strictly increasing on
+\([0,1]\) and maps that interval bijectively to itself.  On the folded side,
+\(\upf\) is positive exactly on \((-1,1)\), increases strictly to its unique
+maximum \(1\) at \(0\), and then decreases strictly.
+
+\file{Convexity.lean} feeds this unimodality back through the derivative
+equation.  The derivative of \(F\) increases up to \(x=1/2\) and decreases
+afterward, with exact range \([0,2]\) and unique maximum \(2\) at the
+midpoint.  Consequently \(F\) is convex on the left half-line and concave on
+the right, strictly so on the two open halves of its transition interval.
+
+\section{Sharp regularity and flatness}
+\file{Regularity.lean} proves that \(2\) is not merely a convenient Lipschitz
+constant: it is the least global Lipschitz constant for both \(F\) and
+\(\upf\).  The scaling recurrence then yields, for every \(k\geq0\),
+\[
+  \bigl|F^{(k)}(x)\bigr|\leq 2^{\binom{k+1}{2}},
+\]
+with equality attained at \(x=2^{-k}\) for positive order.  The signed
+extension and the up-function have parallel sharp bounds in
+\file{GlobalBounds.lean}; \file{BoundedDerivatives.lean} transfers them to
+the clamped function without confusing its constant right tail with the
+signed extension.
+
+The effective endpoint bounds are stronger than the qualitative assertion
+that every positive derivative vanishes.  If \(x\geq0\) and \(2^n x\leq1\),
+\file{SharpFlatness.lean} proves
+\[
+  F(x)\leq \frac{2^{\binom{n+1}{2}}}{n!}\,x^n.
+\]
+Reflection gives the analogous estimate for \(1-F(x)\) at the right endpoint.
+The scale condition is part of the theorem; the family is not a single bound
+uniform in \(n\).
+
+\section{The totalized inverse}
+Strict monotonicity packages the restriction of \(F\) to \([0,1]\) as the
+order isomorphism \lean{fabiusOrderIso}.  The definition \lean{fabiusInv}
+uses the inverse order isomorphism on that interval and \lean{IccExtend} to
+clamp all real inputs: it is \(0\) on the left tail and \(1\) on the right.
+The module \file{FabiusInverse.lean} proves both inverse identities on the unit
+interval, global continuity and monotonicity, endpoint reflection, and exact
+inversion of every value produced by the bounded dyadic evaluator.
+
+Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
+\(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
+window,
+\[
+  y\leq 2^{\binom{n+1}{2}}\bigl(F^{-1}(y)\bigr)^n,
+\]
+with a factorial-strengthened version as well.  In particular
+\(F^{-1}(y)/y\to+\infty\) as \(y\downarrow0\), and reflection supplies the
+right-endpoint counterpart.
+
+\section{Exact analytic loci and non-elementarity}
+The smooth function is analytic precisely off its closed transition interval:
+\[
+  \operatorname{AnalyticAt}(F,x)\quad\Longleftrightarrow\quad
+  x\notin[0,1].
+\]
+\file{NowhereAnalytic.lean} includes both endpoints; outside the interval the
+function is locally constant.  \file{InverseNotElementary.lean} proves the
+same analytic locus for the totalized inverse.  In the interior, analyticity
+of the inverse would make \(F\) analytic by the inverse-function theorem; at
+the endpoints, the identity theorem conflicts with the constant tails and
+strict increase.
+
+The generic modules \file{AlgebraicBranch.lean} and
+\file{ElementaryFunction.lean} show that the formal class
+\lean{IsElementary} has dense analytic locus, as do continuous algebraic
+branches with elementary coefficients.  \file{NotElementary.lean} therefore
+proves that no such expression agrees with \(F\) on any subset of the unit
+interval having nonempty interior.  \file{InverseBranch.lean} closes the
+class under iterated continuous inverse branches---enough to include Lambert
+\(W\)---and \file{InverseNotElementary.lean} excludes both \(F\) and
+\(F^{-1}\) from this enlarged class on \((0,1)\).
+
+\begin{warningbox}
+These are theorems about the explicitly defined Lean predicates
+\lean{IsElementary} and \lean{IsElementaryOrInverse}, not a claim about every
+possible computer-algebra language or every informal use of the word
+``closed form.''  The precise constructors and branch hypotheses in
+\file{ElementaryFunction.lean} and \file{InverseBranch.lean} are part of the
+statement.
+\end{warningbox}
+
+\section{Primitive-recursive splines and computable reals}
+The approximation branch also became effective.  \file{FabiusComputability.lean}
+proves the uniform estimates
+\[
+  \sup_{x\in[0,1]}|S_p(x)-F(x)|\leq2^{-p},\qquad
+  \sup_{x\in\R}|S_p(x)-\widetilde F(x)|\leq2^{-p},
+\]
+and records the primitive-recursive modulus \(d(n)=2n\) coming from the sharp
+Lipschitz bound.  \file{FabiusComputableSpline.lean} implements the centered
+Thue--Morse spline using signed pairs of natural numerators, proves its pieces
+primitive recursive, rounds to a dyadic name with an explicit error budget,
+and packages the result as \lean{IsComputableRealFunction (fabiusReal F)}.
+Thus the computability theorem contains both required clauses: preservation of
+computable real sequences and effective uniform continuity.
 
 \chapter{The exact--analytic dyadic bridge}\label{ch:dyadic-bridge}
 
@@ -704,15 +919,14 @@ The surrounding modules \file{DyadicClosedForm.lean} and \file{DyadicCorrectness
 \section{Finite Taylor expansion on a dyadic scale}
 Fix a sufficiently small dyadic base point.  The iterated derivative formula expresses every derivative up to a chosen order through a scaled value of \(F\).  At the order where the scaled argument leaves the active interval and enters the zero tail, higher derivatives vanish.  Taylor's theorem therefore terminates exactly rather than producing an infinite series with a remainder.
 
-A representative identity has the shape
+A representative identity, in the normalization used by the evaluator, is
 \[
-  F\!\left(\frac{a+r}{2^n}\right)
-  =\sum_{k=0}^{K}
-    \frac{2^{k(k+1)/2}}{k!}
-    F\!\left(\frac{a}{2^{n-k}}\right)
-    \left(\frac{r}{2^n}\right)^k,
+  F(2^{-m}+y)+F(y)
+  =\sum_{k=0}^{m}
+    \frac{2^{\binom{k+1}{2}}}{k!}
+    F(2^{-(m-k)})\,y^k,
 \]
-with the base point, displacement, and upper index chosen to match a dyadic cell.  The source uses a carefully normalized variant so the coefficients coincide with the exact Horner evaluator.
+valid for (m\geq1) and (0\leq y\leq2^{-m}).  Thus the highest-bit evaluator computes the displayed polynomial and subtracts the recursively evaluated (F(y)).  The domain and the subtraction are essential parts of the recurrence.
 
 The proof does not invoke analyticity.  It uses a finite-order Taylor theorem with a remainder, then proves the next derivative vanishes on the relevant segment.  This is crucial: the Fabius function is smooth but nowhere analytic in the appropriate sense, so an argument based on convergence of an infinite Taylor series would be false.
 
@@ -745,7 +959,7 @@ No proof about derivatives needs to know how a coefficient list is stored, and n
 \section{Correctness of highest-bit reduction}
 Suppose the numerator decomposes as \(a=2^b+r\).  The analytic Taylor theorem proves exactly the recurrence used by the recursive evaluator.  The recursive call has numerator \(r<a\), so strong induction on \(a\) applies.  At the end, the theorem states that evaluating the exact program and embedding its rational output into \(\R\) gives \(F(a/2^n)\).
 
-The proof handles endpoint and out-of-range cases before entering the recursion.  This matches the program structure and avoids forcing the induction hypothesis to cover impossible branch conditions.  Each branch ends with a theorem about the corresponding normalization operation: left-tail clamping, right-tail clamping, reflection, highest-bit Taylor reduction, or refinement.
+The proof handles endpoint and out-of-range cases before entering the recursion.  This matches the program structure and avoids forcing the induction hypothesis to cover impossible branch conditions.  Each branch ends with a theorem about the corresponding normalization operation: left-tail clamping, right-tail clamping, highest-bit Taylor reduction, or refinement.  Reflection appears only in the separate signed global evaluator.
 
 \section{Representation independence}
 The same dyadic rational has infinitely many representations:
@@ -820,7 +1034,7 @@ The base case is total mass.  In the induction step, the analytic recurrence is 
 The same method identifies half-interval moments with \lean{halfMoment}.  These moments are connected more directly to inverse-power Fabius values, so they become the analytic bridge between moment theory and the dyadic table.
 
 \section{Generating functions}
-The moment generating function is represented both as an integral and as a power series.  Compact support gives uniform bounds
+The analytic moment generating function is represented both as an integral and as a convergent series.  Compact support gives uniform bounds
 \[
   |M_n|\leq C R^n,
 \]
@@ -830,7 +1044,25 @@ which are more than sufficient for convergence of
 \]
 for every complex \(z\).  Dominated convergence justifies interchanging sum and integral, giving the usual identity with \(\int e^{zx}\upf(x)\,\dd x\).
 
-\file{MomentPowerSeries.lean} develops the power-series side in a reusable form.  It links the exact inverse-power table, moments, and entire functions.  The code uses mathlib's \lean{FormalMultilinearSeries} and \lean{HasFPowerSeriesAt} machinery only where it pays off; many coefficient identities are easier as direct statements about \lean{HasSum} and factorially weighted series.
+\file{MomentPowerSeries.lean} is a separate exact-algebra layer over
+\lean{PowerSeries \Q}.  If
+\[
+ M(X)=\sum_{n\geq0}\frac{\operatorname{moment}(n)}{(2n)!}X^n,
+ \qquad
+ S(X)=\sum_{n\geq0}\frac{X^n}{(2n+1)!},
+\]
+then its central identity is
+\[
+  M(4X)=M(X)S(X).
+\]
+This is a coefficient theorem in exact rational power series, not an appeal to
+\lean{FormalMultilinearSeries} or \lean{HasFPowerSeriesAt}.  Analytic modules
+later identify the evaluated series with transforms after proving convergence.
+The half-moment bridge also gives the exact inverse-power formula
+\[
+  F(2^{-n})=
+  \frac{\operatorname{halfMoment}(n)}{n!\,2^{\binom n2}}.
+\]
 
 \section{Removable singularities}
 Expressions such as
