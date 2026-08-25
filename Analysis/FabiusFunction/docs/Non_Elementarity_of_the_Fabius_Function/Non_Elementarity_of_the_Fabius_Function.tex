@@ -862,7 +862,7 @@ Lambert $W$ belongs to $\Elem^{-1}$
   & \texttt{isElementaryOrInverse\_of\_lambertW}
   & \texttt{InverseBranch} \\
 $F^{-1}$ is differentiable on $(0,1)$ with $(F^{-1})'=1/F'>0$ (\Cref{thm:invnowhere})
-  & \texttt{fabiusInv\_hasDerivAt}, \texttt{deriv\_fabiusInv}, \texttt{deriv\_fabiusInv\_pos}, \texttt{fabiusInv\_mem\_Ioo}
+  & \texttt{fabiusInv\_hasDerivAt}, \texttt{deriv\_fabiusInv}, \texttt{deriv\_fabiusInv\_pos}, \texttt{fabiusInv\_mem\_Ioo}, \texttt{fabiusInv\_contDiffOn\_Ioo}
   & \texttt{FabiusInverse} \\
 Hence no critical point, and nowhere analytic (\Cref{thm:invnowhere})
   & \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
@@ -947,6 +947,13 @@ candidate we know how to extract from Definition~\ref{def:elem} directly.  Nothi
 this document rules out a different separating property; what it does show is
 that analyticity suffices, and that it is available at the modest cost of
 Lemma~\ref{lem:key}.
+
+The same is true of the inverse, and for the same reason.  Bootstrapping the
+reciprocal formula of \Cref{thm:invnowhere} through its own derivative shows
+$F^{-1}$ to be $C^{\infty}$ on $(0,1)$ --- this is
+\texttt{fabiusInv\_contDiffOn\_Ioo} --- so $F^{-1}$ is a second function that
+is smooth to every order on an interval and real analytic at no point of it.
+Smoothness separates neither of them from $\Elem$; analyticity separates both.
 
 \subsection{The role of the endpoints}
 
