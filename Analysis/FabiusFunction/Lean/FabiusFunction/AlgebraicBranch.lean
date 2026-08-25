@@ -286,8 +286,13 @@ theorem analyticDenseOn_of_algebraic :
           exact mul_ne_zero h1 (hlead x (hWsub hx))
       exact analyticDenseOn_of_split hVan hWih
 
-/-- The form used downstream: if the region is a dense open set, the analytic
-locus of the branch is dense in `ℝ`. -/
+/-- The globalized form: if the region is a dense open set, the analytic locus
+of the branch is dense in `ℝ`.
+
+Recorded for use with the `Dense`-valued obstruction
+`Fabius.not_eqOn_of_dense_analyticLocus`.  The algebraic application itself
+goes through `Fabius.AnalyticDenseOn` relatively, so this corollary currently
+has no call site in the development. -/
 theorem dense_setOf_analyticAt_of_algebraic (n : ℕ) (a : ℕ → ℝ → ℝ) (y : ℝ → ℝ)
     {U : Set ℝ} (hU : IsOpen U) (hUd : Dense U)
     (ha : ∀ i ∈ Finset.range (n + 1), ∀ x ∈ U, AnalyticAt ℝ (a i) x)
