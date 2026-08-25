@@ -93,6 +93,47 @@ theorem antitoneOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     (by linarith)
   linarith
 
+/--
+On the *closed* first half `[0, 1/2]` the derivative is strictly increasing.
+
+This is the sharp form of `strictMonoOn_deriv_fabiusReal`, which states the
+same conclusion on the open interval only.  Nothing extra is needed for the
+endpoints: the argument factors through `strictMonoOn_rvachevUp`, which is
+itself stated on the *closed* interval `[-1, 0]`, and `x ↦ 2 * x - 1` maps
+`[0, 1/2]` onto exactly `[-1, 0]`.
+
+The endpoints carry real content: together with `F' 0 = 0` and `F' (1/2) = 2`
+this gives the strict two-sided bound `0 < F' x < 2` for `0 < x < 1/2`, and it
+makes `deriv (fabiusReal F)` injective on the closed half.
+-/
+theorem strictMonoOn_deriv_fabiusReal_Icc (F : BoundedFabius) (hF : IsFabius F) :
+    StrictMonoOn (deriv (fabiusReal F)) (Icc (0 : ℝ) (1 / 2)) := by
+  intro x hx y hy hxy
+  rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
+  have h := strictMonoOn_rvachevUp F hF
+    (show 2 * x - 1 ∈ Icc (-1 : ℝ) 0 from ⟨by linarith [hx.1], by linarith [hx.2]⟩)
+    (show 2 * y - 1 ∈ Icc (-1 : ℝ) 0 from ⟨by linarith [hy.1], by linarith [hy.2]⟩)
+    (by linarith)
+  linarith
+
+/--
+On the *closed* second half `[1/2, 1]` the derivative is strictly decreasing.
+
+This is the sharp form of `strictAntiOn_deriv_fabiusReal`, which states the
+same conclusion on the open interval only.  As above the endpoints come for
+free: `strictAntiOn_rvachevUp` is stated on the closed interval `[0, 1]` and
+`x ↦ 2 * x - 1` maps `[1/2, 1]` onto exactly `[0, 1]`.
+-/
+theorem strictAntiOn_deriv_fabiusReal_Icc (F : BoundedFabius) (hF : IsFabius F) :
+    StrictAntiOn (deriv (fabiusReal F)) (Icc (1 / 2 : ℝ) 1) := by
+  intro x hx y hy hxy
+  rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
+  have h := strictAntiOn_rvachevUp F hF
+    (show 2 * x - 1 ∈ Icc (0 : ℝ) 1 from ⟨by linarith [hx.1], by linarith [hx.2]⟩)
+    (show 2 * y - 1 ∈ Icc (0 : ℝ) 1 from ⟨by linarith [hy.1], by linarith [hy.2]⟩)
+    (by linarith)
+  linarith
+
 /-- On the interior of the first half the derivative is strictly increasing. -/
 theorem strictMonoOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     StrictMonoOn (deriv (fabiusReal F)) (Ioo (0 : ℝ) (1 / 2)) := by

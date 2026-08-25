@@ -121,9 +121,7 @@ theorem extendedFabius_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
   · have hblock : ∀ y ∈ Ioo (0 : ℝ) 2,
         extendedFabius F y = rvachevUp F (y - 1) := by
       intro y hy
-      have hsingle := extendedFabius_eq_single_translate F hF 0
-        (by simpa using hy.1.le) (by simpa using hy.2.le)
-      simpa [binaryWeight] using hsingle
+      exact extendedFabius_eq_rvachevUp_sub_one F hF hy.2.le
     have hgerm : AnalyticAt ℝ (fun y : ℝ => rvachevUp F (y - 1)) x := by
       refine h.congr ?_
       filter_upwards [Ioo_mem_nhds hx0 hx.2] with y hy

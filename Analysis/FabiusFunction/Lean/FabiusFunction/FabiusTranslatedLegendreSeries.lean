@@ -36,9 +36,8 @@ theorem hasSum_extendedFabius_translatedLegendreSeries
   have hxshift : x - 1 ∈ Icc (-1 : ℝ) 1 := by
     constructor <;> linarith [hx.1, hx.2]
   have hseries := hasSum_rvachevLegendreSeries F hF (x - 1) hxshift
-  have hext := extendedFabius_eq_single_translate F hF 0 (x := x)
-    (by simpa using hx.1) (by simpa using hx.2)
-  norm_num [binaryWeight] at hext
+  have hext : extendedFabius F x = rvachevUp F (x - 1) :=
+    extendedFabius_eq_rvachevUp_sub_one F hF hx.2
   rw [hext]
   convert hseries using 1
   funext n

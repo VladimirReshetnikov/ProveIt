@@ -56,10 +56,6 @@ theorem fabiusComplexShiftSpline_eq_zero_of_neg
     fabiusComplexShiftSpline p q x = 0 :=
   fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx.le
 
-private theorem neg_one_pow_thueMorseBit_complex (r : ℕ) :
-    (-1 : ℂ) ^ thueMorseBit r = (thueMorseSign r : ℂ) := by
-  exact_mod_cast neg_one_pow_thueMorseBit r
-
 /-- The literal shifted spline is the generic normalized branch evaluated at
 `2^p x-q`. -/
 theorem fabiusComplexShiftSpline_eq_branch (p : ℕ) (q : ℂ) (x : ℝ) :
@@ -68,7 +64,7 @@ theorem fabiusComplexShiftSpline_eq_branch (p : ℕ) (q : ℂ) (x : ℝ) :
         (fabiusDiscreteLimitRangeLength x p)
         ((2 : ℂ) ^ p * (x : ℂ) - q) := by
   rw [fabiusComplexShiftSpline, normalizedThueMorseSplineBranch]
-  simp_rw [neg_one_pow_thueMorseBit_complex]
+  simp_rw [neg_one_pow_thueMorseBit_ring (R := ℂ)]
   have hterm (r : ℕ) :
       ((r : ℂ) - (2 : ℂ) ^ p * (x : ℂ) + q) ^ p =
         (-1 : ℂ) ^ p *
@@ -167,7 +163,7 @@ theorem fabiusComplexShiftSpline_center (p : ℕ) (x : ℝ) :
       (fabiusUniformSpline p x : ℂ) := by
   rw [fabiusComplexShiftSpline, fabiusUniformSpline]
   push_cast
-  simp_rw [neg_one_pow_thueMorseBit_complex]
+  simp_rw [neg_one_pow_thueMorseBit_ring (R := ℂ)]
 
 /-- Descriptive alias for the exact identification of the centered complex
 shift spline with the real uniform spline. -/

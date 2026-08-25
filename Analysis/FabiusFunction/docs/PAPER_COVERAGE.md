@@ -200,7 +200,7 @@ or corollary environments.  Its public Lean aggregate is
 | Equation (10), claimed `O(log n)` error after stationary substitution | **False for the displayed Stirling proxy**: substitution leaves an omitted linear `+n`, which is not `O(log n)` | `Fabius.paperStirlingPhi_of_stationary`, `Fabius.paperStirlingOmittedTerm_not_isBigO_log` |
 | Standard lower-branch expansion used before equation (11) | Proved as a positive-side limit: `W₋₁(-ε) - (log ε - log |log ε|) → 0` | `Fabius.tendsto_lowerLambertW_expansion` |
 | Equation (11), coarse log-squared decay | Proved rigorously without the false maximum/Lambert-W chain | `Fabius.log_fabiusLogPhi_add_quadratic_isBigO`, `Fabius.fabiusLogProfile_normalized_tendsto` |
-| “Faster than every power” | Proved from smooth flatness | `Fabius.extendedFabius_isLittleO_pow_at_zero`, `Fabius.fabius_isLittleO_pow_at_zero_right` |
+| “Faster than every power” | Proved from smooth flatness | `Fabius.extendedFabius_isLittleO_pow_at_zero`, `Fabius.fabius_isLittleO_pow_at_zero` (two-sided), `Fabius.fabius_isLittleO_pow_at_zero_right` |
 | “Slower than `exp(-c/x)`” | Proved precisely on the dyadic logarithmic scale: for every `c > 0`, `exp (-c 2^t)` is little-o of `F(2^-t)` | `Fabius.exp_neg_two_rpow_isLittleO_fabiusLogPhi`, `Fabius.exp_neg_two_rpow_isLittleO_fabius` |
 
 The corrected approximation is a separate theorem, not a reinterpretation

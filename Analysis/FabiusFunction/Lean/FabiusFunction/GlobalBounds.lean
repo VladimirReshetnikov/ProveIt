@@ -102,15 +102,6 @@ theorem isGreatest_abs_iteratedDeriv_extendedFabius (F : BoundedFabius)
 
 /-! ## The same bounds for Rvachev's function -/
 
-private lemma iteratedDeriv_zero_fun (n : ℕ) :
-    iteratedDeriv n (fun _ : ℝ => (0 : ℝ)) = fun _ => 0 := by
-  induction n with
-  | zero => funext y; simp
-  | succ n ih =>
-      funext y
-      rw [iteratedDeriv_succ, ih]
-      simp
-
 /-- Outside the support of Rvachev's function every iterated derivative
 vanishes, because `up` vanishes identically near such a point. -/
 theorem iteratedDeriv_rvachevUp_eq_zero_of_one_lt_abs (F : BoundedFabius)
@@ -127,7 +118,55 @@ theorem iteratedDeriv_rvachevUp_eq_zero_of_one_lt_abs (F : BoundedFabius)
         linarith
       filter_upwards [Iio_mem_nhds h] with y hy
       exact rvachevUp_eq_zero_of_le_neg_one F hF (le_of_lt hy)
-  rw [hEq.iteratedDeriv_eq n, iteratedDeriv_zero_fun n]
+  exact (hEq.iteratedDeriv_eq n).trans iteratedDeriv_fun_const_zero
+
+/--
+Every iterated derivative of Rvachev's function vanishes outside the *open*
+support, the two endpoints `±1` included: `up` is a genuine `C^∞` bump
+function, flat exactly where its support closes.
+
+This is the sharp form of `iteratedDeriv_rvachevUp_eq_zero_of_one_lt_abs`,
+which stays the primitive and is deliberately left untouched: the
+neighbourhood argument used there really does fail at `|x| = 1`, because `up`
+is nonzero throughout `(-1, 1)` and hence not eventually zero near `±1`.  The
+endpoints are reached instead by continuity of the derivative together with
+`closure (Ioi 1) = Ici 1` and `closure (Iio (-1)) = Iic (-1)`.
+-/
+theorem iteratedDeriv_rvachevUp_eq_zero_of_one_le_abs (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {x : ℝ} (hx : 1 ≤ |x|) :
+    iteratedDeriv n (rvachevUp F) x = 0 := by
+  have hcont : Continuous (iteratedDeriv n (rvachevUp F)) :=
+    (rvachev_contDiff F hF).continuous_iteratedDeriv n
+      (ENat.natCast_le_of_coe_top_le_withTop le_rfl n)
+  have hclosed : IsClosed {y : ℝ | iteratedDeriv n (rvachevUp F) y = 0} :=
+    isClosed_eq hcont continuous_const
+  by_cases hx0 : 0 ≤ x
+  · have h1 : (1 : ℝ) ≤ x := by rwa [abs_of_nonneg hx0] at hx
+    have hsub : Ioi (1 : ℝ) ⊆ {y : ℝ | iteratedDeriv n (rvachevUp F) y = 0} := by
+      intro y hy
+      have hy1 : (1 : ℝ) < y := mem_Ioi.mp hy
+      have hy0 : (0 : ℝ) < y := by linarith
+      show iteratedDeriv n (rvachevUp F) y = 0
+      refine iteratedDeriv_rvachevUp_eq_zero_of_one_lt_abs F hF n ?_
+      rwa [abs_of_pos hy0]
+    have hmono := closure_mono hsub
+    rw [closure_Ioi, hclosed.closure_eq] at hmono
+    exact hmono (mem_Ici.mpr h1)
+  · have hneg : x < 0 := lt_of_not_ge hx0
+    have h1 : x ≤ -1 := by
+      rw [abs_of_neg hneg] at hx
+      linarith
+    have hsub : Iio (-1 : ℝ) ⊆ {y : ℝ | iteratedDeriv n (rvachevUp F) y = 0} := by
+      intro y hy
+      have hy1 : y < (-1 : ℝ) := mem_Iio.mp hy
+      have hy0 : y < 0 := by linarith
+      show iteratedDeriv n (rvachevUp F) y = 0
+      refine iteratedDeriv_rvachevUp_eq_zero_of_one_lt_abs F hF n ?_
+      rw [abs_of_neg hy0]
+      linarith
+    have hmono := closure_mono hsub
+    rw [closure_Iio, hclosed.closure_eq] at hmono
+    exact hmono (mem_Iic.mpr h1)
 
 /--
 Every iterated derivative of Rvachev's function is uniformly bounded by
