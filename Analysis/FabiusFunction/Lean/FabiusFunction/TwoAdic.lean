@@ -208,22 +208,6 @@ theorem two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
     · exact sub_ne_zero.mpr (ne_of_gt (one_lt_pow₀ (by norm_num) (by omega)))
   field_simp [hD]
 
-private lemma card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop)
-    [DecidablePred p] :
-    ((Finset.univ : Finset (Fin N)).filter (fun k => p k.val)).card =
-      ((range N).filter p).card := by
-  apply Finset.card_bij (fun k _ => k.val)
-  · intro k hk
-    simp only [mem_filter, mem_univ, true_and] at hk
-    exact mem_filter.2 ⟨mem_range.2 k.isLt, hk⟩
-  · intro a ha b hb hab
-    exact Fin.ext hab
-  · intro j hj
-    simp only [mem_filter, mem_range] at hj
-    refine ⟨⟨j, hj.1⟩, ?_, rfl⟩
-    simp only [mem_filter, mem_univ, true_and]
-    exact hj.2
-
 private lemma odd_inner_binomial_count (m : ℕ) (hm : 1 ≤ m) :
     Odd (((range (2 * m)).filter (fun k =>
       k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))).card) := by

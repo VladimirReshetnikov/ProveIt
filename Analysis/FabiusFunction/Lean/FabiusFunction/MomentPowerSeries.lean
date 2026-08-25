@@ -42,13 +42,19 @@ theorem moment_original_recurrence (n : ℕ) :
       field_simp
       ring
 
-private noncomputable def momentPS : PowerSeries ℚ :=
+/-- The generating series `∑ (moment n / (2 * n)!) * X ^ n` of the Fabius
+moments. -/
+noncomputable def momentPS : PowerSeries ℚ :=
   PowerSeries.mk fun n => moment n / ((2 * n).factorial : ℚ)
 
-private noncomputable def sinhDivPS : PowerSeries ℚ :=
+/-- The generating series `∑ X ^ n / (2 * n + 1)!`, obtained from `sinh x / x`
+by substituting `X` for `x ^ 2`. -/
+noncomputable def sinhDivPS : PowerSeries ℚ :=
   PowerSeries.mk fun n => 1 / ((2 * n + 1).factorial : ℚ)
 
-private lemma momentPS_functional :
+/-- The original moment recurrence, packaged as the functional equation
+`momentPS (4 * X) = momentPS * sinhDivPS` between formal power series. -/
+lemma momentPS_functional :
     PowerSeries.rescale 4 momentPS = momentPS * sinhDivPS := by
   ext n
   rw [PowerSeries.coeff_rescale, PowerSeries.coeff_mul]

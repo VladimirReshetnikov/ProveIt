@@ -38,10 +38,6 @@ theorem fabiusAtInverseTwoPow_eq_halfMomentNumerator_formula (n : ℕ) :
   push_cast
   ring
 
-private lemma mersenneProduct_succ (n : ℕ) :
-    mersenneProduct (n + 1) = mersenneProduct n * (2 ^ (n + 1) - 1) := by
-  simp [mersenneProduct, Finset.prod_range_succ]
-
 private lemma evenMersenneProduct_succ (n : ℕ) :
     evenMersenneProduct (n + 1) =
       evenMersenneProduct n * (2 ^ (2 * (n + 1)) - 1) := by

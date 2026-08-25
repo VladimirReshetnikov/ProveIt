@@ -42,7 +42,9 @@ private lemma mersenneProduct_mul_interval (n k : ℕ) (hk : k ≤ n) :
   exact Finset.prod_Ico_consecutive (fun j => 2 ^ j - 1)
     (by omega) (by omega)
 
-private lemma mersenneProduct_succ (n : ℕ) :
+/-- Peeling off the last factor of the Mersenne product
+`mersenneProduct n = ∏_{k<n} (2 ^ (k + 1) - 1)`. -/
+lemma mersenneProduct_succ (n : ℕ) :
     mersenneProduct (n + 1) = mersenneProduct n * (2 ^ (n + 1) - 1) := by
   simp [mersenneProduct, Finset.prod_range_succ]
 

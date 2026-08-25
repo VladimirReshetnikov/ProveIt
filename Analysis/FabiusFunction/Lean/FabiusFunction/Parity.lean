@@ -224,7 +224,9 @@ private lemma odd_two_pow_sub_one {w : ℕ} (hw : 0 < w) : Odd (2 ^ w - 1) := by
     simp [Nat.mul_comm]
   · exact odd_one
 
-private lemma card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
+/-- Counting the elements of `Fin N` whose value satisfies `p` is the same as
+counting the elements of `range N` satisfying `p`. -/
+lemma card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
     ((Finset.univ : Finset (Fin N)).filter (fun k => p k.val)).card =
       ((range N).filter p).card := by
   apply Finset.card_bij (fun k _ => k.val)
