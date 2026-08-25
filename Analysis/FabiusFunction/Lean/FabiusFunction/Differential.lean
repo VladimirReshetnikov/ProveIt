@@ -9,6 +9,9 @@ This module derives the global differential equation for Rvachev's compactly
 supported `up` function from the bounded Fabius characterization.  The proof
 handles the fold point at zero by gluing the two one-sided derivatives, then
 bootstraps the differential equation to smoothness of every finite order.
+It also records the closed constant-tail forms of the Fabius derivative and
+the exact midpoint derivative, so endpoint arguments do not need to reopen
+the global folded formula.
 -/
 
 set_option autoImplicit false
@@ -18,8 +21,9 @@ open Set
 
 namespace Fabius
 
+set_option linter.unusedVariables false in
 /-- Backwards-compatible form of `rvachevUp_even` for an `IsFabius` candidate. -/
-theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
+theorem rvachev_even (F : BoundedFabius) (hF : IsFabius F) :
     Function.Even (rvachevUp F) :=
   rvachevUp_even F
 
@@ -117,6 +121,36 @@ theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith), mul_zero]
     exact fabius_hasDerivAt_of_neg F hF hx
 
+/-- On the whole closed left tail `(-∞, 0]`, including the gluing point, the
+bounded Fabius function has derivative zero. -/
+theorem fabius_hasDerivAt_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ≤ 0) : HasDerivAt (fabiusReal F) 0 x := by
+  have h := fabius_hasDerivAt F hF x
+  have hup : rvachevUp F (2 * x - 1) = 0 :=
+    rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
+  simpa [hup] using h
+
+/-- On the whole closed right tail `[1, ∞)`, including the gluing point, the
+bounded Fabius function has derivative zero. -/
+theorem fabius_hasDerivAt_of_one_le (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : 1 ≤ x) : HasDerivAt (fabiusReal F) 0 x := by
+  have h := fabius_hasDerivAt F hF x
+  have hup : rvachevUp F (2 * x - 1) = 0 :=
+    rvachevUp_eq_zero_of_one_le F hF (by linarith)
+  simpa [hup] using h
+
+/-- Exact derivative at the left endpoint of the unit interval. -/
+theorem fabius_hasDerivAt_zero (F : BoundedFabius) (hF : IsFabius F) :
+    HasDerivAt (fabiusReal F) 0 0 :=
+  fabius_hasDerivAt_of_nonpos F hF le_rfl
+
+/-- The derivative reaches its exact maximum `2` at the midpoint. -/
+theorem fabius_hasDerivAt_half (F : BoundedFabius) (hF : IsFabius F) :
+    HasDerivAt (fabiusReal F) 2 (1 / 2) := by
+  have h := fabius_hasDerivAt F hF (1 / 2)
+  have harg : 2 * (1 / 2 : ℝ) - 1 = 0 := by norm_num
+  simpa [harg, rvachevUp_zero F hF] using h
+
 /--
 Reflected form of the defining differential equation on the whole second half
 of the unit interval, endpoints included.
@@ -146,7 +180,7 @@ theorem fabius_differentiable (F : BoundedFabius) (hF : IsFabius F) :
   fun x => (fabius_hasDerivAt F hF x).differentiableAt
 
 private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (_hx : x ≤ 0) :
+    {x : ℝ} :
     HasDerivAt (fun y : ℝ => fabiusReal F (y + 1))
       (2 * rvachevUp F (2 * x + 1)) x := by
   have h := (fabius_hasDerivAt F hF (x + 1)).comp_add_const x 1
@@ -156,7 +190,7 @@ private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
 private lemma rvachev_hasDerivAt_of_neg (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : x < 0) :
     HasDerivAt (rvachevUp F) (2 * rvachevUp F (2 * x + 1)) x := by
-  have hl := rvachev_left_hasDerivAt F hF hx.le
+  have hl := rvachev_left_hasDerivAt F hF (x := x)
   apply hl.congr_of_eventuallyEq
   filter_upwards [Iio_mem_nhds hx] with y hy
   have hyle : y ≤ 0 := le_of_lt hy
@@ -172,7 +206,7 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       exact rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
     rw [hsecond]
     simpa using hmain
-  · have hl0 := rvachev_left_hasDerivAt F hF (x := 0) le_rfl
+  · have hl0 := rvachev_left_hasDerivAt F hF (x := 0)
     have hcoef : 2 * rvachevUp F (2 * (0 : ℝ) + 1) = 0 := by
       simp [rvachevUp, hF.zero_of_nonpos]
     rw [hcoef] at hl0
