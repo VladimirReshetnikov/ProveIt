@@ -8,7 +8,9 @@ import Mathlib.Analysis.Calculus.Taylor
 This module turns the translated-remainder cancellation theorem into the
 finite recursive formula of Proposition 10.  The proof handles nonnegative
 indices by Taylor expansion and negative indices directly by the
-power-of-two sign-translation law.
+power-of-two sign-translation law.  It also records the constant order-zero
+polynomial, its value at the Taylor base point, and sign-specialized wrappers
+that remove the conditional from the public reduction formula.
 -/
 
 open scoped BigOperators ContDiff Interval
@@ -23,6 +25,22 @@ noncomputable def fabiusReductionSum (n : ℕ) (y : ℝ) : ℝ :=
   ∑ k ∈ range (n + 1),
     (2 : ℝ) ^ ((Nat.choose (k + 1) 2 : ℤ) - Nat.choose (n - k) 2) *
       (halfMoment (n - k) : ℝ) / (n - k).factorial * y ^ k / k.factorial
+
+/-- The order-zero reduction polynomial is the constant polynomial `1`. -/
+theorem fabiusReductionSum_zero (y : ℝ) :
+    fabiusReductionSum 0 y = 1 := by
+  simp [fabiusReductionSum, halfMoment_zero]
+
+/-- At the Taylor base point only the constant coefficient survives. -/
+theorem fabiusReductionSum_at_zero (n : ℕ) :
+    fabiusReductionSum n 0 =
+      (2 : ℝ) ^ (-((n.choose 2 : ℕ) : ℤ)) *
+        (halfMoment n : ℝ) / n.factorial := by
+  rw [fabiusReductionSum, Finset.sum_eq_single 0]
+  · simp
+  · intro k hk hk0
+    simp [zero_pow hk0]
+  · simp
 
 private theorem global_taylor_integral_remainder
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (x₀ x : ℝ) :
@@ -105,6 +123,18 @@ private theorem extendedFabius_inverse_two_pow
     halfMomentFabiusValue]
   push_cast
   rfl
+
+/-- The constant coefficient of the order-`n` reduction polynomial is the
+analytic value at the inverse dyadic Taylor base point. -/
+theorem fabiusReductionSum_at_zero_eq_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusReductionSum n 0 =
+      extendedFabius F ((2 : ℝ) ^ (-(n : ℤ))) := by
+  rw [fabiusReductionSum_at_zero,
+    extendedFabius_inverse_two_pow F hF, zpow_neg, zpow_natCast]
+  have hfac : (n.factorial : ℝ) ≠ 0 := by positivity
+  have hpow : (2 : ℝ) ^ n.choose 2 ≠ 0 := by positivity
+  field_simp [hfac, hpow]
 
 private theorem taylorAtInverse_eq_reduction
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) (y : ℝ) :
@@ -212,5 +242,30 @@ theorem extendedFabius_reduction (F : BoundedFabius) (hF : IsFabius F)
     dsimp only [y]
     rw [hpow]
     ring_nf
+
+/-- Natural-index form of `extendedFabius_reduction`.  The nonnegative branch
+is selected definitionally, so its conclusion contains no conditional. -/
+theorem extendedFabius_reduction_nat
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) (n : ℕ)
+    (hx : 0 < x)
+    (hlo : (2 : ℝ) ^ (-((n : ℤ))) ≤ x)
+    (hhi : x < (2 : ℝ) ^ (-((n : ℤ)) + 1)) :
+    let y := x - (2 : ℝ) ^ (-((n : ℤ)))
+    extendedFabius F x = -extendedFabius F y + fabiusReductionSum n y := by
+  have hn : (0 : ℤ) ≤ (n : ℤ) := by omega
+  simpa [hn] using extendedFabius_reduction F hF x (n : ℤ) hx hlo hhi
+
+/-- Negative-index form of `extendedFabius_reduction`.  In this range the
+Taylor polynomial disappears and the formula is exactly sign translation. -/
+theorem extendedFabius_reduction_of_neg
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) (n : ℤ)
+    (hn : n < 0) (hx : 0 < x)
+    (hlo : (2 : ℝ) ^ (-n) ≤ x)
+    (hhi : x < (2 : ℝ) ^ (-n + 1)) :
+    let y := x - (2 : ℝ) ^ (-n)
+    extendedFabius F x = -extendedFabius F y := by
+  have hn' : ¬ (0 : ℤ) ≤ n := not_le_of_gt hn
+  simpa [hn'] using
+    extendedFabius_reduction F hF x n hx hlo hhi
 
 end Fabius
