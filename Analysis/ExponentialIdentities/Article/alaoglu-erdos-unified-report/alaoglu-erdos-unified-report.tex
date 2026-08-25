@@ -21531,6 +21531,140 @@ implies the uniform subunit bound, for dense or arbitrary sparse supports, givin
 machine-checkable route (Priority~A of its program) whose success criterion is a proven
 sufficient condition.  The dense asymptotics do not yet meet the capacity criterion; the
 open question is whether near-resonant sparse supports do.
+Section~\ref{nc:measured} answers that for the natural resonant family --- they do not, and
+for a structural reason --- and measures the dense family directly.
+
+\subsection{Measuring the capacity criterion}
+\label{nc:measured}
+
+Section~\ref{nc:budgets} leaves one question open: the dense asymptotics do not meet
+$\mathrm{Cap}_L=o(L)$, and ``the open question is whether near-resonant sparse supports do''.
+This subsection answers it for the natural resonant family, and measures the dense family
+directly.  Neither result closes the route, and the second is data rather than theorem, but
+together they narrow what a successful search could look like.
+
+Throughout, write $\lambda_{ij}=i+j\thetaq$, so that the restriction of $X^iY^j$ to the curve
+is $X^{\lambda_{ij}}$, and the subunit requirement for the block $2^L\le X<2^{L+1}$ is
+\begin{equation}
+  \Bigl|\sum_{(i,j)\in S}c_{ij}X^{\lambda_{ij}}\Bigr|<1
+  \qquad\text{for all }X\in[2^L,2^{L+1}],
+  \qquad c\in\Z^{S}\setminus\{0\}.
+  \label{nc:eq-subunit}
+\end{equation}
+Sampling at $T=\#S$ nodes turns the left side into $Ac$ with $A_{k,s}=X_k^{\lambda_s}$, and
+Minkowski's theorem gives a nonzero integer solution of $\|Ac\|_\infty<1$ as soon as
+$|\det A|\le1$.  Writing $X_k=2^Lz_k$ with $z_k\in[1,2]$,
+\begin{equation}
+  \det A=2^{L\sum_s\lambda_s}\cdot V,\qquad V=\det\bigl(z_k^{\lambda_s}\bigr),
+  \label{nc:eq-det}
+\end{equation}
+so the search is a contest between the weight $2^{L\sum\lambda_s}$, which the block forces,
+and the ill-conditioning of the exponential system, which the support may be designed to
+maximise.  Clustering the $\lambda_s$ makes $V$ small; that is exactly what ``near-resonant''
+means.
+
+\begin{proposition}[Resonant chains cannot supply the criterion]
+\label{nc:prop-chain}
+Let $p,q$ be positive integers, put $\eps=|p-q\thetaq|$, and let $S$ be a resonant chain
+$S=\{(i_0-kp,\;j_0+kq):0\le k<T\}$ with $i_0\ge(T-1)p$, so that consecutive exponents differ
+by $\eps$.  Then the Minkowski condition $|\det A|\le1$ forces
+\begin{equation}
+  2p(L+1)\log2\;\le\;\log\frac1{\eps\log2},
+  \label{nc:eq-chainfeas}
+\end{equation}
+and no pair $(p,q)$ satisfies this for any $L\ge1$.
+\end{proposition}
+
+\begin{proof}
+The exponents are $\lambda_k=\lambda_0-k\eps$ with $\lambda_0=i_0+j_0\thetaq\ge(T-1)p$, so
+$\sum_k\lambda_k\le T\lambda_0$.  Setting $t_k=e^{-\eps u_k}$ with $u_k=\log z_k\in[0,\log2]$
+gives $z_k^{\lambda_s}=e^{\lambda_0u_k}t_k^{\,s}$, whence
+$|V|=\bigl(\prod_ke^{\lambda_0u_k}\bigr)\prod_{k<l}|t_l-t_k|
+\le2^{\lambda_0T}(\eps\log2)^{T(T-1)/2}$,
+because the $t_k$ lie in an interval of length at most $\eps\log2$.  Substituting into
+\eqref{nc:eq-det},
+\[
+  |\det A|\le2^{\lambda_0T(L+1)}(\eps\log2)^{T(T-1)/2},
+\]
+and $|\det A|\le1$ gives $\lambda_0T(L+1)\log2\le\frac{T(T-1)}2\log\frac1{\eps\log2}$.  Using
+$\lambda_0\ge(T-1)p$ and cancelling $T(T-1)$ gives \eqref{nc:eq-chainfeas}.
+
+For the second claim, $\eps$ cannot be made small without cost.  The effective irrationality
+measure $\mu_{\thetaq}=8.616$ of \eqref{eq:wu-measure} gives
+$|\thetaq-p/q|>c\,q^{-\mu_{\thetaq}}$, hence
+\[
+  \eps=q\Bigl|\thetaq-\frac pq\Bigr|>c\,q^{1-\mu_{\thetaq}}=c\,q^{-7.616},
+\]
+so the right side of \eqref{nc:eq-chainfeas} is at most $7.616\log q+\mathrm O(1)$.  A small
+$\eps$ also forces $p\ge q\thetaq-1$.  So \eqref{nc:eq-chainfeas} demands
+\[
+  2\,(q\thetaq-1)(L+1)\log2\;\le\;7.616\log q+\mathrm O(1),
+\]
+whose left side is linear in $q$ and whose right side is logarithmic.  At $L=1$ the left side
+already exceeds the right at $q=1$ and the gap widens monotonically --- $6.0$ against $5.3$ at
+$q=2$, $41.2$ against $17.5$ at $q=10$, $4.4\cdot10^{4}$ against $70.1$ at $q=10^{4}$ --- and
+increasing $L$ only scales the left side up.  A direct search over every $(p,q)$ with
+$q\le4000$ confirms it: the most favourable step is the trivial $p=q=1$, which misses
+\eqref{nc:eq-chainfeas} by $1.87$ in the logarithm.
+\end{proof}
+
+The failure is structural rather than numerical, and it is worth naming, because it is the
+same shape as every other dead end in this report.  Making the resonance $\eps$ small buys
+ill-conditioning at rate $\log(1/\eps)$ per pair of support points, but a step with
+small $\eps$ has a large numerator $p\approx q\thetaq$, and keeping the support inside
+$\N_0^2$ then forces $\lambda_0\ge(T-1)p$, so the weight $2^{L\sum\lambda}$ grows like
+$2^{LT^2p}$ while the gain grows only like $\eps^{T^2}$.  The exponent $p$ appears
+multiplicatively in the cost and only logarithmically in the gain.  Resonance pays for itself
+at exactly the wrong rate.
+
+\paragraph{The dense family, measured.}  For the dense triangular supports
+$S_d=\{(i,j):i+j\le d\}$, $T=\binom{d+2}2$, an LLL search on the rounded sampling matrix finds
+the smallest $d$ admitting \eqref{nc:eq-subunit}:
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$L$ & $d_{\min}$ & $T$ & attained $\sup$ & $T/(L/\log L)$ \\
+\midrule
+$1$ & $1$ & $3$  & $2.96\cdot10^{-1}$ & --- \\
+$2$ & $2$ & $6$  & $5.78\cdot10^{-2}$ & $2.08$ \\
+$3$ & $2$ & $6$  & $3.92\cdot10^{-1}$ & $2.20$ \\
+$4$ & $3$ & $10$ & $5.83\cdot10^{-2}$ & $3.47$ \\
+$5$ & $3$ & $10$ & $5.59\cdot10^{-1}$ & $3.22$ \\
+$6$ & $4$ & $15$ & $2.55\cdot10^{-1}$ & $4.48$ \\
+$8$ & $6$ & $28$ & $6.02\cdot10^{-3}$ & $7.28$ \\
+$10$ & $7$ & $36$ & $2.39\cdot10^{-1}$ & $8.29$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two things are visible.  Subunit certificates do exist, so the construction is not vacuous ---
+at $L=8$ a degree-six polynomial with integer coefficients is uniformly below $6\cdot10^{-3}$
+on a block where its individual monomials exceed $2^{124}$.  And the minimal degree grows
+close to linearly --- $d_{\min}=1,2,2,3,3,4,6,7$ against $L=1,2,3,4,5,6,8,10$, so
+$d_{\min}\approx0.7L$ --- and hence $T\approx d^2/2$ grows close to
+\emph{quadratically}: the last column, which would have to be bounded for the criterion to be
+in reach, instead grows steadily from $2.1$ to $8.3$.  These are upper bounds on $d_{\min}$,
+since LLL is heuristic and only dense triangular supports were tried, so the true growth could
+be slower; but nothing in the data suggests approach to $o(L)$.
+
+The heuristic behind the observed $d\asymp L$ is the same balance as
+Proposition~\ref{nc:prop-chain}.  For $S_d$ one has $\sum_s\lambda_s\asymp d^3$, so the cost in
+\eqref{nc:eq-det} is $\asymp Ld^3$, while the exponential system $\{e^{\lambda u}\}$ on an
+interval of length $\log2$ has effective bandwidth $\asymp d$ and therefore contributes
+ill-conditioning $\asymp T^2\asymp d^4$ once $T$ exceeds that bandwidth.  Balancing $Ld^3$
+against $d^4$ gives $d\asymp L$ and $T\asymp L^2$, which is what the table shows.
+
+\paragraph{Status.}  Neither result closes Section~\ref{nc:budgets}'s route.
+Proposition~\ref{nc:prop-chain} is a statement about when the Minkowski existence criterion can
+be met, not a proof that no chain certificate exists, and the dense table is measurement.  What
+they do is remove the two families anyone would try first, and identify what a successful
+support must avoid: it cannot be a resonant chain, and it cannot be dense.  A support meeting
+$\mathrm{Cap}_L=o(L)$ would have to be sparse \emph{and} non-resonant, which is to say it would
+have to obtain its ill-conditioning from the arithmetic of $\thetaq$ in some way not visible in
+the spacing of $\{i+j\thetaq\}$.  No mechanism for that is known here.  \statusnew{};
+scripts \path{scripts/nearcurve_search.py} and \path{scripts/nearcurve_growth.py}.
 
 \subsection{The toric no-go and the Carlitz model}
 \label{nc:toric}
