@@ -5,9 +5,9 @@ import FabiusFunction.FabiusLambertSaddle
 # Comparing Lambert and logarithmic error scales
 
 The exact lower-Lambert saddle phase is asymptotic to the logarithmic
-coordinate.  For the sharp Fabius estimate it suffices to compare their
-reciprocals by Big-O.  This module also converts that rate into the literal
-`1 / (-log x)` scale at `x → 0⁺`.
+coordinate.  This module records the sharp reciprocal ratio limit, extracts
+the Big-O comparison used by the sharp Fabius estimate, and converts that rate
+into the literal `1 / (-log x)` scale at `x → 0⁺`.
 -/
 
 set_option autoImplicit false
@@ -15,6 +15,18 @@ set_option autoImplicit false
 open Filter Asymptotics Set
 
 namespace Fabius
+
+/-- Sharp reciprocal form of the first-order Lambert asymptotic:
+`t / dyadicLambertPhase t → 1`. -/
+theorem dyadicLambertPhase_inv_mul_t_tendsto_one :
+    Tendsto (fun t : ℝ => (dyadicLambertPhase t)⁻¹ * t) atTop (nhds 1) := by
+  have h := dyadicLambertPhase_div_t_tendsto_one.inv₀ one_ne_zero
+  have h' : Tendsto (fun t : ℝ => t / dyadicLambertPhase t)
+      atTop (nhds (1 : ℝ)⁻¹) := by
+    apply h.congr'
+    filter_upwards with t
+    rw [inv_div]
+  simpa only [inv_one, div_eq_mul_inv, mul_comm] using h'
 
 /-- The reciprocal lower-Lambert phase is `O(1/t)`. -/
 theorem dyadicLambertPhase_inv_isBigO_inv :

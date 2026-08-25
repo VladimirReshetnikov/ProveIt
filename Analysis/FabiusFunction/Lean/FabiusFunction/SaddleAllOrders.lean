@@ -270,7 +270,9 @@ lemma integral_pairedReference_eq_even
       ((hA (2 * j + 1) (by omega)).const_mul _)
 
 /-- An `L¹` approximation of a kernel by any integrable reference gives the
-same-order approximation of their normalized integrals. -/
+same-order approximation of their normalized integrals.  This established
+all-orders name is a compatibility wrapper for the generic transfer now
+exposed by `QuantitativeSaddle`. -/
 theorem normalizedIntegral_sub_reference_isBigO_of_L1
     {α : Type*} (l : Filter α) (rate : α → ℝ)
     (K reference : α → ℝ → ℂ)
@@ -280,40 +282,13 @@ theorem normalizedIntegral_sub_reference_isBigO_of_L1
     (fun i ↦
       (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
         (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
-          (∫ v : ℝ, reference i v)) =O[l] rate := by
-  rw [isBigO_iff] at herror ⊢
-  obtain ⟨C, hC⟩ := herror
-  let gaussianMass : ℝ := Real.sqrt (2 * Real.pi)
-  have hmass : 0 < gaussianMass := by
-    dsimp [gaussianMass]
-    positivity
-  refine ⟨gaussianMass⁻¹ * C, ?_⟩
-  filter_upwards [hK, hreference, hC] with i hKi hRi hi
-  have hdiffInt : Integrable (fun v ↦ ‖K i v - reference i v‖) :=
-    (hKi.sub hRi).norm
-  have hnonneg : 0 ≤ ∫ v : ℝ, ‖K i v - reference i v‖ :=
-    integral_nonneg fun _ ↦ norm_nonneg _
-  rw [Real.norm_eq_abs, abs_of_nonneg hnonneg] at hi
-  have hnorm :
-      ‖(∫ v : ℝ, K i v) - ∫ v : ℝ, reference i v‖ ≤
-        ∫ v : ℝ, ‖K i v - reference i v‖ := by
-    rw [← integral_sub hKi hRi]
-    exact norm_integral_le_of_norm_le hdiffInt
-      (Filter.Eventually.of_forall fun _ ↦ le_rfl)
-  change ‖(gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
-      (gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, reference i v)‖ ≤ _
-  rw [← mul_sub, norm_mul, norm_inv, Complex.norm_real,
-    Real.norm_eq_abs, abs_of_pos hmass]
-  calc
-    gaussianMass⁻¹ *
-          ‖(∫ v : ℝ, K i v) - ∫ v : ℝ, reference i v‖
-        ≤ gaussianMass⁻¹ *
-          (∫ v : ℝ, ‖K i v - reference i v‖) := by gcongr
-    _ ≤ gaussianMass⁻¹ * (C * ‖rate i‖) := by gcongr
-    _ = (gaussianMass⁻¹ * C) * ‖rate i‖ := by ring
+          (∫ v : ℝ, reference i v)) =O[l] rate :=
+  QuantitativeSaddle.normalized_integral_sub_reference_isBigO_of_L1
+    l rate K reference hK hreference herror
 
 /-- Central-set plus complementary-tail form of the arbitrary-reference
-normalized-integral estimate. -/
+normalized-integral estimate, retained here as the all-orders namespace
+wrapper for the generic `QuantitativeSaddle` theorem. -/
 theorem normalizedIntegral_sub_reference_isBigO_of_central_tail
     {α : Type*} (l : Filter α) (rate : α → ℝ)
     (K reference : α → ℝ → ℂ) (central : α → Set ℝ)
@@ -327,16 +302,9 @@ theorem normalizedIntegral_sub_reference_isBigO_of_central_tail
     (fun i ↦
       (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
         (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
-          (∫ v : ℝ, reference i v)) =O[l] rate := by
-  apply normalizedIntegral_sub_reference_isBigO_of_L1 l rate K reference
-    hK hreference
-  have hsum := hcentral.add htail
-  apply hsum.congr'
-  · filter_upwards [hK, hreference, hcentralMeas] with i hKi hRi hmeas
-    have hdiffInt : Integrable (fun v ↦ ‖K i v - reference i v‖) :=
-      (hKi.sub hRi).norm
-    exact integral_add_compl hmeas hdiffInt
-  · exact Filter.EventuallyEq.rfl
+          (∫ v : ℝ, reference i v)) =O[l] rate :=
+  QuantitativeSaddle.normalized_integral_sub_reference_isBigO_of_central_tail
+    l rate K reference central hK hreference hcentralMeas hcentral htail
 
 /-- All-orders parity wrapper.  If a kernel is `L¹`-close through degree
 `2N+1` to a paired Edgeworth reference, then only the even coefficients

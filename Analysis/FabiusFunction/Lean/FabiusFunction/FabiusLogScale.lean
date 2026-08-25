@@ -20,7 +20,9 @@ example, the bounded function is constant on `[1, ∞)`).
 
 No asymptotic ansatz or periodic-remainder assertion is assumed here.  This
 file provides the exact identities on which a rigorous asymptotic analysis can
-be built.
+be built.  It also records the elementary derivative, reciprocal, and shift
+identities of the logarithmic coordinate itself, so downstream scale-transfer
+arguments do not have to reopen the definition of `fabiusLogArgument`.
 -/
 
 set_option autoImplicit false
@@ -45,6 +47,22 @@ noncomputable def fabiusLogProfile (F : BoundedFabius) (t : ℝ) : ℝ :=
 theorem fabiusLogArgument_pos (t : ℝ) : 0 < fabiusLogArgument t := by
   exact Real.rpow_pos_of_pos (by norm_num) _
 
+/-- The derivative of the logarithmic coordinate is
+`-(log 2) * 2⁻ᵗ`. -/
+theorem fabiusLogArgument_hasDerivAt (t : ℝ) :
+    HasDerivAt fabiusLogArgument
+      (-(Real.log 2) * fabiusLogArgument t) t := by
+  change HasDerivAt (fun s : ℝ => (2 : ℝ) ^ (-s))
+    (-(Real.log 2) * (2 : ℝ) ^ (-t)) t
+  simpa [id_eq] using
+    ((hasDerivAt_id t).neg.const_rpow (by norm_num : (0 : ℝ) < 2))
+
+/-- The reciprocal of `2⁻ᵗ` is `2ᵗ`. -/
+theorem fabiusLogArgument_inv (t : ℝ) :
+    (fabiusLogArgument t)⁻¹ = (2 : ℝ) ^ t := by
+  unfold fabiusLogArgument
+  rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), inv_inv]
+
 /-- If `t ≥ 1`, then `2⁻ᵗ` lies in the first half of the unit interval. -/
 theorem fabiusLogArgument_le_half {t : ℝ} (ht : 1 ≤ t) :
     fabiusLogArgument t ≤ 1 / 2 := by
@@ -65,6 +83,12 @@ theorem fabiusLogArgument_sub_one (t : ℝ) :
   congr 1
   ring
 
+/-- Shifting the logarithmic coordinate by one is the same as doubling its
+argument. -/
+theorem two_mul_fabiusLogArgument_eq_sub_one (t : ℝ) :
+    2 * fabiusLogArgument t = fabiusLogArgument (t - 1) := by
+  rw [two_mul_fabiusLogArgument, fabiusLogArgument_sub_one]
+
 /-- The profile `φ(t) = F(2⁻ᵗ)` is strictly positive. -/
 theorem fabiusLogPhi_pos (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
     0 < fabiusLogPhi F t := by
@@ -80,18 +104,20 @@ theorem fabiusLogPhi_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
       (-(Real.log 2) * (2 : ℝ) ^ (1 - t) * fabiusLogPhi F (t - 1)) t := by
   have harg : fabiusLogArgument t ∈ Icc (0 : ℝ) (1 / 2) :=
     ⟨(fabiusLogArgument_pos t).le, fabiusLogArgument_le_half ht⟩
-  have hinner : HasDerivAt fabiusLogArgument
-      (-(Real.log 2) * fabiusLogArgument t) t := by
-    change HasDerivAt (fun s : ℝ => (2 : ℝ) ^ (-s))
-      (-(Real.log 2) * (2 : ℝ) ^ (-t)) t
-    simpa [id_eq] using
-      ((hasDerivAt_id t).neg.const_rpow (by norm_num : (0 : ℝ) < 2))
+  have hinner := fabiusLogArgument_hasDerivAt t
   have hcomp := (hF.hasDerivAt (fabiusLogArgument t) harg).comp t hinner
   change HasDerivAt (fabiusReal F ∘ fabiusLogArgument)
     (-(Real.log 2) * (2 : ℝ) ^ (1 - t) * fabiusLogPhi F (t - 1)) t
   apply hcomp.congr_deriv
   rw [fabiusLogPhi, fabiusLogArgument_sub_one, ← two_mul_fabiusLogArgument]
   ring
+
+/-- Derivative form of `fabiusLogPhi_hasDerivAt`. -/
+theorem deriv_fabiusLogPhi (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (ht : 1 ≤ t) :
+    deriv (fabiusLogPhi F) t =
+      -(Real.log 2) * (2 : ℝ) ^ (1 - t) * fabiusLogPhi F (t - 1) :=
+  (fabiusLogPhi_hasDerivAt F hF ht).deriv
 
 /-- The explicit positive value of the derivative of `fabiusLogProfile`. -/
 noncomputable def fabiusLogSlope (F : BoundedFabius) (t : ℝ) : ℝ :=
@@ -124,6 +150,12 @@ theorem fabiusLogProfile_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
   exact (hneg.congr_deriv heq).congr_of_eventuallyEq
     (Filter.Eventually.of_forall fun _ => rfl)
 
+/-- Derivative form of `fabiusLogProfile_hasDerivAt`. -/
+theorem deriv_fabiusLogProfile (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (ht : 1 ≤ t) :
+    deriv (fabiusLogProfile F) t = fabiusLogSlope F t :=
+  (fabiusLogProfile_hasDerivAt F hF ht).deriv
+
 /--
 Algebraic logarithmic form of the delay identity, expressed using the explicit
 slope.  This equality itself holds for every `t`; the slope is identified with
@@ -155,7 +187,7 @@ theorem fabiusLogProfile_difference_eq_log_deriv
     fabiusLogProfile F t - fabiusLogProfile F (t - 1) =
       Real.log (deriv (fabiusLogProfile F) t) - Real.log (Real.log 2) -
         (1 - t) * Real.log 2 := by
-  rw [(fabiusLogProfile_hasDerivAt F hF ht).deriv]
+  rw [deriv_fabiusLogProfile F hF ht]
   exact fabiusLogProfile_sub_one F hF t
 
 end Fabius

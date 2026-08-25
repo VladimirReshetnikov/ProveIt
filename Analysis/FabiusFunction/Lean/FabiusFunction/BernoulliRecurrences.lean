@@ -6,7 +6,9 @@ import Mathlib.NumberTheory.Bernoulli
 
 This module proves Proposition 22 of *Arithmetic of the Fabius function* from
 the executable moment recurrences and Mathlib's formal generating series for
-the Bernoulli numbers.
+the Bernoulli numbers.  The positive-index formulas are accompanied by
+successor-index forms, so downstream recursions can use them without carrying
+a separate positivity hypothesis.
 -/
 
 set_option autoImplicit false
@@ -15,6 +17,13 @@ open scoped BigOperators
 open Finset PowerSeries
 
 namespace Fabius
+
+/-- A positive power of two is not one in `ℚ`.  This is the common
+denominator fact used by the moment and recurrence-sequence formulas. -/
+theorem rat_two_pow_sub_one_ne_zero (n : ℕ) (hn : 1 ≤ n) :
+    (2 : ℚ) ^ n - 1 ≠ 0 := by
+  exact ne_of_gt (sub_pos.mpr
+    (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
 
 /-- The original, non-isolated recurrence for the half moments. -/
 theorem halfMoment_original_recurrence (n : ℕ) :
@@ -30,9 +39,7 @@ theorem halfMoment_original_recurrence (n : ℕ) :
       have hchoose : (n + 2).choose (n + 1) = n + 2 := by
         exact Nat.choose_succ_self_right (n + 1)
       rw [hchoose]
-      have hpow : (2 : ℚ) ^ (n + 1) - 1 ≠ 0 := by
-        exact ne_of_gt (sub_pos.mpr
-          (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+      have hpow := rat_two_pow_sub_one_ne_zero (n + 1) (by omega)
       field_simp
       ring
 
@@ -234,11 +241,22 @@ theorem halfMoment_bernoulli_recurrence (n : ℕ) (hn : 1 ≤ n) :
     calc
       _ = ∑ k ∈ range (n + 1), f k := by linear_combination hsplitBase
       _ = halfMoment n := hconv
-  have hpow : (2 : ℚ) ^ n - 1 ≠ 0 := by
-    exact ne_of_gt (sub_pos.mpr
-      (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+  have hpow := rat_two_pow_sub_one_ne_zero n hn
   field_simp [hpow]
   linear_combination 4 * hrel
+
+/-- All-index successor form of the half-moment Bernoulli recurrence. -/
+theorem halfMoment_bernoulli_succ_recurrence (n : ℕ) :
+    halfMoment (n + 1) =
+      ((((n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (n + 1) /
+          (4 * ((2 : ℚ) ^ (n + 1) - 1))) * halfMoment n) -
+        (∑ k ∈ Icc 1 ((n + 1) / 2),
+          (Nat.choose (n + 1) (2 * k) : ℚ) *
+            (2 : ℚ) ^ (n + 1 - 2 * k) *
+            bernoulli (2 * k) * halfMoment (n + 1 - 2 * k)) /
+          ((2 : ℚ) ^ (n + 1) - 1) := by
+  simpa only [Nat.add_sub_cancel] using
+    halfMoment_bernoulli_recurrence (n + 1) (by omega)
 
 private noncomputable def bernoulliCoshFactorPS22 : PowerSeries ℚ :=
   PowerSeries.mk fun n =>
@@ -462,11 +480,20 @@ theorem moment_bernoulli_recurrence (n : ℕ) (hn : 1 ≤ n) :
     dsimp [g]
     norm_num
   rw [hsplit, hg0] at hconv
-  have hpow : (2 : ℚ) ^ (2 * n) - 1 ≠ 0 := by
-    exact ne_of_gt (sub_pos.mpr
-      (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+  have hpow := rat_two_pow_sub_one_ne_zero (2 * n) (by omega)
   field_simp [hpow]
   linear_combination -hconv
+
+/-- All-index successor form of the even-moment Bernoulli recurrence. -/
+theorem moment_bernoulli_succ_recurrence (n : ℕ) :
+    moment (n + 1) =
+      (∑ k ∈ Icc 1 (n + 1),
+        (2 : ℚ) ^ (2 * (n + 1) - 2 * k) *
+          ((2 : ℚ) ^ (2 * k) - 2) *
+          Nat.choose (2 * (n + 1)) (2 * k) * bernoulli (2 * k) *
+            moment (n + 1 - k)) /
+        ((2 : ℚ) ^ (2 * (n + 1)) - 1) := by
+  exact moment_bernoulli_recurrence (n + 1) (by omega)
 
 /-- Both Bernoulli recurrences packaged in the conjunction used by Proposition
 22 of the paper. -/
