@@ -161,6 +161,18 @@ theorem rvachevMeasure_charFun (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
   · exact ENNReal.measurable_ofReal.comp (rvachev_contDiff F hF).continuous.measurable
   · exact Eventually.of_forall fun x => ENNReal.ofReal_lt_top
 
+/-- The characteristic function in the positive-frequency normalization.
+Evenness of Rvachev's Fourier transform removes the sign introduced by
+Mathlib's characteristic-function convention. -/
+theorem rvachevMeasure_charFun_pos
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    charFun (rvachevMeasure F) t =
+      rvachevFourier F ((t : ℂ) / (2 * Real.pi)) := by
+  rw [rvachevMeasure_charFun F hF]
+  rw [show -(t : ℂ) / (2 * Real.pi) =
+      -((t : ℂ) / (2 * Real.pi)) by ring,
+    rvachevFourier_neg F hF]
+
 /-- The finite cosine product which is the characteristic function of `μ_n`. -/
 noncomputable def finiteCosineProduct (n : ℕ) (t : ℝ) : ℂ :=
   ∏ k ∈ range n, Complex.cos ((t : ℂ) / (2 : ℂ) ^ (k + 2)) ^ (k + 1)

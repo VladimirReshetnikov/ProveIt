@@ -252,18 +252,8 @@ theorem iteratedDeriv_generatingFunction_neg
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (s : ℝ) :
     iteratedDeriv n (fun x => generatingFunction F (-x)) s =
       (-1 : ℝ) ^ n * fabiusLaplaceMoment F n s := by
-  induction n generalizing s with
-  | zero => simp
-  | succ n ih =>
-      rw [iteratedDeriv_succ]
-      have hfun : iteratedDeriv n (fun x => generatingFunction F (-x)) =
-          fun x => (-1 : ℝ) ^ n * fabiusLaplaceMoment F n x := by
-        funext x
-        exact ih x
-      rw [hfun, deriv_const_mul_field,
-        (fabiusLaplaceMoment_hasDerivAt F hF n s).deriv]
-      rw [pow_succ]
-      ring
+  change iteratedDeriv n (fabiusLaplaceMoment F 0) s = _
+  simpa using iteratedDeriv_fabiusLaplaceMoment F hF 0 n s
 
 /-- The Taylor jet of the negative generating function at the origin is the
 alternating half-moment sequence. -/
@@ -273,5 +263,39 @@ theorem iteratedDeriv_generatingFunction_neg_zero
       (-1 : ℝ) ^ n * (halfMoment n : ℝ) := by
   rw [iteratedDeriv_generatingFunction_neg F hF,
     fabiusLaplaceMoment_zero_eq_halfMoment F hF]
+
+/-- Composing a tilted moment with negation cancels the minus sign in its
+differential recurrence. -/
+theorem fabiusLaplaceMoment_comp_neg_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (s : ℝ) :
+    HasDerivAt (fun x => fabiusLaplaceMoment F k (-x))
+      (fabiusLaplaceMoment F (k + 1) (-s)) s := by
+  have h := (fabiusLaplaceMoment_hasDerivAt F hF k (-s)).comp s
+    (hasDerivAt_id s).neg
+  simpa only [Function.comp_def, mul_neg, mul_one, neg_neg] using h
+
+/-- All derivatives of the generating function itself are the tilted moments
+at the opposite tilt, without an alternating sign. -/
+theorem iteratedDeriv_generatingFunction
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (s : ℝ) :
+    iteratedDeriv n (generatingFunction F) s =
+      fabiusLaplaceMoment F n (-s) := by
+  induction n generalizing s with
+  | zero => simp
+  | succ n ih =>
+      rw [iteratedDeriv_succ]
+      have hfun : iteratedDeriv n (generatingFunction F) =
+          fun x => fabiusLaplaceMoment F n (-x) := by
+        funext x
+        exact ih x
+      rw [hfun, (fabiusLaplaceMoment_comp_neg_hasDerivAt F hF n s).deriv]
+
+/-- The Taylor jet of the generating function at the origin is exactly the
+half-moment sequence, with no signs. -/
+theorem iteratedDeriv_generatingFunction_zero
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    iteratedDeriv n (generatingFunction F) 0 = (halfMoment n : ℝ) := by
+  rw [iteratedDeriv_generatingFunction F hF,
+    neg_zero, fabiusLaplaceMoment_zero_eq_halfMoment F hF]
 
 end Fabius
