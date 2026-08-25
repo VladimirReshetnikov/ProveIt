@@ -202,7 +202,14 @@ That derivative calculus started here as `hasDerivAt_fabiusInv`; a `codex/*`
 workstream upstreamed it into `FabiusInverse.lean` as `fabiusInv_hasDerivAt`,
 `deriv_fabiusInv`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp` and
 `deriv_fabiusInv_pos`, which is the better home for it, and that placement is
-kept.  `fabiusInv_mem_Ioo` moved with it.
+kept.  `fabiusInv_mem_Ioo` moved with it.  The original spelling
+`hasDerivAt_fabiusInv` still exists, deliberately, as a compatibility alias in
+that file; docstrings here cite `deriv_fabiusInv_pos` because it is the
+primary name, not because the alias was broken.
+
+Every ``Fabius.*`` name appearing in a docstring of the five modules — thirty
+of them — is checked to resolve, by a generated `#check` sweep run against the
+built closure.  Prose citations are otherwise invisible to the compiler.
 
 `F'` now enters the five modules of this workstream only through the imported
 `deriv_fabiusInv_pos`.  It is *not* true that this is the only use of a
