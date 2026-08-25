@@ -106,7 +106,11 @@ quotient from zero to one.
   `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, and `deriv_fabiusInv_pos` — the
   exact positive reciprocal-derivative formula throughout `(0,1)`.
 * `fabiusInv_contDiffOn_Ioo` — the inverse is `C^∞` on the whole open unit
-  interval.
+  interval.  The global refinements `fabiusInv_contDiffAt_iff` and
+  `fabiusInv_differentiableAt_iff` show that the two clamping endpoints are
+  exactly the exceptions to positive finite-order or `C^∞` smoothness and
+  differentiability; order-zero smoothness, namely continuity, still holds
+  globally.
 * `deriv_fabiusInv_hasDerivAt` and `deriv_deriv_fabiusInv` — the exact
   reciprocal-cubic second-derivative rule on `(0,1)`.
 * `strictConcaveOn_fabiusInv_firstHalf` and
@@ -369,6 +373,23 @@ theorem fabiusInv_eq_one_of_one_le (F : BoundedFabius) (hF : IsFabius F)
   have hmono := monotone_fabiusInv F hF hy
   rw [fabiusInv_one F hF] at hmono
   exact le_antisymm (fabiusInv_le_one F hF y) hmono
+
+/-- Away from the two clamping endpoints, the totalized inverse is smooth.
+This combines interior smoothness with the locally constant tails; no sign or
+interval-membership case has to be supplied by callers. -/
+theorem fabiusInv_contDiffAt (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy0 : y ≠ 0) (hy1 : y ≠ 1) :
+    ContDiffAt ℝ ∞ (fabiusInv F hF) y := by
+  rcases hy0.lt_or_gt with hy0 | hy0
+  · refine (contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_
+    filter_upwards [Iio_mem_nhds hy0] with t ht
+    exact fabiusInv_eq_zero_of_nonpos F hF ht.le
+  · rcases hy1.lt_or_gt with hy1 | hy1
+    · exact (fabiusInv_contDiffOn_Ioo F hF).contDiffAt
+        (isOpen_Ioo.mem_nhds ⟨hy0, hy1⟩)
+    · refine (contDiffAt_const (c := (1 : ℝ))).congr_of_eventuallyEq ?_
+      filter_upwards [Ioi_mem_nhds hy1] with t ht
+      exact fabiusInv_eq_one_of_one_le F hF ht.le
 
 /-- The inverse inherits the Fabius reflection symmetry on the whole real
 line, including both clamped tails. -/
@@ -707,5 +728,105 @@ theorem tendsto_one_sub_fabiusInv_div_one_sub_atTop
     funext y
     rw [Function.comp_apply, fabiusInv_one_sub F hF y]
   rwa [heq] at h
+
+/-! ## Exact smoothness locus -/
+
+/-- The totalized inverse is not differentiable at the left clamping point.
+The local inverse identity on `[0,1]` would otherwise contradict the vanishing
+derivative of `fabiusReal` at zero. -/
+theorem fabiusInv_not_differentiableAt_zero
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ DifferentiableAt ℝ (fabiusInv F hF) 0 := by
+  intro hdiff
+  have hnot : ¬ DifferentiableWithinAt ℝ (fabiusInv F hF)
+      (Icc (0 : ℝ) 1) 0 := by
+    apply not_differentiableWithinAt_of_local_left_inverse_hasDerivWithinAt_zero
+      (f := fabiusReal F) (g := fabiusInv F hF)
+      (s := Icc (0 : ℝ) 1) (t := Icc (0 : ℝ) 1)
+      (left_mem_Icc.2 zero_le_one)
+      (uniqueDiffOn_Icc_zero_one 0 (left_mem_Icc.2 zero_le_one))
+      (by simpa only [fabiusInv_zero] using
+        (fabius_hasDerivAt_zero F hF).hasDerivWithinAt)
+      (fun y _hy => fabiusInv_mem_Icc F hF y)
+    filter_upwards [self_mem_nhdsWithin] with y hy
+    exact fabiusReal_fabiusInv F hF hy
+  exact hnot hdiff.differentiableWithinAt
+
+/-- The totalized inverse is not differentiable at the right clamping point.
+The symmetric local inverse argument uses the vanishing derivative of
+`fabiusReal` at one. -/
+theorem fabiusInv_not_differentiableAt_one
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ¬ DifferentiableAt ℝ (fabiusInv F hF) 1 := by
+  intro hdiff
+  have hnot : ¬ DifferentiableWithinAt ℝ (fabiusInv F hF)
+      (Icc (0 : ℝ) 1) 1 := by
+    apply not_differentiableWithinAt_of_local_left_inverse_hasDerivWithinAt_zero
+      (f := fabiusReal F) (g := fabiusInv F hF)
+      (s := Icc (0 : ℝ) 1) (t := Icc (0 : ℝ) 1)
+      (right_mem_Icc.2 zero_le_one)
+      (uniqueDiffOn_Icc_zero_one 1 (right_mem_Icc.2 zero_le_one))
+      (by simpa only [fabiusInv_one] using
+        (fabius_hasDerivAt_one F hF).hasDerivWithinAt)
+      (fun y _hy => fabiusInv_mem_Icc F hF y)
+    filter_upwards [self_mem_nhdsWithin] with y hy
+    exact fabiusReal_fabiusInv F hF hy
+  exact hnot hdiff.differentiableWithinAt
+
+/-- Exact differentiability locus of the totalized inverse: the inverse is
+smooth in the open interval and on both constant tails, but not at either
+clamping endpoint. -/
+theorem fabiusInv_differentiableAt_iff
+    (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) :
+    DifferentiableAt ℝ (fabiusInv F hF) y ↔ y ≠ 0 ∧ y ≠ 1 := by
+  constructor
+  · intro hdiff
+    constructor
+    · intro hy
+      subst y
+      exact fabiusInv_not_differentiableAt_zero F hF hdiff
+    · intro hy
+      subst y
+      exact fabiusInv_not_differentiableAt_one F hF hdiff
+  · rintro ⟨hy0, hy1⟩
+    exact (fabiusInv_contDiffAt F hF hy0 hy1).differentiableAt (by simp)
+
+/-- Exact finite-order or `C∞` smoothness locus of the totalized inverse.
+
+Order zero is continuity, which holds globally.  At every positive order the
+two clamping endpoints are the exact exceptions, while all other points are
+in a constant tail or in the smooth open interval.  The hypothesis `n ≤ ∞`
+is essential: `ℕ∞ω` also has the strictly stronger analytic order `ω`, and the
+inverse is not analytic in the interior. -/
+theorem fabiusInv_contDiffAt_iff
+    (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) {n : ℕ∞ω} (hn : n ≤ ∞) :
+    ContDiffAt ℝ n (fabiusInv F hF) y ↔ n = 0 ∨ (y ≠ 0 ∧ y ≠ 1) := by
+  constructor
+  · intro hsmooth
+    by_cases hn0 : n = 0
+    · exact Or.inl hn0
+    · exact Or.inr <| (fabiusInv_differentiableAt_iff F hF y).mp
+        (hsmooth.differentiableAt hn0)
+  · rintro (rfl | ⟨hy0, hy1⟩)
+    · exact (contDiff_zero.mpr (continuous_fabiusInv F hF)).contDiffAt
+    · exact (fabiusInv_contDiffAt F hF hy0 hy1).of_le hn
+
+/-- The `C∞` specialization of `fabiusInv_contDiffAt_iff`, without an order
+side condition. -/
+theorem fabiusInv_contDiffAt_infty_iff
+    (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) :
+    ContDiffAt ℝ ∞ (fabiusInv F hF) y ↔ y ≠ 0 ∧ y ≠ 1 := by
+  simpa using (fabiusInv_contDiffAt_iff F hF y (n := ∞) le_rfl)
+
+/-- Setwise form of `fabiusInv_contDiffAt_infty_iff`: the inverse is `C∞` on
+the complement of the two clamping endpoints. -/
+theorem fabiusInv_contDiffOn_compl_endpoints
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ContDiffOn ℝ ∞ (fabiusInv F hF) ({0, 1} : Set ℝ)ᶜ := by
+  intro y hy
+  have hne : y ≠ 0 ∧ y ≠ 1 := by
+    simpa only [Set.mem_compl_iff, Set.mem_insert_iff,
+      Set.mem_singleton_iff, not_or] using hy
+  exact (fabiusInv_contDiffAt F hF hne.1 hne.2).contDiffWithinAt
 
 end Fabius
