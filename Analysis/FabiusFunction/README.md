@@ -1,5 +1,13 @@
 # Fabius function
 
+> **Active multi-agent campaign.** Before editing anything in this directory,
+> read [`AGENTS.md`](AGENTS.md) and the live
+> [coordinator board](docs/registry/coordinator.md).  The board, rather than a
+> chat-local claim, records current leases, collision freezes, the build token,
+> and branch-specific handoffs.  During the current recovery checkpoint,
+> workers push feature branches only; the designated coordinator performs the
+> reviewed fast-forward updates to `main`.
+
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
 
@@ -20,12 +28,15 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The small-argument asymptotics are explored separately in Part
-“Small-Argument Asymptotics Research Frontiers” of the consolidated
-[*Non-Formalized Research Frontiers for the Fabius Function*](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
-([PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf)),
-whose boundary notices distinguish exact Lean inputs from ordinary deductions
-and numerical evidence.
+The formally proved small-argument hierarchy—including the corrected sharp
+asymptotic, the general coefficient algebra for the recursive all-orders
+expansion, and the first two explicit periodic saddle corrections—is integrated
+into the primary exposition. Exploratory derivations, the small-argument
+notebook, and the primary-exposition gap register are preserved in the canonical
+[research-frontier LaTeX volume](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
+([PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf)).
+That volume labels claims still awaiting literal Lean counterparts and records
+their exact outstanding proof obligations.
 
 Non-elementarity is treated in
 [*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
@@ -36,18 +47,13 @@ this is combined with nowhere analyticity to show that no elementary function
 agrees with the Fabius function on any subset of `[0,1]` with nonempty
 interior.  The
 same conclusion is proved for a class the inductive definition does not
-reach — continuous branches, on a nonempty open set, of polynomial equations
-whose coefficients are elementary and whose leading coefficient vanishes
-nowhere there — including examples not expressible by radicals.  The inverse
-Fabius function is treated too: it is real analytic at no point of `[0,1]`
-either, hence not elementary, and neither it nor the Fabius function is
-reachable after closing the class under inverse branches at any depth.  That
-closure includes every totalized branch meeting its explicit inverse-identity
-and continuity hypotheses on an open domain `U`, together with analyticity on
-`interior Uᶜ`.  The development provides a conditional Lambert-`W` criterion
-of this form; it neither defines nor verifies a standard real branch.  The
-boundary of `U`, including the usual branch point, is deliberately excluded
-from the complementary-interior side condition.
+reach — any continuous branch of a polynomial equation whose coefficients are
+elementary and whose leading coefficient vanishes nowhere — which covers the
+algebraic functions that are not expressible by radicals.  The inverse Fabius
+function is treated too: it is real analytic at no point of `[0,1]` either,
+hence not elementary, and neither it nor the Fabius function is reachable once
+the class is closed under continuous inverse branches at any depth — a class
+containing the Lambert `W` function.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -61,12 +67,10 @@ its nonconstant Gamma--zeta periodic term, together with its complete
 all-orders saddle expansion.
 
 Several agents develop this directory concurrently in separate worktrees.  If
-you are one of them, please read [`AGENTS.md`](AGENTS.md) and the current
-operational guide in
+you are one of them, please read [`AGENTS.md`](AGENTS.md) and the proposal in
 [`docs/COLLABORATION.md`](docs/COLLABORATION.md), which records the collisions
-that have already happened, the live coordination rules adopted in response,
-and a tentative list of claimable future work.  Focused amendments and
-evidence-backed counterexamples are welcome.
+that have already happened, the working rules suggested to avoid them, and a
+list of claimable future work.  Feedback on that proposal is invited.
 
 ## Design
 
@@ -116,7 +120,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-lake build FabiusFunction
+lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -134,7 +138,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `abs_log_fabius_dyadic_sub_explicitCumulantMain_le`, `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_fabiusInv_div_atTop` |
+| Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_neg_iff`, `deriv_deriv_fabiusInv_pos_iff`, `deriv_deriv_fabiusInv_eq_zero_iff`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_deriv_fabiusInv_atTop_at_zero_right`, `tendsto_deriv_fabiusInv_atTop_at_one_left` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
 
@@ -339,7 +343,19 @@ constant of each.  The linear majorant `F(x) ≤ 2x` holds on all of `[0, ∞)`.
 
 `Convexity.lean` shows that `F` is convex on `(-∞, 1/2]` and concave on
 `[1/2, ∞)`, strictly so on the two halves of the unit interval, so the
-midpoint is the unique inflection point.
+midpoint is the unique inflection point.  It also gives the exact pointwise
+formula
+
+```text
+F''(x) = 8 * (up(4x - 1) - up(4x - 3)),
+```
+
+and proves that `F''` is positive exactly on `(0, 1/2)`, negative exactly on
+`(1/2, 1)`, and zero outside `(0,1)` and at the midpoint.  The entry points
+are `Fabius.deriv_deriv_fabiusReal`,
+`Fabius.deriv_deriv_fabiusReal_pos_iff`,
+`Fabius.deriv_deriv_fabiusReal_neg_iff`, and
+`Fabius.deriv_deriv_fabiusReal_eq_zero_iff`.
 
 `EffectiveFlatness.lean` replaces the qualitative `o(x^n)` flatness statement
 by the effective bound
@@ -488,9 +504,13 @@ value `F(1)=1`, so unlike the recurrence this formula holds for every natural
 decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
-canonical, and signed-global real corollaries.  The former standalone article
-about this derivation is not currently vendored; the Lean declarations and
-their module documentation are the maintained source of truth.
+canonical, and signed-global real corollaries.  The self-contained derivation
+is integrated into the primary exposition, available as
+[LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+and as a
+[rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+The consolidated frontier volume retains longer alternative derivations and
+their provenance without weakening this exact, primary-document integration.
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
@@ -501,26 +521,13 @@ needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
 function satisfying `IsFabius`.  The rational expression is independent of
 the representation of `m / 2^n` (in particular, it is unchanged by
 `(m,n) ↦ (2m,n+1)`) and is invariant under any common translation of its
-inner powers.  The assembled finite q-binomial translated expressions are
-constant polynomials over `ℚ`, so they can be evaluated in every field over
-`ℚ`.  In particular,
+inner powers.  The finite translated expressions are constant polynomials
+over `ℚ`, so they can be evaluated in every field over `ℚ`.  In particular,
 for every real or complex `q` the fully displayed sum with inner power
 `(j - m * 2^k + q)^(n+k)` has that same value; generic, real, complex, and
 Gaussian-rational endpoints are public.  Thus the source's `+1/2` formula and
 the centered form agree, while its `QPochhammer`/`QBinomial` factors retain
 notation-faithful definitions at the fixed q-special-function base `1/2`.
-
-At the individual-block level,
-`Fabius.coeff_thueMorseTranslatedPowerSumPolynomial` identifies the
-coefficient of translation degree `j` as `d.choose j` times the centered
-moment of degree `d - j`.  Consequently the block polynomial vanishes exactly
-when `d < k`; otherwise Prouhet cancellation lowers its degree exactly from
-`d` to `d - k`, with leading coefficient `d.choose k` times the sharp Prouhet
-factor.  The natural-degree formula uses Lean's convention `natDegree 0 = 0`;
-the accompanying `WithBot`-valued degree theorem is what distinguishes the
-zero case `d < k` from the nonzero constant at `d = k`.  Boundary simplifiers
-record `k = 0` as `(X - 1)^d` and `d = k` as the sharp Prouhet constant.
-
 For the inverse-power specialization, dyadic reflection additionally proves
 for every real or complex `q` the raw-coordinate formula with inner power
 `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses
@@ -698,19 +705,18 @@ compiled PDF is committed alongside its source.
 
 ## Contributing and coordination
 
-The [current operational guide](docs/COLLABORATION.md) defines live path
-leases, Git and build ownership, synchronization checkpoints, review, and
-handoffs for concurrent Fabius development.  A longer
-[multi-agent coordination proposal](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
-explores a stricter campaign-and-captain pilot with pinned synchronization
-windows.  That pilot is not current project policy and does not override the
-operational guide; review, counterexamples, and simpler enforceable
-alternatives are welcome.
+The current operational entry points are [`AGENTS.md`](AGENTS.md) and the
+[coordinator board](docs/registry/coordinator.md).  The detailed
+[collaboration guide](docs/COLLABORATION.md) records the protocol and the
+failures that motivated it; the longer
+[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
+background.  Focused amendments are welcome through a worker's own registry
+file, but neither background document overrides a current board instruction.
 
 ## Checking
 
 From the repository root:
 
 ```sh
-lake build FabiusFunction
+lake build +FabiusFunction
 ```

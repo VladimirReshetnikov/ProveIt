@@ -20,6 +20,12 @@ boundedness.  Applying the generic `logCoeff` recurrence produces the real
 logarithmic coefficients with the same regularity.  Finally, the first
 coefficient is identified with the closed periodic correction already used
 by the first-order saddle theorem.
+
+The specialized theorem `fabiusSaddleLogCoefficient_succ` exposes the full
+all-index logarithmic recurrence in the concrete Fabius API, with orders zero,
+one, and two recorded separately.  In particular, downstream calculations can
+recurse on the public mass and log coefficients without reopening the generic
+formal-series definitions.
 -/
 
 set_option autoImplicit false
@@ -37,6 +43,7 @@ def fabiusSaddleMassCoefficientComplex (j : ℕ) (t : ℝ) : ℂ :=
   gaussianPolynomialContraction
     (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) (2 * j))
 
+/-- The complex mass coefficient is fixed by conjugation, hence is real. -/
 theorem fabiusSaddleMassCoefficientComplex_star (j : ℕ) (t : ℝ) :
     star (fabiusSaddleMassCoefficientComplex j t) =
       fabiusSaddleMassCoefficientComplex j t := by
@@ -47,6 +54,8 @@ theorem fabiusSaddleMassCoefficientComplex_star (j : ℕ) (t : ℝ) :
 def fabiusSaddleMassCoefficient (j : ℕ) (t : ℝ) : ℝ :=
   (fabiusSaddleMassCoefficientComplex j t).re
 
+/-- Coercing the real mass coefficient back to `ℂ` recovers the original
+Gaussian contraction. -/
 theorem ofReal_fabiusSaddleMassCoefficient (j : ℕ) (t : ℝ) :
     (fabiusSaddleMassCoefficient j t : ℂ) =
       fabiusSaddleMassCoefficientComplex j t := by
@@ -54,16 +63,19 @@ theorem ofReal_fabiusSaddleMassCoefficient (j : ℕ) (t : ℝ) :
     simpa only [Complex.star_def] using
       fabiusSaddleMassCoefficientComplex_star j t)
 
+/-- The normalized Gaussian mass has constant coefficient one. -/
 @[simp] theorem fabiusSaddleMassCoefficientComplex_zero (t : ℝ) :
     fabiusSaddleMassCoefficientComplex 0 t = 1 := by
   unfold fabiusSaddleMassCoefficientComplex
   simp only [mul_zero, expCoeff_zero]
   simpa only [Polynomial.C_1] using gaussianPolynomialContraction_C (1 : ℂ)
 
+/-- Real form of the unit constant mass coefficient. -/
 @[simp] theorem fabiusSaddleMassCoefficient_zero (t : ℝ) :
     fabiusSaddleMassCoefficient 0 t = 1 := by
   simp [fabiusSaddleMassCoefficient]
 
+/-- Every complex mass coefficient is one-periodic in the saddle phase. -/
 theorem fabiusSaddleMassCoefficientComplex_periodic (j : ℕ) :
     Function.Periodic (fabiusSaddleMassCoefficientComplex j) 1 := by
   intro t
@@ -71,6 +83,7 @@ theorem fabiusSaddleMassCoefficientComplex_periodic (j : ℕ) :
   exact congrArg gaussianPolynomialContraction
     (negativeLaplaceExpCoeff_periodic (2 * j) t)
 
+/-- Every real mass coefficient is one-periodic in the saddle phase. -/
 theorem fabiusSaddleMassCoefficient_periodic (j : ℕ) :
     Function.Periodic (fabiusSaddleMassCoefficient j) 1 := by
   intro t
@@ -160,6 +173,7 @@ private theorem fabiusSaddleMassCoefficientComplexContinuousMap_apply
   intro m _hm
   exact negativeLaplaceExponentPolynomialContinuous_map m t
 
+/-- Every complex mass coefficient depends continuously on the saddle phase. -/
 theorem continuous_fabiusSaddleMassCoefficientComplex (j : ℕ) :
     Continuous (fabiusSaddleMassCoefficientComplex j) := by
   have hfun :
@@ -170,16 +184,19 @@ theorem continuous_fabiusSaddleMassCoefficientComplex (j : ℕ) :
   rw [← hfun]
   exact (fabiusSaddleMassCoefficientComplexContinuousMap j).continuous
 
+/-- Every real mass coefficient depends continuously on the saddle phase. -/
 theorem continuous_fabiusSaddleMassCoefficient (j : ℕ) :
     Continuous (fabiusSaddleMassCoefficient j) := by
   exact Complex.continuous_re.comp
     (continuous_fabiusSaddleMassCoefficientComplex j)
 
+/-- The range of every complex mass coefficient is globally bounded. -/
 theorem isBounded_range_fabiusSaddleMassCoefficientComplex (j : ℕ) :
     Bornology.IsBounded (Set.range (fabiusSaddleMassCoefficientComplex j)) :=
   (fabiusSaddleMassCoefficientComplex_periodic j).isBounded_of_continuous
     one_ne_zero (continuous_fabiusSaddleMassCoefficientComplex j)
 
+/-- The range of every real mass coefficient is globally bounded. -/
 theorem isBounded_range_fabiusSaddleMassCoefficient (j : ℕ) :
     Bornology.IsBounded (Set.range (fabiusSaddleMassCoefficient j)) :=
   (fabiusSaddleMassCoefficient_periodic j).isBounded_of_continuous
@@ -189,14 +206,42 @@ theorem isBounded_range_fabiusSaddleMassCoefficient (j : ℕ) :
 def fabiusSaddleLogCoefficient (j : ℕ) (t : ℝ) : ℝ :=
   logCoeff (fun k => fabiusSaddleMassCoefficient k t) j
 
+/-- The logarithmic expansion has vanishing constant coefficient. -/
 @[simp] theorem fabiusSaddleLogCoefficient_zero (t : ℝ) :
     fabiusSaddleLogCoefficient 0 t = 0 := by
   simp [fabiusSaddleLogCoefficient]
 
+/-- At first order the logarithmic coefficient equals the mass coefficient. -/
 @[simp] theorem fabiusSaddleLogCoefficient_one (t : ℝ) :
     fabiusSaddleLogCoefficient 1 t = fabiusSaddleMassCoefficient 1 t := by
   simp [fabiusSaddleLogCoefficient]
 
+/-- Concrete all-index recurrence for the logarithmic saddle coefficients.
+It is the specialization of `SaddleExpansion.logCoeff_succ` to the real
+Gaussian mass coefficients. -/
+theorem fabiusSaddleLogCoefficient_succ (n : ℕ) (t : ℝ) :
+    fabiusSaddleLogCoefficient (n + 1) t =
+      fabiusSaddleMassCoefficient (n + 1) t -
+        ((n + 1 : ℚ)⁻¹) •
+          (∑ j ∈ Finset.range n,
+            ((n - j : ℕ) : ℝ) * fabiusSaddleLogCoefficient (n - j) t *
+              fabiusSaddleMassCoefficient (j + 1) t) := by
+  simpa only [fabiusSaddleLogCoefficient] using
+    (logCoeff_succ (fun k => fabiusSaddleMassCoefficient k t) n)
+
+/-- At second order the logarithmic coefficient is the second mass
+coefficient minus one half of the square of the first.  The rational scalar
+is left in the same canonical form as the generic `logCoeff` API. -/
+theorem fabiusSaddleLogCoefficient_two (t : ℝ) :
+    fabiusSaddleLogCoefficient 2 t =
+      fabiusSaddleMassCoefficient 2 t -
+        ((2 : ℚ)⁻¹) •
+          (fabiusSaddleMassCoefficient 1 t *
+            fabiusSaddleMassCoefficient 1 t) := by
+  simpa only [fabiusSaddleLogCoefficient] using
+    (logCoeff_two (fun k => fabiusSaddleMassCoefficient k t))
+
+/-- Every logarithmic coefficient is one-periodic in the saddle phase. -/
 theorem fabiusSaddleLogCoefficient_periodic (j : ℕ) :
     Function.Periodic (fabiusSaddleLogCoefficient j) 1 := by
   intro t
@@ -225,6 +270,7 @@ private theorem fabiusSaddleLogCoefficientContinuousMap_apply
     fabiusSaddleMassCoefficientContinuousMap j]
   rfl
 
+/-- Every logarithmic coefficient depends continuously on the saddle phase. -/
 theorem continuous_fabiusSaddleLogCoefficient (j : ℕ) :
     Continuous (fabiusSaddleLogCoefficient j) := by
   have hfun : (fabiusSaddleLogCoefficientContinuousMap j : ℝ → ℝ) =
@@ -234,6 +280,7 @@ theorem continuous_fabiusSaddleLogCoefficient (j : ℕ) :
   rw [← hfun]
   exact (fabiusSaddleLogCoefficientContinuousMap j).continuous
 
+/-- The range of every logarithmic coefficient is globally bounded. -/
 theorem isBounded_range_fabiusSaddleLogCoefficient (j : ℕ) :
     Bornology.IsBounded (Set.range (fabiusSaddleLogCoefficient j)) :=
   (fabiusSaddleLogCoefficient_periodic j).isBounded_of_continuous
@@ -314,6 +361,8 @@ private theorem gaussianPolynomialContraction_C_mul_X_pow
   rw [Polynomial.C_mul']
   simp
 
+/-- The first complex mass coefficient is the previously computed real
+first-order saddle correction. -/
 theorem fabiusSaddleMassCoefficientComplex_one (t : ℝ) :
     fabiusSaddleMassCoefficientComplex 1 t =
       (fabiusFirstSaddleCorrection t : ℂ) := by
@@ -328,12 +377,15 @@ theorem fabiusSaddleMassCoefficientComplex_one (t : ℝ) :
   rw [hcorrection]
   ring
 
+/-- Real form of the first mass-coefficient evaluation. -/
 theorem fabiusSaddleMassCoefficient_one (t : ℝ) :
     fabiusSaddleMassCoefficient 1 t = fabiusFirstSaddleCorrection t := by
   apply Complex.ofReal_injective
   rw [ofReal_fabiusSaddleMassCoefficient,
     fabiusSaddleMassCoefficientComplex_one]
 
+/-- The first logarithmic coefficient is exactly the first-order saddle
+correction used by the sharp asymptotic theorem. -/
 theorem fabiusSaddleLogCoefficient_one_eq_firstSaddleCorrection (t : ℝ) :
     fabiusSaddleLogCoefficient 1 t = fabiusFirstSaddleCorrection t := by
   rw [fabiusSaddleLogCoefficient_one, fabiusSaddleMassCoefficient_one]

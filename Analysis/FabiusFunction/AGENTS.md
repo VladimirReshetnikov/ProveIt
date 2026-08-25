@@ -1,33 +1,75 @@
 # Agents working in `Analysis/FabiusFunction`
 
 Several agents develop this directory concurrently in separate worktrees.
-Please read [`docs/COLLABORATION.md`](docs/COLLABORATION.md) before making
-structural changes.  It is the current operational coordination guide, remains
-open to focused revision, and records which collisions have already happened
-and how they were resolved.  The longer
-[`docs/MULTI_AGENT_COORDINATION_PROPOSAL.md`](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
-is a non-authoritative pilot proposal; if the two documents differ, follow the
-operational guide.
+The user has designated one coordinator for the current campaign.  The
+operational rules below and the live
+[`docs/registry/coordinator.md`](docs/registry/coordinator.md) board are current
+project policy; [`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the
+reasons and remains open for focused revision.
+
+## Live coordination -- mandatory before writing
+
+At the start of every work session, after every fetch, and before every merge
+or push, read the coordinator board from the fetched `main`, even when your
+worktree is dirty and cannot merge yet:
+
+```sh
+git fetch origin
+git show origin/main:Analysis/FabiusFunction/docs/registry/coordinator.md
+```
+
+The board contains the pinned integration SHA, hot paths, integration queue,
+build ownership, and branch-specific instructions.  An instruction addressed
+to your exact branch is binding until the board releases it.  If your branch is
+not listed, you have no write lease yet: inspect read-only, then publish a
+status/claim in a new file named `docs/registry/<branch-with-slashes-replaced-by-dashes>.md`.
+
+During the current collision-recovery checkpoint:
+
+1. **Push feature branches, not `main`.** Only the coordinator advances
+   `origin/main`.  Never force-push.  A rejected fast-forward is a signal to
+   fetch and reread the board, not to retry blindly.
+2. **One branch, one registry file.** Each worker edits only its own registry
+   file.  Only the coordinator edits `docs/registry/coordinator.md`, this live
+   section of `AGENTS.md`, the coordination notice in `README.md`, and the
+   campaign-wide coordination documents.
+3. **No implicit lease.** A write lease names exact paths and expected public
+   declarations.  Topic names such as "asymptotics" or "documentation" do not
+   lease a directory.  Do not expand the path set until the coordinator
+   acknowledges the request on the board.
+4. **Preserve before synchronizing.** If your worktree is dirty, do not stash,
+   reset, or merge over it.  Stop expanding the edit, make a clearly labelled
+   checkpoint commit on your feature branch when coherent (or an explicit WIP
+   commit when necessary to preserve it), push that branch, and report the
+   exact SHA and validation state in its registry file.
+5. **Build tokens are per physical host.** On `codexbox`, no agent starts Lean,
+   Lake, `pdflatex`, or another cache-mutating validation job unless the board
+   assigns the token.  Let an already-running job finish; do not kill another
+   worktree's process.  The other machine maintains the same one-owner rule
+   independently and records its owner on the board.
+6. **Binary PDFs are never conflict-resolved.** Freeze both sources, integrate
+   the TeX semantically under one owner, then rebuild the PDF once with three
+   passes.  Never take a PDF wholesale from either side of a conflict.
+
+Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
+committed only to the worker's feature branch, and are pushed promptly.  The
+coordinator discovers them from advertised branch tips and updates the board.
 
 The rules that have actually cost time so far:
 
 1. **Fetch and inspect `origin/main` before you start, and again before editing
-   any module you did not create.** When a synchronization merge is due and
-   the worktree is clean, pin the fetched main tip in a unique local ref and
-   merge the recorded full SHA, never the moving `origin/main` name.  For a
+   any module you did not create.** Merge it when the worktree is clean.  For a
    dirty shared worktree, freeze every writer and follow the path-overlap and
    Git-owner protocol in `docs/COLLABORATION.md`; never merge or stash behind
    another writer's back.  The same refactor has already been performed
    independently three times by three branches.
 
-2. **Know the upstream-most module that can state a lemma, then account for
-   invalidation cost.** Facts about `rvachevUp` needing only its definition and
-   `IsFabius` canonically belong in `Basic.lean`, not `Differential.lean`.
-   Consolidate existing duplicates at that canonical layer, but do not rebuild
-   the broad root import cone merely to pre-position a brand-new declaration
-   with no duplicates.  The cost-aware exception and its required debt record
-   are in `docs/COLLABORATION.md`; acquire a live path lease before either kind
-   of edit.
+2. **A lemma belongs in the upstream-most module that can state it** — facts
+   about `rvachevUp` needing only its definition and `IsFabius` go in
+   `Basic.lean`, not `Differential.lean`. But relocating into `Basic.lean`,
+   `Arithmetic.lean`, or `Differential.lean` invalidates all 172 modules and
+   is the edit class most likely to collide, so acquire a live path lease as
+   described in `docs/COLLABORATION.md` first.
 
 3. **Say in the commit message what you actually compiled.** Committing
    uncompiled work is fine and often necessary — a full rebuild costs the
@@ -103,10 +145,9 @@ compiled PDF is committed with it.**
 
 3. **Layout.** One directory per document, named after it, holding the `.tex`
    and the `.pdf` of the same name — as in
-   `docs/Fabius_Function_and_Rvachev_Up/`.  The canonical consolidated
-   research-frontier pair is the deliberate exception: its `.tex` and `.pdf`
-   live directly in `docs/non-formalized-research-frontiers/`, beside the
-   provenance README for the retired source notebooks.
+   `docs/Fabius_Function_and_Rvachev_Up/` and
+   `docs/non-formalized-research-frontiers/`, whose canonical TeX/PDF pair is
+   `non-formalized-research-frontiers.*`.
 
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:
@@ -150,7 +191,7 @@ compiled PDF is committed with it.**
 
 Build one module per `lake` invocation, in topological order. `LAKE_JOBS=1` is
 not enough: a single `lake build A B` still starts two `lean` processes, and on
-this memory-constrained host both then die with a misleading
+this 13 GB machine both then die with a misleading
 `failed to read file '….olean'`, which is an out-of-memory symptom rather than
 a real error.
 
@@ -164,14 +205,9 @@ is exactly the double-`lean` situation the serialization exists to prevent,
 reintroduced by the tool meant to stop it. The symptom is an interleaved build
 log: one module logged `OK` twice with different timings, two consecutive
 `BUILD` lines for a single module, a count of completed modules that goes
-*down* between polls, and free memory pinned near half a gigabyte.  Inspect
-candidate processes with `Get-CimInstance Win32_Process` so that command lines
-and parent PIDs identify the exact driver and descendants.  Before relaunching,
-terminate by PID only a stale process tree attributable to the current
-worktree, after confirming that it is not the valid host-wide build owner's
-tree.  Never kill every process named `lean`, `lake`, or `sh`; follow the
-current-worktree-only recovery rule in `docs/COLLABORATION.md`, and do not trust
-the harness task's reported status alone.
+*down* between polls, and free memory pinned near half a gigabyte. Confirm
+with `Get-Process -Name lean,lake,sh` and kill the survivors by PID before
+relaunching; do not trust the task's reported status.
 
 A worktree without its own `.lake` would rebuild Mathlib from scratch. Give it
 one whose `packages` is a directory junction to the shared
@@ -188,7 +224,7 @@ cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
 Moving a declaration into `Arithmetic.lean`, `Basic.lean` or `Differential.lean`
 invalidates essentially the whole corpus, so the placement question is really a
 cost question. The rule that reconciles the two decisions taken in this
-directory — one branch paid a near-corpus-wide invalidation to consolidate ten
+directory — one branch paid a 158-module invalidation to consolidate ten
 byte-identical copies of a triangular-number identity into `Arithmetic.lean`,
 another deliberately did not pay one to place new generic `expCoeff` lemmas in
 `SaddleExpansionAlgebra.lean` — is:

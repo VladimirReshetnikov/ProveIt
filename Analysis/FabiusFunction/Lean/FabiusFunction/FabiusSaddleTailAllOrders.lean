@@ -25,9 +25,10 @@ inverse power.
 
 * `fabiusSaddleCentralRadiusOrder`, with `fabiusSaddleCentralRadiusOrder_pos`,
   `sq_fabiusSaddleCentralRadiusOrder` and
-  `one_le_fabiusSaddleCentralRadiusOrder` — the order-dependent radius.  This
-  definition is the module's most widely used export: it fixes the common
-  window of `FabiusSaddleCentralRadiusAsymptotics`,
+  `one_le_fabiusSaddleCentralRadiusOrder` — the order-dependent radius;
+  `fabiusSaddleCentralRadiusOrder_zero` identifies its order-zero case with
+  the standard radius.  This definition is the module's most widely used
+  export: it fixes the common window of `FabiusSaddleCentralRadiusAsymptotics`,
   `GaussianPolynomialTailAllOrders` and `FabiusSaddleMassAllOrders`.
 * `ordered_intermediate_tail_le_inv_pow` — intermediate region, explicit
   bound `16 * b⁻¹ ^ (N+1)`, for any `1 ≤ b` and any radius `1 ≤ A` with
@@ -55,6 +56,18 @@ namespace Fabius
 tail smaller than the requested `b^(-(N+1))` rate. -/
 noncomputable def fabiusSaddleCentralRadiusOrder (N : ℕ) (b : ℝ) : ℝ :=
   Real.sqrt (32 * (N + 1 : ℝ) * Real.log b)
+
+/-- The order-zero radius is exactly the standard central radius from
+`FabiusSaddleTail`. -/
+lemma fabiusSaddleCentralRadiusOrder_zero (b : ℝ) :
+    fabiusSaddleCentralRadiusOrder 0 b = fabiusSaddleCentralRadius b := by
+  simp [fabiusSaddleCentralRadiusOrder, fabiusSaddleCentralRadius]
+
+/-- At the endpoint `b = 1`, every fixed-order logarithmic central radius
+collapses to zero. -/
+lemma fabiusSaddleCentralRadiusOrder_one (N : ℕ) :
+    fabiusSaddleCentralRadiusOrder N 1 = 0 := by
+  simp [fabiusSaddleCentralRadiusOrder]
 
 /-- The order-`N` central radius is strictly positive for `1 < b`, where
 `Real.log b` is strictly positive. -/

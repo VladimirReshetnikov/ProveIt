@@ -8,12 +8,11 @@ import Mathlib.Topology.Order.MonotoneContinuity
 # The lower real Lambert W branch
 
 This module supplies the minimal real `W_{-1}` infrastructure needed for
-equation (9) of the local K-fold Thue--Morse draft.  The branch is totalized,
-but its specification and uniqueness theorems use the natural domain
-`(-exp(-1), 0)`.  It also proves the standard first two terms of the branch's
-positive-side asymptotic expansion.  On its natural domain the API additionally
-records the exact range `(-∞,-1)`, strict antitonicity, continuity, and the
-inverse-function derivative.
+equation (9) of the local K-fold Thue--Morse draft.  The branch is totalized;
+its defining equation, order, uniqueness, and exact-range API covers the
+closed-left natural domain `[-exp(-1), 0)`, while its ordinary continuity and
+derivative API uses the smooth interior `(-exp(-1), 0)`.  It also proves the
+standard first two terms of the branch's positive-side asymptotic expansion.
 -/
 
 set_option autoImplicit false
@@ -70,6 +69,49 @@ private lemma lowerLambertArg_spec {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0)
       rw [heval] at hspec
       exact hz.1.ne hspec.2
 
+private lemma lowerLambertArg_branchPoint :
+    lowerLambertArg (-Real.exp (-1)) = Real.exp (-1) := by
+  have hex : ∃ u ∈ Icc (0 : ℝ) (Real.exp (-1)),
+      mulLog u = -Real.exp (-1) := by
+    refine ⟨Real.exp (-1), ⟨(Real.exp_pos _).le, le_rfl⟩, ?_⟩
+    simp [mulLog]
+  have hspec0 := Function.invFunOn_pos hex
+  have hspec : lowerLambertArg (-Real.exp (-1)) ∈
+        Icc (0 : ℝ) (Real.exp (-1)) ∧
+      mulLog (lowerLambertArg (-Real.exp (-1))) =
+        -Real.exp (-1) := by
+    simpa [lowerLambertArg] using hspec0
+  apply Real.mul_log_strictAntiOn.injOn hspec.1
+    ⟨(Real.exp_pos _).le, le_rfl⟩
+  change mulLog (lowerLambertArg (-Real.exp (-1))) =
+    mulLog (Real.exp (-1))
+  rw [hspec.2]
+  simp [mulLog]
+
+/-- At the branch point, the lower real Lambert branch has value `-1`. -/
+@[simp] theorem lowerLambertW_branchPoint :
+    lowerLambertW (-Real.exp (-1)) = -1 := by
+  rw [lowerLambertW, lowerLambertArg_branchPoint, Real.log_exp]
+
+private lemma lowerLambertArg_spec_of_mem_Ico {z : ℝ}
+    (hz : z ∈ Ico (-Real.exp (-1)) 0) :
+    lowerLambertArg z ∈ Ioc (0 : ℝ) (Real.exp (-1)) ∧
+      mulLog (lowerLambertArg z) = z := by
+  rcases hz.1.eq_or_lt with rfl | hzlt
+  · rw [lowerLambertArg_branchPoint]
+    exact ⟨⟨Real.exp_pos _, le_rfl⟩, by simp [mulLog]⟩
+  · have h := lowerLambertArg_spec ⟨hzlt, hz.2⟩
+    exact ⟨⟨h.1.1, h.1.2.le⟩, h.2⟩
+
+/-- On the full closed-left natural domain, the lower branch is at most
+`-1`, with equality at the branch point. -/
+theorem lowerLambertW_le_neg_one {z : ℝ}
+    (hz : z ∈ Ico (-Real.exp (-1)) 0) :
+    lowerLambertW z ≤ -1 := by
+  rw [lowerLambertW]
+  have hu := (lowerLambertArg_spec_of_mem_Ico hz).1
+  exact (Real.log_le_iff_le_exp hu.1).2 hu.2
+
 /-- On its natural domain, the lower branch is strictly below `-1`. -/
 theorem lowerLambertW_lt_neg_one {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
     lowerLambertW z < -1 := by
@@ -77,34 +119,52 @@ theorem lowerLambertW_lt_neg_one {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
   have hu := (lowerLambertArg_spec hz).1
   exact (Real.log_lt_iff_lt_exp hu.1).2 hu.2
 
-/-- Defining equation `W(z) exp(W(z)) = z` for the lower real branch. -/
-theorem lowerLambertW_mul_exp {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
+/-- Defining equation on the closed-left natural domain
+`[-exp(-1), 0)`, including the branch point. -/
+theorem lowerLambertW_mul_exp_of_mem_Ico {z : ℝ}
+    (hz : z ∈ Ico (-Real.exp (-1)) 0) :
     lowerLambertW z * Real.exp (lowerLambertW z) = z := by
-  rw [lowerLambertW, Real.exp_log (lowerLambertArg_spec hz).1.1]
-  simpa [mulLog, mul_comm] using (lowerLambertArg_spec hz).2
+  rw [lowerLambertW,
+    Real.exp_log (lowerLambertArg_spec_of_mem_Ico hz).1.1]
+  simpa [mulLog, mul_comm] using
+    (lowerLambertArg_spec_of_mem_Ico hz).2
+
+/-- Defining equation `W(z) exp(W(z)) = z` on the interior of the lower
+real branch. -/
+theorem lowerLambertW_mul_exp {z : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0) :
+    lowerLambertW z * Real.exp (lowerLambertW z) = z :=
+  lowerLambertW_mul_exp_of_mem_Ico ⟨hz.1.le, hz.2⟩
+
+/-- Uniqueness of the real Lambert solution at or below `-1` on the full
+closed-left natural domain. -/
+theorem lowerLambertW_unique_of_mem_Ico {z w : ℝ}
+    (hz : z ∈ Ico (-Real.exp (-1)) 0) (hw : w ≤ -1)
+    (heq : w * Real.exp w = z) :
+    w = lowerLambertW z := by
+  have hew : Real.exp w ∈ Ioc (0 : ℝ) (Real.exp (-1)) :=
+    ⟨Real.exp_pos _, Real.exp_le_exp.2 hw⟩
+  have harg := (lowerLambertArg_spec_of_mem_Ico hz).1
+  have hargEq : mulLog (Real.exp w) = mulLog (lowerLambertArg z) := by
+    rw [(lowerLambertArg_spec_of_mem_Ico hz).2]
+    simpa [mulLog, mul_comm] using heq
+  have hinj := Real.mul_log_strictAntiOn.injOn
+  have hexp : Real.exp w = lowerLambertArg z :=
+    hinj ⟨hew.1.le, hew.2⟩ ⟨harg.1.le, harg.2⟩ hargEq
+  rw [lowerLambertW, ← hexp, Real.log_exp]
 
 /-- Uniqueness of the real Lambert solution below `-1`. -/
 theorem lowerLambertW_unique {z w : ℝ} (hz : z ∈ Ioo (-Real.exp (-1)) 0)
     (hw : w < -1) (heq : w * Real.exp w = z) :
-    w = lowerLambertW z := by
-  have hew0 : 0 < Real.exp w := Real.exp_pos _
-  have hewtop : Real.exp w < Real.exp (-1) := Real.exp_lt_exp.2 hw
-  have harg := (lowerLambertArg_spec hz).1
-  have hargEq : mulLog (Real.exp w) = mulLog (lowerLambertArg z) := by
-    rw [(lowerLambertArg_spec hz).2]
-    simpa [mulLog, mul_comm] using heq
-  have hinj := Real.mul_log_strictAntiOn.injOn
-  have hexp : Real.exp w = lowerLambertArg z :=
-    hinj ⟨hew0.le, hewtop.le⟩ ⟨harg.1.le, harg.2.le⟩ hargEq
-  rw [lowerLambertW, ← hexp, Real.log_exp]
+    w = lowerLambertW z :=
+  lowerLambertW_unique_of_mem_Ico ⟨hz.1.le, hz.2⟩ hw.le heq
 
-/-- The lower real Lambert branch is strictly decreasing on its natural
-domain. -/
-theorem lowerLambertW_strictAntiOn :
-    StrictAntiOn lowerLambertW (Ioo (-Real.exp (-1)) 0) := by
+/-- The lower real Lambert branch is strictly decreasing on its closed-left
+natural domain. -/
+theorem lowerLambertW_strictAntiOn_Ico :
+    StrictAntiOn lowerLambertW (Ico (-Real.exp (-1)) 0) := by
   intro z₁ hz₁ z₂ hz₂ hz
-  have hs₁ := lowerLambertArg_spec hz₁
-  have hs₂ := lowerLambertArg_spec hz₂
+  have hs₁ := lowerLambertArg_spec_of_mem_Ico hz₁
+  have hs₂ := lowerLambertArg_spec_of_mem_Ico hz₂
   have harg : lowerLambertArg z₂ < lowerLambertArg z₁ := by
     by_contra hnot
     have hle : lowerLambertArg z₁ ≤ lowerLambertArg z₂ := le_of_not_gt hnot
@@ -113,13 +173,19 @@ theorem lowerLambertW_strictAntiOn :
         rw [← hs₁.2, ← hs₂.2, heq]
       exact (ne_of_lt hz) hzEq
     · have hanti := Real.mul_log_strictAntiOn
-          ⟨hs₁.1.1.le, hs₁.1.2.le⟩ ⟨hs₂.1.1.le, hs₂.1.2.le⟩ hlt
+          ⟨hs₁.1.1.le, hs₁.1.2⟩ ⟨hs₂.1.1.le, hs₂.1.2⟩ hlt
       change mulLog (lowerLambertArg z₂) <
         mulLog (lowerLambertArg z₁) at hanti
       rw [hs₁.2, hs₂.2] at hanti
       exact (not_lt_of_ge hz.le) hanti
   rw [lowerLambertW, lowerLambertW]
   exact Real.strictMonoOn_log hs₂.1.1 hs₁.1.1 harg
+
+/-- The lower real Lambert branch is strictly decreasing on the smooth
+interior of its natural domain. -/
+theorem lowerLambertW_strictAntiOn :
+    StrictAntiOn lowerLambertW (Ioo (-Real.exp (-1)) 0) :=
+  lowerLambertW_strictAntiOn_Ico.mono fun _ hz ↦ ⟨hz.1.le, hz.2⟩
 
 /-- Exact range of the lower real Lambert branch on its natural domain. -/
 theorem lowerLambertW_image :
@@ -141,6 +207,23 @@ theorem lowerLambertW_image :
       · exact mul_neg_of_neg_of_pos hw0 (Real.exp_pos _)
     refine ⟨z, hz, ?_⟩
     exact (lowerLambertW_unique hz hw rfl).symm
+
+/-- Exact range of the lower real Lambert branch on the full closed-left
+natural domain. -/
+theorem lowerLambertW_image_Ico :
+    lowerLambertW '' Ico (-Real.exp (-1)) 0 = Iic (-1) := by
+  apply Subset.antisymm
+  · rintro _ ⟨z, hz, rfl⟩
+    exact lowerLambertW_le_neg_one hz
+  · intro w hw
+    change w ≤ -1 at hw
+    rcases eq_or_lt_of_le hw with rfl | hwlt
+    · exact ⟨-Real.exp (-1), ⟨le_rfl, neg_lt_zero.2 (Real.exp_pos _)⟩,
+        lowerLambertW_branchPoint⟩
+    · have hwmem : w ∈ Iio (-1) := hwlt
+      rw [← lowerLambertW_image] at hwmem
+      obtain ⟨z, hz, hzw⟩ := hwmem
+      exact ⟨z, ⟨hz.1.le, hz.2⟩, hzw⟩
 
 /-- The lower real Lambert branch is continuous at every point of its natural
 domain. -/
@@ -244,20 +327,81 @@ theorem deriv_lowerLambertW_neg {z : ℝ}
 noncomputable def paperLambertN (x : ℝ) : ℝ :=
   -lowerLambertW (-(Real.log 2 * x)) / Real.log 2
 
-/-- Repaired equation (9): on the lower-branch domain, the displayed closed
-form solves `n * 2⁻ⁿ = x`. -/
-theorem paperLambertN_eq9 {x : ℝ} (hx : 0 < x)
-    (hsmall : Real.log 2 * x < Real.exp (-1)) :
+/-- Endpoint-inclusive equation (9): the displayed closed form solves
+`n * 2⁻ⁿ = x` throughout the full lower-branch domain. -/
+theorem paperLambertN_eq9_of_le {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
     paperLambertN x * (2 : ℝ) ^ (-paperLambertN x) = x := by
   have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hz : -(Real.log 2 * x) ∈ Ioo (-Real.exp (-1)) 0 := by
+  have hz : -(Real.log 2 * x) ∈ Ico (-Real.exp (-1)) 0 := by
     constructor <;> linarith [mul_pos hlog2 hx]
-  have hW := lowerLambertW_mul_exp hz
+  have hW := lowerLambertW_mul_exp_of_mem_Ico hz
   rw [paperLambertN, Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)]
   rw [show Real.log 2 * (-(-lowerLambertW (-(Real.log 2 * x)) / Real.log 2)) =
       lowerLambertW (-(Real.log 2 * x)) by field_simp]
   field_simp
   linarith
+
+/-- Repaired equation (9): on the interior lower-branch domain, the displayed
+closed form solves `n * 2⁻ⁿ = x`. -/
+theorem paperLambertN_eq9 {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x < Real.exp (-1)) :
+    paperLambertN x * (2 : ℝ) ^ (-paperLambertN x) = x :=
+  paperLambertN_eq9_of_le hx hsmall.le
+
+/-- On the full lower-branch domain, the paper's stationary point lies at or
+beyond the turning value `1 / log 2`. -/
+theorem one_div_log_two_le_paperLambertN {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    1 / Real.log 2 ≤ paperLambertN x := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hz : -(Real.log 2 * x) ∈ Ico (-Real.exp (-1)) 0 := by
+    constructor <;> linarith [mul_pos hlog2 hx]
+  unfold paperLambertN
+  exact (div_le_div_iff_of_pos_right hlog2).2 (by
+    linarith [lowerLambertW_le_neg_one hz])
+
+/-- At the branch-point input, the stationary point attains its sharp lower
+bound. -/
+theorem paperLambertN_eq_one_div_log_two {x : ℝ}
+    (hx : Real.log 2 * x = Real.exp (-1)) :
+    paperLambertN x = 1 / Real.log 2 := by
+  rw [paperLambertN, hx, lowerLambertW_branchPoint]
+  ring
+
+/-- The paper's stationary point equals the turning value exactly at the
+Lambert branch point. -/
+theorem paperLambertN_eq_one_div_log_two_iff {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x ≤ Real.exp (-1)) :
+    paperLambertN x = 1 / Real.log 2 ↔
+      Real.log 2 * x = Real.exp (-1) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hz : -(Real.log 2 * x) ∈ Ico (-Real.exp (-1)) 0 := by
+    constructor <;> linarith [mul_pos hlog2 hx]
+  constructor
+  · intro hphase
+    have hW : lowerLambertW (-(Real.log 2 * x)) = -1 := by
+      unfold paperLambertN at hphase
+      rw [div_left_inj' hlog2.ne'] at hphase
+      linarith
+    have hdef := lowerLambertW_mul_exp_of_mem_Ico hz
+    rw [hW] at hdef
+    norm_num at hdef
+    linarith
+  · intro hbranch
+    exact paperLambertN_eq_one_div_log_two hbranch
+
+/-- In the interior lower-branch domain, the paper's stationary point lies
+strictly beyond the turning value `1 / log 2`. -/
+theorem one_div_log_two_lt_paperLambertN {x : ℝ} (hx : 0 < x)
+    (hsmall : Real.log 2 * x < Real.exp (-1)) :
+    1 / Real.log 2 < paperLambertN x := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hz : -(Real.log 2 * x) ∈ Ioo (-Real.exp (-1)) 0 := by
+    constructor <;> linarith [mul_pos hlog2 hx]
+  unfold paperLambertN
+  exact (div_lt_div_iff_of_pos_right hlog2).2 (by
+    linarith [lowerLambertW_lt_neg_one hz])
 
 private def mulExpNeg (y : ℝ) : ℝ := y * Real.exp (-y)
 

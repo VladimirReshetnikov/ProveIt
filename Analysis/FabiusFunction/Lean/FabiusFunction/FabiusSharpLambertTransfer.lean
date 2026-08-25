@@ -21,7 +21,9 @@ open Filter Asymptotics
 
 namespace Fabius
 
-private theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv :
+/-- Along the lower-Lambert logarithmic coordinate, the forward product tail
+is `O(1 / lambda)`. -/
+theorem negativeLaplaceTailError_dyadicLambert_isBigO_inv :
     (fun t : ℝ => negativeLaplaceTailError
       (fabiusLambertRadius ((2 : ℝ) ^ (-t)))) =O[atTop]
         (fun t : ℝ => (fabiusLambertPhase ((2 : ℝ) ^ (-t)))⁻¹) := by
