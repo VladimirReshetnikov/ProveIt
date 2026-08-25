@@ -268,7 +268,7 @@ lemma transform_admissible (f : admissibleSet) : admissible (transform f) := by
     · have hxlt : 1 / 2 < x.1 := lt_of_not_ge hx
       have hr : 1 - x.1 ≤ 1 / 2 := by linarith
       rw [if_pos hr, if_neg hx]
-      ring
+      ring_nf
 
 /-- The transform viewed as a self-map of `admissibleSet`.  Its fixed point
 is `fixedCandidate`. -/
@@ -760,7 +760,7 @@ lemma rvachevCandidate_hasDerivAt (x : ℝ) :
     have heq : Fabius.rvachevUp boundedCandidate (2 * (-x) + 1) =
         Fabius.rvachevUp boundedCandidate (2 * x - 1) := by
       convert heven using 1
-      ring
+      ring_nf
     rw [heq]
     ring
 

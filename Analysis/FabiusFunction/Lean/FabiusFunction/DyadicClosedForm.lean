@@ -200,7 +200,7 @@ lemma thuePowerSum_succ (b d : ℕ) :
     rw [add_pow, Finset.sum_range_succ]
     simp only [one_pow, mul_one, Nat.choose_self, Nat.cast_one]
     rw [mul_pow]
-    ring
+    ring_nf
   simp only [f]
   simp_rw [hpoint]
   calc
@@ -844,7 +844,8 @@ lemma dyadicBlock_expand_truncated (n b : ℕ) (hb : b ≤ n) (r : ℚ) :
   have hzero' :
       (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
         dyadicKernel (n - j) ((2 : ℚ) * 2 ^ b - 2 * h.val - 1)) = 0 := by
-    convert hzero using 1; ring
+    convert hzero using 1
+    all_goals ring_nf
   rw [hzero', mul_zero]
 
 /-- The kernel refinement law as a `Prop`: for all `n` and all rational `x`,
@@ -986,7 +987,7 @@ theorem fabiusDyadic_block_translate (n block residue : ℕ)
         rw [thueMorseSign_block_concat (n + 1) q j
           (by simpa [period] using hjlt)]
         push_cast
-        ring
+        ring_nf
       _ = 0 := by
         rw [← Fin.sum_univ_eq_sum_range
           (fun j => (thueMorseSign j : ℚ) *
@@ -1013,7 +1014,7 @@ theorem fabiusDyadic_block_translate (n block residue : ℕ)
         (by simpa [period] using hjlt)]
       push_cast
       dsimp only [period]
-      ring
+      ring_nf
     _ = _ := by ring
 
 /-- The closed dyadic formula vanishes at the right endpoint `2`. -/
