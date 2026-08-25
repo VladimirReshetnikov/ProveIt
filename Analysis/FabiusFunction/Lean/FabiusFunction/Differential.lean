@@ -93,10 +93,8 @@ theorem fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
   have hd := (hF.contDiff.differentiable (by simp) 1).hasDerivAt
   rwa [hderiv] at hd
 
-/-- Reflected form of the defining differential equation on the second half of
-the unit interval. -/
-theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
-    {t : ℝ} (htlow : 1 / 2 < t) (hthigh : t < 1) :
+private lemma fabius_hasDerivAt_secondHalf_aux (F : BoundedFabius)
+    (hF : IsFabius F) {t : ℝ} (htlow : 1 / 2 < t) (hthigh : t < 1) :
     HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
   have harg : 1 - t ∈ Icc (0 : ℝ) (1 / 2) := by
     constructor <;> linarith
@@ -149,7 +147,7 @@ theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
         show 2 * x - 1 + 1 = 2 * x by ring]
     · have hhalf : 1 / 2 < x := lt_of_not_ge hxhalf
       rcases lt_trichotomy x 1 with hx1 | hx1 | hx1
-      · have h := fabius_hasDerivAt_secondHalf F hF hhalf hx1
+      · have h := fabius_hasDerivAt_secondHalf_aux F hF hhalf hx1
         rwa [rvachevUp_of_pos F (show (0 : ℝ) < 2 * x - 1 by linarith),
           show 1 - (2 * x - 1) = 2 - 2 * x by ring]
       · subst hx1
@@ -160,6 +158,23 @@ theorem fabius_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
   · have hx : x < 0 := lt_of_not_ge hx0
     rw [rvachevUp_eq_zero_of_le_neg_one F hF (by linarith), mul_zero]
     exact fabius_hasDerivAt_of_neg F hF hx
+
+/--
+Reflected form of the defining differential equation on the whole second half
+of the unit interval, endpoints included.
+-/
+theorem fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
+    {t : ℝ} (htlow : 1 / 2 ≤ t) (hthigh : t ≤ 1) :
+    HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
+  have h := fabius_hasDerivAt F hF t
+  have hup : rvachevUp F (2 * t - 1) = fabiusReal F (2 - 2 * t) := by
+    rcases eq_or_lt_of_le (show (0 : ℝ) ≤ 2 * t - 1 by linarith) with h0 | h0
+    · rw [← h0, rvachevUp_zero F hF, show (2 : ℝ) - 2 * t = 1 by linarith]
+      exact (hF.one_of_one_le 1 le_rfl).symm
+    · rw [rvachevUp_of_pos F h0]
+      congr 1
+      ring
+  rwa [hup] at h
 
 /-- Closed form for the derivative of the bounded Fabius function. -/
 theorem deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :

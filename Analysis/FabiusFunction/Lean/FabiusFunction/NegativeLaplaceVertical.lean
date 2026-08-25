@@ -409,15 +409,7 @@ theorem norm_complexGeneratingFunction_neg_div_le_real
       generatingFunction F (-z.re) / z.re := by
   let g : ℝ → ℝ := fun t => fabiusReal F t * Real.exp (-z.re * t)
   have hg : IntegrableOn g (Ioi 0) := by
-    have hexp : IntegrableOn (fun t : ℝ => Real.exp (-z.re * t)) (Ioi 0) := by
-      convert integrableOn_exp_mul_Ioi (a := -z.re) (by linarith) 0 using 1
-    apply hexp.mono'
-    · exact (hF.contDiff.continuous.mul
-        (Real.continuous_exp.comp (continuous_const.mul continuous_id))).aestronglyMeasurable
-    · filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
-      rw [Real.norm_eq_abs, abs_of_nonneg
-        (mul_nonneg (fabiusReal_nonneg F t) (Real.exp_nonneg _))]
-      exact mul_le_of_le_one_left (Real.exp_nonneg _) (fabiusReal_le_one F t)
+    simpa [g] using integrableOn_fabiusReal_mul_exp_neg F hF hz
   have hpoint : ∀ t : ℝ,
       ‖(fabiusReal F t : ℂ) * Complex.exp (-z * t)‖ = g t := by
     intro t
@@ -433,31 +425,9 @@ theorem norm_complexGeneratingFunction_neg_div_le_real
     exact norm_integral_le_of_norm_le hg
       (Filter.Eventually.of_forall fun t => (hpoint t).le)
   rw [← complexGeneratingFunction_neg_div_eq_laplace F hF hz] at hnorm
-  have hreal := complexGeneratingFunction_neg_div_eq_laplace F hF
-    (z := (z.re : ℂ)) (by simpa using hz)
-  have hintegrand :
-      (fun t : ℝ =>
-        (fabiusReal F t : ℂ) * Complex.exp (-(z.re : ℂ) * t)) =
-        fun t : ℝ => (g t : ℂ) := by
-    funext t
-    dsimp [g]
-    push_cast
-    rfl
-  have hgcast :
-      (∫ t : ℝ in Ioi 0, (g t : ℂ)) =
-        Complex.ofReal (∫ t : ℝ in Ioi 0, g t) := by
-    exact integral_ofReal (𝕜 := ℂ)
-  rw [hintegrand, hgcast] at hreal
-  have hneg : -(z.re : ℂ) = ((-z.re : ℝ) : ℂ) := by
-    push_cast
-    rfl
-  rw [hneg, complexGeneratingFunction_ofReal_vertical F (-z.re)] at hreal
-  have hcast : Complex.ofReal (generatingFunction F (-z.re) / z.re) =
-      Complex.ofReal (∫ t : ℝ in Ioi 0, g t) := by
-    simpa using hreal
   have hrealEq : generatingFunction F (-z.re) / z.re =
       ∫ t : ℝ in Ioi 0, g t := by
-    exact Complex.ofReal_injective hcast
+    simpa [g] using generatingFunction_neg_div_eq_laplace F hF hz
   rwa [hrealEq]
 
 /-- Tail factor bound used after finite dyadic refinement. -/

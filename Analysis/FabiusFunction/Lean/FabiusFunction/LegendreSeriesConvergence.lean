@@ -20,6 +20,8 @@ self-adjoint Sturm--Liouville operator
 `f ↦ -((1 - x²) f')'`.
 
 The factor `1 - x²` makes both boundary terms vanish at `x = ±1`.
+The Green identity is also iterated to transfer an arbitrary power of a
+Legendre eigenvalue from an eigenfunction onto the function being expanded.
 -/
 
 set_option autoImplicit false
@@ -51,6 +53,17 @@ theorem ContDiff.legendreSturmLiouville {f : ℝ → ℝ}
   change ContDiff ℝ ∞
     (fun x : ℝ ↦ -deriv (fun y : ℝ ↦ (1 - y ^ 2) * deriv f y) x)
   exact (contDiff_infty_iff_deriv.mp hweighted).2.neg
+
+/-- Every iterate of the Legendre Sturm--Liouville operator preserves
+smoothness. -/
+theorem ContDiff.iterate_legendreSturmLiouville {f : ℝ → ℝ}
+    (hf : ContDiff ℝ ∞ f) (k : ℕ) :
+    ContDiff ℝ ∞ ((Fabius.legendreSturmLiouville^[k]) f) := by
+  induction k with
+  | zero => simpa
+  | succ k ih =>
+      rw [Function.iterate_succ_apply']
+      exact ContDiff.legendreSturmLiouville ih
 
 /-- Sonin's energy estimate: a polynomial solution of Legendre's differential
 equation whose endpoint values have square one is bounded by one on
@@ -274,6 +287,36 @@ theorem eigenvalue_mul_integral_eq_integral_legendreSturmLiouville
     _ = ∫ x in (-1 : ℝ)..1, legendreSturmLiouville f x * g x :=
       integral_mul_legendreSturmLiouville_eq hf hg
 
+/-- Iterating Green's identity transfers any natural power of a
+Sturm--Liouville eigenvalue from the eigenfunction to the other factor. -/
+theorem eigenvalue_pow_mul_integral_eq_integral_iterate_legendreSturmLiouville
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (eigenvalue : ℝ)
+    (heigen : ∀ x, legendreSturmLiouville g x = eigenvalue * g x)
+    (k : ℕ) :
+    eigenvalue ^ k * (∫ x in (-1 : ℝ)..1, f x * g x) =
+      ∫ x in (-1 : ℝ)..1,
+        (legendreSturmLiouville^[k]) f x * g x := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      calc
+        eigenvalue ^ (k + 1) * (∫ x in (-1 : ℝ)..1, f x * g x) =
+            eigenvalue *
+              (eigenvalue ^ k * (∫ x in (-1 : ℝ)..1, f x * g x)) := by
+                rw [pow_succ]
+                ring
+        _ = eigenvalue *
+            (∫ x in (-1 : ℝ)..1,
+              (legendreSturmLiouville^[k]) f x * g x) := by rw [ih]
+        _ = ∫ x in (-1 : ℝ)..1,
+            legendreSturmLiouville ((legendreSturmLiouville^[k]) f) x * g x :=
+          eigenvalue_mul_integral_eq_integral_legendreSturmLiouville
+            (ContDiff.iterate_legendreSturmLiouville hf k) hg eigenvalue heigen
+        _ = ∫ x in (-1 : ℝ)..1,
+            (legendreSturmLiouville^[k + 1]) f x * g x := by
+          rw [Function.iterate_succ_apply']
+
 /-- Applying Green's identity twice transfers two powers of a
 Sturm--Liouville eigenvalue from the Legendre polynomial to the function. -/
 theorem eigenvalue_sq_mul_integral_eq_integral_legendreSturmLiouville_sq
@@ -283,19 +326,9 @@ theorem eigenvalue_sq_mul_integral_eq_integral_legendreSturmLiouville_sq
     eigenvalue ^ 2 * (∫ x in (-1 : ℝ)..1, f x * g x) =
       ∫ x in (-1 : ℝ)..1,
         legendreSturmLiouville (legendreSturmLiouville f) x * g x := by
-  have hfirst := eigenvalue_mul_integral_eq_integral_legendreSturmLiouville
-    hf hg eigenvalue heigen
-  have hLf := ContDiff.legendreSturmLiouville hf
-  have hsecond := eigenvalue_mul_integral_eq_integral_legendreSturmLiouville
-    hLf hg eigenvalue heigen
-  calc
-    eigenvalue ^ 2 * (∫ x in (-1 : ℝ)..1, f x * g x) =
-        eigenvalue * (eigenvalue * (∫ x in (-1 : ℝ)..1, f x * g x)) := by ring
-    _ = eigenvalue *
-        (∫ x in (-1 : ℝ)..1, legendreSturmLiouville f x * g x) := by
-      rw [hfirst]
-    _ = ∫ x in (-1 : ℝ)..1,
-        legendreSturmLiouville (legendreSturmLiouville f) x * g x := hsecond
+  simpa [Function.iterate_succ_apply'] using
+    eigenvalue_pow_mul_integral_eq_integral_iterate_legendreSturmLiouville
+      hf hg eigenvalue heigen 2
 
 /-- Two integrations by parts give the cubic decay estimate needed for
 absolute convergence of a Legendre series.  The hypotheses isolate the three

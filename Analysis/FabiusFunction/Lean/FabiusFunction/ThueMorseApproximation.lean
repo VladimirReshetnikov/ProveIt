@@ -2,6 +2,15 @@ import FabiusFunction.ThueMorseGenerating
 import FabiusFunction.StepApproximationLimit
 import Mathlib.Analysis.SpecificLimits.Normed
 
+/-!
+# Thue--Morse prefix approximations
+
+This module identifies the corrected iterated Thue--Morse prefixes with the
+polynomial/histogram approximants, first exactly at dyadic cell centers and
+then asymptotically along moving cells.  It includes the exceptional right
+endpoint and the rescaling that recovers the Fabius function on `[0,1]`.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology
@@ -11,6 +20,8 @@ namespace Fabius
 
 open Polynomial
 
+/-- The approximation polynomial with its natural coefficients cast to
+integers, for comparison with the signed Thue--Morse power series. -/
 noncomputable def approximationPolynomialInt (n : ℕ) : Polynomial ℤ :=
   (approximationPolynomial n).map (Nat.castRingHom ℤ)
 
@@ -223,7 +234,9 @@ noncomputable def correctedPrefixGridSample (n : ℕ) (x : ℝ) : ℝ :=
 noncomputable def correctedPrefixCellCenter (n : ℕ) (x : ℝ) : ℝ :=
   polynomialAtomLocation n ⌊x * (2 : ℝ) ^ (n + 1)⌋₊
 
-private theorem approximationDegree_div_pow_succ_tendsto_one :
+/-- The centered-cell translation term tends to one after dyadic
+normalization. -/
+theorem approximationDegree_div_pow_succ_tendsto_one :
     Tendsto (fun n : ℕ =>
       (approximationDegree n : ℝ) / (2 : ℝ) ^ (n + 1))
       atTop (nhds 1) := by
@@ -426,6 +439,7 @@ theorem correctedPrefixGridSample_tendsto_of_lt_one
   exact hstep.congr' (Filter.Eventually.of_forall fun n =>
     (correctedPrefixGridSample_eq_stepApproximant n hx0 hx1).symm)
 
+/-- Exact value of the exceptional right-endpoint sample. -/
 theorem correctedPrefixGridSample_one (n : ℕ) :
     correctedPrefixGridSample n 1 =
       -(1 / (2 : ℝ) ^ n.choose 2) := by

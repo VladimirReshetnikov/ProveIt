@@ -135,19 +135,13 @@ private lemma abs_log_one_sub_exp_neg_le (x : ℝ) (hx : 0 < x) :
       field_simp
       ring
 
-private lemma nat_succ_le_two_pow (n : ℕ) : n + 1 ≤ 2 ^ n := by
-  induction n with
-  | zero => norm_num
-  | succ n ih =>
-      rw [pow_succ]
-      omega
-
 private lemma exp_forward_le_geometric (s : ℝ) (hs : 0 < s) (n : ℕ) :
     Real.exp (-(s * (2 : ℝ) ^ n)) ≤ Real.exp (-s) ^ (n + 1) := by
   rw [← Real.exp_nat_mul]
   apply Real.exp_le_exp.mpr
   have hn : ((n + 1 : ℕ) : ℝ) ≤ (2 : ℝ) ^ n := by
-    exact_mod_cast nat_succ_le_two_pow n
+    have hnat : n + 1 ≤ 2 ^ n := Nat.succ_le_of_lt Nat.lt_two_pow_self
+    exact_mod_cast hnat
   nlinarith
 
 /-- A geometric majorant for one forward-tail term. -/
@@ -366,7 +360,9 @@ theorem negativeLaplaceLog_exact_periodic_decomposition
   field_simp
   ring
 
-private lemma generatingFunction_continuous
+/-- The real half-moment generating function is continuous on the whole real
+line. -/
+theorem continuous_generatingFunction
     (F : BoundedFabius) (hF : IsFabius F) :
     Continuous (generatingFunction F) := by
   unfold generatingFunction
@@ -439,7 +435,7 @@ theorem exp_negativeLaplaceLog_eq_generatingFunction_neg
   have hgen : Tendsto
       (fun N : ℕ => generatingFunction F (-(s / (2 : ℝ) ^ N)))
       atTop (𝓝 1) := by
-    have hc := (generatingFunction_continuous F hF).continuousAt.tendsto.comp hsmall
+    have hc := (continuous_generatingFunction F hF).continuousAt.tendsto.comp hsmall
     have hzero : generatingFunction F 0 = 1 := by simp [generatingFunction]
     change Tendsto
       (generatingFunction F ∘ fun N : ℕ => -(s / (2 : ℝ) ^ N))

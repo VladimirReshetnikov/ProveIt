@@ -833,29 +833,6 @@ theorem proposition_two_formula (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) 
                 rvachevLaplace F (z / 2) := by ring
         _ = _ := by rw [hexp]; ring
 
-private lemma complexGeneratingFunction_ofReal
-    (F : BoundedFabius) (x : ℝ) :
-    complexGeneratingFunction F (x : ℂ) =
-      (generatingFunction F x : ℂ) := by
-  unfold complexGeneratingFunction generatingFunction
-  push_cast
-  congr 1
-  congr 1
-  rw [← intervalIntegral.integral_ofReal]
-  apply intervalIntegral.integral_congr
-  intro t _ht
-  push_cast
-  rfl
-
-private lemma complexExpm1Div_ofReal (x : ℝ) :
-    complexExpm1Div (x : ℂ) = (expm1Div x : ℂ) := by
-  by_cases hx : x = 0
-  · subst x
-    simp
-  rw [complexExpm1Div_of_ne (by exact_mod_cast hx), expm1Div_of_ne hx]
-  push_cast
-  rfl
-
 /-- The real-axis restriction of the complex dilation identity. -/
 theorem proposition_two_real_formula
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
@@ -909,7 +886,7 @@ private lemma complexExp_integral_hasSum
     dsimp [term, bound]
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _)
-      (norm_ofReal_rvachevUp_le_one F t)).trans hinner
+      (norm_coe_rvachevUp_le_one F t)).trans hinner
   · filter_upwards with t
     intro _ht
     exact NormedSpace.norm_expSeries_div_summable z
@@ -1045,7 +1022,7 @@ private lemma rvachevFourier_expansion_hasSum
     dsimp [term, bound]
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _)
-      (norm_ofReal_rvachevUp_le_one F t)).trans hinner
+      (norm_coe_rvachevUp_le_one F t)).trans hinner
   · filter_upwards with t
     intro _ht
     exact NormedSpace.norm_expSeries_div_summable c

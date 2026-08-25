@@ -39,15 +39,10 @@ private lemma analyticAt_comp_const_sub {f : ℝ → ℝ} {c a : ℝ}
 
 /-- The bounded Fabius function is the reflection of Rvachev's function at
 every argument at most one, including both endpoints. -/
-theorem fabiusReal_eq_rvachevUp_one_sub (F : BoundedFabius) (hF : IsFabius F)
-    {y : ℝ} (hy : y ≤ 1) : fabiusReal F y = rvachevUp F (1 - y) := by
-  rcases eq_or_lt_of_le hy with h | h
-  · subst h
-    rw [sub_self, rvachevUp_zero F hF]
-    exact hF.one_of_one_le 1 le_rfl
-  · rw [rvachevUp_of_pos F (show (0 : ℝ) < 1 - y by linarith)]
-    congr 1
-    ring
+theorem fabiusReal_eq_rvachevUp_one_sub (F : BoundedFabius) {y : ℝ} (hy : y ≤ 1) :
+    fabiusReal F y = rvachevUp F (1 - y) := by
+  rw [rvachevUp_eq_fabiusReal_one_sub F (show (0 : ℝ) ≤ 1 - y by linarith),
+    show (1 : ℝ) - (1 - y) = y by ring]
 
 /-! ## Non-analyticity on the unit interval -/
 
