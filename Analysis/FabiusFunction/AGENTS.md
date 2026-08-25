@@ -31,14 +31,100 @@ The rules that have actually cost time so far:
    or Lake with writers frozen.  Subagents do not stage, merge, push, clean, or
    mutate build outputs.
 
+5. **All mathematical writing is LaTeX.** See the documentation policy below.
+   Markdown is for repository bookkeeping — READMEs, coverage maps, audits,
+   coordination — never for mathematics.
+
 Invariants that must not regress: no `sorry`, `admit`, `axiom`, or `opaque`;
 the axiom set stays exactly `propext`, `Classical.choice`, `Quot.sound`;
 `set_option autoImplicit false` in every file; a doc comment on every
 non-`private` declaration; new modules registered in
 `Lean/FabiusFunction.lean`.
 
+## Documentation policy
+
+**Every mathematical document in this directory is a LaTeX document, and its
+compiled PDF is committed with it.**
+
+1. **Format.** Mathematics is written in `*.tex`, never in Markdown. A
+   write-up of a theorem, a derivation, a table of coefficients, a numerical
+   study, or an expository account of any part of the development belongs in a
+   `.tex` file. Markdown remains correct for `README.md`, `AGENTS.md`,
+   `docs/PAPER_COVERAGE.md`, `docs/COLLABORATION.md`, `docs/registry/*.md` and
+   similar repository bookkeeping, which contain no displayed mathematics.
+
+2. **Style.** New documents reuse the preamble of
+   [`docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+   verbatim: the same `geometry`, font and `microtype` setup, the same
+   `linkblue`/`shadegray`/`rulegray` colours and `hyperref` configuration, the
+   same `fancyhdr` and `titlesec` section formatting, the same theorem
+   environments (`theorem`/`proposition`/`lemma`/`corollary`/`conjecture`,
+   `definition`/`algorithm`/`example`, `remark`/`warning`), the same macro set
+   (`\R`, `\C`, `\Q`, `\N`, `\Z`, `\Up`, `\e`, `\ii`, `\dd`, `\E`, `\Prob`,
+   `\bigO`, `\qbinom`, `\repo`, …), the same `proofidea` and `boxedremark`
+   environments, and the same `pseudo` listing style. Only the `\title`,
+   `\author`, `\date`, `pdftitle`/`pdfsubject`/`pdfkeywords` and the running
+   head change. Do not invent a second visual identity for this directory.
+
+3. **Layout.** One directory per document, named after it, holding the `.tex`
+   and the `.pdf` of the same name — as in
+   `docs/Fabius_Function_and_Rvachev_Up/` and
+   `docs/Small_Argument_Asymptotics/`.
+
+4. **The PDF is committed.** Build it before committing and commit it in the
+   same commit as the source:
+
+   ```sh
+   cd Analysis/FabiusFunction/docs/<Document_Name>
+   pdflatex -interaction=nonstopmode -halt-on-error <Document_Name>.tex
+   pdflatex -interaction=nonstopmode -halt-on-error <Document_Name>.tex
+   pdflatex -interaction=nonstopmode -halt-on-error <Document_Name>.tex
+   rm -f *.aux *.log *.out *.toc
+   ```
+
+   Three passes: the first writes the `.aux` and `.toc`, the second resolves
+   `\ref`/`\cref`, the third settles the table of contents and page numbers. Do
+   not commit `.aux`, `.log`, `.out` or `.toc`. A `.tex` change without a
+   rebuilt `.pdf` is an incomplete commit.
+
+5. **Verify the rendered PDF, not the source.** Never write LaTeX through a
+   shell heredoc or a Python patch script that round-trips through
+   `unicode_escape`: both silently destroy backslashes and non-ASCII
+   characters, and LaTeX does *not* error on the result — it renders
+   something plausible and wrong. Use the editor tools, then check the page
+   count and the log.
+
+6. **Cross-reference the formalization.** A mathematical document should carry
+   a table mapping its objects to the Lean names and modules that formalize
+   them, and should state explicitly what is *not* claimed.
+
+## Building Lean
+
 Build one module per `lake` invocation, in topological order. `LAKE_JOBS=1` is
 not enough: a single `lake build A B` still starts two `lean` processes, and on
 this 13 GB machine both then die with a misleading
 `failed to read file '….olean'`, which is an out-of-memory symptom rather than
 a real error.
+
+The module target needs a `+` prefix. `lake build FabiusFunction.Basic` fails
+with `unknown target`; `lake build +FabiusFunction.Basic` is the working form.
+
+A worktree without its own `.lake` would rebuild Mathlib from scratch. Give it
+one whose `packages` is a directory junction to the shared
+`C:\ProveIt\.lake\packages`, so the built Mathlib is reused while the Fabius
+build outputs stay isolated per worktree:
+
+```sh
+mkdir -p .lake
+cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
+```
+
+Two further traps that have cost real time here:
+
+- **`ContDiff ℝ ⊤` means *analytic*, not `C^∞`.** In this Mathlib `ω` is
+  `(⊤ : WithTop ℕ∞)` and `∞` is the strictly smaller `((⊤ : ℕ∞) : WithTop ℕ∞)`.
+  Write `ContDiff ℝ ∞`, and remember that `∞` is `scoped[ContDiff]` notation:
+  a file that uses it needs `open scoped ContDiff`.
+- **Windows line endings.** A build-order list generated by Python in text mode
+  carries `\r`, and every entry then fails with `unknown target` — or, with the
+  `+` prefix, `unknown module [anonymous]`. Pipe the list through `tr -d '\r'`.

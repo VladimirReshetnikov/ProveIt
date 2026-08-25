@@ -18,6 +18,11 @@ A self-contained human-readable synthesis of the formal development is also
 available as [LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
 and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
+The small-argument asymptotics are developed separately, with a general formula
+for every coefficient of the all-orders expansion, in
+[*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
+([PDF](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
+
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
@@ -554,6 +559,35 @@ Among them:
    `expm1Div 0` is defined to be `1`.
 6. The exponent in `R_n` is positive in equation (27), its proof, and its
    displayed values.  The development uses that consistent positive exponent.
+
+## Documentation policy
+
+Every mathematical document in this directory is a LaTeX document, and its
+compiled PDF is committed alongside its source.
+
+- **Format.** Mathematics is written in `*.tex`, never in Markdown. Markdown is
+  reserved for repository bookkeeping that contains no displayed mathematics:
+  this README, [`AGENTS.md`](AGENTS.md),
+  [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md),
+  [`docs/COLLABORATION.md`](docs/COLLABORATION.md), and the per-branch files in
+  `docs/registry/`.
+- **Style.** New documents reuse the preamble of
+  [`Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+  verbatim — the same geometry, fonts, colours, `hyperref` setup, running
+  heads, section formatting, theorem environments, macros, and listing style.
+  Only the title block and the PDF metadata change.
+- **Layout.** One directory per document, named after it, containing the `.tex`
+  and the `.pdf` of the same name.
+- **The PDF is committed** in the same commit as the `.tex`, built with three
+  `pdflatex` passes so that the cross-references and the table of contents
+  settle; the `.aux`, `.log`, `.out` and `.toc` files are not committed. A
+  `.tex` change without a rebuilt `.pdf` is an incomplete commit.
+- **Check the rendered PDF.** Never write LaTeX through a shell heredoc or a
+  script that round-trips through `unicode_escape`: both silently destroy
+  backslashes, and LaTeX will not complain — it renders something plausible and
+  wrong.
+
+[`AGENTS.md`](AGENTS.md) states the same policy with the exact build commands.
 
 ## Contributing and coordination
 

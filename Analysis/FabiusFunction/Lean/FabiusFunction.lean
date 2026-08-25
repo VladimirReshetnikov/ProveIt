@@ -21,6 +21,8 @@ import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
 import FabiusFunction.FabiusComputableSpline
+import FabiusFunction.FabiusSaddleJetClosedForm
+import FabiusFunction.FabiusSaddleExponentClosedForm
 
 /-!
 # Fabius function
@@ -50,6 +52,19 @@ the exact support `(-1,1)` of `up` and its strict unimodality, convexity of
 `F(x) ≤ 2^C(n+1,2) x^n` on `2^n x ≤ 1`, the sharp uniform derivative bounds
 `|F^(k)| ≤ 2^C(k+1,2)` with the value attained, and the exact real-analytic
 locus: `F` is analytic at `x` if and only if `x ∉ [0,1]`.
+
+The small-argument asymptotic layer is completed by closed forms for the
+objects that previously existed only as recursions.  The differential
+recurrence for the periodic saddle jets is solved: the `n`-th jet is a
+harmonic-number constant plus a sum of the first `n+1` derivatives of the
+centered periodic correction, weighted by the coefficients of
+`∏ k ∈ Finset.Icc 1 n, (X - k)`, that is, by signed Stirling numbers of the
+first kind.  The saddle exponent coefficients likewise collapse to one power
+of `I` multiplying a jet term and a universal jet-free tail.  Together these
+make every coefficient of the all-orders expansion an explicit finite
+expression with rational coefficients in `1 / log 2` and the derivatives of
+the periodic correction, rather than the output of a recursion.  See
+`docs/SMALL_ARGUMENT_ASYMPTOTICS.md`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
