@@ -34,6 +34,21 @@ theorem fabiusLaplaceMoment_zero_pos
   rw [← exp_negativeLaplaceLog_eq_generatingFunction_neg F hF s hs]
   exact Real.exp_pos _
 
+/-- The zeroth normalized tilted moment is one wherever its denominator does
+not vanish. -/
+theorem normalizedLaplaceMoment_zero_of_ne
+    (F : BoundedFabius) {s : ℝ} (h0 : fabiusLaplaceMoment F 0 s ≠ 0) :
+    normalizedLaplaceMoment F 0 s = 1 := by
+  unfold normalizedLaplaceMoment
+  exact div_self h0
+
+/-- Positive-scale form of `normalizedLaplaceMoment_zero_of_ne`. -/
+theorem normalizedLaplaceMoment_zero
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    normalizedLaplaceMoment F 0 s = 1 :=
+  normalizedLaplaceMoment_zero_of_ne F
+    (fabiusLaplaceMoment_zero_pos F hF hs).ne'
+
 /-- The exact logarithmic product is the logarithm of the negative Laplace
 transform. -/
 theorem negativeLaplaceLog_eq_log_laplaceMoment
@@ -69,19 +84,68 @@ noncomputable def negativeLaplaceLogFourth
     12 * normalizedLaplaceMoment F 1 s ^ 2 * normalizedLaplaceMoment F 2 s -
     6 * normalizedLaplaceMoment F 1 s ^ 4
 
-/-- Differential recurrence for normalized tilted moments. -/
-theorem normalizedLaplaceMoment_hasDerivAt
-    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) {s : ℝ} (hs : 0 < s) :
+/-- Differential recurrence for normalized tilted moments wherever the
+normalizing zeroth moment is nonzero. -/
+theorem normalizedLaplaceMoment_hasDerivAt_of_ne
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) {s : ℝ}
+    (h0 : fabiusLaplaceMoment F 0 s ≠ 0) :
     HasDerivAt (normalizedLaplaceMoment F k)
       (-normalizedLaplaceMoment F (k + 1) s +
         normalizedLaplaceMoment F k s * normalizedLaplaceMoment F 1 s) s := by
-  have h0 := (fabiusLaplaceMoment_zero_pos F hF hs).ne'
   unfold normalizedLaplaceMoment
   have hbase := (fabiusLaplaceMoment_hasDerivAt F hF k s).div
     (fabiusLaplaceMoment_hasDerivAt F hF 0 s) h0
   refine hbase.congr_deriv ?_
   field_simp [h0]
   ring
+
+/-- Positive-scale compatibility form of the normalized-moment differential
+recurrence. -/
+theorem normalizedLaplaceMoment_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) {s : ℝ} (hs : 0 < s) :
+    HasDerivAt (normalizedLaplaceMoment F k)
+      (-normalizedLaplaceMoment F (k + 1) s +
+        normalizedLaplaceMoment F k s * normalizedLaplaceMoment F 1 s) s :=
+  normalizedLaplaceMoment_hasDerivAt_of_ne F hF k
+    (fabiusLaplaceMoment_zero_pos F hF hs).ne'
+
+/-- Normalized tilted moments are continuous on any set where the zeroth
+moment does not vanish. -/
+theorem continuousOn_normalizedLaplaceMoment_of_ne
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (S : Set ℝ)
+    (hS : ∀ s ∈ S, fabiusLaplaceMoment F 0 s ≠ 0) :
+    ContinuousOn (normalizedLaplaceMoment F k) S := by
+  intro s hs
+  exact (normalizedLaplaceMoment_hasDerivAt_of_ne F hF k
+    (hS s hs)).continuousAt.continuousWithinAt
+
+/-- Every normalized tilted moment is continuous on the positive half-line. -/
+theorem continuousOn_normalizedLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    ContinuousOn (normalizedLaplaceMoment F k) (Ioi 0) := by
+  apply continuousOn_normalizedLaplaceMoment_of_ne F hF k
+  intro s hs
+  change 0 < s at hs
+  exact (fabiusLaplaceMoment_zero_pos F hF hs).ne'
+
+/-- `deriv` form of the normalized-moment recurrence at every point where the
+zeroth moment is nonzero. -/
+theorem deriv_normalizedLaplaceMoment_of_ne
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) {s : ℝ}
+    (h0 : fabiusLaplaceMoment F 0 s ≠ 0) :
+    deriv (normalizedLaplaceMoment F k) s =
+      -normalizedLaplaceMoment F (k + 1) s +
+        normalizedLaplaceMoment F k s * normalizedLaplaceMoment F 1 s :=
+  (normalizedLaplaceMoment_hasDerivAt_of_ne F hF k h0).deriv
+
+/-- Positive-scale compatibility form of `deriv_normalizedLaplaceMoment_of_ne`. -/
+theorem deriv_normalizedLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) {s : ℝ} (hs : 0 < s) :
+    deriv (normalizedLaplaceMoment F k) s =
+      -normalizedLaplaceMoment F (k + 1) s +
+        normalizedLaplaceMoment F k s * normalizedLaplaceMoment F 1 s :=
+  deriv_normalizedLaplaceMoment_of_ne F hF k
+    (fabiusLaplaceMoment_zero_pos F hF hs).ne'
 
 /-- First derivative of the exact logarithmic product. -/
 theorem negativeLaplaceLog_hasDerivAt

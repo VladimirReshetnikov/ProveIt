@@ -127,18 +127,20 @@ theorem normalizedThueMorseSplineBranch_add_sub
   have hpow : (2 : ℂ) ^ p.choose 2 ≠ 0 := pow_ne_zero _ (by norm_num)
   simp [hpow]
 
-/-- A norm bound for the translated branch, assuming that all lower real
-branches occurring in its Taylor expansion have norm at most one. -/
-theorem norm_normalizedThueMorseSplineBranch_add_sub_le
+/-- A norm bound for a translated branch when all lower branches in its
+Taylor expansion are bounded by a common constant `B`.  The bound is useful
+independently of the Fabius application, where `B = 1`. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le_mul_sum
     (p M : ℕ) (z δ : ℂ)
+    (B : ℝ)
     (hbound : ∀ d ∈ Finset.range p,
-      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ B) :
     ‖normalizedThueMorseSplineBranch p M (z + δ) -
         normalizedThueMorseSplineBranch p M z‖ ≤
-      ∑ d ∈ Finset.range p,
-        ‖(2 : ℂ) ^ d.choose 2 /
-            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
-          ‖δ‖ ^ (p - d) := by
+      B * ∑ d ∈ Finset.range p,
+          ‖(2 : ℂ) ^ d.choose 2 /
+              ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+            ‖δ‖ ^ (p - d) := by
   rw [normalizedThueMorseSplineBranch_add_sub]
   calc
     ‖∑ d ∈ Finset.range p,
@@ -150,10 +152,10 @@ theorem norm_normalizedThueMorseSplineBranch_add_sub_le
               ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))) *
             δ ^ (p - d) * normalizedThueMorseSplineBranch d M z‖ :=
       norm_sum_le _ _
-    _ ≤ ∑ d ∈ Finset.range p,
-        ‖(2 : ℂ) ^ d.choose 2 /
+    _ ≤ ∑ d ∈ Finset.range p, B *
+        (‖(2 : ℂ) ^ d.choose 2 /
             ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
-          ‖δ‖ ^ (p - d) := by
+          ‖δ‖ ^ (p - d)) := by
       apply Finset.sum_le_sum
       intro d hd
       simp only [norm_mul, norm_pow]
@@ -161,11 +163,32 @@ theorem norm_normalizedThueMorseSplineBranch_add_sub_le
         ‖(2 : ℂ) ^ d.choose 2 /
             ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
           ‖δ‖ ^ (p - d)
-      change A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ A
+      change A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ B * A
       calc
-        A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ A * 1 :=
+        A * ‖normalizedThueMorseSplineBranch d M z‖ ≤ A * B :=
           mul_le_mul_of_nonneg_left (hbound d hd) (by positivity)
-        _ = A := mul_one A
+        _ = B * A := mul_comm A B
+    _ = B * ∑ d ∈ Finset.range p,
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d) := by
+      rw [Finset.mul_sum]
+
+/-- A norm bound for the translated branch, assuming that all lower
+branches occurring in its Taylor expansion have norm at most one. -/
+theorem norm_normalizedThueMorseSplineBranch_add_sub_le
+    (p M : ℕ) (z δ : ℂ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d M z‖ ≤ 1) :
+    ‖normalizedThueMorseSplineBranch p M (z + δ) -
+        normalizedThueMorseSplineBranch p M z‖ ≤
+      ∑ d ∈ Finset.range p,
+        ‖(2 : ℂ) ^ d.choose 2 /
+            ((2 : ℂ) ^ p.choose 2 * ((p - d).factorial : ℂ))‖ *
+          ‖δ‖ ^ (p - d) := by
+  simpa using
+    norm_normalizedThueMorseSplineBranch_add_sub_le_mul_sum
+      p M z δ 1 hbound
 
 private theorem norm_complex_two_choose_factor
     (p d : ℕ) :

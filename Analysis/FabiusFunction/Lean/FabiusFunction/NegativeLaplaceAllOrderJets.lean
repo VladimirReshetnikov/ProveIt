@@ -1,7 +1,15 @@
 import FabiusFunction.PeriodicSmooth
 import FabiusFunction.LaplacePeriodicSecondOrder
 
-/-! Exact all-order ordinary derivative jets of the negative Laplace logarithm. -/
+/-!
+# Exact all-order ordinary derivative jets
+
+This module packages every ordinary derivative of the negative-Laplace
+logarithm into a single recursive sequence.  On the positive half-line the
+sequence agrees with `iteratedDeriv`; after dyadic rescaling, each derivative
+splits exactly into a linear drift, a smooth periodic jet, and a forward-tail
+remainder.
+-/
 
 set_option autoImplicit false
 
@@ -22,6 +30,7 @@ noncomputable def negativeLaplaceLogOrdinaryDeriv : ℕ → ℝ → ℝ
     negativeLaplaceLogOrdinaryDeriv 0 = negativeLaplaceLog := by
   rfl
 
+/-- Unfolding equation for a positive-order ordinary derivative. -/
 theorem negativeLaplaceLogOrdinaryDeriv_succ_apply
     (n : ℕ) (s : ℝ) :
     negativeLaplaceLogOrdinaryDeriv (n + 1) s =
@@ -44,6 +53,8 @@ private theorem negativeLaplacePeriodicJet_hasDerivAt
   ((contDiff_infty_negativeLaplacePeriodicJet n).differentiable
     (by simp) t).hasDerivAt
 
+/-- The explicit sequence is a genuine derivative tower on the positive
+half-line. -/
 theorem negativeLaplaceLogOrdinaryDeriv_hasDerivAt
     (n : ℕ) {s : ℝ} (hs : 0 < s) :
     HasDerivAt (negativeLaplaceLogOrdinaryDeriv n)
@@ -104,6 +115,24 @@ theorem negativeLaplaceLogOrdinaryDeriv_hasDerivAt
       field_simp [hs.ne', (Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne']
       ring
 
+/-- `deriv` advances the explicit ordinary-derivative sequence at every
+positive scale. -/
+theorem deriv_negativeLaplaceLogOrdinaryDeriv
+    (n : ℕ) {s : ℝ} (hs : 0 < s) :
+    deriv (negativeLaplaceLogOrdinaryDeriv n) s =
+      negativeLaplaceLogOrdinaryDeriv (n + 1) s :=
+  (negativeLaplaceLogOrdinaryDeriv_hasDerivAt n hs).deriv
+
+/-- Every member of the explicit derivative sequence is continuous on the
+positive half-line. -/
+theorem continuousOn_negativeLaplaceLogOrdinaryDeriv (n : ℕ) :
+    ContinuousOn (negativeLaplaceLogOrdinaryDeriv n) (Ioi 0) := by
+  intro s hs
+  change 0 < s at hs
+  exact (negativeLaplaceLogOrdinaryDeriv_hasDerivAt n hs).continuousAt.continuousWithinAt
+
+/-- Every iterated derivative agrees pointwise with the explicit ordinary
+derivative sequence at positive scales. -/
 theorem iteratedDeriv_negativeLaplaceLog_eq_ordinaryDeriv
     (n : ℕ) {s : ℝ} (hs : 0 < s) :
     iteratedDeriv n negativeLaplaceLog s =
@@ -119,6 +148,15 @@ theorem iteratedDeriv_negativeLaplaceLog_eq_ordinaryDeriv
       rw [heq.deriv_eq]
       exact (negativeLaplaceLogOrdinaryDeriv_hasDerivAt n hs).deriv
 
+/-- Function-level form of the all-order derivative identification on the
+positive half-line. -/
+theorem iteratedDeriv_negativeLaplaceLog_eqOn_ordinaryDeriv (n : ℕ) :
+    EqOn (iteratedDeriv n negativeLaplaceLog)
+      (negativeLaplaceLogOrdinaryDeriv n) (Ioi 0) := by
+  intro s hs
+  change 0 < s at hs
+  exact iteratedDeriv_negativeLaplaceLog_eq_ordinaryDeriv n hs
+
 /-- Scaled `(n+1)`st ordinary derivative of the negative Laplace logarithm
 on the dyadic logarithmic orbit. -/
 noncomputable def negativeLaplaceScaledOrdinaryJet (n : ℕ) (t : ℝ) : ℝ :=
@@ -130,6 +168,8 @@ noncomputable def negativeLaplaceForwardScaledJet (n : ℕ) (t : ℝ) : ℝ :=
   ((2 : ℝ) ^ t) ^ (n + 1) *
     negativeLaplaceForwardTailDeriv (n + 1) ((2 : ℝ) ^ t)
 
+/-- Exact affine-periodic-plus-tail decomposition of every scaled ordinary
+derivative jet. -/
 theorem negativeLaplaceScaledOrdinaryJet_eq
     (n : ℕ) (t : ℝ) :
     negativeLaplaceScaledOrdinaryJet n t =
@@ -148,5 +188,15 @@ theorem negativeLaplaceScaledOrdinaryJet_eq
   have hpow : ((2 : ℝ) ^ t) ^ (n + 1) ≠ 0 :=
     pow_ne_zero _ (by positivity)
   field_simp [hpow]
+
+/-- Adding back the scaled forward tail leaves exactly the affine-periodic
+part of the ordinary derivative jet. -/
+theorem negativeLaplaceScaledOrdinaryJet_add_forwardScaledJet
+    (n : ℕ) (t : ℝ) :
+    negativeLaplaceScaledOrdinaryJet n t +
+        negativeLaplaceForwardScaledJet n t =
+      negativeLaplaceJetSlope n * t + negativeLaplacePeriodicJet n t := by
+  rw [negativeLaplaceScaledOrdinaryJet_eq]
+  ring
 
 end Fabius
