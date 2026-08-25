@@ -81,11 +81,29 @@ lake env lean Analysis/FabiusFunction/Lean/FabiusFunction/FabiusLambertAllOrderS
 ```
 
 The public aggregate build completes successfully.  A `Lean.collectAxioms`
-scan of every declaration originating in a `FabiusFunction.*` module reports
-4,632 constants, including 4,139 theorems, with zero declared axioms, zero
-`sorryAx` dependencies, and no unexpected axioms.  The union of dependencies
-is exactly `propext`, `Classical.choice`, and `Quot.sound`.  A source scan of
-all 141 Lean files finds no `sorry`, `admit`, declared `axiom`, or `opaque`.
+scan of every declaration originating in a `FabiusFunction.*` module reported,
+at the 141-file snapshot at which that scan was last run, 4,632 constants
+including 4,139 theorems, with zero declared axioms, zero `sorryAx`
+dependencies, and no unexpected axioms; the union of dependencies was exactly
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+The tree has since grown and the axiom scan has not been re-run, so those two
+figures are historical.  The current source-level counts, which do not require
+a build, are:
+
+| Measure | Count |
+| --- | --- |
+| Lean files (174 modules plus the root aggregate) | 175 |
+| Lines of Lean | 62,411 |
+| Top-level `theorem` / `lemma` declarations | 2,967 |
+| of which `private` | 537 |
+| Public `theorem` / `lemma` declarations | 2,430 |
+| Top-level `def` / `abbrev` declarations | 536 |
+| Occurrences of `sorry`, `admit`, `axiom`, `opaque` | 0 |
+
+The last row is the one that matters for the completion claim, and it is
+re-verified by a source scan of all 175 files.  Re-running `Lean.collectAxioms`
+to refresh the first two figures is the outstanding item in this audit.
 
 The complete source-to-theorem mapping remains in
 [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).

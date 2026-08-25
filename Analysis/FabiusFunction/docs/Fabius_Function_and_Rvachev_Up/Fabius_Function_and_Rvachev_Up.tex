@@ -166,8 +166,8 @@ $C^\infty$ function \cite{fabius1966}.  Independently, and for entirely differen
 the Rvachevs introduced the same object in 1971 as the canonical compactly supported
 solution of a functional--differential equation \cite{rvachev1971}, and V.\,A.~Rvachev
 later developed it into the theory of \emph{atomic functions} used in approximation
-theory and numerical analysis \cite{rvachev1973,rvachev1990}.  Rvachev's normalization
-emphasizes the even compactly
+theory and numerical analysis \cite{rvachev1973,rvachev1979,rvachev1990}.  Rvachev's
+normalization emphasizes the even compactly
 supported density, whereas the Fabius normalization emphasizes its cumulative distribution
 function.  Arias de Reyna's 1982 paper gave a systematic treatment of the compactly supported
 function, including its Fourier product, probability interpretation, partitions of unity,
@@ -1128,6 +1128,230 @@ supported even bump; and $\mathcal F$ always means the signed global extension. 
 $[0,1]$ we have $F=\mathcal F$, but globally they are different functions.
 \end{boxedremark}
 
+\subsection{Exact shape: positivity, bijectivity, and unimodality}
+\label{shape:basic}
+
+The three defining equations \eqref{eq:F-left}--\eqref{eq:F-diffeq} already determine the
+qualitative picture, but the statements that are actually used later are the sharp ones: not
+$F\ge0$ but $F(x)>0$ exactly for $x>0$; not $\Up\le1$ but $\Up(x)=1$ exactly at the origin.
+We record them here, in the form of equivalences, because the strict versions are what make
+the convexity and Lipschitz theorems below sharp.
+
+Everything rests on a single formula that merges \eqref{eq:F-diffeq} and
+\eqref{eq:F-diffeq-right} into one identity valid on the whole line.
+
+\begin{lemma}[Unified derivative formula]
+\label{thm:shape-unified-derivative}
+For every real $x$,
+\begin{equation}
+ F'(x)=2\Up(2x-1).                                        \label{eq:shape-unified-derivative}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:up-absolute}, $\Up(2x-1)=F\bigl(1-|2x-1|\bigr)$.  For $0\le x\le\tfrac12$ one has
+$|2x-1|=1-2x$, so $\Up(2x-1)=F(2x)$ and \eqref{eq:shape-unified-derivative} is
+\eqref{eq:F-diffeq}.  For $\tfrac12\le x\le1$ one has $|2x-1|=2x-1$, so $\Up(2x-1)=F(2-2x)$
+and \eqref{eq:shape-unified-derivative} is \eqref{eq:F-diffeq-right}.  For $x<0$ or $x>1$ one
+has $|2x-1|>1$, hence $1-|2x-1|<0$ and $\Up(2x-1)=0$ by \eqref{eq:F-left}, while $F'(x)=0$
+because $F$ is constant on each exterior half-line by \eqref{eq:F-left} and
+\eqref{eq:F-right}.
+\end{proof}
+
+Since $\Up\ge0$, formula \eqref{eq:shape-unified-derivative} shows at once that $F$ is
+nondecreasing on all of $\R$.  It is also convenient to note that the reflection symmetry
+\eqref{eq:F-symmetry}, stated on the unit interval, in fact holds globally:
+\begin{equation}
+ F(1-x)=1-F(x)\qquad(x\in\R).                             \label{eq:shape-symmetry-global}
+\end{equation}
+Indeed, for $x<0$ both sides equal $1$ by \eqref{eq:F-left} and \eqref{eq:F-right}, and for
+$x>1$ both sides equal $0$.
+
+\begin{theorem}[Positivity, strict monotonicity, bijectivity]
+\label{thm:shape-bijection}
+The bounded Fabius function satisfies the following.
+\begin{enumerate}
+\item $F(x)>0$ if and only if $x>0$.
+\item $F(x)<1$ if and only if $x<1$.
+\item $F'(x)>0$ for $0<x<1$, and $F$ is strictly increasing on $[0,1]$.
+\item $F$ maps $[0,1]$ bijectively onto $[0,1]$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The heart of the matter is the following doubling step: if $0\le x\le\tfrac12$ and $F(x)=0$,
+then $F(2x)=0$.  To see it, observe that $F\ge0$ everywhere, so a zero of $F$ is a global
+minimum of a function differentiable on all of $\R$; Fermat's rule gives $F'(x)=0$, and
+\eqref{eq:F-diffeq} turns this into $2F(2x)=0$.
+
+Suppose now that $F(x)=0$ for some $x>0$.  Since $2^nx\to\infty$, there is a smallest
+integer $n\ge0$ with $2^nx\ge\tfrac12$.  For $0\le m<n$ we have $2^mx<\tfrac12$, so the
+doubling step applies at $2^mx$ and propagates the vanishing: from $F(x)=0$ we obtain
+$F(2^mx)=0$ for every $m\le n$, and in particular $F(2^nx)=0$.  But $F$ is nondecreasing and
+$2^nx\ge\tfrac12$, so $F(2^nx)\ge F(\tfrac12)=\tfrac12$, where the midpoint value comes from
+\eqref{eq:F-symmetry} at $x=\tfrac12$.  This contradiction proves that $F$ has no zero on the
+positive half-line; combined with \eqref{eq:F-left} it proves (i).
+
+Assertion (ii) follows from (i) and \eqref{eq:shape-symmetry-global}: $F(x)<1$ if and only if
+$F(1-x)>0$, that is, if and only if $1-x>0$.
+
+For (iii), let $0<x<1$.  Then $2x-1\in(-1,1)$, so $1-|2x-1|\in(0,1]$, and (i) gives
+$\Up(2x-1)=F(1-|2x-1|)>0$.  Now \eqref{eq:shape-unified-derivative} yields $F'(x)>0$.  A
+continuous function on $[0,1]$ whose derivative is positive throughout the interior is
+strictly increasing on $[0,1]$.
+
+For (iv), $F$ is continuous with $F(0)=0$ and $F(1)=1$, so the intermediate value theorem
+makes $F([0,1])$ contain $[0,1]$; since $F$ takes values in $[0,1]$, the image is exactly
+$[0,1]$.  Strict monotonicity from (iii) gives injectivity.
+\end{proof}
+
+The fold \eqref{eq:up-absolute} now transfers the whole picture to Rvachev's bump, and it
+does so in strict form.
+
+\begin{theorem}[Strict unimodality of $\Up$]
+\label{thm:shape-unimodal}
+Rvachev's function satisfies the following.
+\begin{enumerate}
+\item $\Up$ is strictly increasing on $[-1,0]$ and strictly decreasing on $[0,1]$.
+\item $\Up(x)=1$ if and only if $x=0$; the maximum value $1$ is attained at the origin and
+      nowhere else.
+\item $\Up(x)=0$ if and only if $x\notin(-1,1)$.  Thus $\Up$ is nonzero exactly on
+      $(-1,1)$, and $\supp\Up=[-1,1]$.
+\item $\Up'(x)>0$ for $-1<x<0$ and $\Up'(x)<0$ for $0<x<1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:up-absolute}, $\Up(x)=F(1-x)$ for $x\ge0$.  As $x$ increases through $[0,1]$ the
+argument $1-x$ decreases through $[0,1]$, on which $F$ is strictly increasing by
+\cref{thm:shape-bijection}(iii); hence $\Up$ is strictly decreasing on $[0,1]$, and evenness
+gives (i) on $[-1,0]$.
+
+For (ii), $\Up(x)=F(1-|x|)$ and \cref{thm:shape-bijection}(ii) say that $\Up(x)<1$ unless
+$1-|x|\ge1$, that is, unless $x=0$; and $\Up(0)=F(1)=1$.  For (iii), $\Up(x)>0$ if and only
+if $1-|x|>0$ by \cref{thm:shape-bijection}(i), and $\Up\ge0$, so the zero set is exactly the
+complement of $(-1,1)$; the closed support is the closure $[-1,1]$.
+
+For (iv), the identity $\Up(x)=F(1-x)$ holds on the whole open half-line $x>0$, hence may be
+differentiated there: $\Up'(x)=-F'(1-x)$, which is negative for $0<x<1$ by
+\cref{thm:shape-bijection}(iii).  Evenness gives $\Up'(x)=-\Up'(-x)$, so $\Up'>0$ on
+$(-1,0)$.
+\end{proof}
+
+Parts (i) and (iii) are the classical description of the bump \cite{rvachev1990,arias1982};
+the strict forms, and the equivalences in \cref{thm:shape-bijection}, are exactly what the
+formal development records.
+
+\subsection{Convexity and the unique inflection point}
+\label{shape:convexity}
+
+Formula \eqref{eq:shape-unified-derivative} converts the first-order shape of $\Up$ into the
+second-order shape of $F$.  The affine substitution $x\mapsto2x-1$ carries
+$(-\infty,\tfrac12]$ onto $(-\infty,0]$ and $[\tfrac12,\infty)$ onto $[0,\infty)$, which are
+precisely the two halves on which $\Up$ is monotone.
+
+\begin{theorem}[Convexity and the inflection point]
+\label{thm:shape-convexity}
+The derivative $F'$ is nondecreasing on $(-\infty,\tfrac12]$ and nonincreasing on
+$[\tfrac12,\infty)$, and it is strictly increasing on $[0,\tfrac12]$ and strictly decreasing
+on $[\tfrac12,1]$.  Consequently $F$ is convex on $(-\infty,\tfrac12]$ and concave on
+$[\tfrac12,\infty)$, strictly convex on $[0,\tfrac12]$ and strictly concave on
+$[\tfrac12,1]$.  The midpoint $x=\tfrac12$ is the unique inflection point, and
+\begin{equation}
+ F'(\tfrac12)=2=\max_{x\in\R}F'(x),                       \label{eq:shape-max-slope}
+\end{equation}
+the maximum being attained at $x=\tfrac12$ and nowhere else.
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:shape-unimodal}, $\Up$ is nondecreasing on $(-\infty,0]$: it vanishes on
+$(-\infty,-1]$ and increases strictly on $[-1,0]$.  Symmetrically it is nonincreasing on
+$[0,\infty)$.  Composing with $x\mapsto2x-1$ and using
+\eqref{eq:shape-unified-derivative} shows that $F'$ is nondecreasing on $(-\infty,\tfrac12]$
+and nonincreasing on $[\tfrac12,\infty)$.  If $0\le x<y\le\tfrac12$ then
+$-1\le2x-1<2y-1\le0$ and the increase of $\Up$ on $[-1,0]$ is strict, so $F'(x)<F'(y)$;
+the second half is symmetric.
+
+A differentiable function on an interval is convex precisely when its derivative is
+nondecreasing there, and strictly convex when the derivative is strictly increasing; the
+concave statements are the same assertions for $-F$.  The intervals of strictness cannot be
+enlarged: $F$ vanishes identically on $(-\infty,0]$ and equals $1$ identically on
+$[1,\infty)$, so it is affine, hence not strictly convex or concave, on either exterior
+half-line.
+
+Since $F$ is convex on the whole of $(-\infty,\tfrac12]$ and concave on the whole of
+$[\tfrac12,\infty)$, the sense of convexity can change only at the midpoint, and it does
+change there, because $F$ is strictly convex immediately to the left of $\tfrac12$ and
+strictly concave immediately to the right.  So $\tfrac12$ is the unique inflection point.
+Finally $F'(x)=2\Up(2x-1)\le2\Up(0)=2$ by \cref{thm:shape-unimodal}(ii), with equality if and
+only if $2x-1=0$.
+\end{proof}
+
+Differentiating \eqref{eq:shape-unified-derivative} once more gives $F''(x)=4\Up'(2x-1)$, so
+$F''(\tfrac12)=4\Up'(0)=0$: the origin is an interior maximum of the differentiable function
+$\Up$.  Together with $F(\tfrac12)=\tfrac12$ this locates the steepest point of the sigmoid
+exactly at its centre of symmetry, where the graph crosses its own midpoint with slope $2$.
+
+\subsection{The optimal Lipschitz constant}
+\label{shape:lipschitz}
+
+The bound $F'\le2$ of \eqref{eq:shape-max-slope} is a Lipschitz estimate, and because the
+bound is attained the estimate cannot be improved.
+
+\begin{theorem}[Two is the least Lipschitz constant]
+\label{thm:shape-lipschitz}
+Both $F$ and $\Up$ are $2$-Lipschitz on $\R$:
+\begin{equation}
+ |F(x)-F(y)|\le2|x-y|,\qquad |\Up(x)-\Up(y)|\le2|x-y|\qquad(x,y\in\R).
+                                                          \label{eq:shape-lipschitz}
+\end{equation}
+Moreover $2$ is the least admissible constant for each: if $K\ge0$ is such that
+$|F(x)-F(y)|\le K|x-y|$ for all $x,y$, or such that $|\Up(x)-\Up(y)|\le K|x-y|$ for all
+$x,y$, then $K\ge2$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:shape-unified-derivative} and $0\le\Up\le1$ we have $0\le F'\le2$ on all of
+$\R$, so the mean value theorem gives the first estimate in \eqref{eq:shape-lipschitz}.  The
+map $x\mapsto1-|x|$ is $1$-Lipschitz, so the second estimate follows from the first through
+the fold \eqref{eq:up-absolute}.
+
+For optimality, let $K$ be admissible for $F$.  Dividing $|F(x)-F(\tfrac12)|\le K|x-\tfrac12|$
+by $|x-\tfrac12|$ and letting $x\to\tfrac12$ gives $K\ge|F'(\tfrac12)|=2$ by
+\eqref{eq:shape-max-slope}.  For $\Up$ the same limit at the same point works: the proof of
+\cref{thm:shape-unimodal}(iv) gives $\Up'(\tfrac12)=-F'(\tfrac12)=-2$, so $K\ge2$.
+\end{proof}
+
+The two extremal points are the same point in the two pictures: $\tfrac12$ is the centre of
+the sigmoid and the midpoint of the decreasing half of the bump, and the fold sends one to
+the other.
+
+\begin{corollary}[Linear majorants at the endpoints]
+\label{thm:shape-majorants}
+For all admissible arguments,
+\begin{align}
+ F(x)&\le2x                       &&(x\ge0),   \label{eq:shape-majorant-left}\\
+ 1-F(x)&\le2(1-x)                 &&(x\le1),   \label{eq:shape-majorant-right}\\
+ \Up(x)&\le2\bigl(1-|x|\bigr)     &&(|x|\le1). \label{eq:shape-majorant-up}
+\end{align}
+\end{corollary}
+
+\begin{proof}
+Applying \eqref{eq:shape-lipschitz} with $y=0$ and using $F(0)=0$ gives
+\eqref{eq:shape-majorant-left}.  Replacing $x$ by $1-x$ there and using
+\eqref{eq:shape-symmetry-global} gives \eqref{eq:shape-majorant-right}.  Substituting
+$1-|x|\ge0$ into \eqref{eq:shape-majorant-left} and using \eqref{eq:up-absolute} gives
+\eqref{eq:shape-majorant-up}.
+\end{proof}
+
+The content of \eqref{eq:shape-majorant-left} lies on $[0,\tfrac12]$; for $x\ge\tfrac12$ it is
+weaker than $F\le1$.  Its value is that it holds with no hypothesis at all on the size of
+$x$, so it can be used as a linear majorant in any estimate near the left endpoint, and
+\eqref{eq:shape-majorant-up} says that the bump vanishes at least linearly at both ends of
+its support.  These majorants and the optimality of the constant $2$ are contributions of the
+formal development; the plain $2$-Lipschitz bound is used implicitly throughout
+\cite{arias1982,rvachev1990}.
+
 \section{Existence and uniqueness by a contraction}
 \label{sec:existence}
 
@@ -1698,6 +1922,178 @@ rescaling of the original function; it is an exact rescaling of the signed exten
 large factor $2^{m(m+1)/2}$ quantifies the rapid growth of high derivatives, while the
 argument $2^m x$ accounts for the increasingly fine oscillatory structure.
 
+\subsection{Sharp uniform bounds for all derivatives}
+\label{shape:derivative-bounds}
+
+Equation \eqref{eq:global-derivatives} converts any bound on $\mathcal F$ itself into a bound
+on all of its derivatives.  The one ingredient it needs is that the signed extension is
+bounded by one in absolute value.  That is not visible in \eqref{eq:global-extension}, whose
+terms carry no uniform sign, but it is immediate from the block form \eqref{eq:single-block}.
+
+\begin{lemma}[The signed extension is bounded by one]
+\label{thm:shape-extension-bounded}
+For every real $x$ one has $-1\le\mathcal F(x)\le1$.
+\end{lemma}
+
+\begin{proof}
+For $x\le0$ the extension vanishes.  For $x>0$ let $b=\lfloor x/2\rfloor$, a nonnegative
+integer with $2b\le x\le2b+2$.  Then \eqref{eq:single-block} gives
+$\mathcal F(x)=\varepsilon_b\Up(x-2b-1)$ with $\varepsilon_b=\pm1$ by \eqref{eq:tm-sign}, and
+$0\le\Up\le1$.
+\end{proof}
+
+\begin{theorem}[Sharp uniform derivative bounds]
+\label{thm:shape-sharp-derivative-bounds}
+For every integer $m\ge0$ and every real $x$,
+\begin{equation}
+ \bigl|\mathcal F^{(m)}(x)\bigr|\le2^{\binom{m+1}{2}},\qquad
+ \bigl|\Up^{(m)}(x)\bigr|\le2^{\binom{m+1}{2}},\qquad
+ \bigl|F^{(m)}(x)\bigr|\le2^{\binom{m+1}{2}}.             \label{eq:shape-derivative-bound}
+\end{equation}
+Each of the three constants is attained:
+\begin{equation}
+ \mathcal F^{(m)}\bigl(2^{-m}\bigr)=F^{(m)}\bigl(2^{-m}\bigr)
+ =\Up^{(m)}\bigl(2^{-m}-1\bigr)=2^{\binom{m+1}{2}}.       \label{eq:shape-derivative-attained}
+\end{equation}
+Hence $2^{\binom{m+1}{2}}$ is not merely an upper bound but the exact supremum of
+$|\mathcal F^{(m)}|$, of $|\Up^{(m)}|$, and of $|F^{(m)}|$ over $\R$, and each supremum is a
+maximum.
+\end{theorem}
+
+\begin{proof}
+The bound for $\mathcal F$ is \eqref{eq:global-derivatives} combined with
+\cref{thm:shape-extension-bounded}.  For $\Up$ and $|x|\le1$ the bound is
+\eqref{eq:up-derivatives} combined with the same lemma; for $|x|>1$ the function $\Up$
+vanishes identically on a neighbourhood of $x$ by \cref{thm:shape-unimodal}(iii), so every
+derivative of $\Up$ vanishes at $x$.
+
+For the bounded function, note that $F$ and $\mathcal F$ agree on $(-\infty,1]$: both vanish
+on $(-\infty,0]$ and they agree on $[0,1]$.  Hence they have the same germ at every point
+$x<1$, so $F^{(m)}(x)=\mathcal F^{(m)}(x)$ there and the bound holds for $x<1$.  For $x>1$ the
+function $F$ is constant near $x$, so $F^{(m)}(x)=0$ when $m\ge1$, while for $m=0$ the bound
+reads $F\le1$.  The single remaining point $x=1$ follows by letting $x\uparrow1$, since
+$F^{(m)}$ is continuous and the bound is a closed condition.
+
+For \eqref{eq:shape-derivative-attained}, take $x=2^{-m}$ in \eqref{eq:global-derivatives}:
+then $2^mx=1$ and $\mathcal F(1)=1$, so $\mathcal F^{(m)}(2^{-m})=2^{\binom{m+1}{2}}$.  When
+$m\ge1$ the point $2^{-m}$ lies in $(0,1)$, where $F$ and $\mathcal F$ have the same germ, so
+$F^{(m)}$ takes the same value there; when $m=0$ the assertion is $F(1)=1=2^{0}$.  Finally
+take $x=2^{-m}-1\in[-1,0]$ in \eqref{eq:up-derivatives}: then $2^mx+2^m=1$ and the same
+computation applies.
+\end{proof}
+
+For $m=1$ the theorem returns \eqref{eq:shape-max-slope}, with the extremal point
+$2^{-1}=\tfrac12$; for $m=2$ the sharp constant is $2^{3}=8$, for $m=3$ it is $2^{6}=64$.
+Two features deserve emphasis.  First, no estimate of the form $|F^{(m)}|\le C_m$ can have
+$C_m<2^{\binom{m+1}{2}}$, so the triangular power of two in \eqref{eq:global-derivatives} is
+not an artefact of the induction.  Second, the extremal points $2^{-m}$ march towards the
+origin as $m$ grows: the derivatives become large exactly in the region where $F$ itself is
+flattest.  The next subsection quantifies that flatness, and it will do so at the very same
+points $2^{-m}$.
+
+\subsection{Effective flatness at the origin}
+\label{shape:effective-flatness}
+
+Equation \eqref{eq:flat-endpoints} says that $F$ vanishes to infinite order at the origin, so
+that $F(x)=\smallo(x^n)$ as $x\to0^{+}$ for every $n$.  That statement carries no constant.
+Two elementary arguments supply one, and the second is strictly better than the first.
+
+\begin{lemma}[Self-improving estimate]
+\label{thm:shape-selfimproving}
+For $0\le x\le\tfrac12$ one has $F(x)\le2x\,F(2x)$.
+\end{lemma}
+
+\begin{proof}
+At $x=0$ both sides vanish.  For $0<x\le\tfrac12$, Lagrange's mean value theorem on $[0,x]$
+provides a point $c\in(0,x)$ with $F(x)=F(x)-F(0)=x\,F'(c)$.  Since $0<c<x\le\tfrac12$,
+equation \eqref{eq:F-diffeq} gives $F'(c)=2F(2c)$, and $F$ is nondecreasing with $2c\le2x$,
+so $F'(c)\le2F(2x)$.
+\end{proof}
+
+\begin{theorem}[Effective flatness, mean value form]
+\label{thm:shape-flatness-mvt}
+Let $n\ge0$.  If $x\ge0$ and $2^nx\le1$, then
+\begin{equation}
+ F(x)\le2^{\binom{n+1}{2}}x^{n}.                          \label{eq:shape-flatness-mvt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Induction on $n$.  For $n=0$ the claim is $F\le1$.  Assume it for $n$, and let $x\ge0$ satisfy
+$2^{n+1}x\le1$.  Then $x\le\tfrac12$, because $2^{n+1}\ge2$, so
+\cref{thm:shape-selfimproving} applies; and $2^{n}(2x)=2^{n+1}x\le1$, so the inductive
+hypothesis applies at $2x$.  Therefore
+\[
+ F(x)\le2x\,F(2x)\le2x\cdot2^{\binom{n+1}{2}}(2x)^{n}
+ =2^{\binom{n+1}{2}+n+1}x^{n+1}=2^{\binom{n+2}{2}}x^{n+1},
+\]
+the last step being the Pascal identity $\binom{n+2}{2}=\binom{n+1}{2}+(n+1)$.
+\end{proof}
+
+Replacing the mean value theorem by the fundamental theorem of calculus recovers a factorial
+that the pointwise argument throws away.  The reason is structural: the mean value theorem
+evaluates the integrand at a single unknown point and then bounds it by its largest value on
+the interval, whereas integrating the same bound keeps the whole profile.
+
+\begin{theorem}[Effective flatness, integral form]
+\label{thm:shape-flatness-ftc}
+Let $n\ge0$.  If $x\ge0$ and $2^nx\le1$, then
+\begin{equation}
+ F(x)\le\frac{2^{\binom{n+1}{2}}}{n!}\,x^{n}.             \label{eq:shape-flatness-ftc}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $F(0)=0$ and $F'(t)=2F(2t)$ for $0\le t\le\tfrac12$ by \eqref{eq:F-diffeq},
+\begin{equation}
+ F(x)=\int_0^x2F(2t)\dd t\qquad(0\le x\le\tfrac12).       \label{eq:shape-ftc}
+\end{equation}
+Write $a_n=2^{\binom{n+1}{2}}/n!$ and induct.  For $n=0$ the claim is $F\le1$.  Assume
+$F(y)\le a_ny^{n}$ whenever $y\ge0$ and $2^ny\le1$, and let $x\ge0$ satisfy $2^{n+1}x\le1$;
+then $x\le\tfrac12$.  For $0\le t\le x$ we have $2^{n}(2t)\le2^{n+1}x\le1$, so the inductive
+hypothesis gives $2F(2t)\le2a_n(2t)^{n}=2^{n+1}a_n\,t^{n}$.  Inserting this into
+\eqref{eq:shape-ftc} and integrating,
+\[
+ F(x)\le2^{n+1}a_n\int_0^xt^{n}\dd t=\frac{2^{n+1}a_n}{n+1}\,x^{n+1}
+ =\frac{2^{\binom{n+1}{2}+n+1}}{(n+1)!}\,x^{n+1}
+ =a_{n+1}x^{n+1},
+\]
+again by the Pascal identity.
+\end{proof}
+
+Both bounds are stated on the dyadic range $2^nx\le1$, and the natural point to test them is
+the right endpoint $x=2^{-n}$ of that range, which is also the point where the $n$th
+derivative attains its maximum in \eqref{eq:shape-derivative-attained}.  There
+$\binom{n+1}{2}-n^2=-\binom n2$, so \eqref{eq:shape-flatness-mvt} and
+\eqref{eq:shape-flatness-ftc} read
+\begin{equation}
+ F\bigl(2^{-n}\bigr)\le2^{-\binom n2}
+ \qquad\text{and}\qquad
+ F\bigl(2^{-n}\bigr)\le\frac{2^{-\binom n2}}{n!},         \label{eq:shape-flatness-at-dyadic}
+\end{equation}
+so the entire gain of the integral argument over the mean value argument is the factorial.
+The second bound is now within an explicit factor of the truth.  Indeed
+\eqref{eq:F-inverse-power} gives the exact value $F(2^{-n})=d_n/\bigl(n!\,2^{\binom n2}\bigr)$
+with $d_n$ the half moment \eqref{eq:d-integral}, so the right-hand side of
+\eqref{eq:shape-flatness-ftc} at $x=2^{-n}$ overshoots the true value by exactly the factor
+$1/d_n$.  This is consistent, and it also shows how little room is left: from
+\eqref{eq:d-integral} and $0\le\Up\le1$,
+\[
+ d_n=n\int_0^1t^{n-1}\Up(t)\dd t\le n\int_0^1t^{n-1}\dd t=1,
+\]
+with equality only for $n=0$.  At $n=1$ the estimate reads $F(\tfrac12)\le1$ against the true
+value $F(\tfrac12)=\tfrac12=d_1$.
+
+The fold \eqref{eq:up-absolute} transports the estimate to both ends of the support of the
+bump: if $|x|\le1$ and $2^{n}\bigl(1-|x|\bigr)\le1$, then
+\begin{equation}
+ \Up(x)\le\frac{2^{\binom{n+1}{2}}}{n!}\bigl(1-|x|\bigr)^{n}.  \label{eq:shape-flatness-up}
+\end{equation}
+For $n=1$ this is the linear majorant \eqref{eq:shape-majorant-up} restricted to the two end
+zones.  Both effective forms are contributions of the formal development; the mean value
+derivation is retained there alongside the sharper one because it uses nothing but the
+differential equation and monotonicity.
+
 \subsection{Polynomial behavior near dyadic points}
 
 Let $x_0=a/2^n$ be a dyadic point in the interior of the unit interval.  For $m>n$, the
@@ -1723,6 +2119,78 @@ flatness at $0$ and its nonconstant value $F(1/2)=1/2$.  Equivalently, a polynom
 positive-order derivatives zero at $0$ is constant, whereas $F$ is not.
 \end{proof}
 
+\subsubsection{The exact degree of the terminating polynomial}
+
+The proposition on terminating Taylor series bounds the degree of that polynomial by $n$.
+The bound is always attained, because the $n$th derivative at a level-$n$ dyadic point with
+odd numerator can be computed exactly and is never zero.
+
+\begin{proposition}[Exact dyadic derivative]\label{thm:sup-dyadic-derivative}
+Let $x_0=a/2^{n}\in(0,1)$ with $a$ odd, say $a=2b+1$; necessarily $n\ge1$.  Then
+\begin{equation}
+ F^{(n)}(x_0)=\varepsilon_b\,2^{\binom{n+1}{2}}
+ =-\varepsilon_a\,2^{\binom{n+1}{2}},                       \label{eq:sup-dyadic-derivative}
+\end{equation}
+with $\varepsilon$ as in \eqref{eq:tm-sign}.  In particular
+$|F^{(n)}(x_0)|=2^{n(n+1)/2}\ne0$.
+\end{proposition}
+
+\begin{proof}
+The signed extension $\mathcal F$ agrees with $F$ on $[0,1]$, hence all their derivatives
+agree at the interior point $x_0$.  By the derivative scaling identity
+\eqref{eq:global-derivatives},
+\begin{equation*}
+ F^{(n)}(x_0)=\mathcal F^{(n)}(x_0)
+ =2^{\binom{n+1}{2}}\mathcal F(2^{n}x_0)
+ =2^{\binom{n+1}{2}}\mathcal F(a).
+\end{equation*}
+The point $a=2b+1$ lies in the block $[2b,2b+2]$, so the single-block formula
+\eqref{eq:single-block} applies and gives
+\begin{equation*}
+ \mathcal F(a)=\varepsilon_b\Up(a-2b-1)=\varepsilon_b\Up(0)=\varepsilon_b,
+\end{equation*}
+since $\Up(0)=1$.  This is the first equality in \eqref{eq:sup-dyadic-derivative}.  For the
+second, \eqref{eq:weight-even-odd} gives $\wt(a)=\wt(2b+1)=\wt(b)+1$, hence
+$\varepsilon_b=-\varepsilon_a$.  Finally $\binom{n+1}{2}=n(n+1)/2$ and
+$|\varepsilon_b|=1$.
+\end{proof}
+
+The computation isolates exactly what makes $m=n$ the last surviving order.  In
+\eqref{eq:global-derivatives} the argument $2^{m}x_0=2^{m-n}a$ is an even integer for every
+$m>n$, and $\mathcal F$ vanishes at even integers; this is
+\eqref{eq:dyadic-high-derivatives-zero}.  For $m=n$ that argument is the odd integer $a$, and
+$\mathcal F$ takes the value $\pm1$ at every odd integer.  The truncation of the Taylor
+series is therefore governed by a parity, and the last nonzero coefficient is forced.
+
+\begin{proposition}[Exact degree]\label{thm:sup-taylor-degree}
+Let $x_0=a/2^{n}\in(0,1)$ with $a$ odd, and let
+\begin{equation}
+ T_{x_0}(x)=\sum_{k=0}^{n}\frac{F^{(k)}(x_0)}{k!}(x-x_0)^{k} \label{eq:sup-dyadic-taylor}
+\end{equation}
+be the Taylor polynomial of $F$ at $x_0$.  Then $T_{x_0}$ is the whole formal Taylor series
+of $F$ at $x_0$ and has degree exactly $n$, with leading coefficient
+$-\varepsilon_a2^{\binom{n+1}{2}}/n!$.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:dyadic-high-derivatives-zero} every coefficient of order $m>n$ in the formal
+Taylor series of $F$ at $x_0$ vanishes, so that series is the polynomial
+\eqref{eq:sup-dyadic-taylor} and $\deg T_{x_0}\le n$.  Its coefficient of $(x-x_0)^{n}$ is
+$F^{(n)}(x_0)/n!$, which by \eqref{eq:sup-dyadic-derivative} equals
+$-\varepsilon_a2^{\binom{n+1}{2}}/n!$ and is nonzero.  Hence $\deg T_{x_0}=n$.
+\end{proof}
+
+\begin{remark}
+Under the translation \eqref{eq:F-up-translate} the statement transfers verbatim to Rvachev's
+bump: at a centered dyadic point $y_0=a/2^{n}-1\in(-1,1)$ with $a$ odd one has
+$\Up^{(n)}(y_0)=-\varepsilon_a2^{\binom{n+1}{2}}$, and the Taylor polynomial of $\Up$ at
+$y_0$ has degree exactly $n$.  This sharpening is what makes the nowhere-analyticity
+corollary effective rather than merely soft: a convergent power series centered at a level-$n$
+odd dyadic point would force $\Up$ to be a polynomial of degree $n$ on a whole interval,
+while every neighborhood of that point contains odd dyadic points of arbitrarily large level
+$m$, at which the $m$th derivative is nonzero by \eqref{eq:sup-dyadic-derivative}.
+\end{remark}
+
 \begin{corollary}[Nowhere analytic]
 Neither $F$ on $(0,1)$ nor $\Up$ on $(-1,1)$ is real analytic at any point.
 \end{corollary}
@@ -1733,6 +2201,120 @@ translation/reflection identities would extend analyticity to an interval and th
 points in that interval, contradicting the preceding proposition.  The statement for $\Up$
 follows from the fold relation.
 \end{proof}
+
+\subsection{The exact analytic locus}
+\label{shape:analytic-locus}
+
+The corollary above can be sharpened to an exact description of the analytic locus of each of
+the three functions.  Two points are worth isolating in advance.  The endpoints are not
+neutral: both $0$ and $1$ belong to the non-analytic set of $F$, and both $-1$ and $1$ belong
+to the non-analytic set of $\Up$, even though each function is analytic arbitrarily close to
+them on the outside.  And the right endpoint of the unit interval must be treated separately,
+because the fold identity that handles every other point degenerates there.
+
+\begin{theorem}[Analytic locus of $F$]
+\label{thm:shape-analytic-locus-F}
+Let $x\in\R$.  The bounded Fabius function is real analytic at $x$ if and only if
+$x\notin[0,1]$.
+\end{theorem}
+
+\begin{proof}
+If $x<0$, then $F$ vanishes identically on the neighbourhood $(-\infty,0)$ of $x$ by
+\eqref{eq:F-left}; if $x>1$, then $F$ equals $1$ identically on the neighbourhood
+$(1,\infty)$ of $x$ by \eqref{eq:F-right}.  A function that is constant near a point is
+analytic at that point.
+
+Conversely, let $x\in[0,1]$.  For $0<x<1$ this is the corollary above.
+
+Suppose $F$ were analytic at $0$.  Its Taylor coefficients at $0$ are $F(0)=0$ and
+$F^{(m)}(0)/m!=0$ for $m\ge1$ by \eqref{eq:flat-endpoints}, so the Taylor series at $0$ is
+identically zero and analyticity would force $F$ to vanish on a neighbourhood of the origin.
+That contradicts \cref{thm:shape-bijection}(i), which gives $F(t)>0$ for every $t>0$.
+
+Suppose $F$ were analytic at $1$.  Its Taylor coefficients at $1$ are $F(1)=1$ and, again by
+\eqref{eq:flat-endpoints}, $F^{(m)}(1)/m!=0$ for $m\ge1$, so analyticity would force $F$ to
+equal $1$ on a neighbourhood of $1$.  That contradicts \cref{thm:shape-bijection}(ii), which
+gives $F(t)<1$ for every $t<1$.
+\end{proof}
+
+\begin{remark}
+The right endpoint really does need its own argument.  The fold \eqref{eq:up-absolute} gives
+$F(y)=\Up(1-y)$ for every $y\le1$, and for no $y>1$: there $\Up(1-y)=F(2-y)$, which is
+smaller than $F(y)=1$.  So the reflection is an identity of germs at every point $y<1$, and at
+$y=1$ it is only a one-sided identity; non-analyticity of $\Up$ at the origin therefore cannot
+be transported to $F$ at $1$ along it.  The flatness argument above sidesteps the difficulty.
+The formal development takes the other available route and transports analyticity at $1$ to
+analyticity at $0$ along the global symmetry \eqref{eq:shape-symmetry-global}, which, unlike
+the fold, is a genuine identity of germs at every point of the line.
+\end{remark}
+
+\begin{corollary}[Analytic locus of $\Up$]
+\label{thm:shape-analytic-locus-up}
+Rvachev's function is real analytic at $x$ if and only if $|x|>1$.  In particular it is not
+analytic at either endpoint of its support.
+\end{corollary}
+
+\begin{proof}
+If $|x|>1$, then $\Up$ vanishes identically near $x$ by \cref{thm:shape-unimodal}(iii).  If
+$|x|<1$, this is the corollary above.  At $x=1$, use that $\Up(y)=F(1-y)$ for all $y>0$, hence
+on a neighbourhood of $1$; therefore $\Up(1)=F(0)=0$ and $\Up^{(m)}(1)=(-1)^mF^{(m)}(0)=0$ for
+$m\ge1$ by \eqref{eq:flat-endpoints}.  Analyticity at $1$ would force $\Up$ to vanish on a
+neighbourhood of $1$, contradicting \cref{thm:shape-unimodal}(iii).  Evenness gives the same
+conclusion at $x=-1$.
+\end{proof}
+
+The statement of the corollary on the closed interval $[-1,1]$ is the unnumbered corollary
+following equation~(24) of \cite{arias2018}; non-analyticity in the interior is Fabius's
+original point \cite{fabius1966}.
+
+\begin{theorem}[Analytic locus of the signed extension]
+\label{thm:shape-analytic-locus-extension}
+The signed extension $\mathcal F$ is real analytic at $x$ if and only if $x<0$.  Equivalently,
+it is analytic at no point of $[0,\infty)$.
+\end{theorem}
+
+\begin{proof}
+For $x<0$ the extension vanishes identically on $(-\infty,0)$, hence is analytic at $x$.
+
+Let $x\ge0$ and suppose first that $x$ is not an even integer.  Put $b=\lfloor x/2\rfloor$, so
+that $2b<x<2b+2$.  On that open block, \eqref{eq:single-block} gives
+$\mathcal F(y)=\varepsilon_b\Up(y-2b-1)$, an identity of germs at $x$.  If $\mathcal F$ were
+analytic at $x$, then $\Up$ would be analytic at $x-2b-1\in(-1,1)$, contradicting
+\cref{thm:shape-analytic-locus-up}.
+
+Suppose now that $x=2b$ with $b$ a nonnegative integer.  Evaluating \eqref{eq:single-block} at
+the left endpoint of the block $[2a,2a+2]$ shows that $\mathcal F(2a)=\varepsilon_a\Up(-1)=0$
+for every nonnegative integer $a$; that is, $\mathcal F$ vanishes at every nonnegative even
+integer.  By \eqref{eq:global-derivatives},
+\[
+ \mathcal F^{(m)}(2b)=2^{\binom{m+1}{2}}\mathcal F\bigl(2^{m}\cdot2b\bigr)
+ =2^{\binom{m+1}{2}}\mathcal F\bigl(2^{m+1}b\bigr)=0
+\]
+for every $m\ge0$, because $2^{m+1}b$ is again a nonnegative even integer.  So all Taylor
+coefficients of $\mathcal F$ at $2b$ vanish, and analyticity would force $\mathcal F$ to
+vanish on a neighbourhood of $2b$.  But \eqref{eq:single-block} and
+\cref{thm:shape-unimodal}(iii) give $\mathcal F(y)=\pm\Up(y-2b-1)\ne0$ for every $y$ with
+$2b<y<2b+2$.
+\end{proof}
+
+\begin{warning}
+It is tempting to compress the last theorem into the slogan that the signed extension is
+nowhere analytic.  That is false.  The extension vanishes identically on $(-\infty,0]$ and is
+therefore analytic at every negative point.  What is true is that its analytic locus is
+exactly the open half-line $(-\infty,0)$, so that, in contrast with $F$, whose non-analytic set
+is the compact interval $[0,1]$, the extension fails to be analytic on an unbounded set.  The
+origin lies in the non-analytic set of both.
+\end{warning}
+
+The three loci therefore are $\R\setminus[0,1]$ for $F$, $\R\setminus[-1,1]$ for $\Up$, and
+$(-\infty,0)$ for $\mathcal F$.  In every case the boundary points of the interval belong to
+the non-analytic set, and in every case the reason is the same: the function is flat to
+infinite order there while being nonconstant on one side.  This is precisely the mechanism by
+which a $C^\infty$ function fails to be analytic, and the Fabius function is the historical
+example of it \cite{fabius1966}.  The formal development records the analytic locus of $F$
+exactly, the non-analyticity of $\Up$ at every point of the closed interval $[-1,1]$, and the
+extension case on the first block $[0,2)$; the block induction just given carries the last
+statement to the whole half-line.
 
 \section{Moments and generating functions}
 \label{sec:moments}
@@ -2031,7 +2613,8 @@ For $n=0$ the unique empty composition makes the right side equal to $1$.
 \end{theorem}
 
 \begin{proof}
-Let $C_n=\sum_{\rho\vDash n}W(\rho)$.  The empty-composition convention gives $C_0=1$.
+Let $\Sigma_n=\sum_{\rho\vDash n}W(\rho)$.  The empty-composition convention gives
+$\Sigma_0=1$.
 Fix $n\ge1$ and split every composition of $n$ immediately before its last block.  If the
 preceding blocks sum to $k$, then $0\le k<n$, the last block is $n-k$, and the last factor
 of \eqref{eq:composition-weight} is
@@ -2041,11 +2624,12 @@ of \eqref{eq:composition-weight} is
 Conversely, appending the block $n-k$ to any composition of $k$ gives exactly one
 composition of $n$ with penultimate partial sum $k$.  Therefore
 \begin{equation*}
- C_n=\sum_{k=0}^{n-1}
- \frac{C_k}{(2^n-1)(n-k+1)!}.
+ \Sigma_n=\sum_{k=0}^{n-1}
+ \frac{\Sigma_k}{(2^n-1)(n-k+1)!}.
 \end{equation*}
-Thus $(C_n)$ and $(A_n)$ have the same initial value and the same triangular recurrence.
-Induction gives $C_n=A_n$, and multiplying by $2^{-\binom n2}$ proves
+Thus $(\Sigma_n)$ and $(A_n)$ have the same initial value and the same triangular
+recurrence.
+Induction gives $\Sigma_n=A_n$, and multiplying by $2^{-\binom n2}$ proves
 \eqref{eq:inverse-composition-formula}.
 \end{proof}
 
@@ -2167,6 +2751,10 @@ For $n\ge1$ define
 \end{equation}
 The exponent of two in \eqref{eq:Rn} is \emph{positive}; a negative sign that appears in an
 abstract of the source paper is a typographical error.
+
+That these numbers are integers at all was not obvious.  The question was raised by
+Reshetnikov \cite{reshetnikovMO} on the basis of numerical evidence, and answered
+affirmatively by Arias de Reyna \cite{arias2018}, whose paper devotes a section to it.
 
 \begin{theorem}
 Each $R_n$ is an odd positive integer.  Moreover it has a finite expression in the moment
@@ -4119,7 +4707,8 @@ There are three useful normalization choices.
       eventually returned as rational numbers.
 \item Store $d_n=n!2^{\binom n2}V_n$.  The recurrence has smaller explicit powers of two,
       and the parity theorem provides a strong integrity check.
-\item Store the division-free natural numerators $G_n$ of the half moments.  This avoids
+\item Store the division-free natural numerators $D_n$ of the half moments, defined by
+      \eqref{eq:d-normalized}.  This avoids
       fraction reduction inside the recurrence but requires restoring a known structured
       denominator at the end.
 \end{enumerate}
@@ -4321,8 +4910,8 @@ Thue--Morse bit from
 fold the finite range $0\le r<a$ using addition, multiplication, subtraction, and powers
 on natural numbers, and compute the denominator from
 \begin{equation}
- D_0=1,\qquad D_{s+1}=D_s\,2^{s+1}(s+1),
- \qquad D_s=2^{\binom{s+1}{2}}s!.                         \label{eq:spline-denominator-recursion}
+ \delta_0=1,\qquad \delta_{s+1}=\delta_s\,2^{s+1}(s+1),
+ \qquad \delta_s=2^{\binom{s+1}{2}}s!.                    \label{eq:spline-denominator-recursion}
 \end{equation}
 Finally round the rational in \eqref{eq:matched-spline-rational} to the nearest multiple
 of $2^{-p}$, breaking ties upward.  If $N$ and $D$ are its nonnegative numerator and
@@ -4588,163 +5177,957 @@ that makes the table useful as a test vector.
 \label{app:module-guide}
 
 The Lean development is intentionally split into small files, while this article groups
-results by mathematical theme.  The following map gives the principal entry points.  File
-names are relative to
+results by mathematical theme.  The tables below cover every module of the development, not
+merely its principal entry points.  File names are relative to
 \begin{center}
-\repo/\texttt{Lean/FabiusFunction/}.
+\repo/\texttt{Lean/FabiusFunction/},
 \end{center}
+the sole exception being the root aggregate \path{FabiusFunction.lean}, which sits one
+directory higher and is the module a user actually imports.
+
+At the time of writing the development consists of $175$ Lean files: $174$ modules in the
+directory named above, together with that root aggregate.  They comprise roughly $62{,}400$
+lines, $2967$ top-level \texttt{theorem} or \texttt{lemma} declarations --- of which $537$
+are \texttt{private}, leaving $2430$ in the public interface --- and $536$ top-level
+\texttt{def} or \texttt{abbrev} declarations.
+
+Dependency order runs broadly downward through the clusters.  The exact-arithmetic module
+\path{Arithmetic.lean} imports nothing from the project at all, and \path{Basic.lean}
+imports only it; between them they sit below essentially everything else.  The moment,
+dyadic, Fourier, and Legendre layers depend on the foundations and on each other but not on
+any asymptotic module.  Within the endpoint asymptotics the order is genuinely less linear:
+the dyadic-cumulant branch and the vertical-Bromwich branch are developed in parallel from a
+shared negative-Laplace root and first meet in \path{FabiusDyadicSharpAsymptotic.lean}, then
+again in \path{FabiusSharpAsymptotic.lean}, which imports both.
+
+A handful of modules are pure infrastructure with no counterpart anywhere in the article:
+the generic Gaussian-contraction and Gaussian-tail estimates, the formal exponential and
+logarithm coefficient algebra of the \path{SaddleExpansion}\,/\,\path{SaddleLog} files, the
+abstract Toeplitz row lemma, and the generic weighted-path-sum solver are all stated for
+arbitrary inputs and are used only to keep the named Fabius theorems short.
+
+\subsection{Foundations: definitions, existence, and the original characterization}
+\label{guide:foundations}
+
+These modules underlie everything else and correspond to \Cref{sec:history},
+\Cref{sec:three-functions}, and \Cref{sec:existence}.
 
 \begingroup\small
 \begin{longtable}{@{}
-  >{\raggedright\arraybackslash}p{0.22\textwidth}
-  >{\raggedright\arraybackslash}p{0.31\textwidth}
-  >{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
 \toprule
-Mathematical layer & Principal module(s) & Role in the proof\\
+Module & Role in the proof\\
 \midrule
 \endhead
-Exact sequences &
 \path{Arithmetic.lean} &
-Defines binary weight, Thue--Morse signs, $c_n,d_n$, division-free numerators, reciprocal
-values, closed dyadic formulas, and executable evaluators over $\Q$.\\
-Analytic interface &
+Keeps all exact quantities in $\Q$ and $\N$: binary weight, Thue--Morse signs, $c_n$ and
+$d_n$, division-free numerators, reciprocal values, closed dyadic formulas, and executable
+rational evaluators.  Imports nothing from the rest of the project.\\
 \path{Basic.lean} &
-Separates bounded $F$, compactly supported $\Up$, and signed $\mathcal F$; defines Fourier
-products and moment integrals.\\
-Existence and uniqueness &
+Separates the three functions that share the letter $F$: the bounded CDF-valued
+\texttt{BoundedFabius} subtype with its characterization \texttt{IsFabius}, the signed
+extension on all of $\R$, and the compactly supported $\Up$.  Defines the Fourier products
+and moment integrals used later.\\
 \path{Existence.lean} &
-Constructs $F$ as the fixed point of a strict contraction and proves uniqueness from dense
-dyadic values.\\
-Differential equations &
+Constructs $F$ as the fixed point of a strict contraction on symmetric $[0,1]$-valued
+continuous functions, extracts the integral fixed-point equation, and proves uniqueness from
+agreement on the dense set of dyadic rationals.\\
 \path{Differential.lean} &
-Proves evenness and the global Rvachev equation, including the gluing argument at the fold
-point, then bootstraps to $C^\infty$.\\
-Original characterization &
-\path{OriginalCharacterization.lean},
+Derives the Rvachev differential equation, gluing the two one-sided derivatives at the fold
+point $x=0$, and bootstraps the equation to smoothness of every finite order.\\
+\path{OriginalCharacterization.lean} &
+Formalizes Theorem~1 of the compact-support paper starting from an unspecified constant $k$,
+and derives the exact support, nonnegativity, translate identity, normalization, and the
+forced value $k=2$.\\
 \path{OriginalUniqueness.lean} &
-Formalizes the compact-support characterization and proves uniqueness through the Fourier
-refinement product.\\
-Probability &
-\path{ProbabilityRepresentation.lean} &
-Builds the infinite product probability space, proves independence, identifies the random
-series CDF with $F$, and obtains $\Up$ as its density.\\
-Centered splines &
-\path{FabiusUniformSpline.lean},
-\path{FabiusComputability.lean} &
-Identifies the finite centered spline with a partial-sum CDF, proves the sandwich bound, and
-derives the explicit uniform error $2^{-p}$.\\
-Computable evaluator &
-\path{FabiusComputableSpline.lean} &
-Implements the signed-natural matched-grid spline by primitive recursion, certifies its
-rounding error, and proves sequential computability of the bounded Fabius function.\\
-Finite convolutions &
-\path{EarlyApproximants.lean},
-\path{EarlyMeasureBridge.lean},
-\path{WeakConvergence.lean},
-\path{StepMeasureBridge.lean},
-\path{StepApproximationLimit.lean} &
-Connects polynomial densities, repeated convolutions, weak convergence, and the explicit
-step approximants of the original paper, including their measure and endpoint conventions.\\
-Fourier and Poisson &
-\path{FourierProduct.lean},
-\path{FourierAnalytic.lean},
-\path{PoissonSummation.lean} &
-Proves the sinc product, inversion, rapid decay, Poisson summation, cosine series, and
-partitions of unity.\\
-Signed extension &
+Proves the uniqueness half of that theorem by the Fourier refinement argument: every
+solution has transform value one at the origin and satisfies the same finite and infinite
+dyadic $\sinc$-product formulas.\\
+\path{OriginalPaperSupplement.lean} &
+Packages Theorems 4, 6, and 7 of the compact-support paper, the finite Taylor expansion at
+dyadic points, the nowhere-analyticity corollary, and the exact even and odd integer values
+of the signed extension.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Regularity, shape, and the global extension}
+\label{guide:regularity}
+
+The sharp shape statements collected here are used throughout
+\Cref{sec:three-functions} and supply the exact derivative identities of \Cref{sec:global}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{Regularity.lean} &
+Records the global $2$-Lipschitz estimate for both functions, proves that the constant is
+attained at the midpoint, and isolates the linear majorants $F(x)\le2x$ and
+$\Up(x)\le2(1-|x|)$ used as quantitative input elsewhere.\\
+\path{Monotonicity.lean} &
+Collects the order-theoretic consequences of the derivative formula: strict monotonicity of
+$F$ on $[0,1]$ and the resulting bijection of $[0,1]$ onto itself, the exact open support
+$(-1,1)$ of $\Up$, and its strict unimodality.\\
+\path{Convexity.lean} &
+Turns the monotonicity of $\Up$ into convexity of $F$ on $(-\infty,1/2]$ and concavity on
+$[1/2,\infty)$, strictly inside the unit interval, so that the midpoint is exactly the
+inflection point.\\
 \path{GlobalExtension.lean} &
-Proves local finiteness of the Thue--Morse translate sum, the global differential equation,
-and exact iterated-derivative formulas.\\
-Moment arithmetic &
-\path{MomentPowerSeries.lean},
-\path{AnalyticMoments.lean},
-\path{LaplaceMoments.lean},
-\path{BernoulliRecurrences.lean},
-\path{Paper06487.lean} &
-Bridges the exact recurrences to integrals and entire generating functions and packages the
-arithmetic paper's named statements.\\
-Closed dyadic form &
-\path{DyadicCorrectness.lean},
-\path{DyadicClosedForm.lean} &
-Proves affine Thue--Morse cancellation, the Taylor-block identity, and agreement of the fast
-evaluator with the closed formula.\\
-Global dyadic values &
-\path{GlobalDyadic.lean} &
-Extends exact computation beyond the unit interval using triangular reduction and
-Thue--Morse signs.\\
-\addlinespace
-Inverse-dyadic path sums &
-\path{FabiusRecurrenceSequence.lean},
+Proves that the Thue--Morse translate series defining the signed extension is locally
+finite, then derives the global differential equation and the closed formulas for every
+iterated derivative of both $\mathcal F$ and $\Up$.\\
+\path{GlobalBounds.lean} &
+Observes that exactly one translate survives on each block $[2b,2b+2]$, hence
+$|\mathcal F|\le1$ everywhere, and converts the derivative formula into the sharp attained
+bound $|\mathcal F^{(k)}|\le2^{\binom{k+1}2}$.\\
+\path{BoundedDerivatives.lean} &
+Transfers those sharp derivative bounds from the signed extension to the bounded CDF by a
+germ argument below one, a local-constancy argument above one, and continuity at the
+remaining point $x=1$.\\
+\path{NowhereAnalytic.lean} &
+Determines the exact real-analytic locus: $F$ is analytic at $x$ if and only if
+$x\notin[0,1]$.  The right endpoint needs a separate argument, since the reflection identity
+is not an identity of germs there.\\
+\path{FabiusFlatness.lean} &
+The qualitative flatness statement at the origin: every derivative vanishes there, so
+Taylor's theorem gives $\mathcal F(x)=\smallo(x^n)$ for every $n$, with no constant.\\
+\path{EffectiveFlatness.lean} &
+An elementary effective form $F(x)\le2^{\binom{n+1}2}x^n$ on $2^nx\le1$, proved by iterating
+the mean value theorem, kept because it avoids importing any integral machinery.\\
+\path{SharpFlatness.lean} &
+Recovers the factorial that the mean value theorem discards by integrating instead, giving
+$F(x)\le2^{\binom{n+1}2}x^n/n!$; the remaining overshoot at $x=2^{-n}$ is exactly $1/d_n$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Probability, finite splines, and computability}
+\label{guide:probability}
+
+This cluster realizes the probabilistic model of \Cref{sec:probability} and supplies the
+evaluators and error bounds of \Cref{sec:computation} and
+\Cref{sec:effective-computability}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{ProbabilityRepresentation.lean} &
+Builds the infinite product probability space, proves independence and the uniform law of
+each coordinate, identifies the CDF of the random weighted series with $F$ globally on $\R$,
+and obtains $\Up$ as the corresponding density.\\
+\path{FabiusComplexMGF.lean} &
+Identifies the entire generating function with Mathlib's complex moment-generating function
+of that law, so that all complex derivatives are tilted moments and vertical-line norms are
+dominated by real tilted moments.\\
+\path{EarlyApproximants.lean} &
+Formalizes the generating polynomials, their product and recursion laws, exact degree and
+coefficient normalization, the associated atomic measures and finite Bernoulli convolutions,
+and the corrected half-endpoint step representatives.\\
+\path{EarlyMeasureBridge.lean} &
+Proves that the atomic measure encoded by the generating polynomial really is the finite
+Bernoulli convolution appearing in the source.\\
+\path{WeakConvergence.lean} &
+Proves weak-$*$ convergence of the finite convolution measures to $\Up\,\dd\lambda$, with
+explicit test-function formulations over an arbitrary \texttt{RCLike} field.\\
+\path{StepMeasureBridge.lean} &
+Identifies half-endpoint cells with ordinary interval indicators almost everywhere, computes
+their masses exactly, and sandwiches each histogram integral between shrunken and enlarged
+interval masses.\\
+\path{StepApproximationLimit.lean} &
+Supplies coefficient unimodality, monotonicity of the step functions, and the interval
+average squeeze that upgrades convergence of interval integrals to pointwise convergence
+against a continuous limit.\\
+\path{FabiusUniformSpline.lean} &
+Identifies the centered Thue--Morse power sums with distribution functions of finite
+weighted sums of independent uniform coordinates, giving support bounds, monotonicity,
+block-translation identities, and pointwise convergence.\\
+\path{FabiusComputability.lean} &
+Formalizes both clauses of computability in the sense of computable analysis: effective
+uniform continuity from the global derivative equation, and preservation of computable
+sequences by rounded dyadic spline evaluation.\\
+\path{FabiusComputableSpline.lean} &
+Certifies a primitive-recursive natural-number evaluator: clamp a signed-natural numerator,
+evaluate a finite centered spline, round half-up, and inherit the explicit error bound
+$5\cdot2^{-(p+3)}$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Fourier transform, Poisson summation, and the Laplace bridge}
+\label{guide:fourier}
+
+These are the analytic identities of \Cref{sec:fourier}, together with the spectral
+consequences of \Cref{sec:additional-identities} and the transform normalization that the
+asymptotic analysis later requires.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{FourierProduct.lean} &
+Proves that the removable $\sinc$ factors form a genuine convergent infinite product, that
+the transform satisfies the finite refinement identity, and that the limit identifies the
+two functions.\\
+\path{FourierAnalytic.lean} &
+Shows that the transform of $\Up$ is entire, establishes Fourier inversion, and relates its
+values at imaginary arguments to the half-moment generating function.\\
+\path{PoissonSummation.lean} &
+Formalizes Poisson summation and the partition-of-unity identities, correcting two
+typographical errors in the source: a missing dependence on $t$ in the exponent and a
+spurious factor $1/a$ after multiplication.\\
+\path{LaplaceTransform.lean} &
+Proves that the negative generating function divided by the spectral variable is the
+one-sided Laplace transform of $F$, in both complex and real form, with the integrability
+needed to avoid detouring through complex integrals.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Moments, generating functions, and exact arithmetic}
+\label{guide:moments}
+
+Everything here stays in $\Q$ or $\N$, so no denominator or $2$-adic valuation is ever taken
+of a real number.  The cluster carries \Cref{sec:moments} and \Cref{sec:inverse-powers}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{MomentPowerSeries.lean} &
+Proves in exact rational arithmetic that the half moments are the even-binomial transform of
+the moments, by packaging the defining recurrence as a formal power series identity.\\
+\path{NormalizedMoments.lean} &
+Shows that the executable rational recurrence for $d_n$ agrees with the division-free
+recurrence for its natural numerator, independently of any analytic construction.\\
+\path{NormalizedEvenMoments.lean} &
+The same normalization statement for the even moments $c_n$, identifying the division-free
+natural recurrence with the numerator of the rational one.\\
+\path{AnalyticMoments.lean} &
+Supplies the integral interpretations of both exact sequences, their inverse-power
+specializations, and the generating-function dilation identity.\\
+\path{BernoulliRecurrences.lean} &
+Connects the executable moment recurrences to Mathlib's formal generating series for the
+Bernoulli numbers.\\
+\path{LaplaceMoments.lean} &
+Differentiates the negative Laplace transform under its compact integral, producing the
+tilted moment family with $M_k'=-M_{k+1}$ and $M_k(0)=d_k$, the exact moment input for the
+endpoint comparison.\\
+\path{Parity.lean} &
+Proves the binary-coefficient count behind the oddness of every integral moment numerator,
+using Lucas's theorem at the prime $2$, together with the truncated odd-coefficient count
+needed two-adically.\\
+\path{TwoAdic.lean} &
+Establishes the exact numerator and denominator parity of the half moments and converts it
+into the dyadic valuation $\vtwo(F(2^{-n}))$, using Legendre's formula to trade the
+factorial valuation for binary weight.\\
+\path{HalfMomentDenominator.lean} &
+Proves that the reduced denominator of $2d_n$ is odd for every $n$, inductively at even
+indices and through $d_{2m+1}=(2m+1)c_m/2$ at odd ones.\\
+\path{DenominatorBound.lean} &
+Puts the moments in the closed dyadic formula over a common denominator, shows the scaled
+value is an integer after the factorial and power-of-two cancellations, and derives the
+$\lcm$ denominator bound.\\
+\path{ExactInversePower.lean} &
+Arithmetic proofs of the explicit inverse-power identities relating $F(2^{-n})$ to the half
+moments and to the normalized odd integers $R_n$.\\
+\path{FabiusRecurrenceSequence.lean} &
+Records the factorially normalized half-moment sequence $a_n=d_n/n!$, its elementary
+recurrence, its exact relation to $F(2^{-n})$, and the associated entire series and dyadic
+product.\\
 \path{FabiusInverseDyadicClosedForm.lean} &
-Derives the reciprocal-power recurrence, proves a generic finite weighted-path solver, and
-identifies its path sum with ordered-composition and length-stratified formulas.\\
-Finite $q$-binomial formulas &
-\path{HalfQBinomial.lean},
-\path{ThueMorseExponential.lean},
-\path{FabiusQBinomialFormula.lean},
-\path{FabiusQBinomialTaylor.lean},
-\path{FabiusQBinomialScalarFormula.lean},
-\path{FabiusRawQBinomialScalar.lean},
+Solves the triangular recurrence for $F(2^{-n})$ nonrecursively as a weighted sum over
+ordered compositions of $n$, via a generic path-weight layer with last-edge and edge-count
+decompositions; the empty composition covers $n=0$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Dyadic closed forms and finite $q$-binomial identities}
+\label{guide:dyadic}
+
+This is the exact evaluation machinery of \Cref{sec:dyadic}, whose algorithmic side is
+discussed in \Cref{sec:computation}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{ScaleTranslation.lean} &
+Proves that the Thue--Morse series changes sign under translation by a power of two over the
+corresponding initial block, and combines this with the derivative formula to obtain the
+translated Taylor-remainder identity.\\
+\path{TaylorReduction.lean} &
+Turns that cancellation into the finite recursive reduction formula, treating nonnegative
+indices by Taylor expansion and negative ones directly by the sign-translation law.\\
+\path{DyadicCorrectness.lean} &
+Discharges the structural half of the evaluator proof: strong induction upgrades the
+single-step dyadic recurrence to agreement of the terminating bit recursion with the closed
+formula at every unit dyadic grid point.\\
+\path{DyadicClosedForm.lean} &
+Proves the affine Thue--Morse cancellation and the Taylor-block identity, identifies the
+inverse-power lookup table, and concludes that the fast evaluator agrees with the closed
+formula on $[0,1]$.\\
+\path{DyadicAnalytic.lean} &
+Closes the loop analytically: endpoint compatibility of the finite Taylor recurrence
+determines the inverse-power values, so the rational evaluator really computes the analytic
+function.\\
+\path{GlobalDyadic.lean} &
+Extends exact evaluation beyond the unit interval by reducing modulo a length-two block,
+folding the residue, and applying the Thue--Morse sign; local finiteness identifies the one
+contributing translate.\\
+\path{HalfQBinomial.lean} &
+Develops the finite $q$-Pochhammer symbol and the Gaussian binomial coefficient at $q=1/2$
+over $\Q$: vanishing criteria, Mersenne evaluation, symmetry, both Pascal recurrences, and
+the finite $q$-binomial theorem.\\
+\path{ThueMorseExponential.lean} &
+Packages the centered Thue--Morse power sums into a formal exponential generating series,
+shows Prouhet cancellation forces divisibility by $X^k$, and computes the effect of
+translating the inner power by a constant.\\
+\path{FabiusQBinomialFormula.lean} &
+Proves the source-literal centered $q$-binomial formula, first at inverse powers and then
+for arbitrary numerators, together with the stronger statement that a common rational
+translation leaves the numerator unchanged.\\
+\path{FabiusQBinomialTaylor.lean} &
+Identifies that finite $q$-binomial polynomial with the Taylor reduction sum by viewing the
+translation as an indeterminate over $\Q$; constancy then permits evaluation in any
+characteristic-zero field.\\
+\path{FabiusQBinomialScalarFormula.lean} &
+Restores the normalizing prefactor at scalar level, exposing the centered identity for
+arbitrary real and complex translations.\\
+\path{FabiusRawQBinomialFormula.lean} &
+Proves the raw-coordinate variant with inner power $(r+q)^{n+k}$ by reflecting each dyadic
+Thue--Morse block, the combined sign being cancelled exactly by the normalization
+$(-2)^{n^2}$.\\
+\path{FabiusRawQBinomialScalar.lean} &
+Lifts the raw identity from $\Q$ to any $\Q$-algebra by the same constant-polynomial
+argument, with real and complex wrappers and fully expanded finite-sum statements.\\
 \path{FabiusDyadicQBinomialScalar.lean} &
-Proves the centered and raw finite formulas, the double finite-difference identities,
-arbitrary complex translation, scalar extension, all nonnegative dyadic numerators, and
-representation independence.\\
-Global binary and $q$-series &
-\path{FabiusBinaryReductionSeries.lean},
-\path{FabiusParityPowerSeries.lean},
+Does the same for the arbitrary-numerator dyadic formula, so that a single statement covers
+$\R$, $\C$, and every other characteristic-zero scalar field.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Global binary reduction and the discrete limit}
+\label{guide:binary}
+
+These modules prove the telescope of \Cref{sec:global-binary-reduction} and the convergence
+statement of \Cref{sec:q-discrete-limit}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{FabiusBinaryReductionSeries.lean} &
+Iterates the finite Taylor reduction along the binary expansion, keeping the outer index at
+$m=0$ so that the even and odd unit blocks are distinguished, and upgrades the signed
+residual identity to absolute summability.\\
+\path{FabiusParityPowerSeries.lean} &
+Formalizes the corrected scale-zero parity-power series, valid for every nonnegative real
+input; the series indexed from $m=1$ remains valid only on $0\le x<1$.\\
 \path{FabiusGlobalQBinomialSeries.lean} &
-Proves the finite binary telescope with residual, the corrected parity-power series, and the
-absolutely convergent pointwise complex $q$-binomial expansion.\\
-Discrete $q$-limit &
-\path{FabiusDiscreteLimitComplexShift.lean},
-\path{FabiusDiscreteLimitToeplitz.lean},
-\path{FabiusComplexShiftSpline.lean},
+Combines the constant-polynomial identity with the binary telescope to give the absolutely
+convergent pointwise $q$-binomial expansion, over $\R$ and $\C$ alike, for every real or
+complex translation.\\
+\path{FabiusComplexShiftSpline.lean} &
+Identifies the complex-shifted finite spline with a fixed polynomial branch, expands it
+around the centered shift $q=1/2$, and proves an exponentially small translation bound, so
+every fixed shift has the same limit.\\
+\path{FabiusDiscreteLimitComplexShift.lean} &
+Isolates the complex-analytic ingredient: translating a normalized finite Thue--Morse power
+sum has an exact finite Taylor expansion in the lower-degree branches.\\
+\path{FabiusDiscreteLimitToeplitz.lean} &
+Proves that each row of finite $q$-binomial weights has mass one, gives an exact formula and
+a uniform bound for its total variation, and supplies a general finite-row Toeplitz
+convergence theorem.\\
 \path{FabiusDiscreteLimitIntegration.lean} &
-Controls complex-shift splines, normalizes the finite Gaussian rows, proves their uniform
-variation bound, and applies the Toeplitz theorem for every real argument.\\
-Negative-Laplace product &
-\path{NegativeLaplace.lean},
-\path{PeriodicCorrection.lean} &
-Splits the logarithmic product into its quadratic drift, periodic finite part, and
-exponentially small tail.\\
-Fourier analysis of $\Psi$ &
-\path{PeriodicFourier.lean},
-\path{PeriodicMean.lean},
-\path{FabiusSharpConstant.lean} &
-Computes all Fourier coefficients and the mean of the periodic correction and identifies
-the sharp Euler--Stieltjes constant.\\
-Lambert saddle &
-\path{FabiusLambertSaddle.lean},
-\path{QuantitativeSaddle.lean},
-\path{FabiusSharpAsymptotic.lean} &
-Introduces the lower-Lambert coordinate, performs exact Bromwich reduction, and proves the
-quantitative leading asymptotic.\\
-Higher asymptotics &
-\path{FabiusFirstSaddleCorrection.lean},
-\path{FabiusFullAsymptoticExpansion.lean},
-\path{FabiusWikipediaExpansion.lean} &
-Derives the first periodic correction, every higher coefficient, the elementary
-log--log conversion, and the refutation of the uncorrected claimed error.\\
-Decay comparisons &
-\path{FabiusDecayComparison.lean},
-\path{FabiusQuotientExponentialMismatch.lean} &
-Places $F$ between algebraic and ordinary flat-exponential scales and proves the endpoint
-failure of the visual quotient model.\\
-Legendre expansion &
-\path{LegendrePolynomial.lean},
-\path{LegendreSeriesConvergence.lean},
-\path{FabiusLegendreCoefficients.lean},
-\path{FabiusLegendreSeries.lean},
-\path{FabiusTranslatedLegendreSeries.lean},
+Performs the outer $q$-binomial reindexing, applies Toeplitz convergence to the
+complex-shift spline limit, and extends the result from the nonnegative axis to all of $\R$
+by exact empty-prefix vanishing.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{The Fourier--Legendre expansion}
+\label{guide:legendre}
+
+The whole cluster corresponds to \Cref{sec:legendre}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{LegendrePolynomial.lean} &
+Supplies the ordinary Rodrigues-normalized Legendre polynomials on $[-1,1]$, which Mathlib
+does not carry, with endpoint, parity, norm, and differential-equation facts and the affine
+rule relating them to the shifted basis.\\
+\path{LegendreSeriesConvergence.lean} &
+Provides the analytic convergence layer from the self-adjoint Sturm--Liouville operator
+$f\mapsto-((1-x^2)f')'$, whose weight makes both boundary terms vanish, and iterates the
+Green identity to move eigenvalue powers onto the expanded function.\\
+\path{FabiusLegendreCoefficients.lean} &
+Evaluates the coefficient $u_n$ of the even function $\Up$ in closed form in terms of the
+inverse-power values $F(2^{-k})$.\\
+\path{FabiusLegendreSeries.lean} &
+Combines coefficients and convergence: absolute and uniform convergence on $[-1,1]$,
+including both endpoints, plus the full orthogonality relation and absolute summability of
+the coefficient sequence.\\
+\path{FabiusTranslatedLegendreSeries.lean} &
+Translates the even expansion to $[0,2]$, where $\mathcal F(x)=\Up(x-1)$, and expands the
+shifted Legendre polynomials into monomials to give the exact double finite inner sum.\\
 \path{FabiusLegendreLeastSquares.lean} &
-Builds the Legendre foundation, computes exact coefficients, proves absolute uniform
-convergence, expands the translated global function on $[0,2]$, and establishes the unique
-least-squares projection through degree $2N+1$.\\
-Public aggregates &
-\path{Paper05442.lean}, \path{Paper06487.lean},
+Proves a generic Pythagorean identity for the unweighted $L^2[-1,1]$ error and deduces that
+$S_N$ is the unique least-squares minimizer through degree $2N+1$, one degree better than
+its visible class.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{The negative-Laplace product and its periodic correction}
+\label{guide:negative-laplace}
+
+This is the exact decomposition of \Cref{sec:asymptotic-decomposition} together with the
+Mellin evaluation of the constant appearing in \Cref{sec:sharp-asymptotic}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{NegativeLaplace.lean} &
+Constructs the logarithm of the dyadic product as an absolutely convergent series and splits
+its dilation equation into a quadratic solution, an exact one-periodic correction, and a
+forward tail bounded by $4\e^{-s}$, using only elementary bounds.\\
+\path{PeriodicCorrection.lean} &
+Proves continuity of that exact correction by treating the two infinite sums locally on
+compact positive intervals with geometric majorants, establishing the regularity interface
+used downstream.\\
+\path{PeriodicRegularity.lean} &
+Differentiates the forward tail termwise through order four with superexponential majorants,
+proving that $\Psi$ is $C^4$ and that its first two derivatives are one-periodic and
+globally bounded.\\
+\path{PeriodicSmooth.lean} &
+Upgrades that to $C^\infty$ by encoding the $(k+1)$st derivative of each summand as a
+recursively generated polynomial in $\e^{-s2^n}$, then propagates smoothness through the
+saddle-jet recurrence.\\
+\path{PeriodicMean.lean} &
+Integrates the negative-Laplace logarithm and its forward tail over a dyadic interval,
+evaluates the mean of the exact correction, and pins down the unit-interval integral of the
+centered normalization $\Psi$.\\
+\path{PeriodicFourier.lean} &
+Computes every Fourier coefficient of $\Psi$ through the regularized Bose--Mellin kernel,
+proves the first coefficient nonzero --- hence $\Psi$ nonconstant --- and gives the
+summable Gamma--zeta Fourier series.\\
+\path{StieltjesConstant.lean} &
+Fixes the sign convention for the first Stieltjes constant and records the Laurent expansion
+of $\zeta$ at its pole.\\
+\path{MellinBose.lean} &
+Proves the real Mellin identity for $\log(1-\e^{-x})$ with value $-\Gamma(a)\zeta(a+1)$ by
+expanding the logarithm and justifying termwise integration.\\
+\path{MellinFinitePart.lean} &
+Regularizes $\Gamma(s)\zeta(1+s)$ at the double pole $s=0$ and identifies the finite part
+with the Euler--Stieltjes combination.\\
+\path{BoseFinitePartIntegral.lean} &
+Realizes that finite part as a convergent split integral --- singular logarithm removed near
+zero, kernel divided by $x$ near infinity --- and supplies the two kernels reused by the
+mean and Fourier computations.\\
+\path{GammaSecondOrder.lean} &
+Supplies the second-order Taylor expansion of $\Gamma$ at $1$ with an explicit remainder,
+obtained from analyticity and the reflection formula.\\
+\path{FabiusSharpConstant.lean} &
+Combines the mean of the periodic correction with the Gaussian saddle prefactor and records
+the resulting constant in both compact Gamma--zeta and expanded Euler--Stieltjes form.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Tilted moments, endpoint cumulants, and the sharp dyadic formula}
+\label{guide:endpoint}
+
+This branch turns \Cref{sec:asymptotic-decomposition} into the unconditional dyadic
+statement quoted in \Cref{sec:sharp-asymptotic}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{NegativeLaplaceDerivatives.lean} &
+Expresses the first four logarithmic derivatives in terms of normalized tilted moments
+$R_k=M_k/M_0$ satisfying $R_k'=-R_{k+1}+R_kR_1$, so that they become the usual cumulant
+polynomials.\\
+\path{NegativeLaplaceDerivativeBounds.lean} &
+Differentiates the dilation equation, bounds the elementary dilation kernel with polynomial
+weights, and iterates to prove $q^{(j)}(n)=\bigO(\log n/n^j)$ for $1\le j\le4$.\\
+\path{NegativeLaplaceAllOrderJets.lean} &
+Packages every ordinary derivative into one recursive sequence agreeing with
+\texttt{iteratedDeriv}, splitting each dyadically rescaled derivative into a linear drift, a
+smooth periodic jet, and a forward-tail remainder.\\
+\path{NegativeLaplaceScaledTailFlat.lean} &
+Bounds every positive-order forward-tail summand by a polynomial times an exponential on
+$[1,\infty)$ and shows the scaled dyadic sum is $\smallo$ of every real power of the
+radius.\\
+\path{LaplaceMoments.lean} &
+(See \Cref{guide:moments}.)  Its tilted moment family is the entry point of this branch.\\
+\path{LaplaceMomentBounds.lean} &
+Makes the endpoint comparison unconditional through $R_k(s)^2\le s((4/s)^kk!)^2$ for
+$s\ge2$, proved by H\"older log-convexity at the intermediate tilt $3s/4$ with no periodic
+regularity input at all.\\
+\path{LaplaceCumulantAsymptotics.lean} &
+Inverts the first four cumulant polynomials and packages the bookkeeping that turns the
+logarithmic derivative bounds into an $\bigO(1/n)$ endpoint error.\\
+\path{LaplacePeriodicSecondOrder.lean} &
+Differentiates the quadratic-plus-periodic decomposition, controls the forward-tail
+derivative, and shows the linear logarithmic terms cancel in $n(q''+(q')^2)/2$, leaving the
+explicit periodic-derivative expansion.\\
+\path{EndpointLaplaceComparison.lean} &
+Compares $(1-x)^n$ with $\e^{-nx}(1-nx^2/2)$ pointwise, bridges to survival-function moments
+by Fubini, and transfers $d_n$ to the negative Laplace transform at scale $n$ with an
+explicit logarithmic correction.\\
+\path{DyadicSharpDecomposition.lean} &
+Performs the exact algebraic assembly before any estimate: elementary main term, exact
+periodic correction, exponentially small product tail, endpoint-versus-Laplace error, and
+sharp Stirling remainder, with no hidden cancellation.\\
+\path{DyadicSharpConditional.lean} &
+Quantifies every contribution except the two isolated moment estimates, reducing the
+complete dyadic formula to exactly those.\\
+\path{FabiusDyadicSharpCumulant.lean} &
+Combines the exact Euler--Stieltjes constant with the unconditional endpoint comparison,
+reaching the final $\bigO(1/n)$ precision while keeping the second-order cumulant exact.\\
+\path{FabiusDyadicSharpAsymptotic.lean} &
+Recognizes that cumulant as the first-order displacement of the periodic correction from
+$\log_2n$ to the exact Lambert phase, and performs the Taylor transfer with a uniform
+quadratic remainder.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Vertical estimates, Bromwich inversion, and the central saddle}
+\label{guide:vertical}
+
+The contour-free analytic input to \Cref{sec:sharp-asymptotic}.  There is no
+contour-shifting argument anywhere: every hypothesis of Fourier inversion is discharged
+explicitly.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{NegativeLaplaceVertical.lean} &
+Proves the canonical complex dyadic product and extracts finitely many factors to obtain the
+minor-arc bound $\|P(-rw)\|/P(-r)\le C(r,N)\|w\|/\|w\|^N$; already $N=2$ gives integrability
+of the vertical kernel.\\
+\path{NegativeLaplaceMinorArc.lean} &
+Isolates the elementary criterion bounding the finite $\coth$ product by $\exp(4N\e^{-b})$,
+separating that estimate from any later choice of the number of extracted factors.\\
+\path{NegativeLaplaceVerticalLog.lean} &
+Constructs a branch-safe logarithm on each vertical line by integrating the logarithmic
+derivative rather than selecting a branch of $\log$, and proves that exponentiating it
+recovers the transform ratio.\\
+\path{NegativeLaplaceVerticalSmooth.lean} &
+Promotes that normalized logarithm to $C^\infty$, since the underlying transform curve is
+smooth and nonvanishing and the fundamental theorem of calculus transfers the regularity.\\
+\path{NegativeLaplaceVerticalTaylor.lean} &
+Gives the branch-safe cubic Taylor expansion with explicit integral remainder, together with
+continuity and $C^4$ smoothness of the normalized vertical moments.\\
+\path{NegativeLaplaceVerticalFourthBound.lean} &
+Supplies the uniform off-axis fourth derivative bound used by the first-order central
+estimate.\\
+\path{NegativeLaplaceVerticalAllOrderBound.lean} &
+Continues the one-factor derivative holomorphically and applies Cauchy's estimate on disks
+of radius $1/2$ to give the scale-independent increment bound $m!\,5/(1/2)^m$, then iterates
+to $\bigO(b)$ at $r=2^b$ for every order.\\
+\path{NegativeLaplaceVerticalOrdinaryJets.lean} &
+Defines the holomorphic logarithmic derivative on the open right half-plane and matches it on
+the real axis with the ordinary derivatives of the negative-Laplace logarithm.\\
+\path{BromwichSaddle.lean} &
+Derives the real Bromwich formula directly from Mathlib's Fourier inversion theorem and
+performs the exact change of variables putting a transform $P(z)/z$ into dimensionless
+saddle coordinates.\\
+\path{FabiusBromwichInput.lean} &
+Discharges the hypotheses of that framework for $F$: exponential tilting gives an integrable
+continuous input whose transform is the negative generating function over the vertical
+coordinate.\\
+\path{QuantitativeSaddle.lean} &
+The measure-theoretic end of the argument.  Bounds on a central set and its complement give
+a relative estimate $1+\bigO(1/b)$, with the vanishing of the signed odd correction made
+explicit.\\
+\path{FabiusSaddleReduction.lean} &
+Separates the exact Bromwich formula into a real prefactor and a normalized kernel integral,
+so that no positivity or logarithm manipulation survives into the central-arc estimates.\\
+\path{FabiusSaddleCentral.lean} &
+Bounds the central $L^1$ error against a standard Gaussian plus the retained odd
+linear-plus-cubic correction, at a general radius and then at the standardized one.\\
+\path{FabiusSaddleCentralLambert.lean} &
+Instantiates that estimate on the dyadic Lambert orbit, extracting the concrete linear,
+cubic, and curvature coefficients and proving the normalized kernel mass is
+$1+\bigO(1/\lambda)$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{The lower-Lambert phase and the corrected sharp asymptotic}
+\label{guide:lambert}
+
+The exact saddle coordinate and the source-facing statements of
+\Cref{sec:sharp-asymptotic}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{LowerLambertW.lean} &
+Supplies the minimal real $W_{-1}$ infrastructure: a totalized branch with specification and
+uniqueness on $(-\e^{-1},0)$ and the standard first two terms of its expansion.\\
+\path{FabiusLambertPhase.lean} &
+Defines the coordinate $\lambda$ solving $\lambda2^{-\lambda}=2^{-t}$, proves its exact
+fixed-point equation, and records its first two asymptotic terms; keeping it exact is what
+avoids losing a logarithmic factor.\\
+\path{FabiusLambertSaddle.lean} &
+Packages $\lambda$ with the positive Laplace radius $r=2^{\lambda}$, turning the defining
+equation into the identity $rx=\lambda$ without committing to an implicitly defined saddle
+point.\\
+\path{FabiusLambertRates.lean} &
+Compares the reciprocals of the Lambert and logarithmic coordinates by $\bigO$ and converts
+the rate into the literal $1/(-\log x)$ scale.\\
+\path{FabiusLambertHigherExpansion.lean} &
+Retains the next phase term, since substitution into a quadratic action magnifies phase
+errors by one power of $t$; without it the final error would be $\log t/t$ rather than
+$1/t$.\\
+\path{FabiusLambertDerivativeBounds.lean} &
+Bounds the first three logarithmic derivative residuals along the real orbit at a Lambert
+radius and expresses the second and third derivatives in periodic form.\\
+\path{FabiusLambertMinorArc.lean} &
+Chooses the factor count $m(t)=\lceil\lambda(t)/4\rceil$, so that $2m(t)=\lambda(t)/2+\bigO(1)$
+and the finite $\coth$ product is uniformly bounded by $\e^4$.\\
+\path{FabiusLambertTailFlat.lean} &
+Records once and for all that the forward Laplace tail is smaller than every inverse power
+of $\lambda$, so it can be discarded at every finite order.\\
+\path{FabiusSmallArgumentScale.lean} &
+Packages the exact inverse relationship between $t\mapsto2^{-t}$ and $x\mapsto-\log_2x$ and
+transfers $\bigO$ estimates between the two forms.\\
+\path{FabiusSharpExactReduction.lean} &
+Isolates the exact identity behind the transfer: on the lower-Lambert branch, $\log F$ minus
+the corrected main term is exactly the logarithm of the real saddle ratio plus the
+exponentially small forward tail.\\
+\path{FabiusSharpLambertMain.lean} &
+Isolates the purely algebraic part of the corrected small-argument asymptotic, leaving the
+normalized Bromwich kernel estimate as the sole analytic input.\\
+\path{FabiusSharpLambertTransfer.lean} &
+Converts a relative kernel error of order $1/\lambda$ into the corrected sharp logarithmic
+asymptotic, absorbing the forward tail unconditionally via $\lambda\le2^{\lambda}$.\\
+\path{FabiusSharpAsymptoticTransfer.lean} &
+Packages the last source-facing reduction, producing the corrected formula with its literal
+$\bigO(1/(-\log x))$ error as $x\downarrow0$.\\
+\path{FabiusExplicitSharpTransfer.lean} &
+Combines the compact Lambert transfer with the expansion into logarithms and
+Euler--Stieltjes constants, discharging every phase and formula-conversion error.\\
+\path{FabiusFirstSaddleCorrection.lean} &
+Expands the normalized kernel one order further and records the resulting periodic
+coefficient of $1/\lambda$, contracted against the Gaussian moments $(1,3,15)$,
+independently of the analytic remainder estimate.\\
+\path{FabiusSharpAsymptotic.lean} &
+The headline module: it closes the quantitative saddle argument, shows the elementary
+printed expression is missing a genuine nonconstant periodic term, and imports the
+quotient-approximation obstruction.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{The all-orders expansion}
+\label{guide:all-orders}
+
+The machinery behind \Cref{sec:full-asymptotic}.  The first eight modules are generic: they
+know nothing about the Fabius function and would serve any saddle-point problem with bounded
+periodic coefficients.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{SaddleExpansionAlgebra.lean} &
+Turns a formal exponent $E(\varepsilon)=\sum_{j\ge1}E_j\varepsilon^j$ into the correction
+coefficients of $\exp E$, in any commutative $\Q$-algebra, and defines the
+bounded-coefficient Poincar\'e expansion API.\\
+\path{SaddleExpansionFiniteRemainder.lean} &
+Makes the coefficient identity a finite polynomial one: the discrepancy is an exact multiple
+of $X^L$, with canonical quotient defined by iterating \texttt{divX} so that parameter
+dependence stays algebraic.\\
+\path{SaddleExpansionFlat.lean} &
+Bridges from estimates at every algebraic order to the parameter-dependent expansion API.\\
+\path{SaddleExpansionSmallArgument.lean} &
+Transports a full expansion from the dyadic logarithmic scale to $x\downarrow0$.\\
+\path{SaddleLogExpansionAlgebra.lean} &
+Builds the coefficient sequence of the formal logarithm of a unit-constant series from the
+recurrence $B'A=A'$.\\
+\path{SaddleLogExpansionPowerSeries.lean} &
+Identifies that recurrence with Mathlib's \texttt{PowerSeries.logOf}, connecting the finite
+recursion to the standard substitution calculus.\\
+\path{SaddleLogAsymptoticTransfer.lean} &
+Turns a full real expansion with constant coefficient one into the expansion of its
+logarithm, combining the formal divisibility statement with the analytic Taylor remainder
+and a stability estimate.\\
+\path{SaddleAllOrders.lean} &
+Supplies the two-source exponential remainder bound, the Gaussian-weighted reference, and
+the criteria under which a normalized integral matches its even expansion.\\
+\path{GaussianPolynomialContraction.lean} &
+Identifies normalized Gaussian integration with a linear functional on complex polynomials
+and records the integrability and coefficient estimates reused throughout.\\
+\path{GaussianPolynomialTail.lean} &
+Bounds the complementary-interval integral of a Gaussian times a finite polynomial
+coefficient by coefficient, making any fixed reference smaller than any requested inverse
+power.\\
+\path{GaussianPolynomialTailAllOrders.lean} &
+Upgrades that estimate to the order-dependent radius, so a phase-dependent polynomial family
+contributes a tail of order $b^{-(N+1)}$ whenever its coefficient weight stays bounded.\\
+\path{GaussianPolynomialWholeIntegral.lean} &
+Controls the full $L^1$ norm of the same references by the same factorial coefficient
+weight.\\
+\path{FabiusSaddleCoefficientRecurrence.lean} &
+Records the concrete periodic-jet algebra: $r^{n+1}q^{(n+1)}(r)=s_nt+p_n(t)$ with
+$s_n=(-1)^{n+1}n!$, together with the parity $E_m(t,-v)=(-1)^mE_m(t,v)$ that kills all odd
+half-powers.\\
+\path{FabiusSaddlePolynomialCoefficients.lean} &
+Packages that exponent coefficient as an element of $\C[X]$ and propagates coefficientwise
+conjugation, so every even exponential coefficient is fixed.\\
+\path{FabiusSaddleExpansionCoefficients.lean} &
+Exponentiates and contracts against Gaussian moments, proves every mass coefficient real,
+lifts the recurrence to continuous maps for continuity and periodic boundedness, and applies
+the logarithmic recurrence.\\
+\path{FabiusSaddleExponentAllOrders.lean} &
+Splits the exact centered exponent jet of each order into its bounded part, its linear-in-$t$
+slope part, and the flat forward-product correction.\\
+\path{FabiusSaddleCentralAllOrders.lean} &
+Identifies the finite polynomial reference on the dyadic Lambert orbit, contracts its odd
+terms, and decomposes the exact centered exponent into a periodic truncation plus explicit
+remainders.\\
+\path{FabiusSaddleCentralRadiusAsymptotics.lean} &
+Shows the logarithmic central radius grows more slowly than $\sqrt\lambda$ for every fixed
+degree, controlling all fixed-order Taylor polynomials uniformly on the expanding interval.\\
+\path{FabiusSaddleReferenceWeight.lean} &
+Proves the Gaussian tail weight of the finite reference polynomial uniformly bounded, in the
+periodic phase and in every substitution parameter of norm at most one.\\
+\path{FabiusSaddleReferenceTail.lean} &
+Supplies the explicit Gaussian moment tail estimates on the complement of $[-A,A]$ used by
+that weight argument.\\
+\path{FabiusSaddleTail.lean} &
+Integrates the polynomial kernel bound $C(r,2m)/(1+v^2/b)^m$ by splitting into an
+intermediate Gaussian region and a far geometric region, giving an $\bigO(1/b)$ tail at the
+standardized radius.\\
+\path{FabiusSaddleTailAllOrders.lean} &
+Repeats that at the order-dependent radius $\sqrt{32(N+1)\log b}$, so the complementary tail
+is below every requested inverse power.\\
+\path{FabiusSaddleMassAllOrders.lean} &
+Combines vertical Taylor expansion, finite exponential substitution, Gaussian contraction,
+and the minor-arc estimates into the full Poincar\'e expansion of the normalized kernel
+mass.\\
+\path{FabiusFullAsymptoticExpansion.lean} &
+Transfers that expansion through the exact real saddle identity and the logarithm, adds the
+flat forward tail, and moves the result to $x\downarrow0$, keeping every coefficient
+evaluated at the exact Lambert phase.\\
+\path{FabiusLambertAllOrderAlgebra.lean} &
+Defines the displacement coefficient polynomials $a_n(\ell)$ by their exact recursive
+algebra and connects the first nontrivial truncation to the quantitative expansion already
+proved.\\
+\path{FabiusLambertFormalLog.lean} &
+Identifies those coefficients with the logarithm of the formal unit series $1+uA(u)$,
+supplying the cancellations needed to make the formal series analytic.\\
+\path{FabiusLambertAllOrderRemainder.lean} &
+Upgrades the formal recurrence to a rigorous expansion of every finite order, bounding the
+varying-coefficient Taylor remainder and using stability of $u-\log u/\log2$ on the large
+positive branch.\\
+\path{FabiusLambertAllOrderSmallArgument.lean} &
+Transports the all-order phase expansion to $x\downarrow0$ and writes it purely in terms of
+$-\log x$ and $\log(-\log x)$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Elementary log--log forms and endpoint consequences}
+\label{guide:elementary}
+
+These modules carry \Cref{sec:elementary-asymptotic} and
+\Cref{sec:asymptotic-consequences}, and several of the negative results of
+\Cref{sec:audit}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{FabiusLogScale.lean} &
+Introduces the profiles $F(2^{-t})$ and $-\log F(2^{-t})$ and proves their exact
+differential-delay identity, carrying the explicit hypothesis $t\ge1$ that the source omits
+and without which the statement is false.\\
+\path{FabiusDyadicLogBounds.lean} &
+Combines the exact identity $d_n=n!\,2^{\binom n2}F(2^{-n})$ with elementary integral bounds
+to prove $|\log F(2^{-n})+(\log2/2)n^2|\le3n\log(n+1)$, with no periodic ansatz.\\
+\path{FabiusLogSquaredAsymptotic.lean} &
+Promotes that natural-index estimate to the real logarithmic scale by squeezing $t$ between
+consecutive integers, giving the rigorous leading asymptotic $\log2/2$.\\
+\path{FabiusLogMainDefect.lean} &
+Substitutes the draft's proposed main term into the exact delay equation and determines its
+residual: a nonzero multiple of $(\log t/t)^2$, which is exactly the term the source later
+discards.\\
+\path{FabiusWikipediaMain.lean} &
+Defines the compact lower-Lambert form of the published expression, including the centered
+periodic correction, and proves it equals the Lambert-coordinate saddle main term.\\
+\path{FabiusWikipediaExpansion.lean} &
+Expands that compact form into the elementary printed logarithms, retaining the periodic
+correction at its exact phase; the fourth phase term is what keeps the error at $1/t$.\\
+\path{FabiusWikipediaObstruction.lean} &
+Shows the periodic correction is nonconstant and its phase visits every far integer
+translate, so deleting the term makes an $\bigO(1/(-\log x))$ error impossible.\\
+\path{FabiusDecayComparison.lean} &
+Proves the second qualitative comparison: although $F$ is flatter than every power, it
+decays strictly more slowly than $\exp(-c/x)$ for every $c>0$.\\
+\path{FabiusQuotientExponentialMismatch.lean} &
+Formalizes the endpoint obstruction for the visually accurate quotient of exponentials,
+whose ordinary $\exp(-c/y)$ decay is strictly faster than the true bump.\\
+\path{StirlingAsymptotics.lean} &
+Records the precise $\bigO(\log n)$ form of Stirling's formula invoked without proof in the
+draft.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Iterated Thue--Morse prefixes and draft refutations}
+\label{guide:thue-morse}
+
+The machine-checked half of \Cref{sec:audit}: what the local drafts get right, stated
+correctly, and what they get wrong, refuted.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{ThueMorsePrefix.lean} &
+Defines the iterated inclusive prefix sums, proves the convolution kernel formula, the
+Prouhet vanishing of low-degree power sums, the affine power-sum identity, and the exact zero
+runs at dyadic indices.\\
+\path{ThueMorseGenerating.lean} &
+Builds the signed Thue--Morse block polynomial and its finite product form, then shows the
+draft's literal grid normalization has endpoint value bounded away from one, refuting its
+convergence claim.\\
+\path{ThueMorseApproximation.lean} &
+Identifies the corrected iterated prefixes with the polynomial and histogram approximants,
+exactly at dyadic cell centers and asymptotically along moving cells, including the
+exceptional right endpoint and the rescaling that recovers $F$.\\
+\path{ThueMorseBinomialLog.lean} &
+Proves the binomial-parity formula for the Thue--Morse sequence, interpreting the finite sum
+in $\Z$ and the outer division in $\Q$, and showing the logarithm's argument is exactly
+$2^{\wt(n)+1}$.\\
+\path{DraftCounterexamples.lean} &
+Records three explicit obstructions while preserving the draft's definitions literally: the
+nonexistent maximum, the uncancelled linear term in the printed proxy, and a local error of
+$3$ where the draft claims $4h=1$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\subsection{Public aggregates}
+\label{guide:aggregates}
+
+The root module \path{FabiusFunction.lean} is what a user imports.  It pulls in five paper
+aggregates --- \path{Paper05442.lean}, \path{Paper06487.lean}, \path{PaperStatements.lean},
+\path{PaperFabiusAsymptotic.lean}, and \path{PaperKFoldThueMorse.lean} --- the last two of
+which cover the two local drafts audited in \Cref{sec:audit}, together with the regularity,
+flatness, Legendre, negative-Laplace, and computability layers.  Only
+\path{PaperStatements.lean} is reached indirectly, through \path{Paper06487.lean}.
+
+\begingroup\small
+\begin{longtable}{@{}
+  >{\raggedright\arraybackslash}p{0.29\textwidth}
+  >{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule
+Module & Role in the proof\\
+\midrule
+\endhead
+\path{FabiusFunction.lean} &
+The root aggregate, one directory above all the others.  Its module docstring is the
+authoritative summary of the public surface: the two formalized papers, the two audited
+drafts, exact arithmetic, the Legendre expansion, the sharp asymptotic, the regularity
+layer, and Grzegorczyk computability.\\
+\path{Paper05442.lean} &
+Public import for the compact-support paper, naming a proved Lean counterpart for every
+theorem, lemma, corollary, and prose proposition, and flagging where the development proves
+strictly more than the source-facing domain.\\
+\path{Paper06487.lean} &
+Public import for the arithmetic paper, exposing the analytic, integrality, divisibility,
+and two-adic statements, both orders of summation in the dyadic formula, and the denominator
+consequences of the conjecture.\\
 \path{PaperStatements.lean} &
-Expose source-facing theorem names and the paper-coverage interface from the public import
-\texttt{FabiusFunction}.\\
+The numbered index for the arithmetic paper: every proposition, theorem, lemma, question,
+definition, and conjecture, with the two deliberate corrections --- the bounded versus signed
+codomain split, and the missing order hypothesis in Lemma~1.\\
+\path{Paper06487Supplement.lean} &
+Exposes the prose-level and proof-internal assertions of the same paper that are not numbered
+theorem environments, several with weaker hypotheses or wider boundary cases than the prose
+needs.\\
+\path{PaperFabiusAsymptotic.lean} &
+Claim-level audit of the local asymptotics draft, which contains no theorem environments at
+all: it tracks numbered equations and prose claims, proves the valid ones, disproves the
+$\bigO(t^{-2})$ residual claim, and points to the correct saddle analysis.\\
+\path{PaperKFoldThueMorse.lean} &
+Claim-level audit of the local $K$-fold Thue--Morse draft: the identities, zero runs, and
+corrected approximation theorem are proved, while the printed normalization, the maximum,
+and the proxy's missing linear term are refuted.\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -4818,6 +6201,12 @@ V.~A.~Rvachev,
 \newblock in \emph{Mathematical Physics and Functional Analysis}, Kharkov
   (1973), 139--149, 194.  Russian.
 
+\bibitem{rvachev1979}
+V.~L.~Rvachev and V.~A.~Rvachev,
+\newblock \emph{Non-classical Methods of Approximation Theory in Boundary Value
+  Problems},
+\newblock Naukova Dumka, Kiev, 1979.  Russian.
+
 \bibitem{rvachev1990}
 V.~A.~Rvachev,
 \newblock Compactly supported solutions of functional-differential equations
@@ -4841,7 +6230,9 @@ J.~Arias de Reyna,
 J.~Arias de Reyna,
 \newblock Arithmetic of the Fabius function,
 \newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
-  arXiv:\nolinkurl{1702.06487}.
+  arXiv:\nolinkurl{1702.06487}, version~3.
+\newblock The version is pinned because a sign in the abstract of one version
+  is a typographical error; see \Cref{sec:audit}.
 
 \bibitem{haugland2016}
 J.~K.~Haugland,
@@ -4900,7 +6291,13 @@ NIST Digital Library of Mathematical Functions, Chapter~17,
 V.~Reshetnikov,
 \newblock A conjectured closed form for the Fabius function at dyadic
   rationals,
-\newblock Mathematics Stack Exchange (2019).
+\newblock Mathematics Stack Exchange, question 3283519, 5 July 2019.
+
+\bibitem{reshetnikovMO}
+V.~Reshetnikov,
+\newblock A conjecture about certain values of the Fabius function,
+\newblock MathOverflow, question 261649, 7 February 2017.
+\newblock The integrality question answered in \cite{arias2018}.
 
 \bibitem{proveit}
 V.~Reshetnikov,
