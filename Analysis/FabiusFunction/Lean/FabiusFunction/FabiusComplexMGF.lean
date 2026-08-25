@@ -8,8 +8,9 @@ import Mathlib.Probability.Moments.ComplexMGF
 The probabilistic construction realizes the Fabius law as the distribution of a random weighted
 sum in `[0,1]`.  This module identifies the entire generating function already used in the
 project with Mathlib's complex moment-generating function of that distribution.  It follows that
-all complex derivatives are tilted moments.  On a vertical line their norms are bounded by the
-corresponding real tilted moments, exactly the domination needed for the saddle Taylor remainder.
+all complex derivatives are tilted moments.  Their norms at an arbitrary complex parameter `z`
+are bounded by the real tilted moments at scale `-z.re`; the vertical-line estimate needed for
+the saddle Taylor remainder is exposed as a direct specialization.
 -/
 
 set_option autoImplicit false
@@ -92,19 +93,18 @@ theorem iteratedDeriv_complexGeneratingFunction_eq_integral
   simpa [id_eq] using
     (iteratedDeriv_complexMGF (X := id) (μ := weightedSumDistribution) hz n)
 
-/-- On a vertical negative-Laplace line, the norm of the `n`th complex derivative is bounded by
-the corresponding real tilted moment. -/
-theorem norm_iteratedDeriv_complexGeneratingFunction_neg_vertical_le
-    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (r θ : ℝ) :
-    ‖iteratedDeriv n (complexGeneratingFunction F)
-        (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I)))‖ ≤
-      fabiusLaplaceMoment F n r := by
+/-- At an arbitrary complex parameter, the norm of the `n`th derivative is
+bounded by the real tilted moment at the opposite real part. -/
+theorem norm_iteratedDeriv_complexGeneratingFunction_le_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (z : ℂ) :
+    ‖iteratedDeriv n (complexGeneratingFunction F) z‖ ≤
+      fabiusLaplaceMoment F n (-z.re) := by
   rw [iteratedDeriv_complexGeneratingFunction_eq_integral F hF]
-  rw [← unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment F hF n r]
+  rw [← unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+    F hF n (-z.re)]
   let g : ℝ → ℂ := fun x =>
-    (x : ℂ) ^ n * Complex.exp
-      (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I)) * x)
-  let bound : ℝ → ℝ := fun x => Real.exp (-r * x) * x ^ n
+    (x : ℂ) ^ n * Complex.exp (z * x)
+  let bound : ℝ → ℝ := fun x => Real.exp (-(-z.re) * x) * x ^ n
   have hboundInt : Integrable bound weightedSumDistribution := by
     rw [← weightedSumDistribution_restrict_Icc]
     exact (by fun_prop : Continuous bound).integrableOn_Icc
@@ -113,12 +113,28 @@ theorem norm_iteratedDeriv_complexGeneratingFunction_neg_vertical_le
     dsimp [g, bound]
     rw [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
       abs_of_nonneg hx.1, Complex.norm_exp]
-    norm_num
-    ring_nf
-    exact le_rfl
+    have hre : (z * (x : ℂ)).re = z.re * x := by simp
+    rw [hre]
+    have harg : - -z.re * x = z.re * x := by ring
+    rw [harg]
+    exact (mul_comm _ _).le
   have hle := norm_integral_le_of_norm_le hboundInt hnorm
   unfold unitLaplaceMoment
   rw [weightedSumDistribution_restrict_Icc]
   exact hle
+
+/-- On a vertical negative-Laplace line, the norm of the `n`th complex derivative is bounded by
+the corresponding real tilted moment. -/
+theorem norm_iteratedDeriv_complexGeneratingFunction_neg_vertical_le
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (r θ : ℝ) :
+    ‖iteratedDeriv n (complexGeneratingFunction F)
+        (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I)))‖ ≤
+      fabiusLaplaceMoment F n r := by
+  have h := norm_iteratedDeriv_complexGeneratingFunction_le_fabiusLaplaceMoment
+    F hF n (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I)))
+  have hre : (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I))).re = -r := by
+    norm_num
+  rw [hre, neg_neg] at h
+  exact h
 
 end Fabius

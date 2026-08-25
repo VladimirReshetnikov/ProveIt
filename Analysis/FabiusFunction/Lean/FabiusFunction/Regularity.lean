@@ -18,6 +18,11 @@ its reflection at the right endpoint) and the linear majorant
 The first removes the hypothesis `x ≤ 1/2` carried by an auxiliary estimate
 used elsewhere in the development; the content is on `[0, 1/2]`, since for
 `x ≥ 1/2` the bound is just `F(x) ≤ 1 ≤ 2x`.
+
+For convenient global use, each endpoint estimate also has a version in which
+the signed distance is replaced by its nonnegative truncation `max d 0`.
+Those forms have no interval hypothesis and remain meaningful outside the
+support.
 -/
 
 set_option autoImplicit false
@@ -137,5 +142,44 @@ theorem rvachevUp_le_two_mul_one_sub_abs (F : BoundedFabius) (hF : IsFabius F)
   · have hneg : x < 0 := lt_of_not_ge hx0
     rw [abs_of_neg hneg, ← rvachevUp_even F x]
     exact key (-x) (by linarith) (by rw [abs_of_neg hneg] at hx; linarith)
+
+/-! ### Global truncated-distance forms -/
+
+/-- Hypothesis-free linear majorant at the origin, using the nonnegative
+truncation of the distance to the endpoint. -/
+theorem fabiusReal_le_two_mul_max (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) : fabiusReal F x ≤ 2 * max x 0 := by
+  by_cases hx : 0 ≤ x
+  · rw [max_eq_left hx]
+    exact fabiusReal_le_two_mul F hF hx
+  · have hxle : x ≤ 0 := (lt_of_not_ge hx).le
+    rw [hF.zero_of_nonpos x hxle, max_eq_right hxle, mul_zero]
+
+/-- Hypothesis-free reflected linear majorant at the right endpoint. -/
+theorem one_sub_fabiusReal_le_two_mul_max (F : BoundedFabius)
+    (hF : IsFabius F) (x : ℝ) :
+    1 - fabiusReal F x ≤ 2 * max (1 - x) 0 := by
+  by_cases hx : x ≤ 1
+  · rw [max_eq_left (sub_nonneg.mpr hx)]
+    exact one_sub_fabiusReal_le_two_mul F hF hx
+  · have hxge : 1 ≤ x := (lt_of_not_ge hx).le
+    rw [hF.one_of_one_le x hxge, sub_self,
+      max_eq_right (sub_nonpos.mpr hxge), mul_zero]
+
+/-- Global linear vanishing bound for Rvachev's function, with the distance
+to the boundary truncated to zero outside its support. -/
+theorem rvachevUp_le_two_mul_max_one_sub_abs (F : BoundedFabius)
+    (hF : IsFabius F) (x : ℝ) :
+    rvachevUp F x ≤ 2 * max (1 - |x|) 0 := by
+  by_cases hx : |x| ≤ 1
+  · rw [max_eq_left (sub_nonneg.mpr hx)]
+    exact rvachevUp_le_two_mul_one_sub_abs F hF x hx
+  · have houtside : x ∉ Ioo (-1 : ℝ) 1 := by
+      intro hmem
+      have habs : |x| < 1 := abs_lt.mpr ⟨hmem.1, hmem.2⟩
+      exact hx habs.le
+    have habs : 1 ≤ |x| := (lt_of_not_ge hx).le
+    rw [rvachevUp_eq_zero_of_not_mem_Ioo F hF houtside,
+      max_eq_right (sub_nonpos.mpr habs), mul_zero]
 
 end Fabius

@@ -23,7 +23,10 @@ forced zero, its coefficient of degree `n` is precisely
 The translated variants show, more generally, that replacing the inner
 power by `(r - 2^k + c)^m` multiplies the normalized series by `exp(cX)`.
 In particular, this covers the `c = 1/2` normalization occurring in an
-alternative q-binomial formula for dyadic Fabius values.
+alternative q-binomial formula for dyadic Fabius values.  The coefficient API
+uses the unified sharp-degree affine formula from `ThueMorsePrefix`, so one
+statement covers every `m ≤ k`; the explicit `k = 0` lemmas retain the
+boundary convention `0^0 = 1`.
 -/
 
 set_option autoImplicit false
@@ -77,26 +80,31 @@ theorem thueMorseCenteredPowerSum_eq_sum_range (k m : ℕ) :
     thueMorseCenteredPowerSum 0 m = (-1 : ℚ) ^ m := by
   simp [thueMorseCenteredPowerSum, thueMorseSign, binaryWeight]
 
+/-- One formula for the centered power sums through the first nonzero degree.
+It is zero below `k` and takes the sharp Prouhet value at `m = k`. -/
+theorem thueMorseCenteredPowerSum_of_le
+    (k m : ℕ) (hm : m ≤ k) :
+    thueMorseCenteredPowerSum k m =
+      if m = k then
+        (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial
+      else 0 := by
+  rw [thueMorseCenteredPowerSum]
+  simpa only [one_mul, one_pow, mul_one, sub_eq_add_neg, add_comm] using
+    thueMorse_affine_power_sum_of_le k m hm (-(2 : ℚ) ^ k) 1
+
 /-- Prouhet cancellation: a dyadic block of exponent `k` annihilates every
 polynomial of degree strictly below `k`. -/
 theorem thueMorseCenteredPowerSum_eq_zero_of_lt
     (k m : ℕ) (hm : m < k) :
     thueMorseCenteredPowerSum k m = 0 := by
-  have hzero := thueMorse_affine_power_sum_eq_zero k m hm
-    (-(2 : ℚ) ^ k) 1
-  rw [thueMorseCenteredPowerSum]
-  convert hzero using 1
-  ring_nf
+  rw [thueMorseCenteredPowerSum_of_le k m hm.le, if_neg hm.ne]
 
 /-- The first centered power sum beyond the Prouhet zero range.  Centering
 does not change this leading-degree value. -/
 theorem thueMorseCenteredPowerSum_self (k : ℕ) :
     thueMorseCenteredPowerSum k k =
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  have hfirst := thueMorse_affine_power_sum_self k
-    (-(2 : ℚ) ^ k) 1
-  rw [thueMorseCenteredPowerSum]
-  convert hfirst using 1 <;> ring
+  rw [thueMorseCenteredPowerSum_of_le k k le_rfl, if_pos rfl]
 
 /-- The finite exponential generating series before removing its forced
 zero of order `k`. -/
@@ -241,27 +249,37 @@ theorem thueMorseTranslatedPowerSum_eq_sum_range
           ((r : ℚ) - (2 : ℚ) ^ k + c) ^ m)
       (2 ^ k)]
 
+/-- At block exponent zero the translated sum has one term.  In particular,
+`c = 1` and `m = 0` gives Lean's boundary value `0 ^ 0 = 1`. -/
+@[simp] theorem thueMorseTranslatedPowerSum_zero (c : ℚ) (m : ℕ) :
+    thueMorseTranslatedPowerSum c 0 m = (c - 1) ^ m := by
+  simp [thueMorseTranslatedPowerSum, thueMorseSign, binaryWeight,
+    sub_eq_add_neg, add_comm]
+
+/-- Unified vanishing/sharp-degree formula for every rational translation. -/
+theorem thueMorseTranslatedPowerSum_of_le
+    (c : ℚ) (k m : ℕ) (hm : m ≤ k) :
+    thueMorseTranslatedPowerSum c k m =
+      if m = k then
+        (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial
+      else 0 := by
+  rw [thueMorseTranslatedPowerSum]
+  simpa only [one_mul, one_pow, mul_one, sub_eq_add_neg, add_comm,
+    add_left_comm, add_assoc] using
+    thueMorse_affine_power_sum_of_le k m hm (-(2 : ℚ) ^ k + c) 1
+
 /-- Translation does not affect Prouhet cancellation below degree `k`. -/
 theorem thueMorseTranslatedPowerSum_eq_zero_of_lt
     (c : ℚ) (k m : ℕ) (hm : m < k) :
     thueMorseTranslatedPowerSum c k m = 0 := by
-  have hzero := thueMorse_affine_power_sum_eq_zero k m hm
-    (-(2 : ℚ) ^ k + c) 1
-  rw [thueMorseTranslatedPowerSum]
-  simpa only [one_mul, sub_eq_add_neg, add_comm, add_left_comm, add_assoc]
-    using hzero
+  rw [thueMorseTranslatedPowerSum_of_le c k m hm.le, if_neg hm.ne]
 
 /-- Translation by an arbitrary rational constant also leaves the first
 nonzero Thue--Morse power sum unchanged. -/
 theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
     thueMorseTranslatedPowerSum c k k =
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  have hfirst := thueMorse_affine_power_sum_self k
-    (-(2 : ℚ) ^ k + c) 1
-  rw [thueMorseTranslatedPowerSum]
-  simpa only [one_mul, mul_one, one_pow, sub_eq_add_neg, add_comm, add_left_comm,
-    add_assoc]
-    using hfirst
+  rw [thueMorseTranslatedPowerSum_of_le c k k le_rfl, if_pos rfl]
 
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries
@@ -333,6 +351,17 @@ theorem thueMorseTranslatedPowerSeries_eq_exp_mul
   intro r _hr
   exact translated_exp_term c k r
 
+/-- At block exponent zero, translation simply changes `exp (-X)` into
+`exp ((c - 1)X)`. -/
+@[simp] theorem thueMorseTranslatedPowerSeries_zero (c : ℚ) :
+    thueMorseTranslatedPowerSeries c 0 =
+      PowerSeries.rescale (c - 1) (PowerSeries.exp ℚ) := by
+  rw [thueMorseTranslatedPowerSeries_eq_exp_mul,
+    thueMorseCenteredPowerSeries_zero,
+    PowerSeries.exp_mul_exp_eq_exp_add]
+  congr 2
+  ring
+
 /-- The translated coefficient series with the forced order-`k` zero
 removed. -/
 noncomputable def thueMorseTranslatedShiftedPowerSeries
@@ -365,6 +394,13 @@ theorem X_pow_mul_thueMorseTranslatedShiftedPowerSeries
       thueMorseTranslatedPowerSum_eq_zero_of_lt c k m
         (Nat.lt_of_not_ge hkm)]
     norm_num
+
+/-- Removing the vacuous factor `X^0` leaves the same one-term exponential
+series at block exponent zero. -/
+@[simp] theorem thueMorseTranslatedShiftedPowerSeries_zero (c : ℚ) :
+    thueMorseTranslatedShiftedPowerSeries c 0 =
+      PowerSeries.rescale (c - 1) (PowerSeries.exp ℚ) := by
+  simpa using X_pow_mul_thueMorseTranslatedShiftedPowerSeries c 0
 
 /-- Translating the inner sum by `c` multiplies its normalized shifted
 series by `exp(cX)`. -/
