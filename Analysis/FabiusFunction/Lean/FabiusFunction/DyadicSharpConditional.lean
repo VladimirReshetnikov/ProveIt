@@ -26,6 +26,11 @@ noncomputable def dyadicEndpointSecondOrder
   (n : ℝ) / 2 *
     (negativeLaplaceLogSecond F n + negativeLaplaceLogFirst F n ^ 2)
 
+/-- The endpoint correction vanishes at the scale-zero boundary. -/
+@[simp] theorem dyadicEndpointSecondOrder_zero (F : BoundedFabius) :
+    dyadicEndpointSecondOrder F 0 = 0 := by
+  simp [dyadicEndpointSecondOrder]
+
 /-- The exact elementary, constant, periodic, and second-order terms in the
 sharp dyadic logarithmic asymptotic. -/
 noncomputable def dyadicSharpCumulantMain
@@ -34,7 +39,8 @@ noncomputable def dyadicSharpCumulantMain
     (negativeLaplacePeriodicMean - Real.log (2 * Real.pi) / 2) +
     negativeLaplacePsi (Real.logb 2 n) - dyadicEndpointSecondOrder F n
 
-private theorem negativeLaplaceTailError_nat_isBigO_inv :
+/-- The exact product-tail correction is `O(1/n)` along natural scales. -/
+theorem negativeLaplaceTailError_nat_isBigO_inv :
     (fun n : ℕ => negativeLaplaceTailError n) =O[atTop]
       (fun n : ℕ => (n : ℝ)⁻¹) := by
   rw [isBigO_iff]
@@ -54,7 +60,8 @@ private theorem negativeLaplaceTailError_nat_isBigO_inv :
   exact (abs_negativeLaplaceTailError_le_four_exp n hlogn).trans
     (mul_le_mul_of_nonneg_left hinv (by norm_num))
 
-private theorem dyadicStirlingLogError_isBigO_inv :
+/-- The sharp Stirling remainder is `O(1/n)` along natural scales. -/
+theorem dyadicStirlingLogError_isBigO_inv :
     dyadicStirlingLogError =O[atTop] (fun n : ℕ => (n : ℝ)⁻¹) := by
   rw [isBigO_iff]
   refine ⟨1 / 12, ?_⟩
