@@ -81,7 +81,9 @@ theorem rvachevFourier_differentiable_analytic
     intro t w
     dsimp [G, G']
     convert! (((hasDerivAt_id w).const_mul (A * (t : ℂ))).cexp.const_mul
-      (rvachevUp F t : ℂ)) using 1 <;> simp [id] <;> ring
+      (rvachevUp F t : ℂ)) using 1
+    simp [id]
+    ring
   have hbound : ∀ (t : ℝ) (w : ℂ), w ∈ Metric.ball z 1 →
       ‖G' w t‖ ≤ bound t := by
     intro t w hw
@@ -206,7 +208,9 @@ private lemma rvachevUp_complex_hasDerivAt_on_unit
       ((-2 * rvachevUp F (2 * x - 1) : ℝ) : ℂ) x := by
   have h := rvachev_hasDerivAt F hF x
   rw [rvachevUp_two_mul_add_one_eq_zero F hF hx] at h
-  convert! h.ofReal_comp using 1 <;> push_cast <;> ring
+  convert! h.ofReal_comp using 1
+  push_cast
+  ring
 
 private lemma complexGeneratingFunction_eq_affine_integral
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -239,8 +243,9 @@ private lemma complexGeneratingFunction_eq_affine_integral
   have hv : ∀ x ∈ uIcc (0 : ℝ) 1, HasDerivAt v (v' x) x := by
     intro x hx
     dsimp [v, v']
-    convert! (((hasDerivAt_id x).ofReal_comp.const_mul z).cexp) using 1 <;>
-      simp [id] <;> ring
+    convert! (((hasDerivAt_id x).ofReal_comp.const_mul z).cexp) using 1
+    simp [id]
+    ring
   have hu'_int : IntervalIntegrable u' volume (0 : ℝ) 1 :=
     hu'cont.intervalIntegrable (μ := volume) 0 1
   have hv'_int : IntervalIntegrable v' volume (0 : ℝ) 1 :=
@@ -342,9 +347,11 @@ theorem complexGeneratingFunction_eq_fourier_analytic
     have hsubst' :
         (2 : ℝ) • (∫ x in (0 : ℝ)..1, p (2 * x - 1)) =
           ∫ t in (-1 : ℝ)..1, p t := by
-      convert! hsubst using 1 <;> norm_num [sub_eq_add_neg]
+      convert! hsubst using 1
+      norm_num [sub_eq_add_neg]
     rw [hpcomp] at hsubst'
-    convert hsubst'.symm using 1 <;> norm_num
+    convert hsubst'.symm using 1
+    norm_num
   rw [complexGeneratingFunction_eq_affine_integral F hF z, hfourier]
   symm
   calc

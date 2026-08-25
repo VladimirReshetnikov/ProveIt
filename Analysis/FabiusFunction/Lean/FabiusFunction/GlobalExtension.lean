@@ -68,7 +68,8 @@ theorem extendedFabius_two_mul_add (F : BoundedFabius) (hF : IsFabius F)
       (-1 : ℝ) ^ binaryWeight b * rvachevUp F (t - 1) := by
   have h := extendedFabius_eq_single_translate F hF b
     (x := 2 * (b : ℝ) + t) (by linarith [ht.1]) (by linarith [ht.2])
-  convert h using 1 <;> ring
+  convert h using 1
+  ring
 
 /-- The signed extension vanishes at every nonnegative even integer knot. -/
 theorem extendedFabius_two_mul_nat (F : BoundedFabius) (hF : IsFabius F)
