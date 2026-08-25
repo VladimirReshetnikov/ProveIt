@@ -141,17 +141,6 @@ theorem negativeLaplaceKernelThird_hasDerivAt
   field_simp [one_sub_exp_neg_ne hx, hx.ne']
   ring
 
-private lemma pow_mul_exp_neg_le_factorial
-    (k : ℕ) {x : ℝ} (hx : 0 ≤ x) :
-    x ^ k * Real.exp (-x) ≤ (k.factorial : ℝ) := by
-  have hfac : (0 : ℝ) < k.factorial := by positivity
-  have hseries := Real.pow_div_factorial_le_exp x hx k
-  have hmul := mul_le_mul_of_nonneg_right hseries (Real.exp_nonneg (-x))
-  rw [div_mul_eq_mul_div] at hmul
-  rw [← Real.exp_add] at hmul
-  norm_num at hmul
-  rwa [div_le_one hfac] at hmul
-
 private lemma exp_neg_le_half {x : ℝ} (hx : 1 ≤ x) :
     Real.exp (-x) ≤ 1 / 2 := by
   calc

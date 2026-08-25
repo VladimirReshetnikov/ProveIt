@@ -93,6 +93,27 @@ theorem intervalIntegral_halfEndpointIntervalIndicator_of_le
         tauto]
       exact Real.volume_real_Ioc
 
+/-- Endpoint-order-free form of
+`intervalIntegral_halfEndpointIntervalIndicator_of_le`.  The first maximum
+is the overlap traversed from `c` to `d`, and the second is the reverse
+overlap; exactly one can be nonzero. -/
+theorem intervalIntegral_halfEndpointIntervalIndicator
+    (a b c d : ℝ) :
+    (∫ x in c..d, halfEndpointIntervalIndicator a b x) =
+      max (min d b - max c a) 0 - max (min c b - max d a) 0 := by
+  rcases le_total c d with hcd | hdc
+  · have hreverse : max (min c b - max d a) 0 = 0 := by
+      rw [max_eq_right]
+      linarith [min_le_left c b, le_max_left d a]
+    rw [intervalIntegral_halfEndpointIntervalIndicator_of_le a b c d hcd,
+      hreverse, sub_zero]
+  · have hforward : max (min d b - max c a) 0 = 0 := by
+      rw [max_eq_right]
+      linarith [min_le_left d b, le_max_left c a]
+    rw [intervalIntegral.integral_symm d c,
+      intervalIntegral_halfEndpointIntervalIndicator_of_le a b d c hdc,
+      hforward, zero_sub]
+
 /-- For `c ≤ d`, the integral of the step approximant `φ_n` over `c..d` is the
 prefactor `2 ^ n / 2 ^ (n + 1).choose 2` times the sum over `m` of the
 coefficient `coeff m` weighted by the overlap length of `c..d` with the `m`-th
@@ -130,11 +151,25 @@ theorem stepApproximant_intervalIntegrable (n : ℕ) (a b : ℝ) :
     IntervalIntegrable (stepApproximant n) volume a b :=
   (stepApproximant_integrable n).intervalIntegrable
 
-/-- The density measure `rvachevMeasure F` charges no singleton: it is given by
-a density against Lebesgue measure, and points are Lebesgue null. -/
+/-- The density measure `rvachevMeasure F` is absolutely continuous with
+respect to Lebesgue measure.  This packages the null-set principle used for
+singletons and interval frontiers below. -/
+theorem rvachevMeasure_absolutelyContinuous (F : BoundedFabius) :
+    rvachevMeasure F ≪ volume := by
+  unfold rvachevMeasure
+  exact withDensity_absolutelyContinuous volume _
+
+/-- Every Lebesgue-null set is also null for `rvachevMeasure F`. -/
+theorem rvachevMeasure_eq_zero_of_volume_eq_zero
+    (F : BoundedFabius) {s : Set ℝ} (hs : volume s = 0) :
+    rvachevMeasure F s = 0 :=
+  rvachevMeasure_absolutelyContinuous F hs
+
+/-- The density measure `rvachevMeasure F` charges no singleton: points are
+Lebesgue null and the measure is absolutely continuous. -/
 theorem rvachevMeasure_singleton (F : BoundedFabius) (x : ℝ) :
     rvachevMeasure F {x} = 0 := by
-  exact withDensity_absolutelyContinuous volume _ (measure_singleton x)
+  exact rvachevMeasure_eq_zero_of_volume_eq_zero F (measure_singleton x)
 
 /-- The frontier of `Ioc a b` is `rvachevMeasure F`-null.  This is the
 null-boundary hypothesis required by the portmanteau theorem in
@@ -449,6 +484,16 @@ theorem stepOverlap_le_cellWidth (n m : ℕ) (a b : ℝ) :
       le_max_right a (stepIntervalLeft n m)]
   · exact hw
 
+/-- If the displayed interval is oppositely ordered, its (unsigned) overlap
+with every histogram cell is zero.  This is the cancellation input for the
+order-free integral formula below. -/
+theorem stepOverlap_eq_zero_of_le (n m : ℕ) {a b : ℝ} (hba : b ≤ a) :
+    stepOverlap n m a b = 0 := by
+  unfold stepOverlap
+  rw [max_eq_right]
+  linarith [min_le_left b (stepIntervalRight n m),
+    le_max_left a (stepIntervalLeft n m)]
+
 /-- Inner comparison: if the `m`-th atom lies in the shrunken interval
 `Ioc (a + stepHalfWidth n) (b - stepHalfWidth n)`, then its whole cell lies in
 `a..b`, so the atom indicator is at most the normalized overlap
@@ -527,6 +572,31 @@ theorem intervalIntegral_stepApproximant_eq_mass_overlap
   apply Finset.sum_congr rfl
   intro m hm
   ring
+
+/-- Endpoint-order-free mass-overlap formula for the step approximant.  The
+difference of the forward and reverse overlaps records the orientation of the
+interval integral, while retaining the normalized atomic-mass coefficients. -/
+theorem intervalIntegral_stepApproximant_eq_mass_orientedOverlap
+    (n : ℕ) (a b : ℝ) :
+    (∫ x in a..b, stepApproximant n x) =
+      ∑ m ∈ range (approximationDegree n + 1),
+        (((approximationPolynomial n).coeff m : ℝ) /
+          (2 : ℝ) ^ ((n + 1).choose 2)) *
+            ((2 : ℝ) ^ n *
+              (stepOverlap n m a b - stepOverlap n m b a)) := by
+  rcases le_total a b with hab | hba
+  · rw [intervalIntegral_stepApproximant_eq_mass_overlap n a b hab]
+    apply Finset.sum_congr rfl
+    intro m hm
+    rw [stepOverlap_eq_zero_of_le n m (a := b) (b := a) hab]
+    ring
+  · rw [intervalIntegral.integral_symm b a,
+      intervalIntegral_stepApproximant_eq_mass_overlap n b a hba,
+      ← Finset.sum_neg_distrib]
+    apply Finset.sum_congr rfl
+    intro m hm
+    rw [stepOverlap_eq_zero_of_le n m hba]
+    ring
 
 /-- The histogram integral over `[a,b]` dominates the atomic mass whose cells lie
 entirely inside that interval. -/

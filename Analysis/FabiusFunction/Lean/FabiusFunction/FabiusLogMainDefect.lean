@@ -10,7 +10,9 @@ periodic-remainder ansatz.
 
 The quadratic Taylor calculation leaves a residual of order
 `((Real.log t) / t) ^ 2`.  In particular, this records the logarithm-squared term omitted
-when the source strengthens its intermediate error estimate.
+when the source strengthens its intermediate error estimate.  The exact
+remainder identity is recorded all the way down to its natural boundary
+`t = 1`; the later logarithmic Taylor decomposition still uses `1 < t`.
 -/
 
 set_option autoImplicit false
@@ -100,6 +102,20 @@ theorem logMainTerm_hasDerivAt {t : ℝ} (ht : t ≠ 0) :
   field_simp [Real.log_ne_zero_of_pos_of_ne_one (by norm_num : (0 : ℝ) < 2) (by norm_num)]
   ring
 
+/-- The derivative of the proposed main term is positive on its full
+logarithmic-scale range `1 ≤ t`, including the endpoint. -/
+theorem logMainDerivative_pos {t : ℝ} (ht : 1 ≤ t) :
+    0 < logMainDerivative t := by
+  have ht0 : 0 < t := zero_lt_one.trans_le ht
+  have halog : 0 < Real.log (2 : ℝ) := Real.log_pos (by norm_num)
+  have hlogt : 0 ≤ Real.log t := Real.log_nonneg ht
+  have hfrac : 0 ≤ Real.log t / (Real.log 2 * t) :=
+    div_nonneg hlogt (mul_nonneg halog.le ht0.le)
+  have hlead := mul_le_mul_of_nonneg_left ht halog.le
+  simp only [mul_one] at hlead
+  unfold logMainDerivative
+  nlinarith
+
 /-- The small relative perturbation in `logMainDerivative = (log 2)t(1+u)`. -/
 noncomputable def logMainDerivativePerturbation (t : ℝ) : ℝ :=
   (Real.log t - Real.log 2 / 2 + Real.log t / (Real.log 2 * t)) /
@@ -115,27 +131,38 @@ noncomputable def logMainDefect (t : ℝ) : ℝ :=
       (1 - t) * Real.log 2) -
     (logMainTerm t - logMainTerm (t - 1))
 
-/--
-Exact repaired form of equation (9) in the local asymptotic draft.  For the
+/-- Boundary-strengthened form of `fabiusLogRemainder_difference_eq`.  The
+exact algebraic remainder identity only needs `1 ≤ t`; strict inequality is
+required later when `log (t - 1)` is split into positive factors.  For the
 actual remainder `g - G`, its finite difference is the difference of the two
-logarithmic derivatives plus the explicitly defined defect of `G`.
--/
-theorem fabiusLogRemainder_difference_eq
-    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 1 < t) :
+logarithmic derivatives plus the explicitly defined defect of `G`. -/
+theorem fabiusLogRemainder_difference_eq_of_one_le
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 1 ≤ t) :
     ((fabiusLogProfile F t - logMainTerm t) -
         (fabiusLogProfile F (t - 1) - logMainTerm (t - 1))) =
       Real.log (deriv (fabiusLogProfile F) t) -
         Real.log (deriv logMainTerm t) + logMainDefect t := by
-  have ht0 : t ≠ 0 := ne_of_gt (lt_trans zero_lt_one ht)
+  have ht0 : t ≠ 0 := ne_of_gt (zero_lt_one.trans_le ht)
   rw [(logMainTerm_hasDerivAt ht0).deriv]
   rw [show
       (fabiusLogProfile F t - logMainTerm t) -
           (fabiusLogProfile F (t - 1) - logMainTerm (t - 1)) =
         (fabiusLogProfile F t - fabiusLogProfile F (t - 1)) -
           (logMainTerm t - logMainTerm (t - 1)) by ring]
-  rw [fabiusLogProfile_difference_eq_log_deriv F hF ht.le]
+  rw [fabiusLogProfile_difference_eq_log_deriv F hF ht]
   unfold logMainDefect
   ring
+
+/-- Exact repaired form of equation (9) on the source's strict range.  This
+compatibility statement is a specialization of the boundary-strengthened
+theorem `fabiusLogRemainder_difference_eq_of_one_le`. -/
+theorem fabiusLogRemainder_difference_eq
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 1 < t) :
+    ((fabiusLogProfile F t - logMainTerm t) -
+        (fabiusLogProfile F (t - 1) - logMainTerm (t - 1))) =
+      Real.log (deriv (fabiusLogProfile F) t) -
+        Real.log (deriv logMainTerm t) + logMainDefect t :=
+  fabiusLogRemainder_difference_eq_of_one_le F hF ht.le
 
 /-- For `t ≠ 0` the derivative factors as `(log 2) * t` times
 `1 + logMainDerivativePerturbation t`.  This is what lets `Real.log` of the
@@ -146,6 +173,17 @@ lemma logMainDerivative_factor {t : ℝ} (ht : t ≠ 0) :
   unfold logMainDerivative logMainDerivativePerturbation
   field_simp [ht, Real.log_ne_zero_of_pos_of_ne_one (by norm_num : (0 : ℝ) < 2) (by norm_num)]
   ring
+
+/-- The perturbative factor in
+`logMainDerivative = (log 2) * t * (1 + u)` is positive for `1 ≤ t`. -/
+theorem one_add_logMainDerivativePerturbation_pos
+    {t : ℝ} (ht : 1 ≤ t) :
+    0 < 1 + logMainDerivativePerturbation t := by
+  have ht0 : 0 < t := zero_lt_one.trans_le ht
+  have hderiv := logMainDerivative_pos ht
+  rw [logMainDerivative_factor ht0.ne'] at hderiv
+  exact pos_of_mul_pos_right hderiv
+    (mul_pos (Real.log_pos (by norm_num)) ht0).le
 
 /-- An exact expression for the main-term defect before Taylor estimation. -/
 theorem logMainDefect_eq {t : ℝ} (ht : 1 < t) :
@@ -164,16 +202,8 @@ theorem logMainDefect_eq {t : ℝ} (ht : 1 < t) :
   have hlogShift : Real.log (t - 1) = Real.log t + logMainShift t := by
     have hfactor : t - 1 = t * (1 - 1 / t) := by field_simp
     rw [hfactor, Real.log_mul ht0 honeSub, logMainShift]
-  have hpertPos : 0 < 1 + logMainDerivativePerturbation t := by
-    have hderivPos : 0 < logMainDerivative t := by
-      unfold logMainDerivative
-      have hlogt : 0 < Real.log t := Real.log_pos ht
-      have halog : 0 < Real.log (2 : ℝ) := Real.log_pos (by norm_num)
-      have : 0 < Real.log t / (Real.log 2 * t) := div_pos hlogt (mul_pos halog (lt_trans zero_lt_one ht))
-      nlinarith
-    rw [logMainDerivative_factor ht0] at hderivPos
-    exact pos_of_mul_pos_right hderivPos
-      (mul_pos (Real.log_pos (by norm_num)) (lt_trans zero_lt_one ht)).le
+  have hpertPos : 0 < 1 + logMainDerivativePerturbation t :=
+    one_add_logMainDerivativePerturbation_pos ht.le
   have hlogDeriv :
       Real.log (logMainDerivative t) = Real.log (Real.log 2) + Real.log t +
         Real.log (1 + logMainDerivativePerturbation t) := by

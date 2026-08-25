@@ -10,18 +10,16 @@ supplement it but do not replace it.
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
 branch/base: codex/fabius-theorem-refinements at
-  published checkpoint 1b2cd37ddad9253cb498510f99368f68eeac5b99,
-  with pinned origin/main f51777a184240e20d5991676ebb3465b0824b942
-  source-resolved for the current merge checkpoint
+  unpublished merge checkpoint 4c54e8d9beee1622003891222b76e2cfc59b685f,
+  merging pinned origin/main 6fcbbb5da45330bdc78c6090706cf1479f3d3afb
 git owner: root in this worktree
-build owner: released after exact combined-tree `+FabiusQBinomialTaylor`
-  (3,320 jobs) and `+FabiusQBinomialFormula` (3,317 jobs) builds passed.  The
-  next target's Lake graph scan was stopped before Lean under host memory
-  pressure; no process survived, and the remaining replay is still pending
-source lease: refreshed 2026-08-25 14:25 -07:00 through 15:25 -07:00
-next synchronization checkpoint: publish this pinned merge, re-fetch
-  origin/main, and record whether the remote pin remained current; run the
-  exact combined-tree Lean replay when the single host build lane is free
+build owner: external 10ef worktree; this worktree will not run Lean, Lake, or
+  cache-mutating commands until that owner records a terminal event
+source lease: refreshed 2026-08-25 15:37 -07:00 through 16:37 -07:00 for the
+  exact 6fcbbb5d documentation merge and registry repair paths below
+next synchronization checkpoint: resolve, rebuild, inspect, commit, and
+  publish this pinned merge; then re-fetch origin/main and merge any newer
+  exact tip before a no-force fast-forward push to main
 ```
 
 ## Current integration and validation lease
@@ -53,6 +51,10 @@ next synchronization checkpoint: publish this pinned merge, re-fetch
   consolidation without data loss, stale-reference repair, explicit
   formalization boundaries, reproducible PDF rebuilds, and immutable
   validation attribution.
+- Seventh integration lease for pinned main `6fcbbb5d` over unpublished
+  checkpoint `4c54e8d9`: retain the incoming theorem/API union and synthesized
+  dossier structure; semantically reconcile the primary module guide,
+  formalization boundaries, provenance registry, and both generated PDFs.
 
 ## Read-only survey
 
@@ -125,7 +127,7 @@ carry focused immutable evidence.  Those reports predate the current-only
 translated-polynomial batch and do not validate the exact combined
 `23bfd95d0 + 35852aa65` tree.
 
-## Current merge-checkpoint evidence
+## Sixth pinned integration evidence (historical)
 
 This checkpoint merges exact incoming tip
 `f51777a184240e20d5991676ebb3465b0824b942` into exact published branch
@@ -190,6 +192,51 @@ worktree's wrapper was interrupted before any Lean child started, its mutex was
 released, and zero residual Lean/Lake processes remained.  The remaining
 changed-leaf replay, umbrella target, and axiom audit are therefore explicitly
 resource-deferred, not inferred from historical artifacts.
+
+## Seventh pinned integration evidence
+
+This checkpoint merges exact incoming tip
+`6fcbbb5da45330bdc78c6090706cf1479f3d3afb` into exact local checkpoint
+`4c54e8d9beee1622003891222b76e2cfc59b685f`, with merge base
+`f51777a184240e20d5991676ebb3465b0824b942` and divergence of 14 branch-only
+and 29 incoming-only commits. An immutable preview and the actual merge agree
+on five conflict paths, all documentation: the primary and consolidated
+frontier TeX/PDF pairs and the historical both-papers registry. No Lean source
+conflicts.
+
+The incoming Lean union adds a generic unit-Laplace-moment abstraction,
+computable signed-global splines, boundary-complete binary/Bernoulli APIs,
+quantitative saddle transfers, lower-Lambert calculus, Bose finite-part
+integrals, and logarithmic small-argument refinements. A lexical public-name
+comparison finds 97 additions and no removal from this branch's prior public
+surface. The facade auto-merge retains the corrected frontier link and adds
+the new focused import.
+
+The primary resolution keeps the complete sharp-asymptotic module family,
+adds the Mellin/Bose modules, retains the incoming Bose and signed-global
+accounts, and pins its bibliography to theorem-bearing commit `169de0901`.
+Its three-pass rebuilt PDF is 78 A4 pages with SHA-256
+`AE8742EA8D254F4318347F9C0C18FA327D159493FDABB211DBF8F6386B45CDB1`.
+The frontier uses the incoming deduplicated repeated-integration, Thue--Morse,
+and dyadic synthesis, with explicit local warnings for paper-level results
+that still lack exact declarations. Its synthesized provenance records the
+repaired repeated-integration and dyadic-q source hashes `e3a7fcad...` and
+`8776344b...`. Its final three-pass rebuilt PDF is 192 A4 pages with SHA-256
+`411309202A8789D58B6D4690D8AB054DD8184CAC75AD86D51F8686B4956614EE`.
+Both final logs have no undefined references or citations, duplicate-label
+rerun requests, fatal errors, or overfull boxes; representative changed pages
+were rendered and inspected. The incoming 88-page walkthrough source/PDF pair
+is preserved byte-for-byte.
+
+Post-resolution static gates pass: staged and unstaged `diff --check`, a
+tree-wide conflict-marker scan, the forbidden Lean declaration scan, all 189
+leaf modules with `autoImplicit false`, 48 local Markdown links, and all five
+project-authored TeX/PDF pairs. The documentation ratchet reports 189 files,
+3,348 public declarations, 154 pre-existing undocumented declarations in 16
+files, zero missing module headers, and no regression. Exact-tree Lean
+compilation remains explicitly deferred while the 10ef worktree owns the
+single host-wide build lane; historical incoming and pre-merge component
+builds are not represented as validation of this merged union.
 
 ## Reviewed translated-polynomial API
 

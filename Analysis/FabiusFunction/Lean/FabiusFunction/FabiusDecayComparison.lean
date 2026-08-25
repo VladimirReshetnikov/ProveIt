@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusLogSquaredAsymptotic
+import FabiusFunction.FabiusSmallArgumentScale
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-!
@@ -10,7 +11,10 @@ function is flat (and hence smaller than every power), it decays more slowly
 than `exp (-c / x)` for every `c > 0`.
 
 We state the result on the natural logarithmic scale `x = 2⁻ᵗ`, where
-`exp (-c / x) = exp (-c * 2ᵗ)`.
+`exp (-c / x) = exp (-c * 2ᵗ)`, and then transfer it back to the
+small-positive-argument filter.  Thus both the coordinate form used in the
+proof and the direct comparison with `fabiusReal` are available as public
+theorems.
 -/
 
 set_option autoImplicit false
@@ -90,5 +94,26 @@ theorem exp_neg_two_rpow_isLittleO_fabius {c : ℝ} (hc : 0 < c) :
     (fun t : ℝ => Real.exp (-c * (2 : ℝ) ^ t)) =o[atTop]
       fabiusLogPhi fabius :=
   exp_neg_two_rpow_isLittleO_fabiusLogPhi fabius fabius_spec hc
+
+/-- On the original small-argument scale, `exp (-c / x)` is little-o of every
+bounded/CDF Fabius solution as `x → 0⁺`, for every `c > 0`. -/
+theorem exp_neg_div_isLittleO_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) {c : ℝ} (hc : 0 < c) :
+    (fun x : ℝ => Real.exp (-c / x)) =o[nhdsWithin 0 (Set.Ioi 0)]
+      fabiusReal F := by
+  refine isLittleO_smallArgument_of_logScale
+    (fun x : ℝ => Real.exp (-c / x)) (fabiusReal F) ?_
+  have h := exp_neg_two_rpow_isLittleO_fabiusLogPhi F hF hc
+  apply h.congr'
+  · filter_upwards with t
+    rw [div_eq_mul_inv, fabiusLogArgument_inv]
+  · filter_upwards with t
+    rfl
+
+/-- Canonical small-argument specialization of the exponential comparison. -/
+theorem exp_neg_div_isLittleO_fabius {c : ℝ} (hc : 0 < c) :
+    (fun x : ℝ => Real.exp (-c / x)) =o[nhdsWithin 0 (Set.Ioi 0)]
+      fabiusReal fabius :=
+  exp_neg_div_isLittleO_fabiusReal fabius fabius_spec hc
 
 end Fabius

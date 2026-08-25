@@ -169,16 +169,6 @@ theorem exists_bound_abs_negativeLaplacePsiThird :
   exact exists_nonneg_bound_abs_of_isBounded_range negativeLaplacePsiThird
     isBounded_range_negativeLaplacePsiThird
 
-private lemma local_pow_mul_exp_neg_le_factorial
-    (k : ℕ) {x : ℝ} (hx : 0 ≤ x) :
-    x ^ k * Real.exp (-x) ≤ (k.factorial : ℝ) := by
-  have hfac : (0 : ℝ) < k.factorial := by positivity
-  have hseries := Real.pow_div_factorial_le_exp x hx k
-  have hmul := mul_le_mul_of_nonneg_right hseries (Real.exp_nonneg (-x))
-  rw [div_mul_eq_mul_div, ← Real.exp_add] at hmul
-  norm_num at hmul
-  rwa [div_le_one hfac] at hmul
-
 private lemma local_exp_neg_div_one_sub_pow_le
     (m : ℕ) {x : ℝ} (hx : 1 ≤ x) :
     Real.exp (-x) / (1 - Real.exp (-x)) ^ m ≤
@@ -212,7 +202,7 @@ private lemma norm_negativeLaplaceForwardTermSecond_le_invCube_geometric
     nlinarith
   have hfrac := local_exp_neg_div_one_sub_pow_le 2 hy
   norm_num at hfrac
-  have hpow := local_pow_mul_exp_neg_le_factorial 3 (by positivity : 0 ≤ y)
+  have hpow := pow_mul_exp_neg_le_factorial 3 (by positivity : 0 ≤ y)
   norm_num at hpow
   unfold negativeLaplaceForwardTermSecond
   change ‖-(a ^ 2 * Real.exp (-y) / (1 - Real.exp (-y)) ^ 2)‖ ≤ _
@@ -282,7 +272,7 @@ private lemma norm_negativeLaplaceForwardTermThird_le_invFourth_geometric
     exact Real.exp_le_exp.mpr (by linarith)
   have hfrac := local_exp_neg_div_one_sub_pow_le 3 hy
   norm_num at hfrac
-  have hpow := local_pow_mul_exp_neg_le_factorial 4 (by positivity : 0 ≤ y)
+  have hpow := pow_mul_exp_neg_le_factorial 4 (by positivity : 0 ≤ y)
   norm_num at hpow
   unfold negativeLaplaceForwardTermThird
   change ‖a ^ 3 * Real.exp (-y) * (1 + Real.exp (-y)) /

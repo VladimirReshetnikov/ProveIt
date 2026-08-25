@@ -13,8 +13,11 @@ the relative estimate `1 + O(1 / b)`.
 At this precision one must normally retain the first odd correction: its
 absolute integral is `O(1 / √b)`, although its signed integral vanishes.  The
 theorem `normalized_integral_sub_one_isBigO_of_central_tail_odd_correction`
-makes that cancellation explicit.  It does not hide any derivative, product,
-or tail estimate specific to the Fabius function.
+makes that cancellation explicit.  The generic
+`normalized_integral_sub_reference_isBigO_of_L1` and central/tail companion
+isolate the preceding passage from kernel error to normalized-integral error.
+None of these results hides a derivative, product, or tail estimate specific
+to the Fabius function.
 -/
 
 set_option autoImplicit false
@@ -64,27 +67,153 @@ lemma integral_standardGaussian :
     ring
   exact_mod_cast hreal
 
-/-- A complex-valued odd function has zero Lebesgue integral on the real
-line.  Mathlib defines the integral of a nonintegrable function to be zero, so
-integrability is not required for this identity. -/
-lemma integral_eq_zero_of_odd (J : ℝ → ℂ) (hodd : Function.Odd J) :
+/-- An odd function with values in a complete real normed additive group has
+zero Lebesgue integral on the real line.  Mathlib defines the integral of a
+nonintegrable function to be zero, so integrability is not required for this
+identity. -/
+lemma integral_eq_zero_of_odd
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (J : ℝ → E) (hodd : Function.Odd J) :
     (∫ v : ℝ, J v) = 0 := by
   have hinvariant := integral_neg_eq_self J volume
   have hfun : (fun v : ℝ => J (-v)) = -J := by
     funext v
     exact hodd v
   rw [hfun, integral_neg'] at hinvariant
-  exact neg_eq_self.mp hinvariant
+  have hsum : (∫ v : ℝ, J v) + ∫ v : ℝ, J v = 0 :=
+    eq_neg_iff_add_eq_zero.mp hinvariant.symm
+  have hsmul : (2 : ℝ) • (∫ v : ℝ, J v) = 0 := by
+    simpa only [two_smul ℝ] using hsum
+  exact (smul_eq_zero.mp hsmul).resolve_left (by norm_num)
 
 /-- Integrate a pointwise norm bound for the difference of two Bochner
-integrable functions. -/
+integrable functions with values in any complete real normed additive
+group. -/
 theorem norm_integral_sub_le_of_pointwise
-    (K G : ℝ → ℂ) (g : ℝ → ℝ)
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (K G : ℝ → E) (g : ℝ → ℝ)
     (hK : Integrable K) (hG : Integrable G) (hg : Integrable g)
     (hbound : ∀ v : ℝ, ‖K v - G v‖ ≤ g v) :
     ‖(∫ v : ℝ, K v) - ∫ v : ℝ, G v‖ ≤ ∫ v : ℝ, g v := by
   rw [← integral_sub hK hG]
   exact norm_integral_le_of_norm_le hg (Filter.Eventually.of_forall hbound)
+
+/-- An `L¹` approximation of a complex kernel by any integrable reference
+gives the same-order approximation of their Gaussian-normalized integrals.
+The comparison rate and indexing filter are completely arbitrary. -/
+theorem normalized_integral_sub_reference_isBigO_of_L1
+    {α : Type*} (l : Filter α) (rate : α → ℝ)
+    (K reference : α → ℝ → ℂ)
+    (hK : ∀ᶠ i in l, Integrable (K i))
+    (hreference : ∀ᶠ i in l, Integrable (reference i))
+    (herror : (fun i => ∫ v : ℝ, ‖K i v - reference i v‖) =O[l] rate) :
+    (fun i =>
+      (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
+        (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
+          (∫ v : ℝ, reference i v)) =O[l] rate := by
+  rw [isBigO_iff] at herror ⊢
+  obtain ⟨C, hC⟩ := herror
+  let gaussianMass : ℝ := Real.sqrt (2 * Real.pi)
+  have hmass : 0 < gaussianMass := by
+    dsimp [gaussianMass]
+    positivity
+  refine ⟨gaussianMass⁻¹ * C, ?_⟩
+  filter_upwards [hK, hreference, hC] with i hKi hRi hi
+  have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
+    (hKi.sub hRi).norm
+  have hnonneg : 0 ≤ ∫ v : ℝ, ‖K i v - reference i v‖ :=
+    integral_nonneg fun _ => norm_nonneg _
+  rw [Real.norm_eq_abs, abs_of_nonneg hnonneg] at hi
+  have hnorm := norm_integral_sub_le_of_pointwise (K i) (reference i)
+    (fun v => ‖K i v - reference i v‖) hKi hRi hdiffInt
+    (fun _ => le_rfl)
+  change ‖(gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
+      (gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, reference i v)‖ ≤ _
+  rw [← mul_sub, norm_mul, norm_inv, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_pos hmass]
+  calc
+    gaussianMass⁻¹ *
+          ‖(∫ v : ℝ, K i v) - ∫ v : ℝ, reference i v‖
+        ≤ gaussianMass⁻¹ *
+          (∫ v : ℝ, ‖K i v - reference i v‖) := by gcongr
+    _ ≤ gaussianMass⁻¹ * (C * ‖rate i‖) := by gcongr
+    _ = (gaussianMass⁻¹ * C) * ‖rate i‖ := by ring
+
+/-- Central-set plus complementary-tail form of the arbitrary-reference
+normalized-integral estimate. -/
+theorem normalized_integral_sub_reference_isBigO_of_central_tail
+    {α : Type*} (l : Filter α) (rate : α → ℝ)
+    (K reference : α → ℝ → ℂ) (central : α → Set ℝ)
+    (hK : ∀ᶠ i in l, Integrable (K i))
+    (hreference : ∀ᶠ i in l, Integrable (reference i))
+    (hcentralMeas : ∀ᶠ i in l, MeasurableSet (central i))
+    (hcentral :
+      (fun i => ∫ v in central i, ‖K i v - reference i v‖) =O[l] rate)
+    (htail :
+      (fun i => ∫ v in (central i)ᶜ, ‖K i v - reference i v‖) =O[l] rate) :
+    (fun i =>
+      (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) -
+        (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ *
+          (∫ v : ℝ, reference i v)) =O[l] rate := by
+  apply normalized_integral_sub_reference_isBigO_of_L1 l rate K reference
+    hK hreference
+  have hsum := hcentral.add htail
+  apply hsum.congr'
+  · filter_upwards [hK, hreference, hcentralMeas] with i hKi hRi hmeas
+    have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
+      (hKi.sub hRi).norm
+    exact integral_add_compl hmeas hdiffInt
+  · exact Filter.EventuallyEq.rfl
+
+/-- If the reference has standard Gaussian mass, an `L¹` approximation gives
+the same-order relative estimate `normalized integral = 1 + O(rate)`. -/
+theorem normalized_integral_sub_one_isBigO_of_L1
+    {α : Type*} (l : Filter α) (rate : α → ℝ)
+    (K reference : α → ℝ → ℂ)
+    (hK : ∀ᶠ i in l, Integrable (K i))
+    (hreference : ∀ᶠ i in l, Integrable (reference i))
+    (hreferenceMass : ∀ᶠ i in l,
+      (∫ v : ℝ, reference i v) = (Real.sqrt (2 * Real.pi) : ℂ))
+    (herror : (fun i => ∫ v : ℝ, ‖K i v - reference i v‖) =O[l] rate) :
+    (fun i =>
+      (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1)
+        =O[l] rate := by
+  have h := normalized_integral_sub_reference_isBigO_of_L1
+    l rate K reference hK hreference herror
+  apply h.congr'
+  · filter_upwards [hreferenceMass] with i hi
+    rw [hi]
+    have hmass : (Real.sqrt (2 * Real.pi) : ℂ) ≠ 0 := by
+      exact_mod_cast (ne_of_gt (by positivity : 0 < Real.sqrt (2 * Real.pi)))
+    rw [inv_mul_cancel₀ hmass]
+  · exact Filter.EventuallyEq.rfl
+
+/-- Central-set plus complementary-tail form of
+`normalized_integral_sub_one_isBigO_of_L1`. -/
+theorem normalized_integral_sub_one_isBigO_of_central_tail
+    {α : Type*} (l : Filter α) (rate : α → ℝ)
+    (K reference : α → ℝ → ℂ) (central : α → Set ℝ)
+    (hK : ∀ᶠ i in l, Integrable (K i))
+    (hreference : ∀ᶠ i in l, Integrable (reference i))
+    (hreferenceMass : ∀ᶠ i in l,
+      (∫ v : ℝ, reference i v) = (Real.sqrt (2 * Real.pi) : ℂ))
+    (hcentralMeas : ∀ᶠ i in l, MeasurableSet (central i))
+    (hcentral :
+      (fun i => ∫ v in central i, ‖K i v - reference i v‖) =O[l] rate)
+    (htail :
+      (fun i => ∫ v in (central i)ᶜ, ‖K i v - reference i v‖) =O[l] rate) :
+    (fun i =>
+      (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1)
+        =O[l] rate := by
+  have h := normalized_integral_sub_reference_isBigO_of_central_tail
+    l rate K reference central hK hreference hcentralMeas hcentral htail
+  apply h.congr'
+  · filter_upwards [hreferenceMass] with i hi
+    rw [hi]
+    have hmass : (Real.sqrt (2 * Real.pi) : ℂ) ≠ 0 := by
+      exact_mod_cast (ne_of_gt (by positivity : 0 < Real.sqrt (2 * Real.pi)))
+    rw [inv_mul_cancel₀ hmass]
+  · exact Filter.EventuallyEq.rfl
 
 /-- A normalized integral is `1 + O(1 / b)` if its kernel has `L¹` distance
 `O(1 / b)` from an integrable reference of standard Gaussian mass. -/
@@ -101,38 +230,15 @@ theorem normalized_integral_sub_one_isBigO_of_reference
     (fun i =>
       (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1) =O[l]
         (fun i => (b i)⁻¹) := by
-  rw [isBigO_iff]
-  let gaussianMass : ℝ := Real.sqrt (2 * Real.pi)
-  have hmass : 0 < gaussianMass := by
-    dsimp [gaussianMass]
-    positivity
-  refine ⟨C / gaussianMass, ?_⟩
-  filter_upwards [hb, hK, hreference, hreferenceMass, herror] with
-    i hbi hKi hRi hRmass herr
-  have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
-    (hKi.sub hRi).norm
-  have hdiff := norm_integral_sub_le_of_pointwise (K i) (reference i)
-    (fun v => ‖K i v - reference i v‖) hKi hRi hdiffInt
-    (fun _ => le_rfl)
-  rw [hRmass] at hdiff
-  change ‖(gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1‖ ≤ _
-  have hrewrite :
-      (gaussianMass : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1 =
-        (gaussianMass : ℂ)⁻¹ *
-          ((∫ v : ℝ, K i v) - (gaussianMass : ℂ)) := by
-    field_simp [ne_of_gt hmass]
-  rw [hrewrite, norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos hmass]
-  have hbinv : ‖(b i)⁻¹‖ = (b i)⁻¹ := by
-    rw [Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hbi)]
-  rw [hbinv]
-  calc
-    gaussianMass⁻¹ * ‖(∫ v : ℝ, K i v) - (gaussianMass : ℂ)‖
-        ≤ gaussianMass⁻¹ * (∫ v : ℝ, ‖K i v - reference i v‖) := by
-          gcongr
-    _ ≤ gaussianMass⁻¹ * (C * (b i)⁻¹) := by
-          gcongr
-    _ = (C / gaussianMass) * (b i)⁻¹ := by ring
+  apply normalized_integral_sub_one_isBigO_of_L1 l
+    (fun i => (b i)⁻¹) K reference hK hreference hreferenceMass
+  apply IsBigO.of_bound C
+  filter_upwards [hb, herror] with i hbi hi
+  have hnonneg : 0 ≤ ∫ v : ℝ, ‖K i v - reference i v‖ :=
+    integral_nonneg fun _ => norm_nonneg _
+  rw [Real.norm_eq_abs, abs_of_nonneg hnonneg, Real.norm_eq_abs,
+    abs_of_pos (inv_pos.mpr hbi)]
+  exact hi
 
 /-- Central-arc plus complementary-tail form of quantitative Gaussian
 extraction, relative to any reference kernel of standard Gaussian mass. -/
@@ -155,18 +261,24 @@ theorem normalized_integral_sub_one_isBigO_of_central_tail_reference
     (fun i =>
       (Real.sqrt (2 * Real.pi) : ℂ)⁻¹ * (∫ v : ℝ, K i v) - 1) =O[l]
         (fun i => (b i)⁻¹) := by
-  apply normalized_integral_sub_one_isBigO_of_reference l b K reference
-    (Ccentral + Ctail) hb hK hreference hreferenceMass
-  filter_upwards [hK, hreference, hcentralMeas, hcentral, htail] with
-    i hKi hRi hmeas hc ht
-  have hdiffInt : Integrable (fun v => ‖K i v - reference i v‖) :=
-    (hKi.sub hRi).norm
-  rw [← integral_add_compl hmeas hdiffInt]
-  calc
-    (∫ v in central i, ‖K i v - reference i v‖) +
-          ∫ v in (central i)ᶜ, ‖K i v - reference i v‖
-        ≤ Ccentral * (b i)⁻¹ + Ctail * (b i)⁻¹ := add_le_add hc ht
-    _ = (Ccentral + Ctail) * (b i)⁻¹ := by ring
+  apply normalized_integral_sub_one_isBigO_of_central_tail l
+    (fun i => (b i)⁻¹) K reference central hK hreference hreferenceMass
+    hcentralMeas
+  · apply IsBigO.of_bound Ccentral
+    filter_upwards [hb, hcentral] with i hbi hi
+    have hnonneg : 0 ≤ ∫ v in central i, ‖K i v - reference i v‖ :=
+      integral_nonneg fun _ => norm_nonneg _
+    rw [Real.norm_eq_abs, abs_of_nonneg hnonneg, Real.norm_eq_abs,
+      abs_of_pos (inv_pos.mpr hbi)]
+    exact hi
+  · apply IsBigO.of_bound Ctail
+    filter_upwards [hb, htail] with i hbi hi
+    have hnonneg : 0 ≤ ∫ v in (central i)ᶜ,
+        ‖K i v - reference i v‖ :=
+      integral_nonneg fun _ => norm_nonneg _
+    rw [Real.norm_eq_abs, abs_of_nonneg hnonneg, Real.norm_eq_abs,
+      abs_of_pos (inv_pos.mpr hbi)]
+    exact hi
 
 /-- The saddle-point specialization which retains an integrable odd first
 correction `J`.  Its integral vanishes, while the two hypotheses bound the

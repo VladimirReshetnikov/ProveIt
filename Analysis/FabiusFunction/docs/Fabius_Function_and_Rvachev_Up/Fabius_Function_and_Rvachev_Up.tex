@@ -3861,6 +3861,73 @@ where
 \begin{equation}
  A_0=\frac{6\gamma^2+12\gamma_1-\pi^2}{12}.               \label{eq:A0}
 \end{equation}
+
+\subsubsection{A convergent real finite-part integral}
+\label{subsub:as-real-finite-part}
+
+The formal development also realizes this Laurent coefficient as an ordinary sum of two
+absolutely convergent real integrals.  For \(x>0\), write
+\begin{equation}
+ \kappa_0(x)=\frac1x\log\frac{1-\e^{-x}}x,
+ \qquad
+ \kappa_\infty(x)=\frac1x\log(1-\e^{-x}).                 \label{eq:bose-finite-part-kernels}
+\end{equation}
+The first kernel stays uniformly bounded as \(x\downarrow0\): the formal estimate is
+
+\begin{equation}
+ |\kappa_0(x)|\le1\qquad(x>0).                            \label{eq:bose-small-bound}
+\end{equation}
+
+The second is integrable at infinity, by an explicit exponential majorant.  Thus no
+analytic-continuation convention is hidden in the following identity.
+
+\begin{theorem}[Convergent Bose finite part]
+\label{thm:bose-real-finite-part}
+For every cutoff \(c>0\), one has the cutoff-independent identity
+\begin{equation}
+ \boxed{
+ \int_{(0,c]}\kappa_0(x)\dd x+
+ \int_{(c,\infty)}\kappa_\infty(x)\dd x+
+ \frac{(\log c)^2}{2}=A_0.}                               \label{eq:bose-real-finite-part-cutoff}
+\end{equation}
+In particular, the unit cutoff gives
+\begin{equation}
+ \int_{(0,1]}\kappa_0(x)\dd x+
+ \int_{(1,\infty)}\kappa_\infty(x)\dd x=A_0.             \label{eq:bose-real-finite-part}
+\end{equation}
+Moreover, if \(0<a\le b\), then moving between the two regularizations over the transition
+interval incurs exactly
+\begin{equation}
+ \int_{(a,b]}\bigl(\kappa_\infty(x)-\kappa_0(x)\bigr)\dd x
+ =\frac{(\log b)^2-(\log a)^2}{2}.                        \label{eq:bose-cutoff-transition}
+\end{equation}
+\end{theorem}
+
+In Lean, the kernels in \eqref{eq:bose-finite-part-kernels} are
+\lean{boseFinitePartSmallKernel} and \lean{boseFinitePartLargeKernel}.  Their arbitrary-cutoff
+integrability is
+\lean{integrableOn_boseFinitePartSmallKernel_Ioc} and
+\lean{integrableOn_boseFinitePartLargeKernel_Ioi_of_pos}; the pointwise estimate
+\eqref{eq:bose-small-bound} is \lean{abs_boseFinitePartSmallKernel_le_one_of_pos}.
+Equation \eqref{eq:bose-cutoff-transition} is
+\lean{integral_boseFinitePartLargeKernel_sub_small_Ioc}, and
+\eqref{eq:bose-real-finite-part-cutoff} is the expanded theorem
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant_of_pos}.  Equivalently, Lean packages its
+left side as \lean{boseFinitePartIntegralAtCutoff}; its cutoff independence and evaluation
+are \lean{boseFinitePartIntegralAtCutoff_eq} and
+\lean{boseFinitePartIntegralAtCutoff_eq_gammaZetaConstant}.  Before adding the logarithmic
+correction, the raw quantity \lean{boseFinitePartSplitIntegral} is evaluated by
+\lean{boseFinitePartSplitIntegral_eq_gammaZetaConstant_sub}, which fixes the minus sign in
+\(A_0-(\log c)^2/2\).  The unit-cutoff specialization
+\eqref{eq:bose-real-finite-part} is
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant}.  All these declarations are in
+\path{BoseFinitePartIntegral.lean}.  The proof first establishes the positive-real Mellin
+identity \lean{bose_mellin_integral_zeta} in \path{MellinBose.lean}, splits off the elementary
+integral of \(x^{r-1}\log x\), and then uses
+\lean{tendsto_realGamma_mul_zeta_finitePart} from \path{MellinFinitePart.lean} as
+\(r\downarrow0\).  In particular, the displayed equality is a theorem about convergent real
+integrals, not a notation for a divergent integral assigned a regularized value.
+
 The final constant is
 \begin{equation}
  C_F=\frac{A_0}{L}-\frac{7L}{12}-\frac12\log\pi
@@ -5233,6 +5300,34 @@ definition.  The declarations are
 \lean{fabiusReal_isComputableRealFunction} in
 \path{FabiusComputableSpline.lean} and \path{FabiusComputability.lean}.
 
+The same finite spline code also gives a signed-global algorithm.  Instead of clamping the
+positive numerator to the unit grid, it retains the unrestricted centered spline and rounds
+the signed rational numerator pair.  Negative dyadic inputs collapse to the zero grid point,
+which is exact because \(
+\mathcal F(x)=0\) for \(x\le0\).  The resulting primitive-recursive procedure satisfies
+\begin{equation}
+ \left|
+ \mathcal F\!\left(c.\operatorname{value}(p+3)\right)
+ -\operatorname{Approx}_{\rm glob}(c,p).\operatorname{value}(p)
+ \right|
+ \le 5\,2^{-(p+3)}.                                      \label{eq:computable-global-spline-error}
+\end{equation}
+These are \lean{extendedFabiusSplineApproxPR_primrec} and
+\lean{extendedFabiusSplineApproxPR_error}.  Hence, for every \(F\) satisfying
+\lean{IsFabius F}, its signed extension \lean{extendedFabius F} is a computable real function, by
+\lean{extendedFabius_isComputableRealFunction}; the canonical specialization is
+\lean{globalFabius_isComputableRealFunction}.  This is a primitive-recursive correctness
+statement, not a practical running-time estimate: the unrestricted positive grid numerator
+sets the length of the finite fold.
+
+The quantitative analytic estimate is stable under moving the evaluation point:
+\begin{equation}
+ |S_p(x)-\mathcal F(y)|\le 2^{-p}+2|x-y|.                 \label{eq:computable-spline-moving-input}
+\end{equation}
+This is \lean{abs_fabiusUniformSpline_sub_extendedFabius_le_add}.  In particular, if
+\(x_p\to x\), then \(S_p(x_p)\to\mathcal F(x)\), as packaged by
+\lean{fabiusUniformSpline_tendsto_extendedFabius_of_tendsto}.
+
 \section{Formalization boundary and audit conventions}
 \label{sec:audit}
 
@@ -5338,11 +5433,14 @@ Thue--Morse prefixes &
 Endpoint asymptotics &
 \path{NegativeLaplace.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
+\path{MellinBose.lean}, \path{MellinFinitePart.lean},
+\path{BoseFinitePartIntegral.lean},
 \path{FabiusLambertPhase.lean}, \path{FabiusSharpLambertMain.lean},
 \path{FabiusLambertSaddle.lean}, \path{FabiusDyadicSharpAsymptotic.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{FabiusSaddleLeadingCoefficient.lean},
-\path{FabiusSecondSaddleCorrection.lean}, \path{FabiusSecondSaddleExpansion.lean}\\
+\path{FabiusSecondSaddleCorrection.lean},
+\path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
 \path{FabiusLegendreLeastSquares.lean}, \path{FabiusTranslatedLegendreSeries.lean},
@@ -5499,8 +5597,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, repository snapshot
-  \path{75dac857e96d858140e7e5520172d0c659bde98e}, 24 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/75dac857e96d858140e7e5520172d0c659bde98e/Analysis/FabiusFunction}.
+  \path{169de0901be8f9be4b8988f09ecada1d888765dd}, 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/169de0901be8f9be4b8988f09ecada1d888765dd/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
