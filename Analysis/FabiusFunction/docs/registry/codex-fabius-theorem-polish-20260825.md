@@ -8,25 +8,29 @@ SYNC Fabius
 worktree/task: 10ef /root — theorem and exposition refinement campaign
 branch/base: codex/fabius-theorem-polish-20260825 at published checkpoint
   61928eb0d0f448f997a53c52d8154dfb9f16450d, based on origin/main
-writing: Lean/FabiusFunction/HalfQBinomial.lean and this registry file
+writing: this registry file only; the provisional HalfQBinomial lease was
+  retracted before any source edit
 reading: the primary synthesis q-binomial section, effective-constant sites,
   and probability/discrete-limit leaf modules
-expected API: a general finite-q-Pochhammer zero-factor characterization;
-  the exact roots 1, 2, ..., 2^(n-1) at q = 1/2; and q-binomial-polynomial
-  corollaries in both native and literal notation
+expected API: under reselection after a full live-dirty-state audit; the
+  finite-q-Pochhammer zero-set candidate remains mathematically sound but is
+  reserved to the existing 8f3f writer
 completed: feature branch and initial survey registry published; three
   independent read-only surveys found no advertised-branch overlap for the
   selected leaf module
-validated: every advertised origin head fetched; exact-path remote-branch and
-  sibling-worktree dirty-state checks found no HalfQBinomial writer; no host-
-  wide Lean, Lake, Elan, or PDFLaTeX process was running at the claim time
-next: prototype the factor/root equivalences, obtain an independent source
-  review, then run the focused HalfQBinomial target under the single build lane
-lease: refreshed 2026-08-25T13:48:39-07:00 through 14:48:39-07:00
+validated: every advertised origin head fetched and no host-wide Lean, Lake,
+  Elan, or PDFLaTeX process was running at the claim time; a subsequent full
+  worktree audit found an unadvertised modified HalfQBinomial file in 8f3f,
+  correcting the narrower initial path check before any production edit
+next: finish the unchanged-tree baseline build already in progress, release
+  HalfQBinomial to 8f3f, and select a candidate only after checking every live
+  worktree's dirty paths as well as advertised branch histories
+lease: HalfQBinomial released 2026-08-25T13:52:05-07:00; registry-only lease
+  through the next collision-free selection checkpoint
 git owner / build owner: /root / /root
-risks/questions: the primary synthesis is actively conflicted in worktree c9a3
-  and remains read-only here until that owner publishes or releases it; no
-  documentation merge will be attempted behind that writer
+risks/questions: worktrees 8f3f and c9a3 both carry unresolved documentation
+  conflicts, and 8f3f modifies HalfQBinomial; all of those paths remain read-
+  only here until their owners publish or release them
 ```
 
 Source-only subagents remain read-only. They do not stage, commit, merge,
