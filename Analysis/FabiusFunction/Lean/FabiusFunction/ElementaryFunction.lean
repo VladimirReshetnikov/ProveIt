@@ -433,6 +433,7 @@ example : IsElementary fun x : ℝ =>
 /-- The set of points at which `f` is real analytic. -/
 def analyticLocus (f : ℝ → ℝ) : Set ℝ := {x : ℝ | AnalyticAt ℝ f x}
 
+/-- Membership in the analytic locus is analyticity at the point. -/
 @[simp]
 theorem mem_analyticLocus {f : ℝ → ℝ} {x : ℝ} :
     x ∈ analyticLocus f ↔ AnalyticAt ℝ f x := Iff.rfl

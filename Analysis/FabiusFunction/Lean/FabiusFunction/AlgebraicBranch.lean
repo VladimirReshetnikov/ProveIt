@@ -126,10 +126,11 @@ theorem analyticDenseOn_of_split {y : ℝ → ℝ} {s V : Set ℝ}
     AnalyticDenseOn y s := by
   intro B hB hBne hBs
   rcases Set.eq_empty_or_nonempty (B ∩ V) with hBV | ⟨x, hxB, hxV⟩
-  · refine hW B hB hBne fun z hz => ⟨hBs hz, ?_⟩
-    have hdisj : Disjoint B (closure V) :=
+  · have hdisj : Disjoint B (closure V) :=
       (Set.disjoint_iff_inter_eq_empty.2 hBV).closure_right hB
-    exact fun hzc => Set.disjoint_left.mp hdisj hz hzc
+    refine hW B hB hBne ?_
+    intro z hz
+    exact ⟨hBs hz, fun hzc => Set.disjoint_left.mp hdisj hz hzc⟩
   · exact ⟨x, hxB, hVan x hxV⟩
 
 /-! ## The polynomial and its formal `y`-derivative -/
