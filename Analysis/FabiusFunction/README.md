@@ -118,6 +118,29 @@ both endpoints.  The primary public results are
 forms available for both.  No corresponding equality is asserted outside
 the natural Legendre interval.
 
+`FabiusLegendreLeastSquares.lean` proves the finite orthogonal-projection
+property behind this expansion.  If
+
+```text
+S_N(x) = sum (n = 0..N), u_n * P_(2n)(x),
+E(q) = integral (-1..1), (up(x) - q(x))^2 dx,
+```
+
+then for every real polynomial `q` of degree at most `2N+1`,
+
+```text
+E(q) = E(S_N) + integral (-1..1), (S_N(x) - q(x))^2 dx.
+```
+
+Consequently `S_N` is the unique least-squares minimizer.  This is stronger
+than optimality among polynomials of its visible degree at most `2N`: the
+extra degree is available because the coefficient of `P_(2N+1)` vanishes.
+The primary public results are
+`Fabius.rvachevLegendrePartialSum_pythagorean`,
+`Fabius.rvachevLegendrePartialSum_least_squares`,
+`Fabius.rvachevLegendrePartialSum_error_eq_iff`, and
+`Fabius.canonical_rvachevLegendrePartialSum_mem_and_isMinOn`.
+
 `FabiusTranslatedLegendreSeries.lean` translates this expansion to the
 signed global Fabius function on `[0,2]`.  It proves
 

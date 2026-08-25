@@ -11,6 +11,7 @@ import FabiusFunction.PeriodicMean
 import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
+import FabiusFunction.FabiusLegendreLeastSquares
 
 /-!
 # Fabius function
@@ -26,4 +27,6 @@ sharp small-argument asymptotic.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.
+Every finite even Legendre partial sum is also proved to be the unique
+least-squares best polynomial approximation in its degree class.
 -/
