@@ -862,6 +862,32 @@ theorem fabiusDyadic_block_translate (n block residue : ℕ)
       ring
     _ = _ := by ring
 
+/-- The closed dyadic formula vanishes at the right endpoint `2`. -/
+@[simp]
+theorem fabiusDyadic_two_pow_succ (n : ℕ) :
+    fabiusDyadic n (2 ^ (n + 1)) = 0 := by
+  simpa [fabiusDyadic_arg_zero] using
+    fabiusDyadic_block_translate n 1 0 (by positivity)
+
+/-- The block-translation law also holds at the right endpoint of a block.
+Both sides then vanish, so callers may use the natural closed-block bound. -/
+theorem fabiusDyadic_block_translate_le (n block residue : ℕ)
+    (hresidue : residue ≤ 2 ^ (n + 1)) :
+    fabiusDyadic n (block * 2 ^ (n + 1) + residue) =
+      (thueMorseSign block : ℚ) * fabiusDyadic n residue := by
+  rcases hresidue.eq_or_lt with rfl | hresidue
+  · calc
+      fabiusDyadic n (block * 2 ^ (n + 1) + 2 ^ (n + 1)) =
+          fabiusDyadic n ((block + 1) * 2 ^ (n + 1) + 0) := by
+        congr 1
+        ring
+      _ = (thueMorseSign (block + 1) : ℚ) * fabiusDyadic n 0 :=
+        fabiusDyadic_block_translate n (block + 1) 0 (by positivity)
+      _ = 0 := by rw [fabiusDyadic_arg_zero, mul_zero]
+      _ = (thueMorseSign block : ℚ) * fabiusDyadic n (2 ^ (n + 1)) := by
+        rw [fabiusDyadic_two_pow_succ, mul_zero]
+  · exact fabiusDyadic_block_translate n block residue hresidue
+
 lemma fabiusDyadic_refine_of_kernel (hk : DyadicKernelHasRefinement)
     (n a : ℕ) :
     fabiusDyadic (n + 1) (2 * a) = fabiusDyadic n a := by
