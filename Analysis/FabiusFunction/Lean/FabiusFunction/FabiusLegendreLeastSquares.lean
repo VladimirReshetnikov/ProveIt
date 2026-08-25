@@ -119,7 +119,7 @@ private theorem integral_legendreProjectionPolynomial_mul_legendre
 
 /-- The residual of the degree-`N` Fourier--Legendre projection is
 orthogonal to every polynomial of degree at most `N`. -/
-theorem integral_sub_projection_mul_polynomial_eq_zero
+theorem integral_sub_projection_mul_polynomial_eq_zero_of_continuousOn
     (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
     (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
@@ -205,8 +205,19 @@ theorem integral_sub_projection_mul_polynomial_eq_zero
     exact Submodule.span_le.mpr hrange
   exact LinearMap.mem_ker.mp (hspanKer (Polynomial.mem_degreeLE.mpr hq))
 
+/-- Compatibility form of
+`integral_sub_projection_mul_polynomial_eq_zero_of_continuousOn` for a
+globally continuous function. -/
+theorem integral_sub_projection_mul_polynomial_eq_zero
+    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (hq : q.degree ≤ N) :
+    (∫ x in (-1 : ℝ)..1,
+      (f x - (legendreProjectionPolynomial f N).eval x) * q.eval x) = 0 :=
+  integral_sub_projection_mul_polynomial_eq_zero_of_continuousOn
+    f hf.continuousOn N q hq
+
 /-- Pythagorean identity for the degree-`N` Fourier--Legendre projection. -/
-theorem legendreSquaredError_eq_add
+theorem legendreSquaredError_eq_add_of_continuousOn
     (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
     (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
@@ -219,7 +230,7 @@ theorem legendreSquaredError_eq_add
     simpa [S] using legendreProjectionPolynomial_mem_degreeLE f N
   have hqmem : q ∈ Polynomial.degreeLE ℝ N :=
     Polynomial.mem_degreeLE.mpr hq
-  have hcross := integral_sub_projection_mul_polynomial_eq_zero
+  have hcross := integral_sub_projection_mul_polynomial_eq_zero_of_continuousOn
     f hf N (S - q) (Polynomial.mem_degreeLE.mp (Submodule.sub_mem _ hS hqmem))
   change (∫ x in (-1 : ℝ)..1, (f x - q.eval x) ^ 2) =
     (∫ x in (-1 : ℝ)..1, (f x - S.eval x) ^ 2) +
@@ -274,6 +285,17 @@ theorem legendreSquaredError_eq_add
   rw [haddOuter, haddInner, htwocross]
   ring
 
+/-- Compatibility form of `legendreSquaredError_eq_add_of_continuousOn` for
+a globally continuous function. -/
+theorem legendreSquaredError_eq_add
+    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (hq : q.degree ≤ N) :
+    legendreSquaredError f q =
+      legendreSquaredError f (legendreProjectionPolynomial f N) +
+        (∫ x in (-1 : ℝ)..1,
+          ((legendreProjectionPolynomial f N).eval x - q.eval x) ^ 2) :=
+  legendreSquaredError_eq_add_of_continuousOn f hf.continuousOn N q hq
+
 /-- A nonzero polynomial difference has strictly positive squared integral on
 `[-1,1]`. -/
 theorem integral_sq_eval_sub_pos {p q : ℝ[X]} (hpq : p ≠ q) :
@@ -295,19 +317,30 @@ theorem integral_sq_eval_sub_pos {p q : ℝ[X]} (hpq : p ≠ q) :
 
 /-- The Fourier--Legendre projection minimizes squared `L²[-1,1]` error
 among all polynomials of degree at most `N`. -/
-theorem legendreProjectionPolynomial_least_squares
+theorem legendreProjectionPolynomial_least_squares_of_continuousOn
     (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
     (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
     legendreSquaredError f (legendreProjectionPolynomial f N) ≤
       legendreSquaredError f q := by
-  rw [legendreSquaredError_eq_add f hf N q hq]
+  rw [legendreSquaredError_eq_add_of_continuousOn f hf N q hq]
   exact le_add_of_nonneg_right
     (intervalIntegral.integral_nonneg (by norm_num) fun _x _hx ↦ sq_nonneg _)
 
+/-- Compatibility form of
+`legendreProjectionPolynomial_least_squares_of_continuousOn` for a globally
+continuous function. -/
+theorem legendreProjectionPolynomial_least_squares
+    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (hq : q.degree ≤ N) :
+    legendreSquaredError f (legendreProjectionPolynomial f N) ≤
+      legendreSquaredError f q :=
+  legendreProjectionPolynomial_least_squares_of_continuousOn
+    f hf.continuousOn N q hq
+
 /-- Equality in the least-squares inequality occurs only at the projection
 polynomial. -/
-theorem legendreSquaredError_eq_projection_iff
+theorem legendreSquaredError_eq_projection_iff_of_continuousOn
     (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
     (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
@@ -320,23 +353,46 @@ theorem legendreSquaredError_eq_projection_iff
     have hpos : 0 < ∫ x in (-1 : ℝ)..1,
         ((legendreProjectionPolynomial f N).eval x - q.eval x) ^ 2 :=
       integral_sq_eval_sub_pos (Ne.symm hne)
-    have hpyth := legendreSquaredError_eq_add f hf N q hq
+    have hpyth := legendreSquaredError_eq_add_of_continuousOn f hf N q hq
     linarith
   · rintro rfl
     rfl
 
+/-- Compatibility form of
+`legendreSquaredError_eq_projection_iff_of_continuousOn` for a globally
+continuous function. -/
+theorem legendreSquaredError_eq_projection_iff
+    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (hq : q.degree ≤ N) :
+    legendreSquaredError f q =
+        legendreSquaredError f (legendreProjectionPolynomial f N) ↔
+      q = legendreProjectionPolynomial f N :=
+  legendreSquaredError_eq_projection_iff_of_continuousOn
+    f hf.continuousOn N q hq
+
 /-- Every distinct degree-`N` competitor has strictly larger squared error. -/
-theorem legendreProjectionPolynomial_strict_least_squares
+theorem legendreProjectionPolynomial_strict_least_squares_of_continuousOn
     (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
     (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) (hne : q ≠ legendreProjectionPolynomial f N) :
     legendreSquaredError f (legendreProjectionPolynomial f N) <
       legendreSquaredError f q := by
-  have hpyth := legendreSquaredError_eq_add f hf N q hq
+  have hpyth := legendreSquaredError_eq_add_of_continuousOn f hf N q hq
   have hpos : 0 < ∫ x in (-1 : ℝ)..1,
       ((legendreProjectionPolynomial f N).eval x - q.eval x) ^ 2 :=
     integral_sq_eval_sub_pos (Ne.symm hne)
   linarith
+
+/-- Compatibility form of
+`legendreProjectionPolynomial_strict_least_squares_of_continuousOn` for a
+globally continuous function. -/
+theorem legendreProjectionPolynomial_strict_least_squares
+    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (hq : q.degree ≤ N) (hne : q ≠ legendreProjectionPolynomial f N) :
+    legendreSquaredError f (legendreProjectionPolynomial f N) <
+      legendreSquaredError f q :=
+  legendreProjectionPolynomial_strict_least_squares_of_continuousOn
+    f hf.continuousOn N q hq hne
 
 /-- The degree-`N` Fourier--Legendre projection fixes every polynomial of
 degree at most `N`. -/
@@ -347,7 +403,8 @@ theorem legendreProjectionPolynomial_eval_eq_self
   have hf : ContinuousOn f (Icc (-1 : ℝ) 1) := q.continuous.continuousOn
   have hqError : legendreSquaredError f q = 0 := by
     simp [legendreSquaredError, f]
-  have hleast := legendreProjectionPolynomial_least_squares f hf N q hq
+  have hleast := legendreProjectionPolynomial_least_squares_of_continuousOn
+    f hf N q hq
   have hprojectionNonneg :
       0 ≤ legendreSquaredError f (legendreProjectionPolynomial f N) := by
     exact intervalIntegral.integral_nonneg (by norm_num)
@@ -357,7 +414,8 @@ theorem legendreProjectionPolynomial_eval_eq_self
     rw [hqError] at hleast
     exact le_antisymm hleast hprojectionNonneg
   symm
-  apply (legendreSquaredError_eq_projection_iff f hf N q hq).mp
+  apply (legendreSquaredError_eq_projection_iff_of_continuousOn
+    f hf N q hq).mp
   rw [hqError, hprojectionError]
 
 /-! ## The even Rvachev partial sums -/
@@ -481,7 +539,7 @@ theorem integral_rvachevUp_sub_partialSum_mul_polynomial_eq_zero
     (∫ x in (-1 : ℝ)..1,
       (rvachevUp F x -
         (rvachevLegendrePartialSumPolynomial F N).eval x) * q.eval x) = 0 := by
-  have h := integral_sub_projection_mul_polynomial_eq_zero
+  have h := integral_sub_projection_mul_polynomial_eq_zero_of_continuousOn
     (rvachevUp F) (rvachev_contDiff F hF).continuous.continuousOn (2 * N + 1) q
     (Polynomial.natDegree_le_iff_degree_le.mp hq)
   rw [legendreProjectionPolynomial_rvachevUp_two_mul_add_one F hF N] at h
@@ -496,7 +554,7 @@ theorem rvachevLegendrePartialSum_pythagorean
           (rvachevLegendrePartialSumPolynomial F N) +
         (∫ x in (-1 : ℝ)..1,
           ((rvachevLegendrePartialSumPolynomial F N).eval x - q.eval x) ^ 2) := by
-  have h := legendreSquaredError_eq_add
+  have h := legendreSquaredError_eq_add_of_continuousOn
     (rvachevUp F) (rvachev_contDiff F hF).continuous.continuousOn (2 * N + 1) q
     (Polynomial.natDegree_le_iff_degree_le.mp hq)
   rw [legendreProjectionPolynomial_rvachevUp_two_mul_add_one F hF N] at h
