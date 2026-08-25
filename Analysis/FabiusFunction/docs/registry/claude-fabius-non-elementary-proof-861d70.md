@@ -154,11 +154,12 @@ arbitrary branch, since `Mathlib` does not define `W`.
 `InverseNotElementary.lean` applies this to `fabiusInv`:
 `fabiusInv_not_analyticAt` and `fabiusInv_analyticAt_iff` pin the analytic
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
-argument is the inverse function theorem run backwards, and the one thing to
-check is that `F⁻¹` has no critical point — `deriv_fabiusInv_ne_zero`, from
-`(F⁻¹)'(F x) · F'(x) = 1` and finiteness of `F'`.  That is the only place in
-the whole workstream where smoothness of `F`, rather than its failure to be
-analytic, is used.
+argument is the inverse function theorem run backwards.  The upstream
+`FabiusInverse.lean` module now packages the stronger unconditional identity
+`deriv_fabiusInv` and positivity theorem `deriv_fabiusInv_pos` on `(0,1)`;
+`deriv_fabiusInv_ne_zero` remains as a source-compatible corollary with its
+original analyticity hypothesis.  Thus the noncritical-point fact no longer
+depends on assuming analyticity of the inverse.
 
 `Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
 density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`

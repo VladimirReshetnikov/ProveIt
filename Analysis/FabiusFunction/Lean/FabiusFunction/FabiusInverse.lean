@@ -26,6 +26,19 @@ matching the convention that `F` itself is `0` to the left and `1` to the
 right of the unit interval.  With that convention `fabiusInv F hF` is
 monotone and continuous on all of `ℝ`, not merely on `[0,1]`.
 
+## Interior calculus
+
+On the open unit interval the derivative of `F` is strictly positive.  The
+local inverse theorem therefore applies without any analyticity assumption:
+
+`(fabiusInv F hF)'(y) = 1 / F'(fabiusInv F hF y)
+                       = 1 / (2 * up(2 * fabiusInv F hF y - 1)) > 0`.
+
+The formal statements below expose both the `HasDerivAt` result and its
+pointwise derivative, explicit `rvachevUp`, and positivity corollaries.  This
+gives the ordinary differential geometry of the inverse throughout `(0,1)`;
+the endpoint behavior remains singular, as quantified by the flatness results.
+
 ## Flatness inverts to steepness
 
 The interesting content is what flatness becomes on the other side.  The
@@ -74,6 +87,9 @@ quotient from zero to one.
   `mul_lt_fabiusInv` below.
 * `fabiusInv_eq_zero_of_nonpos`, `fabiusInv_eq_one_of_one_le`, and
   `fabiusInv_one_sub` — the two constant tails and the global reflection law.
+* `fabiusInv_hasDerivAt`, `deriv_fabiusInv`,
+  `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, and `deriv_fabiusInv_pos` — the
+  exact positive reciprocal-derivative formula throughout `(0,1)`.
 * `fabiusInv_fabiusDyadicUnit` — every value produced by the exact bounded
   dyadic evaluator inverts to the corresponding clamped dyadic argument.
 * `le_two_pow_mul_fabiusInv_pow` and
@@ -213,6 +229,57 @@ theorem fabiusReal_lt_iff_lt_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
   have h := (strictMonoOn_fabiusReal F hF).lt_iff_lt
     hx (fabiusInv_mem_Icc F hF y)
   rwa [fabiusReal_fabiusInv F hF hy] at h
+
+/-! ## Interior calculus -/
+
+/-- The inverse maps the open unit interval into itself. -/
+theorem fabiusInv_mem_Ioo (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) : fabiusInv F hF y ∈ Ioo (0 : ℝ) 1 := by
+  have hy' : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy
+  constructor
+  · apply (fabiusReal_lt_iff_lt_fabiusInv F hF
+      (left_mem_Icc.2 zero_le_one) hy').mp
+    simpa [fabiusReal, hF.zero_of_nonpos 0 le_rfl] using hy.1
+  · apply (fabiusInv_lt_iff_lt_fabiusReal F hF hy'
+      (right_mem_Icc.2 zero_le_one)).mpr
+    simpa [fabiusReal, hF.one_of_one_le 1 le_rfl] using hy.2
+
+/-- The inverse is differentiable at every interior point, with derivative the
+reciprocal of the derivative of `fabiusReal` at the inverse point. -/
+theorem fabiusInv_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    HasDerivAt (fabiusInv F hF)
+      (deriv (fabiusReal F) (fabiusInv F hF y))⁻¹ y := by
+  have hx := fabiusInv_mem_Ioo F hF hy
+  have hderiv : deriv (fabiusReal F) (fabiusInv F hF y) ≠ 0 :=
+    (deriv_fabiusReal_pos F hF hx).ne'
+  refine ((fabius_differentiable F hF _).hasDerivAt).of_local_left_inverse
+    (continuous_fabiusInv F hF).continuousAt hderiv ?_
+  filter_upwards [isOpen_Ioo.mem_nhds hy] with t ht
+  exact fabiusReal_fabiusInv F hF (Ioo_subset_Icc_self ht)
+
+/-- Pointwise reciprocal-derivative formula for the inverse on `(0,1)`. -/
+theorem deriv_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    deriv (fabiusInv F hF) y =
+      (deriv (fabiusReal F) (fabiusInv F hF y))⁻¹ :=
+  (fabiusInv_hasDerivAt F hF hy).deriv
+
+/-- Explicit inverse-derivative formula through Rvachev's up-function. -/
+theorem deriv_fabiusInv_eq_inv_two_mul_rvachevUp
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    deriv (fabiusInv F hF) y =
+      (2 * rvachevUp F (2 * fabiusInv F hF y - 1))⁻¹ := by
+  rw [deriv_fabiusInv F hF hy,
+    congrFun (deriv_fabiusReal F hF) (fabiusInv F hF y)]
+
+/-- The inverse has strictly positive derivative throughout `(0,1)`. -/
+theorem deriv_fabiusInv_pos (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    0 < deriv (fabiusInv F hF) y := by
+  rw [deriv_fabiusInv F hF hy]
+  exact inv_pos.mpr (deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF hy))
 
 /-! ## Exact values -/
 

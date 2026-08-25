@@ -440,10 +440,9 @@ is $I(1)=1$.
 
 \subsection{Interior differential geometry: an ordinary-analysis corollary}
 
-The current inverse module deliberately avoids differentiability assumptions and builds the
-inverse using order topology alone.  Once the positivity theorem for $F'$ in the open unit
-interval is imported, the classical inverse function theorem supplies a sharper interior
-picture.
+The inverse is constructed using order topology alone.  Once the positivity theorem for
+$F'$ in the open unit interval is imported, the local inverse theorem supplies a sharper
+interior picture; the formal development now packages its first-order consequences directly.
 
 \begin{corollary}[Interior derivative of the inverse]
 \label{cor:inverse-derivative}
@@ -477,10 +476,12 @@ The midpoint is the reflection-symmetric change of curvature.
 \end{corollary}
 
 \begin{remark}
-\Cref{cor:inverse-derivative,cor:inverse-curvature} are straightforward consequences in
-ordinary real analysis.  The named Lean declarations in \path{FabiusInverse.lean} stop at
-continuity, monotonicity, exact inversion, and endpoint steepness; they do not presently
-package the interior inverse-function theorem.
+The first identity in \cref{cor:inverse-derivative}, its explicit \(\Up\)-form, and strict
+positivity are the named Lean declarations \lean{fabiusInv\_hasDerivAt},
+\lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp}, and
+\lean{deriv\_fabiusInv\_pos}.  The promotion to a named \(C^\infty\) theorem and the
+second-derivative curvature formula in \cref{cor:inverse-curvature} remain ordinary-analysis
+corollaries rather than separate declarations.
 \end{remark}
 
 \section{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
@@ -3062,7 +3063,9 @@ that scale positivity follows from the other original-characterization assumptio
 \lean{fabiusOrderIso}, \lean{fabiusInv}, \lean{fabiusReal\_fabiusInv},
 \lean{fabiusInv\_fabiusReal}, \lean{continuous\_fabiusInv},
 \lean{strictMonoOn\_fabiusInv}, \lean{fabiusInv\_one\_sub},
-\lean{fabiusInv\_fabiusDyadicUnit}, the transported root-free bounds,
+\lean{fabiusInv\_fabiusDyadicUnit}, \lean{fabiusInv\_hasDerivAt},
+\lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp},
+\lean{deriv\_fabiusInv\_pos}, the transported root-free bounds,
 \lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
 \cref{sec:inverse,sec:inverse-steepness}.\\
 \path{ElementaryFunction.lean} &
