@@ -1225,6 +1225,28 @@ The Wikipedia draft calls the coefficients merely continuous; they are in fact
 $C^\infty$, one-periodic and bounded, and \cref{sec:general} shows that they are
 polynomials in smooth periodic functions.
 
+The jets and the exponent coefficients have no counterpart in the Wikipedia
+draft, and in the main article they carry different letters, because $p$, $d$
+and $E$ are all taken there: $p_j$ is the Lambert phase polynomial and $p_m$
+the binary prefix, $d_n$ is the half moment in some sixty places, and $E$ is
+both the tail error and the exponential quotient.  The article's names are:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+this note & the main article & Lean\\
+\midrule
+$p_n$ & $Z_n$ & \texttt{negativeLaplacePeriodicJet}\\
+$d_n$ & $\widetilde Z_n$ & \texttt{negativeLaplaceBoundedExponentJet}\\
+$E_m$ & $\Xi_m$ & \texttt{negativeLaplaceExponentCoefficient}\\
+$\dd/\dd t$ & $\mathrm D$ & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The tilde in $\widetilde Z_n$ is apt: the two jet families differ by the
+single constant $(-1)^{n+1}n!$.
+
 \section{Open items}\label{sec:open}
 
 \begin{enumerate}

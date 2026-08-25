@@ -11,8 +11,16 @@ module shows that the coefficient of `d (2*j-1)` is exactly
 
 `(-1)^j / (2^j * j !)`,
 
-for every `j`, so the highest-derivative term of the `j`-th coefficient of the
-small-argument expansion is `(-1)^j Psi^(2j) / (2^j * j ! * (log 2)^(2j))`.
+for every `j`.
+
+What is proved here is a statement about the *mass* coefficient `a j`, not about
+the logarithmic coefficient `A j` of the small-argument expansion.  The transfer
+is immediate on paper — the formal logarithm subtracts from `a j` only products
+of strictly lower mass coefficients, none of which reaches `d (2*j-1)`, so the
+coefficient of `d (2*j-1)` survives unchanged into `A j`, making the
+highest-derivative term of `A j` equal to
+`(-1)^j Psi^(2j) / (2^j * j ! * (log 2)^(2j))` — but that last step is not
+formalized in this module, and the theorems below do not assert it.
 
 Two elementary facts do all the work.
 
@@ -185,7 +193,9 @@ theorem normalizedGaussianMoment_div_factorial (j : ℕ) :
 
 /-- **The coefficient of the top jet in the mass coefficient of order `j+1` is
 `(-1)^(j+1) / (2^(j+1) * (j+1)!)`.**  The two jet sequences are required to
-agree below index `2*j+1`, so the only difference is in the top jet. -/
+agree below index `2*j+1`; what they do at or above it is unconstrained, and
+only the value at `2*j+1` enters, because the order-`2*(j+1)` exponential
+coefficient sees no exponent coefficient beyond that order. -/
 theorem saddleJetMassCoefficient_succ_sub (j : ℕ) (d e : ℕ → ℂ)
     (h : ∀ m, m < 2 * j + 1 → d m = e m) :
     saddleJetMassCoefficient d (j + 1) - saddleJetMassCoefficient e (j + 1) =
@@ -227,21 +237,46 @@ theorem saddleJetMassCoefficient_succ_sub (j : ℕ) (d e : ℕ → ℂ)
     normalizedGaussianMoment_div_factorial j]
   ring
 
-/-- The Fabius specialization: the coefficient of the top jet in the
-order-`(j+1)` mass coefficient. -/
-theorem fabiusSaddleMassCoefficientComplex_succ_sub (j : ℕ) (t u : ℝ)
-    (h : ∀ m, m < 2 * j + 1 →
-      negativeLaplaceBoundedExponentJet m t =
-        negativeLaplaceBoundedExponentJet m u) :
-    fabiusSaddleMassCoefficientComplex (j + 1) t -
-        fabiusSaddleMassCoefficientComplex (j + 1) u =
-      (-1 : ℂ) ^ (j + 1) / ((2 : ℂ) ^ (j + 1) * (((j + 1).factorial : ℕ) : ℂ)) *
-        ((negativeLaplaceBoundedExponentJet (2 * j + 1) t : ℂ) -
-          (negativeLaplaceBoundedExponentJet (2 * j + 1) u : ℂ)) := by
-  rw [fabiusSaddleMassCoefficientComplex_eq_saddleJet,
-    fabiusSaddleMassCoefficientComplex_eq_saddleJet]
-  exact saddleJetMassCoefficient_succ_sub j _ _ fun m hm => by
-    exact_mod_cast congrArg (fun x : ℝ => (x : ℂ)) (h m hm)
+/-- **Affine decomposition of the mass coefficient in its top jet.**  The
+order-`(j+1)` mass coefficient is a function of `d 0, …, d (2*j)` alone, plus
+exactly `(-1)^(j+1) / (2^(j+1) * (j+1)!)` times `d (2*j+1)`.
+
+This is the non-degenerate form of `saddleJetMassCoefficient_succ_sub`: the
+difference form degenerates whenever the two sequences also agree at the top
+index, since both sides are then zero, whereas this one exhibits the dependence
+on `d (2*j+1)` explicitly, by comparing against the sequence that truncates it
+to zero. -/
+theorem saddleJetMassCoefficient_succ_eq_add (j : ℕ) (d : ℕ → ℂ) :
+    saddleJetMassCoefficient d (j + 1) =
+      saddleJetMassCoefficient
+          (fun m => if m < 2 * j + 1 then d m else 0) (j + 1) +
+        (-1 : ℂ) ^ (j + 1) /
+            ((2 : ℂ) ^ (j + 1) * (((j + 1).factorial : ℕ) : ℂ)) *
+          d (2 * j + 1) := by
+  have h := saddleJetMassCoefficient_succ_sub j d
+    (fun m => if m < 2 * j + 1 then d m else 0)
+    (fun m hm => (if_pos hm).symm)
+  simp only [if_neg (by omega : ¬ (2 * j + 1 < 2 * j + 1)), sub_zero] at h
+  linear_combination h
+
+/-- The Fabius specialization: the order-`(j+1)` mass coefficient at the Fabius
+jets depends on the top jet `d (2*j+1)` only through the displayed linear term,
+whose coefficient is `(-1)^(j+1) / (2^(j+1) * (j+1)!)`.  Since
+`negativeLaplaceBoundedExponentJet (2*j+1)` is the first jet reaching
+`iteratedDeriv (2*j+2) negativeLaplacePsi`, this is the source of the
+highest-derivative term of the `(j+1)`-st *mass* coefficient.  The corresponding
+statement for the logarithmic coefficient needs the observation recorded in the
+module header and is not proved here. -/
+theorem fabiusSaddleMassCoefficientComplex_succ_eq_add (j : ℕ) (t : ℝ) :
+    fabiusSaddleMassCoefficientComplex (j + 1) t =
+      saddleJetMassCoefficient
+          (fun m => if m < 2 * j + 1 then
+            (negativeLaplaceBoundedExponentJet m t : ℂ) else 0) (j + 1) +
+        (-1 : ℂ) ^ (j + 1) /
+            ((2 : ℂ) ^ (j + 1) * (((j + 1).factorial : ℕ) : ℂ)) *
+          (negativeLaplaceBoundedExponentJet (2 * j + 1) t : ℂ) := by
+  rw [fabiusSaddleMassCoefficientComplex_eq_saddleJet]
+  exact saddleJetMassCoefficient_succ_eq_add j _
 
 end
 
