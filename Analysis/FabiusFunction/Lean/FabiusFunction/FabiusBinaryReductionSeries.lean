@@ -1,5 +1,7 @@
 import FabiusFunction.TaylorReduction
 import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Topology.EMetricSpace.Basic
 
 /-!
 # A global binary-reduction series for the Fabius function
@@ -11,8 +13,10 @@ term distinguishes the even and odd unit blocks of the signed global Fabius
 extension.
 
 The exact finite identity has a signed residual term.  Binary tails tend to
-zero, so the residual tends to zero.  A geometric norm bound proves absolute
-summability and therefore both a `HasSum` theorem and a `tsum` identity.
+zero, so the residual tends to zero.  Its input-independent geometric bound
+also proves uniform convergence of the finite telescopes on the real line.
+The summand norms are summable, yielding both a `HasSum` theorem and a `tsum`
+identity.
 
 The elementary binary API is stated uniformly at every scale, including
 `m = 0`: the previous prefix is the quotient of the current prefix by two,
@@ -129,6 +133,21 @@ inverse-power constants in `fabiusReductionSum`. -/
 def globalBinaryReductionSummand (x : ℝ) (m : ℕ) : ℝ :=
   globalBinaryReductionCoefficient x m *
     fabiusReductionSum m (binaryTail x m)
+
+/-- Every binary-reduction summand vanishes at a nonpositive input.  Lean's
+natural floor makes every binary prefix zero there, matching the convention
+that the signed extension itself vanishes on the negative half-line. -/
+@[simp] theorem globalBinaryReductionSummand_eq_zero_of_nonpos
+    (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    globalBinaryReductionSummand x m = 0 := by
+  have hp : binaryPrefix x m = 0 := by
+    rw [binaryPrefix, Nat.floor_eq_zero]
+    have hnonpos : (2 : ℝ) ^ m * x ≤ 0 :=
+      mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
+    linarith
+  rw [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
+    binaryPreviousPrefix_eq_binaryPrefix_div_two, hp]
+  norm_num
 
 /-- The signed residual term after the first `N` fractional binary digits. -/
 def binaryReductionRemainder (F : BoundedFabius) (x : ℝ) (N : ℕ) : ℝ :=
@@ -464,6 +483,35 @@ theorem norm_binaryReductionRemainder_le
     _ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
       nlinarith [(binaryTail_lt x N).le]
 
+/-- Uniform quantitative error for the finite binary-reduction telescope.
+After retaining the scales `0, ..., N`, the error is at most `2 * 2⁻ᴺ`,
+independently of the nonnegative input `x`. -/
+theorem norm_extendedFabius_sub_globalBinaryReductionSum_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) (hN : 1 ≤ N) :
+    ‖extendedFabius F x -
+        ∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m‖ ≤
+      2 * ((2 : ℝ) ^ N)⁻¹ := by
+  have hrem := norm_binaryReductionRemainder_le F hF x hx0 N hN
+  have hid := extendedFabius_eq_globalBinaryReductionSum_add_remainder
+    F hF x hx0 N
+  rw [hid]
+  simpa only [add_sub_cancel_left] using hrem
+
+/-- All-real form of the uniform finite-telescope error.  On nonnegative
+inputs it is the residual estimate; on nonpositive inputs both the signed
+extension and every finite summand vanish exactly. -/
+theorem norm_globalBinaryReductionSum_sub_extendedFabius_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) (hN : 1 ≤ N) (x : ℝ) :
+    ‖(∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) -
+        extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
+  rcases le_total 0 x with hx | hx
+  · rw [norm_sub_rev]
+    exact norm_extendedFabius_sub_globalBinaryReductionSum_le F hF x hx N hN
+  · rw [extendedFabius_eq_zero_of_nonpos F hF hx, sub_zero]
+    simp [globalBinaryReductionSummand_eq_zero_of_nonpos _ hx]
+
 /-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
 exactly one step of the residual telescope.  Restated for the
 concrete Fabius function as `globalFabius_binary_telescope_step`
@@ -573,6 +621,35 @@ theorem tendsto_sum_range_globalBinaryReduction
     filter_upwards with N
     linarith [hid N]
   exact (tendsto_add_atTop_iff_nat 1).mp hshift
+
+/-- The finite binary-reduction telescopes converge uniformly on the whole
+real line to the signed extension.  On the nonnegative half-line the residual
+bound is independent of `x`; on the nonpositive half-line the approximation
+is exact at every scale. -/
+theorem globalBinaryReductionSum_tendstoUniformly_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F) :
+    TendstoUniformly
+      (fun N : ℕ => fun x : ℝ =>
+        ∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m)
+      (extendedFabius F) atTop := by
+  rw [Metric.tendstoUniformly_iff]
+  intro ε hε
+  have hgeom : Tendsto (fun N : ℕ => 2 * ((2 : ℝ) ^ N)⁻¹)
+      atTop (𝓝 0) := by
+    have hhalf : Tendsto (fun N : ℕ => ((2 : ℝ)⁻¹) ^ N)
+        atTop (𝓝 0) :=
+      tendsto_pow_atTop_nhds_zero_of_lt_one
+        (by norm_num : (0 : ℝ) ≤ (2 : ℝ)⁻¹)
+        (by norm_num : (2 : ℝ)⁻¹ < 1)
+    simpa only [inv_pow, mul_zero] using tendsto_const_nhds.mul hhalf
+  have heps : ∀ᶠ N : ℕ in atTop, 2 * ((2 : ℝ) ^ N)⁻¹ < ε :=
+    (tendsto_order.1 hgeom).2 ε hε
+  filter_upwards [heps, eventually_ge_atTop 1] with N hbound hN
+  intro x
+  exact lt_of_le_of_lt
+    (by simpa [Real.dist_eq, Real.norm_eq_abs, abs_sub_comm] using
+      norm_globalBinaryReductionSum_sub_extendedFabius_le F hF N hN x)
+    hbound
 
 /-- The corrected global binary-reduction series sums absolutely to the
 signed global Fabius extension for every nonnegative real input. -/

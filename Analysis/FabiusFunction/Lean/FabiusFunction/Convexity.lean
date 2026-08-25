@@ -13,7 +13,9 @@ concave on `[1/2, ∞)`, with strict convexity and concavity on the two halves
 of the unit interval, where the monotonicity of `up` is strict.
 
 The inflection point is therefore exactly the midpoint, where `F(1/2) = 1/2`
-and `F'(1/2) = 2` is the global maximum of the derivative.
+and `F'(1/2) = 2` is the unique global maximum of the derivative.  The exact
+range statement is recorded below: `0 ≤ F'(x) ≤ 2`, with equality on the
+left exactly off `(0,1)` and equality on the right exactly at `x = 1/2`.
 -/
 
 set_option autoImplicit false
@@ -93,6 +95,71 @@ theorem antitoneOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     (by linarith)
   linarith
 
+/-! ## Exact range of the derivative -/
+
+/-- The derivative of the bounded Fabius function is nonnegative everywhere. -/
+theorem deriv_fabiusReal_nonneg (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    0 ≤ deriv (fabiusReal F) x := by
+  rw [(fabius_hasDerivAt F hF x).deriv]
+  exact mul_nonneg (by norm_num) (rvachevUp_nonneg F (2 * x - 1))
+
+/-- The derivative of the bounded Fabius function is at most two everywhere. -/
+theorem deriv_fabiusReal_le_two (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (fabiusReal F) x ≤ 2 := by
+  rw [(fabius_hasDerivAt F hF x).deriv]
+  nlinarith [rvachevUp_le_one F (2 * x - 1)]
+
+/-- The derivative of the bounded Fabius function takes values in `[0,2]`. -/
+theorem deriv_fabiusReal_mem_Icc (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (fabiusReal F) x ∈ Icc (0 : ℝ) 2 :=
+  ⟨deriv_fabiusReal_nonneg F hF x, deriv_fabiusReal_le_two F hF x⟩
+
+/-- At the midpoint the derivative of the bounded Fabius function is two. -/
+theorem deriv_fabiusReal_half (F : BoundedFabius) (hF : IsFabius F) :
+    deriv (fabiusReal F) (1 / 2 : ℝ) = 2 := by
+  rw [(fabius_hasDerivAt F hF (1 / 2 : ℝ)).deriv,
+    show 2 * (1 / 2 : ℝ) - 1 = 0 by norm_num, rvachevUp_zero F hF]
+  norm_num
+
+/-- The derivative vanishes exactly outside the open unit interval, including
+at both endpoints. -/
+theorem deriv_fabiusReal_eq_zero_iff (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) :
+    deriv (fabiusReal F) x = 0 ↔ x ∉ Ioo (0 : ℝ) 1 := by
+  constructor
+  · intro hx hmem
+    exact (deriv_fabiusReal_pos F hF hmem).ne' hx
+  · intro hx
+    have harg : 2 * x - 1 ∉ Ioo (-1 : ℝ) 1 := by
+      intro hmem
+      apply hx
+      exact ⟨by linarith [hmem.1], by linarith [hmem.2]⟩
+    rw [(fabius_hasDerivAt F hF x).deriv,
+      rvachevUp_eq_zero_of_not_mem_Ioo F hF harg, mul_zero]
+
+/-- The derivative reaches two only at the midpoint. -/
+theorem deriv_fabiusReal_eq_two_iff (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) :
+    deriv (fabiusReal F) x = 2 ↔ x = 1 / 2 := by
+  rw [(fabius_hasDerivAt F hF x).deriv]
+  constructor
+  · intro hx
+    have hup : rvachevUp F (2 * x - 1) = 1 := by linarith
+    have harg := (rvachevUp_eq_one_iff F hF (2 * x - 1)).mp hup
+    linarith
+  · rintro rfl
+    rw [show 2 * (1 / 2 : ℝ) - 1 = 0 by norm_num, rvachevUp_zero F hF]
+    norm_num
+
+/-- Two is the maximum value of the derivative, and it is attained uniquely
+at the midpoint by `deriv_fabiusReal_eq_two_iff`. -/
+theorem isGreatest_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+    IsGreatest (Set.range fun x : ℝ => deriv (fabiusReal F) x) 2 := by
+  constructor
+  · exact ⟨(1 / 2 : ℝ), deriv_fabiusReal_half F hF⟩
+  · rintro y ⟨x, rfl⟩
+    exact deriv_fabiusReal_le_two F hF x
+
 /--
 On the *closed* first half `[0, 1/2]` the derivative is strictly increasing.
 
@@ -137,24 +204,12 @@ theorem strictAntiOn_deriv_fabiusReal_Icc (F : BoundedFabius) (hF : IsFabius F) 
 /-- On the interior of the first half the derivative is strictly increasing. -/
 theorem strictMonoOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     StrictMonoOn (deriv (fabiusReal F)) (Ioo (0 : ℝ) (1 / 2)) := by
-  intro x hx y hy hxy
-  rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
-  have h := strictMonoOn_rvachevUp F hF
-    (show 2 * x - 1 ∈ Icc (-1 : ℝ) 0 from ⟨by linarith [hx.1], by linarith [hx.2]⟩)
-    (show 2 * y - 1 ∈ Icc (-1 : ℝ) 0 from ⟨by linarith [hy.1], by linarith [hy.2]⟩)
-    (by linarith)
-  linarith
+  exact (strictMonoOn_deriv_fabiusReal_Icc F hF).mono Ioo_subset_Icc_self
 
 /-- On the interior of the second half the derivative is strictly decreasing. -/
 theorem strictAntiOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     StrictAntiOn (deriv (fabiusReal F)) (Ioo (1 / 2 : ℝ) 1) := by
-  intro x hx y hy hxy
-  rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
-  have h := strictAntiOn_rvachevUp F hF
-    (show 2 * x - 1 ∈ Icc (0 : ℝ) 1 from ⟨by linarith [hx.1], by linarith [hx.2]⟩)
-    (show 2 * y - 1 ∈ Icc (0 : ℝ) 1 from ⟨by linarith [hy.1], by linarith [hy.2]⟩)
-    (by linarith)
-  linarith
+  exact (strictAntiOn_deriv_fabiusReal_Icc F hF).mono Ioo_subset_Icc_self
 
 /-! ## Convexity and concavity -/
 

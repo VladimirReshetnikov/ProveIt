@@ -164,7 +164,11 @@ to the nearest dyadic of order `p`.  Its proved evaluator error is
 within `2^-p`.  This proves `fabius_sequentiallyComputable`.  The
 primitive-recursive modulus `d(n)=2n` proves effective uniform continuity,
 and `fabius_isComputableRealFunction` packages both clauses for the canonical
-bounded Fabius function.
+bounded Fabius function.  The underlying analytic approximation is stronger
+than the computability application needs:
+`Fabius.abs_fabiusUniformSpline_sub_extendedFabius_le` gives the global error
+`2^-p`, and `Fabius.fabiusUniformSpline_tendstoUniformly_globalFabius`
+packages uniform convergence on all of `ℝ`.
 
 ## Exact dyadic evaluation
 
@@ -472,9 +476,14 @@ The global binary-reduction series is also formalized.  Its correct outer
 index starts at `m = 0`, where `Floor[2^(m-1)x]` is genuinely `Floor[x/2]`.
 For every real `x ≥ 0`, the series converges absolutely to the signed global
 Fabius extension.  This specializes to the bounded Fabius function on
-`0 ≤ x ≤ 1`.  The complete finite inner expression is a constant polynomial
-in its common translation, so the theorem holds not only for rational `q`,
-but for every real or complex `q`.  The missing `m = 0` term is zero on
+`0 ≤ x ≤ 1`.  More strongly, for `N ≥ 1` the finite telescope through scale `N` has
+all-real error at most `2 * 2^-N`: it is the uniformly bounded residual for
+`x ≥ 0`, while both the partial sum and signed extension vanish for `x ≤ 0`.
+Thus `Fabius.globalBinaryReductionSum_tendstoUniformly_extendedFabius`
+proves uniform convergence on `ℝ`.  The complete finite inner expression is
+a constant polynomial in its common translation, so the theorem holds not
+only for rational `q`, but for every real or complex `q`.  The missing
+`m = 0` term is zero on
 `0 ≤ x < 1` and equals one at `x = 1`; this explains both why the former
 one-indexed formula worked on the half-open interval and why it failed at the
 right endpoint.  The primary public endpoints are

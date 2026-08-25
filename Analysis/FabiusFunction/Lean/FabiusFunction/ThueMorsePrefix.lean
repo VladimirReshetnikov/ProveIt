@@ -43,9 +43,10 @@ to evaluate centered and translated exponential generating series.
   cancellation for `d < r`, and the sharp boundary value
   `(-1)^r * 2^C(r,2) * r!` at `d = r`.
 * `thueMorse_polynomial_sum_eq_coeff`, `thueMorse_polynomial_sum_eq_zero`,
-  `thueMorse_affine_power_sum_self` -- a block sum against a rational
-  polynomial of degree at most `r` returns its degree-`r` coefficient times
-  that factor, and vanishes when the degree is below `r`.
+  `thueMorse_affine_power_sum_self`, and `thueMorse_affine_power_sum_of_le` --
+  a block sum against a rational polynomial of degree at most `r` returns its
+  degree-`r` coefficient times that factor; affine powers have a single
+  formula covering both the vanishing range and the sharp degree.
 * `iteratedPrefix_dyadic_zero_run`, `iteratedPrefix_before_dyadic_run`,
   `iteratedPrefix_at_dyadic` -- for `1 <= k <= r` the `k` values
   `S^k(2^r - k + i)`, `i < k`, all vanish, and the run is exactly that long:
@@ -65,8 +66,9 @@ over `j <= n`; `iteratedPrefix` is `ℤ`-valued while the power sums are
 source's positive indexing of `B_k`.  Every zero-run statement assumes
 `k <= r`, that is, a block long enough to absorb `k` cancellations, and says
 nothing for shorter blocks.  `thueMorse_affine_power_sum_self` does not
-depend on the translation, but it carries a factor `y^r` and so degenerates
-when the linear coefficient `y` is zero.  The draft's grid normalization
+depend on the translation, but it carries a factor `y^r` and so vanishes for
+`y = 0` when `r > 0`; at `r = 0`, Lean's `0^0 = 1` convention gives the
+correct one-term sum.  The draft's grid normalization
 `2^C(k,2)` is applied downstream in `FabiusFunction.ThueMorseGenerating`, not
 here.
 -/
@@ -265,8 +267,8 @@ theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
 
 /-- At the sharp Prouhet degree, an affine change of variable contributes only
 the expected power of its linear coefficient.  In particular, the sum is
-independent of the translation `x`; it may still vanish when that coefficient
-is zero. -/
+independent of the translation `x`; for positive `r` it vanishes when that
+coefficient is zero. -/
 theorem thueMorse_affine_power_sum_self (r : ℕ) (x y : ℚ) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
       (x + y * (h.val : ℚ)) ^ r) =
@@ -303,6 +305,22 @@ theorem thueMorse_affine_power_sum_self (r : ℕ) (x y : ℚ) :
           ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) := by
       simpa [p] using hsum
     _ = _ := by rw [hcoeff]; ring
+
+/-- Unified Prouhet formula for affine powers through the sharp degree.  Below
+degree `r` the block sum vanishes; at degree `r` it is the sharp value from
+`thueMorse_affine_power_sum_self`.  The formula includes `r = d = 0`, where
+Lean's power convention makes `y ^ 0 = 1` even when `y = 0`. -/
+theorem thueMorse_affine_power_sum_of_le
+    (r d : ℕ) (hd : d ≤ r) (x y : ℚ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
+      (x + y * (h.val : ℚ)) ^ d) =
+      if d = r then
+        (-1 : ℚ) ^ r * y ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial
+      else 0 := by
+  rcases eq_or_lt_of_le hd with h | h
+  · subst d
+    rw [thueMorse_affine_power_sum_self, if_pos rfl]
+  · rw [thueMorse_affine_power_sum_eq_zero r d h x y, if_neg h.ne]
 
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
 dyadic block exponent. -/
