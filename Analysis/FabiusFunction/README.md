@@ -415,16 +415,10 @@ used.  Independently, a negative-Laplace product, Mellin finite-part analysis,
 and quantitative Bromwich saddle proof establish a corrected sharp formula
 with error `O(1 / (-log x))`.  Its centered periodic correction is reconstructed
 as an absolutely summable Gamma--zeta Fourier series and proved nonconstant.
-At dyadic arguments the cumulant approximation is fully effective: for every
-`n ≥ 224043`,
-
-```text
-|log F(2^(-n)) - dyadicSharpExplicitCumulantMain F n|
-  ≤ 2512945 / (12n).
-```
-
-The component normalized-moment estimates, the endpoint/Laplace comparison,
-and this final evaluated-constant form are all public Lean theorems, headed by
+At dyadic arguments the cumulant approximation is fully effective from index
+`224043` onward.  The component normalized-moment estimates, the
+endpoint/Laplace comparison, and the final evaluated-constant bound are all
+public Lean theorems, headed by
 `abs_log_fabius_dyadic_sub_explicitCumulantMain_le`.
 More strongly, if `lambda = fabiusLambertPhase x`, then for every `N`
 

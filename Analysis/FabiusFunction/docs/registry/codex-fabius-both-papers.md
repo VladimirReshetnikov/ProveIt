@@ -7,7 +7,7 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 worktree/task: /root — effective dyadic cumulant constants
 branch/base: codex/fabius-both-papers synchronized with origin/main at
-  20b35c24005c8dddd7da3b475f487f52254f6a30
+  721260e0ec9ce3b9db2fbe06fec32a6ce05e857a
 writing: none — effective-constant tranche complete
 reading: DyadicSharpConditional.lean, EndpointLaplaceComparison.lean,
   FabiusSharpConstant.lean
@@ -17,13 +17,13 @@ expected API: pointwise `256/n` and `104448/n` normalized-moment estimates,
 completed: exposed the two pointwise normalized-moment transfer constants,
   derived the effective endpoint and complete cumulant bounds, refactored the
   four legacy `IsBigO` results into compatibility wrappers, and documented
-  the quantitative dyadic endpoint on the focused public import
+  the quantitative dyadic endpoint on the focused public import; merged
+  origin/main through `721260e0e` and retained the complete theorem family
 validated: focused builds for `LaplaceMomentBounds` and
   `FabiusDyadicSharpCumulant`; full 4007-job facade build; facade-only
   `assert_no_sorry`, public-surface, and axiom audit; independent arithmetic,
   threshold, API, and documentation review; `git diff --check`
-next: commit the effective-constant tranche, resynchronize with origin/main,
-  and push by fast-forward
+next: push the committed and synchronized tranche by fast-forward
 lease: released 2026-08-25T13:47:15-07:00
 git owner / build owner: /root / /root
 risks/questions: retain `n >= 224043` exactly; the threshold discharges the
