@@ -1,0 +1,3325 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdftitle={Fabius Function --- Missing Parts},
+  pdfsubject={Inverse theory, non-elementarity, probability--Laplace bridges, discrete limit engines, and all-orders saddle machinery},
+  pdfkeywords={Fabius function, Rvachev up-function, inverse, non-elementary, Toeplitz theorem, saddle expansion, Gaussian contraction}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Rvachev supplement}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.7em}{}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\bigO}{\mathcal O}
+\newcommand{\smallo}{o}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\vtwo}{v_2}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{\texttt{#1}}
+\newcommand{\anloc}{\mathcal A}
+\newcommand{\Gcal}{\mathcal G}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Wcal}{\mathcal W}
+\newcommand{\Id}{\operatorname{id}}
+\newcommand{\interior}{\operatorname{int}}
+
+\newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}{%
+  \par\smallskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}%
+  \color{black}\hrule\vspace{0.6em}\small
+}{%
+  \vspace{0.6em}\hrule\end{minipage}\end{center}\smallskip
+}
+
+\lstdefinestyle{pseudo}{
+ basicstyle=\ttfamily\small,
+ backgroundcolor=\color{shadegray},
+ frame=single,
+ rulecolor=\color{rulegray},
+ columns=fullflexible,
+ keepspaces=true,
+ showstringspaces=false,
+ xleftmargin=0.7em,
+ xrightmargin=0.7em,
+ aboveskip=0.8em,
+ belowskip=0.8em
+}
+
+\title{\bfseries Fabius Function --- Missing Parts\\[0.35em]
+\large Inversion, non-elementarity, probability--Laplace bridges,\\
+and the algebra behind the saddle expansion}
+\author{A companion to \emph{The Fabius Function and Rvachev's Up-Function}\\
+\small based on Vladimir Reshetnikov's \texttt{ProveIt} formal development}
+\date{Repository snapshot: 25 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The long article \emph{The Fabius Function and Rvachev's Up-Function} gives a broad
+human-readable account of the formal development in \texttt{ProveIt}.  Its breadth is also
+its unavoidable weakness: several new branches of the Lean library postdate the article,
+and several generic proof engines are named only in the module guide because they have no
+counterpart in the exposition.  This companion supplies those missing parts.
+
+The first part develops the total inverse of the bounded Fabius function, transports
+infinite flatness into infinite endpoint steepness, and proves the strong non-elementarity
+results: no elementary function can agree with the Fabius function, Rvachev's up-function,
+or the signed global extension on any set with nonempty interior in the relevant support.
+The second part fills in the measure-theoretic bridges between the product probability law,
+its survival function, tilted Laplace moments, finite atomic laws, and half-weighted step
+approximants.  The third part presents two reusable discrete engines omitted from the main
+article: weighted path sums for triangular recurrences and a finite-row Toeplitz convergence
+theorem.  The opening audit also records a newly formalized redundancy in the original
+compact-support characterization: positivity of its dilation parameter follows from the
+remaining hypotheses.  The final and largest part exposes the formal and analytic machinery behind the
+all-orders saddle expansion: parameter-dependent Poincar\'e expansions, recursive
+exponential and logarithmic coefficients, exact finite polynomial remainders, Gaussian
+contraction, uniform polynomial tails, the closed Stirling description of the saddle jets,
+and the explicit second periodic correction.
+
+The purpose is complementarity rather than repetition.  Definitions and headline theorems
+already proved in detail in the main article are recalled only when they are needed as input.
+Every substantial assertion below is either a direct human-readable rendering of a current
+Lean declaration, a proof-level explanation of a generic module that the main article
+explicitly omits, or a clearly identified elementary corollary of those declarations.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\section{Scope, conventions, and the audit boundary}
+\label{sec:scope}
+
+Let $F:\R\to[0,1]$ denote the bounded Fabius function, totalized in the usual way by
+$F(x)=0$ for $x\le0$ and $F(x)=1$ for $x\ge1$.  Let
+\begin{equation}
+ \Up(x)=F(1-|x|)
+ \label{eq:up-fold-supp}
+\end{equation}
+be Rvachev's compactly supported up-function, and let $\widetilde F$ denote the signed
+global extension used in the Lean development.  On $[0,1]$ the basic identities are
+\begin{equation}
+ F(1-x)=1-F(x),
+ \qquad
+ F'(x)=2\Up(2x-1),
+ \qquad
+ F'(x)=2F(2x)\quad(0<x<\tfrac12).
+ \label{eq:basic-inputs}
+\end{equation}
+These are inputs here, not topics to be reproved.
+
+The repository snapshot underlying this supplement is the head of \texttt{main} on
+25 August 2026, commit
+\begin{center}
+ \texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}.
+\end{center}
+The main article itself records an earlier pinned snapshot and, near the beginning of its
+module guide, explicitly says that four clusters have ``no counterpart anywhere in the
+article'': Gaussian contraction and Gaussian tails, the formal saddle exponential and
+logarithm algebra, the abstract Toeplitz row lemma, and the generic weighted-path solver.
+Those four clusters receive complete mathematical chapters below.  Two additional clusters,
+the inverse and non-elementarity developments, are absent because they were added after the
+article's pinned snapshot.  The current snapshot also adds a proof that positivity of the
+dilation parameter in the original compact-support characterization is redundant.  Finally,
+several bridges are present only as one- or two-sentence transitions; they are expanded here
+into proof-level arguments.
+
+\subsection{Three levels of coverage}
+
+To keep the audit precise, each topic belongs to one of the following levels.
+\begin{longtable}{@{}p{0.19\textwidth}p{0.72\textwidth}@{}}
+\toprule
+Status & Meaning in this companion\\
+\midrule
+\endhead
+\textbf{New branch} & A current Lean module whose mathematical content does not occur in the
+main article: principally \path{FabiusInverse.lean}, \path{ElementaryFunction.lean},
+\path{NotElementary.lean}, and \path{ProbabilityLaplaceMoments.lean}.\\
+\textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
+the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
+remainders, and Gaussian polynomial estimates.\\
+\textbf{Compressed bridge} & A statement whose endpoints occur in the main article but whose
+intermediate measure theory, topology, or asymptotic algebra is suppressed.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Notation that must not collide}
+
+The exact half moments are denoted by $d_n$, following the main article.  The bounded saddle
+exponent jets are instead denoted by
+\begin{equation}
+ Z_n(t),
+ \label{eq:Z-notation}
+\end{equation}
+although their Lean declaration is
+\lean{negativeLaplaceBoundedExponentJet}.  This avoids using the same letter for two wholly
+different sequences.  We write $L=\log 2$, $\Psi$ for the smooth one-periodic correction in
+the negative-Laplace exponent, and $\lambda(x)$ for the exact lower-Lambert phase at small
+positive $x$.
+
+\begin{boxedremark}
+\textbf{Formal boundary convention.}  When a statement is a theorem in the current Lean
+library, the corresponding declaration is named in the margin of the discussion or in the
+concordance in \cref{app:concordance}.  When a statement is an immediate classical calculus
+corollary but is not presently packaged as a declaration, it is called a \emph{corollary in
+ordinary analysis}.  This distinction matters most for the interior derivative of the
+inverse and for the transfer of the highest-jet coefficient from mass coefficients to
+logarithmic coefficients.
+\end{boxedremark}
+
+\subsection{The positivity hypothesis in the original characterization is redundant}
+\label{sec:scale-positive}
+
+The compact-support characterization used in the first Arias de Reyna paper
+\cite{arias05442} assumes a smooth function $\phi:\R\to\R$, a real dilation
+parameter $k$, and
+\begin{equation}
+ \operatorname{tsupp}\phi=[-1,1],\qquad
+ \phi(x)>0\quad(-1<x<1),\qquad
+ \phi(0)=1,
+ \label{eq:original-characterization-data}
+\end{equation}
+together with the derivative law
+\begin{equation}
+ \phi'(x)=k\bigl(\phi(2x+1)-\phi(2x-1)\bigr).
+ \label{eq:original-characterization-derivative}
+\end{equation}
+The paper states $k>0$ as a hypothesis.  In the current formal development that field is retained
+for source fidelity, but a smart constructor proves that its positivity follows from the other
+assumptions.
+
+\begin{theorem}[Redundancy of scale positivity]
+\label{thm:scale-positive-redundant}
+Suppose $\phi\in C^\infty(\R)$ satisfies
+\eqref{eq:original-characterization-data} and
+\eqref{eq:original-characterization-derivative} for some $k\in\R$.  Then $k>0$.
+Consequently these data determine an instance of the full original-characterization predicate
+without a separate positivity proof.
+\end{theorem}
+
+\begin{proof}
+The support identity and continuity imply $\phi(-1)=0$: the function vanishes on
+$(-\infty,-1)$, and $-1$ is a limit point of that interval.  The mean-value theorem on
+$[-1,0]$ therefore gives a point $c\in(-1,0)$ such that
+\begin{equation}
+ \phi'(c)=\frac{\phi(0)-\phi(-1)}{0-(-1)}=1.
+ \label{eq:original-characterization-mvt}
+\end{equation}
+Now $2c-1<-1$, so the support condition gives $\phi(2c-1)=0$, whereas
+$-1<2c+1<1$, so interior positivity gives $\phi(2c+1)>0$.  Evaluating
+\eqref{eq:original-characterization-derivative} at $c$ yields
+\begin{equation}
+ 1=k\phi(2c+1).
+ \label{eq:original-characterization-positive-product}
+\end{equation}
+The second factor is positive, hence $k>0$.
+\end{proof}
+
+This is \lean{IsOriginalFabius.mk\_of\_derivative\_law}.  The proof is small, but it clarifies
+the logical content of the original theorem: the sign of the scale is forced before the later
+Fourier argument identifies its exact value $k=2$.
+
+\part{The inverse and the elementary-function obstruction}
+
+\section{The total inverse of the bounded Fabius function}
+\label{sec:inverse}
+
+The main article proves that $F$ is a continuous strictly increasing bijection of $[0,1]$
+onto itself.  The inverse development turns that qualitative fact into a reusable global
+object whose endpoint behavior can be estimated exactly.
+
+\subsection{Order-isomorphism construction and totalization}
+
+Let $F_{[0,1]}$ be the restriction of $F$ to the subtype $[0,1]$.  Strict monotonicity and
+surjectivity package it as an order isomorphism
+\begin{equation}
+ \mathfrak F:[0,1]\simeq_o[0,1].
+ \label{eq:fabius-order-iso}
+\end{equation}
+Define the clamping map
+\begin{equation}
+ \pi(y)=\min(1,\max(0,y))
+ \label{eq:clamp}
+\end{equation}
+and the total inverse
+\begin{equation}
+ I(y)=\operatorname{val}\bigl(\mathfrak F^{-1}(\pi(y))\bigr).
+ \label{eq:total-inverse}
+\end{equation}
+This is the mathematical content of \lean{fabiusOrderIso} and \lean{fabiusInv}; Lean uses
+\lean{Set.IccExtend} rather than spelling out \eqref{eq:clamp}.
+
+\begin{theorem}[Global inverse package]
+\label{thm:global-inverse}
+The function $I:\R\to\R$ has the following properties.
+\begin{enumerate}
+ \item $0\le I(y)\le1$ for every $y\in\R$.
+ \item $I$ is continuous and nondecreasing on $\R$.
+ \item $I$ is strictly increasing on $[0,1]$ and maps that interval bijectively onto itself.
+ \item For $x,y\in[0,1]$,
+ \begin{equation}
+  F(I(y))=y,
+  \qquad
+  I(F(x))=x.
+  \label{eq:two-sided-inverse}
+ \end{equation}
+ \item The clamped tails are
+ \begin{equation}
+  I(y)=0\quad(y\le0),
+  \qquad
+  I(y)=1\quad(y\ge1).
+  \label{eq:inverse-tails}
+ \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The inverse of an order isomorphism is again an order isomorphism, hence continuous for the
+order topologies and strictly increasing.  The interval projection $\pi$ is continuous and
+nondecreasing, so the composite \eqref{eq:total-inverse} is continuous and nondecreasing on
+all of $\R$.  Its values lie in $[0,1]$ because the codomain of $\mathfrak F^{-1}$ is that
+subtype.  On $[0,1]$ the projection is the identity, and the two inverse identities are the
+usual \emph{apply--inverse--apply} laws for $\mathfrak F$.  If $y\le0$, then $\pi(y)=0$ and
+$\mathfrak F^{-1}(0)=0$ because $F(0)=0$; the right tail is identical.
+\end{proof}
+
+The comparison laws are often more useful than direct substitution.
+
+\begin{proposition}[Comparison calculus]
+\label{prop:inverse-comparison}
+For $x,y\in[0,1]$,
+\begin{align}
+ I(y)\le x &\iff y\le F(x),
+ & I(y)<x &\iff y<F(x),                                    \label{eq:I-left-compare}\\
+ x\le I(y) &\iff F(x)\le y,
+ & x<I(y) &\iff F(x)<y.                                    \label{eq:I-right-compare}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+Apply the strictly increasing map $F$ to the first comparison, or the strictly increasing map
+$I$ to the second, and use \eqref{eq:two-sided-inverse}.  The strict versions are the same
+argument with $<$ in place of $\le$.
+\end{proof}
+
+\subsection{Reflection and exact inverse values}
+
+The reflection symmetry of $F$ survives totalization without a domain restriction.
+
+\begin{theorem}[Global reflection]
+\label{thm:inverse-reflection}
+For every $y\in\R$,
+\begin{equation}
+ I(1-y)=1-I(y).
+ \label{eq:inverse-reflection}
+\end{equation}
+In particular
+\begin{equation}
+ I(0)=0,
+ \qquad
+ I(1)=1,
+ \qquad
+ I\!\left(\frac12\right)=\frac12.
+ \label{eq:inverse-basic-values}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $y\le0$ or $y\ge1$, the identity follows directly from the two constant tails.  Suppose
+$0<y<1$.  Both $I(1-y)$ and $1-I(y)$ lie in $[0,1]$.  Applying $F$ and using the reflection
+law for $F$ gives
+\[
+ F(1-I(y))=1-F(I(y))=1-y=F(I(1-y)).
+\]
+Injectivity of $F$ on $[0,1]$ proves \eqref{eq:inverse-reflection}.  Substituting
+$y=1/2$ then forces the midpoint identity.
+\end{proof}
+
+Exact dyadic evaluation of $F$ immediately becomes exact evaluation of $I$ at a dense family
+of rational ordinates.  Let $D_{n,a}$ denote the exact bounded dyadic evaluator, so that for
+$0\le a\le2^n$,
+\begin{equation}
+ D_{n,a}=F\!\left(\frac{a}{2^n}\right)\in\Q.
+ \label{eq:dyadic-evaluator-input}
+\end{equation}
+The evaluator is clamped for $a>2^n$.
+
+\begin{theorem}[Inverting the exact dyadic evaluator]
+\label{thm:inverse-dyadic-evaluator}
+For all $n,a\in\N$,
+\begin{equation}
+ I(D_{n,a})=\frac{\min(a,2^n)}{2^n}.
+ \label{eq:inverse-dyadic-evaluator}
+\end{equation}
+In particular,
+\begin{equation}
+ F\!\left(\frac14\right)=\frac5{72}
+ \quad\Longrightarrow\quad
+ I\!\left(\frac5{72}\right)=\frac14.
+ \label{eq:inverse-five-seventy-two}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $a\le2^n$, combine \eqref{eq:dyadic-evaluator-input} with the left inverse identity in
+\eqref{eq:two-sided-inverse}.  For $a\ge2^n$, the clamped evaluator equals $1$ and the result
+is $I(1)=1$.
+\end{proof}
+
+\subsection{Interior differential geometry: an ordinary-analysis corollary}
+
+The current inverse module deliberately avoids differentiability assumptions and builds the
+inverse using order topology alone.  Once the positivity theorem for $F'$ in the open unit
+interval is imported, the classical inverse function theorem supplies a sharper interior
+picture.
+
+\begin{corollary}[Interior derivative of the inverse]
+\label{cor:inverse-derivative}
+For $0<y<1$,
+\begin{equation}
+ I'(y)=\frac{1}{F'(I(y))}
+      =\frac{1}{2\Up(2I(y)-1)}.
+ \label{eq:inverse-derivative}
+\end{equation}
+Thus $I$ is $C^\infty$ on $(0,1)$.
+\end{corollary}
+
+\begin{proof}
+The point $x=I(y)$ lies in $(0,1)$, and strict positivity of $F'(x)$ there makes $F$ a local
+$C^\infty$ diffeomorphism.  Differentiate $F(I(y))=y$ and substitute the second identity in
+\eqref{eq:basic-inputs}.
+\end{proof}
+
+Because $F$ is convex on $(0,1/2)$ and concave on $(1/2,1)$, inversion reverses those
+curvature signs.
+
+\begin{corollary}[Curvature of the inverse]
+\label{cor:inverse-curvature}
+The inverse $I$ is concave on $(0,1/2)$ and convex on $(1/2,1)$.  Where second derivatives
+are evaluated,
+\begin{equation}
+ I''(y)=-\frac{F''(I(y))}{F'(I(y))^3}.
+ \label{eq:inverse-second-derivative}
+\end{equation}
+The midpoint is the reflection-symmetric change of curvature.
+\end{corollary}
+
+\begin{remark}
+\Cref{cor:inverse-derivative,cor:inverse-curvature} are straightforward consequences in
+ordinary real analysis.  The named Lean declarations in \path{FabiusInverse.lean} stop at
+continuity, monotonicity, exact inversion, and endpoint steepness; they do not presently
+package the interior inverse-function theorem.
+\end{remark}
+
+\section{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
+\label{sec:inverse-steepness}
+
+The inverse is most interesting at the two endpoints, where the classical formula
+\eqref{eq:inverse-derivative} ceases to have a finite limit.  The formal development proves
+this without differentiating the inverse: exact upper bounds for $F$ are transported through
+monotonicity and then solved as inequalities for $I$.
+
+\subsection{Root-free inverse bounds}
+
+For $n\in\N$, the effective flatness theorem for $F$ says that on the dyadic window
+$0\le x\le2^{-n}$,
+\begin{equation}
+ F(x)\le 2^{\binom{n+1}{2}}x^n.
+ \label{eq:effective-flatness-input}
+\end{equation}
+The sharp factorial refinement is
+\begin{equation}
+ F(x)\le \frac{2^{\binom{n+1}{2}}}{n!}x^n.
+ \label{eq:sharp-flatness-input}
+\end{equation}
+Substitute $x=I(y)$ and use $F(I(y))=y$.
+
+\begin{theorem}[Flatness transported through the inverse]
+\label{thm:inverse-root-free}
+Let $n\in\N$ and $y\in[0,1]$.  If
+\begin{equation}
+ 2^n I(y)\le1,
+ \label{eq:inverse-scale-hypothesis}
+\end{equation}
+then
+\begin{align}
+ y&\le 2^{\binom{n+1}{2}}I(y)^n,                            \label{eq:inverse-basic-root-free}\\
+ y&\le \frac{2^{\binom{n+1}{2}}}{n!}I(y)^n.                \label{eq:inverse-sharp-root-free}
+\end{align}
+It is enough to assume the argument-side condition
+\begin{equation}
+ 0\le y\le F(2^{-n}).
+ \label{eq:inverse-argument-window}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Under \eqref{eq:inverse-scale-hypothesis}, the point $x=I(y)$ belongs to the window of
+\eqref{eq:effective-flatness-input} and \eqref{eq:sharp-flatness-input}.  Their left sides
+become $F(I(y))=y$, giving the two conclusions.  Under
+\eqref{eq:inverse-argument-window}, the comparison calculus
+\eqref{eq:I-left-compare} gives $I(y)\le2^{-n}$, which is exactly
+\eqref{eq:inverse-scale-hypothesis}.
+\end{proof}
+
+If roots are allowed, \eqref{eq:inverse-sharp-root-free} reads
+\begin{equation}
+ I(y)\ge
+ \left(\frac{n!}{2^{\binom{n+1}{2}}}y\right)^{1/n}
+ \qquad\bigl(0\le y\le F(2^{-n})\bigr).
+ \label{eq:inverse-root-form}
+\end{equation}
+The Lean statements retain the root-free form because all constants remain exact and no
+case split for real powers is required.
+
+\subsection{An effective infinite-slope estimate}
+
+The case $n=2$ already forces the difference quotient to diverge.  Since
+$2^{\binom32}=8$ and $F(1/4)=5/72$, \eqref{eq:inverse-basic-root-free} gives
+\begin{equation}
+ y\le8I(y)^2
+ \qquad\left(0\le y\le\frac5{72}\right).
+ \label{eq:inverse-square-bound}
+\end{equation}
+
+\begin{theorem}[Effective domination of every slope]
+\label{thm:inverse-effective-slope}
+Let $M\in\R$ and $y>0$.  If
+\begin{equation}
+ y\le F(1/4)=\frac5{72},
+ \qquad
+ 8M^2y<1,
+ \label{eq:effective-slope-hypotheses}
+\end{equation}
+then
+\begin{equation}
+ My<I(y).
+ \label{eq:effective-slope-conclusion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Assume contrariwise that $I(y)\le My$.  The left side is nonnegative, so squaring preserves
+the inequality and gives $I(y)^2\le M^2y^2$.  Combining this with
+\eqref{eq:inverse-square-bound} yields
+\[
+ y\le8M^2y^2.
+\]
+Since $y>0$, division by $y$ gives $1\le8M^2y$, contradicting
+\eqref{eq:effective-slope-hypotheses}.
+\end{proof}
+
+No positivity assumption on $M$ is necessary: for $M\le0$ the conclusion is automatic from
+$I(y)>0$, and the same algebra proves it uniformly.
+
+\begin{theorem}[Infinite one-sided endpoint slopes]
+\label{thm:inverse-infinite-slope}
+The endpoint difference quotients diverge:
+\begin{align}
+ \frac{I(y)}{y}&\longrightarrow+\infty
+   &&(y\downarrow0),                                       \label{eq:inverse-slope-zero}\\
+ \frac{1-I(y)}{1-y}&\longrightarrow+\infty
+   &&(y\uparrow1).                                         \label{eq:inverse-slope-one}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Fix a target slope $M$.  Replace it by $|M|+1$ and choose $y>0$ below both
+$F(1/4)$ and $[8(|M|+1)^2]^{-1}$.  Then \cref{thm:inverse-effective-slope} gives
+$(|M|+1)y<I(y)$, hence $M<I(y)/y$.  This is exactly convergence to $+\infty$ in the
+order topology.  For the right endpoint, put $z=1-y$ and use
+$I(1-z)=1-I(z)$.
+\end{proof}
+
+\begin{corollary}[Failure of endpoint Lipschitz and H\"older bounds]
+\label{cor:inverse-not-holder}
+The inverse is not locally Lipschitz at $0$ or $1$.  More strongly, for every
+$\alpha>0$ and every $C>0$, no estimate
+\begin{equation}
+ I(y)\le Cy^\alpha
+ \label{eq:holder-false}
+\end{equation}
+can hold throughout a punctured right neighborhood of $0$; the reflected statement holds
+at $1$.
+\end{corollary}
+
+\begin{proof}
+The Lipschitz claim follows immediately from \eqref{eq:inverse-slope-zero}.  For the H\"older
+claim, choose $n$ with $1/n<\alpha$.  On the shrinking window
+$0<y\le F(2^{-n})$, \eqref{eq:inverse-root-form} gives $I(y)\ge c_ny^{1/n}$ with
+$c_n>0$.  If \eqref{eq:holder-false} held, then
+$c_n\le Cy^{\alpha-1/n}$, whose right side tends to zero as $y\downarrow0$, a
+contradiction.
+\end{proof}
+
+\begin{boxedremark}
+The windows $y\le F(2^{-n})$ shrink super-exponentially as $n$ grows.  One must therefore
+not read \eqref{eq:inverse-root-form} as a lower bound uniform in $n$.  Its strength is
+quantifier order: for each prescribed root exponent one obtains a sufficiently small window.
+That is exactly what is needed to defeat every fixed positive H\"older exponent.
+\end{boxedremark}
+
+\section{Elementary functions through their analytic locus}
+\label{sec:elementary}
+
+The non-elementarity proof does not attempt differential algebra or Liouville theory.  It
+uses a topological-analytic invariant that is both stronger and easier to formalize: every
+one-variable elementary function is analytic on a dense open set, whereas the Fabius family
+is nonanalytic at every point of the relevant interval.
+
+\subsection{The exact formal class}
+
+\begin{definition}[The class $\mathsf{Elem}$]
+\label{def:elementary-class}
+Let $\mathsf{Elem}$ be the smallest class of total functions $\R\to\R$ containing all
+constant functions and the identity and closed under
+\begin{equation}
+ +,\quad\cdot,\quad-,\quad(\cdot)^{-1},\quad
+ f\mapsto f^r\ (r\in\R),\quad
+ \exp,\ \log,\ \sin,\ \cos,\ \arcsin,\ \arctan,
+ \label{eq:elementary-generators}
+\end{equation}
+where every unary operation is applied pointwise.
+\end{definition}
+
+This is the inductive predicate \lean{IsElementary}.  Composition is deliberately not a
+constructor.
+
+\begin{proposition}[Closure derived from the generators]
+\label{prop:elementary-derived}
+The class $\mathsf{Elem}$ is closed under composition.  It is consequently closed under
+subtraction, division, natural powers, polynomial and rational functions, square roots,
+absolute values, tangent, hyperbolic functions, $\arccos$, $\operatorname{arsinh}$, and
+signed odd roots.
+\end{proposition}
+
+\begin{proof}
+Induct on the construction of the outer function $g$.  Precomposing a constant or the
+identity with an elementary $f$ is elementary.  Every remaining constructor commutes with
+precomposition: for example $(g_1+g_2)\circ f=(g_1\circ f)+(g_2\circ f)$, and similarly for
+the unary generators.  This proves closure under composition.  The remaining operations
+are identities in the generated algebra.  For example
+\[
+ |f|=\sqrt{f^2},
+ \qquad
+ \tan f=\frac{\sin f}{\cos f},
+ \qquad
+ \sinh f=\frac{\e^f-\e^{-f}}2.
+\]
+For an odd positive integer $n$, the signed root may be written
+\[
+ \frac{f}{|f|}|f|^{1/n},
+\]
+with value zero at $f=0$ under the total reciprocal convention.
+\end{proof}
+
+\begin{remark}[Totalization makes the theorem stronger]
+\label{rem:elementary-totalization}
+Mathlib treats reciprocal, logarithm, real power, and inverse trigonometric functions as
+total maps on $\R$; outside their classical domains they receive specified extension values.
+Thus \cref{def:elementary-class} is at least as large as the class represented by classical
+expressions on open domains.  Proving that $F$ does not belong to this larger class is a
+stronger statement, not a domain-convention loophole.
+\end{remark}
+
+\subsection{Analytic loci}
+
+For a function $f:\R\to\R$, define
+\begin{equation}
+ \anloc(f)=\{x\in\R:f\text{ is real analytic at }x\}.
+ \label{eq:analytic-locus}
+\end{equation}
+Analyticity is local, hence $\anloc(f)$ is open for every $f$.  The substantive theorem is
+density for elementary functions.
+
+The only difficult induction step is composition with a unary generator that has finitely
+many exceptional values.  The following lemma isolates it.
+
+\begin{lemma}[Finite-bad-value composition principle]
+\label{lem:finite-bad-composition}
+Let $f,g:\R\to\R$.  Suppose that $\anloc(f)$ is dense and that there is a finite set
+$B\subset\R$ such that $g$ is analytic at every point of $\R\setminus B$.  Then
+$\anloc(g\circ f)$ is dense.
+\end{lemma}
+
+\begin{proof}
+Let $U$ be a nonempty open interval.  Because $\anloc(f)$ is dense and open, choose
+$x_0\in U\cap\anloc(f)$.  We prove that every punctured neighborhood of $x_0$ contains a
+point where $g\circ f$ is analytic.
+
+Fix $c\in B$.  The analytic function $f-c$ near $x_0$ has two possibilities.
+\begin{enumerate}
+ \item It vanishes identically on a neighborhood of $x_0$.  Then $f$ is locally constant
+ equal to $c$, so $g\circ f$ is locally constant and therefore analytic at $x_0$, regardless
+ of whether $g$ is analytic at $c$.
+ \item It is not locally zero.  The isolated-zero theorem gives a punctured neighborhood of
+ $x_0$ on which $f(x)\ne c$.
+\end{enumerate}
+If the first alternative occurs for any $c\in B$, we are done.  Otherwise intersect the
+finitely many punctured neighborhoods.  The intersection still contains points arbitrarily
+close to $x_0$; intersect once more with the open set $U\cap\anloc(f)$.  At any resulting
+point $x$, the value $f(x)$ avoids $B$, so $g$ is analytic at $f(x)$ and $f$ is analytic at
+$x$.  The analytic chain rule makes $g\circ f$ analytic at $x$.  Thus every nonempty open
+$U$ meets $\anloc(g\circ f)$.
+\end{proof}
+
+\begin{theorem}[Dense open analytic locus]
+\label{thm:elementary-dense-analytic}
+If $f\in\mathsf{Elem}$, then $\anloc(f)$ is dense and open.  Equivalently, the nonanalytic
+locus
+\begin{equation}
+ \R\setminus\anloc(f)
+ \label{eq:elementary-exceptional-set}
+\end{equation}
+is closed and nowhere dense.
+\end{theorem}
+
+\begin{proof}
+Openness is true for every analytic locus.  Density follows by induction on the elementary
+construction.
+
+Constants and the identity are analytic everywhere.  For sums and products, the
+intersection of the two dense open analytic loci is dense and each point in the intersection
+is analytic for the result.  Negation is immediate.  For a unary generator, apply
+\cref{lem:finite-bad-composition} with the following exceptional sets:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Generator & Exceptional values & Analytic elsewhere\\
+\midrule
+$t\mapsto t^{-1}$ & $\{0\}$ & yes\\
+$t\mapsto t^r$ & $\{0\}$ & yes for every fixed $r\in\R$\\
+$\log t$ & $\{0\}$ & yes under the total real-log convention\\
+$\arcsin t$ & $\{-1,1\}$ & yes\\
+$\exp t,\sin t,\cos t,\arctan t$ & $\varnothing$ & everywhere\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complement of a dense open set is closed with empty interior, hence nowhere dense.
+\end{proof}
+
+\subsection{The reusable obstruction}
+
+\begin{theorem}[No agreement on an interior]
+\label{thm:elementary-obstruction}
+Let $h:\R\to\R$ be nonanalytic at every point of $\interior(S)$, where
+$S\subset\R$ has nonempty interior.  No elementary function $g$ can agree with $h$ on all of
+$S$.
+\end{theorem}
+
+\begin{proof}
+If $g$ were elementary, \cref{thm:elementary-dense-analytic} would give a point
+$x\in\interior(S)$ at which $g$ is analytic.  Equality on $S$ implies equality on a whole
+neighborhood of $x$ contained in $S$, so analyticity transfers from $g$ to $h$ at $x$, a
+contradiction.
+\end{proof}
+
+The theorem is stronger than saying that $h$ itself is not elementary: it rules out any
+piecewise repair outside $S$ and any elementary surrogate on a substantial subset.
+
+\section{Strong non-elementarity of the Fabius family}
+\label{sec:not-elementary}
+
+The main article proves nowhere analyticity of $F$ on $[0,1]$, of $\Up$ on $[-1,1]$, and of
+the signed extension on its active interval.  Combining those results with
+\cref{thm:elementary-obstruction} gives the new non-elementarity branch almost for free.
+
+\begin{theorem}[Strong local non-elementarity of $F$]
+\label{thm:fabius-strong-non-elementary}
+Let $U\subset[0,1]$ have nonempty interior.  There is no $g\in\mathsf{Elem}$ such that
+\begin{equation}
+ g(x)=F(x)\qquad(x\in U).
+ \label{eq:elementary-F-agreement}
+\end{equation}
+In particular, no elementary function agrees with $F$ on $(0,1)$, and $F$ is not an
+elementary function on $\R$.
+\end{theorem}
+
+\begin{proof}
+The function $F$ is nonanalytic at every point of $[0,1]$, hence at every point of
+$\interior(U)$.  Apply \cref{thm:elementary-obstruction}.
+\end{proof}
+
+\begin{theorem}[Strong local non-elementarity of $\Up$]
+\label{thm:up-strong-non-elementary}
+If $U\subset[-1,1]$ has nonempty interior, no elementary $g$ agrees with $\Up$ on $U$.
+Consequently $\Up$ is not elementary.
+\end{theorem}
+
+\begin{theorem}[Strong local non-elementarity of the signed extension]
+\label{thm:global-strong-non-elementary}
+If $U\subset[0,2)$ has nonempty interior, no elementary $g$ agrees with the signed global
+extension $\widetilde F$ on $U$.  Consequently $\widetilde F$ is not elementary.
+\end{theorem}
+
+\begin{proof}[Proof of the last two theorems]
+The corresponding nowhere-analyticity theorems supply the hypothesis of
+\cref{thm:elementary-obstruction}.  The global conclusions follow by taking a nonempty open
+subinterval of the active support and observing that an elementary representation on all of
+$\R$ would in particular agree there.
+\end{proof}
+
+\begin{remark}[Why compact support alone is not the argument]
+A compactly supported nonzero function cannot be globally real analytic, but elementary
+functions need not be analytic everywhere: $|x|$, $x^{-1}$, and totalized logarithms already
+have exceptional points.  What defeats elementarity is not compact support by itself; it is
+nonanalyticity on an entire interval, while elementary exceptional sets are nowhere dense.
+\end{remark}
+
+\begin{remark}[Why this is sharper than a differential-algebra slogan]
+The conclusion does not depend on choosing a particular syntax for ``closed form'' beyond
+the explicit inductive class.  More importantly, it is local: changing the function outside
+a small open interval cannot make it elementary on that interval.  Thus the theorem rules
+out not only a global elementary formula for $F$, but also an elementary formula valid on
+any nontrivial open patch of its natural domain.
+\end{remark}
+
+\part{Probability laws and the bridges the headline formulas conceal}
+
+\section{The product probability law in measure-theoretic form}
+\label{sec:product-law}
+
+The random-series representation in the main article is concise because it speaks in the
+usual probabilistic shorthand.  The formal construction must establish continuity,
+measurability, product independence, pushforward identities, and support before it may use
+the same shorthand.  This section records that chain explicitly.
+
+\subsection{Sample space and uniform convergence}
+
+Let
+\begin{equation}
+ \Omega=[0,1]^{\N}
+ \label{eq:sample-space}
+\end{equation}
+with its product topology and product Borel probability measure
+\begin{equation}
+ \mathbf P=\bigotimes_{n\ge0}\operatorname{Unif}[0,1].
+ \label{eq:uniform-product}
+\end{equation}
+Write $\omega_n$ for the $n$th coordinate and define
+\begin{equation}
+ X(\omega)=\sum_{n=0}^{\infty}\frac{\omega_n}{2^{n+1}}.
+ \label{eq:weighted-coordinate-sum}
+\end{equation}
+For every $\omega$,
+\begin{equation}
+ 0\le \frac{\omega_n}{2^{n+1}}\le2^{-n-1},
+ \qquad
+ \sum_{n\ge0}2^{-n-1}=1.
+ \label{eq:coordinate-majorant}
+\end{equation}
+The Weierstrass test therefore gives uniform convergence on $\Omega$.  Every partial sum is
+continuous, so $X$ is continuous and hence measurable.  Termwise comparison in
+\eqref{eq:coordinate-majorant} gives the pointwise support statement
+\begin{equation}
+ 0\le X(\omega)\le1.
+ \label{eq:X-support}
+\end{equation}
+
+Let
+\begin{equation}
+ \mu=\mathbf P\circ X^{-1}
+ \label{eq:weighted-sum-law}
+\end{equation}
+be the pushforward law.  It is a probability measure and
+\begin{equation}
+ \mu([0,1])=1,
+ \qquad
+ \mu(\R\setminus[0,1])=0.
+ \label{eq:law-support}
+\end{equation}
+The Lean declarations are \lean{weightedCoordinateSum},
+\lean{continuous\_weightedCoordinateSum}, \lean{weightedSumDistribution}, and the support
+lemmas surrounding them.
+
+\subsection{Deleting the head coordinate}
+
+Define the left shift
+\begin{equation}
+ (T\omega)_n=\omega_{n+1}.
+ \label{eq:tail-map}
+\end{equation}
+The product measure is invariant under this deletion in the sense that $T_\#\mathbf P=\mathbf
+P$, and the head coordinate $\omega_0$ is independent of the entire tail $T\omega$.  Reindexing
+the series gives the exact pointwise split
+\begin{equation}
+ X(\omega)=\frac{\omega_0+X(T\omega)}2.
+ \label{eq:X-head-tail-split}
+\end{equation}
+Consequently the pair $(\omega_0,X(T\omega))$ has law
+\begin{equation}
+ \operatorname{Unif}[0,1]\otimes\mu.
+ \label{eq:head-tail-law}
+\end{equation}
+Pushing \eqref{eq:X-head-tail-split} through this joint law gives the self-similarity identity
+\begin{equation}
+ \mu=\left(\operatorname{Unif}[0,1]\otimes\mu\right)
+       \circ\left[(u,x)\mapsto\frac{u+x}{2}\right]^{-1}.
+ \label{eq:law-self-similarity}
+\end{equation}
+
+\begin{proposition}[The smoothing equation for the CDF]
+\label{prop:CDF-smoothing-detailed}
+Let $H(y)=\mu(({-\infty},y])$.  Then for every $y\in\R$,
+\begin{equation}
+ H(y)=\int_0^1 H(2y-u)\dd u.
+ \label{eq:CDF-smoothing-detailed}
+\end{equation}
+For $0\le y\le1/2$ this reduces to
+\begin{equation}
+ H(y)=\int_0^{2y}H(t)\dd t.
+ \label{eq:CDF-left-detailed}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Condition on the head coordinate in \eqref{eq:X-head-tail-split}.  For a fixed $u$,
+\[
+ \Prob\!\left(\frac{u+X'}2\le y\right)=\Prob(X'\le2y-u)=H(2y-u),
+\]
+where $X'$ has law $\mu$ and is independent of $u$.  Integrate over $u\in[0,1]$.  If
+$0\le y\le1/2$, support implies $H(2y-u)=0$ when $u>2y$; substitute $t=2y-u$ and use the
+reflection identity established below, or reverse the interval directly.
+\end{proof}
+
+\subsection{Coordinate reflection}
+
+Let $R:\Omega\to\Omega$ be
+\begin{equation}
+ (R\omega)_n=1-\omega_n.
+ \label{eq:coordinate-reflection}
+\end{equation}
+Lebesgue measure on $[0,1]$ is invariant under $u\mapsto1-u$, so the infinite product measure
+is invariant under $R$.  Moreover
+\begin{equation}
+ X(R\omega)=\sum_{n\ge0}\frac{1-\omega_n}{2^{n+1}}
+ =1-X(\omega).
+ \label{eq:X-reflection}
+\end{equation}
+Thus the law is reflection invariant:
+\begin{equation}
+ (x\mapsto1-x)_\#\mu=\mu.
+ \label{eq:law-reflection}
+\end{equation}
+Since the CDF is continuous, this becomes
+\begin{equation}
+ H(1-y)=1-H(y).
+ \label{eq:CDF-reflection}
+\end{equation}
+The fixed-point uniqueness theorem for the bounded Fabius equation now identifies
+\begin{equation}
+ H=F
+ \quad\text{on all of }\R.
+ \label{eq:CDF-is-F}
+\end{equation}
+The phrase ``on all of $\R$'' includes the two constant tails; it is not a reference to the
+signed extension $\widetilde F$.
+
+\begin{theorem}[Probability representation, global form]
+\label{thm:probability-representation-global}
+For every $y\in\R$,
+\begin{equation}
+ F(y)=\Prob\!\left(\sum_{n\ge0}\frac{U_n}{2^{n+1}}\le y\right),
+ \label{eq:F-as-CDF-global}
+\end{equation}
+where the $U_n$ are independent uniform variables on $[0,1]$.  Equivalently,
+\begin{equation}
+ \Up(x)=\mu(({-\infty},1-|x|])
+ \label{eq:up-as-CDF-global}
+\end{equation}
+for every $x\in\R$.
+\end{theorem}
+
+\section{The survival-function Fubini identity}
+\label{sec:survival-fubini}
+
+A particularly useful bridge, absent from the main article's probability chapter, identifies
+integration against the Fabius law with an ordinary integral against $\Up$.  It is the compact
+support version of the layer-cake or tail-integration formula.
+
+For $t\ge0$, support and \eqref{eq:CDF-is-F} give
+\begin{equation}
+ \mu((t,\infty))=1-F(t)=\Up(t).
+ \label{eq:survival-is-up}
+\end{equation}
+The equality remains correct for $t>1$, when both sides are zero.
+
+\begin{theorem}[Expectation from the survival function]
+\label{thm:survival-Fubini}
+Let $g,g':\R\to\R$ be continuous and suppose
+\begin{equation}
+ g(x)-g(0)=\int_0^x g'(t)\dd t
+ \qquad(0\le x\le1).
+ \label{eq:g-FTC-hypothesis}
+\end{equation}
+Then
+\begin{equation}
+ \int_{[0,1]}g(x)\dd\mu(x)
+ =g(0)+\int_0^1 g'(t)\Up(t)\dd t.
+ \label{eq:survival-Fubini}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put
+\begin{equation}
+ A=\{(t,x)\in[0,1]\times\R:t<x\},
+ \qquad
+ K(t,x)=\mathbf1_A(t,x)g'(t).
+ \label{eq:Fubini-kernel}
+\end{equation}
+Continuity of $g'$ on the compact interval makes $K$ integrable with respect to
+$\operatorname{Leb}_{[0,1]}\otimes\mu$.  Integrating first in $t$ and using
+\eqref{eq:g-FTC-hypothesis} gives, for $x\in[0,1]$,
+\begin{equation}
+ \int_0^1K(t,x)\dd t=\int_0^xg'(t)\dd t=g(x)-g(0).
+ \label{eq:Fubini-first-order}
+\end{equation}
+Integrating first in $x$ gives
+\begin{equation}
+ \int K(t,x)\dd\mu(x)=g'(t)\mu((t,\infty))=g'(t)\Up(t)
+ \label{eq:Fubini-second-order}
+\end{equation}
+by \eqref{eq:survival-is-up}.  Fubini equates the two iterated integrals.  Since $\mu$ is a
+probability measure supported on $[0,1]$, the integral of the constant $g(0)$ is $g(0)$,
+and rearrangement yields \eqref{eq:survival-Fubini}.
+\end{proof}
+
+\begin{remark}[Endpoint conventions disappear under integration]
+The survival function uses the open ray $(t,\infty)$.  The CDF uses $(-\infty,t]$.  Their
+complements are exact, and no endpoint atom enters because $\mu$ has a continuous CDF.
+Likewise, replacing $(0,1)$ by any of the standard half-open versions changes no Lebesgue
+integral.  The formal proof nevertheless records these null-set conversions explicitly.
+\end{remark}
+
+\section{Raw, endpoint, and tilted Laplace moments}
+\label{sec:probability-laplace}
+
+The main article develops half moments and the negative generating function from the
+analytic side.  The new probability--Laplace module proves that those quantities are exactly
+the moments of the product law.
+
+\subsection{Three moment families}
+
+For a probability measure $\nu$ supported on $[0,1]$, define
+\begin{align}
+ U_n(\nu)&=\int_{[0,1]}(1-x)^n\dd\nu(x),                  \label{eq:endpoint-moment-def}\\
+ L_k(\nu;s)&=\int_{[0,1]}\e^{-sx}x^k\dd\nu(x),           \label{eq:raw-laplace-def}\\
+ J_k(s)&=\int_0^1t^k\Up(t)\e^{-st}\dd t.                 \label{eq:survival-tilt-def}
+\end{align}
+For real $s$, the integrand in \eqref{eq:raw-laplace-def} is nonnegative, so
+\begin{equation}
+ L_k(\nu;s)\ge0.
+ \label{eq:laplace-moment-nonnegative}
+\end{equation}
+
+Apply \cref{thm:survival-Fubini} to $g(x)=\e^{-sx}x^k$.  For $k=0$ one obtains
+\begin{equation}
+ L_0(\mu;s)=1-sJ_0(s).
+ \label{eq:laplace-zero-survival}
+\end{equation}
+For $k\ge0$, applying it to $g(x)=\e^{-sx}x^{k+1}$ gives
+\begin{equation}
+ L_{k+1}(\mu;s)=(k+1)J_k(s)-sJ_{k+1}(s).
+ \label{eq:laplace-successor-survival}
+\end{equation}
+These equations are exactly the defining clauses of
+\lean{fabiusLaplaceMoment}.
+
+\begin{theorem}[Law moments equal analytic Fabius moments]
+\label{thm:law-moments-identification}
+For every $k\in\N$ and $s\in\R$,
+\begin{equation}
+ L_k(\mu;s)=M_k(s),
+ \label{eq:law-M-identification}
+\end{equation}
+where
+\begin{align}
+ M_0(s)&=G(-s),                                            \label{eq:M-zero}\\
+ M_{k+1}(s)&=(k+1)J_k(s)-sJ_{k+1}(s)                      \label{eq:M-successor}
+\end{align}
+are the tilted Fabius moments and $G$ is the generating function of the main article.
+In particular $M_k(s)\ge0$ for real $s$.
+\end{theorem}
+
+\begin{proof}
+The case $k=0$ is the integration-by-parts identity
+\eqref{eq:laplace-zero-survival}, which is also the negative generating-function formula.
+The successor case is \eqref{eq:laplace-successor-survival}.
+\end{proof}
+
+\subsection{Differential recurrence}
+
+Differentiation under the compact integral in \eqref{eq:survival-tilt-def} is justified by a
+uniform exponential majorant in a neighborhood of each real $s$.  It gives
+\begin{equation}
+ J_k'(s)=-J_{k+1}(s).
+ \label{eq:J-differential-recurrence}
+\end{equation}
+Substituting into \eqref{eq:M-zero}--\eqref{eq:M-successor} yields the cleaner recurrence
+\begin{equation}
+ M_k'(s)=-M_{k+1}(s).
+ \label{eq:M-differential-recurrence}
+\end{equation}
+Iteration gives
+\begin{equation}
+ M_k^{(n)}(s)=(-1)^nM_{k+n}(s).
+ \label{eq:M-iterated-derivative}
+\end{equation}
+Thus all $M_k$ are $C^\infty$ on $\R$, and the negative generating function is completely
+monotone:
+\begin{equation}
+ (-1)^n\frac{\dd^n}{\dd s^n}G(-s)=M_n(s)\ge0.
+ \label{eq:complete-monotonicity}
+\end{equation}
+
+\subsection{Reflection and the half moments}
+
+Reflection invariance \eqref{eq:law-reflection} gives
+\begin{equation}
+ \int(1-x)^n\dd\mu(x)=\int x^n\dd\mu(x).
+ \label{eq:endpoint-raw-reflection}
+\end{equation}
+At zero tilt the analytic moment normalization is the exact rational half-moment sequence
+$d_n$:
+\begin{equation}
+ M_n(0)=d_n.
+ \label{eq:M-zero-half-moment}
+\end{equation}
+Combining the identifications yields the full probability interpretation.
+
+\begin{theorem}[Probability meaning of the half moments]
+\label{thm:half-moments-probability}
+For every $n\in\N$,
+\begin{equation}
+ d_n=\E[X^n]=\E[(1-X)^n]
+     =\int_{[0,1]}x^n\dd\mu(x)
+     =\int_{[0,1]}(1-x)^n\dd\mu(x).
+ \label{eq:half-moment-probability}
+\end{equation}
+Moreover
+\begin{equation}
+ \left.\frac{\dd^n}{\dd s^n}G(-s)\right|_{s=0}=(-1)^nd_n.
+ \label{eq:generating-jet-half-moments}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use \eqref{eq:law-M-identification} at $s=0$, then
+\eqref{eq:M-zero-half-moment} and \eqref{eq:endpoint-raw-reflection}.  The derivative identity
+is \eqref{eq:M-iterated-derivative} with $k=0$ and $s=0$.
+\end{proof}
+
+\begin{boxedremark}
+The equality $d_n=\E[X^n]$ is not merely an interpretation of a previously known rational
+sequence.  It is the bridge that licenses positivity, log-convexity, moment-matrix
+positivity, and Laplace comparison arguments without rebuilding them from the recurrence for
+$d_n$.  The formal library keeps the bridge in a separate module precisely so the
+probabilistic and saddle branches can import it independently.
+\end{boxedremark}
+
+\section{From atomic laws to half-endpoint histograms}
+\label{sec:step-measure-bridge}
+
+The main article introduces the polynomial step approximants $\Wcal_n$ and then moves quickly
+to their convergence.  The formal proof has a nontrivial middle layer: the coefficients first
+define an atomic probability measure; each atom is smeared across a centered cell; interval
+integrals of the resulting histogram are sandwiched between masses of slightly shrunken and
+enlarged intervals.
+
+\subsection{Half-endpoint indicators are ordinary indicators almost everywhere}
+
+For $a<b$, define
+\begin{equation}
+ \mathbf1_{[a,b]}^*(x)=
+ \begin{cases}
+  1,&a<x<b,\\
+  \tfrac12,&x=a\text{ or }x=b,\\
+  0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:half-endpoint-indicator}
+\end{equation}
+The two endpoint values are essential for pointwise gluing of adjacent cells, but irrelevant
+to Lebesgue integration.
+
+\begin{lemma}[Almost-everywhere replacement]
+\label{lem:half-indicator-ae}
+For every $a,b\in\R$,
+\begin{equation}
+ \mathbf1_{[a,b]}^*=\mathbf1_{(a,b]}
+ \quad\text{Lebesgue-almost everywhere}.
+ \label{eq:half-indicator-ae}
+\end{equation}
+Consequently
+\begin{equation}
+ \int_\R\mathbf1_{[a,b]}^*(x)\dd x=\max(b-a,0),
+ \label{eq:half-indicator-total-integral}
+\end{equation}
+and, for $c\le d$,
+\begin{equation}
+ \int_c^d\mathbf1_{[a,b]}^*(x)\dd x
+ =\max\bigl(\min(d,b)-\max(c,a),0\bigr).
+ \label{eq:half-indicator-overlap}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The functions differ only at $a$ and $b$, a null set.  The first integral is the length of
+$(a,b]$.  The second is the length of
+$(c,d]\cap(a,b]=(\max(c,a),\min(d,b)]$, with truncation at zero when the interval is empty.
+\end{proof}
+
+\subsection{Atomic measure, cell geometry, and exact normalization}
+
+At level $n$, let $x_{n,m}$ be the location of the $m$th polynomial atom and let
+$p_{n,m}\ge0$ be its normalized mass, with
+\begin{equation}
+ \sum_m p_{n,m}=1.
+ \label{eq:atomic-mass-one}
+\end{equation}
+The corresponding atomic law is
+\begin{equation}
+ \nu_n=\sum_m p_{n,m}\delta_{x_{n,m}}.
+ \label{eq:polynomial-atomic-law}
+\end{equation}
+Let
+\begin{equation}
+ h_n=2^{-n-1}
+ \label{eq:step-half-width}
+\end{equation}
+be the half-width of a cell and
+\begin{equation}
+ C_{n,m}=[x_{n,m}-h_n,x_{n,m}+h_n].
+ \label{eq:step-cell}
+\end{equation}
+Its full width is $2h_n=2^{-n}$.  Smearing the atom uniformly over its cell produces the
+histogram
+\begin{equation}
+ \Wcal_n(x)=2^n\sum_m p_{n,m}\mathbf1^*_{C_{n,m}}(x).
+ \label{eq:histogram-from-atoms}
+\end{equation}
+By \eqref{eq:half-indicator-total-integral}, each term has integral $p_{n,m}$, hence
+\begin{equation}
+ \int_\R\Wcal_n(x)\dd x=1.
+ \label{eq:histogram-mass-one}
+\end{equation}
+The pointwise half weights ensure that when two cells share an endpoint, the two half
+contributions add to the correct plateau value.
+
+\subsection{The overlap sandwich}
+
+For a fixed interval $[a,b]$ with $a\le b$, let
+\begin{equation}
+ \ell_{n,m}(a,b)=|[a,b]\cap C_{n,m}|
+ =\max\bigl(\min(b,x_{n,m}+h_n)-\max(a,x_{n,m}-h_n),0\bigr).
+ \label{eq:cell-overlap-length}
+\end{equation}
+Then
+\begin{equation}
+ \int_a^b\Wcal_n(x)\dd x
+ =\sum_m p_{n,m}\,2^n\ell_{n,m}(a,b).
+ \label{eq:histogram-overlap-sum}
+\end{equation}
+The normalized overlap $2^n\ell_{n,m}$ lies in $[0,1]$.
+
+If $x_{n,m}\in(a+h_n,b-h_n]$, then the entire cell lies inside $[a,b]$, so the normalized
+overlap is $1$.  If the cell meets $[a,b]$, then its center lies in
+$(a-h_n,b+h_n]$.  Therefore, term by term,
+\begin{equation}
+ \mathbf1_{(a+h_n,b-h_n]}(x_{n,m})
+ \le2^n\ell_{n,m}(a,b)
+ \le\mathbf1_{(a-h_n,b+h_n]}(x_{n,m}).
+ \label{eq:overlap-indicator-sandwich}
+\end{equation}
+Multiplication by $p_{n,m}$ and summation gives the central bridge.
+
+\begin{theorem}[Atomic--histogram interval sandwich]
+\label{thm:atomic-histogram-sandwich}
+For $a\le b$,
+\begin{equation}
+ \nu_n((a+h_n,b-h_n])
+ \le\int_a^b\Wcal_n(x)\dd x
+ \le\nu_n((a-h_n,b+h_n]).
+ \label{eq:atomic-histogram-sandwich}
+\end{equation}
+\end{theorem}
+
+This is the exact content of the inner- and outer-overlap lemmas in
+\path{StepMeasureBridge.lean}.  Its importance is conceptual: it converts weak convergence
+of measures into convergence of integrals of discontinuous histograms without claiming
+pointwise convergence of densities from weak convergence alone.
+
+\subsection{Portmanteau plus a moving-boundary squeeze}
+
+The atomic laws $\nu_n$ coincide with the finite convolution laws and converge weakly to the
+absolutely continuous law with density $\Up$.  Because that limit gives zero mass to every
+singleton, the frontier of $(a,b]$ is null.  Portmanteau therefore gives
+\begin{equation}
+ \nu_n((a,b])\longrightarrow\int_a^b\Up(x)\dd x.
+ \label{eq:portmanteau-Ioc}
+\end{equation}
+The intervals in \eqref{eq:atomic-histogram-sandwich} move with $n$, so one more squeeze is
+needed.  Fix $\varepsilon>0$ and choose $\delta>0$ with $4\delta<\varepsilon$.  Eventually
+$h_n\le\delta$, and hence
+\begin{align}
+ (a+\delta,b-\delta]&\subset(a+h_n,b-h_n],                 \label{eq:fixed-inner-subset}\\
+ (a-h_n,b+h_n]&\subset(a-\delta,b+\delta].                 \label{eq:moving-outer-subset}
+\end{align}
+The bound $0\le\Up\le1$ gives
+\begin{align}
+ 0&\le\int_a^b\Up-\int_{a+\delta}^{b-\delta}\Up\le2\delta, \label{eq:up-shrink-error}\\
+ 0&\le\int_{a-\delta}^{b+\delta}\Up-\int_a^b\Up\le2\delta. \label{eq:up-expand-error}
+\end{align}
+Apply \eqref{eq:portmanteau-Ioc} to the two fixed comparison intervals and combine with
+\eqref{eq:atomic-histogram-sandwich}.
+
+\begin{theorem}[Interval-integral convergence of the step approximants]
+\label{thm:step-integral-convergence}
+For every $a,b\in\R$,
+\begin{equation}
+ \int_a^b\Wcal_n(x)\dd x
+ \longrightarrow
+ \int_a^b\Up(x)\dd x.
+ \label{eq:step-integral-convergence}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The preceding fixed-$\delta$ sandwich proves the result for $a\le b$.  If $b<a$, reverse the
+orientation of both interval integrals.
+\end{proof}
+
+\begin{warning}[The logical order cannot be shortened]
+Weak convergence of $\nu_n$ does not by itself imply pointwise convergence of the
+histograms $\Wcal_n$, nor even convergence of their values at a single point.  The formal
+route is
+\[
+\begin{aligned}
+ \text{weak convergence}
+ &\Longrightarrow \text{null-boundary interval masses}\\
+ &\Longrightarrow \text{moving-cell sandwich}
+ \Longrightarrow \text{interval-integral convergence}.
+\end{aligned}
+\]
+Other parts of the development then use shape, refinement, Fourier decay, or difference
+quotients to obtain stronger function-level convergence.
+\end{warning}
+
+\part{The reusable discrete engines}
+
+\section{Weighted paths solve triangular recurrences}
+\label{sec:path-sums}
+
+The exact inverse-power recurrence for $F(2^{-n})$ is triangular.  The main article states its
+composition formula, but the Lean proof first establishes a generic solver for every
+semiring-valued triangular recurrence.  That abstraction explains both the form of the
+answer and the uniqueness argument.
+
+\subsection{Compositions as increasing paths}
+
+A composition of $n$ is an ordered list of positive integers
+\begin{equation}
+ c=(r_1,\ldots,r_m),
+ \qquad
+ r_1+\cdots+r_m=n.
+ \label{eq:composition}
+\end{equation}
+Its partial sums
+\begin{equation}
+ s_0=0,
+ \qquad
+ s_j=r_1+\cdots+r_j
+ \quad(1\le j\le m)
+ \label{eq:composition-partial-sums}
+\end{equation}
+form a strictly increasing path
+\begin{equation}
+ 0=s_0<s_1<\cdots<s_m=n.
+ \label{eq:increasing-path}
+\end{equation}
+Conversely, every such path determines the positive increments $r_j=s_j-s_{j-1}$.
+
+Let $R$ be a semiring and let
+\begin{equation}
+ w:\N\times\N\to R
+ \label{eq:generic-edge-weight}
+\end{equation}
+be an edge-weight function.  Define
+\begin{align}
+ W_w(c)&=\prod_{j=1}^{m}w(s_{j-1},s_j),                    \label{eq:path-weight}\\
+ P_w(n)&=\sum_{c\models n}W_w(c).                          \label{eq:path-sum}
+\end{align}
+For $n=0$, there is one empty composition and its empty product is $1$, so
+\begin{equation}
+ P_w(0)=1.
+ \label{eq:path-sum-zero}
+\end{equation}
+
+\subsection{Last-edge decomposition}
+
+Every nonempty path to $n$ has a unique last predecessor $k<n$.  Deleting its final edge
+gives a path to $k$, and appending the edge $k\to n$ reverses the operation.  Therefore
+
+\begin{theorem}[Last-edge decomposition]
+\label{thm:path-last-edge}
+For $n>0$,
+\begin{equation}
+ P_w(n)=\sum_{k=0}^{n-1}P_w(k)w(k,n).
+ \label{eq:path-last-edge}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Partition the finite set of compositions of $n$ by the sum $k$ of all blocks except the last.
+For fixed $k$, deleting the final block is a bijection with compositions of $k$.  Path-weight
+multiplicativity gives
+\[
+ W_w(c\mathbin{\|}(n-k))=W_w(c)w(k,n).
+\]
+Summing first over compositions of $k$ and then over $k<n$ gives
+\eqref{eq:path-last-edge}.
+\end{proof}
+
+One can instead partition by the number of edges.  Let $P_{w,r}(n)$ be the contribution of
+compositions with exactly $r$ blocks.  Uniformly in $n$,
+\begin{equation}
+ P_w(n)=\sum_{r=0}^{n}P_{w,r}(n),
+ \label{eq:path-length-uniform}
+\end{equation}
+and for $n>0$ the zero-edge term vanishes, so the range may be written $1\le r\le n$.
+
+\subsection{The generic triangular solver}
+
+\begin{theorem}[Path-sum solution of a triangular recurrence]
+\label{thm:triangular-path-solver}
+Let $x:\N\to R$ satisfy
+\begin{align}
+ x_0&=b,                                                    \label{eq:triangular-initial}\\
+ x_n&=\sum_{k=0}^{n-1}x_k w(k,n)\qquad(n>0).               \label{eq:triangular-recurrence}
+\end{align}
+Then
+\begin{equation}
+ x_n=bP_w(n)
+ \qquad(n\ge0).
+ \label{eq:triangular-path-solution}
+\end{equation}
+Consequently the recurrence and initial value determine $x$ uniquely.
+\end{theorem}
+
+\begin{proof}
+Use strong induction on $n$.  At $n=0$, \eqref{eq:path-sum-zero} gives
+$bP_w(0)=b=x_0$.  For $n>0$, insert the induction hypotheses into
+\eqref{eq:triangular-recurrence}:
+\[
+ x_n=\sum_{k<n}bP_w(k)w(k,n)
+ =b\sum_{k<n}P_w(k)w(k,n)
+ =bP_w(n),
+\]
+where the last equality is \cref{thm:path-last-edge}.  Any two solutions therefore equal the
+same path sum at each index.
+\end{proof}
+
+\begin{remark}
+No subtraction, division, topology, or order is used.  The theorem works in an arbitrary
+semiring.  This is why the formal development separates it from the rational Fabius
+specialization.
+\end{remark}
+
+\section{The nonrecursive composition formula for \texorpdfstring{$F(2^{-n})$}{F(2 to the -n)}}
+\label{sec:fabius-composition-formula}
+
+Let $a_n$ be the normalized inverse-dyadic recurrence sequence used in the main article, so
+\begin{equation}
+ F(2^{-n})=2^{-\binom n2}a_n.
+ \label{eq:inverse-dyadic-normalization}
+\end{equation}
+Its triangular recurrence has edge weights
+\begin{equation}
+ w(k,n)=\frac{1}{(2^n-1)(n-k+1)!}
+ \qquad(0\le k<n).
+ \label{eq:fabius-recurrence-edge}
+\end{equation}
+Because $a_0=1$, \cref{thm:triangular-path-solver} gives $a_n=P_w(n)$.
+
+For a composition $c=(r_1,\ldots,r_m)$ of $n$, the edge from $s_{j-1}$ to $s_j$ has
+$n-k$ replaced by $r_j$, hence
+\begin{equation}
+ w(s_{j-1},s_j)=\frac{1}{(2^{s_j}-1)(r_j+1)!}.
+ \label{eq:fabius-composition-edge}
+\end{equation}
+Therefore:
+
+\begin{theorem}[Nonrecursive inverse-dyadic formula]
+\label{thm:composition-inverse-dyadic}
+For every $n\in\N$,
+\begin{equation}
+ F(2^{-n})=
+ 2^{-\binom n2}
+ \sum_{(r_1,\ldots,r_m)\models n}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{r_1+\cdots+r_j}-1)(r_j+1)!}.
+ \label{eq:composition-inverse-dyadic}
+\end{equation}
+At $n=0$, the unique empty composition contributes the empty product $1$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:triangular-path-solver} with \eqref{eq:fabius-recurrence-edge}, translate
+paths into compositions using \eqref{eq:composition-partial-sums}, and multiply by the outer
+normalization in \eqref{eq:inverse-dyadic-normalization}.
+\end{proof}
+
+The formula may be grouped by the number $m$ of blocks:
+\begin{equation}
+ F(2^{-n})=
+ 2^{-\binom n2}
+ \sum_{m=1}^{n}
+ \sum_{\substack{r_1+\cdots+r_m=n\\r_j\ge1}}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{r_1+\cdots+r_j}-1)(r_j+1)!},
+ \qquad n>0.
+ \label{eq:composition-by-length}
+\end{equation}
+
+\subsection{Small cases as structural checks}
+
+\begin{example}[The value at $1/2$]
+For $n=1$ the sole composition is $(1)$, with weight
+\[
+ \frac1{(2^1-1)2!}=\frac12.
+\]
+The outer power is $2^0=1$, so $F(1/2)=1/2$.
+\end{example}
+
+\begin{example}[The value at $1/4$]
+The two compositions of $2$ are $(2)$ and $(1,1)$:
+\begin{align*}
+ W(2)&=\frac1{(4-1)3!}=\frac1{18},\\
+ W(1,1)&=\frac1{(2-1)2!}\frac1{(4-1)2!}=\frac1{12}.
+\end{align*}
+Their sum is $5/36$ and the outer factor is $2^{-1}$, giving
+\begin{equation}
+ F(1/4)=\frac5{72}.
+ \label{eq:F-quarter-path-check}
+\end{equation}
+\end{example}
+
+\begin{example}[The value at $1/8$]
+The four compositions of $3$ have weights
+\begin{equation*}
+ \frac1{168},\qquad
+ \frac1{84},\qquad
+ \frac1{252},\qquad
+ \frac1{168},
+\end{equation*}
+for $(3)$, $(1,2)$, $(2,1)$, and $(1,1,1)$ respectively.  Their sum is $1/36$; multiplying by
+$2^{-\binom32}=1/8$ gives
+\begin{equation}
+ F(1/8)=\frac1{288}.
+ \label{eq:F-eighth-path-check}
+\end{equation}
+\end{example}
+
+\begin{boxedremark}
+The composition formula is not a mysterious closed form guessed from the first values.  It
+is the universal unrolling of a triangular recurrence.  Every block records a jump, every
+partial sum records the endpoint of that jump, and the product records the chronological
+edge weights.  The formal path layer makes this explanation exact and reusable.
+\end{boxedremark}
+
+\section{A finite-row Toeplitz convergence theorem}
+\label{sec:toeplitz}
+
+The complex-shift and discrete-limit formulas involve a row of coefficients depending on
+$n$, not a fixed summability kernel.  The main article verifies the Fabius specialization but
+omits the abstract theorem.  The needed result is a finite-row version of the Toeplitz
+summability principle in a normed ring.
+
+\subsection{Abstract statement}
+
+Let $K$ be a normed ring.  For each $n$, let $J_n$ be a finite index set, let
+$w_{n,j}\in K$, and let $q(n,j)\in\N$ be the sampled sequence index.  Assume:
+\begin{align}
+ \sum_{j\in J_n}w_{n,j}&=1,                                \label{eq:toeplitz-row-mass}\\
+ \sum_{j\in J_n}\|w_{n,j}\|&\le C                         \label{eq:toeplitz-variation}
+\end{align}
+for one constant $C\ge0$, and assume that the sampled indices move uniformly into every
+tail:
+\begin{equation}
+ \forall N\ \exists n_0\ \forall n\ge n_0\ \forall j\in J_n,
+ \qquad q(n,j)\ge N.
+ \label{eq:toeplitz-tail-index}
+\end{equation}
+
+\begin{theorem}[Finite-row Toeplitz convergence]
+\label{thm:finite-row-toeplitz}
+If $H_m\to L$ in $K$, then
+\begin{equation}
+ \sum_{j\in J_n}w_{n,j}H_{q(n,j)}\longrightarrow L.
+ \label{eq:finite-row-toeplitz}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix $\varepsilon>0$.  Since $H_m\to L$, choose $N$ such that
+\begin{equation}
+ \|H_m-L\|<\frac{\varepsilon}{C+1}
+ \qquad(m\ge N).
+ \label{eq:toeplitz-tail-error}
+\end{equation}
+Choose $n_0$ from \eqref{eq:toeplitz-tail-index}.  For $n\ge n_0$, use the row-mass identity
+to subtract $L$:
+\begin{align*}
+ \sum_{j\in J_n}w_{n,j}H_{q(n,j)}-L
+ &=\sum_{j\in J_n}w_{n,j}\bigl(H_{q(n,j)}-L\bigr).
+\end{align*}
+Therefore
+\begin{align*}
+ \left\|\sum_{j\in J_n}w_{n,j}H_{q(n,j)}-L\right\|
+ &\le\sum_{j\in J_n}\|w_{n,j}\|\,\|H_{q(n,j)}-L\|\\
+ &<\frac{\varepsilon}{C+1}\sum_{j\in J_n}\|w_{n,j}\|\\
+ &\le\varepsilon\frac{C}{C+1}<\varepsilon.
+\end{align*}
+This proves convergence.
+\end{proof}
+
+\begin{remark}
+The weights need not be positive, the rows need not be nested, and no entrywise limit of
+$w_{n,j}$ is required.  The theorem uses exactly three facts: row mass one, uniformly bounded
+total variation, and uniform migration of all sampled indices into the tail.
+\end{remark}
+
+\section{The Fabius Toeplitz rows and corrected discrete prefixes}
+\label{sec:fabius-toeplitz}
+
+\subsection{The half-base \texorpdfstring{$q$}{q}-binomial weights}
+
+For $0\le j\le n$, define
+\begin{equation}
+ w_{n,j}=\frac{(-1)^j
+ \qbinom{n}{j}{1/2}
+ (1/2)^{\binom{j+1}{2}}}{(1/2;1/2)_n}.
+ \label{eq:fabius-toeplitz-weight}
+\end{equation}
+The half-base finite $q$-binomial theorem evaluated at $z=1/2$ gives
+\begin{equation}
+ \sum_{j=0}^{n}w_{n,j}=1.
+ \label{eq:fabius-toeplitz-mass}
+\end{equation}
+Taking absolute values removes the signs and changes the finite product from
+$(1/2;1/2)_n$ to $(-1/2;1/2)_n$:
+\begin{equation}
+ \sum_{j=0}^{n}|w_{n,j}|
+ =\frac{(-1/2;1/2)_n}{(1/2;1/2)_n}.
+ \label{eq:fabius-toeplitz-exact-variation}
+\end{equation}
+The formal proof uses the elementary uniform lower bound
+\begin{equation}
+ (1/2;1/2)_n\ge\frac14
+ \label{eq:half-q-lower-quarter}
+\end{equation}
+and the product comparison
+\begin{equation}
+ (-1/2;1/2)_n(1/2;1/2)_n\le1.
+ \label{eq:q-product-comparison}
+\end{equation}
+Hence
+\begin{equation}
+ \sum_{j=0}^{n}|w_{n,j}|\le16.
+ \label{eq:fabius-toeplitz-variation-16}
+\end{equation}
+The constant $16$ is deliberately coarse but uniform and algebraically simple.
+
+The reindexing used by the discrete formula is
+\begin{equation}
+ q(n,j)=2n-j.
+ \label{eq:fabius-toeplitz-index}
+\end{equation}
+Since $0\le j\le n$,
+\begin{equation}
+ q(n,j)=2n-j\ge n.
+ \label{eq:fabius-toeplitz-index-tail}
+\end{equation}
+Thus every index in row $n$ lies beyond the common threshold $n$.
+
+\begin{corollary}[Specialized Fabius row convergence]
+\label{cor:fabius-toeplitz-convergence}
+For every convergent sequence $H_m\to L$ in $\R$ or $\C$,
+\begin{equation}
+ \sum_{j=0}^{n}w_{n,j}H_{2n-j}\longrightarrow L.
+ \label{eq:fabius-toeplitz-convergence}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:finite-row-toeplitz} with $C=16$ and use
+\eqref{eq:fabius-toeplitz-mass}, \eqref{eq:fabius-toeplitz-variation-16}, and
+\eqref{eq:fabius-toeplitz-index-tail}.
+\end{proof}
+
+\subsection{Why the inner range uses a half-cell correction}
+
+The finite discrete approximant contains an inner prefix whose source-facing notation has
+inclusive upper endpoint
+\begin{equation}
+ \left\lfloor2^px-\frac12\right\rfloor.
+ \label{eq:inclusive-upper-bound}
+\end{equation}
+A direct natural-number range cannot represent the value $-1$, which should mean an empty
+sum.  The safe range length is
+\begin{equation}
+ \ell_p(x)=\left\lfloor2^px+\frac12\right\rfloor_{\N},
+ \label{eq:corrected-range-length}
+\end{equation}
+where the natural floor clamps negative results to zero.  For $x\ge0$,
+\begin{equation}
+ \ell_p(x)=\left\lfloor2^px-\frac12\right\rfloor+1,
+ \label{eq:range-length-inclusive}
+\end{equation}
+so the natural range $0\le r<\ell_p(x)$ exactly represents the intended inclusive sum.
+Moreover
+\begin{equation}
+ \ell_p(x)=0
+ \iff 2^px<\frac12.
+ \label{eq:range-length-zero-iff}
+\end{equation}
+In particular every prefix is empty for $x\le0$, so every finite approximant vanishes there
+before taking a limit.
+
+\begin{warning}[The half-cell is not cosmetic]
+Replacing \eqref{eq:corrected-range-length} by $\lfloor2^px\rfloor$ shifts every jump and
+breaks the centered nearest-integer convention.  Replacing it by a signed inclusive endpoint
+inside a natural range mishandles the empty case.  The formula
+$\lfloor2^px+1/2\rfloor_{\N}$ simultaneously fixes both issues and is the exact convention
+used by the formal development.
+\end{warning}
+
+\subsection{Where the abstract theorem enters the discrete limit}
+
+After the algebraic $q$-binomial reindexing, the $n$th discrete approximant takes the form
+\begin{equation}
+ A_n(x)=\sum_{j=0}^{n}w_{n,j}H_{2n-j}(x),
+ \label{eq:discrete-limit-toeplitz-form}
+\end{equation}
+where, for each fixed $x$, the inner objects $H_p(x)$ converge to the desired translated
+Fabius value.  The entire outer-limit argument is then
+\begin{equation*}
+ H_p(x)\to L(x)
+ \quad+\quad
+ \text{\eqref{eq:fabius-toeplitz-mass}, \eqref{eq:fabius-toeplitz-variation-16},
+ \eqref{eq:fabius-toeplitz-index-tail}}
+ \quad\Longrightarrow\quad
+ A_n(x)\to L(x).
+\end{equation*}
+All Fabius-specific work lies in identifying $H_p$ and its limit; all row summation is
+contained in \cref{thm:finite-row-toeplitz}.
+
+\part{The formal and analytic machinery of the all-orders saddle expansion}
+
+\section{Parameter-dependent Poincar\'e expansions}
+\label{sec:poincare-api}
+
+The endpoint asymptotic is not an ordinary expansion with constant coefficients.  Its
+coefficients retain a bounded one-periodic dependence on the exact Lambert phase.  The
+formal library therefore uses an asymptotic API in which coefficient families may depend on
+the asymptotic parameter, provided that dependence remains bounded.
+
+Let $\ell$ be a filter on a parameter space $A$, let $\sigma:A\to\mathbb K$ be a scale tending
+to zero, and let $f:A\to E$ take values in a normed vector space over the normed field
+$\mathbb K$.  For coefficient families $c_k:A\to E$, put
+\begin{equation}
+ S_N[f](a)=\sum_{k=0}^{N-1}\sigma(a)^k c_k(a).
+ \label{eq:parameter-partial-sum}
+\end{equation}
+
+\begin{definition}[Full parameter-dependent expansion]
+\label{def:parameter-expansion}
+We write
+\begin{equation}
+ f(a)\sim_{\ell}\sum_{k\ge0}\sigma(a)^kc_k(a)
+ \label{eq:parameter-expansion-symbol}
+\end{equation}
+when
+\begin{enumerate}
+ \item every $c_k$ is bounded along $\ell$, equivalently $c_k=O_{\ell}(1)$;
+ \item for every $N\in\N$,
+ \begin{equation}
+  f-S_N[f]=O_{\ell}(\sigma^N).
+  \label{eq:parameter-expansion-remainder}
+ \end{equation}
+\end{enumerate}
+\end{definition}
+
+This is \lean{HasAsymptoticExpansion}.  Boundedness of the coefficients is not redundant: if
+arbitrary unbounded parameter dependence were allowed, powers of $\sigma$ could be moved
+between the ``coefficient'' and the scale, destroying the meaning of order.
+
+\subsection{Elementary algebra of full expansions}
+
+Suppose $f$ and $g$ have expansions with the same scale.  Direct manipulation of finite
+partial sums proves:
+\begin{align}
+ f+g&\sim\sum_{k\ge0}\sigma^k(c_k+d_k),                    \label{eq:expansion-add}\\
+ f-g&\sim\sum_{k\ge0}\sigma^k(c_k-d_k),                    \label{eq:expansion-sub}\\
+ \alpha f&\sim\sum_{k\ge0}\sigma^k(\alpha c_k).            \label{eq:expansion-smul}
+\end{align}
+The API also supports transport across eventual equality and pullback along a map tending to
+the source filter.  These apparently routine lemmas are what let the final proof switch
+between complex and real saddle ratios, replace exact identities after a threshold, and move
+from the logarithmic coordinate to $x\downarrow0$ without reopening every remainder
+estimate.
+
+\subsection{Flat functions}
+
+\begin{definition}[Flat relative to a scale]
+\label{def:flat-scale}
+A function $r$ is flat relative to $\sigma$ along $\ell$ if
+\begin{equation}
+ r=O_{\ell}(\sigma^N)
+ \qquad\text{for every }N\in\N.
+ \label{eq:flat-all-orders}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Flat remainders are invisible to all coefficients]
+\label{thm:flat-invisible}
+A flat $r$ has the full expansion with every coefficient zero.  Consequently, if
+\begin{equation}
+ f\sim\sum_{k\ge0}\sigma^kc_k,
+ \label{eq:f-exp-before-flat}
+\end{equation}
+then
+\begin{equation}
+ f+r\sim\sum_{k\ge0}\sigma^kc_k,
+ \qquad
+ f-r\sim\sum_{k\ge0}\sigma^kc_k.
+ \label{eq:flat-preserves-expansion}
+\end{equation}
+The implications hold in both directions.
+\end{theorem}
+
+\begin{proof}
+For the zero-coefficient expansion, the $N$th partial sum is identically zero, so the
+remainder condition is exactly \eqref{eq:flat-all-orders}.  Add or subtract this expansion
+coefficientwise from the expansion of $f$.  Reversibility follows by moving $r$ to the other
+side.
+\end{proof}
+
+This theorem is the formal reason that the forward negative-Laplace tail can be restored
+after the central saddle expansion without changing any algebraic-order coefficient.
+
+\subsection{Exact logarithmic coordinates}
+
+Define
+\begin{equation}
+ x(t)=2^{-t},
+ \qquad
+ t(x)=-\log_2x
+ \quad(x>0).
+ \label{eq:small-log-coordinates}
+\end{equation}
+These maps are exact inverses on $x>0$, and
+\begin{equation}
+ t\to+\infty\iff x(t)\downarrow0,
+ \qquad
+ x\downarrow0\iff t(x)\to+\infty.
+ \label{eq:coordinate-filter-equivalence}
+\end{equation}
+
+\begin{theorem}[Full-expansion coordinate equivalence]
+\label{thm:small-log-expansion-equivalence}
+For functions $f,\sigma,c_k$ on the positive half-line,
+\begin{equation}
+ f(2^{-t})\sim_{t\to\infty}
+ \sum_{k\ge0}\sigma(2^{-t})^kc_k(2^{-t})
+ \label{eq:log-coordinate-expansion}
+\end{equation}
+if and only if
+\begin{equation}
+ f(x)\sim_{x\downarrow0}
+ \sum_{k\ge0}\sigma(x)^kc_k(x).
+ \label{eq:small-coordinate-expansion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Pull back the full expansion along either coordinate map.  The two composites are eventually
+identical on their respective filters by \eqref{eq:small-log-coordinates}; boundedness and
+every remainder estimate therefore transfer in both directions.
+\end{proof}
+
+\section{Recursive coefficients of a formal exponential}
+\label{sec:exp-coeff}
+
+The saddle integrand contains the exponential of a formal perturbation.  Rather than invoke
+Bell polynomials or repeatedly expand a universal power series, the Lean development uses a
+finite recurrence whose $n$th output depends only on the first $n$ input coefficients.
+
+Let $R$ be a commutative $\Q$-algebra, and let
+\begin{equation}
+ E(u)=\sum_{j\ge1}E_j u^j
+ \label{eq:formal-exponent}
+\end{equation}
+be a formal exponent with zero constant term.  Define $a_n\in R$ recursively by
+\begin{align}
+ a_0&=1,                                                    \label{eq:expcoeff-zero}\\
+ a_{n+1}&=\frac1{n+1}\sum_{j=0}^{n}(j+1)E_{j+1}a_{n-j}.
+                                                               \label{eq:expcoeff-recurrence}
+\end{align}
+
+\begin{theorem}[Correctness and uniqueness of the exponential recurrence]
+\label{thm:expcoeff-correctness}
+The power series
+\begin{equation}
+ A(u)=\sum_{n\ge0}a_nu^n
+ \label{eq:formal-mass-series}
+\end{equation}
+satisfies
+\begin{equation}
+ A'(u)=E'(u)A(u),
+ \qquad
+ A(0)=1.
+ \label{eq:formal-exp-ode}
+\end{equation}
+It is the unique formal power series with these two properties, and therefore
+\begin{equation}
+ A(u)=\exp(E(u)).
+ \label{eq:formal-exp-identification}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The coefficient of $u^n$ in $A'$ is $(n+1)a_{n+1}$.  The coefficient of $u^n$ in $E'A$ is
+\[
+ \sum_{j=0}^{n}(j+1)E_{j+1}a_{n-j},
+\]
+so \eqref{eq:formal-exp-ode} is coefficientwise equivalent to
+\eqref{eq:expcoeff-recurrence}.  Conversely the differential equation and initial value
+determine $a_0$, then $a_1$, then $a_2$, and so on, proving uniqueness.  The universal
+formal exponential satisfies the same equation and initial value.
+\end{proof}
+
+The first coefficients are
+\begin{align}
+ a_1={}&E_1,                                                  \label{eq:a1}\\
+ a_2={}&E_2+\frac12E_1^2,                                    \label{eq:a2}\\
+ a_3={}&E_3+E_1E_2+\frac16E_1^3,                             \label{eq:a3}\\
+ a_4={}&E_4+E_1E_3+\frac12E_2^2
+       +\frac12E_1^2E_2+\frac1{24}E_1^4.                    \label{eq:a4}
+\end{align}
+Equation \eqref{eq:a4} is the exact finite identity used for the second saddle correction.
+
+\subsection{Structural laws}
+
+The recurrence is preferable to a black-box exponential because it exposes several laws
+needed downstream.
+
+\begin{proposition}[Finite dependence]
+\label{prop:expcoeff-finite-dependence}
+The coefficient $a_n$ depends only on $E_1,\ldots,E_n$.  If two exponent families agree
+through order $n$, their $n$th exponential coefficients agree.
+\end{proposition}
+
+\begin{proposition}[Naturality]
+\label{prop:expcoeff-naturality}
+For every morphism of commutative $\Q$-algebras $\varphi:R\to S$,
+\begin{equation}
+ \varphi(a_n(E))=a_n(\varphi\circ E).
+ \label{eq:expcoeff-map}
+\end{equation}
+In particular, evaluation of polynomial- or function-valued coefficients commutes with the
+recurrence.
+\end{proposition}
+
+\begin{proposition}[Rescaling, sums, and parity]
+\label{prop:expcoeff-structure}
+Let $c\in R$ be central.
+\begin{enumerate}
+ \item If $\widetilde E_j=c^jE_j$, then
+ \begin{equation}
+  a_n(\widetilde E)=c^na_n(E).
+  \label{eq:expcoeff-rescale}
+ \end{equation}
+ \item If $E$ and $F$ are two exponent families, then
+ \begin{equation}
+  a_n(E+F)=\sum_{r+s=n}a_r(E)a_s(F).
+  \label{eq:expcoeff-add-convolution}
+ \end{equation}
+ \item If $E_j(-v)=(-1)^jE_j(v)$, then
+ \begin{equation}
+  a_n(-v)=(-1)^na_n(v).
+  \label{eq:expcoeff-parity}
+ \end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proofidea}
+Naturality is induction through finite sums and rational scalar multiplication.
+Rescaling follows from the recurrence because every summand has total degree
+$(j+1)+(n-j)=n+1$.  The addition law is the coefficient form of
+$\exp(E+F)=\exp(E)\exp(F)$.  Parity is the specialization $c=-1$ of rescaling after
+pointwise reflection in $v$.
+\end{proofidea}
+
+\section{Recursive coefficients of a formal logarithm}
+\label{sec:log-coeff}
+
+Let
+\begin{equation}
+ A(u)=1+\sum_{n\ge1}a_nu^n.
+ \label{eq:unit-mass-series}
+\end{equation}
+We seek
+\begin{equation}
+ B(u)=\log A(u)=\sum_{n\ge1}b_nu^n.
+ \label{eq:formal-log-series}
+\end{equation}
+Instead of expanding the universal logarithm, use
+\begin{equation}
+ A(u)B'(u)=A'(u).
+ \label{eq:formal-log-ode}
+\end{equation}
+Solving the coefficient of $u^n$ for $b_{n+1}$ gives
+\begin{align}
+ b_0&=0,                                                     \label{eq:logcoeff-zero}\\
+ b_{n+1}&=a_{n+1}-\frac1{n+1}
+ \sum_{j=0}^{n-1}(n-j)b_{n-j}a_{j+1}.                      \label{eq:logcoeff-recurrence}
+\end{align}
+The empty sum at $n=0$ gives $b_1=a_1$.
+
+\begin{theorem}[Correctness and uniqueness of the logarithm recurrence]
+\label{thm:logcoeff-correctness}
+If $a_0=1$, the series generated by \eqref{eq:logcoeff-recurrence} is the unique series with
+zero constant term satisfying \eqref{eq:formal-log-ode}; hence it is the formal logarithm of
+$A$.
+\end{theorem}
+
+\begin{proof}
+The coefficient of $u^n$ in $AB'$ contains the term $(n+1)b_{n+1}$ from $a_0b'$, plus terms
+involving only $b_1,\ldots,b_n$.  Equating it with $(n+1)a_{n+1}$ and dividing by $n+1$
+gives \eqref{eq:logcoeff-recurrence}.  This triangular relation proves uniqueness.  The
+formal logarithm satisfies $B(0)=0$ and $B'A=A'$.
+\end{proof}
+
+The first coefficients are
+\begin{align}
+ b_1={}&a_1,                                                  \label{eq:b1}\\
+ b_2={}&a_2-\frac12a_1^2,                                   \label{eq:b2}\\
+ b_3={}&a_3-a_1a_2+\frac13a_1^3,                            \label{eq:b3}\\
+ b_4={}&a_4-a_1a_3-\frac12a_2^2+a_1^2a_2-\frac14a_1^4.     \label{eq:b4}
+\end{align}
+As with the exponential recurrence, $b_n$ depends only on $a_1,\ldots,a_n$, commutes with
+$\Q$-algebra morphisms and evaluation, obeys the rescaling law
+\begin{equation}
+ a_j\mapsto c^ja_j\quad\Longrightarrow\quad b_n\mapsto c^nb_n,
+ \label{eq:logcoeff-rescale}
+\end{equation}
+and preserves parity.
+
+\begin{remark}[Why $a_0$ is a hypothesis, not an input]
+The recursive definition \eqref{eq:logcoeff-recurrence} never reads $a_0$; it is meaningful
+for every sequence.  Correctness as a logarithm, however, requires $a_0=1$.  Separating the
+recurrence from its normalization makes finite coefficient calculations easier while keeping
+the theorem honest.
+\end{remark}
+
+\subsection{From mass expansions to logarithmic expansions}
+
+Suppose a positive real function has a full expansion
+\begin{equation}
+ R(a)\sim1+\sum_{n\ge1}\sigma(a)^na_n(a),
+ \qquad \sigma(a)\to0,
+ \label{eq:mass-expansion-before-log}
+\end{equation}
+with bounded coefficient families.  Finite polynomial remainders, discussed in the next
+section, show that for each $N$,
+\begin{equation}
+ \log R(a)=\sum_{n=1}^{N-1}\sigma(a)^nb_n(a)+O(\sigma(a)^N),
+ \label{eq:log-asymptotic-transfer}
+\end{equation}
+where $b_n$ is generated by \eqref{eq:logcoeff-recurrence}.  The positivity hypothesis fixes
+the real branch and is eventually automatic when $R\to1$.
+
+\section{Exact finite remainders from formal coefficient identities}
+\label{sec:finite-remainder}
+
+Formal power-series equality says that two expressions have the same coefficients below a
+chosen order.  An asymptotic proof needs an evaluated identity with an explicit factor of the
+first omitted power.  The module \path{SaddleExpansionFiniteRemainder.lean} provides exactly
+that bridge without invoking an infinite series.
+
+Fix $L\ge1$ and truncate the exponent:
+\begin{equation}
+ E_{<L}(X)=\sum_{k=1}^{L-1}E_kX^k.
+ \label{eq:exponent-trunc-polynomial}
+\end{equation}
+Truncate the scalar exponential polynomial at the same order and substitute:
+\begin{equation}
+ T_L(X)=\sum_{q=0}^{L-1}\frac{E_{<L}(X)^q}{q!}.
+ \label{eq:finite-exp-substitution}
+\end{equation}
+Let
+\begin{equation}
+ A_{<L}(X)=\sum_{k=0}^{L-1}a_kX^k
+ \label{eq:expcoeff-trunc-polynomial}
+\end{equation}
+be the polynomial formed from the recursive exponential coefficients.
+
+\begin{theorem}[Exact divisibility of the finite defect]
+\label{thm:finite-defect-divisibility}
+If $E_0=0$, then
+\begin{equation}
+ X^L\mid\bigl(T_L(X)-A_{<L}(X)\bigr).
+ \label{eq:defect-divisibility}
+\end{equation}
+Equivalently, there is a canonical polynomial $Q_L(X)$ such that
+\begin{equation}
+ T_L(X)=A_{<L}(X)+X^LQ_L(X).
+ \label{eq:exact-finite-remainder-polynomial}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The coefficient of $X^k$ in $T_L$ agrees with that of the full formal substitution
+$\exp(E(X))$ for every $k<L$: terms of scalar exponential degree $q\ge L$ cannot contribute
+below degree $L$ because $E$ has zero constant term, and truncating $E$ itself does not alter
+coefficients below $L$.  By \cref{thm:expcoeff-correctness}, that common coefficient is
+$a_k$.  Hence the first $L$ coefficients of the defect vanish, which is equivalent to
+divisibility by $X^L$.  The formal construction takes $Q_L$ to be the result of applying
+polynomial division by $X$ exactly $L$ times.
+\end{proof}
+
+Evaluating at $x\in R$ gives the identity actually used in estimates:
+\begin{equation}
+ \sum_{q=0}^{L-1}\frac1{q!}
+ \left(\sum_{k=1}^{L-1}E_kx^k\right)^q
+ =\sum_{k=0}^{L-1}a_kx^k+x^LQ_L(x).
+ \label{eq:finite-remainder-evaluated}
+\end{equation}
+
+\begin{boxedremark}
+The quotient $Q_L$ is a polynomial in $x$ whose coefficients are algebraic expressions in
+the finitely many parameters $E_1,\ldots,E_{L-1}$.  If those parameter families are uniformly
+bounded, then $Q_L$ is uniformly bounded on a fixed compact $x$-window.  Thus the exact
+factorization \eqref{eq:finite-remainder-evaluated} turns formal coefficient agreement into a
+uniform $O(x^L)$ estimate with no appeal to convergence of an infinite formal series.
+\end{boxedremark}
+
+\section{Gaussian contraction: integration becomes polynomial algebra}
+\label{sec:gaussian-contraction}
+
+After the saddle variable is scaled by $v=\sqrt{\lambda}\,\theta$, the leading kernel is the
+standard Gaussian
+\begin{equation}
+ \gamma(v)=\e^{-v^2/2}.
+ \label{eq:standard-gaussian-kernel}
+\end{equation}
+Every finite reference term is $\gamma(v)$ times a complex polynomial.  The generic
+contraction module turns its whole-line integral into an algebraic linear functional.
+
+\subsection{Gaussian moments}
+
+Define the unnormalized moments
+\begin{equation}
+ M_n^{\mathrm G}=\int_{\R}\e^{-v^2/2}v^n\dd v.
+ \label{eq:real-gaussian-moment}
+\end{equation}
+Every moment is absolutely integrable.  Symmetry gives
+\begin{equation}
+ M_{2j+1}^{\mathrm G}=0.
+ \label{eq:gaussian-odd-zero}
+\end{equation}
+Integration by parts, with $u=v^{n+1}$ and
+$\dd w=-v\e^{-v^2/2}\dd v$, gives
+\begin{equation}
+ M_{n+2}^{\mathrm G}=(n+1)M_n^{\mathrm G}.
+ \label{eq:gaussian-moment-recurrence}
+\end{equation}
+Since
+\begin{equation}
+ M_0^{\mathrm G}=\sqrt{2\pi},
+ \label{eq:gaussian-moment-zero}
+\end{equation}
+the normalized moments
+\begin{equation}
+ \mu_n=\frac{M_n^{\mathrm G}}{\sqrt{2\pi}}
+ \label{eq:normalized-gaussian-moment}
+\end{equation}
+satisfy
+\begin{equation}
+ \mu_0=1,
+ \quad
+ \mu_1=0,
+ \quad
+ \mu_{n+2}=(n+1)\mu_n.
+ \label{eq:normalized-gaussian-recurrence}
+\end{equation}
+Thus
+\begin{equation}
+ \mu_{2j}=(2j-1)!!,
+ \qquad
+ \mu_{2j+1}=0.
+ \label{eq:normalized-gaussian-closed}
+\end{equation}
+The first even values needed below are
+\begin{equation}
+ \mu_4=3,
+ \quad
+ \mu_6=15,
+ \quad
+ \mu_8=105,
+ \quad
+ \mu_{10}=945,
+ \quad
+ \mu_{12}=10395.
+ \label{eq:gaussian-moments-second-correction}
+\end{equation}
+
+\subsection{The contraction functional}
+
+For $p(X)=\sum_kp_kX^k\in\C[X]$, define
+\begin{equation}
+ \Gcal[p]=\sum_kp_k\mu_k.
+ \label{eq:gaussian-contraction-def}
+\end{equation}
+This is a $\C$-linear map $\C[X]\to\C$.
+
+\begin{theorem}[Gaussian polynomial contraction]
+\label{thm:gaussian-contraction}
+For every complex polynomial $p$,
+\begin{equation}
+ \int_{\R}\e^{-v^2/2}p(v)\dd v
+ =\sqrt{2\pi}\,\Gcal[p].
+ \label{eq:gaussian-contraction-integral}
+\end{equation}
+In particular
+\begin{equation}
+ \Gcal[X^{2j}]=(2j-1)!!,
+ \qquad
+ \Gcal[X^{2j+1}]=0.
+ \label{eq:gaussian-contraction-monomials}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Expand $p$ as a finite sum of monomials, interchange that finite sum with the integral, and
+use \eqref{eq:normalized-gaussian-moment}.  Integrability follows coefficientwise from the
+absolute Gaussian moments.
+\end{proof}
+
+The same coefficientwise expansion yields the norm estimate
+\begin{equation}
+ \left|\Gcal[p]\right|
+ \le\sum_k|p_k|\mu_{2\lceil k/2\rceil},
+ \label{eq:gaussian-contraction-norm-bound}
+\end{equation}
+with odd coefficients contributing zero in the exact functional.  In the formal proof a
+slightly more uniform support sum is used so it composes smoothly with polynomial families.
+
+\begin{remark}[Parity is an algebraic annihilator]
+The vanishing of odd Gaussian moments is not merely a simplification after integration.  It
+is the mechanism that removes every odd power of the small parameter $\varepsilon=
+\lambda^{-1/2}$ from the mass expansion.  The exponent coefficient of order $m$ has parity
+$m$ in $v$, the formal exponential recurrence preserves total parity, and
+\eqref{eq:gaussian-contraction-monomials} kills every odd result.  The final expansion is
+therefore in integer powers of $\lambda^{-1}$.
+\end{remark}
+
+\section{Uniform Gaussian tails for polynomial references}
+\label{sec:gaussian-tails}
+
+Whole-line contraction is useful only after the central-window integral has been replaced by
+a whole-line integral with a negligible error.  The omitted Gaussian-tail modules provide a
+single coefficient weight that controls every polynomial reference.
+
+\subsection{A factorial coefficient weight}
+
+For $p(X)=\sum_kp_kX^k$, define
+\begin{equation}
+ \mathfrak W(p)=\sum_{k\in\supp p}|p_k|\,8k!.
+ \label{eq:gaussian-tail-weight}
+\end{equation}
+It is finite and nonnegative.
+
+\begin{lemma}[Monomial Gaussian tail]
+\label{lem:monomial-gaussian-tail}
+For $A\ge4$ and $k\in\N$,
+\begin{equation}
+ \int_{|v|>A}\e^{-v^2/2}|v|^k\dd v
+ \le 8k!\,\frac{\e^{-A^2/4}}{A}.
+ \label{eq:monomial-gaussian-tail}
+\end{equation}
+\end{lemma}
+
+\begin{proofidea}
+Split the kernel as
+$\e^{-v^2/2}=\e^{-v^2/4}\e^{-v^2/4}$.  The factor
+$|v|^k\e^{-v^2/4}$ is controlled uniformly by a factorial bound, while the remaining
+Gaussian tail is estimated by integrating the derivative of $\e^{-v^2/4}$ and using
+$|v|\ge A$.  The constants are chosen so the result holds simultaneously for every
+$k\ge0$ once $A\ge4$; no optimization is needed in the saddle application.
+\end{proofidea}
+
+\begin{theorem}[Polynomial Gaussian tail]
+\label{thm:polynomial-gaussian-tail}
+For every $p\in\C[X]$ and $A\ge4$,
+\begin{equation}
+ \int_{|v|>A}\left|\e^{-v^2/2}p(v)\right|\dd v
+ \le \mathfrak W(p)\frac{\e^{-A^2/4}}{A}.
+ \label{eq:polynomial-gaussian-tail}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Use
+$|p(v)|\le\sum_{k\in\supp p}|p_k||v|^k$, integrate the finite sum, and apply
+\cref{lem:monomial-gaussian-tail} coefficientwise.
+\end{proof}
+
+\subsection{The all-orders central radius}
+
+For expansion order $N$ and scale parameter $b\ge1$, set
+\begin{equation}
+ A_N(b)=\sqrt{32(N+1)\log b}.
+ \label{eq:order-central-radius}
+\end{equation}
+Then
+\begin{equation}
+ \e^{-A_N(b)^2/4}=b^{-8(N+1)}.
+ \label{eq:order-radius-exponential}
+\end{equation}
+The exponent $8(N+1)$ is much stronger than the requested algebraic order $N+1$, leaving
+ample room for the factor $1/A_N(b)$ and for bounded coefficient weights.
+
+\begin{theorem}[All-orders polynomial tail]
+\label{thm:all-orders-polynomial-tail}
+Let $b(a)\to+\infty$ along a filter and let $p_a\in\C[X]$ satisfy
+\begin{equation}
+ \mathfrak W(p_a)=O(1).
+ \label{eq:bounded-polynomial-tail-weight}
+\end{equation}
+Then for every fixed $N$,
+\begin{equation}
+ \int_{|v|>A_N(b(a))}
+ \left|\e^{-v^2/2}p_a(v)\right|\dd v
+ =O\bigl(b(a)^{-(N+1)}\bigr).
+ \label{eq:all-orders-polynomial-tail}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Eventually $A_N(b(a))\ge4$ and $b(a)\ge1$.  Apply
+\cref{thm:polynomial-gaussian-tail}, substitute
+\eqref{eq:order-radius-exponential}, and use
+\[
+ b^{-8(N+1)}A_N(b)^{-1}\le b^{-(N+1)}.
+\]
+Multiplication by the bounded family \eqref{eq:bounded-polynomial-tail-weight} preserves the
+big-$O$ rate.
+\end{proof}
+
+\begin{remark}
+The theorem is formulated for a moving polynomial family.  This is essential: the saddle
+reference polynomial depends periodically on the exact phase.  Periodicity and smoothness
+make its finitely many coefficient functions bounded, hence its factorial weight is bounded.
+\end{remark}
+
+\section{Closed saddle jets and shifted Stirling numbers}
+\label{sec:saddle-jets}
+
+The main article states several low-order jets.  The new closed-form modules identify the
+entire jet sequence and explain the combinatorial coefficients.
+
+Let $L=\log2$ and let $\Psi$ be the smooth one-periodic fluctuation in the exact negative
+Laplace exponent.  The bounded exponent jets $Z_n(t)$ satisfy
+\begin{align}
+ Z_0(t)&=-\frac12+\frac{\Psi'(t)}{L},                         \label{eq:Z0-recurrence}\\
+ Z_{n+1}(t)&=\frac{Z_n'(t)}{L}-(n+1)Z_n(t)
+              +\frac{(-1)^{n+1}n!}{L}.                      \label{eq:Z-recurrence}
+\end{align}
+
+Define integers $c(n,m)$ by
+\begin{equation}
+ \prod_{k=1}^{n}(z-k)=\sum_{m=0}^{n}c(n,m)z^m.
+ \label{eq:falling-shift-coeff}
+\end{equation}
+With $H_n=1+1/2+\cdots+1/n$ and $H_0=0$, the recurrence solves explicitly.
+
+\begin{theorem}[Closed form for every bounded exponent jet]
+\label{thm:closed-saddle-jet}
+For every $n\ge0$,
+\begin{equation}
+ Z_n(t)=(-1)^nn!\left(\frac{H_n}{L}-\frac12\right)
+ +\sum_{m=0}^{n}c(n,m)
+   \frac{\Psi^{(m+1)}(t)}{L^{m+1}}.
+ \label{eq:closed-saddle-jet}
+\end{equation}
+Moreover
+\begin{equation}
+ c(n,m)=s(n+1,m+1),
+ \label{eq:shifted-stirling}
+\end{equation}
+where $s(\cdot,\cdot)$ denotes the signed Stirling number of the first kind.
+\end{theorem}
+
+\begin{proof}
+Let $D=L^{-1}\dd/\dd t$.  The derivative-dependent part of
+\eqref{eq:Z-recurrence} is generated by the operator product
+\begin{equation}
+ (D-n)(D-(n-1))\cdots(D-1)\frac{\Psi'}L.
+ \label{eq:jet-operator-product}
+\end{equation}
+Expanding the product gives the sum in \eqref{eq:closed-saddle-jet}.  The constant part
+$C_n$ satisfies
+\begin{equation}
+ C_{n+1}=-(n+1)C_n+\frac{(-1)^{n+1}n!}{L},
+ \quad C_0=-\frac12,
+ \label{eq:jet-constant-recurrence}
+\end{equation}
+whose solution is $C_n=(-1)^nn!(H_n/L-1/2)$, using
+$H_{n+1}=H_n+1/(n+1)$.  Finally, the coefficients of
+$\prod_{k=1}^{n}(z-k)$ satisfy
+\begin{equation}
+ c(n+1,m)=c(n,m-1)-(n+1)c(n,m),
+ \label{eq:c-stirling-recurrence}
+\end{equation}
+which is exactly the shifted signed-Stirling recurrence; the initial rows agree.
+\end{proof}
+
+The first four jets are
+\begin{align}
+ Z_0={}&-\frac12+\frac{\Psi'}L,                              \label{eq:Z0-explicit}\\
+ Z_1={}&\frac12-\frac1L-\frac{\Psi'}L+\frac{\Psi''}{L^2},  \label{eq:Z1-explicit}\\
+ Z_2={}&-1+\frac3L+\frac{2\Psi'}L-\frac{3\Psi''}{L^2}
+             +\frac{\Psi^{(3)}}{L^3},                       \label{eq:Z2-explicit}\\
+ Z_3={}&3-\frac{11}{L}-\frac{6\Psi'}L+\frac{11\Psi''}{L^2}
+             -\frac{6\Psi^{(3)}}{L^3}+\frac{\Psi^{(4)}}{L^4}.
+                                                                    \label{eq:Z3-explicit}
+\end{align}
+All derivatives are evaluated at the common argument $t$.  These formulas make boundedness,
+one-periodicity, and $C^\infty$ regularity immediate.
+
+\subsection{The exponent coefficient at arbitrary order}
+
+Let $\varepsilon=\lambda^{-1/2}$ and $v$ be the Gaussian variable.  The coefficient of
+$\varepsilon^m$ in the centered saddle exponent is, for $m\ge1$,
+\begin{equation}
+ E_m(t,v)=\ii^m\left(
+ \frac{Z_{m-1}(t)}{m!}v^m
+ +\frac{(-1)^{m+1}}{m+2}v^{m+2}
+\right).
+ \label{eq:closed-exponent-coefficient}
+\end{equation}
+The second monomial is universal: it is independent of $\Psi$ and of every jet.  It arises
+when the jet slope $(-1)^{m}(m+1)!$, the factorial $(m+2)!$, and the extra factor
+$\ii^{m+2}=-\ii^m$ cancel.
+
+By \eqref{eq:closed-saddle-jet}, each $E_m$ is therefore completely explicit in terms of
+$L^{-1}$ and $\Psi',\ldots,\Psi^{(m)}$.  It has the parity law
+\begin{equation}
+ E_m(t,-v)=(-1)^mE_m(t,v).
+ \label{eq:exponent-coefficient-parity}
+\end{equation}
+
+\section{From exponent coefficients to periodic mass and log coefficients}
+\label{sec:saddle-coeff-engine}
+
+Let $a_n(t,v)$ be the recursive exponential coefficient
+\begin{equation}
+ \exp\!\left(\sum_{m\ge1}\varepsilon^mE_m(t,v)\right)
+ \sim\sum_{n\ge0}\varepsilon^na_n(t,v).
+ \label{eq:saddle-exp-formal}
+\end{equation}
+Parity preservation gives
+\begin{equation}
+ a_n(t,-v)=(-1)^na_n(t,v).
+ \label{eq:saddle-a-parity}
+\end{equation}
+Define the mass coefficients by Gaussian contraction:
+\begin{equation}
+ B_j(t)=\Gcal[a_{2j}(t,\cdot)].
+ \label{eq:saddle-mass-coefficient}
+\end{equation}
+Odd orders disappear.  The normalized saddle mass therefore has the formal pattern
+\begin{equation}
+ 1+\frac{B_1(t)}{\lambda}
+   +\frac{B_2(t)}{\lambda^2}+\cdots.
+ \label{eq:saddle-mass-pattern}
+\end{equation}
+Apply the logarithm recurrence to $1+B_1u+B_2u^2+\cdots$ and define
+\begin{equation}
+ A_j(t)=b_j(B_0,B_1,\ldots),
+ \qquad B_0=1.
+ \label{eq:saddle-log-coefficient}
+\end{equation}
+Then
+\begin{equation}
+ A_0=0,
+ \qquad
+ A_1=B_1,
+ \qquad
+ A_2=B_2-\frac12B_1^2.
+ \label{eq:first-log-mass-relations}
+\end{equation}
+Every $A_j$ and $B_j$ is bounded, one-periodic, and $C^\infty$.
+
+\subsection{The highest derivative has a universal coefficient}
+
+The jet $Z_{2j-1}$ first appears at mass order $j$.  The formalized leading-jet theorem says
+that its coefficient in $B_j$ is
+\begin{equation}
+ \frac{(-1)^j}{2^jj!}.
+ \label{eq:top-jet-mass-coefficient}
+\end{equation}
+The reason is rigid: among all monomials produced by the exponential recurrence, exactly one
+can contain the newest jet, namely the linear occurrence of the exponent coefficient
+$E_{2j}$.  Its jet monomial is
+\begin{equation}
+ \ii^{2j}\frac{Z_{2j-1}}{(2j)!}v^{2j}
+ =(-1)^j\frac{Z_{2j-1}}{(2j)!}v^{2j}.
+ \label{eq:top-jet-monomial}
+\end{equation}
+Gaussian contraction multiplies by $(2j-1)!!=(2j)!/(2^jj!)$, giving
+\eqref{eq:top-jet-mass-coefficient}.
+
+Because lower $B_k$ involve only $Z_0,\ldots,Z_{2k-1}$, every nonlinear term in the logarithm
+recurrence for $A_j$ uses jets strictly below $Z_{2j-1}$.  Thus the newest jet survives with
+the same coefficient.  Combining with the leading term
+$\Psi^{(2j)}/L^{2j}$ in \eqref{eq:closed-saddle-jet} yields the ordinary-analysis
+corollary
+\begin{equation}
+ [\Psi^{(2j)}]A_j
+ =\frac{(-1)^j}{2^jj!L^{2j}}.
+ \label{eq:top-periodic-derivative-coefficient}
+\end{equation}
+The mass version is a named Lean theorem; the final triangular transfer to the logarithmic
+coefficient is presently a short prose corollary rather than a separate declaration.
+
+\section{The second periodic correction, line by line}
+\label{sec:second-correction}
+
+The main article records the first correction and announces the general coefficient engine.
+The current development now computes the second correction completely.  This is the first
+order at which every layer of the machinery is visible at once: four exponent polynomials,
+the order-four exponential coefficient, five Gaussian moments, and the mass-to-logarithm
+conversion.
+
+Fix the phase $t$ and abbreviate
+\begin{equation}
+ z_j=Z_j(t).
+ \label{eq:zj-abbreviation}
+\end{equation}
+From \eqref{eq:closed-exponent-coefficient}, the first four exponent polynomials are
+\begin{align}
+ E_1={}&\ii\left(z_0X+\frac{X^3}{3}\right),                 \label{eq:E1-explicit}\\
+ E_2={}&-\frac{z_1}{2}X^2+\frac14X^4,                       \label{eq:E2-explicit}\\
+ E_3={}&\ii\left(-\frac{z_2}{6}X^3-\frac15X^5\right),      \label{eq:E3-explicit}\\
+ E_4={}&\frac{z_3}{24}X^4-\frac16X^6.                      \label{eq:E4-explicit}
+\end{align}
+At order four in $\varepsilon$, \eqref{eq:a4} gives
+\begin{equation}
+ a_4=E_4+E_3E_1+\frac12E_2^2
+     +\frac12E_2E_1^2+\frac1{24}E_1^4.
+ \label{eq:a4-saddle}
+\end{equation}
+Every occurrence of $\ii$ cancels because the odd exponent polynomials carry one common
+square root of $-1$.  Expanding and collecting even monomials gives
+\begin{equation}
+ a_4=c_4X^4+c_6X^6+c_8X^8+c_{10}X^{10}+c_{12}X^{12},
+ \label{eq:a4-even-polynomial}
+\end{equation}
+where
+\begin{align}
+ c_4={}&\frac{z_0^4}{24}+\frac{z_0^2z_1}{4}
+       +\frac{z_0z_2}{6}+\frac{z_1^2}{8}+\frac{z_3}{24},     \label{eq:c4}\\
+ c_6={}&\frac{z_0^3}{18}-\frac{z_0^2}{8}+\frac{z_0z_1}{6}
+       +\frac{z_0}{5}-\frac{z_1}{8}+\frac{z_2}{18}-\frac16, \label{eq:c6}\\
+ c_8={}&\frac{z_0^2}{36}-\frac{z_0}{12}+\frac{z_1}{36}
+       +\frac{47}{480},                                      \label{eq:c8}\\
+ c_{10}={}&\frac{z_0}{162}-\frac1{72},                       \label{eq:c10}\\
+ c_{12}={}&\frac1{1944}.                                     \label{eq:c12}
+\end{align}
+The five rational constants in these formulas are the visible trace of the universal
+jet-free monomials in \eqref{eq:closed-exponent-coefficient}.
+
+\subsection{Gaussian contraction}
+
+Using \eqref{eq:gaussian-moments-second-correction}, the second mass coefficient is
+\begin{equation}
+ B_2=3c_4+15c_6+105c_8+945c_{10}+10395c_{12}.
+ \label{eq:B2-contraction}
+\end{equation}
+A direct simplification gives
+\begin{align}
+ B_2={}&\frac{z_0^4}{8}+\frac{5z_0^3}{6}
+ +\frac{3z_0^2z_1}{4}+\frac{25z_0^2}{24}
+ +\frac{5z_0z_1}{2}+\frac{z_0z_2}{2}+\frac{z_0}{12}
+ \notag\\
+ &+\frac{3z_1^2}{8}+\frac{25z_1}{24}
+ +\frac{5z_2}{6}+\frac{z_3}{8}+\frac1{288}.                \label{eq:B2-explicit}
+\end{align}
+The first mass coefficient, already logarithmic at first order, is
+\begin{equation}
+ B_1=A_1=-\frac{z_0^2}{2}-z_0-\frac{z_1}{2}-\frac1{12}.
+ \label{eq:A1-jets}
+\end{equation}
+Substitution of \eqref{eq:Z0-explicit}--\eqref{eq:Z1-explicit} reduces this to the compact
+formula from the main article,
+\begin{equation}
+ A_1(t)=\frac1{24}+\frac1{2L}
+ -\frac{\Psi''(t)+\Psi'(t)^2}{2L^2}.
+ \label{eq:A1-Psi}
+\end{equation}
+
+\subsection{Taking the logarithm}
+
+By \eqref{eq:first-log-mass-relations},
+\begin{equation}
+ A_2=B_2-\frac12B_1^2.
+ \label{eq:A2-from-B}
+\end{equation}
+The quartic and many lower-degree terms cancel.  The result is
+
+\begin{theorem}[Closed second periodic correction]
+\label{thm:closed-second-correction}
+With $z_j=Z_j(t)$,
+\begin{align}
+ A_2(t)=\frac1{24}\bigl(&8z_0^3+12z_0^2z_1+12z_0^2
+ +48z_0z_1+12z_0z_2\notag\\
+ &+6z_1^2+24z_1+20z_2+3z_3\bigr).                          \label{eq:A2-jets}
+\end{align}
+It is a bounded smooth one-periodic function.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:B2-explicit} and \eqref{eq:A1-jets} into
+\eqref{eq:A2-from-B}, expand the square, and collect.  Periodicity and smoothness follow from
+the same properties of $Z_0,\ldots,Z_3$; boundedness follows from periodic continuity.
+\end{proof}
+
+Substitution of \eqref{eq:Z0-explicit}--\eqref{eq:Z3-explicit} makes
+$A_2$ an explicit differential polynomial in
+\begin{equation}
+ \Psi',\ \Psi'',\ \Psi^{(3)},\ \Psi^{(4)}
+ \label{eq:A2-derivatives}
+\end{equation}
+with coefficients in $\Q[L^{-1}]$.  The jet form \eqref{eq:A2-jets} is shorter, more stable
+under formal manipulation, and displays the triangular structure that generalizes to all
+orders.
+
+\begin{boxedremark}
+At order two the mass coefficient \eqref{eq:B2-explicit} contains a quartic term
+$z_0^4/8$.  It disappears from $A_2$ because the logarithm removes the disconnected square
+$B_1^2/2$.  This is the same connected-versus-disconnected cancellation familiar from
+cumulants.  The formal logarithm recurrence performs that cancellation over an arbitrary
+commutative $\Q$-algebra, before any analytic interpretation is imposed.
+\end{boxedremark}
+
+\section{Assembly of the full endpoint expansion}
+\label{sec:full-assembly}
+
+We now put the separate engines into the order in which the formal proof uses them.  This
+section does not rederive the negative-Laplace product or the Bromwich formula from the main
+article; it explains every transition from that exact representation to the all-orders
+statement.
+
+\subsection{Exact Lambert phase and exact normalized mass}
+
+Let $\lambda=\lambda(x)$ be the large positive solution of
+\begin{equation}
+ \lambda2^{-\lambda}=x,
+ \qquad x\downarrow0,
+ \label{eq:exact-lambert-phase}
+\end{equation}
+so
+\begin{equation}
+ r=2^\lambda=\frac{\lambda}{x}.
+ \label{eq:saddle-radius-r}
+\end{equation}
+Write $\Lambda(r)=\log G(-r)$ for the negative log-transform.  Define the dimensionless
+normalized saddle mass
+\begin{equation}
+ \mathcal S(x)=
+ \frac{F(x)\sqrt{2\pi\lambda}}
+      {\exp(rx+\Lambda(r))}.
+ \label{eq:normalized-saddle-mass}
+\end{equation}
+It is positive and satisfies the exact identity
+\begin{equation}
+ \log F(x)=rx+\Lambda(r)-\frac12\log(2\pi\lambda)+\log\mathcal S(x).
+ \label{eq:exact-log-saddle-supp}
+\end{equation}
+No asymptotic estimate has entered yet.
+
+Let
+\begin{equation}
+ \mathcal M(x)=
+ -\frac L2\lambda^2+
+ \left(1+\frac L2\right)\lambda-\frac12\log\lambda
+ +C_F+\Psi(\lambda).
+ \label{eq:sharp-main-supp}
+\end{equation}
+The exact negative-Laplace decomposition gives
+\begin{equation}
+ rx+\Lambda(r)-\frac12\log(2\pi\lambda)
+ =\mathcal M(x)+E(r),
+ \label{eq:exact-main-tail-supp}
+\end{equation}
+where the forward tail satisfies
+\begin{equation}
+ 0\le E(2^\lambda)\le4\exp(-2^\lambda).
+ \label{eq:forward-tail-flat-supp}
+\end{equation}
+Therefore
+\begin{equation}
+ \log F(x)-\mathcal M(x)=\log\mathcal S(x)+E(2^\lambda).
+ \label{eq:exact-error-separation-supp}
+\end{equation}
+The final term is flat relative to $\lambda^{-1}$ by elementary exponential domination and
+will be reattached using \cref{thm:flat-invisible}.
+
+\subsection{The central integral and the moving window}
+
+Bromwich inversion and the scaling $\theta=v/\sqrt\lambda$ give
+\begin{equation}
+ \mathcal S(x)=\frac1{\sqrt{2\pi}}
+ \int_{\R}\exp\Phi_\lambda(v/\sqrt\lambda)\dd v.
+ \label{eq:normalized-saddle-integral}
+\end{equation}
+The exact phase separates as
+\begin{equation}
+ \Phi_\lambda(v/\sqrt\lambda)
+ =-\frac{v^2}{2}+
+ \sum_{m=1}^{M}\varepsilon^mE_m(\lambda,v)
+ +R_{M+1}(\lambda,v),
+ \qquad
+ \varepsilon=\lambda^{-1/2},
+ \label{eq:central-exponent-expansion}
+\end{equation}
+inside an order-dependent central window
+\begin{equation}
+ |v|\le A_N(\lambda)=\sqrt{32(N+1)\log\lambda}.
+ \label{eq:central-window-lambda}
+\end{equation}
+The all-orders Taylor modules prove, uniformly on this moving window, that the truncated
+perturbation tends to zero and that the analytic remainder is dominated by the first omitted
+power times a polynomial in $v$.  The slow growth of $A_N$ is crucial:
+\begin{equation}
+ \lambda^{-1/2}A_N(\lambda)^d\longrightarrow0
+ \qquad\text{for every fixed }d.
+ \label{eq:epsilon-log-radius-decay}
+\end{equation}
+
+\subsection{Finite exponential substitution}
+
+Fix the requested logarithmic order $N$.  Choose the exponent and scalar-exponential
+truncation orders high enough that every omitted term is
+$O(\varepsilon^{2N})=O(\lambda^{-N})$.  Apply the exact finite-remainder identity
+\eqref{eq:finite-remainder-evaluated} pointwise with
+\begin{equation}
+ x=\varepsilon,
+ \qquad
+ E_m=E_m(\lambda,v).
+ \label{eq:finite-exp-saddle-substitution}
+\end{equation}
+This yields, on the central window,
+\begin{equation}
+ \exp\!\left(\sum_{m<M}\varepsilon^mE_m\right)
+ =\sum_{k<2N}\varepsilon^ka_k(\lambda,v)
+ +O\!\left(\varepsilon^{2N}P_N(v)\right),
+ \label{eq:central-reference-expansion}
+\end{equation}
+where $P_N$ is a fixed-degree polynomial with bounded periodic coefficient families.  The
+analytic remainder $R_{M+1}$ is absorbed by a finite scalar exponential estimate because the
+whole perturbation is eventually bounded by one on the central window.
+
+\subsection{Gaussian contraction and the disappearance of half-orders}
+
+Multiply \eqref{eq:central-reference-expansion} by $\e^{-v^2/2}$ and integrate.  Parity gives
+\begin{equation}
+ \Gcal[a_{2j+1}(\lambda,\cdot)]=0.
+ \label{eq:odd-saddle-contractions-zero}
+\end{equation}
+For the even terms,
+\begin{equation}
+ \frac1{\sqrt{2\pi}}
+ \int_\R\e^{-v^2/2}a_{2j}(\lambda,v)\dd v=B_j(\lambda).
+ \label{eq:even-saddle-contraction}
+\end{equation}
+The central-window integral may be replaced by the whole-line integral because
+\cref{thm:all-orders-polynomial-tail} makes the complementary Gaussian-polynomial tail
+$O(\lambda^{-N})$.
+
+The genuine saddle integrand outside the central window is controlled separately.  The
+minor-arc estimates combine strict off-axis decay of the negative-Laplace product with
+far-tail polynomial bounds.  They show that the noncentral part of
+\eqref{eq:normalized-saddle-integral} is also $O(\lambda^{-N})$ for every fixed $N$.
+Consequently
+\begin{equation}
+ \mathcal S(x)=
+ 1+\sum_{j=1}^{N-1}\frac{B_j(\lambda)}{\lambda^j}
+ +O(\lambda^{-N}).
+ \label{eq:full-mass-expansion-supp}
+\end{equation}
+This is the full mass expansion in the sense of \cref{def:parameter-expansion}.
+
+\subsection{Logarithmic transfer and restoration of the flat tail}
+
+The ratio in \eqref{eq:full-mass-expansion-supp} tends to $1$ and is positive.  Apply the
+formal logarithm recurrence and its finite analytic remainder theorem:
+\begin{equation}
+ \log\mathcal S(x)=
+ \sum_{j=1}^{N-1}\frac{A_j(\lambda)}{\lambda^j}
+ +O(\lambda^{-N}).
+ \label{eq:full-log-mass-expansion-supp}
+\end{equation}
+Now restore $E(2^\lambda)$ in \eqref{eq:exact-error-separation-supp}.  It is flat by
+\eqref{eq:forward-tail-flat-supp}, so \cref{thm:flat-invisible} leaves every coefficient
+unchanged.
+
+\begin{theorem}[Full exact-phase logarithmic expansion]
+\label{thm:full-exact-phase-expansion}
+For every $N\ge1$, as $x\downarrow0$,
+\begin{equation}
+ \boxed{
+ \log F(x)=\mathcal M(x)+
+ \sum_{j=1}^{N-1}\frac{A_j(\lambda(x))}{\lambda(x)^j}
+ +O\!\left(\lambda(x)^{-N}\right).}
+ \label{eq:full-exact-phase-expansion}
+\end{equation}
+The coefficient functions $A_j$ are bounded, smooth, and one-periodic; $A_1$ and $A_2$ are
+given by \eqref{eq:A1-jets} and \eqref{eq:A2-jets}.
+\end{theorem}
+
+\begin{proof}
+The preceding five subsections establish the expansion on the dyadic logarithmic coordinate.
+Use \cref{thm:small-log-expansion-equivalence} to transport it to the small-positive filter.
+The exact phase identity $\lambda(2^{-t})$ is retained throughout, so the coefficient
+families pull back without approximation.
+\end{proof}
+
+Because $\lambda(x)$ is comparable to $-\log x$, the remainder may be weakened to
+\begin{equation}
+ O\bigl(({-\log x})^{-N}\bigr),
+ \label{eq:full-expansion-neglog-rate}
+\end{equation}
+but the coefficients still remain evaluated at the exact Lambert phase.
+
+\section{Why the exact phase cannot be casually re-expanded}
+\label{sec:exact-phase-boundary}
+
+The Lambert phase itself has an all-orders expansion in
+$T=-\log x$ and $\log T$.  It is tempting to substitute that expansion into every
+$A_j(\lambda(x))$ and claim an ordinary nested-log series.  The current formal theorem does
+not do so, for a good reason.
+
+Let $\lambda_N(x)$ be a finite asymptotic approximation to $\lambda(x)$ and write
+\begin{equation}
+ \Delta_N(x)=\lambda(x)-\lambda_N(x).
+ \label{eq:phase-error}
+\end{equation}
+For a nonconstant periodic coefficient,
+\begin{equation}
+ A_j(\lambda)-A_j(\lambda_N)
+ =A_j'(\lambda_N)\Delta_N+\frac12 A_j''(\xi)\Delta_N^2.
+ \label{eq:periodic-phase-Taylor}
+\end{equation}
+To preserve an $O(\lambda^{-N})$ total remainder, the phase approximation must be accurate
+enough after multiplication by every prefactor $\lambda^{-j}$ and after repeated Taylor
+composition through all coefficient families.  A statement merely of the form
+$\Delta_N=O(\lambda^{-N})$ at one fixed order is not automatically stable under the entire
+triangular composition.
+
+\begin{warning}[The formalized boundary]
+The theorem proved in \path{FabiusFullAsymptoticExpansion.lean} is
+\eqref{eq:full-exact-phase-expansion}: every periodic coefficient is evaluated at the exact
+lower-Lambert phase.  A separate branch expands the phase itself to all orders.  What is not
+currently claimed is a single all-orders composition theorem that substitutes the phase
+series through every oscillatory coefficient while preserving the requested remainder.
+This is a missing formal composition layer, not a defect in the exact-phase expansion.
+\end{warning}
+
+The exact-phase form is in any case mathematically preferable.  It isolates the implicit
+saddle inversion once, avoids secular phase error, and makes phase-locked subsequences
+transparent.  For any fixed $u\in\R$, the sequence
+\begin{equation}
+ x_n=(n+u)2^{-(n+u)}
+ \label{eq:phase-locked-sequence-supp}
+\end{equation}
+has exact phase $\lambda(x_n)=n+u$, so every periodic coefficient is literally constant
+along it:
+\begin{equation}
+ A_j(\lambda(x_n))=A_j(u).
+ \label{eq:phase-locked-coefficients}
+\end{equation}
+This is the cleanest way to separate algebraic decay from periodic oscillation.
+
+\appendix
+
+\section{Executable recurrences in mathematical pseudocode}
+\label{app:algorithms}
+
+The following algorithms are not substitutes for the proofs above.  They are compact
+implementations of the finite algebra that appears repeatedly in the formal development.
+All arrays are zero-indexed.
+
+\begin{algorithm}[Weighted path sum]
+\label{alg:path-sum}
+The dynamic program below computes $P_w(n)$ without enumerating compositions.  It is the
+triangular recurrence proved equivalent to the composition sum in
+\cref{thm:triangular-path-solver}.
+\end{algorithm}
+\begin{lstlisting}[style=pseudo]
+function PathSums(N, weight):
+    P[0] := 1
+    for n := 1 to N:
+        P[n] := 0
+        for k := 0 to n - 1:
+            P[n] := P[n] + P[k] * weight(k, n)
+    return P
+
+function FabiusInverseDyadic(N):
+    weight(k, n) := 1 / ((2^n - 1) * factorial(n - k + 1))
+    a := PathSums(N, weight)
+    for n := 0 to N:
+        value[n] := 2^(-binomial(n, 2)) * a[n]
+    return value
+\end{lstlisting}
+
+\begin{algorithm}[Formal exponential coefficients]
+\label{alg:expcoeff}
+Given $E[1],\ldots,E[N]$ in a commutative $\Q$-algebra, this returns the first $N$
+coefficients of $\exp(\sum_{j\ge1}E[j]u^j)$.
+\end{algorithm}
+\begin{lstlisting}[style=pseudo]
+function ExpCoeff(E, N):
+    a[0] := 1
+    for n := 0 to N - 1:
+        s := 0
+        for j := 0 to n:
+            s := s + (j + 1) * E[j + 1] * a[n - j]
+        a[n + 1] := s / (n + 1)
+    return a
+\end{lstlisting}
+
+\begin{algorithm}[Formal logarithm coefficients]
+\label{alg:logcoeff}
+The input is a unit series $1+\sum_{j\ge1}a[j]u^j$.  The output satisfies
+$\log(1+\sum a[j]u^j)=\sum b[j]u^j$.
+\end{algorithm}
+\begin{lstlisting}[style=pseudo]
+function LogCoeff(a, N):
+    b[0] := 0
+    for n := 0 to N - 1:
+        s := 0
+        for j := 0 to n - 1:
+            s := s + (n - j) * b[n - j] * a[j + 1]
+        b[n + 1] := a[n + 1] - s / (n + 1)
+    return b
+\end{lstlisting}
+
+\begin{algorithm}[Normalized Gaussian contraction]
+\label{alg:gaussian-contraction}
+The moment table can be built once to the degree of the input polynomial.
+\end{algorithm}
+\begin{lstlisting}[style=pseudo]
+function GaussianMoments(D):
+    mu[0] := 1
+    if D >= 1: mu[1] := 0
+    for n := 0 to D - 2:
+        mu[n + 2] := (n + 1) * mu[n]
+    return mu
+
+function GaussianContract(coeff, D):
+    mu := GaussianMoments(D)
+    result := 0
+    for k := 0 to D:
+        result := result + coeff[k] * mu[k]
+    return result
+\end{lstlisting}
+
+\begin{algorithm}[Saddle coefficient pipeline]
+\label{alg:saddle-pipeline}
+This is the finite algebra at fixed logarithmic order $N$.  The analytic proof is what
+justifies applying it to the central integral with a uniform remainder.
+\end{algorithm}
+\begin{lstlisting}[style=pseudo]
+function SaddleCoefficients(N, phase):
+    # 1. Build bounded exponent jets Z[0 .. 2N - 1].
+    Z := ClosedJets(2*N - 1, phase)
+
+    # 2. Build exponent polynomials E[1 .. 2N].
+    for m := 1 to 2*N:
+        E[m] := i^m * (Z[m - 1] * X^m / factorial(m)
+                       + (-1)^(m + 1) * X^(m + 2) / (m + 2))
+
+    # 3. Exponentiate formally in epsilon.
+    a := ExpCoeff(E, 2*N)
+
+    # 4. Contract even epsilon orders against the normalized Gaussian.
+    B[0] := 1
+    for j := 1 to N:
+        B[j] := GaussianContract(coefficients(a[2*j]), degree(a[2*j]))
+
+    # 5. Convert mass coefficients to logarithmic coefficients.
+    A := LogCoeff(B, N)
+    return (B, A)
+\end{lstlisting}
+
+\section{Lean declaration and module concordance}
+\label{app:concordance}
+
+File names below are relative to
+\begin{center}
+ \repo/\texttt{Lean/FabiusFunction/}.
+\end{center}
+The table lists the principal declarations, not every supporting lemma.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash\scriptsize}p{0.36\textwidth}
+                         >{\raggedright\arraybackslash}p{0.57\textwidth}@{}}
+\toprule
+Module & Content explained in this companion\\
+\midrule
+\endhead
+\path{OriginalCharacterization.lean} &
+\lean{IsOriginalFabius.mk\_of\_derivative\_law}: the support/mean-value argument showing
+that scale positivity follows from the other original-characterization assumptions;
+\cref{sec:scale-positive}.\\
+\path{FabiusInverse.lean} &
+\lean{fabiusOrderIso}, \lean{fabiusInv}, \lean{fabiusReal\_fabiusInv},
+\lean{fabiusInv\_fabiusReal}, \lean{continuous\_fabiusInv},
+\lean{strictMonoOn\_fabiusInv}, \lean{fabiusInv\_one\_sub},
+\lean{fabiusInv\_fabiusDyadicUnit}, the transported root-free bounds,
+\lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
+\cref{sec:inverse,sec:inverse-steepness}.\\
+\path{ElementaryFunction.lean} &
+The inductive predicate \lean{IsElementary}, composition closure, derived elementary
+operations, analytic loci, the finite-bad-value composition theorem, and the dense-open
+analytic-locus theorem; \cref{sec:elementary}.\\
+\path{NotElementary.lean} &
+No elementary function agrees with a bounded Fabius function, $\Up$, or the signed extension
+on a set with nonempty interior; \cref{sec:not-elementary}.\\
+\path{ProbabilityRepresentation.lean} &
+The product sample space, uniformly convergent coordinate sum, pushforward law, head--tail
+split, coordinate reflection, and identification of the CDF with $F$;
+\cref{sec:product-law}.\\
+\path{ProbabilityLaplaceMoments.lean} &
+Almost-sure support, restriction to $[0,1]$, survival function, the compact-support Fubini
+identity, raw and endpoint moment identifications, zero-tilt normalization, and positivity;
+\cref{sec:survival-fubini,sec:probability-laplace}.\\
+\path{LaplaceMoments.lean} &
+\lean{tiltedSurvivalMoment}, \lean{fabiusLaplaceMoment}, the differential recurrence,
+iterated derivatives, smoothness, and evaluation at zero tilt; \cref{sec:probability-laplace}.\\
+\path{StepMeasureBridge.lean} &
+Almost-everywhere replacement of half-endpoint indicators, exact overlap integrals, atomic
+measure comparisons, the shrunken/enlarged interval sandwich, portmanteau, and convergence of
+every interval integral; \cref{sec:step-measure-bridge}.\\
+\path{FabiusInverseDyadicClosedForm.lean} &
+Compositions, path weights, last-edge decomposition, generic triangular solver, uniqueness,
+and the exact composition formula for $F(2^{-n})$; \cref{sec:path-sums,sec:fabius-composition-formula}.\\
+\path{FabiusDiscreteLimitToeplitz.lean} &
+Corrected prefix length, exact $q$-binomial row mass, total-variation bound $16$, the generic
+finite-row Toeplitz theorem, and the specialization $q(n,j)=2n-j$;
+\cref{sec:toeplitz,sec:fabius-toeplitz}.\\
+\path{SaddleExpansionAlgebra.lean} &
+\lean{expCoeff}, its differential equation, uniqueness, naturality, rescaling, addition,
+parity, and \lean{HasAsymptoticExpansion}; \cref{sec:poincare-api,sec:exp-coeff}.\\
+\path{SaddleLogExpansionAlgebra.lean} &
+\lean{logCoeff}, the identity $AB'=A'$, low-order formulas, uniqueness, naturality,
+rescaling, and parity; \cref{sec:log-coeff}.\\
+\path{SaddleExpansionFiniteRemainder.lean} &
+Finite exponent substitution, equality of coefficients below the truncation order,
+divisibility of the defect by $X^L$, and the evaluated exact remainder;
+\cref{sec:finite-remainder}.\\
+\path{SaddleExpansionSmallArgument.lean} &
+Exact transfer of full expansions between $t\to\infty$ and $x=2^{-t}\downarrow0$;
+\cref{sec:poincare-api}.\\
+\path{SaddleExpansionFlat.lean} &
+Zero-coefficient expansion of all-orders-flat errors and invariance of every coefficient under
+addition or subtraction of such an error; \cref{sec:poincare-api,sec:full-assembly}.\\
+\path{GaussianPolynomialContraction.lean} &
+Gaussian integrability, odd moments, integration-by-parts recurrence, normalized moments,
+linear polynomial contraction, and the whole-line integral identity;
+\cref{sec:gaussian-contraction}.\\
+\path{GaussianPolynomialTail.lean} &
+The factorial coefficient weight and explicit complementary-interval tail bound;
+\cref{sec:gaussian-tails}.\\
+\path{GaussianPolynomialTailAllOrders.lean} &
+The radius $\sqrt{32(N+1)\log b}$ and arbitrary algebraic tail order for bounded polynomial
+families; \cref{sec:gaussian-tails}.\\
+\path{FabiusSaddleJetClosedForm.lean} &
+Closed formula for the periodic and bounded exponent jets, including harmonic constants and
+the shifted falling-factorial coefficients; \cref{sec:saddle-jets}.\\
+\path{FabiusSaddleJetStirling.lean} &
+Identification $c(n,m)=s(n+1,m+1)$ with signed Stirling numbers of the first kind;
+\cref{sec:saddle-jets}.\\
+\path{FabiusSaddleExponentClosedForm.lean} &
+Cancellation of factorials and the extra power of $\ii$, yielding the two-monomial formula
+\eqref{eq:closed-exponent-coefficient}; \cref{sec:saddle-jets}.\\
+\path{FabiusSaddleLeadingCoefficient.lean} &
+The unique newest-jet monomial and coefficient $(-1)^j/(2^jj!)$ in the $j$th mass
+coefficient; \cref{sec:saddle-coeff-engine}.\\
+\path{FabiusSecondSaddleCorrection.lean} &
+Low-order formal exponential identities, explicit order-four polynomial, Gaussian contraction,
+closed $B_2$, and closed $A_2$; \cref{sec:second-correction}.\\
+\path{FabiusSecondSaddleExpansion.lean} &
+The explicit expansion through $A_2/\lambda^2$ with $O(\lambda^{-3})$ and the weakened
+$O(({-\log x})^{-3})$ form; \cref{sec:second-correction,sec:full-assembly}.\\
+\path{FabiusSaddleMassAllOrders.lean} &
+Finite exponential substitution, bounded jet families, central reference polynomial,
+Gaussian whole-line contraction, and all-orders normalized saddle mass;
+\cref{sec:full-assembly}.\\
+\path{FabiusFullAsymptoticExpansion.lean} &
+Transfer from complex kernel mass to the real saddle ratio, logarithmic coefficient transfer,
+addition of the flat forward tail, exact-phase full expansion, and small-argument transport;
+\cref{sec:full-assembly,sec:exact-phase-boundary}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Audit matrix against the main article}
+\label{app:audit-matrix}
+
+\begingroup\small
+\begin{longtable}{@{}p{0.28\textwidth}p{0.18\textwidth}p{0.46\textwidth}@{}}
+\toprule
+Topic & Status before this companion & Added here\\
+\midrule
+\endhead
+Original scale positivity & Assumed in the source statement & Mean-value proof that the dilation
+parameter is automatically positive before its exact value $k=2$ is derived.\\
+Total inverse $I$ & Absent & Global clamped construction, order calculus, reflection, exact
+dyadic inverse values, interior calculus consequences, endpoint steepness, and non-H\"older
+corollaries.\\
+Elementary function class & Absent & Exact inductive closure, totalization convention,
+finite-bad-value composition, and dense-open analytic locus.\\
+Non-elementarity & Absent & No local agreement on any set with nonempty interior for $F$,
+$\Up$, and the signed extension.\\
+Product probability law & Headline proof only & Uniform convergence and measurability,
+head--tail pushforward identity, coordinate reflection, and global support bookkeeping.\\
+Probability--Laplace bridge & Absent & Survival-function Fubini identity, identification of
+raw, endpoint, and tilted moments, complete monotonicity, and half-moment interpretation.\\
+Atomic-to-step bridge & Compressed & Half-endpoint null-set conversion, exact cell overlap,
+shrunken/enlarged interval sandwich, portmanteau, and moving-boundary squeeze.\\
+Weighted path solver & Explicitly omitted & Generic semiring theorem, uniqueness, edge-count
+decomposition, Fabius specialization, and worked values.\\
+Finite-row Toeplitz theorem & Explicitly omitted & Abstract normed-ring proof, exact Fabius
+row mass, uniform variation bound, tail-index condition, and corrected prefix rounding.\\
+Parameter-dependent full expansions & Only summarized & Exact API, coefficient boundedness,
+closure, flat errors, and coordinate transfer.\\
+Formal exponential/logarithm & Explicitly omitted & Recurrences, formal differential equations,
+uniqueness, low orders, naturality, rescaling, addition, and parity.\\
+Finite formal-to-analytic remainder & Absent & Exact divisibility by the first omitted power
+and evaluated polynomial remainder.\\
+Gaussian contraction/tails & Explicitly omitted & Moment recurrence, contraction functional,
+factorial coefficient weight, explicit tail, and all-orders radius.\\
+Closed saddle jets & Stated, lightly motivated & Operator-product solution, harmonic constants,
+shifted signed Stirling identification, and first four bounded jets.\\
+Second saddle correction & Not yet in pinned snapshot & Complete $E_1$--$E_4$ expansion,
+order-four polynomial, Gaussian contraction, $B_2$, and closed $A_2$.\\
+Full saddle assembly & Proof architecture only & Exact sequence of finite remainder, central
+window, contraction, Gaussian tail, minor arc, log transfer, flat-tail restoration, and filter
+transport.\\
+Exact phase boundary & Warning only & Quantified explanation of why all-orders substitution
+through oscillatory coefficients needs a separate composition theorem.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The following substantial topics are intentionally not repeated because the main article
+already treats them at proof level: construction and uniqueness of $F$ and $\Up$; the original
+Rvachev characterization apart from the redundancy isolated in \cref{sec:scale-positive}; the infinite sinc product and Fourier decay; support, positivity,
+shape, and nowhere analyticity; exact moment recurrences and denominator arithmetic; dyadic
+rational evaluation, $q$-Pochhammer and $q$-binomial formulas; Thue--Morse interpolation and
+iterated difference identities; Legendre expansions and least-squares approximation; and the
+computational API.  Their use as input above is always signposted.
+
+\section{Notation crosswalk}
+\label{app:notation}
+
+\begin{longtable}{@{}p{0.18\textwidth}p{0.29\textwidth}>{\raggedright\arraybackslash\footnotesize}p{0.43\textwidth}@{}}
+\toprule
+This companion & Main-article notation & Principal Lean declaration\\
+\midrule
+\endhead
+$I(y)$ & inverse of bounded $F$ & \lean{fabiusInv}\\
+$\mu$ & law of the weighted uniform sum & \lean{weightedSumDistribution}\\
+$J_k(s)$ & tilted survival moment & \lean{tiltedSurvivalMoment}\\
+$M_k(s)$ & tilted probability/Fabius moment & \lean{fabiusLaplaceMoment}\\
+$d_n$ & exact half moment & \lean{halfMoment}\\
+$P_w(n)$ & weighted composition/path sum & generic path-sum definition in
+\path{FabiusInverseDyadicClosedForm.lean}\\
+$\sigma$ & abstract small scale & first argument of \lean{HasAsymptoticExpansion}\\
+$a_n$ & formal exponential coefficient & \lean{SaddleExpansion.expCoeff}\\
+$b_n$ & formal logarithm coefficient & \lean{SaddleExpansion.logCoeff}\\
+$\Gcal[p]$ & normalized Gaussian contraction &
+\lean{SaddleExpansion.}\newline\lean{gaussianPolynomialContraction}\\
+$Z_n(t)$ & bounded exponent jet $\widetilde{\mathcal Z}_n$ &
+\lean{negativeLaplaceBoundedExponentJet}\\
+$B_j(t)$ & normalized saddle mass coefficient & \lean{fabiusSaddleMassCoefficient}\\
+$A_j(t)$ & logarithmic saddle coefficient & \lean{fabiusSaddleLogCoefficient}\\
+$\lambda(x)$ & exact lower-Lambert phase & \lean{fabiusLambertPhase}\\
+$\mathcal M(x)$ & corrected sharp Lambert main & \lean{fabiusSharpLambertMain}\\
+$\mathcal S(x)$ & normalized real saddle mass/ratio & \lean{fabiusSaddleRatio} and the
+kernel-mass bridge\\
+\bottomrule
+\end{longtable}
+
+\section{A compact dependency diagram}
+\label{app:dependency}
+
+The proof dependencies of the material unique to this companion can be read from the
+following diagram.  An arrow means that the target uses the source as a mathematical input,
+not merely as a Lean import.
+
+\begin{center}
+\begin{minipage}{0.96\textwidth}\footnotesize
+\begin{align*}
+ &\text{support + interior positivity + mean-value theorem + derivative law}
+   \longrightarrow k>0,\\[0.35ex]
+ &\text{strict monotonicity + surjectivity + flatness}
+   \longrightarrow \text{total inverse}
+   \longrightarrow \text{endpoint steepness},\\[0.35ex]
+ &\text{nowhere analyticity + dense elementary analytic locus}
+   \longrightarrow \text{strong non-elementarity},\\[0.35ex]
+ &\text{product law}
+   \longrightarrow \text{survival identity}
+   \longrightarrow \text{Laplace/raw/endpoint moment bridge},\\[0.35ex]
+ &\text{weak convergence + null boundaries + cell geometry}
+   \longrightarrow \text{step-integral convergence},\\[0.35ex]
+ &\text{triangular recurrence}
+   \longrightarrow \text{weighted paths}
+   \longrightarrow \text{composition formula},\\[0.35ex]
+ &\text{$q$-binomial row mass + variation + tail indices}
+   \longrightarrow \text{discrete Toeplitz limit},\\[0.35ex]
+ &\text{closed jets}
+   \longrightarrow \text{exponent coefficients}
+   \longrightarrow \text{formal exponential}\\[-0.1ex]
+ &\hspace{8em}\longrightarrow \text{Gaussian contraction}
+   \longrightarrow \text{mass coefficients},\\[0.35ex]
+ &\text{mass coefficients}
+   \longrightarrow \text{formal logarithm}
+   \longrightarrow \text{log coefficients},\\[0.35ex]
+ &\text{finite remainders + central Taylor + Gaussian tails + minor arcs}\\[-0.1ex]
+ &\hspace{8em}\longrightarrow \text{all-orders saddle mass},\\[0.35ex]
+ &\text{all-orders mass + exact reduction + flat tail + coordinate transfer}\\[-0.1ex]
+ &\hspace{8em}\longrightarrow \text{full exact-phase expansion}.
+\end{align*}
+\end{minipage}
+\end{center}
+
+\nocite{fabius1966,arias1982,arias05442,arias2018,mainarticle,repo}
+\begin{thebibliography}{99}
+
+\bibitem{fabius1966}
+J.~Fabius,
+\newblock A probabilistic example of a nowhere analytic $C^\infty$-function,
+\newblock \emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+\textbf{5} (1966), 173--174.
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\newblock On the Fabius function,
+\newblock \emph{The American Mathematical Monthly} \textbf{89} (1982), 291--298.
+
+\bibitem{arias05442}
+J.~Arias de Reyna,
+\newblock An infinitely differentiable function with compact support: Definition and properties,
+\newblock arXiv:1702.05442.
+
+\bibitem{arias2018}
+J.~Arias de Reyna,
+\newblock The asymptotic behavior of the Fabius function,
+\newblock arXiv:1702.06487, version 3, 2018.
+
+\bibitem{mainarticle}
+V.~Reshetnikov,
+\newblock \emph{The Fabius Function and Rvachev's Up-Function: Exact Arithmetic,
+Probability, Fourier Analysis, and Corrected Sharp Asymptotics},
+\newblock \texttt{ProveIt},
+\path{Analysis/FabiusFunction/docs/Fabius_Function_and_Rvachev_Up/}.
+
+\bibitem{repo}
+V.~Reshetnikov,
+\newblock \texttt{ProveIt}: formal development of the Fabius function and Rvachev's
+up-function,
+\newblock GitHub repository, snapshot
+\texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}, 25 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+
+\end{thebibliography}
+
+\end{document}

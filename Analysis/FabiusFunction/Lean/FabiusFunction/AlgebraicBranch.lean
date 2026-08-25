@@ -116,6 +116,36 @@ needs and every instantiation here is at an open set. -/
 def AnalyticDenseOn (y : ℝ → ℝ) (s : Set ℝ) : Prop :=
   ∀ V : Set ℝ, IsOpen V → V.Nonempty → V ⊆ s → ∃ x ∈ V, AnalyticAt ℝ y x
 
+/-- Analytic density on `s ∩ V` implies analytic density on `s` when `V` is
+open and dense.
+
+This is the relative-density step used when a branch theorem first restricts
+to the common analytic locus of finitely many coefficient functions. -/
+theorem analyticDenseOn_of_inter_open_dense {y : ℝ → ℝ} {s V : Set ℝ}
+    (hVopen : IsOpen V) (hVdense : Dense V) (h : AnalyticDenseOn y (s ∩ V)) :
+    AnalyticDenseOn y s := by
+  intro B hB hBne hBs
+  obtain ⟨x, hxB, hxV⟩ := (dense_iff_inter_open.mp hVdense) B hB hBne
+  obtain ⟨z, hz, hza⟩ := h (B ∩ V) (hB.inter hVopen) ⟨x, hxB, hxV⟩ (fun t ht =>
+    ⟨hBs ht.1, ht.2⟩)
+  exact ⟨z, hz.1, hza⟩
+
+/-- A branch that is analytically dense on a nonempty open set cannot agree
+there with a function that is nonanalytic at every point of that set.
+
+The openness hypothesis turns `EqOn` into the germ equality needed to
+transport analyticity from the branch to the nowhere-analytic function. -/
+theorem AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt
+    {y f : ℝ → ℝ} {U : Set ℝ} (hy : AnalyticDenseOn y U)
+    (hU : IsOpen U) (hUne : U.Nonempty)
+    (hf : ∀ x ∈ U, ¬ AnalyticAt ℝ f x) :
+    ¬ EqOn y f U := by
+  intro heq
+  obtain ⟨x, hxU, hxy⟩ := hy U hU hUne subset_rfl
+  exact hf x hxU (hxy.congr <| by
+    filter_upwards [hU.mem_nhds hxU] with t ht
+    exact heq ht)
+
 /-- Splitting an open set by an open piece on which analyticity is already
 known.  An open set disjoint from `V` is disjoint from `closure V`, so it is
 contained in `s \ closure V`. -/
