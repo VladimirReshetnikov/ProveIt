@@ -230,6 +230,15 @@ lemma fabiusLaplaceMoment_zero_half_le_mul
   rw [div_le_iff₀ hs0] at hmul
   simpa [mul_comm] using hmul
 
+/-- Normalization by the positive zeroth moment preserves nonnegativity. -/
+lemma normalizedLaplaceMoment_nonneg
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) {s : ℝ} (hs : 0 < s) :
+    0 ≤ normalizedLaplaceMoment F k s := by
+  unfold normalizedLaplaceMoment
+  exact div_nonneg (fabiusLaplaceMoment_nonneg F hF k s)
+    (fabiusLaplaceMoment_zero_pos F hF hs).le
+
 /-- A uniform square bound for every normalized tilted moment.  The loss of
 one power of `s` comes from the exact dyadic factor, while log-convexity at
 the intermediate tilt supplies its square root. -/
@@ -268,6 +277,26 @@ theorem normalizedLaplaceMoment_sq_le
   rw [div_le_iff₀ (sq_pos_of_pos hB)]
   simpa [mul_assoc] using hraw
 
+/-- The corresponding unsquared bound, uniform in the moment index. -/
+theorem normalizedLaplaceMoment_le_sqrt
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) {s : ℝ} (hs : 2 ≤ s) :
+    normalizedLaplaceMoment F k s ≤
+      Real.sqrt s * ((4 / s) ^ k * (k.factorial : ℝ)) := by
+  let C : ℝ := (4 / s) ^ k * (k.factorial : ℝ)
+  have hs0 : 0 < s := by linarith
+  have hR : 0 ≤ normalizedLaplaceMoment F k s :=
+    normalizedLaplaceMoment_nonneg F hF k hs0
+  have hC : 0 ≤ C := by dsimp [C]; positivity
+  have hrhs : 0 ≤ Real.sqrt s * C :=
+    mul_nonneg (Real.sqrt_nonneg s) hC
+  apply (sq_le_sq₀ hR hrhs).mp
+  calc
+    normalizedLaplaceMoment F k s ^ 2 ≤ s * C ^ 2 :=
+      normalizedLaplaceMoment_sq_le F hF k hs
+    _ = Real.sqrt s ^ 2 * C ^ 2 := by rw [Real.sq_sqrt hs0.le]
+    _ = (Real.sqrt s * C) ^ 2 := by ring
+
 theorem normalizedLaplaceMoment_two_sq_le
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 2 ≤ s) :
@@ -285,10 +314,8 @@ theorem normalizedLaplaceMoment_three_le
     normalizedLaplaceMoment F 3 s ≤ 384 / s ^ 2 := by
   have hs0 : 0 < s := by linarith
   have hsq := normalizedLaplaceMoment_sq_le F hF 3 hs
-  have hnonneg : 0 ≤ normalizedLaplaceMoment F 3 s := by
-    unfold normalizedLaplaceMoment
-    exact div_nonneg (fabiusLaplaceMoment_nonneg F hF 3 s)
-      (fabiusLaplaceMoment_zero_pos F hF hs0).le
+  have hnonneg : 0 ≤ normalizedLaplaceMoment F 3 s :=
+    normalizedLaplaceMoment_nonneg F hF 3 hs0
   have hbound0 : 0 ≤ 384 / s ^ 2 := by positivity
   apply (sq_le_sq₀ hnonneg hbound0).mp
   norm_num at hsq ⊢
@@ -301,10 +328,8 @@ theorem normalizedLaplaceMoment_four_le
     normalizedLaplaceMoment F 4 s ≤ 6144 / s ^ 3 := by
   have hs0 : 0 < s := by linarith
   have hsq := normalizedLaplaceMoment_sq_le F hF 4 hs
-  have hnonneg : 0 ≤ normalizedLaplaceMoment F 4 s := by
-    unfold normalizedLaplaceMoment
-    exact div_nonneg (fabiusLaplaceMoment_nonneg F hF 4 s)
-      (fabiusLaplaceMoment_zero_pos F hF hs0).le
+  have hnonneg : 0 ≤ normalizedLaplaceMoment F 4 s :=
+    normalizedLaplaceMoment_nonneg F hF 4 hs0
   have hbound0 : 0 ≤ 6144 / s ^ 3 := by positivity
   apply (sq_le_sq₀ hnonneg hbound0).mp
   norm_num at hsq ⊢
@@ -346,14 +371,10 @@ theorem dyadicHigherLaplaceMoments_isBigO
     (by exact_mod_cast hn : (2 : ℝ) ≤ n)
   have h4 := normalizedLaplaceMoment_four_le F hF
     (by exact_mod_cast hn : (2 : ℝ) ≤ n)
-  have hR3 : 0 ≤ normalizedLaplaceMoment F 3 n := by
-    unfold normalizedLaplaceMoment
-    exact div_nonneg (fabiusLaplaceMoment_nonneg F hF 3 n)
-      (fabiusLaplaceMoment_zero_pos F hF hn0).le
-  have hR4 : 0 ≤ normalizedLaplaceMoment F 4 n := by
-    unfold normalizedLaplaceMoment
-    exact div_nonneg (fabiusLaplaceMoment_nonneg F hF 4 n)
-      (fabiusLaplaceMoment_zero_pos F hF hn0).le
+  have hR3 : 0 ≤ normalizedLaplaceMoment F 3 n :=
+    normalizedLaplaceMoment_nonneg F hF 3 hn0
+  have hR4 : 0 ≤ normalizedLaplaceMoment F 4 n :=
+    normalizedLaplaceMoment_nonneg F hF 4 hn0
   rw [Real.norm_eq_abs,
     abs_of_nonneg (by positivity : 0 ≤ 16 *
       ((n : ℝ) * normalizedLaplaceMoment F 3 n +

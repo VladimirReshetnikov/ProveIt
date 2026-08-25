@@ -19,7 +19,7 @@ transform in the sharp dyadic asymptotic.
 set_option autoImplicit false
 
 open Filter Set MeasureTheory Topology
-open scoped Interval
+open scoped ContDiff Interval
 
 namespace Fabius
 
@@ -177,6 +177,53 @@ theorem fabiusLaplaceMoment_hasDerivAt
       simp only [id_eq]
       ring
 
+/-- Every tilted moment is continuous on the whole real line. -/
+theorem continuous_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    Continuous (fabiusLaplaceMoment F k) :=
+  continuous_iff_continuousAt.2 fun s =>
+    (fabiusLaplaceMoment_hasDerivAt F hF k s).continuousAt
+
+/-- Every tilted moment is differentiable on the whole real line. -/
+theorem differentiable_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    Differentiable ℝ (fabiusLaplaceMoment F k) :=
+  fun s => (fabiusLaplaceMoment_hasDerivAt F hF k s).differentiableAt
+
+/-- Iterating the differential recurrence shifts the moment index and
+contributes the expected alternating sign. -/
+theorem iteratedDeriv_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k n : ℕ) (s : ℝ) :
+    iteratedDeriv n (fabiusLaplaceMoment F k) s =
+      (-1 : ℝ) ^ n * fabiusLaplaceMoment F (k + n) s := by
+  induction n generalizing s with
+  | zero => simp
+  | succ n ih =>
+      rw [iteratedDeriv_succ]
+      have hfun : iteratedDeriv n (fabiusLaplaceMoment F k) =
+          fun x => (-1 : ℝ) ^ n * fabiusLaplaceMoment F (k + n) x := by
+        funext x
+        exact ih x
+      rw [hfun, deriv_const_mul_field,
+        (fabiusLaplaceMoment_hasDerivAt F hF (k + n) s).deriv]
+      rw [pow_succ]
+      have hindex : k + n + 1 = k + (n + 1) := by omega
+      rw [hindex]
+      ring
+
+/-- Tilted moments are smooth on the whole real line. -/
+theorem contDiff_fabiusLaplaceMoment
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    ContDiff ℝ ∞ (fabiusLaplaceMoment F k) := by
+  apply contDiff_of_differentiable_iteratedDeriv
+  intro n _hn
+  have hfun : iteratedDeriv n (fabiusLaplaceMoment F k) =
+      fun s => (-1 : ℝ) ^ n * fabiusLaplaceMoment F (k + n) s := by
+    funext s
+    exact iteratedDeriv_fabiusLaplaceMoment F hF k n s
+  rw [hfun]
+  exact (differentiable_fabiusLaplaceMoment F hF (k + n)).const_mul ((-1 : ℝ) ^ n)
+
 /-- At zero tilt, the tilted probability moments are exactly the executable
 half moments. -/
 theorem fabiusLaplaceMoment_zero_eq_halfMoment
@@ -190,6 +237,15 @@ theorem fabiusLaplaceMoment_zero_eq_halfMoment
       rw [halfMoment_eq_integral_formula F hF (n + 1) (by omega),
         halfMomentIntegral_succ]
       simp [tiltedSurvivalMoment]
+
+/-- At zero tilt, all derivatives of every tilted moment are executable half
+moments (up to the alternating sign). -/
+theorem iteratedDeriv_fabiusLaplaceMoment_zero
+    (F : BoundedFabius) (hF : IsFabius F) (k n : ℕ) :
+    iteratedDeriv n (fabiusLaplaceMoment F k) 0 =
+      (-1 : ℝ) ^ n * (halfMoment (k + n) : ℝ) := by
+  rw [iteratedDeriv_fabiusLaplaceMoment F hF,
+    fabiusLaplaceMoment_zero_eq_halfMoment F hF]
 
 /-- All real derivatives of the negative generating function are the tilted
 moments with alternating sign. -/
@@ -209,5 +265,14 @@ theorem iteratedDeriv_generatingFunction_neg
         (fabiusLaplaceMoment_hasDerivAt F hF n s).deriv]
       rw [pow_succ]
       ring
+
+/-- The Taylor jet of the negative generating function at the origin is the
+alternating half-moment sequence. -/
+theorem iteratedDeriv_generatingFunction_neg_zero
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    iteratedDeriv n (fun x => generatingFunction F (-x)) 0 =
+      (-1 : ℝ) ^ n * (halfMoment n : ℝ) := by
+  rw [iteratedDeriv_generatingFunction_neg F hF,
+    fabiusLaplaceMoment_zero_eq_halfMoment F hF]
 
 end Fabius

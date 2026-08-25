@@ -111,7 +111,8 @@ private lemma integral_pow_mul_rvachev_eq_interval
     _ = ∫ x in (-1 : ℝ)..1, x ^ m * rvachevUp F x := by
       rw [intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
 
-private lemma integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
+/-- Rvachev's compactly supported function has total mass one. -/
+theorem integral_rvachev_eq_one (F : BoundedFabius) (hF : IsFabius F) :
     (∫ x : ℝ, rvachevUp F x) = 1 := by
   have hderiv : ∀ x ∈ [[(0 : ℝ), 1]],
       HasDerivAt (rvachevUp F) (-2 * rvachevUp F (2 * x - 1)) x := by
@@ -274,7 +275,8 @@ private lemma integral_add_one_odd_pow_mul_rvachev
   rw [hodd0]
   ring
 
-private lemma integral_odd_pow_mul_rvachev_eq_zero
+/-- Every odd moment over the symmetric support interval vanishes. -/
+theorem intervalIntegral_odd_pow_mul_rvachev_eq_zero
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
     (∫ x in (-1 : ℝ)..1, x ^ (2 * k + 1) * rvachevUp F x) = 0 := by
   have h := integral_pow_mul_rvachev_symm F hF (2 * k + 1)
@@ -296,7 +298,7 @@ private lemma binomial_integral_sum_eq_even
     congr 1
     · apply Finset.sum_congr rfl
       intro k hk
-      rw [integral_odd_pow_mul_rvachev_eq_zero F hF]
+      rw [intervalIntegral_odd_pow_mul_rvachev_eq_zero F hF]
       ring
   · subst n
     have hdiv : (2 * m + 1) / 2 + 1 = m + 1 := by omega
@@ -305,7 +307,7 @@ private lemma binomial_integral_sum_eq_even
     rw [sum_range_two_mul]
     apply Finset.sum_congr rfl
     intro k hk
-    rw [integral_odd_pow_mul_rvachev_eq_zero F hF]
+    rw [intervalIntegral_odd_pow_mul_rvachev_eq_zero F hF]
     ring
 
 private lemma momentIntegral_recurrence_all
@@ -391,6 +393,23 @@ theorem moment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F) (n : �
           apply Finset.sum_congr rfl
           intro k hk
           rw [ih k (by simp only [Finset.mem_range] at hk; omega)]
+
+/-- The full-line even moments of Rvachev's function are the executable
+rational moment sequence. -/
+theorem integral_even_pow_mul_rvachev_eq_moment
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (∫ x : ℝ, x ^ (2 * n) * rvachevUp F x) = (moment n : ℝ) := by
+  simpa only [momentIntegral] using (moment_eq_integral_formula F hF n).symm
+
+/-- Every full-line odd moment of Rvachev's function vanishes. -/
+theorem integral_odd_pow_mul_rvachev_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (∫ x : ℝ, x ^ (2 * n + 1) * rvachevUp F x) = 0 := by
+  calc
+    (∫ x : ℝ, x ^ (2 * n + 1) * rvachevUp F x) =
+        ∫ x in (-1 : ℝ)..1, x ^ (2 * n + 1) * rvachevUp F x :=
+      integral_pow_mul_rvachev_eq_interval F hF (2 * n + 1)
+    _ = 0 := intervalIntegral_odd_pow_mul_rvachev_eq_zero F hF n
 
 private lemma halfMomentIntegral_eq_evenMoment_sum
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
@@ -1089,7 +1108,7 @@ private lemma fourierSeriesTerm_odd_eq_zero
         (((-2 * Real.pi * Complex.I * z) * (t : ℂ)) ^ (2 * n + 1) /
           ((2 * n + 1).factorial : ℂ))) = 0 := by
   rw [fourierSeriesTerm_integral_factor F z (2 * n + 1)]
-  rw [integral_odd_pow_mul_rvachev_eq_zero F hF n]
+  rw [intervalIntegral_odd_pow_mul_rvachev_eq_zero F hF n]
   simp
 
 private lemma fourierSeriesTerm_even_eq_moment

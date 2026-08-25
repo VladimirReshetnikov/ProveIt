@@ -261,6 +261,21 @@ recovers the factorially normalized half-moment series. -/
 noncomputable def centeredMomentPowerSeries : PowerSeries ℚ :=
   expandedMomentQuarter
 
+/-- The even coefficients of the centered series are the factorially
+normalized moments, with the centering scale `4^n`. -/
+@[simp] theorem coeff_centeredMomentPowerSeries_even (n : ℕ) :
+    PowerSeries.coeff (2 * n) centeredMomentPowerSeries =
+      moment n / ((4 : ℚ) ^ n * ((2 * n).factorial : ℚ)) := by
+  simp [centeredMomentPowerSeries, expandedMomentQuarter, momentPS]
+  ring
+
+/-- The centered moment series has no odd-degree coefficients. -/
+@[simp] theorem coeff_centeredMomentPowerSeries_odd (n : ℕ) :
+    PowerSeries.coeff (2 * n + 1) centeredMomentPowerSeries = 0 := by
+  rw [centeredMomentPowerSeries, expandedMomentQuarter]
+  apply PowerSeries.coeff_expand_of_not_dvd
+  exact Nat.not_two_dvd_bit1 n
+
 /-- Coefficients after translating the centered even-moment series by an
 arbitrary rational amount. -/
 theorem coeff_exp_mul_centeredMomentPowerSeries (y : ℚ) (n : ℕ) :
@@ -427,6 +442,17 @@ theorem halfMoment_eq_evenMomentSum (n : ℕ) :
           apply Finset.sum_congr rfl
           intro k hk
           rw [ih k.val k.isLt]
+
+/-- Multiplying the centered moment series by `exp(X/2)` produces the
+factorially normalized half-moment series coefficient by coefficient. -/
+theorem coeff_expHalf_mul_centeredMomentPowerSeries_eq_halfMoment (n : ℕ) :
+    PowerSeries.coeff n
+        (PowerSeries.rescale (1 / 2) (PowerSeries.exp ℚ) *
+          centeredMomentPowerSeries) =
+      halfMoment n / (n.factorial : ℚ) := by
+  rw [coeff_expHalf_mul_centeredMomentPowerSeries,
+    halfMoment_eq_evenMomentSum]
+  field_simp
 
 /-- Odd half moments reduce to a single even moment. -/
 theorem halfMoment_odd_eq_moment (n : ℕ) :
