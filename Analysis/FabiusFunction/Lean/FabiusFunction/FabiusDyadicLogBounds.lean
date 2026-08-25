@@ -55,7 +55,7 @@ theorem halfMoment_real_le_one (F : BoundedFabius) (hF : IsFabius F)
     (halfMoment n : ℝ) ≤ 1 := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
   rw [add_comm 1 m] at hn ⊢
-  rw [halfMoment_eq_integral_formula F hF (m + 1) (by omega)]
+  rw [halfMoment_eq_integral_formula_all F hF (m + 1)]
   change ((m + 1 : ℕ) : ℝ) *
       (∫ t in (0 : ℝ)..1, t ^ m * rvachevUp F t) ≤ 1
   have hmono :
@@ -84,7 +84,7 @@ theorem halfMoment_real_lower (F : BoundedFabius) (hF : IsFabius F)
     ((2 : ℝ) ^ (n + 1))⁻¹ ≤ (halfMoment n : ℝ) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
   rw [add_comm 1 m] at hn ⊢
-  rw [halfMoment_eq_integral_formula F hF (m + 1) (by omega)]
+  rw [halfMoment_eq_integral_formula_all F hF (m + 1)]
   change ((2 : ℝ) ^ (m + 1 + 1))⁻¹ ≤
     ((m + 1 : ℕ) : ℝ) *
       (∫ t in (0 : ℝ)..1, t ^ m * rvachevUp F t)

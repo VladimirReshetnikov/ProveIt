@@ -5,10 +5,16 @@
 \usepackage{fontspec}
 \usepackage{mathtools}
 \usepackage{unicode-math}
-\setmainfont{EB Garamond}
-\setsansfont{Noto Sans}[Scale=0.90]
+\IfFontExistsTF{EB Garamond}
+  {\setmainfont{EB Garamond}}
+  {\setmainfont{Latin Modern Roman}}
+\IfFontExistsTF{Noto Sans}
+  {\setsansfont{Noto Sans}[Scale=0.90]}
+  {\setsansfont{DejaVu Sans}[Scale=0.90]}
 \setmonofont{DejaVu Sans Mono}[Scale=0.82]
-\setmathfont{Asana Math}
+\IfFontExistsTF{Asana Math}
+  {\setmathfont{Asana Math}}
+  {\setmathfont{Latin Modern Math}}
 \usepackage{microtype}
 \usepackage{setspace}
 \setstretch{1.045}
@@ -1193,7 +1199,10 @@ identifies the integral with the exact sequence:
 \[
  \int_{-1}^{1} x^{2n}\upfun_F(x)\,dx=c_n.
 \]
-A half-interval version similarly identifies \decl{halfMoment}.
+A half-interval version similarly identifies \decl{halfMoment}.  The additive
+theorem \pathbreak{halfMoment_eq_integral_formula_all} includes the normalized
+zeroth term, where both exact and analytic definitions equal one, without
+changing the source-faithful positive-index theorem.
 
 \section{The inverse-power identity}
 One of the most important bridges in the library relates the value at

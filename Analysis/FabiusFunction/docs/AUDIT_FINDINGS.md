@@ -155,9 +155,13 @@ By cluster: core 7, discrete-limits-computability 10, dyadic 8, fourier-legendre
 
 #### IMPLEMENTED: `IsOriginalFabius.scale_pos` is a redundant structure field: positivity of the dilation constant follows from the other five hypotheses
 
-Confidence medium.  `OriginalCharacterization.lean:32`, `OriginalCharacterization.lean:232`, `OriginalCharacterization.lean:271`, `OriginalUniqueness.lean:396`
+Confidence medium.  `OriginalCharacterization.lean`, `OriginalUniqueness.lean`
 
-**Why.** `scale_pos` is dead weight: grepping all 174 files shows the field is referenced exactly twice — its declaration (line 37) and the `by norm_num` that discharges it for the canonical solution (line 271). No proof anywhere consumes it. In particular `IsOriginalFabius.scale_eq_two` (line 232), which derives `k = 2`, uses only `hasDerivAt`, `eq_zero_of_le_neg_one`, `contDiff`, `value_zero`, `value_neg_one` and `intervalIntegral_eq_one`, and each of those in turn traces back only to `contDiff`, ...
+**Why.** Before this strengthening, `scale_pos` was supplied only by callers and
+was not consumed by the proof of `IsOriginalFabius.scale_eq_two`.  That proof
+uses only `hasDerivAt`, support consequences, `contDiff`, `value_zero`, and the
+normalization argument.  The smart constructor now records the derived
+positivity in the retained compatibility field.
 
 **Implementation.** CONFIRMED with two corrections.  The compatibility-preserving
 smart constructor is now `IsOriginalFabius.mk_of_derivative_law`; the
@@ -179,7 +183,10 @@ CORRECTION 1 (proof route). Route (b) is not needed and route (a) is far cheaper
   - `hfar : ∀ x, x < -1 → φ x = 0` (directly from `htsupport` via `subset_tsupport`; note `2*c - 1 < -1` strictly, so `value_neg_one` is NOT needed here);
   - ...
 
-**Verifier.** The finding survives every adversarial check. (1) Signatures are quoted correctly: `IsOriginalFabius` is at OriginalCharacterization.lean:32-39 with `scale_pos : 0 < k` at line 37, `scale_eq_two` at 232, the canonical `scale_pos := by norm_num` at 271, `existsUnique_originalFabius` at 404-408 of OriginalUniqueness.lean. (2) The dead-field claim is ...
+**Verifier.** The finding survived adversarial checking before implementation:
+the mean-value point lies strictly in `(-1,0)`, so one translated argument is
+strictly outside the support and the other is strictly inside it.  Thus the
+proof never assumes endpoint positivity, and `k ≤ 0` is impossible.
 
 #### `card_odd_inner_binomial_coefficients` does not need `1 ≤ m`
 
@@ -453,15 +460,24 @@ Confidence medium.  `EndpointLaplaceComparison.lean:243`, `EndpointLaplaceCompar
 
 ### Cluster: moments-probability
 
-#### `halfMoment_eq_integral_formula` does not need `1 ≤ n`; the identity is already true at n = 0
+#### IMPLEMENTED: the normalized half-moment identity is valid also at `n = 0`
 
-Confidence high.  `AnalyticMoments.lean:440`, `AnalyticMoments.lean:415`, `PaperStatements.lean:135`, `Basic.lean:284`, `Arithmetic.lean:276`
+Confidence high.  `AnalyticMoments.lean`, `PaperStatements.lean`, `Basic.lean`, `Arithmetic.lean`
 
-**Why.** `hn` forces every caller to discharge a side condition for a lemma that is unconditionally true, and it is the reason `LaplaceMoments.fabiusLaplaceMoment_zero_eq_halfMoment` and `FabiusDyadicLogBounds` (lines 58, 87) all carry `(by omega)` noise. Every one of the six call sites passes a literal successor.
+**Why.** The identity is unconditionally true.  Four of its six former call
+sites passed a literal successor and discharged positivity with `(by omega)`;
+the other two already carried a positive-index hypothesis.
 
-**Proposal.** Drop `hn` from exactly two declarations in AnalyticMoments.lean, keeping the existing names (no new name, no wrapper, no circularity). First, `halfMomentIntegral_eq_evenMoment_sum` (line 415) becomes `(F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` with the `| zero =>` branch changed from `omega` to a proof that the RHS collapses to `momentIntegral F 0`, which equals `1` by `rw [← moment_eq_integral_formula F hF 0, moment_zero]` (available: `moment_eq_integral_formula` is unconditional at AnalyticMoments.lean:362, `moment_zero` at Arithmetic.lean:272); the `| succ m =>` branch is unchanged. Second, `halfMoment_eq_integral_formula` (line 440) becomes `(F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` and its existing proof body works verbatim after deleting the `hn` argument from the `rw [halfMomentIntegral_eq_evenMoment_sum F hF n]` line, since `halfMoment_eq_evenMomentSum` and `moment_eq_integral_formula` are both already unconditional; no `cases n` split is needed. Then fix the four call sites that pass a literal successor by deleting the `(by omega)` argument ...
+**Implementation.** To preserve the source-facing equation and public API, the
+positive-index theorem keeps its original signature.  The additive theorem
+`halfMoment_eq_integral_formula_all` handles `n = 0` from
+`halfMoment_zero = halfMomentIntegral_zero = 1` and delegates successors to
+the existing result.  Internal analytic and dyadic callers use this all-index
+form, removing their repeated positivity side conditions.
 
-**Verifier.** The mathematical core holds and I could positively confirm it. All five cited locations exist with the quoted signatures: AnalyticMoments.lean:440 verbatim; AnalyticMoments.lean:415 is the private lemma with `(hn : 1 ≤ n)` whose zero branch is discharged by `omega`; Basic.lean:278-284 defines `halfMomentIntegral F 0 = 1` with `@[simp] ...
+**Verifier.** The zero branch is definitionally the normalized equality
+`1 = 1`; the successor branch is exactly the already-verified positive-index
+identity.  No integral with the exponent `n-1` is asserted at zero.
 
 #### `weightedSumCDF_left_formula` uses only `x ≤ 1/2`; the `0 ≤ x` half of the `Icc` hypothesis is dead
 

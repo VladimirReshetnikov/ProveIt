@@ -10,7 +10,9 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 This module proves the integral interpretations of the exact moment sequences,
 their inverse-power specializations, and the generating-function dilation
-identity from Proposition 2 of *Arithmetic of the Fabius function*.
+identity from Proposition 2 of *Arithmetic of the Fabius function*.  The
+source-facing positive-index half-moment identity is complemented by a
+totalized all-index form whose normalized zeroth term is one.
 -/
 
 set_option autoImplicit false
@@ -448,6 +450,18 @@ theorem halfMoment_eq_integral_formula (F : BoundedFabius) (hF : IsFabius F)
   intro k hk
   rw [moment_eq_integral_formula F hF k]
 
+/-- The exact and analytic half moments agree at every natural index,
+including the normalized zeroth term.  The positive-index theorem above keeps
+the literal integral formula used in the source, whereas
+`halfMomentIntegral F 0` is defined to be one. -/
+theorem halfMoment_eq_integral_formula_all
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (halfMoment n : ℝ) = halfMomentIntegral F n := by
+  cases n with
+  | zero => norm_num [halfMoment_zero, halfMomentIntegral_zero]
+  | succ n =>
+      exact halfMoment_eq_integral_formula F hF (n + 1) (by omega)
+
 theorem halfMoment_eq_fabius_formula (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (halfMoment n : ℝ) =
       n.factorial * 2 ^ n.choose 2 * fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
@@ -489,7 +503,7 @@ theorem halfIntegral_eq_rvachev_dyadic_formula
   calc
     (n : ℝ) * ∫ t in (0 : ℝ)..1, t ^ (n - 1) * rvachevUp F t =
         halfMomentIntegral F n := hint.symm
-    _ = (halfMoment n : ℝ) := (halfMoment_eq_integral_formula F hF n hn).symm
+    _ = (halfMoment n : ℝ) := (halfMoment_eq_integral_formula_all F hF n).symm
     _ = n.factorial * 2 ^ n.choose 2 *
         fabiusReal F (((2 : ℝ) ^ n)⁻¹) := halfMoment_eq_fabius_formula F hF n
     _ = n.factorial * 2 ^ n.choose 2 *
@@ -907,7 +921,7 @@ private lemma halfMoment_succ_seriesTerm_eq_integral
       z * ∫ t in (0 : ℝ)..1,
         (rvachevUp F t : ℂ) *
           ((z * (t : ℂ)) ^ n / (n.factorial : ℂ)) := by
-  have hm := halfMoment_eq_integral_formula F hF (n + 1) (by omega)
+  have hm := halfMoment_eq_integral_formula_all F hF (n + 1)
   rw [halfMomentIntegral_succ] at hm
   have hmc : (halfMoment (n + 1) : ℂ) =
       (n + 1 : ℂ) *

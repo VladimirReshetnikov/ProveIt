@@ -132,7 +132,8 @@ theorem moment_eq_integral (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) = momentIntegral F n := by
   exact moment_eq_integral_formula F hF n
 
-/-- Equation (21), whose integral form starts at `n = 1`. -/
+/-- Equation (21), whose literal integral form starts at `n = 1`.  See
+`halfMoment_eq_integral_formula_all` for the normalized all-index identity. -/
 theorem halfMoment_eq_integral (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
     (halfMoment n : ℝ) = halfMomentIntegral F n := by

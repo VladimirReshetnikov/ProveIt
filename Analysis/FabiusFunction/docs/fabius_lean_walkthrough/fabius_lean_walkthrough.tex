@@ -817,7 +817,12 @@ after embedding the rational value into \(\R\).  The displayed formula intention
 
 The base case is total mass.  In the induction step, the analytic recurrence is rewritten term by term using the induction hypotheses.  A cast lemma turns the finite rational sum into the corresponding real sum.  The exact recurrence then closes the goal.
 
-The same method identifies half-interval moments with \lean{halfMoment}.  These moments are connected more directly to inverse-power Fabius values, so they become the analytic bridge between moment theory and the dyadic table.
+The same method identifies half-interval moments with \lean{halfMoment}.  The
+source-facing theorem starts at positive index, while
+\lean{halfMoment_eq_integral_formula_all} packages the normalized zeroth value
+and the integral cases into one statement for every natural index.  These
+moments are connected more directly to inverse-power Fabius values, so they
+become the analytic bridge between moment theory and the dyadic table.
 
 \section{Generating functions}
 The moment generating function is represented both as an integral and as a power series.  Compact support gives uniform bounds
