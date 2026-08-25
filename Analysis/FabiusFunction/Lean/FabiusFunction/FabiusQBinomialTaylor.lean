@@ -11,8 +11,16 @@ global Fabius expansion with the Taylor polynomial `fabiusReductionSum`.
 The common translation is first treated as an indeterminate in
 `Polynomial ℚ`.  Its rational evaluations are constant by the previously
 proved translation theorem, hence the polynomial itself is constant.  It can
-therefore be evaluated at an arbitrary element of any characteristic-zero
-field, in particular at any real or complex `q`.
+therefore be evaluated at an arbitrary element of any field over `ℚ` (and
+hence of characteristic zero), in particular at any real or complex `q`.
+
+The individual translated Thue--Morse block has a sharper polynomial
+structure.  Its coefficient of translation degree `j` is `d.choose j` times
+the centered moment of complementary degree `d - j`.  Consequently the block
+is zero for `d < k`, while for `k ≤ d` it has translation degree exactly
+`d - k`.  The boundary cases are made explicit: `k = 0` gives `(X - 1) ^ d`,
+`d < k` gives the zero polynomial (whose `natDegree` is zero), and `d = k`
+gives the nonzero sharp Prouhet constant.
 
 For each `n`, the normalized numerator is
 
@@ -47,6 +55,8 @@ def qBinomialThueMorseTranslatedNumeratorPolynomial (n : ℕ) : Polynomial ℚ :
         ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ))) *
       thueMorseTranslatedPowerSumPolynomial k (n + k)
 
+/-- Rational evaluation of the inner block polynomial recovers the translated
+Thue--Morse power sum. -/
 @[simp] theorem thueMorseTranslatedPowerSumPolynomial_eval
     (q : ℚ) (k d : ℕ) :
     (thueMorseTranslatedPowerSumPolynomial k d).eval q =
@@ -60,6 +70,147 @@ def qBinomialThueMorseTranslatedNumeratorPolynomial (n : ℕ) : Polynomial ℚ :
   congr 1
   ring
 
+/-- The coefficient of translation degree `j` is the corresponding binomial
+coefficient times the centered Thue--Morse moment of complementary degree. -/
+@[simp] theorem coeff_thueMorseTranslatedPowerSumPolynomial
+    (k d j : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).coeff j =
+      (d.choose j : ℚ) * thueMorseCenteredPowerSum k (d - j) := by
+  rw [thueMorseTranslatedPowerSumPolynomial,
+    Polynomial.finsetSum_coeff,
+    thueMorseCenteredPowerSum_eq_sum_range]
+  simp only [Polynomial.coeff_C_mul, Polynomial.coeff_X_add_C_pow]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro r _hr
+  ring
+
+private theorem coeff_thueMorseTranslatedPowerSumPolynomial_natSub
+    (k d : ℕ) (hkd : k ≤ d) :
+    (thueMorseTranslatedPowerSumPolynomial k d).coeff (d - k) =
+      (d.choose k : ℚ) *
+        ((-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * (k.factorial : ℚ)) := by
+  rw [coeff_thueMorseTranslatedPowerSumPolynomial,
+    Nat.sub_sub_self hkd, Nat.choose_symm hkd,
+    thueMorseCenteredPowerSum_self]
+
+private theorem coeff_thueMorseTranslatedPowerSumPolynomial_natSub_ne_zero
+    (k d : ℕ) (hkd : k ≤ d) :
+    (thueMorseTranslatedPowerSumPolynomial k d).coeff (d - k) ≠ 0 := by
+  rw [coeff_thueMorseTranslatedPowerSumPolynomial_natSub k d hkd]
+  exact mul_ne_zero
+    (Nat.cast_ne_zero.mpr (Nat.choose_ne_zero hkd))
+    (mul_ne_zero
+      (mul_ne_zero (pow_ne_zero _ (by norm_num))
+        (pow_ne_zero _ (by norm_num)))
+      (Nat.cast_ne_zero.mpr k.factorial_ne_zero))
+
+/-- At block exponent zero, the translated polynomial is the single term
+`(X - 1) ^ d`. -/
+@[simp] theorem thueMorseTranslatedPowerSumPolynomial_zero (d : ℕ) :
+    thueMorseTranslatedPowerSumPolynomial 0 d =
+      (Polynomial.X - 1) ^ d := by
+  apply Polynomial.funext
+  intro q
+  rw [thueMorseTranslatedPowerSumPolynomial_eval,
+    thueMorseTranslatedPowerSum_zero]
+  simp
+
+/-- At the sharp Prouhet degree, the translated polynomial is the nonzero
+constant sharp moment. -/
+@[simp] theorem thueMorseTranslatedPowerSumPolynomial_self (k : ℕ) :
+    thueMorseTranslatedPowerSumPolynomial k k =
+      Polynomial.C
+        ((-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * (k.factorial : ℚ)) := by
+  apply Polynomial.funext
+  intro q
+  rw [thueMorseTranslatedPowerSumPolynomial_eval,
+    thueMorseTranslatedPowerSum_self]
+  simp
+
+/-- The translated polynomial vanishes exactly below the sharp Prouhet
+degree. -/
+@[simp] theorem thueMorseTranslatedPowerSumPolynomial_eq_zero_iff
+    (k d : ℕ) :
+    thueMorseTranslatedPowerSumPolynomial k d = 0 ↔ d < k := by
+  constructor
+  · intro hp
+    by_contra hdk
+    have hkd : k ≤ d := Nat.le_of_not_gt hdk
+    have hcoeff :
+        (thueMorseTranslatedPowerSumPolynomial k d).coeff (d - k) = 0 := by
+      simpa only [Polynomial.coeff_zero] using
+        congrArg (fun p : Polynomial ℚ => p.coeff (d - k)) hp
+    exact
+      (coeff_thueMorseTranslatedPowerSumPolynomial_natSub_ne_zero k d hkd)
+        hcoeff
+  · intro hdk
+    apply Polynomial.funext
+    intro q
+    rw [thueMorseTranslatedPowerSumPolynomial_eval,
+      thueMorseTranslatedPowerSum_eq_zero_of_lt q k d hdk,
+      Polynomial.eval_zero]
+
+/-- Prouhet cancellation lowers the natural degree by exactly `k`.  This
+includes the zero-polynomial convention `natDegree 0 = 0` when `d < k`. -/
+@[simp] theorem thueMorseTranslatedPowerSumPolynomial_natDegree
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).natDegree = d - k := by
+  by_cases hdk : d < k
+  · rw [(thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d).2 hdk]
+    simp [Nat.sub_eq_zero_of_le hdk.le]
+  · have hkd : k ≤ d := Nat.le_of_not_gt hdk
+    apply Polynomial.natDegree_eq_of_le_of_coeff_ne_zero
+    · rw [Polynomial.natDegree_le_iff_coeff_eq_zero]
+      intro j hj
+      rw [coeff_thueMorseTranslatedPowerSumPolynomial]
+      by_cases hjd : j ≤ d
+      · have hlt : d - j < k := by omega
+        rw [thueMorseCenteredPowerSum_eq_zero_of_lt k (d - j) hlt,
+          mul_zero]
+      · have hdj : d < j := Nat.lt_of_not_ge hjd
+        simp [Nat.choose_eq_zero_of_lt hdj]
+    · exact
+        coeff_thueMorseTranslatedPowerSumPolynomial_natSub_ne_zero k d hkd
+
+/-- Exact leading coefficient, including the zero-polynomial branch. -/
+@[simp] theorem thueMorseTranslatedPowerSumPolynomial_leadingCoeff
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).leadingCoeff =
+      if k ≤ d then
+        (d.choose k : ℚ) *
+          ((-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * (k.factorial : ℚ))
+      else 0 := by
+  by_cases hkd : k ≤ d
+  · rw [if_pos hkd, ← Polynomial.coeff_natDegree,
+      thueMorseTranslatedPowerSumPolynomial_natDegree,
+      coeff_thueMorseTranslatedPowerSumPolynomial_natSub k d hkd]
+  · have hdk : d < k := Nat.lt_of_not_ge hkd
+    rw [if_neg hkd,
+      (thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d).2 hdk]
+    simp
+
+/-- Exact degree, retaining the distinction between a nonzero constant and
+the zero polynomial. -/
+theorem thueMorseTranslatedPowerSumPolynomial_degree
+    (k d : ℕ) :
+    (thueMorseTranslatedPowerSumPolynomial k d).degree =
+      if k ≤ d then ((d - k : ℕ) : WithBot ℕ) else ⊥ := by
+  by_cases hkd : k ≤ d
+  · rw [if_pos hkd]
+    have hp : thueMorseTranslatedPowerSumPolynomial k d ≠ 0 :=
+      (not_congr
+        (thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d)).2
+          (Nat.not_lt.mpr hkd)
+    rw [Polynomial.degree_eq_natDegree hp,
+      thueMorseTranslatedPowerSumPolynomial_natDegree]
+  · have hdk : d < k := Nat.lt_of_not_ge hkd
+    rw [if_neg hkd,
+      (thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d).2 hdk,
+      Polynomial.degree_zero]
+
+/-- Rational evaluation of the assembled numerator polynomial recovers the
+translated q-binomial numerator. -/
 @[simp] theorem qBinomialThueMorseTranslatedNumeratorPolynomial_eval
     (q : ℚ) (n : ℕ) :
     (qBinomialThueMorseTranslatedNumeratorPolynomial n).eval q =
@@ -79,7 +230,7 @@ theorem qBinomialThueMorseTranslatedNumeratorPolynomial_eq_const (n : ℕ) :
     qBinomialThueMorseTranslatedNumerator_eq_centered,
     Polynomial.eval_C]
 
-/-- Evaluation of the translated numerator in any characteristic-zero field. -/
+/-- Evaluation of the translated numerator in any field over `ℚ`. -/
 def qBinomialThueMorseTranslatedNumeratorIn
     {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) : K :=
   Polynomial.eval₂ (algebraMap ℚ K) q
@@ -176,9 +327,9 @@ theorem qBinomialThueMorseTranslatedNumerator_div_eq_fabiusAtInverseTwoPow
   rw [hchoose, pow_add]
   field_simp
 
-/-- The normalization after evaluation in an arbitrary characteristic-zero field. -/
+/-- The normalization after evaluation in an arbitrary field over `ℚ`. -/
 theorem qBinomialThueMorseTranslatedNumeratorIn_div_eq_halfMoment
-    {K : Type*} [Field K] [CharZero K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseTranslatedNumeratorIn q n /
         algebraMap ℚ K
           ((2 : ℚ) ^ n.choose 2 * qPochhammer (1 / 2) (1 / 2) n) =
@@ -193,7 +344,7 @@ theorem qBinomialThueMorseTranslatedNumeratorIn_div_eq_halfMoment
 
 /-- The generic normalization in terms of the exact inverse-dyadic value. -/
 theorem qBinomialThueMorseTranslatedNumeratorIn_div_eq_fabiusAtInverseTwoPow
-    {K : Type*} [Field K] [CharZero K] [Algebra ℚ K] (q : K) (n : ℕ) :
+    {K : Type*} [Field K] [Algebra ℚ K] (q : K) (n : ℕ) :
     qBinomialThueMorseTranslatedNumeratorIn q n /
         algebraMap ℚ K
           ((2 : ℚ) ^ n.choose 2 * qPochhammer (1 / 2) (1 / 2) n) =
@@ -248,7 +399,7 @@ theorem qBinomialFabiusReductionPolynomial_eq_sum
   rw [qBinomialFabiusReductionPolynomial]
   simp_rw [qBinomialThueMorseTranslatedNumeratorIn_eq_wolfram_sum]
 
-/-- The Taylor reduction polynomial over an arbitrary characteristic-zero field. -/
+/-- The Taylor reduction polynomial over an arbitrary field over `ℚ`. -/
 def fabiusReductionSumIn
     {K : Type*} [Field K] [Algebra ℚ K] (m : ℕ) (y : K) : K :=
   ∑ k ∈ Finset.range (m + 1),
@@ -258,10 +409,11 @@ def fabiusReductionSumIn
 
 /-- The fully scaled finite q-binomial sum is the Taylor reduction polynomial. -/
 theorem qBinomialFabiusReductionPolynomial_eq_reductionSumIn
-    {K : Type*} [Field K] [CharZero K] [Algebra ℚ K]
+    {K : Type*} [Field K] [Algebra ℚ K]
     (q : K) (m : ℕ) (y : K) :
     qBinomialFabiusReductionPolynomial q m y =
       fabiusReductionSumIn m y := by
+  haveI : CharZero K := algebraRat.charZero K
   have hbridge (n : ℕ) :
       qBinomialThueMorseTranslatedNumeratorIn q n /
           algebraMap ℚ K
@@ -311,12 +463,16 @@ theorem qBinomialFabiusReductionPolynomial_eq_reductionSumIn
     _ = y ^ k * algebraMap ℚ K (halfMoment (m - k)) *
           (2 : K) ^ (m + 1).choose 2 * (2 : K) ^ (k + 1).choose 2 := by ring
 
+/-- In degree zero the scaled q-binomial reduction is the constant one,
+independently of its translation and evaluation point. -/
 @[simp] theorem qBinomialFabiusReductionPolynomial_zero
-    {K : Type*} [Field K] [CharZero K] [Algebra ℚ K] (q y : K) :
+    {K : Type*} [Field K] [Algebra ℚ K] (q y : K) :
     qBinomialFabiusReductionPolynomial q 0 y = 1 := by
   rw [qBinomialFabiusReductionPolynomial_eq_reductionSumIn]
   simp [fabiusReductionSumIn]
 
+/-- Over the reals, the scalar-generic Taylor reduction is the original
+real-valued reduction sum. -/
 theorem fabiusReductionSumIn_real (m : ℕ) (y : ℝ) :
     fabiusReductionSumIn m y = fabiusReductionSum m y := by
   rw [fabiusReductionSumIn, fabiusReductionSum]
@@ -324,6 +480,8 @@ theorem fabiusReductionSumIn_real (m : ℕ) (y : ℝ) :
   intro k _hk
   norm_num
 
+/-- The real q-binomial reduction polynomial is the original Taylor reduction
+sum, independently of its common translation. -/
 theorem qBinomialFabiusReductionPolynomial_eq_fabiusReductionSum
     (q : ℝ) (m : ℕ) (y : ℝ) :
     qBinomialFabiusReductionPolynomial q m y = fabiusReductionSum m y := by
@@ -374,10 +532,14 @@ theorem qBinomialFabiusReductionPolynomial_rclike_eq_fabiusReductionSum
   rw [qBinomialFabiusReductionPolynomial_eq_reductionSumIn,
     fabiusReductionSumIn_rclike]
 
+/-- The complex scalar reduction at a real argument is the cast of the real
+Taylor reduction sum. -/
 theorem fabiusReductionSumIn_complex_ofReal (m : ℕ) (y : ℝ) :
     fabiusReductionSumIn m (y : ℂ) = (fabiusReductionSum m y : ℂ) := by
   exact fabiusReductionSumIn_rclike m y
 
+/-- The complex q-binomial reduction at a real argument is the cast of the
+real Taylor reduction sum. -/
 theorem qBinomialFabiusReductionPolynomial_complex_eq_fabiusReductionSum
     (q : ℂ) (m : ℕ) (y : ℝ) :
     qBinomialFabiusReductionPolynomial q m (y : ℂ) =

@@ -467,13 +467,26 @@ needed.  When `m ≤ 2^n`, the same formula is a corollary for every bounded
 function satisfying `IsFabius`.  The rational expression is independent of
 the representation of `m / 2^n` (in particular, it is unchanged by
 `(m,n) ↦ (2m,n+1)`) and is invariant under any common translation of its
-inner powers.  The finite translated expressions are constant polynomials
-over `ℚ`, so they can be evaluated in every field over `ℚ`.  In particular,
+inner powers.  The assembled finite q-binomial translated expressions are
+constant polynomials over `ℚ`, so they can be evaluated in every field over
+`ℚ`.  In particular,
 for every real or complex `q` the fully displayed sum with inner power
 `(j - m * 2^k + q)^(n+k)` has that same value; generic, real, complex, and
 Gaussian-rational endpoints are public.  Thus the source's `+1/2` formula and
 the centered form agree, while its `QPochhammer`/`QBinomial` factors retain
 notation-faithful definitions at the fixed q-special-function base `1/2`.
+
+At the individual-block level,
+`Fabius.coeff_thueMorseTranslatedPowerSumPolynomial` identifies the
+coefficient of translation degree `j` as `d.choose j` times the centered
+moment of degree `d - j`.  Consequently the block polynomial vanishes exactly
+when `d < k`; otherwise Prouhet cancellation lowers its degree exactly from
+`d` to `d - k`, with leading coefficient `d.choose k` times the sharp Prouhet
+factor.  The natural-degree formula uses Lean's convention `natDegree 0 = 0`;
+the accompanying `WithBot`-valued degree theorem is what distinguishes the
+zero case `d < k` from the nonzero constant at `d = k`.  Boundary simplifiers
+record `k = 0` as `(X - 1)^d` and `d = k` as the sharp Prouhet constant.
+
 For the inverse-power specialization, dyadic reflection additionally proves
 for every real or complex `q` the raw-coordinate formula with inner power
 `(r+q)^(n+k)` and denominator `(-2)^(n^2)`.  Its fully literal theorem uses

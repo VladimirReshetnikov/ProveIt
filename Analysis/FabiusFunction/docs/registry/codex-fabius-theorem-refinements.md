@@ -9,29 +9,34 @@ supplement it but do not replace it.
 ```text
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
-branch/base: codex/fabius-theorem-refinements at 72d33be08 before merging
-  pinned origin/main 5e80805b1ee92697723949d125aa0d6dbf32f538
+branch/base: codex/fabius-theorem-refinements at
+  8cc000b11d1f5426d9b56d1bff22538fdd8bcc49, containing pinned origin/main
+  5e80805b1ee92697723949d125aa0d6dbf32f538
 git owner: root in this worktree
 build owner: not held; the external non-elementarity worktree owns target
-  +FabiusFunction.InverseNotElementary, process tree 17168 -> 3916 -> 27744,
-  until its terminal event
-source lease: 2026-08-25 09:57 -07:00 through 10:27 -07:00
-next synchronization checkpoint: after this pinned-main merge is committed and
-  pushed, then before theorem edits if a fetched branch overlaps the translated
-  polynomial declaration family
+  +FabiusFunction.SharpFlatness, process tree 28952 -> 30068 -> 16336, as part
+  of its serialized closure build and until the owner reports a handoff
+source lease: 2026-08-25 10:16 -07:00 through 10:46 -07:00
+next synchronization checkpoint: publish the independently reviewed but
+  explicitly uncompiled translated-polynomial source checkpoint; then obtain
+  the build lane, compile the focused module, and re-fetch origin/main before
+  any validated integration checkpoint
 ```
 
 ## Current write lease
 
 - `Lean/FabiusFunction/FabiusQBinomialTaylor.lean`: audit and, if the exact
-  all-index statements survive review, expose the coefficients, zero
-  criterion, and natural degree of
-  `thueMorseTranslatedPowerSumPolynomial`.
+  all-index statements survive implementation review, expose the coefficient
+  formula, exact zero criterion, natural degree, degree, leading coefficient,
+  and useful boundary normal forms of
+  `thueMorseTranslatedPowerSumPolynomial`; also remove redundant `CharZero`
+  binders already implied by `Algebra ℚ K`.
+- `README.md`: document the exact structure of the inner translated polynomial.
+- `docs/AUDIT_FINDINGS.md`: close the verified redundant-`CharZero` API
+  finding.
+- `docs/COLLABORATION.md`: retire the translated-polynomial candidate once the
+  theorem batch is compiled and published.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
-
-The temporary integration lease covers the exact paths changed by immutable
-range `3de52ca1c..5e80805b1`, plus this registry, and ends when the pinned-main
-merge is reviewed, committed, and pushed.
 
 ## Read-only survey
 
@@ -77,16 +82,22 @@ pending until the external host-wide build lease is released; mainline has
 since absorbed the same source changes, so validation must run on the new
 combined immutable tip rather than on a stale pre-merge tree.
 
-## Proposed translated-polynomial API
+## Reviewed translated-polynomial API
 
-The current candidate is intentionally provisional until independent review:
+Independent mathematical/API review and a separate hostile source preflight
+confirmed the following coherent declaration family:
 
 - an exact coefficient formula in terms of
   `thueMorseCenteredPowerSum k (d - j)`;
 - vanishing exactly when `d < k`; and
-- the all-index degree drop `natDegree = d - k`, including Lean's zero
-  polynomial convention in the `d < k` case.
+- the all-index degree drop `natDegree = d - k`, the exact `WithBot`-valued
+  degree and leading coefficient, and the `k = 0` and `d = k` normal forms.
 
-Boundary cases `k = 0`, `d < k`, `d = k`, and the nonzero leading coefficient
-must all be checked before editing.  No synonym should be added if current
-mainline already exposes an equivalent result under another name.
+The reviews checked `k = d = 0`, `k = 0`, `d < k`, `d = k`, `j > d`, the
+nonzero leading coefficient, simp critical pairs, and the four redundant
+`CharZero` binders.  The hostile preflight found and repaired one associativity
+mismatch in the sharp-coefficient nonzero proof, then found no remaining
+source-level blocker against the exact Mathlib signatures and import closure.
+`git diff --check`, the forbidden-placeholder/conflict-marker scans, and the
+documentation baseline gate pass; the focused Lean build remains pending
+behind the external host-wide build owner.
