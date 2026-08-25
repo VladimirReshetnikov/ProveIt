@@ -239,6 +239,8 @@ theorem polynomialMeasure_eq_finiteConvolutionMeasure (n : ℕ) :
   apply Measure.ext_of_charFun
   exact polynomialMeasure_charFun_eq_finiteConvolutionMeasure_charFun n
 
+/-- Base case of the bridge: the measure attached to `p_0` is the unit
+point mass at `0`. -/
 @[simp]
 theorem polynomialMeasure_zero :
     polynomialMeasure 0 = Measure.dirac 0 := by

@@ -95,6 +95,15 @@ private theorem hasSum_even_of_odd_eq_zero
 
 /-! ## Specialization to Rvachev's up function -/
 
+/-- The generic normalized coefficient functional of
+`LegendreSeriesConvergence`, applied to `rvachevUp F` and to the `n`-th
+ordinary Legendre polynomial, is by definition
+`rvachevFullLegendreCoefficient F n`.  This is the notation bridge used to
+rewrite in `summable_abs_rvachevFullLegendreCoefficient`,
+`hasSum_rvachevFullLegendreSeries`,
+`hasSum_rvachevFullLegendreSeries_uniform`, and in
+`legendreProjectionPolynomial_rvachevUp` of
+`FabiusLegendreLeastSquares`. -/
 @[simp]
 theorem legendreSeriesCoefficientOf_rvachevUp
     (F : BoundedFabius) (n : ℕ) :

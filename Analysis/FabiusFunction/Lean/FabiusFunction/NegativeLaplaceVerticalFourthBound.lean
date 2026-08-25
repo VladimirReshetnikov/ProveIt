@@ -81,16 +81,40 @@ open scoped Interval Topology
 
 namespace Fabius
 
+/-- The complex kernel `K₁(z) = exp (-z) / (1 - exp (-z)) - 1 / z`, with the
+rational singular part `1 / z` kept as a separate summand.  It is the
+`Complex.exp` analogue of `negativeLaplaceKernelFirst` of
+`FabiusFunction.NegativeLaplaceDerivativeBounds`.  It is identified as the
+logarithmic derivative of `negativeLaplaceComplexFactor` by
+`negativeLaplaceComplexFactor_hasDerivAt`, which needs `0 < z.re`; the
+definition itself is unrestricted, so Lean's `x / 0 = 0` convention governs
+the value at `z = 0` and at the poles of the first summand. -/
 noncomputable def negativeLaplaceComplexKernelFirst (z : ℂ) : ℂ :=
   Complex.exp (-z) / (1 - Complex.exp (-z)) - 1 / z
 
+/-- The complex kernel `K₂(z) = -exp (-z) / (1 - exp (-z)) ^ 2 + 1 / z ^ 2`, the
+`Complex.exp` analogue of `negativeLaplaceKernelSecond`.  It is identified
+as the derivative of `negativeLaplaceComplexKernelFirst` by
+`negativeLaplaceComplexKernelFirst_hasDerivAt`, for `0 < z.re`. -/
 noncomputable def negativeLaplaceComplexKernelSecond (z : ℂ) : ℂ :=
   -Complex.exp (-z) / (1 - Complex.exp (-z)) ^ 2 + 1 / z ^ 2
 
+/-- The complex kernel
+`K₃(z) = exp (-z) * (1 + exp (-z)) / (1 - exp (-z)) ^ 3 - 2 / z ^ 3`, the
+`Complex.exp` analogue of `negativeLaplaceKernelThird`.  It is identified as
+the derivative of `negativeLaplaceComplexKernelSecond` by
+`negativeLaplaceComplexKernelSecond_hasDerivAt`, for `0 < z.re`. -/
 noncomputable def negativeLaplaceComplexKernelThird (z : ℂ) : ℂ :=
   Complex.exp (-z) * (1 + Complex.exp (-z)) /
       (1 - Complex.exp (-z)) ^ 3 - 2 / z ^ 3
 
+/-- The complex kernel `K₄(z)`, equal to
+`-(exp (-z) * (1 + 4 * exp (-z) + exp (-z) ^ 2)) / (1 - exp (-z)) ^ 4`
+plus `6 / z ^ 4`; the `Complex.exp` analogue of
+`negativeLaplaceKernelFourth`.  It is identified as the derivative of
+`negativeLaplaceComplexKernelThird` by
+`negativeLaplaceComplexKernelThird_hasDerivAt`, for `0 < z.re`.  This is the
+highest complex kernel the module defines. -/
 noncomputable def negativeLaplaceComplexKernelFourth (z : ℂ) : ℂ :=
   -(Complex.exp (-z) *
       (1 + 4 * Complex.exp (-z) + Complex.exp (-z) ^ 2)) /
@@ -111,6 +135,11 @@ private lemma complex_ne_zero_of_re_pos {z : ℂ} (hz : 0 < z.re) : z ≠ 0 := b
   subst z
   norm_num at hz
 
+/-- On the open right half-plane `0 < z.re` the dilation factor
+`negativeLaplaceComplexFactor` is complex differentiable at `z`, with
+derivative its own value at `z` times
+`negativeLaplaceComplexKernelFirst z`; that is, `K₁` is its logarithmic
+derivative there. -/
 theorem negativeLaplaceComplexFactor_hasDerivAt
     {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt negativeLaplaceComplexFactor
@@ -135,6 +164,9 @@ theorem negativeLaplaceComplexFactor_hasDerivAt
   field_simp [hz0, complex_one_sub_exp_neg_ne hz]
   ring
 
+/-- On the open right half-plane `0 < z.re` the kernel
+`negativeLaplaceComplexKernelFirst` is complex differentiable at `z` with
+derivative `negativeLaplaceComplexKernelSecond z`. -/
 theorem negativeLaplaceComplexKernelFirst_hasDerivAt
     {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt negativeLaplaceComplexKernelFirst
@@ -151,6 +183,9 @@ theorem negativeLaplaceComplexKernelFirst_hasDerivAt
   field_simp [hz0, complex_one_sub_exp_neg_ne hz]
   ring
 
+/-- On the open right half-plane `0 < z.re` the kernel
+`negativeLaplaceComplexKernelSecond` is complex differentiable at `z` with
+derivative `negativeLaplaceComplexKernelThird z`. -/
 theorem negativeLaplaceComplexKernelSecond_hasDerivAt
     {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt negativeLaplaceComplexKernelSecond
@@ -169,6 +204,9 @@ theorem negativeLaplaceComplexKernelSecond_hasDerivAt
   field_simp [hz0, complex_one_sub_exp_neg_ne hz]
   ring
 
+/-- On the open right half-plane `0 < z.re` the kernel
+`negativeLaplaceComplexKernelThird` is complex differentiable at `z` with
+derivative `negativeLaplaceComplexKernelFourth z`. -/
 theorem negativeLaplaceComplexKernelThird_hasDerivAt
     {z : ℂ} (hz : 0 < z.re) :
     HasDerivAt negativeLaplaceComplexKernelThird
@@ -189,18 +227,37 @@ theorem negativeLaplaceComplexKernelThird_hasDerivAt
   field_simp [hz0, complex_one_sub_exp_neg_ne hz]
   ring
 
+/-- The first complex kernel evaluated on the vertical line
+`z = s * (1 + θ * I)`, carrying the chain-rule prefactor `s * I`.  Both `s`
+and `θ` are real and the definition imposes no positivity; the restrictions
+enter only in the lemmas below.  This kernel is also used by
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound`, which continues it
+holomorphically in the vertical parameter. -/
 noncomputable def negativeLaplaceVerticalKernelLogFirst (s θ : ℝ) : ℂ :=
   ((s : ℂ) * Complex.I) * negativeLaplaceComplexKernelFirst
     ((s : ℂ) * (1 + (θ : ℂ) * Complex.I))
 
+/-- The second complex kernel on the vertical line `z = s * (1 + θ * I)`, with
+the chain-rule prefactor `(s * I) ^ 2`.  For `s > 0` it is the
+`θ`-derivative of `negativeLaplaceVerticalKernelLogFirst s`, by
+`negativeLaplaceVerticalKernelLogFirst_hasDerivAt`. -/
 noncomputable def negativeLaplaceVerticalKernelLogSecond (s θ : ℝ) : ℂ :=
   ((s : ℂ) * Complex.I) ^ 2 * negativeLaplaceComplexKernelSecond
     ((s : ℂ) * (1 + (θ : ℂ) * Complex.I))
 
+/-- The third complex kernel on the vertical line `z = s * (1 + θ * I)`, with
+the chain-rule prefactor `(s * I) ^ 3`.  For `s > 0` it is the
+`θ`-derivative of `negativeLaplaceVerticalKernelLogSecond s`, by
+`negativeLaplaceVerticalKernelLogSecond_hasDerivAt`. -/
 noncomputable def negativeLaplaceVerticalKernelLogThird (s θ : ℝ) : ℂ :=
   ((s : ℂ) * Complex.I) ^ 3 * negativeLaplaceComplexKernelThird
     ((s : ℂ) * (1 + (θ : ℂ) * Complex.I))
 
+/-- The fourth complex kernel on the vertical line `z = s * (1 + θ * I)`, with
+the chain-rule prefactor `(s * I) ^ 4`.  For `s > 0` it is the
+`θ`-derivative of `negativeLaplaceVerticalKernelLogThird s`, by
+`negativeLaplaceVerticalKernelLogThird_hasDerivAt`.  This is the order at
+which the uniform increment bound of this module is proved. -/
 noncomputable def negativeLaplaceVerticalKernelLogFourth (s θ : ℝ) : ℂ :=
   ((s : ℂ) * Complex.I) ^ 4 * negativeLaplaceComplexKernelFourth
     ((s : ℂ) * (1 + (θ : ℂ) * Complex.I))
@@ -225,6 +282,9 @@ private lemma vertical_arg_re (s θ : ℝ) :
     ((s : ℂ) * (1 + (θ : ℂ) * Complex.I)).re = s := by
   norm_num
 
+/-- For `s > 0` and every real `θ`, `negativeLaplaceVerticalKernelLogFirst s` is
+differentiable in the vertical parameter with derivative
+`negativeLaplaceVerticalKernelLogSecond s θ`. -/
 theorem negativeLaplaceVerticalKernelLogFirst_hasDerivAt
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalKernelLogFirst s)
@@ -238,6 +298,9 @@ theorem negativeLaplaceVerticalKernelLogFirst_hasDerivAt
     unfold negativeLaplaceVerticalKernelLogSecond
     ring)
 
+/-- For `s > 0` and every real `θ`, `negativeLaplaceVerticalKernelLogSecond s`
+is differentiable in the vertical parameter with derivative
+`negativeLaplaceVerticalKernelLogThird s θ`. -/
 theorem negativeLaplaceVerticalKernelLogSecond_hasDerivAt
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalKernelLogSecond s)
@@ -251,6 +314,9 @@ theorem negativeLaplaceVerticalKernelLogSecond_hasDerivAt
     unfold negativeLaplaceVerticalKernelLogThird
     ring)
 
+/-- For `s > 0` and every real `θ`, `negativeLaplaceVerticalKernelLogThird s` is
+differentiable in the vertical parameter with derivative
+`negativeLaplaceVerticalKernelLogFourth s θ`. -/
 theorem negativeLaplaceVerticalKernelLogThird_hasDerivAt
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalKernelLogThird s)
@@ -294,6 +360,15 @@ private theorem negativeLaplaceVerticalFactor_hasDerivAt
     unfold negativeLaplaceVerticalKernelLogFirst
     ring)
 
+/-- The exact one-factor dyadic recurrence at order one: for an arbitrary
+`F : BoundedFabius` with `IsFabius F`, every `s > 0` and every real `θ`, the
+first vertical logarithmic derivative at radius `2 * s` equals the increment
+`negativeLaplaceVerticalKernelLogFirst s θ` plus its own value at radius `s`.
+No weight appears, because the dilation acts on `s` while the
+differentiation acts on `θ`.  The orders two through four below are obtained
+from this one by differentiating in `θ`, and
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound` reuses this order-one
+statement for its all-order recurrence. -/
 theorem negativeLaplaceVerticalLogFirst_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
@@ -406,6 +481,10 @@ private lemma vertical_fourth_mul_exp_neg_le
   norm_num at hmul
   nlinarith
 
+/-- Uniform bound `‖K₄(s, θ)‖ ≤ 1542` on the fourth vertical kernel, valid for
+every `s ≥ 1` and every real `θ`; the vertical parameter is unrestricted.
+The constant `1542 = 64 * 24 + 6` is explicit but deliberately generous, and
+no attainment or converse is claimed. -/
 theorem norm_negativeLaplaceVerticalKernelLogFourth_le
     {s : ℝ} (hs : 1 ≤ s) (θ : ℝ) :
     ‖negativeLaplaceVerticalKernelLogFourth s θ‖ ≤ 1542 := by

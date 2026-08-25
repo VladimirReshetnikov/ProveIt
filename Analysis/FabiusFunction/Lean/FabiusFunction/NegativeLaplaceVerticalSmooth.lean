@@ -16,6 +16,11 @@ set_option autoImplicit false
 
 namespace Fabius
 
+/-- For `r > 0` the vertical logarithmic derivative
+`negativeLaplaceVerticalLogDerivative F r` is `C^∞` in the vertical
+parameter, on all of `ℝ`.  The exponent `↑(⊤ : ℕ∞)` is the `C^∞` exponent
+of `WithTop ℕ∞`, not the analytic exponent.  Assumes `IsFabius F`, which
+supplies both the regularity of the vertical curve and its non-vanishing. -/
 theorem contDiff_negativeLaplaceVerticalLogDerivative_infty
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
     ContDiff ℝ (↑(⊤ : ℕ∞)) (negativeLaplaceVerticalLogDerivative F r) := by
@@ -29,6 +34,11 @@ theorem contDiff_negativeLaplaceVerticalLogDerivative_infty
   exact hcurveDeriv.mul
     (hcurveSmooth.inv (negativeLaplaceVerticalCurve_ne_zero F hF hr))
 
+/-- For `r > 0` the branch-safe vertical logarithm
+`negativeLaplaceVerticalLog F r` is `C^∞` in the vertical parameter, on all
+of `ℝ`.  The exponent `↑(⊤ : ℕ∞)` is the `C^∞` exponent of `WithTop ℕ∞`,
+not the analytic exponent.  Assumes `IsFabius F`.  Used by
+`FabiusFunction.FabiusSaddleCentralAllOrders`. -/
 theorem contDiff_negativeLaplaceVerticalLog_infty
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
     ContDiff ℝ (↑(⊤ : ℕ∞)) (negativeLaplaceVerticalLog F r) := by
@@ -42,6 +52,11 @@ theorem contDiff_negativeLaplaceVerticalLog_infty
   rw [hderiv]
   exact contDiff_negativeLaplaceVerticalLogDerivative_infty F hF hr
 
+/-- For `r > 0` and every order `k`, the `k`-th iterated vertical derivative of
+the branch-safe vertical logarithm is again `C^∞`.  The exponent
+`↑(⊤ : ℕ∞)` is the `C^∞` exponent of `WithTop ℕ∞`, not the analytic
+exponent.  Assumes `IsFabius F`.  Used at order one by
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound`. -/
 theorem contDiff_iteratedDeriv_negativeLaplaceVerticalLog_infty
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (k : ℕ) :
     ContDiff ℝ (↑(⊤ : ℕ∞))
@@ -50,6 +65,9 @@ theorem contDiff_iteratedDeriv_negativeLaplaceVerticalLog_infty
   exact ContDiff.iterate_deriv k
     (contDiff_negativeLaplaceVerticalLog_infty F hF hr)
 
+/-- For `r > 0` and every order `k`, the `k`-th iterated vertical derivative of
+the branch-safe vertical logarithm is continuous on all of `ℝ`.  Assumes
+`IsFabius F`.  Used by `FabiusFunction.FabiusSaddleMassAllOrders`. -/
 theorem continuous_iteratedDeriv_negativeLaplaceVerticalLog
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (k : ℕ) :
     Continuous (iteratedDeriv k (negativeLaplaceVerticalLog F r)) :=

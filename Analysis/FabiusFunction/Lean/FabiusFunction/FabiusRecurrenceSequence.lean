@@ -29,6 +29,7 @@ noncomputable section
 def fabiusRecurrenceSequence (n : ℕ) : ℚ :=
   halfMoment n / (n.factorial : ℚ)
 
+/-- The initial value `a₀ = 1`, since `halfMoment 0 = 1` and `0! = 1`. -/
 @[simp]
 theorem fabiusRecurrenceSequence_zero : fabiusRecurrenceSequence 0 = 1 := by
   norm_num [fabiusRecurrenceSequence, halfMoment]

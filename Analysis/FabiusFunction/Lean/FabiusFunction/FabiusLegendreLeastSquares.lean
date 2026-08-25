@@ -40,6 +40,10 @@ noncomputable def legendreProjectionPolynomial
       (fun x : ℝ ↦ (legendrePolynomial n).eval x) n •
       legendrePolynomial n
 
+/-- Evaluation of the degree-`N` Fourier--Legendre projection: the value at
+`x` is the sum over `n` in `range (N + 1)` of the normalized coefficient of
+index `n` times `P_n x`.  Used as a rewrite in
+`integral_legendreProjectionPolynomial_mul_legendre`. -/
 @[simp]
 theorem eval_legendreProjectionPolynomial
     (f : ℝ → ℝ) (N : ℕ) (x : ℝ) :
@@ -426,6 +430,11 @@ noncomputable def rvachevLegendrePartialSumPolynomial
   ∑ n ∈ range (N + 1),
     C (rvachevLegendreCoefficient F n) * legendrePolynomial (2 * n)
 
+/-- Evaluation of the `N`-th even Rvachev--Legendre partial sum: the value
+at `x` is the sum over `n` in `range (N + 1)` of
+`rvachevLegendreCoefficient F n` times `P_(2n) x`.  This is a pure
+`Polynomial.eval` computation; no hypothesis on `F` beyond `BoundedFabius`
+enters. -/
 @[simp]
 theorem eval_rvachevLegendrePartialSumPolynomial
     (F : BoundedFabius) (N : ℕ) (x : ℝ) :

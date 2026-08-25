@@ -102,6 +102,13 @@ private lemma integrable_gaussian_abs_pow (k : ℕ) :
     filter_upwards with v
     rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_pos (Real.exp_pos _)]
 
+/-- Explicit `k`th absolute Gaussian moment outside a symmetric interval:
+for `4 ≤ A`, the integral of `exp (-v ^ 2 / 2) * |v| ^ k` over
+`(Icc (-A) A)ᶜ` is at most `8 * k ! * exp (-A ^ 2 / 4) / A`.  The hypothesis
+`4 ≤ A` is used and the exponent `-A ^ 2 / 4` is the price of absorbing the
+factor `|v| ^ k` into the exponential, so the bound is sufficient rather than
+sharp.  Besides this file, `GaussianPolynomialTail` applies it at every
+degree in a polynomial's support. -/
 lemma integral_gaussian_abs_pow_compl_Icc_le
     (k : ℕ) {A : ℝ} (hA : 4 ≤ A) :
     (∫ v in (Icc (-A) A)ᶜ,
@@ -145,6 +152,13 @@ private lemma integrable_gaussian_abs_pow_mul_const (k : ℕ) (c : ℝ) :
       (Real.exp (-(v ^ 2) / 2) * |v| ^ k)) :=
   (integrable_gaussian_abs_pow k).const_mul c
 
+/-- Complementary-tail bound for the Gaussian-plus-odd reference.  For
+`4 ≤ A`, the integral of
+`‖standardGaussian v + oddCorrection a c v‖` over `(Icc (-A) A)ᶜ` is at most
+`8 * exp (-A ^ 2 / 4) / A` plus `|a|` times the same quantity plus `|c|`
+times `48 * exp (-A ^ 2 / 4) / A`.  The three summands come from the
+`k = 0, 1, 3` cases of `integral_gaussian_abs_pow_compl_Icc_le`; the
+constants are sufficient, not sharp. -/
 lemma integral_norm_gaussian_add_oddCorrection_compl_Icc_le
     (a c : ℝ) {A : ℝ} (hA : 4 ≤ A) :
     (∫ v in (Icc (-A) A)ᶜ,

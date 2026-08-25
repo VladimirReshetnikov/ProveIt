@@ -28,6 +28,13 @@ open scoped Topology Interval
 
 namespace Fabius
 
+/-- Real and complex iterated derivatives agree along the real embedding: if
+`f : ℂ → ℂ` is complex differentiable on an open set `U` and `(x : ℂ)` lies
+in `U`, then the `n`-th iterated derivative over `ℝ` of `fun t : ℝ => f t`
+at `x` equals the `n`-th iterated derivative over `ℂ` of `f` at `(x : ℂ)`.
+Both Cauchy estimates of this file are transferred back to the real vertical
+parameter with it, and it is also the transfer step used by
+`FabiusFunction.NegativeLaplaceVerticalOrdinaryJets`. -/
 lemma iteratedDeriv_comp_ofReal_eq_of_differentiableOn
     (f : ℂ → ℂ) {U : Set ℂ} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) (n : ℕ) (x : ℝ) (hx : (x : ℂ) ∈ U) :
@@ -48,6 +55,12 @@ lemma iteratedDeriv_comp_ofReal_eq_of_differentiableOn
         exact ((hf.analyticOnNhd hU).iterated_deriv n) x hx
       exact han.differentiableAt.hasDerivAt.comp_ofReal.deriv
 
+/-- Continuation of `negativeLaplaceVerticalKernelLogFirst s` in the vertical
+parameter: the real `θ` is replaced by a complex `z`, while the scale `s`
+and the prefactor `s * I` are unchanged.  The restriction to real arguments
+is definitionally the real kernel, as recorded by
+`negativeLaplaceVerticalKernelLogFirstComplex_ofReal`; holomorphy on the
+tilted half-plane `0 < (s * (1 + z * I)).re` is proved separately below. -/
 noncomputable def negativeLaplaceVerticalKernelLogFirstComplex
     (s : ℝ) (z : ℂ) : ℂ :=
   ((s : ℂ) * Complex.I) * negativeLaplaceComplexKernelFirst
@@ -236,6 +249,10 @@ theorem norm_iteratedDeriv_negativeLaplaceVerticalKernelLogFirst_le
     (negativeLaplaceVerticalKernelLogFirstComplex s) hU hdiff m θ hθU]
   exact hcauchy
 
+/-- For `r > 0` the first vertical logarithmic derivative
+`negativeLaplaceVerticalLogFirst F r` is `C^∞` in the vertical parameter.
+The exponent `↑(⊤ : ℕ∞)` is the `C^∞` exponent of `WithTop ℕ∞`, not the
+analytic exponent.  Assumes `IsFabius F`. -/
 theorem contDiff_negativeLaplaceVerticalLogFirst_infty
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
     ContDiff ℝ (↑(⊤ : ℕ∞)) (negativeLaplaceVerticalLogFirst F r) := by
@@ -246,6 +263,12 @@ theorem contDiff_negativeLaplaceVerticalLogFirst_infty
   have h := contDiff_iteratedDeriv_negativeLaplaceVerticalLog_infty F hF hr 1
   simpa only [iteratedDeriv_succ', iteratedDeriv_zero, hderiv] using h
 
+/-- For `s > 0` the first vertical kernel is `C^∞` in the vertical parameter.
+The exponent `↑(⊤ : ℕ∞)` is the `C^∞` exponent of `WithTop ℕ∞`, not the
+analytic exponent.  The conclusion does not mention `F`, yet the statement
+still takes a `BoundedFabius` together with `IsFabius F`: the proof rewrites
+the kernel as the difference of the first vertical logarithmic derivatives
+at `2 * s` and at `s`. -/
 theorem contDiff_negativeLaplaceVerticalKernelLogFirst_infty
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
     ContDiff ℝ (↑(⊤ : ℕ∞)) (negativeLaplaceVerticalKernelLogFirst s) := by

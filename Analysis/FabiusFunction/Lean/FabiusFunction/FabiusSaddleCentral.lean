@@ -90,6 +90,8 @@ noncomputable def oddPhase (a c v : ℝ) : ℂ :=
 noncomputable def oddCorrection (a c v : ℝ) : ℂ :=
   QuantitativeSaddle.standardGaussian v * oddPhase a c v
 
+/-- The retained phase is odd in `v`: both the linear and the cubic term
+change sign under `v ↦ -v`. -/
 lemma oddPhase_neg (a c v : ℝ) : oddPhase a c (-v) = -oddPhase a c v := by
   simp [oddPhase]
   ring
@@ -97,10 +99,20 @@ lemma oddPhase_neg (a c v : ℝ) : oddPhase a c (-v) = -oddPhase a c v := by
 @[simp] lemma oddPhase_re (a c v : ℝ) : (oddPhase a c v).re = 0 := by
   simp [oddPhase, Complex.mul_re, pow_succ]
 
+/-- The phase is purely imaginary, so its norm is the absolute value of the
+real linear-plus-cubic coefficient: `‖oddPhase a c v‖ = |a v + c v ^ 3|`.
+Used by `oddPhase_sq_le_div` below and by `FabiusSaddleReferenceTail`. -/
 lemma norm_oddPhase (a c v : ℝ) : ‖oddPhase a c v‖ = |a * v + c * v ^ 3| := by
   simp only [oddPhase, norm_mul, Complex.norm_I, mul_one,
     Complex.norm_real, Real.norm_eq_abs]
 
+/-- `oddCorrection a c` is an odd function of `v`, in the sense of
+`Function.Odd`: its value at `-v` is the negative of its value at `v`.  The
+Gaussian factor is even, so the parity comes from `oddPhase_neg`.  This is
+what makes the signed integral of the correction vanish, and it is the
+oddness hypothesis fed to
+`QuantitativeSaddle.normalized_integral_sub_one_isBigO_of_central_tail_odd_correction`
+in the last theorem of this file and in `FabiusSaddleCentralLambert`. -/
 lemma oddCorrection_odd (a c : ℝ) : Function.Odd (oddCorrection a c) := by
   intro v
   rw [oddCorrection, oddCorrection, oddPhase_neg]
@@ -108,6 +120,10 @@ lemma oddCorrection_odd (a c : ℝ) : Function.Odd (oddCorrection a c) := by
   rw [neg_sq]
   ring
 
+/-- Every Gaussian moment integrand `v ↦ exp (-v ^ 2 / 2) * v ^ n` is
+integrable on the real line.  This is the plumbing behind the integrability
+of `oddCorrection` and of `centralMajorant`; `FabiusSaddleReferenceTail`
+also uses it. -/
 lemma integrable_gaussian_mul_pow (n : ℕ) :
     Integrable (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * v ^ n) := by
   have hs : (-1 : ℝ) < (n : ℝ) := by
@@ -121,6 +137,11 @@ lemma integrable_gaussian_mul_pow (n : ℕ) :
   rw [Real.rpow_natCast]
   ring_nf
 
+/-- The odd correction is integrable on the whole real line, for arbitrary
+real coefficients `a` and `c`.  It is the reference term that must be
+integrable before the corrected `L¹` error makes sense; besides its uses
+here, `FabiusSaddleReferenceTail` and `FabiusSaddleCentralLambert` also
+consume it. -/
 lemma integrable_oddCorrection (a c : ℝ) : Integrable (oddCorrection a c) := by
   have hreal : Integrable
       (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * (a * v + c * v ^ 3)) := by
@@ -171,6 +192,9 @@ noncomputable def centralMajorant
     ((2 * Clinear ^ 2 + 2 * Cquadratic) * v ^ 2 +
       2 * Cquartic * v ^ 4 + 2 * Ccubic ^ 2 * v ^ 6)
 
+/-- Pointwise nonnegativity of `centralMajorant`, assuming only
+`0 ≤ Cquadratic` and `0 ≤ Cquartic`; no sign hypothesis is needed on
+`Clinear` or `Ccubic`, which occur squared. -/
 lemma centralMajorant_nonneg
     (Clinear Ccubic Cquadratic Cquartic v : ℝ)
     (hCquadratic : 0 ≤ Cquadratic) (hCquartic : 0 ≤ Cquartic) :
@@ -182,6 +206,8 @@ lemma centralMajorant_nonneg
   have hlin : 0 ≤ 2 * Clinear ^ 2 + 2 * Cquadratic := by positivity
   positivity
 
+/-- The majorant is integrable on the whole real line, for arbitrary real
+constants: it is a fixed Gaussian times a polynomial. -/
 lemma integrable_centralMajorant
     (Clinear Ccubic Cquadratic Cquartic : ℝ) :
     Integrable (centralMajorant Clinear Ccubic Cquadratic Cquartic) := by
@@ -194,6 +220,14 @@ lemma integrable_centralMajorant
   simp only [Pi.add_apply, centralMajorant]
   ring
 
+/-- Squared size of the retained phase under the scaled coefficient
+hypotheses `b * a ^ 2 ≤ Clinear ^ 2` and `b * c ^ 2 ≤ Ccubic ^ 2`, for `b > 0`
+and every real `v`:
+`‖oddPhase a c v‖ ^ 2 ≤ (2 Clinear ^ 2 v ^ 2 + 2 Ccubic ^ 2 v ^ 6) / b`.
+The factors `2` come from `(x + y) ^ 2 ≤ 2 x ^ 2 + 2 y ^ 2` and are
+sufficient rather than sharp.  Used by
+`norm_sub_gaussian_add_oddCorrection_le` below and by the odd-phase
+smallness lemma of `FabiusSaddleCentralLambert`. -/
 lemma oddPhase_sq_le_div
     (b a c Clinear Ccubic v : ℝ) (hb : 0 < b)
     (ha : b * a ^ 2 ≤ Clinear ^ 2)

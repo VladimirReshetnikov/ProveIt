@@ -225,6 +225,9 @@ noncomputable def normalizedEvenExpansion (N : ℕ) (eps : ℝ)
     ∑ j ∈ Finset.range (N + 1),
       ((eps : ℂ) ^ (2 * j) * ∫ v : ℝ, A (2 * j) v)
 
+/-- The paired truncation is integrable as soon as every coefficient
+function of index below `2 * (N + 1)` is; those are exactly the indices the
+sum uses. -/
 lemma integrable_pairedReference (N : ℕ) (eps : ℝ)
     (A : ℕ → ℝ → ℂ)
     (hA : ∀ k < 2 * (N + 1), Integrable (A k)) :
@@ -236,6 +239,13 @@ lemma integrable_pairedReference (N : ℕ) (eps : ℝ)
   exact ((hA (2 * j) (by omega)).const_mul _).add
     ((hA (2 * j + 1) (by omega)).const_mul _)
 
+/-- Only the even half of the paired truncation survives integration: if all
+the coefficient functions of index below `2 * (N + 1)` are integrable and
+every odd-indexed one `A (2 * j + 1)` with `j < N + 1` is an odd function,
+then the integral of `pairedReference N eps A` over the line is
+`sum_{j < N+1} eps ^ (2 * j) * integral of A (2 * j)`.  Used in this file by
+`normalizedIntegral_sub_evenExpansion_isBigO` and its central/tail
+variant. -/
 lemma integral_pairedReference_eq_even
     (N : ℕ) (eps : ℝ) (A : ℕ → ℝ → ℂ)
     (hA : ∀ k < 2 * (N + 1), Integrable (A k))
