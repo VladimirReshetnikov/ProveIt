@@ -80,8 +80,10 @@ It will not be committed until it compiles.
 
 This worktree has its own `.lake` whose `packages` is a directory junction to
 the shared `C:\ProveIt\.lake\packages`.  Builds are strictly serialized, one
-`lake build +<module>` per invocation, `LAKE_JOBS=1`, in topological order —
-`order.txt` at the repository root of this worktree holds the current list.
+`lake build +<module>` per invocation, `LAKE_JOBS=1`, in topological order.
+When useful, `order.txt` and `build_closure.sh` may be created at the repository
+root as ignored, machine-local build drivers; they are not tracked project
+files.
 Only one `lean` process runs at a time on this machine; a second one makes the
 13 GB box thrash and produces the misleading `failed to read file '….olean'`.
 
