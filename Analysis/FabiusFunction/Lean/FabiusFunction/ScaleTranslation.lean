@@ -16,14 +16,6 @@ namespace Fabius
 
 set_option autoImplicit false
 
-private lemma rvachevUp_eq_zero_of_le_neg_one_scale (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-private lemma rvachevUp_eq_zero_of_one_le_scale (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
 /-- On its initial block, translation by `2^r` negates the signed extension. -/
 theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
     (r : ℕ) (hr : 1 ≤ r) {x : ℝ} (hx0 : 0 ≤ x) (hxpow : x ≤ (2 : ℝ) ^ r) :
@@ -45,7 +37,7 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
     intro n hn
     have hnB : B ≤ n := by simpa using hn
     have hnBR : (B : ℝ) ≤ n := by exact_mod_cast hnB
-    rw [rvachevUp_eq_zero_of_le_neg_one_scale F hF (by
+    rw [rvachevUp_eq_zero_of_le_neg_one F hF (by
       rw [hpowReal] at hxpow
       nlinarith)]
     ring
@@ -60,14 +52,14 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
     · have hnlt : n < B := lt_of_not_ge hn
       have hnle : n + 1 ≤ B := by omega
       have hnleR : (n : ℝ) + 1 ≤ B := by exact_mod_cast hnle
-      rw [rvachevUp_eq_zero_of_one_le_scale F hF (by
+      rw [rvachevUp_eq_zero_of_one_le F hF (by
         rw [hpowReal]
         nlinarith)]
       ring
     · have hnle : 2 * B ≤ n := by simpa using hn
       have hnleR : (2 * B : ℕ) ≤ n := hnle
       have hnleReal : (2 * B : ℝ) ≤ n := by exact_mod_cast hnleR
-      rw [rvachevUp_eq_zero_of_le_neg_one_scale F hF (by
+      rw [rvachevUp_eq_zero_of_le_neg_one F hF (by
         rw [hpowReal] at hxpow ⊢
         nlinarith)]
       ring

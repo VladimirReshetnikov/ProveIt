@@ -18,14 +18,6 @@ namespace Fabius
 
 set_option autoImplicit false
 
-private lemma rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-private lemma rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
 private lemma extendedSummand_eq_zero_of_lt_two_mul
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} {n : ℕ}
     (hx : x < 2 * (n : ℝ)) :

@@ -82,6 +82,53 @@ zero.  Under `IsFabius F`, its support is contained in `[-1, 1]`.
 noncomputable def rvachevUp (F : BoundedFabius) (x : ℝ) : ℝ :=
   if x ≤ 0 then fabiusReal F (x + 1) else fabiusReal F (1 - x)
 
+/-- Folding a bounded candidate about zero always produces an even function;
+this fact does not require any of the Fabius equations. -/
+theorem rvachevUp_even (F : BoundedFabius) : Function.Even (rvachevUp F) := by
+  intro x
+  by_cases hx : x = 0
+  · subst x
+    simp
+  by_cases hxpos : 0 < x
+  · have hnx : -x ≤ 0 := by linarith
+    have hxnot : ¬ x ≤ 0 := not_le.mpr hxpos
+    simp only [rvachevUp, if_pos hnx, if_neg hxnot]
+    congr 1
+    ring
+  · have hxneg : x < 0 := lt_of_le_of_ne (le_of_not_gt hxpos) hx
+    have hnxnot : ¬ -x ≤ 0 := by linarith
+    have hxle : x ≤ 0 := hxneg.le
+    simp only [rvachevUp, if_neg hnxnot, if_pos hxle]
+    congr 1
+    ring
+
+/-- Rvachev's function vanishes at and to the left of its lower support endpoint. -/
+theorem rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+/-- Rvachev's function vanishes at and to the right of its upper support endpoint. -/
+theorem rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+/-- Rvachev's function vanishes outside the open interval `(-1,1)`, including
+at both endpoints. -/
+theorem rvachevUp_eq_zero_of_not_mem_Ioo (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : x ∉ Ioo (-1 : ℝ) 1) : rvachevUp F x = 0 := by
+  rw [mem_Ioo, not_and_or] at hx
+  rcases hx with hx | hx
+  · exact rvachevUp_eq_zero_of_le_neg_one F hF (le_of_not_gt hx)
+  · exact rvachevUp_eq_zero_of_one_le F hF (le_of_not_gt hx)
+
+/-- The pointwise support of Rvachev's function is contained in the open
+interval `(-1,1)`.  Its topological support is the closed interval `[-1,1]`. -/
+theorem support_rvachev_subset_Ioo (F : BoundedFabius) (hF : IsFabius F) :
+    Function.support (rvachevUp F) ⊆ Ioo (-1 : ℝ) 1 := by
+  intro x hx
+  by_contra hmem
+  exact hx (rvachevUp_eq_zero_of_not_mem_Ioo F hF hmem)
+
 /--
 The signed global extension from equation (1) of Arias de Reyna's paper:
 `F(x) = ∑ n, (-1)^w(n) up(x - 2n - 1)`.
