@@ -548,6 +548,27 @@ the derivatives of $\Psi$.  The jet form is dramatically shorter.
 \end{aligned}
 \end{equation}
 
+One order further, in the same coordinates,
+\begin{equation}\label{eq:A4jets}
+\begin{aligned}
+  A_4=\frac{1}{5760}\bigl(&1152d_0^5+8640d_0^4d_1+2880d_0^4d_2+240d_0^4d_3+1440d_0^4\\
+   &+11520d_0^3d_1^2+2880d_0^3d_1d_2+28800d_0^3d_1+25920d_0^3d_2\\
+   &+6720d_0^3d_3+480d_0^3d_4+2880d_0^2d_1^3+63360d_0^2d_1^2\\
+   &+46080d_0^2d_1d_2+4320d_0^2d_1d_3+17280d_0^2d_1+2880d_0^2d_2^2\\
+   &+46080d_0^2d_2+29280d_0^2d_3+6000d_0^2d_4+360d_0^2d_5\\
+   &+23040d_0d_1^3+8640d_0d_1^2d_2+74880d_0d_1^2+123840d_0d_1d_2\\
+   &+30720d_0d_1d_3+2160d_0d_1d_4+21600d_0d_2^2+3840d_0d_2d_3\\
+   &+17280d_0d_2+30720d_0d_3+14640d_0d_4+2400d_0d_5+120d_0d_6\\
+   &+720d_1^4+30720d_1^3+28800d_1^2d_2+2160d_1^2d_3+14400d_1^2\\
+   &+3600d_1d_2^2+66240d_1d_2+36960d_1d_3+6720d_1d_4+360d_1d_5\\
+   &+25200d_2^2+12000d_2d_3+840d_2d_4+480d_3^2+5760d_3\\
+   &+7392d_4+2720d_5+360d_6+15d_7\bigr).
+\end{aligned}
+\end{equation}
+
+Its top term is $15d_7/5760=d_7/384$, and $(-1)^4/(2^4\cdot4!)=1/384$: a
+fourth independent check of \cref{thm:leading}.
+
 \subsection{The same coefficients in the derivatives of \texorpdfstring{$\Psi$}{Psi}}
 
 Write $P_k=\Psi^{(k)}(u)$.  Then
@@ -587,6 +608,7 @@ $j$ & $\Psi$-free part of $A_j$ & value\\
 $1$ & $\dfrac1{24}+\dfrac1{2L}$ & $0.7630141871$\\[0.6em]
 $2$ & $\dfrac1{4L^2}$ & $0.5203422453$\\[0.6em]
 $3$ & $-\dfrac7{2880}-\dfrac1{24L}-\dfrac1{4L^2}+\dfrac1{6L^3}$ & $-0.0824216430$\\
+$4$ & $\dfrac{-L^3-72L^2-816L+144}{1152L^4}$ & $-1.7167954639$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -823,6 +845,37 @@ $3\times10^{-3}$; \cref{eq:A2psi} predicts a minimum at $0.6011297$ and a
 peak-to-peak of $3.8798\times10^{-3}$ over the full period.  That is a phase
 prediction, not a magnitude fit, and it was made before the comparison.
 \end{remark}
+
+\subsection{The fourth coefficient}
+
+The same apparatus confirms \cref{eq:A4jets}.  Writing
+$r_4=\lambda^4(\log F-\mathcal M-A_1/\lambda-A_2/\lambda^2-A_3/\lambda^3)$,
+at $300$-digit precision with eight Gamma--zeta modes:
+
+\begin{center}\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & $\{\lambda\}$ & $r_4$ & $A_4(\lambda)$\\
+\midrule
+$120$ & $0.988555$ & $-1.299548008$ & $-1.305123624$\\
+$136$ & $0.161500$ & $-1.532967481$ & $-1.506670619$\\
+$152$ & $0.315745$ & $-1.939809221$ & $-1.890185255$\\
+$160$ & $0.387044$ & $-2.087234974$ & $-2.035031382$\\
+$176$ & $0.519792$ & $-2.166743696$ & $-2.124617975$\\
+$192$ & $0.641266$ & $-1.992935176$ & $-1.970225155$\\
+$200$ & $0.698346$ & $-1.853347748$ & $-1.840001848$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$\lambda(r_4-A_4)$ stays inside $[-8.8,0.8]$ over $120\le n\le200$ with no
+drift, which places $A_5$ and confirms $A_4$.  The $\Psi$-free part
+$-1.7167954639$ sits inside the measured range, and the swing of the
+$A_4$ column, $0.82$ peak to peak, is $1.6$ times the leading-term estimate
+$0.50$ of \cref{eq:amplitude} --- the same upward drift of that ratio seen
+at $j=2$ ($1.08$) and $j=3$ ($1.24$), because the subleading terms of
+$c_j(1)$ contribute more as $j$ grows.  \Cref{eq:amplitude} is a
+leading-term estimate and should be read as one.
 
 \subsection{An independent confirmation to $n=400$}
 
