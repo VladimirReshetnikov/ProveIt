@@ -1,4 +1,5 @@
 import FabiusFunction.Monotonicity
+import FabiusFunction.EffectiveFlatness
 import Mathlib.MeasureTheory.Integral.FundThmCalculus
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
@@ -25,22 +26,27 @@ elementary derivations.
 
 set_option autoImplicit false
 
-open Set
+open Set MeasureTheory
 
 namespace Fabius
+
+/-- The integrand of the fundamental theorem of calculus for the bounded
+Fabius function is continuous. -/
+theorem continuous_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+    Continuous (fun t : ℝ => 2 * rvachevUp F (2 * t - 1)) := by
+  have hup : Continuous (rvachevUp F) := (rvachev_contDiff F hF).continuous
+  have hinner : Continuous (fun t : ℝ => 2 * t - 1) :=
+    (continuous_const.mul continuous_id).sub continuous_const
+  exact continuous_const.mul (hup.comp hinner)
 
 /-- The fundamental theorem of calculus for the bounded Fabius function,
 using the global differential equation `F'(t) = 2 up(2t - 1)`. -/
 theorem integral_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     (∫ t in (0 : ℝ)..x, 2 * rvachevUp F (2 * t - 1)) = fabiusReal F x := by
-  have hcont : Continuous (fun t : ℝ => 2 * rvachevUp F (2 * t - 1)) :=
-    continuous_const.mul
-      ((rvachev_contDiff F hF).continuous.comp
-        ((continuous_const.mul continuous_id).sub continuous_const))
-  have h := intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (f := fabiusReal F) (f' := fun t : ℝ => 2 * rvachevUp F (2 * t - 1))
-    (fun t _ => fabius_hasDerivAt F hF t) hcont.intervalIntegrable
-  rw [h, hF.zero_of_nonpos 0 le_rfl, sub_zero]
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt
+      (fun t _ => fabius_hasDerivAt F hF t)
+      ((continuous_deriv_fabiusReal F hF).intervalIntegrable _ _),
+    hF.zero_of_nonpos 0 le_rfl, sub_zero]
 
 /-- On the first half of the unit interval the integrand is `2 F(2t)`. -/
 theorem fabiusReal_eq_integral (F : BoundedFabius) (hF : IsFabius F)
@@ -51,9 +57,9 @@ theorem fabiusReal_eq_integral (F : BoundedFabius) (hF : IsFabius F)
   intro t ht
   rw [uIcc_of_le hx0] at ht
   have ht2 : 2 * t - 1 ≤ 0 := by
-    have := ht.2
+    have htx : t ≤ x := ht.2
     linarith
-  simp only
+  show 2 * rvachevUp F (2 * t - 1) = 2 * fabiusReal F (2 * t)
   rw [rvachevUp_of_nonpos F ht2, show 2 * t - 1 + 1 = 2 * t by ring]
 
 /--
@@ -74,14 +80,9 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
       have hpow2 : (2 : ℝ) ≤ 2 ^ (n + 1) := by
         rw [hps]; nlinarith
       have hhalf : x ≤ 1 / 2 := by nlinarith
-      set a : ℝ := 2 ^ (n + 1).choose 2 / (n.factorial : ℝ) with ha
-      have hapos : (0 : ℝ) ≤ a := by
-        rw [ha]; positivity
-      set D : ℝ := 2 ^ (n + 1) * a with hD
-      have hDpos : (0 : ℝ) ≤ D := by
-        rw [hD]; positivity
-      -- the integrand is dominated by `D tⁿ` on `[0, x]`
-      have hdom : ∀ t ∈ Icc (0 : ℝ) x, 2 * fabiusReal F (2 * t) ≤ D * t ^ n := by
+      have hdom : ∀ t ∈ Icc (0 : ℝ) x,
+          2 * fabiusReal F (2 * t) ≤
+            2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n := by
         intro t ht
         have ht0 : (0 : ℝ) ≤ t := ht.1
         have htx : t ≤ x := ht.2
@@ -92,46 +93,53 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
             _ = 2 ^ (n + 1) * x := by rw [hps]
             _ ≤ 1 := hx
         have hIH := ih (by linarith : (0 : ℝ) ≤ 2 * t) harg
-        have hpow : (2 * t) ^ n = 2 ^ n * t ^ n := by rw [mul_pow]
-        rw [hpow] at hIH
-        have : 2 * fabiusReal F (2 * t) ≤ 2 * (a * (2 ^ n * t ^ n)) := by
-          nlinarith [hIH]
-        calc 2 * fabiusReal F (2 * t) ≤ 2 * (a * (2 ^ n * t ^ n)) := this
-          _ = D * t ^ n := by rw [hD, hps]; ring
-      -- integrate the domination
+        rw [mul_pow] at hIH
+        nlinarith [hIH, hps]
       have hcontL : Continuous (fun t : ℝ => 2 * fabiusReal F (2 * t)) :=
         continuous_const.mul
           (hF.contDiff.continuous.comp (continuous_const.mul continuous_id))
-      have hcontR : Continuous (fun t : ℝ => D * t ^ n) :=
+      have hcontR : Continuous (fun t : ℝ =>
+          2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n) :=
         continuous_const.mul (continuous_pow n)
       have hmono :
           (∫ t in (0 : ℝ)..x, 2 * fabiusReal F (2 * t)) ≤
-            ∫ t in (0 : ℝ)..x, D * t ^ n :=
-        intervalIntegral.integral_mono_on hx0 hcontL.intervalIntegrable
-          hcontR.intervalIntegrable hdom
-      have hright : (∫ t in (0 : ℝ)..x, D * t ^ n) =
-          D * (x ^ (n + 1) / (n + 1)) := by
+            ∫ t in (0 : ℝ)..x,
+              2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n :=
+        intervalIntegral.integral_mono_on hx0 (hcontL.intervalIntegrable _ _)
+          (hcontR.intervalIntegrable _ _) hdom
+      have hright :
+          (∫ t in (0 : ℝ)..x,
+              2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n) =
+            2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) *
+              (x ^ (n + 1) / (n + 1)) := by
         rw [intervalIntegral.integral_const_mul, integral_pow]
-        have hzero : (0 : ℝ) ^ (n + 1) = 0 := by
-          simp
+        have hzero : (0 : ℝ) ^ (n + 1) = 0 := by simp
         rw [hzero, sub_zero]
         push_cast
         ring
-      rw [fabiusReal_eq_integral F hF hx0 hhalf]
-      refine hmono.trans ?_
-      rw [hright]
-      -- rewrite the constant into the claimed form
       have hchoose : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
         rw [show n + 2 = (n + 1) + 1 by omega, show 2 = 1 + 1 by omega,
           Nat.choose_succ_succ]
         simp [Nat.choose_one_right, add_comm]
-      have hfac : (((n + 1).factorial : ℕ) : ℝ) = ((n : ℝ) + 1) * (n.factorial : ℝ) := by
+      have hfac : (((n + 1).factorial : ℕ) : ℝ) =
+          ((n : ℝ) + 1) * (n.factorial : ℝ) := by
         rw [Nat.factorial_succ]
         push_cast
         ring
       have hne : ((n : ℝ) + 1) ≠ 0 := by positivity
-      rw [hD, ha, show n + 1 + 1 = n + 2 by omega, hchoose, hfac, pow_add]
+      rw [fabiusReal_eq_integral F hF hx0 hhalf]
+      refine hmono.trans ?_
+      rw [hright, show n + 1 + 1 = n + 2 by omega, hchoose, hfac, pow_add]
       field_simp
       ring
+
+/-- The factorial bound transferred to Rvachev's function at both ends of its
+support. -/
+theorem rvachevUp_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {x : ℝ} (hx : |x| ≤ 1)
+    (hn : (2 : ℝ) ^ n * (1 - |x|) ≤ 1) :
+    rvachevUp F x ≤ 2 ^ (n + 1).choose 2 / (n.factorial : ℝ) * (1 - |x|) ^ n := by
+  rw [rvachevUp_eq_fabiusReal_one_sub_abs F x]
+  exact fabiusReal_le_two_pow_div_factorial_mul_pow F hF n (by linarith) hn
 
 end Fabius
