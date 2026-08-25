@@ -28,14 +28,14 @@
   linkcolor=linkblue,
   citecolor=linkblue,
   urlcolor=linkblue,
-  pdftitle={The Fabius Function is Not Elementary},
-  pdfsubject={Density of the analytic locus of an elementary function},
-  pdfkeywords={Fabius function, elementary function, real analytic, nowhere analytic, isolated zeros, Lean, Mathlib}
+  pdftitle={The Fabius Function and Its Inverse are Not Elementary},
+  pdfsubject={Density of the analytic locus, under elementary operations, algebraic branches and inversion},
+  pdfkeywords={Fabius function, inverse Fabius function, elementary function, Lambert W, real analytic, nowhere analytic, isolated zeros, implicit function theorem, Lean, Mathlib}
 }
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small The Fabius function is not elementary}
+\fancyhead[L]{\small The Fabius function and its inverse are not elementary}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -102,8 +102,8 @@
   belowskip=0.8em
 }
 
-\title{\bfseries The Fabius Function is Not an Elementary Function\\[0.35em]
-\large Density of the analytic locus, and what it costs to prove}
+\title{\bfseries The Fabius Function and Its Inverse are Not Elementary\\[0.35em]
+\large Density of the analytic locus, and what it survives}
 \author{Human-readable account of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository snapshot: 25 August 2026}
@@ -135,13 +135,22 @@ unary one, where a locally constant intermediate value must be separated from
 a locally nonconstant one; the separation is furnished by the isolated-zeros
 theorem for real analytic functions of one variable.
 
-The same conclusion is then proved for a class the inductive definition does
-not reach: any continuous branch of a polynomial equation whose coefficients
-are elementary and whose leading coefficient vanishes nowhere.  This covers
-the algebraic functions that are not expressible by radicals, and it rests on
-a degree induction that avoids the discriminant, of which \texttt{Mathlib} has
-no usable theory, in favour of the analytic implicit function theorem, of
-which it does.
+The same conclusion is then proved for two classes the inductive definition
+does not reach.  The first is the algebraic functions: any continuous branch
+of a polynomial equation whose coefficients are elementary and whose leading
+coefficient vanishes nowhere, which covers those not expressible by radicals,
+and which rests on a degree induction that avoids the discriminant --- of
+which \texttt{Mathlib} has no usable theory --- in favour of the analytic
+implicit function theorem, of which it does.
+
+The second is inverses.  We prove that $F^{-1}$, which exists because $F$ is a
+homeomorphism of $[0,1]$, is itself analytic at no point of $[0,1]$ and hence
+not elementary either; and then that adjoining continuous inverse branches to
+the class, at any depth, changes nothing.  The Lambert $W$ function is such a
+branch, so it is covered.  The organizing observation is that a left inverse
+is an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
+inverse function theorem is the implicit function theorem already in hand and
+no new analysis is required at all.
 \end{abstract}
 
 \tableofcontents
@@ -390,7 +399,7 @@ the shape the induction consumes, and it is why Lemma~\ref{lem:key} below is sta
 with a finite set $B\subseteq\R$ of forbidden values.
 \end{remark}
 
-\section{Density of the analytic locus}
+\section{Density of the analytic locus}\label{sec:density}
 
 \subsection{Openness}
 
@@ -588,6 +597,147 @@ algebraic extensions with exponentials and logarithms at several levels is
 covered only when it can be presented in one of the two forms.
 \end{boxedremark}
 
+\section{The inverse, and why inverting cannot help}\label{sec:inverse}
+
+$F$ is a homeomorphism of $[0,1]$ onto itself, so it has a continuous inverse
+$F^{-1}$.  Everything above concerned $F$; this section treats $F^{-1}$, and
+then closes the class under inversion.
+
+\subsection{A left inverse is an implicit branch}
+
+The observation that organizes this section is that no new analysis is
+needed.  The equation
+\[
+  h\bigl(g(x)\bigr)=x
+\]
+says exactly that $g$ is a continuous branch of $P(x,z)=h(z)-x=0$, an implicit
+equation whose partial derivative in $z$ is $h'$.  So the analytic implicit
+function theorem quoted in \Cref{sec:algebraic} --- already proved there, for
+an unrelated purpose --- delivers the analytic inverse function theorem with
+nothing further to check.
+
+\begin{theorem}[Analytic inverse function theorem]\label{thm:ift}
+If $h$ is analytic at $g(x_0)$ with $h'(g(x_0))\ne0$, $g$ is continuous at
+$x_0$, and $h\circ g$ is the identity near $x_0$, then $g$ is analytic
+at~$x_0$.
+\end{theorem}
+
+\subsection{The inverse of the Fabius function}
+
+\begin{theorem}\label{thm:invnowhere}
+$F^{-1}$ is real analytic at no point of $[0,1]$; its analytic locus is
+exactly $\R\setminus[0,1]$.
+\end{theorem}
+
+\begin{proofidea}
+In the interior, run \Cref{thm:ift} backwards.  If $F^{-1}$ is analytic at
+$y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
+$F^{-1}(y_0)\in(0,1)$ --- provided $F^{-1}$ has no critical point there.  It
+has none, and this is the one place in the whole development where smoothness
+of $F$ is used rather than its failure to be analytic: differentiating
+$F^{-1}\circ F=\mathrm{id}$ gives
+\[
+  (F^{-1})'\bigl(F(x)\bigr)\cdot F'(x)=1 ,
+\]
+and $F$ is $C^\infty$, so $F'(x)$ is a finite real number and the product
+could not be $1$ if the first factor vanished.  \Cref{thm:nowhere} then
+supplies the contradiction.
+
+At the endpoints the argument is different, and simpler.  $F^{-1}$ is
+identically $0$ to the left of $0$; an analytic germ agreeing with $0$ on a
+set with an accumulation point vanishes identically, so $F^{-1}$ would vanish
+just to the right of $0$ as well, contradicting strict monotonicity.
+Symmetrically at $1$.
+\end{proofidea}
+
+\begin{corollary}\label{cor:invmain}
+No elementary function agrees with $F^{-1}$ on any subset of $[0,1]$ with
+nonempty interior; in particular the restriction of $F^{-1}$ to $(0,1)$ is not
+elementary.
+\end{corollary}
+
+\begin{boxedremark}
+One might have hoped that inverting improves matters.  $F$ is flat to infinite
+order at the endpoints, so $F^{-1}$ is steep there, and steepness is not
+obviously an obstruction to being elementary --- $x\mapsto x^{1/3}$ is steep
+at the origin and perfectly elementary.  \Cref{thm:invnowhere} says the hope
+is misplaced, and the reason is structural rather than quantitative: analytic
+functions are closed under inversion wherever the derivative survives, so an
+analytic inverse would hand analyticity straight back.
+\end{boxedremark}
+
+\subsection{Closing the class under inversion}
+
+Nothing about the argument was special to $F$.  The same reasoning shows that
+the invariant of \Cref{thm:density} survives inversion in general.
+
+\begin{theorem}\label{thm:invbranch}
+Let $f$ be analytic on a dense set and let $g$ be continuous on a nonempty
+open $U$ with $f(g(y))=y$ there.  Then $g$ is analytic at some point of $U$.
+\end{theorem}
+
+\begin{proofidea}
+Two facts.  A continuous right inverse is injective, and a continuous
+injection carries an interval to a set containing an interval --- the
+intermediate value theorem --- so the image $g(U)$ is \emph{fat} and the dense
+set $\An(f)$ must meet it.  And on that image $f$ is injective, being inverse
+to $g$, so $f$ cannot be locally constant there; its derivative therefore
+fails to vanish somewhere in $\An(f)\cap g(U)$.  At such a point
+\Cref{thm:ift} applies, and transporting back through the branch gives a point
+of $U$ at which $g$ is analytic.
+\end{proofidea}
+
+The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
+that is not slack in the argument: $x\mapsto x^{1/3}$ is a continuous right
+inverse of the entire function $x\mapsto x^3$ and is not analytic at the
+origin.  Critical points of $f$ really do produce singularities of the
+inverse.  It is the same phenomenon that made density, rather than
+analyticity everywhere, the right invariant in \Cref{thm:density}.
+
+\begin{definition}\label{def:elemplus}
+$\Elem^{-1}$ is the smallest class containing $\Elem$, closed under the
+operations of Definition~\ref{def:elem}, and closed under the following rule: if
+$f\in\Elem^{-1}$, $U$ is open, $g$ is continuous on $U$ with $f(g(y))=y$ for
+$y\in U$, and $g$ is analytic off $U$, then $g\in\Elem^{-1}$.
+\end{definition}
+
+The rule is local in $U$ deliberately.  The Lambert $W$ function satisfies its
+defining identity $W(y)\e^{W(y)}=y$ only on $[-1/\e,\infty)$, so a rule
+demanding a global identity would not reach it; and the requirement that $g$
+be analytic off $U$ is exactly what the junk-value conventions supply, those
+values being constants.  Inversion may be applied at any depth: to members of
+$\Elem$, to branches of those, and so on without limit.
+
+\begin{theorem}\label{thm:plusdense}
+Every member of $\Elem^{-1}$ is analytic on a dense set.
+\end{theorem}
+
+\begin{proof}
+Induction.  The elementary generators are \Cref{thm:density}; the operations
+are as in \Cref{sec:density}; and the inverse rule is \Cref{thm:invbranch}
+inside $U$ together with the hypothesis off $U$ --- given a nonempty open $B$,
+either $B$ meets $U$, and \Cref{thm:invbranch} applies to $B\cap U$, or
+$B$ misses $U$ and every point of $B$ will do.
+\end{proof}
+
+\begin{corollary}\label{cor:plusmain}
+Neither $F$ nor $F^{-1}$ agrees with any member of $\Elem^{-1}$ on any subset
+of $[0,1]$ with nonempty interior.  In particular neither is representable on
+$(0,1)$ by elementary functions, their inverses, inverses of those, and the
+elementary operations --- Lambert $W$ included.
+\end{corollary}
+
+\begin{boxedremark}
+It is worth being explicit about what Corollary~\ref{cor:plusmain} does and does not
+rest on.  It does not rest on any property of $W$ beyond its defining
+identity: the formalization states the membership of $W$ in $\Elem^{-1}$ for
+an \emph{arbitrary} continuous branch of $y=z\e^{z}$, because \texttt{Mathlib}
+does not define $W$, and the statement therefore applies to any construction
+of it.  And it does not rest on the inverse being a two-sided one; a
+continuous right inverse on an open set is all that is used, which is the most
+that a multivalued algebraic or transcendental inverse ever provides.
+\end{boxedremark}
+
 \section{The formal development}
 
 \subsection{Correspondence with the Lean names}
@@ -651,6 +801,30 @@ Branches of polynomial equations (\Cref{thm:algebraic})
 Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
   & \texttt{exists\_analyticAt\_of\_isElementary\_coeffs}, \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
   & \texttt{NotElementary} \\
+The obstruction, stated once (proof of Corollary~\ref{cor:main})
+  & \texttt{not\_eqOn\_of\_dense\_analyticLocus}
+  & \texttt{ElementaryFunction} \\
+Analytic inverse function theorem (\Cref{thm:ift})
+  & \texttt{analyticAt\_of\_leftInverse}
+  & \texttt{InverseBranch} \\
+Inverse branches are analytic somewhere (\Cref{thm:invbranch})
+  & \texttt{exists\_analyticAt\_of\_rightInverse}
+  & \texttt{InverseBranch} \\
+The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
+  & \texttt{IsElementaryOrInverse}, \texttt{IsElementaryOrInverse.dense\_analyticLocus}
+  & \texttt{InverseBranch} \\
+Lambert $W$ belongs to $\Elem^{-1}$
+  & \texttt{isElementaryOrInverse\_of\_lambertW}
+  & \texttt{InverseBranch} \\
+$F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
+  & \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
+  & \texttt{InverseNotElementary} \\
+$F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
+  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}
+  & \texttt{InverseNotElementary} \\
+Neither is reachable by inverting (Corollary~\ref{cor:plusmain})
+  & \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo}
+  & \texttt{InverseNotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
   & \texttt{NowhereAnalytic} \\
