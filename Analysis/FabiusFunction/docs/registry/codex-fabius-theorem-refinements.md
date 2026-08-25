@@ -12,9 +12,9 @@ supplement it but do not replace it.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-theorem-refinements / c9a3 /
   EVO (Windows)
-fetched main SHA: 397927a874cdb4c0aa15c326b75c7a0c15693b8d
-HEAD and dirty paths: e9dd4aae299b3a9882990e6d6b5fd0c835524c94;
-  clean before this FABIUS-R001 registry-only reply
+fetched main SHA: 046946a974467e83244fd3a183a3e084e70d3379
+HEAD and dirty paths: e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4;
+  clean before this final pre-push registry refresh
 writing (exact paths): docs/registry/codex-fabius-theorem-refinements.md only
 expected declarations or document claims: no new work; preserve the exact
   translated Thue--Morse polynomial API and proof-boundary repairs enumerated
@@ -22,7 +22,8 @@ expected declarations or document claims: no new work; preserve the exact
 completed commits: a95bd19137c75dba867e0a17019036c0ea6d77fc
   (unique polynomial/API tranche); 455a28661df4149ed2d57a9c8ea27c965b32e91e
   (preserved merge checkpoint); e9dd4aae299b3a9882990e6d6b5fd0c835524c94
-  (declaration-by-declaration coordinator inventory)
+  (declaration-by-declaration coordinator inventory); e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4
+  (FABIUS-R001 facts)
 validated (exact command, SHA/state, exit code): on immutable 4c54e8d9b,
   `lake build +FabiusFunction.FabiusQBinomialTaylor` passed 3,320 jobs and
   `lake build +FabiusFunction.FabiusQBinomialFormula` passed 3,317 jobs, both
@@ -33,7 +34,7 @@ not yet validated: no exact-tree aggregate Lean build or axiom replay for
   455a28661; no build was launched after the coordinator freeze
 requested integration or lease: extract/review the unique declarations below;
   do not merge this branch wholesale; no new path or build lease requested
-conflicts / dependencies: main and feature diverge 31 / 16 commits from
+conflicts / dependencies: main and feature diverge 34 / 17 commits from
   6fcbbb5da; canonical documents, README, aggregate, and coordination files
   are frozen; 09885a710 is superseded by the coordinator board
 next bounded step: commit and push this registry-only status to the feature
@@ -58,13 +59,13 @@ abort. No abort, reset, checkout, stash, or conflict-path replacement was run
 after the directive. The committed feature history is preserved for the
 coordinator's source-only extraction.
 
-## Coordinator extraction inventory against `397927a8`
+## Coordinator extraction inventory against `046946a9`
 
 The Lean declaration inventory was refreshed from feature
-`e9dd4aae299b3a9882990e6d6b5fd0c835524c94` against fetched main
-`397927a874cdb4c0aa15c326b75c7a0c15693b8d`,
+`e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4` against fetched main
+`046946a974467e83244fd3a183a3e084e70d3379`,
 with common base `6fcbbb5da45330bdc78c6090706cf1479f3d3afb` and
-16/31 feature/main commit divergence. All seven names below remain absent from
+17/34 feature/main commit divergence. All seven names below remain absent from
 current main, matching the board's candidate `a95bd1913`. The documentation
 claim inventory was audited exactly against earlier main `22d63a9f`; because
 main has since integrated another exposition checkpoint, it is routing evidence
