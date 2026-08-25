@@ -24,7 +24,8 @@ of the class of elementary functions that the non-elementarity proof needs.
 `Fabius.IsElementary` is an inductive predicate on `ℝ → ℝ` generating the
 class described at <https://en.wikipedia.org/wiki/Elementary_function>: the
 smallest class containing the constants and the identity and closed under
-sums, products, negation, reciprocals, real powers (hence `n`-th roots),
+sums, products, negation, reciprocals, fixed real powers (hence principal
+`n`-th roots on nonnegative inputs for positive `n`),
 `Real.exp`, `Real.log`, `Real.sin`, `Real.cos`, `Real.arcsin` and
 `Real.arctan`.  Closure under *composition* is not a constructor: it is proved
 in `Fabius.IsElementary.comp`, by induction on the derivation of the outer
@@ -66,10 +67,13 @@ each such `t`.
 
 ## What is not claimed
 
-The class is closed under `n`-th roots but not under passage to an arbitrary
-algebraic function: `IsElementary` has no constructor for a continuous branch
-of `P (x, y) = 0` with elementary coefficients.  Wikipedia's definition speaks
-of "roots", which is what `IsElementary.rpow` provides.
+For positive `n`, the class contains principal `n`-th roots on nonnegative
+inputs.  Bare `Real.rpow` is not the signed odd root on a negative base; for
+positive odd `n`, that root can instead be expressed as
+`(x * |x|⁻¹) * |x| ^ (1 / n)`.  This formula also gives zero at `x = 0`
+because the sign factor is zero there.  The class is not closed under passage
+to an arbitrary algebraic function: `IsElementary` has no constructor for a
+continuous branch of `P (x, y) = 0` with elementary coefficients.
 -/
 
 set_option autoImplicit false
@@ -115,15 +119,16 @@ theorem analyticAt_arcsin {x : ℝ} (h₁ : x ≠ -1) (h₂ : x ≠ 1) :
 /-- Elementary functions of one real variable, in the sense of
 <https://en.wikipedia.org/wiki/Elementary_function>: the smallest class of
 functions `ℝ → ℝ` containing the constants and the identity and closed under
-sums, products, negation, reciprocals, arbitrary real powers, the exponential,
+sums, products, negation, reciprocals, fixed real powers, the exponential,
 the logarithm, the two basic trigonometric functions and two inverse
 trigonometric functions.
 
 Closure under composition is not assumed; it is the theorem
-`Fabius.IsElementary.comp`.  Subtraction, division, natural powers, `n`-th
-roots, `Real.sqrt`, the absolute value, `Real.tan`, the hyperbolic functions,
+`Fabius.IsElementary.comp`.  Subtraction, division, natural powers, principal
+`n`-th roots on nonnegative inputs for positive `n`, signed odd roots,
+`Real.sqrt`, the absolute value, `Real.tan`, the hyperbolic functions,
 `Real.arccos`, `Real.arsinh` and all polynomial and rational functions are
-derived below. -/
+derivable from these operations. -/
 inductive IsElementary : (ℝ → ℝ) → Prop
   /-- Every constant function is elementary. -/
   | const (c : ℝ) : IsElementary fun _ => c
@@ -138,7 +143,8 @@ inductive IsElementary : (ℝ → ℝ) → Prop
   /-- Elementary functions are closed under taking reciprocals. -/
   | inv {f : ℝ → ℝ} : IsElementary f → IsElementary fun x => (f x)⁻¹
   /-- Elementary functions are closed under raising to a fixed real power;
-  taking `r = 1 / n` gives the `n`-th roots. -/
+  on nonnegative inputs, `r = 1 / n` gives the principal `n`-th root when
+  `0 < n`. -/
   | rpow {f : ℝ → ℝ} (r : ℝ) : IsElementary f → IsElementary fun x => f x ^ r
   /-- Elementary functions are closed under the exponential. -/
   | exp {f : ℝ → ℝ} : IsElementary f → IsElementary fun x => Real.exp (f x)
@@ -227,7 +233,8 @@ theorem polynomial (p : Polynomial ℝ) : IsElementary fun x => p.eval x := by
       exact (IsElementary.id.npow n).const_mul a
 
 /-- `Real.sqrt ∘ f` is elementary whenever `f` is: `Mathlib`'s square root is
-the real power `t ↦ t ^ (1 / 2 : ℝ)`, at negative arguments as well. -/
+the real power `t ↦ t ^ (1 / 2 : ℝ)`; both sides totalize to zero at negative
+arguments. -/
 theorem sqrt {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.sqrt (f x) := by
   have h : (fun x => Real.sqrt (f x)) = fun x => f x ^ (1 / (2 : ℝ)) := by
@@ -289,11 +296,12 @@ theorem arccos {f : ℝ → ℝ} (hf : IsElementary f) :
 `f ^ g` is the elementary function `exp (log f * g)`; in particular
 `fun x => x ^ x` is elementary on any set where the base is positive.
 
-The unrestricted two-variable power is not a constructor of `IsElementary`,
-because `Mathlib`'s `Real.rpow` is sign-dependent at a negative base
-(`x ^ y = |x| ^ y * cos (π y)`) and no single elementary formula covers both
-signs.  On an interval on which `f` has constant sign, however, `f ^ g` does
-agree with a member of the class, so nothing is lost for the purposes of
+The unrestricted two-variable power is not a constructor of `IsElementary`.
+The simple positive-base formula below does not cover negative bases, where
+`Mathlib`'s `Real.rpow` is sign-dependent
+(`x ^ y = |x| ^ y * cos (π y)`), and its zero-base convention is exceptional.
+On an interval on which `f` has fixed nonzero sign, however, `f ^ g` does agree
+with a member of the class, so nothing is lost for the purposes of
 `Fabius.not_isElementary_eqOn`. -/
 theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
     (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
@@ -324,7 +332,8 @@ theorem isElementary_id : IsElementary fun x : ℝ => x := IsElementary.id
 /-- The reciprocal is elementary. -/
 theorem isElementary_inv : IsElementary fun x : ℝ => x⁻¹ := IsElementary.id.inv
 
-/-- Every real power is elementary; `r = 1 / n` gives the `n`-th root. -/
+/-- Every fixed `Mathlib` real power is elementary.  On nonnegative inputs,
+`r = 1 / n` gives the principal `n`-th root when `0 < n`. -/
 theorem isElementary_rpow (r : ℝ) : IsElementary fun x : ℝ => x ^ r :=
   IsElementary.id.rpow r
 
