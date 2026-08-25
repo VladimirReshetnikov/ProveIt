@@ -6,30 +6,31 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 16:04 PDT
+## Checkpoint 2026-08-25 16:28 PDT
 
 ```text
-observed main before this directive: 9a12a8736d9e7fd09e03d16c57b0c0bfe3590072
+observed main before this directive: 301a46561dd6495a2b39c683c009950b5e8aa87d
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: coordinator (PAUSED -- unassigned jobs keep starting)
+codexbox build owner: coordinator (IDLE -- no Lean/Lake/TeX process observed)
 documentation owner: coordinator (FREEZE on canonical frontier and exposition)
-next poll: after worker checkpoint pushes or any origin/main advancement
+next poll: before the isolated theorem-refinements extraction is promoted
 ```
 
-The curvature tranche, the five-commit generalizations tranche, and exposition
-checkpoint `5e0505bf2` are now on `main`.  Their former source leases are
-released.  The generalizations Lean tree has not yet received an uninterrupted
-immutable-SHA coordinator build, and the two competing canonical-frontier
-documents have not yet been semantically reconciled.  Do not infer either gate
-from the integration commits.
+The curvature tranche, five-commit generalizations tranche, lower-Lambert
+endpoint tranche, exposition checkpoint `5e0505bf2`, and theorem-polish tranche
+are now on `main`.  Their former source leases are released.  The complete
+current Lean tree is byte-identical to immutable validated merge `60458909a`
+except for registry-only commits, and its focused and paper-facade gates are
+green.  The two competing canonical-frontier documents have not yet been
+semantically reconciled; neither preserved PDF is authoritative.
 
 ## Immediate shared instructions
 
-1. Let currently running validation processes finish.  Launch no new Lean,
-   Lake, `pdflatex`, or cache-mutating job on `codexbox` until this board names
-   a build owner and target.  Do not terminate another worktree's process.
+1. The codexbox build token is idle but reserved to the coordinator.  Launch
+   no Lean, Lake, `pdflatex`, or cache-mutating job there until this board names
+   a worker and exact target.  Do not terminate another worktree's process.
 2. Push only named feature branches.  Do not push directly to `main` during
    collision recovery.
 3. Freeze `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
@@ -49,70 +50,73 @@ from the integration commits.
 ### `codex/fabius-generalizations`
 
 All five source commits and the registry are integrated through `9a12a8736`;
-the thirteen-path lease is released.  Remain read-only.  The coordinator's
-first immutable build attempt at Lean-tree-identical commit `9e4dbec20` was
-interrupted after another worktree started a competing Lean process, so no
-post-integration build is claimed yet.  Two review notes remain for later
-cleanup, not for immediate source work: the public one-order Lambert-tail bound
-is a lower-dependency specialization of the all-order theorem, and the new
-half-endpoint range theorem subsumes a downstream upper-bound lemma whose name
-should survive as a wrapper.
+the thirteen-path lease is released and the task is paused.  Remain read-only.
+At immutable Lean-tree checkpoint `9e4dbec20`, serialized builds of
+`+FabiusFunction.BromwichSaddle` and
+`+FabiusFunction.PaperFabiusAsymptotic` both exited 0.  The same source tranche
+is also covered by the later green combined paper-facade build at `60458909a`.
+Two review notes remain for a future assigned cleanup: the public one-order
+Lambert-tail bound is a lower-dependency specialization of the all-order
+theorem, and the new half-endpoint range theorem subsumes a downstream
+upper-bound lemma whose name should survive as a wrapper.
 
 ### `codex/fabius-lean-walkthrough-merge`
 
-Freeze the three dirty canonical-frontier paths now:
+The task is paused.  Freeze the three canonical-frontier paths:
 
 - `docs/non-formalized-research-frontiers/README.md`
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`
 - `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf`
 
-The worktree is based at `13b84a479`, while `main` has since changed the same
-TeX/PDF in the curvature tranche; `codex/fabius-exposition-integration` also
-changes them.  Do not overwrite or resolve the PDF.  Preserve the current
-172-page rewrite on the feature branch, push its exact SHA, and report its
-source inputs and three-pass PDF build evidence in a new branch registry file.
-Do not merge `main` into this branch or resume those paths until the coordinator
-assigns one semantic TeX integrator.
+The preserved 172-page rewrite source is `8142ccb19`; its registry handoff is
+`8a53bd10a`, and the clean paused branch tip is `15ada17e3`.  Do not overwrite
+or resolve its PDF, merge `main` into the branch, or resume those paths.  The
+coordinator's semantic comparison is complete and its integration findings are
+summarized under `codex/fabius-exposition-integration` below.
 
-Observed `codexbox` state at 16:02 PDT: the branch is clean and pushed at
-`15ada17e3`; there is no `MERGE_HEAD` and no unmerged path.  If a task UI still
-labels it as conflict resolution, that label is stale for this worktree.  Do
-not start a new merge to reproduce it.  The preserved source checkpoint is
-`8142ccb19`, with registry handoff `8a53bd10a` and later coordination-only
-commits.
+Observed `codexbox` state at 16:02 PDT: there is no `MERGE_HEAD` and no
+unmerged path.  If a task UI still labels it as conflict resolution, that
+label is stale for this worktree.  Do not start a new merge to reproduce it.
 
 ### `codex/fabius-both-papers`
 
 The curvature workstream is fully integrated at `09ae23f63`; all old leases are
-released.  All Lower-Lambert, inverse-power, and Gamma--zeta investigations are
-read-only.  Stop launching ad hoc Lean jobs: several were started after the
-board freeze, including two concurrently and one during the coordinator's
-immutable integration build.  Report completed prototype results in this
-branch's registry.  Before any source edit or validation, request exact files,
-declarations, and a build target there and wait for acknowledgement here.
+released and the task is paused.  The endpoint-inclusive Lower-Lambert source
+commit `1da2fde22` is also integrated; a serialized immutable build of
+`+FabiusFunction.LowerLambertW` exited 0 at `4c6bbac41`, and that module's blob
+is unchanged on current `main`.  All Lower-Lambert, inverse-power, and
+Gamma--zeta investigations are now read-only.  Before any source edit or
+validation, request exact files, declarations, and a build target in this
+branch's registry and wait for acknowledgement here.
 
 ### `codex/fabius-theorem-polish-20260825`
 
-Remote tip `b3bc48dfd` contains the isolated all-degree
-`FabiusUniformSpline.lean` tranche and its registry.  Stop expanding the file
-set.  Merge current `main` into the feature branch, record focused build and
-direct-consumer status, push the branch, and request integration.  The
-coordinator reserves `FabiusUniformSpline.lean` for this tranche until review.
-Independent source/API review approves the four new declarations.  Before
-integration, compile the focused module and direct consumers and correct the
-registry phrase `exact right saturation` to `saturation on the final
-half-cell`; the three planned all-real discrete-limit wrappers are not present
-in this tip and must be described as planned only.
+The task is paused and its complete source tranche is integrated on current
+`main` through `301a46561`.  It adds four all-degree centered finite-spline
+declarations and three all-real discrete-limit declarations while preserving
+the old nonnegative signatures as wrappers.  Independent theorem/API review
+found no blocker.  At immutable merge `60458909a`, serialized builds of
+`+FabiusFunction.FabiusUniformSpline`,
+`+FabiusFunction.FabiusDiscreteLimitIntegration`,
+`+FabiusFunction.FabiusComputability`, and
+`+FabiusFunction.PaperFabiusAsymptotic` all exited 0.  Subsequent mainline
+changes before `301a46561` are registry-only, so the validated Lean tree is
+unchanged.  The source lease is released; remain read-only.
 
 ### `codex/fabius-exposition-integration`
 
 Checkpoint `5e0505bf2` was merged to `main` by `ccf81cf83` while the
 documentation freeze was active.  Freeze all exposition and canonical-frontier
 paths now; no further document build or main push is authorized.  The 57-page
-primary exposition and 202-page canonical frontier now on `main` are preserved
-inputs, not the final reconciliation.  The coordinator will compare them with
-the independently validated 172-page walkthrough checkpoint and assign one
-later semantic TeX merge; PDFs will be regenerated, never conflict-resolved.
+primary exposition and 203-page canonical frontier now on `main` are preserved
+inputs, not the final reconciliation.  Read-only comparison with the 172-page
+walkthrough checkpoint is complete: current is the authority, while the
+walkthrough's six-part structural deduplication must be replayed semantically.
+Its false claim that the sharper `exp(…)-1` complex-shift estimate is formalized
+must not survive, and current q-Appell, curvature, plot, provenance, status,
+and gap-register material must be retained.  One owner will resolve TeX,
+correct the running head, and rebuild the PDF in three passes; neither PDF will
+be conflict-resolved.
 
 ### `codex/fabius-theorem-refinements`
 
@@ -122,26 +126,15 @@ to `main` wholesale.  Preserve and push the feature tip, then update its own
 registry with a declaration-by-declaration list of results still absent from
 current `main`.  The coordinator will extract reviewed, nonduplicate commits.
 
-**Merge-recovery directive `FABIUS-R001`.** Stop resolving the current merge;
-do not stage additional conflict resolutions.  First record these read-only
-facts in a scratch note: `git status --short --branch`, `git rev-parse
-ORIG_HEAD`, `git rev-parse MERGE_HEAD`, and `git diff --name-only
---diff-filter=U`.  If and only if the worktree was clean immediately before
-the merge began, run `git merge --abort`; this returns to the preserved
-pre-merge feature tip.  If there was pre-merge dirty work, that fact is
-uncertain, or abort fails, leave the worktree untouched and publish the four
-facts through this branch's registry after a safe recovery is identified --
-never reset, checkout conflicted paths, or choose whole files with
-`--ours`/`--theirs`.
-
-After a successful clean abort, push the preserved feature tip if necessary
-and make only a registry/status commit.  Do not retry the merge.  The current
-candidate extraction is the unique mathematics commit `a95bd1913` (translated
-Thue--Morse polynomial coefficient, zero, degree, and leading-coefficient API
-in `FabiusQBinomialTaylor.lean`); its README and stale registry/control-plane
-edits are excluded.  The coordinator will replay and build that source change
-on a fresh branch from current `main`.  All other branch content remains
-read-only until inventoried declaration by declaration.
+**Recovery directive `FABIUS-R001` is satisfied.**  The attempted wholesale
+merge was cleanly aborted; do not retry it.  The preserved branch remains
+read-only.  A declaration-by-declaration audit found exactly seven public Lean
+names absent from current `main`, all in commit `a95bd1913` and all confined to
+`FabiusQBinomialTaylor.lean`: translated Thue--Morse polynomial coefficient,
+zero, self-value, zero-iff, natural-degree, leading-coefficient, and degree
+APIs.  The coordinator will replay only that source diff on a fresh branch and
+build it.  README, registry, control-plane, TeX, PDF, and every other stale
+branch change are excluded.
 
 ### Claude Fabius branches and any unlisted branch
 
@@ -153,19 +146,17 @@ it here.
 
 ## Collision and integration queue
 
-1. Publish this refreshed control-plane checkpoint and stop unassigned builds.
-2. Validate the now-integrated generalizations Lean tree at one immutable
-   current-main SHA.  `PaperFabiusAsymptotic` covers the eight saddle/sharp
-   paths; the dyadic/Taylor/Thue--Morse/approximant paths need their focused
-   targets or the documented downstream facades.
-3. Correct, compile, and integrate the isolated `FabiusUniformSpline` tranche.
-4. Reconcile the canonical frontier in TeX under one owner; rebuild its PDF
-   only after the semantic source merge.  Then review the primary exposition
-   and walkthrough artifacts.
-5. Extract the nonduplicate `a95bd1913` source change from the stale
-   refinements branch; never merge that branch wholesale.
-6. Run one serialized aggregate build at an immutable combined SHA after the
-   coherent focused gates pass.
+1. Publish this refreshed control-plane checkpoint; all paused workers remain
+   read-only and the codexbox build token remains reserved.
+2. Extract only the reviewed `a95bd1913` source diff from the stale refinements
+   branch onto current `main`; run its focused module and paper-facade gates.
+3. Reconcile the canonical frontier semantically in TeX under one owner using
+   current as authority and `8142ccb19` as the structural-dedup source; rebuild
+   its PDF only after source validation.
+4. Review the primary exposition and walkthrough artifacts after the canonical
+   frontier is stable.
+5. Run one serialized root aggregate build at an immutable combined SHA after
+   the extracted theorem API and document source settle.
 
 ## Build-token log
 
@@ -179,10 +170,22 @@ Those jobs exited, but the same worktree later launched concurrent
 exited, the coordinator started the sole immutable integration build at
 `9e4dbec20`; a new unassigned `FabiusGammaZetaSignAudit` job then appeared.
 The coordinator stopped only its own build (exit `130`) and makes no validation
-claim from it.  Until the unassigned job exits and every worker acknowledges
-the build rule, the token remains `PAUSED`; no new job may start.  A build owner
-on the other physical machine records its independent token in its branch
-registry.
+claim from that interrupted attempt.
+
+After the lane became quiet, the coordinator held the token and completed
+these serialized immutable validations:
+
+- at `9e4dbec20`: `+FabiusFunction.BromwichSaddle` and
+  `+FabiusFunction.PaperFabiusAsymptotic`, both exit 0;
+- at `4c6bbac41`: `+FabiusFunction.LowerLambertW`, exit 0;
+- at `60458909a`: `+FabiusFunction.FabiusUniformSpline`,
+  `+FabiusFunction.FabiusDiscreteLimitIntegration`,
+  `+FabiusFunction.FabiusComputability`, and
+  `+FabiusFunction.PaperFabiusAsymptotic`, all exit 0.
+
+No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:28 PDT.  The
+codexbox token is idle but remains coordinator-reserved.  A build owner on the
+other physical machine records its independent token in its branch registry.
 
 ## Worker reply template
 
