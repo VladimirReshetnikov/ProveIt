@@ -60,8 +60,12 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All eighteen exported theorems have axiom set
-`[propext, Classical.choice, Quot.sound]`.
+All 95 theorems exported by the five new modules — `ElementaryFunction`,
+`AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
+have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
+anywhere.  The audit is a generated `#print axioms` sweep over every
+`theorem`/`lemma` at any namespace depth in those files, run against the fully
+built closure; it is re-run after every change to them.
 
 The mathematical input from this branch is
 `Fabius.IsElementary.dense_analyticLocus`: the analytic locus of an elementary
@@ -138,7 +142,7 @@ would have to be applied to the preamble of every document at once.
 
 `InverseBranch.lean` observes that a left inverse is an implicit branch of the
 simplest possible equation — `h (g x) = x` says `g` is a continuous branch of
-`h z - x = 0` — so `Fabius.analyticAt_of_leftInverse`, the analytic inverse
+`h z - x = 0` — so `Fabius.analyticAt_of_rightInverse`, the analytic inverse
 function theorem, is `analyticAt_of_continuous_branch` applied with no further
 analysis.  On top of it, `Fabius.exists_analyticAt_of_rightInverse`: a
 continuous right inverse of a densely analytic function is analytic somewhere.
@@ -149,16 +153,30 @@ continuous inverse branches at any depth, and
 densely analytic.  Its constructor is localized to an open `U` because Lambert
 `W` satisfies its identity only on `[-1/e, ∞)`;
 `Fabius.isElementaryOrInverse_of_lambertW` records the membership for an
-arbitrary branch, since `Mathlib` does not define `W`.
+arbitrary branch, since `Mathlib` does not define `W`.  The constructor's
+analyticity clause is `∀ y ∈ interior Uᶜ`, not `∀ y ∉ U`: the branch point
+`-1/e` lies on the boundary of `W`'s natural `U`, and demanding analyticity
+there would make the `W` instance vacuous.  That clause constrains the chosen
+extension of the branch past `U` rather than following from `Mathlib`'s junk
+values; constant extension always satisfies it, and `U = ∅` degenerates it to
+"`g` is entire".
 
 `InverseNotElementary.lean` applies this to `fabiusInv`:
 `fabiusInv_not_analyticAt` and `fabiusInv_analyticAt_iff` pin the analytic
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
 argument is the inverse function theorem run backwards, and the one thing to
-check is that `F⁻¹` has no critical point — `deriv_fabiusInv_ne_zero`, from
-`(F⁻¹)'(F x) · F'(x) = 1` and finiteness of `F'`.  That is the only place in
-the whole workstream where smoothness of `F`, rather than its failure to be
-analytic, is used.
+check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
+now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
+on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
+there, a nonzero real number.  It is the only place in the whole workstream
+where a differential property of `F`, rather than its failure to be analytic,
+is used.
+
+An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
+`F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
+hypothesis — refuted, for every `y ∈ Icc 0 1`, by `fabiusInv_not_analyticAt`
+twelve lines below.  The statement was therefore vacuous.  An adversarial
+review caught it; the fix strengthens the theorem rather than the wording.
 
 `Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
 density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`
