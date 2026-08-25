@@ -10,6 +10,8 @@ in dimensionless saddle-point coordinates.
 
 There is no contour-shifting argument here.  Every analytic and integrability
 hypothesis needed by Fourier inversion is explicit in the theorem statements.
+The normalized saddle kernel is also recorded at its central coordinate,
+where it is exactly `1` whenever the normalizing value `P r` is nonzero.
 -/
 
 set_option autoImplicit false
@@ -74,6 +76,14 @@ noncomputable def scaledSaddleKernel
     (P ((r : ℂ) + ((r * v / Real.sqrt b : ℝ) : ℂ) * Complex.I) /
       P (r : ℂ)) /
     (1 + ((v / Real.sqrt b : ℝ) : ℂ) * Complex.I)
+
+/-- At the central coordinate `v = 0`, the normalized saddle kernel is
+exactly `1`.  No positivity assumption on the scale is needed for this
+algebraic normalization. -/
+theorem scaledSaddleKernel_zero
+    (P : ℂ → ℂ) (x r b : ℝ) (hPr : P (r : ℂ) ≠ 0) :
+    scaledSaddleKernel P x r b 0 = 1 := by
+  simp [scaledSaddleKernel, hPr]
 
 /-- Exact Fourier/Bromwich formula in dimensionless saddle coordinates.
 
