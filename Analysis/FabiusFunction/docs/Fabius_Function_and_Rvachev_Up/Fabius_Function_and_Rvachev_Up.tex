@@ -9017,6 +9017,76 @@ These forms also make \Cref{thm:as-leading-derivative} below legible: the top je
 \eqref{eq:as-A1-jets} with coefficient $-\tfrac12$ and \eqref{eq:as-A2-jets} with
 coefficient $\tfrac3{24}=\tfrac18$, which are $(-1)^{j}/(2^{j}j!)$ at $j=1$ and $j=2$.
 
+\subsection{Every coefficient in closed form}
+\label{subsec:as-general-coefficient}
+
+With the jets solved, the remaining steps are pure algebra and can be carried out once and
+for all, replacing the recursion \eqref{eq:log-coefficient-recurrence} by a formula.  Write
+$(m_1,\ldots,m_r)\vDash N$ for a composition of $N$ into $r$ positive parts, as in
+\Cref{subsec:inverse-dyadic-compositions}.
+
+\begin{theorem}[Explicit saddle mass coefficients]
+\label{thm:as-mass-coefficients}
+Let $1+\sum_{j\ge1}a_j(u)\lambda^{-j}$ be the normalized saddle mass.  Then for $j\ge1$,
+\begin{align}
+ a_j(u)=(-1)^{j}\sum_{r=1}^{2j}\frac1{r!}
+   \sum_{(m_1,\ldots,m_r)\vDash 2j}\ \sum_{S\subseteq\{1,\ldots,r\}}
+   \bigl(2j+2|S|-1\bigr)!!                                 \notag\\
+   \times\prod_{i\in S}\frac{(-1)^{m_i+1}}{m_i+2}
+   \prod_{i\notin S}\frac{\widetilde{\mathcal Z}_{m_i-1}(u)}{m_i!}.
+                                                          \label{eq:as-mass-coefficients}
+\end{align}
+\end{theorem}
+
+The set $S$ records which of the two monomials of \eqref{eq:as-exponent-collapse} is taken
+from each factor: $i\in S$ selects the universal tail $v^{m_i+2}/(m_i+2)$ and $i\notin S$
+selects the jet term.  The total degree is then $2j+2|S|$, always even, and the double
+factorial is its Gaussian moment.  The prefactor is $\ii^{2j}$.
+
+\begin{theorem}[Explicit logarithmic coefficients]
+\label{thm:as-log-coefficients}
+With $a_0=1$, for every $j\ge1$,
+\begin{equation}
+ A_j(u)=\sum_{r=1}^{j}\frac{(-1)^{r-1}}{r}
+   \sum_{(q_1,\ldots,q_r)\vDash j}a_{q_1}(u)\cdots a_{q_r}(u).
+                                                          \label{eq:as-log-coefficients}
+\end{equation}
+\end{theorem}
+
+Substituting \eqref{eq:as-jet-d} into these two leaves no recursion anywhere: every $A_j$ is
+a finite expression with rational coefficients in $1/L$ and $\Psi'(u),\ldots,\Psi^{(2j)}(u)$.
+Three structural facts follow immediately.  No derivative beyond $\Psi^{(2j)}$ occurs,
+because the highest jet reached at order $2j$ is $\widetilde{\mathcal Z}_{2j-1}$.  Every
+$A_j$ is smooth, one-periodic and bounded, being a polynomial in such functions.  And the
+mean of $A_j$ is its $\Psi$-free part plus the means of its terms of degree two and higher,
+which is the content of \Cref{warn:as-products}.
+
+\begin{remark}
+Unlike \Cref{thm:as-jet-closed-form}, these two are not machine-checked.  They were verified
+symbolically against the recursions they replace for $j\le3$, with identically vanishing
+residuals, and \eqref{eq:as-mass-coefficients} is checked here at $j=1$: it returns
+$-\widetilde{\mathcal Z}_0^{2}/2-\widetilde{\mathcal Z}_0-\widetilde{\mathcal Z}_1/2-1/12$,
+which is \eqref{eq:as-A1-jets}, and $A_1=a_1$.
+\end{remark}
+
+For reference, the $\Psi$-free parts of the first four coefficients --- the values obtained
+by setting $\Psi\equiv0$, which by \Cref{warn:as-products} are close to but not equal to the
+means --- are
+\begin{center}
+\begin{tabular}{@{}clr@{}}
+\toprule
+$j$ & $\Psi$-free part of $A_j$ & value\\
+\midrule
+$1$ & $\dfrac1{24}+\dfrac1{2L}$ & $0.7630141871$\\[0.6em]
+$2$ & $\dfrac1{4L^{2}}$ & $0.5203422453$\\[0.6em]
+$3$ & $-\dfrac7{2880}-\dfrac1{24L}-\dfrac1{4L^{2}}+\dfrac1{6L^{3}}$ & $-0.0824216430$\\[0.6em]
+$4$ & $\dfrac{-L^{3}-72L^{2}-816L+144}{1152L^{4}}$ & $-1.7167954639$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The order-two entry is unexpectedly clean: it is exactly $1/(4\log^{2}2)$, with no rational
+term and no term in $1/L$.
+
 
 \subsection{The phase to all orders}
 \label{subsec:as-phase-all-orders}
