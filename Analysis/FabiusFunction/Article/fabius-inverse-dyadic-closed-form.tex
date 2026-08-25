@@ -1,0 +1,604 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+% This document remains portable to minimal TeX installations that do not
+% provide scalable T1 Computer Modern fonts: protrusion is harmless there,
+% whereas automatic font expansion is not.
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Comp}{\mathcal{C}}
+\newcommand{\Chains}{\mathcal{P}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\len}{\operatorname{len}}
+
+\title{A Non-Recursive Composition Formula for\\
+Inverse-Dyadic Values of the Fabius Function}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Let $F_n=F(2^{-n})$ denote the inverse-dyadic values of the Fabius
+function.  Starting from the triangular recurrence
+\[
+ F_n=\frac{2^{-\binom n2}}{2^n-1}
+ \sum_{k=0}^{n-1}
+ \frac{2^{\binom k2}}{(n-k+1)!}F_k,
+ \qquad n\geq 1,
+\]
+with $F_0=1$, we derive a finite, fully non-recursive solution.  After the
+normalization $a_n=2^{\binom n2}F_n$, every term becomes the total weight of
+all increasing paths from $0$ to $n$.  Equivalently, it is a sum over the
+ordered compositions of $n$.  We prove the formula by decomposing a
+composition at its last block, give equivalent increasing-chain and
+nilpotent-matrix forms, and verify the values through $n=4$.  The argument is
+purely finite: no limiting process or convergence theorem is involved.  We
+also formalize the path and composition arguments in Lean.
+\end{abstract}
+
+\section{The recurrence and its range}
+
+We study a sequence $(F_n)_{n\geq 0}$ with initial value
+\begin{equation}\label{eq:F0}
+ F_0=1
+\end{equation}
+and recurrence
+\begin{equation}\label{eq:F-recurrence}
+ F_n=\frac{2^{-\binom n2}}{2^n-1}
+ \sum_{k=0}^{n-1}
+ \frac{2^{\binom k2}}{(n-k+1)!}F_k,
+ \qquad n\geq 1.
+\end{equation}
+For the Fabius function, $F_n=F(2^{-n})$, so that $F_0=F(1)=1$.
+Everything below is algebraic and applies to any sequence satisfying
+\eqref{eq:F0}--\eqref{eq:F-recurrence}.
+
+The restriction $n\geq1$ is essential.  At $n=0$ the denominator $2^n-1$
+vanishes and the displayed sum is empty.  Thus \eqref{eq:F-recurrence} is
+not a formula for $F_0$; the initial value \eqref{eq:F0} must be supplied
+separately.  In a formal field such as Lean's rational or real numbers,
+division by zero is totalized, but that convention does not repair the
+identity: its right-hand side would reduce to zero while $F_0=1$.
+
+For every $n\geq1$, all quantities in \eqref{eq:F-recurrence} are defined
+and its right-hand side involves only earlier values $F_0,\ldots,F_{n-1}$.
+It therefore determines the sequence uniquely.  Our aim is to replace this
+recursive determination by one finite multiple sum containing no $F_k$.
+
+\section{Normalization}
+
+The triangular powers of two in \eqref{eq:F-recurrence} are designed to
+telescope.  This is clearest after a normalization.
+
+\begin{definition}\label{def:a}
+For $n\geq0$, put
+\begin{equation}\label{eq:a-def}
+ a_n=2^{\binom n2}F_n.
+\end{equation}
+\end{definition}
+
+Since $\binom02=0$, one has $a_0=1$.  Multiplying
+\eqref{eq:F-recurrence} by $2^{\binom n2}$ and replacing
+$2^{\binom k2}F_k$ by $a_k$ gives
+\begin{equation}\label{eq:a-recurrence}
+ a_n=\frac{1}{2^n-1}
+ \sum_{k=0}^{n-1}\frac{a_k}{(n-k+1)!},
+ \qquad n\geq1.
+\end{equation}
+Equivalently, if
+\begin{equation}\label{eq:Tweight}
+ T_{n,k}=\frac{1}{(2^n-1)(n-k+1)!}
+ \qquad (0\leq k<n),
+\end{equation}
+then
+\begin{equation}\label{eq:a-weighted}
+ a_n=\sum_{k=0}^{n-1}T_{n,k}a_k.
+\end{equation}
+The normalized recurrence is a weighted path recurrence on the acyclic
+directed graph whose vertices are the nonnegative integers and which has an
+edge $k\to n$ whenever $k<n$.
+
+\begin{proposition}[Triangular uniqueness]\label{prop:uniqueness}
+There is at most one sequence over $\Q$ or $\mathbb{R}$ satisfying
+$a_0=1$ and \eqref{eq:a-recurrence}.  Consequently there is at most one
+sequence satisfying \eqref{eq:F0} and \eqref{eq:F-recurrence}.
+\end{proposition}
+
+\begin{proof}
+If two normalized sequences agree through index $n-1$, then
+\eqref{eq:a-recurrence} expresses both values at index $n$ as the same
+linear combination of those earlier values.  Induction proves equality at
+every index.  The change of variables \eqref{eq:a-def} is invertible, so the
+same conclusion holds for $(F_n)$.
+\end{proof}
+
+\section{The composition formula}
+
+An \emph{ordered composition} of $n$ is a finite tuple of positive integers
+whose sum is $n$.  We write
+\[
+ \rho=(r_1,\ldots,r_m)\vDash n
+\]
+and call $m=\len(\rho)$ its length.  Let $\Comp(n)$ be the set of all such
+compositions.  We use the standard convention
+\[
+ \Comp(0)=\{()\},
+\]
+where $()$ is the empty composition.  For a nonempty composition define its
+partial sums
+\begin{equation}\label{eq:partial-sums}
+ s_j=r_1+\cdots+r_j,\qquad 1\leq j\leq m.
+\end{equation}
+Thus $s_m=n$.  Define the weight
+\begin{equation}\label{eq:composition-weight}
+ \wt(\rho)=
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{s_j}-1)(r_j+1)!}.
+\end{equation}
+For the empty composition the product is empty and has value $1$.
+
+\begin{theorem}[Non-recursive composition formula]\label{thm:composition}
+For every $n\geq0$,
+\begin{equation}\label{eq:main-composition}
+ \boxed{
+ F_n=2^{-\binom n2}
+ \sum_{\rho\in\Comp(n)}
+ \prod_{j=1}^{\len(\rho)}
+ \frac{1}{(2^{s_j}-1)(r_j+1)!}}
+\end{equation}
+where $\rho=(r_1,\ldots,r_m)$ and $s_j$ is given by
+\eqref{eq:partial-sums}.  At $n=0$, the right-hand side is interpreted using
+the unique empty composition and equals $1$.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ A_n=\sum_{\rho\in\Comp(n)}\wt(\rho).
+\]
+The empty-composition convention gives $A_0=1$.  Fix $n\geq1$.  Every
+composition $\rho=(r_1,\ldots,r_m)$ of $n$ has a unique last block.  Put
+\[
+ k=r_1+\cdots+r_{m-1},
+\]
+where $k=0$ if $m=1$.  Then $0\leq k<n$, the initial tuple
+$(r_1,\ldots,r_{m-1})$ is a composition of $k$, and the last block is
+$r_m=n-k$.  Conversely, appending $n-k$ to any composition of $k$ produces
+a composition of $n$ with penultimate partial sum $k$.
+
+The last factor in \eqref{eq:composition-weight} is
+\[
+ \frac{1}{(2^n-1)(n-k+1)!}=T_{n,k}.
+\]
+All earlier factors form precisely the weight of the prefix composition.
+Partitioning $\Comp(n)$ according to $k$ therefore gives
+\begin{equation}\label{eq:A-recurrence}
+ A_n=\sum_{k=0}^{n-1}
+ \frac{A_k}{(2^n-1)(n-k+1)!}
+ =\frac{1}{2^n-1}
+ \sum_{k=0}^{n-1}\frac{A_k}{(n-k+1)!}.
+\end{equation}
+Thus $(A_n)$ satisfies the same recurrence and initial value as $(a_n)$.
+By Proposition~\ref{prop:uniqueness}, $A_n=a_n$ for every $n$.  Finally,
+$F_n=2^{-\binom n2}a_n$ by \eqref{eq:a-def}, proving
+\eqref{eq:main-composition}.
+\end{proof}
+
+\begin{remark}[Finiteness]
+For $n\geq1$, there are $2^{n-1}$ ordered compositions of $n$.  Hence
+\eqref{eq:main-composition} is a finite sum of $2^{n-1}$ positive rational
+terms.  It is fully non-recursive, although its number of terms grows
+exponentially.  No convergence question is present.
+\end{remark}
+
+\begin{corollary}[Positivity]\label{cor:positive}
+$F_n>0$ for every $n\geq0$.
+\end{corollary}
+
+\begin{proof}
+The $n=0$ case is immediate.  If $n\geq1$, then every partial sum $s_j$ in
+a composition is positive, so $2^{s_j}-1>0$, and every factorial is
+positive.  Every summand in \eqref{eq:main-composition} is therefore
+positive.
+\end{proof}
+
+\section{Increasing chains and an explicit multiple sum}
+
+The composition formula can be written as a path sum without introducing
+blocks.  For $m\geq1$, let $\Chains_m(n)$ denote the set of strictly
+increasing chains
+\begin{equation}\label{eq:chain}
+ 0=i_0<i_1<\cdots<i_m=n.
+\end{equation}
+The bijection between compositions and chains is
+\begin{equation}\label{eq:chain-composition-bijection}
+ r_j=i_j-i_{j-1},
+ \qquad
+ i_j=r_1+\cdots+r_j=s_j.
+\end{equation}
+Under this bijection, \eqref{eq:composition-weight} becomes
+\begin{equation}\label{eq:chain-weight}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{i_j}-1)(i_j-i_{j-1}+1)!}.
+\end{equation}
+
+\begin{corollary}[Increasing-chain form]\label{cor:chains}
+For $n\geq1$,
+\begin{equation}\label{eq:chain-formula}
+ \boxed{
+ F_n=2^{-\binom n2}
+ \sum_{m=1}^{n}
+ \sum_{0=i_0<i_1<\cdots<i_m=n}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{i_j}-1)(i_j-i_{j-1}+1)!}.}
+\end{equation}
+\end{corollary}
+
+Formula \eqref{eq:chain-formula} is the requested multiple sum.  Written
+with only the internal indices displayed, its inner summation is
+\[
+ \sum_{1\leq i_1<\cdots<i_{m-1}\leq n-1}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{i_j}-1)(i_j-i_{j-1}+1)!},
+ \qquad i_0=0,\quad i_m=n.
+\]
+When $m=1$, there are no internal indices and the inner sum consists of the
+single chain $0<n$.
+
+There is also a direct explanation for the common factor
+$2^{-\binom n2}$.  Before normalization, the edge $k\to r$ in
+\eqref{eq:F-recurrence} has weight
+\begin{equation}\label{eq:original-edge}
+ U_{r,k}=
+ \frac{2^{\binom k2-\binom r2}}
+ {(2^r-1)(r-k+1)!}.
+\end{equation}
+Along a chain \eqref{eq:chain}, the powers of two telescope:
+\begin{align*}
+ \prod_{j=1}^{m}
+ 2^{\binom{i_{j-1}}2-\binom{i_j}2}
+ &=2^{\sum_{j=1}^{m}
+ (\binom{i_{j-1}}2-\binom{i_j}2)}\\
+ &=2^{\binom{i_0}2-\binom{i_m}2}
+ =2^{-\binom n2}.
+\end{align*}
+The remaining edge factors are exactly \eqref{eq:chain-weight}.
+
+\section{A nilpotent-matrix interpretation}
+
+Fix a terminal index $N$ and consider matrices indexed by
+$\{0,1,\ldots,N\}$.  Define the strictly lower-triangular matrix
+\begin{equation}\label{eq:matrix-T}
+ T^{[N]}_{i,j}=
+ \begin{cases}
+ \displaystyle
+ \frac{1}{(2^i-1)(i-j+1)!},&0\leq j<i\leq N,\\[6pt]
+ 0,&j\geq i.
+ \end{cases}
+\end{equation}
+Let
+\[
+ \mathbf{a}^{[N]}=(a_0,a_1,\ldots,a_N)^{\mathsf T},
+ \qquad
+ \mathbf{e}_0=(1,0,\ldots,0)^{\mathsf T}.
+\]
+The initial condition and \eqref{eq:a-weighted} say
+\begin{equation}\label{eq:matrix-rec}
+ \mathbf{a}^{[N]}=\mathbf{e}_0+T^{[N]}\mathbf{a}^{[N]}.
+\end{equation}
+Because $T^{[N]}$ is strictly lower triangular,
+$(T^{[N]})^{N+1}=0$.  Therefore
+\begin{equation}\label{eq:matrix-inverse}
+ (I-T^{[N]})^{-1}
+ =I+T^{[N]}+\cdots+(T^{[N]})^N,
+\end{equation}
+and \eqref{eq:matrix-rec} yields
+\begin{equation}\label{eq:matrix-solution}
+ \mathbf{a}^{[N]}=
+ \left(I+T^{[N]}+\cdots+(T^{[N]})^N\right)\mathbf{e}_0.
+\end{equation}
+
+Taking the $n$th component, for any $n\leq N$, gives
+\begin{equation}\label{eq:matrix-component}
+ F_n=2^{-\binom n2}
+ \sum_{m=0}^{n}(T^{[N]})^m_{n,0}.
+\end{equation}
+For $n>0$, the $m=0$ term vanishes.  Standard matrix multiplication shows
+that $(T^{[N]})^m_{n,0}$ is the sum of the products of edge weights over all
+length-$m$ increasing paths from $0$ to $n$.  Thus
+\eqref{eq:matrix-component} is precisely Corollary~\ref{cor:chains}.
+
+If $D=\operatorname{diag}(2^{\binom02},\ldots,2^{\binom N2})$, then the
+matrix acting directly on $(F_0,\ldots,F_N)^{\mathsf T}$ is
+$U=D^{-1}T^{[N]}D$.  Its entries are \eqref{eq:original-edge}; the diagonal
+similarity explains the telescoping powers along paths.
+
+\section{Low-index examples}\label{sec:examples}
+
+We now expand the composition formula explicitly.  These checks both
+illustrate the weighting rule and guard against shifts in the factorial or
+the Mersenne factor.
+
+\subsection*{$n=0$ and $n=1$}
+
+For $n=0$, the sole composition is empty, so $a_0=1$ and $F_0=1$.
+For $n=1$, the sole composition is $(1)$, with weight
+\[
+ \frac{1}{(2^1-1)(1+1)!}=\frac12.
+\]
+Since $2^{-\binom12}=1$, this gives
+\[
+ F_1=\frac12.
+\]
+
+\subsection*{$n=2$}
+
+The compositions are $(2)$ and $(1,1)$.  Their weights are
+\[
+ \wt(2)=\frac{1}{(2^2-1)3!}=\frac1{18},
+ \qquad
+ \wt(1,1)=
+ \frac1{(2^1-1)2!}\frac1{(2^2-1)2!}=\frac1{12}.
+\]
+Hence
+\[
+ a_2=\frac1{18}+\frac1{12}=\frac5{36},
+ \qquad
+ F_2=2^{-1}a_2=\frac5{72}.
+\]
+
+\subsection*{$n=3$}
+
+For $(3)$, $(1,2)$, $(2,1)$, and $(1,1,1)$ the respective weights are
+\[
+ \frac1{168},\qquad
+ \frac1{84},\qquad
+ \frac1{252},\qquad
+ \frac1{168}.
+\]
+Thus
+\[
+ a_3=\frac1{168}+\frac1{84}+\frac1{252}+\frac1{168}
+ =\frac1{36},
+ \qquad
+ F_3=2^{-3}a_3=\frac1{288}.
+\]
+
+\subsection*{$n=4$}
+
+There are eight compositions.  In the order
+\[
+ (4),\ (1,3),\ (2,2),\ (3,1),\
+ (1,1,2),\ (1,2,1),\ (2,1,1),\ (1,1,1,1),
+\]
+their weights are
+\[
+ \frac1{1800},\quad \frac1{720},\quad \frac1{1620},\quad
+ \frac1{5040},\quad \frac1{1080},\quad \frac1{2520},\quad
+ \frac1{7560},\quad \frac1{5040}.
+\]
+Their sum and the resulting inverse-dyadic value are
+\[
+ a_4=\frac{143}{32400},
+ \qquad
+ F_4=2^{-6}a_4=\frac{143}{2073600}.
+\]
+
+For reference, the first five values are therefore
+\begin{center}
+\begin{tabular}{@{}ccl@{}}
+\toprule
+$n$ & $a_n=2^{\binom n2}F_n$ & $F_n$ \\
+\midrule
+0 & $1$ & $1$ \\
+1 & $1/2$ & $1/2$ \\
+2 & $5/36$ & $5/72$ \\
+3 & $1/36$ & $1/288$ \\
+4 & $143/32400$ & $143/2073600$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+When $F_n=F(2^{-n})$, this reads
+\[
+ F(1)=1,\quad F(1/2)=\frac12,\quad F(1/4)=\frac5{72},
+ \quad F(1/8)=\frac1{288},\quad
+ F(1/16)=\frac{143}{2073600}.
+\]
+
+\section{Equivalence of the three viewpoints}
+
+We summarize the logical equivalence, which is useful when choosing a form
+for computation or formal proof.
+
+\begin{proposition}\label{prop:equivalence}
+For a sequence with $F_0=1$, the following descriptions are equivalent.
+\begin{enumerate}
+\item The sequence satisfies the recurrence \eqref{eq:F-recurrence} for
+      every $n\geq1$.
+\item It satisfies the composition formula \eqref{eq:main-composition} for
+      every $n\geq0$.
+\item Its normalization satisfies the finite matrix formula
+      \eqref{eq:matrix-solution} for every terminal index $N$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The implication from the composition formula to the normalized recurrence is
+the last-block decomposition \eqref{eq:A-recurrence}; undoing the
+normalization gives \eqref{eq:F-recurrence}.  Conversely, the recurrence and
+Proposition~\ref{prop:uniqueness} identify its solution with the composition
+sum constructed in Theorem~\ref{thm:composition}.  Finally,
+\eqref{eq:matrix-rec} is simply the normalized recurrence written for all
+indices up to $N$, and the finite geometric identity
+\eqref{eq:matrix-inverse} is equivalent to its unique solution.  Expanding
+matrix powers gives the chain formula, which is carried to the composition
+formula by the bijection \eqref{eq:chain-composition-bijection}.
+\end{proof}
+
+This proposition also clarifies the meaning of ``closed form'' here.  The
+composition expression is not recursive: each summand depends only on the
+blocks of one composition and on $n$.  The matrix inverse is likewise a
+finite polynomial in a nilpotent matrix.  Both are exact finite solutions of
+the triangular system.
+
+\section{Relation to inverse-dyadic Fabius values}
+
+The recurrence arises naturally from the half moments of Rvachev's
+$\operatorname{up}$ function.  If $d_n$ denotes the $n$th half moment and
+\[
+ a_n=\frac{d_n}{n!},
+\]
+then the moment recurrence gives \eqref{eq:a-recurrence}.  The analytic
+bridge to the Fabius function is
+\[
+ d_n=n!\,2^{\binom n2}F(2^{-n}),
+\]
+so the two definitions of $a_n$ agree.  Substituting this bridge into
+\eqref{eq:a-recurrence} yields \eqref{eq:F-recurrence}, and
+Theorem~\ref{thm:composition} therefore supplies a non-recursive exact
+formula for every inverse-dyadic Fabius value.
+
+There is no ambiguity between the usual bounded Fabius function and its
+signed global extension in this statement.  Every argument $2^{-k}$ belongs
+to $[0,1]$, including $2^0=1$, and the two versions agree throughout that
+interval.  Thus the same finite composition formula applies to either
+notation.
+
+\section{Lean formalization}
+
+The argument above has been formalized in Lean.  The implementation is in
+\begin{verbatim}
+FabiusFunction/FabiusInverseDyadicClosedForm.lean
+\end{verbatim}
+and is exported by the public \verb|FabiusFunction| facade.  It contains no
+axioms or placeholders beyond Lean and Mathlib's standard logical
+foundations.  The proof is split into a reusable path-sum layer, the explicit
+composition weights, and the analytic Fabius corollaries.
+
+\subsection*{Existing recurrence layer}
+
+The pre-existing normalized sequence is represented by
+\begin{verbatim}
+fabiusRecurrenceSequence n = halfMoment n / n!
+\end{verbatim}
+with the positive-index recurrence exposed as
+\begin{verbatim}
+fabiusRecurrenceSequence_recurrence
+  (n : Nat) (hn : 1 <= n) : ...
+\end{verbatim}
+The exact inverse-dyadic bridge and direct recurrence are represented by
+declarations such as
+\begin{verbatim}
+fabius_inverse_two_pow_eq_recurrenceSequence
+fabiusAtInverseTwoPow_recurrence_zpow
+fabiusFunction_inverse_two_pow_recurrence_zpow
+globalFabius_inverse_two_pow_recurrence
+\end{verbatim}
+The hypothesis $1\leq n$ remains explicit in source-facing recurrence
+theorems.  The non-recursive formula itself is total at $n=0$, because it
+uses the empty composition rather than the singular recurrence.
+
+\subsection*{Generic weighted paths}
+
+Mathlib provides the type \verb|Composition n| in
+\verb|Mathlib.Combinatorics.Enumerative.Composition|.  Its
+\verb|blocks| list records the positive increments of a path.  The formal
+equivalence
+\begin{verbatim}
+Composition.splitLastEquiv
+\end{verbatim}
+identifies a composition of a positive $n$ with a proper predecessor $k<n$
+and a composition of $k$.  The definitions \verb|Composition.pathWeight|
+and \verb|Composition.pathSum| multiply edge weights and sum them over all
+compositions.  The last-edge decomposition is the theorem
+\begin{verbatim}
+Composition.pathSum_eq_sum_range
+\end{verbatim}
+and the general solver
+\begin{verbatim}
+triangularRecurrence_eq_initial_mul_pathSum
+\end{verbatim}
+proves, by strong induction, that any semiring-valued triangular recurrence
+is its initial value times the corresponding finite path sum.  A separate
+\verb|triangularRecurrence_unique| theorem records uniqueness.
+
+\subsection*{Explicit composition formula}
+
+The theorem
+\begin{verbatim}
+Composition.pathWeight_eq_boundary_product
+\end{verbatim}
+rewrites a recursive list product chronologically, between consecutive
+partial sums.
+Since \verb|blocksFun| gives the blocks $r_j$ and \verb|sizeUpTo| gives the
+partial sums $s_j$, the article's rational weight is implemented literally
+as
+\begin{verbatim}
+def fabiusCompositionWeight (c : Composition n) : Rat :=
+  product over j of
+    1 / ((2^(c.sizeUpTo (j+1)) - 1) * (c.blocksFun j + 1)!)
+\end{verbatim}
+and \verb|fabiusCompositionSum n| sums this weight over all
+\verb|Composition n|.  The principal exact statements are
+\begin{verbatim}
+fabiusCompositionSum_eq_pathSum
+fabiusRecurrenceSequence_eq_sum_compositions
+fabiusAtInverseTwoPow_eq_sum_compositions
+fabiusAtInverseTwoPow_eq_composition_formula
+fabiusAtInverseTwoPow_eq_composition_formula_by_length
+fabiusFunction_inverse_two_pow_eq_sum_compositions
+fabius_inverse_two_pow_eq_sum_compositions_zpow
+globalFabius_inverse_two_pow_eq_sum_compositions
+\end{verbatim}
+The first fully expanded theorem is precisely \eqref{eq:main-composition}.
+The second is the requested multiple-sum presentation: it first sums over
+the length $1\leq m\leq n$, then over all compositions of $n$, retaining
+only those of length $m$.  No infinite sum or matrix library is needed.
+The generic real theorem holds for every bounded function satisfying the
+Fabius equations; the canonical and signed-global versions follow from the
+already proved analytic bridges.
+
+\subsection*{Verification targets}
+
+The mechanized theorem is valid for every $n:\N$, including $n=0$.
+Exact rational evaluations through $n=4$ reproduce the values in
+Section~\ref{sec:examples}.  The source has been checked directly and through
+the public facade; the principal declarations have no \verb|sorry| and use
+only the standard axioms \verb|propext|, \verb|Classical.choice|, and
+\verb|Quot.sound|.  The real corollaries are derived from the rational
+identity by the existing recurrence-sequence bridge, rather than by
+reproving any analytic property of the Fabius function.
+
+\section{Conclusion}
+
+The normalization $a_n=2^{\binom n2}F_n$ turns the inverse-dyadic Fabius
+recurrence into a weighted acyclic path recurrence.  Summing all paths gives
+the exact composition formula \eqref{eq:main-composition}.  Its proof is the
+elementary operation of removing the last block of a composition; its matrix
+counterpart is the finite Neumann series of a nilpotent lower-triangular
+matrix.  The resulting expression is explicit, positive, rational, and
+fully non-recursive, and it incorporates the initial value at $n=0$ through
+the empty-composition convention.
+
+\end{document}

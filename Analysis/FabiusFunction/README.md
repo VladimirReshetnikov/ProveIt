@@ -218,7 +218,29 @@ for every `n ≥ 1`; exact rational, generic `IsFabius`, and canonical global
 forms are exposed by `fabiusAtInverseTwoPow_recurrence_zpow`,
 `fabiusFunction_inverse_two_pow_recurrence_zpow`, and
 `globalFabius_inverse_two_pow_recurrence`.  The restriction is necessary:
-at `n = 0` the displayed denominator vanishes.  The
+at `n = 0` the displayed denominator vanishes.
+
+`FabiusInverseDyadicClosedForm.lean` solves this recurrence completely.  If
+`(r₁,…,rₘ)` ranges over the ordered compositions of `n` and
+`sⱼ = r₁+⋯+rⱼ`, then
+
+```text
+F(2^(-n)) = 2^(-choose(n,2)) *
+  sum (r₁,…,rₘ) ⊧ n,
+    product (j = 1,…,m), 1 / ((2^sⱼ - 1) * (rⱼ + 1)!).
+```
+
+For `n = 0`, the unique empty composition and empty product give the initial
+value `F(1)=1`, so unlike the recurrence this formula holds for every natural
+`n`.  The proof is a finite weighted-path expansion with a formal last-edge
+decomposition.  Public endpoints include
+`Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
+`Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
+canonical, and signed-global real corollaries.  A self-contained derivation is
+available as [LaTeX source](Article/fabius-inverse-dyadic-closed-form.tex) and
+as a [rendered PDF](Article/fabius-inverse-dyadic-closed-form.pdf).
+
+The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
 is proved exactly in its full stated scope: for all natural `m,n`, its
 half-shifted Thue--Morse sum is the signed global Fabius value at `m / 2^n`.
