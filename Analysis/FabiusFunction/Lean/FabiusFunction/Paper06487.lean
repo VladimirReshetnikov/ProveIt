@@ -12,7 +12,17 @@ numbered question, definition, and conjecture.  The supplement imported here
 also exposes the mathematical assertions made in the surrounding prose and
 inside proofs.
 
+In particular, the public import provides:
+
+* analytic facts about the support, sign, derivatives, and flat points of
+  Rvachev's function;
+* the exact integrality, oddness, divisibility, and two-adic assertions used in
+  the arithmetic arguments;
+* both orders of summation in the finite dyadic-value formula; and
+* the denominator formulas implied by Conjecture 16.
+
 The formalization documents and corrects the few statements that are not
 literally valid as printed, most notably the missing order condition in
-Lemma 1 and the removable singularity in Proposition 2.
+Lemma 1, the removable singularity in Proposition 2, and the missing factor of
+two in a proof-internal sentence in Theorem 20.
 -/

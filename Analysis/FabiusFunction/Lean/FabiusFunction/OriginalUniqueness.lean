@@ -7,7 +7,10 @@ import Mathlib.Analysis.Fourier.Inversion
 # Uniqueness in the original Rvachev characterization
 
 This file proves the uniqueness half of Theorem 1 of arXiv:1702.05442 by
-the Fourier-refinement argument used in the paper.
+the Fourier-refinement argument used in the paper.  The intermediate Fourier
+facts are part of the public API: every original solution has transform value
+one at the origin, satisfies the finite and infinite dyadic sinc-product
+formulas, and consequently has the same transform as every other solution.
 -/
 
 set_option autoImplicit false
@@ -49,27 +52,19 @@ private theorem complex_integrable : Integrable (complexFunction φ) :=
 noncomputable def originalFourier (φ : ℝ → ℝ) (z : ℝ) : ℂ :=
   𝓕 (complexFunction φ) z
 
-private theorem originalFourier_continuous : Continuous (originalFourier φ) := by
+/-- The Fourier transform of an original solution is continuous. -/
+theorem originalFourier_continuous : Continuous (originalFourier φ) := by
   exact VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar
     (innerSL ℝ).continuous₂ h.complex_integrable
 
-private theorem originalFourier_zero : originalFourier φ 0 = 1 := by
+/-- Normalization of an original solution gives Fourier-transform value one at
+frequency zero. -/
+theorem originalFourier_zero : originalFourier φ 0 = 1 := by
   rw [originalFourier, Real.fourier_real_eq_integral_exp_smul]
-  have hloc : (∫ x : ℝ, (φ x : ℂ)) =
-      ∫ x : ℝ in Icc (-1 : ℝ) 1, (φ x : ℂ) := by
-    rw [← integral_indicator measurableSet_Icc]
-    apply integral_congr_ae
-    filter_upwards with x
-    by_cases hx : x ∈ Icc (-1 : ℝ) 1
-    · simp [hx]
-    · rw [h.eq_zero_of_not_mem hx]
-      simp [hx]
-  have hinter : (∫ x : ℝ in Icc (-1 : ℝ) 1, (φ x : ℂ)) = 1 := by
-    rw [integral_Icc_eq_integral_Ioc]
-    rw [← intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
-    rw [intervalIntegral.integral_ofReal]
-    simp [h.intervalIntegral_eq_one]
-  simpa [hloc, hinter]
+  have hcast : (∫ x : ℝ, (φ x : ℂ)) =
+      Complex.ofReal (∫ x : ℝ, φ x) := by
+    exact integral_ofReal (𝕜 := ℂ)
+  simpa [hcast, h.integral_eq_one]
 
 private theorem affine_fourier (d z : ℝ) :
     𝓕 (fun x : ℝ => complexFunction φ (2 * x + d)) z =
@@ -270,7 +265,9 @@ theorem originalFourier_scaling (z : ℝ) :
     _ = Complex.sin (Real.pi * (z : ℂ)) / (Real.pi * (z : ℂ)) *
         originalFourier φ (z / 2) := by ring
 
-private theorem originalFourier_finite_product (z : ℝ) (N : ℕ) :
+/-- Iterating the refinement equation `N` times separates the first `N` sinc
+factors from a Fourier-transform tail at the rescaled frequency `z / 2^N`. -/
+theorem originalFourier_finite_product (z : ℝ) (N : ℕ) :
     originalFourier φ z =
       (∏ n ∈ Finset.range N,
         complexSinc (Real.pi * (z : ℂ) / (2 : ℂ) ^ n)) *
@@ -343,6 +340,14 @@ theorem originalFourier_eq_product (z : ℝ) :
   unfold rvachevFourierProduct
   exact tendsto_nhds_unique tendsto_const_nhds hlim
 
+/-- Any two functions satisfying the original characterization have identical
+Fourier transforms, even when their dilation constants are presented
+independently. -/
+theorem originalFourier_eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
+    (hψ : IsOriginalFabius ψ ℓ) (z : ℝ) :
+    originalFourier φ z = originalFourier ψ z := by
+  rw [h.originalFourier_eq_product, hψ.originalFourier_eq_product]
+
 private noncomputable def schwartzMap : 𝓢(ℝ, ℂ) :=
   h.complex_hasCompactSupport.toSchwartzMap h.complex_contDiff
 
@@ -358,13 +363,25 @@ theorem eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
     ext z
     rw [SchwartzMap.fourier_coe, SchwartzMap.fourier_coe]
     change originalFourier φ z = originalFourier ψ z
-    rw [h.originalFourier_eq_product, hψ.originalFourier_eq_product]
+    exact h.originalFourier_eq_of_isOriginalFabius hψ z
   have hschwartz : h.schwartzMap = hψ.schwartzMap :=
     (FourierTransform.fourierEquiv ℂ 𝓢(ℝ, ℂ)).injective htransform
   funext x
   have hx := congrArg (fun s : 𝓢(ℝ, ℂ) => s x) hschwartz
   change (φ x : ℂ) = (ψ x : ℂ) at hx
   exact_mod_cast hx
+
+/-- Every original solution is the canonical Rvachev function.  This
+namespace form is convenient when the dilation constant is not otherwise
+needed. -/
+theorem eq_canonical : φ = rvachevUp fabius :=
+  h.eq_of_isOriginalFabius canonical_isOriginalFabius
+
+/-- Every original solution is even.  This is transported from the canonical
+Rvachev function after uniqueness has been established. -/
+theorem even : Function.Even φ := by
+  rw [h.eq_canonical]
+  exact rvachevUp_even fabius
 
 /-- The functions and dilation constants of any two original solutions agree
 simultaneously. -/
@@ -380,7 +397,7 @@ end IsOriginalFabius
 function, and its dilation constant is `2`. -/
 theorem originalFabius_eq_canonical {φ : ℝ → ℝ} {k : ℝ}
     (h : IsOriginalFabius φ k) : φ = rvachevUp fabius ∧ k = 2 := by
-  exact ⟨h.eq_of_isOriginalFabius canonical_isOriginalFabius, h.scale_eq_two⟩
+  exact ⟨h.eq_canonical, h.scale_eq_two⟩
 
 /-- The exact existence-and-uniqueness formulation of Theorem 1 of
 arXiv:1702.05442. -/
