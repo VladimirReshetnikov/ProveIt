@@ -85,6 +85,17 @@ theorem fabiusSaddleKernelMass_im_eq_zero
   simpa using congrArg Complex.im
     (fabiusSaddleRatio_ofReal_eq_kernelMass F hF hr hb).symm
 
+/-- The norm of the normalized complex kernel mass is the absolute value of
+the exact real saddle ratio.  This is the norm-level form of
+`fabiusSaddleRatio_ofReal_eq_kernelMass`; unlike the positivity refinement
+below, it needs no sign hypothesis on `fabiusReal F x`. -/
+theorem norm_fabiusSaddleKernelMass_eq_abs_ratio
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x r b : ℝ} (hr : 0 < r) (hb : 0 < b) :
+    ‖fabiusSaddleKernelMass F x r b‖ = |fabiusSaddleRatio F x r b| := by
+  rw [← fabiusSaddleRatio_ofReal_eq_kernelMass F hF hr hb,
+    Complex.norm_real, Real.norm_eq_abs]
+
 /-- Positivity of the exact saddle ratio. -/
 theorem fabiusSaddleRatio_pos
     (F : BoundedFabius) {x r b : ℝ}
