@@ -36,7 +36,10 @@ proved Lean counterpart:
 * Theorem 5: `Fabius.rvachev_poisson_summation`, supported by the stronger
   real-axis Schwartz estimates
   `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay` and
-  `Fabius.rvachevFourier_real_rapidDecay`;
+  `Fabius.rvachevFourier_real_rapidDecay`, and by the upper-bound-free support
+  specializations
+  `Fabius.rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+  `Fabius.rvachev_poisson_support_specialization_of_one_half_le`;
 * Theorem 6: `Fabius.original_theorem_six`;
 * Theorem 7: `Fabius.original_theorem_seven_global`.
 

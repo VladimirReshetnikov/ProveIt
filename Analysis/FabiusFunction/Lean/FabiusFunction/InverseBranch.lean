@@ -9,14 +9,13 @@ functions that are real analytic on a dense set — the invariant that
 `FabiusFunction.ElementaryFunction` establishes for the elementary functions —
 is also closed under passage to a **continuous inverse branch**.
 
-That closure is what makes the non-elementarity results robust.  Adjoining
-`Real.log` to a class already containing `Real.exp` adds nothing that was not
-already tame, and the same is true of the Lambert `W` function, of the
-inverses of those, and of anything assembled from them by the elementary
-operations.  A function that is analytic at *no* point of an interval is
-therefore outside the entire tower, not merely outside its ground floor.
+That closure is what makes the non-elementarity results robust.  Every inverse
+branch admitted by the constructor below preserves dense analyticity, as do
+all later elementary operations.  A function that is analytic at *no* point
+of an interval is therefore outside the entire resulting tower, not merely
+outside its ground floor.
 
-## The two theorems
+## The inverse-analyticity theorems
 
 `Fabius.analyticAt_of_rightInverse` is the analytic inverse function theorem,
 and it is obtained here for free.  The observation is that a one-sided inverse
@@ -30,15 +29,17 @@ theorem `Fabius.analyticAt_of_continuous_branch`, proved in
 `FabiusFunction.AlgebraicBranch` for the algebraic application, delivers the
 inverse function theorem with no further analysis.
 
-`Fabius.exists_analyticAt_of_rightInverse` is the global statement: if `f` is
-analytic on a dense set and `g` is a continuous right inverse of `f` on a
-nonempty open `U`, then `g` is analytic somewhere in `U`.  Two facts drive it.
-A continuous right inverse is injective, and a continuous injection carries a
-closed interval to a set containing an interval — this is the intermediate
-value theorem — so the image `g '' U` is *fat*, and a dense set must meet it.
-And on that image `f` is injective, so `f` cannot be locally constant there;
-its derivative therefore fails to vanish somewhere, which is what the inverse
-function theorem needs.
+`Fabius.exists_analyticAt_of_rightInverse` is the open-set existence statement:
+if `f` is analytic on a dense set and `g` is a continuous right inverse of `f`
+on a nonempty open `U`, then `g` is analytic somewhere in `U`.  Its local
+strengthening `Fabius.analyticDenseOn_of_rightInverse` applies that result in
+every open subset of an arbitrary branch domain; the ambient domain itself
+need not be open.  Two facts drive the existence proof.  A continuous right
+inverse is injective, and a continuous injection carries a closed interval to
+a set containing an interval — this is the intermediate value theorem — so the
+image `g '' U` is *fat*, and a dense set must meet it.  And on that image `f`
+is injective, so `f` cannot be locally constant there; its derivative therefore
+fails to vanish somewhere, which is what the inverse function theorem needs.
 
 The critical points are exactly where the argument must be allowed to move:
 `x ↦ x ^ 3` is analytic and invertible, but its inverse is not analytic at
@@ -46,9 +47,9 @@ The critical points are exactly where the argument must be allowed to move:
 not `t ↦ t ^ (1/3 : ℝ)`: `Mathlib`'s `Real.rpow` gives `(-8 : ℝ) ^ (1/3 : ℝ) = 1`,
 so the `rpow` version is a right inverse of the cube only on `[0, ∞)`.  The
 signed form is a right inverse on all of `ℝ`, by `Fabius.signedRoot_pow`.  This
-is why the conclusion is "analytic somewhere in `U`" rather than "analytic on
-`U`", and it is the same phenomenon that makes density, not analyticity
-everywhere, the right invariant throughout.
+is why the strongest conclusion is density of analytic points rather than
+analyticity everywhere; the existence theorem records its single-open-set
+specialization.
 
 ## The extended class
 
@@ -181,6 +182,22 @@ theorem exists_analyticAt_of_rightInverse {f g : ℝ → ℝ} {U : Set ℝ}
   · exact hg.continuousAt (hU.mem_nhds hy₁U)
   · filter_upwards [hU.mem_nhds hy₁U] with y hy using hinv y hy
 
+/-- **A continuous inverse branch of a densely analytic function is analytic
+on a dense subset of its branch domain.**
+
+The domain `U` need not itself be open.  The conclusion tests every nonempty
+open `V ⊆ U`; on such a `V`, continuity and the right-inverse identity restrict
+from `U`, and `Fabius.exists_analyticAt_of_rightInverse` supplies an analytic
+point.  Thus for open `U` this is precisely relative density of the analytic
+locus in `U`, while for a domain with empty interior it is correctly vacuous. -/
+theorem analyticDenseOn_of_rightInverse {f g : ℝ → ℝ} {U : Set ℝ}
+    (hf : Dense (analyticLocus f)) (hg : ContinuousOn g U)
+    (hinv : ∀ y ∈ U, f (g y) = y) :
+    AnalyticDenseOn g U := by
+  intro V hV hVne hVU
+  exact exists_analyticAt_of_rightInverse hf hV hVne (hg.mono hVU)
+    (fun y hy => hinv y (hVU hy))
+
 /-! ## Elementary functions extended by inverse branches -/
 
 /-- Elementary functions of one real variable, closed under continuous inverse
@@ -259,7 +276,7 @@ on a dense set.**
 
 The elementary cases are `Fabius.IsElementary.dense_analyticLocus` and the
 closure lemmas behind it; the inverse case is
-`Fabius.exists_analyticAt_of_rightInverse` inside `U`, together with the
+`Fabius.analyticDenseOn_of_rightInverse` inside `U`, together with the
 hypothesis that the branch is analytic on `interior Uᶜ`.  The two cases are
 separated by whether the open test set meets `U`; if it does not, it is
 contained in `Uᶜ` and, being open, in `interior Uᶜ`. -/
@@ -268,6 +285,7 @@ theorem IsElementaryOrInverse.dense_analyticLocus {f : ℝ → ℝ}
   induction hf with
   | ofElementary h => exact h.dense_analyticLocus
   | invBranch U _ hU hg hinv hout ih =>
+      have hgin := analyticDenseOn_of_rightInverse ih hg hinv
       rw [dense_iff_inter_open]
       intro B hB hBne
       rcases Set.eq_empty_or_nonempty (B ∩ U) with hBU | hBU
@@ -276,8 +294,7 @@ theorem IsElementaryOrInverse.dense_analyticLocus {f : ℝ → ℝ}
           Set.eq_empty_iff_forall_notMem.1 hBU z ⟨hz, hzU⟩
         exact ⟨y, hyB, hout y (interior_maximal hBsub hB hyB)⟩
       · obtain ⟨y, hy, hya⟩ :=
-          exists_analyticAt_of_rightInverse ih (hB.inter hU) hBU
-            (hg.mono Set.inter_subset_right) (fun y hy => hinv y hy.2)
+          hgin (B ∩ U) (hB.inter hU) hBU Set.inter_subset_right
         exact ⟨y, hy.1, hya⟩
   | add _ _ ih₁ ih₂ =>
       refine (ih₁.inter_of_isOpen_left ih₂ (isOpen_analyticLocus _)).mono ?_
@@ -321,7 +338,8 @@ theorem IsElementaryOrInverse.exists_analyticAt_of_isOpen {f : ℝ → ℝ}
   obtain ⟨x, hxU, hxf⟩ := (dense_iff_inter_open.mp hf.dense_analyticLocus) U hU hUne
   exact ⟨x, hxU, hxf⟩
 
-/-- **The Lambert `W` function belongs to the extended class.**
+/-- **A criterion for a Lambert-style inverse branch to belong to the extended
+class.**
 
 Any function satisfying the defining identity `W y * exp (W y) = y` on an open
 set `U`, continuous there and analytic on the interior of the complement of

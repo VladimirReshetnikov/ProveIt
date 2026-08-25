@@ -2,6 +2,7 @@ import FabiusFunction.EarlyApproximants
 import FabiusFunction.FourierProduct
 import FabiusFunction.PaperStatements
 import Mathlib.MeasureTheory.Measure.LevyConvergence
+import Mathlib.MeasureTheory.Measure.Support
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 
 /-!
@@ -16,6 +17,12 @@ We formalize weak-* convergence as convergence in the standard weak topology
 on `ProbabilityMeasure ℝ`.  Explicit equivalent formulations are supplied
 for bounded continuous test functions valued in an arbitrary `RCLike` field,
 with convenient real and complex specializations.
+
+The limiting density measure is also described intrinsically: every open set
+meeting `(-1,1)` has positive mass, and its exact measure-theoretic support is
+the closed interval `[-1,1]`.  Thus the endpoint inclusion is not merely a
+consequence of a convenient closed support bound; both endpoints genuinely
+belong to the topological support.
 
 The index `n` here is the paper's finite cutoff: `finiteConvolutionMeasure n`
 contains the factors indexed by `k = 1, ..., n`.  Internally those factors are
@@ -90,6 +97,51 @@ theorem rvachevMeasure_Icc (F : BoundedFabius) (hF : IsFabius F) :
     (μ := rvachevMeasure F) measurableSet_Icc
   rw [rvachevMeasure_compl_Icc F hF, rvachevMeasure_univ F hF, add_zero] at h
   exact h
+
+/-- Every open set that meets the interior `(-1,1)` of Rvachev's support has
+positive `rvachevMeasure` mass.  This is the measure-level form of strict
+positivity of the density on its ordinary support. -/
+theorem rvachevMeasure_pos_of_isOpen_inter_Ioo
+    (F : BoundedFabius) (hF : IsFabius F) {U : Set ℝ}
+    (hU : IsOpen U) (hne : (U ∩ Ioo (-1 : ℝ) 1).Nonempty) :
+    0 < rvachevMeasure F U := by
+  apply pos_iff_ne_zero.mpr
+  intro hzero
+  have hdensity : Measurable (fun x : ℝ => ENNReal.ofReal (rvachevUp F x)) :=
+    ENNReal.measurable_ofReal.comp (rvachev_contDiff F hF).continuous.measurable
+  have hnull :
+      volume ({x : ℝ | ENNReal.ofReal (rvachevUp F x) ≠ 0} ∩ U) = 0 :=
+    (withDensity_apply_eq_zero hdensity).mp (by
+      simpa only [rvachevMeasure] using hzero)
+  have hsub : U ∩ Ioo (-1 : ℝ) 1 ⊆
+      {x : ℝ | ENNReal.ofReal (rvachevUp F x) ≠ 0} ∩ U := by
+    intro x hx
+    exact ⟨(ENNReal.ofReal_pos.mpr
+      (rvachevUp_pos_of_mem_Ioo F hF hx.2)).ne', hx.1⟩
+  have hVzero : volume (U ∩ Ioo (-1 : ℝ) 1) = 0 :=
+    measure_mono_null hsub hnull
+  exact ((hU.inter isOpen_Ioo).measure_pos volume hne).ne' hVzero
+
+/-- The exact topological support of the Rvachev density measure is the closed
+interval `[-1,1]`.  Although the density vanishes at the two endpoints, every
+endpoint neighborhood meets the open positivity set `(-1,1)` and therefore
+has positive mass. -/
+theorem support_rvachevMeasure (F : BoundedFabius) (hF : IsFabius F) :
+    (rvachevMeasure F).support = Icc (-1 : ℝ) 1 := by
+  apply Set.Subset.antisymm
+  · apply Measure.support_subset_of_isClosed isClosed_Icc
+    rw [mem_ae_iff]
+    exact rvachevMeasure_compl_Icc F hF
+  · intro x hx
+    rw [Measure.mem_support_iff_forall]
+    intro U hUnhds
+    obtain ⟨V, hVU, hVopen, hxV⟩ := mem_nhds_iff.mp hUnhds
+    have hxClosure : x ∈ closure (Ioo (-1 : ℝ) 1) := by
+      rw [closure_Ioo (by norm_num : (-1 : ℝ) ≠ 1)]
+      exact hx
+    obtain ⟨y, hyV, hyIoo⟩ := mem_closure_iff.mp hxClosure V hVopen hxV
+    exact (rvachevMeasure_pos_of_isOpen_inter_Ioo F hF hVopen
+      ⟨y, hyV, hyIoo⟩).trans_le (measure_mono hVU)
 
 /-- The characteristic function of the density `φ λ`, with the conversion
 between mathlib's convention and the paper's Fourier-transform convention. -/
