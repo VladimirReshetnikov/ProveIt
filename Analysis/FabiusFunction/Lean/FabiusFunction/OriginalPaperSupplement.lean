@@ -15,9 +15,9 @@ import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 This file packages Theorems 4, 6, and 7 of arXiv:1702.05442 in the
 notation used by this development.  It also records the finite Taylor
 expansion at dyadic points and the paper's unnumbered corollary that
-Rvachev's compactly supported function is nowhere real analytic.  The exact
-even and odd integer values of the signed global extension make the dyadic
-derivative truncation transparent.
+Rvachev's compactly supported function is not real analytic at any point of
+its support.  The exact even and odd integer values of the signed global
+extension make the dyadic derivative truncation transparent.
 -/
 
 open scoped BigOperators ContDiff Topology
@@ -211,6 +211,8 @@ theorem paperTheta_odd_nat_ne_zero
 def centeredDyadic (n a : ℕ) : ℝ :=
   ((a : ℝ) - 2 ^ n) / 2 ^ n
 
+/-- A centered dyadic whose numerator is in the defining range lies in the
+closed support interval. -/
 lemma centeredDyadic_mem_Icc (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) :
     centeredDyadic n a ∈ Icc (-1 : ℝ) 1 := by
   dsimp [centeredDyadic]
@@ -279,6 +281,8 @@ theorem iteratedDeriv_rvachev_centeredDyadic_ne_zero
   exact mul_ne_zero (pow_ne_zero _ (by norm_num))
     (paperTheta_odd_nat_ne_zero F hF b)
 
+/-- An in-range centered dyadic with odd numerator lies in the interior of
+the support interval. -/
 lemma centeredDyadic_mem_Ioo_of_odd
     (n a : ℕ) (ha : a ≤ 2 ^ (n + 1)) (haOdd : Odd a) :
     centeredDyadic n a ∈ Ioo (-1 : ℝ) 1 := by
@@ -337,29 +341,35 @@ theorem rvachevDyadicTaylorPolynomial_natDegree_eq
 
 /-! ## The nowhere-analytic corollary -/
 
+/-- Dyadic meshes become arbitrarily fine while their level stays above any
+prescribed cutoff. -/
+private lemma exists_level_ge_one_div_two_pow_lt
+    (r : ℝ) (hr : 0 < r) (N : ℕ) :
+    ∃ n : ℕ, N ≤ n ∧ 1 / (2 : ℝ) ^ n < r := by
+  obtain ⟨d, hd⟩ := exists_pow_lt_of_lt_one hr
+    (by norm_num : (1 / 2 : ℝ) < 1)
+  refine ⟨N + d, by omega, ?_⟩
+  rw [show 1 / (2 : ℝ) ^ (N + d) = (1 / 2 : ℝ) ^ (N + d) by
+    rw [div_pow]
+    norm_num]
+  rw [pow_add]
+  calc
+    (1 / 2 : ℝ) ^ N * (1 / 2 : ℝ) ^ d ≤
+        1 * (1 / 2 : ℝ) ^ d :=
+      mul_le_mul_of_nonneg_right (pow_le_one₀ (by norm_num) (by norm_num))
+        (by positivity)
+    _ < r := by simpa using hd
+
 /-- Odd centered dyadics of arbitrarily high level occur in every ball whose
 center is in the interior of `[-1,1]`. -/
 private theorem exists_odd_centeredDyadic_mem_ball_of_mem_Ioo
     (x r : ℝ) (hx : x ∈ Ioo (-1 : ℝ) 1) (hr : 0 < r) (N : ℕ) :
     ∃ n a : ℕ, N ≤ n ∧ a ≤ 2 ^ (n + 1) ∧ Odd a ∧
       centeredDyadic n a ∈ Metric.ball x r := by
-  obtain ⟨d, hd⟩ := exists_pow_lt_of_lt_one hr
-    (by norm_num : (1 / 2 : ℝ) < 1)
-  let n := N + 1 + d
-  have hnN : N ≤ n := by dsimp [n]; omega
-  have hn1 : 1 ≤ n := by dsimp [n]; omega
-  have hmesh : 1 / (2 : ℝ) ^ n < r := by
-    have hfactor : (1 / 2 : ℝ) ^ (N + 1) ≤ 1 :=
-      pow_le_one₀ (by norm_num) (by norm_num)
-    rw [show 1 / (2 : ℝ) ^ n = (1 / 2 : ℝ) ^ n by
-      rw [div_pow]; norm_num]
-    dsimp [n]
-    rw [pow_add]
-    calc
-      (1 / 2 : ℝ) ^ (N + 1) * (1 / 2 : ℝ) ^ d ≤
-          1 * (1 / 2 : ℝ) ^ d :=
-        mul_le_mul_of_nonneg_right hfactor (by positivity)
-      _ < r := by simpa using hd
+  obtain ⟨n, hnN1, hmesh⟩ :=
+    exists_level_ge_one_div_two_pow_lt r hr (N + 1)
+  have hnN : N ≤ n := by omega
+  have hn1 : 1 ≤ n := by omega
   let scale : ℝ := 2 ^ (n - 1)
   have hscale : 0 < scale := by positivity
   have hpow : (2 : ℝ) ^ n = 2 * scale := by
@@ -416,19 +426,7 @@ private theorem exists_odd_centeredDyadic_mem_ball
   rcases eq_or_lt_of_le hx.1 with hleft | hleft
   · have hxeq : x = -1 := hleft.symm
     subst x
-    obtain ⟨d, hd⟩ := exists_pow_lt_of_lt_one hr
-      (by norm_num : (1 / 2 : ℝ) < 1)
-    let n := N + d
-    have hnN : N ≤ n := by dsimp [n]; omega
-    have hmesh : 1 / (2 : ℝ) ^ n < r := by
-      rw [show 1 / (2 : ℝ) ^ n = (1 / 2 : ℝ) ^ n by
-        rw [div_pow]; norm_num]
-      dsimp [n]
-      rw [pow_add]
-      calc
-        (1 / 2 : ℝ) ^ N * (1 / 2 : ℝ) ^ d ≤ 1 * (1 / 2 : ℝ) ^ d :=
-          mul_le_mul_of_nonneg_right (pow_le_one₀ (by norm_num) (by norm_num)) (by positivity)
-        _ < r := by simpa using hd
+    obtain ⟨n, hnN, hmesh⟩ := exists_level_ge_one_div_two_pow_lt r hr N
     refine ⟨n, 1, hnN, Nat.one_le_two_pow, ⟨0, by simp⟩, ?_⟩
     rw [Metric.mem_ball, Real.dist_eq]
     have hy : centeredDyadic n 1 - (-1 : ℝ) = 1 / 2 ^ n := by
@@ -440,19 +438,7 @@ private theorem exists_odd_centeredDyadic_mem_ball
   · rcases eq_or_lt_of_le hx.2 with hright | hright
     · have hxeq : x = 1 := hright
       subst x
-      obtain ⟨d, hd⟩ := exists_pow_lt_of_lt_one hr
-        (by norm_num : (1 / 2 : ℝ) < 1)
-      let n := N + d
-      have hnN : N ≤ n := by dsimp [n]; omega
-      have hmesh : 1 / (2 : ℝ) ^ n < r := by
-        rw [show 1 / (2 : ℝ) ^ n = (1 / 2 : ℝ) ^ n by
-          rw [div_pow]; norm_num]
-        dsimp [n]
-        rw [pow_add]
-        calc
-          (1 / 2 : ℝ) ^ N * (1 / 2 : ℝ) ^ d ≤ 1 * (1 / 2 : ℝ) ^ d :=
-            mul_le_mul_of_nonneg_right (pow_le_one₀ (by norm_num) (by norm_num)) (by positivity)
-          _ < r := by simpa using hd
+      obtain ⟨n, hnN, hmesh⟩ := exists_level_ge_one_div_two_pow_lt r hr N
       let a := 2 ^ (n + 1) - 1
       have ha : a ≤ 2 ^ (n + 1) := Nat.sub_le _ _
       have haOdd : Odd a := by
@@ -585,21 +571,10 @@ theorem rvachevDyadic_cast_global
         exact_mod_cast halt
       simpa only [Nat.cast_natAbs, Int.cast_abs] using hcast
     have hzero : rvachevUp F ((a : ℝ) / (2 : ℝ) ^ n) = 0 := by
-      by_cases ha0 : a ≤ 0
-      · have hx0 : (a : ℝ) / (2 : ℝ) ^ n ≤ 0 :=
-          div_nonpos_of_nonpos_of_nonneg (by exact_mod_cast ha0) (by positivity)
-        have hxlt : (a : ℝ) / (2 : ℝ) ^ n < -1 := by
-          rw [abs_of_nonpos hx0] at habs
-          linarith
-        rw [rvachevUp, if_pos hx0]
-        exact hF.zero_of_nonpos _ (by linarith)
-      · have hx0 : 0 < (a : ℝ) / (2 : ℝ) ^ n :=
-          div_pos (by exact_mod_cast (lt_of_not_ge ha0)) (by positivity)
-        have hxgt : 1 < (a : ℝ) / (2 : ℝ) ^ n := by
-          rw [abs_of_pos hx0] at habs
-          exact habs
-        rw [rvachevUp, if_neg (not_le.mpr hx0)]
-        exact hF.zero_of_nonpos _ (by linarith)
+      apply rvachevUp_eq_zero_of_not_mem_Ioo F hF
+      intro hx
+      have hxabs : |(a : ℝ) / (2 : ℝ) ^ n| < 1 := (abs_lt).2 hx
+      linarith
     rw [rvachevDyadic, if_neg ha, Rat.cast_zero, hzero]
 
 /-- Theorem 7 in its literal global form: Rvachev's function is rational at

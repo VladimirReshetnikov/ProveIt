@@ -37,8 +37,7 @@ noncomputable section
 theorem rvachevUp_integrable (F : BoundedFabius) (hF : IsFabius F) :
     Integrable (rvachevUp F) := by
   apply (rvachev_contDiff F hF).continuous.integrable_of_hasCompactSupport
-  rw [HasCompactSupport, tsupport_rvachev F hF]
-  exact isCompact_Icc
+  exact rvachevUp_hasCompactSupport F hF
 
 -- The companion fact "Rvachev's up function has total integral one" is
 -- `Fabius.integral_rvachev_eq_one` in `FabiusFunction.AnalyticMoments` (reachable
@@ -51,6 +50,8 @@ theorem rvachevUp_integrable (F : BoundedFabius) (hF : IsFabius F) :
 noncomputable def rvachevMeasure (F : BoundedFabius) : Measure ℝ :=
   volume.withDensity (fun x => ENNReal.ofReal (rvachevUp F x))
 
+/-- The density `rvachevMeasure F` is a probability measure whenever `F`
+satisfies the Fabius equations. -/
 theorem rvachevMeasure_isProbability (F : BoundedFabius) (hF : IsFabius F) :
     IsProbabilityMeasure (rvachevMeasure F) := by
   rw [isProbabilityMeasure_iff]
@@ -116,6 +117,7 @@ noncomputable def finiteCosineProduct (n : ℕ) (t : ℝ) : ℂ :=
 noncomputable def sincTail (n : ℕ) (t : ℝ) : ℂ :=
   complexSinc ((t : ℂ) / (2 : ℂ) ^ (n + 1))
 
+/-- Extending the cutoff appends the next weighted cosine factor. -/
 theorem finiteCosineProduct_succ (n : ℕ) (t : ℝ) :
     finiteCosineProduct (n + 1) t = finiteCosineProduct n t *
       Complex.cos ((t : ℂ) / (2 : ℂ) ^ (n + 2)) ^ (n + 1) := by
@@ -185,6 +187,7 @@ by the characteristic functions of the convolution approximants. -/
 noncomputable def shiftedSincProduct (t : ℝ) : ℂ :=
   ∏' k : ℕ, complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))
 
+/-- The shifted sinc factors form a convergent infinite product. -/
 lemma shiftedSincFactors_multipliable (t : ℝ) :
     Multipliable (fun k : ℕ => complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) := by
   have h := sincFactors_multipliable ((t : ℂ) / (2 * Real.pi))
@@ -209,6 +212,7 @@ lemma shiftedSincProduct_eq_rvachevFourierProduct (t : ℝ) :
     ring
   rw [harg, complexSinc_neg]
 
+/-- The partial shifted sinc products converge to `shiftedSincProduct`. -/
 lemma tendsto_finiteSincProduct (t : ℝ) :
     Tendsto
       (fun n : ℕ => ∏ k ∈ range n,
@@ -237,6 +241,8 @@ theorem tendsto_finiteCosineProduct (t : ℝ) :
     field_simp
   simpa using hdiv.congr' heq
 
+/-- The characteristic function of the `n`th finite convolution is its
+finite weighted cosine product. -/
 theorem finiteConvolutionMeasure_charFun_eq_finiteCosineProduct (n : ℕ) (t : ℝ) :
     charFun (finiteConvolutionMeasure n) t = finiteCosineProduct n t := by
   rw [finiteConvolutionMeasure_charFun]
