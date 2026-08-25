@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseApproximation
+import FabiusFunction.ThueMorseExponential
 import FabiusFunction.ThueMorseBinomialLog
 import FabiusFunction.DraftCounterexamples
 import FabiusFunction.StirlingAsymptotics
@@ -17,10 +18,11 @@ The TeX source in
 `theorem`, `lemma`, `proposition`, or `corollary` environments.  This public
 aggregate tracks its numbered equations and substantive prose claims.
 
-The Thue--Morse identities, iterated-prefix convolution, exact zero runs,
-formal generating series, and a corrected pointwise approximation theorem
-are proved.  The aggregate also exposes the zero-one Thue--Morse sequence and
-the exact binomial-parity/`Log2` formula for it.  The literal normalization
+The Thue--Morse identities, sharp affine Prouhet formula, iterated-prefix
+convolution, exact zero runs, ordinary and exponential formal generating
+series, and a corrected pointwise approximation theorem are proved.  The
+aggregate also exposes the zero-one Thue--Morse sequence and the exact
+binomial-parity/`Log2` formula for it.  The literal normalization
 printed in equation (1), its local
 and global error claims, the maximum in equation (7), and the missing linear
 term in the equation-(10) proxy are refuted by machine-checked theorems.

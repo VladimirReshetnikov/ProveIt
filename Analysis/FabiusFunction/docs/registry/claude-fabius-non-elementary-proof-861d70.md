@@ -1,11 +1,10 @@
 # Workstream registry: `claude/fabius-non-elementary-proof-861d70`
 
-**Status: active at the pinned synchronization tip `fd6c0653b`.** Commit
-`c827bcbff` refreshed this record with `AlgebraicBranch.lean` in progress and
-ongoing build ownership.  Those newer claims supersede the closed historical
-classification made at `5ed2fc27b`; the normal source-lease expiry and build
-terminal-event rules in [`../COLLABORATION.md`](../COLLABORATION.md) still
-apply.
+**Status: active workstream record as received through pinned `origin/main`
+`eb1ce0122`.** The `AlgebraicBranch.lean` and build-ownership claims originate
+with that workstream; this integration does not repin its branch snapshot.
+The normal source-lease expiry and build terminal-event rules in
+[`../COLLABORATION.md`](../COLLABORATION.md) still apply.
 
 This file implements the per-branch registry fallback proposed in
 [`../COLLABORATION.md`](../COLLABORATION.md) ("one small file per branch,
@@ -87,8 +86,10 @@ It will not be committed until it compiles.
 
 This worktree has its own `.lake` whose `packages` is a directory junction to
 the shared `C:\ProveIt\.lake\packages`.  Builds are strictly serialized, one
-`lake build +<module>` per invocation, `LAKE_JOBS=1`, in topological order —
-`order.txt` at the repository root of this worktree holds the current list.
+`lake build +<module>` per invocation, `LAKE_JOBS=1`, in topological order.
+When useful, `order.txt` and `build_closure.sh` may be created at the repository
+root as ignored, machine-local build drivers; they are not tracked project
+files.
 Only one `lean` process runs at a time on this machine; a second one makes the
 13 GB box thrash and produces the misleading `failed to read file '….olean'`.
 

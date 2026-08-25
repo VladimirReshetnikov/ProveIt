@@ -22,7 +22,8 @@ Sharpness is proved as well: the value `2^C(k+1,2)` is attained at `2^(-k)`,
 where `2^k x = 1` and the extension equals one.  The corresponding statements
 for `up` are obtained on `[-1,1]` from equation (23) and extended to all of
 `ℝ` by observing that `up` vanishes identically near every point outside its
-support.
+support.  Endpoint continuity then shows that every iterated derivative has
+ordinary support in `(-1,1)` and topological support contained in `[-1,1]`.
 -/
 
 set_option autoImplicit false
@@ -167,6 +168,39 @@ theorem iteratedDeriv_rvachevUp_eq_zero_of_one_le_abs (F : BoundedFabius)
     have hmono := closure_mono hsub
     rw [closure_Iio, hclosed.closure_eq] at hmono
     exact hmono (mem_Iic.mpr h1)
+
+/-- Every iterated derivative of Rvachev's function vanishes off the open
+interval `(-1,1)`.  This is the set-theoretic form of
+`iteratedDeriv_rvachevUp_eq_zero_of_one_le_abs`. -/
+theorem iteratedDeriv_rvachevUp_eq_zero_of_not_mem_Ioo (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {x : ℝ} (hx : x ∉ Ioo (-1 : ℝ) 1) :
+    iteratedDeriv n (rvachevUp F) x = 0 := by
+  apply iteratedDeriv_rvachevUp_eq_zero_of_one_le_abs F hF n
+  apply le_of_not_gt
+  intro hlt
+  apply hx
+  rcases abs_lt.mp hlt with ⟨hlo, hhi⟩
+  exact ⟨hlo, hhi⟩
+
+/-- The ordinary support of every iterated derivative of Rvachev's function
+is contained in the open interval `(-1,1)`. -/
+theorem support_iteratedDeriv_rvachevUp_subset_Ioo (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) :
+    Function.support (iteratedDeriv n (rvachevUp F)) ⊆ Ioo (-1 : ℝ) 1 := by
+  intro x hx
+  by_contra hmem
+  exact hx (iteratedDeriv_rvachevUp_eq_zero_of_not_mem_Ioo F hF n hmem)
+
+/-- The topological support of every iterated derivative of Rvachev's
+function is contained in the compact interval `[-1,1]`. -/
+theorem tsupport_iteratedDeriv_rvachevUp_subset_Icc (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) :
+    tsupport (iteratedDeriv n (rvachevUp F)) ⊆ Icc (-1 : ℝ) 1 := by
+  change closure (Function.support (iteratedDeriv n (rvachevUp F))) ⊆
+    Icc (-1 : ℝ) 1
+  exact closure_minimal
+    ((support_iteratedDeriv_rvachevUp_subset_Ioo F hF n).trans Ioo_subset_Icc_self)
+    isClosed_Icc
 
 /--
 Every iterated derivative of Rvachev's function is uniformly bounded by

@@ -1,4 +1,5 @@
 import FabiusFunction.SharpFlatness
+import FabiusFunction.DyadicAnalytic
 import Mathlib.Order.Hom.Set
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Topology.Order.MonotoneContinuity
@@ -53,8 +54,10 @@ origin, and in particular has an infinite one-sided derivative there:
 already exceeds `M * y` once `8 * M ^ 2 * y < 1`, where `8 = 2 ^ C(3,2)` is
 the flatness constant at `n = 2`.
 
-The right endpoint behaves the same way, by the reflection symmetry
-`F (1 - x) = 1 - F x`.  That direction is not developed here.
+The right endpoint behaves the same way.  The inverse inherits the exact
+reflection symmetry `fabiusInv F hF (1 - y) = 1 - fabiusInv F hF y`, which
+transports both the effective slope bound and the divergent difference
+quotient from zero to one.
 
 ## Main results
 
@@ -69,12 +72,17 @@ The right endpoint behaves the same way, by the reflection symmetry
   every dyadic rational of `[0,1]` exactly, so every such value inverts.  For
   instance `F (1/4) = 5/72`, which is the threshold appearing in
   `mul_lt_fabiusInv` below.
+* `fabiusInv_eq_zero_of_nonpos`, `fabiusInv_eq_one_of_one_le`, and
+  `fabiusInv_one_sub` — the two constant tails and the global reflection law.
+* `fabiusInv_fabiusDyadicUnit` — every value produced by the exact bounded
+  dyadic evaluator inverts to the corresponding clamped dyadic argument.
 * `le_two_pow_mul_fabiusInv_pow` and
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
   hypothesis on the argument.
-* `mul_lt_fabiusInv` and `tendsto_fabiusInv_div_atTop` — the effective and
-  limiting forms of infinite steepness at the origin.
+* `mul_lt_fabiusInv`, `tendsto_fabiusInv_div_atTop`, and their reflected
+  companions — effective and limiting forms of infinite steepness at both
+  endpoints.
 -/
 
 set_option autoImplicit false
@@ -181,6 +189,31 @@ theorem fabiusInv_le_iff_le_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
   rw [fabiusReal_fabiusInv F hF hy] at h
   exact h.symm
 
+/-- The companion comparison equivalence with `fabiusReal` on the left. -/
+theorem fabiusReal_le_iff_le_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
+    {x y : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) (hy : y ∈ Icc (0 : ℝ) 1) :
+    fabiusReal F x ≤ y ↔ x ≤ fabiusInv F hF y := by
+  have h := (strictMonoOn_fabiusReal F hF).le_iff_le
+    hx (fabiusInv_mem_Icc F hF y)
+  rwa [fabiusReal_fabiusInv F hF hy] at h
+
+/-- Strict comparison of the inverse with a point of the unit interval. -/
+theorem fabiusInv_lt_iff_lt_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
+    {y x : ℝ} (hy : y ∈ Icc (0 : ℝ) 1) (hx : x ∈ Icc (0 : ℝ) 1) :
+    fabiusInv F hF y < x ↔ y < fabiusReal F x := by
+  have h := (strictMonoOn_fabiusReal F hF).lt_iff_lt
+    (fabiusInv_mem_Icc F hF y) hx
+  rw [fabiusReal_fabiusInv F hF hy] at h
+  exact h.symm
+
+/-- Strict comparison of a point of the unit interval with the inverse. -/
+theorem fabiusReal_lt_iff_lt_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
+    {x y : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) (hy : y ∈ Icc (0 : ℝ) 1) :
+    fabiusReal F x < y ↔ x < fabiusInv F hF y := by
+  have h := (strictMonoOn_fabiusReal F hF).lt_iff_lt
+    hx (fabiusInv_mem_Icc F hF y)
+  rwa [fabiusReal_fabiusInv F hF hy] at h
+
 /-! ## Exact values -/
 
 /-- `F` fixes the origin, hence so does its inverse. -/
@@ -197,6 +230,44 @@ theorem fabiusInv_le_iff_le_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
     (right_mem_Icc.mpr (zero_le_one : (0 : ℝ) ≤ 1))
   rwa [hF.one_of_one_le 1 le_rfl] at h
 
+/-- The totalized inverse is zero on the whole nonpositive half line. -/
+theorem fabiusInv_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ≤ 0) : fabiusInv F hF y = 0 := by
+  have hmono := monotone_fabiusInv F hF hy
+  rw [fabiusInv_zero F hF] at hmono
+  exact le_antisymm hmono (fabiusInv_nonneg F hF y)
+
+/-- The totalized inverse is one on the whole half line starting at one. -/
+theorem fabiusInv_eq_one_of_one_le (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : 1 ≤ y) : fabiusInv F hF y = 1 := by
+  have hmono := monotone_fabiusInv F hF hy
+  rw [fabiusInv_one F hF] at hmono
+  exact le_antisymm (fabiusInv_le_one F hF y) hmono
+
+/-- The inverse inherits the Fabius reflection symmetry on the whole real
+line, including both clamped tails. -/
+theorem fabiusInv_one_sub (F : BoundedFabius) (hF : IsFabius F) (y : ℝ) :
+    fabiusInv F hF (1 - y) = 1 - fabiusInv F hF y := by
+  by_cases hy0 : y ≤ 0
+  · rw [fabiusInv_eq_zero_of_nonpos F hF hy0,
+      fabiusInv_eq_one_of_one_le F hF (by linarith)]
+    norm_num
+  · by_cases hy1 : 1 ≤ y
+    · rw [fabiusInv_eq_one_of_one_le F hF hy1,
+        fabiusInv_eq_zero_of_nonpos F hF (by linarith)]
+      norm_num
+    · have hy : y ∈ Icc (0 : ℝ) 1 :=
+        ⟨le_of_not_ge hy0, le_of_not_ge hy1⟩
+      have hone : 1 - y ∈ Icc (0 : ℝ) 1 := by
+        constructor <;> linarith [hy.1, hy.2]
+      have hinv := fabiusInv_mem_Icc F hF y
+      have hreflected : 1 - fabiusInv F hF y ∈ Icc (0 : ℝ) 1 := by
+        constructor <;> linarith [hinv.1, hinv.2]
+      apply injOn_fabiusReal F hF (fabiusInv_mem_Icc F hF (1 - y)) hreflected
+      rw [fabiusReal_fabiusInv F hF hone,
+        hF.symmetry_all (fabiusInv F hF y),
+        fabiusReal_fabiusInv F hF hy]
+
 /-- The reflection symmetry fixes the midpoint, hence so does the inverse.
 
 The midpoint is the unique fixed point of `F` in the interior, but it is far
@@ -207,9 +278,36 @@ transferred to `fabiusReal` by `DyadicAnalytic.fabiusDyadicUnit_cast`.  So
 `fabiusInv F hF (5/72) = 1/4`, since `F (1/4) = 5/72`. -/
 theorem fabiusInv_half (F : BoundedFabius) (hF : IsFabius F) :
     fabiusInv F hF (1 / 2) = 1 / 2 := by
-  have h := fabiusInv_fabiusReal F hF
-    (show (1 : ℝ) / 2 ∈ Icc (0 : ℝ) 1 by constructor <;> norm_num)
-  rwa [fabius_half F hF] at h
+  have h := fabiusInv_one_sub F hF ((1 : ℝ) / 2)
+  norm_num at h ⊢
+  linarith
+
+/-- On a dyadic point of the unit grid, the exact bounded evaluator inverts
+back to that point. -/
+theorem fabiusInv_fabiusDyadicUnit_of_le (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) (ha : a ≤ 2 ^ n) :
+    fabiusInv F hF (fabiusDyadicUnit n a : ℝ) =
+      (a : ℝ) / (2 : ℝ) ^ n := by
+  rw [fabiusDyadicUnit_cast F hF]
+  apply fabiusInv_fabiusReal F hF
+  constructor
+  · positivity
+  · rw [div_le_one (by positivity)]
+    exact_mod_cast ha
+
+/-- Every value of the exact bounded dyadic evaluator inverts to its clamped
+dyadic argument.  Numerators at or beyond the unit grid therefore invert to
+one. -/
+theorem fabiusInv_fabiusDyadicUnit (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) :
+    fabiusInv F hF (fabiusDyadicUnit n a : ℝ) =
+      (min a (2 ^ n) : ℕ) / (2 : ℝ) ^ n := by
+  by_cases ha : a ≤ 2 ^ n
+  · rw [Nat.min_eq_left ha]
+    exact fabiusInv_fabiusDyadicUnit_of_le F hF n a ha
+  · have hge : 2 ^ n ≤ a := le_of_not_ge ha
+    rw [Nat.min_eq_right hge, fabiusDyadicUnit_of_ge n a hge]
+    norm_num [fabiusInv_one F hF]
 
 /-! ## Flatness at the origin, transported through the inverse -/
 
@@ -326,5 +424,49 @@ theorem tendsto_fabiusInv_div_atTop (F : BoundedFabius) (hF : IsFabius F) :
     have := le_abs_self M
     linarith
   exact hMle.trans hstep
+
+/-! ## Infinite steepness at the right endpoint -/
+
+/-- The effective slope bound reflected from zero to one.  Once `y < 1` is
+close enough to one, the complementary inverse exceeds every prescribed
+multiple of the remaining distance to the endpoint. -/
+theorem mul_one_sub_lt_one_sub_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
+    {M y : ℝ} (hy1 : y < 1)
+    (hy : 1 - y ≤ fabiusReal F (((2 : ℝ)⁻¹) ^ 2))
+    (hsmall : 8 * M ^ 2 * (1 - y) < 1) :
+    M * (1 - y) < 1 - fabiusInv F hF y := by
+  have h := mul_lt_fabiusInv F hF (sub_pos.mpr hy1) hy hsmall
+  rwa [fabiusInv_one_sub F hF y] at h
+
+/-- The complementary difference quotient at one diverges from the left:
+
+`(1 - fabiusInv F hF y) / (1 - y) → ∞` as `y → 1⁻`.
+
+This is the reflection of `tendsto_fabiusInv_div_atTop`. -/
+theorem tendsto_one_sub_fabiusInv_div_one_sub_atTop
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto (fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y))
+      (𝓝[<] (1 : ℝ)) atTop := by
+  have hreflect : Tendsto (fun y : ℝ => 1 - y)
+      (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
+    rw [tendsto_nhdsWithin_iff]
+    constructor
+    · have hcontinuous : Continuous (fun y : ℝ => 1 - y) := by fun_prop
+      have hat : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ))
+          (nhds (1 - (1 : ℝ))) :=
+        hcontinuous.continuousAt
+      have hat' : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ)) (nhds 0) := by
+        simpa only [sub_self] using hat
+      exact hat'.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with y hy
+      change 0 < 1 - y
+      exact sub_pos.mpr hy
+  have h := (tendsto_fabiusInv_div_atTop F hF).comp hreflect
+  have heq :
+      ((fun y : ℝ => fabiusInv F hF y / y) ∘ fun y : ℝ => 1 - y) =
+        fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y) := by
+    funext y
+    rw [Function.comp_apply, fabiusInv_one_sub F hF y]
+  rwa [heq] at h
 
 end Fabius

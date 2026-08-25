@@ -26,7 +26,8 @@ These identities exist as a separate layer because
 `FabiusFunction.ThueMorseApproximation` needs them to identify `S^k_m`, for
 `m < 2^k`, with a coefficient of the polynomial approximant of the Fabius
 function, and `FabiusFunction.ThueMorseExponential` builds the exponential
-generating series for centered Thue--Morse power sums on the same import.
+generating series for centered and rationally translated Thue--Morse power
+sums from the sharp affine coefficient formula on the same import.
 
 The second half of the module reads the draft's equation (1) literally: grid
 value `S^k_j / 2^(C(k,2))` at abscissa `j / 2^k`.  It proves the discrete
