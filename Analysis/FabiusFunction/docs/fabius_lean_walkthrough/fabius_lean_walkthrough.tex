@@ -670,6 +670,52 @@ The case \(b=0\), together with the defining fold relation, gives unit-interval 
 
 The extension is therefore a sequence of two-unit cells, not a globally periodic function: the sign of cell \(b\) is the Thue--Morse value \((-1)^{s_2(b)}\).  Scale-and-translation theorems record the precise identities on their valid blocks.  \nolinkurl{GlobalDyadic.lean} combines this cell structure with exact values to remove assumptions that a numerator be reduced or lie between zero and its denominator.
 
+\subsection{Global differential calculus}
+Local finiteness also permits termwise differentiation and even--odd
+reindexing.  For every \(x\in\R\), the theorems
+\nolinkurl{extendedFabius_hasDerivAt} and
+\nolinkurl{deriv_extendedFabius} give
+\[
+  \widetilde F'(x)=2\widetilde F(2x).
+\]
+Iterating this identity yields \nolinkurl{iteratedDeriv_extendedFabius}:
+for every \(k\in\N\) and \(x\in\R\),
+\[
+  \widetilde F^{(k)}(x)
+  =2^{\binom{k+1}{2}}\widetilde F(2^k x).
+\]
+Unlike the bounded derivative formula above, these identities require no
+branch-domain hypothesis.
+
+\subsection{Exact Taylor reduction}
+On its initial block, \nolinkurl{extendedFabius_add_pow_two} says that
+\[
+  \widetilde F(x+2^r)=-\widetilde F(x)
+  \qquad(r\geq1,\ 0\leq x\leq2^r).
+\]
+A derivative version extends this sign change to an integer scale \(s\)
+whenever the derivative order \(m\) is high enough that \(0\leq s+m\).
+Under that condition, \nolinkurl{taylorRemainder_translate} packages the exact
+cancellation of the two adjacent integral Taylor remainders.  Write \(R_m(y)\)
+for \nolinkurl{fabiusReductionSum m y}.  If \(n\in\Z\),
+\(x>0\),
+\[
+  2^{-n}\leq x<2^{-n+1},
+  \qquad y=x-2^{-n},
+\]
+then \nolinkurl{extendedFabius_reduction}, exported as
+\nolinkurl{proposition_ten}, states
+\[
+  \widetilde F(x)=-\widetilde F(y)+
+  \begin{cases}
+    R_{\operatorname{toNat}(n)}(y),& n\geq0,\\
+    0,& n<0.
+  \end{cases}
+\]
+Thus the finite correction for \(n\geq0\) is an exact Taylor polynomial,
+not a truncated approximation with an estimated remainder; for \(n<0\),
+the formula reduces directly to the power-of-two sign-translation law.
+
 \subsection{Why use a \texttt{tsum} for a locally finite expression?}
 A hand proof would select the unique active odd translate on each nonnegative two-unit cell.  The repository instead uses a conceptually uniform sum over all natural indices.  This pays off in translation and differentiation arguments: the same summand family can be manipulated with standard infinite-sum lemmas.  The initial cost is a local-finiteness API; the later algebra becomes much cleaner.
 
