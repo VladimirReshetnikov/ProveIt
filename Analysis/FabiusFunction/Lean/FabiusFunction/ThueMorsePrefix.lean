@@ -194,6 +194,56 @@ theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
       lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
     rw [thueMorsePowerSum_eq_zero_of_lt r d hdr', mul_zero]
 
+/-- At the sharp Prouhet degree, an affine change of variable contributes only
+the expected power of its linear coefficient.  In particular, the sum is
+independent of the translation `x`; it may still vanish when that coefficient
+is zero. -/
+theorem thueMorse_affine_power_sum_self (r : ℕ) (x y : ℚ) :
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
+      (x + y * (h.val : ℚ)) ^ r) =
+      (-1 : ℚ) ^ r * y ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial := by
+  let p : Polynomial ℚ :=
+    (Polynomial.C x + Polynomial.C y * Polynomial.X) ^ r
+  have hlinear :
+      (Polynomial.C x + Polynomial.C y * Polynomial.X).natDegree ≤ 1 := by
+    calc
+      (Polynomial.C x + Polynomial.C y * Polynomial.X).natDegree ≤
+          max (Polynomial.C x).natDegree
+            (Polynomial.C y * Polynomial.X).natDegree :=
+        Polynomial.natDegree_add_le _ _
+      _ ≤ 1 := by
+        apply max_le
+        · simp
+        · simpa only [pow_one] using
+            Polynomial.natDegree_C_mul_X_pow_le y 1
+  have hp : p.natDegree ≤ r := by
+    dsimp [p]
+    simpa only [Nat.mul_one] using
+      Polynomial.natDegree_pow_le_of_le r hlinear
+  have hsum := thueMorse_polynomial_sum_eq_coeff r p hp
+  have hcoeff : p.coeff r = y ^ r := by
+    dsimp [p]
+    by_cases hy : y = 0
+    · subst y
+      cases r <;> simp
+    · have hxy : y * (x / y) = x := by
+        field_simp [hy]
+      have hfactor :
+          Polynomial.C x + Polynomial.C y * Polynomial.X =
+            Polynomial.C y *
+              (Polynomial.X + Polynomial.C (x / y)) := by
+        rw [mul_add, ← Polynomial.C_mul, hxy]
+        ring
+      rw [hfactor, mul_pow]
+      simp [Polynomial.coeff_X_add_C_pow]
+  calc
+    (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
+        (x + y * (h.val : ℚ)) ^ r) =
+        p.coeff r *
+          ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) := by
+      simpa [p] using hsum
+    _ = _ := by rw [hcoeff]; ring
+
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
 dyadic block exponent. -/
 lemma thueMorse_polynomial_sum_eq_zero (r : ℕ) (p : Polynomial ℚ)
