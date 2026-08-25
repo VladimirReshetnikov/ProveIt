@@ -126,8 +126,8 @@ constants.  Until now those coefficients existed only as the output of a chain
 of recursions --- a differential recursion for the saddle jets, a formal
 exponential recursion, a Gaussian contraction, and a formal logarithm --- and
 only $A_1$ had ever been written down.  This note closes the chain.  We solve
-the differential recursion in closed form using signed Stirling numbers of the
-first kind and harmonic numbers, collapse the exponent coefficients to a single
+the differential recursion in closed form using shifted signed Stirling numbers
+of the first kind and harmonic numbers, collapse the exponent coefficients to a single
 power of $\ii$ times a jet term plus a universal jet-free tail, and assemble a
 completely explicit, non-recursive formula for every $A_j$ as a finite sum over
 compositions, subsets and Gaussian moments.  As applications we compute $A_2$
@@ -212,7 +212,7 @@ $a_j$ & the $j$-th \emph{mass} coefficient, before taking the logarithm\\
 $d_n$ & the $n$-th bounded exponent jet of \cref{sec:jets}\\
 $p_n$ & the $n$-th periodic jet of \cref{sec:jets}\\
 $s_n$ & $(-1)^{n+1}n!$, the jet slope\\
-$c(n,m)$ & $[z^m]\prod_{k=1}^n(z-k)$, a signed Stirling number of the first kind\\
+$c(n,m)$ & $[z^m]\prod_{k=1}^n(z-k)=s(n+1,m+1)$, a shifted signed Stirling number\\
 $(N-1)!!$ & $1\cdot3\cdot5\cdots(N-1)$, the $N$-th standard Gaussian moment for even $N$\\
 \bottomrule
 \end{tabular}
@@ -352,8 +352,8 @@ For every $n\ge0$ and every $t$,
     +\sum_{m=0}^{n}c(n,m)\,\frac{\Psi^{(m+1)}(t)}{L^{m+1}},
 \end{aligned}
 \]
-where $c(n,m)=[z^m]\prod_{k=1}^n(z-k)$ is a signed Stirling number of the first
-kind, so that $c(n,n)=1$ and $c(n,m)=0$ for $m>n$.
+where $c(n,m)=[z^m]\prod_{k=1}^n(z-k)$, so that $c(n,n)=1$ and $c(n,m)=0$ for
+$m>n$.
 \end{theorem}
 
 The coefficient array obeys $c(0,0)=1$, $c(0,m+1)=0$,
@@ -374,6 +374,22 @@ $5$ & $-120,\,274,\,-225,\,85,\,-15,\,1$ & $60-274/L$\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\begin{warning}[The index shift]
+The weights $c(n,m)$ are shifted signed Stirling numbers of the first kind,
+not the unshifted ones.  With the standard convention
+$x(x-1)\cdots(x-n+1)=\sum_k s(n,k)x^k$ one has
+\[
+  z\prod_{k=1}^{n}(z-k)=\prod_{k=0}^{n}(z-k)=\sum_{m}s(n+1,m)z^m,
+  \qquad\text{hence}\qquad c(n,m)=s(n+1,m+1).
+\]
+The distinction is not cosmetic: $s(n,0)=0$ for every $n\ge1$, whereas
+$c(n,0)=\prod_{k=1}^n(-k)=(-1)^nn!$, which is the entire constant column of
+the table above and carries the harmonic-number part of the jet.  Reading
+$c(n,m)$ as $s(n,m)$ would delete it.  Concretely $c(2,\cdot)=(2,-3,1)$ while
+$s(2,\cdot)=(0,-1,1)$, and $c(3,\cdot)=(-6,11,-6,1)$ while
+$s(3,\cdot)=(0,2,-3,1)$.
+\end{warning}
 
 Explicitly, for the first four jets,
 \[
