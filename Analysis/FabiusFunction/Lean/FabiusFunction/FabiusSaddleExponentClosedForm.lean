@@ -65,7 +65,6 @@ private theorem exponentTail_coeff (n : ℕ) :
   push_cast
   rw [hsign]
   field_simp
-  ring
 
 /-- The same cancellation in the association used by
 `negativeLaplaceExponentCoefficient`, where the division sits outermost. -/
