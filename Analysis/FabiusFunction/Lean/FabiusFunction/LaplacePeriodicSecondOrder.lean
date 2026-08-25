@@ -78,6 +78,11 @@ private lemma norm_negativeLaplaceForwardTermFirst_le_invSq_geometric
       rw [le_div_iff₀ (mul_pos (sq_pos_of_pos hs0) ha)]
       nlinarith
 
+/-- Explicit bound on the forward tail of the first derivative series: for
+`1 ≤ s`, `‖negativeLaplaceForwardTailFirst s‖ ≤ 8 / s ^ 2`.  Proved by summing
+a geometric majorant of the individual terms.  Besides the `O(s⁻²)` estimate
+below, it is used by `abs_mul_negativeLaplaceForwardTailFirst_le_eight` in
+`FabiusLambertDerivativeBounds`. -/
 theorem norm_negativeLaplaceForwardTailFirst_le_inv_sq
     {s : ℝ} (hs : 1 ≤ s) :
     ‖negativeLaplaceForwardTailFirst s‖ ≤ 8 / s ^ 2 := by
@@ -116,6 +121,13 @@ theorem negativeLaplaceForwardTailFirst_isBigO_inv_sq_nat :
       (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) := by
   simpa using negativeLaplaceForwardTailFirst_isBigO_inv_sq_real.natCast_atTop
 
+/-- Hypothesis-carrying form of the periodic expansion of the first
+logarithmic derivative.  For `0 < s`, assuming `negativeLaplacePsi` is
+differentiable at `Real.logb 2 s` and `negativeLaplaceForwardTail` at `s`,
+`negativeLaplaceLogFirst F s` equals
+`(-log s / log 2 + 1 / 2 + deriv negativeLaplacePsi (logb 2 s) / log 2) / s`
+minus `deriv negativeLaplaceForwardTail s`.  Requires `IsFabius F`.  It is
+used to prove `negativeLaplaceLogFirst_eq_periodic` just below. -/
 theorem negativeLaplaceLogFirst_eq_periodic_of_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s)
     (hpsi : HasDerivAt negativeLaplacePsi

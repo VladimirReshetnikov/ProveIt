@@ -26,6 +26,11 @@ open SaddleExpansion
 
 noncomputable section
 
+/-- Evaluation commutes with the formal exponential recursion: evaluating
+the polynomial `expCoeff (negativeLaplaceExponentPolynomial · t) n` at
+`(v : ℂ)` gives the scalar coefficient
+`expCoeff (negativeLaplaceExponentCoefficient · t v) n`.  Proved by
+transporting `expCoeff` along the `ℚ`-algebra map `Polynomial.aeval v`. -/
 theorem negativeLaplaceExpCoeff_eval
     (n : ℕ) (t v : ℝ) :
     (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).eval (v : ℂ) =
@@ -38,6 +43,10 @@ theorem negativeLaplaceExpCoeff_eval
   intro m _hm
   exact negativeLaplaceExponentPolynomial_eval m t v
 
+/-- Parity of the exponential coefficient polynomials: the `n`-th one
+evaluates at `-v` to `(-1) ^ n` times its value at `v`.  It is inherited
+from the parity of the scalar exponent coefficients through
+`negativeLaplaceExpCoeff_eval`. -/
 theorem negativeLaplaceExpCoeff_eval_neg
     (n : ℕ) (t v : ℝ) :
     (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).eval ((-v : ℝ) : ℂ) =
@@ -48,6 +57,11 @@ theorem negativeLaplaceExpCoeff_eval_neg
     expCoeff_parity (fun m v => negativeLaplaceExponentCoefficient m t v)
       (fun m v => negativeLaplaceExponentCoefficient_parity m t v) n v
 
+/-- Odd-index exponential coefficients contract to zero: the Gaussian
+contraction of `expCoeff (negativeLaplaceExponentPolynomial · t) (2 * j + 1)`
+vanishes for every `j` and every real `t`.  The contraction is a
+Gaussian-weighted integral and the integrand is odd by
+`negativeLaplaceExpCoeff_eval_neg`. -/
 theorem gaussianPolynomialContraction_negativeLaplaceExpCoeff_odd
     (j : ℕ) (t : ℝ) :
     gaussianPolynomialContraction
@@ -79,16 +93,33 @@ private lemma sum_range_two_mul_pair
 noncomputable def dyadicLambertEpsilon (t : ℝ) : ℝ :=
   (Real.sqrt (dyadicLambertPhase t))⁻¹
 
+/-- Squaring the reciprocal square-root scale inverts the phase, under the
+hypothesis `0 < dyadicLambertPhase t`.  Also used in
+`FabiusSaddleMassAllOrders`. -/
 lemma dyadicLambertEpsilon_sq {t : ℝ} (ht : 0 < dyadicLambertPhase t) :
     dyadicLambertEpsilon t ^ 2 = (dyadicLambertPhase t)⁻¹ := by
   unfold dyadicLambertEpsilon
   rw [inv_pow, Real.sq_sqrt ht.le]
 
+/-- Order-`N` polynomial reference on the dyadic Lambert orbit: the saddle
+reference polynomial in the Gaussian variable, truncated at epsilon-length
+`2 * (N + 1)`, that is retaining the epsilon-orders `0` through `2 * N + 1`,
+at phase `dyadicLambertPhase t` and scale `dyadicLambertEpsilon t`.  The
+even orders are the `N + 1` ones that survive the Gaussian contraction; the
+odd ones are carried along and cancel there. -/
 noncomputable def dyadicLambertReferencePolynomial
     (N : ℕ) (t : ℝ) : Polynomial ℂ :=
   fabiusSaddleReferencePolynomial (2 * (N + 1))
     (dyadicLambertPhase t) (dyadicLambertEpsilon t : ℂ)
 
+/-- Gaussian contraction of the order-`N` dyadic Lambert reference
+polynomial, for `t` with `0 < dyadicLambertPhase t`.  All odd epsilon-orders
+drop out by
+`gaussianPolynomialContraction_negativeLaplaceExpCoeff_odd`, and what is
+left is the finite mass expansion
+`∑_{j < N+1} (dyadicLambertPhase t)⁻¹ ^ j * fabiusSaddleMassCoefficient j
+(dyadicLambertPhase t)`, with the epsilon-powers converted by
+`dyadicLambertEpsilon_sq`.  Used by `FabiusSaddleMassAllOrders`. -/
 theorem gaussianPolynomialContraction_dyadicLambertReferencePolynomial
     (N : ℕ) {t : ℝ} (ht : 0 < dyadicLambertPhase t) :
     gaussianPolynomialContraction (dyadicLambertReferencePolynomial N t) =
@@ -127,6 +158,14 @@ noncomputable def dyadicLambertExponentTruncation
     (dyadicLambertEpsilon t : ℂ) ^ m *
       negativeLaplaceExponentCoefficient m (dyadicLambertPhase t) v
 
+/-- The explicit Taylor sum `negativeLaplaceVerticalTaylorSum F K t eps v`
+of the vertical logarithm at radius `2 ^ t` agrees with Mathlib's
+`taylorWithinEval` of order `K` for that function, taken within
+`uIcc 0 (eps * v)`, based at `0` and evaluated at `eps * v`.  Requires
+`IsFabius F`; it holds for all real `t`, `eps` and `v`, the degenerate case
+`eps * v = 0` included.  `FabiusSaddleMassAllOrders` rewrites with it to put
+the sum in the shape required by
+`norm_negativeLaplaceVerticalLog_sub_taylorWithinEval_le`. -/
 theorem negativeLaplaceVerticalTaylorSum_eq_taylorWithinEval
     (F : BoundedFabius) (hF : IsFabius F)
     (K : ℕ) (t eps v : ℝ) :

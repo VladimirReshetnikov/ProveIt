@@ -95,6 +95,15 @@ private theorem hasSum_even_of_odd_eq_zero
 
 /-! ## Specialization to Rvachev's up function -/
 
+/-- The generic normalized coefficient functional of
+`LegendreSeriesConvergence`, applied to `rvachevUp F` and to the `n`-th
+ordinary Legendre polynomial, is by definition
+`rvachevFullLegendreCoefficient F n`.  This is the notation bridge used to
+rewrite in `summable_abs_rvachevFullLegendreCoefficient`,
+`hasSum_rvachevFullLegendreSeries`,
+`hasSum_rvachevFullLegendreSeries_uniform`, and in
+`legendreProjectionPolynomial_rvachevUp` of
+`FabiusLegendreLeastSquares`. -/
 @[simp]
 theorem legendreSeriesCoefficientOf_rvachevUp
     (F : BoundedFabius) (n : ℕ) :
@@ -186,108 +195,6 @@ theorem summable_abs_rvachevLegendreCoefficient
       |rvachevLegendreCoefficient F n|
     rw [rvachevFullLegendreCoefficient_even_eq])
 
-private theorem hasSum_rvachevFullLegendreSeries_of_properties
-    (F : BoundedFabius) (hF : IsFabius F)
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ)))
-    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
-    HasSum (fun n ↦
-      rvachevFullLegendreCoefficient F n * (legendrePolynomial n).eval x)
-      (rvachevUp F x) := by
-  have horthogonal : ∀ m n, m ≠ n →
-      (∫ y in (-1 : ℝ)..1,
-        (legendrePolynomial m).eval y * (legendrePolynomial n).eval y) = 0 := by
-    intro m n hmn
-    exact integral_eigenpolynomial_mul_eq_zero_of_ne legendrePolynomial
-      legendrePolynomial_contDiff_infty hpEigen hmn
-  simpa only [legendreSeriesCoefficientOf_rvachevUp] using
-    hasSum_legendrePolynomialSeries_eq
-      (rvachevUp F) (rvachev_contDiff F hF) legendrePolynomial
-      degree_legendrePolynomial legendrePolynomial_contDiff_infty hpEigen hpBound
-      horthogonal hpNorm x hx
-
-private theorem hasSum_rvachevFullLegendreSeries_uniform_of_properties
-    (F : BoundedFabius) (hF : IsFabius F)
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ))) :
-    HasSum (fun n ↦
-      rvachevFullLegendreCoefficient F n •
-        continuousMapOnLegendreInterval
-          (fun x : ℝ ↦ (legendrePolynomial n).eval x)
-          (legendrePolynomial_contDiff n).continuous)
-      (continuousMapOnLegendreInterval
-        (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
-  have horthogonal : ∀ m n, m ≠ n →
-      (∫ y in (-1 : ℝ)..1,
-        (legendrePolynomial m).eval y * (legendrePolynomial n).eval y) = 0 := by
-    intro m n hmn
-    exact integral_eigenpolynomial_mul_eq_zero_of_ne legendrePolynomial
-      legendrePolynomial_contDiff_infty hpEigen hmn
-  simpa only [legendreSeriesCoefficientOf_rvachevUp] using
-    hasSum_legendrePolynomialSeries_eq_uniform
-      (rvachevUp F) (rvachev_contDiff F hF) legendrePolynomial
-      degree_legendrePolynomial legendrePolynomial_contDiff_infty hpEigen hpBound
-      horthogonal hpNorm
-
-private theorem hasSum_rvachevEvenLegendreSeries_of_properties
-    (F : BoundedFabius) (hF : IsFabius F)
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ)))
-    (x : ℝ) (hx : x ∈ Icc (-1 : ℝ) 1) :
-    HasSum (fun n ↦
-      rvachevLegendreCoefficient F n *
-        (legendrePolynomial (2 * n)).eval x) (rvachevUp F x) := by
-  have hfull := hasSum_rvachevFullLegendreSeries_of_properties
-    F hF hpEigen hpBound hpNorm x hx
-  have heven := hasSum_even_of_odd_eq_zero hfull (fun n ↦ by
-    rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_mul])
-  simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
-
-private theorem hasSum_rvachevEvenLegendreSeries_uniform_of_properties
-    (F : BoundedFabius) (hF : IsFabius F)
-    (hpEigen : ∀ n x,
-      legendreSturmLiouville
-          (fun y : ℝ ↦ (legendrePolynomial n).eval y) x =
-        ((n : ℝ) * (n + 1 : ℝ)) * (legendrePolynomial n).eval x)
-    (hpBound : ∀ n x, x ∈ Icc (-1 : ℝ) 1 →
-      |(legendrePolynomial n).eval x| ≤ 1)
-    (hpNorm : ∀ n,
-      (∫ x in (-1 : ℝ)..1, (legendrePolynomial n).eval x ^ 2) =
-        2 / (((2 * n + 1 : ℕ) : ℝ))) :
-    HasSum (fun n ↦
-      rvachevLegendreCoefficient F n •
-        continuousMapOnLegendreInterval
-          (fun x : ℝ ↦ (legendrePolynomial (2 * n)).eval x)
-          (legendrePolynomial_contDiff (2 * n)).continuous)
-      (continuousMapOnLegendreInterval
-        (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
-  have hfull := hasSum_rvachevFullLegendreSeries_uniform_of_properties
-    F hF hpEigen hpBound hpNorm
-  have heven := hasSum_even_of_odd_eq_zero hfull (fun n ↦ by
-    rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_smul])
-  simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
-
 /-- The full Fourier--Legendre series of Rvachev's up function converges
 pointwise on `[-1,1]`, including both endpoints. -/
 theorem hasSum_rvachevFullLegendreSeries
@@ -296,9 +203,14 @@ theorem hasSum_rvachevFullLegendreSeries
     HasSum (fun n ↦
       rvachevFullLegendreCoefficient F n * (legendrePolynomial n).eval x)
       (rvachevUp F x) := by
-  exact hasSum_rvachevFullLegendreSeries_of_properties F hF
-    legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
+  simpa only [legendreSeriesCoefficientOf_rvachevUp] using
+    hasSum_legendrePolynomialSeries_eq
+      (rvachevUp F) (rvachev_contDiff F hF) legendrePolynomial
+      degree_legendrePolynomial legendrePolynomial_contDiff_infty
+      legendreSturmLiouville_eval_legendrePolynomial
+      abs_eval_legendrePolynomial_le_one
+      (fun _ _ hmn ↦ integral_eval_legendrePolynomial_mul_eq_zero_of_ne hmn)
+      integral_sq_eval_legendrePolynomial x hx
 
 /-- Tsum form of `hasSum_rvachevFullLegendreSeries`. -/
 theorem tsum_rvachevFullLegendreSeries
@@ -320,9 +232,14 @@ theorem hasSum_rvachevFullLegendreSeries_uniform
           (legendrePolynomial_contDiff n).continuous)
       (continuousMapOnLegendreInterval
         (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
-  exact hasSum_rvachevFullLegendreSeries_uniform_of_properties F hF
-    legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
+  simpa only [legendreSeriesCoefficientOf_rvachevUp] using
+    hasSum_legendrePolynomialSeries_eq_uniform
+      (rvachevUp F) (rvachev_contDiff F hF) legendrePolynomial
+      degree_legendrePolynomial legendrePolynomial_contDiff_infty
+      legendreSturmLiouville_eval_legendrePolynomial
+      abs_eval_legendrePolynomial_le_one
+      (fun _ _ hmn ↦ integral_eval_legendrePolynomial_mul_eq_zero_of_ne hmn)
+      integral_sq_eval_legendrePolynomial
 
 /-- Tsum form of `hasSum_rvachevFullLegendreSeries_uniform`. -/
 theorem tsum_rvachevFullLegendreSeries_uniform
@@ -344,9 +261,10 @@ theorem hasSum_rvachevLegendreSeries
     HasSum (fun n ↦
       rvachevLegendreCoefficient F n *
         (legendrePolynomial (2 * n)).eval x) (rvachevUp F x) := by
-  exact hasSum_rvachevEvenLegendreSeries_of_properties F hF
-    legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
+  have heven := hasSum_even_of_odd_eq_zero
+    (hasSum_rvachevFullLegendreSeries F hF x hx) (fun n ↦ by
+      rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_mul])
+  simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
 
 /-- Tsum form of `hasSum_rvachevLegendreSeries`. -/
 theorem tsum_rvachevLegendreSeries
@@ -367,9 +285,10 @@ theorem hasSum_rvachevLegendreSeries_uniform
           (legendrePolynomial_contDiff (2 * n)).continuous)
       (continuousMapOnLegendreInterval
         (rvachevUp F) (rvachev_contDiff F hF).continuous) := by
-  exact hasSum_rvachevEvenLegendreSeries_uniform_of_properties F hF
-    legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
+  have heven := hasSum_even_of_odd_eq_zero
+    (hasSum_rvachevFullLegendreSeries_uniform F hF) (fun n ↦ by
+      rw [rvachevFullLegendreCoefficient_odd_eq_zero F hF n, zero_smul])
+  simpa only [rvachevFullLegendreCoefficient_even_eq] using heven
 
 /-- Tsum form of `hasSum_rvachevLegendreSeries_uniform`. -/
 theorem tsum_rvachevLegendreSeries_uniform
@@ -397,9 +316,7 @@ theorem hasSum_canonical_rvachevLegendreSeries_formula
             2 ^ (2 * k + 1).choose 2 *
             fabiusReal fabius (((2 : ℝ) ^ (2 * k + 1))⁻¹)) *
         (legendrePolynomial (2 * n)).eval x)) (rvachevUp fabius x) := by
-  have hseries := hasSum_rvachevEvenLegendreSeries_of_properties
-    fabius fabius_spec legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial x hx
+  have hseries := hasSum_rvachevLegendreSeries fabius fabius_spec x hx
   convert hseries using 1
   funext n
   rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]
@@ -435,9 +352,7 @@ theorem hasSum_canonical_rvachevLegendreSeries_formula_uniform :
           (legendrePolynomial_contDiff (2 * n)).continuous)
       (continuousMapOnLegendreInterval
         (rvachevUp fabius) (rvachev_contDiff fabius fabius_spec).continuous) := by
-  have hseries := hasSum_rvachevEvenLegendreSeries_uniform_of_properties
-    fabius fabius_spec legendreSturmLiouville_eval_legendrePolynomial
-    abs_eval_legendrePolynomial_le_one integral_sq_eval_legendrePolynomial
+  have hseries := hasSum_rvachevLegendreSeries_uniform fabius fabius_spec
   convert hseries using 1
   funext n
   rw [canonical_rvachevLegendreCoefficient_eq_fabius_sum]

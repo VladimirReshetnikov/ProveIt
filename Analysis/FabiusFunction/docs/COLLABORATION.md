@@ -50,31 +50,38 @@ produce a commit.
 
 ## File ownership and live claims
 
-Before editing, announce a short workstream lease containing:
+Before editing or building, announce a workstream lease containing:
 
 - worktree identifier and agent or task name;
 - branch and base commit SHA;
 - exact files intended for modification;
 - files or clusters that will be inspected read-only;
 - expected public API changes;
-- timestamp, expiry, and next synchronization checkpoint; and
+- timestamp, source-lease expiry or build terminal event, and next
+  synchronization checkpoint; and
 - Git mutation owner and build owner for a shared worktree.
 
 Only one workstream writes a given file at a time.  Other agents may inspect it
 and send findings to its owner.  A lease covers exact paths, not a whole
 mathematical subject, and must be refreshed or released at each checkpoint.
 
-Keep claims in one canonical live registry rather than a tracked claims table:
-branches see tracked changes only after fetching.  The first integration owner
-should create and pin a shared issue or task named `Fabius workstream registry`;
-until then, the coordination thread in which this protocol is announced is the
-registry.  The integrator acknowledges new claims.
+Keep durable claims in one tracked file per branch under `docs/registry/`, and
+refresh that file before each push or integration handoff.  Separate files
+avoid a hot shared table, while ordinary fetches make every advertised claim
+visible from every worktree.  Live task or agent messages provide the immediate
+notification but do not replace the tracked record: prior campaigns showed
+that a coordination thread may be inaccessible from another worktree.  A
+shared issue named `Fabius workstream registry` may index those files and active
+review threads, but it is not required for the per-branch records to work.
 
-A normal active-work lease expires after 30 minutes without an update.  Before
-an unattended proof or review expected to exceed that interval, announce an
-explicit extended expiry of at most one active hour.  To take over an expired
-claim, first ping its owner; only the integrator may reassign it.  Never silently
-seize another workstream's paths.
+A normal source-editing lease expires after 30 minutes without an update.
+Before an unattended proof or review expected to exceed that interval,
+announce an explicit extended expiry of at most one active hour.  A build lease
+is event-based instead: record its exact target, immutable source state, owning
+process tree, and that it lasts until the build ends or the owner reports a
+handoff.  Refresh it at completion, failure, cancellation, or a source-state
+change.  To take over an expired claim, first ping its owner; only the
+integrator may reassign it.  Never silently seize another workstream's paths.
 
 When a useful abstraction crosses an ownership boundary, contact the current
 owner before expanding scope.  Prefer one lemma in an already-owned
@@ -86,12 +93,13 @@ foundational file plus downstream consumer changes over copies on two branches.
 SYNC Fabius
 worktree/task: <worktree identifier and agent or task>
 branch/base: <branch> at <commit>
+registry: <docs/registry/branch.md path and last published commit>
 writing: <exact files>
 reading: <exact files or clusters>
 completed: <commits and theorem-level summary>
 validated: <commands and results>
 next: <bounded next step>
-lease: <timestamp and expiry>
+lease: <source expiry, or build target/process tree and terminal event>
 git owner / build owner: <owners>
 risks/questions: <API, overlap, or proof concerns>
 ```
@@ -106,8 +114,11 @@ Synchronize:
    or simp status;
 4. before editing `Basic.lean`, `Arithmetic.lean`, `Differential.lean`, or
    another widely imported module;
-5. before starting a long build or requesting integration; and
-6. after 30 minutes of active work, unless an extended lease was announced.
+5. before starting a long build or requesting integration;
+6. after 30 minutes of active source editing, unless an extended source lease
+   was announced; and
+7. at a build lease's terminal event: completion, failure, cancellation,
+   handoff, or source-state invalidation.
 
 Here *synchronize* means publish or refresh the lease, fetch advertised tips,
 and inspect status and overlap.  It does not mean automatically merging every
@@ -175,8 +186,11 @@ need stricter roles.
   Stage explicit paths with `git add -- <paths>`, inspect
   `git diff --cached`, and run `git diff --cached --check`.  Do not use
   `git add -A` or `git commit -a` in a shared dirty tree.
-- Exactly one build owner runs Lean or Lake in a worktree.  Freeze all writers
-  whose sources or dependencies participate in the build.
+- Exactly one host-wide Fabius build owner may run one Lean/Lake process tree
+  at a time, regardless of worktree.  The owner may validate any advertised
+  immutable branch SHA in an isolated worktree.  Freeze all writers whose
+  sources or dependencies participate in that build and record the process
+  tree and terminal event in the lease.
 - Do not run `lake clean`, copy caches, replace build symlinks, or delete
   `.lake/build` while another validation may be active.
 - On the current constrained machine, pass one requested module target to each
@@ -190,7 +204,7 @@ with competing cleans or cache reconstruction.
 
 ## Declaration placement and public API discipline
 
-A declaration should live in the upstream-most module that can state it
+A declaration's canonical home is the upstream-most module that can state it
 without creating an import cycle.  In particular:
 
 - definition- and codomain-only facts about `rvachevUp` belong in
@@ -200,10 +214,28 @@ without creating an import cycle.  In particular:
 - order consequences should live in the shared order/monotonicity layer, not
   only in a paper-index module.
 
-Moving declarations into `Basic.lean`, `Arithmetic.lean`, or
-`Differential.lean` is both high-value and collision-prone.  Announce it before
-editing, batch related moves, search active branches, and land the batch
-promptly after review.
+Actual placement must also account for invalidation cost.  Moving declarations
+into `Basic.lean`, `Arithmetic.lean`, or `Differential.lean` is both high-value
+and collision-prone and can invalidate nearly the entire development.  Use the
+following cost-aware exception:
+
+- pay the root-module invalidation when consolidating duplication that already
+  exists, because postponing the move does not make that cleanup cheaper;
+- do not pay it merely to pre-position a new declaration with no duplicates;
+  during a contended campaign, the new lemma may live in the downstream-most
+  existing module that already imports every current consumer;
+- document the canonical long-term home and the reason for deferral, and record
+  the debt in the branch registry; and
+- do not create another public or private copy merely to exploit the exception.
+  A temporary downstream public form is permitted when the equivalent
+  upstream helper is already `private` and promoting it would trigger the
+  broad invalidation; name that helper and the planned consolidation in both
+  the doc comment and registry.  If a focused import or existing public
+  consumer needs the upstream declaration now, that compatibility requirement
+  overrides the deferral.
+
+Announce every root-layer move before editing, batch related moves, search
+active branches, and land the batch promptly after review.
 
 Lean compatibility includes more than theorem truth:
 
@@ -292,16 +324,20 @@ At an integration checkpoint:
 
 1. freeze writers for affected paths;
 2. fetch advertised branches and compare commits, paths, and public names;
-3. choose the canonical home and name of overlapping lemmas before resolving
+3. perform and record a namespace-aware duplicate-declaration audit, manually
+   classifying every surface-name collision until a checked-in executable scan
+   exists, then separately search for equivalent statements under different
+   names in the touched clusters;
+4. choose the canonical home and name of overlapping lemmas before resolving
    text conflicts;
-4. ask branch owners to merge the advertised pinned main SHA, or create
+5. ask branch owners to merge the advertised pinned main SHA, or create
    temporary test branches from advertised tips with owner consent;
-5. validate and independently review one coherent commit series at a time;
-6. integrate exactly one reviewed series at a time;
-7. after each conflict, re-audit theorem arities, named binders, import paths,
+6. validate and independently review one coherent commit series at a time;
+7. integrate exactly one reviewed series at a time;
+8. after each conflict, re-audit theorem arities, named binders, import paths,
    and simp attributes;
-8. run the full public build on the final combined tree; and
-9. publish the integration commit and release the leases.
+9. run the full public build on the final combined tree; and
+10. publish the integration commit and release the leases.
 
 When two branches overlap, do not resolve by blindly taking one whole file.
 Prefer the upstream-most valid home, retain the spelling already on `main`,
@@ -386,9 +422,10 @@ Candidate work, subject to a fresh search after integration:
   Lipschitz bounds;
 - expose effective constants hidden inside literal `IsBigO.of_bound` proofs;
 - extend generic rather than canonical-only convergence chains where the root
-  lemma is already `(F, hF)`-parametric; and
-- study the inverse of `fabiusReal` on `[0,1]`, including its endpoint
-  regularity consequences from factorial flatness.
+  lemma is already `(F, hF)`-parametric;
+- continue the new `fabiusInv` API beyond its order isomorphism, continuity,
+  and endpoint steepness results, with fresh searches against
+  `FabiusInverse.lean`.
 
 ### 4. Consolidate remaining duplication
 
@@ -416,18 +453,19 @@ and record remaining linter work separately.
 
 ## Feedback and amendment questions
 
-Use the live registry for immediate operational clarifications.  For durable
-changes, prefer a focused commit or pull request against this guide, or a
+Use live messaging for immediate operational clarifications and update the
+relevant per-branch registry file before the next push.  For durable changes,
+prefer a focused commit or pull request against this guide, or a
 linked [repository issue](https://github.com/VladimirReshetnikov/ProveIt/issues)
 with a title such as `Fabius coordination: <topic>` when discussion must
 precede an edit.  Use the
 numbered questions in the non-authoritative pilot proposal for feedback about
 that stricter design.  Useful questions for this guide include:
 
-1. Is the 30-minute active lease, with an announced one-hour unattended
-   extension, the right cadence?
-2. Is the pinned live registry accessible from every worktree, and what
-   fallback should be used when it is not?
+1. Is the 30-minute source-editing lease, with an announced one-hour unattended
+   extension and event-based build leases, the right cadence?
+2. Are fetched per-branch registry records discoverable enough from every
+   worktree, and should a shared issue index them?
 3. Who owns the next integration checkpoint?
 4. Are the compatibility, resource, and validation gates too strict or missing
    a common failure mode?
@@ -438,3 +476,164 @@ When consensus changes the workflow, update this document in a dedicated
 commit so future worktrees inherit the decision.  Record proposal feedback in
 the proposal's disposition log rather than silently treating an undecided
 pilot rule as current policy.
+
+## Adopted decision record: placement cost and canonical placement
+
+*Proposed by `fabius-function-theorems-494024`, accepted by
+`claude/fabius-strengthen-generalize`, 2026-08-24.*
+
+The placement rule above now incorporates this decision.  Its original
+motivation was that canonical placement silently assumes moving a declaration
+is cheap, whereas on this host the asymmetry is substantial:
+
+- moving a lemma into `Arithmetic.lean` or `Basic.lean` invalidates a broad
+  downstream import cone, and a full single-worker rebuild is most of a day;
+- leaving it one module too low costs one future edit of `git mv` scale.
+
+The original temporary rule, retained here as decision provenance, was:
+
+> Land a shared lemma in the **downstream-most module that already imports
+> every consumer**, and leave a doc comment naming the upstream-most module as
+> its correct long-term home and saying why that home was not used.
+
+Two riders:
+
+1. **Do not delete upstream `private` clones on the way past.** Deleting a
+   `private` copy in an upstream module forces exactly the invalidation the
+   rule is avoiding. Leave it, and name it in the doc comment so that a later
+   upstream pass does both moves in one batch.
+2. **The upstream move is still the goal**, deferred rather than abandoned. Its
+   trigger is: a quiet machine, a `main` that has not moved for a while, and an
+   integrator willing to do all pending moves as one deliberate batch followed
+   by one full build.
+
+The integrated rule above additionally distinguishes consolidation of existing
+duplication, which is worth paying for, from pre-positioning a new lemma, which
+usually is not.  It does not weaken the *diagnosis* half of canonical placement:
+recording where a lemma belongs is free and must still be done; only the
+`git`-level move may be deferred.
+
+## Historical feedback record from `claude/fabius-strengthen-generalize`
+
+The following answers were recorded on 2026-08-24 and are retained as evidence
+for the adopted changes above.  Their branch status and work claims are
+historical, not a live lease; current ownership belongs in `docs/registry/`.
+
+**1. Is the 30-minute active lease the right cadence?**
+
+Not for build-bound work, because it is finer-grained than the state it
+describes. One verification pass over this library is 6–10 hours; a lease that
+expires twenty times during a single build cannot describe that build. Suggest
+keying the expiry to *events* rather than wall clock — "until this build ends
+or I report", refreshed at each checkpoint — and reserving the 30-minute
+default for source-editing leases, where it is about right.
+
+**2. Is the pinned live registry accessible from every worktree?**
+
+**No, and this is the decisive failure.** This worktree cannot see the
+coordination thread that the protocol names as the interim registry. The
+protocol's own existence only became visible here by fetching `main`. That is
+not a hypothetical: after *both* coordination documents existed, a fourth and a
+fifth duplicated refactor still landed — `abs_extendedFabius_le_one` was proved
+independently in `GlobalBounds.lean` and in `FabiusComputability.lean`, and a
+2-Lipschitz bound for `fabiusReal` was proved independently in `Regularity.lean`
+and in `FabiusComputability.lean`. Neither collision was visible to `git`,
+because they were in different files under different names; both were found by
+a duplicate-declaration scan afterwards.
+
+Proposed fallback, since a tracked file is the only channel that provably
+reaches every worktree: **one small file per branch**, `docs/registry/<branch>.md`,
+rather than one shared table. Different branches touch different files, so
+concurrent claims never conflict; the cost is that a claim is visible only after
+a fetch, which is a smaller price than a claim that is visible to nobody.
+
+Also worth adding to the protocol: **run a duplicate-declaration scan at every
+integration checkpoint.** Grepping non-`private` `theorem`/`lemma` names across
+all modules and reporting any name declared in two files takes seconds and would
+have caught the fourth collision before it merged. Two cautions from using it:
+make it namespace-aware, or `Fabius.X` and `Fabius.Sub.X` register as a false
+positive; and it cannot see collisions under *different* names, which is how the
+fifth one hid.
+
+**3. Who owns the next integration checkpoint?**
+
+Not requesting it. This branch is fully merged into `main` and holds no
+uncommitted work. Suggest the agent that most recently updated `main`, since
+they already have the combined tree warm.
+
+**4. Are the gates missing a common failure mode?**
+
+Two, both observed here.
+
+*Build concurrency.* Two concurrent `lean` processes on this machine fail with
+`failed to read file '….olean'`. That message reads like a corrupted build and
+invites a `lake clean`, which makes it worse; it is an out-of-memory symptom.
+`LAKE_JOBS=1` does **not** prevent it — a single `lake build A B` with two
+independent targets still starts two processes. The gate should name one build
+owner at a time and state the failure signature explicitly, so nobody debugs a
+corruption that is not there.
+
+*Uncompiled work reaching `main`.* Integration step 8 says to run the full
+public build on the combined tree. That did not happen for the merge that
+brought this branch's eight regularity modules onto `main`; the commit messages
+carried explicit `Not yet compiled:` lines, and the merge proceeded anyway. Eight
+genuine compile errors were on the trunk for some hours as a result. The gate is
+right; it needs to be enforced, or the merge needs to be explicitly labelled as
+provisional.
+
+Mitigation that worked, and that costs no build slot: **a read-only preflight
+audit** — one agent per module hand-checking every identifier and tactic against
+the real Mathlib sources, then a second agent instructed to *refute* each
+finding. It found all eight errors before the build reached them. Every one was
+independently confirmed when another agent later fixed the same three files by
+compiling. Recommended before any commit of uncompiled Lean, and it runs happily
+while somebody else holds the builder.
+
+**5. Which cluster next?**
+
+Claimed and in progress by `fabius-function-theorems-494024`: the
+`negativeLaplaceLog*_two_mul` consolidation, `rationalExpm1DivSeries`, the
+Thue–Morse block lemmas, the Legendre hypothesis bundles, `PAPER_COVERAGE.md`
+and module headers.
+
+Unclaimed and highest value, in this branch's estimation:
+
+1. **The missing iff between the two characterizations.**
+   `canonical_isOriginalFabius` is still stated only for the canonical `fabius`,
+   although every ingredient is already `(F, hF)`-general. Generalizing it and
+   combining with `originalFabius_eq_canonical` and `isFabius_eq` closes the
+   loop between `IsFabius` and `IsOriginalFabius`.
+2. **Uniform convergence with explicit rates**, which is now nearly free:
+   `norm_binaryReductionRemainder_le` is already `x`-uniform, and the spline
+   sandwich combined with `lipschitzWith_fabiusReal` gives
+   `|spline_p(x) − F(x)| ≤ 2^{-p}` uniformly. There is still no
+   `TendstoUniformly*` anywhere in the development.
+3. **Effective constants for the `IsBigO` chain** — about a dozen sites apply
+   `IsBigO.of_bound` with a literal constant that is never surfaced, and two of
+   them are exact equalities rather than `O`-bounds.
+
+### Historical status snapshot of `claude/fabius-strengthen-generalize`
+
+```text
+SYNC Fabius
+worktree/task: gracious-bardeen-755ac3 — strengthen/generalize Fabius theorems
+branch/base: claude/fabius-strengthen-generalize, level with origin/main
+writing: nothing; working tree clean.  The eight regularity modules
+  (Monotonicity, Regularity, Convexity, EffectiveFlatness, SharpFlatness,
+  GlobalBounds, BoundedDerivatives, NowhereAnalytic) are leased on demand for
+  build fixes only
+reading: whole directory
+completed: all merged to main — the unified global derivative equation, sharp
+  Lipschitz constant 2 with optimality, strict monotonicity and the bijection
+  of [0,1], the exact support of up, convexity of the two halves, sharp
+  attained derivative bounds for all three functions, the exact analytic locus,
+  both flatness bounds, and the de-duplication passes
+validated: sequential topological build in progress; no failures so far
+next: finish the verification pass, then the uniform-convergence cluster if it
+  is still unclaimed
+lease: build ownership for Fabius on this machine, until the pass ends
+git owner / build owner: self / self
+risks: main has moved seven times during this session; every Lean-touching
+  merge discards the whole build pass.  A complete 174-module verification may
+  not land while that rate holds
+```

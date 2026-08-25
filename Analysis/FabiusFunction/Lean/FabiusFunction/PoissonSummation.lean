@@ -222,13 +222,6 @@ theorem rvachev_even_translate_fourier
       norm_num
       ring
 
-private lemma complexSinc_neg_poisson (z : ℂ) : complexSinc (-z) = complexSinc z := by
-  by_cases hz : z = 0
-  · subst z
-    simp [complexSinc]
-  · simp only [complexSinc, neg_eq_zero, hz, if_false, Complex.sin_neg]
-    field_simp
-
 /-- The Fourier transform of the even Rvachev function is itself even. -/
 lemma rvachevFourier_neg
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -239,7 +232,7 @@ lemma rvachevFourier_neg
   intro n
   rw [show (Real.pi : ℂ) * -z / (2 : ℂ) ^ n =
       -((Real.pi : ℂ) * z / (2 : ℂ) ^ n) by ring,
-    complexSinc_neg_poisson]
+    complexSinc_neg]
 
 private lemma rvachevFourier_half_int_summable
     (F : BoundedFabius) (hF : IsFabius F) :
@@ -446,8 +439,61 @@ theorem rvachev_lattice_sum_of_one_half_le
       have hmposR : (2 : ℝ) ≤ m := by exact_mod_cast hmpos
       nlinarith
 
+/-- The direct support specialization of (31), before multiplying by `a`,
+for every lattice spacing `a ≥ 1 / 2`.
+
+The paper states (31)--(32) under `1 / 2 ≤ a ≤ 1`, but the upper bound is
+never needed: the two ingredients
+`rvachev_poisson_at_zero` (which needs only `0 < a`, itself a consequence of
+`1 / 2 ≤ a`) and `rvachev_lattice_sum_of_one_half_le` (which needs only
+`1 / 2 ≤ a`) both hold on the whole ray.  This is the upper-bound-free companion
+of `rvachev_poisson_support_specialization_unscaled`, which is kept with its
+original signature for compatibility. -/
+theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ a) :
+    (1 : ℂ) + 2 * rvachevUp F a =
+      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  rw [← rvachev_poisson_at_zero F hF ha, ← Complex.ofReal_tsum,
+    rvachev_lattice_sum_of_one_half_le F hF ha0]
+  push_cast
+  rfl
+
+/-- Corrected equation (32) for every lattice spacing `a ≥ 1 / 2`.
+
+As above, the paper's upper bound `a ≤ 1` plays no role; multiplying the
+unscaled identity by `a` only needs `a ≠ 0`.  The source also leaves an extra
+factor `1 / a` on the right after that multiplication, which is corrected
+here.  This is the upper-bound-free companion of
+`rvachev_poisson_support_specialization`, which is kept with its original
+signature for compatibility. -/
+theorem rvachev_poisson_support_specialization_of_one_half_le
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ a) :
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  have h := rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0
+  calc
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
+    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
+    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+      rw [← tsum_mul_left]
+      apply tsum_congr
+      intro m
+      push_cast
+      field_simp [ha.ne']
+
 /-- The direct support specialization of (31), before multiplying by `a`.
-This is the identity from which the corrected equation (32) follows. -/
+This is the identity from which the corrected equation (32) follows.
+
+Kept for compatibility with the paper's hypotheses; the upper bound `a ≤ 1`
+is not needed, see
+`rvachev_poisson_support_specialization_unscaled_of_one_half_le`. -/
 theorem rvachev_poisson_support_specialization_unscaled
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
     (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
@@ -461,7 +507,10 @@ theorem rvachev_poisson_support_specialization_unscaled
   rfl
 
 /-- Corrected equation (32).  The source leaves an extra factor `1 / a` on
-the right after multiplying the preceding identity by `a`. -/
+the right after multiplying the preceding identity by `a`.
+
+Kept for compatibility with the paper's hypotheses; the upper bound `a ≤ 1`
+is not needed, see `rvachev_poisson_support_specialization_of_one_half_le`. -/
 theorem rvachev_poisson_support_specialization
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
     (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :

@@ -291,7 +291,16 @@ theorem iteratedDeriv_extendedFabius
       rw [show k + 1 + 1 = k + 2 by omega, hchoose, pow_add]
       ring
 
-private lemma extendedFabius_add_one_eq_rvachevUp
+/-- On the first block the signed extension is literally the translate of
+Rvachev's compactly supported function: `extendedFabius F (x + 1) = up F x`
+for every `x ≤ 1`.
+
+This is the `b = 0` case of `extendedFabius_eq_single_translate` with the
+sign `(-1) ^ binaryWeight 0 = 1` and the offset `2 * 0` already discharged.
+It is the entry point for the Rvachev bridge of equation (32), for the
+nowhere-analyticity transfer, and for the translated Legendre series, so it
+is stated publicly rather than kept private to this module. -/
+theorem extendedFabius_add_one_eq_rvachevUp
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ 1) :
     extendedFabius F (x + 1) = rvachevUp F x := by
   unfold extendedFabius
@@ -304,6 +313,21 @@ private lemma extendedFabius_add_one_eq_rvachevUp
       have : x + 1 - 2 * (n : ℝ) - 1 ≤ -1 := by linarith
       exact this)]
     ring
+
+/-- Shifted form of `extendedFabius_add_one_eq_rvachevUp`: on `(-∞, 2]` the
+signed extension is the single translate `up (y - 1)`.
+
+No lower bound on `y` is needed: for `y ≤ 0` both sides vanish, since
+`y - 1 ≤ -1` puts the argument outside the support of `up`.  Downstream
+arguments that instantiate the `b = 0` block of
+`extendedFabius_eq_single_translate` always have `y ≤ 2` in context, so this
+is the shape they should use. -/
+theorem extendedFabius_eq_rvachevUp_sub_one
+    (F : BoundedFabius) (hF : IsFabius F) {y : ℝ} (hy : y ≤ 2) :
+    extendedFabius F y = rvachevUp F (y - 1) := by
+  have h := extendedFabius_add_one_eq_rvachevUp F hF (x := y - 1) (by linarith)
+  rw [show y - 1 + 1 = y by ring] at h
+  exact h
 
 /-- The iterated derivatives of Rvachev's function are rescaled global Fabius values. -/
 theorem iteratedDeriv_rvachev

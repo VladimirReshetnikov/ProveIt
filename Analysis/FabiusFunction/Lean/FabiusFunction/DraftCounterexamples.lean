@@ -42,11 +42,6 @@ noncomputable def paperProxyTerm (x : ℝ) (n : ℕ) : ℝ :=
   (((2 : ℝ) ^ n * x) ^ n) /
     ((n.factorial : ℝ) * (2 : ℝ) ^ n.choose 2)
 
-private lemma choose_succ_two (n : ℕ) :
-    (n + 1).choose 2 = n.choose 2 + n := by
-  rw [show n + 1 = Nat.succ n by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 /-- The exact successive-term ratio of the proxy in equation (7). -/
 theorem paperProxyTerm_succ (x : ℝ) (n : ℕ) :
     paperProxyTerm x (n + 1) =
@@ -88,6 +83,8 @@ theorem paperProxyRatio_tendsto_atTop {x : ℝ} (hx : 0 < x) :
     simpa only [Pi.inv_apply, inv_div] using hmul
   simpa only [Nat.cast_add, Nat.cast_one, mul_div_assoc] using hmul'
 
+/-- At a positive argument every term of equation (7)'s proxy is positive,
+including the index `n = 0`. -/
 lemma paperProxyTerm_pos {x : ℝ} (hx : 0 < x) (n : ℕ) :
     0 < paperProxyTerm x n := by
   unfold paperProxyTerm

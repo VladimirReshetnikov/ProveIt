@@ -1,5 +1,7 @@
 import FabiusFunction.Paper06487Supplement
 
+set_option autoImplicit false
+
 /-!
 # *Arithmetic of the Fabius function* (arXiv:1702.06487v3)
 

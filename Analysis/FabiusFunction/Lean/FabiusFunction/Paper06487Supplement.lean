@@ -26,11 +26,35 @@ noncomputable section
 
 /-! ## Elementary analytic consequences -/
 
-/-- The recurrence in Proposition 1 shows that every moment `c_n` is
-nonnegative. -/
-theorem moment_nonneg (n : ℕ) : 0 ≤ moment n := by
+/-- Every moment `c_n` of Rvachev's function is strictly positive.
+
+This is the sharp form of `Fabius.moment_nonneg` below, and the exact analogue
+of `Fabius.halfMoment_pos` for the half-moment sequence.  It matters because a
+moment routinely appears in a denominator or inside a `padicValRat`, where the
+nonnegativity statement is useless and `moment n ≠ 0` is what is needed; that
+is available here as `(moment_pos n).ne'`.
+
+Placement note: by symmetry with `halfMoment_pos` the long-term home of this
+lemma is `FabiusFunction.Arithmetic`, where `moment` itself is defined, but the
+proof is not available there: `Arithmetic` is upstream of both
+`FabiusFunction.NormalizedEvenMoments` (which supplies
+`moment_eq_momentNumerator_div`) and `FabiusFunction.Parity` (which supplies
+`momentNumerator_pos`).  The upstream-most module in which both are in scope is
+`FabiusFunction.TwoAdic`; this file is used instead so that the lemma sits next
+to the `moment_nonneg` it sharpens. -/
+theorem moment_pos (n : ℕ) : 0 < moment n := by
   rw [moment_eq_momentNumerator_div]
-  positivity
+  refine div_pos ?_ ?_
+  · exact_mod_cast momentNumerator_pos n
+  · exact_mod_cast Nat.mul_pos (oddDoubleFactorial_pos (n + 1))
+      (evenMersenneProduct_pos n)
+
+/-- The recurrence in Proposition 1 shows that every moment `c_n` is
+nonnegative.  Superseded by the sharp `Fabius.moment_pos` above, of which this
+is now a direct consequence; it is kept under its own name for the prose of
+the paper, which asserts only nonnegativity. -/
+theorem moment_nonneg (n : ℕ) : 0 ≤ moment n :=
+  (moment_pos n).le
 
 /-- The partition-of-unity identity used after equation (32). -/
 theorem rvachev_add_one_sub_eq_one
@@ -55,15 +79,17 @@ theorem rvachev_add_one_sub_eq_one
   rw [hleft, hright, hF.symmetry t ht]
   ring
 
-/-- Rvachev's function is strictly positive on the interior of its support. -/
+/-- Rvachev's function is strictly positive on the interior of its support.
+
+This is the paper-facing name for `Fabius.rvachevUp_pos_of_mem_Ioo`, which is
+the canonical home of the statement in `FabiusFunction.Monotonicity` (reached
+here through `FabiusFunction.PaperStatements`).  It is kept as a one-line
+forwarder so that references in the prose index continue to resolve. -/
 theorem rvachev_pos_of_mem_Ioo
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Ioo (-1 : ℝ) 1) :
-    0 < rvachevUp F x := by
-  unfold rvachevUp
-  split_ifs with hx0
-  · exact fabius_pos_of_pos F hF (by linarith [hx.1])
-  · exact fabius_pos_of_pos F hF (by linarith [hx.2])
+    0 < rvachevUp F x :=
+  rvachevUp_pos_of_mem_Ioo F hF hx
 
 /-- Positivity characterizes the interior `(-1,1)` of the support of
 Rvachev's function. -/
@@ -87,18 +113,16 @@ theorem rvachevUp_eq_zero_iff_not_mem_Ioo
   · exact rvachevUp_eq_zero_of_not_mem_Ioo F hF
 
 /-- The ordinary (rather than topological) support of Rvachev's function is
-exactly `(-1,1)`. -/
+exactly `(-1,1)`.
+
+This is the paper-facing name for `Fabius.support_rvachevUp`, which is the
+canonical home of the statement in `FabiusFunction.Monotonicity` (reached here
+through `FabiusFunction.PaperStatements`).  It is kept as a one-line forwarder
+so that references in the prose index continue to resolve. -/
 theorem support_rvachev_eq
     (F : BoundedFabius) (hF : IsFabius F) :
-    Function.support (rvachevUp F) = Ioo (-1 : ℝ) 1 := by
-  ext x
-  change rvachevUp F x ≠ 0 ↔ x ∈ Ioo (-1 : ℝ) 1
-  constructor
-  · intro hx
-    apply (rvachev_pos_iff_mem_Ioo F hF x).1
-    exact lt_of_le_of_ne (rvachevUp_nonneg F x) hx.symm
-  · intro hx
-    exact ne_of_gt ((rvachev_pos_iff_mem_Ioo F hF x).2 hx)
+    Function.support (rvachevUp F) = Ioo (-1 : ℝ) 1 :=
+  support_rvachevUp F hF
 
 /-- The derivative is positive on the increasing half of the bump, as stated
 in Section 2. -/
@@ -302,17 +326,14 @@ theorem rvachev_shifted_dyadic_eq_fabiusDyadic
     rvachevUp F (((a : ℝ) - (2 : ℝ) ^ n) / (2 : ℝ) ^ n) =
       (fabiusDyadic n a : ℝ) := by
   let x : ℝ := (a : ℝ) / (2 : ℝ) ^ n
-  have hx0 : 0 ≤ x := by positivity
   have hx2 : x ≤ 2 := by
     dsimp only [x]
     rw [div_le_iff₀ (by positivity)]
     rw [pow_succ] at ha
     have ha' : a ≤ 2 * 2 ^ n := by simpa [mul_comm] using ha
     exact_mod_cast ha'
-  have hsingle := extendedFabius_eq_single_translate F hF 0
-    (x := x) (by simpa using hx0) (by simpa using hx2)
-  have hext : extendedFabius F x = rvachevUp F (x - 1) := by
-    simpa [binaryWeight] using hsingle
+  have hext : extendedFabius F x = rvachevUp F (x - 1) :=
+    extendedFabius_eq_rvachevUp_sub_one F hF hx2
   have harg : ((a : ℝ) - (2 : ℝ) ^ n) / (2 : ℝ) ^ n = x - 1 := by
     dsimp only [x]
     field_simp
@@ -390,17 +411,14 @@ theorem rvachev_one_sub_dyadic_eq_reordered_sum
             ∑ h : Fin a, (thueMorseSign h.val : ℚ) *
               ((2 : ℚ) * a - 2 * h.val - 1) ^ (n - 2 * k.val) : ℚ) := by
   let x : ℝ := (a : ℝ) / (2 : ℝ) ^ n
-  have hx0 : 0 ≤ x := by positivity
   have hx2 : x ≤ 2 := by
     dsimp only [x]
     rw [div_le_iff₀ (by positivity)]
     rw [pow_succ] at ha
     have ha' : a ≤ 2 * 2 ^ n := by simpa [mul_comm] using ha
     exact_mod_cast ha'
-  have hsingle := extendedFabius_eq_single_translate F hF 0
-    (x := x) (by simpa using hx0) (by simpa using hx2)
-  have hext : extendedFabius F x = rvachevUp F (x - 1) := by
-    simpa [binaryWeight] using hsingle
+  have hext : extendedFabius F x = rvachevUp F (x - 1) :=
+    extendedFabius_eq_rvachevUp_sub_one F hF hx2
   have heven := rvachev_even F hF (1 - x)
   have hup : rvachevUp F (1 - x) = extendedFabius F x := by
     rw [hext]

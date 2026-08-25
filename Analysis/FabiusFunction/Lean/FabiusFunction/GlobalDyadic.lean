@@ -39,13 +39,12 @@ bounded Fabius function. -/
 theorem extendedFabius_one_add (F : BoundedFabius) (hF : IsFabius F)
     {y : ℝ} (hy : y ∈ Set.Icc (0 : ℝ) 1) :
     extendedFabius F (1 + y) = 1 - fabiusReal F y := by
-  have hylo : 0 ≤ y := hy.1
   have hyhi : y ≤ 1 := hy.2
-  have hext := extendedFabius_eq_single_translate F hF 0
-    (x := 1 + y) (by norm_num; linarith) (by norm_num; linarith)
+  have hext : extendedFabius F (1 + y) = rvachevUp F y := by
+    have h := extendedFabius_add_one_eq_rvachevUp F hF hyhi
+    rw [show y + 1 = 1 + y by ring] at h
+    exact h
   rw [hext]
-  norm_num [binaryWeight]
-  change rvachevUp F y = 1 - fabiusReal F y
   by_cases hy0 : y ≤ 0
   · have : y = 0 := le_antisymm hy0 hy.1
     subst y

@@ -29,12 +29,16 @@ namespace Fabius
 noncomputable section
 
 /-- The Wolfram sign `(-1)^ThueMorse[r]` agrees with the repository's signed
-Thue--Morse convention. -/
+Thue--Morse convention.
+
+This is the `ℚ` instance of `neg_one_pow_thueMorseBit_ring`
+(`ThueMorseBinomialLog`), which holds over an arbitrary `[Ring R]`.  The
+statement and name are unchanged, so all existing callers are unaffected;
+new call sites over a general ring, a field, or `ℂ` should use the ring-level
+form directly. -/
 theorem neg_one_pow_thueMorseBit (r : ℕ) :
-    (-1 : ℚ) ^ thueMorseBit r = (thueMorseSign r : ℚ) := by
-  rw [thueMorseBit, thueMorseSign]
-  push_cast
-  exact (neg_one_pow_eq_pow_mod_two (R := ℚ) (binaryWeight r)).symm
+    (-1 : ℚ) ^ thueMorseBit r = (thueMorseSign r : ℚ) :=
+  neg_one_pow_thueMorseBit_ring (R := ℚ) r
 
 /-- Reflecting an index in a dyadic block complements its first `k` binary
 digits and multiplies its Thue--Morse sign by `(-1)^k`. -/

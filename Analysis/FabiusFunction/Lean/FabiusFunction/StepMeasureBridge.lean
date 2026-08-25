@@ -22,6 +22,10 @@ namespace Fabius
 
 noncomputable section
 
+/-- The half-endpoint cell indicator agrees Lebesgue-almost everywhere with the
+ordinary indicator of `Ioc a b`, the two endpoints forming a null set.  This is
+what lets every integral of `halfEndpointIntervalIndicator` below be reduced to
+Mathlib's `Ioc` indicator lemmas. -/
 theorem halfEndpointIntervalIndicator_ae_eq_indicator (a b : ℝ) :
     halfEndpointIntervalIndicator a b =ᵐ[volume]
       (Ioc a b).indicator (fun _ : ℝ => (1 : ℝ)) := by
@@ -36,22 +40,32 @@ theorem halfEndpointIntervalIndicator_ae_eq_indicator (a b : ℝ) :
     · exact (h ⟨hx.1, hx.2.lt_of_ne hxb⟩).elim
     · rfl
 
+/-- The half-endpoint cell indicator is Lebesgue integrable on all of `ℝ`,
+being almost everywhere the indicator of a bounded interval. -/
 theorem halfEndpointIntervalIndicator_integrable (a b : ℝ) :
     Integrable (halfEndpointIntervalIndicator a b) := by
   rw [integrable_congr (halfEndpointIntervalIndicator_ae_eq_indicator a b)]
   exact (integrableOn_const (μ := volume) (s := Ioc a b) (C := (1 : ℝ))
     (measure_Ioc_lt_top.ne)).integrable_indicator measurableSet_Ioc
 
+/-- Interval-integrability of the half-endpoint cell indicator on an arbitrary
+`c..d`, an immediate corollary of `halfEndpointIntervalIndicator_integrable`. -/
 theorem halfEndpointIntervalIndicator_intervalIntegrable (a b c d : ℝ) :
     IntervalIntegrable (halfEndpointIntervalIndicator a b) volume c d :=
   (halfEndpointIntervalIndicator_integrable a b).intervalIntegrable
 
+/-- The integral of the half-endpoint cell indicator over the whole line is
+`max (b - a) 0`, the truncation recording that `Ioc a b` is empty when `b < a`.
+This is the per-cell input to `integral_stepApproximant`. -/
 theorem integral_halfEndpointIntervalIndicator (a b : ℝ) :
     (∫ x : ℝ, halfEndpointIntervalIndicator a b x) = max (b - a) 0 := by
   rw [integral_congr_ae (halfEndpointIntervalIndicator_ae_eq_indicator a b)]
   rw [integral_indicator_const (1 : ℝ) measurableSet_Ioc, Real.volume_real_Ioc]
   simp
 
+/-- On an ordered interval `c ≤ d`, the integral of the half-endpoint cell
+indicator is `max (min d b - max c a) 0`, the length of the overlap
+`Ioc c d ∩ Ioc a b`. -/
 theorem intervalIntegral_halfEndpointIntervalIndicator_of_le
     (a b c d : ℝ) (hcd : c ≤ d) :
     (∫ x in c..d, halfEndpointIntervalIndicator a b x) =
@@ -79,6 +93,11 @@ theorem intervalIntegral_halfEndpointIntervalIndicator_of_le
         tauto]
       exact Real.volume_real_Ioc
 
+/-- For `c ≤ d`, the integral of the step approximant `φ_n` over `c..d` is the
+prefactor `2 ^ n / 2 ^ (n + 1).choose 2` times the sum over `m` of the
+coefficient `coeff m` weighted by the overlap length of `c..d` with the `m`-th
+histogram cell.  This is the raw expansion later repackaged by
+`intervalIntegral_stepApproximant_eq_mass_overlap`. -/
 theorem intervalIntegral_stepApproximant_of_le (n : ℕ) (c d : ℝ) (hcd : c ≤ d) :
     (∫ x in c..d, stepApproximant n x) =
       (2 : ℝ) ^ n / (2 : ℝ) ^ ((n + 1).choose 2) *
@@ -111,10 +130,15 @@ theorem stepApproximant_intervalIntegrable (n : ℕ) (a b : ℝ) :
     IntervalIntegrable (stepApproximant n) volume a b :=
   (stepApproximant_integrable n).intervalIntegrable
 
+/-- The density measure `rvachevMeasure F` charges no singleton: it is given by
+a density against Lebesgue measure, and points are Lebesgue null. -/
 theorem rvachevMeasure_singleton (F : BoundedFabius) (x : ℝ) :
     rvachevMeasure F {x} = 0 := by
   exact withDensity_absolutelyContinuous volume _ (measure_singleton x)
 
+/-- The frontier of `Ioc a b` is `rvachevMeasure F`-null.  This is the
+null-boundary hypothesis required by the portmanteau theorem in
+`finiteConvolutionMeasure_Ioc_tendsto`. -/
 theorem rvachevMeasure_frontier_Ioc (F : BoundedFabius) (a b : ℝ) :
     rvachevMeasure F (frontier (Ioc a b)) = 0 := by
   by_cases hab : a < b
@@ -124,6 +148,10 @@ theorem rvachevMeasure_frontier_Ioc (F : BoundedFabius) (a b : ℝ) :
   · rw [Ioc_eq_empty hab, frontier_empty]
     exact measure_empty
 
+/-- Under `IsFabius F`, the mass of `Ioc a b` under the finite convolution
+measures converges to its mass under `rvachevMeasure F`.  This is weak
+convergence together with the null frontier of `Ioc a b`, read through
+portmanteau. -/
 theorem finiteConvolutionMeasure_Ioc_tendsto
     (F : BoundedFabius) (hF : IsFabius F) (a b : ℝ) :
     Tendsto (fun n : ℕ => (finiteConvolutionMeasure n).real (Ioc a b)) atTop
@@ -136,6 +164,9 @@ theorem finiteConvolutionMeasure_Ioc_tendsto
   simpa [finiteConvolutionProbability, rvachevProbability, Measure.real,
     Function.comp_def] using hreal
 
+/-- Under `IsFabius F` and for `a ≤ b`, the mass of `Ioc a b` under the density
+measure equals the interval integral of `rvachevUp F` over `a..b`.  This turns
+the measure-theoretic limit into the analytic one wanted for Theorem 2. -/
 theorem rvachevMeasure_real_Ioc_eq_intervalIntegral
     (F : BoundedFabius) (hF : IsFabius F) (a b : ℝ) (hab : a ≤ b) :
     (rvachevMeasure F).real (Ioc a b) = ∫ x in a..b, rvachevUp F x := by
@@ -148,11 +179,16 @@ theorem rvachevMeasure_real_Ioc_eq_intervalIntegral
   · exact (rvachevUp_integrable F hF).integrableOn
   · exact Eventually.of_forall (rvachevUp_nonneg F)
 
+/-- The interval integral of `rvachevUp F` over `a..b` is nonnegative when
+`a ≤ b`, since `rvachevUp F` is pointwise nonnegative. -/
 theorem intervalIntegral_rvachevUp_nonneg
     (F : BoundedFabius) (a b : ℝ) (hab : a ≤ b) :
     0 ≤ ∫ x in a..b, rvachevUp F x :=
   intervalIntegral.integral_nonneg hab fun x _ => rvachevUp_nonneg F x
 
+/-- Under `IsFabius F` and for `a ≤ b`, the interval integral of `rvachevUp F`
+over `a..b` is at most the length `b - a`, since `rvachevUp F` is bounded by
+one. -/
 theorem intervalIntegral_rvachevUp_le_length
     (F : BoundedFabius) (hF : IsFabius F) (a b : ℝ) (hab : a ≤ b) :
     (∫ x in a..b, rvachevUp F x) ≤ b - a := by
@@ -165,6 +201,9 @@ theorem intervalIntegral_rvachevUp_le_length
       exact rvachevUp_le_one F x
     _ = b - a := by simp
 
+/-- Under `IsFabius F`, with `a ≤ b` and `0 ≤ δ`, enlarging `a..b` by `δ` at each
+end raises the integral of `rvachevUp F` by at most `2 * δ`.  This bounds the
+outer side of the sandwich in `intervalIntegral_stepApproximant_tendsto_of_le`. -/
 theorem intervalIntegral_rvachevUp_expand_sub_le
     (F : BoundedFabius) (hF : IsFabius F) (a b δ : ℝ)
     (_hab : a ≤ b) (hδ : 0 ≤ δ) :
@@ -180,6 +219,10 @@ theorem intervalIntegral_rvachevUp_expand_sub_le
     (hint (a - δ) b) (hint b (b + δ))
   linarith
 
+/-- Under `IsFabius F`, with `0 ≤ δ` and the nondegeneracy hypothesis
+`a + δ ≤ b - δ`, shrinking `a..b` by `δ` at each end lowers the integral of
+`rvachevUp F` by at most `2 * δ`.  This bounds the inner side of the same
+sandwich. -/
 theorem intervalIntegral_rvachevUp_sub_shrink_le
     (F : BoundedFabius) (hF : IsFabius F) (a b δ : ℝ)
     (_hinner : a + δ ≤ b - δ) (hδ : 0 ≤ δ) :
@@ -195,6 +238,10 @@ theorem intervalIntegral_rvachevUp_sub_shrink_le
     (hint a (b - δ)) (hint (b - δ) b)
   linarith
 
+/-- The mass that `polynomialMeasure n` gives to `Ioc a b` is the sum of the
+normalized coefficients `coeff m / 2 ^ (n + 1).choose 2` over those atom
+locations `polynomialAtomLocation n m` that lie in `Ioc a b`.  This is the
+atom-counting side of the sandwich against the histogram integral. -/
 theorem polynomialMeasure_real_Ioc (n : ℕ) (a b : ℝ) :
     (polynomialMeasure n).real (Ioc a b) =
       ∑ m ∈ range (approximationDegree n + 1),
@@ -218,6 +265,8 @@ theorem polynomialMeasure_real_Ioc (n : ℕ) (a b : ℝ) :
     · simp only [Set.indicator]
       split_ifs <;> simp
 
+/-- The `m`-th atom location lies strictly to the right of the left endpoint of
+its histogram cell. -/
 theorem stepIntervalLeft_lt_atom (n m : ℕ) :
     stepIntervalLeft n m < polynomialAtomLocation n m := by
   unfold stepIntervalLeft polynomialAtomLocation
@@ -225,6 +274,10 @@ theorem stepIntervalLeft_lt_atom (n m : ℕ) :
   apply (div_lt_div_iff_of_pos_right hden).2
   linarith
 
+/-- The `m`-th atom location lies strictly to the left of the right endpoint of
+its histogram cell.  Together with `stepIntervalLeft_lt_atom` this places the
+atom in the open cell, which is what makes `halfEndpointIntervalIndicator_atom`
+evaluate to one. -/
 theorem atom_lt_stepIntervalRight (n m : ℕ) :
     polynomialAtomLocation n m < stepIntervalRight n m := by
   unfold stepIntervalRight polynomialAtomLocation
@@ -244,6 +297,11 @@ theorem atom_lt_stepIntervalRight (n m : ℕ) :
   · exact (hinterior ⟨stepIntervalLeft_lt_atom n m,
       atom_lt_stepIntervalRight n m⟩).elim
 
+/-- Conditional height-to-mass estimate: if the step approximant `φ_n` is at
+most one at the `m`-th atom, then the normalized atom mass
+`coeff m / 2 ^ (n + 1).choose 2` is at most the cell width `1 / 2 ^ n`.  The
+hypothesis is discharged globally in `StepApproximationLimit` by
+`polynomialAtomMass_le_cellWidth_unconditional`. -/
 theorem polynomialAtomMass_le_cellWidth (n m : ℕ)
     (hstep : stepApproximant n (polynomialAtomLocation n m) ≤ 1) :
     ((approximationPolynomial n).coeff m : ℝ) /
@@ -279,29 +337,44 @@ theorem polynomialAtomMass_le_cellWidth (n m : ℕ)
   apply (le_div_iff₀ (show (0 : ℝ) < (2 : ℝ) ^ n by positivity)).2
   simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using hheight
 
+/-- Half the width of a level-`n` histogram cell, namely `1 / 2 ^ (n + 1)`.
+Each cell is centred at its atom location and has full width `1 / 2 ^ n`, so
+this is the amount by which an interval is shrunk or enlarged when it is
+compared with the cells it meets. -/
 noncomputable def stepHalfWidth (n : ℕ) : ℝ :=
   1 / (2 : ℝ) ^ (n + 1)
 
+/-- The half-width `stepHalfWidth n` is strictly positive. -/
 theorem stepHalfWidth_pos (n : ℕ) : 0 < stepHalfWidth n := by
   unfold stepHalfWidth
   positivity
 
+/-- The half-widths tend to zero, so for every fixed `δ > 0` the level-`n`
+comparison intervals eventually nest against the fixed ones: `Ioc (a + δ) (b - δ)`
+sits inside the shrunken interval, and the enlarged interval sits inside
+`Ioc (a - δ) (b + δ)`. -/
 theorem tendsto_stepHalfWidth : Tendsto stepHalfWidth atTop (𝓝 0) := by
   have h := (tendsto_pow_atTop_nhds_zero_of_abs_lt_one
     (show |(1 / 2 : ℝ)| < 1 by norm_num)).comp (tendsto_add_atTop_nat 1)
   exact h.congr' (Eventually.of_forall fun n => by
     simp [stepHalfWidth, one_div, inv_pow])
 
+/-- The left endpoint of the `m`-th cell is its atom location minus the
+half-width. -/
 theorem stepIntervalLeft_eq_atom_sub (n m : ℕ) :
     stepIntervalLeft n m = polynomialAtomLocation n m - stepHalfWidth n := by
   unfold stepIntervalLeft polynomialAtomLocation stepHalfWidth
   ring
 
+/-- The right endpoint of the `m`-th cell is its atom location plus the
+half-width. -/
 theorem stepIntervalRight_eq_atom_add (n m : ℕ) :
     stepIntervalRight n m = polynomialAtomLocation n m + stepHalfWidth n := by
   unfold stepIntervalRight polynomialAtomLocation stepHalfWidth
   ring
 
+/-- Every level-`n` histogram cell has width `1 / 2 ^ n`, independently of the
+cell index `m`. -/
 theorem stepCellWidth_eq (n m : ℕ) :
     stepIntervalRight n m - stepIntervalLeft n m = 1 / (2 : ℝ) ^ n := by
   rw [stepIntervalRight_eq_atom_add, stepIntervalLeft_eq_atom_sub]
@@ -309,6 +382,9 @@ theorem stepCellWidth_eq (n m : ℕ) :
   rw [pow_succ]
   ring
 
+/-- The height factor `2 ^ n` and the cell width are reciprocal, so a cell of
+the step approximant carries exactly the mass of its coefficient.  This is the
+normalization used on both sides of the sandwich. -/
 theorem stepCell_normalization (n m : ℕ) :
     (2 : ℝ) ^ n * (stepIntervalRight n m - stepIntervalLeft n m) = 1 := by
   rw [stepCellWidth_eq]
@@ -332,21 +408,37 @@ theorem integral_stepApproximant (n : ℕ) :
             ((approximationPolynomial n).coeff m : ℝ)) =
           (2 : ℝ) ^ ((n + 1).choose 2) := by
       norm_cast
-      rw [← approximationPolynomial_eval_one,
-        Polynomial.eval_eq_sum_range, approximationPolynomial_natDegree]
-      simp
+      exact sum_approximationPolynomial_coeff n
     rw [hcoeff]
     field_simp
   · intro m hm
     exact (halfEndpointIntervalIndicator_integrable
       (stepIntervalLeft n m) (stepIntervalRight n m)).const_mul _
 
+/-- The nonnegative histogram approximants have exact `L¹` mass one. -/
+theorem integral_abs_stepApproximant (n : ℕ) :
+    (∫ x : ℝ, |stepApproximant n x|) = 1 := by
+  calc
+    (∫ x : ℝ, |stepApproximant n x|) =
+        ∫ x : ℝ, stepApproximant n x := by
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [abs_of_nonneg (stepApproximant_nonneg n x)]
+    _ = 1 := integral_stepApproximant n
+
+/-- Length of the overlap between the interval `a..b` and the `m`-th level-`n`
+histogram cell, truncated at zero when the two are disjoint.  It is the shape in
+which `intervalIntegral_stepApproximant_of_le` is compared with the atomic
+masses of `polynomialMeasure n`. -/
 noncomputable def stepOverlap (n m : ℕ) (a b : ℝ) : ℝ :=
   max (min b (stepIntervalRight n m) - max a (stepIntervalLeft n m)) 0
 
+/-- Overlap lengths are nonnegative, by the truncation in the definition. -/
 theorem stepOverlap_nonneg (n m : ℕ) (a b : ℝ) :
     0 ≤ stepOverlap n m a b := le_max_right _ _
 
+/-- An overlap length never exceeds the width of the cell it is measured
+against. -/
 theorem stepOverlap_le_cellWidth (n m : ℕ) (a b : ℝ) :
     stepOverlap n m a b ≤ stepIntervalRight n m - stepIntervalLeft n m := by
   unfold stepOverlap
@@ -357,6 +449,10 @@ theorem stepOverlap_le_cellWidth (n m : ℕ) (a b : ℝ) :
       le_max_right a (stepIntervalLeft n m)]
   · exact hw
 
+/-- Inner comparison: if the `m`-th atom lies in the shrunken interval
+`Ioc (a + stepHalfWidth n) (b - stepHalfWidth n)`, then its whole cell lies in
+`a..b`, so the atom indicator is at most the normalized overlap
+`2 ^ n * stepOverlap n m a b`. -/
 theorem innerAtomIndicator_le_normalizedOverlap (n m : ℕ) (a b : ℝ) :
     (if polynomialAtomLocation n m ∈
         Ioc (a + stepHalfWidth n) (b - stepHalfWidth n) then 1 else 0 : ℝ) ≤
@@ -377,6 +473,10 @@ theorem innerAtomIndicator_le_normalizedOverlap (n m : ℕ) (a b : ℝ) :
   · rw [if_neg hz]
     exact mul_nonneg (by positivity) (stepOverlap_nonneg n m a b)
 
+/-- Outer comparison: the normalized overlap `2 ^ n * stepOverlap n m a b` is at
+most the indicator of the `m`-th atom lying in the enlarged interval
+`Ioc (a - stepHalfWidth n) (b + stepHalfWidth n)`, because an atom outside that
+interval has a cell disjoint from `a..b`. -/
 theorem normalizedOverlap_le_outerAtomIndicator (n m : ℕ) (a b : ℝ) :
     (2 : ℝ) ^ n * stepOverlap n m a b ≤
       (if polynomialAtomLocation n m ∈
@@ -410,6 +510,10 @@ theorem normalizedOverlap_le_outerAtomIndicator (n m : ℕ) (a b : ℝ) :
           le_max_right a (stepIntervalLeft n m)]
     rw [hoverlap, mul_zero]
 
+/-- For `a ≤ b`, the integral of `φ_n` over `a..b` is the sum over atoms of the
+normalized coefficient times the normalized overlap `2 ^ n * stepOverlap`.
+Matching this term by term with `polynomialMeasure_real_Ioc` yields both halves
+of the sandwich. -/
 theorem intervalIntegral_stepApproximant_eq_mass_overlap
     (n : ℕ) (a b : ℝ) (hab : a ≤ b) :
     (∫ x in a..b, stepApproximant n x) =
@@ -452,6 +556,9 @@ theorem intervalIntegral_stepApproximant_le_polynomialMeasure_outer
   apply mul_le_mul_of_nonneg_left (normalizedOverlap_le_outerAtomIndicator n m a b)
   exact div_nonneg (Nat.cast_nonneg _) (by positivity)
 
+/-- For `a ≤ b`, the mass the finite convolution measure gives to the shrunken
+interval is at most the histogram integral over `a..b`.  This is the inner bound
+transported along `polynomialMeasure_eq_finiteConvolutionMeasure`. -/
 theorem finiteConvolutionMeasure_inner_le_intervalIntegral_stepApproximant
     (n : ℕ) (a b : ℝ) (hab : a ≤ b) :
     (finiteConvolutionMeasure n).real
@@ -460,6 +567,9 @@ theorem finiteConvolutionMeasure_inner_le_intervalIntegral_stepApproximant
   rw [← polynomialMeasure_eq_finiteConvolutionMeasure n]
   exact polynomialMeasure_inner_le_intervalIntegral_stepApproximant n a b hab
 
+/-- For `a ≤ b`, the histogram integral over `a..b` is at most the mass the
+finite convolution measure gives to the enlarged interval.  This is the outer
+bound transported along `polynomialMeasure_eq_finiteConvolutionMeasure`. -/
 theorem intervalIntegral_stepApproximant_le_finiteConvolutionMeasure_outer
     (n : ℕ) (a b : ℝ) (hab : a ≤ b) :
     (∫ x in a..b, stepApproximant n x) ≤

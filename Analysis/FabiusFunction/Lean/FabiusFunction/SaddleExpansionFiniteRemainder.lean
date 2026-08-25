@@ -43,12 +43,18 @@ coefficients vanish. -/
 def finiteExpSubstitutionDefect (E : ℕ → R) (L : ℕ) : Polynomial R :=
   finiteExpSubstitutionPolynomial E L - expCoeffTruncPolynomial E L
 
+/-- The constant coefficient of the truncated exponent is `E 0`, provided
+the truncation order `L` is positive. -/
 lemma constantCoeff_exponentTruncPolynomial
     (E : ℕ → R) (L : ℕ) (hL : 0 < L) :
     (exponentTruncPolynomial E L).coeff 0 = E 0 := by
   simp [exponentTruncPolynomial, PowerSeries.coeff_trunc, hL,
     coeff_exponentSeries]
 
+/-- Truncating the exponent does not disturb low-order coefficients of its
+powers: for `k < L` and any exponent `d`, the `k`th power-series coefficient
+of `exponentTruncPolynomial E L ^ d`, read as a power series, equals that of
+`exponentSeries E ^ d`. -/
 lemma coeff_pow_exponentTruncPolynomial_eq
     (E : ℕ → R) (L d k : ℕ) (hk : k < L) :
     PowerSeries.coeff k
@@ -59,6 +65,10 @@ lemma coeff_pow_exponentTruncPolynomial_eq
   simpa only [exponentTruncPolynomial, PowerSeries.coeff_trunc,
     if_pos hk] using hcoeff
 
+/-- Below the truncation order the finite substitution reproduces the
+recursive coefficients: if `E 0 = 0` then for every `k < L` the `k`th
+coefficient of `finiteExpSubstitutionPolynomial E L` is `expCoeff E k`.
+Nothing is claimed about coefficients of order `L` or higher. -/
 lemma coeff_finiteExpSubstitutionPolynomial_eq_expCoeff
     (E : ℕ → R) (hEzero : E 0 = 0) (L k : ℕ) (hk : k < L) :
     (finiteExpSubstitutionPolynomial E L).coeff k = expCoeff E k := by
@@ -117,6 +127,11 @@ lemma coeff_finiteExpSubstitutionPolynomial_eq_expCoeff
       rw [hsum, ← hfull, ← expSeries_eq_exp_subst E hEzero,
         coeff_expSeries]
 
+/-- For an exponent with vanishing constant term, `X ^ L` divides the finite
+exponential substitution defect; equivalently every coefficient of
+`finiteExpSubstitutionDefect E L` below order `L` vanishes.  This is what
+justifies dividing by `X ^ L` in
+`X_pow_mul_finiteExpSubstitutionQuotient` below. -/
 theorem X_pow_dvd_finiteExpSubstitutionDefect
     (E : ℕ → R) (hEzero : E 0 = 0) (L : ℕ) :
     Polynomial.X ^ L ∣ finiteExpSubstitutionDefect E L := by

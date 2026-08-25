@@ -3,6 +3,70 @@ import Mathlib.Analysis.Calculus.Taylor
 
 /-!
 # Branch-safe Taylor expansion of the vertical negative-Laplace logarithm
+
+Fix `r > 0` and travel along the vertical line `z = -r (1 + i θ)`.  This module
+differentiates the branch-safe logarithm `L(r, θ) = negativeLaplaceVerticalLog F r θ`
+of `FabiusFunction.NegativeLaplaceVerticalLog` four times in `θ`, and converts those
+derivatives into an exact cubic Taylor formula with an integral remainder.
+
+The mechanism is the complex counterpart of
+`FabiusFunction.NegativeLaplaceDerivatives`.  Let `M_k(r, θ)` be the `k`th tilted
+complex moment, that is the `k`th iterated derivative of `complexGeneratingFunction`
+at `-r (1 + i θ)`, and let `R_k = M_k / M_0`.  Differentiating in `θ` gives
+
+`M_k' = (-i r) M_(k+1)`  and  `R_k' = (-i r) (R_(k+1) - R_k R_1)`,
+
+so the first four cumulant polynomials `kappa_1, ..., kappa_4` in the `R_k` satisfy
+`kappa_j' = (-i r) kappa_(j+1)` for `j ≤ 3` (the chain stops at `kappa_4`, which is
+as far as this module needs it), and the `θ` derivatives of `L` are
+
+`L⁽ʲ⁾(r, θ) = (-i r)ʲ kappa_j(r, θ)`,  for `1 ≤ j ≤ 4`.
+
+At `θ = 0` each `R_k` collapses to the real `normalizedLaplaceMoment F k r`, hence
+
+`L⁽ʲ⁾(r, 0) = (i r)ʲ q⁽ʲ⁾(r)`,
+
+where `q = negativeLaplaceLog` and `q⁽ʲ⁾` runs through `negativeLaplaceLogFirst` to
+`negativeLaplaceLogFourth`.  The cubic Taylor polynomial at the real point is
+therefore explicit in real-axis data alone.
+
+The module exists to hand the central saddle argument an expansion that never selects
+a branch of `Complex.log`: the remainder is an interval integral of the fourth
+vertical derivative, so the error is controlled purely by a uniform bound on that one
+function.  `FabiusFunction.NegativeLaplaceVerticalFourthBound` produces such a bound
+by iterating a dyadic dilation recurrence, and
+`FabiusFunction.FabiusSaddleCentralLambert` consumes the cubic together with its
+remainder estimate as the central-region exponent.
+
+## Main results
+
+* `negativeLaplaceVerticalMoment`, `normalizedNegativeLaplaceVerticalMoment` -- the
+  tilted moments `M_k` and `R_k`, with their derivative rules and `θ = 0` values.
+* `negativeLaplaceVerticalCumulantFirst` through `...Fourth` -- the complex cumulants,
+  with `kappa_j(r, 0) = (-1)ʲ q⁽ʲ⁾(r)` identifying each one at `θ = 0` with the
+  matching `negativeLaplaceLog` derivative.
+* `negativeLaplaceVerticalLogFirst` through `...Fourth`, together with the chaining
+  lemmas `negativeLaplaceVerticalLogDerivative_eq_cumulant`,
+  `negativeLaplaceVerticalLog_hasDerivAt_cumulant`, and
+  `iteratedDeriv_negativeLaplaceVerticalLog_one` through `..._four`.
+* `contDiff_four_negativeLaplaceVerticalLog` -- `L` is `C⁴` in `θ` for every `r > 0`.
+* `negativeLaplaceVerticalCubic` -- the explicit cubic Taylor polynomial, tied to the
+  abstract jet form by `negativeLaplaceVerticalCubic_eq`.
+* `negativeLaplaceVerticalLog_eq_cubic_add_integralRemainder` and
+  `negativeLaplaceVerticalLog_eq_explicitCubic_add_integralRemainder` -- the exact
+  Taylor formula with its integral remainder.
+* `norm_negativeLaplaceVerticalLog_sub_cubic_le` and
+  `norm_negativeLaplaceVerticalLog_sub_explicitCubic_le` -- the remainder bound
+  `M * |θ|⁴ / 6` from a uniform bound `M` on the fourth vertical derivative over
+  `uIcc 0 θ`.
+
+Conventions and caveats.  Everything about `R_k` and `L` is stated for `r > 0`, which
+is what keeps `M_0` nonzero and the normalization legitimate.  The remainder constant
+`1/6` is deliberately crude -- the exact integral gives `1/24` -- and is sufficient
+rather than sharp.  The smoothness proved here is `C⁴` in `θ` only; all-order vertical
+smoothness and derivative bounds live in
+`FabiusFunction.NegativeLaplaceVerticalSmooth` and
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound`.
 -/
 
 set_option autoImplicit false
@@ -30,12 +94,18 @@ noncomputable def normalizedNegativeLaplaceVerticalMoment
       negativeLaplaceVerticalCurve F r θ := by
   simp [negativeLaplaceVerticalMoment, negativeLaplaceVerticalCurve]
 
+/-- The zeroth tilted moment `M_0(r, θ)` is nonzero for `r > 0`, which is
+what makes the normalization in `normalizedNegativeLaplaceVerticalMoment`
+legitimate. -/
 lemma negativeLaplaceVerticalMoment_ne_zero
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     negativeLaplaceVerticalMoment F 0 r θ ≠ 0 := by
   rw [negativeLaplaceVerticalMoment_zero]
   exact negativeLaplaceVerticalCurve_ne_zero F hF hr θ
 
+/-- Differentiating the `k`th tilted moment in `θ` raises the index:
+`M_k' = M_(k+1) * (-i r)`.  This is the base recurrence of the module; the
+normalized and cumulant derivative rules below all reduce to it. -/
 lemma negativeLaplaceVerticalMoment_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (r θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalMoment F k r)
@@ -76,6 +146,10 @@ lemma negativeLaplaceVerticalMoment_hasDerivAt
     filter_upwards with t
     rfl
 
+/-- Quotient rule for the normalized tilted moments at `r > 0`:
+`R_k' = (-i r) (R_(k+1) - R_k R_1)`.  Positivity of `r` enters only through
+`negativeLaplaceVerticalMoment_ne_zero`, which supplies the nonvanishing
+denominator. -/
 lemma normalizedNegativeLaplaceVerticalMoment_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ)
     {r : ℝ} (hr : 0 < r) (θ : ℝ) :
@@ -214,6 +288,9 @@ noncomputable def negativeLaplaceVerticalCumulantFourth
   push_cast
   ring
 
+/-- `kappa_1' = (-i r) kappa_2` in `θ`, for `r > 0`.  First link of the
+cumulant chain that produces the `θ` derivatives of the vertical
+logarithm. -/
 lemma negativeLaplaceVerticalCumulantFirst_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalCumulantFirst F r)
@@ -224,6 +301,7 @@ lemma negativeLaplaceVerticalCumulantFirst_hasDerivAt
     pow_two] using
     normalizedNegativeLaplaceVerticalMoment_hasDerivAt F hF 1 hr θ
 
+/-- `kappa_2' = (-i r) kappa_3` in `θ`, for `r > 0`. -/
 lemma negativeLaplaceVerticalCumulantSecond_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalCumulantSecond F r)
@@ -237,6 +315,8 @@ lemma negativeLaplaceVerticalCumulantSecond_hasDerivAt
   unfold negativeLaplaceVerticalCumulantThird
   ring
 
+/-- `kappa_3' = (-i r) kappa_4` in `θ`, for `r > 0`.  The chain stops here:
+no derivative of `kappa_4` is proved, since `C⁴` is all this module needs. -/
 lemma negativeLaplaceVerticalCumulantThird_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalCumulantThird F r)
@@ -266,6 +346,11 @@ lemma negativeLaplaceVerticalCumulantThird_hasDerivAt
   norm_num
   ring
 
+/-- The vertical logarithmic derivative equals `(-i r) kappa_1`, for every
+real `r` and `θ`.  This is the bridge from the curve-quotient definition in
+`FabiusFunction.NegativeLaplaceVerticalLog` to the cumulant calculus, and it
+is reused by the dyadic dilation identities of
+`FabiusFunction.NegativeLaplaceVerticalFourthBound`. -/
 lemma negativeLaplaceVerticalLogDerivative_eq_cumulant
     (F : BoundedFabius) (hF : IsFabius F) (r θ : ℝ) :
     negativeLaplaceVerticalLogDerivative F r θ =
@@ -379,6 +464,10 @@ noncomputable def negativeLaplaceVerticalLogFourth
   rw [show Complex.I ^ 4 = 1 by norm_num]
   ring
 
+/-- For `r > 0` the branch-safe vertical logarithm has `θ` derivative
+`negativeLaplaceVerticalLogFirst`.  This restates
+`negativeLaplaceVerticalLog_hasDerivAt` in cumulant form and starts the
+ladder that `contDiff_four_negativeLaplaceVerticalLog` climbs. -/
 lemma negativeLaplaceVerticalLog_hasDerivAt_cumulant
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalLog F r)
@@ -387,6 +476,8 @@ lemma negativeLaplaceVerticalLog_hasDerivAt_cumulant
   exact (negativeLaplaceVerticalLog_hasDerivAt F hF hr θ).congr_deriv
     (negativeLaplaceVerticalLogDerivative_eq_cumulant F hF r θ)
 
+/-- For `r > 0`, `negativeLaplaceVerticalLogSecond` is the `θ` derivative of
+`negativeLaplaceVerticalLogFirst`. -/
 lemma negativeLaplaceVerticalLogFirst_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalLogFirst F r)
@@ -397,6 +488,8 @@ lemma negativeLaplaceVerticalLogFirst_hasDerivAt
   rw [negativeLaplaceVerticalLogSecond_apply]
   exact h.congr_deriv (by simp only [smul_eq_mul]; ring)
 
+/-- For `r > 0`, `negativeLaplaceVerticalLogThird` is the `θ` derivative of
+`negativeLaplaceVerticalLogSecond`. -/
 lemma negativeLaplaceVerticalLogSecond_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalLogSecond F r)
@@ -407,6 +500,9 @@ lemma negativeLaplaceVerticalLogSecond_hasDerivAt
   rw [negativeLaplaceVerticalLogThird_apply]
   exact h.congr_deriv (by simp only [smul_eq_mul]; ring)
 
+/-- For `r > 0`, `negativeLaplaceVerticalLogFourth` is the `θ` derivative of
+`negativeLaplaceVerticalLogThird`.  Last rung of the ladder used by
+`contDiff_four_negativeLaplaceVerticalLog`. -/
 lemma negativeLaplaceVerticalLogThird_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     HasDerivAt (negativeLaplaceVerticalLogThird F r)
@@ -417,6 +513,9 @@ lemma negativeLaplaceVerticalLogThird_hasDerivAt
   rw [negativeLaplaceVerticalLogFourth_apply]
   exact h.congr_deriv (by simp only [smul_eq_mul]; ring)
 
+/-- Each tilted moment `M_k(r, ·)` is `C^∞` in `θ`, for every real `r`.  The
+exponent is the coercion of `⊤ : ℕ∞`, that is `C^∞`, and not the analytic
+exponent `ω`. -/
 theorem contDiff_negativeLaplaceVerticalMoment
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (r : ℝ) :
     ContDiff ℝ (↑(⊤ : ℕ∞)) (negativeLaplaceVerticalMoment F k r) := by
@@ -434,6 +533,9 @@ theorem contDiff_negativeLaplaceVerticalMoment
       (contDiff_const.add (hθ.mul contDiff_const))).neg
   exact (houter.restrict_scalars ℝ).comp hinner
 
+/-- The normalized tilted moment `R_k(r, ·)` is continuous in `θ` for
+`r > 0`, read off from its derivative rule.  It feeds the continuity of the
+fourth vertical derivative. -/
 theorem continuous_normalizedNegativeLaplaceVerticalMoment
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ)
     {r : ℝ} (hr : 0 < r) :
@@ -442,6 +544,9 @@ theorem continuous_normalizedNegativeLaplaceVerticalMoment
   intro θ
   exact (normalizedNegativeLaplaceVerticalMoment_hasDerivAt F hF k hr θ).continuousAt
 
+/-- The fourth vertical derivative is continuous in `θ` for `r > 0`, being a
+polynomial in the continuous normalized moments `R_1, ..., R_4`.  This is the
+`C⁰` bottom of the ladder in `contDiff_four_negativeLaplaceVerticalLog`. -/
 theorem continuous_negativeLaplaceVerticalLogFourth
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
     Continuous (negativeLaplaceVerticalLogFourth F r) := by
@@ -452,6 +557,11 @@ theorem continuous_negativeLaplaceVerticalLogFourth
   unfold negativeLaplaceVerticalLogFourth negativeLaplaceVerticalCumulantFourth
   fun_prop
 
+/-- For `r > 0` the branch-safe vertical logarithm is `C⁴` in `θ`.  Only
+four derivatives are claimed, which is exactly the regularity that Mathlib's
+`taylor_integral_remainder` needs for the cubic expansion below; all-order
+vertical smoothness lives in
+`FabiusFunction.NegativeLaplaceVerticalSmooth`. -/
 theorem contDiff_four_negativeLaplaceVerticalLog
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
     ContDiff ℝ 4 (negativeLaplaceVerticalLog F r) := by
@@ -544,6 +654,11 @@ noncomputable def negativeLaplaceVerticalCubic
     ((r ^ 2 * negativeLaplaceLogSecond F r * θ ^ 2 / 2 : ℝ) : ℂ) -
     ((r ^ 3 * negativeLaplaceLogThird F r * θ ^ 3 / 6 : ℝ) : ℂ) * Complex.I
 
+/-- The explicit cubic agrees with the abstract third-order jet of `L` at
+`θ = 0`, that is with the polynomial built from
+`negativeLaplaceVerticalLogFirst`, `...Second`, and `...Third` evaluated at
+`θ = 0`.  This is the translation step between the two Taylor statements
+below. -/
 theorem negativeLaplaceVerticalCubic_eq
     (F : BoundedFabius) (hF : IsFabius F) (r θ : ℝ) :
     negativeLaplaceVerticalCubic F r θ =
@@ -617,6 +732,10 @@ theorem negativeLaplaceVerticalLog_eq_cubic_add_integralRemainder
   rw [htaylor, hremainder] at ht
   exact sub_eq_iff_eq_add'.mp ht
 
+/-- Exact cubic Taylor formula in explicit form: `L(r, θ)` is
+`negativeLaplaceVerticalCubic` plus the same integral remainder in the fourth
+vertical derivative, so the cubic part is written purely in real-axis
+data. -/
 theorem negativeLaplaceVerticalLog_eq_explicitCubic_add_integralRemainder
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) (θ : ℝ) :
     negativeLaplaceVerticalLog F r θ =
@@ -678,6 +797,12 @@ theorem norm_negativeLaplaceVerticalLog_sub_cubic_le
       rw [sub_zero]
       ring
 
+/-- Explicit-cubic form of the remainder bound: a uniform bound `M` on the
+fourth vertical derivative over `uIcc 0 θ` gives
+`‖L(r, θ) - negativeLaplaceVerticalCubic F r θ‖ ≤ M * |θ|⁴ / 6`.  The
+constant `1/6` is sufficient rather than sharp.  This is the form consumed by
+`norm_exponentRemainder_le` in
+`FabiusFunction.FabiusSaddleCentralLambert`. -/
 theorem norm_negativeLaplaceVerticalLog_sub_explicitCubic_le
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r)
     (θ M : ℝ)

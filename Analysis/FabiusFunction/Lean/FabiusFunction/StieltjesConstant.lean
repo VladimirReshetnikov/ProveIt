@@ -24,17 +24,28 @@ noncomputable def zetaRegularReal (x : ℝ) : ℝ :=
 noncomputable def firstStieltjesConstant : ℝ :=
   -deriv zetaRegularReal 1
 
+/-- `zetaRegularReal` is differentiable on all of `ℝ`, because
+`riemannZeta₀` is entire.  Used below in `deriv_riemannZeta₀_ofReal`. -/
 theorem differentiable_zetaRegularReal : Differentiable ℝ zetaRegularReal := by
   unfold zetaRegularReal
   fun_prop
 
+/-- `zetaRegularReal` is `ContDiff ℝ n` for an arbitrary smoothness exponent
+`n : WithTop ℕ∞`.  The exponent is universally quantified, so this covers both
+the `∞` (C-infinity) case and the top exponent `ω`, i.e. real analyticity. -/
 theorem contDiff_zetaRegularReal {n : WithTop ℕ∞} : ContDiff ℝ n zetaRegularReal := by
   exact differentiable_riemannZeta₀.contDiff.real_of_complex
 
+/-- At every real point `x`, `zetaRegularReal` has derivative
+`(deriv riemannZeta₀ x).re`.  This is the `HasDerivAt` form from which
+`deriv_zetaRegularReal` is deduced. -/
 theorem zetaRegularReal_hasDerivAt (x : ℝ) :
     HasDerivAt zetaRegularReal (deriv riemannZeta₀ (x : ℂ)).re x := by
   exact differentiable_riemannZeta₀.differentiableAt.hasDerivAt.real_of_complex
 
+/-- The derivative of `zetaRegularReal` at a real point `x` is the real part of
+the complex derivative of `riemannZeta₀` at `x`.  Used below to evaluate
+`firstStieltjesConstant`. -/
 theorem deriv_zetaRegularReal (x : ℝ) :
     deriv zetaRegularReal x = (deriv riemannZeta₀ (x : ℂ)).re :=
   (zetaRegularReal_hasDerivAt x).deriv
@@ -43,11 +54,17 @@ theorem deriv_zetaRegularReal (x : ℝ) :
     zetaRegularReal 1 = Real.eulerMascheroniConstant := by
   simp [zetaRegularReal]
 
+/-- `γ₁` equals minus the real part of the complex derivative of
+`riemannZeta₀` at `1`.  This restates the definition of
+`firstStieltjesConstant` without the detour through `zetaRegularReal`. -/
 theorem firstStieltjesConstant_eq_neg_re_deriv :
     firstStieltjesConstant = -(deriv riemannZeta₀ 1).re := by
   rw [firstStieltjesConstant, deriv_zetaRegularReal]
   norm_num
 
+/-- `riemannZeta₀` is real on the real axis: at a real argument `x` its
+value is the coercion of `zetaRegularReal x`.  Used below in
+`deriv_riemannZeta₀_ofReal`. -/
 lemma riemannZeta₀_ofReal_eq_ofReal_re (x : ℝ) :
     riemannZeta₀ (x : ℂ) = (zetaRegularReal x : ℂ) := by
   apply Complex.ext
@@ -60,6 +77,9 @@ lemma riemannZeta₀_ofReal_eq_ofReal_re (x : ℝ) :
     · rw [map_sub, ← riemannZeta_conj]
       simp
 
+/-- At a real point `x` the complex derivative of `riemannZeta₀` is the
+coercion of the real derivative of `zetaRegularReal` at `x`; in particular
+it is real.  Used below in `deriv_riemannZeta₀_one`. -/
 theorem deriv_riemannZeta₀_ofReal (x : ℝ) :
     deriv riemannZeta₀ (x : ℂ) = ((deriv zetaRegularReal x : ℝ) : ℂ) := by
   have hc : HasDerivAt (fun y : ℝ ↦ riemannZeta₀ (y : ℂ))
@@ -74,11 +94,16 @@ theorem deriv_riemannZeta₀_ofReal (x : ℝ) :
       (Filter.Eventually.of_forall riemannZeta₀_ofReal_eq_ofReal_re)
   exact hc.unique hr'
 
+/-- The complex derivative of `riemannZeta₀` at `1` is `-γ₁`, coerced to
+`ℂ`.  Used below in `riemannZeta₀_hasDerivAt_one`. -/
 theorem deriv_riemannZeta₀_one :
     deriv riemannZeta₀ 1 = -(firstStieltjesConstant : ℂ) := by
   rw [show (1 : ℂ) = ((1 : ℝ) : ℂ) by norm_num, deriv_riemannZeta₀_ofReal]
   simp [firstStieltjesConstant]
 
+/-- `riemannZeta₀` has complex derivative `-γ₁` at `1`.  This is the
+`HasDerivAt` form of `deriv_riemannZeta₀_one`, and it is what
+`riemannZeta₀_taylor_first` below is proved from. -/
 theorem riemannZeta₀_hasDerivAt_one :
     HasDerivAt riemannZeta₀ (-(firstStieltjesConstant : ℂ)) 1 := by
   simpa [deriv_riemannZeta₀_one] using
@@ -133,6 +158,9 @@ coefficient in the Laurent expansion of `Γ(s) * ζ(1+s)`. -/
 noncomputable def gammaZetaConstant : ℝ :=
   Real.eulerMascheroniConstant ^ 2 / 2 + firstStieltjesConstant - Real.pi ^ 2 / 12
 
+/-- `gammaZetaConstant` written over the common denominator `12`, as
+`(6 * γ ^ 2 + 12 * γ₁ - π ^ 2) / 12`.  Used by
+`fabiusSharpAsymptoticConstant_eq` in `FabiusFunction.FabiusSharpConstant`. -/
 theorem gammaZetaConstant_eq_div_twelve :
     gammaZetaConstant =
       (6 * Real.eulerMascheroniConstant ^ 2 + 12 * firstStieltjesConstant -

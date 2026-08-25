@@ -79,12 +79,13 @@ lemma exists_negativeLaplacePsi_ne_zero :
   by_contra ht
   exact h ⟨t, ht⟩
 
-/-- The periodic fluctuation sampled at the exact lower-Lambert phase cannot
-be hidden in an `O(1 / (-log x))` remainder at `x → 0⁺`. -/
-theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO :
-    ¬ ((negativeLaplacePsi ∘ fabiusLambertPhase) =O[nhdsWithin 0 (Ioi 0)]
-        (fun x : ℝ => (-Real.log x)⁻¹)) := by
-  intro hO
+/-- The periodic fluctuation sampled at the exact lower-Lambert phase does
+not tend to zero as `x → 0⁺`.  This is the intrinsic obstruction behind all
+of the rate-specific results below. -/
+theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero :
+    ¬ Tendsto (negativeLaplacePsi ∘ fabiusLambertPhase)
+        (nhdsWithin 0 (Ioi 0)) (nhds 0) := by
+  intro hzero
   obtain ⟨a, ha⟩ := exists_negativeLaplacePsi_ne_zero
   obtain ⟨N : ℕ, hN⟩ := exists_nat_gt (1 / Real.log 2 - a)
   have hlogTwo : 0 < Real.log 2 := Real.log_pos (by norm_num)
@@ -139,16 +140,10 @@ theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO :
         negativeLaplacePsi a := by
     intro n
     simp only [Function.comp_apply, hphase n, hperiod n]
-  have hseq := hO.comp_tendsto hxWithin
-  have hlog : Tendsto (fun n : ℕ => -Real.log (x n)) atTop atTop :=
-    tendsto_neg_atBot_atTop.comp
-      (Real.tendsto_log_nhdsGT_zero.comp hxWithin)
-  have hinv : Tendsto (fun n : ℕ => (-Real.log (x n))⁻¹) atTop (nhds 0) :=
-    tendsto_inv_atTop_zero.comp hlog
   have hpsiZero : Tendsto
       (fun n : ℕ => (negativeLaplacePsi ∘ fabiusLambertPhase) (x n))
       atTop (nhds 0) :=
-    hseq.trans_tendsto hinv
+    hzero.comp hxWithin
   have hpsiA : Tendsto
       (fun n : ℕ => (negativeLaplacePsi ∘ fabiusLambertPhase) (x n))
       atTop (nhds (negativeLaplacePsi a)) := by
@@ -156,6 +151,37 @@ theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO :
       (tendsto_const_nhds : Tendsto (fun _ : ℕ => negativeLaplacePsi a)
         atTop (nhds (negativeLaplacePsi a)))
   exact ha (tendsto_nhds_unique hpsiA hpsiZero)
+
+/-- The periodic fluctuation sampled at the exact lower-Lambert phase cannot
+be hidden in an `O(1 / (-log x))` remainder at `x → 0⁺`. -/
+theorem negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO :
+    ¬ ((negativeLaplacePsi ∘ fabiusLambertPhase) =O[nhdsWithin 0 (Ioi 0)]
+        (fun x : ℝ => (-Real.log x)⁻¹)) := by
+  intro hO
+  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero
+  have hlog : Tendsto (fun x : ℝ => -Real.log x)
+      (nhdsWithin 0 (Ioi 0)) atTop :=
+    tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
+  exact hO.trans_tendsto (tendsto_inv_atTop_zero.comp hlog)
+
+/-- If an error scale tends to zero, an approximation containing the exact
+periodic correction and an approximation omitting it cannot both have that
+error scale. -/
+theorem fabiusWikipediaElementaryMain_error_not_isBigO_of_corrected_of_tendsto
+    (q g : ℝ → ℝ)
+    (hg : Tendsto g (nhdsWithin 0 (Ioi 0)) (nhds 0))
+    (hcorrected :
+      (fun x : ℝ => q x - fabiusExplicitCorrectedWikipediaMain x)
+          =O[nhdsWithin 0 (Ioi 0)] g) :
+    ¬ ((fun x : ℝ => q x - fabiusWikipediaElementaryMain x)
+        =O[nhdsWithin 0 (Ioi 0)] g) := by
+  intro huncorrected
+  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_tendsto_zero
+  have hdiff := huncorrected.sub hcorrected
+  apply (hdiff.congr' ?_ Filter.EventuallyEq.rfl).trans_tendsto hg
+  filter_upwards with x
+  simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
+  ring
 
 /-- Once an approximation contains the exact periodic correction with an
 `O(1 / (-log x))` remainder, deleting that correction cannot preserve the
@@ -167,14 +193,12 @@ theorem fabiusWikipediaElementaryMain_error_not_isBigO_of_corrected
           =O[nhdsWithin 0 (Ioi 0)] (fun x : ℝ => (-Real.log x)⁻¹)) :
     ¬ ((fun x : ℝ => q x - fabiusWikipediaElementaryMain x)
         =O[nhdsWithin 0 (Ioi 0)] (fun x : ℝ => (-Real.log x)⁻¹)) := by
-  intro huncorrected
-  apply negativeLaplacePsi_comp_fabiusLambertPhase_not_isBigO
-  have hdiff := huncorrected.sub hcorrected
-  apply hdiff.congr'
-  · filter_upwards with x
-    simp only [fabiusExplicitCorrectedWikipediaMain, Function.comp_apply]
-    ring
-  · exact Filter.EventuallyEq.rfl
+  apply fabiusWikipediaElementaryMain_error_not_isBigO_of_corrected_of_tendsto
+    q (fun x : ℝ => (-Real.log x)⁻¹) ?_ hcorrected
+  have hlog : Tendsto (fun x : ℝ => -Real.log x)
+      (nhdsWithin 0 (Ioi 0)) atTop :=
+    tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
+  exact tendsto_inv_atTop_zero.comp hlog
 
 /-- In particular, the normalized saddle-kernel estimate proves that the
 literal uncorrected Wikipedia expression does not have the claimed

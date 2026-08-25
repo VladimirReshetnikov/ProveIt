@@ -16,15 +16,6 @@ open Filter Set MeasureTheory Asymptotics
 
 namespace Fabius.SaddleExpansion
 
-/-- A finite weight controlling the Gaussian tail of a complex polynomial. -/
-noncomputable def gaussianPolynomialTailWeight (p : Polynomial ℂ) : ℝ :=
-  ∑ k ∈ p.support, ‖p.coeff k‖ * (8 * k.factorial)
-
-lemma gaussianPolynomialTailWeight_nonneg (p : Polynomial ℂ) :
-    0 ≤ gaussianPolynomialTailWeight p := by
-  unfold gaussianPolynomialTailWeight
-  positivity
-
 private lemma exp_neg_sq_orderRadius_div_four
     (N : ℕ) {b : ℝ} (hb : 1 ≤ b) :
     Real.exp (-(fabiusSaddleCentralRadiusOrder N b ^ 2) / 4) =
@@ -70,7 +61,7 @@ theorem integral_norm_standardGaussian_mul_eval_orderRadius_isBigO
       nlinarith
     have hA1 : 1 ≤ A i := (by norm_num : (1 : ℝ) ≤ 4).trans hA4
     have htail :=
-      integral_norm_standardGaussian_mul_eval_compl_Icc_le (p i) hA4
+      integral_norm_standardGaussian_mul_eval_compl_Icc_le_tailWeight (p i) hA4
     have hexp := exp_neg_sq_orderRadius_div_four N hb1
     rw [hexp] at htail
     have hinv0 : 0 ≤ (b i)⁻¹ := by positivity
@@ -86,15 +77,8 @@ theorem integral_norm_standardGaussian_mul_eval_orderRadius_isBigO
       calc
         (∫ v in (Icc (-A i) (A i))ᶜ,
           ‖QuantitativeSaddle.standardGaussian v * (p i).eval (v : ℂ)‖) ≤
-          ∑ k ∈ (p i).support,
-            ‖(p i).coeff k‖ *
-              (8 * k.factorial * (b i)⁻¹ ^ (8 * (N + 1)) / A i) := htail
-        _ = w i * ((b i)⁻¹ ^ (8 * (N + 1)) / A i) := by
-          dsimp [w, gaussianPolynomialTailWeight]
-          rw [Finset.sum_mul]
-          apply Finset.sum_congr rfl
-          intro k _hk
-          ring
+          w i * ((b i)⁻¹ ^ (8 * (N + 1)) / A i) := by
+            simpa only [w] using htail
         _ ≤ w i * rate i := by
           have hw : 0 ≤ w i := gaussianPolynomialTailWeight_nonneg _
           gcongr

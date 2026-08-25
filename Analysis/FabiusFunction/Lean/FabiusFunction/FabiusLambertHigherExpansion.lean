@@ -22,31 +22,6 @@ noncomputable def dyadicLambertSecondRefinedRemainder (t : ℝ) : ℝ :=
     Real.log t / (Real.log 2) ^ 2 / t -
     (Real.log t - Real.log t ^ 2 / 2) / (Real.log 2) ^ 3 / t ^ 2
 
-private lemma remainder_eq_log_perturbation {t : ℝ} (ht : 0 < t)
-    (hsmall : Real.log 2 * (2 : ℝ) ^ (-t) < Real.exp (-1)) :
-    dyadicLambertRemainder t =
-      Real.log (1 + dyadicLambertPerturbation t) / Real.log 2 := by
-  have hfixed := dyadicLambertPhase_fixedPoint hsmall
-  have hphase : 0 < dyadicLambertPhase t := by
-    have heq := dyadicLambertPhase_eq9 hsmall
-    have hp : 0 < (2 : ℝ) ^ (-dyadicLambertPhase t) :=
-      Real.rpow_pos_of_pos (by norm_num) _
-    have : 0 < dyadicLambertPhase t * (2 : ℝ) ^ (-dyadicLambertPhase t) :=
-      heq.symm ▸ Real.rpow_pos_of_pos (by norm_num) _
-    nlinarith
-  have hratio : 1 + dyadicLambertPerturbation t = dyadicLambertPhase t / t := by
-    unfold dyadicLambertPerturbation dyadicLambertRemainder
-    field_simp
-    ring
-  rw [hratio, Real.log_div hphase.ne' ht.ne']
-  unfold dyadicLambertRemainder
-  have hdiff : dyadicLambertPhase t - t =
-      Real.log (dyadicLambertPhase t) / Real.log 2 := by linarith
-  rw [show dyadicLambertPhase t - (t + Real.log t / Real.log 2) =
-      (dyadicLambertPhase t - t) - Real.log t / Real.log 2 by ring,
-    hdiff]
-  ring
-
 private lemma secondRefined_eq {t : ℝ} (ht : 0 < t)
     (hsmall : Real.log 2 * (2 : ℝ) ^ (-t) < Real.exp (-1)) :
     dyadicLambertSecondRefinedRemainder t =
@@ -57,7 +32,7 @@ private lemma secondRefined_eq {t : ℝ} (ht : 0 < t)
         dyadicLambertPerturbation t +
         dyadicLambertPerturbation t ^ 2 / 2) / Real.log 2 := by
   have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
-  have hlog := remainder_eq_log_perturbation ht hsmall
+  have hlog := dyadicLambertRemainder_eq_log_perturbation ht hsmall
   have hlog' : Real.log (1 + dyadicLambertPerturbation t) =
       Real.log 2 * dyadicLambertRemainder t := by
     rw [hlog]

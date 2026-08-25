@@ -1,5 +1,49 @@
 import FabiusFunction.FabiusSaddleTail
 
+/-!
+# All-order complementary tails for the Fabius saddle kernel
+
+`FabiusSaddleTail` bounds the normalized saddle-kernel integral outside the
+standard window `|v| ≤ √(32 log b)` by `O(1/b)`.  One inverse power is not
+enough for a Poincaré expansion, in which the discarded contour must be flat
+against every retained coefficient.  This module widens the window in
+proportion to the requested order,
+
+`A_N(b) = √(32 (N+1) log b)`,
+
+and shows that the omitted contour is then `O(b⁻¹ ^ (N+1))` for each fixed
+`N`.
+
+The two-region splitting of the parent module is reused unchanged.  In the
+intermediate region the enlarged radius turns `exp (-(mA/(2b)) A)` into
+`b⁻¹ ^ (4 (N+1))` once `b/4 ≤ m`, four times the decay actually asked for;
+in the far region the geometric weight `2⁻⁽ᵐ⁻¹⁾ √b π` is majorized by
+`2 π b exp (-(log 2 / 4) b)`, and exponential decay beats every fixed
+inverse power.
+
+## Main results
+
+* `fabiusSaddleCentralRadiusOrder`, with `fabiusSaddleCentralRadiusOrder_pos`,
+  `sq_fabiusSaddleCentralRadiusOrder` and
+  `one_le_fabiusSaddleCentralRadiusOrder` — the order-dependent radius.  This
+  definition is the module's most widely used export: it fixes the common
+  window of `FabiusSaddleCentralRadiusAsymptotics`,
+  `GaussianPolynomialTailAllOrders` and `FabiusSaddleMassAllOrders`.
+* `ordered_intermediate_tail_le_inv_pow` — intermediate region, explicit
+  bound `16 * b⁻¹ ^ (N+1)`, for any `1 ≤ b` and any radius `1 ≤ A` with
+  `A² = 32 (N+1) log b`.
+* `geometric_tail_isBigO_inv_pow` — far region, along an arbitrary filter on
+  which `b → atTop` and `b/4 ≤ m`.
+* `integral_norm_fabius_scaledSaddleKernel_orderRadius_isBigO` — the export
+  consumed by `FabiusSaddleMassAllOrders`.
+
+`N` is fixed throughout; no statement here is uniform in `N`.  The standing
+hypotheses match the parent module: `0 < r` eventually, `b → atTop`, at least
+`2m ≥ b/2` extracted dyadic Laplace factors (written `b/4 ≤ m`), and a
+minor-arc constant `negativeLaplaceMinorArcConstant r (2m)` that is `O(1)`.
+The constant `16` and the fourfold exponent slack are sufficient, not sharp.
+-/
+
 set_option autoImplicit false
 
 open Filter Set MeasureTheory Asymptotics
@@ -12,12 +56,19 @@ tail smaller than the requested `b^(-(N+1))` rate. -/
 noncomputable def fabiusSaddleCentralRadiusOrder (N : ℕ) (b : ℝ) : ℝ :=
   Real.sqrt (32 * (N + 1 : ℝ) * Real.log b)
 
+/-- The order-`N` central radius is strictly positive for `1 < b`, where
+`Real.log b` is strictly positive. -/
 lemma fabiusSaddleCentralRadiusOrder_pos (N : ℕ) {b : ℝ} (hb : 1 < b) :
     0 < fabiusSaddleCentralRadiusOrder N b := by
   unfold fabiusSaddleCentralRadiusOrder
   exact Real.sqrt_pos.2 (mul_pos
     (mul_pos (by norm_num) (by positivity)) (Real.log_pos hb))
 
+/-- For `1 ≤ b` the square root defining the order-`N` central radius is
+taken of a nonnegative quantity, so
+`fabiusSaddleCentralRadiusOrder N b ^ 2 = 32 * (N + 1) * Real.log b`.
+Besides this file, `FabiusSaddleCentralRadiusAsymptotics` and
+`GaussianPolynomialTailAllOrders` both rewrite with it. -/
 lemma sq_fabiusSaddleCentralRadiusOrder (N : ℕ) {b : ℝ} (hb : 1 ≤ b) :
     fabiusSaddleCentralRadiusOrder N b ^ 2 =
       32 * (N + 1 : ℝ) * Real.log b := by
@@ -26,6 +77,8 @@ lemma sq_fabiusSaddleCentralRadiusOrder (N : ℕ) {b : ℝ} (hb : 1 ≤ b) :
   exact mul_nonneg (mul_nonneg (by norm_num) (by positivity))
     (Real.log_nonneg hb)
 
+/-- Once `b` is at least `Real.exp 1`, the order-`N` central radius is at
+least `1`. -/
 lemma one_le_fabiusSaddleCentralRadiusOrder
     (N : ℕ) {b : ℝ} (hb : Real.exp 1 ≤ b) :
     1 ≤ fabiusSaddleCentralRadiusOrder N b := by
@@ -38,6 +91,12 @@ lemma one_le_fabiusSaddleCentralRadiusOrder
     exact_mod_cast Nat.le_add_left 1 N
   nlinarith
 
+/-- Intermediate-region estimate.  For `1 ≤ b`, `1 ≤ A`, `b / 4 ≤ m` and a
+radius obeying `A ^ 2 = 32 * (N + 1) * Real.log b`, the quantity
+`2 * exp (-(m * A / (2 * b)) * A) / (m * A / (2 * b))` is at most
+`16 * b⁻¹ ^ (N + 1)`.  The constant `16` and the exponent are sufficient,
+not sharp: the proof first obtains `b⁻¹ ^ (4 * (N + 1))`.  Used in this file
+by `integral_norm_fabius_scaledSaddleKernel_orderRadius_isBigO`. -/
 lemma ordered_intermediate_tail_le_inv_pow
     (N : ℕ) (b A : ℝ) (m : ℕ)
     (hb : 1 ≤ b) (hA : 1 ≤ A)
@@ -126,6 +185,11 @@ private lemma geometric_majorant_isBigO_inv_pow (N : ℕ) :
   rw [show N + 2 = (N + 1) + 1 by omega, pow_succ]
   field_simp [hb.ne']
 
+/-- Far-region estimate.  Along any filter on which `b` tends to `atTop` and
+eventually `b / 4 ≤ m`, the geometric weight
+`(2 ^ (m - 1))⁻¹ * (sqrt b * pi)` is `O(b⁻¹ ^ (N + 1))` for the fixed `N`.
+Here `m - 1` is truncated natural subtraction.  Used in this file by
+`integral_norm_fabius_scaledSaddleKernel_orderRadius_isBigO`. -/
 lemma geometric_tail_isBigO_inv_pow
     {α : Type*} (l : Filter α) (N : ℕ)
     (b : α → ℝ) (m : α → ℕ)

@@ -41,6 +41,11 @@ noncomputable def dyadicLambertDisplacementPolynomial (n : ℕ) : Polynomial ℝ
   rw [dyadicLambertDisplacementPolynomial, Nat.strongRec_eq]
   rfl
 
+/-- The defining recurrence, unfolded from the strong recursion:
+`a_(n+1) = (log 2)⁻¹ * a_n - (n + 1)⁻¹ * ∑ j : Fin n, (n - j) * a_j * a_(n-j)`,
+where `n - j` is truncated natural subtraction.  Used by
+`dyadicLambertDisplacementPolynomial_one` and `_two` in this file and by
+`dyadicLambert_logCoeff_succ` in `FabiusFunction.FabiusLambertFormalLog`. -/
 theorem dyadicLambertDisplacementPolynomial_succ (n : ℕ) :
     dyadicLambertDisplacementPolynomial (n + 1) =
       C (Real.log 2)⁻¹ * dyadicLambertDisplacementPolynomial n -
@@ -64,6 +69,10 @@ noncomputable def dyadicLambertDisplacementCoefficient
   simp only [eval_mul, eval_C, eval_X]
   ring
 
+/-- Scalar form of the recurrence at a point `ell`: the value of `a_(n+1)` is
+`a_n ell / log 2` minus `(n + 1)⁻¹` times the sum over `j : Fin n` of
+`(n - j) * a_j ell * a_(n-j) ell`, with `n - j` truncated natural
+subtraction. -/
 theorem dyadicLambertDisplacementCoefficient_succ (n : ℕ) (ell : ℝ) :
     dyadicLambertDisplacementCoefficient (n + 1) ell =
       dyadicLambertDisplacementCoefficient n ell / Real.log 2 -
@@ -76,6 +85,8 @@ theorem dyadicLambertDisplacementCoefficient_succ (n : ℕ) (ell : ℝ) :
     eval_C, eval_finsetSum]
   ring
 
+/-- Closed form of the first displacement polynomial:
+`a₁ = (log 2)⁻¹ ^ 2 * X`. -/
 theorem dyadicLambertDisplacementPolynomial_one :
     dyadicLambertDisplacementPolynomial 1 =
       C ((Real.log 2)⁻¹ ^ 2) * X := by
@@ -92,6 +103,8 @@ theorem dyadicLambertDisplacementPolynomial_one :
       simp only [eval_mul, eval_C, eval_X]
       ring
 
+/-- Closed form of the second displacement polynomial:
+`a₂ = (log 2)⁻¹ ^ 3 * (X - X ^ 2 / 2)`. -/
 theorem dyadicLambertDisplacementPolynomial_two :
     dyadicLambertDisplacementPolynomial 2 =
       C ((Real.log 2)⁻¹ ^ 3) *
@@ -141,6 +154,10 @@ noncomputable def dyadicLambertPhaseApproximation (N : ℕ) (t : ℝ) : ℝ :=
 noncomputable def dyadicLambertAllOrderRemainder (N : ℕ) (t : ℝ) : ℝ :=
   dyadicLambertPhase t - dyadicLambertPhaseApproximation N t
 
+/-- Closed form of the order-two truncation:
+`t + log t / log 2 + log t / (log 2) ^ 2 / t +
+(log t - (log t) ^ 2 / 2) / (log 2) ^ 3 / t ^ 2`.  No positivity hypothesis
+on `t` is imposed. -/
 theorem dyadicLambertPhaseApproximation_two (t : ℝ) :
     dyadicLambertPhaseApproximation 2 t =
       t + Real.log t / Real.log 2 +
@@ -158,6 +175,9 @@ theorem dyadicLambertPhaseApproximation_two (t : ℝ) :
   field_simp [hL]
   ring
 
+/-- The order-two all-order remainder coincides, as a function on `ℝ`, with
+`dyadicLambertSecondRefinedRemainder` of
+`FabiusFunction.FabiusLambertHigherExpansion`. -/
 theorem dyadicLambertAllOrderRemainder_two :
     dyadicLambertAllOrderRemainder 2 =
       dyadicLambertSecondRefinedRemainder := by
@@ -167,6 +187,8 @@ theorem dyadicLambertAllOrderRemainder_two :
   unfold dyadicLambertSecondRefinedRemainder dyadicLambertRemainder
   ring
 
+/-- The order-two truncation error of the elementary lower-Lambert expansion
+is `O((t⁻¹) ^ 2)` along `atTop`. -/
 theorem dyadicLambertAllOrderRemainder_two_isBigO :
     dyadicLambertAllOrderRemainder 2 =O[atTop]
       (fun t : ℝ => t⁻¹ ^ 2) := by
