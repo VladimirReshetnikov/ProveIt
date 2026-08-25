@@ -834,6 +834,10 @@ The indexing in \eqref{eq:finite-atomic-law} is worth noticing: the new scale at
 
 Let \(\mu_{\Up}\) denote the formal measure \lean{rvachevMeasure}; by definition it is
 Lebesgue measure with density \(\operatorname{ofReal}\!\circ\Up\).
+It is absolutely continuous with respect to Lebesgue measure; in particular, every
+Lebesgue-null set is also \(\mu_{\Up}\)-null.  These are
+\lean{rvachevMeasure_absolutelyContinuous} and
+\lean{rvachevMeasure_eq_zero_of_volume_eq_zero} in \path{StepMeasureBridge.lean}.
 Its characteristic function uses the positive-frequency normalization
 \begin{equation}
  \operatorname{charFun}(\mu_{\Up},t)
@@ -1529,8 +1533,8 @@ so \(s\mapsto\e^{s/2}L_0(s)\) is even.  Two useful quantitative forms, with all
 variables real, are
 \begin{align}
  L_0\!\left(\frac{a+b}{2}\right)^2
-   &\le L_0(a)L_0(b) &&(a,b\ge0),                         \label{eq:laplace-midpoint}\\
- L_k(s)&\le a^{-k}k!\,L_0(s-a) &&(a>0).                   \label{eq:laplace-shift}
+   &\le L_0(a)L_0(b) &&(a,b\in\R),                         \label{eq:laplace-midpoint}\\
+ L_k(s)&\le (1/a)^k k!\,L_0(s-a) &&(a>0).                 \label{eq:laplace-shift}
 \end{align}
 
 \begin{proof}[Formal proof]
@@ -1548,8 +1552,8 @@ identities are
 \lean{fabiusLaplaceMoment_zero_reflection} and
 \lean{fabiusLaplaceMoment_zero_centered_even}.  Finally,
 \eqref{eq:laplace-midpoint}--\eqref{eq:laplace-shift} are
-\lean{fabiusLaplaceMoment_midpoint_sq_le} and
-\lean{fabiusLaplaceMoment_le_shift} in \path{LaplaceMomentBounds.lean}.
+\lean{fabiusLaplaceMoment_midpoint_sq_le_all} and
+\lean{fabiusLaplaceMoment_le_shift} in \path{UnitLaplaceMomentBounds.lean}.
 \end{proof}
 
 \subsection{Exact values at reciprocal powers of two}
@@ -3309,6 +3313,17 @@ These are respectively \lean{lowerLambertW_lt_neg_one},
 \path{LowerLambertW.lean}.
 \end{proof}
 
+On its natural domain, \(W_{-1}\) is continuous and strictly decreasing, and its image is
+exactly \((-\infty,-1)\).  At every \(z\in(-\e^{-1},0)\), it is differentiable with
+\begin{equation}
+ \frac{d}{dz}W_{-1}(z)
+ =\frac{W_{-1}(z)}{z\bigl(1+W_{-1}(z)\bigr)}<0.              \label{eq:lower-lambert-derivative}
+\end{equation}
+These four assertions are \lean{lowerLambertW_continuousOn},
+\lean{lowerLambertW_strictAntiOn}, \lean{lowerLambertW_image},
+\lean{deriv_lowerLambertW}, and \lean{deriv_lowerLambertW_neg}; the underlying derivative
+witness is \lean{lowerLambertW_hasDerivAt}, all in \path{LowerLambertW.lean}.
+
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
 Let $x>0$ with $Lx<\e^{-1}$, where $L=\log2$ as in \eqref{eq:L-def}, and put
@@ -3541,7 +3556,38 @@ combination
 is \lean{gammaZetaConstant}; its equivalent common-denominator form is proved by
 \lean{gammaZetaConstant_eq_div_twelve}.  The split, convergent finite-part Bose integral
 is evaluated as this same constant by
-\lean{boseFinitePartIntegral_eq_gammaZetaConstant}.  In turn,
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant}.
+
+The formal finite part is independent of where the convergent integral is split.  More
+precisely, put
+\[
+ \kappa_0(x)=\frac1x\log\!\left(\frac{1-\exp(-x)}x\right),
+ \qquad
+ \kappa_\infty(x)=\frac1x\log(1-\exp(-x)).
+\]
+For every \(c>0\), both integrals below are convergent and
+\begin{equation}
+ \boxed{
+ \int_{(0,c]}\kappa_0(x)\,dx+
+ \int_{(c,\infty)}\kappa_\infty(x)\,dx+
+ \frac{(\log c)^2}{2}=A_0.}                                  \label{eq:bose-finite-part-cutoff}
+\end{equation}
+If \(0<a\le b\), changing the splitting point is governed by the exact transition identity
+\begin{equation}
+ \int_{(a,b]}\bigl(\kappa_\infty(x)-\kappa_0(x)\bigr)\,dx
+ =\frac{(\log b)^2-(\log a)^2}{2}.                           \label{eq:bose-cutoff-transition}
+\end{equation}
+Here the two kernels are \lean{boseFinitePartSmallKernel} and
+\lean{boseFinitePartLargeKernel}; their integrability is
+\lean{integrableOn_boseFinitePartSmallKernel_Ioc} and
+\lean{integrableOn_boseFinitePartLargeKernel_Ioi_of_pos}.  Equations
+\eqref{eq:bose-finite-part-cutoff} and \eqref{eq:bose-cutoff-transition} are respectively
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant_of_pos} and
+\lean{integral_boseFinitePartLargeKernel_sub_small_Ioc} in
+\path{BoseFinitePartIntegral.lean}.  Thus the constant is represented by ordinary convergent
+real integrals, without assigning a value to a divergent integral.
+
+In turn,
 \lean{negativeLaplacePeriodicMean_eq} gives
 \[
  \overline P=\frac{A_0}{L}-\frac{L}{12}.
@@ -3893,6 +3939,15 @@ definition.  The declarations are
 \lean{fabiusReal_effectivelyUniformContinuous}, and
 \lean{fabiusReal_isComputableRealFunction} in
 \path{FabiusComputableSpline.lean} and \path{FabiusComputability.lean}.
+The same effective continuity holds for every signed global extension:
+\lean{extendedFabius_effectivelyUniformContinuous}.  For the canonical extension
+\(\mathcal F=\lean{globalFabius}\), the explicit modulus is \(d(n)=2n\): whenever
+\(n>0\) and \(|x-y|<1/(2n)\),
+\begin{equation}
+ |\mathcal F(x)-\mathcal F(y)|<\frac1n.                      \label{eq:global-effective-modulus}
+\end{equation}
+This is \lean{globalFabius_effectively_uniformly_continuous}, together with the definition
+\lean{fabiusEffectiveUniformModulus}, in \path{FabiusComputability.lean}.
 
 \section{Formalization boundary and audit conventions}
 \label{sec:audit}
@@ -3985,7 +4040,8 @@ Analyticity, inverse, elementary obstruction &
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
-\path{MomentPowerSeries.lean}, \path{NormalizedEvenMoments.lean},
+\path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
+\path{NormalizedEvenMoments.lean},
 \path{BernoulliRecurrences.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Dyadic and \(q\)-binomial formulas &
@@ -4001,7 +4057,10 @@ Thue--Morse prefixes &
 Endpoint asymptotics &
 \path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
-\path{FabiusLambertPhase.lean}, \path{FabiusLambertSaddle.lean},
+\path{MellinBose.lean}, \path{MellinFinitePart.lean},
+\path{BoseFinitePartIntegral.lean},
+\path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
+\path{FabiusLambertSaddle.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
