@@ -62,8 +62,13 @@ theorem negativeLaplaceJetStirling_eq_coeff (n m : ℕ) :
   induction n generalizing m with
   | zero =>
       cases m with
-      | zero => simp
-      | succ m => simp
+      | zero =>
+          rw [negativeLaplaceJetStirling_zero_zero,
+            negativeLaplaceJetPolynomial_zero, Polynomial.coeff_one_zero]
+      | succ m =>
+          rw [negativeLaplaceJetStirling_zero_succ,
+            negativeLaplaceJetPolynomial_zero, Polynomial.coeff_one,
+            if_neg (Nat.succ_ne_zero m)]
   | succ n ih =>
       cases m with
       | zero =>
