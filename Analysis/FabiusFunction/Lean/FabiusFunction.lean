@@ -12,6 +12,8 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.FabiusBinaryReductionSeries
+import FabiusFunction.FabiusComputability
 import FabiusFunction.Monotonicity
 import FabiusFunction.Regularity
 import FabiusFunction.Convexity
@@ -86,5 +88,8 @@ A₂(lambda)/lambda² + O(lambda⁻³)` with both corrections written out.  See
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
 computable dyadic names, and the explicit recursive modulus `d(n)=2n` gives
-effective uniform continuity.
+effective uniform continuity.  The same centered splines converge uniformly
+on all of `ℝ` to the signed extension with error at most `2⁻ᵖ`, while the
+finite binary-reduction telescope through scale `N ≥ 1` converges uniformly
+with error at most `2^(1-N)`.
 -/

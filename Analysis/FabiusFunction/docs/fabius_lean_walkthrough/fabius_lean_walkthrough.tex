@@ -1167,7 +1167,11 @@ The discrete-limit project starts from finite q-binomial/Thue--Morse rows depend
 This distinction between finite-stage dependence and limiting independence is explicitly formalized.  It prevents an overstrong claim that each approximant is constant in the parameter.
 
 \section{Uniform spline approximants}
-\file{FabiusUniformSpline.lean} introduces centered finite Thue--Morse splines.  These are piecewise-polynomial functions whose coefficients encode a finite convolution row.  The splines are uniformly bounded and supported in a common compact region after scaling.
+\file{FabiusUniformSpline.lean} introduces centered finite Thue--Morse splines.  These are piecewise-polynomial functions whose coefficients encode a finite convolution row.  They are uniformly bounded, vanish on the nonpositive half-line, and repeat on the nonnegative axis as signed two-unit blocks.  \file{FabiusComputability.lean} proves the global error estimate
+\[
+ \sup_{x\in\R}|S_p(x)-\mathcal F(x)|\le 2^{-p}\qquad(p\ge1).
+\]
+Thus they converge uniformly on all of $\R$, while their bounded-CDF specialization converges uniformly to $F$ on $[0,1]$.
 
 The source proves continuity at knots by comparing adjacent polynomial pieces.  Finite-difference cancellation ensures derivatives up to the expected order also match.  Rather than relying on a generic spline package, the proof works directly with the explicit pieces because their coefficients must later be transformed into the q-binomial sum.
 
@@ -1177,7 +1181,7 @@ The source proves continuity at knots by comparing adjacent polynomial pieces.  
 The proof is careful not to use order arguments on \(\C\).  Norm bounds replace real inequalities, and factorial denominators are estimated in \(\R\) before being cast into complex norms.  The finite nature of the Taylor expansion is again important: each finite spline has bounded degree, so no complex analytic remainder theorem is required.
 
 \section{The Toeplitz averaging mechanism}
-\file{FabiusDiscreteLimitToeplitz.lean} rewrites the normalized row as a Toeplitz-type weighted average of centered spline values.  The weights are nonnegative or absolutely summable after taking norms, their total tends to one, and mass far from the central region vanishes.  A general Toeplitz convergence principle then transfers pointwise or uniform convergence of the splines to convergence of the averages.
+\file{FabiusDiscreteLimitToeplitz.lean} rewrites the normalized row as a Toeplitz-type weighted average of centered spline values.  The weights need not be nonnegative: their row sum is one and their total variation is uniformly bounded, while the sampled spline degrees all tend to infinity.  These facts transfer convergence of the splines to convergence of the averages.
 
 The formal theorem isolates three hypotheses:
 \begin{enumerate}

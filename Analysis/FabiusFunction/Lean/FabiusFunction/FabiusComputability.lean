@@ -2,9 +2,12 @@ import FabiusFunction.GlobalDyadic
 import FabiusFunction.GlobalBounds
 import FabiusFunction.Regularity
 import FabiusFunction.FabiusUniformSpline
-import FabiusFunction.WeakConvergence
+import FabiusFunction.PaperStatements
+import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Computability.Partrec
+import Mathlib.Topology.EMetricSpace.Basic
 
 /-!
 # Computability of the Fabius function
@@ -14,16 +17,18 @@ of a computable real function: effective uniform continuity and preservation
 of computable sequences.  The analytic clause is obtained from the global
 derivative equation.  The algorithmic clause evaluates finite centered
 splines on dyadic grids and rounds them with an explicit error bound.
+The same splines approximate the signed extension uniformly on the whole
+real line, with sup-norm error at most `2⁻ᵖ` at order `p`.
 -/
 
-open scoped BigOperators
-open Set
+open scoped BigOperators Topology
+open Filter Set
 
 namespace Fabius
 
 set_option autoImplicit false
 
-/-! ## A global effective modulus -/
+/-! ## Lipschitz bounds and uniform spline approximation -/
 
 /-- The signed global extension is globally `2`-Lipschitz. -/
 theorem extendedFabius_lipschitzWith_two
@@ -113,11 +118,116 @@ theorem abs_fabiusUniformSpline_sub_fabiusReal_le_all
   | succ p =>
       exact abs_fabiusUniformSpline_sub_fabiusReal_le F hF (p + 1) (by omega) hx
 
+/-- The centered order-`p` uniform spline approximates the signed extension
+on the whole real line with the same error `2⁻ᵖ` as on `[0,1]`.  Nonpositive
+inputs are exact.  Every nonnegative two-unit block is a common signed copy
+of the first block, and reflection on its second half preserves the error. -/
+theorem abs_fabiusUniformSpline_sub_extendedFabius_le
+    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ) (x : ℝ) :
+    |fabiusUniformSpline p x - extendedFabius F x| ≤ ((2 : ℝ) ^ p)⁻¹ := by
+  rcases le_total 0 x with hx | hx
+  · let block : ℕ := ⌊x / 2⌋₊
+    let y : ℝ := x - 2 * (block : ℝ)
+    have hfloor : (block : ℝ) ≤ x / 2 := by
+      dsimp [block]
+      exact Nat.floor_le (div_nonneg hx (by norm_num))
+    have hfloor' : x / 2 < (block : ℝ) + 1 := by
+      dsimp [block]
+      exact Nat.lt_floor_add_one (x / 2)
+    have hy0 : 0 ≤ y := by dsimp [y]; linarith
+    have hy2 : y < 2 := by dsimp [y]; linarith
+    have hxform : x = 2 * (block : ℝ) + y := by dsimp [y]; ring
+    have hspline : fabiusUniformSpline p x =
+        (thueMorseSign block : ℝ) * fabiusUniformSpline p y := by
+      rw [hxform]
+      exact fabiusUniformSpline_block_translate p block hy0 hy2
+    have hext : extendedFabius F x =
+        (thueMorseSign block : ℝ) * extendedFabius F y := by
+      have hxblock := extendedFabius_eq_single_translate F hF block
+        (x := x) (by rw [hxform]; linarith)
+        (by rw [hxform]; linarith)
+      have hyblock := extendedFabius_eq_single_translate F hF 0
+        (x := y) (by norm_num; exact hy0) (by norm_num; exact hy2.le)
+      rw [hxblock, hyblock]
+      norm_num [binaryWeight, thueMorseSign]
+      ring
+    have hsign : |(thueMorseSign block : ℝ)| = 1 := by
+      rw [thueMorseSign]
+      push_cast
+      rw [abs_pow, abs_neg, abs_one, one_pow]
+    rw [hspline, hext, ← mul_sub, abs_mul, hsign, one_mul]
+    by_cases hy1 : y ≤ 1
+    · have hyI : y ∈ Icc (0 : ℝ) 1 := ⟨hy0, hy1⟩
+      rw [extendedFabius_eq_fabiusReal F hF hyI]
+      exact abs_fabiusUniformSpline_sub_fabiusReal_le_all F hF p hyI
+    · let z : ℝ := y - 1
+      have hzI : z ∈ Icc (0 : ℝ) 1 := by
+        dsimp [z]
+        constructor <;> linarith
+      have hsplineOne : fabiusUniformSpline p y =
+          1 - fabiusUniformSpline p z := by
+        have hyz : y = 1 + z := by dsimp [z]; ring
+        rw [hyz]
+        exact fabiusUniformSpline_one_add p hzI.1 hzI.2
+      have hextOne : extendedFabius F y = 1 - fabiusReal F z := by
+        have hyz : y = 1 + z := by dsimp [z]; ring
+        rw [hyz]
+        exact extendedFabius_one_add F hF hzI
+      rw [hsplineOne, hextOne, sub_sub_sub_cancel_left]
+      simpa only [abs_sub_comm] using
+        abs_fabiusUniformSpline_sub_fabiusReal_le_all F hF p hzI
+  · rw [fabiusUniformSpline_eq_zero_of_nonpos p hx,
+      extendedFabius_eq_zero_of_nonpos F hF hx, sub_zero, abs_zero]
+    positivity
+
+/-- The centered uniform splines converge uniformly on the whole real line to
+the signed Fabius extension. -/
+theorem fabiusUniformSpline_tendstoUniformly_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F) :
+    TendstoUniformly fabiusUniformSpline (extendedFabius F) atTop := by
+  rw [Metric.tendstoUniformly_iff]
+  intro ε hε
+  have hgeom : Tendsto (fun p : ℕ => ((2 : ℝ) ^ p)⁻¹) atTop (𝓝 0) := by
+    simpa only [inv_pow] using
+      (tendsto_pow_atTop_nhds_zero_of_lt_one
+        (by norm_num : (0 : ℝ) ≤ (2 : ℝ)⁻¹)
+        (by norm_num : (2 : ℝ)⁻¹ < 1))
+  have heps : ∀ᶠ p : ℕ in atTop, ((2 : ℝ) ^ p)⁻¹ < ε :=
+    (tendsto_order.1 hgeom).2 ε hε
+  filter_upwards [heps] with p hp
+  intro x
+  exact lt_of_le_of_lt
+    (by simpa [Real.dist_eq, abs_sub_comm] using
+      abs_fabiusUniformSpline_sub_extendedFabius_le F hF p x)
+    hp
+
+/-- The centered uniform splines converge uniformly to every bounded Fabius
+function on the closed unit interval.  This packages the pointwise error
+estimate `abs_fabiusUniformSpline_sub_fabiusReal_le_all` as Mathlib's standard
+uniform-convergence predicate. -/
+theorem fabiusUniformSpline_tendstoUniformlyOn_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) :
+    TendstoUniformlyOn (fun p : ℕ => fabiusUniformSpline p) (fabiusReal F)
+      atTop (Icc (0 : ℝ) 1) := by
+  refine (fabiusUniformSpline_tendstoUniformly_extendedFabius
+    F hF).tendstoUniformlyOn.congr_right ?_
+  intro x hx
+  exact extendedFabius_eq_fabiusReal F hF hx
+
+/-- Canonical specialization: the centered uniform splines converge uniformly
+on `ℝ` to `globalFabius`. -/
+theorem fabiusUniformSpline_tendstoUniformly_globalFabius :
+    TendstoUniformly fabiusUniformSpline globalFabius atTop := by
+  simpa only [globalFabius] using
+    fabiusUniformSpline_tendstoUniformly_extendedFabius fabius fabius_spec
+
 /-- The canonical signed global Fabius function is globally `2`-Lipschitz. -/
 theorem globalFabius_lipschitzWith_two :
     LipschitzWith 2 globalFabius := by
   simpa only [globalFabius] using
     extendedFabius_lipschitzWith_two fabius fabius_spec
+
+/-! ## A global effective modulus -/
 
 /-- A primitive-recursive modulus for the Fabius functions. -/
 def fabiusEffectiveUniformModulus (n : ℕ) : ℕ :=
