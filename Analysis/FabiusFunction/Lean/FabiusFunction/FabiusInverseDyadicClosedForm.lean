@@ -1,4 +1,5 @@
 import FabiusFunction.FabiusRecurrenceSequence
+import FabiusFunction.FabiusInverse
 import Mathlib.Combinatorics.Enumerative.Composition
 
 /-!
@@ -14,7 +15,9 @@ semiring-valued path sums, proves both last-edge and edge-count
 decompositions, and solves arbitrary triangular recurrences. The Fabius
 specialization then identifies the exact rational composition sum with
 `fabiusAtInverseTwoPow`, and supplies bounded and signed-global real
-corollaries for every model satisfying the Fabius equations.
+corollaries for every model satisfying the Fabius equations.  The final
+inverse corollaries state directly that these explicit finite sums are sent
+back to `2⁻ⁿ` by the totalized inverse Fabius function.
 -/
 
 set_option autoImplicit false
@@ -566,6 +569,19 @@ theorem fabiusFunction_inverse_two_pow_eq_sum_compositions
   rw [fabius_inverse_two_pow_eq_recurrenceSequence F hF n,
     fabiusRecurrenceSequence_eq_sum_compositions]
 
+/-- The totalized inverse sends the explicit real composition formula back
+to `2⁻ⁿ`.  This is uniform in the bounded Fabius model and includes `n = 0`. -/
+theorem fabiusInv_two_pow_choose_mul_fabiusCompositionSum
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusInv F hF
+        (((2 : ℝ) ^ n.choose 2)⁻¹ * (fabiusCompositionSum n : ℝ)) =
+      ((2 : ℝ) ^ n)⁻¹ := by
+  rw [← fabiusFunction_inverse_two_pow_eq_sum_compositions F hF n]
+  apply fabiusInv_fabiusReal F hF
+  constructor
+  · positivity
+  · exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
+
 /-- Generic real form with literal `2^(-n)` and `2^(-choose(n,2))`
 notation. -/
 theorem fabiusFunction_inverse_two_pow_eq_sum_compositions_zpow
@@ -575,6 +591,17 @@ theorem fabiusFunction_inverse_two_pow_eq_sum_compositions_zpow
         (fabiusCompositionSum n : ℝ) := by
   simpa [zpow_neg] using
     fabiusFunction_inverse_two_pow_eq_sum_compositions F hF n
+
+/-- Literal-negative-exponent form of
+`fabiusInv_two_pow_choose_mul_fabiusCompositionSum`. -/
+theorem fabiusInv_fabiusCompositionSum_zpow
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusInv F hF
+        ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) *
+          (fabiusCompositionSum n : ℝ)) =
+      (2 : ℝ) ^ (-(n : ℤ)) := by
+  simpa [zpow_neg] using
+    fabiusInv_two_pow_choose_mul_fabiusCompositionSum F hF n
 
 /-- Canonical bounded-Fabius specialization. -/
 theorem fabius_inverse_two_pow_eq_sum_compositions (n : ℕ) :
