@@ -19,6 +19,10 @@ The summand norms are summable on the nonnegative half-line.  Since both the
 summand and the signed extension vanish identically on the nonpositive
 half-line, the resulting `HasSum` and `tsum` identities are stated on all of
 `ℝ`; the established nonnegative signatures remain as compatibility wrappers.
+The finite telescope and residual estimate likewise have all-real cores;
+nonpositive inputs reduce termwise to zero.  The shifted series starting at
+`m = 1` consequently holds on the full domain `x < 1` where its omitted
+scale-zero term vanishes.
 
 The elementary binary API is stated uniformly at every scale, including
 `m = 0`: the previous prefix is the quotient of the current prefix by two,
@@ -42,6 +46,22 @@ def binaryPrefix (x : ℝ) (m : ℕ) : ℕ :=
 /-- The tail left after truncating the binary expansion after `m` places. -/
 def binaryTail (x : ℝ) (m : ℕ) : ℝ :=
   x - (binaryPrefix x m : ℝ) / (2 : ℝ) ^ m
+
+/-- Every natural binary prefix is zero at a nonpositive input. -/
+@[simp] theorem binaryPrefix_eq_zero_of_nonpos
+    (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    binaryPrefix x m = 0 := by
+  rw [binaryPrefix, Nat.floor_eq_zero]
+  have hnonpos : (2 : ℝ) ^ m * x ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
+  linarith
+
+/-- On the nonpositive half-line truncation removes no fractional prefix. -/
+@[simp] theorem binaryTail_eq_self_of_nonpos
+    (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    binaryTail x m = x := by
+  rw [binaryTail, binaryPrefix_eq_zero_of_nonpos m hx]
+  norm_num
 
 /-- Clearing the scale denominator in a binary tail recovers the prefix
 subtraction exactly. -/
@@ -102,6 +122,13 @@ theorem binaryPreviousPrefix_eq_binaryPrefix_div_two (x : ℝ) (m : ℕ) :
         ring
       rw [harg]
       exact Nat.floor_div_natCast ((2 : ℝ) ^ (m + 1) * x) 2
+
+/-- The half-scale predecessor is also zero at every nonpositive input. -/
+@[simp] theorem binaryPreviousPrefix_eq_zero_of_nonpos
+    (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    binaryPreviousPrefix x m = 0 := by
+  rw [binaryPreviousPrefix_eq_binaryPrefix_div_two,
+    binaryPrefix_eq_zero_of_nonpos m hx]
 
 /-- Exact quotient-remainder decomposition of a binary prefix.  The final
 term, `binaryPrefix x m % 2`, is the binary digit exposed at scale `m`. -/
@@ -185,19 +212,25 @@ that the signed extension itself vanishes on the negative half-line. -/
 @[simp] theorem globalBinaryReductionSummand_eq_zero_of_nonpos
     (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
     globalBinaryReductionSummand x m = 0 := by
-  have hp : binaryPrefix x m = 0 := by
-    rw [binaryPrefix, Nat.floor_eq_zero]
-    have hnonpos : (2 : ℝ) ^ m * x ≤ 0 :=
-      mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
-    linarith
-  rw [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
-    binaryPreviousPrefix_eq_binaryPrefix_div_two, hp]
+  rw [globalBinaryReductionSummand,
+    globalBinaryReductionCoefficient_eq_neg_mod_two,
+    binaryPrefix_eq_zero_of_nonpos m hx]
   norm_num
 
 /-- The signed residual term after the first `N` fractional binary digits. -/
 def binaryReductionRemainder (F : BoundedFabius) (x : ℝ) (N : ℕ) : ℝ :=
   (-1 : ℝ) ^ binaryWeight (binaryPrefix x N) *
     extendedFabius F (binaryTail x N)
+
+/-- The signed residual vanishes at every nonpositive input and every scale. -/
+@[simp] theorem binaryReductionRemainder_eq_zero_of_nonpos
+    (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    binaryReductionRemainder F x N = 0 := by
+  rw [binaryReductionRemainder, binaryPrefix_eq_zero_of_nonpos N hx,
+    binaryTail_eq_self_of_nonpos N hx,
+    extendedFabius_eq_zero_of_nonpos F hF hx]
+  norm_num
 
 /-- For a nonnegative argument the binary tail at every scale is
 nonnegative. -/
@@ -441,6 +474,30 @@ theorem extendedFabius_eq_globalBinaryReductionSum_add_remainder
         dsimp only [m]
         ring
 
+/-- All-real finite telescope.  For a nonpositive input the extension,
+summands, and residual all vanish termwise. -/
+theorem extendedFabius_eq_globalBinaryReductionSum_add_remainder_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (N : ℕ) :
+    extendedFabius F x =
+      (∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) +
+        binaryReductionRemainder F x N := by
+  rcases le_total 0 x with hx | hx
+  · exact extendedFabius_eq_globalBinaryReductionSum_add_remainder
+      F hF x hx N
+  · rw [extendedFabius_eq_zero_of_nonpos F hF hx,
+      binaryReductionRemainder_eq_zero_of_nonpos F hF N hx]
+    simp [globalBinaryReductionSummand_eq_zero_of_nonpos _ hx]
+
+/-- All-real scale-zero telescope, including the trivial nonpositive
+branch. -/
+theorem extendedFabius_eq_globalBinaryReduction_zero_add_remainder_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    extendedFabius F x =
+      globalBinaryReductionSummand x 0 + binaryReductionRemainder F x 0 := by
+  simpa using
+    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x 0
+
 /-- For nonnegative `x` the binary tails tend to zero as the scale
 grows, by squeezing between `0` and `2 ^ (-m)`. -/
 theorem binaryTail_tendsto_zero (x : ℝ) (hx0 : 0 ≤ x) :
@@ -472,6 +529,19 @@ theorem binaryReductionRemainder_tendsto_zero
     rw [binaryReductionRemainder, norm_mul, norm_pow]
     norm_num
   · norm_num
+
+/-- All-real residual convergence.  The nonpositive branch is identically
+zero, while the nonnegative branch follows from convergence of binary tails. -/
+theorem binaryReductionRemainder_tendsto_zero_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    Tendsto (binaryReductionRemainder F x) atTop (𝓝 0) := by
+  rcases le_total 0 x with hx | hx
+  · exact binaryReductionRemainder_tendsto_zero F hF x hx
+  · have hzero : binaryReductionRemainder F x = fun _ : ℕ => (0 : ℝ) := by
+      funext N
+      exact binaryReductionRemainder_eq_zero_of_nonpos F hF N hx
+    rw [hzero]
+    exact tendsto_const_nhds
 
 private lemma fabiusReal_le_two_mul_of_mem_Icc_half
     (F : BoundedFabius) (hF : IsFabius F) (y : ℝ)
@@ -528,6 +598,19 @@ theorem norm_binaryReductionRemainder_le
     _ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
       nlinarith [(binaryTail_lt x N).le]
 
+/-- All-real residual bound.  The geometric estimate is unchanged on the
+nonnegative half-line and is immediate on the nonpositive half-line. -/
+theorem norm_binaryReductionRemainder_le_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (N : ℕ) (hN : 1 ≤ N) :
+    ‖binaryReductionRemainder F x N‖ ≤
+      2 * ((2 : ℝ) ^ N)⁻¹ := by
+  rcases le_total 0 x with hx | hx
+  · exact norm_binaryReductionRemainder_le F hF x hx N hN
+  · rw [binaryReductionRemainder_eq_zero_of_nonpos F hF N hx]
+    simp only [norm_zero]
+    positivity
+
 /-- Uniform quantitative error for the finite binary-reduction telescope.
 After retaining the scales `0, ..., N`, the error is at most `2 * 2⁻ᴺ`,
 independently of the nonnegative input `x`. -/
@@ -551,11 +634,12 @@ theorem norm_globalBinaryReductionSum_sub_extendedFabius_le
     (N : ℕ) (hN : 1 ≤ N) (x : ℝ) :
     ‖(∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) -
         extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
-  rcases le_total 0 x with hx | hx
-  · rw [norm_sub_rev]
-    exact norm_extendedFabius_sub_globalBinaryReductionSum_le F hF x hx N hN
-  · rw [extendedFabius_eq_zero_of_nonpos F hF hx, sub_zero]
-    simp [globalBinaryReductionSummand_eq_zero_of_nonpos _ hx]
+  rw [norm_sub_rev]
+  have hrem := norm_binaryReductionRemainder_le_all F hF x N hN
+  have hid :=
+    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x N
+  rw [hid]
+  simpa only [add_sub_cancel_left] using hrem
 
 /-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
 exactly one step of the residual telescope.  Restated for the
@@ -747,6 +831,38 @@ term vanishes. -/
     binaryPreviousPrefix, binaryPrefix, Nat.floor_eq_zero.mpr hx,
     Nat.floor_eq_zero.mpr hxhalf]
 
+/-- The shifted series has the same sum whenever its omitted scale-zero term
+vanishes.  This is the common boundary lemma behind the interval-specific
+forms below. -/
+theorem hasSum_globalBinaryReductionSummand_succ_of_zero
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ)
+    (hzero : globalBinaryReductionSummand x 0 = 0) :
+    HasSum (fun m : ℕ ↦ globalBinaryReductionSummand x (m + 1))
+      (extendedFabius F x) := by
+  have h := hasSum_globalBinaryReductionSummand_all F hF x
+  have htail := (hasSum_nat_add_iff' (f := globalBinaryReductionSummand x)
+    (g := extendedFabius F x) 1).2 h
+  simpa [hzero] using htail
+
+/-- `tsum` form of omitting a vanishing scale-zero term. -/
+theorem extendedFabius_eq_tsum_globalBinaryReductionSummand_succ_of_zero
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ)
+    (hzero : globalBinaryReductionSummand x 0 = 0) :
+    extendedFabius F x =
+      ∑' m : ℕ, globalBinaryReductionSummand x (m + 1) :=
+  (hasSum_globalBinaryReductionSummand_succ_of_zero
+    F hF x hzero).tsum_eq.symm
+
+/-- All-real shifted series on the convenient domain `x < 1`, where the
+scale-zero summand vanishes. -/
+theorem hasSum_globalBinaryReductionSummand_succ_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx1 : x < 1) :
+    HasSum (fun m : ℕ ↦ globalBinaryReductionSummand x (m + 1))
+      (extendedFabius F x) := by
+  exact hasSum_globalBinaryReductionSummand_succ_of_zero F hF x
+    (globalBinaryReductionSummand_zero_of_lt_one x hx1)
+
 /-- At the right endpoint `x = 1`, the restored scale-zero term is exactly
 the missing unit contribution.  This theorem is deliberately not a simp rule;
 the existing literal q-binomial endpoint wrapper retains that role. -/
@@ -756,25 +872,34 @@ theorem globalBinaryReductionSummand_one_zero :
     binaryPrefix, binaryPreviousPrefix, binaryTail, fabiusReductionSum,
     binaryWeight, halfMoment]
 
-/-- The original `m = 1,2,...` series is valid on `0 ≤ x < 1`. -/
+set_option linter.unusedVariables false in
+/-- The original `m = 1,2,...` series is valid on `0 ≤ x < 1`.  The now
+redundant nonnegativity hypothesis is retained for source compatibility. -/
 theorem hasSum_globalBinaryReductionSummand_succ
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) :
     HasSum (fun m : ℕ ↦ globalBinaryReductionSummand x (m + 1))
       (extendedFabius F x) := by
-  have h := hasSum_globalBinaryReductionSummand F hF x hx0
-  have htail := (hasSum_nat_add_iff' (f := globalBinaryReductionSummand x)
-    (g := extendedFabius F x) 1).2 h
-  simpa [globalBinaryReductionSummand_zero_of_lt_one x hx1] using htail
+  exact hasSum_globalBinaryReductionSummand_succ_all F hF x hx1
 
+/-- `tsum` form of the shifted all-real series on `x < 1`. -/
+theorem extendedFabius_eq_tsum_globalBinaryReductionSummand_succ_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (hx1 : x < 1) :
+    extendedFabius F x =
+      ∑' m : ℕ, globalBinaryReductionSummand x (m + 1) :=
+  (hasSum_globalBinaryReductionSummand_succ_all F hF x hx1).tsum_eq.symm
+
+set_option linter.unusedVariables false in
 /-- `tsum` form of the shifted `m = 1, 2, ...` series, valid on
-`0 ≤ x < 1`, where the scale-zero term vanishes. -/
+`0 ≤ x < 1`, where the scale-zero term vanishes.  The nonnegativity binder is
+retained for source compatibility with the original theorem. -/
 theorem extendedFabius_eq_tsum_globalBinaryReductionSummand_succ
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) :
     extendedFabius F x =
       ∑' m : ℕ, globalBinaryReductionSummand x (m + 1) :=
-  (hasSum_globalBinaryReductionSummand_succ F hF x hx0 hx1).tsum_eq.symm
+  extendedFabius_eq_tsum_globalBinaryReductionSummand_succ_all F hF x hx1
 
 /-- Bounded-function form on the closed unit interval. -/
 theorem hasSum_fabiusReal_globalBinaryReductionSummand
