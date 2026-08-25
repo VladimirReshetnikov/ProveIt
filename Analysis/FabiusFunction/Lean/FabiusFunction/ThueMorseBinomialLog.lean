@@ -18,7 +18,9 @@ The final sign lemmas are coefficient-facing forms of the same parity fact:
 in an arbitrary ring, raising `-1` to `thueMorseBit r` is already the same as
 raising it to the full binary weight.  This lets later real and complex series
 share one exact algebraic bridge instead of reopening the modulo-two
-definition.
+definition.  The accompanying positivity and range lemmas make explicit that
+the logarithm argument is never truncated by `Int.toNat` and that the bit is
+indeed zero-one valued at every index, including `n = 0`.
 -/
 
 set_option autoImplicit false
@@ -61,6 +63,13 @@ theorem thueMorseLogIntegerArgument_eq_two_pow (n : ℕ) :
   simp only [pow_succ]
   ring
 
+/-- The integer logarithm argument is strictly positive, so the subsequent
+conversion with `Int.toNat` loses no sign information. -/
+theorem thueMorseLogIntegerArgument_pos (n : ℕ) :
+    0 < (n + 1 : ℤ) - signedBinomialParitySum n := by
+  rw [thueMorseLogIntegerArgument_eq_two_pow]
+  positivity
+
 /-- The natural argument of `Log2` in the Wolfram Language formula. -/
 def thueMorseLog2Argument (n : ℕ) : ℕ :=
   Int.toNat ((n + 1 : ℤ) - signedBinomialParitySum n)
@@ -73,6 +82,12 @@ theorem thueMorseLog2Argument_eq (n : ℕ) :
       ((2 ^ (binaryWeight n + 1) : ℕ) : ℤ) by norm_num,
     Int.toNat_natCast]
 
+/-- The natural argument supplied to `Nat.log2` is positive at every index. -/
+theorem thueMorseLog2Argument_pos (n : ℕ) :
+    0 < thueMorseLog2Argument n := by
+  rw [thueMorseLog2Argument_eq]
+  positivity
+
 /-- Consequently the base-two logarithm in the formula is exact. -/
 theorem log2_thueMorseLog2Argument (n : ℕ) :
     Nat.log2 (thueMorseLog2Argument n) = binaryWeight n + 1 := by
@@ -82,6 +97,13 @@ theorem log2_thueMorseLog2Argument (n : ℕ) :
 /-- The zero-one Thue--Morse sequence, matching Wolfram's `ThueMorse[n]`. -/
 def thueMorseBit (n : ℕ) : ℕ :=
   binaryWeight n % 2
+
+/-- The natural-valued Thue--Morse bit lies in the advertised range
+`{0, 1}`. -/
+theorem thueMorseBit_le_one (n : ℕ) : thueMorseBit n ≤ 1 := by
+  unfold thueMorseBit
+  have h := Nat.mod_lt (binaryWeight n) (by omega : 0 < 2)
+  omega
 
 /-- The zero-one sequence agrees with the existing signed convention. -/
 theorem thueMorseSign_eq_one_sub_two_mul_bit (n : ℕ) :
