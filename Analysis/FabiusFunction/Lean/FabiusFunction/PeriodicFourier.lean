@@ -46,9 +46,12 @@ that obstruction beside the corrected asymptotic.
 * `negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta` — the closed form above;
   `negativeLaplacePsiFourierCoeff_eq_gamma_zeta` is the same identity written
   in the Mellin frequency `negativeLaplaceMellinFrequency k = -χₖ`.
-* `negativeLaplacePsiFourierCoeff_zero` — the zero mode vanishes.
-* `negativeLaplacePsiFourierCoeff_ne_zero` and
-  `negativeLaplacePsi_not_constant` — no nonzero mode vanishes, hence `Ψ` is
+* `negativeLaplacePsiFourierCoeff_eq_zero_iff` — a coefficient vanishes
+  exactly at the zero mode; `negativeLaplacePsiFourierCoeff_zero` and
+  `negativeLaplacePsiFourierCoeff_ne_zero` supply its two directions, and
+  `negativeLaplacePsiGammaZetaFourierCoeff_eq_zero_iff` transports the same
+  characterization to the explicit closed-form sequence.
+* `negativeLaplacePsi_not_constant` — no nonzero mode vanishes, hence `Ψ` is
   genuinely nonconstant.  This is the export the rest of the corpus uses.
 * `summable_negativeLaplacePsiFourierCoeff` — absolute summability of the
   coefficients.
@@ -645,7 +648,8 @@ lemma intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) (n : ℕ) :
       (t - ((n + 1 : ℕ) : ℝ))
     have hshift : negativeLaplaceFourierWeight k t =
         negativeLaplaceFourierWeight k (t - ((n + 1 : ℕ) : ℝ)) := by
-      convert hw using 1 <;> push_cast
+      convert hw using 1
+      push_cast
       ring
     rw [hshift]
     unfold H negativeLaplaceTerm
@@ -1463,6 +1467,17 @@ theorem negativeLaplacePsiFourierCoeff_ne_zero
       (riemannZeta_one_add_negativeLaplaceMellinFrequency_ne_zero k)
   · exact ofReal_ne_zero.mpr (Real.log_pos (by norm_num)).ne'
 
+/-- A Fourier coefficient of the normalized periodic correction vanishes
+exactly at the zero mode. -/
+theorem negativeLaplacePsiFourierCoeff_eq_zero_iff (k : ℤ) :
+    negativeLaplacePsiFourierCoeff k = 0 ↔ k = 0 := by
+  constructor
+  · intro hcoeff
+    by_contra hk
+    exact negativeLaplacePsiFourierCoeff_ne_zero k hk hcoeff
+  · rintro rfl
+    exact negativeLaplacePsiFourierCoeff_zero
+
 /-- The first mode is nonzero; this single mode is all that
 `negativeLaplacePsi_not_constant` consumes. -/
 theorem negativeLaplacePsiFourierCoeff_one_ne_zero :
@@ -1679,6 +1694,12 @@ theorem negativeLaplacePsiGammaZetaFourierCoeff_eq (k : ℤ) :
       negativeLaplacePsiFourierCoeff_zero]
   · rw [negativeLaplacePsiGammaZetaFourierCoeff, if_neg hk,
       negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta k hk]
+
+/-- The explicit `Γζ` coefficient vanishes exactly at the zero mode. -/
+theorem negativeLaplacePsiGammaZetaFourierCoeff_eq_zero_iff (k : ℤ) :
+    negativeLaplacePsiGammaZetaFourierCoeff k = 0 ↔ k = 0 := by
+  rw [negativeLaplacePsiGammaZetaFourierCoeff_eq]
+  exact negativeLaplacePsiFourierCoeff_eq_zero_iff k
 
 /-- The closed-form `Γζ` coefficient sequence is absolutely summable. -/
 theorem summable_negativeLaplacePsiGammaZetaFourierCoeff :
