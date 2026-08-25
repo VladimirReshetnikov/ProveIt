@@ -180,12 +180,11 @@ theorem normalizedGaussianMoment_div_factorial (j : ℕ) :
     exact_mod_cast (Nat.factorial_pos (j + 1)).ne'
   have hfac : (2 * (j + 1)).factorial =
       2 ^ (j + 1) * (j + 1).factorial * Nat.doubleFactorial (2 * j + 1) := by
-    have h1 : (2 * (j + 1)).factorial =
-        Nat.doubleFactorial (2 * (j + 1)) *
-          Nat.doubleFactorial (2 * j + 1) := by
-      have h2 := Nat.factorial_eq_mul_doubleFactorial (2 * j + 1)
-      simpa [show 2 * j + 1 + 1 = 2 * (j + 1) by ring] using h2
-    rw [h1, Nat.doubleFactorial_two_mul]
+    -- `Nat.doubleFactorial` is a `@[simp]` definition, so `simp` here would
+    -- normalize `2 * (j + 1)` to `2 * j + 2` and then unfold it; `rw` will not.
+    have h2 := Nat.factorial_eq_mul_doubleFactorial (2 * j + 1)
+    rw [show 2 * j + 1 + 1 = 2 * (j + 1) by omega] at h2
+    rw [h2, Nat.doubleFactorial_two_mul]
   rw [normalizedGaussianMoment_even,
     show 2 * (j + 1) - 1 = 2 * j + 1 by omega, hfac]
   push_cast
