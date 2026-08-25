@@ -23584,6 +23584,18 @@ $v_p(M)=b_0t_p$ gives $v_p(A)=a_0t_p$, and $T=\prod_{p\ge5}p^{t_p}$ is the requi
 Some external prime exists by Theorem~\ref{lp:thm-smooth}, and for it $t_p>0$, so $T>1$.
 \end{proof}
 
+\begin{statusbox}{\statuslean{} --- \lean{CommonExternalRadicand}.  The arithmetic core is
+\lean{CommonRadicand.dvd_of_coprime_mul_eq} ($a_0x=b_0y$ with $a_0,b_0$ coprime forces
+$b_0\mid x$ and $a_0\mid y$) together with
+\lean{CommonRadicand.quot_eq_of_coprime_mul_eq}, which is what makes the common exponent
+$t_p$ well defined rather than merely existent on each side.  The statement at every external
+prime is \lean{CommonRadicand.common_external_radicand}, and
+\lean{CommonRadicand.radicand_exponent_pos} is the nontriviality $T>1$, whose hypothesis is
+the external prime supplied by \lean{integer_of_threeSmooth_outputs}.  No transcendence input:
+the module is pure valuation arithmetic, which is the point --- it is the part of the
+dependent-branch analysis that can be checked, and it is not the part that is hard.}
+\end{statusbox}
+
 What is new here is only the mixed-sign structure: the sign trichotomy itself, and the
 identification of the two degenerate cases with the smooth-output branches, are already
 Proposition~\ref{kn:prop-dim}, kernel-verified as \lean{kernelPairs_mul_nonpos} and
@@ -26940,6 +26952,8 @@ exponents to $5.9\cdot10^6$) \\
 \lean{.../FiniteCheck32768} & zero-free region $2^x<32768$ ($16384$ rows in four chunks of
 $4096$, of which $16383$ are certified and one is the exempt power of two; $36$ enclosure pairs
 carried as data, exponents to $1.04\cdot10^7$) \\
+\lean{.../CommonExternalRadicand} & common external radicand in the mixed-sign dependent
+branch; coprime-proportionality core and its well-defined quotient \\
 \lean{.../ZeroDensity} & AP obstruction, Roth-number counting, $o(N)$ \\
 \lean{.../NonintegerDensity} & nonintegral candidate refinement, density zero \\
 \lean{.../MultiplicativeRank} & rank $\le2$, $\thetaq$ irrational, $(\clog_2N)^2$ \\

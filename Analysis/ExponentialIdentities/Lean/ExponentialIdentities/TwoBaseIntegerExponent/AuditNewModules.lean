@@ -125,6 +125,7 @@ import ExponentialIdentities.TwoBaseIntegerExponent.SmoothLevelClassification
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck8192
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck16384
 import ExponentialIdentities.TwoBaseIntegerExponent.FiniteCheck32768
+import ExponentialIdentities.TwoBaseIntegerExponent.CommonExternalRadicand
 
 /-!
 # Assumption audit for the newly formalized modules
@@ -885,5 +886,9 @@ namespace LeanProofs.TwoBaseIntegerExponent
 #print axioms integer_of_two_three_rpow_integer_of_two_rpow_lt_32768
 #print axioms fifteen_le_of_not_integer_of_two_three_rpow_integer
 #print axioms le_of_twoBaseNonintegerCandidate_32768
+#print axioms CommonRadicand.dvd_of_coprime_mul_eq
+#print axioms CommonRadicand.quot_eq_of_coprime_mul_eq
+#print axioms CommonRadicand.common_external_radicand
+#print axioms CommonRadicand.radicand_exponent_pos
 
 end LeanProofs.TwoBaseIntegerExponent
