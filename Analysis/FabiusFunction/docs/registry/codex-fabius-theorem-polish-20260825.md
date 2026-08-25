@@ -7,8 +7,8 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
   C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
-fetched main SHA: 22d63a9f74a9dd022b243fc3836930ae94354ff9
-HEAD and dirty paths: cbc5efd527229e88cc9d46e60b6ac3f98a33eb58
+fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
+HEAD and dirty paths: 4f36c5e58705d7dfe828955ab780d151392c4865
   after a conflict-free merge of fetched main; only this registry file is
   dirty for the present status reply
 writing (exact paths): this registry file only; theorem-source edits are
@@ -28,7 +28,8 @@ expected declarations or document claims: the frozen source tranche adds
 completed commits: 504ab4055 (all-degree centered finite-spline probability
   API); b3bc48dfd (formalization-backed prose corrections); 3431ffdac
   (all-real discrete-limit series identifications); cbc5efd52 (merge fetched
-  main 22d63a9f7 into the preserved feature checkpoint)
+  main 22d63a9f7 into the preserved feature checkpoint); 4f36c5e58 (refresh
+  merge of fetched main ebe4bd844 immediately before publication)
 validated (exact command, SHA/state, exit code): before the coordinator
   checkpoint was received, a named-mutex PowerShell harness ran
   `$env:LAKE_JOBS='1'; lake build "+FabiusFunction.<module>"` once per module
@@ -42,7 +43,7 @@ validated (exact command, SHA/state, exit code): before the coordinator
   independent hostile/API reviews found no blocker, and
   `python Analysis/FabiusFunction/scripts/doc_audit.py` exited 0 while
   reporting 159 inherited undocumented declarations in 17 other files.
-not yet validated: merged HEAD cbc5efd52 has not been compiled; the sole
+not yet validated: merged HEAD 4f36c5e58 has not been compiled; the sole
   direct consumer PaperFabiusAsymptotic and root +FabiusFunction aggregate
   were not built.  No new validation will start without a board-assigned EVO
   build token.
@@ -50,10 +51,11 @@ requested integration or lease: review and integrate the isolated
   504ab4055 + b3bc48dfd spline tranche, and separately review 3431ffdac for
   the all-real discrete-limit endpoint API.  No additional write lease is
   requested.
-conflicts / dependencies: the fetched-main merge was conflict-free but changed
-  dependencies within both focused closures, so the successful pre-merge build
-  is not merged-tip evidence.  Canonical exposition, walkthrough, frontier,
-  coordination, README, and root aggregate remain frozen here.
+conflicts / dependencies: both fetched-main merges were conflict-free but
+  changed dependencies within both focused closures, so the successful
+  pre-merge build is not merged-tip evidence.  Canonical exposition,
+  walkthrough, frontier, coordination, README, and root aggregate remain
+  frozen here.
 next bounded step: commit and push this status reply to the feature branch,
   then wait read-only for coordinator integration review or an explicit build
   assignment.
