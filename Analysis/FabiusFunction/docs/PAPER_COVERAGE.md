@@ -25,7 +25,7 @@ The exact version used by this audit is vendored as
 | Probability proposition after Theorem 3 | `Fabius.ProbabilityRepresentation.independent_uniform_coordinates`, `Fabius.ProbabilityRepresentation.coordinate_has_uniform_law` |
 | Theorem 4(a–c) | `Fabius.original_theorem_four_a`, `Fabius.original_theorem_four_b`, `Fabius.original_theorem_four_c` |
 | Unnumbered corollary | `Fabius.rvachev_not_analyticAt` |
-| Theorem 5 and its Schwartz-decay strengthening | `Fabius.rvachev_poisson_summation`, `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay`, `Fabius.rvachevFourier_real_rapidDecay` |
+| Theorem 5, its Schwartz-decay strengthening, and its upper-bound-free support specializations | `Fabius.rvachev_poisson_summation`, `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay`, `Fabius.rvachevFourier_real_rapidDecay`, `Fabius.rvachev_poisson_support_specialization_unscaled_of_one_half_le`, `Fabius.rvachev_poisson_support_specialization_of_one_half_le` |
 | Theorem 6 | `Fabius.original_theorem_six` |
 | Theorem 7 | `Fabius.original_theorem_seven_global` |
 
@@ -64,8 +64,9 @@ generating-function identities in proof-oriented forms.  In particular:
   used in Theorem 2;
 - `Fabius.rvachev_partition_one_over_nat`,
   `Fabius.rvachev_partition_unity`, `Fabius.rvachev_cosine_series`, and the
-  two `rvachev_poisson_support_specialization` theorems cover equations
-  (26)–(32);
+  source-compatible `rvachev_poisson_support_specialization` theorems cover
+  equations (26)–(32), while their `_of_one_half_le` companions show that
+  the upper bound on the lattice spacing is unnecessary;
 - `Fabius.rvachevDyadic_cast_global` gives the executable equality underlying
   the global form of Theorem 7.
 

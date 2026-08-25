@@ -593,7 +593,11 @@ Among them:
    the asserted normalization `φ_n(0) = 1` and the pointwise limit.
 3. Equation (25) omits `t` from its exponential, equation (26) needs `n > 0`,
    and equation (32) has inconsistent scaling.  The Poisson-summation module
-   proves the corrected identities.
+   proves the corrected identities.  Its
+   `rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+   `rvachev_poisson_support_specialization_of_one_half_le` declarations also
+   show that the paper's upper bound `a ≤ 1` is unnecessary: both formulas
+   hold on the sharp support-controlled ray `a ≥ 1/2`.
 4. In the arithmetic paper, Lemma 1 is false for a negative scale and an
    arbitrary derivative order.  Its proof requires
    `0 ≤ scale + order`; the Lean statement includes that hypothesis.

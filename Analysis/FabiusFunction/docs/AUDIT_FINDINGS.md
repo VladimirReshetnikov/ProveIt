@@ -374,26 +374,23 @@ the normalized value at `1` is one.
 
 ### Cluster: fourier-legendre
 
-#### The hypothesis a ≤ 1 is unused in both Poisson support-specialization theorems
+#### IMPLEMENTED: the Poisson support specialization needs no upper bound on the lattice spacing
 
-Confidence high.  `PoissonSummation.lean:451`, `PoissonSummation.lean:465`
+Confidence high.  `PoissonSummation.lean`
 
-**Why.** The upper bound `a ≤ 1` is transcribed from the paper but plays no role: the author already wrote it as `_ha1`, i.e. Lean's own convention for a binder that is never used. The scaled theorem passes `ha1` down solely to feed that dead binder, so it too is superfluous. Every ingredient — `rvachev_poisson_at_zero` (needs `0 < a`, derived from `ha0`) and `rvachev_lattice_sum_of_one_half_le` (PoissonSummation.lean:~415, needs only `1/2 ≤ a`) — is already stated for all `a ≥ 1/2`. The stronger form ...
+**Why.** The paper's hypothesis `a ≤ 1` is dead weight.  Support reduces the
+lattice sum to the three possible indices `-1`, `0`, and `1` as soon as
+`a ≥ 1/2`; Poisson summation itself needs only positivity, which follows from
+the same lower bound.  The ray `a ≥ 1/2` is sharp for the three-term formula:
+below it the points `±2a` enter the open support.
 
-**Proposal.** Title should read: "The hypothesis `a <= 1` is dead weight in both Poisson support-specialization theorems" — in `rvachev_poisson_support_specialization_unscaled` the binder is literally unused (`_ha1`), while in `rvachev_poisson_support_specialization` `ha1` is used only at line 471 to feed that dead binder, so it is vacuous rather than unused. Also correct the citation for `rvachev_lattice_sum_of_one_half_le` from "~415" to PoissonSummation.lean:424 (415 is `rvachev_poisson_at_zero`).
-
-The code proposal itself is correct as written and matches the project's own rule at docs/COLLABORATION.md:192-193. Add, in PoissonSummation.lean immediately before the existing declarations:
-
-/-- Equation (32) holds for every lattice spacing `a >= 1/2`, not only for `a <= 1`. -/
-theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
-    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ} (ha0 : 1 / 2 ≤ a) :
-    (1 : ℂ) + 2 * rvachevUp F a =
-      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) * rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ))
-
-theorem rvachev_poisson_support_specialization_of_one_half_le
-    (F : ...
-
-**Verifier.** The finding survives adversarial checking. Signatures at PoissonSummation.lean:451-457 and 465-470 are quoted verbatim, `_ha1` included. Every ingredient is already stated without an upper bound on `a`: `rvachev_poisson_summation` (line 86) and `rvachev_poisson_at_zero` (line 415) require only `0 < u` / `0 < a`, and ...
+**Implementation.**
+`rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+`rvachev_poisson_support_specialization_of_one_half_le` state the unscaled and
+correctly rescaled identities on the full ray.  The original declarations and
+their exact named binders remain as compatibility wrappers for the paper's
+interval.  A common private scaling lemma now records only the nonzero
+hypothesis actually required to cancel the inverse factor.
 
 ### Cluster: lambert-asymptotics
 
