@@ -187,4 +187,13 @@ theorem moment_eq_momentNumerator_div (n : ℕ) :
           rw [← hdenRat]
           ring
 
+/-- The reduced denominator of `moment n` divides its natural normalization.
+This packages the exact quotient formula in a form convenient for subsequent
+denominator arguments. -/
+theorem moment_den_dvd_normalization (n : ℕ) :
+    (moment n).den ∣
+      oddDoubleFactorial (n + 1) * evenMersenneProduct n := by
+  rw [moment_eq_momentNumerator_div]
+  exact rat_den_dvd_nat_div _ _
+
 end Fabius

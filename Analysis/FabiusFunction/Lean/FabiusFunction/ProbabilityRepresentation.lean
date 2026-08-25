@@ -80,6 +80,11 @@ lemma weightedCoordinateSum_le_one (ω : SampleSpace) :
         (summable_geometric_two' 1)
     _ = 1 := tsum_geometric_two' 1
 
+/-- The random series takes values in the closed unit interval pointwise. -/
+lemma weightedCoordinateSum_mem_Icc (ω : SampleSpace) :
+    weightedCoordinateSum ω ∈ Icc (0 : ℝ) 1 :=
+  ⟨weightedCoordinateSum_nonneg ω, weightedCoordinateSum_le_one ω⟩
+
 /-- Delete the first coordinate. -/
 def tail (ω : SampleSpace) : SampleSpace := fun n => ω (Nat.succ n)
 
@@ -151,6 +156,15 @@ noncomputable def weightedSumDistribution : Measure ℝ :=
 
 instance : IsProbabilityMeasure weightedSumDistribution :=
   Measure.isProbabilityMeasure_map measurable_weightedCoordinateSum.aemeasurable
+
+/-- The law of the random series is supported on the closed unit interval. -/
+lemma weightedSumDistribution_Icc :
+    weightedSumDistribution (Icc (0 : ℝ) 1) = 1 := by
+  rw [weightedSumDistribution, Measure.map_apply measurable_weightedCoordinateSum
+    measurableSet_Icc]
+  have hpreimage : weightedCoordinateSum ⁻¹' Icc (0 : ℝ) 1 = Set.univ :=
+    Set.eq_univ_of_forall weightedCoordinateSum_mem_Icc
+  rw [hpreimage, measure_univ]
 
 lemma uniformProduct_map_head_tailSum :
     uniformProduct.map
@@ -426,6 +440,12 @@ lemma weightedSumCDF_symmetry (x : ℝ) :
     _ = 1 - weightedSumCDF x := by
       rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real]
 
+/-- Symmetry fixes the value of the CDF at the midpoint. -/
+@[simp] lemma weightedSumCDF_one_half : weightedSumCDF (1 / 2) = 1 / 2 := by
+  have h := weightedSumCDF_symmetry (1 / 2)
+  norm_num at h ⊢
+  linarith
+
 lemma weightedSumCDF_left_formula {x : ℝ}
     (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
     weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t := by
@@ -557,6 +577,22 @@ theorem ofReal_rvachevUp_eq_weightedSum_probability_global
       {ω : SampleSpace | weightedCoordinateSum ω ≤ 1 - |x|} := by
   rw [rvachevUp_eq_weightedSum_probability_global F hF x,
     ofReal_measureReal]
+
+/-- The bounded Fabius function is the distribution function of the random
+series, with no restriction on the real argument. -/
+theorem fabiusReal_eq_weightedSum_probability
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    fabiusReal F x =
+      uniformProduct.real {ω : SampleSpace | weightedCoordinateSum ω ≤ x} := by
+  rw [← weightedSumCDF_eq_measureReal,
+    weightedSumCDF_eq_fabiusReal F hF]
+
+/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+theorem ofReal_fabiusReal_eq_weightedSum_probability
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    ENNReal.ofReal (fabiusReal F x) =
+      uniformProduct {ω : SampleSpace | weightedCoordinateSum ω ≤ x} := by
+  rw [fabiusReal_eq_weightedSum_probability F hF, ofReal_measureReal]
 
 /-- The coordinate projections are mutually independent uniform random
 variables.  This is the prose proposition following Theorem 3 in the paper. -/

@@ -491,6 +491,23 @@ theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
         rw [hratCast, hihr]
         exact hana.symm
 
+/-- The executable bounded evaluator agrees with the analytic Fabius function
+for every natural dyadic numerator. Numerators beyond the unit grid are
+handled by the common constant value `1`. -/
+theorem fabiusDyadicUnit_cast (F : BoundedFabius) (hF : IsFabius F)
+    (n a : ℕ) :
+    (fabiusDyadicUnit n a : ℝ) =
+      fabiusReal F ((a : ℝ) / (2 : ℝ) ^ n) := by
+  by_cases ha : a ≤ 2 ^ n
+  · rw [fabiusDyadicUnit_eq_fabiusDyadic n a ha,
+      fabiusDyadic_cast F hF n a ha]
+  · rw [fabiusDyadicUnit_of_ge n a (by omega)]
+    norm_num
+    apply (hF.one_of_one_le _ ?_).symm
+    rw [le_div_iff₀' (by positivity : (0 : ℝ) < (2 : ℝ) ^ n)]
+    norm_num
+    exact_mod_cast (show 2 ^ n ≤ a by omega)
+
 end
 
 end Fabius

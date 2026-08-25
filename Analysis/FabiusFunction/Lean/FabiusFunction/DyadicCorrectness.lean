@@ -176,6 +176,44 @@ lemma fabiusTaylorHorner_table_succ (n order : ℕ) (horder : order ≤ n)
   unfold fabiusTaylorHorner
   exact fabiusTaylorHorner_go_table_succ n order order horder le_rfl offset
 
+/-- Extending the inverse-power table by any number of entries leaves every
+Horner subcomputation within the original table unchanged. -/
+lemma fabiusTaylorHorner_go_table_add (n extra order m : ℕ)
+    (horder : order ≤ n) (hm : m ≤ order) (offset : ℚ) :
+    fabiusTaylorHorner.go (fabiusInversePowTwoTable (n + extra)) order offset m =
+      fabiusTaylorHorner.go (fabiusInversePowTwoTable n) order offset m := by
+  induction extra with
+  | zero => simp
+  | succ extra ih =>
+      calc
+        fabiusTaylorHorner.go
+              (fabiusInversePowTwoTable (n + (extra + 1))) order offset m =
+            fabiusTaylorHorner.go
+              (fabiusInversePowTwoTable (n + extra)) order offset m := by
+          simpa [Nat.add_assoc] using
+            fabiusTaylorHorner_go_table_succ (n + extra) order m
+              (by omega) hm offset
+        _ = fabiusTaylorHorner.go
+              (fabiusInversePowTwoTable n) order offset m := ih
+
+/-- Extending the inverse-power table by any number of entries does not change
+a Taylor polynomial whose order already fits in the original table. -/
+theorem fabiusTaylorHorner_table_add (n extra order : ℕ)
+    (horder : order ≤ n) (offset : ℚ) :
+    fabiusTaylorHorner (fabiusInversePowTwoTable (n + extra)) order offset =
+      fabiusTaylorHorner (fabiusInversePowTwoTable n) order offset := by
+  unfold fabiusTaylorHorner
+  exact fabiusTaylorHorner_go_table_add n extra order order horder le_rfl offset
+
+/-- The Horner evaluator is independent of the chosen table bound, provided
+both bounds contain every coefficient requested by the polynomial. -/
+theorem fabiusTaylorHorner_table_eq_of_le (n maxExponent order : ℕ)
+    (hn : n ≤ maxExponent) (horder : order ≤ n) (offset : ℚ) :
+    fabiusTaylorHorner (fabiusInversePowTwoTable maxExponent) order offset =
+      fabiusTaylorHorner (fabiusInversePowTwoTable n) order offset := by
+  obtain ⟨extra, rfl⟩ := Nat.exists_eq_add_of_le hn
+  exact fabiusTaylorHorner_table_add n extra order horder offset
+
 private theorem log2_two_mul (a : ℕ) (ha : a ≠ 0) :
     Nat.log2 (2 * a) = Nat.log2 a + 1 := by
   rw [Nat.log2_eq_log_two, mul_comm, Nat.log_mul_base Nat.one_lt_two ha,

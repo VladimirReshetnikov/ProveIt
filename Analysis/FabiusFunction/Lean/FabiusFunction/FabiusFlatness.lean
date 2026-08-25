@@ -15,7 +15,7 @@ they say that the Fabius function approaches zero faster than any power.
 
 set_option autoImplicit false
 
-open Set
+open Filter Set
 
 namespace Fabius
 
@@ -69,5 +69,37 @@ theorem fabiusReal_isLittleO_pow_at_zero_right
 theorem fabius_isLittleO_pow_at_zero_right (n : ℕ) :
     fabiusReal fabius =o[nhdsWithin 0 (Ici 0)] (fun x : ℝ => x ^ n) :=
   fabiusReal_isLittleO_pow_at_zero_right fabius fabius_spec n
+
+/-- From the left, the complementary bounded Fabius function is little-o of
+every power of the distance to one. -/
+theorem one_sub_fabiusReal_isLittleO_pow_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (fun x : ℝ => 1 - fabiusReal F x) =o[nhdsWithin 1 (Iic 1)]
+      (fun x : ℝ => (1 - x) ^ n) := by
+  have hreflect : Tendsto (fun x : ℝ => 1 - x)
+      (nhdsWithin 1 (Iic 1)) (nhdsWithin 0 (Ici 0)) := by
+    rw [tendsto_nhdsWithin_iff]
+    constructor
+    · have hcontinuous : Continuous (fun x : ℝ => 1 - x) := by fun_prop
+      have hat : Tendsto (fun x : ℝ => 1 - x) (nhds (1 : ℝ))
+          (nhds (1 - (1 : ℝ))) :=
+        hcontinuous.continuousAt
+      have hat' : Tendsto (fun x : ℝ => 1 - x) (nhds (1 : ℝ))
+          (nhds (0 : ℝ)) := by simpa using hat
+      exact hat'.mono_left nhdsWithin_le_nhds
+    · filter_upwards [self_mem_nhdsWithin] with x hx
+      change 0 ≤ 1 - x
+      exact sub_nonneg.mpr (show x ≤ (1 : ℝ) from hx)
+  have h := (fabiusReal_isLittleO_pow_at_zero_right F hF n).comp_tendsto
+    hreflect
+  apply h.congr'
+  · exact Filter.Eventually.of_forall fun x => hF.symmetry_all x
+  · exact Filter.Eventually.of_forall fun _ => rfl
+
+/-- Canonical form of left-hand flatness at one. -/
+theorem one_sub_fabius_isLittleO_pow_at_one_left (n : ℕ) :
+    (fun x : ℝ => 1 - fabiusReal fabius x) =o[nhdsWithin 1 (Iic 1)]
+      (fun x : ℝ => (1 - x) ^ n) :=
+  one_sub_fabiusReal_isLittleO_pow_at_one_left fabius fabius_spec n
 
 end Fabius

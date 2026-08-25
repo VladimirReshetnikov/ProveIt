@@ -65,12 +65,12 @@ theorem mersenneProduct_split_odd_even (n : ℕ) :
         evenMersenneProduct_succ, oddMersenneProduct_succ]
       ring_nf
 
-/-- Equation (26), including its natural divisibility consequence. -/
-theorem halfMomentNumerator_odd_index_formula (n : ℕ) :
-    (halfMomentNumerator (2 * n + 1) : ℚ) / (2 * n + 1) =
-      ((2 ^ n * (n + 1).factorial * momentNumerator n *
-        oddMersenneProduct n : ℕ) : ℚ) ∧
-    (2 * n + 1) * momentNumerator n ∣ halfMomentNumerator (2 * n + 1) := by
+/-- Division-free natural-number form of Equation (26). -/
+theorem halfMomentNumerator_odd_index_eq (n : ℕ) :
+    halfMomentNumerator (2 * n + 1) =
+      (2 * n + 1) *
+        (2 ^ n * (n + 1).factorial * momentNumerator n *
+          oddMersenneProduct n) := by
   have hfac :
       (2 * n + 2).factorial =
         2 ^ (n + 1) * (n + 1).factorial * oddDoubleFactorial (n + 1) := by
@@ -112,7 +112,6 @@ theorem halfMomentNumerator_odd_index_formula (n : ℕ) :
       2 * (oddDoubleFactorial (n + 1) : ℚ) * (evenMersenneProduct n : ℚ))
     · positivity
     · linear_combination -hhalf
-  refine ⟨hEq, ?_⟩
   let R : ℕ :=
     2 ^ n * (n + 1).factorial * momentNumerator n * oddMersenneProduct n
   have hcast :
@@ -131,9 +130,19 @@ theorem halfMomentNumerator_odd_index_formula (n : ℕ) :
         ring
   have hnat : halfMomentNumerator (2 * n + 1) = (2 * n + 1) * R := by
     exact_mod_cast hcast
-  refine ⟨2 ^ n * (n + 1).factorial * oddMersenneProduct n, ?_⟩
-  rw [hnat]
-  dsimp [R]
-  ring
+  simpa only [R] using hnat
+
+/-- Equation (26), together with its natural divisibility consequence. -/
+theorem halfMomentNumerator_odd_index_formula (n : ℕ) :
+    (halfMomentNumerator (2 * n + 1) : ℚ) / (2 * n + 1) =
+      ((2 ^ n * (n + 1).factorial * momentNumerator n *
+        oddMersenneProduct n : ℕ) : ℚ) ∧
+    (2 * n + 1) * momentNumerator n ∣ halfMomentNumerator (2 * n + 1) := by
+  rw [halfMomentNumerator_odd_index_eq]
+  constructor
+  · push_cast
+    field_simp
+  · refine ⟨2 ^ n * (n + 1).factorial * oddMersenneProduct n, ?_⟩
+    ring
 
 end Fabius
