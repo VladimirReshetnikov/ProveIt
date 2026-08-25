@@ -15,7 +15,9 @@ at the intermediate tilt `3s/4`, together with the exact dyadic product
 factor between `s/2` and `s`, proves the estimate without any periodic
 regularity input.  The cases `k=2,3,4` discharge both hypotheses of
 `EndpointLaplaceComparison` and give an unconditional sharp dyadic formula
-with its exact cumulant correction.
+with its exact cumulant correction.  The underlying log-convexity and
+power-for-tilt estimates are exposed for arbitrary finite measures, with the
+Fabius statements retained as direct specializations.
 -/
 
 set_option autoImplicit false
@@ -25,44 +27,41 @@ open scoped Topology ENNReal
 
 namespace Fabius
 
-private lemma unitLaplaceMoment_three_quarters_le_sqrt
-    (s : ℝ) (hs : 0 ≤ s) :
-    unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-        (3 * s / 4) 0 ≤
-      (unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          (s / 2) 0) ^ (1 / 2 : ℝ) *
-        (unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          s 0) ^ (1 / 2 : ℝ) := by
-  let μ : Measure ℝ :=
-    ProbabilityRepresentation.weightedSumDistribution.restrict (Icc (0 : ℝ) 1)
-  let f : ℝ → ℝ := fun x => Real.exp (-(s / 4) * x)
-  let g : ℝ → ℝ := fun x => Real.exp (-(s / 2) * x)
-  have hf_meas : AEStronglyMeasurable f μ := by
+private lemma unitLaplaceMoment_midpoint_le_sqrt
+    (μ : Measure ℝ) [IsFiniteMeasure μ]
+    (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    unitLaplaceMoment μ ((a + b) / 2) 0 ≤
+      (unitLaplaceMoment μ a 0) ^ (1 / 2 : ℝ) *
+        (unitLaplaceMoment μ b 0) ^ (1 / 2 : ℝ) := by
+  let ν : Measure ℝ := μ.restrict (Icc (0 : ℝ) 1)
+  let f : ℝ → ℝ := fun x => Real.exp (-(a / 2) * x)
+  let g : ℝ → ℝ := fun x => Real.exp (-(b / 2) * x)
+  have hf_meas : AEStronglyMeasurable f ν := by
     exact (by fun_prop : Continuous f).aestronglyMeasurable
-  have hg_meas : AEStronglyMeasurable g μ := by
+  have hg_meas : AEStronglyMeasurable g ν := by
     exact (by fun_prop : Continuous g).aestronglyMeasurable
-  have hf_bound : ∀ᵐ x ∂μ, ‖f x‖ ≤ 1 := by
+  have hf_bound : ∀ᵐ x ∂ν, ‖f x‖ ≤ 1 := by
     filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
     rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
     rw [← Real.exp_zero]
     apply Real.exp_le_exp.mpr
     nlinarith [hx.1]
-  have hg_bound : ∀ᵐ x ∂μ, ‖g x‖ ≤ 1 := by
+  have hg_bound : ∀ᵐ x ∂ν, ‖g x‖ ≤ 1 := by
     filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
     rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
     rw [← Real.exp_zero]
     apply Real.exp_le_exp.mpr
     nlinarith [hx.1]
-  have hf : MemLp f (ENNReal.ofReal 2) μ :=
+  have hf : MemLp f (ENNReal.ofReal 2) ν :=
     MemLp.of_bound hf_meas 1 hf_bound
-  have hg : MemLp g (ENNReal.ofReal 2) μ :=
+  have hg : MemLp g (ENNReal.ofReal 2) ν :=
     MemLp.of_bound hg_meas 1 hg_bound
   have h := integral_mul_le_Lp_mul_Lq_of_nonneg
     Real.HolderConjugate.two_two
     (Eventually.of_forall fun _ => (Real.exp_pos _).le)
     (Eventually.of_forall fun _ => (Real.exp_pos _).le) hf hg
   simp only [unitLaplaceMoment, pow_zero, mul_one]
-  change (∫ x, Real.exp (-(3 * s / 4) * x) ∂μ) ≤ _
+  change (∫ x, Real.exp (-((a + b) / 2) * x) ∂ν) ≤ _
   convert h using 1
   · apply integral_congr_ae
     filter_upwards with x
@@ -83,24 +82,21 @@ private lemma unitLaplaceMoment_three_quarters_le_sqrt
       congr 1
       ring
 
-private lemma unitLaplaceMoment_three_quarters_sq_le
-    (s : ℝ) (hs : 0 ≤ s) :
-    unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          (3 * s / 4) 0 ^ 2 ≤
-      unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          (s / 2) 0 *
-        unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          s 0 := by
-  let A := unitLaplaceMoment
-    ProbabilityRepresentation.weightedSumDistribution (s / 2) 0
-  let B := unitLaplaceMoment
-    ProbabilityRepresentation.weightedSumDistribution s 0
-  let C := unitLaplaceMoment
-    ProbabilityRepresentation.weightedSumDistribution (3 * s / 4) 0
+/-- Midpoint log-convexity of the zeroth unit-interval Laplace moment for any
+finite measure.  The restriction built into `unitLaplaceMoment` makes no
+support hypothesis necessary. -/
+lemma unitLaplaceMoment_midpoint_sq_le
+    (μ : Measure ℝ) [IsFiniteMeasure μ]
+    (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    unitLaplaceMoment μ ((a + b) / 2) 0 ^ 2 ≤
+      unitLaplaceMoment μ a 0 * unitLaplaceMoment μ b 0 := by
+  let A := unitLaplaceMoment μ a 0
+  let B := unitLaplaceMoment μ b 0
+  let C := unitLaplaceMoment μ ((a + b) / 2) 0
   have hA : 0 ≤ A := unitLaplaceMoment_nonneg _ _ _
   have hB : 0 ≤ B := unitLaplaceMoment_nonneg _ _ _
   have hC : 0 ≤ C := unitLaplaceMoment_nonneg _ _ _
-  have h := unitLaplaceMoment_three_quarters_le_sqrt s hs
+  have h := unitLaplaceMoment_midpoint_le_sqrt μ a b ha hb
   change C ≤ A ^ (1 / 2 : ℝ) * B ^ (1 / 2 : ℝ) at h
   change C ^ 2 ≤ A * B
   calc
@@ -115,11 +111,21 @@ private lemma unitLaplaceMoment_three_quarters_sq_le
         simpa [one_div] using
           (Real.rpow_inv_natCast_pow hB (by norm_num : (2 : ℕ) ≠ 0))]
 
-private lemma pow_mul_exp_neg_quarter_le
-    (k : ℕ) {s x : ℝ} (hs : 0 < s) (hx : 0 ≤ x) :
-    x ^ k * Real.exp (-(s * x / 4)) ≤
-      (4 / s) ^ k * (k.factorial : ℝ) := by
-  let y : ℝ := s * x / 4
+/-- Three-quarter specialization of `unitLaplaceMoment_midpoint_sq_le`,
+comparing the tilts `s / 2` and `s`. -/
+lemma unitLaplaceMoment_three_quarters_sq_le
+    (μ : Measure ℝ) [IsFiniteMeasure μ] (s : ℝ) (hs : 0 ≤ s) :
+    unitLaplaceMoment μ (3 * s / 4) 0 ^ 2 ≤
+      unitLaplaceMoment μ (s / 2) 0 * unitLaplaceMoment μ s 0 := by
+  convert unitLaplaceMoment_midpoint_sq_le μ (s / 2) s (by positivity) hs
+    using 1
+  all_goals ring_nf
+
+private lemma pow_mul_exp_neg_mul_le
+    (k : ℕ) {a x : ℝ} (ha : 0 < a) (hx : 0 ≤ x) :
+    x ^ k * Real.exp (-(a * x)) ≤
+      (1 / a) ^ k * (k.factorial : ℝ) := by
+  let y : ℝ := a * x
   have hy : 0 ≤ y := by dsimp [y]; positivity
   have hfac : (0 : ℝ) < k.factorial := by positivity
   have hseries := Real.pow_div_factorial_le_exp y hy k
@@ -129,29 +135,30 @@ private lemma pow_mul_exp_neg_quarter_le
     rw [← Real.exp_add] at hmul
     norm_num at hmul
     rwa [div_le_one hfac] at hmul
-  have hscale : x = (4 / s) * y := by
+  have hscale : x = (1 / a) * y := by
     dsimp [y]
-    field_simp
+    field_simp [ha.ne']
   rw [hscale, mul_pow]
-  have hexp : -(s * ((4 / s) * y) / 4) = -y := by
-    field_simp
+  have hexp : -(a * ((1 / a) * y)) = -y := by
+    field_simp [ha.ne']
   rw [hexp, mul_assoc]
   exact mul_le_mul_of_nonneg_left hybound (pow_nonneg (by positivity) k)
 
-private lemma unitLaplaceMoment_le_three_quarters
-    (k : ℕ) {s : ℝ} (hs : 0 < s) :
-    unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution s k ≤
-      ((4 / s) ^ k * (k.factorial : ℝ)) *
-        unitLaplaceMoment ProbabilityRepresentation.weightedSumDistribution
-          (3 * s / 4) 0 := by
-  let μ := ProbabilityRepresentation.weightedSumDistribution
-  let C : ℝ := (4 / s) ^ k * (k.factorial : ℝ)
+/-- Trading `k` powers of the integration variable for an arbitrary positive
+amount `a` of tilt, uniformly for every finite measure on `ℝ`. -/
+lemma unitLaplaceMoment_le_shift
+    (μ : Measure ℝ) [IsFiniteMeasure μ] (k : ℕ)
+    {s a : ℝ} (ha : 0 < a) :
+    unitLaplaceMoment μ s k ≤
+      ((1 / a) ^ k * (k.factorial : ℝ)) *
+        unitLaplaceMoment μ (s - a) 0 := by
+  let C : ℝ := (1 / a) ^ k * (k.factorial : ℝ)
   have hleft : IntegrableOn
       (fun x : ℝ => Real.exp (-s * x) * x ^ k) (Icc (0 : ℝ) 1) μ := by
     apply ContinuousOn.integrableOn_compact isCompact_Icc
     fun_prop
   have hright : IntegrableOn
-      (fun x : ℝ => C * (Real.exp (-(3 * s / 4) * x) * x ^ 0))
+      (fun x : ℝ => C * (Real.exp (-(s - a) * x) * x ^ 0))
       (Icc (0 : ℝ) 1) μ := by
     apply ContinuousOn.integrableOn_compact isCompact_Icc
     fun_prop
@@ -161,24 +168,47 @@ private lemma unitLaplaceMoment_le_three_quarters
   filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
   simp only [pow_zero, mul_one]
   have hsplit : Real.exp (-s * x) =
-      Real.exp (-(3 * s / 4) * x) * Real.exp (-(s * x / 4)) := by
+      Real.exp (-(s - a) * x) * Real.exp (-(a * x)) := by
     rw [← Real.exp_add]
     congr 1
     ring
   rw [hsplit]
-  rw [mul_assoc, mul_comm (Real.exp (-(s * x / 4))) (x ^ k)]
+  rw [mul_assoc, mul_comm (Real.exp (-(a * x))) (x ^ k)]
   calc
-    Real.exp (-(3 * s / 4) * x) *
-          (x ^ k * Real.exp (-(s * x / 4))) ≤
-        Real.exp (-(3 * s / 4) * x) * C := by
+    Real.exp (-(s - a) * x) * (x ^ k * Real.exp (-(a * x))) ≤
+        Real.exp (-(s - a) * x) * C := by
       exact mul_le_mul_of_nonneg_left
-        (pow_mul_exp_neg_quarter_le k hs hx.1) (Real.exp_nonneg _)
-    _ = C * Real.exp (-(3 * s / 4) * x) := by ring
+        (pow_mul_exp_neg_mul_le k ha hx.1) (Real.exp_nonneg _)
+    _ = C * Real.exp (-(s - a) * x) := by ring
 
-/-- Midpoint log-convexity of the negative Laplace transform: for `0 ≤ s`,
-`fabiusLaplaceMoment F 0 (3 * s / 4) ^ 2` is at most
-`fabiusLaplaceMoment F 0 (s / 2) * fabiusLaplaceMoment F 0 s`.  Proved by
-Cauchy--Schwarz between the tilts `s / 2` and `s`.  Requires `IsFabius F`. -/
+/-- Quarter-tilt specialization of `unitLaplaceMoment_le_shift`. -/
+lemma unitLaplaceMoment_le_three_quarters
+    (μ : Measure ℝ) [IsFiniteMeasure μ] (k : ℕ) {s : ℝ} (hs : 0 < s) :
+    unitLaplaceMoment μ s k ≤
+      ((4 / s) ^ k * (k.factorial : ℝ)) *
+        unitLaplaceMoment μ (3 * s / 4) 0 := by
+  have hscale : (1 / (s / 4) : ℝ) = 4 / s := by
+    field_simp [hs.ne']
+  have htilt : s - s / 4 = 3 * s / 4 := by ring
+  simpa only [hscale, htilt] using
+    unitLaplaceMoment_le_shift μ k (s := s) (a := s / 4) (by positivity)
+
+/-- Midpoint log-convexity of the negative Fabius Laplace transform on the
+nonnegative ray.  This is the probability-law Cauchy--Schwarz inequality
+transported through the exact moment representation. -/
+lemma fabiusLaplaceMoment_midpoint_sq_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    fabiusLaplaceMoment F 0 ((a + b) / 2) ^ 2 ≤
+      fabiusLaplaceMoment F 0 a * fabiusLaplaceMoment F 0 b := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using unitLaplaceMoment_midpoint_sq_le
+        ProbabilityRepresentation.weightedSumDistribution a b ha hb
+
+/-- Three-quarter specialization of `fabiusLaplaceMoment_midpoint_sq_le`: for
+`0 ≤ s`, the square at `3s/4` is bounded by the product at `s/2` and `s`.
+Requires `IsFabius F`. -/
 lemma fabiusLaplaceMoment_three_quarters_sq_le
     (F : BoundedFabius) (hF : IsFabius F)
     (s : ℝ) (hs : 0 ≤ s) :
@@ -186,7 +216,22 @@ lemma fabiusLaplaceMoment_three_quarters_sq_le
       fabiusLaplaceMoment F 0 (s / 2) * fabiusLaplaceMoment F 0 s := by
   simpa only [
     ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
-      F hF] using unitLaplaceMoment_three_quarters_sq_le s hs
+      F hF] using unitLaplaceMoment_three_quarters_sq_le
+        ProbabilityRepresentation.weightedSumDistribution s hs
+
+/-- Trading `k` powers for an arbitrary positive amount `a` of tilt in a
+Fabius Laplace moment.  No sign condition on the original tilt `s` is needed. -/
+lemma fabiusLaplaceMoment_le_shift
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ)
+    {s a : ℝ} (ha : 0 < a) :
+    fabiusLaplaceMoment F k s ≤
+      ((1 / a) ^ k * (k.factorial : ℝ)) *
+        fabiusLaplaceMoment F 0 (s - a) := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using unitLaplaceMoment_le_shift
+        ProbabilityRepresentation.weightedSumDistribution k
+          (s := s) (a := a) ha
 
 /-- Trading `k` powers of the variable for a quarter of the tilt: for
 `0 < s`, `fabiusLaplaceMoment F k s` is at most
@@ -200,7 +245,8 @@ lemma fabiusLaplaceMoment_le_three_quarters
         fabiusLaplaceMoment F 0 (3 * s / 4) := by
   simpa only [
     ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
-      F hF] using unitLaplaceMoment_le_three_quarters k hs
+      F hF] using unitLaplaceMoment_le_three_quarters
+        ProbabilityRepresentation.weightedSumDistribution k hs
 
 /-- Halving the tilt costs at most one factor of `s`: for `2 ≤ s`,
 `fabiusLaplaceMoment F 0 (s / 2) ≤ s * fabiusLaplaceMoment F 0 s`.  The proof
