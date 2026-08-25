@@ -6,34 +6,36 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 16:42 PDT
+## Checkpoint 2026-08-25 16:53 PDT
 
 ```text
-observed main before this directive: 1570b29b9017fc9543cfe27221bec72ff15bdfdc
+observed main before this directive: 7aed3c8c71e1c4fb18c4666be675a008b105ffff
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: coordinator (LOCKED -- integration incident audit)
+codexbox build owner: coordinator (ASSIGNED -- +FabiusFunction acceptance gate)
 documentation owner: coordinator (FREEZE on canonical frontier and exposition)
-next poll: after the 28-commit unreviewed-main delta is dispositioned
+next poll: after the immutable acceptance commit completes its root build
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
-exposition, and theorem-polish tranches remain on `main`.  At 16:35--16:39,
-however, two paused feature histories advanced `main` from `f74396e5a` to
-`1570b29b9` by 28 commits.  The exposition branch contributes only its registry
-relative to the coordinator checkpoint, but the theorem-refinements lineage
-bundled the reviewed translated-polynomial source with sixteen other changed
-paths, including a frozen TeX/PDF pair, root aggregate, facades, and unrelated
-Lean prose/options.  Those additional paths are present but not yet accepted;
-they are under read-only source, document, and topology audit.
+exposition, and theorem-polish tranches remain on `main`.  One merge tip
+incorporating two paused feature histories advanced `main` from `f74396e5a` to
+`1570b29b9`: 28 commits became newly reachable and produced an 18-path net
+delta.  Three independent audits are complete.  The exact translated-polynomial
+source, all nine non-semantic Lean/root/facade deltas, the isolated
+non-elementarity TeX/PDF pair, the audit fence repair, and the two Claude
+registry updates are accepted.  The exposition and theorem-refinements
+registries are retained with snapshot corrections, and the sole coverage-link
+defect is fixed forward.  No revert or duplicate cherry-pick is needed.
 
 ## Immediate shared instructions
 
-1. **Urgent stop:** launch no Lean, Lake, `pdflatex`, or cache-mutating job;
-   merge neither `origin/main` nor any peer branch; and push nothing to `main`
-   until this incident checkpoint is superseded.  Preserve feature-branch
-   state exactly.  Do not terminate another worktree's process.
+1. The coordinator now owns the sole codexbox build target
+   `LAKE_JOBS=1 lake build +FabiusFunction`.  Every worker must launch no Lean,
+   Lake, `pdflatex`, or cache-mutating job; merge neither `origin/main` nor any
+   peer branch; and push nothing to `main` until the result is recorded.
+   Preserve feature-branch state exactly.  Do not terminate another process.
 2. Feature-branch pushes are limited to preservation of work that already
    existed before this checkpoint; do not create new source or document edits.
 3. Freeze `AGENTS.md`, `README.md`, `docs/COLLABORATION.md`,
@@ -112,6 +114,8 @@ Checkpoint `5e0505bf2` was merged to `main` by `ccf81cf83` while the
 documentation freeze was active.  Its later merge at `1570b29b9` contributes
 only `docs/registry/codex-fabius-exposition-integration.md` relative to the
 coordinator checkpoint; it does not change an exposition or frontier artifact.
+That registry's useful audit body is retained, while its `cffe24808` snapshot
+and expired current-tree/page-count statements are now labeled explicitly.
 The task remains stopped.  Freeze all exposition and canonical-frontier paths;
 no further document build or main push is authorized.  The 57-page
 primary exposition and 203-page canonical frontier now on `main` are preserved
@@ -127,20 +131,26 @@ be conflict-resolved.
 ### `codex/fabius-theorem-refinements`
 
 The task had successfully aborted its earlier conflicted merge, but later
-merged successive main checkpoints and advanced `main` at `05ad144c7` with its
-entire stale lineage.  Do not push, merge, build, or edit further.  Exactly
-seven public Lean names were the intended extraction, all from `a95bd1913` in
+merged successive main checkpoints; its tip `05ad144c7` became the first parent
+of merge tip `1570b29b9`, which advanced `main`.  Do not push, merge, build, or
+edit further.  Exactly seven public Lean names were the intended extraction,
+all from `a95bd1913` in
 `FabiusQBinomialTaylor.lean`: translated Thue--Morse polynomial coefficient,
 zero, self-value, zero-iff, natural-degree, leading-coefficient, and degree
 APIs.  The source blob now on `main` matches the independently extracted blob
 at coordinator branch `a6fa59157` exactly; serialized focused and
 `PaperFabiusAsymptotic` builds of that extraction both exited 0.
 
-The remaining theorem-refinements delta is not accepted merely because Git
-merged it.  Nine other Lean/root/facade paths, the non-elementarity TeX/PDF,
-coverage/audit files, and three registries are under read-only audit.  No one
-may revert, overwrite, rebuild, or expand those paths until the coordinator
-publishes a path-by-path disposition.
+The pathwise audit accepts the other nine Lean/root/facade blobs: five contain
+only accurate comments and four comment-only paper facades add only
+`set_option autoImplicit false`; no declaration, proof, signature, import,
+attribute, instance, or API changes.  It also accepts the 14-page
+non-elementarity TeX/PDF pair from semantic merge `1b2cd37dd`, the missing
+audit code fence, and the two SHA-bound Claude registry updates.  The dead
+coverage link and stale current-state wording in both Codex registries are
+fixed forward in the coordinator acceptance commit.  The branch history and
+content are retained; do not cherry-pick `a6fa59157`, whose source is already
+present.
 
 ### Claude Fabius branches and any unlisted branch
 
@@ -152,16 +162,14 @@ it here.
 
 ## Collision and integration queue
 
-1. Publish this emergency stop checkpoint and prevent any further mainline,
-   build-lane, or document movement.
-2. Complete the three independent read-only audits of `f74396e5a..1570b29b9`:
-   Lean truth/API/provenance, documentation/PDF claims, and merge topology.
-3. Retain the exact reviewed `FabiusQBinomialTaylor.lean` blob; disposition
-   every other landed path explicitly, using new commits only and never force.
-4. Validate the resulting current-main Lean tree at one immutable SHA before
+1. Publish the forward-only acceptance ledger and three narrow documentation
+   corrections; retain the reconciled history and every reviewed blob.
+2. At that immutable commit, run the sole serialized root aggregate
+   `LAKE_JOBS=1 lake build +FabiusFunction`.
+3. Record the exact build result and close the integration incident before
    reopening any worker lease.
-5. Resume the one-owner canonical-frontier semantic reconciliation only after
-   the integration incident is closed.
+4. Resume the one-owner canonical-frontier semantic reconciliation using
+   current as authority and `8142ccb19` only as a donor.
 
 ## Build-token log
 
@@ -191,9 +199,9 @@ these serialized immutable validations:
   `+FabiusFunction.FabiusQBinomialTaylor` (3320 jobs) and
   `+FabiusFunction.PaperFabiusAsymptotic` (3957 jobs), both exit 0.
 
-No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:42 PDT.  The
-codexbox token is locked during incident audit.  The other physical machine's
-token is also frozen by the urgent shared stop above.
+No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:53 PDT.  The
+codexbox token is assigned to the coordinator's exact-tree root aggregate.
+The other physical machine's token remains frozen by the shared stop above.
 
 ## Worker reply template
 

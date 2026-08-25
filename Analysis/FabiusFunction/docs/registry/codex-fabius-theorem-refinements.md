@@ -1,12 +1,20 @@
 # Workstream registry: `codex/fabius-theorem-refinements`
 
-**Status: synchronized and frozen pending coordinator extraction.** All former
-source/build leases are released. The only current write is this branch's own
-registry reply.
+**Coordinator disposition at `7aed3c8c7`: landed and retained after review.**
+The exact seven-declaration source blob and redundant-binder cleanup are on
+main through `1570b29b9`.  The isolated non-elementarity artifact and the
+landed audit/coverage/link repairs are accepted; the canonical-document notes
+below remain routing input for later reconciliation.  All leases are released.
+The status block and inventories below are preserved as historical snapshots
+relative to `f74396e5a`; they do not describe the current main tree.
+Exact-current-tree aggregate compilation remains the only Lean validation
+gate.
 
 This file is the durable cross-worktree record for the open-ended theorem,
 refactoring, and documentation campaign on this branch.  Live task messages
 supplement it but do not replace it.
+
+## Historical worker snapshot at `f74396e5a`
 
 ```text
 SYNC Fabius
@@ -79,17 +87,18 @@ main has since integrated another exposition checkpoint, it is routing evidence
 for a fresh semantic audit, not a claim that its line-level patches still apply.
 Do not merge either side wholesale.
 
-### Public declarations absent from main
+### Public declarations absent from main `f74396e5a`
 
-Exactly seven public names are feature-only. All live in
-`FabiusFunction.FabiusQBinomialTaylor` and were introduced by
-`a95bd19137c75dba867e0a17019036c0ea6d77fc`:
+Exactly seven public names were feature-only relative to `f74396e5a`.  They are
+now on main, all live in `FabiusFunction.FabiusQBinomialTaylor`, and were
+introduced by `a95bd19137c75dba867e0a17019036c0ea6d77fc`:
 
 1. `coeff_thueMorseTranslatedPowerSumPolynomial k d j` identifies coefficient
    `j` of the translation-variable polynomial with
-   `(d.choose j : ℚ) * thueMorseCenteredPowerSum k (d - j)`. This is genuinely
-   absent: main's exponential-series coefficient and Prouhet declarations are
-   ingredients, not this finite polynomial coefficient theorem.
+   `(d.choose j : ℚ) * thueMorseCenteredPowerSum k (d - j)`. This was genuinely
+   absent at `f74396e5a`: its exponential-series coefficient and Prouhet
+   declarations were ingredients, not this finite polynomial coefficient
+   theorem.
 2. `[simp] thueMorseTranslatedPowerSumPolynomial_zero d` gives the polynomial
    normal form `(X - 1) ^ d` at block exponent zero. It is a useful named simp
    theorem, although mathematically it is a direct `Polynomial.funext` wrapper
@@ -98,12 +107,13 @@ Exactly seven public names are feature-only. All live in
    constant polynomial at the sharp Prouhet degree. This is likewise a useful
    named polynomial-level simp theorem derived from existing pointwise input.
 4. `[simp] thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d` proves the
-   exact criterion `P k d = 0 ↔ d < k`. Main has only forward pointwise
-   cancellation below degree and no converse polynomial nonvanishing result.
+   exact criterion `P k d = 0 ↔ d < k`. Main at `f74396e5a` had only forward
+   pointwise cancellation below degree and no converse polynomial nonvanishing
+   result.
 5. `[simp] thueMorseTranslatedPowerSumPolynomial_natDegree k d` proves
    `natDegree (P k d) = d - k`, including Lean's `natDegree 0 = 0` convention.
-   Main's power-series order theorem concerns the exponential variable, not
-   the translation degree.
+   The earlier main's power-series order theorem concerns the exponential
+   variable, not the translation degree.
 6. `[simp] thueMorseTranslatedPowerSumPolynomial_leadingCoeff k d` gives the
    exact piecewise leading coefficient: the binomial multiple of the sharp
    Prouhet constant for `k ≤ d`, and zero otherwise.
@@ -124,12 +134,13 @@ new results:
 - `qBinomialFabiusReductionPolynomial_zero`.
 
 The feature removes redundant explicit `[CharZero K]` binders because
-`[Algebra ℚ K]` already supplies `CharZero K`. Main has the same names and
-conclusions with the redundant binder. This is worthwhile signature polish,
-not a missing theorem family. No feature-only public definitions, abbreviations,
-structures, classes, or instances remain.
+`[Algebra ℚ K]` already supplies `CharZero K`. Main at `f74396e5a` had the same
+names and conclusions with the redundant binder; current main has the cleaner
+signatures. This is worthwhile signature polish, not a separate theorem
+family. No feature-only public definitions, abbreviations, structures, classes,
+or instances remain.
 
-### Claim-level documentation repairs absent from main
+### Claim-level documentation repairs relative to main `f74396e5a`
 
 These are extraction notes only; all named canonical paths remain frozen and
 their feature files/binaries must not replace newer main files.
@@ -154,14 +165,14 @@ their feature files/binaries must not replace newer main files.
   audited. Preserve main's curvature ledger. Record repaired provenance hashes
   `e3a7fcad...` and `8776344b...` as later variants alongside, rather than
   silently replacing, the original synthesis-input hashes.
-- The non-elementarity TeX/PDF artifact is isolated because main's blobs are
-  unchanged from the common base. Its source repairs localize algebraic-branch
+- The non-elementarity TeX/PDF artifact was isolated because `f74396e5a`'s
+  blobs were unchanged from the common base. Its source repairs localize algebraic-branch
   hypotheses to the open set, correct Bring right-inverse reasoning, distinguish
   positive and nonvanishing `rpow` rules, state clamped-totalization and exact
   inverse smoothness-locus facts, and make the Lambert-W constructor explicitly
   conditional with boundary/complement caveats. Mathlib is not claimed to
-  define or verify Lambert W. Review source blob `9024036a8` and PDF blob
-  `bd0b4f4ba`; integrate as an isolated semantic artifact if accepted.
+  define or verify Lambert W. Source blob `9024036a8` and PDF blob
+  `bd0b4f4ba` are now accepted on main as an isolated semantic artifact.
 - Small repairs: restore the missing closing code fence in `AUDIT_FINDINGS.md`;
   redirect the two retired inverse-dyadic links in `PAPER_COVERAGE.md` and the
   retired small-argument link in the Claude asymptotic registry to the

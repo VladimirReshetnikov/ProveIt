@@ -4,6 +4,13 @@ This file implements the per-branch registry protocol in
 [`../COLLABORATION.md`](../COLLABORATION.md). It is a status and provenance
 record, not a mathematical exposition.
 
+**Coordinator disposition at `7aed3c8c7`.**  The detailed status block and
+continuation audit below are a snapshot at `cffe24808`; they are retained as
+provenance, not as claims about the later Lean tree.  Current main still has
+the exact primary/frontier artifact blobs recorded here, and the proposed
+primary corrections and frontier donor clusters remain pending coordinator
+disposition.  This registry grants no active path or build lease.
+
 ```text
 SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
@@ -43,11 +50,11 @@ requested integration or lease: assign this branch the exact frontier
   and 8142ccb19 only as a donor; then assign the exact primary TeX/PDF pair for
   the narrow corrections below; assign one serialized build token for three
   pdflatex passes per changed document and the final immutable-SHA Lean gate
-conflicts / dependencies: no unresolved Git conflict. The board's 202-page
-  frontier count is stale: the committed artifact is 203 pages. The board says
-  reconciliation remains pending, so the earlier registry claim that this
-  workstream was closed is retracted. The two redundant untracked build copies
-  remain untouched under the preservation freeze.
+conflicts / dependencies: no unresolved Git conflict. At this cffe24808
+  snapshot the board still said 202 pages; the current board now correctly
+  records the committed 203-page artifact. Reconciliation remains pending.
+  The two redundant untracked build copies remain untouched under the
+  preservation freeze.
 next bounded step: push this registry-only audit checkpoint to the feature
   branch, then remain read-only until the coordinator grants exact paths and a
   build token; never select either binary PDF as a conflict resolution
@@ -70,11 +77,12 @@ following file-level facts remain established:
   byte-identical between `5e0505bf2` and `cffe24808`.
 - The requested
   `docs/Fabius_Function_and_Rvachev_Up/drafts/` directory is absent.
-- Current main preserves the strict placement rules and the live coordinator
-  preamble. No stale branch-local coordination wording should be resurrected.
+- Pinned main `cffe24808` preserved the strict placement rules and coordinator
+  preamble. Current main retains them; no stale branch-local coordination
+  wording should be resurrected.
 
-Canonical artifact blob IDs, identical at the feature checkpoint and current
-main, are:
+Canonical artifact blob IDs, identical at the feature checkpoint,
+`cffe24808`, and current main, are:
 
 | Artifact | Git blob |
 | --- | --- |
@@ -422,11 +430,13 @@ copies are deliberately neither staged nor removed under the freeze.
 
 ## Continuation audit at `cffe24808`
 
-Three independent read-only lanes re-audited the current artifacts after the
-coordinator requested a later semantic reconciliation. None edited, staged,
-built, committed, merged, or pushed. The Lean and document trees at current
-main are byte-identical to the audited `a49db7313` pin; the intervening commits
-change only another branch's registry.
+Three independent read-only lanes re-audited the artifacts at `cffe24808`
+after the coordinator requested a later semantic reconciliation. None edited,
+staged, built, committed, merged, or pushed. At that snapshot the Lean and
+document trees were byte-identical to the audited `a49db7313` pin; the
+intervening commits changed only another branch's registry. Later mainline Lean
+changes supersede that tree-identity claim, while all canonical artifact blobs
+remain unchanged.
 
 The requirement audit confirms that the feature branch, original draft
 inventory and disposition, deletion of the requested draft inbox, placement
@@ -439,10 +449,10 @@ does not certify the goal complete. Two gates remain:
 2. close the primary's local traceability defects and then perform final
    immutable-SHA source/build validation.
 
-The coordinator board calls the canonical frontier 202 pages. That number
-describes `0157e504f` before the curvature tranche. Checkpoint `5e0505bf2`
-rebuilt the same canonical pair at 203 pages, and its TeX/PDF blobs remain the
-ones committed on current main.
+The coordinator board at this snapshot called the canonical frontier 202
+pages. That number described `0157e504f` before the curvature tranche.
+Checkpoint `5e0505bf2` rebuilt the same canonical pair at 203 pages; the current
+board now records 203, and those TeX/PDF blobs remain on main.
 
 ## Current-primary source correspondence audit
 
