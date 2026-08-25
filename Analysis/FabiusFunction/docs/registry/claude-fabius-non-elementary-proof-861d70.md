@@ -8,12 +8,16 @@ running on a different machine.
 
 ```text
 SYNC Fabius
-worktree/task: fabius-non-elementary-proof-861d70 — the Fabius function on
-  (0,1) is not an elementary function
-branch/base: claude/fabius-non-elementary-proof-861d70, fast-forwarded onto
-  origin/main at 5437f9d0c (which already contains this branch's first two
-  commits, merged upstream by the integrator)
+worktree/task: fabius-non-elementary-proof-861d70 — neither the Fabius
+  function nor its inverse is elementary on (0,1), and neither is reachable
+  once inverse branches (Lambert W included) are adjoined
+branch/base: claude/fabius-non-elementary-proof-861d70, merged with
+  origin/main at cb54665bf.  No conflicts.  The codex refactoring of
+  `analyticDenseOn_of_isElementary_coeffs` came in with that merge and is kept
+  as it arrived.
 git owner / build owner: self / self (own worktree, own `.lake`)
+status: complete and verified — 35-module closure builds clean, every exported
+  theorem audited for axioms, write-up and PDF current
 ```
 
 ## Write set
@@ -60,7 +64,7 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All 95 theorems exported by the five new modules — `ElementaryFunction`,
+All 98 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
 anywhere.  The audit is a generated `#print axioms` sweep over every
@@ -89,11 +93,22 @@ by radicals.
 
 Every hypothesis on the branch is confined to the region `U`.  That is not
 cosmetic: a version with global hypotheses excludes `y ^ 5 - y - x = 0`
-altogether, since `w ↦ w ^ 5 - w` is not injective and so no continuous branch
-on all of `ℝ` exists — and that equation is the standard example of a
-non-solvable Galois group.  An adversarial review caught the earlier global
-form claiming coverage it did not have; the theorem was strengthened rather
-than the claim weakened.
+altogether, since a global continuous solution would be a continuous right
+inverse of `w ↦ w ^ 5 - w`, and that polynomial has none — it is monotone only
+on three pieces, and the image of each is a proper subinterval of `ℝ`.  That
+equation is the standard example of a non-solvable Galois group.  An
+adversarial review caught the earlier global form claiming coverage it did not
+have; the theorem was strengthened rather than the claim weakened.
+
+A `codex/*` workstream then factored the localized proof, and the refactoring
+is kept as it arrived: `analyticDenseOn_of_isElementary_coeffs` now carries the
+content, with `analyticDenseOn_of_inter_open_dense` isolating the step that
+removes the restriction to the coefficients' common analytic locus, and
+`AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt` isolating the germ-transport
+step.  `exists_analyticAt_of_isElementary_coeffs`,
+`dense_analyticLocus_of_isElementary_coeffs` and `not_algebraicBranch_eqOn`
+keep their statements and are now one-liners over it.  Nothing downstream in
+`InverseBranch` or `InverseNotElementary` needed changing.
 
 This deliberately does *not* add a constructor to `IsElementary`.  Doing so
 would cost `IsElementary.comp`: composing an algebraic branch with an
@@ -168,9 +183,9 @@ argument is the inverse function theorem run backwards, and the one thing to
 check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
 now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
 on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
-there, a nonzero real number.  It is the only place in the whole workstream
-where a differential property of `F`, rather than its failure to be analytic,
-is used.
+there, a nonzero real number.  `F'` enters the five modules of this workstream
+only through those two theorems; everywhere else `F` is used through its
+continuity and through `fabius_not_analyticAt`.
 
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
