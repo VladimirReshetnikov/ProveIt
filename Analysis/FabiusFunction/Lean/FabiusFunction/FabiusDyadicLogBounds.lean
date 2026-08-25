@@ -20,8 +20,10 @@ The resulting explicit estimate is
 
 `|log F(2⁻ⁿ) + (log 2 / 2) n²| ≤ 3 n log (n + 1)`
 
-for every `n ≥ 1`.  As a headline asymptotic corollary, the normalized
-logarithm along the dyadic sequence tends to `-(log 2) / 2`.
+for every `n ≥ 1`.  Total companion theorems include the exactly normalized
+boundary `n = 0`, where the centered error vanishes.  As a headline
+asymptotic corollary, the normalized logarithm along the dyadic sequence
+tends to `-(log 2) / 2`.
 -/
 
 set_option autoImplicit false
@@ -124,6 +126,28 @@ theorem halfMoment_real_lower (F : BoundedFabius) (hF : IsFabius F)
         (∫ t in (0 : ℝ)..1, t ^ m * rvachevUp F t) :=
       mul_le_mul_of_nonneg_left hlarge (by positivity)
 
+/-- The upper half-moment bound, including the normalized boundary `n = 0`. -/
+theorem halfMoment_real_le_one_all (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    (halfMoment n : ℝ) ≤ 1 := by
+  cases n with
+  | zero => norm_num [halfMoment_zero]
+  | succ n => exact halfMoment_real_le_one F hF (n + 1) (by omega)
+
+/-- The lower half-moment bound, including the normalized boundary `n = 0`. -/
+theorem halfMoment_real_lower_all (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    ((2 : ℝ) ^ (n + 1))⁻¹ ≤ (halfMoment n : ℝ) := by
+  cases n with
+  | zero => norm_num [halfMoment_zero]
+  | succ n => exact halfMoment_real_lower F hF (n + 1) (by omega)
+
+/-- Every real half moment lies in its elementary dyadic interval. -/
+theorem halfMoment_real_mem_Icc (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    (halfMoment n : ℝ) ∈ Icc (((2 : ℝ) ^ (n + 1))⁻¹) 1 :=
+  ⟨halfMoment_real_lower_all F hF n, halfMoment_real_le_one_all F hF n⟩
+
 /-- The logarithm of a positive half moment is nonpositive. -/
 theorem log_halfMoment_le_zero (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
@@ -142,6 +166,22 @@ theorem neg_succ_mul_log_two_le_log_halfMoment
       ring
     _ ≤ Real.log (halfMoment n : ℝ) :=
       Real.log_le_log (by positivity) (halfMoment_real_lower F hF n hn)
+
+/-- The logarithmic half-moment bounds, including `n = 0`. -/
+theorem log_halfMoment_mem_Icc (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) :
+    Real.log (halfMoment n : ℝ) ∈
+      Icc (-((n + 1 : ℕ) : ℝ) * Real.log 2) 0 := by
+  constructor
+  · calc
+      -((n + 1 : ℕ) : ℝ) * Real.log 2 =
+          Real.log (((2 : ℝ) ^ (n + 1))⁻¹) := by
+        rw [Real.log_inv, Real.log_pow]
+        ring
+      _ ≤ Real.log (halfMoment n : ℝ) :=
+        Real.log_le_log (by positivity) (halfMoment_real_lower_all F hF n)
+  · exact Real.log_nonpos (by exact_mod_cast (halfMoment_pos n).le)
+      (halfMoment_real_le_one_all F hF n)
 
 /-- Exact logarithmic decomposition of the dyadic Fabius value. -/
 theorem log_fabius_inverse_two_pow_eq
@@ -234,6 +274,19 @@ theorem dyadicLogError_bounds
     have hfac := log_factorial_nonneg n
     linarith
 
+/-- Total two-sided coarse bound for the centered dyadic logarithmic error.
+At `n = 0` both sides vanish exactly. -/
+theorem dyadicLogError_bounds_all
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    -3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) ≤ dyadicLogError F n ∧
+      dyadicLogError F n ≤ 3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) := by
+  cases n with
+  | zero =>
+      have hzero : dyadicLogError F 0 = 0 := by
+        simpa [halfMoment_zero] using dyadicLogError_eq F hF 0
+      constructor <;> norm_num [hzero]
+  | succ n => exact dyadicLogError_bounds F hF (n + 1) (by omega)
+
 /-- Coarse log-squared asymptotics along dyadic integer arguments. -/
 theorem abs_dyadicLogError_le
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
@@ -243,6 +296,18 @@ theorem abs_dyadicLogError_le
   rw [← dyadicLogError]
   rw [abs_le]
   have h := dyadicLogError_bounds F hF n hn
+  constructor
+  · nlinarith [h.1]
+  · exact h.2
+
+/-- Total absolute-value form of the coarse dyadic logarithmic estimate. -/
+theorem abs_dyadicLogError_le_all
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    |Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) +
+        Real.log 2 / 2 * (n : ℝ) ^ 2| ≤
+      3 * (n : ℝ) * Real.log ((n + 1 : ℕ) : ℝ) := by
+  rw [← dyadicLogError, abs_le]
+  have h := dyadicLogError_bounds_all F hF n
   constructor
   · nlinarith [h.1]
   · exact h.2
