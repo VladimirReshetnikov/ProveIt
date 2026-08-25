@@ -16,11 +16,12 @@ variable {R : Type*} [CommRing R] [Algebra ℚ R]
 # Exact finite remainders for saddle exponential coefficients
 
 This module turns the formal coefficient identity for `expCoeff` into a
-finite polynomial identity.  Substituting the degree-`L-1` exponent into the
-degree-`L-1` exponential polynomial differs from the recursive coefficient
-polynomial by an exact multiple of `X ^ L`.  The canonical quotient is
-defined by iterating `Polynomial.divX`, so its dependence on parameterized
-coefficients remains algebraic and can be bounded uniformly downstream.
+finite polynomial identity.  When the exponent has zero constant term,
+substituting its degree-`L-1` truncation into the degree-`L-1` exponential
+polynomial differs from the recursive coefficient polynomial by an exact
+multiple of `X ^ L`.  The canonical quotient is defined by iterating
+`Polynomial.divX`, so its dependence on parameterized coefficients remains
+algebraic and can be bounded uniformly downstream.
 -/
 
 /-- The order-`L-1` polynomial truncation of a formal exponent. -/
@@ -38,11 +39,12 @@ coefficients through order `L-1`. -/
 def expCoeffTruncPolynomial (E : ℕ → R) (L : ℕ) : Polynomial R :=
   ∑ k ∈ Finset.range L, Polynomial.monomial k (expCoeff E k)
 
-/-- The finite exponential substitution defect.  Its first `L`
-coefficients vanish. -/
+/-- The finite exponential substitution defect.  Its first `L` coefficients
+vanish when the exponent has zero constant term. -/
 def finiteExpSubstitutionDefect (E : ℕ → R) (L : ℕ) : Polynomial R :=
   finiteExpSubstitutionPolynomial E L - expCoeffTruncPolynomial E L
 
+omit [Algebra ℚ R] in
 /-- The constant coefficient of the truncated exponent is `E 0`, provided
 the truncation order `L` is positive. -/
 lemma constantCoeff_exponentTruncPolynomial
@@ -51,6 +53,7 @@ lemma constantCoeff_exponentTruncPolynomial
   simp [exponentTruncPolynomial, PowerSeries.coeff_trunc, hL,
     coeff_exponentSeries]
 
+omit [Algebra ℚ R] in
 /-- Truncating the exponent does not disturb low-order coefficients of its
 powers: for `k < L` and any exponent `d`, the `k`th power-series coefficient
 of `exponentTruncPolynomial E L ^ d`, read as a power series, equals that of
@@ -148,10 +151,12 @@ theorem X_pow_dvd_finiteExpSubstitutionDefect
   · intro hnot
     exact (hnot hk_mem).elim
 
-/-- Canonical quotient after removing `L` zero coefficients. -/
+/-- Canonical iterated-`divX` quotient; when `E 0 = 0`, this removes the
+defect's first `L` zero coefficients. -/
 def finiteExpSubstitutionQuotient (E : ℕ → R) (L : ℕ) : Polynomial R :=
   (Polynomial.divX^[L]) (finiteExpSubstitutionDefect E L)
 
+omit [Algebra ℚ R] in
 private lemma X_pow_mul_iterate_divX_eq_of_coeff_zero
     (p : Polynomial R) (L : ℕ)
     (hzero : ∀ k < L, p.coeff k = 0) :
@@ -209,6 +214,7 @@ theorem eval_expCoeffTruncPolynomial
   rw [Polynomial.eval_monomial]
   ring
 
+omit [Algebra ℚ R] in
 /-- Evaluation of the truncated exponent polynomial. -/
 theorem eval_exponentTruncPolynomial
     (E : ℕ → R) (L : ℕ) (x : R) :
@@ -237,6 +243,29 @@ theorem eval_finiteExpSubstitutionPolynomial
   apply Finset.sum_congr rfl
   intro q _hq
   rw [Polynomial.eval_monomial, PowerSeries.coeff_exp]
+
+/-- Fully expanded exact finite-remainder identity.  The finite Taylor
+polynomial in the truncated exponent equals the recursively generated
+coefficient sum plus the canonical remainder divisible by `x ^ L`. -/
+theorem finiteExpSubstitution_sum_eq_expCoeff_sum_add_remainder
+    (E : ℕ → R) (hEzero : E 0 = 0) (L : ℕ) (x : R) :
+    (∑ q ∈ Finset.range L,
+        algebraMap ℚ R (1 / q.factorial) *
+          (∑ k ∈ Finset.range L, x ^ k * E k) ^ q) =
+      (∑ k ∈ Finset.range L, x ^ k * expCoeff E k) +
+        x ^ L * (finiteExpSubstitutionQuotient E L).eval x := by
+  calc
+    (∑ q ∈ Finset.range L,
+        algebraMap ℚ R (1 / q.factorial) *
+          (∑ k ∈ Finset.range L, x ^ k * E k) ^ q) =
+        (finiteExpSubstitutionPolynomial E L).eval x :=
+      (eval_finiteExpSubstitutionPolynomial E L x).symm
+    _ = (expCoeffTruncPolynomial E L).eval x +
+          x ^ L * (finiteExpSubstitutionQuotient E L).eval x :=
+      eval_finiteExpSubstitutionPolynomial_eq E hEzero L x
+    _ = (∑ k ∈ Finset.range L, x ^ k * expCoeff E k) +
+          x ^ L * (finiteExpSubstitutionQuotient E L).eval x := by
+      rw [eval_expCoeffTruncPolynomial]
 
 end
 

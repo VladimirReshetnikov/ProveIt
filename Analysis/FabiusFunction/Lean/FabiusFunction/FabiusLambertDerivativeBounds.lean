@@ -54,10 +54,11 @@ exact quadratic term and the standard Gaussian exponent.
   saddle analysis consumes.
 * `norm_negativeLaplaceForwardTailSecond_le_inv_cube` and
   `norm_negativeLaplaceForwardTailThird_le_inv_fourth` -- explicit tail decay
-  `48 / s ^ 3` and `768 / s ^ 4` for `s ≥ 1`, together with the scaled forms
-  `abs_mul_negativeLaplaceForwardTailFirst_le_eight`,
-  `abs_sq_mul_negativeLaplaceForwardTailSecond_le` and
-  `abs_cube_mul_negativeLaplaceForwardTailThird_le`.
+  `48 / s ^ 3` and `768 / s ^ 4` for `s ≥ 1`, together with sharper scaled
+  bounds `abs_mul_negativeLaplaceForwardTailFirst_le_div`,
+  `abs_sq_mul_negativeLaplaceForwardTailSecond_le_div` and
+  `abs_cube_mul_negativeLaplaceForwardTailThird_le_div` of order `1 / s`;
+  the pre-existing constant bounds are retained as convenient corollaries.
 * `negativeLaplacePsiThird` -- the third derivative of `Ψ`, one order past
   where `FabiusFunction.PeriodicRegularity` stops, with the expected
   periodicity, continuity, boundedness and `HasDerivAt` support lemmas, plus
@@ -139,36 +140,34 @@ theorem isBounded_range_negativeLaplacePsiThird :
   negativeLaplacePsiThird_periodic.isBounded_of_continuous one_ne_zero
     continuous_negativeLaplacePsiThird
 
+private theorem exists_nonneg_bound_abs_of_isBounded_range
+    (f : ℝ → ℝ) (hf : Bornology.IsBounded (range f)) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |f t| ≤ C := by
+  rcases (Metric.isBounded_iff_subset_closedBall 0).mp hf with ⟨C, hC⟩
+  have hzero := hC (mem_range_self (0 : ℝ))
+  have hC0 : 0 ≤ C := by
+    have : |f 0| ≤ C := by
+      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
+    exact (abs_nonneg _).trans this
+  refine ⟨C, hC0, fun t => ?_⟩
+  simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
+
 /-- Some nonnegative constant bounds `|Ψ'|` at every real point.  The constant
 is only asserted to exist and is never named.  This is the first-derivative
 analogue of `exists_bound_abs_secondDeriv_negativeLaplacePsi`; all three
 residual bounds in this file consume it. -/
 theorem exists_bound_abs_deriv_negativeLaplacePsi :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |deriv negativeLaplacePsi t| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_deriv_negativeLaplacePsi with ⟨C, hC⟩
-  have hzero := hC (mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have : |deriv negativeLaplacePsi 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans this
-  refine ⟨C, hC0, fun t => ?_⟩
-  simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
+  exact exists_nonneg_bound_abs_of_isBounded_range
+    (deriv negativeLaplacePsi) isBounded_range_deriv_negativeLaplacePsi
 
 /-- Some nonnegative constant bounds `|Ψ'''|` at every real point, extracted
 from boundedness of its range.  Used in this file by
 `exists_bound_abs_negativeLaplaceRpowThirdResidual`. -/
 theorem exists_bound_abs_negativeLaplacePsiThird :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |negativeLaplacePsiThird t| ≤ C := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_negativeLaplacePsiThird with ⟨C, hC⟩
-  have hzero := hC (mem_range_self (0 : ℝ))
-  have hC0 : 0 ≤ C := by
-    have : |negativeLaplacePsiThird 0| ≤ C := by
-      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
-    exact (abs_nonneg _).trans this
-  refine ⟨C, hC0, fun t => ?_⟩
-  simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
+  exact exists_nonneg_bound_abs_of_isBounded_range negativeLaplacePsiThird
+    isBounded_range_negativeLaplacePsiThird
 
 private lemma local_pow_mul_exp_neg_le_factorial
     (k : ℕ) {x : ℝ} (hx : 0 ≤ x) :
@@ -303,7 +302,7 @@ private lemma norm_negativeLaplaceForwardTermThird_le_invFourth_geometric
               (1 - Real.exp (-y)) ^ 3 =
             a ^ 3 * (Real.exp (-y) / (1 - Real.exp (-y)) ^ 3) *
               (1 + Real.exp (-y)) := by ring
-        _ ≤ a ^ 3 * (8 * Real.exp (-y)) * 2 := by gcongr <;> linarith
+        _ ≤ a ^ 3 * (8 * Real.exp (-y)) * 2 := by gcongr; linarith
         _ = a ^ 3 * (16 * Real.exp (-y)) := by ring
     _ ≤ (384 / s ^ 4) * (1 / 2 : ℝ) ^ n := by
       have hgeom : (1 / 2 : ℝ) ^ n = 1 / a := by
@@ -340,6 +339,12 @@ theorem norm_negativeLaplaceForwardTailThird_le_inv_fourth
         tsum_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)]
       ring
 
+private lemma hasDerivAt_logb_two {s : ℝ} (hs : s ≠ 0) :
+    HasDerivAt (fun x : ℝ => Real.logb 2 x)
+      ((1 / s) / Real.log 2) s := by
+  unfold Real.logb
+  simpa [one_div] using (Real.hasDerivAt_log hs).div_const (Real.log 2)
+
 /-- Exact all-real second derivative of the quadratic-plus-periodic Laplace decomposition. -/
 theorem negativeLaplaceLogSecond_eq_periodic
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
@@ -354,9 +359,7 @@ theorem negativeLaplaceLogSecond_eq_periodic
       deriv negativeLaplacePsi (Real.logb 2 x) / Real.log 2
   have hlog := Real.hasDerivAt_log hs.ne'
   have hlogb : HasDerivAt (fun x : ℝ => Real.logb 2 x)
-      ((1 / s) / Real.log 2) s := by
-    unfold Real.logb
-    simpa [one_div] using hlog.div_const (Real.log 2)
+      ((1 / s) / Real.log 2) s := hasDerivAt_logb_two hs.ne'
   have hpsi := (negativeLaplacePsi_deriv_hasDerivAt
     (Real.logb 2 s)).comp s hlogb
   have hAraw := (hlog.neg.div_const (Real.log 2)).add_const (1 / 2) |>.add
@@ -407,9 +410,7 @@ theorem negativeLaplaceLogThird_eq_periodic
       deriv (deriv negativeLaplacePsi) (Real.logb 2 x) / (Real.log 2) ^ 2
   have hlog := Real.hasDerivAt_log hs.ne'
   have hlogb : HasDerivAt (fun x : ℝ => Real.logb 2 x)
-      ((1 / s) / Real.log 2) s := by
-    unfold Real.logb
-    simpa [one_div] using hlog.div_const (Real.log 2)
+      ((1 / s) / Real.log 2) s := hasDerivAt_logb_two hs.ne'
   have hpsi1 := (negativeLaplacePsi_deriv_hasDerivAt
     (Real.logb 2 s)).comp s hlogb
   have hpsi2 := (negativeLaplacePsi_secondDeriv_hasDerivAt
@@ -522,11 +523,11 @@ theorem negativeLaplaceRpowThirdResidual_eq
   field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne', hr.ne']
   ring
 
-/-- Scaled first-tail bound: `|s * negativeLaplaceForwardTailFirst s| ≤ 8`
-whenever `s ≥ 1`. -/
-lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
+/-- Sharper scaled first-tail bound:
+`|s * negativeLaplaceForwardTailFirst s| ≤ 8 / s` whenever `s ≥ 1`. -/
+lemma abs_mul_negativeLaplaceForwardTailFirst_le_div
     {s : ℝ} (hs : 1 ≤ s) :
-    |s * negativeLaplaceForwardTailFirst s| ≤ 8 := by
+    |s * negativeLaplaceForwardTailFirst s| ≤ 8 / s := by
   have hs0 : 0 < s := zero_lt_one.trans_le hs
   have h := norm_negativeLaplaceForwardTailFirst_le_inv_sq hs
   rw [Real.norm_eq_abs] at h
@@ -534,15 +535,25 @@ lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
   calc
     s * |negativeLaplaceForwardTailFirst s| ≤ s * (8 / s ^ 2) := by gcongr
     _ = 8 / s := by field_simp
+
+/-- Scaled first-tail bound: `|s * negativeLaplaceForwardTailFirst s| ≤ 8`
+whenever `s ≥ 1`. -/
+lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
+    {s : ℝ} (hs : 1 ≤ s) :
+    |s * negativeLaplaceForwardTailFirst s| ≤ 8 := by
+  have hs0 : 0 < s := zero_lt_one.trans_le hs
+  calc
+    |s * negativeLaplaceForwardTailFirst s| ≤ 8 / s :=
+      abs_mul_negativeLaplaceForwardTailFirst_le_div hs
     _ ≤ 8 := by
       rw [div_le_iff₀ hs0]
       nlinarith
 
-/-- Scaled second-tail bound:
-`|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48` whenever `s ≥ 1`. -/
-lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
+/-- Sharper scaled second-tail bound:
+`|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s` whenever `s ≥ 1`. -/
+lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le_div
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 := by
+    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s := by
   have hs0 : 0 < s := zero_lt_one.trans_le hs
   have h := norm_negativeLaplaceForwardTailSecond_le_inv_cube hs
   rw [Real.norm_eq_abs] at h
@@ -551,15 +562,25 @@ lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
     s ^ 2 * |negativeLaplaceForwardTailSecond s| ≤ s ^ 2 * (48 / s ^ 3) := by
       gcongr
     _ = 48 / s := by field_simp
+
+/-- Scaled second-tail bound:
+`|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48` whenever `s ≥ 1`. -/
+lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
+    {s : ℝ} (hs : 1 ≤ s) :
+    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 := by
+  have hs0 : 0 < s := zero_lt_one.trans_le hs
+  calc
+    |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 / s :=
+      abs_sq_mul_negativeLaplaceForwardTailSecond_le_div hs
     _ ≤ 48 := by
       rw [div_le_iff₀ hs0]
       nlinarith
 
-/-- Scaled third-tail bound:
-`|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768` whenever `s ≥ 1`. -/
-lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
+/-- Sharper scaled third-tail bound:
+`|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s` whenever `s ≥ 1`. -/
+lemma abs_cube_mul_negativeLaplaceForwardTailThird_le_div
     {s : ℝ} (hs : 1 ≤ s) :
-    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 := by
+    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s := by
   have hs0 : 0 < s := zero_lt_one.trans_le hs
   have h := norm_negativeLaplaceForwardTailThird_le_inv_fourth hs
   rw [Real.norm_eq_abs] at h
@@ -568,6 +589,16 @@ lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
     s ^ 3 * |negativeLaplaceForwardTailThird s| ≤ s ^ 3 * (768 / s ^ 4) := by
       gcongr
     _ = 768 / s := by field_simp
+
+/-- Scaled third-tail bound:
+`|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768` whenever `s ≥ 1`. -/
+lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
+    {s : ℝ} (hs : 1 ≤ s) :
+    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 := by
+  have hs0 : 0 < s := zero_lt_one.trans_le hs
+  calc
+    |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 / s :=
+      abs_cube_mul_negativeLaplaceForwardTailThird_le_div hs
     _ ≤ 768 := by
       rw [div_le_iff₀ hs0]
       nlinarith
@@ -788,4 +819,3 @@ theorem exists_bound_abs_negativeLaplaceRpowThirdResidual
         768 := by ring
 
 end Fabius
-
