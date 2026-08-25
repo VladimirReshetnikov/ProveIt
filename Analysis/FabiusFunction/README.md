@@ -24,12 +24,13 @@ for every coefficient of the all-orders expansion, in
 ([PDF](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
 
 Non-elementarity is treated in
-[*The Fabius Function is Not an Elementary Function*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
+[*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
 ([PDF](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.pdf)):
 the class of elementary functions of one real variable is formalized, every
 member of it is proved real analytic on a dense open subset of the line, and
 this is combined with nowhere analyticity to show that no elementary function
-agrees with the Fabius function on any nonempty open subset of `[0,1]`.  The
+agrees with the Fabius function on any subset of `[0,1]` with nonempty
+interior.  The
 same conclusion is proved for a class the inductive definition does not
 reach — any continuous branch of a polynomial equation whose coefficients are
 elementary and whose leading coefficient vanishes nowhere — which covers the
@@ -121,7 +122,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
+| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `hasDerivAt_fabiusInv`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
@@ -593,7 +594,11 @@ Among them:
    the asserted normalization `φ_n(0) = 1` and the pointwise limit.
 3. Equation (25) omits `t` from its exponential, equation (26) needs `n > 0`,
    and equation (32) has inconsistent scaling.  The Poisson-summation module
-   proves the corrected identities.
+   proves the corrected identities.  Its
+   `rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+   `rvachev_poisson_support_specialization_of_one_half_le` declarations also
+   show that the paper's upper bound `a ≤ 1` is unnecessary: both formulas
+   hold on the sharp support-controlled ray `a ≥ 1/2`.
 4. In the arithmetic paper, Lemma 1 is false for a negative scale and an
    arbitrary derivative order.  Its proof requires
    `0 ≤ scale + order`; the Lean statement includes that hypothesis.

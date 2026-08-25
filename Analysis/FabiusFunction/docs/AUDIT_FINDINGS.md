@@ -374,46 +374,44 @@ the normalized value at `1` is one.
 
 ### Cluster: fourier-legendre
 
-#### The hypothesis a ≤ 1 is unused in both Poisson support-specialization theorems
+#### IMPLEMENTED: the Poisson support specialization needs no upper bound on the lattice spacing
 
-Confidence high.  `PoissonSummation.lean:451`, `PoissonSummation.lean:465`
+Confidence high.  `PoissonSummation.lean`
 
-**Why.** The upper bound `a ≤ 1` is transcribed from the paper but plays no role: the author already wrote it as `_ha1`, i.e. Lean's own convention for a binder that is never used. The scaled theorem passes `ha1` down solely to feed that dead binder, so it too is superfluous. Every ingredient — `rvachev_poisson_at_zero` (needs `0 < a`, derived from `ha0`) and `rvachev_lattice_sum_of_one_half_le` (PoissonSummation.lean:~415, needs only `1/2 ≤ a`) — is already stated for all `a ≥ 1/2`. The stronger form ...
+**Why.** The paper's hypothesis `a ≤ 1` is dead weight.  Support reduces the
+lattice sum to the three possible indices `-1`, `0`, and `1` as soon as
+`a ≥ 1/2`; Poisson summation itself needs only positivity, which follows from
+the same lower bound.  The ray `a ≥ 1/2` is sharp for the three-term formula:
+below it the points `±2a` enter the open support.
 
-**Proposal.** Title should read: "The hypothesis `a <= 1` is dead weight in both Poisson support-specialization theorems" — in `rvachev_poisson_support_specialization_unscaled` the binder is literally unused (`_ha1`), while in `rvachev_poisson_support_specialization` `ha1` is used only at line 471 to feed that dead binder, so it is vacuous rather than unused. Also correct the citation for `rvachev_lattice_sum_of_one_half_le` from "~415" to PoissonSummation.lean:424 (415 is `rvachev_poisson_at_zero`).
-
-The code proposal itself is correct as written and matches the project's own rule at docs/COLLABORATION.md:192-193. Add, in PoissonSummation.lean immediately before the existing declarations:
-
-/-- Equation (32) holds for every lattice spacing `a >= 1/2`, not only for `a <= 1`. -/
-theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
-    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ} (ha0 : 1 / 2 ≤ a) :
-    (1 : ℂ) + 2 * rvachevUp F a =
-      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) * rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ))
-
-theorem rvachev_poisson_support_specialization_of_one_half_le
-    (F : ...
-
-**Verifier.** The finding survives adversarial checking. Signatures at PoissonSummation.lean:451-457 and 465-470 are quoted verbatim, `_ha1` included. Every ingredient is already stated without an upper bound on `a`: `rvachev_poisson_summation` (line 86) and `rvachev_poisson_at_zero` (line 415) require only `0 < u` / `0 < a`, and ...
+**Implementation.**
+`rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+`rvachev_poisson_support_specialization_of_one_half_le` state the unscaled and
+correctly rescaled identities on the full ray.  The original declarations and
+their exact named binders remain as compatibility wrappers for the paper's
+interval.  A common private scaling lemma now records only the nonzero
+hypothesis actually required to cancel the inverse factor.
 
 ### Cluster: lambert-asymptotics
 
-#### `smallArgumentLog_inv_eq` needs no hypothesis at all; the resulting Big-O comparison holds on every filter, killing a duplicated proof block
+#### IMPLEMENTED: the reciprocal logarithmic identity needs no hypothesis, and its Big-O comparison holds on every filter
 
-Confidence high.  `FabiusLambertRates.lean:43`, `FabiusLambertRates.lean:67`, `FabiusWikipediaExpansion.lean:267`, `FabiusLambertAllOrderSmallArgument.lean:108`, `FabiusSmallArgumentScale.lean:19`
+Confidence high.  `FabiusLambertRates.lean`,
+`FabiusWikipediaExpansion.lean`,
+`FabiusLambertAllOrderSmallArgument.lean`
 
-**Why.** `fabiusSmallArgumentLog x = -Real.logb 2 x` and `Real.logb b x = Real.log x / Real.log b` by definition, so both sides are `((-Real.log x) * (Real.log 2)⁻¹)⁻¹` versus `Real.log 2 * (-Real.log x)⁻¹`. In ℝ inversion is total (`0⁻¹ = 0`), so `mul_inv_rev` + `inv_inv` prove the identity for every real `x` — including `x = 0`, `x = 1`, and `x < 0`. The `0 < x` hypothesis and the `by_cases h : x = 1` branch are pure artifacts of proving it with `field_simp`. Because the identity is filter-free, the ...
+**Why.** Since real inversion is total, the reciprocal-coordinate identity is
+algebraic even at `x = 0`, `x = 1`, and negative arguments.  The former
+positivity hypothesis and exceptional `x = 1` branch were artifacts of a
+`field_simp` proof.
 
-**Proposal.** The finding stands as stated; two cosmetic corrections to the proposal text.
-
-(a) The suggested compatibility wrapper `fun hx => smallArgumentLog_inv_eq' _` does not typecheck, since `hx` is already bound by the theorem signature, and an unused `hx` binder trips the `unusedVariables` linter. If a wrapper is kept it must read:
-
-theorem smallArgumentLog_inv_eq {x : ℝ} (_hx : 0 < x) :
-    (fabiusSmallArgumentLog x)⁻¹ = Real.log 2 * (-Real.log x)⁻¹ :=
-  smallArgumentLog_inv_eq' x
-
-(b) The wrapper is not actually needed. `smallArgumentLog_inv_eq` has exactly three references in the whole corpus — FabiusLambertRates.lean:71, FabiusWikipediaExpansion.lean:271, FabiusLambertAllOrderSmallArgument.lean:108 — all passing `hx` positionally, and no doc file under Analysis/FabiusFunction mentions the name. So the cleaner edit is to weaken `smallArgumentLog_inv_eq` in place to `(x : ℝ)` with the six-rewrite proof, add `smallArgumentLog_inv_isBigO` beside it (or in FabiusSmallArgumentScale.lean as proposed), replace the two `htarget` blocks with `smallArgumentLog_inv_isBigO _`, and change line ...
-
-**Verifier.** Confirmed on every axis. (1) Signature at FabiusLambertRates.lean:43-52 matches the quote verbatim. (2) The weakened statement is TRUE at every boundary: with Real.log 0 = 0, Real.log 1 = 0, and 0⁻¹ = 0 in ℝ, both sides are 0 at x = 0, x = 1, and x = -1; for x < 0 with log|x| ≠ 0 (e.g. x = -2) both sides equal -1; for log x ≠ 0 both sides equal ...
+**Implementation.** `smallArgumentLog_inv_eq_all` is unconditional, while the
+old positive-argument `smallArgumentLog_inv_eq` signature remains as a
+compatibility wrapper.  The public `smallArgumentLog_inv_isBigO` packages the
+comparison on an arbitrary filter.  Both local small-argument Big-O proofs
+delegate to this theorem, and the all-order power comparison is simply
+`(smallArgumentLog_inv_isBigO _).pow N`.  This removes the duplicated
+filter-local estimates while strengthening the reusable API.
 
 #### `rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc` only needs `0 ≤ t`, and belongs next to `IsFabius.symmetry_all`, which already does the work
 
