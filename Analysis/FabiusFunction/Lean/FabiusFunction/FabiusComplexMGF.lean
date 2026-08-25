@@ -1,4 +1,4 @@
-import FabiusFunction.EndpointLaplaceComparison
+import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.NegativeLaplaceVerticalLog
 import Mathlib.Probability.Moments.ComplexMGF
 
