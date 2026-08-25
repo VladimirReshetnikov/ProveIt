@@ -607,11 +607,6 @@ private theorem fabiusUniformSpline_eq_positiveSpline
   field_simp
   rw [pow_two, hsquare, one_mul]
 
-private lemma choose_succ_two_uniformSpline (p : ℕ) :
-    (p + 1).choose 2 = p.choose 2 + p := by
-  rw [show p + 1 = Nat.succ p by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 private theorem fabiusUniformPositiveSpline_smoothing
     (p : ℕ) (hp : 0 < p) (x : ℝ) :
     fabiusUniformPositiveSpline (p + 1) x =
@@ -690,7 +685,7 @@ private theorem fabiusUniformPositiveSpline_smoothing
     ring
   rw [hfactor, hsum]
   dsimp only [P]
-  rw [choose_succ_two_uniformSpline, pow_add, Nat.factorial_succ]
+  rw [choose_succ_two, pow_add, Nat.factorial_succ]
   push_cast
   field_simp
 

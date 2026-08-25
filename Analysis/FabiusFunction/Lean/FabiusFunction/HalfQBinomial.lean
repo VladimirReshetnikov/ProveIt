@@ -180,11 +180,6 @@ private theorem half_factor_eq (m : ℕ) :
   simp only [one_pow]
   field_simp
 
-private theorem choose_succ_two' (n : ℕ) :
-    (n + 1).choose 2 = n.choose 2 + n := by
-  rw [show n + 1 = Nat.succ n by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 /-- The exact denominator normalization of `(1/2;1/2)_n`. -/
 theorem halfQPochhammer_eq_mersenne_div (n : ℕ) :
     halfQPochhammer n =
@@ -193,7 +188,7 @@ theorem halfQPochhammer_eq_mersenne_div (n : ℕ) :
   | zero => simp
   | succ n ih =>
       have hchoose : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
-        simpa only [Nat.succ_eq_add_one] using choose_succ_two' (n + 1)
+        simpa only [Nat.succ_eq_add_one] using choose_succ_two (n + 1)
       rw [halfQPochhammer_succ, halfMersenneProduct_succ, ih,
         half_factor_eq, hchoose, pow_add]
       ring
@@ -204,8 +199,8 @@ private theorem square_eq_choose_sum (n : ℕ) :
   | zero => simp
   | succ n ih =>
       have htop : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
-        simpa only [Nat.succ_eq_add_one] using choose_succ_two' (n + 1)
-      have hbottom : (n + 1).choose 2 = n.choose 2 + n := choose_succ_two' n
+        simpa only [Nat.succ_eq_add_one] using choose_succ_two (n + 1)
+      have hbottom : (n + 1).choose 2 = n.choose 2 + n := choose_succ_two n
       rw [htop, hbottom]
       nlinarith
 
@@ -474,7 +469,7 @@ private theorem halfQBinomialSummand_succ_succ
         z * (1 / 2 : ℚ) ^ n * halfQBinomialSummand n z k := by
   rw [halfQBinomialSummand, halfQBinomialSummand,
     halfQBinomialSummand, halfQBinomial_succ_succ']
-  rw [choose_succ_two', pow_add, pow_succ, pow_succ]
+  rw [choose_succ_two, pow_add, pow_succ, pow_succ]
   have hsum : k + (n - k) = n := Nat.add_sub_of_le hk
   have hknpow : (1 / 2 : ℚ) ^ k * (1 / 2 : ℚ) ^ (n - k) =
       (1 / 2 : ℚ) ^ n := by

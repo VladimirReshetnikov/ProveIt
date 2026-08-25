@@ -142,14 +142,6 @@ theorem qBinomialThueMorseTranslatedNumeratorIn_eq_wolfram_sum
   congr 1
   ring
 
-private theorem two_mul_choose_two_add (n : ℕ) :
-    2 * n.choose 2 + n = n ^ 2 := by
-  cases n with
-  | zero => simp
-  | succ n =>
-      rw [two_mul_choose_succ_two]
-      ring
-
 /-- The rational q-binomial numerator has the Taylor-coefficient normalization. -/
 theorem qBinomialThueMorseTranslatedNumerator_div_eq_halfMoment
     (q : ℚ) (n : ℕ) :
