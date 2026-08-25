@@ -9,11 +9,11 @@ supplement it but do not replace it.
 ```text
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
-branch/base: codex/fabius-theorem-refinements at da7d0c3a3 before merging
-  pinned origin/main 436e421f133ce637063fe460d7c92459a8016bed
+branch/base: codex/fabius-theorem-refinements at a877f9c82 before merging
+  pinned origin/main 3de52ca1c3402b57db2601fbf8e664df615b39a7
 git owner: root in this worktree
 build owner: not held; another worktree currently owns the host-wide Lean lane
-source lease: 2026-08-25 09:29 -07:00 through 09:59 -07:00
+source lease: 2026-08-25 09:37 -07:00 through 10:07 -07:00
 next synchronization checkpoint: after this pinned-main merge is committed and
   pushed, then before theorem edits if a fetched branch overlaps the translated
   polynomial declaration family
@@ -27,9 +27,10 @@ next synchronization checkpoint: after this pinned-main merge is committed and
   `thueMorseTranslatedPowerSumPolynomial`.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
 
-The integration lease on `README.md`, `docs/COLLABORATION.md`,
-`docs/PAPER_COVERAGE.md`, and their paired mathematical documents ends when the
-pinned-main merge is reviewed, committed, and pushed.
+The integration lease on `Lean/FabiusFunction/ElementaryFunction.lean`,
+`docs/Non_Elementarity_of_the_Fabius_Function/`, the Claude workstream
+registry, and this registry ends when the pinned-main merge is reviewed,
+committed, and pushed.
 
 ## Read-only survey
 
@@ -38,6 +39,9 @@ pinned-main merge is reviewed, committed, and pushed.
   sharp-moment and real-scalar APIs;
 - `ProbabilityLaplaceMoments.lean`, `FabiusComplexMGF.lean`, and their callers
   to avoid reintroducing transform bridges already integrated upstream; and
+- `AlgebraicBranch.lean` and `NotElementary.lean`, whose completed localized
+  algebraic-branch obstruction is integrated at pinned main `3de52ca1c`, to
+  avoid duplicating that theorem family; and
 - current branch registry files and advertised remote tips before expanding
   either write set.
 
@@ -58,6 +62,9 @@ pinned-main merge is reviewed, committed, and pushed.
 - `a049141fb` on mainline supplies the unified rational affine and translated
   power-sum API; the distinct formal-polynomial coefficient/zero/degree batch
   remains open and should build on those names.
+- `3de52ca1c` on mainline completes and registers the localized
+  algebraic-branch obstruction, including the direct nowhere-analytic
+  corollaries, so that formerly advertised work is no longer an open lane.
 
 Each commit message records its exact textual validation and any deferred Lean
 targets.  Focused compilation of the formerly branch-only Lean slices remains

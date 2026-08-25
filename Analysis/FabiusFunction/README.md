@@ -29,7 +29,11 @@ Non-elementarity is treated in
 the class of elementary functions of one real variable is formalized, every
 member of it is proved real analytic on a dense open subset of the line, and
 this is combined with nowhere analyticity to show that no elementary function
-agrees with the Fabius function on any nonempty open subset of `[0,1]`.
+agrees with the Fabius function on any nonempty open subset of `[0,1]`.  The
+same conclusion is proved for a class the inductive definition does not
+reach — any continuous branch of a polynomial equation whose coefficients are
+elementary and whose leading coefficient vanishes nowhere — which covers the
+algebraic functions that are not expressible by radicals.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -115,7 +119,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.NotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary` |
+| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.NotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments

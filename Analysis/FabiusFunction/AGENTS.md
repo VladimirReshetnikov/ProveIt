@@ -117,6 +117,22 @@ a real error.
 The module target needs a `+` prefix. `lake build FabiusFunction.Basic` fails
 with `unknown target`; `lake build +FabiusFunction.Basic` is the working form.
 
+**If you drive the serialization from a script, give the script a PID lock.**
+Stopping the harness task that launched a background script kills the wrapper
+but not the script, so relaunching leaves two serialized loops racing — which
+is exactly the double-`lean` situation the serialization exists to prevent,
+reintroduced by the tool meant to stop it. The symptom is an interleaved build
+log: one module logged `OK` twice with different timings, two consecutive
+`BUILD` lines for a single module, a count of completed modules that goes
+*down* between polls, and free memory pinned near half a gigabyte.  Inspect
+candidate processes with `Get-CimInstance Win32_Process` so that command lines
+and parent PIDs identify the exact driver and descendants.  Before relaunching,
+terminate by PID only a stale process tree attributable to the current
+worktree, after confirming that it is not the valid host-wide build owner's
+tree.  Never kill every process named `lean`, `lake`, or `sh`; follow the
+current-worktree-only recovery rule in `docs/COLLABORATION.md`, and do not trust
+the harness task's reported status alone.
+
 A worktree without its own `.lake` would rebuild Mathlib from scratch. Give it
 one whose `packages` is a directory junction to the shared
 `C:\ProveIt\.lake\packages`, so the built Mathlib is reused while the Fabius

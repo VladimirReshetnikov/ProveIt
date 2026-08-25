@@ -37,9 +37,12 @@ the hyperbolic functions, `Real.arccos` and `Real.arsinh` are all derived.
 Every generator here is a *total* function `ℝ → ℝ`: `Mathlib` gives `x⁻¹`,
 `Real.log`, `Real.rpow` and `Real.arcsin` junk values outside their classical
 domains.  This makes the class *larger*, and hence the non-elementarity
-theorem *stronger*: a classical elementary expression that happens to be well
-formed on an open set agrees there with the total function built by the same
-derivation, because the junk values are never consulted.
+theorem *stronger*: a classical elementary expression that is well formed on
+an open set, and that takes no real power of a nonpositive base, agrees there
+with the total function built by the same derivation, because the junk values
+are never consulted.  The excluded case is real, not pedantry: at a negative
+base `Real.rpow` differs from the classical root *inside* its classical
+domain, and `IsElementary.signedRpow` is the derivation to use instead.
 
 ## The theorem
 
@@ -69,16 +72,25 @@ each such `t`.
 
 ## What is not claimed
 
-For positive `n`, `IsElementary.rpow` gives the principal `n`-th root on
-nonnegative inputs.  Bare `Real.rpow` is not the signed odd root on a negative
-base.  For positive odd `n`, the classical signed root on all of `ℝ` is instead
-represented by `(x * |x|⁻¹) * |x| ^ (1 / n)`:
+Wikipedia's definition speaks of "roots"; this class represents the relevant
+real root functions by two different derivations.  For positive `n`, applying
+`IsElementary.rpow` with exponent `(n : ℝ)⁻¹` gives the principal `n`-th root
+on nonnegative inputs.  At a negative base `Mathlib`'s `Real.rpow` is
+`|x| ^ r * cos (π r)`, so `(-8 : ℝ) ^ (1 / 3 : ℝ) = 1` rather than `-2`.
+For positive odd `n`, the classical signed root on all of `ℝ` is instead
+represented by `(x / |x|) * |x| ^ (n : ℝ)⁻¹`:
 `IsElementary.signedRpow` proves that this expression is elementary, and
-`signedRoot_pow` verifies that its `n`-th power is `x`.  The formula also gives
-zero at `x = 0` because its sign factor is zero there.  The class is not closed
-under passage to an arbitrary algebraic function: `IsElementary` has no
-constructor for a continuous branch of `P (x, y) = 0` with elementary
-coefficients.
+`Fabius.signedRoot_pow` verifies that its `n`-th power is `x`.  The formula is
+also correct at `x = 0`, where the totalized sign factor vanishes.
+
+The class is not closed under passage to an arbitrary algebraic function:
+`IsElementary` has no constructor for a continuous branch of `P (x, y) = 0`
+with elementary coefficients.  Adding one would cost `IsElementary.comp`,
+since composing a branch with an elementary function needs the *inner*
+function to be continuous and elementary functions need not be.
+`FabiusFunction.AlgebraicBranch` therefore proves the analytic statement for
+such branches separately, and `Fabius.not_algebraicBranch_eqOn` draws the
+non-elementarity conclusion from it without enlarging this class.
 -/
 
 set_option autoImplicit false
@@ -313,16 +325,23 @@ theorem arccos {f : ℝ → ℝ} (hf : IsElementary f) :
   rw [h]
   exact (IsElementary.const (Real.pi / 2)).sub hf.arcsin
 
-/-- Variable exponents, at a positive base.  Where `f` is positive,
-`f ^ g` is the elementary function `exp (log f * g)`; in particular
-`fun x => x ^ x` is elementary on any set where the base is positive.
+/-- Variable exponents, at a base that is positive **at every real**: then
+`f ^ g` is the elementary function `exp (log f * g)`.  So this covers
+`fun x => (1 + x ^ 2) ^ Real.sin x` and, more generally, any
+everywhere-positive elementary base — no uniform lower bound is needed — but
+*not* `fun x => x ^ x` as a total function.  Its base is positive only on
+`(0, ∞)`; for that, see `Fabius.eqOn_rpow_of_pos`, which is a statement about a
+region rather than about membership in the class.
 
 The unrestricted two-variable power is not a constructor of `IsElementary`.
-The simple positive-base formula below does not cover negative bases, where
-`Mathlib`'s `Real.rpow` is sign-dependent
-(`x ^ y = |x| ^ y * cos (π y)`), and its zero-base convention is exceptional.
-On an interval on which `f` has fixed nonzero sign, however, `f ^ g` does agree
-with a member of the class, so nothing is lost for the purposes of
+The positive-base formula below does not cover negative bases, where
+`Mathlib`'s `Real.rpow` is sign-dependent (`x ^ y = |x| ^ y * cos (π y)`), and
+its zero-base convention is exceptional.  On a region where `f` has fixed
+nonzero sign, however, `f ^ g` does agree with a member of the class — the
+witness being `exp (log f * g)` for a positive base, formalized as
+`Fabius.eqOn_rpow_of_pos`, and `exp (log |f| * g) * cos (π * g)` for a
+negative one, which is elementary by the same constructors but is not spelled
+out here.  So nothing is lost for the purposes of
 `Fabius.not_isElementary_eqOn`. -/
 theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
     (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
@@ -368,6 +387,18 @@ theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
     have hdiv : t / |t| = 1 := by rw [habs, div_self (ne_of_gt ht)]
     rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
       ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
+
+/-- On a region where the base is positive, a variable-exponent power agrees
+with an elementary function.
+
+`IsElementary` is a predicate on *total* functions, so `fun x => f x ^ g x`
+cannot be a member outright — `Mathlib`'s `Real.rpow` is sign-dependent at a
+negative base.  What the non-elementarity theorem needs is only agreement on a
+region, and that is what this supplies: the right-hand side is elementary
+whenever `f` and `g` are, by `IsElementary.log`, `.mul` and `.exp`. -/
+theorem eqOn_rpow_of_pos {f g : ℝ → ℝ} {U : Set ℝ} (hpos : ∀ x ∈ U, 0 < f x) :
+    Set.EqOn (fun x => f x ^ g x) (fun x => Real.exp (Real.log (f x) * g x)) U :=
+  fun x hx => Real.rpow_def_of_pos (hpos x hx) _
 
 /-! ## Named elementary functions
 
