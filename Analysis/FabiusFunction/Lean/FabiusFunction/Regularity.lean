@@ -15,8 +15,9 @@ Two consequences are stated separately because they are used as quantitative
 input elsewhere: the linear majorant `F(x) ≤ 2x` at the left endpoint (with
 its reflection at the right endpoint) and the linear majorant
 `up(x) ≤ 2(1 - |x|)` at the two ends of the support of Rvachev's function.
-The first strengthens an auxiliary estimate that previously required
-`x ≤ 1/2`.
+The first removes the hypothesis `x ≤ 1/2` carried by an auxiliary estimate
+used elsewhere in the development; the content is on `[0, 1/2]`, since for
+`x ≥ 1/2` the bound is just `F(x) ≤ 1 ≤ 2x`.
 -/
 
 set_option autoImplicit false
@@ -105,7 +106,8 @@ theorem isLeast_lipschitzWith_rvachevUp (F : BoundedFabius) (hF : IsFabius F) :
 /-! ## Linear majorants at the endpoints -/
 
 /-- The bounded Fabius function is dominated by `2x` on the whole half line
-`[0, ∞)`, not only on `[0, 1/2]`. -/
+`[0, ∞)`.  On `[1/2, ∞)` this is the trivial bound `F ≤ 1 ≤ 2x`; the content
+is on `[0, 1/2]`. -/
 theorem fabiusReal_le_two_mul (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : 0 ≤ x) : fabiusReal F x ≤ 2 * x := by
   have h := abs_fabiusReal_sub_le F hF x 0

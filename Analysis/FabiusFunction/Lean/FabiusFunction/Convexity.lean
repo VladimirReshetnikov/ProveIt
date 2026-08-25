@@ -60,10 +60,10 @@ theorem antitoneOn_rvachevUp_Ici (F : BoundedFabius) (hF : IsFabius F) :
 /-- The derivative of the bounded Fabius function is monotone to the left of
 the midpoint. -/
 theorem monotoneOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
-    MonotoneOn (deriv (fabiusReal F)) (Iio (1 / 2 : ℝ)) := by
+    MonotoneOn (deriv (fabiusReal F)) (Iic (1 / 2 : ℝ)) := by
   intro x hx y hy hxy
-  have hx' : x < 1 / 2 := hx
-  have hy' : y < 1 / 2 := hy
+  have hx' : x ≤ 1 / 2 := hx
+  have hy' : y ≤ 1 / 2 := hy
   rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
   have h := monotoneOn_rvachevUp_Iic F hF
     (show 2 * x - 1 ∈ Iic (0 : ℝ) from by
@@ -78,10 +78,10 @@ theorem monotoneOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
 /-- The derivative of the bounded Fabius function is antitone to the right of
 the midpoint. -/
 theorem antitoneOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
-    AntitoneOn (deriv (fabiusReal F)) (Ioi (1 / 2 : ℝ)) := by
+    AntitoneOn (deriv (fabiusReal F)) (Ici (1 / 2 : ℝ)) := by
   intro x hx y hy hxy
-  have hx' : 1 / 2 < x := hx
-  have hy' : 1 / 2 < y := hy
+  have hx' : 1 / 2 ≤ x := hx
+  have hy' : 1 / 2 ≤ y := hy
   rw [(fabius_hasDerivAt F hF x).deriv, (fabius_hasDerivAt F hF y).deriv]
   have h := antitoneOn_rvachevUp_Ici F hF
     (show 2 * x - 1 ∈ Ici (0 : ℝ) from by
@@ -123,7 +123,7 @@ theorem convexOn_fabiusReal_Iic_half (F : BoundedFabius) (hF : IsFabius F) :
   have hmono : MonotoneOn (deriv (fabiusReal F))
       (interior (Iic (1 / 2 : ℝ))) := by
     rw [interior_Iic]
-    exact monotoneOn_deriv_fabiusReal F hF
+    exact (monotoneOn_deriv_fabiusReal F hF).mono Iio_subset_Iic_self
   exact hmono.convexOn_of_deriv (convex_Iic _)
     hF.contDiff.continuous.continuousOn
     (fabius_differentiable F hF).differentiableOn
@@ -134,13 +134,18 @@ theorem concaveOn_fabiusReal_Ici_half (F : BoundedFabius) (hF : IsFabius F) :
   have hanti : AntitoneOn (deriv (fabiusReal F))
       (interior (Ici (1 / 2 : ℝ))) := by
     rw [interior_Ici]
-    exact antitoneOn_deriv_fabiusReal F hF
+    exact (antitoneOn_deriv_fabiusReal F hF).mono Ioi_subset_Ici_self
   exact hanti.concaveOn_of_deriv (convex_Ici _)
     hF.contDiff.continuous.continuousOn
     (fabius_differentiable F hF).differentiableOn
 
-/-- The bounded Fabius function is strictly convex on `[0, 1/2]`. -/
-theorem strictConvexOn_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+/--
+The bounded Fabius function is strictly convex on `[0, 1/2]`.
+
+The interval cannot be enlarged to `(-∞, 1/2]`: the function is constant to
+the left of the origin, so strict convexity fails there.
+-/
+theorem strictConvexOn_fabiusReal_firstHalf (F : BoundedFabius) (hF : IsFabius F) :
     StrictConvexOn ℝ (Icc (0 : ℝ) (1 / 2)) (fabiusReal F) := by
   have hmono : StrictMonoOn (deriv (fabiusReal F))
       (interior (Icc (0 : ℝ) (1 / 2))) := by
@@ -149,8 +154,13 @@ theorem strictConvexOn_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
   exact hmono.strictConvexOn_of_deriv (convex_Icc _ _)
     hF.contDiff.continuous.continuousOn
 
-/-- The bounded Fabius function is strictly concave on `[1/2, 1]`. -/
-theorem strictConcaveOn_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+/--
+The bounded Fabius function is strictly concave on `[1/2, 1]`.
+
+The interval cannot be enlarged to `[1/2, ∞)`: the function is constant to
+the right of one, so strict concavity fails there.
+-/
+theorem strictConcaveOn_fabiusReal_secondHalf (F : BoundedFabius) (hF : IsFabius F) :
     StrictConcaveOn ℝ (Icc (1 / 2 : ℝ) 1) (fabiusReal F) := by
   have hanti : StrictAntiOn (deriv (fabiusReal F))
       (interior (Icc (1 / 2 : ℝ) 1)) := by

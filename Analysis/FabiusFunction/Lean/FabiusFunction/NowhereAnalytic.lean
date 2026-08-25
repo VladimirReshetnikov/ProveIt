@@ -37,6 +37,15 @@ private lemma analyticAt_comp_const_sub {f : ℝ → ℝ} {c a : ℝ}
   filter_upwards with y
   rfl
 
+/-- Analyticity is preserved by precomposition with the translation `y ↦ y + c`. -/
+private lemma analyticAt_comp_add_const {f : ℝ → ℝ} {c a : ℝ}
+    (h : AnalyticAt ℝ f (a + c)) :
+    AnalyticAt ℝ (fun y : ℝ => f (y + c)) a := by
+  have haffine : AnalyticAt ℝ (fun y : ℝ => y + c) a := by fun_prop
+  refine (h.comp haffine).congr ?_
+  filter_upwards with y
+  rfl
+
 /-- The bounded Fabius function is the reflection of Rvachev's function at
 every argument at most one, including both endpoints. -/
 theorem fabiusReal_eq_rvachevUp_one_sub (F : BoundedFabius) {y : ℝ} (hy : y ≤ 1) :
@@ -88,16 +97,47 @@ theorem fabius_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
     exact fabius_not_analyticAt_one F hF
   · exact fabius_not_analyticAt_of_lt_one F hF hx.1 h
 
-/-- The signed global extension is not real analytic at any interior point of
-the unit interval. -/
+/--
+The signed global extension is not real analytic at any point of `[0, 2)`.
+
+On the first block `[0,2]` the extension is the single translate `up(x - 1)`,
+and `up` is analytic nowhere on `[-1,1]`; at the left endpoint the extension
+instead has the same germ as the bounded function.
+-/
 theorem extendedFabius_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
-    {x : ℝ} (hx : x ∈ Ioo (0 : ℝ) 1) :
+    {x : ℝ} (hx : x ∈ Ico (0 : ℝ) 2) :
     ¬ AnalyticAt ℝ (extendedFabius F) x := by
   intro h
-  refine fabius_not_analyticAt F hF (Set.mem_Icc.mpr ⟨hx.1.le, hx.2.le⟩) ?_
-  refine h.congr ?_
-  filter_upwards [Ioo_mem_nhds hx.1 hx.2] with y hy
-  exact extendedFabius_eq_fabiusReal F hF (Set.mem_Icc.mpr ⟨hy.1.le, hy.2.le⟩)
+  rcases eq_or_lt_of_le hx.1 with hx0 | hx0
+  · subst hx0
+    have heq : extendedFabius F =ᶠ[nhds (0 : ℝ)] fabiusReal F := by
+      filter_upwards [Iio_mem_nhds (show (0 : ℝ) < 1 by norm_num)] with y hy
+      by_cases hy0 : y ≤ 0
+      · rw [extendedFabius_eq_zero_of_nonpos F hF hy0, hF.zero_of_nonpos y hy0]
+      · exact extendedFabius_eq_fabiusReal F hF
+          ⟨le_of_lt (lt_of_not_ge hy0), le_of_lt hy⟩
+    exact fabius_not_analyticAt F hF
+      (Set.mem_Icc.mpr ⟨le_rfl, by norm_num⟩) (h.congr heq)
+  · have hblock : ∀ y ∈ Ioo (0 : ℝ) 2,
+        extendedFabius F y = rvachevUp F (y - 1) := by
+      intro y hy
+      have hsingle := extendedFabius_eq_single_translate F hF 0
+        (by simpa using hy.1.le) (by simpa using hy.2.le)
+      simpa [binaryWeight] using hsingle
+    have hgerm : AnalyticAt ℝ (fun y : ℝ => rvachevUp F (y - 1)) x := by
+      refine h.congr ?_
+      filter_upwards [Ioo_mem_nhds hx0 hx.2] with y hy
+      exact hblock y hy
+    have hshift : AnalyticAt ℝ (fun z : ℝ => rvachevUp F (z + 1 - 1)) (x - 1) := by
+      apply analyticAt_comp_add_const
+      rw [show x - 1 + 1 = x by ring]
+      exact hgerm
+    have hup : AnalyticAt ℝ (rvachevUp F) (x - 1) := by
+      refine hshift.congr ?_
+      filter_upwards with z
+      rw [show z + 1 - 1 = z by ring]
+    exact rvachev_not_analyticAt F hF (x - 1)
+      ⟨by linarith, by linarith [hx.2]⟩ hup
 
 /-! ## Analyticity off the unit interval -/
 

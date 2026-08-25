@@ -108,7 +108,12 @@ theorem fabius_monotone (F : BoundedFabius) (hF : IsFabius F) :
 
 /-! ## Positivity -/
 
-/-- A zero on the first half would force a zero at twice the argument. -/
+/--
+A zero on the first half would force a zero at twice the argument.
+
+This is the bootstrap step used to prove `fabius_pos_of_pos`; once that is
+available, `fabius_pos_iff` shows the hypothesis can only hold at `x = 0`.
+-/
 theorem fabius_zero_double (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx0 : 0 ≤ x) (hxhalf : x ≤ 1 / 2)
     (hz : fabiusReal F x = 0) : fabiusReal F (2 * x) = 0 := by

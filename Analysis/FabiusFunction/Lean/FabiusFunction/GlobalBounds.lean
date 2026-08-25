@@ -14,7 +14,9 @@ the only missing ingredient for turning equation (3),
 
 `F^(k)(x) = 2^C(k+1,2) F(2^k x)`,
 
-into the sharp uniform bound `|F^(k)| ≤ 2^C(k+1,2)`.
+into the sharp uniform bound `|F^(k)| ≤ 2^C(k+1,2)` for the *signed
+extension* `F = extendedFabius`.  (The corresponding statement for the bounded
+function `fabiusReal` is in `FabiusFunction.BoundedDerivatives`.)
 
 Sharpness is proved as well: the value `2^C(k+1,2)` is attained at `2^(-k)`,
 where `2^k x = 1` and the extension equals one.  The corresponding statements
@@ -82,7 +84,8 @@ theorem iteratedDeriv_extendedFabius_inv_two_pow (F : BoundedFabius)
     extendedFabius_one F hF, mul_one]
 
 /--
-`2^C(k+1,2)` is exactly the supremum of `|F^(k)|`, and it is attained.
+`2^C(k+1,2)` is exactly the supremum of the `k`-th derivative of the signed
+extension in absolute value, and it is attained.
 -/
 theorem isGreatest_abs_iteratedDeriv_extendedFabius (F : BoundedFabius)
     (hF : IsFabius F) (k : ℕ) :
@@ -159,7 +162,8 @@ theorem iteratedDeriv_rvachevUp_inv_two_pow_sub_one (F : BoundedFabius)
     show ((2 : ℝ) ^ n)⁻¹ - 1 + 1 = ((2 : ℝ) ^ n)⁻¹ by ring,
     mul_inv_cancel₀ (ne_of_gt hpos), extendedFabius_one F hF, mul_one]
 
-/-- `2^C(n+1,2)` is exactly the supremum of `|up^(n)|`, and it is attained. -/
+/-- `2^C(n+1,2)` is exactly the supremum of the `n`-th derivative of Rvachev's
+function in absolute value, and it is attained. -/
 theorem isGreatest_abs_iteratedDeriv_rvachevUp (F : BoundedFabius)
     (hF : IsFabius F) (n : ℕ) :
     IsGreatest (Set.range fun x : ℝ => |iteratedDeriv n (rvachevUp F) x|)

@@ -16,7 +16,9 @@ import FabiusFunction.Monotonicity
 import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
+import FabiusFunction.SharpFlatness
 import FabiusFunction.GlobalBounds
+import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
 
 /-!
