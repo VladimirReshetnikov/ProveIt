@@ -1,4 +1,5 @@
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusFlatness
 import FabiusFunction.DyadicAnalytic
 import FabiusFunction.Convexity
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
@@ -14,8 +15,9 @@ import Mathlib.Topology.Order.MonotoneContinuity
 
 `FabiusFunction.Monotonicity` proves that a bounded Fabius function restricts
 to a bijection of `[0,1]` onto itself, strictly increasing and continuous.
-This module constructs the inverse of that bijection and transports the
-flatness estimates of `FabiusFunction.EffectiveFlatness` and
+This module constructs the inverse of that bijection and transports both the
+qualitative flatness of `FabiusFunction.FabiusFlatness` and the quantitative
+estimates of `FabiusFunction.EffectiveFlatness` and
 `FabiusFunction.SharpFlatness` through it.
 
 The construction follows Mathlib's own `Real.arcsin`, which solves the same
@@ -75,8 +77,10 @@ statements below are given in the equivalent root-free form, which avoids
 window of validity shrinks super-exponentially in `n`, so the family cannot
 be combined into one bound uniform in `n`.
 
-Two consequences are recorded.  The inverse is steeper than every root at the
-origin, and in particular has an infinite one-sided derivative there:
+Two consequences are recorded.  The all-degree little-o statement
+`y = o((fabiusInv F hF y)^n)` says exactly, without choosing an `n`-th-root
+convention, that the inverse is steeper than every root at the origin.  In
+particular it has an infinite one-sided derivative there:
 `fabiusInv F hF y / y → ∞` as `y → 0⁺`.  That is the exact mirror of
 `F' 0 = 0`.  An effective form is also given: for every slope `M` the inverse
 already exceeds `M * y` once `8 * M ^ 2 * y < 1`, where `8 = 2 ^ C(3,2)` is
@@ -122,6 +126,9 @@ quotient from zero to one.
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
   hypothesis on the argument.
+* `id_isLittleO_fabiusInv_pow_at_zero_right` and
+  `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left` — the inverse outruns
+  every root asymptotically at both clamping endpoints, in root-free form.
 * `mul_lt_fabiusInv`, `tendsto_fabiusInv_div_atTop`, and their reflected
   companions — effective and limiting forms of infinite steepness at both
   endpoints.
@@ -618,6 +625,68 @@ theorem le_two_pow_mul_fabiusInv_pow_of_le (F : BoundedFabius) (hF : IsFabius F)
       _ = 1 := by rw [← mul_pow]; norm_num
   exact le_two_pow_mul_fabiusInv_pow F hF n hy1 hscale
 
+/-! ## All-order asymptotic steepness -/
+
+/-- **The inverse outruns every root at the origin.**  For every natural `n`,
+
+`y = o((fabiusInv F hF y) ^ n)` as `y → 0⁺`.
+
+This is the root-free form of saying that `fabiusInv F hF y` decays more
+slowly than `y ^ (1 / n)` for every positive `n`.  The statement deliberately
+also includes `n = 0`, where it reduces to the ordinary fact `y = o(1)`.
+
+The proof composes the two-sided flatness of `fabiusReal F` with continuity of
+the totalized inverse.  Restricting to `y < 1` eventually supplies the exact
+inverse identity; no quantitative dyadic cutoff is required. -/
+theorem id_isLittleO_fabiusInv_pow_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (fun y : ℝ => y) =o[𝓝[>] (0 : ℝ)] (fun y : ℝ => fabiusInv F hF y ^ n) := by
+  have hinv0 : Tendsto (fabiusInv F hF) (nhds (0 : ℝ)) (nhds (0 : ℝ)) :=
+    (continuous_fabiusInv F hF).tendsto' 0 0 (fabiusInv_zero F hF)
+  have hinv : Tendsto (fabiusInv F hF) (𝓝[>] (0 : ℝ)) (nhds (0 : ℝ)) :=
+    hinv0.mono_left nhdsWithin_le_nhds
+  have h := (fabiusReal_isLittleO_pow_at_zero F hF n).comp_tendsto hinv
+  refine h.congr' ?_ (Filter.Eventually.of_forall fun _ => rfl)
+  filter_upwards [self_mem_nhdsWithin,
+    nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy0 hy1
+  exact fabiusReal_fabiusInv F hF ⟨hy0.le, hy1.le⟩
+
+/-- Reflection carries the left-hand neighborhood of one to the right-hand
+neighborhood of zero. -/
+private theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
+    Tendsto (fun y : ℝ => 1 - y) (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
+  rw [tendsto_nhdsWithin_iff]
+  constructor
+  · have hcontinuous : Continuous (fun y : ℝ => 1 - y) := by fun_prop
+    have hat : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ))
+        (nhds (1 - (1 : ℝ))) :=
+      hcontinuous.continuousAt
+    have hat' : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ)) (nhds 0) := by
+      simpa only [sub_self] using hat
+    exact hat'.mono_left nhdsWithin_le_nhds
+  · filter_upwards [self_mem_nhdsWithin] with y hy
+    change 0 < 1 - y
+    exact sub_pos.mpr hy
+
+/-- **The inverse outruns every reflected root at the right endpoint.**  For
+every natural `n`,
+
+`1 - y = o((1 - fabiusInv F hF y) ^ n)` as `y → 1⁻`.
+
+The endpoint and the zero-degree case are already handled by the little-o
+statement, so no positivity assumption on `n` or separate boundary wrapper is
+needed. -/
+theorem one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    (fun y : ℝ => 1 - y) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => (1 - fabiusInv F hF y) ^ n) := by
+  have h := (id_isLittleO_fabiusInv_pow_at_zero_right F hF n).comp_tendsto
+    tendsto_one_sub_nhdsLT_one_nhdsGT_zero
+  refine h.congr' (Filter.Eventually.of_forall fun _ => rfl) ?_
+  filter_upwards with y
+  change fabiusInv F hF (1 - y) ^ n = (1 - fabiusInv F hF y) ^ n
+  rw [fabiusInv_one_sub F hF y]
+
 /-! ## Infinite steepness at the origin -/
 
 /-- **The inverse outruns every linear function at the origin, effectively.**
@@ -707,21 +776,8 @@ theorem tendsto_one_sub_fabiusInv_div_one_sub_atTop
     (F : BoundedFabius) (hF : IsFabius F) :
     Tendsto (fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y))
       (𝓝[<] (1 : ℝ)) atTop := by
-  have hreflect : Tendsto (fun y : ℝ => 1 - y)
-      (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by
-    rw [tendsto_nhdsWithin_iff]
-    constructor
-    · have hcontinuous : Continuous (fun y : ℝ => 1 - y) := by fun_prop
-      have hat : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ))
-          (nhds (1 - (1 : ℝ))) :=
-        hcontinuous.continuousAt
-      have hat' : Tendsto (fun y : ℝ => 1 - y) (nhds (1 : ℝ)) (nhds 0) := by
-        simpa only [sub_self] using hat
-      exact hat'.mono_left nhdsWithin_le_nhds
-    · filter_upwards [self_mem_nhdsWithin] with y hy
-      change 0 < 1 - y
-      exact sub_pos.mpr hy
-  have h := (tendsto_fabiusInv_div_atTop F hF).comp hreflect
+  have h := (tendsto_fabiusInv_div_atTop F hF).comp
+    tendsto_one_sub_nhdsLT_one_nhdsGT_zero
   have heq :
       ((fun y : ℝ => fabiusInv F hF y / y) ∘ fun y : ℝ => 1 - y) =
         fun y : ℝ => (1 - fabiusInv F hF y) / (1 - y) := by
