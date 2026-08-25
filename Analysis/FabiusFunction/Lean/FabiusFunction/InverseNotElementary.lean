@@ -31,6 +31,12 @@ analyticity of `F⁻¹` anywhere in `(0,1)` would hand back
 analyticity of `F` somewhere in `(0,1)`, which
 `Fabius.fabius_not_analyticAt` forbids.
 
+`F'` enters this file only there, through the imported
+`Fabius.deriv_fabiusInv_pos` and its corollary
+`Fabius.deriv_fabiusInv_ne_zero`.  Everywhere else `F` is used through its
+continuity — `Fabius.fabius_differentiable` appears once more below, but only
+to produce a `ContinuousAt` — and through its failure to be analytic.
+
 The direction matters.  Differentiating `F⁻¹ ∘ F = id` to get
 `(F⁻¹)' · F' = 1` would be circular, since it presupposes that `F⁻¹` is
 differentiable; positivity of `F'` is what supplies that.

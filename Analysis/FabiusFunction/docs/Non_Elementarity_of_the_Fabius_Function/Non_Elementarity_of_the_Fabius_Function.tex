@@ -147,8 +147,8 @@ The second is inverses.  We prove that $F^{-1}$, which exists because $F$ is a
 homeomorphism of $[0,1]$, is itself analytic at no point of $[0,1]$ and hence
 not elementary either; and then that adjoining continuous inverse branches to
 the class, at any depth, changes nothing.  The Lambert $W$ function is such a
-branch, so it is covered.  The organizing observation is that a left inverse
-is an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
+branch, so it is covered.  The organizing observation is that a one-sided
+inverse is an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
 inverse function theorem is the implicit function theorem already in hand and
 no new analysis is required at all.
 \end{abstract}
@@ -614,7 +614,7 @@ isomorphism.  The extension is continuous, so nothing is hidden in the
 gluing, and the constancy outside $[0,1]$ is what the endpoint half of
 \Cref{thm:invnowhere} exploits.
 
-\subsection{A left inverse is an implicit branch}
+\subsection{A one-sided inverse is an implicit branch}
 
 The observation that organizes this section is that no new analysis is
 needed.  The equation
@@ -644,9 +644,9 @@ exactly $\R\setminus[0,1]$.
 In the interior, run \Cref{thm:ift} backwards.  If $F^{-1}$ is analytic at
 $y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
 $F^{-1}(y_0)\in(0,1)$ --- provided $F^{-1}$ has no critical point there.  It
-has none.  This is the one place in the whole development where a
-\emph{differential} property of $F$ is used rather than its failure to be
-analytic, and the property is that $F'>0$ on $(0,1)$.  Given that, the easy
+has none.  This is the one place where $F'$ enters at all --- everywhere else
+$F$ is used through its continuity and through its failure to be analytic ---
+and what is needed of it is only that $F'>0$ on $(0,1)$.  Given that, the easy
 half of the inverse function theorem --- the half that assumes the inverse
 already exists --- yields
 \[
@@ -704,6 +704,12 @@ fails to vanish somewhere in $\An(f)\cap g(U)$.  At such a point
 of $U$ at which $g$ is analytic.
 \end{proofidea}
 
+Applied to every nonempty open subset at once, this says that a continuous
+inverse branch is analytic on a relatively dense subset of its domain, and the
+domain need not be open: \texttt{analyticDenseOn\_of\_rightInverse}.  For a
+domain with empty interior the statement is vacuous, which is the correct
+reading --- there is no open set on which to test.
+
 The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
 that is not slack in the argument: the real cube root is a continuous right
 inverse of the entire function $x\mapsto x^3$ on all of $\R$ and is not
@@ -751,10 +757,12 @@ Every member of $\Elem^{-1}$ is analytic on a dense set.
 
 \begin{proof}
 Induction.  The elementary generators are \Cref{thm:density}; the operations
-are as in \Cref{sec:density}; and the inverse rule is \Cref{thm:invbranch}
-inside $U$ together with the hypothesis off $U$ --- given a nonempty open $B$,
-either $B$ meets $U$, and \Cref{thm:invbranch} applies to $B\cap U$, or
-$B$ misses $U$ and every point of $B$ will do.
+are as in \Cref{sec:density}; and the inverse rule splits on whether the test
+set meets $U$.  Given a nonempty open $B$: if $B\cap U\ne\emptyset$ then
+\Cref{thm:invbranch} applies to the nonempty open set $B\cap U$ and produces a
+point of $B$ at which $g$ is analytic; and if $B\cap U=\emptyset$ then
+$B\subseteq U^{c}$, so $B\subseteq\operatorname{int}(U^{c})$ because $B$ is
+open, and every point of $B$ will do by the rule's analyticity clause.
 \end{proof}
 
 \begin{corollary}\label{cor:plusmain}
@@ -833,10 +841,10 @@ Analytic implicit function theorem in two real variables
   & \texttt{analyticAt\_implicitFunction}, \texttt{analyticAt\_of\_continuous\_branch}
   & \texttt{AlgebraicBranch} \\
 Branches of polynomial equations (\Cref{thm:algebraic})
-  & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}
+  & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}, \texttt{analyticDenseOn\_of\_inter\_open\_dense}, \texttt{AnalyticDenseOn.not\_eqOn\_of\_forall\_not\_analyticAt}
   & \texttt{AlgebraicBranch} \\
 Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
-  & \texttt{exists\_analyticAt\_of\_isElementary\_coeffs}, \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
+  & \texttt{analyticDenseOn\_of\_isElementary\_coeffs}, \texttt{exists\_analyticAt\_of\_isElementary\_coeffs}, \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
   & \texttt{NotElementary} \\
 The obstruction, stated once (proof of Corollary~\ref{cor:main})
   & \texttt{not\_eqOn\_of\_dense\_analyticLocus}
@@ -845,7 +853,7 @@ Analytic inverse function theorem (\Cref{thm:ift})
   & \texttt{analyticAt\_of\_rightInverse}
   & \texttt{InverseBranch} \\
 Inverse branches are analytic somewhere (\Cref{thm:invbranch})
-  & \texttt{exists\_analyticAt\_of\_rightInverse}
+  & \texttt{exists\_analyticAt\_of\_rightInverse}, \texttt{analyticDenseOn\_of\_rightInverse}
   & \texttt{InverseBranch} \\
 The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
   & \texttt{IsElementaryOrInverse}, \texttt{IsElementaryOrInverse.dense\_analyticLocus}
@@ -853,11 +861,14 @@ The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
 Lambert $W$ belongs to $\Elem^{-1}$
   & \texttt{isElementaryOrInverse\_of\_lambertW}
   & \texttt{InverseBranch} \\
-$F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
-  & \texttt{hasDerivAt\_fabiusInv}, \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
+$F^{-1}$ is differentiable on $(0,1)$ with $(F^{-1})'=1/F'>0$ (\Cref{thm:invnowhere})
+  & \texttt{fabiusInv\_hasDerivAt}, \texttt{deriv\_fabiusInv}, \texttt{deriv\_fabiusInv\_pos}, \texttt{fabiusInv\_mem\_Ioo}
+  & \texttt{FabiusInverse} \\
+Hence no critical point, and nowhere analytic (\Cref{thm:invnowhere})
+  & \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
   & \texttt{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
-  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}
+  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}, \texttt{not\_eqOn\_fabiusInv\_of\_analyticDenseOn}, \texttt{not\_eqOn\_fabiusInv\_of\_dense\_analyticLocus}
   & \texttt{InverseNotElementary} \\
 Neither is reachable by inverting (Corollary~\ref{cor:plusmain})
   & \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo}
