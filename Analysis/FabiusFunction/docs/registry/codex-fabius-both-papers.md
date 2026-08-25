@@ -7,7 +7,7 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 worktree/task: /root — generic unit-Laplace moment bounds
 branch/base: codex/fabius-both-papers synchronized with origin/main at
-  f51777a184b5a532830292207be1813cb329436d
+  f51777a184240e20d5991676ebb3465b0824b942
 writing: none — generic unit-Laplace tranche integrated
 reading: ProbabilityLaplaceMoments.lean, EndpointLaplaceComparison.lean
 expected API: measure-generic midpoint log-convexity and tilt-subtraction
