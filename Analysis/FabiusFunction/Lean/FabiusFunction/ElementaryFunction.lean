@@ -235,6 +235,19 @@ theorem abs {f : ℝ → ℝ} (hf : IsElementary f) : IsElementary fun x => |f x
   rw [h]
   exact (hf.npow 2).sqrt
 
+/-- The *signed* real power `x ↦ (f x / |f x|) * |f x| ^ r`.
+
+The constructor `IsElementary.rpow` supplies `n`-th roots only on
+`[0, ∞)`: `Mathlib`'s `Real.rpow` at a negative base is
+`|x| ^ r * cos (π r)`, so `(-8 : ℝ) ^ (1/3 : ℝ) = 1`, not `-2`.  The
+expression below is the classical odd root, and it is elementary by a
+different derivation — division, absolute value, real power.
+`Fabius.signedRoot_pow` checks that for odd `n` its `n`-th power really is
+the identity. -/
+theorem signedRpow {f : ℝ → ℝ} (hf : IsElementary f) (r : ℝ) :
+    IsElementary fun x => f x / |f x| * |f x| ^ r :=
+  (hf.div hf.abs).mul (hf.abs.rpow r)
+
 /-- Elementary functions are closed under the tangent. -/
 theorem tan {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.tan (f x) := by
@@ -278,6 +291,23 @@ theorem arccos {f : ℝ → ℝ} (hf : IsElementary f) :
   rw [h]
   exact (IsElementary.const (Real.pi / 2)).sub hf.arcsin
 
+/-- Variable exponents, at a positive base.  Where `f` is positive,
+`f ^ g` is the elementary function `exp (log f * g)`; in particular
+`fun x => x ^ x` is elementary on any set where the base is positive.
+
+The unrestricted two-variable power is not a constructor of `IsElementary`,
+because `Mathlib`'s `Real.rpow` is sign-dependent at a negative base
+(`x ^ y = |x| ^ y * cos (π y)`) and no single elementary formula covers both
+signs.  On an interval on which `f` has constant sign, however, `f ^ g` does
+agree with a member of the class, so nothing is lost for the purposes of
+`Fabius.not_isElementary_eqOn`. -/
+theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
+    (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
+  have h : (fun x => f x ^ g x) = fun x => Real.exp (Real.log (f x) * g x) := by
+    funext x; exact Real.rpow_def_of_pos (hpos x) _
+  rw [h]
+  exact (hf.log.mul hg).exp
+
 /-- Elementary functions are closed under the inverse hyperbolic sine. -/
 theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.arsinh (f x) := by
@@ -287,6 +317,34 @@ theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
   exact (hf.add ((IsElementary.const 1).add (hf.npow 2)).sqrt).log
 
 end IsElementary
+
+/-- For odd `n`, the elementary expression `t ↦ (t / |t|) * |t| ^ (n : ℝ)⁻¹`
+of `Fabius.IsElementary.signedRpow` is a genuine real `n`-th root: raising it
+to the `n`-th power returns the argument, at negative arguments and at zero as
+well as at positive ones.
+
+This is what substantiates the claim that the class is closed under `n`-th
+roots.  The constructor `IsElementary.rpow` on its own does not give it: with
+`Mathlib`'s convention `t ^ (n : ℝ)⁻¹ = |t| ^ (n : ℝ)⁻¹ * cos (π / n)` for
+`t < 0`, whose `n`-th power is not `t`. -/
+theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
+    (t / |t| * |t| ^ ((n : ℝ))⁻¹) ^ n = t := by
+  have hn0 : n ≠ 0 := hn.pos.ne'
+  have hnR : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn0
+  rcases lt_trichotomy t 0 with ht | ht | ht
+  · have ht0 : t ≠ 0 := ne_of_lt ht
+    have habs : |t| = -t := abs_of_neg ht
+    have hnonneg : (0 : ℝ) ≤ -t := le_of_lt (neg_pos.mpr ht)
+    have hdiv : t / |t| = -1 := by rw [habs, div_neg, div_self ht0]
+    rw [hdiv, habs, neg_one_mul, hn.neg_pow,
+      ← Real.rpow_natCast ((-t) ^ ((n : ℝ))⁻¹) n, ← Real.rpow_mul hnonneg,
+      inv_mul_cancel₀ hnR, Real.rpow_one, neg_neg]
+  · subst ht
+    simp [Real.zero_rpow (inv_ne_zero hnR), zero_pow hn0]
+  · have habs : |t| = t := abs_of_pos ht
+    have hdiv : t / |t| = 1 := by rw [habs, div_self (ne_of_gt ht)]
+    rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
+      ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
 
 /-! ## Named elementary functions
 
@@ -464,6 +522,17 @@ theorem IsElementary.dense_analyticLocus {f : ℝ → ℝ} (hf : IsElementary f)
       exact analyticAt_arcsin hy.1 hy.2
   | arctan _ ih =>
       exact dense_analyticLocus_comp _ Real.arctan ∅ ih fun y _ => analyticAt_arctan y
+
+/-- The set where a function fails to be real analytic is closed. -/
+theorem isClosed_compl_analyticLocus (f : ℝ → ℝ) : IsClosed (analyticLocus f)ᶜ :=
+  (isOpen_analyticLocus f).isClosed_compl
+
+/-- The set where an elementary function fails to be real analytic has empty
+interior.  Together with `Fabius.isClosed_compl_analyticLocus` this says the
+exceptional set is nowhere dense. -/
+theorem IsElementary.interior_compl_analyticLocus {f : ℝ → ℝ} (hf : IsElementary f) :
+    interior (analyticLocus f)ᶜ = ∅ := by
+  rw [interior_compl, hf.dense_analyticLocus.closure_eq, compl_univ]
 
 /-- An elementary function is real analytic at *some* point of every nonempty
 open set. -/

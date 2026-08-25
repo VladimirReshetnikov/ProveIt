@@ -260,7 +260,8 @@ theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
     (-(2 : ℚ) ^ k + c) 1
   rw [thueMorseTranslatedPowerSum]
   simpa only [one_mul, mul_one, one_pow, sub_eq_add_neg, add_comm, add_left_comm,
-    add_assoc] using hfirst
+    add_assoc]
+    using hfirst
 
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries

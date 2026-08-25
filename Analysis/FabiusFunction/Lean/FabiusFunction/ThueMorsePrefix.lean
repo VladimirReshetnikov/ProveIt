@@ -292,26 +292,10 @@ theorem thueMorse_affine_power_sum_self (r : ℕ) (x y : ℚ) :
   have hsum := thueMorse_polynomial_sum_eq_coeff r p hp
   have hcoeff : p.coeff r = y ^ r := by
     dsimp [p]
-    by_cases hy : y = 0
-    · subst y
-      cases r with
-      | zero => simp
-      | succ r =>
-        simp only [Polynomial.C_0, zero_mul, add_zero]
-        rw [← Polynomial.C_pow, Polynomial.coeff_C_succ]
-        simp
-    · have hxy : y * (x / y) = x := by
-        field_simp [hy]
-      have hfactor :
-          Polynomial.C x + Polynomial.C y * Polynomial.X =
-            Polynomial.C y *
-              (Polynomial.X + Polynomial.C (x / y)) := by
-        rw [mul_add, ← Polynomial.C_mul, hxy]
-        ring
-      rw [hfactor, mul_pow]
-      rw [← Polynomial.C_pow, Polynomial.coeff_C_mul,
-        Polynomial.coeff_X_add_C_pow]
-      simp
+    simpa using
+      (Polynomial.coeff_pow_of_natDegree_le
+        (p := Polynomial.C x + Polynomial.C y * Polynomial.X)
+        (m := r) (n := 1) hlinear)
   calc
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) *
         (x + y * (h.val : ℚ)) ^ r) =
