@@ -4,6 +4,18 @@ import FabiusFunction.DyadicClosedForm
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
+/-!
+# Centered finite splines and their probabilistic limit
+
+The centered Thue--Morse power sums used by the discrete-limit formula are
+identified here with distribution functions of finite weighted sums of
+independent uniform coordinates.  The probabilistic model gives sharp
+support bounds, monotonicity on the fundamental interval, and pointwise
+convergence to the bounded Fabius function.  A block-translation identity
+extends the estimates across the nonnegative axis, while exact empty-prefix
+vanishing supplies the nonpositive half-line.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators ENNReal MeasureTheory unitInterval Topology
@@ -21,6 +33,40 @@ def fabiusUniformSpline (p : ℕ) (x : ℝ) : ℝ :=
         (fabiusDiscreteLimitRangeLength x p),
       (thueMorseSign r : ℝ) *
         ((r : ℝ) - (2 : ℝ) ^ p * x + 1 / 2) ^ p
+
+/-- Empty-prefix half-cell vanishing for a centered spline at one fixed scale. -/
+theorem fabiusUniformSpline_eq_zero_of_lt_half
+    (p : ℕ) {x : ℝ} (hx : (2 : ℝ) ^ p * x < 1 / 2) :
+    fabiusUniformSpline p x = 0 := by
+  rw [fabiusUniformSpline,
+    fabiusDiscreteLimitRangeLength_eq_zero_of_lt_half p hx]
+  simp
+
+/-- In positive degree the centered spline also vanishes at the half-cell
+boundary: when the prefix first becomes nonempty, its sole power term is zero. -/
+theorem fabiusUniformSpline_eq_zero_of_le_half
+    (p : ℕ) (hp : 0 < p) {x : ℝ} (hx : (2 : ℝ) ^ p * x ≤ 1 / 2) :
+    fabiusUniformSpline p x = 0 := by
+  rcases lt_or_eq_of_le hx with hlt | heq
+  · exact fabiusUniformSpline_eq_zero_of_lt_half p hlt
+  · rw [fabiusUniformSpline, fabiusDiscreteLimitRangeLength, heq]
+    norm_num [hp.ne']
+
+/-- The centered spline vanishes at and to the left of the origin because
+its finite prefix is empty there. -/
+theorem fabiusUniformSpline_eq_zero_of_nonpos
+    (p : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    fabiusUniformSpline p x = 0 := by
+  apply fabiusUniformSpline_eq_zero_of_lt_half p
+  have hscale : (2 : ℝ) ^ p * x ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
+  linarith
+
+/-- In particular, every centered spline vanishes on the negative axis. -/
+theorem fabiusUniformSpline_eq_zero_of_neg
+    (p : ℕ) {x : ℝ} (hx : x < 0) :
+    fabiusUniformSpline p x = 0 :=
+  fabiusUniformSpline_eq_zero_of_nonpos p hx.le
 
 @[simp] lemma fabiusUniformSpline_zero (x : ℝ) :
     fabiusUniformSpline 0 x =
@@ -765,6 +811,12 @@ instance uniformPartialDistribution_isProbability (p : ℕ) :
 def uniformPartialCDF (p : ℕ) (x : ℝ) : ℝ :=
   ProbabilityTheory.cdf (uniformPartialDistribution p) x
 
+/-- Every finite partial-sum CDF is monotone in its threshold. -/
+theorem monotone_uniformPartialCDF (p : ℕ) :
+    Monotone (uniformPartialCDF p) := by
+  intro x y hxy
+  exact ProbabilityTheory.monotone_cdf (uniformPartialDistribution p) hxy
+
 lemma uniformPartialCDF_eq_measureReal (p : ℕ) (x : ℝ) :
     uniformPartialCDF p x =
       uniformProduct.real {ω | uniformPartialSum p ω ≤ x} := by
@@ -883,6 +935,12 @@ lemma uniformPartialCDF_eq_integral (p : ℕ) (y : ℝ) :
 def uniformCenteredPartialCDF (p : ℕ) (x : ℝ) : ℝ :=
   uniformPartialCDF p (x - 1 / (2 : ℝ) ^ (p + 1))
 
+/-- Midpoint correction preserves monotonicity of the finite CDF. -/
+theorem monotone_uniformCenteredPartialCDF (p : ℕ) :
+    Monotone (uniformCenteredPartialCDF p) := by
+  intro x y hxy
+  exact monotone_uniformPartialCDF p (sub_le_sub_right hxy _)
+
 lemma uniformCenteredPartialCDF_eq_integral (p : ℕ) (x : ℝ) :
     uniformCenteredPartialCDF (p + 1) x =
       ∫ u : Set.Icc (0 : ℝ) 1,
@@ -970,6 +1028,16 @@ theorem fabiusUniformSpline_eq_centeredPartialCDF
     fabiusUniformSpline p x = uniformCenteredPartialCDF p x := by
   rw [fabiusUniformSpline_eq_positiveSpline p hp hx,
     fabiusUniformPositiveSpline_eq_centeredPartialCDF p hp x]
+
+/-- Every positive-degree centered finite spline is monotone on the
+fundamental interval `[0,1]`. -/
+theorem monotoneOn_fabiusUniformSpline
+    (p : ℕ) (hp : 0 < p) :
+    MonotoneOn (fabiusUniformSpline p) (Icc (0 : ℝ) 1) := by
+  intro x hx y hy hxy
+  rw [fabiusUniformSpline_eq_centeredPartialCDF p hp hx,
+    fabiusUniformSpline_eq_centeredPartialCDF p hp hy]
+  exact monotone_uniformCenteredPartialCDF p hxy
 
 theorem fabiusUniformSpline_mem_Icc
     (p : ℕ) (hp : 0 < p) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
@@ -1126,6 +1194,39 @@ theorem uniformCenteredPartialCDF_eq_one_of_le
   rw [hpow]
   linarith
 
+/-- At degree zero, the elementary step spline agrees with the centered
+partial CDF throughout the fundamental interval. -/
+theorem fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc
+    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    fabiusUniformSpline 0 x = uniformCenteredPartialCDF 0 x := by
+  by_cases hhalf : x < 1 / 2
+  · rw [fabiusUniformSpline_eq_zero_of_lt_half 0 (by simpa using hhalf),
+      uniformCenteredPartialCDF_eq_zero_of_lt 0 (by simpa using hhalf)]
+  · have hhalf' : 1 / 2 ≤ x := le_of_not_gt hhalf
+    have hlen : fabiusDiscreteLimitRangeLength x 0 = 1 := by
+      rw [fabiusDiscreteLimitRangeLength, pow_zero, one_mul]
+      apply (Nat.floor_eq_iff (by linarith [hx.1])).2
+      constructor <;> norm_num <;> linarith [hhalf', hx.2]
+    have hcdf : uniformCenteredPartialCDF 0 x = 1 :=
+      uniformCenteredPartialCDF_eq_one_of_le 0 (by
+        norm_num
+        linarith)
+    rw [fabiusUniformSpline_zero, hlen, hcdf]
+    norm_num [thueMorseSign, binaryWeight]
+
+/-- Centered finite splines are monotone on `[0,1]` in every degree,
+including the degree-zero step spline. -/
+theorem monotoneOn_fabiusUniformSpline_all (p : ℕ) :
+    MonotoneOn (fabiusUniformSpline p) (Icc (0 : ℝ) 1) := by
+  cases p with
+  | zero =>
+      intro x hx y hy hxy
+      rw [fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc hx,
+        fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc hy]
+      exact monotone_uniformCenteredPartialCDF 0 hxy
+  | succ p =>
+      exact monotoneOn_fabiusUniformSpline (p + 1) (by omega)
+
 theorem uniformPartialCDF_sandwich (p : ℕ) (x : ℝ) :
     weightedSumCDF x ≤ uniformPartialCDF p x ∧
       uniformPartialCDF p x ≤ weightedSumCDF (x + 1 / (2 : ℝ) ^ p) := by
@@ -1221,6 +1322,13 @@ theorem fabiusUniformSpline_tendsto_globalFabius_of_mem_Icc
 
 end ProbabilityRepresentation
 
+/-- Centered finite splines are monotone on `[0,1]` in every degree.
+This root-namespace alias exposes the probabilistic monotonicity theorem as
+part of the primary spline API. -/
+theorem monotoneOn_fabiusUniformSpline_all (p : ℕ) :
+    MonotoneOn (fabiusUniformSpline p) (Icc (0 : ℝ) 1) :=
+  ProbabilityRepresentation.monotoneOn_fabiusUniformSpline_all p
+
 /-- The centered finite splines converge pointwise on the whole nonnegative
 axis to the signed global Fabius extension. -/
 theorem fabiusUniformSpline_tendsto_globalFabius
@@ -1290,6 +1398,22 @@ theorem fabiusUniformSpline_tendsto_globalFabius
           rw [hone p],
       hext]
     exact tendsto_const_nhds.mul (tendsto_const_nhds.sub hlim)
+
+/-- The centered finite splines converge to the signed global extension on
+the whole real line.  The nonpositive case is exact at every finite scale. -/
+theorem fabiusUniformSpline_tendsto_globalFabius_all (x : ℝ) :
+    Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop
+      (nhds (globalFabius x)) := by
+  rcases le_total 0 x with hx | hx
+  · exact fabiusUniformSpline_tendsto_globalFabius hx
+  · have hspline (p : ℕ) : fabiusUniformSpline p x = 0 :=
+      fabiusUniformSpline_eq_zero_of_nonpos p hx
+    have hglobal : globalFabius x = 0 := by
+      change extendedFabius fabius x = 0
+      exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
+    simpa [hspline, hglobal] using
+      (tendsto_const_nhds :
+        Tendsto (fun _ : ℕ => (0 : ℝ)) atTop (nhds 0))
 
 /-- Every centered finite spline is bounded in absolute value by one on the
 nonnegative axis. -/

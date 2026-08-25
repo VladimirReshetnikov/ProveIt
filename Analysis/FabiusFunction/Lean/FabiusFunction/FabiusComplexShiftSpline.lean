@@ -3,6 +3,17 @@ import FabiusFunction.FabiusDiscreteLimitToeplitz
 import FabiusFunction.FabiusUniformSpline
 import Mathlib.Topology.Algebra.Order.Field
 
+/-!
+# Complex shifts of the finite Fabius splines
+
+The discrete-limit formula contains a complex shift `q` inside each finite
+Thue--Morse spline.  This module identifies that expression with a fixed
+polynomial branch, expands it exactly around the centered shift `q = 1/2`,
+and proves an exponentially small translation bound.  Consequently every
+fixed complex shift has the same pointwise limit on the whole real line;
+to the left of the first half-cell the finite splines vanish exactly.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology
@@ -19,6 +30,31 @@ def fabiusComplexShiftSpline (p : ℕ) (q : ℂ) (x : ℝ) : ℂ :=
     ∑ r ∈ Finset.range (fabiusDiscreteLimitRangeLength x p),
       (-1 : ℂ) ^ thueMorseBit r *
         ((r : ℂ) - (2 : ℂ) ^ p * (x : ℂ) + q) ^ p
+
+/-- Exact half-cell vanishing criterion for a complex-shift spline at one
+fixed scale. -/
+theorem fabiusComplexShiftSpline_eq_zero_of_lt_half
+    (p : ℕ) (q : ℂ) {x : ℝ} (hx : (2 : ℝ) ^ p * x < 1 / 2) :
+    fabiusComplexShiftSpline p q x = 0 := by
+  rw [fabiusComplexShiftSpline,
+    fabiusDiscreteLimitRangeLength_eq_zero_of_lt_half p hx]
+  simp
+
+/-- At and to the left of the origin the half-cell cutoff is empty,
+independently of the complex shift. -/
+theorem fabiusComplexShiftSpline_eq_zero_of_nonpos
+    (p : ℕ) (q : ℂ) {x : ℝ} (hx : x ≤ 0) :
+    fabiusComplexShiftSpline p q x = 0 := by
+  apply fabiusComplexShiftSpline_eq_zero_of_lt_half p q
+  have hscale : (2 : ℝ) ^ p * x ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
+  linarith
+
+/-- In particular, the complex-shift spline vanishes on the negative axis. -/
+theorem fabiusComplexShiftSpline_eq_zero_of_neg
+    (p : ℕ) (q : ℂ) {x : ℝ} (hx : x < 0) :
+    fabiusComplexShiftSpline p q x = 0 :=
+  fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx.le
 
 private theorem neg_one_pow_thueMorseBit_complex (r : ℕ) :
     (-1 : ℂ) ^ thueMorseBit r = (thueMorseSign r : ℂ) := by
@@ -133,6 +169,13 @@ theorem fabiusComplexShiftSpline_center (p : ℕ) (x : ℝ) :
   push_cast
   simp_rw [neg_one_pow_thueMorseBit_complex]
 
+/-- Descriptive alias for the exact identification of the centered complex
+shift spline with the real uniform spline. -/
+theorem fabiusComplexShiftSpline_center_eq_uniformSpline (p : ℕ) (x : ℝ) :
+    fabiusComplexShiftSpline p (1 / 2 : ℂ) x =
+      (fabiusUniformSpline p x : ℂ) :=
+  fabiusComplexShiftSpline_center p x
+
 private theorem pow_scale_sub (p d : ℕ) (hd : d ≤ p) (x : ℝ) :
     (2 : ℝ) ^ d * ((2 : ℝ) ^ (p - d) * x) = (2 : ℝ) ^ p * x := by
   calc
@@ -244,6 +287,57 @@ theorem fabiusComplexShiftSpline_tendsto_globalFabius
   have hdiff := fabiusComplexShiftSpline_sub_center_tendsto_zero q hx
   have hadd := hdiff.add hcenter'
   simpa only [sub_add_cancel, zero_add] using hadd
+
+/-- Every fixed complex shift has the same global Fabius limit on the whole
+real line.  On the nonpositive half-line both the finite splines and the
+global extension vanish identically. -/
+theorem fabiusComplexShiftSpline_tendsto_globalFabius_all
+    (q : ℂ) (x : ℝ) :
+    Tendsto (fun p : ℕ => fabiusComplexShiftSpline p q x)
+      atTop (nhds (globalFabius x : ℂ)) := by
+  rcases le_total 0 x with hx | hx
+  · exact fabiusComplexShiftSpline_tendsto_globalFabius q hx
+  · have hspline (p : ℕ) : fabiusComplexShiftSpline p q x = 0 :=
+      fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx
+    have hglobal : globalFabius x = 0 := by
+      change extendedFabius fabius x = 0
+      exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
+    simpa [hspline, hglobal] using
+      (tendsto_const_nhds :
+        Tendsto (fun _ : ℕ => (0 : ℂ)) atTop (nhds 0))
+
+/-- Any two fixed complex translations become asymptotically
+indistinguishable. -/
+theorem fabiusComplexShiftSpline_sub_tendsto_zero
+    (q₁ q₂ : ℂ) {x : ℝ} (hx : 0 ≤ x) :
+    Tendsto (fun p : ℕ =>
+      fabiusComplexShiftSpline p q₁ x -
+        fabiusComplexShiftSpline p q₂ x)
+      atTop (nhds 0) := by
+  simpa using
+    (fabiusComplexShiftSpline_tendsto_globalFabius q₁ hx).sub
+      (fabiusComplexShiftSpline_tendsto_globalFabius q₂ hx)
+
+/-- Pairwise asymptotic independence of the shift holds on the whole real
+line. -/
+theorem fabiusComplexShiftSpline_sub_tendsto_zero_all
+    (q₁ q₂ : ℂ) (x : ℝ) :
+    Tendsto (fun p : ℕ =>
+      fabiusComplexShiftSpline p q₁ x -
+        fabiusComplexShiftSpline p q₂ x)
+      atTop (nhds 0) := by
+  simpa using
+    (fabiusComplexShiftSpline_tendsto_globalFabius_all q₁ x).sub
+      (fabiusComplexShiftSpline_tendsto_globalFabius_all q₂ x)
+
+/-- On the unit interval, the common complex-shift limit is the ordinary
+bounded Fabius function. -/
+theorem fabiusComplexShiftSpline_tendsto_fabiusReal
+    (q : ℂ) {x : ℝ} (hx : x ∈ Set.Icc (0 : ℝ) 1) :
+    Tendsto (fun p : ℕ => fabiusComplexShiftSpline p q x)
+      atTop (nhds (fabiusReal fabius x : ℂ)) := by
+  rw [← extendedFabius_eq_fabiusReal fabius fabius_spec hx]
+  exact fabiusComplexShiftSpline_tendsto_globalFabius q hx.1
 
 /-- Explicit specialization for an arbitrary real shift, including irrational
 ones. -/

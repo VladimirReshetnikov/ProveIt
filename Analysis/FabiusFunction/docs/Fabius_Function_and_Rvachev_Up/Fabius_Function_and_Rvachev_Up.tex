@@ -141,7 +141,9 @@ bound.  The first saddle correction and the full all-orders expansion are also d
 The presentation follows the theorem structure of the Lean formalization under
 \repo, while translating the machine-oriented decomposition into conventional mathematical
 arguments.  Source-level endpoint and normalization defects are corrected rather than
-repeated.
+repeated.  In particular, a centered finite-spline approximation is given with an explicit
+uniform error, and this approximation is turned into a primitive-recursive dyadic algorithm
+proving computability of the bounded Fabius function in the sense of Grzegorczyk.
 \end{abstract}
 
 \tableofcontents
@@ -1370,6 +1372,129 @@ is immediate from almost-sure convergence of $Y_N$; the refinement equation and 
 bounds upgrade the convergence to the strong forms used in the formal development.  This
 constructs $\Up$ as an infinite convolution of shrinking boxes, a perspective useful in
 approximation theory and wavelet analysis.
+
+\subsection{Centered finite splines and an explicit error bound}
+\label{sec:centered-splines}
+
+The preceding finite random sums also give a completely explicit polynomial approximation
+to $F$.  Put
+\begin{equation}
+ T_p=\sum_{i=0}^{p-1}\frac{U_i}{2^{i+1}},
+ \qquad
+ C_p(x)=\Prob\left(T_p\le x-2^{-p-1}\right),               \label{eq:centered-partial-cdf}
+\end{equation}
+where $p\ge1$.  The shift by half of the omitted tail is important: it centers the
+one-sided approximation and improves its error by a factor of two.
+
+Let
+\begin{equation}
+ N_p(x)=\max\left(0,\left\lfloor 2^p x+\frac12\right\rfloor\right),
+ \qquad \varepsilon_r=(-1)^{\wt(r)},                       \label{eq:centered-cutoff}
+\end{equation}
+and interpret a sum with $N_p(x)=0$ as empty.  Define
+\begin{equation}
+ S_p(x)=
+ \frac{(-1)^p}{2^{\binom p2}p!}
+ \sum_{r=0}^{N_p(x)-1}
+ \varepsilon_r
+ \left(r-2^p x+\frac12\right)^p.                          \label{eq:centered-spline}
+\end{equation}
+Equivalently,
+\begin{equation}
+ S_p(x)=
+ \frac{1}{2^{\binom p2}p!}
+ \sum_{r\ge0}\varepsilon_r
+ \left(2^p x-\frac12-r\right)_+^p,                        \label{eq:centered-spline-positive}
+\end{equation}
+where only the terms $r<N_p(x)$ can be nonzero and $t_+=\max(t,0)$.
+The cutoff in \eqref{eq:centered-cutoff} is a safe natural-number form of the
+inclusive upper limit
+\[
+ 0\le r\le\left\lfloor2^p x-\frac12\right\rfloor.
+\]
+It handles the empty case without assigning a negative upper endpoint to a finite sum.
+
+\begin{theorem}[Centered spline as a finite distribution function]
+\label{thm:centered-spline-cdf}
+For $p\ge1$ and $0\le x\le1$,
+\begin{equation}
+ S_p(x)=C_p(x).                                            \label{eq:spline-equals-cdf}
+\end{equation}
+Consequently $0\le S_p(x)\le1$ on the unit interval.
+\end{theorem}
+
+\begin{proof}
+For $p=1$, $T_1=U_0/2$, and direct evaluation gives
+\[
+ C_1(x)=\max\left(0,\min\left(1,2x-\frac12\right)\right).
+\]
+Formula \eqref{eq:centered-spline-positive} gives exactly the same broken-linear
+function: the term $r=0$ starts at $x=1/4$, and the term $r=1$ subtracts the excess
+after $x=3/4$.
+
+For the induction step, split off the first uniform coordinate.  The finite sums satisfy
+\[
+ T_{p+1}\ \overset{\mathrm d}=\ \frac{U_0+T_p'}2,
+\]
+where $T_p'$ is an independent copy of $T_p$.  Conditioning on $U_0$ and accounting for
+the midpoint shifts gives the exact smoothing recurrence
+\begin{equation}
+ C_{p+1}(x)=\int_0^1 C_p(2x-u)\dd u.                      \label{eq:centered-cdf-smoothing}
+\end{equation}
+On the spline side, integrate each truncated power in
+\eqref{eq:centered-spline-positive}.  The two binary children $2r$ and $2r+1$
+have opposite Thue--Morse signs, because
+\(\varepsilon_{2r}=\varepsilon_r\) and
+\(\varepsilon_{2r+1}=-\varepsilon_r\).  After the change of scale this yields
+\begin{equation}
+ S_{p+1}(x)=\int_0^1 S_p(2x-u)\dd u.                      \label{eq:centered-spline-smoothing}
+\end{equation}
+The normalization is exactly the one required by
+\[
+ \sum_{r=0}^{2^p-1}\varepsilon_r r^p
+ =(-1)^p2^{\binom p2}p!,
+\]
+while every lower power sum vanishes.  Thus the two recurrences and their common base
+case prove \eqref{eq:spline-equals-cdf}.
+\end{proof}
+
+\begin{theorem}[Quantitative centered approximation]
+\label{thm:centered-spline-error}
+For $p\ge1$ and $0\le x\le1$,
+\begin{equation}
+ F(x-2^{-p-1})\le S_p(x)\le F(x+2^{-p-1}),                \label{eq:centered-sandwich}
+\end{equation}
+and hence
+\begin{equation}
+ |S_p(x)-F(x)|\le2^{-p}.                                  \label{eq:centered-error}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $X=T_p+R_p$, where the omitted tail satisfies
+\[
+ 0\le R_p=\sum_{i=p}^{\infty}\frac{U_i}{2^{i+1}}\le2^{-p}.
+\]
+If $X\le x-2^{-p-1}$, then certainly
+$T_p\le x-2^{-p-1}$.  Conversely, if
+$T_p\le x-2^{-p-1}$, then
+$X\le x+2^{-p-1}$.  Taking probabilities and using
+\eqref{eq:F-CDF} and \eqref{eq:spline-equals-cdf} proves
+\eqref{eq:centered-sandwich}.
+
+The bounded Fabius function is globally $2$-Lipschitz.  Indeed, on the open unit interval
+its derivative is a rescaled value of $\Up$ (or of the signed extension), whose absolute
+value is at most $1$, and outside the unit interval $F$ is constant.  Thus
+\[
+ |F(x\pm2^{-p-1})-F(x)|\le2\cdot2^{-p-1}=2^{-p}.
+\]
+Combining these two inequalities with the sandwich gives
+\eqref{eq:centered-error}.
+\end{proof}
+
+The bound is uniform on the closed interval and includes both endpoints.  It is stronger
+than mere weak convergence of the finite distributions, and it is the quantitative input
+for the computability proof in \cref{sec:effective-computability}.
 
 \section{Fourier transform, entire products, and Poisson summation}
 \label{sec:fourier}
@@ -3295,6 +3420,9 @@ Produces approximating functions rather than exact individual values.\\
 Finite convolution / probability &
 Positive approximants, natural sampling, and a transparent explanation of smoothness. &
 High resolution requires many convolution levels.\\
+Centered finite spline &
+An explicit finite formula with certified uniform error at most $2^{-p}$. &
+Direct summation has exponentially many terms unless its recursion is compiled.\\
 Fourier sinc product &
 Entire transform, rapid frequency decay, and efficient evaluation away from extreme
 endpoint cancellation. &
@@ -3462,6 +3590,149 @@ proved translation independence.  For floating-point code, the partition of unit
 \eqref{eq:partition-unity}, Fourier refinement \eqref{eq:fourier-refinement}, and agreement
 between the Legendre and Fourier reconstructions provide complementary global tests.
 
+\subsection{Effective uniform continuity and sequential computability}
+\label{sec:effective-computability}
+
+Computability has a precise recursion-theoretic meaning here, not merely the informal
+meaning that a numerical routine can be written.  We use the classical Grzegorczyk
+formulation \cite{grzegorczyk1957}, expressed through fast dyadic names.
+
+\begin{definition}[Fast signed-dyadic name]
+A signed-natural numerator is a pair $c=(c^+,c^-)\in\N^2$.  At precision $p$ it represents
+\begin{equation}
+ \langle c\rangle_p=\frac{c^+-c^-}{2^p}.                 \label{eq:dyadic-name-value}
+\end{equation}
+A real sequence $(x_i)_{i\ge0}$ is \emph{computable} if one recursive algorithm, uniform
+in both $i$ and $p$, produces pairs $a(i,p)$ such that
+\begin{equation}
+ |x_i-\langle a(i,p)\rangle_p|\le2^{-p}.                 \label{eq:fast-name-error}
+\end{equation}
+A function $f\colon\R\to\R$ is \emph{sequentially computable} if it sends every
+computable real sequence to a computable real sequence.
+\end{definition}
+
+The two-natural representation is deliberately redundant.  It is extensionally the usual
+signed dyadic representation, but its arithmetic can be certified using primitive recursion
+on natural numbers without hiding an integer or rational coding convention.
+
+\begin{definition}[Effective uniform continuity]
+A function $f\colon\R\to\R$ is effectively uniformly continuous if there is a recursive
+$d\colon\N\to\N$ such that, for every positive $n$,
+\begin{equation}
+ d(n)>0,\qquad
+ |x-y|<\frac1{d(n)}
+ \ \Longrightarrow\
+ |f(x)-f(y)|<\frac1n.                                    \label{eq:effective-uniform-continuity}
+\end{equation}
+It is a computable real function in this sense if it is both sequentially computable and
+effectively uniformly continuous.
+\end{definition}
+
+Restricting \eqref{eq:effective-uniform-continuity} to $n>0$ and requiring $d(n)>0$ are
+substantive, not cosmetic.  At $n=0$ the reciprocal accuracy request is meaningless; in a
+totalized division formalism, allowing $d(n)=0$ would make the implication vacuous.
+
+\begin{theorem}[Computability of the bounded Fabius function]
+\label{thm:fabius-computable}
+The constant-tail extension of the bounded Fabius distribution function is sequentially
+computable and effectively uniformly continuous.  A primitive-recursive modulus is
+\begin{equation}
+ d(n)=2n\qquad(n>0).                                      \label{eq:fabius-effective-modulus}
+\end{equation}
+Consequently $F\colon\R\to[0,1]$ is a computable real function in the preceding sense.
+\end{theorem}
+
+\begin{proof}
+The effective-continuity clause follows immediately from the global $2$-Lipschitz estimate:
+if $|x-y|<1/(2n)$, then
+\[
+ |F(x)-F(y)|\le2|x-y|<\frac1n.
+\]
+Multiplication by the constant $2$ is primitive recursive, so
+\eqref{eq:fabius-effective-modulus} is an effective modulus.
+
+It remains to give one recursive transformer of fast names.  Suppose an output of precision
+$p$ is requested, and put $s=p+3$.  Read the input numerator $c=(c^+,c^-)$ at precision
+$s$, and clamp it to the unit interval by the natural-number operation
+\begin{equation}
+ a=
+ \begin{cases}
+ 0,&c^+\le c^-,\\
+ 2^s,&2^s+c^-\le c^+,\\
+ c^+-c^-,&\text{otherwise}.
+ \end{cases}                                              \label{eq:primitive-clamp}
+\end{equation}
+Because $F$ has constant tails, this clamp does not change its value.  Evaluate the
+centered spline at the matched grid point $a/2^s$.  Formula
+\eqref{eq:centered-spline} simplifies to the exact rational number
+\begin{equation}
+ S_s\left(\frac a{2^s}\right)
+ =
+ \frac{\displaystyle
+   \sum_{r=0}^{a-1}\varepsilon_r(2a-2r-1)^s}
+ {2^{\binom{s+1}{2}}s!}.                                 \label{eq:matched-spline-rational}
+\end{equation}
+On this clamped grid the numerator is nonnegative.  It can nevertheless be computed without
+signed arithmetic: keep separate positive and negative accumulators according to the
+Thue--Morse bit.
+
+Every part of this evaluator is primitive recursive.  More explicitly, compute the
+Thue--Morse bit from
+\begin{equation}
+ b(0)=0,\qquad
+ b(m)=\bigl(b(\lfloor m/2\rfloor)+(m\bmod2)\bigr)\bmod2
+ \quad(m>0),                                              \label{eq:primitive-thue-bit}
+\end{equation}
+fold the finite range $0\le r<a$ using addition, multiplication, subtraction, and powers
+on natural numbers, and compute the denominator from
+\begin{equation}
+ D_0=1,\qquad D_{s+1}=D_s\,2^{s+1}(s+1),
+ \qquad D_s=2^{\binom{s+1}{2}}s!.                         \label{eq:spline-denominator-recursion}
+\end{equation}
+Finally round the rational in \eqref{eq:matched-spline-rational} to the nearest multiple
+of $2^{-p}$, breaking ties upward.  If $N$ and $D$ are its nonnegative numerator and
+positive denominator, the returned numerator is
+\begin{equation}
+ Q=\left\lfloor\frac{2(2^pN)+D}{2D}\right\rfloor.         \label{eq:half-up-rounding}
+\end{equation}
+Bounded range folds, natural division, and the displayed recursion are all closed under
+primitive recursion; thus $(c,p)\mapsto(Q,0)$ is one certified recursive algorithm.
+
+It remains to verify its precision.  The centered-spline error
+\eqref{eq:centered-error} at level $s=p+3$ costs one unit of $2^{-s}$.
+Nearest-grid rounding costs
+\[
+ \frac12\,2^{-p}=4\cdot2^{-(p+3)}.
+\]
+Hence the evaluator itself has error at most
+\begin{equation}
+ 5\cdot2^{-(p+3)}.                                       \label{eq:evaluator-five-units}
+\end{equation}
+When the input is the $s$th approximation to an arbitrary real $x$, propagation through
+the $2$-Lipschitz function costs another
+\[
+ 2\cdot2^{-(p+3)}.
+\]
+The total is therefore
+\[
+ (2+5)2^{-(p+3)}
+ =7\cdot2^{-(p+3)}
+ \le8\cdot2^{-(p+3)}
+ =2^{-p}.
+\]
+Applying the same algorithm uniformly to the two indices $(i,p)$ produces a fast name for
+$F(x_i)$ from any fast name for $(x_i)$.  This proves sequential computability and completes
+the theorem.
+\end{proof}
+
+\begin{remark}[Scope of the formal computability theorem]
+The signed global extension $\mathcal F$ is also globally $2$-Lipschitz, so the same modulus
+$d(n)=2n$ proves its effective uniform continuity.  The formal development packages the
+primitive-recursive spline evaluator and the combined sequential-computability theorem for
+the bounded constant-tail function $F$.  It does not claim a packaged global sequential
+computability theorem for $\mathcal F$.
+\end{remark}
+
 \section{Corrections, conventions, and proof audit}
 \label{sec:audit}
 
@@ -3476,7 +3747,8 @@ The signed extension $\mathcal F$ is not bounded in that way and instead obeys
 \begin{equation*}
  \mathcal F'(x)=2\mathcal F(2x)\qquad(x\in\R).
 \end{equation*}
-They agree only on $[0,1]$.  Thus a statement such as ``$F'(x)=2F(2x)$ for all real
+They agree for every $x\le1$, hence in particular on $[0,1]$, but they are globally
+distinct.  Thus a statement such as ``$F'(x)=2F(2x)$ for all real
 $x$'' is correct only when $F$ denotes the signed extension.  The explicit
 Thue--Morse series \eqref{eq:global-extension} makes the distinction unavoidable and proves
 that the global sum is locally finite rather than merely conditionally convergent.
@@ -3717,6 +3989,15 @@ Probability &
 \path{ProbabilityRepresentation.lean} &
 Builds the infinite product probability space, proves independence, identifies the random
 series CDF with $F$, and obtains $\Up$ as its density.\\
+Centered splines &
+\path{FabiusUniformSpline.lean},
+\path{FabiusComputability.lean} &
+Identifies the finite centered spline with a partial-sum CDF, proves the sandwich bound, and
+derives the explicit uniform error $2^{-p}$.\\
+Computable evaluator &
+\path{FabiusComputableSpline.lean} &
+Implements the signed-natural matched-grid spline by primitive recursion, certifies its
+rounding error, and proves sequential computability of the bounded Fabius function.\\
 Finite convolutions &
 \path{ConvolutionApproximation.lean},
 \path{StepApproximant.lean} &
@@ -3870,6 +4151,11 @@ J.~Arias de Reyna,
 \newblock Arithmetic of the Fabius function,
 \newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
   arXiv:\nolinkurl{1702.06487}.
+
+\bibitem{grzegorczyk1957}
+A.~Grzegorczyk,
+\newblock On the definitions of computable real continuous functions,
+\newblock \emph{Fundamenta Mathematicae} \textbf{44} (1957), 61--77.
 
 \bibitem{corless1996}
 R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
