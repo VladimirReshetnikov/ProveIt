@@ -9,7 +9,9 @@ import Mathlib.Analysis.Calculus.Deriv.Pow
 The bounded Fabius differential equation yields a finite Taylor recurrence on
 each dyadic scale. Endpoint compatibility determines its inverse-power values,
 and comparison with the exact closed-form recurrence proves that the rational
-dyadic evaluator computes the analytic function.
+dyadic evaluator computes the analytic function.  The final API includes the
+exact right endpoint of every unit dyadic grid as well as total analytic
+correctness for the clamped natural-numerator evaluator.
 -/
 
 set_option autoImplicit false
@@ -432,6 +434,13 @@ private theorem fabiusReal_dyadic_bit_recurrence
       at hscale
     rw [eq_sub_iff_add_eq, hxSplit, ← hoffsetCast]
     exact hscale
+
+/-- The exact closed-form evaluator takes the value `1` at the right endpoint
+of every unit dyadic grid, including the scale `n = 0`. -/
+theorem fabiusDyadic_unit_endpoint (n : ℕ) :
+    fabiusDyadic n (2 ^ n) = 1 := by
+  rw [← fabiusDyadicUnit_eq_fabiusDyadic n (2 ^ n) le_rfl,
+    fabiusDyadicUnit_of_ge n (2 ^ n) le_rfl]
 
 /-- Equation (32) evaluates the bounded Fabius function on its dyadic grid. -/
 theorem fabiusDyadic_cast (F : BoundedFabius) (hF : IsFabius F)
