@@ -8994,6 +8994,29 @@ could have caught, since every number in sight is computed from the product
 \eqref{eq:as-jet-weights} and never from the name.
 \end{remark}
 
+Written in the jets, the first two coefficients are far shorter than in the derivatives of
+$\Psi$:
+\begin{align}
+ A_1&=-\frac{\widetilde{\mathcal Z}_0^{2}}{2}-\widetilde{\mathcal Z}_0
+      -\frac{\widetilde{\mathcal Z}_1}{2}-\frac1{12},      \label{eq:as-A1-jets}\\
+ A_2&=\frac1{24}\Bigl(8\widetilde{\mathcal Z}_0^{3}
+      +12\widetilde{\mathcal Z}_0^{2}\widetilde{\mathcal Z}_1
+      +12\widetilde{\mathcal Z}_0^{2}
+      +48\widetilde{\mathcal Z}_0\widetilde{\mathcal Z}_1
+      +12\widetilde{\mathcal Z}_0\widetilde{\mathcal Z}_2                 \notag\\
+   &\hspace{3.2em}
+      +6\widetilde{\mathcal Z}_1^{2}+24\widetilde{\mathcal Z}_1
+      +20\widetilde{\mathcal Z}_2+3\widetilde{\mathcal Z}_3\Bigr).        \label{eq:as-A2-jets}
+\end{align}
+Both are machine-checked.  Expanding \eqref{eq:as-A1-jets} through \eqref{eq:as-jet-d}
+reproduces \eqref{eq:A1} exactly: the terms in $\Psi'$ cancel, and the constants collapse to
+$1/24+1/(2L)$.  That is a useful check in its own right, because \eqref{eq:A1} predates the
+jet parametrization and so is an independent anchor for it.
+
+These forms also make \Cref{thm:as-leading-derivative} below legible: the top jet enters
+\eqref{eq:as-A1-jets} with coefficient $-\tfrac12$ and \eqref{eq:as-A2-jets} with
+coefficient $\tfrac3{24}=\tfrac18$, which are $(-1)^{j}/(2^{j}j!)$ at $j=1$ and $j=2$.
+
 
 \subsection{The phase to all orders}
 \label{subsec:as-phase-all-orders}
@@ -9235,6 +9258,24 @@ The law is visible in the coefficients that have been computed.  For $j=1$ it gi
 $-\Psi''/(2L^{2})$, which is the $\Psi''$ term of \eqref{eq:A1}; for $j=2$ it gives
 $+\Psi^{(4)}/(8L^{4})$; for $j=3$, $-\Psi^{(6)}/(48L^{6})$; for $j=4$,
 $+\Psi^{(8)}/(384L^{8})$.
+
+\begin{remark}[What is formalized here, and what is not]
+\label{rem:as-leading-derivative-status}
+The substance of \Cref{thm:as-leading-derivative} is machine-checked for general $j$, and
+not merely verified in the four cases just listed.  What the formal development proves is
+the statement about the Gaussian \emph{mass} coefficient: for an arbitrary jet sequence and
+every $j$, the order-$(j+1)$ mass coefficient depends on the top jet
+$\widetilde{\mathcal Z}_{2j+1}$ exactly linearly, with coefficient
+$(-1)^{j+1}/\bigl(2^{j+1}(j+1)!\bigr)$.  The engine of that proof is the observation that the
+exponential recurrence is affine in its top exponent coefficient, which is what makes the
+statement provable at once for all orders rather than checkable one order at a time.
+
+The passage from the mass coefficient to the logarithmic coefficient $A_j$ is not
+formalized.  It is immediate --- taking the formal logarithm subtracts from the order-$j$
+mass coefficient only products of strictly lower mass coefficients, and no such product
+reaches $\widetilde{\mathcal Z}_{2j-1}$, so the linear term survives unchanged --- but it is
+an elementary observation and the article does not claim otherwise.
+\end{remark}
 
 \begin{corollary}[Growth of the oscillation]
 \label{cor:as-amplitude-growth}
