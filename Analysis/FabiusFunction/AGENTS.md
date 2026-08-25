@@ -119,6 +119,48 @@ mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
 ```
 
+### When to pay a root-module invalidation
+
+Moving a declaration into `Arithmetic.lean`, `Basic.lean` or `Differential.lean`
+invalidates essentially the whole corpus, so the placement question is really a
+cost question. The rule that reconciles the two decisions taken in this
+directory — one branch paid a 158-module invalidation to consolidate ten
+byte-identical copies of a triangular-number identity into `Arithmetic.lean`,
+another deliberately did not pay one to place new generic `expCoeff` lemmas in
+`SaddleExpansionAlgebra.lean` — is:
+
+> **Pay a root-module invalidation to remove duplication that already exists.
+> Never pay one to pre-position a new declaration that has no duplicates yet.**
+
+Removing `n` existing copies buys something that cannot be bought later without
+paying the same price again. A new declaration that is merely in a
+lower-than-ideal module costs one future `git mv`-scale edit, and nothing else.
+Record the correct long-term home in a doc comment either way; recording is
+free, moving is not.
+
+### Preflight instead of building, when the build is scarce
+
+A read-only preflight — one agent checking every identifier and tactic against
+the real Mathlib sources at `C:\ProveIt\.lake\packages\mathlib\Mathlib`, then a
+second agent instructed to *refute* each of its conclusions — is a real
+substitute for a compiler when the compiler is contended. It needs no build
+slot and runs while somebody else holds one.
+
+The evidence from this directory, rather than the advice: a preflight over two
+new modules found four blockers before any build — `∞` being `scoped[ContDiff]`
+notation that does not leak through `import`, `Finset.range_subset` being the
+wrong lemma for `n ≤ N`, `HasDerivAt.sum` producing the Pi-valued sum where
+`HasDerivAt.fun_sum` is wanted, and one cancellation lemma being unable to serve
+two different associations of the same expression. When those modules were
+finally compiled, the compiler found exactly one further defect, and it was one
+the same preflight had already listed as a risk: a `field_simp` that closes its
+own goal, leaving the following `ring` with `No goals to be solved`. An earlier
+preflight on a different branch found eight errors in six modules, every one
+later confirmed by a build.
+
+So: preflight before committing uncompiled Lean, and say in the commit message
+that you did.
+
 ### Validating another branch without merging it
 
 A build owner can check somebody else's commit without either party merging,
