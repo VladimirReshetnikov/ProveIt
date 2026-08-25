@@ -181,11 +181,11 @@ contradicting \Cref{thm:nowhere}.
 \end{proof}
 
 \begin{boxedremark}
-\Cref{cor:main} is the sharp form of the assertion ``the Fabius function is
+Corollary~\ref{cor:main} is the sharp form of the assertion ``the Fabius function is
 not elementary'', and it is strictly stronger than the bare
 non-elementarity of $F$ as a function on $\R$.  The bare statement leaves
 open the possibility that some elementary function agrees with $F$ on all of
-$(0,1)$ and differs from it outside; \Cref{cor:main} rules that out, and rules
+$(0,1)$ and differs from it outside; Corollary~\ref{cor:main} rules that out, and rules
 it out on every subinterval.
 \end{boxedremark}
 
@@ -223,10 +223,10 @@ class of functions such that
 \end{enumerate}
 \end{definition}
 
-Two features of \Cref{def:elem} deserve comment.
+Two features of Definition~\ref{def:elem} deserve comment.
 
 \paragraph{Composition is a theorem, not an axiom.}
-\Cref{def:elem} contains no clause ``$f,g\in\Elem\Rightarrow f\circ
+Definition~\ref{def:elem} contains no clause ``$f,g\in\Elem\Rightarrow f\circ
 g\in\Elem$''.  It does not need one.
 
 \begin{proposition}\label{prop:comp}
@@ -235,7 +235,7 @@ $\Elem$ is closed under composition.
 
 \begin{proof}
 Induct on the derivation of the outer function $f$.  Every clause of
-\Cref{def:elem} commutes with precomposition by a fixed $g$: the constant
+Definition~\ref{def:elem} commutes with precomposition by a fixed $g$: the constant
 $x\mapsto c$ composed with $g$ is again that constant; the identity composed
 with $g$ is $g$ itself, which is elementary by hypothesis; and
 $(f_1+f_2)\circ g=(f_1\circ g)+(f_2\circ g)$, $(\exp\circ f)\circ
@@ -252,7 +252,7 @@ $\operatorname{arsinh}x=\log\bigl(x+\sqrt{1+x^2}\bigr)$.
 
 \paragraph{Total functions and junk values.}
 Every member of $\Elem$ is a \emph{total} function $\R\to\R$.  This is a
-deliberate choice, and it is the choice that makes \Cref{cor:main} strongest.
+deliberate choice, and it is the choice that makes Corollary~\ref{cor:main} strongest.
 The formalization inherits \texttt{Mathlib}'s conventions
 \[
   0^{-1}=0,\qquad \log x=\log|x|,\qquad \log 0=0,\qquad
@@ -262,7 +262,7 @@ The formalization inherits \texttt{Mathlib}'s conventions
   x^{r}=|x|^{r}\cos(\pi r)\ \ (x<0),\qquad
   \arcsin x=\pm\tfrac{\pi}{2}\ \ (\pm x\ge 1),
 \]
-so that clauses (3)--(5) of \Cref{def:elem} never fail to produce a function.
+so that clauses (3)--(5) of Definition~\ref{def:elem} never fail to produce a function.
 
 \begin{boxedremark}
 One might worry that junk values weaken the theorem, by admitting
@@ -276,7 +276,7 @@ nonpositive base, no arcsine of a value outside $[-1,1]$ --- then on $U$ it
 agrees pointwise with the total function produced by the same derivation,
 since on $U$ the junk values are never consulted.  So every such classical
 elementary function on $U$ is the restriction to $U$ of a member of $\Elem$,
-and \Cref{cor:main} applies to it.
+and Corollary~\ref{cor:main} applies to it.
 \end{boxedremark}
 
 \begin{warning}[Odd roots need a different derivation]\label{warn:oddroot}
@@ -284,7 +284,7 @@ The condition ``no real power of a nonpositive base'' in the box above cannot
 be dropped, and it is the one place where the total-function convention bites.
 \texttt{Mathlib}'s $x^{r}$ at a negative base is $|x|^{r}\cos(\pi r)$, so
 $(-8)^{1/3}=2\cos(\pi/3)=1$, whereas the classical real cube root of $-8$
-is~$-2$.  The clause $x\mapsto f(x)^{r}$ of \Cref{def:elem} therefore supplies
+is~$-2$.  The clause $x\mapsto f(x)^{r}$ of Definition~\ref{def:elem} therefore supplies
 the $n$-th roots only on $[0,\infty)$.
 
 Nothing is lost, because the classical real odd root is in $\Elem$ by a
@@ -303,7 +303,7 @@ plausible substitute.
 \subsection{What is not claimed}\label{sec:notclaimed}
 
 $\Elem$ is closed under $n$-th roots but not, as defined, under passage to an
-arbitrary algebraic function: \Cref{def:elem} has no clause producing a
+arbitrary algebraic function: Definition~\ref{def:elem} has no clause producing a
 continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
 coefficients whose Galois group is not solvable.  Liouville's differential
 field definition of ``elementary'' does admit such branches.  We do not claim
@@ -314,18 +314,18 @@ applies, and that zero set is finite on each interval --- but the analytic
 implicit function theorem over $\R$ is not available in \texttt{Mathlib} at
 the time of writing.
 
-A second, much smaller gap concerns variable exponents.  \Cref{def:elem}
+A second, much smaller gap concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
 everywhere positive, which covers $x\mapsto x^x$ and every classical
 variable-exponent expression.  The unrestricted two-variable power is not a
 constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
 base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
-covers both signs at once.  Nothing is lost for \Cref{cor:main}, and this is
+covers both signs at once.  Nothing is lost for Corollary~\ref{cor:main}, and this is
 formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
 states that on any set where the base is positive, $f^{g}$ agrees pointwise
 with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
-are.  Since \Cref{cor:main} already rules out agreement on \emph{every}
+are.  Since Corollary~\ref{cor:main} already rules out agreement on \emph{every}
 nonempty open subset of $[0,1]$, and the base of a classical
 variable-exponent expression is positive wherever the expression is well
 formed, such an expression is excluded too.
@@ -336,7 +336,7 @@ an algebraic differential equation.
 
 \section{Analyticity of the generators}
 
-Each generator of \Cref{def:elem} is real analytic away from a finite set of
+Each generator of Definition~\ref{def:elem} is real analytic away from a finite set of
 arguments.  All of these facts are in \texttt{Mathlib}, most of them in the
 form ``$C^n$ for every $n$ in $\N\cup\{\infty,\omega\}$''; specializing to the
 analytic exponent $\omega$ and applying \texttt{ContDiffAt.analyticAt}
@@ -362,7 +362,7 @@ converts them to the statements below.
 The bad sets are sets of \emph{values} of the inner function, not sets of
 points of the domain --- $\{0\}$ for the reciprocal, the logarithm and a real
 power, $\{-1,1\}$ for the arcsine, and $\varnothing$ for the rest.  This is
-the shape the induction consumes, and it is why \Cref{lem:key} below is stated
+the shape the induction consumes, and it is why Lemma~\ref{lem:key} below is stated
 with a finite set $B\subseteq\R$ of forbidden values.
 \end{remark}
 
@@ -401,7 +401,7 @@ dense.
 \begin{proof}
 Let $U$ be a nonempty open set; we must produce a point of $U\cap\An(g\circ
 f)$.  Since $\An(f)$ is dense there is $x_0\in U\cap\An(f)$, and by
-\Cref{lem:open} the set $V=U\cap\An(f)$ is an open neighbourhood of $x_0$.
+Lemma~\ref{lem:open} the set $V=U\cap\An(f)$ is an open neighbourhood of $x_0$.
 Distinguish two cases.
 
 \emph{Case 1: $f$ is constant equal to some $c\in B$ on a neighbourhood of
@@ -436,8 +436,8 @@ of substance about real analytic functions is used.
 \subsection{The induction}
 
 \begin{proof}[Proof of \Cref{thm:density}]
-Openness of $\An(f)$ is \Cref{lem:open} and holds for every $f$.  Density is
-proved by induction on the derivation of $f$ in \Cref{def:elem}.
+Openness of $\An(f)$ is Lemma~\ref{lem:open} and holds for every $f$.  Density is
+proved by induction on the derivation of $f$ in Definition~\ref{def:elem}.
 
 \emph{Constants and the identity.}  Here $\An(f)=\R$.
 
@@ -449,8 +449,8 @@ dense set is dense.
 
 \emph{Negation.}  $\An(f)\subseteq\An(-f)$.
 
-\emph{The unary clauses.}  Apply \Cref{lem:key} with the pair $(f,g)$ and the
-finite bad set $B$ read off from \Cref{lem:generators}: $B=\varnothing$ for
+\emph{The unary clauses.}  Apply Lemma~\ref{lem:key} with the pair $(f,g)$ and the
+finite bad set $B$ read off from Lemma~\ref{lem:generators}: $B=\varnothing$ for
 $\exp$, $\sin$, $\cos$, $\arctan$; $B=\{0\}$ for $y\mapsto y^{-1}$, for
 $\log$, and for $y\mapsto y^{r}$; and $B=\{-1,1\}$ for $\arcsin$.
 \end{proof}
@@ -480,10 +480,10 @@ All statements below live in the namespace \texttt{Fabius}.
 \toprule
 \textbf{Object or statement} & \textbf{Lean name} & \textbf{Module} \\
 \midrule
-Elementary functions (\Cref{def:elem})
+Elementary functions (Definition~\ref{def:elem})
   & \texttt{IsElementary}
   & \texttt{ElementaryFunction} \\
-Closure under composition (\Cref{prop:comp})
+Closure under composition (Proposition~\ref{prop:comp})
   & \texttt{IsElementary.comp}
   & \texttt{ElementaryFunction} \\
 Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\cosh$, $\tanh$, $\arccos$, $\operatorname{arsinh}$, polynomials
@@ -492,16 +492,16 @@ Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\co
 Analytic locus $\An(f)$
   & \texttt{analyticLocus}
   & \texttt{ElementaryFunction} \\
-Openness (\Cref{lem:open})
+Openness (Lemma~\ref{lem:open})
   & \texttt{isOpen\_analyticLocus}
   & \texttt{ElementaryFunction} \\
-Generators (\Cref{lem:generators})
+Generators (Lemma~\ref{lem:generators})
   & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}; for $x\mapsto x^{-1}$, $\exp$, $\sin$, $\cos$ the \texttt{Mathlib} lemmas \texttt{analyticAt\_inv}, \texttt{analyticAt\_rexp}, \texttt{Real.analyticAt\_sin}, \texttt{Real.analyticAt\_cos} are used directly
   & \texttt{ElementaryFunction} \\
 Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, which routes $\sqrt{\cdot}$ through \texttt{rpow})
   & \texttt{analyticAt\_sqrt\_of\_ne\_zero}
   & \texttt{ElementaryFunction} \\
-Signed root, and its defining property (\Cref{warn:oddroot})
+Signed root, and its defining property (Warning~\ref{warn:oddroot})
   & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
   & \texttt{ElementaryFunction} \\
 Variable exponents at a positive base
@@ -510,7 +510,7 @@ Variable exponents at a positive base
 Membership of the named functions
   & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
   & \texttt{ElementaryFunction} \\
-Key lemma (\Cref{lem:key})
+Key lemma (Lemma~\ref{lem:key})
   & \texttt{dense\_analyticLocus\_comp}
   & \texttt{ElementaryFunction} \\
 Density (\Cref{thm:density})
@@ -525,7 +525,7 @@ Exceptional set closed with empty interior
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
   & \texttt{NowhereAnalytic} \\
-Main result (\Cref{cor:main})
+Main result (Corollary~\ref{cor:main})
   & \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo}
   & \texttt{NotElementary} \\
 $F$ is not elementary
@@ -552,15 +552,15 @@ theorems of substance that the argument consumes.
 \item \texttt{AnalyticAt.eventually\_eq\_zero\_or\_eventually\_ne\_zero} and
       its two-function form: the isolated-zeros theorem for a function of one
       variable over a nontrivially normed field, which is what powers
-      \Cref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
+      Lemma~\ref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
 \item \texttt{isOpen\_analyticAt}: the analytic locus is open, which is
-      \Cref{lem:open} verbatim.  (The pointwise form, analyticity propagating
+      Lemma~\ref{lem:open} verbatim.  (The pointwise form, analyticity propagating
       from a point to a neighbourhood, is
       \texttt{AnalyticAt.eventually\_analyticAt}; the development uses the
       set-level statement.)
 \item \texttt{ContDiffAt.analyticAt} together with the family of
       \texttt{contDiffAt\_\ldots} lemmas stated for exponents in
-      $\N\cup\{\infty,\omega\}$: this is how \Cref{lem:generators} is
+      $\N\cup\{\infty,\omega\}$: this is how Lemma~\ref{lem:generators} is
       obtained, including the two facts that are otherwise awkward over $\R$,
       namely analyticity of $\arctan$ everywhere and of $\arcsin$ off
       $\{\pm1\}$.
@@ -589,15 +589,15 @@ non-elementarity must therefore distinguish $F$ from the elementary functions
 by a property strictly finer than differentiability of every order.  Real
 analyticity is the natural candidate, and \Cref{thm:density} says it is a
 sufficient one.  It is also, in a precise sense, the \emph{only} such
-candidate we know how to extract from \Cref{def:elem} directly.  Nothing in
+candidate we know how to extract from Definition~\ref{def:elem} directly.  Nothing in
 this document rules out a different separating property; what it does show is
 that analyticity suffices, and that it is available at the modest cost of
-\Cref{lem:key}.
+Lemma~\ref{lem:key}.
 
 \subsection{The role of the endpoints}
 
 \Cref{thm:nowhere} includes the endpoints $0$ and $1$, where $F$ is flat to
-infinite order.  It is worth recording that \Cref{cor:main} does \emph{not}
+infinite order.  It is worth recording that Corollary~\ref{cor:main} does \emph{not}
 need them.  A set that is open in $\R$ and contained in $[0,1]$ is
 automatically contained in $(0,1)$ --- an $\R$-open set containing $0$
 contains negative numbers --- so the witness produced by
@@ -620,7 +620,7 @@ Two natural strengthenings are visible from here.
       functions lying in an \emph{elementary} differential-field extension of
       the rational functions in Liouville's sense --- allowing arbitrary
       algebraic branches alongside exponentials and logarithms --- would
-      subsume \Cref{def:elem}.  (The wider \emph{Liouvillian} class also
+      subsume Definition~\ref{def:elem}.  (The wider \emph{Liouvillian} class also
       admits antiderivatives, and so contains $\operatorname{erf}$,
       $\operatorname{Ei}$ and $\operatorname{Si}$, which are not elementary;
       that class is not what is meant here.)  The analytic content is

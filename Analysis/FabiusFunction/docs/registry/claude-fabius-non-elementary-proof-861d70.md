@@ -89,6 +89,24 @@ Only one `lean` process runs at a time on this machine; a second one makes the
 imports, about seventy seconds off a warm `Mathlib`.  `NotElementary.lean`
 costs the whole 28-module closure of `NowhereAnalytic`.
 
+## One directory-wide observation, not acted on beyond this document
+
+The shared preamble declares every theorem-like environment on the `theorem`
+counter (`\newtheorem{lemma}[theorem]{Lemma}` and so on).  `cleveref` takes a
+reference's *name* from its counter, not its environment, so `\Cref` to a
+lemma, definition, corollary, proposition or warning prints "Theorem".  The
+headings are right; only the cross-references are wrong.  In
+`Fabius_Function_and_Rvachev_Up.tex` this affects 127 `\Cref` uses against
+`lem:`, `cor:` and `def:` labels.
+
+I did not touch the shared preamble, since `AGENTS.md` asks for it verbatim.
+In `Non_Elementarity_of_the_Fabius_Function.tex` the references to
+non-theorem environments are written as `Lemma~\ref{...}` and so on, which is
+a body-level change only.  The global fix, if anyone wants it, is the
+`aliascnt` package — `\newaliascnt{lemma}{theorem}` plus
+`\aliascntresetthe{lemma}` and `\crefname{lemma}{Lemma}{Lemmas}` — and it
+would have to be applied to the preamble of every document at once.
+
 ## Not claimed
 
 Until `AlgebraicBranch.lean` lands, the class has no constructor for a general
