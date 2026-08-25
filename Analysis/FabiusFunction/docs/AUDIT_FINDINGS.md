@@ -397,23 +397,24 @@ theorem rvachev_poisson_support_specialization_of_one_half_le
 
 ### Cluster: lambert-asymptotics
 
-#### `smallArgumentLog_inv_eq` needs no hypothesis at all; the resulting Big-O comparison holds on every filter, killing a duplicated proof block
+#### IMPLEMENTED: the reciprocal logarithmic identity needs no hypothesis, and its Big-O comparison holds on every filter
 
-Confidence high.  `FabiusLambertRates.lean:43`, `FabiusLambertRates.lean:67`, `FabiusWikipediaExpansion.lean:267`, `FabiusLambertAllOrderSmallArgument.lean:108`, `FabiusSmallArgumentScale.lean:19`
+Confidence high.  `FabiusLambertRates.lean`,
+`FabiusWikipediaExpansion.lean`,
+`FabiusLambertAllOrderSmallArgument.lean`
 
-**Why.** `fabiusSmallArgumentLog x = -Real.logb 2 x` and `Real.logb b x = Real.log x / Real.log b` by definition, so both sides are `((-Real.log x) * (Real.log 2)⁻¹)⁻¹` versus `Real.log 2 * (-Real.log x)⁻¹`. In ℝ inversion is total (`0⁻¹ = 0`), so `mul_inv_rev` + `inv_inv` prove the identity for every real `x` — including `x = 0`, `x = 1`, and `x < 0`. The `0 < x` hypothesis and the `by_cases h : x = 1` branch are pure artifacts of proving it with `field_simp`. Because the identity is filter-free, the ...
+**Why.** Since real inversion is total, the reciprocal-coordinate identity is
+algebraic even at `x = 0`, `x = 1`, and negative arguments.  The former
+positivity hypothesis and exceptional `x = 1` branch were artifacts of a
+`field_simp` proof.
 
-**Proposal.** The finding stands as stated; two cosmetic corrections to the proposal text.
-
-(a) The suggested compatibility wrapper `fun hx => smallArgumentLog_inv_eq' _` does not typecheck, since `hx` is already bound by the theorem signature, and an unused `hx` binder trips the `unusedVariables` linter. If a wrapper is kept it must read:
-
-theorem smallArgumentLog_inv_eq {x : ℝ} (_hx : 0 < x) :
-    (fabiusSmallArgumentLog x)⁻¹ = Real.log 2 * (-Real.log x)⁻¹ :=
-  smallArgumentLog_inv_eq' x
-
-(b) The wrapper is not actually needed. `smallArgumentLog_inv_eq` has exactly three references in the whole corpus — FabiusLambertRates.lean:71, FabiusWikipediaExpansion.lean:271, FabiusLambertAllOrderSmallArgument.lean:108 — all passing `hx` positionally, and no doc file under Analysis/FabiusFunction mentions the name. So the cleaner edit is to weaken `smallArgumentLog_inv_eq` in place to `(x : ℝ)` with the six-rewrite proof, add `smallArgumentLog_inv_isBigO` beside it (or in FabiusSmallArgumentScale.lean as proposed), replace the two `htarget` blocks with `smallArgumentLog_inv_isBigO _`, and change line ...
-
-**Verifier.** Confirmed on every axis. (1) Signature at FabiusLambertRates.lean:43-52 matches the quote verbatim. (2) The weakened statement is TRUE at every boundary: with Real.log 0 = 0, Real.log 1 = 0, and 0⁻¹ = 0 in ℝ, both sides are 0 at x = 0, x = 1, and x = -1; for x < 0 with log|x| ≠ 0 (e.g. x = -2) both sides equal -1; for log x ≠ 0 both sides equal ...
+**Implementation.** `smallArgumentLog_inv_eq_all` is unconditional, while the
+old positive-argument `smallArgumentLog_inv_eq` signature remains as a
+compatibility wrapper.  The public `smallArgumentLog_inv_isBigO` packages the
+comparison on an arbitrary filter.  Both local small-argument Big-O proofs
+delegate to this theorem, and the all-order power comparison is simply
+`(smallArgumentLog_inv_isBigO _).pow N`.  This removes the duplicated
+filter-local estimates while strengthening the reusable API.
 
 #### `rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc` only needs `0 ≤ t`, and belongs next to `IsFabius.symmetry_all`, which already does the work
 
