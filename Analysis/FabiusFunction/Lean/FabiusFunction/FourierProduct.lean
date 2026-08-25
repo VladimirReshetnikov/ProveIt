@@ -45,6 +45,35 @@ lemma complexSinc_sub_one_isBigO :
     DifferentiableAt ℂ complexSinc 0).isBigO_sub
   simpa [complexSinc] using h
 
+/-- The half-angle factorization of the removable complex sinc function,
+`sinc z = cos (z / 2) * sinc (z / 2)`.
+
+The strictly upstream home for this fact (and for `complexSinc_neg` below)
+would be `FabiusFunction.Basic`, where `complexSinc` itself is defined; it is
+placed here instead because `Basic` sits at the root of the import graph and
+editing it invalidates every module in the development.  This module is the
+earliest one already imported by all three former duplication sites
+(`WeakConvergence`, `PoissonSummation`, `OriginalPaperSupplement`), so no
+import path changes. -/
+theorem complexSinc_eq_cos_mul (z : ℂ) :
+    complexSinc z = Complex.cos (z / 2) * complexSinc (z / 2) := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexSinc]
+  · have hz2 : z / 2 ≠ 0 := div_ne_zero hz (by norm_num)
+    rw [complexSinc, if_neg hz, complexSinc, if_neg hz2]
+    have htwo : 2 * (z / 2) = z := by ring
+    rw [← htwo, Complex.sin_two_mul]
+    field_simp
+
+/-- The removable complex sinc function is even. -/
+theorem complexSinc_neg (z : ℂ) : complexSinc (-z) = complexSinc z := by
+  by_cases hz : z = 0
+  · subst z
+    simp [complexSinc]
+  · simp only [complexSinc, neg_eq_zero, hz, if_false, Complex.sin_neg]
+    field_simp
+
 /-- The dyadically scaled Fourier arguments form a summable complex series. -/
 lemma dyadicComplex_summable (z : ℂ) :
     Summable (fun n : ℕ => (Real.pi : ℂ) * z / (2 : ℂ) ^ n) := by

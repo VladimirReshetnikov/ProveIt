@@ -2,6 +2,74 @@ import FabiusFunction.ThueMorsePrefix
 import Mathlib.RingTheory.PowerSeries.WellKnown
 import Mathlib.Topology.Instances.Rat
 
+/-!
+# Thue--Morse generating series and the literal prefix grid
+
+The signed Thue--Morse sequence is `t(n) = (-1)^w(n)`, with `w(n)` the binary
+digit sum, and `S^k` is its `k`-fold *inclusive* prefix sum, defined in
+`FabiusFunction.ThueMorsePrefix`.  This module is the generating-function
+layer for those sequences, that is, equation (6) of the local draft *K-fold
+summation over the signed Thue--Morse sequence*:
+
+`sum_n t(n) X^n = prod_{j>=0} (1 - X^(2^j))`, and
+`sum_n S^k_n X^n = (sum_n t(n) X^n) / (1 - X)^k`.
+
+Both are proved as identities of formal power series over `ℤ`, so no complex
+variable and no convergence hypothesis is involved.  The infinite product is
+rendered coefficientwise, as a finite stabilization: the first `r` factors
+already fix every coefficient of degree below `2^r`.  Division by `(1 - X)^k`
+uses Mathlib's unit `PowerSeries.invOneSubPow`, and the denominator-cleared
+identity `(1 - X)^k * sum_n S^k_n X^n = sum_n t(n) X^n` avoids inverses
+altogether.
+
+These identities exist as a separate layer because
+`FabiusFunction.ThueMorseApproximation` needs them to identify `S^k_m`, for
+`m < 2^k`, with a coefficient of the polynomial approximant of the Fabius
+function, and `FabiusFunction.ThueMorseExponential` builds the exponential
+generating series for centered Thue--Morse power sums on the same import.
+
+The second half of the module reads the draft's equation (1) literally: grid
+value `S^k_j / 2^(C(k,2))` at abscissa `j / 2^k`.  It proves the discrete
+functional equation (2) together with the index condition `j < 2^q` that the
+draft omits, and then refutes the printed normalization -- at the right
+endpoint the literal value is `-1 / 2^(C(k,2))` at every level, hence stays
+negative, so neither the grid nor the polygon through it can converge to
+`F(1) = 1`.
+
+## Main results
+
+* `thueMorseBlockPolynomial_eq_product` and `coeff_finite_thueMorse_product`
+  -- the dyadic block polynomial is `prod_{j<r} (1 - X^(2^j))`, and its
+  coefficients below `2^r` are already the Thue--Morse signs.
+* `iteratedPrefixSeries_eq`, `one_sub_X_pow_mul_iteratedPrefixSeries`, and
+  `coeff_eq6_finite` -- the convolution half of equation (6) for every order
+  `k`, including `k = 0`, in quotient, cleared, and coefficient form.
+* `paperPrefixGridValue`, `prefixGridPoint`, `paperPrefixGridValue_equation`,
+  and `paperPrefixGridValue_equation_of_pos` -- equations (1) and (2) with
+  the admissible index range made explicit.
+* `paperPrefixGridValue_endpoint`, `one_lt_paperPrefixGridValue_endpoint_error`,
+  `paperPrefixGridValue_endpoint_not_tendsto_one`, and
+  `paperPrefixPolygonReal_endpoint_not_tendsto_one` -- the endpoint
+  obstruction, for the grid and for the intended polygonal interpolation.
+* The remaining declarations include the `correctedPrefixGridValue` counterparts
+  of the grid statements, the rational companion `paperPrefixPolygon` of the
+  real polygon, and `simp` coefficient lemmas for the two series.
+
+## Conventions and caveats
+
+`C(k,2)` is `k.choose 2`.  Prefix sums are inclusive, so `S^k_j` already
+contains the term at index `j`; the recurrences are stated at level `q + 1`,
+and the `_of_pos` variants restate them in the draft's own positive-level
+indexing.  `correctedPrefixGridValue` is the one-index shift `S^(k+1)` under
+the level-`k` normalization, recorded here only to show it obeys the same
+recurrence -- the approximation that this shift actually makes converge is
+proved in `FabiusFunction.ThueMorseApproximation`, over `ℝ`, from a separate
+definition.  Both polygons take `⌊x * 2^k⌋₊` in `ℕ` and so are meant for
+`x >= 0`; they are the interpolation the draft describes in words, not the
+step function its printed floor formula defines.  The nonconvergence results
+come in a rational and a real form, the first in the order topology on `ℚ`.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators
@@ -132,11 +200,6 @@ theorem coeff_eq6_finite (k r n : ℕ) (hn : n < 2 ^ r) :
   rw [one_sub_X_pow_mul_iteratedPrefixSeries]
   exact (coeff_finite_thueMorse_product r n hn).symm
 
-private lemma choose_succ_two_grid (q : ℕ) :
-    (q + 1).choose 2 = q.choose 2 + q := by
-  rw [show q + 1 = Nat.succ q by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 /-- Equation (1), interpreted literally at its dyadic grid points. -/
 def paperPrefixGridValue (k j : ℕ) : ℚ :=
   (iteratedPrefix k j : ℚ) / (2 : ℚ) ^ k.choose 2
@@ -156,7 +219,7 @@ theorem paperPrefixGridValue_succ_sub (q j : ℕ) :
       paperPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
   rw [paperPrefixGridValue, paperPrefixGridValue, paperPrefixGridValue]
   rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two_grid, pow_add, div_div]
+  rw [choose_succ_two, pow_add, div_div]
 
 /-- The corrected grid obeys the same normalization recurrence, with each
 prefix order shifted up by one. -/
@@ -167,7 +230,7 @@ theorem correctedPrefixGridValue_succ_sub (q j : ℕ) :
   rw [correctedPrefixGridValue, correctedPrefixGridValue,
     correctedPrefixGridValue]
   rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two_grid, pow_add, div_div]
+  rw [choose_succ_two, pow_add, div_div]
 
 /-- The exact forward-difference identity, before restricting the argument of
 the lower-level grid value to `[0,1]`. -/

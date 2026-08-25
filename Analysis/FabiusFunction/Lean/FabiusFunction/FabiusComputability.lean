@@ -123,6 +123,9 @@ theorem globalFabius_lipschitzWith_two :
 def fabiusEffectiveUniformModulus (n : ℕ) : ℕ :=
   2 * n
 
+/-- The modulus `fabiusEffectiveUniformModulus n = 2 * n` is primitive
+recursive.  Its `to_comp` form supplies the `Computable` field required by
+`effectivelyUniformContinuous_of_lipschitzWith_two`. -/
 theorem fabiusEffectiveUniformModulus_primrec :
     Primrec fabiusEffectiveUniformModulus := by
   exact Primrec.nat_mul.comp (Primrec.const 2) Primrec.id

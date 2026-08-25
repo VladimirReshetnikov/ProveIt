@@ -99,6 +99,7 @@ Mellin weight. -/
 noncomputable def boseMellinTerm (a : ℝ) (n : ℕ) (x : ℝ) : ℝ :=
   x ^ (a - 1) * (-Real.exp (-((n + 1 : ℕ) * x)) / (n + 1 : ℕ))
 
+/-- For `a > 0` each Bose--Mellin summand is integrable on `(0, ∞)`. -/
 lemma integrableOn_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
     IntegrableOn (boseMellinTerm a n) (Ioi 0) := by
   have hr : 0 < (n : ℝ) + 1 := by positivity
@@ -122,6 +123,9 @@ lemma one_div_mul_one_div_rpow (r a : ℝ) (hr : 0 < r) :
       rw [show (1 + a : ℝ) = a + 1 by ring]
       simp only [one_div, Real.inv_rpow hr.le]
 
+/-- For `a > 0` the integral of the `n`th Bose--Mellin summand over `(0, ∞)`
+is `-(1 / (n + 1)) * ((1 / (n + 1)) ^ a * Γ a)`, where the inner power is a
+real `rpow`.  This is the Gamma integral rescaled by `n + 1`. -/
 lemma integral_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
     ∫ x : ℝ in Ioi 0, boseMellinTerm a n x =
       -(1 / ((n + 1 : ℕ) : ℝ)) *
@@ -156,6 +160,9 @@ lemma integral_boseMellinTerm_eq_neg_gamma_div_rpow
       rw [one_div_mul_one_div_rpow _ _ (by positivity)]
     _ = -Real.Gamma a / (((n + 1 : ℕ) : ℝ) ^ (a + 1)) := by ring
 
+/-- For `a > 0` the integral over `(0, ∞)` of `‖boseMellinTerm a n‖` is
+`(1 / (n + 1)) * ((1 / (n + 1)) ^ a * Γ a)`: the summand is nonpositive on
+`(0, ∞)`, so this is `integral_boseMellinTerm` with the opposite sign. -/
 lemma integral_norm_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
     ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖ =
       (1 / ((n + 1 : ℕ) : ℝ)) *
@@ -197,12 +204,17 @@ the termwise-integral argument. -/
 noncomputable def realZetaSeries (p : ℝ) : ℝ :=
   ∑' n : ℕ, 1 / ((n + 1 : ℕ) : ℝ) ^ p
 
+/-- The shifted Dirichlet series `∑ 1 / (n + 1) ^ p` is summable for a real
+exponent `p > 1`. -/
 lemma summable_realZetaSeries (p : ℝ) (hp : 1 < p) :
     Summable (fun n : ℕ => 1 / ((n + 1 : ℕ) : ℝ) ^ p) := by
   have hbase : Summable (fun n : ℕ => 1 / (n : ℝ) ^ p) :=
     Real.summable_one_div_nat_rpow.mpr hp
   simpa [Nat.add_comm] using (summable_nat_add_iff 1).mpr hbase
 
+/-- For a real exponent `p > 1` the series `realZetaSeries p` agrees with the
+real part of `riemannZeta p`.  Used to pass from `bose_mellin_integral` to
+`bose_mellin_integral_zeta`. -/
 lemma realZetaSeries_eq_riemannZeta_re (p : ℝ) (hp : 1 < p) :
     realZetaSeries p = (riemannZeta (p : ℂ)).re := by
   have hzc : Summable (fun n : ℕ => 1 / ((n + 1 : ℕ) : ℂ) ^ (p : ℂ)) := by
@@ -224,6 +236,9 @@ lemma realZetaSeries_eq_riemannZeta_re (p : ℝ) (hp : 1 < p) :
   rw [hpw]
   simp
 
+/-- For `a > 0` the `L¹` norms on `(0, ∞)` of the Bose--Mellin summands form a
+summable sequence.  This supplies the hypothesis of
+`integral_tsum_of_summable_integral_norm` in `bose_mellin_integral`. -/
 lemma summable_integral_norm_boseMellinTerm (a : ℝ) (ha : 0 < a) :
     Summable (fun n : ℕ => ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖) := by
   have hz := summable_realZetaSeries (a + 1) (by linarith)

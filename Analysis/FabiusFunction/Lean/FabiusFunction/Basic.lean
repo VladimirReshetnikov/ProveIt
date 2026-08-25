@@ -42,6 +42,9 @@ abbrev BoundedFabius := ℝ → UnitInterval
 abbrev fabiusReal (F : BoundedFabius) : ℝ → ℝ :=
   fun x => F x
 
+/-- The real-valued view of a bounded Fabius candidate is its underlying
+coercion.  This is definitional, and is a `simp` lemma so that statements
+about `fabiusReal F` and about `(F x : ℝ)` normalize to the same form. -/
 @[simp]
 theorem fabiusReal_apply (F : BoundedFabius) (x : ℝ) :
     fabiusReal F x = (F x : ℝ) :=
@@ -236,10 +239,13 @@ noncomputable def halfMomentGeneratingSeries (z : ℂ) : ℂ :=
 noncomputable def expm1Div (x : ℝ) : ℝ :=
   if x = 0 then 1 else (Real.exp x - 1) / x
 
+/-- The removable singularity is filled with the correct value: the limit of
+`(exp x - 1) / x` at the origin is `1`. -/
 @[simp]
 theorem expm1Div_zero : expm1Div 0 = 1 := by
   simp [expm1Div]
 
+/-- Away from the origin the removable extension is the quotient itself. -/
 theorem expm1Div_of_ne {x : ℝ} (hx : x ≠ 0) :
     expm1Div x = (Real.exp x - 1) / x := by
   simp [expm1Div, hx]
@@ -248,10 +254,14 @@ theorem expm1Div_of_ne {x : ℝ} (hx : x ≠ 0) :
 noncomputable def complexExpm1Div (z : ℂ) : ℂ :=
   if z = 0 then 1 else (Complex.exp z - 1) / z
 
+/-- The complex removable extension takes the value `1` at the origin, in
+agreement with `expm1Div_zero`. -/
 @[simp]
 theorem complexExpm1Div_zero : complexExpm1Div 0 = 1 := by
   simp [complexExpm1Div]
 
+/-- Away from the origin the complex removable extension is the quotient
+itself. -/
 theorem complexExpm1Div_of_ne {z : ℂ} (hz : z ≠ 0) :
     complexExpm1Div z = (Complex.exp z - 1) / z := by
   simp [complexExpm1Div, hz]
@@ -280,11 +290,16 @@ noncomputable def halfMomentIntegral (F : BoundedFabius) : ℕ → ℝ
   | n + 1 =>
       ((n + 1 : ℕ) : ℝ) * ∫ t in (0 : ℝ)..1, t ^ n * rvachevUp F t
 
+/-- The half-moment recursion is normalized to start at `1`, matching
+`Arithmetic.halfMoment_zero` on the rational side. -/
 @[simp]
 theorem halfMomentIntegral_zero (F : BoundedFabius) :
     halfMomentIntegral F 0 = 1 :=
   rfl
 
+/-- The defining equation of a positive-index half moment, unfolded.  The
+integral is over `[0,1]` only, which is what makes these *half* moments;
+the factor `n + 1` is the paper's normalization. -/
 @[simp]
 theorem halfMomentIntegral_succ (F : BoundedFabius) (n : ℕ) :
     halfMomentIntegral F (n + 1) =

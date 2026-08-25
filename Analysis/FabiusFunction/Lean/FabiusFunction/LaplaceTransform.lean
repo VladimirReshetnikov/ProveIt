@@ -46,6 +46,32 @@ theorem rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc
     norm_num
   · exact hF.symmetry t ht
 
+/-- Sharp form of `rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc`: on the whole
+nonnegative ray, and not merely on `[0, 1]`, Rvachev's bump is the
+complementary Fabius CDF.
+
+No upper endpoint restriction is needed, because `IsFabius.symmetry_all`
+already extends the reflection identity `F (1 - x) = 1 - F x` from `Icc 0 1`
+to all of `ℝ` using the two constant tails.  The remaining hypothesis `0 ≤ t`
+is sharp: at `t = -1/2` the left side is `fabiusReal F (1/2) = 1/2` while the
+right side is `1 - fabiusReal F (-1/2) = 1`.
+
+It is placed next to the `Icc` form rather than in `FabiusFunction.Basic`,
+where the ingredients `rvachevUp_of_nonpos`, `rvachevUp_of_pos` and
+`IsFabius.symmetry_all` live, so that the root of the import graph stays
+untouched.  The nonnegative-ray unfolding is re-derived here because
+`rvachevUp_eq_fabiusReal_one_sub` in `FabiusFunction.Monotonicity` is not in
+this module's import closure. -/
+theorem rvachevUp_eq_one_sub_fabiusReal_of_nonneg
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 0 ≤ t) :
+    rvachevUp F t = 1 - fabiusReal F t := by
+  have hup : rvachevUp F t = fabiusReal F (1 - t) := by
+    rcases eq_or_lt_of_le ht with h | h
+    · rw [← h, rvachevUp_of_nonpos F le_rfl]
+      norm_num
+    · exact rvachevUp_of_pos F h
+  rw [hup, hF.symmetry_all t]
+
 /-- Integration by parts in algebraic form: `G(-z)` is the endpoint
 exponential plus `z` times the finite-interval Laplace transform of `F`. -/
 theorem complexGeneratingFunction_neg_eq_exp_add_integral

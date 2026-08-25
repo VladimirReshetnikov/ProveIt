@@ -104,6 +104,10 @@ theorem dyadicLambertDisplacementPolynomial_eq_logCoeff (n : ℕ) :
       simp only [eval_mul, eval_C]
       field_simp [hL]
 
+/-- Scalar form of the coefficientwise fixed-point equation: at a real `ell`
+the value `a_0 ell` is `ell / log 2`, while for `n ≠ 0` the value `a_n ell` is
+`(log 2)⁻¹` times the value at `ell` of the `n`-th formal-log coefficient of
+`1 + u A(u)`. -/
 theorem dyadicLambertDisplacementCoefficient_eq_logCoeff
     (n : ℕ) (ell : ℝ) :
     dyadicLambertDisplacementCoefficient n ell =

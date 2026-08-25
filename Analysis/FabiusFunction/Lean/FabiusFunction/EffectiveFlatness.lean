@@ -62,6 +62,27 @@ theorem fabiusReal_le_two_mul_mul (F : BoundedFabius) (hF : IsFabius F)
     rw [hxval]
     nlinarith [fabiusReal_nonneg F (2 * c)]
 
+/-- The self-improving estimate `F(x) ≤ 2x F(2x)` holds on the whole half line,
+with no upper restriction on `x`.
+
+The hypothesis `x ≤ 1/2` in `fabiusReal_le_two_mul_mul` is not needed: past the
+midpoint the estimate is trivially true, because `1 ≤ 2x` there and `F` is
+monotone and nonnegative, so `F(x) ≤ F(2x) ≤ 2x F(2x)`.  Only the range
+`0 ≤ x ≤ 1/2` requires the mean value theorem.
+
+`fabiusReal_le_two_mul_mul` is kept unchanged as the half-interval form, and
+this statement is proved from it rather than the other way round, so that the
+existing declaration and its consumers are untouched. -/
+theorem fabiusReal_le_two_mul_mul_of_nonneg (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx0 : 0 ≤ x) :
+    fabiusReal F x ≤ 2 * x * fabiusReal F (2 * x) := by
+  rcases le_or_gt x (1 / 2) with hx | hx
+  · exact fabiusReal_le_two_mul_mul F hF hx0 hx
+  · have hmono : fabiusReal F x ≤ fabiusReal F (2 * x) :=
+      fabius_monotone F hF (show x ≤ 2 * x by linarith)
+    have hnn : 0 ≤ fabiusReal F (2 * x) := fabiusReal_nonneg F (2 * x)
+    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 2 * x - 1) hnn]
+
 /-- Effective super-exponential flatness at the origin: on the dyadic scale
 `2^n x ≤ 1` the Fabius function is dominated by `2^C(n+1,2) x^n`. -/
 theorem fabiusReal_le_two_pow_mul_pow (F : BoundedFabius) (hF : IsFabius F)

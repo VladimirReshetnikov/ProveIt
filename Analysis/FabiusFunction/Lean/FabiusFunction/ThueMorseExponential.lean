@@ -93,19 +93,10 @@ does not change this leading-degree value. -/
 theorem thueMorseCenteredPowerSum_self (k : ℕ) :
     thueMorseCenteredPowerSum k k =
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  let p : Polynomial ℚ :=
-    (Polynomial.X + Polynomial.C (-(2 : ℚ) ^ k)) ^ k
-  have hp : p.natDegree ≤ k := by
-    dsimp [p]
-    rw [Polynomial.natDegree_pow_X_add_C]
-  have h := thueMorse_polynomial_sum_eq_coeff k p hp
-  have hcoeff : p.coeff k = 1 := by
-    dsimp [p]
-    rw [Polynomial.coeff_X_add_C_pow]
-    simp
-  rw [hcoeff, one_mul] at h
+  have hfirst := thueMorse_affine_power_sum_self k
+    (-(2 : ℚ) ^ k) 1
   rw [thueMorseCenteredPowerSum]
-  simpa [p, sub_eq_add_neg] using h
+  convert hfirst using 1 <;> ring
 
 /-- The finite exponential generating series before removing its forced
 zero of order `k`. -/
@@ -265,19 +256,12 @@ nonzero Thue--Morse power sum unchanged. -/
 theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
     thueMorseTranslatedPowerSum c k k =
       (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
-  let p : Polynomial ℚ :=
-    (Polynomial.X + Polynomial.C (-(2 : ℚ) ^ k + c)) ^ k
-  have hp : p.natDegree ≤ k := by
-    dsimp [p]
-    rw [Polynomial.natDegree_pow_X_add_C]
-  have h := thueMorse_polynomial_sum_eq_coeff k p hp
-  have hcoeff : p.coeff k = 1 := by
-    dsimp [p]
-    rw [Polynomial.coeff_X_add_C_pow]
-    simp
-  rw [hcoeff, one_mul] at h
+  have hfirst := thueMorse_affine_power_sum_self k
+    (-(2 : ℚ) ^ k + c) 1
   rw [thueMorseTranslatedPowerSum]
-  simpa [p, sub_eq_add_neg, add_assoc] using h
+  simpa only [one_mul, mul_one, one_pow, sub_eq_add_neg, add_comm, add_left_comm,
+    add_assoc]
+    using hfirst
 
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries

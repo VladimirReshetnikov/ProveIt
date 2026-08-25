@@ -22,6 +22,10 @@ namespace Fabius
 
 open Polynomial
 
+/-- Below the window length `L`, multiplying by `geometricPolynomial L`
+replaces the coefficient sequence of `p` by its prefix sums.  This is the
+low-index input to the unimodality analysis of the coefficients of
+`approximationPolynomial (k + 1)`. -/
 theorem coeff_mul_geometric_of_lt (p : Polynomial ℕ) {L r : ℕ} (hr : r < L) :
     (p * geometricPolynomial L).coeff r = ∑ i ∈ range (r + 1), p.coeff i := by
   rw [coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
@@ -30,6 +34,9 @@ theorem coeff_mul_geometric_of_lt (p : Polynomial ℕ) {L r : ℕ} (hr : r < L) 
   rw [geometricPolynomial_coeff, if_pos (by omega)]
   simp
 
+/-- Sliding-window form of the same product, valid once the index `r` has
+reached `p.natDegree`: only the coefficients `p.coeff i` with `r - i < L`
+contribute.  High-index counterpart of `coeff_mul_geometric_of_lt`. -/
 theorem coeff_mul_geometric_of_natDegree_le (p : Polynomial ℕ) {L r : ℕ}
     (hr : p.natDegree ≤ r) :
     (p * geometricPolynomial L).coeff r =
@@ -46,12 +53,19 @@ theorem coeff_mul_geometric_of_natDegree_le (p : Polynomial ℕ) {L r : ℕ}
     rw [Polynomial.coeff_eq_zero_of_natDegree_lt hi]
     simp
 
+/-- On indices below the window length `L` the coefficients of
+`p * geometricPolynomial L` are nondecreasing: `r ≤ s < L` forces the `r`-th
+coefficient to be at most the `s`-th.  This is the rising half of the
+unimodal coefficient profile of `approximationPolynomial (k + 1)`. -/
 theorem coeff_mul_geometric_monotone_before (p : Polynomial ℕ) {L r s : ℕ}
     (hrs : r ≤ s) (hs : s < L) :
     (p * geometricPolynomial L).coeff r ≤ (p * geometricPolynomial L).coeff s := by
   rw [coeff_mul_geometric_of_lt p (hrs.trans_lt hs), coeff_mul_geometric_of_lt p hs]
   exact Finset.sum_le_sum_of_subset (range_mono (Nat.succ_le_succ hrs))
 
+/-- On indices at or beyond `p.natDegree` the coefficients of
+`p * geometricPolynomial L` are nonincreasing.  This is the falling half of
+the unimodal coefficient profile of `approximationPolynomial (k + 1)`. -/
 theorem coeff_mul_geometric_antitone_after (p : Polynomial ℕ) {L r s : ℕ}
     (hdegree : p.natDegree ≤ r) (hrs : r ≤ s) :
     (p * geometricPolynomial L).coeff s ≤ (p * geometricPolynomial L).coeff r := by
@@ -64,6 +78,9 @@ theorem coeff_mul_geometric_antitone_after (p : Polynomial ℕ) {L r s : ℕ}
   · rw [if_neg hs]
     simp
 
+/-- On the plateau `p.natDegree ≤ r < L` every coefficient of
+`p * geometricPolynomial L` equals `p.eval 1`.  This fixes the common plateau
+height that `stepApproximant_apply_zero` reads off at the origin. -/
 theorem coeff_mul_geometric_eq_eval_one (p : Polynomial ℕ) {L r : ℕ}
     (hdegree : p.natDegree ≤ r) (hrL : r < L) :
     (p * geometricPolynomial L).coeff r = p.eval 1 := by
@@ -75,6 +92,9 @@ theorem coeff_mul_geometric_eq_eval_one (p : Polynomial ℕ) {L r : ℕ}
   have hi : p.natDegree < i := by simpa using hinat
   exact Polynomial.coeff_eq_zero_of_natDegree_lt hi
 
+/-- No coefficient of `approximationPolynomial (k + 1)` exceeds the plateau
+value `(approximationPolynomial k).eval 1`.  This is the coefficient bound
+behind the global height bound `stepApproximant_le_one`. -/
 theorem approximationPolynomial_succ_coeff_le_eval_one (k m : ℕ) :
     (approximationPolynomial (k + 1)).coeff m ≤
       (approximationPolynomial k).eval 1 := by
@@ -108,6 +128,11 @@ theorem approximationPolynomial_succ_coeff_le_eval_one (k m : ℕ) :
           have h := approximationDegree_eq k
           omega)
 
+/-- For `a < b < c` the half-endpoint indicators of `[a,b]` and `[b,c]` add
+to the half-endpoint indicator of `[a,c]`: the two halves at the shared
+endpoint `b` combine into a full `1`.  This additivity is what the
+half-endpoint convention buys, and it drives every telescoping and Abel
+summation below. -/
 theorem halfEndpointIntervalIndicator_add_adjacent {a b c : ℝ}
     (hab : a < b) (hbc : b < c) (x : ℝ) :
     halfEndpointIntervalIndicator a b x + halfEndpointIntervalIndicator b c x =
@@ -122,6 +147,9 @@ theorem halfEndpointIntervalIndicator_add_adjacent {a b c : ℝ}
   push_cast
   ring
 
+/-- At a fixed level `n` the left endpoints `stepIntervalLeft n m` are
+strictly increasing in the cell index `m`, so the histogram cells of
+`φ_n` are laid out in order. -/
 theorem stepIntervalLeft_strictMono (n : ℕ) : StrictMono (stepIntervalLeft n) := by
   intro a b hab
   unfold stepIntervalLeft
@@ -130,6 +158,9 @@ theorem stepIntervalLeft_strictMono (n : ℕ) : StrictMono (stepIntervalLeft n) 
   apply (div_lt_div_iff_of_pos_right hden).2
   linarith
 
+/-- For `a < b`, the half-endpoint indicator of `[a,b]` is monotone on the
+open ray `Iio b`.  The point `b` must be excluded: the indicator falls back
+to `1/2` there. -/
 theorem halfEndpointIntervalIndicator_monotoneOn_Iio_right {a b : ℝ}
     (_hab : a < b) :
     MonotoneOn (halfEndpointIntervalIndicator a b) (Iio b) := by
@@ -137,6 +168,9 @@ theorem halfEndpointIntervalIndicator_monotoneOn_Iio_right {a b : ℝ}
   unfold halfEndpointIntervalIndicator
   split_ifs <;> grind
 
+/-- For `a < b`, the half-endpoint indicator of `[a,b]` is antitone on the
+open ray `Ioi a`.  The point `a` must be excluded: the indicator is only
+`1/2` there. -/
 theorem halfEndpointIntervalIndicator_antitoneOn_Ioi_left {a b : ℝ}
     (_hab : a < b) :
     AntitoneOn (halfEndpointIntervalIndicator a b) (Ioi a) := by
@@ -144,12 +178,16 @@ theorem halfEndpointIntervalIndicator_antitoneOn_Ioi_left {a b : ℝ}
   unfold halfEndpointIntervalIndicator
   split_ifs <;> grind
 
+/-- The half-endpoint indicator of `[a,b]` vanishes strictly to the left of
+`a`. -/
 theorem halfEndpointIntervalIndicator_eq_zero_of_lt_left {a b x : ℝ} (hab : a < b)
     (hx : x < a) :
     halfEndpointIntervalIndicator a b x = 0 := by
   unfold halfEndpointIntervalIndicator
   split_ifs <;> grind
 
+/-- The half-endpoint indicator of `[a,b]` vanishes strictly to the right of
+`b`. -/
 theorem halfEndpointIntervalIndicator_eq_zero_of_right_lt {a b x : ℝ} (hab : a < b)
     (hx : b < x) :
     halfEndpointIntervalIndicator a b x = 0 := by
@@ -221,11 +259,18 @@ theorem support_stepApproximant_subset (n : ℕ) :
   · by_contra hright
     exact hx (stepApproximant_eq_zero_of_right_support_lt n (lt_of_not_ge hright))
 
+/-- The half-endpoint indicator never exceeds `1`.  No ordering of `a` and
+`b` is assumed. -/
 theorem halfEndpointIntervalIndicator_le_one (a b x : ℝ) :
     halfEndpointIntervalIndicator a b x ≤ 1 := by
   unfold halfEndpointIntervalIndicator
   split_ifs <;> norm_num
 
+/-- Telescoping over consecutive cells: for `j < N` the level-`n` cell
+indicators with index in `Ico j N` sum to the single half-endpoint indicator
+of `[stepIntervalLeft n j, stepIntervalLeft n N]`.  It is instantiated at
+the whole cell block in `stepApproximant_le_one` and at the plateau block
+`Ico (approximationDegree k) (2 ^ (k + 1))` in `stepApproximant_apply_zero`. -/
 theorem sum_halfEndpointIntervalIndicator_Ico {n j N : ℕ} (hjN : j < N) (x : ℝ) :
     (∑ m ∈ Ico j N,
         halfEndpointIntervalIndicator (stepIntervalLeft n m)
@@ -245,6 +290,12 @@ theorem sum_halfEndpointIntervalIndicator_Ico {n j N : ℕ} (hjN : j < N) (x : �
           (stepIntervalLeft_strictMono n hjlt)
           (stepIntervalLeft_strictMono n (Nat.lt_succ_self N)) x
 
+/-- Abel summation, tail form, for a weighted sum of level-`n` cell
+indicators with `0 < N`: the sum over `range N` equals `w 0` times the
+indicator of the whole block `[stepIntervalLeft n 0, stepIntervalLeft n N]`
+plus the increments `w j - w (j - 1)` against the tail blocks
+`[stepIntervalLeft n j, stepIntervalLeft n N]`.  This is the rewriting used
+by `weighted_step_sum_monotoneOn_Iio`. -/
 theorem weighted_step_sum_eq_tail_sum (n N : ℕ) (hN : 0 < N)
     (w : ℕ → ℝ) (x : ℝ) :
     (∑ m ∈ range N, w m *
@@ -305,6 +356,11 @@ theorem weighted_step_sum_eq_tail_sum (n N : ℕ) (hN : 0 < N)
         rw [stepIntervalRight_eq_left_succ]
         ring
 
+/-- Abel summation, prefix form, for the same weighted sum with `0 < N`: it
+equals `w (N - 1)` times the indicator of the whole block plus the decrements
+`w j - w (j + 1)` against the prefix blocks
+`[stepIntervalLeft n 0, stepIntervalLeft n (j + 1)]`.  This is the rewriting
+used by `weighted_step_sum_antitoneOn_Ioi`. -/
 theorem weighted_step_sum_eq_prefix_sum (n N : ℕ) (hN : 0 < N)
     (w : ℕ → ℝ) (x : ℝ) :
     (∑ m ∈ range N, w m *
@@ -345,6 +401,12 @@ theorem weighted_step_sum_eq_prefix_sum (n N : ℕ) (hN : 0 < N)
           stepIntervalRight_eq_left_succ]
         ring
 
+/-- A weighted sum of level-`n` cell indicators is monotone on `Iio 0` when
+the weights are nonnegative, the increments `w (j - 1) ≤ w j` hold for
+`1 ≤ j < N` below the cut index `J`, and both `stepIntervalLeft n J` and
+`stepIntervalLeft n N` are nonnegative, so that the cells whose weights may
+fall lie to the right of `0`.  Used with `J = 2 ^ (k + 1)` in
+`stepApproximant_monotoneOn_Iio`. -/
 theorem weighted_step_sum_monotoneOn_Iio (n N J : ℕ) (hN : 0 < N)
     (w : ℕ → ℝ) (hw_nonneg : ∀ j, 0 ≤ w j)
     (hw_mono : ∀ j ∈ Finset.Ico 1 N, j < J → w (j - 1) ≤ w j)
@@ -385,6 +447,11 @@ theorem weighted_step_sum_monotoneOn_Iio (n N J : ℕ) (hN : 0 < N)
           (stepIntervalLeft_strictMono n (Finset.mem_Ico.mp hj).2)
           (lt_of_lt_of_le hy (hcut.trans hb))]
 
+/-- Mirror of `weighted_step_sum_monotoneOn_Iio`: the weighted sum is
+antitone on `Ioi 0` when the weights are nonnegative, the decrements
+`w (j + 1) ≤ w j` hold for `J ≤ j < N - 1`, and both `stepIntervalLeft n J`
+and `stepIntervalLeft n 0` are nonpositive.  Used with
+`J = approximationDegree k` in `stepApproximant_antitoneOn_Ioi`. -/
 theorem weighted_step_sum_antitoneOn_Ioi (n N J : ℕ) (hN : 0 < N)
     (w : ℕ → ℝ) (hw_nonneg : ∀ j, 0 ≤ w j)
     (hw_anti : ∀ j ∈ Finset.Ico 0 (N - 1), J ≤ j → w (j + 1) ≤ w j)
@@ -425,6 +492,10 @@ theorem weighted_step_sum_antitoneOn_Ioi (n N J : ℕ) (hN : 0 < N)
           (stepIntervalLeft_strictMono n (by omega))
           (lt_of_le_of_lt (hb.trans hcut) hy)]
 
+/-- The step approximant `φ_n` is monotone on the negative half-line
+`Iio 0`, for every `n`.  Together with `stepApproximant_antitoneOn_Ioi` this
+supplies the unimodality hypotheses of
+`tendsto_of_unimodal_of_intervalIntegral_tendsto`. -/
 theorem stepApproximant_monotoneOn_Iio (n : ℕ) :
     MonotoneOn (stepApproximant n) (Set.Iio 0) := by
   cases n with
@@ -478,6 +549,9 @@ theorem stepApproximant_monotoneOn_Iio (n : ℕ) :
       exact weighted_step_sum_monotoneOn_Iio (k + 1) N L hN w hw_nonneg
         hw_mono hcut hboundary hx hy hxy
 
+/-- The step approximant `φ_n` is antitone on the positive half-line
+`Ioi 0`, for every `n`.  Only the open ray is claimed; `0` itself carries the
+peak value `1` recorded by `stepApproximant_apply_zero`. -/
 theorem stepApproximant_antitoneOn_Ioi (n : ℕ) :
     AntitoneOn (stepApproximant n) (Set.Ioi 0) := by
   cases n with
@@ -532,6 +606,11 @@ theorem stepApproximant_antitoneOn_Ioi (n : ℕ) :
       exact weighted_step_sum_antitoneOn_Ioi (k + 1) N J hN w hw_nonneg
         hw_anti hcut hboundary hx hy hxy
 
+/-- Normalization identity for the height of `φ_(k+1)`: its prefactor
+`2 ^ (k + 1) / 2 ^ (k + 2).choose 2` times the plateau value
+`(approximationPolynomial k).eval 1` is exactly `1`.  This is the closing
+step of `stepApproximant_le_one`; `stepApproximant_apply_zero` re-derives the
+same identity inline instead of invoking this lemma. -/
 theorem stepScale_mul_previous_eval_one (k : ℕ) :
     (2 : ℝ) ^ (k + 1) / (2 : ℝ) ^ ((k + 2).choose 2) *
       (((approximationPolynomial k).eval 1 : ℕ) : ℝ) = 1 := by
@@ -547,6 +626,9 @@ theorem stepScale_mul_previous_eval_one (k : ℕ) :
   rw [pow_add, pow_succ]
   ring
 
+/-- Every step approximant is bounded above by `1` at every real point.
+With `stepApproximant_nonneg` this gives `stepApproximant_mem_Icc`, and it
+discharges the hypothesis of `polynomialAtomMass_le_cellWidth`. -/
 theorem stepApproximant_le_one (n : ℕ) (x : ℝ) : stepApproximant n x ≤ 1 := by
   cases n with
   | zero =>

@@ -14,6 +14,8 @@ set_option autoImplicit false
 
 namespace Fabius
 
+/-- Equation (32) vanishes at numerator `0`, where its sum over `Fin a` is
+empty.  Used in `DyadicClosedForm`, `DyadicAnalytic`, and `GlobalDyadic`. -/
 @[simp]
 theorem fabiusDyadic_arg_zero (n : ℕ) : fabiusDyadic n 0 = 0 := by
   simp [fabiusDyadic]
@@ -70,6 +72,8 @@ lemma halfMomentFabiusValue_succ (n : ℕ) :
       push_cast
       ring
 
+/-- The table for exponent `n` holds exactly `n + 1` entries, one for each
+index from `0` to `n`. -/
 @[simp]
 lemma fabiusInversePowTwoTable_size (n : ℕ) :
     (fabiusInversePowTwoTable n).size = n + 1 := by
@@ -151,6 +155,8 @@ lemma fabiusTaylorHorner_go_eq_sum
 
 /-! ## Independence of dyadic representation -/
 
+/-- Appending the next entry does not disturb the earlier ones: for `k ≤ n`
+the optional lookups at index `k` in the tables for `n + 1` and `n` agree. -/
 lemma fabiusInversePowTwoTable_succ_get (n k : ℕ) (hk : k ≤ n) :
     (fabiusInversePowTwoTable (n + 1))[k]? =
       (fabiusInversePowTwoTable n)[k]? := by
@@ -158,6 +164,9 @@ lemma fabiusInversePowTwoTable_succ_get (n k : ℕ) (hk : k ≤ n) :
   rw [fabiusInversePowTwoTable]
   simp [Array.getElem?_push, fabiusInversePowTwoTable_size, hk, hne]
 
+/-- Appending one entry to the inverse-power table leaves each Horner loop
+step unchanged, provided the requested `order` fits in the smaller table
+(`order ≤ n`) and the loop counter satisfies `m ≤ order`. -/
 lemma fabiusTaylorHorner_go_table_succ (n order m : ℕ) (horder : order ≤ n)
     (hm : m ≤ order) (offset : ℚ) :
     fabiusTaylorHorner.go (fabiusInversePowTwoTable (n + 1)) order offset m =
@@ -169,6 +178,9 @@ lemma fabiusTaylorHorner_go_table_succ (n order m : ℕ) (horder : order ≤ n)
       unfold fabiusInversePowTwoTableValue
       rw [fabiusInversePowTwoTable_succ_get n (m + 1) (by omega)]
 
+/-- Appending one entry to the inverse-power table leaves the whole Taylor
+polynomial unchanged, provided the requested `order` already fits in the
+smaller table. -/
 lemma fabiusTaylorHorner_table_succ (n order : ℕ) (horder : order ≤ n)
     (offset : ℚ) :
     fabiusTaylorHorner (fabiusInversePowTwoTable (n + 1)) order offset =
@@ -337,6 +349,9 @@ theorem extendedFabiusDyadicValue_refine (n : ℕ) (a : ℤ) :
       rw [if_neg hres, if_neg htwice, ← Nat.mul_sub_left_distrib,
         fabiusDyadicUnit_refine_direct]
 
+/-- Iterated form of `fabiusDyadicValue_refine`: multiplying the numerator by
+`2 ^ k` while raising the exponent by `k` leaves the bounded value unchanged.
+This is the step used by `fabiusDyadicValue_eq_of_rat_eq` below. -/
 theorem fabiusDyadicValue_refine_iter (n k : ℕ) (a : ℤ) :
     fabiusDyadicValue (n + k) ((2 : ℤ) ^ k * a) = fabiusDyadicValue n a := by
   induction k with
@@ -349,6 +364,10 @@ theorem fabiusDyadicValue_refine_iter (n k : ℕ) (a : ℤ) :
             fabiusDyadicValue_refine (n + k) ((2 : ℤ) ^ k * a)
         _ = fabiusDyadicValue n a := ih
 
+/-- Iterated form of `extendedFabiusDyadicValue_refine`: multiplying the
+numerator by `2 ^ k` while raising the exponent by `k` leaves the global
+value unchanged.  This is the step used by
+`extendedFabiusDyadicValue_eq_of_rat_eq` below. -/
 theorem extendedFabiusDyadicValue_refine_iter (n k : ℕ) (a : ℤ) :
     extendedFabiusDyadicValue (n + k) ((2 : ℤ) ^ k * a) =
       extendedFabiusDyadicValue n a := by
@@ -476,6 +495,14 @@ def FabiusDyadicHasBitRecurrence (values : Array ℚ) (n : ℕ) : Prop :=
     fabiusDyadic n a =
       fabiusTaylorHorner values order offset - fabiusDyadic n remainder
 
+/--
+Assuming the single-step bit recurrence for `values` at exponent `n`, strong
+induction on the numerator shows that the bit recursion agrees with equation
+(32) at every numerator `a < 2 ^ n`.
+
+The hypothesis is discharged for the precomputed table by
+`fabiusInversePowTwoTable_hasBitRecurrence` in `DyadicClosedForm`.
+-/
 theorem fabiusDyadicUnitAux_eq_of_bitRecurrence
     (values : Array ℚ) (n : ℕ)
     (hrec : FabiusDyadicHasBitRecurrence values n) :
@@ -508,6 +535,13 @@ theorem fabiusDyadicUnitAux_eq_of_bitRecurrence
           rw [ih remainder hrem_lt hrem_den]
           exact (hrec (a + 1) hpos ha.le).symm
 
+/--
+The same recurrence hypothesis pins the right endpoint of the unit grid:
+`fabiusDyadic n (2 ^ n) = 1`.
+
+At `a = 2 ^ n` the leading exponent is `n`, so the recurrence contributes the
+constant Horner term `1` minus the value at numerator `0`.
+-/
 theorem fabiusDyadic_unit_endpoint_of_bitRecurrence
     (values : Array ℚ) (n : ℕ)
     (hrec : FabiusDyadicHasBitRecurrence values n) :

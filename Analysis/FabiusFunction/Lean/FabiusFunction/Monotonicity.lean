@@ -126,14 +126,6 @@ theorem fabius_zero_double (F : BoundedFabius) (hF : IsFabius F)
   rw [(hF.hasDerivAt x ⟨hx0, hxhalf⟩).deriv] at hderiv
   linarith
 
-private theorem index_le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [pow_succ]
-      have hone : 1 ≤ 2 ^ n := Nat.one_le_two_pow
-      omega
-
 /-- The Fabius function is strictly positive at every positive argument. -/
 theorem fabius_pos_of_pos (F : BoundedFabius) (hF : IsFabius F)
     {x : ℝ} (hx : 0 < x) : 0 < fabiusReal F x := by
@@ -142,7 +134,7 @@ theorem fabius_pos_of_pos (F : BoundedFabius) (hF : IsFabius F)
     le_antisymm (le_of_not_gt hnot) (fabiusReal_nonneg F x)
   obtain ⟨N, hN⟩ := exists_nat_gt ((1 / 2 : ℝ) / x)
   have hNle : (N : ℝ) ≤ (2 : ℝ) ^ N := by
-    exact_mod_cast index_le_two_pow N
+    exact_mod_cast (Nat.lt_two_pow_self (n := N)).le
   have hex : ∃ n : ℕ, (1 / 2 : ℝ) ≤ (2 : ℝ) ^ n * x := by
     refine ⟨N, ?_⟩
     have : (1 / 2 : ℝ) < (N : ℝ) * x := by

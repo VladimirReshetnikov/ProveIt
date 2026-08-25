@@ -1,6 +1,64 @@
 import FabiusFunction.NegativeLaplaceVerticalAllOrderBound
 import FabiusFunction.NegativeLaplaceAllOrderJets
 
+/-!
+# Vertical logarithmic jets as ordinary negative-Laplace jets
+
+Write `Λ = negativeLaplaceLog` for the logarithm of the canonical negative
+Laplace product, and `L_r = negativeLaplaceVerticalLog F r` for the
+branch-safe logarithm of the negative-Laplace transform restricted to the
+vertical line `s = r * (1 + θ * I)`, normalized by `L_r 0 = 0`.  That line is
+the affine image `θ ↦ r + (r * I) * θ` of the real axis, so the chain rule
+predicts
+
+`L_r⁽ⁿ⁺¹⁾(0) = (r * I) ^ (n + 1) * Λ⁽ⁿ⁺¹⁾(r)`,  for `r > 0`.
+
+Proving that identity is the whole content of this module.  It is what lets
+the saddle machinery trade the vertical Taylor coefficients of `L_r` for the
+exact ordinary jets of `Λ` -- linear drift plus periodic jet plus forward
+tail -- supplied by `FabiusFunction.NegativeLaplaceAllOrderJets`.  It is not
+a one-line chain rule in Lean: `iteratedDeriv` over `ℝ` sees only the
+restriction of a function to the real line, so a real jet cannot be pushed
+through a complex affine substitution directly.  The work is therefore two
+holomorphic continuations of the first logarithmic derivative -- one in the
+ordinary variable on the open right half-plane `{0 < re z}`, one in the
+vertical parameter on the tilted half-plane `0 < (r + (r * I) * z).re` --
+after which `iteratedDeriv_comp_ofReal_eq_of_differentiableOn` of
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound` carries each iterated
+derivative across the real embedding.
+
+## Main results
+
+* `negativeLaplaceComplexLogFirst` -- holomorphic `Λ'`, namely
+  `-(G'(-z) / G(-z))` for the complex generating function `G`, together with
+  `differentiableOn_negativeLaplaceComplexLogFirst` and
+  `negativeLaplaceComplexLogFirst_ofReal`, which identifies its restriction
+  to the positive real axis with `negativeLaplaceLogOrdinaryDeriv 1`.
+* `negativeLaplaceComplexVerticalFirst` -- its pullback
+  `(r * I) * Λ'(r + (r * I) * z)` along the vertical line, with
+  `negativeLaplaceComplexVerticalFirst_ofReal` matching it against
+  `negativeLaplaceVerticalLogFirst` on real arguments.
+* `iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary` -- the jet
+  identity displayed above, and the only declaration downstream code uses.
+
+Every result except `negativeLaplaceComplexVerticalFirst_ofReal`, which is a
+definitional rearrangement, assumes `IsFabius F`, for holomorphy of `G` and
+for `G(-z) ≠ 0` on `{0 < re z}`.  The identity is stated only in orders
+`n + 1`; order `0` is false as written, since `L_r 0 = 0` while `Λ r` is
+not, and the consumer dispatches that case separately with
+`negativeLaplaceVerticalLog_zero`.  The chain-rule factor carries a plus
+sign: the minus signs visible in
+`negativeLaplaceComplexLogFirst` and in `negativeLaplaceVerticalLogFirst`
+both come from the negative-Laplace convention `s ↦ G(-s)` and cancel.  The
+supporting differentiability and iterated-derivative lemmas for the vertical
+continuation are `private` and are phrased with the unsimplified half-plane
+predicate; only the final theorem assumes `0 < r`, under which that predicate
+reads `im z < 1`.
+
+The sole consumer is `FabiusFunction.FabiusSaddleExponentAllOrders`, inside
+`verticalTaylorSum_sub_logTaylor_eq_jetSum`.
+-/
+
 set_option autoImplicit false
 
 open Filter Set
@@ -15,6 +73,10 @@ noncomputable def negativeLaplaceComplexLogFirst
   -(iteratedDeriv 1 (complexGeneratingFunction F) (-z) /
     complexGeneratingFunction F (-z))
 
+/-- `negativeLaplaceComplexLogFirst F` is complex differentiable on the open
+right half-plane `{z | 0 < z.re}`.  The hypothesis `IsFabius F` supplies
+both the holomorphy of the complex generating function and its nonvanishing
+at `-z` there; nothing is claimed off that half-plane. -/
 theorem differentiableOn_negativeLaplaceComplexLogFirst
     (F : BoundedFabius) (hF : IsFabius F) :
     DifferentiableOn ℂ (negativeLaplaceComplexLogFirst F)
@@ -37,6 +99,10 @@ theorem differentiableOn_negativeLaplaceComplexLogFirst
     complexGeneratingFunction_neg_ne_zero F hF hz
   exact (hnum.div hden hdenNe).neg.differentiableAt.differentiableWithinAt
 
+/-- On the positive real axis the holomorphic logarithmic derivative agrees
+with the ordinary derivative sequence: for `s > 0` and `IsFabius F`,
+`negativeLaplaceComplexLogFirst F s` is the cast into `ℂ` of
+`negativeLaplaceLogOrdinaryDeriv 1 s`.  Nothing is claimed for `s ≤ 0`. -/
 theorem negativeLaplaceComplexLogFirst_ofReal
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
     negativeLaplaceComplexLogFirst F s =

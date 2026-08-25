@@ -628,45 +628,6 @@ noncomputable def qBinomialThueMorseDyadicFormula (m n : ℕ) : ℚ :=
           ((4 : ℚ) ^ k.choose 2 * ((n + k).factorial : ℚ)) *
         thueMorseDyadicNumeratorPowerSum m k (n + k)
 
-private theorem thueMorseSign_mul_pow_two_add
-    (k h r : ℕ) (hr : r < 2 ^ k) :
-    thueMorseSign (h * 2 ^ k + r) =
-      thueMorseSign h * thueMorseSign r := by
-  induction k generalizing h r with
-  | zero =>
-      have : r = 0 := by omega
-      subst r
-      norm_num [thueMorseSign, binaryWeight]
-  | succ k ih =>
-      rcases r.even_or_odd with ⟨r, rfl⟩ | ⟨r, rfl⟩
-      · have hr' : r < 2 ^ k := by
-          rw [pow_succ] at hr
-          omega
-        rw [pow_succ]
-        rw [← two_mul r]
-        rw [show h * (2 ^ k * 2) + 2 * r =
-          2 * (h * 2 ^ k + r) by ring]
-        rw [thueMorseSign_two_mul, ih h r hr', thueMorseSign_two_mul]
-      · have hr' : r < 2 ^ k := by
-          rw [pow_succ] at hr
-          omega
-        rw [pow_succ]
-        rw [show h * (2 ^ k * 2) + (2 * r + 1) =
-          2 * (h * 2 ^ k + r) + 1 by ring]
-        rw [thueMorseSign_two_mul_add_one, ih h r hr',
-          thueMorseSign_two_mul_add_one]
-        ring
-
-private theorem sum_range_mul_blocks
-    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
-    (∑ j ∈ Finset.range (m * p), f j) =
-      ∑ h ∈ Finset.range m, ∑ r ∈ Finset.range p, f (h * p + r) := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      rw [Nat.succ_mul, Finset.sum_range_add, ih,
-        Finset.sum_range_succ]
-
 private noncomputable def dyadicNumeratorPrefixSeries (m : ℕ) :
     PowerSeries ℚ :=
   ∑ h ∈ Finset.range m, (thueMorseSign h : ℚ) •
@@ -707,7 +668,7 @@ private theorem thueMorseDyadicNumeratorPowerSeries_factor
       PowerSeries.rescale (dyadicNode k) (dyadicNumeratorPrefixSeries m) *
         thueMorseCenteredPowerSeries k := by
   rw [thueMorseDyadicNumeratorPowerSeries,
-    sum_range_mul_blocks (fun r => (thueMorseSign r : ℚ) •
+    sum_range_block_decomposition (fun r => (thueMorseSign r : ℚ) •
       PowerSeries.rescale
         ((r : ℚ) - (m : ℚ) * (2 : ℚ) ^ k)
         (PowerSeries.exp ℚ)) m (2 ^ k)]
@@ -724,7 +685,7 @@ private theorem thueMorseDyadicNumeratorPowerSeries_factor
   apply Finset.sum_congr rfl
   intro r hr
   have hrlt : r < 2 ^ k := Finset.mem_range.mp hr
-  rw [thueMorseSign_mul_pow_two_add k h r hrlt]
+  rw [thueMorseSign_block_concat k h r hrlt]
   push_cast
   rw [rescale_smul_rat, PowerSeries.rescale_rescale,
     smul_mul_assoc, mul_smul_comm, smul_smul,

@@ -1,5 +1,69 @@
 import FabiusFunction.FabiusSaddleCentral
 
+/-!
+# Gaussian reference tails outside the central saddle interval
+
+The Fabius saddle argument compares a rescaled saddle kernel `K` against the
+reference
+
+`exp (-v ^ 2 / 2) * (1 + (a * v + c * v ^ 3) * I)`,
+
+a standard Gaussian plus the odd linear-plus-cubic correction
+`oddCorrection a c` of `FabiusFunction.FabiusSaddleCentral`.  That module
+bounds the `L¹` distance between kernel and reference on the central interval
+`[-A, A]`.  This module supplies the complementary half, the integral over
+`(Icc (-A) A)ᶜ`, so that the two estimates add up to a bound on the whole
+line.
+
+Every tail estimate here goes through one crude majorant: for `4 ≤ A` and
+`A ≤ |v|` one has `-v ^ 2 / 2 + |v| ≤ -(A / 4) * |v|`, which turns a Gaussian
+times a power into a pure exponential and yields
+
+`∫_{|v| > A} exp (-v ^ 2 / 2) * |v| ^ k ≤ 8 * k! * exp (-A ^ 2 / 4) / A`.
+
+At the standard radius `A = fabiusSaddleCentralRadius b = sqrt (32 * log b)`
+this reads `exp (-A ^ 2 / 4) = b⁻¹ ^ 8`, comfortably past the `O(1 / b)` the
+saddle argument asks for.  The slack is deliberate: a single radius then
+serves the Gaussian and both odd coefficients at once.
+
+## Main results
+
+* `integral_gaussian_abs_pow_compl_Icc_le` -- the explicit `k`-th absolute
+  moment tail `8 * k! * exp (-A ^ 2 / 4) / A`, for `4 ≤ A`.  Also reused by
+  `FabiusFunction.GaussianPolynomialTail` for arbitrary-order polynomial
+  references.
+* `integral_norm_gaussian_add_oddCorrection_compl_Icc_le` -- the same estimate
+  assembled for the Gaussian-plus-odd reference, with explicit constants `8`,
+  `8 * |a|` and `48 * |c|` multiplying `exp (-A ^ 2 / 4) / A`.
+* `integral_norm_gaussian_add_oddCorrection_standardRadius_isBigO` -- along a
+  filter on which `b` tends to infinity and the coefficients obey
+  `b * a ^ 2 ≤ Clinear ^ 2` and `b * c ^ 2 ≤ Ccubic ^ 2`, the reference tail at
+  the standard radius is `O(1 / b)`.
+* `integral_norm_sub_gaussian_add_oddCorrection_standardRadius_isBigO` -- the
+  form consumers use: if the kernel `K` also has an `O(1 / b)` tail, then so
+  does `K` minus the reference.  This is the outer-region input that
+  `FabiusFunction.FabiusSaddleCentralLambert` combines with the central
+  estimate to reach the normalized saddle kernel mass asymptotics.
+
+The remaining declarations are private helpers: integrability of
+`exp (-v ^ 2 / 2) * |v| ^ k`, the pointwise exponential majorant, the
+evaluation of `exp (-A ^ 2 / 4)` at the standard radius, and the passage from
+`b * a ^ 2 ≤ C ^ 2` to `|a| ≤ C / sqrt b`.
+
+## Conventions and caveats
+
+The hypothesis `4 ≤ A` is used in every bound and is not cosmetic; the
+exponential majorant fails for small `A`.  The constants are sufficient, not
+sharp: the true Gaussian tail decays like `exp (-A ^ 2 / 2)`, and the weaker
+`exp (-A ^ 2 / 4)` is the price of absorbing the polynomial factor into the
+exponential.  Coefficient bounds are phrased as `b * a ^ 2 ≤ Clinear ^ 2` to
+match the central saddle theorem, although the proofs here only use the
+weaker consequence `|a| ≤ Clinear`.  The odd correction is kept in the
+reference rather than dropped: it has size `O(1 / sqrt b)`, too large to
+discard at the accuracy sought, and keeping it is free because it integrates
+to zero by oddness over the symmetric central interval.
+-/
+
 set_option autoImplicit false
 
 open Filter Set MeasureTheory Asymptotics
@@ -38,6 +102,13 @@ private lemma integrable_gaussian_abs_pow (k : ℕ) :
     filter_upwards with v
     rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_pos (Real.exp_pos _)]
 
+/-- Explicit `k`th absolute Gaussian moment outside a symmetric interval:
+for `4 ≤ A`, the integral of `exp (-v ^ 2 / 2) * |v| ^ k` over
+`(Icc (-A) A)ᶜ` is at most `8 * k ! * exp (-A ^ 2 / 4) / A`.  The hypothesis
+`4 ≤ A` is used and the exponent `-A ^ 2 / 4` is the price of absorbing the
+factor `|v| ^ k` into the exponential, so the bound is sufficient rather than
+sharp.  Besides this file, `GaussianPolynomialTail` applies it at every
+degree in a polynomial's support. -/
 lemma integral_gaussian_abs_pow_compl_Icc_le
     (k : ℕ) {A : ℝ} (hA : 4 ≤ A) :
     (∫ v in (Icc (-A) A)ᶜ,
@@ -81,6 +152,13 @@ private lemma integrable_gaussian_abs_pow_mul_const (k : ℕ) (c : ℝ) :
       (Real.exp (-(v ^ 2) / 2) * |v| ^ k)) :=
   (integrable_gaussian_abs_pow k).const_mul c
 
+/-- Complementary-tail bound for the Gaussian-plus-odd reference.  For
+`4 ≤ A`, the integral of
+`‖standardGaussian v + oddCorrection a c v‖` over `(Icc (-A) A)ᶜ` is at most
+`8 * exp (-A ^ 2 / 4) / A` plus `|a|` times the same quantity plus `|c|`
+times `48 * exp (-A ^ 2 / 4) / A`.  The three summands come from the
+`k = 0, 1, 3` cases of `integral_gaussian_abs_pow_compl_Icc_le`; the
+constants are sufficient, not sharp. -/
 lemma integral_norm_gaussian_add_oddCorrection_compl_Icc_le
     (a c : ℝ) {A : ℝ} (hA : 4 ≤ A) :
     (∫ v in (Icc (-A) A)ᶜ,

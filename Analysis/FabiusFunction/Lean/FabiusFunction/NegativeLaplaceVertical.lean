@@ -27,12 +27,23 @@ factors.  Taking `N = 2` proves integrability of the natural vertical-line
 kernel `P(-rw) / w` without any unproved analytic hypotheses.
 -/
 
+/-- The elementary factor `(1 - exp (-z)) / z` of the negative dyadic
+product, packaged as the entire function `complexExpm1Div (-z)` so that the
+removable singularity at `z = 0` is filled in with the value `1`. -/
 noncomputable def negativeLaplaceComplexFactor (z : ℂ) : ℂ :=
   complexExpm1Div (-z)
 
+/-- The real version `(1 - exp (-x)) / x` of `negativeLaplaceComplexFactor`,
+written as a raw quotient.  It matches the complex factor only away from the
+origin: at `x = 0` Lean's `0 / 0 = 0` convention gives `0` here, whereas
+`negativeLaplaceComplexFactor 0 = 1`. -/
 noncomputable def negativeLaplaceRealFactor (x : ℝ) : ℝ :=
   (1 - Real.exp (-x)) / x
 
+/-- For `x ≠ 0` the complex factor at a real argument is the cast of the real
+factor.  The hypothesis cannot be dropped: the two definitions disagree at the
+origin.  This is the bridge used to descend the complex dyadic identities to
+the real axis. -/
 lemma negativeLaplaceComplexFactor_ofReal (x : ℝ) (hx : x ≠ 0) :
     negativeLaplaceComplexFactor (x : ℂ) =
       (negativeLaplaceRealFactor x : ℂ) := by
@@ -42,20 +53,31 @@ lemma negativeLaplaceComplexFactor_ofReal (x : ℝ) (hx : x ≠ 0) :
     ring
   · exact neg_ne_zero.mpr (Complex.ofReal_ne_zero.mpr hx)
 
+/-- The real factor is positive on the positive axis.  This supplies the
+nonzero denominators for all the ratio bounds `‖·‖ / real factor` below. -/
 lemma negativeLaplaceRealFactor_pos (x : ℝ) (hx : 0 < x) :
     0 < negativeLaplaceRealFactor x := by
   rw [negativeLaplaceRealFactor]
   exact div_pos (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith))) hx
 
+/-- The hyperbolic-cotangent factor `(1 + exp (-x)) / (1 - exp (-x))`, that
+is `coth (x / 2)`.  It is the price of trading one factor of the negative
+Laplace product for one power of `‖1 + iθ‖` of decay; the finite products of
+these over dyadic scales form `negativeLaplaceMinorArcConstant`. -/
 noncomputable def negativeLaplaceCothFactor (x : ℝ) : ℝ :=
   (1 + Real.exp (-x)) / (1 - Real.exp (-x))
 
+/-- The `coth` factor is positive for `x > 0`.  Used here for
+`negativeLaplaceMinorArcConstant_pos`, and again in `NegativeLaplaceMinorArc`
+when the constant is bounded uniformly in `N`. -/
 lemma negativeLaplaceCothFactor_pos (x : ℝ) (hx : 0 < x) :
     0 < negativeLaplaceCothFactor x := by
   rw [negativeLaplaceCothFactor]
   exact div_pos (by positivity)
     (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith)))
 
+/-- The vertical-line direction `1 + iθ` never vanishes, so its norm is
+positive.  Every division by `‖1 + iθ‖` in this file rests on this. -/
 lemma norm_one_add_mul_I_pos (θ : ℝ) :
     0 < ‖(1 : ℂ) + (θ : ℂ) * Complex.I‖ := by
   rw [norm_pos_iff]
@@ -63,12 +85,18 @@ lemma norm_one_add_mul_I_pos (θ : ℝ) :
   have hre := congrArg Complex.re h
   norm_num at hre
 
+/-- `‖1 + iθ‖ ^ 2 = 1 + θ ^ 2`.  This is what turns the `N = 2` minor-arc
+bound into the integrable Cauchy weight `(1 + θ ^ 2)⁻¹`. -/
 lemma sq_norm_one_add_mul_I (θ : ℝ) :
     ‖(1 : ℂ) + (θ : ℂ) * Complex.I‖ ^ 2 = 1 + θ ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]
   norm_num
   ring
 
+/-- On the ray `x (1 + iθ)` with `x > 0`, the factor has modulus at most
+`(1 + exp (-x)) / (x ‖1 + iθ‖)`.  The numerator is the triangle-inequality
+bound on `‖exp (-x (1 + iθ)) - 1‖`; the gain over the real axis is the single
+power of `‖1 + iθ‖` in the denominator. -/
 theorem norm_negativeLaplaceComplexFactor_vertical_le
     (x θ : ℝ) (hx : 0 < x) :
     ‖negativeLaplaceComplexFactor
@@ -95,6 +123,10 @@ theorem norm_negativeLaplaceComplexFactor_vertical_le
     exact div_le_div_of_nonneg_right hnum (mul_nonneg hx.le (norm_nonneg _))
   · exact neg_ne_zero.mpr (mul_ne_zero hxC hw)
 
+/-- Ratio form of the previous bound, for `x > 0`: the modulus of the factor
+at `x (1 + iθ)`, divided by its real value `negativeLaplaceRealFactor x`, is at
+most `negativeLaplaceCothFactor x / ‖1 + iθ‖`.  One extracted factor buys one
+power of decay in `‖1 + iθ‖` at the cost of one `coth` factor. -/
 theorem norm_negativeLaplaceComplexFactor_vertical_div_le
     (x θ : ℝ) (hx : 0 < x) :
     ‖negativeLaplaceComplexFactor
@@ -112,6 +144,10 @@ theorem norm_negativeLaplaceComplexFactor_vertical_div_le
     (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith))).ne'
   field_simp [he, hnorm.ne']
 
+/-- The integral representation `negativeLaplaceComplexFactor z =
+∫ t in 0..1, exp (-z t)`, valid for every `z`, the case `z = 0` included.
+It is the route to the small-argument estimate
+`norm_negativeLaplaceComplexFactor_sub_one_le`. -/
 theorem negativeLaplaceComplexFactor_eq_integral (z : ℂ) :
     negativeLaplaceComplexFactor z =
       ∫ t in (0 : ℝ)..1, Complex.exp (-z * t) := by
@@ -123,6 +159,10 @@ theorem negativeLaplaceComplexFactor_eq_integral (z : ℂ) :
     rw [integral_exp_mul_complex (c := -z) (neg_ne_zero.mpr hz)]
     norm_num
 
+/-- Small-argument estimate: for `‖z‖ ≤ 1`, the factor deviates from `1` by at
+most `2 ‖z‖`.  The restriction to the closed unit disc is essential.  Applied
+to the dyadic arguments `z / 2 ^ (n + 1)` it gives the geometric majorant that
+makes the product converge. -/
 theorem norm_negativeLaplaceComplexFactor_sub_one_le
     (z : ℂ) (hz : ‖z‖ ≤ 1) :
     ‖negativeLaplaceComplexFactor z - 1‖ ≤ 2 * ‖z‖ := by
@@ -166,21 +206,37 @@ theorem norm_negativeLaplaceComplexFactor_sub_one_le
             _ = 2 * ‖z‖ := by ring)
   simpa using hbound
 
+/-- The `n`-th factor of the canonical dyadic product for
+`complexGeneratingFunction F (-z)`: the elementary factor at the halved
+argument `z / 2 ^ (n + 1)`.  Indexing starts at `n = 0` with the scale `z / 2`,
+hence the exponent `n + 1` rather than `n`. -/
 noncomputable def negativeLaplaceDyadicFactor (z : ℂ) (n : ℕ) : ℂ :=
   negativeLaplaceComplexFactor (z / (2 : ℂ) ^ (n + 1))
 
+/-- The real counterpart of `negativeLaplaceDyadicFactor`, at the scale
+`r / 2 ^ (n + 1)`.  Finite products of these are the normalizing denominators
+in the minor-arc ratio bounds. -/
 noncomputable def negativeLaplaceRealDyadicFactor (r : ℝ) (n : ℕ) : ℝ :=
   negativeLaplaceRealFactor (r / (2 : ℝ) ^ (n + 1))
 
+/-- The minor-arc constant `C(r, N)`: the product of the `coth` factors at the
+first `N` dyadic scales `r / 2 ^ (n + 1)`, `n < N`.  It is the constant paid
+for extracting `N` factors.  The product is over `Finset.range N`, so `N = 0`
+gives the empty product `1`. -/
 noncomputable def negativeLaplaceMinorArcConstant (r : ℝ) (N : ℕ) : ℝ :=
   ∏ n ∈ Finset.range N,
     negativeLaplaceCothFactor (r / (2 : ℝ) ^ (n + 1))
 
+/-- Positivity of the real dyadic factors for `r > 0`, so their finite
+products can serve as denominators. -/
 lemma negativeLaplaceRealDyadicFactor_pos (r : ℝ) (hr : 0 < r) (n : ℕ) :
     0 < negativeLaplaceRealDyadicFactor r n := by
   apply negativeLaplaceRealFactor_pos
   positivity
 
+/-- For `r > 0` the complex dyadic factor at the real point `r` is the cast of
+the real dyadic factor.  This is the step that turns the complex finite
+refinement into `generatingFunction_neg_finite_refinement`. -/
 lemma negativeLaplaceDyadicFactor_ofReal
     (r : ℝ) (hr : 0 < r) (n : ℕ) :
     negativeLaplaceDyadicFactor (r : ℂ) n =
@@ -194,6 +250,9 @@ lemma negativeLaplaceDyadicFactor_ofReal
   rw [hscale, negativeLaplaceComplexFactor_ofReal]
   positivity
 
+/-- Rewrites the `n`-th dyadic factor at `r (1 + iθ)` as the plain complex
+factor at `(r / 2 ^ (n + 1)) (1 + iθ)`, moving the dyadic scaling onto the real
+parameter.  No hypothesis on `r` or `θ` is needed. -/
 lemma negativeLaplaceDyadicFactor_vertical
     (r θ : ℝ) (n : ℕ) :
     negativeLaplaceDyadicFactor
@@ -206,6 +265,9 @@ lemma negativeLaplaceDyadicFactor_vertical
   push_cast
   field_simp
 
+/-- The per-factor ratio bound transported to the `n`-th dyadic scale, for
+`r > 0`: one power of `‖1 + iθ‖` of decay against the `coth` factor at
+`r / 2 ^ (n + 1)`. -/
 theorem norm_negativeLaplaceDyadicFactor_vertical_div_le
     (r θ : ℝ) (hr : 0 < r) (n : ℕ) :
     ‖negativeLaplaceDyadicFactor
@@ -217,6 +279,8 @@ theorem norm_negativeLaplaceDyadicFactor_vertical_div_le
     negativeLaplaceRealDyadicFactor]
   exact norm_negativeLaplaceComplexFactor_vertical_div_le _ θ (by positivity)
 
+/-- The minor-arc constant is positive for `r > 0`, being a finite product of
+positive `coth` factors.  Also used by the saddle-point files downstream. -/
 lemma negativeLaplaceMinorArcConstant_pos
     (r : ℝ) (hr : 0 < r) (N : ℕ) :
     0 < negativeLaplaceMinorArcConstant r N := by
@@ -225,6 +289,10 @@ lemma negativeLaplaceMinorArcConstant_pos
   intro n _hn
   exact negativeLaplaceCothFactor_pos _ (by positivity)
 
+/-- Multiplying the per-factor bounds over `n < N`, for `r > 0`: the modulus of
+the first `N` dyadic factors at `r (1 + iθ)`, divided by the corresponding real
+product, is at most `C(r, N) / ‖1 + iθ‖ ^ N`.  This is where the arbitrary
+prescribed polynomial order of the minor-arc bound comes from. -/
 theorem norm_negativeLaplaceDyadicFactor_prod_vertical_div_le
     (r θ : ℝ) (hr : 0 < r) (N : ℕ) :
     ‖∏ n ∈ Finset.range N,
@@ -254,6 +322,10 @@ theorem norm_negativeLaplaceDyadicFactor_prod_vertical_div_le
       rw [Finset.prod_div_distrib]
       simp [negativeLaplaceMinorArcConstant]
 
+/-- For every `z` the deviations `negativeLaplaceDyadicFactor z n - 1` are
+summable, since eventually `‖z / 2 ^ (n + 1)‖ ≤ 1` and the small-argument
+estimate then majorizes them by a geometric series.  This is the hypothesis of
+`Complex.multipliable_one_add_of_summable`. -/
 lemma summable_negativeLaplaceDyadicFactor_sub_one (z : ℂ) :
     Summable (fun n : ℕ => negativeLaplaceDyadicFactor z n - 1) := by
   have harg : Tendsto
@@ -286,6 +358,10 @@ lemma summable_negativeLaplaceDyadicFactor_sub_one (z : ℂ) :
   rw [pow_succ]
   field_simp
 
+/-- The dyadic factors are multipliable for every `z`, so the infinite product
+`∏' n, negativeLaplaceDyadicFactor z n` converges.  This is what lets the
+finite refinement be passed to the limit in
+`complexGeneratingFunction_neg_eq_tprod`. -/
 lemma negativeLaplaceDyadicFactor_multipliable (z : ℂ) :
     Multipliable (negativeLaplaceDyadicFactor z) := by
   have h := Complex.multipliable_one_add_of_summable
@@ -294,6 +370,10 @@ lemma negativeLaplaceDyadicFactor_multipliable (z : ℂ) :
   funext n
   ring
 
+/-- Iterating the functional equation `proposition_two_formula` `N` times:
+`complexGeneratingFunction F (-z)` equals the product of the first `N` dyadic
+factors of `z` times the value at the remaining scale `-(z / 2 ^ N)`.  An exact
+identity for every `N`, holding for all `z`. -/
 theorem complexGeneratingFunction_neg_finite_refinement
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) (N : ℕ) :
     complexGeneratingFunction F (-z) =
@@ -321,20 +401,15 @@ theorem complexGeneratingFunction_neg_finite_refinement
       rw [hfactor]
       ring
 
-lemma complexGeneratingFunction_ofReal_vertical
-    (F : BoundedFabius) (x : ℝ) :
-    complexGeneratingFunction F (x : ℂ) =
-      (generatingFunction F x : ℂ) := by
-  unfold complexGeneratingFunction generatingFunction
-  push_cast
-  congr 1
-  congr 1
-  rw [← intervalIntegral.integral_ofReal]
-  apply intervalIntegral.integral_congr
-  intro t _ht
-  push_cast
-  rfl
+/-- Deprecated compatibility alias for `complexGeneratingFunction_ofReal`. -/
+@[deprecated complexGeneratingFunction_ofReal (since := "2026-08-24")]
+alias complexGeneratingFunction_ofReal_vertical :=
+  complexGeneratingFunction_ofReal
 
+/-- The real form of the finite refinement on the negative axis: for `r > 0`,
+`generatingFunction F (-r)` is the product of the first `N` real dyadic factors
+times `generatingFunction F (-(r / 2 ^ N))`.  The hypothesis `0 < r` is what
+lets the complex and real factors be identified. -/
 theorem generatingFunction_neg_finite_refinement
     (F : BoundedFabius) (hF : IsFabius F)
     (r : ℝ) (hr : 0 < r) (N : ℕ) :
@@ -350,8 +425,8 @@ theorem generatingFunction_neg_finite_refinement
         ((-(r / (2 : ℝ) ^ N) : ℝ) : ℂ) := by
     push_cast
     rfl
-  rw [hleft, complexGeneratingFunction_ofReal_vertical,
-    htail, complexGeneratingFunction_ofReal_vertical] at hc
+  rw [hleft, complexGeneratingFunction_ofReal,
+    htail, complexGeneratingFunction_ofReal] at hc
   simp_rw [negativeLaplaceDyadicFactor_ofReal r hr] at hc
   exact_mod_cast hc
 
@@ -457,6 +532,10 @@ theorem norm_complexGeneratingFunction_neg_le_real_mul_verticalNorm
         ‖(1 : ℂ) + (θ : ℂ) * Complex.I‖ := by
       field_simp [hr.ne']
 
+/-- For `r > 0` the value `generatingFunction F (-r)` is positive, being the
+exponential of the negative Laplace logarithm.  It is the denominator of the
+normalized bound `norm_complexGeneratingFunction_neg_vertical_div_le`, and is
+reused in `FabiusBromwichInput` and `FabiusSaddleTail`. -/
 lemma generatingFunction_neg_pos
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) (hr : 0 < r) :
     0 < generatingFunction F (-r) := by
@@ -547,6 +626,10 @@ noncomputable def negativeLaplaceVerticalKernel
       (-((r : ℂ) * (1 + (θ : ℂ) * Complex.I))) /
     (1 + (θ : ℂ) * Complex.I)
 
+/-- The `N = 2` case of the minor-arc bound, rewritten with
+`‖1 + iθ‖ ^ 2 = 1 + θ ^ 2`: the vertical kernel is dominated by
+`generatingFunction F (-r) * C(r, 2) * (1 + θ ^ 2)⁻¹` for `r > 0`.  The
+constant is explicit; no claim of optimality is made or proved. -/
 theorem norm_negativeLaplaceVerticalKernel_le
     (F : BoundedFabius) (hF : IsFabius F)
     (r θ : ℝ) (hr : 0 < r) :
@@ -563,6 +646,10 @@ theorem norm_negativeLaplaceVerticalKernel_le
   rw [← sq_norm_one_add_mul_I θ]
   field_simp [hw.ne']
 
+/-- For `r > 0` the vertical-line kernel is integrable over all of `ℝ`, by
+continuity together with the `(1 + θ ^ 2)⁻¹` domination above.  This is the
+analytic input the Bromwich contour needs, and is consumed by
+`FabiusBromwichInput` and `FabiusSaddleTail`. -/
 theorem integrable_negativeLaplaceVerticalKernel
     (F : BoundedFabius) (hF : IsFabius F)
     (r : ℝ) (hr : 0 < r) :

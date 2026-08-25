@@ -6,6 +6,84 @@ import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.Analysis.Fourier.AddCircle
 import Mathlib.NumberTheory.ZetaValues
 
+/-!
+# The Gamma--zeta Fourier coefficients of the periodic correction
+
+The zero-mean correction `Ψ = negativeLaplacePsi` fixed in
+`FabiusFunction.PeriodicCorrection` is exactly one-periodic, so it has a
+Fourier expansion over a period.  This module evaluates every coefficient in
+closed form.  With `L = log 2` and the paper's frequencies `χₖ = 2πik / L`,
+
+`negativeLaplacePsiFourierCoeff k = -Γ(-χₖ) ζ(1 - χₖ) / L`  for `k ≠ 0`,
+
+the zero mode vanishes by the normalization, and the resulting series
+converges absolutely and reconstructs `Ψ` pointwise.
+
+The mechanism is the substitution `x = 2 ^ t` that already drives
+`FabiusFunction.PeriodicMean`.  In the logarithmic variable `t` the weight
+`e^{-2πikt}` becomes the power `x ^ (-χₖ)`, so a Fourier coefficient is a
+Mellin transform evaluated at the pure imaginary point `s = -χₖ`.  The dyadic
+partitions `smallDyadicInterval` and `largeDyadicInterval` reassemble the
+termwise integrals of `negativeLaplaceLog (2 ^ t)` and
+`negativeLaplaceForwardTail (2 ^ t)` into one Mellin integral of the Bose
+finite-part kernel over `(0,∞)`, and for `k ≠ 0` the remaining elementary
+piece `log 2 / 2 * (t ^ 2 - t)` contributes exactly the term that cancels the
+`1 / s ^ 2` regularizing the double pole of `-Γ(s) ζ(1+s)` at the origin.
+What `FabiusFunction.PeriodicMean` does for the mode `k = 0`, this module
+does for every mode.
+
+Downstream what matters is nonvanishing rather than the formula:
+`FabiusFunction.FabiusWikipediaObstruction` consumes
+`negativeLaplacePsi_not_constant` to show that the periodic term missing from
+the elementary small-argument formula cannot be absorbed into an
+`O(1 / (-log x))` error, and `FabiusFunction.FabiusSharpAsymptotic` reexports
+that obstruction beside the corrected asymptotic.
+
+## Main results
+
+* `negativeLaplacePsiFourierCoeff` — the coefficient `∫₀¹ Ψ(t) e^{-2πikt} dt`,
+  defined through Mathlib's `fourierCoeffOn zero_lt_one`.
+* `negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta` — the closed form above;
+  `negativeLaplacePsiFourierCoeff_eq_gamma_zeta` is the same identity written
+  in the Mellin frequency `negativeLaplaceMellinFrequency k = -χₖ`.
+* `negativeLaplacePsiFourierCoeff_zero` — the zero mode vanishes.
+* `negativeLaplacePsiFourierCoeff_ne_zero` and
+  `negativeLaplacePsi_not_constant` — no nonzero mode vanishes, hence `Ψ` is
+  genuinely nonconstant.  This is the export the rest of the corpus uses.
+* `summable_negativeLaplacePsiFourierCoeff` — absolute summability of the
+  coefficients.
+* `hasSum_negativeLaplacePsi_fourierSeries` and
+  `tsum_negativeLaplacePsi_gammaZeta_fourierSeries` — pointwise Fourier
+  reconstruction on the real line, first with the abstract coefficients and
+  then with the closed sequence `negativeLaplacePsiGammaZetaFourierCoeff`.
+* `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_pos_re` and
+  `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_re_zero` — the analytic
+  engine.  The Mellin transform of `boseRegularizedMellinKernel` equals
+  `gammaZetaMellinFinitePart` on the open right half-plane, by the identity
+  theorem from the real evaluations of
+  `FabiusFunction.BoseFinitePartIntegral`, and on the punctured imaginary
+  axis by continuity.
+* `negativeLaplacePsiCircle` — `Ψ` as a `C(AddCircle 1, ℂ)`, the object
+  Mathlib's Fourier inversion theorem is stated for.
+
+The remaining declarations are the change-of-variable, integrability,
+dominated-convergence, and Bernoulli-coefficient steps feeding those results.
+
+Conventions and caveats.  The Fourier convention is Mathlib's: coefficients
+are taken against `e^{-2πikt}` and the series is summed against `e^{2πikt}`.
+That sign is why the Mellin variable is `-χₖ` and not `χₖ`, and why both
+spellings of the closed form are supplied.  The frequencies sit on the
+imaginary axis, so the kernel is regularized first: subtracting the
+small-argument logarithmic singularity makes the Mellin transform of
+`boseRegularizedMellinKernel` holomorphic on `-1 < re s`, which the raw Bose
+kernel is not.  Summability is proved by integrating by parts twice against
+the uniform bound on `Ψ''` from `FabiusFunction.PeriodicRegularity`, giving
+only `O(1 / k ^ 2)` decay; the paper's Stirling argument for exponential
+decay of `Γ(-χₖ)` is not formalized, so the bound here is sufficient for
+absolute convergence but far from sharp.  Nonvanishing rests on Mathlib's
+`riemannZeta_ne_zero_of_one_le_re`, since `1 - χₖ` lies on `re s = 1`.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology Interval FourierTransform
@@ -18,6 +96,10 @@ Its Mellin transform is holomorphic on `-1 < re s`. -/
 noncomputable def boseRegularizedMellinKernel (x : ℝ) : ℂ :=
   if x ≤ 1 then (x * boseFinitePartSmallKernel x : ℝ) else boseLogKernel x
 
+/-- `boseRegularizedMellinKernel` is integrable on `(0,∞)`, proved by
+splitting at `1` into the weighted small kernel on `(0,1]` and the Bose
+logarithm on `(1,∞)`.  This is the input to
+`locallyIntegrableOn_boseRegularizedMellinKernel`. -/
 lemma integrableOn_boseRegularizedMellinKernel :
     IntegrableOn boseRegularizedMellinKernel (Ioi 0) := by
   have hsmallR : IntegrableOn
@@ -42,10 +124,16 @@ lemma integrableOn_boseRegularizedMellinKernel :
       · exact measurableSet_Ioi
   simpa [Ioc_union_Ioi_eq_Ioi zero_le_one] using hunion
 
+/-- Local integrability on `(0,∞)`, the shape in which Mathlib's Mellin
+criteria `mellin_differentiableAt_of_isBigO_rpow_exp` and
+`mellinConvergent_of_isBigO_rpow_exp` want the hypothesis. -/
 lemma locallyIntegrableOn_boseRegularizedMellinKernel :
     LocallyIntegrableOn boseRegularizedMellinKernel (Ioi 0) :=
   integrableOn_boseRegularizedMellinKernel.locallyIntegrableOn
 
+/-- Small-argument decay: the regularized kernel is `O(x)` as `x → 0⁺`.
+This is the `b = -1` half of the Mellin hypotheses, and it is what pushes
+the half-plane of holomorphy out to `-1 < re s`. -/
 lemma boseRegularizedMellinKernel_isBigO_zero :
     boseRegularizedMellinKernel =O[𝓝[>] 0] (fun x : ℝ => x ^ (1 : ℝ)) := by
   rw [isBigO_iff]
@@ -61,6 +149,8 @@ lemma boseRegularizedMellinKernel_isBigO_zero :
   simpa using mul_le_mul_of_nonneg_left
     (abs_boseFinitePartSmallKernel_le_one x hxmem) hx.le
 
+/-- Large-argument decay: the regularized kernel is `O(exp (-x))` at
+infinity, the `a = 1` half of the Mellin hypotheses. -/
 lemma boseRegularizedMellinKernel_isBigO_atTop :
     boseRegularizedMellinKernel =O[atTop]
       (fun x : ℝ => Real.exp (-(1 * x))) := by
@@ -73,6 +163,9 @@ lemma boseRegularizedMellinKernel_isBigO_atTop :
   have h := abs_boseLogKernel_le_const_exp x hx.le
   simpa [C] using h
 
+/-- The Mellin transform of `boseRegularizedMellinKernel` is complex
+differentiable at every `s` with `-1 < re s`.  That half-plane reaches past
+the imaginary axis, which is where the Fourier frequencies sit. -/
 lemma differentiableAt_mellin_boseRegularizedMellinKernel
     (s : ℂ) (hs : -1 < s.re) :
     DifferentiableAt ℂ (mellin boseRegularizedMellinKernel) s := by
@@ -83,6 +176,9 @@ lemma differentiableAt_mellin_boseRegularizedMellinKernel
   · simpa using boseRegularizedMellinKernel_isBigO_zero
   · exact hs
 
+/-- For `-1 < re s` the Mellin integral of `boseRegularizedMellinKernel`
+converges, that is, `x ↦ x ^ (s - 1) * f x` is integrable on `(0,∞)`.
+Applied below at the purely imaginary `negativeLaplaceMellinFrequency k`. -/
 lemma mellinConvergent_boseRegularizedMellinKernel
     (s : ℂ) (hs : -1 < s.re) :
     MellinConvergent boseRegularizedMellinKernel s := by
@@ -93,6 +189,9 @@ lemma mellinConvergent_boseRegularizedMellinKernel
   · simpa using boseRegularizedMellinKernel_isBigO_zero
   · exact hs
 
+/-- The Mellin transform is analytic on the open half-plane `-1 < re s`;
+one of the two inputs to the identity-theorem argument in
+`mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_pos_re`. -/
 lemma analyticOnNhd_mellin_boseRegularizedMellinKernel :
     AnalyticOnNhd ℂ (mellin boseRegularizedMellinKernel) {s : ℂ | -1 < s.re} := by
   apply DifferentiableOn.analyticOnNhd
@@ -100,6 +199,11 @@ lemma analyticOnNhd_mellin_boseRegularizedMellinKernel :
     exact (differentiableAt_mellin_boseRegularizedMellinKernel s hs).differentiableWithinAt
   · exact isOpen_lt continuous_const continuous_re
 
+/-- At a real point `a` with `0 < a ≤ 1` the Mellin transform is the real
+number obtained by splitting the integral at `1`: the weight `x ^ a`
+against `boseFinitePartSmallKernel` on `(0,1]`, plus `x ^ (a - 1)` against
+`boseLogKernel` on `(1,∞)`.  These are exactly the two integrals evaluated
+in `FabiusFunction.BoseFinitePartIntegral`. -/
 lemma mellin_boseRegularizedMellinKernel_ofReal
     (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
     mellin boseRegularizedMellinKernel (a : ℂ) =
@@ -209,6 +313,9 @@ lemma mellin_boseRegularizedMellinKernel_ofReal
 noncomputable def gammaZetaMellinFinitePart (s : ℂ) : ℂ :=
   -Gamma s * riemannZeta (1 + s) + 1 / s ^ 2
 
+/-- `gammaZetaMellinFinitePart` is complex differentiable at every `s` of
+positive real part, where `Γ` has no pole, `ζ (1 + s)` stays off the pole
+at `1`, and `1 / s ^ 2` is regular. -/
 lemma differentiableAt_gammaZetaMellinFinitePart
     (s : ℂ) (hs : 0 < s.re) :
     DifferentiableAt ℂ gammaZetaMellinFinitePart s := by
@@ -232,6 +339,8 @@ lemma differentiableAt_gammaZetaMellinFinitePart
   unfold gammaZetaMellinFinitePart
   exact (hGamma.neg.mul hzeta).add hinv
 
+/-- `gammaZetaMellinFinitePart` is analytic on the open right half-plane
+`0 < re s`, the second input to the identity-theorem argument. -/
 lemma analyticOnNhd_gammaZetaMellinFinitePart :
     AnalyticOnNhd ℂ gammaZetaMellinFinitePart {s : ℂ | 0 < s.re} := by
   apply DifferentiableOn.analyticOnNhd
@@ -239,6 +348,11 @@ lemma analyticOnNhd_gammaZetaMellinFinitePart :
     exact (differentiableAt_gammaZetaMellinFinitePart s hs).differentiableWithinAt
   · exact isOpen_lt continuous_const continuous_re
 
+/-- The Mellin transform agrees with `gammaZetaMellinFinitePart` at every
+real point of `(0,1]`, by the real evaluation proved in
+`FabiusFunction.BoseFinitePartIntegral`.  Those real points accumulate at
+`1 / 2`, which is what lets the identity theorem propagate the identity
+across the right half-plane. -/
 lemma mellin_boseRegularizedMellinKernel_ofReal_eq_gammaZeta
     (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
     mellin boseRegularizedMellinKernel (a : ℂ) =
@@ -357,11 +471,17 @@ noncomputable def negativeLaplaceMellinFrequency (k : ℤ) : ℂ :=
 noncomputable def negativeLaplaceFourierWeight (k : ℤ) (t : ℝ) : ℂ :=
   exp (-(2 * (Real.pi : ℂ) * I * (k : ℂ) * (t : ℂ)))
 
+/-- The Fourier weight has modulus one at every real `t`, so the bounds
+and dominated-convergence arguments below reduce to bounds on the real
+factor it multiplies. -/
 lemma norm_negativeLaplaceFourierWeight (k : ℤ) (t : ℝ) :
     ‖negativeLaplaceFourierWeight k t‖ = 1 := by
   rw [negativeLaplaceFourierWeight, norm_exp]
   simp
 
+/-- The weight is invariant under integer translations of `t`.  This is
+how the termwise integrals over `[0,1]` are shifted onto the dyadic
+blocks. -/
 lemma negativeLaplaceFourierWeight_add_int (k m : ℤ) (t : ℝ) :
     negativeLaplaceFourierWeight k (t + m) =
       negativeLaplaceFourierWeight k t := by
@@ -379,6 +499,9 @@ lemma negativeLaplaceFourierWeight_add_int (k m : ℤ) (t : ℝ) :
   rw [hexp]
   ring
 
+/-- The substitution `x = 2 ^ t` in one line: at `t = logb 2 x` the
+Fourier weight becomes the complex power
+`x ^ negativeLaplaceMellinFrequency k`.  Stated for `0 < x`. -/
 lemma negativeLaplaceFourierWeight_eq_cpow_logb
     (k : ℤ) (x : ℝ) (hx : 0 < x) :
     negativeLaplaceFourierWeight k (Real.logb 2 x) =
@@ -393,6 +516,10 @@ lemma negativeLaplaceFourierWeight_eq_cpow_logb
     (Real.log_pos (by norm_num)).ne'
   field_simp [hlog2]
 
+/-- Change of variables `x = 2 ^ t` for the small-argument kernel: `log 2`
+times the weighted integral of `negativeLaplaceKernel (2 ^ t)` over `[a,b]`
+is the Mellin-weighted integral of `boseFinitePartSmallKernel` over
+`[2 ^ a, 2 ^ b]`.  The `1 / x` inside the small kernel is the Jacobian. -/
 lemma intervalIntegral_negativeLaplaceKernel_fourier
     (k : ℤ) (a b : ℝ) :
     Real.log 2 * (∫ t : ℝ in a..b,
@@ -443,6 +570,10 @@ lemma intervalIntegral_negativeLaplaceKernel_fourier
   rw [intervalIntegral.integral_const_mul] at hsub
   exact hsub
 
+/-- The same change of variables for the large-argument kernel: `log 2`
+times the weighted integral of `boseLogKernel (2 ^ t)` over `[a,b]` is the
+Mellin-weighted integral of `boseFinitePartLargeKernel` over
+`[2 ^ a, 2 ^ b]`. -/
 lemma intervalIntegral_boseLogKernel_fourier
     (k : ℤ) (a b : ℝ) :
     Real.log 2 * (∫ t : ℝ in a..b,
@@ -492,6 +623,10 @@ lemma intervalIntegral_boseLogKernel_fourier
   rw [intervalIntegral.integral_const_mul] at hsub
   exact hsub
 
+/-- The `n`-th term of `negativeLaplaceLog (2 ^ t)`, integrated against
+the weight over one period, is the Mellin integral of
+`boseFinitePartSmallKernel` over `smallDyadicInterval n`, up to the factor
+`log 2`.  The shift `t ↦ t - (n + 1)` uses periodicity of the weight. -/
 lemma intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) (n : ℕ) :
     Real.log 2 * (∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -536,6 +671,9 @@ lemma intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) (n : ℕ) :
   rw [hlo, hhi] at hchange
   exact hchange
 
+/-- The `n`-th forward-tail term, integrated against the weight over one
+period, is the Mellin integral of `boseFinitePartLargeKernel` over
+`Ioc (2 ^ n) (2 ^ (n + 1))`, up to the factor `log 2`. -/
 lemma intervalIntegral_negativeLaplaceForwardTerm_fourier (k : ℤ) (n : ℕ) :
     Real.log 2 * (∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -571,6 +709,10 @@ lemma intervalIntegral_negativeLaplaceForwardTerm_fourier (k : ℤ) (n : ℕ) :
   rw [hlo, hhi] at hchange
   exact hchange
 
+/-- The Mellin frequency is purely imaginary.  It therefore lies inside
+the half-plane `-1 < re s` where the regularized Mellin transform is
+analytic, but on the boundary of `0 < re s`, which is why the identity with
+`gammaZetaMellinFinitePart` needs the separate boundary theorem. -/
 lemma negativeLaplaceMellinFrequency_re (k : ℤ) :
     (negativeLaplaceMellinFrequency k).re = 0 := by
   unfold negativeLaplaceMellinFrequency
@@ -589,6 +731,9 @@ lemma negativeLaplaceMellinFrequency_re (k : ℤ) :
     Complex.ofReal_im]
   ring
 
+/-- The integrand `x ^ negativeLaplaceMellinFrequency k` times
+`boseFinitePartSmallKernel x` is integrable on `(0,1]`; this is the
+integrability hypothesis of `hasSum_integral_smallDyadicInterval_fourier`. -/
 lemma integrableOn_small_negativeLaplaceMellinFrequency (k : ℤ) :
     IntegrableOn (fun x : ℝ =>
       (x : ℂ) ^ negativeLaplaceMellinFrequency k *
@@ -618,6 +763,8 @@ lemma integrableOn_small_negativeLaplaceMellinFrequency (k : ℤ) :
     rw [← mul_assoc, hpow]
   · exact measurableSet_Ioc
 
+/-- The integrand `x ^ (negativeLaplaceMellinFrequency k - 1)` times
+`boseLogKernel x` is integrable on `(1,∞)`. -/
 lemma integrableOn_large_negativeLaplaceMellinFrequency (k : ℤ) :
     IntegrableOn (fun x : ℝ =>
       (x : ℂ) ^ (negativeLaplaceMellinFrequency k - 1) *
@@ -638,6 +785,9 @@ lemma integrableOn_large_negativeLaplaceMellinFrequency (k : ℤ) :
     simp only [smul_eq_mul]
   · exact measurableSet_Ioi
 
+/-- The previous integrability restated with the `1 / x` absorbed into
+`boseFinitePartLargeKernel`; this is the hypothesis of
+`hasSum_integral_largeDyadicInterval_fourier`. -/
 lemma integrableOn_largeKernel_negativeLaplaceMellinFrequency (k : ℤ) :
     IntegrableOn (fun x : ℝ =>
       (x : ℂ) ^ negativeLaplaceMellinFrequency k *
@@ -657,6 +807,9 @@ lemma integrableOn_largeKernel_negativeLaplaceMellinFrequency (k : ℤ) :
     ring
   · exact measurableSet_Ioi
 
+/-- The Mellin integrals over the intervals `smallDyadicInterval n` sum to
+the integral over `(0,1]`, those intervals being pairwise disjoint with
+union `(0,1]`. -/
 lemma hasSum_integral_smallDyadicInterval_fourier (k : ℤ) :
     HasSum (fun n : ℕ => ∫ x : ℝ in smallDyadicInterval n,
       (x : ℂ) ^ negativeLaplaceMellinFrequency k *
@@ -674,6 +827,9 @@ lemma hasSum_integral_smallDyadicInterval_fourier (k : ℤ) :
       integrableOn_small_negativeLaplaceMellinFrequency k)
   simpa [iUnion_smallDyadicInterval] using h
 
+/-- The Mellin integrals over the blocks `Ioc (2 ^ n) (2 ^ (n + 1))` sum
+to the integral over `(1,∞)`; the half-open `largeDyadicInterval` used in
+the proof is traded for `Ioc` up to a null set. -/
 lemma hasSum_integral_largeDyadicInterval_fourier (k : ℤ) :
     HasSum (fun n : ℕ => ∫ x : ℝ in Ioc ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1)),
       (x : ℂ) ^ negativeLaplaceMellinFrequency k *
@@ -698,11 +854,17 @@ lemma hasSum_integral_largeDyadicInterval_fourier (k : ℤ) :
   rw [setIntegral_congr_set Ioi_ae_eq_Ici]
   exact h'
 
+/-- Continuity of the Fourier weight, used throughout for interval
+integrability of the products it multiplies. -/
 lemma continuous_negativeLaplaceFourierWeight (k : ℤ) :
     Continuous (negativeLaplaceFourierWeight k) := by
   unfold negativeLaplaceFourierWeight
   fun_prop
 
+/-- Termwise integration of `negativeLaplaceLog (2 ^ t)` over one period:
+the weighted integrals of the terms sum to the weighted integral of the
+series, by dominated convergence against the geometric bound `1 / 2 ^ n`,
+which holds on `[0,1]`. -/
 lemma hasSum_intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) :
     HasSum (fun n : ℕ => ∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -743,6 +905,9 @@ lemma hasSum_intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) :
         (Real.rpow_pos_of_pos (by norm_num) _)).hasSum).mul_left
           (negativeLaplaceFourierWeight k t))
 
+/-- Termwise integration of `negativeLaplaceForwardTail (2 ^ t)` over one
+period, by dominated convergence against the geometric bound
+`r ^ (n + 1) / (1 - r)` with `r = exp (-1)`, which holds on `[0,1]`. -/
 lemma hasSum_intervalIntegral_negativeLaplaceForwardTerm_fourier (k : ℤ) :
     HasSum (fun n : ℕ => ∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -800,6 +965,9 @@ lemma hasSum_intervalIntegral_negativeLaplaceForwardTerm_fourier (k : ℤ) :
         (Real.rpow_pos_of_pos (by norm_num) _)).hasSum).mul_left
           (negativeLaplaceFourierWeight k t))
 
+/-- The weighted integral of `negativeLaplaceLog (2 ^ t)` over one period
+is the Mellin integral of `boseFinitePartSmallKernel` over `(0,1]`, divided
+by `log 2`: the two dyadic sums above have the same terms. -/
 theorem intervalIntegral_negativeLaplaceLog_fourier (k : ℤ) :
     (∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -834,6 +1002,9 @@ theorem intervalIntegral_negativeLaplaceLog_fourier (k : ℤ) :
             (boseFinitePartSmallKernel x : ℂ) := hn
   exact (hasSum_intervalIntegral_negativeLaplaceTerm_fourier k).unique hdy'
 
+/-- The weighted integral of `negativeLaplaceForwardTail (2 ^ t)` over one
+period is the Mellin integral of `boseFinitePartLargeKernel` over `(1,∞)`,
+divided by `log 2`. -/
 theorem intervalIntegral_negativeLaplaceForwardTail_fourier (k : ℤ) :
     (∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -868,6 +1039,9 @@ theorem intervalIntegral_negativeLaplaceForwardTail_fourier (k : ℤ) :
             (boseFinitePartLargeKernel x : ℂ) := hn
   exact (hasSum_intervalIntegral_negativeLaplaceForwardTerm_fourier k).unique hdy'
 
+/-- At the frequency `negativeLaplaceMellinFrequency k` the Mellin
+transform splits at `1` into the small-kernel integral over `(0,1]` and the
+large-kernel integral over `(1,∞)`, matching the two previous lemmas. -/
 lemma mellin_boseRegularizedMellinKernel_split_frequency (k : ℤ) :
     mellin boseRegularizedMellinKernel (negativeLaplaceMellinFrequency k) =
       (∫ x : ℝ in Ioc 0 1,
@@ -934,6 +1108,11 @@ lemma mellin_boseRegularizedMellinKernel_split_frequency (k : ℤ) :
       rw [← hpow]
       ring)
 
+/-- The two nonelementary pieces of the periodic correction assemble into
+a single Mellin transform: the weighted integral of
+`negativeLaplaceLog (2 ^ t) + negativeLaplaceForwardTail (2 ^ t)` over one
+period is `mellin boseRegularizedMellinKernel` at the frequency, divided by
+`log 2`.  No hypothesis on `k` is needed. -/
 theorem intervalIntegral_negativeLaplaceLog_add_tail_fourier (k : ℤ) :
     (∫ t : ℝ in (0 : ℝ)..1,
       negativeLaplaceFourierWeight k t *
@@ -976,6 +1155,9 @@ theorem intervalIntegral_negativeLaplaceLog_add_tail_fourier (k : ℤ) :
     intervalIntegral_negativeLaplaceForwardTail_fourier,
     ← add_div, ← mellin_boseRegularizedMellinKernel_split_frequency]
 
+/-- Mathlib's character `fourier (-k)` on `AddCircle 1`, evaluated at the
+image of a real number `t`, is the explicit weight
+`negativeLaplaceFourierWeight k t`. -/
 lemma fourier_neg_coe_eq_negativeLaplaceFourierWeight (k : ℤ) (t : ℝ) :
     @fourier (1 : ℝ) (-k) (t : AddCircle (1 : ℝ)) =
       negativeLaplaceFourierWeight k t := by
@@ -985,6 +1167,10 @@ lemma fourier_neg_coe_eq_negativeLaplaceFourierWeight (k : ℤ) (t : ℝ) :
   push_cast
   ring
 
+/-- Mathlib's `fourierCoeffOn zero_lt_one` unfolded on the period `[0,1]`:
+for any `f : ℝ → ℂ` the coefficient is the interval integral of `f` against
+the explicit weight.  Most coefficient computations below factor through
+this. -/
 lemma fourierCoeffOn_zero_one_eq_weight_integral
     (f : ℝ → ℂ) (k : ℤ) :
     fourierCoeffOn zero_lt_one f k =
@@ -1006,12 +1192,17 @@ lemma fourierCoeffOn_zero_one_eq_weight_integral
 noncomputable def negativeLaplacePsiFourierCoeff (k : ℤ) : ℂ :=
   fourierCoeffOn zero_lt_one (fun t : ℝ => (negativeLaplacePsi t : ℂ)) k
 
+/-- The defining coefficient of `Ψ` as an explicit interval integral over
+one period. -/
 theorem negativeLaplacePsiFourierCoeff_eq_integral (k : ℤ) :
     negativeLaplacePsiFourierCoeff k =
       ∫ t : ℝ in (0 : ℝ)..1,
         negativeLaplaceFourierWeight k t * (negativeLaplacePsi t : ℂ) := by
   exact fourierCoeffOn_zero_one_eq_weight_integral _ k
 
+/-- For `k ≠ 0` the weight integrates to zero over a period, so a constant
+summand of the integrand contributes nothing to the coefficient.  Read off
+Mathlib's degree-zero Bernoulli Fourier coefficient. -/
 lemma intervalIntegral_negativeLaplaceFourierWeight_eq_zero
     (k : ℤ) (hk : k ≠ 0) :
     (∫ t : ℝ in (0 : ℝ)..1, negativeLaplaceFourierWeight k t) = 0 := by
@@ -1020,6 +1211,9 @@ lemma intervalIntegral_negativeLaplaceFourierWeight_eq_zero
     fourierCoeffOn_zero_one_eq_weight_integral] at hzero
   simpa using hzero
 
+/-- For `k ≠ 0` the weighted integral of `t ^ 2 - t` over one period is
+`-2 / (2πik) ^ 2`, read off Mathlib's Fourier coefficients of the second
+Bernoulli function `bernoulliFun 2 t = t ^ 2 - t + 1 / 6`. -/
 lemma intervalIntegral_quadratic_fourier
     (k : ℤ) (hk : k ≠ 0) :
     (∫ t : ℝ in (0 : ℝ)..1,
@@ -1061,6 +1255,9 @@ lemma intervalIntegral_quadratic_fourier
     mul_zero, add_zero] at htwo
   exact htwo
 
+/-- For `k ≠ 0` the Mellin frequency is nonzero, which is what makes the
+`1 / s ^ 2` term of `gammaZetaMellinFinitePart` and the reciprocals below
+meaningful. -/
 lemma negativeLaplaceMellinFrequency_ne_zero
     (k : ℤ) (hk : k ≠ 0) :
     negativeLaplaceMellinFrequency k ≠ 0 := by
@@ -1073,6 +1270,11 @@ lemma negativeLaplaceMellinFrequency_ne_zero
       (Int.cast_ne_zero.mpr hk)
   · exact ofReal_ne_zero.mpr (Real.log_pos (by norm_num)).ne'
 
+/-- For `k ≠ 0` the elementary piece `log 2 / 2 * (t ^ 2 - t)` of the
+periodic correction contributes exactly
+`-(1 / negativeLaplaceMellinFrequency k ^ 2) / log 2`, the term that
+cancels the `1 / s ^ 2` regularizer inside
+`gammaZetaMellinFinitePart`. -/
 lemma intervalIntegral_quadraticCorrection_fourier
     (k : ℤ) (hk : k ≠ 0) :
     (∫ t : ℝ in (0 : ℝ)..1,
@@ -1097,6 +1299,11 @@ lemma intervalIntegral_quadraticCorrection_fourier
   have hkC : (k : ℂ) ≠ 0 := Int.cast_ne_zero.mpr hk
   field_simp [hlog, hpi, hkC, I_ne_zero]
 
+/-- For `k ≠ 0` the whole coefficient integral of `Ψ` is the Mellin
+transform at the frequency minus `1 / negativeLaplaceMellinFrequency k ^ 2`,
+both divided by `log 2`.  The three components of `negativeLaplacePsi`
+contribute the Mellin piece, the quadratic piece, and nothing at all for
+the constant mean. -/
 lemma intervalIntegral_negativeLaplacePsi_fourier
     (k : ℤ) (hk : k ≠ 0) :
     (∫ t : ℝ in (0 : ℝ)..1,
@@ -1183,6 +1390,8 @@ used above is `-χₖ`. -/
 noncomputable def negativeLaplaceFourierFrequency (k : ℤ) : ℂ :=
   2 * (Real.pi : ℂ) * I * (k : ℂ) / Real.log 2
 
+/-- The two frequency conventions differ by a sign:
+`negativeLaplaceMellinFrequency k = -negativeLaplaceFourierFrequency k`. -/
 lemma negativeLaplaceMellinFrequency_eq_neg_fourierFrequency (k : ℤ) :
     negativeLaplaceMellinFrequency k = -negativeLaplaceFourierFrequency k := by
   unfold negativeLaplaceMellinFrequency negativeLaplaceFourierFrequency
@@ -1200,6 +1409,8 @@ theorem negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta
     negativeLaplaceMellinFrequency_eq_neg_fourierFrequency]
   ring
 
+/-- The zero mode vanishes, which is exactly the normalization built into
+`negativeLaplacePsi`. -/
 theorem negativeLaplacePsiFourierCoeff_zero :
     negativeLaplacePsiFourierCoeff 0 = 0 := by
   rw [negativeLaplacePsiFourierCoeff_eq_integral]
@@ -1216,6 +1427,9 @@ theorem negativeLaplacePsiFourierCoeff_zero :
   rw [integral_negativeLaplacePsi_zero]
   simp
 
+/-- For `k ≠ 0` the value of `Γ` at the Mellin frequency is nonzero: `Γ`
+never vanishes, and the frequency is not a nonpositive integer because it
+is purely imaginary and nonzero. -/
 lemma Gamma_negativeLaplaceMellinFrequency_ne_zero
     (k : ℤ) (hk : k ≠ 0) :
     Gamma (negativeLaplaceMellinFrequency k) ≠ 0 := by
@@ -1228,6 +1442,9 @@ lemma Gamma_negativeLaplaceMellinFrequency_ne_zero
   subst m
   exact negativeLaplaceMellinFrequency_ne_zero k hk (by simpa using hm)
 
+/-- The value `riemannZeta (1 + negativeLaplaceMellinFrequency k)` is
+nonzero for every `k`, since the argument has real part one and Mathlib's
+`riemannZeta_ne_zero_of_one_le_re` applies there. -/
 lemma riemannZeta_one_add_negativeLaplaceMellinFrequency_ne_zero
     (k : ℤ) :
     riemannZeta (1 + negativeLaplaceMellinFrequency k) ≠ 0 := by
@@ -1246,6 +1463,8 @@ theorem negativeLaplacePsiFourierCoeff_ne_zero
       (riemannZeta_one_add_negativeLaplaceMellinFrequency_ne_zero k)
   · exact ofReal_ne_zero.mpr (Real.log_pos (by norm_num)).ne'
 
+/-- The first mode is nonzero; this single mode is all that
+`negativeLaplacePsi_not_constant` consumes. -/
 theorem negativeLaplacePsiFourierCoeff_one_ne_zero :
     negativeLaplacePsiFourierCoeff 1 ≠ 0 :=
   negativeLaplacePsiFourierCoeff_ne_zero 1 one_ne_zero
@@ -1272,6 +1491,9 @@ theorem negativeLaplacePsi_not_constant :
       rw [intervalIntegral_negativeLaplaceFourierWeight_eq_zero 1 one_ne_zero,
         mul_zero]
 
+/-- Integration by parts twice, for `k ≠ 0`: the coefficient of `Ψ` is
+`(1 / (-2πik)) ^ 2` times the coefficient of `deriv (deriv Ψ)`.  The
+boundary terms cancel because `Ψ` and its derivative are one-periodic. -/
 lemma negativeLaplacePsiFourierCoeff_eq_secondDerivCoeff
     (k : ℤ) (hk : k ≠ 0) :
     negativeLaplacePsiFourierCoeff k =
@@ -1302,6 +1524,9 @@ lemma negativeLaplacePsiFourierCoeff_eq_secondDerivCoeff
   field_simp [hpi, hkC, I_ne_zero]
   rw [show I ^ 4 = (1 : ℂ) by norm_num [pow_succ], one_mul]
 
+/-- The Fourier coefficients of `deriv (deriv Ψ)` are bounded uniformly in
+`k` by the sup bound on `Ψ''` from `FabiusFunction.PeriodicRegularity`,
+because the weight has modulus one on a period of length one. -/
 lemma exists_bound_negativeLaplacePsi_secondDerivFourierCoeff :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ k : ℤ,
       ‖fourierCoeffOn zero_lt_one
@@ -1320,6 +1545,10 @@ lemma exists_bound_negativeLaplacePsi_secondDerivFourierCoeff :
   norm_num at hbound ⊢
   exact hbound
 
+/-- The elementary norm computation
+`‖1 / (-2πik)‖ ^ 2 = (1 / (4 * π ^ 2)) * (1 / k ^ 2)`, in the shape needed
+for the `O(1 / k ^ 2)` majorant.  Both sides vanish at `k = 0` under Lean's
+`1 / 0 = 0` convention. -/
 lemma norm_fourierDenominator_inv_sq (k : ℤ) :
     ‖(1 / (-2 * (Real.pi : ℂ) * I * (k : ℂ)))‖ ^ 2 =
       (1 / (4 * Real.pi ^ 2)) * (1 / (k : ℝ) ^ 2) := by
@@ -1334,6 +1563,9 @@ lemma norm_fourierDenominator_inv_sq (k : ℤ) :
   ]
   ring
 
+/-- Absolute summability of the coefficients.  The decay used is only the
+`O(1 / k ^ 2)` produced by the two integrations by parts against the bound
+on `Ψ''`; no exponential decay of `Γ` is claimed. -/
 theorem summable_negativeLaplacePsiFourierCoeff :
     Summable negativeLaplacePsiFourierCoeff := by
   rcases exists_bound_negativeLaplacePsi_secondDerivFourierCoeff with
@@ -1359,6 +1591,8 @@ theorem summable_negativeLaplacePsiFourierCoeff :
         dsimp [A]
         ring
 
+/-- The complex-valued `Ψ` is one-periodic; this is the datum that
+`negativeLaplacePsiCircle` lifts to `AddCircle 1`. -/
 lemma negativeLaplacePsi_complex_periodic :
     Function.Periodic (fun t : ℝ => (negativeLaplacePsi t : ℂ)) 1 := by
   intro t
@@ -1378,6 +1612,9 @@ noncomputable def negativeLaplacePsiCircle : C(AddCircle (1 : ℝ), ℂ) where
       (negativeLaplacePsi t : ℂ) := by
   rfl
 
+/-- Mathlib's `fourierCoeff` of the circle-valued `Ψ` agrees with
+`negativeLaplacePsiFourierCoeff`, so the coefficients computed above are
+the ones Mathlib's Fourier inversion theorem sums. -/
 lemma fourierCoeff_negativeLaplacePsiCircle (k : ℤ) :
     fourierCoeff negativeLaplacePsiCircle k =
       negativeLaplacePsiFourierCoeff k := by
@@ -1394,11 +1631,16 @@ lemma fourierCoeff_negativeLaplacePsiCircle (k : ℤ) :
   push_cast
   norm_num
 
+/-- Summability transported to `negativeLaplacePsiCircle`, the hypothesis
+of `has_pointwise_sum_fourier_series_of_summable`. -/
 theorem summable_fourierCoeff_negativeLaplacePsiCircle :
     Summable (fourierCoeff negativeLaplacePsiCircle) :=
   summable_negativeLaplacePsiFourierCoeff.congr
     (fun k => (fourierCoeff_negativeLaplacePsiCircle k).symm)
 
+/-- Pointwise Fourier reconstruction on `AddCircle 1`.  The real-line form
+`hasSum_negativeLaplacePsi_fourierSeries` is this statement pulled back
+along `t ↦ (t : AddCircle 1)`. -/
 theorem hasSum_negativeLaplacePsi_fourierSeries_circle
     (x : AddCircle (1 : ℝ)) :
     HasSum (fun k : ℤ =>
@@ -1426,6 +1668,8 @@ noncomputable def negativeLaplacePsiGammaZetaFourierCoeff (k : ℤ) : ℂ :=
         riemannZeta (1 - negativeLaplaceFourierFrequency k) /
       (Real.log 2 : ℂ)
 
+/-- The closed-form sequence agrees with the abstract coefficients at
+every `k`, the zero mode included, where both sides vanish. -/
 theorem negativeLaplacePsiGammaZetaFourierCoeff_eq (k : ℤ) :
     negativeLaplacePsiGammaZetaFourierCoeff k =
       negativeLaplacePsiFourierCoeff k := by

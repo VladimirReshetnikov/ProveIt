@@ -165,7 +165,7 @@ theorem fabius_bromwich_scaled
               (fun z => complexGeneratingFunction F (-z)) x r b v) := by
   have hPr : complexGeneratingFunction F (-(r : ℂ)) ≠ 0 := by
     rw [show -(r : ℂ) = ((-r : ℝ) : ℂ) by simp,
-      complexGeneratingFunction_ofReal_vertical]
+      complexGeneratingFunction_ofReal]
     exact Complex.ofReal_ne_zero.mpr
       (generatingFunction_neg_pos F hF r hr).ne'
   exact QuantitativeSaddle.fourier_bromwich_scaled

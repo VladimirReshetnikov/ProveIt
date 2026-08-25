@@ -40,11 +40,12 @@ theorem rvachevUp_integrable (F : BoundedFabius) (hF : IsFabius F) :
   rw [HasCompactSupport, tsupport_rvachev F hF]
   exact isCompact_Icc
 
-/-- Rvachev's up function has total integral one. -/
-theorem integral_rvachevUp_eq_one (F : BoundedFabius) (hF : IsFabius F) :
-    (∫ x : ℝ, rvachevUp F x) = 1 := by
-  have h := moment_eq_integral_formula F hF 0
-  simpa [momentIntegral] using h.symm
+-- The companion fact "Rvachev's up function has total integral one" is
+-- `Fabius.integral_rvachev_eq_one` in `FabiusFunction.AnalyticMoments` (reachable
+-- here through `FabiusFunction.FourierProduct`).  It used to be restated in this
+-- file as `integral_rvachevUp_eq_one`, proved from `moment_eq_integral_formula
+-- F hF 0` — whose own `n = 0` branch is discharged by `integral_rvachev_eq_one`,
+-- so that restatement was a round trip back to the theorem it duplicated.
 
 /-- The density measure `φ λ` occurring in Lemma 1. -/
 noncomputable def rvachevMeasure (F : BoundedFabius) : Measure ℝ :=
@@ -57,7 +58,7 @@ theorem rvachevMeasure_isProbability (F : BoundedFabius) (hF : IsFabius F) :
   rw [withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]
   rw [← ofReal_integral_eq_lintegral_ofReal (rvachevUp_integrable F hF)
     (Eventually.of_forall (rvachevUp_nonneg F))]
-  rw [integral_rvachevUp_eq_one F hF]
+  rw [integral_rvachev_eq_one F hF]
   norm_num
 
 /-- The density measure has total mass one. -/
@@ -106,24 +107,6 @@ theorem rvachevMeasure_charFun (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
     field_simp [Real.pi_ne_zero]
   · exact ENNReal.measurable_ofReal.comp (rvachev_contDiff F hF).continuous.measurable
   · exact Eventually.of_forall fun x => ENNReal.ofReal_lt_top
-
-/-- The half-angle factorization of the removable complex sinc function. -/
-theorem complexSinc_eq_cos_mul (z : ℂ) :
-    complexSinc z = Complex.cos (z / 2) * complexSinc (z / 2) := by
-  by_cases hz : z = 0
-  · subst z
-    simp [complexSinc]
-  · have hz2 : z / 2 ≠ 0 := div_ne_zero hz (by norm_num)
-    simp only [complexSinc, hz, hz2, if_false]
-    rw [show z = 2 * (z / 2) by ring, Complex.sin_two_mul]
-    field_simp
-
-/-- The removable complex sinc function is even. -/
-theorem complexSinc_neg (z : ℂ) : complexSinc (-z) = complexSinc z := by
-  by_cases hz : z = 0
-  · subst z
-    simp [complexSinc]
-  · simp [complexSinc, hz, Complex.sin_neg]
 
 /-- The finite cosine product which is the characteristic function of `μ_n`. -/
 noncomputable def finiteCosineProduct (n : ℕ) (t : ℝ) : ℂ :=

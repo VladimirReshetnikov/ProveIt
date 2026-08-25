@@ -167,7 +167,17 @@ theorem dyadicLambertRemainder_tendsto_zero :
     Tendsto dyadicLambertRemainder atTop (nhds 0) := by
   exact dyadicLambertPhase_sub_main_tendsto_zero
 
-private lemma dyadicLambertRemainder_eq_log_perturbation {t : ℝ} (ht : 0 < t)
+/-- The Lambert displacement remainder is the logarithm of the relative
+perturbation, rescaled by `log 2`:
+`dyadicLambertRemainder t = log (1 + dyadicLambertPerturbation t) / log 2`.
+
+This is the exact algebraic identity behind every expansion of the Lambert
+phase, obtained by rewriting the additive fixed-point equation
+`dyadicLambertPhase_fixedPoint` as a statement about the ratio
+`dyadicLambertPhase t / t`.  It is public rather than `private` because
+downstream modules (notably `FabiusFunction.FabiusLambertHigherExpansion`)
+need it to push the expansion past order `t⁻¹`. -/
+theorem dyadicLambertRemainder_eq_log_perturbation {t : ℝ} (ht : 0 < t)
     (hsmall : Real.log 2 * (2 : ℝ) ^ (-t) < Real.exp (-1)) :
     dyadicLambertRemainder t =
       Real.log (1 + dyadicLambertPerturbation t) / Real.log 2 := by

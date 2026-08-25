@@ -38,12 +38,19 @@ lemma log_pow_div_sq_isBigO_inv_nat (k : ℕ) :
     field_simp
 
 /-- The second normalized Laplace moment as a Bell polynomial in the first
-two logarithmic derivatives. -/
-lemma normalizedLaplaceMoment_two_eq_logDerivatives
-    (F : BoundedFabius) (s : ℝ) :
-    normalizedLaplaceMoment F 2 s =
-      negativeLaplaceLogSecond F s + negativeLaplaceLogFirst F s ^ 2 :=
-  normalizedLaplaceMoment_two_eq_logSecond_add_first_sq F s
+two logarithmic derivatives.
+
+This is an alias, not a second theorem.  The statement and its proof live once,
+in `normalizedLaplaceMoment_two_eq_logSecond_add_first_sq`
+(`FabiusFunction.EndpointLaplaceComparison`, imported by this module); the
+restated copy of the identity that used to stand here has been removed, so the
+two public names can no longer drift apart.  The name is kept only so that the
+second-order case can be quoted under the same scheme as
+`normalizedLaplaceMoment_three_eq_logDerivatives` and
+`normalizedLaplaceMoment_four_eq_logDerivatives` below; new call sites should
+prefer the canonical name. -/
+alias normalizedLaplaceMoment_two_eq_logDerivatives :=
+  normalizedLaplaceMoment_two_eq_logSecond_add_first_sq
 
 /-- The third normalized Laplace moment as a Bell polynomial in the first
 three logarithmic derivatives. -/

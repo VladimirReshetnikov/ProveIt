@@ -78,17 +78,6 @@ limit of its naturally ordered partial products. -/
 noncomputable def rvachevCosineProduct (z : ℂ) : ℂ :=
   Filter.limUnder atTop (rvachevCosinePartialProduct z)
 
-private lemma complexSinc_half (z : ℂ) :
-    complexSinc z = Complex.cos (z / 2) * complexSinc (z / 2) := by
-  by_cases hz : z = 0
-  · subst z
-    simp [complexSinc]
-  · have hz2 : z / 2 ≠ 0 := div_ne_zero hz (by norm_num)
-    rw [complexSinc, if_neg hz, complexSinc, if_neg hz2]
-    have htwo : 2 * (z / 2) = z := by ring
-    rw [← htwo, Complex.sin_two_mul]
-    field_simp
-
 private lemma sincPartial_eq_cosinePartial_mul_tail
     (z : ℂ) (N : ℕ) :
     (∏ h ∈ range N, complexSinc (Real.pi * z / (2 : ℂ) ^ h)) =
@@ -109,7 +98,7 @@ private lemma sincPartial_eq_cosinePartial_mul_tail
           complexSinc (Real.pi * z / (2 : ℂ) ^ N) =
             Complex.cos (Real.pi * z / (2 : ℂ) ^ (N + 1)) *
               complexSinc (Real.pi * z / (2 : ℂ) ^ (N + 1)) := by
-        rw [complexSinc_half, harg]
+        rw [complexSinc_eq_cos_mul, harg]
       rw [mul_assoc, ← pow_succ, htail, mul_pow]
       ring
 

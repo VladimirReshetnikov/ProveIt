@@ -24,6 +24,10 @@ private theorem nat_pow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) :
 
 /-! ## A primitive-recursive Thue--Morse bit -/
 
+/-- The Thue--Morse bit computed by halving recursion: `tmBitPR 0 = 0` and
+`tmBitPR n = (tmBitPR (n / 2) + n % 2) % 2` for `0 < n`.  This is the
+primitive-recursive presentation of `thueMorseBit`; the evaluator below needs
+the bit rather than the sign so that all intermediate data stay natural. -/
 def tmBitPR : ℕ → ℕ
   | 0 => 0
   | n + 1 => (tmBitPR ((n + 1) / 2) + (n + 1) % 2) % 2
@@ -33,11 +37,17 @@ decreasing_by exact Nat.div_lt_self (by omega) (by omega)
 @[simp] theorem tmBitPR_zero : tmBitPR 0 = 0 := by
   rw [tmBitPR]
 
+/-- The halving recurrence of `tmBitPR`, stated for positive `n`.  It is the
+unfolding step used by `tmBitPR_eq_thueMorseBit` and by the strong-recursion
+proof that `tmBitPR` is primitive recursive. -/
 theorem tmBitPR_of_pos (n : ℕ) (hn : 0 < n) :
     tmBitPR n = (tmBitPR (n / 2) + n % 2) % 2 := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn.ne'
   rw [tmBitPR]
 
+/-- `tmBitPR` agrees with `thueMorseBit`, that is with `binaryWeight n % 2`.
+This is what carries the Thue--Morse signs of the centered spline into the
+natural-number evaluator. -/
 theorem tmBitPR_eq_thueMorseBit (n : ℕ) : tmBitPR n = thueMorseBit n := by
   unfold thueMorseBit
   induction n using Nat.strong_induction_on with
@@ -97,11 +107,19 @@ private theorem tmBitPR_primrec_aux :
     rw [List.getElem?_range hdiv]
     simp [tmBitPR_of_pos n (Nat.pos_of_ne_zero hn)]
 
+/-- `tmBitPR` is primitive recursive, obtained from `Primrec.nat_strong_rec`
+on the halving step.  It is the base ingredient of the fold step that
+accumulates the spline terms. -/
 theorem tmBitPR_primrec : Primrec tmBitPR :=
   tmBitPR_primrec_aux.comp (Primrec.const ()) Primrec.id
 
 /-! ## Signed-natural matched-grid spline -/
 
+/-- The unsigned magnitude of the `r`-th centered spline term of degree `p`
+at the matched grid point `a / 2 ^ p`, namely `(2 * a - 2 * r - 1) ^ p` with
+natural subtraction.  Only indices `r < a` are ever used, where the base is
+at least `1`, so neither the truncation nor the `0 ^ 0` convention
+intervenes. -/
 def splineTermPR (p a r : ℕ) : ℕ :=
   (2 * a - 2 * r - 1) ^ p
 
@@ -145,9 +163,18 @@ private theorem splineFoldStep_primrec : Primrec₂ splineFoldStep := by
         (Primrec.nat_sub.comp₂ (Primrec.const 1).to₂ hb) ht))
     (Primrec.nat_add.comp₂ hneg (Primrec.nat_mul.comp₂ hb ht))
 
+/-- Accumulates the degree-`p` centered spline terms for `r < a` into a
+signed natural pair `(positive, negative)`: a term whose Thue--Morse bit is
+`0` is added to the first component, one whose bit is `1` to the second.  The
+intended value is the difference of the components, which `splineSumsPR_diff`
+identifies with the signed sum.  A left fold over `List.range a` is used to
+keep the whole computation primitive recursive. -/
 def splineSumsPR (p a : ℕ) : ℕ × ℕ :=
   (List.range a).foldl (fun s r => splineFoldStep (p, a) (s, r)) (0, 0)
 
+/-- `splineSumsPR` is primitive recursive in `(p, a)`, by list recursion over
+`List.range a`.  It feeds `splineCodePR_primrec`, and is also used
+directly by `fabiusSplineApproxPR_primrec`. -/
 theorem splineSumsPR_primrec : Primrec₂ splineSumsPR := by
   change Primrec (fun pa : ℕ × ℕ =>
     (List.range pa.2).foldl (fun s r => splineFoldStep pa (s, r)) (0, 0))
@@ -156,6 +183,11 @@ theorem splineSumsPR_primrec : Primrec₂ splineSumsPR := by
     (Primrec.const (0, 0))
     splineFoldStep_primrec
 
+/-- The natural denominator of the exact spline code, defined by the
+recurrence `splineDenPR 0 = 1` and
+`splineDenPR (p + 1) = splineDenPR p * 2 ^ (p + 1) * (p + 1)`.  The recurrence
+form is what makes it primitive recursive; `splineDenPR_eq` gives the closed
+form. -/
 def splineDenPR : ℕ → ℕ
   | 0 => 1
   | p + 1 => splineDenPR p * 2 ^ (p + 1) * (p + 1)
@@ -168,12 +200,19 @@ private theorem splineDenStep_primrec :
         (Primrec.succ.comp₂ Primrec₂.left)))
     (Primrec.succ.comp₂ Primrec₂.left)
 
+/-- `splineDenPR` is primitive recursive, by `Primrec.nat_rec₁` on its
+defining recurrence. -/
 theorem splineDenPR_primrec : Primrec splineDenPR := by
   exact (Primrec.nat_rec₁ 1 splineDenStep_primrec).of_eq fun n => by
     induction n with
     | zero => rfl
     | succ n ih => simp only [splineDenPR]; rw [ih]
 
+/-- Closed form of the denominator:
+`splineDenPR p = 2 ^ ((p + 1).choose 2) * p.factorial`.  It collects the
+`2 ^ (p.choose 2) * p.factorial` prefactor of `fabiusUniformSpline` together
+with the extra `2 ^ p` produced by rewriting the centered base in terms of
+`2 * a - 2 * r - 1`. -/
 theorem splineDenPR_eq (p : ℕ) :
     splineDenPR p = 2 ^ (p + 1).choose 2 * p.factorial := by
   induction p with
@@ -196,15 +235,27 @@ theorem splineDenPR_pos (p : ℕ) : 0 < splineDenPR p := by
 theorem splineDenPR_ne_zero (p : ℕ) : splineDenPR p ≠ 0 :=
   Nat.ne_of_gt (splineDenPR_pos p)
 
+/-- A rational code `((positive, negative), denominator)` denoting the real
+`(positive - negative) / denominator`.  The numerator is kept as a pair of
+naturals, as for `DyadicNumerator`, so that codes stay primitive recursive
+without an opaque integer encoding. -/
 abbrev SignedRatCode := (ℕ × ℕ) × ℕ
 
+/-- The exact rational code of the degree-`p` centered spline at the matched
+grid point `a / 2 ^ p`: the signed numerator pair `splineSumsPR p a` over the
+denominator `splineDenPR p`.  `splineCodePR_value` shows that the code
+denotes `fabiusUniformSpline p (a / 2 ^ p)` with no error at all. -/
 def splineCodePR (p a : ℕ) : SignedRatCode :=
   (splineSumsPR p a, splineDenPR p)
 
+/-- `splineCodePR` is primitive recursive in `(p, a)`. -/
 theorem splineCodePR_primrec : Primrec₂ splineCodePR := by
   exact Primrec₂.pair.comp₂ splineSumsPR_primrec
     (splineDenPR_primrec.comp₂ Primrec₂.left)
 
+/-- Computability form of `splineCodePR_primrec`.  Nothing in this file
+consumes it; it is exported so that the exact spline code can be used
+wherever a `Computable₂` hypothesis is required. -/
 theorem splineCodePR_computable : Computable₂ splineCodePR :=
   splineCodePR_primrec.to_comp
 
@@ -248,6 +299,11 @@ private lemma splineFold_diff (p a : ℕ) (l : List ℕ) (s : ℕ × ℕ) :
         splineFoldStep_diff]
       ring
 
+/-- The pair accumulated by the fold really encodes the signed sum: in `ℤ`,
+`(splineSumsPR p a).1 - (splineSumsPR p a).2` equals
+`∑ r ∈ range a, thueMorseSign r * splineTermPR p a r`.  This is the step that
+transfers the `List.foldl` implementation to the `Finset` sum used by
+`rawSplineNumerator`. -/
 theorem splineSumsPR_diff (p a : ℕ) :
     ((splineSumsPR p a).1 : ℤ) - ((splineSumsPR p a).2 : ℤ) =
       ∑ r ∈ Finset.range a,
@@ -256,14 +312,26 @@ theorem splineSumsPR_diff (p a : ℕ) :
   simp only [Int.natCast_zero, zero_sub, neg_zero, zero_add]
   rw [← List.sum_toFinset _ List.nodup_range, List.toFinset_range]
 
+/-- The integer numerator of the degree-`p` centered spline at the matched
+grid point `a / 2 ^ p`: the Thue--Morse-signed sum of `splineTermPR p a r`
+over `r < a`.  This is the mathematical reading of `splineSumsPR`, used in
+the correctness proofs and not in the evaluator itself. -/
 def rawSplineNumerator (p a : ℕ) : ℤ :=
   ∑ r ∈ Finset.range a,
     thueMorseSign r * (splineTermPR p a r : ℤ)
 
+/-- The real number denoted by `splineCodePR p a`, written with real
+division: `rawSplineNumerator p a / (2 ^ ((p + 1).choose 2) * p.factorial)`.
+`rawSplineValue_eq_uniformSpline` identifies it with the centered spline. -/
 noncomputable def rawSplineValue (p a : ℕ) : ℝ :=
   (rawSplineNumerator p a : ℝ) /
     ((2 : ℝ) ^ (p + 1).choose 2 * (p.factorial : ℝ))
 
+/-- On a matched grid point the prefix length is exactly the numerator:
+`fabiusDiscreteLimitRangeLength ((a : ℝ) / 2 ^ p) p = a`, for all `p` and
+`a`, because the half-up rounding of that definition is applied to the
+integer `a`.  This is what makes the finite fold over `r < a` the complete
+spline sum. -/
 theorem rangeLength_matched (p a : ℕ) :
     fabiusDiscreteLimitRangeLength ((a : ℝ) / (2 : ℝ) ^ p) p = a := by
   unfold fabiusDiscreteLimitRangeLength
@@ -292,6 +360,11 @@ private lemma matched_power (p a r : ℕ) (hr : r < a) :
       (-1 : ℝ) / 2 * ((2 : ℝ) * a - 2 * r - 1) := by ring
   rw [hbase, mul_pow, div_pow]
 
+/-- The natural-number spline value is exactly the centered spline at the
+matched grid point: `rawSplineValue p a = fabiusUniformSpline p (a / 2 ^ p)`,
+for all `p` and `a`.  The extra `2 ^ p` coming from the centered base is
+absorbed into the denominator of `rawSplineValue`, while the sign `(-1) ^ p`
+cancels against the `(-1) ^ p` prefactor of `fabiusUniformSpline`. -/
 theorem rawSplineValue_eq_uniformSpline (p a : ℕ) :
     rawSplineValue p a =
       fabiusUniformSpline p ((a : ℝ) / (2 : ℝ) ^ p) := by
@@ -334,6 +407,11 @@ theorem rawSplineValue_eq_uniformSpline (p a : ℕ) :
   rw [hsign]
   ring
 
+/-- Semantic correctness of the exact code: with the numerator difference
+taken in `ℝ`, the ratio `((code.1.1 : ℝ) - code.1.2) / code.2` equals
+`fabiusUniformSpline p ((a : ℝ) / 2 ^ p)`, for all `p` and `a` and with no
+restriction on the grid.  Everything downstream is a rounding argument on top
+of this identity. -/
 theorem splineCodePR_value (p a : ℕ) :
     (((splineCodePR p a).1.1 : ℝ) - ((splineCodePR p a).1.2 : ℝ)) /
         (splineCodePR p a).2 =
@@ -360,6 +438,8 @@ private theorem addThreePrimrec : Primrec (fun p : ℕ => p + 3) :=
 def clampDyadicNumeratorPR (c : DyadicNumerator) (s : ℕ) : ℕ :=
   if c.1 ≤ c.2 then 0 else min (c.1 - c.2) (2 ^ s)
 
+/-- `clampDyadicNumeratorPR` is primitive recursive in the code and the
+exponent. -/
 theorem clampDyadicNumeratorPR_primrec : Primrec₂ clampDyadicNumeratorPR := by
   apply Primrec₂.mk
   exact Primrec.ite
@@ -371,11 +451,16 @@ theorem clampDyadicNumeratorPR_primrec : Primrec₂ clampDyadicNumeratorPR := by
         (Primrec.snd.comp Primrec.fst))
       (natPowPrimrec.comp (Primrec.const 2) Primrec.snd))
 
+/-- The clamped numerator never exceeds `2 ^ s`, so the grid point it names
+is at most `1`. -/
 lemma clampDyadicNumeratorPR_le (c : DyadicNumerator) (s : ℕ) :
     clampDyadicNumeratorPR c s ≤ 2 ^ s := by
   unfold clampDyadicNumeratorPR
   split <;> simp
 
+/-- The clamped grid point lies in `Set.Icc 0 1`.  This is the hypothesis
+required by `abs_fabiusUniformSpline_sub_fabiusReal_le_all`, whose spline
+error bound is only available on the unit interval. -/
 lemma clampDyadicNumeratorPR_ratio_mem_Icc (c : DyadicNumerator) (s : ℕ) :
     (clampDyadicNumeratorPR c s : ℝ) / (2 : ℝ) ^ s ∈ Set.Icc 0 1 := by
   constructor
@@ -383,6 +468,12 @@ lemma clampDyadicNumeratorPR_ratio_mem_Icc (c : DyadicNumerator) (s : ℕ) :
   · rw [div_le_one (by positivity)]
     exact_mod_cast clampDyadicNumeratorPR_le c s
 
+/-- Clamping is invisible to a bounded/CDF Fabius solution: for `F` with
+`IsFabius F`, evaluating `fabiusReal F` at the clamped grid point gives the
+same value as at `c.value s`.  Off `[0,1]` this uses `hF.zero_of_nonpos` and
+`hF.one_of_one_le`, and inside `[0,1]` the clamp is the identity.  It is what
+lets the evaluator work on `[0,1]` while still approximating `F` on all of
+`ℝ`. -/
 lemma fabiusReal_clampDyadicNumeratorPR
     (F : BoundedFabius) (hF : IsFabius F) (c : DyadicNumerator) (s : ℕ) :
     fabiusReal F ((clampDyadicNumeratorPR c s : ℝ) / (2 : ℝ) ^ s) =
@@ -505,6 +596,9 @@ def fabiusSplineApproxPR (c : DyadicNumerator) (p : ℕ) : DyadicNumerator :=
   let denominator := splineDenPR s
   ((2 * (2 ^ p * numerator) + denominator) / (2 * denominator), 0)
 
+/-- `fabiusSplineApproxPR` is primitive recursive in the input code and the
+requested precision: the clamp, the spline fold, the denominator and the
+half-up division are each assembled from the lemmas above. -/
 theorem fabiusSplineApproxPR_primrec : Primrec₂ fabiusSplineApproxPR := by
   let hs : Primrec₂ (fun (_ : DyadicNumerator) (p : ℕ) => p + 3) :=
     addThreePrimrec.comp₂ Primrec₂.right
@@ -530,9 +624,17 @@ theorem fabiusSplineApproxPR_primrec : Primrec₂ fabiusSplineApproxPR := by
       (Primrec.nat_mul.comp₂ (Primrec.const 2).to₂ hden)
   · exact (Primrec.const 0).to₂
 
+/-- Computability form of `fabiusSplineApproxPR_primrec`, supplying the
+`computable` field of `fabiusHasComputableDyadicApproximation`. -/
 theorem fabiusSplineApproxPR_computable : Computable₂ fabiusSplineApproxPR :=
   fabiusSplineApproxPR_primrec.to_comp
 
+/-- Error bound for the evaluator, for any `F` with `IsFabius F`: reading the
+input code at exponent `p + 3`, the returned code at exponent `p` differs
+from `fabiusReal F (c.value (p + 3))` by at most `5 * (2 ^ (p + 3))⁻¹`.  One
+of the five units is the spline error at scale `p + 3`, the other four the
+half-up rounding onto the coarser output grid.  This supplies the `error`
+field of `fabiusHasComputableDyadicApproximation`. -/
 theorem fabiusSplineApproxPR_error
     (F : BoundedFabius) (hF : IsFabius F) (c : DyadicNumerator) (p : ℕ) :
     |fabiusReal F (c.value (p + 3)) -

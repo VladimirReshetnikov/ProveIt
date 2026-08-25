@@ -135,6 +135,8 @@ def binaryReductionRemainder (F : BoundedFabius) (x : ℝ) (N : ℕ) : ℝ :=
   (-1 : ℝ) ^ binaryWeight (binaryPrefix x N) *
     extendedFabius F (binaryTail x N)
 
+/-- For a nonnegative argument the binary tail at every scale is
+nonnegative. -/
 theorem binaryTail_nonneg (x : ℝ) (m : ℕ) (hx : 0 ≤ x) :
     0 ≤ binaryTail x m := by
   rw [binaryTail]
@@ -144,6 +146,8 @@ theorem binaryTail_nonneg (x : ℝ) (m : ℕ) (hx : 0 ≤ x) :
   dsimp only [binaryPrefix] at h ⊢
   nlinarith
 
+/-- The binary tail at scale `m` is strictly less than `2 ^ (-m)`.
+No sign hypothesis on `x` is required. -/
 theorem binaryTail_lt (x : ℝ) (m : ℕ) :
     binaryTail x m < ((2 : ℝ) ^ m)⁻¹ := by
   rw [binaryTail]
@@ -250,11 +254,8 @@ theorem extendedFabius_eq_globalBinaryReduction_zero_add_remainder
     have hblockX := extendedFabius_eq_single_translate F hF b
       (show 2 * (b : ℝ) ≤ x by rw [hxform, heven]; push_cast; linarith)
       (show x ≤ 2 * (b : ℝ) + 2 by rw [hxform, heven]; push_cast; linarith)
-    have hblockZ := extendedFabius_eq_single_translate F hF 0 (x := z)
-      (by norm_num; rw [hzform]; exact hy0)
-      (by norm_num; rw [hzform]; linarith)
-    have hblockZ' : extendedFabius F z = rvachevUp F (z - 1) := by
-      simpa [binaryWeight] using hblockZ
+    have hblockZ' : extendedFabius F z = rvachevUp F (z - 1) :=
+      extendedFabius_eq_rvachevUp_sub_one F hF (by rw [hzform]; linarith)
     have hglobal : extendedFabius F x =
         (-1 : ℝ) ^ binaryWeight b * extendedFabius F y := by
       rw [hblockX, ← hblockZ', hzform]
@@ -276,11 +277,8 @@ theorem extendedFabius_eq_globalBinaryReduction_zero_add_remainder
     have hblockX := extendedFabius_eq_single_translate F hF b
       (show 2 * (b : ℝ) ≤ x by rw [hxform, hodd]; push_cast; linarith)
       (show x ≤ 2 * (b : ℝ) + 2 by rw [hxform, hodd]; push_cast; linarith)
-    have hblockZ := extendedFabius_eq_single_translate F hF 0 (x := z)
-      (by norm_num; rw [hzform]; linarith)
-      (by norm_num; rw [hzform]; linarith)
-    have hblockZ' : extendedFabius F z = rvachevUp F (z - 1) := by
-      simpa [binaryWeight] using hblockZ
+    have hblockZ' : extendedFabius F z = rvachevUp F (z - 1) :=
+      extendedFabius_eq_rvachevUp_sub_one F hF (by rw [hzform]; linarith)
     have hglobal : extendedFabius F x =
         (-1 : ℝ) ^ binaryWeight b * extendedFabius F z := by
       rw [hblockX, ← hblockZ']
@@ -379,6 +377,8 @@ theorem extendedFabius_eq_globalBinaryReductionSum_add_remainder
         dsimp only [m]
         ring
 
+/-- For nonnegative `x` the binary tails tend to zero as the scale
+grows, by squeezing between `0` and `2 ^ (-m)`. -/
 theorem binaryTail_tendsto_zero (x : ℝ) (hx0 : 0 ≤ x) :
     Tendsto (binaryTail x) atTop (𝓝 0) := by
   apply squeeze_zero
@@ -389,6 +389,8 @@ theorem binaryTail_tendsto_zero (x : ℝ) (hx0 : 0 ≤ x) :
         (by norm_num : (0 : ℝ) ≤ (2 : ℝ)⁻¹)
         (by norm_num : (2 : ℝ)⁻¹ < 1))
 
+/-- For an `IsFabius` extension and nonnegative `x`, the signed
+residual after `N` fractional binary digits tends to zero. -/
 theorem binaryReductionRemainder_tendsto_zero
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
@@ -441,6 +443,9 @@ private lemma binaryTail_mem_Icc_half
   exact ⟨binaryTail_nonneg x N hx0,
     (binaryTail_lt x N).le.trans (inverse_two_pow_le_half N hN)⟩
 
+/-- Geometric bound on the residual: for `0 ≤ x` and `1 ≤ N` its
+norm is at most `2 * 2 ^ (-N)`.  The hypothesis `1 ≤ N` places the
+tail inside `[0, 1/2]`, where `fabiusReal F y ≤ 2 * y`. -/
 theorem norm_binaryReductionRemainder_le
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (N : ℕ) (hN : 1 ≤ N) :
@@ -459,6 +464,10 @@ theorem norm_binaryReductionRemainder_le
     _ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
       nlinarith [(binaryTail_lt x N).le]
 
+/-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
+exactly one step of the residual telescope.  Restated for the
+concrete Fabius function as `globalFabius_binary_telescope_step`
+in `FabiusDiscreteLimitIntegration`. -/
 theorem globalBinaryReductionSummand_eq_remainder_sub
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (m : ℕ) (hm : 1 ≤ m) :
@@ -476,6 +485,9 @@ theorem globalBinaryReductionSummand_eq_remainder_sub
   rw [Finset.sum_range_succ] at hcur
   linarith
 
+/-- For `0 ≤ x` and `2 ≤ m` the outer summand has norm at most
+`4 * 2 ^ (-(m - 1))`, obtained from the telescope identity and the
+residual bound at scales `m - 1` and `m`. -/
 theorem norm_globalBinaryReductionSummand_le_ge_two
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (m : ℕ) (hm : 2 ≤ m) :
@@ -502,6 +514,10 @@ theorem norm_globalBinaryReductionSummand_le_ge_two
       norm_num
       linarith
 
+/-- For nonnegative `x` the outer series converges absolutely, by
+comparison with a geometric series after discarding the first two
+terms.  Also used in `FabiusGlobalQBinomialSeries` to prove
+`summable_norm_qBinomialFabiusGlobalSummand`. -/
 theorem summable_norm_globalBinaryReductionSummand
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
@@ -522,12 +538,18 @@ theorem summable_norm_globalBinaryReductionSummand
       have hnonneg : 0 ≤ ((2 : ℝ)⁻¹) ^ j := by positivity
       norm_num
 
+/-- Summability of the outer series for nonnegative `x`, deduced
+from absolute summability. -/
 theorem summable_globalBinaryReductionSummand
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
     Summable (globalBinaryReductionSummand x) :=
   Summable.of_norm (summable_norm_globalBinaryReductionSummand F hF x hx0)
 
+/-- For nonnegative `x` the partial sums over `Finset.range N`
+converge to `extendedFabius F x`.  Restated for the concrete
+Fabius function as `binary_telescope_tendsto_globalFabius` in
+`FabiusDiscreteLimitIntegration`. -/
 theorem tendsto_sum_range_globalBinaryReduction
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
@@ -590,6 +612,8 @@ theorem hasSum_globalBinaryReductionSummand_succ
     (g := extendedFabius F x) 1).2 h
   simpa [globalBinaryReductionSummand_zero_of_lt_one x hx1] using htail
 
+/-- `tsum` form of the shifted `m = 1, 2, ...` series, valid on
+`0 ≤ x < 1`, where the scale-zero term vanishes. -/
 theorem extendedFabius_eq_tsum_globalBinaryReductionSummand_succ
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) :
@@ -605,6 +629,9 @@ theorem hasSum_fabiusReal_globalBinaryReductionSummand
   rw [← extendedFabius_eq_fabiusReal F hF hx]
   exact hasSum_globalBinaryReductionSummand F hF x hx.1
 
+/-- `tsum` form on the closed unit interval `[0, 1]`, stated for the
+bounded function `fabiusReal F` instead of the signed global
+extension. -/
 theorem fabiusReal_eq_tsum_globalBinaryReductionSummand
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :

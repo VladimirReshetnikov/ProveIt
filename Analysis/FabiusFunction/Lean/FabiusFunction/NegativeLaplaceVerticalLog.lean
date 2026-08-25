@@ -97,7 +97,11 @@ theorem negativeLaplaceVerticalCurve_ne_zero
   norm_num
   exact hr
 
-/-- The vertical curve is smooth to every real order. -/
+/-- The vertical curve is real analytic in the vertical parameter.  The
+smoothness exponent is the top element of `WithTop ℕ∞`, which in this Mathlib
+is the *analytic* exponent `ω` rather than `C^∞`: the curve is an entire
+generating function composed with an affine map, so analyticity, not merely
+infinite differentiability, is what is proved here. -/
 theorem contDiff_negativeLaplaceVerticalCurve
     (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
     ContDiff ℝ ⊤ (negativeLaplaceVerticalCurve F r) := by

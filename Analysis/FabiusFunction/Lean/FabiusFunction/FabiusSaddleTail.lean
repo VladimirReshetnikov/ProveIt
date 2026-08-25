@@ -1,4 +1,5 @@
 import FabiusFunction.NegativeLaplaceVertical
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
 /-!
@@ -343,7 +344,7 @@ lemma norm_fabius_scaledSaddleKernel_le
   have hP : ‖complexGeneratingFunction F (-(r : ℂ))‖ =
       generatingFunction F (-r) := by
     rw [show -(r : ℂ) = ((-r : ℝ) : ℂ) by push_cast; ring,
-      complexGeneratingFunction_ofReal_vertical, Complex.norm_real,
+      complexGeneratingFunction_ofReal, Complex.norm_real,
       Real.norm_eq_abs, abs_of_pos hreal]
   have hvertical := norm_complexGeneratingFunction_neg_vertical_div_le
     F hF r θ hr (2 * m)
@@ -608,6 +609,14 @@ lemma one_le_fabiusSaddleCentralRadius
   apply (Real.le_sqrt (by norm_num) (by positivity)).2
   nlinarith
 
+/-- `Real.exp 1 < 2.72 < 4`, so a lower bound `4 ≤ b` already supplies the
+hypothesis `Real.exp 1 ≤ b` demanded by `one_le_fabiusSaddleCentralRadius`.
+This is the bridge that lets the standardized-radius tail estimates below be
+stated with a single explicit numeric lower bound on `b`. -/
+lemma exp_one_le_of_four_le {b : ℝ} (hb4 : 4 ≤ b) : Real.exp 1 ≤ b := by
+  have := Real.exp_one_lt_d9
+  linarith
+
 lemma integral_scaledPolynomialKernel_standardRadius_le
     (b : ℝ) (m : ℕ)
     (hbexp : Real.exp 1 ≤ b) (hb4 : 4 ≤ b)
@@ -641,6 +650,22 @@ lemma integral_scaledPolynomialKernel_standardRadius_le
         ((2 : ℝ) ^ (m - 1))⁻¹ * (Real.sqrt b * Real.pi) := htail
     _ ≤ 16 * b⁻¹ + 32 * Real.pi * b⁻¹ := add_le_add hmiddle hfar
     _ = (16 + 32 * Real.pi) * b⁻¹ := by ring
+
+/-- `integral_scaledPolynomialKernel_standardRadius_le` without the redundant
+hypothesis `Real.exp 1 ≤ b`: it is implied by `4 ≤ b`, which the statement
+already assumes.  Prefer this form; the hypothesis-heavy original is kept
+unchanged so that no existing consumer moves. -/
+lemma integral_scaledPolynomialKernel_standardRadius_le_of_four_le
+    (b : ℝ) (m : ℕ)
+    (hb4 : 4 ≤ b)
+    (hm : b / 4 ≤ (m : ℝ))
+    (hpow : (m : ℝ) ^ 2 ≤ (2 : ℝ) ^ m) :
+    (∫ v in (Icc (-fabiusSaddleCentralRadius b)
+        (fabiusSaddleCentralRadius b))ᶜ,
+      scaledPolynomialKernel b m v) ≤
+      (16 + 32 * Real.pi) * b⁻¹ :=
+  integral_scaledPolynomialKernel_standardRadius_le b m
+    (exp_one_le_of_four_le hb4) hb4 hm hpow
 
 lemma natCast_sq_le_two_pow {n : ℕ} (hn : 4 ≤ n) :
     (n : ℝ) ^ 2 ≤ (2 : ℝ) ^ n := by
@@ -694,6 +719,25 @@ theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_le
       _ = (16 + 32 * Real.pi) * b⁻¹ := by ring
   exact hraw.trans (mul_le_mul_of_nonneg_left hbracket
     (negativeLaplaceMinorArcConstant_pos r hr (2 * m)).le)
+
+/-- `integral_norm_fabius_scaledSaddleKernel_standardRadius_le` without the
+redundant hypothesis `Real.exp 1 ≤ b`: it already follows from `16 ≤ b`.
+Prefer this form; the original is kept unchanged so that its existing
+consumer `integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO`
+is untouched. -/
+theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_le_of_sixteen_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x r b : ℝ) (m : ℕ)
+    (hr : 0 < r) (hb16 : 16 ≤ b)
+    (hm : b / 4 ≤ (m : ℝ)) :
+    (∫ v in (Icc (-fabiusSaddleCentralRadius b)
+        (fabiusSaddleCentralRadius b))ᶜ,
+      ‖QuantitativeSaddle.scaledSaddleKernel
+        (fun z => complexGeneratingFunction F (-z)) x r b v‖) ≤
+      negativeLaplaceMinorArcConstant r (2 * m) *
+        ((16 + 32 * Real.pi) * b⁻¹) :=
+  integral_norm_fabius_scaledSaddleKernel_standardRadius_le F hF x r b m hr
+    (exp_one_le_of_four_le (by linarith)) hb16 hm
 
 /-- Complementary-tail `O(1/b)` for the normalized scaled Fabius kernel.
 The extracted factor count is `N = 2m`; the hypothesis `b/4 ≤ m` is exactly
