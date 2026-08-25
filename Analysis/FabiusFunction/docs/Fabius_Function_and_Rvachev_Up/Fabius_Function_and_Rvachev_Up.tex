@@ -8176,6 +8176,31 @@ but not in that formula, and a routine built on it returns an overflow or, worse
 wrong number.  This is not a rounding story; it is a defect of the algorithm at exactly the
 arguments this problem cares about, and it explains how two independently published decimal
 values for $\widehat\Psi(1)$ can agree with each other to eight figures and both be wrong.
+
+The symptom that identifies the defect is that raising the working precision does not shrink
+the error.  It moves it:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+working digits & value returned for $10^{7}\widehat\Psi(1)$\\
+\midrule
+$30$ & $7.55865005-7.47011001\,\ii$\\
+$50$ & $7.55864674-7.47009636\,\ii$\\
+$80$ & $7.55865060-7.47008702\,\ii$\\
+\midrule
+any & $7.55864754-7.47010356\,\ii$ \quad(Euler--Maclaurin)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first three rows come from a widely used arbitrary-precision library whose complex zeta
+routes through \eqref{eq:eta-series}; the last is a hand-written Euler--Maclaurin evaluation,
+which is stable at all three precisions and agrees with
+\eqref{eq:Psi-first-coeff}.\footnote{The precision table is due to an independent
+recomputation carried out alongside this article; the Euler--Maclaurin values were checked
+here at two truncations, $60$ terms with $12$ Bernoulli corrections and $100$ with $16$,
+which agree with each other to $37$ digits.}
+Digits that wander as the precision rises are the signature of a removable singularity being
+divided by, and they are exactly what would persuade a careful reader to trust a wrong value.
 Use an Euler--Maclaurin or Hurwitz evaluation instead, and check the answer at two working
 precisions.
 \end{warning}  Thus the visible oscillation is
@@ -9080,14 +9105,84 @@ $n=173$ to $n=352$, consistent with an $\bigO(\lambda^{-1})$ correction.  So $A_
 genuinely nonconstant periodic function of mean about $0.5199$ and peak-to-peak amplitude
 about $3\times10^{-3}$.
 
-The amplitude is not surprising once one looks at where it must come from.  The periodic part
-of $A_1$ is of size $8.7\times10^{-5}$ because it involves $\Psi''$, which multiplies the
-$k$th Fourier mode by $(2\pi k)^{2}$.  A coefficient one order further carries derivatives of
-$\Psi$ two orders higher, and $(2\pi)^{4}\cdot2|\widehat\Psi(1)|\approx3.3\times10^{-3}$.
-The smallness of $\widehat\Psi(1)$ is progressively cancelled by differentiation, so the
-oscillation of $A_j$ grows with $j$ even though $\Psi$ itself is minute.  Any numerical
-extraction of a later coefficient must therefore fix the phase first.
+The amplitude is not an accident, and its growth with $j$ is governed by an exact law, which
+is the subject of \Cref{subsec:as-leading-derivative} below.  Any numerical extraction of a
+later coefficient must fix the phase first.
 \end{warning}
+
+\subsection{The highest derivative in each coefficient}
+\label{subsec:as-leading-derivative}
+
+The coefficients $A_j$ of \eqref{eq:all-orders-log} are polynomials in $L^{-1}$ and in the
+derivatives of $\Psi$.  Two facts about them are worth isolating, because together they
+explain both the size of the oscillation seen above and the ultimate divergence of the
+series.
+
+\begin{theorem}[Leading-derivative law]
+\label{thm:as-leading-derivative}
+For every $j\ge1$ the coefficient $A_j$ involves no derivative of $\Psi$ beyond the
+$2j$th, that derivative occurs linearly, and its coefficient is exactly
+\begin{equation}
+ \frac{(-1)^{j}}{2^{j}\,j!\,L^{2j}}\,\Psi^{(2j)}(u).       \label{eq:as-leading-derivative}
+\end{equation}
+\end{theorem}
+
+\begin{proofidea}
+The $(2j)$th derivative reaches $A_j$ through exactly one route.  It enters the exponent
+expansion only in the top exponent polynomial, and there linearly, with coefficient
+$\ii^{2j}/(2j)!=(-1)^{j}/(2j)!$.  The Gaussian contraction replaces $v^{2j}$ by the moment
+$(2j-1)!!$, and the passage from the saddle mass to its logarithm leaves a linear term
+untouched.  The stated constant is then the identity
+\begin{equation*}
+ \frac{(2j-1)!!}{(2j)!}=\frac1{2^{j}\,j!},
+\end{equation*}
+which is $(2j)!=2^{j}j!\,(2j-1)!!$.
+\end{proofidea}
+
+The law is visible in the coefficients that have been computed.  For $j=1$ it gives
+$-\Psi''/(2L^{2})$, which is the $\Psi''$ term of \eqref{eq:A1}; for $j=2$ it gives
+$+\Psi^{(4)}/(8L^{4})$; for $j=3$, $-\Psi^{(6)}/(48L^{6})$; for $j=4$,
+$+\Psi^{(8)}/(384L^{8})$.
+
+\begin{corollary}[Growth of the oscillation]
+\label{cor:as-amplitude-growth}
+Differentiating multiplies the first Fourier mode by $(2\pi)^{2j}$, so that mode of
+$\Psi^{(2j)}$ has amplitude $2|\widehat\Psi(1)|(2\pi)^{2j}$, and the leading term
+\eqref{eq:as-leading-derivative} therefore contributes an oscillation of amplitude
+\begin{equation}
+ 2|\widehat\Psi(1)|\,\frac1{j!}\left(\frac{2\pi^{2}}{L^{2}}\right)^{\!j},
+ \qquad \frac{2\pi^{2}}{L^{2}}=41.0845769104.              \label{eq:as-amplitude-law}
+\end{equation}
+\end{corollary}
+
+Numerically this predicts $8.73\times10^{-5}$, $1.79\times10^{-3}$, $2.46\times10^{-2}$ and
+$2.52\times10^{-1}$ for $j=1,2,3,4$.
+
+\begin{warning}
+Equation~\eqref{eq:as-amplitude-law} is a growth rate, not the amplitude.  It uses only the
+top derivative; the lower ones contribute in phase and inflate the true swing by a factor
+that itself grows.  The measured peak-to-peak amplitudes are $8.73\times10^{-5}$,
+$1.94\times10^{-3}$, about $6\times10^{-2}$ and about $0.82$, so the ratio of truth to
+estimate drifts $1.00$, $1.08$, $1.24$, $1.63$.  Use \eqref{eq:as-amplitude-law} to see how
+fast the oscillation grows, never to size a particular coefficient.
+\end{warning}
+
+The same two facts explain why the expansion \eqref{eq:all-orders-log} is asymptotic and not
+convergent, and the mechanism is worth naming because it is not the usual one.  Stirling's
+estimate for $\Gamma$ on vertical lines gives
+\begin{equation}
+ |\widehat\Psi(k)|\asymp\e^{-\pi^{2}k/L},
+ \qquad \frac{\pi^{2}}{L}=14.2385595,                      \label{eq:as-mode-decay}
+\end{equation}
+so the Fourier modes of $\Psi$ die extremely fast; already
+$|\widehat\Psi(2)|/|\widehat\Psi(1)|\approx6.3\times10^{-7}$.  But mode $k$ enters $A_j$
+amplified by $(2\pi k)^{2j}/(2^{j}j!L^{2j})$, so its contribution behaves like
+$\exp\bigl(2j\log k-\pi^{2}k/L\bigr)$, which is maximized at $k\approx0.14j$.  For small $j$
+the first mode dominates and the coefficients are minute; past roughly $j=8$ the higher modes
+take over and $\sup|A_j|$ grows faster than geometrically.  The divergence of the expansion is
+therefore caused by the \emph{high-frequency} content of the periodic correction, not by the
+factorial growth one expects from a saddle-point expansion.  This paragraph is a size
+estimate, not a theorem.
 
 Third, and for honesty about what the table can and cannot show at these sizes: the periodic
 part of $A_1$ is minute.  The constant part $1/24+1/(2L)=0.7630141871$ of \eqref{eq:A1} is
