@@ -306,7 +306,7 @@ lemma weightedCoordinateSum_reflect (ω : SampleSpace) :
 
 /-- The law of the random series is invariant under `x ↦ 1 - x`, i.e. it
 is symmetric about `1/2`.  It gives `weightedSumCDF_symmetry` here, and
-is reused in `EndpointLaplaceComparison` to relate the endpoint moments
+is reused in `ProbabilityLaplaceMoments` to relate the endpoint moments
 of the law at `0` and at `1`. -/
 lemma weightedSumDistribution_reflection :
     weightedSumDistribution.map (fun x : ℝ => 1 - x) = weightedSumDistribution := by
