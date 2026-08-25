@@ -19,6 +19,12 @@ layer additionally proves the corrected sharp small-argument expansion with
 its nonconstant Gamma--zeta periodic term, together with its complete
 all-orders saddle expansion.
 
+Several agents develop this directory concurrently in separate worktrees.  If
+you are one of them, please read [`AGENTS.md`](AGENTS.md) and the proposal in
+[`docs/COLLABORATION.md`](docs/COLLABORATION.md), which records the collisions
+that have already happened, the working rules suggested to avoid them, and a
+list of claimable future work.  Feedback on that proposal is invited.
+
 ## Design
 
 The formalization separates two functions that the sources both call `F`:
@@ -53,14 +59,6 @@ This makes denominator, divisibility, parity, and valuation proofs live in
 `ℚ` and `ℕ`; named bridge theorems connect them to the analytic functions.
 The Fourier transform, sinc product, inversion integral, moment series, and
 complex exponential generating function are also represented explicitly.
-
-## Parallel contribution
-
-Parallel contributors and agents should also read the
-[`collaboration and coordination proposal`](docs/COLLABORATION.md).  It
-describes file ownership, synchronization checkpoints, public-API
-compatibility, serialized build discipline, review gates, and the tentative
-integration roadmap for simultaneous Fabius worktrees.
 
 ## Using the Lean library
 
