@@ -5570,6 +5570,34 @@ definition.  The declarations are
 \lean{fabiusReal_isComputableRealFunction} in
 \path{FabiusComputableSpline.lean} and \path{FabiusComputability.lean}.
 
+The same finite spline code also gives a signed-global algorithm.  Instead of clamping the
+positive numerator to the unit grid, it retains the unrestricted centered spline and rounds
+the signed rational numerator pair.  Negative dyadic inputs collapse to the zero grid point,
+which is exact because \(
+\mathcal F(x)=0\) for \(x\le0\).  The resulting primitive-recursive procedure satisfies
+\begin{equation}
+ \left|
+ \mathcal F\!\left(c.\operatorname{value}(p+3)\right)
+ -\operatorname{Approx}_{\rm glob}(c,p).\operatorname{value}(p)
+ \right|
+ \le 5\,2^{-(p+3)}.                                      \label{eq:computable-global-spline-error}
+\end{equation}
+These are \lean{extendedFabiusSplineApproxPR_primrec} and
+\lean{extendedFabiusSplineApproxPR_error}.  Hence, for every \(F\) satisfying
+\lean{IsFabius F}, its signed extension \lean{extendedFabius F} is a computable real function, by
+\lean{extendedFabius_isComputableRealFunction}; the canonical specialization is
+\lean{globalFabius_isComputableRealFunction}.  This is a primitive-recursive correctness
+statement, not a practical running-time estimate: the unrestricted positive grid numerator
+sets the length of the finite fold.
+
+The quantitative analytic estimate is stable under moving the evaluation point:
+\begin{equation}
+ |S_p(x)-\mathcal F(y)|\le 2^{-p}+2|x-y|.                 \label{eq:computable-spline-moving-input}
+\end{equation}
+This is \lean{abs_fabiusUniformSpline_sub_extendedFabius_le_add}.  In particular, if
+\(x_p\to x\), then \(S_p(x_p)\to\mathcal F(x)\), as packaged by
+\lean{fabiusUniformSpline_tendsto_extendedFabius_of_tendsto}.
+
 \section{Formalization boundary and audit conventions}
 \label{sec:audit}
 

@@ -180,6 +180,26 @@ theorem abs_fabiusUniformSpline_sub_extendedFabius_le
       extendedFabius_eq_zero_of_nonpos F hF hx, sub_zero, abs_zero]
     positivity
 
+/-- Quantitative stability of the global spline evaluator when the spline and
+the signed Fabius extension are evaluated at different points.  The first
+term is the uniform spline error; the second is the global Lipschitz
+propagation error. -/
+theorem abs_fabiusUniformSpline_sub_extendedFabius_le_add
+    (F : BoundedFabius) (hF : IsFabius F)
+    (p : ℕ) (x y : ℝ) :
+    |fabiusUniformSpline p x - extendedFabius F y| ≤
+      ((2 : ℝ) ^ p)⁻¹ + 2 * |x - y| := by
+  calc
+    |fabiusUniformSpline p x - extendedFabius F y| ≤
+        |fabiusUniformSpline p x - extendedFabius F x| +
+          |extendedFabius F x - extendedFabius F y| :=
+      abs_sub_le _ _ _
+    _ ≤ ((2 : ℝ) ^ p)⁻¹ + 2 * |x - y| := by
+      gcongr
+      · exact abs_fabiusUniformSpline_sub_extendedFabius_le F hF p x
+      · simpa only [Real.dist_eq, NNReal.coe_ofNat] using
+          (extendedFabius_lipschitzWith_two F hF).dist_le_mul x y
+
 /-- The centered uniform splines converge uniformly on the whole real line to
 the signed Fabius extension. -/
 theorem fabiusUniformSpline_tendstoUniformly_extendedFabius
@@ -221,6 +241,16 @@ theorem fabiusUniformSpline_tendsto_extendedFabius
     Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop
       (𝓝 (extendedFabius F x)) :=
   (fabiusUniformSpline_tendstoUniformly_extendedFabius F hF).tendsto_at x
+
+/-- Diagonal form of global uniform spline convergence: the evaluation point
+may vary with the spline order, provided that it converges. -/
+theorem fabiusUniformSpline_tendsto_extendedFabius_of_tendsto
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} {u : ℕ → ℝ} (hu : Tendsto u atTop (𝓝 x)) :
+    Tendsto (fun p : ℕ => fabiusUniformSpline p (u p)) atTop
+      (𝓝 (extendedFabius F x)) :=
+  (fabiusUniformSpline_tendstoUniformly_extendedFabius F hF).tendsto_comp
+    (extendedFabius_contDiff F hF).continuous.continuousAt hu
 
 /-- On the unit interval, the same spline sequence converges pointwise to the
 bounded/CDF representative of every Fabius solution. -/
