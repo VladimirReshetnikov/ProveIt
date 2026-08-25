@@ -20,10 +20,15 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The small-argument asymptotics are developed separately, with a general formula
-for every coefficient of the all-orders expansion, in
-[*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
-([PDF](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
+The formally proved small-argument hierarchy, including the first two explicit
+periodic saddle corrections and the recursive all-orders theorem, is integrated
+into the primary exposition. Exploratory derivations and claims still awaiting
+literal Lean counterparts are preserved in the research-frontier notebook
+[*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
+([PDF](docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
+A compact [primary-exposition gap register](docs/non-formalized-research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex)
+([PDF](docs/non-formalized-research-frontiers/Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.pdf))
+tracks smaller displaced claims and their exact outstanding proof obligations.
 
 Non-elementarity is treated in
 [*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
@@ -465,11 +470,11 @@ value `F(1)=1`, so unlike the recurrence this formula holds for every natural
 decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
-canonical, and signed-global real corollaries.  A self-contained derivation is
-available as
-[LaTeX source](docs/drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex)
+canonical, and signed-global real corollaries.  The self-contained derivation
+is integrated into the primary exposition, available as
+[LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
 and as a
-[rendered PDF](docs/drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf).
+[rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
