@@ -146,7 +146,7 @@ The endpoint chapters report only the negative-Laplace decompositions, periodic 
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
 counterparts in the formal source.  Plausible extensions, numerical observations, generic
 $q$-analogues, and other arguments not yet represented by an exact Lean theorem are kept in
-the companion notebooks under \path{docs/non-formalized-research-frontiers/}, not in this
+the companion volume under \path{docs/non-formalized-research-frontiers/}, not in this
 primary exposition.
 \end{abstract}
 
@@ -251,8 +251,8 @@ declarations supporting each retained theorem.
 
 A statement appears here only when its complete mathematical content has an exact proved Lean
 counterpart.  Material removed from earlier drafts because that test is not yet met is
-preserved in the research-frontier notebooks.  Thus the division between this document and
-those notebooks is a proof-status boundary, not a judgment about mathematical plausibility
+preserved in the research-frontier volume.  Thus the division between this document and
+that volume is a proof-status boundary, not a judgment about mathematical plausibility
 or importance.
 
 \begin{boxedremark}
@@ -834,6 +834,13 @@ The indexing in \eqref{eq:finite-atomic-law} is worth noticing: the new scale at
 
 Let \(\mu_{\Up}\) denote the formal measure \lean{rvachevMeasure}; by definition it is
 Lebesgue measure with density \(\operatorname{ofReal}\!\circ\Up\).
+Its characteristic function uses the positive-frequency normalization
+\begin{equation}
+ \operatorname{charFun}(\mu_{\Up},t)
+ =\widehat{\Up}\!\left(\frac{t}{2\pi}\right)\qquad(t\in\R),
+                                                               \label{eq:rvachev-charfun}
+\end{equation}
+the exact identity \lean{rvachevMeasure_charFun_pos} in \path{WeakConvergence.lean}.
 The finite laws converge weakly to \(\mu_{\Up}\):
 \begin{equation}
  \nu_n\Longrightarrow\mu_{\Up}.                               \label{eq:finite-atomic-weak}
@@ -1140,13 +1147,23 @@ The finite-product refinement and its infinite limit are
 \lean{rvachevFourier_eq_finite_product} and
 \lean{rvachevFourier_eq_product} in \path{FourierProduct.lean}.
 The refinement equation is \lean{rvachevFourier_scaling} in the same module.
-The entire-function theorem is
-\lean{rvachevFourier_differentiable_analytic} in
+The whole-plane analyticity theorem is
+\lean{rvachevFourier_analyticOnNhd} in
 \path{FourierAnalytic.lean}.  The weighted cosine product is
 \lean{rvachevFourierProduct_eq_cosineProduct} in
 \path{OriginalPaperSupplement.lean}; its finite telescoping identity is proved internally in
 the same module.
 \end{proof}
+
+The transform also has the exact conjugation, parity, and real-axis identities
+\begin{equation}
+ \overline{\widehat{\Up}(z)}=\widehat{\Up}(-\overline z),
+ \qquad \widehat{\Up}(-z)=\widehat{\Up}(z),
+ \qquad \operatorname{Im}\widehat{\Up}(t)=0\quad(t\in\R).   \label{eq:fourier-symmetries}
+\end{equation}
+These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
+\lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
+\path{FourierProduct.lean}.
 
 A consequence needed for Poisson summation is the formally proved integer-zero statement
 \begin{equation}
@@ -1392,8 +1409,15 @@ The exact declarations are
 
 The larger formal class \lean{IsElementaryOrInverse} admits an inverse-branch constructor
 only with an open branch domain, continuity and a right-inverse identity there, and
-analyticity of the chosen total extension on the interior of the complement.  Even that
-class cannot represent \(F\) or \(I\) on \((0,1)\), by
+analyticity of the chosen total extension on the interior of the complement.  The canonical
+global functions themselves are not members of that larger class:
+\begin{equation}
+ \neg\lean{IsElementaryOrInverse}\,F,
+ \qquad \neg\lean{IsElementaryOrInverse}\,I.                \label{eq:not-elementary-or-inverse}
+\end{equation}
+These are \lean{fabius_not_isElementaryOrInverse} and
+\lean{fabiusInv_not_isElementaryOrInverse}.  More strongly in a different direction, no
+member of the class can represent \(F\) or \(I\) even merely on \((0,1)\), by
 \lean{canonical_fabius_not_isElementaryOrInverse_on_Ioo} and
 \lean{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo} in
 \path{InverseNotElementary.lean}.
@@ -1492,6 +1516,22 @@ tilt
 \begin{equation}
  L_n(0)=\int_{[0,1]}(1-x)^n\,\dd\mu_X(x)=d_n.              \label{eq:probability-half-moment}
 \end{equation}
+On the real axis, every derivative of the generating function is a tilted moment:
+\begin{equation}
+ G^{(n)}(s)=L_n(-s),\qquad G^{(n)}(0)=d_n.                  \label{eq:G-derivative-laplace}
+\end{equation}
+Reflection of the law about \(1/2\) gives
+\begin{equation}
+ L_0(s)=\e^{-s}L_0(-s),\qquad
+ \e^{s/2}L_0(s)=\e^{-s/2}L_0(-s),                          \label{eq:laplace-reflection}
+\end{equation}
+so \(s\mapsto\e^{s/2}L_0(s)\) is even.  Two useful quantitative forms, with all
+variables real, are
+\begin{align}
+ L_0\!\left(\frac{a+b}{2}\right)^2
+   &\le L_0(a)L_0(b) &&(a,b\ge0),                         \label{eq:laplace-midpoint}\\
+ L_k(s)&\le a^{-k}k!\,L_0(s-a) &&(a>0).                   \label{eq:laplace-shift}
+\end{align}
 
 \begin{proof}[Formal proof]
 The survival identity and integration-by-parts formula are
@@ -1501,7 +1541,15 @@ identities are
 \lean{unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment},
 \lean{unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment}, and
 \lean{unitEndpointMoment_weightedSumDistribution_eq_halfMoment} in
-\path{ProbabilityLaplaceMoments.lean}.
+\path{ProbabilityLaplaceMoments.lean}.  The derivative identities are
+\lean{iteratedDeriv_generatingFunction} and
+\lean{iteratedDeriv_generatingFunction_zero} in \path{LaplaceMoments.lean};
+\eqref{eq:laplace-reflection} is
+\lean{fabiusLaplaceMoment_zero_reflection} and
+\lean{fabiusLaplaceMoment_zero_centered_even}.  Finally,
+\eqref{eq:laplace-midpoint}--\eqref{eq:laplace-shift} are
+\lean{fabiusLaplaceMoment_midpoint_sq_le} and
+\lean{fabiusLaplaceMoment_le_shift} in \path{LaplaceMomentBounds.lean}.
 \end{proof}
 
 \subsection{Exact values at reciprocal powers of two}
@@ -1533,6 +1581,18 @@ and ordered-composition descriptions, proved by
 \lean{fabiusRecurrenceSequence_eq_sum_compositions} in
 \path{FabiusInverseDyadicClosedForm.lean}.  Their positivity and recurrence uniqueness are
 \lean{fabiusCompositionSum_pos} and \lean{triangularRecurrence_unique}.
+
+The totalized inverse sends both exact rational presentations straight back to their
+arguments.  In particular, for every \(n\in\N\), including \(n=0\),
+\begin{align}
+ I\!\left(\lean{fabiusAtInverseTwoPow}\,n\right)&=2^{-n},
+                                                               \label{eq:inverse-power-inversion}\\
+ I\!\left(2^{-\binom n2}\lean{fabiusCompositionSum}\,n\right)&=2^{-n}.
+                                                               \label{eq:composition-inversion}
+\end{align}
+These are \lean{fabiusInv_fabiusAtInverseTwoPow} in \path{FabiusInverse.lean} and
+\lean{fabiusInv_two_pow_choose_mul_fabiusCompositionSum} in
+\path{FabiusInverseDyadicClosedForm.lean}.
 
 \subsection{Parity and the exact two-adic valuation}
 
@@ -1638,6 +1698,19 @@ The displayed rational identity is \lean{fabiusDyadic_cast_extended_nat} in
 \path{GlobalDyadic.lean}, after unfolding the closed form \lean{fabiusDyadic}.
 \end{proof}
 
+This closed form depends only on the represented dyadic rational, not on the chosen
+numerator--exponent pair.  Writing
+\(\operatorname{Dyad}(n,m)=\lean{fabiusDyadic}\,n\,m\), Lean proves
+\begin{align}
+ \operatorname{Dyad}(n+k,2^km)&=\operatorname{Dyad}(n,m),
+                                                               \label{eq:dyadic-refine-pow}\\
+ \frac{m_1}{2^{n_1}}=\frac{m_2}{2^{n_2}}\ \text{in }\Q
+ &\Longrightarrow
+ \operatorname{Dyad}(n_1,m_1)=\operatorname{Dyad}(n_2,m_2).   \label{eq:dyadic-rat-invariance}
+\end{align}
+The exact declarations are \lean{fabiusDyadic_refine_pow} and
+\lean{fabiusDyadic_eq_of_rat_eq} in \path{GlobalDyadic.lean}.
+
 Two special cases are the ones used in practice.
 
 \begin{corollary}[Bounded case]
@@ -1692,8 +1765,8 @@ floating-point roundoff.
 \begin{remark}[Exact evaluation without uncertified examples]
 The finite sum is an exact rational algorithm, and its agreement with the analytic Fabius
 function is \lean{fabiusDyadic_cast}.  Concrete numerical specializations that do not yet
-have their own named Lean theorems are recorded only in the dyadic research-frontier
-notebooks.
+have their own named Lean theorems are recorded only in the consolidated research-frontier
+volume.
 \end{remark}
 
 \subsection{Thue--Morse cancellation}
@@ -1973,7 +2046,7 @@ The denominator divisibility is \lean{proposition_fifteen} in
 Together, \eqref{eq:lcm-bound} and \eqref{eq:dy-delta-lower} give the formally
 proved denominator information used in this article.  Proposed exact factorizations of the
 least common denominator, together with the associated numerical tables, are kept in the
-dyadic research-frontier notebooks until their individual statements are formalized.
+consolidated research-frontier volume until their individual statements are formalized.
 
 \subsection{The exact half-base \(q\)-binomial layer}
 \label{subsec:q-binomial-dyadic}
@@ -2123,7 +2196,7 @@ Its translated numerator is constant by
 \lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum} in
 \path{FabiusRawQBinomialScalar.lean}.  Generic-\(q\) interpolation formulas, barycentric
 identities, numerical cancellation studies, and complexity comparisons are maintained in the
-dyadic research-frontier notebooks rather than used as theorems here.
+consolidated research-frontier volume rather than used as theorems here.
 
 \section{The global binary-reduction telescope}
 \label{sec:global-binary-reduction}
@@ -3103,9 +3176,9 @@ $[z^m]\mathcal P_n=\sigma_{n+1}(m)=0$ because $\deg\mathcal P_n=g_n$.  Thus both
 again agree.
 \end{proof}
 
-Sampling at the dyadic floor now gives an approximation scheme.  For $x\ge0$ set
+Sampling at the dyadic floor now gives an approximation scheme.  For $x\in\R$ set
 \begin{equation}
- j_n(x)=\bigl\lfloor2^{n+1}x\bigr\rfloor,
+ j_n(x)=\max\!\left(0,\bigl\lfloor2^{n+1}x\bigr\rfloor\right),
  \qquad
  \mathcal J_n(x)=\widetilde{\mathcal V}_n\bigl(j_n(x)\bigr)
  =\frac{\sigma_{n+1}\bigl(j_n(x)\bigr)}{2^{\binom n2}}.    \label{eq:tm-sample}
@@ -3146,9 +3219,13 @@ $\varepsilon/2$ of $\Up(0)$.
 
 \begin{theorem}[Corrected prefix approximation]
 \label{thm:tm-corrected-convergence}
-For every $x\in[0,1]$,
+For every \(x\le1\),
 \begin{equation}
  \mathcal J_n(x)\longrightarrow\Up(2x-1),                      \label{eq:tm-corrected-limit}
+\end{equation}
+and on the whole nonpositive half-line the finite-stage values are exactly
+\begin{equation}
+ \mathcal J_n(x)=\mathcal J_n(0)=2^{-\binom n2}\qquad(x\le0).  \label{eq:tm-left-tail-exact}
 \end{equation}
 and consequently, for every $x\in[0,1]$,
 \begin{equation}
@@ -3157,7 +3234,11 @@ and consequently, for every $x\in[0,1]$,
 \end{theorem}
 
 \begin{proof}
-Let $0\le x<1$.  Then $2^{n+1}x<2^{n+1}$, so $j_n(x)<2^{n+1}$ and
+For \(x\le0\), the natural-floor clamp is exact:
+\lean{correctedPrefixGridSample_eq_at_zero_of_nonpos} and
+\lean{correctedPrefixGridSample_zero} give \eqref{eq:tm-left-tail-exact}, while
+\lean{correctedPrefixGridSample_tendsto_of_nonpos} gives the asserted limit.  Now let
+$0<x<1$.  Then $2^{n+1}x<2^{n+1}$, so $j_n(x)<2^{n+1}$ and
 \cref{thm:tm-histogram-identity} applies:
 $\mathcal J_n(x)=\mathcal W_n(\xi_{n,j_n(x)})$.  Combining
 \cref{thm:tm-moving-center} with \cref{thm:tm-moving} gives
@@ -3170,8 +3251,9 @@ covered by \eqref{eq:tm-prefix-eq-coeff}.  Here the value is computed instead fr
  \mathcal J_n(1)=\frac{\sigma_{n+1}(2^{n+1})}{2^{\binom n2}}=-\frac1{2^{\binom n2}}
  \longrightarrow0=\Up(1),
 \end{equation*}
-since $\binom n2\to\infty$ and $\Up(1)=F(0)=0$.  This proves
-\eqref{eq:tm-corrected-limit} on all of $[0,1]$.  For \eqref{eq:tm-corrected-fabius}, apply
+since $\binom n2\to\infty$ and $\Up(1)=F(0)=0$.  Altogether this is the public theorem
+\lean{correctedPrefixGridSample_tendsto_rvachevUp_of_le_one} in
+\path{ThueMorseApproximation.lean}.  For \eqref{eq:tm-corrected-fabius}, apply
 it at $x/2\in[0,1]$ and use $2(x/2)-1=x-1\le0$, so that $\Up(x-1)=F(x)$ by
 \eqref{eq:up-fold}.
 \end{proof}
@@ -3337,7 +3419,7 @@ exact dyadic product on the negative Laplace axis, a genuinely nonconstant perio
 correction on logarithmic scale, and a lower-Lambert saddle coordinate.  This section
 states the hierarchy in the form proved in Lean.  Longer heuristic derivations, numerical
 experiments, and proposed refinements without exact theorem counterparts are collected in
-\path{docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/}.
+\path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
 
 Throughout, put
 \begin{equation}
@@ -3415,7 +3497,7 @@ derivative of \(\Lambda\) by \lean{negativeLaplaceLog_hasDerivAt}.  The exact
 \lean{negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_real} in
 \path{LaplacePeriodicSecondOrder.lean}.  This promotes the proved derivative estimate
 without importing the longer unformalized contour and Mellin derivations from the frontier
-notebooks.
+volume.
 
 \subsection{The Gamma--zeta Fourier series}
 
@@ -3473,6 +3555,33 @@ After the Gaussian normalization, the sharp Fabius constant is
 This is the exact identity
 \lean{fabiusSharpAsymptoticConstant_eq} in
 \path{FabiusSharpConstant.lean}.
+
+\subsection{A fully effective dyadic bound}
+
+The dyadic specialization admits a proved numerical threshold and error constant.  For
+\(n\ge1\), define
+\begin{align}
+ D_n={}&-\frac L2n^2-n\log n+\left(1+\frac L2\right)n
+       -\frac{(\log n)^2}{2L}+C_F+\Psi(\log_2n) \notag\\
+     &-\frac n2\bigl(\Lambda''(n)+\Lambda'(n)^2\bigr).       \label{eq:dyadic-effective-main}
+\end{align}
+Here the final term is exactly \lean{dyadicEndpointSecondOrder}; the derivative
+identifications are \lean{negativeLaplaceLog_hasDerivAt} and
+\lean{negativeLaplaceLogFirst_hasDerivAt}.  Then, for every \(n\ge224043\),
+\begin{equation}
+ \boxed{
+ \left|\log F(2^{-n})-D_n\right|
+ \le\frac{2512945}{12n}.}
+                                                               \label{eq:dyadic-effective-bound}
+\end{equation}
+This is \lean{abs_log_fabius_dyadic_sub_explicitCumulantMain_le} in
+\path{FabiusDyadicSharpCumulant.lean}.  The threshold is a sufficient certified threshold,
+not an optimality claim.  Its proof uses the pointwise bounds
+\lean{dyadicEndpointSecondOrder_sq_le},
+\lean{dyadicHigherLaplaceMoments_le}, and
+\lean{abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_unconditional} in
+\path{LaplaceMomentBounds.lean}, with respective constants \(256/n\), \(104448/n\), and
+\(209408/n\) on their stated ranges.
 
 \subsection{The lower-Lambert saddle and exact reduction}
 \label{sec:sharp-asymptotic}
@@ -3747,9 +3856,17 @@ This is \lean{rvachev_cosine_series}.  The two-term support specialization
  \Up(t)+\Up(t-1)=1\qquad(0\le t\le1)                       \label{eq:two-term-partition}
 \end{equation}
 is \lean{rvachev_add_shift_eq_one}.  More general scaled Poisson support identities are
-\lean{rvachev_poisson_support_specialization_unscaled_of_one_half_le} and
-\lean{rvachev_poisson_support_specialization_of_one_half_le} in
-\path{PoissonSummation.lean}.  These supplement the partition formulas
+sharp for either orientation of the lattice: whenever \(1/2\le|a|\),
+\begin{align}
+ 1+2\Up(a)
+   &=\sum_{m\in\Z}|a|^{-1}\widehat{\Up}(m/a),              \label{eq:poisson-support-abs-unscaled}\\
+ |a|+2|a|\Up(a)
+   &=\sum_{m\in\Z}\widehat{\Up}(m/a).                     \label{eq:poisson-support-abs}
+\end{align}
+These are \lean{rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs} and
+\lean{rvachev_poisson_support_specialization_of_one_half_le_abs} in
+\path{PoissonSummation.lean}; the oriented frequency \(m/a\) is retained while the
+covolume is \(|a|\).  They supplement the partition formulas
 \eqref{eq:partition-unity}--\eqref{eq:integer-partition}; no unformalized derivative
 partition, probabilistic convolution interpretation, or moment statistic is inferred.
 
@@ -3852,6 +3969,7 @@ Shape and regularity &
 Probability and finite approximants &
 \path{ProbabilityRepresentation.lean}, \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
+\path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
 \path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
@@ -3885,6 +4003,7 @@ Endpoint asymptotics &
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{FabiusLambertPhase.lean}, \path{FabiusLambertSaddle.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
+\path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
 \path{FabiusSecondSaddleCorrection.lean},
 \path{FabiusSecondSaddleExpansion.lean}\\
@@ -4044,8 +4163,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, repository snapshot
-  \path{20b35c24005c8dddd7da3b475f487f52254f6a30}, 25 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/20b35c24005c8dddd7da3b475f487f52254f6a30/Analysis/FabiusFunction}.
+  \path{f51777a184240e20d5991676ebb3465b0824b942}, 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/f51777a184240e20d5991676ebb3465b0824b942/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

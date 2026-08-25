@@ -8,7 +8,8 @@ import Mathlib.Analysis.SpecificLimits.Normed
 This module identifies the corrected iterated Thue--Morse prefixes with the
 polynomial/histogram approximants, first exactly at dyadic cell centers and
 then asymptotically along moving cells.  It includes the exceptional right
-endpoint and the rescaling that recovers the Fabius function on `[0,1]`.
+endpoint, natural-floor clamping on the nonpositive half-line, and the
+rescaling that recovers the Fabius function on `[0,1]`.
 -/
 
 set_option autoImplicit false
@@ -224,6 +225,20 @@ theorem correctedPrefixCoefficient_eq_stepApproximant
 `floor(2^(n+1) x)`. -/
 noncomputable def correctedPrefixGridSample (n : ℕ) (x : ℝ) : ℝ :=
   correctedPrefixCoefficient (n + 1) ⌊x * (2 : ℝ) ^ (n + 1)⌋₊
+
+/-- Exact value of the corrected prefix sample at the left endpoint. -/
+theorem correctedPrefixGridSample_zero (n : ℕ) :
+    correctedPrefixGridSample n 0 = 1 / (2 : ℝ) ^ n.choose 2 := by
+  simp [correctedPrefixGridSample, correctedPrefixCoefficient]
+
+/-- Natural floor clamping makes every nonpositive sample equal to the left
+endpoint sample. -/
+theorem correctedPrefixGridSample_eq_at_zero_of_nonpos
+    (n : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    correctedPrefixGridSample n x = correctedPrefixGridSample n 0 := by
+  rw [correctedPrefixGridSample, correctedPrefixGridSample,
+    Nat.floor_of_nonpos (mul_nonpos_of_nonpos_of_nonneg hx (by positivity))]
+  norm_num
 
 /-- Center of the step-approximant cell carrying the same coefficient. -/
 noncomputable def correctedPrefixCellCenter (n : ℕ) (x : ℝ) : ℝ :=
@@ -466,6 +481,21 @@ private theorem inverse_two_pow_choose_two_tendsto_zero :
   ext n
   simp only [Function.comp_apply, one_div, inv_pow]
 
+/-- On the whole nonpositive half-line the natural-floor samples are the left
+endpoint samples, and hence converge to the zero tail of `rvachevUp`. -/
+theorem correctedPrefixGridSample_tendsto_of_nonpos
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ 0) :
+    Tendsto (fun n : ℕ => correctedPrefixGridSample n x)
+      atTop (nhds (rvachevUp F (2 * x - 1))) := by
+  have htarget : rvachevUp F (2 * x - 1) = 0 :=
+    rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
+  rw [htarget]
+  exact inverse_two_pow_choose_two_tendsto_zero.congr'
+    (Filter.Eventually.of_forall fun n => by
+      change 1 / (2 : ℝ) ^ n.choose 2 = correctedPrefixGridSample n x
+      rw [correctedPrefixGridSample_eq_at_zero_of_nonpos n hx,
+        correctedPrefixGridSample_zero])
+
 /-- The exceptional right-endpoint samples converge to the correct compact
 support boundary value zero. -/
 theorem correctedPrefixGridSample_tendsto_one
@@ -482,6 +512,21 @@ theorem correctedPrefixGridSample_tendsto_one
   exact hneg.congr' (Filter.Eventually.of_forall fun n =>
     (correctedPrefixGridSample_one n).symm)
 
+/-- Corrected dyadic-floor prefix samples converge to the centered Rvachev
+function on the full half-line `x ≤ 1`.  For `x ≤ 0` natural-floor clamping
+reduces the samples to the left endpoint; on `(0,1)` the moving-cell theorem
+applies, and `x = 1` is the exceptional endpoint calculation. -/
+theorem correctedPrefixGridSample_tendsto_rvachevUp_of_le_one
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ 1) :
+    Tendsto (fun n : ℕ => correctedPrefixGridSample n x)
+      atTop (nhds (rvachevUp F (2 * x - 1))) := by
+  rcases lt_or_eq_of_le hx with hxlt | rfl
+  · rcases le_total x 0 with hx0 | hx0
+    · exact correctedPrefixGridSample_tendsto_of_nonpos F hF hx0
+    · exact correctedPrefixGridSample_tendsto_of_lt_one F hF hx0 hxlt
+  · convert correctedPrefixGridSample_tendsto_one F hF using 1
+    norm_num
+
 /-- Corrected dyadic-floor prefix samples converge pointwise on `[0,1]` to
 the centered Rvachev up function. No quantitative uniform rate is asserted. -/
 theorem correctedPrefixGridSample_tendsto_rvachevUp
@@ -489,11 +534,7 @@ theorem correctedPrefixGridSample_tendsto_rvachevUp
     (hx : x ∈ Set.Icc (0 : ℝ) 1) :
     Tendsto (fun n : ℕ => correctedPrefixGridSample n x)
       atTop (nhds (rvachevUp F (2 * x - 1))) := by
-  rcases eq_or_lt_of_le hx.2 with h | h
-  · subst x
-    convert correctedPrefixGridSample_tendsto_one F hF using 1
-    norm_num
-  · exact correctedPrefixGridSample_tendsto_of_lt_one F hF hx.1 h
+  exact correctedPrefixGridSample_tendsto_rvachevUp_of_le_one F hF hx.2
 
 /-- Equivalent first-half rescaling: sample at `x/2` to recover the Fabius
 function itself on `[0,1]`. -/

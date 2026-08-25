@@ -89,16 +89,32 @@ lemma dyadicComplex_summable (z : ℂ) :
   rw [inv_pow]
   ring
 
+/-- The deviations from one of the sinc factors in Rvachev's Fourier product
+form a summable series.  This quantitative statement is useful independently
+of the resulting infinite product. -/
+lemma summable_sincFactors_sub_one (z : ℂ) :
+    Summable (fun n : ℕ =>
+      complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) - 1) :=
+  complexSinc_sub_one_isBigO.comp_summable (dyadicComplex_summable z)
+
 /-- The sinc factors in Rvachev's Fourier product are genuinely multipliable. -/
 lemma sincFactors_multipliable (z : ℂ) :
     Multipliable (fun n : ℕ => complexSinc (Real.pi * z / (2 : ℂ) ^ n)) := by
-  have hsum : Summable (fun n : ℕ =>
-      complexSinc ((Real.pi : ℂ) * z / (2 : ℂ) ^ n) - 1) := by
-    exact complexSinc_sub_one_isBigO.comp_summable (dyadicComplex_summable z)
-  have hp := Complex.multipliable_one_add_of_summable hsum
+  have hp := Complex.multipliable_one_add_of_summable
+    (summable_sincFactors_sub_one z)
   convert hp using 1
   funext n
   ring
+
+/-- The sinc product is even. -/
+theorem rvachevFourierProduct_neg (z : ℂ) :
+    rvachevFourierProduct (-z) = rvachevFourierProduct z := by
+  unfold rvachevFourierProduct
+  apply tprod_congr
+  intro n
+  rw [show (Real.pi : ℂ) * -z / (2 : ℂ) ^ n =
+      -((Real.pi : ℂ) * z / (2 : ℂ) ^ n) by ring,
+    complexSinc_neg]
 
 /-- Rvachev's Fourier transform is normalized to one at the origin. -/
 @[simp] theorem rvachevFourier_zero
@@ -251,6 +267,20 @@ theorem rvachevFourier_eq_product
   unfold rvachevFourierProduct
   exact tendsto_nhds_unique tendsto_const_nhds hlim
 
+/-- The Fourier transform of the even Rvachev function is itself even. -/
+theorem rvachevFourier_neg
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    rvachevFourier F (-z) = rvachevFourier F z := by
+  rw [rvachevFourier_eq_product F hF, rvachevFourier_eq_product F hF,
+    rvachevFourierProduct_neg]
+
+/-- On the real axis Rvachev's Fourier transform is real-valued. -/
+theorem rvachevFourier_ofReal_im_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
+    (rvachevFourier F (t : ℂ)).im = 0 := by
+  rw [← Complex.conj_eq_iff_im, rvachevFourier_conj F,
+    Complex.conj_ofReal, rvachevFourier_neg F hF]
+
 /-- The sinc product vanishes at every nonzero integer.  Its zeroth factor is
 already `sin (π m) / (π m) = 0`. -/
 theorem rvachevFourierProduct_int_eq_zero (m : ℤ) (hm : m ≠ 0) :
@@ -289,6 +319,13 @@ theorem rvachevFourier_int_eq_zero_iff
     rvachevFourier F (m : ℂ) = 0 ↔ m ≠ 0 := by
   rw [rvachevFourier_int_eq_ite F hF m]
   by_cases hm : m = 0 <;> simp [hm]
+
+/-- The Fourier transform vanishes at every nonzero integer.  In the sinc
+product it is already the zeroth factor which vanishes. -/
+lemma rvachevFourier_int_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) (hm : m ≠ 0) :
+    rvachevFourier F (m : ℂ) = 0 :=
+  (rvachevFourier_int_eq_zero_iff F hF m).2 hm
 
 end
 

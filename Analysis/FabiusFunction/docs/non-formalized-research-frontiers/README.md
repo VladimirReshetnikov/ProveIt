@@ -4,34 +4,21 @@ This directory is the quarantine boundary for mathematical claims about the
 Fabius function and Rvachev's up-function that do not yet have an exact,
 audited Lean theorem covering their full hypotheses and conclusions.
 
-The authoritative artifacts are the standalone LaTeX/PDF dossiers in the
-subdirectories below. They remain separate so that each document can be
-audited, promoted, rebuilt, and cited without copying a stale snapshot into a
-second monolithic source.
+The canonical frontier artifacts are:
 
-- [Fabius_Dyadic_Asymptotic_Bridge](Fabius_Dyadic_Asymptotic_Bridge/)
-- [Fabius_Dyadic_Formulae_and_Alternative_Representations](Fabius_Dyadic_Formulae_and_Alternative_Representations/)
-- [Fabius_Dyadic_Formulae_to_Asymptotics](Fabius_Dyadic_Formulae_to_Asymptotics/)
-- [Fabius_Dyadic_q_Connections](Fabius_Dyadic_q_Connections/)
-- [Fabius_Integration_Research_Frontiers](Fabius_Integration_Research_Frontiers/)
-- [Fabius_Inverse_and_Saddle_Research_Frontiers](Fabius_Inverse_and_Saddle_Research_Frontiers/)
-- [Fabius_Thue_Morse_Convergence_Rate](Fabius_Thue_Morse_Convergence_Rate/)
-- [Fabius_Thue_Morse_Convergence_Rate-2](Fabius_Thue_Morse_Convergence_Rate-2/)
-- [Repeated_Integration_and_Rvachev_Up](Repeated_Integration_and_Rvachev_Up/)
-- [Rvachev_Up_from_Repeated_Integration-2](Rvachev_Up_from_Repeated_Integration-2/)
-- [Small_Argument_Asymptotics](Small_Argument_Asymptotics/)
+- [`non-formalized-research-frontiers.tex`](non-formalized-research-frontiers.tex)
+- [`non-formalized-research-frontiers.pdf`](non-formalized-research-frontiers.pdf)
 
-The
-[Primary_Exposition_Gap_Register](Primary_Exposition_Gap_Register/)
-is a compact disposition record for smaller claims removed from the primary
-exposition. It records the missing Lean obligation and the source provenance;
-it is not itself evidence that a claim has been formalized.
+The volume consolidates the eleven former standalone research notebooks and
+the later primary-exposition gap register. It preserves their natural-language
+arguments, symbolic computations, numerical evidence, warnings, citations,
+provenance, and explicit proof obligations without allowing any of that
+material to be mistaken for the formalization-backed primary exposition.
 
-Some passages in a frontier dossier may use already-formalized results as
-inputs. That does not certify subsequent deductions. Conversely, once a
-particular claim is promoted to the primary exposition, adjacent exploratory
-material can remain here if it is still clearly labeled and still has an open
-formal obligation.
+Some passages use already-formalized results as inputs. That does not certify
+the subsequent deductions. Conversely, when one claim is promoted to the
+primary exposition, adjacent exploratory material remains here until its own
+exact proof obligation is discharged.
 
 ## Placement and promotion rule
 
@@ -43,33 +30,60 @@ in the primary document's audit map.
 
 A related definition, a theorem with stronger hypotheses or weaker
 conclusions, an executable computation, a paper citation, a numerical match,
-an .olean file, an agent report, or an apparently immediate derivation is not
+an `.olean` file, an agent report, or an apparently immediate derivation is not
 an exact counterpart. Material supported only in one of those ways stays in
-this directory, however standard or plausible it appears.
+this volume, however standard or plausible it appears.
 
 Promotion is claim-by-claim:
 
-1. verify the exact Lean declaration in current source;
-2. integrate the supported material organically into
-   [Fabius_Function_and_Rvachev_Up.tex](../Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
-   without duplicating material already there;
-3. remove or mark the matching frontier obligation as discharged while
-   preserving any adjacent claims that remain unformalized;
-4. rebuild and inspect every affected PDF.
+1. Verify the exact Lean declaration in current source.
+2. Integrate the supported material organically into
+   [`Fabius_Function_and_Rvachev_Up.tex`](../Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+   without duplicating material already there.
+3. Remove or relabel the matching frontier obligation while preserving every
+   adjacent claim that remains unformalized.
+4. Rebuild and inspect every affected PDF.
 
 Research drafts are temporary inboxes, not archives. Once every part of a
 draft has either been integrated into the primary exposition or preserved in
-an appropriate frontier dossier, delete the processed draft. Delete the draft
+the canonical frontier volume, delete the processed draft. Delete the draft
 directory itself when it becomes empty.
+
+## Consolidation provenance
+
+The unified source records a provenance banner and SHA-256 checksum for every
+absorbed document. The source snapshots consolidated on 25 August 2026 were:
+
+| Former source | SHA-256 |
+| --- | --- |
+| `Fabius_Dyadic_Formulae_and_Alternative_Representations/Fabius_Dyadic_Formulae_and_Alternative_Representations.tex` | `462276b10fcd32b0446deb7cfedc4ec07c2ae55dbd333d5ff9b1d98f07df89e1` |
+| `Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex` | `81a0a911ac7ab28e12c6b87ccaf76ffccaf32e48f873abff18fb7a2d01bcf3e5` |
+| `Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex` | `c5ad7c5298d958ab63f459a3e246c2293d3020525223bc05ef2d0e1edab58f10` |
+| `Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex` | `6e98efd3afc402159a7f080e8604c951d5bc51be4a73383da67c1241d46d54ca` |
+| `Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex` | `21222ae5a8c64cf556dac562fd66943ae0b6ed881408e23e37edfa9113bdecbd` |
+| `Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex` | `f9d8605761aaaa1b2c2af83e3c5c55dcd6acfc847402163458b03b68c7b35ff8` |
+| `Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex` | `577c5f3426def68a774fedf3fce61552d32200c8da526ace44178f2a8995a6d3` |
+| `Fabius_Thue_Morse_Convergence_Rate-2/Fabius_Thue_Morse_Convergence_Rates.tex` | `384d69b461cb94af33f1c080703e269ea77104405d1940413f1944172b3312c0` |
+| `Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex` | `eadcb4b414ac93723a91acbd5062d44340f78134a2cecbc18f7d7ba67eb2c9be` |
+| `Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex` | `fad16072df30d9e6eb5df03da57dd217769180730581f1dfd19fa5be0d16b262` |
+| `Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` | `85f51a20fc7b6bdf3b1d049ec4506f508aee3c4cd70554e6a68cbcc30977cb0b` |
+| `Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex` | `06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1` |
+
+Overlapping dossiers remain visible in the consolidated source when they
+provide independent derivations, sharper later statements, distinct warnings,
+or useful provenance. Editorial notes state which later formulation is
+preferred. The original checksums identify the absorbed snapshots; subsequent
+status corrections are tracked by Git history in the canonical source.
 
 ## Maintenance
 
-Every mathematical dossier remains a LaTeX document in its own directory, with
-a committed PDF of the same basename. Build an affected document with exactly
-three pdflatex passes, inspect the rendered PDF, and commit the PDF with its
-source. Do not commit .aux, .log, .out, .toc, or rendered page images.
+New unformalized mathematical write-ups must be merged into the canonical
+LaTeX volume rather than retained as permanent parallel dossiers. A temporary
+subdirectory may serve as an inbox during concurrent work, but it must be
+audited, absorbed, and removed promptly.
 
-When formalization work discharges a frontier obligation, update the
-standalone dossier directly. Do not maintain copied or concatenated snapshots:
-they drift as soon as one source is corrected and can misclassify proved
-results as open research.
+Build the canonical document with exactly three `pdflatex` passes, inspect the
+rendered PDF, and commit the PDF with its source. Before every push that sends
+a changed frontier TeX source to `origin/main`, the matching rendered PDF must
+already be rebuilt and committed. Never push a TeX/PDF mismatch. Do not commit
+`.aux`, `.log`, `.out`, `.toc`, or rendered page images.

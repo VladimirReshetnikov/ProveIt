@@ -122,6 +122,8 @@ quotient from zero to one.
   statements.
 * `fabiusInv_fabiusDyadicUnit` — every value produced by the exact bounded
   dyadic evaluator inverts to the corresponding clamped dyadic argument.
+  Its inverse-power specialization `fabiusInv_fabiusAtInverseTwoPow` directly
+  inverts the rational table value for `F(2⁻ⁿ)`.
 * `le_two_pow_mul_fabiusInv_pow` and
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
@@ -575,6 +577,18 @@ theorem fabiusInv_fabiusDyadicUnit (F : BoundedFabius) (hF : IsFabius F)
   · have hge : 2 ^ n ≤ a := le_of_not_ge ha
     rw [Nat.min_eq_right hge, fabiusDyadicUnit_of_ge n a hge]
     norm_num [fabiusInv_one F hF]
+
+/-- Every exact inverse-power table value inverts to its represented argument,
+uniformly for every bounded Fabius function satisfying the defining
+equations.  This includes `n = 0`, where both sides are one. -/
+theorem fabiusInv_fabiusAtInverseTwoPow
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusInv F hF (fabiusAtInverseTwoPow n : ℝ) =
+      ((2 : ℝ) ^ n)⁻¹ := by
+  rw [fabiusAtInverseTwoPow,
+    ← fabiusDyadicUnit_eq_fabiusDyadic n 1 Nat.one_le_two_pow]
+  simpa only [Nat.cast_one, one_div] using
+    fabiusInv_fabiusDyadicUnit_of_le F hF n 1 Nat.one_le_two_pow
 
 /-! ## Flatness at the origin, transported through the inverse -/
 
