@@ -50,7 +50,7 @@ theorem fabiusSaddleRatio_ofReal_eq_kernelMass
   have hP : complexGeneratingFunction F (-(r : ℂ)) =
       (Real.exp (negativeLaplaceLog r) : ℂ) := by
     rw [show -(r : ℂ) = ((-r : ℝ) : ℂ) by simp,
-      complexGeneratingFunction_ofReal_vertical,
+      complexGeneratingFunction_ofReal,
       ← exp_negativeLaplaceLog_eq_generatingFunction_neg F hF r hr]
   rw [hP] at hB
   unfold fabiusSaddleRatio fabiusSaddleKernelMass

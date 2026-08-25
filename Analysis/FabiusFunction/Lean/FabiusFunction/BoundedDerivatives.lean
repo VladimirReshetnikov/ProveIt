@@ -83,7 +83,8 @@ theorem abs_iteratedDeriv_fabiusReal_le (F : BoundedFabius) (hF : IsFabius F)
     (k : ℕ) (x : ℝ) :
     |iteratedDeriv k (fabiusReal F) x| ≤ 2 ^ (k + 1).choose 2 := by
   have hcont : Continuous (iteratedDeriv k (fabiusReal F)) :=
-    hF.contDiff.continuous_iteratedDeriv k (by simp)
+    hF.contDiff.continuous_iteratedDeriv k
+      (ENat.natCast_le_of_coe_top_le_withTop le_rfl k)
   have hclosed :
       IsClosed {y : ℝ | |iteratedDeriv k (fabiusReal F) y| ≤
         2 ^ (k + 1).choose 2} :=
