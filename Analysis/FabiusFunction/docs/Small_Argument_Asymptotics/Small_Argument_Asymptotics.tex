@@ -607,6 +607,22 @@ exactly $1/(4\log^2 2)$, with no rational term and no $1/L$ term at all.
 \end{aligned}
 \]
 
+Written out at order three, with $d_k=d_k(\lambda)$ and $\lambda=\lambda(x)$,
+\[
+\begin{aligned}
+  \log F(x)={}&-\frac L2\lambda^2+\Bigl(1+\frac L2\Bigr)\lambda
+    -\frac12\log\lambda+C_F+\Psi(\lambda)\\
+   &-\frac{6d_0^2+12d_0+6d_1+1}{12\lambda}\\
+   &+\frac{8d_0^3+12d_0^2d_1+12d_0^2+48d_0d_1+12d_0d_2
+      +6d_1^2+24d_1+20d_2+3d_3}{24\lambda^2}
+    +\bigO(\lambda^{-3}).
+\end{aligned}
+\]
+The order-three statement is
+\texttt{log\_fabius\_sub\_twoSaddleCorrections\_isBigO} in
+\nolinkurl{FabiusSecondSaddleExpansion.lean}.  Before this note the
+formalization stopped at order two, because $A_2$ was not known.
+
 \section{The leading-derivative law}\label{sec:leading}
 
 \begin{theorem}[Leading term]\label{thm:leading}
@@ -808,6 +824,64 @@ peak-to-peak of $3.8798\times10^{-3}$ over the full period.  That is a phase
 prediction, not a magnitude fit, and it was made before the comparison.
 \end{remark}
 
+\subsection{An independent confirmation to $n=400$}
+
+The following was produced in a separate worktree, by a different agent,
+from a different representation of $F$, and is reproduced with its
+permission.  Half-moments were computed to $n=400$ at $400$-digit working
+precision from
+\[
+  d_n=\frac1{(n+1)(2^n-1)}\sum_{k<n}\binom{n+1}{k}d_k,
+\]
+whose terms are all positive, so there is no cancellation; the values agree
+with the exact rationals to $400$ digits at $n=5,20,60$.  Then
+$\log F(2^{-n})=\log d_n-\log n!-\binom n2\log2$, with $\lambda$ from the
+lower Lambert branch (satisfying $\lambda2^{-\lambda}=x$ to $10^{-21}$) and
+$\Psi$ from ten Gamma--zeta modes.  Nothing in this table shares an
+implementation with \cref{sec:numerics}.
+
+\begin{center}\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $\lambda$ & $\{\lambda\}$ & $r_2$ measured & $A_2(\lambda)$ & $r_3$\\
+\midrule
+$100$ & $106.73793$ & $0.7379$ & $0.51802529$ & $0.51907590$ & $-0.11214$\\
+$125$ & $132.04488$ & $0.0449$ & $0.52169792$ & $0.52216224$ & $-0.06131$\\
+$150$ & $157.29735$ & $0.2974$ & $0.52039793$ & $0.52098533$ & $-0.09240$\\
+$175$ & $182.51185$ & $0.5119$ & $0.51801879$ & $0.51869969$ & $-0.12427$\\
+$200$ & $207.69835$ & $0.6984$ & $0.51821775$ & $0.51875313$ & $-0.11120$\\
+$225$ & $232.86334$ & $0.8633$ & $0.52015631$ & $0.52049092$ & $-0.07792$\\
+$250$ & $258.01129$ & $0.0113$ & $0.52175813$ & $0.52198119$ & $-0.05755$\\
+$275$ & $283.14540$ & $0.1454$ & $0.52199208$ & $0.52220755$ & $-0.06101$\\
+$300$ & $308.26804$ & $0.2680$ & $0.52104845$ & $0.52130958$ & $-0.08050$\\
+$325$ & $333.38103$ & $0.3810$ & $0.51967269$ & $0.51997997$ & $-0.10244$\\
+$350$ & $358.48577$ & $0.4858$ & $0.51856496$ & $0.51889001$ & $-0.11653$\\
+$375$ & $383.58340$ & $0.5834$ & $0.51810490$ & $0.51841439$ & $-0.11872$\\
+$400$ & $408.67481$ & $0.6748$ & $0.51833670$ & $0.51860654$ & $-0.11028$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The decisive column is the last.  Over this range $\lambda$ quadruples, so
+an error of even $10^{-4}$ in $A_2$ would appear as a drift in $r_3$ of
+order $3\times10^{-2}$ with a definite sign.  Instead $r_3$ is $-0.112$ at
+$n=100$ and $-0.110$ at $n=400$, never leaving $[-0.125,-0.058]$ in
+between, and oscillating rather than drifting --- which is what a periodic
+$A_3$ requires.  Its sample mean over the thirteen rows is about $-0.088$,
+against the $\Psi$-free part $-0.0824216430$ of $A_3$; the sample is not a
+uniform phase average and carries an $A_4/\lambda$ term, so the gap is
+expected.
+
+The $A_2(\lambda)$ column also straddles the predicted mean
+$1/(4L^2)=0.5203422452514019$, and the row-by-row differences
+$r_2-A_2$ match the prediction $A_3(\lambda)/\lambda$ to about $10^{-6}$:
+at $\{\lambda\}=0.2680$ the predicted difference is $-2.62\times10^{-4}$
+against a measured $-2.611\times10^{-4}$, and at $\{\lambda\}=0.6748$,
+$-2.71\times10^{-4}$ against $-2.698\times10^{-4}$.
+
+Neither this table nor \cref{sec:numerics} is machine-checked.  What is
+machine-checked is listed in \cref{sec:lean}.
+
 \section{Map to the Lean development}\label{sec:lean}
 
 \begin{center}\small
@@ -842,6 +916,10 @@ $\operatorname{logCoeff}$ & \texttt{SaddleExpansion.logCoeff} & \texttt{SaddleLo
 $A_j$ & \texttt{fabiusSaddleLogCoefficient} & \texttt{FabiusSaddleExpansionCoefficients.lean}\\
 $A_1$ & \texttt{fabiusFirstSaddleCorrection} & \texttt{FabiusFirstSaddleCorrection.lean}\\
 $A_2$ & \texttt{fabiusSecondSaddleCorrection} & \textbf{\texttt{FabiusSecondSaddleCorrection.lean}}\\
+$a_2$ & \texttt{fabiusSaddleMassCoefficient\_two} & \textbf{\texttt{FabiusSecondSaddleCorrection.lean}}\\
+$c(n,m)$ identified & \texttt{negativeLaplaceJetStirling\_eq\_coeff} & \textbf{\texttt{FabiusSaddleJetStirling.lean}}\\
+$\operatorname{expCoeff}$ at $3,4$ & \texttt{expCoeff\_three}, \texttt{expCoeff\_four} & \textbf{\texttt{FabiusSecondSaddleCorrection.lean}}\\
+order-three expansion & \texttt{log\_fabius\_sub\_twoSaddleCorrections\_isBigO} & \textbf{\texttt{FabiusSecondSaddleExpansion.lean}}\\
 the expansion & \texttt{log\_fabius\_sub\_sharpLambertMain\_hasAsymptoticExpansion} & \texttt{FabiusFullAsymptoticExpansion.lean}\\
 truncation & \texttt{log\_fabius\_sub\_sharpLambertExpansion\_isBigO} & \texttt{FabiusFullAsymptoticExpansion.lean}\\
 exact $F(2^{-n})$ & \texttt{fabiusInversePowTwoTable}, \texttt{evalFabiusDyadic} & \texttt{Arithmetic.lean}\\
@@ -949,7 +1027,9 @@ polynomials in smooth periodic functions.
 \item Prove or refute convergence of the series in \cref{sec:fourier}.
 \item Compute $A_4$ in closed form; the numerics of \cref{sec:numerics} place
   its mean near $-1.7$ and \cref{eq:amplitude} predicts an oscillation
-  amplitude of about $0.25$.
+  amplitude of about $0.25$.  The machinery is in place: it needs
+  $\operatorname{expCoeff}$ at order $6$, the jets $d_0,\dots,d_5$, and
+  Gaussian moments to $v^{18}$.
 \item State the mirrored expansion at the right endpoint, $1-F(1-x)$, which
   follows from $F(x)+F(1-x)=1$ but is nowhere displayed.
 \end{enumerate}

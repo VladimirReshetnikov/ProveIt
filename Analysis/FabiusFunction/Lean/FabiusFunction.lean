@@ -26,6 +26,7 @@ import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
 import FabiusFunction.FabiusSaddleJetStirling
 import FabiusFunction.FabiusSecondSaddleCorrection
+import FabiusFunction.FabiusSecondSaddleExpansion
 
 /-!
 # Fabius function
@@ -72,7 +73,11 @@ first kind.  The saddle exponent coefficients likewise collapse to one power
 of `I` multiplying a jet term and a universal jet-free tail.  Together these
 make every coefficient of the all-orders expansion an explicit finite
 expression with rational coefficients in `1 / log 2` and the derivatives of
-the periodic correction, rather than the output of a recursion.  See
+the periodic correction, rather than the output of a recursion.  The
+coefficient of `lambda⁻²` is computed in closed form and substituted into
+the expansion, so the public surface now carries
+`log F(x) = fabiusSharpLambertMain x + A₁(lambda)/lambda +
+A₂(lambda)/lambda² + O(lambda⁻³)` with both corrections written out.  See
 `docs/Small_Argument_Asymptotics/`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
