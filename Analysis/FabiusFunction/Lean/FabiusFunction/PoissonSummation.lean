@@ -84,7 +84,7 @@ private lemma fourier_scaledRvachevSchwartz
       filter_upwards with y
       dsimp only [q]
       push_cast
-      ring
+      ring_nf
 
 /-- Every derivative of the real-axis Fourier transform of Rvachev's function
 is rapidly decreasing. -/
@@ -145,7 +145,7 @@ theorem rvachev_poisson_summation
       rw [fourier_scaledRvachevSchwartz F hF hu]
       simp only [fourier_coe_apply, Complex.real_smul]
       push_cast
-      ring
+      ring_nf
 
 /-- The Fourier transform vanishes at every nonzero integer.  In the sinc
 product it is already the zeroth factor which vanishes. -/
@@ -438,7 +438,7 @@ theorem rvachev_cosine_series
       intro k
       dsimp only [c]
       congr 2
-      ring
+      ring_nf
 
 /-- Equation (31), Poisson summation specialized at `t = 0`. -/
 theorem rvachev_poisson_at_zero

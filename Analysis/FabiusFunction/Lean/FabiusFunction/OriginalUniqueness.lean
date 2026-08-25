@@ -246,7 +246,7 @@ theorem originalFourier_scaling (z : ℝ) :
           Complex.exp (-(Real.pi * Complex.I * (z : ℂ))) =
         2 * Complex.I * Complex.sin (Real.pi * (z : ℂ)) := by
     convert heq0 using 1
-    all_goals ring
+    all_goals ring_nf
   have hrefine :
       (2 * Complex.I) *
           (Complex.sin (Real.pi * (z : ℂ)) * originalFourier φ (z / 2)) =

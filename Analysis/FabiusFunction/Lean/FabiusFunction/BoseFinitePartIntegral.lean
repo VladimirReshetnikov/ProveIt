@@ -415,7 +415,7 @@ lemma integral_rpow_sub_one_mul_log_Ioc (a : ℝ) (ha : 0 < a) :
     · funext x
       dsimp [F]
       ring
-    · ring
+    · ring_nf
   have hone : Tendsto F (𝓝[<] 1) (𝓝 (-1 / a ^ 2)) := by
     have hc : ContinuousAt F 1 := by
       dsimp [F]
