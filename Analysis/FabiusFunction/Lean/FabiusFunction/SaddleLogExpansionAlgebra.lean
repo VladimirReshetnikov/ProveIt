@@ -47,9 +47,15 @@ Lambert displacement coefficients).
 * `coeff_eq_logCoeff_of_derivative_mul_eq` and `logSeries_unique` -- the
   converse, by strong induction on the coefficient index: `logSeries a` is
   the only solution of `A * B' = A'` with vanishing constant term.
-* `logCoeff_congr` -- coefficient `n` depends on input coefficients only
-  through order `n`, which is what lets a truncated mass polynomial stand in
-  for the full series.
+* `expSeries_logCoeff` and `logSeries_expCoeff` -- the logarithmic and
+  exponential recurrences are inverse coefficient transforms after imposing
+  the necessary unit-constant and zero-constant normalizations.  The
+  positive-index forms `expCoeff_logCoeff_of_pos` and
+  `logCoeff_expCoeff_of_pos` need no normalization at all.
+* `logCoeff_congr_of_pos` -- coefficient `n` depends only on the positive
+  input coefficients through order `n`; `logCoeff_congr` is the convenient
+  unrestricted-index wrapper.  This is what lets a truncated mass polynomial
+  stand in for the full series.
 * `map_logCoeff`, `logCoeff_rescale`, `logCoeff_apply`, `logCoeff_parity` --
   the recurrence commutes with `ℚ`-algebra morphisms, converts the rescaling
   `fun j => c ^ j * a j` into multiplication by `c ^ n`, commutes with
@@ -285,26 +291,110 @@ theorem logSeries_unique (a : ℕ → R) (ha0 : a 0 = 1)
   rw [coeff_logSeries]
   exact coeff_eq_logCoeff_of_derivative_mul_eq a ha0 hderiv hzero n
 
-/-- The coefficient of order `n` depends only on input coefficients through
-order `n`. -/
-theorem logCoeff_congr {a b : ℕ → R} (n : ℕ)
-    (hab : ∀ j ≤ n, a j = b j) :
+/-- Exponentiating the recursive logarithm recovers a unit-constant input
+series.  The hypothesis at index zero is necessary: every `expSeries` has
+constant coefficient one, while `logCoeff` intentionally ignores `a 0`. -/
+theorem expSeries_logCoeff (a : ℕ → R) (ha0 : a 0 = 1) :
+    expSeries (logCoeff a) = massSeries a := by
+  symm
+  apply expSeries_unique (logCoeff a)
+  · simpa only [exponentSeries, logSeries] using
+      (derivative_logSeries_mul_massSeries a ha0).symm
+  · rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply,
+      coeff_massSeries, ha0]
+
+/-- Coefficientwise form of `expSeries_logCoeff`, valid at every index,
+including index zero. -/
+theorem expCoeff_logCoeff (a : ℕ → R) (ha0 : a 0 = 1) (n : ℕ) :
+    expCoeff (logCoeff a) n = a n := by
+  have h := congrArg (PowerSeries.coeff n) (expSeries_logCoeff a ha0)
+  simpa only [coeff_expSeries, coeff_massSeries] using h
+
+/-- Taking the recursive logarithm of the exponential recurrence recovers a
+zero-constant exponent series.  The zero-constant hypothesis is exactly what
+is needed at index zero, since `expCoeff` does not depend on `E 0`. -/
+theorem logSeries_expCoeff (E : ℕ → R) (hEzero : E 0 = 0) :
+    logSeries (expCoeff E) = exponentSeries E := by
+  symm
+  apply logSeries_unique (expCoeff E) (by simp)
+  · change expSeries E * d⁄dX R (exponentSeries E) =
+      d⁄dX R (expSeries E)
+    rw [derivative_expSeries]
+    exact mul_comm _ _
+  · rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply,
+      coeff_exponentSeries, hEzero]
+
+/-- Coefficientwise form of `logSeries_expCoeff`, valid at every index,
+including index zero. -/
+theorem logCoeff_expCoeff (E : ℕ → R) (hEzero : E 0 = 0) (n : ℕ) :
+    logCoeff (expCoeff E) n = E n := by
+  have h := congrArg (PowerSeries.coeff n) (logSeries_expCoeff E hEzero)
+  simpa only [coeff_logSeries, coeff_exponentSeries] using h
+
+/-- The coefficient of order `n` depends only on positive input coefficients
+through order `n`; the zeroth input coefficient is irrelevant. -/
+theorem logCoeff_congr_of_pos {a b : ℕ → R} (n : ℕ)
+    (hab : ∀ j, 0 < j → j ≤ n → a j = b j) :
     logCoeff a n = logCoeff b n := by
   induction n using Nat.strong_induction_on with
   | h n ih =>
       cases n with
       | zero => simp
       | succ n =>
-          rw [logCoeff_succ, logCoeff_succ, hab (n + 1) le_rfl]
+          rw [logCoeff_succ, logCoeff_succ,
+            hab (n + 1) (by omega) le_rfl]
           congr 1
           apply congrArg (fun z => ((n + 1 : ℚ)⁻¹) • z)
           apply Finset.sum_congr rfl
           intro j hj
           have hjlt : j < n := mem_range.1 hj
           rw [ih (n - j) (by omega)]
-          · rw [hab (j + 1) (by omega)]
-          · intro k hk
-            exact hab k (by omega)
+          · rw [hab (j + 1) (by omega) (by omega)]
+          · intro k hkpos hk
+            exact hab k hkpos (by omega)
+
+/-- The coefficient of order `n` depends only on input coefficients through
+order `n`.  This compatibility wrapper retains the original API; use
+`logCoeff_congr_of_pos` when the inputs may differ at index zero. -/
+theorem logCoeff_congr {a b : ℕ → R} (n : ℕ)
+    (hab : ∀ j ≤ n, a j = b j) :
+    logCoeff a n = logCoeff b n := by
+  apply logCoeff_congr_of_pos n
+  intro j _hjpos hj
+  exact hab j hj
+
+/-- At every positive index, exponentiating the recursive logarithm recovers
+the input coefficient without any assumption on its zeroth coefficient. -/
+theorem expCoeff_logCoeff_of_pos (a : ℕ → R) (n : ℕ) (hn : 0 < n) :
+    expCoeff (logCoeff a) n = a n := by
+  let a' : ℕ → R := fun j => if j = 0 then 1 else a j
+  have ha'0 : a' 0 = 1 := by simp [a']
+  have hlog : logCoeff a = logCoeff a' := by
+    funext j
+    apply logCoeff_congr_of_pos j
+    intro k hkpos _hk
+    simp [a', Nat.ne_of_gt hkpos]
+  calc
+    expCoeff (logCoeff a) n = expCoeff (logCoeff a') n := by rw [hlog]
+    _ = a' n := expCoeff_logCoeff a' ha'0 n
+    _ = a n := by simp [a', Nat.ne_of_gt hn]
+
+/-- At every positive index, taking the recursive logarithm of the exponential
+recurrence recovers the exponent coefficient without assuming it vanishes at
+index zero. -/
+theorem logCoeff_expCoeff_of_pos (E : ℕ → R) (n : ℕ) (hn : 0 < n) :
+    logCoeff (expCoeff E) n = E n := by
+  let E' : ℕ → R := fun j => if j = 0 then 0 else E j
+  have hE'zero : E' 0 = 0 := by simp [E']
+  have hexp : expCoeff E = expCoeff E' := by
+    funext j
+    apply expCoeff_congr_of_pos j
+    intro k hkpos _hk
+    simp [E', Nat.ne_of_gt hkpos]
+  calc
+    logCoeff (expCoeff E) n = logCoeff (expCoeff E') n := by rw [hexp]
+    _ = E' n := logCoeff_expCoeff E' hE'zero n
+    _ = E n := by simp [E', Nat.ne_of_gt hn]
 
 /-- Formation of logarithmic coefficients commutes with morphisms of
 commutative rational algebras. -/

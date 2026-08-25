@@ -13,6 +13,12 @@ The finite sum is interpreted in `ℤ`, since its summands are signs, and the
 outer division is interpreted in `ℚ`.  The logarithm is represented by
 `Nat.log2` only after proving that its argument is exactly the positive power
 `2 ^ (binaryWeight n + 1)`.
+
+The final sign lemmas are coefficient-facing forms of the same parity fact:
+in an arbitrary ring, raising `-1` to `thueMorseBit r` is already the same as
+raising it to the full binary weight.  This lets later real and complex series
+share one exact algebraic bridge instead of reopening the modulo-two
+definition.
 -/
 
 set_option autoImplicit false
@@ -88,6 +94,15 @@ theorem thueMorseSign_eq_one_sub_two_mul_bit (n : ℕ) :
       hodd.neg_one_pow]
     norm_num
 
+/-- Raising `-1` to the zero-one Thue--Morse bit is the same as raising it
+to the full binary weight, in any ring.  This is the direct coefficient form
+of the modulo-two definition. -/
+theorem neg_one_pow_thueMorseBit_eq_binaryWeight
+    {R : Type*} [Ring R] (r : ℕ) :
+    (-1 : R) ^ thueMorseBit r = (-1 : R) ^ binaryWeight r := by
+  rw [thueMorseBit]
+  exact (neg_one_pow_eq_pow_mod_two (R := R) (binaryWeight r)).symm
+
 /-- The Wolfram sign `(-1)^ThueMorse[r]` agrees with the repository's signed
 Thue--Morse convention in **every** ring.
 
@@ -98,9 +113,9 @@ hypothesis is involved.  The `ℚ`-valued specialization is
 under its established name for its existing callers. -/
 theorem neg_one_pow_thueMorseBit_ring {R : Type*} [Ring R] (r : ℕ) :
     (-1 : R) ^ thueMorseBit r = (thueMorseSign r : R) := by
-  rw [thueMorseBit, thueMorseSign]
+  rw [neg_one_pow_thueMorseBit_eq_binaryWeight, thueMorseSign]
   push_cast
-  exact (neg_one_pow_eq_pow_mod_two (R := R) (binaryWeight r)).symm
+  rfl
 
 /-- The parity form of the desired logarithmic expression. -/
 theorem thueMorseBit_eq_sign_formula (n : ℕ) :

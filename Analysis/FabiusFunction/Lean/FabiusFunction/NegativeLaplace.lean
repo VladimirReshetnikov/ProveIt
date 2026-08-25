@@ -20,6 +20,10 @@ The last bound is at most `4 exp(-s)` once `s ≥ log 2`.
 
 The construction uses only elementary real logarithm and exponential bounds;
 it does not rely on Mellin inversion or vertical estimates for `Gamma`.
+The sign information implicit in the product is exposed as well: every
+logarithmic factor, the full logarithmic product, and the forward tail are
+nonpositive, while the tail error obtained by negating the forward tail is
+nonnegative.
 -/
 
 set_option autoImplicit false
@@ -55,6 +59,19 @@ theorem negativeLaplaceKernel_nonpos (x : ℝ) (hx : 0 < x) :
   · exact (Real.exp_pos _).le.trans (exp_neg_le_one_sub_div x hx)
   · exact one_sub_exp_neg_div_le_one x hx
 
+/-- Every logarithmic product factor is in fact strictly negative at positive
+arguments. -/
+theorem negativeLaplaceKernel_neg (x : ℝ) (hx : 0 < x) :
+    negativeLaplaceKernel x < 0 := by
+  rw [negativeLaplaceKernel]
+  apply Real.log_neg
+  · apply div_pos
+    · apply sub_pos.mpr
+      simpa using Real.exp_lt_exp.mpr (neg_lt_zero.mpr hx)
+    · exact hx
+  · rw [div_lt_one hx]
+    nlinarith [Real.add_one_lt_exp (neg_ne_zero.mpr hx.ne')]
+
 /-- Elementary lower bound for a logarithmic product factor. -/
 theorem neg_le_negativeLaplaceKernel (x : ℝ) (hx : 0 < x) :
     -x ≤ negativeLaplaceKernel x := by
@@ -81,6 +98,16 @@ theorem abs_negativeLaplaceTerm_le (s : ℝ) (hs : 0 < s) (n : ℕ) :
   rw [pow_succ]
   ring
 
+/-- Every term of the logarithmic product series is nonpositive. -/
+theorem negativeLaplaceTerm_nonpos (s : ℝ) (hs : 0 < s) (n : ℕ) :
+    negativeLaplaceTerm s n ≤ 0 := by
+  exact negativeLaplaceKernel_nonpos _ (by positivity)
+
+/-- Every term of the logarithmic product series is strictly negative. -/
+theorem negativeLaplaceTerm_neg (s : ℝ) (hs : 0 < s) (n : ℕ) :
+    negativeLaplaceTerm s n < 0 := by
+  exact negativeLaplaceKernel_neg _ (by positivity)
+
 /-- The logarithmic product series is absolutely summable for `s > 0`. -/
 theorem summable_negativeLaplaceTerm (s : ℝ) (hs : 0 < s) :
     Summable (negativeLaplaceTerm s) := by
@@ -90,6 +117,22 @@ theorem summable_negativeLaplaceTerm (s : ℝ) (hs : 0 < s) :
 /-- Logarithm of the canonical negative Laplace product. -/
 noncomputable def negativeLaplaceLog (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceTerm s n
+
+/-- The logarithm of the negative Laplace product is nonpositive on the
+positive half-line. -/
+theorem negativeLaplaceLog_nonpos (s : ℝ) (hs : 0 < s) :
+    negativeLaplaceLog s ≤ 0 := by
+  exact tsum_nonpos (negativeLaplaceTerm_nonpos s hs)
+
+/-- The logarithm of the negative Laplace product is strictly negative on the
+positive half-line. -/
+theorem negativeLaplaceLog_neg (s : ℝ) (hs : 0 < s) :
+    negativeLaplaceLog s < 0 := by
+  rw [negativeLaplaceLog]
+  have hlt := Summable.tsum_lt_tsum (i := 0)
+    (negativeLaplaceTerm_nonpos s hs) (negativeLaplaceTerm_neg s hs 0)
+    (summable_negativeLaplaceTerm s hs) summable_zero
+  simpa using hlt
 
 private lemma negativeLaplaceTerm_two_zero (s : ℝ) :
     negativeLaplaceTerm (2 * s) 0 = negativeLaplaceKernel s := by
@@ -134,6 +177,26 @@ private lemma abs_log_one_sub_exp_neg_le (x : ℝ) (hx : 0 < x) :
     _ = Real.exp (-x) / (1 - Real.exp (-x)) := by
       field_simp
       ring
+
+/-- Every term of the forward logarithmic tail is nonpositive. -/
+theorem negativeLaplaceForwardTerm_nonpos
+    (s : ℝ) (hs : 0 < s) (n : ℕ) :
+    negativeLaplaceForwardTerm s n ≤ 0 := by
+  rw [negativeLaplaceForwardTerm]
+  apply Real.log_nonpos
+  · have hp : 0 < s * (2 : ℝ) ^ n := by positivity
+    exact (sub_pos.mpr (exp_neg_lt_one _ hp)).le
+  · linarith [Real.exp_pos (-(s * (2 : ℝ) ^ n))]
+
+/-- Every term of the forward logarithmic tail is strictly negative. -/
+theorem negativeLaplaceForwardTerm_neg
+    (s : ℝ) (hs : 0 < s) (n : ℕ) :
+    negativeLaplaceForwardTerm s n < 0 := by
+  rw [negativeLaplaceForwardTerm]
+  apply Real.log_neg
+  · have hp : 0 < s * (2 : ℝ) ^ n := by positivity
+    exact sub_pos.mpr (exp_neg_lt_one _ hp)
+  · linarith [Real.exp_pos (-(s * (2 : ℝ) ^ n))]
 
 private lemma exp_forward_le_geometric (s : ℝ) (hs : 0 < s) (n : ℕ) :
     Real.exp (-(s * (2 : ℝ) ^ n)) ≤ Real.exp (-s) ^ (n + 1) := by
@@ -182,6 +245,22 @@ theorem summable_negativeLaplaceForwardTerm (s : ℝ) (hs : 0 < s) :
 /-- The forward logarithmic tail.  Its terms, and hence its sum, are negative. -/
 noncomputable def negativeLaplaceForwardTail (s : ℝ) : ℝ :=
   ∑' n : ℕ, negativeLaplaceForwardTerm s n
+
+/-- The forward logarithmic tail is nonpositive on the positive half-line. -/
+theorem negativeLaplaceForwardTail_nonpos (s : ℝ) (hs : 0 < s) :
+    negativeLaplaceForwardTail s ≤ 0 := by
+  exact tsum_nonpos (negativeLaplaceForwardTerm_nonpos s hs)
+
+/-- The forward logarithmic tail is strictly negative on the positive
+half-line. -/
+theorem negativeLaplaceForwardTail_neg (s : ℝ) (hs : 0 < s) :
+    negativeLaplaceForwardTail s < 0 := by
+  rw [negativeLaplaceForwardTail]
+  have hlt := Summable.tsum_lt_tsum (i := 0)
+    (negativeLaplaceForwardTerm_nonpos s hs)
+    (negativeLaplaceForwardTerm_neg s hs 0)
+    (summable_negativeLaplaceForwardTerm s hs) summable_zero
+  simpa using hlt
 
 private lemma negativeLaplaceForwardTerm_zero (s : ℝ) :
     negativeLaplaceForwardTerm s 0 = Real.log (1 - Real.exp (-s)) := by
@@ -247,13 +326,20 @@ noncomputable def negativeLaplaceTailError (s : ℝ) : ℝ :=
 /-- The forward-tail error is nonnegative. -/
 theorem negativeLaplaceTailError_nonneg (s : ℝ) (hs : 0 < s) :
     0 ≤ negativeLaplaceTailError s := by
-  rw [negativeLaplaceTailError, neg_nonneg]
-  apply tsum_nonpos
-  intro n
-  apply Real.log_nonpos
-  · have hp : 0 < s * (2 : ℝ) ^ n := by positivity
-    exact (sub_pos.mpr (exp_neg_lt_one _ hp)).le
-  · linarith [Real.exp_pos (-(s * (2 : ℝ) ^ n))]
+  simpa only [negativeLaplaceTailError, neg_nonneg] using
+    negativeLaplaceForwardTail_nonpos s hs
+
+/-- The forward-tail error is strictly positive on the positive half-line. -/
+theorem negativeLaplaceTailError_pos (s : ℝ) (hs : 0 < s) :
+    0 < negativeLaplaceTailError s := by
+  rw [negativeLaplaceTailError, neg_pos]
+  exact negativeLaplaceForwardTail_neg s hs
+
+/-- On the positive half-line the absolute value of the tail error can be
+removed, since that error is nonnegative. -/
+theorem abs_negativeLaplaceTailError (s : ℝ) (hs : 0 < s) :
+    |negativeLaplaceTailError s| = negativeLaplaceTailError s :=
+  abs_of_nonneg (negativeLaplaceTailError_nonneg s hs)
 
 /-- Global explicit bound for the positive tail error. -/
 theorem abs_negativeLaplaceTailError_le (s : ℝ) (hs : 0 < s) :

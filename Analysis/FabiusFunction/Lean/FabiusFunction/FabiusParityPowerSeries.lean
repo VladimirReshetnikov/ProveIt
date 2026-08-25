@@ -11,8 +11,10 @@ The exponent is an integer exponent, so its value at `n = 0` is genuinely
 `-1`. Lean's convention `0 ^ 0 = 1` is used in the polynomial term.
 
 The corrected series starts at `m = 0` and equals the signed global Fabius
-extension for every nonnegative real input. The original series starting at
-`m = 1` remains valid on the half-open unit interval `0 ≤ x < 1`.
+extension for every real input: on the nonpositive half-line both sides
+vanish termwise.  The established theorem signatures with `0 ≤ x` are kept
+as wrappers.  The original series starting at `m = 1` remains valid on the
+half-open unit interval `0 ≤ x < 1`.
 -/
 
 set_option autoImplicit false
@@ -87,7 +89,10 @@ theorem fabiusParityPowerInner_eq_half_reductionSum (m : ℕ) (y : ℝ) :
   norm_num only [zpow_natCast, zpow_one]
   field_simp [Nat.cast_ne_zero]
 
-private theorem neg_one_pow_sub_one_half (a : ℕ) :
+/-- The half-difference of a parity sign is the signed low binary digit,
+written as the exact natural quotient expression used by the global
+coefficient. -/
+theorem neg_one_pow_sub_one_half (a : ℕ) :
     (((-1 : ℝ) ^ a - 1) * (1 / 2 : ℝ)) =
       2 * (a / 2 : ℕ) - (a : ℝ) := by
   have hmod : a % 2 < 2 := Nat.mod_lt a (by omega)
@@ -115,6 +120,29 @@ def fabiusParityPowerSummand (x : ℝ) (m : ℕ) : ℝ :=
     (-1 : ℝ) ^ thueMorseBit (binaryPrefix x m) *
     fabiusParityPowerInner m (binaryTail x m)
 
+/-- Exact coefficient bridge between the source-literal parity factors and
+the analytic binary-reduction coefficient.  It is valid at every scale,
+including the half-scale convention at `m = 0`. -/
+theorem fabiusParityPowerCoefficient_eq_globalBinaryReductionCoefficient
+    (x : ℝ) (m : ℕ) :
+    (((-1 : ℝ) ^ binaryPrefix x m) - 1) *
+        (-1 : ℝ) ^ thueMorseBit (binaryPrefix x m) * (1 / 2 : ℝ) =
+      globalBinaryReductionCoefficient x m := by
+  have hprev := binaryPreviousPrefix_eq_binaryPrefix_div_two x m
+  have hparity := neg_one_pow_sub_one_half (binaryPrefix x m)
+  rw [neg_one_pow_thueMorseBit_eq_binaryWeight,
+    globalBinaryReductionCoefficient]
+  calc
+    (((-1 : ℝ) ^ binaryPrefix x m - 1) *
+          (-1 : ℝ) ^ binaryWeight (binaryPrefix x m)) * (1 / 2 : ℝ) =
+        (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
+          ((((-1 : ℝ) ^ binaryPrefix x m - 1) * (1 / 2 : ℝ))) := by
+      ring
+    _ = (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
+          (2 * (binaryPreviousPrefix x m : ℝ) -
+            (binaryPrefix x m : ℝ)) := by
+      rw [hparity, hprev]
+
 /-- Pointwise bridge from the parity-power formula to the analytic binary
 reduction summand. -/
 theorem fabiusParityPowerSummand_eq_globalBinaryReductionSummand
@@ -122,42 +150,55 @@ theorem fabiusParityPowerSummand_eq_globalBinaryReductionSummand
     fabiusParityPowerSummand x m = globalBinaryReductionSummand x m := by
   rw [fabiusParityPowerSummand,
     fabiusParityPowerInner_eq_half_reductionSum,
-    globalBinaryReductionSummand, globalBinaryReductionCoefficient]
-  have hprev := binaryPreviousPrefix_eq_binaryPrefix_div_two x m
-  have hparity := neg_one_pow_sub_one_half (binaryPrefix x m)
-  have hsign :
-      (-1 : ℝ) ^ thueMorseBit (binaryPrefix x m) =
-        (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) := by
-    rw [thueMorseBit]
-    exact (neg_one_pow_eq_pow_mod_two
-      (R := ℝ) (binaryWeight (binaryPrefix x m))).symm
-  rw [hsign]
+    globalBinaryReductionSummand]
   calc
-    (((-1 : ℝ) ^ binaryPrefix x m - 1) *
-          (-1 : ℝ) ^ binaryWeight (binaryPrefix x m)) *
-          ((1 / 2 : ℝ) * fabiusReductionSum m (binaryTail x m)) =
-        (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
-          ((((-1 : ℝ) ^ binaryPrefix x m - 1) * (1 / 2 : ℝ))) *
+    _ = ((((-1 : ℝ) ^ binaryPrefix x m) - 1) *
+            (-1 : ℝ) ^ thueMorseBit (binaryPrefix x m)) *
+            (1 / 2 : ℝ) *
           fabiusReductionSum m (binaryTail x m) := by ring
-    _ = (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
-          (2 * (binaryPreviousPrefix x m : ℝ) -
-            (binaryPrefix x m : ℝ)) *
+    _ = globalBinaryReductionCoefficient x m *
           fabiusReductionSum m (binaryTail x m) := by
-      rw [hparity, hprev]
+      rw [fabiusParityPowerCoefficient_eq_globalBinaryReductionCoefficient]
 
-/-- Corrected global series, starting at `m = 0`, for every `x ≥ 0`. -/
+/-- On the original half-open unit interval, the scale-zero parity-power
+summand vanishes pointwise. -/
+theorem fabiusParityPowerSummand_zero_of_lt_one (x : ℝ) (hx : x < 1) :
+    fabiusParityPowerSummand x 0 = 0 := by
+  rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
+    globalBinaryReductionSummand_zero_of_lt_one x hx]
+
+/-- At `x = 1`, the restored scale-zero parity-power term is exactly one. -/
+theorem fabiusParityPowerSummand_one_zero :
+    fabiusParityPowerSummand 1 0 = 1 := by
+  rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
+    globalBinaryReductionSummand_one_zero]
+
+/-- All-real core of the corrected parity-power series, starting at `m = 0`.
+On nonpositive inputs it is the zero series. -/
+theorem hasSum_fabiusParityPowerSummand_all (x : ℝ) :
+    HasSum (fabiusParityPowerSummand x) (globalFabius x) := by
+  exact (hasSum_globalBinaryReductionSummand_all
+    fabius fabius_spec x).congr_fun
+      (fun m => fabiusParityPowerSummand_eq_globalBinaryReductionSummand x m)
+
+/-- Compatibility form of the corrected global series on `x ≥ 0`. -/
 theorem hasSum_fabiusParityPowerSummand
     (x : ℝ) (hx : 0 ≤ x) :
     HasSum (fabiusParityPowerSummand x) (globalFabius x) := by
-  exact (hasSum_globalBinaryReductionSummand
-    fabius fabius_spec x hx).congr_fun
-      (fun m => fabiusParityPowerSummand_eq_globalBinaryReductionSummand x m)
+  simpa only [max_eq_left hx] using
+    hasSum_fabiusParityPowerSummand_all (max x 0)
 
-/-- `tsum` form of the corrected `m = 0,1,...` series for every `x ≥ 0`. -/
+/-- All-real `tsum` form of the corrected `m = 0,1,...` series. -/
+theorem globalFabius_eq_tsum_fabiusParityPowerSummand_all (x : ℝ) :
+    globalFabius x = ∑' m : ℕ, fabiusParityPowerSummand x m :=
+  (hasSum_fabiusParityPowerSummand_all x).tsum_eq.symm
+
+/-- Compatibility `tsum` form for every `x ≥ 0`. -/
 theorem globalFabius_eq_tsum_fabiusParityPowerSummand
     (x : ℝ) (hx : 0 ≤ x) :
-    globalFabius x = ∑' m : ℕ, fabiusParityPowerSummand x m :=
-  (hasSum_fabiusParityPowerSummand x hx).tsum_eq.symm
+    globalFabius x = ∑' m : ℕ, fabiusParityPowerSummand x m := by
+  simpa only [max_eq_left hx] using
+    globalFabius_eq_tsum_fabiusParityPowerSummand_all (max x 0)
 
 /-- Fully expanded corrected parity-power formula. The outer series starts at
 `m = 0`, the quadratic exponent is interpreted using integer division, and
