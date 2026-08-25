@@ -88,7 +88,87 @@ rational values of `F(2^-n)` are in
 
 ## Status log
 
-- Phase-1 build: the 31-module topological closure of
-  `FabiusFunction.FabiusSaddleExpansionCoefficients`, serialized.
-- New modules are committed with an explicit `Verified:` / `Not yet compiled:`
-  line, per `AGENTS.md` rule 3.
+Serialized build in this worktree, one `lake build +<module>` per invocation,
+`LAKE_JOBS=1`, on top of `origin/main` merged at `257d11a14`.
+
+Machine-checked, exit 0, no `sorry` and no new axioms.  **All five modules of
+this branch's closed-form layer are green**, on top of a 34-module serialized
+closure:
+
+`Arithmetic`, `Basic`, `Differential`, `DyadicCorrectness`, `MomentPowerSeries`,
+`DyadicClosedForm`, `DyadicAnalytic`, `AnalyticMoments`, `NegativeLaplace`,
+`PeriodicCorrection`, `StieltjesConstant`, `GammaSecondOrder`, `MellinBose`,
+`MellinFinitePart`, `BoseFinitePartIntegral`, `PeriodicMean`,
+`LaplaceTransform`, `LaplaceMoments`, `NegativeLaplaceDerivatives`, `Existence`,
+`PeriodicRegularity`, `FabiusSaddleCoefficientRecurrence`, `PeriodicSmooth`,
+`SaddleExpansionAlgebra`, `FabiusSaddlePolynomialCoefficients`,
+`BromwichSaddle`, `QuantitativeSaddle`, `GaussianPolynomialContraction`,
+`SaddleLogExpansionAlgebra`, `FabiusFirstSaddleCorrection`,
+`FabiusSaddleExpansionCoefficients`, and this branch's
+
+- **`FabiusSaddleJetClosedForm`** — the closed-form jets;
+- **`FabiusSaddleExponentClosedForm`** — the exponent collapse;
+- **`FabiusSaddleJetStirling`** — the weights are the coefficients of
+  `(X-1)…(X-n)`, with monicity and `natDegree = n`;
+- **`FabiusSaddleLeadingCoefficient`** — the leading-coefficient law for
+  *general* order;
+- **`FabiusSecondSaddleCorrection`** — `A_2`.
+
+Not compiled: `FabiusSecondSaddleExpansion`, which substitutes `A_2` into the
+truncated expansion.  Its closure is the full asymptotic aggregate, about 110
+modules, beyond this session's budget.  Everything it depends on is green and
+its own proofs are three rewrites.
+
+Building `Arithmetic` at the consolidated tip, and `DyadicAnalytic` and
+`DyadicClosedForm` downstream of it, also validates the triangular-number
+consolidation merged from `origin/main` at both ends for `choose_add_two_two`.
+
+Two external builds were run for `claude/fabius-function-theorems-494024` in a
+throwaway sparse worktree, so that neither branch had to merge:
+`+FabiusFunction.ScalingRecurrence` at `36f9d4ce8` (415 s) and
+`+FabiusFunction.Arithmetic` at `1ea3554f4` (125 s), both exit 0.
+
+Defects found before the compiler saw them, by a read-only preflight against the
+real Mathlib sources: the `C∞` exponent notation being `scoped[ContDiff]` and not
+leaking through `import`; `Finset.range_subset` being the wrong lemma for an
+`n ≤ N` hypothesis; `HasDerivAt.sum` producing the Pi-valued sum where
+`HasDerivAt.fun_sum` is wanted; and one cancellation lemma being unable to serve
+two different associations of the same expression.  The compiler then found
+exactly one further defect, which the same preflight had listed as a risk: a
+`field_simp` closing its own goal, leaving the following `ring` with
+`No goals to be solved`.
+
+One defect was found by reading rather than by either: the Fabius specialization
+of the leading-coefficient law was stated as an equality between two evaluation
+points at which the first `2j+1` jets agree.  The jets are one-periodic, so
+`u = t+1` is a trivial witness and the conclusion reads `0 = 0`; for `t` not
+congruent to `u` the hypothesis holds only on a measure-zero set.  It compiled
+and was true and was nearly vacuous.  Replaced by an affine decomposition against
+the sequence that truncates the top jet to zero, which exhibits the dependence
+instead of asserting it.  The generic version over an arbitrary jet sequence was
+sound throughout.
+
+## Machine conditions
+
+Free RAM ranged between 283 MB and 2.5 GB during the session.  A module that
+built in 83 s at 01:49 took 14 minutes for the same work at 03:58.  Timings in
+this file are not comparable across the session and should not be used to plan.
+
+## Inherited from `claude/fabius-function-theorems-494024`
+
+That branch wound down at tip `c8311febb`, working tree clean.  It leaves:
+`Not yet compiled:` lines on every commit needing one, so the state is
+recoverable from history alone; every hypothesis-weakening additive, so an
+unverified edit fails in isolation; `scripts/doc_audit.py --baseline
+docs/doc_audit_baseline.json` passing, pinned at 176 undocumented public
+declarations; and `docs/AUDIT_FINDINGS.md` with 83 findings open, the closed ones
+marked `DONE` in place, the 18 refuted ones listed so nobody re-proposes them,
+and a defect taxonomy for reviewers.
+
+Its outstanding build queue, in value order: `+FabiusFunction.FabiusDiscreteLimitComplexShift`
+(one Fabius dependency, covers fifteen of eighteen rewired call sites),
+`+FabiusFunction.FabiusQBinomialTaylor`, `+FabiusFunction.FabiusInverse`.
+Deliberately not attempted here while the machine is this slow.
+
+The 124 undocumented public declarations in the nine modules this branch reads
+are inherited as this branch's, `PeriodicRegularity`'s 41 first.

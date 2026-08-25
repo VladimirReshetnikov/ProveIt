@@ -30,8 +30,11 @@ harmonic number.  The outcome is
           + ∑ m ∈ Finset.range (n+1), c n m * Psi^(m+1) t / L^(m+1)`,
 
 where `H n` is the `n`-th harmonic number and `c n m` is the coefficient of
-`z ^ m` in `∏ k ∈ Finset.Icc 1 n, (z - k)`, that is, a signed Stirling number
-of the first kind.  The bounded exponent jet used by the saddle expansion is
+`z ^ m` in `∏ k ∈ Finset.Icc 1 n, (z - k)`.  These are signed Stirling numbers
+of the first kind shifted by one in each index, `c n m = s (n+1) (m+1)`, because
+`z * ∏ k ∈ Icc 1 n, (z - k) = ∏ k ∈ Icc 0 n, (z - k)`.  The shift matters: `s n 0`
+vanishes for `n ≥ 1`, while `c n 0 = (-1)^n * n !` is exactly the constant that
+carries the harmonic-number term.  The bounded exponent jet used by the saddle expansion is
 the same sum with the sign of the `1/2` reversed:
 
 `d n t = (-1)^n * n ! * (H n / L - 1/2)
@@ -66,8 +69,10 @@ noncomputable section
 
 /-- The weight of `Psi^(m+1) / L^(m+1)` in the closed form of the `n`-th saddle
 jet.  It is the coefficient of `z ^ m` in `∏ k ∈ Finset.Icc 1 n, (z - k)`, a
-signed Stirling number of the first kind: the recurrence below is exactly the
-coefficient recurrence of multiplying that product by `z - (n+1)`. -/
+shifted signed Stirling number of the first kind, `c n m = s (n+1) (m+1)`: the
+recurrence below is exactly the coefficient recurrence of multiplying that
+product by `z - (n+1)`.  Note `c n 0 = (-1)^n * n !`, unlike the unshifted
+`s n 0`, which vanishes for `n ≥ 1`. -/
 def negativeLaplaceJetStirling : ℕ → ℕ → ℝ
   | 0, 0 => 1
   | 0, _ + 1 => 0
@@ -122,8 +127,9 @@ theorem negativeLaplaceJetStirling_self (n : ℕ) :
       ring
 
 /-- The `(m+1)`-st derivative of the centered periodic correction, normalized by
-`(log 2) ^ (m+1)`.  These are the only transcendental quantities that occur in
-the closed-form jets. -/
+`(log 2) ^ (m+1)`.  Apart from `log 2` itself, these are the only
+non-elementary quantities occurring in the closed-form jets: everything else in
+them is rational. -/
 def negativeLaplacePsiScaledDeriv (m : ℕ) (t : ℝ) : ℝ :=
   iteratedDeriv (m + 1) negativeLaplacePsi t / Real.log 2 ^ (m + 1)
 

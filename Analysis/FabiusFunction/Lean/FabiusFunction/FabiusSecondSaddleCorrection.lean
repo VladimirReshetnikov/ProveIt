@@ -383,6 +383,26 @@ private theorem gaussianMoment_twelve :
     normalizedGaussianMoment 12 = 10395 := by
   norm_num [normalizedGaussianMoment]
 
+/-- Contraction of the five-monomial even polynomial produced at order four.
+
+The coefficients are taken as abstract variables on purpose.  Contracting the
+concrete polynomial with `simp only [map_add, …]` does not work: `Polynomial.C`
+is itself a ring homomorphism, so `map_add` rewrites `C (a + b)` into
+`C a + C b` inside each coefficient, and the resulting `(C a + C b) * X ^ n` no
+longer matches the monomial contraction lemma.  Splitting the sum here, where
+the coefficients cannot be decomposed, avoids that entirely. -/
+private theorem gaussianContraction_even_five (c4 c6 c8 c10 c12 : ℂ) :
+    gaussianPolynomialContraction
+        (C c4 * X ^ 4 + C c6 * X ^ 6 + C c8 * X ^ 8 + C c10 * X ^ 10 +
+          C c12 * X ^ 12) =
+      c4 * normalizedGaussianMoment 4 + c6 * normalizedGaussianMoment 6 +
+        c8 * normalizedGaussianMoment 8 + c10 * normalizedGaussianMoment 10 +
+          c12 * normalizedGaussianMoment 12 := by
+  rw [map_add, map_add, map_add, map_add,
+    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
+    gaussianContraction_C_mul_X_pow, gaussianContraction_C_mul_X_pow,
+    gaussianContraction_C_mul_X_pow]
+
 /-- The complex Gaussian mass coefficient of order `lambda^{-2}` in closed
 form.  It is the image of a real number, as it must be. -/
 theorem fabiusSaddleMassCoefficientComplex_two (t : ℝ) :
@@ -403,9 +423,9 @@ theorem fabiusSaddleMassCoefficientComplex_two (t : ℝ) :
           negativeLaplaceBoundedExponentJet 3 t / 8 + 1 / 288 : ℝ) : ℂ) := by
   unfold fabiusSaddleMassCoefficientComplex
   rw [show 2 * 2 = 4 by omega,
-    expCoeff_four_negativeLaplaceExponentPolynomial]
-  simp only [map_add, gaussianContraction_C_mul_X_pow]
-  rw [gaussianMoment_four, gaussianMoment_six, gaussianMoment_eight,
+    expCoeff_four_negativeLaplaceExponentPolynomial,
+    gaussianContraction_even_five,
+    gaussianMoment_four, gaussianMoment_six, gaussianMoment_eight,
     gaussianMoment_ten, gaussianMoment_twelve]
   push_cast
   ring
