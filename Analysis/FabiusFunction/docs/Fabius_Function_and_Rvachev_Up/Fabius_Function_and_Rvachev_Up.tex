@@ -1870,474 +1870,182 @@ For $0\le y\le1/2$, the integrand vanishes when $u>2y$, so
 Reflection gives $H(1-y)=1-H(y)$.  Thus the restriction of $H$ to $[0,1]$ is a fixed point
 of the contraction $T$ from \cref{sec:existence}.
 
-\begin{theorem}[Probabilistic representation]
-For every $x\in\R$,
-\begin{equation}
- F(x)=\Prob\left(\sum_{n=0}^{\infty}\frac{U_n}{2^{n+1}}\le x\right). \label{eq:F-CDF}
-\end{equation}
-For $-1\le y\le0$,
-\begin{equation}
- \Up(y)=\Prob(X\le y+1).                                  \label{eq:up-left-prob}
-\end{equation}
+\begin{theorem}[Global probabilistic representation]
+\label{thm:probability-representation-global}
+For every \(x,y\in\R\),
+\begin{align}
+ F(x)
+ &=\Prob\left(\sum_{n=0}^{\infty}\frac{U_n}{2^{n+1}}\le x\right),
+                                                               \label{eq:F-CDF}\\
+ \Up(y)
+ &=\Prob\left(\sum_{n=0}^{\infty}\frac{U_n}{2^{n+1}}\le1-|y|\right).
+                                                               \label{eq:up-CDF-global}
+\end{align}
+The second identity includes both tails: if \(|y|\ge1\), both sides vanish.
 \end{theorem}
 
-\begin{proof}
-The preceding calculation shows that $H$ is an admissible fixed point of $T$.  Uniqueness of
-the fixed point gives $H=F$.  Equation \eqref{eq:up-left-prob} is then just the left branch
-of \eqref{eq:up-fold}.
+\begin{proof}[Formal proof]
+The product-space construction proves continuity and measurability of the uniformly
+convergent coordinate sum, identifies its pushforward distribution, establishes the
+head--tail self-similarity and the coordinate-reflection law, and invokes uniqueness of the
+bounded Fabius fixed point.  The exact canonical specializations are
+\lean{fabiusReal_eq_weightedSum_probability} and
+\lean{rvachevUp_eq_weightedSum_probability_global} in
+\path{ProbabilityRepresentation.lean}.
 \end{proof}
 
-The more symmetric random variable is
-\begin{equation}
- Y=2X-1=\sum_{n=0}^{\infty}\frac{V_n}{2^{n+1}},
- \qquad V_n=2U_n-1\sim\operatorname{Unif}[-1,1].           \label{eq:random-Y}
-\end{equation}
-The density of $Y$ is precisely $\Up$.  Indeed, for $-1<y<1$,
-\begin{equation}
- f_Y(y)=\frac12F'\!\left(\frac{y+1}{2}\right)=\Up(y).     \label{eq:up-density}
-\end{equation}
-This identity is a compact way to remember why $\Up$ integrates to one.
+\subsection{Finite atomic laws and weak convergence}
 
-\subsection{Finite convolutions and step approximants}
-
-For each $n$, the summand $V_n/2^{n+1}$ is uniform on
-$[-2^{-n-1},2^{-n-1}]$ and has density
+There is also a completely discrete approximation theorem.  For \(k\ge0\), let
+\(\beta_k\) be the probability measure assigning mass \(1/2\) to each of
+\(\pm2^{-k-1}\).  Starting from \(\nu_0=\delta_0\), define
 \begin{equation}
- b_n(x)=2^n\,\mathbf 1_{[-2^{-n-1},2^{-n-1}]}(x).          \label{eq:box-density}
+ \nu_{n+1}=\nu_n*\beta_{n+1}^{*(n+1)}.                         \label{eq:finite-atomic-law}
 \end{equation}
-Hence the partial sum
+Thus \(\nu_n\) is a finite atomic probability measure.  Its characteristic function is the
+finite weighted cosine product
 \begin{equation}
- Y_N=\sum_{n=0}^{N}\frac{V_n}{2^{n+1}}
+ \widehat\nu_n(t)
+ =\prod_{k=0}^{n-1}
+   \left(\cos\frac{t}{2^{k+2}}\right)^{k+1}.                   \label{eq:finite-atomic-char}
 \end{equation}
-has density
+The indexing in \eqref{eq:finite-atomic-law} is worth noticing: the new scale at stage
+\(n+1\) is \(2^{-n-2}\), and it occurs with multiplicity \(n+1\).
+
+Let \(\mu_{\Up}\) be the probability measure having density \(\Up\).
+The finite laws converge weakly to \(\mu_{\Up}\):
 \begin{equation}
- u_N=b_0*b_1*\cdots*b_N.                                  \label{eq:finite-convolution}
+ \nu_n\Longrightarrow\mu_{\Up}.                               \label{eq:finite-atomic-weak}
 \end{equation}
-These compactly supported piecewise-polynomial densities converge to $\Up$.  Weak convergence
-is immediate from almost-sure convergence of $Y_N$; the refinement equation and uniform
-bounds upgrade the convergence to the strong forms used in the formal development.  This
-constructs $\Up$ as an infinite convolution of shrinking boxes, a perspective useful in
-approximation theory and wavelet analysis.
-
-In fact the convergence is strong in every fixed differentiability order.  The Fourier
-transforms are
+Equivalently, for every bounded continuous \(g:\R\to\R\),
 \begin{equation}
- \widehat u_N(\xi)=\prod_{j=0}^{N}
- \sinc\!\left(\frac{\pi\xi}{2^j}\right),                 \label{eq:finite-box-transform}
+ \lim_{n\to\infty}\int_{\R}g(x)\,\dd\nu_n(x)
+ =\int_{\R}g(x)\Up(x)\,\dd x.                                 \label{eq:finite-atomic-tests}
 \end{equation}
-so they converge pointwise to \eqref{eq:sinc-product}.  Fix $m\ge0$ and choose $M>m+1$.
-For $N\ge M$, every additional real sinc factor has modulus at most one, and therefore
-\[
- |\xi|^m\left|\widehat u_N(\xi)-\widehat\Up(\xi)\right|
- \le2|\xi|^m|\widehat u_M(\xi)|.
-\]
-The right side is integrable: the $M+1$ finite sinc factors give more than $m+1$ powers of
-decay.  Dominated convergence followed by Fourier inversion now gives
-\begin{equation}
- \max_{0\le r\le m}\left\|u_N^{(r)}-\Up^{(r)}\right\|_\infty\longrightarrow0.
-                                                               \label{eq:finite-box-Cm}
-\end{equation}
-Thus the same finite convolutions give weak convergence with an explicit tail modulus below
-and $C^m$ convergence for every fixed $m$.
+The same test-function theorem is formalized for complex-valued, and more generally
+real-or-complex-like, bounded continuous functions.
 
-
-The three properties recorded next make the convergence quantitative and expose the
-mechanism behind it.  They also justify the statement, used repeatedly later, that each
-additional box kernel buys exactly one more derivative.
-
-\begin{proposition}[Tail factorization, derivative recursion, and error at the tail scale]
-\label{prop:res-convolutions}
-Let $u_N=b_0*b_1*\cdots*b_N$ be the finite convolution \eqref{eq:finite-convolution}, built
-from the $N+1$ box densities \eqref{eq:box-density}.  Then the following hold.
-\begin{enumerate}
-\item Each $u_N$ is a probability density with
-\begin{equation}
- \supp u_N=\left[-\left(1-2^{-N-1}\right),\,1-2^{-N-1}\right].
-                                                          \label{eq:res-conv-support}
-\end{equation}
-\item For every $N\ge0$ the bump factors exactly as the finite stage convolved with a tail
-kernel supported in a symmetric interval of radius $2^{-N-1}$ about the origin:
-\begin{equation}
- \Up(x)=\int_{-2^{-N-1}}^{2^{-N-1}}
- u_N(x-t)\,2^{\,N+1}\Up\!\left(2^{\,N+1}t\right)\dd t,
-                                                          \label{eq:res-tail-factorization}
-\end{equation}
-the second factor being itself a probability density.
-\item For every $N\ge1$ the stages obey the exact refinement identity
-\begin{equation}
- u_N(x)=\int_{2x-1}^{2x+1}u_{N-1}(t)\dd t,                \label{eq:res-finite-refinement}
-\end{equation}
-and hence the derivative recursion
-\begin{align}
- u_N'(x)
- &=2\bigl(u_{N-1}(2x+1)-u_{N-1}(2x-1)\bigr) \notag\\
- &=2^{N}\left(u_{N-1}\!\left(x+2^{-N-1}\right)
-             -u_{N-1}\!\left(x-2^{-N-1}\right)\right).
-                                                          \label{eq:res-derivative-recursion}
-\end{align}
-Consequently $u_N\in C^{N-1}(\R)$ for $N\ge1$, and no better: away from its finite knot set,
-its piecewise $N$th derivative is a step function with nonremovable jumps.
-\item For every bounded uniformly continuous $f:\R\to\C$,
-\begin{equation}
- \left|\int_{\R}f(x)u_N(x)\dd x-\int_{\R}f(x)\Up(x)\dd x\right|
- \le\operatorname{osc}\!\left(f;2^{-N-1}\right),          \label{eq:res-tail-error}
-\end{equation}
-where $\operatorname{osc}(f;\delta)=\sup\left\{|f(s)-f(s')|:|s-s'|\le\delta\right\}$ is the
-modulus of continuity of $f$ at scale $\delta$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-For (1), each $b_n$ of \eqref{eq:box-density} is a probability density supported on
-$[-2^{-n-1},2^{-n-1}]$.  A convolution of probability densities is a probability density, and
-the support of a convolution of compactly supported nonnegative densities on intervals is the
-sum of the supports, so the radius is
-$\sum_{n=0}^{N}2^{-n-1}=1-2^{-N-1}$.  This is the first place where the indexing matters: the
-$N$th stage carries $N+1$ factors, so the radius is $1-2^{-N-1}$ and not $1-2^{-N}$; the
-radii increase to the radius $1$ of $\supp\Up$ without ever attaining it.
-
-For (2), split the series \eqref{eq:random-Y} at the cutoff:
-$Y=Y_N+\left(Y-Y_N\right)$, where the two summands are independent and
-\[
- Y-Y_N=\sum_{n=N+1}^{\infty}\frac{V_n}{2^{\,n+1}}
- =2^{-N-1}\sum_{m=0}^{\infty}\frac{V_{N+1+m}}{2^{\,m+1}}.
-\]
-The last series is an independent copy of $Y$, so $Y-Y_N$ has the law of $2^{-N-1}Y$.  By
-\eqref{eq:up-density} the density of $Y$ is $\Up$, so the density of $Y-Y_N$ is
-$t\mapsto2^{\,N+1}\Up\bigl(2^{\,N+1}t\bigr)$, supported in $[-2^{-N-1},2^{-N-1}]$ because
-$\Up$ vanishes off $[-1,1]$.  Densities of independent summands convolve, and the density of
-$Y_N$ is $u_N$; this is \eqref{eq:res-tail-factorization}.
-
-For (3), the two forms in \eqref{eq:res-derivative-recursion} come from peeling the outermost
-and the innermost factor respectively.  Peeling the outermost, $u_N=u_{N-1}*b_N$ gives
-\[
- u_N(x)=2^{N}\int_{x-2^{-N-1}}^{x+2^{-N-1}}u_{N-1}(t)\dd t,
-\]
-and differentiating the endpoints produces the second expression.  Peeling the innermost,
-observe from \eqref{eq:box-density} that $b_{n+1}(x)=2\,b_n(2x)$ for every $n$; hence the
-convolution of the last $N$ factors is a rescaling of the previous stage,
-\[
- \left(b_1*\cdots*b_N\right)(x)=2\,u_{N-1}(2x),
-\]
-and therefore, with $b_0=\mathbf 1_{[-1/2,1/2]}$ and the substitution $t=2x-2s$,
-\[
- u_N(x)=\int_{-1/2}^{1/2}2\,u_{N-1}\bigl(2(x-s)\bigr)\dd s
- =\int_{2x-1}^{2x+1}u_{N-1}(t)\dd t,
-\]
-which is \eqref{eq:res-finite-refinement}.  Differentiating it gives the first expression in
-\eqref{eq:res-derivative-recursion}.  Both displays are exact finite-stage analogues of the
-integral form of the Rvachev equation and of \eqref{eq:up-diffeq} itself, with the single
-difference that the limit equation relates $\Up$ to $\Up$ whereas the finite one relates
-stage $N$ to stage $N-1$.
-
-That difference is precisely why one more convolution buys one more derivative.  The right
-side of \eqref{eq:res-derivative-recursion} involves $u_{N-1}$ itself, never a derivative of
-$u_{N-1}$.  So if $u_{N-1}\in C^{k}$, then $u_N'\in C^{k}$, that is $u_N\in C^{k+1}$.  The
-stage $u_0=b_0$ is a bounded step function and $u_1$, being an integral of it by
-\eqref{eq:res-finite-refinement}, is continuous; induction along
-\eqref{eq:res-derivative-recursion} then gives $u_N\in C^{N-1}$ for all $N\ge1$.  On the
-complement of the finite knot set, iterating \eqref{eq:res-derivative-recursion} $N$ times
-expresses the piecewise $N$th derivative as a signed combination of dilates
-$u_0\bigl(2^{N}x+c\bigr)$ with pairwise distinct odd integers $c$; their jump sets are
-disjoint, so no cancellation occurs.  Thus no continuous $N$th derivative exists.
-Hence the regularity is exactly $C^{N-1}$, and passing to the limit, where the equation
-becomes self-referential, is what makes $\Up$ infinitely differentiable.
-
-For (4), integrate \eqref{eq:res-tail-factorization} against $f$, or equivalently use the
-coupling supplied by the same splitting.  By \eqref{eq:up-density},
-$\int f\Up=\E f(Y)$ and $\int fu_N=\E f(Y_N)$, while
-\[
- \left|Y-Y_N\right|\le\sum_{n=N+1}^{\infty}\frac1{2^{\,n+1}}=2^{-N-1}
-\]
-holds surely, since $|V_n|\le1$.  Therefore
-$\left|f(Y)-f(Y_N)\right|\le\operatorname{osc}\bigl(f;2^{-N-1}\bigr)$ pointwise, and taking
-expectations gives \eqref{eq:res-tail-error}.  In particular
-$\int fu_N\to\int f\Up$ for every bounded uniformly continuous $f$, with a rate governed by
-the tail radius $2^{-N-1}$ and by nothing else.
+\begin{proof}[Formal proof]
+The definitions are \lean{centeredBernoulliMeasure} and
+\lean{finiteConvolutionMeasure}.  Their probability-measure instances and
+\eqref{eq:finite-atomic-char} are proved in \path{EarlyApproximants.lean}.  Pointwise
+convergence of the characteristic functions, weak convergence
+\eqref{eq:finite-atomic-weak}, and the test-function formulations
+\eqref{eq:finite-atomic-tests} are respectively
+\lean{finiteConvolutionMeasure_charFun_tendsto},
+\lean{finiteConvolutionProbability_tendsto_fabius}, and
+\lean{integral_finiteConvolutionMeasure_tendsto_fabius} in
+\path{WeakConvergence.lean}.
 \end{proof}
 
-\begin{remark}[The first two stages, checked by hand]
-\label{rem:res-first-stages}
-At $N=0$ there is a single factor and $u_0=b_0=\mathbf 1_{[-1/2,1/2]}$, whose support radius
-is $1-2^{-1}=1/2$, in agreement with \eqref{eq:res-conv-support}.  It is a step function, so
-the regularity claim in part (3) begins at $N=1$, as it must.
-
-At $N=1$ the radius is $\tfrac12+\tfrac14=\tfrac34=1-2^{-2}$, again as predicted.  Formula
-\eqref{eq:res-finite-refinement} gives
-\[
- u_1(x)=\int_{2x-1}^{2x+1}\mathbf 1_{[-1/2,1/2]}(t)\dd t
- =\left|\,[2x-1,2x+1]\cap\left[-\tfrac12,\tfrac12\right]\right|,
-\]
-the trapezoid that vanishes outside the interval $[-3/4,3/4]$, rises with slope $2$ on
-$[-3/4,-1/4]$, equals $1$ on $[-1/4,1/4]$, and then falls with slope $-2$ on $[1/4,3/4]$.
-Both expressions in
-\eqref{eq:res-derivative-recursion} return exactly that derivative: the dilated form is
-\[
- 2\bigl(u_0(2x+1)-u_0(2x-1)\bigr)
- =2\left(\mathbf 1_{[-3/4,-1/4]}(x)-\mathbf 1_{[1/4,3/4]}(x)\right),
-\]
-and the translated form is
-\[
- 2\left(u_0\!\left(x+\tfrac14\right)-u_0\!\left(x-\tfrac14\right)\right)
- =2\left(\mathbf 1_{[-3/4,1/4]}(x)-\mathbf 1_{[-1/4,3/4]}(x)\right),
-\]
-which is the same function, the overlap $[-1/4,1/4]$ cancelling.  Thus $u_1$ is continuous
-with corners, that is $u_1\in C^0\setminus C^1$.
-
-One stage further, \eqref{eq:res-derivative-recursion} reads
-$u_2'(x)=2\bigl(u_1(2x+1)-u_1(2x-1)\bigr)$, which is continuous because $u_1$ is, and which
-vanishes for $|x|\le1/8$ since both arguments then lie in the plateau $[-1/4,1/4]$ of $u_1$.
-That flat piece is confirmed directly from $u_2=u_1*b_2$: for $|x|\le1/8$ the window
-$[x-\tfrac18,x+\tfrac18]$ lies inside $[-1/4,1/4]$, so
-$u_2(x)=4\int_{x-1/8}^{x+1/8}u_1=4\cdot\tfrac14=1$.  Hence $u_2\in C^1$: one more
-convolution, one more derivative.
-\end{remark}
 
 \subsection{Combinatorial step functions and the half-weight convention}
 
-The convolutions \eqref{eq:finite-convolution} are piecewise polynomial of growing degree.
-A coarser family of approximants is purely combinatorial: its plateau heights are integers
-divided by a power of two, and all of its breakpoints are dyadic.  It is the model behind
-every certified numerical bound on $\Up$, and it is also the one place where the endpoint
-convention for indicator functions cannot be left implicit.
-
-Define polynomials with nonnegative integer coefficients by
+A second finite model replaces each atom by a narrow interval.  Define polynomials with
+nonnegative integer coefficients by
 \begin{equation}
- \mathcal P_0(X)=1,
- \qquad
- \mathcal P_m(X)=\mathcal P_{m-1}(X^2)(1+X)^m\quad(m\ge1). \label{eq:four-P-recursion}
+ \mathcal P_0(X)=1,\qquad
+ \mathcal P_m(X)=\mathcal P_{m-1}(X^2)(1+X)^m\quad(m\ge1).     \label{eq:four-P-recursion}
+\end{equation}
+They also have the finite product form
+\begin{equation}
+ \mathcal P_m(X)=
+ \prod_{j=1}^{m}\bigl(1+X+\cdots+X^{2^j-1}\bigr).             \label{eq:four-P-product}
+\end{equation}
+Writing \(\mathcal P_m(X)=\sum_r a_{m,r}X^r\), the coefficient \(a_{m,r}\)
+counts the tuples
+\begin{equation}
+ (s_1,\ldots,s_m),\qquad
+ 0\le s_j\le2^j-1,\qquad s_1+\cdots+s_m=r.                    \label{eq:four-restricted-tuples}
+\end{equation}
+Moreover,
+\begin{equation}
+ g_m:=\deg\mathcal P_m=2^{m+1}-m-2,\qquad
+ \mathcal P_m(1)=2^{\binom{m+1}{2}}.                          \label{eq:four-degree-mass}
 \end{equation}
 
-\begin{lemma}[Product forms and coefficients]
-\label{lem:four-P-product}
-For every $m\ge0$,
+For \(\alpha<\beta\), let \(\mathbf 1^\ast_{[\alpha,\beta]}\) be \(1\) in the
+interior, \(1/2\) at either endpoint, and \(0\) elsewhere.  Put
 \begin{equation}
- \mathcal P_m(X)
- =\prod_{j=1}^{m}\bigl(1+X+\cdots+X^{2^j-1}\bigr)
- =\prod_{j=1}^{m}\frac{1-X^{2^j}}{1-X}.                   \label{eq:four-P-product}
+ I_{m,r}=
+ \left[\frac{2r-1-g_m}{2^{m+1}},
+       \frac{2r+1-g_m}{2^{m+1}}\right]                        \label{eq:four-cell}
 \end{equation}
-Writing $\mathcal P_m(X)=\sum_{r\ge0}a_{m,r}X^r$, the coefficient $a_{m,r}$ is the number of
-tuples $(s_1,\dots,s_m)$ of integers with
+and
 \begin{equation}
- 0\le s_j\le 2^j-1\quad(1\le j\le m),
- \qquad s_1+\cdots+s_m=r.                                 \label{eq:four-restricted-tuples}
-\end{equation}
-The coefficient sequence is symmetric, $a_{m,r}=a_{m,g_m-r}$, and unimodal, where
-\begin{equation}
- g_m=\deg\mathcal P_m=\sum_{j=1}^{m}(2^j-1)=2^{m+1}-m-2.   \label{eq:four-degree}
-\end{equation}
-The degree obeys $g_0=0$, $g_m=2g_{m-1}+m$, and
-\begin{equation}
- \frac{g_m}{2^m}=\sum_{j=1}^{m}\frac{j}{2^j}
- =2-\frac{m+2}{2^m}\longrightarrow 2.                     \label{eq:four-degree-limit}
-\end{equation}
-Finally $\mathcal P_m(1)=2^{\binom{m+1}{2}}$.
-\end{lemma}
-
-\begin{proof}
-The second equality in \eqref{eq:four-P-product} is the finite geometric sum.  For the first,
-induct on $m$.  The case $m=0$ is the empty product.  Assuming the formula for $m-1$,
-\begin{equation*}
- \mathcal P_{m-1}(X^2)
- =\prod_{j=1}^{m-1}\frac{1-X^{2^{j+1}}}{1-X^2}
- =\prod_{i=2}^{m}\frac{1-X^{2^{i}}}{(1-X)(1+X)},
-\end{equation*}
-so multiplying by $(1+X)^m$ cancels $m-1$ of the factors $1+X$ and leaves one, and
-$1+X=(1-X^2)/(1-X)$ supplies the missing index $i=1$.  This is \eqref{eq:four-P-product}.
-
-Expanding the first product form and collecting the exponent gives exactly the count
-\eqref{eq:four-restricted-tuples}.  Each factor $1+X+\cdots+X^{2^j-1}$ has symmetric and
-unimodal coefficients, and a convolution of symmetric unimodal integer sequences is again
-symmetric and unimodal, whence the same for $\mathcal P_m$.  The degree is the sum of the
-factor degrees, and $\sum_{j\le m}(2^j-1)=2^{m+1}-2-m$; the recursion $g_m=2g_{m-1}+m$ is
-read off from \eqref{eq:four-P-recursion} and is consistent with the closed form.  Dividing
-by $2^m$ gives \eqref{eq:four-degree-limit}.  Finally
-$\mathcal P_m(1)=\prod_{j\le m}2^j=2^{1+2+\cdots+m}=2^{\binom{m+1}{2}}$.
-\end{proof}
-
-The limit $2$ in \eqref{eq:four-degree-limit} is the total width of the support of $\Up$, and
-it is the first sign that these polynomials describe the bump.
-
-For a compact interval $I=[\alpha,\beta]$ with $\alpha<\beta$, let $\mathbf 1^\ast_I$ denote
-the \emph{half-weighted} indicator:
-\begin{equation}
- \mathbf 1^\ast_I(x)=
- \begin{cases}
-  1,&\alpha<x<\beta,\\
-  \tfrac12,&x\in\{\alpha,\beta\},\\
-  0,&\text{otherwise}.
- \end{cases}                                              \label{eq:four-half-indicator}
+ \mathcal W_m(x)=
+ \frac{2^m}{2^{\binom{m+1}{2}}}
+ \sum_{r=0}^{g_m}a_{m,r}\,\mathbf 1^\ast_{I_{m,r}}(x).         \label{eq:four-step-approximant}
 \end{equation}
 
-\begin{definition}[Combinatorial step approximants]
-For $m\ge0$ and $0\le r\le g_m$ put
-\begin{equation}
- I_{m,r}=\left[\frac{2r-1-g_m}{2^{m+1}},\ \frac{2r+1-g_m}{2^{m+1}}\right],
-                                                          \label{eq:four-cell}
-\end{equation}
-a cell of width $2^{-m}$, and define
-\begin{equation}
- \mathcal W_m(x)=2^{\,m-\binom{m+1}{2}}
- \sum_{r=0}^{g_m}a_{m,r}\,\mathbf 1^\ast_{I_{m,r}}(x).    \label{eq:four-step-approximant}
-\end{equation}
-\end{definition}
-
-Consecutive cells share an endpoint, and the cells tile the interval
-$[-(g_m+1)2^{-m-1},(g_m+1)2^{-m-1}]$, whose half-width is
-$1-(m+1)2^{-m-1}<1$.  Thus every $\mathcal W_m$ is supported strictly inside $[-1,1]$, and the
-supports increase to $[-1,1]$.
-
-The origin plays a distinguished role, and the coefficients there are as large as they can
-possibly be.
-
-\begin{lemma}[The central coefficients are saturated]
-\label{lem:four-central-coefficient}
-For every $m\ge1$ and every integer $r$ with $|2r-g_m|\le1$,
-\begin{equation}
- a_{m,r}=\mathcal P_{m-1}(1)=2^{\binom m2}.               \label{eq:four-central-coefficient}
-\end{equation}
-Consequently $\mathcal W_m(0)=1$ for every $m\ge1$.
-\end{lemma}
-
-\begin{proof}
-By \eqref{eq:four-P-product}, $\mathcal P_m=\mathcal P_{m-1}\cdot(1+X+\cdots+X^{2^m-1})$, so
-\begin{equation*}
- a_{m,r}=\sum_{s=r-2^m+1}^{r}a_{m-1,s},
-\end{equation*}
-a window of $2^m$ consecutive coefficients of $\mathcal P_{m-1}$.  The window contains the
-whole support $\{0,1,\dots,g_{m-1}\}$ of $\mathcal P_{m-1}$ precisely when
-$g_{m-1}\le r\le 2^m-1$.  By \eqref{eq:four-degree}, $g_{m-1}=2^m-m-1$ and
-$g_m=2^{m+1}-m-2$, so the hypothesis $|2r-g_m|\le1$ gives
-\begin{equation*}
- r\ \ge\ \frac{g_m-1}{2}=2^m-\frac{m+3}{2}\ \ge\ 2^m-m-1=g_{m-1},
- \qquad
- r\ \le\ \frac{g_m+1}{2}=2^m-\frac{m+1}{2}\ \le\ 2^m-1,
-\end{equation*}
-both inequalities holding for every $m\ge1$.  Hence the window covers the entire support and
-$a_{m,r}=\mathcal P_{m-1}(1)=2^{\binom m2}$.
-
-For the consequence, note that $g_m\equiv m\pmod 2$.  If $g_m$ is even, the origin is the
-center of the cell $I_{m,g_m/2}$ and lies in its interior, so
-$\mathcal W_m(0)=2^{m-\binom{m+1}{2}}a_{m,g_m/2}$.  If $g_m$ is odd, the origin is the shared
-endpoint of $I_{m,(g_m-1)/2}$ and $I_{m,(g_m+1)/2}$, and the half weights give
-\begin{equation*}
- \mathcal W_m(0)=2^{\,m-\binom{m+1}{2}}
- \left(\tfrac12 a_{m,(g_m-1)/2}+\tfrac12 a_{m,(g_m+1)/2}\right).
-\end{equation*}
-In both cases \eqref{eq:four-central-coefficient} applies to every index involved, and the
-value is $2^{m-\binom{m+1}{2}}2^{\binom m2}=2^{m-m}=1$, because
-$\binom{m+1}{2}-\binom m2=m$.
-\end{proof}
-
-\begin{theorem}[Step approximation]
+\begin{theorem}[Corrected step approximation]
 \label{thm:four-step-approx}
-For every $m\ge1$ the function $\mathcal W_m$ is even, nonnegative, nondecreasing on
-$(-\infty,0]$ and nonincreasing on $[0,\infty)$, and
+For every \(m\ge0\) and \(x\in\R\),
+\[
+ 0\le\mathcal W_m(x)\le1,\qquad \mathcal W_m(0)=1,
+ \qquad \int_{\R}\mathcal W_m(x)\dd x=1.
+\]
+The function \(\mathcal W_m\) is nondecreasing on \((-\infty,0)\) and
+nonincreasing on \((0,\infty)\).  For every real \(x\),
 \begin{equation}
- \int_\R\mathcal W_m(x)\dd x=1,
- \qquad
- \mathcal W_m(0)=1.                                           \label{eq:four-step-normalizations}
+ \mathcal W_m(x)\longrightarrow\Up(x).                        \label{eq:four-step-limit}
 \end{equation}
-Moreover $\mathcal W_m(x)\to\Up(x)$ for every $x\in\R$.
 \end{theorem}
 
-\begin{proof}
-Let $\mu_m$ be the atomic probability measure that places mass
-$2^{-\binom{m+1}{2}}a_{m,r}$ at the point $x_{m,r}=(2r-g_m)2^{-m-1}$, for $0\le r\le g_m$;
-the total mass is $2^{-\binom{m+1}{2}}\mathcal P_m(1)=1$ by Lemma~\ref{lem:four-P-product}.  The
-cell $I_{m,r}$ is the interval of width $2^{-m}$ centered at $x_{m,r}$, so
-$\mathcal W_m$ is, off the finitely many shared endpoints, the density of the smeared
-measure
-$\mu_m\ast\beta_m$, where $\beta_m$ is the uniform probability law on
-$[-2^{-m-1},2^{-m-1}]$.  This proves the first equality in
-\eqref{eq:four-step-normalizations}.  Symmetry and unimodality of $(a_{m,r})_r$, together
-with $x_{m,g_m-r}=-x_{m,r}$, give evenness and the two monotonicity statements; the
-half-weighted values at the shared endpoints lie between the neighboring plateau heights and
-so do not disturb them.
-
-For the transform, write $\theta=2\pi\xi/2^m$, so that
-$\e^{-2\pi\ii\xi x_{m,r}}=\e^{\ii\theta g_m/2}\e^{-\ii\theta r}$, and use
-\eqref{eq:four-P-product} together with
-$1-\e^{-\ii\phi}=2\ii\,\e^{-\ii\phi/2}\sin(\phi/2)$:
-\begin{equation*}
- \widehat{\mu_m}(\xi)
- =2^{-\binom{m+1}{2}}\e^{\ii\theta g_m/2}\,\mathcal P_m(\e^{-\ii\theta})
- =2^{-\binom{m+1}{2}}\prod_{j=1}^{m}\frac{\sin(2^{j-1}\theta)}{\sin(\theta/2)},
-\end{equation*}
-the phases cancelling because $\sum_{j\le m}(2^{j-1}-\tfrac12)=g_m/2$.  Repeated use of
-$\sin2u=2\sin u\cos u$ gives
-$\sin(2^{j-1}\theta)=2^{j}\sin(\theta/2)\prod_{i=0}^{j-1}\cos(2^{i-1}\theta)$, so the powers
-of two cancel against $2^{-\binom{m+1}{2}}=\prod_{j\le m}2^{-j}$ and the factor
-$\cos(2^{i-1}\theta)$ survives once for each $j$ with $i<j\le m$, that is $m-i$ times.
-Reindexing by $\ell=m-i$ and substituting $\theta=2\pi\xi/2^m$ turns this into
+The proof of pointwise convergence passes through a useful exact comparison.  Set
+\(h_m=2^{-m-1}\), and use the finite atomic law \(\nu_m\) from
+\eqref{eq:finite-atomic-law}.  Whenever \(a\le b\),
 \begin{equation}
- \widehat{\mu_m}(\xi)=\prod_{\ell=1}^{m}
- \left(\cos\frac{\pi\xi}{2^{\ell}}\right)^{\ell},         \label{eq:four-step-transform}
+ \nu_m\bigl((a+h_m,b-h_m]\bigr)
+ \ \le\ \int_a^b\mathcal W_m(x)\dd x
+ \ \le\ \nu_m\bigl((a-h_m,b+h_m]\bigr).                       \label{eq:four-step-sandwich}
 \end{equation}
-the $m$th partial product of the cosine product \eqref{eq:four-product-cos}.  Since
-$\widehat{\beta_m}(\xi)=\sinc(\pi\xi/2^m)\to1$ pointwise, the transform of
-$\mu_m\ast\beta_m$ converges pointwise to $\widehat{\Up}$, and Lévy's continuity theorem
-gives weak convergence of $\mathcal W_m(x)\dd x$ to $\Up(x)\dd x$.
+Consequently,
+\begin{equation}
+ \lim_{m\to\infty}\int_a^b\mathcal W_m(x)\dd x
+ =\int_a^b\Up(x)\dd x.                                       \label{eq:four-step-interval-limit}
+\end{equation}
+Monotonicity on the two open half-lines, the exact value at the origin, and continuity of
+\(\Up\) then upgrade these interval limits to \eqref{eq:four-step-limit}.
 
-The limit law has a continuous density, so every compact interval is one of its continuity
-sets and its mass is the limit of the masses assigned by $\mathcal W_m(x)\dd x$.  Let
-$x>0$ and choose $0<h<x$.  Monotonicity of $\mathcal W_m$ on $[0,\infty)$ gives
-\begin{equation*}
- \frac1h\int_{x-h}^{x}\mathcal W_m
- \ \ge\ \mathcal W_m(x)\ \ge\ \frac1h\int_{x}^{x+h}\mathcal W_m ,
-\end{equation*}
-so letting $m\to\infty$ bounds $\limsup_m\mathcal W_m(x)$ above by
-$h^{-1}\int_{x-h}^{x}\Up$ and $\liminf_m\mathcal W_m(x)$ below by
-$h^{-1}\int_{x}^{x+h}\Up$.  Letting $h\downarrow0$ and using
-continuity of $\Up$ squeezes both to $\Up(x)$.  The case $x<0$ follows by evenness, and the
-case $x=0$ is the exact identity $\mathcal W_m(0)=1=\Up(0)$ of
-Lemma~\ref{lem:four-central-coefficient}.
+\begin{proof}[Formal proof]
+The polynomial recursion, product, degree, total coefficient mass, and bounded-partition
+interpretation are respectively proved by
+\lean{approximationPolynomial_succ},
+the definition \lean{approximationPolynomial},
+\lean{approximationDegree_eq_sub},
+\lean{approximationPolynomial_eval_one}, and
+\lean{approximationPolynomial_coeff_eq_card} in
+\path{EarlyApproximants.lean}.  The finite atomic description is identified with
+\lean{finiteConvolutionMeasure} by
+\lean{polynomialMeasure_eq_finiteConvolutionMeasure} in
+\path{EarlyMeasureBridge.lean}.
+
+For the analytic assertions, see
+\lean{stepApproximant_nonneg}, \lean{stepApproximant_le_one},
+\lean{stepApproximant_monotoneOn_Iio},
+\lean{stepApproximant_antitoneOn_Ioi},
+\lean{stepApproximant_apply_zero}, and
+\lean{stepApproximant_tendsto_fabius} in
+\path{StepApproximationLimit.lean}.  The normalization, the two sides of
+\eqref{eq:four-step-sandwich}, and \eqref{eq:four-step-interval-limit} are
+\lean{integral_stepApproximant},
+\lean{finiteConvolutionMeasure_inner_le_intervalIntegral_stepApproximant},
+\lean{intervalIntegral_stepApproximant_le_finiteConvolutionMeasure_outer}, and
+\lean{intervalIntegral_stepApproximant_tendsto_of_le} in
+\path{StepMeasureBridge.lean}.
 \end{proof}
 
-\begin{warning}
-The half weights in \eqref{eq:four-half-indicator} are not cosmetic.  Adjacent cells
-\eqref{eq:four-cell} share an endpoint, so replacing $\mathbf 1^\ast$ by the ordinary closed
-indicator counts every interior breakpoint twice and produces a function whose value at each
-breakpoint is the sum of the two neighboring plateau heights.  The integral is unaffected,
-since the breakpoints form a finite set, but the pointwise convergence assertion of
-\cref{thm:four-step-approx} becomes false at every one of them.  The failure is visible at
-the most important point of all.  When $m$ is odd the origin is a shared endpoint, and with
-closed indicators the value there would be $2$, not $\Up(0)=1$.  A half-open convention such
-as $\mathbf 1_{[\alpha,\beta)}$ avoids the double count and still assigns the origin the
-correct value $1$, but it destroys evenness and makes the values at paired breakpoints
-asymmetric.  Only the symmetric half weight simultaneously preserves evenness, keeps the
-integral equal to $1$, and yields the intended symmetric breakpoint values for every $m$.
+\begin{warning}[Why the endpoint convention is explicit]
+The half-weighted cell representative agrees almost everywhere with the ordinary interval
+indicator, so it has the same integral.  Its point values are nevertheless part of the
+formal statement: adjacent cells share endpoints, and each contributes exactly half of its
+coefficient there.  In particular, the corrected representative satisfies
+\(\mathcal W_m(0)=1\) at every level.  These facts are formalized by
+\lean{halfEndpointIntervalIndicator_ae_eq_indicator},
+\lean{intervalIntegral_halfEndpointIntervalIndicator_of_le}, and
+\lean{stepApproximant_apply_zero}.
 \end{warning}
-
-\begin{example}[The first two levels]
-\label{ex:four-first-levels}
-For $m=1$, $\mathcal P_1(X)=1+X$, $g_1=1$, and the prefactor is
-$2^{1-1}=1$.  The two cells are $[-\tfrac12,0]$ and $[0,\tfrac12]$, each of width $2^{-1}$
-and each of height $1$.  Thus $\mathcal W_1$ equals $1$ on $(-\tfrac12,\tfrac12)$ except that
-$\mathcal W_1(\pm\tfrac12)=\tfrac12$, and at the shared endpoint $0$ the two half weights
-add to $\tfrac12+\tfrac12=1$.  The integral is $1$.
-
-For $m=2$, the recursion \eqref{eq:four-P-recursion} gives
-\begin{equation*}
- \mathcal P_2(X)=(1+X^2)(1+X)^2=1+2X+2X^2+2X^3+X^4,
-\end{equation*}
-in agreement with $(1+X)(1+X+X^2+X^3)$, so $g_2=4$ and $\mathcal P_2(1)=8=2^{\binom32}$.  The
-prefactor is $2^{2-3}=\tfrac12$, and the five cells
-\begin{equation*}
- \left[-\tfrac58,-\tfrac38\right],\
- \left[-\tfrac38,-\tfrac18\right],\
- \left[-\tfrac18,\tfrac18\right],\
- \left[\tfrac18,\tfrac38\right],\
- \left[\tfrac38,\tfrac58\right]
-\end{equation*}
-of width $\tfrac14$ carry the plateau heights
-\begin{equation*}
- \tfrac12,\quad 1,\quad 1,\quad 1,\quad \tfrac12 .
-\end{equation*}
-The integral is $\tfrac14\left(\tfrac12+1+1+1+\tfrac12\right)=1$.  The origin is interior to
-the middle cell, so $\mathcal W_2(0)=1$, as Lemma~\ref{lem:four-central-coefficient}
-predicts with $a_{2,2}=2=2^{\binom22}$.
-\end{example}
 
 \subsection{Centered finite splines and an explicit error bound}
 \label{sec:centered-splines}
@@ -3295,54 +3003,139 @@ The statement of the corollary on the closed interval $[-1,1]$ is the unnumbered
 following equation~(24) of \cite{arias2018}; non-analyticity in the interior is Fabius's
 original point \cite{fabius1966}.
 
-\begin{theorem}[Analytic locus of the signed extension]
-\label{thm:shape-analytic-locus-extension}
-The signed extension $\mathcal F$ is real analytic at $x$ if and only if $x<0$.  Equivalently,
-it is analytic at no point of $[0,\infty)$.
+\begin{theorem}[Formalized signed-extension scope]
+\label{thm:shape-signed-extension-first-block}
+The signed extension \(\mathcal F\) is not real analytic at any point of
+\([0,2)\).
 \end{theorem}
 
-\begin{proof}
-For $x<0$ the extension vanishes identically on $(-\infty,0)$, hence is analytic at $x$.
-
-Let $x\ge0$ and suppose first that $x$ is not an even integer.  Put $b=\lfloor x/2\rfloor$, so
-that $2b<x<2b+2$.  On that open block, \eqref{eq:single-block} gives
-$\mathcal F(y)=\varepsilon_b\Up(y-2b-1)$, an identity of germs at $x$.  If $\mathcal F$ were
-analytic at $x$, then $\Up$ would be analytic at $x-2b-1\in(-1,1)$, contradicting
-\cref{thm:shape-analytic-locus-up}.
-
-Suppose now that $x=2b$ with $b$ a nonnegative integer.  Evaluating \eqref{eq:single-block} at
-the left endpoint of the block $[2a,2a+2]$ shows that $\mathcal F(2a)=\varepsilon_a\Up(-1)=0$
-for every nonnegative integer $a$; that is, $\mathcal F$ vanishes at every nonnegative even
-integer.  By \eqref{eq:global-derivatives},
-\[
- \mathcal F^{(m)}(2b)=2^{\binom{m+1}{2}}\mathcal F\bigl(2^{m}\cdot2b\bigr)
- =2^{\binom{m+1}{2}}\mathcal F\bigl(2^{m+1}b\bigr)=0
-\]
-for every $m\ge0$, because $2^{m+1}b$ is again a nonnegative even integer.  So all Taylor
-coefficients of $\mathcal F$ at $2b$ vanish, and analyticity would force $\mathcal F$ to
-vanish on a neighbourhood of $2b$.  But \eqref{eq:single-block} and
-\cref{thm:shape-unimodal}(iii) give $\mathcal F(y)=\pm\Up(y-2b-1)\ne0$ for every $y$ with
-$2b<y<2b+2$.
+\begin{proof}[Formal proof]
+This is \lean{extendedFabius_not_analyticAt} in \path{NowhereAnalytic.lean}.
+The theorem is deliberately stated on the exact interval covered by that declaration; a
+proposed global analytic-locus classification is recorded in the research-frontier
+notebook rather than asserted here.
 \end{proof}
 
-\begin{warning}
-It is tempting to compress the last theorem into the slogan that the signed extension is
-nowhere analytic.  That is false.  The extension vanishes identically on $(-\infty,0]$ and is
-therefore analytic at every negative point.  What is true is that its analytic locus is
-exactly the open half-line $(-\infty,0)$, so that, in contrast with $F$, whose non-analytic set
-is the compact interval $[0,1]$, the extension fails to be analytic on an unbounded set.  The
-origin lies in the non-analytic set of both.
-\end{warning}
+\subsection{The totalized inverse}
+\label{sec:fabius-inverse}
 
-The three loci therefore are $\R\setminus[0,1]$ for $F$, $\R\setminus[-1,1]$ for $\Up$, and
-$(-\infty,0)$ for $\mathcal F$.  In every case the boundary points of the interval belong to
-the non-analytic set, and in every case the reason is the same: the function is flat to
-infinite order there while being nonconstant on one side.  This is precisely the mechanism by
-which a $C^\infty$ function fails to be analytic, and the Fabius function is the historical
-example of it \cite{fabius1966}.  The formal development records the analytic locus of $F$
-exactly, the non-analyticity of $\Up$ at every point of the closed interval $[-1,1]$, and the
-extension case on the first block $[0,2)$; the block induction just given carries the last
-statement to the whole half-line.
+The restriction \(F:[0,1]\to[0,1]\) is a strictly increasing continuous bijection.  Let
+\[
+ I(y)=F^{-1}(y)\qquad(0\le y\le1)
+\]
+and extend it to the whole real line by clamping the argument to \([0,1]\).  Thus
+\(I(y)=0\) for \(y\le0\) and \(I(y)=1\) for \(y\ge1\).
+
+\begin{theorem}[Inverse order and calculus]
+\label{thm:fabius-inverse-calculus}
+The totalized inverse \(I:\R\to[0,1]\) is continuous and nondecreasing, and its restriction
+to \([0,1]\) is a strictly increasing bijection of that interval onto itself.  For
+\(x,y\in[0,1]\),
+\[
+ F(I(y))=y,\qquad I(F(x))=x.
+\]
+For \(0<y<1\), the inverse belongs to \(C^\infty\) locally and
+\begin{equation}
+ I'(y)
+ =\frac{1}{F'(I(y))}
+ =\frac{1}{2\,\Up(2I(y)-1)}
+ >0.                                                         \label{eq:fabius-inverse-derivative}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The order isomorphism and totalized inverse are
+\lean{fabiusOrderIso} and \lean{fabiusInv}.  The range, inverse, order,
+continuity, and bijectivity statements are
+\lean{fabiusInv_mem_Icc}, \lean{fabiusReal_fabiusInv},
+\lean{fabiusInv_fabiusReal}, \lean{strictMonoOn_fabiusInv},
+\lean{monotone_fabiusInv}, \lean{continuous_fabiusInv}, and
+\lean{bijOn_fabiusInv}.  Interior smoothness and
+\eqref{eq:fabius-inverse-derivative} are
+\lean{fabiusInv_contDiffOn_Ioo},
+\lean{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
+\lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
+\end{proof}
+
+The inverse inherits exact arithmetic and symmetry from \(F\):
+\begin{equation}
+ I(1-y)=1-I(y),\qquad I(1/2)=1/2,                             \label{eq:fabius-inverse-symmetry}
+\end{equation}
+and, for \(0\le a\le2^n\),
+\begin{equation}
+ I\!\left(F\!\left(\frac{a}{2^n}\right)\right)=\frac{a}{2^n}.
+                                                                    \label{eq:fabius-inverse-dyadic}
+\end{equation}
+These are \lean{fabiusInv_one_sub}, \lean{fabiusInv_half}, and
+\lean{fabiusInv_fabiusDyadicUnit_of_le}.
+
+The flatness of \(F\) becomes infinite endpoint steepness of \(I\).  The formalized
+quantitative form says that, for \(y\in[0,1]\) and
+\(2^n I(y)\le1\),
+\begin{equation}
+ y\le2^{\binom{n+1}{2}}I(y)^n,\qquad
+ y\le\frac{2^{\binom{n+1}{2}}}{n!}I(y)^n.                    \label{eq:fabius-inverse-flatness}
+\end{equation}
+It also gives the two exact one-sided limits
+\begin{equation}
+ \frac{I(y)}{y}\longrightarrow+\infty\quad(y\downarrow0),
+ \qquad
+ \frac{1-I(y)}{1-y}\longrightarrow+\infty\quad(y\uparrow1).  \label{eq:fabius-inverse-steepness}
+\end{equation}
+The counterparts are
+\lean{le_two_pow_mul_fabiusInv_pow},
+\lean{le_two_pow_div_factorial_mul_fabiusInv_pow},
+\lean{tendsto_fabiusInv_div_atTop}, and
+\lean{tendsto_one_sub_fabiusInv_div_one_sub_atTop} in
+\path{FabiusInverse.lean}.
+
+\begin{theorem}[Analytic locus of the inverse]
+\label{thm:fabius-inverse-analytic-locus}
+The totalized inverse \(I\) is real analytic at \(y\) if and only if
+\(y\notin[0,1]\).  In particular, it is nonanalytic at every point of the unit interval,
+although it is \(C^\infty\) and has no critical points in its interior.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+This is \lean{fabiusInv_analyticAt_iff}; the interior no-critical-point statement is
+\lean{deriv_fabiusInv_ne_zero}.  Both are in \path{InverseNotElementary.lean}.
+\end{proof}
+
+\subsection{A precise no-elementary-form theorem}
+\label{sec:not-elementary}
+
+Here \emph{elementary} means the formal class \lean{IsElementary}: the smallest class of
+total real functions containing constants and the identity, and closed under arithmetic,
+reciprocal, fixed real powers, exponential, logarithm, sine, cosine, arcsine, arctangent,
+and composition.  Its analytic locus is dense.  This makes nonanalyticity on an interval
+an obstruction rather than a heuristic absence of a familiar formula.
+
+\begin{theorem}[Non-elementarity]
+\label{thm:fabius-not-elementary}
+In this formal class, none of the bounded Fabius function, Rvachev's function, the signed
+extension, or the totalized inverse is elementary.  More locally, no elementary function
+agrees with \(F\) or \(I\) throughout the open unit interval.
+\end{theorem}
+
+\begin{proof}[Formal proof]
+The dense-analytic-locus theorem is
+\lean{IsElementary.dense_analyticLocus} in \path{ElementaryFunction.lean}.
+The four global obstructions are
+\lean{canonical_fabius_not_isElementary},
+\lean{rvachev_not_isElementary},
+\lean{extendedFabius_not_isElementary}, and
+\lean{fabiusInv_not_isElementary}; the local forms are
+\lean{canonical_fabius_not_isElementary_on_Ioo} and
+\lean{canonical_fabiusInv_not_isElementary_on_Ioo}.  See
+\path{NotElementary.lean} and \path{InverseNotElementary.lean}.
+\end{proof}
+
+The formal development also closes the elementary class under repeated continuous inverse
+branches.  Even this enlarged class cannot agree with \(F\) or \(I\) on \((0,1)\); the exact
+statements are
+\lean{canonical_fabius_not_isElementaryOrInverse_on_Ioo} and
+\lean{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo} in
+\path{InverseNotElementary.lean}.
 
 \section{Moments and generating functions}
 \label{sec:moments}
@@ -3476,13 +3269,6 @@ Expand $(\e^z-1)/z=\sum_{j\ge0}z^j/(j+1)!$ in
 Isolating the $k=n$ term proves the recurrence.
 \end{proof}
 
-The first values are
-\begin{equation}
- 1,\quad\frac12,\quad\frac5{18},\quad\frac16,\quad
- \frac{143}{1350},\quad\frac{19}{270},\quad
- \frac{1153}{23814},\ldots                                \label{eq:d-first-values}
-\end{equation}
-
 As for $c_n$, one may clear denominators without division:
 \begin{equation}
  d_n=\frac{D_n}{(n+1)!\prod_{j=1}^{n}(2^j-1)},             \label{eq:d-normalized}
@@ -3490,6 +3276,46 @@ As for $c_n$, one may clear denominators without division:
 where $D_n\in\N$.  A division-free recurrence follows by substituting
 \eqref{eq:d-normalized} into \eqref{eq:d-recurrence}.  The normalized parity theorem says
 that, for $n\ge1$, the reduced numerator and denominator of $2d_n$ are both odd.
+
+\subsection{The probability--Laplace bridge}
+\label{sec:probability-laplace-bridge}
+
+Let \(\mu_X\) be the distribution of the weighted sum \(X\) from
+\eqref{eq:random-X}.  Its survival function on the nonnegative half-line is exactly
+\(\Up\):
+\begin{equation}
+ \mu_X((t,\infty))=\Up(t)\qquad(t\ge0).                     \label{eq:survival-up}
+\end{equation}
+Consequently, if \(g\) is continuously differentiable on \([0,1]\), then
+\begin{equation}
+ \int_{[0,1]}g(x)\,\dd\mu_X(x)
+ =g(0)+\int_0^1g'(t)\Up(t)\dd t.                           \label{eq:survival-fubini}
+\end{equation}
+This is a probability-measure form of integration by parts, proved without assuming a
+density for \(\mu_X\).
+
+For \(s\in\R\) and \(k\in\N\), define the raw tilted moments
+\begin{equation}
+ L_k(s)=\int_{[0,1]}\e^{-sx}x^k\,\dd\mu_X(x).               \label{eq:raw-laplace-moment}
+\end{equation}
+They agree exactly with the analytic Fabius Laplace moments used later.  At zero tilt,
+reflection invariance identifies both the ordinary and endpoint moments with the rational
+half-moment sequence:
+\begin{equation}
+ L_n(0)=\int_{[0,1]}(1-x)^n\,\dd\mu_X(x)=d_n.              \label{eq:probability-half-moment}
+\end{equation}
+
+\begin{proof}[Formal proof]
+Equation \eqref{eq:survival-up} is
+\lean{weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg}, and
+\eqref{eq:survival-fubini} is
+\lean{integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp}.
+The tilted identification and the two zero-tilt identities are
+\lean{unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment},
+\lean{unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment}, and
+\lean{unitEndpointMoment_weightedSumDistribution_eq_halfMoment} in
+\path{ProbabilityLaplaceMoments.lean}.
+\end{proof}
 
 \subsection{Relation between the two moment sequences}
 

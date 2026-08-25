@@ -181,7 +181,7 @@ private theorem centered_exp_second (k : ℕ) (r : Fin (2 ^ k)) :
   push_cast
   rw [neg_smul, pow_succ]
   congr 2
-  ring
+  ring_nf
 
 /-- Splitting a dyadic block into its two Thue--Morse halves gives the
 one-step exponential-series recurrence. -/
@@ -565,7 +565,7 @@ theorem prod_rescale_neg_expm1_mul_rescale_neg_one
           rw [PowerSeries.rescale_rescale]
           congr 1
           rw [pow_succ]
-          ring
+          ring_nf
 
 /-- Refinement-ready form of the inner-sum identity.  Any formal series
 satisfying the Fabius moment functional equation absorbs the entire finite
