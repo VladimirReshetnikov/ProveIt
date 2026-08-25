@@ -524,10 +524,18 @@ development uses internally, are
   $\Psi^{(2j)}$.
 \item Every $A_j$ is $C^\infty$, one-periodic and bounded, being a polynomial
   in bounded one-periodic smooth functions.
-\item The mean of $A_j$ differs from its ``$\Psi$-free part'' only by mean
-  values of products of derivatives of $\Psi$, all of which are of size
-  $|\Psihat(1)|^2$ or smaller, hence below $10^{-11}$.  For every practical
-  purpose the mean of $A_j$ \emph{is} its $\Psi$-free part.
+\item The mean of $A_j$ is its ``$\Psi$-free part'' plus the mean of the
+  terms of degree two and higher in the derivatives of $\Psi$.  That
+  correction is small but it is \emph{not} uniformly tiny, and it grows with
+  $j$ for the same reason the oscillation does: 
+  $\langle P_aP_b\rangle=2\sum_{k\ge1}(2\pi\ii k)^a(-2\pi\ii k)^b|\Psihat(k)|^2$
+  carries the amplification $(2\pi k)^{a+b}$ of \cref{sec:fourier}.  Measured
+  over a period, $\langle A_j\rangle$ minus the $\Psi$-free part is
+  $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and $-1.14\times10^{-7}$ at
+  $j=1,2,3$ --- about a factor $40$ per order.  What justifies calling the
+  $\Psi$-free part the mean is not an absolute bound but a ratio: at each
+  order it is four to five orders below the oscillation of $A_j$ itself,
+  which is $8.7\times10^{-5}$, $3.9\times10^{-3}$ and $6.7\times10^{-2}$.
 \end{itemize}
 
 \section{The explicit coefficients}\label{sec:explicit}
@@ -599,9 +607,11 @@ Write $P_k=\Psi^{(k)}(u)$.  Then
    &+\frac{4P_1^2P_2+4P_1P_3+2P_2^2+P_4}{8L^4}.
 \end{aligned}
 \end{equation}
-The corresponding form of $A_3$ is long; its \emph{linear part} --- the only
-part that matters numerically, since products of derivatives of $\Psi$ are
-below $10^{-10}$ --- is
+The corresponding form of $A_3$ is long.  Its \emph{linear part} is the
+following; the omitted terms are quadratic and higher in the derivatives of
+$\Psi$ and reach $8.9\times10^{-7}$ over a period, which is four decades
+below the $6.7\times10^{-2}$ swing of $A_3$ but is not negligible if six
+digits are wanted.
 \begin{equation}\label{eq:A3psi}
 \begin{aligned}
   A_3(u)={}&-\frac7{2880}-\frac1{24L}-\frac1{4L^2}+\frac1{6L^3}
@@ -706,14 +716,18 @@ gives $-\Psi^{(6)}/(48L^6)$ --- exactly the top terms displayed in
 
 Because $\Psi^{(m)}(u)=\sum_{k\ne0}(2\pi\ii k)^m\Psihat(k)\e^{2\pi\ii ku}$,
 \cref{sec:general} together with \cref{eq:psihat} turns every coefficient into
-an explicit Gamma--zeta Fourier object.  Discarding products of derivatives of
-$\Psi$, which contribute below $10^{-10}$, the linearized Fourier form of $A_j$
-is
+an explicit Gamma--zeta Fourier object.  Discarding the terms of degree two
+and higher in the derivatives of $\Psi$ leaves the linearized Fourier form
 \[
   A_j(u)=\langle A_j\rangle
    +2\operatorname{Re}\Bigl(\sum_{k\ge1}c_j(k)\Psihat(k)\e^{2\pi\ii ku}\Bigr)
-   +\bigO(10^{-10}),
+   +R_j(u),
 \]
+where the discarded remainder is measured at
+$\max_u|R_j(u)|=1.6\times10^{-8}$ for $j=2$ and $8.9\times10^{-7}$ for
+$j=3$, growing with $j$ like everything else here.  It is negligible against
+the oscillation it sits inside, and it is not negligible in absolute terms;
+\cref{sec:general} records the same caution for the means.
 with $c_j(k)$ the polynomial in $w=2\pi\ii k$ read off from
 \cref{eq:A2psi,eq:A3psi}.  For the first two,
 \[
@@ -721,16 +735,24 @@ with $c_j(k)$ the polynomial in $w=2\pi\ii k$ read off from
   \qquad
   c_2(k)=\frac{w}{24L}+\frac{w}{2L^2}-\frac{3w^2+w^3}{6L^3}+\frac{w^4}{8L^4}.
 \]
-Consequences for $A_2$, all confirmed numerically in \cref{sec:numerics}:
+Consequences for $A_2$, all confirmed numerically in \cref{sec:numerics}.
+The left column is what the linearized form gives, the right what the exact
+$A_2$ gives; they are quoted separately because the difference is real, if
+small, and quoting ten digits of a linearization would be an overclaim.
 \[
 \begin{aligned}
-  \text{mean}&&\langle A_2\rangle&=\frac1{4L^2}=0.5203422452514019,\\
-  k=1\ \text{amplitude}&&2|c_2(1)\Psihat(1)|&=1.939878\times10^{-3}
-    \quad(\text{peak-to-peak }3.879756\times10^{-3}),\\
-  \text{maximum at}&&\{\lambda\}&=0.1011297035,\\
-  \text{minimum at}&&\{\lambda\}&=0.6011297035.
+  \text{mean}&&\tfrac1{4L^2}=0.5203422452514&\qquad
+    \langle A_2\rangle=0.5203422413049\\
+  k=1\ \text{amplitude}&&2|c_2(1)\Psihat(1)|=1.9398782\times10^{-3}&\qquad
+    \text{peak-to-peak }3.8797564\times10^{-3}\\
+  \text{maximum at}&&\{\lambda\}=0.1011297&\qquad\{\lambda\}=0.1011281\\
+  \text{minimum at}&&\{\lambda\}=0.6011297&\qquad\{\lambda\}=0.6011313
 \end{aligned}
 \]
+The exact peak-to-peak is $3.8797564\times10^{-3}$, agreeing with the
+linearized amplitude to eight digits, and the extrema agree to six.  The
+maximum of the exact $A_2$ is $0.522282117$ and its minimum is
+$0.518402361$.
 
 \subsection{The amplitude law}
 
@@ -891,7 +913,7 @@ An independent high-precision computation performed in a separate worktree,
 using half-moments to $n=400$ at $400$-digit precision and a different route to
 $\lambda$, located the minimum of the order-$\lambda^{-2}$ residual at
 $\{\lambda\}=0.602$ and measured a peak-to-peak spread of about
-$3\times10^{-3}$; \cref{eq:A2psi} predicts a minimum at $0.6011297$ and a
+$3\times10^{-3}$; \cref{eq:A2psi} predicts a minimum at $0.6011313$ and a
 peak-to-peak of $3.8798\times10^{-3}$ over the full period.  That is a phase
 prediction, not a magnitude fit, and it was made before the comparison.
 \end{remark}
