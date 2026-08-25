@@ -1,6 +1,8 @@
 # Workstream registry: `codex/fabius-theorem-refinements`
 
-**Status: active.** The exact source and build leases are recorded below.
+**Status: checkpointed and frozen pending coordinator review.** All former
+source/build leases are released. The only current write is this branch's own
+registry reply.
 
 This file is the durable cross-worktree record for the open-ended theorem,
 refactoring, and documentation campaign on this branch.  Live task messages
@@ -8,21 +10,142 @@ supplement it but do not replace it.
 
 ```text
 SYNC Fabius
-worktree/task: c9a3 / root — theorem refinements and documentation
-branch/base: codex/fabius-theorem-refinements at
-  unpublished merge checkpoint 4c54e8d9beee1622003891222b76e2cfc59b685f,
-  merging pinned origin/main 6fcbbb5da45330bdc78c6090706cf1479f3d3afb
-git owner: root in this worktree
-build owner: external 10ef worktree; this worktree will not run Lean, Lake, or
-  cache-mutating commands until that owner records a terminal event
-source lease: refreshed 2026-08-25 15:37 -07:00 through 16:37 -07:00 for the
-  exact 6fcbbb5d documentation merge and registry repair paths below
-next synchronization checkpoint: resolve, rebuild, inspect, commit, and
-  publish this pinned merge; then re-fetch origin/main and merge any newer
-  exact tip before a no-force fast-forward push to main
+branch / worktree / machine: codex/fabius-theorem-refinements / c9a3 /
+  EVO (Windows)
+fetched main SHA: 22d63a9f74a9dd022b243fc3836930ae94354ff9
+HEAD and dirty paths: 455a28661df4149ed2d57a9c8ea27c965b32e91e;
+  clean before this registry-only coordinator reply
+writing (exact paths): docs/registry/codex-fabius-theorem-refinements.md only
+expected declarations or document claims: no new work; preserve the exact
+  translated Thue--Morse polynomial API and proof-boundary repairs enumerated
+  below for claim-level coordinator extraction
+completed commits: a95bd19137c75dba867e0a17019036c0ea6d77fc
+  (unique polynomial/API tranche); 455a28661df4149ed2d57a9c8ea27c965b32e91e
+  (latest preserved feature checkpoint)
+validated (exact command, SHA/state, exit code): on immutable 4c54e8d9b,
+  `lake build +FabiusFunction.FabiusQBinomialTaylor` passed 3,320 jobs and
+  `lake build +FabiusFunction.FabiusQBinomialFormula` passed 3,317 jobs, both
+  exit 0; the FabiusQBinomialTaylor blob is unchanged at 455a28661. Static and
+  documentation gates for 455a28661 are recorded in the seventh checkpoint
+  below
+not yet validated: no exact-tree aggregate Lean build or axiom replay for
+  455a28661; no build was launched after the coordinator freeze
+requested integration or lease: extract/review the unique declarations below;
+  do not merge this branch wholesale; no new path or build lease requested
+conflicts / dependencies: main and feature diverge 8 / 15 commits from
+  6fcbbb5da; canonical documents, README, aggregate, and coordination files
+  are frozen; 09885a710 is superseded by the coordinator board
+next bounded step: commit and push this registry-only status to the feature
+  branch, then remain read-only pending coordinator instructions
 ```
 
-## Current integration and validation lease
+## Coordinator extraction inventory against `22d63a9f`
+
+The exact comparison is feature `455a28661df4149ed2d57a9c8ea27c965b32e91e`
+against fetched main `22d63a9f74a9dd022b243fc3836930ae94354ff9`,
+with common base `6fcbbb5da45330bdc78c6090706cf1479f3d3afb` and
+15/8 commit divergence. Do not merge either side wholesale.
+
+### Public declarations absent from main
+
+Exactly seven public names are feature-only. All live in
+`FabiusFunction.FabiusQBinomialTaylor` and were introduced by
+`a95bd19137c75dba867e0a17019036c0ea6d77fc`:
+
+1. `coeff_thueMorseTranslatedPowerSumPolynomial k d j` identifies coefficient
+   `j` of the translation-variable polynomial with
+   `(d.choose j : ℚ) * thueMorseCenteredPowerSum k (d - j)`. This is genuinely
+   absent: main's exponential-series coefficient and Prouhet declarations are
+   ingredients, not this finite polynomial coefficient theorem.
+2. `[simp] thueMorseTranslatedPowerSumPolynomial_zero d` gives the polynomial
+   normal form `(X - 1) ^ d` at block exponent zero. It is a useful named simp
+   theorem, although mathematically it is a direct `Polynomial.funext` wrapper
+   around main's evaluation and pointwise zero-exponent theorems.
+3. `[simp] thueMorseTranslatedPowerSumPolynomial_self k` gives the nonzero
+   constant polynomial at the sharp Prouhet degree. This is likewise a useful
+   named polynomial-level simp theorem derived from existing pointwise input.
+4. `[simp] thueMorseTranslatedPowerSumPolynomial_eq_zero_iff k d` proves the
+   exact criterion `P k d = 0 ↔ d < k`. Main has only forward pointwise
+   cancellation below degree and no converse polynomial nonvanishing result.
+5. `[simp] thueMorseTranslatedPowerSumPolynomial_natDegree k d` proves
+   `natDegree (P k d) = d - k`, including Lean's `natDegree 0 = 0` convention.
+   Main's power-series order theorem concerns the exponential variable, not
+   the translation degree.
+6. `[simp] thueMorseTranslatedPowerSumPolynomial_leadingCoeff k d` gives the
+   exact piecewise leading coefficient: the binomial multiple of the sharp
+   Prouhet constant for `k ≤ d`, and zero otherwise.
+7. `thueMorseTranslatedPowerSumPolynomial_degree k d` gives the exact
+   `WithBot` degree, `(d - k : ℕ)` for `k ≤ d` and `⊥` otherwise, preserving
+   the distinction between a nonzero constant and the zero polynomial.
+
+The raw new API is seven declarations; items 1 and 4--7 are the five genuinely
+new structural results. Items 2--3 should still be preserved as public simp
+normal forms. The private `..._natSub` helpers are implementation details.
+
+Four existing main declarations have cleaner feature signatures, but are not
+new results:
+
+- `qBinomialThueMorseTranslatedNumeratorIn_div_eq_halfMoment`;
+- `qBinomialThueMorseTranslatedNumeratorIn_div_eq_fabiusAtInverseTwoPow`;
+- `qBinomialFabiusReductionPolynomial_eq_reductionSumIn`; and
+- `qBinomialFabiusReductionPolynomial_zero`.
+
+The feature removes redundant explicit `[CharZero K]` binders because
+`[Algebra ℚ K]` already supplies `CharZero K`. Main has the same names and
+conclusions with the redundant binder. This is worthwhile signature polish,
+not a missing theorem family. No feature-only public definitions, abbreviations,
+structures, classes, or instances remain.
+
+### Claim-level documentation repairs absent from main
+
+These are extraction notes only; all named canonical paths remain frozen and
+their feature files/binaries must not replace newer main files.
+
+- `README.md`: extract only the translated-polynomial paragraph describing
+  the coefficient theorem, zero criterion, exact translation-degree drop,
+  leading coefficient, `natDegree`/`WithBot` distinction, and `k = 0`/`d = k`
+  normal forms, after integrating the Lean tranche.
+- Primary exposition: preserve main's curvature results and current pins, but
+  apply the feature's fail-closed repair. Add the opening formalization-boundary
+  box and exact normalized-moment theorem `moment_eq_momentNumerator_div`;
+  replace theorem-labelled, explicitly unmachine-checked saddle mass/log
+  formulas, coefficient tables, and logarithmic leading-derivative claims by
+  the exact `saddleJetMassCoefficient_succ_sub`, `_eq_add`, and Fabius
+  specialization. State that mass-to-log transfer and numerical experiments
+  remain frontier obligations. Add the missing normalized-moment, dyadic,
+  sharp-Lambert, full-expansion, and leading-coefficient modules to the guide.
+- Canonical frontier: transplant only the local repeated-integration warning
+  (factorization, finite stages, sharp `L∞`/derivative constants,
+  Peano/convex-order, and all-orders expansion remain obligations) and the
+  dyadic warning that paper-level corollaries are not Lean declarations until
+  audited. Preserve main's curvature ledger. Record repaired provenance hashes
+  `e3a7fcad...` and `8776344b...` as later variants alongside, rather than
+  silently replacing, the original synthesis-input hashes.
+- The non-elementarity TeX/PDF artifact is isolated because main's blobs are
+  unchanged from the common base. Its source repairs localize algebraic-branch
+  hypotheses to the open set, correct Bring right-inverse reasoning, distinguish
+  positive and nonvanishing `rpow` rules, state clamped-totalization and exact
+  inverse smoothness-locus facts, and make the Lambert-W constructor explicitly
+  conditional with boundary/complement caveats. Mathlib is not claimed to
+  define or verify Lambert W. Review source blob `9024036a8` and PDF blob
+  `bd0b4f4ba`; integrate as an isolated semantic artifact if accepted.
+- Small repairs: restore the missing closing code fence in `AUDIT_FINDINGS.md`;
+  redirect the two retired inverse-dyadic links in `PAPER_COVERAGE.md` and the
+  retired small-argument link in the Claude asymptotic registry to the
+  consolidated frontier; replace stale `docs/Small_Argument_Asymptotics/`
+  examples in `AGENTS.md` and the umbrella module doc while retaining the
+  coordinator's layout exception and authority text.
+
+Explicitly do not extract feature coordination policy, README build syntax,
+walkthrough or canonical TeX/PDF files wholesale, older theorem names/pins,
+the both-papers/theorem-polish snapshots, or anything that removes main's
+curvature tranche. Any accepted canonical-document change needs a fresh
+semantic merge and a coordinator-owned three-pass PDF rebuild.
+
+## Released historical integration and validation leases
+
+The entries below describe earlier authority and are retained only as audit
+history. They grant no current write or build ownership.
 
 - `Lean/FabiusFunction/FabiusQBinomialTaylor.lean`: the reviewed all-index
   coefficient, zero, natural-degree, degree, leading-coefficient, and boundary
