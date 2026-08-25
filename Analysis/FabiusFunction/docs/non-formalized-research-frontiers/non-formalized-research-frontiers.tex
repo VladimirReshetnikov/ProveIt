@@ -90,6 +90,8 @@
 \newcommand{\vtwo}{v_2}
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -135,7 +137,6 @@
 \newcommand{\Toperator}{\mathfrak T}
 \newcommand{\Qoperator}{\mathfrak Q}
 \newcommand{\coeff}[2]{\left[#1^{#2}\right]}
-\newcommand{\lean}[1]{\texttt{#1}}
 \newcommand{\anloc}{\mathcal A}
 \newcommand{\Gcal}{\mathcal G}
 \newcommand{\Pcal}{\mathcal P}
@@ -314,12 +315,12 @@ Lean declaration is audited.
 
 
 % BEGIN MERGED SOURCE: Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex
-% Original SHA-256: 05002480d94d3136368ea491d723378221ced6e15955e0ebc69556561af75b55
+% Original SHA-256: 21222ae5a8c64cf556dac562fd66943ae0b6ed881408e23e37edfa9113bdecbd
 \clearpage
 \part{Fabius Integration Research Frontiers}
 \label{part:integration}
 \begin{boxedremark}
-\textbf{Source provenance and status.} Former path: \nolinkurl{Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex}.  Broad mixed-status dossier.  It supplies inverse, probability, discrete-engine, and all-orders saddle machinery.  Claims already represented in Lean are inputs; the dossier-level generalizations and consequences remain quarantined here.\par\smallskip Original source SHA-256: \nolinkurl{05002480d94d3136368ea491d723378221ced6e15955e0ebc69556561af75b55}.
+\textbf{Source provenance and status.} Former path: \nolinkurl{Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex}.  Broad mixed-status dossier.  It supplies inverse, probability, discrete-engine, and all-orders saddle machinery.  Claims already represented in Lean are inputs; the dossier-level generalizations and consequences remain quarantined here.\par\smallskip Original source SHA-256: \nolinkurl{21222ae5a8c64cf556dac562fd66943ae0b6ed881408e23e37edfa9113bdecbd}.
 \end{boxedremark}
 \section*{Dossier abstract}
 The long article \emph{The Fabius Function and Rvachev's Up-Function} gives a broad
@@ -359,7 +360,8 @@ generalizations, and formulas that still lack exact declarations.  Its presence 
 \path{non-formalized-research-frontiers} is intentional: no mathematical assertion in this
 notebook should be attributed to the formal library merely because a related definition or
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
-subset.  Among the obligations retained here are inverse curvature and H\"older claims,
+subset.  Among the obligations retained here are H\"older consequences beyond the
+now-formalized inverse-curvature identities,
 generic moment-matrix consequences, arbitrary-family Toeplitz wording, generic Gaussian
 coefficient bounds, and the passage from the mass top jet to the logarithmic
 highest-derivative law.
@@ -386,10 +388,10 @@ global extension used in the Lean development.  On $[0,1]$ the basic identities 
 \end{equation}
 These are inputs here, not topics to be reproved.
 
-The repository snapshot underlying this supplement is the head of \texttt{main} on
-25 August 2026, commit
+The repository snapshot underlying this supplement is the following commit on
+the \texttt{codex/fabius-both-papers} branch, dated 25 August 2026.
 \begin{center}
- \texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}.
+ \texttt{531338d79f2f640041562138c7b80772ee2f0490}.
 \end{center}
 The main article itself records an earlier pinned snapshot and, near the beginning of its
 module guide, explicitly says that four clusters have ``no counterpart anywhere in the
@@ -440,9 +442,10 @@ positive $x$.
 library, the corresponding declaration is named in the margin of the discussion or in the
 concordance in \cref{integration:app:concordance}.  When a statement is an immediate classical calculus
 corollary but is not presently packaged as a declaration, it is called a \emph{corollary in
-ordinary analysis}.  This distinction matters most for the second-derivative curvature
-formula of the inverse and for the transfer of the highest-jet coefficient from mass
-coefficients to logarithmic coefficients.
+ordinary analysis}.  The inverse second-derivative formula and its strict closed-half shape
+are now packaged formally; the distinction remains relevant for general higher inverse
+derivatives and for the transfer of the highest-jet coefficient from mass coefficients to
+logarithmic coefficients.
 \end{boxedremark}
 
 \subsection{The positivity hypothesis in the original characterization is redundant}
@@ -524,9 +527,9 @@ and the total inverse
  I(y)=\operatorname{val}\bigl(\mathfrak F^{-1}(\pi(y))\bigr).
  \label{integration:eq:total-inverse}
 \end{equation}
-This is the mathematical content of \nolinkurl{fabiusOrderIso} and
-\nolinkurl{fabiusInv}; Lean uses \nolinkurl{Set.IccExtend} rather than spelling
-out \eqref{integration:eq:clamp}.
+The declarations \nolinkurl{fabiusOrderIso} and \nolinkurl{fabiusInv} formalize this
+construction.  Lean uses \nolinkurl{Set.IccExtend} rather than spelling out
+\eqref{integration:eq:clamp}.
 
 \begin{theorem}[Global inverse package]
 \label{integration:thm:global-inverse}
@@ -645,7 +648,7 @@ For $a\le2^n$, combine \eqref{integration:eq:dyadic-evaluator-input} with the le
 is $I(1)=1$.
 \end{proof}
 
-\subsubsection{Formal interior calculus and an ordinary-analysis curvature corollary}
+\subsubsection{Formal interior calculus and curvature}
 
 The inverse is constructed using order topology alone.  Once the positivity theorem for
 $F'$ in the open unit interval is imported, the local inverse theorem supplies a sharper
@@ -669,13 +672,13 @@ $C^\infty$ diffeomorphism.  Differentiate $F(I(y))=y$ and substitute the second 
 \eqref{integration:eq:basic-inputs}.
 \end{proof}
 
-Because $F$ is convex on $(0,1/2)$ and concave on $(1/2,1)$, inversion reverses those
-curvature signs.
+Because $F$ is strictly convex on $[0,1/2]$ and strictly concave on $[1/2,1]$, inversion
+reverses those two shapes.
 
-\begin{corollary}[Curvature of the inverse]
+\begin{corollary}[Curvature of the inverse; formalized]
 \label{integration:cor:inverse-curvature}
-The inverse $I$ is concave on $(0,1/2)$ and convex on $(1/2,1)$.  Where second derivatives
-are evaluated,
+The inverse $I$ is strictly concave on $[0,1/2]$ and strictly convex on $[1/2,1]$.  For every
+$0<y<1$,
 \begin{equation}
  I''(y)=-\frac{F''(I(y))}{F'(I(y))^3}.
  \label{integration:eq:inverse-second-derivative}
@@ -689,9 +692,12 @@ positivity, and the resulting interior smoothness are the named Lean declaration
 \path{fabiusInv_hasDerivAt},
 \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
 \path{deriv_fabiusInv_pos}, together with
-\path{fabiusInv_contDiffOn_Ioo}.  The second-derivative curvature formula in
-\cref{integration:cor:inverse-curvature} remains an ordinary-analysis corollary rather than a separate
-declaration.
+\path{fabiusInv_contDiffOn_Ioo}.  The reciprocal-cubic rule in
+\cref{integration:cor:inverse-curvature} is \path{deriv_fabiusInv_hasDerivAt} together with
+\path{deriv_deriv_fabiusInv}; its two strict closed-half conclusions are
+\path{strictConcaveOn_fabiusInv_firstHalf} and
+\path{strictConvexOn_fabiusInv_secondHalf}.  These shape theorems use derivatives only on
+the interval interiors, so they do not assert finite endpoint derivatives.
 \end{remark}
 
 \subsection{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
@@ -3280,7 +3286,9 @@ that scale positivity follows from the other original-characterization assumptio
 \lean{strictMonoOn\_fabiusInv}, \lean{fabiusInv\_one\_sub},
 \lean{fabiusInv\_fabiusDyadicUnit}, \lean{fabiusInv\_hasDerivAt},
 \lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp},
-\lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo}, the transported root-free bounds,
+\lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo},
+\lean{deriv\_deriv\_fabiusInv}, \lean{strictConcaveOn\_fabiusInv\_firstHalf},
+\lean{strictConvexOn\_fabiusInv\_secondHalf}, the transported root-free bounds,
 \lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
 \cref{integration:sec:inverse,integration:sec:inverse-steepness}.\\
 \path{ElementaryFunction.lean} &
@@ -3536,8 +3544,8 @@ V.~Reshetnikov,
 \newblock \texttt{ProveIt}: formal development of the Fabius function and Rvachev's
 up-function,
 \newblock GitHub repository, snapshot
-\texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}, 25 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+\texttt{531338d79f2f640041562138c7b80772ee2f0490}, 25 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/531338d79f2f640041562138c7b80772ee2f0490/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
@@ -5793,12 +5801,12 @@ V.~Reshetnikov,
 % END MERGED SOURCE: Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex
 
 % BEGIN MERGED SOURCE: Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex
-% Original SHA-256: ef52fd2df35a140ff5c26d7a4c32e0618fce8de94f5eff301dc41ecfc1e66f16
+% Original SHA-256: fad16072df30d9e6eb5df03da57dd217769180730581f1dfd19fa5be0d16b262
 \clearpage
 \part{Repeated Integration and Rvachev's Up-Function: Sharp Thresholds}
 \label{part:repeated2}
 \begin{boxedremark}
-\textbf{Source provenance and status.} Former path: \nolinkurl{Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex}.  Later, sharper treatment of the repeated-integration construction.  It improves the derivative-norm threshold from the earlier dossier's \(n\ge r+3\) presentation to \(n\ge r+2\), while separately resolving the first admissible stage.  Prefer this threshold where the dossiers overlap.  Its new sharp identities and all-orders expansions remain natural-language proofs and formal obligations.\par\smallskip Original source SHA-256: \nolinkurl{ef52fd2df35a140ff5c26d7a4c32e0618fce8de94f5eff301dc41ecfc1e66f16}.
+\textbf{Source provenance and status.} Former path: \nolinkurl{Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex}.  Later, sharper treatment of the repeated-integration construction.  It improves the derivative-norm threshold from the earlier dossier's \(n\ge r+3\) presentation to \(n\ge r+2\), while separately resolving the first admissible stage.  Prefer this threshold where the dossiers overlap.  Its new sharp identities and all-orders expansions remain natural-language proofs and formal obligations.\par\smallskip Original source SHA-256: \nolinkurl{fad16072df30d9e6eb5df03da57dd217769180730581f1dfd19fa5be0d16b262}.
 \end{boxedremark}
 \section*{Dossier abstract}
 A Math Stack Exchange question asks for a closed form for the sequence
@@ -6744,7 +6752,7 @@ $\Up(x)=F(1-x)$, and the smooth bounded Fabius function is constant on $[1,\inft
 therefore all positive-order derivatives of $\Up$ vanish at zero.
 
 Let $q\ge1$, put $a=2^{-q}$, and write $\Up=p_q\conv\rho_a$.  For
-$\ell=k-q\ge1$, 
+$\ell=k-q\ge1$,
 \[
  \Up^{(k)}=(\D^q p_q)\conv\rho_a^{(\ell)}.
 \]
@@ -16129,12 +16137,12 @@ V.~Reshetnikov,
 
 
 % BEGIN MERGED SOURCE: Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex
-% Original SHA-256: d05a201b92ed9031a5b76819cffd68e2cbce5d824839f07bc64a6ad674f9ee0f
+% Original SHA-256: f9d8605761aaaa1b2c2af83e3c5c55dcd6acfc847402163458b03b68c7b35ff8
 \clearpage
 \part{Fabius Inverse and Saddle Research Frontiers}
 \label{part:inverse}
 \begin{boxedremark}
-\textbf{Source provenance and status.} Former path: \nolinkurl{Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex}.  Specialist inverse and saddle dossier.  Formalized inputs are distinguished from derived consequences; inverse endpoint asymptotics and the logarithmic highest-derivative transfer remain explicit obligations.\par\smallskip Original source SHA-256: \nolinkurl{d05a201b92ed9031a5b76819cffd68e2cbce5d824839f07bc64a6ad674f9ee0f}.
+\textbf{Source provenance and status.} Former path: \nolinkurl{Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex}.  Specialist inverse and saddle dossier.  Formalized inputs are distinguished from derived consequences; inverse endpoint asymptotics and the logarithmic highest-derivative transfer remain explicit obligations.\par\smallskip Original source SHA-256: \nolinkurl{f9d8605761aaaa1b2c2af83e3c5c55dcd6acfc847402163458b03b68c7b35ff8}.
 \end{boxedremark}
 \section*{Dossier abstract}
 The Fabius function is unusually rich: a single compactly supported
@@ -16188,8 +16196,10 @@ Lean inputs, ordinary mathematical deductions, symbolic coefficient calculations
 numerical evidence so that the unformalized steps are not lost.  A statement here is a
 project theorem only when an exact current Lean declaration is named for the full statement;
 the labels \Formalized\ and \Derived\ record the draft's provenance but do not themselves
-certify that every displayed consequence has been formalized.  In particular, inverse
-curvature and H\"older consequences, inverse endpoint asymptotics, the ordered-composition coefficient formulas and the logarithmic highest-derivative law remain research obligations.
+certify that every displayed consequence has been formalized.  In particular, H\"older
+consequences beyond the now-formalized inverse-curvature identities, inverse endpoint
+asymptotics, the ordered-composition coefficient formulas and the logarithmic
+highest-derivative law remain research obligations.
 \end{boxedremark}
 
 \section{Purpose, scope, and status conventions}
@@ -16651,8 +16661,9 @@ $\InvF$ outruns \emph{every fixed} positive power.
 
 This section uses the formalized inverse package together with standard
 one-variable analysis.  Smoothness, the reciprocal first-derivative formula,
-and positivity are now marked \Formalized; the second and higher derivative
-formulas remain \Derived.
+the exact second-derivative formula, and the strict closed-half shape are now
+marked \Formalized; the general higher inverse-derivative formulas remain
+\Derived.
 
 \subsection{Smoothness and differential identities in the interior}
 
@@ -16694,8 +16705,8 @@ Mathlib's stronger analytic order; the analytic locus is formalized separately b
 \path{fabiusInv_analyticAt_iff} in \path{InverseNotElementary.lean}.
 \end{remark}
 
-\begin{proposition}[Higher inverse derivatives; \Derived]
-\label{inverse:prop:inverse-higher-derivatives}
+\begin{proposition}[Second inverse derivative; \Formalized]
+\label{inverse:prop:inverse-second-derivative}
 For $0<y<1$,
 \begin{equation}
  \InvF''(y)
@@ -16703,9 +16714,6 @@ For $0<y<1$,
            {F'(\InvF(y))^3}.
  \label{inverse:eq:Gsecond}
 \end{equation}
-More generally, every derivative of $\InvF$ is a rational polynomial in
-the derivatives of $F$ evaluated at $\InvF(y)$, with a power of
-$F'(\InvF(y))$ in the denominator.
 \end{proposition}
 
 \begin{proof}
@@ -16714,10 +16722,17 @@ Differentiating the identity behind \eqref{inverse:eq:Gprime} once more gives
  F''(\InvF(y))\InvF'(y)^2+
  F'(\InvF(y))\InvF''(y)=0.
 \]
-Substitution of \eqref{inverse:eq:Gprime} yields \eqref{inverse:eq:Gsecond}.  Repeated
-differentiation gives the higher formulas, equivalently the
-Fa\`a di Bruno inverse-derivative polynomials.
+Substitution of \eqref{inverse:eq:Gprime} yields \eqref{inverse:eq:Gsecond}.  This is
+\path{deriv_fabiusInv_hasDerivAt} and its pointwise corollary
+\path{deriv_deriv_fabiusInv}.
 \end{proof}
+
+\begin{remark}[Higher inverse derivatives; \Derived]
+Repeated differentiation expresses every higher derivative of $\InvF$ as a
+rational polynomial in the derivatives of $F$ evaluated at $\InvF(y)$, with a
+power of $F'(\InvF(y))$ in the denominator.  These general Fa\`a di Bruno
+inverse-derivative polynomials are not separately packaged in the Lean API.
+\end{remark}
 
 \begin{corollary}[Midpoint differential data; \Derived]
 \label{inverse:cor:midpoint-inverse}
@@ -16742,26 +16757,34 @@ The formal development proves that $F$ is strictly convex on
 $(0,1/2)$ and strictly concave on $(1/2,1)$.  Inversion reverses these
 two curvature signs.
 
-\begin{proposition}[Concavity and convexity of the inverse; \Derived]
+\begin{proposition}[Concavity and convexity of the inverse; \Formalized]
 \label{inverse:prop:inverse-shape}
-The function $\InvF$ is strictly concave on $(0,1/2)$ and strictly convex
-on $(1/2,1)$.  Its tangent slope decreases from $+\infty$ to $1/2$ on the
-left half, then increases from $1/2$ to $+\infty$ on the right half.
+The function $\InvF$ is strictly concave on $[0,1/2]$ and strictly convex
+on $[1/2,1]$.
 \end{proposition}
 
 \begin{proof}
-For $0<y<1/2$, strict increase gives $0<\InvF(y)<1/2$, where
-$F''>0$.  Equation \eqref{inverse:eq:Gsecond} and $F'>0$ imply
-$\InvF''(y)<0$.  Similarly, $y>1/2$ gives $\InvF(y)>1/2$, where
-$F''<0$, and therefore $\InvF''(y)>0$.
+The inverse is strictly increasing and preserves the midpoint.  It therefore
+maps the first half into itself, where $F'$ is strictly increasing and
+positive.  Its reciprocal in \eqref{inverse:eq:Gprime} is strictly decreasing, so the
+derivative criterion and continuity give strict concavity on the closed first
+half.  On the second half $F'$ is strictly decreasing and positive, hence the
+reciprocal derivative of the inverse is strictly increasing and the same
+criterion gives strict convexity.
 
-The endpoint divergence of the derivative is understood as a one-sided
-slope statement: by \cref{inverse:thm:inverse-quotient}, the secant slopes from
-the origin diverge, and concavity makes the right derivative at the
-origin at least as large as every such limiting secant slope.  Reflection
-gives the right endpoint.  The midpoint slope is
-\cref{inverse:cor:midpoint-inverse}.
+The closed-interval conclusions are
+\path{strictConcaveOn_fabiusInv_firstHalf} and
+\path{strictConvexOn_fabiusInv_secondHalf}.  Their derivative criteria inspect
+only the two open interval interiors, while global continuity supplies the
+endpoints; no finite endpoint derivative is asserted.
 \end{proof}
+
+\begin{remark}[Endpoint slope; \Derived]
+The secant slopes from the origin diverge by \cref{inverse:thm:inverse-quotient}, and
+reflection gives the right-endpoint counterpart.  Interpreting this together
+with concavity as an extended one-sided derivative statement remains ordinary
+analysis rather than a separately named Lean theorem.
+\end{remark}
 
 \subsection{\texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}}
 
@@ -16795,6 +16818,11 @@ nonzero by \eqref{inverse:eq:Gprime}; the analytic inverse function theorem woul
 then make its local inverse $F$ analytic near $x_0=\InvF(y_0)$.  But the
 Fabius function is nowhere analytic on the interior of its transition
 interval.  This contradiction proves the claim.
+
+The exact smoothness and differentiability classifications are
+\path{fabiusInv_contDiffAt_infty_iff} and
+\path{fabiusInv_differentiableAt_iff}; the analytic classification is
+\path{fabiusInv_analyticAt_iff}.
 \end{proof}
 
 \section{Inverting the sharp small-argument asymptotic}
@@ -18121,8 +18149,9 @@ Module & Principal role & Status\\
 \texttt{FabiusInverse.lean} &
 Order isomorphism of $[0,1]$, totalized inverse, global continuity and
 monotonicity, comparison equivalences, tails, reflection, exact dyadic
-inversion, transported flatness, effective steepness, exact global
-differentiability and $C^\infty$ loci, and endpoint quotient divergence. & \Formalized\\
+inversion, reciprocal first and second derivatives, interior smoothness,
+strict closed-half curvature, transported flatness, effective steepness,
+exact global differentiability and $C^\infty$ loci, and endpoint quotient divergence. & \Formalized\\
 \texttt{InverseNotElementary.lean} &
 Exact analytic locus of the totalized inverse and the analytic-density
 obstructions used in its non-elementarity theorem. & \Formalized\\
@@ -18214,6 +18243,9 @@ repository:
 equivalences;
 \item the constant tails, reflection, midpoint, and exact dyadic
 inversion;
+\item interior $C^\infty$ regularity, the exact formulas for $\InvF'$ and
+$\InvF''$, and strict concavity on $[0,1/2]$ and strict convexity on
+$[1/2,1]$;
 \item the effective and sharp inverse power inequalities, effective
 linear steepness, and the two endpoint quotient limits;
 \item the exact global differentiability, $C^\infty$, and analytic loci
@@ -18230,9 +18262,6 @@ asymptotic theorems.
 
 The following statements are proved here from the formalized input:
 \begin{itemize}
-\item the formula for $\InvF''$ obtained from the formalized reciprocal
-first derivative;
-\item strict concavity on $(0,1/2)$ and strict convexity on $(1/2,1)$;
 \item divergence of $\InvF(y)/y^\alpha$ for every $\alpha>0$;
 \item the sharp equivalent \eqref{inverse:eq:sharp-inverse} and the scale
 hierarchy \eqref{inverse:eq:power-below-G}--\eqref{inverse:eq:G-below-log};
