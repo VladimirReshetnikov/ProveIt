@@ -13,6 +13,11 @@ extension.
 The exact finite identity has a signed residual term.  Binary tails tend to
 zero, so the residual tends to zero.  A geometric norm bound proves absolute
 summability and therefore both a `HasSum` theorem and a `tsum` identity.
+
+The elementary binary API is stated uniformly at every scale, including
+`m = 0`: the previous prefix is the quotient of the current prefix by two,
+the remainder modulo two is the next binary digit, and clearing the power-of-
+two denominator recovers the defining prefix exactly.
 -/
 
 set_option autoImplicit false
@@ -32,6 +37,30 @@ def binaryPrefix (x : ℝ) (m : ℕ) : ℕ :=
 def binaryTail (x : ℝ) (m : ℕ) : ℝ :=
   x - (binaryPrefix x m : ℝ) / (2 : ℝ) ^ m
 
+/-- Clearing the scale denominator in a binary tail recovers the prefix
+subtraction exactly. -/
+theorem two_pow_mul_binaryTail (x : ℝ) (m : ℕ) :
+    (2 : ℝ) ^ m * binaryTail x m =
+      (2 : ℝ) ^ m * x - binaryPrefix x m := by
+  rw [binaryTail, mul_sub]
+  have hpow : (2 : ℝ) ^ m ≠ 0 := by positivity
+  field_simp
+
+/-- The twice-scaled form used by the global q-binomial summand. -/
+theorem two_pow_succ_mul_binaryTail (x : ℝ) (m : ℕ) :
+    (2 : ℝ) ^ (m + 1) * binaryTail x m =
+      (2 : ℝ) ^ (m + 1) * x - 2 * binaryPrefix x m := by
+  calc
+    (2 : ℝ) ^ (m + 1) * binaryTail x m =
+        2 * ((2 : ℝ) ^ m * binaryTail x m) := by
+      rw [pow_succ]
+      ring
+    _ = 2 * ((2 : ℝ) ^ m * x - binaryPrefix x m) := by
+      rw [two_pow_mul_binaryTail]
+    _ = (2 : ℝ) ^ (m + 1) * x - 2 * binaryPrefix x m := by
+      rw [pow_succ]
+      ring
+
 /-- `Floor[2^(m-1)x]`, including the genuine half-scale value at `m = 0`. -/
 def binaryPreviousPrefix (x : ℝ) : ℕ → ℕ
   | 0 => ⌊x / 2⌋₊
@@ -49,6 +78,47 @@ theorem binaryPreviousPrefix_eq_floor_zpow (x : ℝ) (m : ℕ) :
   | succ m =>
       simp [binaryPreviousPrefix, binaryPrefix]
 
+/-- At every scale, the previous binary prefix is the natural-number quotient
+of the current prefix by two.  The statement includes the half-scale
+definition at `m = 0`. -/
+theorem binaryPreviousPrefix_eq_binaryPrefix_div_two (x : ℝ) (m : ℕ) :
+    binaryPreviousPrefix x m = binaryPrefix x m / 2 := by
+  cases m with
+  | zero =>
+      rw [binaryPreviousPrefix, binaryPrefix]
+      norm_num
+      exact Nat.floor_div_natCast x 2
+  | succ m =>
+      rw [binaryPreviousPrefix, binaryPrefix, binaryPrefix]
+      have harg :
+          (2 : ℝ) ^ m * x = ((2 : ℝ) ^ (m + 1) * x) / 2 := by
+        rw [pow_succ]
+        ring
+      rw [harg]
+      exact Nat.floor_div_natCast ((2 : ℝ) ^ (m + 1) * x) 2
+
+/-- Exact quotient-remainder decomposition of a binary prefix.  The final
+term, `binaryPrefix x m % 2`, is the binary digit exposed at scale `m`. -/
+theorem binaryPrefix_eq_two_mul_previous_add_mod_two (x : ℝ) (m : ℕ) :
+    binaryPrefix x m =
+      2 * binaryPreviousPrefix x m + binaryPrefix x m % 2 := by
+  rw [binaryPreviousPrefix_eq_binaryPrefix_div_two]
+  omega
+
+/-- A binary prefix is either twice its previous prefix or its successor.
+Unlike the internal induction step, this formulation is valid uniformly at
+scale zero. -/
+theorem binaryPrefix_eq_two_mul_previous_or_succ (x : ℝ) (m : ℕ) :
+    binaryPrefix x m = 2 * binaryPreviousPrefix x m ∨
+      binaryPrefix x m = 2 * binaryPreviousPrefix x m + 1 := by
+  have hmod : binaryPrefix x m % 2 < 2 := Nat.mod_lt _ (by omega)
+  have hdecomp := binaryPrefix_eq_two_mul_previous_add_mod_two x m
+  interval_cases h : binaryPrefix x m % 2
+  · left
+    omega
+  · right
+    omega
+
 /-- The signed binary-digit coefficient in the outer series. -/
 def globalBinaryReductionCoefficient (x : ℝ) (m : ℕ) : ℝ :=
   (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
@@ -64,24 +134,6 @@ def globalBinaryReductionSummand (x : ℝ) (m : ℕ) : ℝ :=
 def binaryReductionRemainder (F : BoundedFabius) (x : ℝ) (N : ℕ) : ℝ :=
   (-1 : ℝ) ^ binaryWeight (binaryPrefix x N) *
     extendedFabius F (binaryTail x N)
-
-private lemma binaryPreviousPrefix_zero_eq_div_two (x : ℝ) :
-    binaryPreviousPrefix x 0 = binaryPrefix x 0 / 2 := by
-  rw [binaryPreviousPrefix, binaryPrefix]
-  norm_num
-  exact Nat.floor_div_natCast x 2
-
-private lemma binaryPrefix_zero_eq_double_or_succ (x : ℝ) :
-    binaryPrefix x 0 = 2 * binaryPreviousPrefix x 0 ∨
-      binaryPrefix x 0 = 2 * binaryPreviousPrefix x 0 + 1 := by
-  rw [binaryPreviousPrefix_zero_eq_div_two]
-  have hmod : binaryPrefix x 0 % 2 < 2 := Nat.mod_lt _ (by omega)
-  have hdecomp := (Nat.mod_add_div (binaryPrefix x 0) 2).symm
-  interval_cases h : binaryPrefix x 0 % 2
-  · left
-    omega
-  · right
-    omega
 
 theorem binaryTail_nonneg (x : ℝ) (m : ℕ) (hx : 0 ≤ x) :
     0 ≤ binaryTail x m := by
@@ -108,30 +160,19 @@ theorem binaryTail_lt (x : ℝ) (m : ℕ) :
 private lemma binaryPrefix_pred_eq_div_two
     (x : ℝ) (m : ℕ) (hm : 1 ≤ m) :
     binaryPrefix x (m - 1) = binaryPrefix x m / 2 := by
-  rw [binaryPrefix, binaryPrefix]
-  have hpow : (2 : ℝ) ^ m = (2 : ℝ) ^ (m - 1) * 2 := by
-    calc
-      (2 : ℝ) ^ m = (2 : ℝ) ^ ((m - 1) + 1) := by
-        rw [Nat.sub_add_cancel hm]
-      _ = (2 : ℝ) ^ (m - 1) * 2 := by rw [pow_succ]
-  have harg : (2 : ℝ) ^ (m - 1) * x = ((2 : ℝ) ^ m * x) / 2 := by
-    rw [hpow]
-    ring
-  rw [harg]
-  exact Nat.floor_div_natCast ((2 : ℝ) ^ m * x) 2
+  rw [← binaryPreviousPrefix_eq_binaryPrefix_div_two]
+  cases m with
+  | zero => omega
+  | succ m => rfl
 
 private lemma binaryPrefix_eq_double_or_succ
     (x : ℝ) (m : ℕ) (hm : 1 ≤ m) :
     binaryPrefix x m = 2 * binaryPrefix x (m - 1) ∨
       binaryPrefix x m = 2 * binaryPrefix x (m - 1) + 1 := by
-  rw [binaryPrefix_pred_eq_div_two x m hm]
-  have hmod : binaryPrefix x m % 2 < 2 := Nat.mod_lt _ (by omega)
-  have hdecomp := (Nat.mod_add_div (binaryPrefix x m) 2).symm
-  interval_cases h : binaryPrefix x m % 2
-  · left
-    omega
-  · right
-    omega
+  have hprev : binaryPreviousPrefix x m = binaryPrefix x (m - 1) := by
+    rw [binaryPreviousPrefix_eq_binaryPrefix_div_two,
+      ← binaryPrefix_pred_eq_div_two x m hm]
+  simpa only [hprev] using binaryPrefix_eq_two_mul_previous_or_succ x m
 
 private lemma binaryTail_step_zero
     (x : ℝ) (m : ℕ) (hm : 1 ≤ m)
@@ -198,7 +239,7 @@ theorem extendedFabius_eq_globalBinaryReduction_zero_add_remainder
   have hxform : x = (a : ℝ) + y := by
     simp only [a, y, binaryTail, pow_zero, div_one]
     ring
-  have hab := binaryPrefix_zero_eq_double_or_succ x
+  have hab := binaryPrefix_eq_two_mul_previous_or_succ x 0
   change a = 2 * b ∨ a = 2 * b + 1 at hab
   rcases hab with heven | hodd
   · have hzform : z = y := by

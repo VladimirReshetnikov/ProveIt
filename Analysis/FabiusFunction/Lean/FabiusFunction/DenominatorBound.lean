@@ -147,34 +147,49 @@ theorem abs_fabiusDyadic_mul_denominatorBound_isNatural (n b : ℕ) :
       norm_cast
       simp
 
-/-- Every supported exact Rvachev value becomes natural after multiplication
-by the bound from Theorem 13. -/
+/-- Every exact Rvachev value becomes natural after multiplication by the
+bound from Theorem 13.  Outside the support the value is zero. -/
+theorem rvachevDyadic_mul_denominatorBound_isNatural_all (n : ℕ) (a : ℤ) :
+    IsNatural (rvachevDyadic n a * denominatorBound n) := by
+  by_cases ha : a.natAbs ≤ 2 ^ n
+  · rw [rvachevDyadic, if_pos ha]
+    exact abs_fabiusDyadic_mul_denominatorBound_isNatural n
+      (2 ^ n - a.natAbs)
+  · rw [rvachevDyadic, if_neg ha, zero_mul]
+    exact ⟨0, by norm_num⟩
+
+/-- The supported-input form of
+`rvachevDyadic_mul_denominatorBound_isNatural_all`, retained for compatibility
+with the hypotheses in Theorem 13. -/
 theorem rvachevDyadic_mul_denominatorBound_isNatural (n : ℕ) (a : ℤ)
     (ha : a.natAbs ≤ 2 ^ n) :
-    IsNatural (rvachevDyadic n a * denominatorBound n) := by
-  rw [rvachevDyadic, if_pos ha]
-  exact abs_fabiusDyadic_mul_denominatorBound_isNatural n
-    (2 ^ n - a.natAbs)
+    IsNatural (rvachevDyadic n a * denominatorBound n) :=
+  have _ := ha
+  rvachevDyadic_mul_denominatorBound_isNatural_all n a
 
-private lemma denominatorBound_ne_zero (n : ℕ) : denominatorBound n ≠ 0 := by
+/-- The explicit common-denominator bound is strictly positive. -/
+theorem denominatorBound_pos (n : ℕ) : 0 < denominatorBound n := by
   unfold denominatorBound
-  exact mul_ne_zero
-    (mul_ne_zero
-      (mul_ne_zero (Nat.factorial_ne_zero n) (pow_ne_zero _ (by omega)))
-      (Nat.ne_of_gt (odd_oddDoubleFactorial (n / 2 + 1)).pos))
-    (Nat.ne_of_gt (odd_evenMersenneProduct (n / 2)).pos)
+  exact Nat.mul_pos
+    (Nat.mul_pos
+      (Nat.mul_pos (Nat.factorial_pos n) (pow_pos (by omega) _))
+      (oddDoubleFactorial_pos _))
+    (evenMersenneProduct_pos _)
 
-private lemma rat_den_dvd_of_mul_nat_eq_int {q : ℚ} {B : ℕ} {z : ℤ}
-    (hB : B ≠ 0) (h : q * (B : ℚ) = (z : ℚ)) : q.den ∣ B := by
-  have hBq : (B : ℚ) ≠ 0 := by exact_mod_cast hB
-  have hq : q = (z : ℚ) / (B : ℚ) := (eq_div_iff hBq).2 h
-  have hdivInt : q = Rat.divInt z (B : ℤ) := by
-    rw [hq, Rat.divInt_eq_div]
-    norm_num
-  have hdvdInt : (q.den : ℤ) ∣ (B : ℤ) := by
-    rw [hdivInt]
-    exact Rat.den_dvd z B
-  exact_mod_cast hdvdInt
+/-- Each closed-form dyadic Fabius value has reduced denominator dividing the
+level's common denominator bound. -/
+theorem fabiusDyadic_den_dvd_denominatorBound (n b : ℕ) :
+    (fabiusDyadic n b).den ∣ denominatorBound n :=
+  rat_den_dvd_of_mul_nat_eq_int
+    (fabiusDyadic_mul_denominatorBound_eq_int n b)
+
+/-- Each exact Rvachev value has reduced denominator dividing the level's
+common denominator bound, including the values outside its support. -/
+theorem rvachevDyadic_den_dvd_denominatorBound (n : ℕ) (a : ℤ) :
+    (rvachevDyadic n a).den ∣ denominatorBound n := by
+  obtain ⟨m, hm⟩ := rvachevDyadic_mul_denominatorBound_isNatural_all n a
+  apply rat_den_dvd_of_mul_nat_eq_int (z := (m : ℤ))
+  simpa using hm
 
 /-- The LCM of all reduced denominators on the odd dyadic grid divides the
 common denominator from Theorem 13. -/
@@ -182,15 +197,7 @@ theorem dyadicDenominator_dvd_denominatorBound (n : ℕ) :
     dyadicDenominator n ∣ denominatorBound n := by
   unfold dyadicDenominator
   apply Finset.lcm_dvd
-  intro a ha
-  have haData := Finset.mem_filter.mp (show
-    a ∈ (Icc 1 (2 ^ n - 1)).filter Odd by
-      simpa [oddDyadicNumerators] using ha)
-  have haBounds := Finset.mem_Icc.mp haData.1
-  have hnat := rvachevDyadic_mul_denominatorBound_isNatural n (a : ℤ) (by omega)
-  obtain ⟨m, hm⟩ := hnat
-  apply rat_den_dvd_of_mul_nat_eq_int (z := (m : ℤ))
-    (denominatorBound_ne_zero n)
-  simpa using hm
+  intro a _ha
+  exact rvachevDyadic_den_dvd_denominatorBound n (a : ℤ)
 
 end Fabius

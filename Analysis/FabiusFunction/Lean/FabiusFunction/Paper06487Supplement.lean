@@ -7,6 +7,12 @@ This file exposes mathematical assertions used in the prose and in proofs of
 Juan Arias de Reyna, *Arithmetic of the Fabius function*,
 arXiv:1702.06487v3, which are not themselves numbered theorem environments.
 The numbered results remain collected in `FabiusFunction.PaperStatements`.
+
+The results below are grouped into elementary analytic consequences, exact
+arithmetic assertions used inside the paper's proofs, the reordered dyadic
+formula, and the denominator consequences stated after Conjecture 16.  Several
+lemmas deliberately expose stronger boundary cases or weaker hypotheses than
+the prose needs.
 -/
 
 set_option autoImplicit false
@@ -59,6 +65,41 @@ theorem rvachev_pos_of_mem_Ioo
   · exact fabius_pos_of_pos F hF (by linarith [hx.1])
   · exact fabius_pos_of_pos F hF (by linarith [hx.2])
 
+/-- Positivity characterizes the interior `(-1,1)` of the support of
+Rvachev's function. -/
+theorem rvachev_pos_iff_mem_Ioo
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    0 < rvachevUp F x ↔ x ∈ Ioo (-1 : ℝ) 1 := by
+  constructor
+  · intro hpos
+    by_contra hx
+    rw [rvachevUp_eq_zero_of_not_mem_Ioo F hF hx] at hpos
+    norm_num at hpos
+  · exact rvachev_pos_of_mem_Ioo F hF
+
+/-- The zero set of Rvachev's function is the complement of its open support. -/
+theorem rvachevUp_eq_zero_iff_not_mem_Ioo
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    rvachevUp F x = 0 ↔ x ∉ Ioo (-1 : ℝ) 1 := by
+  constructor
+  · intro hx hxmem
+    exact (ne_of_gt (rvachev_pos_of_mem_Ioo F hF hxmem)) hx
+  · exact rvachevUp_eq_zero_of_not_mem_Ioo F hF
+
+/-- The ordinary (rather than topological) support of Rvachev's function is
+exactly `(-1,1)`. -/
+theorem support_rvachev_eq
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Function.support (rvachevUp F) = Ioo (-1 : ℝ) 1 := by
+  ext x
+  change rvachevUp F x ≠ 0 ↔ x ∈ Ioo (-1 : ℝ) 1
+  constructor
+  · intro hx
+    apply (rvachev_pos_iff_mem_Ioo F hF x).1
+    exact lt_of_le_of_ne (rvachevUp_nonneg F x) hx.symm
+  · intro hx
+    exact ne_of_gt ((rvachev_pos_iff_mem_Ioo F hF x).2 hx)
+
 /-- The derivative is positive on the increasing half of the bump, as stated
 in Section 2. -/
 theorem deriv_rvachev_pos_of_mem_Ioo_neg_zero
@@ -91,10 +132,11 @@ theorem deriv_rvachev_neg_of_mem_Ioo_zero_one
   rw [hzero]
   linarith
 
-/-- The elementary identification used before equation (14): a reciprocal
-power-of-two Fabius value is the reflected Rvachev value. -/
-theorem rvachev_one_sub_inverse_two_pow_eq_fabius
-    (F : BoundedFabius) (_hF : IsFabius F) (n : ℕ) :
+/-- The fold defining `rvachevUp` identifies a reciprocal-power-of-two Fabius
+value with the reflected Rvachev value.  This structural identity needs only
+boundedness, not the Fabius equations. -/
+theorem rvachev_one_sub_inverse_two_pow_eq_fabiusReal
+    (F : BoundedFabius) (n : ℕ) :
     rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) =
       fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
   cases n with
@@ -110,6 +152,15 @@ theorem rvachev_one_sub_inverse_two_pow_eq_fabius
       congr 1
       ring
 
+/-- Backwards-compatible `IsFabius`-specialized form of
+`rvachev_one_sub_inverse_two_pow_eq_fabiusReal`, used before equation (14). -/
+theorem rvachev_one_sub_inverse_two_pow_eq_fabius
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) =
+      fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
+  clear hF
+  exact rvachev_one_sub_inverse_two_pow_eq_fabiusReal F n
+
 /-- Every derivative of the signed global Fabius function vanishes at zero. -/
 theorem iteratedDeriv_extendedFabius_zero
     (F : BoundedFabius) (hF : IsFabius F) (order : ℕ) :
@@ -118,25 +169,42 @@ theorem iteratedDeriv_extendedFabius_zero
     extendedFabius_eq_zero_of_nonpos F hF (by norm_num)]
   ring
 
-/-- For a positive `scale`, every derivative vanishes at the even power of
-two `2^scale`.  This is the flatness assertion used in the negative-index
-case of Proposition 10. -/
-theorem iteratedDeriv_extendedFabius_two_pow_eq_zero
+/-- Every derivative at `2^scale` vanishes as soon as `order + scale` is
+positive.  In particular, this includes positive-order derivatives at the
+previously omitted endpoint `2^0 = 1`. -/
+theorem iteratedDeriv_extendedFabius_two_pow_eq_zero_of_one_le_add
     (F : BoundedFabius) (hF : IsFabius F)
-    (scale order : ℕ) (hscale : 1 ≤ scale) :
+    (scale order : ℕ) (horderScale : 1 ≤ order + scale) :
     iteratedDeriv order (extendedFabius F) ((2 : ℝ) ^ scale) = 0 := by
   rw [iteratedDeriv_extendedFabius F hF]
-  have hexponent : 1 ≤ order + scale := by omega
   have hzero : extendedFabius F ((2 : ℝ) ^ (order + scale)) = 0 := by
     have hzeroAtOrigin : extendedFabius F 0 = 0 :=
       extendedFabius_eq_zero_of_nonpos F hF (by norm_num)
     have htranslate := extendedFabius_add_pow_two F hF (order + scale)
-      hexponent (x := 0) (by norm_num) (by positivity)
+      horderScale (x := 0) (by norm_num) (by positivity)
     rw [zero_add, hzeroAtOrigin, neg_zero] at htranslate
     exact htranslate
   rw [show (2 : ℝ) ^ order * (2 : ℝ) ^ scale =
       (2 : ℝ) ^ (order + scale) by rw [pow_add], hzero]
   ring
+
+/-- Every positive-order derivative of the global Fabius extension vanishes at
+the endpoint `1`. -/
+theorem iteratedDeriv_extendedFabius_one_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    (order : ℕ) (horder : 1 ≤ order) :
+    iteratedDeriv order (extendedFabius F) 1 = 0 := by
+  simpa using iteratedDeriv_extendedFabius_two_pow_eq_zero_of_one_le_add
+    F hF 0 order (by simpa using horder)
+
+/-- For a positive `scale`, every derivative vanishes at the positive power of
+two `2^scale` (hence at an even integer).  This is the flatness assertion used
+in the negative-index case of Proposition 10. -/
+theorem iteratedDeriv_extendedFabius_two_pow_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    (scale order : ℕ) (hscale : 1 ≤ scale) :
+    iteratedDeriv order (extendedFabius F) ((2 : ℝ) ^ scale) = 0 :=
+  iteratedDeriv_extendedFabius_two_pow_eq_zero_of_one_le_add F hF scale order (by omega)
 
 /-! ## Exact arithmetic assertions used inside proofs -/
 

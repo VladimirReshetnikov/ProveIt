@@ -18,7 +18,9 @@ open Finset
 
 namespace Fabius
 
-private lemma mersenneProduct_eq_interval (n : ℕ) :
+/-- Rewrite the initial Mersenne product as a product over the natural interval
+`[1, n + 1)`. -/
+theorem mersenneProduct_eq_interval (n : ℕ) :
     mersenneProduct n = mersenneIntervalProduct 1 (n + 1) := by
   rw [mersenneProduct, mersenneIntervalProduct,
     Finset.prod_Ico_eq_prod_range]
@@ -27,32 +29,23 @@ private lemma mersenneProduct_eq_interval (n : ℕ) :
   congr 2
   omega
 
-private lemma factorial_mul_interval (n k : ℕ) (hk : k ≤ n) :
+/-- Complete `(k + 1)!` to `(n + 1)!` by multiplying by the intervening
+natural factors. -/
+theorem factorial_mul_interval (n k : ℕ) (hk : k ≤ n) :
     (k + 1).factorial * (∏ j ∈ Ico (k + 2) (n + 2), j) =
       (n + 1).factorial := by
   rw [← Finset.prod_Ico_id_eq_factorial,
     ← Finset.prod_Ico_id_eq_factorial]
   exact Finset.prod_Ico_consecutive id (by omega) (by omega)
 
-private lemma mersenneProduct_mul_interval (n k : ℕ) (hk : k ≤ n) :
+/-- Complete the Mersenne product through `k` with the factors through `n`. -/
+theorem mersenneProduct_mul_interval (n k : ℕ) (hk : k ≤ n) :
     mersenneProduct k * mersenneIntervalProduct (k + 1) (n + 1) =
       mersenneProduct n := by
   rw [mersenneProduct_eq_interval, mersenneProduct_eq_interval,
     mersenneIntervalProduct, mersenneIntervalProduct]
   exact Finset.prod_Ico_consecutive (fun j => 2 ^ j - 1)
     (by omega) (by omega)
-
-/-- Peeling off the last factor of the Mersenne product
-`mersenneProduct n = ∏_{k<n} (2 ^ (k + 1) - 1)`. -/
-lemma mersenneProduct_succ (n : ℕ) :
-    mersenneProduct (n + 1) = mersenneProduct n * (2 ^ (n + 1) - 1) := by
-  simp [mersenneProduct, Finset.prod_range_succ]
-
-private lemma mersenneProduct_pos (n : ℕ) : 0 < mersenneProduct n := by
-  apply Finset.prod_pos
-  intro i hi
-  have : 1 < 2 ^ (i + 1) := Nat.one_lt_pow (by omega) (by omega)
-  omega
 
 /--
 The division-free natural sequence `halfMomentNumerator` is the numerator
@@ -97,7 +90,7 @@ theorem halfMoment_eq_halfMomentNumerator (n : ℕ) :
             push_cast
             convert congrArg (fun z : ℕ => (z : ℚ)) hnat using 1 <;>
               push_cast <;> ring
-          rw [hcommon, mersenneProduct_succ]
+          rw [hcommon, mersenneProduct_succ_eq]
           have hfac : (n + 2).factorial = (n + 2) * (n + 1).factorial := by
             rw [show n + 2 = (n + 1) + 1 by omega, Nat.factorial_succ]
           have hpowNat : 1 ≤ 2 ^ (n + 1) := by
@@ -116,5 +109,12 @@ theorem halfMoment_eq_halfMomentNumerator (n : ℕ) :
             have : (1 : ℚ) ≤ (2 : ℚ) ^ n := one_le_pow₀ (by norm_num)
             nlinarith
           field_simp [ne_of_gt hmpos, ne_of_gt hnewpos]
+
+/-- The reduced denominator of a half moment divides the displayed natural
+normalization from its division-free recurrence. -/
+theorem halfMoment_den_dvd_normalization (n : ℕ) :
+    (halfMoment n).den ∣ (n + 1).factorial * mersenneProduct n := by
+  rw [halfMoment_eq_halfMomentNumerator]
+  exact rat_den_dvd_nat_div _ _
 
 end Fabius

@@ -308,7 +308,9 @@ private lemma rvachev_fourier_phase_pair
     exp_add_exp_neg_eq_two_mul_cos (Real.pi * n * t)]
   ring
 
-private lemma rvachev_even_translate_sum_eq_self
+/-- On the support interval, every noncentral translate by an even integer
+vanishes, so the period-two translate sum reduces to its central term. -/
+theorem rvachev_even_translate_sum_eq_self
     (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
     (ht0 : -1 ≤ t) (ht1 : t ≤ 1) :
     ∑' k : ℤ, rvachevUp F (t + 2 * k) = rvachevUp F t := by
@@ -417,9 +419,11 @@ theorem rvachev_poisson_at_zero
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   simpa using rvachev_poisson_summation F hF ha 0
 
-private lemma rvachev_lattice_sum_on_half_one
+/-- Once the lattice spacing is at least `1 / 2`, compact support leaves only
+the central term and the two nearest neighbors. -/
+theorem rvachev_lattice_sum_of_one_half_le
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
-    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
+    (ha0 : 1 / 2 ≤ a) :
     ∑' m : ℤ, rvachevUp F (a * m) = 1 + 2 * rvachevUp F a := by
   rw [tsum_eq_sum (s := {(-1 : ℤ), 0, 1})]
   · rw [Finset.sum_insert]
@@ -446,13 +450,13 @@ private lemma rvachev_lattice_sum_on_half_one
 This is the identity from which the corrected equation (32) follows. -/
 theorem rvachev_poisson_support_specialization_unscaled
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
-    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
+    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
     (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
   rw [← rvachev_poisson_at_zero F hF ha, ← Complex.ofReal_tsum,
-    rvachev_lattice_sum_on_half_one F hF ha0 ha1]
+    rvachev_lattice_sum_of_one_half_le F hF ha0]
   push_cast
   rfl
 

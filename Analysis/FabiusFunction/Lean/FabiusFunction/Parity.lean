@@ -11,7 +11,9 @@ that every integral moment numerator `momentNumerator n` is odd.
 The proofs are entirely in the exact-arithmetic layer.  Lucas's theorem at
 the prime `2` gives the binary recurrences for odd binomial coefficients;
 the recurrence defining `momentNumerator` then reduces modulo `2` to one of
-those counts.
+those counts.  Besides the full-row formulas, the module records the exact
+truncated odd-coefficient count used by the two-adic half-moment recurrence
+and a reusable bridge between filters on `Fin N` and `range N`.
 -/
 
 set_option autoImplicit false
@@ -188,6 +190,41 @@ theorem odd_binomial_coefficient_counts (n : ℕ) :
     rw [card_oddBinomialIndices_two_mul_add_one, card_oddBinomialIndices]
     simp [pow_succ, mul_comm]
 
+/-- The exact number of odd inner coefficients in row `2m + 1` of Pascal's
+triangle after removing the constant term.  Relative to the full row, the
+three discarded odd coefficients occur at indices `0`, `2m`, and `2m + 1`. -/
+theorem card_odd_inner_binomial_coefficients (m : ℕ) (hm : 1 ≤ m) :
+    ((range (2 * m)).filter (fun k =>
+      k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))).card =
+        2 ^ (binaryWeight m + 1) - 3 := by
+  let p : ℕ → Prop := fun k => Odd (Nat.choose (2 * m + 1) k)
+  let coeff : Finset ℕ := (range (2 * m)).filter p
+  have hfull := (odd_binomial_coefficient_counts m).2
+  have hlast : p (2 * m + 1) := by simp [p]
+  have hpenultimate : p (2 * m) := by
+    dsimp [p]
+    rw [Nat.choose_succ_self_right]
+    exact odd_two_mul_add_one m
+  rw [show 2 * m + 2 = (2 * m + 1) + 1 by omega, Finset.range_add_one,
+    Finset.filter_insert, if_pos hlast,
+    Finset.card_insert_of_notMem (by simp)] at hfull
+  rw [Finset.range_add_one, Finset.filter_insert, if_pos hpenultimate,
+    Finset.card_insert_of_notMem (by simp)] at hfull
+  have hzero : 0 ∈ coeff := by
+    have hmpos : 0 < m := by omega
+    simp [coeff, p, hmpos]
+  have herase :
+      (range (2 * m)).filter (fun k => k ≠ 0 ∧ p k) = coeff.erase 0 := by
+    ext k
+    simp only [mem_filter, mem_range, mem_erase, coeff, p]
+    tauto
+  rw [show ((range (2 * m)).filter (fun k =>
+    k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))) = coeff.erase 0 by
+      simpa only [p] using herase]
+  have hcard := Finset.card_erase_add_one hzero
+  change coeff.card + 1 + 1 = 2 ^ (binaryWeight m + 1) at hfull
+  omega
+
 /-! ## Oddness of the moment numerators -/
 
 private lemma sum_modEq_card_filter_odd {alpha : Type*} [DecidableEq alpha]
@@ -224,9 +261,9 @@ private lemma odd_two_pow_sub_one {w : ℕ} (hw : 0 < w) : Odd (2 ^ w - 1) := by
     simp [Nat.mul_comm]
   · exact odd_one
 
-/-- Counting the elements of `Fin N` whose value satisfies `p` is the same as
-counting the elements of `range N` satisfying `p`. -/
-lemma card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
+/-- Filtering `Fin N` by a predicate on values has the same cardinality as
+filtering `range N` by that predicate. -/
+theorem card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
     ((Finset.univ : Finset (Fin N)).filter (fun k => p k.val)).card =
       ((range N).filter p).card := by
   apply Finset.card_bij (fun k _ => k.val)

@@ -9,6 +9,12 @@ import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
 This file formalizes equations (10)--(19), the bounded-partition interpretation following
 equation (19), and the step functions used in Theorem 2 of the paper.
 
+The polynomial API records the product and recursion formulas, exact degree,
+coefficient interpretation, and coefficient normalization.  The measure API
+then constructs the associated atomic probability measures and finite
+Bernoulli convolutions, while the last section defines the corrected pointwise
+step representatives.
+
 Two corrections to the source are built into the definitions:
 
 * The upper convolution index in equation (12) must be finite (`1 ≤ k ≤ n`), as required by
@@ -34,9 +40,12 @@ noncomputable def geometricPolynomial (r : ℕ) : Polynomial ℕ :=
 @[simp] theorem geometricPolynomial_zero : geometricPolynomial 0 = 0 := by
   simp [geometricPolynomial]
 
+/-- The one-term geometric polynomial is the constant polynomial `1`. -/
 @[simp] theorem geometricPolynomial_one : geometricPolynomial 1 = 1 := by
   simp [geometricPolynomial]
 
+/-- Splitting even and odd exponents gives the basic doubling identity for
+geometric polynomials. -/
 theorem geometricPolynomial_two_mul (r : ℕ) :
     geometricPolynomial (2 * r) =
       (geometricPolynomial r).comp (X ^ 2) * (1 + X) := by
@@ -57,6 +66,8 @@ noncomputable def approximationPolynomial (n : ℕ) : Polynomial ℕ :=
 @[simp] theorem approximationPolynomial_zero : approximationPolynomial 0 = 1 := by
   simp [approximationPolynomial]
 
+/-- Appending the last geometric factor gives the direct product recurrence
+for `p_n`. -/
 theorem approximationPolynomial_succ_product (n : ℕ) :
     approximationPolynomial (n + 1) =
       approximationPolynomial n * geometricPolynomial (2 ^ (n + 1)) := by
@@ -91,11 +102,15 @@ def approximationDegree (n : ℕ) : ℕ :=
 @[simp] theorem approximationDegree_zero : approximationDegree 0 = 0 := by
   simp [approximationDegree]
 
+/-- Appending the last geometric factor increases the degree by
+`2^(n+1) - 1`. -/
 theorem approximationDegree_succ_add (n : ℕ) :
     approximationDegree (n + 1) =
       approximationDegree n + (2 ^ (n + 1) - 1) := by
   simp [approximationDegree, sum_range_succ]
 
+/-- A subtraction-free closed form for `g_n`, convenient for natural-number
+arithmetic. -/
 theorem approximationDegree_eq (n : ℕ) :
     approximationDegree n + n + 2 = 2 ^ (n + 1) := by
   induction n with
@@ -103,6 +118,13 @@ theorem approximationDegree_eq (n : ℕ) :
   | succ n ih =>
       rw [approximationDegree_succ_add, pow_succ]
       omega
+
+/-- Closed form for the degree `g_n`, expressed with truncated natural
+subtraction. -/
+theorem approximationDegree_eq_sub (n : ℕ) :
+    approximationDegree n = 2 ^ (n + 1) - n - 2 := by
+  have hdegree := approximationDegree_eq n
+  omega
 
 /-- Equation (16). -/
 theorem approximationDegree_succ (n : ℕ) :
@@ -124,6 +146,8 @@ theorem approximationDegree_div_pow (n : ℕ) :
       rw [← ih]
       ring
 
+/-- Every coefficient below `r` in `1 + X + ⋯ + X^(r-1)` is one, and every
+later coefficient is zero. -/
 theorem geometricPolynomial_coeff (r m : ℕ) :
     (geometricPolynomial r).coeff m = if m < r then 1 else 0 := by
   unfold geometricPolynomial
@@ -147,6 +171,7 @@ theorem geometricPolynomial_coeff (r m : ℕ) :
     rw [heq]
     exact b.isLt
 
+/-- A nonempty geometric polynomial has degree `r - 1`. -/
 theorem geometricPolynomial_natDegree {r : ℕ} (hr : 0 < r) :
     (geometricPolynomial r).natDegree = r - 1 := by
   apply le_antisymm
@@ -158,6 +183,7 @@ theorem geometricPolynomial_natDegree {r : ℕ} (hr : 0 < r) :
     rw [geometricPolynomial_coeff, if_pos (by omega)]
     norm_num
 
+/-- Every nonempty geometric polynomial is monic. -/
 theorem geometricPolynomial_monic {r : ℕ} (hr : 0 < r) :
     (geometricPolynomial r).Monic := by
   rw [Polynomial.Monic.def, ← Polynomial.coeff_natDegree,
@@ -177,6 +203,7 @@ theorem approximationPolynomial_leadingCoeff (n : ℕ) :
     (approximationPolynomial n).leadingCoeff = 1 :=
   (approximationPolynomial_monic n).leadingCoeff
 
+/-- The natural degree of `p_n` is exactly `g_n`. -/
 theorem approximationPolynomial_natDegree (n : ℕ) :
     (approximationPolynomial n).natDegree = approximationDegree n := by
   unfold approximationPolynomial approximationDegree
@@ -188,12 +215,21 @@ theorem approximationPolynomial_natDegree (n : ℕ) :
   · intro k hk
     exact geometricPolynomial_monic (by positivity)
 
+/-- Coefficients strictly above the exact degree of `p_n` vanish. -/
+theorem approximationPolynomial_coeff_eq_zero_of_degree_lt
+    {n m : ℕ} (hm : approximationDegree n < m) :
+    (approximationPolynomial n).coeff m = 0 := by
+  apply Polynomial.coeff_eq_zero_of_natDegree_lt
+  rwa [approximationPolynomial_natDegree]
+
+/-- Evaluating a geometric polynomial at one counts its `r` terms. -/
 theorem geometricPolynomial_eval_one (r : ℕ) :
     (geometricPolynomial r).eval 1 = r := by
   unfold geometricPolynomial
   rw [Polynomial.eval_finsetSum Finset.univ (fun j : Fin r => X ^ j.val) 1]
   simp
 
+/-- Evaluation at one gives the normalization constant for `p_n`. -/
 theorem approximationPolynomial_eval_one (n : ℕ) :
     (approximationPolynomial n).eval 1 = 2 ^ (n + 1).choose 2 := by
   unfold approximationPolynomial
@@ -210,6 +246,17 @@ theorem approximationPolynomial_eval_one (n : ℕ) :
         omega
       rw [hchoose, pow_add]
       ring_nf
+
+/-- The coefficients of `p_n` have total mass `2^choose(n+1,2)`.  This is the
+normalization used by both the polynomial probability measure and the step
+approximant. -/
+theorem sum_approximationPolynomial_coeff (n : ℕ) :
+    ∑ m ∈ range (approximationDegree n + 1),
+        (approximationPolynomial n).coeff m = 2 ^ (n + 1).choose 2 := by
+  rw [← approximationPolynomial_eval_one]
+  rw [Polynomial.eval_eq_sum_range]
+  rw [approximationPolynomial_natDegree]
+  simp
 
 /-- A bounded `n`-part partition as in the combinatorial assertion after equation (19). -/
 abbrev RestrictedPartition (n : ℕ) :=
@@ -270,13 +317,12 @@ instance polynomialMeasure_isProbability (n : ℕ) :
           ((approximationPolynomial n).coeff m : ℝ≥0∞) =
         (2 : ℝ≥0∞) ^ ((n + 1).choose 2) := by
     norm_cast
-    rw [← approximationPolynomial_eval_one]
-    rw [Polynomial.eval_eq_sum_range]
-    rw [approximationPolynomial_natDegree]
-    simp
+    exact sum_approximationPolynomial_coeff n
   rw [hcoeff]
   exact ENNReal.mul_inv_cancel (by norm_num) (by simp)
 
+/-- Expanding the finite atomic measure gives its characteristic function as a
+normalized coefficient sum. -/
 theorem polynomialMeasure_charFun_sum (n : ℕ) (t : ℝ) :
     charFun (polynomialMeasure n) t =
       ∑ m ∈ range (approximationDegree n + 1),
@@ -363,6 +409,8 @@ theorem centeredBernoulliMeasure_charFun (k : ℕ) (t : ℝ) :
   push_cast
   ring
 
+/-- Characteristic functions turn a finite convolution power into an ordinary
+power. -/
 theorem convolutionPow_charFun (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (n : ℕ) (t : ℝ) :
     charFun (convolutionPow μ n) t = (charFun μ t) ^ n := by
@@ -406,6 +454,7 @@ noncomputable def stepApproximant (n : ℕ) (x : ℝ) : ℝ :=
       ((approximationPolynomial n).coeff m : ℝ) *
         halfEndpointIntervalIndicator (stepIntervalLeft n m) (stepIntervalRight n m) x
 
+/-- Each interval used by the step approximant has strictly ordered endpoints. -/
 theorem stepIntervalLeft_lt_right (n m : ℕ) :
     stepIntervalLeft n m < stepIntervalRight n m := by
   unfold stepIntervalLeft stepIntervalRight
@@ -421,6 +470,7 @@ theorem stepIntervalLeft_lt_right (n m : ℕ) :
     halfEndpointIntervalIndicator a b b = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
 
+/-- The half-endpoint interval representative is everywhere nonnegative. -/
 theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
     0 ≤ halfEndpointIntervalIndicator a b x := by
   unfold halfEndpointIntervalIndicator
@@ -440,6 +490,7 @@ theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
     halfEndpointIntervalIndicator, Finset.sum_range_succ]
   norm_num [Polynomial.coeff_one]
 
+/-- Every corrected step approximant is pointwise nonnegative. -/
 theorem stepApproximant_nonneg (n : ℕ) (x : ℝ) : 0 ≤ stepApproximant n x := by
   unfold stepApproximant
   apply mul_nonneg (by positivity)

@@ -38,16 +38,6 @@ theorem fabiusAtInverseTwoPow_eq_halfMomentNumerator_formula (n : ℕ) :
   push_cast
   ring
 
-private lemma evenMersenneProduct_succ (n : ℕ) :
-    evenMersenneProduct (n + 1) =
-      evenMersenneProduct n * (2 ^ (2 * (n + 1)) - 1) := by
-  simp [evenMersenneProduct, Finset.prod_range_succ]
-
-private lemma oddMersenneProduct_succ (n : ℕ) :
-    oddMersenneProduct (n + 1) =
-      oddMersenneProduct n * (2 ^ (2 * (n + 1) + 1) - 1) := by
-  simp [oddMersenneProduct, Finset.prod_range_succ]
-
 /-- Split the first `2n+1` Mersenne factors into their even- and odd-indexed
 subproducts. -/
 theorem mersenneProduct_split_odd_even (n : ℕ) :
@@ -57,8 +47,8 @@ theorem mersenneProduct_split_odd_even (n : ℕ) :
   | zero => norm_num [mersenneProduct, evenMersenneProduct, oddMersenneProduct]
   | succ n ih =>
       rw [show 2 * (n + 1) + 1 = (2 * n + 1) + 1 + 1 by omega,
-        mersenneProduct_succ, mersenneProduct_succ, ih,
-        evenMersenneProduct_succ, oddMersenneProduct_succ]
+        mersenneProduct_succ_eq, mersenneProduct_succ_eq, ih,
+        evenMersenneProduct_succ_eq, oddMersenneProduct_succ_eq]
       ring_nf
 
 /-- Division-free natural-number form of Equation (26). -/
