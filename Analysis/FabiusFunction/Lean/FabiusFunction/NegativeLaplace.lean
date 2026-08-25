@@ -366,7 +366,9 @@ theorem negativeLaplaceLog_exact_periodic_decomposition
   field_simp
   ring
 
-private lemma generatingFunction_continuous
+/-- The real half-moment generating function is continuous on the whole real
+line. -/
+theorem continuous_generatingFunction
     (F : BoundedFabius) (hF : IsFabius F) :
     Continuous (generatingFunction F) := by
   unfold generatingFunction
@@ -439,7 +441,7 @@ theorem exp_negativeLaplaceLog_eq_generatingFunction_neg
   have hgen : Tendsto
       (fun N : ℕ => generatingFunction F (-(s / (2 : ℝ) ^ N)))
       atTop (𝓝 1) := by
-    have hc := (generatingFunction_continuous F hF).continuousAt.tendsto.comp hsmall
+    have hc := (continuous_generatingFunction F hF).continuousAt.tendsto.comp hsmall
     have hzero : generatingFunction F 0 = 1 := by simp [generatingFunction]
     change Tendsto
       (generatingFunction F ∘ fun N : ℕ => -(s / (2 : ℝ) ^ N))
