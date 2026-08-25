@@ -529,6 +529,26 @@ theorem stepApproximant_le_one (n : ℕ) (x : ℝ) : stepApproximant n x ≤ 1 :
           dsimp [c]
           exact stepScale_mul_previous_eval_one k
 
+/-- Every histogram approximant takes values in the unit interval. -/
+theorem stepApproximant_mem_Icc (n : ℕ) (x : ℝ) :
+    stepApproximant n x ∈ Set.Icc (0 : ℝ) 1 :=
+  ⟨stepApproximant_nonneg n x, stepApproximant_le_one n x⟩
+
+/-- Absolute-value form of `stepApproximant_mem_Icc`. -/
+theorem abs_stepApproximant_le_one (n : ℕ) (x : ℝ) :
+    |stepApproximant n x| ≤ 1 := by
+  rw [abs_of_nonneg (stepApproximant_nonneg n x)]
+  exact stepApproximant_le_one n x
+
+/-- The mass of every polynomial atom is at most the width of its histogram
+cell.  This closes the conditional estimate from `StepMeasureBridge` using
+the global height bound. -/
+theorem polynomialAtomMass_le_cellWidth_unconditional (n m : ℕ) :
+    ((approximationPolynomial n).coeff m : ℝ) /
+        (2 : ℝ) ^ ((n + 1).choose 2) ≤ 1 / (2 : ℝ) ^ n :=
+  polynomialAtomMass_le_cellWidth n m
+    (stepApproximant_le_one n (polynomialAtomLocation n m))
+
 @[simp] theorem stepApproximant_apply_zero (n : ℕ) : stepApproximant n 0 = 1 := by
   cases n with
   | zero =>
@@ -623,16 +643,19 @@ theorem stepApproximant_le_one (n : ℕ) (x : ℝ) : stepApproximant n x ≤ 1 :
       rw [pow_add, pow_succ]
       ring
 
+/-- Along any filter, convergence of all interval integrals upgrades to
+pointwise convergence on the negative half-line for a family monotone there. -/
 theorem tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto
-    (f : ℕ → ℝ → ℝ) (g : ℝ → ℝ) (x : ℝ)
+    {ι : Type*} {l : Filter ι}
+    (f : ι → ℝ → ℝ) (g : ℝ → ℝ) (x : ℝ)
     (hx : x < 0)
     (hfmono : ∀ n, MonotoneOn (f n) (Iio 0))
     (hfint : ∀ n a b, IntervalIntegrable (f n) volume a b)
     (hgcont : Continuous g)
-    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) atTop
+    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) l
       (𝓝 (∫ y in a..b, g y))) :
-    Tendsto (fun n => f n x) atTop (𝓝 (g x)) := by
-  rw [Metric.tendsto_atTop]
+    Tendsto (fun n => f n x) l (𝓝 (g x)) := by
+  rw [Metric.tendsto_nhds]
   intro ε hε
   obtain ⟨δ, hδ, hcont⟩ := Metric.continuousAt_iff.mp hgcont.continuousAt (ε / 4) (by positivity)
   let d : ℝ := min (δ / 2) (-x / 2)
@@ -670,14 +693,11 @@ theorem tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto
     linarith
   have hleft := (hint (x - d) x).div_const d
   have hright := (hint x (x + d)).div_const d
-  rw [Metric.tendsto_atTop] at hleft hright
-  obtain ⟨Nl, hNl⟩ := hleft (ε / 4) (by positivity)
-  obtain ⟨Nr, hNr⟩ := hright (ε / 4) (by positivity)
-  refine ⟨max Nl Nr, fun n hn => ?_⟩
-  have hnl : Nl ≤ n := (le_max_left _ _).trans hn
-  have hnr : Nr ≤ n := (le_max_right _ _).trans hn
-  have havgl := hNl n hnl
-  have havgr := hNr n hnr
+  have hleft_eventually := (Metric.tendsto_nhds.1 hleft)
+    (ε / 4) (by positivity)
+  have hright_eventually := (Metric.tendsto_nhds.1 hright)
+    (ε / 4) (by positivity)
+  filter_upwards [hleft_eventually, hright_eventually] with n havgl havgr
   rw [Real.dist_eq, abs_lt] at havgl havgr ⊢
   have hleftMono : (∫ y in (x - d)..x, f n y) ≤ d * f n x := by
     have hconst : (∫ _ in (x - d)..x, f n x) = d * f n x := by
@@ -715,38 +735,45 @@ theorem tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto
       simpa [mul_comm] using hrightMono
     linarith
 
+/-- Arbitrary-filter pointwise convergence for even unimodal families,
+deduced from convergence of interval integrals. -/
 theorem tendsto_of_even_unimodal_of_intervalIntegral_tendsto
-    (f : ℕ → ℝ → ℝ) (g : ℝ → ℝ)
+    {ι : Type*} {l : Filter ι}
+    (f : ι → ℝ → ℝ) (g : ℝ → ℝ)
     (hfmono : ∀ n, MonotoneOn (f n) (Iio 0))
     (hfeven : ∀ n x, f n (-x) = f n x)
     (hfzero : ∀ n, f n 0 = g 0)
     (hfint : ∀ n a b, IntervalIntegrable (f n) volume a b)
     (hgcont : Continuous g)
     (hgeven : ∀ x, g (-x) = g x)
-    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) atTop
+    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) l
       (𝓝 (∫ y in a..b, g y))) :
-    ∀ x, Tendsto (fun n => f n x) atTop (𝓝 (g x)) := by
+    ∀ x, Tendsto (fun n => f n x) l (𝓝 (g x)) := by
   intro x
   rcases lt_trichotomy x 0 with hx | hx | hx
   · exact tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto f g x hx
       hfmono hfint hgcont hint
   · subst x
-    simpa only [hfzero] using (tendsto_const_nhds : Tendsto (fun _ : ℕ => g 0) atTop (𝓝 (g 0)))
+    simpa only [hfzero] using
+      (tendsto_const_nhds : Tendsto (fun _ : ι => g 0) l (𝓝 (g 0)))
   · have hneg : -x < 0 := neg_neg_of_pos hx
     have hlim := tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto f g (-x) hneg
       hfmono hfint hgcont hint
     simpa only [hfeven, hgeven] using hlim
 
+/-- Positive-half-line counterpart of
+`tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto`. -/
 theorem tendsto_of_antitoneOn_Ioi_of_intervalIntegral_tendsto
-    (f : ℕ → ℝ → ℝ) (g : ℝ → ℝ) (x : ℝ)
+    {ι : Type*} {l : Filter ι}
+    (f : ι → ℝ → ℝ) (g : ℝ → ℝ) (x : ℝ)
     (hx : 0 < x)
     (hfanti : ∀ n, AntitoneOn (f n) (Ioi 0))
     (hfint : ∀ n a b, IntervalIntegrable (f n) volume a b)
     (hgcont : Continuous g)
-    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) atTop
+    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) l
       (𝓝 (∫ y in a..b, g y))) :
-    Tendsto (fun n => f n x) atTop (𝓝 (g x)) := by
-  let fr : ℕ → ℝ → ℝ := fun n y => f n (-y)
+    Tendsto (fun n => f n x) l (𝓝 (g x)) := by
+  let fr : ι → ℝ → ℝ := fun n y => f n (-y)
   let gr : ℝ → ℝ := fun y => g (-y)
   have hfrmono : ∀ n, MonotoneOn (fr n) (Iio 0) := by
     intro n y hy z hz hyz
@@ -759,7 +786,7 @@ theorem tendsto_of_antitoneOn_Ioi_of_intervalIntegral_tendsto
       ((IntervalIntegrable.iff_comp_neg (f := f n) (a := -a) (b := -b)).mp
         (hfint n (-a) (-b)))
   have hgrcont : Continuous gr := hgcont.comp continuous_neg
-  have hrint : ∀ a b, Tendsto (fun n => ∫ y in a..b, fr n y) atTop
+  have hrint : ∀ a b, Tendsto (fun n => ∫ y in a..b, fr n y) l
       (𝓝 (∫ y in a..b, gr y)) := by
     intro a b
     simpa only [fr, gr, intervalIntegral.integral_comp_neg] using hint (-b) (-a)
@@ -767,22 +794,26 @@ theorem tendsto_of_antitoneOn_Ioi_of_intervalIntegral_tendsto
     fr gr (-x) (neg_neg_of_pos hx) hfrmono hfrint hgrcont hrint
   simpa only [fr, gr, neg_neg] using hlim
 
+/-- Arbitrary-filter pointwise convergence for a family increasing to zero
+and decreasing after zero, from convergence of all interval integrals. -/
 theorem tendsto_of_unimodal_of_intervalIntegral_tendsto
-    (f : ℕ → ℝ → ℝ) (g : ℝ → ℝ)
+    {ι : Type*} {l : Filter ι}
+    (f : ι → ℝ → ℝ) (g : ℝ → ℝ)
     (hfmono : ∀ n, MonotoneOn (f n) (Iio 0))
     (hfanti : ∀ n, AntitoneOn (f n) (Ioi 0))
     (hfzero : ∀ n, f n 0 = g 0)
     (hfint : ∀ n a b, IntervalIntegrable (f n) volume a b)
     (hgcont : Continuous g)
-    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) atTop
+    (hint : ∀ a b, Tendsto (fun n => ∫ y in a..b, f n y) l
       (𝓝 (∫ y in a..b, g y))) :
-    ∀ x, Tendsto (fun n => f n x) atTop (𝓝 (g x)) := by
+    ∀ x, Tendsto (fun n => f n x) l (𝓝 (g x)) := by
   intro x
   rcases lt_trichotomy x 0 with hx | hx | hx
   · exact tendsto_of_monotoneOn_Iio_of_intervalIntegral_tendsto f g x hx
       hfmono hfint hgcont hint
   · subst x
-    simpa only [hfzero] using (tendsto_const_nhds : Tendsto (fun _ : ℕ => g 0) atTop (𝓝 (g 0)))
+    simpa only [hfzero] using
+      (tendsto_const_nhds : Tendsto (fun _ : ι => g 0) l (𝓝 (g 0)))
   · exact tendsto_of_antitoneOn_Ioi_of_intervalIntegral_tendsto f g x hx
       hfanti hfint hgcont hint
 
