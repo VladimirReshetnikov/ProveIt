@@ -2703,6 +2703,14 @@ finite exponential type.  Fourier inversion is absolutely convergent:
 \begin{equation}
  \Up(x)=\int_\R\widehat{\Up}(\xi)\e^{2\pi\ii x\xi}\dd\xi. \label{eq:fourier-inversion}
 \end{equation}
+The formal development records the equivalent polynomial-weight form of
+\eqref{eq:schwartz-decay} as \path{rvachevFourier_real_rapidDecay}.  Its stronger declaration
+\path{rvachevFourier_real_iteratedDeriv_rapidDecay} proves that for every
+$k,n\ge0$ there is a positive constant $C_{k,n}$ such that
+\[
+ |\xi|^k\left\|\frac{\dd^n}{\dd\xi^n}\widehat{\Up}(\xi)\right\|\le C_{k,n}
+ \qquad(\xi\in\R).
+\]
 
 \subsection{Poisson summation and partitions of unity}
 
@@ -3418,6 +3426,9 @@ Define
  \qquad
  d_n=n\int_0^1 t^{n-1}\Up(t)\dd t\quad(n\ge1).             \label{eq:d-integral}
 \end{equation}
+Lean's totalized analytic half-moment definition assigns the value $1$ at $n=0$,
+so the exact and analytic sequences also admit a single all-index equality;
+the displayed integral itself remains restricted to $n\ge1$.
 Introduce the entire exponential generating function
 \begin{equation}
  G(z)=1+z\int_0^1\Up(t)\e^{zt}\dd t

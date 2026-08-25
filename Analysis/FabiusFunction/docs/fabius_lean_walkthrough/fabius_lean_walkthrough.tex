@@ -616,6 +616,12 @@ A fixed point satisfies an integral equation.  On the left half,
 \[
   F(x)=\int_0^{2x}F(t)\,\dd t.
 \]
+For the probability CDF this identity is actually valid for every
+$x\leq1/2$, not only for $x\in[0,1/2]$: below zero both the CDF and the
+oriented integral vanish.  Lean exposes this stronger form as
+\lean{weightedSumCDF_eq_intervalIntegral_of_le_half} and retains
+\lean{weightedSumCDF_left_formula} as the interval-shaped compatibility
+wrapper.
 The fundamental theorem of calculus and the chain rule give
 \[
   F'(x)=2F(2x).
@@ -817,7 +823,12 @@ after embedding the rational value into \(\R\).  The displayed formula intention
 
 The base case is total mass.  In the induction step, the analytic recurrence is rewritten term by term using the induction hypotheses.  A cast lemma turns the finite rational sum into the corresponding real sum.  The exact recurrence then closes the goal.
 
-The same method identifies half-interval moments with \lean{halfMoment}.  These moments are connected more directly to inverse-power Fabius values, so they become the analytic bridge between moment theory and the dyadic table.
+The same method identifies half-interval moments with \lean{halfMoment}.  The
+source-facing theorem starts at positive index, while
+\lean{halfMoment_eq_integral_formula_all} packages the normalized zeroth value
+and the integral cases into one statement for every natural index.  These
+moments are connected more directly to inverse-power Fabius values, so they
+become the analytic bridge between moment theory and the dyadic table.
 
 \section{Generating functions}
 The moment generating function is represented both as an integral and as a power series.  Compact support gives uniform bounds
@@ -986,6 +997,13 @@ The proof again prefers an identity of entire functions followed by coefficient 
 
 \section{Poisson summation}
 The original paper's Poisson-summation theorem is formalized in a dedicated module.  Compact support and smoothness place the function in the Schwartz class, so mathlib's Poisson summation framework applies.  The main work is normalization: the theorem from the library and the paper use different Fourier conventions and summation coordinates.  The proof rewrites the transform through the sinc product and then simplifies the sampled factors.
+
+The same Schwartz realization yields more than the summability needed here.
+The public theorem \lean{rvachevFourier_real_iteratedDeriv_rapidDecay} bounds
+every real-axis derivative after multiplication by an arbitrary power of the
+frequency, while \lean{rvachevFourier_real_rapidDecay} is the transform-only
+specialization.  Thus the rapid decay invoked by Poisson summation is itself
+part of the reusable Lean API.
 
 This is representative of source-facing modules: the analytic theorem already exists in a reusable library form, while the paper theorem is a carefully normalized corollary.
 
@@ -2173,7 +2191,7 @@ Theorem 2 & \lean{stepApproximant_tendsto_rvachevUp} and endpoint-corrected vari
 Theorem 3 & probability representation of the up-function & \file{ProbabilityRepresentation.lean} \\
 Theorem 4 & declarations grouped as \lean{original_theorem_four_a}, \lean{_b}, \lean{_c} & \file{OriginalPaperSupplement.lean}, Fourier and differential helpers \\
 Nonanalyticity & smoothness plus failure of analyticity & \file{OriginalPaperSupplement.lean}, differential and Taylor modules \\
-Theorem 5 & Poisson-summation identity & \file{PoissonSummation.lean} \\
+Theorem 5 & Poisson summation and real-axis Fourier rapid decay & \file{PoissonSummation.lean} \\
 Theorem 6 & moment formulas & \file{AnalyticMoments.lean}, \file{OriginalPaperSupplement.lean} \\
 Theorem 7 & global rationality/dyadic statement & \file{GlobalDyadic.lean}, \file{OriginalPaperSupplement.lean} \\
 \bottomrule
@@ -2275,7 +2293,7 @@ Module & Role in the development \\
 \modulefile{EarlyMeasureBridge.lean} & Foundational bridge between early convolution approximants and measure formulations. \\
 \modulefile{StepApproximationLimit.lean} & Coefficient monotonicity, endpoint-corrected step functions, and pointwise convergence by an interval-average squeeze. \\
 \modulefile{EarlyApproximants.lean} & Definitions and elementary properties of the finite approximants used before the limiting theorem. \\
-\modulefile{PoissonSummation.lean} & Poisson-summation theorem in the repository's Fourier normalization. \\
+\modulefile{PoissonSummation.lean} & Poisson summation and rapid decay of every real-axis Fourier derivative. \\
 \modulefile{OriginalPaperSupplement.lean} & Remaining numbered and prose results of the first paper, including exact Taylor formulas and nonanalyticity. \\
 \modulefile{Paper05442.lean} & Aggregator and coverage audit for arXiv:1702.05442. \\
 \addlinespace[0.45em]

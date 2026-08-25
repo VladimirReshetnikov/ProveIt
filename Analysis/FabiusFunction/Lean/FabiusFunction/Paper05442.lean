@@ -33,7 +33,10 @@ proved Lean counterpart:
 * Theorem 4: `Fabius.original_theorem_four_a`,
   `Fabius.original_theorem_four_b`, and `Fabius.original_theorem_four_c`;
 * the unnumbered non-analyticity corollary: `Fabius.rvachev_not_analyticAt`;
-* Theorem 5: `Fabius.rvachev_poisson_summation`;
+* Theorem 5: `Fabius.rvachev_poisson_summation`, supported by the stronger
+  real-axis Schwartz estimates
+  `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay` and
+  `Fabius.rvachevFourier_real_rapidDecay`;
 * Theorem 6: `Fabius.original_theorem_six`;
 * Theorem 7: `Fabius.original_theorem_seven_global`.
 
@@ -45,6 +48,9 @@ construction also exposes stronger corollaries valid for every `x : ℝ`:
   `Fabius.ProbabilityRepresentation.fabiusReal_eq_weightedSum_probability`
   identify the bounded Fabius function with the random-series CDF globally on
   its real domain;
+* `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_intervalIntegral_of_le_half`
+  gives the collapsed left integral equation for every real `x ≤ 1/2`, with
+  no artificial nonnegativity assumption;
 * `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF` and
   `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`
   give `up(x) = P[X ≤ 1 - |x|]` for all real `x`.

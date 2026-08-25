@@ -17,6 +17,9 @@ statements below.
 * In (32), after multiplying (31) by `a`, the factor `1 / a` on the right
   disappears.  We state both the unmultiplied identity and the corrected
   multiplied identity.
+
+The same Schwartz realization also yields a public rapid-decay estimate for
+every real-axis derivative of `rvachevFourier`.
 -/
 
 set_option autoImplicit false
@@ -80,6 +83,37 @@ private lemma fourier_scaledRvachevSchwartz
       dsimp only [q]
       push_cast
       ring
+
+/-- Every derivative of the real-axis Fourier transform of Rvachev's function
+is rapidly decreasing. -/
+theorem rvachevFourier_real_iteratedDeriv_rapidDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k n : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      |x| ^ k *
+          ‖iteratedDeriv n (fun t : ℝ => rvachevFourier F (t : ℂ)) x‖ ≤ C := by
+  let φ : SchwartzMap ℝ ℂ :=
+    scaledRvachevSchwartz F hF 1 (by norm_num)
+  let ψ : SchwartzMap ℝ ℂ := 𝓕 φ
+  have hfun : (fun t : ℝ => rvachevFourier F (t : ℂ)) = (ψ : ℝ → ℂ) := by
+    funext t
+    dsimp only [ψ, φ]
+    rw [fourier_scaledRvachevSchwartz F hF (by norm_num : (0 : ℝ) < 1)]
+    norm_num
+  rw [hfun]
+  obtain ⟨C, hC, hbound⟩ := ψ.decay k n
+  refine ⟨C, hC, ?_⟩
+  intro x
+  simpa only [Real.norm_eq_abs, norm_iteratedFDeriv_eq_norm_iteratedDeriv] using
+    hbound x
+
+/-- The Fourier transform of Rvachev's function is rapidly decreasing on the
+real axis. -/
+theorem rvachevFourier_real_rapidDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      |x| ^ k * ‖rvachevFourier F (x : ℂ)‖ ≤ C := by
+  simpa only [iteratedDeriv_zero] using
+    rvachevFourier_real_iteratedDeriv_rapidDecay F hF k 0
 
 /-- Corrected equation (25), i.e. Poisson summation for Rvachev's function.
 The printed exponential in the source accidentally omits the factor `t`. -/
