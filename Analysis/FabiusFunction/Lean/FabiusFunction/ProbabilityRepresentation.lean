@@ -19,6 +19,20 @@ random variable is `∑' n, x n / 2 / 2^n`.
 The construction records both pointwise and measure-theoretic support on
 `[0,1]`, as well as the self-similarity and reflection identities used to
 identify its continuous CDF with the bounded Fabius function.
+
+The theorem stated in the paper is recovered on its source-facing domain
+`x ∈ [-1,0]`.  The construction yields stronger identities with no restriction
+on the real argument:
+
+* `weightedSumCDF x = fabiusReal F x`, equivalently
+  `fabiusReal F x = P[X ≤ x]`;
+* `rvachevUp F x = weightedSumCDF (1 - |x|)`, equivalently
+  `rvachevUp F x = P[X ≤ 1 - |x|]`.
+
+Both identities have real-valued and native `ℝ≥0∞` measure forms.  In theorem
+names below, `_global` means that the input `x` ranges over all of `ℝ`; it
+does **not** refer to the signed extension `extendedFabius` or its canonical
+specialization `globalFabius`.
 -/
 
 open Filter Set MeasureTheory ProbabilityTheory Topology
@@ -572,8 +586,9 @@ theorem rvachevUp_eq_weightedSumCDF
     ring
   · rw [abs_of_pos (lt_of_not_ge hx)]
 
-/-- Global real-probability representation of Rvachev's function:
-`up(x) = P[X ≤ 1 - |x|]` for the weighted sum of independent uniforms. -/
+/-- All-real probability representation of Rvachev's function:
+`up(x) = P[X ≤ 1 - |x|]` for the weighted sum of independent uniforms.
+Here “global” refers to the unrestricted real input, not to `globalFabius`. -/
 theorem rvachevUp_eq_weightedSum_probability_global
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     rvachevUp F x = uniformProduct.real
@@ -581,7 +596,8 @@ theorem rvachevUp_eq_weightedSum_probability_global
   rw [rvachevUp_eq_weightedSumCDF F hF x,
     weightedSumCDF_eq_measureReal]
 
-/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+/-- The all-real representation of `rvachevUp` in the probability measure's
+native `ℝ≥0∞` codomain.  This is unrelated to the signed `globalFabius`. -/
 theorem ofReal_rvachevUp_eq_weightedSum_probability_global
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     ENNReal.ofReal (rvachevUp F x) = uniformProduct
@@ -598,7 +614,8 @@ theorem fabiusReal_eq_weightedSum_probability
   rw [← weightedSumCDF_eq_measureReal,
     weightedSumCDF_eq_fabiusReal F hF]
 
-/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+/-- The all-real bounded-CDF representation in the probability measure's native
+`ℝ≥0∞` codomain. -/
 theorem ofReal_fabiusReal_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     ENNReal.ofReal (fabiusReal F x) =
@@ -612,13 +629,16 @@ lemma independent_uniform_coordinates :
   unfold uniformProduct
   exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
 
+/-- Each coordinate projection has the uniform probability law on `[0,1]`. -/
 lemma coordinate_has_uniform_law (n : ℕ) :
     uniformProduct.map (fun ω : SampleSpace => ω n) =
       (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
   unfold uniformProduct
   rw [Measure.infinitePi_map_eval]
 
-/-- Theorem 3 of arXiv:1702.05442, in real-probability form. -/
+/-- Theorem 3 of arXiv:1702.05442, in its source-facing real-probability form
+on `[-1,0]`.  The unrestricted strengthening is
+`rvachevUp_eq_weightedSum_probability_global`. -/
 theorem rvachevUp_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Icc (-1 : ℝ) 0) :
@@ -638,7 +658,9 @@ theorem rvachevUp_eq_weightedSum_probability
       linarith [hω.2]
   rw [rvachevUp_eq_weightedSum_probability_global F hF x, hset]
 
-/-- The same theorem with the probability left in its native `ℝ≥0∞` codomain. -/
+/-- The same source-facing theorem with the probability left in its native
+`ℝ≥0∞` codomain.  See `ofReal_rvachevUp_eq_weightedSum_probability_global`
+for the unrestricted real-domain strengthening. -/
 theorem ofReal_rvachevUp_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Icc (-1 : ℝ) 0) :

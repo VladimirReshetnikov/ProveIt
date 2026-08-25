@@ -4,9 +4,19 @@ This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
 
 - [*An infinitely differentiable function with compact support: Definition
-  and Properties*](https://arxiv.org/abs/1702.05442);
+  and Properties*](https://arxiv.org/abs/1702.05442); repository copies of
+  the [TeX source](docs/papers/arXiv-1702.05442v1/09-Function.tex) and
+  [published PDF](docs/papers/arXiv-1702.05442v1/1702.05442v1.pdf) are
+  available locally;
 - [*Arithmetic of the Fabius function*](https://arxiv.org/abs/1702.06487),
-  version 3.
+  version 3; repository copies of the
+  [TeX source](docs/papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex) and
+  [published PDF](docs/papers/arXiv-1702.06487v3/1702.06487v3.pdf) are
+  available locally.
+
+A self-contained human-readable synthesis of the formal development is also
+available as [LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -39,6 +49,14 @@ The formalization separates two functions that the sources both call `F`:
   paper.  It is defined by the locally finite Thue--Morse translate sum in
   equation (1).  It agrees with the bounded function on `[0,1]` but can be
   negative outside it.
+
+Rvachev's compactly supported `up` function is represented by `rvachevUp F`,
+which folds the bounded candidate about zero.  Its evenness is structural:
+`rvachevUp_even` holds for every `BoundedFabius`, without the Fabius equations.
+Support does use `IsFabius`: `Basic.lean` gives the lightweight inclusion
+`support_rvachev_subset_Ioo`, `Monotonicity.lean` strengthens it to the exact
+pointwise identity `support_rvachevUp`, and `tsupport_rvachev` identifies the
+topological support with the closed interval `[-1,1]`.
 
 The arithmetic layer is independent of real analysis:
 
@@ -74,8 +92,9 @@ points:
 
 | Purpose | Focused import | Good starting declarations |
 | --- | --- | --- |
-| Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachev_hasDerivAt` |
+| Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
+| Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
@@ -89,6 +108,15 @@ extension and is intentionally different from the bounded, clamped function
 outside `[0,1]`.  Range facts such as `rvachevUp_nonneg`,
 `rvachevUp_le_one`, and `norm_coe_rvachevUp_le_one` need no `IsFabius`
 hypothesis because they follow directly from the codomain.
+
+The probability API uses “global” in a deliberately different sense from
+`globalFabius`: it means that a formula holds for every real argument.  If `X`
+is the weighted sum of independent uniform coordinates, then
+`fabiusReal F x = P[X ≤ x]` and
+`rvachevUp F x = P[X ≤ 1 - |x|]` for every `x : ℝ`.  These identities describe
+the bounded CDF and its folded bump, not the signed extension
+`extendedFabius F`; real-valued and native `ℝ≥0∞` measure forms are both
+available.
 
 The naming scheme distinguishes convergence objects and numeric identities:
 `*_hasSum` retains the summability witness, while `*_eq_tsum` gives the
@@ -393,9 +421,9 @@ decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
 canonical, and signed-global real corollaries.  A self-contained derivation is
 available as
-[LaTeX source](docs/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex)
+[LaTeX source](docs/drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex)
 and as a
-[rendered PDF](docs/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf).
+[rendered PDF](docs/drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf).
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)

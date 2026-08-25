@@ -31,6 +31,23 @@ proved Lean counterpart:
 * Theorem 6: `Fabius.original_theorem_six`;
 * Theorem 7: `Fabius.original_theorem_seven_global`.
 
+The Theorem 3 declaration in that list deliberately preserves the paper's
+source-facing domain `x ∈ [-1,0]` and event description.  The probability
+construction also exposes stronger corollaries valid for every `x : ℝ`:
+
+* `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal` and
+  `Fabius.ProbabilityRepresentation.fabiusReal_eq_weightedSum_probability`
+  identify the bounded Fabius function with the random-series CDF globally on
+  its real domain;
+* `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF` and
+  `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`
+  give `up(x) = P[X ≤ 1 - |x|]` for all real `x`.
+
+Here the suffix `_global` means “no restriction on the real input.”  It does
+not mean the signed extension `Fabius.extendedFabius` or its canonical form
+`Fabius.globalFabius`; the probability identities describe the bounded CDF
+and its folded compactly supported bump.
+
 The source contains several typographical or endpoint defects.  The Lean
 statements use the mathematically valid forms: equation (12) is a finite
 convolution, Theorem 2 uses half-weighted cell endpoints, equation (25)
