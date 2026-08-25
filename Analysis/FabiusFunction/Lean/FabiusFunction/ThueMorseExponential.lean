@@ -259,7 +259,8 @@ theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
   have hfirst := thueMorse_affine_power_sum_self k
     (-(2 : ℚ) ^ k + c) 1
   rw [thueMorseTranslatedPowerSum]
-  convert hfirst using 1 <;> ring
+  simpa only [one_mul, mul_one, one_pow, sub_eq_add_neg, add_comm, add_left_comm,
+    add_assoc] using hfirst
 
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries

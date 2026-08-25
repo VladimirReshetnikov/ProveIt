@@ -412,6 +412,11 @@ def continuousMapOnLegendreInterval (f : ℝ → ℝ) (hf : Continuous f) :
     C(Icc (-1 : ℝ) 1, ℝ) :=
   ⟨fun x ↦ f x, hf.comp continuous_subtype_val⟩
 
+/-- The bundled restriction to `Icc (-1) 1` evaluates through the
+underlying function.  Used to turn `ContinuousMap.hasSum_apply` into
+pointwise statements in
+`hasSum_eval_continuousMapOnLegendreInterval_smul` and in
+`hasSum_legendrePolynomialSeries_eq_uniform`. -/
 @[simp]
 theorem continuousMapOnLegendreInterval_apply
     (f : ℝ → ℝ) (hf : Continuous f) (x : Icc (-1 : ℝ) 1) :

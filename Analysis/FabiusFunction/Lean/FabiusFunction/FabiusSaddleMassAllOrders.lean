@@ -26,6 +26,12 @@ open SaddleExpansion
 
 noncomputable section
 
+/-- For `0 < L`, the degree-`L - 1` exponential Taylor polynomial evaluated
+at the epsilon-truncated dyadic Lambert exponent splits exactly into the
+saddle reference polynomial plus `dyadicLambertEpsilon t ^ L` times the
+finite-exponential quotient polynomial, both evaluated at `v`.  Used in this
+file by `dyadicLambert_central_expTaylor_error_isBigO` and
+`dyadicLambert_central_reference_error_isBigO`. -/
 theorem expTaylorPolynomial_dyadicLambertExponentTruncation_eq
     (L : ℕ) (hL : 0 < L) (t v : ℝ) :
     SaddleAllOrders.expTaylorPolynomial L
@@ -59,6 +65,9 @@ theorem expTaylorPolynomial_dyadicLambertExponentTruncation_eq
     map_div₀, map_natCast, Polynomial.eval_add, one_div, inv_mul_eq_div,
     hrat] using heval
 
+/-- For each `K` there is a constant `C` with `1 ≤ C` bounding, uniformly in
+`t`, both `|negativeLaplaceBoundedExponentJet n t|` and
+`|negativeLaplaceJetSlope n|` for every index `n ≤ K`. -/
 lemma exists_uniform_bound_negativeLaplaceExponentJets (K : ℕ) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ (n : ℕ), n ≤ K → ∀ t : ℝ,
       |negativeLaplaceBoundedExponentJet n t| ≤ C ∧
@@ -93,6 +102,11 @@ lemma exists_uniform_bound_negativeLaplaceExponentJets (K : ℕ) :
             (le_trans (le_max_left _ _) (le_max_right _ _))
         · exact le_trans (le_max_right _ _) (le_max_right _ _)
 
+/-- Given a nonnegative `C` bounding the bounded-exponent jets and the jet
+slopes at all indices up to `K + 2`, the order-`m` exponent coefficient
+satisfies `‖negativeLaplaceExponentCoefficient m t v‖ ≤
+C * (|v| ^ m + |v| ^ (m + 2))` for every `m ≤ K`.  The factorial
+denominators are discarded rather than exploited. -/
 lemma norm_negativeLaplaceExponentCoefficient_le
     {K : ℕ} {C : ℝ}
     (hC : 0 ≤ C)
@@ -153,6 +167,10 @@ lemma norm_negativeLaplaceExponentCoefficient_le
             add_le_add hfirst hsecond
           _ = C * (|v| ^ (n + 1) + |v| ^ (n + 3)) := by ring
 
+/-- Eventually in `t` at `atTop`, the exponent truncation through epsilon
+order `M` has norm at most `1` at every `v` of the order-`N` central window
+`Icc (-A) A`, where `A = fabiusSaddleCentralRadiusOrder N
+(dyadicLambertPhase t)`. -/
 theorem eventually_norm_dyadicLambertExponentTruncation_le_one
     (M N : ℕ) :
     ∀ᶠ t : ℝ in atTop, ∀ v ∈
@@ -245,6 +263,10 @@ theorem eventually_norm_dyadicLambertExponentTruncation_le_one
                 eps t * A t ^ (n + 1 + 2)) := rfl
     _ ≤ 1 := hBt
 
+/-- Along the dyadic Lambert phase the forward scaled jet of index `n` is
+`O` of `(dyadicLambertPhase t)⁻¹ ^ R` for each fixed `R`, since the jet is
+`O` of `(2 ^ dyadicLambertPhase t)⁻¹`, which beats every inverse power of
+the phase. -/
 theorem negativeLaplaceForwardScaledJet_dyadicLambert_isBigO_inv_pow
     (n R : ℕ) :
     (fun t : ℝ => negativeLaplaceForwardScaledJet n (dyadicLambertPhase t))
@@ -271,6 +293,12 @@ theorem negativeLaplaceForwardScaledJet_dyadicLambert_isBigO_inv_pow
       [tendsto_dyadicLambertPhase_atTop.eventually_gt_atTop 0] with t ht
     rw [Real.rpow_neg_eq_inv_rpow, Real.rpow_natCast]
 
+/-- Filter-generic step: if a scalar family `c` is `O` of `rate`, then the
+integral of `Real.exp (-(v ^ 2) / 2) * (|c i| * |v| ^ d)` over an arbitrary
+set `central i` is again `O` of `rate`.  Nothing is assumed about
+`central`, since the restricted measure is dominated by the whole-line one.
+Used in this file by `integralOn_realGaussian_mul_finset_absPow_isBigO` and
+`integral_dyadicLambertCenteredExponentDefectMajor_isBigO`. -/
 lemma integralOn_realGaussian_mul_absPow_mul_isBigO
     {alpha : Type*} (l : Filter alpha) (central : alpha → Set ℝ)
     (c rate : alpha → ℝ) (d : ℕ)
@@ -318,11 +346,13 @@ lemma integralOn_realGaussian_mul_absPow_mul_isBigO
         (|C| * ‖rate i‖) * I := by gcongr
     _ = (I * |C|) * ‖rate i‖ := by ring
 
+/-- The small parameter `dyadicLambertEpsilon` is nonnegative. -/
 lemma dyadicLambertEpsilon_nonneg (t : ℝ) :
     0 ≤ dyadicLambertEpsilon t := by
   unfold dyadicLambertEpsilon
   positivity
 
+/-- The small parameter `dyadicLambertEpsilon` is `O` of `1` at `atTop`. -/
 theorem dyadicLambertEpsilon_isBigO_one :
     dyadicLambertEpsilon =O[atTop] (fun _t : ℝ => (1 : ℝ)) := by
   apply IsBigO.of_bound 1
@@ -337,6 +367,8 @@ theorem dyadicLambertEpsilon_isBigO_one :
       unfold dyadicLambertEpsilon
       exact inv_le_one_of_one_le₀ hsqrt1)
 
+/-- The bounded-exponent jet of index `n`, evaluated along the dyadic
+Lambert phase, is `O` of `1` at `atTop`. -/
 theorem negativeLaplaceBoundedExponentJet_dyadicLambert_isBigO_one
     (n : ℕ) :
     (fun t : ℝ => negativeLaplaceBoundedExponentJet n (dyadicLambertPhase t))
@@ -347,6 +379,8 @@ theorem negativeLaplaceBoundedExponentJet_dyadicLambert_isBigO_one
   filter_upwards with t
   simpa using hC _ ⟨dyadicLambertPhase t, rfl⟩
 
+/-- Each fixed inverse power `(dyadicLambertPhase t)⁻¹ ^ R` is `O` of `1` at
+`atTop`. -/
 theorem dyadicLambert_invPhasePow_isBigO_one (R : ℕ) :
     (fun t : ℝ => (dyadicLambertPhase t)⁻¹ ^ R) =O[atTop]
       (fun _t : ℝ => (1 : ℝ)) := by
@@ -359,12 +393,21 @@ theorem dyadicLambert_invPhasePow_isBigO_one (R : ℕ) :
     mul_one]
   exact (pow_le_one₀ hinv0 hinv1)
 
+/-- Where the phase is positive, `dyadicLambertEpsilon t ^ (2 * R)` equals
+`(dyadicLambertPhase t)⁻¹ ^ R`: two powers of the small parameter are
+exactly one inverse power of the phase. -/
 lemma dyadicLambertEpsilon_pow_two_mul
     (R : ℕ) {t : ℝ} (ht : 0 < dyadicLambertPhase t) :
     dyadicLambertEpsilon t ^ (2 * R) =
       (dyadicLambertPhase t)⁻¹ ^ R := by
   rw [pow_mul, dyadicLambertEpsilon_sq ht]
 
+/-- Eventually in `t` at `atTop`, `|dyadicLambertEpsilon t * v| ≤ 1 / 2` for
+every `v` in the order-`N` central window.  Used in this file by
+`eventually_norm_dyadicLambertCenteredExponent_sub_truncation_le_one` and
+`integral_norm_dyadicLambertCenteredExponent_sub_truncation_isBigO` to
+discharge the smallness hypothesis of
+`norm_dyadicLambertCenteredExponent_sub_truncation_le_major`. -/
 theorem eventually_dyadicLambertEpsilon_mul_abs_le_half_on_orderRadius
     (N : ℕ) :
     ∀ᶠ t : ℝ in atTop, ∀ v ∈
@@ -388,6 +431,7 @@ theorem eventually_dyadicLambertEpsilon_mul_abs_le_half_on_orderRadius
   rw [inv_mul_eq_div]
   exact (div_le_div_of_nonneg_right hvabs hsqrt.le).trans ht
 
+/-- The order-`m` exponent polynomial has natural degree at most `m + 2`. -/
 lemma natDegree_negativeLaplaceExponentPolynomial_le
     (m : ℕ) (t : ℝ) :
     (negativeLaplaceExponentPolynomial m t).natDegree ≤ m + 2 := by
@@ -404,6 +448,8 @@ lemma natDegree_negativeLaplaceExponentPolynomial_le
       · exact (Polynomial.natDegree_C_mul_le _ _).trans <| by
           rw [Polynomial.natDegree_X_pow]
 
+/-- Each fixed coefficient `d` of the order-`m` exponent polynomial,
+evaluated along the dyadic Lambert phase, is `O` of `1` at `atTop`. -/
 theorem negativeLaplaceExponentPolynomial_coeff_dyadicLambert_isBigO_one
     (m d : ℕ) :
     (fun t : ℝ =>
@@ -480,6 +526,10 @@ noncomputable def dyadicLambertReducedExponentPolynomial
     Polynomial.C ((dyadicLambertEpsilon t : ℂ) ^ n) *
       negativeLaplaceExponentPolynomial (n + 1) (dyadicLambertPhase t)
 
+/-- The exponent truncation through epsilon order `K` factors as
+`dyadicLambertEpsilon t` times the evaluation at `v` of the reduced exponent
+polynomial; the factoring is possible because the `m = 0` term of the
+truncation vanishes. -/
 theorem dyadicLambertExponentTruncation_eq_epsilon_mul_reduced
     (K : ℕ) (t v : ℝ) :
     dyadicLambertExponentTruncation K t v =
@@ -497,6 +547,8 @@ theorem dyadicLambertExponentTruncation_eq_epsilon_mul_reduced
   rw [pow_succ']
   ring
 
+/-- The reduced exponent polynomial of order `K` has natural degree at most
+`K + 2`. -/
 lemma natDegree_dyadicLambertReducedExponentPolynomial_le
     (K : ℕ) (t : ℝ) :
     (dyadicLambertReducedExponentPolynomial K t).natDegree ≤ K + 2 := by
@@ -508,6 +560,8 @@ lemma natDegree_dyadicLambertReducedExponentPolynomial_le
       have hnK := Finset.mem_range.mp hn
       omega)
 
+/-- Each fixed coefficient `d` of the reduced exponent polynomial of order
+`K` is `O` of `1` at `atTop`. -/
 theorem dyadicLambertReducedExponentPolynomial_coeff_isBigO_one
     (K d : ℕ) :
     (fun t : ℝ => (dyadicLambertReducedExponentPolynomial K t).coeff d)
@@ -525,6 +579,8 @@ theorem dyadicLambertReducedExponentPolynomial_coeff_isBigO_one
     (negativeLaplaceExponentPolynomial_coeff_dyadicLambert_isBigO_one
       (n + 1) d)
 
+/-- If every coefficient of a polynomial-valued family is `O` of `1` along a
+filter, then so is every coefficient of its `q`-th power. -/
 lemma polynomial_pow_coeff_isBigO_one
     {alpha : Type*} (l : Filter alpha) (p : alpha → Polynomial ℂ)
     (hp : ∀ d : ℕ, (fun i => (p i).coeff d) =O[l]
@@ -546,6 +602,8 @@ lemma polynomial_pow_coeff_isBigO_one
       intro a _ha
       simpa only [one_mul] using (ih a.1).mul (hp a.2)
 
+/-- The Gaussian factorial tail weight of the `q`-th power of the reduced
+exponent polynomial of order `K` is `O` of `1` at `atTop`. -/
 theorem gaussianPolynomialTailWeight_reducedExponentPow_isBigO_one
     (K q : ℕ) :
     (fun t : ℝ => gaussianPolynomialTailWeight
@@ -562,6 +620,10 @@ theorem gaussianPolynomialTailWeight_reducedExponentPow_isBigO_one
       (dyadicLambertReducedExponentPolynomial K)
       (dyadicLambertReducedExponentPolynomial_coeff_isBigO_one K) q d
 
+/-- With `L = 2 * (N + 1)` and `K = L - 1`, the Gaussian-weighted `L`-th
+power of the exponent truncation, integrated over the order-`N` central
+window, is `O` of `(dyadicLambertPhase t)⁻¹ ^ (N + 1)`.  Used in this file
+by `dyadicLambert_central_expTaylor_error_isBigO`. -/
 theorem integral_dyadicLambertExponentTruncation_pow_isBigO
     (N : ℕ) :
     let L := 2 * (N + 1)
@@ -638,6 +700,11 @@ theorem integral_dyadicLambertExponentTruncation_pow_isBigO
       (Filter.Eventually.of_forall fun v => norm_nonneg _) hpint)
     (pow_nonneg heps0 _)
 
+/-- The exact bounded exponent term of order `n + 1` has norm at most
+`(|negativeLaplaceBoundedExponentJet n t| +
+|negativeLaplaceForwardScaledJet n t|) * |v| ^ (n + 1)`, the factorial
+denominator being discarded.  Used in this file by
+`norm_dyadicLambertCenteredExponent_sub_truncation_le_major`. -/
 lemma norm_negativeLaplaceExactExponentBoundedTerm_le
     (n : ℕ) (t v : ℝ) :
     ‖negativeLaplaceExactExponentBoundedTerm (n + 1) t v‖ ≤
@@ -662,6 +729,10 @@ lemma norm_negativeLaplaceExactExponentBoundedTerm_le
       div_le_self (mul_nonneg (add_nonneg (abs_nonneg _) (abs_nonneg _))
         (pow_nonneg (abs_nonneg _) _)) hfac
 
+/-- A single forward-jet exponent term carrying small parameter `eps` has
+norm at most `|eps| ^ (n + 1) * |negativeLaplaceForwardScaledJet n t| *
+|v| ^ (n + 1)`, the factorial denominator being discarded.  Used in this
+file by `norm_dyadicLambertCenteredExponent_sub_truncation_le_major`. -/
 lemma norm_negativeLaplaceForwardExponentTerm_le
     (n : ℕ) (eps t v : ℝ) :
     ‖(eps : ℂ) ^ (n + 1) *
@@ -683,6 +754,14 @@ lemma norm_negativeLaplaceForwardExponentTerm_le
     _ ≤ |eps| ^ (n + 1) * |negativeLaplaceForwardScaledJet n t| *
           |v| ^ (n + 1) := div_le_self (by positivity) hfac
 
+/-- Vertical Taylor remainder at order `M + 2`, for `F` satisfying
+`IsFabius`.  Assuming `1 ≤ dyadicLambertPhase t`,
+`|dyadicLambertEpsilon t * v| ≤ 1`, and that the `(M + 3)`-rd iterated
+derivative of `negativeLaplaceVerticalLog F (2 ^ dyadicLambertPhase t)` is
+bounded by `C * dyadicLambertPhase t` on `|theta| ≤ 1`, the vertical
+logarithm at `dyadicLambertEpsilon t * v` differs from its order-`M + 2`
+Taylor sum by at most `C * dyadicLambertPhase t *
+|dyadicLambertEpsilon t * v| ^ (M + 3) / (M + 2).factorial`. -/
 lemma norm_negativeLaplaceVerticalTaylorRemainder_le
     (F : BoundedFabius) (hF : IsFabius F)
     (M : ℕ) {C t v : ℝ}
@@ -713,6 +792,10 @@ lemma norm_negativeLaplaceVerticalTaylorRemainder_le
   simpa only [sub_zero] using
     htheta'.trans (by simpa only [sub_zero] using htheta)
 
+/-- For a real `theta` with `|theta| ≤ 1 / 2`, the complex logarithm
+`Complex.log (1 + theta * I)` differs from `Complex.logTaylor (K + 1)` at
+`theta * I` by at most `2 * |theta| ^ (K + 1)`.  Used in this file by
+`norm_dyadicLambertCenteredExponent_sub_truncation_le_major`. -/
 lemma norm_complexLog_sub_logTaylor_le_two_mul
     (K : ℕ) {theta : ℝ} (htheta : |theta| ≤ 1 / 2) :
     ‖Complex.log (1 + ((theta : ℂ) * Complex.I)) -
@@ -745,6 +828,8 @@ lemma norm_complexLog_sub_logTaylor_le_two_mul
             (mul_nonneg (pow_nonneg (abs_nonneg _) _) (by norm_num)) hden
         _ = _ := by ring
 
+/-- For all `R` and `k`, `dyadicLambertEpsilon t ^ (2 * R + k)` is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ R` at `atTop`. -/
 theorem dyadicLambertEpsilon_pow_add_isBigO_invPhasePow
     (R k : ℕ) :
     (fun t : ℝ => dyadicLambertEpsilon t ^ (2 * R + k)) =O[atTop]
@@ -765,6 +850,9 @@ theorem dyadicLambertEpsilon_pow_add_isBigO_invPhasePow
   · filter_upwards with t
     simp
 
+/-- `dyadicLambertPhase t * dyadicLambertEpsilon t ^ (2 * R + 2)` is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ R` at `atTop`: the extra phase factor is paid
+for by the two spare powers of the small parameter. -/
 theorem dyadicLambertPhase_mul_epsilon_pow_isBigO_invPhasePow
     (R : ℕ) :
     (fun t : ℝ => dyadicLambertPhase t *
@@ -780,6 +868,10 @@ theorem dyadicLambertPhase_mul_epsilon_pow_isBigO_invPhasePow
     field_simp
   · exact Filter.EventuallyEq.rfl
 
+/-- The boundary coefficient `dyadicLambertEpsilon t ^ (2 * R + k)` times
+the sum of `|negativeLaplaceBoundedExponentJet n|` and
+`|negativeLaplaceForwardScaledJet n|`, both taken along the phase, is `O`
+of `(dyadicLambertPhase t)⁻¹ ^ R`. -/
 theorem dyadicLambertBoundaryCoefficient_isBigO_invPhasePow
     (n R k : ℕ) :
     (fun t : ℝ => dyadicLambertEpsilon t ^ (2 * R + k) *
@@ -797,6 +889,10 @@ theorem dyadicLambertBoundaryCoefficient_isBigO_invPhasePow
   have hmul := heps.mul hsum
   simpa only [mul_one] using hmul
 
+/-- The forward coefficient `dyadicLambertEpsilon t ^ (n + 1)` times
+`|negativeLaplaceForwardScaledJet n (dyadicLambertPhase t)|` is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ R` for every `R`, the small parameter
+contributing nothing beyond `O` of `1`. -/
 theorem dyadicLambertForwardCoefficient_isBigO_invPhasePow
     (n R : ℕ) :
     (fun t : ℝ => dyadicLambertEpsilon t ^ (n + 1) *
@@ -831,6 +927,14 @@ noncomputable def dyadicLambertCenteredExponentDefectMajor
             |negativeLaplaceForwardScaledJet n (dyadicLambertPhase t)| *
               |v| ^ (n + 1)
 
+/-- Pointwise defect bound for `F` satisfying `IsFabius`: assuming
+`0 ≤ C`, `1 ≤ dyadicLambertPhase t`, `|dyadicLambertEpsilon t * v| ≤ 1 / 2`,
+and a `C * dyadicLambertPhase t` bound on the `(M + 3)`-rd iterated
+derivative of the vertical logarithm on `|theta| ≤ 1`, the centered exponent
+differs from its order-`M` truncation by at most
+`dyadicLambertCenteredExponentDefectMajor M C t v`.  Used in this file by
+`eventually_norm_dyadicLambertCenteredExponent_sub_truncation_le_one` and
+`integral_norm_dyadicLambertCenteredExponent_sub_truncation_isBigO`. -/
 theorem norm_dyadicLambertCenteredExponent_sub_truncation_le_major
     (F : BoundedFabius) (hF : IsFabius F)
     (M : ℕ) {C t v : ℝ} (hC : 0 ≤ C)
@@ -1065,6 +1169,9 @@ theorem norm_dyadicLambertCenteredExponent_sub_truncation_le_major
             hforward
         _ = _ := by ring
 
+/-- Finite-sum form of `integralOn_realGaussian_mul_absPow_mul_isBigO`: the
+Gaussian-weighted sum `∑ d ∈ s, |c d i| * |v| ^ d`, integrated over
+`central i`, is `O` of `rate` whenever each `c d` with `d ∈ s` is. -/
 lemma integralOn_realGaussian_mul_finset_absPow_isBigO
     {alpha : Type*} (l : Filter alpha) (central : alpha → Set ℝ)
     (c : ℕ → alpha → ℝ) (s : Finset ℕ) (rate : alpha → ℝ)
@@ -1099,6 +1206,10 @@ lemma integralOn_realGaussian_mul_finset_absPow_isBigO
     exact (hg.const_mul _).integrableOn
   · exact Filter.EventuallyEq.rfl
 
+/-- For `0 < R` and `0 ≤ C`, the Gaussian-weighted defect majorant of order
+`2 * R - 1`, integrated over the order-`N` central window, is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ R`.  Used in this file by
+`integral_norm_dyadicLambertCenteredExponent_sub_truncation_isBigO`. -/
 theorem integral_dyadicLambertCenteredExponentDefectMajor_isBigO
     (N R : ℕ) (hR : 0 < R) (C : ℝ) (hC : 0 ≤ C) :
     (fun t : ℝ => ∫ v in
@@ -1308,6 +1419,8 @@ theorem integral_dyadicLambertCenteredExponentDefectMajor_isBigO
   · filter_upwards with t
     rfl
 
+/-- For `F` satisfying `IsFabius` and `t` fixed, the centered exponent is
+continuous in the Gaussian variable. -/
 lemma continuous_dyadicLambertCenteredExponent
     (F : BoundedFabius) (hF : IsFabius F) (t : ℝ) :
     Continuous (dyadicLambertCenteredExponent F t) := by
@@ -1333,6 +1446,8 @@ lemma continuous_dyadicLambertCenteredExponent
   dsimp only
   fun_prop
 
+/-- For `M` and `t` fixed, the exponent truncation is continuous in the
+Gaussian variable. -/
 lemma continuous_dyadicLambertExponentTruncation (M : ℕ) (t : ℝ) :
     Continuous (dyadicLambertExponentTruncation M t) := by
   unfold dyadicLambertExponentTruncation
@@ -1345,6 +1460,8 @@ lemma continuous_dyadicLambertExponentTruncation (M : ℕ) (t : ℝ) :
       simp only [negativeLaplaceExponentCoefficient]
       fun_prop
 
+/-- For `M`, `C`, and `t` fixed, the defect majorant is continuous in the
+Gaussian variable. -/
 lemma continuous_dyadicLambertCenteredExponentDefectMajor
     (M : ℕ) (C t : ℝ) :
     Continuous (dyadicLambertCenteredExponentDefectMajor M C t) := by
@@ -1378,6 +1495,11 @@ lemma continuous_dyadicLambertCenteredExponentDefectMajor
   unfold dyadicLambertCenteredExponentDefectMajor
   exact hbase.add hsum
 
+/-- For `F` satisfying `IsFabius`, the Gaussian-weighted integral over the
+order-`N` central window of the defect between the centered exponent and its
+truncation through epsilon order `2 * (N + 1) - 1` is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ (N + 1)`.  Used in this file by
+`dyadicLambert_central_expTaylor_error_isBigO`. -/
 theorem integral_norm_dyadicLambertCenteredExponent_sub_truncation_isBigO
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     (fun t : ℝ => ∫ v in
@@ -1490,6 +1612,8 @@ theorem integral_norm_dyadicLambertCenteredExponent_sub_truncation_isBigO
   have hresult := hdom.trans hmajor
   simpa only [defect, central, M, R] using hresult
 
+/-- For `0 < R`, the inverse power `(dyadicLambertPhase t)⁻¹ ^ R` is `O` of
+the small parameter `dyadicLambertEpsilon` at `atTop`. -/
 theorem dyadicLambert_invPhasePow_isBigO_epsilon
     (R : ℕ) (hR : 0 < R) :
     (fun t : ℝ => (dyadicLambertPhase t)⁻¹ ^ R) =O[atTop]
@@ -1509,6 +1633,10 @@ theorem dyadicLambert_invPhasePow_isBigO_epsilon
   · filter_upwards with t
     simp
 
+/-- For `F` satisfying `IsFabius`, eventually in `t` at `atTop` the centered
+exponent differs from its truncation through epsilon order
+`2 * (N + 1) - 1` by at most `1`, uniformly over the order-`N` central
+window. -/
 theorem eventually_norm_dyadicLambertCenteredExponent_sub_truncation_le_one
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     ∀ᶠ t : ℝ in atTop, ∀ v ∈
@@ -1663,6 +1791,11 @@ theorem eventually_norm_dyadicLambertCenteredExponent_sub_truncation_le_one
               hcomponent (cF (n + 1) t) (n + 1) (hcF0 (n + 1))
     _ ≤ 1 := hBt
 
+/-- For `F` satisfying `IsFabius`, with `L = 2 * (N + 1)` and `M = L - 1`,
+the integral over the order-`N` central window of the norm difference
+between the dyadic Lambert kernel and the Gaussian exponential-Taylor
+reference built from the order-`M` exponent truncation is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ (N + 1)`. -/
 theorem dyadicLambert_central_expTaylor_error_isBigO
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     let L := 2 * (N + 1)
@@ -1796,6 +1929,11 @@ theorem dyadicLambert_central_expTaylor_error_isBigO
     (Filter.Eventually.of_forall fun t => measurableSet_Icc)
     hmajorInt hmajorNonneg hrepr hsmall hmajorBound hmajor
 
+/-- For `F` satisfying `IsFabius`, the integral over the order-`N` central
+window of the norm difference between the dyadic Lambert kernel and the
+Gaussian-weighted `dyadicLambertReferencePolynomial N` is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ (N + 1)`.  This is the central half of the
+input to `fabiusSaddleKernelMass_dyadicLambert_sub_partialSum_isBigO`. -/
 theorem dyadicLambert_central_reference_error_isBigO
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     (fun t : ℝ => ∫ v in
@@ -1942,6 +2080,9 @@ theorem dyadicLambert_central_reference_error_isBigO
   intro v hv
   exact norm_sub_le_norm_sub_add_norm_sub _ _ _
 
+/-- For `F` satisfying `IsFabius`, the integral of the norm of the dyadic
+Lambert kernel over the complement of the order-`N` central window is `O` of
+`(dyadicLambertPhase t)⁻¹ ^ (N + 1)`. -/
 theorem integral_norm_dyadicLambertKernel_orderRadius_isBigO
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     (fun t : ℝ => ∫ v in
@@ -1961,6 +2102,10 @@ theorem integral_norm_dyadicLambertKernel_orderRadius_isBigO
         dyadicLambertPhase_div_four_le_extractionCount)
       negativeLaplaceMinorArcConstant_dyadicLambert_isBigO
 
+/-- The integral of the norm of the Gaussian-weighted
+`dyadicLambertReferencePolynomial N` over the complement of the order-`N`
+central window is `O` of `(dyadicLambertPhase t)⁻¹ ^ (N + 1)`.  No Fabius
+hypothesis appears: the reference is an explicit polynomial. -/
 theorem integral_norm_dyadicLambertReference_orderRadius_isBigO
     (N : ℕ) :
     (fun t : ℝ => ∫ v in
@@ -1990,6 +2135,11 @@ theorem integral_norm_dyadicLambertReference_orderRadius_isBigO
         (dyadicLambertPhase t) (dyadicLambertEpsilon t : ℂ))
       tendsto_dyadicLambertPhase_atTop hweight
 
+/-- For `F` satisfying `IsFabius`, the integral over the complement of the
+order-`N` central window of the norm difference between the dyadic Lambert
+kernel and the Gaussian-weighted `dyadicLambertReferencePolynomial N` is `O`
+of `(dyadicLambertPhase t)⁻¹ ^ (N + 1)`.  This is the tail half of the input
+to `fabiusSaddleKernelMass_dyadicLambert_sub_partialSum_isBigO`. -/
 theorem dyadicLambert_reference_tail_error_isBigO
     (F : BoundedFabius) (hF : IsFabius F) (N : ℕ) :
     (fun t : ℝ => ∫ v in

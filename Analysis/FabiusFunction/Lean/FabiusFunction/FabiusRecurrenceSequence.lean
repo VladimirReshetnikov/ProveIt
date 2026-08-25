@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusDyadicLogBounds
 import FabiusFunction.NegativeLaplaceVertical
+import FabiusFunction.BernoulliRecurrences
 
 /-!
 # The recurrence sequence attached to the Fabius function
@@ -28,6 +29,7 @@ noncomputable section
 def fabiusRecurrenceSequence (n : ℕ) : ℚ :=
   halfMoment n / (n.factorial : ℚ)
 
+/-- The initial value `a₀ = 1`, since `halfMoment 0 = 1` and `0! = 1`. -/
 @[simp]
 theorem fabiusRecurrenceSequence_zero : fabiusRecurrenceSequence 0 = 1 := by
   norm_num [fabiusRecurrenceSequence, halfMoment]
@@ -37,18 +39,26 @@ theorem fabiusRecurrenceSequence_pos (n : ℕ) :
     0 < fabiusRecurrenceSequence n := by
   exact div_pos (halfMoment_pos n) (by positivity)
 
-/-- The simple factorial majorant behind the faster-than-exponential decay. -/
-theorem fabiusRecurrenceSequence_cast_le_inv_factorial (n : ℕ) :
-    (fabiusRecurrenceSequence n : ℝ) ≤ ((n.factorial : ℝ))⁻¹ := by
+/-- The exact rational factorial majorant behind the
+faster-than-exponential decay. -/
+theorem fabiusRecurrenceSequence_le_inv_factorial (n : ℕ) :
+    fabiusRecurrenceSequence n ≤ ((n.factorial : ℚ))⁻¹ := by
   cases n with
   | zero => norm_num [fabiusRecurrenceSequence, halfMoment]
   | succ n =>
       simp only [fabiusRecurrenceSequence]
-      push_cast
       rw [div_le_iff₀ (by positivity)]
-      have hfac : ((n + 1).factorial : ℝ) ≠ 0 := by positivity
+      have hfac : ((n + 1).factorial : ℚ) ≠ 0 := by positivity
       rw [inv_mul_cancel₀ hfac]
-      exact halfMoment_real_le_one fabius fabius_spec (n + 1) (by omega)
+      exact_mod_cast halfMoment_real_le_one fabius fabius_spec (n + 1) (by omega)
+
+/-- The factorial majorant after embedding the recurrence sequence in the
+reals. -/
+theorem fabiusRecurrenceSequence_cast_le_inv_factorial (n : ℕ) :
+    (fabiusRecurrenceSequence n : ℝ) ≤ ((n.factorial : ℝ))⁻¹ := by
+  rw [← Rat.cast_natCast, ← Rat.cast_inv_of_ne_zero, Rat.cast_le]
+  · exact fabiusRecurrenceSequence_le_inv_factorial n
+  · positivity
 
 /-- In particular, `a_n` decays faster than every exponential: multiplying
 it by `c^n`, for any fixed real `c`, still gives a sequence tending to zero. -/
@@ -70,6 +80,26 @@ theorem fabiusRecurrenceSequence_faster_than_exponential (c : ℝ) :
         (pow_nonneg (abs_nonneg c) n)
     _ = |c| ^ n / (n.factorial : ℝ) := by rw [div_eq_mul_inv]
   exact FloorSemiring.tendsto_pow_div_factorial_atTop |c|
+
+/-- The ordinary complex power series of the recurrence sequence converges
+absolutely at every point. -/
+theorem summable_norm_fabiusRecurrenceSequence_series (z : ℂ) :
+    Summable (fun n : ℕ => ‖(fabiusRecurrenceSequence n : ℂ) * z ^ n‖) := by
+  refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_)
+    (NormedSpace.norm_expSeries_div_summable z)
+  rw [norm_mul, norm_pow, norm_div, norm_pow]
+  have hpos : 0 < (fabiusRecurrenceSequence n : ℝ) := by
+    exact_mod_cast fabiusRecurrenceSequence_pos n
+  have hbound := fabiusRecurrenceSequence_cast_le_inv_factorial n
+  rw [Complex.norm_ratCast, abs_of_pos hpos, Complex.norm_natCast]
+  simpa only [div_eq_mul_inv, mul_comm] using
+    mul_le_mul_of_nonneg_right hbound (pow_nonneg (norm_nonneg z) n)
+
+/-- The ordinary complex power series of the recurrence sequence is summable
+at every point. -/
+theorem summable_fabiusRecurrenceSequence_series (z : ℂ) :
+    Summable (fun n : ℕ => (fabiusRecurrenceSequence n : ℂ) * z ^ n) :=
+  Summable.of_norm (summable_norm_fabiusRecurrenceSequence_series z)
 
 /-- Successor-index form of the elementary recurrence for `a_n`. -/
 theorem fabiusRecurrenceSequence_succ_recurrence (n : ℕ) :
@@ -328,6 +358,39 @@ theorem fabiusRecurrenceSequence_bernoulli_recurrence (n : ℕ) :
   have hkle : k ≤ n := Nat.le_of_lt_succ (mem_range.1 hk)
   simp only [Nat.add_sub_cancel, Nat.sub_sub_self hkle]
 
+/-- The Bernoulli relation solved for the next recurrence-sequence term.
+Unlike the source-oriented convolution, the right-hand side only uses earlier
+terms.  The minus sign comes from moving the `B₀ 2ⁿ aₙ` self-term to the left. -/
+theorem fabiusRecurrenceSequence_bernoulli_succ_recurrence (n : ℕ) :
+    fabiusRecurrenceSequence (n + 1) =
+      -(∑ k ∈ range (n + 1),
+          bernoulli (n + 1 - k) /
+              (((n + 1 - k).factorial : ℕ) : ℚ) *
+            (2 : ℚ) ^ k * fabiusRecurrenceSequence k) /
+        ((2 : ℚ) ^ (n + 1) - 1) := by
+  have h := fabiusRecurrenceSequence_bernoulli_recurrence (n + 1)
+  rw [sum_range_succ] at h
+  simp only [Nat.sub_self, Nat.factorial_zero, Nat.cast_one,
+    div_one, bernoulli_zero, one_mul] at h
+  have hpow : (2 : ℚ) ^ (n + 1) - 1 ≠ 0 := by
+    exact ne_of_gt (sub_pos.mpr
+      (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+  rw [eq_div_iff hpow]
+  linear_combination -h
+
+/-- The Bernoulli relation solved for `aₙ`, retaining the positive-index
+interface used by the other recurrence formulas. -/
+theorem fabiusRecurrenceSequence_bernoulli_recurrence_isolated
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusRecurrenceSequence n =
+      -(∑ k ∈ range n,
+          bernoulli (n - k) / (((n - k).factorial : ℕ) : ℚ) *
+            (2 : ℚ) ^ k * fabiusRecurrenceSequence k) /
+        ((2 : ℚ) ^ n - 1) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+  rw [add_comm 1 m]
+  exact fabiusRecurrenceSequence_bernoulli_succ_recurrence m
+
 /-- The half-moment generating series is the ordinary generating series of
 the factorially normalized recurrence sequence. -/
 theorem halfMomentGeneratingSeries_eq_fabiusRecurrenceSequence_series
@@ -348,6 +411,15 @@ theorem complexGeneratingFunction_eq_fabiusRecurrenceSequence_series
   rw [complexGeneratingFunction_eq_series F hF z]
   exact halfMomentGeneratingSeries_eq_fabiusRecurrenceSequence_series z
 
+/-- `HasSum` form of the recurrence-sequence expansion of the analytic
+generating function. -/
+theorem hasSum_fabiusRecurrenceSequence_series
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    HasSum (fun n : ℕ => (fabiusRecurrenceSequence n : ℂ) * z ^ n)
+      (complexGeneratingFunction F z) := by
+  rw [complexGeneratingFunction_eq_fabiusRecurrenceSequence_series F hF z]
+  exact (summable_fabiusRecurrenceSequence_series z).hasSum
+
 /-- The alternating ordinary generating series of `a_n` is the canonical
 dyadic product. -/
 theorem fabiusRecurrenceSequence_series_neg_eq_tprod
@@ -356,6 +428,14 @@ theorem fabiusRecurrenceSequence_series_neg_eq_tprod
       ∏' n : ℕ, negativeLaplaceDyadicFactor z n := by
   rw [← complexGeneratingFunction_eq_fabiusRecurrenceSequence_series F hF (-z)]
   exact complexGeneratingFunction_neg_eq_tprod F hF z
+
+/-- `HasSum` form of the alternating recurrence-sequence product identity. -/
+theorem hasSum_fabiusRecurrenceSequence_series_neg
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    HasSum (fun n : ℕ => (fabiusRecurrenceSequence n : ℂ) * (-z) ^ n)
+      (∏' n : ℕ, negativeLaplaceDyadicFactor z n) := by
+  rw [← fabiusRecurrenceSequence_series_neg_eq_tprod F hF z]
+  exact (summable_fabiusRecurrenceSequence_series (-z)).hasSum
 
 end
 

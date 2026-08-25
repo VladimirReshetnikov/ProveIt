@@ -93,6 +93,26 @@ theorem abs_fabiusUniformSpline_sub_fabiusReal_le
     dsimp [δ] at hs
     linarith [hs.2]
 
+/-- The same explicit spline error estimate in every degree.  At degree zero,
+both the elementary step spline and the bounded Fabius function take values in
+`[0,1]`, so the right-hand side is exactly one. -/
+theorem abs_fabiusUniformSpline_sub_fabiusReal_le_all
+    (F : BoundedFabius) (hF : IsFabius F) (p : ℕ)
+    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    |fabiusUniformSpline p x - fabiusReal F x| ≤ ((2 : ℝ) ^ p)⁻¹ := by
+  cases p with
+  | zero =>
+      have hspline : fabiusUniformSpline 0 x ∈ Icc (0 : ℝ) 1 := by
+        rw [ProbabilityRepresentation.fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc
+          hx]
+        exact ⟨ProbabilityTheory.cdf_nonneg _ _, ProbabilityTheory.cdf_le_one _ _⟩
+      rw [pow_zero, inv_one, abs_le]
+      constructor
+      · linarith [hspline.1, fabiusReal_le_one F x]
+      · linarith [hspline.2, fabiusReal_nonneg F x]
+  | succ p =>
+      exact abs_fabiusUniformSpline_sub_fabiusReal_le F hF (p + 1) (by omega) hx
+
 /-- The canonical signed global Fabius function is globally `2`-Lipschitz. -/
 theorem globalFabius_lipschitzWith_two :
     LipschitzWith 2 globalFabius := by
@@ -103,6 +123,9 @@ theorem globalFabius_lipschitzWith_two :
 def fabiusEffectiveUniformModulus (n : ℕ) : ℕ :=
   2 * n
 
+/-- The modulus `fabiusEffectiveUniformModulus n = 2 * n` is primitive
+recursive.  Its `to_comp` form supplies the `Computable` field required by
+`effectivelyUniformContinuous_of_lipschitzWith_two`. -/
 theorem fabiusEffectiveUniformModulus_primrec :
     Primrec fabiusEffectiveUniformModulus := by
   exact Primrec.nat_mul.comp (Primrec.const 2) Primrec.id

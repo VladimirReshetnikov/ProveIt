@@ -42,6 +42,11 @@ lemma fabiusLogArgument_natCast (n : ℕ) :
   unfold fabiusLogArgument
   rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), Real.rpow_natCast]
 
+/-- At a natural scale `n`, the negative-log profile of `F` is
+`-log (F ((2 ^ n)⁻¹))`, the inverse natural power replacing the real power
+`2 ^ (-n)`.  No `IsFabius` hypothesis is needed.  Used in this file by
+`fabiusLogProfile_normalized_tendsto` and
+`fabiusLogProfile_natCast_error_le`. -/
 lemma fabiusLogProfile_natCast (F : BoundedFabius) (n : ℕ) :
     fabiusLogProfile F (n : ℝ) =
       -Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) := by

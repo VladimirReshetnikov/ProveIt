@@ -3,9 +3,66 @@ import FabiusFunction.SaddleExpansionAlgebra
 /-!
 # Logarithmic coefficient algebra for saddle expansions
 
-This scratch module builds the coefficient sequence of the formal logarithm
-of a unit-constant series.  Its defining recurrence is the coefficient form
-of `B' * A = A'`.
+Given a formal series with unit constant term,
+
+`A(u) = 1 + a_1 u + a_2 u^2 + ...`,
+
+this module builds the coefficient sequence of `log A` directly, as the
+coefficient form of `B' A = A'` divided through by `n + 1` and solved for
+`b_{n+1}`:
+
+`b_0 = 0`,  `b_{n+1} = a_{n+1} - (n+1)⁻¹ * ∑ j < n, (n - j) * b_{n-j} * a_{j+1}`.
+
+Everything here is finite ring arithmetic with a single rational scalar, so
+the recurrence lives in an arbitrary commutative `ℚ`-algebra `R`; the corpus
+instantiates `R` at `ℝ`, `Polynomial ℝ`, `C(ℝ, ℝ)`, and function types
+`α → ℝ`.  That is why the module exists.  `PowerSeries.logOf` is defined by
+substitution into a universal series, which is awkward to unfold, to
+evaluate, or to bound coefficientwise, whereas `logCoeff` reduces to a sum of
+`n` explicit terms that downstream files can rewrite and estimate.  Nothing
+is lost by preferring the recurrence, because
+`FabiusFunction.SaddleLogExpansionPowerSeries` feeds the uniqueness theorem
+below into a proof that `logSeries a = PowerSeries.logOf (massSeries a)`.
+
+This is the logarithmic twin of the `expCoeff` layer of
+`FabiusFunction.SaddleExpansionAlgebra`, and it carries the same structural
+toolkit.  Its consumers are `FabiusFunction.SaddleLogAsymptoticTransfer`
+(logarithms of full Poincare expansions),
+`FabiusFunction.FabiusSaddleExpansionCoefficients` (the real, continuous,
+bounded logarithmic coefficients of the Fabius saddle expansion), and
+`FabiusFunction.FabiusLambertFormalLog` together with
+`FabiusFunction.FabiusLambertAllOrderRemainder` (the all-order dyadic
+Lambert displacement coefficients).
+
+## Main results
+
+* `logCoeff` -- the recurrence itself, with `logCoeff_zero`, `logCoeff_succ`,
+  `logCoeff_one`, and `logCoeff_two` as its unfolding lemmas.
+* `massSeries`, `logSeries` -- the input and output coefficient sequences
+  packaged as `PowerSeries R`, with the expected `coeff` simp lemmas.
+* `massSeries_mul_derivative_logSeries` -- correctness: when `a 0 = 1` the
+  generated series satisfies `A * B' = A'`, for `A = massSeries a` and
+  `B = logSeries a`.  `derivative_logSeries_mul_massSeries` is the commuted
+  form.
+* `coeff_eq_logCoeff_of_derivative_mul_eq` and `logSeries_unique` -- the
+  converse, by strong induction on the coefficient index: `logSeries a` is
+  the only solution of `A * B' = A'` with vanishing constant term.
+* `logCoeff_congr` -- coefficient `n` depends on input coefficients only
+  through order `n`, which is what lets a truncated mass polynomial stand in
+  for the full series.
+* `map_logCoeff`, `logCoeff_rescale`, `logCoeff_apply`, `logCoeff_parity` --
+  the recurrence commutes with `ℚ`-algebra morphisms, converts the rescaling
+  `fun j => c ^ j * a j` into multiplication by `c ^ n`, commutes with
+  evaluation of function-valued coefficients at a point, and preserves parity
+  of the coefficients in a parameter.
+
+Conventions.  `logCoeff a` is defined for every `a` but never reads `a 0`;
+the normalization `a 0 = 1` is a hypothesis of each correctness statement
+rather than part of the definition, and those statements are false without
+it.  Fixing `b_0 = 0` selects the branch of the logarithm with vanishing
+constant term.  The rational scalar `(n+1)⁻¹` is the only reason
+`Algebra ℚ R` is assumed throughout; no topology, order, or norm is used
+anywhere in this module.
 -/
 
 set_option autoImplicit false

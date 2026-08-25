@@ -28,6 +28,8 @@ namespace Fabius.QuantitativeSaddle
 noncomputable def standardGaussian (v : ℝ) : ℂ :=
   (Real.exp (-(v ^ 2) / 2) : ℝ)
 
+/-- The complex-valued standard Gaussian `exp (-v ^ 2 / 2)` is Lebesgue
+integrable on the whole real line. -/
 lemma integrable_standardGaussian : Integrable standardGaussian := by
   have hreal : Integrable (fun v : ℝ => Real.exp (-(1 / 2 : ℝ) * v ^ 2)) :=
     integrable_exp_neg_mul_sq (by norm_num)
@@ -40,6 +42,10 @@ lemma integrable_standardGaussian : Integrable standardGaussian := by
   congr 2
   ring
 
+/-- The total mass of `standardGaussian` is `Real.sqrt (2 * Real.pi)`: the
+weight `exp (-v ^ 2 / 2)` carries no normalizing prefactor.  Within this file
+it is used only to evaluate the reference mass in
+`normalized_integral_sub_one_isBigO_of_central_tail_odd_correction`. -/
 lemma integral_standardGaussian :
     (∫ v : ℝ, standardGaussian v) =
       (Real.sqrt (2 * Real.pi) : ℂ) := by

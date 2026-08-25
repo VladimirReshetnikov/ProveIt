@@ -88,6 +88,20 @@ theorem thueMorseSign_eq_one_sub_two_mul_bit (n : ℕ) :
       hodd.neg_one_pow]
     norm_num
 
+/-- The Wolfram sign `(-1)^ThueMorse[r]` agrees with the repository's signed
+Thue--Morse convention in **every** ring.
+
+The argument needs nothing beyond `neg_one_pow_eq_pow_mod_two`, which Mathlib
+states for `[Ring R]`, so no field, characteristic, order, or topological
+hypothesis is involved.  The `ℚ`-valued specialization is
+`neg_one_pow_thueMorseBit` in `FabiusRawQBinomialFormula`, which is retained
+under its established name for its existing callers. -/
+theorem neg_one_pow_thueMorseBit_ring {R : Type*} [Ring R] (r : ℕ) :
+    (-1 : R) ^ thueMorseBit r = (thueMorseSign r : R) := by
+  rw [thueMorseBit, thueMorseSign]
+  push_cast
+  exact (neg_one_pow_eq_pow_mod_two (R := R) (binaryWeight r)).symm
+
 /-- The parity form of the desired logarithmic expression. -/
 theorem thueMorseBit_eq_sign_formula (n : ℕ) :
     (thueMorseBit n : ℚ) =

@@ -175,6 +175,10 @@ private lemma unitLaplaceMoment_le_three_quarters
         (pow_mul_exp_neg_quarter_le k hs hx.1) (Real.exp_nonneg _)
     _ = C * Real.exp (-(3 * s / 4) * x) := by ring
 
+/-- Midpoint log-convexity of the negative Laplace transform: for `0 ≤ s`,
+`fabiusLaplaceMoment F 0 (3 * s / 4) ^ 2` is at most
+`fabiusLaplaceMoment F 0 (s / 2) * fabiusLaplaceMoment F 0 s`.  Proved by
+Cauchy--Schwarz between the tilts `s / 2` and `s`.  Requires `IsFabius F`. -/
 lemma fabiusLaplaceMoment_three_quarters_sq_le
     (F : BoundedFabius) (hF : IsFabius F)
     (s : ℝ) (hs : 0 ≤ s) :
@@ -184,6 +188,10 @@ lemma fabiusLaplaceMoment_three_quarters_sq_le
     ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
       F hF] using unitLaplaceMoment_three_quarters_sq_le s hs
 
+/-- Trading `k` powers of the variable for a quarter of the tilt: for
+`0 < s`, `fabiusLaplaceMoment F k s` is at most
+`((4 / s) ^ k * k.factorial) * fabiusLaplaceMoment F 0 (3 * s / 4)`.
+Requires `IsFabius F`. -/
 lemma fabiusLaplaceMoment_le_three_quarters
     (F : BoundedFabius) (hF : IsFabius F)
     (k : ℕ) {s : ℝ} (hs : 0 < s) :
@@ -194,6 +202,10 @@ lemma fabiusLaplaceMoment_le_three_quarters
     ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
       F hF] using unitLaplaceMoment_le_three_quarters k hs
 
+/-- Halving the tilt costs at most one factor of `s`: for `2 ≤ s`,
+`fabiusLaplaceMoment F 0 (s / 2) ≤ s * fabiusLaplaceMoment F 0 s`.  The proof
+uses the exact dyadic functional equation `proposition_two_real_formula`.
+Requires `IsFabius F`. -/
 lemma fabiusLaplaceMoment_zero_half_le_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 2 ≤ s) :
@@ -297,6 +309,10 @@ theorem normalizedLaplaceMoment_le_sqrt
     _ = Real.sqrt s ^ 2 * C ^ 2 := by rw [Real.sq_sqrt hs0.le]
     _ = (Real.sqrt s * C) ^ 2 := by ring
 
+/-- Explicit second normalized moment bound on the ray `2 ≤ s`:
+`normalizedLaplaceMoment F 2 s ^ 2 ≤ 1024 / s ^ 3`.  This is the `k = 2` case
+of `normalizedLaplaceMoment_sq_le` after clearing denominators.  Requires
+`IsFabius F`. -/
 theorem normalizedLaplaceMoment_two_sq_le
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 2 ≤ s) :
@@ -308,6 +324,10 @@ theorem normalizedLaplaceMoment_two_sq_le
   field_simp [hsne] at h ⊢
   nlinarith [sq_nonneg s]
 
+/-- Explicit third normalized moment bound on the ray `2 ≤ s`:
+`normalizedLaplaceMoment F 3 s ≤ 384 / s ^ 2`.  Obtained from the `k = 3`
+case of `normalizedLaplaceMoment_sq_le` by taking square roots.  Requires
+`IsFabius F`. -/
 theorem normalizedLaplaceMoment_three_le
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 2 ≤ s) :
@@ -322,6 +342,10 @@ theorem normalizedLaplaceMoment_three_le
   field_simp [hs0.ne'] at hsq ⊢
   nlinarith [sq_nonneg s, sq_nonneg (s ^ 2)]
 
+/-- Explicit fourth normalized moment bound on the ray `2 ≤ s`:
+`normalizedLaplaceMoment F 4 s ≤ 6144 / s ^ 3`.  Obtained from the `k = 4`
+case of `normalizedLaplaceMoment_sq_le` by taking square roots.  Requires
+`IsFabius F`. -/
 theorem normalizedLaplaceMoment_four_le
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 2 ≤ s) :
@@ -336,6 +360,12 @@ theorem normalizedLaplaceMoment_four_le
   field_simp [hs0.ne'] at hsq ⊢
   nlinarith [sq_nonneg s, sq_nonneg (s ^ 3)]
 
+/-- The square of `dyadicEndpointSecondOrder F` is `O(1/n)` along the
+naturals; the proof uses the explicit constant `256` and the `k = 2` moment
+bound above.  It supplies the `hsecond` hypothesis of
+`dyadicEndpointLaplaceLogError_add_secondOrder_isBigO` and of
+`log_fabius_dyadic_sub_cumulantMain_isBigO`, both invoked later in this file.
+Requires `IsFabius F`. -/
 theorem dyadicEndpointSecondOrder_sq_isBigO
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => dyadicEndpointSecondOrder F n ^ 2) =O[atTop]
@@ -358,6 +388,13 @@ theorem dyadicEndpointSecondOrder_sq_isBigO
       field_simp
       norm_num
 
+/-- The combined higher-moment term `16 * (n * normalizedLaplaceMoment F 3 n
++ n ^ 2 * normalizedLaplaceMoment F 4 n)` is `O(1/n)` along the naturals; the
+proof uses the explicit constant `104448` and the `k = 3, 4` bounds above.
+It supplies the `hhigher` hypothesis of
+`dyadicEndpointLaplaceLogError_add_secondOrder_isBigO` and of
+`log_fabius_dyadic_sub_cumulantMain_isBigO`, both invoked later in this file.
+Requires `IsFabius F`. -/
 theorem dyadicHigherLaplaceMoments_isBigO
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => 16 *

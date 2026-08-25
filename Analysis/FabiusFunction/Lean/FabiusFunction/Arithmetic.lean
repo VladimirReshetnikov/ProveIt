@@ -31,6 +31,49 @@ open Finset
 
 namespace Fabius
 
+/-! ### Triangular numbers
+
+`Nat.choose n 2` is the `n`-th triangular number, and it appears throughout
+this development as the exponent of a power of two: in `dyadicScale`, in the
+Thue--Morse block weights, in the flatness constants `2 ^ C(n+1,2)`, and in
+every q-binomial formula.  The step and square identities below were
+previously re-proved privately in ten places under ten different names; they
+are stated once here because `Arithmetic` is the only module every consumer
+already imports. -/
+
+/-- The triangular step identity: `C(n+1, 2) = C(n, 2) + n`.
+
+This is `Nat.choose_succ_succ` followed by `Nat.choose_one_right`, but it is
+used often enough, and in enough modules that share no ancestor but this one,
+to deserve a name. -/
+theorem choose_succ_two (n : ℕ) :
+    (n + 1).choose 2 = n.choose 2 + n := by
+  rw [show n + 1 = Nat.succ n by omega, Nat.choose_succ_succ]
+  simp [Nat.choose_one_right, add_comm]
+
+/-- Twice a triangular number plus its index is a square:
+`2 * C(n, 2) + n = n ^ 2`.
+
+Equivalently `C(n, 2) = n(n-1)/2`, stated without natural subtraction or
+division so that it can be transported into any semiring by `push_cast`. -/
+theorem two_mul_choose_two_add (n : ℕ) :
+    2 * n.choose 2 + n = n ^ 2 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      have hstep : 2 * (n + 1).choose 2 + (n + 1)
+          = (2 * n.choose 2 + n) + (2 * n + 1) := by
+        rw [choose_succ_two]
+        ring
+      rw [hstep, ih]
+      ring
+
+/-- The shifted form of `choose_succ_two`, stated at `n + 2` because several
+dyadic recursions index their blocks from one rather than zero. -/
+theorem choose_add_two_two (n : ℕ) :
+    (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) :=
+  choose_succ_two (n + 1)
+
 /-- The sum of the binary digits of `n`, denoted `w(n)` in the paper. -/
 def binaryWeight (n : ℕ) : ℕ :=
   (Nat.digits 2 n).sum
@@ -268,10 +311,14 @@ def halfMoment : ℕ → ℚ
 termination_by n => n
 decreasing_by exact k.isLt
 
+/-- The zeroth moment is one: the recursion starts from the total mass of
+the Fabius density. -/
 @[simp]
 theorem moment_zero : moment 0 = 1 := by
   rw [moment]
 
+/-- The zeroth half-moment is one, by the same normalization as
+`moment_zero`. -/
 @[simp]
 theorem halfMoment_zero : halfMoment 0 = 1 := by
   rw [halfMoment]
@@ -459,26 +506,38 @@ the interior is evaluated by Reshetnikov's terminating Taylor recursion.
 def fabiusDyadicValue (exponent : ℕ) (numerator : ℤ) : ℚ :=
   if numerator ≤ 0 then 0 else fabiusDyadicUnit exponent numerator.toNat
 
+/-- The exact dyadic evaluator vanishes at numerator zero, matching
+`F 0 = 0`. -/
 @[simp]
 theorem fabiusDyadicUnit_zero (exponent : ℕ) :
     fabiusDyadicUnit exponent 0 = 0 := by
   simp [fabiusDyadicUnit]
 
+/-- Above the unit interval the exact dyadic evaluator is constant `1`.
+The hypothesis is on the numerator, so `2 ^ exponent ≤ numerator` says the
+argument `numerator / 2 ^ exponent` is at least one. -/
 theorem fabiusDyadicUnit_of_ge (exponent numerator : ℕ)
     (h : 2 ^ exponent ≤ numerator) :
     fabiusDyadicUnit exponent numerator = 1 := by
   simp [fabiusDyadicUnit, h, Nat.ne_of_gt (lt_of_lt_of_le (by positivity) h)]
 
+/-- The signed-numerator evaluator vanishes at zero. -/
 @[simp]
 theorem fabiusDyadicValue_zero (exponent : ℕ) :
     fabiusDyadicValue exponent 0 = 0 := by
   simp [fabiusDyadicValue]
 
+/-- The bounded dyadic evaluator is zero on the whole left half line, not
+merely at the origin: a nonpositive numerator is sent to `0` by definition,
+matching the convention `F x = 0` for `x ≤ 0`. -/
 theorem fabiusDyadicValue_of_nonpos (exponent : ℕ) (numerator : ℤ)
     (h : numerator ≤ 0) :
     fabiusDyadicValue exponent numerator = 0 := by
   simp [fabiusDyadicValue, h]
 
+/-- The bounded dyadic evaluator is constant `1` to the right of the unit
+interval.  This is where it parts company with `extendedFabiusDyadicValue`,
+which continues by reflection and the Thue--Morse sign instead. -/
 theorem fabiusDyadicValue_of_ge (exponent : ℕ) (numerator : ℤ)
     (h : (2 ^ exponent : ℤ) ≤ numerator) :
     fabiusDyadicValue exponent numerator = 1 := by
@@ -508,11 +567,15 @@ def extendedFabiusDyadicValue (exponent : ℕ) (numerator : ℤ) : ℚ :=
     let coreNumerator := if residue ≤ scale then residue else period - residue
     (thueMorseSign block : ℚ) * fabiusDyadicUnit exponent coreNumerator
 
+/-- The signed global evaluator vanishes at zero. -/
 @[simp]
 theorem extendedFabiusDyadicValue_zero (exponent : ℕ) :
     extendedFabiusDyadicValue exponent 0 = 0 := by
   simp [extendedFabiusDyadicValue]
 
+/-- The signed global evaluator is zero on the whole left half line.  Unlike
+`fabiusDyadicValue_of_ge`, there is no companion statement to the right: the
+signed extension is not eventually constant, it is quasi-periodic. -/
 theorem extendedFabiusDyadicValue_of_nonpos (exponent : ℕ) (numerator : ℤ)
     (h : numerator ≤ 0) :
     extendedFabiusDyadicValue exponent numerator = 0 := by

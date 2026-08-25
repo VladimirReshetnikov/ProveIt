@@ -203,11 +203,6 @@ theorem stepApproximant_at_polynomialAtomLocation (n m : ℕ) :
 noncomputable def correctedPrefixCoefficient (k m : ℕ) : ℝ :=
   (iteratedPrefix k m : ℝ) / (2 : ℝ) ^ ((k - 1).choose 2)
 
-private lemma choose_succ_two_corrected (n : ℕ) :
-    (n + 1).choose 2 = n.choose 2 + n := by
-  rw [show n + 1 = Nat.succ n by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 /-- Exact identification of a corrected prefix coefficient with the value of
 the step approximant at the corresponding centered cell. -/
 theorem correctedPrefixCoefficient_eq_stepApproximant
@@ -220,7 +215,7 @@ theorem correctedPrefixCoefficient_eq_stepApproximant
       rw [correctedPrefixCoefficient, show n + 1 - 1 = n by omega,
         stepApproximant_at_polynomialAtomLocation,
         iteratedPrefix_eq_approximationPolynomial_coeff (n + 1) m (by omega) hm,
-        choose_succ_two_corrected, pow_add]
+        choose_succ_two, pow_add]
       push_cast
       have hpow : (2 : ℝ) ^ n ≠ 0 := by positivity
       field_simp
@@ -459,7 +454,7 @@ private theorem choose_two_tendsto_atTop :
   filter_upwards [eventually_ge_atTop (b + 1)] with n hn
   have hnpos : 0 < n := by omega
   obtain ⟨q, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : n ≠ 0)
-  rw [choose_succ_two_corrected]
+  rw [choose_succ_two]
   omega
 
 private theorem inverse_two_pow_choose_two_tendsto_zero :

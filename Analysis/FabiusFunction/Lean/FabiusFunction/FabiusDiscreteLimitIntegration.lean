@@ -21,21 +21,13 @@ namespace Fabius
 
 noncomputable section
 
-private theorem two_mul_choose_two_add_discreteLimit (a : ℕ) :
-    2 * a.choose 2 + a = a ^ 2 := by
-  cases a with
-  | zero => simp
-  | succ a =>
-      rw [two_mul_choose_succ_two]
-      ring
-
 private theorem discreteLimit_choose_reindex {n k : ℕ} (hk : k ≤ n) :
     (n - k + 1).choose 2 + (n + k).choose 2 =
       n ^ 2 + 2 * k.choose 2 := by
   have hsub : n - k + k = n := Nat.sub_add_cancel hk
   have hleft := two_mul_choose_succ_two (n - k)
-  have hright := two_mul_choose_two_add_discreteLimit (n + k)
-  have hkchoose := two_mul_choose_two_add_discreteLimit k
+  have hright := two_mul_choose_two_add (n + k)
+  have hkchoose := two_mul_choose_two_add k
   nlinarith
 
 private theorem discreteLimit_sign_reindex {n k : ℕ} (hk : k ≤ n) :

@@ -5,7 +5,16 @@ their proved Lean declarations.  It also audits the numbered equations and
 substantive prose claims in the two local TeX drafts.  All cited Lean names
 are available from the public import `FabiusFunction`.
 
+For a human-readable synthesis rather than a declaration-by-declaration map,
+see its
+[LaTeX source](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+or [rendered PDF](Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+
 ## arXiv:1702.05442
+
+The exact version used by this audit is vendored as
+[TeX source](papers/arXiv-1702.05442v1/09-Function.tex) and as the
+[published PDF](papers/arXiv-1702.05442v1/1702.05442v1.pdf).
 
 | Source result | Lean declaration(s) |
 | --- | --- |
@@ -19,6 +28,27 @@ are available from the public import `FabiusFunction`.
 | Theorem 5 | `Fabius.rvachev_poisson_summation` |
 | Theorem 6 | `Fabius.original_theorem_six` |
 | Theorem 7 | `Fabius.original_theorem_seven_global` |
+
+The Theorem 3 row intentionally records the paper's source-facing statement,
+whose input lies in `[-1,0]`.  The library also proves strictly stronger
+all-real forms:
+
+- `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal` and
+  `Fabius.ProbabilityRepresentation.fabiusReal_eq_weightedSum_probability`,
+  together with
+  `Fabius.ProbabilityRepresentation.ofReal_fabiusReal_eq_weightedSum_probability`,
+  identify the bounded Fabius function with the random-series CDF for every
+  real threshold in both measure codomains;
+- `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF`,
+  `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`,
+  and
+  `Fabius.ProbabilityRepresentation.ofReal_rvachevUp_eq_weightedSum_probability_global`
+  give the real-valued and `ℝ≥0∞` identities
+  `up(x) = P[X ≤ 1 - |x|]` for every real `x`.
+
+In these names, “global” means that the real input is unrestricted.  These are
+identities for the bounded CDF and `rvachevUp`, not for the signed extension
+`extendedFabius` or its canonical specialization `globalFabius`.
 
 The construction and proof infrastructure also formalizes the key supporting
 Fourier, recurrence, convolution, polynomial, Taylor, Poisson, moment, and
@@ -40,6 +70,10 @@ identity rather than a theorem or lemma environment.  It is not part of the
 named-result coverage claim.
 
 ## arXiv:1702.06487v3
+
+Version 3 is vendored as
+[TeX source](papers/arXiv-1702.06487v3/157-Arithmetic-v3.tex) and as the
+[published PDF](papers/arXiv-1702.06487v3/1702.06487v3.pdf).
 
 | Source result | Lean declaration |
 | --- | --- |
@@ -82,10 +116,11 @@ post-Conjecture-16 denominator formulas.
 
 ## Local draft: *Fabius Asymptotic*
 
-The file `Papers/Fabius Asymptotic/Fabius Asymptotic.tex` contains **zero**
-formal theorem, lemma, proposition, or corollary environments.  The table is
-therefore a claim matrix, not a named-environment inventory.  Its public Lean
-aggregate is `FabiusFunction.PaperFabiusAsymptotic`.
+The source draft audited for this section is not currently vendored in the
+repository.  It contains **zero** formal theorem, lemma, proposition, or
+corollary environments, so the table is a claim matrix rather than a
+named-environment inventory.  Its public Lean aggregate is
+`FabiusFunction.PaperFabiusAsymptotic`.
 
 | Source claim | Status | Lean declaration(s) |
 | --- | --- | --- |
@@ -117,7 +152,7 @@ formalizing those circular steps as theorems.
 | Web claim | Status | Lean declaration(s) |
 | --- | --- | --- |
 | [Recurrence sequence](https://math.stackexchange.com/questions/4354350/extracting-an-asymptotic-from-a-sequence-defined-by-a-recurrence-relation) and its connection to `F(2^-n)` | Proved with the source normalization `a_n = d_n / n!`; the resulting direct recurrence for `F(2^-n)` is proved exactly for `n ≥ 1` in rational, generic real, canonical bounded, and signed-global forms | `Fabius.fabiusRecurrenceSequence`, `Fabius.fabiusRecurrenceSequence_recurrence`, `Fabius.fabius_inverse_two_pow_eq_recurrenceSequence`, `Fabius.fabiusAtInverseTwoPow_recurrence_zpow`, `Fabius.fabiusFunction_inverse_two_pow_recurrence_zpow`, `Fabius.fabius_inverse_two_pow_recurrence_zpow`, `Fabius.globalFabius_inverse_two_pow_recurrence` |
-| Nonrecursive solution of the inverse-dyadic recurrence | Proved for every natural `n`, including `n = 0`, as a finite weighted-path sum and as the explicit sum over ordered compositions `n = r₁+⋯+rₘ` with partial sums `sⱼ`; a nested version first sums over the number of blocks.  The empty composition gives `F(1)=1`.  Generic bounded, canonical, and signed-global real corollaries are exposed.  See the [article source](fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex) and [PDF](fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf). | `Fabius.Composition.pathSum_eq_sum_range`, `Fabius.triangularRecurrence_eq_initial_mul_pathSum`, `Fabius.fabiusCompositionWeight`, `Fabius.fabiusCompositionSum`, `Fabius.fabiusRecurrenceSequence_eq_sum_compositions`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, `Fabius.fabiusFunction_inverse_two_pow_eq_sum_compositions`, `Fabius.globalFabius_inverse_two_pow_eq_sum_compositions` |
+| Nonrecursive solution of the inverse-dyadic recurrence | Proved for every natural `n`, including `n = 0`, as a finite weighted-path sum and as the explicit sum over ordered compositions `n = r₁+⋯+rₘ` with partial sums `sⱼ`; a nested version first sums over the number of blocks.  The empty composition gives `F(1)=1`.  Generic bounded, canonical, and signed-global real corollaries are exposed.  See the [article source](drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex) and [PDF](drafts/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf). | `Fabius.Composition.pathSum_eq_sum_range`, `Fabius.triangularRecurrence_eq_initial_mul_pathSum`, `Fabius.fabiusCompositionWeight`, `Fabius.fabiusCompositionSum`, `Fabius.fabiusRecurrenceSequence_eq_sum_compositions`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, `Fabius.fabiusFunction_inverse_two_pow_eq_sum_compositions`, `Fabius.globalFabius_inverse_two_pow_eq_sum_compositions` |
 | Bernoulli recurrence and generating-function equation/product | Proved in source-facing coefficient and analytic forms | `Fabius.fabiusRecurrenceSequence_bernoulli_recurrence`, `Fabius.complexGeneratingFunction_eq_fabiusRecurrenceSequence_series`, `Fabius.fabiusRecurrenceSequence_series_neg_eq_tprod` |
 | [Finite q-binomial/half-shifted Thue--Morse formula for `F(m/2^n)`](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function) | Proved exactly for all natural `m,n`, including zero and unreduced representations.  With no bound on `m`, it computes the signed global extension; under `m ≤ 2^n`, it computes every bounded `IsFabius` function.  `qPochhammer` and `qBinomial` follow the source argument order. | `Fabius.qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.fabiusDyadic_eq_qBinomialThueMorseDyadic_halfShift_sum`, `Fabius.extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.globalFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula` |
 | Arbitrary-scalar translation and dyadic-representation invariance of the finite formula | Proved first as a constant polynomial over `ℚ`, then evaluated in every field over `ℚ`.  Consequently the fully displayed sum with inner power `(j - m * 2^k + q)^(n+k)` computes the same value for every real or complex `q`, with an explicit Gaussian-rational endpoint.  In particular the source's `+1/2` and centered sums agree.  Equal nonnegative dyadic rationals give equal formula values, including the refinement `(m,n) ↦ (2m,n+1)`. | `Fabius.qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const`, `Fabius.qBinomialThueMorseDyadicTranslatedFormulaIn_eq_centered`, `Fabius.fabiusDyadic_algebraMap_eq_qBinomialThueMorseDyadic_translated_sum`, `Fabius.globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum_real`, `Fabius.globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum_complex`, `Fabius.globalFabius_dyadic_eq_qBinomialThueMorseDyadicTranslatedFormulaIn_gaussianRat`, `Fabius.qBinomialThueMorseDyadicHalfShiftFormula_refine`, `Fabius.qBinomialThueMorseDyadicHalfShiftFormula_eq_of_rat_eq` |
@@ -137,10 +172,9 @@ formalizing those circular steps as theorems.
 
 ## Local draft: *K-fold summation over the signed Thue--Morse sequence*
 
-The file
-`Papers/K-fold summation over the signed Thue-Morse sequence/K-fold summation over the signed Thue-Morse sequence.tex`
-also contains **zero** formal theorem, lemma, proposition, or corollary
-environments.  Its public Lean aggregate is
+The source draft audited for this section is likewise not currently vendored
+in the repository.  It contains **zero** formal theorem, lemma, proposition,
+or corollary environments.  Its public Lean aggregate is
 `FabiusFunction.PaperKFoldThueMorse`.
 
 | Source claim | Status | Lean declaration(s) |
@@ -166,7 +200,7 @@ environments.  Its public Lean aggregate is
 | Equation (10), claimed `O(log n)` error after stationary substitution | **False for the displayed Stirling proxy**: substitution leaves an omitted linear `+n`, which is not `O(log n)` | `Fabius.paperStirlingPhi_of_stationary`, `Fabius.paperStirlingOmittedTerm_not_isBigO_log` |
 | Standard lower-branch expansion used before equation (11) | Proved as a positive-side limit: `W₋₁(-ε) - (log ε - log |log ε|) → 0` | `Fabius.tendsto_lowerLambertW_expansion` |
 | Equation (11), coarse log-squared decay | Proved rigorously without the false maximum/Lambert-W chain | `Fabius.log_fabiusLogPhi_add_quadratic_isBigO`, `Fabius.fabiusLogProfile_normalized_tendsto` |
-| “Faster than every power” | Proved from smooth flatness | `Fabius.extendedFabius_isLittleO_pow_at_zero`, `Fabius.fabius_isLittleO_pow_at_zero_right` |
+| “Faster than every power” | Proved from smooth flatness | `Fabius.extendedFabius_isLittleO_pow_at_zero`, `Fabius.fabius_isLittleO_pow_at_zero` (two-sided), `Fabius.fabius_isLittleO_pow_at_zero_right` |
 | “Slower than `exp(-c/x)`” | Proved precisely on the dyadic logarithmic scale: for every `c > 0`, `exp (-c 2^t)` is little-o of `F(2^-t)` | `Fabius.exp_neg_two_rpow_isLittleO_fabiusLogPhi`, `Fabius.exp_neg_two_rpow_isLittleO_fabius` |
 
 The corrected approximation is a separate theorem, not a reinterpretation

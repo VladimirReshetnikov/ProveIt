@@ -19,6 +19,20 @@ random variable is `∑' n, x n / 2 / 2^n`.
 The construction records both pointwise and measure-theoretic support on
 `[0,1]`, as well as the self-similarity and reflection identities used to
 identify its continuous CDF with the bounded Fabius function.
+
+The theorem stated in the paper is recovered on its source-facing domain
+`x ∈ [-1,0]`.  The construction yields stronger identities with no restriction
+on the real argument:
+
+* `weightedSumCDF x = fabiusReal F x`, equivalently
+  `fabiusReal F x = P[X ≤ x]`;
+* `rvachevUp F x = weightedSumCDF (1 - |x|)`, equivalently
+  `rvachevUp F x = P[X ≤ 1 - |x|]`.
+
+Both identities have real-valued and native `ℝ≥0∞` measure forms.  In theorem
+names below, `_global` means that the input `x` ranges over all of `ℝ`; it
+does **not** refer to the signed extension `extendedFabius` or its canonical
+specialization `globalFabius`.
 -/
 
 open Filter Set MeasureTheory ProbabilityTheory Topology
@@ -37,6 +51,9 @@ abbrev SampleSpace := ℕ → Set.Icc (0 : ℝ) 1
 noncomputable def uniformProduct : Measure SampleSpace :=
   Measure.infinitePi (fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1)))
 
+/-- `uniformProduct` is a probability measure, inherited coordinatewise
+from Lebesgue measure on `[0,1]`.  This instance is what lets
+`weightedCoordinateSum` be read as a random variable. -/
 instance : IsProbabilityMeasure uniformProduct := by
   unfold uniformProduct
   infer_instance
@@ -54,6 +71,9 @@ private lemma summable_coordinate_series (ω : SampleSpace) :
   gcongr
   exact (ω n).property.2
 
+/-- The random series is continuous on the sample space, because it
+converges uniformly against the summable geometric majorant
+`n ↦ 1 / 2 / 2 ^ n`. -/
 lemma continuous_weightedCoordinateSum : Continuous weightedCoordinateSum := by
   apply continuous_tsum
   · intro n
@@ -66,14 +86,21 @@ lemma continuous_weightedCoordinateSum : Continuous weightedCoordinateSum := by
     gcongr
     exact (ω n).property.2
 
+/-- Measurability of the random series, read off from its continuity.
+This is the hypothesis that lets `uniformProduct` be pushed forward to
+`weightedSumDistribution`. -/
 lemma measurable_weightedCoordinateSum : Measurable weightedCoordinateSum :=
   continuous_weightedCoordinateSum.measurable
 
+/-- The random series is nonnegative, since every summand is. -/
 lemma weightedCoordinateSum_nonneg (ω : SampleSpace) :
     0 ≤ weightedCoordinateSum ω := by
   exact tsum_nonneg fun n =>
     div_nonneg (div_nonneg (ω n).property.1 (by norm_num)) (by positivity)
 
+/-- The random series is at most `1`, by comparison with
+`∑' n, 1 / 2 / 2 ^ n = 1`.  With `weightedCoordinateSum_nonneg` this
+gives `weightedCoordinateSum_mem_Icc`. -/
 lemma weightedCoordinateSum_le_one (ω : SampleSpace) :
     weightedCoordinateSum ω ≤ 1 := by
   rw [weightedCoordinateSum]
@@ -92,9 +119,13 @@ lemma weightedCoordinateSum_mem_Icc (ω : SampleSpace) :
 /-- Delete the first coordinate. -/
 def tail (ω : SampleSpace) : SampleSpace := fun n => ω (Nat.succ n)
 
+/-- The shift `tail` is measurable, being a reindexing of the coordinate
+projections. -/
 lemma measurable_tail : Measurable tail := by
   exact measurable_pi_lambda _ fun n => measurable_pi_apply (Nat.succ n)
 
+/-- The product measure is invariant under deleting the first
+coordinate: `tail` pushes `uniformProduct` forward to itself. -/
 lemma uniformProduct_map_tail : uniformProduct.map tail = uniformProduct := by
   change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
       (fun ω n => ω (Nat.succ n)) =
@@ -128,6 +159,9 @@ private lemma independent_head_tail :
     (by fun_prop : Measurable reindex)
   simpa only [Function.comp_def, takeHead, reindex, t] using hcomp
 
+/-- The head and the tail are jointly distributed as the product of a
+uniform `[0,1]` variable with an independent copy of `uniformProduct`.
+This is the measure-level form of `independent_head_tail`. -/
 lemma uniformProduct_map_head_tail :
     uniformProduct.map (fun ω : SampleSpace => (ω 0, tail ω)) =
       (volume : Measure (Set.Icc (0 : ℝ) 1)).prod uniformProduct := by
@@ -140,6 +174,9 @@ lemma uniformProduct_map_head_tail :
     rw [Measure.infinitePi_map_eval]
   rwa [hhead] at h
 
+/-- One step of the recurrence: the random series at `ω` equals
+`(ω 0 + X (tail ω)) / 2`.  This pointwise identity is what
+`weightedSumDistribution_selfSimilar` transports to the level of laws. -/
 lemma weightedCoordinateSum_split (ω : SampleSpace) :
     weightedCoordinateSum ω = ((ω 0 : ℝ) + weightedCoordinateSum (tail ω)) / 2 := by
   rw [weightedCoordinateSum, (summable_coordinate_series ω).tsum_eq_zero_add]
@@ -158,6 +195,8 @@ lemma weightedCoordinateSum_split (ω : SampleSpace) :
 noncomputable def weightedSumDistribution : Measure ℝ :=
   uniformProduct.map weightedCoordinateSum
 
+/-- The law of the random series is a probability measure, being the
+pushforward of one along a measurable map. -/
 instance : IsProbabilityMeasure weightedSumDistribution :=
   Measure.isProbabilityMeasure_map measurable_weightedCoordinateSum.aemeasurable
 
@@ -177,6 +216,9 @@ lemma weightedSumDistribution_compl_Icc :
   rw [measure_compl measurableSet_Icc (by simp),
     weightedSumDistribution_Icc, measure_univ, tsub_self]
 
+/-- The pair (first coordinate, series of the remaining coordinates) has
+law `volume` times `weightedSumDistribution`: the head is uniform on
+`[0,1]` and independent of the tail series. -/
 lemma uniformProduct_map_head_tailSum :
     uniformProduct.map
         (fun ω : SampleSpace => (ω 0, weightedCoordinateSum (tail ω))) =
@@ -195,6 +237,10 @@ lemma uniformProduct_map_head_tailSum :
     rfl
   rwa [hhead, htail] at h
 
+/-- Self-similarity of the law: `weightedSumDistribution` is the image of
+`volume` times `weightedSumDistribution` under `p ↦ (p.1 + p.2) / 2`.
+This is the measure-level form of `weightedCoordinateSum_split` and the
+input to the smoothing equation `weightedSumCDF_eq_integral`. -/
 lemma weightedSumDistribution_selfSimilar :
     weightedSumDistribution =
       ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod weightedSumDistribution).map
@@ -223,10 +269,15 @@ lemma weightedSumDistribution_selfSimilar :
 def reflectCoordinates (ω : SampleSpace) : SampleSpace :=
   fun n => unitInterval.symm (ω n)
 
+/-- The coordinatewise reflection `t ↦ 1 - t` is measurable on the
+sample space. -/
 lemma measurable_reflectCoordinates : Measurable reflectCoordinates := by
   exact measurable_pi_lambda _ fun n =>
     unitInterval.measurable_symm.comp (measurable_pi_apply n)
 
+/-- Lebesgue measure on `[0,1]` is invariant under `t ↦ 1 - t`, hence so
+is the product measure: `reflectCoordinates` pushes `uniformProduct`
+forward to itself. -/
 lemma uniformProduct_map_reflectCoordinates :
     uniformProduct.map reflectCoordinates = uniformProduct := by
   change (Measure.infinitePi fun _ : ℕ => (volume : Measure (Set.Icc (0 : ℝ) 1))).map
@@ -239,6 +290,8 @@ lemma uniformProduct_map_reflectCoordinates :
   funext n
   exact unitInterval.measurePreserving_symm.map_eq
 
+/-- Reflecting every coordinate sends the random series `X` to `1 - X`;
+the constant comes from `∑' n, 1 / 2 / 2 ^ n = 1`. -/
 lemma weightedCoordinateSum_reflect (ω : SampleSpace) :
     weightedCoordinateSum (reflectCoordinates ω) = 1 - weightedCoordinateSum ω := by
   rw [weightedCoordinateSum, weightedCoordinateSum]
@@ -251,6 +304,10 @@ lemma weightedCoordinateSum_reflect (ω : SampleSpace) :
   rw [(summable_geometric_two' 1).tsum_sub (summable_coordinate_series ω),
     tsum_geometric_two' 1]
 
+/-- The law of the random series is invariant under `x ↦ 1 - x`, i.e. it
+is symmetric about `1/2`.  It gives `weightedSumCDF_symmetry` here, and
+is reused in `EndpointLaplaceComparison` to relate the endpoint moments
+of the law at `0` and at `1`. -/
 lemma weightedSumDistribution_reflection :
     weightedSumDistribution.map (fun x : ℝ => 1 - x) = weightedSumDistribution := by
   rw [weightedSumDistribution,
@@ -272,18 +329,27 @@ lemma weightedSumDistribution_reflection :
 noncomputable def weightedSumCDF (x : ℝ) : ℝ :=
   ProbabilityTheory.cdf weightedSumDistribution x
 
+/-- The CDF as an explicit real-valued probability on the sample space:
+`weightedSumCDF x = P[X ≤ x]`.  This is the bridge between Mathlib's
+`cdf` API and the event `{ω | weightedCoordinateSum ω ≤ x}` appearing in
+the representation theorems at the end of the file. -/
 lemma weightedSumCDF_eq_measureReal (x : ℝ) :
     weightedSumCDF x = uniformProduct.real {ω | weightedCoordinateSum ω ≤ x} := by
   rw [weightedSumCDF, ProbabilityTheory.cdf_eq_real, weightedSumDistribution,
     map_measureReal_apply measurable_weightedCoordinateSum measurableSet_Iic]
   rfl
 
+/-- The CDF is measurable, being monotone. -/
 lemma measurable_weightedSumCDF : Measurable weightedSumCDF := by
   exact (ProbabilityTheory.monotone_cdf weightedSumDistribution).measurable
 
+/-- The CDF is nonnegative.  Half of the range bound required by
+`cdfContinuousMap_admissible`. -/
 lemma weightedSumCDF_nonneg (x : ℝ) : 0 ≤ weightedSumCDF x :=
   ProbabilityTheory.cdf_nonneg weightedSumDistribution x
 
+/-- The CDF is at most `1`.  The other half of the range bound required
+by `cdfContinuousMap_admissible`. -/
 lemma weightedSumCDF_le_one (x : ℝ) : weightedSumCDF x ≤ 1 :=
   ProbabilityTheory.cdf_le_one weightedSumDistribution x
 
@@ -353,6 +419,11 @@ lemma weightedSumCDF_eq_intervalIntegral (y : ℝ) :
       intervalIntegral.integral_comp_sub_left weightedSumCDF (2 * y)
     _ = ∫ t in (2 * y - 1)..(2 * y), weightedSumCDF t := by ring_nf
 
+/-- The CDF is continuous on all of `ℝ`.  Using
+`weightedSumCDF_eq_intervalIntegral` it is rewritten as a difference of
+two primitives of itself, and interval primitives are continuous.
+`weightedSumDistribution_singleton` deduces from this that the law has
+no atoms. -/
 lemma continuous_weightedSumCDF : Continuous weightedSumCDF := by
   have hint : ∀ a b : ℝ, IntervalIntegrable weightedSumCDF volume a b :=
     fun _ _ => (ProbabilityTheory.monotone_cdf weightedSumDistribution).intervalIntegrable
@@ -368,6 +439,8 @@ lemma continuous_weightedSumCDF : Continuous weightedSumCDF := by
   rw [hrepr]
   exact (hp.comp (by fun_prop)).sub (hp.comp (by fun_prop))
 
+/-- For arguments `x ≤ 0` the CDF vanishes: the event `X ≤ x` forces
+`X = 0`, which forces the first coordinate to be `0`, a null event. -/
 lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
     weightedSumCDF x = 0 := by
   rw [weightedSumCDF_eq_measureReal]
@@ -407,6 +480,8 @@ lemma weightedSumCDF_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
   rw [measureReal_def, hzero]
   simp
 
+/-- For arguments `1 ≤ x` the CDF equals `1`, since `X ≤ 1` holds
+pointwise on the sample space. -/
 lemma weightedSumCDF_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
     weightedSumCDF x = 1 := by
   rw [weightedSumCDF_eq_measureReal]
@@ -416,6 +491,9 @@ lemma weightedSumCDF_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
     exact (weightedCoordinateSum_le_one ω).trans hx
   rw [hall, probReal_univ]
 
+/-- The law of the random series has no atoms: every singleton is null.
+This follows from continuity of the CDF, and supplies the
+`NullSingletonClass` instance used by `weightedSumCDF_symmetry`. -/
 lemma weightedSumDistribution_singleton (x : ℝ) :
     weightedSumDistribution {x} = 0 := by
   rw [← ProbabilityTheory.measure_cdf weightedSumDistribution,
@@ -457,6 +535,10 @@ lemma weightedSumCDF_symmetry (x : ℝ) :
   norm_num at h ⊢
   linarith
 
+/-- On the left half `[0, 1/2]` the smoothing equation collapses to
+`H x = ∫ t in 0..2 * x, H t`, because `H` vanishes below `0`.  This is
+the `x ≤ 1/2` branch of `Existence.transformValue`, and is what
+`cdfAdmissible_fixed` matches against. -/
 lemma weightedSumCDF_left_formula {x : ℝ}
     (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
     weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t := by
@@ -484,6 +566,8 @@ noncomputable def cdfContinuousMap : Existence.C :=
 @[simp] lemma cdfContinuousMap_apply (x : Existence.I) :
     cdfContinuousMap x = weightedSumCDF x := rfl
 
+/-- The restricted CDF is admissible in the sense of `Existence`: it
+takes values in `[0,1]` and satisfies `f (1 - x) = 1 - f x`. -/
 lemma cdfContinuousMap_admissible : Existence.admissible cdfContinuousMap := by
   constructor
   · intro x
@@ -492,6 +576,9 @@ lemma cdfContinuousMap_admissible : Existence.admissible cdfContinuousMap := by
     change weightedSumCDF (1 - (x : ℝ)) = 1 - weightedSumCDF x
     exact weightedSumCDF_symmetry x
 
+/-- The restricted CDF packaged as a point of `Existence.admissibleSet`,
+the complete metric space on which `Existence.transformSelf` is a
+contraction. -/
 noncomputable def cdfAdmissible : Existence.admissibleSet :=
   ⟨cdfContinuousMap, cdfContinuousMap_admissible⟩
 
@@ -504,6 +591,9 @@ private lemma cumulative_cdfContinuousMap {y : ℝ} (hy : y ∈ Icc (0 : ℝ) 1)
   rw [Existence.extend_eq cdfContinuousMap ⟨ht.1, ht.2.trans hy.2⟩]
   rfl
 
+/-- The restricted CDF is a fixed point of `Existence.transformSelf`.
+The `x ≤ 1/2` branch is `weightedSumCDF_left_formula`; the other branch
+combines that formula with `weightedSumCDF_symmetry`. -/
 lemma cdfAdmissible_fixed :
     Existence.transformSelf cdfAdmissible = cdfAdmissible := by
   apply Subtype.ext
@@ -529,10 +619,16 @@ lemma cdfAdmissible_fixed :
     rw [heq] at hleft
     linarith
 
+/-- By uniqueness of the fixed point of the contraction
+`Existence.transformSelf`, the restricted CDF is exactly
+`Existence.fixedCandidate`. -/
 lemma cdfAdmissible_eq_fixedCandidate :
     cdfAdmissible = Existence.fixedCandidate :=
   Existence.transformSelf_contracting.fixedPoint_unique cdfAdmissible_fixed
 
+/-- On `[0,1]` the CDF agrees with `Existence.boundedCandidate`.  This is
+the step from the fixed-point identification to
+`weightedSumCDF_eq_fabiusReal`, which drops the restriction on `x`. -/
 lemma weightedSumCDF_eq_boundedCandidate {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     weightedSumCDF x = fabiusReal Existence.boundedCandidate x := by
   change weightedSumCDF x = Existence.extend Existence.fixedCandidate.1 x
@@ -572,8 +668,9 @@ theorem rvachevUp_eq_weightedSumCDF
     ring
   · rw [abs_of_pos (lt_of_not_ge hx)]
 
-/-- Global real-probability representation of Rvachev's function:
-`up(x) = P[X ≤ 1 - |x|]` for the weighted sum of independent uniforms. -/
+/-- All-real probability representation of Rvachev's function:
+`up(x) = P[X ≤ 1 - |x|]` for the weighted sum of independent uniforms.
+Here “global” refers to the unrestricted real input, not to `globalFabius`. -/
 theorem rvachevUp_eq_weightedSum_probability_global
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     rvachevUp F x = uniformProduct.real
@@ -581,7 +678,8 @@ theorem rvachevUp_eq_weightedSum_probability_global
   rw [rvachevUp_eq_weightedSumCDF F hF x,
     weightedSumCDF_eq_measureReal]
 
-/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+/-- The all-real representation of `rvachevUp` in the probability measure's
+native `ℝ≥0∞` codomain.  This is unrelated to the signed `globalFabius`. -/
 theorem ofReal_rvachevUp_eq_weightedSum_probability_global
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     ENNReal.ofReal (rvachevUp F x) = uniformProduct
@@ -598,7 +696,8 @@ theorem fabiusReal_eq_weightedSum_probability
   rw [← weightedSumCDF_eq_measureReal,
     weightedSumCDF_eq_fabiusReal F hF]
 
-/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+/-- The all-real bounded-CDF representation in the probability measure's native
+`ℝ≥0∞` codomain. -/
 theorem ofReal_fabiusReal_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     ENNReal.ofReal (fabiusReal F x) =
@@ -612,13 +711,16 @@ lemma independent_uniform_coordinates :
   unfold uniformProduct
   exact iIndepFun_infinitePi (X := fun _ x => x) (fun _ => measurable_id)
 
+/-- Each coordinate projection has the uniform probability law on `[0,1]`. -/
 lemma coordinate_has_uniform_law (n : ℕ) :
     uniformProduct.map (fun ω : SampleSpace => ω n) =
       (volume : Measure (Set.Icc (0 : ℝ) 1)) := by
   unfold uniformProduct
   rw [Measure.infinitePi_map_eval]
 
-/-- Theorem 3 of arXiv:1702.05442, in real-probability form. -/
+/-- Theorem 3 of arXiv:1702.05442, in its source-facing real-probability form
+on `[-1,0]`.  The unrestricted strengthening is
+`rvachevUp_eq_weightedSum_probability_global`. -/
 theorem rvachevUp_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Icc (-1 : ℝ) 0) :
@@ -638,7 +740,9 @@ theorem rvachevUp_eq_weightedSum_probability
       linarith [hω.2]
   rw [rvachevUp_eq_weightedSum_probability_global F hF x, hset]
 
-/-- The same theorem with the probability left in its native `ℝ≥0∞` codomain. -/
+/-- The same source-facing theorem with the probability left in its native
+`ℝ≥0∞` codomain.  See `ofReal_rvachevUp_eq_weightedSum_probability_global`
+for the unrestricted real-domain strengthening. -/
 theorem ofReal_rvachevUp_eq_weightedSum_probability
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Icc (-1 : ℝ) 0) :

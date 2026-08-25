@@ -17,11 +17,16 @@ open Set MeasureTheory
 
 namespace Fabius.SaddleExpansion
 
-private theorem norm_standardGaussian (v : ℝ) :
-    ‖QuantitativeSaddle.standardGaussian v‖ =
-      Real.exp (-(v ^ 2) / 2) := by
-  rw [QuantitativeSaddle.standardGaussian, Complex.norm_real,
-    Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+/-- A finite factorial coefficient weight controlling both the tail and the
+whole-line `L¹` norm of a Gaussian-weighted complex polynomial. -/
+noncomputable def gaussianPolynomialTailWeight (p : Polynomial ℂ) : ℝ :=
+  ∑ k ∈ p.support, ‖p.coeff k‖ * (8 * k.factorial)
+
+/-- The factorial coefficient weight is nonnegative. -/
+lemma gaussianPolynomialTailWeight_nonneg (p : Polynomial ℂ) :
+    0 ≤ gaussianPolynomialTailWeight p := by
+  unfold gaussianPolynomialTailWeight
+  positivity
 
 /-- Exact coefficientwise tail estimate for a Gaussian-weighted complex
 polynomial outside `[-A,A]`. -/
@@ -34,15 +39,8 @@ theorem integral_norm_standardGaussian_mul_eval_compl_Icc_le
             (8 * k.factorial * Real.exp (-(A ^ 2) / 4) / A) := by
   let g : ℕ → ℝ → ℝ := fun k v =>
     ‖p.coeff k‖ * (Real.exp (-(v ^ 2) / 2) * |v| ^ k)
-  have hg (k : ℕ) : Integrable (g k) := by
-    have h := (integrable_realGaussian_mul_pow k).norm
-    have habs : Integrable (fun v : ℝ =>
-        Real.exp (-(v ^ 2) / 2) * |v| ^ k) := by
-      apply h.congr
-      filter_upwards with v
-      rw [Real.norm_eq_abs, abs_mul, abs_pow,
-        abs_of_pos (Real.exp_pos _)]
-    exact habs.const_mul _
+  have hg (k : ℕ) : Integrable (g k) :=
+    (integrable_realGaussian_mul_abs_pow k).const_mul _
   have hleft : Integrable (fun v : ℝ =>
       ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖) :=
     (integrable_standardGaussian_mul_eval p).norm
@@ -52,22 +50,7 @@ theorem integral_norm_standardGaussian_mul_eval_compl_Icc_le
   have hpoint (v : ℝ) :
       ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖ ≤
         ∑ k ∈ p.support, g k v := by
-    rw [norm_mul, norm_standardGaussian, Polynomial.eval_eq_sum]
-    calc
-      Real.exp (-(v ^ 2) / 2) *
-          ‖p.sum fun k c => c * (v : ℂ) ^ k‖ ≤
-        Real.exp (-(v ^ 2) / 2) *
-          ∑ k ∈ p.support, ‖p.coeff k * (v : ℂ) ^ k‖ := by
-            gcongr
-            exact norm_sum_le _ _
-      _ = ∑ k ∈ p.support, g k v := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _hk
-        simp only [norm_mul, norm_pow, Complex.norm_real,
-          Real.norm_eq_abs]
-        dsimp [g]
-        ring
+    simpa only [g] using norm_standardGaussian_mul_eval_le p v
   have hmono :
       (∫ v in (Icc (-A) A)ᶜ,
         ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖) ≤
@@ -96,5 +79,27 @@ theorem integral_norm_standardGaussian_mul_eval_compl_Icc_le
       exact mul_le_mul_of_nonneg_left
         (Fabius.SaddleCentral.integral_gaussian_abs_pow_compl_Icc_le k hA)
         (norm_nonneg _)
+
+/-- Tail estimate expressed through the common factorial coefficient weight. -/
+theorem integral_norm_standardGaussian_mul_eval_compl_Icc_le_tailWeight
+    (p : Polynomial ℂ) {A : ℝ} (hA : 4 ≤ A) :
+    (∫ v in (Icc (-A) A)ᶜ,
+      ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖) ≤
+        gaussianPolynomialTailWeight p *
+          (Real.exp (-(A ^ 2) / 4) / A) := by
+  calc
+    (∫ v in (Icc (-A) A)ᶜ,
+        ‖QuantitativeSaddle.standardGaussian v * p.eval (v : ℂ)‖) ≤
+      ∑ k ∈ p.support,
+        ‖p.coeff k‖ *
+          (8 * k.factorial * Real.exp (-(A ^ 2) / 4) / A) :=
+      integral_norm_standardGaussian_mul_eval_compl_Icc_le p hA
+    _ = gaussianPolynomialTailWeight p *
+        (Real.exp (-(A ^ 2) / 4) / A) := by
+      unfold gaussianPolynomialTailWeight
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro k _hk
+      ring
 
 end Fabius.SaddleExpansion
