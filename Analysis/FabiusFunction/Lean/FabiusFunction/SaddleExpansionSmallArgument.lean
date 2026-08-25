@@ -47,4 +47,25 @@ theorem HasAsymptoticExpansion.smallArgument_of_logScale
       rw [show fabiusLogArgument (fabiusSmallArgumentLog x) = x from
         fabiusLogArgument_smallArgumentLog hx]
 
+/-- Pull a full small-positive-argument expansion back to the exact
+logarithmic coordinate `t ↦ 2⁻ᵗ`. -/
+theorem HasAsymptoticExpansion.logScale_of_smallArgument
+    {scale f : ℝ → ℝ} {coeff : ℕ → ℝ → ℝ}
+    (h : HasAsymptoticExpansion (nhdsWithin 0 (Ioi 0)) scale f coeff) :
+    HasAsymptoticExpansion atTop
+      (scale ∘ fabiusLogArgument) (f ∘ fabiusLogArgument)
+      (fun k => coeff k ∘ fabiusLogArgument) :=
+  h.comp_tendsto fabiusLogArgument fabiusLogArgument_tendsto_smallArgument
+
+/-- Full expansions in the exact logarithmic coordinate are equivalent to
+full expansions at zero from the right. -/
+theorem hasAsymptoticExpansion_logScale_iff_smallArgument
+    {scale f : ℝ → ℝ} {coeff : ℕ → ℝ → ℝ} :
+    HasAsymptoticExpansion atTop
+        (scale ∘ fabiusLogArgument) (f ∘ fabiusLogArgument)
+        (fun k => coeff k ∘ fabiusLogArgument) ↔
+      HasAsymptoticExpansion (nhdsWithin 0 (Ioi 0)) scale f coeff :=
+  ⟨HasAsymptoticExpansion.smallArgument_of_logScale,
+    HasAsymptoticExpansion.logScale_of_smallArgument⟩
+
 end Fabius.SaddleExpansion

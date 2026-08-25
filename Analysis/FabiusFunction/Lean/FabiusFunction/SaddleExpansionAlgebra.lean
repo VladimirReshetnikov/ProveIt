@@ -190,10 +190,11 @@ theorem trunc_exp_subst_eq_sum (E : ℕ → R) (hEzero : E 0 = 0)
   intro n _hn
   rw [coeff_expSeries]
 
-/-- The coefficient of order `n` only uses exponent coefficients through
-order `n`. -/
-theorem expCoeff_congr {E F : ℕ → R} (n : ℕ)
-    (hEF : ∀ j ≤ n, E j = F j) :
+/-- The coefficient of order `n` only uses the positive-degree exponent
+coefficients through order `n`; in particular, the constant coefficient is
+irrelevant. -/
+theorem expCoeff_congr_of_pos {E F : ℕ → R} (n : ℕ)
+    (hEF : ∀ j, 0 < j → j ≤ n → E j = F j) :
     expCoeff E n = expCoeff F n := by
   induction n using Nat.strong_induction_on with
   | h n ih =>
@@ -205,10 +206,19 @@ theorem expCoeff_congr {E F : ℕ → R} (n : ℕ)
           apply Finset.sum_congr rfl
           intro j hj
           have hjlt : j < n + 1 := mem_range.1 hj
-          rw [hEF (j + 1) (by omega)]
+          rw [hEF (j + 1) (by omega) (by omega)]
           rw [ih (n - j) (by omega)]
-          intro k hk
-          exact hEF k (by omega)
+          intro k hkpos hk
+          exact hEF k hkpos (by omega)
+
+/-- The coefficient of order `n` only uses exponent coefficients through
+order `n`. -/
+theorem expCoeff_congr {E F : ℕ → R} (n : ℕ)
+    (hEF : ∀ j ≤ n, E j = F j) :
+    expCoeff E n = expCoeff F n := by
+  apply expCoeff_congr_of_pos n
+  intro j _hjpos hj
+  exact hEF j hj
 
 /-- Formation of exponential coefficients commutes with morphisms of
 commutative rational algebras. -/
@@ -265,6 +275,31 @@ theorem expCoeff_rescale (c : R) (E : ℕ → R) (n : ℕ) :
           simp only [Algebra.smul_def]
           ring
 
+/-- Formal exponentiation turns addition of exponents into multiplication
+of the recursively generated exponential series. -/
+theorem expSeries_add (E F : ℕ → R) :
+    expSeries (fun j => E j + F j) = expSeries E * expSeries F := by
+  symm
+  apply expSeries_unique
+  · have hexponent :
+        exponentSeries (fun j => E j + F j) =
+          exponentSeries E + exponentSeries F := by
+      ext n
+      simp
+    rw [hexponent]
+    simp only [map_add, Derivation.leibniz, derivative_expSeries,
+      smul_eq_mul]
+    ring
+  · simp
+
+/-- The exponential coefficient of a sum is the Cauchy convolution of the
+two coefficient families. -/
+theorem expCoeff_add (E F : ℕ → R) (n : ℕ) :
+    expCoeff (fun j => E j + F j) n =
+      ∑ ij ∈ antidiagonal n, expCoeff E ij.1 * expCoeff F ij.2 := by
+  rw [← coeff_expSeries, expSeries_add, PowerSeries.coeff_mul]
+  simp only [coeff_expSeries]
+
 /-- Evaluation of function-valued coefficients commutes with the recursive
 exponential coefficient engine. -/
 theorem expCoeff_apply {V : Type*} (E : ℕ → V → R) (n : ℕ) (v : V) :
@@ -308,6 +343,38 @@ theorem partialSum_succ (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
     partialSum scale coeff (N + 1) x =
       partialSum scale coeff N x + scale x ^ N • coeff N x := by
   rw [partialSum, partialSum, sum_range_succ]
+
+@[simp]
+theorem partialSum_add (scale : α → 𝕜)
+    (coeff coeff' : ℕ → α → ℰ) (N : ℕ) (x : α) :
+    partialSum scale (fun k x => coeff k x + coeff' k x) N x =
+      partialSum scale coeff N x + partialSum scale coeff' N x := by
+  simp [partialSum, smul_add, Finset.sum_add_distrib]
+
+@[simp]
+theorem partialSum_const_smul (c : 𝕜) (scale : α → 𝕜)
+    (coeff : ℕ → α → ℰ) (N : ℕ) (x : α) :
+    partialSum scale (fun k x => c • coeff k x) N x =
+      c • partialSum scale coeff N x := by
+  unfold partialSum
+  rw [Finset.smul_sum]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  exact smul_comm (scale x ^ k) c (coeff k x)
+
+@[simp]
+theorem partialSum_neg (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
+    (N : ℕ) (x : α) :
+    partialSum scale (fun k x => -coeff k x) N x =
+      -partialSum scale coeff N x := by
+  simp [partialSum, ← Finset.sum_neg_distrib]
+
+@[simp]
+theorem partialSum_sub (scale : α → 𝕜)
+    (coeff coeff' : ℕ → α → ℰ) (N : ℕ) (x : α) :
+    partialSum scale (fun k x => coeff k x - coeff' k x) N x =
+      partialSum scale coeff N x - partialSum scale coeff' N x := by
+  simp [sub_eq_add_neg]
 
 /-- A full Poincaré expansion along `l`.  Coefficients may depend on the
 asymptotic parameter (for example through a periodic phase), but each such
@@ -357,6 +424,31 @@ theorem HasAsymptoticExpansion.congr
     · filter_upwards [hscale] with x hxscale
       rw [hxscale]
 
+/-- Transport a full expansion across eventual equality of every
+coefficient family. -/
+theorem HasAsymptoticExpansion.congr_coeff
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff coeff' : ℕ → α → ℰ}
+    (h : HasAsymptoticExpansion l scale f coeff)
+    (hcoeff : ∀ k, coeff k =ᶠ[l] coeff' k) :
+    HasAsymptoticExpansion l scale f coeff' := by
+  constructor
+  · intro k
+    exact (h.1 k).congr' (hcoeff k) EventuallyEq.rfl
+  · intro N
+    have hcoeffN : ∀ᶠ x in l, ∀ k ∈ range N, coeff k x = coeff' k x := by
+      rw [Filter.eventually_all_finset]
+      intro k _hk
+      exact hcoeff k
+    apply (h.2 N).congr'
+    · filter_upwards [hcoeffN] with x hx
+      congr 1
+      unfold partialSum
+      apply Finset.sum_congr rfl
+      intro k hk
+      rw [hx k hk]
+    · exact EventuallyEq.rfl
+
 /-- Pull a full expansion back along a map tending to its source filter. -/
 theorem HasAsymptoticExpansion.comp_tendsto
     {β : Type*} {l : Filter α} {l' : Filter β}
@@ -393,9 +485,39 @@ theorem HasAsymptoticExpansion.add
   · intro N
     apply (hf.2 N).add (hg.2 N) |>.congr'
     · filter_upwards with x
-      simp only [partialSum, smul_add, Finset.sum_add_distrib]
+      rw [partialSum_add]
       abel
     · rfl
+
+/-- Multiplying a full expansion by a constant multiplies every coefficient
+by the same constant. -/
+theorem HasAsymptoticExpansion.const_smul (c : 𝕜)
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff : ℕ → α → ℰ}
+    (h : HasAsymptoticExpansion l scale f coeff) :
+    HasAsymptoticExpansion l scale (fun x => c • f x)
+      (fun k x => c • coeff k x) := by
+  constructor
+  · intro k
+    apply (h.1 k).const_smul_left c |>.congr'
+    · exact EventuallyEq.rfl
+    · exact EventuallyEq.rfl
+  · intro N
+    apply (h.2 N).const_smul_left c |>.congr'
+    · filter_upwards with x
+      rw [partialSum_const_smul]
+      change c • (f x - partialSum scale coeff N x) = _
+      exact smul_sub c (f x) (partialSum scale coeff N x)
+    · exact EventuallyEq.rfl
+
+/-- Full expansions are closed under pointwise negation. -/
+theorem HasAsymptoticExpansion.neg
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff : ℕ → α → ℰ}
+    (h : HasAsymptoticExpansion l scale f coeff) :
+    HasAsymptoticExpansion l scale (fun x => -f x)
+      (fun k x => -coeff k x) := by
+  simpa only [neg_one_smul] using h.const_smul (-1 : 𝕜)
 
 /-- Full expansions with a common scale subtract coefficientwise. -/
 theorem HasAsymptoticExpansion.sub
@@ -405,15 +527,7 @@ theorem HasAsymptoticExpansion.sub
     (hg : HasAsymptoticExpansion l scale g coeff') :
     HasAsymptoticExpansion l scale (fun x => f x - g x)
       (fun k x => coeff k x - coeff' k x) := by
-  constructor
-  · intro k
-    exact (hf.1 k).sub (hg.1 k)
-  · intro N
-    apply (hf.2 N).sub (hg.2 N) |>.congr'
-    · filter_upwards with x
-      simp only [partialSum, smul_sub, Finset.sum_sub_distrib]
-      abel
-    · rfl
+  simpa only [sub_eq_add_neg] using hf.add hg.neg
 
 end AsymptoticExpansion
 
