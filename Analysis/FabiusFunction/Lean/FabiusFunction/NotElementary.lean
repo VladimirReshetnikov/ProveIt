@@ -123,62 +123,100 @@ theorem dense_analyticLocus_of_isElementary_coeffs
       Set.mem_iInter₂.1 hx i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
     (fun x _ => hlead x) hy.continuousOn fun x _ => hpoly x
 
-/-- The interior form: such a branch cannot agree with a bounded Fabius
-function on any subset of `[0,1]` with nonempty interior. -/
-theorem not_algebraicBranch_eqOn_of_interior_nonempty (F : BoundedFabius) (hF : IsFabius F)
-    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
-    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
-    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0)
-    {U : Set ℝ} (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
-    (heq : EqOn y (fabiusReal F) U) : False := by
-  obtain ⟨x, hxU, hxy⟩ :=
-    (dense_iff_inter_open.mp
-      (dense_analyticLocus_of_isElementary_coeffs ha hlead hy hpoly))
-      (interior U) isOpen_interior hUne
-  refine fabius_not_analyticAt F hF (hsub (interior_subset hxU)) (hxy.congr ?_)
-  filter_upwards [isOpen_interior.mem_nhds hxU] with t ht
-  exact heq (interior_subset ht)
+/-- The localized form, and the one the applications use: a branch need only
+be continuous **on the open set `U`**, solve the equation **on `U`**, and have
+nonvanishing leading coefficient **on `U`**.  Then it is analytic at some
+point of `U`.
+
+Localizing matters, and is not a cosmetic generalization.  A global hypothesis
+`∀ x, ∑ i ≤ n, a i x * y x ^ i = 0` forces the polynomial `w ↦ ∑ a i x * w ^ i`
+to be surjective onto the values it must attain, which for many equations is
+impossible: `y ^ 5 - y - x = 0` has no continuous branch defined on all of `ℝ`,
+since `w ↦ w ^ 5 - w` is not injective.  Its branches over the interval
+`(0,1)` are perfectly good algebraic functions with non-solvable Galois group,
+and only the localized statement reaches them. -/
+theorem exists_analyticAt_of_isElementary_coeffs
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ} {U : Set ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i)) (hU : IsOpen U) (hUne : U.Nonempty)
+    (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
+    (hpoly : ∀ x ∈ U, branchPoly a n (x, y x) = 0) :
+    ∃ x ∈ U, AnalyticAt ℝ y x := by
+  have hWopen : IsOpen (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
+    (Set.finite_Iic n).isOpen_biInter fun i _ => isOpen_analyticLocus (a i)
+  have hWdense : Dense (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
+    dense_biInter_of_isOpen (fun i _ => isOpen_analyticLocus (a i))
+      (Set.finite_Iic n).countable fun i hi => (ha i hi).dense_analyticLocus
+  obtain ⟨x, hxV, hxa⟩ :=
+    analyticDenseOn_of_algebraic n a y _ (hU.inter hWopen)
+      (fun i hi x hx =>
+        Set.mem_iInter₂.1 hx.2 i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
+      (fun x hx => hlead x hx.1) (hy.mono Set.inter_subset_left)
+      (fun x hx => hpoly x hx.1) _ (hU.inter hWopen)
+      ((dense_iff_inter_open.mp hWdense) U hU hUne) subset_rfl
+  exact ⟨x, hxV.1, hxa⟩
 
 /-- **The Fabius function is not an algebraic function over the elementary
 functions.**
 
-If `a 0, …, a n` are elementary, the leading coefficient `a n` vanishes
-nowhere, and `y` is a continuous function with `∑ i ≤ n, a i x * y x ^ i = 0`
-for every `x`, then `y` does not agree with a bounded Fabius function on any
-nonempty open subset of `[0,1]`.
+Let `U` be a nonempty open subset of `[0,1]`.  If `a 0, …, a n` are
+elementary, the leading coefficient `a n` vanishes nowhere on `U`, and `y` is
+continuous on `U` with `∑ i ≤ n, a i x * y x ^ i = 0` for every `x ∈ U`, then
+`y` does not agree with a bounded Fabius function on `U`.
 
-This covers every algebraic function over the elementary functions, including
-those whose Galois group is not solvable and which are therefore not
-expressible by radicals — so it reaches past the description of the elementary
-functions in terms of roots, towards Liouville's differential-field notion. -/
+Every hypothesis on the branch is confined to `U`, so this reaches the
+algebraic functions that exist only locally — including branches whose Galois
+group is not solvable, which are therefore not expressible by radicals at all.
+It thus goes past the description of the elementary functions in terms of
+roots, towards Liouville's differential-field notion. -/
 theorem not_algebraicBranch_eqOn (F : BoundedFabius) (hF : IsFabius F)
     {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
-    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
-    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0)
+    (ha : ∀ i ≤ n, IsElementary (a i))
     {U : Set ℝ} (hU : IsOpen U) (hUne : U.Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
+    (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
+    (hpoly : ∀ x ∈ U, branchPoly a n (x, y x) = 0)
     (heq : EqOn y (fabiusReal F) U) : False := by
-  refine not_algebraicBranch_eqOn_of_interior_nonempty F hF ha hlead hy hpoly ?_ hsub heq
-  simpa only [hU.interior_eq] using hUne
+  obtain ⟨x, hxU, hxy⟩ :=
+    exists_analyticAt_of_isElementary_coeffs ha hU hUne hlead hy hpoly
+  refine fabius_not_analyticAt F hF (hsub hxU) (hxy.congr ?_)
+  filter_upwards [hU.mem_nhds hxU] with t ht using heq ht
+
+/-- The interior form: such a branch cannot agree with a bounded Fabius
+function on any subset of `[0,1]` with nonempty interior. -/
+theorem not_algebraicBranch_eqOn_of_interior_nonempty (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i))
+    {U : Set ℝ} (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
+    (hlead : ∀ x ∈ interior U, a n x ≠ 0) (hy : ContinuousOn y (interior U))
+    (hpoly : ∀ x ∈ interior U, branchPoly a n (x, y x) = 0)
+    (heq : EqOn y (fabiusReal F) U) : False :=
+  not_algebraicBranch_eqOn F hF ha isOpen_interior hUne
+    (interior_subset.trans hsub) hlead hy hpoly (heq.mono interior_subset)
 
 /-- **The Fabius function on `(0,1)` is not an algebraic function over the
-elementary functions.** -/
+elementary functions.**
+
+Every hypothesis is confined to `(0,1)`, so this applies to branches that are
+defined and continuous only there. -/
 theorem canonical_fabius_not_algebraicBranch_on_Ioo
     {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
-    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
-    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0) :
+    (ha : ∀ i ≤ n, IsElementary (a i))
+    (hlead : ∀ x ∈ Ioo (0 : ℝ) 1, a n x ≠ 0)
+    (hy : ContinuousOn y (Ioo (0 : ℝ) 1))
+    (hpoly : ∀ x ∈ Ioo (0 : ℝ) 1, branchPoly a n (x, y x) = 0) :
     ¬ EqOn y (fabiusReal fabius) (Ioo (0 : ℝ) 1) := fun heq =>
-  not_algebraicBranch_eqOn fabius fabius_spec ha hlead hy hpoly isOpen_Ioo
-    ⟨1 / 2, by norm_num⟩ Ioo_subset_Icc_self heq
+  not_algebraicBranch_eqOn fabius fabius_spec ha isOpen_Ioo
+    ⟨1 / 2, by norm_num⟩ Ioo_subset_Icc_self hlead hy hpoly heq
 
 /-- The interior form for the canonical Fabius function. -/
 theorem canonical_fabius_not_algebraicBranch_of_interior_nonempty
     {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
-    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
-    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0)
-    {U : Set ℝ} (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
+    (ha : ∀ i ≤ n, IsElementary (a i))
+    {U : Set ℝ} (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
+    (hlead : ∀ x ∈ interior U, a n x ≠ 0) (hy : ContinuousOn y (interior U))
+    (hpoly : ∀ x ∈ interior U, branchPoly a n (x, y x) = 0) :
     ¬ EqOn y (fabiusReal fabius) U := fun heq =>
-  not_algebraicBranch_eqOn_of_interior_nonempty fabius fabius_spec ha hlead hy hpoly
-    hUne hsub heq
+  not_algebraicBranch_eqOn_of_interior_nonempty fabius fabius_spec ha hUne hsub
+    hlead hy hpoly heq
 
 /-! ## Rvachev's `up` function and the signed global extension -/
 

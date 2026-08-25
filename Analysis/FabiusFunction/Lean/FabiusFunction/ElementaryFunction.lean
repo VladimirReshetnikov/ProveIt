@@ -35,9 +35,12 @@ the hyperbolic functions, `Real.arccos` and `Real.arsinh` are all derived.
 Every generator here is a *total* function `ℝ → ℝ`: `Mathlib` gives `x⁻¹`,
 `Real.log`, `Real.rpow` and `Real.arcsin` junk values outside their classical
 domains.  This makes the class *larger*, and hence the non-elementarity
-theorem *stronger*: a classical elementary expression that happens to be well
-formed on an open set agrees there with the total function built by the same
-derivation, because the junk values are never consulted.
+theorem *stronger*: a classical elementary expression that is well formed on
+an open set, and that takes no real power of a nonpositive base, agrees there
+with the total function built by the same derivation, because the junk values
+are never consulted.  The excluded case is real, not pedantry: at a negative
+base `Real.rpow` differs from the classical root *inside* its classical
+domain, and `IsElementary.signedRpow` is the derivation to use instead.
 
 ## The theorem
 
@@ -315,16 +318,22 @@ theorem arccos {f : ℝ → ℝ} (hf : IsElementary f) :
   rw [h]
   exact (IsElementary.const (Real.pi / 2)).sub hf.arcsin
 
-/-- Variable exponents, at a positive base.  Where `f` is positive,
-`f ^ g` is the elementary function `exp (log f * g)`; in particular
-`fun x => x ^ x` is elementary on any set where the base is positive.
+/-- Variable exponents, at a base that is positive **at every real**: then
+`f ^ g` is the elementary function `exp (log f * g)`.  So this covers
+`fun x => (1 + x ^ 2) ^ Real.sin x`, and any base bounded away from `0`, but
+*not* `fun x => x ^ x`, whose base is positive only on `(0, ∞)` — for that,
+see `Fabius.eqOn_rpow_of_pos`, which is a statement about a region rather than
+about membership in the class.
 
 The unrestricted two-variable power is not a constructor of `IsElementary`.
-The simple positive-base formula below does not cover negative bases, where
-`Mathlib`'s `Real.rpow` is sign-dependent
-(`x ^ y = |x| ^ y * cos (π y)`), and its zero-base convention is exceptional.
-On an interval on which `f` has fixed nonzero sign, however, `f ^ g` does agree
-with a member of the class, so nothing is lost for the purposes of
+The positive-base formula below does not cover negative bases, where
+`Mathlib`'s `Real.rpow` is sign-dependent (`x ^ y = |x| ^ y * cos (π y)`), and
+its zero-base convention is exceptional.  On a region where `f` has fixed
+nonzero sign, however, `f ^ g` does agree with a member of the class — the
+witness being `exp (log f * g)` for a positive base, formalized as
+`Fabius.eqOn_rpow_of_pos`, and `exp (log |f| * g) * cos (π * g)` for a
+negative one, which is elementary by the same constructors but is not spelled
+out here.  So nothing is lost for the purposes of
 `Fabius.not_isElementary_eqOn`. -/
 theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
     (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
