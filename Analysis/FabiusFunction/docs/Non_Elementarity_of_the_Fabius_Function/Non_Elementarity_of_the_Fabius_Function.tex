@@ -339,8 +339,10 @@ records the one place where the obvious derivation is the wrong one.
 The second concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
-everywhere positive, which covers $x\mapsto x^x$ and every classical
-variable-exponent expression.  The unrestricted two-variable power is not a
+positive \emph{at every real} --- which covers $(1+x^2)^{\sin x}$ and any base
+bounded away from zero, but not $x\mapsto x^x$, whose base is positive only on
+$(0,\infty)$.  That case is handled instead by the region statement below.
+The unrestricted two-variable power is not a
 constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
 base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
 covers both signs at once.  Nothing is lost for Corollary~\ref{cor:main}, and this is
@@ -530,9 +532,16 @@ theorem applies directly.  On $W$ we have $g\equiv 0$, so $y$ satisfies the
 $n\,a_n$ is still nowhere zero; the inductive hypothesis applies to it.
 Finally $V$ together with a dense subset of $W$ is dense in $U$, because an
 open set disjoint from $V$ is disjoint from $\overline V$ and hence contained
-in $W$.  The set $W$ absorbs exactly the degenerate locus that a discriminant
-argument would otherwise have to control, and the induction terminates because
-the degree drops.
+in $W$.  The set $W$ absorbs the \emph{interior} of the degenerate locus
+$\{g=0\}$; what the argument gives up is the boundary $\partial V\cap U$, and
+that is exactly why the conclusion is density rather than analyticity
+everywhere.  For $y=|\cdot|$ the degenerate locus is $\{0\}$, so $V=\R
+\setminus\{0\}$, $\overline V=\R$, $W=\varnothing$, and the origin is conceded
+to the splitting step --- correctly, since $|\cdot|$ is not analytic there.
+
+The induction terminates because the degree drops.  Its base case $n=0$ is
+vacuous rather than positive: the equation reads $a_0(x)=0$ while the leading
+coefficient hypothesis says $a_0(x)\ne0$, so the region is empty.
 
 The implicit function step is \texttt{Mathlib}'s
 \texttt{ContDiffAt.implicitFunction}, which is stated for every smoothness
@@ -545,30 +554,38 @@ Fréchet derivative.
 \end{proofidea}
 
 \begin{corollary}\label{cor:algebraic}
-Let $a_0,\dots,a_n$ be elementary, let $a_n$ vanish nowhere, and let
-$y\colon\R\to\R$ be continuous with $\sum_{i\le n}a_i(x)y(x)^i=0$ for every
-$x$.  Then $y$ does not agree with the Fabius function on any nonempty open
-subset of $[0,1]$; in particular not on $(0,1)$.
+Let $U\subseteq[0,1]$ be nonempty and open, let $a_0,\dots,a_n$ be elementary,
+let $a_n$ vanish nowhere \emph{on $U$}, and let $y$ be continuous \emph{on
+$U$} with $\sum_{i\le n}a_i(x)y(x)^i=0$ for every $x\in U$.  Then $y$ does not
+agree with the Fabius function on $U$; in particular not on $(0,1)$.
 \end{corollary}
 
 \begin{proof}
 Each $a_i$ has dense open analytic locus by \Cref{thm:density}.  The
-intersection of the $n+1$ of them is a finite intersection of dense open sets,
-hence dense and open, and \Cref{thm:algebraic} applies to it, giving that the
-analytic locus of $y$ is dense in $\R$.  Now argue as in
-Corollary~\ref{cor:main}.
+intersection $W$ of the $n+1$ of them is a finite intersection of dense open
+sets, hence dense and open, so $U\cap W$ is nonempty and open, and
+\Cref{thm:algebraic} applies to it: $y$ is analytic at some $x\in U\cap
+W\subseteq U$.  Now argue as in Corollary~\ref{cor:main}.
 \end{proof}
 
 \begin{boxedremark}
-Corollary~\ref{cor:algebraic} covers every algebraic function over the
-elementary functions, including those whose Galois group is not solvable and
-which are therefore not expressible by radicals at all.  It is genuinely
-stronger than Corollary~\ref{cor:main} in that direction, and independent of it
-in the other: it says nothing about $\exp$ or $\log$ of an algebraic function,
-because it is a single algebraic step over elementary coefficients rather than
-a closure.  A tower that interleaves algebraic extensions with exponentials
-and logarithms at several levels is covered only when it can be presented in
-one of the two forms.
+Every hypothesis on the branch in Corollary~\ref{cor:algebraic} is confined to
+$U$, and that is what makes the corollary say what one wants it to say.  A
+version with global hypotheses would be much weaker than it looks: requiring
+$\sum a_i(x)y(x)^i=0$ for \emph{every} real $x$ forces the polynomial
+$w\mapsto\sum a_i(x)w^i$ to be injective along the branch, and for
+$y^5-y-x=0$ --- the standard example of an equation with non-solvable Galois
+group --- no continuous branch on all of $\R$ exists, since $w\mapsto w^5-w$
+is not injective.  The localized statement reaches the branches of that
+equation over $(0,1)$, which are exactly the algebraic functions not
+expressible by radicals.
+
+The corollary is genuinely stronger than Corollary~\ref{cor:main} in that
+direction, and independent of it in the other: it says nothing about $\exp$ or
+$\log$ of an algebraic function, because it is a single algebraic step over
+elementary coefficients rather than a closure.  A tower that interleaves
+algebraic extensions with exponentials and logarithms at several levels is
+covered only when it can be presented in one of the two forms.
 \end{boxedremark}
 
 \section{The formal development}
@@ -590,7 +607,7 @@ Closure under composition (Proposition~\ref{prop:comp})
   & \texttt{IsElementary.comp}
   & \texttt{ElementaryFunction} \\
 Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\cosh$, $\tanh$, $\arccos$, $\operatorname{arsinh}$, polynomials
-  & \texttt{IsElementary.sub}, \texttt{.div}, \texttt{.npow}, \texttt{.sqrt}, \texttt{.abs}, \texttt{.tan}, \texttt{.sinh}, \texttt{.cosh}, \texttt{.tanh}, \texttt{.arccos}, \texttt{.arsinh}, \texttt{.rpow\_of\_pos}, \texttt{.polynomial}
+  & \texttt{IsElementary.sub}, \texttt{.div}, \texttt{.npow}, \texttt{.sqrt}, \texttt{.abs}, \texttt{.tan}, \texttt{.sinh}, \texttt{.cosh}, \texttt{.tanh}, \texttt{.arccos}, \texttt{.arsinh}, \texttt{.polynomial}
   & \texttt{ElementaryFunction} \\
 Analytic locus $\An(f)$
   & \texttt{analyticLocus}
@@ -632,7 +649,7 @@ Branches of polynomial equations (\Cref{thm:algebraic})
   & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}
   & \texttt{AlgebraicBranch} \\
 Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
-  & \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
+  & \texttt{exists\_analyticAt\_of\_isElementary\_coeffs}, \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
   & \texttt{NotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
@@ -717,7 +734,10 @@ need them.  A set that is open in $\R$ and contained in $[0,1]$ is
 automatically contained in $(0,1)$ --- an $\R$-open set containing $0$
 contains negative numbers --- so the witness produced by
 \Cref{thm:density} is always an interior point, and the endpoint case of
-\Cref{thm:nowhere} is never invoked.  The same is true if one reads ``open''
+\Cref{thm:nowhere} is never mathematically reached.  (The proof term still
+cites it: the applications call \texttt{fabius\_not\_analyticAt}, which is the
+combined statement over all of $[0,1]$ and case-splits on the endpoint
+internally.)  The same is true if one reads ``open''
 in the relative topology of $[0,1]$: a nonempty relatively open subset still
 contains a nonempty $\R$-open subinterval of $(0,1)$.
 

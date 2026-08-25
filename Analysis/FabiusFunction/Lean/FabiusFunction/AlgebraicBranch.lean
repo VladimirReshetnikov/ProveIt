@@ -35,8 +35,16 @@ Write `g` for `∂P/∂y` evaluated along the branch, and split the region `U`:
   disjoint from `V` is disjoint from `closure V` and therefore contained
   in `W`.
 
-`W` absorbs exactly the degenerate locus that a discriminant argument would
-have to control, and the induction terminates because the degree drops.
+`W` absorbs the *interior* of the degenerate locus `{g = 0}`; what the
+argument gives up is the boundary `∂V ∩ U`, and that is precisely why the
+conclusion is density rather than analyticity everywhere.  For `y = |·|` the
+degenerate locus is `{0}`, `V` is `ℝ \ {0}`, `closure V` is all of `ℝ`, so
+`W` is empty and the origin is conceded to the splitting lemma — which is
+correct, since `|·|` really is not analytic there.
+
+The induction terminates because the degree drops.  Its base case `n = 0` is
+vacuous rather than positive: the equation reads `a 0 x = 0` while the leading
+coefficient hypothesis says `a 0 x ≠ 0`, so the region is empty.
 
 ## The implicit function theorem used
 
@@ -100,8 +108,11 @@ theorem analyticAt_of_continuous_branch {f : ℝ × ℝ → ℝ} {y : ℝ → �
 /-! ## Density of the analytic locus of a branch -/
 
 /-- `y` is real analytic at some point of every nonempty open subset of `s`.
-This is "the analytic locus of `y` is dense in `s`", phrased so that it
-composes with the splitting lemma below. -/
+
+For open `s` this says the analytic locus of `y` is dense in `s`.  For general
+`s` it constrains only `interior s`, and is vacuous when that is empty; the
+weaker reading is deliberate, because it is what the splitting lemma below
+needs and every instantiation here is at an open set. -/
 def AnalyticDenseOn (y : ℝ → ℝ) (s : Set ℝ) : Prop :=
   ∀ V : Set ℝ, IsOpen V → V.Nonempty → V ⊆ s → ∃ x ∈ V, AnalyticAt ℝ y x
 
