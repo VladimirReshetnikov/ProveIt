@@ -3720,19 +3720,24 @@ four exponentials is attacked by auxiliary functions and zero estimates, while l
 independence of log-products is a question about the arithmetic of the multiplicative group of
 $\Q_{>0}$ and its second symmetric power.
 
-\emph{The smallest instances are already open.}  Independence of the family includes, as its
-very first nontrivial case, the assertion that $(\log3)^2$, $(\log2)(\log3)$ and $(\log2)^2$
-are $\Q$-linearly independent, equivalently that $\thetaq=\log_2 3$ is not a root of a rational
-quadratic --- a statement about the irrationality of $\thetaq^2$ modulo $\Q(\thetaq)$ that is
-not decided by present transcendence theory.  Indeed the relation exhibited in
-Section~\ref{sec:radical} for a $3$-smooth counterexample would already contradict the single
-independence
+\emph{Where the family first becomes open.}  Independence of the family includes, as its very
+first nontrivial case, the assertion that $(\log3)^2$, $(\log2)(\log3)$ and $(\log2)^2$ are
+$\Q$-linearly independent, equivalently that $\thetaq=\log_2 3$ is not a root of a rational
+quadratic.  That case is \emph{not} open: $\thetaq$ is transcendental by Gelfond--Schneider, so
+it is a root of no nonzero rational polynomial at all.  This is
+Proposition~\ref{lp:prop-twoprime} below, and Theorem~\ref{lp:thm-smooth} is the exclusion it
+buys.  Two primes are therefore settled unconditionally, and the family first becomes open at
+three, where a relation says that $(\log_23,\log_25)$ lies on a rational conic.  Indeed the
+relation exhibited in Section~\ref{sec:radical} for a $3$-smooth counterexample would already
+contradict the single independence
 \[
   \alpha_2(\log2)(\log3)+\alpha_3(\log3)^2-\gamma_2(\log2)^2-\gamma_3(\log2)(\log3)\ne0
 \]
-for the relevant nonzero integer vector.  Restricted to the two primes $2$ and $3$, the
-criterion needed is thus exactly: \emph{$1$, $\thetaq$ and $\thetaq^2$ are linearly independent
-over $\Q$}, which is the $3$-smooth shadow of Conjecture~\ref{ra:conj-radical-target}.
+for the relevant nonzero integer vector --- and, that independence being a theorem, the
+$3$-smooth branch is closed rather than merely reduced.  Restricted to the two primes $2$ and
+$3$ the criterion needed is exactly \emph{$1$, $\thetaq$ and $\thetaq^2$ linearly independent
+over $\Q$}, the $3$-smooth shadow of Conjecture~\ref{ra:conj-radical-target}; the transcendence
+of $\thetaq$ supplies it.
 
 \subsection{A finite form of the criterion}
 
@@ -22259,14 +22264,12 @@ Three consequences.  First, $C=4570$ against the quoted $832$: our version is $5
 more conservative, exactly as expected from a crude determinant estimate that uses all rows
 and does not optimise the vanishing order --- which is what makes it safe to rely on, since
 a smaller threshold yields a \emph{weaker but self-contained} statement.  Second --- and this is a serious caveat added after refereeing --- the derivation has a
-gap at exactly the step where it needs one.  "If $g$ is not algebraic of degree $\le d$
-then $\Delta
-e0$" does not follow: linear independence of the $L$ functions says nothing
-about the rank of their $L	imes L$ matrix of \emph{values} on a prescribed point set, and
+gap at exactly the step where it needs one.  ``If $g$ is not algebraic of degree $\le d$
+then $\Delta\ne0$'' does not follow: linear independence of the $L$ functions says nothing
+about the rank of their $L\times L$ matrix of \emph{values} on a prescribed point set, and
 taking all available rows removes the freedom to select a nonsingular minor.  The
-symmetrised product of Proposition~
-ef{camp:prop-inftype} is an explicit witness: it is
-integer-valued on $\Sol$ (vanishing there), has $	au_2>0$ so is not algebraic over
+symmetrised product of Proposition~\ref{camp:prop-inftype} is an explicit witness: it is
+integer-valued on $\Sol$ (vanishing there), has $\tau_2>0$ so is not algebraic over
 $\C(2^z,3^z)$, and makes every column with $k\ge1$ identically zero, forcing $\Delta=0$
 for all $T$ and all $d\ge1$.  So $C=4570$ is \emph{not established} by this argument, and
 the claim that every statement may be re-read with $832$ replaced by $4570$ is withdrawn.
@@ -23438,6 +23441,71 @@ terminal-prime contraction of Section~\ref{sec:criticalwindow}.)  Each has a con
 computational entry point and a precise kill criterion, and each would have to use the
 structural-prime asymmetry (\eqref{fc:eq-carry-free}, $\mathcal P_\pm$) that distinguishes a
 hypothetical primitive pair from the integer controls $(2^m,3^m)$.
+
+\paragraph{A verified attack on all three, and what it did not achieve.}  Those three targets,
+together with the question of closing the multiplicatively dependent branch of
+Theorem~\ref{kn:thm-multiplicative}, were attacked directly; each attempted closure was then
+put to three independent refutations under distinct lenses --- correctness, control-blindness,
+and circularity.  \emph{Three of the four claimed closures were themselves refuted, and nothing
+was closed.}  The outcome is recorded here in full, because the failures are informative and
+because a claimed closure that does not survive refutation is exactly the kind of result this
+corpus has shipped before and should not ship again.
+
+\begin{itemize}
+\item \emph{Shared structural-face capture} (Target~\ref{masks:target}) was claimed refuted in
+both branches, unconditionally and for every multiplicatively independent $(M,A)$, by a contact
+cap of Liouville type together with an explicit witness.  The arithmetic reproduces exactly ---
+$F=5U^6-4U^5V-10UV^2+8V^3+1$ does have contact $2$ and value $1$ at $(9/8,243/256)$ --- but the
+constructions carrying the argument lie inside the class the target explicitly excludes, so
+they do not meet it.  Target~\ref{masks:target} stands.
+\item The \emph{nonlinear prime-top} problem of Section~\ref{primetop:remaining} was claimed
+closed by a ``degree collapse'' theorem asserting that a nonlinear rational stencil of width
+$w$ and any degree $d$ attains exactly the contact of the linear stencil of the same width,
+independent of $d$, while paying up to $d$ times the reduced denominator.  A refutation
+produced an explicit counterexample to that theorem.  The target stands.
+\item The survey of \emph{unconditional weight-two technology} was claimed to be an exhaustive
+three-class classification showing that nothing in the literature applies.  Its exclusion of
+the one genuinely contested class --- arithmetic-holonomy technology of Calegari--Dimitrov--Tang
+type, Section~\ref{camp:cdt} --- does not hold, and an exhaustiveness claim over the whole
+weight-two frontier cannot rest on the secondary sources actually consulted.  The correct status
+is the one Section~\ref{camp:cdt} already records: an open target with a named missing
+ingredient.
+\item Only the \emph{dependent-branch reduction} survived refutation, and most of it turned out
+to be Proposition~\ref{kn:prop-dim} rediscovered: the sign trichotomy and the two smooth-output
+degenerations are already there, and already kernel-verified.  The one genuinely new piece is
+Proposition~\ref{kn:prop-common-radicand} below, and it does not close the branch either.
+\end{itemize}
+
+\begin{proposition}[Common external radicand in the mixed-sign case]
+\label{kn:prop-common-radicand}
+Let $\beta$ be a nonintegral solution and let $(a,b)$ span the coordinate kernel of
+Proposition~\ref{kn:prop-dim} in the case $ab<0$, normalised so that $a=ga_0$, $b=-gb_0$ with
+$a_0,b_0>0$ and $\gcd(a_0,b_0)=1$.  Then the external parts of the two outputs are powers of a
+common integer:
+\[
+  M_{\mathrm{ext}}=T^{\,b_0},\qquad A_{\mathrm{ext}}=T^{\,a_0},
+  \qquad T=\prod_{p\ge5}p^{\,t_p}>1 .
+\]
+\end{proposition}
+
+\begin{proof}
+Proposition~\ref{kn:prop-dim} supplies $a\,v_p(M)+b\,v_p(A)=0$ for every $p\ge5$, so
+$a_0v_p(M)=b_0v_p(A)$.  As $\gcd(a_0,b_0)=1$ this forces $b_0\mid v_p(M)$; writing
+$v_p(M)=b_0t_p$ gives $v_p(A)=a_0t_p$, and $T=\prod_{p\ge5}p^{t_p}$ is the required integer.
+Some external prime exists by Theorem~\ref{lp:thm-smooth}, and for it $t_p>0$, so $T>1$.
+\end{proof}
+
+What is new here is only the mixed-sign structure: the sign trichotomy itself, and the
+identification of the two degenerate cases with the smooth-output branches, are already
+Proposition~\ref{kn:prop-dim}, kernel-verified as \lean{kernelPairs_mul_nonpos} and
+\lean{mem_kernelPairs_one_zero_iff}.  The addition consumes channel (i) and nothing else, and
+it closes nothing: each of the three cases reduces to a weight-two statement.  The first two
+are the smooth-output branches
+already governed by Section~\ref{sec:radical} --- $M$ being $\{2,3\}$-smooth forces
+$3^{\thetaq}$, equivalently $2^{\thetaq^2}$, to be algebraic --- and the third is the
+three-prime case of Definition~\ref{lp:def-independence}, open exactly where
+Proposition~\ref{lp:prop-twoprime} stops.  So the dependent branch is not a weaker problem than
+the independent one; it is the same wall reached by a shorter path.
 
 
 \section{Literature synthesis: what the published record does and does not supply}
