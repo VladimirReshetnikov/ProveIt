@@ -23,12 +23,14 @@ of the class of elementary functions that the non-elementarity proof needs.
 `Fabius.IsElementary` is an inductive predicate on `ℝ → ℝ` generating the
 class described at <https://en.wikipedia.org/wiki/Elementary_function>: the
 smallest class containing the constants and the identity and closed under
-sums, products, negation, reciprocals, real powers (hence `n`-th roots),
-`Real.exp`, `Real.log`, `Real.sin`, `Real.cos`, `Real.arcsin` and
-`Real.arctan`.  Closure under *composition* is not a constructor: it is proved
-in `Fabius.IsElementary.comp`, by induction on the derivation of the outer
-function.  Polynomials, rational functions, `Real.sqrt`, `|·|`, `Real.tan`,
-the hyperbolic functions, `Real.arccos` and `Real.arsinh` are all derived.
+sums, products, negation, reciprocals, Mathlib's real powers, `Real.exp`,
+`Real.log`, `Real.sin`, `Real.cos`, `Real.arcsin` and `Real.arctan`.  Classical
+odd roots are derived separately through `IsElementary.signedRpow` and checked
+by `signedRoot_pow`.  Closure under *composition* is not a constructor: it is
+proved in `Fabius.IsElementary.comp`, by induction on the derivation of the
+outer function.  Polynomials, rational functions, `Real.sqrt`, `|·|`,
+`Real.tan`, the hyperbolic functions, `Real.arccos` and `Real.arsinh` are all
+derived.
 
 Every generator here is a *total* function `ℝ → ℝ`: `Mathlib` gives `x⁻¹`,
 `Real.log`, `Real.rpow` and `Real.arcsin` junk values outside their classical
@@ -59,10 +61,12 @@ each such `t`.
 
 ## What is not claimed
 
-The class is closed under `n`-th roots but not under passage to an arbitrary
-algebraic function: `IsElementary` has no constructor for a continuous branch
-of `P (x, y) = 0` with elementary coefficients.  Wikipedia's definition speaks
-of "roots", which is what `IsElementary.rpow` provides.
+The class contains the classical odd-root functions but is not closed under
+passage to an arbitrary algebraic function: `IsElementary` has no constructor
+for a continuous branch of `P (x, y) = 0` with elementary coefficients.
+`IsElementary.rpow` supplies the usual roots at nonnegative inputs;
+`IsElementary.signedRpow` supplies the classical real odd roots at negative
+inputs as well.
 -/
 
 set_option autoImplicit false
@@ -113,10 +117,10 @@ the logarithm, the two basic trigonometric functions and two inverse
 trigonometric functions.
 
 Closure under composition is not assumed; it is the theorem
-`Fabius.IsElementary.comp`.  Subtraction, division, natural powers, `n`-th
-roots, `Real.sqrt`, the absolute value, `Real.tan`, the hyperbolic functions,
-`Real.arccos`, `Real.arsinh` and all polynomial and rational functions are
-derived below. -/
+`Fabius.IsElementary.comp`.  Subtraction, division, natural powers, Mathlib's
+real-power functions, `Real.sqrt`, the classical odd-root functions, the
+absolute value, `Real.tan`, the hyperbolic functions, `Real.arccos`,
+`Real.arsinh` and all polynomial and rational functions are derived below. -/
 inductive IsElementary : (ℝ → ℝ) → Prop
   /-- Every constant function is elementary. -/
   | const (c : ℝ) : IsElementary fun _ => c
@@ -130,8 +134,10 @@ inductive IsElementary : (ℝ → ℝ) → Prop
   | neg {f : ℝ → ℝ} : IsElementary f → IsElementary fun x => -f x
   /-- Elementary functions are closed under taking reciprocals. -/
   | inv {f : ℝ → ℝ} : IsElementary f → IsElementary fun x => (f x)⁻¹
-  /-- Elementary functions are closed under raising to a fixed real power;
-  taking `r = 1 / n` gives the `n`-th roots. -/
+  /-- Elementary functions are closed under Mathlib's fixed real power.  At a
+  nonnegative input and for positive `n`, taking `r = (n : ℝ)⁻¹` gives the
+  usual nonnegative `n`-th root; negative inputs follow `Real.rpow`'s cosine
+  convention instead. -/
   | rpow {f : ℝ → ℝ} (r : ℝ) : IsElementary f → IsElementary fun x => f x ^ r
   /-- Elementary functions are closed under the exponential. -/
   | exp {f : ℝ → ℝ} : IsElementary f → IsElementary fun x => Real.exp (f x)
@@ -235,6 +241,21 @@ theorem abs {f : ℝ → ℝ} (hf : IsElementary f) : IsElementary fun x => |f x
   rw [h]
   exact (hf.npow 2).sqrt
 
+/-- The *signed* real power `x ↦ (f x / |f x|) * |f x| ^ r`.
+
+For positive `n`, the constructor `IsElementary.rpow` with
+`r = (n : ℝ)⁻¹` supplies the usual `n`-th roots only on `[0, ∞)`:
+`Mathlib`'s `Real.rpow` at a negative base is
+`|x| ^ r * cos (π r)`, so `(-8 : ℝ) ^ (1/3 : ℝ) = 1`, not `-2`.  When
+`r = (n : ℝ)⁻¹` for odd `n`, the expression below is the classical odd root,
+and it is elementary by a different derivation — division, absolute value,
+real power.
+`Fabius.signedRoot_pow` checks that for odd `n` its `n`-th power really is
+the identity. -/
+theorem signedRpow {f : ℝ → ℝ} (hf : IsElementary f) (r : ℝ) :
+    IsElementary fun x => f x / |f x| * |f x| ^ r :=
+  (hf.div hf.abs).mul (hf.abs.rpow r)
+
 /-- Elementary functions are closed under the tangent. -/
 theorem tan {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.tan (f x) := by
@@ -305,6 +326,34 @@ theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
 
 end IsElementary
 
+/-- For odd `n`, the elementary expression `t ↦ (t / |t|) * |t| ^ (n : ℝ)⁻¹`
+of `Fabius.IsElementary.signedRpow` is a genuine real `n`-th root: raising it
+to the `n`-th power returns the argument, at negative arguments and at zero as
+well as at positive ones.
+
+This substantiates closure under classical odd roots.  The constructor
+`IsElementary.rpow` on its own does not give it: with `Mathlib`'s convention
+`t ^ (n : ℝ)⁻¹ = |t| ^ (n : ℝ)⁻¹ * cos (π / n)` for `t < 0`, whose `n`-th
+power is not `t`. -/
+theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
+    (t / |t| * |t| ^ ((n : ℝ))⁻¹) ^ n = t := by
+  have hn0 : n ≠ 0 := hn.pos.ne'
+  have hnR : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn0
+  rcases lt_trichotomy t 0 with ht | ht | ht
+  · have ht0 : t ≠ 0 := ne_of_lt ht
+    have habs : |t| = -t := abs_of_neg ht
+    have hnonneg : (0 : ℝ) ≤ -t := le_of_lt (neg_pos.mpr ht)
+    have hdiv : t / |t| = -1 := by rw [habs, div_neg, div_self ht0]
+    rw [hdiv, habs, neg_one_mul, hn.neg_pow,
+      ← Real.rpow_natCast ((-t) ^ ((n : ℝ))⁻¹) n, ← Real.rpow_mul hnonneg,
+      inv_mul_cancel₀ hnR, Real.rpow_one, neg_neg]
+  · subst ht
+    simp [Real.zero_rpow (inv_ne_zero hnR), zero_pow hn0]
+  · have habs : |t| = t := abs_of_pos ht
+    have hdiv : t / |t| = 1 := by rw [habs, div_self (ne_of_gt ht)]
+    rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
+      ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
+
 /-! ## Named elementary functions
 
 Spelled out for the record: each standard function of the elementary calculus
@@ -317,7 +366,10 @@ theorem isElementary_id : IsElementary fun x : ℝ => x := IsElementary.id
 /-- The reciprocal is elementary. -/
 theorem isElementary_inv : IsElementary fun x : ℝ => x⁻¹ := IsElementary.id.inv
 
-/-- Every real power is elementary; `r = 1 / n` gives the `n`-th root. -/
+/-- Every Mathlib real-power function is elementary.  At nonnegative inputs
+and for positive `n`, `r = (n : ℝ)⁻¹` gives the usual `n`-th root; classical
+odd roots on all of `ℝ` are supplied separately by
+`IsElementary.signedRpow`. -/
 theorem isElementary_rpow (r : ℝ) : IsElementary fun x : ℝ => x ^ r :=
   IsElementary.id.rpow r
 

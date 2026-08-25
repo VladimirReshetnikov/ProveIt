@@ -244,7 +244,7 @@ g=\exp\circ(f\circ g)$, and likewise for every remaining clause.
 
 Consequently $\Elem$ contains every function one expects: differences
 $f-g=f+(-g)$, quotients $f/g=f\cdot g^{-1}$, natural powers, all polynomial
-and rational functions, $\sqrt{\cdot}$ and all $n$-th roots $x\mapsto x^{1/n}$,
+and rational functions, $\sqrt{\cdot}$ and the $n$-th roots,
 the absolute value $|x|=\sqrt{x^2}$, the tangent $\sin/\cos$, the hyperbolic
 functions $\sinh x=(\e^x-\e^{-x})/2$, $\cosh$, $\tanh$, the arccosine
 $\pi/2-\arcsin$, and the inverse hyperbolic sine
@@ -256,6 +256,9 @@ deliberate choice, and it is the choice that makes \Cref{cor:main} strongest.
 The formalization inherits \texttt{Mathlib}'s conventions
 \[
   0^{-1}=0,\qquad \log x=\log|x|,\qquad \log 0=0,\qquad
+  0^{r}=0\ \ (r\ne 0),\qquad 0^{0}=1,
+\]
+\[
   x^{r}=|x|^{r}\cos(\pi r)\ \ (x<0),\qquad
   \arcsin x=\pm\tfrac{\pi}{2}\ \ (\pm x\ge 1),
 \]
@@ -268,26 +271,49 @@ opposite.  Admitting more functions into $\Elem$ makes the assertion ``$g\in
 \Elem$ and $g=F$ on $U$'' easier to satisfy, hence its refutation
 stronger.  And nothing is lost in the other direction: if a classical
 elementary expression is well formed at every point of an open set $U$ --- no
-vanishing denominator, no nonpositive logarithm, no arcsine of a value outside
-$[-1,1]$ --- then on $U$ it agrees pointwise with the total function produced
-by the same derivation, since on $U$ the junk values are never consulted.
-So every classical elementary function on $U$ is the restriction to $U$ of a
-member of $\Elem$, and \Cref{cor:main} applies to it.
+vanishing denominator, no nonpositive logarithm, no real power of a
+nonpositive base, no arcsine of a value outside $[-1,1]$ --- then on $U$ it
+agrees pointwise with the total function produced by the same derivation,
+since on $U$ the junk values are never consulted.  So every such classical
+elementary function on $U$ is the restriction to $U$ of a member of $\Elem$,
+and \Cref{cor:main} applies to it.
 \end{boxedremark}
+
+\begin{warning}[Odd roots need a different derivation]\label{warn:oddroot}
+The condition ``no real power of a nonpositive base'' in the box above cannot
+be dropped, and it is the one place where the total-function convention bites.
+\texttt{Mathlib}'s $x^{r}$ at a negative base is $|x|^{r}\cos(\pi r)$, so
+$(-8)^{1/3}=2\cos(\pi/3)=1$, whereas the classical real cube root of $-8$
+is~$-2$.  The clause $x\mapsto f(x)^{r}$ of \Cref{def:elem} therefore supplies
+the $n$-th roots only on $[0,\infty)$.
+
+Nothing is lost, because the classical real odd root is in $\Elem$ by a
+\emph{different} derivation,
+\[
+  x\ \longmapsto\ \frac{x}{|x|}\cdot|x|^{1/n},
+\]
+which uses only division, the absolute value and a real power, and which
+evaluates to $0$ at $x=0$ under the same conventions.  This is
+\texttt{IsElementary.signedRpow}, and
+\texttt{Fabius.signedRoot\_pow} verifies formally that for odd $n$ its $n$-th
+power is the identity, so it really is the real $n$-th root and not merely a
+plausible substitute.
+\end{warning}
 
 \subsection{What is not claimed}\label{sec:notclaimed}
 
-$\Elem$ is closed under $n$-th roots but not, as defined, under passage to an
-arbitrary algebraic function: \Cref{def:elem} has no clause producing a
-continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
-coefficients whose Galois group is not solvable.  Liouville's differential
-field definition of ``elementary'' does admit such branches.  We do not claim
-them here.  The obstruction is purely one of formalization cost: the analogue
-of \Cref{thm:density} for algebraic branches is true and classical --- away
-from the zero set of the discriminant, the analytic implicit function theorem
-applies, and that zero set is finite on each interval --- but the analytic
-implicit function theorem over $\R$ is not available in \texttt{Mathlib} at
-the time of writing.
+$\Elem$ contains the classical real odd-root functions but is not, as defined,
+closed under passage to an arbitrary algebraic function: \Cref{def:elem} has no
+clause producing a continuous branch of $P(x,y)=0$ for a polynomial $P$ with
+elementary coefficients whose Galois group is not solvable.  Liouville's
+differential field definition of ``elementary'' does admit such branches.  We
+do not claim them here.  The obstruction is global formalization cost, not a
+missing local theorem: \texttt{Mathlib}'s
+\texttt{ContDiffAt.implicitFunction}, instantiated at analytic regularity
+$\omega$, supplies the local analytic implicit-function theorem over $\R$.
+What remains is a dense-analyticity theorem for continuous algebraic branches,
+including a degree induction and control of the loci where the leading
+coefficient or the derivative in the branch variable vanishes.
 
 A second, much smaller gap concerns variable exponents.  \Cref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
@@ -394,11 +420,14 @@ analytic at $f(t)$ and $g\circ f$ is analytic at $t$.
 
 \begin{remark}
 The case distinction is not an artefact of the write-up.  Without it the lemma
-is false as stated for the naive reason above, and with a merely $C^\infty$
-inner function it is false outright: analyticity of $f$ is what makes the
-dichotomy ``locally constant or locally injective away from a discrete set''
-available.  This is the only place in the proof where a theorem of substance
-about real analytic functions is used.
+is false as stated, for the naive reason above.  What makes the two cases
+exhaustive is the isolated-zeros theorem, applied to $f-c$: an analytic germ
+either vanishes identically or vanishes nowhere on some punctured
+neighbourhood.  A merely $C^\infty$ inner function admits neither
+alternative --- it can equal $c$ on a sequence accumulating at $x_0$ without
+being constant there --- so analyticity of $f$, and not just smoothness, is
+what the step consumes.  This is the only place in the proof where a theorem
+of substance about real analytic functions is used.
 \end{remark}
 
 \subsection{The induction}
@@ -464,7 +493,13 @@ Openness (\Cref{lem:open})
   & \texttt{isOpen\_analyticLocus}
   & \texttt{ElementaryFunction} \\
 Generators (\Cref{lem:generators})
-  & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_sqrt\_of\_ne\_zero}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}
+  & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}; for $x\mapsto x^{-1}$, $\exp$, $\sin$, $\cos$ the \texttt{Mathlib} lemmas \texttt{analyticAt\_inv}, \texttt{analyticAt\_rexp}, \texttt{Real.analyticAt\_sin}, \texttt{Real.analyticAt\_cos} are used directly
+  & \texttt{ElementaryFunction} \\
+Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, which routes $\sqrt{\cdot}$ through \texttt{rpow})
+  & \texttt{analyticAt\_sqrt\_of\_ne\_zero}
+  & \texttt{ElementaryFunction} \\
+Signed root, and its defining property (\Cref{warn:oddroot})
+  & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
   & \texttt{ElementaryFunction} \\
 Membership of the named functions
   & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
@@ -512,8 +547,11 @@ theorems of substance that the argument consumes.
       its two-function form: the isolated-zeros theorem for a function of one
       variable over a nontrivially normed field, which is what powers
       \Cref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
-\item \texttt{AnalyticAt.eventually\_analyticAt}: analyticity at a point
-      propagates to a neighbourhood, which is \Cref{lem:open}.
+\item \texttt{isOpen\_analyticAt}: the analytic locus is open, which is
+      \Cref{lem:open} verbatim.  (The pointwise form, analyticity propagating
+      from a point to a neighbourhood, is
+      \texttt{AnalyticAt.eventually\_analyticAt}; the development uses the
+      set-level statement.)
 \item \texttt{ContDiffAt.analyticAt} together with the family of
       \texttt{contDiffAt\_\ldots} lemmas stated for exponents in
       $\N\cup\{\infty,\omega\}$: this is how \Cref{lem:generators} is
@@ -553,11 +591,19 @@ that analyticity suffices, and that it is available at the modest cost of
 \subsection{The role of the endpoints}
 
 \Cref{thm:nowhere} includes the endpoints $0$ and $1$, where $F$ is flat to
-infinite order; this is what makes \Cref{cor:main} apply to \emph{every}
-nonempty open subset of $[0,1]$ rather than to open subsets of $(0,1)$ only.
-Note that $\An(F)$ is exactly $\R\setminus[0,1]$: outside the unit interval
-$F$ is locally constant, hence analytic, so the nowhere-analytic locus is as
-large as it can be and no larger.
+infinite order.  It is worth recording that \Cref{cor:main} does \emph{not}
+need them.  A set that is open in $\R$ and contained in $[0,1]$ is
+automatically contained in $(0,1)$ --- an $\R$-open set containing $0$
+contains negative numbers --- so the witness produced by
+\Cref{thm:density} is always an interior point, and the endpoint case of
+\Cref{thm:nowhere} is never invoked.  The same is true if one reads ``open''
+in the relative topology of $[0,1]$: a nonempty relatively open subset still
+contains a nonempty $\R$-open subinterval of $(0,1)$.
+
+What the endpoints do buy is exactness.  $\An(F)$ is precisely
+$\R\setminus[0,1]$: outside the unit interval $F$ is locally constant, hence
+analytic, so the nowhere-analytic locus is as large as it can be and no
+larger.
 
 \subsection{What a stronger theorem would require}
 
@@ -565,11 +611,16 @@ Two natural strengthenings are visible from here.
 
 \begin{enumerate}
 \item \emph{Liouvillian functions.}  Replacing $\Elem$ by the class of
-      functions lying in a Liouville tower over the rational functions ---
-      allowing arbitrary algebraic branches, and iterated exponentials and
-      logarithms in the differential-field sense --- would subsume
-      \Cref{def:elem}.  The analytic content is unchanged; what is missing is
-      the analytic implicit function theorem over $\R$, as recorded in
+      functions lying in an \emph{elementary} differential-field extension of
+      the rational functions in Liouville's sense --- allowing arbitrary
+      algebraic branches alongside exponentials and logarithms --- would
+      subsume \Cref{def:elem}.  (The wider \emph{Liouvillian} class also
+      admits antiderivatives, and so contains $\operatorname{erf}$,
+      $\operatorname{Ei}$ and $\operatorname{Si}$, which are not elementary;
+      that class is not what is meant here.)  The local analytic
+      implicit-function theorem is already available.  The missing ingredient
+      is the global dense-analyticity argument for algebraic branches, including its
+      degree induction and singular-locus analysis, as recorded in
       \Cref{sec:notclaimed}.
 \item \emph{Differential algebraicity.}  A stronger and genuinely different
       statement is that $F$ satisfies no algebraic differential equation

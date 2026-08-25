@@ -35,7 +35,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small The Fabius function and Rvachev's up-function}
+\fancyhead[L]{\small Fabius--Rvachev synthesis}
 \fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -117,7 +117,7 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 24 August 2026}
+\date{Repository snapshot: 25 August 2026}
 
 \begin{document}
 \maketitle
@@ -1244,12 +1244,14 @@ Define
 \end{definition}
 
 At a fixed $x$ only finitely many summands can be nonzero, so this is a locally finite sum.
-On every block $[2b,2b+2]$ there is exactly one nonzero translate:
+On every block $[2b,2b+2]$ only the $b$-th translate can be nonzero
+(and at the endpoints it too vanishes):
 \begin{equation}
  \mathcal F(x)=\varepsilon_b\Up(x-2b-1),
  \qquad 2b\le x\le 2b+2.                                  \label{eq:single-block}
 \end{equation}
-It vanishes for $x\le0$, and it agrees with the bounded $F$ on $[0,1]$.  It does
+It vanishes for $x\le0$, and it agrees with the bounded $F$ for every $x\le1$
+(both functions vanish on $(-\infty,0]$).  It does
 \emph{not} remain in $[0,1]$ to the right of that interval.  This is the global object that
 satisfies the cleanest differential equation:
 \begin{equation}
@@ -1261,8 +1263,9 @@ $[0,1]$ must therefore not be transferred blindly to the bounded cumulative dist
 \begin{boxedremark}
 \textbf{Notation used in this article.}
 $F$ always means the bounded distribution function; $\Up$ always means the compactly
-supported even bump; and $\mathcal F$ always means the signed global extension.  On
-$[0,1]$ we have $F=\mathcal F$, but globally they are different functions.
+supported even bump; and $\mathcal F$ always means the signed global extension.  We have
+$F=\mathcal F$ throughout $(-\infty,1]$ (hence on $[0,1]$), but globally they are different
+functions.
 \end{boxedremark}
 
 \subsection{Exact shape: positivity, bijectivity, and unimodality}
@@ -1633,7 +1636,42 @@ the support.
 The preceding construction is equivalent to the characterization historically associated
 with Rvachev.
 
-\begin{theorem}[Original characterization]
+\begin{theorem}[Original characterization in the formal development]
+\label{thm:formal-original-characterization}
+Let $\varphi:\R\to\R$ be $C^\infty$, strictly positive on $(-1,1)$, normalized by
+$\varphi(0)=1$, and have topological support exactly $[-1,1]$.  If $k>0$ and
+\begin{equation}
+ \varphi'(x)=k\bigl(\varphi(2x+1)-\varphi(2x-1)\bigr)
+ \qquad(x\in\R),                                           \label{eq:formal-original-rvachev}
+\end{equation}
+then $k=2$ and $\varphi=\Up$.
+\end{theorem}
+
+\begin{proof}
+Continuity and the support hypothesis give $\varphi(\pm1)=0$, while strict interior
+positivity identifies its ordinary nonzero set as $(-1,1)$.  For $0\le t\le1$, differentiate
+$H(t)=\varphi(t)+\varphi(t-1)$.  Equation \eqref{eq:formal-original-rvachev} makes the two
+middle terms cancel and leaves
+\[
+ H'(t)=k\bigl(\varphi(2t+1)-\varphi(2t-3)\bigr)=0,
+\]
+because both arguments lie outside the open support.  Since
+$H(0)=\varphi(0)+\varphi(-1)=1$, we have $H\equiv1$ on $[0,1]$.  Integrating this identity
+shows noncircularly that
+\[
+ \int_{\R}\varphi=
+ \int_0^1\varphi(t)\dd t+\int_0^1\varphi(t-1)\dd t=1.
+\]
+Now integrate \eqref{eq:formal-original-rvachev} over $[-1,0]$.  The left side is
+$\varphi(0)-\varphi(-1)=1$; after the substitutions $y=2x\pm1$, the right side is
+$(k/2)\int_{-1}^{1}\varphi=k/2$.  Hence $k=2$.  The Fourier argument in the next theorem,
+now with the mass and scale derived rather than assumed, gives $\varphi=\Up$.
+\end{proof}
+
+The mass-normalized Fourier form is a useful corollary in which positivity and the value at
+the origin are replaced by a single integral hypothesis.
+
+\begin{theorem}[Integral-normalized Fourier characterization]
 There is a unique nonzero $C^\infty$ function $\varphi:\R\to\R$ such that
 \begin{equation}
  \supp\varphi=[-1,1],\qquad
@@ -1827,6 +1865,27 @@ bounds upgrade the convergence to the strong forms used in the formal developmen
 constructs $\Up$ as an infinite convolution of shrinking boxes, a perspective useful in
 approximation theory and wavelet analysis.
 
+In fact the convergence is strong in every fixed differentiability order.  The Fourier
+transforms are
+\begin{equation}
+ \widehat u_N(\xi)=\prod_{j=0}^{N}
+ \sinc\!\left(\frac{\pi\xi}{2^j}\right),                 \label{eq:finite-box-transform}
+\end{equation}
+so they converge pointwise to \eqref{eq:sinc-product}.  Fix $m\ge0$ and choose $M>m+1$.
+For $N\ge M$, every additional real sinc factor has modulus at most one, and therefore
+\[
+ |\xi|^m\left|\widehat u_N(\xi)-\widehat\Up(\xi)\right|
+ \le2|\xi|^m|\widehat u_M(\xi)|.
+\]
+The right side is integrable: the $M+1$ finite sinc factors give more than $m+1$ powers of
+decay.  Dominated convergence followed by Fourier inversion now gives
+\begin{equation}
+ \max_{0\le r\le m}\left\|u_N^{(r)}-\Up^{(r)}\right\|_\infty\longrightarrow0.
+                                                               \label{eq:finite-box-Cm}
+\end{equation}
+Thus the same finite convolutions give weak convergence with an explicit tail modulus below
+and $C^m$ convergence for every fixed $m$.
+
 
 The three properties recorded next make the convergence quantitative and expose the
 mechanism behind it.  They also justify the statement, used repeatedly later, that each
@@ -1855,12 +1914,15 @@ the second factor being itself a probability density.
  u_N(x)=\int_{2x-1}^{2x+1}u_{N-1}(t)\dd t,                \label{eq:res-finite-refinement}
 \end{equation}
 and hence the derivative recursion
-\begin{equation}
- u_N'(x)=2\bigl(u_{N-1}(2x+1)-u_{N-1}(2x-1)\bigr)
- =2^{N}\left(u_{N-1}\!\left(x+2^{-N-1}\right)-u_{N-1}\!\left(x-2^{-N-1}\right)\right).
+\begin{align}
+ u_N'(x)
+ &=2\bigl(u_{N-1}(2x+1)-u_{N-1}(2x-1)\bigr) \notag\\
+ &=2^{N}\left(u_{N-1}\!\left(x+2^{-N-1}\right)
+             -u_{N-1}\!\left(x-2^{-N-1}\right)\right).
                                                           \label{eq:res-derivative-recursion}
-\end{equation}
-Consequently $u_N\in C^{N-1}(\R)$ for $N\ge1$, and no better: $u_N^{(N)}$ is a step function.
+\end{align}
+Consequently $u_N\in C^{N-1}(\R)$ for $N\ge1$, and no better: away from its finite knot set,
+its piecewise $N$th derivative is a step function with nonremovable jumps.
 \item For every bounded uniformly continuous $f:\R\to\C$,
 \begin{equation}
  \left|\int_{\R}f(x)u_N(x)\dd x-\int_{\R}f(x)\Up(x)\dd x\right|
@@ -1919,10 +1981,11 @@ side of \eqref{eq:res-derivative-recursion} involves $u_{N-1}$ itself, never a d
 $u_{N-1}$.  So if $u_{N-1}\in C^{k}$, then $u_N'\in C^{k}$, that is $u_N\in C^{k+1}$.  The
 stage $u_0=b_0$ is a bounded step function and $u_1$, being an integral of it by
 \eqref{eq:res-finite-refinement}, is continuous; induction along
-\eqref{eq:res-derivative-recursion} then gives $u_N\in C^{N-1}$ for all $N\ge1$.  Iterating
-\eqref{eq:res-derivative-recursion} $N$ times instead expresses $u_N^{(N)}$ as a signed
-combination of dilates $u_0\bigl(2^{N}x+c\bigr)$ with pairwise distinct odd integers $c$;
-their jump sets are disjoint, so no cancellation occurs and $u_N^{(N)}$ genuinely jumps.
+\eqref{eq:res-derivative-recursion} then gives $u_N\in C^{N-1}$ for all $N\ge1$.  On the
+complement of the finite knot set, iterating \eqref{eq:res-derivative-recursion} $N$ times
+expresses the piecewise $N$th derivative as a signed combination of dilates
+$u_0\bigl(2^{N}x+c\bigr)$ with pairwise distinct odd integers $c$; their jump sets are
+disjoint, so no cancellation occurs.  Thus no continuous $N$th derivative exists.
 Hence the regularity is exactly $C^{N-1}$, and passing to the limit, where the equation
 becomes self-referential, is what makes $\Up$ infinitely differentiable.
 
@@ -2053,7 +2116,7 @@ the \emph{half-weighted} indicator:
 \end{equation}
 
 \begin{definition}[Combinatorial step approximants]
-For $m\ge1$ and $0\le r\le g_m$ put
+For $m\ge0$ and $0\le r\le g_m$ put
 \begin{equation}
  I_{m,r}=\left[\frac{2r-1-g_m}{2^{m+1}},\ \frac{2r+1-g_m}{2^{m+1}}\right],
                                                           \label{eq:four-cell}
@@ -2164,7 +2227,7 @@ gives weak convergence of $\mathcal W_m(x)\dd x$ to $\Up(x)\dd x$.
 
 The limit law has a continuous density, so every compact interval is one of its continuity
 sets and its mass is the limit of the masses assigned by $\mathcal W_m(x)\dd x$.  Let
-$x>0$ and $h>0$.  Monotonicity of $\mathcal W_m$ on $[0,\infty)$ gives
+$x>0$ and choose $0<h<x$.  Monotonicity of $\mathcal W_m$ on $[0,\infty)$ gives
 \begin{equation*}
  \frac1h\int_{x-h}^{x}\mathcal W_m
  \ \ge\ \mathcal W_m(x)\ \ge\ \frac1h\int_{x}^{x+h}\mathcal W_m ,
@@ -2185,10 +2248,11 @@ breakpoint is the sum of the two neighboring plateau heights.  The integral is u
 since the breakpoints form a finite set, but the pointwise convergence assertion of
 \cref{thm:four-step-approx} becomes false at every one of them.  The failure is visible at
 the most important point of all.  When $m$ is odd the origin is a shared endpoint, and with
-closed indicators the value there would be $2$, not $\Up(0)=1$.  The half-open convention
-$\mathbf 1_{[\alpha,\beta)}$ avoids the double count but destroys evenness and gives the
-value $1/2$ at the origin instead.  Only the symmetric half weight simultaneously preserves
-evenness, keeps the integral equal to $1$, and yields $\mathcal W_m(0)=1$ for every $m$.
+closed indicators the value there would be $2$, not $\Up(0)=1$.  A half-open convention such
+as $\mathbf 1_{[\alpha,\beta)}$ avoids the double count and still assigns the origin the
+correct value $1$, but it destroys evenness and makes the values at paired breakpoints
+asymmetric.  Only the symmetric half weight simultaneously preserves evenness, keeps the
+integral equal to $1$, and yields the intended symmetric breakpoint values for every $m$.
 \end{warning}
 
 \begin{example}[The first two levels]
@@ -2598,6 +2662,20 @@ For $u>0$ and $t\in\R$,
 Both series converge absolutely and locally uniformly.
 \end{theorem}
 
+\begin{proof}
+Periodize the bump by $P_u(t)=\sum_{k\in\Z}\Up(t+uk)$.  Compact support makes this sum locally
+finite, so $P_u$ is smooth and $u$-periodic.  Unfolding one period shows that its $n$th Fourier
+coefficient is
+\[
+ \frac1u\int_0^uP_u(t)\e^{-2\pi\ii nt/u}\dd t
+ =\frac1u\int_{\R}\Up(x)\e^{-2\pi\ii nx/u}\dd x
+ =\frac1u\widehat{\Up}(n/u).
+\]
+The rapid decay \eqref{eq:schwartz-decay} makes the resulting Fourier series absolutely and
+locally uniformly convergent (indeed, uniformly with every derivative), and its Fourier
+expansion is exactly \eqref{eq:poisson-up}.
+\end{proof}
+
 For a positive integer $m$, every nonzero term $\widehat{\Up}(mk)$ vanishes because the
 first sinc factor in \eqref{eq:sinc-product} vanishes at nonzero integers.  Taking
 $u=1/m$ in \eqref{eq:poisson-up} gives the exact partition of unity
@@ -2696,8 +2774,10 @@ The first assertion is immediate by induction.  If it holds for $m$, then
  &=2^{\binom{m+1}{2}}2^m\cdot2\mathcal F(2^{m+1}x)\\
  &=2^{\binom{m+2}{2}}\mathcal F(2^{m+1}x).
 \end{align*}
-On $[-1,1]$, $\Up(x)=\mathcal F(x+1)$, so
-$\Up^{(m)}(x)=\mathcal F^{(m)}(x+1)$ and the second formula follows.
+For $-1<x<1$, the identity $\Up(x)=\mathcal F(x+1)$ holds on a neighborhood of $x$, so it
+may be differentiated $m$ times there.  For fixed $m$, both resulting sides are continuous
+functions of $x$; letting $x$ tend to either endpoint from inside proves the same identity
+at $x=\pm1$.
 \end{proof}
 
 The formula is striking: the $m$th derivative is not an approximation or an asymptotic
@@ -2781,6 +2861,19 @@ Equation \eqref{eq:flat-endpoints} says that $F$ vanishes to infinite order at t
 that $F(x)=\smallo(x^n)$ as $x\to0^{+}$ for every $n$.  That statement carries no constant.
 Two elementary arguments supply one, and the second is strictly better than the first.
 
+The qualitative theorem formalized in \path{FabiusFlatness.lean} is actually two-sided.  For
+every $n\ge0$,
+\[
+ \mathcal F(x)=\smallo(|x|^n),\quad F(x)=\smallo(|x|^n)\qquad(x\to0),
+\]
+and symmetry gives
+\[
+ 1-F(x)=\smallo(|1-x|^n)\qquad(x\to1).
+\]
+Equivalently, the folded bump is flatter than every power at both endpoints:
+$\Up(x)=\smallo(|x-1|^n)$ as $x\to1$ and
+$\Up(x)=\smallo(|x+1|^n)$ as $x\to-1$.
+
 \begin{lemma}[Self-improving estimate]
 \label{thm:shape-selfimproving}
 For $0\le x\le\tfrac12$ one has $F(x)\le2x\,F(2x)$.
@@ -2860,11 +2953,12 @@ The second bound is now within an explicit factor of the truth.  Indeed
 with $d_n$ the half moment \eqref{eq:d-integral}, so the right-hand side of
 \eqref{eq:shape-flatness-ftc} at $x=2^{-n}$ overshoots the true value by exactly the factor
 $1/d_n$.  This is consistent, and it also shows how little room is left: from
-\eqref{eq:d-integral} and $0\le\Up\le1$,
+\eqref{eq:d-integral} and $0\le\Up\le1$, for $n\ge1$,
 \[
  d_n=n\int_0^1t^{n-1}\Up(t)\dd t\le n\int_0^1t^{n-1}\dd t=1,
 \]
-with equality only for $n=0$.  At $n=1$ the estimate reads $F(\tfrac12)\le1$ against the true
+and the inequality is strict because $\Up<1$ almost everywhere; separately $d_0=1$.  At
+$n=1$ the estimate reads $F(\tfrac12)\le1$ against the true
 value $F(\tfrac12)=\tfrac12=d_1$.
 
 The fold \eqref{eq:up-absolute} transports the estimate to both ends of the support of the
@@ -2894,12 +2988,12 @@ any neighborhood of $x_0$.
 \end{proposition}
 
 \begin{proof}
-Equation \eqref{eq:dyadic-high-derivatives-zero} proves termination.  If $F$ agreed with the
-Taylor polynomial on a nonempty interval, analyticity of the polynomial and the differential
-scaling relation would propagate polynomial behavior across successively enlarged dyadic
-intervals.  Ultimately $F$ would be polynomial on $(0,1)$, which is incompatible with its
-flatness at $0$ and its nonconstant value $F(1/2)=1/2$.  Equivalently, a polynomial with all
-positive-order derivatives zero at $0$ is constant, whereas $F$ is not.
+Equation \eqref{eq:dyadic-high-derivatives-zero} proves termination.  Suppose that $F$ agreed
+with this degree-at-most-$n$ polynomial on a nonempty open interval.  That interval contains
+a reduced dyadic $r=a/2^m$ of arbitrarily large level, so choose $m>n$.  Agreement on a
+neighborhood of $r$ would make the $m$th derivative of $F$ vanish there, whereas the exact
+calculation \eqref{eq:sup-dyadic-derivative} below gives
+$|F^{(m)}(r)|=2^{\binom{m+1}{2}}\ne0$, a contradiction.
 \end{proof}
 
 \subsubsection{The exact degree of the terminating polynomial}
@@ -2983,10 +3077,15 @@ Neither $F$ on $(0,1)$ nor $\Up$ on $(-1,1)$ is real analytic at any point.
 \end{corollary}
 
 \begin{proof}
-Dyadic points are dense.  If $F$ were analytic at one point, the differential equations and
-translation/reflection identities would extend analyticity to an interval and then to dyadic
-points in that interval, contradicting the preceding proposition.  The statement for $\Up$
-follows from the fold relation.
+Suppose first that $F$ were analytic at some $x\in(0,1)$.  It would then be analytic on a
+nonempty open interval $I$ about $x$.  Choose in $I$ a reduced dyadic $q=a/2^n$.  The Taylor
+series at $q$ terminates at degree $n$, so analyticity would make $F$ equal that polynomial
+on a smaller interval.  That interval contains a reduced dyadic of level $m>n$, where
+\eqref{eq:sup-dyadic-derivative} says that the $m$th derivative is nonzero, contradicting the
+polynomial identity.  For $\Up$, use the shifted reduced dyadics
+$a/2^n-1$ described above: they are dense in $(-1,1)$, have terminating Taylor series of
+exact degree $n$, and every neighborhood contains such points of arbitrarily larger level.
+The identical derivative contradiction applies.
 \end{proof}
 
 
@@ -3005,28 +3104,10 @@ For every integer $n\ge0$ and every $x$ with $0\le x\le2^{-n}$,
 \end{theorem}
 
 \begin{proof}
-The signed extension is bounded by one in absolute value.  Indeed, on the block
-$[2b,2b+2]$ the single-block formula \eqref{eq:single-block} gives
-$\mathcal F(x)=\varepsilon_b\Up(x-2b-1)$, and $0\le\Up\le1$; the blocks cover
-$[0,\infty)$, and $\mathcal F$ vanishes to the left of $0$.  Hence $|\mathcal F|\le1$ on
-$\R$, and \eqref{eq:global-derivatives} gives
-\begin{equation}
- \bigl|\mathcal F^{(n)}(t)\bigr|
- =2^{\binom{n+1}{2}}\bigl|\mathcal F(2^nt)\bigr|
- \le2^{\binom{n+1}{2}}\qquad(t\in\R).                     \label{eq:four-derivative-bound}
-\end{equation}
-Since $F=\mathcal F$ on $[0,1]$ and both functions are $C^\infty$ on $\R$, all derivatives
-agree there as well.
-
-Now apply Taylor's theorem to $F$ at the flat endpoint $0$ with Lagrange remainder of order
-$n$.  By \eqref{eq:F-left} and \eqref{eq:flat-endpoints} every term of the Taylor polynomial
-vanishes, so for $0\le x\le 2^{-n}\le1$ there is $\xi\in[0,x]$ with
-\begin{equation*}
- F(x)=\frac{F^{(n)}(\xi)}{n!}\,x^n .
-\end{equation*}
-Combining this with \eqref{eq:four-derivative-bound} at $t=\xi$ gives
-\eqref{eq:four-flat-bound}; nonnegativity of $F$ is \eqref{eq:F-left} and monotonicity.  The
-case $n=0$ reduces to $0\le F\le1$.
+The condition $0\le x\le2^{-n}$ is equivalent to $x\ge0$ and $2^nx\le1$, so the upper
+bound is precisely \eqref{eq:shape-flatness-ftc}.  The lower bound is the nonnegativity of
+the bounded distribution function.  Thus this restatement records the same estimate in the
+endpoint notation used in the Fourier sections, without duplicating its proof.
 \end{proof}
 
 \begin{corollary}[Super-polynomial decay, elementarily]
@@ -7642,7 +7723,12 @@ monomial $z^m$ at
  \xi_{n,m}=\frac{2m-g_n}{2^{n+1}},                    \label{eq:tm-center}
 \end{equation}
 and spread it uniformly over the cell $I_{n,m}$ of width $2^{-n}$ centered at $\xi_{n,m}$.
-The consecutive centers are spaced $2^{-n}$ apart, so the cells tile $\R$.  The resulting
+The consecutive centers are spaced $2^{-n}$ apart, so these finitely many cells tile their
+support interval
+\[
+ \left[-1+\frac{n+1}{2^{n+1}},\ 1-\frac{n+1}{2^{n+1}}\right].
+\]
+The resulting
 density is the step function
 \begin{equation}
  \mathcal W_n(x)=\frac{2^n}{2^{\binom{n+1}2}}
@@ -7661,26 +7747,16 @@ $(-\infty,0)$, is nonincreasing on $(0,\infty)$, and satisfies $\mathcal W_n(0)=
 $\mathcal W_n(x)\to\Up(x)$ for every real $x$.
 \end{theorem}
 
-\begin{proofidea}
-Unimodality and symmetry are statements about the coefficient sequence of $\mathcal P_n$.  Each
-factor of \eqref{eq:tm-approx-poly} is palindromic with nonnegative coefficients and
-unimodal, and these two properties are preserved by multiplication; the placement
-\eqref{eq:tm-center} converts symmetry about $g_n/2$ into symmetry about $x=0$.  The
-normalization $\mathcal W_n(0)=1$ asserts that the coefficient of $\mathcal P_n$ at the central index,
-averaged over the two central indices when $g_n$ is odd, equals $2^{\binom{n+1}2-n}$;
-this is the identity that forces the half-weight endpoint convention, as the case
-$\mathcal P_1=1+z$, $g_1=1$ already shows.  For the limit, note that the law behind
-\eqref{eq:tm-histogram} is that of $\sum_{i=1}^{n}\bigl(2Z_i-2^i+1\bigr)2^{-n-1}$, a
-triangular array whose $i$\/th summand is, after the reindexing $j=n+1-i$, a lattice
-discretization with mesh $2^{-n}$ of the uniform law on $[-2^{-j},2^{-j}]$.  Since
-$g_n=\sum_i(2^i-1)$, these summands do add up to the variable placed at
-\eqref{eq:tm-center}.  Because the meshes tend to zero,
-these laws converge weakly to the law of $Y$, so all interval integrals of $\mathcal W_n$
-converge to the corresponding integrals of $\Up$.  A sequence of unimodal densities with a
-common peak location, whose interval integrals converge to those of a continuous unimodal
-limit, converges pointwise everywhere.  This last step is the only place where continuity of
-$\Up$ is used, and it supplies no rate.
-\end{proofidea}
+\begin{proof}
+For $n\ge1$, this is exactly \cref{thm:four-step-approx}, since
+\eqref{eq:tm-approx-poly} and \eqref{eq:four-P-product} define the same polynomial, while
+\eqref{eq:tm-center} and \eqref{eq:tm-histogram} give the same cells and normalization as
+\eqref{eq:four-cell} and \eqref{eq:four-step-approximant}.  At $n=0$ the empty product is
+$\mathcal P_0=1$, $g_0=0$, and $\mathcal W_0$ is the half-weighted indicator of
+$[-1/2,1/2]$, so the stated order and normalization properties are immediate.  The
+pointwise convergence of the sequence is already the final assertion of
+\cref{thm:four-step-approx}.
+\end{proof}
 
 \begin{theorem}[Exact identification of the corrected grid]
 \label{thm:tm-histogram-identity}
@@ -7692,14 +7768,17 @@ every $m$ with $0\le m<2^{n+1}$,
 \end{theorem}
 
 \begin{proof}
-The point $\xi_{n,m}$ lies in the interior of the cell $I_{n,m}$ and in no other cell, so
-\eqref{eq:tm-histogram} evaluates there to
+If $m\le g_n$, the point $\xi_{n,m}$ is the center of $I_{n,m}$ and lies in no other cell,
+so \eqref{eq:tm-histogram} evaluates there to
 \begin{equation*}
- \frac{2^{n}}{2^{\binom{n+1}2}}\bigl[z^m\bigr]\mathcal P_n(z),
+ \frac{2^{n}}{2^{\binom{n+1}2}}\bigl[z^m\bigr]\mathcal P_n(z).
 \end{equation*}
-including when $m>g_n$, where both sides vanish.  Since $\binom{n+1}2=\binom n2+n$,
-that value is $\bigl[z^m\bigr]\mathcal P_n/2^{\binom n2}$, which is $\widetilde{\mathcal V}_n(m)$ by
-\eqref{eq:tm-prefix-eq-coeff}.
+Since $\binom{n+1}2=\binom n2+n$, this is
+$\bigl[z^m\bigr]\mathcal P_n/2^{\binom n2}=\widetilde{\mathcal V}_n(m)$ by
+\eqref{eq:tm-prefix-eq-coeff}.  If $g_n<m<2^{n+1}$, then $\xi_{n,m}$ lies strictly to the
+right of the finite support interval above, so $\mathcal W_n(\xi_{n,m})=0$; meanwhile
+$[z^m]\mathcal P_n=\sigma_{n+1}(m)=0$ because $\deg\mathcal P_n=g_n$.  Thus both sides
+again agree.
 \end{proof}
 
 Sampling at the dyadic floor now gives an approximation scheme.  For $x\ge0$ set
@@ -7978,6 +8057,46 @@ We use the standard Stieltjes convention
  \zeta(1+s)=\frac1s+\gamma-\gamma_1s+\bigO(s^2),           \label{eq:stieltjes-convention}
 \end{equation}
 where $\gamma$ is Euler's constant and $\gamma_1$ is the first Stieltjes constant.
+
+\subsection{An exact delay identity and the coarse quadratic scale}
+
+Before introducing the saddle point, it is useful to isolate what follows directly from the
+differential equation.  Put
+\begin{equation}
+ \phi(t)=F(2^{-t}),\qquad \Gamma(t)=-\log\phi(t).           \label{eq:log-scale-def}
+\end{equation}
+For $t\ge1$, the argument $2^{-t}$ lies in the left half of the unit interval, and the chain
+rule with $F'(x)=2F(2x)$ gives
+\begin{equation}
+ \phi'(t)=-L\,2^{1-t}\phi(t-1),\qquad
+ \Gamma'(t)=L\,2^{1-t}\frac{\phi(t-1)}{\phi(t)}>0.        \label{eq:log-scale-derivative}
+\end{equation}
+Taking logarithms of the second identity yields the exact delay relation
+\begin{equation}
+ \boxed{\Gamma(t)-\Gamma(t-1)
+ =\log\Gamma'(t)-\log L-(1-t)L,\qquad t\ge1.}             \label{eq:log-scale-delay}
+\end{equation}
+The restriction $t\ge1$ is essential: it is precisely what licenses the left-half bounded
+differential law.
+
+The recurrence and monotonicity already prove, independently of the sharper periodic saddle
+decomposition below,
+\begin{equation}
+ \frac{\Gamma(t)}{t^2}\longrightarrow\frac L2,             \label{eq:coarse-log-square}
+\end{equation}
+and, for all sufficiently large $t$,
+\begin{equation}
+ \left|\Gamma(t)-\frac L2t^2\right|\le16t\log t.           \label{eq:coarse-log-error}
+\end{equation}
+At integral scales the elementary estimate is sharper:
+\begin{equation}
+ \left|\Gamma(n)-\frac L2n^2\right|
+ \le3n\log(n+1)\qquad(n\ge1).                              \label{eq:integer-log-error}
+\end{equation}
+Monotonicity of $\Gamma$ and $\lfloor t\rfloor\le t<\lfloor t\rfloor+1$ transfer the
+integer estimate to real $t$.  These facts are formalized separately in the log-scale
+modules: they establish the quadratic law before the analysis below resolves the linear and
+logarithmic drift, the exact phase, and its unavoidable periodic fluctuation.
 
 \subsection{The negative Laplace product}
 
@@ -8417,9 +8536,12 @@ $2^{z}\to1$, so
  \operatorname*{Res}_{z=\chi_k}\widetilde\Lambda(z)s^{-z}
  =\frac{\Gamma(\chi_k)\zeta(1+\chi_k)}{L}\,s^{-\chi_k}.
 \end{equation*}
-With $s=2^{t}$ one has $s^{-\chi_k}=\e^{-2\pi\ii kt}$, so minus the sum of these residues is
-$\sum_{k\ne0}-L^{-1}\Gamma(-\chi_k)\zeta(1-\chi_k)\e^{2\pi\ii kt}$ after replacing $k$ by
-$-k$, which is precisely the Fourier series of $\Psi$ with the coefficients
+With $s=2^{t}$ one has $s^{-\chi_k}=\e^{-2\pi\ii kt}$.  After replacing $k$ by $-k$, minus
+the sum of these residues is
+\[
+ \sum_{k\ne0}-L^{-1}\Gamma(-\chi_k)\zeta(1-\chi_k)\e^{2\pi\ii kt},
+\]
+which is precisely the Fourier series of $\Psi$ with the coefficients
 \eqref{eq:Psi-Fourier}.  Thus the mean and every oscillating mode come from the single
 factorization \eqref{eq:as-mellin-Lambda}: the triple pole at the origin produces the
 nonperiodic part together with $\overline P$, and the simple poles on the imaginary axis
@@ -10168,10 +10290,11 @@ Write $n=2m$ with $m\ge1$.  Then $\widehat{\Up}(n/2)=\widehat{\Up}(m)=0$ by
 \eqref{eq:sinc-product} vanishes.  Deleting these terms from \eqref{eq:up-cosine-series}
 leaves \eqref{eq:four-odd-cosine}.
 
-For an odd index $n=2m+1$ the $n$th factor of \eqref{eq:sinc-product} evaluated at
-$z=(2m+1)/2$ is $\sinc\bigl(\pi(2m+1)/2^{\,n+1}\bigr)$, which vanishes only if
-$2^{\,n+1}$ divides $2m+1$.  That is impossible for $n\ge0$, since $2m+1$ is odd.  A locally
-uniformly convergent product with no vanishing factor has no zero, so
+For an odd cosine index $2m+1$, the factor indexed by $j\ge0$ in
+\eqref{eq:sinc-product}, evaluated at $z=(2m+1)/2$, is
+$\sinc\bigl(\pi(2m+1)/2^{\,j+1}\bigr)$; it could vanish only if $2^{j+1}$ divided the odd
+integer $2m+1$.  Thus every factor is nonzero.  Moreover the tail differs from $1$ by a
+summable sequence (quadratically in $2^{-j}$), so the convergent product is nonzero and
 $\widehat{\Up}((2m+1)/2)\ne0$.  The displayed value of the first factor is
 \begin{equation*}
  \sinc\!\left(\frac{\pi(2m+1)}{2}\right)
@@ -10183,10 +10306,9 @@ which gives \eqref{eq:four-odd-coefficient}.  Absolute and uniform convergence f
 \end{proof}
 
 The sign pattern in \eqref{eq:four-odd-coefficient} is worth noting: the leading factor
-alternates and decays like $1/(2m+1)$, while the remaining product is bounded by $1$ and
-tends to $1$ as $m$ grows through any fixed dyadic residue class.  The rapid decay of the
-coefficients therefore comes entirely from the tail of the product, not from the first
-factor.
+alternates and decays like $1/(2m+1)$, while the remaining product has magnitude at most
+$1$.  The rapid decay beyond this explicit reciprocal factor is supplied by that remaining
+product, as is also forced by the Schwartz estimate \eqref{eq:schwartz-decay}.
 
 
 \subsection{A sampling identity}
@@ -10255,10 +10377,8 @@ Consequently, for $0\le x\le\tfrac12$,
 \end{proposition}
 
 \begin{proof}
-By \eqref{eq:up-absolute}, $\Up(2x-1)=F(1-|2x-1|)$.  For $0\le x\le\tfrac12$ this is
-$F(2x)$, and \eqref{eq:F-diffeq} gives $F'(x)=2F(2x)$; for $\tfrac12\le x\le1$ it is
-$F(2-2x)$, and \eqref{eq:F-diffeq-right} gives $F'(x)=2F(2-2x)$.  This proves
-\eqref{eq:four-Fprime-up}.
+The first identity is the restriction to $[0,1]$ of the global unified derivative formula
+\eqref{eq:shape-unified-derivative} proved earlier.
 
 Take $m=1$ in \eqref{eq:partition-unity}, that is \eqref{eq:integer-partition}, and evaluate
 at $t\in[0,1]$.  Since $\Up$ vanishes outside $[-1,1]$, only the indices $k=0$ and $k=-1$
@@ -11657,8 +11777,9 @@ attained at the midpoint, and isolates the linear majorants $F(x)\le2x$ and
 $\Up(x)\le2(1-|x|)$ used as quantitative input elsewhere.\\
 \path{Monotonicity.lean} &
 Collects the order-theoretic consequences of the derivative formula: strict monotonicity of
-$F$ on $[0,1]$ and the resulting bijection of $[0,1]$ onto itself, the exact open support
-$(-1,1)$ of $\Up$, and its strict unimodality.\\
+$F$ on $[0,1]$ and the resulting bijection of $[0,1]$ onto itself, the exact nonzero set
+(ordinary \texttt{Function.support}) $(-1,1)$ and topological support $[-1,1]$ of $\Up$,
+and its strict unimodality.\\
 \path{Convexity.lean} &
 Turns the monotonicity of $\Up$ into convexity of $F$ on $(-\infty,1/2]$ and concavity on
 $[1/2,\infty)$, strictly inside the unit interval, so that the midpoint is exactly the
@@ -11668,7 +11789,8 @@ Proves that the Thue--Morse translate series defining the signed extension is lo
 finite, then derives the global differential equation and the closed formulas for every
 iterated derivative of both $\mathcal F$ and $\Up$.\\
 \path{GlobalBounds.lean} &
-Observes that exactly one translate survives on each block $[2b,2b+2]$, hence
+Observes that only the $b$-th translate can be nonzero on $[2b,2b+2]$ (and that it vanishes
+at the endpoints), hence
 $|\mathcal F|\le1$ everywhere, and converts the derivative formula into the sharp attained
 bound $|\mathcal F^{(k)}|\le2^{\binom{k+1}2}$.\\
 \path{BoundedDerivatives.lean} &
@@ -11680,8 +11802,9 @@ Determines the exact real-analytic locus: $F$ is analytic at $x$ if and only if
 $x\notin[0,1]$.  The right endpoint needs a separate argument, since the reflection identity
 is not an identity of germs there.\\
 \path{FabiusFlatness.lean} &
-The qualitative flatness statement at the origin: every derivative vanishes there, so
-Taylor's theorem gives $\mathcal F(x)=\smallo(x^n)$ for every $n$, with no constant.\\
+The two-sided qualitative flatness statements at both endpoints: in particular
+$\mathcal F(x)=\smallo(|x|^n)$ and $F(x)=\smallo(|x|^n)$ at $0$, and
+$1-F(x)=\smallo(|1-x|^n)$ at $1$, for every $n$.\\
 \path{EffectiveFlatness.lean} &
 An elementary effective form $F(x)\le2^{\binom{n+1}2}x^n$ on $2^nx\le1$, proved by iterating
 the mean value theorem, kept because it avoids importing any integral machinery.\\
