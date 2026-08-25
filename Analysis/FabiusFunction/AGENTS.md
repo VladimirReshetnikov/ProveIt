@@ -184,6 +184,42 @@ algebra, run against the same claims. Two symbolic routes agreeing is weaker
 evidence than it looks when the thing at issue is prose, because both routes
 compute from the formula and neither reads the sentence.
 
+### The defect a preflight cannot see: a tactic doing something else
+
+The complement of the previous section. Reading catches wrong identifiers;
+it does not catch a correctly-spelled tactic behaving differently from what the
+author pictured. Every failure the compiler found in one night's new modules was
+of that kind, and none was mathematical:
+
+- a `field_simp` that **closed its goal**, so the following `ring` failed with
+  `No goals to be solved`;
+- a `simp` that **did not close** its goal, because `Polynomial.coeff_one` is
+  not a simp lemma in this Mathlib;
+- a `simp` that **unfolded a definition** — `Nat.doubleFactorial` is declared
+  `@[simp] def`, and simp first normalized `2 * (j + 1)` to `2 * j + 2`, which
+  then matched the `k + 2` equation, dissolving the double factorial before it
+  could be used. Use `rw`, or `simp [-Nat.doubleFactorial]`;
+- a `simp only [map_add]` that **reached into a second homomorphism**.
+  `Polynomial.C` is itself a ring hom, so `map_add` rewrote `C (a + b)` into
+  `C a + C b` inside the coefficients, and `(C a + C b) * X ^ n` no longer
+  matched the monomial lemma.
+
+The last one deserves its generalisation, which is not specific to polynomials:
+
+> A simp set that is **asymmetric in an algebraic structure** will silently do
+> half a job, and *which* half is selected by a property of the data rather than
+> of the goal.
+
+There, the set carried `map_add` but not `map_sub`: of five monomials, the three
+whose coefficients contained a subtraction survived intact and contracted
+correctly, while the two that were pure sums were decomposed and left behind.
+Nothing about the goal predicted the split.
+
+Practical defences, in order of cost: prefer `rw` to `simp` where the rewrite
+positions are known; state a helper lemma over **opaque variables**, so a simp
+set has nothing to decompose (this is what fixed the last case); and when a
+`simp` is genuinely wanted, prefer `simp only` with a named list.
+
 ### Preflight instead of building, when the build is scarce
 
 A read-only preflight — one agent checking every identifier and tactic against
