@@ -9,8 +9,9 @@ worktree/task: 10ef /root — theorem and exposition refinement campaign
 branch/base: codex/fabius-theorem-polish-20260825 at published checkpoint
   7aa69af1e825879319682d7ad8b86b304df86754, merging pinned origin/main
   6fcbbb5da45330bdc78c6090706cf1479f3d3afb
-writing: Lean/FabiusFunction/FabiusDiscreteLimitIntegration.lean and this
-  registry file;
+writing: Lean/FabiusFunction/FabiusDiscreteLimitIntegration.lean,
+  documentation-only reviewer corrections in FabiusUniformSpline.lean, and
+  this registry file;
   no LaTeX or PDF path is leased
 reading: the all-real binary/q-binomial series cores, direct consumers of the
   integration module, and active documentation status

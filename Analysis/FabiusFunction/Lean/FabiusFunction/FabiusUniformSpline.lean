@@ -10,7 +10,7 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 The centered Thue--Morse power sums used by the discrete-limit formula are
 identified here with distribution functions of finite weighted sums of
 independent uniform coordinates.  The probabilistic model gives sharp
-support bounds, the exact right saturation edge, monotonicity on the
+support bounds, saturation on the final half-cell, monotonicity on the
 fundamental interval, and pointwise convergence to the bounded Fabius
 function.  These statements include the degree-zero step spline.  A
 block-translation identity extends the estimates across the nonnegative axis,
@@ -1229,7 +1229,7 @@ theorem fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc
 
 /-- On `[0,1]`, every centered finite spline is exactly the midpoint-corrected
 CDF of the first `p` weighted uniform coordinates.  This includes the
-degree-zero right-continuous step spline, whose jump is at `1 / 2`. -/
+degree-zero step spline, whose inclusive jump is at `1 / 2`. -/
 theorem fabiusUniformSpline_eq_centeredPartialCDF_all
     (p : ℕ) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     fabiusUniformSpline p x = uniformCenteredPartialCDF p x := by
