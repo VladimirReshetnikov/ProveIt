@@ -143,7 +143,10 @@ The presentation follows the theorem structure of the Lean formalization under
 arguments.  Source-level endpoint and normalization defects are corrected rather than
 repeated.  In particular, a centered finite-spline approximation is given with an explicit
 uniform error, and this approximation is turned into a primitive-recursive dyadic algorithm
-proving computability of the bounded Fabius function in the sense of Grzegorczyk.
+proving computability of the bounded Fabius function in the sense of Grzegorczyk.  Binary
+reduction also yields an absolutely convergent signed-global series; finite half-base
+$q$-binomial identities give arbitrary-complex translated presentations of its summands,
+and a bounded-variation Toeplitz argument proves the corresponding discrete-limit formula.
 \end{abstract}
 
 \tableofcontents
@@ -1496,8 +1499,10 @@ The bound is uniform on the closed interval and includes both endpoints.  It is 
 than mere weak convergence of the finite distributions, and it is the quantitative input
 for the computability proof in \cref{sec:effective-computability}.
 
-The same finite formula also has the correct signed global behavior.  Binary block
-translation and midpoint reflection extend the local identification to every $x\ge0$:
+The same finite formula also has the correct signed global behavior.  For $x\le0$ its safe
+cutoff is empty, so $S_p(x)=\mathcal F(x)=0$.  On the nonnegative half-line, binary block
+translation and midpoint reflection extend the local identification.  Consequently, for
+every $x\in\R$,
 \begin{equation}
  |S_p(x)|\le1,\qquad
  S_p(x)\longrightarrow\mathcal F(x).                     \label{eq:centered-spline-global-limit}
@@ -2475,6 +2480,38 @@ and write $\qbinom nkq$ for the Gaussian or $q$-binomial coefficient.  The base 
 is forced by the dilation grid $1,2,4,\ldots$: the corresponding Pochhammer product is the
 node polynomial for reciprocal dyadic scales.
 
+The finite half-base $q$-binomial theorem is
+\begin{equation}
+ (z;1/2)_n=\sum_{k=0}^{n}
+ (-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k.                 \label{eq:half-q-binomial-theorem}
+\end{equation}
+To see its interpolation content, put
+\begin{equation*}
+ \mathfrak m_n=\prod_{\ell=1}^{n}(2^\ell-1),\qquad
+ x_k=-2^k,\qquad
+ w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}.
+\end{equation*}
+Then
+\begin{equation}
+ \sum_{k=0}^{n}w_{n,k}x_k^d=
+ \begin{cases}
+ 0,&d<n,\\
+ \mathfrak m_n,&d=n,
+ \end{cases}
+ \qquad
+ \frac{w_{n,k}}{\mathfrak m_n}
+ =\frac1{\prod_{\ell\ne k}(x_k-x_\ell)}.                 \label{eq:q-geometric-interpolation}
+\end{equation}
+Thus the normalized Gaussian row is exactly the leading-coefficient functional for the
+Lagrange interpolant through $-1,-2,\ldots,-2^n$.  The normalization also satisfies
+\begin{equation}
+ (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n.            \label{eq:half-q-mersenne}
+\end{equation}
+Likewise
+$\qbinom nk{1/2}=2^{-k(n-k)}\qbinom nk2$, so the half-base coefficients are
+power-of-two normalizations of the integer Gaussian coefficients that count
+$k$-planes in $\mathbb F_2^n$.
+
 \begin{theorem}[Global $q$-binomial dyadic formula]
 For $m,n\in\N$ and every scalar translation $Q\in\C$,
 \begin{align}
@@ -2503,14 +2540,55 @@ It has a zero of order $k$ at $z=1$, so the inner power sum annihilates every po
 of degree below $k$.  After this forced zero is removed, its degree-$n$ coefficient is a
 polynomial of degree at most $n$ in the geometric scale node $-2^k$.
 
-Across the scales, the weights
+Here is the coefficient calculation explicitly.  Normalize the half moments by
+\begin{equation*}
+ a_j=\frac{d_j}{j!},\qquad
+ \mathscr A(X)=\sum_{j\ge0}a_jX^j,\qquad
+ E(X)=\frac{\e^X-1}{X}.
+\end{equation*}
+The half-moment recurrence is equivalent, coefficient by coefficient, to
 \begin{equation}
- w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}              \label{eq:q-geometric-weights}
+ \mathscr A(2X)=E(X)\mathscr A(X).                        \label{eq:q-moment-refinement}
 \end{equation}
-form the divided-difference stencil on the nodes $-1,-2,\ldots,-2^n$.  The finite
+For the centered complete block set
+\begin{equation*}
+ C_k(X)=\sum_{r<2^k}(-1)^{\wt(r)}\e^{(r-2^k)X}.
+\end{equation*}
+Binary factorization gives
+\begin{equation}
+ \frac{C_k(X)}{X^k}
+ =(-1)^k2^{\binom k2}\e^{-X}
+ \prod_{j=0}^{k-1}E(-2^jX).                              \label{eq:q-centered-block-factor}
+\end{equation}
+Iterating \eqref{eq:q-moment-refinement} along the negative dyadic orbit gives the same
+product:
+\begin{equation*}
+ \mathscr A(-2^kX)=
+ \left(\prod_{j<k}E(-2^jX)\right)\mathscr A(-X).
+\end{equation*}
+Consequently the coefficient of $X^n$ after the forced $X^k$ is removed is, up to the
+displayed sign and power of two, the value at $z=-2^k$ of
+\begin{equation*}
+ [X^n]\,\mathscr R(z;X),\qquad
+ \mathscr R(z;X)=\frac{\e^{-X}\mathscr A(zX)}{\mathscr A(-X)}.
+\end{equation*}
+For fixed $n$ this is a polynomial in $z$ of degree at most $n$, and its leading
+coefficient is $a_n$.
+
+Across the scales, the weights in \eqref{eq:q-geometric-interpolation} form the
+divided-difference stencil on the nodes $-1,-2,\ldots,-2^n$.  The finite
 $q$-binomial theorem says that this stencil annihilates degrees below $n$ and extracts the
-leading coefficient in degree $n$.  Applying it after the inner Thue--Morse cancellation
-produces exactly the moment normalization equal to $\mathcal F(m/2^n)$.
+leading coefficient in degree $n$.  It therefore returns $\mathfrak m_na_n$.  Using
+\eqref{eq:half-q-mersenne} and
+$F(2^{-n})=2^{-\binom n2}a_n$ gives the one-block formula.  For a general numerator, the
+finite prefix series
+\begin{equation*}
+ B_m(X)=\sum_{h=0}^{m-1}(-1)^{\wt(h)}\e^{(m-1-h)X}
+\end{equation*}
+enters because writing $r=h2^k+s$ factors the long block as
+$B_m(-2^kX)C_k(X)$.  The same divided difference then extracts the coefficient
+$[X^n](B_m(X)\mathscr A(X))$, which is exactly the signed dyadic value
+$2^{\binom n2}\mathcal F(m/2^n)$.
 
 For translation invariance, package the entire numerator as a polynomial $N_{m,n}(X)$ over
 $\Q$.  Multiplying every block exponential by $\e^{QX}$ cannot change its degree-$n$
@@ -2762,7 +2840,7 @@ For $m\in\N$, put
 \end{equation}
 
 \begin{theorem}[$q$-binomial Taylor identity]
-For every $m$, every $y$, and every $Q\in\C$,
+For every $m$, every $y\in\R$, and every $Q\in\C$,
 \begin{equation}
  \mathcal Q_m^{(Q)}(y)=\mathcal T_m(y),                  \label{eq:q-reduction-equals-taylor}
 \end{equation}
@@ -2821,7 +2899,7 @@ limit of finite shifted splines rather than a sequence of partial sums of
 \end{equation}
 including the empty case where the upper endpoint is $-1$.
 
-For fixed $Q\in\C$, define
+For fixed $Q\in\C$ and $x\in\R$, define
 \begin{align}
  \mathcal D_n^{(Q)}(x)
  &=
@@ -2834,7 +2912,7 @@ For fixed $Q\in\C$, define
 \end{align}
 
 \begin{theorem}[Complex discrete-limit formula]
-For every fixed $Q\in\C$ and $x\ge0$,
+For every fixed $Q\in\C$ and every $x\in\R$,
 \begin{equation}
  \boxed{\mathcal D_n^{(Q)}(x)\longrightarrow\mathcal F(x)}
                                                                \label{eq:discrete-q-limit}
@@ -2843,6 +2921,10 @@ in $\C$.  If $0\le x\le1$, the limit is equivalently $F(x)$.
 \end{theorem}
 
 \begin{proof}
+If $x\le0$, every safe cutoff $N_p(x)$ is zero.  Hence every shifted spline and every
+approximant \eqref{eq:discrete-q-approximant} is zero, as is $\mathcal F(x)$.  It remains
+to treat $x\ge0$.
+
 For a degree $p$ and complex shift $Q$, introduce the finite shifted spline
 \begin{equation}
  S_p^{(Q)}(x)=
@@ -2886,7 +2968,16 @@ Applying it with the opposite sign also gives the uniform variation bound
 \end{equation}
 Finally, every sampled degree satisfies $2n-j\ge n$.  A finite-row Toeplitz lemma therefore
 carries the convergence of $S_p^{(Q)}(x)$ to the weighted rows
-\eqref{eq:discrete-toeplitz-reindex}, proving \eqref{eq:discrete-q-limit}.
+\eqref{eq:discrete-toeplitz-reindex}.  Explicitly, given $\epsilon>0$, choose $P$ so that
+$|S_p^{(Q)}(x)-\mathcal F(x)|<\epsilon/16$ for $p\ge P$.  If $n\ge P$, then every
+$2n-j\ge n\ge P$, and the row-sum identity together with
+\eqref{eq:discrete-row-variation} gives
+\begin{equation*}
+ \left|\sum_{j=0}^{n}\omega_{n,j}S_{2n-j}^{(Q)}(x)-\mathcal F(x)\right|
+ \le\sum_{j=0}^{n}|\omega_{n,j}|\,
+ |S_{2n-j}^{(Q)}(x)-\mathcal F(x)|<\epsilon.
+\end{equation*}
+This proves \eqref{eq:discrete-q-limit}.
 \end{proof}
 
 Two distinctions prevent common misreadings of this theorem.  First, unlike the complete
@@ -4349,6 +4440,10 @@ mathematical structures coincide in one object.
 \item Rational moment recurrences evaluate every dyadic argument exactly.
 \item A Taylor recursion turns the closed Thue--Morse formula into an efficient
       bit-sensitive algorithm.
+\item Binary-prefix reduction gives a finite telescope with an explicit residual, an
+      absolutely convergent global series, and the corrected parity-power presentation.
+\item Half-base Gaussian finite differences explain the translated complex dyadic formulas,
+      the pointwise global $q$-series, and the Toeplitz discrete limit.
 \item A negative-Laplace product and a lower-Lambert saddle expose the true endpoint scale,
       its Gamma--zeta periodic fluctuation, and its complete asymptotic expansion.
 \item A uniformly convergent Legendre series converts the same exact dyadic data into
@@ -4468,12 +4563,17 @@ Computable evaluator &
 Implements the signed-natural matched-grid spline by primitive recursion, certifies its
 rounding error, and proves sequential computability of the bounded Fabius function.\\
 Finite convolutions &
-\path{ConvolutionApproximation.lean},
-\path{StepApproximant.lean} &
-Connects polynomial densities, repeated convolutions, weak convergence, and the step
-approximants of the original paper.\\
+\path{EarlyApproximants.lean},
+\path{EarlyMeasureBridge.lean},
+\path{WeakConvergence.lean},
+\path{StepMeasureBridge.lean},
+\path{StepApproximationLimit.lean} &
+Connects polynomial densities, repeated convolutions, weak convergence, and the explicit
+step approximants of the original paper, including their measure and endpoint conventions.\\
 Fourier and Poisson &
-\path{Fourier.lean}, \path{Poisson.lean} &
+\path{FourierProduct.lean},
+\path{FourierAnalytic.lean},
+\path{PoissonSummation.lean} &
 Proves the sinc product, inversion, rapid decay, Poisson summation, cosine series, and
 partitions of unity.\\
 Signed extension &
@@ -4482,7 +4582,9 @@ Proves local finiteness of the Thue--Morse translate sum, the global differentia
 and exact iterated-derivative formulas.\\
 Moment arithmetic &
 \path{MomentPowerSeries.lean},
-\path{HalfMomentGenerating.lean},
+\path{AnalyticMoments.lean},
+\path{LaplaceMoments.lean},
+\path{BernoulliRecurrences.lean},
 \path{Paper06487.lean} &
 Bridges the exact recurrences to integrals and entire generating functions and packages the
 arithmetic paper's named statements.\\
@@ -4495,11 +4597,36 @@ Global dyadic values &
 \path{GlobalDyadic.lean} &
 Extends exact computation beyond the unit interval using triangular reduction and
 Thue--Morse signs.\\
-$q$-binomial formulas &
+\addlinespace
+Inverse-dyadic path sums &
+\path{FabiusRecurrenceSequence.lean},
+\path{FabiusInverseDyadicClosedForm.lean} &
+Derives the reciprocal-power recurrence, proves a generic finite weighted-path solver, and
+identifies its path sum with ordered-composition and length-stratified formulas.\\
+Finite $q$-binomial formulas &
+\path{HalfQBinomial.lean},
+\path{ThueMorseExponential.lean},
+\path{FabiusQBinomialFormula.lean},
 \path{FabiusQBinomialTaylor.lean},
+\path{FabiusQBinomialScalarFormula.lean},
+\path{FabiusRawQBinomialScalar.lean},
 \path{FabiusDyadicQBinomialScalar.lean} &
-Proves the finite $q$-binomial forms, arbitrary translation invariance, scalar extension, and
-dyadic-representation invariance.\\
+Proves the centered and raw finite formulas, the double finite-difference identities,
+arbitrary complex translation, scalar extension, all nonnegative dyadic numerators, and
+representation independence.\\
+Global binary and $q$-series &
+\path{FabiusBinaryReductionSeries.lean},
+\path{FabiusParityPowerSeries.lean},
+\path{FabiusGlobalQBinomialSeries.lean} &
+Proves the finite binary telescope with residual, the corrected parity-power series, and the
+absolutely convergent pointwise complex $q$-binomial expansion.\\
+Discrete $q$-limit &
+\path{FabiusDiscreteLimitComplexShift.lean},
+\path{FabiusDiscreteLimitToeplitz.lean},
+\path{FabiusComplexShiftSpline.lean},
+\path{FabiusDiscreteLimitIntegration.lean} &
+Controls complex-shift splines, normalizes the finite Gaussian rows, proves their uniform
+variation bound, and applies the Toeplitz theorem for every real argument.\\
 Negative-Laplace product &
 \path{NegativeLaplace.lean},
 \path{PeriodicCorrection.lean} &
@@ -4529,10 +4656,15 @@ Decay comparisons &
 Places $F$ between algebraic and ordinary flat-exponential scales and proves the endpoint
 failure of the visual quotient model.\\
 Legendre expansion &
+\path{LegendrePolynomial.lean},
+\path{LegendreSeriesConvergence.lean},
 \path{FabiusLegendreCoefficients.lean},
-\path{FabiusLegendreSeries.lean} &
-Computes exact coefficients, proves endpoint-uniform absolute convergence, and establishes
-least-squares optimality.\\
+\path{FabiusLegendreSeries.lean},
+\path{FabiusTranslatedLegendreSeries.lean},
+\path{FabiusLegendreLeastSquares.lean} &
+Builds the Legendre foundation, computes exact coefficients, proves absolute uniform
+convergence, expands the translated global function on $[0,2]$, and establishes the unique
+least-squares projection through degree $2N+1$.\\
 Public aggregates &
 \path{Paper05442.lean}, \path{Paper06487.lean},
 \path{PaperStatements.lean} &
