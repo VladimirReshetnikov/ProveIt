@@ -1,6 +1,6 @@
 import FabiusFunction.Monotonicity
 import FabiusFunction.EffectiveFlatness
-import Mathlib.MeasureTheory.Integral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 /-!
@@ -94,7 +94,11 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
             _ ≤ 1 := hx
         have hIH := ih (by linarith : (0 : ℝ) ≤ 2 * t) harg
         rw [mul_pow] at hIH
-        nlinarith [hIH, hps]
+        calc 2 * fabiusReal F (2 * t)
+            ≤ 2 * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ) * (2 ^ n * t ^ n)) := by
+              linarith
+          _ = 2 ^ (n + 1) * (2 ^ (n + 1).choose 2 / (n.factorial : ℝ)) * t ^ n := by
+              rw [hps]; ring
       have hcontL : Continuous (fun t : ℝ => 2 * fabiusReal F (2 * t)) :=
         continuous_const.mul
           (hF.contDiff.continuous.comp (continuous_const.mul continuous_id))
@@ -114,7 +118,7 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
               (x ^ (n + 1) / (n + 1)) := by
         rw [intervalIntegral.integral_const_mul, integral_pow]
         have hzero : (0 : ℝ) ^ (n + 1) = 0 := by simp
-        rw [hzero, sub_zero]
+        rw [hzero]
         push_cast
         ring
       have hchoose : (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) := by
@@ -128,7 +132,7 @@ theorem fabiusReal_le_two_pow_div_factorial_mul_pow (F : BoundedFabius)
         ring
       have hne : ((n : ℝ) + 1) ≠ 0 := by positivity
       rw [fabiusReal_eq_integral F hF hx0 hhalf]
-      refine hmono.trans ?_
+      refine hmono.trans (le_of_eq ?_)
       rw [hright, show n + 1 + 1 = n + 2 by omega, hchoose, hfac, pow_add]
       field_simp
       ring

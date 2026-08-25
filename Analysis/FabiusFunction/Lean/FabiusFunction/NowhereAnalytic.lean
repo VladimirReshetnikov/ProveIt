@@ -42,7 +42,7 @@ private lemma analyticAt_comp_add_const {f : ℝ → ℝ} {c a : ℝ}
     (h : AnalyticAt ℝ f (a + c)) :
     AnalyticAt ℝ (fun y : ℝ => f (y + c)) a := by
   have haffine : AnalyticAt ℝ (fun y : ℝ => y + c) a := by fun_prop
-  refine (h.comp haffine).congr ?_
+  refine (h.comp_of_eq haffine rfl).congr ?_
   filter_upwards with y
   rfl
 
@@ -84,6 +84,7 @@ theorem fabius_not_analyticAt_one (F : BoundedFabius) (hF : IsFabius F) :
   have hzero : AnalyticAt ℝ (fabiusReal F) 0 := by
     refine (hconst.sub hrefl).congr ?_
     filter_upwards with y
+    show (1 : ℝ) - fabiusReal F (1 - y) = fabiusReal F y
     rw [hF.symmetry_all y]
     ring
   exact fabius_not_analyticAt_of_lt_one F hF le_rfl (by norm_num) hzero
@@ -129,9 +130,10 @@ theorem extendedFabius_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
       filter_upwards [Ioo_mem_nhds hx0 hx.2] with y hy
       exact hblock y hy
     have hshift : AnalyticAt ℝ (fun z : ℝ => rvachevUp F (z + 1 - 1)) (x - 1) := by
-      apply analyticAt_comp_add_const
-      rw [show x - 1 + 1 = x by ring]
-      exact hgerm
+      have hpoint : AnalyticAt ℝ (fun w : ℝ => rvachevUp F (w - 1)) (x - 1 + 1) := by
+        rw [show x - 1 + 1 = x by ring]
+        exact hgerm
+      exact analyticAt_comp_add_const hpoint
     have hup : AnalyticAt ℝ (rvachevUp F) (x - 1) := by
       refine hshift.congr ?_
       filter_upwards with z
