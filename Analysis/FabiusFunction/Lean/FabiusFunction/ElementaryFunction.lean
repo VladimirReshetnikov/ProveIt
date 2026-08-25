@@ -288,6 +288,76 @@ theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
 
 end IsElementary
 
+/-! ## Named elementary functions
+
+Spelled out for the record: each standard function of the elementary calculus
+belongs to the class in its own right, not merely as a constructor applied to
+an elementary argument. -/
+
+/-- The identity is elementary. -/
+theorem isElementary_id : IsElementary fun x : ℝ => x := IsElementary.id
+
+/-- The reciprocal is elementary. -/
+theorem isElementary_inv : IsElementary fun x : ℝ => x⁻¹ := IsElementary.id.inv
+
+/-- Every real power is elementary; `r = 1 / n` gives the `n`-th root. -/
+theorem isElementary_rpow (r : ℝ) : IsElementary fun x : ℝ => x ^ r :=
+  IsElementary.id.rpow r
+
+/-- `Real.exp` is elementary. -/
+theorem isElementary_exp : IsElementary Real.exp := IsElementary.id.exp
+
+/-- `Real.log` is elementary. -/
+theorem isElementary_log : IsElementary Real.log := IsElementary.id.log
+
+/-- `Real.sin` is elementary. -/
+theorem isElementary_sin : IsElementary Real.sin := IsElementary.id.sin
+
+/-- `Real.cos` is elementary. -/
+theorem isElementary_cos : IsElementary Real.cos := IsElementary.id.cos
+
+/-- `Real.tan` is elementary. -/
+theorem isElementary_tan : IsElementary Real.tan := IsElementary.id.tan
+
+/-- `Real.arcsin` is elementary. -/
+theorem isElementary_arcsin : IsElementary Real.arcsin := IsElementary.id.arcsin
+
+/-- `Real.arccos` is elementary. -/
+theorem isElementary_arccos : IsElementary Real.arccos := IsElementary.id.arccos
+
+/-- `Real.arctan` is elementary. -/
+theorem isElementary_arctan : IsElementary Real.arctan := IsElementary.id.arctan
+
+/-- `Real.sinh` is elementary. -/
+theorem isElementary_sinh : IsElementary Real.sinh := IsElementary.id.sinh
+
+/-- `Real.cosh` is elementary. -/
+theorem isElementary_cosh : IsElementary Real.cosh := IsElementary.id.cosh
+
+/-- `Real.tanh` is elementary. -/
+theorem isElementary_tanh : IsElementary Real.tanh := IsElementary.id.tanh
+
+/-- `Real.arsinh` is elementary. -/
+theorem isElementary_arsinh : IsElementary Real.arsinh := IsElementary.id.arsinh
+
+/-- `Real.sqrt` is elementary. -/
+theorem isElementary_sqrt : IsElementary Real.sqrt := IsElementary.id.sqrt
+
+/-- The absolute value is elementary. -/
+theorem isElementary_abs : IsElementary fun x : ℝ => |x| := IsElementary.id.abs
+
+/-- A representative closed-form expression, to exercise the definition. -/
+example : IsElementary fun x : ℝ =>
+    Real.exp (Real.sin (x ^ 2 + 1)) / (1 + x ^ 2)
+      + Real.log |x| * Real.arctan (Real.sqrt (1 - x ^ 2)) := by
+  have h1 : IsElementary fun x : ℝ => x ^ 2 + 1 :=
+    (IsElementary.id.npow 2).add (IsElementary.const 1)
+  have h2 : IsElementary fun x : ℝ => 1 + x ^ 2 :=
+    (IsElementary.const 1).add (IsElementary.id.npow 2)
+  have h3 : IsElementary fun x : ℝ => 1 - x ^ 2 :=
+    (IsElementary.const 1).sub (IsElementary.id.npow 2)
+  exact (h1.sin.exp.div h2).add (IsElementary.id.abs.log.mul h3.sqrt.arctan)
+
 /-! ## The analytic locus -/
 
 /-- The set of points at which `f` is real analytic. -/
