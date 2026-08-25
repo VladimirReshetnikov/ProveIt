@@ -61,7 +61,14 @@ each such `t`.
 
 The class is closed under `n`-th roots but not under passage to an arbitrary
 algebraic function: `IsElementary` has no constructor for a continuous branch
-of `P (x, y) = 0` with elementary coefficients.  Wikipedia's definition speaks
+of `P (x, y) = 0` with elementary coefficients.  Adding one would cost
+`IsElementary.comp`, since composing a branch with an elementary function
+needs the *inner* function to be continuous and elementary functions need not
+be.  `FabiusFunction.AlgebraicBranch` therefore proves the analytic statement
+for such branches separately, and `Fabius.not_algebraicBranch_eqOn` draws the
+non-elementarity conclusion from it without enlarging this class.
+
+Wikipedia's definition speaks
 of "roots", and those the class does contain — but by two different
 derivations, not one.  `IsElementary.rpow` gives them on `[0, ∞)`; at a
 negative base `Mathlib`'s `Real.rpow` is `|x| ^ r * cos (π r)`, so

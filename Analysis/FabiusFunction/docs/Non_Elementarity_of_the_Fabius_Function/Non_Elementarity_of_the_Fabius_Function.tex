@@ -134,6 +134,14 @@ induction that proves it is short but has one genuinely delicate step, the
 unary one, where a locally constant intermediate value must be separated from
 a locally nonconstant one; the separation is furnished by the isolated-zeros
 theorem for real analytic functions of one variable.
+
+The same conclusion is then proved for a class the inductive definition does
+not reach: any continuous branch of a polynomial equation whose coefficients
+are elementary and whose leading coefficient vanishes nowhere.  This covers
+the algebraic functions that are not expressible by radicals, and it rests on
+a degree induction that avoids the discriminant, of which \texttt{Mathlib} has
+no usable theory, in favour of the analytic implicit function theorem, of
+which it does.
 \end{abstract}
 
 \tableofcontents
@@ -305,34 +313,20 @@ plausible substitute.
 $\Elem$ is closed under $n$-th roots but not, as defined, under passage to an
 arbitrary algebraic function: Definition~\ref{def:elem} has no clause producing a
 continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
-coefficients whose Galois group is not solvable.  Liouville's differential
-field definition of ``elementary'' does admit such branches.  We do not claim
-them here.
+coefficients whose Galois group is not solvable, and Liouville's
+differential-field definition of ``elementary'' does admit such branches.
+\Cref{sec:algebraic} closes that gap, not by enlarging $\Elem$ but by proving
+the conclusion of Corollary~\ref{cor:main} directly for such branches.  What
+remains genuinely outside the result is stated there.
 
-The obstruction is one of formalization effort rather than of missing
-infrastructure, and it is worth being exact about where the effort goes, since
-the obvious route is a dead end.  The classical argument runs the implicit
-function theorem away from the zero set of the discriminant, and that step
-does need an \emph{analytic} implicit function theorem --- which
-\texttt{Mathlib} does have, in the form of
-\texttt{ContDiffAt.implicitFunction}, stated for every smoothness exponent in
-$\N\cup\{\infty,\omega\}$ and therefore usable at $\omega$.  What
-\texttt{Mathlib} does not have is the discriminant theory: \texttt{Polynomial.discr}
-carries no bridge to separability, and there is no continuity of roots in the
-coefficients.
+Two smaller gaps are worth naming here.
 
-The discriminant can be avoided.  Write $g$ for $\partial P/\partial y$
-evaluated along the branch and split the region into $V=\{g\ne 0\}$, where the
-implicit function theorem applies directly, and $W$, the interior of the
-complement of $\overline V$, where $g\equiv 0$ and the branch therefore solves
-the \emph{derivative} equation --- of degree one lower, with leading
-coefficient $n\,a_n$, still nowhere zero.  Induction on the degree closes the
-argument, and $V$ together with a dense subset of $W$ is dense.  A module
-carrying this out is drafted alongside this development but is not part of the
-theorem stated here; until it is machine-checked, the class is the one of
-Definition~\ref{def:elem} and the claim is exactly the claim about that class.
+The first is that $\Elem$ is a class of \emph{total} functions, so a classical
+elementary expression enters it only through a derivation whose junk values
+are never consulted on the region of interest; Warning~\ref{warn:oddroot}
+records the one place where the obvious derivation is the wrong one.
 
-A second, much smaller gap concerns variable exponents.  Definition~\ref{def:elem}
+The second concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
 everywhere positive, which covers $x\mapsto x^x$ and every classical
@@ -486,6 +480,87 @@ complement of the analytic locus of an elementary function is always
 use.
 \end{remark}
 
+\section{Algebraic functions over the elementary functions}\label{sec:algebraic}
+
+Definition~\ref{def:elem} reaches the $n$-th roots but not a general algebraic
+function.  This section removes that restriction.  It does so without
+enlarging $\Elem$, for a reason worth stating: an algebraic clause inside the
+inductive definition would cost Proposition~\ref{prop:comp}.  Composing a
+branch $y$ with an elementary $h$ produces a branch over the coefficients
+$a_i\circ h$, but it is a \emph{continuous} branch only if $h$ is continuous,
+and elementary functions need not be --- $x\mapsto x^{-1}$ is not.  Rather than
+weaken the closure theorem, we prove the conclusion directly.
+
+\begin{theorem}[Branches of polynomial equations]\label{thm:algebraic}
+Let $U\subseteq\R$ be open, let $a_0,\dots,a_n$ be real analytic on $U$ with
+$a_n$ nowhere zero on $U$, and let $y$ be continuous on $U$ with
+\[
+  \sum_{i=0}^{n} a_i(x)\,y(x)^i \;=\; 0 \qquad (x\in U).
+\]
+Then $y$ is real analytic at some point of every nonempty open subset of $U$.
+\end{theorem}
+
+Density is again the right conclusion, and for the same kind of reason as
+before: $y=|\cdot|$ is a continuous branch of $y^2-x^2=0$ on all of $\R$, with
+$a_0=-x^2$, $a_1=0$, $a_2=1$, and it is not analytic at the origin.
+
+\begin{proofidea}
+The implicit function theorem applies only where $\partial P/\partial y\ne 0$,
+and the classical way to control the locus where it vanishes is the
+discriminant.  \texttt{Mathlib} has no usable discriminant theory ---
+\texttt{Polynomial.discr} carries no bridge to separability, and there is no
+continuity of roots in the coefficients --- so we induct on the degree
+instead, which needs neither.
+
+Write $g$ for $\partial P/\partial y$ evaluated along the branch and split
+$U$ into $V=\{x\in U: g(x)\ne0\}$, which is open, and
+$W=U\setminus\overline V$, which is also open.  On $V$ the implicit function
+theorem applies directly.  On $W$ we have $g\equiv 0$, so $y$ satisfies the
+\emph{derivative} equation, of degree $n-1$, whose leading coefficient
+$n\,a_n$ is still nowhere zero; the inductive hypothesis applies to it.
+Finally $V$ together with a dense subset of $W$ is dense in $U$, because an
+open set disjoint from $V$ is disjoint from $\overline V$ and hence contained
+in $W$.  The set $W$ absorbs exactly the degenerate locus that a discriminant
+argument would otherwise have to control, and the induction terminates because
+the degree drops.
+
+The implicit function step is \texttt{Mathlib}'s
+\texttt{ContDiffAt.implicitFunction}, which is stated for every smoothness
+exponent in $\N\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
+with \texttt{ContDiffAt.analyticAt} gives an analytic implicit function
+theorem.  Its one nontrivial hypothesis, invertibility of the partial
+derivative as a continuous linear map, is discharged in one variable by
+\texttt{HasDerivAt.hasFDerivAt\_equiv} together with uniqueness of the
+Fréchet derivative.
+\end{proofidea}
+
+\begin{corollary}\label{cor:algebraic}
+Let $a_0,\dots,a_n$ be elementary, let $a_n$ vanish nowhere, and let
+$y\colon\R\to\R$ be continuous with $\sum_{i\le n}a_i(x)y(x)^i=0$ for every
+$x$.  Then $y$ does not agree with the Fabius function on any nonempty open
+subset of $[0,1]$; in particular not on $(0,1)$.
+\end{corollary}
+
+\begin{proof}
+Each $a_i$ has dense open analytic locus by \Cref{thm:density}.  The
+intersection of the $n+1$ of them is a finite intersection of dense open sets,
+hence dense and open, and \Cref{thm:algebraic} applies to it, giving that the
+analytic locus of $y$ is dense in $\R$.  Now argue as in
+Corollary~\ref{cor:main}.
+\end{proof}
+
+\begin{boxedremark}
+Corollary~\ref{cor:algebraic} covers every algebraic function over the
+elementary functions, including those whose Galois group is not solvable and
+which are therefore not expressible by radicals at all.  It is genuinely
+stronger than Corollary~\ref{cor:main} in that direction, and independent of it
+in the other: it says nothing about $\exp$ or $\log$ of an algebraic function,
+because it is a single algebraic step over elementary coefficients rather than
+a closure.  A tower that interleaves algebraic extensions with exponentials
+and logarithms at several levels is covered only when it can be presented in
+one of the two forms.
+\end{boxedremark}
+
 \section{The formal development}
 
 \subsection{Correspondence with the Lean names}
@@ -540,6 +615,15 @@ Analytic at a point of any nonempty open set
 Exceptional set closed with empty interior
   & \texttt{isClosed\_compl\_analyticLocus}, \texttt{IsElementary.interior\_compl\_analyticLocus}
   & \texttt{ElementaryFunction} \\
+Analytic implicit function theorem in two real variables
+  & \texttt{analyticAt\_implicitFunction}, \texttt{analyticAt\_of\_continuous\_branch}
+  & \texttt{AlgebraicBranch} \\
+Branches of polynomial equations (\Cref{thm:algebraic})
+  & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}
+  & \texttt{AlgebraicBranch} \\
+Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
+  & \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
+  & \texttt{NotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
   & \texttt{NowhereAnalytic} \\
@@ -634,17 +718,22 @@ larger.
 Two natural strengthenings are visible from here.
 
 \begin{enumerate}
-\item \emph{Liouvillian functions.}  Replacing $\Elem$ by the class of
-      functions lying in an \emph{elementary} differential-field extension of
-      the rational functions in Liouville's sense --- allowing arbitrary
-      algebraic branches alongside exponentials and logarithms --- would
-      subsume Definition~\ref{def:elem}.  (The wider \emph{Liouvillian} class also
+\item \emph{Interleaved towers.}  Replacing $\Elem$ by the class of functions
+      lying in an \emph{elementary} differential-field extension of the
+      rational functions in Liouville's sense --- allowing arbitrary algebraic
+      branches alongside exponentials and logarithms, at any depth --- would
+      subsume both Definition~\ref{def:elem} and \Cref{sec:algebraic}.
+      (The wider \emph{Liouvillian} class also
       admits antiderivatives, and so contains $\operatorname{erf}$,
       $\operatorname{Ei}$ and $\operatorname{Si}$, which are not elementary;
-      that class is not what is meant here.)  The analytic content is
-      unchanged; what the algebraic branches still cost is the degree
-      induction described in
-      \Cref{sec:notclaimed}.
+      that class is not what is meant here.)  Each of the two ingredients is
+      now formalized separately; what is missing is the closure that lets them
+      alternate.  The obstruction is the one identified at the head of
+      \Cref{sec:algebraic}: composing an algebraic branch with an elementary
+      function needs the inner function to be continuous.  Repairing that
+      needs the fact that a nonconstant real analytic function on an interval
+      has image containing an interval, so that the preimage of a dense open
+      set is again dense --- true, classical, and not formalized here.
 \item \emph{Differential algebraicity.}  A stronger and genuinely different
       statement is that $F$ satisfies no algebraic differential equation
       $P\bigl(x,F,F',\ldots,F^{(n)}\bigr)=0$ with polynomial $P$.  Such a

@@ -1,3 +1,4 @@
+import FabiusFunction.AlgebraicBranch
 import FabiusFunction.ElementaryFunction
 import FabiusFunction.NowhereAnalytic
 
@@ -72,6 +73,61 @@ theorem canonical_fabius_not_isElementary_eqOn {g : ℝ → ℝ} (hg : IsElement
     {U : Set ℝ} (hU : IsOpen U) (hUne : U.Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
     (heq : EqOn g (fabiusReal fabius) U) : False :=
   not_isElementary_eqOn fabius fabius_spec hg hU hUne hsub heq
+
+/-! ## Algebraic functions over the elementary functions
+
+The class `Fabius.IsElementary` is closed under `n`-th roots but has no
+constructor for a general algebraic function.  That gap is closed here, not by
+enlarging the class — which would cost `Fabius.IsElementary.comp`, since
+composing an algebraic branch with an elementary function needs the *inner*
+function to be continuous, and elementary functions need not be — but by
+proving the non-elementarity statement directly for continuous branches. -/
+
+/-- **The Fabius function is not an algebraic function over the elementary
+functions.**
+
+If `a 0, …, a n` are elementary, the leading coefficient `a n` vanishes
+nowhere, and `y` is a continuous function with `∑ i ≤ n, a i x * y x ^ i = 0`
+for every `x`, then `y` does not agree with a bounded Fabius function on any
+nonempty open subset of `[0,1]`.
+
+This covers every algebraic function over the elementary functions, including
+those whose Galois group is not solvable and which are therefore not
+expressible by radicals — so it reaches past the description of the elementary
+functions in terms of roots, towards Liouville's differential-field notion.
+
+The proof intersects the analytic loci of the finitely many coefficients, a
+finite intersection of dense open sets and hence dense and open, and feeds it
+to `Fabius.dense_setOf_analyticAt_of_algebraic`. -/
+theorem not_algebraicBranch_eqOn (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
+    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0)
+    {U : Set ℝ} (hU : IsOpen U) (hUne : U.Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1)
+    (heq : EqOn y (fabiusReal F) U) : False := by
+  have hWopen : IsOpen (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
+    (Set.finite_Iic n).isOpen_biInter fun i _ => isOpen_analyticLocus (a i)
+  have hWdense : Dense (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
+    dense_biInter_of_isOpen (fun i _ => isOpen_analyticLocus (a i))
+      (Set.finite_Iic n).countable fun i hi => (ha i hi).dense_analyticLocus
+  have hydense : Dense {x : ℝ | AnalyticAt ℝ y x} :=
+    dense_setOf_analyticAt_of_algebraic n a y hWopen hWdense
+      (fun i hi x hx =>
+        Set.mem_iInter₂.1 hx i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
+      (fun x _ => hlead x) hy.continuousOn fun x _ => hpoly x
+  obtain ⟨x, hxU, hxy⟩ := (dense_iff_inter_open.mp hydense) U hU hUne
+  refine fabius_not_analyticAt F hF (hsub hxU) (hxy.congr ?_)
+  filter_upwards [hU.mem_nhds hxU] with t ht using heq ht
+
+/-- **The Fabius function on `(0,1)` is not an algebraic function over the
+elementary functions.** -/
+theorem canonical_fabius_not_algebraicBranch_on_Ioo
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
+    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0) :
+    ¬ EqOn y (fabiusReal fabius) (Ioo (0 : ℝ) 1) := fun heq =>
+  not_algebraicBranch_eqOn fabius fabius_spec ha hlead hy hpoly isOpen_Ioo
+    ⟨1 / 2, by norm_num⟩ Ioo_subset_Icc_self heq
 
 /-! ## Rvachev's `up` function and the signed global extension -/
 

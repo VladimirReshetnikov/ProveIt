@@ -21,6 +21,7 @@ import FabiusFunction.FabiusInverse
 import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
+import FabiusFunction.AlgebraicBranch
 import FabiusFunction.ElementaryFunction
 import FabiusFunction.NotElementary
 import FabiusFunction.FabiusComputableSpline

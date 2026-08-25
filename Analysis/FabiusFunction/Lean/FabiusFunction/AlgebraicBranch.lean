@@ -135,23 +135,23 @@ noncomputable def branchDerivCoeff (a : ℕ → ℝ → ℝ) (i : ℕ) (x : ℝ)
 
 /-- `branchPoly` is real analytic wherever all its coefficients are. -/
 theorem analyticAt_branchPoly {a : ℕ → ℝ → ℝ} (n : ℕ) {x₀ y₀ : ℝ}
-    (ha : ∀ i, AnalyticAt ℝ (a i) x₀) :
+    (ha : ∀ i ∈ Finset.range (n + 1), AnalyticAt ℝ (a i) x₀) :
     AnalyticAt ℝ (branchPoly a n) (x₀, y₀) := by
   have hfst : AnalyticAt ℝ (fun p : ℝ × ℝ => p.1) (x₀, y₀) := analyticAt_fst
   have hsnd : AnalyticAt ℝ (fun p : ℝ × ℝ => p.2) (x₀, y₀) := analyticAt_snd
-  simp only [branchPoly]
-  refine Finset.analyticAt_fun_sum _ fun i _ => ?_
+  show AnalyticAt ℝ (fun p : ℝ × ℝ => ∑ i ∈ Finset.range (n + 1), a i p.1 * p.2 ^ i) (x₀, y₀)
+  refine Finset.analyticAt_fun_sum _ fun i hi => ?_
   have h1 : AnalyticAt ℝ (fun p : ℝ × ℝ => a i p.1) (x₀, y₀) := by
-    simpa [Function.comp_def] using (ha i).comp hfst
+    simpa [Function.comp_def] using (ha i hi).comp hfst
   exact h1.fun_mul (hsnd.fun_pow i)
 
 /-- `x ↦ branchPoly a n (x, y x)` is continuous wherever the coefficients and
 the branch are. -/
 theorem continuousOn_branchPoly {a : ℕ → ℝ → ℝ} {n : ℕ} {y : ℝ → ℝ} {U : Set ℝ}
-    (ha : ∀ i, ContinuousOn (a i) U) (hy : ContinuousOn y U) :
+    (ha : ∀ i ∈ Finset.range (n + 1), ContinuousOn (a i) U) (hy : ContinuousOn y U) :
     ContinuousOn (fun x => branchPoly a n (x, y x)) U := by
   simp only [branchPoly]
-  exact continuousOn_finsetSum _ fun i _ => (ha i).fun_mul (hy.fun_pow i)
+  exact continuousOn_finsetSum _ fun i hi => (ha i hi).fun_mul (hy.fun_pow i)
 
 /-- The derivative of `w ↦ branchPoly a (n + 1) (x, w)` is the formal `∂/∂y`
 of the polynomial, which is `branchPoly` of degree `n` with the coefficients
@@ -186,7 +186,7 @@ Density is the correct conclusion: `y = |·|` is a continuous branch of
 `y ^ 2 - x ^ 2 = 0` on `ℝ` and is not analytic at `0`. -/
 theorem analyticDenseOn_of_algebraic :
     ∀ (n : ℕ) (a : ℕ → ℝ → ℝ) (y : ℝ → ℝ) (U : Set ℝ), IsOpen U →
-      (∀ i, ∀ x ∈ U, AnalyticAt ℝ (a i) x) →
+      (∀ i ∈ Finset.range (n + 1), ∀ x ∈ U, AnalyticAt ℝ (a i) x) →
       (∀ x ∈ U, a n x ≠ 0) →
       ContinuousOn y U →
       (∀ x ∈ U, branchPoly a n (x, y x) = 0) →
@@ -200,11 +200,15 @@ theorem analyticDenseOn_of_algebraic :
       simpa [branchPoly] using heq x (hBU hxB)
   | succ n ih =>
       intro a y U hU ha hlead hy heq
-      have hacont : ∀ i, ContinuousOn (a i) U := fun i x hx =>
-        ((ha i x hx).continuousAt).continuousWithinAt
+      -- `i ≤ n` in the derivative equation means `i + 1 ≤ n + 1` in the original one.
+      have hshift : ∀ i ∈ Finset.range (n + 1), i + 1 ∈ Finset.range (n + 1 + 1) := by
+        intro i hi
+        exact Finset.mem_range.2 (Nat.succ_lt_succ (Finset.mem_range.1 hi))
+      have hacont : ∀ i ∈ Finset.range (n + 1 + 1), ContinuousOn (a i) U :=
+        fun i hi x hx => ((ha i hi x hx).continuousAt).continuousWithinAt
       have hgcont : ContinuousOn (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) U := by
-        refine continuousOn_branchPoly (fun i => ?_) hy
-        exact continuousOn_const.fun_mul (hacont (i + 1))
+        refine continuousOn_branchPoly (fun i hi => ?_) hy
+        exact continuousOn_const.fun_mul (hacont (i + 1) (hshift i hi))
       have hVopen :
           IsOpen (U ∩ (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) ⁻¹' {0}ᶜ) :=
         hgcont.isOpen_inter_preimage hU isOpen_compl_singleton
@@ -214,7 +218,7 @@ theorem analyticDenseOn_of_algebraic :
         rintro x ⟨hxU, hxg⟩
         have hxg' : branchPoly (branchDerivCoeff a) n (x, y x) ≠ 0 := hxg
         refine analyticAt_of_continuous_branch
-          (analyticAt_branchPoly (n + 1) fun i => ha i x hxU)
+          (analyticAt_branchPoly (n + 1) fun i hi => ha i hi x hxU)
           (hasDerivAt_branchPoly_snd a n x (y x)) hxg'
           (hy.continuousAt (hU.mem_nhds hxU)) ?_
         filter_upwards [hU.mem_nhds hxU] with x' hx'
@@ -234,9 +238,9 @@ theorem analyticDenseOn_of_algebraic :
         exact hx.2 (subset_closure ⟨hx.1, h⟩)
       have hWih : AnalyticDenseOn y
           (U \ closure (U ∩ (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) ⁻¹' {0}ᶜ)) := by
-        refine ih (branchDerivCoeff a) y _ hWopen (fun i x hx => ?_) (fun x hx => ?_)
+        refine ih (branchDerivCoeff a) y _ hWopen (fun i hi x hx => ?_) (fun x hx => ?_)
           (hy.mono hWsub) (fun x hx => hWg x hx)
-        · exact AnalyticAt.fun_mul analyticAt_const (ha (i + 1) x (hWsub hx))
+        · exact AnalyticAt.fun_mul analyticAt_const (ha (i + 1) (hshift i hi) x (hWsub hx))
         · have h1 : ((n : ℝ) + 1) ≠ 0 := by positivity
           exact mul_ne_zero h1 (hlead x (hWsub hx))
       exact analyticDenseOn_of_split hVan hWih
@@ -245,7 +249,7 @@ theorem analyticDenseOn_of_algebraic :
 locus of the branch is dense in `ℝ`. -/
 theorem dense_setOf_analyticAt_of_algebraic (n : ℕ) (a : ℕ → ℝ → ℝ) (y : ℝ → ℝ)
     {U : Set ℝ} (hU : IsOpen U) (hUd : Dense U)
-    (ha : ∀ i, ∀ x ∈ U, AnalyticAt ℝ (a i) x)
+    (ha : ∀ i ∈ Finset.range (n + 1), ∀ x ∈ U, AnalyticAt ℝ (a i) x)
     (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
     (heq : ∀ x ∈ U, branchPoly a n (x, y x) = 0) :
     Dense {x : ℝ | AnalyticAt ℝ y x} := by

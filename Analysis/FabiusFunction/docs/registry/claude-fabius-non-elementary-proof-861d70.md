@@ -59,7 +59,7 @@ The mathematical input from this branch is
 function is dense, and open by `Fabius.isOpen_analyticLocus`.  Nowhere
 analyticity is taken unchanged from `NowhereAnalytic.lean`.
 
-## In progress
+## Algebraic branches
 
 `AlgebraicBranch.lean` proves that a continuous branch of a polynomial
 equation with real-analytic coefficients and nowhere-vanishing leading
@@ -67,19 +67,22 @@ coefficient is analytic on a dense subset, by a degree induction that avoids
 the discriminant (`Mathlib` has no `Separable`/`discr` bridge and no
 continuity of roots).  It rests on `ContDiffAt.implicitFunction`, which
 `Mathlib` states at every exponent in `ℕ ∪ {∞, ω}`, so instantiating at `ω`
-gives an analytic implicit function theorem.
+gives an analytic implicit function theorem — packaged here as
+`Fabius.analyticAt_implicitFunction`.
 
-Its purpose is to add one constructor to `IsElementary`, widening the class
-from "closed under `n`-th roots" (Wikipedia's formulation) to "closed under
-arbitrary algebraic functions" (Liouville's).  This is a strengthening beyond
-the task's stated scope, and the main result does not depend on it: if it does
-not land, `ElementaryFunction.lean` and `NotElementary.lean` stand unchanged.
+`Fabius.not_algebraicBranch_eqOn` then draws the non-elementarity conclusion
+for such branches, covering the algebraic functions that are not expressible
+by radicals.
 
-**Status: on this branch, not yet compiled, and deliberately not registered in
-`Lean/FabiusFunction.lean`.**  Nothing imports it, so it cannot affect anyone
-else's build.  It will not be pushed to `origin/main` until it is
-machine-checked; if it does not converge it will be removed from the branch
-before the next push to `main`.
+This deliberately does *not* add a constructor to `IsElementary`.  Doing so
+would cost `IsElementary.comp`: composing an algebraic branch with an
+elementary function yields a branch over the composed coefficients, but a
+*continuous* one only if the inner function is continuous, and elementary
+functions need not be.  Rather than weaken the closure theorem, the analytic
+statement is proved separately and the two are combined at the point of use.
+
+**Status: compiled, registered in `Lean/FabiusFunction.lean`, axiom set
+`[propext, Classical.choice, Quot.sound]`.**
 
 ## Build ownership
 
@@ -114,9 +117,12 @@ would have to be applied to the preamble of every document at once.
 
 ## Not claimed
 
-Until `AlgebraicBranch.lean` lands, the class has no constructor for a general
-algebraic function — a continuous branch of `P(x, y) = 0` with elementary
-coefficients and non-solvable Galois group.
+A tower that *interleaves* algebraic extensions with exponentials and
+logarithms at several levels is covered only when it can be presented either
+as a member of `IsElementary` or as a single algebraic step over elementary
+coefficients.  Closing that would need the fact that a nonconstant real
+analytic function on an interval has image containing an interval, so that
+preimages of dense open sets stay dense; classical, and not formalized here.
 
 Two further caveats, both recorded in the write-up:
 
