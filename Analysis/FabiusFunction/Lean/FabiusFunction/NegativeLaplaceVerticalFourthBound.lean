@@ -473,17 +473,6 @@ private lemma vertical_exp_neg_le_half
     Real.exp (-s) ≤ Real.exp (-1) := Real.exp_le_exp.mpr (by linarith)
     _ ≤ 1 / 2 := Real.exp_neg_one_lt_half.le
 
-private lemma vertical_fourth_mul_exp_neg_le
-    {s : ℝ} (hs : 0 ≤ s) :
-    s ^ 4 * Real.exp (-s) ≤ 24 := by
-  have hfac : (0 : ℝ) < Nat.factorial 4 := by positivity
-  have hseries := Real.pow_div_factorial_le_exp s hs 4
-  have hmul := mul_le_mul_of_nonneg_right hseries (Real.exp_nonneg (-s))
-  rw [div_mul_eq_mul_div] at hmul
-  rw [← Real.exp_add] at hmul
-  norm_num at hmul
-  nlinarith
-
 /-- Uniform bound `‖K₄(s, θ)‖ ≤ 1542` on the fourth vertical kernel, valid for
 every `s ≥ 1` and every real `θ`; the vertical parameter is unrestricted.
 The constant `1542 = 64 * 24 + 6` is explicit but deliberately generous, and
@@ -545,7 +534,8 @@ theorem norm_negativeLaplaceVerticalKernelLogFourth_le
     rw [Complex.norm_exp]
     have hneg : (-z).re = -s := by simpa using congrArg Neg.neg hzre
     rw [hneg]
-  have hexpPow := vertical_fourth_mul_exp_neg_le hs0.le
+  have hexpPow := pow_mul_exp_neg_le_factorial 4 hs0.le
+  norm_num at hexpPow
   unfold negativeLaplaceVerticalKernelLogFourth negativeLaplaceComplexKernelFourth
   change ‖((s : ℂ) * Complex.I) ^ 4 *
     (-(t * (1 + 4 * t + t ^ 2)) / (1 - t) ^ 4 + 6 / z ^ 4)‖ ≤ 1542

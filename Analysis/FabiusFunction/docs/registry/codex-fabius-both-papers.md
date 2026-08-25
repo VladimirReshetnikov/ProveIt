@@ -5,29 +5,37 @@ This file implements the per-branch registry fallback in
 
 ```text
 SYNC Fabius
-worktree/task: /root — effective dyadic cumulant constants
+worktree/task: /root — generic unit-Laplace moment bounds
 branch/base: codex/fabius-both-papers synchronized with origin/main at
-  721260e0ec9ce3b9db2fbe06fec32a6ce05e857a
-writing: none — effective-constant tranche complete
-reading: DyadicSharpConditional.lean, EndpointLaplaceComparison.lean,
-  FabiusSharpConstant.lean
-expected API: pointwise `256/n` and `104448/n` normalized-moment estimates,
-  a fully effective endpoint/Laplace logarithm comparison, and an explicit
-  `2512945/(12n)` cumulant error bound for every `n >= 224043`
-completed: exposed the two pointwise normalized-moment transfer constants,
-  derived the effective endpoint and complete cumulant bounds, refactored the
-  four legacy `IsBigO` results into compatibility wrappers, and documented
-  the quantitative dyadic endpoint on the focused public import; merged
-  origin/main through `721260e0e` and retained the complete theorem family
-validated: focused builds for `LaplaceMomentBounds` and
-  `FabiusDyadicSharpCumulant`; full 4007-job facade build; facade-only
-  `assert_no_sorry`, public-surface, and axiom audit; independent arithmetic,
-  threshold, API, and documentation review; `git diff --check`
-next: push the committed and synchronized tranche by fast-forward
-lease: released 2026-08-25T13:47:15-07:00
+  bcdd6fe7203a011fd713b50cb9086de3f228d5d3
+writing: UnitLaplaceMomentBounds.lean, LaplaceMomentBounds.lean,
+  NegativeLaplaceDerivativeBounds.lean, FabiusLambertDerivativeBounds.lean,
+  LaplacePeriodicSecondOrder.lean, NegativeLaplaceVerticalFourthBound.lean,
+  Lean/FabiusFunction.lean, README.md, docs/AUDIT_FINDINGS.md,
+  docs/registry/codex-fabius-both-papers.md
+reading: ProbabilityLaplaceMoments.lean, EndpointLaplaceComparison.lean
+expected API: measure-generic midpoint log-convexity and tilt-subtraction
+  factorial bounds for `unitLaplaceMoment`, plus bounded-Fabius corollaries;
+  existing three-quarter canonical APIs become thin compatibility wrappers
+completed: added the compactly-finite generic module, retained the established
+  finite-measure and Fabius signatures as compatibility wrappers, removed the
+  four private or inline power-times-exponential copies, registered the public
+  module, and updated focused-import and audit bookkeeping
+validated: direct elaboration of the new module; focused current-source builds
+  for `LaplaceMomentBounds`, `NegativeLaplaceDerivativeBounds`,
+  `FabiusLambertDerivativeBounds`, `LaplacePeriodicSecondOrder`, and
+  `NegativeLaplaceVerticalFourthBound`; a 4008-job facade build before the
+  upstream-compatibility aliases; facade-only `assert_no_sorry` and standard
+  axiom audit; independent mathematics, API, import-DAG, and documentation
+  review; `git diff --check`
+next: commit the local tranche, merge current `origin/main` at `f51777a18`,
+  reconcile its overlapping Laplace generalizations through the compatibility
+  wrappers, and rerun the facade audit before pushing
+lease: held by /root from 2026-08-25T13:49:39-07:00 through
+  2026-08-25T15:49:39-07:00
 git owner / build owner: /root / /root
-risks/questions: retain `n >= 224043` exactly; the threshold discharges the
-  logarithm smallness condition and is not a cosmetic asymptotic cutoff
+risks/questions: preserve all legacy canonical names and binder order; the
+  generic midpoint theorem intentionally allows arbitrary real tilts
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the

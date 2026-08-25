@@ -1552,9 +1552,25 @@ Then delete NINE private duplicates, not eight. The list must add ...
 
 Confidence high.  `NegativeLaplaceDerivativeBounds.lean:115`, `NegativeLaplaceDerivativeBounds.lean:126`, `NegativeLaplaceDerivativeBounds.lean:133`, `FabiusLambertDerivativeBounds.lean:81`, `FabiusLambertDerivativeBounds.lean:91`
 
-**Why.** `local_pow_mul_exp_neg_le_factorial` and `local_exp_neg_div_one_sub_pow_le` are byte-for-byte the same statements as the two `private` lemmas already available upstream (I confirmed by import-closure computation that `FabiusLambertDerivativeBounds` transitively imports `NegativeLaplaceDerivativeBounds` and `LaplaceMomentBounds`); the only reason they were re-typed is that the originals are `private`. Roughly 45 lines of proof text are pure copies, and the `k = 4` and `k = 2` instances are two ...
+**Implementation update.** The power-times-exponential half of this finding is
+now implemented upstream in `UnitLaplaceMomentBounds` as
+`pow_mul_exp_neg_mul_le_factorial` and its unit-tilt specialization
+`pow_mul_exp_neg_le_factorial`.  The duplicate private proofs in
+`NegativeLaplaceDerivativeBounds`, `FabiusLambertDerivativeBounds`, and
+`NegativeLaplaceVerticalFourthBound`, as well as the inline specialization in
+`LaplacePeriodicSecondOrder`, are removed.  The separate denominator estimate
+`exp(-x)/(1-exp(-x))^m ≤ 2^m exp(-x)` remains an open consolidation item.
 
-**Proposal.** Same refactor, with corrected coordinates and two mistakes fixed.
+**Why.** Before this refactor, `local_pow_mul_exp_neg_le_factorial` and
+`local_exp_neg_div_one_sub_pow_le` were byte-for-byte the same statements as
+the two `private` lemmas available upstream.  Import-closure computation showed
+that `FabiusLambertDerivativeBounds` already saw both upstream homes; privacy
+alone forced the copies.  Roughly 45 lines of proof text were duplicates, and
+the `k = 4` and `k = 2` instances were two more specializations.  The shared
+power estimate is now public; the denominator estimate is still private and
+duplicated.
+
+**Original proposal (partially superseded by the implementation above).** Same refactor, with corrected coordinates and two mistakes fixed.
 
 Corrected locations: NegativeLaplaceDerivativeBounds.lean:115 (`pow_mul_exp_neg_le_factorial`), :126 (`exp_neg_le_half`), :133 (`exp_neg_div_one_sub_pow_le`); FabiusLambertDerivativeBounds.lean:155 and :165 (the two `local_` copies), not 81/91; NegativeLaplaceVerticalFourthBound.lean:398 (`vertical_fourth_mul_exp_neg_le`), not 331; LaplaceMomentBounds.lean:118 (`pow_mul_exp_neg_quarter_le`, dead estimate at :127); LaplacePeriodicSecondOrder.lean:53-58 (inline `hpow`).
 
@@ -1959,13 +1975,27 @@ Confidence medium.  `FabiusLambertAllOrderRemainder.lean:589`, `FabiusLambertAll
 
 ### Cluster: moments-probability
 
-#### The three private `unitLaplaceMoment_*` estimates are proved only for `weightedSumDistribution` but their proofs are generic in any finite measure
+#### IMPLEMENTED: the weighted-sum-specific unit-Laplace estimates are public and measure-generic
 
-Confidence high.  `LaplaceMomentBounds.lean:28`, `LaplaceMomentBounds.lean:86`, `LaplaceMomentBounds.lean:118`, `LaplaceMomentBounds.lean:141`, `EndpointLaplaceComparison.lean:233`
+Confidence high.  `UnitLaplaceMomentBounds.lean`,
+`ProbabilityLaplaceMoments.lean`, `LaplaceMomentBounds.lean`
+
+**Implementation.** The generic engine now lives in the focused module
+`UnitLaplaceMomentBounds`, rather than the originally proposed
+`EndpointLaplaceComparison` destination.  It assumes only
+`[IsFiniteMeasureOnCompacts μ]` and proves midpoint log-convexity at arbitrary
+real tilts, factorial absorption for an arbitrary positive amount subtracted
+from the tilt,
+and the corresponding bounded-Fabius corollaries.  The stronger midpoint
+results carry the `_all` suffix; the established finite-measure midpoint,
+shift, three-quarter, and Fabius declarations retain their names, binder order,
+and hypotheses as thin compatibility wrappers.  The elementary unit-tilt
+estimate is public and also replaces its duplicate private proofs in the
+downstream derivative-bound modules.
 
 **Why.** `pow_mul_exp_neg_quarter_le` mentions neither Fabius nor any measure — it is the elementary `x^k e^{-y} ≤ k!` scaling bound and has independent interest. The two Laplace estimates are the standard log-convexity and factorial-moment bounds for the Laplace transform of any measure on `[0,1]`; hiding them behind one particular distribution makes them unusable for the other measures in the corpus (`polynomialMeasure`, `finiteConvolutionMeasure`, `rvachevMeasure`), all of which are probability ...
 
-**Proposal.** Move FOUR declarations (not three) from LaplaceMomentBounds.lean into EndpointLaplaceComparison.lean, immediately after unitLaplaceMoment_nonneg (line 236), as public and measure-generic, using the module's existing [IsFiniteMeasureOnCompacts μ] convention rather than [IsFiniteMeasure μ]:
+**Original proposal (placement and signatures superseded by the implementation).** Move FOUR declarations (not three) from LaplaceMomentBounds.lean into EndpointLaplaceComparison.lean, immediately after unitLaplaceMoment_nonneg (line 236), as public and measure-generic, using the module's existing [IsFiniteMeasureOnCompacts μ] convention rather than [IsFiniteMeasure μ]:
 
 /-- `x ^ k * exp (-(s * x / 4)) ≤ (4 / s) ^ k * k!` for `0 ≤ x`, `0 < s`.  No measure involved. -/
 theorem pow_mul_exp_neg_quarter_le (k : ℕ) {s x : ℝ} (hs : 0 < s) (hx : 0 ≤ x) :
