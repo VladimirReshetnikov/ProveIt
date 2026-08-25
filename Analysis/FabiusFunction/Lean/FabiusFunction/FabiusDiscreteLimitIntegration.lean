@@ -9,7 +9,8 @@ This module performs the exact outer q-binomial reindexing, applies the
 Toeplitz convergence theorem to the complex-shift spline limit, and connects
 the resulting limit with the already proved binary telescope and literal
 global q-binomial series.  Exact empty-prefix vanishing extends the main
-convergence theorem from the nonnegative axis to every real input.
+convergence theorem and both final series identifications from the nonnegative
+axis to every real input; the older half-line forms remain compatibility APIs.
 -/
 
 set_option autoImplicit false
@@ -402,33 +403,73 @@ theorem globalFabius_eq_qBinomialThueMorse_telescope_add_remainder_complex
   exact globalFabius_eq_qBinomial_telescope_add_remainder_complex
     q x hx N
 
-/-- The finite telescopes converge to the same target as the discrete limit. -/
+/-- For every real input, the finite binary telescopes converge to the same
+target as the discrete limit.  At a nonpositive input every summand and the
+signed global Fabius function vanish exactly. -/
+theorem binary_telescope_tendsto_globalFabius_all
+    (x : ℝ) :
+    Tendsto
+      (fun N : ℕ => ∑ m ∈ Finset.range N,
+        globalBinaryReductionSummand x m)
+      atTop (𝓝 (globalFabius x)) := by
+  simpa only [globalFabius] using
+    (hasSum_globalBinaryReductionSummand_all
+      fabius fabius_spec x).tendsto_sum_nat
+
+/-- Compatibility form of binary-telescope convergence on the nonnegative
+half-line. -/
 theorem binary_telescope_tendsto_globalFabius
     (x : ℝ) (hx : 0 ≤ x) :
     Tendsto
       (fun N : ℕ => ∑ m ∈ Finset.range N,
         globalBinaryReductionSummand x m)
-      atTop (𝓝 (globalFabius x)) :=
-  tendsto_sum_range_globalBinaryReduction fabius fabius_spec x hx
+      atTop (𝓝 (globalFabius x)) := by
+  simpa only [max_eq_left hx] using
+    binary_telescope_tendsto_globalFabius_all (max x 0)
 
-/-- Limit-to-`tsum` form for the q-independent analytic telescope. -/
+/-- For every real input, the `q`-dependent finite rows converge to the
+`q`-independent binary-reduction `tsum`. -/
+theorem fabiusDiscreteLimitApproximationComplex_tendsto_binary_tsum_all
+    (q : ℂ) (x : ℝ) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationComplex q x n)
+      atTop
+      (𝓝 ((↑(∑' m : ℕ, globalBinaryReductionSummand x m) : ℂ))) := by
+  rw [← extendedFabius_eq_tsum_globalBinaryReductionSummand_all
+    fabius fabius_spec x]
+  exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all q x
+
+/-- Compatibility form of convergence to the `q`-independent
+binary-reduction `tsum` on the nonnegative half-line. -/
 theorem fabiusDiscreteLimitApproximationComplex_tendsto_binary_tsum
     (q : ℂ) {x : ℝ} (hx : 0 ≤ x) :
     Tendsto (fun n => fabiusDiscreteLimitApproximationComplex q x n)
       atTop
       (𝓝 ((↑(∑' m : ℕ, globalBinaryReductionSummand x m) : ℂ))) := by
-  rw [← extendedFabius_eq_tsum_globalBinaryReductionSummand
-    fabius fabius_spec x hx]
-  exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius q hx
+  simpa only [max_eq_left hx] using
+    fabiusDiscreteLimitApproximationComplex_tendsto_binary_tsum_all
+      q (max x 0)
 
-/-- Limit-to-`tsum` form for the fully literal global q-binomial series. -/
+/-- All-real limit-to-`tsum` form for the fully literal global q-binomial
+series. -/
+theorem fabiusDiscreteLimitApproximationComplex_tendsto_literal_tsum_all
+    (q : ℂ) (x : ℝ) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationComplex q x n)
+      atTop
+      (𝓝 (∑' m : ℕ, qBinomialFabiusGlobalSummand ℂ q x m)) := by
+  rw [← extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
+    ℂ fabius fabius_spec q x]
+  exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all q x
+
+/-- Compatibility limit-to-`tsum` form for the fully literal global
+q-binomial series on the nonnegative half-line. -/
 theorem fabiusDiscreteLimitApproximationComplex_tendsto_literal_tsum
     (q : ℂ) {x : ℝ} (hx : 0 ≤ x) :
     Tendsto (fun n => fabiusDiscreteLimitApproximationComplex q x n)
       atTop
       (𝓝 (∑' m : ℕ, qBinomialFabiusGlobalSummand ℂ q x m)) := by
-  rw [← globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_complex q x hx]
-  exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius q hx
+  simpa only [max_eq_left hx] using
+    fabiusDiscreteLimitApproximationComplex_tendsto_literal_tsum_all
+      q (max x 0)
 
 end
 
