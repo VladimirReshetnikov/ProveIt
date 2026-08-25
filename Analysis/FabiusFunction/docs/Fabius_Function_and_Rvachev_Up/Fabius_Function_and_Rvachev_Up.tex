@@ -1912,15 +1912,16 @@ finite weighted cosine product
 The indexing in \eqref{eq:finite-atomic-law} is worth noticing: the new scale at stage
 \(n+1\) is \(2^{-n-2}\), and it occurs with multiplicity \(n+1\).
 
-Let \(\mu_{\Up}\) be the probability measure having density \(\Up\).
+Let \(\mu_{\Up}\) denote the formal measure \lean{rvachevMeasure}; by definition it is
+Lebesgue measure with density \(\operatorname{ofReal}\!\circ\Up\).
 The finite laws converge weakly to \(\mu_{\Up}\):
 \begin{equation}
  \nu_n\Longrightarrow\mu_{\Up}.                               \label{eq:finite-atomic-weak}
 \end{equation}
-Equivalently, for every bounded continuous \(g:\R\to\R\),
+Equivalently, for every bounded continuous real-valued map \(g\),
 \begin{equation}
  \lim_{n\to\infty}\int_{\R}g(x)\,\dd\nu_n(x)
- =\int_{\R}g(x)\Up(x)\,\dd x.                                 \label{eq:finite-atomic-tests}
+ =\int_{\R}g(x)\,\dd\mu_{\Up}(x).                              \label{eq:finite-atomic-tests}
 \end{equation}
 The same test-function theorem is formalized for complex-valued, and more generally
 real-or-complex-like, bounded continuous functions.
@@ -2013,6 +2014,7 @@ The polynomial recursion, product, degree, total coefficient mass, and bounded-p
 interpretation are respectively proved by
 \lean{approximationPolynomial_succ},
 the definition \lean{approximationPolynomial},
+\lean{approximationPolynomial_natDegree},
 \lean{approximationDegree_eq_sub},
 \lean{approximationPolynomial_eval_one}, and
 \lean{approximationPolynomial_coeff_eq_card} in
@@ -2021,8 +2023,9 @@ the definition \lean{approximationPolynomial},
 \lean{polynomialMeasure_eq_finiteConvolutionMeasure} in
 \path{EarlyMeasureBridge.lean}.
 
-For the analytic assertions, see
-\lean{stepApproximant_nonneg}, \lean{stepApproximant_le_one},
+For nonnegativity, see \lean{stepApproximant_nonneg} in
+\path{EarlyApproximants.lean}.  The remaining analytic assertions are
+\lean{stepApproximant_le_one},
 \lean{stepApproximant_monotoneOn_Iio},
 \lean{stepApproximant_antitoneOn_Ioi},
 \lean{stepApproximant_apply_zero}, and
@@ -3053,6 +3056,7 @@ continuity, and bijectivity statements are
 \lean{bijOn_fabiusInv}.  Interior smoothness and
 \eqref{eq:fabius-inverse-derivative} are
 \lean{fabiusInv_contDiffOn_Ioo},
+\lean{deriv_fabiusInv},
 \lean{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
@@ -3130,9 +3134,11 @@ The four global obstructions are
 \path{NotElementary.lean} and \path{InverseNotElementary.lean}.
 \end{proof}
 
-The formal development also closes the elementary class under repeated continuous inverse
-branches.  Even this enlarged class cannot agree with \(F\) or \(I\) on \((0,1)\); the exact
-statements are
+The formal development also defines a larger class admitting repeated inverse-branch
+constructors.  Such a constructor requires an open branch domain, continuity and a right
+inverse identity there, and analyticity of the chosen total extension on the interior of
+the complementary domain.  Even this precisely delimited class cannot agree with \(F\) or
+\(I\) on \((0,1)\); the exact statements are
 \lean{canonical_fabius_not_isElementaryOrInverse_on_Ioo} and
 \lean{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo} in
 \path{InverseNotElementary.lean}.
@@ -3286,7 +3292,8 @@ Let \(\mu_X\) be the distribution of the weighted sum \(X\) from
 \begin{equation}
  \mu_X((t,\infty))=\Up(t)\qquad(t\ge0).                     \label{eq:survival-up}
 \end{equation}
-Consequently, if \(g\) is continuously differentiable on \([0,1]\), then
+Consequently, if \(g,g':\R\to\R\) are continuous and \(g\) has derivative \(g'(t)\) at
+every \(t\in[0,1]\), then
 \begin{equation}
  \int_{[0,1]}g(x)\,\dd\mu_X(x)
  =g(0)+\int_0^1g'(t)\Up(t)\dd t.                           \label{eq:survival-fubini}
@@ -4197,15 +4204,12 @@ is odd.  The check was carried out for all $n\le24$.
 \section{Exact evaluation at arbitrary dyadic rationals}
 \label{sec:dyadic}
 
-The rationality theorem for dyadic arguments is much stronger than the statement
-``$F$ happens to take rational values there.''  It comes with two complementary exact
-algorithms:
+The rationality theorem for dyadic arguments comes with two complementary exact
+presentations:
 \begin{enumerate}
 \item a closed finite formula involving Thue--Morse signs and the rational moments $c_k$;
-\item a bit-recursive Taylor algorithm whose number of recursive calls is the number of set
-bits in the numerator.
+\item an executable bit-recursive Taylor evaluator.
 \end{enumerate}
-The first is best for proofs; the second is best for computation.
 
 \subsection{The closed Thue--Morse formula}
 
@@ -4505,28 +4509,9 @@ below the top, and those coefficients are already zero.  The centered choice $Q=
  \sum_{r=0}^{2^k-1}\varepsilon_r\,(r-2^k)^k=(-1)^k2^{\binom k2}k!,
                                                                \label{eq:dy-tm-moment-centered}
 \end{equation}
-which is exactly the constant term of the block factorization
-\eqref{eq:q-centered-block-factor} established later: dividing the centered block sum
-$C_k(X)$ by $X^k$ leaves the value $(-1)^k2^{\binom k2}$ at $X=0$, because the remaining
-exponential factors there all tend to $1$.  This also shows
-that the order of vanishing in \eqref{eq:thue-generating-product} is exactly $k$ and not
-more, which is what makes the removal of the forced zero legitimate.
-
-\begin{remark}[Numerical check]
-\label{rem:dy-tm-moment-check}
-The Thue--Morse signs for $0\le r\le7$ are $+,-,-,+,-,+,+,-$.  Reading off the first three
-cases of \eqref{eq:dy-tm-moment}:
-\begin{align*}
- k=1:&\quad 0-1=-1, &&(-1)^12^{0}1!=-1;\\
- k=2:&\quad 0-1-4+9=4, &&(-1)^22^{1}2!=4;\\
- k=3:&\quad 0-1-8+27-64+125+216-343=-48, &&(-1)^32^{3}3!=-48.
-\end{align*}
-These were recomputed in exact integer arithmetic, together with $k=4,\ldots,7$, whose values
-are $1536$, $-122\,880$, $23\,592\,960$, and $-10\,569\,646\,080$, in agreement with
-\eqref{eq:dy-tm-moment}.  The shift invariance \eqref{eq:dy-tm-moment-shift} was checked in
-exact rational arithmetic for $k\le5$ at $Q=-2^k$, $Q=1/2$, and $Q=7$, and the vanishing of
-all lower moments for $k\le6$.
-\end{remark}
+which is the formally proved centered version of the same exact moment identity.  Together
+with the lower-moment annihilation, it proves that the zero in
+\eqref{eq:thue-generating-product} has order exactly $k$.
 
 \subsection{A Taylor block that removes the leading bit}
 
@@ -4635,44 +4620,22 @@ For every $e\in\N$ and $a\in\Z$,
 \begin{equation}
  \operatorname{Eval}(e,a)=F(a/2^e)                        \label{eq:evaluator-correct}
 \end{equation}
-under the bounded convention $F=0$ to the left and $F=1$ to the right.  The recursion makes
-exactly $\wt(a)$ nontrivial calls when $0\le a<2^e$.
+under the bounded convention $F=0$ to the left and $F=1$ to the right.
 \end{theorem}
 
 \begin{proof}
 The boundary clauses agree with \eqref{eq:F-left} and \eqref{eq:F-right}.  In the interior,
 \eqref{eq:taylor-block} is precisely the recursive clause.  Since
-$0\le q<a$, strong induction proves correctness and termination.  Replacing $a$ by $q$
-clears its highest set bit and leaves all lower bits unchanged, so the number of nontrivial
-steps is the popcount $\wt(a)$.
+$0\le q<a$, strong induction proves correctness and termination.
 \end{proof}
-
-Precomputing the reciprocal-power table costs $O(e^2)$ rational operations using the
-triangular recurrence for $d_n$.  A single value then costs
-$O(e\,\wt(a))$ arithmetic operations in a straightforward implementation.  This is much
-smaller than the $a$ outer summands in \eqref{eq:dyadic-closed} when $a$ is large.
-
-\begin{example}[The value at $5/16$]
-Here $a=5=2^2+1$, $e=4$, so $r=2$, $q=1$, and $y=1/16$.  Formula
-\eqref{eq:taylor-block} gives
-\begin{align*}
- F(5/16)
- &=F(1/4)+2F(1/2)y+\frac{2^3F(1)}{2}y^2-F(1/16)\\
- &=\frac5{72}+\frac1{16}+\frac1{64}-\frac{143}{2073600}\\
- &=\boxed{\frac{305857}{2073600}}.
-\end{align*}
-Only two recursive calls are needed, corresponding to the two set bits of $5$.
-\end{example}
 
 
 \subsection{Reduction of an arbitrary dyadic argument}
 \label{subsec:dy-triangular}
 
-Algorithm~\ref{alg:dyadic-evaluator} evaluates the bounded function $F$ on $[0,1]$.  The signed
-global extension is defined on all of $\R$ and is unbounded there, so a total evaluator for
-$\mathcal F$ needs one preliminary step: fold the argument back into the unit interval and
-record the sign that the fold costs.  The fold is triangular in the sense that it is a
-reduction modulo $2$ followed by a reflection.
+Algorithm~\ref{alg:dyadic-evaluator} evaluates the bounded function $F$ on $[0,1]$.  A total
+evaluator for the signed global extension first folds the argument back into the unit interval
+and records the associated sign.  The fold is a reduction modulo $2$ followed by a reflection.
 
 \begin{theorem}[Triangular reduction]
 \label{thm:dy-triangular}
@@ -4712,8 +4675,7 @@ Combining \eqref{eq:dy-triangular} with Algorithm~\ref{alg:dyadic-evaluator} giv
 evaluator for $\mathcal F$ at every dyadic rational: reduce with
 \eqref{eq:dy-triangular-split}--\eqref{eq:dy-triangular-fold}, compute the block sign
 $\varepsilon_B=(-1)^{\wt(B)}$ from the binary digits of $B=\lfloor a/2^{n+1}\rfloor$, and call
-$\operatorname{Eval}(n,C)$.  The cost of the reduction is one shift, one mask, and one
-popcount.
+$\operatorname{Eval}(n,C)$.
 
 The reduction is compatible with unreduced presentations.  Replacing $(n,a)$ by $(n+1,2a)$
 doubles $s$ and $R$, leaves $B$ unchanged, and doubles $C$; the right side of
@@ -4730,52 +4692,6 @@ the interface is exact on every input and cannot be defeated by rounding in the 
 step.
 \end{remark}
 
-\subsection{A complete level-$4$ table}
-
-The exact values at denominator $16$ are shown below.  The second half follows from
-$F(1-x)=1-F(x)$.
-
-\begin{center}
-\begin{tabular}{c@{\qquad}c|c@{\qquad}c}
-\toprule
-$x$&$F(x)$&$x$&$F(x)$\\
-\midrule
-$0$&$0$&$1/2$&$1/2$\\
-$1/16$&$143/2073600$&$9/16$&$1295857/2073600$\\
-$1/8$&$1/288$&$5/8$&$215/288$\\
-$3/16$&$46657/2073600$&$11/16$&$1767743/2073600$\\
-$1/4$&$5/72$&$3/4$&$67/72$\\
-$5/16$&$305857/2073600$&$13/16$&$2026943/2073600$\\
-$3/8$&$73/288$&$7/8$&$287/288$\\
-$7/16$&$777743/2073600$&$15/16$&$2073457/2073600$\\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\subsection{The odd numerators at level $5$}
-
-One tier further is worth recording, because every numerator at level $4$ has at most two set
-bits, so the level-$4$ table never exercises a three-step bit recursion.  At level $5$ the
-values with odd numerator all share the denominator $33\,177\,600$, and the even numerators
-reduce to earlier levels.  Writing $F(a/32)=N_a/33\,177\,600$:
-
-\begin{center}
-\begin{tabular}{c@{\qquad}r@{\qquad\qquad}c@{\qquad}r}
-\toprule
-$a$&$N_a$&$a$&$N_a$\\
-\midrule
-$1$&$19$&$9$&$3\,470\,381$\\
-$3$&$25\,219$&$11$&$6\,555\,581$\\
-$5$&$334\,781$&$13$&$10\,393\,219$\\
-$7$&$1\,396\,781$&$15$&$14\,515\,219$\\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Each fraction is already in lowest terms, and the reflection
-$N_{32-a}=33\,177\,600-N_a$ supplies the upper half.  The numerator $a=7$, with three set
-bits, is the first entry that costs the bit recursion three reduction steps; $a=15$ costs
-four.  These make better regression tests than the level-$4$ values for exactly that reason.
 
 \subsection{Denominator bounds}
 
@@ -4829,1837 +4745,141 @@ $\vtwo\bigl(F(2^{-n})\bigr)=-\binom n2-1-\vtwo(n!)$, so the reduced denominator 
 exactly that power of two.
 \end{proof}
 
-Together, \eqref{eq:lcm-bound} and \eqref{eq:dy-delta-lower} trap $\Delta_n$ between an
-explicit multiple and an explicit power of two.  In particular the power of two in $\Delta_n$
-is pinned from below, which is what the normalizer of the conjecture below relies on: dividing
-$\Delta_n$ by $2^{\binom n2}$ is only informative because that much of a power of two is known
-to be present.
+Together, \eqref{eq:lcm-bound} and \eqref{eq:dy-delta-lower} give the formally
+proved denominator information used in this article.  Proposed exact factorizations of the
+least common denominator, together with the associated numerical tables, are kept in the
+dyadic research-frontier notebooks until their individual statements are formalized.
 
-The exact closed form of $\Delta_n$ is subtler.  The source paper records a conjectural
-factorization; the formal development correctly retains it as a conjecture rather than a
-theorem.
-
-
-\subsubsection{Numerical values of the level denominators}
-\label{subsubsec:dy-delta-values}
-
-The divisibility bound \eqref{eq:lcm-bound} is easy to prove and far from sharp.  It is
-worth seeing the actual denominators.  For $0\le n\le9$,
-\begin{equation}
-\begin{split}
- \Delta_0,\ldots,\Delta_9={}&1,\quad 2,\quad 72,\quad 288,\quad 2\,073\,600,\quad
- 33\,177\,600,\\
- &2\,809\,213\,747\,200,\quad 179\,789\,679\,820\,800,\\
- &704\,200\,217\,922\,109\,440\,000,\\
- &180\,275\,255\,788\,060\,016\,640\,000.
-\end{split}                                                    \label{eq:dy-delta-values}
-\end{equation}
-The next two levels continue
-\begin{equation}
-\begin{split}
- \Delta_{10}&=6\,231\,974\,256\,792\,696\,936\,191\,754\,240\,000,\\
- \Delta_{11}&=6\,381\,541\,638\,955\,721\,662\,660\,356\,341\,760\,000.
-\end{split}                                                    \label{eq:dy-delta-values-ext}
-\end{equation}
-
-Write $B_n$ for the proved multiplier of \eqref{eq:lcm-bound},
-\begin{equation}
- B_n=n!\,2^{\binom{n+1}{2}}\bigl(2\lfloor n/2\rfloor+1\bigr)!!\,M_{\lfloor n/2\rfloor},
-                                                               \label{eq:dy-bound-multiplier}
-\end{equation}
-with $M_m$ as in \eqref{eq:denominator-products}.  The quotients $B_n/\Delta_n$ are
-
-\begin{center}
-\begin{tabular}{c@{\quad}r@{\qquad\qquad}c@{\quad}r}
-\toprule
-$n$&$B_n/\Delta_n$&$n$&$B_n/\Delta_n$\\
-\midrule
-$0$&$1$&$6$&$160$\\
-$1$&$1$&$7$&$2\,240$\\
-$2$&$2$&$8$&$2\,688$\\
-$3$&$12$&$9$&$48\,384$\\
-$4$&$8$&$10$&$161\,280$\\
-$5$&$80$&$11$&$3\,548\,160$\\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\noindent
-The bound is exact only at $n=0,1$.  Its slack is not bounded: it already exceeds
-$3.5\times10^6$ at $n=11$ and continues to grow.  The bound is therefore useful as a
-divisibility certificate and as a source of the exact power of two through
-\eqref{eq:valuation-inverse}, but it does not identify $\Delta_n$.
-
-\begin{remark}[Recomputation]
-\label{rem:dy-delta-recomputed}
-Every value in \eqref{eq:dy-delta-values} and \eqref{eq:dy-delta-values-ext} was recomputed
-independently in exact rational arithmetic for this article, not copied from the source
-paper.  The reciprocal-power table $V_j=F(2^{-j})$ was generated from the triangular
-recurrence \eqref{eq:inverse-dyadic-recurrence} and cross-checked against the composition
-formula \eqref{eq:inverse-composition-formula}; every level-$n$ value $\Up(a/2^n)$ with odd
-$a$ was then produced by the bit recursion \eqref{eq:taylor-block}, reduced to lowest terms,
-and the least common multiple of the resulting denominators taken.  As a control, the
-recomputed level-$4$ values reproduce the table of \eqref{eq:F-inverse-table} and the
-complete level-$4$ table above.  All ten published values agree with the recomputation, and
-the divisibility \eqref{eq:lcm-bound} was verified numerically for $0\le n\le11$.
-\end{remark}
-
-\subsubsection{The denominator conjecture}
-\label{subsubsec:dy-denominator-conjecture}
-
-The list \eqref{eq:dy-delta-values} has visible structure: the terms come in equal
-consecutive pairs after a power of two is removed.  The right normalization is
-\begin{equation}
- \mathfrak a_n=2^{-\binom n2}\Delta_n,
-                                                               \label{eq:dy-normalizer}
-\end{equation}
-which is not to be confused with the composition normalization $A_n$ of
-\Cref{subsec:inverse-dyadic-compositions}.  Its first values are
-\begin{equation}
-\begin{split}
- \mathfrak a_0,\ldots,\mathfrak a_{11}={}&1,\quad2,\quad36,\quad36,\quad32\,400,\quad
- 32\,400,\\
- &85\,730\,400,\quad85\,730\,400,\\
- &2\,623\,350\,240\,000,\quad2\,623\,350\,240\,000,\\
- &177\,123\,361\,504\,320\,000,\quad177\,123\,361\,504\,320\,000.
-\end{split}                                                    \label{eq:dy-normalizer-values}
-\end{equation}
-
-\begin{conjecture}[Arias de Reyna denominator pattern]
-\label{conj:dy-denominators}
-With $\mathfrak a_n$ as in \eqref{eq:dy-normalizer}:
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item $\mathfrak a_{2n}=\mathfrak a_{2n+1}$ for every $n\ge1$;
-\item $2(2n-1)!$ divides $K_n:=\mathfrak a_{2n-1}$ for every $n\ge1$;
-\item the quotient
-\begin{equation}
- H_n=\frac{K_n}{2(2n-1)!}                                      \label{eq:dy-Hn}
-\end{equation}
-is an odd integer for every $n\ge1$.
-\end{enumerate}
-\end{conjecture}
-
-Equivalently, if the conjecture holds then for every $n\ge1$
-\begin{equation}
- \Delta_{2n-1}=2^{1+\binom{2n-1}{2}}(2n-1)!\,H_n,
- \qquad
- \Delta_{2n}=2^{1+\binom{2n}{2}}(2n+1)!\,H_{n+1},
-                                                               \label{eq:dy-delta-conjectural}
-\end{equation}
-so that the entire sequence $(\Delta_n)$ would be determined by the single odd sequence
-$(H_n)$ together with explicit powers of two and factorials.  The first values are
-\begin{equation}
- H_1,\ldots,H_6=1,\quad3,\quad135,\quad8\,505,\quad3\,614\,625,\quad2\,218\,656\,825.
-                                                               \label{eq:dy-Hn-values}
-\end{equation}
-The restriction $n\ge1$ in part~(i) is essential and not a convention: $\mathfrak a_0=1$
-while $\mathfrak a_1=2$, so the pairing fails at the bottom of the range.
-
-The conjecture is due to Arias de Reyna \cite{arias2018}.  The proved bound
-\eqref{eq:lcm-bound} and the exact $2$-adic valuation \eqref{eq:valuation-inverse} constrain
-it --- the latter pins down the power of two in each reduced denominator, which is why the
-normalization \eqref{eq:dy-normalizer} is the natural one --- but neither settles the odd
-part, and no proof of (i), (ii), or (iii) is known.  The formal development records the
-statement as a conjecture and derives nothing from it.
-
-\begin{remark}[Verification]
-\label{rem:dy-conjecture-check}
-The values \eqref{eq:dy-normalizer-values} and \eqref{eq:dy-Hn-values} were computed for
-this article from the recomputed denominators of
-Remark~\ref{rem:dy-delta-recomputed}, in exact integer arithmetic.  Part~(i) was verified for
-$1\le n\le5$, that is, for the five pairs $(\mathfrak a_2,\mathfrak a_3)$ through
-$(\mathfrak a_{10},\mathfrak a_{11})$.  Part~(ii) was verified for $1\le n\le6$, the largest
-case being $2\cdot11!=79\,833\,600$ dividing
-$K_6=\mathfrak a_{11}=177\,123\,361\,504\,320\,000$.  Every $H_n$ in
-\eqref{eq:dy-Hn-values} is an odd integer, as (iii) requires, and the two presentations in
-\eqref{eq:dy-delta-conjectural} were checked against \eqref{eq:dy-delta-values} for
-$1\le n\le5$.
-\end{remark}
-
-\subsection{A $q$-binomial form, double cancellation, and scalar translation}
+\subsection{The exact half-base \(q\)-binomial layer}
 \label{subsec:q-binomial-dyadic}
+\label{sec:qs-half-base-calculus}
 
-The formal development derives a second exact dyadic formula organized by Gaussian
-binomial coefficients.  Put
+The dyadic dilation forces the specialization \(q=1/2\).  For \(a,q\in\Q\), define
 \begin{equation}
- (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),                        \label{eq:qpochhammer}
+ (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),                          \label{eq:qpochhammer}
 \end{equation}
-and write $\qbinom nkq$ for the Gaussian or $q$-binomial coefficient
-\cite{andrews1976,gasper2004,kac2002,dlmf17}.  The base $q=1/2$
-is forced by the dilation grid $1,2,4,\ldots$: the corresponding Pochhammer product is the
-node polynomial for reciprocal dyadic scales.
-
-The finite half-base $q$-binomial theorem is
+and write \(\qbinom nk{1/2}\) for the Gaussian coefficient at that fixed base.  For
+\(k\le n\), its exact Mersenne normalization is
 \begin{equation}
- (z;1/2)_n=\sum_{k=0}^{n}
- (-1)^k2^{-\binom k2}\qbinom nk{1/2}z^k.                 \label{eq:half-q-binomial-theorem}
-\end{equation}
-To see its interpolation content, put
-\begin{equation*}
- \mathfrak m_n=\prod_{\ell=1}^{n}(2^\ell-1),\qquad
- x_k=-2^k,\qquad
- w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}.
-\end{equation*}
-Then
-\begin{equation}
- \sum_{k=0}^{n}w_{n,k}x_k^d=
- \begin{cases}
- 0,&d<n,\\
- \mathfrak m_n,&d=n,
- \end{cases}
+ \qbinom nk{1/2}
+ =
+ \frac{\mathfrak m_n}
+ {\mathfrak m_k\mathfrak m_{n-k}\,2^{k(n-k)}},
  \qquad
- \frac{w_{n,k}}{\mathfrak m_n}
- =\frac1{\prod_{\ell\ne k}(x_k-x_\ell)}.                 \label{eq:q-geometric-interpolation}
+ \mathfrak m_j=\prod_{\ell=1}^{j}(2^\ell-1).                 \label{eq:qs-qbinom-def}
 \end{equation}
-Thus the normalized Gaussian row is exactly the leading-coefficient functional for the
-Lagrange interpolant through $-1,-2,\ldots,-2^n$.  The normalization also satisfies
-\begin{equation}
- (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n.            \label{eq:half-q-mersenne}
-\end{equation}
-Likewise
-$\qbinom nk{1/2}=2^{-k(n-k)}\qbinom nk2$, so the half-base coefficients are
-power-of-two normalizations of the integer Gaussian coefficients that count
-$k$-planes in $\mathbb F_2^n$.
+In particular the row is symmetric under \(k\mapsto n-k\).
 
-\begin{theorem}[Global $q$-binomial dyadic formula]
-For $m,n\in\N$ and every scalar translation $Q\in\C$,
+\begin{theorem}[Finite half-base \(q\)-binomial theorem]
+\label{thm:qs-finite-q-binomial}
+For every \(n\in\N\) and \(z\in\Q\),
+\begin{equation}
+ (z;1/2)_n=
+ \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
+ \qbinom nk{1/2}z^k.                                        \label{eq:half-q-binomial-theorem}
+\end{equation}
+At the dyadic nodes this gives
+\begin{align}
+ \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
+ \qbinom nk{1/2}(2^m)^k&=0 &&(m<n), \notag\\
+ \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
+ \qbinom nk{1/2}(2^n)^k
+ &=(-1)^n2^{\binom{n+1}{2}}(1/2;1/2)_n.                    \label{eq:qs-moment-annihilation}
+\end{align}
+Moreover,
+\begin{equation}
+ (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n.              \label{eq:half-q-mersenne}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Formal proof]
+These are \lean{halfQBinomial_theorem},
+\lean{halfQBinomial_two_pow_sum_eq_zero},
+\lean{halfQBinomial_two_pow_sum_eq_self},
+\lean{halfQPochhammer_eq_mersenne_div},
+\lean{halfQBinomial_eq_mersenne}, and
+\lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
+\end{proof}
+
+The inner cancellation in the dyadic formula is the exact Thue--Morse block identity
+\begin{equation}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}z^r
+ =\prod_{j=0}^{k-1}(1-z^{2^j}),                              \label{eq:thue-generating-product}
+\end{equation}
+formalized as \lean{thueMorseBlockPolynomial_eq_product}.  Its affine power-sum form
+annihilates every degree below \(k\), while its first surviving moment is
+\((-1)^k2^{\binom k2}k!\); see
+\lean{thueMorse_affine_power_sum_eq_zero} and
+\lean{thueMorse_affine_power_sum_self}.
+
+For comparison with the moment recurrence, put
+\begin{equation}
+ a_n=\frac{d_n}{n!},\qquad
+ \mathscr A(X)=\sum_{n\ge0}a_nX^n,\qquad
+ E(X)=\frac{\e^X-1}{X},                                     \label{eq:qs-a-and-series}
+\end{equation}
+with the removable value \(E(0)=1\).  The refinement is
+\begin{equation}
+ \mathscr A(2X)=E(X)\mathscr A(X),                            \label{eq:q-moment-refinement}
+\end{equation}
+and its coefficient recurrence is
+\begin{equation}
+ (2^n-1)a_n=\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!}
+ \quad(n\ge1),\qquad a_0=1.                                 \label{eq:qs-a-recurrence}
+\end{equation}
+These identities are the formal-series bridge used by the specialized dyadic theorem.
+
+For \(m,k,d\in\N\) and \(Q\in\C\), write
+\begin{equation}
+ \sigma_{m;k,d}(Q)=
+ \sum_{r=0}^{m2^k-1}(-1)^{\wt(r)}
+       (r-m2^k+Q)^d.                                        \label{eq:qs-sigma-def}
+\end{equation}
+The exact result is the following finite identity.
+
+\begin{theorem}[Translated global dyadic formula]
+\label{thm:qs-translation}
+For all \(m,n\in\N\) and \(Q\in\C\),
 \begin{align}
  \mathcal F(m/2^n)
  &=\frac{1}{2^{n^2}(1/2;1/2)_n}
- \sum_{k=0}^{n}
- \frac{\qbinom nk{1/2}}
- {4^{\binom k2}(n+k)!}                                    \notag\\
- &\quad\times
- \sum_{r=0}^{m2^k-1}(-1)^{\wt(r)}
- \bigl(r-m2^k+Q\bigr)^{n+k}.                              \label{eq:qbinomial-dyadic}
+   \sum_{k=0}^{n}
+   \frac{\qbinom nk{1/2}}
+        {4^{\binom k2}(n+k)!} \notag\\
+ &\qquad\qquad\times
+   \sum_{r=0}^{m2^k-1}(-1)^{\wt(r)}
+      (r-m2^k+Q)^{n+k}.                                    \label{eq:qbinomial-dyadic}
 \end{align}
-Here the real value on the left is embedded in $\C$.  The right side is independent of
-$Q$, so the identity also holds for real, rational, and Gaussian-rational shifts.  If
-$0\le m\le2^n$, then $\mathcal F(m/2^n)=F(m/2^n)$, giving the bounded formula.
+The real number on the left is embedded in \(\C\).  The entire right-hand side is
+independent of the common translation \(Q\).  When \(m\le2^n\), the left side is the bounded
+value \(F(m/2^n)\).
 \end{theorem}
 
-The shape \eqref{eq:qbinomial-dyadic} was first found experimentally, with the particular
-shift $Q=1/2$, and posted as a conjecture in 2019 \cite{reshetnikovMSE}.  The formal
-development proves it for all $m,n\in\N$, for every complex $Q$, and for every
-unreduced representation $m/2^n$ of a dyadic rational.
+\begin{proof}[Formal proof]
+The numerator is proved to be a constant polynomial in the translation by
+\lean{qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const}.
+Its identification with the signed dyadic value over \(\C\) is
+\lean{globalFabius_dyadic_eq_qBinomialThueMorseDyadic_translated_sum_complex};
+the rational core and real, complex, and Gaussian-rational specializations are in
+\path{FabiusQBinomialFormula.lean} and
+\path{FabiusDyadicQBinomialScalar.lean}.
+\end{proof}
 
-\begin{proofidea}
-There are two nested finite differences.  Inside a block of length $2^k$, the generating
-polynomial factors as
-\begin{equation}
- \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}z^r
- =\prod_{j=0}^{k-1}(1-z^{2^j}).                           \label{eq:thue-generating-product}
-\end{equation}
-It has a zero of order $k$ at $z=1$, so the inner power sum annihilates every polynomial
-of degree below $k$.  After this forced zero is removed, its degree-$n$ coefficient is a
-polynomial of degree at most $n$ in the geometric scale node $-2^k$.
-
-Here is the coefficient calculation explicitly.  Normalize the half moments by
-\begin{equation*}
- a_j=\frac{d_j}{j!},\qquad
- \mathscr A(X)=\sum_{j\ge0}a_jX^j,\qquad
- E(X)=\frac{\e^X-1}{X}.
-\end{equation*}
-The half-moment recurrence is equivalent, coefficient by coefficient, to
-\begin{equation}
- \mathscr A(2X)=E(X)\mathscr A(X).                        \label{eq:q-moment-refinement}
-\end{equation}
-For the centered complete block set
-\begin{equation*}
- C_k(X)=\sum_{r<2^k}(-1)^{\wt(r)}\e^{(r-2^k)X}.
-\end{equation*}
-Binary factorization gives
-\begin{equation}
- \frac{C_k(X)}{X^k}
- =(-1)^k2^{\binom k2}\e^{-X}
- \prod_{j=0}^{k-1}E(-2^jX).                              \label{eq:q-centered-block-factor}
-\end{equation}
-Iterating \eqref{eq:q-moment-refinement} along the negative dyadic orbit gives the same
-product:
-\begin{equation*}
- \mathscr A(-2^kX)=
- \left(\prod_{j<k}E(-2^jX)\right)\mathscr A(-X).
-\end{equation*}
-Consequently the coefficient of $X^n$ after the forced $X^k$ is removed is, up to the
-displayed sign and power of two, the value at $z=-2^k$ of
-\begin{equation*}
- [X^n]\,\mathscr R(z;X),\qquad
- \mathscr R(z;X)=\frac{\e^{-X}\mathscr A(zX)}{\mathscr A(-X)}.
-\end{equation*}
-For fixed $n$ this is a polynomial in $z$ of degree at most $n$, and its leading
-coefficient is $a_n$.
-
-Across the scales, the weights in \eqref{eq:q-geometric-interpolation} form the
-divided-difference stencil on the nodes $-1,-2,\ldots,-2^n$.  The finite
-$q$-binomial theorem says that this stencil annihilates degrees below $n$ and extracts the
-leading coefficient in degree $n$.  It therefore returns $\mathfrak m_na_n$.  Using
-\eqref{eq:half-q-mersenne} and
-$F(2^{-n})=2^{-\binom n2}a_n$ gives the one-block formula.  For a general numerator, the
-finite prefix series
-\begin{equation*}
- B_m(X)=\sum_{h=0}^{m-1}(-1)^{\wt(h)}\e^{(m-1-h)X}
-\end{equation*}
-enters because writing $r=h2^k+s$ factors the long block as
-$B_m(-2^kX)C_k(X)$.  The same divided difference then extracts the coefficient
-$[X^n](B_m(X)\mathscr A(X))$, which is exactly the signed dyadic value
-$2^{\binom n2}\mathcal F(m/2^n)$.
-
-For translation invariance, package the entire numerator as a polynomial $N_{m,n}(X)$ over
-$\Q$.  Multiplying every block exponential by $\e^{QX}$ cannot change its degree-$n$
-coefficient, because the aggregated coefficients of all lower degrees have vanished.  Thus
-$N_{m,n}$ is a constant polynomial.  Evaluation in any characteristic-zero field proves the
-rational, real, and complex statements algebraically; no density or continuity argument is
-involved.  Decomposing the long prefix into $m$ blocks of length $2^k$ supplies the arbitrary
-numerator $m$.
-\end{proofidea}
-
-The endpoint cases are literal finite identities.  When $m=0$, every inner range is empty,
-so both sides are zero.  When $n=0$, the formula is the scale-zero signed block identity.
-A nonreduced presentation $m/2^n=2m/2^{n+1}$ changes every finite sum but not its value,
-because both are identified with the same global function value.
-
-Binary complementation gives a useful raw-coordinate version.  Reflection
-$r\mapsto2^k-1-r$ changes the Thue--Morse sign by $(-1)^k$.  Once the exponent $n+k$ is
-included, the remaining sign is independent of $k$ and is absorbed by $(-2)^{n^2}$.
-Consequently, for every $n\in\N$ and $Q\in\C$,
+Binary complementation gives the raw inverse-dyadic form
 \begin{equation}
  \boxed{
  \mathcal F(2^{-n})=
  \frac{1}{(-2)^{n^2}(1/2;1/2)_n}
  \sum_{k=0}^{n}
  \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}.}
-                                                               \label{eq:qbinomial-raw}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}.}               \label{eq:qbinomial-raw}
 \end{equation}
-Again the left side is embedded in $\C$, and the nested expression is independent of $Q$.
-
-The $q$-binomial formula is not competitive with the bit recursion as an evaluator.  Its
-value is structural: the inner difference is adapted to binary blocks, the outer Gaussian
-difference is adapted to geometric scales, and the same identity survives arbitrary complex
-scalar translation.
-
-\section{The half-base $q$-calculus behind the dyadic formula}
-\label{sec:qs-half-base-calculus}
-
-\Cref{subsec:q-binomial-dyadic} stated \eqref{eq:qbinomial-dyadic} and compressed its
-mechanism into a single proof architecture.  That compression hides the fact that every
-ingredient of the formula is forced, and that each forcing is an elementary identity.  This
-section supplies the missing mathematics.  It develops the finite $q$-calculus at base
-$q=1/2$ from the definitions, proves the geometric interpolation identity
-\eqref{eq:q-geometric-interpolation} that \cref{subsec:q-binomial-dyadic} merely asserted,
-derives the Thue--Morse exponential block factorization behind
-\eqref{eq:thue-generating-product} and \eqref{eq:q-centered-block-factor}, and turns the
-coefficient extraction into a theorem with a complete proof.  Translation invariance,
-arbitrary dyadic numerators, worked numerical examples, and the practical consequences of the
-formula's catastrophic cancellation follow.  Nothing here is analytic: every step before the
-final identification with a Fabius value is a finite identity in $\Q$ or in a ring of formal
-power series over $\Q$.
-
-Throughout, $\varepsilon_r=(-1)^{\wt(r)}$ is the Thue--Morse sign \eqref{eq:tm-sign},
-$\mathfrak m_n=\prod_{\ell=1}^{n}(2^{\ell}-1)$ is the odd Mersenne product, $d_n$ are the
-half moments \eqref{eq:d-integral}, and
-\begin{equation}
- a_n=\frac{d_n}{n!},\qquad
- \mathscr A(X)=\sum_{n\ge0}a_nX^n,\qquad
- E(X)=\frac{\e^X-1}{X}=\sum_{j\ge0}\frac{X^j}{(j+1)!},   \label{eq:qs-a-and-series}
-\end{equation}
-as in \cref{subsec:q-binomial-dyadic}.  In this normalization the generating-function
-equation \eqref{eq:G-functional} is exactly the formal refinement identity
-\eqref{eq:q-moment-refinement}, namely $\mathscr A(2X)=E(X)\mathscr A(X)$, the
-half-moment recurrence \eqref{eq:d-recurrence} reads
-\begin{equation}
- (2^n-1)a_n=\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!}\qquad(n\ge1),
- \qquad a_0=1,                                            \label{eq:qs-a-recurrence}
-\end{equation}
-and the reciprocal-power theorem \eqref{eq:F-inverse-power} reads
-$F(2^{-n})=2^{-\binom n2}a_n$.  The first values are
-$a_0=1$, $a_1=1/2$, $a_2=5/36$, $a_3=1/36$, $a_4=143/32400$, $a_5=19/32400$,
-$a_6=1153/17146080$.
-
-One analytic fact is worth recording before the finite theory begins, because it shows that
-the geometric grid of \cref{subsec:qs-why-geometric} is already visible in the moment series
-itself, and not only in the interpolation stencil built later.  By
-\eqref{eq:qs-a-and-series} and \eqref{eq:G-def} the two normalizations agree,
-$\mathscr A(z)=G(z)$, so $\mathscr A$ is an entire function and not merely a formal series.
-
-\begin{proposition}[Entire dyadic product for the moment series]
-\label{prop:blu-entire-product}
-For every $z\in\C$,
-\begin{equation}
- \mathscr A(z)=\prod_{j=1}^{\infty}E\!\left(\frac z{2^j}\right)
- =\prod_{j=1}^{\infty}\frac{\e^{z/2^j}-1}{z/2^j},          \label{eq:blu-entire-product}
-\end{equation}
-each factor being given its removable value $1$ at $z=0$.  The product converges absolutely
-and uniformly on every disk $|z|\le R$, so its limit is entire.
-\end{proposition}
-
-\begin{proof}
-Each factor is entire, since $E(w)=\sum_{i\ge0}w^i/(i+1)!$.  For $|w|\le R$,
-\begin{equation*}
- |E(w)-1|\le\sum_{i\ge1}\frac{|w|^i}{(i+1)!}
- \le|w|\sum_{i\ge1}\frac{|w|^{i-1}}{(i-1)!}
- =|w|\e^{|w|},
-\end{equation*}
-using $(i+1)!\ge(i-1)!$.  Taking $w=z/2^j$ with $|z|\le R$ gives
-$|E(z/2^j)-1|\le R\e^{R}2^{-j}$, and $\sum_{j\ge1}R\e^R2^{-j}=R\e^R<\infty$.  A product
-$\prod_j(1+u_j)$ of holomorphic factors whose deviations $u_j$ are uniformly summable on a
-compact set converges absolutely and uniformly there, and its limit is holomorphic; since
-$R$ is arbitrary, the limit is entire.
-
-It remains to identify the limit.  Putting $z/2$ for $z$ in \eqref{eq:G-functional} gives
-$G(z)=E(z/2)\,G(z/2)$, and iterating $J$ times,
-\begin{equation*}
- G(z)=\left(\prod_{j=1}^{J}E\!\left(\frac z{2^j}\right)\right)G\!\left(\frac z{2^J}\right).
-\end{equation*}
-The function $G$ is continuous with $G(0)=d_0=1$, so $G(z/2^J)\to1$ uniformly on $|z|\le R$
-as $J\to\infty$.  Letting $J\to\infty$ in the display and using $\mathscr A=G$ gives
-\eqref{eq:blu-entire-product}.
-\end{proof}
-
-The identity \eqref{eq:negative-Laplace-product} is the restriction of
-\eqref{eq:blu-entire-product} to the negative real axis, where it is used as a Laplace
-transform; the statement above is the entire version, valid on all of $\C$, and it costs no
-extra work.  Note also what the product says structurally.  Its scales are
-$1/2,1/4,1/8,\ldots$, a geometric progression of ratio $1/2$, and the factor attached to
-each scale is one and the same function $E$.  Thus $\mathscr A$ is a multiplicative object
-over a base-$1/2$ geometric grid before any Gaussian binomial coefficient has been written
-down.  The half-base $q$-calculus that follows does not impose that grid on the problem; it
-reads off a grid the refinement equation \eqref{eq:q-moment-refinement} has already fixed.
-The zeros of \eqref{eq:blu-entire-product} are transparent as well, and they confirm the
-identification.  The factor $E(z/2^j)$ vanishes exactly at the points $z=2^{j+1}\pi\ii\ell$
-with $\ell\in\Z\setminus\{0\}$, so $\mathscr A$ vanishes precisely on
-$4\pi\ii\bigl(\Z\setminus\{0\}\bigr)$, and the number of factors responsible for the zero at
-$4\pi\ii m$ is the number of indices $j\ge1$ with $2^{j-1}$ dividing $m$, namely
-$1+\vtwo(|m|)$.  That is exactly the multiplicity supplied by the canonical product
-\eqref{eq:four-product-canonical} through \eqref{eq:G-Fourier}, so the dyadic product and
-the sinc product are two factorizations of one entire function, grouped by scale in the
-first case and by zero in the second.
-
-\subsection{Why a geometric calculus should be expected}
-\label{subsec:qs-why-geometric}
-
-Ordinary finite differences are adapted to arithmetic progressions.  The $n$th forward
-difference at equally spaced nodes $0,1,\ldots,n$ annihilates every polynomial of degree
-below $n$ and returns $n!$ times the leading coefficient in degree $n$; its weights are
-ordinary binomial coefficients, and the identity that certifies the annihilation is the
-ordinary binomial theorem applied to $(1-z)^n$ at $z=1$.  The whole calculus is a shadow of
-one symmetry: the translation $x\mapsto x+1$.
-
-The Fabius equation has no such symmetry.  Its defining relation \eqref{eq:F-diffeq} and its
-global form \eqref{eq:global-derivatives} do not translate the argument; they \emph{dilate}
-it.  Differentiating once replaces $x$ by $2x$, so differentiating $n$ times replaces $x$ by
-$2^nx$ and accumulates the triangular factor $2^{\binom{n+1}{2}}$.  Consequently the natural
-node set of the problem is not arithmetic but geometric,
-\begin{equation*}
- 1,\;2,\;4,\;\ldots,\;2^{n},
- \qquad\text{or, after the sign change dictated by \eqref{eq:q-moment-refinement},}\qquad
- -1,\;-2,\;-4,\;\ldots,\;-2^{n}.
-\end{equation*}
-Any linear functional that isolates one coefficient of a quantity depending on the scale
-index $k$ must therefore be a divided difference on \emph{these} nodes, not on
-$0,1,\ldots,n$.
-
-The finite-difference calculus of a geometric grid with ratio $\lambda$ is precisely the
-finite $q$-calculus with reciprocal base $q=\lambda^{-1}$.  Its node polynomial is the
-finite $q$-Pochhammer product \eqref{eq:qpochhammer}, since
-$\prod_{j=0}^{n-1}(1-z\lambda^{-j})=(z;\lambda^{-1})_n$ vanishes exactly at
-$z=1,\lambda,\ldots,\lambda^{n-1}$; its expansion coefficients are the Gaussian binomial
-coefficients at that base, by the finite $q$-binomial theorem; and the endpoint value of the
-node polynomial at the first node that is not a root supplies the normalization.  For the
-Fabius function $\lambda=2$, so $q=1/2$.  The base is not a choice of notation and cannot be
-deformed: it is the reciprocal of the dilation ratio in the refinement equation.  The rest of
-this section makes each of these three roles explicit.
-
-\subsection{Finite $q$-Pochhammer symbols at base one half}
-\label{subsec:qs-pochhammer}
-
-Recall \eqref{eq:qpochhammer}.  For a base $q$, a parameter $a$, and $n\in\N$,
-\begin{equation}
- (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),\qquad (a;q)_0=1,      \label{eq:qs-qpoch-def}
-\end{equation}
-and, when $|q|<1$, the infinite counterpart is
-$(a;q)_\infty=\prod_{j\ge0}(1-aq^j)$.  For several parameters one writes
-$(a_1,\ldots,a_s;q)_n=\prod_{i=1}^{s}(a_i;q)_n$.  The name ``shifted factorial'' can mislead:
-the ordinary Pochhammer symbol $(a)_n=a(a+1)\cdots(a+n-1)$ shifts its argument additively,
-whereas \eqref{eq:qs-qpoch-def} shifts it multiplicatively.  Both objects are the basic
-coefficient packages of their respective hypergeometric theories
-\cite{andrews1976,gasper2004,kac2002,dlmf17}.
-
-Three elementary rules are used repeatedly.  The \emph{step rule}
-\begin{equation}
- (a;q)_{n+1}=(a;q)_n\,(1-aq^n)                            \label{eq:qs-step}
-\end{equation}
-is the analogue of $(n+1)!=n!\,(n+1)$.  The \emph{splitting rule}
-\begin{equation}
- (a;q)_{m+n}=(a;q)_m\,(aq^m;q)_n                          \label{eq:qs-split}
-\end{equation}
-follows by breaking the product after $m$ factors and reindexing.  The \emph{inversion rule}
-extracts $-aq^{-j}$ from each factor of a reciprocal base:
-\begin{equation}
- (a;q^{-1})_n=(-a)^nq^{-\binom n2}(a^{-1};q)_n
- \qquad(aq\ne0).                                          \label{eq:qs-inversion}
-\end{equation}
-Indeed $1-aq^{-j}=-aq^{-j}(1-a^{-1}q^{j})$, and the accumulated power of $q$ is
-$q^{-(0+1+\cdots+(n-1))}=q^{-\binom n2}$.
-
-The zeros of \eqref{eq:qs-qpoch-def} matter more than anything else here.  If $a=q^{-d}$
-with $0\le d<n$, the factor with index $j=d$ is $1-q^{-d}q^{d}=0$, so
-\begin{equation}
- (q^{-d};q)_n=0\qquad(0\le d<n).                          \label{eq:qs-vanishing}
-\end{equation}
-At $q=1/2$ this says $(2^d;1/2)_n=0$ for $d<n$: up to its nonzero leading coefficient,
-$(z;1/2)_n$ is the monic polynomial whose root set is exactly the geometric grid
-$1,2,4,\ldots,2^{n-1}$ generated by dyadic dilation.  At the first node that is \emph{not} a
-root,
-\begin{equation}
- (2^n;1/2)_n=\prod_{j=0}^{n-1}\bigl(1-2^{\,n-j}\bigr)
- =\prod_{i=1}^{n}\bigl(1-2^{i}\bigr)=(-1)^n\mathfrak m_n. \label{eq:qs-endpoint-value}
-\end{equation}
-
-The classical objects are recovered by a limit.  For $q\ne1$ put
-\begin{equation}
- [n]_q=\frac{1-q^n}{1-q}=1+q+\cdots+q^{n-1},
- \qquad
- [n]_q!=\prod_{j=1}^{n}[j]_q,                             \label{eq:qs-q-integer}
-\end{equation}
-so that $(q;q)_n=(1-q)^n[n]_q!$, since $(q;q)_n=\prod_{j=1}^{n}(1-q^j)$.  As $q\to1$ one has
-$[n]_q\to n$ and $[n]_q!\to n!$.  More precisely, for fixed real $\alpha$,
-\begin{equation}
- \lim_{q\to1^-}\frac{(q^{\alpha};q)_n}{(1-q)^n}
- =\alpha(\alpha+1)\cdots(\alpha+n-1),                     \label{eq:qs-classical-limit}
-\end{equation}
-because each quotient $(1-q^{\alpha+j})/(1-q)$ tends to $\alpha+j$.  This is the sense in
-which $q$-Pochhammer symbols deform ordinary rising factorials.  The Fabius identities use
-none of this limiting theory: they live at the fixed nonclassical base $q=1/2$.  The limit is
-recorded only because it explains the terminology.
-
-Specialize now to $a=q=1/2$, which is the product occurring in \eqref{eq:qbinomial-dyadic}:
-\begin{equation}
- (1/2;1/2)_n=\prod_{j=0}^{n-1}\left(1-\tfrac12\cdot2^{-j}\right)
- =\prod_{j=1}^{n}\left(1-2^{-j}\right)>0.                 \label{eq:qs-half-poch}
-\end{equation}
-Clearing one power of two from each factor gives \eqref{eq:half-q-mersenne},
-$(1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n$, and therefore the arithmetic form of the
-global denominator of \eqref{eq:qbinomial-dyadic},
-\begin{equation}
- 2^{n^2}(1/2;1/2)_n=2^{\binom n2}\mathfrak m_n.           \label{eq:qs-full-denominator}
-\end{equation}
-The apparently mixed normalizer is a pure power of two times an odd integer.  The first
-values of \eqref{eq:qs-full-denominator} are $1,1,6,168,20160,9999360,20158709760$ for
-$n=0,\ldots,6$.
-
-The finite products \eqref{eq:qs-half-poch} decrease and converge to a positive constant,
-\begin{equation}
- (1/2;1/2)_\infty=\prod_{j\ge1}\left(1-2^{-j}\right)
- =0.28878809508660242127889972192\ldots,                  \label{eq:qs-half-poch-infinite}
-\end{equation}
-because $\sum_j2^{-j}<\infty$.  Only the finite products occur in the exact formulas, but the
-nonzero limit is what makes the two-sided bound
-$0.2887\ldots\le(1/2;1/2)_n\le1$ available uniformly in $n$; it will be used in
-\cref{subsec:qs-numerics} and again in \cref{sec:q-discrete-limit}.  It also shows that in
-\eqref{eq:qs-full-denominator} the entire growth is carried by the explicit factor $2^{n^2}$
-and not by a vanishing $q$-product.
-
-\subsection{Gaussian binomial coefficients on the dyadic grid}
-\label{subsec:qs-gaussian}
-
-\begin{definition}[Gaussian coefficient]
-For $0\le k\le n$ and $q\ne1$, the Gaussian or $q$-binomial coefficient is
-\begin{equation}
- \qbinom nkq=\frac{(q;q)_n}{(q;q)_k\,(q;q)_{n-k}}
- =\frac{[n]_q!}{[k]_q!\,[n-k]_q!},                        \label{eq:qs-qbinom-def}
-\end{equation}
-and $\qbinom nkq=0$ when $k>n$ or $k<0$.
-\end{definition}
-
-Although \eqref{eq:qs-qbinom-def} is written as a quotient, $\qbinom nkq$ is a polynomial in
-$q$ with nonnegative integer coefficients and constant term $1$.  The quotient form makes the
-symmetry
-\begin{equation}
- \qbinom nkq=\qbinom n{n-k}q                              \label{eq:qs-qbinom-symmetry}
-\end{equation}
-immediate, and letting $q\to1$ gives $\qbinom nkq\to\binom nk$.  Two $q$-Pascal recurrences
-hold:
-\begin{align}
- \qbinom{n+1}kq&=\qbinom nkq+q^{\,n+1-k}\qbinom n{k-1}q,  \label{eq:qs-qpascal-one}\\
- \qbinom{n+1}kq&=q^{k}\qbinom nkq+\qbinom n{k-1}q.        \label{eq:qs-qpascal-two}
-\end{align}
-Each follows from \eqref{eq:qs-qbinom-def} by writing $(q;q)_{n+1}=(q;q)_n(1-q^{n+1})$ and
-splitting $1-q^{n+1}$ as $(1-q^{n+1-k})+q^{\,n+1-k}(1-q^{k})$ or as
-$q^{k}(1-q^{n+1-k})+(1-q^{k})$; the two forms are exchanged by
-\eqref{eq:qs-qbinom-symmetry}.  Exactly as the ordinary Pascal rule proves the binomial
-theorem, either recurrence proves the following.
-
-\begin{theorem}[Finite $q$-binomial theorem]
-\label{thm:qs-finite-q-binomial}
-For every $n\in\N$ and every base $q$,
-\begin{equation}
- (z;q)_n=\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom nkq\,z^k. \label{eq:qs-finite-q-binomial}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Both sides equal $1$ when $n=0$.  Assume \eqref{eq:qs-finite-q-binomial} at $n$.  By the step
-rule \eqref{eq:qs-step},
-\begin{equation*}
- (z;q)_{n+1}=(1-zq^n)\sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom nkq\,z^k.
-\end{equation*}
-The coefficient of $z^k$ on the right is
-\begin{equation*}
- (-1)^kq^{\binom k2}\qbinom nkq
- -q^{n}\,(-1)^{k-1}q^{\binom{k-1}2}\qbinom n{k-1}q
- =(-1)^kq^{\binom k2}\left(\qbinom nkq+q^{\,n+1-k}\qbinom n{k-1}q\right),
-\end{equation*}
-where the exponent bookkeeping uses $\binom k2=\binom{k-1}2+k-1$, so that
-$q^{n}q^{\binom{k-1}2}=q^{\binom k2}q^{\,n+1-k}$.  By \eqref{eq:qs-qpascal-one} the bracket
-is $\qbinom{n+1}kq$, which is the asserted coefficient at $n+1$.
-\end{proof}
-
-At $q=1$ the theorem degenerates to $(1-z)^n=\sum_k(-1)^k\binom nkz^k$, and at $q=1/2$ it is
-\eqref{eq:half-q-binomial-theorem}.  The triangular exponent $\binom k2$ is not decoration:
-it is the cumulative exponent $0+1+\cdots+(k-1)$ produced by choosing the second term from
-$k$ successive factors of $\prod_{j<n}(1-zq^j)$.
-
-Combining \eqref{eq:half-q-binomial-theorem} with the vanishing \eqref{eq:qs-vanishing} and
-the endpoint \eqref{eq:qs-endpoint-value} gives the two nodal identities on which everything
-below rests:
-\begin{align}
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}\,(2^d)^k
- &=0 &&(0\le d<n),                                        \label{eq:qs-node-zero}\\
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}\qbinom nk{1/2}\,(2^n)^k
- &=(-1)^n\mathfrak m_n. &&                                \label{eq:qs-node-endpoint}
-\end{align}
-With the weights and nodes of \eqref{eq:q-geometric-interpolation},
-\begin{equation}
- w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2},\qquad x_k=-2^k, \label{eq:qs-weights-nodes}
-\end{equation}
-one has $x_k^d=(-1)^d(2^d)^k$, so the extra sign turns \eqref{eq:qs-node-endpoint} into
-$+\mathfrak m_n$ and reproduces the first half of \eqref{eq:q-geometric-interpolation}:
-\begin{equation}
- \sum_{k=0}^{n}w_{n,k}x_k^{\,d}=
- \begin{cases}0,&0\le d<n,\\ \mathfrak m_n,&d=n.\end{cases} \label{eq:qs-moment-annihilation}
-\end{equation}
-
-It remains to record the arithmetic of the coefficients themselves.  The value $q=1/2$ is not
-a prime power, so the subspace interpretation does not apply directly; but when $q$ is a
-prime power, $\qbinom nkq$ counts the $k$-dimensional subspaces of $\mathbb F_q^n$, which is
-the source of the adjective ``Gaussian''.  Applying the inversion rule
-\eqref{eq:qs-inversion} to each of the three products in \eqref{eq:qs-qbinom-def} gives the
-reciprocal-base identity $\qbinom nk{q^{-1}}=q^{-k(n-k)}\qbinom nkq$ and hence the relation
-already quoted in \cref{subsec:q-binomial-dyadic},
-\begin{equation}
- \qbinom nk{1/2}=2^{-k(n-k)}\qbinom nk2.                  \label{eq:qs-half-vs-two}
-\end{equation}
-Because $\qbinom nk2$ is an integer with odd value (its polynomial has constant term $1$, so
-$\qbinom nk2\equiv1\pmod2$), \eqref{eq:qs-half-vs-two} determines the $2$-adic valuation
-exactly:
-\begin{equation}
- \vtwo\!\left(\qbinom nk{1/2}\right)=-k(n-k).             \label{eq:qs-half-valuation}
-\end{equation}
-Equivalently, in terms of the odd Mersenne products,
-\begin{equation}
- \qbinom nk{1/2}
- =\frac{\mathfrak m_n}{\mathfrak m_k\,\mathfrak m_{n-k}\,2^{k(n-k)}}. \label{eq:qs-half-mersenne-binom}
-\end{equation}
-Thus every apparent nonintegrality in the Gaussian row is a known power of two, and the odd
-part is finite-field combinatorics.  This exact denominator control is one reason the
-$q$-notation is arithmetically useful and not merely compact.
-
-\begin{table}[htbp]
-\centering
-\caption{The first half-base Gaussian rows $\qbinom nk{1/2}$ and, for comparison, the
-integer rows $\qbinom nk2$ that count $k$-planes in $\mathbb F_2^n$.  The two are related by
-\eqref{eq:qs-half-vs-two}.}
-\label{tab:qs-gaussian-rows}
-\begin{tabular}{@{}c*{7}{c}@{}}
-\toprule
-$n\backslash k$&$0$&$1$&$2$&$3$&$4$&$5$&$6$\\
-\midrule
-$0$&$1$\\
-$1$&$1$&$1$\\
-$2$&$1$&$3/2$&$1$\\
-$3$&$1$&$7/4$&$7/4$&$1$\\
-$4$&$1$&$15/8$&$35/16$&$15/8$&$1$\\
-$5$&$1$&$31/16$&$155/64$&$155/64$&$31/16$&$1$\\
-$6$&$1$&$63/32$&$651/256$&$1395/512$&$651/256$&$63/32$&$1$\\
-\midrule
-$4$&$1$&$15$&$35$&$15$&$1$\\
-$5$&$1$&$31$&$155$&$155$&$31$&$1$\\
-$6$&$1$&$63$&$651$&$1395$&$651$&$63$&$1$\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\Cref{tab:qs-gaussian-rows} shows the first rows.  The Mersenne numerators $2^j-1$ visible
-there are the same factors that occur in $(1/2;1/2)_n$ through \eqref{eq:half-q-mersenne} and
-in the final denominator through \eqref{eq:qs-full-denominator}.  The corresponding rows of
-the signed weights \eqref{eq:qs-weights-nodes} are
-\begin{align*}
- n=0:&\quad 1,\\
- n=1:&\quad 1,\;-1,\\
- n=2:&\quad 1,\;-\tfrac32,\;\tfrac12,\\
- n=3:&\quad 1,\;-\tfrac74,\;\tfrac78,\;-\tfrac18,\\
- n=4:&\quad 1,\;-\tfrac{15}8,\;\tfrac{35}{32},\;-\tfrac{15}{64},\;\tfrac1{64}.
-\end{align*}
-They are exactly the coefficients of the node polynomial $(z;1/2)_n$, read as weights on the
-nodes $-2^k$.
-
-\subsection{The barycentric reading of the Gaussian row}
-\label{subsec:qs-barycentric}
-
-Equation \eqref{eq:qs-moment-annihilation} says that the normalized functional
-\begin{equation}
- \mathcal J_n[f]=\frac1{\mathfrak m_n}\sum_{k=0}^{n}w_{n,k}f(x_k),
- \qquad x_k=-2^k,                                          \label{eq:qs-Kn-def}
-\end{equation}
-annihilates every polynomial of degree below $n$ and returns the leading coefficient of every
-polynomial of degree at most $n$: if $f(x)=c_0+c_1x+\cdots+c_nx^n$, then
-$\mathcal J_n[f]=c_n$.  That is the defining property of the $n$th divided difference on the
-nodes $x_0,\ldots,x_n$.  The second half of \eqref{eq:q-geometric-interpolation} makes the
-identification with Lagrange interpolation exact, and it is proved by splitting one product.
-
-\begin{proposition}[Barycentric form of the half-base weights]
-\label{prop:qs-barycentric}
-For $x_k=-2^k$ and $0\le k\le n$,
-\begin{equation}
- \frac{w_{n,k}}{\mathfrak m_n}
- =\frac1{\displaystyle\prod_{\substack{0\le j\le n\\ j\ne k}}(x_k-x_j)}. \label{eq:qs-barycentric}
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-Split the product at $j=k$.  For $j<k$,
-\begin{equation*}
- x_k-x_j=-2^k+2^j=-2^j\bigl(2^{\,k-j}-1\bigr),
-\end{equation*}
-so those $k$ factors contribute
-\begin{equation*}
- (-1)^k\,2^{\,0+1+\cdots+(k-1)}\prod_{j=0}^{k-1}\bigl(2^{\,k-j}-1\bigr)
- =(-1)^k2^{\binom k2}\mathfrak m_k.
-\end{equation*}
-For $j>k$,
-\begin{equation*}
- x_k-x_j=2^j-2^k=2^k\bigl(2^{\,j-k}-1\bigr),
-\end{equation*}
-so those $n-k$ factors contribute $2^{k(n-k)}\mathfrak m_{n-k}$.  Multiplying,
-\begin{equation}
- \prod_{j\ne k}(x_k-x_j)
- =(-1)^k2^{\binom k2+k(n-k)}\mathfrak m_k\mathfrak m_{n-k}. \label{eq:qs-node-difference-product}
-\end{equation}
-On the other side, substituting \eqref{eq:qs-half-mersenne-binom} into
-\eqref{eq:qs-weights-nodes} gives
-\begin{equation*}
- \frac{w_{n,k}}{\mathfrak m_n}
- =\frac{(-1)^k}{2^{\binom k2+k(n-k)}\mathfrak m_k\mathfrak m_{n-k}},
-\end{equation*}
-which is the reciprocal of \eqref{eq:qs-node-difference-product} because $(-1)^k$ is its own
-reciprocal.
-\end{proof}
-
-The right-hand side of \eqref{eq:qs-barycentric} is the classical coefficient of $f(x_k)$ in
-the leading coefficient of the Lagrange interpolant through $x_0,\ldots,x_n$.  Hence the
-Gaussian row in \eqref{eq:qbinomial-dyadic} is a table of barycentric weights for a geometric
-grid, and \eqref{eq:qs-moment-annihilation} is not a coincidence but the standard vanishing
-of an $n$th divided difference on lower-degree data.  This is exactly the content that
-\eqref{eq:q-geometric-interpolation} asserted without justification.
-
-\begin{example}[The $n=2$ stencil]
-\label{ex:qs-n2-stencil}
-The nodes are $-1,-2,-4$ and $\mathfrak m_2=3$.  From \eqref{eq:qs-weights-nodes},
-\begin{equation*}
- (w_{2,0},w_{2,1},w_{2,2})=\left(1,\,-\tfrac32,\,\tfrac12\right),
-\end{equation*}
-so
-\begin{equation*}
- \mathcal J_2[f]=\tfrac13f(-1)-\tfrac12f(-2)+\tfrac16f(-4).
-\end{equation*}
-Direct verification confirms all three moment conditions:
-$\tfrac13-\tfrac12+\tfrac16=0$;
-$-\tfrac13+1-\tfrac46=0$;
-$\tfrac13-2+\tfrac{16}6=1$.
-The three coefficients are also the reciprocals of the node-difference products
-$(-1+2)(-1+4)=3$, $(-2+1)(-2+4)=-2$, and $(-4+1)(-4+2)=6$, as
-\cref{prop:qs-barycentric} requires.
-\end{example}
-
-\subsection{The Thue--Morse exponential block}
-\label{subsec:qs-thue-morse}
-
-The second cancellation is combinatorial rather than interpolatory.  Its source is that
-$\varepsilon_r=(-1)^{\wt(r)}$ is a multiplicative character of the binary digit expansion.
-
-\begin{lemma}[Block multiplicativity and reflection]
-\label{lem:qs-tm-block}
-Let $k\in\N$ and $0\le s<2^k$.  For every $h\in\N$,
-\begin{equation}
- \varepsilon_{h2^k+s}=\varepsilon_h\varepsilon_s,          \label{eq:qs-tm-multiplicative}
-\end{equation}
-and for every $0\le r<2^k$,
-\begin{equation}
- \varepsilon_{2^k-1-r}=(-1)^k\varepsilon_r.               \label{eq:qs-tm-reflection}
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-In $h2^k+s$ the binary digits of $h$ occupy positions $\ge k$ and those of $s$ occupy
-positions $<k$, so no carries occur and $\wt(h2^k+s)=\wt(h)+\wt(s)$; exponentiating $-1$
-gives \eqref{eq:qs-tm-multiplicative}.  For \eqref{eq:qs-tm-reflection}, the map
-$r\mapsto2^k-1-r$ complements each of the $k$ low binary digits, so
-$\wt(2^k-1-r)=k-\wt(r)$.
-\end{proof}
-
-\begin{proposition}[Digitwise factorization]
-\label{prop:qs-tm-factorization}
-For every $k\in\N$ and every $z$,
-\begin{equation}
- \sum_{r=0}^{2^k-1}\varepsilon_rz^r=\prod_{j=0}^{k-1}\bigl(1-z^{2^j}\bigr), \label{eq:qs-tm-generating}
-\end{equation}
-which is \eqref{eq:thue-generating-product}.
-\end{proposition}
-
-\begin{proof}
-Every $0\le r<2^k$ has a unique expansion $r=\sum_{j=0}^{k-1}b_j2^j$ with $b_j\in\{0,1\}$,
-and $\wt(r)=\sum_jb_j$.  Therefore
-\begin{equation*}
- \sum_{r=0}^{2^k-1}\varepsilon_rz^r
- =\sum_{b_0,\ldots,b_{k-1}\in\{0,1\}}\ \prod_{j=0}^{k-1}(-1)^{b_j}z^{\,b_j2^j}
- =\prod_{j=0}^{k-1}\sum_{b=0}^{1}(-1)^bz^{\,b2^j}
- =\prod_{j=0}^{k-1}\bigl(1-z^{2^j}\bigr),
-\end{equation*}
-the middle step being the distributive law for a product of $k$ two-term sums.
-\end{proof}
-
-Now introduce the translated centered power sums.  For $m,k,d\in\N$ and a scalar $Q$, put
-\begin{equation}
- \sigma_{m;k,d}(Q)=\sum_{r=0}^{m2^k-1}\varepsilon_r\bigl(r-m2^k+Q\bigr)^d,
- \qquad
- \sigma_{k,d}(Q)=\sigma_{1;k,d}(Q),                        \label{eq:qs-sigma-def}
-\end{equation}
-the range being empty, hence the sum zero, when $m=0$.
-These are exactly the inner sums of \eqref{eq:qbinomial-dyadic}.  Their exponential
-generating functions are the objects to work with.  Set, as in
-\cref{subsec:q-binomial-dyadic},
-\begin{equation}
- C_k(X)=\sum_{r=0}^{2^k-1}\varepsilon_r\e^{(r-2^k)X}
- =\sum_{d\ge0}\sigma_{k,d}(0)\frac{X^d}{d!},               \label{eq:qs-Ck-def}
-\end{equation}
-and observe the \emph{translated-block one-liner}: multiplying every summand of
-\eqref{eq:qs-Ck-def} by $\e^{QX}$ replaces $r-2^k$ by $r-2^k+Q$ in each exponent, so
-\begin{equation}
- \sum_{d\ge0}\sigma_{k,d}(Q)\frac{X^d}{d!}=\e^{QX}C_k(X). \label{eq:qs-translated-block}
-\end{equation}
-That single identity is the entire source of translation invariance in
-\cref{subsec:qs-translation}.
-
-\begin{theorem}[Centered block factorization]
-\label{thm:qs-block-factorization}
-Let $\mathscr E_k(X)=\e^{-X}\prod_{j=0}^{k-1}E(-2^jX)$, a formal power series over $\Q$ with
-$\mathscr E_k(0)=1$.  Then
-\begin{equation}
- C_k(X)=(-1)^k2^{\binom k2}X^k\,\mathscr E_k(X),          \label{eq:qs-Ck-factor}
-\end{equation}
-so that $C_k$ has a zero of exact order $k$ at $X=0$.  Consequently
-\begin{equation}
- \sigma_{k,d}(Q)=0\quad(d<k),
- \qquad
- \sigma_{k,k}(Q)=(-1)^k2^{\binom k2}k!                     \label{eq:qs-prouhet}
-\end{equation}
-for every $Q$, and, writing $\mathscr H_k(X)=C_k(X)/X^k$,
-\begin{equation}
- \mathscr H_k(X)=\sum_{n\ge0}\frac{\sigma_{k,n+k}(0)}{(n+k)!}X^n
- =(-1)^k2^{\binom k2}\mathscr E_k(X),                      \label{eq:qs-Hk}
-\end{equation}
-which is \eqref{eq:q-centered-block-factor}.
-\end{theorem}
-
-\begin{proof}
-Apply \eqref{eq:qs-tm-generating} with $z=\e^{X}$ and multiply by $\e^{-2^kX}$:
-\begin{equation}
- C_k(X)=\e^{-2^kX}\prod_{j=0}^{k-1}\bigl(1-\e^{2^jX}\bigr). \label{eq:qs-Ck-product-raw}
-\end{equation}
-Each factor is $1-\e^{u}=-u\,E(u)$ with $u=2^jX$, so
-\begin{equation*}
- \prod_{j=0}^{k-1}\bigl(1-\e^{2^jX}\bigr)
- =(-1)^k\left(\prod_{j=0}^{k-1}2^j\right)X^k\prod_{j=0}^{k-1}E(2^jX)
- =(-1)^k2^{\binom k2}X^k\prod_{j=0}^{k-1}E(2^jX).
-\end{equation*}
-The reflection identity $E(-u)=\e^{-u}E(u)$, valid because both sides equal
-$(1-\e^{-u})/u$, converts the positive-argument product into a negative-argument one:
-using $\sum_{j<k}2^j=2^k-1$,
-\begin{equation}
- \prod_{j=0}^{k-1}E(-2^jX)=\e^{-(2^k-1)X}\prod_{j=0}^{k-1}E(2^jX),
- \qquad\text{i.e.}\qquad
- \mathscr E_k(X)=\e^{-2^kX}\prod_{j=0}^{k-1}E(2^jX).       \label{eq:qs-Ek-two-forms}
-\end{equation}
-Substituting this into the display above gives \eqref{eq:qs-Ck-factor}.  Since
-$\mathscr E_k(0)=1$, the order of the zero is exactly $k$, and comparing coefficients in
-\eqref{eq:qs-Ck-def} yields the first part of \eqref{eq:qs-prouhet} at $Q=0$; by
-\eqref{eq:qs-translated-block} multiplication by $\e^{QX}$ cannot lower the order, so the
-vanishing holds for every $Q$, and the coefficient of $X^k$ in
-$\e^{QX}C_k(X)$ equals that of $C_k(X)$, which gives the stated value of
-$\sigma_{k,k}(Q)$.  Dividing \eqref{eq:qs-Ck-factor} by $X^k$ gives \eqref{eq:qs-Hk}.
-\end{proof}
-
-Identity \eqref{eq:qs-prouhet} is the classical Prouhet cancellation for dyadic Thue--Morse
-blocks \cite{allouche2003}: a complete block of length $2^k$ annihilates all power moments of
-degree below $k$, in any translate of the coordinate.  The factor $2^{\binom k2}$ in the first
-surviving moment is the product $\prod_{j<k}2^j$ contributed by the $k$ dyadic scales that
-occur in \eqref{eq:qs-tm-generating}.
-
-Writing $\beta_{k,n}=[X^n]\mathscr E_k(X)$ for the coefficients of the refinement factor,
-\eqref{eq:qs-Hk} says
-\begin{equation}
- \beta_{k,n}=(-1)^k2^{-\binom k2}\frac{\sigma_{k,n+k}(0)}{(n+k)!},   \label{eq:qs-beta-from-sigma}
-\end{equation}
-and multiplying by the interpolation weight $w_{n,k}$ of \eqref{eq:qs-weights-nodes} makes
-the two signs $(-1)^k$ cancel and the two triangular powers of two combine:
-\begin{equation}
- w_{n,k}\,\beta_{k,n}
- =\frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}\,\sigma_{k,n+k}(0). \label{eq:qs-weight-times-beta}
-\end{equation}
-The right-hand side is precisely one summand of the outer sum in
-\eqref{eq:qbinomial-dyadic}.
-
-\begin{boxedremark}
-\textbf{Why the formula contains $4^{\binom k2}$ and not $2^{\binom k2}$.}
-Two independent copies of $2^{-\binom k2}$ are needed, and their product is
-$4^{-\binom k2}$.
-
-The first copy comes from the Thue--Morse side.  The block $C_k$ has a forced zero of order
-$k$ whose leading coefficient is $(-1)^k2^{\binom k2}$ by \eqref{eq:qs-Ck-factor}.  To read a
-degree-$n$ coefficient of the refinement factor $\mathscr E_k$, one must first divide that
-leading constant out; this is the factor $2^{-\binom k2}$ in
-\eqref{eq:qs-beta-from-sigma}.
-
-The second copy comes from the $q$-binomial side.  The interpolation weight at the node
-$-2^k$ is $w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}$, in which the power of two is
-prescribed by \cref{thm:qs-finite-q-binomial}.
-
-Their product is the $4^{-\binom k2}$ of \eqref{eq:qs-weight-times-beta}.  Neither exponent
-can be adjusted without destroying the identity: one is fixed by the Thue--Morse block, the
-other by the finite $q$-binomial theorem.
-\end{boxedremark}
-
-Finally, \eqref{eq:qs-tm-reflection} lets the centered coordinates be traded for raw ones.
-For $0\le r<2^k$ the substitution $r\mapsto2^k-1-r$ gives
-$(2^k-1-r)-2^k+Q=-(r+1-Q)$, so
-\begin{equation}
- \sum_{r=0}^{2^k-1}\varepsilon_r(r+Q)^{\,n+k}
- =(-1)^{k}(-1)^{\,n+k}\sum_{r=0}^{2^k-1}\varepsilon_r\bigl(r-2^k+1-Q\bigr)^{\,n+k}
- =(-1)^n\sigma_{k,n+k}(1-Q).                              \label{eq:qs-reflection-sum}
-\end{equation}
-The total sign $(-1)^n$ does not depend on $k$, so it factors out of the whole outer sum, and
-since $n^2\equiv n\pmod2$ it is absorbed by writing $(-2)^{n^2}$ in place of $2^{n^2}$.  This
-is the derivation of the raw-coordinate form \eqref{eq:qbinomial-raw}.
-
-\subsection{The coefficient-extraction theorem}
-\label{subsec:qs-extraction}
-
-The two mechanisms now meet.  Iterating the formal refinement identity
-\eqref{eq:q-moment-refinement} at the arguments $-X,-2X,\ldots,-2^{k-1}X$ telescopes to
-$\mathscr A(-2^kX)=\bigl(\prod_{j<k}E(-2^jX)\bigr)\mathscr A(-X)$, and multiplying by
-$\e^{-X}$ produces the bridge
-\begin{equation}
- \mathscr E_k(X)\,\mathscr A(-X)=\e^{-X}\mathscr A(-2^kX). \label{eq:qs-bridge}
-\end{equation}
-The left side is the normalized Thue--Morse block of \cref{thm:qs-block-factorization}; the
-right side is the Fabius moment series evaluated at the geometric node $-2^k$.  Exactly one
-functional annihilates the node dependence below degree $n$, and by
-\cref{prop:qs-barycentric} it is the Gaussian row.
-
-\begin{theorem}[Dyadic Gaussian coefficient extraction]
-\label{thm:qs-extraction}
-Let $\mathscr A(X)=\sum_{m\ge0}a_mX^m$ be any formal power series over $\Q$ with $a_0=1$, and
-for each $k$ let $\mathscr E_k(X)=\sum_{m\ge0}\beta_{k,m}X^m$ be a formal power series
-satisfying \eqref{eq:qs-bridge}.  Then, with the weights \eqref{eq:qs-weights-nodes},
-\begin{equation}
- \sum_{k=0}^{n}w_{n,k}\beta_{k,d}=0\qquad(0\le d<n),      \label{eq:qs-extraction-lower}
-\end{equation}
-and
-\begin{equation}
- \sum_{k=0}^{n}w_{n,k}\beta_{k,n}=\mathfrak m_n\,a_n.     \label{eq:qs-extraction-top}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Extract the coefficient of $X^d$ from \eqref{eq:qs-bridge}.  On the left, $\mathscr A(-X)$
-has coefficients $(-1)^{d-i}a_{d-i}$; on the right, $\e^{-X}$ has coefficients $(-1)^j/j!$
-and $\mathscr A(-2^kX)$ has coefficients $a_{d-j}(-2^k)^{d-j}$.  Hence, for every $k$ and
-every $d$,
-\begin{equation}
- \sum_{i=0}^{d}\beta_{k,i}(-1)^{d-i}a_{d-i}
- =\sum_{j=0}^{d}\frac{(-1)^j}{j!}a_{d-j}\bigl(-2^k\bigr)^{d-j}. \label{eq:qs-coefficient-identity}
-\end{equation}
-Multiply \eqref{eq:qs-coefficient-identity} by $w_{n,k}$ and sum over $k=0,\ldots,n$.  Note
-that only the powers $(-2^k)^{d-j}=x_k^{\,d-j}$ depend on $k$ on the right, and only
-$\beta_{k,i}$ depends on $k$ on the left.
-
-Suppose first $d<n$, and argue by strong induction on $d$.  Every exponent $d-j$ on the right
-satisfies $d-j\le d<n$, so \eqref{eq:qs-moment-annihilation} makes every right-hand term
-vanish; the whole right side is $0$.  On the left, the terms with $i<d$ carry the factor
-$\sum_kw_{n,k}\beta_{k,i}$, which vanishes by the induction hypothesis, so only $i=d$
-survives.  Since $a_0=1$, that term is $\sum_kw_{n,k}\beta_{k,d}$.  Therefore
-$\sum_kw_{n,k}\beta_{k,d}=0$, which is \eqref{eq:qs-extraction-lower}.  The base case $d=0$ is
-the same computation with no induction hypothesis needed.
-
-Now let $d=n$.  On the right, every term with $j>0$ has node exponent $n-j<n$ and vanishes
-after weighting; the term $j=0$ is $a_n\sum_kw_{n,k}x_k^{\,n}=\mathfrak m_na_n$ by
-\eqref{eq:qs-moment-annihilation}.  On the left, all terms with $i<n$ vanish by
-\eqref{eq:qs-extraction-lower}, and the term $i=n$ is $\sum_kw_{n,k}\beta_{k,n}$.  Equating
-the two sides gives \eqref{eq:qs-extraction-top}.
-\end{proof}
-
-The proof is a double cancellation and nothing else.  The finite $q$-binomial theorem
-annihilates powers of the geometric nodes below degree $n$; the coefficient identity
-\eqref{eq:qs-coefficient-identity} recursively transfers that nodal annihilation to the
-coefficients of the normalized Thue--Morse factors.  No summation theorem from the catalogue
-of basic hypergeometric series is used or needed.
-
-\Cref{thm:qs-extraction} is stated with the geometric nodes $-2^k$ and the half-base weights
-built in, and its proof reads as though both were needed.  Neither was.  The only property
-of the weights the argument used is the annihilation of node powers below degree $n$, and
-the only property of the nodes is that they can be substituted into a rescaling.  The
-general statement is the following, and its proof is the proof of
-\cref{thm:qs-extraction} with the two specializations removed.
-
-\begin{proposition}[Abstract weighted coefficient isolation]
-\label{prop:blu-isolation-general}
-Let $I$ be a finite index set, let $(x_k)_{k\in I}$ be scalars in a field $K$ of
-characteristic zero, and let $(w_k)_{k\in I}$ be weights satisfying
-\begin{equation}
- \sum_{k\in I}w_kx_k^{\,d}=0\qquad(0\le d<n).             \label{eq:blu-abstract-annihilation}
-\end{equation}
-Let $\mathscr A=\sum_{m\ge0}a_mX^m$, $\mathscr B=\sum_{m\ge0}b_mX^m$ and
-$\mathscr U=\sum_{m\ge0}u_mX^m$ be formal power series over $K$ with
-$a_0=b_0=u_0=1$, and for each $k\in I$ let $P_k\in K[[X]]$ satisfy
-\begin{equation}
- P_k(X)\,\mathscr B(X)=\mathscr U(X)\,\mathscr A(x_kX).    \label{eq:blu-abstract-bridge}
-\end{equation}
-Then
-\begin{equation}
- \sum_{k\in I}w_k\,[X^d]P_k=0\quad(0\le d<n),
- \qquad
- \sum_{k\in I}w_k\,[X^n]P_k=\left(\sum_{k\in I}w_kx_k^{\,n}\right)a_n. \label{eq:blu-abstract-isolation}
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-Extract the coefficient of $X^d$ from \eqref{eq:blu-abstract-bridge}:
-\begin{equation*}
- \sum_{i=0}^{d}\bigl([X^i]P_k\bigr)b_{d-i}
- =\sum_{j=0}^{d}u_ja_{d-j}x_k^{\,d-j}.
-\end{equation*}
-Multiply by $w_k$ and sum over $k\in I$.  On the right the only $k$-dependence is
-$x_k^{\,d-j}$.
-
-Let $d<n$ and argue by strong induction on $d$.  Every exponent satisfies $d-j\le d<n$, so
-the right side vanishes by \eqref{eq:blu-abstract-annihilation}.  On the left the terms with
-$i<d$ carry the factor $\sum_kw_k[X^i]P_k$, which vanishes by the induction hypothesis, and
-the term $i=d$ is $b_0\sum_kw_k[X^d]P_k=\sum_kw_k[X^d]P_k$.  The case $d=0$ is the same
-computation with no hypothesis used.
-
-Let $d=n$.  On the right the terms with $j>0$ have node exponent $n-j<n$ and vanish, and the
-term $j=0$ is $u_0a_n\sum_kw_kx_k^{\,n}$.  On the left the terms with $i<n$ vanish by what
-has just been proved, leaving $\sum_kw_k[X^n]P_k$.
-\end{proof}
-
-\Cref{thm:qs-extraction} is the case $I=\{0,\ldots,n\}$, $x_k=-2^k$,
-$\mathscr B(X)=\mathscr A(-X)$, $\mathscr U(X)=\e^{-X}$, $P_k=\mathscr E_k$, and
-$w_k=w_{n,k}$, in which \eqref{eq:blu-abstract-bridge} is \eqref{eq:qs-bridge} and
-\eqref{eq:blu-abstract-annihilation} is the lower half of \eqref{eq:qs-moment-annihilation}.
-The dyadic structure of the problem is therefore confined to a single place: verifying
-\eqref{eq:blu-abstract-annihilation}, which is where the finite $q$-binomial theorem
-\eqref{eq:half-q-binomial-theorem} is used.  Any other node set with a matching annihilator
-would run through the same argument unchanged, and this is what makes the base-$b$ heuristic
-of \cref{subsec:qs-two-differences} more than an analogy.
-
-The same conclusion has a purely interpolatory reading, which explains what the induction is
-doing.  Because $\mathscr A(0)=1$, the series $\mathscr A(-X)$ is a unit in $\Q[[X]]$, so one
-may introduce a polynomial parameter $z$ and set, as in \cref{subsec:q-binomial-dyadic},
-\begin{equation}
- \mathscr R(z;X)=\frac{\e^{-X}\mathscr A(zX)}{\mathscr A(-X)},
- \qquad
- r_n(z)=[X^n]\,\mathscr R(z;X).                            \label{eq:qs-R-and-rn}
-\end{equation}
-By \eqref{eq:qs-bridge}, $\mathscr R(-2^k;X)=\mathscr E_k(X)$, so $r_n(-2^k)=\beta_{k,n}$.
-
-\begin{proposition}[The coefficient is a polynomial in the node]
-\label{prop:qs-coefficient-polynomial}
-For each $n$, $r_n$ is a polynomial in $z$ of degree at most $n$, and its leading coefficient
-is $a_n$:
-\begin{equation*}
- r_n(z)=a_nz^n+(\text{a polynomial of degree at most }n-1).
-\end{equation*}
-\end{proposition}
-
-\begin{proof}
-Write $\e^{-X}/\mathscr A(-X)=\sum_{i\ge0}u_iX^i$ with $u_0=1$.  Then
-$r_n(z)=\sum_{i=0}^{n}u_{n-i}a_iz^i$, a polynomial of degree at most $n$ whose coefficient of
-$z^n$ is $u_0a_n=a_n$: the only way to produce $z^nX^n$ is to take $a_nz^nX^n$ from
-$\mathscr A(zX)$ and constant terms from both remaining factors.
-\end{proof}
-
-Applying $\mathcal J_n$ from \eqref{eq:qs-Kn-def} to $r_n$ therefore returns $a_n$, which is
-\eqref{eq:qs-extraction-top} again.  This packages the formal-series induction of
-\cref{thm:qs-extraction} into a familiar interpolation statement: the quantity being
-extracted is the leading coefficient of a polynomial of degree $n$ in the geometric scale
-node, and the Gaussian row is the divided-difference stencil that extracts it.
-
-The two derivations of \eqref{eq:qs-extraction-top} given above are not redundant, and the
-difference between them is not stylistic.  The quotient form is the natural analytic
-statement: $\mathscr R(z;X)$ of \eqref{eq:qs-R-and-rn} is a single generating function in
-which the node $z$ appears as a free parameter, so
-\cref{prop:qs-coefficient-polynomial} can say in one line what is being extracted, namely
-the leading coefficient of a polynomial in $z$, and the divided-difference reading of
-\cref{prop:qs-barycentric} then applies verbatim.  That form presupposes the inversion of
-$\mathscr A(-X)$, which is legitimate because $\mathscr A(0)=1$ makes it a unit in
-$\Q[[X]]$, but it is an extra construction.  The product form \eqref{eq:qs-bridge} presupposes
-nothing: extracting a coefficient from a product is a finite convolution
-\eqref{eq:qs-coefficient-identity}, and the induction of \cref{thm:qs-extraction} closes on
-that convolution alone.  A development that works with formal power series --- as the formal
-development of this article does --- proves the product form directly and never needs the
-inverse series, while a reader who wants to see why the stencil is a divided difference wants
-the quotient form.  Both are recorded because each is the shortest route to a different one
-of the two things being asserted.
-
-We can now assemble the one-block identity.  Define the complete numerator
-\begin{equation}
- \mathcal N_{m,n}(Q)
- =\sum_{k=0}^{n}\frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}\,\sigma_{m;k,n+k}(Q), \label{eq:qs-numerator}
-\end{equation}
-so that \eqref{eq:qbinomial-dyadic} says
-$\mathcal F(m/2^n)=\mathcal N_{m,n}(Q)/\bigl(2^{n^2}(1/2;1/2)_n\bigr)$.  The single-block
-case $\mathcal N_{1,n}(Q)$ is the quantity later written $\mathcal N_n^{(Q)}$ in
-\eqref{eq:q-global-numerator}.
-
-\begin{corollary}[Centered inverse-dyadic evaluation]
-\label{cor:qs-inverse-dyadic}
-For every $n\in\N$,
-\begin{equation}
- \mathcal N_{1,n}(0)=\mathfrak m_n\,a_n,
- \qquad
- \frac{\mathcal N_{1,n}(0)}{2^{n^2}(1/2;1/2)_n}=2^{-\binom n2}a_n=F(2^{-n}). \label{eq:qs-one-block}
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-By \eqref{eq:qs-weight-times-beta}, the $k$th summand of $\mathcal N_{1,n}(0)$ equals
-$w_{n,k}\beta_{k,n}$, so $\mathcal N_{1,n}(0)=\sum_kw_{n,k}\beta_{k,n}=\mathfrak m_na_n$ by
-\cref{thm:qs-extraction}.  For the normalization, insert
-\eqref{eq:half-q-mersenne} and use the triangular splitting
-$n^2=\binom{n+1}2+\binom n2$:
-\begin{equation*}
- \frac{\mathfrak m_na_n}{2^{n^2}(1/2;1/2)_n}
- =\frac{\mathfrak m_na_n}{2^{n^2-\binom{n+1}2}\mathfrak m_n}
- =2^{\binom{n+1}2-n^2}a_n=2^{-\binom n2}a_n,
-\end{equation*}
-and the last quantity is $F(2^{-n})$ by \eqref{eq:F-inverse-power}.
-\end{proof}
-
-\subsection{Arbitrary dyadic numerators}
-\label{subsec:qs-numerators}
-
-The passage from $m=1$ to a general numerator costs one extra factor and no new idea.  Define
-the finite Thue--Morse prefix series
-\begin{equation}
- B_m(X)=\sum_{h=0}^{m-1}\varepsilon_h\e^{(m-1-h)X},
- \qquad B_0(X)=0,\quad B_1(X)=1,                           \label{eq:qs-Bm-def}
-\end{equation}
-and the long centered block
-\begin{equation}
- \mathscr D_{m,k}(X)=\sum_{r=0}^{m2^k-1}\varepsilon_r\e^{(r-m2^k)X}
- =\sum_{d\ge0}\sigma_{m;k,d}(0)\frac{X^d}{d!}.             \label{eq:qs-Dmk-def}
-\end{equation}
-
-\begin{lemma}[Long-block factorization]
-\label{lem:qs-long-block}
-For all $m,k\in\N$,
-\begin{equation}
- \mathscr D_{m,k}(X)=B_m\bigl(-2^kX\bigr)\,C_k(X),
- \qquad\text{hence}\qquad
- \frac{\mathscr D_{m,k}(X)}{X^k}=B_m\bigl(-2^kX\bigr)\mathscr H_k(X). \label{eq:qs-long-block}
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-Write $r=h2^k+s$ with $0\le h<m$ and $0\le s<2^k$; this is a bijection onto
-$0\le r<m2^k$.  By \eqref{eq:qs-tm-multiplicative}, $\varepsilon_r=\varepsilon_h\varepsilon_s$.
-The exponent check is the only computation.  In $B_m(-2^kX)C_k(X)$ the pair $(h,s)$
-contributes the exponent
-\begin{equation*}
- -(m-1-h)2^kX+\bigl(s-2^k\bigr)X
- =\bigl(-m2^k+2^k+h2^k+s-2^k\bigr)X
- =\bigl(h2^k+s-m2^k\bigr)X
- =\bigl(r-m2^k\bigr)X,
-\end{equation*}
-which is the exponent of the same pair in \eqref{eq:qs-Dmk-def}.  The second identity follows
-by dividing by $X^k$ and using $\mathscr H_k=C_k/X^k$; note in particular that
-$\mathscr D_{m,k}$ still has a zero of order at least $k$, so
-$\sigma_{m;k,d}(0)=0$ for $d<k$.
-\end{proof}
-
-Introduce the prefixed parametric series
-\begin{equation}
- \mathscr R_m(z;X)=B_m(zX)\,\mathscr R(z;X)
- =\frac{\e^{-X}B_m(zX)\mathscr A(zX)}{\mathscr A(-X)},
- \qquad
- r_{m,n}(z)=[X^n]\,\mathscr R_m(z;X).                      \label{eq:qs-Rm-def}
-\end{equation}
-Because $B_m(zX)\mathscr A(zX)=(B_m\mathscr A)(zX)$, the argument of
-\cref{prop:qs-coefficient-polynomial} applies verbatim: $r_{m,n}$ is a polynomial in $z$ of
-degree at most $n$, and its leading coefficient is
-\begin{equation}
- [X^n]\bigl(B_m(X)\mathscr A(X)\bigr).                     \label{eq:qs-prefix-leading}
-\end{equation}
-Applying $\mathcal J_n$ and using $\mathscr R_m(-2^k;X)=B_m(-2^kX)\mathscr E_k(X)$ gives the
-general extraction identity
-\begin{equation}
- \sum_{k=0}^{n}w_{n,k}\,[X^n]\Bigl(B_m\bigl(-2^kX\bigr)\mathscr E_k(X)\Bigr)
- =\mathfrak m_n\,[X^n]\bigl(B_m(X)\mathscr A(X)\bigr).     \label{eq:qs-general-extraction}
-\end{equation}
-By \eqref{eq:qs-long-block} and the same weight bookkeeping as in
-\eqref{eq:qs-weight-times-beta}, the left side of \eqref{eq:qs-general-extraction} is exactly
-$\mathcal N_{m,n}(0)$.  The right side is the coefficient that the classical rational theory
-already attaches to a dyadic value.
-
-\begin{lemma}[The prefix coefficient is the dyadic value]
-\label{lem:qs-prefix-value}
-For all $m,n\in\N$,
-\begin{equation}
- \mathcal F\!\left(\frac m{2^n}\right)
- =2^{-\binom n2}\,[X^n]\bigl(B_m(X)\mathscr A(X)\bigr).   \label{eq:qs-prefix-value}
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-For $m=1$ one has $B_1=1$, so the right side is $2^{-\binom n2}a_n$, and the claim is
-\eqref{eq:F-inverse-power}.  For general $m$ start from the closed Thue--Morse formula
-\eqref{eq:dyadic-closed} in its signed global form.  Put $t_h=2m-2h-1$, so that the inner
-polynomial factor is
-\begin{equation*}
- \sum_{k=0}^{\lfloor n/2\rfloor}\binom n{2k}c_kt_h^{\,n-2k}
- =n!\,[w^n]\left(\e^{t_hw}\sum_{k\ge0}c_k\frac{w^{2k}}{(2k)!}\right).
-\end{equation*}
-In the present notation the Fourier relation \eqref{eq:G-Fourier} reads
-\begin{equation*}
- \mathscr A(z)=\e^{z/2}\sum_{k\ge0}c_k\frac{(z/2)^{2k}}{(2k)!},
-\end{equation*}
-so setting $z=2w$ gives $\sum_kc_kw^{2k}/(2k)!=\e^{-w}\mathscr A(2w)$; this is the
-generating-function form of \eqref{eq:d-from-c}.  Since $t_h-1=2(m-1-h)$,
-\begin{equation*}
- \sum_{k}\binom n{2k}c_kt_h^{\,n-2k}
- =n!\,[w^n]\Bigl(\e^{2(m-1-h)w}\mathscr A(2w)\Bigr)
- =n!\,2^n\,[X^n]\Bigl(\e^{(m-1-h)X}\mathscr A(X)\Bigr),
-\end{equation*}
-the last step being the substitution $X=2w$, under which $[w^n]f(2w)=2^n[X^n]f(X)$.
-Multiplying by $\varepsilon_h$ and summing over $0\le h<m$ replaces the exponential by
-$B_m(X)$.  Hence \eqref{eq:dyadic-closed} becomes
-\begin{equation*}
- \mathcal F\!\left(\frac m{2^n}\right)
- =\frac{2^{-\binom{n+1}2}}{n!}\cdot n!\,2^n\,[X^n]\bigl(B_m(X)\mathscr A(X)\bigr)
- =2^{\,n-\binom{n+1}2}[X^n]\bigl(B_m(X)\mathscr A(X)\bigr),
-\end{equation*}
-and $\binom{n+1}2-n=\binom n2$.
-\end{proof}
-
-Combining \eqref{eq:qs-general-extraction}, \eqref{eq:qs-prefix-value},
-\eqref{eq:half-q-mersenne}, and $n^2=\binom{n+1}2+\binom n2$ proves the centered case $Q=0$
-of \eqref{eq:qbinomial-dyadic}; \cref{subsec:qs-translation} removes the restriction on $Q$.
-
-Two consequences deserve to be stated separately, because both are easy to misread.
-
-\begin{proposition}[Representation independence]
-\label{prop:qs-representation}
-For all $m,n\in\N$ and every $Q$,
-\begin{equation*}
- \frac{\mathcal N_{m,n}(Q)}{2^{n^2}(1/2;1/2)_n}
- =\frac{\mathcal N_{2m,n+1}(Q)}{2^{(n+1)^2}(1/2;1/2)_{n+1}}.
-\end{equation*}
-\end{proposition}
-
-\begin{proof}
-Both quotients equal $\mathcal F$ evaluated at the same real number, since
-$m/2^n=2m/2^{n+1}$.
-\end{proof}
-
-Nothing about the two expressions is termwise comparable.  Replacing $(m,n)$ by $(2m,n+1)$
-adds one outer term, changes every inner range, changes the exponents $n+k$, and changes the
-$q$-Pochhammer denominator.  The formula is nevertheless exact for every pair $(m,n)$, with
-no requirement that $m/2^n$ be in lowest terms.  Computationally the reduced representation
-is almost always preferable: a deliberately unreduced one only aggravates the cancellation
-analyzed in \cref{subsec:qs-numerics}.
-
-The second point concerns the range of $m$.  If $0\le m\le2^n$, the argument lies in $[0,1]$
-and \eqref{eq:qbinomial-dyadic} computes the bounded value $F(m/2^n)$.  If $m>2^n$, it
-computes the signed global extension \eqref{eq:global-extension}, whose sign on the block
-$[2b,2b+2]$ is $\varepsilon_b$ by \eqref{eq:single-block}.  This is not a cosmetic widening of
-the domain: the endpoint cases are literal finite identities of the same expression.  When
-$m=0$ every inner range is empty and both sides are zero; when $n=0$ the formula degenerates
-to the scale-zero signed block identity, with all conventions --- empty products, empty sums,
-and the natural-power convention $0^0=1$ --- fixed by finiteness rather than by a limit.  For
-instance, at $m=3$ and $n=0$,
-\begin{equation*}
- \frac{\mathcal N_{3,0}(0)}{2^{0}(1/2;1/2)_0}
- =\varepsilon_0(0-3)^0+\varepsilon_1(1-3)^0+\varepsilon_2(2-3)^0
- =1-1-1=-1=\mathcal F(3),
-\end{equation*}
-in agreement with the block rule \eqref{eq:single-block}.
-
-\subsection{Translation invariance}
-\label{subsec:qs-translation}
-
-\begin{theorem}[Common-translation invariance]
-\label{thm:qs-translation}
-Fix $m,n\in\N$.  The map
-\begin{equation*}
- Q\longmapsto\mathcal N_{m,n}(Q)
- =\sum_{k=0}^{n}\frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
- \sum_{r=0}^{m2^k-1}\varepsilon_r\bigl(r-m2^k+Q\bigr)^{\,n+k}
-\end{equation*}
-is a constant polynomial, with the constant value
-$\mathcal N_{m,n}(0)=\mathfrak m_n\,[X^n]\bigl(B_m(X)\mathscr A(X)\bigr)$.
-\end{theorem}
-
-\begin{proof}
-By \eqref{eq:qs-translated-block} and \eqref{eq:qs-long-block}, translating every inner power
-by the same $Q$ multiplies the shifted long-block series by $\e^{QX}$:
-\begin{equation*}
- \sum_{d\ge0}\sigma_{m;k,d}(Q)\frac{X^d}{d!}=\e^{QX}\mathscr D_{m,k}(X),
- \qquad
- \frac{\e^{QX}\mathscr D_{m,k}(X)}{X^k}
- =(-1)^k2^{\binom k2}\e^{QX}B_m\bigl(-2^kX\bigr)\mathscr E_k(X).
-\end{equation*}
-Hence, with the bookkeeping of \eqref{eq:qs-weight-times-beta},
-\begin{align}
- \mathcal N_{m,n}(Q)
- &=\sum_{k=0}^{n}w_{n,k}\,[X^n]\Bigl(\e^{QX}B_m(-2^kX)\mathscr E_k(X)\Bigr) \notag\\
- &=\sum_{j=0}^{n}\frac{Q^j}{j!}
-   \sum_{k=0}^{n}w_{n,k}\,r_{m,n-j}\bigl(-2^k\bigr)
- =\sum_{j=0}^{n}\frac{Q^j}{j!}\,\mathfrak m_n\,\mathcal J_n\bigl[r_{m,n-j}\bigr]. \label{eq:qs-translation-convolution}
-\end{align}
-For $j>0$ the polynomial $r_{m,n-j}$ has degree at most $n-j<n$, so
-$\mathcal J_n[r_{m,n-j}]=0$ by \eqref{eq:qs-moment-annihilation}.  Only $j=0$ survives, and
-its value is $\mathcal N_{m,n}(0)$ by \eqref{eq:qs-general-extraction}.  Every coefficient of
-a positive power of $Q$ therefore vanishes identically.
-\end{proof}
-
-The mechanism is the vanishing-moment property and nothing else.  Expanding
-$(r-m2^k+Q)^{n+k}$ introduces contributions of lower effective coefficient degree, and the
-Gaussian filter has already been engineered to annihilate all of them.  Translation
-invariance is not an extra symmetry of the Fabius function; it is a property of the
-extraction functional.
-
-\begin{warning}
-\label{warn:qs-common-shift}
-The qualifier \emph{common} is essential.  \Cref{thm:qs-translation} asserts that one and the
-same $Q$ may be used in every inner sum.  A shift that depends on the scale index $k$ ---
-recentering each block about its own midpoint, for example --- destroys the cancellation,
-because the step from \eqref{eq:qs-translated-block} to
-\eqref{eq:qs-translation-convolution} then produces a different factor $\e^{Q_kX}$ inside
-each weighted term and the $j>0$ contributions no longer share the single coefficient
-$\mathcal J_n[r_{m,n-j}]$.  Already at $n=1$ the failure is visible: with
-$Q_0=0$ and $Q_1=1$ the numerator becomes
-$(-1)+\tfrac12\bigl((-1)^2-0^2\bigr)=-\tfrac12$ instead of $\tfrac12$.
-\end{warning}
-
-\begin{example}[Symbolic check at $n=1$]
-\label{ex:qs-n1-symbolic}
-Here $\qbinom10{1/2}=\qbinom11{1/2}=1$ and $4^{\binom02}=4^{\binom12}=1$, so
-\begin{align*}
- \mathcal N_{1,1}(Q)
- &=\frac{\sigma_{0,1}(Q)}{1!}+\frac{\sigma_{1,2}(Q)}{2!}\\
- &=(Q-1)+\tfrac12\Bigl((Q-2)^2-(Q-1)^2\Bigr)\\
- &=(Q-1)+\tfrac12\bigl(3-2Q\bigr)
- =Q-1+\tfrac32-Q=\tfrac12,
-\end{align*}
-identically in $Q$, in agreement with $\mathfrak m_1a_1=1\cdot\tfrac12=\tfrac12$.  At larger
-$n$ the same cancellation occurs coefficient by coefficient, but the direct expansion becomes
-unwieldy very quickly; the order argument of \cref{thm:qs-translation} proves all of the
-cancellations at once.
-\end{example}
-
-One further structural point explains why \eqref{eq:qbinomial-dyadic} can be asserted for an
-arbitrary \emph{complex} shift.  \Cref{thm:qs-translation} is not a family of numerical
-equalities at conveniently chosen shifts; it is the statement that a specific element of the
-polynomial ring $\Q[Q]$ is constant.  Once that is known, evaluation at a scalar is a ring
-homomorphism from $\Q[Q]$ into any commutative $\Q$-algebra, and it carries the constant
-polynomial to the same constant.  The rational, real, Gaussian-rational, and complex versions
-of \eqref{eq:qbinomial-dyadic} are therefore all instances of one algebraic fact.  No density
-argument, no continuity argument, and no analytic continuation is involved.  It is worth
-separating three logically different assertions that the formula bundles together: the finite
-sums are algebraic and make sense over any commutative $\Q$-algebra; their interpretation as
-a value of a real function is analytic and belongs to $\R$; and the complex statement is the
-image of the rational one under the embedding $\Q\hookrightarrow\C$.
-
-\subsection{Worked examples}
-\label{subsec:qs-examples}
-
-The smallest cases can be displayed completely, and they already exhibit the double
-cancellation.
-
-\begin{example}[$n=0$]
-\label{ex:qs-n0}
-Here $(1/2;1/2)_0=1$, the only outer index is $k=0$, and the only inner index is $r=0$.  With
-the centered shift $Q=0$,
-\begin{equation*}
- \frac{\mathcal N_{1,0}(0)}{2^0\cdot1}=\frac{(0-1)^0}{0!}=1=F(1).
-\end{equation*}
-The base of the power is $-1$, so no $0^0$ convention is exercised; at $Q=1$ the base is $0$
-and the natural-power convention $0^0=1$ is used instead, with the same value.
-\end{example}
-
-\begin{example}[$n=1$]
-\label{ex:qs-n1}
-Now $(1/2;1/2)_1=1/2$ and the prefactor is $1/\bigl(2^{1}\cdot\tfrac12\bigr)=1$.  The two
-outer terms are
-\begin{align*}
- k=0:&\quad \frac{\qbinom10{1/2}}{4^0\cdot1!}\,\sigma_{0,1}(0)
- =\frac{(0-1)^1}{1}=-1,\\
- k=1:&\quad \frac{\qbinom11{1/2}}{4^0\cdot2!}\,\sigma_{1,2}(0)
- =\frac{(0-2)^2-(1-2)^2}{2}=\frac{4-1}{2}=\frac32.
-\end{align*}
-Their sum is $\mathcal N_{1,1}(0)=-1+\tfrac32=\tfrac12$, and
-$F(1/2)=1\cdot\tfrac12=\tfrac12$.  The two-stage check reads
-$\mathfrak m_1a_1=1\cdot\tfrac12=\tfrac12$ and $2^{1}(1/2;1/2)_1=1$.
-\end{example}
-
-\begin{example}[$n=2$]
-\label{ex:qs-n2}
-Now
-\begin{equation*}
- (1/2;1/2)_2=\left(1-\tfrac12\right)\left(1-\tfrac14\right)=\tfrac38,
- \qquad
- \left(\qbinom20{1/2},\qbinom21{1/2},\qbinom22{1/2}\right)=\left(1,\tfrac32,1\right),
-\end{equation*}
-so the global prefactor is $1/\bigl(2^{4}\cdot\tfrac38\bigr)=1/6$.  The inner sums are
-\begin{align*}
- \sigma_{0,2}(0)&=(0-1)^2=1,\\
- \sigma_{1,3}(0)&=(0-2)^3-(1-2)^3=-8+1=-7,\\
- \sigma_{2,4}(0)&=(0-4)^4-(1-4)^4-(2-4)^4+(3-4)^4=256-81-16+1=160.
-\end{align*}
-The three outer contributions are
-\begin{equation*}
- k=0:\ \frac{1}{2!}=\frac12,\qquad
- k=1:\ \frac{3/2}{3!}\cdot(-7)=-\frac74,\qquad
- k=2:\ \frac{1}{4\cdot4!}\cdot160=\frac53,
-\end{equation*}
-so
-\begin{equation*}
- \mathcal N_{1,2}(0)=\frac12-\frac74+\frac53
- =\frac{6-21+20}{12}=\frac5{12},
- \qquad
- F\!\left(\frac14\right)=\frac16\cdot\frac5{12}=\frac5{72}.
-\end{equation*}
-Both cancellations are visible: the inner sums are already alternating cancellations among
-integer powers, and the outer combination cancels again before leaving the small rational
-value.  The two-stage check is $\mathfrak m_2a_2=3\cdot\tfrac5{36}=\tfrac5{12}$ and
-$2^{4}(1/2;1/2)_2=6$.
-\end{example}
-
-\begin{example}[$n=4$, and why the formula must not be summed in floating point]
-\label{ex:qs-n4}
-At $n=4$ the numerator is $\mathcal N_{1,4}(0)=\mathfrak m_4a_4=315\cdot\tfrac{143}{32400}
-=\tfrac{1001}{720}$, the denominator is $2^{16}(1/2;1/2)_4=2^{6}\cdot315=20160$, and the
-value is $F(1/16)=\tfrac{1001}{14515200}=\tfrac{143}{2073600}\approx6.90\times10^{-5}$.  The
-five outer contributions are shown below.
-\begin{center}
-\begin{tabular}{@{}cccccr@{}}
-\toprule
-$k$&$\qbinom4k{1/2}$&$4^{\binom k2}$&$(4+k)!$&$\sigma_{k,4+k}(0)$&contribution\\
-\midrule
-$0$&$1$&$1$&$24$&$1$&$1/24$\\
-$1$&$15/8$&$1$&$120$&$-31$&$-31/64$\\
-$2$&$35/16$&$4$&$720$&$3304$&$2891/1152$\\
-$3$&$15/8$&$64$&$5040$&$-1057728$&$-787/128$\\
-$4$&$1$&$4096$&$40320$&$903684096$&$1751/320$\\
-\midrule
-\multicolumn{5}{r}{total}&$1001/720$\\
-\bottomrule
-\end{tabular}
-\end{center}
-The single block $k=4$ contributes $1751/320=5.471875$, which is about $3.94$ times the
-entire numerator $1001/720\approx1.390278$; the block $k=3$ contributes $-787/128$, about
-$4.42$ times the numerator in absolute value.  The raw inner sum for that last block is
-$\sigma_{4,8}(0)=903\,684\,096$, larger than the final answer $F(1/16)$ by a factor of about
-$1.3\times10^{13}$.  This is the point of the example.  The formula is exact, but it is
-catastrophically cancelling, and it must never be evaluated term by term in floating-point
-arithmetic.  \Cref{subsec:qs-numerics} quantifies the growth and lists the evaluation
-strategies that work.
-\end{example}
-
-\subsection{What each factor is doing}
-\label{subsec:qs-roles}
-
-Every ingredient of \eqref{eq:qbinomial-dyadic} now has exactly one structural job.
-\Cref{tab:qs-roles} collects them.
-
-The least self-explanatory entry is the normalization $2^{n^2}$, and it becomes transparent
-once the exponent is split as
-\begin{equation}
- n^2=\binom{n+1}2+\binom n2.                               \label{eq:qs-square-split}
-\end{equation}
-The first triangle is the geometric-grid normalization: it converts the $q$-Pochhammer
-product into the Mersenne product through \eqref{eq:half-q-mersenne}, that is, it is the
-endpoint value of the node polynomial at the first node that is not a root,
-\eqref{eq:qs-endpoint-value}.  The second triangle is the inverse-dyadic scaling of the
-Fabius function itself, the factor in $F(2^{-n})=2^{-\binom n2}a_n$ that comes from
-\eqref{eq:global-derivatives}.  So the abrupt-looking square exponent is the sum of a
-grid normalization and a refinement normalization; it is not a single fitted constant.
-
-The half-base Pochhammer product plays three interchangeable roles: it is the endpoint
-product of node differences on the dyadic geometric grid; multiplied by $2^{\binom{n+1}2}$ it
-is the odd Mersenne product $\mathfrak m_n$; and, up to sign, it is the value of the node
-polynomial $(z;1/2)_n$ at $z=2^n$.  It is the geometric analogue of the $n!$ that normalizes
-an ordinary $n$th finite difference: on equally spaced nodes $0,1,\ldots,n$ the endpoint
-product of differences is $n!$, whereas on the nodes $-1,-2,\ldots,-2^n$ it is a power of two
-times a Mersenne product, that is, a half-base $q$-factorial.
-
-\begin{table}[htbp]
-\centering
-\caption{Structural dictionary for the exact dyadic formula \eqref{eq:qbinomial-dyadic}.}
-\label{tab:qs-roles}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}X@{}}
-\toprule
-Ingredient & Structural role\\
-\midrule
-$(1/2;1/2)_n$
- & Endpoint value of the dyadic node polynomial at the first non-root; equivalently the
-   normalized Mersenne product $2^{-\binom{n+1}2}\mathfrak m_n$.  The geometric analogue of
-   the $n!$ in an ordinary finite difference.\\
-$\qbinom nk{1/2}$
- & Barycentric weight at the node $-2^k$, by \cref{prop:qs-barycentric}; equivalently the
-   $k$th expansion coefficient of $(z;1/2)_n$.  It measures no combinatorial choice inside
-   the Fabius function; it is a closed form for a Lagrange denominator.\\
-$\varepsilon_r$
- & Multiplicative character of the binary digit sum, whose generating polynomial factors once
-   per dyadic scale, \eqref{eq:qs-tm-generating}.  An arbitrary alternating sign pattern would
-   not factor scale by scale.\\
-Exponent $n+k$
- & Raw moment degree.  After the Thue--Morse zero of order $k$ is divided out, what remains is
-   the degree-$n$ coefficient the outer stencil needs.\\
-$4^{\binom k2}$
- & Two copies of $2^{-\binom k2}$: one removes the leading constant of the order-$k$ zero, the
-   other is the weight prescribed by \cref{thm:qs-finite-q-binomial}.\\
-$(n+k)!$
- & Converts an exponential power moment into a formal-series coefficient.\\
-$B_m$, the numerator $m$
- & Enters only through the finite Thue--Morse prefix \eqref{eq:qs-Bm-def}.  The Gaussian row
-   encodes the resolution $2^{-n}$, never the numerator.\\
-Shift $Q$
- & Multiplication of every block by $\e^{QX}$; invisible once all coefficients below degree
-   $n$ have been annihilated.  A gauge freedom of the presentation.\\
-$2^{n^2}$
- & The split \eqref{eq:qs-square-split}: geometric-grid normalization
-   $2^{\binom{n+1}2}$ times inverse-dyadic scaling $2^{\binom n2}$.\\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Two nested notions of finite difference}
-\label{subsec:qs-two-differences}
-
-The formula is the composition of two generalized finite differences of different types.
-Making that explicit clarifies both the proof and the numerical behavior.
-
-The inner one is additive.  For a shift operator $\mathsf E^hf(x)=f(x+h)$, the ordinary $k$th
-forward difference is $(1-\mathsf E)^k$ evaluated at $0$, and it annihilates polynomials of
-degree below $k$ using $k+1$ nodes.  The Thue--Morse block functional
-\begin{equation}
- \mathcal U_k[f]=\sum_{r=0}^{2^k-1}\varepsilon_rf(r)       \label{eq:qs-P-functional}
-\end{equation}
-uses $2^k$ nodes and also annihilates every polynomial of degree below $k$, and
-\cref{prop:qs-tm-factorization} says exactly why: its generating polynomial factors into one
-first difference per dyadic scale, so
-\begin{equation}
- \mathcal U_k[f]=\Bigl(\prod_{j=0}^{k-1}\bigl(1-\mathsf E^{2^j}\bigr)f\Bigr)\Big|_{x=0}. \label{eq:qs-P-as-product}
-\end{equation}
-The inner sum is therefore an iterated \emph{additive} difference, but with dyadically
-increasing step sizes $1,2,4,\ldots,2^{k-1}$ rather than a single step.
-
-The outer one is multiplicative.  The functional $\mathcal J_n$ of \eqref{eq:qs-Kn-def}
-annihilates polynomials of degree below $n$ in the node variable and extracts the leading
-coefficient in degree $n$, but its geometry is that of a dilation: moving from one node to the
-next multiplies by $2$.  It is the leading divided difference on a geometric grid, which by
-\cref{subsec:qs-why-geometric} is what a refinement equation requires.
-
-The exact formula composes the two.  First a dyadic additive-difference block is applied to
-the power function, producing a coefficient of the refinement product; then that coefficient
-is viewed as a polynomial in the geometric scale node $-2^k$ and the geometric divided
-difference is applied; what survives is the single leading coefficient $a_n$, or its
-prefix-modified counterpart \eqref{eq:qs-prefix-leading}.  Both operations are triangular with
-respect to polynomial degree, the inner one starting at degree $k$ and the outer at degree
-$n$, and the indices of \eqref{eq:qbinomial-dyadic} are arranged so that the two triangles
-meet at one coefficient:
-\begin{equation}
- \underbrace{n+k}_{\text{raw moment degree}}
- \;-\;\underbrace{k}_{\text{inner forced zero}}
- \;=\;\underbrace{n}_{\text{outer extracted degree}}.      \label{eq:qs-degree-mnemonic}
-\end{equation}
-This is the cleanest mnemonic for the shape of the formula.
-
-\begin{boxedremark}
-\textbf{A base-$b$ heuristic.}  Suppose a formal refinement equation reads
-$\mathscr A(bX)=E(X)\mathscr A(X)$ for an integer $b>1$, and suppose a signed digit character
-supplies a block identity producing $\prod_{j<k}E(-b^jX)$.  Then a geometric interpolation
-step on the nodes $-b^k$ must involve
-\begin{equation*}
- q=b^{-1},\qquad (z;b^{-1})_n=\prod_{j=0}^{n-1}\bigl(1-zb^{-j}\bigr),
- \qquad \qbinom nk{b^{-1}}.
-\end{equation*}
-The digit character for base $b$ is $\omega^{s_b(r)}$ with $\omega=\e^{2\pi\ii/b}$ and $s_b$
-the base-$b$ digit sum; its block generating polynomial is
-$\prod_{j<k}\bigl(1+\omega z^{b^j}+\cdots+\omega^{b-1}z^{(b-1)b^j}\bigr)$, and each factor has
-a simple zero at $z=1$ because $1+\omega+\cdots+\omega^{b-1}=0$.  The total order of vanishing
-is again $k$.  The Fabius case is $b=2$, $\omega=-1$, and it is unusually tight because the
-Thue--Morse signs, the dyadic blocks, and the factor $2$ in \eqref{eq:F-diffeq} are the same
-$2$.  The appearance of $q$-special functions is a general signature of dilation, not a
-peculiarity of one function.
-\end{boxedremark}
-
-\subsection{Why this is not a basic hypergeometric summation}
-\label{subsec:qs-not-hypergeometric}
-
-The outer coefficient of \eqref{eq:qbinomial-dyadic} resembles a terminating basic
-hypergeometric term, and it is tempting to look for a named ${}_r\phi_s$ evaluation
-\cite{gasper2004,dlmf17}.  Recall that the defining feature of such a series is that the ratio
-of consecutive summands is a rational function of $q^k$.  Here the coefficient is
-\begin{equation}
- \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!},              \label{eq:qs-outer-coefficient}
-\end{equation}
-and the presence of the \emph{ordinary} factorial $(n+k)!$ already breaks that property:
-the ratio of consecutive terms acquires the factor $1/(n+k+1)$, which is a rational function
-of $k$ and not of $2^{-k}$.  The Thue--Morse power sum $\sigma_{m;k,n+k}(Q)$ breaks it a
-second time, since it depends on $k$ both through the block length and through the exponent.
-The formula is therefore not a $q$-hypergeometric term at all.  It is a hybrid of three
-calculi: finite $q$-calculus for the geometric scale index $k$; ordinary exponential
-generating functions for the moments and derivatives; and automatic-sequence cancellation for
-the binary digit signs.  The interaction among the three is more informative than a forced
-rewrite as one named function would be.
-
-What the theory does use from $q$-special functions is exactly one thing: the finite node
-polynomial $(z;1/2)_n$ and its root set, employed as an annihilator on a geometric grid.  The
-infinite $q$-binomial theorem, the $q$-gamma function, and the general ${}_r\phi_s$ hierarchy
-are context, not ingredients.  This also explains a fact recorded later in
-\cref{sec:global-binary-reduction}: the global series is not a new infinite basic
-hypergeometric identity, because its outer sum is an analytic binary telescope while every
-$q$-manipulation inside it stays finite.
-
-Two further framings are worth a sentence each.  First, the Jackson $q$-derivative
-$(\partial_qf)(x)=\bigl(f(x)-f(qx)\bigr)/\bigl((1-q)x\bigr)$ samples a multiplicative grid,
-just as an ordinary derivative samples an additive one.  The functional $\mathcal J_n$ is not
-an iterate of $\partial_{1/2}$, because it is normalized as a leading divided difference on
-the fixed nodes $-1,-2,\ldots,-2^n$ rather than as a derivative at a point; but the two arise
-from the same principle, that derivatives and ordinary differences are adapted to
-translations whereas $q$-derivatives and geometric divided differences are adapted to
-dilations.  Second, there is a spectral reading.  Raising the node $-2^k$ to the power $d$
-produces the mode $2^{dk}$ in the scale index $k$, so the outer sum acts on the finite family
-of modes indexed by $d$.  The polynomial $(z;1/2)_n$ annihilates the modes with $d<n$ and
-retains the endpoint mode $d=n$, and its Gaussian coefficients are precisely the taps of that
-finite spectral filter.
-
-\subsection{Numerical practice}
-\label{subsec:qs-numerics}
-
-\Cref{ex:qs-n4} is not an anomaly; it is the generic behavior.  There are three independent
-sources of cancellation in \eqref{eq:qbinomial-dyadic}, and they act on very different scales.
-
-\begin{enumerate}
-\item \emph{Inside each Thue--Morse block.}  The inner sum $\sigma_{m;k,n+k}(Q)$ has $m2^k$
-terms of size roughly $(m2^k)^{n+k}$, but its first $k$ moments vanish identically.  This is
-the dominant effect.  For $m=1$ and $Q=0$ the largest inner sum in the row of index $n$
-exceeds $F(2^{-n})$ by a factor of about $3\times10^{7}$ at $n=3$, $1.3\times10^{13}$ at
-$n=4$, $1.4\times10^{20}$ at $n=5$, $3.8\times10^{28}$ at $n=6$, and $2.8\times10^{49}$ at
-$n=8$.  The loss is superexponential in $n$.
-\item \emph{Across the outer interpolation weights.}  The weights $w_{n,k}$ alternate in sign,
-and the outer sum is a divided difference, so the individual contributions again exceed their
-total.  This effect is comparatively mild and appears to stay bounded: the largest single
-contribution in the row of index $n$ exceeds $|\mathcal N_{1,n}(0)|$ by factors
-$3.0,\,4.2,\,4.7,\,4.4,\,4.1,\,3.8,\,3.7,\,3.6$ for $n=1,\ldots,8$.
-\item \emph{Against the global normalizer.}  The surviving numerator
-$\mathcal N_{1,n}(0)=\mathfrak m_na_n$ is of moderate size, but it is divided by
-$2^{n^2}(1/2;1/2)_n=2^{\binom n2}\mathfrak m_n$, which by
-\eqref{eq:qs-half-poch-infinite} grows like $2^{n^2}$ up to a bounded factor.  The final
-result is thus a small number obtained as a quotient of a moderate number by a very large one.
-\end{enumerate}
-
-Consequently the displayed order of summation destroys essentially all significance in fixed
-precision.  Five evaluation strategies are sound.
-
-\begin{itemize}
-\item \emph{Exact rational arithmetic.}  Every quantity in \eqref{eq:qbinomial-dyadic} is
-rational with a denominator that is an explicit power of two times a product of factorials
-and Mersenne numbers, by \eqref{eq:qs-half-valuation} and \eqref{eq:qs-full-denominator}.
-Nothing is lost, and the intermediate integers, though large, are of predictable size.
-\item \emph{Modular arithmetic with rational reconstruction.}  Evaluate the whole double sum
-modulo several primes that divide neither the factorials, nor $\mathfrak m_n$, nor the powers
-of two involved, then reconstruct the rational value.  Because the answer has a known
-denominator bound, the number of primes needed can be fixed in advance.
-\item \emph{Interval or ball arithmetic.}  If a floating-point route is required, carry
-rigorous enclosures.  The width of the final ball then reports the cancellation honestly
-instead of silently returning noise; in practice the working precision must exceed the
-cancellation exponent estimated in item~(1) above.
-
-\item \emph{Barycentric assembly of the outer weights.}  Do not form $2^{-\binom k2}$ and
-$\qbinom nk{1/2}$ separately and multiply.  By \cref{prop:qs-barycentric} and
-\eqref{eq:qs-node-difference-product} the weight is a single reciprocal,
-\begin{equation*}
- w_{n,k}=\frac{\mathfrak m_n}
- {(-1)^k2^{\binom k2+k(n-k)}\mathfrak m_k\mathfrak m_{n-k}},
-\end{equation*}
-so the whole row is built from the two Mersenne prefix products
-$\mathfrak m_0,\ldots,\mathfrak m_n$ and one exponent per index.  Every intermediate is then
-an integer divided by an explicit power of two, the largest of which is bounded by
-\eqref{eq:qs-half-valuation}; the raw-power route instead builds a large numerator and a
-large denominator that cancel afterwards.
-\item \emph{Direct prefix coefficient for a general numerator.}  For $m>1$ do not expand the
-double sum of \eqref{eq:qbinomial-dyadic}, whose inner ranges have total length
-$m(2^{n+1}-1)$.  Compute instead the single coefficient that
-\eqref{eq:qs-prefix-value} identifies with the value.  Expanding \eqref{eq:qs-Bm-def} gives
-$[X^j]B_m=\bigl(\sum_{h<m}\varepsilon_h(m-1-h)^j\bigr)/j!$, hence
-\begin{equation*}
- \mathcal F\!\left(\frac m{2^n}\right)
- =2^{-\binom n2}\sum_{i=0}^{n}\frac{a_i}{(n-i)!}
- \sum_{h=0}^{m-1}\varepsilon_h\,(m-1-h)^{\,n-i},
-\end{equation*}
-with the $a_i$ taken from \eqref{eq:qs-a-recurrence}.  This costs $\bigO(mn)$ rational
-operations rather than $\bigO(m2^n)$, and it exhibits none of the cancellation catalogued
-above, since the only signed sum left is the short Thue--Morse prefix.
-\end{itemize}
-
-The translation freedom of \cref{thm:qs-translation} is occasionally useful here, since a
-well-chosen common $Q$ reduces the magnitude of the inner bases without changing the exact
-value; centering a single block near the mean of its nodes is the natural choice.  It reduces
-the intermediate magnitudes but does not remove the cancellation, whose source is the forced
-vanishing of the low moments.
-
-Finally, the derivation itself supplies a two-stage debugging check that is far easier to
-localize than a comparison of the complete nested expression in one step.  Verify
-\begin{equation}
- \mathcal N_{1,n}(0)\overset{?}{=}\mathfrak m_na_n
- \qquad\text{and then}\qquad
- 2^{n^2}(1/2;1/2)_n\overset{?}{=}2^{\binom n2}\mathfrak m_n \label{eq:qs-two-stage-check}
-\end{equation}
-separately.  At $n=2$ these read $\mathcal N_{1,2}(0)=3\cdot\tfrac5{36}=\tfrac5{12}$ and
-$2^{4}\cdot\tfrac38=6$, whose quotient is $\tfrac5{72}$; at $n=4$ they read
-$\mathcal N_{1,4}(0)=315\cdot\tfrac{143}{32400}=\tfrac{1001}{720}$ and
-$2^{16}\cdot\tfrac{315}{1024}=20160$, whose quotient is $\tfrac{143}{2073600}$.  A failure in
-the first equation localizes the error in the Thue--Morse sums, the Gaussian row, or the
-exponents; a failure in the second localizes it in the normalization alone.  The exact data of
-\cref{app:data} give the necessary reference values.
-
-The general lesson is the one already drawn in \cref{sec:computation}: the $q$-binomial
-formula is a structural identity, not an evaluator.  For actual computation of dyadic values,
-the bit recursion of \cref{sec:dyadic} and the recurrence \eqref{eq:qs-a-recurrence} are both
-far better conditioned.  What the $q$-formula supplies is a denominator audit --- it records
-exactly where the powers of two enter, isolates the odd Mersenne part, and reduces the rest to
-an integer signed-power-sum problem --- together with the interpolation picture that makes
-translation invariance, the raw-coordinate variant \eqref{eq:qbinomial-raw}, and the
-Toeplitz-row phenomenon of \cref{sec:q-discrete-limit} all instances of one identity.
-
-\subsection{How to reconstruct the formula from scratch}
-\label{subsec:blu-blueprint}
-
-The proofs above are arranged for verification: each ingredient is isolated, stated, and
-checked.  A reader who wants to rebuild \eqref{eq:qbinomial-dyadic} without them needs a
-different arrangement, namely the shortest chain of forced steps.  That chain is the
-following, and it fits on one page.  Nothing in it is a guess: at every stage the next
-object is the only one that can appear.
-
-\begin{enumerate}
-\item \emph{Normalize the half moments.}  Define $d_n$ by \eqref{eq:d-integral}, put
-$a_n=d_n/n!$ and $\mathscr A(X)=\sum_{n\ge0}a_nX^n$ as in \eqref{eq:qs-a-and-series}, and
-prove the reciprocal-power theorem $F(2^{-n})=2^{-\binom n2}a_n$, that is
-\eqref{eq:F-inverse-power}.  From here to the last step the Fabius function is present only
-through the single rational sequence $(a_n)$.
-
-\item \emph{Package the refinement as a generating-series identity.}  The half-moment
-recurrence \eqref{eq:d-recurrence}, in the normalized form \eqref{eq:qs-a-recurrence}, is
-equivalent coefficient by coefficient to the one-line identity
-$\mathscr A(2X)=E(X)\mathscr A(X)$ of \eqref{eq:q-moment-refinement}, with
-$E(X)=(\e^X-1)/X$.  This is an identity in $\Q[[X]]$; no radius of convergence is required
-for any later step.
-
-\item \emph{Form the Thue--Morse block generating polynomial.}  Expanding the binary digits
-of $r$ gives $\sum_{r<2^k}\varepsilon_rz^r=\prod_{j<k}\bigl(1-z^{2^j}\bigr)$, which is
-\eqref{eq:thue-generating-product} and \cref{prop:qs-tm-factorization}.  One factor appears
-per dyadic scale; an arbitrary alternating sign pattern would not factor this way.
-
-\item \emph{Substitute the exponential, center, and divide out the forced zero.}  Put
-$z=\e^X$ and multiply by $\e^{-2^kX}$, which centers the block at its right endpoint and
-produces $C_k$ of \eqref{eq:qs-Ck-def}.  Each factor is $1-\e^{u}=-u\,E(u)$ with $u=2^jX$,
-so the product carries an explicit zero of order $k$ with leading constant
-$(-1)^k2^{\binom k2}$; this is \eqref{eq:qs-Ck-factor}.  Dividing by $X^k$ leaves
-$\mathscr E_k(X)=\e^{-X}\prod_{j<k}E(-2^jX)$ up to that constant, which is
-\eqref{eq:qs-Hk}.  Reading the vanishing coefficients off the same display gives Prouhet's
-cancellation \eqref{eq:qs-prouhet} for free.
-
-\item \emph{Identify the quotient series by its product identity with the moment series.}
-Iterate \eqref{eq:q-moment-refinement} at $-X,-2X,\ldots,-2^{k-1}X$ and multiply by
-$\e^{-X}$: the result is the bridge
-$\mathscr E_k(X)\mathscr A(-X)=\e^{-X}\mathscr A(-2^kX)$ of \eqref{eq:qs-bridge}.  This is
-the hinge of the whole derivation.  The same product $\prod_{j<k}E(-2^jX)$ has now been
-produced twice, once by the binary digit character and once by the dilation equation, and
-the right-hand side depends on $k$ only through the rescaling $-2^k$.
-
-\item \emph{Introduce the geometric nodes and the half-base weights.}  Set $x_k=-2^k$ and
-$w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}$ as in \eqref{eq:qs-weights-nodes}.  The base
-$q=1/2$ is not chosen: it is the reciprocal of the dilation ratio in
-\eqref{eq:q-moment-refinement}, so it is forced by step~2.
-
-\item \emph{Kill the low moments with the finite $q$-binomial theorem.}  Expand
-$(z;1/2)_n$ by \eqref{eq:half-q-binomial-theorem}, then use that its roots are exactly
-$1,2,\ldots,2^{n-1}$ and that its value at the first non-root $z=2^n$ is
-$(-1)^n\mathfrak m_n$.  In the node variable this is
-\eqref{eq:qs-moment-annihilation}: the weights annihilate $x_k^{\,d}$ for $d<n$ and return
-$\mathfrak m_n$ at $d=n$.
-
-\item \emph{Isolate the degree-$n$ coefficient.}  Two routes are available and give the same
-identity.  The leading-coefficient route observes, as in
-\cref{prop:qs-coefficient-polynomial}, that $[X^n]\mathscr R(z;X)$ is a polynomial of degree
-at most $n$ in the node $z$ with leading coefficient $a_n$, so step~7 extracts exactly that
-leading coefficient.  The inductive route, \cref{thm:qs-extraction}, extracts the
-coefficient of $X^d$ from \eqref{eq:qs-bridge} and runs a strong induction on $d$, never
-dividing by $\mathscr A(-X)$.  Either yields
-$\sum_{k}w_{n,k}\beta_{k,n}=\mathfrak m_n\,a_n$, which is \eqref{eq:qs-extraction-top}.
-
-\item \emph{Recognize the weighted summand.}  Combining
-\eqref{eq:qs-beta-from-sigma} with \eqref{eq:qs-weights-nodes} makes the two signs
-$(-1)^k$ cancel and the two triangular powers of two combine, so that
-$w_{n,k}\beta_{k,n}$ is literally the $k$th summand of \eqref{eq:qbinomial-dyadic}; this is
-\eqref{eq:qs-weight-times-beta}.  Hence the numerator \eqref{eq:qs-numerator} at $m=1$,
-$Q=0$ equals $\mathfrak m_n\,a_n$.
-
-\item \emph{Normalize.}  Convert the half-base Pochhammer product into the odd Mersenne
-product by \eqref{eq:half-q-mersenne}, and split the exponent as
-$n^2=\binom{n+1}2+\binom n2$, which is \eqref{eq:qs-square-split}.  The first triangle
-cancels the $q$-product, the second is the inverse-dyadic scaling already fixed in step~1.
-The outcome is \eqref{eq:qs-one-block}.
-
-\item \emph{Get translation invariance from the order-$n$ vanishing.}  A common shift $Q$
-multiplies every block series by $\e^{QX}$, by \eqref{eq:qs-translated-block}.  Expanding
-that exponential contributes only coefficients of degree below $n$ in the node, and step~7
-has already annihilated all of them, so every positive power of $Q$ drops out and
-$\mathcal N_{m,n}(Q)$ is a constant polynomial.  This is \cref{thm:qs-translation}; the word
-\emph{common} may not be dropped, by \cref{warn:qs-common-shift}.
-
-\item \emph{Extend to a general numerator by the long-block factorization.}  Write
-$r=h2^k+s$ with $0\le h<m$ and $0\le s<2^k$ and use multiplicativity of the Thue--Morse
-sign: the long block factors as
-$\mathscr D_{m,k}(X)=B_m\bigl(-2^kX\bigr)C_k(X)$, which is \eqref{eq:qs-long-block}.  Steps
-6--10 then apply verbatim with $\mathscr A$ replaced by $B_m\mathscr A$, and the extracted
-coefficient $[X^n]\bigl(B_m(X)\mathscr A(X)\bigr)$ is the dyadic value itself by
-\eqref{eq:qs-prefix-value}.  No new cancellation is needed.
-
-\item \emph{Pass to the global series.}  Identify each normalized numerator with a Taylor
-coefficient of $\mathcal F$ through \eqref{eq:q-taylor-normalization}, and insert those
-coefficients scale by scale into the absolutely convergent binary-reduction telescope of
-\cref{sec:global-binary-reduction}.
-\end{enumerate}
-
-Only the last step involves convergence; steps 1--12 are finite identities in $\Q$ or in
-$\Q[[X]]$.  In particular neither the inverse-dyadic formula
-\eqref{eq:qs-one-block} nor its independence of the shift $Q$ requires analytic
-continuation, contour integration, or any infinite $q$-series summation theorem.
+Its translated numerator is constant by
+\lean{qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const}, and the value identity is
+\lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum} in
+\path{FabiusRawQBinomialScalar.lean}.  Generic-\(q\) interpolation formulas, barycentric
+identities, numerical cancellation studies, and complexity comparisons are maintained in the
+dyadic research-frontier notebooks rather than used as theorems here.
 
 \section{The global binary-reduction telescope}
 \label{sec:global-binary-reduction}
@@ -6839,18 +5059,10 @@ subtractions.
 
 \begin{warning}
 \label{warn:blu-natural-subtraction}
-The same reading discipline applies to the \emph{base} of the inner powers, and there the
-article's displays give no visual warning at all.  In
-\eqref{eq:qs-sigma-def} and in \eqref{eq:qbinomial-dyadic} the quantity $r-m2^k+Q$ begins
-life with natural numbers: $r$ is a summation index, $m$ is a numerator, and $2^k$ is a
-block length.  The subtraction must nevertheless be performed after these have been embedded
-in a field of characteristic zero.  Truncated natural subtraction returns $0$ whenever
-$r<m2^k$, that is for every term of every inner sum, so the whole inner sum would collapse
-to $\bigl(\sum_{r<m2^k}\varepsilon_r\bigr)Q^{\,n+k}$ and the identity would be destroyed.
-Already at $m=n=1$ and $Q=0$ the truncated reading gives $\sigma_{0,1}(0)=0$ and
-$\sigma_{1,2}(0)=0$, hence numerator $0$, whereas the correct value is $\tfrac12$ as in
-\cref{ex:qs-n1}.  The centered coordinate is negative by design: it is what makes the block
-of length $m2^k$ end at the evaluation point.
+In \eqref{eq:qs-sigma-def} and \eqref{eq:qbinomial-dyadic}, the summation indices are cast
+into the ambient characteristic-zero field before the subtraction in $r-m2^k+Q$ is
+performed.  This is the typing used by the formal theorem; the displayed subtraction is
+therefore field subtraction, never truncated subtraction on natural numbers.
 \end{warning}
 
 \begin{theorem}[Corrected parity-power series]
@@ -7219,15 +5431,8 @@ gives the exact evaluation
 \begin{equation}
  \sum_{j=0}^{n}|\omega_{n,j}|=\frac{(-1/2;1/2)_n}{(1/2;1/2)_n}, \label{eq:qs-row-variation-exact}
 \end{equation}
-which is the first equality in \eqref{eq:discrete-row-variation}.  The uniform bound follows
-because $(-1/2;1/2)_n$ increases to $(-1/2;1/2)_\infty=2.38423\ldots$ while $(1/2;1/2)_n$
-decreases to $(1/2;1/2)_\infty=0.28878\ldots$, so the quotient increases to
-\begin{equation}
- \frac{(-1/2;1/2)_\infty}{(1/2;1/2)_\infty}=8.25598\ldots<16. \label{eq:qs-row-variation-limit}
-\end{equation}
-The first values of the quotient are $1,3,5,45/7,51/7,1683/217,12155/1519$ for
-$n=0,\ldots,6$.  The constant $16$ in \eqref{eq:discrete-row-variation} is therefore a
-comfortable rounding of a genuine finite supremum, not an artifact of a lossy estimate.
+which is the first equality in \eqref{eq:discrete-row-variation}.  The formally proved
+finite-product estimate supplies the bound by $16$ used in the Toeplitz argument above.
 
 \section{Iterated prefix sums of the signed Thue--Morse sequence}
 \label{tm:sec-prefix}
@@ -7237,8 +5442,8 @@ this article: once as the coefficient sequence of the locally finite global expa
 \eqref{eq:global-extension}, and once as the sign pattern that makes the finite dyadic sums
 of \cref{sec:dyadic} collapse.  There is a third, entirely discrete, way in which
 the same signs produce the Fabius function.  Sum the sequence, sum the result, and iterate.
-After $k$ summations the sequence has been convolved with a discrete B-spline kernel of
-order $k$, and after a dyadic normalization the resulting integer grid reproduces, in the
+After $k$ summations the sequence has been convolved with an explicit binomial kernel, and
+after a dyadic normalization the resulting integer grid reproduces, in the
 limit, the Rvachev bump and hence $F$.
 
 This section develops that construction: the convolution law and its explicit binomial
@@ -7252,7 +5457,7 @@ the end: the lower branch of Lambert's $W$-function, which the asymptotic sectio
 article use but never construct, and an exact binomial--logarithm formula for the
 Thue--Morse bit.
 
-\subsection{Iterated prefix sums and the discrete B-spline law}
+\subsection{Iterated prefix sums and the binomial convolution law}
 \label{tm:sub-convolution}
 
 \begin{definition}[Iterated prefix sums]
@@ -7290,10 +5495,10 @@ The general structure is a discrete convolution.  Write
 \end{equation}
 for the number of ways of writing $i$ as an ordered sum of $k$ nonnegative integers.  The
 family $\mathcal B_k$ is the $k$-fold discrete convolution power of the constant kernel
-$\mathcal B_1\equiv1$; it is the discrete B-spline of order $k$.  Because the argument
+$\mathcal B_1\equiv1$.  Because the argument
 $i=n-m$ is automatically nonnegative in the sums below, no indicator function is needed.
 
-\begin{theorem}[Discrete B-spline convolution law]
+\begin{theorem}[Binomial convolution law]
 \label{thm:tm-convolution}
 For every $k\ge1$ and every $n\ge0$,
 \begin{equation}
@@ -7525,9 +5730,8 @@ factor $1-z^{2^j}$ with $j\ge r$.
 
 The two identities of \cref{thm:tm-generating} connect the prefix sums to the polynomial
 approximants used in \cref{tm:sub-corrected}.  These are the combinatorial step polynomials
-already introduced in \eqref{eq:four-P-product}, whose coefficients, degree and unimodality
-are recorded in \cref{lem:four-P-product}; we restate them here in the index convention of
-this section:
+already introduced in \eqref{eq:four-P-product}; their coefficient interpretation and exact
+degree were proved there.  In the index convention of this section,
 \begin{equation}
  \mathcal P_n(z)=\prod_{i=1}^{n}\bigl(1+z+\cdots+z^{2^i-1}\bigr),
  \qquad
@@ -7615,13 +5819,8 @@ shifted by one, because \eqref{eq:tm-prefix-eq-coeff} matches $\sigma_{n+1}$ wit
 the grid index $m$ must be read as labelling the \emph{center} of a cell of width $2^{-n}$,
 not the left endpoint of a cell of width $2^{-(n+1)}$.
 
-Recall from \eqref{eq:random-Y} and \eqref{eq:up-density} that $\Up$ is the density of
-$Y=\sum_{i\ge0}V_i2^{-i-1}$, with $V_i$ independent and uniform on $[-1,1]$.  Replacing each
-uniform variable by a lattice uniform variable produces an exact finite discrete law.
-Concretely, let $Z_1,\ldots,Z_n$ be independent with $Z_i$ uniform on
-$\{0,1,\ldots,2^i-1\}$, so that $Z_1+\cdots+Z_n$ has generating polynomial $\mathcal P_n$ of
-\eqref{eq:tm-approx-poly} and total mass $\mathcal P_n(1)=2^{\binom{n+1}2}$.  Place the mass of the
-monomial $z^m$ at
+For the polynomial $\mathcal P_n$ of \eqref{eq:tm-approx-poly}, place the coefficient of
+the monomial $z^m$ at
 \begin{equation}
  \xi_{n,m}=\frac{2m-g_n}{2^{n+1}},                    \label{eq:tm-center}
 \end{equation}
@@ -7631,8 +5830,7 @@ support interval
 \[
  \left[-1+\frac{n+1}{2^{n+1}},\ 1-\frac{n+1}{2^{n+1}}\right].
 \]
-The resulting
-density is the step function
+The resulting step approximant is
 \begin{equation}
  \mathcal W_n(x)=\frac{2^n}{2^{\binom{n+1}2}}
  \sum_{m=0}^{g_n}\bigl[z^m\bigr]\mathcal P_n(z)\cdot
@@ -7855,17 +6053,6 @@ $|\log\epsilon|=-\log\epsilon$, and
  &=\log\frac{-\log\epsilon}{y}\longrightarrow\log1=0. \qedhere
 \end{align*}
 \end{proof}
-
-\begin{remark}
-\Cref{thm:tm-lambert-expansion} is an $\smallo(1)$ statement, not a statement with a rate,
-and it is the first two terms only.  Neither property is a defect of the proof; both are
-reasons why the elementary displays of \cref{sec:elementary-asymptotic} cannot simply
-substitute it for the exact phase $\lambda(x)$ in \eqref{eq:sharp-main-lambda}.  The main
-exponent there contains $-L\lambda^2/2$, so a phase error of size $\eta$ moves the answer by
-about $L\lambda\eta$; the phase must therefore be resolved several orders beyond
-\eqref{eq:tm-lambert-expansion}, and the periodic term must still be evaluated at the exact
-phase.
-\end{remark}
 
 \subsection{A binomial--logarithm formula for the Thue--Morse bit}
 \label{tm:sub-binomial-log}
