@@ -18,52 +18,10 @@ open Set
 
 namespace Fabius
 
-/-- Folding a bounded candidate about zero always produces an even function.
-No Fabius equations are needed for this structural fact. -/
-theorem rvachevUp_even (F : BoundedFabius) :
-    Function.Even (rvachevUp F) := by
-  intro x
-  by_cases hx : x = 0
-  · subst x
-    simp
-  by_cases hxpos : 0 < x
-  · have hnx : -x ≤ 0 := by linarith
-    have hxnot : ¬ x ≤ 0 := not_le.mpr hxpos
-    simp only [rvachevUp, if_pos hnx, if_neg hxnot]
-    congr 1
-    ring
-  · have hxneg : x < 0 := lt_of_le_of_ne (le_of_not_gt hxpos) hx
-    have hnxnot : ¬ -x ≤ 0 := by linarith
-    have hxle : x ≤ 0 := hxneg.le
-    simp only [rvachevUp, if_neg hnxnot, if_pos hxle]
-    congr 1
-    ring
-
 /-- Backwards-compatible form of `rvachevUp_even` for an `IsFabius` candidate. -/
 theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
     Function.Even (rvachevUp F) :=
   rvachevUp_even F
-
-/-- Rvachev's folded function vanishes at and to the left of `-1`. -/
-theorem rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-/-- Rvachev's folded function vanishes at and to the right of `1`. -/
-theorem rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-/-- A point outside the open support interval is a zero of Rvachev's function. -/
-theorem rvachevUp_eq_zero_of_not_mem_Ioo (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : x ∉ Ioo (-1 : ℝ) 1) :
-    rvachevUp F x = 0 := by
-  by_cases hleft : x ≤ -1
-  · exact rvachevUp_eq_zero_of_le_neg_one F hF hleft
-  · apply rvachevUp_eq_zero_of_one_le F hF
-    have hxinside : -1 < x := lt_of_not_ge hleft
-    by_contra hright
-    exact hx ⟨hxinside, lt_of_not_ge hright⟩
 
 /-- Folding preserves the pointwise range `[0,1]` of a bounded candidate. -/
 theorem rvachevUp_mem_unitInterval (F : BoundedFabius) (x : ℝ) :
@@ -147,8 +105,7 @@ private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
     have hshift : HasDerivAt (fun y : ℝ => fabiusReal F (y + 1)) 0 x := by
       exact hzero.comp_add_const x 1
     have hup : rvachevUp F (2 * x + 1) = 0 := by
-      rw [rvachevUp, if_pos (by linarith : 2 * x + 1 ≤ 0),
-        hF.zero_of_nonpos _ (by linarith)]
+      exact rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
     rw [hup]
     simpa using hshift
   · subst x
@@ -157,9 +114,7 @@ private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
       simpa [hF.zero_of_nonpos 0 le_rfl] using hd
     have hshift := hd0.comp_add_const (-1 : ℝ) 1
     have hup : rvachevUp F (2 * (-1 : ℝ) + 1) = 0 := by
-      rw [show 2 * (-1 : ℝ) + 1 = -1 by norm_num, rvachevUp,
-        if_pos (by norm_num)]
-      simpa using hF.zero_of_nonpos 0 le_rfl
+      exact rvachevUp_eq_zero_of_le_neg_one F hF (by norm_num)
     rw [hup]
     simpa using hshift
   · rcases lt_trichotomy x (-(1 / 2 : ℝ)) with hxhalf | hxhalf | hxhalf
@@ -190,7 +145,7 @@ private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
         have hd' : HasDerivAt (fabiusReal F) 0 ((0 : ℝ) + 1) := by simpa using hd
         have hshift := hd'.comp_add_const 0 1
         have hup : rvachevUp F (2 * (0 : ℝ) + 1) = 0 := by
-          simp [rvachevUp, hF.zero_of_nonpos]
+          exact rvachevUp_eq_zero_of_one_le F hF (by norm_num)
         rw [hup]
         simpa using hshift
       · have htlow : 1 / 2 < x + 1 := by linarith
@@ -221,8 +176,7 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
   rcases lt_trichotomy x 0 with hx | rfl | hx
   · have hmain := rvachev_hasDerivAt_of_neg F hF hx
     have hsecond : rvachevUp F (2 * x - 1) = 0 := by
-      rw [rvachevUp, if_pos (by linarith : 2 * x - 1 ≤ 0),
-        hF.zero_of_nonpos _ (by linarith)]
+      exact rvachevUp_eq_zero_of_le_neg_one F hF (by linarith)
     rw [hsecond]
     simpa using hmain
   · have hl0 := rvachev_left_hasDerivAt F hF (x := 0) le_rfl
@@ -252,9 +206,9 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
     have hu := hl.union hr
     rw [Iic_union_Ici] at hu
     have hzero : rvachevUp F 1 = 0 := by
-      simp [rvachevUp, hF.zero_of_nonpos]
+      exact rvachevUp_eq_zero_of_one_le F hF le_rfl
     have hnegone : rvachevUp F (-1) = 0 := by
-      simp [rvachevUp, hF.zero_of_nonpos]
+      exact rvachevUp_eq_zero_of_le_neg_one F hF le_rfl
     simpa [hzero, hnegone] using hu
   · have hneg := rvachev_hasDerivAt_of_neg F hF (show -x < 0 by linarith)
     have hneg' : HasDerivAt (rvachevUp F)
@@ -267,9 +221,9 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       simpa using (rvachev_even F hF y).symm
     convert hup using 1
     · have hfar : rvachevUp F (2 * x + 1) = 0 := by
-        rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
+        exact rvachevUp_eq_zero_of_one_le F hF (by linarith)
       rw [hfar]
-      have heven := rvachev_even F hF (2 * x - 1)
+      have heven := rvachevUp_even F (2 * x - 1)
       have heq : rvachevUp F (2 * (-x) + 1) = rvachevUp F (2 * x - 1) := by
         convert heven using 1 <;> ring
       rw [heq]

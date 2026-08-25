@@ -438,6 +438,15 @@ Among them:
 6. The exponent in `R_n` is positive in equation (27), its proof, and its
    displayed values.  The development uses that consistent positive exponent.
 
+## Contributing and coordination
+
+A draft
+[multi-agent coordination proposal](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
+describes suggested work ownership, pinned synchronization windows, validation
+scheduling, handoffs, and integration for concurrent Fabius development.  It
+is not current project policy; review, counterexamples, and alternative
+proposals are welcome.
+
 ## Checking
 
 From the repository root:
