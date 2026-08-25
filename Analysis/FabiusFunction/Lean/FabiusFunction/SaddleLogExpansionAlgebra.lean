@@ -51,7 +51,8 @@ Lambert displacement coefficients).
   exponential recurrences are inverse coefficient transforms after imposing
   the necessary unit-constant and zero-constant normalizations.  The
   positive-index forms `expCoeff_logCoeff_of_pos` and
-  `logCoeff_expCoeff_of_pos` need no normalization at all.
+  `logCoeff_expCoeff_of_pos` need no normalization at all, while the
+  `..._eq_ite` forms state the exact all-index normalization.
 * `logCoeff_congr_of_pos` -- coefficient `n` depends only on the positive
   input coefficients through order `n`; `logCoeff_congr` is the convenient
   unrestricted-index wrapper.  This is what lets a truncated mass polynomial
@@ -62,13 +63,13 @@ Lambert displacement coefficients).
   evaluation of function-valued coefficients at a point, and preserves parity
   of the coefficients in a parameter.
 
-Conventions.  `logCoeff a` is defined for every `a` but never reads `a 0`;
-the normalization `a 0 = 1` is a hypothesis of each correctness statement
-rather than part of the definition, and those statements are false without
-it.  Fixing `b_0 = 0` selects the branch of the logarithm with vanishing
-constant term.  The rational scalar `(n+1)⁻¹` is the only reason
-`Algebra ℚ R` is assumed throughout; no topology, order, or norm is used
-anywhere in this module.
+Conventions.  `logCoeff a` is defined for every `a` but never reads `a 0`.
+The differential-equation and normalized inverse statements therefore assume
+`a 0 = 1`; the positive-index and explicit `ite` forms instead state exactly
+what happens without that hypothesis.  Fixing `b_0 = 0` selects the branch of
+the logarithm with vanishing constant term.  The rational scalar `(n+1)⁻¹` is
+the only reason `Algebra ℚ R` is assumed throughout; no topology, order, or
+norm is used anywhere in this module.
 -/
 
 set_option autoImplicit false
@@ -395,6 +396,28 @@ theorem logCoeff_expCoeff_of_pos (E : ℕ → R) (n : ℕ) (hn : 0 < n) :
     logCoeff (expCoeff E) n = logCoeff (expCoeff E') n := by rw [hexp]
     _ = E' n := logCoeff_expCoeff E' hE'zero n
     _ = E n := by simp [E', Nat.ne_of_gt hn]
+
+/-- Unconditional all-index form of `expCoeff_logCoeff_of_pos`. At index zero
+the exponential recurrence has its fixed normalization `1`; every positive
+coefficient recovers the input, independently of `a 0`. -/
+theorem expCoeff_logCoeff_eq_ite (a : ℕ → R) (n : ℕ) :
+    expCoeff (logCoeff a) n = if n = 0 then 1 else a n := by
+  by_cases hn : n = 0
+  · subst n
+    simp
+  · rw [if_neg hn]
+    exact expCoeff_logCoeff_of_pos a n (Nat.pos_of_ne_zero hn)
+
+/-- Unconditional all-index form of `logCoeff_expCoeff_of_pos`. At index zero
+the logarithmic recurrence has its fixed normalization `0`; every positive
+coefficient recovers the input, independently of `E 0`. -/
+theorem logCoeff_expCoeff_eq_ite (E : ℕ → R) (n : ℕ) :
+    logCoeff (expCoeff E) n = if n = 0 then 0 else E n := by
+  by_cases hn : n = 0
+  · subst n
+    simp
+  · rw [if_neg hn]
+    exact logCoeff_expCoeff_of_pos E n (Nat.pos_of_ne_zero hn)
 
 /-- Formation of logarithmic coefficients commutes with morphisms of
 commutative rational algebras. -/

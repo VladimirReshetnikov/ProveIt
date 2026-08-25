@@ -19,7 +19,10 @@ Wolfram Language.
 The proof is stronger: translating every inner power by the same `c : ℚ`
 leaves the complete q-binomial numerator unchanged.  Thus the source's
 mandatory `c = 1/2` expression and the centered/unshifted `c = 0` expression
-have the same value.
+have the same value.  At arbitrary dyadic arguments, the resulting finite
+formula depends only on the represented rational number: numerator and
+denominator exponent may be refined, and even the common translation may be
+changed simultaneously.
 -/
 
 set_option autoImplicit false
@@ -1433,14 +1436,82 @@ theorem fabius_dyadic_eq_qBinomialThueMorseDyadicFormula
   fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicFormula
     fabius fabius_spec m n hm
 
+/-- The arbitrary translated finite formula depends only on the represented
+dyadic rational.  The two representations may use different common
+translations as well as different numerators and denominator exponents. -/
+theorem qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq
+    (q₁ q₂ : ℚ) (n₁ n₂ m₁ m₂ : ℕ)
+    (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
+      (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
+    qBinomialThueMorseDyadicTranslatedFormula q₁ m₁ n₁ =
+      qBinomialThueMorseDyadicTranslatedFormula q₂ m₂ n₂ := by
+  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula,
+    ← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula,
+    fabiusDyadic_eq_extendedFabiusDyadicValue_nat,
+    fabiusDyadic_eq_extendedFabiusDyadicValue_nat]
+  apply extendedFabiusDyadicValue_eq_of_rat_eq n₁ n₂ (m₁ : ℤ) (m₂ : ℤ)
+  norm_num only [Int.cast_natCast]
+  exact h
+
+/-- The translated finite formula splits canonically into its dyadic block sign
+and the formula at the remainder.  The two translation parameters may differ:
+both formulas represent the same translation-independent Fabius values. -/
+theorem qBinomialThueMorseDyadicTranslatedFormula_eq_block_sign_mul_mod
+    (q₁ q₂ : ℚ) (m n : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormula q₁ m n =
+      (thueMorseSign (m / 2 ^ (n + 1)) : ℚ) *
+        qBinomialThueMorseDyadicTranslatedFormula q₂
+          (m % 2 ^ (n + 1)) n := by
+  calc
+    qBinomialThueMorseDyadicTranslatedFormula q₁ m n = fabiusDyadic n m :=
+      (fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula q₁ m n).symm
+    _ = (thueMorseSign (m / 2 ^ (n + 1)) : ℚ) *
+          fabiusDyadic n (m % 2 ^ (n + 1)) :=
+      fabiusDyadic_eq_block_sign_mul_mod n m
+    _ = (thueMorseSign (m / 2 ^ (n + 1)) : ℚ) *
+          qBinomialThueMorseDyadicTranslatedFormula q₂
+            (m % 2 ^ (n + 1)) n := by
+      rw [fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula
+        q₂ (m % 2 ^ (n + 1)) n]
+
+/-- A single dyadic refinement leaves the translated formula unchanged, even
+if its common translation is changed at the same time. -/
+theorem qBinomialThueMorseDyadicTranslatedFormula_refine
+    (q₁ q₂ : ℚ) (m n : ℕ) :
+    qBinomialThueMorseDyadicTranslatedFormula q₁ (2 * m) (n + 1) =
+      qBinomialThueMorseDyadicTranslatedFormula q₂ m n := by
+  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula,
+    ← fabiusDyadic_eq_qBinomialThueMorseDyadicTranslatedFormula]
+  exact fabiusDyadic_refine_of_kernel dyadicKernel_has_refinement n m
+
+/-- The centered arbitrary-dyadic formula is independent of the chosen
+numerator and denominator exponent. -/
+theorem qBinomialThueMorseDyadicFormula_eq_of_rat_eq
+    (n₁ n₂ m₁ m₂ : ℕ)
+    (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
+      (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
+    qBinomialThueMorseDyadicFormula m₁ n₁ =
+      qBinomialThueMorseDyadicFormula m₂ n₂ := by
+  simpa only [qBinomialThueMorseDyadicTranslatedFormula_eq_centered] using
+    qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq
+      0 0 n₁ n₂ m₁ m₂ h
+
+/-- Doubling numerator and denominator leaves the centered arbitrary-dyadic
+formula unchanged. -/
+theorem qBinomialThueMorseDyadicFormula_refine (m n : ℕ) :
+    qBinomialThueMorseDyadicFormula (2 * m) (n + 1) =
+      qBinomialThueMorseDyadicFormula m n := by
+  simpa only [qBinomialThueMorseDyadicTranslatedFormula_eq_centered] using
+    qBinomialThueMorseDyadicTranslatedFormula_refine 0 0 m n
+
 /-- Doubling numerator and denominator leaves the source half-shifted
 expression unchanged. -/
 theorem qBinomialThueMorseDyadicHalfShiftFormula_refine (m n : ℕ) :
     qBinomialThueMorseDyadicHalfShiftFormula (2 * m) (n + 1) =
       qBinomialThueMorseDyadicHalfShiftFormula m n := by
-  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
-    ← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula]
-  exact fabiusDyadic_refine_of_kernel dyadicKernel_has_refinement n m
+  simpa only [qBinomialThueMorseDyadicHalfShiftFormula] using
+    qBinomialThueMorseDyadicTranslatedFormula_refine
+      (1 / 2) (1 / 2) m n
 
 /-- The half-shifted expression depends only on the represented dyadic
 rational, not on the chosen numerator and denominator exponent. -/
@@ -1450,13 +1521,9 @@ theorem qBinomialThueMorseDyadicHalfShiftFormula_eq_of_rat_eq
       (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
     qBinomialThueMorseDyadicHalfShiftFormula m₁ n₁ =
       qBinomialThueMorseDyadicHalfShiftFormula m₂ n₂ := by
-  rw [← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
-    ← fabiusDyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula,
-    fabiusDyadic_eq_extendedFabiusDyadicValue_nat,
-    fabiusDyadic_eq_extendedFabiusDyadicValue_nat]
-  apply extendedFabiusDyadicValue_eq_of_rat_eq n₁ n₂ (m₁ : ℤ) (m₂ : ℤ)
-  norm_num only [Int.cast_natCast]
-  exact h
+  simpa only [qBinomialThueMorseDyadicHalfShiftFormula] using
+    qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq
+      (1 / 2) (1 / 2) n₁ n₂ m₁ m₂ h
 
 
 end

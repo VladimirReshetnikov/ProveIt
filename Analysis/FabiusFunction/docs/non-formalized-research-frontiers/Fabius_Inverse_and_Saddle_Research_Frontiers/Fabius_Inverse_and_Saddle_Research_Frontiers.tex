@@ -172,8 +172,9 @@ Lean inputs, ordinary mathematical deductions, symbolic coefficient calculations
 numerical evidence so that the unformalized steps are not lost.  A statement here is a
 project theorem only when an exact current Lean declaration is named for the full statement;
 the labels \Formalized\ and \Derived\ record the draft's provenance but do not themselves
-certify that every displayed consequence has been formalized.  In particular, inverse
-curvature and H\"older consequences, inverse endpoint asymptotics, the identification with
+certify that every displayed consequence has been formalized.  In particular, H\"older
+consequences beyond the now-formalized inverse-curvature identities, inverse endpoint
+asymptotics, the identification with
 standard shifted Stirling numbers, ordered-composition coefficient formulas, and the
 logarithmic highest-derivative law remain research obligations.
 \end{boxedremark}
@@ -640,8 +641,9 @@ $\InvF$ outruns \emph{every fixed} positive power.
 
 This section uses the formalized inverse package together with standard
 one-variable analysis.  Smoothness, the reciprocal first-derivative formula,
-and positivity are now marked \Formalized; the second and higher derivative
-formulas remain \Derived.
+the exact second-derivative formula, and the strict closed-half shape are now
+marked \Formalized; the general higher inverse-derivative formulas remain
+\Derived.
 
 \subsection{Smoothness and differential identities in the interior}
 
@@ -670,8 +672,8 @@ The corresponding Lean declarations are \path{fabiusInv_contDiffOn_Ioo},
 \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
 \path{deriv_fabiusInv_pos}.
 
-\begin{proposition}[Higher inverse derivatives; \Derived]
-\label{prop:inverse-higher-derivatives}
+\begin{proposition}[Second inverse derivative; \Formalized]
+\label{prop:inverse-second-derivative}
 For $0<y<1$,
 \begin{equation}
  \InvF''(y)
@@ -679,9 +681,6 @@ For $0<y<1$,
            {F'(\InvF(y))^3}.
  \label{eq:Gsecond}
 \end{equation}
-More generally, every derivative of $\InvF$ is a rational polynomial in
-the derivatives of $F$ evaluated at $\InvF(y)$, with a power of
-$F'(\InvF(y))$ in the denominator.
 \end{proposition}
 
 \begin{proof}
@@ -690,10 +689,17 @@ Differentiating the identity behind \eqref{eq:Gprime} once more gives
  F''(\InvF(y))\InvF'(y)^2+
  F'(\InvF(y))\InvF''(y)=0.
 \]
-Substitution of \eqref{eq:Gprime} yields \eqref{eq:Gsecond}.  Repeated
-differentiation gives the higher formulas, equivalently the
-Fa\`a di Bruno inverse-derivative polynomials.
+Substitution of \eqref{eq:Gprime} yields \eqref{eq:Gsecond}.  This is
+\path{deriv_fabiusInv_hasDerivAt} and its pointwise corollary
+\path{deriv_deriv_fabiusInv}.
 \end{proof}
+
+\begin{remark}[Higher inverse derivatives; \Derived]
+Repeated differentiation expresses every higher derivative of $\InvF$ as a
+rational polynomial in the derivatives of $F$ evaluated at $\InvF(y)$, with a
+power of $F'(\InvF(y))$ in the denominator.  These general Fa\`a di Bruno
+inverse-derivative polynomials are not separately packaged in the Lean API.
+\end{remark}
 
 \begin{corollary}[Midpoint differential data; \Derived]
 \label{cor:midpoint-inverse}
@@ -718,30 +724,38 @@ The formal development proves that $F$ is strictly convex on
 $(0,1/2)$ and strictly concave on $(1/2,1)$.  Inversion reverses these
 two curvature signs.
 
-\begin{proposition}[Concavity and convexity of the inverse; \Derived]
+\begin{proposition}[Concavity and convexity of the inverse; \Formalized]
 \label{prop:inverse-shape}
-The function $\InvF$ is strictly concave on $(0,1/2)$ and strictly convex
-on $(1/2,1)$.  Its tangent slope decreases from $+\infty$ to $1/2$ on the
-left half, then increases from $1/2$ to $+\infty$ on the right half.
+The function $\InvF$ is strictly concave on $[0,1/2]$ and strictly convex
+on $[1/2,1]$.
 \end{proposition}
 
 \begin{proof}
-For $0<y<1/2$, strict increase gives $0<\InvF(y)<1/2$, where
-$F''>0$.  Equation \eqref{eq:Gsecond} and $F'>0$ imply
-$\InvF''(y)<0$.  Similarly, $y>1/2$ gives $\InvF(y)>1/2$, where
-$F''<0$, and therefore $\InvF''(y)>0$.
+The inverse is strictly increasing and preserves the midpoint.  It therefore
+maps the first half into itself, where $F'$ is strictly increasing and
+positive.  Its reciprocal in \eqref{eq:Gprime} is strictly decreasing, so the
+derivative criterion and continuity give strict concavity on the closed first
+half.  On the second half $F'$ is strictly decreasing and positive, hence the
+reciprocal derivative of the inverse is strictly increasing and the same
+criterion gives strict convexity.
 
-The endpoint divergence of the derivative is understood as a one-sided
-slope statement: by \cref{thm:inverse-quotient}, the secant slopes from
-the origin diverge, and concavity makes the right derivative at the
-origin at least as large as every such limiting secant slope.  Reflection
-gives the right endpoint.  The midpoint slope is
-\cref{cor:midpoint-inverse}.
+The closed-interval conclusions are
+\path{strictConcaveOn_fabiusInv_firstHalf} and
+\path{strictConvexOn_fabiusInv_secondHalf}.  Their derivative criteria inspect
+only the two open interval interiors, while global continuity supplies the
+endpoints; no finite endpoint derivative is asserted.
 \end{proof}
+
+\begin{remark}[Endpoint slope; \Derived]
+The secant slopes from the origin diverge by \cref{thm:inverse-quotient}, and
+reflection gives the right-endpoint counterpart.  Interpreting this together
+with concavity as an extended one-sided derivative statement remains ordinary
+analysis rather than a separately named Lean theorem.
+\end{remark}
 
 \subsection{\texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}}
 
-\begin{theorem}[Exact regularity locus; \Derived]
+\begin{theorem}[Exact regularity locus; \Formalized]
 \label{thm:inverse-regularity}
 The totalized inverse has the following regularity.
 \begin{enumerate}
@@ -771,6 +785,11 @@ nonzero by \eqref{eq:Gprime}; the analytic inverse function theorem would
 then make its local inverse $F$ analytic near $x_0=\InvF(y_0)$.  But the
 Fabius function is nowhere analytic on the interior of its transition
 interval.  This contradiction proves the claim.
+
+The exact smoothness and differentiability classifications are
+\path{fabiusInv_contDiffAt_infty_iff} and
+\path{fabiusInv_differentiableAt_iff}; the analytic classification is
+\path{fabiusInv_analyticAt_iff}.
 \end{proof}
 
 \section{Inverting the sharp small-argument asymptotic}
@@ -2097,8 +2116,9 @@ Module & Principal role & Status\\
 \texttt{FabiusInverse.lean} &
 Order isomorphism of $[0,1]$, totalized inverse, global continuity and
 monotonicity, comparison equivalences, tails, reflection, exact dyadic
-inversion, transported flatness, effective steepness, and endpoint
-quotient divergence. & \Formalized\\
+inversion, reciprocal first and second derivatives, interior smoothness,
+strict closed-half curvature, transported flatness, effective steepness, and
+endpoint quotient divergence. & \Formalized\\
 \texttt{FabiusSaddleJet}\\\texttt{ClosedForm.lean} &
 Operator solution of the recursive periodic jets and the harmonic-number
 constant term. & \Formalized\\
@@ -2187,6 +2207,11 @@ repository:
 equivalences;
 \item the constant tails, reflection, midpoint, and exact dyadic
 inversion;
+\item interior $C^\infty$ regularity, the exact formulas for $\InvF'$ and
+$\InvF''$, and strict concavity on $[0,1/2]$ and strict convexity on
+$[1/2,1]$;
+\item the exact smoothness, differentiability, and analytic loci of the
+totalized inverse;
 \item the effective and sharp inverse power inequalities, effective
 linear steepness, and the two endpoint quotient limits;
 \item the closed jet formulas, shifted Stirling conversion, and closed
@@ -2201,10 +2226,6 @@ asymptotic theorems.
 
 The following statements are proved here from the formalized input:
 \begin{itemize}
-\item $C^\infty$ interior regularity of $\InvF$ and the formulas for
-$\InvF'$ and $\InvF''$;
-\item strict concavity on $(0,1/2)$, strict convexity on $(1/2,1)$,
-and the exact smooth and analytic loci;
 \item divergence of $\InvF(y)/y^\alpha$ for every $\alpha>0$;
 \item the sharp equivalent \eqref{eq:sharp-inverse} and the scale
 hierarchy \eqref{eq:power-below-G}--\eqref{eq:G-below-log};

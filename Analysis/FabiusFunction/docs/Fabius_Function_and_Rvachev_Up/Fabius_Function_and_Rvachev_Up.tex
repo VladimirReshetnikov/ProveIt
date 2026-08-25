@@ -1311,6 +1311,21 @@ Interior smoothness and the derivative chain are
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
 
+The same module controls the curvature of the inverse without asserting differentiability
+at the clamped endpoints.  For \(0<y<1\),
+\begin{equation}
+ I''(y)=-\frac{F''(I(y))}{F'(I(y))^3}.                     \label{eq:fabius-inverse-second-derivative}
+\end{equation}
+This is \lean{deriv_deriv_fabiusInv}, with the corresponding derivative witness
+\lean{deriv_fabiusInv_hasDerivAt}.  On the closed half intervals, continuity at the
+endpoints and the interior derivative criterion give
+\begin{equation}
+ I\text{ is strictly concave on }[0,\tfrac12]
+ \quad\hbox{and strictly convex on }[\tfrac12,1].           \label{eq:fabius-inverse-curvature}
+\end{equation}
+The exact declarations are \lean{strictConcaveOn_fabiusInv_firstHalf} and
+\lean{strictConvexOn_fabiusInv_secondHalf}.
+
 The inverse inherits the exact symmetry and midpoint
 \begin{equation}
  I(1-y)=1-I(y),\qquad I(1/2)=1/2,                          \label{eq:fabius-inverse-symmetry}
@@ -1328,11 +1343,34 @@ These are \lean{fabiusInv_one_sub}, \lean{fabiusInv_half}, and
 by \lean{fabiusInv_analyticAt_iff}; in the open interval its derivative never vanishes by
 \lean{deriv_fabiusInv_ne_zero}.
 
+Flatness of \(F\) becomes infinite endpoint steepness of \(I\).  For every \(n\in\N\),
+\begin{align}
+ y&=o\bigl(I(y)^n\bigr) &&(y\downarrow0),                  \label{eq:fabius-inverse-left-steepness}\\
+ 1-y&=o\bigl((1-I(y))^n\bigr) &&(y\uparrow1).             \label{eq:fabius-inverse-right-steepness}
+\end{align}
+These are \lean{id_isLittleO_fabiusInv_pow_at_zero_right} and
+\lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular, the two
+one-sided difference quotients diverge:
+\begin{equation}
+ \frac{I(y)}{y}\longrightarrow+\infty\quad(y\downarrow0),
+ \qquad
+ \frac{1-I(y)}{1-y}\longrightarrow+\infty\quad(y\uparrow1). \label{eq:fabius-inverse-infinite-slopes}
+\end{equation}
+The formally proved counterparts are \lean{tendsto_fabiusInv_div_atTop} and
+\lean{tendsto_one_sub_fabiusInv_div_one_sub_atTop}.  Thus the totalized inverse is not
+differentiable at either clamping point, exactly as stated by
+\lean{fabiusInv_not_differentiableAt_zero} and
+\lean{fabiusInv_not_differentiableAt_one}; no finite endpoint derivative is being smuggled
+into the curvature statement above.
+
 \subsection{Precise non-elementarity}
 
 The inductive predicate \lean{IsElementary} contains constants and the identity and is
-closed under arithmetic operations, composition, real powers on positive inputs,
-exponential, logarithm, and trigonometric operations.  Every such expression has a dense
+closed under arithmetic operations, composition, exponential, logarithm, trigonometric
+operations, and variable real powers whose elementary base is globally nonvanishing.  The
+last closure statement is \lean{IsElementary.rpow_of_ne_zero}; the positive-base and
+positive-region interfaces are \lean{IsElementary.rpow_of_pos} and
+\lean{eqOn_rpow_of_pos}.  Every expression in this class has a dense
 real-analytic locus:
 \[
  \lean{IsElementary}\ g
@@ -1417,6 +1455,19 @@ bridge, are formalized by \lean{momentNumerator},
 \lean{halfMomentNumerator}, \lean{halfMomentNumerator_succ},
 \lean{halfMomentNumerator_odd_index_eq}, and
 \lean{halfMomentNumerator_odd_index_formula}.  No unproved numerical table is needed.
+
+More explicitly, if \(C_n=\lean{momentNumerator}\,(n)\), then \(C_n\) is a positive
+integer and
+\begin{equation}
+ c_n=
+ \frac{C_n}
+ {(2n+1)!!\displaystyle\prod_{j=1}^{n}(2^{2j}-1)}.          \label{eq:moment-natural-normalization}
+\end{equation}
+The exact rational identity is \lean{moment_eq_momentNumerator_div}; the product
+reindexing is \lean{evenMersenneProduct_eq_prod_Ico}, and positivity is
+\lean{momentNumerator_pos}.  Thus \eqref{eq:moment-natural-normalization} records the
+proved natural normalization, not a claim that the displayed denominator is already
+reduced.
 
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
@@ -1952,14 +2003,17 @@ For every \(n\in\N\) and \(z\in\Q\),
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
  \qbinom nk{1/2}z^k.                                        \label{eq:half-q-binomial-theorem}
 \end{equation}
-At the dyadic nodes this gives
-\begin{align}
+At every dyadic node this gives the single closed evaluation
+\begin{equation}
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
- \qbinom nk{1/2}(2^m)^k&=0 &&(m<n), \notag\\
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
- \qbinom nk{1/2}(2^n)^k
- &=(-1)^n2^{\binom{n+1}{2}}(1/2;1/2)_n.                    \label{eq:qs-moment-annihilation}
-\end{align}
+ \qbinom nk{1/2}(2^m)^k
+ =
+ \begin{cases}
+  0,&m<n,\\[2pt]
+  (-1)^n\mathfrak m_m/\mathfrak m_{m-n},&n\le m.
+ \end{cases}                                                \label{eq:qs-moment-annihilation}
+\end{equation}
+In particular, the sum vanishes if and only if \(m<n\).
 Moreover,
 \begin{equation}
  (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n.              \label{eq:half-q-mersenne}
@@ -1968,8 +2022,8 @@ Moreover,
 
 \begin{proof}[Formal proof]
 These are \lean{halfQBinomial_theorem},
-\lean{halfQBinomial_two_pow_sum_eq_zero},
-\lean{halfQBinomial_two_pow_sum_eq_self},
+\lean{qBinomial_half_two_pow_sum_eq_ite},
+\lean{qBinomial_half_two_pow_sum_eq_zero_iff},
 \lean{halfQPochhammer_eq_mersenne_div},
 \lean{halfQBinomial_eq_mersenne}, and
 \lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
@@ -2042,6 +2096,18 @@ the rational core and real, complex, and Gaussian-rational specializations are i
 \path{FabiusQBinomialFormula.lean} and
 \path{FabiusDyadicQBinomialScalar.lean}.
 \end{proof}
+
+The rational specialization is also independent of how the dyadic argument is written.
+If
+\[
+ \frac{m_1}{2^{n_1}}=\frac{m_2}{2^{n_2}},
+\]
+then the two translated rational formulas agree even when their common translations
+\(Q_1,Q_2\in\Q\) differ.  This is
+\lean{qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq}; the one-step refinement
+\((m,n)\mapsto(2m,n+1)\) is
+\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Thus translation invariance and
+representation invariance are both theorem-level properties of the finite formula.
 
 Binary complementation gives the raw inverse-dyadic form
 \begin{equation}
@@ -3164,14 +3230,12 @@ These are respectively \lean{lowerLambertW_lt_neg_one},
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
 Let $x>0$ with $Lx<\e^{-1}$, where $L=\log2$ as in \eqref{eq:L-def}, and put
-$\lambda=-W_{-1}(-Lx)/L$ as in \eqref{eq:lambda-def}.  Then $\lambda>1/L$ and
+$\lambda=-W_{-1}(-Lx)/L$ as in \eqref{eq:lambda-def}.  Then
 $\lambda2^{-\lambda}=x$, which is \eqref{eq:lambda-equation}.
 \end{corollary}
 
 \begin{proof}[Formal proof]
-The saddle equation is \lean{paperLambertN_eq9}; the strict inequality follows from
-\lean{lowerLambertW_lt_neg_one} after unfolding \lean{paperLambertN}.  Both declarations
-are in \path{LowerLambertW.lean}.
+The saddle equation is \lean{paperLambertN_eq9} in \path{LowerLambertW.lean}.
 \end{proof}
 
 \begin{proposition}[Two-term expansion]
@@ -3337,6 +3401,21 @@ The formal counterparts are
 \lean{contDiff_infty_negativeLaplacePsi},
 \lean{negativeLaplacePsi_add_one}, and
 \lean{integral_negativeLaplacePsi_zero}.
+
+The first logarithmic derivative has a correspondingly sharp full-ray expansion.  As
+\(s\to+\infty\),
+\begin{equation}
+ \Lambda'(s)=
+ \frac{-\log s/L+1/2+\Psi'(\log_2s)/L}{s}
+ +\bigO(s^{-2}).                                            \label{eq:negative-Laplace-first-derivative}
+\end{equation}
+Here \(\Lambda'\) is the formal \lean{negativeLaplaceLogFirst}, identified with the
+derivative of \(\Lambda\) by \lean{negativeLaplaceLog_hasDerivAt}.  The exact
+\(\bigO(s^{-2})\) statement is
+\lean{negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_real} in
+\path{LaplacePeriodicSecondOrder.lean}.  This promotes the proved derivative estimate
+without importing the longer unformalized contour and Mellin derivations from the frontier
+notebooks.
 
 \subsection{The Gamma--zeta Fourier series}
 
@@ -3555,6 +3634,23 @@ exponent-polynomial identities.  The exact declarations are
 description is the proved statement; no identification with an external Stirling-number
 API is asserted here.
 
+The algebraic conversion between relative-mass and logarithmic coefficients is normalized
+at every index rather than only asymptotically.  If \(\operatorname{ExpCoeff}\) and
+\(\operatorname{LogCoeff}\) denote the formal recurrences \lean{expCoeff} and
+\lean{logCoeff}, then
+\begin{align}
+ \operatorname{ExpCoeff}(\operatorname{LogCoeff}(a))_n
+  &=\begin{cases}1,&n=0,\\a_n,&n>0,\end{cases} \notag\\
+ \operatorname{LogCoeff}(\operatorname{ExpCoeff}(E))_n
+  &=\begin{cases}0,&n=0,\\E_n,&n>0.\end{cases}              \label{eq:saddle-coefficient-normalization}
+\end{align}
+These are \lean{expCoeff_logCoeff_eq_ite} and
+\lean{logCoeff_expCoeff_eq_ite}; the corresponding identities of formal power series are
+\lean{expSeries_logCoeff_eq_massSeries_normalize_zero} and
+\lean{logSeries_expCoeff_eq_exponentSeries_normalize_zero} in
+\path{SaddleLogExpansionAlgebra.lean} and
+\path{SaddleLogExpansionPowerSeries.lean}.
+
 \subsection{Recursive elementary re-expansion of the phase}
 \label{sec:elementary-asymptotic}
 
@@ -3771,11 +3867,12 @@ Analyticity, inverse, elementary obstruction &
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
-\path{MomentPowerSeries.lean}, \path{BernoulliRecurrences.lean},
+\path{MomentPowerSeries.lean}, \path{NormalizedEvenMoments.lean},
+\path{BernoulliRecurrences.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Dyadic and \(q\)-binomial formulas &
-\path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean},
-\path{DyadicCorrectness.lean},
+\path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
+\path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
@@ -3788,6 +3885,7 @@ Endpoint asymptotics &
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{FabiusLambertPhase.lean}, \path{FabiusLambertSaddle.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
+\path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
 \path{FabiusSecondSaddleCorrection.lean},
 \path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
@@ -3946,8 +4044,8 @@ V.~Reshetnikov,
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
 \newblock Lean~4 formal development, repository snapshot
-  \path{4f675d92c47840bf9a743c4d81b7026f217f5218}, 25 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/4f675d92c47840bf9a743c4d81b7026f217f5218/Analysis/FabiusFunction}.
+  \path{20b35c24005c8dddd7da3b475f487f52254f6a30}, 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/20b35c24005c8dddd7da3b475f487f52254f6a30/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

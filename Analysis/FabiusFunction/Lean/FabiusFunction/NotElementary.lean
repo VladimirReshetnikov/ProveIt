@@ -146,10 +146,14 @@ theorem dense_analyticLocus_of_isElementary_coeffs
       U hU hUne (fun _ _ => Set.mem_univ _)
   exact ⟨x, hxU, hxy⟩
 
-/-- The localized form, and the one the applications use: a branch need only
-be continuous **on the open set `U`**, solve the equation **on `U`**, and have
-nonvanishing leading coefficient **on `U`**.  Then it is analytic at some
-point of `U`.
+/-- The localized existence form: a branch need only be continuous **on the
+open set `U`**, solve the equation **on `U`**, and have nonvanishing leading
+coefficient **on `U`**.  Then it is analytic at some point of `U`.
+
+This is the convenient form to instantiate by hand.  It is not on the path to
+`Fabius.not_algebraicBranch_eqOn`, which goes through the relative statement
+`Fabius.analyticDenseOn_of_isElementary_coeffs` directly; this corollary
+currently has no call site in the development.
 
 Localizing matters, and is not a cosmetic generalization.  For example, a
 global solution of `y x ^ 5 - y x = x` would be a continuous right inverse of

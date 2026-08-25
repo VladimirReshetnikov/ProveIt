@@ -895,7 +895,7 @@ $q$-numerator is a weighted sum of $[X^n](\e^{QX}P_{m,k}(X))$.  Expanding the ex
 For each $s<n$, the Gaussian row sees a polynomial of geometric-node degree at most $s$ and
 annihilates it.  Only the $s=n$ term survives; it has no $Q$ factor.
 
-\begin{proposition}[Finite translation invariance]
+\begin{proposition}[Finite translation invariance; Lean formalized]
 \label{prop:finite-Q-invariance}
 For fixed $m,n$, the polynomial
 \begin{equation}
@@ -910,6 +910,10 @@ is constant.
 This is stronger than saying that a limit is independent of $Q$: every coefficient of
 $Q,Q^2,\ldots$ vanishes in the finite expression itself.  The distinction becomes important
 in \cref{sec:discrete}, where the finite discrete rows generally do depend on $Q$.
+The constant-polynomial identity and its coefficientwise form are the exact declarations
+\path{qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const} and
+\path{qBinomialThueMorseDyadicTranslatedFormulaPolynomial_coeff} in
+\path{FabiusDyadicQBinomialScalar.lean}.
 
 \subsection{A useful abstract summary}
 
@@ -1777,7 +1781,13 @@ can independently check:
 \item representation independence under $(m,n)\mapsto(2m,n+1)$.
 \end{enumerate}
 These checks stress different cancellation patterns.  Agreement is therefore more informative
-than recomputing the same formula in a rearranged order.
+than recomputing the same formula in a rearranged order.  The last item is now more than a
+check: \path{qBinomialThueMorseDyadicFormula_refine} proves it exactly.  The stronger
+\path{qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq} allows any two
+numerator--exponent pairs representing the same rational dyadic value and permits different
+rational translations on the two sides.  The translated refinement and half-shifted variants
+are proved in \path{FabiusQBinomialFormula.lean}.  These theorem-level invariances do not
+formalize the separate finite-row stabilization question in \cref{sec:discrete}.
 
 \subsection{Endpoint and convention warnings}
 
@@ -1829,9 +1839,9 @@ Module & Role in the present article \\
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
-\path{FabiusQBinomialFormula.lean} & Centered finite $q$-binomial formula, arbitrary numerators, and common-translation invariance. \\
+\path{FabiusQBinomialFormula.lean} & Centered finite $q$-binomial formula, arbitrary numerators, common-translation invariance, and invariance under equal rational dyadic representations. \\
 \path{FabiusQBinomialTaylor.lean} & Identification of the finite $q$ expression with the Taylor reduction polynomial. \\
-\path{FabiusQBinomialScalarFormula.lean} & Scalar normalizations and real/complex translated forms. \\
+\path{FabiusQBinomialScalarFormula.lean} and \path{FabiusDyadicQBinomialScalar.lean} & Scalar normalizations, real/complex translated forms, and the constant-polynomial coefficient theorem. \\
 \path{FabiusRawQBinomialFormula.lean} and \path{FabiusRawQBinomialScalar.lean} & Raw inverse-dyadic forms and their scalar versions. \\
 \path{FabiusBinaryReductionSeries.lean} & Exact binary residual telescope, absolute convergence, and uniform tail bound. \\
 \path{FabiusParityPowerSeries.lean} & Corrected scale-zero parity-power presentation. \\

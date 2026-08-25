@@ -201,7 +201,9 @@ contradicting \Cref{thm:nowhere}.
 \begin{remark}
 Hypothesising nonempty \emph{interior} rather than openness costs nothing in
 the proof and buys a little: $U$ may be a closed interval, or an interval with
-some of its rational points removed, or any set that is merely fat somewhere.
+a nowhere dense closed set removed, or any set that is merely fat somewhere.
+(Removing \emph{all} the rationals would not do: the irrationals in an
+interval have empty interior, and the hypothesis genuinely fails.)
 What cannot be weakened is fatness itself: on a finite set an elementary
 function certainly can agree with $F$, since a polynomial interpolates any
 finite table of values.
@@ -349,12 +351,27 @@ The second concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
 positive \emph{at every real} --- which covers $(1+x^2)^{\sin x}$ and any base
-bounded away from zero, but not $x\mapsto x^x$, whose base is positive only on
-$(0,\infty)$.  That case is handled instead by the region statement below.
-The unrestricted two-variable power is not a
-constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
-base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
-covers both signs at once.  Nothing is lost for Corollary~\ref{cor:main}, and this is
+with a positive lower bound, but not $x\mapsto x^x$, whose base is positive
+only on $(0,\infty)$.  That case is handled instead by the region statement
+below.
+
+The sign of the base is \emph{not} an obstruction, and it is worth being
+precise about what is.  \texttt{Mathlib}'s $x^y$ is sign-dependent at a
+negative base --- there $x^y=|x|^y\cos(\pi y)$ --- but a single elementary
+formula covers both signs at once,
+\[
+  f^{g}\;=\;\exp(\log f\cdot g)\cdot
+           \cos\!\Bigl(g\pi\cdot\tfrac{1-f/|f|}{2}\Bigr),
+\]
+since $(1-f/|f|)/2$ is the indicator of $f<0$, making the cosine $\cos 0=1$
+where $f>0$ and $\cos(g\pi)$ where $f<0$; no absolute value is needed inside
+the logarithm because \texttt{Mathlib} already sets $\log x=\log|x|$.  This is
+\texttt{IsElementary.rpow\_of\_ne\_zero}, and it needs only that the base never
+vanishes.  The genuine obstruction is precisely the zero set of the base: at
+$f(x)=0$ the conventions $0^r=0$ for $r\ne0$ and $0^0=1$ are discontinuous in
+the exponent, and no continuous correction factor reproduces them --- which is
+why $x\mapsto x^x$, and not some negative-base example, is the honest
+counterexample.  Nothing is lost for Corollary~\ref{cor:main}, and this is
 formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
 states that on any set where the base is positive, $f^{g}$ agrees pointwise
 with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
@@ -497,10 +514,13 @@ $\R\setminus\{0\}$, $\R\setminus\{0\}$ and $\R\setminus\{-1,1\}$.  Nor can
 ``dense open'' be strengthened to ``open with finite complement'': the
 elementary function $x\mapsto (\sin x)^{-1}$ omits the infinite discrete set
 $\pi\Z$.  What density does give for free is that the complement is closed
-and nowhere dense, being the complement of a dense open set.  Whether the
-complement of the analytic locus of an elementary function is always
-\emph{discrete} is a natural further question that we neither prove nor
-use.
+and nowhere dense, being the complement of a dense open set.  It need not be
+\emph{discrete}, and one more reciprocal settles that: $x\mapsto(\sin(1/x))^{-1}$
+is elementary --- it is \texttt{IsElementary.id.inv.sin.inv} --- and its
+analytic locus omits every $1/(k\pi)$ with $k\in\Z\setminus\{0\}$, together
+with $0$, where the function is not even continuous.  Those points accumulate
+at $0$.  So ``nowhere dense'' is the correct description of the exceptional
+set and cannot be improved to ``discrete''.
 \end{remark}
 
 \section{Algebraic functions over the elementary functions}\label{sec:algebraic}
@@ -751,6 +771,18 @@ function; harmlessly, since those already have dense analytic locus, which is
 all the invariant asks.  Inversion may be applied at any depth: to members of
 $\Elem$, to branches of those, and so on without limit.
 
+One asymmetry with $\Elem$ deserves stating, since \Cref{sec:elem} made a
+point of it.  Composition is a \emph{theorem} for $\Elem$
+(Proposition~\ref{prop:comp}), proved by inducting on the derivation of the
+outer function, because every clause of Definition~\ref{def:elem} commutes with
+precomposition.  That induction does not replay for $\Elem^{-1}$: the inverse
+clause does not commute with precomposition, since $g$ being a branch of
+$f(z)=x$ says nothing about $g\circ h$ being a branch of anything.  So
+$\Elem^{-1}$ is not claimed to be closed under composition, and
+\Cref{thm:plusdense} does not need it --- the induction there is over the
+derivation, and every clause of Definition~\ref{def:elemplus} preserves dense
+analyticity on its own.
+
 \begin{theorem}\label{thm:plusdense}
 Every member of $\Elem^{-1}$ is analytic on a dense set.
 \end{theorem}
@@ -819,8 +851,8 @@ Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, whi
 Signed root, and its defining property (Warning~\ref{warn:oddroot})
   & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
   & \texttt{ElementaryFunction} \\
-Variable exponents at a positive base
-  & \texttt{IsElementary.rpow\_of\_pos}, \texttt{eqOn\_rpow\_of\_pos}
+Variable exponents at a positive base, and at any nonvanishing base
+  & \texttt{IsElementary.rpow\_of\_pos}, \texttt{IsElementary.rpow\_of\_ne\_zero}, \texttt{eqOn\_rpow\_of\_pos}
   & \texttt{ElementaryFunction} \\
 Membership of the named functions
   & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
@@ -871,13 +903,13 @@ $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
   & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}, \texttt{not\_eqOn\_fabiusInv\_of\_analyticDenseOn}, \texttt{not\_eqOn\_fabiusInv\_of\_dense\_analyticLocus}
   & \texttt{InverseNotElementary} \\
 Neither is reachable by inverting (Corollary~\ref{cor:plusmain})
-  & \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo}
+  & \texttt{not\_isElementaryOrInverse\_eqOn\_fabius}, \texttt{not\_isElementaryOrInverse\_eqOn\_fabiusInv} (general $U$), \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo} ($U=(0,1)$)
   & \texttt{InverseNotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
   & \texttt{NowhereAnalytic} \\
 Main result (Corollary~\ref{cor:main})
-  & \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo}
+  & \texttt{canonical\_fabius\_not\_isElementary\_eqOn\_of\_interior\_nonempty} (general $U$), \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo} ($U=(0,1)$)
   & \texttt{NotElementary} \\
 Interior form of the obstruction
   & \texttt{IsElementary.not\_eqOn\_of\_interior\_nonempty}; \texttt{not\_isElementary\_eqOn\_of\_interior\_nonempty}, \texttt{not\_algebraicBranch\_eqOn\_of\_interior\_nonempty}
