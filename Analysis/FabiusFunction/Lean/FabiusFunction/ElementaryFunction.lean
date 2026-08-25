@@ -67,13 +67,23 @@ each such `t`.
 
 ## What is not claimed
 
-For positive `n`, the class contains principal `n`-th roots on nonnegative
-inputs.  Bare `Real.rpow` is not the signed odd root on a negative base; for
-positive odd `n`, that root can instead be expressed as
-`(x * |x|⁻¹) * |x| ^ (1 / n)`.  This formula also gives zero at `x = 0`
-because the sign factor is zero there.  The class is not closed under passage
-to an arbitrary algebraic function: `IsElementary` has no constructor for a
-continuous branch of `P (x, y) = 0` with elementary coefficients.
+Wikipedia's definition speaks of "roots", and the class does contain them —
+but by two different derivations, not one.  For positive `n`,
+`IsElementary.rpow` gives the principal `n`-th root on nonnegative inputs.  At
+a negative base `Mathlib`'s `Real.rpow` is `|x| ^ r * cos (π r)`, so
+`(-8 : ℝ) ^ (1/3 : ℝ) = 1` rather than `-2`; for positive odd `n` the signed
+root is instead `IsElementary.signedRpow`, `(x / |x|) * |x| ^ (1 / n)`, which
+is also correct at `x = 0` because the sign factor vanishes there.  Its
+defining property is `Fabius.signedRoot_pow`.
+
+The class is not closed under passage to an arbitrary algebraic function:
+`IsElementary` has no constructor for a continuous branch of `P (x, y) = 0`
+with elementary coefficients.  Adding one would cost `IsElementary.comp`,
+since composing a branch with an elementary function needs the *inner*
+function to be continuous and elementary functions need not be.
+`FabiusFunction.AlgebraicBranch` therefore proves the analytic statement for
+such branches separately, and `Fabius.not_algebraicBranch_eqOn` draws the
+non-elementarity conclusion from it without enlarging this class.
 -/
 
 set_option autoImplicit false
@@ -361,6 +371,18 @@ theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
     rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
       ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
 
+/-- On a region where the base is positive, a variable-exponent power agrees
+with an elementary function.
+
+`IsElementary` is a predicate on *total* functions, so `fun x => f x ^ g x`
+cannot be a member outright — `Mathlib`'s `Real.rpow` is sign-dependent at a
+negative base.  What the non-elementarity theorem needs is only agreement on a
+region, and that is what this supplies: the right-hand side is elementary
+whenever `f` and `g` are, by `IsElementary.log`, `.mul` and `.exp`. -/
+theorem eqOn_rpow_of_pos {f g : ℝ → ℝ} {U : Set ℝ} (hpos : ∀ x ∈ U, 0 < f x) :
+    Set.EqOn (fun x => f x ^ g x) (fun x => Real.exp (Real.log (f x) * g x)) U :=
+  fun x hx => Real.rpow_def_of_pos (hpos x hx) _
+
 /-! ## Named elementary functions
 
 Spelled out for the record: each standard function of the elementary calculus
@@ -437,6 +459,7 @@ example : IsElementary fun x : ℝ =>
 /-- The set of points at which `f` is real analytic. -/
 def analyticLocus (f : ℝ → ℝ) : Set ℝ := {x : ℝ | AnalyticAt ℝ f x}
 
+/-- Membership in the analytic locus is analyticity at the point. -/
 @[simp]
 theorem mem_analyticLocus {f : ℝ → ℝ} {x : ℝ} :
     x ∈ analyticLocus f ↔ AnalyticAt ℝ f x := Iff.rfl

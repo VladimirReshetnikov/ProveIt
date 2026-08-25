@@ -115,8 +115,8 @@
 The Fabius function $F$ is a $C^\infty$ probability distribution function on
 $[0,1]$ that is real analytic at no point of that interval.  We prove, and
 formalize in Lean~4 on top of \texttt{Mathlib}, that no elementary function of
-one real variable agrees with $F$ on any nonempty open subset of $[0,1]$; in
-particular the restriction of $F$ to $(0,1)$ is not elementary.
+one real variable agrees with $F$ on any subset of $[0,1]$ with nonempty
+interior; in particular the restriction of $F$ to $(0,1)$ is not elementary.
 
 Since $F$ is $C^\infty$, no smoothness obstruction can decide the question:
 the obstruction must be analyticity.  The whole content of the argument is
@@ -134,6 +134,14 @@ induction that proves it is short but has one genuinely delicate step, the
 unary one, where a locally constant intermediate value must be separated from
 a locally nonconstant one; the separation is furnished by the isolated-zeros
 theorem for real analytic functions of one variable.
+
+The same conclusion is then proved for a class the inductive definition does
+not reach: any continuous branch of a polynomial equation whose coefficients
+are elementary and whose leading coefficient vanishes nowhere.  This covers
+the algebraic functions that are not expressible by radicals, and it rests on
+a degree induction that avoids the discriminant, of which \texttt{Mathlib} has
+no usable theory, in favour of the analytic implicit function theorem, of
+which it does.
 \end{abstract}
 
 \tableofcontents
@@ -166,7 +174,7 @@ of~$\R$.
 \end{theorem}
 
 \begin{corollary}[Main result]\label{cor:main}
-Let $U\subseteq[0,1]$ be a nonempty open set and let $g\colon\R\to\R$ be
+Let $U\subseteq[0,1]$ have nonempty interior and let $g\colon\R\to\R$ be
 elementary.  Then $g$ and $F$ do not agree on $U$.  In particular there is no
 elementary function that agrees with $F$ on $(0,1)$, and $F$ itself is not
 elementary.
@@ -174,18 +182,28 @@ elementary.
 
 \begin{proof}
 By \Cref{thm:density} the set $\An(g)$ is dense, so it meets the nonempty open
-set $U$; pick $x\in U\cap\An(g)$.  If $g$ and $F$ agreed on $U$ they would
-have the same germ at $x$, because $U$ is a neighbourhood of $x$; analyticity
+set $\operatorname{int}U$; pick $x\in\operatorname{int}U\cap\An(g)$.  If $g$
+and $F$ agreed on $U$ they would have the same germ at $x$, because
+$\operatorname{int}U$ is a neighbourhood of $x$ contained in $U$; analyticity
 at a point depends only on the germ, so $F$ would be analytic at $x\in[0,1]$,
 contradicting \Cref{thm:nowhere}.
 \end{proof}
 
+\begin{remark}
+Hypothesising nonempty \emph{interior} rather than openness costs nothing in
+the proof and buys a little: $U$ may be a closed interval, or an interval with
+some of its rational points removed, or any set that is merely fat somewhere.
+What cannot be weakened is fatness itself: on a finite set an elementary
+function certainly can agree with $F$, since a polynomial interpolates any
+finite table of values.
+\end{remark}
+
 \begin{boxedremark}
-\Cref{cor:main} is the sharp form of the assertion ``the Fabius function is
+Corollary~\ref{cor:main} is the sharp form of the assertion ``the Fabius function is
 not elementary'', and it is strictly stronger than the bare
 non-elementarity of $F$ as a function on $\R$.  The bare statement leaves
 open the possibility that some elementary function agrees with $F$ on all of
-$(0,1)$ and differs from it outside; \Cref{cor:main} rules that out, and rules
+$(0,1)$ and differs from it outside; Corollary~\ref{cor:main} rules that out, and rules
 it out on every subinterval.
 \end{boxedremark}
 
@@ -223,10 +241,10 @@ class of functions such that
 \end{enumerate}
 \end{definition}
 
-Two features of \Cref{def:elem} deserve comment.
+Two features of Definition~\ref{def:elem} deserve comment.
 
 \paragraph{Composition is a theorem, not an axiom.}
-\Cref{def:elem} contains no clause ``$f,g\in\Elem\Rightarrow f\circ
+Definition~\ref{def:elem} contains no clause ``$f,g\in\Elem\Rightarrow f\circ
 g\in\Elem$''.  It does not need one.
 
 \begin{proposition}\label{prop:comp}
@@ -235,7 +253,7 @@ $\Elem$ is closed under composition.
 
 \begin{proof}
 Induct on the derivation of the outer function $f$.  Every clause of
-\Cref{def:elem} commutes with precomposition by a fixed $g$: the constant
+Definition~\ref{def:elem} commutes with precomposition by a fixed $g$: the constant
 $x\mapsto c$ composed with $g$ is again that constant; the identity composed
 with $g$ is $g$ itself, which is elementary by hypothesis; and
 $(f_1+f_2)\circ g=(f_1\circ g)+(f_2\circ g)$, $(\exp\circ f)\circ
@@ -252,7 +270,7 @@ $\operatorname{arsinh}x=\log\bigl(x+\sqrt{1+x^2}\bigr)$.
 
 \paragraph{Total functions and junk values.}
 Every member of $\Elem$ is a \emph{total} function $\R\to\R$.  This is a
-deliberate choice, and it is the choice that makes \Cref{cor:main} strongest.
+deliberate choice, and it is the choice that makes Corollary~\ref{cor:main} strongest.
 The formalization inherits \texttt{Mathlib}'s conventions
 \[
   0^{-1}=0,\qquad \log x=\log|x|,\qquad \log 0=0,\qquad
@@ -262,7 +280,7 @@ The formalization inherits \texttt{Mathlib}'s conventions
   x^{r}=|x|^{r}\cos(\pi r)\ \ (x<0),\qquad
   \arcsin x=\pm\tfrac{\pi}{2}\ \ (\pm x\ge 1),
 \]
-so that clauses (3)--(5) of \Cref{def:elem} never fail to produce a function.
+so that clauses (3)--(5) of Definition~\ref{def:elem} never fail to produce a function.
 
 \begin{boxedremark}
 One might worry that junk values weaken the theorem, by admitting
@@ -276,7 +294,7 @@ nonpositive base, no arcsine of a value outside $[-1,1]$ --- then on $U$ it
 agrees pointwise with the total function produced by the same derivation,
 since on $U$ the junk values are never consulted.  So every such classical
 elementary function on $U$ is the restriction to $U$ of a member of $\Elem$,
-and \Cref{cor:main} applies to it.
+and Corollary~\ref{cor:main} applies to it.
 \end{boxedremark}
 
 \begin{warning}[Odd roots need a different derivation]\label{warn:oddroot}
@@ -284,7 +302,7 @@ The condition ``no real power of a nonpositive base'' in the box above cannot
 be dropped, and it is the one place where the total-function convention bites.
 \texttt{Mathlib}'s $x^{r}$ at a negative base is $|x|^{r}\cos(\pi r)$, so
 $(-8)^{1/3}=2\cos(\pi/3)=1$, whereas the classical real cube root of $-8$
-is~$-2$.  The clause $x\mapsto f(x)^{r}$ of \Cref{def:elem} therefore supplies
+is~$-2$.  The clause $x\mapsto f(x)^{r}$ of Definition~\ref{def:elem} therefore supplies
 the $n$-th roots only on $[0,\infty)$.
 
 Nothing is lost, because the classical real odd root is in $\Elem$ by a
@@ -303,28 +321,36 @@ plausible substitute.
 \subsection{What is not claimed}\label{sec:notclaimed}
 
 $\Elem$ is closed under $n$-th roots but not, as defined, under passage to an
-arbitrary algebraic function: \Cref{def:elem} has no clause producing a
+arbitrary algebraic function: Definition~\ref{def:elem} has no clause producing a
 continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
-coefficients whose Galois group is not solvable.  Liouville's differential
-field definition of ``elementary'' does admit such branches.  We do not claim
-them here.  The obstruction is purely one of formalization cost: the analogue
-of \Cref{thm:density} for algebraic branches is true and classical --- away
-from the zero set of the discriminant, the analytic implicit function theorem
-applies, and that zero set is finite on each interval --- but the analytic
-implicit function theorem over $\R$ is not available in \texttt{Mathlib} at
-the time of writing.
+coefficients whose Galois group is not solvable, and Liouville's
+differential-field definition of ``elementary'' does admit such branches.
+\Cref{sec:algebraic} closes that gap, not by enlarging $\Elem$ but by proving
+the conclusion of Corollary~\ref{cor:main} directly for such branches.  What
+remains genuinely outside the result is stated there.
 
-A second, much smaller gap concerns variable exponents.  \Cref{def:elem}
+Two smaller gaps are worth naming here.
+
+The first is that $\Elem$ is a class of \emph{total} functions, so a classical
+elementary expression enters it only through a derivation whose junk values
+are never consulted on the region of interest; Warning~\ref{warn:oddroot}
+records the one place where the obvious derivation is the wrong one.
+
+The second concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
 \texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
 everywhere positive, which covers $x\mapsto x^x$ and every classical
 variable-exponent expression.  The unrestricted two-variable power is not a
 constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
 base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
-covers both signs at once.  Nothing is lost for \Cref{cor:main}: on any
-interval on which the base has constant sign, $f^g$ does agree with a member
-of $\Elem$, and \Cref{cor:main} already rules out agreement on every
-subinterval.
+covers both signs at once.  Nothing is lost for Corollary~\ref{cor:main}, and this is
+formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
+states that on any set where the base is positive, $f^{g}$ agrees pointwise
+with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
+are.  Since Corollary~\ref{cor:main} already rules out agreement on \emph{every}
+nonempty open subset of $[0,1]$, and the base of a classical
+variable-exponent expression is positive wherever the expression is well
+formed, such an expression is excluded too.
 
 We also make no claim about elementary functions of a complex variable, and
 none about the closely related but distinct question of whether $F$ satisfies
@@ -332,7 +358,7 @@ an algebraic differential equation.
 
 \section{Analyticity of the generators}
 
-Each generator of \Cref{def:elem} is real analytic away from a finite set of
+Each generator of Definition~\ref{def:elem} is real analytic away from a finite set of
 arguments.  All of these facts are in \texttt{Mathlib}, most of them in the
 form ``$C^n$ for every $n$ in $\N\cup\{\infty,\omega\}$''; specializing to the
 analytic exponent $\omega$ and applying \texttt{ContDiffAt.analyticAt}
@@ -358,7 +384,7 @@ converts them to the statements below.
 The bad sets are sets of \emph{values} of the inner function, not sets of
 points of the domain --- $\{0\}$ for the reciprocal, the logarithm and a real
 power, $\{-1,1\}$ for the arcsine, and $\varnothing$ for the rest.  This is
-the shape the induction consumes, and it is why \Cref{lem:key} below is stated
+the shape the induction consumes, and it is why Lemma~\ref{lem:key} below is stated
 with a finite set $B\subseteq\R$ of forbidden values.
 \end{remark}
 
@@ -397,7 +423,7 @@ dense.
 \begin{proof}
 Let $U$ be a nonempty open set; we must produce a point of $U\cap\An(g\circ
 f)$.  Since $\An(f)$ is dense there is $x_0\in U\cap\An(f)$, and by
-\Cref{lem:open} the set $V=U\cap\An(f)$ is an open neighbourhood of $x_0$.
+Lemma~\ref{lem:open} the set $V=U\cap\An(f)$ is an open neighbourhood of $x_0$.
 Distinguish two cases.
 
 \emph{Case 1: $f$ is constant equal to some $c\in B$ on a neighbourhood of
@@ -432,8 +458,8 @@ of substance about real analytic functions is used.
 \subsection{The induction}
 
 \begin{proof}[Proof of \Cref{thm:density}]
-Openness of $\An(f)$ is \Cref{lem:open} and holds for every $f$.  Density is
-proved by induction on the derivation of $f$ in \Cref{def:elem}.
+Openness of $\An(f)$ is Lemma~\ref{lem:open} and holds for every $f$.  Density is
+proved by induction on the derivation of $f$ in Definition~\ref{def:elem}.
 
 \emph{Constants and the identity.}  Here $\An(f)=\R$.
 
@@ -445,8 +471,8 @@ dense set is dense.
 
 \emph{Negation.}  $\An(f)\subseteq\An(-f)$.
 
-\emph{The unary clauses.}  Apply \Cref{lem:key} with the pair $(f,g)$ and the
-finite bad set $B$ read off from \Cref{lem:generators}: $B=\varnothing$ for
+\emph{The unary clauses.}  Apply Lemma~\ref{lem:key} with the pair $(f,g)$ and the
+finite bad set $B$ read off from Lemma~\ref{lem:generators}: $B=\varnothing$ for
 $\exp$, $\sin$, $\cos$, $\arctan$; $B=\{0\}$ for $y\mapsto y^{-1}$, for
 $\log$, and for $y\mapsto y^{r}$; and $B=\{-1,1\}$ for $\arcsin$.
 \end{proof}
@@ -464,6 +490,87 @@ complement of the analytic locus of an elementary function is always
 use.
 \end{remark}
 
+\section{Algebraic functions over the elementary functions}\label{sec:algebraic}
+
+Definition~\ref{def:elem} reaches the $n$-th roots but not a general algebraic
+function.  This section removes that restriction.  It does so without
+enlarging $\Elem$, for a reason worth stating: an algebraic clause inside the
+inductive definition would cost Proposition~\ref{prop:comp}.  Composing a
+branch $y$ with an elementary $h$ produces a branch over the coefficients
+$a_i\circ h$, but it is a \emph{continuous} branch only if $h$ is continuous,
+and elementary functions need not be --- $x\mapsto x^{-1}$ is not.  Rather than
+weaken the closure theorem, we prove the conclusion directly.
+
+\begin{theorem}[Branches of polynomial equations]\label{thm:algebraic}
+Let $U\subseteq\R$ be open, let $a_0,\dots,a_n$ be real analytic on $U$ with
+$a_n$ nowhere zero on $U$, and let $y$ be continuous on $U$ with
+\[
+  \sum_{i=0}^{n} a_i(x)\,y(x)^i \;=\; 0 \qquad (x\in U).
+\]
+Then $y$ is real analytic at some point of every nonempty open subset of $U$.
+\end{theorem}
+
+Density is again the right conclusion, and for the same kind of reason as
+before: $y=|\cdot|$ is a continuous branch of $y^2-x^2=0$ on all of $\R$, with
+$a_0=-x^2$, $a_1=0$, $a_2=1$, and it is not analytic at the origin.
+
+\begin{proofidea}
+The implicit function theorem applies only where $\partial P/\partial y\ne 0$,
+and the classical way to control the locus where it vanishes is the
+discriminant.  \texttt{Mathlib} has no usable discriminant theory ---
+\texttt{Polynomial.discr} carries no bridge to separability, and there is no
+continuity of roots in the coefficients --- so we induct on the degree
+instead, which needs neither.
+
+Write $g$ for $\partial P/\partial y$ evaluated along the branch and split
+$U$ into $V=\{x\in U: g(x)\ne0\}$, which is open, and
+$W=U\setminus\overline V$, which is also open.  On $V$ the implicit function
+theorem applies directly.  On $W$ we have $g\equiv 0$, so $y$ satisfies the
+\emph{derivative} equation, of degree $n-1$, whose leading coefficient
+$n\,a_n$ is still nowhere zero; the inductive hypothesis applies to it.
+Finally $V$ together with a dense subset of $W$ is dense in $U$, because an
+open set disjoint from $V$ is disjoint from $\overline V$ and hence contained
+in $W$.  The set $W$ absorbs exactly the degenerate locus that a discriminant
+argument would otherwise have to control, and the induction terminates because
+the degree drops.
+
+The implicit function step is \texttt{Mathlib}'s
+\texttt{ContDiffAt.implicitFunction}, which is stated for every smoothness
+exponent in $\N\cup\{\infty,\omega\}$; instantiating at $\omega$ and converting
+with \texttt{ContDiffAt.analyticAt} gives an analytic implicit function
+theorem.  Its one nontrivial hypothesis, invertibility of the partial
+derivative as a continuous linear map, is discharged in one variable by
+\texttt{HasDerivAt.hasFDerivAt\_equiv} together with uniqueness of the
+Fréchet derivative.
+\end{proofidea}
+
+\begin{corollary}\label{cor:algebraic}
+Let $a_0,\dots,a_n$ be elementary, let $a_n$ vanish nowhere, and let
+$y\colon\R\to\R$ be continuous with $\sum_{i\le n}a_i(x)y(x)^i=0$ for every
+$x$.  Then $y$ does not agree with the Fabius function on any nonempty open
+subset of $[0,1]$; in particular not on $(0,1)$.
+\end{corollary}
+
+\begin{proof}
+Each $a_i$ has dense open analytic locus by \Cref{thm:density}.  The
+intersection of the $n+1$ of them is a finite intersection of dense open sets,
+hence dense and open, and \Cref{thm:algebraic} applies to it, giving that the
+analytic locus of $y$ is dense in $\R$.  Now argue as in
+Corollary~\ref{cor:main}.
+\end{proof}
+
+\begin{boxedremark}
+Corollary~\ref{cor:algebraic} covers every algebraic function over the
+elementary functions, including those whose Galois group is not solvable and
+which are therefore not expressible by radicals at all.  It is genuinely
+stronger than Corollary~\ref{cor:main} in that direction, and independent of it
+in the other: it says nothing about $\exp$ or $\log$ of an algebraic function,
+because it is a single algebraic step over elementary coefficients rather than
+a closure.  A tower that interleaves algebraic extensions with exponentials
+and logarithms at several levels is covered only when it can be presented in
+one of the two forms.
+\end{boxedremark}
+
 \section{The formal development}
 
 \subsection{Correspondence with the Lean names}
@@ -476,10 +583,10 @@ All statements below live in the namespace \texttt{Fabius}.
 \toprule
 \textbf{Object or statement} & \textbf{Lean name} & \textbf{Module} \\
 \midrule
-Elementary functions (\Cref{def:elem})
+Elementary functions (Definition~\ref{def:elem})
   & \texttt{IsElementary}
   & \texttt{ElementaryFunction} \\
-Closure under composition (\Cref{prop:comp})
+Closure under composition (Proposition~\ref{prop:comp})
   & \texttt{IsElementary.comp}
   & \texttt{ElementaryFunction} \\
 Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\cosh$, $\tanh$, $\arccos$, $\operatorname{arsinh}$, polynomials
@@ -488,22 +595,25 @@ Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\co
 Analytic locus $\An(f)$
   & \texttt{analyticLocus}
   & \texttt{ElementaryFunction} \\
-Openness (\Cref{lem:open})
+Openness (Lemma~\ref{lem:open})
   & \texttt{isOpen\_analyticLocus}
   & \texttt{ElementaryFunction} \\
-Generators (\Cref{lem:generators})
+Generators (Lemma~\ref{lem:generators})
   & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}; for $x\mapsto x^{-1}$, $\exp$, $\sin$, $\cos$ the \texttt{Mathlib} lemmas \texttt{analyticAt\_inv}, \texttt{analyticAt\_rexp}, \texttt{Real.analyticAt\_sin}, \texttt{Real.analyticAt\_cos} are used directly
   & \texttt{ElementaryFunction} \\
 Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, which routes $\sqrt{\cdot}$ through \texttt{rpow})
   & \texttt{analyticAt\_sqrt\_of\_ne\_zero}
   & \texttt{ElementaryFunction} \\
-Signed root, and its defining property (\Cref{warn:oddroot})
+Signed root, and its defining property (Warning~\ref{warn:oddroot})
   & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
+  & \texttt{ElementaryFunction} \\
+Variable exponents at a positive base
+  & \texttt{IsElementary.rpow\_of\_pos}, \texttt{eqOn\_rpow\_of\_pos}
   & \texttt{ElementaryFunction} \\
 Membership of the named functions
   & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
   & \texttt{ElementaryFunction} \\
-Key lemma (\Cref{lem:key})
+Key lemma (Lemma~\ref{lem:key})
   & \texttt{dense\_analyticLocus\_comp}
   & \texttt{ElementaryFunction} \\
 Density (\Cref{thm:density})
@@ -515,12 +625,24 @@ Analytic at a point of any nonempty open set
 Exceptional set closed with empty interior
   & \texttt{isClosed\_compl\_analyticLocus}, \texttt{IsElementary.interior\_compl\_analyticLocus}
   & \texttt{ElementaryFunction} \\
+Analytic implicit function theorem in two real variables
+  & \texttt{analyticAt\_implicitFunction}, \texttt{analyticAt\_of\_continuous\_branch}
+  & \texttt{AlgebraicBranch} \\
+Branches of polynomial equations (\Cref{thm:algebraic})
+  & \texttt{analyticDenseOn\_of\_algebraic}, \texttt{dense\_setOf\_analyticAt\_of\_algebraic}, \texttt{branchPoly}, \texttt{AnalyticDenseOn}
+  & \texttt{AlgebraicBranch} \\
+Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
+  & \texttt{not\_algebraicBranch\_eqOn}, \texttt{canonical\_fabius\_not\_algebraicBranch\_on\_Ioo}
+  & \texttt{NotElementary} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
   & \texttt{NowhereAnalytic} \\
-Main result (\Cref{cor:main})
+Main result (Corollary~\ref{cor:main})
   & \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo}
   & \texttt{NotElementary} \\
+Interior form of the obstruction
+  & \texttt{IsElementary.not\_eqOn\_of\_interior\_nonempty}; \texttt{not\_isElementary\_eqOn\_of\_interior\_nonempty}, \texttt{not\_algebraicBranch\_eqOn\_of\_interior\_nonempty}
+  & \texttt{ElementaryFunction}; \texttt{NotElementary} \\
 $F$ is not elementary
   & \texttt{canonical\_fabius\_not\_isElementary}
   & \texttt{NotElementary} \\
@@ -545,15 +667,15 @@ theorems of substance that the argument consumes.
 \item \texttt{AnalyticAt.eventually\_eq\_zero\_or\_eventually\_ne\_zero} and
       its two-function form: the isolated-zeros theorem for a function of one
       variable over a nontrivially normed field, which is what powers
-      \Cref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
+      Lemma~\ref{lem:key}.  It applies verbatim to $f\colon\R\to\R$.
 \item \texttt{isOpen\_analyticAt}: the analytic locus is open, which is
-      \Cref{lem:open} verbatim.  (The pointwise form, analyticity propagating
+      Lemma~\ref{lem:open} verbatim.  (The pointwise form, analyticity propagating
       from a point to a neighbourhood, is
       \texttt{AnalyticAt.eventually\_analyticAt}; the development uses the
       set-level statement.)
 \item \texttt{ContDiffAt.analyticAt} together with the family of
       \texttt{contDiffAt\_\ldots} lemmas stated for exponents in
-      $\N\cup\{\infty,\omega\}$: this is how \Cref{lem:generators} is
+      $\N\cup\{\infty,\omega\}$: this is how Lemma~\ref{lem:generators} is
       obtained, including the two facts that are otherwise awkward over $\R$,
       namely analyticity of $\arctan$ everywhere and of $\arcsin$ off
       $\{\pm1\}$.
@@ -582,15 +704,15 @@ non-elementarity must therefore distinguish $F$ from the elementary functions
 by a property strictly finer than differentiability of every order.  Real
 analyticity is the natural candidate, and \Cref{thm:density} says it is a
 sufficient one.  It is also, in a precise sense, the \emph{only} such
-candidate we know how to extract from \Cref{def:elem} directly.  Nothing in
+candidate we know how to extract from Definition~\ref{def:elem} directly.  Nothing in
 this document rules out a different separating property; what it does show is
 that analyticity suffices, and that it is available at the modest cost of
-\Cref{lem:key}.
+Lemma~\ref{lem:key}.
 
 \subsection{The role of the endpoints}
 
 \Cref{thm:nowhere} includes the endpoints $0$ and $1$, where $F$ is flat to
-infinite order.  It is worth recording that \Cref{cor:main} does \emph{not}
+infinite order.  It is worth recording that Corollary~\ref{cor:main} does \emph{not}
 need them.  A set that is open in $\R$ and contained in $[0,1]$ is
 automatically contained in $(0,1)$ --- an $\R$-open set containing $0$
 contains negative numbers --- so the witness produced by
@@ -609,17 +731,22 @@ larger.
 Two natural strengthenings are visible from here.
 
 \begin{enumerate}
-\item \emph{Liouvillian functions.}  Replacing $\Elem$ by the class of
-      functions lying in an \emph{elementary} differential-field extension of
-      the rational functions in Liouville's sense --- allowing arbitrary
-      algebraic branches alongside exponentials and logarithms --- would
-      subsume \Cref{def:elem}.  (The wider \emph{Liouvillian} class also
+\item \emph{Interleaved towers.}  Replacing $\Elem$ by the class of functions
+      lying in an \emph{elementary} differential-field extension of the
+      rational functions in Liouville's sense --- allowing arbitrary algebraic
+      branches alongside exponentials and logarithms, at any depth --- would
+      subsume both Definition~\ref{def:elem} and \Cref{sec:algebraic}.
+      (The wider \emph{Liouvillian} class also
       admits antiderivatives, and so contains $\operatorname{erf}$,
       $\operatorname{Ei}$ and $\operatorname{Si}$, which are not elementary;
-      that class is not what is meant here.)  The analytic content is
-      unchanged; the missing ingredient for the algebraic branches is an
-      analytic implicit function theorem, as recorded in
-      \Cref{sec:notclaimed}.
+      that class is not what is meant here.)  Each of the two ingredients is
+      now formalized separately; what is missing is the closure that lets them
+      alternate.  The obstruction is the one identified at the head of
+      \Cref{sec:algebraic}: composing an algebraic branch with an elementary
+      function needs the inner function to be continuous.  Repairing that
+      needs the fact that a nonconstant real analytic function on an interval
+      has image containing an interval, so that the preimage of a dense open
+      set is again dense --- true, classical, and not formalized here.
 \item \emph{Differential algebraicity.}  A stronger and genuinely different
       statement is that $F$ satisfies no algebraic differential equation
       $P\bigl(x,F,F',\ldots,F^{(n)}\bigr)=0$ with polynomial $P$.  Such a
