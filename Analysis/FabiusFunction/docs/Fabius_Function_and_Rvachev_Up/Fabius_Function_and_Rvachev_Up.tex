@@ -90,6 +90,8 @@
 \newcommand{\vtwo}{v_2}
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{%
+  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -334,6 +336,12 @@ Let $\wt(n)$ denote the sum of the binary digits of $n$, and put
 \begin{equation}
  \varepsilon_n=(-1)^{\wt(n)}.                             \label{eq:tm-sign}
 \end{equation}
+The binary recurrences are
+\begin{align}
+ \wt(2n)&=\wt(n),& \wt(2n+1)&=\wt(n)+1,                  \label{eq:weight-even-odd}\\
+ \varepsilon_{2n}&=\varepsilon_n,&
+ \varepsilon_{2n+1}&=-\varepsilon_n.                     \label{eq:tm-even-odd}
+\end{align}
 The sequence $(\varepsilon_n)$ is the $\{\pm1\}$ form of the Thue--Morse sequence
 \cite{allouche2003}.
 
@@ -1190,7 +1198,7 @@ These are \lean{rvachev_partition_one_over_nat} and
 
 With
 \begin{equation}
- c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,                       \label{eq:c-def}
+ c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,                       \label{eq:c-fourier-moment-def}
 \end{equation}
 the exact entire series is
 \begin{equation}
@@ -1306,6 +1314,21 @@ Interior smoothness and the derivative chain are
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
 
+The same module gives the exact second derivative on the open interval,
+\begin{equation}
+ I''(y)=-\frac{F''(I(y))}{F'(I(y))^3},\qquad 0<y<1,        \label{eq:fabius-inverse-second-derivative}
+\end{equation}
+and proves the sharp closed-half shape statements
+\begin{equation}
+ I\text{ is strictly concave on }[0,\tfrac12],\qquad
+ I\text{ is strictly convex on }[\tfrac12,1].            \label{eq:fabius-inverse-curvature}
+\end{equation}
+These are \lean{deriv_fabiusInv_hasDerivAt},
+\lean{deriv_deriv_fabiusInv},
+\lean{strictConcaveOn_fabiusInv_firstHalf}, and
+\lean{strictConvexOn_fabiusInv_secondHalf}.  The closed endpoints in
+\eqref{eq:fabius-inverse-curvature} use continuity; no endpoint differentiability is claimed.
+
 The inverse inherits the exact symmetry and midpoint
 \begin{equation}
  I(1-y)=1-I(y),\qquad I(1/2)=1/2,                          \label{eq:fabius-inverse-symmetry}
@@ -1322,6 +1345,17 @@ These are \lean{fabiusInv_one_sub}, \lean{fabiusInv_half}, and
 \end{equation}
 by \lean{fabiusInv_analyticAt_iff}; in the open interval its derivative never vanishes by
 \lean{deriv_fabiusInv_ne_zero}.
+
+At the two clamping endpoints the inverse is steeper than every root: for every
+\(n\in\N\),
+\begin{equation}
+ y=o\!\left(I(y)^n\right)\quad(y\downarrow0),\qquad
+ 1-y=o\!\left((1-I(y))^n\right)\quad(y\uparrow1).          \label{eq:fabius-inverse-all-order-steepness}
+\end{equation}
+These are \lean{id_isLittleO_fabiusInv_pow_at_zero_right} and
+\lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular the one-sided
+difference quotients tend to \(+\infty\), as stated by
+\lean{tendsto_fabiusInv_div_atTop} and its reflected companion.
 
 \subsection{Precise non-elementarity}
 
@@ -1380,6 +1414,12 @@ are
 These are the rational declarations \lean{moment_succ} and
 \lean{halfMoment_succ} in \path{Arithmetic.lean}; positivity is
 \lean{moment_pos} and \lean{halfMoment_pos}.
+
+For denominator arguments, write the exact natural normalization as
+\begin{equation}
+ c_n=\frac{C_n}{(2n+1)!!\prod_{j=1}^{n}(2^{2j}-1)},        \label{eq:c-normalized}
+\end{equation}
+where \(C_n\) is the positive integer \lean{momentNumerator} at index \(n\).
 
 The entire generating function
 \begin{equation}
@@ -1448,6 +1488,7 @@ identities are
 
 \subsection{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
+\label{subsec:inverse-dyadic-compositions}
 
 For every \(n\in\N\),
 \begin{equation}
@@ -1555,7 +1596,7 @@ $-1$, Taylor's theorem with integral remainder gives
 \begin{equation}
  \Up(x-1)=\frac1{n!}\int_{-1}^{x-1}(x-1-t)^n\Up^{(n+1)}(t)\dd t. \label{eq:dyadic-taylor-integral}
 \end{equation}
-Insert the exact derivative identity \eqref{eq:up-derivatives}:
+Insert the exact derivative identity \eqref{eq:up-global-derivatives}:
 \begin{equation*}
  \Up^{(n+1)}(t)=2^{\binom{n+2}{2}}
  \mathcal F\bigl(2^{n+1}(t+1)\bigr).
@@ -2773,8 +2814,8 @@ kernel, the exact zero runs forced by Prouhet cancellation, the two generating-s
 identities, the discrete functional equation satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
-normalization does not converge, and that failure is recorded separately in
-\cref{tm:sub-literal-endpoint}.  Two further pieces of foundational material are attached at
+normalization does not converge, while the corrected centered formulation below does.
+Two further pieces of foundational material are attached at
 the end: the lower branch of Lambert's $W$-function, which the asymptotic sections of this
 article use but never construct, and an exact binomial--logarithm formula for the
 Thue--Morse bit.
@@ -2974,8 +3015,7 @@ $\sigma_{k+1}(2^r)=\sigma_{k+1}(2^r-1)+\sigma_k(2^r)=0-1=-1$.
 \begin{remark}
 The right boundary value is not $+1$.  Every iterated prefix sum, at every order
 $k\le r$, takes the value $-1$ at the index $2^r$.  This single sign is what makes the
-literal normalization of \cref{tm:sub-grid-equation} fail at the right endpoint; see
-\cref{tm:sub-literal-endpoint}.
+literal normalization of \cref{tm:sub-grid-equation} fail at the right endpoint.
 \end{remark}
 
 \subsection{Two generating-series identities}
@@ -3380,8 +3420,14 @@ $|\log\epsilon|=-\log\epsilon$, and
 \label{tm:sub-binomial-log}
 
 The zero-one Thue--Morse bit is $\tau(n)=\wt(n)\bmod2$, so that
-$\varepsilon_n=1-2\tau(n)$; the primitive-recursive evaluation
-\eqref{eq:primitive-thue-bit} computes it one binary digit at a time.  It also admits a
+$\varepsilon_n=1-2\tau(n)$.  Its primitive-recursive evaluation computes one binary digit
+at a time:
+\begin{equation}
+ b(0)=0,\qquad
+ b(m)=\bigl(b(\lfloor m/2\rfloor)+(m\bmod2)\bigr)\bmod2
+ \quad(m>0).                                               \label{eq:primitive-thue-bit}
+\end{equation}
+It also admits a
 closed formula in which the entire binary structure is hidden inside a single row of
 Pascal's triangle.  Set
 \begin{equation}
@@ -3517,8 +3563,7 @@ variable $X$ in \eqref{eq:random-X}:
 \begin{equation}
  G(z)=\E\e^{zX}.                                           \label{eq:G-mgf}
 \end{equation}
-Indeed, this also follows from \eqref{eq:G-Fourier} and $Y=2X-1$.  Therefore, for $s>0$,
-$G(-s)$ is the ordinary Laplace transform of the probability law.
+Therefore, for $s>0$, $G(-s)$ is the ordinary Laplace transform of the probability law.
 
 Iterating the functional equation \eqref{eq:G-functional} in the negative direction gives
 an exact product.
@@ -5292,7 +5337,7 @@ and in particular
 \end{corollary}
 
 \begin{proof}
-By the bridge \eqref{eq:d-F-inverse},
+By the bridge \eqref{eq:F-inverse-power},
 \begin{equation}
  \log d_n=\log n!+\binom n2L+\log F(2^{-n}).              \label{eq:as-dn-bridge}
 \end{equation}
@@ -5551,18 +5596,19 @@ Moments and exact arithmetic &
 \path{MomentPowerSeries.lean}, \path{BernoulliRecurrences.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Dyadic and \(q\)-binomial formulas &
-\path{Dyadic.lean}, \path{DyadicCorrectness.lean},
+\path{DyadicClosedForm.lean}, \path{GlobalDyadic.lean},
+\path{DyadicCorrectness.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
 \path{FabiusBinaryReductionSeries.lean}, \path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse prefixes &
-\path{ThueMorsePrefix.lean}, \path{ThueMorsePrefixGenerating.lean},
-\path{ThueMorsePrefixLimit.lean}, \path{ThueMorseApproximation.lean}\\
+\path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
+\path{ThueMorseApproximation.lean}\\
 Endpoint asymptotics &
-\path{NegativeLaplace.lean}, \path{NegativeLaplaceProduct.lean},
+\path{NegativeLaplace.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
-\path{FabiusLambertPhase.lean}, \path{FabiusSaddlePoint.lean},
-\path{FabiusSaddleAsymptotic.lean}, \path{FabiusSecondSaddleCorrection.lean},
+\path{FabiusLambertPhase.lean}, \path{FabiusLambertSaddle.lean},
+\path{FabiusDyadicSharpAsymptotic.lean}, \path{FabiusSecondSaddleCorrection.lean},
 \path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
@@ -5579,14 +5625,14 @@ Legendre expansion and computability &
 \toprule
 Article & Lean & Meaning\\
 \midrule
-\(F\) & \lean{fabiusReal fabius} & bounded canonical Fabius function\\
-\(\Up\) & \lean{rvachevUp fabius} & compactly supported fold\\
-\(\mathcal F\) & \lean{extendedFabius fabius} & signed global extension\\
-\(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
-\(c_n\) & \lean{moment n} & even moment\\
-\(d_n\) & \lean{halfMoment n} & half moment\\
-\(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
-\(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
+\(F\) & \texttt{fabiusReal fabius} & bounded canonical Fabius function\\
+\(\Up\) & \texttt{rvachevUp fabius} & compactly supported fold\\
+\(\mathcal F\) & \texttt{extendedFabius fabius} & signed global extension\\
+\(I\) & \texttt{fabiusInv fabius fabius\_spec} & totalized inverse\\
+\(c_n\) & \texttt{moment n} & even moment\\
+\(d_n\) & \texttt{halfMoment n} & half moment\\
+\(\varepsilon_n\) & \texttt{thueMorseSign n} & signed Thue--Morse value\\
+\(\wt(n)\) & \texttt{binaryWeight n} & binary digit sum\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -5719,9 +5765,8 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, repository snapshot
-  \path{75dac857e96d858140e7e5520172d0c659bde98e}, 24 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/75dac857e96d858140e7e5520172d0c659bde98e/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, consulted 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/codex/fabius-both-papers/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 

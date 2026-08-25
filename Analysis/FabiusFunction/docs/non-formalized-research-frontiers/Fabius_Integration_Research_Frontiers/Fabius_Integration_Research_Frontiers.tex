@@ -164,7 +164,8 @@ generalizations, and formulas that still lack exact declarations.  Its presence 
 \path{non-formalized-research-frontiers} is intentional: no mathematical assertion in this
 notebook should be attributed to the formal library merely because a related definition or
 weaker theorem exists.  The primary exposition contains the audited, declaration-backed
-subset.  Among the obligations retained here are inverse curvature and H\"older claims,
+subset.  Among the obligations retained here are H\"older consequences beyond the
+now-formalized inverse-curvature identities,
 generic moment-matrix consequences, arbitrary-family Toeplitz wording, generic Gaussian
 coefficient bounds, and the passage from the mass top jet to the logarithmic
 highest-derivative law.
@@ -194,10 +195,10 @@ global extension used in the Lean development.  On $[0,1]$ the basic identities 
 \end{equation}
 These are inputs here, not topics to be reproved.
 
-The repository snapshot underlying this supplement is the head of \texttt{main} on
-25 August 2026, commit
+The repository snapshot underlying this supplement is the following commit on
+the \texttt{codex/fabius-both-papers} branch, dated 25 August 2026.
 \begin{center}
- \texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}.
+ \texttt{531338d79f2f640041562138c7b80772ee2f0490}.
 \end{center}
 The main article itself records an earlier pinned snapshot and, near the beginning of its
 module guide, explicitly says that four clusters have ``no counterpart anywhere in the
@@ -248,9 +249,10 @@ positive $x$.
 library, the corresponding declaration is named in the margin of the discussion or in the
 concordance in \cref{app:concordance}.  When a statement is an immediate classical calculus
 corollary but is not presently packaged as a declaration, it is called a \emph{corollary in
-ordinary analysis}.  This distinction matters most for the second-derivative curvature
-formula of the inverse and for the transfer of the highest-jet coefficient from mass
-coefficients to logarithmic coefficients.
+ordinary analysis}.  The inverse second-derivative formula and its strict closed-half shape
+are now packaged formally; the distinction remains relevant for general higher inverse
+derivatives and for the transfer of the highest-jet coefficient from mass coefficients to
+logarithmic coefficients.
 \end{boxedremark}
 
 \subsection{The positivity hypothesis in the original characterization is redundant}
@@ -332,8 +334,8 @@ and the total inverse
  I(y)=\operatorname{val}\bigl(\mathfrak F^{-1}(\pi(y))\bigr).
  \label{eq:total-inverse}
 \end{equation}
-This is the mathematical content of \lean{fabiusOrderIso} and \lean{fabiusInv}; Lean uses
-\lean{Set.IccExtend} rather than spelling out \eqref{eq:clamp}.
+The declarations \lean{fabiusOrderIso} and \lean{fabiusInv} formalize this construction.
+Lean uses \lean{Set.IccExtend} rather than spelling out \eqref{eq:clamp}.
 
 \begin{theorem}[Global inverse package]
 \label{thm:global-inverse}
@@ -452,7 +454,7 @@ For $a\le2^n$, combine \eqref{eq:dyadic-evaluator-input} with the left inverse i
 is $I(1)=1$.
 \end{proof}
 
-\subsection{Formal interior calculus and an ordinary-analysis curvature corollary}
+\subsection{Formal interior calculus and curvature}
 
 The inverse is constructed using order topology alone.  Once the positivity theorem for
 $F'$ in the open unit interval is imported, the local inverse theorem supplies a sharper
@@ -476,13 +478,13 @@ $C^\infty$ diffeomorphism.  Differentiate $F(I(y))=y$ and substitute the second 
 \eqref{eq:basic-inputs}.
 \end{proof}
 
-Because $F$ is convex on $(0,1/2)$ and concave on $(1/2,1)$, inversion reverses those
-curvature signs.
+Because $F$ is strictly convex on $[0,1/2]$ and strictly concave on $[1/2,1]$, inversion
+reverses those two shapes.
 
-\begin{corollary}[Curvature of the inverse]
+\begin{corollary}[Curvature of the inverse; formalized]
 \label{cor:inverse-curvature}
-The inverse $I$ is concave on $(0,1/2)$ and convex on $(1/2,1)$.  Where second derivatives
-are evaluated,
+The inverse $I$ is strictly concave on $[0,1/2]$ and strictly convex on $[1/2,1]$.  For every
+$0<y<1$,
 \begin{equation}
  I''(y)=-\frac{F''(I(y))}{F'(I(y))^3}.
  \label{eq:inverse-second-derivative}
@@ -496,9 +498,12 @@ positivity, and the resulting interior smoothness are the named Lean declaration
 \path{fabiusInv_hasDerivAt},
 \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
 \path{deriv_fabiusInv_pos}, together with
-\path{fabiusInv_contDiffOn_Ioo}.  The second-derivative curvature formula in
-\cref{cor:inverse-curvature} remains an ordinary-analysis corollary rather than a separate
-declaration.
+\path{fabiusInv_contDiffOn_Ioo}.  The reciprocal-cubic rule in
+\cref{cor:inverse-curvature} is \path{deriv_fabiusInv_hasDerivAt} together with
+\path{deriv_deriv_fabiusInv}; its two strict closed-half conclusions are
+\path{strictConcaveOn_fabiusInv_firstHalf} and
+\path{strictConvexOn_fabiusInv_secondHalf}.  These shape theorems use derivatives only on
+the interval interiors, so they do not assert finite endpoint derivatives.
 \end{remark}
 
 \section{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
@@ -3082,7 +3087,9 @@ that scale positivity follows from the other original-characterization assumptio
 \lean{strictMonoOn\_fabiusInv}, \lean{fabiusInv\_one\_sub},
 \lean{fabiusInv\_fabiusDyadicUnit}, \lean{fabiusInv\_hasDerivAt},
 \lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp},
-\lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo}, the transported root-free bounds,
+\lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo},
+\lean{deriv\_deriv\_fabiusInv}, \lean{strictConcaveOn\_fabiusInv\_firstHalf},
+\lean{strictConvexOn\_fabiusInv\_secondHalf}, the transported root-free bounds,
 \lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
 \cref{sec:inverse,sec:inverse-steepness}.\\
 \path{ElementaryFunction.lean} &
@@ -3337,8 +3344,8 @@ V.~Reshetnikov,
 \newblock \texttt{ProveIt}: formal development of the Fabius function and Rvachev's
 up-function,
 \newblock GitHub repository, snapshot
-\texttt{5e80805b1ee92697723949d125aa0d6dbf32f538}, 25 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+\texttt{531338d79f2f640041562138c7b80772ee2f0490}, 25 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/531338d79f2f640041562138c7b80772ee2f0490/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
