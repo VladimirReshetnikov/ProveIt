@@ -62,7 +62,7 @@ theorem complexMGF_weightedSumDistribution_eq_complexGeneratingFunction
     apply Filter.Frequently.of_forall
     intro x
     rw [complexMGF_ofReal, mgf_weightedSumDistribution_eq_generatingFunction F hF]
-    exact (complexGeneratingFunction_ofReal_vertical F x).symm
+    exact (complexGeneratingFunction_ofReal F x).symm
   have hcomplex : ∃ᶠ (z : ℂ) in 𝓝[≠] 0,
       complexMGF id weightedSumDistribution z = complexGeneratingFunction F z := by
     rw [frequently_iff_seq_forall] at hreal ⊢
