@@ -6,7 +6,9 @@ import Mathlib.Analysis.SpecialFunctions.Log.Base
 
 The maps `t ↦ 2⁻ᵗ` and `x ↦ -log₂ x` identify `t → ∞` with the
 small-positive-argument filter `x → 0⁺`.  This module packages that exact
-inverse relationship and transfers Big-O estimates between the two forms.
+inverse relationship.  It transfers arbitrary eventual statements and
+filter-valued limits, as well as Big-O and little-o estimates, between the two
+forms.
 -/
 
 set_option autoImplicit false
@@ -51,6 +53,37 @@ theorem fabiusLogArgument_tendsto_smallArgument :
       (tendsto_rpow_atBot_of_base_gt_one (2 : ℝ) (by norm_num)).comp
         tendsto_neg_atTop_atBot
   · exact Filter.Eventually.of_forall fun t => fabiusLogArgument_pos t
+
+/-- An eventual property on the small positive ray is equivalent to the same
+property in the coordinate `x = 2⁻ᵗ` for large `t`.  This is the proposition-
+valued form of the exact change of asymptotic scale. -/
+theorem eventually_logScale_iff_smallArgument (p : ℝ → Prop) :
+    (∀ᶠ t : ℝ in atTop, p (fabiusLogArgument t)) ↔
+      ∀ᶠ x : ℝ in nhdsWithin 0 (Ioi 0), p x := by
+  constructor
+  · intro h
+    have hpull := fabiusSmallArgumentLog_tendsto_atTop.eventually h
+    filter_upwards [hpull, self_mem_nhdsWithin] with x hx hmem
+    rw [fabiusLogArgument_smallArgumentLog hmem] at hx
+    exact hx
+  · intro h
+    exact fabiusLogArgument_tendsto_smallArgument.eventually h
+
+/-- Composing with `t ↦ 2⁻ᵗ` preserves and reflects convergence to an
+arbitrary target filter.  No topology on the codomain is required. -/
+theorem tendsto_logScale_iff_smallArgument
+    {α : Type*} (f : ℝ → α) (l : Filter α) :
+    Tendsto (fun t => f (fabiusLogArgument t)) atTop l ↔
+      Tendsto f (nhdsWithin 0 (Ioi 0)) l := by
+  constructor
+  · intro h
+    have hpull := h.comp fabiusSmallArgumentLog_tendsto_atTop
+    apply hpull.congr'
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    exact congrArg f (fabiusLogArgument_smallArgumentLog hx)
+  · intro h
+    simpa only [Function.comp_def] using
+      h.comp fabiusLogArgument_tendsto_smallArgument
 
 /-- Transfer a logarithmic-scale `O` estimate at `t → ∞` back to the
 equivalent small-positive-argument filter. -/
