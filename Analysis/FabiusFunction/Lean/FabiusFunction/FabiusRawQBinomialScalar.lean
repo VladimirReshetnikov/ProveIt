@@ -12,6 +12,9 @@ complex translation, not merely for rational or Gaussian-rational ones.
 
 The generic algebraic theorem is accompanied by real- and complex-valued
 Fabius-function wrappers and fully expanded finite-sum statements.
+The constant-polynomial proof is also exposed coefficientwise, and rational
+translations commute exactly with scalar evaluation already at numerator
+level.
 -/
 
 set_option autoImplicit false
@@ -68,17 +71,23 @@ theorem qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const
   apply Polynomial.funext
   intro q
   rw [qBinomialThueMorseRawTranslatedNumeratorPolynomial_eval,
-    Polynomial.eval_C]
-  have h := qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw q n
-  have hsquare : ((-1 : ℚ) ^ n) ^ 2 = 1 := by
-    rw [← pow_mul]
-    norm_num
-  calc
-    qBinomialThueMorseRawTranslatedNumerator q n =
-        1 * qBinomialThueMorseRawTranslatedNumerator q n := by ring
-    _ = ((-1 : ℚ) ^ n) ^ 2 *
-          qBinomialThueMorseRawTranslatedNumerator q n := by rw [hsquare]
-    _ = (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n := by rw [h]; ring
+    Polynomial.eval_C,
+    qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered]
+
+/-- Every positive translation coefficient of the raw numerator cancels.
+The all-index form also retains the exact signed centered numerator as the
+constant coefficient. -/
+theorem qBinomialThueMorseRawTranslatedNumeratorPolynomial_coeff
+    (n j : ℕ) :
+    (qBinomialThueMorseRawTranslatedNumeratorPolynomial n).coeff j =
+      if j = 0 then
+        (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n
+      else 0 := by
+  rw [qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const]
+  by_cases hj : j = 0
+  · subst j
+    rw [Polynomial.coeff_C_zero, if_pos rfl]
+  · rw [Polynomial.coeff_C_of_ne_zero hj, if_neg hj]
 
 /-- Evaluation of the raw numerator at a scalar in any field over `ℚ`. -/
 def qBinomialThueMorseRawTranslatedNumeratorIn
@@ -95,6 +104,17 @@ theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered
   rw [qBinomialThueMorseRawTranslatedNumeratorIn,
     qBinomialThueMorseRawTranslatedNumeratorPolynomial_eq_const,
     Polynomial.eval₂_C]
+
+/-- Scalar evaluation at a rational translation is the scalar embedding of
+the original rational raw numerator. -/
+theorem qBinomialThueMorseRawTranslatedNumeratorIn_ratCast
+    {K : Type*} [Field K] [Algebra ℚ K] (q : ℚ) (n : ℕ) :
+    qBinomialThueMorseRawTranslatedNumeratorIn
+        (algebraMap ℚ K q) n =
+      algebraMap ℚ K
+        (qBinomialThueMorseRawTranslatedNumerator q n) := by
+  rw [qBinomialThueMorseRawTranslatedNumeratorIn_eq_centered,
+    qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered]
 
 /-- Literal expansion of the scalar-valued raw numerator. -/
 theorem qBinomialThueMorseRawTranslatedNumeratorIn_eq_wolfram_sum
@@ -150,16 +170,9 @@ theorem qBinomialThueMorseRawTranslatedFormulaIn_eq_centered
   rw [hden]
   rw [← h]
   congr 1
-  have hraw := qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw 0 n
-  have hsquare : ((-1 : ℚ) ^ n) ^ 2 = 1 := by
-    rw [← pow_mul]
-    norm_num
-  apply congrArg (algebraMap ℚ K)
-  calc
-    (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n =
-        ((-1 : ℚ) ^ n) ^ 2 *
-          qBinomialThueMorseRawTranslatedNumerator 0 n := by rw [hraw]; ring
-    _ = qBinomialThueMorseRawTranslatedNumerator 0 n := by rw [hsquare, one_mul]
+  exact congrArg (algebraMap ℚ K)
+    (qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered
+      0 n).symm
 
 /-- Compatibility with the original rational-valued raw formula. -/
 theorem qBinomialThueMorseRawTranslatedFormulaIn_ratCast

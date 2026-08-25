@@ -49,9 +49,13 @@ at `1`.
 
 ## Why inverting cannot help at all
 
-`Fabius.IsElementaryOrInverse` adds to the elementary functions every
-continuous inverse branch, of members, of branches of members, and so on
-without limit.  By `Fabius.IsElementaryOrInverse.dense_analyticLocus` every
+`Fabius.IsElementaryOrInverse` adds to the elementary functions the continuous
+inverse branches — of members, of branches of members, and so on without
+limit.  "Continuous" is not the only condition: a branch is admitted with an
+open set `U` carrying the identity, and must be analytic on `interior Uᶜ`,
+which is a constraint on how it is continued past `U`.  Without that clause
+the density theorem would be false, since a branch is otherwise unconstrained
+off `U`.  By `Fabius.IsElementaryOrInverse.dense_analyticLocus` every
 member is still analytic on a dense set, so
 `Fabius.not_eqOn_of_dense_analyticLocus` applies unchanged.  Neither `F` nor
 `F⁻¹` is reachable.

@@ -15,7 +15,9 @@ decay.  Dominated convergence then identifies the split integral with
 
 The definitions `boseFinitePartSmallKernel` and
 `boseFinitePartLargeKernel` are also the kernel interface used by the later
-periodic-mean and Fourier-coefficient calculations.
+periodic-mean and Fourier-coefficient calculations. Their integrability is
+recorded for arbitrary cutoffs, together with the exact logarithmic correction
+incurred when the cutoff moves.
 -/
 
 set_option autoImplicit false
@@ -71,20 +73,29 @@ lemma abs_boseFinitePartSmallKernel_le_one_of_pos
   rw [abs_div, abs_of_pos hx]
   exact (div_le_one hx).mpr (abs_negativeLaplaceKernel_le x hx)
 
-lemma integrableOn_boseFinitePartSmallKernel :
-    IntegrableOn boseFinitePartSmallKernel (Ioc 0 1) := by
-  have hone : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Ioc 0 1) :=
+/-- The small finite-part kernel is integrable up to every real cutoff. When
+the cutoff is nonpositive the interval is empty; no positivity hypothesis is
+therefore needed. -/
+lemma integrableOn_boseFinitePartSmallKernel_Ioc (c : ℝ) :
+    IntegrableOn boseFinitePartSmallKernel (Ioc 0 c) := by
+  have hone : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Ioc 0 c) :=
     integrableOn_const (measure_Ioc_lt_top.ne)
-  change Integrable boseFinitePartSmallKernel (volume.restrict (Ioc 0 1))
-  change Integrable (fun _ : ℝ => (1 : ℝ)) (volume.restrict (Ioc 0 1)) at hone
+  change Integrable boseFinitePartSmallKernel (volume.restrict (Ioc 0 c))
+  change Integrable (fun _ : ℝ => (1 : ℝ)) (volume.restrict (Ioc 0 c)) at hone
   apply hone.mono
   · exact (continuousOn_boseFinitePartSmallKernel.mono
-      (Ioc_subset_Ioi_self : Ioc (0 : ℝ) 1 ⊆ Ioi 0)).aestronglyMeasurable
+      (Ioc_subset_Ioi_self : Ioc (0 : ℝ) c ⊆ Ioi 0)).aestronglyMeasurable
         measurableSet_Ioc
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx
     rw [Real.norm_eq_abs]
     simpa only [norm_one] using
       abs_boseFinitePartSmallKernel_le_one_of_pos x hx.1
+
+/-- Unit-cutoff compatibility form of
+`integrableOn_boseFinitePartSmallKernel_Ioc`. -/
+lemma integrableOn_boseFinitePartSmallKernel :
+    IntegrableOn boseFinitePartSmallKernel (Ioc 0 1) := by
+  simpa using integrableOn_boseFinitePartSmallKernel_Ioc 1
 
 /-- Compatibility form of `abs_boseFinitePartSmallKernel_le_one_of_pos` on the
 small integration interval. -/
@@ -136,62 +147,79 @@ lemma abs_boseLogKernel_le_const_exp (x : ℝ) (hx : 1 ≤ x) :
       (1 / (1 - Real.exp (-1))) * Real.exp (-x) := by
   exact abs_boseLogKernel_le_const_exp_of_le 1 x (by norm_num) hx
 
-lemma integrableOn_boseLogKernel_Ioi_one :
-    IntegrableOn boseLogKernel (Ioi 1) := by
-  let c : ℝ := 1 / (1 - Real.exp (-1))
-  have hc0 : 0 ≤ c := by
-    dsimp [c]
+/-- The logarithmic Bose kernel is integrable beyond every positive cutoff. -/
+lemma integrableOn_boseLogKernel_Ioi_of_pos (c : ℝ) (hc : 0 < c) :
+    IntegrableOn boseLogKernel (Ioi c) := by
+  let C : ℝ := 1 / (1 - Real.exp (-c))
+  have hC0 : 0 ≤ C := by
+    dsimp [C]
     exact (one_div_pos.mpr
-      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num)))).le
-  have hg : IntegrableOn (fun x : ℝ => c * Real.exp (-x)) (Ioi 1) :=
-    (integrableOn_exp_neg_Ioi 1).const_mul c
-  change Integrable boseLogKernel (volume.restrict (Ioi 1))
-  change Integrable (fun x : ℝ => c * Real.exp (-x))
-    (volume.restrict (Ioi 1)) at hg
+      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith)))).le
+  have hg : IntegrableOn (fun x : ℝ => C * Real.exp (-x)) (Ioi c) :=
+    (integrableOn_exp_neg_Ioi c).const_mul C
+  change Integrable boseLogKernel (volume.restrict (Ioi c))
+  change Integrable (fun x : ℝ => C * Real.exp (-x))
+    (volume.restrict (Ioi c)) at hg
   apply hg.mono
-  · have hsubset : Ioi (1 : ℝ) ⊆ Ioi 0 := by
+  · have hsubset : Ioi c ⊆ Ioi 0 := by
       intro x hx
-      change 1 < x at hx
-      exact zero_lt_one.trans hx
+      exact hc.trans hx
     exact (continuousOn_boseLogKernel.mono hsubset).aestronglyMeasurable
       measurableSet_Ioi
   · filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
-    change 1 < x at hx
     rw [Real.norm_eq_abs]
-    refine (abs_boseLogKernel_le_const_exp x hx.le).trans_eq ?_
-    rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hc0 (Real.exp_nonneg _))]
+    refine (abs_boseLogKernel_le_const_exp_of_le c x hc hx.le).trans_eq ?_
+    rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hC0 (Real.exp_nonneg _))]
 
-lemma integrableOn_boseFinitePartLargeKernel :
-    IntegrableOn boseFinitePartLargeKernel (Ioi 1) := by
-  let c : ℝ := 1 / (1 - Real.exp (-1))
-  have hc0 : 0 ≤ c := by
-    dsimp [c]
+/-- Unit-cutoff compatibility form of
+`integrableOn_boseLogKernel_Ioi_of_pos`. -/
+lemma integrableOn_boseLogKernel_Ioi_one :
+    IntegrableOn boseLogKernel (Ioi 1) := by
+  simpa using integrableOn_boseLogKernel_Ioi_of_pos 1 (by norm_num)
+
+/-- The large finite-part kernel is integrable beyond every positive cutoff. -/
+lemma integrableOn_boseFinitePartLargeKernel_Ioi_of_pos
+    (c : ℝ) (hc : 0 < c) :
+    IntegrableOn boseFinitePartLargeKernel (Ioi c) := by
+  let C : ℝ := 1 / (1 - Real.exp (-c))
+  let D : ℝ := C / c
+  have hC0 : 0 ≤ C := by
+    dsimp [C]
     exact (one_div_pos.mpr
-      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num)))).le
-  have hg : IntegrableOn (fun x : ℝ => c * Real.exp (-x)) (Ioi 1) :=
-    (integrableOn_exp_neg_Ioi 1).const_mul c
-  change Integrable boseFinitePartLargeKernel (volume.restrict (Ioi 1))
-  change Integrable (fun x : ℝ => c * Real.exp (-x))
-    (volume.restrict (Ioi 1)) at hg
+      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith)))).le
+  have hD0 : 0 ≤ D := div_nonneg hC0 hc.le
+  have hg : IntegrableOn (fun x : ℝ => D * Real.exp (-x)) (Ioi c) :=
+    (integrableOn_exp_neg_Ioi c).const_mul D
+  change Integrable boseFinitePartLargeKernel (volume.restrict (Ioi c))
+  change Integrable (fun x : ℝ => D * Real.exp (-x))
+    (volume.restrict (Ioi c)) at hg
   apply hg.mono
   · exact (continuousOn_boseFinitePartLargeKernel.mono
       (fun x hx => by
-        change 1 < x at hx
-        change 0 < x
-        linarith)).aestronglyMeasurable measurableSet_Ioi
+        exact hc.trans hx)).aestronglyMeasurable measurableSet_Ioi
   · filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
-    change 1 < x at hx
     rw [Real.norm_eq_abs]
-    have hx0 : 0 < x := zero_lt_one.trans hx
-    have hH : |boseLogKernel x| ≤ c * Real.exp (-x) := by
-      simpa only [c] using abs_boseLogKernel_le_const_exp x hx.le
+    have hx0 : 0 < x := hc.trans hx
+    have hH : |boseLogKernel x| ≤ C * Real.exp (-x) := by
+      simpa only [C] using abs_boseLogKernel_le_const_exp_of_le c x hc hx.le
     calc
       |boseFinitePartLargeKernel x| = |boseLogKernel x| / x := by
         rw [boseFinitePartLargeKernel, abs_div, abs_of_pos hx0]
-      _ ≤ |boseLogKernel x| := div_le_self (abs_nonneg _) (by linarith)
-      _ ≤ c * Real.exp (-x) := hH
-      _ = ‖c * Real.exp (-x)‖ := by
-        rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hc0 (Real.exp_nonneg _))]
+      _ ≤ (C * Real.exp (-x)) / x :=
+        (div_le_div_iff_of_pos_right hx0).2 hH
+      _ ≤ (C * Real.exp (-x)) / c :=
+        div_le_div_of_nonneg_left (mul_nonneg hC0 (Real.exp_nonneg _)) hc hx.le
+      _ = D * Real.exp (-x) := by
+        dsimp [D]
+        ring
+      _ = ‖D * Real.exp (-x)‖ := by
+        rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hD0 (Real.exp_nonneg _))]
+
+/-- Unit-cutoff compatibility form of
+`integrableOn_boseFinitePartLargeKernel_Ioi_of_pos`. -/
+lemma integrableOn_boseFinitePartLargeKernel :
+    IntegrableOn boseFinitePartLargeKernel (Ioi 1) := by
+  simpa using integrableOn_boseFinitePartLargeKernel_Ioi_of_pos 1 (by norm_num)
 
 theorem tendsto_small_regularized_bose_integral :
     Tendsto (fun a : ℝ => ∫ x : ℝ in Ioc 0 1,
@@ -451,6 +479,46 @@ lemma boseFinitePartLargeKernel_eq_small_add_log_div
   unfold boseFinitePartLargeKernel boseFinitePartSmallKernel
   rw [boseLogKernel_eq_negativeLaplaceKernel_add_log x hx]
   ring
+
+/-- The elementary transition term between two positive cutoffs. The formula
+also covers the degenerate endpoint `a = b`. -/
+lemma integral_log_div_Ioc (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    ∫ x : ℝ in Ioc a b, Real.log x / x =
+      (Real.log b) ^ 2 / 2 - (Real.log a) ^ 2 / 2 := by
+  have hpos : ∀ x ∈ uIcc a b, 0 < x := by
+    intro x hx
+    rw [uIcc_of_le hab] at hx
+    exact ha.trans_le hx.1
+  have hderiv : ∀ x ∈ uIcc a b,
+      HasDerivAt (fun y : ℝ => (Real.log y) ^ 2 / 2) (Real.log x / x) x := by
+    intro x hx
+    refine (((Real.hasDerivAt_log (hpos x hx).ne').pow 2).div_const 2).congr_deriv ?_
+    ring
+  have hcont : ContinuousOn (fun x : ℝ => Real.log x / x) (uIcc a b) := by
+    intro x hx
+    have hx0 := hpos x hx
+    exact ((Real.continuousAt_log hx0.ne').div continuousAt_id hx0.ne').continuousWithinAt
+  rw [← intervalIntegral.integral_of_le hab]
+  exact intervalIntegral.integral_eq_sub_of_hasDerivAt
+    hderiv hcont.intervalIntegrable
+
+/-- Moving the split point across a positive compact interval changes the
+large-minus-small kernel integral by the explicit logarithmic square term. -/
+lemma integral_boseFinitePartLargeKernel_sub_small_Ioc
+    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    ∫ x : ℝ in Ioc a b,
+        (boseFinitePartLargeKernel x - boseFinitePartSmallKernel x) =
+      (Real.log b) ^ 2 / 2 - (Real.log a) ^ 2 / 2 := by
+  calc
+    (∫ x : ℝ in Ioc a b,
+        (boseFinitePartLargeKernel x - boseFinitePartSmallKernel x)) =
+        ∫ x : ℝ in Ioc a b, Real.log x / x := by
+      exact setIntegral_congr_fun measurableSet_Ioc (fun x hx => by
+        rw [boseFinitePartLargeKernel_eq_small_add_log_div x
+          (ha.trans hx.1)]
+        ring)
+    _ = (Real.log b) ^ 2 / 2 - (Real.log a) ^ 2 / 2 :=
+      integral_log_div_Ioc a b ha hab
 
 /-- Weighted form of the small-scale Bose decomposition used to split its
 Mellin integral at one. -/
