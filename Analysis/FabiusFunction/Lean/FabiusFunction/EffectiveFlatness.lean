@@ -20,7 +20,9 @@ on `[0,x]`, together with the unified differential equation
 and iterating `n` times produces the factor
 `2 · (2 · 2) · (2 · 2^2) ⋯ = 2^(1 + 2 + ⋯ + n) = 2^C(n+1,2)`, which is exactly
 the scaling constant of equation (3).  Rvachev's function inherits the bound
-at both ends of its support through `up(x) = F(1 - |x|)`.
+at both ends of its support through `up(x) = F(1 - |x|)`.  Reflected estimates
+at `1` and global versions using the truncated distance `max d 0` are included,
+so callers need not separately discharge a support-side hypothesis.
 
 `FabiusFunction.SharpFlatness` proves the strictly better bound
 `F(x) ≤ 2^C(n+1,2) / n! · x^n` by running the same induction through the
@@ -118,6 +120,40 @@ theorem fabiusReal_le_two_pow_mul_pow (F : BoundedFabius) (hF : IsFabius F)
         _ = 2 ^ (n + 1 + 1).choose 2 * x ^ (n + 1) := by
             rw [show n + 1 + 1 = n + 2 by omega, hchoose]
 
+/-- Global form of effective flatness at the origin.  Truncating the distance
+to `max x 0` is necessary outside the support when the power is odd. -/
+theorem fabiusReal_le_two_pow_mul_max_pow (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) {x : ℝ} (hx : (2 : ℝ) ^ n * max x 0 ≤ 1) :
+    fabiusReal F x ≤ 2 ^ (n + 1).choose 2 * (max x 0) ^ n := by
+  by_cases hx0 : 0 ≤ x
+  · rw [max_eq_left hx0] at hx ⊢
+    exact fabiusReal_le_two_pow_mul_pow F hF n hx0 hx
+  · have hxle : x ≤ 0 := (lt_of_not_ge hx0).le
+    rw [hF.zero_of_nonpos x hxle]
+    exact mul_nonneg (by positivity) (pow_nonneg (le_max_right x 0) n)
+
+/-- Effective flatness reflected at the right endpoint of the unit interval. -/
+theorem one_sub_fabiusReal_le_two_pow_mul_pow (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {x : ℝ} (hx1 : x ≤ 1)
+    (hx : (2 : ℝ) ^ n * (1 - x) ≤ 1) :
+    1 - fabiusReal F x ≤ 2 ^ (n + 1).choose 2 * (1 - x) ^ n := by
+  have h := fabiusReal_le_two_pow_mul_pow F hF n (x := 1 - x) (by linarith) hx
+  rwa [hF.symmetry_all x] at h
+
+/-- Global reflected flatness estimate at the right endpoint. -/
+theorem one_sub_fabiusReal_le_two_pow_mul_max_pow (F : BoundedFabius)
+    (hF : IsFabius F) (n : ℕ) {x : ℝ}
+    (hx : (2 : ℝ) ^ n * max (1 - x) 0 ≤ 1) :
+    1 - fabiusReal F x ≤
+      2 ^ (n + 1).choose 2 * (max (1 - x) 0) ^ n := by
+  by_cases hx1 : x ≤ 1
+  · rw [max_eq_left (sub_nonneg.mpr hx1)] at hx ⊢
+    exact one_sub_fabiusReal_le_two_pow_mul_pow F hF n hx1 hx
+  · have hxge : 1 ≤ x := (lt_of_not_ge hx1).le
+    rw [hF.one_of_one_le x hxge, sub_self]
+    exact mul_nonneg (by positivity)
+      (pow_nonneg (le_max_right (1 - x) 0) n)
+
 /-- Rvachev's function is the reflection of the Fabius function about the two
 ends of its support. -/
 theorem rvachevUp_eq_fabiusReal_one_sub_abs (F : BoundedFabius) (x : ℝ) :
@@ -134,5 +170,22 @@ theorem rvachevUp_le_two_pow_mul_pow (F : BoundedFabius) (hF : IsFabius F)
     rvachevUp F x ≤ 2 ^ (n + 1).choose 2 * (1 - |x|) ^ n := by
   rw [rvachevUp_eq_fabiusReal_one_sub_abs F x]
   exact fabiusReal_le_two_pow_mul_pow F hF n (by linarith) hn
+
+/-- Global effective flatness at both ends of the support.  The truncated
+distance is zero outside `[-1,1]`, where Rvachev's function vanishes. -/
+theorem rvachevUp_le_two_pow_mul_max_pow (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) {x : ℝ}
+    (hn : (2 : ℝ) ^ n * max (1 - |x|) 0 ≤ 1) :
+    rvachevUp F x ≤ 2 ^ (n + 1).choose 2 * (max (1 - |x|) 0) ^ n := by
+  by_cases hx : |x| ≤ 1
+  · rw [max_eq_left (sub_nonneg.mpr hx)] at hn ⊢
+    exact rvachevUp_le_two_pow_mul_pow F hF n hx hn
+  · have houtside : x ∉ Ioo (-1 : ℝ) 1 := by
+      intro hmem
+      have habs : |x| < 1 := abs_lt.mpr ⟨hmem.1, hmem.2⟩
+      exact hx habs.le
+    rw [rvachevUp_eq_zero_of_not_mem_Ioo F hF houtside]
+    exact mul_nonneg (by positivity)
+      (pow_nonneg (le_max_right (1 - |x|) 0) n)
 
 end Fabius
