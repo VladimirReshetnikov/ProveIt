@@ -234,9 +234,9 @@ positive $x$.
 library, the corresponding declaration is named in the margin of the discussion or in the
 concordance in \cref{app:concordance}.  When a statement is an immediate classical calculus
 corollary but is not presently packaged as a declaration, it is called a \emph{corollary in
-ordinary analysis}.  This distinction matters most for the interior derivative of the
-inverse and for the transfer of the highest-jet coefficient from mass coefficients to
-logarithmic coefficients.
+ordinary analysis}.  This distinction matters most for the second-derivative curvature
+formula of the inverse and for the transfer of the highest-jet coefficient from mass
+coefficients to logarithmic coefficients.
 \end{boxedremark}
 
 \subsection{The positivity hypothesis in the original characterization is redundant}
@@ -438,11 +438,12 @@ For $a\le2^n$, combine \eqref{eq:dyadic-evaluator-input} with the left inverse i
 is $I(1)=1$.
 \end{proof}
 
-\subsection{Interior differential geometry: an ordinary-analysis corollary}
+\subsection{Formal interior calculus and an ordinary-analysis curvature corollary}
 
 The inverse is constructed using order topology alone.  Once the positivity theorem for
 $F'$ in the open unit interval is imported, the local inverse theorem supplies a sharper
-interior picture; the formal development now packages its first-order consequences directly.
+interior picture; the formal development now packages both the reciprocal derivative and
+full interior smoothness directly.
 
 \begin{corollary}[Interior derivative of the inverse]
 \label{cor:inverse-derivative}
@@ -476,12 +477,14 @@ The midpoint is the reflection-symmetric change of curvature.
 \end{corollary}
 
 \begin{remark}
-The first identity in \cref{cor:inverse-derivative}, its explicit \(\Up\)-form, and strict
-positivity are the named Lean declarations \lean{fabiusInv\_hasDerivAt},
-\lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp}, and
-\lean{deriv\_fabiusInv\_pos}.  The promotion to a named \(C^\infty\) theorem and the
-second-derivative curvature formula in \cref{cor:inverse-curvature} remain ordinary-analysis
-corollaries rather than separate declarations.
+The first identity in \cref{cor:inverse-derivative}, its explicit \(\Up\)-form, strict
+positivity, and the resulting interior smoothness are the named Lean declarations
+\path{fabiusInv_hasDerivAt},
+\path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
+\path{deriv_fabiusInv_pos}, together with
+\path{fabiusInv_contDiffOn_Ioo}.  The second-derivative curvature formula in
+\cref{cor:inverse-curvature} remains an ordinary-analysis corollary rather than a separate
+declaration.
 \end{remark}
 
 \section{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
@@ -3065,7 +3068,7 @@ that scale positivity follows from the other original-characterization assumptio
 \lean{strictMonoOn\_fabiusInv}, \lean{fabiusInv\_one\_sub},
 \lean{fabiusInv\_fabiusDyadicUnit}, \lean{fabiusInv\_hasDerivAt},
 \lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp},
-\lean{deriv\_fabiusInv\_pos}, the transported root-free bounds,
+\lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo}, the transported root-free bounds,
 \lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
 \cref{sec:inverse,sec:inverse-steepness}.\\
 \path{ElementaryFunction.lean} &
