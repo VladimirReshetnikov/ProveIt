@@ -1641,7 +1641,7 @@ on $(1,\infty)$; the precise equivalence below retains a unique bounded Fabius w
 \begin{theorem}[Original characterization in the formal development]
 \label{thm:formal-original-characterization}
 Let $\varphi:\R\to\R$ be $C^\infty$, strictly positive on $(-1,1)$, normalized by
-$\varphi(0)=1$, and have topological support exactly $[-1,1]$.  If $k>0$ and
+$\varphi(0)=1$, and have topological support exactly $[-1,1]$.  Let $k\in\R$.  If
 \begin{equation}
  \varphi'(x)=k\bigl(\varphi(2x+1)-\varphi(2x-1)\bigr)
  \qquad(x\in\R),                                           \label{eq:formal-original-rvachev}
@@ -1651,7 +1651,10 @@ then $k=2$ and $\varphi=\Up$.
 
 \begin{proof}
 Continuity and the support hypothesis give $\varphi(\pm1)=0$, while strict interior
-positivity identifies its ordinary nonzero set as $(-1,1)$.  For $0\le t\le1$, differentiate
+positivity identifies its ordinary nonzero set as $(-1,1)$.  Positivity of $k$ need not be
+assumed: the mean-value theorem on $[-1,0]$ gives some $c\in(-1,0)$ for which
+$k\varphi(2c+1)=1$, because the other translated term vanishes; hence $k>0$.
+For $0\le t\le1$, differentiate
 $H(t)=\varphi(t)+\varphi(t-1)$.  Equation \eqref{eq:formal-original-rvachev} makes the two
 middle terms cancel and leaves
 \[
@@ -11806,9 +11809,9 @@ Derives the Rvachev differential equation, gluing the two one-sided derivatives 
 point $x=0$, and bootstraps the equation to smoothness of every finite order.\\
 \path{OriginalCharacterization.lean} &
 Formalizes Theorem~1 of the compact-support paper starting from an unspecified constant $k$,
-and derives the exact support, nonnegativity, translate identity, normalization, and the
-forced value $k=2$.  It also proves that every bounded Fabius solution folds to an original
-compact-support solution.\\
+derives positivity of $k$ from the other hypotheses, and then obtains the exact support,
+nonnegativity, translate identity, normalization, and the forced value $k=2$.  It also proves
+that every bounded Fabius solution folds to an original compact-support solution.\\
 \path{OriginalUniqueness.lean} &
 Proves the uniqueness half of that theorem by the Fourier refinement argument: every
 solution has transform value one at the origin and satisfies the same finite and infinite

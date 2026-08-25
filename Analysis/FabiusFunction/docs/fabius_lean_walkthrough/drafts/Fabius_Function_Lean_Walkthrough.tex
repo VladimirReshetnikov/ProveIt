@@ -1084,6 +1084,12 @@ identity.  The Lean predicate \decl{IsOriginalFabius} packages:
 This problem is not identical to \decl{IsFabius}.  It asks Lean to recover both
 the function and the scale.
 
+For fidelity to the source, positivity remains a field of the predicate.  It is
+logically redundant: \decl{IsOriginalFabius.mk_of_derivative_law} derives it
+from the other five hypotheses by applying the mean-value theorem on
+$[-1,0]$, where support removes one translated term and interior positivity
+fixes the sign of the other.
+
 \section{First force the scale to be two}
 \module{OriginalCharacterization} derives endpoint values, a two-term partition
 identity, and total integral one.  Integrating or evaluating the refinement
@@ -3435,7 +3441,7 @@ Declaration & Role in the development (continued) \\
 \addlinespace[.28em]
 \pathbreak{rvachevUp} & Piecewise folding of a bounded Fabius function into the even compactly supported bump on $[-1,1]$. \\
 \addlinespace[.28em]
-\pathbreak{IsOriginalFabius} & Original compact-support characterization with its a priori unknown scaling constant; used by the independent Fourier uniqueness theorem. \\
+\pathbreak{IsOriginalFabius} & Original compact-support characterization with its a priori unknown scaling constant; \pathbreak{IsOriginalFabius.mk_of_derivative_law} derives its positivity assumption. \\
 \addlinespace[.28em]
 \pathbreak{fabius} & Canonical bounded function obtained as the fixed point of the smoothing operator. \\
 \addlinespace[.28em]
