@@ -94,6 +94,62 @@ zero.  Under `IsFabius F`, its support is contained in `[-1, 1]`.
 noncomputable def rvachevUp (F : BoundedFabius) (x : ℝ) : ℝ :=
   if x ≤ 0 then fabiusReal F (x + 1) else fabiusReal F (1 - x)
 
+/-!
+## Elementary values and bounds for Rvachev's function
+
+These facts require no calculus: they follow from the two branches of the
+definition of `rvachevUp` together with the unit-interval codomain of
+`BoundedFabius`.  Collecting them next to the definition avoids the four
+separate re-derivations that previously appeared downstream.
+-/
+
+/-- Unfolding of `rvachevUp` on the left branch. -/
+theorem rvachevUp_of_nonpos (F : BoundedFabius) {x : ℝ} (hx : x ≤ 0) :
+    rvachevUp F x = fabiusReal F (x + 1) := by
+  rw [rvachevUp, if_pos hx]
+
+/-- Unfolding of `rvachevUp` on the right branch. -/
+theorem rvachevUp_of_pos (F : BoundedFabius) {x : ℝ} (hx : 0 < x) :
+    rvachevUp F x = fabiusReal F (1 - x) := by
+  rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
+
+/-- Rvachev's up function is nonnegative. -/
+theorem rvachevUp_nonneg (F : BoundedFabius) (x : ℝ) : 0 ≤ rvachevUp F x := by
+  rw [rvachevUp]
+  split_ifs <;> exact fabiusReal_nonneg F _
+
+/-- Rvachev's up function is at most one. -/
+theorem rvachevUp_le_one (F : BoundedFabius) (x : ℝ) : rvachevUp F x ≤ 1 := by
+  rw [rvachevUp]
+  split_ifs <;> exact fabiusReal_le_one F _
+
+/-- Rvachev's up function coincides with its own absolute value. -/
+@[simp]
+theorem abs_rvachevUp (F : BoundedFabius) (x : ℝ) :
+    |rvachevUp F x| = rvachevUp F x :=
+  abs_of_nonneg (rvachevUp_nonneg F x)
+
+/-- Rvachev's up function is bounded by one in absolute value. -/
+theorem abs_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    |rvachevUp F x| ≤ 1 := by
+  rw [abs_rvachevUp]
+  exact rvachevUp_le_one F x
+
+/-- Rvachev's up function is bounded by one in norm. -/
+theorem norm_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    ‖rvachevUp F x‖ ≤ 1 :=
+  abs_rvachevUp_le_one F x
+
+/-- Rvachev's up function takes its normalized value at the origin. -/
+theorem rvachevUp_zero (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevUp F 0 = 1 := by
+  rw [rvachevUp, if_pos le_rfl]
+  simpa using hF.one_of_one_le 1 le_rfl
+
+/-- The complex coercion of Rvachev's up function is bounded by one in norm. -/
+theorem norm_coe_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    ‖(rvachevUp F x : ℂ)‖ ≤ 1 := by
+  simpa [Complex.norm_real, Real.norm_eq_abs] using abs_rvachevUp_le_one F x
 /-- Folding a bounded candidate about zero always produces an even function;
 this fact does not require any of the Fabius equations. -/
 theorem rvachevUp_even (F : BoundedFabius) : Function.Even (rvachevUp F) := by

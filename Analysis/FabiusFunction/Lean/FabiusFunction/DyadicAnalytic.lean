@@ -105,31 +105,6 @@ private lemma analyticTaylorSum_derivative_identity
   push_cast
   field_simp
 
-private lemma fabius_hasDerivAt_secondHalf (F : BoundedFabius) (hF : IsFabius F)
-    {t : ℝ} (htlow : 1 / 2 ≤ t) (hthigh : t < 1) :
-    HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 - 2 * t)) t := by
-  rcases htlow.eq_or_lt with hhalf | htlow
-  · subst t
-    exact (hF.hasDerivAt (1 / 2) (by constructor <;> norm_num)).congr_deriv (by
-      norm_num)
-  · have harg : 1 - t ∈ Icc (0 : ℝ) (1 / 2) := by
-      constructor <;> linarith
-    have hd := hF.hasDerivAt (1 - t) harg
-    have hdpoint : HasDerivAt (fabiusReal F)
-        (2 * fabiusReal F (2 * (1 - t))) ((1 : ℝ) - t) := by
-      simpa using hd
-    have hcomp := hdpoint.comp_const_sub 1 t
-    have hrhs : HasDerivAt (fun y : ℝ => 1 - fabiusReal F (1 - y))
-        (2 * fabiusReal F (2 - 2 * t)) t := by
-      have hargEq : 2 * (1 - t) = (2 - 2 * t : ℝ) := by ring
-      rw [hargEq] at hcomp
-      simpa only [neg_neg] using hcomp.const_sub (1 : ℝ)
-    apply hrhs.congr_of_eventuallyEq
-    filter_upwards [Ioo_mem_nhds htlow hthigh] with y hy
-    have hs := hF.symmetry (1 - y)
-      ⟨by linarith [hy.2], by linarith [hy.1]⟩
-    simpa only [sub_sub_cancel] using hs
-
 private lemma analyticTaylorSum_continuous (F : BoundedFabius) (m : ℕ) :
     Continuous (analyticTaylorSum F m) := by
   unfold analyticTaylorSum
@@ -161,7 +136,7 @@ private lemma analytic_scale_recurrence_one
     have hthigh : inverseTwoPowReal 1 + z < 1 := by
       norm_num [inverseTwoPowReal] at hz ⊢
       linarith
-    have hhigh := fabius_hasDerivAt_secondHalf F hF htlow hthigh
+    have hhigh := fabius_hasDerivAt_secondHalf F hF htlow hthigh.le
     have hlow := hF.hasDerivAt z hzhalf
     have hsym := hF.symmetry (2 * z)
       ⟨mul_nonneg (by norm_num) hz.1, by linarith [hzhalf.2]⟩

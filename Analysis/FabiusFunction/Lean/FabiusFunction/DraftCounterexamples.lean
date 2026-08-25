@@ -1,4 +1,5 @@
 import FabiusFunction.Basic
+import FabiusFunction.Monotonicity
 import FabiusFunction.ThueMorsePrefix
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.SpecificLimits.Normed
@@ -226,18 +227,6 @@ def literalGridSlope (k j : ℕ) : ℚ :=
 /-- At `k = 2`, `j = 1`, the literal polygonal grid slope is `-2`. -/
 theorem literalGridSlope_two_one : literalGridSlope 2 1 = -2 := by
   norm_num [literalGridSlope, literalPrefixGrid, iteratedPrefix, Finset.sum_range_succ]
-
-private lemma fabius_half (F : BoundedFabius) (hF : IsFabius F) :
-    fabiusReal F (1 / 2) = 1 / 2 := by
-  have h := hF.symmetry (1 / 2) (by constructor <;> norm_num)
-  norm_num at h ⊢
-  linarith
-
-private lemma fabius_deriv_quarter (F : BoundedFabius) (hF : IsFabius F) :
-    deriv (fabiusReal F) (1 / 4) = 1 := by
-  rw [(hF.hasDerivAt (1 / 4) (by constructor <;> norm_num)).deriv]
-  rw [show (2 : ℝ) * (1 / 4) = 1 / 2 by norm_num, fabius_half F hF]
-  norm_num
 
 /-- At `k = 2`, `j = 1`, the claimed Section 3 error is `3`, but `4h = 1`. -/
 theorem literal_local_error_bound_false
