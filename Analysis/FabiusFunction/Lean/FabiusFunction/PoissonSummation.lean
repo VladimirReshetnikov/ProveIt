@@ -21,7 +21,9 @@ statements below.
 The same Schwartz realization also yields a public rapid-decay estimate for
 every real-axis derivative of `rvachevFourier`.  The support specialization is
 proved on the full sharp ray `a ≥ 1 / 2`; source-compatible wrappers retain the
-paper's unnecessary upper bound `a ≤ 1`.
+paper's unnecessary upper bound `a ≤ 1`.  Sign-invariant companions cover the
+sharp condition `1 / 2 ≤ |a|` and Poisson summation at zero is exposed for
+every nonzero oriented lattice spacing.
 -/
 
 set_option autoImplicit false
@@ -147,13 +149,6 @@ theorem rvachev_poisson_summation
       push_cast
       ring_nf
 
-/-- The Fourier transform vanishes at every nonzero integer.  In the sinc
-product it is already the zeroth factor which vanishes. -/
-lemma rvachevFourier_int_eq_zero
-    (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) (hm : m ≠ 0) :
-    rvachevFourier F (m : ℂ) = 0 :=
-  (rvachevFourier_int_eq_zero_iff F hF m).2 hm
-
 /-- Equation (26), first in the complex-valued form naturally produced by
 Poisson summation.  The positivity hypothesis records the implicit `n ≥ 1`
 condition in the paper. -/
@@ -249,18 +244,6 @@ theorem rvachev_even_translate_fourier
       rw [hexp]
       norm_num
       ring
-
-/-- The Fourier transform of the even Rvachev function is itself even. -/
-lemma rvachevFourier_neg
-    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
-    rvachevFourier F (-z) = rvachevFourier F z := by
-  rw [rvachevFourier_eq_product F hF, rvachevFourier_eq_product F hF]
-  unfold rvachevFourierProduct
-  apply tprod_congr
-  intro n
-  rw [show (Real.pi : ℂ) * -z / (2 : ℂ) ^ n =
-      -((Real.pi : ℂ) * z / (2 : ℂ) ^ n) by ring,
-    complexSinc_neg]
 
 private lemma rvachevFourier_half_int_summable
     (F : BoundedFabius) (hF : IsFabius F) :
@@ -440,6 +423,39 @@ theorem rvachev_poisson_at_zero
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   simpa using rvachev_poisson_summation F hF ha 0
 
+/-- Poisson summation at zero for an arbitrary nonzero lattice spacing.
+The covolume is the absolute value of the spacing; changing its sign leaves
+the even spatial density and Fourier transform unchanged. -/
+theorem rvachev_poisson_at_zero_of_ne_zero
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ} (ha : a ≠ 0) :
+    (∑' m : ℤ, (rvachevUp F (a * m) : ℂ)) =
+      ∑' m : ℤ, (((|a|)⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  by_cases ha_pos : 0 < a
+  · simpa [abs_of_pos ha_pos] using rvachev_poisson_at_zero F hF ha_pos
+  · have ha_neg : a < 0 :=
+      lt_of_le_of_ne (le_of_not_gt ha_pos) ha
+    calc
+      (∑' m : ℤ, (rvachevUp F (a * m) : ℂ)) =
+          ∑' m : ℤ, (rvachevUp F ((-a) * m) : ℂ) := by
+        apply tsum_congr
+        intro m
+        have harg : a * (m : ℝ) = -((-a) * (m : ℝ)) := by ring
+        rw [harg, rvachev_even F hF]
+      _ = ∑' m : ℤ, (((-a)⁻¹ : ℝ) : ℂ) *
+          rvachevFourier F ((((m : ℝ) / (-a) : ℝ) : ℂ)) :=
+        rvachev_poisson_at_zero F hF (neg_pos.mpr ha_neg)
+      _ = ∑' m : ℤ, (((|a|)⁻¹ : ℝ) : ℂ) *
+          rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+        apply tsum_congr
+        intro m
+        rw [abs_of_neg ha_neg]
+        have harg : ((((m : ℝ) / (-a) : ℝ) : ℂ)) =
+            -((((m : ℝ) / a : ℝ) : ℂ)) := by
+          push_cast
+          field_simp [ha]
+        rw [harg, rvachevFourier_neg F hF]
+
 /-- Once the lattice spacing is at least `1 / 2`, compact support leaves only
 the central term and the two nearest neighbors. -/
 theorem rvachev_lattice_sum_of_one_half_le
@@ -467,6 +483,72 @@ theorem rvachev_lattice_sum_of_one_half_le
       have hmposR : (2 : ℝ) ≤ m := by exact_mod_cast hmpos
       nlinarith
 
+/-- Compact support reduces the lattice sum to three terms whenever the
+magnitude of the spacing is at least one half.  This sign-invariant form is
+the natural companion to `rvachev_poisson_at_zero_of_ne_zero`. -/
+theorem rvachev_lattice_sum_of_one_half_le_abs
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ |a|) :
+    ∑' m : ℤ, rvachevUp F (a * m) = 1 + 2 * rvachevUp F a := by
+  by_cases ha_nonneg : 0 ≤ a
+  · exact rvachev_lattice_sum_of_one_half_le F hF
+      (a := a) (by simpa [abs_of_nonneg ha_nonneg] using ha0)
+  · have ha_neg : a < 0 := lt_of_not_ge ha_nonneg
+    have h := rvachev_lattice_sum_of_one_half_le F hF
+      (a := -a) (by simpa [abs_of_neg ha_neg] using ha0)
+    calc
+      (∑' m : ℤ, rvachevUp F (a * m)) =
+          ∑' m : ℤ, rvachevUp F ((-a) * m) := by
+        apply tsum_congr
+        intro m
+        have harg : a * (m : ℝ) = -((-a) * (m : ℝ)) := by ring
+        rw [harg, rvachev_even F hF]
+      _ = 1 + 2 * rvachevUp F (-a) := h
+      _ = 1 + 2 * rvachevUp F a := by rw [rvachev_even F hF]
+
+/-- The support specialization of Poisson summation for either sign of the
+lattice spacing.  The inverse covolume is governed by the absolute value,
+while the dual frequencies retain the oriented spacing. -/
+theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ |a|) :
+    (1 : ℂ) + 2 * rvachevUp F a =
+      ∑' m : ℤ, (((|a|)⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have habs_pos : 0 < |a| :=
+    lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  have ha : a ≠ 0 := abs_pos.mp habs_pos
+  rw [← rvachev_poisson_at_zero_of_ne_zero F hF ha,
+    ← Complex.ofReal_tsum,
+    rvachev_lattice_sum_of_one_half_le_abs F hF ha0]
+  push_cast
+  rfl
+
+/-- Multiplying the sign-invariant support identity by the covolume removes
+the inverse factor term by term. -/
+theorem rvachev_poisson_support_specialization_of_one_half_le_abs
+    (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
+    (ha0 : 1 / 2 ≤ |a|) :
+    ((|a| : ℝ) : ℂ) + 2 * ((|a| : ℝ) : ℂ) * rvachevUp F a =
+      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  have habs_pos : 0 < |a| :=
+    lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
+  have ha_abs : |a| ≠ 0 := habs_pos.ne'
+  have h :=
+    rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs
+      F hF ha0
+  calc
+    ((|a| : ℝ) : ℂ) + 2 * ((|a| : ℝ) : ℂ) * rvachevUp F a =
+        ((|a| : ℝ) : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
+    _ = ((|a| : ℝ) : ℂ) * ∑' m : ℤ, (((|a|)⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
+    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+      rw [← tsum_mul_left]
+      apply tsum_congr
+      intro m
+      push_cast
+      field_simp [ha_abs]
+
 /-- The direct support specialization of (31), before multiplying by `a`,
 for every lattice spacing `a ≥ 1 / 2`.
 
@@ -483,32 +565,11 @@ theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
     (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  rw [← rvachev_poisson_at_zero F hF ha, ← Complex.ofReal_tsum,
-    rvachev_lattice_sum_of_one_half_le F hF ha0]
-  push_cast
-  rfl
-
-/-- Multiplying the unscaled support identity by a nonzero lattice spacing
-cancels its inverse factor term by term. -/
-private lemma rvachev_poisson_support_specialization_of_unscaled
-    (F : BoundedFabius) {a : ℝ} (ha : a ≠ 0)
-    (h : (1 : ℂ) + 2 * rvachevUp F a =
-      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
-        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ))) :
-    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
-      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-  calc
-    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
-        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
-    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
-        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
-    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-      rw [← tsum_mul_left]
-      apply tsum_congr
-      intro m
-      push_cast
-      field_simp [ha]
+  have ha_nonneg : 0 ≤ a :=
+    le_trans (by norm_num : (0 : ℝ) ≤ 1 / 2) ha0
+  simpa [abs_of_nonneg ha_nonneg] using
+    (rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs
+      F hF (a := a) (by simpa [abs_of_nonneg ha_nonneg] using ha0))
 
 /-- Corrected equation (32) for every lattice spacing `a ≥ 1 / 2`.
 
@@ -523,10 +584,13 @@ theorem rvachev_poisson_support_specialization_of_one_half_le
     (ha0 : 1 / 2 ≤ a) :
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
       ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  exact rvachev_poisson_support_specialization_of_unscaled F ha.ne'
-    (rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0)
+  have ha_nonneg : 0 ≤ a :=
+    le_trans (by norm_num : (0 : ℝ) ≤ 1 / 2) ha0
+  simpa [abs_of_nonneg ha_nonneg] using
+    (rvachev_poisson_support_specialization_of_one_half_le_abs
+      F hF (a := a) (by simpa [abs_of_nonneg ha_nonneg] using ha0))
 
+set_option linter.unusedVariables false in
 /-- The direct support specialization of (31), before multiplying by `a`.
 This is the identity from which the corrected equation (32) follows.
 
@@ -535,12 +599,13 @@ is not needed, see
 `rvachev_poisson_support_specialization_unscaled_of_one_half_le`. -/
 theorem rvachev_poisson_support_specialization_unscaled
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
-    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
+    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
     (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) :=
   rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0
 
+set_option linter.unusedVariables false in
 /-- Corrected equation (32).  The source leaves an extra factor `1 / a` on
 the right after multiplying the preceding identity by `a`.
 
@@ -550,10 +615,8 @@ theorem rvachev_poisson_support_specialization
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
     (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
-      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  exact rvachev_poisson_support_specialization_of_unscaled F ha.ne'
-    (rvachev_poisson_support_specialization_unscaled F hF ha0 ha1)
+      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) :=
+  rvachev_poisson_support_specialization_of_one_half_le F hF ha0
 
 end
 
