@@ -1,5 +1,6 @@
 import FabiusFunction.SharpFlatness
 import FabiusFunction.DyadicAnalytic
+import Mathlib.Analysis.Calculus.Deriv.Inverse
 import Mathlib.Order.Hom.Set
 import Mathlib.Topology.Order.ProjIcc
 import Mathlib.Topology.Order.MonotoneContinuity
@@ -257,6 +258,13 @@ theorem fabiusInv_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
     (continuous_fabiusInv F hF).continuousAt hderiv ?_
   filter_upwards [isOpen_Ioo.mem_nhds hy] with t ht
   exact fabiusReal_fabiusInv F hF (Ioo_subset_Icc_self ht)
+
+/-- Compatibility spelling for the interior inverse-derivative theorem. -/
+theorem hasDerivAt_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    HasDerivAt (fabiusInv F hF)
+      (deriv (fabiusReal F) (fabiusInv F hF y))⁻¹ y :=
+  fabiusInv_hasDerivAt F hF hy
 
 /-- Pointwise reciprocal-derivative formula for the inverse on `(0,1)`. -/
 theorem deriv_fabiusInv (F : BoundedFabius) (hF : IsFabius F)

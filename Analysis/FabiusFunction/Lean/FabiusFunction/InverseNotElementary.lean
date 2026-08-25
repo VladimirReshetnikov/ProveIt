@@ -10,7 +10,10 @@ continuous inverse `Fabius.fabiusInv`.  This file proves that the inverse is
 real analytic at no point of `[0,1]` — hence not elementary on `(0,1)` — and
 then strengthens both non-elementarity theorems to the class
 `Fabius.IsElementaryOrInverse`, which is closed under continuous inverse
-branches at any depth and therefore contains the Lambert `W` function.
+branches satisfying an analytic completion hypothesis on the interior of the
+complementary region, at any depth.  Branch-domain boundaries are deliberately
+excluded from that side condition, so standard boundary singularities such as
+that of principal real Lambert `W` are compatible with the constructor.
 
 ## Why the inverse is no better behaved
 
@@ -27,6 +30,10 @@ no critical point there.  The stronger interior calculus in
 analyticity of `F⁻¹` anywhere in `(0,1)` would hand back
 analyticity of `F` somewhere in `(0,1)`, which
 `Fabius.fabius_not_analyticAt` forbids.
+
+The direction matters.  Differentiating `F⁻¹ ∘ F = id` to get
+`(F⁻¹)' · F' = 1` would be circular, since it presupposes that `F⁻¹` is
+differentiable; positivity of `F'` is what supplies that.
 
 At the endpoints the argument is different and simpler.  `F⁻¹` is identically
 `0` to the left of `0`; an analytic germ agreeing with `0` on a set with an
@@ -51,17 +58,14 @@ open scoped Topology
 
 namespace Fabius
 
-/-! ## The inverse has no critical point in the interior -/
+/-! ## The inverse is differentiable, with no critical point, in the interior -/
 
-set_option linter.unusedVariables false in
 /-- **The inverse Fabius function has no critical point in `(0,1)`.**
 
-The analyticity hypothesis is retained for compatibility with the original
-statement of this theorem, but the conclusion now follows from the stronger
-unconditional positivity theorem `deriv_fabiusInv_pos`. -/
+Its derivative there is the positive reciprocal of `F'`, so the result is
+unconditional and does not assume analyticity anywhere. -/
 theorem deriv_fabiusInv_ne_zero (F : BoundedFabius) (hF : IsFabius F)
-    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) (hana : AnalyticAt ℝ (fabiusInv F hF) y) :
-    deriv (fabiusInv F hF) y ≠ 0 :=
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) : deriv (fabiusInv F hF) y ≠ 0 :=
   (deriv_fabiusInv_pos F hF hy).ne'
 
 /-! ## The inverse is analytic at no point of the unit interval -/
@@ -137,9 +141,9 @@ theorem fabiusInv_not_analyticAt (F : BoundedFabius) (hF : IsFabius F)
       have hFx₀ : fabiusReal F (fabiusInv F hF y) = y :=
         fabiusReal_fabiusInv F hF ⟨hy.1, hy.2⟩
       refine fabius_not_analyticAt F hF (Ioo_subset_Icc_self hx₀) ?_
-      refine analyticAt_of_leftInverse (h := fabiusInv F hF) ?_ ?_ ?_ ?_
+      refine analyticAt_of_rightInverse (h := fabiusInv F hF) ?_ ?_ ?_ ?_
       · rw [hFx₀]; exact hana
-      · rw [hFx₀]; exact deriv_fabiusInv_ne_zero F hF hyIoo hana
+      · rw [hFx₀]; exact deriv_fabiusInv_ne_zero F hF hyIoo
       · exact (fabius_differentiable F hF _).continuousAt
       · filter_upwards [isOpen_Ioo.mem_nhds hx₀] with x hx
         exact fabiusInv_fabiusReal F hF ⟨le_of_lt hx.1, le_of_lt hx.2⟩
@@ -164,15 +168,34 @@ theorem fabiusInv_analyticAt_iff (F : BoundedFabius) (hF : IsFabius F) (y : ℝ)
 
 /-! ## Non-representability of the inverse -/
 
+/-- No function whose analytic locus is dense relative to `interior U` agrees
+with the inverse Fabius function on `U ⊆ [0,1]` when that interior is
+nonempty.
+
+This local hypothesis is strictly weaker than asking for a globally dense
+analytic locus.  In particular it can be supplied directly by
+`Fabius.analyticDenseOn_of_rightInverse` for a continuous inverse branch that
+is only defined on the region under consideration. -/
+theorem not_eqOn_fabiusInv_of_analyticDenseOn (F : BoundedFabius) (hF : IsFabius F)
+    {g : ℝ → ℝ} {U : Set ℝ} (hg : AnalyticDenseOn g (interior U))
+    (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
+    ¬ EqOn g (fabiusInv F hF) U := by
+  intro heq
+  exact hg.not_eqOn_of_forall_not_analyticAt isOpen_interior hUne
+    (fun x hx => fabiusInv_not_analyticAt F hF (hsub (interior_subset hx)))
+    (heq.mono interior_subset)
+
 /-- No function analytic on a dense set — in particular no elementary
 function, and no member of `Fabius.IsElementaryOrInverse` — agrees with the
 inverse Fabius function on a subset of `[0,1]` with nonempty interior. -/
 theorem not_eqOn_fabiusInv_of_dense_analyticLocus (F : BoundedFabius) (hF : IsFabius F)
     {g : ℝ → ℝ} (hg : Dense (analyticLocus g)) {U : Set ℝ}
     (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
-    ¬ EqOn g (fabiusInv F hF) U :=
-  not_eqOn_of_dense_analyticLocus hg hUne fun _ hx =>
-    fabiusInv_not_analyticAt F hF (hsub (interior_subset hx))
+    ¬ EqOn g (fabiusInv F hF) U := by
+  apply not_eqOn_fabiusInv_of_analyticDenseOn F hF ?_ hUne hsub
+  intro V hV hVne _
+  obtain ⟨x, hxV, hxg⟩ := (dense_iff_inter_open.mp hg) V hV hVne
+  exact ⟨x, hxV, hxg⟩
 
 /-- **The inverse Fabius function on `(0,1)` is not an elementary function.** -/
 theorem canonical_fabiusInv_not_isElementary_on_Ioo :
@@ -196,9 +219,9 @@ theorem fabiusInv_not_isElementary (F : BoundedFabius) (hF : IsFabius F) :
 /-- **Adjoining inverses does not reach the Fabius function.**
 
 No member of `Fabius.IsElementaryOrInverse` — the elementary functions closed
-under continuous inverse branches at any depth, a class containing the Lambert
-`W` function — agrees with the Fabius function on a subset of `[0,1]` with
-nonempty interior. -/
+under the inverse-branch constructor of `FabiusFunction.InverseBranch` at any
+depth — agrees with the Fabius function on a subset of `[0,1]` with nonempty
+interior. -/
 theorem not_isElementaryOrInverse_eqOn_fabius (F : BoundedFabius) (hF : IsFabius F)
     {g : ℝ → ℝ} (hg : IsElementaryOrInverse g) {U : Set ℝ}
     (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
