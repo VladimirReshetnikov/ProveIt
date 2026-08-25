@@ -23,16 +23,22 @@ expected API: exact second-derivative formula, global sign and zero loci for
 completed: integrated the exact global forward second-derivative formula and
   sign/zero loci in Convexity; integrated the inverse midpoint jet, interior
   sign/zero loci, and both endpoint derivative limits in FabiusInverse; updated
-  the README focused API and shape summary
+  the README focused API and shape summary; committed the Lean/API tranche as
+  `eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80`; updated the primary exposition,
+  published walkthrough, and consolidated research-frontier status ledger;
+  repinned the walkthrough and integration-frontier source claims to that code
+  commit and rebuilt all three paired PDFs in three passes
 validated: direct Lean elaboration and focused Lake builds pass for both
   `FabiusFunction.Convexity` (2661 jobs) and
   `FabiusFunction.FabiusInverse` (3248 jobs); the facade-only
   `/tmp/FabiusCurvatureFacadeAudit.lean` resolves every new declaration,
   passes `assert_no_sorry`, and reports exactly `[propext, Classical.choice,
-  Quot.sound]`; `git diff --check` is clean
-next: commit the Lean source, update the three human-readable accounts and
-  their PDFs against that source commit, then merge the latest origin/main and
-  rerun focused/facade checks
+  Quot.sound]`; all three final LaTeX logs were free of undefined/multiply
+  defined references and errors, and rendered-text checks find the new names,
+  exact pin, and no `??`; `git diff --check` is clean
+next: run independent final documentation/source-coherence review, commit the
+  TeX/PDF/registry batch, merge the latest origin/main, and rerun
+  focused/facade checks before pushing main and the feature branch
 lease: acquired 2026-08-25T15:04:47-07:00; expires 2026-08-25T16:04:47-07:00
 git owner / build owner: /root / /root
 risks/questions: keep inverse zero/sign statements restricted to `(0,1)` so

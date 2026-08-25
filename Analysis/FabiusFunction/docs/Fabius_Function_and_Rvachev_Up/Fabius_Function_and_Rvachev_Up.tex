@@ -119,7 +119,8 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 25 August 2026}
+\date{Repository snapshot: 25 August 2026\\
+\small commit \nolinkurl{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}}
 
 \begin{document}
 \maketitle
@@ -514,8 +515,8 @@ and equality \(F'(x)=2\) holds exactly at \(x=\tfrac12\).
 The derivative monotonicity statements are
 \lean{monotoneOn_deriv_fabiusReal},
 \lean{antitoneOn_deriv_fabiusReal},
-\lean{strictMonoOn_deriv_fabiusReal}, and
-\lean{strictAntiOn_deriv_fabiusReal}.  The four convexity statements are
+\lean{strictMonoOn_deriv_fabiusReal_Icc}, and
+\lean{strictAntiOn_deriv_fabiusReal_Icc}.  The four convexity statements are
 \lean{convexOn_fabiusReal_Iic_half},
 \lean{concaveOn_fabiusReal_Ici_half},
 \lean{strictConvexOn_fabiusReal_firstHalf}, and
@@ -525,6 +526,24 @@ The derivative monotonicity statements are
 \lean{isGreatest_deriv_fabiusReal} prove the exact maximal-slope statement.  All are in
 \path{Convexity.lean}.
 \end{proof}
+
+The same module records the complete pointwise curvature profile.  For every
+\(x\in\R\),
+\begin{equation}
+ F''(x)=8\bigl(\Up(4x-1)-\Up(4x-3)\bigr),                \label{eq:shape-second-derivative}
+\end{equation}
+and therefore
+\begin{align}
+ F''(x)>0&\iff 0<x<\tfrac12,\notag\\
+ F''(x)<0&\iff \tfrac12<x<1,\notag\\
+ F''(x)=0&\iff x\notin(0,1)\ \hbox{or}\ x=\tfrac12.    \label{eq:shape-curvature-loci}
+\end{align}
+The derivative-level statement and its pointwise corollary are
+\lean{deriv_fabiusReal_hasDerivAt} and \lean{deriv_deriv_fabiusReal}; the
+three equivalences are \lean{deriv_deriv_fabiusReal_pos_iff},
+\lean{deriv_deriv_fabiusReal_neg_iff}, and
+\lean{deriv_deriv_fabiusReal_eq_zero_iff}, with
+\lean{deriv_deriv_fabiusReal_half} naming the midpoint specialization.
 
 \subsection{The optimal Lipschitz constant}
 \label{shape:lipschitz}
@@ -1329,6 +1348,24 @@ These are \lean{deriv_fabiusInv_hasDerivAt},
 \lean{strictConvexOn_fabiusInv_secondHalf}.  The closed endpoints in
 \eqref{eq:fabius-inverse-curvature} use continuity; no endpoint differentiability is claimed.
 
+The pointwise statement is sharper.  The midpoint jet is
+\begin{equation}
+ I(1/2)=1/2,\qquad I'(1/2)=1/2,\qquad I''(1/2)=0,         \label{eq:fabius-inverse-midpoint-jet}
+\end{equation}
+and, for \(0<y<1\),
+\begin{align}
+ I''(y)<0&\iff 0<y<\tfrac12,\notag\\
+ I''(y)>0&\iff \tfrac12<y<1,\notag\\
+ I''(y)=0&\iff y=\tfrac12.                              \label{eq:fabius-inverse-curvature-loci}
+\end{align}
+The exact declarations are \lean{fabiusInv_half},
+\lean{deriv_fabiusInv_half}, \lean{deriv_deriv_fabiusInv_half}, and the
+\lean{deriv_deriv_fabiusInv_neg_iff},
+\lean{deriv_deriv_fabiusInv_pos_iff}, and
+\lean{deriv_deriv_fabiusInv_eq_zero_iff} family.  The hypothesis \(0<y<1\)
+is essential in the last three statements: the totalized inverse is not
+differentiable at the clamping endpoints.
+
 The inverse inherits the exact symmetry and midpoint
 \begin{equation}
  I(1-y)=1-I(y),\qquad I(1/2)=1/2,                          \label{eq:fabius-inverse-symmetry}
@@ -1356,6 +1393,15 @@ These are \lean{id_isLittleO_fabiusInv_pow_at_zero_right} and
 \lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular the one-sided
 difference quotients tend to \(+\infty\), as stated by
 \lean{tendsto_fabiusInv_div_atTop} and its reflected companion.
+The stronger limits of the positive interior derivative itself are also
+formalized:
+\begin{equation}
+ I'(y)\longrightarrow+\infty\quad(y\downarrow0),\qquad
+ I'(y)\longrightarrow+\infty\quad(y\uparrow1).           \label{eq:fabius-inverse-derivative-blowup}
+\end{equation}
+They are \lean{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
+\lean{tendsto_deriv_fabiusInv_atTop_at_one_left}; these are limits through
+the open interval, not finite derivatives at \(0\) or \(1\).
 
 \subsection{Precise non-elementarity}
 
@@ -5862,8 +5908,9 @@ V.~Reshetnikov,
 \bibitem{proveit}
 V.~Reshetnikov,
 \newblock \emph{ProveIt: Analysis/FabiusFunction},
-\newblock Lean~4 formal development, consulted 25 August 2026.
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/codex/fabius-both-papers/Analysis/FabiusFunction}.
+\newblock Lean~4 formal development, source snapshot
+\texttt{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}, consulted 25 August 2026.
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
