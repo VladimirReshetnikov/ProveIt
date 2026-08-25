@@ -256,7 +256,7 @@ lemma mellin_boseRegularizedMellinKernel_ofReal
     rw [Set.disjoint_left]
     intro x hxsmall hxlarge
     exact (not_lt_of_ge hxsmall.2) hxlarge
-  have hsplit := integral_union_ae hdis.aedisjoint
+  have hsplit := setIntegral_union₀ hdis.aedisjoint
     measurableSet_Ioi.nullMeasurableSet hsmall hlarge
   rw [Ioc_union_Ioi_eq_Ioi zero_le_one] at hsplit
   rw [mellin]
@@ -896,7 +896,7 @@ lemma hasSum_intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) :
     have hgeom : Summable (fun n : ℕ => (1 / 2 : ℝ) ^ n) :=
       summable_geometric_of_norm_lt_one (by norm_num)
     simpa [one_div, inv_pow] using hgeom
-  · simpa using (intervalIntegrable_const :
+  · exact (intervalIntegrable_const :
       IntervalIntegrable (fun _ : ℝ =>
         ∑' n : ℕ, 1 / (2 : ℝ) ^ n) volume 0 1)
   · filter_upwards with t ht
@@ -956,7 +956,7 @@ lemma hasSum_intervalIntegral_negativeLaplaceForwardTerm_fourier (k : ℤ) :
         (div_le_div_of_nonneg_right hnum hden.le)
   · filter_upwards with t ht
     exact hmajor
-  · simpa using (intervalIntegrable_const :
+  · exact (intervalIntegrable_const :
       IntervalIntegrable (fun _ : ℝ =>
         ∑' n : ℕ, r ^ (n + 1) / (1 - r)) volume 0 1)
   · filter_upwards with t ht
@@ -1069,7 +1069,7 @@ lemma mellin_boseRegularizedMellinKernel_split_frequency (k : ℤ) :
     rw [Set.disjoint_left]
     intro x hxsmall hxlarge
     exact (not_lt_of_ge hxsmall.2) hxlarge
-  have hsplit := integral_union_ae hdis.aedisjoint
+  have hsplit := setIntegral_union₀ hdis.aedisjoint
     measurableSet_Ioi.nullMeasurableSet hsmall hlarge
   rw [Ioc_union_Ioi_eq_Ioi zero_le_one] at hsplit
   rw [mellin]
@@ -1222,7 +1222,7 @@ lemma intervalIntegral_quadratic_fourier
   have htwo := bernoulliFourierCoeff_eq (k := 2) (by norm_num) k
   rw [bernoulliFourierCoeff,
     fourierCoeffOn_zero_one_eq_weight_integral] at htwo
-  simp only [Nat.factorial, Nat.cast_ofNat, Nat.cast_one, mul_one] at htwo
+  simp only [Nat.factorial, mul_one] at htwo
   have hw : IntervalIntegrable (negativeLaplaceFourierWeight k) volume 0 1 :=
     (continuous_negativeLaplaceFourierWeight k).intervalIntegrable 0 1
   have hp : IntervalIntegrable (fun t : ℝ =>

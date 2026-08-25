@@ -539,7 +539,8 @@ lemma splineSumsPR_second_le_first_of_matched_all
 lemma splineSumsPR_second_le_first_of_matched
     (p a : ℕ) (hp : 0 < p) (ha : a ≤ 2 ^ p) :
     (splineSumsPR p a).2 ≤ (splineSumsPR p a).1 := by
-  exact splineSumsPR_second_le_first_of_matched_all p a ha
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hp.ne'
+  exact splineSumsPR_second_le_first_of_matched_all (j + 1) a ha
 
 /-- Exact matched-grid semantics in every degree. -/
 theorem matchedSplineNatRatio_eq_uniformSpline_all (p a : ℕ)
@@ -560,7 +561,8 @@ theorem matchedSplineNatRatio_eq_uniformSpline (p a : ℕ)
     (((splineSumsPR p a).1 - (splineSumsPR p a).2 : ℕ) : ℝ) /
         splineDenPR p =
       fabiusUniformSpline p ((a : ℝ) / (2 : ℝ) ^ p) := by
-  exact matchedSplineNatRatio_eq_uniformSpline_all p a ha
+  obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hp.ne'
+  exact matchedSplineNatRatio_eq_uniformSpline_all (j + 1) a ha
 
 /-- Half-up nearest-integer rounding of a nonnegative rational after scaling. -/
 theorem nearestNatRatio_error (N D scale : ℕ) (hD : 0 < D) (hs : 0 < scale) :
