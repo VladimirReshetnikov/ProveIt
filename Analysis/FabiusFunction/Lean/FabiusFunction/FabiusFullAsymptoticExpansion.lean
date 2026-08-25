@@ -47,62 +47,20 @@ private theorem ratio_fullExpansion_of_kernelMass
         (fabiusLambertRadius ((2 : ℝ) ^ (-t)))
         (dyadicLambertPhase t))
       (fun j t => fabiusSaddleMassCoefficient j (dyadicLambertPhase t)) := by
-  constructor
-  · intro j
-    have hc := hmass.coeff_isBigO j
-    rw [isBigO_iff] at hc ⊢
-    obtain ⟨C, hC⟩ := hc
-    refine ⟨C, ?_⟩
-    filter_upwards [hC] with t ht
-    simpa only [← ofReal_fabiusSaddleMassCoefficient,
-      Complex.norm_real] using ht
-  · intro N
-    have hc := hmass.remainder_isBigO N
-    rw [isBigO_iff] at hc ⊢
-    obtain ⟨C, hC⟩ := hc
-    refine ⟨C, ?_⟩
-    filter_upwards [hC,
-      tendsto_dyadicLambertPhase_atTop.eventually_gt_atTop 0] with t ht hphase
-    have hkernel := fabiusSaddleRatio_ofReal_eq_kernelMass F hF
-      (x := ((2 : ℝ) ^ (-t)))
-      (fabiusLambertRadius_pos ((2 : ℝ) ^ (-t))) hphase
-    have hsum :
-        ((partialSum (fun u : ℝ => (dyadicLambertPhase u)⁻¹)
-          (fun j u => fabiusSaddleMassCoefficient j
-            (dyadicLambertPhase u)) N t : ℝ) : ℂ) =
-          partialSum (fun u : ℝ => (dyadicLambertPhase u)⁻¹)
-            (fun j u =>
-              (fabiusSaddleMassCoefficient j (dyadicLambertPhase u) : ℂ))
-            N t := by
-      unfold partialSum
-      push_cast
-      apply Finset.sum_congr rfl
-      intro j hj
-      simp only [smul_eq_mul, Complex.ofReal_mul, Complex.real_smul,
-        Complex.ofReal_pow]
-    calc
-      ‖fabiusSaddleRatio F ((2 : ℝ) ^ (-t))
-            (fabiusLambertRadius ((2 : ℝ) ^ (-t)))
-            (dyadicLambertPhase t) -
-          partialSum (fun u : ℝ => (dyadicLambertPhase u)⁻¹)
-            (fun j u => fabiusSaddleMassCoefficient j
-              (dyadicLambertPhase u)) N t‖ =
-          ‖((fabiusSaddleRatio F ((2 : ℝ) ^ (-t))
-            (fabiusLambertRadius ((2 : ℝ) ^ (-t)))
-            (dyadicLambertPhase t) -
-          partialSum (fun u : ℝ => (dyadicLambertPhase u)⁻¹)
-            (fun j u => fabiusSaddleMassCoefficient j
-              (dyadicLambertPhase u)) N t : ℝ) : ℂ)‖ :=
-            (Complex.norm_real _).symm
-      _ = ‖fabiusSaddleKernelMass F ((2 : ℝ) ^ (-t))
-            (fabiusLambertRadius ((2 : ℝ) ^ (-t)))
-            (dyadicLambertPhase t) -
-          partialSum (fun u : ℝ => (dyadicLambertPhase u)⁻¹)
-            (fun j u =>
-              (fabiusSaddleMassCoefficient j (dyadicLambertPhase u) : ℂ))
-            N t‖ := by
-              rw [Complex.ofReal_sub, hkernel, hsum]
-      _ ≤ C * ‖(dyadicLambertPhase t)⁻¹ ^ N‖ := ht
+  have hreal := hmass.continuousLinearMap Complex.reCLM
+  have hreal' : HasAsymptoticExpansion atTop
+      (fun t : ℝ => (dyadicLambertPhase t)⁻¹)
+      (fun t : ℝ => (fabiusSaddleKernelMass F ((2 : ℝ) ^ (-t))
+        (fabiusLambertRadius ((2 : ℝ) ^ (-t)))
+        (dyadicLambertPhase t)).re)
+      (fun j t => fabiusSaddleMassCoefficient j (dyadicLambertPhase t)) := by
+    simpa only [Complex.reCLM_apply, Complex.ofReal_re] using hreal
+  apply hreal'.congr Filter.EventuallyEq.rfl
+  filter_upwards [
+    tendsto_dyadicLambertPhase_atTop.eventually_gt_atTop 0] with t hphase
+  exact fabiusSaddleKernelMass_re_eq_ratio F hF
+    (x := ((2 : ℝ) ^ (-t)))
+    (fabiusLambertRadius_pos ((2 : ℝ) ^ (-t))) hphase
 
 /-- The real normalized saddle ratio has the full mass expansion on the
 dyadic real logarithmic scale. -/
