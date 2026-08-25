@@ -6,10 +6,10 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 15:46 PDT
+## Checkpoint 2026-08-25 15:56 PDT
 
 ```text
-campaign base: 09ae23f63217ccf40a67e26b39ed9d9f5fe49d04
+observed main before this directive: 22d63a9f74a9dd022b243fc3836930ae94354ff9
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
@@ -115,6 +115,27 @@ and touches several hot Lean and documentation paths.  Do not merge or push it
 to `main` wholesale.  Preserve and push the feature tip, then update its own
 registry with a declaration-by-declaration list of results still absent from
 current `main`.  The coordinator will extract reviewed, nonduplicate commits.
+
+**Merge-recovery directive `FABIUS-R001`.** Stop resolving the current merge;
+do not stage additional conflict resolutions.  First record these read-only
+facts in a scratch note: `git status --short --branch`, `git rev-parse
+ORIG_HEAD`, `git rev-parse MERGE_HEAD`, and `git diff --name-only
+--diff-filter=U`.  If and only if the worktree was clean immediately before
+the merge began, run `git merge --abort`; this returns to the preserved
+pre-merge feature tip.  If there was pre-merge dirty work, that fact is
+uncertain, or abort fails, leave the worktree untouched and publish the four
+facts through this branch's registry after a safe recovery is identified --
+never reset, checkout conflicted paths, or choose whole files with
+`--ours`/`--theirs`.
+
+After a successful clean abort, push the preserved feature tip if necessary
+and make only a registry/status commit.  Do not retry the merge.  The current
+candidate extraction is the unique mathematics commit `a95bd1913` (translated
+Thue--Morse polynomial coefficient, zero, degree, and leading-coefficient API
+in `FabiusQBinomialTaylor.lean`); its README and stale registry/control-plane
+edits are excluded.  The coordinator will replay and build that source change
+on a fresh branch from current `main`.  All other branch content remains
+read-only until inventoried declaration by declaration.
 
 ### Claude Fabius branches and any unlisted branch
 
