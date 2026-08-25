@@ -12,8 +12,8 @@ supplement it but do not replace it.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-theorem-refinements / c9a3 /
   EVO (Windows)
-fetched main SHA: 046946a974467e83244fd3a183a3e084e70d3379
-HEAD and dirty paths: e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4;
+fetched main SHA: a49db73131bf46030df0e8ccb273b10bca06f539
+HEAD and dirty paths: 3621e4a4b54f960542bd4b98168b70e3b60be928;
   clean before this final pre-push registry refresh
 writing (exact paths): docs/registry/codex-fabius-theorem-refinements.md only
 expected declarations or document claims: no new work; preserve the exact
@@ -34,7 +34,7 @@ not yet validated: no exact-tree aggregate Lean build or axiom replay for
   455a28661; no build was launched after the coordinator freeze
 requested integration or lease: extract/review the unique declarations below;
   do not merge this branch wholesale; no new path or build lease requested
-conflicts / dependencies: main and feature diverge 34 / 17 commits from
+conflicts / dependencies: main and feature diverge 39 / 18 commits from
   6fcbbb5da; canonical documents, README, aggregate, and coordination files
   are frozen; 09885a710 is superseded by the coordinator board
 next bounded step: commit and push this registry-only status to the feature
@@ -59,13 +59,13 @@ abort. No abort, reset, checkout, stash, or conflict-path replacement was run
 after the directive. The committed feature history is preserved for the
 coordinator's source-only extraction.
 
-## Coordinator extraction inventory against `046946a9`
+## Coordinator extraction inventory against `a49db731`
 
 The Lean declaration inventory was refreshed from feature
-`e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4` against fetched main
-`046946a974467e83244fd3a183a3e084e70d3379`,
+`3621e4a4b54f960542bd4b98168b70e3b60be928` against fetched main
+`a49db73131bf46030df0e8ccb273b10bca06f539`,
 with common base `6fcbbb5da45330bdc78c6090706cf1479f3d3afb` and
-17/34 feature/main commit divergence. All seven names below remain absent from
+18/39 feature/main commit divergence. All seven names below remain absent from
 current main, matching the board's candidate `a95bd1913`. The documentation
 claim inventory was audited exactly against earlier main `22d63a9f`; because
 main has since integrated another exposition checkpoint, it is routing evidence
