@@ -36,6 +36,9 @@ import GowersSzemeredi.Proofs05Downstream
 import GowersSzemeredi.Proofs05Lemma14
 import GowersSzemeredi.Proofs05PhaseRemoval
 import GowersSzemeredi.Proofs05PolynomialPartition
+import GowersSzemeredi.Proofs05Lemma9
+import GowersSzemeredi.Proofs05Lemma9Induction
+import GowersSzemeredi.Proofs05Lemma9Scale
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
@@ -73,6 +76,7 @@ import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs13QuadraticRecurrence
+import GowersSzemeredi.Proofs13BilinearRestriction
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
@@ -86,11 +90,19 @@ import GowersSzemeredi.Proofs15ProductToRestriction
 import GowersSzemeredi.Proofs15Walsh
 import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs16Basic
+import GowersSzemeredi.Proofs16InducedCounting
 import GowersSzemeredi.Proofs16BaseCaseCore
 import GowersSzemeredi.Proofs16BaseCaseRestriction
 import GowersSzemeredi.Proofs16BaseCaseExtraction
 import GowersSzemeredi.Proofs16BaseCaseQuantitative
 import GowersSzemeredi.Proofs16BaseCaseCoarsePartition
+import GowersSzemeredi.Proofs16BaseCaseCoarseCover
+import GowersSzemeredi.Proofs16BaseCaseLongBoxTransport
+import GowersSzemeredi.Proofs16BaseCaseLongBoxCover
+import GowersSzemeredi.Proofs16BaseCaseSingleGraph
+import GowersSzemeredi.Proofs16BaseCaseAssembly
+import GowersSzemeredi.Proofs16BaseCaseUnion
+import GowersSzemeredi.Proofs16BaseCaseEndpoint
 import GowersSzemeredi.Proofs16CommonBase
 import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
@@ -99,6 +111,7 @@ import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
 import GowersSzemeredi.Proofs18Consequences
+import GowersSzemeredi.Proofs18QuantitativeSzemeredi
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

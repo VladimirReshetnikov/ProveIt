@@ -1025,12 +1025,98 @@ $1.6$ terabytes.  That conclusion needs no Diophantine hypothesis beyond the obs
 behaviour of $\delta_m$, and it is not softened by faster hardware in the way a time estimate
 would be.
 
-The kernel frontier and the software frontier are therefore not separated by patience.
-Closing that gap requires a certificate whose cost is not one enclosure per excluded value ---
-for instance one algebraic identity retiring a whole interval of $m$ --- and no such scheme is
-known here.  Section~\ref{sec:attempts} reaches the same conclusion qualitatively; what this
-subsection adds is that the obvious route is blocked by memory well before it is blocked by
-time, and that its running time cannot be bounded at all without weight-two information.
+The kernel frontier and the software frontier are therefore not separated by patience,
+\emph{in this certificate family}.  What this subsection adds is that the enclosure family is
+blocked by memory well before it is blocked by time, and that even its running time cannot be
+bounded without weight-two information.  The next subsubsection shows that the memory half of
+that is a property of the family rather than of the route, and identifies what actually binds.
+\subsubsection*{The cost is a property of the certificate, not of the route}
+\label{co:certfamily}
+
+Everything above measures one certificate family: trap $\thetaq$ between two rationals and
+compare integer powers.  That family is not forced, and scoping the estimate to it matters,
+because a second family already present in this report is cheaper by six orders of magnitude
+per row.
+
+Theorem~\ref{thm:finite-range} certifies the range $A\le100{,}000$ in about fifteen seconds of
+software time.  It does not enclose $\thetaq$ at all.  It works directly with the decisive
+quantity
+\begin{equation}
+  G(m)\;=\;\log3\,\log m-\log2\,\log a,\qquad a=\lfloor m^{\thetaq}\rfloor,
+  \label{co:eq-loggap}
+\end{equation}
+together with its upper counterpart $\log2\,\log(a+1)-\log3\,\log m$, and certifies
+$G(m)>0$ from rational enclosures of the four logarithms.  Since
+\[
+  G(m)=\log2\cdot\bigl(\thetaq\log m-\log a\bigr)=\log2\cdot\log\Bigl(1+\frac{\delta_m}{a}\Bigr)
+  \;\asymp\;\frac{\delta_m\log2}{a},
+\]
+the precision a row needs is only $\log_2(a/\delta_m)+\mathrm O(1)$ bits.  With $a\asymp
+N^{\thetaq}$ and $\delta_m$ as small as $N^{-1}$ that is
+\[
+  (1+\thetaq)\log_2N+\mathrm O(1)\ \text{bits},
+\]
+\emph{logarithmic} in $N$ where the enclosure family is polynomial.  The contrast on the
+committed table is stark: at the hardest row of $[16384,32768)$, $m=26983$, the measured gap
+is $2.33\cdot10^{-12}$, so $39$ bits suffice --- against the $1.54\cdot10^{8}$ bits that the
+same row costs as an enclosure comparison.  A factor of about four million, on the identical
+row, from changing the certificate rather than the range.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+$N$ & rows & log-certificate bits/row & enclosure bits/row \\
+\midrule
+$2^{15}$ & $3.3\cdot10^{4}$ & $39$ & $1.5\cdot10^{8}$ \\
+$2^{20}$ & $1.0\cdot10^{6}$ & $52$ & $\sim2\cdot10^{10}$ \\
+$2^{24}$ & $1.7\cdot10^{7}$ & $63$ & --- \\
+$2^{27}$ & $1.3\cdot10^{8}$ & $70$ & --- \\
+$2^{40}$ & $1.1\cdot10^{12}$ & $104$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three consequences, and the third is the one that matters.
+
+First, Proposition~\ref{co:prop-cost} and the space table above are statements about
+\lean{FiniteCheck32768}'s format, not about the finite route.  They are correct as stated and
+they are the reason that \emph{that} format stops near $2^{21}$; they say nothing about what a
+different certificate costs.  The earlier claim that the route ``is blocked by memory well
+before it is blocked by time'' is withdrawn to the narrower claim that this \emph{family} is.
+
+Second, Remark~\ref{co:rem-selfref} survives the change of family, and is worth restating for
+it.  The log-certificate's precision requirement is $\log_2(a/\delta_m)$, so bounding it above
+\emph{uniformly in $m$} still requires a lower bound on $\delta_m=\|m^{\thetaq}\|$, and
+$\delta_m=0$ is still the weight-two relation.  Changing the certificate changes the exponent
+and leaves the obstruction exactly where it was: one cannot bound the work without bounding
+$\|m^{\thetaq}\|$ from below, and that is the conjecture.  What changes is that the dependence
+is now logarithmic, so even a very weak effective bound would suffice, where the enclosure
+family needed a strong one.
+
+Third, and concretely: \emph{the binding constraint on the finite route is the number of rows,
+$\Theta(N)$, not the size of any row.}  That was not visible while only one certificate family
+was in use, and it redirects the engineering.  A kernel table of $2^{20}$ rows at fifty-odd
+bits apiece is a plausible object where a table of $2^{20}$ rows at twenty gigabits apiece is
+not; the frontier $2^{27}$ remains out of reach, but for a reason --- $1.3\cdot10^{8}$
+rows --- that no improvement in per-row arithmetic will touch.
+
+What stands between this and a kernel certificate is one formalisation, not a new idea.  The
+software proof of Theorem~\ref{thm:finite-range} certifies each logarithm from the elementary
+identity
+\[
+  \log n=k\log2+\log\frac{1+z}{1-z},\qquad z=\frac{n-2^k}{n+2^k}\in[0,\tfrac13),
+  \qquad k=\lfloor\log_2n\rfloor,
+\]
+with the alternating-free bound
+$0<\log\frac{1+z}{1-z}-2\sum_{j<M}\frac{z^{2j+1}}{2j+1}<\frac{2z^{2M+1}}{(2M+1)(1-z^2)}$.
+Every operation is rational.  Formalising that single tail bound once, as a lemma about
+rational $z\in[0,1/3)$, converts \eqref{co:eq-loggap} into a kernel-checkable rational
+comparison and makes each row cost a fixed hundred-bit arithmetic instead of a
+hundred-megabit one.  That is the natural next step for this route, and it is a bounded task
+of a kind the repository has done before, unlike the open problems the rest of this report
+is about.
+
 \subsection{Arithmetic descent}
 \label{co:descent}
 
@@ -23371,9 +23457,10 @@ Proposition~\ref{co:prop-cost} gives $\widetilde{\mathrm O}(N^{1+\log_43})$, a f
 $2\sqrt3$ per doubling, but only under a Diophantine hypothesis that
 Remark~\ref{co:rem-selfref} shows to be the terminal obstruction itself, so it is not a
 theorem one may lean on.  The space side needs no such hypothesis and is the binding
-constraint: the worst row forms a single integer of about $2.3$ gigabytes at $N=2^{20}$ and
-$1.6$ terabytes at $2^{27}$, so the route stops around $2^{21}$--$2^{22}$, six doublings short
-of the scan frontier.  ``Mechanical'' was true and ``feasible'' was not, and the two were
+constraint for this format: the worst row forms a single integer of about $2.3$ gigabytes
+at $N=2^{20}$ and $1.6$ terabytes at $2^{27}$.  Section~\ref{co:certfamily} shows that a
+logarithm-based certificate removes that wall entirely, at some seventy bits a row, leaving the
+row count $\Theta(N)$ as the real constraint.  ``Mechanical'' was true and ``feasible'' was not, and the two were
 being conflated.  Further doublings should be undertaken only for a specific descent
 constant that genuinely needs a larger kernel bound, never as a route to the scan frontier;
 reaching that frontier needs a certificate that retires an interval of $m$ at once.
@@ -23425,8 +23512,10 @@ further doubling a routine table to \emph{write}.  It does not make one routine 
 \emph{run}: Proposition~\ref{co:prop-cost} estimates the time at
 $\widetilde{\mathrm O}(N^{1+\log_43})$, a measured factor near $2.8$ and an asymptotic
 $2\sqrt3$ per doubling, though only conditionally (Remark~\ref{co:rem-selfref}), while the
-unconditional space requirement --- one integer of about $1.6$ terabytes at $2^{27}$ ---
-stops the route near $2^{21}$--$2^{22}$.  This route reaches the software frontier only
+space requirement --- one integer of about $1.6$ terabytes at $2^{27}$ --- stops \emph{that
+certificate family} near $2^{21}$--$2^{22}$.  A logarithm-based certificate costs some seventy
+bits a row instead (Section~\ref{co:certfamily}), so what actually binds the route is the row
+count $\Theta(N)$.  This route reaches the software frontier only
 through a genuinely different device --- one certificate retiring an interval of $m$ --- not
 through further doublings.
 
@@ -25931,8 +26020,12 @@ Certificate route costs $\widetilde{\mathrm O}(N^{1+\log_43})$, conditionally &
 \statusnew & Proposition~\ref{co:prop-cost} \\
 Its hypothesis is the terminal obstruction itself & \statusnew &
 Remark~\ref{co:rem-selfref} \\
-Certificate route stops near $2^{21}$--$2^{22}$ on space & \statusexactcomp &
+\emph{Enclosure} certificates stop near $2^{21}$--$2^{22}$ on space & \statusexactcomp &
 Section~\ref{co:cost} \\
+Log certificates need only $(1+\thetaq)\log_2N$ bits a row & \statusexactcomp &
+Section~\ref{co:certfamily} \\
+Binding constraint on the finite route is the row count $\Theta(N)$ & \statusnew &
+Section~\ref{co:certfamily} \\
 No nonintegral candidate with $2^x<2^{20}$ & \statuscomp &
 Section~\ref{sec:finitecheck}, Appendix~\ref{app:interval} \\
 No nonintegral candidate with $2^x<2^{27}$ & \statuscomp &

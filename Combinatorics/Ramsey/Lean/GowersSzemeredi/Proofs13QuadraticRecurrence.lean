@@ -33,11 +33,15 @@ set_option exponentiation.threshold 400 in
 strictly below the threshold required by the repaired Lemma 5.9. -/
 theorem lemma135_small_cutoff_lt_lemma59_threshold :
     2 ^ (2 ^ 12) < simultaneousPolynomialThreshold 2 1 := by
-  have hexp : 2 ^ 12 < 2 ^ 320 :=
-    Nat.pow_lt_pow_right (by norm_num) (by norm_num)
-  rw [show simultaneousPolynomialThreshold 2 1 = 2 ^ (2 ^ 320) by
-    norm_num [simultaneousPolynomialThreshold, polynomialPartitionConstant]]
-  exact Nat.pow_lt_pow_right (by norm_num) hexp
+  have hsmallExponent : 12 < 40 * 2 ^ 3 := by norm_num
+  have hinner : 2 ^ 12 < 2 ^ (40 * 2 ^ 3) :=
+    Nat.pow_lt_pow_right (by norm_num) hsmallExponent
+  have hsmallW : 2 ^ (2 ^ 12) < weylThreshold 2 := by
+    unfold weylThreshold
+    exact Nat.pow_lt_pow_right (by norm_num) hinner
+  exact hsmallW.trans_le <|
+    (weylThreshold_le_polynomialPartitionThreshold 2).trans
+      (polynomialPartitionThreshold_le_simultaneousPolynomialThreshold 2 1)
 
 /-! ### Transporting a progression of indices -/
 
