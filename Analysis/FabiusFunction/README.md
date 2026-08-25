@@ -30,10 +30,12 @@ its nonconstant Gamma--zeta periodic term, together with its complete
 all-orders saddle expansion.
 
 Several agents develop this directory concurrently in separate worktrees.  If
-you are one of them, please read [`AGENTS.md`](AGENTS.md) and the proposal in
+you are one of them, please read [`AGENTS.md`](AGENTS.md) and the current
+operational guide in
 [`docs/COLLABORATION.md`](docs/COLLABORATION.md), which records the collisions
-that have already happened, the working rules suggested to avoid them, and a
-list of claimable future work.  Feedback on that proposal is invited.
+that have already happened, the live coordination rules adopted in response,
+and a tentative list of claimable future work.  Focused amendments and
+evidence-backed counterexamples are welcome.
 
 ## Design
 
@@ -557,12 +559,14 @@ Among them:
 
 ## Contributing and coordination
 
-A draft
+The [current operational guide](docs/COLLABORATION.md) defines live path
+leases, Git and build ownership, synchronization checkpoints, review, and
+handoffs for concurrent Fabius development.  A longer
 [multi-agent coordination proposal](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
-describes suggested work ownership, pinned synchronization windows, validation
-scheduling, handoffs, and integration for concurrent Fabius development.  It
-is not current project policy; review, counterexamples, and alternative
-proposals are welcome.
+explores a stricter campaign-and-captain pilot with pinned synchronization
+windows.  That pilot is not current project policy and does not override the
+operational guide; review, counterexamples, and simpler enforceable
+alternatives are welcome.
 
 ## Checking
 

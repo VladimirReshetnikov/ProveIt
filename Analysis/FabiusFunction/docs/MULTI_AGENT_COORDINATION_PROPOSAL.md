@@ -1,6 +1,8 @@
 # Proposal: multi-agent coordination for `Analysis/FabiusFunction`
 
 > **Status:** Draft for review — not current project policy<br>
+> **Authority:** The [current operational guide](COLLABORATION.md) governs
+> active work and prevails wherever this proposal differs.<br>
 > **Scope:** `Analysis/FabiusFunction` only<br>
 > **Audience:** maintainers, theorem authors, documentation contributors,
 > integration agents, and reviewers<br>
@@ -19,6 +21,7 @@ status and revision history instead.
 
 Related project references:
 
+- [current operational coordination guide](COLLABORATION.md);
 - [project overview](../README.md);
 - [paper-to-theorem coverage](PAPER_COVERAGE.md);
 - [asymptotic completion audit](ASYMPTOTIC_COMPLETION_AUDIT.md);
@@ -61,8 +64,8 @@ The current campaign has exposed several concrete failure modes.
   disjoint.
 - Git refs and stashes are shared by all worktrees in the repository.  A stash
   ordinal such as `stash@{0}` can change when another actor creates a stash.
-- Separate worktrees still share the 14 GiB Windows host, toolchain I/O, and
-  memory pressure.  Concurrent activity has coincided with transient
+- Separate worktrees still share a memory-constrained Windows host, toolchain
+  I/O, and memory pressure.  Concurrent activity has coincided with transient
   `.olean`/`.olean.private` read failures, while the host has also approached
   low free memory; both conditions increase the risk of misleading build
   failures or process termination.
@@ -309,7 +312,8 @@ During a synchronization window:
 5. merge the pinned SHA exactly once;
 6. resolve conflicts semantically and audit both parents;
 7. run the affected focused targets under the build token;
-8. push and broadcast the new campaign and main SHAs; and
+8. push the campaign branch and broadcast its SHA together with the pinned
+   main SHA; update `main` only through the separately authorized funnel; and
 9. reassign leases for the next wave.
 
 For a pushed feature or integration branch, prefer an explicit merge of the
@@ -738,4 +742,5 @@ Windows worktrees, and evidence from other multi-agent formalization campaigns.
 
 | Date | Status | Change | Decision reference |
 | --- | --- | --- | --- |
+| 2026-08-25 | Draft for review | Declared the shorter operational guide authoritative for current work; retained this document as the stricter pilot proposal | Operational-guide consolidation |
 | 2026-08-24 | Draft for review | Initial proposal based on the first concurrent Fabius strengthening campaign | TBD |

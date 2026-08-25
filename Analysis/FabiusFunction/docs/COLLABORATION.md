@@ -1,9 +1,13 @@
 # Collaborating on `Analysis/FabiusFunction`
 
-**Status: proposal, open for revision.** This document combines the coordination
-proposals developed independently on the active Fabius branches.  It is meant
-to reduce duplicated proofs, public-API conflicts, and wasted rebuilds without
-serializing theorem discovery through one agent.  Disagree by proposing a
+**Status: current operational guide, open for focused revision.** `AGENTS.md`
+directs agents working in this subtree to follow this document.  It combines
+the coordination lessons developed independently on the active Fabius branches
+and is meant to reduce duplicated proofs, public-API conflicts, and wasted
+rebuilds without serializing theorem discovery through one agent.  The longer
+[`MULTI_AGENT_COORDINATION_PROPOSAL.md`](MULTI_AGENT_COORDINATION_PROPOSAL.md)
+is a non-authoritative design proposal for a stricter pilot; where the two
+documents differ, this guide governs current work.  Disagree by proposing a
 focused edit and explaining the operational or mathematical reason in its
 commit message.
 
@@ -118,6 +122,23 @@ git log --left-right --oneline HEAD...origin/main
 git diff --name-only origin/main...origin/<peer-branch>
 ```
 
+Before a merge or SHA-qualified validation claim, pin the observed main tip in
+a unique local ref, record its full SHA, and use that immutable SHA throughout
+the operation.  Another worktree may move the shared `origin/main`
+remote-tracking ref after the fetch; a moving symbolic name is not a stable
+merge target or evidence label.  The stricter pilot proposal gives a complete
+example, but the rule is simply: fetch once, pin once, merge the recorded SHA,
+then publish both the branch and main SHAs.
+
+```sh
+git fetch origin +refs/heads/main:refs/codex-sync/main-UNIQUE-ID
+git rev-parse refs/codex-sync/main-UNIQUE-ID
+```
+
+Use the full SHA printed by the second command for the merge, overlap audit,
+and validation record.  Delete the temporary ref after the integrated branch
+has been pushed and independently checked.
+
 Feature branches already pushed or shared by multiple agents should merge the
 common base rather than rewrite public history.  Never force-push a shared
 branch.
@@ -127,10 +148,13 @@ worktree must remain dirty:
 
 1. freeze every writer in that worktree;
 2. collect each owner's path-and-status summary;
-3. compare dirty paths with `git diff --name-only HEAD..origin/main`;
-4. let only the Git mutation owner run `git merge --no-edit origin/main`;
-5. recheck `git status --short` and `git diff --check`; and
-6. resume writers explicitly.
+3. compare dirty paths with `git diff --name-only HEAD..<pinned-main-sha>`;
+4. let only the Git mutation owner run
+   `git merge --no-commit <pinned-main-sha>`;
+5. resolve conflicts and recheck `git status --short` and `git diff --check`;
+6. create a detailed merge commit that records the pinned SHA and semantic
+   resolutions; and
+7. resume writers explicitly.
 
 Path disjointness is necessary but does not replace the freeze.  Never stash a
 shared worktree.
@@ -270,8 +294,8 @@ At an integration checkpoint:
 2. fetch advertised branches and compare commits, paths, and public names;
 3. choose the canonical home and name of overlapping lemmas before resolving
    text conflicts;
-4. ask branch owners to merge `origin/main`, or create temporary test branches
-   from advertised tips with owner consent;
+4. ask branch owners to merge the advertised pinned main SHA, or create
+   temporary test branches from advertised tips with owner consent;
 5. validate and independently review one coherent commit series at a time;
 6. integrate exactly one reviewed series at a time;
 7. after each conflict, re-audit theorem arities, named binders, import paths,
@@ -285,18 +309,23 @@ preserve nonduplicate results and compatibility wrappers from both sides, and
 record the choice in the merge message.  The integrator needs a temporary
 ownership handoff before editing conflicted paths.
 
-Only the designated integrator updates `main`.  Prefer an integration branch
-based on current `origin/main`; merge or cherry-pick one reviewed series at a
-time.  The final non-force update is:
+The designated integrator role coordinates the update to `main`; it does not
+by itself grant permission to perform that update.  A direct push still
+requires explicit user authorization and the repository's normal workflow.
+Without that authority, the integrator prepares a review branch, pull request,
+or exact-SHA handoff instead.  When a direct update is authorized, prefer an
+integration branch based on current `origin/main`; merge or cherry-pick one
+reviewed series at a time.  The final non-force update is:
 
 ```sh
-git fetch origin
-git merge-base --is-ancestor origin/main HEAD && git push origin HEAD:main
+git merge-base --is-ancestor <pinned-main-sha> HEAD &&
+git push origin HEAD:main
 ```
 
-If the remote advances, the push is rejected; fetch and review the new tip
-instead of forcing.  Use protected-branch or pull-request checks when enabled.
-Other workstreams push named feature branches and report commit IDs.
+If the remote advances after the pin, the non-force push is rejected; fetch,
+pin, and review the new tip instead of forcing.  Use protected-branch or
+pull-request checks when enabled.  Other workstreams push named feature
+branches and report commit IDs.
 
 ## Project invariants
 
@@ -387,8 +416,13 @@ and record remaining linter work separately.
 
 ## Feedback and amendment questions
 
-Please respond in the live registry or propose a small documented amendment.
-Useful questions include:
+Use the live registry for immediate operational clarifications.  For durable
+changes, prefer a focused commit or pull request against this guide, or a
+linked [repository issue](https://github.com/VladimirReshetnikov/ProveIt/issues)
+with a title such as `Fabius coordination: <topic>` when discussion must
+precede an edit.  Use the
+numbered questions in the non-authoritative pilot proposal for feedback about
+that stricter design.  Useful questions for this guide include:
 
 1. Is the 30-minute active lease, with an announced one-hour unattended
    extension, the right cadence?
@@ -401,4 +435,6 @@ Useful questions include:
    integrate?
 
 When consensus changes the workflow, update this document in a dedicated
-commit so future worktrees inherit the decision.
+commit so future worktrees inherit the decision.  Record proposal feedback in
+the proposal's disposition log rather than silently treating an undecided
+pilot rule as current policy.
