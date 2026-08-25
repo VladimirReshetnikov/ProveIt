@@ -10,6 +10,13 @@ the Fabius distribution function.  For `Re z > 0`, it proves
 
 `complexGeneratingFunction F (-z) / z = ∫ t in (0, ∞), F(t) exp(-zt)`.
 
+It also records the real-axis specialization
+
+`generatingFunction F (-s) / s = ∫ t in (0, ∞), F(t) exp(-st)`
+
+for `s > 0`, together with the real integrability fact needed to use that
+formula without repeatedly passing through complex-valued integrals.
+
 The proof first rewrites the Rvachev bump as `1 - F` on `[0, 1]`, integrates
 the constant exponential explicitly, and then uses the convention `F(t) = 1`
 for `t ≥ 1` to identify the remaining exponential with the tail integral.
@@ -137,5 +144,63 @@ theorem complexGeneratingFunction_neg_div_eq_laplace
       intervalIntegral.integral_interval_add_Ioi' (hf.intervalIntegrable 0 1) htail
     _ = ∫ t : ℝ in Ioi 0,
         (fabiusReal F t : ℂ) * Complex.exp (-z * t) := by rfl
+
+/-- The real Laplace integrand is integrable on the positive half-line.
+
+This reusable real-valued form avoids reconstructing measurability and
+domination by the decaying exponential in applications of the Laplace
+identity. -/
+theorem integrableOn_fabiusReal_mul_exp_neg
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    IntegrableOn (fun t : ℝ =>
+      fabiusReal F t * Real.exp (-s * t)) (Ioi 0) := by
+  have hexp : IntegrableOn (fun t : ℝ => Real.exp (-s * t)) (Ioi 0) := by
+    convert integrableOn_exp_mul_Ioi (a := -s) (by linarith) 0 using 1
+  apply hexp.mono'
+  · exact (hF.contDiff.continuous.mul
+      (Real.continuous_exp.comp
+        (continuous_const.mul continuous_id))).aestronglyMeasurable
+  · filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
+    rw [Real.norm_eq_abs, abs_of_nonneg
+      (mul_nonneg (fabiusReal_nonneg F t) (Real.exp_nonneg _))]
+    exact mul_le_of_le_one_left (Real.exp_nonneg _)
+      (fabiusReal_le_one F t)
+
+/-- Real-axis form of the one-sided Laplace-transform identity.
+
+Although this follows from the complex identity by restricting to positive
+real parameters, keeping the real statement in the public API eliminates
+coercion bookkeeping in positivity and comparison arguments. -/
+theorem generatingFunction_neg_div_eq_laplace
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    generatingFunction F (-s) / s =
+      ∫ t : ℝ in Ioi 0,
+        fabiusReal F t * Real.exp (-s * t) := by
+  have h := complexGeneratingFunction_neg_div_eq_laplace F hF
+    (z := (s : ℂ)) (by simpa using hs)
+  let g : ℝ → ℝ := fun t =>
+    fabiusReal F t * Real.exp (-s * t)
+  have hintegrand :
+      (fun t : ℝ =>
+        (fabiusReal F t : ℂ) * Complex.exp (-(s : ℂ) * t)) =
+        fun t : ℝ => (g t : ℂ) := by
+    funext t
+    dsimp [g]
+    push_cast
+    rfl
+  have hgcast :
+      (∫ t : ℝ in Ioi 0, (g t : ℂ)) =
+        Complex.ofReal (∫ t : ℝ in Ioi 0, g t) := by
+    exact integral_ofReal (𝕜 := ℂ)
+  rw [hintegrand, hgcast] at h
+  have hneg : -(s : ℂ) = ((-s : ℝ) : ℂ) := by
+    push_cast
+    rfl
+  rw [hneg, complexGeneratingFunction_ofReal] at h
+  have hcast :
+      Complex.ofReal (generatingFunction F (-s) / s) =
+        Complex.ofReal (∫ t : ℝ in Ioi 0, g t) := by
+    simpa using h
+  exact Complex.ofReal_injective hcast
 
 end Fabius

@@ -127,7 +127,9 @@ theorem fabiusLaplaceMoment_succ (F : BoundedFabius) (k : ℕ) (s : ℝ) :
         s * tiltedSurvivalMoment F (k + 1) s :=
   rfl
 
-private lemma generatingFunction_neg_eq_tiltedSurvivalMoment
+/-- The negative generating function is the zeroth tilted survival moment,
+with the endpoint term from integration by parts made explicit. -/
+theorem generatingFunction_neg_eq_tiltedSurvivalMoment
     (F : BoundedFabius) (s : ℝ) :
     generatingFunction F (-s) =
       1 - s * tiltedSurvivalMoment F 0 s := by
