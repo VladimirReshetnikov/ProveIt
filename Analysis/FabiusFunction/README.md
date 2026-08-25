@@ -1,5 +1,13 @@
 # Fabius function
 
+> **Active multi-agent campaign.** Before editing anything in this directory,
+> read [`AGENTS.md`](AGENTS.md) and the live
+> [coordinator board](docs/registry/coordinator.md).  The board, rather than a
+> chat-local claim, records current leases, collision freezes, the build token,
+> and branch-specific handoffs.  During the current recovery checkpoint,
+> workers push feature branches only; the designated coordinator performs the
+> reviewed fast-forward updates to `main`.
+
 This project formalizes the Fabius function and the results in both papers by
 Juan Arias de Reyna:
 
@@ -690,12 +698,13 @@ compiled PDF is committed alongside its source.
 
 ## Contributing and coordination
 
-A draft
-[multi-agent coordination proposal](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md)
-describes suggested work ownership, pinned synchronization windows, validation
-scheduling, handoffs, and integration for concurrent Fabius development.  It
-is not current project policy; review, counterexamples, and alternative
-proposals are welcome.
+The current operational entry points are [`AGENTS.md`](AGENTS.md) and the
+[coordinator board](docs/registry/coordinator.md).  The detailed
+[collaboration guide](docs/COLLABORATION.md) records the protocol and the
+failures that motivated it; the longer
+[coordination design](docs/MULTI_AGENT_COORDINATION_PROPOSAL.md) remains useful
+background.  Focused amendments are welcome through a worker's own registry
+file, but neither background document overrides a current board instruction.
 
 ## Checking
 

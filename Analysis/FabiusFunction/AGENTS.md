@@ -1,9 +1,59 @@
 # Agents working in `Analysis/FabiusFunction`
 
 Several agents develop this directory concurrently in separate worktrees.
-Please read [`docs/COLLABORATION.md`](docs/COLLABORATION.md) before making
-structural changes; it is a proposal, open for revision, and it records which
-collisions have already happened and how they were resolved.
+The user has designated one coordinator for the current campaign.  The
+operational rules below and the live
+[`docs/registry/coordinator.md`](docs/registry/coordinator.md) board are current
+project policy; [`docs/COLLABORATION.md`](docs/COLLABORATION.md) explains the
+reasons and remains open for focused revision.
+
+## Live coordination -- mandatory before writing
+
+At the start of every work session, after every fetch, and before every merge
+or push, read the coordinator board from the fetched `main`, even when your
+worktree is dirty and cannot merge yet:
+
+```sh
+git fetch origin
+git show origin/main:Analysis/FabiusFunction/docs/registry/coordinator.md
+```
+
+The board contains the pinned integration SHA, hot paths, integration queue,
+build ownership, and branch-specific instructions.  An instruction addressed
+to your exact branch is binding until the board releases it.  If your branch is
+not listed, you have no write lease yet: inspect read-only, then publish a
+status/claim in a new file named `docs/registry/<branch-with-slashes-replaced-by-dashes>.md`.
+
+During the current collision-recovery checkpoint:
+
+1. **Push feature branches, not `main`.** Only the coordinator advances
+   `origin/main`.  Never force-push.  A rejected fast-forward is a signal to
+   fetch and reread the board, not to retry blindly.
+2. **One branch, one registry file.** Each worker edits only its own registry
+   file.  Only the coordinator edits `docs/registry/coordinator.md`, this live
+   section of `AGENTS.md`, the coordination notice in `README.md`, and the
+   campaign-wide coordination documents.
+3. **No implicit lease.** A write lease names exact paths and expected public
+   declarations.  Topic names such as "asymptotics" or "documentation" do not
+   lease a directory.  Do not expand the path set until the coordinator
+   acknowledges the request on the board.
+4. **Preserve before synchronizing.** If your worktree is dirty, do not stash,
+   reset, or merge over it.  Stop expanding the edit, make a clearly labelled
+   checkpoint commit on your feature branch when coherent (or an explicit WIP
+   commit when necessary to preserve it), push that branch, and report the
+   exact SHA and validation state in its registry file.
+5. **Build tokens are per physical host.** On `codexbox`, no agent starts Lean,
+   Lake, `pdflatex`, or another cache-mutating validation job unless the board
+   assigns the token.  Let an already-running job finish; do not kill another
+   worktree's process.  The other machine maintains the same one-owner rule
+   independently and records its owner on the board.
+6. **Binary PDFs are never conflict-resolved.** Freeze both sources, integrate
+   the TeX semantically under one owner, then rebuild the PDF once with three
+   passes.  Never take a PDF wholesale from either side of a conflict.
+
+Status replies use the `SYNC Fabius` template in `docs/COLLABORATION.md`, are
+committed only to the worker's feature branch, and are pushed promptly.  The
+coordinator discovers them from advertised branch tips and updates the board.
 
 The rules that have actually cost time so far:
 
