@@ -57,6 +57,11 @@ even though `Psi` itself is uniformly tiny.
 The weights are introduced here by their own recurrence, which is what the
 induction needs, and which is exactly the recurrence satisfied by the
 coefficients of `∏ k ∈ Finset.Icc 1 n, (X - k)`.
+
+For coefficientwise use, `negativeLaplaceJetStirling_succ` packages the
+constant and interior branches into one all-index recurrence, while
+`negativeLaplaceJetStirling_apply_zero` and the zero-index derivative-sum
+lemmas record the two boundary values that recur in concrete calculations.
 -/
 
 set_option autoImplicit false
@@ -100,6 +105,21 @@ theorem negativeLaplaceJetStirling_succ_succ (n m : ℕ) :
       negativeLaplaceJetStirling n m -
         ((n : ℝ) + 1) * negativeLaplaceJetStirling n (m + 1) := rfl
 
+/-- Unified successor recurrence, including the constant-coefficient
+boundary at `m = 0`. -/
+theorem negativeLaplaceJetStirling_succ (n m : ℕ) :
+    negativeLaplaceJetStirling (n + 1) m =
+      (if m = 0 then 0 else negativeLaplaceJetStirling n (m - 1)) -
+        ((n : ℝ) + 1) * negativeLaplaceJetStirling n m := by
+  cases m with
+  | zero =>
+      rw [negativeLaplaceJetStirling_succ_zero]
+      simp
+      ring
+  | succ m =>
+      rw [negativeLaplaceJetStirling_succ_succ]
+      simp
+
 /-- The weights vanish above the degree of their polynomial. -/
 theorem negativeLaplaceJetStirling_eq_zero (n : ℕ) :
     ∀ m : ℕ, n < m → negativeLaplaceJetStirling n m = 0 := by
@@ -126,6 +146,28 @@ theorem negativeLaplaceJetStirling_self (n : ℕ) :
         negativeLaplaceJetStirling_eq_zero n (n + 1) (by omega)]
       ring
 
+/-- Closed form of the constant weight: it is the signed factorial
+`(-1)^n n!`. -/
+theorem negativeLaplaceJetStirling_apply_zero (n : ℕ) :
+    negativeLaplaceJetStirling n 0 =
+      (-1 : ℝ) ^ n * (n.factorial : ℝ) := by
+  induction n with
+  | zero => norm_num [negativeLaplaceJetStirling]
+  | succ n ih =>
+      rw [negativeLaplaceJetStirling_succ_zero, ih,
+        Nat.factorial_succ, pow_succ]
+      push_cast
+      ring
+
+/-- The constant Stirling weight is the negative of the corresponding
+Laplace-jet slope.  This identifies the constant terms of the two recurrences
+without expanding either signed factorial downstream. -/
+theorem negativeLaplaceJetStirling_apply_zero_eq_neg_slope (n : ℕ) :
+    negativeLaplaceJetStirling n 0 = -negativeLaplaceJetSlope n := by
+  rw [negativeLaplaceJetStirling_apply_zero, negativeLaplaceJetSlope,
+    pow_succ]
+  ring
+
 /-- The `(m+1)`-st derivative of the centered periodic correction, normalized by
 `(log 2) ^ (m+1)`.  Apart from `log 2` itself, these are the only
 non-elementary quantities occurring in the closed-form jets: everything else in
@@ -133,13 +175,12 @@ them is rational. -/
 def negativeLaplacePsiScaledDeriv (m : ℕ) (t : ℝ) : ℝ :=
   iteratedDeriv (m + 1) negativeLaplacePsi t / Real.log 2 ^ (m + 1)
 
-/-- Every iterated derivative of the centered periodic correction is `C∞`. -/
-theorem contDiff_infty_iteratedDeriv_negativeLaplacePsi (m : ℕ) :
-    ContDiff ℝ ∞ (iteratedDeriv m negativeLaplacePsi) := by
-  induction m with
-  | zero =>
-      simpa only [iteratedDeriv_zero] using contDiff_infty_negativeLaplacePsi
-  | succ m ih => simpa only [iteratedDeriv_succ] using contDiff_infty_deriv ih
+/-- Zeroth normalized derivative: the first derivative of `Psi`, divided by
+`log 2`. -/
+theorem negativeLaplacePsiScaledDeriv_zero (t : ℝ) :
+    negativeLaplacePsiScaledDeriv 0 t =
+      deriv negativeLaplacePsi t / Real.log 2 := by
+  simp [negativeLaplacePsiScaledDeriv, iteratedDeriv_one]
 
 /-- Differentiating the `m`-th iterated derivative gives the `(m+1)`-st. -/
 theorem negativeLaplacePsi_iteratedDeriv_hasDerivAt (m : ℕ) (t : ℝ) :
@@ -148,18 +189,6 @@ theorem negativeLaplacePsi_iteratedDeriv_hasDerivAt (m : ℕ) (t : ℝ) :
   have h := ((contDiff_infty_iteratedDeriv_negativeLaplacePsi m).differentiable
     (by simp) t).hasDerivAt
   simpa only [iteratedDeriv_succ] using h
-
-/-- Each iterated derivative of the centered periodic correction is
-one-periodic. -/
-theorem negativeLaplacePsi_iteratedDeriv_periodic (m : ℕ) :
-    Function.Periodic (iteratedDeriv m negativeLaplacePsi) 1 := by
-  induction m with
-  | zero =>
-      simpa only [iteratedDeriv_zero] using negativeLaplacePsi_periodic
-  | succ m ih =>
-      simpa only [iteratedDeriv_succ] using
-        periodic_deriv_of_contDiff_infty ih
-          (contDiff_infty_iteratedDeriv_negativeLaplacePsi m)
 
 /-- The normalized derivatives are one-periodic. -/
 theorem negativeLaplacePsiScaledDeriv_periodic (m : ℕ) :
@@ -195,6 +224,20 @@ the value of `deriv (negativeLaplaceJetDerivativeSum n) / log 2`. -/
 def negativeLaplaceJetShiftedSum (n : ℕ) (t : ℝ) : ℝ :=
   ∑ m ∈ Finset.range (n + 1),
     negativeLaplaceJetStirling n m * negativeLaplacePsiScaledDeriv (m + 1) t
+
+/-- At jet order zero the derivative sum consists only of its zeroth
+normalized derivative. -/
+theorem negativeLaplaceJetDerivativeSum_zero (t : ℝ) :
+    negativeLaplaceJetDerivativeSum 0 t =
+      negativeLaplacePsiScaledDeriv 0 t := by
+  simp [negativeLaplaceJetDerivativeSum]
+
+/-- At jet order zero the shifted sum consists only of the next normalized
+derivative. -/
+theorem negativeLaplaceJetShiftedSum_zero (t : ℝ) :
+    negativeLaplaceJetShiftedSum 0 t =
+      negativeLaplacePsiScaledDeriv 1 t := by
+  simp [negativeLaplaceJetShiftedSum]
 
 /-- The weighted sum is insensitive to enlarging its summation range. -/
 theorem sum_range_negativeLaplaceJetStirling_eq (n N : ℕ) (hN : n + 1 ≤ N)
@@ -329,10 +372,9 @@ theorem negativeLaplacePeriodicJet_eq_closedForm (n : ℕ) : ∀ t : ℝ,
   induction n with
   | zero =>
       intro t
-      rw [negativeLaplacePeriodicJet_zero, negativeLaplaceJetConstant_zero]
-      unfold negativeLaplaceJetDerivativeSum negativeLaplacePsiScaledDeriv
-      rw [Finset.sum_range_one, negativeLaplaceJetStirling_zero_zero]
-      norm_num [iteratedDeriv_one]
+      rw [negativeLaplacePeriodicJet_zero, negativeLaplaceJetConstant_zero,
+        negativeLaplaceJetDerivativeSum_zero,
+        negativeLaplacePsiScaledDeriv_zero]
   | succ n ih =>
       intro t
       have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'

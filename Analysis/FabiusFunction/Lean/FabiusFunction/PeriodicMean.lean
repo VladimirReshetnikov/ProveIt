@@ -25,16 +25,19 @@ Under that substitution an integral of a kernel `K (2 ^ t)` in `t` becomes a
 to that same factor, the `n`-th summand of `negativeLaplaceLog (2 ^ t)`,
 integrated over one period, is the integral of `boseFinitePartSmallKernel`
 over the dyadic block `(1/2^(n+1), 1/2^n]`, and the `n`-th summand of
-`negativeLaplaceForwardTail (2 ^ t)` is the integral of
-`boseFinitePartLargeKernel` over `[2^n, 2^(n+1))`.  Summing the blocks
-reassembles the split finite-part integral over `(0, ∞)`.  The remaining
-elementary piece `log 2 / 2 * (t ^ 2 - t)` of `R` contributes `- log 2 / 12`.
+`negativeLaplaceForwardTail (2 ^ t)` is first obtained on
+`(2^n, 2^(n+1)]`.  This is almost everywhere equal to the partition block
+`[2^n, 2^(n+1))`.  Summing the blocks reassembles the split finite-part
+integral over `(0, ∞)`.  The remaining elementary piece
+`log 2 / 2 * (t ^ 2 - t)` of `R` contributes `- log 2 / 12`.
 
 ## Main results
 
 * `negativeLaplacePeriodicMean_eq` — the closed form for the mean.  This is
   what `FabiusFunction.FabiusSharpConstant` converts into the constant term
   of the sharp asymptotic.
+* `intervalIntegral_negativeLaplacePeriodicCorrection_unit_eq_mean` — the
+  definition of that mean transported to every translated unit interval.
 * `intervalIntegral_negativeLaplacePeriodicCorrection_unit` and
   `intervalIntegral_negativeLaplacePsi_unit` — the same value over every
   translated unit interval, and zero for the normalized correction.
@@ -81,10 +84,11 @@ theorem negativeLaplacePsi_periodic :
   negativeLaplacePsi_add_one
 
 /-- Change of variables `x = 2 ^ t` for `negativeLaplaceKernel`: for all
-real `a` and `b`, `log 2` times the `t`-integral over `[a, b]` is the
-`x`-integral of `boseFinitePartSmallKernel` over `[2 ^ a, 2 ^ b]`.  The
-extra `1 / x` in `boseFinitePartSmallKernel` is exactly the Jacobian
-`dx = log 2 * x dt`.  This is the substitution behind
+real `a` and `b`, `log 2` times the oriented `t`-integral over `a..b` is the
+oriented `x`-integral of `boseFinitePartSmallKernel` over
+`2 ^ a..2 ^ b`.  The Jacobian is `dx = log 2 * x dt`, and the `1 / x`
+in `boseFinitePartSmallKernel` cancels its factor `x`.  This is the
+substitution behind
 `intervalIntegral_negativeLaplaceTerm_two_rpow`. -/
 lemma intervalIntegral_negativeLaplaceKernel_two_rpow
     (a b : ℝ) :
@@ -120,9 +124,10 @@ lemma intervalIntegral_negativeLaplaceKernel_two_rpow
   exact hsub
 
 /-- Change of variables `x = 2 ^ t` for `boseLogKernel`: for all real `a`
-and `b`, `log 2` times the `t`-integral over `[a, b]` is the `x`-integral
-of `boseFinitePartLargeKernel` over `[2 ^ a, 2 ^ b]`, the extra `1 / x`
-again being the Jacobian.  This is the substitution behind
+and `b`, `log 2` times the oriented `t`-integral over `a..b` is the oriented
+`x`-integral of `boseFinitePartLargeKernel` over `2 ^ a..2 ^ b`.  Again the
+kernel's `1 / x` cancels the factor `x` in the Jacobian.  This is the
+substitution behind
 `intervalIntegral_negativeLaplaceForwardTerm_two_rpow`. -/
 lemma intervalIntegral_boseLogKernel_two_rpow
     (a b : ℝ) :
@@ -169,6 +174,18 @@ right endpoint excluded.  Indexed by `n : ℕ`, so the blocks tile
 `[1, ∞)`.  `FabiusFunction.PeriodicFourier` reuses it unchanged. -/
 def largeDyadicInterval (n : ℕ) : Set ℝ :=
   Ico ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1))
+
+/-- The first small dyadic block, making the `n = 0` endpoint convention
+explicit.  This is deliberately not a simp rule. -/
+lemma smallDyadicInterval_zero :
+    smallDyadicInterval 0 = Ioc (1 / 2 : ℝ) 1 := by
+  norm_num [smallDyadicInterval]
+
+/-- The first large dyadic block, making the `n = 0` endpoint convention
+explicit.  This is deliberately not a simp rule. -/
+lemma largeDyadicInterval_zero :
+    largeDyadicInterval 0 = Ico (1 : ℝ) 2 := by
+  norm_num [largeDyadicInterval]
 
 /-- The small dyadic blocks cover `(0, 1]` exactly. -/
 lemma iUnion_smallDyadicInterval :
@@ -259,6 +276,21 @@ lemma hasSum_integral_smallDyadicInterval :
     (by simpa [iUnion_smallDyadicInterval] using integrableOn_boseFinitePartSmallKernel)
   simpa [iUnion_smallDyadicInterval] using h
 
+/-- Countable additivity for the large dyadic partition in its exact
+`Ico`/`Ici` form, before changing endpoints almost everywhere. -/
+lemma hasSum_integral_largeDyadicInterval_Ici :
+    HasSum (fun n : ℕ => ∫ x : ℝ in largeDyadicInterval n,
+      boseFinitePartLargeKernel x)
+      (∫ x : ℝ in Ici 1, boseFinitePartLargeKernel x) := by
+  have hIntIci : IntegrableOn boseFinitePartLargeKernel (Ici 1) :=
+    IntegrableOn.congr_set_ae integrableOn_boseFinitePartLargeKernel
+      Ioi_ae_eq_Ici.symm
+  have h := hasSum_integral_iUnion
+    (f := boseFinitePartLargeKernel) (s := largeDyadicInterval)
+    (fun n => measurableSet_Ico) pairwise_disjoint_largeDyadicInterval
+    (by simpa [iUnion_largeDyadicInterval] using hIntIci)
+  simpa [iUnion_largeDyadicInterval] using h
+
 /-- Countable additivity of `∫_{(1, ∞)} boseFinitePartLargeKernel` along
 the large dyadic blocks, stated with the blocks written as
 `Ioc (2 ^ n) (2 ^ (n + 1))` rather than `largeDyadicInterval n`; the
@@ -268,16 +300,8 @@ lemma hasSum_integral_largeDyadicInterval :
     HasSum (fun n : ℕ => ∫ x : ℝ in Ioc ((2 : ℝ) ^ n) ((2 : ℝ) ^ (n + 1)),
       boseFinitePartLargeKernel x)
       (∫ x : ℝ in Ioi 1, boseFinitePartLargeKernel x) := by
-  have hIntIci : IntegrableOn boseFinitePartLargeKernel (Ici 1) :=
-    IntegrableOn.congr_set_ae integrableOn_boseFinitePartLargeKernel
-      Ioi_ae_eq_Ici.symm
-  have h := hasSum_integral_iUnion
-    (f := boseFinitePartLargeKernel) (s := largeDyadicInterval)
-    (fun n => measurableSet_Ico) pairwise_disjoint_largeDyadicInterval
-    (by simpa [iUnion_largeDyadicInterval] using hIntIci)
-  have h' := h.congr_fun (fun n => by
+  have h' := hasSum_integral_largeDyadicInterval_Ici.congr_fun (fun n => by
     exact setIntegral_congr_set Ico_ae_eq_Ioc.symm)
-  rw [iUnion_largeDyadicInterval] at h'
   rw [setIntegral_congr_set Ioi_ae_eq_Ici]
   exact h'
 
@@ -632,10 +656,12 @@ theorem negativeLaplacePeriodicMean_eq :
   rw [hpoly]
   ring
 
-/-- Every translated unit interval has the computed correction mean. -/
-theorem intervalIntegral_negativeLaplacePeriodicCorrection_unit (t : ℝ) :
+/-- Every translated unit interval has integral equal to the defining
+periodic mean, independently of its later closed-form evaluation. -/
+theorem intervalIntegral_negativeLaplacePeriodicCorrection_unit_eq_mean
+    (t : ℝ) :
     (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
-      gammaZetaConstant / Real.log 2 - Real.log 2 / 12 := by
+      negativeLaplacePeriodicMean := by
   calc
     (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
         ∫ x : ℝ in (0 : ℝ)..0 + 1, negativeLaplacePeriodicCorrection x :=
@@ -643,6 +669,15 @@ theorem intervalIntegral_negativeLaplacePeriodicCorrection_unit (t : ℝ) :
     _ = negativeLaplacePeriodicMean := by
       simp only [zero_add]
       rfl
+
+/-- Every translated unit interval has the computed correction mean. -/
+theorem intervalIntegral_negativeLaplacePeriodicCorrection_unit (t : ℝ) :
+    (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
+      gammaZetaConstant / Real.log 2 - Real.log 2 / 12 := by
+  calc
+    (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
+        negativeLaplacePeriodicMean :=
+      intervalIntegral_negativeLaplacePeriodicCorrection_unit_eq_mean t
     _ = gammaZetaConstant / Real.log 2 - Real.log 2 / 12 :=
       negativeLaplacePeriodicMean_eq
 

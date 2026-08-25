@@ -12,7 +12,11 @@ majorant, so every derivative of the forward tail may be taken termwise.
 The resulting smoothness of the exact correction and its centered
 normalization is then propagated through the concrete saddle-jet recurrence.
 Thus every periodic jet, and every bounded exponent jet, is smooth,
-one-periodic, and globally bounded.
+one-periodic, and globally bounded.  The termwise forward-tail sequence is
+identified with the ordinary iterated derivatives on `(0, ∞)`, and generic
+lemmas propagate smooth periodicity to every iterated derivative.  Specialized
+corollaries give continuous, one-periodic, globally bounded derivatives of
+all orders for both the exact correction and its centered normalization.
 -/
 
 set_option autoImplicit false
@@ -258,6 +262,27 @@ theorem negativeLaplaceForwardTailDeriv_hasDerivAt
   · exact summable_negativeLaplaceForwardTermDeriv k s hs
   · exact show a < s by dsimp [a]; linarith
 
+/-- On the positive half-line, the termwise `k`th forward-tail series is
+exactly the ordinary `k`th iterated derivative of the forward tail.  The case
+`k = 0` is included. -/
+theorem iteratedDeriv_negativeLaplaceForwardTail_eq
+    (k : ℕ) (s : ℝ) (hs : 0 < s) :
+    iteratedDeriv k negativeLaplaceForwardTail s =
+      negativeLaplaceForwardTailDeriv k s := by
+  induction k generalizing s with
+  | zero =>
+      change negativeLaplaceForwardTail s =
+        negativeLaplaceForwardTailDeriv 0 s
+      exact (negativeLaplaceForwardTailDeriv_zero s).symm
+  | succ k ih =>
+      rw [iteratedDeriv_succ]
+      have heq : iteratedDeriv k negativeLaplaceForwardTail =ᶠ[𝓝 s]
+          negativeLaplaceForwardTailDeriv k := by
+        filter_upwards [isOpen_Ioi.mem_nhds hs] with y hy
+        exact ih y hy
+      exact ((negativeLaplaceForwardTailDeriv_hasDerivAt k s hs).congr_of_eventuallyEq
+        heq).deriv
+
 theorem contDiffOn_negativeLaplaceForwardTailDeriv_nat
     (m k : ℕ) :
     ContDiffOn ℝ m (negativeLaplaceForwardTailDeriv k) (Ioi 0) := by
@@ -357,6 +382,22 @@ lemma contDiff_infty_deriv
   apply ContDiff.deriv'
   simpa using hf
 
+/-- Every iterated derivative of a smooth real function is again smooth. -/
+lemma contDiff_infty_iteratedDeriv
+    {f : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (n : ℕ) :
+    ContDiff ℝ ∞ (iteratedDeriv n f) := by
+  induction n with
+  | zero =>
+      change ContDiff ℝ ∞ f
+      exact hf
+  | succ n ih =>
+      have heq : iteratedDeriv (n + 1) f =
+          deriv (iteratedDeriv n f) := by
+        funext x
+        rw [iteratedDeriv_succ]
+      rw [heq]
+      exact contDiff_infty_deriv ih
+
 lemma periodic_deriv_of_contDiff_infty
     {f : ℝ → ℝ} (hp : Function.Periodic f 1)
     (hf : ContDiff ℝ ∞ f) :
@@ -369,6 +410,81 @@ lemma periodic_deriv_of_contDiff_infty
   have heq : f =ᶠ[𝓝 t] f ∘ (fun u : ℝ => id u + 1) :=
     Eventually.of_forall fun u => (hp u).symm
   simpa using (hshift.congr_of_eventuallyEq heq).unique (hderiv t)
+
+/-- Every iterated derivative of a smooth one-periodic real function is
+one-periodic, including derivative order zero. -/
+lemma periodic_iteratedDeriv_of_contDiff_infty
+    {f : ℝ → ℝ} (hp : Function.Periodic f 1)
+    (hf : ContDiff ℝ ∞ f) (n : ℕ) :
+    Function.Periodic (iteratedDeriv n f) 1 := by
+  induction n with
+  | zero =>
+      change Function.Periodic f 1
+      exact hp
+  | succ n ih =>
+      have heq : iteratedDeriv (n + 1) f =
+          deriv (iteratedDeriv n f) := by
+        funext x
+        rw [iteratedDeriv_succ]
+      rw [heq]
+      exact periodic_deriv_of_contDiff_infty ih
+        (contDiff_infty_iteratedDeriv hf n)
+
+/-- Every iterated derivative of the exact correction is smooth. -/
+theorem contDiff_infty_iteratedDeriv_negativeLaplacePeriodicCorrection
+    (n : ℕ) :
+    ContDiff ℝ ∞
+      (iteratedDeriv n negativeLaplacePeriodicCorrection) :=
+  contDiff_infty_iteratedDeriv
+    contDiff_infty_negativeLaplacePeriodicCorrection n
+
+/-- Every iterated derivative of the exact correction is one-periodic. -/
+theorem negativeLaplacePeriodicCorrection_iteratedDeriv_periodic
+    (n : ℕ) :
+    Function.Periodic
+      (iteratedDeriv n negativeLaplacePeriodicCorrection) 1 :=
+  periodic_iteratedDeriv_of_contDiff_infty
+    negativeLaplacePeriodicCorrection_periodic
+    contDiff_infty_negativeLaplacePeriodicCorrection n
+
+/-- Every iterated derivative of the exact correction is continuous. -/
+theorem continuous_iteratedDeriv_negativeLaplacePeriodicCorrection
+    (n : ℕ) :
+    Continuous (iteratedDeriv n negativeLaplacePeriodicCorrection) :=
+  (contDiff_infty_iteratedDeriv_negativeLaplacePeriodicCorrection n).continuous
+
+/-- Every iterated derivative of the exact correction has globally bounded
+range. -/
+theorem isBounded_range_iteratedDeriv_negativeLaplacePeriodicCorrection
+    (n : ℕ) :
+    Bornology.IsBounded
+      (range (iteratedDeriv n negativeLaplacePeriodicCorrection)) :=
+  (negativeLaplacePeriodicCorrection_iteratedDeriv_periodic n).isBounded_of_continuous
+    one_ne_zero
+    (continuous_iteratedDeriv_negativeLaplacePeriodicCorrection n)
+
+/-- Every iterated derivative of the centered correction is smooth. -/
+theorem contDiff_infty_iteratedDeriv_negativeLaplacePsi (m : ℕ) :
+    ContDiff ℝ ∞ (iteratedDeriv m negativeLaplacePsi) :=
+  contDiff_infty_iteratedDeriv contDiff_infty_negativeLaplacePsi m
+
+/-- Every iterated derivative of the centered correction is one-periodic. -/
+theorem negativeLaplacePsi_iteratedDeriv_periodic (m : ℕ) :
+    Function.Periodic (iteratedDeriv m negativeLaplacePsi) 1 :=
+  periodic_iteratedDeriv_of_contDiff_infty
+    negativeLaplacePsi_periodic contDiff_infty_negativeLaplacePsi m
+
+/-- Every iterated derivative of the centered correction is continuous. -/
+theorem continuous_iteratedDeriv_negativeLaplacePsi (n : ℕ) :
+    Continuous (iteratedDeriv n negativeLaplacePsi) :=
+  (contDiff_infty_iteratedDeriv_negativeLaplacePsi n).continuous
+
+/-- Every iterated derivative of the centered correction has globally
+bounded range. -/
+theorem isBounded_range_iteratedDeriv_negativeLaplacePsi (n : ℕ) :
+    Bornology.IsBounded (range (iteratedDeriv n negativeLaplacePsi)) :=
+  (negativeLaplacePsi_iteratedDeriv_periodic n).isBounded_of_continuous
+    one_ne_zero (continuous_iteratedDeriv_negativeLaplacePsi n)
 
 /-- Every periodic jet in the concrete saddle recurrence is `C∞`. -/
 theorem contDiff_infty_negativeLaplacePeriodicJet (n : ℕ) :

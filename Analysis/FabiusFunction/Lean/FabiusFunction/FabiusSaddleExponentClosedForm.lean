@@ -24,10 +24,11 @@ of `I` recombine into the real coefficients of the expansion, and the jet-free
 tail is what produces the pure rational numbers in them.
 
 Combined with `negativeLaplaceBoundedExponentJet_eq_closedForm`, this makes the
-saddle exponent completely explicit: for every order `m`, the coefficient of
-`epsilon ^ m` is `I ^ m` times a polynomial in the Gaussian variable whose two
-nonzero coefficients are a rational number and a finite rational combination of
-`1 / log 2` and the normalized derivatives `Psi', …, Psi^(m)`.
+saddle exponent completely explicit: for every positive order `m`, the
+coefficient of `epsilon ^ m` is `I ^ m` times a polynomial in the Gaussian
+variable supported in at most two degrees.  Its coefficients are a rational
+number and a finite rational combination of `1 / log 2` and the normalized
+derivatives `Psi', …, Psi^(m)`.
 -/
 
 set_option autoImplicit false
@@ -118,6 +119,24 @@ theorem negativeLaplaceExponentCoefficient_tail_indep (n : ℕ) (t u v : ℝ) :
           (v : ℂ) ^ (n + 1) / (((n + 1).factorial : ℕ) : ℂ) := by
   rw [negativeLaplaceExponentCoefficient_succ_eq n t v,
     negativeLaplaceExponentCoefficient_succ_eq n u v]
+  ring
+
+/-- Polynomial form of tail independence.  Subtracting the exponent
+polynomials at two phase arguments cancels the universal degree-`n+3` tail,
+leaving only the degree-`n+1` monomial carrying the bounded jet difference. -/
+theorem negativeLaplaceExponentPolynomial_tail_indep
+    (n : ℕ) (t u : ℝ) :
+    negativeLaplaceExponentPolynomial (n + 1) t -
+        negativeLaplaceExponentPolynomial (n + 1) u =
+      C (I ^ (n + 1) *
+          ((negativeLaplaceBoundedExponentJet n t : ℂ) -
+            (negativeLaplaceBoundedExponentJet n u : ℂ)) /
+            (((n + 1).factorial : ℕ) : ℂ)) * X ^ (n + 1) := by
+  rw [negativeLaplaceExponentPolynomial_succ_eq n t,
+    negativeLaplaceExponentPolynomial_succ_eq n u]
+  apply Polynomial.funext
+  intro z
+  simp only [eval_sub, eval_add, eval_mul, eval_C, eval_X, eval_pow]
   ring
 
 end

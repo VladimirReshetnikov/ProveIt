@@ -25,7 +25,14 @@ namespace Fabius
 noncomputable def dyadicPeriodicPhaseShift (n : ℕ) : ℝ :=
   Real.log (n : ℝ) / (Real.log 2) ^ 2 / (n : ℝ)
 
-private lemma dyadicLambertRefinedRemainder_nat_isBigO :
+/-- The first phase displacement is normalized to zero at `n = 0`. -/
+@[simp] theorem dyadicPeriodicPhaseShift_zero :
+    dyadicPeriodicPhaseShift 0 = 0 := by
+  simp [dyadicPeriodicPhaseShift]
+
+/-- The refined lower-Lambert remainder remains `O(1/n)` after sampling on
+the natural scales. -/
+theorem dyadicLambertRefinedRemainder_nat_isBigO :
     (fun n : ℕ => dyadicLambertRefinedRemainder (n : ℝ)) =O[atTop]
       (fun n : ℕ => (n : ℝ)⁻¹) := by
   simpa [Function.comp_def, one_div] using
@@ -55,27 +62,33 @@ private lemma inv_sq_isBigO_inv_nat :
     abs_of_nonneg hinv]
   nlinarith [inv_le_one_of_one_le₀ hn1]
 
+/-- The first periodic phase displacement is bounded by `log n / n`. -/
+theorem dyadicPeriodicPhaseShift_isBigO_log_div :
+    dyadicPeriodicPhaseShift =O[atTop]
+      (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ)) := by
+  have h := (isBigO_refl (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ)) atTop)
+    |>.const_mul_left ((Real.log 2) ^ 2)⁻¹
+  apply h.congr'
+  · filter_upwards with n
+    unfold dyadicPeriodicPhaseShift
+    ring
+  · exact Filter.EventuallyEq.rfl
+
 private lemma dyadicPeriodicPhaseShift_mul_refined_isBigO_inv :
     (fun n : ℕ => dyadicPeriodicPhaseShift n *
       dyadicLambertRefinedRemainder (n : ℝ)) =O[atTop]
       (fun n : ℕ => (n : ℝ)⁻¹) := by
-  have hshift : dyadicPeriodicPhaseShift =O[atTop]
-      (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ)) := by
-    have h := (isBigO_refl (fun n : ℕ => Real.log (n : ℝ) / (n : ℝ)) atTop)
-      |>.const_mul_left ((Real.log 2) ^ 2)⁻¹
-    apply h.congr'
-    · filter_upwards with n
-      unfold dyadicPeriodicPhaseShift
-      ring
-    · exact Filter.EventuallyEq.rfl
-  have hraw := hshift.mul dyadicLambertRefinedRemainder_nat_isBigO
+  have hraw := dyadicPeriodicPhaseShift_isBigO_log_div.mul
+    dyadicLambertRefinedRemainder_nat_isBigO
   have htarget := log_pow_div_sq_isBigO_inv_nat 1
   exact hraw.trans <| htarget.congr_left (by
     intro n
     simp only [div_eq_mul_inv]
     ring)
 
-private lemma dyadicLambertRemainder_sq_isBigO_inv_nat :
+/-- The square of the full lower-Lambert phase displacement is `O(1/n)` on
+natural scales. -/
+theorem dyadicLambertRemainder_sq_isBigO_inv_nat :
     (fun n : ℕ => dyadicLambertRemainder (n : ℝ) ^ 2) =O[atTop]
       (fun n : ℕ => (n : ℝ)⁻¹) := by
   have hE2 := dyadicLambertRefinedRemainder_nat_isBigO.pow 2 |>.trans
