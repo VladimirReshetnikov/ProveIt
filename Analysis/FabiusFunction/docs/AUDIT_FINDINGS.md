@@ -31,6 +31,26 @@ A caution on the hypothesis-weakening entries: removing a hypothesis changes a
 theorem's arity, which is API.  Per `COLLABORATION.md`, either fix every call
 site in the same commit or keep the old signature as a compatibility wrapper.
 
+## Status
+
+Entries closed so far, with the commit that closed them.  Marked DONE in place
+below rather than deleted.
+
+| Entry | Commit | Compiled |
+| --- | --- | --- |
+| The triangular identity `(n+1).choose 2 = n.choose 2 + n`, ten private copies (reported independently by five of the eleven auditors) | `1ea3554f4` | `Arithmetic` green, 1053 jobs, exit 0.  The eighteen rewired call sites are downstream and not yet exercised. |
+| `thueMorseSign_block_concat` and the two range block-decomposition lemmas, triplicated across three modules | `affa557d2` | not yet |
+| The four `negativeLaplaceLog*_two_mul` and three `negativeLaplaceVerticalLog*_two_mul` proofs, consolidated into `ScalingRecurrence` | `affa557d2` | `ScalingRecurrence` green, 1984 jobs, exit 0 |
+| The repeated Legendre hypothesis bundle, four copies | `4a1639106` | not yet |
+| Missing module headers on twelve modules, stub headers on five | `4c59369fe` | comment-only |
+| Undocumented public declarations: 862 to 396 and falling | `35d14fe40`, `9827b5485` | comment-only |
+
+Two builds have run, both on a peer's build slot at the SHAs named above, in a
+sparse detached worktree whose `.lake/packages` is a junction to the shared
+Mathlib.  That technique lets one agent validate another's commit without
+either of them merging, and is why these two lines exist at all: this branch
+has started no Lean process.
+
 ## Summary
 
 | Kind | Count |
@@ -945,6 +965,8 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt (F : BoundedFabius)
 
 #### The Pascal step `C(n+2,2) = C(n+1,2) + (n+1)` is re-proved inline in 12 modules while a private lemma for it already exists
 
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
+
 Confidence high.  `DyadicAnalytic.lean:60`, `GlobalExtension.lean:287`, `GlobalExtension.lean:359`, `DyadicClosedForm.lean:58`, `DyadicClosedForm.lean:584`
 
 **Why.** Fourteen verbatim copies of a three-line `Nat.choose` identity, two of them inside a single file of my cluster (GlobalExtension.lean:287 in `iteratedDeriv_extendedFabius` and GlobalExtension.lean:359 in `iteratedDeriv_rvachev`), plus an existing private lemma nobody outside DyadicAnalytic can reach. This is pure arithmetic with no Fabius content and belongs in the exact-arithmetic layer.
@@ -1009,6 +1031,8 @@ Optionally, and separately, shorten the two neighbouring private product lemmas 
 
 #### `thueMorseSign_block_concat` and the two block-decomposition lemmas are verbatim triplicated across three modules
 
+**DONE** in `affa557d2`.  `thueMorseSign_block_concat`, `sum_range_block_decomposition` and `sum_range_block_decomposition_with_remainder` are now public in `DyadicClosedForm.lean` with doc comments; the four copies in `FabiusUniformSpline` and `FabiusQBinomialFormula` are deleted and their call sites rewired.  Promotion and deletion had to be one commit: a private clone of a now-public name makes every reference inside its module ambiguous.  Not yet compiled.
+
 Confidence high.  `DyadicClosedForm.lean:747`, `DyadicClosedForm.lean:774`, `DyadicClosedForm.lean:784`, `FabiusUniformSpline.lean:222`, `FabiusUniformSpline.lean:246`
 
 **Why.** `thueMorseSign (h*2^k+r) = thueMorseSign h * thueMorseSign r` is the multiplicativity of the Thue–Morse sign under binary concatenation — the single structural fact behind every block-translation theorem in the corpus (`fabiusDyadic_block_translate`, `fabiusUniformSpline_block_translate`, the q-binomial prefix formula). Having it as three private copies means three separate inductions to maintain, and it is invisible to any downstream module that needs it. The two ...
@@ -1032,6 +1056,8 @@ Confidence high.  `FabiusComputableSpline.lean:22`, `FabiusComputableSpline.lean
 **Verifier.** Verified against source. Both declarations exist at the cited lines of Analysis/FabiusFunction/Lean/FabiusFunction/FabiusComputableSpline.lean and are byte-identical apart from the name: line 22 `private theorem nat_pow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) := Primrec₂.unpaired'.1 Nat.Primrec.pow` and line 353 the same with the name ...
 
 #### The elementary identity `(n+1).choose 2 = n.choose 2 + n` is privately re-proved in six modules, with two further families of `choose 2` identities duplicated in pairs
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DraftCounterexamples.lean:45`, `FabiusDiscreteLimitComplexShift.lean:201`, `FabiusDiscreteLimitToeplitz.lean:180`, `HalfQBinomial.lean:98`, `ThueMorseApproximation.lean:206`
 
@@ -1068,6 +1094,8 @@ If a subtype-integral form is ever wanted, ...
 ### Cluster: dyadic
 
 #### `(n+2).choose 2 = (n+1).choose 2 + (n+1)` is proved inline fifteen times across nine modules
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DyadicAnalytic.lean:60`, `DyadicClosedForm.lean:45`, `DyadicClosedForm.lean:58`, `DyadicClosedForm.lean:584`, `DyadicCorrectness.lean:113`
 
@@ -1409,6 +1437,8 @@ Two corrections to the finding's prose: the public lemmas are 55 lines ...
 
 #### The triangular identity `(n+1).choose 2 = n.choose 2 + n` is proved from scratch in roughly twenty modules, eight of them as separate private lemmas
 
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
+
 Confidence high.  `EarlyApproximants.lean:242`, `EarlyMeasureBridge.lean:126`, `StepApproximationLimit.lean:539`, `StepApproximationLimit.lean:700`, `MomentPowerSeries.lean:481`
 
 **Why.** Thirteen verified locations (and about twenty in total by grep on `choose 2 = `) prove one arithmetic identity, five of them inside the moments/probability cluster and along a single import chain: `DyadicClosedForm → EarlyApproximants → EarlyMeasureBridge → StepMeasureBridge → StepApproximationLimit`, where it is re-derived at each of the five levels. This is the largest single-fact duplication I found in the corpus.
@@ -1514,6 +1544,8 @@ One knock-on effect the finding did not state: lines 98 and 101 are the only use
 (1) Locations and signatures are quoted accurately. `Paper06487Supplement.lean:59` is `theorem rvachev_pos_of_mem_Ioo (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ∈ Ioo (-1 : ℝ) 1) : 0 < rvachevUp F x`; `Monotonicity.lean:200` is `theorem rvachevUp_pos_of_mem_Ioo` ...
 
 #### `(n + 1).choose 2 = n.choose 2 + n` is declared as a private lemma in three modules and re-derived inline in a dozen more; it is a one-line Mathlib consequence
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DraftCounterexamples.lean:45`, `FabiusDiscreteLimitComplexShift.lean:201`, `FabiusDiscreteLimitToeplitz.lean:180`, `DyadicAnalytic.lean:60`, `DyadicClosedForm.lean:584`
 
@@ -1737,6 +1769,8 @@ Confidence high.  `FabiusBinaryReductionSeries.lean:410`, `Regularity.lean:111`
 **Verifier.** The core of the finding survives every check. Both declarations exist at the cited lines with the quoted signatures: FabiusBinaryReductionSeries.lean:410 has `private lemma fabiusReal_le_two_mul_of_mem_Icc_half (F) (hF) (y : ℝ) (hy : y ∈ Icc 0 (1/2)) : fabiusReal F y ≤ 2 * y` proved over 20 lines via `Convex.image_sub_le_mul_sub_of_deriv_le`, and ...
 
 #### `(n+1).choose 2 = n.choose 2 + n` and its two algebraic restatements are re-proved privately five times in this cluster (about twenty times corpus-wide), although a public lemma in `DyadicClosedForm` already yields it
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `ThueMorseApproximation.lean:206`, `ThueMorseGenerating.lean:135`, `HalfQBinomial.lean:98`, `HalfQBinomial.lean:116`, `ThueMorseExponential.lean:468`
 
