@@ -105,7 +105,9 @@ Corollaries:
 - Purely arithmetic facts (`ℕ`, `ℚ`, `Finset`, no analysis) go in
   `Arithmetic.lean`.
 - Order-theoretic consequences of the differential equation go in
-  `Monotonicity.lean`, not in the paper-index files.
+  `Monotonicity.lean`, not in the paper-index files.  (That module currently
+  exists only on `claude/fabius-strengthen-generalize`; before it lands, these
+  live in `PaperStatements.lean`.)
 
 **But**: applying R3 is exactly the edit class that collides and that triggers
 the full rebuild. See R4.
