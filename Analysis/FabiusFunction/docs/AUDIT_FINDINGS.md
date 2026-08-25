@@ -31,6 +31,79 @@ A caution on the hypothesis-weakening entries: removing a hypothesis changes a
 theorem's arity, which is API.  Per `COLLABORATION.md`, either fix every call
 site in the same commit or keep the old signature as a compatibility wrapper.
 
+## A defect taxonomy for reviewers
+
+Three defect classes turned up repeatedly while this audit and the two
+documentation passes ran.  None of them is caught by the compiler, and the
+first two are not caught by any check that only reads statements.  A reviewer
+who knows to look for them finds them cheaply; one who does not will not find
+them at all.
+
+### 1. False universal
+
+Prose that asserts more than the surrounding development supports, almost
+always about *dependencies* rather than about mathematics.  "Every coefficient
+computation below factors through this" when one does not.  "The denominator in
+every ratio bound here" when it is the denominator of one.  "Used by `X`" when
+`X` re-derives it inline.
+
+This was by far the most common defect, in both documentation waves.  The
+reason it is common is structural: a claim about a statement can be checked
+against the statement on the next line, and a claim about a dependency cannot
+be checked without grepping the corpus, so it is the claim an author is most
+tempted to write from memory.
+
+*Detection.* Grep every "used by", "every", "only", "all" in a doc comment.
+*Prevention.* Write no consumer clause you have not grepped.  A doc comment
+with no dependency claim is fine; one with a false claim is a defect.
+
+An author is not exempt from this.  One entry in this corpus documented
+`fabiusInv_half` as "the only interior value known in closed form", which this
+very corpus refutes: `DyadicAnalytic.fabiusDyadicUnit_cast` evaluates `F`
+exactly at every dyadic rational, and `F(1/4) = 5/72` is the threshold the
+same module's own theorem uses.
+
+### 2. Vacuous specialization
+
+A theorem that is true, compiles, and whose hypothesis almost nothing can
+satisfy.  This is worse than a false theorem, because a false theorem breaks
+something downstream and a vacuous one never will.
+
+The case that produced this entry: a leading-coefficient law stated as a
+difference between two evaluation points `t` and `u` at which the first
+`2j + 1` jets agree.  The jets are one-periodic, so `u = t + 1` satisfies the
+hypothesis and yields `0 = 0`; for `u` not congruent to `t` the hypothesis
+holds only on a measure-zero set.  The generic statement over an arbitrary jet
+sequence was sound throughout — only the specialization to Fabius was
+degenerate, which is what made it hard to see.
+
+*Detection.* For every hypothesis, ask **who can satisfy it**, and produce two
+genuinely different witnesses.  If the only witnesses you can construct make
+both sides of the conclusion equal, the theorem is vacuous at exactly the
+points you care about.  Periodicity, symmetry and reflection hypotheses are the
+usual sources, because they silently supply a trivial witness.
+*Prevention.* Prefer a statement that *exhibits* a dependence — an affine
+decomposition, an explicit formula — over one that asserts it as an equality
+between two points constrained to agree.
+
+### 3. Sharpness and smoothness overclaim
+
+Writing "sharp", "optimal", "exact" or "if and only if" over a one-directional
+bound whose converse the file does not prove; or writing "valid only for" about
+an interval that is merely the one the statement mentions, when the file proves
+no converse and the bound in fact holds outside it.
+
+In this corpus the smoothness variant has a specific trap.  `ContDiff R (top)`
+at type `WithTop ENat` is the *analytic* exponent, and `ContDiff R infinity` is
+`C^infinity`; the two look alike and mean different things.  The corpus's
+central regularity theorem is that the Fabius function is `C^infinity`
+everywhere and analytic exactly off `[0,1]`, so this is the one confusion the
+library exists to prevent, and two doc comments had it backwards.
+
+*Detection.* Every occurrence of sharp / optimal / exact / iff / only, and
+every occurrence of smooth / analytic, checked against the statement it sits
+above.
+
 ## Status
 
 Entries closed so far, with the commit that closed them.  Marked DONE in place
