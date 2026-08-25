@@ -154,9 +154,7 @@ theorem fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all
     have hglobal : globalFabius x = 0 := by
       change extendedFabius fabius x = 0
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
-    simpa [happ, hglobal] using
-      (tendsto_const_nhds :
-        Tendsto (fun _ : ℕ => (0 : ℂ)) atTop (𝓝 0))
+    simp [happ, hglobal]
 
 /-- Gaussian-rational translations. -/
 theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius
@@ -220,9 +218,7 @@ theorem fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all
     have hglobal : globalFabius x = 0 := by
       change extendedFabius fabius x = 0
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
-    simpa [happ, hglobal] using
-      (tendsto_const_nhds :
-        Tendsto (fun _ : ℕ => (0 : ℝ)) atTop (𝓝 0))
+    simp [happ, hglobal]
 
 /-- Rational translations, stated first in the original real form. -/
 theorem fabiusDiscreteLimitApproximationRat_tendsto_globalFabius

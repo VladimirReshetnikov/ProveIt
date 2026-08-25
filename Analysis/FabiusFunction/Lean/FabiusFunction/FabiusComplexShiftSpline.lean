@@ -298,9 +298,7 @@ theorem fabiusComplexShiftSpline_tendsto_globalFabius_all
     have hglobal : globalFabius x = 0 := by
       change extendedFabius fabius x = 0
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
-    simpa [hspline, hglobal] using
-      (tendsto_const_nhds :
-        Tendsto (fun _ : ℕ => (0 : ℂ)) atTop (nhds 0))
+    simp [hspline, hglobal]
 
 /-- Any two fixed complex translations become asymptotically
 indistinguishable. -/

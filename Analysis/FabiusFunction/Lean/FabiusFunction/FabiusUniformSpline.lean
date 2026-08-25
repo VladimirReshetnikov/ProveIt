@@ -1442,9 +1442,7 @@ theorem fabiusUniformSpline_tendsto_globalFabius_all (x : ℝ) :
     have hglobal : globalFabius x = 0 := by
       change extendedFabius fabius x = 0
       exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
-    simpa [hspline, hglobal] using
-      (tendsto_const_nhds :
-        Tendsto (fun _ : ℕ => (0 : ℝ)) atTop (nhds 0))
+    simp [hspline, hglobal]
 
 /-- Every centered finite spline is bounded in absolute value by one on the
 nonnegative axis. -/
