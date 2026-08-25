@@ -127,16 +127,29 @@ a probability law of an infinite weighted sum of independent uniform random vari
 infinite convolution, an infinite product of sinc functions, a Thue--Morse translate sum,
 and a family of exact rational recurrences.
 
-This article develops these descriptions and proves their equivalence.  Particular emphasis
+This article develops these descriptions and proves their equivalence.  The elementary
+theory is carried further than is usual: the exact shape of $F$ and $\Up$, including strict
+unimodality, the unique inflection point, and the fact that $2$ is the \emph{least} Lipschitz
+constant; the sharp uniform derivative bound $2^{\binom{m+1}{2}}$, which is attained; two
+effective flatness estimates with explicit constants; and the exact real-analytic locus of
+each of the three functions, endpoints included.
+
+Particular emphasis
 is placed on two subjects for which the formal development goes substantially beyond the
 usual short accounts.  First, every dyadic value is evaluated by an explicit finite
 Thue--Morse/moment formula, and also by a fast terminating recursion that removes one set bit
-of the numerator at each step.  Second, the small-argument asymptotic is derived by an exact
-negative-Laplace decomposition and a quantitative saddle-point argument.  The correct main
-term contains a genuine nonconstant periodic fluctuation in the lower Lambert coordinate.
-Its Fourier coefficients are explicit Gamma--zeta values.  Omitting that fluctuation, as in
-a frequently reproduced elementary formula, destroys the claimed inverse-logarithmic error
-bound.  The first saddle correction and the full all-orders expansion are also described.
+of the numerator at each step.  The mechanism behind the first of these is a half-base
+$q$-calculus, developed here in full: the Gaussian binomial row at base $1/2$ is the
+leading-coefficient functional for Lagrange interpolation through the geometric nodes
+$-1,-2,\ldots,-2^n$, and the Thue--Morse signs supply a second, independent triangular
+cancellation inside each dyadic block.  Second, the small-argument asymptotic is derived by
+an exact negative-Laplace decomposition and a quantitative saddle-point argument.  The
+correct main term contains a genuine nonconstant periodic fluctuation in the lower Lambert
+coordinate.  Its Fourier coefficients are explicit Gamma--zeta values, and the fluctuation is
+\emph{unique}: no other continuous periodic function completes the expansion.  Omitting it,
+as in a frequently reproduced elementary formula, destroys the claimed inverse-logarithmic
+error bound.  The first saddle correction and the full all-orders expansion are also
+described, together with a numerical check against exact rational values.
 
 The presentation follows the theorem structure of the Lean formalization under
 \repo, while translating the machine-oriented decomposition into conventional mathematical
@@ -7475,7 +7488,25 @@ orders of magnitude,
  \approx(3.2481234772+5.8517589871\,\ii)\times10^{-13},    \label{eq:Psi-second-coeff}
 \end{equation}
 of magnitude $6.6927863679\times10^{-13}$, so the first harmonic already describes $\Psi$ to
-better than one part in a million of its own size.  Thus the visible oscillation is
+better than one part in a million of its own size.
+
+\begin{warning}[A numerical hazard specific to these points]
+Evaluating \eqref{eq:Psi-Fourier} numerically is delicate for a reason that has nothing to do
+with rounding.  Many implementations of the zeta function compute it from the alternating
+Dirichlet series through
+\begin{equation}
+ \zeta(s)=\frac1{1-2^{1-s}}\sum_{m\ge1}\frac{(-1)^{m-1}}{m^{s}}.  \label{eq:eta-series}
+\end{equation}
+At the points that \eqref{eq:Psi-Fourier} needs, $s=1-\chi_k$, one has
+$2^{1-s}=2^{\chi_k}=\e^{\chi_kL}=\e^{2\pi\ii k}=1$ exactly, so the prefactor in
+\eqref{eq:eta-series} has a pole precisely there.  The singularity is removable in $\zeta$
+but not in that formula, and a routine built on it returns an overflow or, worse, a plausible
+wrong number.  This is not a rounding story; it is a defect of the algorithm at exactly the
+arguments this problem cares about, and it explains how two independently published decimal
+values for $\widehat\Psi(1)$ can agree with each other to eight figures and both be wrong.
+Use an Euler--Maclaurin or Hurwitz evaluation instead, and check the answer at two working
+precisions.
+\end{warning}  Thus the visible oscillation is
 on the scale of a few parts in a million in the logarithm.  Tiny is not the same as zero: its
 nonvanishing changes the logical status of an asymptotic equivalent.
 
@@ -8358,6 +8389,33 @@ differences between the fourth and fifth columns are $0.03675$, $0.02073$, $0.01
 by $\lambda_n$ they are $0.507$, $0.510$, $0.515$, confirming the remainder
 $\bigO(\lambda^{-2})$ of \eqref{eq:first-corrected-asymptotic} and showing that the next
 coefficient $A_2$ is of size about one half.
+
+\begin{warning}
+That last observation is a trap, and it is worth spelling out because the trap is generic to
+this whole expansion.  Extending the same computation along $n=10,20,40,80,160,320$ gives
+scaled second differences $0.5066$, $0.5103$, $0.5151$, $0.5179$, $0.5193$, $0.5199$, which
+look like a sequence converging to a constant near $0.520$.  They are not.  The theorem of
+\Cref{sec:full-asymptotic} says every coefficient $A_j$ is one-periodic in $\lambda$, and
+$A_2$ is no exception.  Doubling $n$ increases $\log_2\lambda$ by roughly one, so
+$\lambda_n\bmod 1$ returns to nearly the same place; a geometric sample of $n$ therefore
+holds the phase almost fixed and displays only the residual drift in $\lambda$.  Sampling
+$n$ densely instead separates the two effects.  Over $300\le n\le400$, where $\lambda$ moves
+by only a third, the quantity
+$\lambda^2\bigl(\log F-\mathcal M-A_1(\lambda)/\lambda\bigr)$ sweeps from $0.52105$ down to
+$0.51810$ and back up, tracking $\lambda\bmod1$, a spread of $2.95\times10^{-3}$.  Held at
+one phase instead and varied in magnitude, it moves by only $3.7\times10^{-4}$ from
+$n=173$ to $n=352$, consistent with an $\bigO(\lambda^{-1})$ correction.  So $A_2$ is a
+genuinely nonconstant periodic function of mean about $0.5199$ and peak-to-peak amplitude
+about $3\times10^{-3}$.
+
+The amplitude is not surprising once one looks at where it must come from.  The periodic part
+of $A_1$ is of size $8.7\times10^{-5}$ because it involves $\Psi''$, which multiplies the
+$k$th Fourier mode by $(2\pi k)^{2}$.  A coefficient one order further carries derivatives of
+$\Psi$ two orders higher, and $(2\pi)^{4}\cdot2|\widehat\Psi(1)|\approx3.3\times10^{-3}$.
+The smallness of $\widehat\Psi(1)$ is progressively cancelled by differentiation, so the
+oscillation of $A_j$ grows with $j$ even though $\Psi$ itself is minute.  Any numerical
+extraction of a later coefficient must therefore fix the phase first.
+\end{warning}
 
 Third, and for honesty about what the table can and cannot show at these sizes: the periodic
 part of $A_1$ is minute.  The constant part $1/24+1/(2L)=0.7630141871$ of \eqref{eq:A1} is
