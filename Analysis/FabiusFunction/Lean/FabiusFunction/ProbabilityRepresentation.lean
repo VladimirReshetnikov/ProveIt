@@ -15,6 +15,10 @@ support: Definition and properties*, arXiv:1702.05442.
 The paper indexes the coordinates by positive integers and writes
 `∑ k ≥ 1, x k / 2^k`.  We use Lean's natural-number indexing, so the same
 random variable is `∑' n, x n / 2 / 2^n`.
+
+The construction records both pointwise and measure-theoretic support on
+`[0,1]`, as well as the self-similarity and reflection identities used to
+identify its continuous CDF with the bounded Fabius function.
 -/
 
 open Filter Set MeasureTheory ProbabilityTheory Topology
@@ -165,6 +169,13 @@ lemma weightedSumDistribution_Icc :
   have hpreimage : weightedCoordinateSum ⁻¹' Icc (0 : ℝ) 1 = Set.univ :=
     Set.eq_univ_of_forall weightedCoordinateSum_mem_Icc
   rw [hpreimage, measure_univ]
+
+/-- The weighted-sum law assigns no mass outside its natural support. -/
+@[simp]
+lemma weightedSumDistribution_compl_Icc :
+    weightedSumDistribution ((Icc (0 : ℝ) 1)ᶜ) = 0 := by
+  rw [measure_compl measurableSet_Icc (by simp),
+    weightedSumDistribution_Icc, measure_univ, tsub_self]
 
 lemma uniformProduct_map_head_tailSum :
     uniformProduct.map

@@ -15,7 +15,9 @@ import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 This file packages Theorems 4, 6, and 7 of arXiv:1702.05442 in the
 notation used by this development.  It also records the finite Taylor
 expansion at dyadic points and the paper's unnumbered corollary that
-Rvachev's compactly supported function is nowhere real analytic.
+Rvachev's compactly supported function is nowhere real analytic.  The exact
+even and odd integer values of the signed global extension make the dyadic
+derivative truncation transparent.
 -/
 
 open scoped BigOperators ContDiff Topology
@@ -194,22 +196,26 @@ theorem paperTheta_even_nat_eq_zero
     paperTheta F (2 * (b : ℝ)) = 0 := by
   change extendedFabius F (2 * (b : ℝ)) = 0
   rw [extendedFabius_eq_single_translate F hF b le_rfl (by norm_num)]
-  have hzero : rvachevUp F (-1) = 0 := by
-    rw [rvachevUp, if_pos (by norm_num)]
-    simpa using hF.zero_of_nonpos 0 le_rfl
-  rw [show 2 * (b : ℝ) - 2 * (b : ℝ) - 1 = -1 by ring, hzero, mul_zero]
+  rw [show 2 * (b : ℝ) - 2 * (b : ℝ) - 1 = -1 by ring,
+    rvachevUp_eq_zero_of_le_neg_one F hF le_rfl, mul_zero]
+
+/-- Exact value of the signed global extension at every odd nonnegative
+integer. -/
+theorem paperTheta_odd_nat_eq
+    (F : BoundedFabius) (hF : IsFabius F) (b : ℕ) :
+    paperTheta F (2 * (b : ℝ) + 1) = (-1 : ℝ) ^ binaryWeight b := by
+  change extendedFabius F (2 * (b : ℝ) + 1) = _
+  rw [extendedFabius_eq_single_translate F hF b (by norm_num) (by norm_num),
+    show 2 * (b : ℝ) + 1 - 2 * (b : ℝ) - 1 = 0 by ring,
+    rvachevUp_zero F hF, mul_one]
 
 /-- At every odd nonnegative integer, `theta` is `1` or `-1`; in
 particular it is nonzero. -/
 theorem paperTheta_odd_nat_ne_zero
     (F : BoundedFabius) (hF : IsFabius F) (b : ℕ) :
     paperTheta F (2 * (b : ℝ) + 1) ≠ 0 := by
-  change extendedFabius F (2 * (b : ℝ) + 1) ≠ 0
-  rw [extendedFabius_eq_single_translate F hF b (by norm_num) (by norm_num)]
-  rw [show 2 * (b : ℝ) + 1 - 2 * (b : ℝ) - 1 = 0 by ring]
-  rw [rvachevUp, if_pos le_rfl]
-  simp only [zero_add, hF.one_of_one_le 1 le_rfl]
-  exact mul_ne_zero (pow_ne_zero _ (by norm_num)) one_ne_zero
+  rw [paperTheta_odd_nat_eq F hF b]
+  exact pow_ne_zero _ (by norm_num)
 
 /-- A centered level-`n` dyadic point.  The range
 `0 ≤ a ≤ 2^(n+1)` parametrizes `[-1,1]`. -/
