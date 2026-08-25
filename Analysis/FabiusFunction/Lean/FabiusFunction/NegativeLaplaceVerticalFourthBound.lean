@@ -344,7 +344,7 @@ private theorem negativeLaplaceVerticalCurve_two_mul
   unfold negativeLaplaceVerticalCurve negativeLaplaceComplexFactor
   convert h using 1
   push_cast
-  ring
+  ring_nf
 
 private theorem negativeLaplaceVerticalFactor_hasDerivAt
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
