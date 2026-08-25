@@ -13,8 +13,9 @@ provides:
 * its survival function on the full nonnegative ray;
 * a general compact-probability Fubini identity for expectations of
   differentiable functions, expressed through the survival function;
-* a reflection principle and exact degree-zero normalizations for arbitrary
-  probability laws supported on the unit interval; and
+* an expectation-level reflection principle, centered Laplace functional
+  equations, and exact degree-zero normalizations for arbitrary probability
+  laws supported on the unit interval; and
 * the resulting identifications with `fabiusLaplaceMoment` and
   `halfMoment`, including the reflection and degree-zero normalizations.
 
@@ -163,23 +164,34 @@ theorem integral_unit_eq_zero_add_integral_deriv_mul_survival
   integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival
     μ (by norm_num) hμ g g' hg hg' hderiv
 
+/-- A reflection-invariant measure gives the same integral after replacing
+`x` by `1 - x`.  This expectation-level statement is independent of support
+and probability normalization; the endpoint- and Laplace-moment identities
+below are its unit-interval specializations. -/
+theorem integral_eq_integral_one_sub_of_reflection
+    (μ : Measure ℝ) (hreflect : μ.map (fun x : ℝ => 1 - x) = μ)
+    (g : ℝ → ℝ) (hg : Continuous g) :
+    (∫ x : ℝ, g x ∂μ) = ∫ x : ℝ, g (1 - x) ∂μ := by
+  let r : ℝ → ℝ := fun x => 1 - x
+  have hr : Measurable r := by
+    dsimp [r]
+    fun_prop
+  calc
+    (∫ x : ℝ, g x ∂μ) = ∫ x : ℝ, g x ∂μ.map r := by rw [hreflect]
+    _ = ∫ x : ℝ, g (1 - x) ∂μ := by
+      simpa only [r] using
+        integral_map hr.aemeasurable hg.aestronglyMeasurable
+
 /-- A measure supported on `[0,1]` and invariant under reflection about
 `1/2` has equal endpoint and ordinary moments. -/
 theorem unitEndpointMoment_eq_unitLaplaceMoment_zero_of_reflection
     (μ : Measure ℝ) (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1)
     (hreflect : μ.map (fun x : ℝ => 1 - x) = μ) (n : ℕ) :
     unitEndpointMoment μ n = unitLaplaceMoment μ 0 n := by
-  let r : ℝ → ℝ := fun x => 1 - x
-  have hr : Measurable r := by
-    dsimp [r]
-    fun_prop
-  have hmap :
-      (∫ y : ℝ, y ^ n ∂μ.map r) = ∫ x : ℝ, (1 - x) ^ n ∂μ := by
-    simpa only [r, Pi.pow_apply, id_eq] using integral_map hr.aemeasurable
-      (continuous_id.pow n).aestronglyMeasurable
   have hreflect' :
       (∫ x : ℝ, (1 - x) ^ n ∂μ) = ∫ x : ℝ, x ^ n ∂μ := by
-    rw [← hmap, hreflect]
+    exact (integral_eq_integral_one_sub_of_reflection μ hreflect
+      (fun x : ℝ => x ^ n) (continuous_id.pow n)).symm
   have hrestrict : μ.restrict (Icc (0 : ℝ) 1) = μ :=
     Measure.restrict_eq_self_of_ae_mem hμ
   calc
@@ -191,6 +203,52 @@ theorem unitEndpointMoment_eq_unitLaplaceMoment_zero_of_reflection
       unfold unitLaplaceMoment
       rw [hrestrict]
       simp
+
+/-- The zeroth unit-interval Laplace transform of a reflection-invariant law
+satisfies `L(s) = exp(-s) * L(-s)`.  Equivalently, multiplying by
+`exp(s / 2)` centers the transform and makes it even. -/
+theorem unitLaplaceMoment_zero_reflection
+    (μ : Measure ℝ) (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1)
+    (hreflect : μ.map (fun x : ℝ => 1 - x) = μ) (s : ℝ) :
+    unitLaplaceMoment μ s 0 =
+      Real.exp (-s) * unitLaplaceMoment μ (-s) 0 := by
+  have hrestrict : μ.restrict (Icc (0 : ℝ) 1) = μ :=
+    Measure.restrict_eq_self_of_ae_mem hμ
+  have hreflect' := integral_eq_integral_one_sub_of_reflection μ hreflect
+    (fun x : ℝ => Real.exp (-s * x)) (by fun_prop)
+  unfold unitLaplaceMoment
+  rw [hrestrict]
+  simp only [pow_zero, mul_one]
+  calc
+    (∫ x : ℝ, Real.exp (-s * x) ∂μ) =
+        ∫ x : ℝ, Real.exp (-s * (1 - x)) ∂μ := hreflect'
+    _ = Real.exp (-s) * ∫ x : ℝ, Real.exp (-(-s) * x) ∂μ := by
+      rw [← MeasureTheory.integral_const_mul]
+      apply integral_congr_ae
+      filter_upwards with x
+      rw [← Real.exp_add]
+      congr 1
+      ring
+
+/-- Centered form of `unitLaplaceMoment_zero_reflection`: the function
+`s ↦ exp(s / 2) * L(s)` is even for every reflection-invariant law
+supported on the unit interval. -/
+theorem unitLaplaceMoment_zero_centered_even
+    (μ : Measure ℝ) (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1)
+    (hreflect : μ.map (fun x : ℝ => 1 - x) = μ) (s : ℝ) :
+    Real.exp (s / 2) * unitLaplaceMoment μ s 0 =
+      Real.exp (-s / 2) * unitLaplaceMoment μ (-s) 0 := by
+  rw [unitLaplaceMoment_zero_reflection μ hμ hreflect s]
+  calc
+    Real.exp (s / 2) *
+          (Real.exp (-s) * unitLaplaceMoment μ (-s) 0) =
+        (Real.exp (s / 2) * Real.exp (-s)) *
+          unitLaplaceMoment μ (-s) 0 := by ring
+    _ = Real.exp (-s / 2) * unitLaplaceMoment μ (-s) 0 := by
+      congr 1
+      rw [← Real.exp_add]
+      congr 1
+      ring
 
 /-- The zero-tilt zeroth moment of a unit-interval probability law is one. -/
 theorem unitLaplaceMoment_zero_zero_of_ae_mem_Icc
@@ -411,6 +469,34 @@ theorem unitEndpointMoment_weightedSumDistribution_eq_halfMoment
       unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment F hF n
 
 end ProbabilityRepresentation
+
+/-- Reflection symmetry of the Fabius law gives the exact functional equation
+`M₀(s) = exp(-s) M₀(-s)` for its bilateral zeroth Laplace moment. -/
+theorem fabiusLaplaceMoment_zero_reflection
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
+    fabiusLaplaceMoment F 0 s =
+      Real.exp (-s) * fabiusLaplaceMoment F 0 (-s) := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using
+    unitLaplaceMoment_zero_reflection
+      ProbabilityRepresentation.weightedSumDistribution
+      ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc
+      ProbabilityRepresentation.weightedSumDistribution_reflection s
+
+/-- After centering at the mean `1/2`, the zeroth Fabius Laplace moment is an
+even function of the tilt. -/
+theorem fabiusLaplaceMoment_zero_centered_even
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
+    Real.exp (s / 2) * fabiusLaplaceMoment F 0 s =
+      Real.exp (-s / 2) * fabiusLaplaceMoment F 0 (-s) := by
+  simpa only [
+    ProbabilityRepresentation.unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
+      F hF] using
+    unitLaplaceMoment_zero_centered_even
+      ProbabilityRepresentation.weightedSumDistribution
+      ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc
+      ProbabilityRepresentation.weightedSumDistribution_reflection s
 
 /-- Every real tilted Fabius moment is nonnegative. -/
 lemma fabiusLaplaceMoment_nonneg

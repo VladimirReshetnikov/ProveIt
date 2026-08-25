@@ -43,12 +43,12 @@ former document. The inputs consolidated on 25 August 2026 were:
 | `Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.tex` | `81a0a911ac7ab28e12c6b87ccaf76ffccaf32e48f873abff18fb7a2d01bcf3e5` |
 | `Fabius_Dyadic_Asymptotic_Bridge/Fabius_Dyadic_Asymptotic_Bridge.tex` | `c5ad7c5298d958ab63f459a3e246c2293d3020525223bc05ef2d0e1edab58f10` |
 | `Fabius_Dyadic_Formulae_to_Asymptotics/Fabius_Dyadic_Formulae_to_Asymptotics.tex` | `6e98efd3afc402159a7f080e8604c951d5bc51be4a73383da67c1241d46d54ca` |
-| `Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex` | `05002480d94d3136368ea491d723378221ced6e15955e0ebc69556561af75b55` |
-| `Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex` | `d05a201b92ed9031a5b76819cffd68e2cbce5d824839f07bc64a6ad674f9ee0f` |
+| `Fabius_Integration_Research_Frontiers/Fabius_Integration_Research_Frontiers.tex` | `21222ae5a8c64cf556dac562fd66943ae0b6ed881408e23e37edfa9113bdecbd` |
+| `Fabius_Inverse_and_Saddle_Research_Frontiers/Fabius_Inverse_and_Saddle_Research_Frontiers.tex` | `f9d8605761aaaa1b2c2af83e3c5c55dcd6acfc847402163458b03b68c7b35ff8` |
 | `Fabius_Thue_Morse_Convergence_Rate/Fabius_Thue_Morse_Convergence_Rate.tex` | `577c5f3426def68a774fedf3fce61552d32200c8da526ace44178f2a8995a6d3` |
 | `Fabius_Thue_Morse_Convergence_Rate-2/Fabius_Thue_Morse_Convergence_Rates.tex` | `384d69b461cb94af33f1c080703e269ea77104405d1940413f1944172b3312c0` |
 | `Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.tex` | `eadcb4b414ac93723a91acbd5062d44340f78134a2cecbc18f7d7ba67eb2c9be` |
-| `Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex` | `ef52fd2df35a140ff5c26d7a4c32e0618fce8de94f5eff301dc41ecfc1e66f16` |
+| `Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex` | `fad16072df30d9e6eb5df03da57dd217769180730581f1dfd19fa5be0d16b262` |
 | `Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` | `85f51a20fc7b6bdf3b1d049ec4506f508aee3c4cd70554e6a68cbcc30977cb0b` |
 
 Overlapping dossiers are retained when they provide independent derivations,
@@ -70,4 +70,7 @@ work a temporary subdirectory may act as an inbox, but it should be merged,
 audited, and deleted promptly.
 
 Build the document with exactly three `pdflatex` passes and commit the PDF with
-the source. Do not commit auxiliary LaTeX files.
+the source. Before every push that sends a changed frontier TeX source to
+`origin/main`, the matching rendered PDF must already be rebuilt and committed;
+never push a TeX/PDF mismatch to the main branch. Do not commit auxiliary
+LaTeX files.

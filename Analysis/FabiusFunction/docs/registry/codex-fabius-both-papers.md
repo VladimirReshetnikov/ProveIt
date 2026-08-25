@@ -5,27 +5,33 @@ This file implements the per-branch registry fallback in
 
 ```text
 SYNC Fabius
-worktree/task: /root — inverse curvature strengthening
+worktree/task: /root — generic unit-Laplace moment bounds
 branch/base: codex/fabius-both-papers synchronized with origin/main at
-  2b9dfd2182fff8032959407245161af5f199d1a0
-writing: none — workstream closed
-reading: Convexity.lean, Differential.lean, Monotonicity.lean,
-  InverseNotElementary.lean
-expected API: exact reciprocal-cubic second derivative and strict
-  concavity/convexity on the two closed halves of the unit interval
-completed: merged origin/main through 2b9dfd218; combined its exact global
-  smoothness and all-order endpoint-steepness APIs with the reciprocal-cubic
-  and closed-half curvature family; retained the exact-Lean primary exposition
-  and synchronized its rebuilt PDF
-validated: focused Lake module build (2832 jobs), full facade build (4007
-  jobs), facade-only no-sorry/axiom audit, independent source and document
-  reviews, and three-pass rebuilt/visually inspected PDFs
-next: none — merge workstream complete
-lease: released 2026-08-25T13:23:26-07:00
+  1b2d7278785ad6ed92e856a80c19c2a3f6e48883
+writing: none — generic unit-Laplace tranche integrated
+reading: ProbabilityLaplaceMoments.lean, EndpointLaplaceComparison.lean
+expected API: measure-generic midpoint log-convexity and tilt-subtraction
+  factorial bounds for `unitLaplaceMoment`, plus bounded-Fabius corollaries;
+  existing three-quarter canonical APIs become thin compatibility wrappers
+completed: added the compactly-finite generic module, retained the established
+  finite-measure and Fabius signatures as compatibility wrappers, removed the
+  four private or inline power-times-exponential copies, registered the public
+  module, and updated focused-import and audit bookkeeping
+validated: direct elaboration of the new module; focused merged-source builds
+  for `LaplaceMomentBounds`, `NegativeLaplaceDerivativeBounds`,
+  `FabiusLambertDerivativeBounds`, `LaplacePeriodicSecondOrder`, and
+  `NegativeLaplaceVerticalFourthBound`; 4008-job facade builds after both
+  successive `origin/main` merges;
+  facade-only `assert_no_sorry`, public-signature, and exact standard-axiom
+  audit; independent mathematics, API, merge-resolution, import-DAG, and
+  documentation review; three-pass rebuild of the 80-page primary PDF with no
+  unresolved references; both index and worktree `git diff --check`
+next: commit the rebuilt primary PDF and synchronized registry, then push both
+  main and the feature branch by fast-forward
+lease: released 2026-08-25T14:24:20-07:00
 git owner / build owner: /root / /root
-risks/questions: preserve endpoint claims—the inverse calculus is interior,
-  while the closed-half shape theorems use continuity and differentiate only
-  on interval interiors
+risks/questions: none — all six finite-measure compatibility names and both
+  older Fabius three-quarter APIs retain their exact signatures
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the

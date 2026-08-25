@@ -8,7 +8,10 @@ import FabiusFunction.GlobalExtension
 The global evaluator reduces a positive input modulo a length-two block,
 folds the residue into the unit interval, and applies the appropriate
 Thue–Morse sign.  Local finiteness of `extendedFabius` shows that this is
-exactly the one translate which contributes to its defining series.
+exactly the one translate which contributes to its defining series.  As a
+consequence, the natural-numerator closed formula is independent of the
+chosen dyadic presentation; convenient one-step and iterated refinement
+forms are recorded below.
 -/
 
 open scoped BigOperators ContDiff Interval
@@ -193,6 +196,35 @@ theorem fabiusDyadic_eq_extendedFabiusDyadicValue_nat
     simpa only [core, scale, period] using
       fabiusDyadic_first_block_eq_fold n residue
         (by simpa only [← hperiod] using hresidueLt)
+
+/-! ## Representation invariance -/
+
+/-- Refining the natural dyadic grid once leaves the closed formula
+unchanged.  This specializes the kernel-level refinement theorem to the
+proved Fabius kernel law. -/
+theorem fabiusDyadic_refine (n m : ℕ) :
+    fabiusDyadic (n + 1) (2 * m) = fabiusDyadic n m :=
+  fabiusDyadic_refine_of_kernel dyadicKernel_has_refinement n m
+
+/-- Refining the natural dyadic grid by `k` binary places leaves the closed
+formula unchanged. -/
+theorem fabiusDyadic_refine_pow (n k m : ℕ) :
+    fabiusDyadic (n + k) (2 ^ k * m) = fabiusDyadic n m :=
+  fabiusDyadic_refine_pow_of_kernel dyadicKernel_has_refinement n k m
+
+/-- The natural-numerator closed formula depends only on the represented
+rational number, even when both numerator and denominator exponent change. -/
+theorem fabiusDyadic_eq_of_rat_eq
+    (n₁ n₂ m₁ m₂ : ℕ)
+    (h : (m₁ : ℚ) / (2 : ℚ) ^ n₁ =
+      (m₂ : ℚ) / (2 : ℚ) ^ n₂) :
+    fabiusDyadic n₁ m₁ = fabiusDyadic n₂ m₂ := by
+  rw [fabiusDyadic_eq_extendedFabiusDyadicValue_nat n₁ m₁,
+    fabiusDyadic_eq_extendedFabiusDyadicValue_nat n₂ m₂]
+  apply extendedFabiusDyadicValue_eq_of_rat_eq
+    n₁ n₂ (m₁ : ℤ) (m₂ : ℤ)
+  norm_num only [Int.cast_natCast]
+  exact h
 
 /-- The total signed-numerator evaluator computes the signed global extension. -/
 theorem extendedFabiusDyadicValue_cast (F : BoundedFabius)

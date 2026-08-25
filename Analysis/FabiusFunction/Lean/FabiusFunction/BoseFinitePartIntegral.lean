@@ -17,7 +17,9 @@ The definitions `boseFinitePartSmallKernel` and
 `boseFinitePartLargeKernel` are also the kernel interface used by the later
 periodic-mean and Fourier-coefficient calculations. Their integrability is
 recorded for arbitrary cutoffs, together with the exact logarithmic correction
-incurred when the cutoff moves.
+incurred when the cutoff moves.  In particular, the cutoff-indexed finite part
+defined below is independent of every positive choice of split point and is
+always equal to `gammaZetaConstant`.
 -/
 
 set_option autoImplicit false
@@ -38,6 +40,19 @@ noncomputable def boseFinitePartSmallKernel (x : ℝ) : ℝ :=
 /-- The integrable large-`x` kernel `log (1 - exp (-x)) / x`. -/
 noncomputable def boseFinitePartLargeKernel (x : ℝ) : ℝ :=
   boseLogKernel x / x
+
+/-- The uncorrected split integral at the cutoff `c`.  Changing `c` moves a
+compact interval from the large kernel to the small kernel, so this quantity
+itself changes by an explicit logarithmic square. -/
+noncomputable def boseFinitePartSplitIntegral (c : ℝ) : ℝ :=
+  (∫ x : ℝ in Ioc 0 c, boseFinitePartSmallKernel x) +
+    ∫ x : ℝ in Ioi c, boseFinitePartLargeKernel x
+
+/-- The cutoff-normalized finite part of the logarithmic Bose kernel.  The
+added `log(c)² / 2` is exactly the correction that makes this independent of
+the positive cutoff `c`. -/
+noncomputable def boseFinitePartIntegralAtCutoff (c : ℝ) : ℝ :=
+  boseFinitePartSplitIntegral c + (Real.log c) ^ 2 / 2
 
 /-- The logarithmic Bose kernel is continuous on the positive half-line. -/
 lemma continuousOn_boseLogKernel :
@@ -520,6 +535,79 @@ lemma integral_boseFinitePartLargeKernel_sub_small_Ioc
     _ = (Real.log b) ^ 2 / 2 - (Real.log a) ^ 2 / 2 :=
       integral_log_div_Ioc a b ha hab
 
+/-- Splitting the small-kernel integral at a positive intermediate cutoff. -/
+lemma integral_boseFinitePartSmallKernel_Ioc_split
+    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    (∫ x : ℝ in Ioc 0 b, boseFinitePartSmallKernel x) =
+      (∫ x : ℝ in Ioc 0 a, boseFinitePartSmallKernel x) +
+        ∫ x : ℝ in Ioc a b, boseFinitePartSmallKernel x := by
+  have h0a := integrableOn_boseFinitePartSmallKernel_Ioc a
+  have hab' : IntegrableOn boseFinitePartSmallKernel (Ioc a b) :=
+    (integrableOn_boseFinitePartSmallKernel_Ioc b).mono_set (fun x hx =>
+      ⟨ha.trans hx.1, hx.2⟩)
+  have hsplit := setIntegral_union
+    (Ioc_disjoint_Ioc_of_le (a := (0 : ℝ)) (b := a) (c := a) (d := b) le_rfl)
+    measurableSet_Ioc h0a hab'
+  rwa [Ioc_union_Ioc_eq_Ioc ha.le hab] at hsplit
+
+/-- Splitting the large-kernel tail at a later positive cutoff. -/
+lemma integral_boseFinitePartLargeKernel_Ioi_split
+    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    (∫ x : ℝ in Ioi a, boseFinitePartLargeKernel x) =
+      (∫ x : ℝ in Ioc a b, boseFinitePartLargeKernel x) +
+        ∫ x : ℝ in Ioi b, boseFinitePartLargeKernel x := by
+  have ha' := integrableOn_boseFinitePartLargeKernel_Ioi_of_pos a ha
+  have hab' : IntegrableOn boseFinitePartLargeKernel (Ioc a b) :=
+    ha'.mono_set Ioc_subset_Ioi_self
+  have hb' := integrableOn_boseFinitePartLargeKernel_Ioi_of_pos b
+    (ha.trans_le hab)
+  have hsplit := setIntegral_union
+    (Ioc_disjoint_Ioi_same (a := a) (b := b))
+    measurableSet_Ioi hab' hb'
+  rwa [Ioc_union_Ioi_eq_Ioi hab] at hsplit
+
+/-- Exact change in the uncorrected split integral when a positive cutoff is
+moved to the right. -/
+theorem boseFinitePartSplitIntegral_change_of_le
+    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    boseFinitePartSplitIntegral b - boseFinitePartSplitIntegral a =
+      (Real.log a) ^ 2 / 2 - (Real.log b) ^ 2 / 2 := by
+  have hsmall := integral_boseFinitePartSmallKernel_Ioc_split a b ha hab
+  have hlarge := integral_boseFinitePartLargeKernel_Ioi_split a b ha hab
+  have hsmallab : IntegrableOn boseFinitePartSmallKernel (Ioc a b) :=
+    (integrableOn_boseFinitePartSmallKernel_Ioc b).mono_set (fun x hx =>
+      ⟨ha.trans hx.1, hx.2⟩)
+  have hlargeab : IntegrableOn boseFinitePartLargeKernel (Ioc a b) :=
+    (integrableOn_boseFinitePartLargeKernel_Ioi_of_pos a ha).mono_set
+      Ioc_subset_Ioi_self
+  have htransition :=
+    integral_boseFinitePartLargeKernel_sub_small_Ioc a b ha hab
+  rw [integral_sub hlargeab hsmallab] at htransition
+  unfold boseFinitePartSplitIntegral
+  rw [hsmall, hlarge]
+  linarith
+
+/-- Exact change in the uncorrected split integral between any two positive
+cutoffs, with no ordering hypothesis. -/
+theorem boseFinitePartSplitIntegral_change
+    (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
+    boseFinitePartSplitIntegral b - boseFinitePartSplitIntegral a =
+      (Real.log a) ^ 2 / 2 - (Real.log b) ^ 2 / 2 := by
+  rcases le_total a b with hab | hba
+  · exact boseFinitePartSplitIntegral_change_of_le a b ha hab
+  · have h := boseFinitePartSplitIntegral_change_of_le b a hb hba
+    linarith
+
+/-- The normalized logarithmic Bose finite part is independent of the choice
+of positive cutoff. -/
+theorem boseFinitePartIntegralAtCutoff_eq
+    (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
+    boseFinitePartIntegralAtCutoff a =
+      boseFinitePartIntegralAtCutoff b := by
+  have h := boseFinitePartSplitIntegral_change a b ha hb
+  unfold boseFinitePartIntegralAtCutoff
+  linarith
+
 /-- Weighted form of the small-scale Bose decomposition used to split its
 Mellin integral at one. -/
 lemma small_weighted_bose_decomposition (a x : ℝ) (hx : 0 < x) :
@@ -623,5 +711,40 @@ theorem boseFinitePartIntegral_eq_gammaZetaConstant :
   have hJ' : Tendsto J (𝓝[>] 0) (𝓝 gammaZetaConstant) :=
     tendsto_realGamma_mul_zeta_finitePart.congr' heq
   exact tendsto_nhds_unique hJ hJ'
+
+/-- Every positive cutoff gives the same finite part, namely the
+Euler--Stieltjes constant `gammaZetaConstant`. -/
+theorem boseFinitePartIntegralAtCutoff_eq_gammaZetaConstant
+    (c : ℝ) (hc : 0 < c) :
+    boseFinitePartIntegralAtCutoff c = gammaZetaConstant := by
+  calc
+    boseFinitePartIntegralAtCutoff c =
+        boseFinitePartIntegralAtCutoff 1 :=
+      boseFinitePartIntegralAtCutoff_eq c 1 hc (by norm_num)
+    _ = (∫ x : ℝ in Ioc 0 1, boseFinitePartSmallKernel x) +
+        ∫ x : ℝ in Ioi 1, boseFinitePartLargeKernel x := by
+      simp [boseFinitePartIntegralAtCutoff, boseFinitePartSplitIntegral]
+    _ = gammaZetaConstant := boseFinitePartIntegral_eq_gammaZetaConstant
+
+/-- The raw split integral at a positive cutoff `c` differs from
+`gammaZetaConstant` by exactly `-log(c)² / 2`. -/
+theorem boseFinitePartSplitIntegral_eq_gammaZetaConstant_sub
+    (c : ℝ) (hc : 0 < c) :
+    boseFinitePartSplitIntegral c =
+      gammaZetaConstant - (Real.log c) ^ 2 / 2 := by
+  have h := boseFinitePartIntegralAtCutoff_eq_gammaZetaConstant c hc
+  unfold boseFinitePartIntegralAtCutoff at h
+  linarith
+
+/-- Expanded arbitrary-cutoff form of the logarithmic Bose finite-part
+identity.  The logarithmic square is the exact correction for moving the split
+away from one. -/
+theorem boseFinitePartIntegral_eq_gammaZetaConstant_of_pos
+    (c : ℝ) (hc : 0 < c) :
+    (∫ x : ℝ in Ioc 0 c, boseFinitePartSmallKernel x) +
+        (∫ x : ℝ in Ioi c, boseFinitePartLargeKernel x) +
+          (Real.log c) ^ 2 / 2 = gammaZetaConstant := by
+  simpa [boseFinitePartIntegralAtCutoff, boseFinitePartSplitIntegral] using
+    boseFinitePartIntegralAtCutoff_eq_gammaZetaConstant c hc
 
 end Fabius
