@@ -903,7 +903,11 @@ Fabius solution satisfies the original compact-support characterization at scale
 Conversely, \lean{isOriginalFabius_iff_existsUnique_isFabius} says that every original
 solution has scale two and is the fold of a unique bounded Fabius solution.  This is the
 correct tail-free equivalence: a direct predicate iff for an arbitrary bounded function
-would be false because its fold never inspects values on $(1,\infty)$.
+would be false because its fold never inspects values on $(1,\infty)$.  The theorem
+\lean{rvachevUp_eq_iff_eqOn_Iic_one} makes that loss of information exact: two folds agree
+if and only if their candidates agree on $(-\infty,1]$.  Accordingly,
+\lean{isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail} restores the sharp
+fixed-candidate iff by adjoining only the condition $F(x)=1$ for $x>1$.
 
 \section{Fourier conventions}
 Formal Fourier proofs are extremely sensitive to normalization.  Mathlib's transform includes a fixed kernel convention; the source therefore writes explicit factors of \(\pi\), \(2\pi\), and the imaginary unit rather than silently adopting a paper convention.  The sinc factor is defined compatibly with that convention and extended continuously at zero.
@@ -2158,7 +2162,7 @@ Source item & Lean declaration or family & Principal proof location \\
 \midrule
 \endhead
 Theorem 1: structure and fold & \lean{IsOriginalFabius}; \lean{IsFabius.isOriginalFabius_rvachevUp} & \file{OriginalCharacterization.lean} \\
-Theorem 1: uniqueness & \lean{isOriginalFabius_iff_eq_canonical}; \lean{isOriginalFabius_iff_existsUnique_isFabius}; \lean{existsUnique_originalFabius} & \file{OriginalUniqueness.lean} \\
+Theorem 1: uniqueness and exact fold kernel & \lean{isOriginalFabius_iff_eq_canonical}; \lean{rvachevUp_eq_iff_eqOn_Iic_one}; \lean{isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail}; \lean{isOriginalFabius_iff_existsUnique_isFabius} & \file{OriginalUniqueness.lean} \\
 Lemma 1 & finite-convolution probability convergence variants & \file{ProbabilityRepresentation.lean}, \file{WeakConvergence.lean} \\
 Theorem 2 & \lean{stepApproximant_tendsto_rvachevUp} and endpoint-corrected variants & \file{StepApproximationLimit.lean} \\
 Theorem 3 & probability representation of the up-function & \file{ProbabilityRepresentation.lean} \\
@@ -2259,7 +2263,7 @@ Module & Role in the development \\
 \modulefile{FourierProduct.lean} & Convergence and continuity of the infinite sinc product and compatibility with finite products. \\
 \modulefile{FourierAnalytic.lean} & Fourier transform formula for the up-function, inversion consequences, and moment-series identification. \\
 \modulefile{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
-\modulefile{OriginalUniqueness.lean} & Fourier-refinement uniqueness and the exact equivalence with unique bounded Fabius witnesses. \\
+\modulefile{OriginalUniqueness.lean} & Fourier-refinement uniqueness, the exact kernel of the fold, and the equivalences with fixed candidates or unique bounded Fabius witnesses. \\
 \modulefile{ProbabilityRepresentation.lean} & Finite convolution laws, characteristic functions, and the probabilistic representation of the up-function. \\
 \modulefile{WeakConvergence.lean} & Convergence of finite probability measures against bounded continuous tests. \\
 \modulefile{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\
