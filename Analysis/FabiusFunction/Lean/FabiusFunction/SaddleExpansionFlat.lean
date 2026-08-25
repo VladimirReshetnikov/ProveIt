@@ -4,7 +4,9 @@ import FabiusFunction.SaddleExpansionAlgebra
 # Flat remainders in full asymptotic expansions
 
 This module records the generic bridge from estimates at every algebraic
-order to the parameter-dependent Poincare-expansion API.
+order to the parameter-dependent Poincare-expansion API.  It also
+characterizes when two functions have the same full expansion: precisely
+when their difference is negligible at every algebraic order.
 -/
 
 set_option autoImplicit false
@@ -59,6 +61,42 @@ theorem HasAsymptoticExpansion.sub_flat
     HasAsymptoticExpansion l scale (fun x => f x - r x) coeff := by
   have hz := hasAsymptoticExpansion_zero_coeff_of_isBigO_all hr
   simpa using hf.sub hz
+
+/-- Two full expansions with the same coefficients differ by a remainder
+which is negligible at every algebraic order.  This is the uniqueness
+statement naturally available without any nondegeneracy assumption on the
+asymptotic scale. -/
+theorem HasAsymptoticExpansion.sub_same_coeff_isBigO_all
+    {l : Filter α} {scale : α → 𝕜} {f g : α → ℰ}
+    {coeff : ℕ → α → ℰ}
+    (hf : HasAsymptoticExpansion l scale f coeff)
+    (hg : HasAsymptoticExpansion l scale g coeff) :
+    ∀ N, (fun x ↦ f x - g x) =O[l] (fun x ↦ scale x ^ N) := by
+  intro N
+  have h := (hf.remainder_isBigO N).sub (hg.remainder_isBigO N)
+  apply h.congr'
+  · filter_upwards with x
+    change (f x - partialSum scale coeff N x) -
+        (g x - partialSum scale coeff N x) = f x - g x
+    abel
+  · exact Filter.EventuallyEq.rfl
+
+/-- Once one full expansion is known, another function has exactly the same
+coefficients if and only if their difference is negligible at every
+algebraic order. -/
+theorem hasAsymptoticExpansion_iff_sub_isBigO_all
+    {l : Filter α} {scale : α → 𝕜} {f g : α → ℰ}
+    {coeff : ℕ → α → ℰ}
+    (hf : HasAsymptoticExpansion l scale f coeff) :
+    HasAsymptoticExpansion l scale g coeff ↔
+      ∀ N, (fun x ↦ g x - f x) =O[l] (fun x ↦ scale x ^ N) := by
+  constructor
+  · intro hg
+    exact hg.sub_same_coeff_isBigO_all hf
+  · intro hflat
+    apply (hf.add_flat hflat).congr Filter.EventuallyEq.rfl
+    filter_upwards with x
+    abel
 
 /-- Adding a flat remainder preserves a full expansion in both directions. -/
 theorem hasAsymptoticExpansion_add_flat_iff

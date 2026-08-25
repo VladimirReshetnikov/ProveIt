@@ -8,12 +8,16 @@ running on a different machine.
 
 ```text
 SYNC Fabius
-worktree/task: fabius-non-elementary-proof-861d70 — the Fabius function on
-  (0,1) is not an elementary function
-branch/base: claude/fabius-non-elementary-proof-861d70, fast-forwarded onto
-  origin/main at 5437f9d0c (which already contains this branch's first two
-  commits, merged upstream by the integrator)
+worktree/task: fabius-non-elementary-proof-861d70 — neither the Fabius
+  function nor its inverse is elementary on (0,1), and neither is reachable
+  once inverse branches (Lambert W included) are adjoined
+branch/base: claude/fabius-non-elementary-proof-861d70, merged with
+  origin/main at cb54665bf.  No conflicts.  The codex refactoring of
+  `analyticDenseOn_of_isElementary_coeffs` came in with that merge and is kept
+  as it arrived.
 git owner / build owner: self / self (own worktree, own `.lake`)
+status: complete and verified — 35-module closure builds clean, every exported
+  theorem audited for axioms, write-up and PDF current
 ```
 
 ## Write set
@@ -60,10 +64,15 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All 95 theorems exported by the five new modules — `ElementaryFunction`,
+All 98 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
-anywhere.  The audit is a generated `#print axioms` sweep over every
+anywhere, and so do the five inverse-calculus theorems this workstream
+contributed to `FabiusInverse.lean` (`fabiusInv_mem_Ioo`,
+`fabiusInv_hasDerivAt`, `deriv_fabiusInv`, `deriv_fabiusInv_pos`,
+`deriv_fabiusInv_eq_inv_two_mul_rvachevUp`).  The count fell from 100 to 98
+because two of them moved out of `InverseNotElementary.lean` in that
+upstreaming, not because anything was dropped.  The audit is a generated `#print axioms` sweep over every
 `theorem`/`lemma` at any namespace depth in those files, run against the fully
 built closure; it is re-run after every change to them.
 
@@ -89,11 +98,22 @@ by radicals.
 
 Every hypothesis on the branch is confined to the region `U`.  That is not
 cosmetic: a version with global hypotheses excludes `y ^ 5 - y - x = 0`
-altogether, since `w ↦ w ^ 5 - w` is not injective and so no continuous branch
-on all of `ℝ` exists — and that equation is the standard example of a
-non-solvable Galois group.  An adversarial review caught the earlier global
-form claiming coverage it did not have; the theorem was strengthened rather
-than the claim weakened.
+altogether, since a global continuous solution would be a continuous right
+inverse of `w ↦ w ^ 5 - w`, and that polynomial has none — it is monotone only
+on three pieces, and the image of each is a proper subinterval of `ℝ`.  That
+equation is the standard example of a non-solvable Galois group.  An
+adversarial review caught the earlier global form claiming coverage it did not
+have; the theorem was strengthened rather than the claim weakened.
+
+A `codex/*` workstream then factored the localized proof, and the refactoring
+is kept as it arrived: `analyticDenseOn_of_isElementary_coeffs` now carries the
+content, with `analyticDenseOn_of_inter_open_dense` isolating the step that
+removes the restriction to the coefficients' common analytic locus, and
+`AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt` isolating the germ-transport
+step.  `exists_analyticAt_of_isElementary_coeffs`,
+`dense_analyticLocus_of_isElementary_coeffs` and `not_algebraicBranch_eqOn`
+keep their statements and are now one-liners over it.  Nothing downstream in
+`InverseBranch` or `InverseNotElementary` needed changing.
 
 This deliberately does *not* add a constructor to `IsElementary`.  Doing so
 would cost `IsElementary.comp`: composing an algebraic branch with an
@@ -147,6 +167,14 @@ function theorem, is `analyticAt_of_continuous_branch` applied with no further
 analysis.  On top of it, `Fabius.exists_analyticAt_of_rightInverse`: a
 continuous right inverse of a densely analytic function is analytic somewhere.
 
+A `codex/*` workstream added the relative form
+`Fabius.analyticDenseOn_of_rightInverse` — the same conclusion tested on every
+nonempty open subset of a branch domain that need not itself be open — together
+with `Fabius.not_eqOn_fabiusInv_of_analyticDenseOn`, which weakens the
+hypothesis of the obstruction from a globally dense analytic locus to relative
+density in `interior U`.  Both arrived by merge and are kept;
+`not_eqOn_fabiusInv_of_dense_analyticLocus` is now a corollary of the second.
+
 `Fabius.IsElementaryOrInverse` closes the elementary functions under
 continuous inverse branches at any depth, and
 `IsElementaryOrInverse.dense_analyticLocus` shows the enlarged class is still
@@ -166,13 +194,34 @@ values; constant extension always satisfies it, and `U = ∅` degenerates it to
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
 argument is the inverse function theorem run backwards, and the one thing to
 check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
-now derived from the stronger core results `fabiusInv_hasDerivAt`,
-`deriv_fabiusInv`, and `deriv_fabiusInv_pos`: `deriv_fabiusReal_pos` gives
-`F' > 0` on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies
-`(F⁻¹)' = 1 / F'` there.  The core module also bootstraps this reciprocal
-formula to `fabiusInv_contDiffOn_Ioo`, proving full smoothness on the open
-interval.  It is the only place in the whole workstream where a differential
-property of `F`, rather than its failure to be analytic, is used.
+now a one-liner over `deriv_fabiusInv_pos`.  The chain is
+`deriv_fabiusReal_pos` gives `F' > 0` on `(0,1)`, so
+`HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F' > 0` there.
+
+That derivative calculus started here as `hasDerivAt_fabiusInv`; a `codex/*`
+workstream upstreamed it into `FabiusInverse.lean` as `fabiusInv_hasDerivAt`,
+`deriv_fabiusInv`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp` and
+`deriv_fabiusInv_pos`, which is the better home for it, and that placement is
+kept.  `fabiusInv_mem_Ioo` moved with it.  The original spelling
+`hasDerivAt_fabiusInv` still exists, deliberately, as a compatibility alias in
+that file; docstrings here cite `deriv_fabiusInv_pos` because it is the
+primary name, not because the alias was broken.
+
+Every ``Fabius.*`` name appearing in a docstring of the five modules — thirty
+of them — is checked to resolve, by a generated `#check` sweep run against the
+built closure.  Prose citations are otherwise invisible to the compiler.
+
+`F'` now enters the five modules of this workstream only through the imported
+`deriv_fabiusInv_pos`.  It is *not* true that this is the only use of a
+differential property of `F` — `fabius_differentiable` appears once more, in
+`fabiusInv_not_analyticAt`, to produce a `ContinuousAt` for the inverse
+function theorem.  The checkable statement is the one about `F'`.
+
+The core module has since bootstrapped the reciprocal formula to
+`fabiusInv_contDiffOn_Ioo`: `F⁻¹` is `C^∞` on `(0,1)`.  That sharpens the
+point of the whole development rather than complicating it — the inverse is
+smooth and still analytic nowhere, so no smoothness obstruction can separate
+it from the elementary functions either.
 
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`

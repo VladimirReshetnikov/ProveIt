@@ -74,7 +74,7 @@ private lemma fabius_hasDerivAt_secondHalf_aux (F : BoundedFabius)
   filter_upwards with y
   have hs := hF.symmetry_all (1 - y)
   convert hs using 1
-  ring
+  ring_nf
 
 /-- To the left of the unit interval the bounded Fabius function is locally
 constant, hence has vanishing derivative. -/
@@ -255,7 +255,7 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       have heven := rvachevUp_even F (2 * x - 1)
       have heq : rvachevUp F (2 * (-x) + 1) = rvachevUp F (2 * x - 1) := by
         convert heven using 1
-        ring
+        ring_nf
       rw [heq]
       ring
 
