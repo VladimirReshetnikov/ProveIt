@@ -7,8 +7,8 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 046946a974467e83244fd3a183a3e084e70d3379
-HEAD and dirty paths: 9290aa77955a5ae3bc6b916bf72fb3b1a14a5c5d;
+fetched main SHA: a49db73131bf46030df0e8ccb273b10bca06f539
+HEAD and dirty paths: 9906ea69aef27a85561a6fa10f67a5c29483aa4f;
   clean before this registry-only refresh
 writing (exact paths): this registry only; no further source writes until the
   coordinator acknowledges the requested lease
@@ -24,7 +24,9 @@ expected declarations or document claims: `lowerLambertW_branchPoint`,
 completed commits: `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   preserves the exact closed lower-Lambert source and the initial coordinator
   reply; `9290aa77955a5ae3bc6b916bf72fb3b1a14a5c5d` records the exact source-lease
-  and build-token request; no documentation or aggregate file was changed
+  and build-token request; `9906ea69aef27a85561a6fa10f67a5c29483aa4f`
+  refreshes the paused coordination state and read-only prototype inventory;
+  no documentation or aggregate file was changed
 validated (exact command, SHA/state, exit code): delegated prototype command
   `lake env lean /tmp/LowerLambertWPrototype.lean` at base 09ae23f63, exit 0;
   all 11 new declarations report exactly `[propext, Classical.choice,
