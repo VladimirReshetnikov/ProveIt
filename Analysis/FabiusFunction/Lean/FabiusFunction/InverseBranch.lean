@@ -18,8 +18,8 @@ outside its ground floor.
 ## The inverse-analyticity theorems
 
 `Fabius.analyticAt_of_rightInverse` is the analytic inverse function theorem,
-and it is obtained here for free.  The observation is that a left inverse is
-an implicit branch of the simplest possible equation: `h (g x) = x` says
+and it is obtained here for free.  The observation is that a one-sided inverse
+is an implicit branch of the simplest possible equation: `h (g x) = x` says
 exactly that `g` is a continuous branch of
 
 `P (x, z) = h z - x = 0`,
