@@ -1,5 +1,5 @@
 import FabiusFunction.FabiusSmallArgumentScale
-import FabiusFunction.SaddleExpansionAlgebra
+import FabiusFunction.SaddleExpansionFlat
 
 /-!
 # Transporting full saddle expansions to small arguments
@@ -8,7 +8,8 @@ The exact inverse coordinate maps `t ↦ 2⁻ᵗ` and `x ↦ -log₂ x` identify
 `t → ∞` with `x → 0⁺`.  This module upgrades the existing single-estimate
 transfer to the full parameter-dependent Poincaré-expansion API, for scales
 in arbitrary normed fields and functions valued in arbitrary normed vector
-spaces.
+spaces. The same equivalence is exposed directly for remainders negligible at
+every algebraic order.
 -/
 
 set_option autoImplicit false
@@ -69,5 +70,35 @@ theorem hasAsymptoticExpansion_logScale_iff_smallArgument
       HasAsymptoticExpansion (nhdsWithin 0 (Ioi 0)) scale f coeff :=
   ⟨HasAsymptoticExpansion.smallArgument_of_logScale,
     HasAsymptoticExpansion.logScale_of_smallArgument⟩
+
+/-- Negligibility at every algebraic order is invariant under the exact
+coordinate change `x = 2⁻ᵗ`. Unlike a one-way `IsBigO.comp_tendsto`
+statement, this is an equivalence because `fabiusLogArgument` and
+`fabiusSmallArgumentLog` are inverse on the relevant filters. -/
+theorem isBigO_all_logScale_iff_smallArgument
+    {scale : ℝ → 𝕜} {f : ℝ → ℰ} :
+    (∀ N, (f ∘ fabiusLogArgument) =O[atTop]
+        (fun t => (scale ∘ fabiusLogArgument) t ^ N)) ↔
+      ∀ N, f =O[nhdsWithin 0 (Ioi 0)] (fun x => scale x ^ N) := by
+  constructor
+  · intro hflat
+    have htop : HasAsymptoticExpansion atTop
+        (scale ∘ fabiusLogArgument) (f ∘ fabiusLogArgument)
+        (fun _k _t => (0 : ℰ)) :=
+      hasAsymptoticExpansion_zero_coeff_iff_isBigO_all.mpr hflat
+    have htop' : HasAsymptoticExpansion atTop
+        (scale ∘ fabiusLogArgument) (f ∘ fabiusLogArgument)
+        (fun k => (fun _x : ℝ => (0 : ℰ)) ∘ fabiusLogArgument) := by
+      simpa [Function.comp_def] using htop
+    have hsmall := htop'.smallArgument_of_logScale
+    apply hasAsymptoticExpansion_zero_coeff_iff_isBigO_all.mp
+    simpa [Function.comp_def] using hsmall
+  · intro hflat
+    have hsmall : HasAsymptoticExpansion (nhdsWithin 0 (Ioi 0)) scale f
+        (fun _k _x => (0 : ℰ)) :=
+      hasAsymptoticExpansion_zero_coeff_iff_isBigO_all.mpr hflat
+    have htop := hsmall.logScale_of_smallArgument
+    apply hasAsymptoticExpansion_zero_coeff_iff_isBigO_all.mp
+    simpa [Function.comp_def] using htop
 
 end Fabius.SaddleExpansion

@@ -30,6 +30,18 @@ theorem hasAsymptoticExpansion_zero_coeff_of_isBigO_all
   · intro N
     simpa [partialSum] using hflat N
 
+/-- A full expansion with identically zero coefficients is exactly a
+remainder negligible at every algebraic order. This includes order zero,
+where the assertion is boundedness relative to the constant scale `1`. -/
+theorem hasAsymptoticExpansion_zero_coeff_iff_isBigO_all
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ} :
+    HasAsymptoticExpansion l scale f (fun _k _x => (0 : ℰ)) ↔
+      ∀ N, f =O[l] (fun x => scale x ^ N) := by
+  constructor
+  · intro h N
+    simpa [partialSum] using h.remainder_isBigO N
+  · exact hasAsymptoticExpansion_zero_coeff_of_isBigO_all
+
 /-- Adding a remainder which is negligible to every order leaves every
 coefficient of a full asymptotic expansion unchanged. -/
 theorem HasAsymptoticExpansion.add_flat
