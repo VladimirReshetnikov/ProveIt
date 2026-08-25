@@ -9182,8 +9182,20 @@ $\lambda^2\bigl(\log F-\mathcal M-A_1(\lambda)/\lambda\bigr)$ sweeps from $0.521
 $0.51810$ and back up, tracking $\lambda\bmod1$, a spread of $2.95\times10^{-3}$.  Held at
 one phase instead and varied in magnitude, it moves by only $3.7\times10^{-4}$ from
 $n=173$ to $n=352$, consistent with an $\bigO(\lambda^{-1})$ correction.  So $A_2$ is a
-genuinely nonconstant periodic function of mean about $0.5199$ and peak-to-peak amplitude
-about $3\times10^{-3}$.
+genuinely nonconstant periodic function.
+
+Neither of those sampled numbers should be mistaken for a property of $A_2$ itself, and the
+distinction is worth drawing because it is the same trap one level down.  The sample covers
+$0.268\le\lambda\bmod1\le0.675$, which is $41\%$ of a period and misses the maximum; and it
+carries an $A_3/\lambda$ displacement of about $-3\times10^{-4}$.  Computed from the
+coefficient rather than from the sample, $A_2$ has
+\begin{equation}
+ \max A_2=0.522282117,\quad \min A_2=0.518402361,
+ \qquad \langle A_2\rangle=0.5203422413,                   \label{eq:as-A2-stats}
+\end{equation}
+attained at $\lambda\bmod1=0.101128$ and $0.601131$, so the true peak-to-peak swing is
+$3.880\times10^{-3}$ rather than the $2.95\times10^{-3}$ visible in the window.  The measured
+minimum at $0.602$ does agree with the true one.
 
 The amplitude is not an accident, and its growth with $j$ is governed by an exact law, which
 is the subject of \Cref{subsec:as-leading-derivative} below.  Any numerical extraction of a
@@ -9241,10 +9253,44 @@ $2.52\times10^{-1}$ for $j=1,2,3,4$.
 \begin{warning}
 Equation~\eqref{eq:as-amplitude-law} is a growth rate, not the amplitude.  It uses only the
 top derivative; the lower ones contribute in phase and inflate the true swing by a factor
-that itself grows.  The measured peak-to-peak amplitudes are $8.73\times10^{-5}$,
-$1.94\times10^{-3}$, about $6\times10^{-2}$ and about $0.82$, so the ratio of truth to
-estimate drifts $1.00$, $1.08$, $1.24$, $1.63$.  Use \eqref{eq:as-amplitude-law} to see how
-fast the oscillation grows, never to size a particular coefficient.
+that itself grows.  Measuring amplitudes --- half the peak-to-peak swing, on the same
+convention as \eqref{eq:as-amplitude-law} itself --- the true values are
+$8.73\times10^{-5}$, $1.94\times10^{-3}$, about $3\times10^{-2}$ and about $0.41$ for
+$j=1,2,3,4$, against the estimates $8.73\times10^{-5}$, $1.79\times10^{-3}$,
+$2.46\times10^{-2}$, $2.52\times10^{-1}$.  The ratio of truth to estimate drifts $1.00$,
+$1.08$, about $1.2$, about $1.6$.  Use \eqref{eq:as-amplitude-law} to see how fast the
+oscillation grows, never to size a particular coefficient.
+\end{warning}
+
+\begin{warning}[Products of derivatives are not negligible either]
+\label{warn:as-products}
+It is tempting to argue that since $\Psi$ oscillates by only about $2\times10^{-6}$, products
+of its derivatives are of order $4\times10^{-12}$ and may be dropped.  That reasoning
+contradicts the one above and is false.  A mean of a product is
+\begin{equation}
+ \bigl\langle\Psi^{(a)}\Psi^{(b)}\bigr\rangle
+ =\sum_{k\ne0}(2\pi\ii k)^{a}(-2\pi\ii k)^{b}\bigl|\widehat\Psi(k)\bigr|^{2},
+                                                          \label{eq:as-product-mean}
+\end{equation}
+which carries the same amplification $(2\pi k)^{a+b}$ as everything else, and it vanishes
+unless $a+b$ is even.  Numerically
+$\langle(\Psi')^{2}\rangle=8.917\times10^{-11}$ but
+$\langle(\Psi''')^{2}\rangle=1.390\times10^{-7}$, four decades larger.
+
+The practical consequence is that the $\Psi$-free part of $A_j$ is \emph{not} its mean.  At
+$j=2$ the two differ by
+\begin{equation*}
+ \langle A_2\rangle-\frac1{4L^{2}}
+ =-\frac{\langle(\Psi')^{2}\rangle}{2L^{3}}-\frac{\langle(\Psi'')^{2}\rangle}{4L^{4}}
+ =-3.946\times10^{-9},
+\end{equation*}
+using $\langle\Psi'\Psi''\rangle=\langle\Psi''\Psi'''\rangle=0$ by parity and
+$\langle\Psi'\Psi'''\rangle=-\langle(\Psi'')^{2}\rangle$.  The gap grows with $j$ like
+everything else here: it is $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and
+$-1.14\times10^{-7}$ at $j=1,2,3$, so it is invisible at $j=1$ and reaches the seventh digit
+by $j=3$.  The $\Psi$-free part remains the right practical value for the mean, but the
+reason is a ratio and not an absolute bound: at each order it sits four to five decades below
+the oscillation of $A_j$ itself.
 \end{warning}
 
 The same two facts explain why the expansion \eqref{eq:all-orders-log} is asymptotic and not
