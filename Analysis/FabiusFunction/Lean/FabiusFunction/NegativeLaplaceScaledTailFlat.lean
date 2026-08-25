@@ -8,8 +8,9 @@ This module supplies the quantitative remainder behind the exact ordinary
 negative-Laplace jets.  Every positive-order forward-tail summand admits a
 uniform polynomial-times-exponential bound on `[1,∞)`.  After scaling the
 `(n+1)`st derivative by `s^(n+1)`, the dyadic sum is still exponentially
-small.  On `s = 2^t` this is smaller than every prescribed inverse power of
-the radius.
+small.  On `s = 2^t` it is little-o of every real power of the radius; the
+previous natural inverse-power `O` estimate is retained as a compatibility
+corollary.
 -/
 
 set_option autoImplicit false
@@ -229,26 +230,42 @@ theorem exists_norm_scaled_negativeLaplaceForwardTailDeriv_le_exp
         (mul_nonneg hC0 (by dsimp [D]; positivity))
     _ = K * Real.exp (-(s / 2)) := rfl
 
-theorem negativeLaplaceForwardScaledJet_isBigO_exp
+/-- Quantitative dyadic-orbit form of the scaled tail estimate.  Unlike the
+asymptotic wrapper below, this exposes a single constant valid for every
+nonnegative logarithmic scale. -/
+theorem exists_norm_negativeLaplaceForwardScaledJet_le_exp
     (n : ℕ) :
-    negativeLaplaceForwardScaledJet n =O[atTop]
-      (fun t : ℝ => Real.exp (-(1 / 2 : ℝ) * ((2 : ℝ) ^ t))) := by
-  obtain ⟨C, _hC0, hC⟩ :=
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ t, 0 ≤ t →
+      ‖negativeLaplaceForwardScaledJet n t‖ ≤
+        C * Real.exp (-(1 / 2 : ℝ) * ((2 : ℝ) ^ t)) := by
+  obtain ⟨C, hC0, hC⟩ :=
     exists_norm_scaled_negativeLaplaceForwardTailDeriv_le_exp n
-  apply IsBigO.of_bound C
-  filter_upwards [eventually_ge_atTop (0 : ℝ)] with t ht
+  refine ⟨C, hC0, ?_⟩
+  intro t ht
   have hs : (1 : ℝ) ≤ (2 : ℝ) ^ t := by
     rw [← Real.rpow_zero (2 : ℝ)]
     exact Real.rpow_le_rpow_of_exponent_le (by norm_num) ht
   simpa [negativeLaplaceForwardScaledJet, div_eq_mul_inv, mul_comm] using
     hC ((2 : ℝ) ^ t) hs
 
-/-- The scaled derivative tail is flat to every inverse power of the dyadic
-radius. -/
-theorem negativeLaplaceForwardScaledJet_isBigO_inv_rpow
-    (n N : ℕ) :
+/-- Every scaled forward-tail derivative has double-exponential decay along
+the dyadic logarithmic orbit. -/
+theorem negativeLaplaceForwardScaledJet_isBigO_exp
+    (n : ℕ) :
     negativeLaplaceForwardScaledJet n =O[atTop]
-      (fun t : ℝ => (((2 : ℝ) ^ t)⁻¹) ^ N) := by
+      (fun t : ℝ => Real.exp (-(1 / 2 : ℝ) * ((2 : ℝ) ^ t))) := by
+  obtain ⟨C, _hC0, hC⟩ :=
+    exists_norm_negativeLaplaceForwardScaledJet_le_exp n
+  apply IsBigO.of_bound C
+  filter_upwards [eventually_ge_atTop (0 : ℝ)] with t ht
+  simpa [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)] using hC t ht
+
+/-- Double-exponential decay beats every real power of the dyadic radius.
+No sign restriction on the power is needed. -/
+theorem negativeLaplaceForwardScaledJet_isLittleO_rpow_neg
+    (n : ℕ) (p : ℝ) :
+    negativeLaplaceForwardScaledJet n =o[atTop]
+      (fun t : ℝ => ((2 : ℝ) ^ t) ^ (-p)) := by
   have hpow : Tendsto (fun t : ℝ => (2 : ℝ) ^ t) atTop atTop := by
     have hlin : Tendsto (fun t : ℝ => Real.log 2 * t) atTop atTop :=
       tendsto_id.const_mul_atTop (Real.log_pos (by norm_num))
@@ -257,14 +274,43 @@ theorem negativeLaplaceForwardScaledJet_isBigO_inv_rpow
       Real.rpow_def_of_pos (by norm_num : (0 : ℝ) < 2)] using hex
   have hexp :
       (fun t : ℝ => Real.exp (-(1 / 2 : ℝ) * ((2 : ℝ) ^ t))) =o[atTop]
-        (fun t : ℝ => ((2 : ℝ) ^ t) ^ (-(N : ℝ))) := by
+        (fun t : ℝ => ((2 : ℝ) ^ t) ^ (-p)) := by
     simpa only [Function.comp_def] using
       (isLittleO_exp_neg_mul_rpow_atTop
-        (by norm_num : (0 : ℝ) < 1 / 2) (-(N : ℝ))).comp_tendsto hpow
-  apply ((negativeLaplaceForwardScaledJet_isBigO_exp n).trans
-    hexp.isBigO).congr'
+        (by norm_num : (0 : ℝ) < 1 / 2) (-p)).comp_tendsto hpow
+  exact (negativeLaplaceForwardScaledJet_isBigO_exp n).trans_isLittleO hexp
+
+/-- In particular, every scaled forward-tail jet tends to zero. -/
+theorem negativeLaplaceForwardScaledJet_tendsto_zero (n : ℕ) :
+    Tendsto (negativeLaplaceForwardScaledJet n) atTop (nhds 0) := by
+  apply (isLittleO_const_iff (one_ne_zero : (1 : ℝ) ≠ 0)).mp
+  simpa using negativeLaplaceForwardScaledJet_isLittleO_rpow_neg n 0
+
+/-- Arbitrary-filter transfer of the all-real-power flatness estimate. -/
+theorem negativeLaplaceForwardScaledJet_comp_isLittleO_rpow_neg
+    {α : Type*} (l : Filter α) (phase : α → ℝ)
+    (hphase : Tendsto phase l atTop) (n : ℕ) (p : ℝ) :
+    (fun x => negativeLaplaceForwardScaledJet n (phase x)) =o[l]
+      (fun x => ((2 : ℝ) ^ phase x) ^ (-p)) := by
+  simpa only [Function.comp_def] using
+    (negativeLaplaceForwardScaledJet_isLittleO_rpow_neg n p).comp_tendsto hphase
+
+/-- Natural-power form of the all-real-power flatness estimate. -/
+theorem negativeLaplaceForwardScaledJet_isLittleO_inv_rpow
+    (n N : ℕ) :
+    negativeLaplaceForwardScaledJet n =o[atTop]
+      (fun t : ℝ => (((2 : ℝ) ^ t)⁻¹) ^ N) := by
+  apply (negativeLaplaceForwardScaledJet_isLittleO_rpow_neg n (N : ℝ)).congr'
   · exact Filter.EventuallyEq.rfl
   · filter_upwards with t
     rw [Real.rpow_neg_eq_inv_rpow, Real.rpow_natCast]
+
+/-- The scaled derivative tail is flat to every inverse power of the dyadic
+radius. -/
+theorem negativeLaplaceForwardScaledJet_isBigO_inv_rpow
+    (n N : ℕ) :
+    negativeLaplaceForwardScaledJet n =O[atTop]
+      (fun t : ℝ => (((2 : ℝ) ^ t)⁻¹) ^ N) := by
+  exact (negativeLaplaceForwardScaledJet_isLittleO_inv_rpow n N).isBigO
 
 end Fabius
