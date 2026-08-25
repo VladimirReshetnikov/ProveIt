@@ -12,7 +12,9 @@ recurrence for `halfMoment` reduces parity to the number of odd entries in an
 odd-indexed row of Pascal's triangle, supplied by `FabiusFunction.Parity`.
 
 The final section converts the parity result into the dyadic valuation of the
-Fabius value at `2⁻ⁿ`, the valuation component of Theorem 21.
+Fabius value at `2⁻ⁿ`, the valuation component of Theorem 21.  Parameter-free
+forms isolate the exceptional zeroth half moment, and Legendre's formula at
+`p = 2` removes the remaining factorial valuation in favor of binary weight.
 -/
 
 set_option autoImplicit false
@@ -295,6 +297,21 @@ theorem two_mul_halfMoment_padicVal_two_and_odd (n : ℕ) (hn : 1 ≤ n) :
   have hodd := two_mul_halfMoment_num_den_odd n (by omega)
   exact ⟨padicValRat_two_eq_zero_of_odd_num_den hodd.1 hodd.2, hodd⟩
 
+/-- The reduced numerator of `2 * halfMoment n` is odd exactly at the
+positive indices.  This packages the exceptional value at `n = 0` into a
+parameter-free characterization. -/
+theorem two_mul_halfMoment_num_odd_iff_pos (n : ℕ) :
+    Odd (2 * halfMoment n).num.natAbs ↔ 0 < n := by
+  constructor
+  · intro hodd
+    by_contra hn
+    have hn0 : n = 0 := Nat.eq_zero_of_not_pos hn
+    subst n
+    norm_num [halfMoment] at hodd
+    exact (Nat.not_odd_iff_even.mpr even_two) hodd
+  · intro hn
+    exact (two_mul_halfMoment_num_den_odd n hn).1
+
 /-- Every positive-index half moment has two-adic valuation `-1`. -/
 theorem halfMoment_padicVal_two (n : ℕ) (hn : 0 < n) :
     padicValRat 2 (halfMoment n) = -1 := by
@@ -306,6 +323,16 @@ theorem halfMoment_padicVal_two (n : ℕ) (hn : 0 < n) :
     (r := halfMoment n) (by norm_num) hhalfMomentNe
   rw [hvalTwo, htwenty.1] at hmul
   omega
+
+/-- Parameter-free two-adic valuation of the half-moment sequence, including
+the exceptional zeroth value. -/
+theorem halfMoment_padicVal_two_eq_ite (n : ℕ) :
+    padicValRat 2 (halfMoment n) = if n = 0 then 0 else -1 := by
+  by_cases hn : n = 0
+  · subst n
+    norm_num [halfMoment]
+  · rw [if_neg hn]
+    exact halfMoment_padicVal_two n (Nat.pos_of_ne_zero hn)
 
 /-- Multiplication preserves oddness of both reduced numerators and
 denominators. -/
@@ -361,6 +388,15 @@ theorem isNatural_of_den_eq_one_of_nonneg {q : ℚ} (hden : q.den = 1)
           congrArg (fun z : ℤ => (z : ℚ)) (Int.natAbs_of_nonneg hnum).symm
         _ = (q.num.natAbs : ℕ) := by norm_num
 
+/-- Legendre's formula at `p = 2`: the valuation of `n!` is `n` minus the
+binary digit sum of `n`. -/
+theorem factorial_padicVal_two (n : ℕ) :
+    padicValRat 2 (n.factorial : ℚ) =
+      ((n - binaryWeight n : ℕ) : ℤ) := by
+  rw [padicValRat.of_nat]
+  have h := sub_one_mul_padicValNat_factorial (p := 2) n
+  simpa [binaryWeight] using congrArg (fun k : ℕ => (k : ℤ)) h
+
 /-- The two-adic valuation of the Fabius value at `2⁻ⁿ`, i.e. the
 valuation equality in Theorem 21. -/
 theorem fabiusAtInverseTwoPow_padicVal_two (n : ℕ) (hn : 1 ≤ n) :
@@ -377,5 +413,12 @@ theorem fabiusAtInverseTwoPow_padicVal_two (n : ℕ) (hn : 1 ≤ n) :
     padicValRat.mul hfactorialNe hpowNe, padicValRat.pow,
     hvalTwo, hhalfMomentVal]
   ring
+
+/-- Closed binary-weight form of the valuation at `2⁻ⁿ`, with the factorial
+valuation eliminated by Legendre's formula. -/
+theorem fabiusAtInverseTwoPow_padicVal_two_closed (n : ℕ) (hn : 1 ≤ n) :
+    padicValRat 2 (fabiusAtInverseTwoPow n) =
+      -(n.choose 2 : ℤ) - 1 - ((n - binaryWeight n : ℕ) : ℤ) := by
+  rw [fabiusAtInverseTwoPow_padicVal_two n hn, factorial_padicVal_two]
 
 end Fabius
