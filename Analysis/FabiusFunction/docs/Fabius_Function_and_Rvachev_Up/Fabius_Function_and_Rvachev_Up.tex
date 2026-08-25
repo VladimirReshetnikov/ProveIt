@@ -157,17 +157,25 @@ and a bounded-variation Toeplitz argument proves the corresponding discrete-limi
 \label{sec:history}
 
 The probability distribution now attached to the name of Fabius is older than Fabius's
-two-page note.  It occurs in the work of Jessen and Wintner on infinite convolutions, was
+two-page note.  It occurs in the 1935 work of Jessen and Wintner on infinite convolutions
+of independent random variables \cite{jessen1935}, was
 rediscovered several times, and entered a different mathematical culture through the
 compactly supported ``finite function'' of V.\,A.~Rvachev.  Fabius used it in 1966 as a
 particularly economical probabilistic construction of a nowhere analytic
-$C^\infty$ function \cite{fabius1966}.  Rvachev's normalization emphasizes the even compactly
+$C^\infty$ function \cite{fabius1966}.  Independently, and for entirely different reasons,
+the Rvachevs introduced the same object in 1971 as the canonical compactly supported
+solution of a functional--differential equation \cite{rvachev1971}, and V.\,A.~Rvachev
+later developed it into the theory of \emph{atomic functions} used in approximation
+theory and numerical analysis \cite{rvachev1973,rvachev1990}.  Rvachev's normalization
+emphasizes the even compactly
 supported density, whereas the Fabius normalization emphasizes its cumulative distribution
 function.  Arias de Reyna's 1982 paper gave a systematic treatment of the compactly supported
 function, including its Fourier product, probability interpretation, partitions of unity,
 derivatives, and dyadic values; an English translation appeared in 2017
 \cite{arias1982}.  His later arithmetic paper organized the exact rational sequences and
-denominator questions \cite{arias2018}.
+denominator questions \cite{arias2018}.  Haugland's note \cite{haugland2016} gives a
+practical algorithm for evaluating $F$ at dyadic rationals, closely related to the
+bit-recursion of \Cref{sec:dyadic}.
 
 The present article is not merely a paraphrase of those papers.  It follows the proof
 dependency graph of the Lean development in the \texttt{ProveIt} repository
@@ -1087,7 +1095,8 @@ Let $\wt(n)$ denote the sum of the binary digits of $n$, and put
 \begin{equation}
  \varepsilon_n=(-1)^{\wt(n)}.                             \label{eq:tm-sign}
 \end{equation}
-The sequence $(\varepsilon_n)$ is the $\{\pm1\}$ form of the Thue--Morse sequence.
+The sequence $(\varepsilon_n)$ is the $\{\pm1\}$ form of the Thue--Morse sequence
+\cite{allouche2003}.
 
 \begin{definition}[Signed extension]
 Define
@@ -1795,7 +1804,8 @@ where $C_n$ is a positive integer.  It can be defined without division by
  \prod_{j=k+1}^{n}(2^{2j}-1).                             \label{eq:C-division-free}
 \end{equation}
 The formal development proves directly that every $C_n$ is odd.  Modulo $2$, all factors in
-the two products are $1$, and Lucas's theorem shows that among the coefficients
+the two products are $1$, and Lucas's theorem \cite{fine1947} shows that among the
+coefficients
 $\binom{2n+3}{2k}$ with $0\le k\le n$ an odd number are odd.  This closes the induction.
 
 \subsection{The half moments $d_n$}
@@ -2476,7 +2486,8 @@ binomial coefficients.  Put
 \begin{equation}
  (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),                        \label{eq:qpochhammer}
 \end{equation}
-and write $\qbinom nkq$ for the Gaussian or $q$-binomial coefficient.  The base $q=1/2$
+and write $\qbinom nkq$ for the Gaussian or $q$-binomial coefficient
+\cite{andrews1976,gasper2004,kac2002,dlmf17}.  The base $q=1/2$
 is forced by the dilation grid $1,2,4,\ldots$: the corresponding Pochhammer product is the
 node polynomial for reciprocal dyadic scales.
 
@@ -2528,6 +2539,11 @@ Here the real value on the left is embedded in $\C$.  The right side is independ
 $Q$, so the identity also holds for real, rational, and Gaussian-rational shifts.  If
 $0\le m\le2^n$, then $\mathcal F(m/2^n)=F(m/2^n)$, giving the bounded formula.
 \end{theorem}
+
+The shape \eqref{eq:qbinomial-dyadic} was first found experimentally, with the particular
+shift $Q=1/2$, and posted as a conjecture in 2019 \cite{reshetnikovMSE}.  The formal
+development proves it for all $m,n\in\N$, for every complex $Q$, and for every
+unreduced representation $m/2^n$ of a dyadic rational.
 
 \begin{proofidea}
 There are two nested finite differences.  Inside a block of length $2^k$, the generating
@@ -3152,7 +3168,8 @@ nonconstant.
 \begin{proof}
 The zero coefficient is zero by definition.  For $k\ne0$, change variables $s=2^t$ in
 \eqref{eq:Psi-Fourier-def}.  Dyadic periodization turns the integral over one logarithmic
-period into a Mellin transform.  The basic Mellin identity is
+period into a Mellin transform; this is the standard harmonic-sum framework for dyadic
+periodicities \cite{flajolet1995}.  The basic Mellin identity is
 \begin{equation}
  \int_0^\infty s^{z-1}\log(1-\e^{-s})\dd s
  =-\Gamma(z)\zeta(1+z),\qquad \Re z>0.                    \label{eq:Mellin-Bose}
@@ -3217,7 +3234,8 @@ For sufficiently small $x>0$, define
 \begin{equation}
  W=W_{-1}(-Lx),                                             \label{eq:W-def}
 \end{equation}
-where $W_{-1}$ is the lower real branch of Lambert's $W$-function, and put
+where $W_{-1}$ is the lower real branch of Lambert's $W$-function \cite{corless1996},
+and put
 \begin{equation}
  \lambda=\lambda(x)=-\frac{W}{L}.                          \label{eq:lambda-def}
 \end{equation}
@@ -4737,6 +4755,21 @@ V.~L.~Rvachev and V.~A.~Rvachev,
 \newblock \emph{Dopovidi Akademii Nauk Ukrains'koi RSR, Series A}
   (1971), 705--707, 764.  Ukrainian, with English and Russian summaries.
 
+\bibitem{rvachev1973}
+V.~A.~Rvachev,
+\newblock Certain functions with compact support and their applications,
+\newblock in \emph{Mathematical Physics and Functional Analysis}, Kharkov
+  (1973), 139--149, 194.  Russian.
+
+\bibitem{rvachev1990}
+V.~A.~Rvachev,
+\newblock Compactly supported solutions of functional-differential equations
+  and their applications,
+\newblock \emph{Russian Mathematical Surveys} \textbf{45} (1990), no.~1,
+  87--120.
+\newblock Translated from \emph{Uspekhi Matematicheskikh Nauk} \textbf{45}
+  (1990), no.~1, 77--103, 222.
+
 \bibitem{arias1982}
 J.~Arias de Reyna,
 \newblock Definición y estudio de una función indefinidamente diferenciable de
@@ -4753,6 +4786,11 @@ J.~Arias de Reyna,
 \newblock \emph{INTEGERS} \textbf{18} (2018), Article A51;
   arXiv:\nolinkurl{1702.06487}.
 
+\bibitem{haugland2016}
+J.~K.~Haugland,
+\newblock Evaluating the Fabius function,
+\newblock arXiv:\nolinkurl{1609.07999} (2016).
+
 \bibitem{grzegorczyk1957}
 A.~Grzegorczyk,
 \newblock On the definitions of computable real continuous functions,
@@ -4763,6 +4801,49 @@ R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey, and D.~E.~Knuth,
 \newblock On the Lambert $W$ function,
 \newblock \emph{Advances in Computational Mathematics}
   \textbf{5} (1996), 329--359.
+
+\bibitem{flajolet1995}
+P.~Flajolet, X.~Gourdon, and P.~Dumas,
+\newblock Mellin transforms and asymptotics: harmonic sums,
+\newblock \emph{Theoretical Computer Science} \textbf{144} (1995), 3--58.
+
+\bibitem{fine1947}
+N.~J.~Fine,
+\newblock Binomial coefficients modulo a prime,
+\newblock \emph{American Mathematical Monthly} \textbf{54} (1947), 589--592.
+
+\bibitem{allouche2003}
+J.-P.~Allouche and J.~Shallit,
+\newblock \emph{Automatic Sequences: Theory, Applications, Generalizations},
+\newblock Cambridge University Press, 2003.
+
+\bibitem{andrews1976}
+G.~E.~Andrews,
+\newblock \emph{The Theory of Partitions},
+\newblock Encyclopedia of Mathematics and its Applications~2,
+  Addison--Wesley, 1976.
+
+\bibitem{gasper2004}
+G.~Gasper and M.~Rahman,
+\newblock \emph{Basic Hypergeometric Series}, second edition,
+\newblock Encyclopedia of Mathematics and its Applications~96,
+  Cambridge University Press, 2004.
+
+\bibitem{kac2002}
+V.~Kac and P.~Cheung,
+\newblock \emph{Quantum Calculus},
+\newblock Universitext, Springer, 2002.
+
+\bibitem{dlmf17}
+NIST Digital Library of Mathematical Functions, Chapter~17,
+\newblock \emph{$q$-Hypergeometric and Related Functions},
+\newblock \url{https://dlmf.nist.gov/17}.
+
+\bibitem{reshetnikovMSE}
+V.~Reshetnikov,
+\newblock A conjectured closed form for the Fabius function at dyadic
+  rationals,
+\newblock Mathematics Stack Exchange (2019).
 
 \bibitem{proveit}
 V.~Reshetnikov,
