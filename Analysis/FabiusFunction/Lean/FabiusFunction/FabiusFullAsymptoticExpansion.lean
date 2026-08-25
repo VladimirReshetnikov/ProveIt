@@ -58,10 +58,9 @@ private theorem ratio_fullExpansion_of_kernelMass
   apply hreal'.congr Filter.EventuallyEq.rfl
   filter_upwards [
     tendsto_dyadicLambertPhase_atTop.eventually_gt_atTop 0] with t hphase
-  have hkernel := fabiusSaddleRatio_ofReal_eq_kernelMass F hF
+  exact fabiusSaddleKernelMass_re_eq_ratio F hF
     (x := ((2 : ℝ) ^ (-t)))
     (fabiusLambertRadius_pos ((2 : ℝ) ^ (-t))) hphase
-  simpa only [Complex.ofReal_re] using congrArg Complex.re hkernel.symm
 
 /-- The real normalized saddle ratio has the full mass expansion on the
 dyadic real logarithmic scale. -/
