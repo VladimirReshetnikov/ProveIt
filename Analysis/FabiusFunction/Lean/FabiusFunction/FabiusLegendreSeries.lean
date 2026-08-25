@@ -8,7 +8,9 @@ import Mathlib.Topology.Algebra.InfiniteSum.NatInt
 This file combines the exact coefficient evaluation with the analytic
 convergence theorem.  The expansion is understood on the natural Legendre
 interval `[-1, 1]`; convergence there is absolute and uniform, and therefore
-also pointwise at both endpoints.
+also pointwise at both endpoints.  We record the complete orthogonality
+formula and absolute summability of both the full coefficient sequence and
+its even subsequence.
 -/
 
 set_option autoImplicit false
@@ -123,6 +125,21 @@ theorem integral_eval_legendrePolynomial_mul_eq_zero_of_ne
     legendrePolynomial_contDiff_infty
     legendreSturmLiouville_eval_legendrePolynomial hmn
 
+/-- Complete orthogonality formula for the ordinary Legendre basis, including
+the diagonal normalization. -/
+theorem integral_eval_legendrePolynomial_mul (m n : ℕ) :
+    (∫ x in (-1 : ℝ)..1,
+      (legendrePolynomial m).eval x * (legendrePolynomial n).eval x) =
+      if m = n then 2 / (((2 * n + 1 : ℕ) : ℝ)) else 0 := by
+  by_cases hmn : m = n
+  · subst m
+    rw [if_pos rfl]
+    convert integral_sq_eval_legendrePolynomial n using 1
+    apply intervalIntegral.integral_congr
+    intro x _hx
+    ring
+  · rw [if_neg hmn, integral_eval_legendrePolynomial_mul_eq_zero_of_ne hmn]
+
 /-- The ordinary Legendre polynomial has absolute value at most one on its
 natural interval. -/
 theorem abs_eval_legendrePolynomial_le_one (n : ℕ) (x : ℝ)
@@ -139,12 +156,35 @@ theorem abs_eval_legendrePolynomial_le_one (n : ℕ) (x : ℝ)
         simp only [eval_add, eval_mul, eval_sub, eval_pow, eval_X, eval_one,
           eval_C] at h
         linear_combination -h
-      · rw [eval_legendrePolynomial_neg, eval_legendrePolynomial_one, mul_one]
-        rw [pow_two, ← pow_add,
-          show (n + 1) + (n + 1) = 2 * (n + 1) by omega]
-        rw [pow_mul]
+      · rw [eval_legendrePolynomial_neg_one, pow_two, ← pow_add,
+          show (n + 1) + (n + 1) = 2 * (n + 1) by omega, pow_mul]
         norm_num
       · simp
+
+/-- The full Fourier--Legendre coefficient sequence of Rvachev's smooth
+function is absolutely summable. -/
+theorem summable_abs_rvachevFullLegendreCoefficient
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Summable (fun n ↦ |rvachevFullLegendreCoefficient F n|) := by
+  simpa only [legendreSeriesCoefficientOf_rvachevUp] using
+    summable_abs_legendreSeriesCoefficientOf
+      (rvachevUp F) (rvachev_contDiff F hF)
+      (fun n x ↦ (legendrePolynomial n).eval x)
+      legendrePolynomial_contDiff_infty
+      legendreSturmLiouville_eval_legendrePolynomial
+      abs_eval_legendrePolynomial_le_one
+
+/-- The even coefficient sequence used in the displayed Rvachev--Legendre
+series is absolutely summable. -/
+theorem summable_abs_rvachevLegendreCoefficient
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Summable (fun n ↦ |rvachevLegendreCoefficient F n|) := by
+  have h := (summable_abs_rvachevFullLegendreCoefficient F hF).comp_injective
+    (mul_right_injective₀ (two_ne_zero' ℕ))
+  exact h.congr (fun n ↦ by
+    change |rvachevFullLegendreCoefficient F (2 * n)| =
+      |rvachevLegendreCoefficient F n|
+    rw [rvachevFullLegendreCoefficient_even_eq])
 
 private theorem hasSum_rvachevFullLegendreSeries_of_properties
     (F : BoundedFabius) (hF : IsFabius F)

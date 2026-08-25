@@ -84,12 +84,6 @@ theorem rvachevFullLegendreCoefficient_odd_eq_zero
       (∫ x in (-1 : ℝ)..1, g x) = 0
   rw [hzero, mul_zero]
 
-private lemma rvachev_neg_one_eq_zero
-    (F : BoundedFabius) (hF : IsFabius F) :
-    rvachevUp F (-1) = 0 := by
-  rw [rvachevUp, if_pos (by norm_num : (-1 : ℝ) ≤ 0)]
-  simpa only [neg_add_cancel] using hF.zero_of_nonpos 0 le_rfl
-
 /-- The even power moments over the support interval are the exact arithmetic
 moments `moment k`. -/
 theorem integral_even_power_mul_rvachev_eq_moment
@@ -108,7 +102,7 @@ theorem integral_even_power_mul_rvachev_eq_moment
     have hxne : x ≠ -1 := by
       intro heq
       subst x
-      exact hup (rvachev_neg_one_eq_zero F hF)
+      exact hup (rvachevUp_eq_zero_of_le_neg_one F hF le_rfl)
     exact ⟨lt_of_le_of_ne hmem.1 (Ne.symm hxne), hmem.2⟩
   rw [intervalIntegral.integral_eq_integral_of_support_subset hsupport]
   exact (moment_eq_integral F hF k).symm
