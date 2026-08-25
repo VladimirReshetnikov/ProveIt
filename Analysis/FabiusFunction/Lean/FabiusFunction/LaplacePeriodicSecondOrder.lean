@@ -96,16 +96,25 @@ theorem norm_negativeLaplaceForwardTailFirst_le_inv_sq
       rw [tsum_geometric_of_norm_lt_one (by norm_num : ‖(1 / 2 : ℝ)‖ < 1)]
       ring
 
+/-- The derivative of the forward tail is `O(s⁻²)` on the full real
+positive ray. -/
+theorem negativeLaplaceForwardTailFirst_isBigO_inv_sq_real :
+    (fun s : ℝ => negativeLaplaceForwardTailFirst s) =O[atTop]
+      (fun s : ℝ => (s ^ 2)⁻¹) := by
+  apply IsBigO.of_bound 8
+  filter_upwards [eventually_ge_atTop (1 : ℝ)] with s hs
+  have h := norm_negativeLaplaceForwardTailFirst_le_inv_sq hs
+  calc
+    ‖negativeLaplaceForwardTailFirst s‖ ≤ 8 / s ^ 2 := h
+    _ = 8 * ‖(s ^ 2)⁻¹‖ := by
+      rw [div_eq_mul_inv, Real.norm_eq_abs,
+        abs_of_nonneg (by positivity : 0 ≤ (s ^ 2)⁻¹)]
+
+/-- Natural-number sampling of the real positive-ray tail estimate. -/
 theorem negativeLaplaceForwardTailFirst_isBigO_inv_sq_nat :
     (fun n : ℕ => negativeLaplaceForwardTailFirst n) =O[atTop]
       (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) := by
-  apply IsBigO.of_bound 8
-  filter_upwards [eventually_atTop.2 ⟨1, fun n hn => hn⟩] with n hn
-  have h := norm_negativeLaplaceForwardTailFirst_le_inv_sq
-    (by exact_mod_cast hn : (1 : ℝ) ≤ n)
-  simp only [Real.norm_eq_abs,
-    abs_of_nonneg (by positivity : 0 ≤ ((n : ℝ) ^ 2)⁻¹)]
-  simpa [div_eq_mul_inv] using h
+  simpa using negativeLaplaceForwardTailFirst_isBigO_inv_sq_real.natCast_atTop
 
 theorem negativeLaplaceLogFirst_eq_periodic_of_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s)
@@ -297,18 +306,27 @@ theorem dyadicEndpointSecondOrder_sub_periodicMain_isBigO_of_bounds
     ring
   · exact Filter.EventuallyEq.rfl
 
+/-- A globally bounded periodic derivative stays `O(1)` after composition with
+an arbitrary phase map and along an arbitrary filter. -/
+theorem deriv_negativeLaplacePsi_comp_isBigO_one
+    {α : Type*} (l : Filter α) (phase : α → ℝ) :
+    (fun x => deriv negativeLaplacePsi (phase x)) =O[l]
+      (fun _ : α => (1 : ℝ)) := by
+  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
+      isBounded_range_deriv_negativeLaplacePsi with ⟨C, hC⟩
+  apply IsBigO.of_bound C
+  filter_upwards with x
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_one]
+  simpa [Metric.mem_closedBall, Real.dist_eq] using
+    hC (Set.mem_range_self (phase x))
+
 /-- Boundedness of the periodic derivative remains uniform after sampling it
 at the logarithmic phases of the natural numbers. -/
 theorem deriv_negativeLaplacePsi_logb_isBigO_one_nat :
     (fun n : ℕ => deriv negativeLaplacePsi (Real.logb 2 n)) =O[atTop]
       (fun _ : ℕ => (1 : ℝ)) := by
-  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
-      isBounded_range_deriv_negativeLaplacePsi with ⟨C, hC⟩
-  apply IsBigO.of_bound C
-  filter_upwards with n
-  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_one]
-  simpa [Metric.mem_closedBall, Real.dist_eq] using
-    hC (Set.mem_range_self (Real.logb 2 n))
+  exact deriv_negativeLaplacePsi_comp_isBigO_one atTop
+    (fun n : ℕ => Real.logb 2 n)
 
 /-- The second endpoint cumulant equals its logarithmic-square and periodic
 phase main terms up to `O(1/n)`.  The linear logarithmic term from `q''`
@@ -354,4 +372,3 @@ theorem log_fabius_dyadic_sub_periodicDerivativeMain_isBigO
   · exact Filter.EventuallyEq.rfl
 
 end Fabius
-

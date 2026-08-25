@@ -20,6 +20,7 @@ import FabiusFunction.SharpFlatness
 import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
+import FabiusFunction.FabiusComputableSpline
 
 /-!
 # Fabius function
@@ -49,4 +50,9 @@ the exact support `(-1,1)` of `up` and its strict unimodality, convexity of
 `F(x) ≤ 2^C(n+1,2) x^n` on `2^n x ≤ 1`, the sharp uniform derivative bounds
 `|F^(k)| ≤ 2^C(k+1,2)` with the value attained, and the exact real-analytic
 locus: `F` is analytic at `x` if and only if `x ∉ [0,1]`.
+
+Finally, the canonical bounded Fabius function is proved computable in the
+Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
+computable dyadic names, and the explicit recursive modulus `d(n)=2n` gives
+effective uniform continuity.
 -/

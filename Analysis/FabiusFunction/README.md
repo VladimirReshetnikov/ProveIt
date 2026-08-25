@@ -80,6 +80,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
+| Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
 `(F : BoundedFabius) (hF : IsFabius F)`.  Canonical corollaries specialize
@@ -95,6 +96,29 @@ corresponding equality; `*_cast` bridges exact rational formulas to analysis;
 and `*_zpow` uses integer exponents so inverse powers remain visible without
 division side conditions.  The module docstrings state endpoint conventions
 and any corrections to the printed sources.
+
+## Computability as a real function
+
+`FabiusComputability.lean` formalizes the two clauses in the
+Grzegorczyk definition of a computable real function.  A computable real
+sequence is presented by one recursive fast dyadic name, uniform in the
+sequence index and precision: at precision `p`, a signed-natural pair
+`(a,b)` denotes `(a-b)/2^p` with error at most `2^-p`.
+`SequentiallyComputable` says that every such sequence is mapped to another
+such sequence.  `EffectivelyUniformContinuous` uses a recursive positive
+modulus and the source's reciprocal convention for positive precision
+indices.
+
+The algorithm in `FabiusComputableSpline.lean` is entirely natural-number
+and primitive-recursive.  It computes the Thue--Morse bit, evaluates the
+finite centered uniform spline on the dyadic grid of order `p+3`, and rounds
+to the nearest dyadic of order `p`.  Its proved evaluator error is
+`5 * 2^(-(p+3))`.  Propagating the input-name error through the global
+`2`-Lipschitz bound costs another `2 * 2^(-(p+3))`, so the output error is
+within `2^-p`.  This proves `fabius_sequentiallyComputable`.  The
+primitive-recursive modulus `d(n)=2n` proves effective uniform continuity,
+and `fabius_isComputableRealFunction` packages both clauses for the canonical
+bounded Fabius function.
 
 ## Exact dyadic evaluation
 
