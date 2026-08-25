@@ -43,7 +43,8 @@ below rather than deleted.
 | The four `negativeLaplaceLog*_two_mul` and three `negativeLaplaceVerticalLog*_two_mul` proofs, consolidated into `ScalingRecurrence` | `affa557d2` | `ScalingRecurrence` green, 1984 jobs, exit 0 |
 | The repeated Legendre hypothesis bundle, four copies | `4a1639106` | not yet |
 | Missing module headers on twelve modules, stub headers on five | `4c59369fe` | comment-only |
-| Undocumented public declarations: 862 to 396 and falling | `35d14fe40`, `9827b5485` | comment-only |
+| Undocumented public declarations: 862 to 176 | `35d14fe40`, `9827b5485`, `ae6176d6e` | comment-only |
+| `expCoeff` values missing from the generic saddle algebra | asymptotic-expansion branch | `FabiusSaddleJetClosedForm` green |
 
 Two builds have run, both on a peer's build slot at the SHAs named above, in a
 sparse detached worktree whose `.lake/packages` is a junction to the shared
@@ -1984,6 +1985,26 @@ CONFIRMED:
 2. `standardGaussian` is ...
 
 #### `expCoeff_one` and `expCoeff_two` are missing from the generic algebra and exist only as a private `Polynomial ℂ`-specific copy
+
+**DONE** by the asymptotic-expansion branch, in
+`FabiusSecondSaddleCorrection.lean` and `FabiusSaddleLeadingCoefficient.lean`.
+Ten generic declarations over `[CommRing R] [Algebra ℚ R]` close the gap:
+`natCast_succ_mul_expCoeff_succ`, `expCoeff_one`, `two_mul_expCoeff_two`,
+`six_mul_expCoeff_three`, `twentyFour_mul_expCoeff_four`, `expCoeff_two`,
+`expCoeff_three`, `expCoeff_four`,
+`twentyFour_mul_expCoeff_four_of_sq_eq_neg_one`, `two_mul_logCoeff_two`.  They
+come in denominator-cleared and rational-scaled pairs, because a commutative
+`ℚ`-algebra need not be a field.  Two further generic lemmas were added
+alongside: `expCoeff_succ_eq_add` and `expCoeff_sub_self_congr`, the second
+recording that the exponential recurrence is affine in its top exponent
+coefficient, which is what makes the leading-coefficient law provable at
+general order rather than checkable order by order.
+
+Landed downstream-most rather than in `SaddleExpansionAlgebra.lean`, with doc
+comments naming that module as the correct long-term home.  This is the
+opposite call from the triangular-identity entry above, and deliberately so:
+pay a root-module invalidation to REMOVE duplication that already exists, never
+to pre-position a new declaration that has no duplicates yet.
 
 Confidence high.  `FabiusSaddleExpansionCoefficients.lean:273`, `SaddleExpansionAlgebra.lean:51`, `SaddleLogExpansionAlgebra.lean:44`, `SaddleLogExpansionAlgebra.lean:49`
 

@@ -91,17 +91,42 @@ statement anywhere in the file of what it was for.
 
 ### Doc comments
 
-Roughly a third of public declarations have no doc comment.  Run the script
-for current numbers; the shape of the backlog is stable, and about half of it
-sits in fifteen files.  The worst are `PeriodicFourier`, `Existence`,
-`FabiusSaddleMassAllOrders`, `PeriodicRegularity`, `DyadicClosedForm`,
-`FabiusLogMainDefect`, `SaddleLogAsymptoticTransfer` and `StepMeasureBridge`.
+The backlog began at 862 undocumented public declarations, 31% of the corpus.
+Two documentation waves and a pass over the two root modules brought it to 176,
+or 6.2%.  Run the script for current numbers.
 
-The backlog is concentrated in the technical interior of the asymptotic
-development, not in the paper-facing API.  That is the right place for it to
-be concentrated, but it is also where a reader needs help most, since those
+What remains is not a random tail.  Of the 176, about 124 sit in the nine
+modules the asymptotic-expansion branch was reading and building against while
+this work ran -- `PeriodicRegularity`, `PeriodicSmooth`,
+`FabiusSaddleExpansionCoefficients`, `SaddleExpansionAlgebra`,
+`GaussianPolynomialContraction`, `FabiusSaddleCoefficientRecurrence`,
+`FabiusSaddleTail` and neighbours -- which were deliberately left alone rather
+than edited underneath another agent.  They are the obvious next batch for
+whoever holds them.
+
+The backlog was always concentrated in the technical interior of the asymptotic
+development rather than in the paper-facing API.  That is the right place for it
+to be concentrated, but it is also where a reader needs help most, since those
 modules are long chains of intermediate estimates whose purpose is invisible
 locally.
+
+### What the review pass caught
+
+Both waves paired each documenting agent with an independent auditor, and that
+was not ceremony.  The recurring defect was never a wrong formula -- it was a
+false claim about dependencies: "every coefficient computation below factors
+through this" when one does not, "the denominator in every ratio bound here"
+when it is the denominator of one, "used by X" when X re-derives it inline.
+Prose asserting a dependency is much easier to get wrong than prose asserting a
+statement, because the statement is on the next line and the dependency is not.
+
+Two doc comments had silently dropped an ambient `IsFabius F`; one stated its
+two interval inclusions in the wrong directions; one said an interval
+restriction was necessary when the file proves no converse.
+
+The second wave was told this in advance and instructed to write no "used by"
+clause at all unless it had been grepped.  78 verified consumer clauses came
+out of that, and the defect rate fell accordingly.
 
 ### Doc comments that contradicted their statements
 
