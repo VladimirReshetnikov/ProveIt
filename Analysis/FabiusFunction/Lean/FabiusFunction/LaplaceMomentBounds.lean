@@ -15,7 +15,10 @@ at the intermediate tilt `3s/4`, together with the exact dyadic product
 factor between `s/2` and `s`, proves the estimate without any periodic
 regularity input.  The cases `k=2,3,4` discharge both hypotheses of
 `EndpointLaplaceComparison` and give an unconditional sharp dyadic formula
-with its exact cumulant correction.
+with its exact cumulant correction.  Pointwise, the two transfer inputs are
+at most `256/n` and `104448/n` for `n ≥ 2`.  Consequently, for
+`n ≥ 224043` the endpoint error is at most `209408/n`, and the complete
+cumulant logarithmic error is at most `2512945/(12n)`.
 -/
 
 set_option autoImplicit false
@@ -360,23 +363,16 @@ theorem normalizedLaplaceMoment_four_le
   field_simp [hs0.ne'] at hsq ⊢
   nlinarith [sq_nonneg s, sq_nonneg (s ^ 3)]
 
-/-- The square of `dyadicEndpointSecondOrder F` is `O(1/n)` along the
-naturals; the proof uses the explicit constant `256` and the `k = 2` moment
-bound above.  It supplies the `hsecond` hypothesis of
-`dyadicEndpointLaplaceLogError_add_secondOrder_isBigO` and of
-`log_fabius_dyadic_sub_cumulantMain_isBigO`, both invoked later in this file.
-Requires `IsFabius F`. -/
-theorem dyadicEndpointSecondOrder_sq_isBigO
-    (F : BoundedFabius) (hF : IsFabius F) :
-    (fun n : ℕ => dyadicEndpointSecondOrder F n ^ 2) =O[atTop]
-      (fun n : ℕ => (n : ℝ)⁻¹) := by
-  apply IsBigO.of_bound 256
-  filter_upwards [eventually_atTop.2 ⟨2, fun n hn => hn⟩] with n hn
+/-- Effective pointwise form of `dyadicEndpointSecondOrder_sq_isBigO`.
+The square of the second endpoint correction is at most `256 / n` on
+`2 ≤ n`. -/
+theorem dyadicEndpointSecondOrder_sq_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 2 ≤ n) :
+    dyadicEndpointSecondOrder F n ^ 2 ≤ 256 / (n : ℝ) := by
   have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
   have hsq := normalizedLaplaceMoment_two_sq_le F hF
     (by exact_mod_cast hn : (2 : ℝ) ≤ n)
-  rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _),
-    Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn0)]
   unfold dyadicEndpointSecondOrder
   rw [← normalizedLaplaceMoment_two_eq_logSecond_add_first_sq]
   calc
@@ -384,17 +380,52 @@ theorem dyadicEndpointSecondOrder_sq_isBigO
         (n : ℝ) ^ 2 / 4 * normalizedLaplaceMoment F 2 n ^ 2 := by ring
     _ ≤ (n : ℝ) ^ 2 / 4 * (1024 / (n : ℝ) ^ 3) := by
       exact mul_le_mul_of_nonneg_left hsq (by positivity)
-    _ = 256 * (n : ℝ)⁻¹ := by
+    _ = 256 / (n : ℝ) := by
       field_simp
       norm_num
 
-/-- The combined higher-moment term `16 * (n * normalizedLaplaceMoment F 3 n
-+ n ^ 2 * normalizedLaplaceMoment F 4 n)` is `O(1/n)` along the naturals; the
-proof uses the explicit constant `104448` and the `k = 3, 4` bounds above.
-It supplies the `hhigher` hypothesis of
-`dyadicEndpointLaplaceLogError_add_secondOrder_isBigO` and of
-`log_fabius_dyadic_sub_cumulantMain_isBigO`, both invoked later in this file.
-Requires `IsFabius F`. -/
+/-- The square of `dyadicEndpointSecondOrder F` is `O(1/n)` along the
+naturals.  This compatibility form is an immediate asymptotic wrapper around
+the stronger pointwise estimate `dyadicEndpointSecondOrder_sq_le`. -/
+theorem dyadicEndpointSecondOrder_sq_isBigO
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun n : ℕ => dyadicEndpointSecondOrder F n ^ 2) =O[atTop]
+      (fun n : ℕ => (n : ℝ)⁻¹) := by
+  apply IsBigO.of_bound 256
+  filter_upwards [eventually_atTop.2 ⟨2, fun n hn => hn⟩] with n hn
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _),
+    Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn0)]
+  simpa [div_eq_mul_inv] using dyadicEndpointSecondOrder_sq_le F hF hn
+
+/-- Effective pointwise form of `dyadicHigherLaplaceMoments_isBigO`.
+The combined third- and fourth-moment transfer term is at most `104448 / n`
+on `2 ≤ n`. -/
+theorem dyadicHigherLaplaceMoments_le
+    (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 2 ≤ n) :
+    16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+      (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) ≤
+        104448 / (n : ℝ) := by
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  have h3 := normalizedLaplaceMoment_three_le F hF
+    (by exact_mod_cast hn : (2 : ℝ) ≤ n)
+  have h4 := normalizedLaplaceMoment_four_le F hF
+    (by exact_mod_cast hn : (2 : ℝ) ≤ n)
+  calc
+    16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+        (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) ≤
+      16 * ((n : ℝ) * (384 / (n : ℝ) ^ 2) +
+        (n : ℝ) ^ 2 * (6144 / (n : ℝ) ^ 3)) := by gcongr
+    _ = 104448 / (n : ℝ) := by
+      field_simp
+      norm_num
+
+/-- The combined higher-moment term
+`16 * (n * normalizedLaplaceMoment F 3 n + n ^ 2 *
+normalizedLaplaceMoment F 4 n)` is `O(1/n)` along the naturals.  This
+compatibility form wraps the stronger pointwise estimate
+`dyadicHigherLaplaceMoments_le`. -/
 theorem dyadicHigherLaplaceMoments_isBigO
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => 16 *
@@ -404,10 +435,6 @@ theorem dyadicHigherLaplaceMoments_isBigO
   apply IsBigO.of_bound 104448
   filter_upwards [eventually_atTop.2 ⟨2, fun n hn => hn⟩] with n hn
   have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
-  have h3 := normalizedLaplaceMoment_three_le F hF
-    (by exact_mod_cast hn : (2 : ℝ) ≤ n)
-  have h4 := normalizedLaplaceMoment_four_le F hF
-    (by exact_mod_cast hn : (2 : ℝ) ≤ n)
   have hR3 : 0 ≤ normalizedLaplaceMoment F 3 n :=
     normalizedLaplaceMoment_nonneg F hF 3 hn0
   have hR4 : 0 ≤ normalizedLaplaceMoment F 4 n :=
@@ -417,38 +444,165 @@ theorem dyadicHigherLaplaceMoments_isBigO
       ((n : ℝ) * normalizedLaplaceMoment F 3 n +
         (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n)),
     Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn0)]
-  calc
-    16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
-        (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) ≤
-      16 * ((n : ℝ) * (384 / (n : ℝ) ^ 2) +
-        (n : ℝ) ^ 2 * (6144 / (n : ℝ) ^ 3)) := by gcongr
-    _ = 104448 * (n : ℝ)⁻¹ := by
-      field_simp
-      norm_num
+  simpa [div_eq_mul_inv] using dyadicHigherLaplaceMoments_le F hF hn
 
-/-- The endpoint/Laplace logarithmic comparison is unconditional: the two
-moment estimates required by the general transfer theorem follow from
-log-convexity and the exact dyadic factor. -/
+/-- Fully effective unconditional endpoint/Laplace comparison.  The threshold
+`224043` makes the two pointwise moment bounds imply the radius-`1/2`
+logarithm-chart hypothesis; no optimality for the actual error is claimed. -/
+theorem abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_unconditional
+    (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 224043 ≤ n) :
+    |dyadicEndpointLaplaceLogError n + dyadicEndpointSecondOrder F n| ≤
+      209408 / (n : ℝ) := by
+  have hn2 : 2 ≤ n := by omega
+  have hn0_nat : 0 < n := by omega
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn0_nat
+  have hnr : (224043 : ℝ) ≤ n := by exact_mod_cast hn
+  have hsecond := dyadicEndpointSecondOrder_sq_le F hF hn2
+  have hhigher := dyadicHigherLaplaceMoments_le F hF hn2
+  have hsecond_nonneg : 0 ≤ dyadicEndpointSecondOrder F n := by
+    unfold dyadicEndpointSecondOrder
+    rw [← normalizedLaplaceMoment_two_eq_logSecond_add_first_sq]
+    exact mul_nonneg (by positivity)
+      (normalizedLaplaceMoment_nonneg F hF 2 hn0)
+  have hmargin_nonneg : 0 ≤ 1 / 2 - 104448 / (n : ℝ) := by
+    rw [sub_nonneg, div_le_iff₀ hn0]
+    norm_num
+    linarith
+  have hmargin_sq :
+      256 / (n : ℝ) ≤ (1 / 2 - 104448 / (n : ℝ)) ^ 2 := by
+    rw [div_le_iff₀ hn0]
+    field_simp [hn0.ne']
+    nlinarith [sq_nonneg ((n : ℝ) - 224043)]
+  have hsecond_margin :
+      |dyadicEndpointSecondOrder F n| ≤ 1 / 2 - 104448 / (n : ℝ) := by
+    rw [abs_of_nonneg hsecond_nonneg]
+    exact (sq_le_sq₀ hsecond_nonneg hmargin_nonneg).mp
+      (hsecond.trans hmargin_sq)
+  have hsmall :
+      |dyadicEndpointSecondOrder F n| +
+        16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+          (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n) ≤ 1 / 2 := by
+    linarith
+  have hlog := abs_dyadicEndpointLaplaceLogError_add_secondOrder_le
+    F hF n (by omega) (by
+      simpa [dyadicEndpointSecondOrder] using hsmall)
+  calc
+    |dyadicEndpointLaplaceLogError n + dyadicEndpointSecondOrder F n| ≤
+        2 * dyadicEndpointSecondOrder F n ^ 2 +
+          2 * (16 * ((n : ℝ) * normalizedLaplaceMoment F 3 n +
+            (n : ℝ) ^ 2 * normalizedLaplaceMoment F 4 n)) := by
+      simpa [dyadicEndpointSecondOrder] using hlog
+    _ ≤ 2 * (256 / (n : ℝ)) + 2 * (104448 / (n : ℝ)) := by gcongr
+    _ = 209408 / (n : ℝ) := by ring
+
+/-- Asymptotic compatibility form of the fully effective unconditional
+endpoint/Laplace comparison. -/
 theorem dyadicEndpointLaplaceLogError_add_secondOrder_isBigO_unconditional
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => dyadicEndpointLaplaceLogError n +
       dyadicEndpointSecondOrder F n) =O[atTop]
         (fun n : ℕ => (n : ℝ)⁻¹) := by
-  simpa [dyadicEndpointSecondOrder] using
-    dyadicEndpointLaplaceLogError_add_secondOrder_isBigO F hF
-      (by simpa [dyadicEndpointSecondOrder] using
-        dyadicEndpointSecondOrder_sq_isBigO F hF)
-      (dyadicHigherLaplaceMoments_isBigO F hF)
+  apply IsBigO.of_bound 209408
+  filter_upwards [eventually_atTop.2 ⟨224043, fun n hn => hn⟩] with n hn
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn0)]
+  simpa [div_eq_mul_inv] using
+    abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_unconditional F hF hn
 
-/-- Unconditional sharp dyadic formula with the exact cumulant correction. -/
+/-- Effective cumulant-form dyadic logarithmic estimate, combining the
+endpoint bound with the `4/n` negative-Laplace tail estimate and the
+`1/(12n)` Stirling remainder. -/
+theorem abs_log_fabius_dyadic_sub_cumulantMain_le_unconditional
+    (F : BoundedFabius) (hF : IsFabius F)
+    {n : ℕ} (hn : 224043 ≤ n) :
+    |Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) -
+        dyadicSharpCumulantMain F n| ≤ 2512945 / (12 * (n : ℝ)) := by
+  have hn1 : 1 ≤ n := by omega
+  have hn0_nat : 0 < n := by omega
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn0_nat
+  have hendpoint :=
+    abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_unconditional
+      F hF hn
+  have htail : |negativeLaplaceTailError n| ≤ 4 / (n : ℝ) := by
+    have hexp : (n : ℝ) ≤ Real.exp n := by
+      exact (le_add_of_nonneg_right (by norm_num : (0 : ℝ) ≤ 1)).trans
+        (Real.add_one_le_exp n)
+    have hinv : Real.exp (-(n : ℝ)) ≤ (n : ℝ)⁻¹ := by
+      rw [Real.exp_neg]
+      exact (inv_le_inv₀ (Real.exp_pos _) hn0).2 hexp
+    have hlogn : Real.log 2 ≤ (n : ℝ) := by
+      have hn1r : (1 : ℝ) ≤ n := by exact_mod_cast hn1
+      linarith [Real.log_lt_sub_one_of_pos
+        (by norm_num : (0 : ℝ) < 2) (by norm_num)]
+    calc
+      |negativeLaplaceTailError n| ≤ 4 * Real.exp (-(n : ℝ)) :=
+        abs_negativeLaplaceTailError_le_four_exp n hlogn
+      _ ≤ 4 * (n : ℝ)⁻¹ :=
+        mul_le_mul_of_nonneg_left hinv (by norm_num)
+      _ = 4 / (n : ℝ) := by rw [div_eq_mul_inv]
+  have hstirling : |dyadicStirlingLogError n| ≤ 1 / (12 * (n : ℝ)) := by
+    obtain ⟨hzero, hupper⟩ := dyadicStirlingLogError_bounds n hn1
+    rw [abs_of_nonneg hzero]
+    exact hupper
+  have hidentity :
+      Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) -
+          dyadicSharpCumulantMain F n =
+        negativeLaplaceTailError n +
+          (dyadicEndpointLaplaceLogError n + dyadicEndpointSecondOrder F n) -
+            dyadicStirlingLogError n := by
+    rw [log_fabius_dyadic_exact_sharp_decomposition_centered F hF n hn1]
+    unfold dyadicSharpCumulantMain
+    ring
+  rw [hidentity]
+  calc
+    |negativeLaplaceTailError n +
+        (dyadicEndpointLaplaceLogError n + dyadicEndpointSecondOrder F n) -
+          dyadicStirlingLogError n| ≤
+      |negativeLaplaceTailError n| +
+        |dyadicEndpointLaplaceLogError n + dyadicEndpointSecondOrder F n| +
+          |dyadicStirlingLogError n| := by
+        calc
+          _ ≤ |negativeLaplaceTailError n +
+              (dyadicEndpointLaplaceLogError n +
+                dyadicEndpointSecondOrder F n)| +
+              |dyadicStirlingLogError n| := by
+                simpa only [sub_eq_add_neg, abs_neg] using
+                  (abs_add_le
+                    (negativeLaplaceTailError n +
+                      (dyadicEndpointLaplaceLogError n +
+                        dyadicEndpointSecondOrder F n))
+                    (-dyadicStirlingLogError n))
+          _ ≤ (|negativeLaplaceTailError n| +
+                |dyadicEndpointLaplaceLogError n +
+                  dyadicEndpointSecondOrder F n|) +
+              |dyadicStirlingLogError n| := by
+                have h := abs_add_le (negativeLaplaceTailError n)
+                  (dyadicEndpointLaplaceLogError n +
+                    dyadicEndpointSecondOrder F n)
+                linarith
+    _ ≤ 4 / (n : ℝ) + 209408 / (n : ℝ) + 1 / (12 * (n : ℝ)) := by
+      gcongr
+    _ = 2512945 / (12 * (n : ℝ)) := by
+      field_simp [hn0.ne']
+      norm_num
+
+/-- Asymptotic compatibility form of the effective sharp dyadic formula with
+the exact cumulant correction. -/
 theorem log_fabius_dyadic_sub_cumulantMain_isBigO_unconditional
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ =>
       Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) -
         dyadicSharpCumulantMain F n) =O[atTop]
-      (fun n : ℕ => (n : ℝ)⁻¹) :=
-  log_fabius_dyadic_sub_cumulantMain_isBigO F hF
-    (dyadicEndpointSecondOrder_sq_isBigO F hF)
-    (dyadicHigherLaplaceMoments_isBigO F hF)
+      (fun n : ℕ => (n : ℝ)⁻¹) := by
+  apply IsBigO.of_bound (2512945 / 12)
+  filter_upwards [eventually_atTop.2 ⟨224043, fun n hn => hn⟩] with n hn
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (show 0 < n by omega)
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn0)]
+  have h := abs_log_fabius_dyadic_sub_cumulantMain_le_unconditional F hF hn
+  calc
+    |Real.log (fabiusReal F (((2 : ℝ) ^ n)⁻¹)) -
+        dyadicSharpCumulantMain F n| ≤ 2512945 / (12 * (n : ℝ)) := h
+    _ = (2512945 / 12) * (n : ℝ)⁻¹ := by field_simp
 
 end Fabius

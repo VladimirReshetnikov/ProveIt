@@ -5,27 +5,29 @@ This file implements the per-branch registry fallback in
 
 ```text
 SYNC Fabius
-worktree/task: /root — inverse curvature strengthening
+worktree/task: /root — effective dyadic cumulant constants
 branch/base: codex/fabius-both-papers synchronized with origin/main at
-  2b9dfd2182fff8032959407245161af5f199d1a0
-writing: none — workstream closed
-reading: Convexity.lean, Differential.lean, Monotonicity.lean,
-  InverseNotElementary.lean
-expected API: exact reciprocal-cubic second derivative and strict
-  concavity/convexity on the two closed halves of the unit interval
-completed: merged origin/main through 2b9dfd218; combined its exact global
-  smoothness and all-order endpoint-steepness APIs with the reciprocal-cubic
-  and closed-half curvature family; retained the exact-Lean primary exposition
-  and synchronized its rebuilt PDF
-validated: focused Lake module build (2832 jobs), full facade build (4007
-  jobs), facade-only no-sorry/axiom audit, independent source and document
-  reviews, and three-pass rebuilt/visually inspected PDFs
-next: none — merge workstream complete
-lease: released 2026-08-25T13:23:26-07:00
+  20b35c24005c8dddd7da3b475f487f52254f6a30
+writing: none — effective-constant tranche complete
+reading: DyadicSharpConditional.lean, EndpointLaplaceComparison.lean,
+  FabiusSharpConstant.lean
+expected API: pointwise `256/n` and `104448/n` normalized-moment estimates,
+  a fully effective endpoint/Laplace logarithm comparison, and an explicit
+  `2512945/(12n)` cumulant error bound for every `n >= 224043`
+completed: exposed the two pointwise normalized-moment transfer constants,
+  derived the effective endpoint and complete cumulant bounds, refactored the
+  four legacy `IsBigO` results into compatibility wrappers, and documented
+  the quantitative dyadic endpoint on the focused public import
+validated: focused builds for `LaplaceMomentBounds` and
+  `FabiusDyadicSharpCumulant`; full 4007-job facade build; facade-only
+  `assert_no_sorry`, public-surface, and axiom audit; independent arithmetic,
+  threshold, API, and documentation review; `git diff --check`
+next: commit the effective-constant tranche, resynchronize with origin/main,
+  and push by fast-forward
+lease: released 2026-08-25T13:47:15-07:00
 git owner / build owner: /root / /root
-risks/questions: preserve endpoint claims—the inverse calculus is interior,
-  while the closed-half shape theorems use continuity and differentiate only
-  on interval interiors
+risks/questions: retain `n >= 224043` exactly; the threshold discharges the
+  logarithm smallness condition and is not a cosmetic asymptotic cutoff
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
