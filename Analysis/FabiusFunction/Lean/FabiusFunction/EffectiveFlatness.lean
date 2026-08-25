@@ -6,7 +6,7 @@ import Mathlib.Analysis.Calculus.Deriv.MeanValue
 
 `FabiusFunction.FabiusFlatness` records that the signed extension is `o(x^n)`
 at the origin for every `n`.  That statement carries no constant.  This file
-supplies the effective form, which is elementary and sharp in shape:
+supplies an effective form, elementary and sharp in shape:
 
 `F(x) ≤ 2^C(n+1,2) x^n`  whenever  `0 ≤ x`  and  `2^n x ≤ 1`.
 
@@ -21,6 +21,13 @@ and iterating `n` times produces the factor
 `2 · (2 · 2) · (2 · 2^2) ⋯ = 2^(1 + 2 + ⋯ + n) = 2^C(n+1,2)`, which is exactly
 the scaling constant of equation (3).  Rvachev's function inherits the bound
 at both ends of its support through `up(x) = F(1 - |x|)`.
+
+`FabiusFunction.SharpFlatness` proves the strictly better bound
+`F(x) ≤ 2^C(n+1,2) / n! · x^n` by running the same induction through the
+fundamental theorem of calculus instead.  This module is kept because its
+derivation is elementary: it uses only the mean value theorem, so it does not
+drag the interval-integral machinery into the import surface of anything that
+only wants a crude polynomial majorant.
 -/
 
 set_option autoImplicit false
