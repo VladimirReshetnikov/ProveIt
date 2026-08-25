@@ -430,11 +430,13 @@ F(2^(-n)) = 2^(-choose(n,2)) / (2^n - 1) *
   sum (k < n), 2^(choose(k,2)) / (n-k+1)! * F(2^(-k))
 ```
 
-for every `n ≥ 1`; exact rational, generic `IsFabius`, and canonical global
-forms are exposed by `fabiusAtInverseTwoPow_recurrence_zpow`,
-`fabiusFunction_inverse_two_pow_recurrence_zpow`, and
-`globalFabius_inverse_two_pow_recurrence`.  The restriction is necessary:
-at `n = 0` the displayed denominator vanishes.
+for every `n ≥ 1`; exact rational, generic bounded, generic signed-global,
+and canonical signed-global forms are exposed by
+`fabiusAtInverseTwoPow_recurrence_zpow`,
+`fabiusFunction_inverse_two_pow_recurrence_zpow`,
+`extendedFabius_inverse_two_pow_recurrence`, and
+`globalFabius_inverse_two_pow_recurrence`, respectively.  The restriction is
+necessary: at `n = 0` the displayed denominator vanishes.
 
 `FabiusInverseDyadicClosedForm.lean` solves this recurrence completely.  If
 `(r₁,…,rₘ)` ranges over the ordered compositions of `n` and

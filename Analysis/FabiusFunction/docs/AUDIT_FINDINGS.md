@@ -352,35 +352,25 @@ Proof route, as stated in the finding: `cases n`; the `zero` branch closes by `s
 
 **Verifier.** All eight cited locations exist with the signatures as quoted, and the boundary case is safe. halfMoment_zero (Arithmetic.lean:276) gives halfMoment 0 = 1, so at n = 0 the four half-moment claims reduce to 1 ≤ 1, 1/2 ≤ 1, log 1 = 0 ≤ 0, and -log 2 ≤ 0 — all true. For the two F-carrying claims, dyadicLogError_eq (FabiusDyadicLogBounds.lean:168) ...
 
-#### `globalFabius_inverse_two_pow_recurrence` is stated only for the canonical instance although its proof is generic in `(F, hF)`
+#### IMPLEMENTED: the signed-global inverse-dyadic recurrence is generic in `(F, hF)`
 
-Confidence high.  `FabiusRecurrenceSequence.lean:305`, `FabiusRecurrenceSequence.lean:292`, `FabiusInverseDyadicClosedForm.lean:572`
+Confidence high.  `FabiusRecurrenceSequence.lean`,
+`FabiusInverseDyadicClosedForm.lean`
 
-**Why.** Every other real-valued statement in this module comes in the generic/canonical pair (`fabiusFunction_inverse_two_pow_recurrence` / `fabius_inverse_two_pow_recurrence`, `fabiusFunction_inverse_two_pow_recurrence_zpow` / `fabius_inverse_two_pow_recurrence_zpow`) — the signed-global one is the sole exception, and the downstream sibling result `extendedFabius_inverse_two_pow_eq_sum_compositions (F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` in FabiusInverseDyadicClosedForm.lean:572 already follows ...
+**Why.** The bounded inverse-dyadic recurrence already came in generic and
+canonical forms, and the signed extension agrees with the bounded function at
+every inverse-dyadic argument in `[0,1]`.  The previous canonical-only global
+proof therefore contained no canonical ingredient beyond its final
+specialization.
 
-**Proposal.** Same proposal, with the two line references fixed and the canonical derivation matched to the module's established idiom. Insert immediately before FabiusRecurrenceSequence.lean:302 (before the existing doc comment):
-
-/-- Signed-global form of the displayed recurrence for any bounded Fabius
-function satisfying its defining equations.  All arguments are in `[0, 1]`,
-where the signed extension agrees with the bounded function. -/
-theorem extendedFabius_inverse_two_pow_recurrence
-    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
-    extendedFabius F ((2 : ℝ) ^ (-(n : ℤ))) =
-      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
-        ∑ k ∈ range n,
-          ((2 : ℝ) ^ k.choose 2 /
-              (((n - k + 1).factorial : ℕ) : ℝ)) *
-            extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) := by
-  have hlocal (k : ℕ) :
-      extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) =
-        fabiusReal F ((2 : ℝ) ^ (-(k : ℤ))) := by
-    apply extendedFabius_eq_fabiusReal F hF
-    constructor
-    · positivity
-    · rw [zpow_neg]
-      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by ...
-
-**Verifier.** Survives adversarial checking on all five axes. (1) The declaration exists at FabiusRecurrenceSequence.lean:305 with exactly the quoted signature and body — lines 302-323 match the `current` block verbatim. (2) The weakened statement is TRUE, not just plausible: every step of the existing proof has a generic parent — `extendedFabius_eq_fabiusReal ...
+**Implementation.** `extendedFabius_inverse_two_pow_recurrence` now states the
+literal `2^(-n)` recurrence for every `F : BoundedFabius` satisfying
+`IsFabius F`.  It rewrites each inverse-dyadic signed value with
+`extendedFabius_eq_fabiusReal` and delegates to the existing generic bounded
+recurrence.  `globalFabius_inverse_two_pow_recurrence` is retained unchanged as
+a two-line specialization to `fabius` and `fabius_spec`.  The necessary
+hypothesis `1 ≤ n` remains: at `n = 0` the displayed denominator vanishes while
+the normalized value at `1` is one.
 
 ### Cluster: fourier-legendre
 
