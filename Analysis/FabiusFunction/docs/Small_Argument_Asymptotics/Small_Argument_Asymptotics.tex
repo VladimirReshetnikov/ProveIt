@@ -525,17 +525,36 @@ development uses internally, are
 \item Every $A_j$ is $C^\infty$, one-periodic and bounded, being a polynomial
   in bounded one-periodic smooth functions.
 \item The mean of $A_j$ is its ``$\Psi$-free part'' plus the mean of the
-  terms of degree two and higher in the derivatives of $\Psi$.  That
-  correction is small but it is \emph{not} uniformly tiny, and it grows with
-  $j$ for the same reason the oscillation does: 
-  $\langle P_aP_b\rangle=2\sum_{k\ge1}(2\pi\ii k)^a(-2\pi\ii k)^b|\Psihat(k)|^2$
-  carries the amplification $(2\pi k)^{a+b}$ of \cref{sec:fourier}.  Measured
-  over a period, $\langle A_j\rangle$ minus the $\Psi$-free part is
-  $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and $-1.14\times10^{-7}$ at
-  $j=1,2,3$ --- about a factor $40$ per order.  What justifies calling the
-  $\Psi$-free part the mean is not an absolute bound but a ratio: at each
-  order it is four to five orders below the oscillation of $A_j$ itself,
-  which is $8.7\times10^{-5}$, $3.9\times10^{-3}$ and $6.7\times10^{-2}$.
+  terms of degree two and higher in the derivatives of $\Psi$.  Those means
+  do not vanish, and they are computable in closed form, because
+  $\langle\Psi^{(a)}\Psi^{(b)}\rangle$ depends only on $a+b$ up to sign:
+  integration by parts over a period gives
+  $\langle\Psi'\Psi''\rangle=0$ and
+  $\langle\Psi'\Psi'''\rangle=-\langle(\Psi'')^2\rangle$, and generally
+  $\langle P_aP_b\rangle=2\sum_{k\ge1}(2\pi\ii k)^a(-2\pi\ii k)^b|\Psihat(k)|^2$,
+  which carries the amplification $(2\pi k)^{a+b}$ of \cref{sec:fourier}.
+  Applying this to \cref{eq:A2psi} and to $A_1$ leaves
+  \begin{align*}
+    \langle A_1\rangle&=\frac1{24}+\frac1{2L}
+      -\frac{\langle(\Psi')^2\rangle}{2L^2},\\
+    \langle A_2\rangle&=\frac1{4L^2}
+      -\frac{\langle(\Psi')^2\rangle}{2L^3}
+      -\frac{\langle(\Psi'')^2\rangle}{4L^4}
+      -\frac{\langle(\Psi')^3\rangle}{6L^3},
+  \end{align*}
+  every other quadratic and cubic mean cancelling.  Numerically
+  $\langle(\Psi')^2\rangle=8.917\times10^{-11}$,
+  $\langle(\Psi'')^2\rangle=3.520\times10^{-9}$ and
+  $\langle(\Psi')^3\rangle=1.115\times10^{-21}$, so
+  $\langle A_1\rangle=0.7630141870184$ and
+  $\langle A_2\rangle=0.5203422413049$, against $\Psi$-free parts
+  $0.7630141871111$ and $0.5203422452514$.  The gaps are
+  $-9.3\times10^{-11}$ and $-3.9\times10^{-9}$, and at $j=3$ the same
+  computation gives $-1.14\times10^{-7}$: about a factor $40$ per order,
+  for the same reason the oscillation grows.  What justifies calling the
+  $\Psi$-free part the mean is therefore not an absolute bound but a ratio:
+  at each order the gap sits four to five decades below the amplitude of
+  $A_j$ itself.
 \end{itemize}
 
 \section{The explicit coefficients}\label{sec:explicit}
@@ -780,15 +799,31 @@ $7$ & $8.33\times10^{1}$\\
 \end{tabular}
 \end{center}
 
-These are estimates from the top term alone.  The exact $k=1$ amplitudes
-$2|c_j(1)\Psihat(1)|$, which use the whole of $c_j$, are
-$8.73\times10^{-5}$ at $j=1$ --- the top term is the only term there ---
-and $1.94\times10^{-3}$ at $j=2$, above the estimate $1.79\times10^{-3}$
-because the $w^3$ term of $c_2$ adds in phase.  The gap widens with $j$:
-the measured peak-to-peak swings of \cref{sec:numerics} are
-$6\times10^{-2}$ at $j=3$ against the estimate $4.9\times10^{-2}$, and
-$0.82$ at $j=4$ against $0.50$.  So \cref{eq:amplitude} gives the growth
-rate, not the constant.  So the periodic parts of
+These are estimates from the top term alone.  Comparing them with the truth
+requires care about a convention: an \emph{amplitude} is half a
+peak-to-peak swing, and mixing the two silently doubles every second
+entry.  Everything below is an amplitude.
+
+\begin{center}
+\begin{tabular}{@{}crrr@{}}
+\toprule
+$j$ & \cref{eq:amplitude} & actual & ratio\\
+\midrule
+$1$ & $8.73\times10^{-5}$ & $8.73\times10^{-5}$ & $1.00$\\
+$2$ & $1.79\times10^{-3}$ & $1.94\times10^{-3}$ & $1.08$\\
+$3$ & $2.46\times10^{-2}$ & $\approx3\times10^{-2}$ & $\approx1.2$\\
+$4$ & $2.52\times10^{-1}$ & $\approx0.41$ & $\approx1.6$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At $j=1$ the top term is the only term, so the estimate is exact.  At
+$j=2$ the $w^3$ term of $c_2$ adds in phase and lifts the amplitude above
+the estimate; the entries at $j=3$ and $j=4$ are halves of the swings
+measured in \cref{sec:numerics}.  The ratio drifts upward because the
+subleading terms of $c_j$ contribute more as $j$ grows.  So
+\cref{eq:amplitude} gives the growth rate and not the constant, and should
+never be used to size a particular coefficient.  So the periodic parts of
 the coefficients grow rapidly with $j$, even though $\Psi$ itself oscillates by
 only $2\times10^{-6}$: differentiation progressively cancels the smallness of
 $\Psihat(1)$.  Any numerical extraction of a coefficient beyond the first must
