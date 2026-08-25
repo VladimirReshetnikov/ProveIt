@@ -3,7 +3,7 @@
 \usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{libertinus}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
 \usepackage{microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
 \usepackage{bm}
@@ -1817,6 +1817,104 @@ The first values are therefore
 \end{equation}
 The denominators grow far faster than exponentially, in agreement with the quadratic leading
 term in the logarithmic asymptotic derived later.
+
+\subsection{A triangular recurrence and its nonrecursive solution}
+\label{subsec:inverse-dyadic-compositions}
+
+The values in \eqref{eq:F-inverse-table} may be generated without first computing the
+moments.  Write
+\begin{equation}
+ V_n=F(2^{-n}).
+\end{equation}
+Eliminating $d_n$ between \eqref{eq:d-recurrence} and
+\eqref{eq:F-inverse-power} gives, for $n\ge1$,
+\begin{equation}
+ V_n=\frac{2^{-\binom n2}}{2^n-1}
+ \sum_{k=0}^{n-1}
+ \frac{2^{\binom k2}}{(n-k+1)!}
+ V_k,
+ \qquad V_0=1.                                           \label{eq:inverse-dyadic-recurrence}
+\end{equation}
+The restriction $n\ge1$ is essential: at $n=0$ the denominator $2^n-1$ is zero and the
+sum is empty, whereas $V_0=F(1)=1$.  Thus the initial value is part of the recurrence data,
+not a removable endpoint convention.
+
+The triangular powers of two disappear after the normalization
+\begin{equation}
+ A_n=2^{\binom n2}V_n.
+\end{equation}
+Indeed, $A_0=1$ and
+\begin{equation}
+ A_n=\sum_{k=0}^{n-1}
+ \frac{A_k}{(2^n-1)(n-k+1)!}.                            \label{eq:normalized-inverse-recurrence}
+\end{equation}
+This is a weighted-path recurrence on the directed graph with one edge $k\to n$ whenever
+$k<n$.  Iterating it terminates, and the resulting paths can be indexed by ordered
+compositions.
+
+An ordered composition of $n$ is a tuple
+$\rho=(r_1,\ldots,r_m)$ of positive integers with sum $n$.  Put
+\begin{equation}
+ s_j=r_1+\cdots+r_j,
+ \qquad
+ W(\rho)=\prod_{j=1}^{m}
+ \frac{1}{(2^{s_j}-1)(r_j+1)!}.                          \label{eq:composition-weight}
+\end{equation}
+For $n=0$ there is one empty composition; its empty product is $1$.
+
+\begin{theorem}[Finite composition formula]
+For every $n\ge0$,
+\begin{equation}
+ \boxed{
+ F(2^{-n})=2^{-\binom n2}
+ \sum_{\rho\vDash n}
+ \prod_{j=1}^{\operatorname{len}(\rho)}
+ \frac{1}{(2^{s_j}-1)(r_j+1)!}}
+                                                               \label{eq:inverse-composition-formula}
+\end{equation}
+where $\rho=(r_1,\ldots,r_m)$ and $s_j=r_1+\cdots+r_j$.
+For $n=0$ the unique empty composition makes the right side equal to $1$.
+\end{theorem}
+
+\begin{proof}
+Let $C_n=\sum_{\rho\vDash n}W(\rho)$.  The empty-composition convention gives $C_0=1$.
+Fix $n\ge1$ and split every composition of $n$ immediately before its last block.  If the
+preceding blocks sum to $k$, then $0\le k<n$, the last block is $n-k$, and the last factor
+of \eqref{eq:composition-weight} is
+\begin{equation*}
+ \frac{1}{(2^n-1)(n-k+1)!}.
+\end{equation*}
+Conversely, appending the block $n-k$ to any composition of $k$ gives exactly one
+composition of $n$ with penultimate partial sum $k$.  Therefore
+\begin{equation*}
+ C_n=\sum_{k=0}^{n-1}
+ \frac{C_k}{(2^n-1)(n-k+1)!}.
+\end{equation*}
+Thus $(C_n)$ and $(A_n)$ have the same initial value and the same triangular recurrence.
+Induction gives $C_n=A_n$, and multiplying by $2^{-\binom n2}$ proves
+\eqref{eq:inverse-composition-formula}.
+\end{proof}
+
+Equivalently, put $i_0=0$ and $i_j=s_j$.  Compositions of length $m$ correspond bijectively
+to chains
+\begin{equation*}
+ 0=i_0<i_1<\cdots<i_m=n,
+ \qquad r_j=i_j-i_{j-1}.
+\end{equation*}
+Hence, for $n\ge1$,
+\begin{equation}
+ F(2^{-n})=2^{-\binom n2}
+ \sum_{m=1}^{n}
+ \sum_{0=i_0<i_1<\cdots<i_m=n}
+ \prod_{j=1}^{m}
+ \frac{1}{(2^{i_j}-1)(i_j-i_{j-1}+1)!}.                 \label{eq:inverse-chain-formula}
+\end{equation}
+There are $2^{n-1}$ compositions of a positive integer $n$, so this is finite and
+nonrecursive, although exponential in size.  In matrix language, if $T_{i,j}$ is the edge
+weight in \eqref{eq:normalized-inverse-recurrence} for $j<i$ and is zero otherwise, then on
+indices $0,\ldots,n$ the matrix $T$ is strictly lower triangular.  Thus
+$(I-T)^{-1}=I+T+\cdots+T^n$, and its $(n,0)$ entry is precisely the path sum above.  No
+analytic convergence theorem is involved.
 
 \subsection{An exact two-adic valuation}
 
