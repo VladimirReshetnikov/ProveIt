@@ -23,11 +23,10 @@ noncomputable def fabiusSharpLambertMain (x : ℝ) : ℝ :=
 /-- The lower-Lambert phase is positive on its natural branch domain. -/
 theorem fabiusLambertPhase_pos {x : ℝ} (hx : 0 < x)
     (hsmall : Real.log 2 * x < Real.exp (-1)) :
-    0 < fabiusLambertPhase x := by
-  have hr := fabiusLambertRadius_pos x
-  have h := fabiusLambertRadius_mul_argument hx hsmall
-  rw [← h]
-  positivity
+    0 < fabiusLambertPhase x :=
+  fabiusLambertPhase_pos_of_mem ⟨hx, (lt_div_iff₀
+    (Real.log_pos (by norm_num : (1 : ℝ) < 2))).2 (by
+      simpa only [mul_comm] using hsmall)⟩
 
 /-- The exact saddle prefactor differs from the corrected Lambert main term
 only by the exponentially small forward-tail error. -/
