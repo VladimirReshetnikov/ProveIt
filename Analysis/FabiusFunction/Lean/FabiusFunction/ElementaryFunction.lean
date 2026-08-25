@@ -278,6 +278,23 @@ theorem arccos {f : ℝ → ℝ} (hf : IsElementary f) :
   rw [h]
   exact (IsElementary.const (Real.pi / 2)).sub hf.arcsin
 
+/-- Variable exponents, at a positive base.  Where `f` is positive,
+`f ^ g` is the elementary function `exp (log f * g)`; in particular
+`fun x => x ^ x` is elementary on any set where the base is positive.
+
+The unrestricted two-variable power is not a constructor of `IsElementary`,
+because `Mathlib`'s `Real.rpow` is sign-dependent at a negative base
+(`x ^ y = |x| ^ y * cos (π y)`) and no single elementary formula covers both
+signs.  On an interval on which `f` has constant sign, however, `f ^ g` does
+agree with a member of the class, so nothing is lost for the purposes of
+`Fabius.not_isElementary_eqOn`. -/
+theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
+    (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
+  have h : (fun x => f x ^ g x) = fun x => Real.exp (Real.log (f x) * g x) := by
+    funext x; exact Real.rpow_def_of_pos (hpos x) _
+  rw [h]
+  exact (hf.log.mul hg).exp
+
 /-- Elementary functions are closed under the inverse hyperbolic sine. -/
 theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.arsinh (f x) := by
@@ -464,6 +481,17 @@ theorem IsElementary.dense_analyticLocus {f : ℝ → ℝ} (hf : IsElementary f)
       exact analyticAt_arcsin hy.1 hy.2
   | arctan _ ih =>
       exact dense_analyticLocus_comp _ Real.arctan ∅ ih fun y _ => analyticAt_arctan y
+
+/-- The set where a function fails to be real analytic is closed. -/
+theorem isClosed_compl_analyticLocus (f : ℝ → ℝ) : IsClosed (analyticLocus f)ᶜ :=
+  (isOpen_analyticLocus f).isClosed_compl
+
+/-- The set where an elementary function fails to be real analytic has empty
+interior.  Together with `Fabius.isClosed_compl_analyticLocus` this says the
+exceptional set is nowhere dense. -/
+theorem IsElementary.interior_compl_analyticLocus {f : ℝ → ℝ} (hf : IsElementary f) :
+    interior (analyticLocus f)ᶜ = ∅ := by
+  rw [interior_compl, hf.dense_analyticLocus.closure_eq, compl_univ]
 
 /-- An elementary function is real analytic at *some* point of every nonempty
 open set. -/

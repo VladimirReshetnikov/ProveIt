@@ -289,6 +289,18 @@ applies, and that zero set is finite on each interval --- but the analytic
 implicit function theorem over $\R$ is not available in \texttt{Mathlib} at
 the time of writing.
 
+A second, much smaller gap concerns variable exponents.  \Cref{def:elem}
+provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
+\texttt{IsElementary.rpow\_of\_pos} supplies $f^g$ whenever the base $f$ is
+everywhere positive, which covers $x\mapsto x^x$ and every classical
+variable-exponent expression.  The unrestricted two-variable power is not a
+constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
+base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
+covers both signs at once.  Nothing is lost for \Cref{cor:main}: on any
+interval on which the base has constant sign, $f^g$ does agree with a member
+of $\Elem$, and \Cref{cor:main} already rules out agreement on every
+subinterval.
+
 We also make no claim about elementary functions of a complex variable, and
 none about the closely related but distinct question of whether $F$ satisfies
 an algebraic differential equation.
@@ -443,7 +455,7 @@ Closure under composition (\Cref{prop:comp})
   & \texttt{IsElementary.comp}
   & \texttt{ElementaryFunction} \\
 Derived closures: $-$, $/$, $x^n$, $\sqrt{\ }$, $|\cdot|$, $\tan$, $\sinh$, $\cosh$, $\tanh$, $\arccos$, $\operatorname{arsinh}$, polynomials
-  & \texttt{IsElementary.sub}, \texttt{.div}, \texttt{.npow}, \texttt{.sqrt}, \texttt{.abs}, \texttt{.tan}, \texttt{.sinh}, \texttt{.cosh}, \texttt{.tanh}, \texttt{.arccos}, \texttt{.arsinh}, \texttt{.polynomial}
+  & \texttt{IsElementary.sub}, \texttt{.div}, \texttt{.npow}, \texttt{.sqrt}, \texttt{.abs}, \texttt{.tan}, \texttt{.sinh}, \texttt{.cosh}, \texttt{.tanh}, \texttt{.arccos}, \texttt{.arsinh}, \texttt{.rpow\_of\_pos}, \texttt{.polynomial}
   & \texttt{ElementaryFunction} \\
 Analytic locus $\An(f)$
   & \texttt{analyticLocus}
@@ -452,7 +464,10 @@ Openness (\Cref{lem:open})
   & \texttt{isOpen\_analyticLocus}
   & \texttt{ElementaryFunction} \\
 Generators (\Cref{lem:generators})
-  & \texttt{analyticAt\_log}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_sqrt}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}
+  & \texttt{analyticAt\_log\_of\_ne\_zero}, \texttt{analyticAt\_rpow\_const}, \texttt{analyticAt\_sqrt\_of\_ne\_zero}, \texttt{analyticAt\_arctan}, \texttt{analyticAt\_arcsin}
+  & \texttt{ElementaryFunction} \\
+Membership of the named functions
+  & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
   & \texttt{ElementaryFunction} \\
 Key lemma (\Cref{lem:key})
   & \texttt{dense\_analyticLocus\_comp}
@@ -462,6 +477,9 @@ Density (\Cref{thm:density})
   & \texttt{ElementaryFunction} \\
 Analytic at a point of any nonempty open set
   & \texttt{IsElementary.exists\_analyticAt\_of\_isOpen}
+  & \texttt{ElementaryFunction} \\
+Exceptional set closed with empty interior
+  & \texttt{isClosed\_compl\_analyticLocus}, \texttt{IsElementary.interior\_compl\_analyticLocus}
   & \texttt{ElementaryFunction} \\
 Nowhere analyticity (\Cref{thm:nowhere})
   & \texttt{canonical\_fabius\_not\_analyticAt}, \texttt{canonical\_fabius\_analyticAt\_iff}
