@@ -14,8 +14,8 @@ inside proofs.
 
 In particular, the public import provides:
 
-* analytic facts about the support, sign, derivatives, and flat points of
-  Rvachev's function;
+* analytic facts about the support, sign, derivatives, fold identities, and
+  exact power-of-two flat points of Rvachev's and Fabius's functions;
 * the exact integrality, oddness, divisibility, and two-adic assertions used in
   the arithmetic arguments;
 * both orders of summation in the finite dyadic-value formula; and

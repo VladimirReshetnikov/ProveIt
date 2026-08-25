@@ -42,8 +42,11 @@ statements of the whole `Fabius*QBinomial*` family.
   positivity for `k ≤ n`, the reflection `k ↦ n - k`, and both orientations
   of the q-Pascal recurrence.
 * `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
-* `halfQBinomial_two_pow_sum_eq_zero`, `halfQBinomial_two_pow_sum_eq_self` --
-  the dyadic node evaluations.
+* `halfQBinomial_two_pow_sum_eq_qPochhammer` -- the all-index dyadic-node
+  specialization, with `halfQBinomial_two_pow_sum_eq_zero` and
+  `halfQBinomial_two_pow_sum_eq_self` as its two interpolation boundaries.
+* `qPochhammer_two_pow_self_eq_mersenne` -- the exact Mersenne-product value
+  of the endpoint q-Pochhammer symbol.
 * `four_pow_choose_two` -- `4^(C(k,2)) = 2^(k(k-1))`, which rewrites the
   Wolfram denominator as a pure power of two.
 
@@ -551,6 +554,30 @@ theorem qBinomial_half_theorem (n : ℕ) (z : ℚ) :
       qPochhammer z (1 / 2) n := by
   simpa only [qBinomial_half_eq] using halfQBinomial_theorem n z
 
+/-! ## Dyadic-node specializations -/
+
+/-- The finite q-binomial theorem evaluated at the dyadic node `z = 2^m`,
+with no ordering hypothesis on `m` and `n`.  Keeping the q-Pochhammer value
+on the right makes this the common wrapper for both the vanishing nodes
+`m < n` and the endpoint `m = n`, while also retaining the values for
+`n < m`. -/
+theorem halfQBinomial_two_pow_sum_eq_qPochhammer (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        halfQBinomial n k * ((2 : ℚ) ^ m) ^ k) =
+      qPochhammer ((2 : ℚ) ^ m) (1 / 2) n := by
+  exact halfQBinomial_theorem n ((2 : ℚ) ^ m)
+
+/-- Literal `QBinomial[n,k,1/2]` form of the all-index dyadic-node
+specialization. -/
+theorem qBinomial_half_two_pow_sum_eq_qPochhammer (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        qBinomial n k (1 / 2) * ((2 : ℚ) ^ m) ^ k) =
+      qPochhammer ((2 : ℚ) ^ m) (1 / 2) n := by
+  simpa only [qBinomial_half_eq] using
+    halfQBinomial_two_pow_sum_eq_qPochhammer n m
+
 private theorem two_pow_mul_half_pow (n j : ℕ) (hj : j ≤ n) :
     (2 : ℚ) ^ n * (1 / 2 : ℚ) ^ j = (2 : ℚ) ^ (n - j) := by
   rw [div_pow]
@@ -572,7 +599,10 @@ theorem qPochhammer_two_pow_eq_zero {n m : ℕ} (hm : m < n) :
   · rw [two_pow_mul_half_pow m m (le_refl m)]
     norm_num
 
-private theorem qPochhammer_two_pow_self_eq_mersenne (n : ℕ) :
+/-- At the endpoint `m = n`, the dyadic q-Pochhammer symbol is the signed
+product of the first `n` Mersenne factors.  This division-free form is the
+product identity behind `halfQBinomial_two_pow_sum_eq_self`. -/
+theorem qPochhammer_two_pow_self_eq_mersenne (n : ℕ) :
     qPochhammer ((2 : ℚ) ^ n) (1 / 2) n =
       (-1 : ℚ) ^ n * halfMersenneProduct n := by
   have hterm (j : ℕ) (hj : j < n) :
@@ -618,7 +648,7 @@ theorem halfQBinomial_two_pow_sum_eq_zero {n m : ℕ} (hm : m < n) :
     (∑ k ∈ Finset.range (n + 1),
       (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
         halfQBinomial n k * ((2 : ℚ) ^ m) ^ k) = 0 := by
-  rw [halfQBinomial_theorem]
+  rw [halfQBinomial_two_pow_sum_eq_qPochhammer]
   exact qPochhammer_two_pow_eq_zero hm
 
 /-- Evaluation at the last dyadic node. -/
@@ -628,9 +658,9 @@ theorem halfQBinomial_two_pow_sum_eq_self (n : ℕ) :
         halfQBinomial n k * ((2 : ℚ) ^ n) ^ k) =
       (-1 : ℚ) ^ n * (2 : ℚ) ^ ((n + 1).choose 2) *
         halfQPochhammer n := by
-  rw [halfQBinomial_theorem]
+  rw [halfQBinomial_two_pow_sum_eq_qPochhammer]
   calc
-    finiteQPochhammer ((2 : ℚ) ^ n) (1 / 2) n =
+    qPochhammer ((2 : ℚ) ^ n) (1 / 2) n =
         (-1 : ℚ) ^ n * halfMersenneProduct n :=
       qPochhammer_two_pow_self_eq_mersenne n
     _ = (-1 : ℚ) ^ n * (2 : ℚ) ^ ((n + 1).choose 2) *

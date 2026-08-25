@@ -158,32 +158,29 @@ theorem deriv_rvachev_neg_of_mem_Ioo_zero_one
 
 /-- The fold defining `rvachevUp` identifies a reciprocal-power-of-two Fabius
 value with the reflected Rvachev value.  This structural identity needs only
-boundedness, not the Fabius equations. -/
+boundedness, not the Fabius equations.  The statement includes the endpoint
+`n = 0`, where the folded argument is zero. -/
 theorem rvachev_one_sub_inverse_two_pow_eq_fabiusReal
     (F : BoundedFabius) (n : ℕ) :
     rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) =
       fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
-  cases n with
-  | zero =>
-      norm_num [rvachevUp]
-  | succ n =>
-      have hpow : (1 : ℝ) < (2 : ℝ) ^ (n + 1) :=
-        one_lt_pow₀ (by norm_num) (by omega)
-      have hinv : ((2 : ℝ) ^ (n + 1))⁻¹ < 1 := by
-        rw [inv_lt_one₀ (by positivity)]
-        exact hpow
-      rw [rvachevUp, if_neg (not_le.mpr (by linarith))]
-      congr 1
-      ring
+  have hinv : ((2 : ℝ) ^ n)⁻¹ ≤ 1 := by
+    rw [inv_le_one₀ (by positivity)]
+    exact one_le_pow₀ (by norm_num)
+  rw [rvachevUp_eq_fabiusReal_one_sub F (by linarith)]
+  congr 1
+  ring
 
+set_option linter.unusedVariables false in
 /-- Backwards-compatible `IsFabius`-specialized form of
-`rvachev_one_sub_inverse_two_pow_eq_fabiusReal`, used before equation (14). -/
+`rvachev_one_sub_inverse_two_pow_eq_fabiusReal`, used before equation (14).
+The hypothesis `hF` is retained solely for source compatibility; the fold
+identity itself holds for every bounded candidate. -/
 theorem rvachev_one_sub_inverse_two_pow_eq_fabius
     (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     rvachevUp F (1 - ((2 : ℝ) ^ n)⁻¹) =
-      fabiusReal F (((2 : ℝ) ^ n)⁻¹) := by
-  clear hF
-  exact rvachev_one_sub_inverse_two_pow_eq_fabiusReal F n
+      fabiusReal F (((2 : ℝ) ^ n)⁻¹) :=
+  rvachev_one_sub_inverse_two_pow_eq_fabiusReal F n
 
 /-- Every derivative of the signed global Fabius function vanishes at zero. -/
 theorem iteratedDeriv_extendedFabius_zero
@@ -229,6 +226,21 @@ theorem iteratedDeriv_extendedFabius_two_pow_eq_zero
     (scale order : ℕ) (hscale : 1 ≤ scale) :
     iteratedDeriv order (extendedFabius F) ((2 : ℝ) ^ scale) = 0 :=
   iteratedDeriv_extendedFabius_two_pow_eq_zero_of_one_le_add F hF scale order (by omega)
+
+/-- Exact total evaluation of every derivative on the nonnegative
+power-of-two grid.  The only nonzero case is the normalization
+`extendedFabius F (2^0) = extendedFabius F 1 = 1`; every positive derivative
+at `1` and every derivative at a positive power of two vanishes. -/
+theorem iteratedDeriv_extendedFabius_two_pow_eq_ite
+    (F : BoundedFabius) (hF : IsFabius F) (scale order : ℕ) :
+    iteratedDeriv order (extendedFabius F) ((2 : ℝ) ^ scale) =
+      if scale = 0 ∧ order = 0 then 1 else 0 := by
+  by_cases hzero : scale = 0 ∧ order = 0
+  · rcases hzero with ⟨rfl, rfl⟩
+    simpa using extendedFabius_one F hF
+  · rw [if_neg hzero]
+    exact iteratedDeriv_extendedFabius_two_pow_eq_zero_of_one_le_add
+      F hF scale order (by omega)
 
 /-! ## Exact arithmetic assertions used inside proofs -/
 

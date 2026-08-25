@@ -47,10 +47,13 @@ estimates valid at every order.
 * `exists_norm_negativeLaplaceVerticalLogFourth_le_dyadicScales` -- iterating
   the recurrence bounds `‖L₄(r, θ)‖` by a compactness constant plus `1542` per
   dyadic scale, for `1 ≤ r ≤ 2 ^ (m + 1)` and `|θ| ≤ 1`.
-* `exists_norm_negativeLaplaceVerticalLogFourth_rpow_le` -- the resulting
-  `O(b)` bound at radius `r = 2 ^ b`, `b ≥ 1`, uniform in the strip `|θ| ≤ 1`.
-  This is the form `FabiusFunction.FabiusSaddleCentralLambert` consumes, as the
-  quartic coefficient of its exponent remainder.
+* `exists_norm_negativeLaplaceVerticalLogFourth_rpow_le_add_one` -- the
+  resulting `O(b + 1)` bound at radius `r = 2 ^ b`, valid from the natural
+  endpoint `b = 0` and uniform in the strip `|θ| ≤ 1`.
+* `exists_norm_negativeLaplaceVerticalLogFourth_rpow_le` -- the compatible
+  `O(b)` form for `b ≥ 1`.  This is the form
+  `FabiusFunction.FabiusSaddleCentralLambert` consumes, as the quartic
+  coefficient of its exponent remainder.
 * `exists_norm_negativeLaplaceVerticalLogFourth_lambertRadius_le` -- the same
   bound restated in the explicit lower-Lambert saddle coordinates
   `r = fabiusLambertRadius x`, `b = fabiusLambertPhase x`.
@@ -662,20 +665,22 @@ theorem exists_norm_negativeLaplaceVerticalLogFourth_le_dyadicScales
           _ ≤ 1542 + (A + (m + 1 : ℕ) * 1542) := add_le_add hk hi
           _ = A + (m + 1 + 1 : ℕ) * 1542 := by push_cast; ring
 
-/-- Uniform `O(b)` control of the fourth vertical logarithmic derivative on
-the radius `r = 2^b`, throughout the fixed strip `|θ| ≤ 1`. -/
-theorem exists_norm_negativeLaplaceVerticalLogFourth_rpow_le
+/-- Uniform `O(b + 1)` control of the fourth vertical logarithmic derivative
+on the radius `r = 2^b`, throughout the fixed strip `|θ| ≤ 1`, for every
+`b ≥ 0`.  The additive one is the natural boundary normalization: at `b = 0`
+the radius is the compact-base endpoint `r = 1`, so a pure `C * b` estimate
+cannot hold unless the derivative happens to vanish there. -/
+theorem exists_norm_negativeLaplaceVerticalLogFourth_rpow_le_add_one
     (F : BoundedFabius) (hF : IsFabius F) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 1 ≤ b → |θ| ≤ 1 →
-      ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤ C * b := by
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 0 ≤ b → |θ| ≤ 1 →
+      ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤ C * (b + 1) := by
   obtain ⟨A, hA, hscale⟩ :=
     exists_norm_negativeLaplaceVerticalLogFourth_le_dyadicScales F hF
-  let C : ℝ := A + 3 * 1542
+  let C : ℝ := A + 2 * 1542
   have hC : 0 ≤ C := by dsimp [C]; positivity
   refine ⟨C, hC, ?_⟩
-  intro b θ hb hθ
+  intro b θ hb0 hθ
   let m : ℕ := ⌈b⌉₊
-  have hb0 : 0 ≤ b := zero_le_one.trans hb
   have hr1 : 1 ≤ (2 : ℝ) ^ b :=
     Real.one_le_rpow (by norm_num) hb0
   have hbceil : b ≤ (m : ℝ) := by
@@ -691,16 +696,32 @@ theorem exists_norm_negativeLaplaceVerticalLogFourth_rpow_le
   have hmCeil : (m : ℝ) < b + 1 := by
     dsimp [m]
     exact Nat.ceil_lt_add_one hb0
-  have hmain' :
-      ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤
-        A + (b + 2) * 1542 := by
-    calc
-      ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤
-          A + (m + 1 : ℕ) * 1542 := hmain
-      _ ≤ A + (b + 2) * 1542 := by push_cast; nlinarith
   calc
     ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤
-        A + (b + 2) * 1542 := hmain'
+        A + (m + 1 : ℕ) * 1542 := hmain
+    _ ≤ A + (b + 2) * 1542 := by push_cast; nlinarith
+    _ ≤ C * (b + 1) := by
+      dsimp [C]
+      nlinarith
+
+/-- Uniform `O(b)` control of the fourth vertical logarithmic derivative on
+the radius `r = 2^b`, throughout the fixed strip `|θ| ≤ 1`, for `b ≥ 1`.
+This retains the original public estimate as a direct corollary of the
+all-nonnegative-exponent `O(b + 1)` bound. -/
+theorem exists_norm_negativeLaplaceVerticalLogFourth_rpow_le
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 1 ≤ b → |θ| ≤ 1 →
+      ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤ C * b := by
+  obtain ⟨D, hD, hbound⟩ :=
+    exists_norm_negativeLaplaceVerticalLogFourth_rpow_le_add_one F hF
+  let C : ℝ := 2 * D
+  have hC : 0 ≤ C := mul_nonneg (by norm_num) hD
+  refine ⟨C, hC, ?_⟩
+  intro b θ hb hθ
+  have hmain := hbound (zero_le_one.trans hb) hθ
+  calc
+    ‖negativeLaplaceVerticalLogFourth F ((2 : ℝ) ^ b) θ‖ ≤
+        D * (b + 1) := hmain
     _ ≤ C * b := by
       dsimp [C]
       nlinarith

@@ -12,7 +12,9 @@ factorially normalized half-moment sequence
 
 This module records its displayed elementary recurrence, its exact relation
 to `F(2⁻ⁿ)`, the Bernoulli-number recurrence from the generating-function
-argument, and the corresponding entire series and dyadic product.
+argument, and the corresponding entire series and dyadic product.  The direct
+inverse-dyadic recurrence is exposed for both the bounded function and its
+signed-global extension, uniformly for every function satisfying `IsFabius`.
 -/
 
 set_option autoImplicit false
@@ -300,9 +302,30 @@ theorem fabius_inverse_two_pow_recurrence_zpow
             fabiusReal fabius ((2 : ℝ) ^ (-(k : ℤ))) :=
   fabiusFunction_inverse_two_pow_recurrence_zpow fabius fabius_spec n hn
 
-/-- Signed-global form of the displayed recurrence.  All arguments are in
-`[0, 1]`, where the signed extension agrees with the bounded Fabius
-function. -/
+/-- Signed-global form of the displayed recurrence for any bounded Fabius
+function satisfying its defining equations.  All arguments are in `[0, 1]`,
+where the signed extension agrees with the bounded function. -/
+theorem extendedFabius_inverse_two_pow_recurrence
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (hn : 1 ≤ n) :
+    extendedFabius F ((2 : ℝ) ^ (-(n : ℤ))) =
+      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) := by
+  have hlocal (k : ℕ) :
+      extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) =
+        fabiusReal F ((2 : ℝ) ^ (-(k : ℤ))) := by
+    apply extendedFabius_eq_fabiusReal F hF
+    constructor
+    · positivity
+    · rw [zpow_neg]
+      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
+  simp_rw [hlocal]
+  exact fabiusFunction_inverse_two_pow_recurrence_zpow F hF n hn
+
+/-- Canonical signed-global form of the displayed recurrence. -/
 theorem globalFabius_inverse_two_pow_recurrence
     (n : ℕ) (hn : 1 ≤ n) :
     globalFabius ((2 : ℝ) ^ (-(n : ℤ))) =
@@ -311,17 +334,8 @@ theorem globalFabius_inverse_two_pow_recurrence
           ((2 : ℝ) ^ k.choose 2 /
               (((n - k + 1).factorial : ℕ) : ℝ)) *
             globalFabius ((2 : ℝ) ^ (-(k : ℤ))) := by
-  have hlocal (k : ℕ) :
-      globalFabius ((2 : ℝ) ^ (-(k : ℤ))) =
-        fabiusReal fabius ((2 : ℝ) ^ (-(k : ℤ))) := by
-    rw [globalFabius]
-    apply extendedFabius_eq_fabiusReal fabius fabius_spec
-    constructor
-    · positivity
-    · rw [zpow_neg]
-      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
-  simp_rw [hlocal]
-  exact fabius_inverse_two_pow_recurrence_zpow n hn
+  simpa only [globalFabius] using
+    extendedFabius_inverse_two_pow_recurrence fabius fabius_spec n hn
 
 /-- The Bernoulli convolution before reflecting the finite sum. -/
 theorem fabiusRecurrenceSequence_bernoulli_convolution (n : ℕ) :
