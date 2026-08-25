@@ -12,6 +12,7 @@ import FabiusFunction.PeriodicRegularity
 import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusTranslatedLegendreSeries
 import FabiusFunction.FabiusLegendreLeastSquares
+import FabiusFunction.FabiusComputableSpline
 
 /-!
 # Fabius function
@@ -31,4 +32,8 @@ Every finite even Legendre partial sum is also proved to be the unique
 least-squares best polynomial approximation in its degree class.
 The inverse-dyadic recurrence also has a finite nonrecursive solution as an
 explicit weighted sum over ordered compositions.
+Finally, the canonical bounded Fabius function is proved computable in the
+Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
+computable dyadic names, and the explicit recursive modulus `d(n)=2n` gives
+effective uniform continuity.
 -/
