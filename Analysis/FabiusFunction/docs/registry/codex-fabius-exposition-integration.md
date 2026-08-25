@@ -8,11 +8,12 @@ record, not a mathematical exposition.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
-fetched main SHA: bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab
-HEAD and dirty paths: parent of this registry-only status commit is the
-  fast-forwarded main SHA bc92ae3a3; no merge is in progress; apart from this
-  registry update, the only dirty paths are two untracked, byte-identical PDF
-  build copies named Fabius_Function_and_Rvachev_Up_build.pdf and
+fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
+HEAD and dirty paths: parent of this follow-up registry commit is merge
+  892fe5b1f, which combines the registry checkpoint with pinned main ebe4bd844;
+  no merge is in progress; apart from this registry update, the only dirty
+  paths are two untracked, byte-identical PDF build copies named
+  Fabius_Function_and_Rvachev_Up_build.pdf and
   non-formalized-research-frontiers_build.pdf
 writing (exact paths):
   Analysis/FabiusFunction/docs/registry/codex-fabius-exposition-integration.md
@@ -22,13 +23,14 @@ completed commits: 150bdcd01 (proof-backed rewrite), bd55f04fe,
   e97e14f14, c2fa48111, 0157e504f, and 5e0505bf2 (successive semantic
   integrations); ccf81cf83 merged the feature tip into main
 validated (exact command, SHA/state, exit code): git merge --ff-only
-  bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab at the feature tip, exit 0;
-  git diff --check and git diff --cached --check at bc92ae3a3, exit 0;
+  bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab, exit 0; git merge --no-ff
+  ebe4bd8442507df7b629aa87669fa6bb92e2f19e, exit 0 with no conflicts;
+  git diff --check and git diff --cached --check, exit 0;
   pdfinfo reports the committed primary as 57 A4 pages / 1,007,180 bytes and
   the committed frontier as 203 A4 pages / 2,169,265 bytes; SHA-256 confirms
   each untracked build copy is identical to its committed PDF. Documentation
   validation recorded at 5e0505bf2 is detailed below.
-not yet validated: no fresh exact-SHA aggregate Lean build at bc92ae3a3; no
+not yet validated: no fresh exact-SHA aggregate Lean build at ebe4bd844; no
   post-generalizations rerun of the primary declaration/module citation audit;
   no build was started after the coordinator froze documentation and withheld
   this machine's build token
@@ -50,11 +52,11 @@ commit, merge, or push.
 There is no remaining extraction set:
 
 - Feature checkpoint `5e0505bf23ac0e348dea8238af51567fa648e045` is an
-  ancestor of current main `bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab`.
+  ancestor of pinned main `ebe4bd8442507df7b629aa87669fa6bb92e2f19e`.
 - Main merge `ccf81cf8399630b64492460d2b39ccaacc8b191a` has
   `5e0505bf2` as its second parent.
 - The primary TeX/PDF, canonical frontier TeX/PDF, and frontier README are
-  byte-identical between `5e0505bf2` and `bc92ae3a3`.
+  byte-identical between `5e0505bf2` and `ebe4bd844`.
 - The requested
   `docs/Fabius_Function_and_Rvachev_Up/drafts/` directory is absent.
 - Current main preserves the strict placement rules and the live coordinator
