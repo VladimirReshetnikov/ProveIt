@@ -243,6 +243,16 @@ F(x) ≤ 2^C(n+1,2) * x^n      whenever 0 ≤ x and 2^n x ≤ 1,
 
 obtained by iterating the mean value estimate `F(x) ≤ 2x F(2x)`.  Rvachev's
 function inherits it at both ends of its support through `up(x) = F(1 - |x|)`.
+`SharpFlatness.lean` runs the same induction through the fundamental theorem
+of calculus instead of the mean value theorem, which recovers the factorial
+the pointwise estimate throws away:
+
+```text
+F(x) ≤ 2^C(n+1,2) / n! * x^n .
+```
+
+At `x = 2^(-n)` the exact value is `2^(-C(n,2)) d_n / n!` with `d_n` the half
+moment, so the remaining overshoot is exactly `1 / d_n`.
 
 `GlobalBounds.lean` proves that the signed global extension is bounded by one
 in absolute value, `Fabius.abs_extendedFabius_le_one` — the missing ingredient
@@ -256,12 +266,24 @@ both attained, at `2^(-k)` and `2^(-n) - 1` respectively, so
 `Fabius.isGreatest_abs_iteratedDeriv_extendedFabius` and
 `Fabius.isGreatest_abs_iteratedDeriv_rvachevUp` are exact suprema.
 
+`BoundedDerivatives.lean` carries all of that back to the bounded, CDF-style
+function.  The two functions have the same germ at every argument below one,
+so equation (3) holds verbatim for `fabiusReal` there; above one the bounded
+function is locally constant, and the single remaining point `x = 1` is caught
+by continuity.  The consequences are flatness at the origin
+(`Fabius.iteratedDeriv_fabiusReal_zero`), the global bound
+`Fabius.abs_iteratedDeriv_fabiusReal_le`, and the exact attained supremum
+`Fabius.isGreatest_abs_iteratedDeriv_fabiusReal`.
+
 `NowhereAnalytic.lean` transfers the unnumbered non-analyticity corollary from
 `up` to `F` and determines the analytic locus exactly:
 
 ```text
 AnalyticAt ℝ (fabiusReal F) x  ↔  x ∉ [0, 1].
 ```
+
+The signed extension is likewise analytic at no point of the first block
+`[0, 2)`.
 
 ## Paper coverage
 

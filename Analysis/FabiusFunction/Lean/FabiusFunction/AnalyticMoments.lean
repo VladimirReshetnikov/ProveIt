@@ -43,7 +43,8 @@ private lemma rvachev_intervalIntegrable (F : BoundedFabius) (hF : IsFabius F)
     (a b : ℝ) : IntervalIntegrable (rvachevUp F) volume a b :=
   (rvachev_continuous F hF).intervalIntegrable a b
 
-private lemma pow_mul_rvachev_continuous (F : BoundedFabius) (hF : IsFabius F)
+/-- Every monomial multiple of Rvachev's function is continuous. -/
+theorem pow_mul_rvachev_continuous (F : BoundedFabius) (hF : IsFabius F)
     (m : ℕ) : Continuous (fun x : ℝ => x ^ m * rvachevUp F x) :=
   (continuous_id.pow m).mul (rvachev_continuous F hF)
 

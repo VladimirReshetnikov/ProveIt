@@ -49,11 +49,6 @@ private lemma rvachevUp_ge_half_on_zero_half
       (show (1 / 2 : ℝ) ≤ 1 - t by linarith [ht.2])
     rwa [fabius_half F hF] at hmono
 
-private lemma pow_mul_rvachev_continuous
-    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
-    Continuous (fun t : ℝ => t ^ m * rvachevUp F t) :=
-  (continuous_id.pow m).mul (rvachev_contDiff F hF).continuous
-
 /-- The half moments are at most one. -/
 theorem halfMoment_real_le_one (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
