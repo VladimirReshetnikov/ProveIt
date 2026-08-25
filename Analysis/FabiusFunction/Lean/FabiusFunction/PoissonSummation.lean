@@ -29,26 +29,6 @@ namespace Fabius
 
 noncomputable section
 
-private lemma rvachevUp_support_subset_poisson
-    (F : BoundedFabius) (hF : IsFabius F) :
-    Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
-  intro x hx
-  constructor
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
-
-private lemma rvachevUp_hasCompactSupport_poisson
-    (F : BoundedFabius) (hF : IsFabius F) :
-    HasCompactSupport (rvachevUp F) :=
-  HasCompactSupport.of_support_subset_isCompact isCompact_Icc
-    (rvachevUp_support_subset_poisson F hF)
-
 /-- The Schwartz function obtained by positively rescaling Rvachev's compactly
 supported smooth function. -/
 private noncomputable def scaledRvachevSchwartz
@@ -56,7 +36,7 @@ private noncomputable def scaledRvachevSchwartz
   let f : ℝ → ℝ := fun x ↦ rvachevUp F (u * x)
   have hf_compact : HasCompactSupport f := by
     simpa only [f, smul_eq_mul] using
-      (rvachevUp_hasCompactSupport_poisson F hF).comp_smul hu
+      (rvachevUp_hasCompactSupport F hF).comp_smul hu
   have hf_smooth : ContDiff ℝ ∞ f := by
     dsimp only [f]
     exact (rvachev_contDiff F hF).comp (by fun_prop)
@@ -131,12 +111,6 @@ theorem rvachev_poisson_summation
       push_cast
       ring
 
-/-- The Fourier transform is normalized to one at the origin. -/
-lemma rvachevFourier_zero_poisson
-    (F : BoundedFabius) (hF : IsFabius F) : rvachevFourier F 0 = 1 := by
-  rw [rvachevFourier_eq_product F hF, rvachevFourierProduct]
-  simp [complexSinc]
-
 /-- The Fourier transform vanishes at every nonzero integer.  In the sinc
 product it is already the zeroth factor which vanishes. -/
 lemma rvachevFourier_int_eq_zero
@@ -151,16 +125,6 @@ lemma rvachevFourier_int_eq_zero
       Complex.sin_int_mul_pi]
     simp
   · exact mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) (Int.cast_ne_zero.mpr hm)
-
-private lemma rvachevUp_eq_zero_of_le_neg_one_poisson
-    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) :
-    rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-private lemma rvachevUp_eq_zero_of_one_le_poisson
-    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) :
-    rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
 
 /-- Equation (26), first in the complex-valued form naturally produced by
 Poisson summation.  The positivity hypothesis records the implicit `n ≥ 1`
@@ -185,7 +149,7 @@ private lemma rvachev_partition_one_over_nat_complex
             (t / (n : ℝ)⁻¹ : ℂ)) := h
     _ = (n : ℂ) := by
       rw [tsum_eq_single 0]
-      · simp [rvachevFourier_zero_poisson F hF]
+      · simp [rvachevFourier_zero F hF]
       · intro k hk
         have hkn : k * (n : ℤ) ≠ 0 := mul_ne_zero hk (by exact_mod_cast hn.ne')
         have harg : ((((k : ℝ) / (n : ℝ)⁻¹ : ℝ) : ℂ)) =
@@ -211,11 +175,6 @@ theorem rvachev_partition_unity
     ∑' k : ℤ, rvachevUp F (t + k) = 1 := by
   simpa using rvachev_partition_one_over_nat F hF 1 (by omega) t
 
-private lemma rvachevUp_zero_poisson
-    (F : BoundedFabius) (hF : IsFabius F) : rvachevUp F 0 = 1 := by
-  rw [rvachevUp, if_pos le_rfl]
-  simpa using hF.one_of_one_le 1 le_rfl
-
 /-- Equation (28), the two-term form of the partition of unity on `[0, 1]`. -/
 theorem rvachev_add_shift_eq_one
     (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
@@ -227,10 +186,10 @@ theorem rvachev_add_shift_eq_one
   · intro k hk
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hk
     rcases (show k ≤ -2 ∨ 1 ≤ k by omega) with hkneg | hkpos
-    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_le_neg_one F hF]
       have hknegR : (k : ℝ) ≤ -2 := by exact_mod_cast hkneg
       linarith
-    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_one_le F hF]
       have hkposR : (1 : ℝ) ≤ k := by exact_mod_cast hkpos
       linarith
 
@@ -357,10 +316,10 @@ private lemma rvachev_even_translate_sum_eq_self
   · norm_num
   · intro k hk
     rcases (show k ≤ -1 ∨ 1 ≤ k by omega) with hkneg | hkpos
-    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_le_neg_one F hF]
       have hknegR : (k : ℝ) ≤ -1 := by exact_mod_cast hkneg
       linarith
-    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_one_le F hF]
       have hkposR : (1 : ℝ) ≤ k := by exact_mod_cast hkpos
       linarith
 
@@ -397,7 +356,7 @@ theorem rvachev_cosine_series
       exact Nat.mul_left_cancel (by omega) (Nat.add_right_cancel hij))
   have heven : ∑' k : ℕ, q (2 * k) = 2 := by
     rw [tsum_eq_single 0]
-    · simp [q, f, rvachevFourier_zero_poisson F hF]
+    · simp [q, f, rvachevFourier_zero F hF]
       ring
     · intro k hk
       rw [hpair]
@@ -424,7 +383,7 @@ theorem rvachev_cosine_series
   have hnat : (∑' n : ℕ, q n) = (∑' n : ℤ, f n) + f 0 := by
     simpa only [q] using tsum_nat_add_neg hf
   have hf0 : f 0 = 1 := by
-    simp [f, rvachevFourier_zero_poisson F hF]
+    simp [f, rvachevFourier_zero F hF]
   have hz : (∑' n : ℤ, f n) = 1 + 2 * ∑' k : ℕ, c k := by
     calc
       (∑' n : ℤ, f n) = (∑' n : ℕ, q n) - f 0 := by rw [hnat]; ring
@@ -469,17 +428,17 @@ private lemma rvachev_lattice_sum_on_half_one
         rw [show a * (-1 : ℤ) = -a by push_cast; ring,
           (rvachev_even F hF a)]
         simp only [Int.cast_zero, mul_zero, Int.cast_one, mul_one,
-          rvachevUp_zero_poisson F hF]
+          rvachevUp_zero F hF]
         ring
       · simp
     · simp
   · intro m hm
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hm
     rcases (show m ≤ -2 ∨ 2 ≤ m by omega) with hmneg | hmpos
-    · rw [rvachevUp_eq_zero_of_le_neg_one_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_le_neg_one F hF]
       have hmnegR : (m : ℝ) ≤ -2 := by exact_mod_cast hmneg
       nlinarith
-    · rw [rvachevUp_eq_zero_of_one_le_poisson F hF]
+    · rw [rvachevUp_eq_zero_of_one_le F hF]
       have hmposR : (2 : ℝ) ≤ m := by exact_mod_cast hmpos
       nlinarith
 

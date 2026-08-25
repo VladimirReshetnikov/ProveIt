@@ -68,7 +68,8 @@ lemma sincFactors_multipliable (z : ℂ) :
   funext n
   ring
 
-private lemma rvachevFourier_zero_value
+/-- Rvachev's Fourier transform is normalized to one at the origin. -/
+@[simp] theorem rvachevFourier_zero
     (F : BoundedFabius) (hF : IsFabius F) :
     rvachevFourier F 0 = 1 := by
   have h := complexGeneratingFunction_eq_fourier_analytic F hF 0
@@ -147,7 +148,8 @@ theorem rvachevFourier_scaling
       rw [← hcoef]
       ring
 
-private lemma rvachevFourier_finite_product
+/-- The refinement identity iterated through any finite number of sinc factors. -/
+theorem rvachevFourier_eq_finite_product
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) (N : ℕ) :
     rvachevFourier F z =
       (∏ n ∈ Finset.range N,
@@ -199,7 +201,7 @@ theorem rvachevFourier_eq_product
   have htail : Tendsto
       (fun N : ℕ => rvachevFourier F (z / (2 : ℂ) ^ N)) atTop
         (nhds 1) := by
-    simpa [rvachevFourier_zero_value F hF] using htail0
+    simpa [rvachevFourier_zero F hF] using htail0
   have hmult : Multipliable fun n : ℕ =>
       complexSinc (Real.pi * z / (2 : ℂ) ^ n) :=
     sincFactors_multipliable z
@@ -212,7 +214,8 @@ theorem rvachevFourier_eq_product
   have hlim : Tendsto (fun _N : ℕ => rvachevFourier F z) atTop
       (nhds (∏' n : ℕ, complexSinc (Real.pi * z / (2 : ℂ) ^ n))) := by
     simpa only [mul_one] using hmul.congr'
-      (Filter.Eventually.of_forall fun N => (rvachevFourier_finite_product F hF z N).symm)
+      (Filter.Eventually.of_forall fun N =>
+        (rvachevFourier_eq_finite_product F hF z N).symm)
   unfold rvachevFourierProduct
   exact tendsto_nhds_unique tendsto_const_nhds hlim
 

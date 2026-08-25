@@ -23,7 +23,8 @@ namespace Fabius
 
 noncomputable section
 
-private lemma up_support_subset (F : BoundedFabius) (hF : IsFabius F) :
+/-- Rvachev's compactly supported function has support contained in `[-1, 1]`. -/
+theorem rvachevUp_support_subset (F : BoundedFabius) (hF : IsFabius F) :
     Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
   intro x hx
   constructor
@@ -36,9 +37,11 @@ private lemma up_support_subset (F : BoundedFabius) (hF : IsFabius F) :
     rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
     exact hF.zero_of_nonpos _ (by linarith)
 
-private lemma up_hasCompactSupport (F : BoundedFabius) (hF : IsFabius F) :
+/-- Rvachev's function has compact support. -/
+theorem rvachevUp_hasCompactSupport (F : BoundedFabius) (hF : IsFabius F) :
     HasCompactSupport (rvachevUp F) :=
-  HasCompactSupport.of_support_subset_isCompact isCompact_Icc (up_support_subset F hF)
+  HasCompactSupport.of_support_subset_isCompact isCompact_Icc
+    (rvachevUp_support_subset F hF)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The complex Fourier transform of Rvachev's function is entire. -/
@@ -56,7 +59,7 @@ theorem rvachevFourier_differentiable_analytic
   have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) := by
     apply HasCompactSupport.of_support_subset_isCompact isCompact_Icc
     intro t ht
-    apply up_support_subset F hF
+    apply rvachevUp_support_subset F hF
     intro hup
     apply ht
     norm_num [hup]
@@ -85,7 +88,7 @@ theorem rvachevFourier_differentiable_analytic
     intro t w hw
     by_cases hup : rvachevUp F t = 0
     · simp [G', bound, hup, K]
-    have ht := up_support_subset F hF
+    have ht := rvachevUp_support_subset F hF
       (show t ∈ Function.support (rvachevUp F) from hup)
     have ht_norm : ‖t‖ ≤ 1 := by
       rw [Real.norm_eq_abs, abs_le]
@@ -163,7 +166,7 @@ theorem rvachev_fourier_inversion_analytic
   have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) := by
     apply HasCompactSupport.of_support_subset_isCompact isCompact_Icc
     intro t ht
-    apply up_support_subset F hF
+    apply rvachevUp_support_subset F hF
     intro hup
     apply ht
     norm_num [hup]
@@ -204,15 +207,11 @@ private lemma rvachevUp_two_mul_add_one_eq_zero
   rw [rvachevUp, if_neg (by linarith : ¬ 2 * x + 1 ≤ 0)]
   exact hF.zero_of_nonpos _ (by linarith)
 
-private lemma rvachevUp_zero_value (F : BoundedFabius) (hF : IsFabius F) :
+/-- Rvachev's function takes its normalized value at the origin. -/
+theorem rvachevUp_zero (F : BoundedFabius) (hF : IsFabius F) :
     rvachevUp F 0 = 1 := by
   rw [rvachevUp, if_pos le_rfl]
   simpa using hF.one_of_one_le 1 le_rfl
-
-private lemma rvachevUp_one_value (F : BoundedFabius) (hF : IsFabius F) :
-    rvachevUp F 1 = 0 := by
-  rw [rvachevUp, if_neg (by norm_num : ¬ (1 : ℝ) ≤ 0)]
-  simpa using hF.zero_of_nonpos 0 le_rfl
 
 private lemma rvachevUp_complex_hasDerivAt_on_unit
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : 0 ≤ x) :
@@ -284,7 +283,8 @@ private lemma complexGeneratingFunction_eq_affine_integral
     ring
   rw [hfirst, hsecond] at hibp
   dsimp [u, v] at hibp
-  rw [rvachevUp_zero_value F hF, rvachevUp_one_value F hF] at hibp
+  rw [rvachevUp_zero F hF,
+    rvachevUp_eq_zero_of_one_le F hF (by norm_num)] at hibp
   norm_num at hibp
   unfold complexGeneratingFunction
   linear_combination hibp

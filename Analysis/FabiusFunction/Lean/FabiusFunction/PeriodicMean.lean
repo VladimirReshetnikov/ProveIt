@@ -1,5 +1,6 @@
 import FabiusFunction.BoseFinitePartIntegral
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
@@ -9,6 +10,16 @@ open scoped BigOperators Topology Interval
 open Set Filter MeasureTheory Asymptotics
 
 namespace Fabius
+
+/-- The exact negative-Laplace correction is one-periodic. -/
+theorem negativeLaplacePeriodicCorrection_periodic :
+    Function.Periodic negativeLaplacePeriodicCorrection 1 :=
+  negativeLaplacePeriodicCorrection_add_one
+
+/-- The zero-mean negative-Laplace correction is one-periodic. -/
+theorem negativeLaplacePsi_periodic :
+    Function.Periodic negativeLaplacePsi 1 :=
+  negativeLaplacePsi_add_one
 
 lemma intervalIntegral_negativeLaplaceKernel_two_rpow
     (a b : ℝ) :
@@ -479,5 +490,29 @@ theorem negativeLaplacePeriodicMean_eq :
     norm_num
   rw [hpoly]
   ring
+
+/-- Every translated unit interval has the computed correction mean. -/
+theorem intervalIntegral_negativeLaplacePeriodicCorrection_unit (t : ℝ) :
+    (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
+      gammaZetaConstant / Real.log 2 - Real.log 2 / 12 := by
+  calc
+    (∫ x : ℝ in t..t + 1, negativeLaplacePeriodicCorrection x) =
+        ∫ x : ℝ in (0 : ℝ)..0 + 1, negativeLaplacePeriodicCorrection x :=
+      negativeLaplacePeriodicCorrection_periodic.intervalIntegral_add_eq t 0
+    _ = negativeLaplacePeriodicMean := by
+      simp only [zero_add]
+      rfl
+    _ = gammaZetaConstant / Real.log 2 - Real.log 2 / 12 :=
+      negativeLaplacePeriodicMean_eq
+
+/-- The normalized correction integrates to zero on every translated unit interval. -/
+theorem intervalIntegral_negativeLaplacePsi_unit (t : ℝ) :
+    (∫ x : ℝ in t..t + 1, negativeLaplacePsi x) = 0 := by
+  calc
+    (∫ x : ℝ in t..t + 1, negativeLaplacePsi x) =
+        ∫ x : ℝ in (0 : ℝ)..0 + 1, negativeLaplacePsi x :=
+      negativeLaplacePsi_periodic.intervalIntegral_add_eq t 0
+    _ = 0 := by
+      simpa only [zero_add] using integral_negativeLaplacePsi_zero
 
 end Fabius

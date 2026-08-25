@@ -29,11 +29,6 @@ include h
 /-- The real-to-complex coercion of an original solution. -/
 private abbrev complexFunction (φ : ℝ → ℝ) : ℝ → ℂ := fun x => (φ x : ℂ)
 
-/-- An original solution has compact support in Mathlib's sense. -/
-theorem hasCompactSupport : HasCompactSupport φ := by
-  rw [HasCompactSupport, h.tsupport_eq]
-  exact isCompact_Icc
-
 private theorem complex_hasCompactSupport :
     HasCompactSupport (complexFunction φ) := by
   apply HasCompactSupport.of_support_subset_isCompact isCompact_Icc
@@ -371,6 +366,14 @@ theorem eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
   change (φ x : ℂ) = (ψ x : ℂ) at hx
   exact_mod_cast hx
 
+/-- The functions and dilation constants of any two original solutions agree
+simultaneously. -/
+theorem pair_eq_of_isOriginalFabius {ψ : ℝ → ℝ} {ℓ : ℝ}
+    (hψ : IsOriginalFabius ψ ℓ) : (φ, k) = (ψ, ℓ) := by
+  apply Prod.ext
+  · exact h.eq_of_isOriginalFabius hψ
+  · exact h.scale_eq_two.trans hψ.scale_eq_two.symm
+
 end IsOriginalFabius
 
 /-- Every solution of the original problem is the canonical Rvachev
@@ -385,12 +388,7 @@ theorem existsUnique_originalFabius :
     ∃! p : (ℝ → ℝ) × ℝ, IsOriginalFabius p.1 p.2 := by
   refine ⟨(rvachevUp fabius, 2), canonical_isOriginalFabius, ?_⟩
   rintro ⟨φ, k⟩ h
-  rcases originalFabius_eq_canonical h with ⟨hφ, hk⟩
-  change φ = rvachevUp fabius at hφ
-  change k = 2 at hk
-  subst φ
-  subst k
-  rfl
+  exact h.pair_eq_of_isOriginalFabius canonical_isOriginalFabius
 
 end
 

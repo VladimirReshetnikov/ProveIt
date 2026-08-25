@@ -39,6 +39,11 @@ variable {φ : ℝ → ℝ} {k : ℝ} (h : IsOriginalFabius φ k)
 
 include h
 
+/-- An original solution has compact support in Mathlib's sense. -/
+theorem hasCompactSupport : HasCompactSupport φ := by
+  rw [HasCompactSupport, h.tsupport_eq]
+  exact isCompact_Icc
+
 /-- A solution vanishes strictly outside its prescribed support. -/
 theorem eq_zero_of_not_mem {x : ℝ} (hx : x ∉ Icc (-1 : ℝ) 1) : φ x = 0 := by
   by_contra hne
@@ -79,6 +84,56 @@ theorem value_one : φ 1 = 0 := by
     simp
   exact (closure_minimal hsub hzclosed) hmem
 
+/-- A solution vanishes at and to the left of the support interval. -/
+theorem eq_zero_of_le_neg_one {x : ℝ} (hx : x ≤ -1) : φ x = 0 := by
+  rcases hx.eq_or_lt with rfl | hxlt
+  · exact h.value_neg_one
+  · exact h.eq_zero_of_not_mem (by
+      intro hxmem
+      exact (not_lt_of_ge hxmem.1) hxlt)
+
+/-- A solution vanishes at and to the right of the support interval. -/
+theorem eq_zero_of_one_le {x : ℝ} (hx : 1 ≤ x) : φ x = 0 := by
+  rcases hx.eq_or_lt with rfl | hxlt
+  · exact h.value_one
+  · exact h.eq_zero_of_not_mem (by
+      intro hxmem
+      exact (not_lt_of_ge hxmem.2) hxlt)
+
+/-- The ordinary support of an original solution is the open interval `(-1,1)`. -/
+theorem support_eq : Function.support φ = Ioo (-1 : ℝ) 1 := by
+  apply Set.Subset.antisymm
+  · intro x hx
+    by_contra hxopen
+    apply hx
+    simp only [mem_Ioo, not_and_or, not_lt] at hxopen
+    rcases hxopen with hxleft | hxright
+    · exact h.eq_zero_of_le_neg_one hxleft
+    · exact h.eq_zero_of_one_le hxright
+  · intro x hx
+    exact ne_of_gt (h.pos_of_mem x hx)
+
+/-- A point outside the open support interval is a zero of an original solution. -/
+theorem eq_zero_of_not_mem_Ioo {x : ℝ} (hx : x ∉ Ioo (-1 : ℝ) 1) : φ x = 0 := by
+  by_contra hne
+  apply hx
+  rw [← h.support_eq]
+  exact hne
+
+/-- An original solution is nonnegative everywhere. -/
+theorem nonneg (x : ℝ) : 0 ≤ φ x := by
+  by_cases hx : x ∈ Ioo (-1 : ℝ) 1
+  · exact (h.pos_of_mem x hx).le
+  · rw [h.eq_zero_of_not_mem_Ioo hx]
+
+/-- Positivity characterizes the interior of the prescribed support. -/
+theorem pos_iff_mem_Ioo (x : ℝ) : 0 < φ x ↔ x ∈ Ioo (-1 : ℝ) 1 := by
+  constructor
+  · intro hx
+    rw [← h.support_eq]
+    exact ne_of_gt hx
+  · exact h.pos_of_mem x
+
 /-- The translate identity `φ(t) + φ(t-1) = 1` on `[0,1]` follows directly
 from the differential equation and support.  It is equation (28) of the
 paper, before Poisson summation is invoked there. -/
@@ -98,18 +153,10 @@ theorem add_shift_eq_one {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
         (k * (φ (2 * x + 1) - φ (2 * x - 1)) +
           k * (φ (2 * (x - 1) + 1) - φ (2 * (x - 1) - 1))) x := by
       exact hfirst.add hsecond
-    have hfarRight : φ (2 * x + 1) = 0 := by
-      rcases hx.1.eq_or_lt with rfl | hxpos
-      · simpa using h.value_one
-      · exact h.eq_zero_of_not_mem (by
-          intro hm
-          change -1 ≤ 2 * x + 1 ∧ 2 * x + 1 ≤ 1 at hm
-          linarith [hm.2])
-    have hfarLeft : φ (2 * x - 3) = 0 := by
-      exact h.eq_zero_of_not_mem (by
-        intro hm
-        change -1 ≤ 2 * x - 3 ∧ 2 * x - 3 ≤ 1 at hm
-        linarith [hm.1, hx.2])
+    have hfarRight : φ (2 * x + 1) = 0 :=
+      h.eq_zero_of_one_le (by linarith [hx.1])
+    have hfarLeft : φ (2 * x - 3) = 0 :=
+      h.eq_zero_of_le_neg_one (by linarith [hx.2])
     have hcoef :
         k * (φ (2 * x + 1) - φ (2 * x - 1)) +
           k * (φ (2 * (x - 1) + 1) - φ (2 * (x - 1) - 1)) = 0 := by
@@ -152,13 +199,8 @@ theorem scale_eq_two : k = 2 := by
     intro x hx
     have hx' : x ∈ Icc (-1 : ℝ) 0 := by
       simpa [uIcc_of_le (by norm_num : (-1 : ℝ) ≤ 0)] using hx
-    have hfar : φ (2 * x - 1) = 0 := by
-      rcases hx'.2.eq_or_lt with rfl | hxneg
-      · simpa using h.value_neg_one
-      · exact h.eq_zero_of_not_mem (by
-          intro hm
-          change -1 ≤ 2 * x - 1 ∧ 2 * x - 1 ≤ 1 at hm
-          linarith [hm.1])
+    have hfar : φ (2 * x - 1) = 0 :=
+      h.eq_zero_of_le_neg_one (by linarith [hx'.2])
     simpa [hfar] using h.hasDerivAt x
   have hint : IntervalIntegrable (fun x : ℝ => k * φ (2 * x + 1)) volume (-1) 0 :=
     (h.contDiff.continuous.comp

@@ -92,10 +92,11 @@ theorem fabiusDyadic_cast_extended_formula
     rw [haeq]
     linarith
 
-private theorem fabiusDyadic_unit_reflection
-    (F : BoundedFabius) (hF : IsFabius F)
-    (n r : ℕ) (hr : r ≤ 2 ^ n) :
+/-- Reflection of the closed dyadic formula across the midpoint of its unit
+grid. The statement is exact and independent of the chosen analytic model. -/
+theorem fabiusDyadic_unit_reflection (n r : ℕ) (hr : r ≤ 2 ^ n) :
     fabiusDyadic n (2 ^ n - r) = 1 - fabiusDyadic n r := by
+  obtain ⟨F, hF, _hunique⟩ := existsUnique_fabius
   apply Rat.cast_injective (α := ℝ)
   push_cast
   rw [fabiusDyadic_cast F hF n (2 ^ n - r) (by omega),
@@ -113,7 +114,6 @@ private theorem fabiusDyadic_unit_reflection
     exact_mod_cast hr
 
 private theorem fabiusDyadic_first_block_eq_fold
-    (F : BoundedFabius) (hF : IsFabius F)
     (n residue : ℕ) (hresidue : residue < 2 ^ (n + 1)) :
     fabiusDyadic n residue =
       let scale := 2 ^ n
@@ -148,7 +148,7 @@ private theorem fabiusDyadic_first_block_eq_fold
       omega
     have hadd := fabiusDyadic_add_pow_eq_one n offset
       (by simpa only [scale] using hoffsetLe)
-    have hsym := fabiusDyadic_unit_reflection F hF n offset
+    have hsym := fabiusDyadic_unit_reflection n offset
       (by simpa only [scale] using hoffsetLe)
     rw [hcoreEq, fabiusDyadicUnit_eq_fabiusDyadic n (scale - offset)]
     · rw [hresidueEq]
@@ -161,7 +161,6 @@ rational evaluator for the signed global Fabius extension. -/
 theorem fabiusDyadic_eq_extendedFabiusDyadicValue_nat
     (n m : ℕ) :
     fabiusDyadic n m = extendedFabiusDyadicValue n (m : ℤ) := by
-  obtain ⟨F, hF, _hunique⟩ := existsUnique_fabius
   by_cases hm : m = 0
   · subst m
     rw [fabiusDyadic_arg_zero]
@@ -193,7 +192,7 @@ theorem fabiusDyadic_eq_extendedFabiusDyadicValue_nat
       (by simpa only [← hperiod] using hresidueLt)]
     congr 1
     simpa only [core, scale, period] using
-      fabiusDyadic_first_block_eq_fold F hF n residue
+      fabiusDyadic_first_block_eq_fold n residue
         (by simpa only [← hperiod] using hresidueLt)
 
 /-- The total signed-numerator evaluator computes the signed global extension. -/

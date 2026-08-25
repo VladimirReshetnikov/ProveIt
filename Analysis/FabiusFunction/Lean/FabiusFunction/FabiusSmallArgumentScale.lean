@@ -39,10 +39,23 @@ theorem fabiusSmallArgumentLog_logArgument (t : ℝ) :
   rw [Real.logb_rpow (by norm_num) (by norm_num)]
   ring
 
+/-- The logarithmic parametrization approaches zero through positive
+arguments.  Together with `fabiusSmallArgumentLog_tendsto_atTop`, this makes
+the two asymptotic coordinates available in both directions. -/
+theorem fabiusLogArgument_tendsto_smallArgument :
+    Tendsto fabiusLogArgument atTop (nhdsWithin 0 (Ioi 0)) := by
+  rw [tendsto_nhdsWithin_iff]
+  constructor
+  · change Tendsto (fun t : ℝ => (2 : ℝ) ^ (-t)) atTop (nhds 0)
+    simpa only [Function.comp_def] using
+      (tendsto_rpow_atBot_of_base_gt_one (2 : ℝ) (by norm_num)).comp
+        tendsto_neg_atTop_atBot
+  · exact Filter.Eventually.of_forall fun t => fabiusLogArgument_pos t
+
 /-- Transfer a logarithmic-scale `O` estimate at `t → ∞` back to the
 equivalent small-positive-argument filter. -/
 theorem isBigO_smallArgument_of_logScale
-    (f g : ℝ → ℝ)
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G)
     (h : (fun t => f (fabiusLogArgument t)) =O[atTop]
       (fun t => g (fabiusLogArgument t))) :
     f =O[nhdsWithin 0 (Ioi 0)] g := by
@@ -52,5 +65,57 @@ theorem isBigO_smallArgument_of_logScale
     exact congrArg f (fabiusLogArgument_smallArgumentLog hx)
   · filter_upwards [self_mem_nhdsWithin] with x hx
     exact congrArg g (fabiusLogArgument_smallArgumentLog hx)
+
+/-- Pull a small-positive-argument `O` estimate back to logarithmic scale. -/
+theorem isBigO_logScale_of_smallArgument
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G)
+    (h : f =O[nhdsWithin 0 (Ioi 0)] g) :
+    (fun t => f (fabiusLogArgument t)) =O[atTop]
+      (fun t => g (fabiusLogArgument t)) := by
+  simpa only [Function.comp_def] using
+    h.comp_tendsto fabiusLogArgument_tendsto_smallArgument
+
+/-- Big-O on logarithmic scale is equivalent to Big-O at zero from the
+right, for functions with arbitrary normed codomains. -/
+theorem isBigO_logScale_iff_smallArgument
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G) :
+    ((fun t => f (fabiusLogArgument t)) =O[atTop]
+        (fun t => g (fabiusLogArgument t))) ↔
+      f =O[nhdsWithin 0 (Ioi 0)] g :=
+  ⟨isBigO_smallArgument_of_logScale f g,
+    isBigO_logScale_of_smallArgument f g⟩
+
+/-- Transfer a logarithmic-scale little-o estimate to zero from the right. -/
+theorem isLittleO_smallArgument_of_logScale
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G)
+    (h : (fun t => f (fabiusLogArgument t)) =o[atTop]
+      (fun t => g (fabiusLogArgument t))) :
+    f =o[nhdsWithin 0 (Ioi 0)] g := by
+  have hc := h.comp_tendsto fabiusSmallArgumentLog_tendsto_atTop
+  apply hc.congr'
+  · filter_upwards [self_mem_nhdsWithin] with x hx
+    exact congrArg f (fabiusLogArgument_smallArgumentLog hx)
+  · filter_upwards [self_mem_nhdsWithin] with x hx
+    exact congrArg g (fabiusLogArgument_smallArgumentLog hx)
+
+/-- Pull a small-positive-argument little-o estimate back to logarithmic
+scale. -/
+theorem isLittleO_logScale_of_smallArgument
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G)
+    (h : f =o[nhdsWithin 0 (Ioi 0)] g) :
+    (fun t => f (fabiusLogArgument t)) =o[atTop]
+      (fun t => g (fabiusLogArgument t)) := by
+  simpa only [Function.comp_def] using
+    h.comp_tendsto fabiusLogArgument_tendsto_smallArgument
+
+/-- Little-o on logarithmic scale is equivalent to little-o at zero from the
+right, for functions with arbitrary normed codomains. -/
+theorem isLittleO_logScale_iff_smallArgument
+    {E G : Type*} [Norm E] [Norm G] (f : ℝ → E) (g : ℝ → G) :
+    ((fun t => f (fabiusLogArgument t)) =o[atTop]
+        (fun t => g (fabiusLogArgument t))) ↔
+      f =o[nhdsWithin 0 (Ioi 0)] g :=
+  ⟨isLittleO_smallArgument_of_logScale f g,
+    isLittleO_logScale_of_smallArgument f g⟩
 
 end Fabius

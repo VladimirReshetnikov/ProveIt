@@ -508,13 +508,14 @@ theorem realLogTaylor_sub_isBigO
   · rfl
 
 /-- A full real Poincaré expansion with constant coefficient one is carried
-by `Real.log` to the recursively generated logarithmic expansion. -/
-theorem HasAsymptoticExpansion.real_log
+by `Real.log` to the recursively generated logarithmic expansion.  No
+separate positivity assumption is needed: the hypotheses force `f` to tend
+to one. -/
+theorem HasAsymptoticExpansion.real_log_of_unit_constantCoeff
     {scale f : α → ℝ} {coeff : ℕ → α → ℝ}
     (h : HasAsymptoticExpansion l scale f coeff)
     (hscale : Tendsto scale l (𝓝 0))
-    (hcoeff0 : coeff 0 = fun _ => 1)
-    (_hfpos : ∀ᶠ x in l, 0 < f x) :
+    (hcoeff0 : coeff 0 = fun _ => 1) :
     HasAsymptoticExpansion l scale (Real.log ∘ f)
       (fun k x => logCoeff (fun j => coeff j x) k) := by
   have hscaleO : scale =O[l] (fun _ : α => (1 : ℝ)) :=
@@ -582,6 +583,18 @@ theorem HasAsymptoticExpansion.real_log
       rw [show 1 + (f x - 1) = f x by ring, hpartial]
       ring
     · rfl
+
+/-- Compatibility form of `real_log_of_unit_constantCoeff` with an explicit
+eventual-positivity hypothesis. -/
+theorem HasAsymptoticExpansion.real_log
+    {scale f : α → ℝ} {coeff : ℕ → α → ℝ}
+    (h : HasAsymptoticExpansion l scale f coeff)
+    (hscale : Tendsto scale l (𝓝 0))
+    (hcoeff0 : coeff 0 = fun _ => 1)
+    (_hfpos : ∀ᶠ x in l, 0 < f x) :
+    HasAsymptoticExpansion l scale (Real.log ∘ f)
+      (fun k x => logCoeff (fun j => coeff j x) k) :=
+  h.real_log_of_unit_constantCoeff hscale hcoeff0
 
 end AnalyticTransfer
 

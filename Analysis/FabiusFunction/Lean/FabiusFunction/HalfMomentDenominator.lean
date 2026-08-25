@@ -1,4 +1,5 @@
 import FabiusFunction.NormalizedEvenMoments
+import FabiusFunction.NormalizedMoments
 
 /-!
 # Odd denominators of doubled half moments
@@ -60,6 +61,13 @@ private lemma finset_prod_odd {ι : Type*} (s : Finset ι) (f : ι → ℕ)
       exact (hf a (by simp)).mul (ih (by
         intro i hi
         exact hf i (by simp [hi])))
+
+/-- The reduced denominator of a half moment divides the displayed natural
+normalization from the division-free recurrence. -/
+theorem halfMoment_den_dvd_normalization (n : ℕ) :
+    (halfMoment n).den ∣ (n + 1).factorial * mersenneProduct n := by
+  rw [halfMoment_eq_halfMomentNumerator]
+  exact rat_den_dvd_nat_div _ _
 
 /-- Every recursively defined half moment is strictly positive. -/
 theorem halfMoment_pos (n : ℕ) : 0 < halfMoment n := by
