@@ -12,16 +12,17 @@ supplement it but do not replace it.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-theorem-refinements / c9a3 /
   EVO (Windows)
-fetched main SHA: 22d63a9f74a9dd022b243fc3836930ae94354ff9
-HEAD and dirty paths: 455a28661df4149ed2d57a9c8ea27c965b32e91e;
-  clean before this registry-only coordinator reply
+fetched main SHA: 397927a874cdb4c0aa15c326b75c7a0c15693b8d
+HEAD and dirty paths: e9dd4aae299b3a9882990e6d6b5fd0c835524c94;
+  clean before this FABIUS-R001 registry-only reply
 writing (exact paths): docs/registry/codex-fabius-theorem-refinements.md only
 expected declarations or document claims: no new work; preserve the exact
   translated Thue--Morse polynomial API and proof-boundary repairs enumerated
   below for claim-level coordinator extraction
 completed commits: a95bd19137c75dba867e0a17019036c0ea6d77fc
   (unique polynomial/API tranche); 455a28661df4149ed2d57a9c8ea27c965b32e91e
-  (latest preserved feature checkpoint)
+  (preserved merge checkpoint); e9dd4aae299b3a9882990e6d6b5fd0c835524c94
+  (declaration-by-declaration coordinator inventory)
 validated (exact command, SHA/state, exit code): on immutable 4c54e8d9b,
   `lake build +FabiusFunction.FabiusQBinomialTaylor` passed 3,320 jobs and
   `lake build +FabiusFunction.FabiusQBinomialFormula` passed 3,317 jobs, both
@@ -32,19 +33,43 @@ not yet validated: no exact-tree aggregate Lean build or axiom replay for
   455a28661; no build was launched after the coordinator freeze
 requested integration or lease: extract/review the unique declarations below;
   do not merge this branch wholesale; no new path or build lease requested
-conflicts / dependencies: main and feature diverge 8 / 15 commits from
+conflicts / dependencies: main and feature diverge 31 / 16 commits from
   6fcbbb5da; canonical documents, README, aggregate, and coordination files
   are frozen; 09885a710 is superseded by the coordinator board
 next bounded step: commit and push this registry-only status to the feature
   branch, then remain read-only pending coordinator instructions
 ```
 
-## Coordinator extraction inventory against `22d63a9f`
+## `FABIUS-R001` recovery facts
 
-The exact comparison is feature `455a28661df4149ed2d57a9c8ea27c965b32e91e`
-against fetched main `22d63a9f74a9dd022b243fc3836930ae94354ff9`,
+These commands were read after fetching `397927a8`, when the directive first
+became visible in this worktree:
+
+- `git status --short --branch`: clean, feature branch ahead of its then-remote
+  tip by 65 commits;
+- `git rev-parse ORIG_HEAD`: `4c54e8d9beee1622003891222b76e2cfc59b685f`;
+- `git rev-parse MERGE_HEAD`: no such ref, exit 128; and
+- `git diff --name-only --diff-filter=U`: no paths.
+
+The `6fcbbb5d` merge had already been resolved and committed as `455a28661`
+before `FABIUS-R001` was published; the registry inventory was then committed
+as `e9dd4aae2`. There is therefore no active merge for `git merge --abort` to
+abort. No abort, reset, checkout, stash, or conflict-path replacement was run
+after the directive. The committed feature history is preserved for the
+coordinator's source-only extraction.
+
+## Coordinator extraction inventory against `397927a8`
+
+The Lean declaration inventory was refreshed from feature
+`e9dd4aae299b3a9882990e6d6b5fd0c835524c94` against fetched main
+`397927a874cdb4c0aa15c326b75c7a0c15693b8d`,
 with common base `6fcbbb5da45330bdc78c6090706cf1479f3d3afb` and
-15/8 commit divergence. Do not merge either side wholesale.
+16/31 feature/main commit divergence. All seven names below remain absent from
+current main, matching the board's candidate `a95bd1913`. The documentation
+claim inventory was audited exactly against earlier main `22d63a9f`; because
+main has since integrated another exposition checkpoint, it is routing evidence
+for a fresh semantic audit, not a claim that its line-level patches still apply.
+Do not merge either side wholesale.
 
 ### Public declarations absent from main
 
