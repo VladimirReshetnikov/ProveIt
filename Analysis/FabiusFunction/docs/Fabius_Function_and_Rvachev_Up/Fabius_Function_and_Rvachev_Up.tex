@@ -1496,6 +1496,15 @@ The bound is uniform on the closed interval and includes both endpoints.  It is 
 than mere weak convergence of the finite distributions, and it is the quantitative input
 for the computability proof in \cref{sec:effective-computability}.
 
+The same finite formula also has the correct signed global behavior.  Binary block
+translation and midpoint reflection extend the local identification to every $x\ge0$:
+\begin{equation}
+ |S_p(x)|\le1,\qquad
+ S_p(x)\longrightarrow\mathcal F(x).                     \label{eq:centered-spline-global-limit}
+\end{equation}
+This global form is the analytic input for the complex-shift and discrete-limit results
+below; it should not be confused with uniform convergence on the whole half-line.
+
 \section{Fourier transform, entire products, and Poisson summation}
 \label{sec:fourier}
 
@@ -1977,6 +1986,11 @@ This is a weighted-path recurrence on the directed graph with one edge $k\to n$ 
 $k<n$.  Iterating it terminates, and the resulting paths can be indexed by ordered
 compositions.
 
+The recurrence is triangular: once $A_0=1$ is fixed, each $A_n$ is a linear combination
+of earlier values.  Induction therefore gives uniqueness.  In particular, the argument
+below is purely algebraic and applies to any sequence satisfying
+\eqref{eq:normalized-inverse-recurrence}; no further analytic property of $F$ is used.
+
 An ordered composition of $n$ is a tuple
 $\rho=(r_1,\ldots,r_m)$ of positive integers with sum $n$.  Put
 \begin{equation}
@@ -2020,6 +2034,10 @@ Induction gives $C_n=A_n$, and multiplying by $2^{-\binom n2}$ proves
 \eqref{eq:inverse-composition-formula}.
 \end{proof}
 
+Every point $2^{-n}$ lies in $[0,1]$, where the bounded Fabius function and the signed
+global extension agree.  Consequently the same formula holds with $F(2^{-n})$ replaced
+by $\mathcal F(2^{-n})$.
+
 Equivalently, put $i_0=0$ and $i_j=s_j$.  Compositions of length $m$ correspond bijectively
 to chains
 \begin{equation*}
@@ -2035,11 +2053,67 @@ Hence, for $n\ge1$,
  \frac{1}{(2^{i_j}-1)(i_j-i_{j-1}+1)!}.                 \label{eq:inverse-chain-formula}
 \end{equation}
 There are $2^{n-1}$ compositions of a positive integer $n$, so this is finite and
-nonrecursive, although exponential in size.  In matrix language, if $T_{i,j}$ is the edge
-weight in \eqref{eq:normalized-inverse-recurrence} for $j<i$ and is zero otherwise, then on
-indices $0,\ldots,n$ the matrix $T$ is strictly lower triangular.  Thus
-$(I-T)^{-1}=I+T+\cdots+T^n$, and its $(n,0)$ entry is precisely the path sum above.  No
-analytic convergence theorem is involved.
+nonrecursive, although exponential in size.  For fixed $m$, the inner sum may instead be
+written over $1\le i_1<\cdots<i_{m-1}\le n-1$, with $i_0=0$ and $i_m=n$; when $m=1$
+there are no internal indices and there is one direct path $0\to n$.
+
+The common factor $2^{-\binom n2}$ has a direct path interpretation.  Before normalization,
+the edge $k\to r$ has weight
+\begin{equation}
+ U_{r,k}=\frac{2^{\binom k2-\binom r2}}
+ {(2^r-1)(r-k+1)!}.                                      \label{eq:inverse-original-edge}
+\end{equation}
+Along a chain $0=i_0<i_1<\cdots<i_m=n$, the powers of two telescope:
+\begin{equation}
+ \prod_{j=1}^{m}2^{\binom{i_{j-1}}2-\binom{i_j}2}
+ =2^{\binom{i_0}2-\binom{i_m}2}
+ =2^{-\binom n2}.                                        \label{eq:inverse-path-telescope}
+\end{equation}
+The remaining factors are precisely the normalized chain weight in
+\eqref{eq:inverse-chain-formula}.  Thus normalization extracts an endpoint factor common
+to every path, rather than merely shortening the recurrence.
+
+\begin{example}[The first nontrivial path sums]
+For $n=2$, the compositions are $(2)$ and $(1,1)$, with weights
+\begin{equation*}
+ W(2)=\frac1{(2^2-1)3!}=\frac1{18},\qquad
+ W(1,1)=\frac1{(2^1-1)2!}\frac1{(2^2-1)2!}=\frac1{12}.
+\end{equation*}
+Hence $A_2=5/36$ and $F(2^{-2})=2^{-1}A_2=5/72$.  For $n=3$, the four ordered
+compositions $(3),(1,2),(2,1),(1,1,1)$ have weights
+\begin{equation*}
+ \frac1{168},\qquad\frac1{84},\qquad\frac1{252},\qquad\frac1{168}.
+\end{equation*}
+The unequal weights of $(1,2)$ and $(2,1)$ record their different intermediate partial
+sums.  Their total is $A_3=1/36$, giving $F(2^{-3})=2^{-3}A_3=1/288$.
+\end{example}
+
+For a precise matrix form, fix $N$ and define a matrix indexed by $0,\ldots,N$ by
+\begin{equation*}
+ T^{[N]}_{i,j}=\begin{cases}
+ \displaystyle\frac1{(2^i-1)(i-j+1)!},&j<i,\\[5pt]
+ 0,&j\ge i.
+ \end{cases}
+\end{equation*}
+With $\mathbf A=(A_0,\ldots,A_N)^{\mathsf T}$ and
+$\mathbf e_0=(1,0,\ldots,0)^{\mathsf T}$, the initial value and recurrence become
+\begin{equation*}
+ \mathbf A=\mathbf e_0+T^{[N]}\mathbf A.
+\end{equation*}
+Since $T^{[N]}$ is strictly lower triangular, $(T^{[N]})^{N+1}=0$ and
+\begin{equation*}
+ \mathbf A=(I-T^{[N]})^{-1}\mathbf e_0
+ =\bigl(I+T^{[N]}+\cdots+(T^{[N]})^N\bigr)\mathbf e_0.
+\end{equation*}
+The entry $(T^{[N]})^m_{n,0}$ is the sum of products of edge weights over all length-$m$
+increasing paths from $0$ to $n$, so its $n$th component is exactly
+\eqref{eq:inverse-chain-formula}.  This is a finite geometric identity for a nilpotent
+matrix, not an analytic convergence argument.  Finally, if
+\begin{equation*}
+ D=\operatorname{diag}\bigl(2^{\binom02},2^{\binom12},\ldots,2^{\binom N2}\bigr),
+\end{equation*}
+then the matrix of the original recurrence is $U=D^{-1}T^{[N]}D$.  This diagonal
+similarity is the matrix form of \eqref{eq:inverse-path-telescope}.
 
 \subsection{An exact two-adic valuation}
 
@@ -2389,47 +2463,442 @@ The exact closed form of $\Delta_n$ is subtler.  The source paper records a conj
 factorization; the formal development correctly retains it as a conjecture rather than a
 theorem.
 
-\subsection{A $q$-binomial form and translation invariance}
+\subsection{A $q$-binomial form, double cancellation, and scalar translation}
+\label{subsec:q-binomial-dyadic}
 
-For completeness, the formal development also derives a less obvious formula organized by
-Gaussian binomial coefficients.  Put
+The formal development derives a second exact dyadic formula organized by Gaussian
+binomial coefficients.  Put
 \begin{equation}
  (a;q)_n=\prod_{j=0}^{n-1}(1-aq^j),                        \label{eq:qpochhammer}
 \end{equation}
-and write $\qbinom nkq$ for the $q$-binomial coefficient.
+and write $\qbinom nkq$ for the Gaussian or $q$-binomial coefficient.  The base $q=1/2$
+is forced by the dilation grid $1,2,4,\ldots$: the corresponding Pochhammer product is the
+node polynomial for reciprocal dyadic scales.
 
-\begin{theorem}[$q$-binomial dyadic formula]
-For $m,n\in\N$ and every scalar translation $Q\in\Q$,
+\begin{theorem}[Global $q$-binomial dyadic formula]
+For $m,n\in\N$ and every scalar translation $Q\in\C$,
 \begin{align}
- F(m/2^n)
+ \mathcal F(m/2^n)
  &=\frac{1}{2^{n^2}(1/2;1/2)_n}
  \sum_{k=0}^{n}
  \frac{\qbinom nk{1/2}}
  {4^{\binom k2}(n+k)!}                                    \notag\\
  &\quad\times
  \sum_{r=0}^{m2^k-1}(-1)^{\wt(r)}
- \bigl(r-m2^k+Q\bigr)^{n+k},                              \label{eq:qbinomial-dyadic}
+ \bigl(r-m2^k+Q\bigr)^{n+k}.                              \label{eq:qbinomial-dyadic}
 \end{align}
-whenever $0\le m\le2^n$.  The right side is independent of $Q$.
+Here the real value on the left is embedded in $\C$.  The right side is independent of
+$Q$, so the identity also holds for real, rational, and Gaussian-rational shifts.  If
+$0\le m\le2^n$, then $\mathcal F(m/2^n)=F(m/2^n)$, giving the bounded formula.
 \end{theorem}
 
 \begin{proofidea}
-Repeated use of the moment recurrence converts the moment kernel in
-\eqref{eq:dyadic-closed} into the Gaussian-binomial coefficients in
-\eqref{eq:qbinomial-dyadic}.  To prove translation independence, regard the right side as a
-polynomial in $Q$.  Its positive-order derivatives are linear combinations of translated
-Thue--Morse power sums.  The cancellation lemma \eqref{eq:thue-affine-cancel}, together with
-the triangular $q$-binomial identity, makes every derivative vanish.  Hence the polynomial is
-constant.  The formal proof packages this polynomial over $\Q$ and then extends the identity
-by scalar evaluation to any characteristic-zero field, including $\R$ and $\C$.
+There are two nested finite differences.  Inside a block of length $2^k$, the generating
+polynomial factors as
+\begin{equation}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}z^r
+ =\prod_{j=0}^{k-1}(1-z^{2^j}).                           \label{eq:thue-generating-product}
+\end{equation}
+It has a zero of order $k$ at $z=1$, so the inner power sum annihilates every polynomial
+of degree below $k$.  After this forced zero is removed, its degree-$n$ coefficient is a
+polynomial of degree at most $n$ in the geometric scale node $-2^k$.
+
+Across the scales, the weights
+\begin{equation}
+ w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}              \label{eq:q-geometric-weights}
+\end{equation}
+form the divided-difference stencil on the nodes $-1,-2,\ldots,-2^n$.  The finite
+$q$-binomial theorem says that this stencil annihilates degrees below $n$ and extracts the
+leading coefficient in degree $n$.  Applying it after the inner Thue--Morse cancellation
+produces exactly the moment normalization equal to $\mathcal F(m/2^n)$.
+
+For translation invariance, package the entire numerator as a polynomial $N_{m,n}(X)$ over
+$\Q$.  Multiplying every block exponential by $\e^{QX}$ cannot change its degree-$n$
+coefficient, because the aggregated coefficients of all lower degrees have vanished.  Thus
+$N_{m,n}$ is a constant polynomial.  Evaluation in any characteristic-zero field proves the
+rational, real, and complex statements algebraically; no density or continuity argument is
+involved.  Decomposing the long prefix into $m$ blocks of length $2^k$ supplies the arbitrary
+numerator $m$.
 \end{proofidea}
 
+The endpoint cases are literal finite identities.  When $m=0$, every inner range is empty,
+so both sides are zero.  When $n=0$, the formula is the scale-zero signed block identity.
+A nonreduced presentation $m/2^n=2m/2^{n+1}$ changes every finite sum but not its value,
+because both are identified with the same global function value.
+
+Binary complementation gives a useful raw-coordinate version.  Reflection
+$r\mapsto2^k-1-r$ changes the Thue--Morse sign by $(-1)^k$.  Once the exponent $n+k$ is
+included, the remaining sign is independent of $k$ and is absorbed by $(-2)^{n^2}$.
+Consequently, for every $n\in\N$ and $Q\in\C$,
+\begin{equation}
+ \boxed{
+ \mathcal F(2^{-n})=
+ \frac{1}{(-2)^{n^2}(1/2;1/2)_n}
+ \sum_{k=0}^{n}
+ \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}(r+Q)^{n+k}.}
+                                                               \label{eq:qbinomial-raw}
+\end{equation}
+Again the left side is embedded in $\C$, and the nested expression is independent of $Q$.
+
 The $q$-binomial formula is not competitive with the bit recursion as an evaluator.  Its
-value is structural: it reveals a hidden finite-difference symmetry and shows that the same
-exact identity survives scalar extension.
+value is structural: the inner difference is adapted to binary blocks, the outer Gaussian
+difference is adapted to geometric scales, and the same identity survives arbitrary complex
+scalar translation.
+
+\section{The global binary-reduction telescope}
+\label{sec:global-binary-reduction}
+
+The Taylor-block recursion also applies to the signed global extension $\mathcal F$.  It can
+therefore be iterated along the binary expansion of an arbitrary nonnegative real number,
+rather than only along the finite expansion of a dyadic rational.  The reductions need not
+terminate, but their residuals tend geometrically to zero.
+
+Define the finite reduction polynomial
+\begin{equation}
+ \mathcal T_m(y)=
+ \sum_{j=0}^{m}
+ 2^{\binom{j+1}{2}-\binom{m-j}{2}}
+ \frac{d_{m-j}}{(m-j)!}\frac{y^j}{j!}.                   \label{eq:global-reduction-polynomial}
+\end{equation}
+All powers of $2$ here are integer powers.  In particular, negative exponents are allowed,
+and $\mathcal T_0(y)=1$.  The signed Taylor-block identity is
+\begin{equation}
+ \mathcal F(2^{-m}+y)=-\mathcal F(y)+\mathcal T_m(y),
+ \qquad 0\le y<2^{-m}.                                   \label{eq:global-taylor-reduction}
+\end{equation}
+
+Fix $x\ge0$.  At scale $m$, put
+\begin{equation}
+ p_m=\lfloor2^mx\rfloor,\qquad
+ y_m=x-\frac{p_m}{2^m},\qquad 0\le y_m<2^{-m}.            \label{eq:global-prefix-tail}
+\end{equation}
+The previous prefix requires a genuine half-scale value at $m=0$:
+\begin{equation}
+ p^*_{m-1}=\begin{cases}
+  \lfloor x/2\rfloor,&m=0,\\
+  p_{m-1},&m\ge1.
+ \end{cases}                                             \label{eq:global-previous-prefix}
+\end{equation}
+Uniformly, $p^*_{m-1}=\lfloor p_m/2\rfloor$.  Thus
+$p_m=2p^*_{m-1}+\delta_m$ with $\delta_m\in\{0,1\}$.  Define
+\begin{equation}
+ \alpha_m(x)=(-1)^{\wt(p_m)}(2p^*_{m-1}-p_m),\qquad
+ R_m(x)=(-1)^{\wt(p_m)}\mathcal F(y_m).                  \label{eq:global-reduction-coefficient}
+\end{equation}
+The coefficient $\alpha_m$ is zero or a sign, and it is nonzero precisely when the newly
+exposed binary digit is $1$.
+
+\begin{lemma}[One-step residual identity]
+For $m\ge1$,
+\begin{equation}
+ \alpha_m(x)\mathcal T_m(y_m)=R_{m-1}(x)-R_m(x).          \label{eq:global-one-step-residual}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $p_m=2p_{m-1}$, then $y_m=y_{m-1}$, the Thue--Morse signs agree, and
+$\alpha_m=0$, so both sides vanish.  If $p_m=2p_{m-1}+1$, then
+\begin{equation*}
+ y_{m-1}=2^{-m}+y_m,\qquad
+ (-1)^{\wt(p_m)}=-(-1)^{\wt(p_{m-1})},\qquad
+ \alpha_m=(-1)^{\wt(p_{m-1})}.
+\end{equation*}
+Apply \eqref{eq:global-taylor-reduction} to $y_{m-1}$ and multiply by the old prefix sign;
+the two copies of $\mathcal F(y_m)$ combine exactly into $R_{m-1}-R_m$.
+\end{proof}
+
+The scale-zero identity is separate and retains the parity of the integer block:
+\begin{equation}
+ \mathcal F(x)=\alpha_0(x)\mathcal T_0(y_0)+R_0(x).       \label{eq:global-scale-zero-step}
+\end{equation}
+Indeed, write $p_0=2p^*_{-1}+\delta_0$ and use the two-unit translation law
+\eqref{eq:single-block}.  When $\delta_0=0$, the polynomial term vanishes.  When
+$\delta_0=1$, the identity $\mathcal F(1+y_0)=-\mathcal F(y_0)+1$ supplies it.
+
+\begin{theorem}[Exact finite binary telescope]
+For $x\ge0$ and $N\in\N$,
+\begin{equation}
+ \boxed{
+ \mathcal F(x)=
+ \sum_{m=0}^{N}\alpha_m(x)\mathcal T_m(y_m(x))+R_N(x).}
+                                                               \label{eq:global-finite-binary-telescope}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Start with \eqref{eq:global-scale-zero-step}.  Summing
+\eqref{eq:global-one-step-residual} for $m=1,\ldots,N$ telescopes all intermediate residuals.
+The case $N=0$ is exactly the scale-zero identity.
+\end{proof}
+
+For $N\ge1$, $0\le y_N<2^{-N}\le1/2$.  On this interval
+$0\le\mathcal F(y)=F(y)\le2y$, so
+\begin{equation}
+ |R_N(x)|\le2^{1-N}.                                     \label{eq:global-residual-bound}
+\end{equation}
+The one-step identity then gives, for $m\ge2$,
+\begin{equation}
+ |\alpha_m(x)\mathcal T_m(y_m)|
+ \le |R_{m-1}|+|R_m|\le4\,2^{-(m-1)}.                   \label{eq:global-summand-majorant}
+\end{equation}
+Thus the limiting series is absolutely, not merely conditionally, convergent.
+
+\begin{theorem}[Absolutely convergent global binary series]
+For every $x\ge0$,
+\begin{equation}
+ \boxed{
+ \mathcal F(x)=\sum_{m=0}^{\infty}
+ \alpha_m(x)\mathcal T_m(y_m(x)).}                       \label{eq:global-binary-reduction-series}
+\end{equation}
+On $0\le x\le1$, the sum is equivalently $F(x)$.
+\end{theorem}
+
+The index $m=0$ is indispensable globally.  For $0\le x<1$ it vanishes, so a series
+starting at $m=1$ happens to be valid there.  At $x=1$, however, the zeroth term is $1$ and
+all later coefficients vanish.  More generally it is the zeroth term that distinguishes
+even and odd integer blocks of the signed extension.
+
+\subsection{The corrected parity-power presentation}
+\label{subsec:corrected-parity-power}
+
+The same summands have a more literal presentation in terms of prefix parity and inverse
+dyadic values.  Define, using integer exponents,
+\begin{equation}
+ \kappa_j=\frac{((j:\Z)+2)((j:\Z)-1)}2
+ =\binom{j+1}{2}-1.                                      \label{eq:parity-power-integer-exponent}
+\end{equation}
+The integer interpretation matters: $\kappa_0=-1$, hence $2^{\kappa_0}=1/2$; natural
+subtraction would silently give the wrong term.  Put
+\begin{equation}
+ \mathcal I_m(y)=\sum_{j=0}^{m}
+ 2^{\kappa_j}\mathcal F\bigl(2^{(j:\Z)-(m:\Z)}\bigr)
+ \frac{y^j}{j!}.                                         \label{eq:parity-power-inner}
+\end{equation}
+
+\begin{lemma}
+For every $m$ and $y$,
+\begin{equation}
+ \mathcal I_m(y)=\frac12\mathcal T_m(y).                 \label{eq:parity-power-half-reduction}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $j\le m$, set $r=m-j$.  The inverse-dyadic identity
+\eqref{eq:F-inverse-power} gives
+\begin{equation*}
+ \mathcal F(2^{j-m})=
+ \frac{d_{m-j}}{(m-j)!\,2^{\binom{m-j}{2}}}.
+\end{equation*}
+Together with $\kappa_j=\binom{j+1}{2}-1$, this identifies each summand with one half of
+the corresponding summand in \eqref{eq:global-reduction-polynomial}.
+\end{proof}
+
+Let $\tau(a)=\wt(a)\bmod2$.  Since
+\begin{equation*}
+ \frac{(-1)^a-1}{2}=2\left\lfloor\frac a2\right\rfloor-a,
+\end{equation*}
+the literal summand
+\begin{align}
+ \Lambda_m(x)
+ &:=
+ \bigl((-1)^{\lfloor2^mx\rfloor}-1\bigr)
+ (-1)^{\tau(\lfloor2^mx\rfloor)}                         \notag\\[-2pt]
+ &\quad\times
+ \sum_{j=0}^{m}2^{((j+2)(j-1))/2}
+ \mathcal F(2^{j-m})
+ \frac{\left(x-\lfloor2^mx\rfloor/2^m\right)^j}{j!}     \label{eq:parity-power-literal-summand}
+\end{align}
+is exactly $\alpha_m(x)\mathcal T_m(y_m)$.  Both exponents
+$((j+2)(j-1))/2$ and $j-m$ in this display are integer exponents, not truncated natural
+subtractions.
+
+\begin{theorem}[Corrected parity-power series]
+For every $x\ge0$,
+\begin{equation}
+ \boxed{\mathcal F(x)=\sum_{m=0}^{\infty}\Lambda_m(x),}  \label{eq:corrected-parity-power-series}
+\end{equation}
+and the series converges absolutely.  On the half-open unit interval $0\le x<1$, the
+zeroth summand vanishes and one may start at $m=1$.
+\end{theorem}
+
+\begin{proof}
+The elementary parity identity and \eqref{eq:parity-power-half-reduction} prove
+$\Lambda_m=\alpha_m\mathcal T_m(y_m)$ term by term.  The claim follows from
+\eqref{eq:global-binary-reduction-series}.  The half-open corollary follows from
+$\lfloor x\rfloor=0$; the closed endpoint $x=1$ requires the restored zeroth term.
+\end{proof}
+
+\subsection{The global complex $q$-binomial series}
+\label{subsec:global-q-series}
+
+The finite constant-polynomial identity from \cref{subsec:q-binomial-dyadic} can be inserted
+at every scale of the binary telescope.  For $Q\in\C$, define
+\begin{equation}
+ \mathcal N_n^{(Q)}=
+ \sum_{k=0}^{n}
+ \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}
+ (r-2^k+Q)^{n+k}.                                       \label{eq:q-global-numerator}
+\end{equation}
+Translation invariance and the inverse-dyadic normalization give
+\begin{equation}
+ \frac{\mathcal N_n^{(Q)}}
+ {2^{\binom n2}(1/2;1/2)_n}
+ =\frac{2^n d_n}{n!}.                                    \label{eq:q-taylor-normalization}
+\end{equation}
+The normalization differs from the $2^{n^2}$ in
+\eqref{eq:qbinomial-dyadic}: here it produces a Taylor coefficient rather than a function
+value.
+
+For $m\in\N$, put
+\begin{equation}
+ \mathcal Q_m^{(Q)}(y)=
+ 2^{-\binom{m+1}{2}}
+ \sum_{n=0}^{m}
+ \frac{(2^{m+1}y)^{m-n}}{(m-n)!}
+ \frac{\mathcal N_n^{(Q)}}
+ {2^{\binom n2}(1/2;1/2)_n}.                             \label{eq:q-reduction-polynomial}
+\end{equation}
+
+\begin{theorem}[$q$-binomial Taylor identity]
+For every $m$, every $y$, and every $Q\in\C$,
+\begin{equation}
+ \mathcal Q_m^{(Q)}(y)=\mathcal T_m(y),                  \label{eq:q-reduction-equals-taylor}
+\end{equation}
+where the real polynomial on the right is embedded in $\C$.  In particular, each finite
+summand is pointwise independent of $Q$ before any infinite sum is taken.
+\end{theorem}
+
+\begin{proof}
+Insert \eqref{eq:q-taylor-normalization} into
+\eqref{eq:q-reduction-polynomial} and set $j=m-n$.  Collecting the powers of $2$ gives
+\begin{equation*}
+ 2^{-\binom{m+1}{2}}\,2^{(m+1)j}\,2^{m-j}
+ =2^{\binom{j+1}{2}-\binom{m-j}{2}}.
+\end{equation*}
+The remaining factorials and moments are exactly those in
+\eqref{eq:global-reduction-polynomial}.
+\end{proof}
+
+\begin{theorem}[Global complex $q$-binomial series]
+For fixed $Q\in\C$ and every $x\ge0$,
+\begin{equation}
+ \boxed{
+ \mathcal F(x)=\sum_{m=0}^{\infty}
+ \alpha_m(x)\mathcal Q_m^{(Q)}(y_m(x)),}                 \label{eq:global-q-binomial-series}
+\end{equation}
+with the left side embedded in $\C$.  The series converges absolutely.
+\end{theorem}
+
+This is not a new infinite basic-hypergeometric identity.  The outer sum is the analytic
+binary telescope, while at each scale a finite $q$-binomial identity presents the same
+Taylor polynomial.  Expanding one summand makes the architecture explicit:
+\begin{align}
+ &\alpha_m(x)\,2^{-\binom{m+1}{2}}
+ \sum_{n=0}^{m}
+ \frac{(2^{m+1}x-2p_m(x))^{m-n}}{(m-n)!}
+ \frac1{2^{\binom n2}(1/2;1/2)_n}                       \notag\\
+ &\qquad\times
+ \sum_{k=0}^{n}
+ \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}(-1)^{\wt(r)}
+ (r-2^k+Q)^{n+k}.                                       \label{eq:global-q-literal-summand}
+\end{align}
+Convergence comes entirely from the binary-tail majorant
+\eqref{eq:global-summand-majorant}; the special-function manipulations are finite and
+algebraic.
+
+\section{A complex $q$-binomial discrete limit}
+\label{sec:q-discrete-limit}
+
+There is a second way in which the same Gaussian row produces $\mathcal F$.  It is a genuine
+limit of finite shifted splines rather than a sequence of partial sums of
+\eqref{eq:global-q-binomial-series}.  Reuse the safe midpoint cutoff $N_p(x)$ from
+\eqref{eq:centered-cutoff}.  For $x\ge0$ it is equivalent to the inclusive source range
+\begin{equation}
+ 0\le r\le\left\lfloor2^px-\frac12\right\rfloor,          \label{eq:discrete-cutoff-inclusive}
+\end{equation}
+including the empty case where the upper endpoint is $-1$.
+
+For fixed $Q\in\C$, define
+\begin{align}
+ \mathcal D_n^{(Q)}(x)
+ &=
+ \frac1{2^{n^2}(1/2;1/2)_n}
+ \sum_{k=0}^{n}
+ \frac{\qbinom nk{1/2}}{4^{\binom k2}(n+k)!}             \notag\\
+ &\quad\times
+ \sum_{r=0}^{N_{n+k}(x)-1}(-1)^{\wt(r)}
+ \bigl(r-2^{n+k}x+Q\bigr)^{n+k}.                         \label{eq:discrete-q-approximant}
+\end{align}
+
+\begin{theorem}[Complex discrete-limit formula]
+For every fixed $Q\in\C$ and $x\ge0$,
+\begin{equation}
+ \boxed{\mathcal D_n^{(Q)}(x)\longrightarrow\mathcal F(x)}
+                                                               \label{eq:discrete-q-limit}
+\end{equation}
+in $\C$.  If $0\le x\le1$, the limit is equivalently $F(x)$.
+\end{theorem}
+
+\begin{proof}
+For a degree $p$ and complex shift $Q$, introduce the finite shifted spline
+\begin{equation}
+ S_p^{(Q)}(x)=
+ \frac{(-1)^p}{2^{\binom p2}p!}
+ \sum_{r=0}^{N_p(x)-1}(-1)^{\wt(r)}
+ (r-2^px+Q)^p.                                           \label{eq:complex-shift-spline}
+\end{equation}
+At $Q=1/2$ this is exactly the centered spline
+\eqref{eq:centered-spline}, so by \eqref{eq:centered-spline-global-limit},
+\begin{equation*}
+ S_p^{(1/2)}(x)\longrightarrow\mathcal F(x).
+\end{equation*}
+Expanding a fixed cutoff branch about $Q=1/2$ gives an exact finite Taylor combination of
+lower-degree centered branches.  The normalized Thue--Morse bounds then give, for $p\ge1$,
+\begin{equation}
+ \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
+ \le2^{-(p-1)}\exp\!\left(|Q-\tfrac12|\right).            \label{eq:complex-shift-spline-bound}
+\end{equation}
+Thus every fixed complex shift has the same spline limit.
+
+Now reindex the outer sum in \eqref{eq:discrete-q-approximant} by $j=n-k$.  Direct
+collection of signs, powers, and factorials gives the exact finite identity
+\begin{equation}
+ \mathcal D_n^{(Q)}(x)=
+ \sum_{j=0}^{n}\omega_{n,j}S_{2n-j}^{(Q)}(x),             \label{eq:discrete-toeplitz-reindex}
+\end{equation}
+where
+\begin{equation}
+ \omega_{n,j}=
+ \frac{(-1)^j\qbinom nj{1/2}\,2^{-\binom{j+1}{2}}}
+ {(1/2;1/2)_n}.                                          \label{eq:discrete-toeplitz-weight}
+\end{equation}
+The finite $q$-binomial theorem gives the row normalization
+\begin{equation}
+ \sum_{j=0}^{n}\omega_{n,j}=1.                            \label{eq:discrete-row-sum}
+\end{equation}
+Applying it with the opposite sign also gives the uniform variation bound
+\begin{equation}
+ \sum_{j=0}^{n}|\omega_{n,j}|
+ =\frac{(-1/2;1/2)_n}{(1/2;1/2)_n}\le16.                 \label{eq:discrete-row-variation}
+\end{equation}
+Finally, every sampled degree satisfies $2n-j\ge n$.  A finite-row Toeplitz lemma therefore
+carries the convergence of $S_p^{(Q)}(x)$ to the weighted rows
+\eqref{eq:discrete-toeplitz-reindex}, proving \eqref{eq:discrete-q-limit}.
+\end{proof}
+
+Two distinctions prevent common misreadings of this theorem.  First, unlike the complete
+finite dyadic numerator and each summand of the global $q$-series, a finite value
+$\mathcal D_n^{(Q)}(x)$ can depend on $Q$; it is the limit that is independent of a fixed
+shift.  Second, the Toeplitz row \eqref{eq:discrete-toeplitz-reindex} is not a finite binary
+telescope or a partial sum of \eqref{eq:global-q-binomial-series}.  These finite expressions
+share a limit but are not equal term by term.
 
 \section{Endpoint asymptotics: exact logarithmic decomposition}
 \label{sec:asymptotic-decomposition}
+\sectionmark{Endpoint asymptotics}
 
 We now turn to the behavior of $F(x)$ as $x\downarrow0$.  This is the technically deepest
 part of the theory and the place where a very small, but mathematically unavoidable,
