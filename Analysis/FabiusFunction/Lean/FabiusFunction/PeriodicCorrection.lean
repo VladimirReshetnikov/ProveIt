@@ -9,8 +9,8 @@ on compact positive intervals.  The small-scale logarithmic product has a
 geometric `2⁻ⁿ` majorant, while the forward tail has a geometric majorant
 with ratio `exp (-a)` on an interval whose left endpoint is `a > 0`.
 
-Mean and Fourier-coefficient calculations belong here once their Mellin data
-have been connected to the new Stieltjes and Gamma expansion infrastructure.
+The resulting global continuity and one-periodicity statements form the
+regularity interface used by the later mean, Fourier, and derivative modules.
 -/
 
 set_option autoImplicit false
@@ -59,6 +59,12 @@ theorem continuousAt_negativeLaplaceLog (s : ℝ) (hs : 0 < s) :
   exact (continuousOn_negativeLaplaceLog_Icc
       (s / 2) (3 * s / 2) (by positivity)).continuousAt
     (Icc_mem_nhds (by linarith) (by linarith))
+
+/-- The logarithmic product is continuous throughout the positive half-line. -/
+theorem continuousOn_negativeLaplaceLog :
+    ContinuousOn negativeLaplaceLog (Ioi 0) := by
+  intro s hs
+  exact (continuousAt_negativeLaplaceLog s hs).continuousWithinAt
 
 /-- Each forward-tail term is continuous on the positive half-line. -/
 theorem continuousOn_negativeLaplaceForwardTerm (n : ℕ) :
@@ -119,6 +125,12 @@ theorem continuousAt_negativeLaplaceForwardTail (s : ℝ) (hs : 0 < s) :
       (s / 2) (3 * s / 2) (by positivity)).continuousAt
     (Icc_mem_nhds (by linarith) (by linarith))
 
+/-- The forward tail is continuous throughout the positive half-line. -/
+theorem continuousOn_negativeLaplaceForwardTail :
+    ContinuousOn negativeLaplaceForwardTail (Ioi 0) := by
+  intro s hs
+  exact (continuousAt_negativeLaplaceForwardTail s hs).continuousWithinAt
+
 /-- The multiplicatively periodic correction is continuous at positive scales. -/
 theorem continuousAt_negativeLaplaceMultiplicativeCorrection
     (s : ℝ) (hs : 0 < s) :
@@ -131,6 +143,13 @@ theorem continuousAt_negativeLaplaceMultiplicativeCorrection
   exact ((continuousAt_negativeLaplaceLog s hs).add
     (continuousAt_const.mul ((ht.pow 2).sub ht))).add
       (continuousAt_negativeLaplaceForwardTail s hs)
+
+/-- The multiplicative correction is continuous throughout the positive
+half-line. -/
+theorem continuousOn_negativeLaplaceMultiplicativeCorrection :
+    ContinuousOn negativeLaplaceMultiplicativeCorrection (Ioi 0) := by
+  intro s hs
+  exact (continuousAt_negativeLaplaceMultiplicativeCorrection s hs).continuousWithinAt
 
 /-- The exact one-periodic logarithmic correction is continuous. -/
 theorem continuous_negativeLaplacePeriodicCorrection :

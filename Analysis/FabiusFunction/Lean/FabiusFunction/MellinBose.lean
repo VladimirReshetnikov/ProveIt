@@ -44,6 +44,7 @@ lemma hasSum_neg_exp_div_log_one_sub_exp (x : ℝ) (hx : 0 < x) :
     push_cast
     ring)
 
+/-- The Gamma-integral kernel is integrable on the positive half-line. -/
 lemma integrableOn_rpow_mul_exp_neg (a : ℝ) (ha : 0 < a) :
     IntegrableOn (fun x : ℝ => x ^ (a - 1) * Real.exp (-x)) (Ioi 0) := by
   let f : ℝ → ℝ := fun x => x ^ (a - 1) * Real.exp (-x)
@@ -68,6 +69,7 @@ lemma integrableOn_rpow_mul_exp_neg (a : ℝ) (ha : 0 < a) :
     |>.mul (Real.continuous_exp.comp_continuousOn continuousOn_neg)).aestronglyMeasurable
       measurableSet_Ioi)
 
+/-- Integrability of the Gamma kernel after an arbitrary positive rescaling. -/
 lemma integrableOn_rpow_mul_exp_neg_mul
     (a r : ℝ) (ha : 0 < a) (hr : 0 < r) :
     IntegrableOn (fun x : ℝ => x ^ (a - 1) * Real.exp (-(r * x))) (Ioi 0) := by
@@ -108,6 +110,18 @@ lemma integrableOn_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
   push_cast
   ring
 
+/-- Combine the Dirichlet factor and its real power into one reciprocal
+power. -/
+lemma one_div_mul_one_div_rpow (r a : ℝ) (hr : 0 < r) :
+    (1 / r) * (1 / r) ^ a = 1 / r ^ (a + 1) := by
+  calc
+    (1 / r) * (1 / r) ^ a = (1 / r) ^ (1 : ℝ) * (1 / r) ^ a := by
+      rw [Real.rpow_one]
+    _ = (1 / r) ^ (1 + a) := by rw [Real.rpow_add (by positivity)]
+    _ = 1 / r ^ (a + 1) := by
+      rw [show (1 + a : ℝ) = a + 1 by ring]
+      simp only [one_div, Real.inv_rpow hr.le]
+
 lemma integral_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
     ∫ x : ℝ in Ioi 0, boseMellinTerm a n x =
       -(1 / ((n + 1 : ℕ) : ℝ)) *
@@ -123,6 +137,24 @@ lemma integral_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
   rw [integral_const_mul]
   push_cast
   rw [Real.integral_rpow_mul_exp_neg_mul_Ioi ha hr]
+
+/-- Closed power form of the integral of one Bose--Mellin summand. -/
+lemma integral_boseMellinTerm_eq_neg_gamma_div_rpow
+    (a : ℝ) (ha : 0 < a) (n : ℕ) :
+    ∫ x : ℝ in Ioi 0, boseMellinTerm a n x =
+      -Real.Gamma a / (((n + 1 : ℕ) : ℝ) ^ (a + 1)) := by
+  calc
+    ∫ x : ℝ in Ioi 0, boseMellinTerm a n x =
+        -(1 / ((n + 1 : ℕ) : ℝ)) *
+          ((1 / ((n + 1 : ℕ) : ℝ)) ^ a * Real.Gamma a) :=
+      integral_boseMellinTerm a ha n
+    _ = -Real.Gamma a *
+        ((1 / ((n + 1 : ℕ) : ℝ)) *
+          (1 / ((n + 1 : ℕ) : ℝ)) ^ a) := by ring
+    _ = -Real.Gamma a *
+        (1 / (((n + 1 : ℕ) : ℝ) ^ (a + 1))) := by
+      rw [one_div_mul_one_div_rpow _ _ (by positivity)]
+    _ = -Real.Gamma a / (((n + 1 : ℕ) : ℝ) ^ (a + 1)) := by ring
 
 lemma integral_norm_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
     ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖ =
@@ -141,6 +173,24 @@ lemma integral_norm_boseMellinTerm (a : ℝ) (ha : 0 < a) (n : ℕ) :
   rw [setIntegral_congr_fun measurableSet_Ioi hpoint]
   rw [integral_neg, integral_boseMellinTerm a ha n]
   ring
+
+/-- Closed power form of the `L¹` norm of one Bose--Mellin summand. -/
+lemma integral_norm_boseMellinTerm_eq_gamma_div_rpow
+    (a : ℝ) (ha : 0 < a) (n : ℕ) :
+    ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖ =
+      Real.Gamma a / (((n + 1 : ℕ) : ℝ) ^ (a + 1)) := by
+  calc
+    ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖ =
+        (1 / ((n + 1 : ℕ) : ℝ)) *
+          ((1 / ((n + 1 : ℕ) : ℝ)) ^ a * Real.Gamma a) :=
+      integral_norm_boseMellinTerm a ha n
+    _ = Real.Gamma a *
+        ((1 / ((n + 1 : ℕ) : ℝ)) *
+          (1 / ((n + 1 : ℕ) : ℝ)) ^ a) := by ring
+    _ = Real.Gamma a *
+        (1 / (((n + 1 : ℕ) : ℝ) ^ (a + 1))) := by
+      rw [one_div_mul_one_div_rpow _ _ (by positivity)]
+    _ = Real.Gamma a / (((n + 1 : ℕ) : ℝ) ^ (a + 1)) := by ring
 
 /-- The real Dirichlet series used to avoid unnecessary complex coercions in
 the termwise-integral argument. -/
@@ -173,16 +223,6 @@ lemma realZetaSeries_eq_riemannZeta_re (p : ℝ) (hp : 1 < p) :
   push_cast
   rw [hpw]
   simp
-
-lemma one_div_mul_one_div_rpow (r a : ℝ) (hr : 0 < r) :
-    (1 / r) * (1 / r) ^ a = 1 / r ^ (a + 1) := by
-  calc
-    (1 / r) * (1 / r) ^ a = (1 / r) ^ (1 : ℝ) * (1 / r) ^ a := by
-      rw [Real.rpow_one]
-    _ = (1 / r) ^ (1 + a) := by rw [Real.rpow_add (by positivity)]
-    _ = 1 / r ^ (a + 1) := by
-      rw [show (1 + a : ℝ) = a + 1 by ring]
-      simp only [one_div, Real.inv_rpow hr.le]
 
 lemma summable_integral_norm_boseMellinTerm (a : ℝ) (ha : 0 < a) :
     Summable (fun n : ℕ => ∫ x : ℝ in Ioi 0, ‖boseMellinTerm a n x‖) := by
