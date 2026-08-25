@@ -9277,20 +9277,40 @@ unless $a+b$ is even.  Numerically
 $\langle(\Psi')^{2}\rangle=8.917\times10^{-11}$ but
 $\langle(\Psi''')^{2}\rangle=1.390\times10^{-7}$, four decades larger.
 
-The practical consequence is that the $\Psi$-free part of $A_j$ is \emph{not} its mean.  At
-$j=2$ the two differ by
-\begin{equation*}
- \langle A_2\rangle-\frac1{4L^{2}}
- =-\frac{\langle(\Psi')^{2}\rangle}{2L^{3}}-\frac{\langle(\Psi'')^{2}\rangle}{4L^{4}}
- =-3.946\times10^{-9},
-\end{equation*}
-using $\langle\Psi'\Psi''\rangle=\langle\Psi''\Psi'''\rangle=0$ by parity and
-$\langle\Psi'\Psi'''\rangle=-\langle(\Psi'')^{2}\rangle$.  The gap grows with $j$ like
-everything else here: it is $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and
-$-1.14\times10^{-7}$ at $j=1,2,3$, so it is invisible at $j=1$ and reaches the seventh digit
-by $j=3$.  The $\Psi$-free part remains the right practical value for the mean, but the
-reason is a ratio and not an absolute bound: at each order it sits four to five decades below
-the oscillation of $A_j$ itself.
+The practical consequence is that the $\Psi$-free part of $A_j$ is \emph{not} its mean.  The
+means themselves are available in closed form.  Every mean of a derivative vanishes, and
+integration by parts over a period kills or pairs the rest:
+\begin{equation}
+ \langle\Psi'\Psi''\rangle=0,\qquad
+ \langle(\Psi')^{2}\Psi''\rangle=0,\qquad
+ \langle\Psi'\Psi'''\rangle=-\langle(\Psi'')^{2}\rangle,   \label{eq:as-parts-identities}
+\end{equation}
+the first two because each integrand is the derivative of a periodic function.  Applying
+these to \eqref{eq:A1} and to the corresponding expression one order further leaves
+\begin{align}
+ \langle A_1\rangle&=\frac1{24}+\frac1{2L}
+   -\frac{\langle(\Psi')^{2}\rangle}{2L^{2}},               \label{eq:as-mean-A1}\\
+ \langle A_2\rangle&=\frac1{4L^{2}}
+   -\frac{\langle(\Psi')^{2}\rangle}{2L^{3}}
+   -\frac{\langle(\Psi'')^{2}\rangle}{4L^{4}}
+   -\frac{\langle(\Psi')^{3}\rangle}{6L^{3}}.               \label{eq:as-mean-A2}
+\end{align}
+Both are exact.  With
+$\langle(\Psi')^{2}\rangle=8.917038\times10^{-11}$,
+$\langle(\Psi'')^{2}\rangle=3.520305\times10^{-9}$ and
+$\langle(\Psi')^{3}\rangle=1.115006\times10^{-21}$ they give
+$\langle A_1\rangle=0.7630141870184$ and $\langle A_2\rangle=0.5203422413049$.
+
+The cubic term in \eqref{eq:as-mean-A2} is $-5.58\times10^{-22}$, twelve orders below the
+smallest term beside it, and it is the only one with no partner to cancel against.  It is
+kept because \eqref{eq:as-mean-A2} is an identity and not an estimate; dropping it would
+change the equals sign into an approximation, which is a different claim.
+
+The gap between the mean and the $\Psi$-free part grows with $j$ like everything else here:
+it is $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and $-1.14\times10^{-7}$ at $j=1,2,3$, so it
+is invisible at $j=1$ and reaches the seventh digit by $j=3$.  The $\Psi$-free part remains
+the right practical value for the mean, but the reason is a ratio and not an absolute bound:
+at each order it sits four to five decades below the oscillation of $A_j$ itself.
 \end{warning}
 
 The same two facts explain why the expansion \eqref{eq:all-orders-log} is asymptotic and not
