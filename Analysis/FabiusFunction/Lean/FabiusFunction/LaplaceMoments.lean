@@ -115,11 +115,16 @@ noncomputable def fabiusLaplaceMoment (F : BoundedFabius) : ℕ → ℝ → ℝ
       (k + 1 : ℝ) * tiltedSurvivalMoment F k s -
         s * tiltedSurvivalMoment F (k + 1) s
 
+/-- Definitional unfolding of the base clause: the zeroth tilted moment is
+the generating function evaluated at `-s`.  Tagged `simp`. -/
 @[simp]
 theorem fabiusLaplaceMoment_zero (F : BoundedFabius) (s : ℝ) :
     fabiusLaplaceMoment F 0 s = generatingFunction F (-s) :=
   rfl
 
+/-- Definitional unfolding of the successor clause: the `(k+1)`st tilted
+moment is `(k+1)` times the `k`th tilted survival moment minus `s` times the
+`(k+1)`st.  Tagged `simp`. -/
 @[simp]
 theorem fabiusLaplaceMoment_succ (F : BoundedFabius) (k : ℕ) (s : ℝ) :
     fabiusLaplaceMoment F (k + 1) s =

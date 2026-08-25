@@ -55,18 +55,6 @@ theorem iteratedDeriv_fabiusReal_zero (F : BoundedFabius) (hF : IsFabius F)
   rw [iteratedDeriv_fabiusReal_of_lt_one F hF k (by norm_num), mul_zero,
     extendedFabius_eq_zero_of_nonpos F hF le_rfl, mul_zero]
 
-private lemma iteratedDeriv_const_succ (c : ℝ) (m : ℕ) :
-    iteratedDeriv (m + 1) (fun _ : ℝ => c) = fun _ => 0 := by
-  induction m with
-  | zero =>
-      funext y
-      rw [iteratedDeriv_one]
-      simp
-  | succ m ih =>
-      funext y
-      rw [iteratedDeriv_succ, ih]
-      simp
-
 /-- To the right of the unit interval the bounded Fabius function is locally
 constant, so every positive-order derivative vanishes. -/
 theorem iteratedDeriv_fabiusReal_eq_zero_of_one_lt (F : BoundedFabius)
@@ -75,7 +63,39 @@ theorem iteratedDeriv_fabiusReal_eq_zero_of_one_lt (F : BoundedFabius)
   have heq : fabiusReal F =ᶠ[nhds x] fun _ : ℝ => (1 : ℝ) := by
     filter_upwards [Ioi_mem_nhds hx] with y hy
     exact hF.one_of_one_le y (le_of_lt hy)
-  rw [heq.iteratedDeriv_eq (m + 1), iteratedDeriv_const_succ]
+  exact (heq.iteratedDeriv_eq (m + 1)).trans (by simp [iteratedDeriv_const])
+
+/-- Every positive-order derivative of the bounded Fabius function vanishes on
+the whole closed ray `[1, ∞)`, the endpoint `x = 1` included.  The open ray is
+`iteratedDeriv_fabiusReal_eq_zero_of_one_lt` (local constancy), and the
+endpoint is caught by continuity, since the vanishing set of a continuous
+function is closed and `Ici 1` is the closure of `Ioi 1`.
+
+This is the right-endpoint mirror of `iteratedDeriv_fabiusReal_zero`, and the
+pair is exactly the statement that `fabiusReal F` glues to its two constant
+tails `0` and `1` in a `C^∞` fashion.  The strictly stronger hypothesis `1 < x`
+of `iteratedDeriv_fabiusReal_eq_zero_of_one_lt` is deliberately kept there
+rather than relaxed in place: the proof below consumes that lemma, so merging
+the two would be circular. -/
+theorem iteratedDeriv_fabiusReal_eq_zero_of_one_le (F : BoundedFabius)
+    (hF : IsFabius F) (m : ℕ) {x : ℝ} (hx : 1 ≤ x) :
+    iteratedDeriv (m + 1) (fabiusReal F) x = 0 := by
+  have hcont : Continuous (iteratedDeriv (m + 1) (fabiusReal F)) :=
+    hF.contDiff.continuous_iteratedDeriv (m + 1)
+      (ENat.natCast_le_of_coe_top_le_withTop le_rfl (m + 1))
+  have hclosed :
+      IsClosed {y : ℝ | iteratedDeriv (m + 1) (fabiusReal F) y = 0} :=
+    isClosed_eq hcont continuous_const
+  have hsub : Ioi (1 : ℝ) ⊆
+      {y : ℝ | iteratedDeriv (m + 1) (fabiusReal F) y = 0} := by
+    intro y hy
+    show iteratedDeriv (m + 1) (fabiusReal F) y = 0
+    exact iteratedDeriv_fabiusReal_eq_zero_of_one_lt F hF m hy
+  have hcl : Ici (1 : ℝ) ⊆
+      {y : ℝ | iteratedDeriv (m + 1) (fabiusReal F) y = 0} := by
+    rw [← closure_Ioi (1 : ℝ)]
+    exact hclosed.closure_subset_iff.mpr hsub
+  exact hcl hx
 
 /-- Sharp uniform bound for every iterated derivative of the bounded Fabius
 function, valid at every real argument. -/
@@ -141,6 +161,44 @@ theorem isGreatest_abs_iteratedDeriv_fabiusReal (F : BoundedFabius)
     show |iteratedDeriv k (fabiusReal F) (((2 : ℝ) ^ k)⁻¹)| =
       2 ^ (k + 1).choose 2
     rw [iteratedDeriv_fabiusReal_inv_two_pow F hF k hk,
+      abs_of_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (k + 1).choose 2)]
+  · rintro y ⟨x, rfl⟩
+    exact abs_iteratedDeriv_fabiusReal_le F hF k x
+
+/-- The uniform bound is attained at `2^(-k)`, for *every* order `k`, including
+`k = 0`.  The order-zero case is not degenerate: `((2 : ℝ) ^ 0)⁻¹ = 1` and
+`(0 + 1).choose 2 = 0`, so the statement reads `fabiusReal F 1 = 1`, which is
+the constant right tail of the bounded Fabius function.  The hypothesis
+`1 ≤ k` carried by `iteratedDeriv_fabiusReal_inv_two_pow` is therefore
+unnecessary; that declaration is kept unchanged for compatibility, and the
+positive-order case here is discharged by it. -/
+theorem iteratedDeriv_fabiusReal_inv_two_pow_all (F : BoundedFabius)
+    (hF : IsFabius F) (k : ℕ) :
+    iteratedDeriv k (fabiusReal F) (((2 : ℝ) ^ k)⁻¹) = 2 ^ (k + 1).choose 2 := by
+  match k with
+  | 0 =>
+      have h1 : ((0 : ℕ) + 1).choose 2 = 0 := by decide
+      rw [iteratedDeriv_zero, pow_zero, inv_one, h1, pow_zero]
+      exact hF.one_of_one_le 1 le_rfl
+  | (j + 1) =>
+      exact iteratedDeriv_fabiusReal_inv_two_pow F hF (j + 1) (by omega)
+
+/-- `2^C(k+1,2)` is exactly the supremum of the `k`-th derivative of the
+bounded Fabius function in absolute value, and it is attained at `2^(-k)` —
+for *every* order `k`, including `k = 0`, where the statement says that the
+supremum of `|fabiusReal F|` is `1`, attained at `1`.  This is the
+hypothesis-free form of `isGreatest_abs_iteratedDeriv_fabiusReal`, which is
+kept unchanged for compatibility; it matches the shape already used for
+`extendedFabius` and `rvachevUp` in `FabiusFunction.GlobalBounds`. -/
+theorem isGreatest_abs_iteratedDeriv_fabiusReal_all (F : BoundedFabius)
+    (hF : IsFabius F) (k : ℕ) :
+    IsGreatest (Set.range fun x : ℝ => |iteratedDeriv k (fabiusReal F) x|)
+      (2 ^ (k + 1).choose 2) := by
+  constructor
+  · refine ⟨((2 : ℝ) ^ k)⁻¹, ?_⟩
+    show |iteratedDeriv k (fabiusReal F) (((2 : ℝ) ^ k)⁻¹)| =
+      2 ^ (k + 1).choose 2
+    rw [iteratedDeriv_fabiusReal_inv_two_pow_all F hF k,
       abs_of_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (k + 1).choose 2)]
   · rintro y ⟨x, rfl⟩
     exact abs_iteratedDeriv_fabiusReal_le F hF k x

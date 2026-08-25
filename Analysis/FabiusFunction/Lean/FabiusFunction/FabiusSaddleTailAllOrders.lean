@@ -56,12 +56,19 @@ tail smaller than the requested `b^(-(N+1))` rate. -/
 noncomputable def fabiusSaddleCentralRadiusOrder (N : ℕ) (b : ℝ) : ℝ :=
   Real.sqrt (32 * (N + 1 : ℝ) * Real.log b)
 
+/-- The order-`N` central radius is strictly positive for `1 < b`, where
+`Real.log b` is strictly positive. -/
 lemma fabiusSaddleCentralRadiusOrder_pos (N : ℕ) {b : ℝ} (hb : 1 < b) :
     0 < fabiusSaddleCentralRadiusOrder N b := by
   unfold fabiusSaddleCentralRadiusOrder
   exact Real.sqrt_pos.2 (mul_pos
     (mul_pos (by norm_num) (by positivity)) (Real.log_pos hb))
 
+/-- For `1 ≤ b` the square root defining the order-`N` central radius is
+taken of a nonnegative quantity, so
+`fabiusSaddleCentralRadiusOrder N b ^ 2 = 32 * (N + 1) * Real.log b`.
+Besides this file, `FabiusSaddleCentralRadiusAsymptotics` and
+`GaussianPolynomialTailAllOrders` both rewrite with it. -/
 lemma sq_fabiusSaddleCentralRadiusOrder (N : ℕ) {b : ℝ} (hb : 1 ≤ b) :
     fabiusSaddleCentralRadiusOrder N b ^ 2 =
       32 * (N + 1 : ℝ) * Real.log b := by
@@ -70,6 +77,8 @@ lemma sq_fabiusSaddleCentralRadiusOrder (N : ℕ) {b : ℝ} (hb : 1 ≤ b) :
   exact mul_nonneg (mul_nonneg (by norm_num) (by positivity))
     (Real.log_nonneg hb)
 
+/-- Once `b` is at least `Real.exp 1`, the order-`N` central radius is at
+least `1`. -/
 lemma one_le_fabiusSaddleCentralRadiusOrder
     (N : ℕ) {b : ℝ} (hb : Real.exp 1 ≤ b) :
     1 ≤ fabiusSaddleCentralRadiusOrder N b := by
@@ -82,6 +91,12 @@ lemma one_le_fabiusSaddleCentralRadiusOrder
     exact_mod_cast Nat.le_add_left 1 N
   nlinarith
 
+/-- Intermediate-region estimate.  For `1 ≤ b`, `1 ≤ A`, `b / 4 ≤ m` and a
+radius obeying `A ^ 2 = 32 * (N + 1) * Real.log b`, the quantity
+`2 * exp (-(m * A / (2 * b)) * A) / (m * A / (2 * b))` is at most
+`16 * b⁻¹ ^ (N + 1)`.  The constant `16` and the exponent are sufficient,
+not sharp: the proof first obtains `b⁻¹ ^ (4 * (N + 1))`.  Used in this file
+by `integral_norm_fabius_scaledSaddleKernel_orderRadius_isBigO`. -/
 lemma ordered_intermediate_tail_le_inv_pow
     (N : ℕ) (b A : ℝ) (m : ℕ)
     (hb : 1 ≤ b) (hA : 1 ≤ A)
@@ -170,6 +185,11 @@ private lemma geometric_majorant_isBigO_inv_pow (N : ℕ) :
   rw [show N + 2 = (N + 1) + 1 by omega, pow_succ]
   field_simp [hb.ne']
 
+/-- Far-region estimate.  Along any filter on which `b` tends to `atTop` and
+eventually `b / 4 ≤ m`, the geometric weight
+`(2 ^ (m - 1))⁻¹ * (sqrt b * pi)` is `O(b⁻¹ ^ (N + 1))` for the fixed `N`.
+Here `m - 1` is truncated natural subtraction.  Used in this file by
+`integral_norm_fabius_scaledSaddleKernel_orderRadius_isBigO`. -/
 lemma geometric_tail_isBigO_inv_pow
     {α : Type*} (l : Filter α) (N : ℕ)
     (b : α → ℝ) (m : α → ℕ)

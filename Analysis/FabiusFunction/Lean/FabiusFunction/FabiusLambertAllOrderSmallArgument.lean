@@ -27,6 +27,10 @@ noncomputable def fabiusLambertLogarithmicApproximation
         (Real.log (fabiusSmallArgumentLog x)) /
           (fabiusSmallArgumentLog x) ^ n
 
+/-- Transport along `t ↦ 2 ^ (-t)`: the order-`N` logarithmic-coordinate
+approximation evaluated at `fabiusLogArgument t` equals the dyadic-coordinate
+approximation at `t`, for every real `t`.  Used in this file by
+`fabiusLambertPhase_sub_logarithmicApproximation_isBigO`. -/
 theorem fabiusLambertLogarithmicApproximation_dyadic
     (N : ℕ) (t : ℝ) :
     fabiusLambertLogarithmicApproximation N (fabiusLogArgument t) =

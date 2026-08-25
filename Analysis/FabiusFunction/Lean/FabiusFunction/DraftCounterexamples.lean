@@ -83,6 +83,8 @@ theorem paperProxyRatio_tendsto_atTop {x : ℝ} (hx : 0 < x) :
     simpa only [Pi.inv_apply, inv_div] using hmul
   simpa only [Nat.cast_add, Nat.cast_one, mul_div_assoc] using hmul'
 
+/-- At a positive argument every term of equation (7)'s proxy is positive,
+including the index `n = 0`. -/
 lemma paperProxyTerm_pos {x : ℝ} (hx : 0 < x) (n : ℕ) :
     0 < paperProxyTerm x n := by
   unfold paperProxyTerm

@@ -132,10 +132,18 @@ theorem negativeLaplaceExactExponentCoefficient_eq
 @[simp] theorem negativeLaplaceExponentSlopeTerm_zero (v : ℂ) :
     negativeLaplaceExponentSlopeTerm 0 v = 0 := rfl
 
+/-- The order-one slope term is `-Complex.I * v`, since the jet slope
+`negativeLaplaceJetSlope 0` equals `-1`.  Its only use in the corpus is the
+base case of `centeredJetSum_eq_exactExponentSum_boundary`, where it cancels
+the imposed linear phase `t * eps * v * I`. -/
 lemma negativeLaplaceExponentSlopeTerm_one (v : ℂ) :
     negativeLaplaceExponentSlopeTerm 1 v = -Complex.I * v := by
   simp [negativeLaplaceExponentSlopeTerm, negativeLaplaceJetSlope]
 
+/-- The order-two slope term is `-(v ^ 2) / 2`.  Its only use in the corpus
+is the base case of `centeredJetSum_eq_exactExponentSum_boundary`, where
+`t * eps ^ 2 = 1` turns it into the cancellation of the Gaussian quadratic
+`v ^ 2 / 2`. -/
 lemma negativeLaplaceExponentSlopeTerm_two (v : ℂ) :
     negativeLaplaceExponentSlopeTerm 2 v = -(v ^ 2) / 2 := by
   norm_num [negativeLaplaceExponentSlopeTerm, negativeLaplaceJetSlope]

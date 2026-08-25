@@ -225,6 +225,20 @@ theorem card_odd_inner_binomial_coefficients (m : ℕ) (hm : 1 ≤ m) :
   change coeff.card + 1 + 1 = 2 ^ (binaryWeight m + 1) at hfull
   omega
 
+/-- All-index form of `card_odd_inner_binomial_coefficients`: the count of odd
+inner coefficients in row `2m + 1` of Pascal's triangle needs no positivity
+hypothesis on `m`.  At `m = 0` the left-hand side filters the empty range and
+the right-hand side is `2 ^ (0 + 1) - 3 = 0` by truncated natural subtraction,
+so both sides vanish.  This mirrors `odd_binomial_coefficient_counts`, which is
+likewise stated for every index. -/
+theorem card_odd_inner_binomial_coefficients_all (m : ℕ) :
+    ((range (2 * m)).filter (fun k =>
+      k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))).card =
+        2 ^ (binaryWeight m + 1) - 3 := by
+  cases m with
+  | zero => decide
+  | succ m => exact card_odd_inner_binomial_coefficients (m + 1) (by omega)
+
 /-! ## Oddness of the moment numerators -/
 
 private lemma sum_modEq_card_filter_odd {alpha : Type*} [DecidableEq alpha]

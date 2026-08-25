@@ -31,6 +31,110 @@ A caution on the hypothesis-weakening entries: removing a hypothesis changes a
 theorem's arity, which is API.  Per `COLLABORATION.md`, either fix every call
 site in the same commit or keep the old signature as a compatibility wrapper.
 
+## A defect taxonomy for reviewers
+
+Three defect classes turned up repeatedly while this audit and the two
+documentation passes ran.  None of them is caught by the compiler, and the
+first two are not caught by any check that only reads statements.  A reviewer
+who knows to look for them finds them cheaply; one who does not will not find
+them at all.
+
+### 1. False universal
+
+Prose that asserts more than the surrounding development supports, almost
+always about *dependencies* rather than about mathematics.  "Every coefficient
+computation below factors through this" when one does not.  "The denominator in
+every ratio bound here" when it is the denominator of one.  "Used by `X`" when
+`X` re-derives it inline.
+
+This was by far the most common defect, in both documentation waves.  The
+reason it is common is structural: a claim about a statement can be checked
+against the statement on the next line, and a claim about a dependency cannot
+be checked without grepping the corpus, so it is the claim an author is most
+tempted to write from memory.
+
+*Detection.* Grep every "used by", "every", "only", "all" in a doc comment.
+*Prevention.* Write no consumer clause you have not grepped.  A doc comment
+with no dependency claim is fine; one with a false claim is a defect.
+
+An author is not exempt from this.  One entry in this corpus documented
+`fabiusInv_half` as "the only interior value known in closed form", which this
+very corpus refutes: `DyadicAnalytic.fabiusDyadicUnit_cast` evaluates `F`
+exactly at every dyadic rational, and `F(1/4) = 5/72` is the threshold the
+same module's own theorem uses.
+
+### 2. Vacuous specialization
+
+A theorem that is true, compiles, and whose hypothesis almost nothing can
+satisfy.  This is worse than a false theorem, because a false theorem breaks
+something downstream and a vacuous one never will.
+
+The case that produced this entry: a leading-coefficient law stated as a
+difference between two evaluation points `t` and `u` at which the first
+`2j + 1` jets agree.  The jets are one-periodic, so `u = t + 1` satisfies the
+hypothesis and yields `0 = 0`; for `u` not congruent to `t` the hypothesis
+holds only on a measure-zero set.  The generic statement over an arbitrary jet
+sequence was sound throughout — only the specialization to Fabius was
+degenerate, which is what made it hard to see.
+
+*Detection, from the signature alone.*  A theorem quantified over a **free
+parameter** is hard to make vacuous: witnesses are trivial to produce and
+manifestly disagree.  A theorem quantified over **two constrained instances of
+a fixed object** is easy to make vacuous, because the constraint may admit only
+the trivial pair.  That is the whole difference between the generic and
+specialized forms in the case above, and it is readable off the binders before
+any thought about the mathematics.  Check that first; it costs seconds.
+
+*Detection, when the signature does not settle it.*  For every hypothesis, ask
+**who can satisfy it**, and produce two genuinely different witnesses.  If the
+only witnesses you can construct make both sides of the conclusion equal, the
+theorem is vacuous at exactly the points you care about.  Periodicity, symmetry
+and reflection hypotheses are the usual sources, because they silently supply a
+trivial witness — and in this repository nearly every object in the asymptotic
+layer is one-periodic, so the trivial witness is always available.
+*Prevention.* Prefer a statement that *exhibits* a dependence — an affine
+decomposition, an explicit formula — over one that asserts it as an equality
+between two points constrained to agree.
+
+### 3. Sharpness and smoothness overclaim
+
+Writing "sharp", "optimal", "exact" or "if and only if" over a one-directional
+bound whose converse the file does not prove; or writing "valid only for" about
+an interval that is merely the one the statement mentions, when the file proves
+no converse and the bound in fact holds outside it.
+
+In this corpus the smoothness variant has a specific trap.  `ContDiff R (top)`
+at type `WithTop ENat` is the *analytic* exponent, and `ContDiff R infinity` is
+`C^infinity`; the two look alike and mean different things.  The corpus's
+central regularity theorem is that the Fabius function is `C^infinity`
+everywhere and analytic exactly off `[0,1]`, so this is the one confusion the
+library exists to prevent, and two doc comments had it backwards.
+
+*Detection.* Every occurrence of sharp / optimal / exact / iff / only, and
+every occurrence of smooth / analytic, checked against the statement it sits
+above.
+
+## Status
+
+Entries closed so far, with the commit that closed them.  Marked DONE in place
+below rather than deleted.
+
+| Entry | Commit | Compiled |
+| --- | --- | --- |
+| The triangular identity `(n+1).choose 2 = n.choose 2 + n`, ten private copies (reported independently by five of the eleven auditors) | `1ea3554f4` | `Arithmetic` green, 1053 jobs, exit 0.  The eighteen rewired call sites are downstream and not yet exercised. |
+| `thueMorseSign_block_concat` and the two range block-decomposition lemmas, triplicated across three modules | `affa557d2` | not yet |
+| The four `negativeLaplaceLog*_two_mul` and three `negativeLaplaceVerticalLog*_two_mul` proofs, consolidated into `ScalingRecurrence` | `affa557d2` | `ScalingRecurrence` green, 1984 jobs, exit 0 |
+| The repeated Legendre hypothesis bundle, four copies | `4a1639106` | not yet |
+| Missing module headers on twelve modules, stub headers on five | `4c59369fe` | comment-only |
+| Undocumented public declarations: 862 to 176 | `35d14fe40`, `9827b5485`, `ae6176d6e` | comment-only |
+| `expCoeff` values missing from the generic saddle algebra | asymptotic-expansion branch | `FabiusSaddleJetClosedForm` green |
+
+Two builds have run, both on a peer's build slot at the SHAs named above, in a
+sparse detached worktree whose `.lake/packages` is a junction to the shared
+Mathlib.  That technique lets one agent validate another's commit without
+either of them merging, and is why these two lines exist at all: this branch
+has started no Lean process.
+
 ## Summary
 
 | Kind | Count |
@@ -945,6 +1049,8 @@ theorem rvachevUp_hasDerivAt_of_fabiusReal_hasDerivAt (F : BoundedFabius)
 
 #### The Pascal step `C(n+2,2) = C(n+1,2) + (n+1)` is re-proved inline in 12 modules while a private lemma for it already exists
 
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
+
 Confidence high.  `DyadicAnalytic.lean:60`, `GlobalExtension.lean:287`, `GlobalExtension.lean:359`, `DyadicClosedForm.lean:58`, `DyadicClosedForm.lean:584`
 
 **Why.** Fourteen verbatim copies of a three-line `Nat.choose` identity, two of them inside a single file of my cluster (GlobalExtension.lean:287 in `iteratedDeriv_extendedFabius` and GlobalExtension.lean:359 in `iteratedDeriv_rvachev`), plus an existing private lemma nobody outside DyadicAnalytic can reach. This is pure arithmetic with no Fabius content and belongs in the exact-arithmetic layer.
@@ -1009,6 +1115,8 @@ Optionally, and separately, shorten the two neighbouring private product lemmas 
 
 #### `thueMorseSign_block_concat` and the two block-decomposition lemmas are verbatim triplicated across three modules
 
+**DONE** in `affa557d2`.  `thueMorseSign_block_concat`, `sum_range_block_decomposition` and `sum_range_block_decomposition_with_remainder` are now public in `DyadicClosedForm.lean` with doc comments; the four copies in `FabiusUniformSpline` and `FabiusQBinomialFormula` are deleted and their call sites rewired.  Promotion and deletion had to be one commit: a private clone of a now-public name makes every reference inside its module ambiguous.  Not yet compiled.
+
 Confidence high.  `DyadicClosedForm.lean:747`, `DyadicClosedForm.lean:774`, `DyadicClosedForm.lean:784`, `FabiusUniformSpline.lean:222`, `FabiusUniformSpline.lean:246`
 
 **Why.** `thueMorseSign (h*2^k+r) = thueMorseSign h * thueMorseSign r` is the multiplicativity of the Thue–Morse sign under binary concatenation — the single structural fact behind every block-translation theorem in the corpus (`fabiusDyadic_block_translate`, `fabiusUniformSpline_block_translate`, the q-binomial prefix formula). Having it as three private copies means three separate inductions to maintain, and it is invisible to any downstream module that needs it. The two ...
@@ -1032,6 +1140,8 @@ Confidence high.  `FabiusComputableSpline.lean:22`, `FabiusComputableSpline.lean
 **Verifier.** Verified against source. Both declarations exist at the cited lines of Analysis/FabiusFunction/Lean/FabiusFunction/FabiusComputableSpline.lean and are byte-identical apart from the name: line 22 `private theorem nat_pow_primrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) := Primrec₂.unpaired'.1 Nat.Primrec.pow` and line 353 the same with the name ...
 
 #### The elementary identity `(n+1).choose 2 = n.choose 2 + n` is privately re-proved in six modules, with two further families of `choose 2` identities duplicated in pairs
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DraftCounterexamples.lean:45`, `FabiusDiscreteLimitComplexShift.lean:201`, `FabiusDiscreteLimitToeplitz.lean:180`, `HalfQBinomial.lean:98`, `ThueMorseApproximation.lean:206`
 
@@ -1068,6 +1178,8 @@ If a subtype-integral form is ever wanted, ...
 ### Cluster: dyadic
 
 #### `(n+2).choose 2 = (n+1).choose 2 + (n+1)` is proved inline fifteen times across nine modules
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DyadicAnalytic.lean:60`, `DyadicClosedForm.lean:45`, `DyadicClosedForm.lean:58`, `DyadicClosedForm.lean:584`, `DyadicCorrectness.lean:113`
 
@@ -1409,6 +1521,8 @@ Two corrections to the finding's prose: the public lemmas are 55 lines ...
 
 #### The triangular identity `(n+1).choose 2 = n.choose 2 + n` is proved from scratch in roughly twenty modules, eight of them as separate private lemmas
 
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
+
 Confidence high.  `EarlyApproximants.lean:242`, `EarlyMeasureBridge.lean:126`, `StepApproximationLimit.lean:539`, `StepApproximationLimit.lean:700`, `MomentPowerSeries.lean:481`
 
 **Why.** Thirteen verified locations (and about twenty in total by grep on `choose 2 = `) prove one arithmetic identity, five of them inside the moments/probability cluster and along a single import chain: `DyadicClosedForm → EarlyApproximants → EarlyMeasureBridge → StepMeasureBridge → StepApproximationLimit`, where it is re-derived at each of the five levels. This is the largest single-fact duplication I found in the corpus.
@@ -1514,6 +1628,8 @@ One knock-on effect the finding did not state: lines 98 and 101 are the only use
 (1) Locations and signatures are quoted accurately. `Paper06487Supplement.lean:59` is `theorem rvachev_pos_of_mem_Ioo (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} (hx : x ∈ Ioo (-1 : ℝ) 1) : 0 < rvachevUp F x`; `Monotonicity.lean:200` is `theorem rvachevUp_pos_of_mem_Ioo` ...
 
 #### `(n + 1).choose 2 = n.choose 2 + n` is declared as a private lemma in three modules and re-derived inline in a dozen more; it is a one-line Mathlib consequence
+
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
 
 Confidence high.  `DraftCounterexamples.lean:45`, `FabiusDiscreteLimitComplexShift.lean:201`, `FabiusDiscreteLimitToeplitz.lean:180`, `DyadicAnalytic.lean:60`, `DyadicClosedForm.lean:584`
 
@@ -1738,6 +1854,8 @@ Confidence high.  `FabiusBinaryReductionSeries.lean:410`, `Regularity.lean:111`
 
 #### `(n+1).choose 2 = n.choose 2 + n` and its two algebraic restatements are re-proved privately five times in this cluster (about twenty times corpus-wide), although a public lemma in `DyadicClosedForm` already yields it
 
+**DONE** in `1ea3554f4`.  `choose_succ_two`, `two_mul_choose_two_add` and `choose_add_two_two` are now public in `Arithmetic.lean`; all ten private copies are deleted and all eighteen call sites rewired in that one commit.  `Arithmetic` compiles green at that SHA (`lake build +FabiusFunction.Arithmetic`, 1053 jobs, exit 0, no warnings).  Note that building `Arithmetic` alone does not exercise the rewired call sites, which live downstream; `FabiusDiscreteLimitComplexShift` (1 Fabius dependency), `DyadicAnalytic` (6) and `FabiusQBinomialTaylor` (43) between them cover all three lemmas.
+
 Confidence high.  `ThueMorseApproximation.lean:206`, `ThueMorseGenerating.lean:135`, `HalfQBinomial.lean:98`, `HalfQBinomial.lean:116`, `ThueMorseExponential.lean:468`
 
 **Why.** `square_eq_choose_sum` (HalfQBinomial.lean:116) and `choose_square_split` (FabiusQBinomialFormula.lean:360) are the identical statement with the identical induction proof, and FabiusQBinomialFormula.lean imports HalfQBinomial.lean directly — the second copy exists only because the first is `private`. The successor identity is additionally proved inline inside `choose_add_succ_two` and `two_mul_choose_succ_two` themselves (DyadicClosedForm.lean:44 and :62), so the canonical module already ...
@@ -1950,6 +2068,26 @@ CONFIRMED:
 2. `standardGaussian` is ...
 
 #### `expCoeff_one` and `expCoeff_two` are missing from the generic algebra and exist only as a private `Polynomial ℂ`-specific copy
+
+**DONE** by the asymptotic-expansion branch, in
+`FabiusSecondSaddleCorrection.lean` and `FabiusSaddleLeadingCoefficient.lean`.
+Ten generic declarations over `[CommRing R] [Algebra ℚ R]` close the gap:
+`natCast_succ_mul_expCoeff_succ`, `expCoeff_one`, `two_mul_expCoeff_two`,
+`six_mul_expCoeff_three`, `twentyFour_mul_expCoeff_four`, `expCoeff_two`,
+`expCoeff_three`, `expCoeff_four`,
+`twentyFour_mul_expCoeff_four_of_sq_eq_neg_one`, `two_mul_logCoeff_two`.  They
+come in denominator-cleared and rational-scaled pairs, because a commutative
+`ℚ`-algebra need not be a field.  Two further generic lemmas were added
+alongside: `expCoeff_succ_eq_add` and `expCoeff_sub_self_congr`, the second
+recording that the exponential recurrence is affine in its top exponent
+coefficient, which is what makes the leading-coefficient law provable at
+general order rather than checkable order by order.
+
+Landed downstream-most rather than in `SaddleExpansionAlgebra.lean`, with doc
+comments naming that module as the correct long-term home.  This is the
+opposite call from the triangular-identity entry above, and deliberately so:
+pay a root-module invalidation to REMOVE duplication that already exists, never
+to pre-position a new declaration that has no duplicates yet.
 
 Confidence high.  `FabiusSaddleExpansionCoefficients.lean:273`, `SaddleExpansionAlgebra.lean:51`, `SaddleLogExpansionAlgebra.lean:44`, `SaddleLogExpansionAlgebra.lean:49`
 

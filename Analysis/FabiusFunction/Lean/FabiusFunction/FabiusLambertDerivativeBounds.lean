@@ -90,18 +90,25 @@ namespace Fabius
 noncomputable def negativeLaplacePsiThird (t : ℝ) : ℝ :=
   deriv (deriv (deriv negativeLaplacePsi)) t
 
+/-- The second derivative of the normalized periodic correction `Ψ` is `C²`.
+Used in this file by `negativeLaplacePsi_secondDeriv_hasDerivAt` and by
+`continuous_negativeLaplacePsiThird`. -/
 theorem contDiff_secondDeriv_negativeLaplacePsi :
     ContDiff ℝ 2 (deriv (deriv negativeLaplacePsi)) := by
   apply ContDiff.deriv'
   simpa only [show (2 : WithTop ℕ∞) + 1 = 3 by norm_num] using
     contDiff_deriv_negativeLaplacePsi
 
+/-- At every real `t` the second derivative of `Ψ` is differentiable, with
+derivative `negativeLaplacePsiThird t`. -/
 theorem negativeLaplacePsi_secondDeriv_hasDerivAt (t : ℝ) :
     HasDerivAt (deriv (deriv negativeLaplacePsi))
       (negativeLaplacePsiThird t) t := by
   exact (contDiff_secondDeriv_negativeLaplacePsi.differentiable
     (by norm_num) t).hasDerivAt
 
+/-- The third derivative of `Ψ` is unchanged by a unit shift of its
+argument. -/
 theorem negativeLaplacePsiThird_add_one (t : ℝ) :
     negativeLaplacePsiThird (t + 1) = negativeLaplacePsiThird t := by
   have hshift := (negativeLaplacePsi_secondDeriv_hasDerivAt (t + 1)).comp t
@@ -114,20 +121,28 @@ theorem negativeLaplacePsiThird_add_one (t : ℝ) :
     (hshift.congr_of_eventuallyEq heq).unique
       (negativeLaplacePsi_secondDeriv_hasDerivAt t)
 
+/-- The third derivative of `Ψ` is one-periodic. -/
 theorem negativeLaplacePsiThird_periodic :
     Function.Periodic negativeLaplacePsiThird 1 :=
   negativeLaplacePsiThird_add_one
 
+/-- The third derivative of `Ψ` is continuous on all of `ℝ`. -/
 theorem continuous_negativeLaplacePsiThird :
     Continuous negativeLaplacePsiThird := by
   unfold negativeLaplacePsiThird
   exact contDiff_secondDeriv_negativeLaplacePsi.continuous_deriv (by norm_num)
 
+/-- The range of the third derivative of `Ψ` is bounded, since a continuous
+one-periodic function has bounded range. -/
 theorem isBounded_range_negativeLaplacePsiThird :
     Bornology.IsBounded (range negativeLaplacePsiThird) :=
   negativeLaplacePsiThird_periodic.isBounded_of_continuous one_ne_zero
     continuous_negativeLaplacePsiThird
 
+/-- Some nonnegative constant bounds `|Ψ'|` at every real point.  The constant
+is only asserted to exist and is never named.  This is the first-derivative
+analogue of `exists_bound_abs_secondDeriv_negativeLaplacePsi`; all three
+residual bounds in this file consume it. -/
 theorem exists_bound_abs_deriv_negativeLaplacePsi :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |deriv negativeLaplacePsi t| ≤ C := by
   rcases (Metric.isBounded_iff_subset_closedBall 0).mp
@@ -140,6 +155,9 @@ theorem exists_bound_abs_deriv_negativeLaplacePsi :
   refine ⟨C, hC0, fun t => ?_⟩
   simpa [Metric.mem_closedBall, Real.dist_eq] using hC (mem_range_self t)
 
+/-- Some nonnegative constant bounds `|Ψ'''|` at every real point, extracted
+from boundedness of its range.  Used in this file by
+`exists_bound_abs_negativeLaplaceRpowThirdResidual`. -/
 theorem exists_bound_abs_negativeLaplacePsiThird :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ t : ℝ, |negativeLaplacePsiThird t| ≤ C := by
   rcases (Metric.isBounded_iff_subset_closedBall 0).mp
@@ -222,6 +240,10 @@ private lemma norm_negativeLaplaceForwardTermSecond_le_invCube_geometric
       dsimp [y] at hpow
       nlinarith
 
+/-- For `s ≥ 1` the second forward tail obeys
+`‖negativeLaplaceForwardTailSecond s‖ ≤ 48 / s ^ 3`.  The constant is
+explicit but merely sufficient: it is the sum of a geometric majorant of the
+individual terms. -/
 theorem norm_negativeLaplaceForwardTailSecond_le_inv_cube
     {s : ℝ} (hs : 1 ≤ s) :
     ‖negativeLaplaceForwardTailSecond s‖ ≤ 48 / s ^ 3 := by
@@ -293,6 +315,9 @@ private lemma norm_negativeLaplaceForwardTermThird_le_invFourth_geometric
       dsimp [y] at hpow
       nlinarith
 
+/-- For `s ≥ 1` the third forward tail obeys
+`‖negativeLaplaceForwardTailThird s‖ ≤ 768 / s ^ 4`, again by summing a
+geometric majorant; the constant is sufficient, not sharp. -/
 theorem norm_negativeLaplaceForwardTailThird_le_inv_fourth
     {s : ℝ} (hs : 1 ≤ s) :
     ‖negativeLaplaceForwardTailThird s‖ ≤ 768 / s ^ 4 := by
@@ -442,6 +467,9 @@ noncomputable def negativeLaplaceRpowThirdResidual
     (F : BoundedFabius) (b : ℝ) : ℝ :=
   ((2 : ℝ) ^ b) ^ 3 * negativeLaplaceLogThird F ((2 : ℝ) ^ b) + 2 * b
 
+/-- Closed form of the first residual on the real dyadic orbit, for a Fabius
+function `F` and every real `b`: it equals `1 / 2 + Ψ'(b) / log 2` minus the
+scaled tail `2 ^ b * negativeLaplaceForwardTailFirst (2 ^ b)`. -/
 theorem negativeLaplaceRpowFirstResidual_eq
     (F : BoundedFabius) (hF : IsFabius F) (b : ℝ) :
     negativeLaplaceRpowFirstResidual F b =
@@ -455,6 +483,10 @@ theorem negativeLaplaceRpowFirstResidual_eq
   field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne', hr.ne']
   ring
 
+/-- Closed form of the curvature residual, for a Fabius function `F` and every
+real `b`: it equals
+`-1 / 2 - 1 / log 2 - Ψ'(b) / log 2 + Ψ''(b) / (log 2) ^ 2` minus the scaled
+tail `(2 ^ b) ^ 2 * negativeLaplaceForwardTailSecond (2 ^ b)`. -/
 theorem negativeLaplaceRpowSecondResidual_eq
     (F : BoundedFabius) (hF : IsFabius F) (b : ℝ) :
     negativeLaplaceRpowSecondResidual F b =
@@ -470,6 +502,10 @@ theorem negativeLaplaceRpowSecondResidual_eq
   field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne', hr.ne']
   ring
 
+/-- Closed form of the cubic residual, for a Fabius function `F` and every
+real `b`: it equals `1 + 3 / log 2 + 2 * Ψ'(b) / log 2 -
+3 * Ψ''(b) / (log 2) ^ 2 + Ψ'''(b) / (log 2) ^ 3` minus the scaled tail
+`(2 ^ b) ^ 3 * negativeLaplaceForwardTailThird (2 ^ b)`. -/
 theorem negativeLaplaceRpowThirdResidual_eq
     (F : BoundedFabius) (hF : IsFabius F) (b : ℝ) :
     negativeLaplaceRpowThirdResidual F b =
@@ -486,6 +522,8 @@ theorem negativeLaplaceRpowThirdResidual_eq
   field_simp [(Real.log_pos (by norm_num : (1 : ℝ) < 2)).ne', hr.ne']
   ring
 
+/-- Scaled first-tail bound: `|s * negativeLaplaceForwardTailFirst s| ≤ 8`
+whenever `s ≥ 1`. -/
 lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
     {s : ℝ} (hs : 1 ≤ s) :
     |s * negativeLaplaceForwardTailFirst s| ≤ 8 := by
@@ -500,6 +538,8 @@ lemma abs_mul_negativeLaplaceForwardTailFirst_le_eight
       rw [div_le_iff₀ hs0]
       nlinarith
 
+/-- Scaled second-tail bound:
+`|s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48` whenever `s ≥ 1`. -/
 lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
     {s : ℝ} (hs : 1 ≤ s) :
     |s ^ 2 * negativeLaplaceForwardTailSecond s| ≤ 48 := by
@@ -515,6 +555,8 @@ lemma abs_sq_mul_negativeLaplaceForwardTailSecond_le
       rw [div_le_iff₀ hs0]
       nlinarith
 
+/-- Scaled third-tail bound:
+`|s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768` whenever `s ≥ 1`. -/
 lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
     {s : ℝ} (hs : 1 ≤ s) :
     |s ^ 3 * negativeLaplaceForwardTailThird s| ≤ 768 := by
@@ -530,6 +572,11 @@ lemma abs_cube_mul_negativeLaplaceForwardTailThird_le
       rw [div_le_iff₀ hs0]
       nlinarith
 
+/-- Uniform bound on the first residual over the half-line `b ≥ 0`: for a
+Fabius function `F` some nonnegative constant dominates
+`|negativeLaplaceRpowFirstResidual F b|` at every nonnegative `b`.  The
+constant is an existence claim only.  Consumed by
+`FabiusFunction.FabiusSaddleCentralLambert`. -/
 theorem exists_bound_abs_negativeLaplaceRpowFirstResidual
     (F : BoundedFabius) (hF : IsFabius F) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ {b : ℝ}, 0 ≤ b →
@@ -572,6 +619,9 @@ theorem exists_bound_abs_negativeLaplaceRpowFirstResidual
       gcongr
     _ = 1 / 2 + Cψ / Real.log 2 + 8 := by ring
 
+/-- Uniform bound on the curvature residual over the half-line `b ≥ 0`, for a
+Fabius function `F`, again through an unnamed nonnegative constant.  Consumed
+by `FabiusFunction.FabiusSaddleCentralLambert`. -/
 theorem exists_bound_abs_negativeLaplaceRpowSecondResidual
     (F : BoundedFabius) (hF : IsFabius F) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ {b : ℝ}, 0 ≤ b →
@@ -641,6 +691,9 @@ theorem exists_bound_abs_negativeLaplaceRpowSecondResidual
       add_le_add hcore ht
     _ = 1 / 2 + 1 / L + C₁ / L + C₂ / L ^ 2 + 48 := by ring
 
+/-- Uniform bound on the cubic residual over the half-line `b ≥ 0`, for a
+Fabius function `F`, through an unnamed nonnegative constant.  Consumed by
+`FabiusFunction.FabiusSaddleCentralLambert`. -/
 theorem exists_bound_abs_negativeLaplaceRpowThirdResidual
     (F : BoundedFabius) (hF : IsFabius F) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ {b : ℝ}, 0 ≤ b →

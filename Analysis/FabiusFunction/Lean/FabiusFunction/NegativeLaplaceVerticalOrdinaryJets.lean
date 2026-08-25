@@ -73,6 +73,10 @@ noncomputable def negativeLaplaceComplexLogFirst
   -(iteratedDeriv 1 (complexGeneratingFunction F) (-z) /
     complexGeneratingFunction F (-z))
 
+/-- `negativeLaplaceComplexLogFirst F` is complex differentiable on the open
+right half-plane `{z | 0 < z.re}`.  The hypothesis `IsFabius F` supplies
+both the holomorphy of the complex generating function and its nonvanishing
+at `-z` there; nothing is claimed off that half-plane. -/
 theorem differentiableOn_negativeLaplaceComplexLogFirst
     (F : BoundedFabius) (hF : IsFabius F) :
     DifferentiableOn ℂ (negativeLaplaceComplexLogFirst F)
@@ -95,6 +99,10 @@ theorem differentiableOn_negativeLaplaceComplexLogFirst
     complexGeneratingFunction_neg_ne_zero F hF hz
   exact (hnum.div hden hdenNe).neg.differentiableAt.differentiableWithinAt
 
+/-- On the positive real axis the holomorphic logarithmic derivative agrees
+with the ordinary derivative sequence: for `s > 0` and `IsFabius F`,
+`negativeLaplaceComplexLogFirst F s` is the cast into `ℂ` of
+`negativeLaplaceLogOrdinaryDeriv 1 s`.  Nothing is claimed for `s ≤ 0`. -/
 theorem negativeLaplaceComplexLogFirst_ofReal
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
     negativeLaplaceComplexLogFirst F s =

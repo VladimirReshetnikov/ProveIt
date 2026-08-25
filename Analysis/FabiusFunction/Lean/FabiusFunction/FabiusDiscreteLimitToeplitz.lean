@@ -43,6 +43,9 @@ theorem fabiusDiscreteLimitRangeLength_eq_floor_add_one
       ((2 : ℝ) ^ p * x - 1 / 2) + 1 by ring,
     Int.floor_add_one]
 
+/-- The inner prefix at scale `p` is empty exactly when the scaled
+argument `2 ^ p * x` is strictly below `1 / 2`.  Stated for every
+real `x`, with no sign hypothesis. -/
 theorem fabiusDiscreteLimitRangeLength_eq_zero_iff
     (x : ℝ) (p : ℕ) :
     fabiusDiscreteLimitRangeLength x p = 0 ↔
@@ -184,6 +187,9 @@ def discreteLimitWeight (n j : ℕ) : ℚ :=
       (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
     halfQPochhammer n
 
+/-- Every Toeplitz row has mass one.  The proof evaluates
+`halfQBinomial_theorem` at `z = 1 / 2`, where the right-hand side
+is exactly the normalizing factor `halfQPochhammer n`. -/
 theorem sum_range_discreteLimitWeight (n : ℕ) :
     (∑ j ∈ Finset.range (n + 1), discreteLimitWeight n j) = 1 := by
   simp_rw [discreteLimitWeight]
@@ -227,6 +233,10 @@ private theorem quarter_add_pow_le_halfQPochhammer_succ (n : ℕ) :
         _ ≤ halfQPochhammer (n + 1) *
               (1 - (1 / 2 : ℚ) ^ (n + 2)) := hmul
 
+/-- The finite q-Pochhammer symbol at `q = 1 / 2` is at least
+`1 / 4`, uniformly in `n`.  It is used in
+`sum_abs_discreteLimitWeight_le` below to bound
+`1 / halfQPochhammer n` by `4`. -/
 theorem one_fourth_le_halfQPochhammer (n : ℕ) :
     (1 / 4 : ℚ) ≤ halfQPochhammer n := by
   cases n with
@@ -413,6 +423,8 @@ theorem tendsto_weighted_rows_of_tendsto
 def discreteLimitWeightIn (K : Type*) [RCLike K] (n j : ℕ) : K :=
   (discreteLimitWeight n j : K)
 
+/-- Row mass one after casting the rational weights into an
+`RCLike` field. -/
 theorem sum_range_discreteLimitWeightIn
     (K : Type*) [RCLike K] (n : ℕ) :
     (∑ j ∈ Finset.range (n + 1), discreteLimitWeightIn K n j) = 1 := by
@@ -421,6 +433,10 @@ theorem sum_range_discreteLimitWeightIn
     sum_range_discreteLimitWeight]
   norm_num
 
+/-- The cast rows have total variation at most `16`, uniformly in
+`n`.  Together with `sum_range_discreteLimitWeightIn` this supplies
+the two row hypotheses of `tendsto_weighted_rows_of_tendsto` used
+in `tendsto_discreteLimitWeightIn_sum` below. -/
 theorem sum_norm_discreteLimitWeightIn_le
     (K : Type*) [RCLike K] (n : ℕ) :
     (∑ j ∈ Finset.range (n + 1), ‖discreteLimitWeightIn K n j‖) ≤ 16 := by

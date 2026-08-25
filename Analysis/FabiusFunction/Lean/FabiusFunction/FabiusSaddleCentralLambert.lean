@@ -111,6 +111,13 @@ noncomputable def denominatorCubic (theta : ℝ) : ℂ :=
 noncomputable def denominatorRemainder (theta : ℝ) : ℂ :=
   -Complex.log (1 + (theta : ℂ) * Complex.I) - denominatorCubic theta
 
+/-- Quartic bound on `denominatorRemainder`, the remainder of
+`-log (1 + i theta)` past its cubic Taylor polynomial, stated only for
+`|theta| ≤ 1 / 2`:
+`‖denominatorRemainder theta‖ ≤ (1 / 2) * |theta| ^ 4`.  The restriction
+keeps `1 + i theta` inside the principal branch and makes the geometric
+majorant `(1 - |theta|)⁻¹ ≤ 2` available.  The constant `1 / 2` is
+sufficient, not sharp.  Used by `norm_exponentRemainder_le` below. -/
 lemma norm_denominatorRemainder_le {theta : ℝ} (htheta : |theta| ≤ 1 / 2) :
     ‖denominatorRemainder theta‖ ≤ (1 / 2 : ℝ) * |theta| ^ 4 := by
   have hz : ‖(theta : ℂ) * Complex.I‖ < 1 := by
@@ -176,6 +183,13 @@ noncomputable def exponentRemainder
     denominatorRemainder (v / Real.sqrt b) +
     curvatureRemainder F r b v
 
+/-- Exact factorization of the scaled Bromwich kernel of the negated Fabius
+generating function: for `0 < r`, `0 < b` and every real `x` and `v`, the
+kernel equals `standardGaussian v` times the exponential of
+`oddPhase (linearCoefficient F x r b) (cubicCoefficient F r b) v +
+exponentRemainder F r b v`.  This is an identity rather than an estimate:
+no saddle equation linking `x`, `r` and `b` is assumed, and every mismatch
+is absorbed into `exponentRemainder`.  Requires `IsFabius F`. -/
 lemma scaledSaddleKernel_eq_gaussian_exp
     (F : BoundedFabius) (hF : IsFabius F)
     (x r b v : ℝ) (hr : 0 < r) (hb : 0 < b) :
@@ -352,6 +366,11 @@ lemma norm_exponentRemainder_le
     _ = (((Csecond + 1) / 2) * v ^ 2 +
         (Cfourth / 6 + 1 / 2) * v ^ 4) / b := by ring
 
+/-- The odd linear coefficient at radius `2 ^ b` rewritten through the
+scaled first residual, assuming the saddle equation `2 ^ b * x = b`:
+`linearCoefficient F x (2 ^ b) b =
+(negativeLaplaceRpowFirstResidual F b - 1) / √b`.  The saddle equation is
+what turns the term `r * x` into the `+ b` carried inside the residual. -/
 lemma linearCoefficient_rpow_eq
     (F : BoundedFabius) {x b : ℝ}
     (hsaddle : (2 : ℝ) ^ b * x = b) :
@@ -361,6 +380,11 @@ lemma linearCoefficient_rpow_eq
   rw [hsaddle]
   ring
 
+/-- The odd cubic coefficient at radius `2 ^ b` rewritten through the scaled
+third residual: `cubicCoefficient F (2 ^ b) b =
+(2 + 2 b - negativeLaplaceRpowThirdResidual F b) / (6 b √b)`.  Unlike the
+linear rewrite this is an algebraic identity, needing neither the saddle
+equation nor positivity of `b`. -/
 lemma cubicCoefficient_rpow_eq
     (F : BoundedFabius) (b : ℝ) :
     cubicCoefficient F ((2 : ℝ) ^ b) b =

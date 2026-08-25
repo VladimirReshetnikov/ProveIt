@@ -20,6 +20,11 @@ private lemma tendsto_const_mul_log_pow_div_id_atTop (C : ℝ) (d : ℕ) :
   simpa [id_eq, div_eq_mul_inv, mul_assoc] using
     (Real.isLittleO_pow_log_id_atTop (n := d)).tendsto_div_nhds_zero.const_mul C
 
+/-- For a fixed order `N` and a fixed exponent `d`, the `d`-th power of the
+order-`N` central radius `fabiusSaddleCentralRadiusOrder N b`, that is of
+`√(32 (N+1) log b)`, is `o(√b)`:
+`(√b)⁻¹ * fabiusSaddleCentralRadiusOrder N b ^ d → 0` along `atTop`.  The
+statement is for fixed `N` and `d`; no uniformity in either is claimed. -/
 theorem tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow
     (N d : ℕ) :
     Tendsto (fun b : ℝ =>
@@ -56,6 +61,10 @@ theorem tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow
   simp only [mul_pow, div_eq_mul_inv]
   ac_rfl
 
+/-- The order-`N` central radius is `o(√b)`:
+`fabiusSaddleCentralRadiusOrder N b / √b → 0` along `atTop`.  This is the
+case `d = 1` of the previous theorem, and it is the form used in
+`FabiusSaddleMassAllOrders`. -/
 theorem tendsto_fabiusSaddleCentralRadiusOrder_div_sqrt
     (N : ℕ) :
     Tendsto (fun b : ℝ =>
@@ -64,6 +73,9 @@ theorem tendsto_fabiusSaddleCentralRadiusOrder_div_sqrt
   simpa [div_eq_mul_inv, mul_comm] using
     tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow N 1
 
+/-- Eventual form of the previous limit: for fixed `N` and `d`, the bound
+`(√b)⁻¹ * fabiusSaddleCentralRadiusOrder N b ^ d ≤ 1` holds for all
+sufficiently large `b`. -/
 theorem eventually_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow_le_one
     (N d : ℕ) :
     ∀ᶠ b : ℝ in atTop,
@@ -71,6 +83,11 @@ theorem eventually_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow_le_one
   (tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow N d).eventually
     (eventually_le_nhds (by norm_num : (0 : ℝ) < 1))
 
+/-- Composition of
+`tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow` with an arbitrary
+`b : alpha → ℝ` tending to `atTop` along an arbitrary filter `l`.  This is
+the form consumed by `FabiusSaddleMassAllOrders`, where `b` is the dyadic
+Lambert phase. -/
 theorem tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow_comp
     {alpha : Type*} {l : Filter alpha} (b : alpha → ℝ)
     (hb : Tendsto b l atTop) (N d : ℕ) :
@@ -79,6 +96,11 @@ theorem tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow_comp
       l (nhds 0) :=
   (tendsto_inv_sqrt_mul_fabiusSaddleCentralRadiusOrder_pow N d).comp hb
 
+/-- Uniform version of the previous bound on the order-`N` window: for all
+large `b` and every `v` in
+`Icc (-fabiusSaddleCentralRadiusOrder N b) (fabiusSaddleCentralRadiusOrder N b)`
+one has `(√b)⁻¹ * |v| ^ d ≤ 1`.  Both `N` and `d` are fixed; the eventual
+threshold in `b` depends on them. -/
 theorem eventually_inv_sqrt_mul_abs_pow_le_one_on_orderRadius
     (N d : ℕ) :
     ∀ᶠ b : ℝ in atTop, ∀ v ∈

@@ -137,6 +137,11 @@ private theorem negativeLaplaceExponentPolynomialContinuous'_map
       congr 1
       ring
 
+/-- For fixed order `n` and degree `d`, the map sending the saddle phase `t`
+to the degree-`d` coefficient of the polynomial
+`expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n` is continuous.
+The proof runs the same `expCoeff` recursion over the ring `C(ℝ, ℂ)` of
+continuous functions and evaluates. -/
 theorem continuous_negativeLaplaceExpCoeff_coeff (n d : ℕ) :
     Continuous (fun t : ℝ =>
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d) := by
@@ -167,6 +172,9 @@ theorem continuous_negativeLaplaceExpCoeff_coeff (n d : ℕ) :
   rw [← hfun]
   exact c.continuous
 
+/-- Each such coefficient is periodic in the phase with period `1`, read off
+from the periodicity of the whole polynomial `expCoeff` in
+`negativeLaplaceExpCoeff_periodic`. -/
 theorem negativeLaplaceExpCoeff_coeff_periodic (n d : ℕ) :
     Function.Periodic (fun t : ℝ =>
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d) 1 := by
@@ -174,6 +182,12 @@ theorem negativeLaplaceExpCoeff_coeff_periodic (n d : ℕ) :
   exact congrArg (fun p : Polynomial ℂ => p.coeff d)
     (negativeLaplaceExpCoeff_periodic n t)
 
+/-- Continuity together with period `1` makes the phase-dependent
+coefficient bounded: for fixed `n` and `d` the range of
+`t ↦ (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d`
+is a bounded subset of `ℂ`.  This is the uniform coefficient bound behind
+`gaussianPolynomialTailWeight_fabiusSaddleReferencePolynomial_isBigO` later
+in this file. -/
 theorem isBounded_range_negativeLaplaceExpCoeff_coeff (n d : ℕ) :
     Bornology.IsBounded (Set.range fun t : ℝ =>
       (expCoeff (fun m => negativeLaplaceExponentPolynomial m t) n).coeff d) :=

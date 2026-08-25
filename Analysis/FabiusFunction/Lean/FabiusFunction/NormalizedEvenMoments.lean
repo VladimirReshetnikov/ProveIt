@@ -25,24 +25,29 @@ theorem evenMersenneProduct_eq_prod_Ico (n : ℕ) :
       ∏ j ∈ Ico 1 (n + 1), (2 ^ (2 * j) - 1) := by
   simp [evenMersenneProduct, Finset.prod_Ico_eq_prod_range, add_comm]
 
+/-- Split an odd double factorial at an arbitrary index. -/
+theorem oddDoubleFactorial_mul_interval (a b : ℕ) (hab : a ≤ b) :
+    oddDoubleFactorial a * oddFactorProduct a b = oddDoubleFactorial b := by
+  simpa [oddDoubleFactorial, oddFactorProduct] using
+    (Finset.prod_range_mul_prod_Ico (fun j => 2 * j + 1) hab)
+
+/-- Split the even-indexed Mersenne product at an arbitrary index. -/
+theorem evenMersenneProduct_mul_interval (k n : ℕ) (hkn : k ≤ n) :
+    evenMersenneProduct k *
+        (∏ j ∈ Ico (k + 1) (n + 1), (2 ^ (2 * j) - 1)) =
+      evenMersenneProduct n := by
+  rw [evenMersenneProduct_eq_prod_Ico, evenMersenneProduct_eq_prod_Ico]
+  exact Finset.prod_Ico_consecutive (fun j => 2 ^ (2 * j) - 1)
+    (by omega) (Nat.succ_le_succ hkn)
+
 private lemma momentDenominator_mul_tail (k n : ℕ) (hkn : k ≤ n) :
     momentDenominator k *
         (oddFactorProduct (k + 1) (n + 1) *
           (∏ j ∈ Ico (k + 1) (n + 1), (2 ^ (2 * j) - 1))) =
       oddDoubleFactorial (n + 1) * evenMersenneProduct n := by
-  have hodd :
-      oddDoubleFactorial (k + 1) * oddFactorProduct (k + 1) (n + 1) =
-        oddDoubleFactorial (n + 1) := by
-    simpa [oddDoubleFactorial, oddFactorProduct] using
-      (Finset.prod_range_mul_prod_Ico (fun j => 2 * j + 1)
-        (Nat.succ_le_succ hkn))
-  have hmrs :
-      evenMersenneProduct k *
-          (∏ j ∈ Ico (k + 1) (n + 1), (2 ^ (2 * j) - 1)) =
-        evenMersenneProduct n := by
-    rw [evenMersenneProduct_eq_prod_Ico, evenMersenneProduct_eq_prod_Ico]
-    exact Finset.prod_Ico_consecutive (fun j => 2 ^ (2 * j) - 1)
-      (by omega) (Nat.succ_le_succ hkn)
+  have hodd := oddDoubleFactorial_mul_interval (k + 1) (n + 1)
+    (Nat.succ_le_succ hkn)
+  have hmrs := evenMersenneProduct_mul_interval k n hkn
   unfold momentDenominator
   calc
     oddDoubleFactorial (k + 1) * evenMersenneProduct k *
@@ -78,21 +83,6 @@ theorem oddDoubleFactorial_mul_Icc (n : ℕ) :
   rw [← h]
   rw [Finset.prod_range_succ]
   ring
-
-/-- Split an odd double factorial at an arbitrary index. -/
-theorem oddDoubleFactorial_mul_interval (a b : ℕ) (hab : a ≤ b) :
-    oddDoubleFactorial a * oddFactorProduct a b = oddDoubleFactorial b := by
-  simpa [oddDoubleFactorial, oddFactorProduct] using
-    (Finset.prod_range_mul_prod_Ico (fun j => 2 * j + 1) hab)
-
-/-- Split the even-indexed Mersenne product at an arbitrary index. -/
-theorem evenMersenneProduct_mul_interval (k n : ℕ) (hkn : k ≤ n) :
-    evenMersenneProduct k *
-        (∏ j ∈ Ico (k + 1) (n + 1), (2 ^ (2 * j) - 1)) =
-      evenMersenneProduct n := by
-  rw [evenMersenneProduct_eq_prod_Ico, evenMersenneProduct_eq_prod_Ico]
-  exact Finset.prod_Ico_consecutive (fun j => 2 ^ (2 * j) - 1)
-    (by omega) (Nat.succ_le_succ hkn)
 
 /-- Casting an even-indexed Mersenne factor from `ℕ` to `ℚ`. -/
 theorem mersenneFactor_cast (j : ℕ) :

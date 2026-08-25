@@ -120,16 +120,24 @@ def pathWeightFrom (w : ℕ → ℕ → R) : ℕ → List ℕ → R
   | _, [] => 1
   | i, d :: ds => w i (i + d) * pathWeightFrom w (i + d) ds
 
+/-- The empty increment list contributes the empty product `1`, from any
+starting index. -/
 @[simp]
 theorem pathWeightFrom_nil (w : ℕ → ℕ → R) (i : ℕ) :
     pathWeightFrom w i [] = 1 := rfl
 
+/-- Peeling the first increment: the edge from `i` to `i + d`, times the
+weight of the remaining path started at `i + d`. -/
 @[simp]
 theorem pathWeightFrom_cons (w : ℕ → ℕ → R)
     (i d : ℕ) (ds : List ℕ) :
     pathWeightFrom w i (d :: ds) =
       w i (i + d) * pathWeightFrom w (i + d) ds := rfl
 
+/-- Path weights are multiplicative under concatenation of increment lists:
+the second factor starts at `i` shifted by the sum of the first list.  Used
+by `pathWeight_append_single` and by the last-edge decomposition
+`pathSum_eq_sum_range`. -/
 theorem pathWeightFrom_append (w : ℕ → ℕ → R)
     (i : ℕ) (xs ys : List ℕ) :
     pathWeightFrom w i (xs ++ ys) =
@@ -145,10 +153,14 @@ theorem pathWeightFrom_append (w : ℕ → ℕ → R)
 def pathWeight {n : ℕ} (w : ℕ → ℕ → R) (c : Composition n) : R :=
   pathWeightFrom w 0 c.blocks
 
+/-- The composition `Composition.ones 0` is the empty path, so its weight is
+the empty product `1`. -/
 @[simp]
 theorem pathWeight_ones_zero (w : ℕ → ℕ → R) :
     pathWeight w (Composition.ones 0) = 1 := rfl
 
+/-- Appending a final block of positive size `d` to a composition of `m`
+multiplies the path weight by the single edge weight `w m (m + d)`. -/
 @[simp]
 theorem pathWeight_append_single {m d : ℕ} (hd : 0 < d)
     (w : ℕ → ℕ → R) (c : Composition m) :
@@ -171,6 +183,8 @@ the positive increments of a composition of `n`. -/
 def pathSum (w : ℕ → ℕ → R) (n : ℕ) : R :=
   ∑ c : Composition n, pathWeight w c
 
+/-- The path sum at `0` is `1`: the only composition of `0` is the empty
+path, of weight `1`. -/
 @[simp]
 theorem pathSum_zero (w : ℕ → ℕ → R) : pathSum w 0 = 1 := by
   rw [pathSum]
@@ -357,6 +371,10 @@ end TriangularRecurrence
 def fabiusRecurrenceEdge (k n : ℕ) : ℚ :=
   (((2 : ℚ) ^ n - 1) * (((n - k + 1).factorial : ℕ) : ℚ))⁻¹
 
+/-- For `n ≥ 1`, the Fabius recurrence in last-edge form: `a n` is the sum
+over `k < n` of `a k` times the edge weight `fabiusRecurrenceEdge k n`.  This
+repackages `fabiusRecurrenceSequence_recurrence`, and is the hypothesis fed
+to the triangular solver in `fabiusRecurrenceSequence_eq_pathSum`. -/
 theorem fabiusRecurrenceSequence_edge_recurrence (n : ℕ) (hn : 0 < n) :
     fabiusRecurrenceSequence n =
       ∑ k ∈ range n,
@@ -400,6 +418,10 @@ def fabiusCompositionWeight {n : ℕ} (c : Composition n) : ℚ :=
 def fabiusCompositionSum (n : ℕ) : ℚ :=
   ∑ c : Composition n, fabiusCompositionWeight c
 
+/-- Along any composition, the generic path weight of `fabiusRecurrenceEdge`
+is the article's chronological weight `fabiusCompositionWeight`.  This is the
+bridge used by `fabiusCompositionSum_eq_pathSum` and by the two expanded
+edge-count formulas at the end of this file. -/
 theorem Composition.pathWeight_fabiusRecurrenceEdge
     {n : ℕ} (c : Composition n) :
     pathWeight fabiusRecurrenceEdge c = fabiusCompositionWeight c := by
@@ -446,6 +468,8 @@ theorem fabiusCompositionSum_recurrence (n : ℕ) (hn : 0 < n) :
       intro k _hk
       rw [fabiusCompositionSum_eq_pathSum]
 
+/-- The composition sum at `0` is `1`: the only composition of `0` is the
+empty one, whose weight is the empty product. -/
 @[simp]
 theorem fabiusCompositionSum_zero : fabiusCompositionSum 0 = 1 := by
   rw [← fabiusRecurrenceSequence_eq_sum_compositions,
