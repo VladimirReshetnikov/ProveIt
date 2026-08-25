@@ -625,39 +625,53 @@ $\InvF$ outruns \emph{every fixed} positive power.
 \label{sec:inverse-calculus}
 
 This section uses the formalized inverse package together with standard
-one-variable analysis.  The individual conclusions are therefore marked
-\Derived, even though all Fabius-specific hypotheses have been proved
-formally.
+one-variable analysis.  Smoothness, the reciprocal first-derivative formula,
+and positivity are now marked \Formalized; the second and higher derivative
+formulas remain \Derived.
 
 \subsection{Smoothness and differential identities in the interior}
 
-\begin{theorem}[Interior inverse calculus; \Derived]
+\begin{theorem}[Interior inverse calculus through first order; \Formalized]
 \label{thm:inverse-calculus}
 The inverse $\InvF$ is $C^\infty$ on $(0,1)$.  For $0<y<1$,
-\begin{align}
+\begin{equation}
  \InvF'(y)
-   &=\frac1{F'(\InvF(y))}
-     =\frac1{2\Up(2\InvF(y)-1)}>0, \label{eq:Gprime}\\
- \InvF''(y)
-   &=-\frac{F''(\InvF(y))}
-           {F'(\InvF(y))^3}. \label{eq:Gsecond}
-\end{align}
-More generally, every derivative of $\InvF$ is a rational polynomial in
-the derivatives of $F$ evaluated at $\InvF(y)$, with a power of
-$F'(\InvF(y))$ in the denominator.
+   =\frac1{F'(\InvF(y))}
+     =\frac1{2\Up(2\InvF(y)-1)}>0.
+ \label{eq:Gprime}
+\end{equation}
 \end{theorem}
 
 \begin{proof}
 For $x\in(0,1)$, \eqref{eq:Fprime-up} and positivity of $\Up$ on
 $(-1,1)$ imply $F'(x)>0$.  The $C^\infty$ inverse function theorem
 therefore applies at every interior point and gives a smooth local inverse.
-Uniqueness identifies all these local inverses with $\InvF$.
+Uniqueness identifies all these local inverses with $\InvF$.  Differentiating
+$F(\InvF(y))=y$ and substituting \eqref{eq:Fprime-up} proves
+\eqref{eq:Gprime}.
+\end{proof}
 
-Differentiate $F(\InvF(y))=y$:
-\[
- F'(\InvF(y))\InvF'(y)=1,
-\]
-which proves \eqref{eq:Gprime}.  Differentiating once more gives
+The corresponding Lean declarations are \path{fabiusInv_contDiffOn_Ioo},
+\path{fabiusInv_hasDerivAt},
+\path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, and
+\path{deriv_fabiusInv_pos}.
+
+\begin{proposition}[Higher inverse derivatives; \Derived]
+\label{prop:inverse-higher-derivatives}
+For $0<y<1$,
+\begin{equation}
+ \InvF''(y)
+   =-\frac{F''(\InvF(y))}
+           {F'(\InvF(y))^3}.
+ \label{eq:Gsecond}
+\end{equation}
+More generally, every derivative of $\InvF$ is a rational polynomial in
+the derivatives of $F$ evaluated at $\InvF(y)$, with a power of
+$F'(\InvF(y))$ in the denominator.
+\end{proposition}
+
+\begin{proof}
+Differentiating the identity behind \eqref{eq:Gprime} once more gives
 \[
  F''(\InvF(y))\InvF'(y)^2+
  F'(\InvF(y))\InvF''(y)=0.

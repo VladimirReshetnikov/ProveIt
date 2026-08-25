@@ -6,7 +6,11 @@ import FabiusFunction.SaddleLogExpansionAlgebra
 The coefficient recurrence in `SaddleLogExpansionAlgebra` is identified
 with Mathlib's formal power-series logarithm.  This supplies a bridge from
 the finite recurrence used by the all-order saddle algebra to the standard
-substitution calculus for `PowerSeries.logOf`.
+substitution calculus for `PowerSeries.logOf`.  The algebra module already
+shows directly that the logarithmic and exponential coefficient recurrences
+are inverse after the appropriate constant-term normalization; the theorem
+here identifies that algebraically characterized logarithm with Mathlib's
+universal construction.
 -/
 
 set_option autoImplicit false

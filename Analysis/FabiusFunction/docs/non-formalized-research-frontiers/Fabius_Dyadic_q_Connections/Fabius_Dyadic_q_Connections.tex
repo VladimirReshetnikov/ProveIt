@@ -1,0 +1,1644 @@
+\documentclass[11pt,oneside]{article}
+
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\IfFileExists{libertinus.sty}{\usepackage{libertinus}}{\usepackage{lmodern}}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\definecolor{deepgray}{RGB}{75,80,86}
+\pgfplotsset{compat=1.18}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkblue,
+  citecolor=linkblue,
+  urlcolor=linkblue,
+  pdfauthor={Vladimir Reshetnikov, ProveIt project},
+  pdftitle={Dyadic Calculus for the Fabius Function: Connections and Alternative Representations}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Fabius--Rvachev synthesis}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}
+  {\Large\bfseries}
+  {\thesection}{0.7em}{}
+  [\vspace{0.2ex}\color{rulegray}\titlerule]
+\titleformat{\subsection}
+  {\large\bfseries}
+  {\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries}
+  {\thesubsubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.8ex plus 1ex minus .2ex}{1.7ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.2ex plus .8ex minus .2ex}{1.0ex plus .2ex}
+
+\setlist[itemize]{leftmargin=2em,itemsep=.25ex,topsep=.5ex}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=.25ex,topsep=.5ex}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{0.15em}
+\allowdisplaybreaks[3]
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newenvironment{proofidea}
+  {\par\smallskip\noindent\textit{Proof idea.}\ }
+  {\hfill$\square$\par\smallskip}
+\newenvironment{boxedremark}
+  {\par\medskip\noindent\begin{center}\begin{minipage}{0.94\textwidth}\color{deepgray}\hrule\vspace{0.7ex}}
+  {\vspace{0.7ex}\hrule\end{minipage}\end{center}\medskip}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Up}{\operatorname{up}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\wt}{\operatorname{wt}_2}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\poch}[3]{\left(#1;#2\right)_{#3}}
+\newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
+\newcommand{\half}{\tfrac12}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Fglobal}{\mathcal F}
+\newcommand{\Toperator}{\mathfrak T}
+\newcommand{\Qoperator}{\mathfrak Q}
+\newcommand{\coeff}[2]{\left[#1^{#2}\right]}
+
+\title{\bfseries Dyadic Calculus for the Fabius Function\\[0.35em]
+\Large Connections among exact values, Appell blocks, Thue--Morse differences, Gaussian interpolation, and discrete limits}
+\author{A complementary article to \emph{The Fabius Function and Rvachev's up-Function}}
+\date{25 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The exact formulae for the values of the Fabius function at dyadic rationals,
+the binary-reduction series at an arbitrary argument, and the discrete-limit
+formula involving Gaussian binomial coefficients look at first like three
+rather different constructions.  They are, in fact, organized by one finite
+polynomial identity and one regular summability argument.
+
+The finite identity is most transparent after introducing the Appell moment
+polynomials
+\[
+  A_n(\theta)=\E (X+\theta)^n,
+\]
+where $X$ has the Fabius distribution.  The Taylor-reduction polynomial at
+scale $n$ is exactly $2^{-\binom n2}A_n(2^n y)/n!$.  Consequently, the global
+binary expansion becomes a rapidly convergent, digit-sparse Appell series;
+for a dyadic rational it terminates, so the finite dyadic formula is literally
+the terminating case of the arbitrary-argument expansion.  Replacing each
+Appell polynomial by its finite Thue--Morse/Gaussian-binomial representation
+gives the nested $q$-series term by term, not merely after taking a limit.
+
+The discrete-limit formula uses the same finite Gaussian stencil in a different
+way.  After an exact reindexing it is a signed Toeplitz average of shifted
+uniform-spline approximants.  Its row-generating polynomial is
+\[
+  \frac{\poch{z/2}{1/2}{n}}{\poch{1/2}{1/2}{n}},
+\]
+which simultaneously explains unit row mass, bounded total variation, and the
+appearance of $q$-Pochhammer symbols.  This article develops these connections,
+derives quantitative error bounds, and adds several alternative exact
+representations: a finite composition sum obtained directly from the moment
+product, a lower-Hessenberg determinant, a Bernoulli--Bell-polynomial formula,
+and Fourier and Laplace inversion formulae.
+\end{abstract}
+
+\tableofcontents
+
+\section{Orientation and notation}
+
+\subsection{What is being connected}
+
+The companion article and the Lean development establish, among many other
+facts, the following three families of formulae.
+
+\begin{enumerate}
+\item Exact rational expressions for $F(m/2^n)$, including formulae in which a
+  Gaussian binomial coefficient at base $1/2$ multiplies a finite signed
+  Thue--Morse power sum.
+\item An exact infinite expansion for $F(x)$, or for the signed
+  global extension $\Fglobal(x)$, obtained by repeatedly reducing along the
+  binary expansion of $x$.  Substituting the finite $q$-binomial expression
+  into every reduction block produces a nested infinite $q$-series.
+\item A discrete limit in which a finite $q$-binomial sum of increasingly fine
+  Thue--Morse splines converges to $\Fglobal(x)$ at an arbitrary real argument.
+\end{enumerate}
+
+The purpose here is not to repeat the proofs already presented there.  We
+instead isolate the common algebraic mechanism, compress the formulae into a
+small collection of reusable objects, and then unfold those objects in several
+new directions.
+
+Throughout,
+\[
+  \rho=\frac12,
+  \qquad
+  \poch{a}{\rho}{n}=\prod_{j=0}^{n-1}(1-a\rho^j),
+  \qquad
+  \qbinom{n}{k}{\rho}
+  =\frac{\poch{\rho}{\rho}{n}}
+  {\poch{\rho}{\rho}{k}\poch{\rho}{\rho}{n-k}}.
+\]
+The empty product is $1$.  We write
+\[
+  \eps_r=(-1)^{\wt(r)},
+\]
+where $\wt(r)$ is the number of $1$'s in the binary expansion of $r$.
+Thus $(\eps_r)_{r\ge0}$ is the $\{\pm1\}$ Thue--Morse sequence.
+
+
+\subsection{The half-base notation is Mersenne arithmetic}
+
+At the special base $\rho=1/2$, the $q$-Pochhammer symbol is simply a compact
+normalization of a product of Mersenne numbers:
+\begin{equation}\label{eq:Mersenne-Pochhammer}
+ \poch{1/2}{1/2}{n}
+ =\prod_{j=1}^{n}(1-2^{-j})
+ =2^{-\binom{n+1}{2}}\prod_{j=1}^{n}(2^j-1).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:main-denom-Mersenne}
+ 2^{n^2}\poch{1/2}{1/2}{n}
+ =2^{\binom n2}\prod_{j=1}^{n}(2^j-1).
+\end{equation}
+The factors $2^j-1$ appearing separately in moment recurrences and
+composition formulae are therefore the same arithmetic content that the
+$q$-Pochhammer symbol packages in the closed Gaussian-binomial formula.
+Likewise,
+\begin{equation}\label{eq:qbinomial-inversion}
+ \qbinom{n}{k}{1/2}
+ =2^{-k(n-k)}\qbinom{n}{k}{2}.
+\end{equation}
+Thus the half-base Gaussian coefficients are ordinary integral Gaussian
+coefficients at base $2$, accompanied by an explicit power of $2$.  The
+$q$-notation is not introducing mysterious irrational constants; it records
+the geometry of the dyadic interpolation grid and keeps its Mersenne
+normalizations factored.
+
+\subsection{The probabilistic normalization}
+
+Let $U_1,U_2,\ldots$ be independent random variables, each uniformly
+distributed on $[0,1]$, and put
+\begin{equation}\label{eq:X-definition}
+  X=\sum_{j=1}^{\infty}\frac{U_j}{2^j}.
+\end{equation}
+Then $0\le X\le1$, and the distribution function of $X$ is the Fabius
+function:
+\[
+  F(x)=\Prob(X\le x).
+\]
+This representation fixes all normalizations used below.  Define the moments
+\begin{equation}\label{eq:dn-definition}
+  d_n=\E X^n,
+  \qquad d_0=1,
+\end{equation}
+and their exponential generating function
+\begin{equation}\label{eq:G-definition}
+  G(z)=\E e^{zX}=\sum_{n=0}^{\infty}d_n\frac{z^n}{n!}.
+\end{equation}
+Independence in \eqref{eq:X-definition} gives the entire product
+\begin{equation}\label{eq:G-product}
+  G(z)=\prod_{j=1}^{\infty}E\!\left(\frac{z}{2^j}\right),
+  \qquad
+  E(w)=\frac{e^w-1}{w}.
+\end{equation}
+Shifting the product by one factor yields
+\begin{equation}\label{eq:G-dilation}
+  G(2z)=E(z)G(z).
+\end{equation}
+Comparing coefficients gives the basic moment recurrence
+\begin{equation}\label{eq:moment-recurrence}
+  (2^n-1)\frac{d_n}{n!}
+  =\sum_{k=0}^{n-1}\frac{d_k}{k!(n-k+1)!}
+  \qquad(n\ge1).
+\end{equation}
+
+One of the fundamental exact dyadic identities is
+\begin{equation}\label{eq:inverse-dyadic-moment}
+  F(2^{-n})=2^{-\binom n2}\frac{d_n}{n!}.
+\end{equation}
+It will reappear in nearly every section, but in different disguises.
+
+\begin{boxedremark}
+\textbf{Formalization boundary.}
+This is a research-frontier article.  Lean formally proves the underlying
+probability/CDF and moment identities, the finite translated $q$-binomial
+formulae, the source-literal binary and global $q$-series, the ordered
+composition formula \eqref{eq:composition-formula}, the centered and shifted
+spline bounds, the exact Toeplitz reindexing, row mass, total variation and
+qualitative limit, the sinc product and Fourier inversion for $\Up$, and an
+equivalent real-line Bromwich formula for $F$.
+
+The exact displayed forms still requiring Lean counterparts are:
+\begin{enumerate}
+\item the $q=2$ comparison \eqref{eq:qbinomial-inversion}, the operator
+  factorizations \eqref{eq:TM-factorization} and \eqref{eq:TM-sinhc}, and the
+  generic-$q$ interpolation identities
+  \eqref{eq:q-leading-extractor-general}--\eqref{eq:q-survivor};
+\item the Appell package \eqref{eq:An-definition}--\eqref{eq:R-superbound},
+  its digit formula, uniform and superexponential tail bounds, dyadic
+  termination, Appell-compressed finite and global $q$-formulae, and the
+  occupied-bit prefix regrouping;
+\item the coefficient-extraction and geometric-simplex derivation
+  \eqref{eq:an-coeff}--\eqref{eq:geometric-simplex}, the determinant, and the
+  complete Bernoulli--cumulant--Bell and partition formulae; the final
+  composition formula itself is already formalized;
+\item the Toeplitz row polynomial, signed moments and limiting filter, together
+  with the explicit rates \eqref{eq:Dn-rate}--\eqref{eq:Dn-centered-rate};
+\item the literal CDF sine integral \eqref{eq:F-Fourier} and truncated vertical
+  product integral \eqref{eq:Bromwich}, including their convergence and
+  substitution steps; and
+\item the $O(N^2)$ rational-operation count and the floating-point conditioning
+  claims, which need an explicit cost or numerical-error model.
+\end{enumerate}
+Arguments for those items below are ordinary mathematics, not Lean
+certificates.
+\end{boxedremark}
+
+\section{The master Taylor block}
+
+\subsection{The reduction polynomial}
+
+For $n\ge0$, define
+\begin{equation}\label{eq:Rn-definition}
+ R_n(y)=
+ \sum_{k=0}^{n}
+ 2^{\binom{k+1}{2}-\binom{n-k}{2}}
+ \frac{d_{n-k}}{(n-k)!}\frac{y^k}{k!}.
+\end{equation}
+This is the polynomial that occurs in the exact Taylor reduction.  On the
+appropriate dyadic shell, if $y=x-2^{-n}$, the global Fabius extension satisfies
+an identity of the form
+\[
+  \Fglobal(x)=-\Fglobal(y)+R_n(y).
+\]
+Only the polynomial itself will be needed here.
+
+Putting $y=0$ in \eqref{eq:Rn-definition} gives
+\[
+  R_n(0)=2^{-\binom n2}\frac{d_n}{n!}=F(2^{-n}),
+\]
+so every inverse-dyadic value is the constant term of one reduction block.
+The less obvious fact is that the whole block has an equally simple meaning.
+
+\subsection{Appell compression}
+
+\begin{definition}[Moment Appell polynomials]\label{def:Appell}
+For $n\ge0$ and $\theta\in\C$, let
+\begin{equation}\label{eq:An-definition}
+  A_n(\theta)=\E(X+\theta)^n
+  =\sum_{k=0}^{n}\binom nk d_{n-k}\theta^k.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:Appell-egf}
+  \sum_{n=0}^{\infty}A_n(\theta)\frac{z^n}{n!}
+  =e^{\theta z}G(z).
+\end{equation}
+\end{definition}
+
+The family is Appell in the classical sense:
+\begin{equation}\label{eq:Appell-derivative}
+  A_n'(\theta)=nA_{n-1}(\theta),
+  \qquad
+  A_n(\theta+c)=\sum_{j=0}^{n}\binom nj A_{n-j}(\theta)c^j.
+\end{equation}
+Since $X$ and $1-X$ have the same distribution,
+\begin{equation}\label{eq:Appell-reflection}
+  A_n(\theta)=(-1)^nA_n(-1-\theta).
+\end{equation}
+
+\begin{theorem}[Appell compression of the reduction block]\label{thm:Appell-compression}
+For every $n\ge0$ and $\theta\in\C$,
+\begin{equation}\label{eq:Appell-compression}
+  R_n(2^{-n}\theta)
+  =2^{-\binom n2}\frac{A_n(\theta)}{n!}.
+\end{equation}
+Equivalently, for arbitrary $y$,
+\begin{equation}\label{eq:R-Appell-general}
+  R_n(y)=2^{-\binom n2}\frac{A_n(2^ny)}{n!}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Substitute $y=2^{-n}\theta$ into \eqref{eq:Rn-definition}.  The power of $2$
+in the $k$th term becomes
+\[
+ \binom{k+1}{2}-\binom{n-k}{2}-nk=-\binom n2,
+\]
+independently of $k$.  Factoring out $2^{-\binom n2}$ leaves
+\[
+ \sum_{k=0}^{n}\frac{d_{n-k}\theta^k}{(n-k)!k!}
+ =\frac1{n!}\sum_{k=0}^{n}\binom nkd_{n-k}\theta^k
+ =\frac{A_n(\theta)}{n!}.
+\]
+\end{proof}
+
+This elementary cancellation is the main compression used throughout the
+article.  A triangular-looking polynomial with apparently irregular powers of
+$2$ is simply a rescaled shifted moment.
+
+\subsection{Immediate consequences}
+
+For $0\le\theta<1$, positivity and bounded support give
+\begin{equation}\label{eq:Appell-bound}
+  0\le A_n(\theta)\le 2^n.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:R-superbound}
+  0\le R_n(2^{-n}\theta)
+  \le \frac{2^{n-\binom n2}}{n!}.
+\end{equation}
+This estimate is much sharper than the geometric estimate normally used to
+prove convergence of the binary-reduction series.
+
+The first few Appell polynomials are
+\begin{align*}
+ A_0(\theta)&=1,\\
+ A_1(\theta)&=\theta+\frac12,\\
+ A_2(\theta)&=\theta^2+\theta+\frac5{18},\\
+ A_3(\theta)&=\theta^3+\frac32\theta^2+\frac56\theta+\frac16,\\
+ A_4(\theta)&=\theta^4+2\theta^3+\frac53\theta^2
+              +\frac23\theta+\frac{143}{1350}.
+\end{align*}
+They encode all Taylor blocks of the corresponding orders by a single change
+of scale.
+
+\section{The binary expansion as a sparse Appell series}
+
+\subsection{Prefixes, bits, and tails}
+
+Fix $x\in[0,1)$.  Use the canonical binary expansion that is not eventually
+all $1$'s,
+\begin{equation}\label{eq:binary-x}
+  x=0.b_1b_2b_3\ldots{}_2,
+  \qquad b_m\in\{0,1\}.
+\end{equation}
+Let
+\begin{equation}\label{eq:prefix-tail}
+  a_m=\lfloor2^m x\rfloor,
+  \qquad
+  \theta_m=\fracpart{2^m x},
+  \qquad
+  y_m=x-\frac{a_m}{2^m}=2^{-m}\theta_m.
+\end{equation}
+Then
+\begin{equation}\label{eq:bit-prefix-relation}
+  a_m=2a_{m-1}+b_m,
+  \qquad
+  \theta_m=0.b_{m+1}b_{m+2}\ldots{}_2.
+\end{equation}
+
+The binary-reduction series in the formal development has coefficient
+\begin{equation}\label{eq:source-coefficient}
+  c_m(x)=\eps_{a_m}\bigl(2a_{m-1}-a_m\bigr)
+  \qquad(m\ge1).
+\end{equation}
+Using \eqref{eq:bit-prefix-relation}, this simplifies completely:
+\begin{equation}\label{eq:coefficient-simplified}
+  c_m(x)=
+  \begin{cases}
+   0,&b_m=0,\\
+   \eps_{a_{m-1}},&b_m=1.
+  \end{cases}
+\end{equation}
+Indeed, when $b_m=1$ one has
+$\eps_{a_m}=-\eps_{a_{m-1}}$ and $2a_{m-1}-a_m=-1$.
+Thus only the positions of the $1$-bits contribute.
+
+\subsection{The digit--Appell formula}
+
+\begin{theorem}[Digit-sparse Appell expansion]\label{thm:digit-Appell}
+For every $x\in[0,1)$,
+\begin{equation}\label{eq:digit-Appell}
+ \boxed{
+ F(x)=
+ \sum_{m=1}^{\infty}
+ b_m\,(-1)^{b_1+\cdots+b_{m-1}}
+ \frac{2^{-\binom m2}}{m!}
+ A_m(\theta_m).}
+\end{equation}
+The series converges absolutely, and in fact uniformly with respect to
+$x\in[0,1)$.
+\end{theorem}
+
+\begin{proof}
+The exact binary-reduction series is
+\[
+ F(x)=\sum_{m\ge1}c_m(x)R_m(y_m).
+\]
+Insert \eqref{eq:coefficient-simplified}, use
+$\eps_{a_{m-1}}=(-1)^{b_1+\cdots+b_{m-1}}$, and then apply
+\cref{thm:Appell-compression} with $y_m=2^{-m}\theta_m$.
+Absolute and uniform convergence follow from
+\eqref{eq:Appell-bound} and the Weierstrass test.
+\end{proof}
+
+Formula \eqref{eq:digit-Appell} is a compact arbitrary-argument representation
+that contains no $q$-notation at all.  The $q$-series will emerge by replacing
+each $A_m$ by an exactly equal finite Gaussian-binomial expression.
+
+\subsection{A superexponential remainder bound}
+
+Let $S_N(x)$ denote the truncation of \eqref{eq:digit-Appell} after $m=N$.
+From \eqref{eq:Appell-bound},
+\[
+ |F(x)-S_N(x)|
+ \le\sum_{m=N+1}^{\infty}\frac{2^{m-\binom m2}}{m!}.
+\]
+The ratio of consecutive majorants is
+\[
+ \frac{2^{m+1-\binom{m+1}{2}}/(m+1)!}
+      {2^{m-\binom m2}/m!}
+ =\frac{2^{1-m}}{m+1}\le\frac12
+ \qquad(m\ge1).
+\]
+Therefore, for $N\ge0$,
+\begin{equation}\label{eq:digit-tail-bound}
+ \boxed{
+  |F(x)-S_N(x)|
+  \le 2\,\frac{2^{N+1-\binom{N+1}{2}}}{(N+1)!}.}
+\end{equation}
+The right-hand side decays faster than geometrically in $N$.  In practical
+computation, the binary digit series is therefore far more rapidly convergent
+than the elementary residual estimate $O(2^{-N})$ suggests.
+
+\subsection{Dyadic rationals are the terminating case}
+
+Suppose
+\[
+ x=\frac{M}{2^N}=0.b_1b_2\ldots b_N000\ldots{}_2,
+ \qquad 0\le M<2^N.
+\]
+Then $b_m=0$ for $m>N$, and \eqref{eq:digit-Appell} terminates:
+\begin{equation}\label{eq:dyadic-digit-Appell}
+ \boxed{
+ F\!\left(\frac{M}{2^N}\right)
+ =\sum_{\substack{1\le m\le N\\b_m=1}}
+ (-1)^{b_1+\cdots+b_{m-1}}
+ \frac{2^{-\binom m2}}{m!}
+ A_m\!\left(0.b_{m+1}\ldots b_N{}_2\right).}
+\end{equation}
+Thus the exact bit-recursive evaluator, the finite exact dyadic formula, and
+the arbitrary-argument series are not separate phenomena: they are the finite,
+recursive, and infinite readings of the same identity.
+
+\begin{example}[The value at $5/16$]\label{ex:five-sixteen}
+The terminating binary expansion is
+\[
+ \frac5{16}=0.0101_2.
+\]
+Only $m=2$ and $m=4$ contribute.  At $m=2$ the previous prefix has even
+weight and $\theta_2=1/4$; at $m=4$ the previous prefix is $010_2$, so the
+sign is negative and $\theta_4=0$.  Hence
+\begin{align*}
+ F\!\left(\frac5{16}\right)
+ &=\frac{2^{-1}}{2!}A_2\!\left(\frac14\right)
+   -\frac{2^{-6}}{4!}A_4(0)\\
+ &=\frac14\left(\frac5{18}+\frac14+\frac1{16}\right)
+   -\frac1{1536}\frac{143}{1350}\\
+ &=\frac{305857}{2073600}.
+\end{align*}
+The first contribution accounts for the prefix $01$ together with the
+remaining tail $01$; the second contribution corrects for the final $1$-bit.
+\end{example}
+
+\section{Why Thue--Morse and Gaussian binomial coefficients appear}
+
+Two independent annihilation mechanisms are superposed in the nested exact
+formula.  The inner Thue--Morse sum is an additive finite-difference operator;
+the outer Gaussian-binomial sum is a divided-difference operator on a geometric
+grid.  Each kills lower-degree terms.  Their composition isolates precisely
+the coefficient needed by the Taylor block.
+
+\subsection{The Thue--Morse difference operator}
+
+For a polynomial or entire function $P$, define
+\begin{equation}\label{eq:TM-operator}
+  (\Toperator_kP)(c)
+  =\sum_{r=0}^{2^k-1}\eps_rP(c+r).
+\end{equation}
+Writing $D=\frac{\dd}{\dd c}$ and using the binary digits of $r$ gives the
+operator factorization
+\begin{equation}\label{eq:TM-factorization}
+  \Toperator_k
+  =\prod_{j=0}^{k-1}\left(1-e^{2^jD}\right).
+\end{equation}
+Indeed,
+\[
+ \sum_{r<2^k}\eps_re^{rz}
+ =\prod_{j=0}^{k-1}(1-e^{2^jz}).
+\]
+Since every factor in \eqref{eq:TM-factorization} begins with
+$-2^jD$, the operator annihilates all polynomials of degree less than $k$ and
+satisfies
+\begin{equation}\label{eq:first-TM-moment}
+  \sum_{r=0}^{2^k-1}\eps_rr^k
+  =(-1)^k2^{\binom k2}k!.
+\end{equation}
+More generally, for fixed $n$,
+\begin{equation}\label{eq:TM-degree-n}
+  c\longmapsto
+  \frac1{(n+k)!}
+  \sum_{r<2^k}\eps_r(r+c)^{n+k}
+\end{equation}
+has degree at most $n$, and its leading coefficient is
+\begin{equation}\label{eq:TM-leading-coeff}
+  \coeff{c}{n}\left(
+  \frac1{(n+k)!}\sum_{r<2^k}\eps_r(r+c)^{n+k}
+  \right)
+  =\frac{(-1)^k2^{\binom k2}}{n!}.
+\end{equation}
+
+A symmetric form of the operator is also useful.  With
+$\operatorname{sinhc}(z)=\sinh(z)/z$,
+\begin{equation}\label{eq:TM-sinhc}
+ \Toperator_k
+ =(-1)^k2^{\binom k2}D^k
+ e^{(2^k-1)D/2}
+ \prod_{j=0}^{k-1}
+ \operatorname{sinhc}(2^{j-1}D).
+\end{equation}
+This shows that the Thue--Morse block is a $k$th derivative, followed by an
+even differential correction and evaluation about the midpoint of the block.
+It also explains why centered and translated versions of the formula are so
+natural.
+
+\subsection{Geometric divided differences}
+
+Let $0<q<1$ for a moment, and consider the geometric nodes
+\[
+  1,q^{-1},q^{-2},\ldots,q^{-n}.
+\]
+The leading coefficient of any polynomial $P$ of degree at most $n$ is its
+$n$th divided difference on these nodes.  Lagrange interpolation gives
+\begin{equation}\label{eq:q-leading-extractor-general}
+ \coeff{t}{n}P(t)
+ =\frac{(-1)^nq^{\binom{n+1}{2}}}{\poch{q}{q}{n}}
+  \sum_{k=0}^{n}
+  (-1)^kq^{\binom k2}\qbinom{n}{k}{q}P(q^{-k}).
+\end{equation}
+For completeness, the barycentric denominator is
+\begin{equation}\label{eq:barycentric-denominator}
+ \frac1{\displaystyle\prod_{j\ne k}(q^{-k}-q^{-j})}
+ =\frac{(-1)^{n-k}q^{\binom{n+1}{2}+\binom k2}}
+ {\poch{q}{q}{n}}\qbinom{n}{k}{q}.
+\end{equation}
+At $q=1/2$, the nodes are $1,2,4,\ldots,2^n$ and the interpolation weights are
+exactly Gaussian binomial coefficients at base $1/2$, decorated by triangular
+powers of $2$.
+
+The same identity follows immediately from the finite $q$-binomial theorem
+\begin{equation}\label{eq:finite-q-binomial}
+ \sum_{k=0}^{n}(-1)^kq^{\binom k2}\qbinom{n}{k}{q}z^k
+ =\poch{z}{q}{n}.
+\end{equation}
+If $z=q^{-m}$, the right-hand side is zero for $m<n$, while
+\begin{equation}\label{eq:q-survivor}
+  \poch{q^{-n}}{q}{n}
+  =(-1)^nq^{-\binom{n+1}{2}}\poch{q}{q}{n}.
+\end{equation}
+Thus the stencil kills every lower monomial and normalizes the top one.
+
+\subsection{The two annihilators together}
+
+The inner sum \eqref{eq:TM-degree-n} first lowers degree by $k$.  Its remaining
+dependence is a polynomial of degree at most $n$.  The outer geometric stencil
+\eqref{eq:q-leading-extractor-general} then kills all but one prescribed
+coefficient of that degree-$n$ polynomial.  Schematically,
+\[
+ \boxed{
+ \text{power of degree }n+k
+ \xrightarrow{\ \Toperator_k\ }
+ \text{polynomial of degree }n
+ \xrightarrow{\ \Qoperator_n\ }
+ \text{one coefficient}.}
+\]
+This is the structural reason that a formula about a smooth distribution
+function involves both Thue--Morse signs and Gaussian binomial coefficients.
+Neither ingredient is ornamental: each is the coefficient vector of a finite
+annihilator.
+
+Translation invariance is now transparent.  Translating the argument of the
+intermediate degree-$n$ polynomial changes only lower coefficients after the
+target coefficient is fixed.  The geometric extractor annihilates precisely
+those changes.  The Lean proof strengthens this observation by treating the
+translation as an indeterminate and proving that the complete numerator
+polynomial is constant.
+
+\section[The finite q-formula as an Appell identity]
+{The finite $q$-formula as an Appell identity}
+
+\subsection{A centered master formula}
+
+The exact inverse-dyadic formula is most revealing when one retains the Taylor
+variable instead of setting it to zero.
+
+\begin{theorem}[Centered Gaussian-binomial representation of $A_n$]
+\label{thm:centered-q-Appell}
+For every $n\ge0$ and $\theta\in\C$,
+\begin{equation}\label{eq:centered-q-Appell}
+\boxed{
+ \frac{A_n(\theta)}{n!}
+ =\frac{2^{-\binom{n+1}{2}}}{\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}
+ \eps_r\bigl(r-2^k(1+\theta)\bigr)^{n+k}.}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The polynomial version of the formalized $q$-binomial Taylor identity is
+\[
+ R_n(y)=
+ \frac1{2^{n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r<2^k}\eps_r
+ \bigl(r-2^k-2^{n+k}y\bigr)^{n+k}.
+\]
+Set $y=2^{-n}\theta$ and use
+\cref{thm:Appell-compression}.  Multiplying by $2^{\binom n2}$ changes the
+outer power $2^{-n^2}$ into $2^{-\binom{n+1}{2}}$, while the inner shift becomes
+$-2^k(1+\theta)$.
+\end{proof}
+
+At $\theta=0$, multiplying \eqref{eq:centered-q-Appell} by
+$2^{-\binom n2}$ gives the exact centered inverse-dyadic formula
+\begin{equation}\label{eq:centered-inverse-dyadic}
+ \boxed{
+ F(2^{-n})
+ =\frac1{2^{n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}
+ \eps_r(r-2^k)^{n+k}.}
+\end{equation}
+Thus the formula for one special value is merely the constant-term
+specialization of a formula for the entire Appell polynomial.
+
+\subsection{The arbitrary-translation form}
+
+The companion development proves an even stronger polynomial identity.  A
+common translation parameter may be inserted into all the raw Thue--Morse
+blocks without changing the result.
+
+\begin{theorem}[Raw translated representation]\label{thm:raw-q-Appell}
+For every $n\ge0$ and every $\theta,\eta\in\C$,
+\begin{equation}\label{eq:raw-q-Appell}
+\boxed{
+ \frac{A_n(\theta)}{n!}
+ =\frac{(-1)^n2^{-\binom{n+1}{2}}}{\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}
+ \eps_r\bigl(r+\eta+2^k\theta\bigr)^{n+k}.}
+\end{equation}
+The right-hand side is independent of $\eta$.
+\end{theorem}
+
+Putting $\theta=0$ gives
+\begin{equation}\label{eq:raw-inverse-dyadic}
+ F(2^{-n})
+ =\frac1{(-2)^{n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \sum_{r=0}^{2^k-1}\eps_r(r+\eta)^{n+k}.
+\end{equation}
+The identity $(-1)^n=(-1)^{n^2}$ accounts for the denominator
+$(-2)^{n^2}$.
+
+\begin{remark}[A scale-dependent translation]
+Because \eqref{eq:raw-q-Appell} is an identity separately for each $n$, one
+may choose a different common translation $\eta_n$ at every outer scale in an
+infinite expansion.  This does not change a single term.  In exact arithmetic
+this is merely a gauge freedom; in floating-point arithmetic it may be used to
+reduce the size of intermediate powers.  The translation must remain common
+to the inner $k$-sum for a fixed $n$.
+\end{remark}
+
+
+\section{One-shot and digitwise formulae for a general dyadic rational}
+
+The formula \eqref{eq:centered-inverse-dyadic} treats the numerator $1$.
+There is also a one-shot formula for a general numerator.  For
+$0\le M<2^N$,
+\begin{equation}\label{eq:one-shot-general-dyadic}
+\boxed{
+ F\!\left(\frac{M}{2^N}\right)
+ =\frac1{2^{N^2}\poch{1/2}{1/2}{N}}
+ \sum_{k=0}^{N}
+ \frac{\qbinom{N}{k}{1/2}}
+ {4^{\binom k2}(N+k)!}
+ \sum_{r=0}^{M2^k-1}
+ \eps_r(r-M2^k)^{N+k}.}
+\end{equation}
+A common translation may be inserted in all the inner powers; the complete
+outer numerator is unchanged.  Formula \eqref{eq:one-shot-general-dyadic}
+uses the denominator exponent $N$ once and for all.  In contrast,
+\eqref{eq:dyadic-digit-Appell} uses one lower-order block for each $1$-bit of
+$M$.  The two organizations are related by the canonical dyadic decomposition
+of the prefix interval.
+
+Write
+\[
+ \frac{M}{2^N}=0.b_1\ldots b_N{}_2,
+ \qquad
+ a_m=\lfloor2^mM/2^N\rfloor.
+\]
+For every function $P$ on the nonnegative integers and every $k\ge0$,
+\begin{align}\label{eq:prefix-block-decomposition}
+ \sum_{r=0}^{M2^k-1}\eps_rP(r)
+ &=\sum_{\substack{1\le m\le N\\b_m=1}}
+ \eps_{a_{m-1}}
+ \sum_{s=0}^{2^{N-m+k}-1}\eps_s
+ P\!\left(a_{m-1}2^{N-m+k+1}+s\right).
+\end{align}
+Indeed, the interval $[0,M)$ is the disjoint union, over its $1$-bits, of
+\[
+ \left[a_{m-1}2^{N-m+1},
+       a_{m-1}2^{N-m+1}+2^{N-m}\right),
+ \qquad b_m=1.
+\]
+After multiplication by $2^k$, every block starts at a multiple of twice its
+length.  Hence adding the local coordinate $s$ creates no binary carry and
+\[
+ \eps_{a_{m-1}2^{N-m+k+1}+s}
+ =\eps_{a_{m-1}}\eps_s.
+\]
+This proves \eqref{eq:prefix-block-decomposition}.
+
+Substituting \eqref{eq:prefix-block-decomposition} into the one-shot formula
+splits every long Thue--Morse prefix into complete blocks carrying exactly the
+signs $\eps_{a_{m-1}}$ that occur in the digit formula.  The remaining outer
+Gaussian stencil is still of order $N$; applying the polynomial Taylor
+identity to each rescaled block lowers it to its natural bit scale $m$ and
+produces \eqref{eq:dyadic-digit-Appell}.  Thus:
+\begin{itemize}
+\item \eqref{eq:one-shot-general-dyadic} groups the computation by polynomial
+  degree $N+k$;
+\item \eqref{eq:dyadic-digit-Appell} groups it by the occupied binary scales of
+  the numerator;
+\item \eqref{eq:prefix-block-decomposition} is the combinatorial bridge between
+  the two groupings.
+\end{itemize}
+
+For $M=5$ and $N=4$, the one-shot expression has one outer sum of order $4$
+and inner prefixes of lengths $5\cdot2^k$.  The digitwise expression has only
+two active blocks, at scales $m=2$ and $m=4$, as shown in
+\cref{ex:five-sixteen}.  Their equality is a nontrivial finite rearrangement,
+not a limiting assertion.
+
+\section[From exact dyadic values to the arbitrary-argument q-series]
+{From exact dyadic values to the arbitrary-argument $q$-series}
+
+The connection can now be made without any further analysis: substitute
+\cref{thm:centered-q-Appell} or \cref{thm:raw-q-Appell} into the digit--Appell
+series term by term.
+
+\subsection{The centered nested series}
+
+\begin{theorem}[Centered digit--$q$ expansion]\label{thm:centered-digit-q}
+For $x\in[0,1)$, with notation \eqref{eq:binary-x}--\eqref{eq:prefix-tail},
+\begin{align}\label{eq:centered-digit-q}
+ F(x)
+ &=\sum_{m=1}^{\infty}
+ b_m\eps_{a_{m-1}}
+ \frac1{2^{m^2}\poch{1/2}{1/2}{m}}
+ \sum_{k=0}^{m}
+ \frac{\qbinom{m}{k}{1/2}}
+ {4^{\binom k2}(m+k)!}
+ \notag\\[-0.25em]
+ &\hspace{5.6em}\times
+ \sum_{r=0}^{2^k-1}
+ \eps_r\bigl(r-2^k(1+\theta_m)\bigr)^{m+k}.
+\end{align}
+The equality holds term by term with \eqref{eq:digit-Appell}.
+\end{theorem}
+
+\begin{proof}
+In the $m$th term of \eqref{eq:digit-Appell}, multiply the prefactor
+$2^{-\binom m2}$ by the prefactor
+$2^{-\binom{m+1}{2}}$ in \eqref{eq:centered-q-Appell}.  Their product is
+$2^{-m^2}$.  Everything else is a direct substitution.
+\end{proof}
+
+If $x=M/2^N$ has a terminating binary expansion, then
+\eqref{eq:centered-digit-q} terminates after $m=N$.  The ``infinite'' global
+$q$-series is therefore exactly a finite dyadic formula whenever its argument
+is dyadic.  Conversely, allowing infinitely many nonzero binary digits turns
+the same finite block identity into the arbitrary-argument series.
+
+\subsection{The raw translated nested series}
+
+For any fixed $\eta\in\C$, the raw form is
+\begin{align}\label{eq:raw-digit-q}
+ F(x)
+ &=\sum_{m=1}^{\infty}
+ b_m\eps_{a_{m-1}}
+ \frac1{(-2)^{m^2}\poch{1/2}{1/2}{m}}
+ \sum_{k=0}^{m}
+ \frac{\qbinom{m}{k}{1/2}}
+ {4^{\binom k2}(m+k)!}
+ \notag\\[-0.25em]
+ &\hspace{5.6em}\times
+ \sum_{r=0}^{2^k-1}
+ \eps_r\bigl(r+\eta+2^k\theta_m\bigr)^{m+k}.
+\end{align}
+Again, every individual $m$th summand equals the corresponding Appell summand
+in \eqref{eq:digit-Appell}; no interchange of infinite sums is needed to prove
+the identity.
+
+\subsection{A useful commutative diagram}
+
+The relations may be summarized as follows:
+\[
+\begin{array}{ccc}
+ R_m(2^{-m}\theta)
+ &\xleftrightarrow{\quad\text{Appell compression}\quad}&
+ 2^{-\binom m2}A_m(\theta)/m!
+ \\[0.8em]
+ \Big\updownarrow\scriptstyle\text{finite Gaussian/Thue--Morse identity}
+ &&
+ \Big\downarrow\scriptstyle\text{insert binary tail }\theta=\theta_m
+ \\[0.8em]
+ \text{finite nested }q\text{-block}
+ &\xrightarrow{\quad\text{sum over the 1-bits}\quad}&
+ F(x).
+\end{array}
+\]
+Setting $\theta=0$ in the top row gives $F(2^{-m})$.  Taking a terminating
+binary expansion makes the right-hand summation finite.  Taking an arbitrary
+binary expansion leaves an absolutely convergent infinite series.  These are
+specializations, not analogies.
+
+\section{Alternative exact representations of inverse-dyadic values}
+
+The $q$-binomial formula is only one exact representation of
+$F(2^{-n})$.  The moment product \eqref{eq:G-product} leads to several others,
+each exposing a different combinatorial structure.
+
+\subsection{Coefficient extraction from the moment product}
+
+Let
+\begin{equation}\label{eq:an-definition}
+  a_n=\frac{d_n}{n!}=2^{\binom n2}F(2^{-n}).
+\end{equation}
+Then
+\begin{equation}\label{eq:an-coeff}
+  a_n=\coeff{z}{n}\prod_{j=1}^{\infty}
+  \left(\sum_{r=0}^{\infty}
+  \frac{z^r}{2^{jr}(r+1)!}\right).
+\end{equation}
+Expanding by the set of scales at which a nonconstant term is chosen gives
+\begin{align}\label{eq:scale-selection}
+ a_n
+ &=\sum_{\ell=1}^{n}
+   \sum_{\substack{r_1+\cdots+r_\ell=n\\r_i\ge1}}
+   \frac1{\prod_{i=1}^{\ell}(r_i+1)!}
+   \sum_{1\le j_1<\cdots<j_\ell}
+   2^{-\sum_{i=1}^{\ell}j_ir_i},
+ \qquad(n\ge1).
+\end{align}
+The infinite inner sum is an elementary geometric simplex sum.  If
+$t_h=r_h+\cdots+r_\ell$, then
+\begin{equation}\label{eq:geometric-simplex}
+ \sum_{1\le j_1<\cdots<j_\ell}
+ 2^{-\sum_i j_ir_i}
+ =\prod_{h=1}^{\ell}\frac1{2^{t_h}-1}.
+\end{equation}
+To see this, put
+$j_i=i+g_1+\cdots+g_i$ with $g_h\ge0$; the resulting independent geometric
+series contribute $(1-2^{-t_h})^{-1}$, and their powers of $2$ cancel the
+initial offset.
+
+Reversing the composition $(r_1,\ldots,r_\ell)$ changes tail sums into prefix
+sums.  We obtain the finite composition formula
+\begin{theorem}[Composition representation]\label{thm:composition}
+Let $\rho=(r_1,\ldots,r_\ell)\vDash n$ run over all ordered compositions of
+$n$, and let $s_j=r_1+\cdots+r_j$.  Then
+\begin{equation}\label{eq:composition-formula}
+ \boxed{
+ F(2^{-n})
+ =2^{-\binom n2}
+ \sum_{\rho\vDash n}
+ \prod_{j=1}^{\ell}
+ \frac1{(2^{s_j}-1)(r_j+1)!}.}
+\end{equation}
+\end{theorem}
+This derivation explains the factors $2^{s_j}-1$: they are the closed forms of
+geometric sums over the infinitely many binary scales in
+\eqref{eq:G-product}.
+
+\subsection{A lower-Hessenberg determinant}
+
+The recurrence \eqref{eq:moment-recurrence} may be written
+\begin{equation}\label{eq:an-recurrence}
+ a_n=\sum_{k=0}^{n-1}\beta_{n,k}a_k,
+ \qquad
+ \beta_{n,k}=\frac1{(2^n-1)(n-k+1)!}.
+\end{equation}
+Define the $n\times n$ lower-Hessenberg matrix
+\begin{equation}\label{eq:Hn-matrix}
+ H_n=
+ \begin{pmatrix}
+ \beta_{1,0}&-1&0&\cdots&0\\
+ \beta_{2,0}&\beta_{2,1}&-1&\ddots&\vdots\\
+ \beta_{3,0}&\beta_{3,1}&\beta_{3,2}&\ddots&0\\
+ \vdots&\vdots&\vdots&\ddots&-1\\
+ \beta_{n,0}&\beta_{n,1}&\beta_{n,2}&\cdots&\beta_{n,n-1}
+ \end{pmatrix}.
+\end{equation}
+
+\begin{proposition}[Determinant representation]\label{prop:determinant}
+For $n\ge1$,
+\begin{equation}\label{eq:determinant-formula}
+ \boxed{
+  F(2^{-n})=2^{-\binom n2}\det H_n.}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Let $D_0=1$ and $D_n=\det H_n$.  Expanding the determinant along its last row,
+with the $-1$ superdiagonal supplying the compensating cofactor signs, gives
+\[
+ D_n=\sum_{k=0}^{n-1}\beta_{n,k}D_k.
+\]
+This is exactly \eqref{eq:an-recurrence}, with the same initial value; hence
+$D_n=a_n$.
+\end{proof}
+
+Expanding the determinant by paths through the nonzero Hessenberg band
+recovers the composition sum \eqref{eq:composition-formula}.  Thus the
+composition and determinant formulae are two standard expansions of the same
+triangular resolvent.
+
+\subsection{Cumulants, Bernoulli numbers, and Bell polynomials}
+
+Taking the logarithm of \eqref{eq:G-product} gives another exact description.
+The classical expansion
+\begin{equation}\label{eq:log-E}
+ \log\frac{e^z-1}{z}
+ =\frac z2+\sum_{m=1}^{\infty}
+ \frac{B_{2m}}{2m(2m)!}z^{2m}
+\end{equation}
+uses the Bernoulli numbers $B_{2m}$.  Summing over the dyadic scales yields
+\begin{equation}\label{eq:log-G}
+ \log G(z)
+ =\frac z2+
+ \sum_{m=1}^{\infty}
+ \frac{B_{2m}}{2m(2^{2m}-1)}
+ \frac{z^{2m}}{(2m)!}.
+\end{equation}
+Therefore the cumulants of $X$ are
+\begin{equation}\label{eq:cumulants}
+ \kappa_1=\frac12,
+ \qquad
+ \kappa_{2m}=\frac{B_{2m}}{2m(2^{2m}-1)},
+ \qquad
+ \kappa_{2m+1}=0\quad(m\ge1).
+\end{equation}
+The vanishing odd cumulants beyond the first are another expression of the
+symmetry $X\overset d=1-X$.
+
+Let $\Bcal_n$ denote the complete exponential Bell polynomial, normalized by
+\begin{equation}\label{eq:Bell-definition}
+ \exp\left(\sum_{j=1}^{\infty}x_j\frac{z^j}{j!}\right)
+ =\sum_{n=0}^{\infty}\Bcal_n(x_1,\ldots,x_n)\frac{z^n}{n!}.
+\end{equation}
+Then $d_n=\Bcal_n(\kappa_1,\ldots,\kappa_n)$, and hence
+\begin{theorem}[Bernoulli--Bell representation]\label{thm:Bell}
+\begin{equation}\label{eq:Bell-dyadic}
+ \boxed{
+ F(2^{-n})
+ =\frac{2^{-\binom n2}}{n!}
+ \Bcal_n(\kappa_1,\ldots,\kappa_n),}
+\end{equation}
+where the $\kappa_j$ are given by \eqref{eq:cumulants}.
+\end{theorem}
+Equivalently, expanding the complete Bell polynomial gives the finite partition
+sum
+\begin{equation}\label{eq:cumulant-partition}
+ F(2^{-n})
+ =2^{-\binom n2}
+ \sum_{\substack{\nu_1,\ldots,\nu_n\ge0\\
+                    \nu_1+2\nu_2+\cdots+n\nu_n=n}}
+ \prod_{j=1}^{n}
+ \frac1{\nu_j!}
+ \left(\frac{\kappa_j}{j!}\right)^{\nu_j}.
+\end{equation}
+Only $\kappa_1$ and the even cumulants are nonzero, so the apparent
+$n$-variable sum is substantially sparse.
+
+For example,
+\[
+ d_2=\kappa_1^2+\kappa_2=\frac5{18},
+ \qquad
+ d_4=\kappa_1^4+6\kappa_1^2\kappa_2+3\kappa_2^2+\kappa_4
+ =\frac{143}{1350}.
+\]
+Consequently,
+\[
+ F\!\left(\frac14\right)=\frac5{72},
+ \qquad
+ F\!\left(\frac1{16}\right)=\frac{143}{2073600}.
+\]
+The Bell-polynomial formula replaces Thue--Morse cancellation by cumulant
+addition: the dyadic scales contribute independently to $\log G$.
+
+\section[The discrete limit as a q-Toeplitz transform]
+{The discrete limit as a $q$-Toeplitz transform}
+
+The discrete limit uses the same finite Gaussian coefficients as the exact
+formula, but its inner sums are truncated at an $x$-dependent point rather
+than taken over a complete Thue--Morse block.  Exact coefficient extraction is
+therefore replaced by convergence of splines and regular summability.
+
+\subsection{Shifted finite splines}
+
+For $p\ge0$, $\eta\in\C$, and real $x$, define
+\begin{equation}\label{eq:shifted-spline}
+ S_{p,\eta}(x)=
+ \frac{(-1)^p}{2^{\binom p2}p!}
+ \sum_{0\le r<\lfloor2^px+1/2\rfloor}
+ \eps_r\bigl(r-2^px+\eta\bigr)^p.
+\end{equation}
+An empty sum is zero.  The centered choice is $\eta=1/2$.
+The formal development proves the uniform estimate
+\begin{equation}\label{eq:centered-spline-error}
+ |S_{p,1/2}(x)-\Fglobal(x)|\le2^{-p}
+ \qquad(x\in\R),
+\end{equation}
+and, for fixed complex shift and $p\ge1$,
+\begin{equation}\label{eq:shift-spline-error}
+ |S_{p,\eta}(x)-S_{p,1/2}(x)|
+ \le2^{1-p}e^{|\eta-1/2|}
+ \qquad(x\ge0).
+\end{equation}
+On the negative half-line the relevant sums and the global extension vanish,
+so the convergence statement extends without difficulty.
+
+\subsection[The discrete q-sum]{The discrete $q$-sum}
+
+Define
+\begin{align}\label{eq:Dn-definition}
+ D_n(\eta,x)
+ &=\frac1{2^{n^2}\poch{1/2}{1/2}{n}}
+ \sum_{k=0}^{n}
+ \frac{\qbinom{n}{k}{1/2}}
+ {4^{\binom k2}(n+k)!}
+ \notag\\[-0.25em]
+ &\quad\times
+ \sum_{0\le r<\lfloor2^{n+k}x+1/2\rfloor}
+ \eps_r\bigl(r-2^{n+k}x+\eta\bigr)^{n+k}.
+\end{align}
+This looks like a direct arbitrary-$x$ analogue of
+\eqref{eq:centered-inverse-dyadic}.  The decisive simplification is an exact
+reindexing.
+
+\begin{theorem}[Exact Toeplitz decomposition]\label{thm:Toeplitz-decomp}
+Put
+\begin{equation}\label{eq:wnj-definition}
+ w_{n,j}=
+ \frac{(-1)^j\qbinom{n}{j}{1/2}
+ 2^{-\binom{j+1}{2}}}
+ {\poch{1/2}{1/2}{n}}
+ \qquad(0\le j\le n).
+\end{equation}
+Then
+\begin{equation}\label{eq:Toeplitz-decomp}
+ \boxed{
+  D_n(\eta,x)=\sum_{j=0}^{n}w_{n,j}S_{2n-j,\eta}(x).}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set $j=n-k$ and $p=n+k=2n-j$ in \eqref{eq:Dn-definition}.  Replacing the
+inner sum by the definition of $S_{p,\eta}$ leaves the power of $2$
+\[
+ \binom{2n-j}{2}-n^2-2\binom{n-j}{2}
+ =-\binom{j+1}{2},
+\]
+and the sign $(-1)^{2n-j}=(-1)^j$.  Symmetry of the Gaussian binomial
+coefficient gives
+$\qbinom{n}{n-j}{1/2}=\qbinom{n}{j}{1/2}$.
+\end{proof}
+
+The indices $2n-j$ lie between $n$ and $2n$.  Thus every spline entering the
+$n$th row is already at resolution at least $n$.
+
+\subsection{One polynomial explains the entire row}
+
+Define the row-generating polynomial
+\begin{equation}\label{eq:Wn-definition}
+  W_n(z)=\sum_{j=0}^{n}w_{n,j}z^j.
+\end{equation}
+The finite $q$-binomial theorem gives the compact product
+\begin{theorem}[Toeplitz row polynomial]\label{thm:row-polynomial}
+\begin{equation}\label{eq:row-polynomial}
+ \boxed{
+ W_n(z)=\frac{\poch{z/2}{1/2}{n}}
+              {\poch{1/2}{1/2}{n}}.}
+\end{equation}
+\end{theorem}
+
+Three important facts are immediate.
+
+First, the row mass is one:
+\begin{equation}\label{eq:row-mass}
+ \sum_{j=0}^{n}w_{n,j}=W_n(1)=1.
+\end{equation}
+Second, the signs alternate, so the exact total variation is
+\begin{equation}\label{eq:row-TV}
+ V_n:=\sum_{j=0}^{n}|w_{n,j}|
+ =W_n(-1)
+ =\frac{\poch{-1/2}{1/2}{n}}
+        {\poch{1/2}{1/2}{n}}.
+\end{equation}
+The sequence $V_n$ is bounded; the formal proof uses the convenient uniform
+bound $V_n\le16$.
+
+Third, differentiating at $z=1$ gives the first signed moment of the row:
+\begin{equation}\label{eq:row-first-moment}
+ \sum_{j=0}^{n}j\,w_{n,j}
+ =W_n'(1)
+ =-\sum_{\ell=1}^{n}\frac1{2^\ell-1}.
+\end{equation}
+Higher factorial moments follow by further logarithmic differentiation of
+\eqref{eq:row-polynomial}.  Thus the entire Toeplitz stencil is encoded by one
+finite $q$-Pochhammer ratio.
+
+The weights also admit the symmetric form
+\begin{equation}\label{eq:weights-symmetric}
+ w_{n,j}=
+ \frac{(-1)^j2^{-\binom{j+1}{2}}}
+ {\poch{1/2}{1/2}{j}\poch{1/2}{1/2}{n-j}}.
+\end{equation}
+For fixed $j$ they converge to
+\begin{equation}\label{eq:limit-weights}
+ w_{\infty,j}=
+ \frac{(-1)^j2^{-\binom{j+1}{2}}}
+ {\poch{1/2}{1/2}{j}\poch{1/2}{1/2}{\infty}},
+\end{equation}
+whose generating function is
+\begin{equation}\label{eq:limit-filter}
+ W_\infty(z)=
+ \frac{\poch{z/2}{1/2}{\infty}}
+ {\poch{1/2}{1/2}{\infty}}.
+\end{equation}
+This limiting object is a stationary signed $q$-filter of unit mass and finite
+variation.
+
+\subsection{A quantitative discrete-limit estimate}
+
+The exact Toeplitz decomposition makes an explicit error bound immediate.
+
+\begin{theorem}[Uniform rate for fixed shift]\label{thm:Dn-rate}
+For $n\ge1$, $x\ge0$, and $\eta\in\C$,
+\begin{equation}\label{eq:Dn-rate}
+ \boxed{
+ |D_n(\eta,x)-\Fglobal(x)|
+ \le V_n\left(2^{-n}+2^{1-n}e^{|\eta-1/2|}\right),}
+\end{equation}
+where $V_n$ is given by \eqref{eq:row-TV}.  In particular,
+\begin{equation}\label{eq:Dn-rate-16}
+ |D_n(\eta,x)-\Fglobal(x)|
+ \le16\left(2^{-n}+2^{1-n}e^{|\eta-1/2|}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:row-mass} and \cref{thm:Toeplitz-decomp},
+\[
+ D_n(\eta,x)-\Fglobal(x)
+ =\sum_{j=0}^{n}w_{n,j}
+  \bigl(S_{2n-j,\eta}(x)-\Fglobal(x)\bigr).
+\]
+For $p=2n-j\ge n$, combine
+\eqref{eq:centered-spline-error} and \eqref{eq:shift-spline-error}:
+\[
+ |S_{p,\eta}(x)-\Fglobal(x)|
+ \le2^{-p}+2^{1-p}e^{|\eta-1/2|}
+ \le2^{-n}+2^{1-n}e^{|\eta-1/2|}.
+\]
+Sum against $|w_{n,j}|$ and use \eqref{eq:row-TV}.
+\end{proof}
+
+For the centered shift one should not insert $\eta=1/2$ into the deliberately
+coarse shift estimate.  The shift difference is then exactly zero, and the
+sharper bound is
+\begin{equation}\label{eq:Dn-centered-rate}
+ |D_n(1/2,x)-\Fglobal(x)|\le V_n2^{-n}\le16\,2^{-n}.
+\end{equation}
+
+This argument shows precisely why the translation parameter disappears in the
+limit.  It is not cancelled algebraically as in the finite exact formula;
+rather, every fixed shift perturbs a degree-$p$ spline by $O(2^{-p})$, and the
+Toeplitz rows have uniformly bounded total variation.
+
+\subsection{Exact formula versus discrete limit}
+
+The two constructions may now be compared without ambiguity.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{0.94\textwidth}{>{\raggedright\arraybackslash}p{0.23\textwidth}XX}
+\toprule
+ & Exact dyadic/Appell identity & Discrete limit \\
+\midrule
+Inner Thue--Morse sum
+ & Complete block $0\le r<2^k$; exact polynomial annihilation
+ & Prefix $0\le r<\lfloor2^{n+k}x+1/2\rfloor$; spline approximation \\
+Outer Gaussian stencil
+ & Extracts one coefficient exactly
+ & Averages spline degrees $n,\ldots,2n$ with unit mass \\
+Translation parameter
+ & Cancels identically in the full numerator polynomial
+ & Produces an $O(2^{-p})$ perturbation that vanishes in the limit \\
+Passage to arbitrary $x$
+ & Sum exact blocks over the binary $1$-digits of $x$
+ & Let spline degree tend to infinity through a regular Toeplitz transform \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The formulae share the same algebraic stencil, but the reason they are valid is
+different.  Conflating coefficient extraction with Toeplitz convergence hides
+the most interesting part of the story.
+
+\section{Integral-transform representations}
+
+The previous formulae read the entire function $G$ through its Taylor
+coefficients.  Fourier and Laplace inversion read the same product globally.
+They provide useful alternative representations at arbitrary, not necessarily
+dyadic, arguments.
+
+\subsection{Fourier--sinc inversion}
+
+Let $Y=2X-1$.  Its density is Rvachev's up-function on $[-1,1]$.  With the
+Fourier convention
+\[
+ \widehat f(\xi)=\int_{\R}f(t)e^{-2\pi i\xi t}\dd t,
+\]
+independence gives
+\begin{equation}\label{eq:up-Fourier}
+ \widehat{\Up}(\xi)
+ =\prod_{j=0}^{\infty}
+ \sinc\!\left(\frac{\pi\xi}{2^j}\right),
+ \qquad
+ \sinc u=\begin{cases}\sin u/u,&u\ne0,\\1,&u=0.\end{cases}
+\end{equation}
+Since $F(x)=\Prob(Y\le2x-1)$ and $\Up$ is even,
+Fourier inversion followed by one integration gives, for $0<x<1$,
+\begin{equation}\label{eq:F-Fourier}
+ \boxed{
+ F(x)=\frac12+\frac1\pi\int_0^{\infty}
+ \frac{\sin\bigl(2\pi\xi(2x-1)\bigr)}{\xi}
+ \prod_{j=0}^{\infty}
+ \sinc\!\left(\frac{\pi\xi}{2^j}\right)\dd\xi.}
+\end{equation}
+The rapid decay of the infinite sinc product makes this a genuine convergent
+integral, not merely a distributional formula.
+
+The dyadic exact formulae are invisible term by term in
+\eqref{eq:F-Fourier}; their rationality results from highly nonlocal
+cancellation in the integral.  This contrast is useful: the Fourier form is
+well adapted to smoothness and global shape, while the Appell and $q$-forms are
+adapted to arithmetic at dyadic points.
+
+\subsection{Bromwich inversion of the moment product}
+
+The Laplace transform of $X$ is
+\begin{equation}\label{eq:LX}
+ L_X(s)=\E e^{-sX}=G(-s)
+ =\prod_{j=1}^{\infty}
+ \frac{1-e^{-s/2^j}}{s/2^j}.
+\end{equation}
+For $\sigma>0$ and $0<x<1$, inversion of the transform of the distribution
+function gives
+\begin{equation}\label{eq:Bromwich}
+ \boxed{
+ F(x)=\frac1{2\pi i}
+ \lim_{T\to\infty}
+ \int_{\sigma-iT}^{\sigma+iT}
+ \frac{e^{sx}}{s}
+ \prod_{j=1}^{\infty}
+ \frac{1-e^{-s/2^j}}{s/2^j}\dd s.}
+\end{equation}
+The same product therefore supports three complementary readings:
+\begin{itemize}
+\item coefficient extraction gives moments and exact dyadic values;
+\item logarithmic expansion gives cumulants and Bell-polynomial formulae;
+\item contour inversion gives $F(x)$ directly at an arbitrary argument.
+\end{itemize}
+
+\section{Computational consequences}
+
+\subsection{Exact dyadic evaluation}
+
+For exact rational computation at $x=M/2^N$, the shortest route is usually:
+
+\begin{enumerate}
+\item compute $d_0,\ldots,d_N$ from the triangular recurrence
+  \eqref{eq:moment-recurrence};
+\item form $A_m(\theta)$ by Horner evaluation or by the binomial formula
+  \eqref{eq:An-definition};
+\item sum only over the $1$-bits in \eqref{eq:dyadic-digit-Appell}.
+\end{enumerate}
+
+This uses $O(N^2)$ rational arithmetic in a straightforward implementation and
+avoids the exponentially long inner Thue--Morse sums that appear in the
+closed $q$-formula.  The latter remain invaluable as structural identities and
+formal certificates, but are not generally the numerically cheapest way to
+obtain a rational value.
+
+For inverse powers $x=2^{-N}$, only one bit is active, so
+\eqref{eq:dyadic-digit-Appell} collapses at once to
+\eqref{eq:inverse-dyadic-moment}.  The recurrence, composition sum,
+determinant, Bell formula, and Gaussian-binomial formula then provide five
+exactly equivalent ways to compute the same rational number.
+
+\subsection{Arbitrary arguments}
+
+For a non-dyadic $x$, the digit--Appell series
+\eqref{eq:digit-Appell} is attractive because:
+\begin{itemize}
+\item zero bits cost nothing;
+\item each active term needs one polynomial value $A_m(\theta_m)$;
+\item the uniform remainder bound \eqref{eq:digit-tail-bound} is
+  superexponentially small;
+\item no cancellation inside a $2^k$-term Thue--Morse block is required.
+\end{itemize}
+
+The centered nested $q$-series \eqref{eq:centered-digit-q} is mathematically
+equivalent term by term, but may be badly conditioned in ordinary floating
+point because large powers cancel.  The raw translation freedom
+\eqref{eq:raw-digit-q} can improve conditioning, although exact rational or
+ball arithmetic is preferable when evaluating the nested sums directly.
+
+The discrete limit \eqref{eq:Dn-definition} supplies an independent numerical
+route and a global approximation to $\Fglobal$.  Its error is controlled by
+\eqref{eq:Dn-rate}; the centered shift $\eta=1/2$ removes the shift-error term
+entirely, giving the sharper estimate \eqref{eq:Dn-centered-rate}, and is
+normally the best-conditioned canonical choice.
+
+\section{Synthesis}
+
+The apparent diversity of the formulae is reduced by separating three layers.
+
+\paragraph{The moment layer.}
+The random series \eqref{eq:X-definition} gives the entire moment product
+\eqref{eq:G-product}.  Its coefficients are $d_n$, its logarithm gives the
+cumulants \eqref{eq:cumulants}, and its dilation gives the recurrence
+\eqref{eq:moment-recurrence}.
+
+\paragraph{The finite polynomial layer.}
+The reduction block is the rescaled Appell polynomial
+\[
+ R_n(2^{-n}\theta)=2^{-\binom n2}A_n(\theta)/n!.
+\]
+The finite Thue--Morse operator removes $k$ degrees, and the geometric
+Gaussian-binomial stencil removes the remaining lower-degree terms.  This
+produces the centered and translated finite $q$-formulae for the same Appell
+polynomial.
+
+\paragraph{The passage to arbitrary arguments.}
+There are two distinct routes.
+\begin{enumerate}
+\item Follow the binary digits of $x$ and sum exact Appell blocks.  This yields
+  \eqref{eq:digit-Appell}; substitution of the finite $q$-identity yields
+  \eqref{eq:centered-digit-q} and \eqref{eq:raw-digit-q}.  Dyadic rationals are
+  exactly the terminating cases.
+\item Truncate Thue--Morse power sums at the spatial point $x$, interpret them
+  as splines, and apply a bounded-variation Toeplitz row.  The row polynomial
+  \eqref{eq:row-polynomial} makes the $q$-Pochhammer structure explicit, while
+  \eqref{eq:Dn-rate} proves convergence quantitatively.
+\end{enumerate}
+
+The central identities can be compressed into the following chain:
+\begin{equation}\label{eq:final-chain}
+\boxed{
+\begin{aligned}
+ F(2^{-n})
+ &=2^{-\binom n2}\frac{A_n(0)}{n!},\\[0.25em]
+ R_n(2^{-n}\theta)
+ &=2^{-\binom n2}\frac{A_n(\theta)}{n!},\\[0.25em]
+ F(x)
+ &=\sum_{m\ge1}b_m\eps_{a_{m-1}}
+   2^{-\binom m2}\frac{A_m(\theta_m)}{m!},\\[0.25em]
+ \frac{A_m(\theta)}{m!}
+ &=\text{one finite Gaussian-binomial/Thue--Morse block},\\[0.25em]
+ D_n(\eta,x)
+ &=\sum_{j=0}^nw_{n,j}S_{2n-j,\eta}(x),
+ \qquad
+ \sum_{j=0}^nw_{n,j}z^j
+ =\frac{\poch{z/2}{1/2}{n}}{\poch{1/2}{1/2}{n}}.
+\end{aligned}}
+\end{equation}
+The first four lines are exact finite algebra assembled along the binary
+expansion; the last line is regular summability of convergent spline
+approximants.  Together they explain both the arithmetic exactness at dyadic
+rationals and the analytic convergence at arbitrary arguments.
+
+\appendix
+
+\section{A compact proof of the geometric simplex sum}
+
+For positive integers $r_1,\ldots,r_\ell$, put
+$t_h=r_h+\cdots+r_\ell$.  Every increasing sequence
+$1\le j_1<\cdots<j_\ell$ has a unique gap representation
+\[
+ j_i=i+g_1+\cdots+g_i,
+ \qquad g_h\in\N\cup\{0\}.
+\]
+Therefore
+\begin{align*}
+ \sum_{j_1<\cdots<j_\ell}2^{-\sum_i j_ir_i}
+ &=2^{-\sum_i ir_i}
+   \prod_{h=1}^{\ell}
+   \sum_{g_h=0}^{\infty}2^{-g_ht_h}\\
+ &=2^{-\sum_i ir_i}
+   \prod_{h=1}^{\ell}\frac1{1-2^{-t_h}}.
+\end{align*}
+But $\sum_ht_h=\sum_iir_i$, so
+\[
+ 2^{-\sum_iir_i}\prod_h\frac{2^{t_h}}{2^{t_h}-1}
+ =\prod_h\frac1{2^{t_h}-1},
+\]
+which is \eqref{eq:geometric-simplex}.
+
+\section{First moments and inverse-dyadic values}
+
+The recurrence \eqref{eq:moment-recurrence} gives:
+\begin{center}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{ccl}
+\toprule
+$n$ & $d_n=\E X^n$ & $F(2^{-n})=2^{-\binom n2}d_n/n!$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $1/2$ & $1/2$\\
+2 & $5/18$ & $5/72$\\
+3 & $1/6$ & $1/288$\\
+4 & $143/1350$ & $143/2073600$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The $n=0$ row uses the standard convention $2^0=1$ and $0!=1$.
+
+\section{Map to the formal development}
+
+The principal formal ingredients used here are organized in the following
+source files in this \texttt{ProveIt} repository directory:
+
+\begin{center}
+\path{Analysis/FabiusFunction}
+\end{center}
+
+\renewcommand{\arraystretch}{1.16}
+\begin{longtable}{@{}>{\ttfamily\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}@{}}
+\toprule
+\normalfont File & Mathematical role\\
+\midrule
+\endfirsthead
+\toprule
+\normalfont File & Mathematical role\\
+\midrule
+\endhead
+\midrule
+\multicolumn{2}{r}{\small Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+ProbabilityRepresentation.lean
+ & random dyadic series and the exact identification of its CDF with the
+   Fabius function\\
+FabiusComplexMGF.lean
+ & probabilistic moment-generating function and its identification with the
+   canonical complex generating function\\
+NegativeLaplaceVertical.lean
+ & the canonical dyadic infinite product and its negative-Laplace sign
+   structure\\
+FabiusRecurrenceSequence.lean
+ & moment recurrence and exact inverse-dyadic values\\
+FabiusInverseDyadicClosedForm.lean
+ & path sums, ordered compositions, and the exact theorem
+   \path{fabiusAtInverseTwoPow_eq_composition_formula}\\
+HalfQBinomial.lean
+ & finite $q$-Pochhammer identities, Gaussian binomial coefficients at
+   $q=1/2$, and the finite $q$-binomial annihilator\\
+FabiusQBinomialFormula.lean
+ & centered exact formulae for inverse and general dyadic arguments\\
+FabiusRawQBinomialFormula.lean
+ & raw-coordinate formula with arbitrary common translation\\
+FabiusQBinomialScalarFormula.lean
+ & scalar-valued centered formulae over real and complex targets\\
+FabiusRawQBinomialScalar.lean
+ & scalar-valued raw translated formulae\\
+FabiusDyadicQBinomialScalar.lean
+ & general dyadic formulae with arbitrary common real or complex translation\\
+FabiusQBinomialTaylor.lean
+ & polynomial identity equating the $q$-binomial block with the Taylor
+   reduction polynomial\\
+TaylorReduction.lean
+ & exact reduction polynomial $R_n$ and dyadic-shell Taylor identities\\
+FabiusBinaryReductionSeries.lean
+ & finite telescoping identity, residual estimate, and global binary series\\
+FabiusGlobalQBinomialSeries.lean
+ & termwise substitution of the finite $q$-block into the binary series\\
+FabiusUniformSpline.lean
+ & centered finite splines and uniform convergence\\
+FabiusComputability.lean
+ & the exact global centered bound
+   \path{abs_fabiusUniformSpline_sub_extendedFabius_le}\\
+FabiusComplexShiftSpline.lean
+ & complex translation of the spline and quantitative shift stability\\
+FabiusDiscreteLimitToeplitz.lean
+ & exact Toeplitz weights, row mass, and total variation; not the article's
+   row polynomial, limiting filter, or quantitative rate\\
+FabiusDiscreteLimitIntegration.lean
+ & exact reindexing of the discrete formula and convergence to the global
+   Fabius extension, qualitatively rather than with the displayed rate\\
+FourierProduct.lean
+ & the sinc product for the Rvachev density\\
+FourierAnalytic.lean
+ & rapid decay of the Fourier transform\\
+PoissonSummation.lean
+ & Fourier inversion for the density; not the article's literal CDF sine
+   integral\\
+FabiusBromwichInput.lean
+ & an equivalent exact real-line Bromwich formula; not the displayed
+   truncated vertical-contour product formula\\
+\end{longtable}
+
+\begin{thebibliography}{9}
+
+\bibitem{Companion}
+V.~Reshetnikov,
+\emph{The Fabius Function and Rvachev's up-Function},
+companion article in the \texttt{ProveIt} repository, 2026.
+
+\bibitem{ProveIt}
+V.~Reshetnikov,
+\emph{ProveIt: formal developments for the Fabius function},
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction}.
+
+\bibitem{GasperRahman}
+G.~Gasper and M.~Rahman,
+\emph{Basic Hypergeometric Series}, 2nd ed.,
+Cambridge University Press, 2004.
+
+\bibitem{Comtet}
+L.~Comtet,
+\emph{Advanced Combinatorics},
+D.~Reidel, 1974.
+
+\bibitem{Hardy}
+G.~H.~Hardy,
+\emph{Divergent Series},
+Oxford University Press, 1949.
+
+\end{thebibliography}
+
+\end{document}

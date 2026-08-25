@@ -656,10 +656,13 @@ development where a
 analytic, and the property is that $F'>0$ on $(0,1)$.  Given that, the easy
 half of the inverse function theorem --- the half that assumes the inverse
 already exists --- yields
-\[
-  (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
-\]
-a nonzero real number.  \Cref{thm:nowhere} then supplies the contradiction.
+ \[
+   (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
+ \]
+ a nonzero real number.  The core inverse module formalizes this reciprocal
+ derivative, its strict positivity, and the stronger fact that $F^{-1}$ is
+ $C^\infty$ throughout $(0,1)$.  \Cref{thm:nowhere} then supplies the
+ contradiction.
 
 The direction deserves to be stated, because the shorter route is circular.
 Differentiating $F^{-1}\circ F=\mathrm{id}$ to obtain
@@ -875,8 +878,11 @@ The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
 Conditional Lambert-$W$ inverse-branch criterion
   & \path{isElementaryOrInverse_of_lambertW}
   & \path{InverseBranch} \\
+Interior calculus and smoothness of $F^{-1}$
+  & \path{fabiusInv_hasDerivAt}, \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, \path{deriv_fabiusInv_pos}, \path{fabiusInv_contDiffOn_Ioo}
+  & \path{FabiusInverse} \\
 $F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
-  & \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
+  & \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
   & \path{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
   & \path{canonical_fabiusInv_not_isElementary_on_Ioo}, \path{fabiusInv_not_isElementary}

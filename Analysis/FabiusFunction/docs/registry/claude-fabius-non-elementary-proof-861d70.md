@@ -2,26 +2,28 @@
 
 **Status: closed historical source record; exact combined-tree validation
 pending.** The elementary/algebraic work and its later inverse extension are
-integrated through pinned `origin/main` at `639bfc53e`.  This file grants no
+integrated through pinned `origin/main` at
+`783cecf7208edd4de86fd0cee7d4b9f13299ee60`.  This file grants no
 live source or build lease.  All validation statements below are reports tied
 to immutable historical commits, not evidence for the manually resolved
 combined tree.  The normal lease and build-terminal-event rules in
 [`../COLLABORATION.md`](../COLLABORATION.md) govern any future source work.
 
-This file implements the per-branch registry fallback proposed in
+This file is the per-branch registry fallback proposed in
 [`../COLLABORATION.md`](../COLLABORATION.md) ("one small file per branch,
-`docs/registry/<branch>.md`").  A tracked file is the only channel that
-provably reaches every worktree, including the two `codex/*` workstreams
-running on a different machine.
+`docs/registry/<branch>.md`").  At its creation, a tracked file was the channel
+used to reach every worktree, including two `codex/*` workstreams on another
+machine.
 
 ```text
 HISTORICAL SYNC Fabius
 worktree/task: fabius-non-elementary-proof-861d70 — elementary, algebraic-
   branch, inverse-branch, and inverse-Fabius non-representability
-integration pin: origin/main at 1e371c773
-source owner: none granted by this closed record
-build note: the originating worktree is presently running a serialized closure
-  validation; see the active integrator registry for its current target
+integration pin: pinned origin/main at
+  783cecf7208edd4de86fd0cee7d4b9f13299ee60
+source/build owner: none granted by this closed record
+validation: immutable reported evidence is recorded below; exact combined-tree
+  validation remains pending
 ```
 
 ## Write set
@@ -116,14 +118,14 @@ statement is proved separately and the two are combined at the point of use.
 The following records the originating worktree's build setup; it is not a live
 lease.
 
-This worktree has its own `.lake` whose `packages` is a directory junction to
-the shared `C:\ProveIt\.lake\packages`.  Builds are strictly serialized, one
-`lake build +<module>` per invocation, `LAKE_JOBS=1`, in topological order.
-When useful, `order.txt` and `build_closure.sh` may be created at the repository
-root as ignored, machine-local build drivers; they are not tracked project
-files.
-Only one `lean` process runs at a time on this machine; a second one makes the
-13 GB box thrash and produces the misleading `failed to read file '….olean'`.
+The originating worktree had its own `.lake` whose `packages` was a directory
+junction to the shared `C:\ProveIt\.lake\packages`.  Builds were strictly
+serialized, one `lake build +<module>` per invocation, `LAKE_JOBS=1`, in
+topological order.  When useful, `order.txt` and `build_closure.sh` could be
+created at the repository root as ignored, machine-local build drivers; they
+were not tracked project files.  The originating 13 GB machine ran only one
+`lean` process at a time; a second made it thrash and produced the misleading
+`failed to read file '….olean'`.
 
 `ElementaryFunction.lean` is the cheap module to iterate on: `Mathlib`-only
 imports, about seventy seconds off a warm `Mathlib`.  `NotElementary.lean`
@@ -178,11 +180,13 @@ neither constructs nor verifies a standard real branch.
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
 argument is the inverse function theorem run backwards, and the one thing to
 check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
-now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
-on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
-there, a nonzero real number.  It is the only place in the whole workstream
-where a differential property of `F`, rather than its failure to be analytic,
-is used.
+now derived from the stronger core results `fabiusInv_hasDerivAt`,
+`deriv_fabiusInv`, and `deriv_fabiusInv_pos`: `deriv_fabiusReal_pos` gives
+`F' > 0` on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies
+`(F⁻¹)' = 1 / F'` there.  The core module also bootstraps this reciprocal
+formula to `fabiusInv_contDiffOn_Ioo`, proving full smoothness on the open
+interval.  It is the only place in the whole workstream where a differential
+property of `F`, rather than its failure to be analytic, is used.
 
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
@@ -212,9 +216,22 @@ focused builds of `FabiusFunction.InverseBranch` and
 combined build, after adding the relative analytic-density strengthening.  It
 did not report a new 95-theorem axiom sweep.
 
+At immutable source commit `b164f3d2f`, the originating workstream reported
+direct Lean checks and focused builds for `FabiusFunction.FabiusInverse` and
+`FabiusFunction.InverseNotElementary`, an aggregate `+FabiusFunction` build,
+and a facade axiom audit with only the standard axioms.  This is reported
+evidence for the core first-order inverse calculus at that exact commit.
+
+At immutable follow-up commit `c62a56d95`, the originating workstream reported
+focused builds after adding full interior smoothness as
+`Fabius.fabiusInv_contDiffOn_Ioo`, a successful 4007-job aggregate
+`+FabiusFunction` build, and a facade axiom audit with only the standard axioms.
+This is reported evidence for full interior smoothness at that exact commit.
+
 These are immutable historical component reports.  They do not validate the
-exact manually resolved combined tree, whose focused build and axiom audit
-remain pending.
+exact manually resolved post-merge tree, and they do not compile or otherwise
+cover the current-only `FabiusQBinomialTaylor` coefficient/degree batch.  Exact
+combined-tree focused and aggregate builds and an axiom audit remain pending.
 
 `Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
 density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`

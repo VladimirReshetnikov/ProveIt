@@ -24,11 +24,11 @@ theorem run backwards.
 
 If `F⁻¹` were analytic at some `y₀` in the interior, then `F` — being its
 inverse near that point — would be analytic at `F⁻¹ y₀`, *provided* `F⁻¹` has
-no critical point there.  And `F⁻¹` has none, unconditionally: `F'` is
-strictly positive on `(0,1)` by `Fabius.deriv_fabiusReal_pos`, so the easy
-half of the inverse function theorem gives `F⁻¹` a derivative there, equal to
-`1 / F'`, which is a nonzero real number.  So analyticity of `F⁻¹` anywhere in
-`(0,1)` would hand back analyticity of `F` somewhere in `(0,1)`, which
+no critical point there.  The stronger interior calculus in
+`FabiusFunction.FabiusInverse` gives the exact formula
+`(F⁻¹)'(y) = 1 / F'(F⁻¹ y) > 0` without any analyticity assumption.  So
+analyticity of `F⁻¹` anywhere in `(0,1)` would hand back
+analyticity of `F` somewhere in `(0,1)`, which
 `Fabius.fabius_not_analyticAt` forbids.
 
 The direction matters.  Differentiating `F⁻¹ ∘ F = id` to get
@@ -62,47 +62,13 @@ namespace Fabius
 
 /-! ## The inverse is differentiable, with no critical point, in the interior -/
 
-/-- The inverse maps the open unit interval into itself.  It fixes `0` and `1`
-and is strictly increasing on `[0,1]`. -/
-theorem fabiusInv_mem_Ioo (F : BoundedFabius) (hF : IsFabius F)
-    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) : fabiusInv F hF y ∈ Ioo (0 : ℝ) 1 := by
-  have h0 : fabiusInv F hF 0 = 0 := fabiusInv_eq_zero_of_nonpos F hF le_rfl
-  have h1 : fabiusInv F hF 1 = 1 := fabiusInv_eq_one_of_one_le F hF le_rfl
-  have hy' : y ∈ Icc (0 : ℝ) 1 := ⟨hy.1.le, hy.2.le⟩
-  constructor
-  · have := strictMonoOn_fabiusInv F hF (left_mem_Icc.2 zero_le_one) hy' hy.1
-    rwa [h0] at this
-  · have := strictMonoOn_fabiusInv F hF hy' (right_mem_Icc.2 zero_le_one) hy.2
-    rwa [h1] at this
-
-/-- **The inverse Fabius function is differentiable on `(0,1)`, with derivative
-`1 / F'`.**
-
-This is the easy half of the inverse function theorem — the half that assumes
-the inverse already exists — and the input it needs is that `F'` is strictly
-positive on the open unit interval, which is
-`Fabius.deriv_fabiusReal_pos`.  Nothing here assumes anything about
-analyticity. -/
-theorem hasDerivAt_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
-    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
-    HasDerivAt (fabiusInv F hF) (deriv (fabiusReal F) (fabiusInv F hF y))⁻¹ y := by
-  have hx₀ : fabiusInv F hF y ∈ Ioo (0 : ℝ) 1 := fabiusInv_mem_Ioo F hF hy
-  refine HasDerivAt.of_local_left_inverse (continuous_fabiusInv F hF).continuousAt
-    (fabius_differentiable F hF _).hasDerivAt (deriv_fabiusReal_pos F hF hx₀).ne' ?_
-  filter_upwards [isOpen_Ioo.mem_nhds hy] with t ht
-  exact fabiusReal_fabiusInv F hF ⟨ht.1.le, ht.2.le⟩
-
 /-- **The inverse Fabius function has no critical point in `(0,1)`.**
 
-Its derivative there is `1 / F'`, and `F'` is strictly positive on `(0,1)`, so
-the reciprocal is a nonzero real number.  The statement is unconditional: it
-does not assume analyticity anywhere, which matters, since the analyticity it
-would have assumed is refuted a few lines below by
-`Fabius.fabiusInv_not_analyticAt`. -/
+Its derivative there is the positive reciprocal of `F'`, so the result is
+unconditional and does not assume analyticity anywhere. -/
 theorem deriv_fabiusInv_ne_zero (F : BoundedFabius) (hF : IsFabius F)
-    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) : deriv (fabiusInv F hF) y ≠ 0 := by
-  rw [(hasDerivAt_fabiusInv F hF hy).deriv]
-  exact inv_ne_zero (deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF hy)).ne'
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) : deriv (fabiusInv F hF) y ≠ 0 :=
+  (deriv_fabiusInv_pos F hF hy).ne'
 
 /-! ## The inverse is analytic at no point of the unit interval -/
 
