@@ -118,7 +118,7 @@
 \author{Proof architecture, exact computation, asymptotics, and effective approximation\\
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
-\small commit \nolinkurl{c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9}}
+\small commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875}}
 
 \begin{document}
 \maketitle
@@ -135,7 +135,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \section*{Scope and conventions}
 \addcontentsline{toc}{section}{Scope and conventions}
-The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
+The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -177,7 +177,7 @@ The normal build command from the project root is:
 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
-\nolinkurl{c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9}.  Before reproducing a
+\nolinkurl{4173648faf531c1b2a012c2089764221eb975875}.  Before reproducing a
 declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
@@ -1390,24 +1390,31 @@ In \nolinkurl{FabiusQBinomialTaylor.lean}, \(q\) is a common translation indeter
 This algebraic constancy is distinct from the discrete-limit approximation \nolinkurl{fabiusDiscreteLimitApproximation K q x n}.  A finite approximation there can genuinely depend on a complex \(q\); later complex-shift estimates prove only that this dependence vanishes in the prescribed limit.
 
 \subsection{The global binary-reduction series}
-\nolinkurl{FabiusBinaryReductionSeries.lean} and \nolinkurl{FabiusGlobalQBinomialSeries.lean} pass from finite identities to an infinite series representing the signed extension.  The binary reduction follows the same highest-bit philosophy as the exact evaluator, but now the steps are organized as a global q-series.
+\nolinkurl{FabiusBinaryReductionSeries.lean} and \nolinkurl{FabiusGlobalQBinomialSeries.lean} pass from finite identities to an infinite series representing the signed extension.  The binary reduction follows the same highest-bit philosophy as the exact evaluator, but now the steps are organized as a global \(q\)-series.
 
-A subtle endpoint correction places the outer index at \(m=0\), not \(m=1\).  At the initial endpoint the missing term is not negligible; it carries the base value that makes the telescoping identity exact.  The formal proof reveals this immediately because a finite partial-sum formula leaves a nonzero boundary term.
+A genuine scale-zero term forces the outer index to start at \(m=0\).  Its previous prefix is the half-scale floor \(\lfloor x/2\rfloor\), so the zeroth coefficient distinguishes even and odd unit blocks of the signed extension.  It vanishes for \(x<1\) and equals one at \(x=1\); hence the older \(m=1\) presentation survives only on \(0\leq x<1\).
 
 The exact finite telescope leaves a signed residual whose uniform geometric
-bound tends to zero on the whole real line.  The summand norms are pointwise
-summable, giving \nolinkurl{HasSum} and \nolinkurl{tsum} identities.
+bound is at most \(2^{1-N}\) through inclusive scale \(N\geq1\), for every
+real input.  It therefore tends uniformly to zero on the whole real line.
+The summand norms are pointwise summable, giving all-real \nolinkurl{HasSum}
+and \nolinkurl{tsum} identities.
 \nolinkurl{FabiusGlobalQBinomialSeries.lean} proves that its literal real or complex
 \(q\)-summand is pointwise equal to the \(q\)-independent binary-reduction
-summand before either side is summed.
+summand before either side is summed.  The resulting real and complex series
+represent the signed extension for every \(x\in\R\); the earlier
+nonnegative-input statements remain compatibility wrappers.
 
 \subsection{Parity-power series}
 \nolinkurl{FabiusParityPowerSeries.lean} rewrites the corrected scale-zero
 binary-reduction series in the draft's parity-power notation.  The outer sum
 starts at \(m=0\) and equals the signed global Fabius extension for every
-\(x\geq0\); the original series starting at \(m=1\) is recovered only on
-\(0\leq x<1\).  The proof identifies the inner finite sum with one half of
-\nolinkurl{fabiusReductionSum} and then reuses the already proved binary telescope.
+\(x\in\R\), with the nonpositive side termwise zero; the original series
+starting at \(m=1\) is recovered only on \(0\leq x<1\).  Its integer exponent
+is \(\kappa_n=\binom{n+1}{2}-1\), so \(\kappa_0=-1\), not a truncated natural
+subtraction; the scale-zero identity also uses Lean's convention \(0^0=1\).
+The proof identifies the inner finite sum with one half of
+\nolinkurl{fabiusReductionSum} and then reuses the binary telescope.
 
 \section{Discrete limits and complex shifts}\label{ch:discrete-limit}
 
@@ -1618,6 +1625,21 @@ where \(R(u+1)=R(u)\) and the forward-tail error satisfies an explicit exponenti
 \]
 and for \(s\) beyond a fixed threshold this is simplified to a constant multiple of \(e^{-s}\).
 
+The sign information is equally exact on the positive half-line.  Every
+logarithmic factor and the full logarithmic product are strictly negative,
+as is the forward tail.  Consequently
+\nolinkurl{negativeLaplaceTailError}, defined as the negative of that tail,
+is strictly positive and its absolute value can be removed.
+
+The reusable differentiation step is isolated in
+\nolinkurl{ScalingRecurrence.lean}, a Mathlib-only module independent of the
+Fabius definitions.  It differentiates multiplicative scaling recurrences
+for an arbitrary dilation \(q>0\), in both vector-valued and real-scalar
+forms, with the outgoing weight normalized by the caller.  Its inert-parameter
+version acquires no factor of \(q\), because differentiation is in the other
+variable; dyadic wrappers feed these results into the ordinary and vertical
+negative-Laplace derivative layers.
+
 \subsection{How the periodic function is constructed}
 The periodic term is not guessed from numerics.  The code builds it by comparing the exact logarithm with a particular quadratic solution of the dilation equation.  The difference is invariant under doubling up to a forward tail.  Iterating the dilation toward infinity makes that tail summable; adding its convergent correction yields an exactly invariant function of \(\log_2s\).
 
@@ -1647,6 +1669,18 @@ and integrating term by term.  \nolinkurl{MellinFinitePart.lean} regularizes the
 double pole of \(\Gamma(s)\zeta(1+s)\) at \(s=0\), while
 \nolinkurl{BoseFinitePartIntegral.lean} realizes the finite part as convergent
 split integrals after subtracting the small-\(x\) singular term.
+
+The local constants are normalized explicitly.  \nolinkurl{GammaSecondOrder.lean}
+proves the sharp complex remainder
+\[
+ \Gamma(1+z)=1-\gamma z+
+ \left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)z^2+O(z^3)
+ \qquad(z\to0),
+\]
+while \nolinkurl{StieltjesConstant.lean} fixes \(\gamma_1\) by declaring the
+derivative of \nolinkurl{zetaRegularReal} at one to be \(-\gamma_1\), recorded
+in \nolinkurl{HasDerivAt} form.  Thus the sign of the linear coefficient in
+\(\zeta(1+s)=s^{-1}+\gamma-\gamma_1s+O(s^2)\) is part of the checked interface.
 
 \nolinkurl{PeriodicFourier.lean} treats the zero mode through the mean calculation
 and the nonzero modes by the substitution \(x=2^t\), dyadic interval
@@ -1749,6 +1783,13 @@ The normalized saddle mass is divided by the Gaussian main integral so its limit
 
 \subsection{Cumulants and derivative bounds}
 The logarithm of the negative-Laplace product has derivatives expressible as dyadic sums of kernel derivatives.  \nolinkurl{LaplaceCumulantAsymptotics.lean}, \nolinkurl{FabiusLambertDerivativeBounds.lean}, and related modules prove uniform estimates for these cumulants at the saddle.
+
+The same cumulant module packages Bell-polynomial inversion of normalized
+Laplace moments through order four.  The first identity is already exact
+without side conditions:
+\[
+ \operatorname{normalizedLaplaceMoment}_1(s)=-L'(s).
+\]
 
 The second derivative determines the Gaussian width.  Higher derivatives determine correction polynomials.  The source proves bounds of the form
 \[
@@ -1887,6 +1928,16 @@ The source proves such comparisons with explicit thresholds and reuses them thro
 \]
 The theorem is formulated through a structure or predicate such as \nolinkurl{HasAsymptoticExpansion}, allowing generic lemmas for truncation, addition, multiplication, and logarithms.
 
+Two generic interfaces make the all-order statement reusable.
+\nolinkurl{SaddleExpansionFlat.lean} proves that, once one full expansion is
+known, another function has the same coefficient family exactly when their
+difference is \(O(\operatorname{scale}^N)\) for every \(N\); this is the
+natural uniqueness statement modulo flat remainders without assuming a
+nondegenerate scale.  \nolinkurl{SaddleExpansionSmallArgument.lean} transfers
+full expansions in both directions between the exact logarithmic coordinate
+and \(x\to0^+\), for scales in arbitrary normed fields and functions valued
+in arbitrary normed vector spaces.
+
 \subsection{From mass to logarithm}
 Since \(c_0=1\), the normalized mass is eventually close to one.  A formal logarithm of the coefficient series gives
 \[
@@ -1894,6 +1945,15 @@ Since \(c_0=1\), the normalized mass is eventually close to one.  A formal logar
   \sim\sum_{j\geq1}\frac{d_j(\lambda(x))}{\lambda(x)^j},
 \]
 where the \(d_j\) are again bounded period-one functions.  The analytic proof uses a Taylor theorem for \(\log(1+u)\) with a uniform remainder on a small neighborhood.  Positivity of the exact mass, inherited from the original integral representation, ensures the logarithm is well-defined.
+
+At the formal level, \nolinkurl{SaddleLogExpansionAlgebra.lean} proves that
+the recursive logarithm and exponential coefficient transforms are exact
+inverses in every commutative \(\Q\)-algebra.  Unit and zero constant-term
+hypotheses give identities at all indices; at every positive index the
+inverse identities need no normalization because the recurrences do not read
+the zeroth input coefficient.  \nolinkurl{SaddleLogExpansionPowerSeries.lean}
+then identifies the recursive logarithm with Mathlib's
+\nolinkurl{PowerSeries.logOf}.
 
 \nolinkurl{FabiusSecondSaddleCorrection.lean} computes \(d_2\) explicitly as a
 finite polynomial in the first four bounded exponent jets, and
@@ -2069,6 +2129,19 @@ This part of the repository illustrates a mature use of formalization.  A failed
 The Thue--Morse modules prove prefix-sum cancellation, long zero runs of finite differences, convolution formulas, and generating-series identities.  Repeated finite difference annihilates polynomials below a threshold degree, which explains the high-order cancellation of the sign sequence.
 
 The formal proofs use induction on binary depth and repeated even/odd splitting.  Convolution associativity is kept finite, so all sums are over \nolinkurl{Finset.range} and can be reindexed explicitly.  Generating polynomials turn convolution into multiplication, allowing coefficient comparison to replace nested sum manipulations.
+
+\nolinkurl{ThueMorseBinomialLog.lean} also makes the zero--one convention
+exact.  For the integer sum
+\(X(n)=\sum_{k=0}^{n}(-1)^{\binom nk}\), it proves
+\(n+1-X(n)=2^{\operatorname{wt}(n)+1}\), so the ensuing base-two logarithm
+is exact.  If \(t_n=\operatorname{wt}(n)\bmod2\), the resulting rational
+identity is
+\[
+ t_n=\frac{1+(-1)^{\log_2(n+1-X(n))}}2.
+\]
+The module also identifies, in every ring,
+\((-1)^{t_n}\) with the cast of the signed Thue--Morse convention used by the
+real and complex \(q\)-series.
 
 \subsection{The failed polygon and the corrected grid samples}
 The literal grid of the draft uses
@@ -2642,7 +2715,7 @@ Module & Role in the development \\
 \nolinkurl{GlobalDyadic.lean} & Exact dyadic identities for the signed extension with unrestricted and nonreduced representatives. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Global shape, inversion, and computability}}\\[0.25em]
-\nolinkurl{ScalingRecurrence.lean} & Generic chain-rule lemmas for differentiating multiplicative and parameter scaling recurrences, with dyadic specializations used by the negative-Laplace derivative layer. \\
+\nolinkurl{ScalingRecurrence.lean} & Mathlib-only chain rules for arbitrary positive dilations, in vector and scalar forms, with caller-normalized outgoing weight; inert-parameter variants and dyadic wrappers used by negative-Laplace derivatives. \\
 \nolinkurl{Monotonicity.lean} & Strict increase of \(F\) on \([0,1]\), endpoint range, and order consequences. \\
 \nolinkurl{Regularity.lean} & Optimal global Lipschitz constants for \(F\) and \(\Up\). \\
 \nolinkurl{Convexity.lean} & Convexity before the midpoint and concavity afterward. \\
@@ -2715,9 +2788,9 @@ Module & Role in the development \\
 \nolinkurl{FabiusQBinomialScalarFormula.lean} & Scalar-valued form of the principal q-binomial theorem. \\
 \nolinkurl{FabiusDyadicQBinomialScalar.lean} & Specialization using exact dyadic Fabius values. \\
 \nolinkurl{FabiusQBinomialTaylor.lean} & Constancy in the common translation indeterminate and identification, after normalization, with \nolinkurl{fabiusReductionSum}. \\
-\nolinkurl{FabiusGlobalQBinomialSeries.lean} & Convergent global series identified with the signed extension. \\
-\nolinkurl{FabiusBinaryReductionSeries.lean} & Binary-reduction telescoping series, including the necessary initial endpoint term. \\
-\nolinkurl{FabiusParityPowerSeries.lean} & Power series whose coefficients reflect binary parity and Thue--Morse cancellation. \\
+\nolinkurl{FabiusGlobalQBinomialSeries.lean} & Real and complex all-real q-series for the signed extension, with pointwise q-independent summands and zero-series behavior on the nonpositive side. \\
+\nolinkurl{FabiusBinaryReductionSeries.lean} & Exact binary telescope, the scale-zero term distinguishing even and odd unit blocks, a global \(2^{1-N}\) residual bound, uniform convergence on \(\R\), and all-real sum identities. \\
+\nolinkurl{FabiusParityPowerSeries.lean} & All-real parity-power form of the signed extension, including the integer-valued scale-zero exponent, termwise vanishing on the nonpositive side, and the restricted older \(m=1\) form. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Discrete-limit family}}\\[0.25em]
 \nolinkurl{FabiusUniformSpline.lean} & Centered finite Thue--Morse splines; empty-prefix support, block translation, finite-CDF identification, monotonicity/range bounds, and pointwise convergence. \\
@@ -2735,7 +2808,7 @@ Module & Role in the development \\
 \nolinkurl{FabiusLogMainDefect.lean} & Definition and first bounds for the defect after subtracting the quadratic logarithmic main term. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Negative Laplace, Mellin, and periodicity}}\\[0.25em]
-\nolinkurl{NegativeLaplace.lean} & Infinite product and absolutely convergent logarithm, exact dilation equation, quadratic decomposition, periodic correction, and exponential tail. \\
+\nolinkurl{NegativeLaplace.lean} & Infinite product and absolutely convergent logarithm, exact dilation equation, quadratic decomposition, periodic correction, exponential tail, and strict signs of the factors, logarithm, forward tail, and positive tail error. \\
 \nolinkurl{NegativeLaplaceVerticalAllOrderBound.lean} & Uniform positive-order vertical log-product bounds at radius \(2^b\): \(C(b+1)\) for \(b\geq0\), with the legacy \(Cb\) corollary for \(b\geq1\). \\
 \nolinkurl{NegativeLaplaceVerticalOrdinaryJets.lean} & Exact zero-axis vertical logarithmic jets in terms of ordinary negative-Laplace jets, including the exceptional order-zero normalization. \\
 \nolinkurl{PeriodicCorrection.lean} & Continuity of the multiplicatively periodic correction by locally uniform convergence. \\
@@ -2745,7 +2818,9 @@ Module & Role in the development \\
 \nolinkurl{MellinBose.lean} & Mellin transform of the Bose kernel and Gamma/zeta factorization. \\
 \nolinkurl{MellinFinitePart.lean} & Finite-part continuation after subtraction of singular Laurent terms. \\
 \nolinkurl{BoseFinitePartIntegral.lean} & Convergent integral representation for the regularized Bose/Mellin contribution. \\
-\nolinkurl{GammaSecondOrder.lean} & Second-order Gamma-function expansions and bounds used in saddle normalization. \\
+\nolinkurl{StieltjesConstant.lean} & Sign-fixed first Stieltjes constant, exact real and complex derivatives at one, and the local zeta Taylor/Laurent interface. \\
+\nolinkurl{GammaSecondOrder.lean} & Exact \(\Gamma''(1)\), analytic cubic factorization of the quadratic Taylor remainder, and the sharp complex \(O(z^3)\) estimate at zero. \\
+\nolinkurl{LaplaceCumulantAsymptotics.lean} & Bell-polynomial inversion of normalized Laplace moments through order four and the conditional corrected \(O(1/n)\) endpoint comparison. \\
 \nolinkurl{LaplacePeriodicSecondOrder.lean} & Second-order transform asymptotics retaining the periodic correction. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Bromwich and Lambert saddle analysis}}\\[0.25em]
@@ -2781,6 +2856,8 @@ Module & Role in the development \\
 \nolinkurl{FabiusSaddleCentralAllOrders.lean} & Uniform central-integral expansion to every inverse phase order. \\
 \nolinkurl{FabiusSaddleTailAllOrders.lean} & Tail smaller than every requested inverse phase power. \\
 \nolinkurl{FabiusSaddleMassAllOrders.lean} & All-order expansion of the normalized saddle mass. \\
+\nolinkurl{SaddleExpansionFlat.lean} & Flat-remainder calculus and characterization of equality of full coefficient families modulo \(O(\operatorname{scale}^N)\) for every \(N\). \\
+\nolinkurl{SaddleExpansionSmallArgument.lean} & Bidirectional transfer of full expansions between the logarithmic coordinate and \(x\to0^+\), for arbitrary normed scalar and vector codomains. \\
 \nolinkurl{FabiusSaddleJetClosedForm.lean} & Closed finite formula for periodic saddle jets in derivatives of the periodic correction. \\
 \nolinkurl{FabiusSaddleExponentClosedForm.lean} & Closed decomposition of exponent coefficients into a jet term and universal tail. \\
 \nolinkurl{FabiusSaddleJetStirling.lean} & Identification of jet weights with shifted signed first-kind Stirling numbers. \\
@@ -2793,6 +2870,8 @@ Module & Role in the development \\
 \nolinkurl{GaussianPolynomialTailAllOrders.lean} & Uniform tail bounds compatible with arbitrary expansion order. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Lambert formal algebra and final expansion}}\\[0.25em]
+\nolinkurl{SaddleLogExpansionAlgebra.lean} & Recursive formal logarithm and mutually inverse exponential/logarithmic coefficient transforms, including assumption-free positive-index forms. \\
+\nolinkurl{SaddleLogExpansionPowerSeries.lean} & Identification of the recursive logarithm with Mathlib's \nolinkurl{PowerSeries.logOf} for unit-constant series. \\
 \nolinkurl{FabiusLambertFormalLog.lean} & Formal logarithm/exponential algebra for truncated saddle series. \\
 \nolinkurl{FabiusLambertHigherExpansion.lean} & Higher explicit approximants to the exact Lambert phase. \\
 \nolinkurl{FabiusLambertAllOrderAlgebra.lean} & Coefficient identities for arbitrary-order Lambert substitution. \\
@@ -2816,7 +2895,7 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{K-fold Thue--Morse audit and auxiliary asymptotics}}\\[0.25em]
 \nolinkurl{ThueMorseApproximation.lean} & Exact identification of corrected grid samples with moving-center step approximants and pointwise convergence, including the endpoint. \\
 \nolinkurl{ThueMorseGenerating.lean} & Formal power-series identities, shifted grid recurrence, and exact endpoint refutation of the literal grid and polygonal limits. \\
-\nolinkurl{ThueMorseBinomialLog.lean} & Binomial and logarithmic identities underlying the draft's proposed normalization. \\
+\nolinkurl{ThueMorseBinomialLog.lean} & Exact integer signed-binomial sum and rational binomial--log formula for the zero--one bit, including the power-of-two log argument and ring-general bridge to the signed convention. \\
 \nolinkurl{DraftCounterexamples.lean} & Exact and asymptotic counterexamples to false literal claims in the informal draft. \\
 \nolinkurl{StirlingAsymptotics.lean} & Factorial and binomial asymptotics needed for the k-fold scale. \\
 \nolinkurl{LowerLambertW.lean} & Correctly defined lower Lambert-type inverse branch, domain, monotonicity, and asymptotics. \\
@@ -2964,6 +3043,7 @@ variable (F : BoundedFabius) (hF : IsFabius F)
 \end{lstlisting}
 The generic style is useful for proving a new consequence once and applying it both to the canonical function and to any future equivalent construction.
 
+\newpage
 \subsection{Find source-facing arithmetic theorems}
 \begin{lstlisting}[style=pseudo]
 import FabiusFunction.Paper06487
@@ -3013,7 +3093,7 @@ not against an unspecified moving branch.  A reproduction run should begin
 with:
 \begin{lstlisting}[style=pseudo,language={}]
 git rev-parse HEAD
-source_pin=c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9
+source_pin=4173648faf531c1b2a012c2089764221eb975875
 test "$(git rev-parse "$source_pin^{commit}")" = "$source_pin"
 git diff --exit-code "$source_pin" -- \
   Analysis/FabiusFunction/Lean
@@ -3087,7 +3167,7 @@ records its nonclaims.
 Vladimir Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction},
 GitHub repository, source tree and README inspected 25 August 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9/Analysis/FabiusFunction}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4173648faf531c1b2a012c2089764221eb975875/Analysis/FabiusFunction}
 
 \bibitem{Arias05442}
 Juan Arias de Reyna,
@@ -3119,7 +3199,7 @@ CPP 2020 and continuously maintained Lean 4 library.
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 Title & The Fabius Function in Lean: A Guided Walkthrough of the ProveIt Formalization \\
-Source snapshot & commit \nolinkurl{c62a56d951c58df3fb1db8fc9ca1aa678fafc5c9} on \texttt{main}, inspected 25 August 2026 \\
+Source snapshot & commit \nolinkurl{4173648faf531c1b2a012c2089764221eb975875} on \texttt{main}, inspected 25 August 2026 \\
 Toolchain recorded by source & Lean 4.32.0; repository-pinned mathlib revision \\
 Primary path & \nolinkurl{Analysis/FabiusFunction/Lean/} \\
 Umbrella module & \nolinkurl{FabiusFunction.lean} \\
