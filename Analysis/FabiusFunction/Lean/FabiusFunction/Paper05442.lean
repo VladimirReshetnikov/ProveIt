@@ -33,7 +33,10 @@ proved Lean counterpart:
 * Theorem 4: `Fabius.original_theorem_four_a`,
   `Fabius.original_theorem_four_b`, and `Fabius.original_theorem_four_c`;
 * the unnumbered non-analyticity corollary: `Fabius.rvachev_not_analyticAt`;
-* Theorem 5: `Fabius.rvachev_poisson_summation`;
+* Theorem 5: `Fabius.rvachev_poisson_summation`, supported by the stronger
+  real-axis Schwartz estimates
+  `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay` and
+  `Fabius.rvachevFourier_real_rapidDecay`;
 * Theorem 6: `Fabius.original_theorem_six`;
 * Theorem 7: `Fabius.original_theorem_seven_global`.
 

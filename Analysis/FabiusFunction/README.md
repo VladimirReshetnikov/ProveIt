@@ -385,7 +385,10 @@ aggregate also proves
 weak-* convergence of the finite convolution measures, pointwise convergence
 of the polynomial step approximants, the infinite-product probability model,
 the differential identities, Poisson summation, moment formulas, and global
-rationality at dyadic points.
+rationality at dyadic points.  Its Schwartz construction also exposes rapid
+decay of every real-axis derivative of the entire Fourier transform through
+`rvachevFourier_real_iteratedDeriv_rapidDecay`, with the transform-only form
+`rvachevFourier_real_rapidDecay` as a direct corollary.
 
 `Paper06487.lean` is the public import for the arithmetic paper.
 `PaperStatements.lean` contains all 18 proved numbered results in the v3 PDF:
