@@ -273,8 +273,10 @@ decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
 canonical, and signed-global real corollaries.  A self-contained derivation is
-available as [LaTeX source](Article/fabius-inverse-dyadic-closed-form.tex) and
-as a [rendered PDF](Article/fabius-inverse-dyadic-closed-form.pdf).
+available as
+[LaTeX source](docs/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.tex)
+and as a
+[rendered PDF](docs/fabius-inverse-dyadic-closed-form/fabius-inverse-dyadic-closed-form.pdf).
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
