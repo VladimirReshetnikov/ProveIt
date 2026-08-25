@@ -22,21 +22,13 @@ open Finset
 
 namespace Fabius
 
-private lemma odd_den_add {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
-    Odd (q + r).den :=
-  (hq.mul hr).of_dvd_nat (Rat.add_den_dvd q r)
-
-private lemma odd_den_mul {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
-    Odd (q * r).den :=
-  (hq.mul hr).of_dvd_nat (Rat.mul_den_dvd q r)
-
 private lemma odd_num_mul_iff {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
     Odd (q * r).num ↔ Odd q.num ∧ Odd r.num := by
   have hprod := Rat.mul_num_den' q r
   have hq' : Odd (q.den : ℤ) := by exact_mod_cast hq
   have hr' : Odd (r.den : ℤ) := by exact_mod_cast hr
   have hqr' : Odd ((q * r).den : ℤ) := by
-    exact_mod_cast odd_den_mul hq hr
+    exact_mod_cast rat_den_mul_odd hq hr
   have hparity :
       Odd ((q * r).num * q.den * r.den) ↔
         Odd (q.num * r.num * (q * r).den) := by
@@ -50,7 +42,7 @@ private lemma odd_num_add_iff {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
   have hr' : Odd (r.den : ℤ) := by exact_mod_cast hr
   have hnq' : ¬ Even (q.den : ℤ) := Int.not_even_iff_odd.mpr hq'
   have hsum' : Odd ((q + r).den : ℤ) := by
-    exact_mod_cast odd_den_add hq hr
+    exact_mod_cast rat_den_add_odd hq hr
   have hparity :
       Odd ((q + r).num * q.den * r.den) ↔
         Odd ((q.num * r.den + r.num * q.den) * (q + r).den) := by
@@ -75,7 +67,7 @@ private lemma odd_den_sum_and_odd_num_iff_card {alpha : Type*}
       have hi := ih hrest
       rw [sum_insert ha]
       constructor
-      · exact odd_den_add hfa hi.1
+      · exact rat_den_add_odd hfa hi.1
       · rw [odd_num_add_iff hfa hi.1]
         by_cases hodd : Odd (f a).num
         · have hanot : a ∉ s.filter (fun x => Odd (f x).num) :=
@@ -93,9 +85,12 @@ private lemma odd_den_sum_and_odd_num_iff_card {alpha : Type*}
               constructor <;> rintro ⟨k, hk⟩ <;> exact ⟨k, by omega⟩
         · simp [Finset.filter_insert, hodd, hi.2]
 
-private lemma odd_num_den_of_eq_divInt {q : ℚ} {a d : ℤ} (hd0 : d ≠ 0)
+private lemma odd_num_den_of_eq_divInt {q : ℚ} {a d : ℤ}
     (hq : q = Rat.divInt a d) (ha : Odd a) (hd : Odd d) :
     Odd q.num.natAbs ∧ Odd q.den := by
+  have hd0 : d ≠ 0 := by
+    rintro rfl
+    norm_num at hd
   obtain ⟨c, hnum, hden⟩ := Rat.num_den_mk hd0 hq
   have hdenProd : Odd (c * (q.den : ℤ)) := by rwa [← hden]
   have hnumProd : Odd (c * q.num) := by rwa [← hnum]
@@ -105,50 +100,19 @@ private lemma odd_num_den_of_eq_divInt {q : ℚ} {a d : ℤ} (hd0 : d ≠ 0)
   · exact Int.natAbs_odd.mpr hqnum
   · exact_mod_cast hqdenInt
 
-private lemma odd_num_den_of_eq_nat_div {q : ℚ} {a d : ℕ} (hd0 : d ≠ 0)
+private lemma odd_num_den_of_eq_nat_div {q : ℚ} {a d : ℕ}
     (hq : q = (a : ℚ) / d) (ha : Odd a) (hd : Odd d) :
     Odd q.num.natAbs ∧ Odd q.den := by
   apply odd_num_den_of_eq_divInt (a := (a : ℤ)) (d := (d : ℤ))
-    (by exact_mod_cast hd0)
   · simpa [Rat.divInt_eq_div] using hq
   · exact_mod_cast ha
   · exact_mod_cast hd
 
-/-- Every factor in the odd double factorial is odd. -/
-theorem odd_oddDoubleFactorial (n : ℕ) : Odd (oddDoubleFactorial n) := by
-  unfold oddDoubleFactorial
-  apply Finset.prod_induction (fun k : ℕ => 2 * k + 1) Odd
-  · exact fun _ _ => Odd.mul
-  · exact odd_one
-  · intro k hk
-    exact odd_two_mul_add_one k
-
-private lemma odd_two_pow_positive_sub_one {e : ℕ} (he : 0 < e) :
-    Odd (2 ^ e - 1) := by
-  apply Nat.Even.sub_odd Nat.one_le_two_pow
-  · exact Nat.even_pow.mpr ⟨even_two, Nat.ne_of_gt he⟩
-  · exact odd_one
-
-private lemma odd_ne_zero_nat {n : ℕ} (hn : Odd n) : n ≠ 0 := by
-  rcases hn with ⟨k, rfl⟩
-  omega
-
-/-- Every factor in the even Mersenne product is odd. -/
-theorem odd_evenMersenneProduct (n : ℕ) : Odd (evenMersenneProduct n) := by
-  unfold evenMersenneProduct
-  apply Finset.prod_induction (fun k : ℕ => 2 ^ (2 * (k + 1)) - 1) Odd
-  · exact fun _ _ => Odd.mul
-  · exact odd_one
-  · intro k hk
-    exact odd_two_pow_positive_sub_one (by omega)
-
-private lemma moment_odd_num_den (n : ℕ) :
+/-- Both the reduced numerator and denominator of every even moment are odd. -/
+theorem moment_num_den_odd (n : ℕ) :
     Odd (moment n).num.natAbs ∧ Odd (moment n).den := by
   rw [moment_eq_momentNumerator_div]
   apply odd_num_den_of_eq_nat_div
-  · have hodd := (odd_oddDoubleFactorial (n + 1)).mul
-        (odd_evenMersenneProduct n)
-    exact odd_ne_zero_nat hodd
   · rfl
   · exact momentNumerator_odd n
   · exact (odd_oddDoubleFactorial (n + 1)).mul
@@ -159,7 +123,7 @@ private lemma nat_mul_odd_den_and_num_iff (a : ℕ) {q : ℚ}
     Odd (((a : ℚ) * q).den) ∧
       (Odd (((a : ℚ) * q).num) ↔ Odd a ∧ Odd q.num) := by
   constructor
-  · exact odd_den_mul (by simp) hqden
+  · exact rat_den_mul_odd (by simp) hqden
   · simpa using odd_num_mul_iff (q := (a : ℚ)) (r := q) (by simp) hqden
 
 private lemma two_mul_halfMoment_odd_index_num_den (n : ℕ) :
@@ -170,7 +134,7 @@ private lemma two_mul_halfMoment_odd_index_num_den (n : ℕ) :
     rw [halfMoment_odd_eq_moment]
     ring
   rw [heq]
-  have hm := moment_odd_num_den n
+  have hm := moment_num_den_odd n
   have hmnum : Odd (moment n).num := Int.natAbs_odd.mp hm.1
   have hmul := nat_mul_odd_den_and_num_iff (2 * n + 1) hm.2
   constructor
@@ -178,13 +142,18 @@ private lemma two_mul_halfMoment_odd_index_num_den (n : ℕ) :
     exact hmul.2.2 ⟨odd_two_mul_add_one n, hmnum⟩
   · exact hmul.1
 
-/-- Equation (31) of *Arithmetic of the Fabius function*: the isolated
-half-moment recurrence after multiplying every term by two. -/
-theorem two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
+/-- All-index form of equation (31) of *Arithmetic of the Fabius function*:
+the isolated half-moment recurrence after multiplying every term by two.
+At `N = 0`, both sides are zero. -/
+theorem two_mul_halfMoment_recurrence_all (N : ℕ) :
     ((((N + 1) * (2 ^ N - 1) : ℕ) : ℚ) * (2 * halfMoment N)) =
       ∑ k : Fin N,
         (Nat.choose (N + 1) k.val : ℚ) * (2 * halfMoment k.val) := by
-  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hN
+  by_cases hN : N = 0
+  · subst N
+    norm_num
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le
+    (Nat.one_le_iff_ne_zero.mpr hN)
   rw [show 1 + m = m + 1 by omega, halfMoment_succ]
   have hpow : 1 ≤ 2 ^ (m + 1) := Nat.one_le_two_pow
   push_cast [Nat.cast_sub hpow]
@@ -208,68 +177,30 @@ theorem two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
     · exact sub_ne_zero.mpr (ne_of_gt (one_lt_pow₀ (by norm_num) (by omega)))
   field_simp [hD]
 
-private lemma card_filter_fin_eq_range (N : ℕ) (p : ℕ → Prop)
-    [DecidablePred p] :
-    ((Finset.univ : Finset (Fin N)).filter (fun k => p k.val)).card =
-      ((range N).filter p).card := by
-  apply Finset.card_bij (fun k _ => k.val)
-  · intro k hk
-    simp only [mem_filter, mem_univ, true_and] at hk
-    exact mem_filter.2 ⟨mem_range.2 k.isLt, hk⟩
-  · intro a ha b hb hab
-    exact Fin.ext hab
-  · intro j hj
-    simp only [mem_filter, mem_range] at hj
-    refine ⟨⟨j, hj.1⟩, ?_, rfl⟩
-    simp only [mem_filter, mem_univ, true_and]
-    exact hj.2
+/-- Positive-index form of equation (31), retained with its original
+signature for source compatibility. -/
+theorem two_mul_halfMoment_recurrence (N : ℕ) (hN : 1 ≤ N) :
+    ((((N + 1) * (2 ^ N - 1) : ℕ) : ℚ) * (2 * halfMoment N)) =
+      ∑ k : Fin N,
+        (Nat.choose (N + 1) k.val : ℚ) * (2 * halfMoment k.val) := by
+  have _hN0 : N ≠ 0 := Nat.one_le_iff_ne_zero.mp hN
+  exact two_mul_halfMoment_recurrence_all N
 
 private lemma odd_inner_binomial_count (m : ℕ) (hm : 1 ≤ m) :
     Odd (((range (2 * m)).filter (fun k =>
       k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))).card) := by
-  let p : ℕ → Prop := fun k => Odd (Nat.choose (2 * m + 1) k)
-  let coeff : Finset ℕ := (range (2 * m)).filter p
-  have hfull := (odd_binomial_coefficient_counts m).2
-  have hlast : p (2 * m + 1) := by simp [p]
-  have hpenultimate : p (2 * m) := by
-    dsimp [p]
-    rw [Nat.choose_succ_self_right]
-    exact odd_two_mul_add_one m
-  rw [show 2 * m + 2 = (2 * m + 1) + 1 by omega, Finset.range_add_one,
-    Finset.filter_insert, if_pos hlast,
-    Finset.card_insert_of_notMem (by simp)] at hfull
-  rw [Finset.range_add_one, Finset.filter_insert, if_pos hpenultimate,
-    Finset.card_insert_of_notMem (by simp)] at hfull
+  rw [card_odd_inner_binomial_coefficients m hm]
   have hpowEven : Even (2 ^ (binaryWeight m + 1)) := by
     rw [pow_succ]
-    exact ⟨2 ^ binaryWeight m, by ring⟩
-  have hcoeffEven : Even coeff.card := by
-    rcases hpowEven with ⟨t, ht⟩
-    change coeff.card + 1 + 1 = 2 ^ (binaryWeight m + 1) at hfull
-    have htpos : 0 < t := by omega
-    have htdecomp : t = (t - 1) + 1 := by omega
-    refine ⟨t - 1, ?_⟩
-    rw [htdecomp] at ht
-    omega
-  have hzero : 0 ∈ coeff := by
-    have hmpos : 0 < m := by omega
-    simp [coeff, p, hmpos]
-  have herase :
-      (range (2 * m)).filter (fun k => k ≠ 0 ∧ p k) = coeff.erase 0 := by
-    ext k
-    simp only [mem_filter, mem_range, mem_erase, coeff, p]
-    tauto
-  have htarget :
-      Odd (((range (2 * m)).filter (fun k => k ≠ 0 ∧ p k)).card) := by
-    rw [herase]
-    have hcard := Finset.card_erase_add_one hzero
-    rcases hcoeffEven with ⟨t, ht⟩
-    have htpos : 0 < t := by omega
-    have htdecomp : t = (t - 1) + 1 := by omega
-    rw [htdecomp] at ht
-    refine ⟨t - 1, ?_⟩
-    omega
-  simpa only [p] using htarget
+    exact even_two.mul_left _
+  have hcardPos : 0 < ((range (2 * m)).filter (fun k =>
+      k ≠ 0 ∧ Odd (Nat.choose (2 * m + 1) k))).card := by
+    apply Finset.card_pos.mpr
+    refine ⟨1, ?_⟩
+    simp only [mem_filter, mem_range, Nat.choose_one_right]
+    exact ⟨by omega, by norm_num, odd_two_mul_add_one m⟩
+  rw [card_odd_inner_binomial_coefficients m hm] at hcardPos
+  exact Nat.Even.sub_odd (by omega) hpowEven (by decide)
 
 /-- For a positive index, both reduced numerator and denominator of
 `2 * halfMoment n` are odd. -/
@@ -318,9 +249,9 @@ theorem two_mul_halfMoment_num_den_odd (n : ℕ) (hn : 0 < n) :
       let A : ℕ := (2 * m + 1) * (2 ^ (2 * m) - 1)
       have hAodd : Odd A := by
         exact (odd_two_mul_add_one m).mul
-          (odd_two_pow_positive_sub_one (by omega))
-      have hA0 : A ≠ 0 := odd_ne_zero_nat hAodd
-      have hrec := two_mul_halfMoment_recurrence (2 * m) (by omega)
+          (two_pow_sub_one_odd (by omega))
+      have hA0 : A ≠ 0 := Nat.ne_of_gt hAodd.pos
+      have hrec := two_mul_halfMoment_recurrence_all (2 * m)
       change (A : ℚ) * (2 * halfMoment (2 * m)) = S at hrec
       have hquot : 2 * halfMoment (2 * m) = S / (A : ℚ) := by
         apply (eq_div_iff (by exact_mod_cast hA0)).2
@@ -336,7 +267,6 @@ theorem two_mul_halfMoment_num_den_odd (n : ℕ) (hn : 0 < n) :
             push_cast
             field_simp [hA0, S.den_ne_zero]
       apply odd_num_den_of_eq_divInt (d := ((S.den * A : ℕ) : ℤ))
-      · exact_mod_cast (odd_ne_zero_nat (hSden.mul hAodd))
       · exact hrepr
       · exact Int.natAbs_odd.mp hSnum
       · exact_mod_cast hSden.mul hAodd
@@ -351,6 +281,11 @@ private lemma padicValRat_two_eq_zero_of_odd_num_den {q : ℚ}
     padicValNat.eq_zero_of_not_dvd hden.not_two_dvd_nat]
   norm_num
 
+/-- Every even moment is a two-adic unit. -/
+theorem moment_padicVal_two (n : ℕ) : padicValRat 2 (moment n) = 0 := by
+  have hodd := moment_num_den_odd n
+  exact padicValRat_two_eq_zero_of_odd_num_den hodd.1 hodd.2
+
 /-- Theorem 20's exact-arithmetic content: `2 * halfMoment n` is a two-adic
 unit, witnessed by its odd reduced numerator and denominator. -/
 theorem two_mul_halfMoment_padicVal_two_and_odd (n : ℕ) (hn : 1 ≤ n) :
@@ -359,6 +294,30 @@ theorem two_mul_halfMoment_padicVal_two_and_odd (n : ℕ) (hn : 1 ≤ n) :
       Odd (2 * halfMoment n).den := by
   have hodd := two_mul_halfMoment_num_den_odd n (by omega)
   exact ⟨padicValRat_two_eq_zero_of_odd_num_den hodd.1 hodd.2, hodd⟩
+
+/-- Every positive-index half moment has two-adic valuation `-1`. -/
+theorem halfMoment_padicVal_two (n : ℕ) (hn : 0 < n) :
+    padicValRat 2 (halfMoment n) = -1 := by
+  have htwenty := two_mul_halfMoment_padicVal_two_and_odd n (by omega)
+  have hhalfMomentNe : halfMoment n ≠ 0 := ne_of_gt (halfMoment_pos n)
+  have hvalTwo : padicValRat 2 (2 : ℚ) = 1 := by
+    simpa using padicValRat.self (p := 2) (by omega)
+  have hmul := padicValRat.mul (p := 2) (q := (2 : ℚ))
+    (r := halfMoment n) (by norm_num) hhalfMomentNe
+  rw [hvalTwo, htwenty.1] at hmul
+  omega
+
+/-- Multiplication preserves oddness of both reduced numerators and
+denominators. -/
+theorem odd_num_den_mul {q r : ℚ}
+    (hq : Odd q.num.natAbs ∧ Odd q.den)
+    (hr : Odd r.num.natAbs ∧ Odd r.den) :
+    Odd (q * r).num.natAbs ∧ Odd (q * r).den := by
+  constructor
+  · apply Int.natAbs_odd.mpr
+    exact (odd_num_mul_iff hq.2 hr.2).2
+      ⟨Int.natAbs_odd.mp hq.1, Int.natAbs_odd.mp hr.1⟩
+  · exact rat_den_mul_odd hq.2 hr.2
 
 /-- Multiplication by an odd natural preserves oddness of the reduced
 numerator and denominator of a rational. -/
@@ -407,26 +366,10 @@ valuation equality in Theorem 21. -/
 theorem fabiusAtInverseTwoPow_padicVal_two (n : ℕ) (hn : 1 ≤ n) :
     padicValRat 2 (fabiusAtInverseTwoPow n) =
       -(n.choose 2 : ℤ) - 1 - padicValRat 2 (n.factorial : ℚ) := by
-  have htwenty := two_mul_halfMoment_padicVal_two_and_odd n hn
-  have htwoHalfMomentNe : 2 * halfMoment n ≠ 0 := by
-    intro hzero
-    have hnumZero : (2 * halfMoment n).num = 0 := Rat.num_eq_zero.mpr hzero
-    have hnatAbsZero : (2 * halfMoment n).num.natAbs = 0 :=
-      Int.natAbs_eq_zero.mpr hnumZero
-    have hodd := htwenty.2.1
-    rw [hnatAbsZero] at hodd
-    simp at hodd
-  have hhalfMomentNe : halfMoment n ≠ 0 := by
-    intro hzero
-    apply htwoHalfMomentNe
-    simp [hzero]
+  have hhalfMomentNe : halfMoment n ≠ 0 := ne_of_gt (halfMoment_pos n)
   have hvalTwo : padicValRat 2 (2 : ℚ) = 1 := by
     simpa using padicValRat.self (p := 2) (by omega)
-  have hhalfMomentVal : padicValRat 2 (halfMoment n) = -1 := by
-    have hmul := padicValRat.mul (p := 2) (q := (2 : ℚ))
-      (r := halfMoment n) (by norm_num) hhalfMomentNe
-    rw [hvalTwo, htwenty.1] at hmul
-    omega
+  have hhalfMomentVal := halfMoment_padicVal_two n (by omega)
   have hfactorialNe : (n.factorial : ℚ) ≠ 0 := by positivity
   have hpowNe : (2 : ℚ) ^ n.choose 2 ≠ 0 := by positivity
   rw [fabiusAtInverseTwoPow_eq_halfMoment, halfMomentFabiusValue,

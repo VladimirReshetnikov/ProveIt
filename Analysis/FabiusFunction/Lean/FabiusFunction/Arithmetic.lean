@@ -1,5 +1,8 @@
 import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Algebra.Order.Ring.Abs
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Digits.Lemmas
 import Mathlib.Data.Nat.Factorial.DoubleFactorial
@@ -72,6 +75,102 @@ def evenMersenneProduct (n : ℕ) : ℕ :=
 def oddMersenneProduct (n : ℕ) : ℕ :=
   ∏ k ∈ range (n + 1), (2 ^ (2 * k + 1) - 1)
 
+/-! ### Structural facts about the normalization products -/
+
+/-- Append the final odd factor to an odd double factorial. -/
+theorem oddDoubleFactorial_succ (n : ℕ) :
+    oddDoubleFactorial (n + 1) = oddDoubleFactorial n * (2 * n + 1) := by
+  simp [oddDoubleFactorial, Finset.prod_range_succ]
+
+/-- Append the final factor to the ordinary Mersenne product. -/
+theorem mersenneProduct_succ_eq (n : ℕ) :
+    mersenneProduct (n + 1) = mersenneProduct n * (2 ^ (n + 1) - 1) := by
+  simp [mersenneProduct, Finset.prod_range_succ]
+
+/-- Append the final factor to the even-indexed Mersenne product. -/
+theorem evenMersenneProduct_succ_eq (n : ℕ) :
+    evenMersenneProduct (n + 1) =
+      evenMersenneProduct n * (2 ^ (2 * (n + 1)) - 1) := by
+  simp [evenMersenneProduct, Finset.prod_range_succ]
+
+/-- Append the final factor to the odd-indexed Mersenne product. -/
+theorem oddMersenneProduct_succ_eq (n : ℕ) :
+    oddMersenneProduct (n + 1) =
+      oddMersenneProduct n * (2 ^ (2 * (n + 1) + 1) - 1) := by
+  simp [oddMersenneProduct, Finset.prod_range_succ]
+
+/-- Odd double factorials are positive, including the empty product. -/
+theorem oddDoubleFactorial_pos (n : ℕ) : 0 < oddDoubleFactorial n := by
+  unfold oddDoubleFactorial
+  exact Finset.prod_pos fun k _ => by omega
+
+/-- Ordinary Mersenne products are positive, including the empty product. -/
+theorem mersenneProduct_pos (n : ℕ) : 0 < mersenneProduct n := by
+  unfold mersenneProduct
+  apply Finset.prod_pos
+  intro k hk
+  exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+
+/-- Even-indexed Mersenne products are positive, including the empty product. -/
+theorem evenMersenneProduct_pos (n : ℕ) : 0 < evenMersenneProduct n := by
+  unfold evenMersenneProduct
+  apply Finset.prod_pos
+  intro k hk
+  exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+
+/-- Odd-indexed Mersenne products are positive. -/
+theorem oddMersenneProduct_pos (n : ℕ) : 0 < oddMersenneProduct n := by
+  unfold oddMersenneProduct
+  apply Finset.prod_pos
+  intro k hk
+  exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+
+/-- A finite product of odd natural numbers is odd. -/
+theorem finset_prod_odd {ι : Type*} (s : Finset ι) (f : ι → ℕ)
+    (hf : ∀ i ∈ s, Odd (f i)) : Odd (∏ i ∈ s, f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+      rw [Finset.prod_insert ha]
+      exact (hf a (by simp)).mul (ih (by
+        intro i hi
+        exact hf i (by simp [hi])))
+
+/-- A positive power of two minus one is odd. -/
+theorem two_pow_sub_one_odd {e : ℕ} (he : 0 < e) : Odd (2 ^ e - 1) := by
+  apply Nat.Even.sub_odd Nat.one_le_two_pow
+  · exact Nat.even_pow.mpr ⟨even_two, Nat.ne_of_gt he⟩
+  · exact odd_one
+
+/-- Every odd double factorial is odd. -/
+theorem odd_oddDoubleFactorial (n : ℕ) : Odd (oddDoubleFactorial n) := by
+  unfold oddDoubleFactorial
+  apply finset_prod_odd
+  intro k hk
+  exact odd_two_mul_add_one k
+
+/-- Every ordinary Mersenne product is odd. -/
+theorem odd_mersenneProduct (n : ℕ) : Odd (mersenneProduct n) := by
+  unfold mersenneProduct
+  apply finset_prod_odd
+  intro k hk
+  exact two_pow_sub_one_odd (by omega)
+
+/-- Every even-indexed Mersenne product is odd. -/
+theorem odd_evenMersenneProduct (n : ℕ) : Odd (evenMersenneProduct n) := by
+  unfold evenMersenneProduct
+  apply finset_prod_odd
+  intro k hk
+  exact two_pow_sub_one_odd (by omega)
+
+/-- Every odd-indexed Mersenne product is odd. -/
+theorem odd_oddMersenneProduct (n : ℕ) : Odd (oddMersenneProduct n) := by
+  unfold oddMersenneProduct
+  apply finset_prod_odd
+  intro k hk
+  exact two_pow_sub_one_odd (by omega)
+
 /-- A rational number is the image of a natural number. -/
 def IsNatural (q : ℚ) : Prop :=
   ∃ m : ℕ, q = m
@@ -79,6 +178,70 @@ def IsNatural (q : ℚ) : Prop :=
 /-- A rational number is the image of an odd natural number. -/
 def IsOddNatural (q : ℚ) : Prop :=
   ∃ m : ℕ, Odd m ∧ q = m
+
+/-! ### Odd reduced denominators -/
+
+/-- The sum of rationals with odd reduced denominators again has odd reduced
+denominator. -/
+theorem rat_den_add_odd {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
+    Odd (q + r).den :=
+  (hq.mul hr).of_dvd_nat (Rat.add_den_dvd q r)
+
+/-- The product of rationals with odd reduced denominators again has odd
+reduced denominator. -/
+theorem rat_den_mul_odd {q r : ℚ} (hq : Odd q.den) (hr : Odd r.den) :
+    Odd (q * r).den :=
+  (hq.mul hr).of_dvd_nat (Rat.mul_den_dvd q r)
+
+/-- A finite sum of rationals with odd reduced denominators has odd reduced
+denominator. -/
+theorem rat_den_sum_odd {ι : Type*} (s : Finset ι) (f : ι → ℚ)
+    (hf : ∀ i ∈ s, Odd (f i).den) : Odd (∑ i ∈ s, f i).den := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+      rw [Finset.sum_insert ha]
+      apply rat_den_add_odd (hf a (by simp))
+      exact ih (by
+        intro i hi
+        exact hf i (by simp [hi]))
+
+/-- Dividing by an odd natural preserves oddness of the reduced denominator. -/
+theorem rat_den_div_nat_odd (q : ℚ) (d : ℕ)
+    (hq : Odd q.den) (hd : Odd d) : Odd (q / (d : ℚ)).den := by
+  rw [div_eq_mul_inv]
+  apply rat_den_mul_odd hq
+  rw [Rat.inv_natCast_den_of_pos hd.pos]
+  exact hd
+
+/-- The reduced denominator of a quotient of natural numbers divides its
+displayed denominator. -/
+theorem rat_den_dvd_nat_div (a b : ℕ) :
+    ((a : ℚ) / (b : ℚ)).den ∣ b := by
+  have hInt :
+      ((((a : ℚ) / (b : ℚ)).den : ℕ) : ℤ) ∣ (b : ℤ) := by
+    rw [Rat.natCast_div_eq_divInt]
+    exact Rat.den_dvd a b
+  exact_mod_cast hInt
+
+/-- If multiplication by a natural number makes a rational integral, then
+the rational's reduced denominator divides that natural number.  The
+statement includes the zero multiplier, where divisibility is automatic. -/
+theorem rat_den_dvd_of_mul_nat_eq_int {q : ℚ} {B : ℕ} {z : ℤ}
+    (h : q * (B : ℚ) = (z : ℚ)) : q.den ∣ B := by
+  by_cases hB : B = 0
+  · subst B
+    exact dvd_zero _
+  have hBq : (B : ℚ) ≠ 0 := by exact_mod_cast hB
+  have hq : q = (z : ℚ) / (B : ℚ) := (eq_div_iff hBq).2 h
+  have hdivInt : q = Rat.divInt z (B : ℤ) := by
+    rw [hq, Rat.divInt_eq_div]
+    norm_num
+  have hdvdInt : (q.den : ℤ) ∣ (B : ℤ) := by
+    rw [hdivInt]
+    exact Rat.den_dvd z B
+  exact_mod_cast hdvdInt
 
 /--
 The rational moment sequence `c_n`, defined by the recurrence in equation
@@ -128,6 +291,24 @@ theorem halfMoment_succ (n : ℕ) :
         (Nat.choose (n + 2) k.val : ℚ) * halfMoment k.val) /
         (((n + 2 : ℕ) : ℚ) * ((2 : ℚ) ^ (n + 1) - 1)) := by
   rw [halfMoment]
+
+/-- Every recursively defined half moment is strictly positive. -/
+theorem halfMoment_pos (n : ℕ) : 0 < halfMoment n := by
+  induction n using Nat.strong_induction_on with
+  | h n ih =>
+      cases n with
+      | zero => norm_num
+      | succ n =>
+          rw [halfMoment_succ]
+          apply div_pos
+          · apply Finset.sum_pos
+            · intro k hk
+              exact mul_pos (by
+                exact_mod_cast Nat.choose_pos (by omega : k.val ≤ n + 2))
+                (ih k.val k.isLt)
+            · exact ⟨0, Finset.mem_univ _⟩
+          · exact mul_pos (by positivity) (sub_pos.mpr
+              (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
 
 /--
 The natural sequence `F_n` from Proposition 1.  This is the integral recurrence
