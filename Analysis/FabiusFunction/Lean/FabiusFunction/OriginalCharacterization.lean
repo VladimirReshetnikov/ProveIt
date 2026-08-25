@@ -10,6 +10,11 @@ This file formalizes Theorem 1 of Juan Arias de Reyna,
 Properties*, arXiv:1702.05442.  Unlike the bounded-CDF characterization in
 `IsFabius`, the paper starts with a compactly supported function `φ` and an
 initially unspecified positive constant `k`.
+
+Besides packaging the hypotheses, the file derives the elementary consequences
+needed by the Fourier uniqueness argument: the exact ordinary support,
+nonnegativity, the translate identity on `[0,1]`, normalization on both the
+support interval and the whole real line, and the forced value `k = 2`.
 -/
 
 set_option autoImplicit false
@@ -134,6 +139,16 @@ theorem pos_iff_mem_Ioo (x : ℝ) : 0 < φ x ↔ x ∈ Ioo (-1 : ℝ) 1 := by
     exact ne_of_gt hx
   · exact h.pos_of_mem x
 
+/-- The zero set of an original solution is exactly the complement of
+`(-1,1)`.  This packages positivity in the interior together with vanishing at
+and beyond both endpoints. -/
+theorem eq_zero_iff_not_mem_Ioo (x : ℝ) :
+    φ x = 0 ↔ x ∉ Ioo (-1 : ℝ) 1 := by
+  constructor
+  · intro hx hxmem
+    exact (ne_of_gt (h.pos_of_mem x hxmem)) hx
+  · exact h.eq_zero_of_not_mem_Ioo
+
 /-- The translate identity `φ(t) + φ(t-1) = 1` on `[0,1]` follows directly
 from the differential equation and support.  It is equation (28) of the
 paper, before Poisson summation is invoked there. -/
@@ -191,6 +206,27 @@ theorem intervalIntegral_eq_one :
   · exact h.contDiff.continuous.intervalIntegrable _ _
   · exact (h.contDiff.continuous.comp
       (continuous_id.sub continuous_const)).intervalIntegrable _ _
+
+/-- The whole-line integral of an original solution is one.  Compact support
+turns this into `intervalIntegral_eq_one`; exposing the whole-line form avoids
+repeating that localization in Fourier-transform arguments. -/
+theorem integral_eq_one :
+    (∫ x : ℝ, φ x) = 1 := by
+  have hrestrict : (∫ x : ℝ, φ x) =
+      ∫ x : ℝ in Icc (-1 : ℝ) 1, φ x := by
+    rw [← integral_indicator measurableSet_Icc]
+    apply integral_congr_ae
+    filter_upwards with x
+    by_cases hx : x ∈ Icc (-1 : ℝ) 1
+    · simp [hx]
+    · rw [h.eq_zero_of_not_mem hx]
+      simp [hx]
+  calc
+    (∫ x : ℝ, φ x) = ∫ x : ℝ in Icc (-1 : ℝ) 1, φ x := hrestrict
+    _ = ∫ x in (-1 : ℝ)..1, φ x := by
+      rw [integral_Icc_eq_integral_Ioc,
+        ← intervalIntegral.integral_of_le (by norm_num : (-1 : ℝ) ≤ 1)]
+    _ = 1 := h.intervalIntegral_eq_one
 
 /-- The unspecified constant in the original problem is necessarily `2`. -/
 theorem scale_eq_two : k = 2 := by
