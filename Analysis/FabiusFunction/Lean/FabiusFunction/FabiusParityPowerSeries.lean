@@ -87,23 +87,6 @@ theorem fabiusParityPowerInner_eq_half_reductionSum (m : ℕ) (y : ℝ) :
   norm_num only [zpow_natCast, zpow_one]
   field_simp [Nat.cast_ne_zero]
 
-private theorem binaryPreviousPrefix_eq_prefix_div_two
-    (x : ℝ) (m : ℕ) :
-    binaryPreviousPrefix x m = binaryPrefix x m / 2 := by
-  cases m with
-  | zero =>
-      rw [binaryPreviousPrefix, binaryPrefix]
-      norm_num
-      exact Nat.floor_div_natCast x 2
-  | succ m =>
-      rw [binaryPreviousPrefix, binaryPrefix, binaryPrefix]
-      have harg :
-          (2 : ℝ) ^ m * x = ((2 : ℝ) ^ (m + 1) * x) / 2 := by
-        rw [pow_succ]
-        ring
-      rw [harg]
-      exact Nat.floor_div_natCast ((2 : ℝ) ^ (m + 1) * x) 2
-
 private theorem neg_one_pow_sub_one_half (a : ℕ) :
     (((-1 : ℝ) ^ a - 1) * (1 / 2 : ℝ)) =
       2 * (a / 2 : ℕ) - (a : ℝ) := by
@@ -140,7 +123,7 @@ theorem fabiusParityPowerSummand_eq_globalBinaryReductionSummand
   rw [fabiusParityPowerSummand,
     fabiusParityPowerInner_eq_half_reductionSum,
     globalBinaryReductionSummand, globalBinaryReductionCoefficient]
-  have hprev := binaryPreviousPrefix_eq_prefix_div_two x m
+  have hprev := binaryPreviousPrefix_eq_binaryPrefix_div_two x m
   have hparity := neg_one_pow_sub_one_half (binaryPrefix x m)
   have hsign :
       (-1 : ℝ) ^ thueMorseBit (binaryPrefix x m) =
