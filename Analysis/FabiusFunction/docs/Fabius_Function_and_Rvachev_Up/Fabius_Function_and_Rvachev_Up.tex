@@ -90,6 +90,7 @@
 \newcommand{\vtwo}{v_2}
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
+\newcommand{\lean}[1]{\nolinkurl{#1}}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -263,8 +264,9 @@ Two independent constructions follow, and a reader in a hurry may take either.
 that proves uniqueness also makes the construction a certified numerical scheme
 \eqref{eq:fixed-point-error}.  \Cref{sec:probability} builds the same function as the law of
 a weighted sum of independent uniform variables, which explains positivity, monotonicity,
-symmetry, and smoothing at once, and which produces the finite convolutions
-\eqref{eq:finite-convolution} and the centered finite spline of \Cref{sec:centered-splines}.
+symmetry, and smoothing at once, and which produces the finite atomic laws
+\eqref{eq:finite-atomic-law}--\eqref{eq:finite-atomic-weak} and the centered finite spline
+of \Cref{sec:centered-splines}.
 That spline, with its explicit uniform error, is the one approximation used again later, in
 the computability theorem of \Cref{sec:effective-computability}.
 
@@ -1820,8 +1822,8 @@ therefore both established, and necessarily $k=2$.
 \label{rem:four-normalizations}
 Two normalizations circulate for the bump.  The geometric one is $\Up(0)=1$, which is how
 \eqref{eq:up-fold} defines it out of $F(1)=1$; the probabilistic one is
-$\int_\R\Up=1$, which is what makes $\Up$ the density of the symmetric law
-\eqref{eq:random-Y}.  For a solution of \eqref{eq:original-rvachev} with $k=2$ and support in
+$\int_\R\Up=1$, which makes $\Up$ a probability density.  For a solution of
+\eqref{eq:original-rvachev} with $k=2$ and support in
 $[-1,1]$ these are not merely proportional, they are the same condition.  Integrating the
 equation over $[-1,0]$ and using $\varphi(-1)=0$ gives
 \begin{equation*}
@@ -1835,6 +1837,8 @@ This article uses the probabilistic normalization in every statement about
 $\widehat{\Up}$, since $\widehat{\Up}(0)=\int\Up$ is what enters the transform argument at
 $z=0$, and the geometric normalization whenever values of $\Up$ are compared with values of
 $F$.  The displayed identity says that no reconciliation is ever required.
+The mass normalization itself is \lean{integral_rvachev_eq_one} in
+\path{AnalyticMoments.lean}.
 \end{remark}
 
 \section{The probability law behind the functions}
@@ -2193,9 +2197,8 @@ We use the Fourier convention
 \begin{equation}
  \widehat f(z)=\int_\R f(x)\e^{-2\pi\ii xz}\dd x.          \label{eq:fourier-convention}
 \end{equation}
-The characteristic function of a uniform variable on $[-a,a]$ is
-$\sinc(2\pi az)$.  Independence in \eqref{eq:random-Y} therefore yields the product
-formula.
+The transform refinement \eqref{eq:four-refinement}, specialized to \(\Up\), determines
+its Fourier transform recursively.
 
 \begin{theorem}[Fourier product]
 For every $z\in\C$,
@@ -2207,17 +2210,23 @@ The product converges locally uniformly and hence defines an entire function.
 \end{theorem}
 
 \begin{proof}
-For real $z$, the characteristic function of the partial sum $Y_N$ is the finite product
-through $n=N$.  Since $Y_N\to Y$ almost surely and the exponential has modulus one,
-dominated convergence gives the real identity.  On compact subsets of $\C$,
+Iterating \eqref{eq:four-refinement} with \(\varphi=\Up\) gives
+\begin{equation*}
+ \widehat{\Up}(z)=\widehat{\Up}(z/2^N)
+   \prod_{n=0}^{N-1}\sinc\!\left(\frac{\pi z}{2^n}\right).
+\end{equation*}
+Continuity and the normalization \(\widehat{\Up}(0)=1\) make the first factor tend to one.
+On compact subsets of $\C$,
 \begin{equation*}
  \sinc w=1-\frac{w^2}{6}+\bigO(w^4),
 \end{equation*}
 so the sum of the deviations of the factors from $1$ is dominated by
 $C_K\sum4^{-n}$.  The Weierstrass product theorem gives local uniform convergence to an
-entire function.  Equality on the real axis and the identity theorem extend the formula to
-all complex $z$.
+entire function, and passage to the limit gives the formula for every complex \(z\).
 \end{proof}
+
+The exact formal statement is \lean{rvachevFourier_eq_product} in
+\path{FourierProduct.lean}.
 
 Separating the first factor gives the refinement equation already seen in
 \eqref{eq:four-refinement}:
@@ -2932,9 +2941,7 @@ whereas \eqref{eq:F-inverse-power} gives the exact value
 The two differ by exactly the factor $1/d_n$.  Since
 $d_n=n\int_0^1t^{n-1}\Up(t)\dd t\le1$ by \eqref{eq:d-integral} and $\Up\le1$, the bound
 always overshoots, and it overshoots by the reciprocal of the $n$th half moment and by
-nothing else.  With the values \eqref{eq:d-first-values} the overshoot is $2$ at $n=1$,
-$18/5$ at $n=2$, and $6$ at $n=3$, against exact values $F(1/4)=5/72$ and $F(1/8)=1/288$
-from \eqref{eq:F-inverse-table}.  The bound therefore captures the whole of the doubly
+nothing else.  The bound therefore captures the whole of the doubly
 exponential factor $2^{-\binom n2}/n!$ and loses only the slowly decaying half moment.
 \end{remark}
 
@@ -3563,24 +3570,6 @@ The two forms are equivalent to \eqref{eq:c-recurrence} and \eqref{eq:d-recurren
 each determines its sequence uniquely from $c_0=d_0=1$.  The binomial recurrences are better
 for exact computation, because they involve only integers and one division; the Bernoulli
 forms are better for asymptotic estimates, because the size of $B_{2k}$ is known explicitly.
-
-\begin{remark}[The first values, checked against \eqref{eq:c-first-values} and \eqref{eq:d-first-values}]
-                                                           \label{rem:mom-bernoulli-check}
-For $n=1$, \eqref{eq:mom-c-bernoulli} reads
-$3c_1=\binom22 2^0(2^2-2)B_2c_0=2B_2=\tfrac13$, so $c_1=\tfrac19$.  For $n=2$,
-\begin{equation*}
- 15\,c_2=\binom42 2^2(2^2-2)B_2c_1+\binom44 2^0(2^4-2)B_4c_0
- =\frac89-\frac7{15}=\frac{19}{45},
-\end{equation*}
-so $c_2=\tfrac{19}{675}$.  For $n=1$ the sum in \eqref{eq:mom-d-bernoulli} is empty and
-$d_1=\tfrac12$.  For $n=2$,
-$d_2=\tfrac23d_1-\tfrac13\binom22 2^0B_2d_0=\tfrac13-\tfrac1{18}=\tfrac5{18}$.  For $n=3$,
-$d_3=\tfrac67d_2-\tfrac17\binom32 2^1B_2d_1=\tfrac5{21}-\tfrac1{14}=\tfrac16$.  All five
-values agree with \eqref{eq:c-first-values} and \eqref{eq:d-first-values}.  An independent
-computation in exact rational arithmetic confirms that
-\eqref{eq:mom-c-bernoulli}--\eqref{eq:mom-d-bernoulli} reproduce
-\eqref{eq:c-recurrence}--\eqref{eq:d-recurrence} term by term for all $n\le20$.
-\end{remark}
 
 \section{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
@@ -7525,9 +7514,9 @@ factor $1-z^{2^j}$ with $j\ge r$.
 
 The two identities of \cref{thm:tm-generating} connect the prefix sums to the polynomial
 approximants used in \cref{tm:sub-corrected}.  These are the combinatorial step polynomials
-already introduced in \eqref{eq:four-P-product}, whose coefficients, degree and unimodality
-are recorded in \cref{lem:four-P-product}; we restate them here in the index convention of
-this section:
+already introduced in \eqref{eq:four-P-product}, whose degree and total mass are recorded in
+\eqref{eq:four-degree-mass}; we restate the product and degree here in the index convention
+of this section:
 \begin{equation}
  \mathcal P_n(z)=\prod_{i=1}^{n}\bigl(1+z+\cdots+z^{2^i-1}\bigr),
  \qquad
@@ -7615,10 +7604,10 @@ shifted by one, because \eqref{eq:tm-prefix-eq-coeff} matches $\sigma_{n+1}$ wit
 the grid index $m$ must be read as labelling the \emph{center} of a cell of width $2^{-n}$,
 not the left endpoint of a cell of width $2^{-(n+1)}$.
 
-Recall from \eqref{eq:random-Y} and \eqref{eq:up-density} that $\Up$ is the density of
-$Y=\sum_{i\ge0}V_i2^{-i-1}$, with $V_i$ independent and uniform on $[-1,1]$.  Replacing each
-uniform variable by a lattice uniform variable produces an exact finite discrete law.
-Concretely, let $Z_1,\ldots,Z_n$ be independent with $Z_i$ uniform on
+Recall the step approximants \(\mathcal W_n\) from \eqref{eq:four-step-approximant} and
+their pointwise convergence \eqref{eq:four-step-limit}.  Their bounded-partition
+interpretation can be expressed through an exact finite discrete law: let
+$Z_1,\ldots,Z_n$ be independent with $Z_i$ uniform on
 $\{0,1,\ldots,2^i-1\}$, so that $Z_1+\cdots+Z_n$ has generating polynomial $\mathcal P_n$ of
 \eqref{eq:tm-approx-poly} and total mass $\mathcal P_n(1)=2^{\binom{n+1}2}$.  Place the mass of the
 monomial $z^m$ at
@@ -10808,9 +10797,9 @@ convolution must stop at $k=m$, the factors with $k>m$ being absent.  Since
 $\sinc(\pi z)=\prod_{k\ge1}\cos(\pi z/2^{k})$, letting $m\to\infty$ in
 \eqref{eq:aud-stage-transform} recovers exactly the sinc product \eqref{eq:sinc-product},
 which is the correct statement that $\mu_m$ converges weakly to the measure with density
-$\Up$.  The continuous counterpart
-used in this article is the finite box convolution \eqref{eq:finite-convolution}, whose
-stage dependence is explicit in the notation.
+$\Up$.  This is precisely the finite atomic construction
+\eqref{eq:finite-atomic-law}--\eqref{eq:finite-atomic-weak}, whose stage dependence is
+explicit in the notation.
 
 \subsubsection{Half weights at shared dyadic endpoints}
 
@@ -11392,9 +11381,10 @@ Probability law &
 That $F$ is a distribution function at all, together with positivity, strict monotonicity on
 $[0,1]$, the symmetry \eqref{eq:F-symmetry}, and the exact mean and variance.  These are
 invisible in every analytic presentation.\\
-Infinite convolution &
-Why the function is $C^\infty$ but nowhere analytic: each additional box kernel buys one more
-derivative, and no finite stage buys analyticity \eqref{eq:finite-convolution}.\\
+Finite atomic approximation &
+Why weak convergence can be proved through characteristic functions: the finite product
+\eqref{eq:finite-atomic-char} converges to the transform of the probability measure with
+density \(\Up\), yielding \eqref{eq:finite-atomic-weak}.\\
 Sinc product &
 That the transform is entire of exponential type with superalgebraic decay, and that its
 zeros at the nonzero integers are the exact mechanism behind the partitions of unity
@@ -11505,30 +11495,6 @@ $n$ & $F(2^{-n})$ & $\vtwo(F(2^{-n}))$ & $R_n$\\
 The valuation column is computed from \eqref{eq:valuation-inverse}; it is not obtained by
 factoring the displayed decimal-sized denominators.  This is exactly the kind of redundancy
 that makes the table useful as a test vector.
-
-\begin{example}[A worked consistency check at $F(1/16)$]    \label{ex:mom-f16-check}
-The half-moment recurrence \eqref{eq:d-recurrence} at $n=4$ reads
-$5(2^4-1)d_4=\sum_{k=0}^{3}\binom5kd_k$.  With the values $d_0=1$, $d_1=\tfrac12$,
-$d_2=\tfrac5{18}$, $d_3=\tfrac16$ from \eqref{eq:d-first-values},
-\begin{equation*}
- \sum_{k=0}^{3}\binom5kd_k
- =1+5\cdot\frac12+10\cdot\frac5{18}+10\cdot\frac16
- =\frac{18+45+50+30}{18}
- =\frac{143}{18},
-\end{equation*}
-so $75\,d_4=\tfrac{143}{18}$ and $d_4=\tfrac{143}{1350}$, in agreement with
-\eqref{eq:d-first-values}.  Now apply \eqref{eq:F-inverse-power} with $\binom42=6$:
-\begin{equation*}
- F\!\left(\frac1{16}\right)=\frac{d_4}{4!\,2^{\binom42}}
- =\frac{143/1350}{24\cdot64}
- =\frac{143}{2073600},
-\end{equation*}
-which is the entry for $n=4$ in \eqref{eq:F-inverse-table}.  The valuation formula
-\eqref{eq:valuation-inverse} predicts
-$\vtwo(F(2^{-4}))=-6-1-\vtwo(4!)=-6-1-3=-10$, and indeed
-$2073600=2^{10}\cdot2025$ with $2025$ odd and $143$ odd.  The two computations are
-independent, which is what makes this a test rather than a restatement.
-\end{example}
 
 \subsection{Half-base $q$-products and the $q$-binomial layer}
 \label{subsec:qs-data}
@@ -12587,8 +12553,9 @@ $\Up$ by the fold.\\
 1982 paper, Lemma 1 &
 The stage-$m$ discrete convolution measures converge weak-$*$ to the measure with density
 $\Up$. &
-\Cref{sec:probability}, with the density form \eqref{eq:finite-convolution}.  Corrected: the
-printed convolution index is finite, see \Cref{sec:aud-source-defects}.\\
+\Cref{sec:probability}, via the finite atomic laws
+\eqref{eq:finite-atomic-law}--\eqref{eq:finite-atomic-weak}.  Corrected: the printed
+convolution index is finite, see \Cref{sec:aud-source-defects}.\\
 
 1982 paper, Theorem 2 &
 $\Up$ is the limit of the explicit step functions attached to the generating polynomials. &
