@@ -8,40 +8,49 @@ record, not a mathematical exposition.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-exposition-integration /
   C:\Users\vresh\.codex\worktrees\8f3f\ProveIt / EVO
-fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
-HEAD and dirty paths: parent of this follow-up registry commit is merge
-  892fe5b1f, which combines the registry checkpoint with pinned main ebe4bd844;
-  no merge is in progress; apart from this registry update, the only dirty
-  paths are two untracked, byte-identical PDF build copies named
+fetched main SHA: cffe248089cf040ce5f9c51b7e2380a32b71c0eb
+HEAD and dirty paths: parent of this registry update is cffe24808 after two
+  conflict-free fast-forwards from a49db7313 through 4c6bbac41; no merge is in
+  progress; apart from this registry update, the only dirty paths are two
+  untracked, byte-identical PDF build copies named
   Fabius_Function_and_Rvachev_Up_build.pdf and
   non-formalized-research-frontiers_build.pdf
 writing (exact paths):
   Analysis/FabiusFunction/docs/registry/codex-fabius-exposition-integration.md
-expected declarations or document claims: none outstanding relative to
-  current main; historical branch-only content is inventoried below
+expected declarations or document claims: no Lean edits; request a later
+  documentation lease for five claim-level frontier donor clusters and four
+  primary citation/attribution corrections identified below
 completed commits: 150bdcd01 (proof-backed rewrite), bd55f04fe,
   e97e14f14, c2fa48111, 0157e504f, and 5e0505bf2 (successive semantic
   integrations); ccf81cf83 merged the feature tip into main
-validated (exact command, SHA/state, exit code): git merge --ff-only
-  bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab, exit 0; git merge --no-ff
-  ebe4bd8442507df7b629aa87669fa6bb92e2f19e, exit 0 with no conflicts;
-  git diff --check and git diff --cached --check, exit 0;
+validated (exact command, SHA/state, exit code): git merge --no-edit
+  origin/main fast-forwarded a49db7313 -> 4c6bbac41 and 4c6bbac41 ->
+  cffe24808, both exit 0 with no conflicts; git diff --check and exact
+  declaration/module source audits, exit 0; the primary audit resolved all
+  414 unique cited declaration tokens and all 96 cited modules, with zero
+  missing, private-only, ambiguous, or out-of-aggregate results; all 26 cited
+  declarations in files changed since 5e0505bf2 retain their signatures;
   pdfinfo reports the committed primary as 57 A4 pages / 1,007,180 bytes and
   the committed frontier as 203 A4 pages / 2,169,265 bytes; SHA-256 confirms
   each untracked build copy is identical to its committed PDF. Documentation
   validation recorded at 5e0505bf2 is detailed below.
-not yet validated: no fresh exact-SHA aggregate Lean build at ebe4bd844; no
-  post-generalizations rerun of the primary declaration/module citation audit;
-  no build was started after the coordinator froze documentation and withheld
-  this machine's build token
-requested integration or lease: none; the documentation tranche is already
-  on main and this workstream should be treated as closed
-conflicts / dependencies: no unresolved Git or semantic-document conflict;
-  current main contains the feature tip through ccf81cf83. The two redundant
-  untracked build copies remain untouched under the preservation freeze.
-next bounded step: push this registry-only status commit to the feature branch,
-  then wait for the coordinator; do not edit, rebuild, replay, cherry-pick, or
-  remerge the exposition tranche
+not yet validated: the source audit is not Lean elaboration, an aggregate
+  build, or a sentence-by-sentence proof-equivalence certificate; no fresh
+  exact-current-SHA aggregate Lean build has run; no TeX/PDF build was started
+  after the coordinator froze documentation and withheld this machine's token
+requested integration or lease: assign this branch the exact frontier
+  README/TeX/PDF paths for a semantic union using current main as the backbone
+  and 8142ccb19 only as a donor; then assign the exact primary TeX/PDF pair for
+  the narrow corrections below; assign one serialized build token for three
+  pdflatex passes per changed document and the final immutable-SHA Lean gate
+conflicts / dependencies: no unresolved Git conflict. The board's 202-page
+  frontier count is stale: the committed artifact is 203 pages. The board says
+  reconciliation remains pending, so the earlier registry claim that this
+  workstream was closed is retracted. The two redundant untracked build copies
+  remain untouched under the preservation freeze.
+next bounded step: push this registry-only audit checkpoint to the feature
+  branch, then remain read-only until the coordinator grants exact paths and a
+  build token; never select either binary PDF as a conflict resolution
 ```
 
 Source-only reviewers remained read-only. They did not edit, stage, build,
@@ -49,14 +58,16 @@ commit, merge, or push.
 
 ## Current disposition
 
-There is no remaining extraction set:
+The original draft-disposition tranche is complete, but the campaign-wide
+document reconciliation and final formal-validation gate are not. The
+following file-level facts remain established:
 
 - Feature checkpoint `5e0505bf23ac0e348dea8238af51567fa648e045` is an
-  ancestor of pinned main `ebe4bd8442507df7b629aa87669fa6bb92e2f19e`.
+  ancestor of pinned main `cffe248089cf040ce5f9c51b7e2380a32b71c0eb`.
 - Main merge `ccf81cf8399630b64492460d2b39ccaacc8b191a` has
   `5e0505bf2` as its second parent.
 - The primary TeX/PDF, canonical frontier TeX/PDF, and frontier README are
-  byte-identical between `5e0505bf2` and `ebe4bd844`.
+  byte-identical between `5e0505bf2` and `cffe24808`.
 - The requested
   `docs/Fabius_Function_and_Rvachev_Up/drafts/` directory is absent.
 - Current main preserves the strict placement rules and the live coordinator
@@ -408,3 +419,169 @@ Current untracked build copies are redundant, not divergent:
 
 Each hash exactly matches the corresponding committed canonical PDF. The
 copies are deliberately neither staged nor removed under the freeze.
+
+## Continuation audit at `cffe24808`
+
+Three independent read-only lanes re-audited the current artifacts after the
+coordinator requested a later semantic reconciliation. None edited, staged,
+built, committed, merged, or pushed. The Lean and document trees at current
+main are byte-identical to the audited `a49db7313` pin; the intervening commits
+change only another branch's registry.
+
+The requirement audit confirms that the feature branch, original draft
+inventory and disposition, deletion of the requested draft inbox, placement
+rules, primary/frontier TeX--PDF pairs, historical three-pass builds, and
+frequent detailed checkpoint pushes all have direct repository evidence. It
+does not certify the goal complete. Two gates remain:
+
+1. reconcile the current 203-page frontier semantically with the independent
+   172-page checkpoint without losing either side's unique material; and
+2. close the primary's local traceability defects and then perform final
+   immutable-SHA source/build validation.
+
+The coordinator board calls the canonical frontier 202 pages. That number
+describes `0157e504f` before the curvature tranche. Checkpoint `5e0505bf2`
+rebuilt the same canonical pair at 203 pages, and its TeX/PDF blobs remain the
+ones committed on current main.
+
+## Current-primary source correspondence audit
+
+The full primary citation surface resolves against current public Lean source:
+
+- 441 `\lean{...}` occurrences, 416 unique complete arguments, and 414 unique
+  first-token declaration names;
+- zero parse failures, missing declarations, private-only matches, or ambiguous
+  public matches;
+- 189 `\path{*.lean}` occurrences and 96 unique modules, with zero missing or
+  ambiguous modules; and
+- all 96 modules occur in the 190-file aggregate import closure.
+
+Twenty-six cited declarations live in files changed since `5e0505bf2`. A
+signature-and-hypothesis drift audit found that all remain public and retain
+the cited signatures. The Lower-Lambert, Taylor, dyadic, Thue--Morse,
+early-approximant, saddle, and sharp-asymptotic changes are additive or retain
+the old APIs as exact wrappers. This is strong current-source evidence, but it
+is not a Lean/Lake build and the explicit citation registry alone cannot prove
+sentence-level equivalence for every uncited prose consequence.
+
+The audit found one concrete attribution defect and two local traceability
+clusters. All underlying mathematics already has exact public counterparts;
+no Lean edit is needed.
+
+1. Primary TeX lines 1977--1981 call
+   `fabiusDyadicUnitAux_eq_of_bitRecurrence` a total recursive correctness
+   theorem. `DyadicCorrectness.lean:540--544` proves only the auxiliary
+   interior case with `a < 2 ^ n`. The display is correctly supported for all
+   signed numerators by `fabiusDyadicValue_cast` in
+   `PaperStatements.lean:200--203`; endpoint-inclusive unit-grid plumbing is
+   `fabiusDyadicUnit_eq_fabiusDyadic_of_bitRecurrence` at
+   `DyadicCorrectness.lean:591--605`. The prose should distinguish these three
+   scopes.
+2. Primary TeX lines 2028--2048 state refinement, representation invariance,
+   and exact dyadic recognition without adjacent pointers. Add the exact
+   `DyadicCorrectness.lean` declarations
+   `extendedFabiusDyadicValue_refine`,
+   `extendedFabiusDyadicValue_refine_iter`,
+   `fabiusDyadicValue_eq_of_rat_eq`,
+   `extendedFabiusDyadicValue_eq_of_rat_eq`,
+   `fabiusDyadicUnit_eq_of_rat_eq`, and `dyadicExponent?_exists_iff`.
+3. Primary TeX lines 3420--3471 state the Glaisher count, exact logarithm
+   argument and positivity, exact base-two logarithm, binomial-logarithm bit
+   formula, and sign formula without adjacent pointers. Add
+   `card_oddBinomialIndices` from `Parity.lean` and
+   `thueMorseLogIntegerArgument_eq_two_pow`,
+   `thueMorseLogIntegerArgument_pos`,
+   `log2_thueMorseLog2Argument`, `thueMorseBit_le_one`,
+   `thueMorseSign_eq_one_sub_two_mul_bit`, and
+   `thueMorseBit_eq_log2_binomialParity_formula` from
+   `ThueMorseBinomialLog.lean`.
+4. Add `ThueMorseBinomialLog.lean` to the principal Thue--Morse module-map row.
+
+These are narrow corrections to the primary TeX and its regenerated PDF, not
+a reason to restore any frontier mathematics to the primary.
+
+## Canonical-frontier semantic reconciliation
+
+Current main's canonical frontier TeX blob is
+`3108624f90ac806fa3aa3edcc1159afccb8cd64f`. The independent 172-page source
+checkpoint is `8142ccb1916075a6191ed4870529e14ec42e9cc5`, TeX blob
+`181b746d51a1620956d1ec04a1d78439bbe77499`; the latest advertised branch tip
+`825afaed53c29c0086bfc115fe23f8b88f9075fc` still carries those exact TeX
+bytes. The current source must remain the semantic backbone. It alone retains
+the post-audit Primary Exposition Gap Register and several later claim/status
+corrections, restored q-operator/Appell/Bromwich material, independent
+repeated-integration material, and the fuller Small-Argument dossier.
+
+The 172-page checkpoint is nevertheless the donor for five genuinely absent
+clusters:
+
+1. `dyadicasym:eq:Cmn-def`, including eventual positivity before the following
+   real logarithm. The current source uses this normalized mass in the
+   fixed-ray separation without defining it.
+2. `tmrates:prop:effective-floor-certificate` and its five associated
+   first-order, second-order, remainder, and uniform-profile labels. Keep this
+   explicitly frontier/derived: no exact public Lean declaration packages the
+   stated finite constants.
+3. The definition of the dilation operator immediately before the effective
+   certificate; current text uses that notation without defining it.
+4. The independent recurrence-path specialization following
+   `dyadicweb:eq:ordered-composition`. Import it as an alternate derivation,
+   without repeating the already retained final formula.
+5. The updated `inverse:sec:specialist-open` obligation ledger, merged into the
+   canonical `smallarg:sec:open` rather than duplicated. It must distinguish
+   the now-formalized mass top-jet dependence from the still-derived
+   logarithmic transfer, and retain the outstanding composition,
+   higher-correction, effective-constant, convergence, summability, and
+   optimal-truncation obligations.
+
+Several other apparent donor-only labels are editorial relocations, not new
+mathematics. Reconciliation should use cross-references or status edits rather
+than repeat them:
+
+- the probability-to-product handoff is already split between the canonical
+  probability and Laplace-product sections;
+- the inverse/saddle notation crosswalk already appears in the canonical
+  Small-Argument part;
+- the right-endpoint all-orders transfer, Lambert-phase expansion, and exact
+  period means already occur canonically; and
+- the ordered-composition exponential and logarithm formulas already occur in
+  canonical recurrence propositions, but their general closed sums lack a
+  single exact public Lean theorem. Preserve the recurrences as Formalized and
+  label the composition consequences as Derived rather than presenting the
+  entire propositions under one formalized status.
+
+Do not replace the canonical source with the shorter checkpoint, resurrect its
+status regressions, or select either PDF wholesale. In particular preserve the
+exact formalized midpoint/curvature/endpoint inverse results, the plain
+exponential complex-shift bound, finite translation invariance, all twelve
+provenance hashes, the complete gap register, and every canonical-only claim
+cluster inventoried earlier in this registry.
+
+## Exact lease and final-gate request
+
+The requested write lease is deliberately narrow and staged:
+
+1. Frontier semantic union:
+   `docs/non-formalized-research-frontiers/README.md`,
+   `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex`,
+   and its matching `.pdf`.
+2. Primary traceability cleanup:
+   `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+   and its matching `.pdf`.
+3. No Lean, root aggregate, `AGENTS.md`, campaign `README.md`, coordinator
+   board, or other registry path is requested.
+
+After the semantic TeX edits, request the machine build token for exactly three
+successful `pdflatex` passes per changed document. Require settled references
+and citations, unique labels, no rerun request, no overfull box, no rendered
+`??`, clean `git diff --check`, embedded fonts, text/raster extraction, and
+visual inspection of every changed cluster and document opener. Record final
+page counts, Git blobs, and SHA-256 hashes; do not expect either predecessor
+PDF hash to survive.
+
+At the final immutable combined SHA, rerun the declaration/module audit, the
+source trust and axiom-set audit, and the serialized aggregate
+`lake build +FabiusFunction` gate under the assigned owner/token. Separately
+record the limits of automation and a human claim-level audit of mathematical
+prose. Only those gates can support the universal completion claim required by
+this workstream.
