@@ -24,6 +24,15 @@ factor of `s`. -/
 noncomputable def gammaZetaRegularProduct (s : ℂ) : ℂ :=
   Complex.Gamma (1 + s) * (s * riemannZeta (1 + s))
 
+/-- Away from the origin, the regular product is the singular Gamma--zeta
+product multiplied by the two powers of `s` that cancel its double pole. -/
+lemma gammaZetaRegularProduct_eq_sq_mul (s : ℂ) (hs : s ≠ 0) :
+    gammaZetaRegularProduct s =
+      s ^ 2 * Complex.Gamma s * riemannZeta (1 + s) := by
+  unfold gammaZetaRegularProduct
+  rw [show 1 + s = s + 1 by ring, Complex.Gamma_add_one s hs]
+  ring
+
 /-- The second-order Taylor expansion of the regular Gamma--zeta product.
 
 Its quadratic coefficient is the negative of `gammaZetaConstant`. -/
@@ -90,6 +99,8 @@ lemma gammaZetaRegularProduct_taylor_second :
   dsimp [gammaZetaRegularProduct, G, Z, P, Q, C]
   ring
 
+/-- Dividing the regular product's quadratic defect by `s²` recovers its
+finite part at the punctured origin. -/
 theorem tendsto_gammaZetaRegularProduct_finitePart :
     Tendsto (fun s : ℂ => (1 - gammaZetaRegularProduct s) / s ^ 2)
       (𝓝[≠] 0) (𝓝 (gammaZetaConstant : ℂ)) := by
@@ -113,11 +124,12 @@ theorem tendsto_complexGamma_mul_zeta_finitePart :
   apply tendsto_gammaZetaRegularProduct_finitePart.congr'
   filter_upwards [self_mem_nhdsWithin] with s hs
   have hs0 : s ≠ 0 := by simpa using hs
-  unfold gammaZetaRegularProduct
-  rw [show 1 + s = s + 1 by ring, Complex.Gamma_add_one s hs0]
+  rw [gammaZetaRegularProduct_eq_sq_mul s hs0]
   field_simp [hs0]
   ring
 
+/-- Positive real numbers approach the origin inside the punctured complex
+neighborhood under the canonical embedding. -/
 lemma tendsto_ofReal_nhdsGT_punctured :
     Tendsto (fun a : ℝ => (a : ℂ)) (𝓝[>] 0) (𝓝[≠] 0) := by
   rw [tendsto_nhdsWithin_iff]

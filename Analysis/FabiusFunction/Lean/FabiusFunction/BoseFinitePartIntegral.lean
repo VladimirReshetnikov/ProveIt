@@ -3,6 +3,21 @@ import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
+/-!
+# The finite-part integral of the logarithmic Bose kernel
+
+The Mellin transform of `log (1 - exp (-x))` has a double pole at the origin.
+This module realizes its finite part as a convergent split integral.  Near zero
+the singular `log x` term is removed with `negativeLaplaceKernel`; near infinity
+the original logarithmic kernel is divided by `x` and controlled by exponential
+decay.  Dominated convergence then identifies the split integral with
+`gammaZetaConstant`.
+
+The definitions `boseFinitePartSmallKernel` and
+`boseFinitePartLargeKernel` are also the kernel interface used by the later
+periodic-mean and Fourier-coefficient calculations.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology Interval
@@ -10,14 +25,28 @@ open Set Filter MeasureTheory Asymptotics
 
 namespace Fabius
 
+/-- The logarithmic Bose kernel `log (1 - exp (-x))`. -/
 noncomputable def boseLogKernel (x : ℝ) : ℝ :=
   Real.log (1 - Real.exp (-x))
 
+/-- The regularized kernel near zero, obtained after removing `log x`. -/
 noncomputable def boseFinitePartSmallKernel (x : ℝ) : ℝ :=
   negativeLaplaceKernel x / x
 
+/-- The integrable large-`x` kernel `log (1 - exp (-x)) / x`. -/
 noncomputable def boseFinitePartLargeKernel (x : ℝ) : ℝ :=
   boseLogKernel x / x
+
+/-- The logarithmic Bose kernel is continuous on the positive half-line. -/
+lemma continuousOn_boseLogKernel :
+    ContinuousOn boseLogKernel (Ioi 0) := by
+  intro x hx
+  change 0 < x at hx
+  unfold boseLogKernel
+  apply ContinuousAt.continuousWithinAt
+  have hnum : 1 - Real.exp (-x) ≠ 0 := by
+    exact (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith))).ne'
+  fun_prop (disch := assumption)
 
 lemma continuousOn_boseFinitePartSmallKernel :
     ContinuousOn boseFinitePartSmallKernel (Ioi 0) := by
@@ -33,6 +62,15 @@ lemma continuousOn_boseFinitePartSmallKernel :
   have hratio : (1 - Real.exp (-x)) / x ≠ 0 := div_ne_zero hnum hx0
   fun_prop (disch := assumption)
 
+/-- The small finite-part kernel is bounded by one at every positive argument.
+The upper cutoff used in the split integral is not needed for this estimate. -/
+lemma abs_boseFinitePartSmallKernel_le_one_of_pos
+    (x : ℝ) (hx : 0 < x) :
+    |boseFinitePartSmallKernel x| ≤ 1 := by
+  unfold boseFinitePartSmallKernel
+  rw [abs_div, abs_of_pos hx]
+  exact (div_le_one hx).mpr (abs_negativeLaplaceKernel_le x hx)
+
 lemma integrableOn_boseFinitePartSmallKernel :
     IntegrableOn boseFinitePartSmallKernel (Ioc 0 1) := by
   have hone : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Ioc 0 1) :=
@@ -45,17 +83,15 @@ lemma integrableOn_boseFinitePartSmallKernel :
         measurableSet_Ioc
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx
     rw [Real.norm_eq_abs]
-    unfold boseFinitePartSmallKernel
-    rw [abs_div, abs_of_pos hx.1]
-    have h := abs_negativeLaplaceKernel_le x hx.1
-    simpa only [norm_one] using (div_le_one hx.1).mpr h
+    simpa only [norm_one] using
+      abs_boseFinitePartSmallKernel_le_one_of_pos x hx.1
 
+/-- Compatibility form of `abs_boseFinitePartSmallKernel_le_one_of_pos` on the
+small integration interval. -/
 lemma abs_boseFinitePartSmallKernel_le_one
     (x : ℝ) (hx : x ∈ Ioc (0 : ℝ) 1) :
-    |boseFinitePartSmallKernel x| ≤ 1 := by
-  unfold boseFinitePartSmallKernel
-  rw [abs_div, abs_of_pos hx.1]
-  exact (div_le_one hx.1).mpr (abs_negativeLaplaceKernel_le x hx.1)
+    |boseFinitePartSmallKernel x| ≤ 1 :=
+  abs_boseFinitePartSmallKernel_le_one_of_pos x hx.1
 
 lemma continuousOn_boseFinitePartLargeKernel :
     ContinuousOn boseFinitePartLargeKernel (Ioi 0) := by
@@ -70,50 +106,55 @@ lemma continuousOn_boseFinitePartLargeKernel :
     exact Real.exp_lt_exp.mpr (by linarith)
   fun_prop (disch := assumption)
 
-lemma abs_boseLogKernel_le_const_exp (x : ℝ) (hx : 1 ≤ x) :
+/-- Exponential domination of the Bose kernel beyond an arbitrary positive
+cutoff. -/
+lemma abs_boseLogKernel_le_const_exp_of_le
+    (c x : ℝ) (hc : 0 < c) (hx : c ≤ x) :
     |boseLogKernel x| ≤
-      (1 / (1 - Real.exp (-1))) * Real.exp (-x) := by
-  have hx0 : 0 < x := zero_lt_one.trans_le hx
+      (1 / (1 - Real.exp (-c))) * Real.exp (-x) := by
+  have hx0 : 0 < x := hc.trans_le hx
   have hH : |boseLogKernel x| ≤
       Real.exp (-x) / (1 - Real.exp (-x)) := by
     have h := abs_negativeLaplaceForwardTerm_le x hx0 0
     simpa [negativeLaplaceForwardTerm, boseLogKernel] using h
-  have he : Real.exp (-x) ≤ Real.exp (-1) :=
+  have he : Real.exp (-x) ≤ Real.exp (-c) :=
     Real.exp_le_exp.mpr (by linarith)
-  have hd0 : 0 < 1 - Real.exp (-1) := by
+  have hd0 : 0 < 1 - Real.exp (-c) := by
     rw [sub_pos, ← Real.exp_zero]
-    exact Real.exp_lt_exp.mpr (by norm_num)
-  have hd : 1 - Real.exp (-1) ≤ 1 - Real.exp (-x) :=
+    exact Real.exp_lt_exp.mpr (by linarith)
+  have hd : 1 - Real.exp (-c) ≤ 1 - Real.exp (-x) :=
     sub_le_sub_left he 1
   calc
     |boseLogKernel x| ≤ Real.exp (-x) / (1 - Real.exp (-x)) := hH
-    _ ≤ 1 / (1 - Real.exp (-1)) * Real.exp (-x) := by
+    _ ≤ 1 / (1 - Real.exp (-c)) * Real.exp (-x) := by
       rw [one_div_mul_eq_div]
       exact div_le_div_of_nonneg_left (Real.exp_nonneg _) hd0 hd
+
+/-- Exponential domination beyond the unit cutoff. -/
+lemma abs_boseLogKernel_le_const_exp (x : ℝ) (hx : 1 ≤ x) :
+    |boseLogKernel x| ≤
+      (1 / (1 - Real.exp (-1))) * Real.exp (-x) := by
+  exact abs_boseLogKernel_le_const_exp_of_le 1 x (by norm_num) hx
 
 lemma integrableOn_boseLogKernel_Ioi_one :
     IntegrableOn boseLogKernel (Ioi 1) := by
   let c : ℝ := 1 / (1 - Real.exp (-1))
-  have hcden : 0 < 1 - Real.exp (-1) := by
-    rw [sub_pos, ← Real.exp_zero]
-    exact Real.exp_lt_exp.mpr (by norm_num)
   have hc0 : 0 ≤ c := by
     dsimp [c]
-    positivity
+    exact (one_div_pos.mpr
+      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num)))).le
   have hg : IntegrableOn (fun x : ℝ => c * Real.exp (-x)) (Ioi 1) :=
     (integrableOn_exp_neg_Ioi 1).const_mul c
   change Integrable boseLogKernel (volume.restrict (Ioi 1))
   change Integrable (fun x : ℝ => c * Real.exp (-x))
     (volume.restrict (Ioi 1)) at hg
   apply hg.mono
-  · exact ((continuousOn_const.sub
-      (Real.continuous_exp.comp_continuousOn continuousOn_neg)).log
-        (fun x hx => by
-          change 1 < x at hx
-          apply (sub_pos.mpr ?_).ne'
-          rw [← Real.exp_zero]
-          exact Real.exp_lt_exp.mpr (by linarith))).aestronglyMeasurable
-            measurableSet_Ioi
+  · have hsubset : Ioi (1 : ℝ) ⊆ Ioi 0 := by
+      intro x hx
+      change 1 < x at hx
+      exact zero_lt_one.trans hx
+    exact (continuousOn_boseLogKernel.mono hsubset).aestronglyMeasurable
+      measurableSet_Ioi
   · filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
     change 1 < x at hx
     rw [Real.norm_eq_abs]
@@ -123,12 +164,10 @@ lemma integrableOn_boseLogKernel_Ioi_one :
 lemma integrableOn_boseFinitePartLargeKernel :
     IntegrableOn boseFinitePartLargeKernel (Ioi 1) := by
   let c : ℝ := 1 / (1 - Real.exp (-1))
-  have hcden : 0 < 1 - Real.exp (-1) := by
-    rw [sub_pos, ← Real.exp_zero]
-    exact Real.exp_lt_exp.mpr (by norm_num)
   have hc0 : 0 ≤ c := by
     dsimp [c]
-    positivity
+    exact (one_div_pos.mpr
+      (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num)))).le
   have hg : IntegrableOn (fun x : ℝ => c * Real.exp (-x)) (Ioi 1) :=
     (integrableOn_exp_neg_Ioi 1).const_mul c
   change Integrable boseFinitePartLargeKernel (volume.restrict (Ioi 1))
@@ -144,26 +183,13 @@ lemma integrableOn_boseFinitePartLargeKernel :
     change 1 < x at hx
     rw [Real.norm_eq_abs]
     have hx0 : 0 < x := zero_lt_one.trans hx
-    have hH : |boseLogKernel x| ≤
-        Real.exp (-x) / (1 - Real.exp (-x)) := by
-      have h := abs_negativeLaplaceForwardTerm_le x hx0 0
-      simpa [negativeLaplaceForwardTerm, boseLogKernel] using h
-    have he : Real.exp (-x) ≤ Real.exp (-1) :=
-      Real.exp_le_exp.mpr (by linarith)
-    have hd0 : 0 < 1 - Real.exp (-1) := hcden
-    have hd : 1 - Real.exp (-1) ≤ 1 - Real.exp (-x) :=
-      sub_le_sub_left he 1
-    have hratio : Real.exp (-x) / (1 - Real.exp (-x)) ≤
-        c * Real.exp (-x) := by
-      dsimp [c]
-      rw [one_div_mul_eq_div]
-      exact div_le_div_of_nonneg_left (Real.exp_nonneg _) hd0 hd
+    have hH : |boseLogKernel x| ≤ c * Real.exp (-x) := by
+      simpa only [c] using abs_boseLogKernel_le_const_exp x hx.le
     calc
       |boseFinitePartLargeKernel x| = |boseLogKernel x| / x := by
         rw [boseFinitePartLargeKernel, abs_div, abs_of_pos hx0]
       _ ≤ |boseLogKernel x| := div_le_self (abs_nonneg _) (by linarith)
-      _ ≤ Real.exp (-x) / (1 - Real.exp (-x)) := hH
-      _ ≤ c * Real.exp (-x) := hratio
+      _ ≤ c * Real.exp (-x) := hH
       _ = ‖c * Real.exp (-x)‖ := by
         rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hc0 (Real.exp_nonneg _))]
 
@@ -178,9 +204,7 @@ theorem tendsto_small_regularized_bose_integral :
       (continuousOn_boseFinitePartSmallKernel.mono
         (Ioc_subset_Ioi_self : Ioc (0 : ℝ) 1 ⊆ Ioi 0))).aestronglyMeasurable
           measurableSet_Ioc
-  · filter_upwards [self_mem_nhdsWithin,
-      (eventually_le_nhds (show (0 : ℝ) < 1 by norm_num)).filter_mono
-        nhdsWithin_le_nhds] with a ha0 ha1
+  · filter_upwards [self_mem_nhdsWithin] with a ha0
     filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx
     rw [Real.norm_eq_abs, abs_mul]
     have hxa : 0 ≤ x ^ a := (Real.rpow_pos_of_pos hx.1 _).le
@@ -406,6 +430,8 @@ lemma integral_rpow_sub_one_mul_log_Ioc (a : ℝ) (ha : 0 < a) :
   rw [intervalIntegral.integral_of_le zero_le_one] at hres
   simpa using hres
 
+/-- On the positive half-line, the Bose kernel splits into its regularized
+small-scale part and the explicit logarithmic singularity. -/
 lemma boseLogKernel_eq_negativeLaplaceKernel_add_log
     (x : ℝ) (hx : 0 < x) :
     boseLogKernel x = negativeLaplaceKernel x + Real.log x := by
@@ -416,6 +442,18 @@ lemma boseLogKernel_eq_negativeLaplaceKernel_add_log
   rw [boseLogKernel, negativeLaplaceKernel, Real.log_div hnum hx.ne']
   ring
 
+/-- The two finite-part kernels differ exactly by `log x / x` on the positive
+half-line. -/
+lemma boseFinitePartLargeKernel_eq_small_add_log_div
+    (x : ℝ) (hx : 0 < x) :
+    boseFinitePartLargeKernel x =
+      boseFinitePartSmallKernel x + Real.log x / x := by
+  unfold boseFinitePartLargeKernel boseFinitePartSmallKernel
+  rw [boseLogKernel_eq_negativeLaplaceKernel_add_log x hx]
+  ring
+
+/-- Weighted form of the small-scale Bose decomposition used to split its
+Mellin integral at one. -/
 lemma small_weighted_bose_decomposition (a x : ℝ) (hx : 0 < x) :
     x ^ (a - 1) * boseLogKernel x =
       x ^ a * boseFinitePartSmallKernel x +
@@ -443,6 +481,8 @@ lemma integrableOn_small_weighted_bose (a : ℝ) (ha : 0 < a) :
     exact (small_weighted_bose_decomposition a x hx.1).symm
   · exact measurableSet_Ioc
 
+/-- Split the regularized Mellin integral at one.  The double-pole subtraction
+is exactly the elementary integral of `x^(a-1) log x` over `(0,1]`. -/
 lemma bose_mellin_regularized_split (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
     (∫ x : ℝ in Ioi 0, x ^ (a - 1) * boseLogKernel x) + 1 / a ^ 2 =
       (∫ x : ℝ in Ioc 0 1, x ^ a * boseFinitePartSmallKernel x) +
@@ -477,6 +517,8 @@ lemma bose_mellin_regularized_split (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
   rw [hsplit]
   ring
 
+/-- For `0 < a ≤ 1`, the Gamma--zeta finite part equals the two convergent
+regularized integrals before taking the limit `a → 0+`. -/
 lemma gamma_zeta_finitePart_eq_regularized_integrals
     (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
     -Real.Gamma a * (riemannZeta ((1 + a : ℝ) : ℂ)).re + 1 / a ^ 2 =
