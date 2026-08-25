@@ -561,6 +561,38 @@ private lemma complex_exp_mul_hasDerivAt (z : ℂ) (x : ℝ) :
       ((hasDerivAt_id (x : ℂ)).const_mul z).comp_ofReal
   exact hlin.cexp
 
+private lemma shifted_laplace_plus
+    (F : BoundedFabius) (z : ℂ) :
+    2 * (∫ t in (0 : ℝ)..1,
+      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
+  let g : ℝ → ℂ := fun y =>
+    (rvachevUp F y : ℂ) * Complex.exp (z * ((y + 1) / 2))
+  have hsub0 := intervalIntegral.smul_integral_comp_mul_sub
+    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
+  have hsub : 2 * (∫ t in (0 : ℝ)..1,
+      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
+      ∫ y in (-1 : ℝ)..1, g y := by
+    have hcongr : (∫ t in (0 : ℝ)..1, g (2 * t - 1)) =
+        ∫ t in (0 : ℝ)..1,
+          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
+      apply intervalIntegral.integral_congr
+      intro t _ht
+      dsimp [g]
+      congr 2
+      congr 1
+      push_cast
+      ring
+    rw [hcongr] at hsub0
+    convert hsub0 using 1 <;> norm_num
+  rw [hsub, rvachevLaplace, ← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro y _hy
+  dsimp [g]
+  have hz : z * (((y : ℂ) + 1) / 2) = z / 2 + (z / 2) * y := by ring
+  rw [hz, Complex.exp_add]
+  ring
+
 private lemma complexGeneratingFunction_eq_exp_mul_laplace
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
     complexGeneratingFunction F z =
@@ -621,67 +653,7 @@ private lemma complexGeneratingFunction_eq_exp_mul_laplace
         (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
     rw [complexGeneratingFunction]
     linear_combination hparts
-  let g : ℝ → ℂ := fun y =>
-    (rvachevUp F y : ℂ) * Complex.exp (z * ((y + 1) / 2))
-  have hsub0 := intervalIntegral.smul_integral_comp_mul_sub
-    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
-  have hsub : 2 * (∫ t in (0 : ℝ)..1,
-      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
-      ∫ y in (-1 : ℝ)..1, g y := by
-    have hcongr : (∫ t in (0 : ℝ)..1, g (2 * t - 1)) =
-        ∫ t in (0 : ℝ)..1,
-          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
-      apply intervalIntegral.integral_congr
-      intro t _ht
-      dsimp [g]
-      congr 2
-      congr 1
-      push_cast
-      ring
-    rw [hcongr] at hsub0
-    convert hsub0 using 1 <;> norm_num
-  have hfactor : (∫ y in (-1 : ℝ)..1, g y) =
-      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
-    rw [rvachevLaplace, ← intervalIntegral.integral_const_mul]
-    apply intervalIntegral.integral_congr
-    intro y _hy
-    dsimp [g]
-    have hz : z * (((y : ℂ) + 1) / 2) = z / 2 + (z / 2) * y := by ring
-    rw [hz, Complex.exp_add]
-    ring
-  rw [hgen, hsub, hfactor]
-
-private lemma shifted_laplace_plus
-    (F : BoundedFabius) (z : ℂ) :
-    2 * (∫ t in (0 : ℝ)..1,
-      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
-      Complex.exp (z / 2) * rvachevLaplace F (z / 2) := by
-  let g : ℝ → ℂ := fun y =>
-    (rvachevUp F y : ℂ) * Complex.exp (z * ((y + 1) / 2))
-  have hsub0 := intervalIntegral.smul_integral_comp_mul_sub
-    (f := g) (a := (0 : ℝ)) (b := 1) 2 1
-  have hsub : 2 * (∫ t in (0 : ℝ)..1,
-      (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t)) =
-      ∫ y in (-1 : ℝ)..1, g y := by
-    have hcongr : (∫ t in (0 : ℝ)..1, g (2 * t - 1)) =
-        ∫ t in (0 : ℝ)..1,
-          (rvachevUp F (2 * t - 1) : ℂ) * Complex.exp (z * t) := by
-      apply intervalIntegral.integral_congr
-      intro t _ht
-      dsimp [g]
-      congr 2
-      congr 1
-      push_cast
-      ring
-    rw [hcongr] at hsub0
-    convert hsub0 using 1 <;> norm_num
-  rw [hsub, rvachevLaplace, ← intervalIntegral.integral_const_mul]
-  apply intervalIntegral.integral_congr
-  intro y _hy
-  dsimp [g]
-  have hz : z * (((y : ℂ) + 1) / 2) = z / 2 + (z / 2) * y := by ring
-  rw [hz, Complex.exp_add]
-  ring
+  rw [hgen, shifted_laplace_plus F z]
 
 private lemma shifted_laplace_minus
     (F : BoundedFabius) (z : ℂ) :
