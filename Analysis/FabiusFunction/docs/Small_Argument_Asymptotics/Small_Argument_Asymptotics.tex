@@ -1048,6 +1048,48 @@ exact $F(2^{-n})$ & \texttt{fabiusInversePowTwoTable}, \texttt{evalFabiusDyadic}
 
 Modules in bold are the ones added with this document.
 
+\subsection{What is machine-checked, and what is not}
+
+The three kinds of evidence in this note are not interchangeable, so they
+are separated here.
+
+\emph{Machine-checked.}  The following modules compile under Lean 4.32.0
+with Mathlib \texttt{v4.32.0}, with no \texttt{sorry}, no declared axiom and
+no \texttt{opaque}, on top of a serialized topological build of their whole
+import closure:
+\begin{itemize}
+\item \texttt{FabiusSaddleJetClosedForm.lean}
+\item \texttt{FabiusSaddleExponentClosedForm.lean}
+\end{itemize}
+
+\emph{Written but not yet compiled} at this snapshot:
+\begin{itemize}
+\item \texttt{FabiusSaddleJetStirling.lean}
+\item \texttt{FabiusSaddleLeadingCoefficient.lean}
+\item \texttt{FabiusSecondSaddleCorrection.lean}
+\item \texttt{FabiusSecondSaddleExpansion.lean}
+\end{itemize}
+Their statements are recorded in \cref{sec:lean}; a reader should treat
+them as claims until the build log says otherwise.
+
+\emph{Verified symbolically but not formalized.}  \Cref{thm:mass,thm:log},
+the composition formulas, were checked against the original recursions in
+\textsc{sympy} for $j\le3$, with residuals simplifying to identically zero.
+The coefficients $A_3$ and $A_4$ of \cref{eq:A3jets,eq:A4jets} were derived
+by the same pipeline, which reproduces $A_1$ exactly against the
+independently formalized \texttt{fabiusFirstSaddleCorrection}.  That
+agreement is the pipeline's calibration, not a proof of $A_3$ or $A_4$.
+
+\emph{Verified numerically only.}  Everything in \cref{sec:numerics}.
+High-precision agreement between an exact rational evaluation of $F$ and a
+closed form is strong evidence and is not a proof; in particular it cannot
+distinguish a correct coefficient from one differing by a quantity below the
+noise floor of the sampled range.
+
+No claim in this note rests on the numerics alone except the location of
+$A_5$, which is stated only as a bound on an observed residual.
+
+
 \section{What is not claimed}\label{sec:notclaimed}
 
 \begin{itemize}
