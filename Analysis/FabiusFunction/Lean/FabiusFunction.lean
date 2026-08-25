@@ -25,6 +25,7 @@ import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
 import FabiusFunction.FabiusSaddleJetStirling
+import FabiusFunction.FabiusSecondSaddleCorrection
 
 /-!
 # Fabius function

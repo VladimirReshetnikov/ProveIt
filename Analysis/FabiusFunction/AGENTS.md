@@ -119,6 +119,37 @@ mkdir -p .lake
 cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
 ```
 
+### Validating another branch without merging it
+
+A build owner can check somebody else's commit without either party merging,
+and without disturbing an in-progress closure, by using a throwaway sparse
+worktree:
+
+```sh
+git worktree add -f --no-checkout --detach <dir> <sha>
+cd <dir>
+git sparse-checkout init --cone
+git sparse-checkout set Analysis/FabiusFunction
+git checkout
+mkdir -p .lake
+cmd //c mklink //J ".lake\\packages" "C:\\ProveIt\\.lake\\packages"
+LAKE_JOBS=1 lake build +FabiusFunction.<Module>
+```
+
+The junction is the point: a fresh worktree without it rebuilds Mathlib and is
+worse than useless. Cone mode matters too — a full checkout of this repository
+can take minutes on a busy disk, while the `Analysis/FabiusFunction` cone plus
+the root files is seconds.
+
+This makes "who owns the build" a scheduling question rather than a structural
+one: the owner of the slot can spend it on any branch, and a peer's commit can
+be validated at the price of one checkout. It does not change the arithmetic
+that only one `lean` process may run at a time.
+
+Prefer the cheapest module that exercises the change. A module's cost is the
+size of its Fabius import closure, not its own length; a leaf with no Fabius
+imports is a single invocation off warm Mathlib.
+
 Two further traps that have cost real time here:
 
 - **`ContDiff ℝ ⊤` means *analytic*, not `C^∞`.** In this Mathlib `ω` is
