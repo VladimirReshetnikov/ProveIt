@@ -1436,6 +1436,12 @@ theorem negativeLaplacePsiGammaZetaFourierCoeff_eq (k : ℤ) :
   · rw [negativeLaplacePsiGammaZetaFourierCoeff, if_neg hk,
       negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta k hk]
 
+/-- The closed-form `Γζ` coefficient sequence is absolutely summable. -/
+theorem summable_negativeLaplacePsiGammaZetaFourierCoeff :
+    Summable negativeLaplacePsiGammaZetaFourierCoeff :=
+  summable_negativeLaplacePsiFourierCoeff.congr
+    (fun k => (negativeLaplacePsiGammaZetaFourierCoeff_eq k).symm)
+
 /-- The explicit `Γζ` Fourier series of the zero-mean periodic correction. -/
 theorem hasSum_negativeLaplacePsi_gammaZeta_fourierSeries (t : ℝ) :
     HasSum (fun k : ℤ =>
@@ -1444,5 +1450,13 @@ theorem hasSum_negativeLaplacePsi_gammaZeta_fourierSeries (t : ℝ) :
       (negativeLaplacePsi t : ℂ) := by
   exact (hasSum_negativeLaplacePsi_fourierSeries t).congr_fun
     (fun k => by rw [negativeLaplacePsiGammaZetaFourierCoeff_eq])
+
+/-- The explicit `Γζ` Fourier series, in `tsum` form. -/
+theorem tsum_negativeLaplacePsi_gammaZeta_fourierSeries (t : ℝ) :
+    (∑' k : ℤ,
+      negativeLaplacePsiGammaZetaFourierCoeff k *
+        exp (2 * (Real.pi : ℂ) * I * (k : ℂ) * (t : ℂ))) =
+      (negativeLaplacePsi t : ℂ) :=
+  (hasSum_negativeLaplacePsi_gammaZeta_fourierSeries t).tsum_eq
 
 end Fabius
