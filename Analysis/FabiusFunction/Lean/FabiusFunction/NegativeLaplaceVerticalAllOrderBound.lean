@@ -16,9 +16,11 @@ the explicit scale-independent increment bound
 
 A second holomorphic continuation controls the compact base
 `1 ≤ r ≤ 2`, `|θ| ≤ 1`.  Iterating the exact dilation recurrence then proves
-that every positive-order vertical logarithmic derivative is `O(b)` at
-`r = 2^b`, uniformly throughout the fixed strip.  The final theorem exports
-the same statement directly in the lower-Lambert saddle coordinates.
+that every positive-order vertical logarithmic derivative is `O(b + 1)` at
+`r = 2^b` for every `b ≥ 0`, uniformly throughout the fixed strip.  A
+compatibility corollary recovers the original `O(b)` form for `b ≥ 1`, and the
+final theorem exports that form directly in the lower-Lambert saddle
+coordinates.
 -/
 
 set_option autoImplicit false
@@ -530,24 +532,24 @@ theorem exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_le_dyadicScales
           _ ≤ D + (A + (k + 1 : ℕ) * D) := add_le_add hk hi
           _ = A + (k + 1 + 1 : ℕ) * D := by push_cast; ring
 
-/-- Uniform all-order `O(b)` control on the dyadic radius `r = 2^b`.
-The theorem is quantified in the derivative order; no order-dependent
-regularity assumptions remain. -/
-theorem exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_rpow_le
+/-- Uniform all-order `O(b + 1)` control on the dyadic radius `r = 2^b`, valid
+from the natural endpoint `b = 0`.  The additive one accounts for the compact
+base radius `r = 1`; the theorem is quantified in the derivative order, so no
+order-dependent regularity assumptions remain. -/
+theorem exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_rpow_le_add_one
     (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 1 ≤ b → |θ| ≤ 1 →
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 0 ≤ b → |θ| ≤ 1 →
       ‖iteratedDeriv (m + 1)
-        (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤ C * b := by
+        (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤ C * (b + 1) := by
   obtain ⟨A, hA, hscale⟩ :=
     exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_le_dyadicScales F hF m
   let D : ℝ := m.factorial * 5 / (1 / 2 : ℝ) ^ m
   have hD : 0 ≤ D := by dsimp [D]; positivity
-  let C : ℝ := A + 3 * D
+  let C : ℝ := A + 2 * D
   have hC : 0 ≤ C := by dsimp [C]; positivity
   refine ⟨C, hC, ?_⟩
-  intro b θ hb hθ
+  intro b θ hb0 hθ
   let k : ℕ := ⌈b⌉₊
-  have hb0 : 0 ≤ b := zero_le_one.trans hb
   have hr1 : 1 ≤ (2 : ℝ) ^ b :=
     Real.one_le_rpow (by norm_num) hb0
   have hbceil : b ≤ (k : ℝ) := by
@@ -563,19 +565,34 @@ theorem exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_rpow_le
   have hkCeil : (k : ℝ) < b + 1 := by
     dsimp [k]
     exact Nat.ceil_lt_add_one hb0
-  have hmain' :
-      ‖iteratedDeriv (m + 1)
-        (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤
-          A + (b + 2) * D := by
-    calc
-      ‖iteratedDeriv (m + 1)
-          (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤
-          A + (k + 1 : ℕ) * D := hmain
-      _ ≤ A + (b + 2) * D := by push_cast; nlinarith
   calc
     ‖iteratedDeriv (m + 1)
         (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤
-        A + (b + 2) * D := hmain'
+        A + (k + 1 : ℕ) * D := hmain
+    _ ≤ A + (b + 2) * D := by push_cast; nlinarith
+    _ ≤ C * (b + 1) := by
+      dsimp [C]
+      nlinarith
+
+/-- Uniform all-order `O(b)` control on the dyadic radius `r = 2^b`, for
+`b ≥ 1`.  This retains the original public estimate as a direct corollary of
+the boundary-compatible `O(b + 1)` theorem. -/
+theorem exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_rpow_le
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ {b θ : ℝ}, 1 ≤ b → |θ| ≤ 1 →
+      ‖iteratedDeriv (m + 1)
+        (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤ C * b := by
+  obtain ⟨D, hD, hbound⟩ :=
+    exists_norm_iteratedDeriv_negativeLaplaceVerticalLog_rpow_le_add_one F hF m
+  let C : ℝ := 2 * D
+  have hC : 0 ≤ C := mul_nonneg (by norm_num) hD
+  refine ⟨C, hC, ?_⟩
+  intro b θ hb hθ
+  have hmain := hbound (zero_le_one.trans hb) hθ
+  calc
+    ‖iteratedDeriv (m + 1)
+        (negativeLaplaceVerticalLog F ((2 : ℝ) ^ b)) θ‖ ≤
+        D * (b + 1) := hmain
     _ ≤ C * b := by
       dsimp [C]
       nlinarith

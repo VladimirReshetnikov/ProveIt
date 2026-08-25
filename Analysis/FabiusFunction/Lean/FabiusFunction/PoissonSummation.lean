@@ -17,6 +17,11 @@ statements below.
 * In (32), after multiplying (31) by `a`, the factor `1 / a` on the right
   disappears.  We state both the unmultiplied identity and the corrected
   multiplied identity.
+
+The same Schwartz realization also yields a public rapid-decay estimate for
+every real-axis derivative of `rvachevFourier`.  The support specialization is
+proved on the full sharp ray `a ≥ 1 / 2`; source-compatible wrappers retain the
+paper's unnecessary upper bound `a ≤ 1`.
 -/
 
 set_option autoImplicit false
@@ -80,6 +85,37 @@ private lemma fourier_scaledRvachevSchwartz
       dsimp only [q]
       push_cast
       ring
+
+/-- Every derivative of the real-axis Fourier transform of Rvachev's function
+is rapidly decreasing. -/
+theorem rvachevFourier_real_iteratedDeriv_rapidDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k n : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      |x| ^ k *
+          ‖iteratedDeriv n (fun t : ℝ => rvachevFourier F (t : ℂ)) x‖ ≤ C := by
+  let φ : SchwartzMap ℝ ℂ :=
+    scaledRvachevSchwartz F hF 1 (by norm_num)
+  let ψ : SchwartzMap ℝ ℂ := 𝓕 φ
+  have hfun : (fun t : ℝ => rvachevFourier F (t : ℂ)) = (ψ : ℝ → ℂ) := by
+    funext t
+    dsimp only [ψ, φ]
+    rw [fourier_scaledRvachevSchwartz F hF (by norm_num : (0 : ℝ) < 1)]
+    norm_num
+  rw [hfun]
+  obtain ⟨C, hC, hbound⟩ := ψ.decay k n
+  refine ⟨C, hC, ?_⟩
+  intro x
+  simpa only [Real.norm_eq_abs, norm_iteratedFDeriv_eq_norm_iteratedDeriv] using
+    hbound x
+
+/-- The Fourier transform of Rvachev's function is rapidly decreasing on the
+real axis. -/
+theorem rvachevFourier_real_rapidDecay
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ,
+      |x| ^ k * ‖rvachevFourier F (x : ℂ)‖ ≤ C := by
+  simpa only [iteratedDeriv_zero] using
+    rvachevFourier_real_iteratedDeriv_rapidDecay F hF k 0
 
 /-- Corrected equation (25), i.e. Poisson summation for Rvachev's function.
 The printed exponential in the source accidentally omits the factor `t`. -/
@@ -461,10 +497,10 @@ theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
   push_cast
   rfl
 
-/-- Multiplying the unscaled support identity by a positive lattice spacing
+/-- Multiplying the unscaled support identity by a nonzero lattice spacing
 cancels its inverse factor term by term. -/
 private lemma rvachev_poisson_support_specialization_of_unscaled
-    (F : BoundedFabius) {a : ℝ} (ha : 0 < a)
+    (F : BoundedFabius) {a : ℝ} (ha : a ≠ 0)
     (h : (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ))) :
@@ -480,7 +516,7 @@ private lemma rvachev_poisson_support_specialization_of_unscaled
       apply tsum_congr
       intro m
       push_cast
-      field_simp [ha.ne']
+      field_simp [ha]
 
 /-- Corrected equation (32) for every lattice spacing `a ≥ 1 / 2`.
 
@@ -496,10 +532,9 @@ theorem rvachev_poisson_support_specialization_of_one_half_le
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
       ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  exact rvachev_poisson_support_specialization_of_unscaled F ha
+  exact rvachev_poisson_support_specialization_of_unscaled F ha.ne'
     (rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0)
 
-set_option linter.unusedVariables false in
 /-- The direct support specialization of (31), before multiplying by `a`.
 This is the identity from which the corrected equation (32) follows.
 
@@ -508,7 +543,7 @@ is not needed, see
 `rvachev_poisson_support_specialization_unscaled_of_one_half_le`. -/
 theorem rvachev_poisson_support_specialization_unscaled
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
-    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
+    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
     (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
         rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) :=
@@ -525,7 +560,7 @@ theorem rvachev_poisson_support_specialization
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
       ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  exact rvachev_poisson_support_specialization_of_unscaled F ha
+  exact rvachev_poisson_support_specialization_of_unscaled F ha.ne'
     (rvachev_poisson_support_specialization_unscaled F hF ha0 ha1)
 
 end

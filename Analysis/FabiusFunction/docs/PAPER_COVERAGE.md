@@ -25,7 +25,7 @@ The exact version used by this audit is vendored as
 | Probability proposition after Theorem 3 | `Fabius.ProbabilityRepresentation.independent_uniform_coordinates`, `Fabius.ProbabilityRepresentation.coordinate_has_uniform_law` |
 | Theorem 4(a–c) | `Fabius.original_theorem_four_a`, `Fabius.original_theorem_four_b`, `Fabius.original_theorem_four_c` |
 | Unnumbered corollary | `Fabius.rvachev_not_analyticAt` |
-| Theorem 5 | `Fabius.rvachev_poisson_summation` |
+| Theorem 5, its Schwartz-decay strengthening, and its upper-bound-free support specializations | `Fabius.rvachev_poisson_summation`, `Fabius.rvachevFourier_real_iteratedDeriv_rapidDecay`, `Fabius.rvachevFourier_real_rapidDecay`, `Fabius.rvachev_poisson_support_specialization_unscaled_of_one_half_le`, `Fabius.rvachev_poisson_support_specialization_of_one_half_le` |
 | Theorem 6 | `Fabius.original_theorem_six` |
 | Theorem 7 | `Fabius.original_theorem_seven_global` |
 
@@ -39,6 +39,10 @@ all-real forms:
   `Fabius.ProbabilityRepresentation.ofReal_fabiusReal_eq_weightedSum_probability`,
   identify the bounded Fabius function with the random-series CDF for every
   real threshold in both measure codomains;
+- `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_intervalIntegral_of_le_half`
+  proves the collapsed smoothing equation
+  `H(x) = ∫ t in 0..2*x, H(t)` for every `x ≤ 1/2`, including negative
+  thresholds where the oriented integral and CDF both vanish;
 - `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF`,
   `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`,
   and
@@ -60,8 +64,9 @@ generating-function identities in proof-oriented forms.  In particular:
   used in Theorem 2;
 - `Fabius.rvachev_partition_one_over_nat`,
   `Fabius.rvachev_partition_unity`, `Fabius.rvachev_cosine_series`, and the
-  two `rvachev_poisson_support_specialization` theorems cover equations
-  (26)–(32);
+  source-compatible `rvachev_poisson_support_specialization` theorems cover
+  equations (26)–(32), while their `_of_one_half_le` companions show that
+  the upper bound on the lattice spacing is unnecessary;
 - `Fabius.rvachevDyadic_cast_global` gives the executable equality underlying
   the global form of Theorem 7.
 
@@ -151,7 +156,7 @@ formalizing those circular steps as theorems.
 
 | Web claim | Status | Lean declaration(s) |
 | --- | --- | --- |
-| [Recurrence sequence](https://math.stackexchange.com/questions/4354350/extracting-an-asymptotic-from-a-sequence-defined-by-a-recurrence-relation) and its connection to `F(2^-n)` | Proved with the source normalization `a_n = d_n / n!`; the resulting direct recurrence for `F(2^-n)` is proved exactly for `n ≥ 1` in rational, generic real, canonical bounded, and signed-global forms | `Fabius.fabiusRecurrenceSequence`, `Fabius.fabiusRecurrenceSequence_recurrence`, `Fabius.fabius_inverse_two_pow_eq_recurrenceSequence`, `Fabius.fabiusAtInverseTwoPow_recurrence_zpow`, `Fabius.fabiusFunction_inverse_two_pow_recurrence_zpow`, `Fabius.fabius_inverse_two_pow_recurrence_zpow`, `Fabius.globalFabius_inverse_two_pow_recurrence` |
+| [Recurrence sequence](https://math.stackexchange.com/questions/4354350/extracting-an-asymptotic-from-a-sequence-defined-by-a-recurrence-relation) and its connection to `F(2^-n)` | Proved with the source normalization `a_n = d_n / n!`; the resulting direct recurrence for `F(2^-n)` is proved exactly for `n ≥ 1` in rational, generic bounded, canonical bounded, generic signed-global, and canonical signed-global forms | `Fabius.fabiusRecurrenceSequence`, `Fabius.fabiusRecurrenceSequence_recurrence`, `Fabius.fabius_inverse_two_pow_eq_recurrenceSequence`, `Fabius.fabiusAtInverseTwoPow_recurrence_zpow`, `Fabius.fabiusFunction_inverse_two_pow_recurrence_zpow`, `Fabius.fabius_inverse_two_pow_recurrence_zpow`, `Fabius.extendedFabius_inverse_two_pow_recurrence`, `Fabius.globalFabius_inverse_two_pow_recurrence` |
 | Nonrecursive solution of the inverse-dyadic recurrence | Proved for every natural `n`, including `n = 0`, as a finite weighted-path sum and as the explicit sum over ordered compositions `n = r₁+⋯+rₘ` with partial sums `sⱼ`; a nested version first sums over the number of blocks.  The empty composition gives `F(1)=1`.  Generic bounded, canonical, and signed-global real corollaries are exposed.  The former standalone article is not currently vendored; the Lean declarations and module documentation are the maintained source of truth. | `Fabius.Composition.pathSum_eq_sum_range`, `Fabius.triangularRecurrence_eq_initial_mul_pathSum`, `Fabius.fabiusCompositionWeight`, `Fabius.fabiusCompositionSum`, `Fabius.fabiusRecurrenceSequence_eq_sum_compositions`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, `Fabius.fabiusFunction_inverse_two_pow_eq_sum_compositions`, `Fabius.globalFabius_inverse_two_pow_eq_sum_compositions` |
 | Bernoulli recurrence and generating-function equation/product | Proved in source-facing coefficient and analytic forms | `Fabius.fabiusRecurrenceSequence_bernoulli_recurrence`, `Fabius.complexGeneratingFunction_eq_fabiusRecurrenceSequence_series`, `Fabius.fabiusRecurrenceSequence_series_neg_eq_tprod` |
 | [Finite q-binomial/half-shifted Thue--Morse formula for `F(m/2^n)`](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function) | Proved exactly for all natural `m,n`, including zero and unreduced representations.  With no bound on `m`, it computes the signed global extension; under `m ≤ 2^n`, it computes every bounded `IsFabius` function.  `qPochhammer` and `qBinomial` follow the source argument order. | `Fabius.qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.fabiusDyadic_eq_qBinomialThueMorseDyadic_halfShift_sum`, `Fabius.extendedFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.globalFabius_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula`, `Fabius.fabiusFunction_dyadic_eq_qBinomialThueMorseDyadicHalfShiftFormula` |

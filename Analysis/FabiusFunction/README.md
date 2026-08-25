@@ -29,7 +29,8 @@ Non-elementarity is treated in
 the class of elementary functions of one real variable is formalized, every
 member of it is proved real analytic on a dense open subset of the line, and
 this is combined with nowhere analyticity to show that no elementary function
-agrees with the Fabius function on any nonempty open subset of `[0,1]`.  The
+agrees with the Fabius function on any subset of `[0,1]` with nonempty
+interior.  The
 same conclusion is proved for a class the inductive definition does not
 reach — continuous branches, on a nonempty open set, of polynomial equations
 whose coefficients are elementary and whose leading coefficient vanishes
@@ -37,11 +38,12 @@ nowhere there — including examples not expressible by radicals.  The inverse
 Fabius function is treated too: it is real analytic at no point of `[0,1]`
 either, hence not elementary, and neither it nor the Fabius function is
 reachable after closing the class under inverse branches at any depth.  That
-closure includes every totalized branch meeting its explicit open-domain
-identity and continuity hypotheses and its off-domain analyticity hypothesis.
-The development gives a conditional Lambert-`W` constructor of this form; it
-does not construct a standard real branch or prove that the latter hypothesis
-holds at its branch point.
+closure includes every totalized branch meeting its explicit inverse-identity
+and continuity hypotheses on an open domain `U`, together with analyticity on
+`interior Uᶜ`.  The development provides a conditional Lambert-`W` criterion
+of this form; it neither defines nor verifies a standard real branch.  The
+boundary of `U`, including the usual branch point, is deliberately excluded
+from the complementary-interior side condition.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -127,7 +129,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
+| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `hasDerivAt_fabiusInv`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
@@ -395,7 +397,10 @@ aggregate also proves
 weak-* convergence of the finite convolution measures, pointwise convergence
 of the polynomial step approximants, the infinite-product probability model,
 the differential identities, Poisson summation, moment formulas, and global
-rationality at dyadic points.
+rationality at dyadic points.  Its Schwartz construction also exposes rapid
+decay of every real-axis derivative of the entire Fourier transform through
+`rvachevFourier_real_iteratedDeriv_rapidDecay`, with the transform-only form
+`rvachevFourier_real_rapidDecay` as a direct corollary.
 
 `Paper06487.lean` is the public import for the arithmetic paper.
 `PaperStatements.lean` contains all 18 proved numbered results in the v3 PDF:
@@ -440,11 +445,13 @@ F(2^(-n)) = 2^(-choose(n,2)) / (2^n - 1) *
   sum (k < n), 2^(choose(k,2)) / (n-k+1)! * F(2^(-k))
 ```
 
-for every `n ≥ 1`; exact rational, generic `IsFabius`, and canonical global
-forms are exposed by `fabiusAtInverseTwoPow_recurrence_zpow`,
-`fabiusFunction_inverse_two_pow_recurrence_zpow`, and
-`globalFabius_inverse_two_pow_recurrence`.  The restriction is necessary:
-at `n = 0` the displayed denominator vanishes.
+for every `n ≥ 1`; exact rational, generic bounded, generic signed-global,
+and canonical signed-global forms are exposed by
+`fabiusAtInverseTwoPow_recurrence_zpow`,
+`fabiusFunction_inverse_two_pow_recurrence_zpow`,
+`extendedFabius_inverse_two_pow_recurrence`, and
+`globalFabius_inverse_two_pow_recurrence`, respectively.  The restriction is
+necessary: at `n = 0` the displayed denominator vanishes.
 
 `FabiusInverseDyadicClosedForm.lean` solves this recurrence completely.  If
 `(r₁,…,rₘ)` ranges over the ordered compositions of `n` and
@@ -605,7 +612,11 @@ Among them:
    the asserted normalization `φ_n(0) = 1` and the pointwise limit.
 3. Equation (25) omits `t` from its exponential, equation (26) needs `n > 0`,
    and equation (32) has inconsistent scaling.  The Poisson-summation module
-   proves the corrected identities.
+   proves the corrected identities.  Its
+   `rvachev_poisson_support_specialization_unscaled_of_one_half_le` and
+   `rvachev_poisson_support_specialization_of_one_half_le` declarations also
+   show that the paper's upper bound `a ≤ 1` is unnecessary: both formulas
+   hold on the sharp support-controlled ray `a ≥ 1/2`.
 4. In the arithmetic paper, Lemma 1 is false for a negative scale and an
    arbitrary derivative order.  Its proof requires
    `0 ≤ scale + order`; the Lean statement includes that hypothesis.

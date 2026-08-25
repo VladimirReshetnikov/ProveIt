@@ -100,60 +100,71 @@ composing an algebraic branch with an elementary function needs the *inner*
 function to be continuous, and elementary functions need not be — but by
 proving the non-elementarity statement directly for continuous branches. -/
 
-/-- A continuous branch of a polynomial equation whose coefficients are
-elementary and whose leading coefficient vanishes nowhere has dense analytic
-locus.
+/-- A continuous branch of a polynomial equation with elementary coefficients
+is analytic on a dense subset of every open region on which its leading
+coefficient does not vanish.
 
-The analytic loci of the finitely many coefficients are dense and open by
-`Fabius.IsElementary.dense_analyticLocus` and
-`Fabius.isOpen_analyticLocus`; their intersection is therefore dense and open
-too, and `Fabius.dense_setOf_analyticAt_of_algebraic` applies to it. -/
-theorem dense_analyticLocus_of_isElementary_coeffs
-    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
-    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
-    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0) :
-    Dense (analyticLocus y) := by
+More precisely, every nonempty open subset of `U` contains a point where the
+branch is analytic.  The proof restricts to the common analytic locus of the
+finitely many coefficients, applies `Fabius.analyticDenseOn_of_algebraic`
+there, and then removes that dense-open restriction with
+`Fabius.analyticDenseOn_of_inter_open_dense`. -/
+theorem analyticDenseOn_of_isElementary_coeffs
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ} {U : Set ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i)) (hU : IsOpen U)
+    (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
+    (hpoly : ∀ x ∈ U, branchPoly a n (x, y x) = 0) :
+    AnalyticDenseOn y U := by
   have hWopen : IsOpen (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
     (Set.finite_Iic n).isOpen_biInter fun i _ => isOpen_analyticLocus (a i)
   have hWdense : Dense (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
     dense_biInter_of_isOpen (fun i _ => isOpen_analyticLocus (a i))
       (Set.finite_Iic n).countable fun i hi => (ha i hi).dense_analyticLocus
-  exact dense_setOf_analyticAt_of_algebraic n a y hWopen hWdense
+  refine analyticDenseOn_of_inter_open_dense hWopen hWdense ?_
+  exact analyticDenseOn_of_algebraic n a y _ (hU.inter hWopen)
     (fun i hi x hx =>
-      Set.mem_iInter₂.1 hx i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
-    (fun x _ => hlead x) hy.continuousOn fun x _ => hpoly x
+      Set.mem_iInter₂.1 hx.2 i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
+    (fun x hx => hlead x hx.1) (hy.mono Set.inter_subset_left)
+    (fun x hx => hpoly x hx.1)
+
+/-- A continuous branch of a polynomial equation whose coefficients are
+elementary and whose leading coefficient vanishes nowhere has dense analytic
+locus.
+
+This is the global specialization of
+`Fabius.analyticDenseOn_of_isElementary_coeffs`. -/
+theorem dense_analyticLocus_of_isElementary_coeffs
+    {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ}
+    (ha : ∀ i ≤ n, IsElementary (a i)) (hlead : ∀ x, a n x ≠ 0)
+    (hy : Continuous y) (hpoly : ∀ x, branchPoly a n (x, y x) = 0) :
+    Dense (analyticLocus y) := by
+  rw [dense_iff_inter_open]
+  intro U hU hUne
+  obtain ⟨x, hxU, hxy⟩ :=
+    analyticDenseOn_of_isElementary_coeffs (U := Set.univ) ha isOpen_univ
+      (fun x _ => hlead x) hy.continuousOn (fun x _ => hpoly x)
+      U hU hUne (fun _ _ => Set.mem_univ _)
+  exact ⟨x, hxU, hxy⟩
 
 /-- The localized form, and the one the applications use: a branch need only
 be continuous **on the open set `U`**, solve the equation **on `U`**, and have
 nonvanishing leading coefficient **on `U`**.  Then it is analytic at some
 point of `U`.
 
-Localizing matters, and is not a cosmetic generalization.  A global hypothesis
-`∀ x, ∑ i ≤ n, a i x * y x ^ i = 0` forces the polynomial `w ↦ ∑ a i x * w ^ i`
-to be surjective onto the values it must attain, which for many equations is
-impossible: `y ^ 5 - y - x = 0` has no continuous branch defined on all of `ℝ`,
-since `w ↦ w ^ 5 - w` is not injective.  Its branches over the interval
-`(0,1)` are perfectly good algebraic functions with non-solvable Galois group,
-and only the localized statement reaches them. -/
+Localizing matters, and is not a cosmetic generalization.  For example, a
+global solution of `y x ^ 5 - y x = x` would be a continuous right inverse of
+`w ↦ w ^ 5 - w`, but that polynomial has no global continuous right inverse.
+Its positive real branch is nevertheless a perfectly good algebraic function
+on `(0,1)` (with non-solvable generic Galois group), and only the localized
+statement reaches it. -/
 theorem exists_analyticAt_of_isElementary_coeffs
     {n : ℕ} {a : ℕ → ℝ → ℝ} {y : ℝ → ℝ} {U : Set ℝ}
     (ha : ∀ i ≤ n, IsElementary (a i)) (hU : IsOpen U) (hUne : U.Nonempty)
     (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
     (hpoly : ∀ x ∈ U, branchPoly a n (x, y x) = 0) :
     ∃ x ∈ U, AnalyticAt ℝ y x := by
-  have hWopen : IsOpen (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
-    (Set.finite_Iic n).isOpen_biInter fun i _ => isOpen_analyticLocus (a i)
-  have hWdense : Dense (⋂ i ∈ (Set.Iic n : Set ℕ), analyticLocus (a i)) :=
-    dense_biInter_of_isOpen (fun i _ => isOpen_analyticLocus (a i))
-      (Set.finite_Iic n).countable fun i hi => (ha i hi).dense_analyticLocus
-  obtain ⟨x, hxV, hxa⟩ :=
-    analyticDenseOn_of_algebraic n a y _ (hU.inter hWopen)
-      (fun i hi x hx =>
-        Set.mem_iInter₂.1 hx.2 i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)))
-      (fun x hx => hlead x hx.1) (hy.mono Set.inter_subset_left)
-      (fun x hx => hpoly x hx.1) _ (hU.inter hWopen)
-      ((dense_iff_inter_open.mp hWdense) U hU hUne) subset_rfl
-  exact ⟨x, hxV.1, hxa⟩
+  exact analyticDenseOn_of_isElementary_coeffs ha hU hlead hy hpoly
+    U hU hUne subset_rfl
 
 /-- **The Fabius function is not an algebraic function over the elementary
 functions.**
@@ -175,10 +186,9 @@ theorem not_algebraicBranch_eqOn (F : BoundedFabius) (hF : IsFabius F)
     (hlead : ∀ x ∈ U, a n x ≠ 0) (hy : ContinuousOn y U)
     (hpoly : ∀ x ∈ U, branchPoly a n (x, y x) = 0)
     (heq : EqOn y (fabiusReal F) U) : False := by
-  obtain ⟨x, hxU, hxy⟩ :=
-    exists_analyticAt_of_isElementary_coeffs ha hU hUne hlead hy hpoly
-  refine fabius_not_analyticAt F hF (hsub hxU) (hxy.congr ?_)
-  filter_upwards [hU.mem_nhds hxU] with t ht using heq ht
+  exact
+    (analyticDenseOn_of_isElementary_coeffs ha hU hlead hy hpoly).not_eqOn_of_forall_not_analyticAt
+      hU hUne (fun x hx => fabius_not_analyticAt F hF (hsub hx)) heq
 
 /-- The interior form: such a branch cannot agree with a bounded Fabius
 function on any subset of `[0,1]` with nonempty interior. -/

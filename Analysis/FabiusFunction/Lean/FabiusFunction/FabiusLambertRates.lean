@@ -39,17 +39,34 @@ theorem dyadicLambertPhase_inv_isBigO_inv :
     abs_of_pos (inv_pos.mpr (lt_of_lt_of_le zero_lt_one ht1)), one_mul]
   exact inv_anti₀ (lt_of_lt_of_le zero_lt_one ht1) htlam
 
-/-- Reciprocal logarithmic coordinate written in the source's `-log x` scale. -/
-theorem smallArgumentLog_inv_eq {x : ℝ} (hx : 0 < x) :
+/-- Reciprocal logarithmic coordinate written in the source's `-log x`
+scale, for every real argument. -/
+theorem smallArgumentLog_inv_eq_all (x : ℝ) :
     (fabiusSmallArgumentLog x)⁻¹ =
       Real.log 2 * (-Real.log x)⁻¹ := by
   unfold fabiusSmallArgumentLog Real.logb
-  by_cases h : x = 1
+  rw [inv_neg, inv_div, inv_neg, div_eq_mul_inv]
+  ring
+
+/-- Positive-argument compatibility form of
+`smallArgumentLog_inv_eq_all`. -/
+theorem smallArgumentLog_inv_eq {x : ℝ} (hx : 0 < x) :
+    (fabiusSmallArgumentLog x)⁻¹ =
+      Real.log 2 * (-Real.log x)⁻¹ := by
+  by_cases h : x = 0
   · subst x
-    simp
-  · have hlog : Real.log x ≠ 0 := Real.log_ne_zero_of_pos_of_ne_one hx h
-    have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
-    field_simp [hlog, hL]
+    norm_num at hx
+  · exact smallArgumentLog_inv_eq_all x
+
+/-- The reciprocal base-two logarithmic coordinate is bounded by the literal
+reciprocal logarithmic scale on every filter. -/
+theorem smallArgumentLog_inv_isBigO (l : Filter ℝ) :
+    (fun x : ℝ => (fabiusSmallArgumentLog x)⁻¹) =O[l]
+      (fun x => (-Real.log x)⁻¹) := by
+  apply IsBigO.of_bound (Real.log 2)
+  filter_upwards with x
+  rw [smallArgumentLog_inv_eq_all x, norm_mul, Real.norm_eq_abs,
+    abs_of_pos (Real.log_pos (by norm_num : (1 : ℝ) < 2))]
 
 /-- Transfer an `O(1/λ)` logarithmic-scale estimate to the literal
 `O(1/(-log x))` small-positive-argument rate. -/
@@ -64,12 +81,6 @@ theorem isBigO_smallArgument_log_of_lambertScale
       apply ht.congr' Filter.EventuallyEq.rfl
       filter_upwards with t
       rw [fabiusSmallArgumentLog_logArgument])
-  have htarget : (fun x => (fabiusSmallArgumentLog x)⁻¹) =O[nhdsWithin 0 (Ioi 0)]
-      (fun x => (-Real.log x)⁻¹) := by
-    apply IsBigO.of_bound (Real.log 2)
-    filter_upwards [self_mem_nhdsWithin] with x hx
-    rw [smallArgumentLog_inv_eq hx, norm_mul, Real.norm_eq_abs,
-      abs_of_pos (Real.log_pos (by norm_num))]
-  exact hs.trans htarget
+  exact hs.trans (smallArgumentLog_inv_isBigO _)
 
 end Fabius

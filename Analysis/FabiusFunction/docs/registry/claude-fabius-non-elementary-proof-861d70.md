@@ -1,12 +1,11 @@
 # Workstream registry: `claude/fabius-non-elementary-proof-861d70`
 
-**Status: closed historical source record; exact post-integration validation
+**Status: closed historical source record; exact combined-tree validation
 pending.** The elementary/algebraic work and its later inverse extension are
-integrated through pinned `origin/main` at `1e371c773`.  This file grants no
-live source lease.  A serialized closure validation is currently running in
-the originating worktree; its host-wide build ownership remains effective
-until a terminal event and is tracked by the active integrator registry.  The
-normal lease and build-terminal-event rules in
+integrated through pinned `origin/main` at `639bfc53e`.  This file grants no
+live source or build lease.  All validation statements below are reports tied
+to immutable historical commits, not evidence for the manually resolved
+combined tree.  The normal lease and build-terminal-event rules in
 [`../COLLABORATION.md`](../COLLABORATION.md) govern any future source work.
 
 This file implements the per-branch registry fallback proposed in
@@ -68,8 +67,11 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All eighteen exported theorems in the earlier elementary/algebraic batch have axiom set
-`[propext, Classical.choice, Quot.sound]`.
+At its then-immutable source state, the earlier elementary/algebraic batch was
+reported to have eighteen exported theorems with axiom set
+`[propext, Classical.choice, Quot.sound]`.  The later five-module closure
+evidence is recorded below with its exact source commits.  Neither report is
+validation of the exact combined post-merge tree.
 
 The mathematical input from this branch is
 `Fabius.IsElementary.dense_analyticLocus`: the analytic locus of an elementary
@@ -150,7 +152,7 @@ would have to be applied to the preamble of every document at once.
 `InverseBranch.lean` observes that a right inverse is an implicit branch of the
 simplest possible equation — `h (g x) = x` says that `h` is a left inverse of
 `g`, equivalently that `g` is a continuous right inverse of `h`, and makes `g`
-a branch of `h z - x = 0`.  Thus `Fabius.analyticAt_of_leftInverse`, the
+a branch of `h z - x = 0`.  Thus `Fabius.analyticAt_of_rightInverse`, the
 analytic inverse function theorem, is `analyticAt_of_continuous_branch`
 applied with no further analysis.  On top of it,
 `Fabius.exists_analyticAt_of_rightInverse`: a continuous right inverse of a
@@ -161,20 +163,32 @@ continuous inverse branches at any depth, and
 `IsElementaryOrInverse.dense_analyticLocus` shows the enlarged class is still
 densely analytic.  Its constructor localizes the inverse identity and
 continuity to an open `U`, while requiring the chosen totalization to be
-analytic at every point outside `U`.
-`Fabius.isElementaryOrInverse_of_lambertW` is a conditional constructor for a
-Lambert-`W`-shaped branch satisfying those hypotheses.  Because `Mathlib` does
-not define `W`, the development neither constructs a standard branch nor
-claims that its branch-point behavior discharges the off-domain hypothesis.
+analytic at every `y ∈ interior Uᶜ`.  This clause constrains the selected
+extension of the branch rather than following automatically from `Mathlib`'s
+junk values; a constant extension satisfies it, and `U = ∅` reduces it to
+"`g` is entire".  A branch-domain boundary is excluded from both regions, so
+the singular point `-1/e` is compatible with the shape of the criterion.
+`Fabius.isElementaryOrInverse_of_lambertW` is nevertheless only a conditional
+constructor for a supplied Lambert-`W`-shaped total branch satisfying the
+stated hypotheses.  Because `Mathlib` does not define `W`, the development
+neither constructs nor verifies a standard real branch.
 
 `InverseNotElementary.lean` applies this to `fabiusInv`:
 `fabiusInv_not_analyticAt` and `fabiusInv_analyticAt_iff` pin the analytic
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
-argument is the inverse function theorem run backwards.  At any hypothetical
-analytic interior germ, `deriv_fabiusInv_ne_zero` proves that the derivative
-cannot vanish, using `(F⁻¹)'(F x) · F'(x) = 1` and finiteness of `F'`.  That is
-the only place in the whole workstream where smoothness of `F`, rather than its
-failure to be analytic, is used.
+argument is the inverse function theorem run backwards, and the one thing to
+check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
+now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
+on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
+there, a nonzero real number.  It is the only place in the whole workstream
+where a differential property of `F`, rather than its failure to be analytic,
+is used.
+
+An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
+`F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
+hypothesis — refuted, for every `y ∈ Icc 0 1`, by `fabiusInv_not_analyticAt`
+twelve lines below.  The statement was therefore vacuous.  An adversarial
+review caught it; the fix strengthens the theorem rather than the wording.
 
 ## Historical inverse validation evidence
 
@@ -183,8 +197,24 @@ clean `lake build +FabiusFunction.InverseNotElementary`; twelve checked
 statements had axiom set `[propext, Classical.choice, Quot.sound]`.  Commit
 `22f802725` separately recorded three successful `pdflatex` passes for the
 inverse-enhanced paper, while explicitly noting that the subsequently changed
-Lean closure still required rebuilding.  These are historical component
-results, not validation of the exact combined post-merge tree.
+Lean closure still required rebuilding.
+
+At immutable source commit `703dd4ed4`, the originating workstream reported a
+clean rebuild of the 35-module `InverseNotElementary` closure and a generated
+`#print axioms` sweep over all 95 theorems exported by `ElementaryFunction`,
+`AlgebraicBranch`, `NotElementary`, `InverseBranch`, and
+`InverseNotElementary`.  The report recorded axiom set
+`[propext, Classical.choice, Quot.sound]` for every theorem and no `sorryAx`.
+
+At immutable follow-up commit `9d76a07b3`, the originating workstream reported
+focused builds of `FabiusFunction.InverseBranch` and
+`FabiusFunction.InverseNotElementary`, followed by a post-documentation
+combined build, after adding the relative analytic-density strengthening.  It
+did not report a new 95-theorem axiom sweep.
+
+These are immutable historical component reports.  They do not validate the
+exact manually resolved combined tree, whose focused build and axiom audit
+remain pending.
 
 `Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
 density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`

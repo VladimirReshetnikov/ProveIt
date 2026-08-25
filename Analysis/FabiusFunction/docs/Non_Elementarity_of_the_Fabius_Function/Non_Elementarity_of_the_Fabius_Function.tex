@@ -226,7 +226,7 @@ the statement that survives the induction: ``analytic somewhere'' is not
 preserved by intersection, whereas ``dense open'' is.
 \end{remark}
 
-\section{The class of elementary functions}
+\section{The class of elementary functions}\label{sec:elem}
 
 \subsection{Definition}
 
@@ -468,8 +468,10 @@ either vanishes identically or vanishes nowhere on some punctured
 neighbourhood.  A merely $C^\infty$ inner function admits neither
 alternative --- it can equal $c$ on a sequence accumulating at $x_0$ without
 being constant there --- so analyticity of $f$, and not just smoothness, is
-what the step consumes.  This is the only place in the proof where a theorem
-of substance about real analytic functions is used.
+what the step consumes.  Within the induction of this section it is the only
+place where a theorem of substance about real analytic functions is used;
+\Cref{sec:algebraic,sec:inverse} call on the implicit function theorem as
+well.
 \end{remark}
 
 \subsection{The induction}
@@ -613,6 +615,11 @@ the constant $1$ on $[1,\infty)$.  Everything above concerned $F$; this
 section treats that totalization, and then closes the class under the
 admissible inverse-branch rule.
 
+In the formalization this function is \texttt{Fabius.fabiusInv}, defined by
+\texttt{Set.IccExtend} of the order isomorphism.  The extension is continuous,
+so nothing is hidden in the gluing; its constant tails are what the endpoint
+half of \Cref{thm:invnowhere} exploits.
+
 \subsection{A right inverse is an implicit branch}
 
 The observation that organizes this section is that no new analysis is
@@ -642,17 +649,23 @@ exactly $\R\setminus[0,1]$.
 \begin{proofidea}
 In the interior, run \Cref{thm:ift} backwards.  If $F^{-1}$ is analytic at
 $y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
-$F^{-1}(y_0)\in(0,1)$ --- provided $(F^{-1})'(y_0)\ne0$.  At such a
-hypothetical analytic interior point this derivative cannot vanish, and this
-is the one place in the whole development where smoothness of $F$ is used
-rather than its failure to be analytic: differentiating
-$F^{-1}\circ F=\mathrm{id}$ gives
+$F^{-1}(y_0)\in(0,1)$ --- provided $(F^{-1})'(y_0)\ne0$.  It has no critical
+point anywhere in the interior.  This is the one place in the whole
+development where a
+\emph{differential} property of $F$ is used rather than its failure to be
+analytic, and the property is that $F'>0$ on $(0,1)$.  Given that, the easy
+half of the inverse function theorem --- the half that assumes the inverse
+already exists --- yields
 \[
-  (F^{-1})'\bigl(F(x)\bigr)\cdot F'(x)=1 ,
+  (F^{-1})'(y)=\frac{1}{F'\bigl(F^{-1}(y)\bigr)}\qquad(0<y<1),
 \]
-and $F$ is $C^\infty$, so $F'(x)$ is a finite real number and the product
-could not be $1$ if the first factor vanished.  \Cref{thm:nowhere} then
-supplies the contradiction.
+a nonzero real number.  \Cref{thm:nowhere} then supplies the contradiction.
+
+The direction deserves to be stated, because the shorter route is circular.
+Differentiating $F^{-1}\circ F=\mathrm{id}$ to obtain
+$(F^{-1})'\bigl(F(x)\bigr)\cdot F'(x)=1$ presupposes that $F^{-1}$ is
+differentiable, which is exactly what is at issue; strict positivity of $F'$
+is what supplies it.
 
 At the endpoints the argument is different, and simpler.  $F^{-1}$ is
 identically $0$ to the left of $0$; an analytic germ agreeing with $0$ on a
@@ -701,28 +714,50 @@ of $U$ at which $g$ is analytic.
 \end{proofidea}
 
 The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
-that is not slack in the argument: the signed real cube root
-$x\mapsto (x/|x|)|x|^{1/3}$ (with value $0$ at the origin) is a continuous
-right inverse of the entire function $x\mapsto x^3$ and is not analytic at the
-origin.  Critical points of $f$ really do produce singularities of the
-inverse.  It is the same phenomenon that made density, rather than analyticity
-everywhere, the right invariant in \Cref{thm:density}.
+that is not slack in the argument: the real cube root is a continuous right
+inverse of the entire function $x\mapsto x^3$ on all of $\R$ and is not
+analytic at the origin.  In the formalization the right inverse has to be
+written $t\mapsto(t/|t|)\,|t|^{1/3}$, since \texttt{Real.rpow} makes
+$(-8)^{1/3}=1$ (Warning~\ref{warn:oddroot}); that this signed form really does
+cube back to $t$ is \texttt{Fabius.signedRoot\_pow}.  Critical points of $f$
+do produce singularities of the inverse.  It is the same phenomenon that made
+density, rather than analyticity everywhere, the right invariant in
+\Cref{thm:density}.
 
 \begin{definition}\label{def:elemplus}
 $\Elem^{-1}$ is the smallest class containing $\Elem$, closed under the
 operations of Definition~\ref{def:elem}, and closed under the following rule: if
 $f\in\Elem^{-1}$, $U$ is open, $g$ is continuous on $U$ with $f(g(y))=y$ for
-$y\in U$, and $g$ is analytic off $U$, then $g\in\Elem^{-1}$.
+$y\in U$, and $g$ is analytic on the interior of the complement of $U$, then
+$g\in\Elem^{-1}$.
 \end{definition}
 
-The rule is local in $U$ deliberately: a branch identity may hold only on its
-natural domain.  The Lean development records a conditional constructor for
-any totalized Lambert-$W$ branch satisfying its inverse identity on an open
-set, continuity there, and analyticity at every point outside that set.  It
-does not construct a total principal branch satisfying those hypotheses; in
-particular the real branch point at $-1/\e$ requires separate treatment.
-Inversion may be applied at any depth: to members of $\Elem$, to branches of
-those, and so on without limit.
+Two features of the rule are deliberate, and the Lambert $W$ function shows
+why each is needed.  It is local in $U$: $W$ satisfies its defining identity
+$W(y)\e^{W(y)}=y$ only on $[-1/\e,\infty)$, so a rule demanding a global
+identity would not reach it.  And it asks for analyticity on the
+\emph{interior} of the complement rather than at every point outside $U$: the
+branch point $-1/\e$ sits on the boundary of the natural $U=(-1/\e,\infty)$,
+and $W$ is certainly not analytic there.  Dropping that boundary costs
+nothing, since the boundary of an open set is nowhere dense, and for $W$ the
+constant extension then satisfies the analyticity clause on all of
+$(-\infty,-1/\e)$.
+
+The Lean result is a conditional criterion for any supplied total function
+satisfying these hypotheses.  Since \texttt{Mathlib} does not define $W$, the
+formalization neither constructs a standard real branch nor verifies a
+particular totalization of it.
+
+That clause is a condition on the chosen extension of the branch past $U$, not
+a fact that comes for free.  Extension by a constant always meets it, and that
+is the honest reading of the rule: a branch is admitted together with a
+declaration of how it is continued.  Other conventions also meet it without
+being constant --- \texttt{Mathlib} sets $\log y=\log|y|$, which is analytic
+off the origin.  At the other extreme $U=\emptyset$ reduces the clause to
+``$g$ is entire'', so the rule also adjoins every everywhere-analytic
+function; harmlessly, since those already have dense analytic locus, which is
+all the invariant asks.  Inversion may be applied at any depth: to members of
+$\Elem$, to branches of those, and so on without limit.
 
 \begin{theorem}\label{thm:plusdense}
 Every member of $\Elem^{-1}$ is analytic on a dense set.
@@ -731,9 +766,11 @@ Every member of $\Elem^{-1}$ is analytic on a dense set.
 \begin{proof}
 Induction.  The elementary generators are \Cref{thm:density}; the operations
 are as in \Cref{sec:density}; and the inverse rule is \Cref{thm:invbranch}
-inside $U$ together with the hypothesis off $U$ --- given a nonempty open $B$,
-either $B$ meets $U$, and \Cref{thm:invbranch} applies to $B\cap U$, or
-$B$ misses $U$ and every point of $B$ will do.
+inside $U$ together with the hypothesis on $\operatorname{int}(U^{\mathsf c})$.
+Given a nonempty open $B$, either $B$ meets $U$, and
+\Cref{thm:invbranch} applies to $B\cap U$, or $B$ misses $U$.  In the latter
+case the openness of $B$ gives $B\subseteq\operatorname{int}(U^{\mathsf c})$,
+so every point of $B$ will do.
 \end{proof}
 
 \begin{corollary}\label{cor:plusmain}
@@ -747,10 +784,11 @@ of totalized inverse branches satisfying Definition~\ref{def:elemplus}.
 It is worth being explicit about what Corollary~\ref{cor:plusmain} does and does
 not rest on.  The inverse need not be two-sided: a continuous right inverse on
 an open set is enough.  On the other hand, the conditional Lambert-$W$
-constructor also requires the chosen totalization to be analytic off that
-open set.  Because \texttt{Mathlib} does not define $W$, the formalization
-neither constructs such a totalization nor claims that the standard principal
-real branch satisfies the boundary hypothesis.
+constructor also requires the chosen totalization to be analytic on the
+interior of that open set's complement.  The branch-domain boundary is
+deliberately excluded from this side condition.  Because \texttt{Mathlib} does
+not define $W$, the formalization neither constructs a standard real branch
+nor verifies any particular totalization.
 \end{boxedremark}
 
 \section{The formal development}
@@ -826,7 +864,7 @@ The obstruction, stated once (proof of Corollary~\ref{cor:main})
   & \path{not_eqOn_of_dense_analyticLocus}
   & \path{ElementaryFunction} \\
 Analytic inverse function theorem (\Cref{thm:ift})
-  & \path{analyticAt_of_leftInverse}
+  & \path{analyticAt_of_rightInverse}
   & \path{InverseBranch} \\
 Inverse branches are analytic somewhere (\Cref{thm:invbranch})
   & \path{exists_analyticAt_of_rightInverse}
@@ -834,11 +872,11 @@ Inverse branches are analytic somewhere (\Cref{thm:invbranch})
 The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
   & \path{IsElementaryOrInverse}, \path{IsElementaryOrInverse.dense_analyticLocus}
   & \path{InverseBranch} \\
-Conditional Lambert-$W$ inverse-branch constructor
+Conditional Lambert-$W$ inverse-branch criterion
   & \path{isElementaryOrInverse_of_lambertW}
   & \path{InverseBranch} \\
-Any analytic interior germ of $F^{-1}$ has nonzero derivative; $F^{-1}$ is nowhere analytic (\Cref{thm:invnowhere})
-  & \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
+$F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
+  & \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
   & \path{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
   & \path{canonical_fabiusInv_not_isElementary_on_Ioo}, \path{fabiusInv_not_isElementary}
