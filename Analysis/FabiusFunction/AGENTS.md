@@ -103,8 +103,10 @@ compiled PDF is committed with it.**
 
 3. **Layout.** One directory per document, named after it, holding the `.tex`
    and the `.pdf` of the same name — as in
-   `docs/Fabius_Function_and_Rvachev_Up/` and
-   `docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/`.
+   `docs/Fabius_Function_and_Rvachev_Up/`.  The canonical consolidated
+   research-frontier pair is the deliberate exception: its `.tex` and `.pdf`
+   live directly in `docs/non-formalized-research-frontiers/`, beside the
+   provenance README for the retired source notebooks.
 
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:
@@ -120,7 +122,10 @@ compiled PDF is committed with it.**
    Three passes: the first writes the `.aux` and `.toc`, the second resolves
    `\ref`/`\cref`, the third settles the table of contents and page numbers. Do
    not commit `.aux`, `.log`, `.out` or `.toc`. A `.tex` change without a
-   rebuilt `.pdf` is an incomplete commit.
+   rebuilt `.pdf` is an incomplete commit. Before every push that sends a
+   changed `.tex` file to `origin/main`, its matching rendered `.pdf` must
+   already be rebuilt and committed. Never push a TeX/PDF mismatch to the main
+   branch.
 
 5. **Verify the rendered PDF, not the source.** Never write LaTeX through a
    shell heredoc or a Python patch script that round-trips through

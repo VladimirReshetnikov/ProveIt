@@ -10,17 +10,18 @@ supplement it but do not replace it.
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
 branch/base: codex/fabius-theorem-refinements at
-  published checkpoint 23bfd95d04087eec63958e2b1e9b0c89d2e623e7,
-  with pinned origin/main 35852aa65ba66cf700419c296a78460b02bb65b3
-  resolved for the current merge checkpoint
+  published checkpoint 1b2cd37ddad9253cb498510f99368f68eeac5b99,
+  with pinned origin/main f51777a184240e20d5991676ebb3465b0824b942
+  source-resolved for the current merge checkpoint
 git owner: root in this worktree
-build owner: not held; incoming components carry focused historical evidence,
-  but no build has been run on the exact 23bfd95d0 + 35852aa65 union.  Recheck
-  and claim the host-wide lane before any focused or aggregate replay
-source lease: refreshed 2026-08-25 13:54 -07:00 through 14:54 -07:00
+build owner: released after exact combined-tree `+FabiusQBinomialTaylor`
+  (3,320 jobs) and `+FabiusQBinomialFormula` (3,317 jobs) builds passed.  The
+  next target's Lake graph scan was stopped before Lean under host memory
+  pressure; no process survived, and the remaining replay is still pending
+source lease: refreshed 2026-08-25 14:25 -07:00 through 15:25 -07:00
 next synchronization checkpoint: publish this pinned merge, re-fetch
-  origin/main, and record whether the remote pin remained current; then pursue
-  the exact combined-tree Lean replay under the single build owner
+  origin/main, and record whether the remote pin remained current; run the
+  exact combined-tree Lean replay when the single host build lane is free
 ```
 
 ## Current integration and validation lease
@@ -38,19 +39,19 @@ next synchronization checkpoint: publish this pinned merge, re-fetch
 - `docs/COLLABORATION.md`: retire the translated-polynomial candidate once the
   theorem batch is compiled and published.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
-- Fifth integration lease for pinned main `35852aa65` over published checkpoint
-  `23bfd95d0`: retain the incoming arbitrary Bose cutoffs, nonvanishing-base
-  variable-power closure, scalar/all-index q-binomial APIs, all-order inverse
-  endpoint steepness, continuous-linear saddle transport, exact Fourier
-  samples, saddle-kernel real structure, and real-ray periodic Laplace bound.
+- Sixth integration lease for pinned main `f51777a1` over published checkpoint
+  `1b2cd37d`: retain the incoming effective cumulant bounds, generalized
+  Laplace/reflection identities, representation-independent inverse dyadics,
+  all-node q-Pochhammer evaluations, parameter-dependent scalar transport,
+  full left-tail Thue--Morse convergence, and Fourier/Poisson symmetries.
   Preserve the branch-only translated-polynomial coefficient/zero/degree API.
 - Semantic artifact repair lease for this nontrivial merge:
-  `docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.{tex,pdf}`,
   `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.{tex,pdf}`,
-  `docs/non-formalized-research-frontiers/Rvachev_Up_from_Repeated_Integration-2/Rvachev_Up_from_Repeated_Integration.tex`,
-  `docs/registry/claude-fabius-non-elementary-proof-861d70.md`, and this active
-  registry.  This covers semantic conflict resolution, stale-reference repair,
-  explicit formalization boundaries, reproducible PDF rebuilds, and immutable
+  `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.{tex,pdf}`,
+  their provenance README, the retired frontier paths, both Codex registries,
+  and this active registry.  This covers semantic conflict resolution,
+  consolidation without data loss, stale-reference repair, explicit
+  formalization boundaries, reproducible PDF rebuilds, and immutable
   validation attribution.
 
 ## Read-only survey
@@ -111,6 +112,10 @@ next synchronization checkpoint: publish this pinned merge, re-fetch
   exact inverse smoothness, all-order flat-remainder and vector-valued
   small-argument APIs retained, three documentation artifacts rebuilt and
   inspected, and exact combined-tree Lean validation explicitly deferred.
+- `1b2cd37dd` publishes the fifth pinned-main integration at `35852aa65`, with
+  the incoming theorem families retained, both conflicted papers rebuilt and
+  inspected, and the primary exposition restored to its proof-backed boundary;
+  exact combined-tree Lean validation remained explicitly deferred.
 
 Each substantive non-merge checkpoint message records its exact textual
 validation and any deferred Lean targets.  Incoming commits `b164f3d2f` and
@@ -123,71 +128,68 @@ translated-polynomial batch and do not validate the exact combined
 ## Current merge-checkpoint evidence
 
 This checkpoint merges exact incoming tip
-`35852aa65ba66cf700419c296a78460b02bb65b3` into exact published branch
-checkpoint `23bfd95d04087eec63958e2b1e9b0c89d2e623e7`.  The merge base is
-`a24af8347aba5d38b8febf2cf9a19eeef6aba18a`; the sides were 12 and 28
-commits ahead of that base.  Git reported six conflict paths: two Lean
-docstrings, the primary synthesis source, the non-elementarity source/PDF
-pair, and the closed non-elementarity registry.
+`f51777a184240e20d5991676ebb3465b0824b942` into exact published branch
+checkpoint `1b2cd37ddad9253cb498510f99368f68eeac5b99`.  The merge base is
+`35852aa65ba66cf700419c296a78460b02bb65b3`; the sides were 13 and 33 commits
+ahead of that base.  Git reported six true conflict paths: the primary source
+and binary, plus four modify/delete paths from the incoming frontier
+consolidation.  No Lean source has a conflict; the independently edited
+`InverseNotElementary.lean` hunks merge disjointly.
 
-The incoming range changes 26 Lean modules and adds 23 public declarations
-plus one private helper without removing or weakening a public declaration.
-All 26 files retain `set_option autoImplicit false`.  The new APIs cover
-arbitrary Bose cutoffs, nonvanishing-base real powers, scalar/all-index
-q-binomial coefficients, all-order inverse endpoint steepness,
-continuous-linear transport of asymptotic expansions, normalized saddle
-kernel components, integer Fourier samples, and a real-ray periodic
-negative-Laplace estimate.  The two textual Lean conflicts changed
-documentation only; their resolution preserves the exact pointwise
-positivity, nonvanishing, totalization, right-inverse, and complementary-
-interior analyticity hypotheses.
+The incoming range changes 22 Lean modules and exposes 70 additional public
+declarations after accounting for two formerly private generalized lemmas.
+No public declaration is removed or weakened.  The new APIs cover effective
+Laplace and dyadic-cumulant bounds, reflection moments, inverse curvature and
+representation-independent dyadics, complete half-base q-evaluations,
+parameter-dependent asymptotic transport, full left-tail Thue--Morse
+convergence, and Fourier/Poisson symmetries.  All 188 modules retain
+`set_option autoImplicit false`.  The merge also repairs the incoming
+documentation-ratchet regression by documenting `partialSum_smul`.
 
-The primary synthesis was rebuilt from the incoming structural rewrite rather
-than either stale parent artifact.  The resolution defines the Lean-name macro
-in both text and math mode; repairs nine dangling references, one duplicate
-label, and six nonexistent module paths; restores the exact normalized-moment
-and Thue--Morse recurrences; and replaces the incoming unformalized
-mass-to-log coefficient and numerical passages with the proved top-mass-jet
-theorem.  The omitted conventional material remains preserved in
-`docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/`.
+The primary synthesis keeps the strict proof-backed boundary and proved
+top-mass-jet theorem while adding the incoming inverse second derivative,
+closed-half curvature, all-order endpoint steepness, primitive Thue--Morse
+recursion, and expanded real module guide.  Both stale small-argument paths now
+name Part “Small-Argument Asymptotics Research Frontiers” in the canonical
+consolidated source.  The regenerated primary PDF is 76 A4 pages with SHA-256
+`1A8DD39F85412C723A9C8E86A4A89B41E0C0A3D01B3462A069B4E6E8D57B3822`.
 
-Both conflicted papers received three successful PDFLaTeX passes and
-representative rendered-page inspection:
+The incoming consolidation retires eleven standalone source notebooks without
+losing the two branch-later refinements: the detailed dyadic-q formalization
+boundary and source map, and the repeated-integration formalization boundary
+and corrected finite-atomic/spline wording, are transplanted into their
+namespaced canonical parts.  Their provenance hashes are updated to
+`8776344b...` and `e3a7fcad...`; the duplicate Rvachev source already matched
+the consolidated `fad16072...` hash.  The regenerated canonical frontier PDF
+is 273 A4 pages with SHA-256
+`F4BBB2B69150A3261E70F2BC7CFCE6B45EF451555746829B51D864FBD4D293AB`.
 
-- the primary synthesis is 75 A4 pages, with 468 unique labels, 455 resolved
-  reference uses, and PDF SHA-256
-  `2B86AD8AF5FC370350B13947CA6394923F7FA17349589019816250CF56CB0D05`;
-- the non-elementarity paper is 14 A4 pages, with 23 unique labels, 91
-  resolved reference uses, and PDF SHA-256
-  `AB722E11F7B72916CA079CC3FFF8BCD1B3CA7B68D104DCF8FF3853FB04C777E1`.
+Both changed documents received exactly three successful PDFLaTeX passes and
+representative rendered-page inspection.  Their final logs contain no
+undefined references or citations, multiply defined labels, rerun notices,
+fatal errors, or overfull boxes.  The primary retains twelve benign hyperref
+bookmark-token warnings and one underfull box; the consolidated volume has
+only underfull diagnostics.
 
-The final logs contain no undefined references or citations, multiply defined
-labels, rerun notices, fatal errors, or overfull boxes.  The primary log has
-only harmless PDF-bookmark token warnings and one underfull box; the
-non-elementarity log has three underfull-box diagnostics.  The added
-repeated-integration frontier source also has its sole trailing-space defect
-repaired without changing rendered content.
+Post-resolution static gates are clean: working/index `diff --check`, the
+tree-wide conflict-marker and forbidden declaration/placeholder scans, 47
+local Markdown links, and all five project-authored TeX/PDF pairs.  The
+documentation ratchet passes at 188 modules, 3,251 public declarations, 156
+pre-existing undocumented declarations in 17 files, and zero missing module
+headers.
 
-The three imported frontier TeX/PDF pairs are retained as incoming historical
-artifacts, not claimed formal results.  Their overlapping dyadic-asymptotic and
-repeated-integration scopes, mutable provenance in two drafts, uneven
-first-page boundary notices, and the parallel `-2` directory need a separately
-leased consolidation; no canonical-source claim or live ownership is granted
-by this merge.
-
-Post-resolution static gates are clean: `git diff --cached --check`, the
-tree-wide conflict-marker and forbidden declaration/placeholder scans, all 188
-Lean modules carrying `set_option autoImplicit false`, 46 local Markdown links,
-and all 15 project-authored TeX/PDF pairs.  The documentation ratchet passes at
-188 modules, 3,181 public declarations, 156 pre-existing undocumented
-declarations in 17 files, and zero missing module headers.
-
-Incoming components carry focused immutable build evidence, and
-`c6e2da733` records a 35-module non-elementarity closure build plus a
-105-declaration standard-axiom sweep.  Neither the exact incoming union nor
-this manually resolved union has an exact aggregate Lean build.  The focused
-q dependency chain, umbrella target, and axiom audit remain pending until the
-host-wide single build lane is checked and claimed.
+Incoming components carry focused immutable build evidence, but the final
+incoming tip only reports focused `LaplaceMomentBounds` and `FabiusInverse`
+builds.  Its older aggregate claim predates 13 later Lean-file changes.  On the
+exact manually resolved union, serialized builds of
+`+FabiusFunction.FabiusQBinomialTaylor` (3,320 jobs) and
+`+FabiusFunction.FabiusQBinomialFormula` (3,317 jobs) both completed at exit
+zero.  A subsequent `FabiusInverseDyadicClosedForm` Lake graph scan ceased
+making measurable CPU progress with about 800 MB host memory free; the current
+worktree's wrapper was interrupted before any Lean child started, its mutex was
+released, and zero residual Lean/Lake processes remained.  The remaining
+changed-leaf replay, umbrella target, and axiom audit are therefore explicitly
+resource-deferred, not inferred from historical artifacts.
 
 ## Reviewed translated-polynomial API
 
@@ -207,7 +209,7 @@ mismatch in the sharp-coefficient nonzero proof, then found no remaining
 source-level blocker against the exact Mathlib signatures and import closure.
 On the pre-merge `a95bd1913` tree, `git diff --check`, the
 forbidden-placeholder/conflict-marker scans, and the documentation baseline
-gate passed.  The fifth pinned integration at `35852aa65` is source-resolved
-over published checkpoint `23bfd95d0`; active ownership is unchanged, and
+gate passed.  The sixth pinned integration at `f51777a1` is source-resolved
+over published checkpoint `1b2cd37d`; active ownership is unchanged, and
 focused Lean validation of the exact combined tree remains pending until this
 merge is published and the host-wide build lane is rechecked and claimed.

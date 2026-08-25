@@ -343,6 +343,12 @@ Let $\wt(n)$ denote the sum of the binary digits of $n$, and put
 \begin{equation}
  \varepsilon_n=(-1)^{\wt(n)}.                             \label{eq:tm-sign}
 \end{equation}
+The binary recurrences are
+\begin{align}
+ \wt(2n)&=\wt(n),& \wt(2n+1)&=\wt(n)+1,                  \label{eq:weight-even-odd}\\
+ \varepsilon_{2n}&=\varepsilon_n,&
+ \varepsilon_{2n+1}&=-\varepsilon_n.                     \label{eq:tm-even-odd}
+\end{align}
 The sequence $(\varepsilon_n)$ is the $\{\pm1\}$ form of the Thue--Morse sequence
 \cite{allouche2003}.
 
@@ -1199,7 +1205,7 @@ These are \lean{rvachev_partition_one_over_nat} and
 
 With
 \begin{equation}
- c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,
+ c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,                       \label{eq:c-fourier-moment-def}
 \end{equation}
 the exact entire series is
 \begin{equation}
@@ -1315,6 +1321,21 @@ Interior smoothness and the derivative chain are
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
 
+The same module gives the exact second derivative on the open interval,
+\begin{equation}
+ I''(y)=-\frac{F''(I(y))}{F'(I(y))^3},\qquad 0<y<1,        \label{eq:fabius-inverse-second-derivative}
+\end{equation}
+and proves the sharp closed-half shape statements
+\begin{equation}
+ I\text{ is strictly concave on }[0,\tfrac12],\qquad
+ I\text{ is strictly convex on }[\tfrac12,1].            \label{eq:fabius-inverse-curvature}
+\end{equation}
+These are \lean{deriv_fabiusInv_hasDerivAt},
+\lean{deriv_deriv_fabiusInv},
+\lean{strictConcaveOn_fabiusInv_firstHalf}, and
+\lean{strictConvexOn_fabiusInv_secondHalf}.  The closed endpoints in
+\eqref{eq:fabius-inverse-curvature} use continuity; no endpoint differentiability is claimed.
+
 The inverse inherits the exact symmetry and midpoint
 \begin{equation}
  I(1-y)=1-I(y),\qquad I(1/2)=1/2,                          \label{eq:fabius-inverse-symmetry}
@@ -1331,6 +1352,17 @@ These are \lean{fabiusInv_one_sub}, \lean{fabiusInv_half}, and
 \end{equation}
 by \lean{fabiusInv_analyticAt_iff}; in the open interval its derivative never vanishes by
 \lean{deriv_fabiusInv_ne_zero}.
+
+At the two clamping endpoints the inverse is steeper than every root: for every
+\(n\in\N\),
+\begin{equation}
+ y=o\!\left(I(y)^n\right)\quad(y\downarrow0),\qquad
+ 1-y=o\!\left((1-I(y))^n\right)\quad(y\uparrow1).          \label{eq:fabius-inverse-all-order-steepness}
+\end{equation}
+These are \lean{id_isLittleO_fabiusInv_pow_at_zero_right} and
+\lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular the one-sided
+difference quotients tend to \(+\infty\), as stated by
+\lean{tendsto_fabiusInv_div_atTop} and its reflected companion.
 
 \subsection{Precise non-elementarity}
 
@@ -2785,20 +2817,14 @@ After $k$ summations the sequence has been convolved with an explicit binomial k
 after a dyadic normalization the resulting integer grid reproduces, in the
 limit, the Rvachev bump and hence $F$.
 
-The binary recurrences used throughout this section are
-\begin{align}
- \wt(2n)&=\wt(n), & \wt(2n+1)&=\wt(n)+1,                  \label{eq:weight-even-odd}\\
- \varepsilon_{2n}&=\varepsilon_n, &
- \varepsilon_{2n+1}&=-\varepsilon_n.                     \label{eq:tm-even-odd}
-\end{align}
-
 This section develops that construction: the convolution law and its explicit binomial
 kernel, the exact zero runs forced by Prouhet cancellation, the two generating-series
 identities, the discrete functional equation satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
 normalization does not converge, and that failure is recorded separately in
-the right-boundary remark below.  Two further pieces of foundational material are attached at
+the right-boundary remark below, while the corrected centered formulation does converge.
+Two further pieces of foundational material are attached at
 the end: the lower branch of Lambert's $W$-function, which the asymptotic sections of this
 article use but never construct, and an exact binomial--logarithm formula for the
 Thue--Morse bit.
@@ -3403,8 +3429,14 @@ $|\log\epsilon|=-\log\epsilon$, and
 \label{tm:sub-binomial-log}
 
 The zero-one Thue--Morse bit is $\tau(n)=\wt(n)\bmod2$, so that
-$\varepsilon_n=1-2\tau(n)$.  The standard parity recursion computes it one binary digit at a
-time, while it also admits a
+$\varepsilon_n=1-2\tau(n)$.  Its primitive-recursive evaluation computes one binary digit
+at a time:
+\begin{equation}
+ b(0)=0,\qquad
+ b(m)=\bigl(b(\lfloor m/2\rfloor)+(m\bmod2)\bigr)\bmod2
+ \quad(m>0).                                               \label{eq:primitive-thue-bit}
+\end{equation}
+It also admits a
 closed formula in which the entire binary structure is hidden inside a single row of
 Pascal's triangle.  Set
 \begin{equation}
@@ -4596,7 +4628,8 @@ This is \lean{saddleJetMassCoefficient_succ_sub}; its affine decomposition form 
 \path{FabiusSaddleLeadingCoefficient.lean}.  The analogous transfer from mass coefficients
 to logarithmic coefficients has not yet been formalized, so it is not asserted here.  Its
 conventional derivation and numerical exploration remain available in
-\path{docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/}.
+Part ``Small-Argument Asymptotics Research Frontiers'' of
+\path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
 \subsection{The phase to all orders}
 \label{subsec:as-phase-all-orders}
 
@@ -4727,7 +4760,8 @@ The exact reciprocal-power identity used to obtain dyadic endpoint values is for
 \path{ExactInversePower.lean}.  Numerical coefficient tables, the still-unformalized
 mass-to-logarithm transfer, and experiments on the amplitude and high-frequency growth of
 later correction terms are intentionally kept in
-\path{docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/}.  This primary
+Part ``Small-Argument Asymptotics Research Frontiers'' of
+\path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.  This primary
 exposition continues with the proved endpoint statements.
 \section{Elementary log--log forms and the missing periodic term}
 \label{sec:elementary-asymptotic}
@@ -5305,6 +5339,7 @@ Endpoint asymptotics &
 \path{NegativeLaplace.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{FabiusLambertPhase.lean}, \path{FabiusSharpLambertMain.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusDyadicSharpAsymptotic.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{FabiusSaddleLeadingCoefficient.lean},
 \path{FabiusSecondSaddleCorrection.lean}, \path{FabiusSecondSaddleExpansion.lean}\\
@@ -5323,14 +5358,14 @@ Legendre expansion and computability &
 \toprule
 Article & Lean & Meaning\\
 \midrule
-\(F\) & \lean{fabiusReal fabius} & bounded canonical Fabius function\\
-\(\Up\) & \lean{rvachevUp fabius} & compactly supported fold\\
-\(\mathcal F\) & \lean{extendedFabius fabius} & signed global extension\\
-\(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
-\(c_n\) & \lean{moment n} & even moment\\
-\(d_n\) & \lean{halfMoment n} & half moment\\
-\(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
-\(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
+\(F\) & \texttt{fabiusReal fabius} & bounded canonical Fabius function\\
+\(\Up\) & \texttt{rvachevUp fabius} & compactly supported fold\\
+\(\mathcal F\) & \texttt{extendedFabius fabius} & signed global extension\\
+\(I\) & \texttt{fabiusInv fabius fabius\_spec} & totalized inverse\\
+\(c_n\) & \texttt{moment n} & even moment\\
+\(d_n\) & \texttt{halfMoment n} & half moment\\
+\(\varepsilon_n\) & \texttt{thueMorseSign n} & signed Thue--Morse value\\
+\(\wt(n)\) & \texttt{binaryWeight n} & binary digit sum\\
 \bottomrule
 \end{tabular}
 \end{center}

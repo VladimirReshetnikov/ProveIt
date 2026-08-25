@@ -30,8 +30,9 @@ New files only.  No existing Lean module is edited.
   grounds that a root aggregate appended to by two agents is exactly the
   collision `AGENTS.md` warns about, and that nothing imports it so serializing
   is cheap.
-- `docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` and its
-  committed `.pdf`
+- the source and committed PDF now preserved as Part “Small-Argument
+  Asymptotics Research Frontiers” of
+  `docs/non-formalized-research-frontiers/non-formalized-research-frontiers.{tex,pdf}`
 - `docs/registry/claude-fabius-asymptotic-expansion-51c5fc.md` (this file)
 - `AGENTS.md` — the documentation policy, plus the build-syntax and
   `ContDiff` traps, claimed after its previous owner's session ended.
@@ -87,8 +88,9 @@ recursions.  This branch closes the chain:
   oscillation with the order.
 
 Details, tables and an independent numerical verification against exact
-rational values of `F(2^-n)` are in
-[`../non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`](../non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex).
+rational values of `F(2^-n)` are preserved in Part “Small-Argument
+Asymptotics Research Frontiers” of the
+[consolidated frontier source](../non-formalized-research-frontiers/non-formalized-research-frontiers.tex).
 
 ## Status log
 

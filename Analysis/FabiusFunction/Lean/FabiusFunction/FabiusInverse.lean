@@ -1,8 +1,10 @@
 import FabiusFunction.SharpFlatness
 import FabiusFunction.FabiusFlatness
 import FabiusFunction.DyadicAnalytic
+import FabiusFunction.Convexity
 import Mathlib.Analysis.Calculus.ContDiff.Deriv
 import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Analysis.Calculus.Deriv.Inverse
 import Mathlib.Order.Hom.Set
 import Mathlib.Topology.Order.ProjIcc
@@ -41,8 +43,18 @@ local inverse theorem therefore applies without any analyticity assumption:
 
 The formal statements below expose both the `HasDerivAt` result and its
 pointwise derivative, explicit `rvachevUp`, positivity, and full `C^∞`
-smoothness on `(0,1)`.  The endpoint behavior remains singular, as quantified
-by the flatness results.
+smoothness on `(0,1)`.  Differentiating once more gives the exact
+reciprocal-cubic rule
+
+`(fabiusInv F hF)''(y) = -F''(fabiusInv F hF y) /
+                         F'(fabiusInv F hF y)^3`.
+
+Consequently the shape of `F` reverses under inversion: the inverse is
+strictly concave on `[0,1/2]` and strictly convex on `[1/2,1]`.  These closed
+interval statements do not assert endpoint differentiability; their proofs
+differentiate only on the interval interiors and use global continuity at the
+endpoints.  The endpoint behavior remains singular, as quantified by the
+flatness results.
 
 ## Flatness inverts to steepness
 
@@ -103,8 +115,15 @@ quotient from zero to one.
   exactly the exceptions to positive finite-order or `C^∞` smoothness and
   differentiability; order-zero smoothness, namely continuity, still holds
   globally.
+* `deriv_fabiusInv_hasDerivAt` and `deriv_deriv_fabiusInv` — the exact
+  reciprocal-cubic second-derivative rule on `(0,1)`.
+* `strictConcaveOn_fabiusInv_firstHalf` and
+  `strictConvexOn_fabiusInv_secondHalf` — the sharp closed-half curvature
+  statements.
 * `fabiusInv_fabiusDyadicUnit` — every value produced by the exact bounded
   dyadic evaluator inverts to the corresponding clamped dyadic argument.
+  Its inverse-power specialization `fabiusInv_fabiusAtInverseTwoPow` directly
+  inverts the rational table value for `F(2⁻ⁿ)`.
 * `le_two_pow_mul_fabiusInv_pow` and
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
@@ -419,6 +438,119 @@ theorem fabiusInv_half (F : BoundedFabius) (hF : IsFabius F) :
   norm_num at h ⊢
   linarith
 
+/-! ## Curvature on the two halves -/
+
+/-- The derivative of the inverse is differentiable on the open unit
+interval, with the reciprocal-cubic derivative furnished by the inverse
+function rule. -/
+theorem deriv_fabiusInv_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    HasDerivAt (deriv (fabiusInv F hF))
+      (-deriv (deriv (fabiusReal F)) (fabiusInv F hF y) /
+        deriv (fabiusReal F) (fabiusInv F hF y) ^ 3) y := by
+  let G := fabiusInv F hF
+  let D := fun z : ℝ => deriv (fabiusReal F) (G z)
+  have hx : G y ∈ Ioo (0 : ℝ) 1 := fabiusInv_mem_Ioo F hF hy
+  have hD0 : D y ≠ 0 := (deriv_fabiusReal_pos F hF hx).ne'
+  have hG : HasDerivAt G (D y)⁻¹ y := fabiusInv_hasDerivAt F hF hy
+  have hderivF : ContDiff ℝ ∞ (deriv (fabiusReal F)) :=
+    (contDiff_infty_iff_deriv.mp hF.contDiff).2
+  have hF2 : HasDerivAt (deriv (fabiusReal F))
+      (deriv (deriv (fabiusReal F)) (G y)) (G y) :=
+    ((hderivF.differentiable (by simp)) (G y)).hasDerivAt
+  have hD : HasDerivAt D
+      (deriv (deriv (fabiusReal F)) (G y) * (D y)⁻¹) y := by
+    simpa only [D, Function.comp_def] using hF2.comp y hG
+  have hrecip : HasDerivAt D⁻¹
+      (-deriv (deriv (fabiusReal F)) (G y) / D y ^ 3) y := by
+    have hraw : HasDerivAt D⁻¹
+        (-(deriv (deriv (fabiusReal F)) (G y) * (D y)⁻¹) / D y ^ 2) y :=
+      hD.inv hD0
+    apply hraw.congr_deriv
+    field_simp [hD0]
+  have heq : deriv G =ᶠ[𝓝 y] D⁻¹ := by
+    filter_upwards [isOpen_Ioo.mem_nhds hy] with z hz
+    change deriv G z = (D z)⁻¹
+    exact deriv_fabiusInv F hF hz
+  have hsecond := hrecip.congr_of_eventuallyEq heq
+  simpa only [G, D] using hsecond
+
+/-- The exact second derivative of the inverse on the open unit interval. -/
+theorem deriv_deriv_fabiusInv
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    deriv (deriv (fabiusInv F hF)) y =
+      -deriv (deriv (fabiusReal F)) (fabiusInv F hF y) /
+        deriv (fabiusReal F) (fabiusInv F hF y) ^ 3 :=
+  (deriv_fabiusInv_hasDerivAt F hF hy).deriv
+
+/-- The inverse is strictly concave on the first closed half of the unit
+interval.  Endpoint differentiability is not needed: the derivative criterion
+is applied only on `(0,1/2)` and continuity supplies the endpoints. -/
+theorem strictConcaveOn_fabiusInv_firstHalf
+    (F : BoundedFabius) (hF : IsFabius F) :
+    StrictConcaveOn ℝ (Icc (0 : ℝ) (1 / 2)) (fabiusInv F hF) := by
+  apply StrictAntiOn.strictConcaveOn_of_deriv (convex_Icc _ _)
+    (continuous_fabiusInv F hF).continuousOn
+  rw [interior_Icc]
+  intro y hy z hz hyz
+  have hy01 : y ∈ Ioo (0 : ℝ) 1 := ⟨hy.1, by linarith [hy.2]⟩
+  have hz01 : z ∈ Ioo (0 : ℝ) 1 := ⟨hz.1, by linarith [hz.2]⟩
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy01
+  have hzIcc : z ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hz01
+  have hGyz : fabiusInv F hF y < fabiusInv F hF z :=
+    strictMonoOn_fabiusInv F hF hyIcc hzIcc hyz
+  have hyGhalf : fabiusInv F hF y < 1 / 2 := by
+    have h := strictMonoOn_fabiusInv F hF hyIcc
+      (show (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 by norm_num) hy.2
+    rwa [fabiusInv_half F hF] at h
+  have hzGhalf : fabiusInv F hF z < 1 / 2 := by
+    have h := strictMonoOn_fabiusInv F hF hzIcc
+      (show (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 by norm_num) hz.2
+    rwa [fabiusInv_half F hF] at h
+  have hyG : fabiusInv F hF y ∈ Icc (0 : ℝ) (1 / 2) :=
+    ⟨(fabiusInv_mem_Ioo F hF hy01).1.le, hyGhalf.le⟩
+  have hzG : fabiusInv F hF z ∈ Icc (0 : ℝ) (1 / 2) :=
+    ⟨(fabiusInv_mem_Ioo F hF hz01).1.le, hzGhalf.le⟩
+  rw [deriv_fabiusInv F hF hy01, deriv_fabiusInv F hF hz01]
+  exact inv_strictAnti₀
+    (deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF hy01))
+    (strictMonoOn_deriv_fabiusReal_Icc F hF hyG hzG hGyz)
+
+/-- The inverse is strictly convex on the second closed half of the unit
+interval.  As on the first half, only interior differentiability and global
+continuity are used at the endpoints. -/
+theorem strictConvexOn_fabiusInv_secondHalf
+    (F : BoundedFabius) (hF : IsFabius F) :
+    StrictConvexOn ℝ (Icc (1 / 2 : ℝ) 1) (fabiusInv F hF) := by
+  apply StrictMonoOn.strictConvexOn_of_deriv (convex_Icc _ _)
+    (continuous_fabiusInv F hF).continuousOn
+  rw [interior_Icc]
+  intro y hy z hz hyz
+  have hy01 : y ∈ Ioo (0 : ℝ) 1 := ⟨by linarith [hy.1], hy.2⟩
+  have hz01 : z ∈ Ioo (0 : ℝ) 1 := ⟨by linarith [hz.1], hz.2⟩
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy01
+  have hzIcc : z ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hz01
+  have hGyz : fabiusInv F hF y < fabiusInv F hF z :=
+    strictMonoOn_fabiusInv F hF hyIcc hzIcc hyz
+  have hhalfGy : 1 / 2 < fabiusInv F hF y := by
+    have h := strictMonoOn_fabiusInv F hF
+      (show (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 by norm_num) hyIcc hy.1
+    rwa [fabiusInv_half F hF] at h
+  have hhalfGz : 1 / 2 < fabiusInv F hF z := by
+    have h := strictMonoOn_fabiusInv F hF
+      (show (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 by norm_num) hzIcc hz.1
+    rwa [fabiusInv_half F hF] at h
+  have hyG : fabiusInv F hF y ∈ Icc (1 / 2 : ℝ) 1 :=
+    ⟨hhalfGy.le, (fabiusInv_mem_Ioo F hF hy01).2.le⟩
+  have hzG : fabiusInv F hF z ∈ Icc (1 / 2 : ℝ) 1 :=
+    ⟨hhalfGz.le, (fabiusInv_mem_Ioo F hF hz01).2.le⟩
+  rw [deriv_fabiusInv F hF hy01, deriv_fabiusInv F hF hz01]
+  exact inv_strictAnti₀
+    (deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF hz01))
+    (strictAntiOn_deriv_fabiusReal_Icc F hF hyG hzG hGyz)
+
 /-- On a dyadic point of the unit grid, the exact bounded evaluator inverts
 back to that point. -/
 theorem fabiusInv_fabiusDyadicUnit_of_le (F : BoundedFabius) (hF : IsFabius F)
@@ -445,6 +577,18 @@ theorem fabiusInv_fabiusDyadicUnit (F : BoundedFabius) (hF : IsFabius F)
   · have hge : 2 ^ n ≤ a := le_of_not_ge ha
     rw [Nat.min_eq_right hge, fabiusDyadicUnit_of_ge n a hge]
     norm_num [fabiusInv_one F hF]
+
+/-- Every exact inverse-power table value inverts to its represented argument,
+uniformly for every bounded Fabius function satisfying the defining
+equations.  This includes `n = 0`, where both sides are one. -/
+theorem fabiusInv_fabiusAtInverseTwoPow
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusInv F hF (fabiusAtInverseTwoPow n : ℝ) =
+      ((2 : ℝ) ^ n)⁻¹ := by
+  rw [fabiusAtInverseTwoPow,
+    ← fabiusDyadicUnit_eq_fabiusDyadic n 1 Nat.one_le_two_pow]
+  simpa only [Nat.cast_one, one_div] using
+    fabiusInv_fabiusDyadicUnit_of_le F hF n 1 Nat.one_le_two_pow
 
 /-! ## Flatness at the origin, transported through the inverse -/
 

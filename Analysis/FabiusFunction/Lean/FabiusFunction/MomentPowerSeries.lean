@@ -10,7 +10,9 @@ This file proves, entirely in exact rational arithmetic, that the half moments
 are the even-binomial transform of the moments.  The key step packages the
 recurrence defining `moment` as a formal-power-series identity.  This avoids
 using any analytic facts about the Fabius or Rvachev functions in the proof of
-the inverse-power evaluator formula.
+the inverse-power evaluator formula.  A single arbitrary-translation
+coefficient calculation supplies both the centered-series API and the
+half-translation used in the recurrence proof.
 -/
 
 set_option autoImplicit false
@@ -210,89 +212,14 @@ private lemma sum_range_even_div_two {R : Type*} [AddCommMonoid R]
     change 2 * a = 2 * b at hab
     omega
 
-private lemma coeff_halfMomentCandidatePS (n : ℕ) :
-    PowerSeries.coeff n halfMomentCandidatePS =
-      (∑ k ∈ range (n / 2 + 1),
-          (Nat.choose n (2 * k) : ℚ) * moment k) /
-        ((2 : ℚ) ^ n * (n.factorial : ℚ)) := by
-  rw [halfMomentCandidatePS, mul_comm, PowerSeries.coeff_mul]
-  simp only [Nat.sum_antidiagonal_eq_sum_range_succ_mk,
-    expandedMomentQuarter, PowerSeries.coeff_expand,
-    PowerSeries.coeff_rescale, momentPS, PowerSeries.coeff_mk,
-    PowerSeries.coeff_exp]
-  simp only [ite_mul, zero_mul]
-  have hnormalize :
-      (∑ x ∈ range n.succ,
-        if 2 ∣ x then
-          (1 / 4 : ℚ) ^ (x / 2) *
-              (moment (x / 2) / ((2 * (x / 2)).factorial : ℚ)) *
-            ((1 / 2 : ℚ) ^ (n - x) *
-              (algebraMap ℚ ℚ) (1 / ((n - x).factorial : ℚ)))
-        else 0) =
-      ∑ x ∈ range (n + 1), if 2 ∣ x then
-        ((1 / 4 : ℚ) ^ (x / 2) *
-            (moment (x / 2) / ((2 * (x / 2)).factorial : ℚ))) *
-          ((1 / 2 : ℚ) ^ (n - 2 * (x / 2)) *
-            (1 / ((n - 2 * (x / 2)).factorial : ℚ)))
-        else 0 := by
-    apply Finset.sum_congr rfl
-    intro x hx
-    by_cases hdiv : 2 ∣ x
-    · obtain ⟨k, rfl⟩ := hdiv
-      simp
-    · simp [hdiv]
-  rw [hnormalize]
-  rw [sum_range_even_div_two n (fun k =>
-    ((1 / 4 : ℚ) ^ k * (moment k / ((2 * k).factorial : ℚ))) *
-      ((1 / 2 : ℚ) ^ (n - 2 * k) *
-        (1 / ((n - 2 * k).factorial : ℚ))))]
-  rw [Finset.sum_div]
-  apply Finset.sum_congr rfl
-  intro k hk
-  have hk' : 2 * k ≤ n := by
-    have : k ≤ n / 2 := Nat.le_of_lt_succ (mem_range.1 hk)
-    omega
-  rw [Nat.cast_choose ℚ hk']
-  norm_num [div_pow, pow_mul]
-  field_simp
-  have hn : n = 2 * k + (n - 2 * k) :=
-    (Nat.add_sub_of_le hk').symm
-  rw [hn, pow_add]
-  norm_num [pow_mul]
-  ring
-
-/-- The centered even-moment series
-`sum moment(k) X^(2k) / (4^k (2k)!)`.  Multiplication by `exp(X/2)`
-recovers the factorially normalized half-moment series. -/
-noncomputable def centeredMomentPowerSeries : PowerSeries ℚ :=
-  expandedMomentQuarter
-
-/-- The even coefficients of the centered series are the factorially
-normalized moments, with the centering scale `4^n`. -/
-@[simp] theorem coeff_centeredMomentPowerSeries_even (n : ℕ) :
-    PowerSeries.coeff (2 * n) centeredMomentPowerSeries =
-      moment n / ((4 : ℚ) ^ n * ((2 * n).factorial : ℚ)) := by
-  simp [centeredMomentPowerSeries, expandedMomentQuarter, momentPS]
-  ring
-
-/-- The centered moment series has no odd-degree coefficients. -/
-@[simp] theorem coeff_centeredMomentPowerSeries_odd (n : ℕ) :
-    PowerSeries.coeff (2 * n + 1) centeredMomentPowerSeries = 0 := by
-  rw [centeredMomentPowerSeries, expandedMomentQuarter]
-  apply PowerSeries.coeff_expand_of_not_dvd
-  exact Nat.not_two_dvd_bit1 n
-
-/-- Coefficients after translating the centered even-moment series by an
-arbitrary rational amount. -/
-theorem coeff_exp_mul_centeredMomentPowerSeries (y : ℚ) (n : ℕ) :
+private lemma coeff_exp_mul_expandedMomentQuarter (y : ℚ) (n : ℕ) :
     PowerSeries.coeff n
-      (PowerSeries.rescale y (PowerSeries.exp ℚ) *
-        centeredMomentPowerSeries) =
+      (PowerSeries.rescale y (PowerSeries.exp ℚ) * expandedMomentQuarter) =
       (1 / ((2 : ℚ) ^ n * (n.factorial : ℚ))) *
         ∑ k ∈ range (n / 2 + 1),
           (Nat.choose n (2 * k) : ℚ) *
             (2 * y) ^ (n - 2 * k) * moment k := by
-  rw [centeredMomentPowerSeries, mul_comm, PowerSeries.coeff_mul]
+  rw [mul_comm, PowerSeries.coeff_mul]
   simp only [Nat.sum_antidiagonal_eq_sum_range_succ_mk,
     expandedMomentQuarter, PowerSeries.coeff_expand,
     PowerSeries.coeff_rescale, momentPS, PowerSeries.coeff_mk,
@@ -337,6 +264,49 @@ theorem coeff_exp_mul_centeredMomentPowerSeries (y : ℚ) (n : ℕ) :
   rw [hn, pow_add]
   norm_num [pow_mul]
   ring
+
+private lemma coeff_halfMomentCandidatePS (n : ℕ) :
+    PowerSeries.coeff n halfMomentCandidatePS =
+      (∑ k ∈ range (n / 2 + 1),
+          (Nat.choose n (2 * k) : ℚ) * moment k) /
+        ((2 : ℚ) ^ n * (n.factorial : ℚ)) := by
+  rw [halfMomentCandidatePS, coeff_exp_mul_expandedMomentQuarter]
+  norm_num
+  ring
+
+/-- The centered even-moment series
+`sum moment(k) X^(2k) / (4^k (2k)!)`.  Multiplication by `exp(X/2)`
+recovers the factorially normalized half-moment series. -/
+noncomputable def centeredMomentPowerSeries : PowerSeries ℚ :=
+  expandedMomentQuarter
+
+/-- The even coefficients of the centered series are the factorially
+normalized moments, with the centering scale `4^n`. -/
+@[simp] theorem coeff_centeredMomentPowerSeries_even (n : ℕ) :
+    PowerSeries.coeff (2 * n) centeredMomentPowerSeries =
+      moment n / ((4 : ℚ) ^ n * ((2 * n).factorial : ℚ)) := by
+  simp [centeredMomentPowerSeries, expandedMomentQuarter, momentPS]
+  ring
+
+/-- The centered moment series has no odd-degree coefficients. -/
+@[simp] theorem coeff_centeredMomentPowerSeries_odd (n : ℕ) :
+    PowerSeries.coeff (2 * n + 1) centeredMomentPowerSeries = 0 := by
+  rw [centeredMomentPowerSeries, expandedMomentQuarter]
+  apply PowerSeries.coeff_expand_of_not_dvd
+  exact Nat.not_two_dvd_bit1 n
+
+/-- Coefficients after translating the centered even-moment series by an
+arbitrary rational amount. -/
+theorem coeff_exp_mul_centeredMomentPowerSeries (y : ℚ) (n : ℕ) :
+    PowerSeries.coeff n
+      (PowerSeries.rescale y (PowerSeries.exp ℚ) *
+        centeredMomentPowerSeries) =
+      (1 / ((2 : ℚ) ^ n * (n.factorial : ℚ))) *
+        ∑ k ∈ range (n / 2 + 1),
+          (Nat.choose n (2 * k) : ℚ) *
+            (2 * y) ^ (n - 2 * k) * moment k := by
+  simpa only [centeredMomentPowerSeries] using
+    coeff_exp_mul_expandedMomentQuarter y n
 
 /-- Coefficients after translating the centered moment series by `1/2`.
 This is the even-binomial transform appearing in Proposition 3. -/

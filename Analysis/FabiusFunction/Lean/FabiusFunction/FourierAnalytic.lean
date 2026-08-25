@@ -2,6 +2,7 @@ import FabiusFunction.Differential
 import Mathlib.Analysis.Calculus.ParametricIntegral
 import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
 import Mathlib.Analysis.Fourier.Inversion
+import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 /-!
@@ -16,7 +17,7 @@ function.
 set_option autoImplicit false
 set_option maxHeartbeats 800000
 
-open scoped BigOperators ContDiff Interval FourierTransform SchwartzMap
+open scoped BigOperators ComplexConjugate ContDiff Interval FourierTransform SchwartzMap
 open MeasureTheory Set
 
 namespace Fabius
@@ -139,6 +140,33 @@ theorem rvachevFourier_differentiable_analytic
     filter_upwards with t
     dsimp [G, A]
   rwa [hfun] at hdifferentiable
+
+/-- Rvachev's Fourier transform is analytic on the whole complex plane.
+
+This is the power-series-facing form of
+`rvachevFourier_differentiable_analytic`; exposing it avoids repeating the
+standard conversion from complex differentiability at downstream uses. -/
+theorem rvachevFourier_analyticOnNhd
+    (F : BoundedFabius) (hF : IsFabius F) :
+    AnalyticOnNhd ℂ (rvachevFourier F) Set.univ :=
+  (rvachevFourier_differentiable_analytic F hF).differentiableOn.analyticOnNhd
+    isOpen_univ
+
+/-- Complex conjugation of Rvachev's Fourier transform reflects its
+argument.  This identity only uses that `rvachevUp` is real-valued; the
+Fabius equations are not needed. -/
+theorem rvachevFourier_conj
+    (F : BoundedFabius) (z : ℂ) :
+    conj (rvachevFourier F z) = rvachevFourier F (-conj z) := by
+  unfold rvachevFourier
+  rw [← integral_conj]
+  apply integral_congr_ae
+  filter_upwards with t
+  rw [map_mul, Complex.conj_ofReal, ← Complex.exp_conj]
+  congr 1
+  simp only [map_mul, map_neg, map_ofNat, Complex.conj_ofReal,
+    Complex.conj_I]
+  ring_nf
 
 private lemma rvachevFourier_real_eq_fourier
     (F : BoundedFabius) (t : ℝ) :
