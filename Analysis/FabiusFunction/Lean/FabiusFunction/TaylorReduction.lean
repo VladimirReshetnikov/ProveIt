@@ -211,6 +211,6 @@ theorem extendedFabius_reduction (F : BoundedFabius) (hF : IsFabius F)
     convert hs using 1
     dsimp only [y]
     rw [hpow]
-    ring
+    ring_nf
 
 end Fabius
