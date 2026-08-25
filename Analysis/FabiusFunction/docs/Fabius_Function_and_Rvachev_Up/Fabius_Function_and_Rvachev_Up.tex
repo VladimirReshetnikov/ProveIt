@@ -10418,13 +10418,19 @@ $\sum_m\Up(am)=1+2\Up(a)$.  Absolute convergence and the rate are
 
 The identity is a genuine evaluation device: the left side is a single value of a function
 with no elementary closed form, and the right side is a sum whose terms are explicit infinite
-products \eqref{eq:sinc-product} decaying faster than any power.  The two endpoints of the
-admissible range are consistency checks.  At $a=1$ every term with $m\ne0$ is
+products \eqref{eq:sinc-product} decaying faster than any power.  The values $a=1$ and
+$a=\tfrac12$ give two useful consistency checks.  At $a=1$ every term with $m\ne0$ is
 $\widehat{\Up}(m)=0$, so \eqref{eq:four-sampling-bump} reads $1+2\Up(1)=1$, which is the
 vanishing of $\Up$ at the edge of its support.  At $a=\tfrac12$ only the even samples
 $\widehat{\Up}(2m)$ appear, all of which vanish except $m=0$, so the right side is
 $2\widehat{\Up}(0)=2$ and \eqref{eq:four-sampling-bump} gives $\Up(\tfrac12)=\tfrac12$,
 matching $F(\tfrac12)=\tfrac12$ through \eqref{eq:up-absolute}.
+
+The source restricts this specialization to $\tfrac12\le a\le1$, but the proof uses no
+upper bound.  Lean therefore retains source-compatible wrappers and also exposes the stronger
+ray statements
+\path{rvachev_poisson_support_specialization_unscaled_of_one_half_le} and
+\path{rvachev_poisson_support_specialization_of_one_half_le} for every $a\ge\tfrac12$.
 
 \subsection{Scaled partitions}
 
