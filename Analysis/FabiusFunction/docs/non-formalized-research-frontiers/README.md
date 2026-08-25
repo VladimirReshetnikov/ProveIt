@@ -69,10 +69,12 @@ absorbed document. The source snapshots consolidated on 25 August 2026 were:
 | `Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` | `85f51a20fc7b6bdf3b1d049ec4506f508aee3c4cd70554e6a68cbcc30977cb0b` |
 | `Primary_Exposition_Gap_Register/Primary_Exposition_Gap_Register.tex` | `06c7b888d9601b67ad7a5c0aee3f087d44d9ecaaa9abfb3bf3edfda4bd29c0d1` |
 
-Overlapping dossiers remain visible in the consolidated source when they
-provide independent derivations, sharper later statements, distinct warnings,
-or useful provenance. Editorial notes state which later formulation is
-preferred. The original checksums identify the absorbed snapshots; subsequent
+The eleven notebooks are represented by seven core or synthesized parts,
+followed by the post-audit gap register. Overlapping dossiers were merged around
+their stronger backbones: independent derivations, sharper later statements,
+distinct warnings, numerical data, figures, and useful provenance remain, while
+genuinely redundant repetitions are compressed and cross-referenced. The
+original checksums identify every absorbed snapshot; subsequent synthesis and
 status corrections are tracked by Git history in the canonical source.
 
 ## Maintenance

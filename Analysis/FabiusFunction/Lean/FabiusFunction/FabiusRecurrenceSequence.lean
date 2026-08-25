@@ -15,6 +15,8 @@ to `F(2⁻ⁿ)`, the Bernoulli-number recurrence from the generating-function
 argument, and the corresponding entire series and dyadic product.  The direct
 inverse-dyadic recurrence is exposed for both the bounded function and its
 signed-global extension, uniformly for every function satisfying `IsFabius`.
+Successor-index forms expose the positive-index recurrences without auxiliary
+positivity hypotheses.
 -/
 
 set_option autoImplicit false
@@ -40,6 +42,18 @@ theorem fabiusRecurrenceSequence_zero : fabiusRecurrenceSequence 0 = 1 := by
 theorem fabiusRecurrenceSequence_pos (n : ℕ) :
     0 < fabiusRecurrenceSequence n := by
   exact div_pos (halfMoment_pos n) (by positivity)
+
+/-- Positivity is preserved by the canonical embedding into the reals. -/
+theorem fabiusRecurrenceSequence_cast_pos (n : ℕ) :
+    0 < (fabiusRecurrenceSequence n : ℝ) := by
+  exact_mod_cast fabiusRecurrenceSequence_pos n
+
+/-- Recovering the unnormalized half moment multiplies `a_n` by `n!`. -/
+theorem halfMoment_eq_factorial_mul_fabiusRecurrenceSequence (n : ℕ) :
+    halfMoment n =
+      (n.factorial : ℚ) * fabiusRecurrenceSequence n := by
+  rw [fabiusRecurrenceSequence]
+  field_simp
 
 /-- The exact rational factorial majorant behind the
 faster-than-exponential decay. -/
@@ -71,8 +85,7 @@ theorem fabiusRecurrenceSequence_faster_than_exponential (c : ℝ) :
   apply squeeze_zero_norm
     (a := fun n : ℕ => |c| ^ n / (n.factorial : ℝ))
   intro n
-  have hpos : 0 < (fabiusRecurrenceSequence n : ℝ) := by
-    exact_mod_cast fabiusRecurrenceSequence_pos n
+  have hpos := fabiusRecurrenceSequence_cast_pos n
   rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_pos hpos]
   calc
     |c| ^ n * (fabiusRecurrenceSequence n : ℝ) ≤
@@ -90,8 +103,7 @@ theorem summable_norm_fabiusRecurrenceSequence_series (z : ℂ) :
   refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_)
     (NormedSpace.norm_expSeries_div_summable z)
   rw [norm_mul, norm_pow, norm_div, norm_pow]
-  have hpos : 0 < (fabiusRecurrenceSequence n : ℝ) := by
-    exact_mod_cast fabiusRecurrenceSequence_pos n
+  have hpos := fabiusRecurrenceSequence_cast_pos n
   have hbound := fabiusRecurrenceSequence_cast_le_inv_factorial n
   rw [Complex.norm_ratCast, abs_of_pos hpos, Complex.norm_natCast]
   simpa only [div_eq_mul_inv, mul_comm] using
@@ -125,9 +137,7 @@ theorem fabiusRecurrenceSequence_succ_recurrence (n : ℕ) :
           have hn2 : (((n + 2 : ℕ) : ℚ)) ≠ 0 := by positivity
           have hfac : ((((n + 1).factorial : ℕ) : ℚ)) ≠ 0 := by
             positivity
-          have hpow : (2 : ℚ) ^ (n + 1) - 1 ≠ 0 := by
-            exact ne_of_gt (sub_pos.mpr
-              (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+          have hpow := rat_two_pow_sub_one_ne_zero (n + 1) (by omega)
           field_simp
     _ =
       (∑ k : Fin (n + 1),
@@ -219,6 +229,18 @@ theorem fabiusAtInverseTwoPow_recurrence
   rw [fabiusAtInverseTwoPow_eq_recurrenceSequence,
     fabiusRecurrenceSequence_recurrence n hn, hsum]
   ring
+
+/-- All-index successor form of the exact rational inverse-dyadic
+recurrence. -/
+theorem fabiusAtInverseTwoPow_succ_recurrence (n : ℕ) :
+    fabiusAtInverseTwoPow (n + 1) =
+      (((2 : ℚ) ^ (n + 1).choose 2)⁻¹ /
+          ((2 : ℚ) ^ (n + 1) - 1)) *
+        ∑ k ∈ range (n + 1),
+          ((2 : ℚ) ^ k.choose 2 /
+              (((n + 1 - k + 1).factorial : ℕ) : ℚ)) *
+            fabiusAtInverseTwoPow k := by
+  exact fabiusAtInverseTwoPow_recurrence (n + 1) (by omega)
 
 /-- Exact rational form with the literal negative exponent from the displayed
 recurrence. -/
@@ -386,9 +408,7 @@ theorem fabiusRecurrenceSequence_bernoulli_succ_recurrence (n : ℕ) :
   rw [sum_range_succ] at h
   simp only [Nat.sub_self, Nat.factorial_zero, Nat.cast_one,
     div_one, bernoulli_zero, one_mul] at h
-  have hpow : (2 : ℚ) ^ (n + 1) - 1 ≠ 0 := by
-    exact ne_of_gt (sub_pos.mpr
-      (one_lt_pow₀ (a := (2 : ℚ)) (by norm_num) (by omega)))
+  have hpow := rat_two_pow_sub_one_ne_zero (n + 1) (by omega)
   rw [eq_div_iff hpow]
   linear_combination -h
 

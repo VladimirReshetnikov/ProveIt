@@ -131,7 +131,7 @@ points:
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
 | Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_fabiusInv_div_atTop` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
-| Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
+| Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
 `(F : BoundedFabius) (hF : IsFabius F)`.  Canonical corollaries specialize
@@ -169,20 +169,28 @@ such sequence.  `EffectivelyUniformContinuous` uses a recursive positive
 modulus and the source's reciprocal convention for positive precision
 indices.
 
-The algorithm in `FabiusComputableSpline.lean` is entirely natural-number
-and primitive-recursive.  It computes the Thue--Morse bit, evaluates the
-finite centered uniform spline on the dyadic grid of order `p+3`, and rounds
-to the nearest dyadic of order `p`.  Its proved evaluator error is
-`5 * 2^(-(p+3))`.  Propagating the input-name error through the global
-`2`-Lipschitz bound costs another `2 * 2^(-(p+3))`, so the output error is
-within `2^-p`.  This proves `fabius_sequentiallyComputable`.  The
-primitive-recursive modulus `d(n)=2n` proves effective uniform continuity,
-and `fabius_isComputableRealFunction` packages both clauses for the canonical
-bounded Fabius function.  The underlying analytic approximation is stronger
-than the computability application needs:
+The algorithms in `FabiusComputableSpline.lean` are entirely natural-number
+and primitive-recursive.  Both compute the Thue--Morse bit, evaluate the
+finite centered uniform spline on the dyadic grid of order `p+3`, and round
+to the nearest dyadic of order `p`.  The bounded evaluator clamps its input
+to `[0,1]`; the signed-global evaluator instead rounds an unrestricted signed
+rational spline code, with negative input names collapsing to the exact zero
+tail.  Each has proved evaluator error `5 * 2^(-(p+3))`.  Propagating the
+input-name error through the global `2`-Lipschitz bound costs another
+`2 * 2^(-(p+3))`, so the output error is within `2^-p`.  This proves both
+`fabius_sequentiallyComputable` and `globalFabius_sequentiallyComputable`.
+The primitive-recursive modulus `d(n)=2n` proves effective uniform continuity;
+`fabius_isComputableRealFunction` and
+`globalFabius_isComputableRealFunction` package both clauses for the canonical
+bounded and signed-global functions.  These are computability certificates,
+not practical running-time claims: the unrestricted positive grid numerator
+controls the length of a finite primitive-recursive fold.  The underlying
+analytic approximation is stronger than the computability application needs:
 `Fabius.abs_fabiusUniformSpline_sub_extendedFabius_le` gives the global error
 `2^-p`, and `Fabius.fabiusUniformSpline_tendstoUniformly_globalFabius`
-packages uniform convergence on all of `ℝ`.
+packages uniform convergence on all of `ℝ`; the diagonal theorem
+`Fabius.fabiusUniformSpline_tendsto_extendedFabius_of_tendsto` also allows the
+evaluation point to vary with the spline order.
 
 ## Exact dyadic evaluation
 

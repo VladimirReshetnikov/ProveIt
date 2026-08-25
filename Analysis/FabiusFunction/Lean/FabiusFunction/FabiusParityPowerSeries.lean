@@ -14,7 +14,7 @@ The corrected series starts at `m = 0` and equals the signed global Fabius
 extension for every real input: on the nonpositive half-line both sides
 vanish termwise.  The established theorem signatures with `0 ≤ x` are kept
 as wrappers.  The original series starting at `m = 1` remains valid on the
-half-open unit interval `0 ≤ x < 1`.
+full domain `x < 1`; its nonpositive branch is identically zero.
 -/
 
 set_option autoImplicit false
@@ -160,6 +160,14 @@ theorem fabiusParityPowerSummand_eq_globalBinaryReductionSummand
           fabiusReductionSum m (binaryTail x m) := by
       rw [fabiusParityPowerCoefficient_eq_globalBinaryReductionCoefficient]
 
+/-- Every parity-power summand vanishes termwise on the nonpositive
+half-line. -/
+@[simp] theorem fabiusParityPowerSummand_eq_zero_of_nonpos
+    (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    fabiusParityPowerSummand x m = 0 := by
+  rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
+    globalBinaryReductionSummand_eq_zero_of_nonpos m hx]
+
 /-- On the original half-open unit interval, the scale-zero parity-power
 summand vanishes pointwise. -/
 theorem fabiusParityPowerSummand_zero_of_lt_one (x : ℝ) (hx : x < 1) :
@@ -200,9 +208,32 @@ theorem globalFabius_eq_tsum_fabiusParityPowerSummand
   simpa only [max_eq_left hx] using
     globalFabius_eq_tsum_fabiusParityPowerSummand_all (max x 0)
 
-/-- Fully expanded corrected parity-power formula. The outer series starts at
+/-- Fully expanded all-real parity-power formula.  The outer series starts at
 `m = 0`, the quadratic exponent is interpreted using integer division, and
 the binary tail is displayed literally. -/
+theorem globalFabius_eq_tsum_fabiusParityPower_literal_all (x : ℝ) :
+    globalFabius x =
+      ∑' m : ℕ,
+        (((-1 : ℝ) ^ ⌊(2 : ℝ) ^ m * x⌋₊) - 1) *
+          (-1 : ℝ) ^ thueMorseBit ⌊(2 : ℝ) ^ m * x⌋₊ *
+          (∑ n ∈ Finset.range (m + 1),
+            (2 : ℝ) ^
+                ((((n : ℤ) + 2) * ((n : ℤ) - 1)) / 2) *
+              globalFabius
+                ((2 : ℝ) ^ ((n : ℤ) - (m : ℤ))) *
+              (x - (⌊(2 : ℝ) ^ m * x⌋₊ : ℝ) /
+                (2 : ℝ) ^ m) ^ n /
+              (n.factorial : ℝ)) := by
+  rw [globalFabius_eq_tsum_fabiusParityPowerSummand_all x]
+  apply tsum_congr
+  intro m
+  rw [fabiusParityPowerSummand, fabiusParityPowerInner,
+    binaryTail, binaryPrefix]
+  simp_rw [fabiusParityPowerExponent_eq_choose_sub_one]
+
+set_option linter.unusedVariables false in
+/-- Compatibility form of the fully expanded formula on `x ≥ 0`; the
+nonnegativity binder is retained for source compatibility. -/
 theorem globalFabius_eq_tsum_fabiusParityPower_literal
     (x : ℝ) (hx : 0 ≤ x) :
     globalFabius x =
@@ -217,12 +248,7 @@ theorem globalFabius_eq_tsum_fabiusParityPower_literal
               (x - (⌊(2 : ℝ) ^ m * x⌋₊ : ℝ) /
                 (2 : ℝ) ^ m) ^ n /
               (n.factorial : ℝ)) := by
-  rw [globalFabius_eq_tsum_fabiusParityPowerSummand x hx]
-  apply tsum_congr
-  intro m
-  rw [fabiusParityPowerSummand, fabiusParityPowerInner,
-    binaryTail, binaryPrefix]
-  simp_rw [fabiusParityPowerExponent_eq_choose_sub_one]
+  exact globalFabius_eq_tsum_fabiusParityPower_literal_all x
 
 /-- On `[0,1]`, the corrected series has the ordinary bounded Fabius function
 as its sum. -/
@@ -238,22 +264,60 @@ theorem fabiusReal_eq_tsum_fabiusParityPowerSummand
     fabiusReal fabius x = ∑' m : ℕ, fabiusParityPowerSummand x m :=
   (hasSum_fabiusReal_fabiusParityPowerSummand x hx).tsum_eq.symm
 
-/-- The original series starting at `m = 1` is valid on `0 ≤ x < 1`. -/
+/-- The shifted series has the same sum whenever its omitted scale-zero term
+vanishes. -/
+theorem hasSum_fabiusParityPowerSummand_succ_of_zero
+    (x : ℝ) (hzero : fabiusParityPowerSummand x 0 = 0) :
+    HasSum (fun m : ℕ => fabiusParityPowerSummand x (m + 1))
+      (globalFabius x) := by
+  have hglobalzero : globalBinaryReductionSummand x 0 = 0 := by
+    simpa only [fabiusParityPowerSummand_eq_globalBinaryReductionSummand]
+      using hzero
+  exact (hasSum_globalBinaryReductionSummand_succ_of_zero
+    fabius fabius_spec x hglobalzero).congr_fun
+      (fun m => fabiusParityPowerSummand_eq_globalBinaryReductionSummand
+        x (m + 1))
+
+/-- `tsum` form of omitting a vanishing scale-zero parity-power term. -/
+theorem globalFabius_eq_tsum_fabiusParityPowerSummand_succ_of_zero
+    (x : ℝ) (hzero : fabiusParityPowerSummand x 0 = 0) :
+    globalFabius x =
+      ∑' m : ℕ, fabiusParityPowerSummand x (m + 1) :=
+  (hasSum_fabiusParityPowerSummand_succ_of_zero x hzero).tsum_eq.symm
+
+/-- The shifted series starting at `m = 1` is valid for every `x < 1`;
+nonpositive inputs contribute the zero series. -/
+theorem hasSum_fabiusParityPowerSummand_succ_all
+    (x : ℝ) (hx1 : x < 1) :
+    HasSum (fun m : ℕ => fabiusParityPowerSummand x (m + 1))
+      (globalFabius x) := by
+  exact hasSum_fabiusParityPowerSummand_succ_of_zero x
+    (fabiusParityPowerSummand_zero_of_lt_one x hx1)
+
+set_option linter.unusedVariables false in
+/-- Compatibility form of the shifted series on `0 ≤ x < 1`; the
+nonnegativity binder is retained for source compatibility. -/
 theorem hasSum_fabiusParityPowerSummand_succ
     (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) :
     HasSum (fun m : ℕ => fabiusParityPowerSummand x (m + 1))
       (globalFabius x) := by
-  exact (hasSum_globalBinaryReductionSummand_succ
-    fabius fabius_spec x hx0 hx1).congr_fun
-      (fun m => fabiusParityPowerSummand_eq_globalBinaryReductionSummand
-        x (m + 1))
+  exact hasSum_fabiusParityPowerSummand_succ_all x hx1
 
-/-- `tsum` form of the original `m = 1,2,...` theorem on `0 ≤ x < 1`. -/
+/-- `tsum` form of the shifted parity-power series on every `x < 1`. -/
+theorem globalFabius_eq_tsum_fabiusParityPowerSummand_succ_all
+    (x : ℝ) (hx1 : x < 1) :
+    globalFabius x =
+      ∑' m : ℕ, fabiusParityPowerSummand x (m + 1) :=
+  (hasSum_fabiusParityPowerSummand_succ_all x hx1).tsum_eq.symm
+
+set_option linter.unusedVariables false in
+/-- `tsum` form of the original `m = 1,2,...` theorem on `0 ≤ x < 1`; the
+nonnegativity binder is retained for source compatibility. -/
 theorem globalFabius_eq_tsum_fabiusParityPowerSummand_succ
     (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) :
     globalFabius x =
       ∑' m : ℕ, fabiusParityPowerSummand x (m + 1) :=
-  (hasSum_fabiusParityPowerSummand_succ x hx0 hx1).tsum_eq.symm
+  globalFabius_eq_tsum_fabiusParityPowerSummand_succ_all x hx1
 
 end
 

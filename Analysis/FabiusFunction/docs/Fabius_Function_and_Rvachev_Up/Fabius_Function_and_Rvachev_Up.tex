@@ -2319,6 +2319,16 @@ For every $x\ge0$,
 On $0\le x\le1$, the sum is equivalently $F(x)$.
 \end{theorem}
 
+Lean's natural-floor definitions make the telescope genuinely all-real: when \(x\le0\),
+every binary prefix, summand, residual, and \(\mathcal F(x)\) vanishes termwise.  Thus the
+finite identity and the \(m=0\) infinite series hold for every \(x\in\R\), as
+\lean{extendedFabius_eq_globalBinaryReductionSum_add_remainder_all} and
+\lean{extendedFabius_eq_tsum_globalBinaryReductionSummand_all} in
+\path{FabiusBinaryReductionSeries.lean}.  The fully expanded parity-power version has the
+same all-real scope by \lean{globalFabius_eq_tsum_fabiusParityPower_literal_all} in
+\path{FabiusParityPowerSeries.lean}.  The displayed floor formulas above remain ordinary
+nonnegative-floor formulas on their stated domain.
+
 The index $m=0$ is indispensable globally.  For $0\le x<1$ it vanishes, so a series
 starting at $m=1$ happens to be valid there.  At $x=1$, however, the zeroth term is $1$ and
 all later coefficients vanish.  More generally it is the zeroth term that distinguishes
@@ -3654,6 +3664,18 @@ They are proved by
 \lean{fabiusLambertRadius_mul_argument}, and
 \lean{log_fabiusLambertRadius} in \path{FabiusLambertSaddle.lean}.
 
+On the exact domain \(0<x<\e^{-1}/L\), the phase \(\lambda(x)\) is continuous and
+strictly decreasing, with image \((1/L,\infty)\), and
+\begin{equation}
+ \lambda'(x)=
+ \frac{\lambda(x)}{x\bigl(1-L\lambda(x)\bigr)}<0.            \label{eq:lambert-phase-derivative}
+\end{equation}
+These are \lean{fabiusLambertPhase_continuousOn},
+\lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
+\lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
+\path{FabiusLambertSaddle.lean}; the derivative witness is
+\lean{fabiusLambertPhase_hasDerivAt}.
+
 The corrected main term is
 \begin{equation}
  \mathcal M(x)=
@@ -3836,7 +3858,7 @@ This is \lean{log_fabius_sub_WikipediaElementaryMain_not_isBigO} in
 \path{FabiusSharpAsymptotic.lean}.  The obstruction is therefore a theorem, not a
 numerical diagnosis.
 
-\subsection{Two endpoint consequences already formalized}
+\subsection{Three endpoint consequences already formalized}
 
 On the dyadic logarithmic scale, let
 \(g(t)=-\log F(2^{-t})\).  Then
@@ -3844,7 +3866,13 @@ On the dyadic logarithmic scale, let
  \lim_{t\to\infty}\frac{g(t)}{t^2}=\frac{L}{2}.             \label{eq:dyadic-quadratic-law}
 \end{equation}
 This is \lean{fabiusLogProfile_normalized_tendsto} in
-\path{FabiusLogSquaredAsymptotic.lean}.  At the opposite endpoint, the exact global
+\path{FabiusLogSquaredAsymptotic.lean}.  On the original small-argument scale, for every
+\(c>0\),
+\begin{equation}
+ \exp(-c/x)=o(F(x))\qquad(x\downarrow0).                     \label{eq:exp-inverse-little-o}
+\end{equation}
+This is \lean{exp_neg_div_isLittleO_fabius} in
+\path{FabiusDecayComparison.lean}.  At the opposite endpoint, the exact global
 symmetry already proved in \eqref{eq:shape-symmetry-global} gives only the identity
 \begin{equation}
  1-F(1-x)=F(x).                                             \label{eq:right-endpoint-sym}
@@ -3949,6 +3977,34 @@ The same effective continuity holds for every signed global extension:
 This is \lean{globalFabius_effectively_uniformly_continuous}, together with the definition
 \lean{fabiusEffectiveUniformModulus}, in \path{FabiusComputability.lean}.
 
+The same finite spline code also gives a signed-global algorithm.  Instead of clamping the
+positive numerator to the unit grid, it retains the unrestricted centered spline and rounds
+the signed rational numerator pair.  Negative dyadic inputs collapse to the zero grid point,
+which is exact because \(
+\mathcal F(x)=0\) for \(x\le0\).  The resulting primitive-recursive procedure satisfies
+\begin{equation}
+ \left|
+ \mathcal F\!\left(c.\operatorname{value}(p+3)\right)
+ -\operatorname{Approx}_{\rm glob}(c,p).\operatorname{value}(p)
+ \right|
+ \le 5\,2^{-(p+3)}.                                      \label{eq:computable-global-spline-error}
+\end{equation}
+These are \lean{extendedFabiusSplineApproxPR_primrec} and
+\lean{extendedFabiusSplineApproxPR_error}.  Hence, for every \(F\) satisfying
+\lean{IsFabius F}, its signed extension \lean{extendedFabius F} is a computable real function, by
+\lean{extendedFabius_isComputableRealFunction}; the canonical specialization is
+\lean{globalFabius_isComputableRealFunction}.  This is a primitive-recursive correctness
+statement, not a practical running-time estimate: the unrestricted positive grid numerator
+sets the length of the finite fold.
+
+The quantitative analytic estimate is stable under moving the evaluation point:
+\begin{equation}
+ |S_p(x)-\mathcal F(y)|\le 2^{-p}+2|x-y|.                 \label{eq:computable-spline-moving-input}
+\end{equation}
+This is \lean{abs_fabiusUniformSpline_sub_extendedFabius_le_add}.  In particular, if
+\(x_p\to x\), then \(S_p(x_p)\to\mathcal F(x)\), as packaged by
+\lean{fabiusUniformSpline_tendsto_extendedFabius_of_tendsto}.
+
 \section{Formalization boundary and audit conventions}
 \label{sec:audit}
 
@@ -4048,7 +4104,8 @@ Dyadic and \(q\)-binomial formulas &
 \path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
 \path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
-\path{FabiusBinaryReductionSeries.lean}, \path{FabiusGlobalQBinomialSeries.lean},
+\path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
+\path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse prefixes &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
@@ -4060,7 +4117,7 @@ Endpoint asymptotics &
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
 \path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
-\path{FabiusLambertSaddle.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusDecayComparison.lean},
 \path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
 \path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
 \path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},

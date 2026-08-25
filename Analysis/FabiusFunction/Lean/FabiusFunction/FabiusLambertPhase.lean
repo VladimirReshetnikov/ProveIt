@@ -163,6 +163,7 @@ noncomputable def dyadicLambertRemainder (t : ℝ) : ℝ :=
 noncomputable def dyadicLambertPerturbation (t : ℝ) : ℝ :=
   (Real.log t / Real.log 2 + dyadicLambertRemainder t) / t
 
+/-- The displacement left after subtracting `t + log₂ t` tends to zero. -/
 theorem dyadicLambertRemainder_tendsto_zero :
     Tendsto dyadicLambertRemainder atTop (nhds 0) := by
   exact dyadicLambertPhase_sub_main_tendsto_zero
@@ -202,6 +203,7 @@ theorem dyadicLambertRemainder_eq_log_perturbation {t : ℝ} (ht : 0 < t)
     hdiff]
   ring
 
+/-- The relative displacement of the Lambert phase from `t` tends to zero. -/
 theorem dyadicLambertPerturbation_tendsto_zero :
     Tendsto dyadicLambertPerturbation atTop (nhds 0) := by
   have hlog : Tendsto (fun t : ℝ => Real.log t / t) atTop (nhds 0) :=
@@ -215,6 +217,20 @@ theorem dyadicLambertPerturbation_tendsto_zero :
     unfold dyadicLambertPerturbation
     field_simp
   · simp
+
+/-- First-order asymptotic equivalence of the exact Lambert phase and the
+dyadic logarithmic coordinate: `dyadicLambertPhase t / t → 1`.  This is the
+ratio form used when reciprocal Lambert rates are compared with `1 / t`. -/
+theorem dyadicLambertPhase_div_t_tendsto_one :
+    Tendsto (fun t : ℝ => dyadicLambertPhase t / t) atTop (nhds 1) := by
+  have h : Tendsto (fun t : ℝ => 1 + dyadicLambertPerturbation t)
+      atTop (nhds 1) := by
+    simpa using tendsto_const_nhds.add dyadicLambertPerturbation_tendsto_zero
+  exact h.congr' <| by
+    filter_upwards [eventually_ne_atTop (0 : ℝ)] with t ht
+    unfold dyadicLambertPerturbation dyadicLambertRemainder
+    field_simp [ht]
+    ring
 
 private lemma dyadicLambertRemainder_isBigO_one :
     dyadicLambertRemainder =O[atTop] (fun _ : ℝ => (1 : ℝ)) :=

@@ -4,12 +4,15 @@ import FabiusFunction.ThueMorseBinomialLog
 /-!
 # A primitive-recursive Fabius evaluator
 
-This module certifies a natural-number algorithm for the bounded Fabius
-function.  It clamps a signed-natural dyadic numerator, evaluates a finite
-centered Thue--Morse spline, and rounds half-up to the requested dyadic grid.
-The evaluator is primitive recursive and has error at most
-`5 * 2^(-(p+3))`; together with the global Lipschitz bound this proves
-sequential computability and the combined computable-real-function theorem.
+This module certifies natural-number algorithms for both the bounded Fabius
+function and its signed global extension.  The bounded evaluator clamps a
+signed-natural dyadic numerator; the global evaluator keeps every nonnegative
+grid point and uses a signed rational code.  Both evaluate a finite centered
+Thue--Morse spline and round to the nearest requested dyadic, with half ties
+away from zero.  They are primitive recursive and have error at most
+`5 * 2^(-(p+3))`; together with
+the global Lipschitz bounds this proves sequential computability and the
+combined computable-real-function theorem for both representatives.
 -/
 
 namespace Fabius
@@ -585,6 +588,89 @@ theorem nearestNatRatio_error (N D scale : ℕ) (hD : 0 < D) (hs : 0 < scale) :
   · field_simp
     nlinarith
 
+/-! ## Signed rational rounding -/
+
+/-- Round a signed-natural rational code to the nearest signed dyadic at
+precision `p`, with half ties away from zero.  The result is a normalized
+signed-natural pair with at most one nonzero component. -/
+def roundSignedRatCodePR (code : SignedRatCode) (p : ℕ) : DyadicNumerator :=
+  let positive := code.1.1
+  let negative := code.1.2
+  let denominator := code.2
+  let scale := 2 ^ p
+  if negative ≤ positive then
+    ((2 * (scale * (positive - negative)) + denominator) /
+      (2 * denominator), 0)
+  else
+    (0, (2 * (scale * (negative - positive)) + denominator) /
+      (2 * denominator))
+
+/-- `roundSignedRatCodePR` is primitive recursive. -/
+theorem roundSignedRatCodePR_primrec : Primrec₂ roundSignedRatCodePR := by
+  apply Primrec₂.mk
+  let hpositive : Primrec (fun q : SignedRatCode × ℕ => q.1.1.1) :=
+    Primrec.fst.comp (Primrec.fst.comp Primrec.fst)
+  let hnegative : Primrec (fun q : SignedRatCode × ℕ => q.1.1.2) :=
+    Primrec.snd.comp (Primrec.fst.comp Primrec.fst)
+  let hdenominator : Primrec (fun q : SignedRatCode × ℕ => q.1.2) :=
+    Primrec.snd.comp Primrec.fst
+  let hscale : Primrec (fun q : SignedRatCode × ℕ => 2 ^ q.2) :=
+    nat_pow_primrec.comp (Primrec.const 2) Primrec.snd
+  let hpositiveMagnitude : Primrec (fun q : SignedRatCode × ℕ =>
+      q.1.1.1 - q.1.1.2) :=
+    Primrec.nat_sub.comp hpositive hnegative
+  let hnegativeMagnitude : Primrec (fun q : SignedRatCode × ℕ =>
+      q.1.1.2 - q.1.1.1) :=
+    Primrec.nat_sub.comp hnegative hpositive
+  let hroundPositive : Primrec (fun q : SignedRatCode × ℕ =>
+      (2 * (2 ^ q.2 * (q.1.1.1 - q.1.1.2)) + q.1.2) /
+        (2 * q.1.2)) :=
+    Primrec.nat_div.comp
+      (Primrec.nat_add.comp
+        (Primrec.nat_mul.comp (Primrec.const 2)
+          (Primrec.nat_mul.comp hscale hpositiveMagnitude))
+        hdenominator)
+      (Primrec.nat_mul.comp (Primrec.const 2) hdenominator)
+  let hroundNegative : Primrec (fun q : SignedRatCode × ℕ =>
+      (2 * (2 ^ q.2 * (q.1.1.2 - q.1.1.1)) + q.1.2) /
+        (2 * q.1.2)) :=
+    Primrec.nat_div.comp
+      (Primrec.nat_add.comp
+        (Primrec.nat_mul.comp (Primrec.const 2)
+          (Primrec.nat_mul.comp hscale hnegativeMagnitude))
+        hdenominator)
+      (Primrec.nat_mul.comp (Primrec.const 2) hdenominator)
+  exact Primrec.ite
+    (Primrec.nat_le.comp hnegative hpositive)
+    (Primrec.pair hroundPositive (Primrec.const 0))
+    (Primrec.pair (Primrec.const 0) hroundNegative)
+
+/-- Nearest rounding of a signed rational, with half ties away from zero,
+incurs at most half a dyadic unit.
+The positivity hypothesis excludes only meaningless denominator-zero codes;
+all spline codes satisfy it. -/
+theorem roundSignedRatCodePR_error (positive negative denominator p : ℕ)
+    (hdenominator : 0 < denominator) :
+    |(roundSignedRatCodePR ((positive, negative), denominator) p).value p -
+        ((positive : ℝ) - negative) / denominator| ≤
+      1 / (2 * (2 : ℝ) ^ p) := by
+  by_cases hsign : negative ≤ positive
+  · simpa [roundSignedRatCodePR, hsign, DyadicNumerator.value,
+      Nat.cast_sub hsign] using
+      nearestNatRatio_error (positive - negative) denominator (2 ^ p)
+        hdenominator (by positivity)
+  · have hsign' : positive ≤ negative := (Nat.lt_of_not_ge hsign).le
+    have hround := nearestNatRatio_error (negative - positive) denominator
+      (2 ^ p) hdenominator (by positivity)
+    rw [roundSignedRatCodePR, if_neg hsign, DyadicNumerator.value]
+    simp only [Nat.cast_zero, zero_sub]
+    convert hround using 1
+    · simp only [Nat.cast_pow, Nat.cast_ofNat, Nat.cast_sub hsign']
+      rw [← abs_neg]
+      congr 1
+      ring
+    · simp only [Nat.cast_pow, Nat.cast_ofNat]
+
 /-- The matched-grid evaluator. At requested precision `p`, the input pair
 is interpreted at exponent `p+3`; the result is returned at exponent `p`. -/
 def fabiusSplineApproxPR (c : DyadicNumerator) (p : ℕ) : DyadicNumerator :=
@@ -697,6 +783,114 @@ def fabiusHasComputableDyadicApproximation
   computable := fabiusSplineApproxPR_computable
   error := fabiusSplineApproxPR_error F hF
 
+/-! ## Signed global fast-grid wrapper -/
+
+/-- Replacing a signed dyadic numerator by its natural positive part is
+invisible to the signed Fabius extension.  When the code denotes a
+nonpositive number, both sides vanish; otherwise natural subtraction is exact.
+-/
+theorem extendedFabius_natSub_div_pow_eq_value
+    (F : BoundedFabius) (hF : IsFabius F)
+    (c : DyadicNumerator) (s : ℕ) :
+    extendedFabius F (((c.1 - c.2 : ℕ) : ℝ) / (2 : ℝ) ^ s) =
+      extendedFabius F (c.value s) := by
+  by_cases hsign : c.1 ≤ c.2
+  · have hvalue : c.value s ≤ 0 := by
+      rw [DyadicNumerator.value]
+      exact div_nonpos_of_nonpos_of_nonneg
+        (sub_nonpos.mpr (by exact_mod_cast hsign)) (by positivity)
+    rw [extendedFabius_eq_zero_of_nonpos F hF hvalue]
+    simp [Nat.sub_eq_zero_of_le hsign,
+      extendedFabius_eq_zero_of_nonpos F hF]
+  · have hsign' : c.2 ≤ c.1 := (Nat.lt_of_not_ge hsign).le
+    congr 1
+    rw [DyadicNumerator.value, Nat.cast_sub hsign']
+
+/-- A global signed Fabius evaluator obtained by evaluating the unrestricted
+centered spline exactly and then rounding its signed rational code.  Unlike
+the bounded evaluator, it does not clamp positive inputs to the unit interval.
+-/
+def extendedFabiusSplineApproxPR
+    (c : DyadicNumerator) (p : ℕ) : DyadicNumerator :=
+  roundSignedRatCodePR
+    (splineCodePR (p + 3) (c.1 - c.2)) p
+
+/-- `extendedFabiusSplineApproxPR` is primitive recursive. -/
+theorem extendedFabiusSplineApproxPR_primrec :
+    Primrec₂ extendedFabiusSplineApproxPR := by
+  let hs : Primrec₂ (fun (_ : DyadicNumerator) (p : ℕ) => p + 3) :=
+    Primrec.nat_add.comp₂ Primrec₂.right (Primrec.const 3).to₂
+  let ha : Primrec₂ (fun (c : DyadicNumerator) (_ : ℕ) => c.1 - c.2) :=
+    Primrec.nat_sub.comp₂
+      (Primrec.fst.comp₂ Primrec₂.left)
+      (Primrec.snd.comp₂ Primrec₂.left)
+  let hcode : Primrec₂ (fun (c : DyadicNumerator) (p : ℕ) =>
+      splineCodePR (p + 3) (c.1 - c.2)) :=
+    splineCodePR_primrec.comp₂ hs ha
+  exact roundSignedRatCodePR_primrec.comp₂ hcode Primrec₂.right
+
+/-- Computability form of `extendedFabiusSplineApproxPR_primrec`. -/
+theorem extendedFabiusSplineApproxPR_computable :
+    Computable₂ extendedFabiusSplineApproxPR :=
+  extendedFabiusSplineApproxPR_primrec.to_comp
+
+/-- The global signed evaluator has the same `5 * 2^(-(p+3))` error budget
+as the bounded evaluator.  The spline contributes one guard unit and signed
+nearest rounding contributes four at the finer input scale. -/
+theorem extendedFabiusSplineApproxPR_error
+    (F : BoundedFabius) (hF : IsFabius F)
+    (c : DyadicNumerator) (p : ℕ) :
+    |extendedFabius F (c.value (p + 3)) -
+        (extendedFabiusSplineApproxPR c p).value p| ≤
+      5 * ((2 : ℝ) ^ (p + 3))⁻¹ := by
+  let s := p + 3
+  let a := c.1 - c.2
+  have hs : s = p + 3 := rfl
+  have hround0 := roundSignedRatCodePR_error
+    (splineSumsPR s a).1 (splineSumsPR s a).2 (splineDenPR s) p
+    (splineDenPR_pos s)
+  have hround :
+      |(extendedFabiusSplineApproxPR c p).value p -
+          fabiusUniformSpline s ((a : ℝ) / (2 : ℝ) ^ s)| ≤
+        1 / (2 * (2 : ℝ) ^ p) := by
+    rw [← splineCodePR_value s a]
+    simpa [extendedFabiusSplineApproxPR, splineCodePR, s, a] using hround0
+  have hspline :=
+    abs_fabiusUniformSpline_sub_extendedFabius_le F hF s
+      ((a : ℝ) / (2 : ℝ) ^ s)
+  have hext := extendedFabius_natSub_div_pow_eq_value F hF c s
+  rw [show p + 3 = s by rfl, ← hext]
+  change
+    |extendedFabius F ((a : ℝ) / (2 : ℝ) ^ s) -
+        (extendedFabiusSplineApproxPR c p).value p| ≤ _
+  calc
+    |extendedFabius F ((a : ℝ) / (2 : ℝ) ^ s) -
+        (extendedFabiusSplineApproxPR c p).value p| ≤
+        |extendedFabius F ((a : ℝ) / (2 : ℝ) ^ s) -
+          fabiusUniformSpline s ((a : ℝ) / (2 : ℝ) ^ s)| +
+        |fabiusUniformSpline s ((a : ℝ) / (2 : ℝ) ^ s) -
+          (extendedFabiusSplineApproxPR c p).value p| :=
+      abs_sub_le _ _ _
+    _ ≤ ((2 : ℝ) ^ s)⁻¹ + 1 / (2 * (2 : ℝ) ^ p) := by
+      gcongr
+      · simpa only [abs_sub_comm] using hspline
+      · simpa only [abs_sub_comm] using hround
+    _ ≤ 5 * ((2 : ℝ) ^ (p + 3))⁻¹ := by
+      rw [hs, show p + 3 = ((p + 1) + 1) + 1 by omega,
+        pow_succ, pow_succ, pow_succ]
+      have hp : (2 : ℝ) ^ p ≠ 0 := by positivity
+      field_simp
+      norm_num
+
+/-- The signed centered-spline evaluator packaged for the generic
+computability bridge. -/
+def extendedFabiusHasComputableDyadicApproximation
+    (F : BoundedFabius) (hF : IsFabius F) :
+    HasComputableDyadicApproximation (extendedFabius F) where
+  approx := extendedFabiusSplineApproxPR
+  computable := extendedFabiusSplineApproxPR_computable
+  error := extendedFabiusSplineApproxPR_error F hF
+
 /-! ## Sequential computability and the combined result -/
 
 /-- Every bounded/CDF Fabius solution preserves computable real sequences. -/
@@ -716,6 +910,24 @@ theorem fabiusReal_isComputableRealFunction
   effectivelyUniformContinuous :=
     fabiusReal_effectivelyUniformContinuous F hF
 
+/-- Every signed global Fabius extension preserves computable real
+sequences. -/
+theorem extendedFabius_sequentiallyComputable
+    (F : BoundedFabius) (hF : IsFabius F) :
+    SequentiallyComputable (extendedFabius F) :=
+  sequentiallyComputable_of_lipschitzWith_two_of_dyadicApproximation
+    (extendedFabius_lipschitzWith_two F hF)
+    (extendedFabiusHasComputableDyadicApproximation F hF)
+
+/-- Every signed global Fabius extension is computable in the
+Wikipedia/Grzegorczyk sense. -/
+theorem extendedFabius_isComputableRealFunction
+    (F : BoundedFabius) (hF : IsFabius F) :
+    IsComputableRealFunction (extendedFabius F) where
+  sequentiallyComputable := extendedFabius_sequentiallyComputable F hF
+  effectivelyUniformContinuous :=
+    extendedFabius_effectivelyUniformContinuous F hF
+
 /-- The canonical bounded/CDF Fabius function preserves computable real
 sequences. -/
 theorem fabius_sequentiallyComputable :
@@ -727,5 +939,19 @@ Wikipedia/Grzegorczyk sense. -/
 theorem fabius_isComputableRealFunction :
     IsComputableRealFunction (fabiusReal fabius) :=
   fabiusReal_isComputableRealFunction fabius fabius_spec
+
+/-- The canonical signed global Fabius function preserves computable real
+sequences. -/
+theorem globalFabius_sequentiallyComputable :
+    SequentiallyComputable globalFabius := by
+  simpa only [globalFabius] using
+    extendedFabius_sequentiallyComputable fabius fabius_spec
+
+/-- The canonical signed global Fabius function is computable in the
+Wikipedia/Grzegorczyk sense. -/
+theorem globalFabius_isComputableRealFunction :
+    IsComputableRealFunction globalFabius := by
+  simpa only [globalFabius] using
+    extendedFabius_isComputableRealFunction fabius fabius_spec
 
 end Fabius
