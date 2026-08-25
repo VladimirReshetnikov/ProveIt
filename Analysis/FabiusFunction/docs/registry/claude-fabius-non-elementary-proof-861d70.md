@@ -166,11 +166,13 @@ values; constant extension always satisfies it, and `U = ∅` degenerates it to
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
 argument is the inverse function theorem run backwards, and the one thing to
 check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
-now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
-on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
-there, a nonzero real number.  It is the only place in the whole workstream
-where a differential property of `F`, rather than its failure to be analytic,
-is used.
+now derived from the stronger core results `fabiusInv_hasDerivAt`,
+`deriv_fabiusInv`, and `deriv_fabiusInv_pos`: `deriv_fabiusReal_pos` gives
+`F' > 0` on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies
+`(F⁻¹)' = 1 / F'` there.  The core module also bootstraps this reciprocal
+formula to `fabiusInv_contDiffOn_Ioo`, proving full smoothness on the open
+interval.  It is the only place in the whole workstream where a differential
+property of `F`, rather than its failure to be analytic, is used.
 
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
