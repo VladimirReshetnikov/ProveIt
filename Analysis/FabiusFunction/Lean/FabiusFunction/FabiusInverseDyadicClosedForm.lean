@@ -9,11 +9,12 @@ weights of all increasing paths from `0` to `n`. Such paths are encoded by
 ordered compositions of `n`. The resulting formula is finite and
 nonrecursive; at `n = 0`, the unique empty composition contributes `1`.
 
-The generic path layer proves the usual last-edge decomposition and solves
-any semiring-valued triangular recurrence. The Fabius specialization then
-identifies the exact rational composition sum with
+The generic path layer separates multiplicative path weights from
+semiring-valued path sums, proves both last-edge and edge-count
+decompositions, and solves arbitrary triangular recurrences. The Fabius
+specialization then identifies the exact rational composition sum with
 `fabiusAtInverseTwoPow`, and supplies bounded and signed-global real
-corollaries.
+corollaries for every model satisfying the Fabius equations.
 -/
 
 set_option autoImplicit false
@@ -26,6 +27,8 @@ namespace Fabius
 noncomputable section
 
 namespace Composition
+
+/-! ## Compositions and their last block -/
 
 /-- Delete the last block of a composition. -/
 def dropLast {n : ℕ} (c : Composition n) : Composition c.blocks.dropLast.sum where
@@ -105,7 +108,11 @@ def splitLastEquiv (n : ℕ) (hn : 0 < n) :
       simp [p, splitLast, joinLast, dropLast]
     exact (Composition.cast_heq p hnat).symm.trans (heq_of_eq hcast)
 
-variable {R : Type*} [Semiring R]
+/-! ## Multiplicative path weights -/
+
+section PathWeights
+
+variable {R : Type*} [Monoid R]
 
 /-- The product of edge weights along a list of positive increments, starting
 at `i`. -/
@@ -150,6 +157,14 @@ theorem pathWeight_append_single {m d : ℕ} (hd : 0 < d)
   rw [pathWeight, pathWeight, Composition.append_blocks,
     pathWeightFrom_append]
   simp [c.blocks_sum]
+
+end PathWeights
+
+/-! ## Semiring-valued path sums -/
+
+section PathSums
+
+variable {R : Type*} [Semiring R]
 
 /-- Sum of the weights of all increasing paths from `0` to `n`, encoded by
 the positive increments of a composition of `n`. -/
@@ -200,6 +215,28 @@ theorem pathSum_eq_sum_range (w : ℕ → ℕ → R)
 def pathSumOfLength (w : ℕ → ℕ → R) (n r : ℕ) : R :=
   ∑ c : Composition n, if c.length = r then pathWeight w c else 0
 
+/-- Partition all paths from `0` to `n` by their number of edges. This
+uniform form includes `n = 0`, where the empty path has length zero. -/
+theorem pathSum_eq_sum_length_range (w : ℕ → ℕ → R) (n : ℕ) :
+    pathSum w n =
+      ∑ r ∈ range (n + 1), pathSumOfLength w n r := by
+  change (∑ c : Composition n, pathWeight w c) =
+    ∑ r ∈ range (n + 1),
+      ∑ c : Composition n,
+        if c.length = r then pathWeight w c else 0
+  calc
+    (∑ c : Composition n, pathWeight w c) =
+        ∑ c : Composition n, ∑ r ∈ range (n + 1),
+          if c.length = r then pathWeight w c else 0 := by
+            apply Finset.sum_congr rfl
+            intro c _hc
+            have hlen : c.length ∈ range (n + 1) := by
+              exact mem_range.mpr (Nat.lt_succ_of_le c.length_le)
+            simp [hlen]
+    _ = ∑ r ∈ range (n + 1), ∑ c : Composition n,
+          if c.length = r then pathWeight w c else 0 := by
+            exact Finset.sum_comm
+
 /-- Partition the paths from `0` to a positive endpoint according to their
 number of edges. -/
 theorem pathSum_eq_sum_length (w : ℕ → ℕ → R)
@@ -222,11 +259,13 @@ theorem pathSum_eq_sum_length (w : ℕ → ℕ → R)
           if c.length = r then pathWeight w c else 0 := by
             exact Finset.sum_comm
 
+end PathSums
+
 end Composition
 
 namespace Composition
 
-variable {R : Type*} [CommSemiring R]
+variable {R : Type*} [CommMonoid R]
 
 private theorem pathWeightFrom_eq_prod_aux
     (w : ℕ → ℕ → R) (i : ℕ) (xs : List ℕ) :
@@ -387,10 +426,36 @@ theorem fabiusRecurrenceSequence_eq_sum_compositions (n : ℕ) :
   rw [fabiusRecurrenceSequence_eq_pathSum,
     fabiusCompositionSum_eq_pathSum]
 
+/-- The explicit composition sum satisfies the same last-edge recurrence as
+the normalized Fabius sequence. -/
+theorem fabiusCompositionSum_recurrence (n : ℕ) (hn : 0 < n) :
+    fabiusCompositionSum n =
+      ∑ k ∈ range n,
+        fabiusCompositionSum k * fabiusRecurrenceEdge k n := by
+  calc
+    fabiusCompositionSum n =
+        Composition.pathSum fabiusRecurrenceEdge n :=
+      fabiusCompositionSum_eq_pathSum n
+    _ = ∑ k ∈ range n,
+          Composition.pathSum fabiusRecurrenceEdge k *
+            fabiusRecurrenceEdge k n :=
+      Composition.pathSum_eq_sum_range fabiusRecurrenceEdge n hn
+    _ = ∑ k ∈ range n,
+          fabiusCompositionSum k * fabiusRecurrenceEdge k n := by
+      apply Finset.sum_congr rfl
+      intro k _hk
+      rw [fabiusCompositionSum_eq_pathSum]
+
 @[simp]
 theorem fabiusCompositionSum_zero : fabiusCompositionSum 0 = 1 := by
   rw [← fabiusRecurrenceSequence_eq_sum_compositions,
     fabiusRecurrenceSequence_zero]
+
+/-- Every explicit composition sum is strictly positive. -/
+theorem fabiusCompositionSum_pos (n : ℕ) :
+    0 < fabiusCompositionSum n := by
+  rw [← fabiusRecurrenceSequence_eq_sum_compositions]
+  exact fabiusRecurrenceSequence_pos n
 
 /-- Exact rational nonrecursive composition formula for `F(2⁻ⁿ)`. -/
 theorem fabiusAtInverseTwoPow_eq_sum_compositions (n : ℕ) :
@@ -410,6 +475,17 @@ theorem fabiusAtInverseTwoPow_eq_composition_formula (n : ℕ) :
               (((c.blocksFun j + 1).factorial : ℕ) : ℚ))⁻¹ := by
   simpa [fabiusCompositionSum, fabiusCompositionWeight, zpow_neg] using
     fabiusAtInverseTwoPow_eq_sum_compositions n
+
+/-- Uniform edge-count form of the inverse-dyadic formula. Unlike the
+article-style positive-index form below, this also covers `n = 0`; the sole
+length-zero path is the empty composition. -/
+theorem fabiusAtInverseTwoPow_eq_sum_path_lengths_range (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      ((2 : ℚ) ^ n.choose 2)⁻¹ *
+        ∑ r ∈ range (n + 1),
+          Composition.pathSumOfLength fabiusRecurrenceEdge n r := by
+  rw [fabiusAtInverseTwoPow_eq_pathSum,
+    Composition.pathSum_eq_sum_length_range]
 
 /-- Source-facing form: first sum over the number `r` of strict steps, then
 over compositions with exactly `r` blocks. -/
@@ -440,6 +516,23 @@ theorem fabiusAtInverseTwoPow_eq_composition_formula_by_length
     Composition.pathWeight_fabiusRecurrenceEdge, fabiusCompositionWeight,
     zpow_neg, zpow_natCast]
 
+/-- Fully expanded edge-count formula valid uniformly for every `n`, with
+the length-zero contribution retained when `n = 0`. -/
+theorem fabiusAtInverseTwoPow_eq_composition_formula_by_length_range (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      (2 : ℚ) ^ (-(n.choose 2 : ℤ)) *
+        ∑ r ∈ range (n + 1),
+          ∑ c : Composition n,
+            if c.length = r then
+              ∏ j : Fin c.length,
+                (((2 : ℚ) ^ c.sizeUpTo ((j : ℕ) + 1) - 1) *
+                  (((c.blocksFun j + 1).factorial : ℕ) : ℚ))⁻¹
+            else 0 := by
+  rw [fabiusAtInverseTwoPow_eq_sum_path_lengths_range]
+  simp only [Composition.pathSumOfLength,
+    Composition.pathWeight_fabiusRecurrenceEdge, fabiusCompositionWeight,
+    zpow_neg, zpow_natCast]
+
 /-- Real analytic version for any bounded Fabius function satisfying its
 defining equations. -/
 theorem fabiusFunction_inverse_two_pow_eq_sum_compositions
@@ -448,6 +541,16 @@ theorem fabiusFunction_inverse_two_pow_eq_sum_compositions
       ((2 : ℝ) ^ n.choose 2)⁻¹ * (fabiusCompositionSum n : ℝ) := by
   rw [fabius_inverse_two_pow_eq_recurrenceSequence F hF n,
     fabiusRecurrenceSequence_eq_sum_compositions]
+
+/-- Generic real form with literal `2^(-n)` and `2^(-choose(n,2))`
+notation. -/
+theorem fabiusFunction_inverse_two_pow_eq_sum_compositions_zpow
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    fabiusReal F ((2 : ℝ) ^ (-(n : ℤ))) =
+      (2 : ℝ) ^ (-(n.choose 2 : ℤ)) *
+        (fabiusCompositionSum n : ℝ) := by
+  simpa [zpow_neg] using
+    fabiusFunction_inverse_two_pow_eq_sum_compositions F hF n
 
 /-- Canonical bounded-Fabius specialization. -/
 theorem fabius_inverse_two_pow_eq_sum_compositions (n : ℕ) :
@@ -461,7 +564,23 @@ theorem fabius_inverse_two_pow_eq_sum_compositions_zpow (n : ℕ) :
     fabiusReal fabius ((2 : ℝ) ^ (-(n : ℤ))) =
       (2 : ℝ) ^ (-(n.choose 2 : ℤ)) *
         (fabiusCompositionSum n : ℝ) := by
-  simpa [zpow_neg] using fabius_inverse_two_pow_eq_sum_compositions n
+  exact fabiusFunction_inverse_two_pow_eq_sum_compositions_zpow
+    fabius fabius_spec n
+
+/-- Signed-global form for any bounded Fabius function satisfying its
+defining equations. All inverse powers of two lie in `[0, 1]`, where the
+global extension agrees with the bounded function. -/
+theorem extendedFabius_inverse_two_pow_eq_sum_compositions
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    extendedFabius F ((2 : ℝ) ^ (-(n : ℤ))) =
+      (2 : ℝ) ^ (-(n.choose 2 : ℤ)) *
+        (fabiusCompositionSum n : ℝ) := by
+  rw [extendedFabius_eq_fabiusReal F hF]
+  · exact fabiusFunction_inverse_two_pow_eq_sum_compositions_zpow F hF n
+  · constructor
+    · positivity
+    · rw [zpow_neg]
+      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
 
 /-- Signed-global form. All arguments are in `[0, 1]`, where the global
 extension agrees with the bounded Fabius function. -/
@@ -469,17 +588,8 @@ theorem globalFabius_inverse_two_pow_eq_sum_compositions (n : ℕ) :
     globalFabius ((2 : ℝ) ^ (-(n : ℤ))) =
       (2 : ℝ) ^ (-(n.choose 2 : ℤ)) *
         (fabiusCompositionSum n : ℝ) := by
-  have hlocal :
-      globalFabius ((2 : ℝ) ^ (-(n : ℤ))) =
-        fabiusReal fabius ((2 : ℝ) ^ (-(n : ℤ))) := by
-    rw [globalFabius]
-    apply extendedFabius_eq_fabiusReal fabius fabius_spec
-    constructor
-    · positivity
-    · rw [zpow_neg]
-      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
-  rw [hlocal]
-  exact fabius_inverse_two_pow_eq_sum_compositions_zpow n
+  simpa only [globalFabius] using
+    extendedFabius_inverse_two_pow_eq_sum_compositions fabius fabius_spec n
 
 end
 
