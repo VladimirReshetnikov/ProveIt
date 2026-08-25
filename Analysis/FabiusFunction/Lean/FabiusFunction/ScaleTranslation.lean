@@ -80,7 +80,7 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
   rw [hpowReal]
   push_cast
   simp only [B, Nat.cast_pow, Nat.cast_ofNat]
-  ring
+  ring_nf
 
 /-- Translating by `2^scale` negates a sufficiently high iterated derivative,
 including at the right endpoint of the source interval. -/
@@ -162,7 +162,7 @@ theorem taylorRemainder_translate_of_mem_Icc
   have htranslate : (∫ t in a..x, g t) = ∫ t in 0..y, g (t + a) := by
     convert (intervalIntegral.integral_comp_add_right (a := 0) (b := y) g a).symm using 1
     dsimp only [y]
-    ring
+    ring_nf
   have hintegrand : Set.EqOn (fun t => g (t + a)) (fun t => -q t) (uIcc 0 y) := by
     intro t ht
     rw [uIcc_of_le hy0] at ht

@@ -20,10 +20,12 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The small-argument asymptotics are developed separately, with a general formula
-for every coefficient of the all-orders expansion, in
-[*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
-([PDF](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
+The small-argument asymptotics are explored separately in the research-frontier
+notebook
+[*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
+([PDF](docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)),
+whose boundary notice distinguishes exact Lean inputs from ordinary deductions
+and numerical evidence.
 
 Non-elementarity is treated in
 [*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)

@@ -30,7 +30,7 @@ New files only.  No existing Lean module is edited.
   grounds that a root aggregate appended to by two agents is exactly the
   collision `AGENTS.md` warns about, and that nothing imports it so serializing
   is cheap.
-- `docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` and its
+- `docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex` and its
   committed `.pdf`
 - `docs/registry/claude-fabius-asymptotic-expansion-51c5fc.md` (this file)
 - `AGENTS.md` — the documentation policy, plus the build-syntax and
@@ -88,7 +88,7 @@ recursions.  This branch closes the chain:
 
 Details, tables and an independent numerical verification against exact
 rational values of `F(2^-n)` are in
-[`../Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`](../Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex).
+[`../non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex`](../non-formalized-research-frontiers/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex).
 
 ## Status log
 

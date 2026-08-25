@@ -10,18 +10,18 @@ supplement it but do not replace it.
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
 branch/base: codex/fabius-theorem-refinements at
-  published checkpoint 4b8c0094ed382d896390907d3703cadf8138cc19,
-  with pinned origin/main 783cecf7208edd4de86fd0cee7d4b9f13299ee60
-  integrated for the current merge checkpoint
+  published checkpoint 996ef24218fd11d2f76984292bde534cd13eefc9,
+  with pinned origin/main a24af8347aba5d38b8febf2cf9a19eeef6aba18a
+  resolved for the current merge checkpoint
 git owner: root in this worktree
-build owner: not held; the external guarded non-elementarity closure reported
-  its terminal 35-module rebuild and axiom audit, and a read-only host process
-  check at 2026-08-25 11:55 -07:00 found no live lean, lake, or closure-driver
-  process.  Recheck immediately before claiming the lane
-source lease: refreshed 2026-08-25 12:04 -07:00 through 12:34 -07:00
-next synchronization checkpoint: publish this pinned merge and re-fetch
-  origin/main; once the pin remains current, claim the host-wide lane for the
-  exact combined-tree focused Lean build
+build owner: not held; incoming commit d29ca2fe7 reports an aggregate build of
+  the exact incoming Lean subtree, but no build has been run on the resolved
+  996ef2421 + a24af8347 union.  Recheck and claim the host-wide lane before any
+  focused or aggregate replay
+source lease: refreshed 2026-08-25 13:02 -07:00 through 14:02 -07:00
+next synchronization checkpoint: publish this pinned merge, re-fetch
+  origin/main, and record whether the remote pin remained current; then pursue
+  the exact combined-tree Lean replay under the single build owner
 ```
 
 ## Current integration and validation lease
@@ -39,19 +39,20 @@ next synchronization checkpoint: publish this pinned merge and re-fetch
 - `docs/COLLABORATION.md`: retire the translated-polynomial candidate once the
   theorem batch is compiled and published.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
-- Third integration lease for pinned main `783cecf720` over published
-  checkpoint `4b8c0094e`: retain the incoming core inverse calculus in
-  `FabiusInverse.lean`, including `fabiusInv_hasDerivAt`, its compatibility
-  spelling, the exact positive derivative, and `fabiusInv_contDiffOn_Ioo`;
-  keep only the noncritical and non-representability layer in
-  `InverseNotElementary.lean`.
-- Semantic artifact repair lease for this clean textual merge:
+- Fourth integration lease for pinned main `a24af8347` over published
+  checkpoint `996ef2421`: retain the incoming exact differentiability and
+  finite/`C∞` smoothness locus in `FabiusInverse.lean`, the all-orders-flat
+  remainder equivalence, the vector-valued small-argument transport API, and
+  the proof-normalization changes.  Preserve the branch-only translated-
+  polynomial coefficient/zero/degree API.
+- Semantic artifact repair lease for this nontrivial merge:
   `docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.{tex,pdf}`,
-  `docs/non-formalized-research-frontiers/Fabius_Dyadic_q_Connections/Fabius_Dyadic_q_Connections.{tex,pdf}`,
+  `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.{tex,pdf}`,
+  `docs/non-formalized-research-frontiers/Repeated_Integration_and_Rvachev_Up/Repeated_Integration_and_Rvachev_Up.{tex,pdf}`,
   `docs/registry/claude-fabius-non-elementary-proof-861d70.md`, and this active
-  registry.  The first paper now attributes the relocated calculus correctly;
-  the new frontier article has an explicit formalization boundary and its
-  formerly missing, visually inspected PDF.
+  registry.  This covers semantic conflict resolution, stale-reference repair,
+  explicit formalization boundaries, reproducible PDF rebuilds, and immutable
+  validation attribution.
 
 ## Read-only survey
 
@@ -102,6 +103,11 @@ next synchronization checkpoint: publish this pinned merge and re-fetch
   the right-inverse/interior-complement API resolved coherently, the
   non-elementarity paper rebuilt and inspected, and exact combined-tree Lean
   validation explicitly deferred behind the then-active external build owner.
+- `996ef2421` publishes the third pinned-main integration at `783cecf720`, with
+  the core inverse calculus and conditional inverse-branch documentation
+  reconciled, the non-elementarity paper rebuilt, and the new dyadic/q
+  research-frontier article supplied with a rendered PDF.  Its exact combined
+  Lean replay was explicitly deferred.
 
 Each substantive non-merge checkpoint message records its exact textual
 validation and any deferred Lean targets.  Incoming commits `b164f3d2f` and
@@ -113,22 +119,38 @@ translated-polynomial batch and do not validate the exact combined
 
 ## Current merge-checkpoint evidence
 
-For the exact source-resolved `4b8c0094e + 783cecf720` tree, the 13 incoming
-Lean files all retain `set_option autoImplicit false`.  The tree-wide forbidden
-declaration/placeholder scan, conflict-marker scan, and `git diff --check` are
-clean.  The documentation ratchet passes with 188 modules, 3,149 public
-declarations, 159 existing missing comments in 17 files, and no missing module
-headers.
+For the exact source-resolved `996ef2421 + a24af8347` tree, all 12 incoming
+Lean files retain `set_option autoImplicit false`.  The tree-wide forbidden
+declaration/placeholder and conflict-marker scans, `git diff --check`, and the
+local-Markdown-link scan are clean.  Relocated small-argument references use
+the research-frontier path.  The documentation ratchet passes with 188
+modules, 3,158 public declarations, 159 existing missing comments in 17 files,
+and no missing module headers.
 
-Both semantically updated papers were built with three successful PDFLaTeX
-passes and inspected as rendered pages.  The non-elementarity paper is 13 A4
-pages with PDF SHA-256
-`85039AE2C54C6B595338713BB19026C3FB470A28E5F56EB088712219A26F8F79`.
-The new dyadic/q-connections frontier paper is 23 A4 pages with PDF SHA-256
-`A642AA471132A4A6AFEFF997D172AF75E946D1A794029C6E6F4C0B36F4D88FD0`;
-its 94 labels have no case-sensitive duplicates and all 80 references resolve.
-This is static and document-build evidence only.  No Lean build has yet been
-run on the exact combined tree.
+Three changed articles were rebuilt with three successful PDFLaTeX passes and
+inspected at representative rendered pages:
+
+- the primary synthesis is 166 A4 pages, has 810 unique labels and 1,428
+  resolved references, and has PDF SHA-256
+  `0D6E83E7268810FEB72E2136905B4632C179FB5B4D5F3DC1C681550CA5348573`;
+- the non-elementarity paper is 14 A4 pages, has 23 unique labels and 86
+  resolved references, and has PDF SHA-256
+  `D29CDCCDB4EE26CD0DAADC312534E3613A0BFF5C31051F96101E4C6AFC7D86FB`;
+- the repeated-integration research frontier is 20 A4 pages, has 122 unique
+  labels and 75 resolved references, and has PDF SHA-256
+  `718D848AB32D8ED174A27DBB582558E33A307531F81995D73379680408C7966A`.
+
+The primary log has only pre-existing harmless `hyperref` bookmark-token
+warnings; the non-elementarity log has three underfull-box diagnostics; the
+frontier log is clean.  There are no undefined references, duplicate labels,
+fatal errors, or overfull boxes in these rebuilt documents.
+
+Incoming commit `d29ca2fe7` reports a clean-tree, single-job, 4,007-job
+aggregate `+FabiusFunction` build.  The Lean subtree at that commit is exactly
+the subtree at incoming tip `a24af8347`.  This is strong immutable evidence for
+the incoming side only: it does not compile the branch-only translated-
+polynomial batch or the exact resolved union, whose Lean replay remains
+pending.
 
 ## Reviewed translated-polynomial API
 
@@ -148,8 +170,7 @@ mismatch in the sharp-coefficient nonzero proof, then found no remaining
 source-level blocker against the exact Mathlib signatures and import closure.
 On the pre-merge `a95bd1913` tree, `git diff --check`, the
 forbidden-placeholder/conflict-marker scans, and the documentation baseline
-gate passed.  The third pinned integration at `783cecf720` is source-resolved
-over published checkpoint `4b8c0094e`; active ownership is unchanged, and
+gate passed.  The fourth pinned integration at `a24af8347` is source-resolved
+over published checkpoint `996ef2421`; active ownership is unchanged, and
 focused Lean validation of the exact combined tree remains pending until this
-merge is published and the now-free host-wide build lane is rechecked and
-claimed.
+merge is published and the host-wide build lane is rechecked and claimed.

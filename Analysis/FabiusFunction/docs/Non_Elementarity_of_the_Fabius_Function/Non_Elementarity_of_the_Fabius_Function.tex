@@ -150,9 +150,9 @@ because $F$ is a homeomorphism of $[0,1]$, is itself analytic at no point of
 $[0,1]$ and hence not elementary either; and then that adjoining continuous
 inverse branches which are analytic off their open branch domains, at any
 depth, preserves density of the analytic locus.  The organizing observation
-is that a right inverse $g$ of $h$ is an implicit branch of the simplest
-possible equation, $h(z)-x=0$, so the analytic inverse theorem is the implicit
-function theorem already in hand.
+is that the one-sided identity $h(g(x))=x$ makes $g$ a right inverse of $h$
+and an implicit branch of the simplest possible equation, $h(z)-x=0$, so the
+analytic inverse theorem is the implicit function theorem already in hand.
 \end{abstract}
 
 \tableofcontents
@@ -650,10 +650,10 @@ exactly $\R\setminus[0,1]$.
 In the interior, run \Cref{thm:ift} backwards.  If $F^{-1}$ is analytic at
 $y_0\in(0,1)$ then $F$, being its inverse near that point, is analytic at
 $F^{-1}(y_0)\in(0,1)$ --- provided $(F^{-1})'(y_0)\ne0$.  It has no critical
-point anywhere in the interior.  This is the one place in the whole
-development where a
-\emph{differential} property of $F$ is used rather than its failure to be
-analytic, and the property is that $F'>0$ on $(0,1)$.  Given that, the easy
+point anywhere in the interior.  This is the one place where $F'$ enters at
+all --- everywhere else
+$F$ is used through its continuity and through its failure to be analytic ---
+and what is needed of it is only that $F'>0$ on $(0,1)$.  Given that, the easy
 half of the inverse function theorem --- the half that assumes the inverse
 already exists --- yields
  \[
@@ -716,6 +716,12 @@ fails to vanish somewhere in $\An(f)\cap g(U)$.  At such a point
 of $U$ at which $g$ is analytic.
 \end{proofidea}
 
+Applied to every nonempty open subset at once, this says that a continuous
+inverse branch is analytic on a relatively dense subset of its domain, and the
+domain need not be open: \texttt{analyticDenseOn\_of\_rightInverse}.  For a
+domain with empty interior the statement is vacuous, which is the correct
+reading --- there is no open set on which to test.
+
 The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
 that is not slack in the argument: the real cube root is a continuous right
 inverse of the entire function $x\mapsto x^3$ on all of $\R$ and is not
@@ -768,12 +774,13 @@ Every member of $\Elem^{-1}$ is analytic on a dense set.
 
 \begin{proof}
 Induction.  The elementary generators are \Cref{thm:density}; the operations
-are as in \Cref{sec:density}; and the inverse rule is \Cref{thm:invbranch}
-inside $U$ together with the hypothesis on $\operatorname{int}(U^{\mathsf c})$.
-Given a nonempty open $B$, either $B$ meets $U$, and
-\Cref{thm:invbranch} applies to $B\cap U$, or $B$ misses $U$.  In the latter
-case the openness of $B$ gives $B\subseteq\operatorname{int}(U^{\mathsf c})$,
-so every point of $B$ will do.
+are as in \Cref{sec:density}; and the inverse rule splits on whether the test
+set meets $U$.  Given a nonempty open $B$: if $B\cap U\ne\emptyset$ then
+\Cref{thm:invbranch} applies to the nonempty open set $B\cap U$ and produces a
+point of $B$ at which $g$ is analytic; and if $B\cap U=\emptyset$ then
+$B\subseteq U^{\mathsf c}$, so
+$B\subseteq\operatorname{int}(U^{\mathsf c})$ because $B$ is open, and every
+point of $B$ will do by the rule's analyticity clause.
 \end{proof}
 
 \begin{corollary}\label{cor:plusmain}
@@ -858,10 +865,10 @@ Analytic implicit function theorem in two real variables
   & \path{analyticAt_implicitFunction}, \path{analyticAt_of_continuous_branch}
   & \path{AlgebraicBranch} \\
 Branches of polynomial equations (\Cref{thm:algebraic})
-  & \path{analyticDenseOn_of_algebraic}, \path{dense_setOf_analyticAt_of_algebraic}, \path{branchPoly}, \path{AnalyticDenseOn}
+  & \path{analyticDenseOn_of_algebraic}, \path{dense_setOf_analyticAt_of_algebraic}, \path{branchPoly}, \path{AnalyticDenseOn}, \path{analyticDenseOn_of_inter_open_dense}, \path{AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt}
   & \path{AlgebraicBranch} \\
 Algebraic functions over $\Elem$ (Corollary~\ref{cor:algebraic})
-  & \path{exists_analyticAt_of_isElementary_coeffs}, \path{not_algebraicBranch_eqOn}, \path{canonical_fabius_not_algebraicBranch_on_Ioo}
+  & \path{analyticDenseOn_of_isElementary_coeffs}, \path{exists_analyticAt_of_isElementary_coeffs}, \path{not_algebraicBranch_eqOn}, \path{canonical_fabius_not_algebraicBranch_on_Ioo}
   & \path{NotElementary} \\
 The obstruction, stated once (proof of Corollary~\ref{cor:main})
   & \path{not_eqOn_of_dense_analyticLocus}
@@ -870,7 +877,7 @@ Analytic inverse function theorem (\Cref{thm:ift})
   & \path{analyticAt_of_rightInverse}
   & \path{InverseBranch} \\
 Inverse branches are analytic somewhere (\Cref{thm:invbranch})
-  & \path{exists_analyticAt_of_rightInverse}
+  & \path{exists_analyticAt_of_rightInverse}, \path{analyticDenseOn_of_rightInverse}
   & \path{InverseBranch} \\
 The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
   & \path{IsElementaryOrInverse}, \path{IsElementaryOrInverse.dense_analyticLocus}
@@ -879,13 +886,16 @@ Conditional Lambert-$W$ inverse-branch criterion
   & \path{isElementaryOrInverse_of_lambertW}
   & \path{InverseBranch} \\
 Interior calculus and smoothness of $F^{-1}$
-  & \path{fabiusInv_hasDerivAt}, \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, \path{deriv_fabiusInv_pos}, \path{fabiusInv_contDiffOn_Ioo}
+  & \path{fabiusInv_mem_Ioo}, \path{fabiusInv_hasDerivAt}, \path{hasDerivAt_fabiusInv}, \path{deriv_fabiusInv}, \path{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, \path{deriv_fabiusInv_pos}, \path{fabiusInv_contDiffOn_Ioo}
+  & \path{FabiusInverse} \\
+Exact global differentiability and smoothness locus of the totalized $F^{-1}$
+  & \path{fabiusInv_contDiffAt}, \path{fabiusInv_not_differentiableAt_zero}, \path{fabiusInv_not_differentiableAt_one}, \path{fabiusInv_differentiableAt_iff}, \path{fabiusInv_contDiffAt_iff}, \path{fabiusInv_contDiffAt_infty_iff}, \path{fabiusInv_contDiffOn_compl_endpoints}
   & \path{FabiusInverse} \\
 $F^{-1}$ has no critical point, and is nowhere analytic (\Cref{thm:invnowhere})
   & \path{deriv_fabiusInv_ne_zero}, \path{fabiusInv_not_analyticAt}, \path{fabiusInv_analyticAt_iff}
   & \path{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
-  & \path{canonical_fabiusInv_not_isElementary_on_Ioo}, \path{fabiusInv_not_isElementary}
+  & \path{canonical_fabiusInv_not_isElementary_on_Ioo}, \path{fabiusInv_not_isElementary}, \path{not_eqOn_fabiusInv_of_analyticDenseOn}, \path{not_eqOn_fabiusInv_of_dense_analyticLocus}
   & \path{InverseNotElementary} \\
 Neither is reachable by the inverse-branch closure (Corollary~\ref{cor:plusmain})
   & \path{canonical_fabius_not_isElementaryOrInverse_on_Ioo}, \path{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo}
@@ -967,6 +977,13 @@ candidate we know how to extract from Definition~\ref{def:elem} directly.  Nothi
 this document rules out a different separating property; what it does show is
 that analyticity suffices, and that it is available at the modest cost of
 Lemma~\ref{lem:key}.
+
+The same is true of the inverse, and for the same reason.  Bootstrapping the
+reciprocal formula of \Cref{thm:invnowhere} through its own derivative shows
+$F^{-1}$ to be $C^{\infty}$ on $(0,1)$ --- this is
+\texttt{fabiusInv\_contDiffOn\_Ioo} --- so $F^{-1}$ is a second function that
+is smooth to every order on an interval and real analytic at no point of it.
+Smoothness separates neither of them from $\Elem$; analyticity separates both.
 
 \subsection{The role of the endpoints}
 

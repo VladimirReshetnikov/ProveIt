@@ -87,7 +87,7 @@ coefficient of `lambda⁻²` is computed in closed form and substituted into
 the expansion, so the public surface now carries
 `log F(x) = fabiusSharpLambertMain x + A₁(lambda)/lambda +
 A₂(lambda)/lambda² + O(lambda⁻³)` with both corrections written out.  See
-`docs/Small_Argument_Asymptotics/`.
+`docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves

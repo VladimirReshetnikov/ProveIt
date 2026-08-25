@@ -104,7 +104,7 @@ compiled PDF is committed with it.**
 3. **Layout.** One directory per document, named after it, holding the `.tex`
    and the `.pdf` of the same name — as in
    `docs/Fabius_Function_and_Rvachev_Up/` and
-   `docs/Small_Argument_Asymptotics/`.
+   `docs/non-formalized-research-frontiers/Small_Argument_Asymptotics/`.
 
 4. **The PDF is committed.** Build it before committing and commit it in the
    same commit as the source:
