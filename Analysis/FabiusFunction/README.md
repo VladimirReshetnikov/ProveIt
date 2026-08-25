@@ -54,6 +54,42 @@ This makes denominator, divisibility, parity, and valuation proofs live in
 The Fourier transform, sinc product, inversion integral, moment series, and
 complex exponential generating function are also represented explicitly.
 
+## Using the Lean library
+
+From the repository root, the complete public surface is checked with
+
+```sh
+lake build FabiusFunction
+```
+
+Use `import FabiusFunction` when downstream code needs the entire development.
+For a smaller dependency footprint, the following imports are useful entry
+points:
+
+| Purpose | Focused import | Good starting declarations |
+| --- | --- | --- |
+| Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachev_hasDerivAt` |
+| Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
+| Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
+| First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
+| Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
+| Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
+
+Most analytic theorems first appear in a reusable form with arguments
+`(F : BoundedFabius) (hF : IsFabius F)`.  Canonical corollaries specialize
+these results to `fabius` and `fabius_spec`; `globalFabius` denotes the signed
+extension and is intentionally different from the bounded, clamped function
+outside `[0,1]`.  Range facts such as `rvachevUp_nonneg`,
+`rvachevUp_le_one`, and `norm_coe_rvachevUp_le_one` need no `IsFabius`
+hypothesis because they follow directly from the codomain.
+
+The naming scheme distinguishes convergence objects and numeric identities:
+`*_hasSum` retains the summability witness, while `*_eq_tsum` gives the
+corresponding equality; `*_cast` bridges exact rational formulas to analysis;
+and `*_zpow` uses integer exponents so inverse powers remain visible without
+division side conditions.  The module docstrings state endpoint conventions
+and any corrections to the printed sources.
+
 ## Exact dyadic evaluation
 
 The executable evaluator follows
@@ -345,9 +381,10 @@ theorem is used to justify the false proxy chain; instead, the repaired lower
 branch, its equation-(9) solution, and its standard two-term expansion are
 proved separately.
 
-The exact source-to-Lean map is in [`PAPER_COVERAGE.md`](PAPER_COVERAGE.md).
+The exact source-to-Lean map is in
+[`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md).
 The requirement-by-requirement asymptotic evidence is recorded in
-[`ASYMPTOTIC_COMPLETION_AUDIT.md`](ASYMPTOTIC_COMPLETION_AUDIT.md).
+[`docs/ASYMPTOTIC_COMPLETION_AUDIT.md`](docs/ASYMPTOTIC_COMPLETION_AUDIT.md).
 
 The two arXiv sources contain a few statements that are not literally correct.  The
 formalization records the mathematically valid versions next to their proofs.

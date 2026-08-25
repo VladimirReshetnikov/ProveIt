@@ -6,7 +6,10 @@ import Mathlib.Order.Interval.Set.Infinite
 
 The finite Fourier--Legendre projection through degree `N` is characterized
 by a Pythagorean identity for the unweighted squared `L²[-1,1]` error.  We
-then specialize this generic fact to Rvachev's even `up` function.
+then specialize this generic fact to Rvachev's even `up` function.  The
+generic theory only assumes continuity on the closed integration interval,
+and shows in particular that projection fixes every polynomial already in
+the degree class.
 
 If
 
@@ -107,23 +110,18 @@ private theorem integral_legendreProjectionPolynomial_mul_legendre
       apply Continuous.intervalIntegrable
       fun_prop]
   rw [sum_eq_single_of_mem i (by simpa using Nat.lt_succ_of_le hi)]
-  · rw [show (∫ x in (-1 : ℝ)..1,
-        (legendrePolynomial i).eval x * (legendrePolynomial i).eval x) =
-        ∫ x in (-1 : ℝ)..1, (legendrePolynomial i).eval x ^ 2 by
-      apply intervalIntegral.integral_congr
-      intro x _hx
-      ring]
-    rw [integral_sq_eval_legendrePolynomial]
+  · rw [integral_eval_legendrePolynomial_mul, if_pos rfl]
     dsimp [legendreSeriesCoefficientOf]
     have hden : (((2 * i + 1 : ℕ) : ℝ)) ≠ 0 := by positivity
     field_simp
   · intro n hn hne
-    rw [integral_eval_legendrePolynomial_mul_eq_zero_of_ne hne, mul_zero]
+    rw [integral_eval_legendrePolynomial_mul, if_neg hne, mul_zero]
 
 /-- The residual of the degree-`N` Fourier--Legendre projection is
 orthogonal to every polynomial of degree at most `N`. -/
 theorem integral_sub_projection_mul_polynomial_eq_zero
-    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
+    (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
     (∫ x in (-1 : ℝ)..1,
       (f x - (legendreProjectionPolynomial f N).eval x) * q.eval x) = 0 := by
@@ -139,13 +137,15 @@ theorem integral_sub_projection_mul_polynomial_eq_zero
       have hp : IntervalIntegrable (fun x : ℝ ↦
           (f x - (legendreProjectionPolynomial f N).eval x) * p.eval x)
           volume (-1) 1 := by
-        apply Continuous.intervalIntegrable
-        exact (hf.sub (legendreProjectionPolynomial f N).continuous).mul p.continuous
+        exact ((hf.sub
+          (legendreProjectionPolynomial f N).continuous.continuousOn).mul
+            p.continuous.continuousOn).intervalIntegrable_of_Icc (by norm_num)
       have hq : IntervalIntegrable (fun x : ℝ ↦
           (f x - (legendreProjectionPolynomial f N).eval x) * q.eval x)
           volume (-1) 1 := by
-        apply Continuous.intervalIntegrable
-        exact (hf.sub (legendreProjectionPolynomial f N).continuous).mul q.continuous
+        exact ((hf.sub
+          (legendreProjectionPolynomial f N).continuous.continuousOn).mul
+            q.continuous.continuousOn).intervalIntegrable_of_Icc (by norm_num)
       rw [← intervalIntegral.integral_add hp hq]
       apply intervalIntegral.integral_congr
       intro x _hx
@@ -181,7 +181,8 @@ theorem integral_sub_projection_mul_polynomial_eq_zero
         (legendrePolynomial i).eval x) = 0
     have hfInt : IntervalIntegrable
         (fun x : ℝ ↦ f x * (legendrePolynomial i).eval x) volume (-1) 1 :=
-      (hf.mul (legendrePolynomial_contDiff i).continuous).intervalIntegrable _ _
+      (hf.mul (legendrePolynomial_contDiff i).continuous.continuousOn)
+        |>.intervalIntegrable_of_Icc (by norm_num)
     have hsInt : IntervalIntegrable
         (fun x : ℝ ↦ (legendreProjectionPolynomial f N).eval x *
           (legendrePolynomial i).eval x) volume (-1) 1 :=
@@ -206,7 +207,8 @@ theorem integral_sub_projection_mul_polynomial_eq_zero
 
 /-- Pythagorean identity for the degree-`N` Fourier--Legendre projection. -/
 theorem legendreSquaredError_eq_add
-    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
+    (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
     legendreSquaredError f q =
       legendreSquaredError f (legendreProjectionPolynomial f N) +
@@ -222,13 +224,17 @@ theorem legendreSquaredError_eq_add
   change (∫ x in (-1 : ℝ)..1, (f x - q.eval x) ^ 2) =
     (∫ x in (-1 : ℝ)..1, (f x - S.eval x) ^ 2) +
       ∫ x in (-1 : ℝ)..1, (S.eval x - q.eval x) ^ 2
-  have hc1 : Continuous (fun x : ℝ ↦ (f x - S.eval x) ^ 2) := by
-    fun_prop
-  have hc2 : Continuous (fun x : ℝ ↦
-      2 * ((f x - S.eval x) * (S.eval x - q.eval x))) := by
-    fun_prop
-  have hc3 : Continuous (fun x : ℝ ↦ (S.eval x - q.eval x) ^ 2) := by
-    fun_prop
+  have hc1 : ContinuousOn (fun x : ℝ ↦ (f x - S.eval x) ^ 2)
+      (Icc (-1 : ℝ) 1) :=
+    (hf.sub S.continuous.continuousOn).pow 2
+  have hc2 : ContinuousOn (fun x : ℝ ↦
+      2 * ((f x - S.eval x) * (S.eval x - q.eval x)))
+      (Icc (-1 : ℝ) 1) :=
+    continuousOn_const.mul ((hf.sub S.continuous.continuousOn).mul
+      (S.continuous.continuousOn.sub q.continuous.continuousOn))
+  have hc3 : ContinuousOn (fun x : ℝ ↦ (S.eval x - q.eval x) ^ 2)
+      (Icc (-1 : ℝ) 1) :=
+    (S.continuous.continuousOn.sub q.continuous.continuousOn).pow 2
   rw [show (∫ x in (-1 : ℝ)..1, (f x - q.eval x) ^ 2) =
       ∫ x in (-1 : ℝ)..1,
         ((f x - S.eval x) ^ 2 +
@@ -253,7 +259,8 @@ theorem legendreSquaredError_eq_add
             2 * ((f x - S.eval x) * (S.eval x - q.eval x))) +
         ∫ x in (-1 : ℝ)..1, (S.eval x - q.eval x) ^ 2 := by
     simpa only [Pi.add_apply] using intervalIntegral.integral_add (μ := volume)
-      ((hc1.add hc2).intervalIntegrable (-1) 1) (hc3.intervalIntegrable (-1) 1)
+      ((hc1.add hc2).intervalIntegrable_of_Icc (by norm_num))
+      (hc3.intervalIntegrable_of_Icc (by norm_num))
   have haddInner :
       (∫ x in (-1 : ℝ)..1,
         (f x - S.eval x) ^ 2 +
@@ -262,7 +269,8 @@ theorem legendreSquaredError_eq_add
         ∫ x in (-1 : ℝ)..1,
           2 * ((f x - S.eval x) * (S.eval x - q.eval x)) := by
     simpa only [Pi.add_apply] using intervalIntegral.integral_add (μ := volume)
-      (hc1.intervalIntegrable (-1) 1) (hc2.intervalIntegrable (-1) 1)
+      (hc1.intervalIntegrable_of_Icc (by norm_num))
+      (hc2.intervalIntegrable_of_Icc (by norm_num))
   rw [haddOuter, haddInner, htwocross]
   ring
 
@@ -288,7 +296,8 @@ theorem integral_sq_eval_sub_pos {p q : ℝ[X]} (hpq : p ≠ q) :
 /-- The Fourier--Legendre projection minimizes squared `L²[-1,1]` error
 among all polynomials of degree at most `N`. -/
 theorem legendreProjectionPolynomial_least_squares
-    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
+    (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
     legendreSquaredError f (legendreProjectionPolynomial f N) ≤
       legendreSquaredError f q := by
@@ -299,7 +308,8 @@ theorem legendreProjectionPolynomial_least_squares
 /-- Equality in the least-squares inequality occurs only at the projection
 polynomial. -/
 theorem legendreSquaredError_eq_projection_iff
-    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
+    (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) :
     legendreSquaredError f q =
         legendreSquaredError f (legendreProjectionPolynomial f N) ↔
@@ -317,7 +327,8 @@ theorem legendreSquaredError_eq_projection_iff
 
 /-- Every distinct degree-`N` competitor has strictly larger squared error. -/
 theorem legendreProjectionPolynomial_strict_least_squares
-    (f : ℝ → ℝ) (hf : Continuous f) (N : ℕ) (q : ℝ[X])
+    (f : ℝ → ℝ) (hf : ContinuousOn f (Icc (-1 : ℝ) 1))
+    (N : ℕ) (q : ℝ[X])
     (hq : q.degree ≤ N) (hne : q ≠ legendreProjectionPolynomial f N) :
     legendreSquaredError f (legendreProjectionPolynomial f N) <
       legendreSquaredError f q := by
@@ -326,6 +337,28 @@ theorem legendreProjectionPolynomial_strict_least_squares
       ((legendreProjectionPolynomial f N).eval x - q.eval x) ^ 2 :=
     integral_sq_eval_sub_pos (Ne.symm hne)
   linarith
+
+/-- The degree-`N` Fourier--Legendre projection fixes every polynomial of
+degree at most `N`. -/
+theorem legendreProjectionPolynomial_eval_eq_self
+    (N : ℕ) (q : ℝ[X]) (hq : q.degree ≤ N) :
+    legendreProjectionPolynomial (fun x : ℝ ↦ q.eval x) N = q := by
+  let f : ℝ → ℝ := fun x ↦ q.eval x
+  have hf : ContinuousOn f (Icc (-1 : ℝ) 1) := q.continuous.continuousOn
+  have hqError : legendreSquaredError f q = 0 := by
+    simp [legendreSquaredError, f]
+  have hleast := legendreProjectionPolynomial_least_squares f hf N q hq
+  have hprojectionNonneg :
+      0 ≤ legendreSquaredError f (legendreProjectionPolynomial f N) := by
+    exact intervalIntegral.integral_nonneg (by norm_num)
+      (fun _x _hx ↦ sq_nonneg _)
+  have hprojectionError :
+      legendreSquaredError f (legendreProjectionPolynomial f N) = 0 := by
+    rw [hqError] at hleast
+    exact le_antisymm hleast hprojectionNonneg
+  symm
+  apply (legendreSquaredError_eq_projection_iff f hf N q hq).mp
+  rw [hqError, hprojectionError]
 
 /-! ## The even Rvachev partial sums -/
 
@@ -449,7 +482,7 @@ theorem integral_rvachevUp_sub_partialSum_mul_polynomial_eq_zero
       (rvachevUp F x -
         (rvachevLegendrePartialSumPolynomial F N).eval x) * q.eval x) = 0 := by
   have h := integral_sub_projection_mul_polynomial_eq_zero
-    (rvachevUp F) (rvachev_contDiff F hF).continuous (2 * N + 1) q
+    (rvachevUp F) (rvachev_contDiff F hF).continuous.continuousOn (2 * N + 1) q
     (Polynomial.natDegree_le_iff_degree_le.mp hq)
   rw [legendreProjectionPolynomial_rvachevUp_two_mul_add_one F hF N] at h
   exact h
@@ -464,7 +497,7 @@ theorem rvachevLegendrePartialSum_pythagorean
         (∫ x in (-1 : ℝ)..1,
           ((rvachevLegendrePartialSumPolynomial F N).eval x - q.eval x) ^ 2) := by
   have h := legendreSquaredError_eq_add
-    (rvachevUp F) (rvachev_contDiff F hF).continuous (2 * N + 1) q
+    (rvachevUp F) (rvachev_contDiff F hF).continuous.continuousOn (2 * N + 1) q
     (Polynomial.natDegree_le_iff_degree_le.mp hq)
   rw [legendreProjectionPolynomial_rvachevUp_two_mul_add_one F hF N] at h
   exact h

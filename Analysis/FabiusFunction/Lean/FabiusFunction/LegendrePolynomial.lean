@@ -14,6 +14,9 @@ This file supplies the ordinary (unshifted) Legendre polynomials needed for
 the Fourier--Legendre expansion of Rvachev's `up` function.  Mathlib already
 contains the shifted integral polynomials `Polynomial.shiftedLegendre`; the
 normalization below is the usual Rodrigues normalization on `[-1,1]`.
+Alongside the standard endpoint, parity, norm, and differential-equation
+facts, we expose the affine iterated-derivative rule used to relate the
+ordinary and shifted bases.
 -/
 
 set_option autoImplicit false
@@ -632,9 +635,26 @@ theorem eval_legendrePolynomial_neg (n : ℕ) (x : ℝ) :
       omega
     simp [hzero]
 
+/-- Polynomial form of the parity identity for the ordinary Legendre basis. -/
+theorem legendrePolynomial_comp_neg_X (n : ℕ) :
+    (legendrePolynomial n).comp (-X) =
+      (-1 : ℝ) ^ n • legendrePolynomial n := by
+  apply Polynomial.eq_of_infinite_eval_eq
+  apply Set.infinite_univ.mono
+  intro x _hx
+  simp only [Set.mem_setOf_eq, eval_comp, eval_neg, eval_X, eval_smul,
+    smul_eq_mul]
+  exact eval_legendrePolynomial_neg n x
+
+/-- Value of the ordinary Legendre polynomial at the left endpoint. -/
+@[simp] theorem eval_legendrePolynomial_neg_one (n : ℕ) :
+    (legendrePolynomial n).eval (-1) = (-1 : ℝ) ^ n := by
+  simpa using eval_legendrePolynomial_neg n 1
+
 /-! ## Translation to the shifted Legendre normalization -/
 
-private lemma iterate_derivative_comp_affine
+/-- Iterated polynomial differentiation through an affine substitution. -/
+theorem iterate_derivative_comp_affine
     (p : ℝ[X]) (a b : ℝ) (n : ℕ) :
     derivative^[n] (p.comp (C a * X + C b)) =
       a ^ n • (derivative^[n] p).comp (C a * X + C b) := by

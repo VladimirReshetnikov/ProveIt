@@ -113,7 +113,9 @@ private lemma approximationPolynomial_eval₂_succ (n : ℕ) (t : ℝ) :
     Polynomial.eval₂_one, Polynomial.eval₂_X]
   rw [hzsq]
 
-private lemma polynomialMeasure_charFun_succ (n : ℕ) (t : ℝ) :
+/-- Successive polynomial measures acquire exactly the next centered
+binomial characteristic-function factor. -/
+lemma polynomialMeasure_charFun_succ (n : ℕ) (t : ℝ) :
     charFun (polynomialMeasure (n + 1)) t =
       charFun (polynomialMeasure n) t *
         (Real.cos (t / (2 : ℝ) ^ (n + 2)) : ℂ) ^ (n + 1) := by
@@ -236,6 +238,18 @@ theorem polynomialMeasure_eq_finiteConvolutionMeasure (n : ℕ) :
     polynomialMeasure n = finiteConvolutionMeasure n := by
   apply Measure.ext_of_charFun
   exact polynomialMeasure_charFun_eq_finiteConvolutionMeasure_charFun n
+
+@[simp]
+theorem polynomialMeasure_zero :
+    polynomialMeasure 0 = Measure.dirac 0 := by
+  rw [polynomialMeasure_eq_finiteConvolutionMeasure 0, finiteConvolutionMeasure]
+
+/-- Exact convolution recurrence for the polynomial measures. -/
+theorem polynomialMeasure_succ (n : ℕ) :
+    polynomialMeasure (n + 1) = polynomialMeasure n ∗
+      convolutionPow (centeredBernoulliMeasure (n + 1)) (n + 1) := by
+  rw [polynomialMeasure_eq_finiteConvolutionMeasure (n + 1),
+    polynomialMeasure_eq_finiteConvolutionMeasure n, finiteConvolutionMeasure]
 
 end
 

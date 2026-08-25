@@ -153,6 +153,17 @@ theorem complexExpm1Div_of_ne {z : ℂ} (hz : z ≠ 0) :
     complexExpm1Div z = (Complex.exp z - 1) / z := by
   simp [complexExpm1Div, hz]
 
+/-- The complex removable quotient restricts to the real removable quotient. -/
+@[simp]
+theorem complexExpm1Div_ofReal (x : ℝ) :
+    complexExpm1Div (x : ℂ) = (expm1Div x : ℂ) := by
+  by_cases hx : x = 0
+  · subst x
+    simp
+  rw [complexExpm1Div_of_ne (by exact_mod_cast hx), expm1Div_of_ne hx]
+  push_cast
+  rfl
+
 /-- The even moment `∫_ℝ t^(2n) up(t) dt`, denoted `c_n` in the paper. -/
 noncomputable def momentIntegral (F : BoundedFabius) (n : ℕ) : ℝ :=
   ∫ t : ℝ, t ^ (2 * n) * rvachevUp F t
@@ -191,5 +202,19 @@ restriction to the real axis is `generatingFunction` after the usual cast.
 noncomputable def complexGeneratingFunction (F : BoundedFabius) (z : ℂ) : ℂ :=
   1 + z * ∫ t in (0 : ℝ)..1,
     (rvachevUp F t : ℂ) * Complex.exp (z * t)
+
+/-- The complex half-moment generating function restricts to its real version. -/
+@[simp]
+theorem complexGeneratingFunction_ofReal (F : BoundedFabius) (x : ℝ) :
+    complexGeneratingFunction F (x : ℂ) = (generatingFunction F x : ℂ) := by
+  unfold complexGeneratingFunction generatingFunction
+  push_cast
+  congr 1
+  congr 1
+  rw [← intervalIntegral.integral_ofReal]
+  apply intervalIntegral.integral_congr
+  intro t _ht
+  push_cast
+  rfl
 
 end Fabius
