@@ -53,8 +53,12 @@ Consequently the shape of `F` reverses under inversion: the inverse is
 strictly concave on `[0,1/2]` and strictly convex on `[1/2,1]`.  These closed
 interval statements do not assert endpoint differentiability; their proofs
 differentiate only on the interval interiors and use global continuity at the
-endpoints.  The endpoint behavior remains singular, as quantified by the
-flatness results.
+endpoints.  Pointwise, the inverse second derivative is negative exactly on
+`(0,1/2)`, positive exactly on `(1/2,1)`, and vanishes at the midpoint, where
+the exact jet begins `G(1/2)=1/2`, `G'(1/2)=1/2`, `G''(1/2)=0`.  The endpoint
+behavior remains singular: the positive interior derivative itself tends to
+infinity at both endpoints, strengthening the difference-quotient conclusions
+obtained from flatness.
 
 ## Flatness inverts to steepness
 
@@ -117,6 +121,9 @@ quotient from zero to one.
   globally.
 * `deriv_fabiusInv_hasDerivAt` and `deriv_deriv_fabiusInv` — the exact
   reciprocal-cubic second-derivative rule on `(0,1)`.
+* `deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_half`, and the
+  `deriv_deriv_fabiusInv_{neg,pos,eq_zero}_iff` family — the exact midpoint
+  jet and complete pointwise sign profile of the inverse curvature.
 * `strictConcaveOn_fabiusInv_firstHalf` and
   `strictConvexOn_fabiusInv_secondHalf` — the sharp closed-half curvature
   statements.
@@ -134,6 +141,9 @@ quotient from zero to one.
 * `mul_lt_fabiusInv`, `tendsto_fabiusInv_div_atTop`, and their reflected
   companions — effective and limiting forms of infinite steepness at both
   endpoints.
+* `tendsto_deriv_fabiusInv_atTop_at_zero_right` and
+  `tendsto_deriv_fabiusInv_atTop_at_one_left` — the interior derivative itself
+  diverges to infinity at the two clamping endpoints.
 -/
 
 set_option autoImplicit false
@@ -485,6 +495,90 @@ theorem deriv_deriv_fabiusInv
         deriv (fabiusReal F) (fabiusInv F hF y) ^ 3 :=
   (deriv_fabiusInv_hasDerivAt F hF hy).deriv
 
+/-- Exact inverse slope at the reflection-fixed midpoint. -/
+theorem deriv_fabiusInv_half
+    (F : BoundedFabius) (hF : IsFabius F) :
+    deriv (fabiusInv F hF) (1 / 2 : ℝ) = 1 / 2 := by
+  rw [deriv_fabiusInv F hF (by norm_num), fabiusInv_half F hF,
+    deriv_fabiusReal_half F hF]
+  norm_num
+
+/-- Exact vanishing inverse second derivative at the reflection-fixed
+midpoint. -/
+theorem deriv_deriv_fabiusInv_half
+    (F : BoundedFabius) (hF : IsFabius F) :
+    deriv (deriv (fabiusInv F hF)) (1 / 2 : ℝ) = 0 := by
+  rw [deriv_deriv_fabiusInv F hF (by norm_num), fabiusInv_half F hF,
+    deriv_deriv_fabiusReal_half F hF]
+  norm_num
+
+/-- On the open unit interval, the inverse second derivative is negative
+exactly on the open first half. -/
+theorem deriv_deriv_fabiusInv_neg_iff
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    deriv (deriv (fabiusInv F hF)) y < 0 ↔ y ∈ Ioo (0 : ℝ) (1 / 2) := by
+  rw [deriv_deriv_fabiusInv F hF hy]
+  have hx := fabiusInv_mem_Ioo F hF hy
+  have hden : 0 < deriv (fabiusReal F) (fabiusInv F hF y) ^ 3 :=
+    pow_pos (deriv_fabiusReal_pos F hF hx) 3
+  rw [div_lt_iff₀ hden]
+  simp only [zero_mul, neg_lt_zero]
+  rw [deriv_deriv_fabiusReal_pos_iff F hF]
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy
+  have hhalfIcc : (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 := by norm_num
+  constructor
+  · intro hG
+    refine ⟨hy.1, ?_⟩
+    have h := (fabiusInv_lt_iff_lt_fabiusReal F hF hyIcc hhalfIcc).mp hG.2
+    rwa [fabius_half F hF] at h
+  · intro hyhalf
+    refine ⟨hx.1, ?_⟩
+    apply (fabiusInv_lt_iff_lt_fabiusReal F hF hyIcc hhalfIcc).mpr
+    simpa only [fabius_half F hF] using hyhalf.2
+
+/-- On the open unit interval, the inverse second derivative is positive
+exactly on the open second half. -/
+theorem deriv_deriv_fabiusInv_pos_iff
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    0 < deriv (deriv (fabiusInv F hF)) y ↔ y ∈ Ioo (1 / 2 : ℝ) 1 := by
+  rw [deriv_deriv_fabiusInv F hF hy]
+  have hx := fabiusInv_mem_Ioo F hF hy
+  have hden : 0 < deriv (fabiusReal F) (fabiusInv F hF y) ^ 3 :=
+    pow_pos (deriv_fabiusReal_pos F hF hx) 3
+  rw [lt_div_iff₀ hden]
+  simp only [zero_mul, neg_pos]
+  rw [deriv_deriv_fabiusReal_neg_iff F hF]
+  have hyIcc : y ∈ Icc (0 : ℝ) 1 := Ioo_subset_Icc_self hy
+  have hhalfIcc : (1 / 2 : ℝ) ∈ Icc (0 : ℝ) 1 := by norm_num
+  constructor
+  · intro hG
+    refine ⟨?_, hy.2⟩
+    have h := (fabiusReal_lt_iff_lt_fabiusInv F hF hhalfIcc hyIcc).mpr hG.1
+    rwa [fabius_half F hF] at h
+  · intro hyhalf
+    refine ⟨?_, hx.2⟩
+    apply (fabiusReal_lt_iff_lt_fabiusInv F hF hhalfIcc hyIcc).mp
+    simpa only [fabius_half F hF] using hyhalf.1
+
+/-- Within the open unit interval, the inverse second derivative vanishes
+exactly at the midpoint. -/
+theorem deriv_deriv_fabiusInv_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F)
+    {y : ℝ} (hy : y ∈ Ioo (0 : ℝ) 1) :
+    deriv (deriv (fabiusInv F hF)) y = 0 ↔ y = 1 / 2 := by
+  constructor
+  · intro hzero
+    rcases lt_trichotomy y (1 / 2 : ℝ) with hylt | hyeq | hygt
+    · exact False.elim (((deriv_deriv_fabiusInv_neg_iff F hF hy).2
+        ⟨hy.1, hylt⟩).ne hzero)
+    · exact hyeq
+    · exact False.elim (((deriv_deriv_fabiusInv_pos_iff F hF hy).2
+        ⟨hygt, hy.2⟩).ne' hzero)
+  · rintro rfl
+    exact deriv_deriv_fabiusInv_half F hF
+
 /-- The inverse is strictly concave on the first closed half of the unit
 interval.  Endpoint differentiability is not needed: the derivative criterion
 is applied only on `(0,1/2)` and continuity supplies the endpoints. -/
@@ -768,6 +862,34 @@ theorem tendsto_fabiusInv_div_atTop (F : BoundedFabius) (hF : IsFabius F) :
     linarith
   exact hMle.trans hstep
 
+/-- The positive interior derivatives of the inverse diverge to infinity as
+the argument approaches the left clamping endpoint from the right. -/
+theorem tendsto_deriv_fabiusInv_atTop_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto (deriv (fabiusInv F hF)) (nhdsWithin (0 : ℝ) (Ioi 0)) atTop := by
+  let G := fabiusInv F hF
+  let D := fun y : ℝ => deriv (fabiusReal F) (G y)
+  have hG0 : Tendsto G (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds (0 : ℝ)) := by
+    exact ((continuous_fabiusInv F hF).tendsto' 0 0
+      (fabiusInv_zero F hF)).mono_left nhdsWithin_le_nhds
+  have hderivF : Continuous (deriv (fabiusReal F)) :=
+    ((contDiff_infty_iff_deriv.mp hF.contDiff).2).continuous
+  have hD0 : Tendsto D (nhdsWithin (0 : ℝ) (Ioi 0)) (nhds (0 : ℝ)) := by
+    have h := hderivF.continuousAt.tendsto.comp hG0
+    simpa only [D, G, Function.comp_def,
+      (deriv_fabiusReal_eq_zero_iff F hF 0).2 (by simp)] using h
+  have hD : Tendsto D (nhdsWithin (0 : ℝ) (Ioi 0))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) := by
+    rw [tendsto_nhdsWithin_iff]
+    refine ⟨hD0, ?_⟩
+    filter_upwards [self_mem_nhdsWithin,
+      nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy0 hy1
+    exact deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩)
+  refine hD.inv_tendsto_nhdsGT_zero.congr' ?_
+  filter_upwards [self_mem_nhdsWithin,
+    nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy0 hy1
+  exact (deriv_fabiusInv F hF ⟨hy0, hy1⟩).symm
+
 /-! ## Infinite steepness at the right endpoint -/
 
 /-- The effective slope bound reflected from zero to one.  Once `y < 1` is
@@ -798,6 +920,34 @@ theorem tendsto_one_sub_fabiusInv_div_one_sub_atTop
     funext y
     rw [Function.comp_apply, fabiusInv_one_sub F hF y]
   rwa [heq] at h
+
+/-- The positive interior derivatives of the inverse diverge to infinity as
+the argument approaches the right clamping endpoint from the left. -/
+theorem tendsto_deriv_fabiusInv_atTop_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Tendsto (deriv (fabiusInv F hF)) (nhdsWithin (1 : ℝ) (Iio 1)) atTop := by
+  let G := fabiusInv F hF
+  let D := fun y : ℝ => deriv (fabiusReal F) (G y)
+  have hG1 : Tendsto G (nhdsWithin (1 : ℝ) (Iio 1)) (nhds (1 : ℝ)) := by
+    exact ((continuous_fabiusInv F hF).tendsto' 1 1
+      (fabiusInv_one F hF)).mono_left nhdsWithin_le_nhds
+  have hderivF : Continuous (deriv (fabiusReal F)) :=
+    ((contDiff_infty_iff_deriv.mp hF.contDiff).2).continuous
+  have hD0 : Tendsto D (nhdsWithin (1 : ℝ) (Iio 1)) (nhds (0 : ℝ)) := by
+    have h := hderivF.continuousAt.tendsto.comp hG1
+    simpa only [D, G, Function.comp_def,
+      (deriv_fabiusReal_eq_zero_iff F hF 1).2 (by simp)] using h
+  have hD : Tendsto D (nhdsWithin (1 : ℝ) (Iio 1))
+      (nhdsWithin (0 : ℝ) (Ioi 0)) := by
+    rw [tendsto_nhdsWithin_iff]
+    refine ⟨hD0, ?_⟩
+    filter_upwards [self_mem_nhdsWithin,
+      nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy1 hy0
+    exact deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩)
+  refine hD.inv_tendsto_nhdsGT_zero.congr' ?_
+  filter_upwards [self_mem_nhdsWithin,
+    nhdsWithin_le_nhds (Ioi_mem_nhds (zero_lt_one : (0 : ℝ) < 1))] with y hy1 hy0
+  exact (deriv_fabiusInv F hF ⟨hy0, hy1⟩).symm
 
 /-! ## Exact smoothness locus -/
 

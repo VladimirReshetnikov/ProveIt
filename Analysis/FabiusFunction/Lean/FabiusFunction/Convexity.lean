@@ -16,6 +16,15 @@ The inflection point is therefore exactly the midpoint, where `F(1/2) = 1/2`
 and `F'(1/2) = 2` is the unique global maximum of the derivative.  The exact
 range statement is recorded below: `0 ≤ F'(x) ≤ 2`, with equality on the
 left exactly off `(0,1)` and equality on the right exactly at `x = 1/2`.
+
+Differentiating the unified equation once more gives the exact pointwise
+profile
+
+`F''(x) = 8 * (up(4*x - 1) - up(4*x - 3))`.
+
+It is positive exactly on `(0,1/2)`, negative exactly on `(1/2,1)`, and zero
+off `(0,1)` and at the midpoint.  Thus the inflection statement is recorded
+both as strict setwise shape and as a complete second-derivative sign locus.
 -/
 
 set_option autoImplicit false
@@ -210,6 +219,143 @@ theorem strictMonoOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
 theorem strictAntiOn_deriv_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
     StrictAntiOn (deriv (fabiusReal F)) (Ioo (1 / 2 : ℝ) 1) := by
   exact (strictAntiOn_deriv_fabiusReal_Icc F hF).mono Ioo_subset_Icc_self
+
+/-! ## Exact second derivative -/
+
+/-- The derivative of the bounded Fabius function has the exact dyadic
+second-derivative refinement formula. -/
+theorem deriv_fabiusReal_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    HasDerivAt (deriv (fabiusReal F))
+      (8 * (rvachevUp F (4 * x - 1) - rvachevUp F (4 * x - 3))) x := by
+  have haffine : HasDerivAt (fun t : ℝ => 2 * t - 1) 2 x := by
+    simpa using ((hasDerivAt_id x).const_mul 2).sub_const 1
+  have hup := (rvachev_hasDerivAt F hF (2 * x - 1)).comp x haffine
+  have hscaled := hup.const_mul 2
+  rw [deriv_fabiusReal F hF]
+  have hscaled' : HasDerivAt
+      (fun t : ℝ => 2 * rvachevUp F (2 * t - 1))
+      (2 * (2 * (rvachevUp F (2 * (2 * x - 1) + 1) -
+        rvachevUp F (2 * (2 * x - 1) - 1)) * 2)) x := by
+    simpa only [Function.comp_apply] using hscaled
+  apply hscaled'.congr_deriv
+  ring_nf
+
+/-- Exact pointwise second derivative of the bounded Fabius function. -/
+theorem deriv_deriv_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (deriv (fabiusReal F)) x =
+      8 * (rvachevUp F (4 * x - 1) - rvachevUp F (4 * x - 3)) :=
+  (deriv_fabiusReal_hasDerivAt F hF x).deriv
+
+private theorem deriv_deriv_fabiusReal_pos_of_mem_Ioo_zero_half
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ∈ Ioo (0 : ℝ) (1 / 2)) :
+    0 < deriv (deriv (fabiusReal F)) x := by
+  have hzero : rvachevUp F (4 * x - 3) = 0 :=
+    rvachevUp_eq_zero_of_le_neg_one F hF (by linarith [hx.2])
+  rw [deriv_deriv_fabiusReal F hF x, hzero]
+  have hpos : 0 < rvachevUp F (4 * x - 1) :=
+    rvachevUp_pos_of_mem_Ioo F hF
+      (by constructor <;> linarith [hx.1, hx.2])
+  linarith
+
+private theorem deriv_deriv_fabiusReal_neg_of_mem_Ioo_half_one
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ∈ Ioo (1 / 2 : ℝ) 1) :
+    deriv (deriv (fabiusReal F)) x < 0 := by
+  rw [deriv_deriv_fabiusReal F hF x,
+    rvachevUp_eq_zero_of_one_le F hF (by linarith [hx.1])]
+  have hpos : 0 < rvachevUp F (4 * x - 3) :=
+    rvachevUp_pos_of_mem_Ioo F hF
+      (by constructor <;> linarith [hx.1, hx.2])
+  linarith
+
+/-- The second derivative of the bounded Fabius function vanishes exactly
+off the open unit interval and at its midpoint. -/
+theorem deriv_deriv_fabiusReal_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (deriv (fabiusReal F)) x = 0 ↔
+      x ∉ Ioo (0 : ℝ) 1 ∨ x = 1 / 2 := by
+  constructor
+  · intro hzero
+    by_contra hcases
+    have hxunit : x ∈ Ioo (0 : ℝ) 1 := by
+      by_contra hout
+      exact hcases (Or.inl hout)
+    have hxhalf : x ≠ 1 / 2 := by
+      intro hx
+      exact hcases (Or.inr hx)
+    rcases lt_or_gt_of_ne hxhalf with hx | hx
+    · exact (deriv_deriv_fabiusReal_pos_of_mem_Ioo_zero_half F hF
+        ⟨hxunit.1, hx⟩).ne' hzero
+    · exact (deriv_deriv_fabiusReal_neg_of_mem_Ioo_half_one F hF
+        ⟨hx, hxunit.2⟩).ne hzero
+  · rintro (hout | rfl)
+    · simp only [mem_Ioo, not_and_or, not_lt] at hout
+      rcases hout with hx | hx
+      · rw [deriv_deriv_fabiusReal F hF x,
+          rvachevUp_eq_zero_of_le_neg_one F hF (by linarith),
+          rvachevUp_eq_zero_of_le_neg_one F hF (by linarith),
+          sub_self, mul_zero]
+      · rw [deriv_deriv_fabiusReal F hF x,
+          rvachevUp_eq_zero_of_one_le F hF (by linarith),
+          rvachevUp_eq_zero_of_one_le F hF (by linarith),
+          sub_self, mul_zero]
+    · rw [deriv_deriv_fabiusReal F hF]
+      norm_num [rvachevUp_eq_zero_of_one_le F hF,
+        rvachevUp_eq_zero_of_le_neg_one F hF]
+
+/-- The second derivative is positive exactly on the open first half of the
+unit interval. -/
+theorem deriv_deriv_fabiusReal_pos_iff
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    0 < deriv (deriv (fabiusReal F)) x ↔ x ∈ Ioo (0 : ℝ) (1 / 2) := by
+  constructor
+  · intro hpos
+    have hxunit : x ∈ Ioo (0 : ℝ) 1 := by
+      by_contra hout
+      have hz := (deriv_deriv_fabiusReal_eq_zero_iff F hF x).2 (Or.inl hout)
+      linarith
+    have hxhalf : x < 1 / 2 := by
+      by_contra hnot
+      rcases eq_or_lt_of_le (le_of_not_gt hnot) with hx | hx
+      · have hz :=
+          (deriv_deriv_fabiusReal_eq_zero_iff F hF x).2 (Or.inr hx.symm)
+        linarith
+      · have hneg := deriv_deriv_fabiusReal_neg_of_mem_Ioo_half_one F hF
+          ⟨hx, hxunit.2⟩
+        linarith
+    exact ⟨hxunit.1, hxhalf⟩
+  · exact deriv_deriv_fabiusReal_pos_of_mem_Ioo_zero_half F hF
+
+/-- The second derivative is negative exactly on the open second half of the
+unit interval. -/
+theorem deriv_deriv_fabiusReal_neg_iff
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (deriv (fabiusReal F)) x < 0 ↔ x ∈ Ioo (1 / 2 : ℝ) 1 := by
+  constructor
+  · intro hneg
+    have hxunit : x ∈ Ioo (0 : ℝ) 1 := by
+      by_contra hout
+      have hz := (deriv_deriv_fabiusReal_eq_zero_iff F hF x).2 (Or.inl hout)
+      linarith
+    have hxhalf : 1 / 2 < x := by
+      by_contra hnot
+      rcases eq_or_lt_of_le (le_of_not_gt hnot) with hx | hx
+      · have hz := (deriv_deriv_fabiusReal_eq_zero_iff F hF x).2 (Or.inr hx)
+        linarith
+      · have hpos := deriv_deriv_fabiusReal_pos_of_mem_Ioo_zero_half F hF
+          ⟨hxunit.1, hx⟩
+        linarith
+    exact ⟨hxhalf, hxunit.2⟩
+  · exact deriv_deriv_fabiusReal_neg_of_mem_Ioo_half_one F hF
+
+/-- Exact vanishing second derivative at the midpoint. -/
+theorem deriv_deriv_fabiusReal_half
+    (F : BoundedFabius) (hF : IsFabius F) :
+    deriv (deriv (fabiusReal F)) (1 / 2 : ℝ) = 0 :=
+  (deriv_deriv_fabiusReal_eq_zero_iff F hF (1 / 2)).2 (Or.inr rfl)
 
 /-! ## Convexity and concavity -/
 
