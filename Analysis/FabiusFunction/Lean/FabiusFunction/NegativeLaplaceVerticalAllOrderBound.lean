@@ -197,9 +197,12 @@ private theorem differentiableOn_negativeLaplaceVerticalKernelLogFirstComplex
   exact hd.differentiableWithinAt
 
 /-- The `m`-th derivative of the one-factor logarithmic increment is bounded
-uniformly on every vertical strip center `|theta| <= 1`, at all scales
-`s >= 1`.  Cauchy's estimate on a disk of radius `1/2` gives the explicit
-constant `5 * m! * 2^m`. -/
+uniformly in the vertical parameter `theta`, at all scales `s >= 1`.  The
+bound holds for *every* real `theta`, not only on a bounded strip: the
+constant does not depend on `theta` at all, because the disk of radius `1/2`
+around `theta` stays inside the half plane `Re > 0` uniformly.  Cauchy's
+estimate on that disk gives the explicit constant `5 * m! * 2^m`, written
+below as `m! * 5 / (1/2)^m`. -/
 theorem norm_iteratedDeriv_negativeLaplaceVerticalKernelLogFirst_le
     (m : ℕ) {s θ : ℝ} (hs : 1 ≤ s) :
     ‖iteratedDeriv m (negativeLaplaceVerticalKernelLogFirst s) θ‖ ≤

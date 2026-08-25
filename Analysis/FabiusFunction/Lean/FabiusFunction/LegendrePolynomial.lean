@@ -42,7 +42,10 @@ noncomputable def legendrePolynomial (n : ℕ) : ℝ[X] :=
   ext k
   norm_num [legendrePolynomial, derivative_sub, coeff_X]
 
-/-- Evaluation of a Legendre polynomial is smooth. -/
+/-- Evaluation of a Legendre polynomial is real analytic.  The smoothness
+exponent is the top element of `WithTop ℕ∞`, which in this Mathlib is the
+*analytic* exponent `ω` rather than `C^∞`; a polynomial is of course both,
+and the stronger form is what downstream Legendre arguments consume. -/
 theorem legendrePolynomial_contDiff (n : ℕ) :
     ContDiff ℝ ⊤ (fun x : ℝ ↦ (legendrePolynomial n).eval x) := by
   induction legendrePolynomial n using Polynomial.induction_on' with

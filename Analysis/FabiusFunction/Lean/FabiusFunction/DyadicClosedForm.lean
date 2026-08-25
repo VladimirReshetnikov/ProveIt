@@ -782,7 +782,14 @@ theorem thueMorseSign_block_concat
 /-- **Block decomposition of a range sum.**  A sum over `Finset.range (m * p)`
 is the sum of `m` consecutive blocks of length `p`.  Stated over an arbitrary
 `AddCommMonoid`, since the corpus applies it over the rationals, over the
-reals, and over formal power series. -/
+reals, and over formal power series.
+
+Mathlib has no equivalent: it has `Finset.sum_range_add` for a two-part split
+and `Finset.sum_range_add_sum_Ico` for a range/interval split, but nothing
+that splits `range (m * p)` into `m` blocks for symbolic `m` and `p`.  A
+tree-wide search of Mathlib for `range (a * b)` with two symbolic variables
+finds no occurrence at all, and `Combinatorics.SimpleGraph.Extremal.Turan`
+does this decomposition by hand.  So do not replace this by an import. -/
 theorem sum_range_block_decomposition
     {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
     (∑ j ∈ Finset.range (m * p), f j) =
