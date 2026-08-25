@@ -8,7 +8,8 @@ import FabiusFunction.FabiusGlobalQBinomialSeries
 This module performs the exact outer q-binomial reindexing, applies the
 Toeplitz convergence theorem to the complex-shift spline limit, and connects
 the resulting limit with the already proved binary telescope and literal
-global q-binomial series.
+global q-binomial series.  Exact empty-prefix vanishing extends the main
+convergence theorem from the nonnegative axis to every real input.
 -/
 
 set_option autoImplicit false
@@ -147,6 +148,24 @@ theorem fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius
     (fabiusDiscreteLimitApproximationComplex_eq_weighted_shiftSpline
       q x n).symm
 
+/-- Complex-shift discrete-limit approximants converge on the whole real
+line.  On the nonpositive half-line both sides vanish exactly. -/
+theorem fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all
+    (q : ℂ) (x : ℝ) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationComplex q x n)
+      atTop (𝓝 (globalFabius x : ℂ)) := by
+  rcases le_total 0 x with hx | hx
+  · exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius q hx
+  · have happ (n : ℕ) :
+        fabiusDiscreteLimitApproximationComplex q x n = 0 :=
+      fabiusDiscreteLimitApproximationComplex_eq_zero_of_nonpos q hx n
+    have hglobal : globalFabius x = 0 := by
+      change extendedFabius fabius x = 0
+      exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
+    simpa [happ, hglobal] using
+      (tendsto_const_nhds :
+        Tendsto (fun _ : ℕ => (0 : ℂ)) atTop (𝓝 0))
+
 /-- Gaussian-rational translations. -/
 theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius
     (a b : ℚ) {x : ℝ} (hx : 0 ≤ x) :
@@ -158,7 +177,20 @@ theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius
     fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius
       ((a : ℂ) + (b : ℂ) * Complex.I) hx
 
-private theorem fabiusDiscreteLimitApproximationReal_ofReal
+/-- Gaussian-rational translations converge on the whole real line. -/
+theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius_all
+    (a b : ℚ) (x : ℝ) :
+    Tendsto
+      (fun n => fabiusDiscreteLimitApproximationGaussianRat a b x n)
+      atTop (𝓝 (globalFabius x : ℂ)) := by
+  simpa only [fabiusDiscreteLimitApproximationGaussianRat,
+    fabiusDiscreteLimitApproximationComplex] using
+    fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all
+      ((a : ℂ) + (b : ℂ) * Complex.I) x
+
+/-- Casting the real-shift approximant to `ℂ` agrees exactly with evaluating
+the complex approximant at the corresponding real shift. -/
+theorem ofReal_fabiusDiscreteLimitApproximationReal
     (q x : ℝ) (n : ℕ) :
     (fabiusDiscreteLimitApproximationReal q x n : ℂ) =
       fabiusDiscreteLimitApproximationComplex (q : ℂ) x n := by
@@ -180,8 +212,25 @@ theorem fabiusDiscreteLimitApproximationReal_tendsto_globalFabius
   filter_upwards with n
   change (fabiusDiscreteLimitApproximationComplex (q : ℂ) x n).re =
     fabiusDiscreteLimitApproximationReal q x n
-  rw [← fabiusDiscreteLimitApproximationReal_ofReal]
+  rw [← ofReal_fabiusDiscreteLimitApproximationReal]
   exact Complex.ofReal_re _
+
+/-- Real-shift discrete-limit approximants converge on the whole real line. -/
+theorem fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all
+    (q x : ℝ) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationReal q x n)
+      atTop (𝓝 (globalFabius x)) := by
+  rcases le_total 0 x with hx | hx
+  · exact fabiusDiscreteLimitApproximationReal_tendsto_globalFabius q hx
+  · have happ (n : ℕ) :
+        fabiusDiscreteLimitApproximationReal q x n = 0 :=
+      fabiusDiscreteLimitApproximationReal_eq_zero_of_nonpos q hx n
+    have hglobal : globalFabius x = 0 := by
+      change extendedFabius fabius x = 0
+      exact extendedFabius_eq_zero_of_nonpos fabius fabius_spec hx
+    simpa [happ, hglobal] using
+      (tendsto_const_nhds :
+        Tendsto (fun _ : ℕ => (0 : ℝ)) atTop (𝓝 0))
 
 /-- Rational translations, stated first in the original real form. -/
 theorem fabiusDiscreteLimitApproximationRat_tendsto_globalFabius
@@ -191,6 +240,16 @@ theorem fabiusDiscreteLimitApproximationRat_tendsto_globalFabius
   simpa only [fabiusDiscreteLimitApproximationRat,
     fabiusDiscreteLimitApproximationReal] using
       fabiusDiscreteLimitApproximationReal_tendsto_globalFabius (q : ℝ) hx
+
+/-- Rational translations converge on the whole real line. -/
+theorem fabiusDiscreteLimitApproximationRat_tendsto_globalFabius_all
+    (q : ℚ) (x : ℝ) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationRat q x n)
+      atTop (𝓝 (globalFabius x)) := by
+  simpa only [fabiusDiscreteLimitApproximationRat,
+    fabiusDiscreteLimitApproximationReal] using
+      fabiusDiscreteLimitApproximationReal_tendsto_globalFabius_all
+        (q : ℝ) x
 
 /-- Fully expanded complex theorem, with the safe range-length version of
 the inclusive Wolfram cutoff. -/
@@ -215,6 +274,29 @@ theorem fabiusDiscreteLimit_literal_complex_tendsto_globalFabius
     atTop (𝓝 (globalFabius x : ℂ))
   exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius q hx
 
+/-- Fully expanded complex discrete-limit convergence on the whole real
+line. -/
+theorem fabiusDiscreteLimit_literal_complex_tendsto_globalFabius_all
+    (q : ℂ) (x : ℝ) :
+    Tendsto
+      (fun n : ℕ =>
+        (1 /
+            ((2 : ℂ) ^ (n ^ 2) *
+              (qPochhammer (1 / 2) (1 / 2) n : ℂ))) *
+          ∑ k ∈ Finset.range (n + 1),
+            ((qBinomial n k (1 / 2) : ℂ) /
+                ((4 : ℂ) ^ k.choose 2 * ((n + k).factorial : ℂ))) *
+              ∑ r ∈ Finset.range
+                  ⌊(2 : ℝ) ^ (n + k) * x + 1 / 2⌋₊,
+                (-1 : ℂ) ^ thueMorseBit r *
+                  ((r : ℂ) - (2 : ℂ) ^ (n + k) * (x : ℂ) + q) ^
+                    (n + k))
+      atTop (𝓝 (globalFabius x : ℂ)) := by
+  change Tendsto
+    (fun n => fabiusDiscreteLimitApproximationComplex q x n)
+    atTop (𝓝 (globalFabius x : ℂ))
+  exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all q x
+
 /-- On `[0,1]`, the same limit is the ordinary bounded Fabius function. -/
 theorem fabiusDiscreteLimitApproximationComplex_tendsto_fabiusReal
     (q : ℂ) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
@@ -222,6 +304,34 @@ theorem fabiusDiscreteLimitApproximationComplex_tendsto_fabiusReal
       atTop (𝓝 (fabiusReal fabius x : ℂ)) := by
   rw [← extendedFabius_eq_fabiusReal fabius fabius_spec hx]
   exact fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius q hx.1
+
+/-- The arbitrary-real-shift formula converges to the bounded Fabius
+function on its fundamental interval. -/
+theorem fabiusDiscreteLimitApproximationReal_tendsto_fabiusReal
+    (q : ℝ) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationReal q x n)
+      atTop (𝓝 (fabiusReal fabius x)) := by
+  rw [← extendedFabius_eq_fabiusReal fabius fabius_spec hx]
+  exact fabiusDiscreteLimitApproximationReal_tendsto_globalFabius q hx.1
+
+/-- Rational-shift specialization on the fundamental interval. -/
+theorem fabiusDiscreteLimitApproximationRat_tendsto_fabiusReal
+    (q : ℚ) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    Tendsto (fun n => fabiusDiscreteLimitApproximationRat q x n)
+      atTop (𝓝 (fabiusReal fabius x)) := by
+  simpa only [fabiusDiscreteLimitApproximationRat,
+    fabiusDiscreteLimitApproximationReal] using
+      fabiusDiscreteLimitApproximationReal_tendsto_fabiusReal (q : ℝ) hx
+
+/-- Gaussian-rational-shift specialization on the fundamental interval. -/
+theorem fabiusDiscreteLimitApproximationGaussianRat_tendsto_fabiusReal
+    (a b : ℚ) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    Tendsto
+      (fun n => fabiusDiscreteLimitApproximationGaussianRat a b x n)
+      atTop (𝓝 (fabiusReal fabius x : ℂ)) := by
+  rw [← extendedFabius_eq_fabiusReal fabius fabius_spec hx]
+  exact fabiusDiscreteLimitApproximationGaussianRat_tendsto_globalFabius
+    a b hx.1
 
 /-! ## Link with the binary telescope and its literal global series -/
 

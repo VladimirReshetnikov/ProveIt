@@ -1,6 +1,19 @@
 import FabiusFunction.FabiusRawQBinomialFormula
 import Mathlib.Topology.MetricSpace.Pseudo.Constructions
 
+/-!
+# Toeplitz weights for the Fabius discrete limit
+
+This module packages the finite q-binomial coefficients that arise after
+reindexing the proposed discrete-limit formula.  It proves that every row
+has mass one, gives both an exact formula and a uniform bound for its total
+variation, and supplies a general finite-row Toeplitz convergence theorem.
+
+The range-length convention uses a half-cell correction.  In particular it
+continues to encode the original inclusive upper bound when that bound is
+negative, without introducing an ill-formed finite range.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology
@@ -10,8 +23,9 @@ namespace Fabius
 
 noncomputable section
 
-/-- Number of terms in the inner prefix at scale `p`.  This is nearest-integer
-rounding with half-integers rounded upward. -/
+/-- Number of terms in the inner prefix at scale `p`.  On nonnegative inputs
+this is nearest-integer rounding with half-integers rounded upward; on negative
+inputs the natural-valued floor clamps the result to zero. -/
 def fabiusDiscreteLimitRangeLength (x : ℝ) (p : ℕ) : ℕ :=
   ⌊(2 : ℝ) ^ p * x + 1 / 2⌋₊
 
@@ -35,6 +49,31 @@ theorem fabiusDiscreteLimitRangeLength_eq_zero_iff
       (2 : ℝ) ^ p * x < 1 / 2 := by
   rw [fabiusDiscreteLimitRangeLength, Nat.floor_eq_zero]
   constructor <;> intro h <;> linarith
+
+/-- Direct form of the exact empty-prefix criterion. -/
+theorem fabiusDiscreteLimitRangeLength_eq_zero_of_lt_half
+    {x : ℝ} (p : ℕ) (hx : (2 : ℝ) ^ p * x < 1 / 2) :
+    fabiusDiscreteLimitRangeLength x p = 0 :=
+  (fabiusDiscreteLimitRangeLength_eq_zero_iff x p).2 hx
+
+/-- At every scale the corrected prefix is empty at and to the left of the
+origin. -/
+theorem fabiusDiscreteLimitRangeLength_eq_zero_of_nonpos
+    {x : ℝ} (hx : x ≤ 0) (p : ℕ) :
+    fabiusDiscreteLimitRangeLength x p = 0 := by
+  apply fabiusDiscreteLimitRangeLength_eq_zero_of_lt_half p
+  have hscale : (2 : ℝ) ^ p * x ≤ 0 :=
+    mul_nonpos_of_nonneg_of_nonpos (by positivity) hx
+  linarith
+
+/-- The prefix is nonempty exactly when the scaled argument reaches the
+left edge of the centered half-cell. -/
+theorem fabiusDiscreteLimitRangeLength_pos_iff
+    (x : ℝ) (p : ℕ) :
+    0 < fabiusDiscreteLimitRangeLength x p ↔
+      1 / 2 ≤ (2 : ℝ) ^ p * x := by
+  simpa only [Nat.pos_iff_ne_zero, not_lt] using
+    not_congr (fabiusDiscreteLimitRangeLength_eq_zero_iff x p)
 
 /-- The literal finite expression inside the user's `DiscreteLimit`.  The
 inner finite range has length `floor(2^(n+k)*x+1/2)`, equivalently inclusive
@@ -69,6 +108,74 @@ def fabiusDiscreteLimitApproximationReal
 def fabiusDiscreteLimitApproximationComplex
     (q : ℂ) (x : ℝ) (n : ℕ) : ℂ :=
   fabiusDiscreteLimitApproximation ℂ q x n
+
+/-- Every inner prefix in the generic discrete-limit approximant is empty
+at and to the left of the origin. -/
+theorem fabiusDiscreteLimitApproximation_eq_zero_of_nonpos
+    (K : Type*) [RCLike K] (q : K) {x : ℝ} (hx : x ≤ 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximation K q x n = 0 := by
+  simp [fabiusDiscreteLimitApproximation,
+    fabiusDiscreteLimitRangeLength_eq_zero_of_nonpos hx]
+
+/-- Negative-input specialization of the generic vanishing theorem. -/
+theorem fabiusDiscreteLimitApproximation_eq_zero_of_neg
+    (K : Type*) [RCLike K] (q : K) {x : ℝ} (hx : x < 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximation K q x n = 0 :=
+  fabiusDiscreteLimitApproximation_eq_zero_of_nonpos K q hx.le n
+
+/-- Real-shift approximants vanish at and to the left of the origin. -/
+theorem fabiusDiscreteLimitApproximationReal_eq_zero_of_nonpos
+    (q : ℝ) {x : ℝ} (hx : x ≤ 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationReal q x n = 0 := by
+  simpa only [fabiusDiscreteLimitApproximationReal] using
+    fabiusDiscreteLimitApproximation_eq_zero_of_nonpos ℝ q hx n
+
+/-- Real-shift approximants vanish on the negative axis. -/
+theorem fabiusDiscreteLimitApproximationReal_eq_zero_of_neg
+    (q : ℝ) {x : ℝ} (hx : x < 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationReal q x n = 0 :=
+  fabiusDiscreteLimitApproximationReal_eq_zero_of_nonpos q hx.le n
+
+/-- Complex-shift approximants vanish at and to the left of the origin. -/
+theorem fabiusDiscreteLimitApproximationComplex_eq_zero_of_nonpos
+    (q : ℂ) {x : ℝ} (hx : x ≤ 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationComplex q x n = 0 := by
+  simpa only [fabiusDiscreteLimitApproximationComplex] using
+    fabiusDiscreteLimitApproximation_eq_zero_of_nonpos ℂ q hx n
+
+/-- Complex-shift approximants vanish on the negative axis. -/
+theorem fabiusDiscreteLimitApproximationComplex_eq_zero_of_neg
+    (q : ℂ) {x : ℝ} (hx : x < 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationComplex q x n = 0 :=
+  fabiusDiscreteLimitApproximationComplex_eq_zero_of_nonpos q hx.le n
+
+/-- Rational-shift approximants vanish at and to the left of the origin. -/
+theorem fabiusDiscreteLimitApproximationRat_eq_zero_of_nonpos
+    (q : ℚ) {x : ℝ} (hx : x ≤ 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationRat q x n = 0 := by
+  simpa only [fabiusDiscreteLimitApproximationRat] using
+    fabiusDiscreteLimitApproximation_eq_zero_of_nonpos ℝ (q : ℝ) hx n
+
+/-- Rational-shift approximants vanish on the negative axis. -/
+theorem fabiusDiscreteLimitApproximationRat_eq_zero_of_neg
+    (q : ℚ) {x : ℝ} (hx : x < 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationRat q x n = 0 :=
+  fabiusDiscreteLimitApproximationRat_eq_zero_of_nonpos q hx.le n
+
+/-- Gaussian-rational-shift approximants vanish at and to the left of the
+origin. -/
+theorem fabiusDiscreteLimitApproximationGaussianRat_eq_zero_of_nonpos
+    (a b : ℚ) {x : ℝ} (hx : x ≤ 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationGaussianRat a b x n = 0 := by
+  simpa only [fabiusDiscreteLimitApproximationGaussianRat] using
+    fabiusDiscreteLimitApproximation_eq_zero_of_nonpos ℂ
+      ((a : ℂ) + (b : ℂ) * Complex.I) hx n
+
+/-- Gaussian-rational-shift approximants vanish on the negative axis. -/
+theorem fabiusDiscreteLimitApproximationGaussianRat_eq_zero_of_neg
+    (a b : ℚ) {x : ℝ} (hx : x < 0) (n : ℕ) :
+    fabiusDiscreteLimitApproximationGaussianRat a b x n = 0 :=
+  fabiusDiscreteLimitApproximationGaussianRat_eq_zero_of_nonpos a b hx.le n
 
 private theorem choose_succ_two_toeplitz (j : ℕ) :
     (j + 1).choose 2 = j.choose 2 + j := by
@@ -166,7 +273,9 @@ private theorem finiteQPochhammer_neg_half_mul_half_le_one (n : ℕ) :
     rw [hterm]
     nlinarith
 
-private theorem abs_discreteLimitWeight {n j : ℕ} (hj : j ≤ n) :
+/-- Absolute value of a Toeplitz coefficient within its finite row.  All
+factors remaining after removal of the alternating sign are positive. -/
+theorem abs_discreteLimitWeight {n j : ℕ} (hj : j ≤ n) :
     |discreteLimitWeight n j| =
       halfQBinomial n j * (1 / 2 : ℚ) ^ ((j + 1).choose 2) /
         halfQPochhammer n := by
@@ -175,8 +284,11 @@ private theorem abs_discreteLimitWeight {n j : ℕ} (hj : j ≤ n) :
     abs_of_pos (halfQPochhammer_pos n)]
   norm_num
 
-theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
-    (∑ j ∈ Finset.range (n + 1), |discreteLimitWeight n j|) ≤ 16 := by
+/-- Exact total variation of the `n`-th Toeplitz row.  The coarse uniform
+bound below is obtained by estimating the two finite q-Pochhammer factors. -/
+theorem sum_abs_discreteLimitWeight (n : ℕ) :
+    (∑ j ∈ Finset.range (n + 1), |discreteLimitWeight n j|) =
+      finiteQPochhammer (-1 / 2) (1 / 2) n / halfQPochhammer n := by
   have hplus := halfQBinomial_theorem n (-1 / 2)
   have hsum :
       (∑ j ∈ Finset.range (n + 1),
@@ -216,7 +328,13 @@ theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
         exact abs_discreteLimitWeight
           (Nat.le_of_lt_succ (Finset.mem_range.mp hj))
       _ = _ := by rw [← Finset.sum_div, hsum]
-  rw [hl1]
+  exact hl1
+
+/-- The total variations of the Toeplitz rows are bounded uniformly in the
+row index. -/
+theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
+    (∑ j ∈ Finset.range (n + 1), |discreteLimitWeight n j|) ≤ 16 := by
+  rw [sum_abs_discreteLimitWeight]
   have hp := halfQPochhammer_pos n
   have hpquarter := one_fourth_le_halfQPochhammer n
   have hplus_div :
@@ -238,9 +356,10 @@ theorem sum_abs_discreteLimitWeight_le (n : ℕ) :
 
 /-- A finite-row Toeplitz convergence lemma.  The row sums are one, their
 total variations are uniformly bounded, and every sampled index in a row
-eventually lies in any prescribed tail. -/
+eventually lies in any prescribed tail.  No order or real/complex structure
+on the coefficient field is needed. -/
 theorem tendsto_weighted_rows_of_tendsto
-    {K : Type*} [RCLike K]
+    {K : Type*} [NormedRing K]
     (w : ℕ → ℕ → K) (index : ℕ → ℕ → ℕ) (C : ℝ)
     (hC : 0 ≤ C)
     (hrow : ∀ n, (∑ j ∈ Finset.range (n + 1), w n j) = 1)
@@ -276,11 +395,11 @@ theorem tendsto_weighted_rows_of_tendsto
         ∑ j ∈ Finset.range (n + 1),
           ‖w n j * (H (index n j) - L)‖ :=
       norm_sum_le _ _
-    _ = ∑ j ∈ Finset.range (n + 1),
+    _ ≤ ∑ j ∈ Finset.range (n + 1),
           ‖w n j‖ * ‖H (index n j) - L‖ := by
-      apply Finset.sum_congr rfl
+      apply Finset.sum_le_sum
       intro j _hj
-      rw [norm_mul]
+      exact norm_mul_le _ _
     _ ≤ ∑ j ∈ Finset.range (n + 1),
           ‖w n j‖ * (ε / (C + 1)) := by
       apply Finset.sum_le_sum
