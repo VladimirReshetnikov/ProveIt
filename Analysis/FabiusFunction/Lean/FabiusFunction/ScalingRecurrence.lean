@@ -30,8 +30,11 @@ the dyadic case that the rest of the corpus consumes.
 
 ## Main results
 
-* `hasDerivAt_of_scalingRecurrence` — differentiate `c * f (q * t) = g t + f t`
-  in the dilated variable.
+* `hasDerivAt_of_smul_scalingRecurrence` — differentiate
+  `c • f (q * t) = g t + f t` for functions valued in an arbitrary real
+  normed space.
+* `hasDerivAt_of_scalingRecurrence` — its real-valued multiplication spelling.
+* `hasDerivAt_of_smul_scalingRecurrence_two_mul` and
 * `hasDerivAt_of_scalingRecurrence_two_mul` — its dyadic specialization.
 * `hasDerivAt_of_parameterScalingRecurrence` — differentiate a dilation
   identity `f (q * t) θ = g t θ + f t θ` in an inert parameter `θ`, for
@@ -69,6 +72,33 @@ open Filter Set Topology
 
 namespace Fabius
 
+/-- **Differentiating a vector-valued weighted scaling recurrence.**
+
+If `f` and `g` take values in a real normed space, are differentiable at every
+positive point with derivatives `f'` and `g'`, and satisfy
+
+`c • f (q * t) = g t + f t`,
+
+then the same identity holds one derivative up, with outgoing weight `q * c`.
+As in the scalar compatibility theorem below, that weight is supplied as a
+separate argument `d` so consumers can choose its syntactic normal form. -/
+theorem hasDerivAt_of_smul_scalingRecurrence
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {f g f' g' : ℝ → E} {c d q : ℝ} (hq : 0 < q) (hd : d = q * c)
+    (hf : ∀ ⦃t : ℝ⦄, 0 < t → HasDerivAt f (f' t) t)
+    (hg : ∀ ⦃t : ℝ⦄, 0 < t → HasDerivAt g (g' t) t)
+    (hrec : ∀ ⦃t : ℝ⦄, 0 < t → c • f (q * t) = g t + f t)
+    {s : ℝ} (hs : 0 < s) :
+    d • f' (q * s) = g' s + f' s := by
+  subst hd
+  have hqs : 0 < q * s := mul_pos hq hs
+  have hl := ((hf hqs).scomp s ((hasDerivAt_id s).const_mul q)).const_smul c
+  have hr := (hg hs).add (hf hs)
+  have heq : (fun t : ℝ => c • f (q * t)) =ᶠ[nhds s] fun t : ℝ => g t + f t := by
+    filter_upwards [Ioi_mem_nhds hs] with t ht using hrec ht
+  have hu := hl.unique (hr.congr_of_eventuallyEq heq)
+  simpa only [smul_smul, mul_one, mul_comm] using hu
+
 /-- **Differentiating a weighted scaling recurrence.**
 
 If `f` and `g` are differentiable at every positive point with derivatives
@@ -88,15 +118,23 @@ theorem hasDerivAt_of_scalingRecurrence
     (hrec : ∀ ⦃t : ℝ⦄, 0 < t → c * f (q * t) = g t + f t)
     {s : ℝ} (hs : 0 < s) :
     d * f' (q * s) = g' s + f' s := by
-  subst hd
-  have hqs : 0 < q * s := mul_pos hq hs
-  have hl := ((hf hqs).comp s ((hasDerivAt_id s).const_mul q)).const_mul c
-  have hr := (hg hs).add (hf hs)
-  have heq : (fun t : ℝ => c * f (q * t)) =ᶠ[nhds s] fun t : ℝ => g t + f t := by
-    filter_upwards [Ioi_mem_nhds hs] with t ht using hrec ht
-  have hu := hl.unique (hr.congr_of_eventuallyEq heq)
-  calc q * c * f' (q * s) = c * (f' (q * s) * (q * 1)) := by ring
-    _ = g' s + f' s := hu
+  simpa only [smul_eq_mul] using
+    (hasDerivAt_of_smul_scalingRecurrence (E := ℝ) (f := f) (g := g)
+      (f' := f') (g' := g') hq hd hf hg hrec hs)
+
+/-- The dyadic case `q = 2` of
+`hasDerivAt_of_smul_scalingRecurrence`, for an arbitrary real normed
+codomain. -/
+theorem hasDerivAt_of_smul_scalingRecurrence_two_mul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {f g f' g' : ℝ → E} {c d : ℝ} (hd : d = 2 * c)
+    (hf : ∀ ⦃t : ℝ⦄, 0 < t → HasDerivAt f (f' t) t)
+    (hg : ∀ ⦃t : ℝ⦄, 0 < t → HasDerivAt g (g' t) t)
+    (hrec : ∀ ⦃t : ℝ⦄, 0 < t → c • f (2 * t) = g t + f t)
+    {s : ℝ} (hs : 0 < s) :
+    d • f' (2 * s) = g' s + f' s :=
+  hasDerivAt_of_smul_scalingRecurrence (f := f) (g := g) (f' := f') (g' := g')
+    (by norm_num) hd hf hg hrec hs
 
 /-- The dyadic case `q = 2` of `hasDerivAt_of_scalingRecurrence`: the weight
 of a dilation recurrence doubles with every differentiation. -/
