@@ -50,9 +50,13 @@ nothing else from that module.
 
 `Fabius.canonical_fabius_not_isElementary_on_Ioo`: there is no elementary
 `g : ℝ → ℝ` with `Set.EqOn g (fabiusReal fabius) (Set.Ioo 0 1)`.  More
-generally `Fabius.not_isElementary_eqOn` rules out agreement on *any* nonempty
-open subset of `[0,1]`, and the same holds for `rvachevUp` on `[-1,1]` and for
-`extendedFabius` on `[0,2)`.
+generally `Fabius.not_isElementary_eqOn_of_interior_nonempty` rules out
+agreement on *any* subset of `[0,1]` with nonempty interior — that
+generalization came from a `codex/*` workstream and is kept — and the same
+holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
+
+All eighteen exported theorems have axiom set
+`[propext, Classical.choice, Quot.sound]`.
 
 The mathematical input from this branch is
 `Fabius.IsElementary.dense_analyticLocus`: the analytic locus of an elementary
@@ -73,6 +77,14 @@ gives an analytic implicit function theorem — packaged here as
 `Fabius.not_algebraicBranch_eqOn` then draws the non-elementarity conclusion
 for such branches, covering the algebraic functions that are not expressible
 by radicals.
+
+Every hypothesis on the branch is confined to the region `U`.  That is not
+cosmetic: a version with global hypotheses excludes `y ^ 5 - y - x = 0`
+altogether, since `w ↦ w ^ 5 - w` is not injective and so no continuous branch
+on all of `ℝ` exists — and that equation is the standard example of a
+non-solvable Galois group.  An adversarial review caught the earlier global
+form claiming coverage it did not have; the theorem was strengthened rather
+than the claim weakened.
 
 This deliberately does *not* add a constructor to `IsElementary`.  Doing so
 would cost `IsElementary.comp`: composing an algebraic branch with an
