@@ -248,7 +248,8 @@ theorem scale_eq_two : k = 2 := by
     have hs := intervalIntegral.integral_comp_mul_add
       (f := φ) (a := (-1 : ℝ)) (b := 0) (c := 2)
         (by norm_num : (2 : ℝ) ≠ 0) 1
-    convert hs using 1 <;> norm_num
+    convert hs using 1
+    all_goals norm_num
   have hconst : (∫ x in (-1 : ℝ)..0, k * φ (2 * x + 1)) =
       k * ∫ x in (-1 : ℝ)..0, φ (2 * x + 1) := by
     rw [intervalIntegral.integral_const_mul]
@@ -271,7 +272,7 @@ theorem canonical_isOriginalFabius : IsOriginalFabius (rvachevUp fabius) 2 where
   scale_pos := by norm_num
   hasDerivAt := by
     intro x
-    convert rvachev_hasDerivAt fabius fabius_spec x using 1 <;> ring
+    exact rvachev_hasDerivAt fabius fabius_spec x
 
 /-- The constant in every solution of the original characterization is `2`. -/
 theorem originalFabius_scale_eq_two {φ : ℝ → ℝ} {k : ℝ}
