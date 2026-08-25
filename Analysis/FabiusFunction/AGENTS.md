@@ -138,6 +138,52 @@ lower-than-ideal module costs one future `git mv`-scale edit, and nothing else.
 Record the correct long-term home in a doc comment either way; recording is
 free, moving is not.
 
+### The defect a compiler cannot see: right formula, wrong prose about it
+
+Every defect found in one night's work on the asymptotic layer that was *not*
+found by the compiler had the same shape. The formula was correct, every number
+computed from it was correct, and the false statement was a sentence
+*summarising* the computation instead of performing it. Four variants, all real,
+all from that one night:
+
+- **Wrong label on a right object.** The jet weights were called "the signed
+  Stirling numbers of the first kind". They are those shifted by one in each
+  index, `c(n,m) = s(n+1,m+1)`. `s(n,0) = 0` for `n ≥ 1` but
+  `c(n,0) = (-1)^n n!`, which carries the whole non-oscillatory part of the jet,
+  so resolving the name would have deleted it. Every number in both documents
+  was computed from the product, never from the name, so nothing numerical was
+  wrong and nothing could have caught it.
+- **A measurement reported as a property.** "`A_2` has mean about 0.5199 and
+  peak-to-peak about 3e-3" was a description of a sample that spanned 41% of a
+  period and missed the maximum. The true values are 0.5203422413 and 3.880e-3.
+- **A size estimate reasoned to rather than computed.** "Products of derivatives
+  of `Psi` are below 1e-11" — they reach 1.4e-7, for exactly the reason the same
+  document argued two sections later. "`Psi` is tiny" and "differentiation
+  cancels the smallness of `Psi`" sat in one document without either author
+  noticing they contradict.
+- **A derivation truncated and then described as complete.** A closed form for a
+  mean was derived correctly, a third-order term was dropped as negligible
+  mid-working, and the result was printed with an equals sign. The dropped term
+  was 5.6e-22 — invisible, and the difference between an identity and an
+  approximation.
+
+The rule that would have caught all four:
+
+> Any sentence stating a mean, a magnitude, a negligibility, or the name of a
+> known object must be **computed, not reasoned to** — and the computation must
+> be carried to exactness, not to the point where the answer stops changing.
+
+Two practical corollaries. Quoting ten digits of a linearization is an
+overclaim; say which object the digits belong to. And when comparing quantities,
+state the convention in words — an amplitude is half a peak-to-peak swing, and a
+row mixing the two survives every check whose ratios happen to double on both
+sides.
+
+Note what did find these: a purely numerical re-derivation, with no computer
+algebra, run against the same claims. Two symbolic routes agreeing is weaker
+evidence than it looks when the thing at issue is prose, because both routes
+compute from the formula and neither reads the sentence.
+
 ### Preflight instead of building, when the build is scarce
 
 A read-only preflight — one agent checking every identifier and tactic against
