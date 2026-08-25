@@ -39,24 +39,30 @@ derivative across the real embedding.
   `negativeLaplaceComplexVerticalFirst_ofReal` matching it against
   `negativeLaplaceVerticalLogFirst` on real arguments.
 * `iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary` -- the jet
-  identity displayed above, and the only declaration downstream code uses.
+  identity displayed above for positive orders.
+* `iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary_all` -- the
+  exact all-order form, including the exceptional normalized value at order
+  zero.
 
 Every result except `negativeLaplaceComplexVerticalFirst_ofReal`, which is a
 definitional rearrangement, assumes `IsFabius F`, for holomorphy of `G` and
-for `G(-z) ≠ 0` on `{0 < re z}`.  The identity is stated only in orders
-`n + 1`; order `0` is false as written, since `L_r 0 = 0` while `Λ r` is
-not, and the consumer dispatches that case separately with
-`negativeLaplaceVerticalLog_zero`.  The chain-rule factor carries a plus
-sign: the minus signs visible in
-`negativeLaplaceComplexLogFirst` and in `negativeLaplaceVerticalLogFirst`
-both come from the negative-Laplace convention `s ↦ G(-s)` and cancel.  The
+for `G(-z) ≠ 0` on `{0 < re z}`.  The multiplicative jet identity holds only
+in orders `n + 1`: at order zero, `L_r 0 = 0` while `Λ r` is not generally
+zero.  The all-order theorem therefore records that normalization as a
+separate `if` branch, matching the case split previously required of every
+consumer.  The chain-rule factor carries a plus sign: the minus signs visible
+in `negativeLaplaceComplexLogFirst` and in
+`negativeLaplaceVerticalLogFirst` both come from the negative-Laplace
+convention `s ↦ G(-s)` and cancel.  The
 supporting differentiability and iterated-derivative lemmas for the vertical
 continuation are `private` and are phrased with the unsimplified half-plane
 predicate; only the final theorem assumes `0 < r`, under which that predicate
 reads `im z < 1`.
 
-The sole consumer is `FabiusFunction.FabiusSaddleExponentAllOrders`, inside
-`verticalTaylorSum_sub_logTaylor_eq_jetSum`.
+The positive-order identity is consumed by
+`FabiusFunction.FabiusSaddleExponentAllOrders`, inside
+`verticalTaylorSum_sub_logTaylor_eq_jetSum`; the total form is available to
+future consumers that do not want to split off order zero.
 -/
 
 set_option autoImplicit false
@@ -277,5 +283,22 @@ theorem iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary
     (differentiableOn_negativeLaplaceComplexLogFirst F hF) n r hrV]
   rw [iteratedDeriv_negativeLaplaceComplexLogFirst_ofReal F hF n hr]
   rw [iteratedDeriv_negativeLaplaceLog_eq_ordinaryDeriv (n + 1) hr]
+
+/-- Exact zero-axis vertical logarithmic jet at every order.  Positive orders
+are the ordinary negative-Laplace jets multiplied by their complex
+chain-rule factors; order zero is the exceptional normalization
+`negativeLaplaceVerticalLog F r 0 = 0`. -/
+theorem iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary_all
+    (F : BoundedFabius) (hF : IsFabius F) (order : ℕ)
+    {r : ℝ} (hr : 0 < r) :
+    iteratedDeriv order (negativeLaplaceVerticalLog F r) 0 =
+      if order = 0 then 0 else
+        (((r : ℂ) * Complex.I) ^ order) *
+          ((iteratedDeriv (𝕜 := ℝ) order negativeLaplaceLog r : ℝ) : ℂ) := by
+  cases order with
+  | zero => simp
+  | succ n =>
+      simpa using
+        iteratedDeriv_negativeLaplaceVerticalLog_at_zero_eq_ordinary F hF n hr
 
 end Fabius

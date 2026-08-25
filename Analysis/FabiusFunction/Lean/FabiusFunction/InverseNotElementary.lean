@@ -10,7 +10,10 @@ continuous inverse `Fabius.fabiusInv`.  This file proves that the inverse is
 real analytic at no point of `[0,1]` — hence not elementary on `(0,1)` — and
 then strengthens both non-elementarity theorems to the class
 `Fabius.IsElementaryOrInverse`, which is closed under continuous inverse
-branches at any depth and therefore contains the Lambert `W` function.
+branches satisfying an analytic completion hypothesis on the interior of the
+complementary region, at any depth.  Branch-domain boundaries are deliberately
+excluded from that side condition, so standard boundary singularities such as
+that of principal real Lambert `W` are compatible with the constructor.
 
 ## Why the inverse is no better behaved
 
@@ -199,15 +202,34 @@ theorem fabiusInv_analyticAt_iff (F : BoundedFabius) (hF : IsFabius F) (y : ℝ)
 
 /-! ## Non-representability of the inverse -/
 
+/-- No function whose analytic locus is dense relative to `interior U` agrees
+with the inverse Fabius function on `U ⊆ [0,1]` when that interior is
+nonempty.
+
+This local hypothesis is strictly weaker than asking for a globally dense
+analytic locus.  In particular it can be supplied directly by
+`Fabius.analyticDenseOn_of_rightInverse` for a continuous inverse branch that
+is only defined on the region under consideration. -/
+theorem not_eqOn_fabiusInv_of_analyticDenseOn (F : BoundedFabius) (hF : IsFabius F)
+    {g : ℝ → ℝ} {U : Set ℝ} (hg : AnalyticDenseOn g (interior U))
+    (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
+    ¬ EqOn g (fabiusInv F hF) U := by
+  intro heq
+  exact hg.not_eqOn_of_forall_not_analyticAt isOpen_interior hUne
+    (fun x hx => fabiusInv_not_analyticAt F hF (hsub (interior_subset hx)))
+    (heq.mono interior_subset)
+
 /-- No function analytic on a dense set — in particular no elementary
 function, and no member of `Fabius.IsElementaryOrInverse` — agrees with the
 inverse Fabius function on a subset of `[0,1]` with nonempty interior. -/
 theorem not_eqOn_fabiusInv_of_dense_analyticLocus (F : BoundedFabius) (hF : IsFabius F)
     {g : ℝ → ℝ} (hg : Dense (analyticLocus g)) {U : Set ℝ}
     (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
-    ¬ EqOn g (fabiusInv F hF) U :=
-  not_eqOn_of_dense_analyticLocus hg hUne fun _ hx =>
-    fabiusInv_not_analyticAt F hF (hsub (interior_subset hx))
+    ¬ EqOn g (fabiusInv F hF) U := by
+  apply not_eqOn_fabiusInv_of_analyticDenseOn F hF ?_ hUne hsub
+  intro V hV hVne _
+  obtain ⟨x, hxV, hxg⟩ := (dense_iff_inter_open.mp hg) V hV hVne
+  exact ⟨x, hxV, hxg⟩
 
 /-- **The inverse Fabius function on `(0,1)` is not an elementary function.** -/
 theorem canonical_fabiusInv_not_isElementary_on_Ioo :
@@ -231,9 +253,9 @@ theorem fabiusInv_not_isElementary (F : BoundedFabius) (hF : IsFabius F) :
 /-- **Adjoining inverses does not reach the Fabius function.**
 
 No member of `Fabius.IsElementaryOrInverse` — the elementary functions closed
-under continuous inverse branches at any depth, a class containing the Lambert
-`W` function — agrees with the Fabius function on a subset of `[0,1]` with
-nonempty interior. -/
+under the inverse-branch constructor of `FabiusFunction.InverseBranch` at any
+depth — agrees with the Fabius function on a subset of `[0,1]` with nonempty
+interior. -/
 theorem not_isElementaryOrInverse_eqOn_fabius (F : BoundedFabius) (hF : IsFabius F)
     {g : ℝ → ℝ} (hg : IsElementaryOrInverse g) {U : Set ℝ}
     (hUne : (interior U).Nonempty) (hsub : U ⊆ Icc (0 : ℝ) 1) :
