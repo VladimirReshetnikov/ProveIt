@@ -112,7 +112,10 @@ compiled PDF is committed with it.**
    Three passes: the first writes the `.aux` and `.toc`, the second resolves
    `\ref`/`\cref`, the third settles the table of contents and page numbers. Do
    not commit `.aux`, `.log`, `.out` or `.toc`. A `.tex` change without a
-   rebuilt `.pdf` is an incomplete commit.
+   rebuilt `.pdf` is an incomplete commit. Before every push that sends a
+   changed `.tex` file to `origin/main`, its matching rendered `.pdf` must
+   already be rebuilt and committed. Never push a TeX/PDF mismatch to the main
+   branch.
 
 5. **Verify the rendered PDF, not the source.** Never write LaTeX through a
    shell heredoc or a Python patch script that round-trips through

@@ -195,6 +195,28 @@
   columns=fullflexible
 }
 
+% The merged volume has three-digit global section numbers.  Article's
+% default 1.5em number box is too narrow for them, so widen only that local
+% ToC box while preserving the house style's spacing and typography.
+\makeatletter
+\renewcommand*\l@section[2]{%
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \addvspace{1.0em \@plus\p@}%
+    \setlength\@tempdima{2.3em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\hfil
+      \nobreak\hb@xt@\@pnumwidth{\hss #2\kern-\p@\kern\p@}\par
+    \endgroup
+  \fi}
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{3.2em}}
+\makeatother
+
 \maketitle
 
 \begin{abstract}
@@ -274,7 +296,7 @@ Signed global extension & \nolinkurl{extendedFabius} & \nolinkurl{GlobalExtensio
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
-Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
+Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule
@@ -10532,7 +10554,7 @@ Module & Role in the present article \\
 \path{DyadicClosedForm.lean} & Exact Thue--Morse/even-moment formula for arbitrary dyadic numerators. \\
 \path{HalfQBinomial.lean} & Finite $q$-Pochhammer and Gaussian-binomial calculus at $q=1/2$, including the interpolation annihilation row. \\
 \path{ThueMorseExponential.lean} & Complete-block exponential factorization, Prouhet cancellation, and translation of inner powers. \\
-\path{FabiusQBinomialFormula.lean} & Centered finite $q$-binomial formula, arbitrary numerators, and common-translation invariance. \\
+\path{FabiusQBinomialFormula.lean} & Centered and translated finite $q$-binomial formulas, arbitrary numerators, translation invariance, block/refinement normal forms, and representation independence. \\
 \path{FabiusQBinomialTaylor.lean} & Identification of the finite $q$ expression with the Taylor reduction polynomial. \\
 \path{FabiusQBinomialScalarFormula.lean} & Scalar normalizations and real/complex translated forms. \\
 \path{FabiusRawQBinomialFormula.lean} and \path{FabiusRawQBinomialScalar.lean} & Raw inverse-dyadic forms and their scalar versions. \\
@@ -16668,7 +16690,8 @@ inverse is differentiable, and indeed \(C^\infty\), exactly at the points
 generally, \path{fabiusInv_contDiffAt_iff} says that order-zero smoothness is
 global, whereas every positive finite order and \(C^\infty\) have precisely
 those two exceptions.  Its order side condition deliberately excludes
-Mathlib's stronger analytic order; the analytic locus is a separate question.
+Mathlib's stronger analytic order; the analytic locus is formalized separately by
+\path{fabiusInv_analyticAt_iff} in \path{InverseNotElementary.lean}.
 \end{remark}
 
 \begin{proposition}[Higher inverse derivatives; \Derived]
@@ -16742,7 +16765,7 @@ gives the right endpoint.  The midpoint slope is
 
 \subsection{\texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}}
 
-\begin{theorem}[Exact regularity locus; \Derived]
+\begin{theorem}[Exact regularity locus; \Formalized]
 \label{inverse:thm:inverse-regularity}
 The totalized inverse has the following regularity.
 \begin{enumerate}
@@ -18098,8 +18121,11 @@ Module & Principal role & Status\\
 \texttt{FabiusInverse.lean} &
 Order isomorphism of $[0,1]$, totalized inverse, global continuity and
 monotonicity, comparison equivalences, tails, reflection, exact dyadic
-inversion, transported flatness, effective steepness, and endpoint
-quotient divergence. & \Formalized\\
+inversion, transported flatness, effective steepness, exact global
+differentiability and $C^\infty$ loci, and endpoint quotient divergence. & \Formalized\\
+\texttt{InverseNotElementary.lean} &
+Exact analytic locus of the totalized inverse and the analytic-density
+obstructions used in its non-elementarity theorem. & \Formalized\\
 \texttt{FabiusSaddleJet}\\\texttt{ClosedForm.lean} &
 Operator solution of the recursive periodic jets and the harmonic-number
 constant term. & \Formalized\\
@@ -18190,6 +18216,8 @@ equivalences;
 inversion;
 \item the effective and sharp inverse power inequalities, effective
 linear steepness, and the two endpoint quotient limits;
+\item the exact global differentiability, $C^\infty$, and analytic loci
+of the totalized inverse;
 \item the closed jet formulas, shifted Stirling conversion, and closed
 exponent coefficients;
 \item the formal exponential and logarithmic coefficient machinery,
@@ -18202,10 +18230,9 @@ asymptotic theorems.
 
 The following statements are proved here from the formalized input:
 \begin{itemize}
-\item $C^\infty$ interior regularity of $\InvF$ and the formulas for
-$\InvF'$ and $\InvF''$;
-\item strict concavity on $(0,1/2)$, strict convexity on $(1/2,1)$,
-and the exact smooth and analytic loci;
+\item the formula for $\InvF''$ obtained from the formalized reciprocal
+first derivative;
+\item strict concavity on $(0,1/2)$ and strict convexity on $(1/2,1)$;
 \item divergence of $\InvF(y)/y^\alpha$ for every $\alpha>0$;
 \item the sharp equivalent \eqref{inverse:eq:sharp-inverse} and the scale
 hierarchy \eqref{inverse:eq:power-below-G}--\eqref{inverse:eq:G-below-log};
@@ -18455,7 +18482,7 @@ The sharp main term, recursive all-orders expansion, closed product-polynomial s
 and the first two corrections have exact Lean counterparts, but several stronger claims in
 the pages below do not.  In particular, the ordered-composition formulas, general
 logarithmic highest-derivative law,
-expanded higher coefficients, Fourier-amplitude estimates, uniqueness and phase-locking
+expanded higher coefficients, Fourier-amplitude estimates, uniqueness
 claims, and all numerical tables remain to be formalized.  Those passages are research
 targets, not established results of the project.
 \end{boxedremark}
@@ -19078,21 +19105,22 @@ with $c_j(k)$ the polynomial in $w=2\pi\ii k$ read off from
   c_2(k)=\frac{w}{24L}+\frac{w}{2L^2}-\frac{3w^2+w^3}{6L^3}+\frac{w^4}{8L^4}.
 \]
 Consequences for $A_2$, all confirmed numerically in \cref{smallarg:sec:numerics}.
-The left column is what the linearized form gives, the right what the exact
+For the first Fourier mode, the linearized amplitude is
+$2|c_2(1)\Psihat(1)|$.  The left column is what the linearized form gives, the right what the exact
 $A_2$ gives; they are quoted separately because the difference is real, if
 small, and quoting ten digits of a linearization would be an overclaim.
 \[
 \begin{aligned}
   \text{mean}&&\tfrac1{4L^2}=0.5203422452514&\qquad
     \langle A_2\rangle=0.5203422413049\\
-  k=1\ \text{amplitude}&&2|c_2(1)\Psihat(1)|=1.9398782\times10^{-3}&\qquad
-    \text{peak-to-peak }3.8797564\times10^{-3}\\
+  k=1\ \text{amplitude}&&1.9398782\times10^{-3}&\qquad
+    1.9398782\times10^{-3}\\
   \text{maximum at}&&\{\lambda\}=0.1011297&\qquad\{\lambda\}=0.1011281\\
   \text{minimum at}&&\{\lambda\}=0.6011297&\qquad\{\lambda\}=0.6011313
 \end{aligned}
 \]
-The exact peak-to-peak is $3.8797564\times10^{-3}$, agreeing with the
-linearized amplitude to eight digits, and the extrema agree to six.  The
+The exact peak-to-peak is $3.8797564\times10^{-3}$, twice the linearized
+$k=1$ amplitude to the displayed precision, and the extrema agree to six.  The
 maximum of the exact $A_2$ is $0.522282117$ and its minimum is
 $0.518402361$.
 
@@ -19477,19 +19505,8 @@ import closure:
 \item \texttt{FabiusSaddleJetStirling.lean}
 \item \texttt{FabiusSaddleLeadingCoefficient.lean}
 \item \texttt{FabiusSecondSaddleCorrection.lean}
-\end{itemize}
-
-\emph{Written but not yet compiled} at this snapshot:
-\begin{itemize}
 \item \texttt{FabiusSecondSaddleExpansion.lean}
 \end{itemize}
-That one module substitutes $A_2$ into the truncated expansion and states
-$\log F(x)=\mathcal M(x)+A_1/\lambda+A_2/\lambda^2+\bigO(\lambda^{-3})$ for
-every bounded Fabius function.  Its import closure is the full asymptotic
-aggregate, about $110$ modules, which was beyond the build budget of this
-snapshot; a reader should treat it as a claim until the build log says
-otherwise.  Everything it depends on is machine-checked, and its own proofs
-are three rewrites.
 
 \emph{Verified symbolically but not formalized.}  \Cref{smallarg:thm:mass,smallarg:thm:log},
 the composition formulas, were checked against the original recursions in

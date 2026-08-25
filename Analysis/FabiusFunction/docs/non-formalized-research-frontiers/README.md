@@ -70,4 +70,7 @@ work a temporary subdirectory may act as an inbox, but it should be merged,
 audited, and deleted promptly.
 
 Build the document with exactly three `pdflatex` passes and commit the PDF with
-the source. Do not commit auxiliary LaTeX files.
+the source. Before every push that sends a changed frontier TeX source to
+`origin/main`, the matching rendered PDF must already be rebuilt and committed;
+never push a TeX/PDF mismatch to the main branch. Do not commit auxiliary
+LaTeX files.
