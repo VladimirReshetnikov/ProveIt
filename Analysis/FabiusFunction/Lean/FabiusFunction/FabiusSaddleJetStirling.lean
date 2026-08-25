@@ -1,7 +1,7 @@
 import FabiusFunction.FabiusSaddleJetClosedForm
 
 /-!
-# The jet weights are Stirling numbers of the first kind
+# The jet weights are shifted Stirling numbers of the first kind
 
 `FabiusSaddleJetClosedForm` introduces the weights `negativeLaplaceJetStirling`
 by the recurrence that the induction there needs.  This module identifies them
@@ -9,8 +9,9 @@ with the coefficients of the falling-factorial polynomial
 
 `∏ k ∈ Finset.range n, (X - (k + 1)) = (X - 1)(X - 2) ⋯ (X - n)`,
 
-that is, with the signed Stirling numbers of the first kind.  The identification
-is exactly the statement that the recurrence
+whose coefficients are the signed Stirling numbers of the first kind shifted by
+one in each index, `c n m = s (n+1) (m+1)`.  The identification is exactly the
+statement that the recurrence
 
 `c (n+1) 0 = -(n+1) * c n 0`,
 `c (n+1) (m+1) = c n m - (n+1) * c n (m+1)`
@@ -55,7 +56,10 @@ theorem negativeLaplaceJetPolynomial_eq_prod (n : ℕ) :
   | succ n ih =>
       rw [negativeLaplaceJetPolynomial_succ, ih, Finset.prod_range_succ]
 
-/-- **The jet weights are signed Stirling numbers of the first kind.** -/
+/-- **The jet weights are the coefficients of the falling-factorial
+polynomial**, hence signed Stirling numbers of the first kind shifted by one in
+each index.  In particular the constant weight is `c n 0 = (-1)^n * n !`, which
+is nonzero, unlike the unshifted `s n 0`. -/
 theorem negativeLaplaceJetStirling_eq_coeff (n m : ℕ) :
     negativeLaplaceJetStirling n m =
       (negativeLaplaceJetPolynomial n).coeff m := by

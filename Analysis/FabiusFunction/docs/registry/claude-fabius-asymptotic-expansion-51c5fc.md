@@ -91,7 +91,9 @@ rational values of `F(2^-n)` are in
 Serialized build in this worktree, one `lake build +<module>` per invocation,
 `LAKE_JOBS=1`, on top of `origin/main` merged at `257d11a14`.
 
-Machine-checked, exit 0, no `sorry` and no new axioms:
+Machine-checked, exit 0, no `sorry` and no new axioms.  **All five modules of
+this branch's closed-form layer are green**, on top of a 34-module serialized
+closure:
 
 `Arithmetic`, `Basic`, `Differential`, `DyadicCorrectness`, `MomentPowerSeries`,
 `DyadicClosedForm`, `DyadicAnalytic`, `AnalyticMoments`, `NegativeLaplace`,
@@ -100,12 +102,26 @@ Machine-checked, exit 0, no `sorry` and no new axioms:
 `LaplaceTransform`, `LaplaceMoments`, `NegativeLaplaceDerivatives`, `Existence`,
 `PeriodicRegularity`, `FabiusSaddleCoefficientRecurrence`, `PeriodicSmooth`,
 `SaddleExpansionAlgebra`, `FabiusSaddlePolynomialCoefficients`,
-**`FabiusSaddleJetClosedForm`**, **`FabiusSaddleExponentClosedForm`**.
+`BromwichSaddle`, `QuantitativeSaddle`, `GaussianPolynomialContraction`,
+`SaddleLogExpansionAlgebra`, `FabiusFirstSaddleCorrection`,
+`FabiusSaddleExpansionCoefficients`, and this branch's
 
-The two in bold are this branch's; the rest are their import closure.  Building
-`Arithmetic` at the consolidated tip, and `DyadicAnalytic` and `DyadicClosedForm`
-downstream of it, also validates the triangular-number consolidation merged from
-`origin/main` at both ends for `choose_add_two_two`.
+- **`FabiusSaddleJetClosedForm`** — the closed-form jets;
+- **`FabiusSaddleExponentClosedForm`** — the exponent collapse;
+- **`FabiusSaddleJetStirling`** — the weights are the coefficients of
+  `(X-1)…(X-n)`, with monicity and `natDegree = n`;
+- **`FabiusSaddleLeadingCoefficient`** — the leading-coefficient law for
+  *general* order;
+- **`FabiusSecondSaddleCorrection`** — `A_2`.
+
+Not compiled: `FabiusSecondSaddleExpansion`, which substitutes `A_2` into the
+truncated expansion.  Its closure is the full asymptotic aggregate, about 110
+modules, beyond this session's budget.  Everything it depends on is green and
+its own proofs are three rewrites.
+
+Building `Arithmetic` at the consolidated tip, and `DyadicAnalytic` and
+`DyadicClosedForm` downstream of it, also validates the triangular-number
+consolidation merged from `origin/main` at both ends for `choose_add_two_two`.
 
 Two external builds were run for `claude/fabius-function-theorems-494024` in a
 throwaway sparse worktree, so that neither branch had to merge:

@@ -105,8 +105,10 @@ theorem negativeLaplaceExponentPolynomial_succ_eq (n : ℕ) (t : ℝ) :
   rw [exponentTail_coeff n]
   ring
 
-/-- The jet-free tail of the exponent coefficient is the same for every Fabius
-saddle order: it does not see the periodic correction at all. -/
+/-- The tail of the exponent coefficient does not see the periodic correction:
+it is the same at every argument `t`.  It does depend on the order `m`, being
+`(-1)^(m+1) v^(m+2) / (m+2)`; what is uniform is its independence of the jets,
+not the monomial itself. -/
 theorem negativeLaplaceExponentCoefficient_tail_indep (n : ℕ) (t u v : ℝ) :
     negativeLaplaceExponentCoefficient (n + 1) t v -
         negativeLaplaceExponentCoefficient (n + 1) u v =

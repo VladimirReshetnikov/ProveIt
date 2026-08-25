@@ -1145,17 +1145,22 @@ import closure:
 \begin{itemize}
 \item \texttt{FabiusSaddleJetClosedForm.lean}
 \item \texttt{FabiusSaddleExponentClosedForm.lean}
+\item \texttt{FabiusSaddleJetStirling.lean}
+\item \texttt{FabiusSaddleLeadingCoefficient.lean}
+\item \texttt{FabiusSecondSaddleCorrection.lean}
 \end{itemize}
 
 \emph{Written but not yet compiled} at this snapshot:
 \begin{itemize}
-\item \texttt{FabiusSaddleJetStirling.lean}
-\item \texttt{FabiusSaddleLeadingCoefficient.lean}
-\item \texttt{FabiusSecondSaddleCorrection.lean}
 \item \texttt{FabiusSecondSaddleExpansion.lean}
 \end{itemize}
-Their statements are recorded in \cref{sec:lean}; a reader should treat
-them as claims until the build log says otherwise.
+That one module substitutes $A_2$ into the truncated expansion and states
+$\log F(x)=\mathcal M(x)+A_1/\lambda+A_2/\lambda^2+\bigO(\lambda^{-3})$ for
+every bounded Fabius function.  Its import closure is the full asymptotic
+aggregate, about $110$ modules, which was beyond the build budget of this
+snapshot; a reader should treat it as a claim until the build log says
+otherwise.  Everything it depends on is machine-checked, and its own proofs
+are three rewrites.
 
 \emph{Verified symbolically but not formalized.}  \Cref{thm:mass,thm:log},
 the composition formulas, were checked against the original recursions in

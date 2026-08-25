@@ -385,7 +385,7 @@ private theorem gaussianMoment_twelve :
 
 /-- Contraction of the five-monomial even polynomial produced at order four.
 
-The coefficients are taken as opaque variables on purpose.  Contracting the
+The coefficients are taken as abstract variables on purpose.  Contracting the
 concrete polynomial with `simp only [map_add, …]` does not work: `Polynomial.C`
 is itself a ring homomorphism, so `map_add` rewrites `C (a + b)` into
 `C a + C b` inside each coefficient, and the resulting `(C a + C b) * X ^ n` no
