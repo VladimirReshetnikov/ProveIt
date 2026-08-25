@@ -35,6 +35,33 @@ The rules that have actually cost time so far:
    Markdown is for repository bookkeeping — READMEs, coverage maps, audits,
    coordination — never for mathematics.
 
+6. **The primary exposition is a formalization-backed document, not a research
+   notebook.** Every mathematical assertion placed in
+   `docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex`
+   must have an actual proved Lean counterpart. This includes displayed
+   theorems and equations, prose claims, numerical identities, bounds,
+   convergence statements, algorithms and their correctness or complexity
+   claims, and alleged consequences that may look immediate. Record the exact
+   declaration name and module in the exposition's Lean guide or adjacent
+   audit text. A suggestive definition, an uncompiled draft, a theorem with
+   stronger hypotheses or a weaker conclusion, or an informal derivation is
+   not a counterpart.
+
+7. **Unformalized mathematics belongs on the research frontier.** If any part
+   of a draft lacks an exact proved Lean counterpart, move that part to a
+   LaTeX/PDF document under `docs/non-formalized-research-frontiers/`, with the
+   missing formal obligation stated explicitly. Do this no matter how
+   straightforward, standard, numerical, or plausible the claim appears. Do
+   not weaken the wording until it merely resembles an existing theorem, and
+   do not present frontier material as established by the project.
+
+8. **Draft directories are temporary inboxes.** Material under
+   `docs/Fabius_Function_and_Rvachev_Up/drafts/` must be dispositioned
+   claim-by-claim: integrate the Lean-backed part without duplicating the main
+   exposition, move the remainder to the research-frontier tree, preserve any
+   necessary citations or provenance, then remove the processed draft. Delete
+   the `drafts/` directory itself when it becomes empty; it is not an archive.
+
 Invariants that must not regress: no `sorry`, `admit`, `axiom`, or `opaque`;
 the axiom set stays exactly `propext`, `Classical.choice`, `Quot.sound`;
 `set_option autoImplicit false` in every file; a doc comment on every
@@ -97,6 +124,14 @@ compiled PDF is committed with it.**
 6. **Cross-reference the formalization.** A mathematical document should carry
    a table mapping its objects to the Lean names and modules that formalize
    them, and should state explicitly what is *not* claimed.
+
+7. **Respect the exposition boundary.** The primary synthesis may contain only
+   mathematics backed by proved Lean declarations. Research-frontier documents
+   may discuss conjectural, heuristic, partially formalized, or refuted
+   material, but must label that status and the outstanding proof obligations
+   plainly. When auditing a draft, inspect the Lean source rather than relying
+   on a declaration name, an `.olean` file, a previous agent's report, or a
+   paper citation as evidence of formalization.
 
 ## Building Lean
 
