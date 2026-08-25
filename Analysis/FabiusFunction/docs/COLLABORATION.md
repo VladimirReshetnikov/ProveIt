@@ -558,4 +558,3 @@ risks: main has moved seven times during this session; every Lean-touching
   merge discards the whole build pass.  A complete 174-module verification may
   not land while that rate holds
 ```
-

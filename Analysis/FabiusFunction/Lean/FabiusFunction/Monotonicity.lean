@@ -186,6 +186,43 @@ theorem fabius_lt_one_iff (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
   rw [hF.one_of_one_le x (le_of_not_gt hx)] at h
   exact lt_irrefl 1 h
 
+/-- The zero set of the bounded Fabius function is the nonpositive half line. -/
+theorem fabiusReal_eq_zero_iff (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    fabiusReal F x = 0 ↔ x ≤ 0 := by
+  constructor
+  · intro h
+    by_contra hx
+    have hpos := fabius_pos_of_pos F hF (lt_of_not_ge hx)
+    rw [h] at hpos
+    exact lt_irrefl 0 hpos
+  · exact hF.zero_of_nonpos x
+
+/-- The one set of the bounded Fabius function is the half line starting at
+one. -/
+theorem fabiusReal_eq_one_iff (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    fabiusReal F x = 1 ↔ 1 ≤ x := by
+  constructor
+  · intro h
+    by_contra hx
+    have hlt := fabius_lt_one_of_lt_one F hF (lt_of_not_ge hx)
+    rw [h] at hlt
+    exact lt_irrefl 1 hlt
+  · exact hF.one_of_one_le x
+
+/-- The ordinary support of the bounded Fabius function is `(0, ∞)`. -/
+theorem support_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+    Function.support (fabiusReal F) = Ioi (0 : ℝ) := by
+  ext x
+  change fabiusReal F x ≠ 0 ↔ 0 < x
+  exact (not_congr (fabiusReal_eq_zero_iff F hF x)).trans not_le
+
+/-- The topological support of the bounded Fabius function is `[0, ∞)`. -/
+theorem tsupport_fabiusReal (F : BoundedFabius) (hF : IsFabius F) :
+    tsupport (fabiusReal F) = Ici (0 : ℝ) := by
+  have hts : tsupport (fabiusReal F) =
+      closure (Function.support (fabiusReal F)) := rfl
+  rw [hts, support_fabiusReal F hF, closure_Ioi]
+
 /-! ## The exact support of Rvachev's function -/
 
 /-- Rvachev's function is strictly positive on the interior of its support. -/
