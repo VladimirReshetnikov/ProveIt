@@ -1,5 +1,6 @@
 import FabiusFunction.BromwichSaddle
 import FabiusFunction.LaplaceTransform
+import FabiusFunction.Monotonicity
 import FabiusFunction.NegativeLaplaceVertical
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
@@ -10,6 +11,8 @@ This module discharges the analytic input hypotheses of the generic
 quantitative saddle framework.  Exponentially tilting the bounded Fabius CDF
 produces an integrable continuous Fourier input.  Its Fourier transform is the
 negative generating function divided by the vertical Laplace coordinate.
+The exact norm, exponential envelope, and ordinary/topological supports of
+the tilted input are recorded independently for reuse.
 
 The arbitrary-order vertical product bound from `NegativeLaplaceVertical`
 then proves integrability of that transform.  Consequently Fourier inversion
@@ -38,6 +41,58 @@ theorem continuous_fabiusExponentialTilt
   · fun_prop
   · exact Complex.continuous_ofReal.comp hF.contDiff.continuous
 
+/-- Exact norm of the exponentially tilted Fabius CDF. -/
+theorem norm_fabiusExponentialTilt_eq
+    (F : BoundedFabius) (r x : ℝ) :
+    ‖fabiusExponentialTilt F r x‖ =
+      Real.exp (-r * x) * fabiusReal F x := by
+  unfold fabiusExponentialTilt QuantitativeSaddle.exponentialTilt
+  rw [norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (fabiusReal_nonneg F x)]
+  simp
+
+/-- The tilted CDF is bounded pointwise by its exponential envelope. -/
+theorem norm_fabiusExponentialTilt_le_exp_neg
+    (F : BoundedFabius) (r x : ℝ) :
+    ‖fabiusExponentialTilt F r x‖ ≤ Real.exp (-r * x) := by
+  rw [norm_fabiusExponentialTilt_eq]
+  exact mul_le_of_le_one_right (Real.exp_nonneg _)
+    (fabiusReal_le_one F x)
+
+/-- Exponential tilting preserves the exact ordinary support `(0, ∞)` of the
+bounded Fabius CDF. -/
+theorem support_fabiusExponentialTilt
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    Function.support (fabiusExponentialTilt F r) = Ioi (0 : ℝ) := by
+  ext x
+  change fabiusExponentialTilt F r x ≠ 0 ↔ 0 < x
+  constructor
+  · intro hx
+    by_contra hxpos
+    have hFx : fabiusReal F x = 0 :=
+      hF.zero_of_nonpos x (le_of_not_gt hxpos)
+    exact hx (by
+      simp [fabiusExponentialTilt, QuantitativeSaddle.exponentialTilt, hFx])
+  · intro hx
+    unfold fabiusExponentialTilt QuantitativeSaddle.exponentialTilt
+    exact mul_ne_zero (Complex.exp_ne_zero _)
+      (Complex.ofReal_ne_zero.mpr (fabius_pos_of_pos F hF hx).ne')
+
+/-- The topological support of the tilted CDF is the closed nonnegative
+half-line. -/
+theorem tsupport_fabiusExponentialTilt
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    tsupport (fabiusExponentialTilt F r) = Ici (0 : ℝ) := by
+  have hts : tsupport (fabiusExponentialTilt F r) =
+      closure (Function.support (fabiusExponentialTilt F r)) := rfl
+  rw [hts, support_fabiusExponentialTilt F hF r, closure_Ioi]
+
+/-- Compatibility subset form of `support_fabiusExponentialTilt`. -/
+theorem support_fabiusExponentialTilt_subset
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    Function.support (fabiusExponentialTilt F r) ⊆ Ioi (0 : ℝ) := by
+  rw [support_fabiusExponentialTilt F hF r]
+
 /-- The exponentially tilted Fabius CDF is integrable for a positive tilt. -/
 theorem integrable_fabiusExponentialTilt
     (F : BoundedFabius) (hF : IsFabius F) {r : ℝ} (hr : 0 < r) :
@@ -50,12 +105,7 @@ theorem integrable_fabiusExponentialTilt
   have htail : IntegrableOn (fabiusExponentialTilt F r) (Ioi 0) := by
     apply hexp.mono' hmeas
     filter_upwards with x
-    unfold fabiusExponentialTilt QuantitativeSaddle.exponentialTilt
-    rw [norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_nonneg (fabiusReal_nonneg F x)]
-    have hre : (-((r * x : ℝ) : ℂ)).re = -r * x := by simp
-    rw [hre]
-    exact mul_le_of_le_one_right (Real.exp_nonneg _) (fabiusReal_le_one F x)
+    exact norm_fabiusExponentialTilt_le_exp_neg F r x
   have hindicator := htail.integrable_indicator measurableSet_Ioi
   have heq : (Ioi 0).indicator (fabiusExponentialTilt F r) =
       fabiusExponentialTilt F r := by

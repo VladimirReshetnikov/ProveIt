@@ -15,7 +15,9 @@ It also records the real-axis specialization
 `generatingFunction F (-s) / s = ∫ t in (0, ∞), F(t) exp(-st)`
 
 for `s > 0`, together with the real integrability fact needed to use that
-formula without repeatedly passing through complex-valued integrals.
+formula without repeatedly passing through complex-valued integrals.  The
+complex integrand is separately exposed as integrable for `Re z > 0`, with
+the uniform transform bound `‖L(z)‖ ≤ 1 / Re z` and its real-axis corollary.
 
 The proof first rewrites the Rvachev bump as `1 - F` on `[0, 1]`, integrates
 the constant exponential explicitly, and then uses the convention `F(t) = 1`
@@ -71,6 +73,60 @@ theorem rvachevUp_eq_one_sub_fabiusReal_of_nonneg
       norm_num
     · exact rvachevUp_of_pos F h
   rw [hup, hF.symmetry_all t]
+
+/-- Pointwise domination of the complex Fabius--Laplace integrand by the
+real exponential determined by the real part of the parameter. -/
+theorem norm_fabiusReal_mul_cexp_neg_le
+    (F : BoundedFabius) (z : ℂ) (t : ℝ) :
+    ‖(fabiusReal F t : ℂ) * Complex.exp (-z * t)‖ ≤
+      Real.exp (-z.re * t) := by
+  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (fabiusReal_nonneg F t), Complex.norm_exp]
+  have hre : (-z * (t : ℂ)).re = -z.re * t := by
+    simp
+  rw [hre]
+  exact mul_le_of_le_one_left (Real.exp_nonneg _)
+    (fabiusReal_le_one F t)
+
+/-- Continuity of the complex Fabius--Laplace integrand for every complex
+parameter. -/
+theorem continuous_fabiusReal_mul_cexp_neg
+    (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
+    Continuous (fun t : ℝ =>
+      (fabiusReal F t : ℂ) * Complex.exp (-z * t)) :=
+  (Complex.continuous_ofReal.comp hF.contDiff.continuous).mul (by fun_prop)
+
+/-- The complex Fabius--Laplace integrand is integrable on the positive
+half-line whenever the parameter lies in the open right half-plane. -/
+theorem integrableOn_fabiusReal_mul_cexp_neg
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : 0 < z.re) :
+    IntegrableOn (fun t : ℝ =>
+      (fabiusReal F t : ℂ) * Complex.exp (-z * t)) (Ioi 0) := by
+  have hexp : IntegrableOn (fun t : ℝ => Real.exp (-z.re * t)) (Ioi 0) :=
+    integrableOn_exp_mul_Ioi (a := -z.re) (by linarith) 0
+  apply hexp.mono'
+  · exact (continuous_fabiusReal_mul_cexp_neg F hF z).aestronglyMeasurable
+  · exact Filter.Eventually.of_forall fun t =>
+      norm_fabiusReal_mul_cexp_neg_le F z t
+
+/-- Uniform half-plane bound for the one-sided complex Laplace transform. -/
+theorem norm_integral_fabiusReal_mul_cexp_neg_le
+    (F : BoundedFabius) {z : ℂ} (hz : 0 < z.re) :
+    ‖∫ t : ℝ in Ioi 0,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t)‖ ≤
+      (z.re)⁻¹ := by
+  have hexp : IntegrableOn (fun t : ℝ => Real.exp (-z.re * t)) (Ioi 0) :=
+    integrableOn_exp_mul_Ioi (a := -z.re) (by linarith) 0
+  calc
+    ‖∫ t : ℝ in Ioi 0,
+        (fabiusReal F t : ℂ) * Complex.exp (-z * t)‖ ≤
+        ∫ t : ℝ in Ioi 0, Real.exp (-z.re * t) := by
+      apply norm_integral_le_of_norm_le hexp
+      exact Filter.Eventually.of_forall fun t =>
+        norm_fabiusReal_mul_cexp_neg_le F z t
+    _ = (z.re)⁻¹ := by
+      rw [integral_exp_mul_Ioi (a := -z.re) (by linarith) 0]
+      simp [div_eq_mul_inv]
 
 /-- Integration by parts in algebraic form: `G(-z)` is the endpoint
 exponential plus `z` times the finite-interval Laplace transform of `F`. -/
@@ -143,7 +199,7 @@ theorem complexGeneratingFunction_neg_div_eq_laplace
     (fabiusReal F t : ℂ) * Complex.exp (-z * t)
   have hf : Continuous f := by
     dsimp [f]
-    exact (Complex.continuous_ofReal.comp (hF.contDiff.continuous)).mul (by fun_prop)
+    exact continuous_fabiusReal_mul_cexp_neg F hF z
   have htail_eq : Set.EqOn f (fun t : ℝ => Complex.exp ((-z) * t)) (Ioi 1) := by
     intro t ht
     dsimp [f]
@@ -170,6 +226,14 @@ theorem complexGeneratingFunction_neg_div_eq_laplace
       intervalIntegral.integral_interval_add_Ioi' (hf.intervalIntegrable 0 1) htail
     _ = ∫ t : ℝ in Ioi 0,
         (fabiusReal F t : ℂ) * Complex.exp (-z * t) := by rfl
+
+/-- The quotient form of the negative generating function inherits the
+sharp elementary half-plane bound from its Laplace representation. -/
+theorem norm_complexGeneratingFunction_neg_div_le_inv_re
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : 0 < z.re) :
+    ‖complexGeneratingFunction F (-z) / z‖ ≤ (z.re)⁻¹ := by
+  rw [complexGeneratingFunction_neg_div_eq_laplace F hF hz]
+  exact norm_integral_fabiusReal_mul_cexp_neg_le F hz
 
 /-- The real Laplace integrand is integrable on the positive half-line.
 
@@ -228,5 +292,15 @@ theorem generatingFunction_neg_div_eq_laplace
         Complex.ofReal (∫ t : ℝ in Ioi 0, g t) := by
     simpa using h
   exact Complex.ofReal_injective hcast
+
+/-- Real-axis specialization of the half-plane quotient bound. -/
+theorem abs_generatingFunction_neg_div_le_inv
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    |generatingFunction F (-s) / s| ≤ s⁻¹ := by
+  have h := norm_complexGeneratingFunction_neg_div_le_inv_re F hF
+    (z := (s : ℂ)) (by simpa using hs)
+  rw [show -(s : ℂ) = ((-s : ℝ) : ℂ) by simp,
+    complexGeneratingFunction_ofReal] at h
+  simpa [abs_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs] using h
 
 end Fabius

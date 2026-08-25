@@ -25,6 +25,10 @@ The explicit logarithmic correction is
 `n/2 * (negativeLaplaceLogSecond F n + negativeLaplaceLogFirst F n ^ 2)`,
 
 which is `n/2` times the normalized second tilted moment.
+
+The probability bridge also records the survival identity on the full
+nonnegative ray and separates reflection invariance from the zero-tilt and
+degree-zero moment normalizations.
 -/
 
 set_option autoImplicit false
@@ -215,7 +219,7 @@ theorem log_secondOrder_transfer_isBigO
   have hpoint :
       (fun i ↦ Real.log (m i) - Real.log (b i) + a i) =O[l]
         (fun i ↦ 2 * (a i) ^ 2 + 2 * ε i) := by
-    apply IsBigO.of_bound' 
+    apply IsBigO.of_bound'
     filter_upwards [hm, hb, hε0, hsmall, happrox] with
       i hmi hbi hεi hs hi
     rw [Real.norm_eq_abs, Real.norm_eq_abs,
@@ -529,9 +533,10 @@ lemma weightedSumDistribution_restrict_Icc :
       weightedSumDistribution :=
   Measure.restrict_eq_self_of_ae_mem ae_weightedSumDistribution_mem_Icc
 
-lemma weightedSumDistribution_real_Ioi_eq_rvachevUp
-    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
-    (ht : t ∈ Icc (0 : ℝ) 1) :
+/-- The survival function of the weighted-sum law is Rvachev's bump on the
+whole nonnegative ray, including beyond the compact support. -/
+lemma weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ} (ht : 0 ≤ t) :
     weightedSumDistribution.real (Ioi t) = rvachevUp F t := by
   calc
     weightedSumDistribution.real (Ioi t) =
@@ -542,7 +547,15 @@ lemma weightedSumDistribution_real_Ioi_eq_rvachevUp
     _ = 1 - fabiusReal F t := by
       rw [weightedSumCDF_eq_fabiusReal F hF t]
     _ = rvachevUp F t :=
-      (rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc F hF ht).symm
+      (rvachevUp_eq_one_sub_fabiusReal_of_nonneg F hF ht).symm
+
+/-- Unit-interval compatibility form of
+`weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg`. -/
+lemma weightedSumDistribution_real_Ioi_eq_rvachevUp
+    (F : BoundedFabius) (hF : IsFabius F) {t : ℝ}
+    (ht : t ∈ Icc (0 : ℝ) 1) :
+    weightedSumDistribution.real (Ioi t) = rvachevUp F t :=
+  weightedSumDistribution_real_Ioi_eq_rvachevUp_of_nonneg F hF ht.1
 
 /-- Integration against the weighted-sum law in terms of the survival
 function `rvachevUp`.  This is the compact-support expectation identity
@@ -727,10 +740,11 @@ theorem unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
       simpa [unitLaplaceMoment, g, fabiusLaplaceMoment] using h
 
 /-- Reflection invariance identifies the endpoint power moment with the
-ordinary power moment, hence with `halfMoment`. -/
-theorem unitEndpointMoment_weightedSumDistribution_eq_halfMoment
-    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
-    unitEndpointMoment weightedSumDistribution n = (halfMoment n : ℝ) := by
+ordinary raw moment, represented here as the zero-tilt Laplace moment. -/
+theorem unitEndpointMoment_weightedSumDistribution_eq_unitLaplaceMoment_zero
+    (n : ℕ) :
+    unitEndpointMoment weightedSumDistribution n =
+      unitLaplaceMoment weightedSumDistribution 0 n := by
   let r : ℝ → ℝ := fun x => 1 - x
   have hr : Measurable r := by
     dsimp [r]
@@ -754,11 +768,44 @@ theorem unitEndpointMoment_weightedSumDistribution_eq_halfMoment
       unfold unitLaplaceMoment
       rw [weightedSumDistribution_restrict_Icc]
       simp
-    _ = fabiusLaplaceMoment F n 0 :=
+
+/-- The zero-tilt zeroth moment has total mass one. -/
+@[simp] theorem unitLaplaceMoment_weightedSumDistribution_zero_zero :
+    unitLaplaceMoment weightedSumDistribution 0 0 = 1 := by
+  unfold unitLaplaceMoment
+  rw [weightedSumDistribution_restrict_Icc]
+  simp
+
+/-- Exact endpoint-moment normalization in degree zero. -/
+@[simp] theorem unitEndpointMoment_weightedSumDistribution_zero :
+    unitEndpointMoment weightedSumDistribution 0 = 1 := by
+  rw [unitEndpointMoment_weightedSumDistribution_eq_unitLaplaceMoment_zero,
+    unitLaplaceMoment_weightedSumDistribution_zero_zero]
+
+/-- At zero tilt, the raw moments of the weighted-sum law are exactly the
+rational half moments. -/
+theorem unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    unitLaplaceMoment weightedSumDistribution 0 n = (halfMoment n : ℝ) := by
+  calc
+    unitLaplaceMoment weightedSumDistribution 0 n =
+        fabiusLaplaceMoment F n 0 :=
       unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment
         F hF n 0
     _ = (halfMoment n : ℝ) :=
       fabiusLaplaceMoment_zero_eq_halfMoment F hF n
+
+/-- Reflection invariance identifies the endpoint power moment with the
+ordinary power moment, hence with `halfMoment`. -/
+theorem unitEndpointMoment_weightedSumDistribution_eq_halfMoment
+    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
+    unitEndpointMoment weightedSumDistribution n = (halfMoment n : ℝ) := by
+  calc
+    unitEndpointMoment weightedSumDistribution n =
+        unitLaplaceMoment weightedSumDistribution 0 n :=
+      unitEndpointMoment_weightedSumDistribution_eq_unitLaplaceMoment_zero n
+    _ = (halfMoment n : ℝ) :=
+      unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment F hF n
 
 end ProbabilityRepresentation
 
