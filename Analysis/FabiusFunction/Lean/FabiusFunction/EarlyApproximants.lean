@@ -198,6 +198,9 @@ theorem approximationPolynomial_monic (n : ℕ) :
   intro k _hk
   exact geometricPolynomial_monic (by positivity)
 
+/-- Restatement of `approximationPolynomial_monic` as a `simp` lemma: the
+leading coefficient of `p_n` is `1`.  Monicity comes from the geometric
+factors `1 + X + ⋯ + X^(2^(k+1) - 1)`, each of which is monic. -/
 @[simp]
 theorem approximationPolynomial_leadingCoeff (n : ℕ) :
     (approximationPolynomial n).leadingCoeff = 1 :=
@@ -270,6 +273,12 @@ def restrictedPartitionWeight {n : ℕ} (s : RestrictedPartition n) : ℕ :=
 noncomputable def restrictedPartitionPolynomial (n : ℕ) : Polynomial ℕ :=
   ∑ s : RestrictedPartition n, X ^ restrictedPartitionWeight s
 
+/-- Expanding the product of geometric factors identifies `p_n` with the
+generating polynomial of the bounded partitions: choosing one exponent from
+each factor `1 + X + ⋯ + X^(2^(k+1) - 1)` is exactly choosing a
+`RestrictedPartition n`, and the chosen exponents add.  This is the input
+to `approximationPolynomial_coeff_eq_card`, which turns it into the
+combinatorial assertion following equation (19). -/
 theorem approximationPolynomial_eq_partitionPolynomial (n : ℕ) :
     approximationPolynomial n = restrictedPartitionPolynomial n := by
   unfold approximationPolynomial restrictedPartitionPolynomial
@@ -304,6 +313,12 @@ noncomputable def polynomialMeasure (n : ℕ) : Measure ℝ :=
     (((approximationPolynomial n).coeff m : ℝ≥0∞) /
       (2 : ℝ≥0∞) ^ ((n + 1).choose 2)) • Measure.dirac (polynomialAtomLocation n m)
 
+/-- `polynomialMeasure n` is a probability measure: by
+`sum_approximationPolynomial_coeff` the coefficients of `p_n` sum to
+`2 ^ (n + 1).choose 2`, which is exactly the factor divided out in the
+definition.  Together with the corresponding instance for
+`finiteConvolutionMeasure` this supplies the hypotheses of
+`Measure.ext_of_charFun` used in `EarlyMeasureBridge`. -/
 instance polynomialMeasure_isProbability (n : ℕ) :
     IsProbabilityMeasure (polynomialMeasure n) := by
   rw [isProbabilityMeasure_iff]
@@ -340,6 +355,9 @@ noncomputable def centeredBernoulliMeasure (k : ℕ) : Measure ℝ :=
   (2 : ℝ≥0∞)⁻¹ • Measure.dirac ((2 : ℝ) ^ (-(k + 1 : ℤ))) +
     (2 : ℝ≥0∞)⁻¹ • Measure.dirac (-((2 : ℝ) ^ (-(k + 1 : ℤ))))
 
+/-- `centeredBernoulliMeasure k` is a probability measure: its two atoms at
+`±2^(-(k+1))` carry mass `1/2` each.  This is what lets the convolutions
+built from it inherit `IsProbabilityMeasure`. -/
 instance centeredBernoulliMeasure_isProbability (k : ℕ) :
     IsProbabilityMeasure (centeredBernoulliMeasure k) := by
   rw [isProbabilityMeasure_iff]
@@ -352,6 +370,9 @@ noncomputable def convolutionPow (μ : Measure ℝ) : ℕ → Measure ℝ
   | 0 => Measure.dirac 0
   | n + 1 => μ ∗ convolutionPow μ n
 
+/-- Convolution powers of a probability measure are again probability
+measures, the exponent `0` case being the Dirac unit at zero.  Needed so
+that `charFun_conv` applies in `convolutionPow_charFun`. -/
 instance convolutionPow_isProbability (μ : Measure ℝ) [IsProbabilityMeasure μ]
     (n : ℕ) : IsProbabilityMeasure (convolutionPow μ n) := by
   induction n with
@@ -368,6 +389,11 @@ noncomputable def finiteConvolutionMeasure : ℕ → Measure ℝ
   | n + 1 => finiteConvolutionMeasure n ∗
       convolutionPow (centeredBernoulliMeasure (n + 1)) (n + 1)
 
+/-- The corrected finite convolution `μ_n` of equation (12) is a
+probability measure, by induction over its finitely many Bernoulli
+factors.  This is the instance behind `finiteConvolutionProbability` in
+`WeakConvergence` and behind the `Measure.ext_of_charFun` step in
+`EarlyMeasureBridge`. -/
 instance finiteConvolutionMeasure_isProbability (n : ℕ) :
     IsProbabilityMeasure (finiteConvolutionMeasure n) := by
   induction n with
@@ -379,6 +405,10 @@ instance finiteConvolutionMeasure_isProbability (n : ℕ) :
       infer_instance
 
 set_option maxHeartbeats 100000 in
+/-- The characteristic function of the symmetric two-atom measure at
+`±2^(-(k+1))` is `cos (t / 2^(k+1))`.  This is the single-factor
+computation that `finiteConvolutionMeasure_charFun` raises to powers to
+produce the finite cosine product of equation (12). -/
 theorem centeredBernoulliMeasure_charFun (k : ℕ) (t : ℝ) :
     charFun (centeredBernoulliMeasure k) t =
       Real.cos (t / (2 : ℝ) ^ (k + 1)) := by

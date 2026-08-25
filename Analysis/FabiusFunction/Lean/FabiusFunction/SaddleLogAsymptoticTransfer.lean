@@ -30,11 +30,22 @@ noncomputable section
 
 variable {R : Type*} [CommRing R] [Algebra ℚ R]
 
+/-- The order-`N` truncation of the formal logarithm of `A`, namely
+`∑ j < N, coeff j (log R) • (A - 1) ^ j`.  The `j = 0` summand is present but
+vanishes, because `PowerSeries.log` has zero constant coefficient, so this is
+the Taylor polynomial of `log (1 + (A - 1))` through degree `N - 1`.  `N`
+counts terms, not degree.  This is the formal model whose polynomial
+counterpart is `truncatedLogTaylorPolynomial`. -/
 def truncatedLogTaylorSeries (N : ℕ) (A : R⟦X⟧) : R⟦X⟧ :=
   ∑ j ∈ Finset.range N,
     PowerSeries.coeff j (PowerSeries.log R) • (A - 1) ^ j
 
 omit [Algebra ℚ R] in
+/-- A power series `u` with vanishing constant coefficient has `u ^ j`
+supported in degrees at least `j`, so its `k`-th coefficient vanishes whenever
+`k < j`.  This is what lets the infinite substitution sum defining
+`PowerSeries.logOf` be cut off at order `N` in
+`coeff_truncatedLogTaylorSeries_eq_logCoeff`. -/
 lemma coeff_pow_eq_zero_of_lt {u : R⟦X⟧}
     (hu : PowerSeries.constantCoeff u = 0) {k j : ℕ} (hkj : k < j) :
     PowerSeries.coeff k (u ^ j) = 0 := by
@@ -42,6 +53,10 @@ lemma coeff_pow_eq_zero_of_lt {u : R⟦X⟧}
   exact lt_of_lt_of_le (by exact_mod_cast hkj)
     (PowerSeries.le_order_pow_of_constantCoeff_eq_zero j hu)
 
+/-- Below the truncation order the truncated logarithm of the mass series
+reproduces the recursive coefficients `logCoeff`.  Both hypotheses matter: the
+constant coefficient `a 0` must be one, and the order `k` must satisfy
+`k < N`. -/
 theorem coeff_truncatedLogTaylorSeries_eq_logCoeff
     (a : ℕ → R) (ha0 : a 0 = 1) {N k : ℕ} (hk : k < N) :
     PowerSeries.coeff k (truncatedLogTaylorSeries N (massSeries a)) =
@@ -64,23 +79,36 @@ theorem coeff_truncatedLogTaylorSeries_eq_logCoeff
     rw [coeff_pow_eq_zero_of_lt hu0 (hk.trans_le hjN)]
     simp
 
+/-- The polynomial truncation `∑ k < N, a k * X ^ k` of the mass series.  The
+index `N` is excluded, so all coefficients in degrees at least `N` are zero and
+the degree is at most `N - 1`.  It is the polynomial stand-in for `massSeries`
+on which the bounded-coefficient calculus below operates. -/
 def massPolynomial (a : ℕ → R) (N : ℕ) : Polynomial R :=
   ∑ k ∈ Finset.range N, Polynomial.monomial k (a k)
 
 omit [Algebra ℚ R] in
+/-- Below the truncation order the coefficients of `massPolynomial` are the
+input coefficients. -/
 theorem coeff_massPolynomial_of_lt (a : ℕ → R) {N k : ℕ} (hk : k < N) :
     (massPolynomial a N).coeff k = a k := by
   simp [massPolynomial, Polynomial.coeff_monomial, hk]
 
 omit [Algebra ℚ R] in
+/-- At and above the truncation order the coefficients of `massPolynomial`
+vanish. -/
 theorem coeff_massPolynomial_of_ge (a : ℕ → R) {N k : ℕ} (hk : N ≤ k) :
     (massPolynomial a N).coeff k = 0 := by
   simp [massPolynomial, Polynomial.coeff_monomial, hk.not_gt]
 
+/-- The polynomial counterpart of `truncatedLogTaylorSeries`, namely
+`∑ j < N, C (coeff j (log R)) * (p - 1) ^ j`.  Only the number of Taylor terms
+is truncated, not the degree: the result can have degree well above `N`. -/
 def truncatedLogTaylorPolynomial (N : ℕ) (p : Polynomial R) : Polynomial R :=
   ∑ j ∈ Finset.range N,
     Polynomial.C (PowerSeries.coeff j (PowerSeries.log R)) * (p - 1) ^ j
 
+/-- Coercion to power series commutes with the truncated logarithmic Taylor
+construction, transporting the formal computation to polynomials. -/
 theorem coe_truncatedLogTaylorPolynomial (N : ℕ) (p : Polynomial R) :
     (truncatedLogTaylorPolynomial N p : R⟦X⟧) =
       truncatedLogTaylorSeries N (p : R⟦X⟧) := by
@@ -99,12 +127,18 @@ theorem coe_truncatedLogTaylorPolynomial (N : ℕ) (p : Polynomial R) :
     rw [← hcoe, ← Polynomial.coe_pow, Polynomial.coeff_coe]
 
 omit [Algebra ℚ R] in
+/-- The power series attached to `massPolynomial a N` is the mass series of
+its own coefficient function.  This is the shape needed to feed a polynomial
+into `coeff_truncatedLogTaylorSeries_eq_logCoeff`. -/
 theorem coe_massPolynomial (a : ℕ → R) (N : ℕ) :
     (massPolynomial a N : R⟦X⟧) =
       massSeries (fun j => (massPolynomial a N).coeff j) := by
   ext k
   simp [massSeries]
 
+/-- Below the truncation order, the coefficients of the truncated logarithmic
+Taylor polynomial of `massPolynomial a N` are the recursive coefficients
+`logCoeff a k`.  Assumes `a 0 = 1` and `k < N`. -/
 theorem coeff_truncatedLogTaylorPolynomial_mass_eq_logCoeff
     (a : ℕ → R) (ha0 : a 0 = 1) {N k : ℕ} (hk : k < N) :
     (truncatedLogTaylorPolynomial N (massPolynomial a N)).coeff k =
@@ -118,6 +152,11 @@ theorem coeff_truncatedLogTaylorPolynomial_mass_eq_logCoeff
   intro j hj
   exact coeff_massPolynomial_of_lt a (hj.trans_lt hk)
 
+/-- The discrepancy between the truncated logarithmic Taylor polynomial of
+`massPolynomial a N` and the polynomial `∑ k < N, logCoeff a k * X ^ k` is
+divisible by `X ^ N`, assuming `a 0 = 1`.  Pulling out this `X ^ N` is what
+turns the formal identity into the `O (z ^ N)` estimate of
+`formalLogRemainderEvaluation_isBigO`. -/
 theorem X_pow_dvd_truncatedLogTaylorPolynomial_sub_logPolynomial
     (a : ℕ → R) (ha0 : a 0 = 1) (N : ℕ) :
     Polynomial.X ^ N ∣
@@ -149,6 +188,7 @@ def HasBoundedPolynomialCoefficients
     (l : Filter α) (p : Polynomial (α → ℝ)) : Prop :=
   ∀ n, (p.coeff n) =O[l] (fun _ : α => (1 : ℝ))
 
+/-- Bounded coefficients are preserved by addition of polynomials. -/
 theorem HasBoundedPolynomialCoefficients.add
     {p q : Polynomial (α → ℝ)}
     (hp : HasBoundedPolynomialCoefficients l p)
@@ -158,6 +198,7 @@ theorem HasBoundedPolynomialCoefficients.add
   rw [Polynomial.coeff_add]
   exact (hp n).add (hq n)
 
+/-- Bounded coefficients are preserved by negation. -/
 theorem HasBoundedPolynomialCoefficients.neg
     {p : Polynomial (α → ℝ)} (hp : HasBoundedPolynomialCoefficients l p) :
     HasBoundedPolynomialCoefficients l (-p) := by
@@ -165,6 +206,7 @@ theorem HasBoundedPolynomialCoefficients.neg
   rw [Polynomial.coeff_neg]
   exact (hp n).neg_left
 
+/-- Bounded coefficients are preserved by subtraction. -/
 theorem HasBoundedPolynomialCoefficients.sub
     {p q : Polynomial (α → ℝ)}
     (hp : HasBoundedPolynomialCoefficients l p)
@@ -173,6 +215,8 @@ theorem HasBoundedPolynomialCoefficients.sub
   rw [sub_eq_add_neg]
   exact hp.add hq.neg
 
+/-- A constant polynomial has bounded coefficients as soon as the constant
+family itself is `O (1)` along `l`. -/
 theorem hasBoundedPolynomialCoefficients_C
     {c : α → ℝ} (hc : c =O[l] (fun _ : α => (1 : ℝ))) :
     HasBoundedPolynomialCoefficients l (Polynomial.C c) := by
@@ -183,6 +227,7 @@ theorem hasBoundedPolynomialCoefficients_C
   · rw [Polynomial.coeff_C, if_neg hn]
     exact isBigO_zero (fun _ : α => (1 : ℝ)) l
 
+/-- The indeterminate `X` has bounded coefficients. -/
 theorem hasBoundedPolynomialCoefficients_X :
     HasBoundedPolynomialCoefficients l
       (Polynomial.X : Polynomial (α → ℝ)) := by
@@ -193,6 +238,8 @@ theorem hasBoundedPolynomialCoefficients_X :
   · rw [Polynomial.coeff_X, if_neg hn]
     exact isBigO_zero (fun _ : α => (1 : ℝ)) l
 
+/-- Bounded coefficients are preserved by multiplication, since each
+coefficient of a product is a fixed finite convolution sum. -/
 theorem HasBoundedPolynomialCoefficients.mul
     {p q : Polynomial (α → ℝ)}
     (hp : HasBoundedPolynomialCoefficients l p)
@@ -212,6 +259,8 @@ theorem HasBoundedPolynomialCoefficients.mul
     simp
   · rfl
 
+/-- Bounded coefficients are preserved by every natural power, the zeroth
+included, where the result is the constant polynomial one. -/
 theorem HasBoundedPolynomialCoefficients.pow
     {p : Polynomial (α → ℝ)}
     (hp : HasBoundedPolynomialCoefficients l p) :
@@ -225,6 +274,8 @@ theorem HasBoundedPolynomialCoefficients.pow
       rw [pow_succ]
       exact (hp.pow n).mul hp
 
+/-- A finite sum of polynomials with bounded coefficients again has bounded
+coefficients. -/
 theorem hasBoundedPolynomialCoefficients_sum
     {ι : Type*} (s : Finset ι) {p : ι → Polynomial (α → ℝ)}
     (hp : ∀ i ∈ s, HasBoundedPolynomialCoefficients l (p i)) :
@@ -239,6 +290,9 @@ theorem hasBoundedPolynomialCoefficients_sum
       exact (hp i (Finset.mem_cons_self i s)).add
         (ih fun j hj => hp j (Finset.mem_cons_of_mem hj))
 
+/-- If every input coefficient family `a n` is `O (1)` along `l`, then so is
+every logarithmic coefficient family `logCoeff a n`.  This supplies the
+coefficient-boundedness half of `HasAsymptoticExpansion` for the logarithm. -/
 theorem logCoeff_isBigO_one
     {a : ℕ → α → ℝ}
     (ha : ∀ n, (a n) =O[l] (fun _ : α => (1 : ℝ))) :
@@ -268,6 +322,8 @@ theorem logCoeff_isBigO_one
           apply (ha (n + 1)).sub
           simpa [Algebra.smul_def] using hscaled
 
+/-- `massPolynomial a N` has bounded coefficients whenever every `a n` is
+`O (1)` along `l`. -/
 theorem massPolynomial_hasBoundedCoefficients
     {a : ℕ → α → ℝ}
     (ha : ∀ n, (a n) =O[l] (fun _ : α => (1 : ℝ))) (N : ℕ) :
@@ -279,6 +335,9 @@ theorem massPolynomial_hasBoundedCoefficients
   · rw [coeff_massPolynomial_of_ge a (Nat.le_of_not_gt hk)]
     exact isBigO_zero (fun _ : α => (1 : ℝ)) l
 
+/-- The truncated logarithmic Taylor polynomial of a polynomial with bounded
+coefficients again has bounded coefficients; the Taylor scalars are constant
+functions of the asymptotic parameter. -/
 theorem truncatedLogTaylorPolynomial_hasBoundedCoefficients
     {p : Polynomial (α → ℝ)}
     (hp : HasBoundedPolynomialCoefficients l p) (N : ℕ) :
@@ -296,6 +355,8 @@ theorem truncatedLogTaylorPolynomial_hasBoundedCoefficients
   · exact (hp.sub (hasBoundedPolynomialCoefficients_C
       (isBigO_const_one ℝ (1 : ℝ) l))).pow j
 
+/-- A monomial has bounded coefficients as soon as its coefficient family is
+`O (1)` along `l`. -/
 theorem hasBoundedPolynomialCoefficients_monomial
     {c : α → ℝ} (hc : c =O[l] (fun _ : α => (1 : ℝ))) (n : ℕ) :
     HasBoundedPolynomialCoefficients l (Polynomial.monomial n c) := by
@@ -303,6 +364,8 @@ theorem hasBoundedPolynomialCoefficients_monomial
   exact (hasBoundedPolynomialCoefficients_C hc).mul
     (hasBoundedPolynomialCoefficients_X.pow n)
 
+/-- The polynomial `∑ k < N, logCoeff a k * X ^ k` has bounded coefficients
+whenever every `a n` is `O (1)` along `l`. -/
 theorem logPolynomial_hasBoundedCoefficients
     {a : ℕ → α → ℝ}
     (ha : ∀ n, (a n) =O[l] (fun _ : α => (1 : ℝ))) (N : ℕ) :
@@ -313,6 +376,9 @@ theorem logPolynomial_hasBoundedCoefficients
   exact hasBoundedPolynomialCoefficients_monomial
     (logCoeff_isBigO_one ha k) k
 
+/-- Evaluating a polynomial with bounded coefficients at an `O (1)` argument,
+coefficientwise at the parameter `x`, gives an `O (1)` function.  This is the
+step that converts the polynomial calculus above into an asymptotic bound. -/
 theorem polynomial_eval₂_isBigO_one
     {p : Polynomial (α → ℝ)} {z : α → ℝ}
     (hp : HasBoundedPolynomialCoefficients l p)
@@ -331,10 +397,17 @@ theorem polynomial_eval₂_isBigO_one
     simp
   · rfl
 
+/-- The real Taylor polynomial `∑ j < N, coeff j (log ℝ) * u ^ j` of
+`log (1 + u)`.  As for `truncatedLogTaylorSeries`, `N` counts terms rather
+than degree: `realLogTaylor 0` is zero and the highest power present is
+`u ^ (N - 1)`.  It is the real form of `Complex.logTaylor N`, as
+`ofReal_realLogTaylor` records. -/
 def realLogTaylor (N : ℕ) (u : ℝ) : ℝ :=
   ∑ j ∈ Finset.range N,
     PowerSeries.coeff j (PowerSeries.log ℝ) * u ^ j
 
+/-- Evaluating `massPolynomial a N` at `z x` reproduces the expansion partial
+sum `partialSum z a N x`. -/
 theorem eval₂_massPolynomial
     (a : ℕ → α → ℝ) (z : α → ℝ) (N : ℕ) (x : α) :
     (massPolynomial a N).eval₂
@@ -343,6 +416,8 @@ theorem eval₂_massPolynomial
   simp [massPolynomial, partialSum, Polynomial.eval₂_finsetSum,
     Polynomial.eval₂_monomial, smul_eq_mul, mul_comm]
 
+/-- Evaluating `truncatedLogTaylorPolynomial N p` at `z x` reproduces
+`realLogTaylor N` applied to the evaluation of `p` minus one. -/
 theorem eval₂_truncatedLogTaylorPolynomial
     (p : Polynomial (α → ℝ)) (N : ℕ) (z : α → ℝ) (x : α) :
     (truncatedLogTaylorPolynomial N p).eval₂
@@ -360,6 +435,8 @@ theorem eval₂_truncatedLogTaylorPolynomial
   · simp only [hj0, ↓reduceIte]
     rfl
 
+/-- Evaluating `∑ k < N, logCoeff a k * X ^ k` at `z x` reproduces the partial
+sum of the logarithmic expansion. -/
 theorem eval₂_logPolynomial
     (a : ℕ → α → ℝ) (z : α → ℝ) (N : ℕ) (x : α) :
     (∑ k ∈ Finset.range N, Polynomial.monomial k (logCoeff a k)).eval₂
@@ -368,6 +445,12 @@ theorem eval₂_logPolynomial
   simp [partialSum, Polynomial.eval₂_finsetSum,
     Polynomial.eval₂_monomial, smul_eq_mul, mul_comm]
 
+/-- The purely formal discrepancy, namely the logarithmic Taylor polynomial of
+the partial sum minus the partial sum of the logarithmic coefficients, is
+`O (z ^ N)`.  The hypotheses are that every `a n` is `O (1)`, that `a 0` is the
+constant function one, and that `z` is `O (1)`.  The bound comes from the
+`X ^ N` divisibility above, evaluated through
+`polynomial_eval₂_isBigO_one`. -/
 theorem formalLogRemainderEvaluation_isBigO
     {a : ℕ → α → ℝ} {z : α → ℝ}
     (ha : ∀ n, (a n) =O[l] (fun _ : α => (1 : ℝ)))
@@ -412,6 +495,8 @@ theorem formalLogRemainderEvaluation_isBigO
   · filter_upwards with x
     simp
 
+/-- `realLogTaylor` is the real restriction of `Complex.logTaylor`: its value
+cast to `ℂ` is `Complex.logTaylor N` at the cast argument. -/
 theorem ofReal_realLogTaylor (N : ℕ) (u : ℝ) :
     (realLogTaylor N u : ℂ) = Complex.logTaylor N (u : ℂ) := by
   unfold realLogTaylor Complex.logTaylor
@@ -424,6 +509,9 @@ theorem ofReal_realLogTaylor (N : ℕ) (u : ℝ) :
   · simp [hj0]
     ring
 
+/-- The Taylor remainder `log (1 + u) - realLogTaylor N u` is `O (u ^ N)` as
+`u` tends to `0`.  For `N = 0` this only says the remainder is `O (1)`; for
+positive `N` it is transported from `Complex.log_sub_logTaylor_isBigO`. -/
 theorem realLog_sub_realLogTaylor_isBigO (N : ℕ) :
     (fun u : ℝ => Real.log (1 + u) - realLogTaylor N u) =O[𝓝 0]
       (fun u : ℝ => u ^ N) := by
@@ -461,6 +549,9 @@ theorem realLog_sub_realLogTaylor_isBigO (N : ℕ) :
       exact Complex.isBigO_ofReal_right.mp
         (Complex.isBigO_ofReal_left.mp hcast)
 
+/-- If `u - v` is `O (r)` and both `u` and `v` are `O (1)`, then
+`u ^ n - v ^ n` is `O (r)`, by the geometric factorization of
+`u ^ n - v ^ n`. -/
 theorem pow_sub_pow_isBigO_of_isBigO_one
     {u v r : α → ℝ}
     (huv : (fun x => u x - v x) =O[l] r)
@@ -482,6 +573,10 @@ theorem pow_sub_pow_isBigO_of_isBigO_one
   · filter_upwards with x
     simp
 
+/-- Stability of `realLogTaylor N` under an `O (r)` perturbation of its
+argument, among `O (1)` arguments.  This is the step that lets the argument
+`f - 1` be replaced by `partialSum scale coeff N - 1` in
+`HasAsymptoticExpansion.real_log_of_unit_constantCoeff`. -/
 theorem realLogTaylor_sub_isBigO
     {u v r : α → ℝ}
     (huv : (fun x => u x - v x) =O[l] r)

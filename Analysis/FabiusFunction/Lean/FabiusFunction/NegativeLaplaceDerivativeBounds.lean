@@ -22,16 +22,32 @@ open Filter Set Topology Asymptotics
 
 namespace Fabius
 
+/-- First derivative of the elementary log-product summand
+`negativeLaplaceKernel x = log ((1 - exp (-x)) / x)`, in closed form.
+Writing that summand as `log (1 - exp (-x)) - log x` separates the
+exponential part from the rational singular part `1 / x`.  The
+identification as a derivative is `negativeLaplaceKernel_hasDerivAt`, which
+needs `0 < x`. -/
 noncomputable def negativeLaplaceKernelFirst (x : ℝ) : ℝ :=
   Real.exp (-x) / (1 - Real.exp (-x)) - 1 / x
 
+/-- Second derivative of `negativeLaplaceKernel`, in closed form, with the
+rational singular part `1 / x ^ 2` kept as a separate summand.  The
+identification is `negativeLaplaceKernelFirst_hasDerivAt`, for `0 < x`. -/
 noncomputable def negativeLaplaceKernelSecond (x : ℝ) : ℝ :=
   -Real.exp (-x) / (1 - Real.exp (-x)) ^ 2 + 1 / x ^ 2
 
+/-- Third derivative of `negativeLaplaceKernel`, in closed form, with the
+rational singular part `2 / x ^ 3` kept as a separate summand.  The
+identification is `negativeLaplaceKernelSecond_hasDerivAt`, for `0 < x`. -/
 noncomputable def negativeLaplaceKernelThird (x : ℝ) : ℝ :=
   Real.exp (-x) * (1 + Real.exp (-x)) /
       (1 - Real.exp (-x)) ^ 3 - 2 / x ^ 3
 
+/-- Fourth derivative of `negativeLaplaceKernel`, in closed form, with the
+rational singular part `6 / x ^ 4` kept as a separate summand.  The
+identification is `negativeLaplaceKernelThird_hasDerivAt`, for `0 < x`.
+This is the highest kernel derivative the module uses. -/
 noncomputable def negativeLaplaceKernelFourth (x : ℝ) : ℝ :=
   -(Real.exp (-x) *
       (1 + 4 * Real.exp (-x) + Real.exp (-x) ^ 2)) /
@@ -43,6 +59,10 @@ private lemma one_sub_exp_neg_ne {x : ℝ} (hx : 0 < x) :
   rw [← Real.exp_zero]
   exact Real.exp_lt_exp.mpr (by linarith)
 
+/-- For `0 < x` the elementary log-product summand `negativeLaplaceKernel` is
+differentiable with derivative `negativeLaplaceKernelFirst x`.  This is the
+kernel half of the input to `negativeLaplaceLogFirst_two_mul`, which
+differentiates the exact dilation equation `negativeLaplaceLog_two_mul`. -/
 theorem negativeLaplaceKernel_hasDerivAt
     {x : ℝ} (hx : 0 < x) :
     HasDerivAt negativeLaplaceKernel (negativeLaplaceKernelFirst x) x := by
@@ -65,6 +85,9 @@ theorem negativeLaplaceKernel_hasDerivAt
   simp only [id_eq, Pi.neg_apply, Pi.sub_apply]
   ring
 
+/-- For `0 < x`, `negativeLaplaceKernelSecond x` is the derivative of
+`negativeLaplaceKernelFirst`.  This is the kernel input to the
+second-derivative dilation recurrence `negativeLaplaceLogSecond_two_mul`. -/
 theorem negativeLaplaceKernelFirst_hasDerivAt
     {x : ℝ} (hx : 0 < x) :
     HasDerivAt negativeLaplaceKernelFirst (negativeLaplaceKernelSecond x) x := by
@@ -79,6 +102,9 @@ theorem negativeLaplaceKernelFirst_hasDerivAt
   field_simp [one_sub_exp_neg_ne hx, hx.ne']
   ring
 
+/-- For `0 < x`, `negativeLaplaceKernelThird x` is the derivative of
+`negativeLaplaceKernelSecond`.  This is the kernel input to the
+third-derivative dilation recurrence `negativeLaplaceLogThird_two_mul`. -/
 theorem negativeLaplaceKernelSecond_hasDerivAt
     {x : ℝ} (hx : 0 < x) :
     HasDerivAt negativeLaplaceKernelSecond (negativeLaplaceKernelThird x) x := by
@@ -94,6 +120,9 @@ theorem negativeLaplaceKernelSecond_hasDerivAt
   field_simp [one_sub_exp_neg_ne hx, hx.ne']
   ring
 
+/-- For `0 < x`, `negativeLaplaceKernelFourth x` is the derivative of
+`negativeLaplaceKernelThird`.  This is the kernel input to the
+fourth-derivative dilation recurrence `negativeLaplaceLogFourth_two_mul`. -/
 theorem negativeLaplaceKernelThird_hasDerivAt
     {x : ℝ} (hx : 0 < x) :
     HasDerivAt negativeLaplaceKernelThird (negativeLaplaceKernelFourth x) x := by
@@ -145,6 +174,10 @@ private lemma exp_neg_div_one_sub_pow_le
   simpa [t, mul_assoc, mul_left_comm, mul_comm] using
     (mul_le_mul_of_nonneg_left hp ht0)
 
+/-- Weighted kernel bound `|x * negativeLaplaceKernelFirst x| ≤ 3` on the
+half-line `1 ≤ x`.  The constant is explicit but no attainment is claimed.
+It is the per-step increment bound for the `j = 1` dyadic iteration behind
+`negativeLaplaceLogFirst_isBigO_log_div_nat`. -/
 theorem abs_mul_negativeLaplaceKernelFirst_le
     {x : ℝ} (hx : 1 ≤ x) :
     |x * negativeLaplaceKernelFirst x| ≤ 3 := by
@@ -170,6 +203,10 @@ theorem abs_mul_negativeLaplaceKernelFirst_le
       norm_num at hpow
       nlinarith
 
+/-- Weighted kernel bound `|x ^ 2 * negativeLaplaceKernelSecond x| ≤ 9` on
+the half-line `1 ≤ x`.  The constant is explicit but no attainment is
+claimed.  It is the per-step increment bound for the `j = 2` dyadic
+iteration behind `negativeLaplaceLogSecond_isBigO_log_div_sq_nat`. -/
 theorem abs_sq_mul_negativeLaplaceKernelSecond_le
     {x : ℝ} (hx : 1 ≤ x) :
     |x ^ 2 * negativeLaplaceKernelSecond x| ≤ 9 := by
@@ -200,6 +237,10 @@ theorem abs_sq_mul_negativeLaplaceKernelSecond_le
       norm_num at hpow
       nlinarith
 
+/-- Weighted kernel bound `|x ^ 3 * negativeLaplaceKernelThird x| ≤ 74` on
+the half-line `1 ≤ x`.  The constant is explicit but no attainment is
+claimed.  It is the per-step increment bound for the `j = 3` dyadic
+iteration behind `negativeLaplaceLogThird_isBigO_log_div_cube_nat`. -/
 theorem abs_cube_mul_negativeLaplaceKernelThird_le
     {x : ℝ} (hx : 1 ≤ x) :
     |x ^ 3 * negativeLaplaceKernelThird x| ≤ 74 := by
@@ -238,6 +279,10 @@ theorem abs_cube_mul_negativeLaplaceKernelThird_le
       norm_num at hpow
       nlinarith
 
+/-- Weighted kernel bound `|x ^ 4 * negativeLaplaceKernelFourth x| ≤ 1542`
+on the half-line `1 ≤ x`.  The constant is explicit but no attainment is
+claimed.  It is the per-step increment bound for the `j = 4` dyadic
+iteration behind `negativeLaplaceLogFourth_isBigO_log_div_fourth_nat`. -/
 theorem abs_fourth_mul_negativeLaplaceKernelFourth_le
     {x : ℝ} (hx : 1 ≤ x) :
     |x ^ 4 * negativeLaplaceKernelFourth x| ≤ 1542 := by
@@ -448,6 +493,12 @@ private theorem dyadic_recurrence_isBigO_nat
       nlinarith
     _ = D * Real.log (n : ℝ) := rfl
 
+/-- Along the natural numbers, the first logarithmic derivative of the
+negative-Laplace transform of any `F` satisfying `IsFabius` obeys
+`q'(n) = O(log n / n)`.  The proof iterates the weight-`2` recurrence
+`negativeLaplaceLogFirst_two_mul` outward from the compact base window
+`[1, 2]`, paying `abs_mul_negativeLaplaceKernelFirst_le` at each of the
+roughly `log₂ n` dyadic steps. -/
 theorem negativeLaplaceLogFirst_isBigO_log_div_nat
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => negativeLaplaceLogFirst F n) =O[atTop]
@@ -465,6 +516,14 @@ theorem negativeLaplaceLogFirst_isBigO_log_div_nat
         simpa only [pow_one] using abs_mul_negativeLaplaceKernelFirst_le hs)
   simpa only [pow_one] using h
 
+/-- Along the natural numbers, the second logarithmic derivative obeys
+`q''(n) = O(log n / n²)`: the weight-`4` recurrence
+`negativeLaplaceLogSecond_two_mul` iterated from `[1, 2]` with the increment
+bound `abs_sq_mul_negativeLaplaceKernelSecond_le`.  The logarithm comes from
+bounding every dyadic increment by a constant;
+`negativeLaplaceLogSecond_sub_log_main_isBigO_inv_sq_nat` below instead
+subtracts the exact rational main term first and so exhibits
+`log n / (log 2 * n ^ 2)` explicitly with an `O(n⁻²)` remainder. -/
 theorem negativeLaplaceLogSecond_isBigO_log_div_sq_nat
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => negativeLaplaceLogSecond F n) =O[atTop]
@@ -482,6 +541,10 @@ theorem negativeLaplaceLogSecond_isBigO_log_div_sq_nat
   · intro s hs
     exact abs_sq_mul_negativeLaplaceKernelSecond_le hs
 
+/-- Along the natural numbers, the third logarithmic derivative obeys
+`q'''(n) = O(log n / n³)`: the weight-`8` recurrence
+`negativeLaplaceLogThird_two_mul` iterated from `[1, 2]` with the increment
+bound `abs_cube_mul_negativeLaplaceKernelThird_le`. -/
 theorem negativeLaplaceLogThird_isBigO_log_div_cube_nat
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => negativeLaplaceLogThird F n) =O[atTop]
@@ -499,6 +562,12 @@ theorem negativeLaplaceLogThird_isBigO_log_div_cube_nat
   · intro s hs
     exact abs_cube_mul_negativeLaplaceKernelThird_le hs
 
+/-- The fourth logarithmic derivative is continuous on the compact base
+window `Icc 1 2` of the dyadic iteration.  For the three lower orders this
+continuity is read off a single `HasDerivAt` statement; here it is assembled
+from the normalized tilted moments `R₁, …, R₄` appearing in
+`negativeLaplaceLogFourth`.  It supplies the continuity hypothesis of
+`negativeLaplaceLogFourth_isBigO_log_div_fourth_nat`. -/
 theorem continuousOn_negativeLaplaceLogFourth_Icc
     (F : BoundedFabius) (hF : IsFabius F) :
     ContinuousOn (negativeLaplaceLogFourth F) (Icc (1 : ℝ) 2) := by
@@ -517,6 +586,11 @@ theorem continuousOn_negativeLaplaceLogFourth_Icc
   filter_upwards with x
   simp only [Pi.sub_apply, Pi.add_apply, Pi.mul_apply, Pi.pow_apply]
 
+/-- Along the natural numbers, the fourth logarithmic derivative obeys
+`q⁽⁴⁾(n) = O(log n / n⁴)`: the weight-`16` recurrence
+`negativeLaplaceLogFourth_two_mul` iterated from `[1, 2]` with the increment
+bound `abs_fourth_mul_negativeLaplaceKernelFourth_le`.  This closes the
+range `1 ≤ j ≤ 4` announced in the module header. -/
 theorem negativeLaplaceLogFourth_isBigO_log_div_fourth_nat
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => negativeLaplaceLogFourth F n) =O[atTop]

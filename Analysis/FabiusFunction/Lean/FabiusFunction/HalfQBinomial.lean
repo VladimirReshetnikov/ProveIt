@@ -77,6 +77,10 @@ noncomputable def finiteQPochhammer (a q : ℚ) (n : ℕ) : ℚ :=
     finiteQPochhammer a q 0 = 1 := by
   simp [finiteQPochhammer]
 
+/-- Peeling the top factor: `(a; q)_(n+1) = (a; q)_n (1 - a q^n)`, the new
+factor carrying the exponent `n`, the last index of `range (n + 1)`.  This
+is the induction step behind `halfQPochhammer_succ` and behind the closing
+step of `halfQBinomial_theorem`. -/
 theorem finiteQPochhammer_succ (a q : ℚ) (n : ℕ) :
     finiteQPochhammer a q (n + 1) =
       finiteQPochhammer a q n * (1 - a * q ^ n) := by
@@ -89,6 +93,9 @@ noncomputable abbrev qPochhammer := finiteQPochhammer
 @[simp] theorem qPochhammer_zero (a q : ℚ) : qPochhammer a q 0 = 1 := by
   exact finiteQPochhammer_zero a q
 
+/-- The same top-factor recurrence stated for the Wolfram alias, so that
+statements written in literal `QPochhammer` notation never have to unfold to
+`finiteQPochhammer`. -/
 theorem qPochhammer_succ (a q : ℚ) (n : ℕ) :
     qPochhammer a q (n + 1) =
       qPochhammer a q n * (1 - a * q ^ n) :=
@@ -105,6 +112,10 @@ noncomputable def halfQPochhammer (n : ℕ) : ℚ :=
 @[simp] theorem halfQPochhammer_zero : halfQPochhammer 0 = 1 := by
   simp [halfQPochhammer]
 
+/-- Top-factor recurrence at `q = 1/2`, with the two halves already merged:
+the new factor is `1 - (1/2)^(n+1)`, not `1 - (1/2) (1/2)^n`.  This is the
+form the Toeplitz row estimates of `FabiusDiscreteLimitToeplitz` induct
+on. -/
 theorem halfQPochhammer_succ (n : ℕ) :
     halfQPochhammer (n + 1) =
       halfQPochhammer n * (1 - (1 / 2 : ℚ) ^ (n + 1)) := by
@@ -113,6 +124,9 @@ theorem halfQPochhammer_succ (n : ℕ) :
   rw [pow_succ]
   ring
 
+/-- `(1/2; 1/2)_n` is strictly positive, every factor `1 - (1/2)^(j+1)`
+lying in `(0, 1)`.  This is what lets `FabiusDiscreteLimitToeplitz` drop the
+absolute value from the denominator of a Toeplitz coefficient. -/
 theorem halfQPochhammer_pos (n : ℕ) : 0 < halfQPochhammer n := by
   induction n with
   | zero => simp
@@ -123,6 +137,9 @@ theorem halfQPochhammer_pos (n : ℕ) : 0 < halfQPochhammer n := by
         pow_lt_one₀ (by norm_num) (by norm_num) (by omega)
       linarith
 
+/-- `(1/2; 1/2)_n` never vanishes.  It sits in the denominator of every
+q-binomial quotient below, so this is the side condition discharged by the
+`field_simp` calls here and throughout the `Fabius*QBinomial*` files. -/
 theorem halfQPochhammer_ne_zero (n : ℕ) : halfQPochhammer n ≠ 0 :=
   (halfQPochhammer_pos n).ne'
 
@@ -133,11 +150,16 @@ noncomputable def halfMersenneProduct (n : ℕ) : ℚ :=
 @[simp] theorem halfMersenneProduct_zero : halfMersenneProduct 0 = 1 := by
   simp [halfMersenneProduct]
 
+/-- Peeling the top Mersenne factor:
+`∏_(j=1)^(n+1) (2^j - 1) = (∏_(j=1)^n (2^j - 1)) (2^(n+1) - 1)`.  This is the
+induction step of `halfQPochhammer_eq_mersenne_div`. -/
 theorem halfMersenneProduct_succ (n : ℕ) :
     halfMersenneProduct (n + 1) =
       halfMersenneProduct n * ((2 : ℚ) ^ (n + 1) - 1) := by
   simp [halfMersenneProduct, Finset.prod_range_succ]
 
+/-- `∏_(j=1)^n (2^j - 1)` is strictly positive, since every factor with
+`j ≥ 1` is at least `1`. -/
 theorem halfMersenneProduct_pos (n : ℕ) : 0 < halfMersenneProduct n := by
   induction n with
   | zero => simp
@@ -147,6 +169,8 @@ theorem halfMersenneProduct_pos (n : ℕ) : 0 < halfMersenneProduct n := by
         have : (1 : ℚ) < 2 ^ (n + 1) := one_lt_pow₀ (by norm_num) (by omega)
         linarith)
 
+/-- The Mersenne product never vanishes; this is the side condition needed
+by the `field_simp` in `halfQBinomial_eq_mersenne`. -/
 theorem halfMersenneProduct_ne_zero (n : ℕ) : halfMersenneProduct n ≠ 0 :=
   (halfMersenneProduct_pos n).ne'
 
@@ -236,20 +260,33 @@ noncomputable def qBinomial (n k : ℕ) (q : ℚ) : ℚ :=
       (qPochhammer q q k * qPochhammer q q (n - k))
   else 0
 
+/-- The specialization `QBinomial[n,k,1/2] = halfQBinomial n k`, true by
+`rfl`.  It is the bridge by which the literal-notation statements used in
+`FabiusQBinomialFormula` are discharged from the `halfQBinomial` lemmas. -/
 theorem qBinomial_half_eq (n k : ℕ) :
     qBinomial n k (1 / 2) = halfQBinomial n k := by
   rfl
 
+/-- Extension by zero: `QBinomial[n,k,q] = 0` whenever `n < k`, for every
+`q`.  This records the `if` in the definition and says nothing about `q`. -/
 theorem qBinomial_eq_zero_of_lt (q : ℚ) {n k : ℕ} (hk : n < k) :
     qBinomial n k q = 0 := by
   simp [qBinomial, Nat.not_le.mpr hk]
 
+/-- In the admissible range `k ≤ n` the `if` unfolds and `halfQBinomial n k`
+is the q-Pochhammer quotient
+`(1/2;1/2)_n / ((1/2;1/2)_k (1/2;1/2)_(n-k))`.  The hypothesis `k ≤ n` is
+needed because `n - k` is truncated natural subtraction.  Every quotient
+manipulation below starts from this rewrite. -/
 theorem halfQBinomial_eq_quotient {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n k =
       halfQPochhammer n /
         (halfQPochhammer k * halfQPochhammer (n - k)) := by
   simp [halfQBinomial, hk]
 
+/-- The coefficient vanishes above the diagonal, `n < k`.  This is what
+kills the extra term when a sum over `range (n + 1)` is compared with a sum
+over `range (n + 2)` in the induction proving `halfQBinomial_theorem`. -/
 theorem halfQBinomial_eq_zero_of_lt {n k : ℕ} (hk : n < k) :
     halfQBinomial n k = 0 := by
   simp [halfQBinomial, Nat.not_le.mpr hk]
@@ -270,15 +307,23 @@ theorem halfQBinomial_eq_zero_of_lt {n k : ℕ} (hk : n < k) :
     halfQBinomial 0 (k + 1) = 0 := by
   exact halfQBinomial_eq_zero_of_lt (by omega)
 
+/-- For `k ≤ n` the coefficient is strictly positive, being a quotient of
+positive q-Pochhammer symbols.  This removes the absolute value in
+`FabiusDiscreteLimitToeplitz.abs_discreteLimitWeight`. -/
 theorem halfQBinomial_pos {n k : ℕ} (hk : k ≤ n) :
     0 < halfQBinomial n k := by
   rw [halfQBinomial_eq_quotient hk]
   exact div_pos (halfQPochhammer_pos n)
     (mul_pos (halfQPochhammer_pos k) (halfQPochhammer_pos (n - k)))
 
+/-- For `k ≤ n` the coefficient is nonzero; the contrapositive direction of
+`halfQBinomial_eq_zero_iff`. -/
 theorem halfQBinomial_ne_zero {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n k ≠ 0 := (halfQBinomial_pos hk).ne'
 
+/-- `halfQBinomial n k` vanishes exactly above the diagonal: it is `0` if
+and only if `n < k`.  Both directions are proved here, from
+`halfQBinomial_ne_zero` and `halfQBinomial_eq_zero_of_lt`. -/
 theorem halfQBinomial_eq_zero_iff {n k : ℕ} :
     halfQBinomial n k = 0 ↔ n < k := by
   constructor
@@ -305,6 +350,11 @@ theorem halfQBinomial_eq_mersenne {n k : ℕ} (hk : k ≤ n) :
   rw [choose_split n k hk, pow_add, pow_add]
   field_simp [halfMersenneProduct_ne_zero]
 
+/-- Reflection `k ↦ n - k` for `k ≤ n`: the quotient is unchanged because
+its two denominator factors merely swap.  It supplies the reindexing in
+`FabiusDiscreteLimitIntegration.discreteLimit_coefficient_reindex` and turns
+`halfQBinomial_succ_succ` into its symmetric partner
+`halfQBinomial_succ_succ'`. -/
 theorem halfQBinomial_symm {n k : ℕ} (hk : k ≤ n) :
     halfQBinomial n (n - k) = halfQBinomial n k := by
   rw [halfQBinomial_eq_quotient (Nat.sub_le n k),
@@ -515,6 +565,10 @@ private theorem two_pow_mul_half_pow (n j : ℕ) (hj : j ≤ n) :
   rw [hpow]
   field_simp
 
+/-- For `m < n` the symbol `(2^m; 1/2)_n` vanishes, since its `j = m` factor
+is `1 - 2^m (1/2)^m = 0`.  Fed through the q-binomial theorem this becomes
+`halfQBinomial_two_pow_sum_eq_zero`, the vanishing half of the interpolation
+data that `FabiusQBinomialFormula` uses at the nodes `-(2^k)`. -/
 theorem qPochhammer_two_pow_eq_zero {n m : ℕ} (hm : m < n) :
     qPochhammer ((2 : ℚ) ^ m) (1 / 2) n = 0 := by
   unfold qPochhammer finiteQPochhammer
