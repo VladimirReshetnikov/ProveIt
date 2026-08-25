@@ -39,6 +39,7 @@ import GowersSzemeredi.Proofs05PolynomialPartition
 import GowersSzemeredi.Proofs05Lemma9
 import GowersSzemeredi.Proofs05Lemma9Induction
 import GowersSzemeredi.Proofs05Lemma9Scale
+import GowersSzemeredi.Proofs05ExactEndpoints
 import GowersSzemeredi.Proofs05Progressions
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
