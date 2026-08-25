@@ -18,8 +18,9 @@ open Set
 
 namespace Fabius
 
-/-- Rvachev's function is even. -/
-theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
+/-- Folding a bounded candidate about zero always produces an even function.
+No Fabius equations are needed for this structural fact. -/
+theorem rvachevUp_even (F : BoundedFabius) :
     Function.Even (rvachevUp F) := by
   intro x
   by_cases hx : x = 0
@@ -37,6 +38,38 @@ theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
     simp only [rvachevUp, if_neg hnxnot, if_pos hxle]
     congr 1
     ring
+
+/-- Backwards-compatible form of `rvachevUp_even` for an `IsFabius` candidate. -/
+theorem rvachev_even (F : BoundedFabius) (_hF : IsFabius F) :
+    Function.Even (rvachevUp F) :=
+  rvachevUp_even F
+
+/-- Rvachev's folded function vanishes at and to the left of `-1`. -/
+theorem rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+/-- Rvachev's folded function vanishes at and to the right of `1`. -/
+theorem rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
+  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
+
+/-- A point outside the open support interval is a zero of Rvachev's function. -/
+theorem rvachevUp_eq_zero_of_not_mem_Ioo (F : BoundedFabius)
+    (hF : IsFabius F) {x : ℝ} (hx : x ∉ Ioo (-1 : ℝ) 1) :
+    rvachevUp F x = 0 := by
+  by_cases hleft : x ≤ -1
+  · exact rvachevUp_eq_zero_of_le_neg_one F hF hleft
+  · apply rvachevUp_eq_zero_of_one_le F hF
+    have hxinside : -1 < x := lt_of_not_ge hleft
+    by_contra hright
+    exact hx ⟨hxinside, lt_of_not_ge hright⟩
+
+/-- Folding preserves the pointwise range `[0,1]` of a bounded candidate. -/
+theorem rvachevUp_mem_unitInterval (F : BoundedFabius) (x : ℝ) :
+    rvachevUp F x ∈ Icc (0 : ℝ) 1 := by
+  unfold rvachevUp
+  split_ifs <;> exact ⟨fabiusReal_nonneg F _, fabiusReal_le_one F _⟩
 
 private lemma fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
     HasDerivAt (fabiusReal F) (0 : ℝ) (1 : ℝ) := by
@@ -65,9 +98,8 @@ private lemma fabius_hasDerivAt_high (F : BoundedFabius) (hF : IsFabius F)
     rw [hargEq] at hcomp
     simpa only [neg_neg] using hcomp.const_sub (1 : ℝ)
   apply hrhs.congr_of_eventuallyEq
-  filter_upwards [Ioo_mem_nhds htlow hthigh] with y hy
-  have hs := hF.symmetry (1 - y)
-    ⟨by linarith [hy.2], by linarith [hy.1]⟩
+  filter_upwards with y
+  have hs := hF.symmetry_all (1 - y)
   convert hs using 1 <;> ring
 
 private lemma rvachev_left_hasDerivAt (F : BoundedFabius) (hF : IsFabius F)
@@ -211,11 +243,21 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       rw [heq]
       ring
 
-/-- Rvachev's function is smooth. -/
-theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
-    ContDiff ℝ ∞ (rvachevUp F) := by
-  have hdifferentiable : Differentiable ℝ (rvachevUp F) :=
-    fun x => (rvachev_hasDerivAt F hF x).differentiableAt
+/-- Pointwise derivative form of Rvachev's differential equation. -/
+theorem deriv_rvachevUp (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (rvachevUp F) x =
+      2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1)) :=
+  (rvachev_hasDerivAt F hF x).deriv
+
+/-- Any solution of Rvachev's dyadic differential refinement equation is smooth.
+
+This isolates the regularity bootstrap from the construction and from the
+particular folded representation of the canonical solution. -/
+theorem contDiff_of_hasDerivAt_dyadic_refinement (u : ℝ → ℝ)
+    (hu : ∀ x : ℝ, HasDerivAt u (2 * (u (2 * x + 1) - u (2 * x - 1))) x) :
+    ContDiff ℝ ∞ u := by
+  have hdifferentiable : Differentiable ℝ u :=
+    fun x => (hu x).differentiableAt
   apply contDiff_infty.mpr
   intro n
   induction n with
@@ -224,15 +266,20 @@ theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
       rw [show ((n + 1 : ℕ) : ℕ∞ω) = (n : ℕ∞ω) + 1 by simp,
         contDiff_succ_iff_deriv]
       refine ⟨hdifferentiable, by simp, ?_⟩
-      have hderiv : deriv (rvachevUp F) = fun x : ℝ =>
-          2 * (rvachevUp F (2 * x + 1) - rvachevUp F (2 * x - 1)) := by
+      have hderiv : deriv u = fun x : ℝ =>
+          2 * (u (2 * x + 1) - u (2 * x - 1)) := by
         funext x
-        exact (rvachev_hasDerivAt F hF x).deriv
+        exact (hu x).deriv
       rw [hderiv]
-      have hplus : ContDiff ℝ n (fun x : ℝ => rvachevUp F (2 * x + 1)) :=
+      have hplus : ContDiff ℝ n (fun x : ℝ => u (2 * x + 1)) :=
         ih.comp ((contDiff_const.mul contDiff_id).add contDiff_const)
-      have hminus : ContDiff ℝ n (fun x : ℝ => rvachevUp F (2 * x - 1)) :=
+      have hminus : ContDiff ℝ n (fun x : ℝ => u (2 * x - 1)) :=
         ih.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
       exact contDiff_const.mul (hplus.sub hminus)
+
+/-- Rvachev's function is smooth. -/
+theorem rvachev_contDiff (F : BoundedFabius) (hF : IsFabius F) :
+    ContDiff ℝ ∞ (rvachevUp F) :=
+  contDiff_of_hasDerivAt_dyadic_refinement _ (rvachev_hasDerivAt F hF)
 
 end Fabius

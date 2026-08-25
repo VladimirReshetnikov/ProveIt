@@ -547,22 +547,7 @@ lemma boundedCandidate_hasDerivAt (x : ℝ) :
 
 lemma rvachevCandidate_even :
     Function.Even (Fabius.rvachevUp boundedCandidate) := by
-  intro x
-  by_cases hx : x = 0
-  · subst x
-    simp
-  by_cases hxpos : 0 < x
-  · have hnx : -x ≤ 0 := by linarith
-    have hxnot : ¬ x ≤ 0 := not_le.mpr hxpos
-    simp only [Fabius.rvachevUp, if_pos hnx, if_neg hxnot]
-    congr 1
-    ring
-  · have hxneg : x < 0 := lt_of_le_of_ne (le_of_not_gt hxpos) hx
-    have hnxnot : ¬ -x ≤ 0 := by linarith
-    have hxle : x ≤ 0 := hxneg.le
-    simp only [Fabius.rvachevUp, if_neg hnxnot, if_pos hxle]
-    congr 1
-    ring
+  exact Fabius.rvachevUp_even boundedCandidate
 
 private lemma rvachevCandidate_hasDerivAt_of_neg {x : ℝ} (hx : x < 0) :
     HasDerivAt (Fabius.rvachevUp boundedCandidate)
@@ -648,30 +633,7 @@ lemma rvachevCandidate_hasDerivAt (x : ℝ) :
 
 lemma rvachevCandidate_contDiff :
     ContDiff ℝ ∞ (Fabius.rvachevUp boundedCandidate) := by
-  have hdifferentiable : Differentiable ℝ
-      (Fabius.rvachevUp boundedCandidate) :=
-    fun x => (rvachevCandidate_hasDerivAt x).differentiableAt
-  apply contDiff_infty.mpr
-  intro n
-  induction n with
-  | zero => exact contDiff_zero.mpr hdifferentiable.continuous
-  | succ n ih =>
-      rw [show ((n + 1 : ℕ) : ℕ∞ω) = (n : ℕ∞ω) + 1 by simp,
-        contDiff_succ_iff_deriv]
-      refine ⟨hdifferentiable, by simp, ?_⟩
-      have hderiv : deriv (Fabius.rvachevUp boundedCandidate) = fun x : ℝ =>
-          2 * (Fabius.rvachevUp boundedCandidate (2 * x + 1) -
-            Fabius.rvachevUp boundedCandidate (2 * x - 1)) := by
-        funext x
-        exact (rvachevCandidate_hasDerivAt x).deriv
-      rw [hderiv]
-      have hplus : ContDiff ℝ n (fun x : ℝ =>
-          Fabius.rvachevUp boundedCandidate (2 * x + 1)) :=
-        ih.comp ((contDiff_const.mul contDiff_id).add contDiff_const)
-      have hminus : ContDiff ℝ n (fun x : ℝ =>
-          Fabius.rvachevUp boundedCandidate (2 * x - 1)) :=
-        ih.comp ((contDiff_const.mul contDiff_id).sub contDiff_const)
-      exact contDiff_const.mul (hplus.sub hminus)
+  exact Fabius.contDiff_of_hasDerivAt_dyadic_refinement _ rvachevCandidate_hasDerivAt
 
 lemma boundedCandidate_contDiff :
     ContDiff ℝ ∞ (Fabius.fabiusReal boundedCandidate) := by
@@ -759,5 +721,14 @@ end Existence
 theorem existsUnique_fabius :
     ∃! F : BoundedFabius, IsFabius F :=
   Existence.existsUnique
+
+/-- Any two bounded functions satisfying the Fabius characterization agree. -/
+theorem IsFabius.eq {F G : BoundedFabius} (hF : IsFabius F) (hG : IsFabius G) :
+    F = G :=
+  Existence.isFabius_eq F G hF hG
+
+/-- Bundled bounded Fabius functions form a subsingleton. -/
+instance fabiusFunctionSubsingleton : Subsingleton FabiusFunction where
+  allEq F G := Subtype.ext (F.property.eq G.property)
 
 end Fabius

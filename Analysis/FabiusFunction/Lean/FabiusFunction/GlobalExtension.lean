@@ -18,14 +18,6 @@ namespace Fabius
 
 set_option autoImplicit false
 
-private lemma rvachevUp_eq_zero_of_le_neg_one (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : x ≤ -1) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_pos (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
-private lemma rvachevUp_eq_zero_of_one_le (F : BoundedFabius)
-    (hF : IsFabius F) {x : ℝ} (hx : 1 ≤ x) : rvachevUp F x = 0 := by
-  rw [rvachevUp, if_neg (by linarith), hF.zero_of_nonpos _ (by linarith)]
-
 private lemma extendedSummand_eq_zero_of_lt_two_mul
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ} {n : ℕ}
     (hx : x < 2 * (n : ℝ)) :
@@ -97,6 +89,27 @@ theorem extendedFabius_eq_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
       linarith [hx.2]
     rw [rvachevUp, if_pos harg, hF.zero_of_nonpos _ hinside]
     simp
+
+/-- The signed extension vanishes at the origin. -/
+@[simp] theorem extendedFabius_zero (F : BoundedFabius) (hF : IsFabius F) :
+    extendedFabius F 0 = 0 :=
+  extendedFabius_eq_zero_of_nonpos F hF le_rfl
+
+/-- The signed extension retains the bounded normalization at one. -/
+@[simp] theorem extendedFabius_one (F : BoundedFabius) (hF : IsFabius F) :
+    extendedFabius F 1 = 1 := by
+  rw [extendedFabius_eq_fabiusReal F hF (by constructor <;> norm_num),
+    hF.one_of_one_le 1 le_rfl]
+
+/-- On the unit interval, the signed extension inherits the reflection
+symmetry of the bounded Fabius function. -/
+theorem extendedFabius_one_sub (F : BoundedFabius) (hF : IsFabius F)
+    {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
+    extendedFabius F (1 - x) = 1 - extendedFabius F x := by
+  rw [extendedFabius_eq_fabiusReal F hF
+      ⟨by linarith [hx.2], by linarith [hx.1]⟩,
+    extendedFabius_eq_fabiusReal F hF hx]
+  exact hF.symmetry x hx
 
 /-- The signed global extension is infinitely differentiable. -/
 theorem extendedFabius_contDiff (F : BoundedFabius) (hF : IsFabius F) :
@@ -249,6 +262,12 @@ theorem extendedFabius_hasDerivAt
   have hd := (extendedFabius_contDiff F hF).differentiable (by simp) x
   rw [← hderivValue]
   exact hd.hasDerivAt
+
+/-- Pointwise derivative form of the signed extension's refinement equation. -/
+theorem deriv_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    deriv (extendedFabius F) x = 2 * extendedFabius F (2 * x) :=
+  (extendedFabius_hasDerivAt F hF x).deriv
 
 /-- Equation (3): every iterated derivative is a rescaled global Fabius value. -/
 theorem iteratedDeriv_extendedFabius

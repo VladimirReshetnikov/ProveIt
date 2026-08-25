@@ -78,11 +78,17 @@ theorem not_odd_choose_two_mul_odd (n k : ℕ) :
   simp at h
   omega
 
+/-- Odd-position entries in an even-indexed binomial row are even. -/
+theorem even_choose_two_mul_add_one (n k : ℕ) :
+    Even (Nat.choose (2 * n) (2 * k + 1)) :=
+  Nat.not_odd_iff_even.mp (not_odd_choose_two_mul_odd n k)
+
 /-- The indices of the odd coefficients in row `n` of Pascal's triangle. -/
 def oddBinomialIndices (n : ℕ) : Finset ℕ :=
   (range (n + 1)).filter (fun k => Odd (Nat.choose n k))
 
-private lemma card_oddBinomialIndices_two_mul (n : ℕ) :
+/-- Doubling the row index preserves the number of odd binomial coefficients. -/
+theorem card_oddBinomialIndices_two_mul (n : ℕ) :
     (oddBinomialIndices (2 * n)).card = (oddBinomialIndices n).card := by
   symm
   apply Finset.card_bij (fun k _ => 2 * k)
@@ -105,7 +111,8 @@ private lemma card_oddBinomialIndices_two_mul (n : ℕ) :
     · subst j
       exact (not_odd_choose_two_mul_odd n k hj.2).elim
 
-private lemma card_oddBinomialIndices_two_mul_add_one (n : ℕ) :
+/-- Passing from row `n` to row `2n+1` doubles the number of odd coefficients. -/
+theorem card_oddBinomialIndices_two_mul_add_one (n : ℕ) :
     (oddBinomialIndices (2 * n + 1)).card = 2 * (oddBinomialIndices n).card := by
   let source : Finset (ℕ × Bool) := oddBinomialIndices n ×ˢ Finset.univ
   have hcard : source.card = (oddBinomialIndices (2 * n + 1)).card := by
@@ -302,5 +309,17 @@ theorem momentNumerator_odd (n : ℕ) : Odd (momentNumerator n) := by
             ((Finset.univ : Finset (Fin (n + 1))).filter
               (fun k => Odd (Nat.choose (2 * (n + 1) + 1) (2 * k.val)))).card % 2 := hmod
         _ = 1 := Nat.odd_iff.mp hcardOdd
+
+/-- The integral moment numerator is congruent to one modulo two. -/
+@[simp] theorem momentNumerator_mod_two (n : ℕ) : momentNumerator n % 2 = 1 :=
+  Nat.odd_iff.mp (momentNumerator_odd n)
+
+/-- Every integral moment numerator is strictly positive. -/
+theorem momentNumerator_pos (n : ℕ) : 0 < momentNumerator n :=
+  (momentNumerator_odd n).pos
+
+/-- In particular, no integral moment numerator vanishes. -/
+theorem momentNumerator_ne_zero (n : ℕ) : momentNumerator n ≠ 0 :=
+  Nat.ne_of_gt (momentNumerator_pos n)
 
 end Fabius

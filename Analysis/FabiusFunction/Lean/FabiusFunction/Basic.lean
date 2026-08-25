@@ -72,6 +72,18 @@ structure IsFabius (F : BoundedFabius) : Prop where
   hasDerivAt : ∀ x ∈ Set.Icc (0 : ℝ) (1 / 2),
     HasDerivAt (fabiusReal F) (2 * fabiusReal F (2 * x)) x
 
+/-- The reflection identity in `IsFabius` automatically extends from the
+unit interval to all real arguments using the two constant tails. -/
+theorem IsFabius.symmetry_all {F : BoundedFabius} (hF : IsFabius F) (x : ℝ) :
+    fabiusReal F (1 - x) = 1 - fabiusReal F x := by
+  by_cases hx0 : x ≤ 0
+  · rw [hF.one_of_one_le (1 - x) (by linarith), hF.zero_of_nonpos x hx0]
+    norm_num
+  · by_cases hx1 : 1 ≤ x
+    · rw [hF.zero_of_nonpos (1 - x) (by linarith), hF.one_of_one_le x hx1]
+      norm_num
+    · exact hF.symmetry x ⟨le_of_not_ge hx0, le_of_not_ge hx1⟩
+
 /-- A bounded Fabius function bundled with its defining properties. -/
 abbrev FabiusFunction := {F : BoundedFabius // IsFabius F}
 
