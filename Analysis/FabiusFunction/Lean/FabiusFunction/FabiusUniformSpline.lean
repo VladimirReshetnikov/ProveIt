@@ -220,47 +220,6 @@ private lemma thueMorse_affine_power_sum_self_real
       _ = 0 := by rw [hzeroR, mul_zero]
   · simp
 
-private theorem thueMorseSign_block_concat
-    (k h r : ℕ) (hr : r < 2 ^ k) :
-    thueMorseSign (h * 2 ^ k + r) =
-      thueMorseSign h * thueMorseSign r := by
-  induction k generalizing h r with
-  | zero =>
-      have : r = 0 := by omega
-      subst r
-      norm_num [thueMorseSign, binaryWeight]
-  | succ k ih =>
-      rcases r.even_or_odd with ⟨r, rfl⟩ | ⟨r, rfl⟩
-      · have hr' : r < 2 ^ k := by rw [pow_succ] at hr; omega
-        rw [show r + r = 2 * r by omega]
-        rw [show h * 2 ^ (k + 1) + 2 * r =
-            2 * (h * 2 ^ k + r) by rw [pow_succ]; ring,
-          thueMorseSign_two_mul, thueMorseSign_two_mul, ih h r hr']
-      · have hr' : r < 2 ^ k := by rw [pow_succ] at hr; omega
-        rw [show h * 2 ^ (k + 1) + (2 * r + 1) =
-            2 * (h * 2 ^ k + r) + 1 by rw [pow_succ]; ring,
-          thueMorseSign_two_mul_add_one,
-          thueMorseSign_two_mul_add_one, ih h r hr']
-        ring
-
-private lemma sum_range_block_decomposition
-    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
-    (∑ j ∈ Finset.range (m * p), f j) =
-      ∑ h ∈ Finset.range m, ∑ r ∈ Finset.range p, f (h * p + r) := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      rw [Nat.succ_mul, Finset.sum_range_add, ih,
-        Finset.sum_range_succ]
-
-private lemma sum_range_block_decomposition_with_remainder
-    {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p r : ℕ) :
-    (∑ j ∈ Finset.range (m * p + r), f j) =
-      (∑ h ∈ Finset.range m,
-        ∑ j ∈ Finset.range p, f (h * p + j)) +
-      ∑ j ∈ Finset.range r, f (m * p + j) := by
-  rw [Finset.sum_range_add, sum_range_block_decomposition]
-
 private lemma fabiusDiscreteLimitRangeLength_two_mul_add
     (p block : ℕ) {y : ℝ} (hy : 0 ≤ y) :
     fabiusDiscreteLimitRangeLength (2 * block + y) p =

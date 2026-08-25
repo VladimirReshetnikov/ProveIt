@@ -263,53 +263,58 @@ theorem negativeLaplaceVerticalLogFirst_two_mul
   dsimp [factorCurve] at hfactorNe ⊢
   field_simp [hfactorNe, hcurveNe]
 
+/-- The second vertical logarithmic derivative inherits the one-factor dyadic
+recurrence by differentiating the first one in the vertical parameter.  No
+weight appears: the dilation acts on `s`, the differentiation on `θ`. -/
 theorem negativeLaplaceVerticalLogSecond_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     negativeLaplaceVerticalLogSecond F (2 * s) θ =
       negativeLaplaceVerticalKernelLogSecond s θ +
-        negativeLaplaceVerticalLogSecond F s θ := by
-  have hl := negativeLaplaceVerticalLogFirst_hasDerivAt F hF (by positivity : 0 < 2 * s) θ
-  have hr := (negativeLaplaceVerticalKernelLogFirst_hasDerivAt hs θ).add
-    (negativeLaplaceVerticalLogFirst_hasDerivAt F hF hs θ)
-  have heq : negativeLaplaceVerticalLogFirst F (2 * s) =ᶠ[nhds θ]
-      negativeLaplaceVerticalKernelLogFirst s +
-        negativeLaplaceVerticalLogFirst F s := by
-    filter_upwards with t
-    exact negativeLaplaceVerticalLogFirst_two_mul F hF hs t
-  exact hl.unique (hr.congr_of_eventuallyEq heq)
+        negativeLaplaceVerticalLogSecond F s θ :=
+  hasDerivAt_of_parameterScalingRecurrence_two_mul
+    (f := negativeLaplaceVerticalLogFirst F)
+    (f' := negativeLaplaceVerticalLogSecond F)
+    (g := negativeLaplaceVerticalKernelLogFirst)
+    (g' := negativeLaplaceVerticalKernelLogSecond)
+    (fun _ ht t => negativeLaplaceVerticalLogFirst_hasDerivAt F hF ht t)
+    (fun _ ht t => negativeLaplaceVerticalKernelLogFirst_hasDerivAt ht t)
+    (fun _ ht t => negativeLaplaceVerticalLogFirst_two_mul F hF ht t) hs θ
 
+/-- The third vertical logarithmic derivative satisfies the same unweighted
+one-factor dyadic recurrence. -/
 theorem negativeLaplaceVerticalLogThird_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     negativeLaplaceVerticalLogThird F (2 * s) θ =
       negativeLaplaceVerticalKernelLogThird s θ +
-        negativeLaplaceVerticalLogThird F s θ := by
-  have hl := negativeLaplaceVerticalLogSecond_hasDerivAt F hF (by positivity : 0 < 2 * s) θ
-  have hr := (negativeLaplaceVerticalKernelLogSecond_hasDerivAt hs θ).add
-    (negativeLaplaceVerticalLogSecond_hasDerivAt F hF hs θ)
-  have heq : negativeLaplaceVerticalLogSecond F (2 * s) =ᶠ[nhds θ]
-      negativeLaplaceVerticalKernelLogSecond s +
-        negativeLaplaceVerticalLogSecond F s := by
-    filter_upwards with t
-    exact negativeLaplaceVerticalLogSecond_two_mul F hF hs t
-  exact hl.unique (hr.congr_of_eventuallyEq heq)
+        negativeLaplaceVerticalLogThird F s θ :=
+  hasDerivAt_of_parameterScalingRecurrence_two_mul
+    (f := negativeLaplaceVerticalLogSecond F)
+    (f' := negativeLaplaceVerticalLogThird F)
+    (g := negativeLaplaceVerticalKernelLogSecond)
+    (g' := negativeLaplaceVerticalKernelLogThird)
+    (fun _ ht t => negativeLaplaceVerticalLogSecond_hasDerivAt F hF ht t)
+    (fun _ ht t => negativeLaplaceVerticalKernelLogSecond_hasDerivAt ht t)
+    (fun _ ht t => negativeLaplaceVerticalLogSecond_two_mul F hF ht t) hs θ
 
+/-- The fourth vertical logarithmic derivative satisfies the same unweighted
+one-factor dyadic recurrence.  This is the order used by the uniform off-axis
+bound below. -/
 theorem negativeLaplaceVerticalLogFourth_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) (θ : ℝ) :
     negativeLaplaceVerticalLogFourth F (2 * s) θ =
       negativeLaplaceVerticalKernelLogFourth s θ +
-        negativeLaplaceVerticalLogFourth F s θ := by
-  have hl := negativeLaplaceVerticalLogThird_hasDerivAt F hF (by positivity : 0 < 2 * s) θ
-  have hr := (negativeLaplaceVerticalKernelLogThird_hasDerivAt hs θ).add
-    (negativeLaplaceVerticalLogThird_hasDerivAt F hF hs θ)
-  have heq : negativeLaplaceVerticalLogThird F (2 * s) =ᶠ[nhds θ]
-      negativeLaplaceVerticalKernelLogThird s +
-        negativeLaplaceVerticalLogThird F s := by
-    filter_upwards with t
-    exact negativeLaplaceVerticalLogThird_two_mul F hF hs t
-  exact hl.unique (hr.congr_of_eventuallyEq heq)
+        negativeLaplaceVerticalLogFourth F s θ :=
+  hasDerivAt_of_parameterScalingRecurrence_two_mul
+    (f := negativeLaplaceVerticalLogThird F)
+    (f' := negativeLaplaceVerticalLogFourth F)
+    (g := negativeLaplaceVerticalKernelLogThird)
+    (g' := negativeLaplaceVerticalKernelLogFourth)
+    (fun _ ht t => negativeLaplaceVerticalLogThird_hasDerivAt F hF ht t)
+    (fun _ ht t => negativeLaplaceVerticalKernelLogThird_hasDerivAt ht t)
+    (fun _ ht t => negativeLaplaceVerticalLogThird_two_mul F hF ht t) hs θ
 
 private lemma vertical_exp_neg_le_half
     {s θ : ℝ} (hs : 1 ≤ s) :
