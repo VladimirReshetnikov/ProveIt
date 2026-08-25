@@ -645,6 +645,23 @@ The order-three statement is
 \nolinkurl{FabiusSecondSaddleExpansion.lean}.  Before this note the
 formalization stopped at order two, because $A_2$ was not known.
 
+\subsection{The right endpoint}\label{sec:right}
+
+Nothing separate is needed at $x\to1^-$.  The symmetry $F(x)+F(1-x)=1$,
+which holds on all of $\R$ for the bounded Fabius function, gives
+$1-F(1-x)=F(x)$ identically, so the deficiency at the right endpoint is the
+value at the left endpoint and every expansion above transfers verbatim:
+\[
+  \log\bigl(1-F(1-x)\bigr)=\mathcal M(x)
+    +\sum_{j=1}^{N-1}\frac{A_j(\lambda(x))}{\lambda(x)^j}
+    +\bigO(\lambda(x)^{-N}),\qquad x\to0^+,
+\]
+with the same $\mathcal M$, the same $\lambda$ and the same coefficients.
+In particular $1-F(y)$ is flat to infinite order at $y=1$, with exactly the
+same periodic modulation.  The reason this is worth a sentence rather than a
+section is that the symmetry is exact, not asymptotic; there is no error term
+to propagate.
+
 \section{The leading-derivative law}\label{sec:leading}
 
 \begin{theorem}[Leading term]\label{thm:leading}
@@ -882,6 +899,50 @@ at $j=2$ ($1.08$) and $j=3$ ($1.24$), because the subleading terms of
 $c_j(1)$ contribute more as $j$ grows.  \Cref{eq:amplitude} is a
 leading-term estimate and should be read as one.
 
+\subsection{A worked example}\label{sec:worked}
+
+It is worth seeing the expansion used once, on a value that can be written
+down exactly.  At $x=2^{-10}$ the evaluator gives
+\[
+  F(2^{-10})=\frac{134\,926\,369}{1\,246\,394\,851\,358\,539\,387\,238\,350\,848\,000},
+  \qquad \log F(2^{-10})=-50.57756828234216081254\dots,
+\]
+and $\lambda=13.7850305606$, so $\{\lambda\}=0.785031$.  The successive
+truncations miss $\log F$ by
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+truncation & error at $n=10$ & error at $n=160$\\
+\midrule
+$\mathcal M(x)$ & $5.80\times10^{-2}$ & $4.58\times10^{-3}$\\
+${}+A_1/\lambda$ & $2.67\times10^{-3}$ & $1.85\times10^{-5}$\\
+${}+A_2/\lambda^2$ & $-6.84\times10^{-5}$ & $-2.34\times10^{-8}$\\
+${}+A_3/\lambda^3$ & $-3.52\times10^{-5}$ & $-2.66\times10^{-9}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+where $n=160$ has $\lambda=167.387044$ and
+$\log F(2^{-160})=-9489.629874649676879065\dots$
+
+Two things are visible.  At $n=160$ each order gains roughly a factor
+$\lambda$, as it should: $250$, then $790$.  The last gain is only $8.8$,
+and that is not a defect --- the third-order error is already dominated by
+$A_4/\lambda^4$, which \cref{eq:A4jets} puts at
+$-1.72/167.387^4=-2.19\times10^{-9}$ against a measured
+$-2.66\times10^{-9}$.  So the table is measuring $A_4$, not a failure.
+
+At $n=10$, by contrast, the fourth term barely helps: the error falls only
+from $6.8\times10^{-5}$ to $3.5\times10^{-5}$.  With $\lambda=13.8$ and
+$A_4\approx-1.7$, the term $A_4/\lambda^4$ is itself $4.7\times10^{-5}$,
+comparable to the error it is meant to reduce.  This is the ordinary
+behaviour of a Poincar\'e expansion near the end of its useful range, and it
+is the practical reason \cref{sec:fourier} declines to claim convergence:
+the coefficients grow, so for a fixed $x$ there is a best truncation, and
+going past it makes the approximation worse.  At $x=2^{-10}$ that optimum is
+already at hand around the third term.
+
 \subsection{An independent confirmation to $n=400$}
 
 The following was produced in a separate worktree, by a different agent,
@@ -1076,10 +1137,26 @@ polynomials in smooth periodic functions.
 
 \begin{enumerate}
 \item Formalize \cref{thm:mass,thm:log} for the generic
-  $\operatorname{expCoeff}$ and $\operatorname{logCoeff}$ recursions.  Mathlib
-  has \texttt{Composition n} with a \texttt{Fintype} instance but no
-  first-block decomposition equivalence, which is the missing combinatorial
-  ingredient.
+  $\operatorname{expCoeff}$ and $\operatorname{logCoeff}$ recursions.  This is
+  the one part of the general formula that remains unformalized, so it is
+  worth recording what it would actually take.  Mathlib has
+  \texttt{Composition n} with a \texttt{Fintype} instance, but no first-block
+  decomposition equivalence
+  $\mathcal C(n+1)\simeq\coprod_{b=1}^{n+1}\mathcal C(n+1-b)$, which is what
+  an induction against the recursion needs.
+
+  The route that avoids \texttt{Composition} altogether is to work with the
+  $k$-fold convolution powers $E^{*k}$ directly, as plain finite sums, and
+  prove $\operatorname{expCoeff}(E)_n=\sum_{k\le n}(k!)^{-1}(E^{*k})_n$ when
+  $E_0=0$.  The pleasant part is that the product rule is a triviality at the
+  level of coefficients: writing $(\mathrm DA)_n=nA_n$,
+  $\mathrm D(A*B)=(\mathrm DA)*B+A*(\mathrm DB)$ is just $n=j+(n-j)$ inside
+  the convolution sum.  The unpleasant part is that promoting it to
+  $\mathrm D(E^{*(k+1)})=(k+1)\,E^{*k}*\mathrm DE$ needs associativity of
+  convolution, which is a double-sum reindexing that Mathlib does not state
+  for bare sequences either.  Either ingredient is a self-contained piece of
+  \texttt{Finset} combinatorics; neither is deep, and both are larger than the
+  theorem they support.
 \item Formalize \cref{thm:leading} for general $j$.
 \item Surface effective constants in the $\bigO(\lambda^{-N})$ remainders.
 \item Prove or refute convergence of the series in \cref{sec:fourier}.
@@ -1088,8 +1165,6 @@ polynomials in smooth periodic functions.
   amplitude of about $0.25$.  The machinery is in place: it needs
   $\operatorname{expCoeff}$ at order $6$, the jets $d_0,\dots,d_5$, and
   Gaussian moments to $v^{18}$.
-\item State the mirrored expansion at the right endpoint, $1-F(1-x)$, which
-  follows from $F(x)+F(1-x)=1$ but is nowhere displayed.
 \end{enumerate}
 
 \end{document}
