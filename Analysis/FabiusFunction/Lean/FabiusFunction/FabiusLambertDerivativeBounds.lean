@@ -2,7 +2,81 @@ import FabiusFunction.LaplacePeriodicSecondOrder
 import FabiusFunction.FabiusLambertSaddle
 
 /-!
-# Real-orbit logarithmic derivative bounds at a Lambert radius
+# Second and third logarithmic derivatives on the real dyadic orbit
+
+Write `q` for the negative-Laplace logarithm of the Fabius function and `Ψ`
+for the zero-mean one-periodic correction appearing in its
+quadratic-plus-periodic decomposition.  `FabiusFunction.LaplacePeriodicSecondOrder`
+establishes the exact first-derivative identity
+
+`q'(s) = (-log s / log 2 + 1/2 + Ψ'(logb 2 s) / log 2) / s - T₁(s)`,
+
+valid for every `s > 0`, where `T₁ = negativeLaplaceForwardTailFirst` is the
+exponentially small forward tail.  This module differentiates that identity
+twice more, producing exact all-real formulas of the same shape for `q''` and
+`q'''`, and then restricts them to the real dyadic orbit `s = 2 ^ b`.  On that
+orbit `logb 2 s = b`, so the periodic terms become `Ψ'(b)`, `Ψ''(b)`,
+`Ψ'''(b)` -- bounded because `Ψ` is `C⁴` and one-periodic -- and the only
+unbounded contribution is an explicit term linear in `b`.  Removing it leaves
+the three scaled residuals
+
+```
+R₁ b = 2 ^ b * q' (2 ^ b) + b
+R₂ b = (2 ^ b) ^ 2 * q'' (2 ^ b) - b
+R₃ b = (2 ^ b) ^ 3 * q''' (2 ^ b) + 2 * b
+```
+
+each bounded uniformly over `b ≥ 0`.
+
+The orbit `s = 2 ^ b` is not an arbitrary choice: it is exactly where the
+explicit lower-Lambert saddle of `FabiusFunction.FabiusLambertSaddle` lives,
+since there the radius is `r = 2 ^ lambda` and the saddle equation `r * x =
+lambda` identifies the phase `b` with `lambda`.  This module is the
+derivative-estimate layer under that saddle.  Its sole consumer,
+`FabiusFunction.FabiusSaddleCentralLambert`, rewrites the odd linear and cubic
+saddle coefficients as `(R₁ b - 1) / sqrt b` and `(2 + 2 * b - R₃ b) /
+(6 * b * sqrt b)`, so the uniform bounds below are precisely what make both
+coefficients `O(b ^ (-1/2))`; `R₂` supplies the curvature defect between the
+exact quadratic term and the standard Gaussian exponent.
+
+## Main results
+
+* `negativeLaplaceLogSecond_eq_periodic` and `negativeLaplaceLogThird_eq_periodic`
+  -- exact quadratic-plus-periodic formulas for `q''` and `q'''` on `(0, ∞)`,
+  each equal to a periodic-plus-logarithmic numerator over `s ^ 2`, `s ^ 3`
+  minus the corresponding forward tail.
+* `negativeLaplaceRpowFirstResidual`, `negativeLaplaceRpowSecondResidual`,
+  `negativeLaplaceRpowThirdResidual` -- the residuals `R₁`, `R₂`, `R₃`, with
+  `_eq` lemmas giving their closed forms in terms of `Ψ'`, `Ψ''`, `Ψ'''` and
+  the forward tails.
+* `exists_bound_abs_negativeLaplaceRpowFirstResidual` and its second- and
+  third-order companions -- the uniform residual bounds on `b ≥ 0` that the
+  saddle analysis consumes.
+* `norm_negativeLaplaceForwardTailSecond_le_inv_cube` and
+  `norm_negativeLaplaceForwardTailThird_le_inv_fourth` -- explicit tail decay
+  `48 / s ^ 3` and `768 / s ^ 4` for `s ≥ 1`, together with the scaled forms
+  `abs_mul_negativeLaplaceForwardTailFirst_le_eight`,
+  `abs_sq_mul_negativeLaplaceForwardTailSecond_le` and
+  `abs_cube_mul_negativeLaplaceForwardTailThird_le`.
+* `negativeLaplacePsiThird` -- the third derivative of `Ψ`, one order past
+  where `FabiusFunction.PeriodicRegularity` stops, with the expected
+  periodicity, continuity, boundedness and `HasDerivAt` support lemmas, plus
+  `exists_bound_abs_deriv_negativeLaplacePsi` supplying the first-derivative
+  analogue of the existing second-derivative bound.
+
+## Conventions and caveats
+
+The derivative identities are unconditional on `(0, ∞)`; every *bound* here is
+restricted to `s ≥ 1`, equivalently `b ≥ 0`, and the residual bounds take `b`
+as an implicit argument.  The numeric constants `8`, `48`, `768` are explicit
+but merely sufficient, not sharp: they come from the crude estimates
+`x ^ k * exp (-x) ≤ k!` and `(1 - exp (-x)) ^ (-m) ≤ 2 ^ m` for `x ≥ 1`, summed
+against a geometric series in the dyadic index.  The residual bounds, by
+contrast, are pure existence statements -- the constants are extracted from
+boundedness of the range of a continuous one-periodic function and are never
+named.  `Ψ` here is the *normalized* correction, with its mean over a period
+subtracted; all logarithms are natural, with the base-2 scale carried by the
+explicit `log 2` denominators.
 -/
 
 set_option autoImplicit false

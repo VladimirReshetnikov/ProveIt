@@ -2,6 +2,65 @@ import FabiusFunction.NegativeLaplaceVerticalOrdinaryJets
 import FabiusFunction.FabiusSaddlePolynomialCoefficients
 import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 
+/-!
+# All-orders algebra of the centered Fabius saddle exponent
+
+On the dyadic Lambert central arc the saddle data are a phase `t`, a radius
+`r = 2^t`, and a Gaussian scale `epsilon` fixed by `t * epsilon^2 = 1`.  Once
+the standard Gaussian is factored out of the saddle kernel, the exponent left
+over is
+
+`t * epsilon * v * I + v^2/2 + L_r (epsilon * v) - log (1 + epsilon * v * I)`,
+
+with `L_r = negativeLaplaceVerticalLog F r` the branch-safe vertical logarithm
+normalized to vanish at the origin.  This module regroups the Taylor
+polynomials of those two logarithms into a single power series in `epsilon`
+with exactly identified coefficients.  Write `d_n` for the bounded exponent
+jet, `f_n` for the flat forward-product jet, and `s_n = (-1)^(n+1) n!` for the
+slope of the `(n+1)`st scaled ordinary derivative of the negative-Laplace
+logarithm.  The `Complex.logTaylor` counterterm supplies exactly the constant
+`s_(k-1)` that promotes the periodic part of the `k`th scaled jet to the
+bounded jet `d_(k-1)`, leaving a bounded piece
+`I^k (d_(k-1) - f_(k-1)) v^k / k!` beside a piece `t * I^k s_(k-1) v^k / k!`
+that is linear in `t`.  Because `t * epsilon^2 = 1`, the linear piece
+reappears two `epsilon` orders lower, so the exact coefficient of `epsilon^m`
+is the bounded term of order `m` plus the slope term of order `m + 2`.
+
+Isolating that index juggling is the point of the module.
+`FabiusSaddleCentralAllOrders` feeds the results below into
+`dyadicLambertCenteredExponent_sub_truncation_eq`, the exact decomposition of
+the centered exponent into its periodic truncation plus a vertical Taylor
+remainder, a `Complex.log` Taylor remainder, two boundary jets, and the flat
+forward-product jets; `FabiusSaddleMassAllOrders` bounds those pieces on the
+way to the full asymptotic expansion of the saddle-kernel mass.
+
+## Main results
+
+* `negativeLaplaceExactExponentBoundedTerm`, `negativeLaplaceExponentSlopeTerm`
+  and `negativeLaplaceExactExponentCoefficient` -- the two graded pieces and
+  the exact coefficient of `epsilon^m`, indexed by the power of `epsilon`
+  rather than by the jet order, and all zero in order `0`.
+* `negativeLaplaceExactExponentCoefficient_eq` -- that coefficient differs from
+  the periodic polynomial coefficient `negativeLaplaceExponentCoefficient` of
+  `FabiusFunction.FabiusSaddleCoefficientRecurrence` by exactly one flat
+  forward-product term.
+* `centeredJetSum_eq_exactExponentSum_boundary` -- the reindexing identity: the
+  imposed linear phase and the Gaussian quadratic are cancelled by the first
+  two slope terms, and the jet sum through order `M + 2` collapses to the
+  coefficient sum through order `M` plus two boundary terms.
+* `negativeLaplaceVerticalTaylorSum` and
+  `verticalTaylorSum_sub_logTaylor_eq_jetSum` -- the order-`K` Taylor sum of
+  `L_r` at `theta = epsilon * v`, and the identification of its difference
+  with `Complex.logTaylor (K + 1)` as the graded jet sum.
+
+Nothing in this module is an estimate.  The reindexing identity holds for all
+complex `epsilon` and `v` obeying `t * epsilon^2 = 1`, with no smallness
+hypothesis, and its boundary terms of orders `epsilon^(M+1)` and
+`epsilon^(M+2)` are exact summands rather than remainders; they are bounded
+downstream.  The variable `t` is the dyadic phase, so the radius is `2^t`, and
+consumers instantiate it at `dyadicLambertPhase`.
+-/
+
 set_option autoImplicit false
 
 open Complex Filter Set

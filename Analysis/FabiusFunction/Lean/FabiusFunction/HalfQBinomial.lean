@@ -1,6 +1,67 @@
 import FabiusFunction.ThueMorsePrefix
 import Mathlib.Tactic.FieldSimp
 
+/-!
+# Finite q-Pochhammer symbols and Gaussian binomials at `q = 1/2`
+
+This module is the small q-special-function layer in which the
+q-binomial--Thue--Morse closed form for dyadic Fabius values is stated.  Over
+`ℚ` it defines the finite q-Pochhammer symbol
+
+`(a; q)_n = ∏_{j=0}^{n-1} (1 - a q^j)`
+
+as `finiteQPochhammer a q n`, in Wolfram Language's argument order, and the
+Gaussian binomial `qBinomial n k q = (q;q)_n / ((q;q)_k (q;q)_{n-k})`,
+extended by zero for `k > n`.  Both are specialized at `q = 1/2` to
+`halfQPochhammer n = (1/2; 1/2)_n` and `halfQBinomial n k`.  All arithmetic
+is exact and rational; there is no polynomial-in-`q` theory here.
+
+The payload is the finite q-binomial theorem at `q = 1/2`,
+
+`∑_{k=0}^n (-1)^k (1/2)^(C(k,2)) * halfQBinomial n k * z^k = (z; 1/2)_n`,
+
+proved from the q-Pascal recurrence, together with its values at the dyadic
+nodes `z = 2^m`: for `m < n` the factor `1 - 2^m (1/2)^m` vanishes and the
+sum is zero, while at `z = 2^n` the product reflects to
+`(-1)^n 2^(C(n+1,2)) (1/2;1/2)_n`.  Those two evaluations are the
+interpolation data that `FabiusFunction.FabiusQBinomialFormula` feeds to its
+Lagrange argument at the nodes `-(2^k)`, and the theorem itself is what
+`FabiusFunction.FabiusDiscreteLimitToeplitz` evaluates at `z = 1/2` and
+`z = -1/2` to obtain its Toeplitz row sums and their exact total variation.
+These definitions are also the notation carried unchanged through the
+statements of the whole `Fabius*QBinomial*` family.
+
+## Main results
+
+* `finiteQPochhammer`, `qPochhammer`, `halfQPochhammer` -- the symbol, its
+  notation-faithful Wolfram alias, and the `q = 1/2` case, with
+  `halfQPochhammer_pos` and `halfQPochhammer_ne_zero` supplying the
+  nonvanishing that every later denominator argument needs.
+* `qBinomial`, `halfQBinomial`, `halfQBinomial_pos`, `halfQBinomial_symm`,
+  `halfQBinomial_succ_succ`, `halfQBinomial_succ_succ'` -- the coefficient,
+  positivity for `k ≤ n`, the reflection `k ↦ n - k`, and both orientations
+  of the q-Pascal recurrence.
+* `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
+* `halfQBinomial_two_pow_sum_eq_zero`, `halfQBinomial_two_pow_sum_eq_self` --
+  the dyadic node evaluations.
+* `four_pow_choose_two` -- `4^(C(k,2)) = 2^(k(k-1))`, which rewrites the
+  Wolfram denominator as a pure power of two.
+
+The remaining declarations are edge-case `simp` lemmas, `qBinomial_half_*`
+restatements of the results above in literal Wolfram notation, and a
+Mersenne-product normalization layer: `halfMersenneProduct n` is
+`∏_{j=1}^n (2^j - 1)`, `halfQPochhammer_eq_mersenne_div` gives
+`(1/2;1/2)_n = (∏_{j=1}^n (2^j - 1)) / 2^(C(n+1,2))`, and
+`two_pow_nat_sq_mul_halfQPochhammer` reads the formula's prefactor
+division-free as `2^(n^2) (1/2;1/2)_n = 2^(C(n,2)) ∏_{j=1}^n (2^j - 1)`.
+
+Caveat: `qBinomial n k q` is the q-Pochhammer quotient, not the polynomial
+Gaussian binomial.  The two agree whenever the denominator is nonzero, which
+holds at `q = 1/2`, the only specialization used here, but fails at a root of
+unity.  Natural subtraction is truncated, so the quotient lemmas carry
+`k ≤ n` hypotheses, and `C(k,2)` above is Lean's `k.choose 2`.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators

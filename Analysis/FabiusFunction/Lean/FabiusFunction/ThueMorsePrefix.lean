@@ -2,6 +2,75 @@ import FabiusFunction.DyadicClosedForm
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.RingTheory.Polynomial.Pochhammer
 
+/-!
+# Iterated prefix sums of the signed Thue--Morse sequence
+
+Write `t_n = (-1)^(binaryWeight n)` for the signed Thue--Morse sequence of
+`FabiusFunction.DyadicClosedForm`.  This module develops the discrete side of
+the local K-fold Thue--Morse draft: the `k`-fold *inclusive* prefix sums
+`S^0(n) = t_n`, `S^(k+1)(n) = sum_{j <= n} S^k(j)`, their closed form as the
+binomial convolution
+
+`S^(k+1)(n) = sum_{m <= n} C(n - m + k, k) * t_m`
+
+-- the draft's equation (5), with discrete B-spline kernel
+`B_k(n) = C(n + k - 1, k - 1)` -- and the exact run of zeros that `S^k` has
+at the right end of every dyadic block.  Those zero runs come from Prouhet
+cancellation, so the module also gives the block power sums
+`sum_{h < 2^r} t_h * h^d` a public name, `thueMorsePowerSum`
+(`DyadicClosedForm` proves the monomial statements only for a private copy),
+and upgrades them from monomials to arbitrary rational polynomials and to
+affine substitutions.
+
+It is a separate module because it is the base of the draft's whole discrete
+chain.  `FabiusFunction.ThueMorseGenerating` turns `iteratedPrefix` into a
+power series satisfying `(1 - X)^k * S_k = thueMorseSeries` (equation (6))
+and defines the normalized grid `S^k(j) / 2^C(k,2)`;
+`FabiusFunction.ThueMorseApproximation` identifies the prefixes with the
+coefficients of the Fabius approximation polynomials;
+`FabiusFunction.DraftCounterexamples` refutes the draft's literal error
+claims; and `FabiusFunction.ThueMorseExponential` uses the affine power sum
+to evaluate centered and translated exponential generating series.
+
+## Main results
+
+* `iteratedPrefix`, `iteratedPrefix_succ_sub` -- the `k`-fold inclusive
+  prefix sums and their forward difference.
+* `iteratedPrefix_convolution`, `iteratedPrefixKernel`,
+  `iteratedPrefix_eq_sum_kernel` -- equation (5), in a predecessor-free
+  indexing and in the source's kernel form.
+* `thueMorsePowerSum_eq_zero_of_lt`, `thueMorsePowerSum_self` -- Prouhet
+  cancellation for `d < r`, and the sharp boundary value
+  `(-1)^r * 2^C(r,2) * r!` at `d = r`.
+* `thueMorse_polynomial_sum_eq_coeff`, `thueMorse_polynomial_sum_eq_zero`,
+  `thueMorse_affine_power_sum_self` -- a block sum against a rational
+  polynomial of degree at most `r` returns its degree-`r` coefficient times
+  that factor, and vanishes when the degree is below `r`.
+* `iteratedPrefix_dyadic_zero_run`, `iteratedPrefix_before_dyadic_run`,
+  `iteratedPrefix_at_dyadic` -- for `1 <= k <= r` the `k` values
+  `S^k(2^r - k + i)`, `i < k`, all vanish, and the run is exactly that long:
+  the entry just before it is `(-1)^(r - k)` and `S^k(2^r) = -1`.
+
+The remaining public declarations are the definitional unfolding
+`iteratedPrefix_succ` and the half-block recurrence
+`thueMorsePowerSum_succ`, the `simp` normal forms (`iteratedPrefix_zero`,
+`iteratedPrefix_at_zero`, `iteratedPrefix_one_two_mul_add_one`,
+`thueMorseSign_two_pow_sub_one`), and the endpoint and reverse-indexed forms
+of the zero run (`iteratedPrefix_dyadic_endpoint`,
+`iteratedPrefix_dyadic_zero_reverse`).
+
+Conventions and caveats.  Prefix sums are inclusive, so `S^(k+1)(n)` ranges
+over `j <= n`; `iteratedPrefix` is `ℤ`-valued while the power sums are
+`ℚ`-valued.  `iteratedPrefix_eq_sum_kernel` assumes `1 <= k`, matching the
+source's positive indexing of `B_k`.  Every zero-run statement assumes
+`k <= r`, that is, a block long enough to absorb `k` cancellations, and says
+nothing for shorter blocks.  `thueMorse_affine_power_sum_self` does not
+depend on the translation, but it carries a factor `y^r` and so degenerates
+when the linear coefficient `y` is zero.  The draft's grid normalization
+`2^C(k,2)` is applied downstream in `FabiusFunction.ThueMorseGenerating`, not
+here.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators

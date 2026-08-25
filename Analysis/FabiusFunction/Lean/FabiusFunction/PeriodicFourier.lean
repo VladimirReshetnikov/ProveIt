@@ -6,6 +6,84 @@ import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.Analysis.Fourier.AddCircle
 import Mathlib.NumberTheory.ZetaValues
 
+/-!
+# The Gamma--zeta Fourier coefficients of the periodic correction
+
+The zero-mean correction `Ψ = negativeLaplacePsi` fixed in
+`FabiusFunction.PeriodicCorrection` is exactly one-periodic, so it has a
+Fourier expansion over a period.  This module evaluates every coefficient in
+closed form.  With `L = log 2` and the paper's frequencies `χₖ = 2πik / L`,
+
+`negativeLaplacePsiFourierCoeff k = -Γ(-χₖ) ζ(1 - χₖ) / L`  for `k ≠ 0`,
+
+the zero mode vanishes by the normalization, and the resulting series
+converges absolutely and reconstructs `Ψ` pointwise.
+
+The mechanism is the substitution `x = 2 ^ t` that already drives
+`FabiusFunction.PeriodicMean`.  In the logarithmic variable `t` the weight
+`e^{-2πikt}` becomes the power `x ^ (-χₖ)`, so a Fourier coefficient is a
+Mellin transform evaluated at the pure imaginary point `s = -χₖ`.  The dyadic
+partitions `smallDyadicInterval` and `largeDyadicInterval` reassemble the
+termwise integrals of `negativeLaplaceLog (2 ^ t)` and
+`negativeLaplaceForwardTail (2 ^ t)` into one Mellin integral of the Bose
+finite-part kernel over `(0,∞)`, and for `k ≠ 0` the remaining elementary
+piece `log 2 / 2 * (t ^ 2 - t)` contributes exactly the term that cancels the
+`1 / s ^ 2` regularizing the double pole of `-Γ(s) ζ(1+s)` at the origin.
+What `FabiusFunction.PeriodicMean` does for the mode `k = 0`, this module
+does for every mode.
+
+Downstream what matters is nonvanishing rather than the formula:
+`FabiusFunction.FabiusWikipediaObstruction` consumes
+`negativeLaplacePsi_not_constant` to show that the periodic term missing from
+the elementary small-argument formula cannot be absorbed into an
+`O(1 / (-log x))` error, and `FabiusFunction.FabiusSharpAsymptotic` reexports
+that obstruction beside the corrected asymptotic.
+
+## Main results
+
+* `negativeLaplacePsiFourierCoeff` — the coefficient `∫₀¹ Ψ(t) e^{-2πikt} dt`,
+  defined through Mathlib's `fourierCoeffOn zero_lt_one`.
+* `negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta` — the closed form above;
+  `negativeLaplacePsiFourierCoeff_eq_gamma_zeta` is the same identity written
+  in the Mellin frequency `negativeLaplaceMellinFrequency k = -χₖ`.
+* `negativeLaplacePsiFourierCoeff_zero` — the zero mode vanishes.
+* `negativeLaplacePsiFourierCoeff_ne_zero` and
+  `negativeLaplacePsi_not_constant` — no nonzero mode vanishes, hence `Ψ` is
+  genuinely nonconstant.  This is the export the rest of the corpus uses.
+* `summable_negativeLaplacePsiFourierCoeff` — absolute summability of the
+  coefficients.
+* `hasSum_negativeLaplacePsi_fourierSeries` and
+  `tsum_negativeLaplacePsi_gammaZeta_fourierSeries` — pointwise Fourier
+  reconstruction on the real line, first with the abstract coefficients and
+  then with the closed sequence `negativeLaplacePsiGammaZetaFourierCoeff`.
+* `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_pos_re` and
+  `mellin_boseRegularizedMellinKernel_eq_gammaZeta_of_re_zero` — the analytic
+  engine.  The Mellin transform of `boseRegularizedMellinKernel` equals
+  `gammaZetaMellinFinitePart` on the open right half-plane, by the identity
+  theorem from the real evaluations of
+  `FabiusFunction.BoseFinitePartIntegral`, and on the punctured imaginary
+  axis by continuity.
+* `negativeLaplacePsiCircle` — `Ψ` as a `C(AddCircle 1, ℂ)`, the object
+  Mathlib's Fourier inversion theorem is stated for.
+
+The remaining declarations are the change-of-variable, integrability,
+dominated-convergence, and Bernoulli-coefficient steps feeding those results.
+
+Conventions and caveats.  The Fourier convention is Mathlib's: coefficients
+are taken against `e^{-2πikt}` and the series is summed against `e^{2πikt}`.
+That sign is why the Mellin variable is `-χₖ` and not `χₖ`, and why both
+spellings of the closed form are supplied.  The frequencies sit on the
+imaginary axis, so the kernel is regularized first: subtracting the
+small-argument logarithmic singularity makes the Mellin transform of
+`boseRegularizedMellinKernel` holomorphic on `-1 < re s`, which the raw Bose
+kernel is not.  Summability is proved by integrating by parts twice against
+the uniform bound on `Ψ''` from `FabiusFunction.PeriodicRegularity`, giving
+only `O(1 / k ^ 2)` decay; the paper's Stirling argument for exponential
+decay of `Γ(-χₖ)` is not formalized, so the bound here is sufficient for
+absolute convergence but far from sharp.  Nonvanishing rests on Mathlib's
+`riemannZeta_ne_zero_of_one_le_re`, since `1 - χₖ` lies on `re s = 1`.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology Interval FourierTransform

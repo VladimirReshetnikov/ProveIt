@@ -4,6 +4,65 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
+/-!
+# The mean of the one-periodic negative-Laplace correction
+
+The correction `R(t) = negativeLaplacePeriodicCorrection t` built in
+`FabiusFunction.NegativeLaplace` is exactly one-periodic, so the sharp Fabius
+asymptotic carries its mean over a period as an additive constant.  This
+module evaluates that mean in closed form,
+
+`∫_0^1 R(t) dt = gammaZetaConstant / log 2 - log 2 / 12`,
+
+where `gammaZetaConstant = γ² / 2 + γ₁ - π² / 12` is the Euler--Stieltjes
+combination occurring, with the opposite sign, as the finite part of
+`Γ(s) ζ(1+s)` at the origin, realized as a convergent split integral in
+`FabiusFunction.BoseFinitePartIntegral`.
+
+The proof is the substitution `x = 2 ^ t` combined with a dyadic regrouping.
+Under that substitution an integral of a kernel `K (2 ^ t)` in `t` becomes a
+`1 / log 2` multiple of the integral of `K x / x` in `x`.  Consequently, up
+to that same factor, the `n`-th summand of `negativeLaplaceLog (2 ^ t)`,
+integrated over one period, is the integral of `boseFinitePartSmallKernel`
+over the dyadic block `(1/2^(n+1), 1/2^n]`, and the `n`-th summand of
+`negativeLaplaceForwardTail (2 ^ t)` is the integral of
+`boseFinitePartLargeKernel` over `[2^n, 2^(n+1))`.  Summing the blocks
+reassembles the split finite-part integral over `(0, ∞)`.  The remaining
+elementary piece `log 2 / 2 * (t ^ 2 - t)` of `R` contributes `- log 2 / 12`.
+
+## Main results
+
+* `negativeLaplacePeriodicMean_eq` — the closed form for the mean.  This is
+  what `FabiusFunction.FabiusSharpConstant` converts into the constant term
+  of the sharp asymptotic.
+* `intervalIntegral_negativeLaplacePeriodicCorrection_unit` and
+  `intervalIntegral_negativeLaplacePsi_unit` — the same value over every
+  translated unit interval, and zero for the normalized correction.
+* `intervalIntegral_negativeLaplaceLog_two_rpow`,
+  `intervalIntegral_negativeLaplaceForwardTail_two_rpow`, and their sum
+  `intervalIntegral_negativeLaplaceLog_add_tail_two_rpow` — the two halves of
+  the period integral, and the finite-part integral they add up to.
+* `smallDyadicInterval`, `largeDyadicInterval`, together with their union,
+  disjointness, and `HasSum` countable-additivity lemmas — the dyadic
+  partitions of `(0,1]` and `[1,∞)`.  `FabiusFunction.PeriodicFourier` reuses
+  them unchanged for the Fourier coefficients, which is why they are public.
+* `negativeLaplacePeriodicCorrection_eq_components` — the three-term
+  decomposition of `R` along which the mean computation splits.
+
+The remaining declarations are the `Function.Periodic` repackagings
+`negativeLaplacePeriodicCorrection_periodic`, `negativeLaplacePsi_periodic`,
+and the change-of-variable, continuity, and dominated-convergence steps
+feeding those results.
+
+Conventions.  `negativeLaplacePsi = R - negativeLaplacePeriodicMean` is the
+zero-mean normalization fixed in `FabiusFunction.PeriodicCorrection`, so the
+vanishing unit-interval integral is exactly that normalization.
+`smallDyadicInterval` is half-open on the left and `largeDyadicInterval` on
+the right; the endpoint mismatches this creates with the interval integrals
+are absorbed by almost-everywhere set congruence.  Every identity here is an
+exact evaluation, not an estimate.
+-/
+
 set_option autoImplicit false
 
 open scoped BigOperators Topology Interval

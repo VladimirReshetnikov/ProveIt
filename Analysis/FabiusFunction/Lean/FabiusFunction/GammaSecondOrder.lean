@@ -4,6 +4,46 @@ import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
 import Mathlib.Analysis.Analytic.Order
 import Mathlib.Analysis.Complex.CauchyIntegral
 
+/-!
+# Second-order expansion of `Γ(1 + z)` at the origin
+
+This module computes the quadratic Taylor coefficient of the Gamma function at
+the point `1` and packages the expansion
+
+`Γ(1 + z) = 1 - γ z + (γ² / 2 + π² / 12) z² + O(z³)`,
+
+where `γ` is the Euler--Mascheroni constant.  Mathlib already supplies
+`Γ'(1) = -γ`; the new ingredient is `Γ''(1) = γ² + π² / 6`, extracted from the
+reflection formula in the cross-multiplied form
+`Γ(1 + z) Γ(1 - z) sin(π z) = π z`, which extends across the puncture at the
+origin, so that differentiating it three times at `0` leaves a linear equation
+for `Γ''(1)` in which every other term is already known.
+
+The module is the Gamma-side half of the regularization of the Gamma--zeta
+product at `s = 0`; the zeta-side half is
+`mul_riemannZeta_one_add_taylor_second` of `FabiusFunction.StieltjesConstant`.
+`FabiusFunction.MellinFinitePart` multiplies the two expansions to cancel the
+double pole of `Γ(s) ζ(1 + s)` and to identify the finite part with the
+Euler--Stieltjes constant `gammaZetaConstant`, from which the mean of the
+periodic correction and the sharp Fabius asymptotic constant are built.
+Nothing here mentions the Fabius function; the file imports only Mathlib, and
+`FabiusFunction.MellinBose` merely forwards it along the import chain.
+
+## Main results
+
+* `iteratedDeriv_two_complexGamma_one` — `Γ''(1) = γ² + π² / 6`.
+* `exists_complexGamma_one_add_taylor_remainder` — the expansion with an
+  explicit remainder `z ^ 3 * R z`, with `R` analytic at the origin.
+* `complexGamma_one_add_taylor_second` — the same expansion as a little-o
+  statement at `nhds 0`, which is the form downstream files consume.
+
+Statements are complex throughout (`Complex.Gamma`) and are phrased for the
+shifted function `z ↦ Γ(1 + z)`, so the expansion point is `0`.  The remainder
+identity is asserted for every `z : ℂ`, but `R` is only claimed analytic at the
+origin, so its content is local: away from a neighbourhood of `0` the equation
+merely defines `R`.
+-/
+
 set_option autoImplicit false
 
 open Filter Set

@@ -7,6 +7,90 @@ import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 
 /-!
 # The central Fabius saddle at the explicit dyadic Lambert radius
+
+This module runs the quantitative central saddle estimate for the Fabius
+generating function on the single concrete orbit the sharp theory needs: the
+argument `x = 2 ^ (-t)`, the radius `r = fabiusLambertRadius x = 2 ^ b`, and
+the Gaussian scale `b = fabiusLambertPhase x = dyadicLambertPhase t`, the
+lower-Lambert phase solving the saddle equation `r * x = b`.  After the
+Bromwich substitution `z = r * (1 + i * v / sqrt b)` the normalized integrand
+is `QuantitativeSaddle.scaledSaddleKernel`, and the content here is its exact
+factorization
+
+`K v = exp (-v ^ 2 / 2) * exp (i * (a * v + c * v ^ 3) + R v)`,
+
+whose odd coefficients are, writing `q` for `negativeLaplaceLog`,
+
+`a = (r * x + r * q' r - 1) / sqrt b`,
+`c = (2 - r ^ 3 * q''' r) / (6 * b * sqrt b)`.
+
+Three sources feed that exponent: the tilt `exp (i * r * x * v / sqrt b)`, the
+branch-safe vertical logarithm `negativeLaplaceVerticalLog`, and the Bromwich
+denominator `-log (1 + i * theta)` at `theta = v / sqrt b`.  Each is expanded
+to cubic order and the leftovers are collected into `exponentRemainder`.
+
+The module is the bridge between the generic saddle machinery and the
+Fabius-specific input it needs.  `FabiusFunction.FabiusSaddleCentral` proves
+the central `L^1` estimate for an abstract kernel obeying such hypotheses, and
+`FabiusFunction.FabiusSaddleReferenceTail` with
+`FabiusFunction.FabiusLambertMinorArc` covers the complementary outer region;
+what was missing was a proof that the genuine Fabius kernel at the genuine
+Lambert saddle obeys them.  Supplying it produces the one statement the sharp
+small-argument theory consumes: the normalized kernel mass is `1 + O(1 / b)`.
+
+## Main results
+
+* `scaledSaddleKernel_eq_gaussian_exp` -- the exact factorization displayed
+  above, for arbitrary `r, b > 0` and every `v`; no saddle equation is used.
+* `norm_exponentRemainder_le` -- the quadratic-plus-quartic remainder bound
+  `((Csecond + 1) / 2 * v ^ 2 + (Cfourth / 6 + 1 / 2) * v ^ 4) / b`, valid for
+  `1 <= b` and `|v / sqrt b| <= 1 / 2`, from a curvature defect bound and a
+  uniform fourth vertical derivative bound.
+* `linearCoefficient_rpow_eq` and `cubicCoefficient_rpow_eq` -- the odd
+  coefficients at radius `2 ^ b` rewritten through
+  `negativeLaplaceRpowFirstResidual` and `negativeLaplaceRpowThirdResidual`;
+  the linear rewrite needs the saddle equation `2 ^ b * x = b`, the cubic one
+  is unconditional.
+* `exists_rpow_coefficient_bounds` -- uniform `b * a ^ 2 <= Clinear ^ 2` and
+  `b * c ^ 2 <= Ccubic ^ 2` along the dyadic orbit, which is the exact
+  normalization the generic central theorem asks for.
+* `dyadicLambertKernel`, together with `dyadicLambertLinearCoefficient`,
+  `dyadicLambertCubicCoefficient` and `dyadicLambertExponentRemainder` -- the
+  specializations to `x = 2 ^ (-t)`.  `dyadicLambertKernel` is the corpus-wide
+  name for this kernel and is reused verbatim by
+  `FabiusFunction.FabiusSaddleCentralAllOrders` and
+  `FabiusFunction.FabiusSaddleMassAllOrders`.
+* `dyadicLambert_central_corrected_error_isBigO` -- the central `L^1` error
+  against `standardGaussian + oddCorrection` is `O(1 / b)`.
+* `fabiusSaddleKernelMass_dyadicLambert_sub_one_isBigO` -- the headline
+  result `fabiusSaddleKernelMass F (2 ^ (-t)) r b - 1 = O(1 / b)`, the final
+  analytic input of `FabiusFunction.FabiusSharpAsymptotic`.
+
+The remaining public declarations are the definitions named in the formulas
+above (`denominatorCubic`, `denominatorRemainder`, `linearCoefficient`,
+`cubicCoefficient`, `curvatureRemainder`, `exponentRemainder`) and the cubic
+Taylor bound `norm_denominatorRemainder_le`.  Most of the private lemmas are
+decay bookkeeping at the standard radius
+`fabiusSaddleCentralRadius b = sqrt (32 * log b)`: there the odd phase and the
+exponent remainder are eventually at most `1`, and `v / sqrt b` eventually
+stays within `1 / 2` of the origin.  The two remaining private results
+transport the coefficient bounds onto the dyadic orbit and glue the central
+and tail estimates into the normalized mass.
+
+## Conventions and caveats
+
+The Gaussian scale is taken to be the Lambert phase `b` itself rather than the
+exact curvature `1 + r ^ 2 * q'' r` of the exponent.  That mismatch is real
+and is carried by `curvatureRemainder`; it is why the quadratic constant reads
+`(Csecond + 1) / 2` and not `Csecond / 2`, the extra `1` being the curvature
+contributed by the Bromwich denominator itself.
+
+`norm_denominatorRemainder_le` is stated only for `|theta| <= 1 / 2`, which
+keeps `1 + i * theta` inside the principal branch and makes the geometric
+majorant available; the radius lemmas exist to check that the standard radius
+eventually satisfies it.  Every `atTop` statement is eventual in `t`, with no
+uniformity claimed for small `t`, and every constant produced here is
+sufficient rather than sharp.
 -/
 
 set_option autoImplicit false

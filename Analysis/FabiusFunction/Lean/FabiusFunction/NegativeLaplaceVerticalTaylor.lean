@@ -3,6 +3,70 @@ import Mathlib.Analysis.Calculus.Taylor
 
 /-!
 # Branch-safe Taylor expansion of the vertical negative-Laplace logarithm
+
+Fix `r > 0` and travel along the vertical line `z = -r (1 + i θ)`.  This module
+differentiates the branch-safe logarithm `L(r, θ) = negativeLaplaceVerticalLog F r θ`
+of `FabiusFunction.NegativeLaplaceVerticalLog` four times in `θ`, and converts those
+derivatives into an exact cubic Taylor formula with an integral remainder.
+
+The mechanism is the complex counterpart of
+`FabiusFunction.NegativeLaplaceDerivatives`.  Let `M_k(r, θ)` be the `k`th tilted
+complex moment, that is the `k`th iterated derivative of `complexGeneratingFunction`
+at `-r (1 + i θ)`, and let `R_k = M_k / M_0`.  Differentiating in `θ` gives
+
+`M_k' = (-i r) M_(k+1)`  and  `R_k' = (-i r) (R_(k+1) - R_k R_1)`,
+
+so the first four cumulant polynomials `kappa_1, ..., kappa_4` in the `R_k` satisfy
+`kappa_j' = (-i r) kappa_(j+1)` for `j ≤ 3` (the chain stops at `kappa_4`, which is
+as far as this module needs it), and the `θ` derivatives of `L` are
+
+`L⁽ʲ⁾(r, θ) = (-i r)ʲ kappa_j(r, θ)`,  for `1 ≤ j ≤ 4`.
+
+At `θ = 0` each `R_k` collapses to the real `normalizedLaplaceMoment F k r`, hence
+
+`L⁽ʲ⁾(r, 0) = (i r)ʲ q⁽ʲ⁾(r)`,
+
+where `q = negativeLaplaceLog` and `q⁽ʲ⁾` runs through `negativeLaplaceLogFirst` to
+`negativeLaplaceLogFourth`.  The cubic Taylor polynomial at the real point is
+therefore explicit in real-axis data alone.
+
+The module exists to hand the central saddle argument an expansion that never selects
+a branch of `Complex.log`: the remainder is an interval integral of the fourth
+vertical derivative, so the error is controlled purely by a uniform bound on that one
+function.  `FabiusFunction.NegativeLaplaceVerticalFourthBound` produces such a bound
+by iterating a dyadic dilation recurrence, and
+`FabiusFunction.FabiusSaddleCentralLambert` consumes the cubic together with its
+remainder estimate as the central-region exponent.
+
+## Main results
+
+* `negativeLaplaceVerticalMoment`, `normalizedNegativeLaplaceVerticalMoment` -- the
+  tilted moments `M_k` and `R_k`, with their derivative rules and `θ = 0` values.
+* `negativeLaplaceVerticalCumulantFirst` through `...Fourth` -- the complex cumulants,
+  with `kappa_j(r, 0) = (-1)ʲ q⁽ʲ⁾(r)` identifying each one at `θ = 0` with the
+  matching `negativeLaplaceLog` derivative.
+* `negativeLaplaceVerticalLogFirst` through `...Fourth`, together with the chaining
+  lemmas `negativeLaplaceVerticalLogDerivative_eq_cumulant`,
+  `negativeLaplaceVerticalLog_hasDerivAt_cumulant`, and
+  `iteratedDeriv_negativeLaplaceVerticalLog_one` through `..._four`.
+* `contDiff_four_negativeLaplaceVerticalLog` -- `L` is `C⁴` in `θ` for every `r > 0`.
+* `negativeLaplaceVerticalCubic` -- the explicit cubic Taylor polynomial, tied to the
+  abstract jet form by `negativeLaplaceVerticalCubic_eq`.
+* `negativeLaplaceVerticalLog_eq_cubic_add_integralRemainder` and
+  `negativeLaplaceVerticalLog_eq_explicitCubic_add_integralRemainder` -- the exact
+  Taylor formula with its integral remainder.
+* `norm_negativeLaplaceVerticalLog_sub_cubic_le` and
+  `norm_negativeLaplaceVerticalLog_sub_explicitCubic_le` -- the remainder bound
+  `M * |θ|⁴ / 6` from a uniform bound `M` on the fourth vertical derivative over
+  `uIcc 0 θ`.
+
+Conventions and caveats.  Everything about `R_k` and `L` is stated for `r > 0`, which
+is what keeps `M_0` nonzero and the normalization legitimate.  The remainder constant
+`1/6` is deliberately crude -- the exact integral gives `1/24` -- and is sufficient
+rather than sharp.  The smoothness proved here is `C⁴` in `θ` only; all-order vertical
+smoothness and derivative bounds live in
+`FabiusFunction.NegativeLaplaceVerticalSmooth` and
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound`.
 -/
 
 set_option autoImplicit false

@@ -17,6 +17,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusInverse
 import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
@@ -50,6 +51,12 @@ the exact support `(-1,1)` of `up` and its strict unimodality, convexity of
 `F(x) ≤ 2^C(n+1,2) x^n` on `2^n x ≤ 1`, the sharp uniform derivative bounds
 `|F^(k)| ≤ 2^C(k+1,2)` with the value attained, and the exact real-analytic
 locus: `F` is analytic at `x` if and only if `x ∉ [0,1]`.
+
+The regularity layer also inverts the bijection `F : [0,1] → [0,1]`.  The
+inverse is continuous and monotone on all of `ℝ` once totalized by the
+endpoint values, and the flatness bounds transport through it into lower
+bounds `y ≤ 2^C(n+1,2) · F⁻¹(y)^n`: the inverse is steeper than every root at
+the origin, with `F⁻¹(y)/y → ∞` as `y → 0⁺`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves
