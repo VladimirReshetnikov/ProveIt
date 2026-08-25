@@ -64,14 +64,14 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All 98 theorems exported by the five new modules — `ElementaryFunction`,
+All 99 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
 anywhere, and so do the six inverse-calculus theorems in `FabiusInverse.lean`
 that this workstream contributed to or depends on (`fabiusInv_mem_Ioo`,
 `fabiusInv_hasDerivAt`, `deriv_fabiusInv`, `deriv_fabiusInv_pos`,
 `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `fabiusInv_contDiffOn_Ioo`).  That
-is 104 declarations, each audited by parsing the full `#print axioms` block
+is 105 declarations, each audited by parsing the full `#print axioms` block
 rather than a single line, since long ones wrap.  The module count fell from
 100 to 98 because two declarations moved out of `InverseNotElementary.lean` in
 the upstreaming, not because anything was dropped.  The audit is a generated `#print axioms` sweep over every
@@ -209,9 +209,45 @@ kept.  `fabiusInv_mem_Ioo` moved with it.  The original spelling
 that file; docstrings here cite `deriv_fabiusInv_pos` because it is the
 primary name, not because the alias was broken.
 
-Every ``Fabius.*`` name appearing in a docstring of the five modules — thirty
-of them — is checked to resolve, by a generated `#check` sweep run against the
+Every ``Fabius.*`` name appearing in a docstring of the five modules — 35 of
+them — is checked to resolve, by a generated `#check` sweep run against the
 built closure.  Prose citations are otherwise invisible to the compiler.
+
+## Findings of the final adversarial review
+
+Five independent lenses over the Lean and the write-up, run after the last
+merge.  Ten distinct defects, all in prose about correct code, all fixed.  The
+substantive one: the write-up asserted that "no single elementary formula
+covers both signs at once" for `Mathlib`'s two-variable power.  That is false.
+For a nonvanishing base,
+
+    f ^ g = exp (log f * g) * cos (g * π * (1 - f / |f|) / 2)
+
+covers both signs, since `(1 - f/|f|)/2` is the indicator of `f < 0` and
+`Mathlib` already sets `log x = log |x|`.  Rather than weaken the sentence,
+the identity is now formalized as `IsElementary.rpow_of_ne_zero`.  The genuine
+obstruction is the *zero set* of the base — `0 ^ r = 0` for `r ≠ 0` against
+`0 ^ 0 = 1` is discontinuous in the exponent — which is why `x ↦ x ^ x` is the
+honest counterexample and no negative-base example is.
+
+Also fixed: two docstrings advertised theorems as the ones "the applications
+use" and "used downstream" when a `codex/*` refactoring had left both with
+zero call sites; the claim that *every* non-representability theorem factors
+through `not_eqOn_of_dense_analyticLocus` (two now use the relative
+`AnalyticDenseOn` form); `IsElementaryOrInverse` described as adding "every
+continuous inverse branch", dropping the essential `interior Uᶜ` clause; the
+discreteness of the exceptional set presented as an open question when
+`x ↦ (sin (1/x))⁻¹` settles it negatively in one line; "an interval with some
+of its rational points removed" as an example of nonempty interior, which
+fails if all of them are removed; two correspondence-table rows citing only the
+`Ioo 0 1` specializations of corollaries stated for general `U`; and "bounded
+away from `0`" used for a hypothesis that is positivity.
+
+One gap is now stated rather than left implicit: `Elem⁻¹` is **not** claimed to
+be closed under composition.  For `Elem` that closure is a theorem, proved by
+inducting on the outer derivation, but the induction does not replay, since
+`g` being a branch of `f z = x` says nothing about `g ∘ h`.  The density
+theorem does not need it.
 
 `F'` now enters the five modules of this workstream only through the imported
 `deriv_fabiusInv_pos`.  It is *not* true that this is the only use of a
