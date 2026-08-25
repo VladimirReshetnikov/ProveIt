@@ -13,8 +13,9 @@ notation, the finite measures `mu_n` converge weak-* to `phi * lambda`, where
 `phi` is Rvachev's up function and `lambda` is Lebesgue measure.
 
 We formalize weak-* convergence as convergence in the standard weak topology
-on `ProbabilityMeasure ℝ`.  An explicit equivalent formulation against every
-bounded continuous real-valued test function is supplied below.
+on `ProbabilityMeasure ℝ`.  Explicit equivalent formulations are supplied
+for bounded continuous test functions valued in an arbitrary `RCLike` field,
+with convenient real and complex specializations.
 
 The index `n` here is the paper's finite cutoff: `finiteConvolutionMeasure n`
 contains the factors indexed by `k = 1, ..., n`.  Internally those factors are
@@ -58,6 +59,35 @@ theorem rvachevMeasure_isProbability (F : BoundedFabius) (hF : IsFabius F) :
     (Eventually.of_forall (rvachevUp_nonneg F))]
   rw [integral_rvachevUp_eq_one F hF]
   norm_num
+
+/-- The density measure has total mass one. -/
+@[simp]
+theorem rvachevMeasure_univ (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevMeasure F Set.univ = 1 := by
+  letI := rvachevMeasure_isProbability F hF
+  exact measure_univ
+
+/-- The density measure assigns no mass outside the support interval. -/
+@[simp]
+theorem rvachevMeasure_compl_Icc (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevMeasure F ((Icc (-1 : ℝ) 1)ᶜ) = 0 := by
+  rw [rvachevMeasure, withDensity_apply _ measurableSet_Icc.compl]
+  apply setLIntegral_eq_zero measurableSet_Icc.compl
+  intro x hx
+  change ENNReal.ofReal (rvachevUp F x) = 0
+  rw [rvachevUp_eq_zero_of_not_mem_Ioo F hF]
+  · simp
+  · intro hxIoo
+    exact hx ⟨hxIoo.1.le, hxIoo.2.le⟩
+
+/-- The density measure gives full mass to Rvachev's support interval. -/
+@[simp]
+theorem rvachevMeasure_Icc (F : BoundedFabius) (hF : IsFabius F) :
+    rvachevMeasure F (Icc (-1 : ℝ) 1) = 1 := by
+  have h := measure_add_measure_compl (s := Icc (-1 : ℝ) 1)
+    (μ := rvachevMeasure F) measurableSet_Icc
+  rw [rvachevMeasure_compl_Icc F hF, rvachevMeasure_univ F hF, add_zero] at h
+  exact h
 
 /-- The characteristic function of the density `φ λ`, with the conversion
 between mathlib's convention and the paper's Fourier-transform convention. -/
@@ -267,25 +297,31 @@ theorem finiteConvolutionProbability_tendsto
   simpa [finiteConvolutionProbability, rvachevProbability] using
     finiteConvolutionMeasure_charFun_tendsto F hF t
 
-/-- The bounded-continuous-test-function formulation of Lemma 1, exactly the
-weak-* convergence statement used in analysis. -/
+/-- Weak convergence tested against bounded continuous functions valued in
+any real-or-complex-like field. -/
+theorem integral_finiteConvolutionMeasure_rclike_tendsto
+    (𝕜 : Type*) [RCLike 𝕜]
+    (F : BoundedFabius) (hF : IsFabius F) (g : ℝ →ᵇ 𝕜) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (nhds (∫ x : ℝ, g x ∂rvachevMeasure F)) := by
+  have h := finiteConvolutionProbability_tendsto F hF
+  rw [ProbabilityMeasure.tendsto_iff_forall_integral_rclike_tendsto 𝕜] at h
+  simpa [finiteConvolutionProbability, rvachevProbability] using h g
+
+/-- The real bounded-continuous-test-function formulation of Lemma 1. -/
 theorem integral_finiteConvolutionMeasure_tendsto
     (F : BoundedFabius) (hF : IsFabius F) (g : ℝ →ᵇ ℝ) :
     Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
-      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) := by
-  have h := finiteConvolutionProbability_tendsto F hF
-  rw [ProbabilityMeasure.tendsto_iff_forall_integral_tendsto] at h
-  simpa [finiteConvolutionProbability, rvachevProbability] using h g
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) :=
+  integral_finiteConvolutionMeasure_rclike_tendsto ℝ F hF g
 
 /-- The complex bounded-continuous-test-function formulation used literally
 by the paper's complex Banach space of test functions. -/
 theorem integral_finiteConvolutionMeasure_complex_tendsto
     (F : BoundedFabius) (hF : IsFabius F) (g : ℝ →ᵇ ℂ) :
     Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
-      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) := by
-  have h := finiteConvolutionProbability_tendsto F hF
-  rw [ProbabilityMeasure.tendsto_iff_forall_integral_rclike_tendsto ℂ] at h
-  simpa [finiteConvolutionProbability, rvachevProbability] using h g
+      (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure F)) :=
+  integral_finiteConvolutionMeasure_rclike_tendsto ℂ F hF g
 
 /-- Lemma 1 specialized to the canonical Fabius function. -/
 theorem finiteConvolutionProbability_tendsto_fabius :
@@ -299,11 +335,19 @@ theorem integral_finiteConvolutionMeasure_tendsto_fabius (g : ℝ →ᵇ ℝ) :
       (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure fabius)) :=
   integral_finiteConvolutionMeasure_tendsto fabius fabius_spec g
 
+/-- The canonical Fabius specialization for any `RCLike`-valued bounded
+continuous test function. -/
+theorem integral_finiteConvolutionMeasure_rclike_tendsto_fabius
+    (𝕜 : Type*) [RCLike 𝕜] (g : ℝ →ᵇ 𝕜) :
+    Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
+      (nhds (∫ x : ℝ, g x ∂rvachevMeasure fabius)) :=
+  integral_finiteConvolutionMeasure_rclike_tendsto 𝕜 fabius fabius_spec g
+
 /-- The canonical complex-valued bounded-test-function specialization. -/
 theorem integral_finiteConvolutionMeasure_complex_tendsto_fabius (g : ℝ →ᵇ ℂ) :
     Tendsto (fun n : ℕ => ∫ x : ℝ, g x ∂finiteConvolutionMeasure n) atTop
       (𝓝 (∫ x : ℝ, g x ∂rvachevMeasure fabius)) :=
-  integral_finiteConvolutionMeasure_complex_tendsto fabius fabius_spec g
+  integral_finiteConvolutionMeasure_rclike_tendsto_fabius ℂ g
 
 end
 

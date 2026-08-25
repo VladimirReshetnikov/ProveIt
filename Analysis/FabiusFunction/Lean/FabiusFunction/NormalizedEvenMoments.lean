@@ -18,7 +18,9 @@ namespace Fabius
 private def momentDenominator (n : ℕ) : ℕ :=
   oddDoubleFactorial (n + 1) * evenMersenneProduct n
 
-private lemma evenMersenneProduct_eq_prod_Ico (n : ℕ) :
+/-- Rewrite the initial even-indexed Mersenne product as a product over
+`[1, n + 1)`. -/
+theorem evenMersenneProduct_eq_prod_Ico (n : ℕ) :
     evenMersenneProduct n =
       ∏ j ∈ Ico 1 (n + 1), (2 ^ (2 * j) - 1) := by
   simp [evenMersenneProduct, Finset.prod_Ico_eq_prod_range, add_comm]
@@ -57,19 +59,12 @@ private lemma momentDenominator_succ (n : ℕ) :
     momentDenominator (n + 1) =
       ((2 * (n + 1) + 1) * (2 ^ (2 * (n + 1)) - 1)) *
         momentDenominator n := by
-  simp only [momentDenominator, oddDoubleFactorial, evenMersenneProduct,
-    Finset.prod_range_succ]
+  rw [momentDenominator, oddDoubleFactorial_succ, evenMersenneProduct_succ_eq,
+    momentDenominator]
   ring
 
 private lemma momentDenominator_pos (n : ℕ) : 0 < momentDenominator n := by
-  unfold momentDenominator oddDoubleFactorial evenMersenneProduct
-  apply Nat.mul_pos
-  · apply Finset.prod_pos
-    intro k hk
-    omega
-  · apply Finset.prod_pos
-    intro k hk
-    exact Nat.sub_pos_of_lt (Nat.one_lt_pow (by omega) (by omega))
+  exact Nat.mul_pos (oddDoubleFactorial_pos _) (evenMersenneProduct_pos _)
 
 /-- Split an odd double factorial at its middle factor. -/
 theorem oddDoubleFactorial_mul_Icc (n : ℕ) :
@@ -104,16 +99,6 @@ theorem mersenneFactor_cast (j : ℕ) :
     (((2 ^ (2 * j) - 1 : ℕ) : ℚ)) = (2 : ℚ) ^ (2 * j) - 1 := by
   rw [Nat.cast_sub (show 1 ≤ 2 ^ (2 * j) by exact one_le_pow₀ (by omega))]
   norm_num
-
-/-- The reduced denominator of a quotient of natural numbers divides its
-displayed denominator. -/
-theorem rat_den_dvd_nat_div (a b : ℕ) :
-    ((a : ℚ) / (b : ℚ)).den ∣ b := by
-  have hInt :
-      ((((a : ℚ) / (b : ℚ)).den : ℕ) : ℤ) ∣ (b : ℤ) := by
-    rw [Rat.natCast_div_eq_divInt]
-    exact Rat.den_dvd a b
-  exact_mod_cast hInt
 
 /--
 The division-free natural sequence `momentNumerator` is exactly the numerator

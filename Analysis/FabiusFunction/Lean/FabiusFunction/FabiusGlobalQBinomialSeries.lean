@@ -45,14 +45,6 @@ def qBinomialFabiusGlobalSummand
               ((2 : ℚ) ^ n.choose 2 * qPochhammer (1 / 2) (1 / 2) n)))) /
       (2 : K) ^ (m + 1).choose 2)
 
-private theorem scaled_binaryTail_eq
-    (x : ℝ) (m : ℕ) :
-    (2 : ℝ) ^ (m + 1) * binaryTail x m =
-      (2 : ℝ) ^ (m + 1) * x - 2 * (binaryPrefix x m : ℝ) := by
-  rw [binaryTail, mul_sub, pow_succ]
-  have hpow : (2 : ℝ) ^ m ≠ 0 := by positivity
-  field_simp
-
 private theorem globalBinaryReductionCoefficient_cast
     (K : Type*) [RCLike K] (x : ℝ) (m : ℕ) :
     (globalBinaryReductionCoefficient x m : K) =
@@ -69,7 +61,7 @@ theorem qBinomialFabiusGlobalSummand_eq
     qBinomialFabiusGlobalSummand K q x m =
       (globalBinaryReductionSummand x m : K) := by
   have hscaleK := congrArg (fun z : ℝ => (z : K))
-    (scaled_binaryTail_eq x m)
+    (two_pow_succ_mul_binaryTail x m)
   push_cast at hscaleK
   have hbase :
       (((2 : ℝ) ^ (m + 1) * x -
