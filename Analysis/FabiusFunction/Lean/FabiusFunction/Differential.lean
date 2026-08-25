@@ -73,7 +73,8 @@ private lemma fabius_hasDerivAt_secondHalf_aux (F : BoundedFabius)
   apply hrhs.congr_of_eventuallyEq
   filter_upwards with y
   have hs := hF.symmetry_all (1 - y)
-  convert hs using 1 <;> ring
+  convert hs using 1
+  ring
 
 /-- To the left of the unit interval the bounded Fabius function is locally
 constant, hence has vanishing derivative. -/
@@ -151,6 +152,7 @@ theorem fabius_hasDerivAt_half (F : BoundedFabius) (hF : IsFabius F) :
   have harg : 2 * (1 / 2 : ℝ) - 1 = 0 := by norm_num
   simpa [harg, rvachevUp_zero F hF] using h
 
+set_option linter.unusedVariables false in
 /--
 Reflected form of the defining differential equation on the whole second half
 of the unit interval, endpoints included.
@@ -252,7 +254,8 @@ theorem rvachev_hasDerivAt (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
       rw [hfar]
       have heven := rvachevUp_even F (2 * x - 1)
       have heq : rvachevUp F (2 * (-x) + 1) = rvachevUp F (2 * x - 1) := by
-        convert heven using 1 <;> ring
+        convert heven using 1
+        ring
       rw [heq]
       ring
 

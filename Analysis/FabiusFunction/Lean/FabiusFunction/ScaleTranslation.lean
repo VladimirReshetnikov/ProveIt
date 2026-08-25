@@ -26,7 +26,9 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
   let B : ℕ := 2 ^ (r - 1)
   have hpowNat : 2 ^ r = 2 * B := by
     calc
-      2 ^ r = 2 ^ ((r - 1) + 1) := by congr 1 <;> omega
+      2 ^ r = 2 ^ ((r - 1) + 1) := by
+        congr 1
+        omega
       _ = 2 ^ (r - 1) * 2 := by rw [pow_succ]
       _ = 2 * B := by simp only [B]; ring
   have hpowReal : (2 : ℝ) ^ r = 2 * (B : ℝ) := by
@@ -159,7 +161,8 @@ theorem taylorRemainder_translate_of_mem_Icc
     (y - t) ^ order * iteratedDeriv (order + 1) (extendedFabius F) t
   have htranslate : (∫ t in a..x, g t) = ∫ t in 0..y, g (t + a) := by
     convert (intervalIntegral.integral_comp_add_right (a := 0) (b := y) g a).symm using 1
-    <;> dsimp only [y] <;> ring
+    dsimp only [y]
+    ring
   have hintegrand : Set.EqOn (fun t => g (t + a)) (fun t => -q t) (uIcc 0 y) := by
     intro t ht
     rw [uIcc_of_le hy0] at ht

@@ -844,7 +844,7 @@ lemma dyadicBlock_expand_truncated (n b : ℕ) (hb : b ≤ n) (r : ℚ) :
   have hzero' :
       (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
         dyadicKernel (n - j) ((2 : ℚ) * 2 ^ b - 2 * h.val - 1)) = 0 := by
-    convert hzero using 1 <;> ring
+    convert hzero using 1; ring
   rw [hzero', mul_zero]
 
 /-- The kernel refinement law as a `Prop`: for all `n` and all rational `x`,
@@ -1042,6 +1042,32 @@ theorem fabiusDyadic_block_translate_le (n block residue : ℕ)
         rw [fabiusDyadic_two_pow_succ, mul_zero]
   · exact fabiusDyadic_block_translate n block residue hresidue
 
+/-- **Canonical block normal form.**  Dividing an arbitrary numerator `a`
+by the natural period `2 ^ (n + 1)` separates its closed-form dyadic value
+into the Thue--Morse sign of the block quotient and the value at the canonical
+remainder:
+
+`fabiusDyadic n a = thueMorseSign (a / 2 ^ (n + 1)) *
+  fabiusDyadic n (a % 2 ^ (n + 1))`.
+
+This includes level `n = 0`, the numerator `a = 0`, and exact block multiples;
+in the latter case the remainder is zero and both sides vanish. -/
+theorem fabiusDyadic_eq_block_sign_mul_mod (n a : ℕ) :
+    fabiusDyadic n a =
+      (thueMorseSign (a / 2 ^ (n + 1)) : ℚ) *
+        fabiusDyadic n (a % 2 ^ (n + 1)) := by
+  have hperiod : 0 < 2 ^ (n + 1) := by positivity
+  have hdecomp :
+      a / 2 ^ (n + 1) * 2 ^ (n + 1) + a % 2 ^ (n + 1) = a := by
+    calc
+      a / 2 ^ (n + 1) * 2 ^ (n + 1) + a % 2 ^ (n + 1) =
+          2 ^ (n + 1) * (a / 2 ^ (n + 1)) + a % 2 ^ (n + 1) := by
+        rw [Nat.mul_comm]
+      _ = a := Nat.div_add_mod a (2 ^ (n + 1))
+  simpa only [hdecomp] using
+    fabiusDyadic_block_translate n (a / 2 ^ (n + 1))
+      (a % 2 ^ (n + 1)) (Nat.mod_lt a hperiod)
+
 /-- Assuming the kernel refinement law, equation (32) is consistent under
 refining the dyadic grid: `fabiusDyadic (n + 1) (2 a) = fabiusDyadic n a`, so
 the value depends only on the rational `a / 2 ^ n`.  Callers supply
@@ -1078,7 +1104,7 @@ lemma fabiusDyadic_refine_of_kernel (hk : DyadicKernelHasRefinement)
             (2 * (2 * (a : ℚ)) - 2 * (2 * (j.val : ℚ) + 1) - 1) =
           ((n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (n + 1) *
             dyadicKernel n (2 * (a : ℚ) - 2 * (j.val : ℚ) - 1) := by
-      convert hrefine using 1 <;> ring_nf
+      convert hrefine using 1; ring_nf
     rw [hdiff]
     push_cast
     ring

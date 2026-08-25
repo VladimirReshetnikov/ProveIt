@@ -61,10 +61,11 @@ private theorem mathematicaFabiusQuotientLeft_nonneg (y : ℝ) :
   unfold mathematicaFabiusQuotientLeft
   positivity
 
-/-- Near the left endpoint the proposed quotient is bounded by twice an
-ordinary flat exponential. -/
-theorem mathematicaFabiusQuotientLeft_le_exp {y : ℝ}
-    (hy : 0 < y) (hy4 : y ≤ 1 / 4) :
+/-- On `0 < y ≤ 1 / 3`, the proposed quotient is bounded by twice an
+ordinary flat exponential.  The endpoint `1 / 3` is the sharp threshold for
+the exponent comparison used in this estimate. -/
+theorem mathematicaFabiusQuotientLeft_le_exp_of_le_one_third {y : ℝ}
+    (hy : 0 < y) (hy3 : y ≤ 1 / 3) :
     mathematicaFabiusQuotientLeft y ≤
       2 * Real.exp (-(1 / 2 : ℝ) * y⁻¹) := by
   have hy1 : y < 1 := by linarith
@@ -97,6 +98,14 @@ theorem mathematicaFabiusQuotientLeft_le_exp {y : ℝ}
   rw [div_le_iff₀ (by positivity : 0 < 1 + Real.exp A)]
   nlinarith [Real.exp_pos (-(1 / 2 : ℝ) * y⁻¹)]
 
+/-- Compatibility specialization of
+`mathematicaFabiusQuotientLeft_le_exp_of_le_one_third` to `y ≤ 1 / 4`. -/
+theorem mathematicaFabiusQuotientLeft_le_exp {y : ℝ}
+    (hy : 0 < y) (hy4 : y ≤ 1 / 4) :
+    mathematicaFabiusQuotientLeft y ≤
+      2 * Real.exp (-(1 / 2 : ℝ) * y⁻¹) :=
+  mathematicaFabiusQuotientLeft_le_exp_of_le_one_third hy (by linarith)
+
 /-- On `y = 2⁻ᵗ`, the proposed quotient is `O(exp (-(1/2) 2ᵗ))`. -/
 theorem mathematicaFabiusQuotientLeft_dyadic_isBigO_exp :
     (fun t : ℝ => mathematicaFabiusQuotientLeft ((2 : ℝ) ^ (-t)))
@@ -107,7 +116,8 @@ theorem mathematicaFabiusQuotientLeft_dyadic_isBigO_exp :
   have hy4 : (2 : ℝ) ^ (-t) ≤ 1 / 4 := by
     have hpow := Real.rpow_le_rpow_of_exponent_le
       (show (1 : ℝ) ≤ 2 by norm_num) (show -t ≤ (-2 : ℝ) by linarith)
-    convert hpow using 1 <;> norm_num [Real.rpow_neg]
+    convert hpow using 1
+    norm_num [Real.rpow_neg]
   have hinv : ((2 : ℝ) ^ (-t))⁻¹ = (2 : ℝ) ^ t := by
     rw [Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2), inv_inv]
   rw [Real.norm_eq_abs, Real.norm_eq_abs,

@@ -26,7 +26,12 @@ edited; no existing public name is moved or renamed.
   Depends on `Mathlib` only; no Fabius import, so it is cheap to rebuild.
 - `Lean/FabiusFunction/NotElementary.lean` — the combination with
   `NowhereAnalytic`.
-- `Lean/FabiusFunction/AlgebraicBranch.lean` — *in progress*, see below.
+- `Lean/FabiusFunction/AlgebraicBranch.lean` — continuous branches of
+  polynomial equations with analytic coefficients.
+- `Lean/FabiusFunction/InverseBranch.lean` — the analytic inverse function
+  theorem, and the class closed under inverse branches.
+- `Lean/FabiusFunction/InverseNotElementary.lean` — the inverse Fabius
+  function, and the strengthened non-representability theorems.
 - `Lean/FabiusFunction.lean` — registration lines only.
 - `docs/Non_Elementarity_of_the_Fabius_Function/` — `.tex` and committed
   `.pdf`.
@@ -128,6 +133,38 @@ a body-level change only.  The global fix, if anyone wants it, is the
 `aliascnt` package — `\newaliascnt{lemma}{theorem}` plus
 `\aliascntresetthe{lemma}` and `\crefname{lemma}{Lemma}{Lemmas}` — and it
 would have to be applied to the preamble of every document at once.
+
+## Inverses
+
+`InverseBranch.lean` observes that a left inverse is an implicit branch of the
+simplest possible equation — `h (g x) = x` says `g` is a continuous branch of
+`h z - x = 0` — so `Fabius.analyticAt_of_leftInverse`, the analytic inverse
+function theorem, is `analyticAt_of_continuous_branch` applied with no further
+analysis.  On top of it, `Fabius.exists_analyticAt_of_rightInverse`: a
+continuous right inverse of a densely analytic function is analytic somewhere.
+
+`Fabius.IsElementaryOrInverse` closes the elementary functions under
+continuous inverse branches at any depth, and
+`IsElementaryOrInverse.dense_analyticLocus` shows the enlarged class is still
+densely analytic.  Its constructor is localized to an open `U` because Lambert
+`W` satisfies its identity only on `[-1/e, ∞)`;
+`Fabius.isElementaryOrInverse_of_lambertW` records the membership for an
+arbitrary branch, since `Mathlib` does not define `W`.
+
+`InverseNotElementary.lean` applies this to `fabiusInv`:
+`fabiusInv_not_analyticAt` and `fabiusInv_analyticAt_iff` pin the analytic
+locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
+argument is the inverse function theorem run backwards, and the one thing to
+check is that `F⁻¹` has no critical point — `deriv_fabiusInv_ne_zero`, from
+`(F⁻¹)'(F x) · F'(x) = 1` and finiteness of `F'`.  That is the only place in
+the whole workstream where smoothness of `F`, rather than its failure to be
+analytic, is used.
+
+`Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
+density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`
+(from a `codex/*` workstream) is a one-line corollary of it, and every
+non-representability theorem here is that lemma applied to a class for which
+density has been proved.
 
 ## Not claimed
 

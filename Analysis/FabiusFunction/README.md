@@ -33,7 +33,11 @@ agrees with the Fabius function on any nonempty open subset of `[0,1]`.  The
 same conclusion is proved for a class the inductive definition does not
 reach — any continuous branch of a polynomial equation whose coefficients are
 elementary and whose leading coefficient vanishes nowhere — which covers the
-algebraic functions that are not expressible by radicals.
+algebraic functions that are not expressible by radicals.  The inverse Fabius
+function is treated too: it is real analytic at no point of `[0,1]` either,
+hence not elementary, and neither it nor the Fabius function is reachable once
+the class is closed under continuous inverse branches at any depth — a class
+containing the Lambert `W` function.
 
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
@@ -111,13 +115,13 @@ points:
 | --- | --- | --- |
 | Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
-| Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
+| Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law`, `IsFabius.isOriginalFabius_rvachevUp`, `rvachevUp_eq_iff_eqOn_Iic_one`, `isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.NotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo` |
+| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
@@ -372,6 +376,10 @@ The signed extension is likewise analytic at no point of the first block
 seven theorems, Lemma 1, the unnumbered non-analyticity corollary, and the
 prose probability proposition.  In particular, it proves the original
 existence-and-uniqueness characterization with the initially unknown scale.
+Although positivity of that scale remains a source-faithful field of
+`IsOriginalFabius`, `IsOriginalFabius.mk_of_derivative_law` derives it from
+the remaining smoothness, support, positivity, normalization, and derivative
+hypotheses.
 Every bounded Fabius solution folds to an original compact-support solution,
 and conversely every original solution has scale two and is the fold of a
 unique bounded Fabius solution.  More sharply, equality of two folds is

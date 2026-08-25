@@ -165,7 +165,9 @@ lemma cumulative_one_of_admissible {f : C} (hf : admissible f) :
     cumulative f 1 = 1 / 2 := by
   have hreflect : (∫ t in (0 : ℝ)..1, extend f (1 - t)) =
       ∫ t in (0 : ℝ)..1, extend f t := by
-    simpa using intervalIntegral.integral_comp_sub_left (f := extend f) (a := 0) (b := 1) 1
+    simpa only [sub_self, sub_zero] using
+      intervalIntegral.integral_comp_sub_left
+        (f := extend f) (a := 0) (b := 1) 1
   have heq : ∀ t ∈ uIcc (0 : ℝ) 1, extend f (1 - t) = 1 - extend f t := by
     intro t ht
     rw [uIcc_of_le (by norm_num)] at ht
@@ -266,7 +268,6 @@ lemma transform_admissible (f : admissibleSet) : admissible (transform f) := by
     · have hxlt : 1 / 2 < x.1 := lt_of_not_ge hx
       have hr : 1 - x.1 ≤ 1 / 2 := by linarith
       rw [if_pos hr, if_neg hx]
-      congr 2
       ring
 
 /-- The transform viewed as a self-map of `admissibleSet`.  Its fixed point
@@ -359,7 +360,9 @@ lemma dist_transformSelf_le (f g : admissibleSet) :
       |(1 - cumulative f.1 (2 - 2 * x.1)) -
           (1 - cumulative g.1 (2 - 2 * x.1))| =
           ‖-(cumulative f.1 (2 - 2 * x.1) -
-            cumulative g.1 (2 - 2 * x.1))‖ := by congr 1 <;> ring
+            cumulative g.1 (2 - 2 * x.1))‖ := by
+        congr 1
+        ring
       _ = ‖cumulative f.1 (2 - 2 * x.1) -
           cumulative g.1 (2 - 2 * x.1)‖ := norm_neg _
       _ ≤ _ := h
@@ -756,7 +759,8 @@ lemma rvachevCandidate_hasDerivAt (x : ℝ) :
     have heven := rvachevCandidate_even (2 * x - 1)
     have heq : Fabius.rvachevUp boundedCandidate (2 * (-x) + 1) =
         Fabius.rvachevUp boundedCandidate (2 * x - 1) := by
-      convert heven using 1 <;> ring
+      convert heven using 1
+      ring
     rw [heq]
     ring
 

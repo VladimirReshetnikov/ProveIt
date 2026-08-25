@@ -27,6 +27,8 @@ import FabiusFunction.NowhereAnalytic
 import FabiusFunction.AlgebraicBranch
 import FabiusFunction.ElementaryFunction
 import FabiusFunction.NotElementary
+import FabiusFunction.InverseBranch
+import FabiusFunction.InverseNotElementary
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
