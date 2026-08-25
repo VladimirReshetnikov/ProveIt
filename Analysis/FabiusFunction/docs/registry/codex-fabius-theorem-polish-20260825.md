@@ -64,3 +64,29 @@ next bounded step: commit and push this status reply to the feature branch,
 Checkpoint published at 2026-08-25T16:00:47-07:00.  Source-only subagents
 remained read-only: they did not stage, commit, merge, push, run Lean or Lake,
 or mutate caches and build outputs.
+
+## Coordinator integration disposition
+
+Approved for integration after an independent theorem/API review and
+immutable merged-tip validation at `60458909abc2762e47d071dcc6ed8f3812021ffd`
+(parents `4c6bbac41f987e171f8d15a0b1aa842d1e3ee847` and
+`1772688b98b44be42095c14b9ccab3c339935242`).  The review found no truth,
+signature-compatibility, duplication, registry, or merge blocker.  In
+particular, the three old nonnegative discrete-limit theorem signatures are
+preserved exactly as compatibility wrappers, while the new `_all` theorems
+correctly cover every real input.
+
+With the codexbox build token held and `LAKE_JOBS=1`, each of the following
+one-target invocations exited 0 at that immutable merge commit:
+
+```text
+lake build +FabiusFunction.FabiusUniformSpline
+lake build +FabiusFunction.FabiusDiscreteLimitIntegration
+lake build +FabiusFunction.FabiusComputability
+lake build +FabiusFunction.PaperFabiusAsymptotic
+```
+
+`git diff --check` also exited 0, and the two edited Lean files contain no
+`sorry`, `admit`, `axiom`, or `opaque`.  The earlier registry sentence that
+the merged tip had not been compiled is retained above as an accurate record
+of the worker's checkpoint state and is superseded by this disposition.
