@@ -3193,11 +3193,68 @@ converge rapidly.
 The first coefficient is tiny:
 \begin{equation}
  \widehat\Psi(1)
- \approx(7.5586467408-7.4700963646\,\ii)\times10^{-7},     \label{eq:Psi-first-coeff}
+ \approx(7.5586475410-7.4701035590\,\ii)\times10^{-7},     \label{eq:Psi-first-coeff}
 \end{equation}
-with magnitude approximately $1.0627110626\times10^{-6}$.  Thus the visible oscillation is
+with magnitude approximately $1.0627116252\times10^{-6}$.  The second is smaller by six
+orders of magnitude,
+\begin{equation}
+ \widehat\Psi(2)
+ \approx(3.2481234772+5.8517589871\,\ii)\times10^{-13},    \label{eq:Psi-second-coeff}
+\end{equation}
+of magnitude $6.6927863679\times10^{-13}$, so the first harmonic already describes $\Psi$ to
+better than one part in a million of its own size.  Thus the visible oscillation is
 on the scale of a few parts in a million in the logarithm.  Tiny is not the same as zero: its
 nonvanishing changes the logical status of an asymptotic equivalent.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+ width=0.86\textwidth,height=0.34\textwidth,
+ xmin=0,xmax=1,
+ xlabel={$t$},ylabel={$10^{6}\,\Psi(t)$},
+ grid=major,major grid style={draw=gray!18},
+ axis line style={draw=rulegray},
+ tick label style={font=\small},label style={font=\small},
+ line width=0.9pt]
+\addplot[draw=linkblue,smooth] coordinates {
+(0.000000,1.511730) (0.010000,1.602557) (0.020000,1.687060) (0.030000,1.764904)
+(0.040000,1.835784) (0.050000,1.899418) (0.060000,1.955556) (0.070000,2.003976)
+(0.080000,2.044488) (0.090000,2.076931) (0.100000,2.101177) (0.110000,2.117131)
+(0.120000,2.124730) (0.130000,2.123943) (0.140000,2.114774) (0.150000,2.097259)
+(0.160000,2.071467) (0.170000,2.037500) (0.180000,1.995492) (0.190000,1.945609)
+(0.200000,1.888047) (0.210000,1.823034) (0.220000,1.750826) (0.230000,1.671709)
+(0.240000,1.585994) (0.250000,1.494020) (0.260000,1.396150) (0.270000,1.292770)
+(0.280000,1.184287) (0.290000,1.071131) (0.300000,0.953748) (0.310000,0.832601)
+(0.320000,0.708168) (0.330000,0.580940) (0.340000,0.451419) (0.350000,0.320117)
+(0.360000,0.187551) (0.370000,0.054245) (0.380000,-0.079275) (0.390000,-0.212482)
+(0.400000,-0.344850) (0.410000,-0.475858) (0.420000,-0.604987) (0.430000,-0.731729)
+(0.440000,-0.855584) (0.450000,-0.976061) (0.460000,-1.092687) (0.470000,-1.205000)
+(0.480000,-1.312558) (0.490000,-1.414935) (0.500000,-1.511729) (0.510000,-1.602556)
+(0.520000,-1.687059) (0.530000,-1.764904) (0.540000,-1.835784) (0.550000,-1.899418)
+(0.560000,-1.955557) (0.570000,-2.003977) (0.580000,-2.044489) (0.590000,-2.076933)
+(0.600000,-2.101179) (0.610000,-2.117133) (0.620000,-2.124732) (0.630000,-2.123945)
+(0.640000,-2.114777) (0.650000,-2.097262) (0.660000,-2.071470) (0.670000,-2.037503)
+(0.680000,-1.995495) (0.690000,-1.945611) (0.700000,-1.888049) (0.710000,-1.823036)
+(0.720000,-1.750828) (0.730000,-1.671711) (0.740000,-1.585996) (0.750000,-1.494021)
+(0.760000,-1.396151) (0.770000,-1.292770) (0.780000,-1.184288) (0.790000,-1.071131)
+(0.800000,-0.953748) (0.810000,-0.832600) (0.820000,-0.708167) (0.830000,-0.580938)
+(0.840000,-0.451417) (0.850000,-0.320115) (0.860000,-0.187549) (0.870000,-0.054243)
+(0.880000,0.079277) (0.890000,0.212484) (0.900000,0.344853) (0.910000,0.475860)
+(0.920000,0.604990) (0.930000,0.731732) (0.940000,0.855586) (0.950000,0.976064)
+(0.960000,1.092689) (0.970000,1.205002) (0.980000,1.312560) (0.990000,1.414937)
+(1.000000,1.511730) 
+};
+\end{axis}
+\end{tikzpicture}
+\caption{The periodic correction $\Psi$, magnified by $10^{6}$.  The curve is
+indistinguishable from its first Fourier harmonic at this resolution, and the
+half-period antisymmetry $\Psi(t+\tfrac12)\approx-\Psi(t)$ visible here is the statement
+that the even harmonics are negligible.  The vertical scale is the point of the picture:
+the oscillation is a few parts in a million in the logarithm, but it does not tend to
+zero.}
+\label{fig:Psi-plot}
+\end{figure}
 
 \subsection{The finite part at the Mellin origin}
 
@@ -4517,9 +4574,9 @@ $n$ & $F(2^{-n})$ & $\vtwo(F(2^{-n}))$ & $R_n$\\
 2 & $\dfrac5{72}$ & $-3$ & $5$\\[0.8ex]
 3 & $\dfrac1{288}$ & $-5$ & $15$\\[0.8ex]
 4 & $\dfrac{143}{2073600}$ & $-10$ & $1001$\\[0.8ex]
-5 & $\dfrac{19}{33177600}$ & $-15$ & $5985$\\[0.8ex]
-6 & $\dfrac{1153}{561842749440}$ & $-22$ & $2853675$\\[0.8ex]
-7 & $\dfrac{583}{179789679820800}$ & $-29$ & $26261235$\\
+5 & $\dfrac{19}{33177600}$ & $-14$ & $5985$\\[0.8ex]
+6 & $\dfrac{1153}{561842749440}$ & $-20$ & $2853675$\\[0.8ex]
+7 & $\dfrac{583}{179789679820800}$ & $-26$ & $26261235$\\
 \bottomrule
 \end{longtable}
 
