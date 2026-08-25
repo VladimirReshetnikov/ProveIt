@@ -115,8 +115,8 @@
 The Fabius function $F$ is a $C^\infty$ probability distribution function on
 $[0,1]$ that is real analytic at no point of that interval.  We prove, and
 formalize in Lean~4 on top of \texttt{Mathlib}, that no elementary function of
-one real variable agrees with $F$ on any nonempty open subset of $[0,1]$; in
-particular the restriction of $F$ to $(0,1)$ is not elementary.
+one real variable agrees with $F$ on any subset of $[0,1]$ with nonempty
+interior; in particular the restriction of $F$ to $(0,1)$ is not elementary.
 
 Since $F$ is $C^\infty$, no smoothness obstruction can decide the question:
 the obstruction must be analyticity.  The whole content of the argument is
@@ -174,7 +174,7 @@ of~$\R$.
 \end{theorem}
 
 \begin{corollary}[Main result]\label{cor:main}
-Let $U\subseteq[0,1]$ be a nonempty open set and let $g\colon\R\to\R$ be
+Let $U\subseteq[0,1]$ have nonempty interior and let $g\colon\R\to\R$ be
 elementary.  Then $g$ and $F$ do not agree on $U$.  In particular there is no
 elementary function that agrees with $F$ on $(0,1)$, and $F$ itself is not
 elementary.
@@ -182,11 +182,21 @@ elementary.
 
 \begin{proof}
 By \Cref{thm:density} the set $\An(g)$ is dense, so it meets the nonempty open
-set $U$; pick $x\in U\cap\An(g)$.  If $g$ and $F$ agreed on $U$ they would
-have the same germ at $x$, because $U$ is a neighbourhood of $x$; analyticity
+set $\operatorname{int}U$; pick $x\in\operatorname{int}U\cap\An(g)$.  If $g$
+and $F$ agreed on $U$ they would have the same germ at $x$, because
+$\operatorname{int}U$ is a neighbourhood of $x$ contained in $U$; analyticity
 at a point depends only on the germ, so $F$ would be analytic at $x\in[0,1]$,
 contradicting \Cref{thm:nowhere}.
 \end{proof}
+
+\begin{remark}
+Hypothesising nonempty \emph{interior} rather than openness costs nothing in
+the proof and buys a little: $U$ may be a closed interval, or an interval with
+some of its rational points removed, or any set that is merely fat somewhere.
+What cannot be weakened is fatness itself: on a finite set an elementary
+function certainly can agree with $F$, since a polynomial interpolates any
+finite table of values.
+\end{remark}
 
 \begin{boxedremark}
 Corollary~\ref{cor:main} is the sharp form of the assertion ``the Fabius function is
@@ -630,6 +640,9 @@ Nowhere analyticity (\Cref{thm:nowhere})
 Main result (Corollary~\ref{cor:main})
   & \texttt{canonical\_fabius\_not\_isElementary\_on\_Ioo}
   & \texttt{NotElementary} \\
+Interior form of the obstruction
+  & \texttt{IsElementary.not\_eqOn\_of\_interior\_nonempty}; \texttt{not\_isElementary\_eqOn\_of\_interior\_nonempty}, \texttt{not\_algebraicBranch\_eqOn\_of\_interior\_nonempty}
+  & \texttt{ElementaryFunction}; \texttt{NotElementary} \\
 $F$ is not elementary
   & \texttt{canonical\_fabius\_not\_isElementary}
   & \texttt{NotElementary} \\
