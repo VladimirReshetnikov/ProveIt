@@ -22,8 +22,9 @@ The payload is the finite q-binomial theorem at `q = 1/2`,
 
 proved from the q-Pascal recurrence, together with its values at the dyadic
 nodes `z = 2^m`: for `m < n` the factor `1 - 2^m (1/2)^m` vanishes and the
-sum is zero, while at `z = 2^n` the product reflects to
-`(-1)^n 2^(C(n+1,2)) (1/2;1/2)_n`.  Those two evaluations are the
+sum is zero, while for `n ≤ m` the product is an exact signed quotient of
+Mersenne products.  At `z = 2^n` this specializes to
+`(-1)^n 2^(C(n+1,2)) (1/2;1/2)_n`.  The vanishing and endpoint evaluations are the
 interpolation data that `FabiusFunction.FabiusQBinomialFormula` feeds to its
 Lagrange argument at the nodes `-(2^k)`, and the theorem itself is what
 `FabiusFunction.FabiusDiscreteLimitToeplitz` evaluates at `z = 1/2` and
@@ -43,10 +44,10 @@ statements of the whole `Fabius*QBinomial*` family.
   of the q-Pascal recurrence.
 * `halfQBinomial_theorem` -- the q-binomial theorem displayed above.
 * `halfQBinomial_two_pow_sum_eq_qPochhammer` -- the all-index dyadic-node
-  specialization, with `halfQBinomial_two_pow_sum_eq_zero` and
-  `halfQBinomial_two_pow_sum_eq_self` as its two interpolation boundaries.
-* `qPochhammer_two_pow_self_eq_mersenne` -- the exact Mersenne-product value
-  of the endpoint q-Pochhammer symbol.
+  specialization, with an exact piecewise Mersenne-product form and the
+  existing zero/endpoint interpolation boundaries.
+* `qPochhammer_two_pow_eq_mersenne_div` and `qPochhammer_two_pow_eq_ite` --
+  the closed Mersenne-product value at every dyadic node.
 * `four_pow_choose_two` -- `4^(C(k,2)) = 2^(k(k-1))`, which rewrites the
   Wolfram denominator as a pure power of two.
 
@@ -160,6 +161,18 @@ theorem halfMersenneProduct_succ (n : ℕ) :
     halfMersenneProduct (n + 1) =
       halfMersenneProduct n * ((2 : ℚ) ^ (n + 1) - 1) := by
   simp [halfMersenneProduct, Finset.prod_range_succ]
+
+/-- Split the first `m + n` Mersenne factors after the first `m` factors. -/
+theorem halfMersenneProduct_add (m n : ℕ) :
+    halfMersenneProduct (m + n) =
+      halfMersenneProduct m *
+        ∏ j ∈ Finset.range n, ((2 : ℚ) ^ (m + j + 1) - 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [Nat.add_succ, halfMersenneProduct_succ, ih,
+        Finset.prod_range_succ]
+      ring
 
 /-- `∏_(j=1)^n (2^j - 1)` is strictly positive, since every factor with
 `j ≥ 1` is at least `1`. -/
@@ -599,49 +612,144 @@ theorem qPochhammer_two_pow_eq_zero {n m : ℕ} (hm : m < n) :
   · rw [two_pow_mul_half_pow m m (le_refl m)]
     norm_num
 
-/-- At the endpoint `m = n`, the dyadic q-Pochhammer symbol is the signed
-product of the first `n` Mersenne factors.  This division-free form is the
-product identity behind `halfQBinomial_two_pow_sum_eq_self`. -/
-theorem qPochhammer_two_pow_self_eq_mersenne (n : ℕ) :
-    qPochhammer ((2 : ℚ) ^ n) (1 / 2) n =
-      (-1 : ℚ) ^ n * halfMersenneProduct n := by
+/-- At and beyond the last interpolation node, `(2^m; 1/2)_n` is the signed
+quotient of two Mersenne products.  This includes `n = 0` and specializes at
+`m = n` to `qPochhammer_two_pow_self_eq_mersenne`. -/
+theorem qPochhammer_two_pow_eq_mersenne_div {n m : ℕ} (hnm : n ≤ m) :
+    qPochhammer ((2 : ℚ) ^ m) (1 / 2) n =
+      (-1 : ℚ) ^ n * halfMersenneProduct m /
+        halfMersenneProduct (m - n) := by
   have hterm (j : ℕ) (hj : j < n) :
-      1 - (2 : ℚ) ^ n * (1 / 2 : ℚ) ^ j =
-        -((2 : ℚ) ^ (n - j) - 1) := by
-    rw [two_pow_mul_half_pow n j hj.le]
+      1 - (2 : ℚ) ^ m * (1 / 2 : ℚ) ^ j =
+        -((2 : ℚ) ^ (m - j) - 1) := by
+    rw [two_pow_mul_half_pow m j (hj.le.trans hnm)]
     ring
   have hreflect :
-      (∏ j ∈ Finset.range n, ((2 : ℚ) ^ (n - j) - 1)) =
-        halfMersenneProduct n := by
-    rw [halfMersenneProduct]
+      (∏ j ∈ Finset.range n, ((2 : ℚ) ^ (m - j) - 1)) =
+        ∏ j ∈ Finset.range n,
+          ((2 : ℚ) ^ ((m - n) + j + 1) - 1) := by
     rw [← Finset.prod_range_reflect
-      (fun j => ((2 : ℚ) ^ (j + 1) - 1)) n]
+      (fun j => ((2 : ℚ) ^ ((m - n) + j + 1) - 1)) n]
     apply Finset.prod_congr rfl
     intro j hj
     congr 2
     have hjlt := Finset.mem_range.mp hj
     omega
+  have hsplit :
+      halfMersenneProduct m =
+        halfMersenneProduct (m - n) *
+          ∏ j ∈ Finset.range n,
+            ((2 : ℚ) ^ ((m - n) + j + 1) - 1) := by
+    simpa only [Nat.sub_add_cancel hnm] using
+      halfMersenneProduct_add (m - n) n
   unfold qPochhammer finiteQPochhammer
   calc
     (∏ j ∈ Finset.range n,
-        (1 - (2 : ℚ) ^ n * (1 / 2 : ℚ) ^ j)) =
-        ∏ j ∈ Finset.range n, -((2 : ℚ) ^ (n - j) - 1) := by
+        (1 - (2 : ℚ) ^ m * (1 / 2 : ℚ) ^ j)) =
+        ∏ j ∈ Finset.range n, -((2 : ℚ) ^ (m - j) - 1) := by
       apply Finset.prod_congr rfl
       intro j hj
       exact hterm j (Finset.mem_range.mp hj)
     _ = (-1 : ℚ) ^ n *
-          ∏ j ∈ Finset.range n, ((2 : ℚ) ^ (n - j) - 1) := by
+          ∏ j ∈ Finset.range n, ((2 : ℚ) ^ (m - j) - 1) := by
       calc
-        (∏ j ∈ Finset.range n, -((2 : ℚ) ^ (n - j) - 1)) =
+        (∏ j ∈ Finset.range n, -((2 : ℚ) ^ (m - j) - 1)) =
             ∏ j ∈ Finset.range n,
-              ((-1 : ℚ) * ((2 : ℚ) ^ (n - j) - 1)) := by
+              ((-1 : ℚ) * ((2 : ℚ) ^ (m - j) - 1)) := by
           apply Finset.prod_congr rfl
           intro j _hj
           ring
         _ = _ := by
           rw [Finset.prod_mul_distrib]
           simp
-    _ = (-1 : ℚ) ^ n * halfMersenneProduct n := by rw [hreflect]
+    _ = (-1 : ℚ) ^ n *
+          ∏ j ∈ Finset.range n,
+            ((2 : ℚ) ^ ((m - n) + j + 1) - 1) := by
+      rw [hreflect]
+    _ = (-1 : ℚ) ^ n * halfMersenneProduct m /
+          halfMersenneProduct (m - n) := by
+      rw [hsplit]
+      field_simp [halfMersenneProduct_ne_zero]
+
+/-- At the endpoint `m = n`, the dyadic q-Pochhammer symbol is the signed
+product of the first `n` Mersenne factors.  This division-free form is the
+product identity behind `halfQBinomial_two_pow_sum_eq_self`. -/
+theorem qPochhammer_two_pow_self_eq_mersenne (n : ℕ) :
+    qPochhammer ((2 : ℚ) ^ n) (1 / 2) n =
+      (-1 : ℚ) ^ n * halfMersenneProduct n := by
+  simpa using qPochhammer_two_pow_eq_mersenne_div (le_refl n)
+
+/-- At and beyond the last interpolation node, the dyadic q-Pochhammer value
+is nonzero. -/
+theorem qPochhammer_two_pow_ne_zero_of_le {n m : ℕ} (hnm : n ≤ m) :
+    qPochhammer ((2 : ℚ) ^ m) (1 / 2) n ≠ 0 := by
+  rw [qPochhammer_two_pow_eq_mersenne_div hnm]
+  exact div_ne_zero
+    (mul_ne_zero (pow_ne_zero n (by norm_num))
+      (halfMersenneProduct_ne_zero m))
+    (halfMersenneProduct_ne_zero (m - n))
+
+/-- The dyadic q-Pochhammer value vanishes exactly below the last
+interpolation node. -/
+theorem qPochhammer_two_pow_eq_zero_iff (n m : ℕ) :
+    qPochhammer ((2 : ℚ) ^ m) (1 / 2) n = 0 ↔ m < n := by
+  constructor
+  · intro hzero
+    by_contra hnot
+    exact qPochhammer_two_pow_ne_zero_of_le (Nat.le_of_not_gt hnot) hzero
+  · exact qPochhammer_two_pow_eq_zero
+
+/-- Exact value of `(2^m; 1/2)_n` at every dyadic node: it vanishes below the
+last interpolation node and is a signed Mersenne quotient from that node on. -/
+theorem qPochhammer_two_pow_eq_ite (n m : ℕ) :
+    qPochhammer ((2 : ℚ) ^ m) (1 / 2) n =
+      if m < n then 0 else
+        (-1 : ℚ) ^ n * halfMersenneProduct m /
+          halfMersenneProduct (m - n) := by
+  by_cases hmn : m < n
+  · rw [if_pos hmn, qPochhammer_two_pow_eq_zero hmn]
+  · rw [if_neg hmn]
+    exact qPochhammer_two_pow_eq_mersenne_div (Nat.le_of_not_gt hmn)
+
+/-- Closed dyadic-node evaluation of the q-binomial sum at every pair of
+indices, combining its vanishing and Mersenne-product regimes. -/
+theorem halfQBinomial_two_pow_sum_eq_ite (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        halfQBinomial n k * ((2 : ℚ) ^ m) ^ k) =
+      if m < n then 0 else
+        (-1 : ℚ) ^ n * halfMersenneProduct m /
+          halfMersenneProduct (m - n) := by
+  rw [halfQBinomial_two_pow_sum_eq_qPochhammer]
+  exact qPochhammer_two_pow_eq_ite n m
+
+/-- Literal `QBinomial[n,k,1/2]` form of the closed all-node evaluation. -/
+theorem qBinomial_half_two_pow_sum_eq_ite (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        qBinomial n k (1 / 2) * ((2 : ℚ) ^ m) ^ k) =
+      if m < n then 0 else
+        (-1 : ℚ) ^ n * halfMersenneProduct m /
+          halfMersenneProduct (m - n) := by
+  simpa only [qBinomial_half_eq] using
+    halfQBinomial_two_pow_sum_eq_ite n m
+
+/-- The q-binomial dyadic-node sum vanishes exactly below its last
+interpolation node. -/
+theorem halfQBinomial_two_pow_sum_eq_zero_iff (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        halfQBinomial n k * ((2 : ℚ) ^ m) ^ k) = 0 ↔ m < n := by
+  rw [halfQBinomial_two_pow_sum_eq_qPochhammer]
+  exact qPochhammer_two_pow_eq_zero_iff n m
+
+/-- Literal `QBinomial[n,k,1/2]` form of the exact vanishing criterion. -/
+theorem qBinomial_half_two_pow_sum_eq_zero_iff (n m : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      (-1 : ℚ) ^ k * (1 / 2 : ℚ) ^ (k.choose 2) *
+        qBinomial n k (1 / 2) * ((2 : ℚ) ^ m) ^ k) = 0 ↔ m < n := by
+  simpa only [qBinomial_half_eq] using
+    halfQBinomial_two_pow_sum_eq_zero_iff n m
 
 /-- The q-binomial sum vanishes at every dyadic node `2^m` with `m < n`. -/
 theorem halfQBinomial_two_pow_sum_eq_zero {n m : ℕ} (hm : m < n) :
