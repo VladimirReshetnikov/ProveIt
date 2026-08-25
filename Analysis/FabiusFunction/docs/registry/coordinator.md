@@ -6,16 +6,16 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 16:53 PDT
+## Checkpoint 2026-08-25 16:56 PDT
 
 ```text
-observed main before this directive: 7aed3c8c71e1c4fb18c4666be675a008b105ffff
+observed main before this directive: f3719da05973a0f45bcd882890166ea7b6d8cbab
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
-codexbox build owner: coordinator (ASSIGNED -- +FabiusFunction acceptance gate)
+codexbox build owner: coordinator (ASSIGNED -- +FabiusFunction retry)
 documentation owner: coordinator (FREEZE on canonical frontier and exposition)
-next poll: after the immutable acceptance commit completes its root build
+next poll: after the syntax-fix commit completes its root build
 ```
 
 The previously approved curvature, generalizations, lower-Lambert,
@@ -27,7 +27,10 @@ source, all nine non-semantic Lean/root/facade deltas, the isolated
 non-elementarity TeX/PDF pair, the audit fence repair, and the two Claude
 registry updates are accepted.  The exposition and theorem-refinements
 registries are retained with snapshot corrections, and the sole coverage-link
-defect is fixed forward.  No revert or duplicate cherry-pick is needed.
+defect is fixed forward.  The first exact root build then caught one parse-only
+defect: a new `partialSum_smul` doc comment sat between `@[simp]` and `theorem`.
+The syntax-fix commit moves the comment before the attribute.  No revert or
+duplicate cherry-pick is needed.
 
 ## Immediate shared instructions
 
@@ -144,7 +147,9 @@ at coordinator branch `a6fa59157` exactly; serialized focused and
 The pathwise audit accepts the other nine Lean/root/facade blobs: five contain
 only accurate comments and four comment-only paper facades add only
 `set_option autoImplicit false`; no declaration, proof, signature, import,
-attribute, instance, or API changes.  It also accepts the 14-page
+instance, or API changes.  Exact compilation found and fixes forward the sole
+syntax defect in that prose tranche by placing the `partialSum_smul` doc comment
+before its existing `@[simp]` attribute.  It also accepts the 14-page
 non-elementarity TeX/PDF pair from semantic merge `1b2cd37dd`, the missing
 audit code fence, and the two SHA-bound Claude registry updates.  The dead
 coverage link and stale current-state wording in both Codex registries are
@@ -164,8 +169,9 @@ it here.
 
 1. Publish the forward-only acceptance ledger and three narrow documentation
    corrections; retain the reconciled history and every reviewed blob.
-2. At that immutable commit, run the sole serialized root aggregate
-   `LAKE_JOBS=1 lake build +FabiusFunction`.
+2. Publish the one-line doc-comment ordering fix, then rerun the sole serialized
+   root aggregate `LAKE_JOBS=1 lake build +FabiusFunction` at that immutable
+   commit.
 3. Record the exact build result and close the integration incident before
    reopening any worker lease.
 4. Resume the one-owner canonical-frontier semantic reconciliation using
@@ -199,7 +205,14 @@ these serialized immutable validations:
   `+FabiusFunction.FabiusQBinomialTaylor` (3320 jobs) and
   `+FabiusFunction.PaperFabiusAsymptotic` (3957 jobs), both exit 0.
 
-No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:53 PDT.  The
+At acceptance commit `f3719da05`, the first
+`LAKE_JOBS=1 lake build +FabiusFunction` attempt reached 4007/4008 completed
+jobs but exited 1 because `SaddleExpansionAlgebra.lean:358` placed a doc comment
+after `@[simp]`; Lean expected the declaration immediately after the attribute.
+All other jobs in that invocation passed.  The retry is assigned only after the
+comment is moved before the attribute in a new immutable commit.
+
+No Lean, Lake, `pdflatex`, or `latexmk` process was observed at 16:56 PDT.  The
 codexbox token is assigned to the coordinator's exact-tree root aggregate.
 The other physical machine's token remains frozen by the shared stop above.
 

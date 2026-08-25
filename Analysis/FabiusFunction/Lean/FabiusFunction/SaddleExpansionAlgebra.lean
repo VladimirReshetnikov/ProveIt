@@ -355,8 +355,8 @@ theorem partialSum_add (scale : α → 𝕜)
       partialSum scale coeff N x + partialSum scale coeff' N x := by
   simp [partialSum, smul_add, Finset.sum_add_distrib]
 
-@[simp]
 /-- Pointwise scalar multiplication commutes with finite asymptotic partial sums. -/
+@[simp]
 theorem partialSum_smul (c scale : α → 𝕜)
     (coeff : ℕ → α → ℰ) (N : ℕ) (x : α) :
     partialSum scale (fun k x => c x • coeff k x) N x =
