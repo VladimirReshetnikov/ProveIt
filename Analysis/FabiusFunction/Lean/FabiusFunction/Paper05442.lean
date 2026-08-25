@@ -48,6 +48,9 @@ construction also exposes stronger corollaries valid for every `x : ℝ`:
   `Fabius.ProbabilityRepresentation.fabiusReal_eq_weightedSum_probability`
   identify the bounded Fabius function with the random-series CDF globally on
   its real domain;
+* `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_intervalIntegral_of_le_half`
+  gives the collapsed left integral equation for every real `x ≤ 1/2`, with
+  no artificial nonnegativity assumption;
 * `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF` and
   `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`
   give `up(x) = P[X ≤ 1 - |x|]` for all real `x`.

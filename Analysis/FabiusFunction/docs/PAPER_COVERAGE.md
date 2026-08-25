@@ -39,6 +39,10 @@ all-real forms:
   `Fabius.ProbabilityRepresentation.ofReal_fabiusReal_eq_weightedSum_probability`,
   identify the bounded Fabius function with the random-series CDF for every
   real threshold in both measure codomains;
+- `Fabius.ProbabilityRepresentation.weightedSumCDF_eq_intervalIntegral_of_le_half`
+  proves the collapsed smoothing equation
+  `H(x) = ∫ t in 0..2*x, H(t)` for every `x ≤ 1/2`, including negative
+  thresholds where the oriented integral and CDF both vanish;
 - `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSumCDF`,
   `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability_global`,
   and

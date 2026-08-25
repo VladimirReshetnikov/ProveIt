@@ -616,6 +616,12 @@ A fixed point satisfies an integral equation.  On the left half,
 \[
   F(x)=\int_0^{2x}F(t)\,\dd t.
 \]
+For the probability CDF this identity is actually valid for every
+$x\leq1/2$, not only for $x\in[0,1/2]$: below zero both the CDF and the
+oriented integral vanish.  Lean exposes this stronger form as
+\lean{weightedSumCDF_eq_intervalIntegral_of_le_half} and retains
+\lean{weightedSumCDF_left_formula} as the interval-shaped compatibility
+wrapper.
 The fundamental theorem of calculus and the chain rule give
 \[
   F'(x)=2F(2x).

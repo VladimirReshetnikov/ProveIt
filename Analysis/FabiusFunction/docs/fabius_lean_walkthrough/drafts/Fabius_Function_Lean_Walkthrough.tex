@@ -1664,6 +1664,16 @@ gives
 \[
  H(y)=\int_0^1 H(2y-u)\,du.
 \]
+Because $H$ vanishes on the nonpositive axis, this collapses for every
+$y\leq1/2$ to
+\[
+ H(y)=\int_0^{2y}H(t)\,dt.
+\]
+The statement remains valid for negative $y$: the interval integral has
+reversed orientation, but its integrand vanishes throughout.  This sharp
+domain is the public theorem
+\pathbreak{weightedSumCDF_eq_intervalIntegral_of_le_half}; the older
+\pathbreak{weightedSumCDF_left_formula} remains as its $[0,1/2]$ wrapper.
 The Lean proof is explicit: rewrite the CDF as a measure of a measurable set,
 use the map equation for $\mu$, apply product integration/Fubini to the
 indicator, and identify each fiber measure with $H(2y-u)$.

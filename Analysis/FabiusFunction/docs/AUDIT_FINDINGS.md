@@ -469,13 +469,17 @@ form, removing their repeated positivity side conditions.
 `1 = 1`; the successor branch is exactly the already-verified positive-index
 identity.  No integral with the exponent `n-1` is asserted at zero.
 
-#### `weightedSumCDF_left_formula` uses only `x ≤ 1/2`; the `0 ≤ x` half of the `Icc` hypothesis is dead
+#### IMPLEMENTED: `weightedSumCDF_left_formula` uses only `x ≤ 1/2`; the `0 ≤ x` half of the `Icc` hypothesis is dead
 
 Confidence high.  `ProbabilityRepresentation.lean:474`, `ProbabilityRepresentation.lean:532`, `ProbabilityRepresentation.lean:540`
 
-**Why.** The `Icc` phrasing makes the lemma look like a genuinely interval-restricted statement (the name even says `left_formula`), when it is a global identity on `(-∞, 1/2]`. The two call sites in `cdfAdmissible_fixed` currently build `Icc` membership proofs (`⟨x.property.1, hx⟩` and `honeSub : 1 - x ∈ Icc 0 (1/2)`) whose first components are never used.
+**Why.** The `Icc` phrasing made the lemma look like a genuinely
+interval-restricted statement, although it is a global identity on
+`(-∞,1/2]`.  The two former call sites in `cdfAdmissible_fixed` built `Icc`
+membership proofs whose lower-bound components were never used.
 
-**Proposal.** Weaken the hypothesis in place at ProbabilityRepresentation.lean:474:
+**Implementation.** The strengthened theorem is now
+`weightedSumCDF_eq_intervalIntegral_of_le_half`:
 
 /-- The smoothing equation collapses to a single integral from the origin
 whenever `x ≤ 1/2`; no lower bound on `x` is needed, since the CDF vanishes
@@ -486,17 +490,11 @@ lemma weightedSumCDF_eq_intervalIntegral_of_le_half {x : ℝ} (hx : x ≤ 1 / 2)
   -- body unchanged except:
   have hlower : 2 * x - 1 ≤ 0 := by linarith   -- was: linarith [hx.2]
 
-Call sites in `cdfAdmissible_fixed`:
-- line 532: `exact (weightedSumCDF_eq_intervalIntegral_of_le_half hx).symm` (drop `⟨x.property.1, hx⟩`).
-- lines 535-540: replace `honeSub` with `have honeSub : 1 - (x : ℝ) ≤ 1 / 2 := by linarith` (justified by `hxhalf : 1/2 < (x : ℝ)`; `x.property.2` is no longer needed for `honeSub`, but keep it for `harg` at line 537), then `have hleft := weightedSumCDF_eq_intervalIntegral_of_le_half honeSub`.
-
-If a compatibility name is wanted, it must carry a full statement — `lemma f (h : P) := e` is a ...
-
-**Verifier.** Confirmed on all counts.
-
-(1) Signature quoted accurately. `ProbabilityRepresentation.lean:474-476` reads exactly `lemma weightedSumCDF_left_formula {x : ℝ} (hx : x ∈ Icc (0 : ℝ) (1 / 2)) : weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t`.
-
-(2) `hx.1` is genuinely dead. The body (lines 477-491) mentions `hx` exactly once: `have hlower ...
+The original `weightedSumCDF_left_formula` name remains as a compatibility
+wrapper on `Icc 0 (1/2)`.  Both branches of `cdfAdmissible_fixed` now use the
+strong theorem directly, so they no longer manufacture unused lower bounds.
+The negative-input endpoint behavior is genuine rather than vacuous: both the
+CDF and the reversed-orientation integral vanish there.
 
 #### Four public theorems carry hypotheses the author already marked unused with a leading underscore
 
