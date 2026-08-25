@@ -527,6 +527,37 @@ theorem weightedSumCDF_eq_fabiusReal
     Existence.boundedCandidate_isFabius
   rw [hF_eq]
 
+/-- The Rvachev bump is the random-series CDF evaluated at its distance from
+the boundary of the support.  Unlike the paper's left-half formulation below,
+this identity holds for every real argument; outside `[-1, 1]`, both sides
+vanish automatically. -/
+theorem rvachevUp_eq_weightedSumCDF
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    rvachevUp F x = weightedSumCDF (1 - |x|) := by
+  rw [weightedSumCDF_eq_fabiusReal F hF, rvachevUp]
+  split_ifs with hx
+  · rw [abs_of_nonpos hx]
+    congr 1
+    ring
+  · rw [abs_of_pos (lt_of_not_ge hx)]
+
+/-- Global real-probability representation of Rvachev's function:
+`up(x) = P[X ≤ 1 - |x|]` for the weighted sum of independent uniforms. -/
+theorem rvachevUp_eq_weightedSum_probability_global
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    rvachevUp F x = uniformProduct.real
+      {ω : SampleSpace | weightedCoordinateSum ω ≤ 1 - |x|} := by
+  rw [rvachevUp_eq_weightedSumCDF F hF x,
+    weightedSumCDF_eq_measureReal]
+
+/-- The global probability representation in its native `ℝ≥0∞` codomain. -/
+theorem ofReal_rvachevUp_eq_weightedSum_probability_global
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    ENNReal.ofReal (rvachevUp F x) = uniformProduct
+      {ω : SampleSpace | weightedCoordinateSum ω ≤ 1 - |x|} := by
+  rw [rvachevUp_eq_weightedSum_probability_global F hF x,
+    ofReal_measureReal]
+
 /-- The coordinate projections are mutually independent uniform random
 variables.  This is the prose proposition following Theorem 3 in the paper. -/
 lemma independent_uniform_coordinates :
@@ -547,19 +578,18 @@ theorem rvachevUp_eq_weightedSum_probability
     rvachevUp F x = uniformProduct.real
       {ω : SampleSpace |
         0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} := by
-  have hunit : x + 1 ∈ Icc (0 : ℝ) 1 := by
-    constructor <;> linarith [hx.1, hx.2]
-  have hF_eq := Existence.isFabius_eq F Existence.boundedCandidate hF
-    Existence.boundedCandidate_isFabius
-  have hset : {ω : SampleSpace |
-      0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} =
-      {ω : SampleSpace | weightedCoordinateSum ω ≤ x + 1} := by
+  have hset : {ω : SampleSpace | weightedCoordinateSum ω ≤ 1 - |x|} =
+      {ω : SampleSpace |
+        0 ≤ weightedCoordinateSum ω ∧ weightedCoordinateSum ω ≤ x + 1} := by
     ext ω
     simp only [mem_setOf_eq]
-    exact and_iff_right (weightedCoordinateSum_nonneg ω)
-  rw [hset, ← weightedSumCDF_eq_measureReal,
-    weightedSumCDF_eq_boundedCandidate hunit]
-  rw [rvachevUp, if_pos hx.2, hF_eq]
+    rw [abs_of_nonpos hx.2]
+    constructor
+    · intro hω
+      exact ⟨weightedCoordinateSum_nonneg ω, by linarith⟩
+    · intro hω
+      linarith [hω.2]
+  rw [rvachevUp_eq_weightedSum_probability_global F hF x, hset]
 
 /-- The same theorem with the probability left in its native `ℝ≥0∞` codomain. -/
 theorem ofReal_rvachevUp_eq_weightedSum_probability
