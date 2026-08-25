@@ -507,6 +507,6 @@ theorem correctedPrefixGridSample_tendsto_fabius
   have harg : 2 * (x / 2) - 1 ≤ 0 := by linarith [hx.2]
   rw [rvachevUp, if_pos harg] at h
   convert h using 1
-  ring
+  ring_nf
 
 end Fabius

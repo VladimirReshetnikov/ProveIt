@@ -101,7 +101,7 @@ lemma abs_exp_sub_exp_le_abs_of_nonpos {a b : ℝ} (ha : a ≤ 0) (hb : b ≤ 0)
   have hfac : Real.exp b - Real.exp a =
       Real.exp b * (1 - Real.exp (-(b - a))) := by
     rw [show a = b + (-(b - a)) by ring, Real.exp_add]
-    ring
+    ring_nf
   have hfactor : Real.exp b ≤ 1 := by
     rw [← Real.exp_zero]
     exact Real.exp_le_exp.mpr hb

@@ -650,7 +650,7 @@ lemma intervalIntegral_negativeLaplaceTerm_fourier (k : ℤ) (n : ℕ) :
         negativeLaplaceFourierWeight k (t - ((n + 1 : ℕ) : ℝ)) := by
       convert hw using 1
       push_cast
-      ring
+      ring_nf
     rw [hshift]
     unfold H negativeLaplaceTerm
     congr 2
@@ -1411,7 +1411,7 @@ theorem negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta
         (Real.log 2 : ℂ) := by
   rw [negativeLaplacePsiFourierCoeff_eq_gamma_zeta k hk,
     negativeLaplaceMellinFrequency_eq_neg_fourierFrequency]
-  ring
+  ring_nf
 
 /-- The zero mode vanishes, which is exactly the normalization built into
 `negativeLaplacePsi`. -/
