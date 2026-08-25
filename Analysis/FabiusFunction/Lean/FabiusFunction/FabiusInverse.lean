@@ -88,6 +88,17 @@ noncomputable def fabiusOrderIso (F : BoundedFabius) (hF : IsFabius F) :
   ((strictMonoOn_fabiusReal F hF).orderIso _ _).trans <|
     OrderIso.setCongr _ _ (bijOn_fabiusReal F hF).image_eq
 
+/-- The order isomorphism is `fabiusReal` on the nose.
+
+This bridging `simp` lemma is what lets the inversion identities below close by
+`simpa`.  Without it the two sides differ by an unfolding of `OrderIso.trans`,
+`StrictMonoOn.orderIso`, `Set.BijOn.equiv` and `Equiv.setCongr`, none of which
+is reducible, and `simpa ... using` performs its final unification at reducible
+transparency.  Mathlib carries the same lemma for the same reason next to its
+`Real.sinOrderIso`. -/
+@[simp] theorem coe_fabiusOrderIso_apply (F : BoundedFabius) (hF : IsFabius F)
+    (x : Icc (0 : ℝ) 1) : (fabiusOrderIso F hF x : ℝ) = fabiusReal F x := rfl
+
 /-- The inverse of the bounded Fabius function on `[0,1]`, extended to all of
 `ℝ` by clamping the argument into the unit interval.  It therefore takes the
 value `0` on `(-∞, 0]` and `1` on `[1, ∞)`, mirroring the convention for `F`
@@ -242,16 +253,20 @@ theorem le_two_pow_mul_fabiusInv_pow_of_le (F : BoundedFabius) (hF : IsFabius F)
 /-! ## Infinite steepness at the origin -/
 
 /-- **The inverse outruns every linear function at the origin, effectively.**
-For every slope `M > 0`, once `y` is positive, below `F (1/4)`, and small
-enough that `8 * M ^ 2 * y < 1`, the inverse already exceeds `M * y`.  The
-constant `8` is `2 ^ C(3,2)`, the flatness constant at `n = 2`.
+For every slope `M`, once `y` is positive, below `F (1/4)`, and small enough
+that `8 * M ^ 2 * y < 1`, the inverse already exceeds `M * y`.  The constant
+`8` is `2 ^ C(3,2)`, the flatness constant at `n = 2`.
+
+No positivity is assumed of `M`: for `M ≤ 0` the conclusion is weaker than the
+positive case but the same proof gives it, so requiring `0 < M` would only
+restrict the statement.
 
 Consequently `fabiusInv F hF` is not Lipschitz at `0`, and it is not Hölder
 continuous of any positive exponent there either: running the same argument at
 index `n` gives `fabiusInv F hF y ≥ (y / 2 ^ C(n+1,2)) ^ (1/n)`, which beats
 `y ^ α` for every `α > 1/n`. -/
 theorem mul_lt_fabiusInv (F : BoundedFabius) (hF : IsFabius F)
-    {M y : ℝ} (hM : 0 < M) (hy0 : 0 < y)
+    {M y : ℝ} (hy0 : 0 < y)
     (hy : y ≤ fabiusReal F (((2 : ℝ)⁻¹) ^ 2))
     (hsmall : 8 * M ^ 2 * y < 1) :
     M * y < fabiusInv F hF y := by
@@ -280,7 +295,6 @@ theorem tendsto_fabiusInv_div_atTop (F : BoundedFabius) (hF : IsFabius F) :
     fabius_pos_of_pos F hF (by norm_num)
   rw [tendsto_atTop]
   intro M
-  have hM : (0 : ℝ) < |M| + 1 := by positivity
   have hc : (0 : ℝ) < 8 * (|M| + 1) ^ 2 := by positivity
   have hthr : (0 : ℝ) < (8 * (|M| + 1) ^ 2)⁻¹ := by positivity
   filter_upwards [self_mem_nhdsWithin,
@@ -292,7 +306,7 @@ theorem tendsto_fabiusInv_div_atTop (F : BoundedFabius) (hF : IsFabius F) :
       (show y < (8 * (|M| + 1) ^ 2)⁻¹ from hy3) hc
     rwa [mul_inv_cancel₀ hc.ne'] at h
   have hlt : (|M| + 1) * y < fabiusInv F hF y :=
-    mul_lt_fabiusInv F hF hM hy0 (le_of_lt hy2) hsmall
+    mul_lt_fabiusInv F hF hy0 (le_of_lt hy2) hsmall
   have hstep : |M| + 1 ≤ fabiusInv F hF y / y := by
     rw [le_div_iff₀ hy0]
     exact hlt.le
