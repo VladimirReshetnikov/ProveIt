@@ -8,11 +8,12 @@ import FabiusFunction.FabiusDyadicSharpCumulant
 
 This module differentiates the exact quadratic-plus-periodic decomposition of
 the negative-Laplace logarithm and controls its forward-tail derivative. It
-proves
+proves, on the full positive real ray,
 
-`q'(n) = (-log n / log 2 + 1/2 + Ψ'(logb 2 n) / log 2) / n + O(n⁻²)`
+`q'(s) = (-log s / log 2 + 1/2 + Ψ'(logb 2 s) / log 2) / s + O(s⁻²)`
 
-and combines this with the sharper second-derivative estimate
+and records the natural-number sampling used below. It then combines this with
+the sharper second-derivative estimate
 
 `q''(n) = log n / (log 2 * n²) + O(n⁻²)`.
 
@@ -182,8 +183,24 @@ theorem negativeLaplaceLogFirst_eq_periodic
     (negativeLaplacePsi_hasDerivAt _) ht.differentiableAt.hasDerivAt
   rwa [ht.deriv] at h
 
-/-- The first logarithmic derivative differs from its periodic main term by
-the derivative of the exponentially small forward tail. -/
+/-- On the full positive real ray, the first logarithmic derivative differs
+from its periodic main term by `O(s⁻²)`. The error is exactly the negative
+derivative of the exponentially small forward tail. -/
+theorem negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_real
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fun s : ℝ => negativeLaplaceLogFirst F s -
+      ((-Real.log s / Real.log 2 + 1 / 2 +
+          deriv negativeLaplacePsi (Real.logb 2 s) / Real.log 2) / s)) =O[atTop]
+      (fun s : ℝ => (s ^ 2)⁻¹) := by
+  have htail := negativeLaplaceForwardTailFirst_isBigO_inv_sq_real
+  apply (htail.const_mul_left (-1)).congr'
+  · filter_upwards [eventually_ge_atTop (1 : ℝ)] with s hs
+    rw [negativeLaplaceLogFirst_eq_periodic F hF (zero_lt_one.trans_le hs)]
+    ring
+  · exact Filter.EventuallyEq.rfl
+
+/-- Natural-number sampling of the real positive-ray first-derivative
+approximation. -/
 theorem negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_nat
     (F : BoundedFabius) (hF : IsFabius F) :
     (fun n : ℕ => negativeLaplaceLogFirst F n -
@@ -191,13 +208,8 @@ theorem negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_nat
           deriv negativeLaplacePsi (Real.logb 2 n) / Real.log 2) /
         (n : ℝ))) =O[atTop]
       (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) := by
-  have htail := negativeLaplaceForwardTailFirst_isBigO_inv_sq_nat
-  apply (htail.const_mul_left (-1)).congr'
-  · filter_upwards [eventually_atTop.2 ⟨1, fun n hn => hn⟩] with n hn
-    rw [negativeLaplaceLogFirst_eq_periodic F hF
-      (by exact_mod_cast (show 0 < n by omega))]
-    ring
-  · exact Filter.EventuallyEq.rfl
+  simpa using
+    (negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_real F hF).natCast_atTop
 
 
 private lemma one_isBigO_log_nat :
