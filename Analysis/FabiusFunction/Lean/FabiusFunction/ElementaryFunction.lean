@@ -235,6 +235,19 @@ theorem abs {f : ℝ → ℝ} (hf : IsElementary f) : IsElementary fun x => |f x
   rw [h]
   exact (hf.npow 2).sqrt
 
+/-- The *signed* real power `x ↦ (f x / |f x|) * |f x| ^ r`.
+
+The constructor `IsElementary.rpow` supplies `n`-th roots only on
+`[0, ∞)`: `Mathlib`'s `Real.rpow` at a negative base is
+`|x| ^ r * cos (π r)`, so `(-8 : ℝ) ^ (1/3 : ℝ) = 1`, not `-2`.  The
+expression below is the classical odd root, and it is elementary by a
+different derivation — division, absolute value, real power.
+`Fabius.signedRoot_pow` checks that for odd `n` its `n`-th power really is
+the identity. -/
+theorem signedRpow {f : ℝ → ℝ} (hf : IsElementary f) (r : ℝ) :
+    IsElementary fun x => f x / |f x| * |f x| ^ r :=
+  (hf.div hf.abs).mul (hf.abs.rpow r)
+
 /-- Elementary functions are closed under the tangent. -/
 theorem tan {f : ℝ → ℝ} (hf : IsElementary f) :
     IsElementary fun x => Real.tan (f x) := by
@@ -304,6 +317,34 @@ theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
   exact (hf.add ((IsElementary.const 1).add (hf.npow 2)).sqrt).log
 
 end IsElementary
+
+/-- For odd `n`, the elementary expression `t ↦ (t / |t|) * |t| ^ (n : ℝ)⁻¹`
+of `Fabius.IsElementary.signedRpow` is a genuine real `n`-th root: raising it
+to the `n`-th power returns the argument, at negative arguments and at zero as
+well as at positive ones.
+
+This is what substantiates the claim that the class is closed under `n`-th
+roots.  The constructor `IsElementary.rpow` on its own does not give it: with
+`Mathlib`'s convention `t ^ (n : ℝ)⁻¹ = |t| ^ (n : ℝ)⁻¹ * cos (π / n)` for
+`t < 0`, whose `n`-th power is not `t`. -/
+theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
+    (t / |t| * |t| ^ ((n : ℝ))⁻¹) ^ n = t := by
+  have hn0 : n ≠ 0 := hn.pos.ne'
+  have hnR : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn0
+  rcases lt_trichotomy t 0 with ht | ht | ht
+  · have ht0 : t ≠ 0 := ne_of_lt ht
+    have habs : |t| = -t := abs_of_neg ht
+    have hnonneg : (0 : ℝ) ≤ -t := le_of_lt (neg_pos.mpr ht)
+    have hdiv : t / |t| = -1 := by rw [habs, div_neg, div_self ht0]
+    rw [hdiv, habs, neg_one_mul, hn.neg_pow,
+      ← Real.rpow_natCast ((-t) ^ ((n : ℝ))⁻¹) n, ← Real.rpow_mul hnonneg,
+      inv_mul_cancel₀ hnR, Real.rpow_one, neg_neg]
+  · subst ht
+    simp [Real.zero_rpow (inv_ne_zero hnR), zero_pow hn0]
+  · have habs : |t| = t := abs_of_pos ht
+    have hdiv : t / |t| = 1 := by rw [habs, div_self (ne_of_gt ht)]
+    rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
+      ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
 
 /-! ## Named elementary functions
 

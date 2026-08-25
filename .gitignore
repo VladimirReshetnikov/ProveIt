@@ -25,6 +25,13 @@ out/
 build/
 dist/
 
+# Per-worktree Lean build drivers.  Serializing `lake` one module at a time is
+# a machine-local necessity (see Analysis/FabiusFunction/AGENTS.md), and the
+# module list is specific to whatever closure a worktree is currently building,
+# so neither belongs in history.
+/order.txt
+/build_closure.sh
+
 # IDE and user-specific files
 .vs/
 .vscode/
