@@ -15,6 +15,8 @@ Besides packaging the hypotheses, the file derives the elementary consequences
 needed by the Fourier uniqueness argument: the exact ordinary support,
 nonnegativity, the translate identity on `[0,1]`, normalization on both the
 support interval and the whole real line, and the forced value `k = 2`.
+It also proves that the Rvachev fold of every bounded `IsFabius` solution
+satisfies this original characterization at scale two.
 -/
 
 set_option autoImplicit false
@@ -257,21 +259,23 @@ theorem scale_eq_two : k = 2 := by
 
 end IsOriginalFabius
 
-/-- The canonical Rvachev function supplies the existence half of Theorem 1. -/
-theorem canonical_isOriginalFabius : IsOriginalFabius (rvachevUp fabius) 2 where
-  contDiff := rvachev_contDiff fabius fabius_spec
-  tsupport_eq := tsupport_rvachev fabius fabius_spec
-  pos_of_mem := by
-    intro x hx
-    unfold rvachevUp
-    split_ifs with hx0
-    · exact fabius_pos_of_pos fabius fabius_spec (by linarith [hx.1])
-    · exact fabius_pos_of_pos fabius fabius_spec (by linarith [hx.2])
-  value_zero := rvachev_zero fabius fabius_spec
+/-- Every bounded Fabius solution folds to a solution of Rvachev's original
+compact-support characterization, with the forced scale already equal to
+two. -/
+theorem IsFabius.isOriginalFabius_rvachevUp
+    {F : BoundedFabius} (hF : IsFabius F) :
+    IsOriginalFabius (rvachevUp F) 2 where
+  contDiff := rvachev_contDiff F hF
+  tsupport_eq := tsupport_rvachev F hF
+  pos_of_mem := fun _x hx => rvachevUp_pos_of_mem_Ioo F hF hx
+  value_zero := rvachevUp_zero F hF
   scale_pos := by norm_num
-  hasDerivAt := by
-    intro x
-    convert rvachev_hasDerivAt fabius fabius_spec x using 1 <;> ring
+  hasDerivAt := rvachev_hasDerivAt F hF
+
+/-- The canonical Rvachev function supplies the existence half of Theorem 1. -/
+theorem canonical_isOriginalFabius :
+    IsOriginalFabius (rvachevUp fabius) 2 :=
+  fabius_spec.isOriginalFabius_rvachevUp
 
 /-- The constant in every solution of the original characterization is `2`. -/
 theorem originalFabius_scale_eq_two {φ : ℝ → ℝ} {k : ℝ}

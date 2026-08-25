@@ -18,7 +18,7 @@ The exact version used by this audit is vendored as
 
 | Source result | Lean declaration(s) |
 | --- | --- |
-| Theorem 1 | `Fabius.IsOriginalFabius`, `Fabius.existsUnique_originalFabius`, `Fabius.originalFabius_eq_canonical` |
+| Theorem 1 | `Fabius.IsOriginalFabius`, `Fabius.IsFabius.isOriginalFabius_rvachevUp`, `Fabius.isOriginalFabius_iff_eq_canonical`, `Fabius.isOriginalFabius_iff_existsUnique_isFabius`, `Fabius.existsUnique_originalFabius`, `Fabius.originalFabius_eq_canonical` |
 | Lemma 1 | `Fabius.finiteConvolutionProbability_tendsto`, `Fabius.finiteConvolutionProbability_tendsto_fabius`, `Fabius.integral_finiteConvolutionMeasure_tendsto`, `Fabius.integral_finiteConvolutionMeasure_complex_tendsto` |
 | Theorem 2 | `Fabius.stepApproximant_tendsto_rvachevUp`, `Fabius.stepApproximant_tendsto_fabius` |
 | Theorem 3 | `Fabius.ProbabilityRepresentation.rvachevUp_eq_weightedSum_probability`, `Fabius.ProbabilityRepresentation.ofReal_rvachevUp_eq_weightedSum_probability` |

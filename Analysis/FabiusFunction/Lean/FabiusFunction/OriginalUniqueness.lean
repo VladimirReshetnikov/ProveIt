@@ -1,4 +1,5 @@
 import FabiusFunction.OriginalCharacterization
+import FabiusFunction.Existence
 import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
 import Mathlib.Analysis.Fourier.FourierTransformDeriv
 import Mathlib.Analysis.Fourier.Inversion
@@ -11,6 +12,8 @@ the Fourier-refinement argument used in the paper.  The intermediate Fourier
 facts are part of the public API: every original solution has transform value
 one at the origin, satisfies the finite and infinite dyadic sinc-product
 formulas, and consequently has the same transform as every other solution.
+The final equivalence identifies these original solutions with the scale-two
+folds of unique bounded `IsFabius` witnesses.
 -/
 
 set_option autoImplicit false
@@ -398,6 +401,31 @@ function, and its dilation constant is `2`. -/
 theorem originalFabius_eq_canonical {φ : ℝ → ℝ} {k : ℝ}
     (h : IsOriginalFabius φ k) : φ = rvachevUp fabius ∧ k = 2 := by
   exact ⟨h.eq_canonical, h.scale_eq_two⟩
+
+/-- Exact classification of the original compact-support solutions by the
+canonical Rvachev function and the forced scale. -/
+theorem isOriginalFabius_iff_eq_canonical (φ : ℝ → ℝ) (k : ℝ) :
+    IsOriginalFabius φ k ↔ φ = rvachevUp fabius ∧ k = 2 := by
+  constructor
+  · exact originalFabius_eq_canonical
+  · rintro ⟨rfl, rfl⟩
+    exact canonical_isOriginalFabius
+
+/-- Original compact-support solutions are exactly the folds of bounded
+Fabius solutions, with scale two; the bounded witness is unique. -/
+theorem isOriginalFabius_iff_existsUnique_isFabius
+    (φ : ℝ → ℝ) (k : ℝ) :
+    IsOriginalFabius φ k ↔
+      k = 2 ∧ ∃! F : BoundedFabius,
+        IsFabius F ∧ φ = rvachevUp F := by
+  constructor
+  · intro h
+    refine ⟨h.scale_eq_two, fabius, ⟨fabius_spec, h.eq_canonical⟩, ?_⟩
+    intro G hG
+    exact hG.1.eq fabius_spec
+  · rintro ⟨hk, F, ⟨hF, hφ⟩, _⟩
+    rw [hk, hφ]
+    exact hF.isOriginalFabius_rvachevUp
 
 /-- The exact existence-and-uniqueness formulation of Theorem 1 of
 arXiv:1702.05442. -/

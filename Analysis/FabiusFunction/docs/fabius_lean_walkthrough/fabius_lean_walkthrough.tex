@@ -897,6 +897,14 @@ The bounded Fabius function has nonzero constant tails and is not integrable on 
 
 The original characterization asks for a smooth compactly supported function satisfying a refinement or derivative equation and a normalization.  The repository formalizes both existence and uniqueness.  The uniqueness proof is especially instructive because it turns a differential equation in physical space into a multiplicative recurrence in frequency space.
 
+The two formal solution spaces are connected explicitly.  The theorem
+\lean{IsFabius.isOriginalFabius_rvachevUp} says that the Rvachev fold of every bounded
+Fabius solution satisfies the original compact-support characterization at scale two.
+Conversely, \lean{isOriginalFabius_iff_existsUnique_isFabius} says that every original
+solution has scale two and is the fold of a unique bounded Fabius solution.  This is the
+correct tail-free equivalence: a direct predicate iff for an arbitrary bounded function
+would be false because its fold never inspects values on $(1,\infty)$.
+
 \section{Fourier conventions}
 Formal Fourier proofs are extremely sensitive to normalization.  Mathlib's transform includes a fixed kernel convention; the source therefore writes explicit factors of \(\pi\), \(2\pi\), and the imaginary unit rather than silently adopting a paper convention.  The sinc factor is defined compatibly with that convention and extended continuously at zero.
 
@@ -1054,7 +1062,8 @@ The module named after arXiv:1702.05442 imports the original uniqueness proof, p
 
 A useful reading order is:
 \begin{enumerate}
-  \item \file{OriginalUniqueness.lean} for the defining characterization;
+  \item \file{OriginalCharacterization.lean} and \file{OriginalUniqueness.lean}
+    for the defining characterization and the equivalence of solution spaces;
   \item \file{ProbabilityRepresentation.lean} for the random/convolution model;
   \item \file{WeakConvergence.lean} for the measure limit;
   \item \file{StepApproximationLimit.lean} for pointwise approximation;
@@ -2148,7 +2157,8 @@ Source item & Lean declaration or family & Principal proof location \\
 Source item & Lean declaration or family & Principal proof location \\
 \midrule
 \endhead
-Theorem 1 & \lean{IsOriginalFabius}; existence-and-uniqueness wrapper & \file{OriginalUniqueness.lean}, with canonical existence from the core development \\
+Theorem 1: structure and fold & \lean{IsOriginalFabius}; \lean{IsFabius.isOriginalFabius_rvachevUp} & \file{OriginalCharacterization.lean} \\
+Theorem 1: uniqueness & \lean{isOriginalFabius_iff_eq_canonical}; \lean{isOriginalFabius_iff_existsUnique_isFabius}; \lean{existsUnique_originalFabius} & \file{OriginalUniqueness.lean} \\
 Lemma 1 & finite-convolution probability convergence variants & \file{ProbabilityRepresentation.lean}, \file{WeakConvergence.lean} \\
 Theorem 2 & \lean{stepApproximant_tendsto_rvachevUp} and endpoint-corrected variants & \file{StepApproximationLimit.lean} \\
 Theorem 3 & probability representation of the up-function & \file{ProbabilityRepresentation.lean} \\
@@ -2248,7 +2258,8 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \modulefile{FourierProduct.lean} & Convergence and continuity of the infinite sinc product and compatibility with finite products. \\
 \modulefile{FourierAnalytic.lean} & Fourier transform formula for the up-function, inversion consequences, and moment-series identification. \\
-\modulefile{OriginalUniqueness.lean} & Fourier-refinement proof of uniqueness for Rvachev's original compactly supported characterization. \\
+\modulefile{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
+\modulefile{OriginalUniqueness.lean} & Fourier-refinement uniqueness and the exact equivalence with unique bounded Fabius witnesses. \\
 \modulefile{ProbabilityRepresentation.lean} & Finite convolution laws, characteristic functions, and the probabilistic representation of the up-function. \\
 \modulefile{WeakConvergence.lean} & Convergence of finite probability measures against bounded continuous tests. \\
 \modulefile{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\

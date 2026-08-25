@@ -1633,8 +1633,10 @@ the support.
 
 \subsection{The original Rvachev characterization}
 
-The preceding construction is equivalent to the characterization historically associated
-with Rvachev.
+At the level of solution spaces, the preceding construction is equivalent to the
+characterization historically associated with Rvachev.  The fold alone cannot give a direct
+predicate iff for an arbitrary bounded function, because it does not inspect that function
+on $(1,\infty)$; the precise equivalence below retains a unique bounded Fabius witness.
 
 \begin{theorem}[Original characterization in the formal development]
 \label{thm:formal-original-characterization}
@@ -1666,6 +1668,28 @@ Now integrate \eqref{eq:formal-original-rvachev} over $[-1,0]$.  The left side i
 $\varphi(0)-\varphi(-1)=1$; after the substitutions $y=2x\pm1$, the right side is
 $(k/2)\int_{-1}^{1}\varphi=k/2$.  Hence $k=2$.  The Fourier argument in the next theorem,
 now with the mass and scale derived rather than assumed, gives $\varphi=\Up$.
+\end{proof}
+
+The formal development also closes the converse direction.  For a bounded Fabius solution
+$G$, write $\Up_G$ for the fold
+\eqref{eq:up-fold} formed from $G$.
+
+\begin{corollary}[Equivalence of the two formal characterizations]
+For every $\varphi:\R\to\R$ and $k\in\R$, the original compact-support characterization
+holds for $(\varphi,k)$ if and only if
+\begin{equation}
+ k=2\qquad\text{and}\qquad
+ \text{there is a unique bounded Fabius solution $G$ with }\varphi=\Up_G.
+                                                               \label{eq:formal-characterization-iff}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+In the forward direction the theorem above forces $k=2$ and $\varphi=\Up$; the canonical
+bounded solution is therefore a witness, and uniqueness of bounded Fabius solutions makes
+it the only witness.  Conversely, every bounded Fabius solution folds to a smooth function
+with topological support $[-1,1]$, strict positivity on $(-1,1)$, value one at the origin,
+and derivative law \eqref{eq:formal-original-rvachev} with scale two.
 \end{proof}
 
 The mass-normalized Fourier form is a useful corollary in which positivity and the value at
@@ -11756,11 +11780,13 @@ point $x=0$, and bootstraps the equation to smoothness of every finite order.\\
 \path{OriginalCharacterization.lean} &
 Formalizes Theorem~1 of the compact-support paper starting from an unspecified constant $k$,
 and derives the exact support, nonnegativity, translate identity, normalization, and the
-forced value $k=2$.\\
+forced value $k=2$.  It also proves that every bounded Fabius solution folds to an original
+compact-support solution.\\
 \path{OriginalUniqueness.lean} &
 Proves the uniqueness half of that theorem by the Fourier refinement argument: every
 solution has transform value one at the origin and satisfies the same finite and infinite
-dyadic $\sinc$-product formulas.\\
+dyadic $\sinc$-product formulas.  The final iff packages original solutions as exactly the
+scale-two folds of unique bounded Fabius solutions.\\
 \path{OriginalPaperSupplement.lean} &
 Packages Theorems 4, 6, and 7 of the compact-support paper, the finite Taylor expansion at
 dyadic points, the nowhere-analyticity corollary, and the exact even and odd integer values
