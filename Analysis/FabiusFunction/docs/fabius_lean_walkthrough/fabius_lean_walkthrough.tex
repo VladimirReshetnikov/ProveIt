@@ -897,6 +897,14 @@ The bounded Fabius function has nonzero constant tails and is not integrable on 
 
 The original characterization asks for a smooth compactly supported function satisfying a refinement or derivative equation and a normalization.  The repository formalizes both existence and uniqueness.  The uniqueness proof is especially instructive because it turns a differential equation in physical space into a multiplicative recurrence in frequency space.
 
+The two formal solution spaces are connected explicitly.  The theorem
+\lean{IsFabius.isOriginalFabius_rvachevUp} says that the Rvachev fold of every bounded
+Fabius solution satisfies the original compact-support characterization at scale two.
+Conversely, \lean{isOriginalFabius_iff_existsUnique_isFabius} says that every original
+solution has scale two and is the fold of a unique bounded Fabius solution.  This is the
+correct tail-free equivalence: a direct predicate iff for an arbitrary bounded function
+would be false because its fold never inspects values on $(1,\infty)$.
+
 \section{Fourier conventions}
 Formal Fourier proofs are extremely sensitive to normalization.  Mathlib's transform includes a fixed kernel convention; the source therefore writes explicit factors of \(\pi\), \(2\pi\), and the imaginary unit rather than silently adopting a paper convention.  The sinc factor is defined compatibly with that convention and extended continuously at zero.
 
@@ -1054,7 +1062,8 @@ The module named after arXiv:1702.05442 imports the original uniqueness proof, p
 
 A useful reading order is:
 \begin{enumerate}
-  \item \file{OriginalUniqueness.lean} for the defining characterization;
+  \item \file{OriginalCharacterization.lean} and \file{OriginalUniqueness.lean}
+    for the defining characterization and the equivalence of solution spaces;
   \item \file{ProbabilityRepresentation.lean} for the random/convolution model;
   \item \file{WeakConvergence.lean} for the measure limit;
   \item \file{StepApproximationLimit.lean} for pointwise approximation;
@@ -1167,7 +1176,11 @@ The discrete-limit project starts from finite q-binomial/Thue--Morse rows depend
 This distinction between finite-stage dependence and limiting independence is explicitly formalized.  It prevents an overstrong claim that each approximant is constant in the parameter.
 
 \section{Uniform spline approximants}
-\file{FabiusUniformSpline.lean} introduces centered finite Thue--Morse splines.  These are piecewise-polynomial functions whose coefficients encode a finite convolution row.  The splines are uniformly bounded and supported in a common compact region after scaling.
+\file{FabiusUniformSpline.lean} introduces centered finite Thue--Morse splines.  These are piecewise-polynomial functions whose coefficients encode a finite convolution row.  They are uniformly bounded, vanish on the nonpositive half-line, and repeat on the nonnegative axis as signed two-unit blocks.  \file{FabiusComputability.lean} proves the global error estimate
+\[
+ \sup_{x\in\R}|S_p(x)-\mathcal F(x)|\le 2^{-p}\qquad(p\ge1).
+\]
+Thus they converge uniformly on all of $\R$, while their bounded-CDF specialization converges uniformly to $F$ on $[0,1]$.
 
 The source proves continuity at knots by comparing adjacent polynomial pieces.  Finite-difference cancellation ensures derivatives up to the expected order also match.  Rather than relying on a generic spline package, the proof works directly with the explicit pieces because their coefficients must later be transformed into the q-binomial sum.
 
@@ -1177,7 +1190,7 @@ The source proves continuity at knots by comparing adjacent polynomial pieces.  
 The proof is careful not to use order arguments on \(\C\).  Norm bounds replace real inequalities, and factorial denominators are estimated in \(\R\) before being cast into complex norms.  The finite nature of the Taylor expansion is again important: each finite spline has bounded degree, so no complex analytic remainder theorem is required.
 
 \section{The Toeplitz averaging mechanism}
-\file{FabiusDiscreteLimitToeplitz.lean} rewrites the normalized row as a Toeplitz-type weighted average of centered spline values.  The weights are nonnegative or absolutely summable after taking norms, their total tends to one, and mass far from the central region vanishes.  A general Toeplitz convergence principle then transfers pointwise or uniform convergence of the splines to convergence of the averages.
+\file{FabiusDiscreteLimitToeplitz.lean} rewrites the normalized row as a Toeplitz-type weighted average of centered spline values.  The weights need not be nonnegative: their row sum is one and their total variation is uniformly bounded, while the sampled spline degrees all tend to infinity.  These facts transfer convergence of the splines to convergence of the averages.
 
 The formal theorem isolates three hypotheses:
 \begin{enumerate}
@@ -2144,7 +2157,8 @@ Source item & Lean declaration or family & Principal proof location \\
 Source item & Lean declaration or family & Principal proof location \\
 \midrule
 \endhead
-Theorem 1 & \lean{IsOriginalFabius}; existence-and-uniqueness wrapper & \file{OriginalUniqueness.lean}, with canonical existence from the core development \\
+Theorem 1: structure and fold & \lean{IsOriginalFabius}; \lean{IsFabius.isOriginalFabius_rvachevUp} & \file{OriginalCharacterization.lean} \\
+Theorem 1: uniqueness & \lean{isOriginalFabius_iff_eq_canonical}; \lean{isOriginalFabius_iff_existsUnique_isFabius}; \lean{existsUnique_originalFabius} & \file{OriginalUniqueness.lean} \\
 Lemma 1 & finite-convolution probability convergence variants & \file{ProbabilityRepresentation.lean}, \file{WeakConvergence.lean} \\
 Theorem 2 & \lean{stepApproximant_tendsto_rvachevUp} and endpoint-corrected variants & \file{StepApproximationLimit.lean} \\
 Theorem 3 & probability representation of the up-function & \file{ProbabilityRepresentation.lean} \\
@@ -2244,7 +2258,8 @@ Module & Role in the development \\
 \multicolumn{2}{l}{\textbf{Fourier, probability, and the first paper}}\\[0.25em]
 \modulefile{FourierProduct.lean} & Convergence and continuity of the infinite sinc product and compatibility with finite products. \\
 \modulefile{FourierAnalytic.lean} & Fourier transform formula for the up-function, inversion consequences, and moment-series identification. \\
-\modulefile{OriginalUniqueness.lean} & Fourier-refinement proof of uniqueness for Rvachev's original compactly supported characterization. \\
+\modulefile{OriginalCharacterization.lean} & Rvachev's original compact-support predicate, the forced scale and normalization, and the general fold from bounded Fabius solutions. \\
+\modulefile{OriginalUniqueness.lean} & Fourier-refinement uniqueness and the exact equivalence with unique bounded Fabius witnesses. \\
 \modulefile{ProbabilityRepresentation.lean} & Finite convolution laws, characteristic functions, and the probabilistic representation of the up-function. \\
 \modulefile{WeakConvergence.lean} & Convergence of finite probability measures against bounded continuous tests. \\
 \modulefile{StepMeasureBridge.lean} & Relates discrete/step approximants to their associated finite measures. \\

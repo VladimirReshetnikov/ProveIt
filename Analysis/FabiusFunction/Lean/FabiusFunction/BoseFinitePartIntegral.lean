@@ -496,7 +496,7 @@ lemma bose_mellin_regularized_split (a : ℝ) (ha : 0 < a) (ha1 : a ≤ 1) :
     rw [Set.disjoint_left]
     intro x hxsmall hxlarge
     exact (not_lt_of_ge hxsmall.2) hxlarge
-  have hsplit := integral_union_ae hdis.aedisjoint
+  have hsplit := setIntegral_union₀ hdis.aedisjoint
     measurableSet_Ioi.nullMeasurableSet hfsmall hflarge
   rw [Ioc_union_Ioi_eq_Ioi zero_le_one] at hsplit
   have hsmall : (∫ x : ℝ in Ioc 0 1, f x) =

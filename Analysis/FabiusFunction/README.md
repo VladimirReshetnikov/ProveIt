@@ -109,6 +109,7 @@ points:
 | --- | --- | --- |
 | Definitions, the bounded characterization, and folded `up` | `FabiusFunction.Basic`, `FabiusFunction.Differential` | `BoundedFabius`, `IsFabius`, `rvachevUp`, `rvachevUp_even`, `rvachevUp_eq_zero_of_not_mem_Ioo`, `support_rvachev_subset_Ioo`, `rvachev_hasDerivAt` |
 | Existence, uniqueness, and the canonical functions | `FabiusFunction.PaperStatements` | `existsUnique_fabius`, `fabius`, `fabius_spec`, `globalFabius` |
+| Original compact-support characterization and bounded/original bridge | `FabiusFunction.OriginalUniqueness` | `IsOriginalFabius`, `IsFabius.isOriginalFabius_rvachevUp`, `isOriginalFabius_iff_eq_canonical`, `isOriginalFabius_iff_existsUnique_isFabius` |
 | Product-probability and CDF representations | `FabiusFunction.ProbabilityRepresentation` | `weightedSumCDF_eq_fabiusReal`, `fabiusReal_eq_weightedSum_probability`, `rvachevUp_eq_weightedSumCDF`, `rvachevUp_eq_weightedSum_probability_global` |
 | Exact dyadic computation and analytic correctness | `FabiusFunction.DyadicAnalytic`, `FabiusFunction.GlobalDyadic` | `fabiusDyadicValue`, `evalFabiusDyadic`, `fabiusDyadicUnit_cast`, `extendedFabiusDyadicValue_cast` |
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
@@ -162,7 +163,11 @@ to the nearest dyadic of order `p`.  Its proved evaluator error is
 within `2^-p`.  This proves `fabius_sequentiallyComputable`.  The
 primitive-recursive modulus `d(n)=2n` proves effective uniform continuity,
 and `fabius_isComputableRealFunction` packages both clauses for the canonical
-bounded Fabius function.
+bounded Fabius function.  The underlying analytic approximation is stronger
+than the computability application needs:
+`Fabius.abs_fabiusUniformSpline_sub_extendedFabius_le` gives the global error
+`2^-p`, and `Fabius.fabiusUniformSpline_tendstoUniformly_globalFabius`
+packages uniform convergence on all of `ℝ`.
 
 ## Exact dyadic evaluation
 
@@ -364,7 +369,10 @@ The signed extension is likewise analytic at no point of the first block
 `Paper05442.lean` is the public import for the first paper.  It includes all
 seven theorems, Lemma 1, the unnumbered non-analyticity corollary, and the
 prose probability proposition.  In particular, it proves the original
-existence-and-uniqueness characterization with the initially unknown scale,
+existence-and-uniqueness characterization with the initially unknown scale.
+Every bounded Fabius solution folds to an original compact-support solution,
+and conversely every original solution has scale two and is the fold of a
+unique bounded Fabius solution.  The paper aggregate also proves
 weak-* convergence of the finite convolution measures, pointwise convergence
 of the polynomial step approximants, the infinite-product probability model,
 the differential identities, Poisson summation, moment formulas, and global
@@ -468,9 +476,14 @@ The global binary-reduction series is also formalized.  Its correct outer
 index starts at `m = 0`, where `Floor[2^(m-1)x]` is genuinely `Floor[x/2]`.
 For every real `x ≥ 0`, the series converges absolutely to the signed global
 Fabius extension.  This specializes to the bounded Fabius function on
-`0 ≤ x ≤ 1`.  The complete finite inner expression is a constant polynomial
-in its common translation, so the theorem holds not only for rational `q`,
-but for every real or complex `q`.  The missing `m = 0` term is zero on
+`0 ≤ x ≤ 1`.  More strongly, for `N ≥ 1` the finite telescope through scale `N` has
+all-real error at most `2 * 2^-N`: it is the uniformly bounded residual for
+`x ≥ 0`, while both the partial sum and signed extension vanish for `x ≤ 0`.
+Thus `Fabius.globalBinaryReductionSum_tendstoUniformly_extendedFabius`
+proves uniform convergence on `ℝ`.  The complete finite inner expression is
+a constant polynomial in its common translation, so the theorem holds not
+only for rational `q`, but for every real or complex `q`.  The missing
+`m = 0` term is zero on
 `0 ≤ x < 1` and equals one at `x = 1`; this explains both why the former
 one-indexed formula worked on the half-open interval and why it failed at the
 right endpoint.  The primary public endpoints are

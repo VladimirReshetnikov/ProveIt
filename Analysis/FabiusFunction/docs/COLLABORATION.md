@@ -414,12 +414,13 @@ bodies, and useful results still marked `private`.
 
 Candidate work, subject to a fresh search after integration:
 
-- prove the equivalence between the original compact-support
-  characterization and `IsFabius` in a generic `(F, hF)` form;
+- expose the coefficient, exact vanishing criterion, and natural degree of
+  `thueMorseTranslatedPowerSumPolynomial`, aligned with the unified rational
+  affine and translated power-sum API;
 - complete the analytic locus of the signed extension beyond its first block;
-- upgrade binary-reduction and finite-spline convergence from pointwise to
-  uniform, with explicit rates already suggested by existing remainder and
-  Lipschitz bounds;
+- consolidate the private real affine Thue--Morse moment proofs used by the
+  uniform-spline development through a reusable scalar theorem, while
+  retaining the existing rational signatures as compatibility wrappers;
 - expose effective constants hidden inside literal `IsBigO.of_bound` proofs;
 - extend generic rather than canonical-only convergence chains where the root
   lemma is already `(F, hF)`-parametric;
@@ -598,16 +599,17 @@ and module headers.
 
 Unclaimed and highest value, in this branch's estimation:
 
-1. **The missing iff between the two characterizations.**
-   `canonical_isOriginalFabius` is still stated only for the canonical `fabius`,
-   although every ingredient is already `(F, hF)`-general. Generalizing it and
-   combining with `originalFabius_eq_canonical` and `isFabius_eq` closes the
-   loop between `IsFabius` and `IsOriginalFabius`.
-2. **Uniform convergence with explicit rates**, which is now nearly free:
-   `norm_binaryReductionRemainder_le` is already `x`-uniform, and the spline
-   sandwich combined with `lipschitzWith_fabiusReal` gives
-   `|spline_p(x) − F(x)| ≤ 2^{-p}` uniformly. There is still no
-   `TendstoUniformly*` anywhere in the development.
+1. **The bridge between the two characterizations — completed 2026-08-25.**
+   `IsFabius.isOriginalFabius_rvachevUp` supplies the general forward map, and
+   `isOriginalFabius_iff_existsUnique_isFabius` gives the exact tail-free
+   solution-space equivalence through a unique bounded Fabius witness.  This
+   deliberately avoids the false naïve iff: `rvachevUp F` does not inspect the
+   values of `F` on `(1,∞)`.
+2. **Uniform convergence with explicit rates — completed 2026-08-25.**
+   `abs_fabiusUniformSpline_sub_extendedFabius_le` gives the global rate
+   `2^{-p}`, while `norm_globalBinaryReductionSum_sub_extendedFabius_le` gives
+   `2^{1-N}` for the inclusive finite telescope when `N ≥ 1`.  Their corresponding
+   `TendstoUniformly` theorems cover all of `ℝ`.
 3. **Effective constants for the `IsBigO` chain** — about a dozen sites apply
    `IsBigO.of_bound` with a literal constant that is never surfaced, and two of
    them are exact equalities rather than `O`-bounds.

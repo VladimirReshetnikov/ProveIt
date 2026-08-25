@@ -9,13 +9,14 @@ supplement it but do not replace it.
 ```text
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
-branch/base: codex/fabius-theorem-refinements at 09885a710 before merging
-  pinned origin/main 5ed2fc27b0844bcb07db0b4a4e2ae008e8086947
+branch/base: codex/fabius-theorem-refinements at da7d0c3a3 before merging
+  pinned origin/main 436e421f133ce637063fe460d7c92459a8016bed
 git owner: root in this worktree
 build owner: not held; another worktree currently owns the host-wide Lean lane
-source lease: 2026-08-25 08:10 -07:00 through 08:40 -07:00
-next synchronization checkpoint: after the translated-polynomial batch, or
-  immediately if a fetched branch overlaps its declaration family
+source lease: 2026-08-25 09:29 -07:00 through 09:59 -07:00
+next synchronization checkpoint: after this pinned-main merge is committed and
+  pushed, then before theorem edits if a fetched branch overlaps the translated
+  polynomial declaration family
 ```
 
 ## Current write lease
@@ -26,17 +27,17 @@ next synchronization checkpoint: after the translated-polynomial batch, or
   `thueMorseTranslatedPowerSumPolynomial`.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
 
-The merge-resolution lease on `AGENTS.md`, `README.md`,
-`docs/COLLABORATION.md`, and `docs/PAPER_COVERAGE.md` ends when the pinned-main
-merge is reviewed, committed, and pushed.
+The integration lease on `README.md`, `docs/COLLABORATION.md`,
+`docs/PAPER_COVERAGE.md`, and their paired mathematical documents ends when the
+pinned-main merge is reviewed, committed, and pushed.
 
 ## Read-only survey
 
 - `ThueMorsePrefix.lean`, `ThueMorseExponential.lean`,
   `ThueMorseGenerating.lean`, and `FabiusUniformSpline.lean` for existing
   sharp-moment and real-scalar APIs;
-- the negative-Laplace vertical, logarithmic, Bromwich, and saddle callers for
-  a next nonduplicate transform lemma; and
+- `ProbabilityLaplaceMoments.lean`, `FabiusComplexMGF.lean`, and their callers
+  to avoid reintroducing transform bridges already integrated upstream; and
 - current branch registry files and advertised remote tips before expanding
   either write set.
 
@@ -51,6 +52,12 @@ merge is reviewed, committed, and pushed.
   entry points.
 - `09885a710`: one operational coordination authority, immutable synchronization
   pins, direct-main authorization boundaries, and explicit feedback routes.
+- `fdae28cab` on mainline now supplies the arbitrary-complex MGF derivative
+  bound and keeps the vertical-line theorem as a compatibility wrapper, so the
+  provisional transform candidate on this branch is retired.
+- `a049141fb` on mainline supplies the unified rational affine and translated
+  power-sum API; the distinct formal-polynomial coefficient/zero/degree batch
+  remains open and should build on those names.
 
 Each commit message records its exact textual validation and any deferred Lean
 targets.  Focused compilation of the formerly branch-only Lean slices remains

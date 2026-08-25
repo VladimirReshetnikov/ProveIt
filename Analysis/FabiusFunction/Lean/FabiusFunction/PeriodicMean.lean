@@ -402,7 +402,7 @@ lemma hasSum_intervalIntegral_negativeLaplaceTerm_two_rpow :
     have hgeom : Summable (fun n : ℕ => (1 / 2 : ℝ) ^ n) :=
       summable_geometric_of_norm_lt_one (by norm_num)
     simpa [one_div, inv_pow] using hgeom
-  · simpa using (intervalIntegrable_const :
+  · exact (intervalIntegrable_const :
       IntervalIntegrable (fun _ : ℝ =>
         ∑' n : ℕ, 1 / (2 : ℝ) ^ n) volume 0 1)
   · filter_upwards with t ht
@@ -480,7 +480,7 @@ lemma hasSum_intervalIntegral_negativeLaplaceForwardTerm_two_rpow :
         (div_le_div_of_nonneg_right hnum hden.le)
   · filter_upwards with t ht
     exact hmajor
-  · simpa using (intervalIntegrable_const :
+  · exact (intervalIntegrable_const :
       IntervalIntegrable (fun _ : ℝ =>
         ∑' n : ℕ, r ^ (n + 1) / (1 - r)) volume 0 1)
   · filter_upwards with t ht
