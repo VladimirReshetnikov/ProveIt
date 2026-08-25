@@ -6,17 +6,18 @@ branch / worktree / machine:
 `codex/fabius-generalizations` / `/home/codex/.codex/worktrees/042c/Proofs` / `codexbox`
 
 fetched main SHA:
-`ccf81cf8399630b64492460d2b39ccaacc8b191a`
+`bc92ae3a36b7a844dbf4a9685d917e21b3ed0aab`
 
 HEAD and dirty paths:
-Branch HEAD before this registry refresh:
-`3619ad3a708c3c8c2ca43b642930f0306cdcfb34`; the source checkpoint remains
+Branch HEAD before this final registry refresh:
+`eb29e3cb2af3f82334f7795daacd50fa60bc98a4`; the source checkpoint remains
 `269a57d7b7d667aba83e584172fb978b777127ac`.
 The source worktree was clean.  This registry file is the only subsequent path
-written.  After `origin/main` integrated the first two source commits, the
-branch and fetched `main` have common base
-`ef38522c89a6ae1fd82632de682bed83e692e1af` and are respectively four commits
-ahead / fifteen commits behind by graph count; no merge was attempted.
+written.  `origin/main` has now integrated all five source commits and the
+original registry checkpoint.  Before this refresh, the branch and fetched
+`main` have common base `3619ad3a708c3c8c2ca43b642930f0306cdcfb34`
+and are respectively one commit ahead / sixteen commits behind by graph count;
+no merge was attempted.
 
 writing (exact paths):
 The thirteen-path preservation tranche is source-complete and frozen:
@@ -64,11 +65,11 @@ completed commits:
   asymptotics as exact equivalents; integrated on `origin/main` by
   `eabf440e8`.
 - `8124078231e5e5b1a645c198a751a6883bb08c2f` — Generalize dyadic Taylor
-  representation invariance.
+  representation invariance; integrated on `origin/main` by `bc92ae3a3`.
 - `b13690159e34200ea542d1151c0f5ac8061b910d` — Complete the Thue--Morse
-  logarithm boundary API.
+  logarithm boundary API; integrated on `origin/main` by `bc92ae3a3`.
 - `269a57d7b7d667aba83e584172fb978b777127ac` — Expose exact endpoint bounds
-  for early step approximants.
+  for early step approximants; integrated on `origin/main` by `bc92ae3a3`.
 
 validated (exact command, SHA/state, exit code):
 All commands below exited `0`.  They were deliberately serialized with
@@ -113,21 +114,19 @@ No Lean/Lake target has been run at immutable source tip
 immutable SHA.  No LaTeX or PDF path is part of this tranche.
 
 requested integration or lease:
-The saddle/sharp pair is already integrated.  Please review and integrate the
-three remaining source commits `812407823`, `b13690159`, and `269a57d7b` in
-that order.  No new write lease is requested.  If the coordinator wants
-immutable-SHA validation before integration, please assign the build token and
-exact target set (the cheapest suggested gates are the edited focused modules,
-followed by `PaperStatements` and `FabiusQBinomialTaylor`).
+All five source commits are integrated.  No further integration and no new
+write lease are requested.  Please release this preservation lease when the
+combined immutable-main validation is complete, or assign an exact next path
+set and build token explicitly.
 
 conflicts / dependencies:
-`git cherry -v origin/main HEAD` lists only the three remaining dyadic/Taylor
-source commits and the registry commit; it omits `5bf954537` and `ef38522c8`,
-confirming their patch-equivalent integration.  Per the board, this branch did
-not merge, rebase, stash, reset, or push to `main`.  The three remaining source
-commits are independent of the integrated saddle/sharp pair.
+Immediately after fetching `bc92ae3a3`, `git cherry -v origin/main HEAD` listed
+only the registry refresh `eb29e3cb2`; every source commit and the original
+registry checkpoint were absent, confirming patch-equivalent integration.
+Per the board, this branch did not merge, rebase, stash, reset, or push to
+`main`.
 
 next bounded step:
-Push this registry refresh to `codex/fabius-generalizations`, then remain
-read-only and wait for coordinator integration review, conflict instructions,
-or an explicit build/source lease.
+Push this final registry refresh to `codex/fabius-generalizations`, then remain
+read-only and wait for coordinator release/synchronization instructions or an
+explicit build/source lease.
