@@ -189,11 +189,21 @@ values; constant extension always satisfies it, and `U = ∅` degenerates it to
 locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
 argument is the inverse function theorem run backwards, and the one thing to
 check is that `F⁻¹` has no critical point.  That is `deriv_fabiusInv_ne_zero`,
-now derived from `hasDerivAt_fabiusInv`: `deriv_fabiusReal_pos` gives `F' > 0`
-on `(0,1)`, so `HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F'`
-there, a nonzero real number.  `F'` enters the five modules of this workstream
-only through those two theorems; everywhere else `F` is used through its
-continuity and through `fabius_not_analyticAt`.
+now a one-liner over `deriv_fabiusInv_pos`.  The chain is
+`deriv_fabiusReal_pos` gives `F' > 0` on `(0,1)`, so
+`HasDerivAt.of_local_left_inverse` supplies `(F⁻¹)' = 1 / F' > 0` there.
+
+That derivative calculus started here as `hasDerivAt_fabiusInv`; a `codex/*`
+workstream upstreamed it into `FabiusInverse.lean` as `fabiusInv_hasDerivAt`,
+`deriv_fabiusInv`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp` and
+`deriv_fabiusInv_pos`, which is the better home for it, and that placement is
+kept.  `fabiusInv_mem_Ioo` moved with it.
+
+`F'` now enters the five modules of this workstream only through the imported
+`deriv_fabiusInv_pos`.  It is *not* true that this is the only use of a
+differential property of `F` — `fabius_differentiable` appears once more, in
+`fabiusInv_not_analyticAt`, to produce a `ContinuousAt` for the inverse
+function theorem.  The checkable statement is the one about `F'`.
 
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
