@@ -2181,9 +2181,13 @@ $-\varepsilon_a2^{\binom{n+1}{2}}/n!$ and is nonzero.  Hence $\deg T_{x_0}=n$.
 \end{proof}
 
 \begin{remark}
-Under the translation \eqref{eq:F-up-translate} the statement transfers verbatim to Rvachev's
-bump: at a centered dyadic point $y_0=a/2^{n}-1\in(-1,1)$ with $a$ odd one has
-$\Up^{(n)}(y_0)=-\varepsilon_a2^{\binom{n+1}{2}}$, and the Taylor polynomial of $\Up$ at
+The same computation applies to Rvachev's bump on all of $(-1,1)$, and not merely on the
+half where $\Up$ is a translate of $F$.  Let $n\ge0$ and let $y_0=a/2^{n}-1$ with $a$ odd
+and $0<a<2^{n+1}$, so that $y_0\in(-1,1)$.  For $m\ge n$ the identity
+\eqref{eq:up-derivatives} gives
+$\Up^{(m)}(y_0)=2^{\binom{m+1}{2}}\mathcal F(2^{m-n}a)$, whose argument is an even integer
+when $m>n$ and the odd integer $a$ when $m=n$.  Hence $\Up^{(m)}(y_0)=0$ for $m>n$ while
+$\Up^{(n)}(y_0)=-\varepsilon_a2^{\binom{n+1}{2}}\ne0$, so the Taylor polynomial of $\Up$ at
 $y_0$ has degree exactly $n$.  This sharpening is what makes the nowhere-analyticity
 corollary effective rather than merely soft: a convergent power series centered at a level-$n$
 odd dyadic point would force $\Up$ to be a polynomial of degree $n$ on a whole interval,
@@ -2482,28 +2486,247 @@ Multiplying by $\e^{z/2}$ and extracting the coefficient of $z^n/n!$ gives exact
 \eqref{eq:d-from-c}.
 \end{proof}
 
+\subsubsection{Integer numerators and a divisibility bridge}
+
+The normalizations \eqref{eq:c-normalized} and \eqref{eq:d-normalized} produce two integer
+sequences, and the relation \eqref{eq:d-from-c} between the moments becomes an exact
+divisibility statement between them.  Throughout, empty products equal $1$ and
+$(-1)!!=1$.
+
+Re-indexing \eqref{eq:C-division-free} by $n\mapsto n-1$ puts the division-free recurrence for
+$C_n$ in the form used below: $C_0=1$ and, for $n\ge1$,
+\begin{equation}
+ C_n=\sum_{k=0}^{n-1}C_k\binom{2n+1}{2k}
+ \prod_{j=k+1}^{n-1}(2j+1)
+ \prod_{j=k+1}^{n-1}(2^{2j}-1).                            \label{eq:mom-C-division-free}
+\end{equation}
+The primary text records only that a companion recurrence for $D_n$ follows by substitution.
+It is the following.
+
+\begin{proposition}[Division-free recurrence for $D_n$]     \label{prop:mom-D-division-free}
+Set $D_0=1$.  For every $n\ge1$,
+\begin{equation}
+ D_n=\sum_{k=0}^{n-1}D_k\binom{n+1}{k}\frac{n!}{(k+1)!}
+ \prod_{j=k+1}^{n-1}(2^j-1).                               \label{eq:mom-D-division-free}
+\end{equation}
+Every factor on the right is a positive integer, so $D_n\in\N$ for all $n$.
+\end{proposition}
+
+\begin{proof}
+Substitute \eqref{eq:d-normalized} into \eqref{eq:d-recurrence}.  The left side becomes
+\begin{equation*}
+ (n+1)(2^n-1)\frac{D_n}{(n+1)!\prod_{j=1}^{n}(2^j-1)}
+ =\frac{D_n}{n!\prod_{j=1}^{n-1}(2^j-1)},
+\end{equation*}
+and the right side becomes
+$\sum_{k=0}^{n-1}\binom{n+1}{k}D_k\bigl[(k+1)!\prod_{j=1}^{k}(2^j-1)\bigr]^{-1}$.
+Multiplying through by $n!\prod_{j=1}^{n-1}(2^j-1)$ gives \eqref{eq:mom-D-division-free}.
+Since $k\le n-1$, the quotient $n!/(k+1)!$ is a product of consecutive integers and hence an
+integer, and the remaining product is an integer as well.  Induction from $D_0=1$ proves
+integrality and positivity.
+\end{proof}
+
+The first values are
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & $C_n$ & $D_n$\\
+\midrule
+0 & $1$ & $1$\\
+1 & $1$ & $1$\\
+2 & $19$ & $5$\\
+3 & $2915$ & $84$\\
+4 & $2788989$ & $4004$\\
+5 & $14754820185$ & $494760$\\
+6 & $402830065455939$ & $150120600$\\
+7 & --- & $107969547840$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Substituting \eqref{eq:d-normalized} into \eqref{eq:F-inverse-power} clears all denominators
+of the reciprocal-power values at once:
+\begin{equation}
+ F(2^{-n})=\frac{2^{-\binom n2}D_n}
+ {n!\,(n+1)!\prod_{j=1}^{n}(2^j-1)}.                       \label{eq:mom-F-inverse-D}
+\end{equation}
+This is the exact closed form behind \eqref{eq:F-inverse-table}: the entire dependence on $n$
+beyond elementary factors is carried by the single integer $D_n$.
+
+The two integer sequences are linked through the odd half moments.  The identity responsible
+is never displayed in the primary text, so we record it.
+
+\begin{lemma}                                              \label{lem:mom-d-odd-c}
+For every $k\ge0$,
+\begin{equation}
+ d_{2k+1}=\frac{2k+1}{2}\,c_k.                             \label{eq:mom-d-odd-c}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:d-integral}, $d_{2k+1}=(2k+1)\int_0^1t^{2k}\Up(t)\dd t$.  The integrand is even,
+so $\int_0^1t^{2k}\Up(t)\dd t=\tfrac12\int_{-1}^{1}t^{2k}\Up(t)\dd t=\tfrac12c_k$ by
+\eqref{eq:c-def}.
+\end{proof}
+
+\begin{theorem}[Bridge between the integer numerators]      \label{thm:mom-numerator-bridge}
+For every $n\ge0$,
+\begin{equation}
+ \frac{D_{2n+1}}{2n+1}
+ =2^n(n+1)!\,C_n\prod_{k=0}^{n}\bigl(2^{2k+1}-1\bigr).      \label{eq:mom-D-C-bridge}
+\end{equation}
+In particular $(2n+1)C_n$ divides $D_{2n+1}$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:d-normalized} and \eqref{eq:mom-d-odd-c},
+\begin{equation*}
+ D_{2n+1}=d_{2n+1}(2n+2)!\prod_{j=1}^{2n+1}(2^j-1)
+ =\frac{2n+1}{2}\,c_n\,(2n+2)!\prod_{j=1}^{2n+1}(2^j-1).
+\end{equation*}
+Insert \eqref{eq:c-normalized} and divide by $2n+1$:
+\begin{equation*}
+ \frac{D_{2n+1}}{2n+1}
+ =\frac{C_n}{2}\cdot\frac{(2n+2)!}{(2n+1)!!}
+ \cdot\frac{\prod_{j=1}^{2n+1}(2^j-1)}{\prod_{j=1}^{n}(2^{2j}-1)}.
+\end{equation*}
+The last quotient retains exactly the factors with odd index, that is
+$\prod_{k=0}^{n}(2^{2k+1}-1)$, since the even indices $j=2k$ with $1\le k\le n$ are precisely
+those canceled by the denominator.  For the factorial quotient, separate the even factors of
+$(2n+2)!$:
+\begin{equation*}
+ (2n+2)!=\bigl[2\cdot4\cdots(2n+2)\bigr]\bigl[1\cdot3\cdots(2n+1)\bigr]
+ =2^{n+1}(n+1)!\,(2n+1)!!,
+\end{equation*}
+so $(2n+2)!/(2n+1)!!=2^{n+1}(n+1)!$.  Combining the two evaluations gives
+\begin{equation*}
+ \frac{D_{2n+1}}{2n+1}
+ =\frac{C_n}{2}\cdot2^{n+1}(n+1)!\prod_{k=0}^{n}\bigl(2^{2k+1}-1\bigr),
+\end{equation*}
+which is \eqref{eq:mom-D-C-bridge}.  The right side is an integer multiple of $C_n$, so
+$D_{2n+1}=(2n+1)C_n\cdot2^n(n+1)!\prod_{k=0}^{n}(2^{2k+1}-1)$ and the divisibility follows.
+\end{proof}
+
+\begin{remark}[Independent numerical verification]          \label{rem:mom-numerator-check}
+Every numeric value printed in this subsubsection was recomputed independently in exact
+rational arithmetic: the moments were generated from \eqref{eq:c-recurrence} and
+\eqref{eq:d-recurrence}, the numerators were obtained both by clearing denominators in
+\eqref{eq:c-normalized} and \eqref{eq:d-normalized} and by running the division-free
+recurrences \eqref{eq:mom-C-division-free} and \eqref{eq:mom-D-division-free}, and the two
+computations were compared entry by entry.  The closed form \eqref{eq:mom-F-inverse-D}, the
+identity \eqref{eq:mom-d-odd-c}, the bridge \eqref{eq:mom-D-C-bridge}, and the divisibility
+$(2n+1)C_n\mid D_{2n+1}$ were checked for all indices $n\le20$.  For instance, at $n=2$,
+$D_5/5=98952=2^2\cdot3!\cdot C_2\cdot(2-1)(2^3-1)(2^5-1)$ with $C_2=19$, and
+$5\cdot19=95$ divides $D_5=494760$.
+\end{remark}
+
 \subsection{Bernoulli-number recurrences}
 
-Taking logarithms in \eqref{eq:G-functional} and using
+The two refinement equations can be inverted before coefficients are compared.  Doing so
+replaces the binomial convolutions of \eqref{eq:c-recurrence} and \eqref{eq:d-recurrence} by
+recurrences whose coefficients are Bernoulli numbers.
+
+Throughout this subsection $B_k$ denotes the Bernoulli numbers in the convention
 \begin{equation}
- \log\frac{\e^z-1}{z}
- =\frac z2+\sum_{m\ge1}\frac{B_{2m}}{2m(2m)!}z^{2m}       \label{eq:bernoulli-log}
+ \frac{z}{\e^z-1}=\sum_{k\ge0}B_k\frac{z^k}{k!},
+ \qquad B_1=-\frac12,                                      \label{eq:mom-bernoulli-convention}
 \end{equation}
-produces recurrences in which Bernoulli numbers replace binomial convolutions.  One convenient
-form for the even moments is obtained by taking the logarithmic derivative of the sinc
-product.  If
+so that $B_0=1$, $B_2=\tfrac16$, $B_4=-\tfrac1{30}$, $B_6=\tfrac1{42}$, and $B_{2m+1}=0$ for
+$m\ge1$.  The sign of $B_1$ is not cosmetic here.  It is what produces the isolated
+first-order term in \eqref{eq:mom-d-bernoulli}; the opposite convention $B_1=+\tfrac12$
+reverses that term's sign and destroys the recurrence.
+
+Rewrite \eqref{eq:fourier-refinement} and \eqref{eq:G-functional} by moving the refinement
+factor to the other side:
+\begin{equation}
+ \frac{\pi z}{\sin\pi z}\,\widehat{\Up}(z)=\widehat{\Up}(z/2),
+ \qquad
+ \frac{z}{\e^z-1}\,G(2z)=G(z).                             \label{eq:mom-reciprocal-refinements}
+\end{equation}
+Both reciprocal factors have classical Bernoulli expansions.  The second is
+\eqref{eq:mom-bernoulli-convention} itself, and the first comes from
+\begin{equation}
+ \frac{w}{\sin w}
+ =\sum_{k\ge0}(-1)^k\bigl(2-2^{2k}\bigr)B_{2k}\frac{w^{2k}}{(2k)!},
+ \qquad|w|<\pi,                                            \label{eq:mom-sine-bernoulli}
+\end{equation}
+evaluated at $w=\pi z$.  The first two terms of \eqref{eq:mom-sine-bernoulli} are
+$1+w^2/6$, as they must be.
+
+\begin{theorem}[Bernoulli recurrences]                     \label{thm:mom-bernoulli-recurrences}
+For every $n\ge1$,
+\begin{equation}
+ c_n=\frac{1}{2^{2n}-1}\sum_{k=1}^{n}
+ 2^{2n-2k}\bigl(2^{2k}-2\bigr)\binom{2n}{2k}B_{2k}\,c_{n-k},
+                                                           \label{eq:mom-c-bernoulli}
+\end{equation}
+and
+\begin{equation}
+ d_n=\frac{n\,2^{n-2}}{2^n-1}\,d_{n-1}
+ -\frac{1}{2^n-1}\sum_{k=1}^{\lfloor n/2\rfloor}
+ \binom{n}{2k}2^{n-2k}B_{2k}\,d_{n-2k}.                    \label{eq:mom-d-bernoulli}
+\end{equation}
+In \eqref{eq:mom-d-bernoulli} the sum is empty for $n=1$.
+\end{theorem}
+
+\begin{proof}
+For the even moments, put $w=\pi z$.  By \eqref{eq:fourier-moment-series},
 \begin{equation*}
- \widehat{\Up}(z)=\sum_{n\ge0}(-1)^nc_n\frac{(2\pi z)^{2n}}{(2n)!},
+ \widehat{\Up}(z)=\sum_{n\ge0}(-1)^nc_n\frac{(2w)^{2n}}{(2n)!},
+ \qquad
+ \widehat{\Up}(z/2)=\sum_{n\ge0}(-1)^nc_n\frac{w^{2n}}{(2n)!}.
 \end{equation*}
-then the coefficients satisfy a triangular recurrence whose $m$th logarithmic coefficient is
-proportional to
-\begin{equation}
- \frac{B_{2m}}{m(2m)!}\frac{1}{1-2^{-2m}}.
-\end{equation}
-The formal development proves both the ordinary convolution recurrences and these Bernoulli
-forms, and proves their equivalence by formal power-series algebra.  The binomial recurrences
-are usually better for exact computation; the Bernoulli forms are often better for
-asymptotic estimates.
+Multiply the first series by \eqref{eq:mom-sine-bernoulli} and use the left identity in
+\eqref{eq:mom-reciprocal-refinements}.  Both sides are entire in $w$, so their coefficients
+agree.  The coefficient of $w^{2n}$ on the left is
+\begin{align*}
+ &\sum_{k=0}^{n}(-1)^k\bigl(2-2^{2k}\bigr)B_{2k}\frac{1}{(2k)!}
+ \cdot(-1)^{n-k}c_{n-k}\frac{2^{2n-2k}}{(2n-2k)!}\\
+ &\hspace{6em}=\frac{(-1)^n}{(2n)!}\sum_{k=0}^{n}
+ \binom{2n}{2k}\bigl(2-2^{2k}\bigr)2^{2n-2k}B_{2k}c_{n-k},
+\end{align*}
+and on the right it is $(-1)^nc_n/(2n)!$.  Canceling the common factor $(-1)^n/(2n)!$ gives
+\begin{equation*}
+ \sum_{k=0}^{n}\binom{2n}{2k}\bigl(2-2^{2k}\bigr)2^{2n-2k}B_{2k}c_{n-k}=c_n.
+\end{equation*}
+The term $k=0$ equals $2^{2n}c_n$, because $B_0=1$ and $2-2^0=1$.  Moving it to the right
+gives $-\bigl(2^{2n}-1\bigr)c_n$ there, and reversing the sign of the bracket
+$2-2^{2k}$ in the remaining terms yields \eqref{eq:mom-c-bernoulli}.
+
+For the half moments, expand $G(2z)=\sum_{n\ge0}2^nd_nz^n/n!$ from \eqref{eq:G-def} and
+multiply by \eqref{eq:mom-bernoulli-convention}.  The right identity in
+\eqref{eq:mom-reciprocal-refinements} and comparison of the coefficient of $z^n/n!$ give
+\begin{equation*}
+ \sum_{m=0}^{n}\binom{n}{m}B_m2^{n-m}d_{n-m}=d_n.
+\end{equation*}
+The term $m=0$ is $2^nd_n$.  The term $m=1$ is
+$n B_12^{n-1}d_{n-1}=-n2^{n-2}d_{n-1}$, by the convention
+\eqref{eq:mom-bernoulli-convention}.  Every term with $m$ odd and $m\ge3$ vanishes, so the
+remaining terms are those with $m=2k$ and $1\le k\le\lfloor n/2\rfloor$.  Isolating $d_n$ and
+dividing by $2^n-1$ produces \eqref{eq:mom-d-bernoulli}.
+\end{proof}
+
+The two forms are equivalent to \eqref{eq:c-recurrence} and \eqref{eq:d-recurrence}, since
+each determines its sequence uniquely from $c_0=d_0=1$.  The binomial recurrences are better
+for exact computation, because they involve only integers and one division; the Bernoulli
+forms are better for asymptotic estimates, because the size of $B_{2k}$ is known explicitly.
+
+\begin{remark}[The first values, checked against \eqref{eq:c-first-values} and \eqref{eq:d-first-values}]
+                                                           \label{rem:mom-bernoulli-check}
+For $n=1$, \eqref{eq:mom-c-bernoulli} reads
+$3c_1=\binom22 2^0(2^2-2)B_2c_0=2B_2=\tfrac13$, so $c_1=\tfrac19$.  For $n=2$,
+\begin{equation*}
+ 15\,c_2=\binom42 2^2(2^2-2)B_2c_1+\binom44 2^0(2^4-2)B_4c_0
+ =\frac89-\frac7{15}=\frac{19}{45},
+\end{equation*}
+so $c_2=\tfrac{19}{675}$.  For $n=1$ the sum in \eqref{eq:mom-d-bernoulli} is empty and
+$d_1=\tfrac12$.  For $n=2$,
+$d_2=\tfrac23d_1-\tfrac13\binom22 2^0B_2d_0=\tfrac13-\tfrac1{18}=\tfrac5{18}$.  For $n=3$,
+$d_3=\tfrac67d_2-\tfrac17\binom32 2^1B_2d_1=\tfrac5{21}-\tfrac1{14}=\tfrac16$.  All five
+values agree with \eqref{eq:c-first-values} and \eqref{eq:d-first-values}.  An independent
+computation in exact rational arithmetic confirms that
+\eqref{eq:mom-c-bernoulli}--\eqref{eq:mom-d-bernoulli} reproduce
+\eqref{eq:c-recurrence}--\eqref{eq:d-recurrence} term by term for all $n\le20$.
+\end{remark}
 
 \section{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
@@ -2522,14 +2745,65 @@ Equivalently,
 \end{theorem}
 
 \begin{proof}
-For $n\ge1$, repeated integration by parts using a chain of primitives generated by
-\eqref{eq:up-diffeq} gives
+The case $n=0$ is $F(1)=d_0=1$, so assume $n\ge1$.  The whole argument is a single chain of
+primitives supplied by \eqref{eq:up-diffeq}.  For $r\ge0$ set
+\begin{equation}
+ f_r(t)=2^{\binom r2}\,\Up\!\left(\frac{t}{2^r}-\frac1{2^r}-\frac1{2^{r-1}}
+ -\cdots-\frac12\right),                                   \label{eq:mom-primitive-chain}
+\end{equation}
+where the subtracted sum is empty for $r=0$, so that $f_0=\Up$.  Since
+$\sum_{j=1}^{r}2^{-j}=1-2^{-r}$, the shift collapses and
+\begin{equation}
+ f_r(t)=2^{\binom r2}\,\Up\bigl((t+1)2^{-r}-1\bigr).        \label{eq:mom-chain-closed}
+\end{equation}
+
+The chain has two properties on $[-1,1]$.  First, $f_r(-1)=2^{\binom r2}\Up(-1)=0$ for every
+$r$.  Second,
+\begin{equation}
+ f_{r+1}'=f_r\qquad\text{on }[-1,1].                        \label{eq:mom-chain-antiderivative}
+\end{equation}
+To see \eqref{eq:mom-chain-antiderivative}, differentiate \eqref{eq:mom-chain-closed} at
+index $r+1$ and write $x=(t+1)2^{-(r+1)}-1$, so that $2x+1=(t+1)2^{-r}-1$ and
+$2x-1=(t+1)2^{-r}-3$.  For $t\in[-1,1]$ and $r\ge0$ we have
+$0\le(t+1)2^{-r}\le2$, hence $2x-1\le-1$; since $\Up$ is supported on $[-1,1]$ and
+$\Up(-1)=0$, the second term of \eqref{eq:up-diffeq} vanishes and
+$\Up'(x)=2\Up(2x+1)$.  Therefore
+\begin{equation*}
+ f_{r+1}'(t)=2^{\binom{r+1}{2}}2^{-(r+1)}\Up'(x)
+ =2^{\binom{r+1}{2}-r}\,\Up\bigl((t+1)2^{-r}-1\bigr)
+ =f_r(t),
+\end{equation*}
+because $\binom{r+1}{2}-r=\binom r2$.  The exponent bookkeeping is exactly what makes the
+chain close.
+
+Put $J_n=\int_{-1}^{0}t^{n-1}\Up(t)\dd t$.  Substituting $t\mapsto-t$ and using evenness of
+$\Up$ gives
+\begin{equation}
+ \int_0^1t^{n-1}\Up(t)\dd t=(-1)^{n-1}J_n.                  \label{eq:mom-reflect-half}
+\end{equation}
+Integrate $J_n$ by parts $n-1$ times, replacing $f_j$ by $f_{j+1}'$ at each step.  The
+boundary contribution at $t=-1$ vanishes at every step because $f_{j+1}(-1)=0$, and the
+contribution at $t=0$ vanishes because the surviving polynomial factor $t^{\,n-1-j}$ still
+has positive degree for $0\le j\le n-2$.  Hence
+\begin{equation*}
+ J_n=(-1)^{n-1}(n-1)!\int_{-1}^{0}f_{n-1}(t)\dd t
+ =(-1)^{n-1}(n-1)!\bigl(f_n(0)-f_n(-1)\bigr)
+ =(-1)^{n-1}(n-1)!\,f_n(0),
+\end{equation*}
+where the last integral was evaluated by \eqref{eq:mom-chain-antiderivative} once more.  By
+\eqref{eq:mom-chain-closed}, evenness, and \eqref{eq:up-absolute},
+\begin{equation*}
+ f_n(0)=2^{\binom n2}\Up\bigl(2^{-n}-1\bigr)
+ =2^{\binom n2}\Up\bigl(1-2^{-n}\bigr)
+ =2^{\binom n2}F(2^{-n}).
+\end{equation*}
+Combining this with \eqref{eq:mom-reflect-half} makes the two signs cancel and yields
 \begin{equation}
  \int_0^1t^{n-1}\Up(t)\dd t
- =(n-1)!\,2^{\binom n2}F(2^{-n}).                          \label{eq:moment-endpoint-bridge}
+ =(n-1)!\,2^{\binom n2}F(2^{-n}).                           \label{eq:moment-endpoint-bridge}
 \end{equation}
-Multiplying by $n$ and using \eqref{eq:d-integral} proves the formula.  The case $n=0$ is
-$F(1)=d_0=1$.
+Multiplying by $n$ and using \eqref{eq:d-integral} gives \eqref{eq:d-F-inverse}, and dividing
+gives \eqref{eq:F-inverse-power}.
 \end{proof}
 
 The first values are therefore
@@ -2714,7 +2988,234 @@ matrix, not an analytic convergence argument.  Finally, if
 then the matrix of the original recurrence is $U=D^{-1}T^{[N]}D$.  This diagonal
 similarity is the matrix form of \eqref{eq:inverse-path-telescope}.
 
+% APPEND to the subsection "A triangular recurrence and its nonrecursive solution"
+% (labelled subsec:inverse-dyadic-compositions), after the paragraph ending
+% "This diagonal similarity is the matrix form of eq:inverse-path-telescope."
+
+\begin{corollary}[Positivity]
+\label{cor:dy-positivity}
+For every $n\ge0$, $F(2^{-n})>0$; equivalently $A_n>0$.
+\end{corollary}
+
+\begin{proof}
+For $n=0$ the single empty composition contributes the empty product $1$.  Let $n\ge1$.
+Every partial sum $s_j$ of a composition of $n$ satisfies $s_j\ge1$, so $2^{s_j}-1\ge1>0$,
+and every factorial $(r_j+1)!$ is positive.  Hence each weight
+\eqref{eq:composition-weight} is a positive rational, the sum
+\eqref{eq:inverse-composition-formula} has at least the one term $\rho=(n)$, and the factor
+$2^{-\binom n2}$ is positive.
+\end{proof}
+
+The argument uses no property of $F$ beyond the recurrence: no integral representation, no
+probabilistic interpretation, no monotonicity, no continuity.  Positivity of the
+reciprocal-power values is a statement about a triangular linear system with positive
+coefficients.  Combined with monotonicity of $F$ it recovers $F(x)>0$ for $0<x\le1$, but the
+corollary itself is purely arithmetic, and it is the step that shows the numerators in
+\eqref{eq:F-inverse-table} cannot vanish.
+
+The worked example above stops at $n=3$.  The first case in which compositions of three
+distinct lengths occur is $n=4$.
+
+\begin{example}[The eight compositions of $4$]
+\label{ex:dy-n4-compositions}
+There are $2^3=8$ ordered compositions of $4$.  Their partial sums and weights
+\eqref{eq:composition-weight} are
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+$\rho$&$(s_1,\ldots,s_m)$&$W(\rho)$\\
+\midrule
+$(4)$&$(4)$&$\dfrac1{(2^4-1)5!}=\dfrac1{1800}$\\[1.1ex]
+$(1,3)$&$(1,4)$&$\dfrac1{(2^1-1)2!}\cdot\dfrac1{(2^4-1)4!}=\dfrac1{720}$\\[1.1ex]
+$(2,2)$&$(2,4)$&$\dfrac1{(2^2-1)3!}\cdot\dfrac1{(2^4-1)3!}=\dfrac1{1620}$\\[1.1ex]
+$(3,1)$&$(3,4)$&$\dfrac1{(2^3-1)4!}\cdot\dfrac1{(2^4-1)2!}=\dfrac1{5040}$\\[1.1ex]
+$(1,1,2)$&$(1,2,4)$&$\dfrac1{(2^1-1)2!}\cdot\dfrac1{(2^2-1)2!}\cdot\dfrac1{(2^4-1)3!}
+ =\dfrac1{1080}$\\[1.1ex]
+$(1,2,1)$&$(1,3,4)$&$\dfrac1{(2^1-1)2!}\cdot\dfrac1{(2^3-1)3!}\cdot\dfrac1{(2^4-1)2!}
+ =\dfrac1{2520}$\\[1.1ex]
+$(2,1,1)$&$(2,3,4)$&$\dfrac1{(2^2-1)3!}\cdot\dfrac1{(2^3-1)2!}\cdot\dfrac1{(2^4-1)2!}
+ =\dfrac1{7560}$\\[1.1ex]
+$(1,1,1,1)$&$(1,2,3,4)$&$\dfrac1{(2^1-1)2!}\cdot\dfrac1{(2^2-1)2!}\cdot\dfrac1{(2^3-1)2!}
+ \cdot\dfrac1{(2^4-1)2!}=\dfrac1{5040}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Their total is
+\begin{equation}
+ A_4=\frac1{1800}+\frac1{720}+\frac1{1620}+\frac1{5040}
+ +\frac1{1080}+\frac1{2520}+\frac1{7560}+\frac1{5040}
+ =\frac{143}{32400},                                          \label{eq:dy-A4}
+\end{equation}
+and since $\binom42=6$,
+\begin{equation*}
+ F(2^{-4})=2^{-6}A_4=\frac{143}{2073600},
+\end{equation*}
+which is the entry for $n=4$ in \eqref{eq:F-inverse-table}.  Note that $(3,1)$ and
+$(1,1,1,1)$ happen to share the weight $1/5040$; the coincidence is numerical, and the two
+compositions have different lengths and different chains.  As at $n=3$, the reversed pairs
+$(1,3)$ and $(3,1)$, and $(1,1,2)$ and $(2,1,1)$, carry different weights, because the
+Mersenne factors depend on the partial sums and not on the multiset of block sizes.
+\end{example}
+
+Both the eight individual weights and the total \eqref{eq:dy-A4} were recomputed in exact
+rational arithmetic directly from \eqref{eq:composition-weight}, with the assignment of each
+weight to its composition checked term by term; the composition sum was also verified against
+the recurrence \eqref{eq:normalized-inverse-recurrence} for $0\le n\le7$.
+
+Finally, the three presentations given in this subsection are not three theorems but one.
+
+\begin{proposition}[One object, three presentations]
+\label{prop:dy-three-presentations}
+Let $(V_n)_{n\ge0}$ be a sequence in $\Q$ with $V_0=1$, and put $A_n=2^{\binom n2}V_n$.  The
+following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $(V_n)$ satisfies the triangular recurrence \eqref{eq:inverse-dyadic-recurrence} for
+every $n\ge1$.
+\item $(V_n)$ is given by the composition sum \eqref{eq:inverse-composition-formula} for
+every $n\ge0$.
+\item For every $N\ge0$, the vector $\mathbf A=(A_0,\ldots,A_N)^{\mathsf T}$ satisfies
+$\mathbf A=(I-T^{[N]})^{-1}\mathbf e_0
+=\bigl(I+T^{[N]}+\cdots+(T^{[N]})^N\bigr)\mathbf e_0$.
+\end{enumerate}
+Each of the three determines $(V_n)$ uniquely, and the common value is $V_n=F(2^{-n})$.
+\end{proposition}
+
+\begin{proof}
+Statement (i) is equivalent to the normalized recurrence
+\eqref{eq:normalized-inverse-recurrence}, since $A_n=2^{\binom n2}V_n$ and the powers of two
+cancel.  Splitting a composition before its last block turns the composition sum into
+\eqref{eq:normalized-inverse-recurrence}, so (ii) implies (i); conversely the recurrence is
+triangular, hence has a unique solution with the given initial value, and the composition sum
+is one such solution, so (i) implies (ii).  For (iii), the identity
+$\mathbf A=\mathbf e_0+T^{[N]}\mathbf A$ is exactly
+\eqref{eq:normalized-inverse-recurrence} written for the indices $0,\ldots,N$ together with
+$A_0=1$; since $T^{[N]}$ is strictly lower triangular, $(T^{[N]})^{N+1}=0$ and $I-T^{[N]}$ is
+invertible with the displayed nilpotent geometric inverse.  Expanding the matrix powers gives
+the chain sum \eqref{eq:inverse-chain-formula}, which the bijection between chains and
+compositions carries to (ii).  The identification $V_n=F(2^{-n})$ is
+\eqref{eq:F-inverse-power} together with \eqref{eq:d-recurrence}.
+\end{proof}
+
+This settles what ``closed form'' means here, and what it does not mean.  Formula
+\eqref{eq:inverse-composition-formula} is closed in the sense that it is nonrecursive: each
+summand is determined by the blocks of a single composition and by $n$ alone, with no
+reference to earlier values of the sequence, and the matrix presentation is a finite
+polynomial in a nilpotent matrix rather than a limit.  It is not closed in the sense of being
+cheap: the sum has $2^{n-1}$ terms, so as an evaluation procedure it is exponentially worse
+than the $\bigO(n^2)$ rational operations of the recurrence itself.  Eliminating recursion
+and reducing arithmetic cost are different goals, and only the first is achieved here.  The
+value of the composition form is structural --- it exhibits positivity termwise, it displays
+the telescoping of the powers of two along paths as in \eqref{eq:inverse-path-telescope}, and
+it makes the edge weights \eqref{eq:inverse-original-edge} visible --- while the recurrence
+and the bit recursion remain the instruments of computation.
+
 \subsection{An exact two-adic valuation}
+
+\subsubsection{An exact count of odd binomial coefficients}
+
+The parity statements used above and below rest on a single counting lemma, which Lucas's
+theorem makes exact rather than merely qualitative.
+
+\begin{lemma}[Odd entries in row $2n+1$]                    \label{lem:mom-lucas-count}
+Let $n\ge1$.  Among the coefficients $\binom{2n+1}{2k}$ with $0\le k\le n$, exactly
+$2^{\wt(n)}$ are odd.  Among all the coefficients $\binom{2n+1}{k}$ with $0\le k\le2n+1$,
+exactly $2^{\wt(n)+1}$ are odd.
+\end{lemma}
+
+\begin{proof}
+Lucas's theorem modulo $2$ \cite{fine1947} states that $\binom{N}{K}$ is odd exactly when
+every binary digit of $K$ is at most the corresponding binary digit of $N$; equivalently,
+when the set of positions of the $1$-bits of $K$ is contained in that of $N$.
+
+The binary expansion of $N=2n+1$ is the expansion of $n$ shifted up by one position, with a
+final digit $1$ appended.  Hence $K$ satisfies the Lucas condition precisely when its lowest
+digit is arbitrary and its remaining digits, read as the binary expansion of
+$\lfloor K/2\rfloor$, select a subset of the $1$-bits of $n$.  There are $2^{\wt(n)}$ such
+subsets and two choices of the lowest digit, giving $2^{\wt(n)+1}$ odd entries in the whole
+row.  Restricting to even $K=2k$ fixes the lowest digit to $0$ and leaves $2^{\wt(n)}$ odd
+entries; as $K$ runs over the even integers in $[0,2n+1]$, the index $k$ runs over
+$[0,n]$.
+\end{proof}
+
+\begin{corollary}                                          \label{cor:mom-lucas-trimmed}
+Let $n\ge1$.  The number of odd coefficients $\binom{2n+1}{2k}$ with $0\le k\le n-1$ is
+$2^{\wt(n)}-1$, and the number of odd coefficients $\binom{2n+1}{k}$ with $1\le k\le2n-1$ is
+$2^{\wt(n)+1}-3$.  Both numbers are odd.
+\end{corollary}
+
+\begin{proof}
+The omitted coefficient in the first count is $\binom{2n+1}{2n}=2n+1$, which is odd.  The
+omitted coefficients in the second count are $\binom{2n+1}{0}=1$,
+$\binom{2n+1}{2n}=2n+1$ and $\binom{2n+1}{2n+1}=1$, all odd.  Subtract from the two totals of
+\Cref{lem:mom-lucas-count}.  Since $n\ge1$ forces $\wt(n)\ge1$, both $2^{\wt(n)}$ and
+$2^{\wt(n)+1}$ are even, so $2^{\wt(n)}-1$ and $2^{\wt(n)+1}-3$ are odd.
+\end{proof}
+
+\begin{proposition}[Oddness of the even-moment numerators]  \label{prop:mom-C-odd}
+Every $C_n$ is odd.
+\end{proposition}
+
+\begin{proof}
+Induct on $n$, the case $C_0=1$ being immediate.  Let $n\ge1$ and assume
+$C_0,\ldots,C_{n-1}$ are odd.  In \eqref{eq:mom-C-division-free} every factor other than the
+binomial coefficient is odd: the entries $2j+1$ are odd, each $2^{2j}-1$ is odd, and each
+$C_k$ is odd by hypothesis.  Hence, modulo $2$, the sum counts the odd coefficients
+$\binom{2n+1}{2k}$ with $0\le k\le n-1$.  By \Cref{cor:mom-lucas-trimmed} that count is
+$2^{\wt(n)}-1$, an odd number.  Therefore $C_n$ is odd.
+\end{proof}
+
+We can now prove the parity statement for the half moments that was asserted after
+\eqref{eq:d-normalized}.  Work in the local ring $\Z_{(2)}$ of rational numbers with odd
+denominator; its residue field is $\Z/2\Z$, and a rational number $x$ lies in $\Z_{(2)}$
+with $\vtwo(x)=0$ exactly when its reduced numerator and denominator are both odd.
+
+\begin{theorem}[Normalized parity]                          \label{thm:mom-two-d-odd}
+For every $n\ge1$,
+\begin{equation}
+ \vtwo(2d_n)=0.                                            \label{eq:mom-two-d-valuation}
+\end{equation}
+Equivalently, the reduced numerator and denominator of $2d_n$ are both odd, and
+$\vtwo(d_n)=-1$.
+\end{theorem}
+
+\begin{proof}
+For an odd index $n=2k+1$, combine \eqref{eq:mom-d-odd-c} with \eqref{eq:c-normalized}:
+\begin{equation*}
+ 2d_{2k+1}=(2k+1)c_k
+ =\frac{(2k+1)\,C_k}{(2k+1)!!\prod_{j=1}^{k}(2^{2j}-1)}.
+\end{equation*}
+The numerator is odd by \Cref{prop:mom-C-odd}, and the denominator is a product of odd
+integers.  Hence $\vtwo(2d_{2k+1})=0$.  This covers every odd index, including $n=1$.
+
+For an even index, write \eqref{eq:d-recurrence} at $2n$ and multiply by $2$:
+\begin{equation}
+ (2n+1)\bigl(2^{2n}-1\bigr)\,2d_{2n}
+ =\sum_{k=0}^{2n-1}\binom{2n+1}{k}\,2d_k.                   \label{eq:mom-doubled-even-recurrence}
+\end{equation}
+Proceed by strong induction on $n\ge1$, assuming $\vtwo(2d_k)=0$ for $1\le k\le2n-1$; the odd
+indices in that range are already settled unconditionally, and the even ones are covered by
+the induction hypothesis.  Every term on the right of \eqref{eq:mom-doubled-even-recurrence}
+then lies in $\Z_{(2)}$, so the right side does, and the prefactor
+$(2n+1)(2^{2n}-1)$ on the left is an odd integer and hence a unit of $\Z_{(2)}$.  Solving for
+$2d_{2n}$ shows $2d_{2n}\in\Z_{(2)}$.
+
+Reduce \eqref{eq:mom-doubled-even-recurrence} modulo $2$ in $\Z_{(2)}$.  The prefactor is
+congruent to $1$.  The term $k=0$ contributes $2d_0=2\equiv0$.  Each term with
+$1\le k\le2n-1$ has $2d_k$ a unit, so it is congruent to $\binom{2n+1}{k}$.  Therefore
+\begin{equation*}
+ 2d_{2n}\equiv\#\bigl\{\,1\le k\le2n-1:\ \tbinom{2n+1}{k}\text{ odd}\,\bigr\}
+ =2^{\wt(n)+1}-3\equiv1\pmod2,
+\end{equation*}
+using \Cref{cor:mom-lucas-trimmed}.  Hence $\vtwo(2d_{2n})=0$, completing the induction.  The
+final assertion is the definition of $\vtwo$ on $\Q^\times$ together with
+$\vtwo(d_n)=\vtwo(2d_n)-1$.
+\end{proof}
+
+\Cref{thm:mom-two-d-odd} is exactly the input required by the valuation theorem that follows,
+which is therefore now proved outright rather than conditionally.
 
 The parity theorem for $d_n$ immediately determines the power of two in the reduced
 denominator.
@@ -2756,18 +3257,84 @@ That these numbers are integers at all was not obvious.  The question was raised
 Reshetnikov \cite{reshetnikovMO} on the basis of numerical evidence, and answered
 affirmatively by Arias de Reyna \cite{arias2018}, whose paper devotes a section to it.
 
-\begin{theorem}
-Each $R_n$ is an odd positive integer.  Moreover it has a finite expression in the moment
-numerators $C_k$ and the odd Mersenne products.
+\begin{theorem}[Reshetnikov's integers]                     \label{thm:mom-reshetnikov}
+For every $n\ge1$ the number $R_n$ of \eqref{eq:Rn} is an odd positive integer.  It has the
+half-moment form
+\begin{equation}
+ R_n=2d_n\,(2n-1)!!\prod_{m=1}^{\lfloor n/2\rfloor}\bigl(2^{2m}-1\bigr),
+                                                           \label{eq:mom-Rn-dn}
+\end{equation}
+the odd-index closed form
+\begin{equation}
+ R_{2n+1}=C_n\,\frac{(4n+1)!!}{(2n-1)!!}\qquad(n\ge0),      \label{eq:mom-Rn-odd}
+\end{equation}
+and the even-index expansion
+\begin{equation}
+ R_{2n}=\sum_{k=0}^{n}\frac{2\,C_k}{2^{2n}}\binom{2n}{2k}
+ \frac{(4n-1)!!}{(2k+1)!!}\prod_{l=k+1}^{n}\bigl(2^{2l}-1\bigr)
+ \qquad(n\ge1).                                            \label{eq:mom-Rn-even}
+\end{equation}
+Empty products equal $1$ and $(-1)!!=1$.
 \end{theorem}
 
-\begin{proofidea}
-Insert \eqref{eq:d-from-c} into \eqref{eq:F-inverse-power}, then substitute the normalized
-form \eqref{eq:c-normalized}.  After factorial and double-factorial cancellations, every
-term has an integral common denominator that is killed by the product in \eqref{eq:Rn}.
-Modulo $2$, all Mersenne and odd-factor products are $1$, and Lucas's theorem reduces the sum
-to an odd count of odd binomial coefficients.  Thus the resulting integer is odd.
-\end{proofidea}
+\begin{proof}
+\emph{The half-moment form.}  Substitute \eqref{eq:F-inverse-power} into \eqref{eq:Rn}:
+\begin{equation*}
+ R_n=2^{\binom{n-1}{2}-\binom n2}\,\frac{(2n)!}{n!}\,d_n
+ \prod_{m=1}^{\lfloor n/2\rfloor}\bigl(2^{2m}-1\bigr).
+\end{equation*}
+Now $\binom n2-\binom{n-1}{2}=n-1$, and separating the even factors of $(2n)!$ gives
+$(2n)!=2^nn!\,(2n-1)!!$, hence $(2n)!/n!=2^n(2n-1)!!$.  The two powers of two combine into
+$2^{-(n-1)}\cdot2^n=2$, which is \eqref{eq:mom-Rn-dn}.  Every factor after $2d_n$ in
+\eqref{eq:mom-Rn-dn} is odd, so
+\begin{equation}
+ \vtwo(R_n)=\vtwo(2d_n)=0                                   \label{eq:mom-Rn-unit}
+\end{equation}
+by \Cref{thm:mom-two-d-odd}.
+
+\emph{Odd indices.}  Take $n\mapsto2n+1$ in \eqref{eq:mom-Rn-dn}, note
+$\lfloor(2n+1)/2\rfloor=n$, and use \eqref{eq:mom-d-odd-c} and \eqref{eq:c-normalized}:
+\begin{equation*}
+ R_{2n+1}=(2n+1)c_n(4n+1)!!\prod_{m=1}^{n}\bigl(2^{2m}-1\bigr)
+ =(2n+1)\,\frac{C_n(4n+1)!!}{(2n+1)!!}
+ =C_n\,\frac{(4n+1)!!}{(2n-1)!!},
+\end{equation*}
+since $(2n+1)!!=(2n+1)(2n-1)!!$.  This is \eqref{eq:mom-Rn-odd}.  The quotient
+$(4n+1)!!/(2n-1)!!$ is the product of the odd integers $2n+1,2n+3,\ldots,4n+1$, so
+$R_{2n+1}$ is a product of odd integers and is therefore an odd integer.
+
+\emph{Even indices.}  Take $n\mapsto2n$ in \eqref{eq:mom-Rn-dn}, insert the binomial
+transform \eqref{eq:d-from-c}, and replace each $c_k$ by \eqref{eq:c-normalized}:
+\begin{align*}
+ R_{2n}&=2\cdot2^{-2n}\sum_{k=0}^{n}\binom{2n}{2k}c_k\,(4n-1)!!
+ \prod_{m=1}^{n}\bigl(2^{2m}-1\bigr)\\
+ &=\sum_{k=0}^{n}\frac{2\,C_k}{2^{2n}}\binom{2n}{2k}
+ \frac{(4n-1)!!}{(2k+1)!!}\prod_{l=k+1}^{n}\bigl(2^{2l}-1\bigr),
+\end{align*}
+because the product $\prod_{m=1}^{k}(2^{2m}-1)$ in the denominator of $c_k$ cancels the
+initial segment of $\prod_{m=1}^{n}(2^{2m}-1)$.  This is \eqref{eq:mom-Rn-even}.  Since
+$k\le n\le2n-1$ for $n\ge1$, each quotient $(4n-1)!!/(2k+1)!!$ is a product of consecutive
+odd integers and hence an integer; the binomial coefficients, the $C_k$ and the remaining
+products are integers as well.  Consequently $2^{2n-1}R_{2n}$ is an integer, so the only
+prime that can occur in the denominator of $R_{2n}$ is $2$.  By \eqref{eq:mom-Rn-unit} that
+denominator is odd, so it equals $1$ and $R_{2n}$ is an integer, necessarily odd.
+
+\emph{Positivity.}  Every factor in \eqref{eq:Rn} is positive, and $F(2^{-n})>0$ because $F$
+is strictly increasing on $[0,1]$.
+\end{proof}
+
+\begin{remark}[Extended value list]                         \label{rem:mom-Rn-values}
+The first nine values are
+\begin{equation}
+ 1,\ 5,\ 15,\ 1001,\ 5985,\ 2853675,\ 26261235,\ 72808620885,\ 915304354965,
+                                                           \label{eq:mom-Rn-values}
+\end{equation}
+extending the table of \Cref{app:data} by $R_8=72808620885$ and $R_9=915304354965$.  All nine
+were recomputed independently in exact rational arithmetic from the definition \eqref{eq:Rn},
+from the half-moment form \eqref{eq:mom-Rn-dn}, and, according to the parity of the index,
+from \eqref{eq:mom-Rn-odd} or \eqref{eq:mom-Rn-even}; the three routes agree, and every value
+is odd.  The check was carried out for all $n\le24$.
+\end{remark}
 
 \section{Exact evaluation at arbitrary dyadic rationals}
 \label{sec:dyadic}
@@ -2832,6 +3399,114 @@ Every quantity on the right of \eqref{eq:dyadic-closed} is rational, so dyadic r
 immediate.  More importantly, the formula lives entirely in $\Q$ and can be evaluated without
 roundoff.
 
+% APPEND to the subsection "The closed Thue--Morse formula" of the section
+% labelled sec:dyadic, immediately after the paragraph beginning
+% "Every quantity on the right of eq:dyadic-closed is rational".
+
+\begin{theorem}[Global dyadic formula]
+\label{thm:dy-global-closed}
+For all $n,a\in\N$ the signed global extension satisfies
+\begin{equation}
+\boxed{
+ \mathcal F\!\left(\frac{a}{2^n}\right)
+ =\frac{2^{-\binom{n+1}{2}}}{n!}
+ \sum_{h=0}^{a-1}\varepsilon_h
+ \sum_{k=0}^{\lfloor n/2\rfloor}
+ \binom n{2k}c_k(2a-2h-1)^{n-2k}.}
+                                                               \label{eq:dy-global-closed}
+\end{equation}
+No upper bound on $a$ is imposed.  An empty outer sum has value $0$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:global-derivatives} the $m$th derivative of $\mathcal F$ is
+$2^{\binom{m+1}{2}}\mathcal F(2^mx)$, and $\mathcal F$ vanishes on $(-\infty,0]$.  Hence
+$\mathcal F^{(m)}(0)=0$ for every $m\ge0$, and Taylor's theorem with integral remainder at
+the base point $0$, applied through order $n$, gives for $x\ge0$
+\begin{equation}
+ \mathcal F(x)=\frac1{n!}\int_0^x(x-t)^n\mathcal F^{(n+1)}(t)\dd t.
+                                                               \label{eq:dy-global-taylor}
+\end{equation}
+Put $x=a/2^n$ and insert $\mathcal F^{(n+1)}(t)=2^{\binom{n+2}{2}}\mathcal F(2^{n+1}t)$.
+The substitution $u=2^{n+1}t$ carries $[0,x]$ onto $[0,2a]$ and produces
+$(x-t)^n=2^{-n(n+1)}(2a-u)^n$ together with $\dd t=2^{-(n+1)}\dd u$.  Since
+\begin{equation*}
+ \binom{n+2}{2}-n(n+1)-(n+1)=-\binom{n+1}{2},
+\end{equation*}
+this is exactly
+\begin{equation}
+ \mathcal F\!\left(\frac a{2^n}\right)
+ =\frac{2^{-\binom{n+1}{2}}}{n!}\int_0^{2a}(2a-u)^n\mathcal F(u)\dd u.
+                                                               \label{eq:dy-global-integral}
+\end{equation}
+Split $[0,2a]$ into the $a$ blocks $[2h,2h+2]$ with $0\le h<a$.  On the $h$th block
+\eqref{eq:single-block} gives $\mathcal F(u)=\varepsilon_h\Up(u-2h-1)$, and the
+substitution $v=u-2h-1$ maps that block onto $[-1,1]$:
+\begin{equation*}
+ \int_{2h}^{2h+2}(2a-u)^n\mathcal F(u)\dd u
+ =\varepsilon_h\int_{-1}^{1}(2a-2h-1-v)^n\Up(v)\dd v.
+\end{equation*}
+Expand the $n$th power by the binomial theorem.  The function $\Up$ is even, so every odd
+moment vanishes, while $\int_{-1}^1v^{2k}\Up(v)\dd v=c_k$ and the surviving sign
+$(-1)^{2k}$ is $+1$.  Summing over $h$ gives \eqref{eq:dy-global-closed}.
+\end{proof}
+
+Two special cases are the ones used in practice.
+
+\begin{corollary}[Bounded case]
+\label{cor:dy-bounded-case}
+If $0\le a\le2^n$ then $\mathcal F(a/2^n)=F(a/2^n)$, so \eqref{eq:dy-global-closed}
+reduces to \eqref{eq:dyadic-closed}.
+\end{corollary}
+
+\begin{proof}
+The two functions agree on $[0,1]$ and $a/2^n\in[0,1]$.
+\end{proof}
+
+\begin{corollary}[Bump case]
+\label{cor:dy-bump-case}
+Let $n\in\N$ and $q\in\Z$.  If $|q|<2^n$, then
+\begin{equation}
+ \Up\!\left(\frac q{2^n}\right)
+ =\frac{2^{-\binom{n+1}{2}}}{n!}
+ \sum_{h=0}^{q+2^n-1}\varepsilon_h
+ \sum_{k=0}^{\lfloor n/2\rfloor}
+ \binom n{2k}c_k\bigl(2q+2^{n+1}-2h-1\bigr)^{n-2k},
+                                                               \label{eq:dy-bump-case}
+\end{equation}
+that is, \eqref{eq:dy-global-closed} evaluated at $a=q+2^n$.  If $|q|\ge2^n$, then
+$\Up(q/2^n)=0$.
+\end{corollary}
+
+\begin{proof}
+Taking $b=0$ in \eqref{eq:single-block} gives $\mathcal F(x)=\Up(x-1)$ for $0\le x\le2$.
+With $x=1+q/2^n=(q+2^n)/2^n$ and $|q|<2^n$ we have $0<x<2$, so
+$\Up(q/2^n)=\mathcal F\bigl((q+2^n)/2^n\bigr)$, and
+\eqref{eq:dy-global-closed} with $a=q+2^n$ applies.  The last statement is the support
+condition $\supp\Up=[-1,1]$.
+\end{proof}
+
+Corollary~\ref{cor:dy-bump-case} is the global form invoked in the proof of the uniform
+denominator multiplier theorem below.  The point is that it genuinely requires
+\Cref{thm:dy-global-closed} and not \eqref{eq:dyadic-closed}: for $0<q<2^n$ the numerator
+$a=q+2^n$ exceeds $2^n$, so the bounded statement does not apply.  At the endpoints
+$|q|=2^n$ the two clauses agree, both giving $0$; for $q=-2^n$ the outer sum is empty and
+for $q=2^n$ the value is $\mathcal F(2)=0$.
+
+\begin{remark}[Why the sum is finite]
+\label{rem:dy-finiteness}
+Finiteness has two independent sources, and neither involves a limit.  Horizontally, only
+the $a$ complete translated bumps indexed by $0\le h<a$ meet the integration range in
+\eqref{eq:dy-global-integral}; the locally finite sum \eqref{eq:global-extension} therefore
+contributes finitely many terms.  Vertically, expanding $(2a-2h-1-v)^n$ produces only
+powers $v^j$ with $j\le n$, and all odd $j$ integrate to zero, leaving the
+$\lfloor n/2\rfloor+1$ even moments $c_0,\ldots,c_{\lfloor n/2\rfloor}$.  Every one of these
+is an explicit rational number produced by \eqref{eq:c-recurrence}, so
+\eqref{eq:dy-global-closed} is an exact algorithm over $\Q$ with no roundoff and no
+truncation.  It is not, however, an efficient one: the outer range has length $a$, whereas
+the bit recursion of Algorithm~\ref{alg:dyadic-evaluator} needs only $\wt(a)$ steps.
+\end{remark}
+
 \subsection{Thue--Morse cancellation}
 
 The mechanism that makes the dyadic formulas simplify is the Prouhet cancellation carried by
@@ -2871,6 +3546,98 @@ zero gives the same cancellation.
 
 This lemma explains why apparently large translated sums in \eqref{eq:dyadic-closed} collapse
 to short Taylor blocks when the numerator crosses a binary boundary.
+
+% APPEND to the subsection "Thue--Morse cancellation", after the paragraph
+% beginning "This lemma explains why apparently large translated sums".
+
+The cancellation lemma states that the first $b$ moments of the signed block vanish.  The
+first surviving moment has an equally clean closed value, and that value is the constant
+that governs every leading coefficient in the $q$-binomial analysis of
+\Cref{subsec:q-binomial-dyadic}.
+
+\begin{proposition}[The first surviving Thue--Morse moment]
+\label{prop:dy-tm-moment}
+For every $k\ge0$,
+\begin{equation}
+\boxed{
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,r^k=(-1)^k2^{\binom k2}k!.}
+                                                               \label{eq:dy-tm-moment}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:thue-exponential-product},
+\begin{equation}
+ \sum_{r<2^k}\varepsilon_r\e^{rt}=\prod_{j=0}^{k-1}\bigl(1-\e^{2^jt}\bigr).
+                                                               \label{eq:dy-tm-product}
+\end{equation}
+Each factor is an entire function with a simple zero at $t=0$, and
+\begin{equation*}
+ 1-\e^{2^jt}=-2^jt+\bigO(t^2)\qquad(t\to0),
+\end{equation*}
+so the product has a zero of order exactly $k$ at the origin, with
+\begin{equation*}
+ \prod_{j=0}^{k-1}\bigl(1-\e^{2^jt}\bigr)
+ =\Bigl(\prod_{j=0}^{k-1}(-2^j)\Bigr)t^k+\bigO(t^{k+1})
+ =(-1)^k2^{\binom k2}t^k+\bigO(t^{k+1}),
+\end{equation*}
+because $\sum_{j=0}^{k-1}j=\binom k2$.  The left side of \eqref{eq:dy-tm-product} is the
+exponential generating function
+\begin{equation*}
+ \sum_{d\ge0}\Bigl(\sum_{r<2^k}\varepsilon_r r^d\Bigr)\frac{t^d}{d!}.
+\end{equation*}
+Comparing coefficients of $t^d$ for $d<k$ recovers \eqref{eq:thue-affine-cancel}; comparing
+coefficients of $t^k$ gives
+\begin{equation*}
+ \frac1{k!}\sum_{r<2^k}\varepsilon_r r^k=(-1)^k2^{\binom k2}.
+\end{equation*}
+The case $k=0$ is the empty product, both sides being $1$.
+\end{proof}
+
+\begin{corollary}[Translation invariance]
+\label{cor:dy-tm-moment-shift}
+For every $k\ge0$ and every $Q$ in a field of characteristic zero,
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,(r+Q)^k=(-1)^k2^{\binom k2}k!.
+                                                               \label{eq:dy-tm-moment-shift}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Expand $(r+Q)^k=\sum_{d=0}^{k}\binom kdQ^{k-d}r^d$ and interchange the two finite sums.  For
+$d<k$ the inner sum $\sum_{r<2^k}\varepsilon_rr^d$ vanishes by \eqref{eq:thue-affine-cancel},
+so only $d=k$ survives, with coefficient $1$.  Apply \eqref{eq:dy-tm-moment}.
+\end{proof}
+
+Thus the value is unchanged if $r$ is replaced by $r+Q$ for any constant $Q$, precisely
+because all the lower moments vanish: a shift can only alter the coefficients of degrees
+below the top, and those coefficients are already zero.  The centered choice $Q=-2^k$ gives
+\begin{equation}
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,(r-2^k)^k=(-1)^k2^{\binom k2}k!,
+                                                               \label{eq:dy-tm-moment-centered}
+\end{equation}
+which is exactly the constant term of the block factorization
+\eqref{eq:q-centered-block-factor} established later: dividing the centered block sum
+$C_k(X)$ by $X^k$ leaves the value $(-1)^k2^{\binom k2}$ at $X=0$, because the remaining
+exponential factors there all tend to $1$.  This also shows
+that the order of vanishing in \eqref{eq:thue-generating-product} is exactly $k$ and not
+more, which is what makes the removal of the forced zero legitimate.
+
+\begin{remark}[Numerical check]
+\label{rem:dy-tm-moment-check}
+The Thue--Morse signs for $0\le r\le7$ are $+,-,-,+,-,+,+,-$.  Reading off the first three
+cases of \eqref{eq:dy-tm-moment}:
+\begin{align*}
+ k=1:&\quad 0-1=-1, &&(-1)^12^{0}1!=-1;\\
+ k=2:&\quad 0-1-4+9=4, &&(-1)^22^{1}2!=4;\\
+ k=3:&\quad 0-1-8+27-64+125+216-343=-48, &&(-1)^32^{3}3!=-48.
+\end{align*}
+These were recomputed in exact integer arithmetic, together with $k=4,\ldots,7$, whose values
+are $1536$, $-122\,880$, $23\,592\,960$, and $-10\,569\,646\,080$, in agreement with
+\eqref{eq:dy-tm-moment}.  The shift invariance \eqref{eq:dy-tm-moment-shift} was checked in
+exact rational arithmetic for $k\le5$ at $Q=-2^k$, $Q=1/2$, and $Q=7$, and the vanishing of
+all lower moments for $k\le6$.
+\end{remark}
 
 \subsection{A Taylor block that removes the leading bit}
 
@@ -3008,6 +3775,74 @@ Here $a=5=2^2+1$, $e=4$, so $r=2$, $q=1$, and $y=1/16$.  Formula
 Only two recursive calls are needed, corresponding to the two set bits of $5$.
 \end{example}
 
+% NEW SUBSECTION, inserted after the subsection "The bit-recursive evaluator"
+% (i.e. between that subsection and "A complete level-$4$ table").
+
+\subsection{Reduction of an arbitrary dyadic argument}
+\label{subsec:dy-triangular}
+
+Algorithm~\ref{alg:dyadic-evaluator} evaluates the bounded function $F$ on $[0,1]$.  The signed
+global extension is defined on all of $\R$ and is unbounded there, so a total evaluator for
+$\mathcal F$ needs one preliminary step: fold the argument back into the unit interval and
+record the sign that the fold costs.  The fold is triangular in the sense that it is a
+reduction modulo $2$ followed by a reflection.
+
+\begin{theorem}[Triangular reduction]
+\label{thm:dy-triangular}
+Let $n\in\N$ and put $s=2^n$.  Let $a\in\N$ and write
+\begin{equation}
+ a=2sB+R,\qquad B=\left\lfloor\frac a{2s}\right\rfloor,\qquad 0\le R<2s,
+                                                               \label{eq:dy-triangular-split}
+\end{equation}
+and set
+\begin{equation}
+ C=\begin{cases}R,&R\le s,\\ 2s-R,&R>s.\end{cases}
+                                                               \label{eq:dy-triangular-fold}
+\end{equation}
+Then $0\le C\le s$ and
+\begin{equation}
+\boxed{\ \mathcal F\!\left(\frac a{2^n}\right)=\varepsilon_B\,F\!\left(\frac C{2^n}\right).\ }
+                                                               \label{eq:dy-triangular}
+\end{equation}
+For $a\in\Z$ with $a<0$ one has $\mathcal F(a/2^n)=0$.
+\end{theorem}
+
+\begin{proof}
+Write $x=a/2^n=2B+R/s$.  Since $0\le R<2s$ we have $2B\le x<2B+2$, so $x$ lies in the
+$B$th block and \eqref{eq:single-block} gives
+\begin{equation*}
+ \mathcal F(x)=\varepsilon_B\Up(x-2B-1)=\varepsilon_B\Up\!\left(\frac Rs-1\right).
+\end{equation*}
+Put $t=R/s-1$, so that $-1\le t<1$.  The fold relation \eqref{eq:up-fold} says
+$\Up(t)=F(t+1)$ for $t\le0$ and $\Up(t)=F(1-t)$ for $t>0$; on $[-1,1]$ both clauses read
+$\Up(t)=F(1-|t|)$.  If $R\le s$ then $|t|=1-R/s$ and $F(1-|t|)=F(R/s)$.  If $R>s$ then
+$|t|=R/s-1$ and $F(1-|t|)=F(2-R/s)=F\bigl((2s-R)/2^n\bigr)$.  In both cases the argument is
+$C/2^n$ with $C$ as in \eqref{eq:dy-triangular-fold}, and $0\le C\le s$ is immediate from
+$0\le R<2s$.  The final statement is the vanishing of $\mathcal F$ on the negative half-line.
+\end{proof}
+
+Combining \eqref{eq:dy-triangular} with Algorithm~\ref{alg:dyadic-evaluator} gives a total exact
+evaluator for $\mathcal F$ at every dyadic rational: reduce with
+\eqref{eq:dy-triangular-split}--\eqref{eq:dy-triangular-fold}, compute the block sign
+$\varepsilon_B=(-1)^{\wt(B)}$ from the binary digits of $B=\lfloor a/2^{n+1}\rfloor$, and call
+$\operatorname{Eval}(n,C)$.  The cost of the reduction is one shift, one mask, and one
+popcount.
+
+The reduction is compatible with unreduced presentations.  Replacing $(n,a)$ by $(n+1,2a)$
+doubles $s$ and $R$, leaves $B$ unchanged, and doubles $C$; the right side of
+\eqref{eq:dy-triangular} is therefore unchanged, as it must be.
+
+\begin{remark}[Recognizing dyadic arguments exactly]
+\label{rem:dy-rational-interface}
+A reduced rational $p/q$ with $q>0$ is dyadic exactly when $q$ is a power of two, and in
+that case $n=\log_2q$ and $a=p$ are read off directly.  An exact rational interface to
+$F$, $\Up$, and $\mathcal F$ therefore tests a single integer condition on the reduced
+denominator, returns ``not dyadic'' when it fails, and otherwise invokes the signed integer
+evaluator above.  No floating-point recognition of powers of two is involved anywhere, so
+the interface is exact on every input and cannot be defeated by rounding in the recognition
+step.
+\end{remark}
+
 \subsection{A complete level-$4$ table}
 
 The exact values at denominator $16$ are shown below.  The second half follows from
@@ -3065,6 +3900,146 @@ $\Up(a/2^n)$ with odd $a$ in the support.  The theorem gives the explicit divisi
 The exact closed form of $\Delta_n$ is subtler.  The source paper records a conjectural
 factorization; the formal development correctly retains it as a conjecture rather than a
 theorem.
+
+% APPEND to the subsection "Denominator bounds", replacing nothing; the two
+% subsubsections below follow the sentence ending "retains it as a conjecture
+% rather than a theorem."
+
+\subsubsection{Numerical values of the level denominators}
+\label{subsubsec:dy-delta-values}
+
+The divisibility bound \eqref{eq:lcm-bound} is easy to prove and far from sharp.  It is
+worth seeing the actual denominators.  For $0\le n\le9$,
+\begin{equation}
+\begin{split}
+ \Delta_0,\ldots,\Delta_9={}&1,\quad 2,\quad 72,\quad 288,\quad 2\,073\,600,\quad
+ 33\,177\,600,\\
+ &2\,809\,213\,747\,200,\quad 179\,789\,679\,820\,800,\\
+ &704\,200\,217\,922\,109\,440\,000,\\
+ &180\,275\,255\,788\,060\,016\,640\,000.
+\end{split}                                                    \label{eq:dy-delta-values}
+\end{equation}
+The next two levels continue
+\begin{equation}
+\begin{split}
+ \Delta_{10}&=6\,231\,974\,256\,792\,696\,936\,191\,754\,240\,000,\\
+ \Delta_{11}&=6\,381\,541\,638\,955\,721\,662\,660\,356\,341\,760\,000.
+\end{split}                                                    \label{eq:dy-delta-values-ext}
+\end{equation}
+
+Write $B_n$ for the proved multiplier of \eqref{eq:lcm-bound},
+\begin{equation}
+ B_n=n!\,2^{\binom{n+1}{2}}\bigl(2\lfloor n/2\rfloor+1\bigr)!!\,M_{\lfloor n/2\rfloor},
+                                                               \label{eq:dy-bound-multiplier}
+\end{equation}
+with $M_m$ as in \eqref{eq:denominator-products}.  The quotients $B_n/\Delta_n$ are
+
+\begin{center}
+\begin{tabular}{c@{\quad}r@{\qquad\qquad}c@{\quad}r}
+\toprule
+$n$&$B_n/\Delta_n$&$n$&$B_n/\Delta_n$\\
+\midrule
+$0$&$1$&$6$&$160$\\
+$1$&$1$&$7$&$2\,240$\\
+$2$&$2$&$8$&$2\,688$\\
+$3$&$12$&$9$&$48\,384$\\
+$4$&$8$&$10$&$161\,280$\\
+$5$&$80$&$11$&$3\,548\,160$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The bound is exact only at $n=0,1$.  Its slack is not bounded: it already exceeds
+$3.5\times10^6$ at $n=11$ and continues to grow.  The bound is therefore useful as a
+divisibility certificate and as a source of the exact power of two through
+\eqref{eq:valuation-inverse}, but it does not identify $\Delta_n$.
+
+\begin{remark}[Recomputation]
+\label{rem:dy-delta-recomputed}
+Every value in \eqref{eq:dy-delta-values} and \eqref{eq:dy-delta-values-ext} was recomputed
+independently in exact rational arithmetic for this article, not copied from the source
+paper.  The reciprocal-power table $V_j=F(2^{-j})$ was generated from the triangular
+recurrence \eqref{eq:inverse-dyadic-recurrence} and cross-checked against the composition
+formula \eqref{eq:inverse-composition-formula}; every level-$n$ value $\Up(a/2^n)$ with odd
+$a$ was then produced by the bit recursion \eqref{eq:taylor-block}, reduced to lowest terms,
+and the least common multiple of the resulting denominators taken.  As a control, the
+recomputed level-$4$ values reproduce the table of \eqref{eq:F-inverse-table} and the
+complete level-$4$ table above.  All ten published values agree with the recomputation, and
+the divisibility \eqref{eq:lcm-bound} was verified numerically for $0\le n\le11$.
+\end{remark}
+
+\subsubsection{The denominator conjecture}
+\label{subsubsec:dy-denominator-conjecture}
+
+The list \eqref{eq:dy-delta-values} has visible structure: the terms come in equal
+consecutive pairs after a power of two is removed.  The right normalization is
+\begin{equation}
+ \mathfrak a_n=2^{-\binom n2}\Delta_n,
+                                                               \label{eq:dy-normalizer}
+\end{equation}
+which is not to be confused with the composition normalization $A_n$ of
+\Cref{subsec:inverse-dyadic-compositions}.  Its first values are
+\begin{equation}
+\begin{split}
+ \mathfrak a_0,\ldots,\mathfrak a_{11}={}&1,\quad2,\quad36,\quad36,\quad32\,400,\quad
+ 32\,400,\\
+ &85\,730\,400,\quad85\,730\,400,\\
+ &2\,623\,350\,240\,000,\quad2\,623\,350\,240\,000,\\
+ &177\,123\,361\,504\,320\,000,\quad177\,123\,361\,504\,320\,000.
+\end{split}                                                    \label{eq:dy-normalizer-values}
+\end{equation}
+
+\begin{conjecture}[Arias de Reyna denominator pattern]
+\label{conj:dy-denominators}
+With $\mathfrak a_n$ as in \eqref{eq:dy-normalizer}:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathfrak a_{2n}=\mathfrak a_{2n+1}$ for every $n\ge1$;
+\item $2(2n-1)!$ divides $K_n:=\mathfrak a_{2n-1}$ for every $n\ge1$;
+\item the quotient
+\begin{equation}
+ H_n=\frac{K_n}{2(2n-1)!}                                      \label{eq:dy-Hn}
+\end{equation}
+is an odd integer for every $n\ge1$.
+\end{enumerate}
+\end{conjecture}
+
+Equivalently, if the conjecture holds then for every $n\ge1$
+\begin{equation}
+ \Delta_{2n-1}=2^{1+\binom{2n-1}{2}}(2n-1)!\,H_n,
+ \qquad
+ \Delta_{2n}=2^{1+\binom{2n}{2}}(2n+1)!\,H_{n+1},
+                                                               \label{eq:dy-delta-conjectural}
+\end{equation}
+so that the entire sequence $(\Delta_n)$ would be determined by the single odd sequence
+$(H_n)$ together with explicit powers of two and factorials.  The first values are
+\begin{equation}
+ H_1,\ldots,H_6=1,\quad3,\quad135,\quad8\,505,\quad3\,614\,625,\quad2\,218\,656\,825.
+                                                               \label{eq:dy-Hn-values}
+\end{equation}
+The restriction $n\ge1$ in part~(i) is essential and not a convention: $\mathfrak a_0=1$
+while $\mathfrak a_1=2$, so the pairing fails at the bottom of the range.
+
+The conjecture is due to Arias de Reyna \cite{arias2018}.  The proved bound
+\eqref{eq:lcm-bound} and the exact $2$-adic valuation \eqref{eq:valuation-inverse} constrain
+it --- the latter pins down the power of two in each reduced denominator, which is why the
+normalization \eqref{eq:dy-normalizer} is the natural one --- but neither settles the odd
+part, and no proof of (i), (ii), or (iii) is known.  The formal development records the
+statement as a conjecture and derives nothing from it.
+
+\begin{remark}[Verification]
+\label{rem:dy-conjecture-check}
+The values \eqref{eq:dy-normalizer-values} and \eqref{eq:dy-Hn-values} were computed for
+this article from the recomputed denominators of
+Remark~\ref{rem:dy-delta-recomputed}, in exact integer arithmetic.  Part~(i) was verified for
+$1\le n\le5$, that is, for the five pairs $(\mathfrak a_2,\mathfrak a_3)$ through
+$(\mathfrak a_{10},\mathfrak a_{11})$.  Part~(ii) was verified for $1\le n\le6$, the largest
+case being $2\cdot11!=79\,833\,600$ dividing
+$K_6=\mathfrak a_{11}=177\,123\,361\,504\,320\,000$.  Every $H_n$ in
+\eqref{eq:dy-Hn-values} is an odd integer, as (iii) requires, and the two presentations in
+\eqref{eq:dy-delta-conjectural} were checked against \eqref{eq:dy-delta-values} for
+$1\le n\le5$.
+\end{remark}
 
 \subsection{A $q$-binomial form, double cancellation, and scalar translation}
 \label{subsec:q-binomial-dyadic}
@@ -3590,6 +4565,711 @@ $\mathcal D_n^{(Q)}(x)$ can depend on $Q$; it is the limit that is independent o
 shift.  Second, the Toeplitz row \eqref{eq:discrete-toeplitz-reindex} is not a finite binary
 telescope or a partial sum of \eqref{eq:global-q-binomial-series}.  These finite expressions
 share a limit but are not equal term by term.
+
+\section{Iterated prefix sums of the signed Thue--Morse sequence}
+\label{tm:sec-prefix}
+
+The signed Thue--Morse sequence $\varepsilon_n=(-1)^{\wt(n)}$ has already appeared twice in
+this article: once as the coefficient sequence of the locally finite global expansion
+\eqref{eq:global-extension}, and once as the sign pattern that makes the finite dyadic sums
+of \cref{sec:dyadic} collapse.  There is a third, entirely discrete, way in which
+the same signs produce the Fabius function.  Sum the sequence, sum the result, and iterate.
+After $k$ summations the sequence has been convolved with a discrete B-spline kernel of
+order $k$, and after a dyadic normalization the resulting integer grid reproduces, in the
+limit, the Rvachev bump and hence $F$.
+
+This section develops that construction: the convolution law and its explicit binomial
+kernel, the exact zero runs forced by Prouhet cancellation, the two generating-series
+identities, the discrete functional equation satisfied by the normalized grid, and the
+precise sense in which the normalized grid converges.  The convergence statement requires
+one shift of the prefix order and the centered reading of the grid cells; the literal
+normalization does not converge, and that failure is recorded separately in
+\cref{tm:sub-literal-endpoint}.  Two further pieces of foundational material are attached at
+the end: the lower branch of Lambert's $W$-function, which the asymptotic sections of this
+article use but never construct, and an exact binomial--logarithm formula for the
+Thue--Morse bit.
+
+\subsection{Iterated prefix sums and the discrete B-spline law}
+\label{tm:sub-convolution}
+
+\begin{definition}[Iterated prefix sums]
+\label{thm:tm-prefix-def}
+Set $\sigma_0(n)=\varepsilon_n$ and, for $k\ge0$,
+\begin{equation}
+ \sigma_{k+1}(n)=\sum_{j=0}^{n}\sigma_k(j).                \label{eq:tm-prefix-def}
+\end{equation}
+All sums are \emph{inclusive}: the index $n$ itself is summed.
+\end{definition}
+
+Every $\sigma_k(n)$ is an integer, and $\sigma_k(0)=1$ for all $k$.  The inclusive
+convention has one consequence that must be kept in view throughout, because it is the
+source of an index shift later:
+\begin{equation}
+ \sigma_{k+1}(n+1)-\sigma_{k+1}(n)=\sigma_k(n+1).          \label{eq:tm-forward-diff}
+\end{equation}
+The increment of a prefix sum is the lower-order value at the \emph{new} index, not at the
+old one.
+
+\begin{proposition}[Odd zeros of the first prefix sum]
+\label{thm:tm-odd-zeros}
+For every $m\ge0$, $\sigma_1(2m+1)=0$.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:tm-even-odd}, $\varepsilon_{2j}+\varepsilon_{2j+1}=0$ for every $j$.  The
+range $0\le n\le 2m+1$ is the disjoint union of the pairs $\{2j,2j+1\}$ for $0\le j\le m$,
+so the sum of $\varepsilon_n$ over that range vanishes.
+\end{proof}
+
+The general structure is a discrete convolution.  Write
+\begin{equation}
+ \mathcal B_k(i)=\binom{i+k-1}{k-1}\qquad(k\ge1,\ i\ge0)   \label{eq:tm-kernel}
+\end{equation}
+for the number of ways of writing $i$ as an ordered sum of $k$ nonnegative integers.  The
+family $\mathcal B_k$ is the $k$-fold discrete convolution power of the constant kernel
+$\mathcal B_1\equiv1$; it is the discrete B-spline of order $k$.  Because the argument
+$i=n-m$ is automatically nonnegative in the sums below, no indicator function is needed.
+
+\begin{theorem}[Discrete B-spline convolution law]
+\label{thm:tm-convolution}
+For every $k\ge1$ and every $n\ge0$,
+\begin{equation}
+ \sigma_k(n)=\sum_{m=0}^{n}\mathcal B_k(n-m)\,\varepsilon_m
+ =\sum_{m=0}^{n}\binom{n-m+k-1}{k-1}\varepsilon_m.         \label{eq:tm-kernel-sum}
+\end{equation}
+Equivalently, in a form valid for every $k\ge0$,
+\begin{equation}
+ \sigma_{k+1}(n)=\sum_{m=0}^{n}\binom{n-m+k}{k}\varepsilon_m. \label{eq:tm-kernel-sum-shifted}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Induct on $k$ in the form \eqref{eq:tm-kernel-sum-shifted}.  For $k=0$ the binomial
+coefficient is $1$ and the assertion is the definition of $\sigma_1$.  Assume
+\eqref{eq:tm-kernel-sum-shifted} for $k$.  Then
+\begin{align*}
+ \sigma_{k+2}(n)
+ &=\sum_{j=0}^{n}\sigma_{k+1}(j)
+  =\sum_{j=0}^{n}\sum_{m=0}^{j}\binom{j-m+k}{k}\varepsilon_m\\
+ &=\sum_{m=0}^{n}\varepsilon_m\sum_{i=0}^{n-m}\binom{i+k}{k}
+  =\sum_{m=0}^{n}\binom{n-m+k+1}{k+1}\varepsilon_m,
+\end{align*}
+where the interchange is the triangular reindexing $i=j-m$ and the inner evaluation is the
+hockey-stick identity $\sum_{i=0}^{N}\binom{i+k}{k}=\binom{N+k+1}{k+1}$.
+\end{proof}
+
+\begin{remark}
+The kernel in \eqref{eq:tm-kernel-sum} is exactly the coefficient sequence of
+$(1-z)^{-k}$.  \Cref{thm:tm-convolution} is therefore the coefficient form of the series
+identity proved in \cref{thm:tm-generating} below, and either statement may be taken as the
+definition of the other.  Both are recorded here because the coefficient form is what one
+actually evaluates, while the series form is what one manipulates.
+\end{remark}
+
+\subsection{Prouhet annihilation and exact dyadic zero runs}
+\label{tm:sub-zero-runs}
+
+\Cref{eq:thue-affine-cancel} already records that a complete dyadic block of Thue--Morse
+signs annihilates every polynomial of degree below the block exponent.  For the prefix sums
+we also need the sharp boundary case, which identifies the first power that survives.
+
+\begin{lemma}[Sharp Prouhet extraction]
+\label{thm:tm-prouhet-extract}
+Write $S_{r,d}=\sum_{h<2^r}\varepsilon_h h^d$.  Then $S_{r,d}=0$ for $0\le d<r$, and
+\begin{equation}
+ S_{r,r}=(-1)^r2^{\binom r2}r!.                            \label{eq:tm-power-sum-sharp}
+\end{equation}
+Consequently, for every $P\in\Q[X]$ with $\deg P\le r$,
+\begin{equation}
+ \sum_{h<2^r}\varepsilon_hP(h)
+ =\bigl[X^r\bigr]P\cdot(-1)^r2^{\binom r2}r!,              \label{eq:tm-polynomial-extract}
+\end{equation}
+and the sum vanishes whenever $\deg P<r$.
+\end{lemma}
+
+\begin{proof}
+The vanishing statement is \eqref{eq:thue-affine-cancel} with $X=0$, $Y=1$.  For the
+boundary case, split the block by parity rather than by halves.  Since
+$\varepsilon_{2j}=\varepsilon_j$ and $\varepsilon_{2j+1}=-\varepsilon_j$ by
+\eqref{eq:tm-even-odd},
+\begin{equation*}
+ S_{r+1,d}
+ =\sum_{j<2^r}\varepsilon_j\bigl[(2j)^d-(2j+1)^d\bigr]
+ =-\sum_{c=0}^{d-1}\binom dc2^{c}S_{r,c},
+\end{equation*}
+because $(2j+1)^d-(2j)^d=\sum_{c<d}\binom dc(2j)^c$.  Take $d=r+1$.  All terms with $c<r$
+vanish by the first assertion, leaving only $c=r$:
+\begin{equation*}
+ S_{r+1,r+1}=-\binom{r+1}{r}2^rS_{r,r}=-(r+1)2^rS_{r,r}.
+\end{equation*}
+Since $S_{0,0}=\varepsilon_0=1$, induction gives
+$S_{r,r}=(-1)^rr!\,2^{0+1+\cdots+(r-1)}=(-1)^rr!\,2^{\binom r2}$, which is
+\eqref{eq:tm-power-sum-sharp}.  Formula \eqref{eq:tm-polynomial-extract} follows by
+expanding $P$ in the monomial basis: every monomial of degree below $r$ contributes zero,
+and the top monomial contributes \eqref{eq:tm-power-sum-sharp} times its coefficient.
+\end{proof}
+
+\begin{corollary}[Affine sharp case]
+\label{thm:tm-affine-sharp}
+For all $X,Y\in\Q$,
+\begin{equation*}
+ \sum_{h<2^r}\varepsilon_h(X+Yh)^r=(-1)^rY^r2^{\binom r2}r!.
+\end{equation*}
+In particular the sum does not depend on the translation $X$.
+\end{corollary}
+
+\begin{proof}
+Apply \eqref{eq:tm-polynomial-extract} to $P(H)=(X+YH)^r$, whose degree is at most $r$ and
+whose coefficient of $H^r$ is $Y^r$.
+\end{proof}
+
+Equivalently, \eqref{eq:tm-polynomial-extract} is the statement that the block polynomial
+of \eqref{eq:thue-generating-product} has a zero of exact order $r$ at $z=1$: the
+$m$\/th derivative of $\prod_{j<r}(1-z^{2^j})$ at $z=1$ vanishes for $m<r$, while the
+$r$\/th derivative equals $(-1)^r r!\prod_{j<r}2^j=(-1)^rr!\,2^{\binom r2}$.  We use the
+polynomial form because it applies directly to the binomial kernel
+\eqref{eq:tm-kernel}, which is a polynomial in the summation index.
+
+\begin{theorem}[Exact dyadic zero runs]
+\label{thm:tm-zero-run}
+Let $1\le k\le r$.  Then
+\begin{align}
+ \sigma_k(n)&=0 &&\text{for } 2^r-k\le n\le2^r-1,          \label{eq:tm-zero-run}\\
+ \sigma_k\bigl(2^r-k-1\bigr)&=(-1)^{r-k},                  \label{eq:tm-run-left}\\
+ \sigma_k\bigl(2^r\bigr)&=-1.                              \label{eq:tm-run-right}
+\end{align}
+Formula \eqref{eq:tm-run-left} also holds for $k=0$, where it reduces to
+$\varepsilon_{2^r-1}=(-1)^r$, and \eqref{eq:tm-run-right} also holds for $k=0$.  Hence the
+zero run terminating at $2^r-1$ has length exactly $k$: it is bounded on the left by a value
+of modulus one and on the right by the value $-1$.
+\end{theorem}
+
+\begin{proof}
+\emph{Endpoint.}  Put $q=k-1$, so $0\le q<r$.  By \eqref{eq:tm-kernel-sum},
+\begin{equation*}
+ \sigma_k(2^r-1)
+ =\sum_{m=0}^{2^r-1}\binom{2^r-1-m+q}{q}\varepsilon_m
+ =\frac1{q!}\sum_{m<2^r}\varepsilon_m\prod_{i=1}^{q}\bigl(2^r-1-m+i\bigr).
+\end{equation*}
+The product is a polynomial in $m$ of degree $q<r$, so the sum vanishes by
+\eqref{eq:tm-polynomial-extract}.
+
+\emph{Rest of the run.}  We prove, by induction on $d$, that $\sigma_k(2^r-1-d)=0$ whenever
+$1\le k\le r$ and $0\le d<k$.  The case $d=0$ is the endpoint.  Suppose the claim holds for
+$d$ and that $d+1<k$, so $k\ge2$ and $1\le k-1\le r$.  The induction hypothesis applied at
+order $k$ gives $\sigma_k(2^r-1-d)=0$, and applied at order $k-1$, which is legitimate
+because $d<k-1$, gives $\sigma_{k-1}(2^r-1-d)=0$.  Now use \eqref{eq:tm-forward-diff} with
+$n=2^r-1-(d+1)$, so that $n+1=2^r-1-d$:
+\begin{equation*}
+ 0-\sigma_k(n)=\sigma_k(n+1)-\sigma_k(n)=\sigma_{k-1}(n+1)=0 .
+\end{equation*}
+This proves \eqref{eq:tm-zero-run}, since the indices $2^r-k,\ldots,2^r-1$ are exactly the
+$2^r-1-d$ with $0\le d<k$.
+
+\emph{Left boundary.}  Induct on $k$.  For $k=0$ the number $2^r-1$ has $r$ binary digits,
+all equal to one, so $\varepsilon_{2^r-1}=(-1)^r$.  Assume \eqref{eq:tm-run-left} at order
+$k$ and let $k+1\le r$.  Put $n=2^r-(k+1)-1$, so $n+1=2^r-k-1$.  By the induction hypothesis
+$\sigma_k(n+1)=(-1)^{r-k}$, and by \eqref{eq:tm-zero-run} at order $k+1$ we have
+$\sigma_{k+1}(n+1)=\sigma_{k+1}(2^r-(k+1))=0$.  Then \eqref{eq:tm-forward-diff} gives
+$-\sigma_{k+1}(n)=(-1)^{r-k}$, that is, $\sigma_{k+1}(n)=(-1)^{r-(k+1)}$.
+
+\emph{Right boundary.}  Induct on $k$.  For $k=0$, $\wt(2^r)=1$, so
+$\varepsilon_{2^r}=-1$.  If \eqref{eq:tm-run-right} holds at order $k$ and $k+1\le r$, then
+by \eqref{eq:tm-forward-diff} and \eqref{eq:tm-zero-run},
+$\sigma_{k+1}(2^r)=\sigma_{k+1}(2^r-1)+\sigma_k(2^r)=0-1=-1$.
+\end{proof}
+
+\begin{remark}
+The right boundary value is not $+1$.  Every iterated prefix sum, at every order
+$k\le r$, takes the value $-1$ at the index $2^r$.  This single sign is what makes the
+literal normalization of \cref{tm:sub-grid-equation} fail at the right endpoint; see
+\cref{tm:sub-literal-endpoint}.
+\end{remark}
+
+\subsection{Two generating-series identities}
+\label{tm:sub-generating}
+
+All series in this subsection are formal power series over $\Z$; no convergence hypothesis
+on a complex variable is used or needed.
+
+Let
+\begin{equation}
+ \mathcal K_r(z)=\sum_{n<2^r}\varepsilon_nz^n,
+ \qquad
+ \mathcal K(z)=\sum_{n\ge0}\varepsilon_nz^n,
+ \qquad
+ \mathcal S_k(z)=\sum_{n\ge0}\sigma_k(n)z^n.               \label{eq:tm-series-def}
+\end{equation}
+
+\begin{proposition}[Block product and coefficient stabilization]
+\label{thm:tm-block-product}
+For every $r\ge0$,
+\begin{equation}
+ \mathcal K_r(z)=\prod_{j=0}^{r-1}\bigl(1-z^{2^j}\bigr),   \label{eq:tm-block-product}
+\end{equation}
+which is \eqref{eq:thue-generating-product}.  Moreover, for every $n<2^r$ the coefficient
+of $z^n$ in the finite product \eqref{eq:tm-block-product} equals $\varepsilon_n$ and is
+therefore independent of $r$.  Consequently the infinite product
+$\prod_{j\ge0}(1-z^{2^j})$ is a well-defined formal power series, and it equals
+$\mathcal K(z)$.
+\end{proposition}
+
+\begin{proof}
+Induct on $r$.  For $r=0$ both sides are $1$.  For the step, split the block of length
+$2^{r+1}$ at $2^r$ and use $\varepsilon_{2^r+n}=-\varepsilon_n$ for $n<2^r$:
+\begin{equation*}
+ \mathcal K_{r+1}(z)
+ =\sum_{n<2^r}\varepsilon_nz^n-z^{2^r}\sum_{n<2^r}\varepsilon_nz^n
+ =\mathcal K_r(z)\bigl(1-z^{2^r}\bigr),
+\end{equation*}
+and the product formula follows.  For the stabilization, $\mathcal K_r$ is a polynomial of
+degree $2^r-1$ whose coefficient of $z^n$ is $\varepsilon_n$ for every $n<2^r$; adjoining
+the factor $1-z^{2^r}$ changes only coefficients of index $\ge2^r$.  Thus for fixed $n$ the
+coefficient of $z^n$ in $\prod_{j<r}(1-z^{2^j})$ is constant once $2^r>n$, which is the
+definition of convergence of the infinite product in the formal topology, and the stable
+value is $\varepsilon_n$.
+\end{proof}
+
+\begin{theorem}[Prefix generating series]
+\label{thm:tm-generating}
+For every $k\ge0$,
+\begin{equation}
+ \mathcal S_k(z)=\frac{\mathcal K(z)}{(1-z)^k},            \label{eq:tm-prefix-series}
+\end{equation}
+equivalently, in denominator-cleared form,
+\begin{equation}
+ (1-z)^k\,\mathcal S_k(z)=\mathcal K(z)=\prod_{j\ge0}\bigl(1-z^{2^j}\bigr).
+                                                          \label{eq:tm-prefix-series-cleared}
+\end{equation}
+Both identities have a finite verification: for every $r$ and every $n<2^r$, the coefficient
+of $z^n$ on either side of \eqref{eq:tm-prefix-series-cleared} may be computed from the
+polynomial $\prod_{j<r}(1-z^{2^j})$ alone.
+\end{theorem}
+
+\begin{proof}
+For $k=0$ both sides of \eqref{eq:tm-prefix-series} are $\mathcal K(z)$.  For $k\ge1$,
+expand $(1-z)^{-k}=\sum_{i\ge0}\binom{i+k-1}{k-1}z^i=\sum_{i\ge0}\mathcal B_k(i)z^i$.  The
+coefficient of $z^n$ in $\mathcal K(z)(1-z)^{-k}$ is then the Cauchy product
+$\sum_{m=0}^n\mathcal B_k(n-m)\varepsilon_m$, which is $\sigma_k(n)$ by
+\eqref{eq:tm-kernel-sum}.  Since $(1-z)^k$ is a unit multiple of the invertible series
+$(1-z)^{-k}$, the cleared form \eqref{eq:tm-prefix-series-cleared} is equivalent, and the
+product expression is \cref{thm:tm-block-product}.  The finite verification is the
+stabilization statement of that proposition: no coefficient of index below $2^r$ sees any
+factor $1-z^{2^j}$ with $j\ge r$.
+\end{proof}
+
+The two identities of \cref{thm:tm-generating} connect the prefix sums to the polynomial
+approximants used in \cref{tm:sub-corrected}.  Put
+\begin{equation}
+ p_n(z)=\prod_{i=1}^{n}\bigl(1+z+\cdots+z^{2^i-1}\bigr),
+ \qquad
+ \delta_n=\deg p_n=\sum_{i=1}^{n}\bigl(2^i-1\bigr)=2^{n+1}-n-2.
+                                                          \label{eq:tm-approx-poly}
+\end{equation}
+Since $1-z^{2^j}=(1-z)(1+z+\cdots+z^{2^j-1})$ and the factor with $j=0$ is trivial,
+\eqref{eq:tm-block-product} factors as
+\begin{equation}
+ \mathcal K_{n+1}(z)=(1-z)^{n+1}p_n(z).                    \label{eq:tm-block-vs-approx}
+\end{equation}
+Comparing \eqref{eq:tm-block-vs-approx} with \eqref{eq:tm-prefix-series-cleared} at order
+$k=n+1$ and using stabilization below $2^{n+1}$ gives the exact coefficient identification
+\begin{equation}
+ \sigma_{n+1}(m)=\bigl[z^m\bigr]p_n(z)\qquad(0\le m<2^{n+1}).
+                                                          \label{eq:tm-prefix-eq-coeff}
+\end{equation}
+Note that \eqref{eq:tm-prefix-eq-coeff} must fail at $m=2^{n+1}$, because
+$\delta_n<2^{n+1}$ makes the right side zero while the left side is $-1$ by
+\eqref{eq:tm-run-right}.  That single index is the exceptional right endpoint of
+\cref{thm:tm-corrected-convergence}.
+
+\subsection{The functional equation of the normalized prefix grid}
+\label{tm:sub-grid-equation}
+
+The natural dyadic normalization of the prefix sums is
+\begin{equation}
+ \mathcal V_k(j)=\frac{\sigma_k(j)}{2^{\binom k2}},
+ \qquad
+ x_{k,j}=\frac j{2^k},                                     \label{eq:tm-grid-def}
+\end{equation}
+so that $\mathcal V_k$ is a rational-valued function on the level-$k$ dyadic grid.  The
+exponent $\binom k2$ is forced: it is the exponent that appears in the sharp Prouhet value
+\eqref{eq:tm-power-sum-sharp}, in the centered spline \eqref{eq:centered-spline}, and in the
+derivative scaling \eqref{eq:global-derivatives}.
+
+\begin{theorem}[Discrete functional equation]
+\label{thm:tm-grid-equation}
+Let $q\ge0$ and $0\le j<2^q$, and put $h=2^{-(q+1)}$ and $x=x_{q+1,j}$.  Then
+\begin{equation}
+ \frac{\mathcal V_{q+1}(j+1)-\mathcal V_{q+1}(j)}{h}
+ =2\,\mathcal V_q(j+1),                                    \label{eq:tm-grid-equation}
+\end{equation}
+and the abscissa attached to the right-hand value is
+\begin{equation}
+ x_{q,j+1}=2(x+h)=2x_{q+1,j+1}\in[0,1].                   \label{eq:tm-grid-argument}
+\end{equation}
+The same identity holds verbatim for the shifted grid
+$\widetilde{\mathcal V}_k(j)=\sigma_{k+1}(j)/2^{\binom k2}$ of
+\cref{tm:sub-corrected}.
+\end{theorem}
+
+\begin{proof}
+Because $\binom{q+1}2=\binom q2+q$, the forward difference \eqref{eq:tm-forward-diff} gives
+\begin{equation*}
+ \mathcal V_{q+1}(j+1)-\mathcal V_{q+1}(j)
+ =\frac{\sigma_{q+1}(j+1)-\sigma_{q+1}(j)}{2^{\binom q2+q}}
+ =\frac{\sigma_q(j+1)}{2^{\binom q2}}\cdot\frac1{2^q}
+ =\frac{\mathcal V_q(j+1)}{2^q}.
+\end{equation*}
+Dividing by $h=2^{-(q+1)}$ multiplies by $2^{q+1}$ and gives \eqref{eq:tm-grid-equation}.
+For \eqref{eq:tm-grid-argument}, $2(x+h)=2(j+1)/2^{q+1}=(j+1)/2^q=x_{q,j+1}$, and the
+hypothesis $j<2^q$ is exactly the condition $j+1\le2^q$ that keeps this abscissa in the unit
+interval.  The shifted grid satisfies the same computation with $\sigma$ replaced by
+$\sigma_{\bullet+1}$ throughout.
+\end{proof}
+
+\Cref{eq:tm-grid-equation} is the discrete counterpart of the global differential equation
+\eqref{eq:global-diffeq-again}: a difference quotient at level $q+1$ equals twice a
+level-$q$ value at the doubled abscissa.  Two features of the discrete statement have no
+continuous analogue and are easy to lose.  First, the right-hand side is evaluated at the
+\emph{forward} node $2(x+h)$ rather than at $2x$; this is the inclusive-prefix convention
+\eqref{eq:tm-forward-diff}.  Second, the identity is an assertion about a level-$q$ value,
+so it is meaningful as a statement about $F$ or $\Up$ only when the doubled abscissa lies in
+the relevant interval, that is, only when $j<2^q$.  Both features are used in
+\cref{tm:sub-corrected}.
+
+\subsection{Corrected normalization and pointwise convergence}
+\label{tm:sub-corrected}
+
+We now identify the normalized prefix grid with the histogram approximants of the
+probabilistic construction, and deduce convergence.  Two adjustments to the naive reading
+are required, and both are forced by identities already proved: the prefix order must be
+shifted by one, because \eqref{eq:tm-prefix-eq-coeff} matches $\sigma_{n+1}$ with $p_n$; and
+the grid index $m$ must be read as labelling the \emph{center} of a cell of width $2^{-n}$,
+not the left endpoint of a cell of width $2^{-(n+1)}$.
+
+Recall from \eqref{eq:random-Y} and \eqref{eq:up-density} that $\Up$ is the density of
+$Y=\sum_{i\ge0}V_i2^{-i-1}$, with $V_i$ independent and uniform on $[-1,1]$.  Replacing each
+uniform variable by a lattice uniform variable produces an exact finite discrete law.
+Concretely, let $D_1,\ldots,D_n$ be independent with $D_i$ uniform on
+$\{0,1,\ldots,2^i-1\}$, so that $D_1+\cdots+D_n$ has generating polynomial $p_n$ of
+\eqref{eq:tm-approx-poly} and total mass $p_n(1)=2^{\binom{n+1}2}$.  Place the mass of the
+monomial $z^m$ at
+\begin{equation}
+ \xi_{n,m}=\frac{2m-\delta_n}{2^{n+1}},                    \label{eq:tm-center}
+\end{equation}
+and spread it uniformly over the cell $I_{n,m}$ of width $2^{-n}$ centered at $\xi_{n,m}$.
+The consecutive centers are spaced $2^{-n}$ apart, so the cells tile $\R$.  The resulting
+density is the step function
+\begin{equation}
+ \Theta_n(x)=\frac{2^n}{2^{\binom{n+1}2}}
+ \sum_{m=0}^{\delta_n}\bigl[z^m\bigr]p_n(z)\cdot
+ \mathbf 1_{I_{n,m}}(x),                                   \label{eq:tm-histogram}
+\end{equation}
+where a point shared by two adjacent cells is given the weight $\tfrac12$ in each, so that
+the two contributions add to the single value the formula is intended to have.  This
+endpoint convention is not cosmetic: with ordinary closed-interval indicators the value at
+$x=0$ would be counted twice already for $n=1$.
+
+\begin{theorem}[Histogram approximants]
+\label{thm:tm-histogram-limit}
+For every $n\ge0$ the function $\Theta_n$ satisfies $0\le\Theta_n\le1$, is nondecreasing on
+$(-\infty,0)$, is nonincreasing on $(0,\infty)$, and satisfies $\Theta_n(0)=1$.  Moreover
+$\Theta_n(x)\to\Up(x)$ for every real $x$.
+\end{theorem}
+
+\begin{proofidea}
+Unimodality and symmetry are statements about the coefficient sequence of $p_n$.  Each
+factor of \eqref{eq:tm-approx-poly} is palindromic with nonnegative coefficients and
+unimodal, and these two properties are preserved by multiplication; the placement
+\eqref{eq:tm-center} converts symmetry about $\delta_n/2$ into symmetry about $x=0$.  The
+normalization $\Theta_n(0)=1$ asserts that the coefficient of $p_n$ at the central index,
+averaged over the two central indices when $\delta_n$ is odd, equals $2^{\binom{n+1}2-n}$;
+this is the identity that forces the half-weight endpoint convention, as the case
+$p_1=1+z$, $\delta_1=1$ already shows.  For the limit, note that the law behind
+\eqref{eq:tm-histogram} is that of $\sum_{i=1}^{n}\bigl(2D_i-2^i+1\bigr)2^{-n-1}$, a
+triangular array whose $i$\/th summand is, after the reindexing $j=n+1-i$, a lattice
+discretization with mesh $2^{-n}$ of the uniform law on $[-2^{-j},2^{-j}]$.  Since
+$\delta_n=\sum_i(2^i-1)$, these summands do add up to the variable placed at
+\eqref{eq:tm-center}.  Because the meshes tend to zero,
+these laws converge weakly to the law of $Y$, so all interval integrals of $\Theta_n$
+converge to the corresponding integrals of $\Up$.  A sequence of unimodal densities with a
+common peak location, whose interval integrals converge to those of a continuous unimodal
+limit, converges pointwise everywhere.  This last step is the only place where continuity of
+$\Up$ is used, and it supplies no rate.
+\end{proofidea}
+
+\begin{theorem}[Exact identification of the corrected grid]
+\label{thm:tm-histogram-identity}
+Put $\widetilde{\mathcal V}_n(m)=\sigma_{n+1}(m)/2^{\binom n2}$.  For every $n\ge0$ and
+every $m$ with $0\le m<2^{n+1}$,
+\begin{equation}
+ \widetilde{\mathcal V}_n(m)=\Theta_n(\xi_{n,m}).          \label{eq:tm-grid-eq-histogram}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The point $\xi_{n,m}$ lies in the interior of the cell $I_{n,m}$ and in no other cell, so
+\eqref{eq:tm-histogram} evaluates there to
+\begin{equation*}
+ \frac{2^{n}}{2^{\binom{n+1}2}}\bigl[z^m\bigr]p_n(z),
+\end{equation*}
+including when $m>\delta_n$, where both sides vanish.  Since $\binom{n+1}2=\binom n2+n$,
+that value is $\bigl[z^m\bigr]p_n/2^{\binom n2}$, which is $\widetilde{\mathcal V}_n(m)$ by
+\eqref{eq:tm-prefix-eq-coeff}.
+\end{proof}
+
+Sampling at the dyadic floor now gives an approximation scheme.  For $x\ge0$ set
+\begin{equation}
+ j_n(x)=\bigl\lfloor2^{n+1}x\bigr\rfloor,
+ \qquad
+ \Sigma_n(x)=\widetilde{\mathcal V}_n\bigl(j_n(x)\bigr)
+ =\frac{\sigma_{n+1}\bigl(j_n(x)\bigr)}{2^{\binom n2}}.    \label{eq:tm-sample}
+\end{equation}
+
+\begin{lemma}[Moving cell centers]
+\label{thm:tm-moving-center}
+For every $x\in[0,1)$, $\xi_{n,j_n(x)}\to2x-1$ as $n\to\infty$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:tm-center},
+$\xi_{n,j_n(x)}=2\cdot j_n(x)2^{-(n+1)}-\delta_n2^{-(n+1)}$.  The first term tends to
+$2x$ because $0\le2^{n+1}x-j_n(x)<1$, and
+$\delta_n2^{-(n+1)}=1-(n+2)2^{-(n+1)}\to1$.
+\end{proof}
+
+\begin{lemma}[Stability under moving arguments]
+\label{thm:tm-moving}
+If $u_n\to y$ in $\R$, then $\Theta_n(u_n)\to\Up(y)$.
+\end{lemma}
+
+\begin{proof}
+Let $\varepsilon>0$.  Suppose first $y>0$.  By continuity of $\Up$ choose
+$d\in(0,y/2]$ with $|\Up(y\pm d)-\Up(y)|<\varepsilon/2$.  For all large $n$ we have
+$u_n\in[y-d,y+d]\subset(0,\infty)$, so the monotonicity of \cref{thm:tm-histogram-limit} on
+$(0,\infty)$ gives
+\begin{equation*}
+ \Theta_n(y+d)\le\Theta_n(u_n)\le\Theta_n(y-d).
+\end{equation*}
+By pointwise convergence at the two fixed points $y\pm d$, for all large $n$ both outer
+terms lie within $\varepsilon/2$ of $\Up(y\pm d)$, hence within $\varepsilon$ of $\Up(y)$.
+The case $y<0$ is identical using monotonicity on $(-\infty,0)$.  For $y=0$ the upper bound
+is $\Theta_n(u_n)\le1=\Up(0)$, and the lower bound is $\Theta_n(-d)$, $\Theta_n(0)=1$, or
+$\Theta_n(d)$ according to the sign of $u_n$; each of the three converges to a value within
+$\varepsilon/2$ of $\Up(0)$.
+\end{proof}
+
+\begin{theorem}[Corrected prefix approximation]
+\label{thm:tm-corrected-convergence}
+For every $x\in[0,1]$,
+\begin{equation}
+ \Sigma_n(x)\longrightarrow\Up(2x-1),                      \label{eq:tm-corrected-limit}
+\end{equation}
+and consequently, for every $x\in[0,1]$,
+\begin{equation}
+ \Sigma_n\!\left(\frac x2\right)\longrightarrow F(x).      \label{eq:tm-corrected-fabius}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $0\le x<1$.  Then $2^{n+1}x<2^{n+1}$, so $j_n(x)<2^{n+1}$ and
+\cref{thm:tm-histogram-identity} applies:
+$\Sigma_n(x)=\Theta_n(\xi_{n,j_n(x)})$.  Combining
+\cref{thm:tm-moving-center} with \cref{thm:tm-moving} gives
+$\Sigma_n(x)\to\Up(2x-1)$.
+
+At $x=1$ the identification fails, because $j_n(1)=2^{n+1}$ is exactly the first index not
+covered by \eqref{eq:tm-prefix-eq-coeff}.  Here the value is computed instead from
+\eqref{eq:tm-run-right} with $k=r=n+1$:
+\begin{equation*}
+ \Sigma_n(1)=\frac{\sigma_{n+1}(2^{n+1})}{2^{\binom n2}}=-\frac1{2^{\binom n2}}
+ \longrightarrow0=\Up(1),
+\end{equation*}
+since $\binom n2\to\infty$ and $\Up(1)=F(0)=0$.  This proves
+\eqref{eq:tm-corrected-limit} on all of $[0,1]$.  For \eqref{eq:tm-corrected-fabius}, apply
+it at $x/2\in[0,1]$ and use $2(x/2)-1=x-1\le0$, so that $\Up(x-1)=F(x)$ by
+\eqref{eq:up-fold}.
+\end{proof}
+
+\begin{warning}
+\Cref{thm:tm-corrected-convergence} is a pointwise statement and nothing more.  No uniform
+rate is asserted, and none is proved.  The proof passes through
+\cref{thm:tm-moving}, whose only quantitative inputs are the shared monotonicity of the
+$\Theta_n$ and the modulus of continuity of the limit $\Up$ at the single point $2x-1$; the
+sandwich it uses degrades as that modulus degrades.  A uniform bound of the kind supplied
+for the centered splines by \eqref{eq:centered-error} is available from
+\cref{sec:centered-splines}, but it is a different approximation scheme, and the two should
+not be conflated.
+\end{warning}
+
+\begin{remark}
+The two corrections are independent of one another and both are necessary.  Shifting the
+prefix order from $k$ to $k+1$ is what makes \eqref{eq:tm-prefix-eq-coeff} available;
+reading the index $m$ as the center \eqref{eq:tm-center} of a cell of width $2^{-n}$ rather
+than as an abscissa $m2^{-k}$ is what supplies the affine change of variable $x\mapsto2x-1$
+between the unit interval and the support of $\Up$.  In particular the corrected grid is a
+sample of the compactly supported bump, not of the distribution function; this is why its
+right-endpoint limit is $0$ and not $1$.
+\end{remark}
+
+\subsection{The lower Lambert branch}
+\label{tm:sub-lambert}
+
+The asymptotic analysis of \cref{sec:sharp-asymptotic} is organized around the coordinate
+\eqref{eq:W-def}, where $W_{-1}$ denotes the lower real branch of Lambert's
+$W$-function \cite{corless1996}.  That section uses three facts about $W_{-1}$ without
+proving any of them: that the branch exists on $(-\e^{-1},0)$, that it is characterized by
+being the solution below $-1$, and that it has the two-term expansion recorded below.  We
+supply them here, since they are the foundational input for
+\eqref{eq:lambda-equation} and for every subsequent estimate in the Lambert variable.
+
+\begin{proposition}[Existence, defining equation, and uniqueness]
+\label{thm:tm-lambert-branch}
+The map $u\mapsto u\log u$ is a strictly decreasing bijection from $(0,\e^{-1})$ onto
+$(-\e^{-1},0)$.  For $z\in(-\e^{-1},0)$ let $u(z)$ be its unique preimage and set
+$W_{-1}(z)=\log u(z)$.  Then
+\begin{equation}
+ W_{-1}(z)<-1,
+ \qquad
+ W_{-1}(z)\,\e^{W_{-1}(z)}=z,                              \label{eq:tm-lambert-eq}
+\end{equation}
+and $W_{-1}(z)$ is the unique real $w<-1$ with $w\e^w=z$.
+\end{proposition}
+
+\begin{proof}
+On $(0,\e^{-1})$ the derivative of $u\log u$ is $1+\log u<0$, so the map is strictly
+decreasing there.  Its limit at $u\downarrow0$ is $0$ and its value at $u=\e^{-1}$ is
+$-\e^{-1}$; by the intermediate value theorem and strict monotonicity it is a bijection onto
+$(-\e^{-1},0)$.  Write $u=u(z)$ and $w=\log u$.  Since $0<u<\e^{-1}$ we get $w<-1$, and
+$\e^w=u$, so $w\e^w=u\log u=z$, which is \eqref{eq:tm-lambert-eq}.  Conversely, if $w<-1$
+and $w\e^w=z$, put $v=\e^w$; then $v\in(0,\e^{-1})$ and $v\log v=w\e^w=z$, so $v=u(z)$ by
+injectivity, hence $w=\log u(z)=W_{-1}(z)$.
+\end{proof}
+
+\begin{corollary}[Solution of the saddle equation]
+\label{thm:tm-lambert-lambda}
+Let $x>0$ with $Lx<\e^{-1}$, where $L=\log2$ as in \eqref{eq:L-def}, and put
+$\lambda=-W_{-1}(-Lx)/L$ as in \eqref{eq:lambda-def}.  Then $\lambda>1/L$ and
+$\lambda2^{-\lambda}=x$, which is \eqref{eq:lambda-equation}.
+\end{corollary}
+
+\begin{proof}
+The number $z=-Lx$ lies in $(-\e^{-1},0)$, so \cref{thm:tm-lambert-branch} applies.  Write
+$W=W_{-1}(z)$, so $\lambda=-W/L$ and $2^{-\lambda}=\e^{-L\lambda}=\e^{W}$.  Hence
+$\lambda2^{-\lambda}=(-W/L)\e^{W}=-z/L=x$.  Finally $W<-1$ gives $\lambda>1/L$.
+\end{proof}
+
+\begin{proposition}[Two-term expansion]
+\label{thm:tm-lambert-expansion}
+As $\epsilon\downarrow0$,
+\begin{equation}
+ W_{-1}(-\epsilon)-\bigl(\log\epsilon-\log|\log\epsilon|\bigr)\longrightarrow0.
+                                                          \label{eq:tm-lambert-expansion}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $0<\epsilon<\e^{-1}$ put $y=y(\epsilon)=-W_{-1}(-\epsilon)>1$.  Negating
+\eqref{eq:tm-lambert-eq} gives the defining equation in the convenient form
+\begin{equation*}
+ y\,\e^{-y}=\epsilon .
+\end{equation*}
+The map $t\mapsto t\e^{-t}$ is strictly decreasing on $[1,\infty)$ with limit $0$ at
+infinity, so $y(\epsilon)\to\infty$ as $\epsilon\downarrow0$.  Taking logarithms in the
+displayed equation gives $\log\epsilon=\log y-y$, hence
+\begin{equation*}
+ \frac{-\log\epsilon}{y}=1-\frac{\log y}{y}\longrightarrow1,
+\end{equation*}
+because $\log y/y\to0$.  Finally, $\epsilon<1$ makes $\log\epsilon<0$, so
+$|\log\epsilon|=-\log\epsilon$, and
+\begin{align*}
+ W_{-1}(-\epsilon)-\bigl(\log\epsilon-\log|\log\epsilon|\bigr)
+ &=-y-(\log y-y)+\log(-\log\epsilon)\\
+ &=\log\frac{-\log\epsilon}{y}\longrightarrow\log1=0. \qedhere
+\end{align*}
+\end{proof}
+
+\begin{remark}
+\Cref{thm:tm-lambert-expansion} is exactly the accuracy that the elementary log--log forms
+of \cref{sec:elementary-asymptotic} can inherit.  It is an $\smallo(1)$ statement, not an
+$\bigO$ statement with a rate, and substituting it into the main term
+\eqref{eq:sharp-main-lambda} in place of the exact phase $\lambda(x)$ destroys the
+periodic correction at exactly the scale discussed in \cref{sec:audit}.
+\end{remark}
+
+\subsection{A binomial--logarithm formula for the Thue--Morse bit}
+\label{tm:sub-binomial-log}
+
+The zero-one Thue--Morse bit $b(n)=\wt(n)\bmod2$ of \eqref{eq:primitive-thue-bit} satisfies
+$\varepsilon_n=1-2b(n)$.  It admits a closed formula in which the entire binary structure is
+hidden inside a row of Pascal's triangle.  Set
+\begin{equation}
+ \mathcal G(n)=\sum_{k=0}^{n}(-1)^{\binom nk}\in\Z.        \label{eq:tm-parity-sum}
+\end{equation}
+
+\begin{lemma}[Glaisher count]
+\label{thm:tm-glaisher}
+The number of odd entries in the $n$\/th row of Pascal's triangle is $2^{\wt(n)}$.
+\end{lemma}
+
+\begin{proof}
+Let $\nu(n)$ denote that number, so that $\nu(n)$ is the number of nonzero coefficients of
+$(1+z)^n$ in $\mathbb F_2[z]$.  There $(1+z)^2=1+z^2$, hence
+\begin{equation*}
+ (1+z)^{2n}=\bigl(1+z^2\bigr)^n,
+ \qquad
+ (1+z)^{2n+1}=\bigl(1+z^2\bigr)^n(1+z).
+\end{equation*}
+The substitution $z\mapsto z^2$ does not change the number of nonzero coefficients, so
+$\nu(2n)=\nu(n)$; and multiplying a polynomial in $z^2$ by $1+z$ produces two summands with
+disjoint supports, one even and one odd, so $\nu(2n+1)=2\nu(n)$.  Since $\wt(2n)=\wt(n)$
+and $\wt(2n+1)=\wt(n)+1$ by \eqref{eq:weight-even-odd}, and $\nu(0)=1=2^{\wt(0)}$,
+induction on the binary representation gives $\nu(n)=2^{\wt(n)}$.
+\end{proof}
+
+\begin{proposition}[The logarithm is exact]
+\label{thm:tm-log-exact}
+For every $n\ge0$,
+\begin{equation}
+ n+1-\mathcal G(n)=2^{\wt(n)+1}.                           \label{eq:tm-log-exact}
+\end{equation}
+In particular $n+1-\mathcal G(n)$ is a positive power of two, and
+$\log_2\bigl(n+1-\mathcal G(n)\bigr)=\wt(n)+1$ is an integer.
+\end{proposition}
+
+\begin{proof}
+Each summand of \eqref{eq:tm-parity-sum} is $-1$ at an odd entry and $+1$ at an even entry,
+and the row has $n+1$ entries.  Hence $\mathcal G(n)=(n+1)-2\nu(n)$ with $\nu$ as in
+\cref{thm:tm-glaisher}, so $n+1-\mathcal G(n)=2\nu(n)=2^{\wt(n)+1}$.
+\end{proof}
+
+\begin{theorem}[Binomial--logarithm formula]
+\label{thm:tm-bit-formula}
+For every $n\ge0$,
+\begin{equation}
+ b(n)=\frac{1+(-1)^{\,\log_2\!\left(n+1-\sum_{k=0}^{n}(-1)^{\binom nk}\right)}}{2},
+ \qquad
+ \varepsilon_n=1-2b(n).                                    \label{eq:tm-bit-formula}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \cref{thm:tm-log-exact} the exponent equals $\wt(n)+1$.  If $\wt(n)$ is even then
+$b(n)=0$ and $(-1)^{\wt(n)+1}=-1$, so the right side is $0$; if $\wt(n)$ is odd then
+$b(n)=1$ and $(-1)^{\wt(n)+1}=1$, so the right side is $1$.  The second identity is
+$\varepsilon_n=(-1)^{\wt(n)}=1-2\bigl(\wt(n)\bmod2\bigr)$.
+\end{proof}
+
+\begin{remark}
+The order of the two steps matters.  As printed, \eqref{eq:tm-bit-formula} raises $-1$ to a
+logarithm, an operation that is meaningful only because the argument of that logarithm has
+first been proved to be exactly a power of two.  The formal development therefore proves
+\eqref{eq:tm-log-exact} before it interprets the outer expression at all, evaluates the
+logarithm on the natural numbers, and reads the final division in $\Q$.  A floating-point
+evaluation of the same display, or an interpretation of the logarithm as a real-valued
+function whose output is then rounded, is an approximation to a formula rather than the
+formula.
+\end{remark}
 
 \section{Endpoint asymptotics: exact logarithmic decomposition}
 \label{sec:asymptotic-decomposition}
@@ -4474,6 +6154,36 @@ sum with the integral.  The integral of $x^{2k}\Up(x)$ is $c_k$.  Substitution o
 Thus the entire polynomial spectral expansion is anchored in the same exact arithmetic table
 $F(2^{-m})$ that drives the bit-recursive evaluator.
 
+\begin{example}[The first two Legendre coefficients]        \label{ex:mom-legendre-first}
+Take $n=0$ and $n=1$ in \eqref{eq:un-legendre}.  Since $P_0=1$ and
+$P_2(x)=(3x^2-1)/2$,
+\begin{align*}
+ u_0&=\frac12\int_{-1}^{1}\Up(x)\dd x=\frac{c_0}{2}=\frac12,\\
+ u_1&=\frac52\int_{-1}^{1}\Up(x)\frac{3x^2-1}{2}\dd x
+ =\frac54\bigl(3c_1-c_0\bigr)=\frac54\left(\frac13-1\right)=-\frac56 .
+\end{align*}
+The exact formula \eqref{eq:legendre-exact-coeff} returns the same two numbers without
+reference to the moments.  For $n=0$ the sum has the single term
+$\binom00\binom00\,0!\,2^{\binom12}F(2^{-1})=\tfrac12$, so $u_0=\tfrac12$.  For $n=1$,
+\begin{equation*}
+ u_1=\frac54\left[-\binom21\binom22\,0!\,2^{\binom12}F(2^{-1})
+ +\binom22\binom42\,2!\,2^{\binom32}F(2^{-3})\right]
+ =\frac54\left[-1+\frac{96}{288}\right]=-\frac56,
+\end{equation*}
+using $\binom12=0$, $\binom32=3$, $F(2^{-1})=\tfrac12$ and $F(2^{-3})=\tfrac1{288}$ from
+\eqref{eq:F-inverse-table}.  Hence the Fourier--Legendre expansion \eqref{eq:legendre-series}
+begins
+\begin{equation}
+ \Up(t)=\frac12-\frac56P_2(t)+\cdots.                       \label{eq:mom-legendre-first-terms}
+\end{equation}
+Both values are stated in the normalization \eqref{eq:un-legendre} used here, in which
+$u_n=\alpha_{2n}(\Up)$ already carries the factor $(4n+1)/2$ of
+\eqref{eq:legendre-coefficient}; the bare integrals are
+$\int_{-1}^{1}\Up P_0=1$ and $\int_{-1}^{1}\Up P_2=-\tfrac13$.  The negative sign of $u_1$ is
+genuine and reflects the fact that $\Up$ is more sharply peaked at the origin than the
+constant $\tfrac12$.
+\end{example}
+
 \subsection{Absolute and uniform convergence}
 
 The Legendre Sturm--Liouville operator
@@ -5077,6 +6787,250 @@ so the quotient is not asymptotically equivalent at the endpoint.  This is a use
 a graph on a linear scale is almost blind to the distinction between
 $\exp[-\Theta((\log(1/y))^2)]$ and $\exp[-\Theta(1/y)]$ once both values are tiny.
 
+\subsection{The literal Thue--Morse prefix normalization does not converge}
+\label{tm:sub-literal-endpoint}
+
+The construction of \cref{tm:sec-prefix} has a shorter and more attractive reading, in
+which the normalized grid $\mathcal V_k$ of \eqref{eq:tm-grid-def} is plotted directly
+against the abscissae $x_{k,j}=j/2^k$ and the resulting broken lines are asserted to
+converge, uniformly on $[0,1]$, to the Fabius function.  That assertion is false, and it
+fails in the strongest possible way: not merely without a rate, and not merely
+nonuniformly, but pointwise at the right endpoint.
+
+\begin{theorem}[Endpoint obstruction]
+\label{thm:tm-literal-divergence}
+For every $k\ge0$,
+\begin{equation}
+ \mathcal V_k\bigl(2^k\bigr)=-\frac1{2^{\binom k2}}<0,
+ \qquad
+ \bigl|\mathcal V_k(2^k)-1\bigr|=1+\frac1{2^{\binom k2}}>1.
+                                                          \label{eq:tm-literal-endpoint}
+\end{equation}
+In particular the sequence $k\mapsto\mathcal V_k(2^k)$ of values at $x=1$ does not converge
+to $F(1)=1$; every term is negative, so any limit is at most $0$.
+\end{theorem}
+
+\begin{proof}
+The index $2^k$ is the right boundary index of \cref{thm:tm-zero-run} with $r=k$, so
+$\sigma_k(2^k)=-1$ by \eqref{eq:tm-run-right}.  Divide by $2^{\binom k2}$ to obtain the
+first identity, and note $-2^{-\binom k2}<0<1$ for the second.  A sequence of nonpositive
+numbers cannot converge to $1$.
+\end{proof}
+
+The obstruction is not an artifact of reading the displayed floor function literally, which
+produces a step function rather than a curve.  Let $\Pi_k$ denote the polygon obtained by
+joining the consecutive points $\bigl(x_{k,j},\mathcal V_k(j)\bigr)$ by line segments, which
+is the object the construction intends.  By construction $\Pi_k$ interpolates the grid:
+$\Pi_k(x_{k,j})=\mathcal V_k(j)$ for every $j$, and in particular
+\begin{equation}
+ \Pi_k(1)=\mathcal V_k\bigl(2^k\bigr)=-\frac1{2^{\binom k2}}.
+                                                          \label{eq:tm-polygon-endpoint}
+\end{equation}
+So $\Pi_k(1)\not\to1$ either, whether the polygon is formed over $\Q$ or over $\R$.  Passing
+from the step reading to the polygonal reading changes nothing at the right endpoint,
+because the two agree there.
+
+The failure is localized precisely.  It is not a failure of the iterated prefix sums, whose
+values \eqref{eq:tm-zero-run}--\eqref{eq:tm-run-right} are exactly right; it is a failure of
+the pair consisting of the prefix order and the abscissa convention.  Shifting the order
+from $k$ to $k+1$ and reading the index as a cell center rather than a left endpoint yields
+genuine pointwise convergence, by \cref{thm:tm-corrected-convergence}.  In that corrected
+reading the right endpoint is still exceptional, but for a reason that is now visible and
+harmless: the limit there is $\Up(1)=0$, and the exact value $-2^{-\binom n2}$ of
+\eqref{eq:tm-run-right} converges to it.  The corrected statement is a separate theorem
+about a different scheme, not a reinterpretation that rescues the literal one.
+
+\subsection{A proposed maximum proxy has no maximum}
+\label{tm:sub-max-proxy}
+
+A second construction attached to the same prefix sums proposes to approximate $F$ near the
+origin by the largest term of an explicit family.  Write
+\begin{equation}
+ M_n(x)=\frac{\bigl(2^nx\bigr)^n}{n!\,2^{\binom n2}}\qquad(n\ge1),
+                                                          \label{eq:tm-proxy}
+\end{equation}
+and consider the claim that for small $x>0$ the quantity $\max_{n\ge1}M_n(x)$ exists and
+serves as a proxy for $F(x)$.  The maximum does not exist for any $x>0$.
+
+\begin{theorem}[Unboundedness of the proxy family]
+\label{thm:tm-no-max}
+Fix $x>0$.  Then
+\begin{equation}
+ \frac{M_{n+1}(x)}{M_n(x)}=\frac{x\,2^{\,n+1}}{n+1}
+ \longrightarrow\infty\qquad(n\to\infty),                  \label{eq:tm-proxy-ratio}
+\end{equation}
+the family $\{M_n(x):n\ge1\}$ is unbounded above, and there is no index $n\ge1$ with
+$M_m(x)\le M_n(x)$ for all $m\ge1$.
+\end{theorem}
+
+\begin{proof}
+Since $\binom{n+1}2-\binom n2=n$,
+\begin{equation*}
+ \frac{M_{n+1}(x)}{M_n(x)}
+ =\frac{\bigl(2^{n+1}x\bigr)^{n+1}}{\bigl(2^{n}x\bigr)^{n}}
+ \cdot\frac{1}{(n+1)\,2^{n}}
+ =\frac{2^{2n+1}x}{(n+1)2^{n}}
+ =\frac{x\,2^{\,n+1}}{n+1},
+\end{equation*}
+which tends to infinity because $2^{n+1}/(n+1)\to\infty$ and $x>0$ is fixed.  Choose $N$
+with $x2^{\,n+1}/(n+1)\ge2$ for all $n\ge N$.  Then $M_{N+m}(x)\ge2^mM_N(x)$ for every
+$m\ge0$, and $M_N(x)>0$, so the family is unbounded above.  Unboundedness contradicts the
+existence of a largest term.
+\end{proof}
+
+Since $0\le F\le1$, an unbounded family cannot serve as a pointwise proxy for $F$, and the
+displayed maximum cannot be evaluated at any positive argument.  The monotone structure is
+in fact the reverse of the one a maximum requires.  The ratio \eqref{eq:tm-proxy-ratio} is
+nondecreasing in $n$, because $2^{n+2}/(n+2)\ge2^{n+1}/(n+1)$ for every $n\ge0$, so it
+crosses the value $1$ at most once.  Hence for $0<x<1/2$ the terms first decrease to a
+single interior minimum and then increase without bound, and for $x\ge1/2$ they increase
+from the start.  The distinguished index is therefore a minimum of the family, not a
+maximum, and the analytically controlled way to select a scale is the saddle-point argument
+of \cref{sec:sharp-asymptotic}, where the contour radius is $r=2^{\lambda}$ with $\lambda$
+given by \cref{thm:tm-lambert-lambda}.
+
+\subsection{A stationary substitution that leaves a linear term}
+\label{tm:sub-stirling-defect}
+
+Even after the index in \eqref{eq:tm-proxy} is treated as a real variable, so that a
+stationary point exists, a separate algebraic defect remains.  The Stirling proxy attached
+to \eqref{eq:tm-proxy} is
+\begin{equation}
+ \mathcal H(x,n)=\frac L2n^2+n\log x-n\log n+n,
+ \qquad L=\log2,                                           \label{eq:tm-phi}
+\end{equation}
+and the claim under discussion is that substituting the stationary equation into
+\eqref{eq:tm-phi} produces $-\tfrac L2n^2$ up to an error $\bigO(\log n)$ inherited from
+Stirling's formula.
+
+The Stirling input itself is correct and we record it in the sharp form actually used.
+
+\begin{lemma}[Stirling with logarithmic error]
+\label{thm:tm-stirling}
+As $n\to\infty$,
+\begin{equation}
+ \log(n!)=n\log n-n+\bigO(\log n).                         \label{eq:tm-stirling}
+\end{equation}
+More precisely, for every $n\ge1$,
+\begin{equation*}
+ 0\le\log(n!)-\left(n\log n-n+\frac12\log n+\frac12\log(2\pi)\right)\le\frac1{12n}.
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+The two-sided bound is Robbins' form of Stirling's formula, obtained from the Stirling
+sequence $s_n=n!\,\e^{n}n^{-n}(2n)^{-1/2}$: the increments $\log s_n-\log s_{n+1}$ are
+positive and bounded by $\frac1{12n}-\frac1{12(n+1)}$, so telescoping and passing to the
+limit $\log s_n\to\tfrac12\log\pi$ gives
+$0\le\log s_n-\tfrac12\log\pi\le\frac1{12n}$, which is the display after unwinding the
+definition of $s_n$.  Since $\tfrac12\log n+\tfrac12\log(2\pi)+\frac1{12n}=\bigO(\log n)$,
+the display implies \eqref{eq:tm-stirling}.
+\end{proof}
+
+\begin{theorem}[The residual linear term]
+\label{thm:tm-linear-residue}
+Let $x>0$ and $n>0$ be real with $n\log2+\log x=\log n$, equivalently $n2^{-n}=x$.  Then
+\begin{equation}
+ \mathcal H(x,n)=-\frac L2n^2+n .                          \label{eq:tm-phi-stationary}
+\end{equation}
+The residual term $n$ is not $\bigO(\log n)$ as $n\to\infty$; consequently the substitution
+does not yield $-\tfrac L2n^2+\bigO(\log n)$.
+\end{theorem}
+
+\begin{proof}
+Differentiating \eqref{eq:tm-phi} in $n$ gives
+$\partial_n\mathcal H(x,n)=nL+\log x-\log n$, so the stationary equation is
+$nL+\log x=\log n$.  For $x,n>0$ it is equivalent to $n2^{-n}=x$, since both sides of the
+latter are positive and taking logarithms is injective there:
+$\log\bigl(n2^{-n}\bigr)=\log n-nL$.  Substituting $\log x-\log n=-nL$ into
+\eqref{eq:tm-phi},
+\begin{equation*}
+ \mathcal H(x,n)=\frac L2n^2+n(\log x-\log n)+n=\frac L2n^2-Ln^2+n=-\frac L2n^2+n .
+\end{equation*}
+Suppose $n=\bigO(\log n)$ as $n\to\infty$.  Composing with $\log n=\smallo(n)$ would give
+$n=\smallo(n)$, which is impossible for a quantity that is eventually nonzero.  Hence the
+term $n$ in \eqref{eq:tm-phi-stationary} cannot be absorbed into a logarithmic remainder.
+\end{proof}
+
+The defect sits inside the main term rather than in the error term, and the amount by which
+it does is computable.  The stationary equation of \cref{thm:tm-linear-residue} is
+$n2^{-n}=x$, which is exactly \eqref{eq:lambda-equation}; so the stationary index is the
+Lambert phase, $n=\lambda(x)$.  Discarding the term $n$ in \eqref{eq:tm-phi-stationary}
+therefore replaces the coefficient of $\lambda$ in the answer by $0$, whereas
+\eqref{eq:sharp-main-lambda} has the coefficient $1+\tfrac L2$.
+
+\begin{remark}
+\label{thm:tm-proxy-vs-main}
+The proxy \eqref{eq:tm-phi} loses a second linear term even before the substitution.  Since
+$\binom n2=\tfrac12n^2-\tfrac12n$, the exact logarithm of \eqref{eq:tm-proxy} is
+\begin{equation*}
+ \log M_n(x)=\frac L2n^2+\frac L2n+n\log x-\log(n!),
+\end{equation*}
+so \cref{thm:tm-stirling} gives
+$\log M_n(x)=\mathcal H(x,n)+\tfrac L2n-\tfrac12\log n-\tfrac12\log(2\pi)+\bigO(n^{-1})$;
+the proxy \eqref{eq:tm-phi} omits the term $\tfrac L2n$.  Reading the index as a real
+variable and substituting $\log x-\log n=-nL$ at $n=\lambda(x)$ turns this into
+\begin{equation*}
+ -\frac L2\lambda^2+\left(1+\frac L2\right)\lambda-\frac12\log\lambda
+ -\frac12\log(2\pi)+\bigO\!\left(\frac1\lambda\right),
+\end{equation*}
+which reproduces the quadratic, linear, and logarithmic coefficients of the corrected main
+term \eqref{eq:sharp-main-lambda}.  What it does not reproduce is the constant $C_F$ and,
+more importantly, the nonconstant periodic function $\Psi(\lambda)$.  Both omitted linear
+terms, $n$ and $\tfrac L2n$, must be restored to reach even that much; and restoring them
+still leaves the periodic obstruction described earlier in this section.
+\end{remark}
+
+\subsection{The uniform local slope bound fails at the second level}
+\label{tm:sub-local-slope}
+
+The last claim attached to the literal grid is a quantitative one: that the polygon $\Pi_k$
+of \cref{tm:sub-literal-endpoint} has, on each cell of width $h=2^{-k}$, a slope within
+$4h$ of the derivative of $F$ there, and hence a uniform error controlled by the same
+quantity.  The bound fails at the first index at which it can be tested.
+
+\begin{theorem}[A counterexample at $k=2$]
+\label{thm:tm-slope-failure}
+Let $k=2$, $j=1$, so that $h=2^{-2}$ and $x_{2,1}=1/4$.  The forward slope of $\Pi_2$ on
+$[1/4,1/2]$ equals $-2$, whereas $F'(1/4)=1$.  The discrepancy is $3$, while $4h=1$.
+\end{theorem}
+
+\begin{proof}
+The relevant values are collected in the following table, computed from
+\eqref{eq:tm-prefix-def} and $\binom22=1$.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+$j$ & $0$ & $1$ & $2$ & $3$\\
+\midrule
+$\varepsilon_j$      & $1$ & $-1$ & $-1$ & $1$\\
+$\sigma_1(j)$        & $1$ & $0$  & $-1$ & $0$\\
+$\sigma_2(j)$        & $1$ & $1$  & $0$  & $0$\\
+$\mathcal V_2(j)$    & $\tfrac12$ & $\tfrac12$ & $0$ & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Hence
+\begin{equation}
+ \frac{\mathcal V_2(2)-\mathcal V_2(1)}{h}
+ =2^2\left(0-\frac12\right)=-2 .                           \label{eq:tm-slope}
+\end{equation}
+On the other side, \eqref{eq:F-diffeq} and the symmetry value $F(1/2)=1/2$ give
+$F'(1/4)=2F(1/2)=1$.  Therefore $|-2-1|=3$, while $4h=4\cdot2^{-2}=1$.
+\end{proof}
+
+The sign is the informative part.  The bounded Fabius function is strictly increasing on
+$(0,1)$, so any approximation whose slope is negative in the interior is not approximating
+$F$ at all on that cell.  This is the same phenomenon as
+\cref{thm:tm-literal-divergence}, seen at the level of first differences rather than at the
+level of values: the literal grid samples a compactly supported bump on a centered window,
+and a bump has decreasing stretches.  The
+corrected reading of \cref{tm:sub-corrected} makes that identification explicit, and
+\eqref{eq:tm-zero-run} shows that the zero runs responsible for the flat stretches sit
+exactly at the top of each dyadic block.
+
 \subsection{What the formalization proves, and what it deliberately does not claim}
 
 The public aggregate contains exact proofs of the two source papers' named results, together
@@ -5172,6 +7126,30 @@ $n$ & $F(2^{-n})$ & $\vtwo(F(2^{-n}))$ & $R_n$\\
 The valuation column is computed from \eqref{eq:valuation-inverse}; it is not obtained by
 factoring the displayed decimal-sized denominators.  This is exactly the kind of redundancy
 that makes the table useful as a test vector.
+
+\begin{example}[A worked consistency check at $F(1/16)$]    \label{ex:mom-f16-check}
+The half-moment recurrence \eqref{eq:d-recurrence} at $n=4$ reads
+$5(2^4-1)d_4=\sum_{k=0}^{3}\binom5kd_k$.  With the values $d_0=1$, $d_1=\tfrac12$,
+$d_2=\tfrac5{18}$, $d_3=\tfrac16$ from \eqref{eq:d-first-values},
+\begin{equation*}
+ \sum_{k=0}^{3}\binom5kd_k
+ =1+5\cdot\frac12+10\cdot\frac5{18}+10\cdot\frac16
+ =\frac{18+45+50+30}{18}
+ =\frac{143}{18},
+\end{equation*}
+so $75\,d_4=\tfrac{143}{18}$ and $d_4=\tfrac{143}{1350}$, in agreement with
+\eqref{eq:d-first-values}.  Now apply \eqref{eq:F-inverse-power} with $\binom42=6$:
+\begin{equation*}
+ F\!\left(\frac1{16}\right)=\frac{d_4}{4!\,2^{\binom42}}
+ =\frac{143/1350}{24\cdot64}
+ =\frac{143}{2073600},
+\end{equation*}
+which is the entry for $n=4$ in \eqref{eq:F-inverse-table}.  The valuation formula
+\eqref{eq:valuation-inverse} predicts
+$\vtwo(F(2^{-4}))=-6-1-\vtwo(4!)=-6-1-3=-10$, and indeed
+$2073600=2^{10}\cdot2025$ with $2025$ odd and $143$ odd.  The two computations are
+independent, which is what makes this a test rather than a restatement.
+\end{example}
 
 \section{Proof dependency and Lean module guide}
 \label{app:module-guide}
