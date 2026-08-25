@@ -4,6 +4,7 @@ import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
+import FabiusFunction.UnitLaplaceMomentBounds
 import FabiusFunction.PeriodicCorrection
 import FabiusFunction.MellinBose
 import FabiusFunction.MellinFinitePart
@@ -47,7 +48,9 @@ of the two local TeX drafts on Fabius asymptotics and K-fold Thue--Morse
 summation, including corrected results and formal counterexamples to their
 false claims.  The public surface also includes the exact negative-Laplace
 product, its Gamma--zeta periodic correction, and the unconditional corrected
-sharp small-argument asymptotic.
+sharp small-argument asymptotic.  Its probability interface also exposes
+measure-generic midpoint log-convexity and positive-shift factorial bounds for
+unit-interval Laplace moments, with bounded-Fabius specializations.
 It also exposes the exact Fourier--Legendre expansion of Rvachev's up
 function, with absolute uniform convergence on `[-1,1]`, and its translated
 monomial representation of the signed global Fabius function on `[0,2]`.

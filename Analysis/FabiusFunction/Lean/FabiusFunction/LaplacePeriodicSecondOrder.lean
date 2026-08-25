@@ -51,13 +51,8 @@ private lemma norm_negativeLaplaceForwardTermFirst_le_invSq_geometric
     rw [div_le_iff₀ hden]
     have : 1 ≤ 2 * (1 - Real.exp (-y)) := by linarith
     nlinarith [Real.exp_nonneg (-y)]
-  have hseries := Real.pow_div_factorial_le_exp y (le_trans (by norm_num) hy) 2
-  have hpow : y ^ 2 * Real.exp (-y) ≤ 2 := by
-    have hmul := mul_le_mul_of_nonneg_right hseries (Real.exp_nonneg (-y))
-    rw [div_mul_eq_mul_div, ← Real.exp_add] at hmul
-    norm_num at hmul
-    norm_num at hseries ⊢
-    nlinarith
+  have hpow := pow_mul_exp_neg_le_factorial 2 (le_trans (by norm_num) hy)
+  norm_num at hpow
   unfold negativeLaplaceForwardTermFirst
   change ‖a * Real.exp (-y) / (1 - Real.exp (-y))‖ ≤ _
   rw [Real.norm_eq_abs, abs_of_pos (div_pos (mul_pos ha (Real.exp_pos _)) hden)]
