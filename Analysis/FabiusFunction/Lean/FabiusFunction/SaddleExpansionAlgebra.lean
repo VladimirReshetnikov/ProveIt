@@ -3,6 +3,7 @@ import Mathlib.RingTheory.PowerSeries.Log
 import Mathlib.RingTheory.PowerSeries.Trunc
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Analysis.Normed.Module.Basic
+import Mathlib.Analysis.Normed.Operator.Asymptotics
 
 /-!
 # Algebra for all-orders saddle expansions
@@ -18,7 +19,9 @@ works in every commutative rational algebra, in particular for
 formal exponential series at every finite truncation order.
 
 The final section defines a full Poincaré expansion with bounded,
-parameter-dependent coefficients, suitable for periodic saddle phases.
+parameter-dependent coefficients, suitable for periodic saddle phases.  This
+notion is functorial under continuous linear maps and invariant under
+continuous linear equivalences.
 -/
 
 set_option autoImplicit false
@@ -376,6 +379,16 @@ theorem partialSum_sub (scale : α → 𝕜)
       partialSum scale coeff N x - partialSum scale coeff' N x := by
   simp [sub_eq_add_neg]
 
+/-- Continuous linear maps commute with finite asymptotic partial sums. -/
+@[simp]
+theorem partialSum_continuousLinearMap {ℱ : Type*}
+    [NormedAddCommGroup ℱ] [NormedSpace 𝕜 ℱ]
+    (L : ℰ →L[𝕜] ℱ) (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
+    (N : ℕ) (x : α) :
+    partialSum scale (fun k x => L (coeff k x)) N x =
+      L (partialSum scale coeff N x) := by
+  simp [partialSum]
+
 /-- A full Poincaré expansion along `l`.  Coefficients may depend on the
 asymptotic parameter (for example through a periodic phase), but each such
 coefficient family is required to remain bounded along the filter. -/
@@ -530,6 +543,56 @@ theorem HasAsymptoticExpansion.sub
   simpa only [sub_eq_add_neg] using hf.add hg.neg
 
 end AsymptoticExpansion
+
+section ContinuousLinearFunctoriality
+
+variable {α 𝕜 ℰ : Type*} [NontriviallyNormedField 𝕜]
+  [NormedAddCommGroup ℰ] [NormedSpace 𝕜 ℰ]
+
+/-- Applying a continuous linear map to a full expansion applies it to every
+coefficient. -/
+theorem HasAsymptoticExpansion.continuousLinearMap {ℱ : Type*}
+    [NormedAddCommGroup ℱ] [NormedSpace 𝕜 ℱ]
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff : ℕ → α → ℰ} (L : ℰ →L[𝕜] ℱ)
+    (h : HasAsymptoticExpansion l scale f coeff) :
+    HasAsymptoticExpansion l scale (fun x => L (f x))
+      (fun k x => L (coeff k x)) := by
+  constructor
+  · intro k
+    exact (L.isBigO_comp (coeff k) l).trans (h.coeff_isBigO k)
+  · intro N
+    apply ((L.isBigO_comp
+      (fun x => f x - partialSum scale coeff N x) l).trans
+        (h.remainder_isBigO N)).congr'
+    · filter_upwards with x
+      rw [partialSum_continuousLinearMap, map_sub]
+    · exact EventuallyEq.rfl
+
+/-- A continuous linear equivalence preserves and reflects full asymptotic
+expansions. -/
+theorem hasAsymptoticExpansion_continuousLinearEquiv_iff {ℱ : Type*}
+    [NormedAddCommGroup ℱ] [NormedSpace 𝕜 ℱ]
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff : ℕ → α → ℰ} (e : ℰ ≃L[𝕜] ℱ) :
+    HasAsymptoticExpansion l scale f coeff ↔
+      HasAsymptoticExpansion l scale (fun x => e (f x))
+        (fun k x => e (coeff k x)) := by
+  constructor
+  · intro h
+    exact h.continuousLinearMap (e : ℰ →L[𝕜] ℱ)
+  · intro h
+    have hback := h.continuousLinearMap (e.symm : ℱ →L[𝕜] ℰ)
+    have hf : (fun x => e.symm (e (f x))) =ᶠ[l] f := by
+      filter_upwards with x
+      exact e.symm_apply_apply (f x)
+    have hback' := hback.congr EventuallyEq.rfl hf
+    apply hback'.congr_coeff
+    intro k
+    filter_upwards with x
+    exact e.symm_apply_apply (coeff k x)
+
+end ContinuousLinearFunctoriality
 
 end
 
