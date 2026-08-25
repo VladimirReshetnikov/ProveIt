@@ -17,6 +17,8 @@ Juan Arias de Reyna:
 A self-contained human-readable synthesis of the formal development is also
 available as [LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
 and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+That primary exposition is deliberately proof-backed: every mathematical claim
+in it must have a proved counterpart in the Lean development.
 
 The small-argument asymptotics are developed separately, with a general formula
 for every coefficient of the all-orders expansion, in
@@ -122,7 +124,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Inverse construction, interior calculus, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `tendsto_fabiusInv_div_atTop` |
+| Inverse construction, interior calculus, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `tendsto_fabiusInv_div_atTop` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
@@ -634,6 +636,29 @@ compiled PDF is committed alongside its source.
   script that round-trips through `unicode_escape`: both silently destroy
   backslashes, and LaTeX will not complain — it renders something plausible and
   wrong.
+- **Keep the primary exposition formalization-backed.** Every mathematical
+  assertion in
+  [`Fabius_Function_and_Rvachev_Up.tex`](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+  must match one or more actual proved Lean declarations. This rule covers not
+  only theorem environments, but also displayed formulas, prose deductions,
+  exact numerical values, inequalities, asymptotics, convergence statements,
+  and claims about algorithms. The exposition records exact declaration names
+  and modules so the correspondence can be audited; similarity to a theorem or
+  an informal consequence is not sufficient.
+- **Put unformalized work on the research frontier.** Any mathematical material
+  without an exact proved Lean counterpart — however obvious, standard, or
+  plausible — belongs in a LaTeX/PDF document under
+  [`docs/non-formalized-research-frontiers/`](docs/non-formalized-research-frontiers/),
+  not in the primary exposition. Frontier documents label conjectures,
+  heuristics, partial formalizations, refutations, and the precise outstanding
+  Lean obligations rather than presenting them as established results.
+- **Treat drafts as a temporary inbox.** Content under
+  `docs/Fabius_Function_and_Rvachev_Up/drafts/` is reviewed claim-by-claim.
+  Lean-backed material is integrated organically into the primary exposition
+  without duplication; everything else is relocated to the research-frontier
+  tree with its provenance. Once a draft is fully dispositioned, it is removed,
+  and an empty `drafts/` directory is deleted rather than retained as an
+  archive.
 
 [`AGENTS.md`](AGENTS.md) states the same policy with the exact build commands.
 

@@ -9,10 +9,12 @@ This module combines the constant-polynomial identity from
 `FabiusBinaryReductionSeries`.
 
 The resulting source-literal summand is valid over both `ℝ` and `ℂ`.  For
-every real `x ≥ 0` and every real or complex translation `q`, its series sums
-to the signed global Fabius extension.  On `[0,1]`, this is the usual bounded
-Fabius function.  The scale-zero term uses `Floor[x / 2]`; it is precisely the
-term missing from the version indexed from one.
+every real `x` and every real or complex translation `q`, its series sums to
+the signed global Fabius extension; at nonpositive inputs both sides vanish
+termwise.  Established signatures carrying `0 ≤ x` remain as compatibility
+wrappers.  On `[0,1]`, the sum is the usual bounded Fabius function.  The
+scale-zero term uses `Floor[x / 2]`; it is precisely the term missing from the
+version indexed from one.
 -/
 
 set_option autoImplicit false
@@ -50,9 +52,9 @@ private theorem globalBinaryReductionCoefficient_cast
     (globalBinaryReductionCoefficient x m : K) =
       (-1 : K) ^ thueMorseBit (binaryPrefix x m) *
         (2 * (binaryPreviousPrefix x m : K) - (binaryPrefix x m : K)) := by
-  rw [globalBinaryReductionCoefficient, thueMorseBit]
+  rw [globalBinaryReductionCoefficient]
   push_cast
-  rw [neg_one_pow_eq_pow_mod_two]
+  rw [neg_one_pow_thueMorseBit_eq_binaryWeight]
 
 /-- The literal q-binomial summand is pointwise equal to the q-independent
 analytic binary-reduction summand. -/
@@ -76,6 +78,24 @@ theorem qBinomialFabiusGlobalSummand_eq
   rw [qBinomialFabiusReductionPolynomial_rclike_eq_fabiusReductionSum]
   push_cast
   rfl
+
+/-- At a nonpositive input the literal q-binomial summand vanishes at every
+scale, before summation and independently of `q`. -/
+theorem qBinomialFabiusGlobalSummand_eq_zero_of_nonpos
+    (K : Type*) [RCLike K] (q : K) (m : ℕ) {x : ℝ} (hx : x ≤ 0) :
+    qBinomialFabiusGlobalSummand K q x m = 0 := by
+  rw [qBinomialFabiusGlobalSummand_eq,
+    globalBinaryReductionSummand_eq_zero_of_nonpos m hx]
+  norm_num
+
+/-- On the original half-open unit interval the literal scale-zero summand
+vanishes, for every coefficient field and translation. -/
+theorem qBinomialFabiusGlobalSummand_zero_of_lt_one
+    (K : Type*) [RCLike K] (q : K) (x : ℝ) (hx : x < 1) :
+    qBinomialFabiusGlobalSummand K q x 0 = 0 := by
+  rw [qBinomialFabiusGlobalSummand_eq,
+    globalBinaryReductionSummand_zero_of_lt_one x hx]
+  norm_num
 
 /-- The literal summand is independent of the real or complex translation,
 pointwise before summation. -/
@@ -106,26 +126,47 @@ theorem summable_qBinomialFabiusGlobalSummand
   Summable.of_norm
     (summable_norm_qBinomialFabiusGlobalSummand K F hF q x hx)
 
-/-- `HasSum` form of the source-literal identity, simultaneously over `ℝ`
-and `ℂ`. -/
+/-- All-real `HasSum` core of the source-literal identity, simultaneously
+over `ℝ` and `ℂ`.  Nonpositive inputs give the zero series. -/
+theorem hasSum_qBinomialFabiusGlobalSummand_all
+    (K : Type*) [RCLike K]
+    (F : BoundedFabius) (hF : IsFabius F)
+    (q : K) (x : ℝ) :
+    HasSum (qBinomialFabiusGlobalSummand K q x)
+      (extendedFabius F x : K) := by
+  exact ((RCLike.hasSum_ofReal K).2
+    (hasSum_globalBinaryReductionSummand_all F hF x)).congr_fun
+      (fun m => qBinomialFabiusGlobalSummand_eq K q x m)
+
+/-- Compatibility `HasSum` form on the nonnegative half-line. -/
 theorem hasSum_qBinomialFabiusGlobalSummand
     (K : Type*) [RCLike K]
     (F : BoundedFabius) (hF : IsFabius F)
     (q : K) (x : ℝ) (hx : 0 ≤ x) :
     HasSum (qBinomialFabiusGlobalSummand K q x)
       (extendedFabius F x : K) := by
-  exact ((RCLike.hasSum_ofReal K).2
-    (hasSum_globalBinaryReductionSummand F hF x hx)).congr_fun
-      (fun m => qBinomialFabiusGlobalSummand_eq K q x m)
+  simpa only [max_eq_left hx] using
+    hasSum_qBinomialFabiusGlobalSummand_all K F hF q (max x 0)
 
-/-- `tsum` form of the source-literal identity. -/
+/-- All-real `tsum` form of the source-literal identity. -/
+theorem extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
+    (K : Type*) [RCLike K]
+    (F : BoundedFabius) (hF : IsFabius F)
+    (q : K) (x : ℝ) :
+    (extendedFabius F x : K) =
+      ∑' m : ℕ, qBinomialFabiusGlobalSummand K q x m :=
+  (hasSum_qBinomialFabiusGlobalSummand_all K F hF q x).tsum_eq.symm
+
+/-- Compatibility `tsum` form on the nonnegative half-line. -/
 theorem extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand
     (K : Type*) [RCLike K]
     (F : BoundedFabius) (hF : IsFabius F)
     (q : K) (x : ℝ) (hx : 0 ≤ x) :
     (extendedFabius F x : K) =
-      ∑' m : ℕ, qBinomialFabiusGlobalSummand K q x m :=
-  (hasSum_qBinomialFabiusGlobalSummand K F hF q x hx).tsum_eq.symm
+      ∑' m : ℕ, qBinomialFabiusGlobalSummand K q x m := by
+  simpa only [max_eq_left hx] using
+    extendedFabius_eq_tsum_qBinomialFabiusGlobalSummand_all
+      K F hF q (max x 0)
 
 /-- Canonical signed-global formula for every real translation. -/
 theorem globalFabius_eq_tsum_qBinomialFabiusGlobalSummand_real
@@ -205,10 +246,9 @@ endpoint convention `0 ^ 0 = 1`. -/
 @[simp] theorem qBinomialFabiusGlobalSummand_one_zero
     (K : Type*) [RCLike K] (q : K) :
     qBinomialFabiusGlobalSummand K q 1 0 = 1 := by
-  rw [qBinomialFabiusGlobalSummand_eq]
-  norm_num [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
-    binaryPrefix, binaryPreviousPrefix, binaryTail, fabiusReductionSum,
-    binaryWeight, halfMoment]
+  rw [qBinomialFabiusGlobalSummand_eq,
+    globalBinaryReductionSummand_one_zero]
+  norm_num
 
 end
 

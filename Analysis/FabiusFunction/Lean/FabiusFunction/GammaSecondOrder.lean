@@ -34,6 +34,8 @@ Nothing here mentions the Fabius function; the file imports only Mathlib, and
 * `iteratedDeriv_two_complexGamma_one` — `Γ''(1) = γ² + π² / 6`.
 * `exists_complexGamma_one_add_taylor_remainder` — the expansion with an
   explicit remainder `z ^ 3 * R z`, with `R` analytic at the origin.
+* `complexGamma_one_add_taylor_remainder_isBigO` — the sharp local
+  `O(z ^ 3)` remainder estimate.
 * `complexGamma_one_add_taylor_second` — the same expansion as a little-o
   statement at `nhds 0`, which is the form downstream files consume.
 
@@ -180,23 +182,33 @@ theorem exists_complexGamma_one_add_taylor_remainder :
   rw [hR]
   ring
 
+/-- The quadratic Taylor polynomial for `Γ(1 + z)` has an `O(z³)` remainder
+at the origin.  This is the quantitative asymptotic consequence of the
+analytic cubic factorization above. -/
+theorem complexGamma_one_add_taylor_remainder_isBigO :
+    (fun z : ℂ ↦ Complex.Gamma (1 + z) -
+      (1 - (Real.eulerMascheroniConstant : ℂ) * z +
+        ((Real.eulerMascheroniConstant : ℂ) ^ 2 / 2 +
+          (Real.pi : ℂ) ^ 2 / 12) * z ^ 2)) =O[nhds 0]
+      (fun z : ℂ ↦ z ^ 3) := by
+  obtain ⟨R, hRa, hR⟩ := exists_complexGamma_one_add_taylor_remainder
+  have hRbig : R =O[nhds 0] (fun _ : ℂ ↦ (1 : ℂ)) :=
+    isBigO_const_of_tendsto hRa.continuousAt one_ne_zero
+  have hrem := (isBigO_refl (fun z : ℂ ↦ z ^ 3) (nhds 0)).mul hRbig
+  refine hrem.congr' ?_ (Filter.Eventually.of_forall fun z ↦ by simp)
+  exact Filter.Eventually.of_forall fun z ↦ by
+    dsimp
+    rw [hR z]
+    ring
+
 /-- Second-order Taylor expansion of `Γ(1 + z)` in complex little-o form. -/
 theorem complexGamma_one_add_taylor_second :
     (fun z : ℂ ↦ Complex.Gamma (1 + z) -
       (1 - (Real.eulerMascheroniConstant : ℂ) * z +
         ((Real.eulerMascheroniConstant : ℂ) ^ 2 / 2 +
           (Real.pi : ℂ) ^ 2 / 12) * z ^ 2)) =o[nhds 0]
-      (fun z : ℂ ↦ z ^ 2) := by
-  obtain ⟨R, hRa, hR⟩ := exists_complexGamma_one_add_taylor_remainder
-  have hpow : (fun z : ℂ ↦ z ^ 3) =o[nhds 0] (fun z : ℂ ↦ z ^ 2) :=
-    isLittleO_pow_pow (by norm_num)
-  have hRbig : R =O[nhds 0] (fun _ : ℂ ↦ (1 : ℂ)) :=
-    isBigO_const_of_tendsto hRa.continuousAt one_ne_zero
-  have hrem := hpow.mul_isBigO hRbig
-  refine hrem.congr' ?_ (Filter.Eventually.of_forall fun z ↦ by simp)
-  exact Filter.Eventually.of_forall fun z ↦ by
-    dsimp
-    rw [hR z]
-    ring
+      (fun z : ℂ ↦ z ^ 2) :=
+  complexGamma_one_add_taylor_remainder_isBigO.trans_isLittleO
+    (isLittleO_pow_pow (by norm_num))
 
 end Fabius

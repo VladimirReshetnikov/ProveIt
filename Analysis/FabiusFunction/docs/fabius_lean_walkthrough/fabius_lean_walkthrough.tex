@@ -859,6 +859,19 @@ The module \file{FabiusInverse.lean} proves both inverse identities on the unit
 interval, global continuity and monotonicity, endpoint reflection, and exact
 inversion of every value produced by the bounded dyadic evaluator.
 
+The same module now packages the first-order interior calculus and full
+smoothness.  On \(0<y<1\),
+\lean{deriv_fabiusInv_eq_inv_two_mul_rvachevUp}, together with
+\lean{deriv_fabiusInv_pos}, gives
+\[
+  (F^{-1})'(y)
+    =\frac{1}{F'(F^{-1}(y))}
+    =\frac{1}{2\upf(2F^{-1}(y)-1)}>0,
+\]
+and \lean{fabiusInv_contDiffOn_Ioo} proves that the totalized inverse is
+\(C^\infty\) throughout the open unit interval.  The endpoints are excluded
+sharply: their one-sided difference quotients diverge.
+
 Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
 \(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
 window,
@@ -2662,7 +2675,7 @@ Total dyadic evaluator & \lean{fabiusDyadicValue} & \file{Arithmetic.lean}; anal
 Dyadic common denominator \(D_n\) & \lean{dyadicDenominator} & \file{Arithmetic.lean} and \file{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \lean{reshetnikov} & \file{Arithmetic.lean} and \file{PaperStatements.lean} \\
 Weighted-sum CDF & \lean{weightedSumCDF} & \file{ProbabilityRepresentation.lean} \\
-Totalized inverse \(F^{-1}\) & \lean{fabiusInv}, \lean{fabiusOrderIso} & \file{FabiusInverse.lean} \\
+Totalized inverse \(F^{-1}\) & \lean{fabiusInv}, \lean{fabiusOrderIso}, \lean{fabiusInv_contDiffOn_Ioo} & \file{FabiusInverse.lean} \\
 Uniform spline \(S_p\) & \lean{fabiusUniformSpline} & \file{FabiusUniformSpline.lean} and \file{FabiusComputability.lean} \\
 Logarithmic profile & \lean{fabiusLogProfile} & \file{FabiusLogScale.lean} \\
 Lower-Lambert reference coordinate \(\lambda\) & \lean{fabiusLambertPhase} & \file{FabiusLambertSaddle.lean} \\
@@ -2713,7 +2726,7 @@ Module & Role in the development \\
 \modulefile{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
 \modulefile{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\upf\). \\
 \modulefile{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
-\modulefile{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, and continuity/monotonicity. \\
+\modulefile{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, interior \(C^\infty\) smoothness, and endpoint steepness. \\
 \modulefile{InverseBranch.lean} & Local inverse-branch regularity on the open range. \\
 \modulefile{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \modulefile{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\

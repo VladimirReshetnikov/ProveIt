@@ -1,5 +1,7 @@
 import FabiusFunction.SharpFlatness
 import FabiusFunction.DyadicAnalytic
+import Mathlib.Analysis.Calculus.ContDiff.Deriv
+import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.Deriv.Inverse
 import Mathlib.Order.Hom.Set
 import Mathlib.Topology.Order.ProjIcc
@@ -36,9 +38,9 @@ local inverse theorem therefore applies without any analyticity assumption:
                        = 1 / (2 * up(2 * fabiusInv F hF y - 1)) > 0`.
 
 The formal statements below expose both the `HasDerivAt` result and its
-pointwise derivative, explicit `rvachevUp`, and positivity corollaries.  This
-gives the ordinary differential geometry of the inverse throughout `(0,1)`;
-the endpoint behavior remains singular, as quantified by the flatness results.
+pointwise derivative, explicit `rvachevUp`, positivity, and full `C^∞`
+smoothness on `(0,1)`.  The endpoint behavior remains singular, as quantified
+by the flatness results.
 
 ## Flatness inverts to steepness
 
@@ -91,6 +93,8 @@ quotient from zero to one.
 * `fabiusInv_hasDerivAt`, `deriv_fabiusInv`,
   `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, and `deriv_fabiusInv_pos` — the
   exact positive reciprocal-derivative formula throughout `(0,1)`.
+* `fabiusInv_contDiffOn_Ioo` — the inverse is `C^∞` on the whole open unit
+  interval.
 * `fabiusInv_fabiusDyadicUnit` — every value produced by the exact bounded
   dyadic evaluator inverts to the corresponding clamped dyadic argument.
 * `le_two_pow_mul_fabiusInv_pow` and
@@ -105,6 +109,7 @@ quotient from zero to one.
 set_option autoImplicit false
 
 open Filter Set Topology
+open scoped ContDiff
 
 namespace Fabius
 
@@ -288,6 +293,35 @@ theorem deriv_fabiusInv_pos (F : BoundedFabius) (hF : IsFabius F)
     0 < deriv (fabiusInv F hF) y := by
   rw [deriv_fabiusInv F hF hy]
   exact inv_pos.mpr (deriv_fabiusReal_pos F hF (fabiusInv_mem_Ioo F hF hy))
+
+/-- The totalized inverse of a bounded Fabius function is smooth on the open
+unit interval. -/
+theorem fabiusInv_contDiffOn_Ioo (F : BoundedFabius) (hF : IsFabius F) :
+    ContDiffOn ℝ ∞ (fabiusInv F hF) (Ioo (0 : ℝ) 1) := by
+  rw [contDiffOn_infty]
+  intro n
+  induction n with
+  | zero =>
+      exact contDiffOn_zero.mpr (continuous_fabiusInv F hF).continuousOn
+  | succ n ih =>
+      rw [Nat.cast_succ, contDiffOn_succ_iff_deriv_of_isOpen isOpen_Ioo]
+      refine ⟨?_, by simp, ?_⟩
+      · intro y hy
+        exact (fabiusInv_hasDerivAt F hF hy).differentiableAt.differentiableWithinAt
+      · have hderivF : ContDiff ℝ ∞ (deriv (fabiusReal F)) :=
+          (contDiff_infty_iff_deriv.mp hF.contDiff).2
+        have hderivF_n : ContDiff ℝ n (deriv (fabiusReal F)) :=
+          (contDiff_infty.mp hderivF) n
+        have hcomp : ContDiffOn ℝ n
+            (fun y => deriv (fabiusReal F) (fabiusInv F hF y))
+            (Ioo (0 : ℝ) 1) := by
+          simpa only [Function.comp_def] using
+            hderivF_n.contDiffOn.comp ih (mapsTo_univ _ _)
+        apply (hcomp.inv fun y hy =>
+          (deriv_fabiusReal_pos F hF
+            (fabiusInv_mem_Ioo F hF hy)).ne').congr
+        intro y hy
+        exact deriv_fabiusInv F hF hy
 
 /-! ## Exact values -/
 

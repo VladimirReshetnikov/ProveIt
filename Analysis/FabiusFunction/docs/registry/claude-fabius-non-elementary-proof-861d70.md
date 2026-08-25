@@ -217,6 +217,12 @@ differential property of `F` — `fabius_differentiable` appears once more, in
 `fabiusInv_not_analyticAt`, to produce a `ContinuousAt` for the inverse
 function theorem.  The checkable statement is the one about `F'`.
 
+The core module has since bootstrapped the reciprocal formula to
+`fabiusInv_contDiffOn_Ioo`: `F⁻¹` is `C^∞` on `(0,1)`.  That sharpens the
+point of the whole development rather than complicating it — the inverse is
+smooth and still analytic nowhere, so no smoothness obstruction can separate
+it from the elementary functions either.
+
 An earlier version derived this by differentiating `F⁻¹ ∘ F = id`, which needs
 `F⁻¹` to be differentiable and so carried an `AnalyticAt ℝ (fabiusInv F hF) y`
 hypothesis — refuted, for every `y ∈ Icc 0 1`, by `fabiusInv_not_analyticAt`

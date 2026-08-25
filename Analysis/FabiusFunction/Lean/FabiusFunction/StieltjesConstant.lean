@@ -4,7 +4,8 @@ import Mathlib.Analysis.Complex.RealDeriv
 /-!
 # The first Stieltjes constant
 
-This file fixes the sign convention for the first Stieltjes constant and records the local
+This file fixes the sign convention for the first Stieltjes constant and
+records the real-axis derivative normalization together with the local
 Taylor/Laurent expansion of the Riemann zeta function at its pole.
 -/
 
@@ -49,6 +50,14 @@ the complex derivative of `riemannZeta₀` at `x`.  Used below to evaluate
 theorem deriv_zetaRegularReal (x : ℝ) :
     deriv zetaRegularReal x = (deriv riemannZeta₀ (x : ℂ)).re :=
   (zetaRegularReal_hasDerivAt x).deriv
+
+/-- At the expansion point, the derivative of the real regular part is
+`-γ₁`.  This is the real `HasDerivAt` companion to
+`riemannZeta₀_hasDerivAt_one` below. -/
+theorem zetaRegularReal_hasDerivAt_one :
+    HasDerivAt zetaRegularReal (-firstStieltjesConstant) 1 := by
+  simpa [firstStieltjesConstant] using
+    (differentiable_zetaRegularReal 1).hasDerivAt
 
 @[simp] theorem zetaRegularReal_one :
     zetaRegularReal 1 = Real.eulerMascheroniConstant := by
@@ -132,8 +141,9 @@ theorem riemannZeta_laurent_first :
 
 /-- Second-order Taylor expansion after regularizing the pole of zeta.
 
-Equivalently, `s * ζ(1+s) = 1 + γs - γ₁s² + o(s²)` on a punctured neighborhood of
-zero. This form is convenient when multiplying by the corresponding regularization of `Γ(s)`. -/
+Equivalently, `s * ζ(1+s) = 1 + γs - γ₁s² + o(s²)` on a punctured
+neighborhood of zero.  This form is convenient when multiplying by the
+corresponding regularization of `Γ(s)`. -/
 theorem mul_riemannZeta_one_add_taylor_second :
     (fun s : ℂ ↦ s * riemannZeta (1 + s) -
         (1 + Real.eulerMascheroniConstant * s -

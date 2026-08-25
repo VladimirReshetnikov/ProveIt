@@ -15,8 +15,10 @@ extension.
 The exact finite identity has a signed residual term.  Binary tails tend to
 zero, so the residual tends to zero.  Its input-independent geometric bound
 also proves uniform convergence of the finite telescopes on the real line.
-The summand norms are summable, yielding both a `HasSum` theorem and a `tsum`
-identity.
+The summand norms are summable on the nonnegative half-line.  Since both the
+summand and the signed extension vanish identically on the nonpositive
+half-line, the resulting `HasSum` and `tsum` identities are stated on all of
+`ℝ`; the established nonnegative signatures remain as compatibility wrappers.
 
 The elementary binary API is stated uniformly at every scale, including
 `m = 0`: the previous prefix is the quotient of the current prefix by two,
@@ -128,6 +130,49 @@ def globalBinaryReductionCoefficient (x : ℝ) (m : ℕ) : ℝ :=
   (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
     (2 * (binaryPreviousPrefix x m : ℝ) - (binaryPrefix x m : ℝ))
 
+/-- Exact all-scale coefficient formula in terms of the exposed binary digit.
+The statement includes `m = 0`, where `binaryPreviousPrefix` is the genuine
+half-scale floor. -/
+theorem globalBinaryReductionCoefficient_eq_neg_mod_two
+    (x : ℝ) (m : ℕ) :
+    globalBinaryReductionCoefficient x m =
+      (-1 : ℝ) ^ binaryWeight (binaryPrefix x m) *
+        (-((binaryPrefix x m % 2 : ℕ) : ℝ)) := by
+  rw [globalBinaryReductionCoefficient]
+  have hprefix :
+      (binaryPrefix x m : ℝ) =
+        2 * (binaryPreviousPrefix x m : ℝ) +
+          ((binaryPrefix x m % 2 : ℕ) : ℝ) := by
+    simpa only [Nat.cast_add, Nat.cast_mul, Nat.cast_ofNat] using
+      congrArg (fun n : ℕ => (n : ℝ))
+        (binaryPrefix_eq_two_mul_previous_add_mod_two x m)
+  rw [hprefix]
+  ring
+
+/-- An even exposed binary digit makes the all-scale coefficient vanish. -/
+theorem globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero
+    (x : ℝ) (m : ℕ) (hbit : binaryPrefix x m % 2 = 0) :
+    globalBinaryReductionCoefficient x m = 0 := by
+  rw [globalBinaryReductionCoefficient_eq_neg_mod_two, hbit]
+  norm_num
+
+/-- An odd exposed binary digit leaves the sign of the previous prefix.  This
+is the all-scale version of the coefficient branch used in the telescope. -/
+theorem globalBinaryReductionCoefficient_eq_previous_sign_of_mod_two_eq_one
+    (x : ℝ) (m : ℕ) (hbit : binaryPrefix x m % 2 = 1) :
+    globalBinaryReductionCoefficient x m =
+      (-1 : ℝ) ^ binaryWeight (binaryPreviousPrefix x m) := by
+  have hprefix :
+      binaryPrefix x m = 2 * binaryPreviousPrefix x m + 1 := by
+    calc
+      binaryPrefix x m =
+          2 * binaryPreviousPrefix x m + binaryPrefix x m % 2 :=
+        binaryPrefix_eq_two_mul_previous_add_mod_two x m
+      _ = 2 * binaryPreviousPrefix x m + 1 := by rw [hbit]
+  rw [globalBinaryReductionCoefficient_eq_neg_mod_two, hbit, hprefix,
+    binaryWeight_two_mul_add_one, pow_succ]
+  ring
+
 /-- The analytic outer summand before substituting explicit formulas for the
 inverse-power constants in `fabiusReductionSum`. -/
 def globalBinaryReductionSummand (x : ℝ) (m : ℕ) : ℝ :=
@@ -227,23 +272,23 @@ private lemma globalBinaryReductionCoefficient_of_zero
   cases m with
   | zero => omega
   | succ m =>
-      simp only [globalBinaryReductionCoefficient, binaryPreviousPrefix]
+      apply globalBinaryReductionCoefficient_eq_zero_of_mod_two_eq_zero
       rw [hzero]
-      push_cast
-      ring
+      omega
 
 private lemma globalBinaryReductionCoefficient_of_one
     (x : ℝ) (m : ℕ) (hm : 1 ≤ m)
     (hone : binaryPrefix x m = 2 * binaryPrefix x (m - 1) + 1) :
     globalBinaryReductionCoefficient x m =
       (-1 : ℝ) ^ binaryWeight (binaryPrefix x (m - 1)) := by
+  have hbit : binaryPrefix x m % 2 = 1 := by
+    rw [hone]
+    omega
+  rw [globalBinaryReductionCoefficient_eq_previous_sign_of_mod_two_eq_one
+    x m hbit]
   cases m with
   | zero => omega
-  | succ m =>
-      simp only [globalBinaryReductionCoefficient, binaryPreviousPrefix]
-      rw [hone, binaryWeight_two_mul_add_one, pow_succ]
-      push_cast
-      ring
+  | succ m => rfl
 
 /-- The scale-zero step.  It distinguishes even and odd unit blocks and is
 the term missing from a series whose outer index incorrectly starts at one. -/
@@ -651,22 +696,46 @@ theorem globalBinaryReductionSum_tendstoUniformly_extendedFabius
       norm_globalBinaryReductionSum_sub_extendedFabius_le F hF N hN x)
     hbound
 
-/-- The corrected global binary-reduction series sums absolutely to the
-signed global Fabius extension for every nonnegative real input. -/
+/-- All-real core of the corrected binary-reduction series.  Absolute
+summability handles nonnegative inputs, while at a nonpositive input every
+summand and the signed extension vanish exactly. -/
+theorem hasSum_globalBinaryReductionSummand_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    HasSum (globalBinaryReductionSummand x) (extendedFabius F x) := by
+  rcases le_total 0 x with hx0 | hx0
+  · rw [hasSum_iff_tendsto_nat_of_summable_norm
+      (summable_norm_globalBinaryReductionSummand F hF x hx0)]
+    exact tendsto_sum_range_globalBinaryReduction F hF x hx0
+  · have hsummand :
+        globalBinaryReductionSummand x = fun _ : ℕ => (0 : ℝ) := by
+      funext m
+      exact globalBinaryReductionSummand_eq_zero_of_nonpos m hx0
+    rw [hsummand, extendedFabius_eq_zero_of_nonpos F hF hx0]
+    exact hasSum_zero
+
+/-- Compatibility form of the corrected global binary-reduction series on
+the nonnegative half-line. -/
 theorem hasSum_globalBinaryReductionSummand
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
     HasSum (globalBinaryReductionSummand x) (extendedFabius F x) := by
-  rw [hasSum_iff_tendsto_nat_of_summable_norm
-    (summable_norm_globalBinaryReductionSummand F hF x hx0)]
-  exact tendsto_sum_range_globalBinaryReduction F hF x hx0
+  simpa only [max_eq_right hx0] using
+    hasSum_globalBinaryReductionSummand_all F hF (max 0 x)
 
-/-- `tsum` form of the corrected global binary-reduction series. -/
+/-- All-real `tsum` form of the corrected global binary-reduction series. -/
+theorem extendedFabius_eq_tsum_globalBinaryReductionSummand_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    extendedFabius F x = ∑' m : ℕ, globalBinaryReductionSummand x m :=
+  (hasSum_globalBinaryReductionSummand_all F hF x).tsum_eq.symm
+
+/-- Compatibility `tsum` form on the nonnegative half-line. -/
 theorem extendedFabius_eq_tsum_globalBinaryReductionSummand
     (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (hx0 : 0 ≤ x) :
-    extendedFabius F x = ∑' m : ℕ, globalBinaryReductionSummand x m :=
-  (hasSum_globalBinaryReductionSummand F hF x hx0).tsum_eq.symm
+    extendedFabius F x = ∑' m : ℕ, globalBinaryReductionSummand x m := by
+  simpa only [max_eq_right hx0] using
+    extendedFabius_eq_tsum_globalBinaryReductionSummand_all
+      F hF (max 0 x)
 
 /-- On the original half-open unit interval, the newly restored scale-zero
 term vanishes. -/
@@ -677,6 +746,15 @@ term vanishes. -/
   simp [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
     binaryPreviousPrefix, binaryPrefix, Nat.floor_eq_zero.mpr hx,
     Nat.floor_eq_zero.mpr hxhalf]
+
+/-- At the right endpoint `x = 1`, the restored scale-zero term is exactly
+the missing unit contribution.  This theorem is deliberately not a simp rule;
+the existing literal q-binomial endpoint wrapper retains that role. -/
+theorem globalBinaryReductionSummand_one_zero :
+    globalBinaryReductionSummand 1 0 = 1 := by
+  norm_num [globalBinaryReductionSummand, globalBinaryReductionCoefficient,
+    binaryPrefix, binaryPreviousPrefix, binaryTail, fabiusReductionSum,
+    binaryWeight, halfMoment]
 
 /-- The original `m = 1,2,...` series is valid on `0 ≤ x < 1`. -/
 theorem hasSum_globalBinaryReductionSummand_succ
