@@ -23,6 +23,7 @@ import FabiusFunction.NowhereAnalytic
 import FabiusFunction.FabiusComputableSpline
 import FabiusFunction.FabiusSaddleJetClosedForm
 import FabiusFunction.FabiusSaddleExponentClosedForm
+import FabiusFunction.FabiusSaddleJetStirling
 
 /-!
 # Fabius function
