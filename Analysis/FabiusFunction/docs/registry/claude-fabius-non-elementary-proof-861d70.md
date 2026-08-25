@@ -1,10 +1,13 @@
 # Workstream registry: `claude/fabius-non-elementary-proof-861d70`
 
-**Status: closed historical record.** The advertised algebraic-branch work is
-compiled, registered, and integrated through pinned `origin/main` at
-`3de52ca1c`.  This file grants no live source or build lease; the normal lease
-and build-terminal-event rules in
-[`../COLLABORATION.md`](../COLLABORATION.md) govern any future work.
+**Status: closed historical source record; exact post-integration validation
+pending.** The elementary/algebraic work and its later inverse extension are
+integrated through pinned `origin/main` at `1e371c773`.  This file grants no
+live source lease.  A serialized closure validation is currently running in
+the originating worktree; its host-wide build ownership remains effective
+until a terminal event and is tracked by the active integrator registry.  The
+normal lease and build-terminal-event rules in
+[`../COLLABORATION.md`](../COLLABORATION.md) govern any future source work.
 
 This file implements the per-branch registry fallback proposed in
 [`../COLLABORATION.md`](../COLLABORATION.md) ("one small file per branch,
@@ -13,13 +16,13 @@ provably reaches every worktree, including the two `codex/*` workstreams
 running on a different machine.
 
 ```text
-SYNC Fabius
-worktree/task: fabius-non-elementary-proof-861d70 — the Fabius function on
-  (0,1) is not an elementary function
-branch/base: claude/fabius-non-elementary-proof-861d70, fast-forwarded onto
-  origin/main at 5437f9d0c (which already contains this branch's first two
-  commits, merged upstream by the integrator)
-git owner / build owner: self / self (own worktree, own `.lake`)
+HISTORICAL SYNC Fabius
+worktree/task: fabius-non-elementary-proof-861d70 — elementary, algebraic-
+  branch, inverse-branch, and inverse-Fabius non-representability
+integration pin: origin/main at 1e371c773
+source owner: none granted by this closed record
+build note: the originating worktree is presently running a serialized closure
+  validation; see the active integrator registry for its current target
 ```
 
 ## Write set
@@ -32,8 +35,12 @@ It did not move or rename existing public names outside this set.
   Depends on `Mathlib` only; no Fabius import, so it is cheap to rebuild.
 - `Lean/FabiusFunction/NotElementary.lean` — the combination with
   `NowhereAnalytic`.
-- `Lean/FabiusFunction/AlgebraicBranch.lean` — compiled and registered; see
-  below.
+- `Lean/FabiusFunction/AlgebraicBranch.lean` — compiled and registered;
+  continuous branches of polynomial equations with analytic coefficients.
+- `Lean/FabiusFunction/InverseBranch.lean` — the analytic inverse function
+  theorem, and the class closed under inverse branches.
+- `Lean/FabiusFunction/InverseNotElementary.lean` — the inverse Fabius
+  function, and the strengthened non-representability theorems.
 - `Lean/FabiusFunction.lean` — registration lines only.
 - `docs/Non_Elementarity_of_the_Fabius_Function/` — `.tex` and committed
   `.pdf`.
@@ -61,7 +68,7 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All eighteen exported theorems have axiom set
+All eighteen exported theorems in the earlier elementary/algebraic batch have axiom set
 `[propext, Classical.choice, Quot.sound]`.
 
 The mathematical input from this branch is
@@ -126,9 +133,9 @@ The shared preamble declares every theorem-like environment on the `theorem`
 counter (`\newtheorem{lemma}[theorem]{Lemma}` and so on).  `cleveref` takes a
 reference's *name* from its counter, not its environment, so `\Cref` to a
 lemma, definition, corollary, proposition or warning prints "Theorem".  The
-headings are right; only the cross-references are wrong.  In
-`Fabius_Function_and_Rvachev_Up.tex` this affects 127 `\Cref` uses against
-`lem:`, `cor:` and `def:` labels.
+headings are right; only the cross-references are wrong.  This remains a
+qualitative directory-wide issue; exact occurrence counts are document-version
+dependent and the earlier recorded count is now stale.
 
 I did not touch the shared preamble, since `AGENTS.md` asks for it verbatim.
 In `Non_Elementarity_of_the_Fabius_Function.tex` the references to
@@ -137,6 +144,53 @@ a body-level change only.  The global fix, if anyone wants it, is the
 `aliascnt` package — `\newaliascnt{lemma}{theorem}` plus
 `\aliascntresetthe{lemma}` and `\crefname{lemma}{Lemma}{Lemmas}` — and it
 would have to be applied to the preamble of every document at once.
+
+## Inverses
+
+`InverseBranch.lean` observes that a right inverse is an implicit branch of the
+simplest possible equation — `h (g x) = x` says that `h` is a left inverse of
+`g`, equivalently that `g` is a continuous right inverse of `h`, and makes `g`
+a branch of `h z - x = 0`.  Thus `Fabius.analyticAt_of_leftInverse`, the
+analytic inverse function theorem, is `analyticAt_of_continuous_branch`
+applied with no further analysis.  On top of it,
+`Fabius.exists_analyticAt_of_rightInverse`: a continuous right inverse of a
+densely analytic function is analytic somewhere.
+
+`Fabius.IsElementaryOrInverse` closes the elementary functions under
+continuous inverse branches at any depth, and
+`IsElementaryOrInverse.dense_analyticLocus` shows the enlarged class is still
+densely analytic.  Its constructor localizes the inverse identity and
+continuity to an open `U`, while requiring the chosen totalization to be
+analytic at every point outside `U`.
+`Fabius.isElementaryOrInverse_of_lambertW` is a conditional constructor for a
+Lambert-`W`-shaped branch satisfying those hypotheses.  Because `Mathlib` does
+not define `W`, the development neither constructs a standard branch nor
+claims that its branch-point behavior discharges the off-domain hypothesis.
+
+`InverseNotElementary.lean` applies this to `fabiusInv`:
+`fabiusInv_not_analyticAt` and `fabiusInv_analyticAt_iff` pin the analytic
+locus of the inverse to `ℝ \ [0,1]`, exactly as for `F`.  In the interior the
+argument is the inverse function theorem run backwards.  At any hypothetical
+analytic interior germ, `deriv_fabiusInv_ne_zero` proves that the derivative
+cannot vanish, using `(F⁻¹)'(F x) · F'(x) = 1` and finiteness of `F'`.  That is
+the only place in the whole workstream where smoothness of `F`, rather than its
+failure to be analytic, is used.
+
+## Historical inverse validation evidence
+
+At immutable source commit `63207d9c7`, the originating workstream reported a
+clean `lake build +FabiusFunction.InverseNotElementary`; twelve checked
+statements had axiom set `[propext, Classical.choice, Quot.sound]`.  Commit
+`22f802725` separately recorded three successful `pdflatex` passes for the
+inverse-enhanced paper, while explicitly noting that the subsequently changed
+Lean closure still required rebuilding.  These are historical component
+results, not validation of the exact combined post-merge tree.
+
+`Fabius.not_eqOn_of_dense_analyticLocus` now states the obstruction once, with
+density as the entire hypothesis; `IsElementary.not_eqOn_of_interior_nonempty`
+(from a `codex/*` workstream) is a one-line corollary of it, and every
+non-representability theorem here is that lemma applied to a class for which
+density has been proved.
 
 ## Not claimed
 

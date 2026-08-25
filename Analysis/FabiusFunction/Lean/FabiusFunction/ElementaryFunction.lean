@@ -608,18 +608,32 @@ theorem IsElementary.exists_analyticAt_of_isOpen {f : ℝ → ℝ} (hf : IsEleme
   obtain ⟨x, hxU, hxf⟩ := (dense_iff_inter_open.mp hf.dense_analyticLocus) U hU hUne
   exact ⟨x, hxU, hxf⟩
 
+/-- **The obstruction, in the only form any of this needs.**
+
+A function analytic on a dense set cannot agree, on a set with nonempty
+interior, with a function that is nonanalytic throughout that interior.
+
+Nothing about elementary functions enters: density of the analytic locus is
+the whole hypothesis.  Every non-representability theorem in this development
+is this lemma applied to a class for which that density has been proved. -/
+theorem not_eqOn_of_dense_analyticLocus {f g : ℝ → ℝ}
+    (hg : Dense (analyticLocus g)) {S : Set ℝ} (hSne : (interior S).Nonempty)
+    (hf : ∀ x ∈ interior S, ¬ AnalyticAt ℝ f x) :
+    ¬ EqOn g f S := by
+  intro heq
+  obtain ⟨x, hxS, hxg⟩ :=
+    (dense_iff_inter_open.mp hg) (interior S) isOpen_interior hSne
+  exact hf x hxS (hxg.congr <| by
+    filter_upwards [isOpen_interior.mem_nhds hxS] with t ht
+    exact heq (interior_subset ht))
+
 /-- An elementary function cannot agree on a set with nonempty interior with
 a function that is nonanalytic at every point of that interior. -/
 theorem IsElementary.not_eqOn_of_interior_nonempty
     {f g : ℝ → ℝ} (hg : IsElementary g) {S : Set ℝ}
     (hSne : (interior S).Nonempty)
     (hf : ∀ x ∈ interior S, ¬ AnalyticAt ℝ f x) :
-    ¬ EqOn g f S := by
-  intro heq
-  obtain ⟨x, hxS, hxg⟩ :=
-    hg.exists_analyticAt_of_isOpen isOpen_interior hSne
-  exact hf x hxS (hxg.congr <| by
-    filter_upwards [isOpen_interior.mem_nhds hxS] with t ht
-    exact heq (interior_subset ht))
+    ¬ EqOn g f S :=
+  not_eqOn_of_dense_analyticLocus hg.dense_analyticLocus hSne hf
 
 end Fabius
