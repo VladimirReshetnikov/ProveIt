@@ -346,6 +346,18 @@ theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
     rw [hdiv, habs, one_mul, ← Real.rpow_natCast (t ^ ((n : ℝ))⁻¹) n,
       ← Real.rpow_mul (le_of_lt ht), inv_mul_cancel₀ hnR, Real.rpow_one]
 
+/-- On a region where the base is positive, a variable-exponent power agrees
+with an elementary function.
+
+`IsElementary` is a predicate on *total* functions, so `fun x => f x ^ g x`
+cannot be a member outright — `Mathlib`'s `Real.rpow` is sign-dependent at a
+negative base.  What the non-elementarity theorem needs is only agreement on a
+region, and that is what this supplies: the right-hand side is elementary
+whenever `f` and `g` are, by `IsElementary.log`, `.mul` and `.exp`. -/
+theorem eqOn_rpow_of_pos {f g : ℝ → ℝ} {U : Set ℝ} (hpos : ∀ x ∈ U, 0 < f x) :
+    Set.EqOn (fun x => f x ^ g x) (fun x => Real.exp (Real.log (f x) * g x)) U :=
+  fun x hx => Real.rpow_def_of_pos (hpos x hx) _
+
 /-! ## Named elementary functions
 
 Spelled out for the record: each standard function of the elementary calculus

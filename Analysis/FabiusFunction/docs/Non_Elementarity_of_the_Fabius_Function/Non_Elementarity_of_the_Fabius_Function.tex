@@ -321,10 +321,14 @@ everywhere positive, which covers $x\mapsto x^x$ and every classical
 variable-exponent expression.  The unrestricted two-variable power is not a
 constructor, because \texttt{Mathlib}'s $x^y$ is sign-dependent at a negative
 base --- there $x^y=|x|^y\cos(\pi y)$ --- and no single elementary formula
-covers both signs at once.  Nothing is lost for \Cref{cor:main}: on any
-interval on which the base has constant sign, $f^g$ does agree with a member
-of $\Elem$, and \Cref{cor:main} already rules out agreement on every
-subinterval.
+covers both signs at once.  Nothing is lost for \Cref{cor:main}, and this is
+formalized rather than asserted: \texttt{Fabius.eqOn\_rpow\_of\_pos}
+states that on any set where the base is positive, $f^{g}$ agrees pointwise
+with $\exp(\log f\cdot g)$, which is a member of $\Elem$ whenever $f$ and $g$
+are.  Since \Cref{cor:main} already rules out agreement on \emph{every}
+nonempty open subset of $[0,1]$, and the base of a classical
+variable-exponent expression is positive wherever the expression is well
+formed, such an expression is excluded too.
 
 We also make no claim about elementary functions of a complex variable, and
 none about the closely related but distinct question of whether $F$ satisfies
@@ -499,6 +503,9 @@ Auxiliary: analyticity of $\sqrt{\cdot}$ off $0$ (not used in the induction, whi
   & \texttt{ElementaryFunction} \\
 Signed root, and its defining property (\Cref{warn:oddroot})
   & \texttt{IsElementary.signedRpow}, \texttt{signedRoot\_pow}
+  & \texttt{ElementaryFunction} \\
+Variable exponents at a positive base
+  & \texttt{IsElementary.rpow\_of\_pos}, \texttt{eqOn\_rpow\_of\_pos}
   & \texttt{ElementaryFunction} \\
 Membership of the named functions
   & \texttt{isElementary\_exp}, \texttt{\_log}, \texttt{\_sin}, \texttt{\_cos}, \texttt{\_tan}, \texttt{\_arcsin}, \texttt{\_arccos}, \texttt{\_arctan}, \texttt{\_sinh}, \texttt{\_cosh}, \texttt{\_tanh}, \texttt{\_arsinh}, \texttt{\_sqrt}, \texttt{\_abs}, \texttt{\_inv}, \texttt{\_rpow}, \texttt{\_id}
