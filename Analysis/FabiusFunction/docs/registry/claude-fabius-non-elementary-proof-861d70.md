@@ -64,7 +64,7 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All 98 theorems exported by the five new modules — `ElementaryFunction`,
+All 100 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
 anywhere.  The audit is a generated `#print axioms` sweep over every
@@ -161,6 +161,14 @@ simplest possible equation — `h (g x) = x` says `g` is a continuous branch of
 function theorem, is `analyticAt_of_continuous_branch` applied with no further
 analysis.  On top of it, `Fabius.exists_analyticAt_of_rightInverse`: a
 continuous right inverse of a densely analytic function is analytic somewhere.
+
+A `codex/*` workstream added the relative form
+`Fabius.analyticDenseOn_of_rightInverse` — the same conclusion tested on every
+nonempty open subset of a branch domain that need not itself be open — together
+with `Fabius.not_eqOn_fabiusInv_of_analyticDenseOn`, which weakens the
+hypothesis of the obstruction from a globally dense analytic locus to relative
+density in `interior U`.  Both arrived by merge and are kept;
+`not_eqOn_fabiusInv_of_dense_analyticLocus` is now a corollary of the second.
 
 `Fabius.IsElementaryOrInverse` closes the elementary functions under
 continuous inverse branches at any depth, and

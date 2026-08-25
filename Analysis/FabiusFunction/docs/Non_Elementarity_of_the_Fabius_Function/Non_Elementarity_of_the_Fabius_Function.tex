@@ -704,6 +704,12 @@ fails to vanish somewhere in $\An(f)\cap g(U)$.  At such a point
 of $U$ at which $g$ is analytic.
 \end{proofidea}
 
+Applied to every nonempty open subset at once, this says that a continuous
+inverse branch is analytic on a relatively dense subset of its domain, and the
+domain need not be open: \texttt{analyticDenseOn\_of\_rightInverse}.  For a
+domain with empty interior the statement is vacuous, which is the correct
+reading --- there is no open set on which to test.
+
 The conclusion is ``analytic somewhere in $U$'', not ``analytic on $U$'', and
 that is not slack in the argument: the real cube root is a continuous right
 inverse of the entire function $x\mapsto x^3$ on all of $\R$ and is not
@@ -847,7 +853,7 @@ Analytic inverse function theorem (\Cref{thm:ift})
   & \texttt{analyticAt\_of\_rightInverse}
   & \texttt{InverseBranch} \\
 Inverse branches are analytic somewhere (\Cref{thm:invbranch})
-  & \texttt{exists\_analyticAt\_of\_rightInverse}
+  & \texttt{exists\_analyticAt\_of\_rightInverse}, \texttt{analyticDenseOn\_of\_rightInverse}
   & \texttt{InverseBranch} \\
 The class $\Elem^{-1}$ (Definition~\ref{def:elemplus}, \Cref{thm:plusdense})
   & \texttt{IsElementaryOrInverse}, \texttt{IsElementaryOrInverse.dense\_analyticLocus}
@@ -859,7 +865,7 @@ $F^{-1}$ is differentiable on $(0,1)$ with $(F^{-1})'=1/F'$, hence has no critic
   & \texttt{hasDerivAt\_fabiusInv}, \texttt{deriv\_fabiusInv\_ne\_zero}, \texttt{fabiusInv\_not\_analyticAt}, \texttt{fabiusInv\_analyticAt\_iff}
   & \texttt{InverseNotElementary} \\
 $F^{-1}$ is not elementary (Corollary~\ref{cor:invmain})
-  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}
+  & \texttt{canonical\_fabiusInv\_not\_isElementary\_on\_Ioo}, \texttt{fabiusInv\_not\_isElementary}, \texttt{not\_eqOn\_fabiusInv\_of\_analyticDenseOn}, \texttt{not\_eqOn\_fabiusInv\_of\_dense\_analyticLocus}
   & \texttt{InverseNotElementary} \\
 Neither is reachable by inverting (Corollary~\ref{cor:plusmain})
   & \texttt{canonical\_fabius\_not\_isElementaryOrInverse\_on\_Ioo}, \texttt{canonical\_fabiusInv\_not\_isElementaryOrInverse\_on\_Ioo}
