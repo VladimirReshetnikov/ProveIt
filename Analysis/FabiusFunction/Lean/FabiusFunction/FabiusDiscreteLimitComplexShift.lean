@@ -198,12 +198,6 @@ private theorem norm_complex_two_choose_factor
         ((2 : ℝ) ^ p.choose 2 * ((p - d).factorial : ℝ)) := by
   simp [norm_pow]
 
-private theorem choose_two_succ (a : ℕ) :
-    (a + 1).choose 2 = a.choose 2 + a := by
-  rw [show a + 1 = a + 1 by rfl, show 2 = 1 + 1 by norm_num,
-    Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, Nat.add_comm]
-
 private theorem norm_complex_two_choose_factor_le
     {p d : ℕ} (hp : 1 ≤ p) (hd : d < p) :
     ‖(2 : ℂ) ^ d.choose 2 /
@@ -219,7 +213,7 @@ private theorem norm_complex_two_choose_factor_le
     have hpow :
         (2 : ℝ) ^ d.choose 2 ≤ (2 : ℝ) ^ a.choose 2 :=
       pow_le_pow_right₀ (by norm_num) hchoose
-    rw [choose_two_succ]
+    rw [choose_succ_two]
     have hscale :
         (1 / 2 : ℝ) ^ (a + 1 - 1) *
             (2 : ℝ) ^ (a.choose 2 + a) =

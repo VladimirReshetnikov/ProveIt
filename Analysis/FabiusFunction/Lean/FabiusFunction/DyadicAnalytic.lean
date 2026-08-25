@@ -57,12 +57,6 @@ private lemma inverseTwoPowReal_le_half (n : ℕ) (hn : 1 ≤ n) :
   rw [Finset.sum_range_succ']
   simp
 
-private lemma choose_succ_two_step (j : ℕ) :
-    (j + 2).choose 2 = (j + 1).choose 2 + (j + 1) := by
-  rw [show j + 2 = (j + 1) + 1 by omega,
-    show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
-  simp [Nat.add_comm]
-
 private lemma analyticTaylorSum_derivative_identity
     (F : BoundedFabius) (m : ℕ) (y : ℝ) :
     HasDerivAt (analyticTaylorSum F (m + 1))
@@ -96,7 +90,7 @@ private lemma analyticTaylorSum_derivative_identity
   have hfac : ((j + 1).factorial : ℝ) = (j + 1) * j.factorial := by
     rw [Nat.factorial_succ]
     norm_num
-  have hchoose := choose_succ_two_step j
+  have hchoose := choose_add_two_two j
   rw [show m + 1 - (j + 1) = m - j by omega, hchoose, pow_add,
     pow_succ, mul_pow, hfac]
   have hjfac : (j.factorial : ℝ) ≠ 0 := by positivity

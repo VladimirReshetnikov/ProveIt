@@ -27,21 +27,35 @@ namespace Existence
 set_option autoImplicit false
 noncomputable section
 
+/-- The closed unit interval `[0, 1]`, coerced to a type to serve as the
+domain of the candidate functions in the fixed-point construction. -/
 abbrev I := Set.Icc (0 : ℝ) 1
+/-- Real-valued continuous functions on `I` with the sup metric, the complete
+ambient space in which the contraction argument takes place. -/
 abbrev C := C(I, ℝ)
 
+/-- The reflection `x ↦ 1 - x` of the unit interval about `1 / 2`, used to
+state the symmetry half of `admissible`. -/
 def reflect (x : I) : I :=
   ⟨1 - x.1, by constructor <;> linarith [x.2.1, x.2.2]⟩
 
+/-- Reflection of `I` about `1 / 2` is continuous. -/
 lemma continuous_reflect : Continuous reflect := by
   exact (continuous_const.sub continuous_subtype_val).subtype_mk _
 
+/-- A continuous `f : C` is admissible when it takes values in `[0, 1]` and
+satisfies the reflection identity `f (1 - x) = 1 - f x` at every point of `I`.
+These are exactly the two constraints preserved by `transform`. -/
 def admissible (f : C) : Prop :=
   (∀ x, 0 ≤ f x ∧ f x ≤ 1) ∧
     ∀ x, f (reflect x) = 1 - f x
 
+/-- The set of admissible members of `C`.  The contraction `transformSelf`
+maps this set into itself and its fixed point is `fixedCandidate`. -/
 def admissibleSet : Set C := {f | admissible f}
 
+/-- `admissibleSet` is closed in `C`, being an intersection over the points of
+`I` of pointwise inequality and equality conditions. -/
 lemma admissibleSet_closed : IsClosed admissibleSet := by
   have heval (x : I) : Continuous (fun f : C => f x) :=
     (ContinuousMap.evalCLM ℝ x).continuous
@@ -60,12 +74,17 @@ lemma admissibleSet_closed : IsClosed admissibleSet := by
     exact isClosed_eq (heval (reflect x)) (continuous_const.sub (heval x))
   exact hbounds.inter hsymm
 
+/-- `admissibleSet` inherits completeness from `C` because it is closed; this
+is one of the two hypotheses of the Banach fixed-point theorem used below. -/
 instance : CompleteSpace admissibleSet :=
   admissibleSet_closed.completeSpace_coe
 
+/-- The identity function `x ↦ x` on `I`, the explicit admissible function
+that witnesses `Nonempty admissibleSet`. -/
 def linearCandidate : C :=
   ⟨fun x => x.1, continuous_subtype_val⟩
 
+/-- The identity function on `I` is admissible. -/
 lemma linearCandidate_admissible : admissible linearCandidate := by
   constructor
   · intro x
@@ -73,30 +92,44 @@ lemma linearCandidate_admissible : admissible linearCandidate := by
   · intro x
     rfl
 
+/-- `admissibleSet` is nonempty, witnessed by `linearCandidate`; this is the
+second hypothesis of the Banach fixed-point theorem used below. -/
 instance : Nonempty admissibleSet :=
   ⟨⟨linearCandidate, linearCandidate_admissible⟩⟩
 
+/-- Extend `f : C` to all of `ℝ` by precomposing with the projection onto
+`[0, 1]`, so the extension is constant on `(-∞, 0]` and on `[1, ∞)`.  This is
+the form in which candidates are integrated. -/
 def extend (f : C) (x : ℝ) : ℝ :=
   f (Set.projIcc 0 1 (by norm_num) x)
 
+/-- The extension of a continuous function on `I` to `ℝ` is continuous. -/
 lemma continuous_extend (f : C) : Continuous (extend f) :=
   f.continuous.comp continuous_projIcc
 
+/-- On `[0, 1]` the extension agrees with the original function on `I`. -/
 lemma extend_eq (f : C) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     extend f x = f ⟨x, hx⟩ := by
   simp [extend, Set.projIcc_of_mem (by norm_num) hx]
 
+/-- The primitive `y ↦ ∫ t in 0..y, extend f t` of the extension of `f`,
+normalized to vanish at `0` and defined for every real `y`. -/
 def cumulative (f : C) (y : ℝ) : ℝ :=
   ∫ t in (0 : ℝ)..y, extend f t
 
+/-- The primitive `cumulative f` is continuous on `ℝ`. -/
 lemma continuous_cumulative (f : C) : Continuous (cumulative f) := by
   apply intervalIntegral.continuous_primitive
   intro a b
   exact (continuous_extend f).intervalIntegrable a b
 
+/-- The primitive of any `f : C` vanishes at `0`. -/
 lemma cumulative_zero (f : C) : cumulative f 0 = 0 := by
   simp [cumulative]
 
+/-- For admissible `f` the primitive reaches `1 / 2` at `1`; this is the
+reflection identity integrated over `[0, 1]`.  It is what makes the two
+branches of `transformValue` agree at `x = 1 / 2`. -/
 lemma cumulative_one_of_admissible {f : C} (hf : admissible f) :
     cumulative f 1 = 1 / 2 := by
   have hreflect : (∫ t in (0 : ℝ)..1, extend f (1 - t)) =
@@ -118,10 +151,15 @@ lemma cumulative_one_of_admissible {f : C} (hf : admissible f) :
   · exact intervalIntegrable_const
   · exact (continuous_extend f).intervalIntegrable 0 1
 
+/-- The value at `x ∈ I` of the transform of `f`: `cumulative f (2 * x)` for
+`x ≤ 1 / 2` and `1 - cumulative f (2 - 2 * x)` otherwise.  The tie at
+`x = 1 / 2` is resolved by the left branch. -/
 def transformValue (f : C) (x : I) : ℝ :=
   if x.1 ≤ 1 / 2 then cumulative f (2 * x.1)
   else 1 - cumulative f (2 - 2 * x.1)
 
+/-- For admissible `f` the two branches of `transformValue f` take the same
+value at `x = 1 / 2`, so the glued function is continuous. -/
 lemma continuous_transformValue {f : C} (hf : admissible f) :
     Continuous (transformValue f) := by
   apply Continuous.if_le
@@ -138,6 +176,7 @@ lemma continuous_transformValue {f : C} (hf : admissible f) :
     rw [cumulative_one_of_admissible hf]
     norm_num
 
+/-- `transformValue` of an admissible `f`, bundled as an element of `C`. -/
 def transform (f : admissibleSet) : C :=
   ⟨transformValue f.1, continuous_transformValue f.2⟩
 
@@ -161,6 +200,8 @@ private lemma cumulative_bounds {f : C} (hf : admissible f)
   norm_num at hle
   exact ⟨by simpa [cumulative] using hnonneg, by simpa [cumulative] using hle⟩
 
+/-- The transform of an admissible function is again admissible, so
+`transform` restricts to a self-map of `admissibleSet`. -/
 lemma transform_admissible (f : admissibleSet) : admissible (transform f) := by
   constructor
   · intro x
@@ -197,6 +238,8 @@ lemma transform_admissible (f : admissibleSet) : admissible (transform f) := by
       congr 2
       ring
 
+/-- The transform viewed as a self-map of `admissibleSet`.  Its fixed point
+is `fixedCandidate`. -/
 def transformSelf (f : admissibleSet) : admissibleSet :=
   ⟨transform f, transform_admissible f⟩
 
@@ -213,6 +256,10 @@ private lemma cumulative_sub_eq_integral (f g : C) (y : ℝ) :
   · exact (continuous_extend f).intervalIntegrable 0 y
   · exact (continuous_extend g).intervalIntegrable 0 y
 
+/-- For admissible `f` and `g` and `y ∈ [0, 1]`, the two primitives differ at
+`y` by at most `dist f g / 2`.  The factor `1 / 2` comes from splitting at
+`y ≤ 1 / 2` and using that both primitives equal `1 / 2` at `1`; this estimate
+is what makes `transformSelf` a contraction. -/
 lemma norm_cumulative_sub_le_half_dist (f g : admissibleSet)
     {y : ℝ} (hy : y ∈ Icc (0 : ℝ) 1) :
     ‖cumulative f.1 y - cumulative g.1 y‖ ≤ (1 / 2 : ℝ) * dist f.1 g.1 := by
@@ -259,6 +306,8 @@ lemma norm_cumulative_sub_le_half_dist (f g : admissibleSet)
         apply mul_le_mul_of_nonneg_right _ dist_nonneg
         linarith
 
+/-- `transformSelf` at least halves distances, uniformly over
+`admissibleSet`. -/
 lemma dist_transformSelf_le (f g : admissibleSet) :
     dist (transformSelf f) (transformSelf g) ≤
       (1 / 2 : ℝ) * dist f g := by
@@ -284,31 +333,43 @@ lemma dist_transformSelf_le (f g : admissibleSet) :
           cumulative g.1 (2 - 2 * x.1)‖ := norm_neg _
       _ ≤ _ := h
 
+/-- `transformSelf` is Lipschitz with constant `1 / 2`. -/
 lemma transformSelf_lipschitz :
     LipschitzWith (1 / 2 : NNReal) transformSelf := by
   apply LipschitzWith.of_dist_le_mul
   intro f g
   simpa using dist_transformSelf_le f g
 
+/-- `transformSelf` is a contraction with ratio `1 / 2`, the input to
+Mathlib's Banach fixed-point theorem. -/
 lemma transformSelf_contracting :
     ContractingWith (1 / 2 : NNReal) transformSelf :=
   ⟨by norm_num, transformSelf_lipschitz⟩
 
+/-- The fixed point of `transformSelf` in `admissibleSet` supplied by the
+Banach fixed-point theorem.  Its extension to `ℝ` is `boundedCandidate`. -/
 noncomputable def fixedCandidate : admissibleSet :=
   transformSelf_contracting.fixedPoint transformSelf
 
+/-- `fixedCandidate` is fixed by `transformSelf`. -/
 lemma fixedCandidate_fixed : transformSelf fixedCandidate = fixedCandidate :=
   transformSelf_contracting.fixedPoint_isFixedPt
 
+/-- Pointwise form of the fixed-point equation: at every `x ∈ I` the value of
+`fixedCandidate` is its own transform value.  Every value computation below
+unfolds this identity. -/
 lemma fixedCandidate_eq_transformValue (x : I) :
     fixedCandidate.1 x = transformValue fixedCandidate.1 x := by
   have h := congrArg (fun f : admissibleSet => f.1 x) fixedCandidate_fixed
   exact h.symm
 
+/-- `fixedCandidate` vanishes at the left endpoint `0`. -/
 lemma fixedCandidate_zero : fixedCandidate.1 ⟨0, by constructor <;> norm_num⟩ = 0 := by
   rw [fixedCandidate_eq_transformValue]
   simp [transformValue, cumulative_zero]
 
+/-- `fixedCandidate` takes the value `1` at the right endpoint `1`, obtained
+from `fixedCandidate_zero` by the admissibility symmetry. -/
 lemma fixedCandidate_one : fixedCandidate.1 ⟨1, by constructor <;> norm_num⟩ = 1 := by
   have hs := fixedCandidate.2.2 ⟨0, by constructor <;> norm_num⟩
   have hreflect : reflect ⟨0, by constructor <;> norm_num⟩ =
@@ -316,33 +377,49 @@ lemma fixedCandidate_one : fixedCandidate.1 ⟨1, by constructor <;> norm_num⟩
   rw [hreflect, fixedCandidate_zero] at hs
   simpa using hs
 
+/-- The extension of `fixedCandidate` to `ℝ` vanishes at `0`; the `simp`
+form of `fixedCandidate_zero`. -/
 @[simp] lemma extend_fixedCandidate_zero : extend fixedCandidate.1 0 = 0 := by
   rw [extend_eq fixedCandidate.1 (by constructor <;> norm_num)]
   exact fixedCandidate_zero
 
+/-- The extension of `fixedCandidate` to `ℝ` equals `1` at `1`; the `simp`
+form of `fixedCandidate_one`, used to evaluate the right branch formula at
+`x = 1 / 2`. -/
 @[simp] lemma extend_fixedCandidate_one : extend fixedCandidate.1 1 = 1 := by
   rw [extend_eq fixedCandidate.1 (by constructor <;> norm_num)]
   exact fixedCandidate_one
 
+/-- The candidate bounded Fabius function: `fixedCandidate` extended to all
+of `ℝ` through the projection onto `[0, 1]`, repackaged with its unit-interval
+codomain.  This is the `F` shown to satisfy `IsFabius` below. -/
 noncomputable def boundedCandidate : Fabius.BoundedFabius := fun x =>
   ⟨extend fixedCandidate.1 x, fixedCandidate.2.1 _⟩
 
+/-- `boundedCandidate` read as a real-valued function is the extension of
+`fixedCandidate`; the definitional `simp` bridge between the two names. -/
 @[simp] lemma boundedCandidate_real (x : ℝ) :
     Fabius.fabiusReal boundedCandidate x = extend fixedCandidate.1 x :=
   rfl
 
+/-- `boundedCandidate` vanishes on `(-∞, 0]`; the `zero_of_nonpos` field of
+`IsFabius`. -/
 lemma boundedCandidate_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
     Fabius.fabiusReal boundedCandidate x = 0 := by
   change extend fixedCandidate.1 x = 0
   rw [extend, (Set.projIcc_eq_left (by norm_num : (0 : ℝ) < 1)).2 hx]
   exact fixedCandidate_zero
 
+/-- `boundedCandidate` equals `1` on `[1, ∞)`; the `one_of_one_le` field of
+`IsFabius`. -/
 lemma boundedCandidate_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
     Fabius.fabiusReal boundedCandidate x = 1 := by
   change extend fixedCandidate.1 x = 1
   rw [extend, (Set.projIcc_eq_right (by norm_num : (0 : ℝ) < 1)).2 hx]
   exact fixedCandidate_one
 
+/-- Reflection symmetry of `boundedCandidate` on `[0, 1]`, inherited from
+admissibility of `fixedCandidate`; the `symmetry` field of `IsFabius`. -/
 lemma boundedCandidate_symmetry (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :
     Fabius.fabiusReal boundedCandidate (1 - x) =
       1 - Fabius.fabiusReal boundedCandidate x := by
@@ -351,6 +428,8 @@ lemma boundedCandidate_symmetry (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :
     extend_eq fixedCandidate.1 hx]
   exact fixedCandidate.2.2 ⟨x, hx⟩
 
+/-- On `[0, 1/2]` the candidate is given by the left branch of the fixed-point
+equation, `x ↦ cumulative fixedCandidate.1 (2 * x)`. -/
 lemma fixedCandidate_left_formula {x : ℝ}
     (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
     Fabius.fabiusReal boundedCandidate x = cumulative fixedCandidate.1 (2 * x) := by
@@ -359,6 +438,10 @@ lemma fixedCandidate_left_formula {x : ℝ}
   rw [fixedCandidate_eq_transformValue]
   rw [transformValue, if_pos hx.2]
 
+/-- On `[1/2, 1]` the candidate is given by the right branch of the
+fixed-point equation, `x ↦ 1 - cumulative fixedCandidate.1 (2 - 2 * x)`; at
+`x = 1 / 2` this uses `cumulative_one_of_admissible` to reconcile the two
+branches. -/
 lemma fixedCandidate_right_formula {x : ℝ}
     (hx : x ∈ Icc (1 / 2 : ℝ) 1) :
     Fabius.fabiusReal boundedCandidate x =
@@ -374,6 +457,9 @@ lemma fixedCandidate_right_formula {x : ℝ}
     norm_num
   · rw [transformValue, if_neg (not_le.mpr (lt_of_le_of_ne hx.1 (Ne.symm heq)))]
 
+/-- Fundamental theorem of calculus for the fixed point: at every real `y`
+the primitive `cumulative fixedCandidate.1` has derivative
+`extend fixedCandidate.1 y`. -/
 lemma cumulative_fixed_hasDerivAt (y : ℝ) :
     HasDerivAt (cumulative fixedCandidate.1) (extend fixedCandidate.1 y) y := by
   apply intervalIntegral.integral_hasDerivAt_right
@@ -381,6 +467,8 @@ lemma cumulative_fixed_hasDerivAt (y : ℝ) :
   · exact (continuous_extend fixedCandidate.1).aestronglyMeasurable.stronglyMeasurableAtFilter
   · exact (continuous_extend fixedCandidate.1).continuousAt
 
+/-- Chain rule for the left branch: `z ↦ cumulative fixedCandidate.1 (2 * z)`
+has derivative `2 * extend fixedCandidate.1 (2 * x)` at every real `x`. -/
 lemma leftFormula_hasDerivAt (x : ℝ) :
     HasDerivAt (fun z : ℝ => cumulative fixedCandidate.1 (2 * z))
       (2 * extend fixedCandidate.1 (2 * x)) x := by
@@ -389,6 +477,9 @@ lemma leftFormula_hasDerivAt (x : ℝ) :
   have h := (cumulative_fixed_hasDerivAt (2 * x)).comp x hinner
   simpa [Function.comp_def, mul_comm] using h
 
+/-- Chain rule for the right branch:
+`z ↦ 1 - cumulative fixedCandidate.1 (2 - 2 * z)` has derivative
+`2 * extend fixedCandidate.1 (2 - 2 * x)` at every real `x`. -/
 lemma rightFormula_hasDerivAt (x : ℝ) :
     HasDerivAt (fun z : ℝ => 1 - cumulative fixedCandidate.1 (2 - 2 * z))
       (2 * extend fixedCandidate.1 (2 - 2 * x)) x := by
@@ -484,6 +575,10 @@ private lemma boundedCandidate_hasDerivAt_one :
   · exact Or.inr hy1
   · exact Or.inl ⟨by linarith [hy.1], le_of_not_ge hy1⟩
 
+/-- Global first-derivative identity: at every real `x` the candidate is
+differentiable with derivative `2 * rvachevUp boundedCandidate (2 * x - 1)`.
+The two branch formulas cover the open pieces and the three private endpoint
+lemmas above supply the gluing points `0`, `1 / 2` and `1`. -/
 lemma boundedCandidate_hasDerivAt (x : ℝ) :
     HasDerivAt (Fabius.fabiusReal boundedCandidate)
       (2 * Fabius.rvachevUp boundedCandidate (2 * x - 1)) x := by
@@ -545,6 +640,8 @@ lemma boundedCandidate_hasDerivAt (x : ℝ) :
         filter_upwards [Ioi_mem_nhds hxone] with y hy
         exact boundedCandidate_one_of_one_le hy.le
 
+/-- The folded candidate `rvachevUp boundedCandidate` is even, a special case
+of `rvachevUp_even`. -/
 lemma rvachevCandidate_even :
     Function.Even (Fabius.rvachevUp boundedCandidate) := by
   exact Fabius.rvachevUp_even boundedCandidate
@@ -563,6 +660,10 @@ private lemma rvachevCandidate_hasDerivAt_of_neg {x : ℝ} (hx : x < 0) :
   filter_upwards [Iio_mem_nhds hx] with y hy
   rw [Fabius.rvachevUp, if_pos hy.le]
 
+/-- Rvachev's dyadic differential refinement equation for the candidate: at
+every real `x`, writing `u` for `rvachevUp boundedCandidate`, the derivative of
+`u` at `x` is `2 * (u (2 * x + 1) - u (2 * x - 1))`.  This is the hypothesis
+fed to `contDiff_of_hasDerivAt_dyadic_refinement`. -/
 lemma rvachevCandidate_hasDerivAt (x : ℝ) :
     HasDerivAt (Fabius.rvachevUp boundedCandidate)
       (2 * (Fabius.rvachevUp boundedCandidate (2 * x + 1) -
@@ -631,10 +732,16 @@ lemma rvachevCandidate_hasDerivAt (x : ℝ) :
     rw [heq]
     ring
 
+/-- The folded candidate is `C^∞` on `ℝ`, obtained by feeding its refinement
+equation to `contDiff_of_hasDerivAt_dyadic_refinement`. -/
 lemma rvachevCandidate_contDiff :
     ContDiff ℝ ∞ (Fabius.rvachevUp boundedCandidate) := by
   exact Fabius.contDiff_of_hasDerivAt_dyadic_refinement _ rvachevCandidate_hasDerivAt
 
+/-- `boundedCandidate` is `C^∞` on `ℝ`: it is differentiable everywhere and
+its derivative is a constant multiple of an affine rescaling of the `C^∞`
+function `rvachevUp boundedCandidate`.  This is the `contDiff` field of
+`IsFabius`. -/
 lemma boundedCandidate_contDiff :
     ContDiff ℝ ∞ (Fabius.fabiusReal boundedCandidate) := by
   have hdifferentiable : Differentiable ℝ
@@ -651,6 +758,10 @@ lemma boundedCandidate_contDiff :
     (rvachevCandidate_contDiff.comp
       ((contDiff_const.mul contDiff_id).sub contDiff_const))
 
+/-- `boundedCandidate` satisfies the `IsFabius` characterization, assembling
+the two constant tails, `C^∞` regularity, the reflection symmetry, and the
+derivative equation on `[0, 1/2]`.  This is the existence half of
+`existsUnique`. -/
 lemma boundedCandidate_isFabius :
     Fabius.IsFabius boundedCandidate where
   zero_of_nonpos := fun _x hx => boundedCandidate_zero_of_nonpos hx
@@ -666,6 +777,10 @@ lemma boundedCandidate_isFabius :
     congr 2
     ring
 
+/-- Uniqueness: two bounded functions satisfying `IsFabius` are equal.  They
+agree at every dyadic rational by `fabiusDyadic_cast`, and the continuity
+contained in the `contDiff` field propagates that along the approximations
+`⌊x * 2 ^ n⌋₊ / 2 ^ n` of an arbitrary point of `[0, 1]`. -/
 lemma isFabius_eq (F G : Fabius.BoundedFabius)
     (hF : Fabius.IsFabius F) (hG : Fabius.IsFabius G) :
     F = G := by
@@ -708,6 +823,9 @@ lemma isFabius_eq (F G : Fabius.BoundedFabius)
     Filter.Eventually.of_forall heq
   exact tendsto_nhds_unique hlimF (hlimG.congr' hevent.symm)
 
+/-- There is exactly one bounded Fabius function: `boundedCandidate` supplies
+existence and `isFabius_eq` supplies uniqueness.  Re-exported outside the
+`Existence` namespace as `Fabius.existsUnique_fabius`. -/
 theorem existsUnique :
     ∃! F : Fabius.BoundedFabius, Fabius.IsFabius F := by
   refine ⟨boundedCandidate, boundedCandidate_isFabius, ?_⟩

@@ -20,6 +20,9 @@ open Finset
 
 namespace Fabius
 
+/-- Choosing disjoint blocks of sizes `p` and `j` out of `n` elements gives
+the same count in either order.  This symmetry is what lets the binomial
+coefficients be re-indexed in `dyadicKernelPolynomial_hasseDeriv`. -/
 lemma choose_mul_choose_disjoint (n p j : ℕ) :
     Nat.choose n p * Nat.choose (n - p) j =
       Nat.choose n j * Nat.choose (n - j) p := by
@@ -33,6 +36,9 @@ lemma choose_mul_choose_disjoint (n p j : ℕ) :
     _ = Nat.choose n (p + j) * Nat.choose (p + j) j := by rw [hsym]
     _ = _ := by simpa [add_comm] using hj
 
+/-- Triangular numbers split additively: `Nat.choose (m + j + 1) 2` equals
+`Nat.choose (m + 1) 2 + m * j + Nat.choose (j + 1) 2`.  This is the exponent
+bookkeeping behind the power of two in `dyadicScale_choose_taylor`. -/
 lemma choose_add_succ_two (m j : ℕ) :
     Nat.choose (m + j + 1) 2 =
       Nat.choose (m + 1) 2 + m * j + Nat.choose (j + 1) 2 := by
@@ -50,6 +56,8 @@ lemma choose_add_succ_two (m j : ℕ) :
       simp [Nat.choose_one_right]
       ring
 
+/-- Closed form for a triangular number:
+`2 * Nat.choose (j + 1) 2 = j * (j + 1)`. -/
 lemma two_mul_choose_succ_two (j : ℕ) :
     2 * Nat.choose (j + 1) 2 = j * (j + 1) := by
   induction j with
@@ -63,6 +71,10 @@ lemma two_mul_choose_succ_two (j : ℕ) :
       rw [Nat.mul_add, ih]
       ring
 
+/-- Splits a `Fin (m + n)` sum into its first `m` terms and the `n` terms
+after them, reindexed by `m + i`.  The `Fin`-indexed form of
+`Finset.sum_range_add`, used to peel off a leading dyadic block in
+`thueMorse_sum_split`. -/
 theorem sum_fin_add {M : Type*} [AddCommMonoid M] (f : ℕ → M) (m n : ℕ) :
     (∑ i : Fin (m + n), f i.val) =
       (∑ i : Fin m, f i.val) + ∑ i : Fin n, f (m + i.val) := by
@@ -70,6 +82,9 @@ theorem sum_fin_add {M : Type*} [AddCommMonoid M] (f : ℕ → M) (m n : ℕ) :
     Fin.sum_univ_eq_sum_range (fun i => f (m + i)) n]
   exact Finset.sum_range_add f m n
 
+/-- Pairs a `Fin (2 * a)` sum into `a` consecutive two-term blocks
+`f (2 j) + f (2 j + 1)`.  This is the index bookkeeping for the halving step
+`thueMorse_sum_two_mul`. -/
 theorem sum_fin_two_mul {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a : ℕ) :
     (∑ i : Fin (2 * a), f i.val) =
       ∑ j : Fin a, (f (2 * j.val) + f (2 * j.val + 1)) := by
@@ -83,6 +98,10 @@ theorem sum_fin_two_mul {M : Type*} [AddCommMonoid M] (f : ℕ → M) (a : ℕ) 
       simp
       rw [Finset.sum_range_succ]
 
+/-- Setting a fresh leading binary bit raises the digit sum by one:
+`binaryWeight (2 ^ b + h) = binaryWeight h + 1` for `h < 2 ^ b`.  The
+hypothesis is essential -- it is what makes the new bit disjoint from the
+digits of `h`.  This is the arithmetic behind `thueMorseSign_add_pow_two`. -/
 theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
     binaryWeight (2 ^ b + h) = binaryWeight h + 1 := by
   have hlen : (Nat.digits 2 h).length ≤ b :=
@@ -98,6 +117,7 @@ theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
   rw [binaryWeight, binaryWeight, ← hdigits]
   simp
 
+/-- Appending a zero binary digit leaves the digit sum unchanged. -/
 @[simp] theorem binaryWeight_two_mul (h : ℕ) :
     binaryWeight (2 * h) = binaryWeight h := by
   cases h with
@@ -107,6 +127,7 @@ theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
         Nat.digits_base_mul Nat.one_lt_two (by positivity : 0 < h + 1)]
       simp
 
+/-- Appending a one binary digit raises the digit sum by one. -/
 @[simp] theorem binaryWeight_two_mul_add_one (h : ℕ) :
     binaryWeight (2 * h + 1) = binaryWeight h + 1 := by
   rw [binaryWeight, binaryWeight]
@@ -115,14 +136,21 @@ theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
   rw [hdigits]
   simp [add_comm]
 
+/-- The Thue--Morse sign is invariant under doubling the index. -/
 @[simp] theorem thueMorseSign_two_mul (h : ℕ) :
     thueMorseSign (2 * h) = thueMorseSign h := by
   simp [thueMorseSign]
 
+/-- The Thue--Morse sign flips between an even index and its successor. -/
 @[simp] theorem thueMorseSign_two_mul_add_one (h : ℕ) :
     thueMorseSign (2 * h + 1) = -thueMorseSign h := by
   simp [thueMorseSign, pow_succ]
 
+/-- Halving a signed Thue--Morse sum: a sum of `thueMorseSign i * f i` over
+`Fin (2 * a)` collapses to a sum of `thueMorseSign j * (f (2 j) - f (2 j + 1))`
+over `Fin a`, because the sign flips within each adjacent pair.  This is the
+step that converts the kernel refinement law into
+`fabiusDyadic_refine_of_kernel`. -/
 theorem thueMorse_sum_two_mul (a : ℕ) (f : ℕ → ℚ) :
     (∑ i : Fin (2 * a), (thueMorseSign i.val : ℚ) * f i.val) =
       ∑ j : Fin a, (thueMorseSign j.val : ℚ) *
@@ -139,9 +167,17 @@ theorem thueMorse_sum_two_mul (a : ℕ) (f : ℕ → ℚ) :
   push_cast
   ring
 
+/-- The signed power sum `∑_{h < 2 ^ b} thueMorseSign h * h ^ d` over one
+complete dyadic Thue--Morse block. -/
 private def thuePowerSum (b d : ℕ) : ℚ :=
   ∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ d
 
+/-- Doubling the block length expresses `thuePowerSum (b + 1) d` through the
+half-length block in degrees strictly below `d`: the degree-`d` terms of the
+two halves cancel, which is why the range stops at `d` and why the whole sum
+picks up a minus sign.  This is the induction step of
+`thuePowerSum_eq_zero_of_lt`, and it is re-exported under local names by
+`ThueMorsePrefix` and `FabiusUniformSpline`. -/
 lemma thuePowerSum_succ (b d : ℕ) :
     thuePowerSum (b + 1) d =
       -(∑ k ∈ Finset.range d,
@@ -191,6 +227,10 @@ lemma thuePowerSum_succ (b d : ℕ) :
       intro j hj
       ring
 
+/-- Prouhet cancellation: a complete Thue--Morse block of length `2 ^ b`
+annihilates every monomial of degree `d < b`.  The hypothesis is exactly
+`d < b`; at `d = b` the sum is nonzero, with the explicit value computed in
+`ThueMorsePrefix.thueMorsePowerSum_self`. -/
 lemma thuePowerSum_eq_zero_of_lt (b d : ℕ) (hd : d < b) :
     thuePowerSum b d = 0 := by
   induction b generalizing d with
@@ -204,6 +244,10 @@ lemma thuePowerSum_eq_zero_of_lt (b d : ℕ) (hd : d < b) :
         rw [ih k (hklt.trans_le (by omega : d ≤ b))]
         ring
 
+/-- Prouhet cancellation for an arbitrary affine argument: for `d < b` the
+signed sum of `(x + y * h) ^ d` over a complete block `h < 2 ^ b` vanishes, for
+every `x` and `y`.  Expanding the binomial reduces it to
+`thuePowerSum_eq_zero_of_lt` in each degree. -/
 lemma thueMorse_affine_power_sum_eq_zero (b d : ℕ) (hd : d < b)
     (x y : ℚ) :
     (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
@@ -226,11 +270,18 @@ lemma thueMorse_affine_power_sum_eq_zero (b d : ℕ) (hd : d < b)
     ring
   rw [hinner, thuePowerSum_eq_zero_of_lt b (d - k) hdegree, mul_zero]
 
+/-- Adding a fresh leading bit flips the Thue--Morse sign:
+`thueMorseSign (2 ^ b + h) = -thueMorseSign h` for `h < 2 ^ b`.  The corpus
+uses this whenever a dyadic block is reflected onto its translate. -/
 theorem thueMorseSign_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
     thueMorseSign (2 ^ b + h) = -thueMorseSign h := by
   rw [thueMorseSign, thueMorseSign, binaryWeight_add_pow_two b h hh, pow_succ]
   ring
 
+/-- Splits a signed sum over `2 ^ b + r` indices, with `r ≤ 2 ^ b`, as the
+complete leading block minus the signed sum over the `r` translated indices;
+the minus sign is `thueMorseSign_add_pow_two`.  This is the identity behind
+`fabiusDyadic_add_remainder_eq_block`. -/
 theorem thueMorse_sum_split (b r : ℕ) (hr : r ≤ 2 ^ b) (f : ℕ → ℚ) :
     (∑ i : Fin (2 ^ b + r), (thueMorseSign i.val : ℚ) * f i.val) =
       (∑ i : Fin (2 ^ b), (thueMorseSign i.val : ℚ) * f i.val) -
@@ -249,13 +300,24 @@ theorem thueMorse_sum_split (b r : ℕ) (hr : r ≤ 2 ^ b) (f : ℕ → ℚ) :
   push_cast
   ring
 
+/-- The normalization of equation (32) at grid exponent `n`, namely
+`2 ^ (-Nat.choose (n + 1) 2) / n !`.  The negative exponent is an integer
+power, so this is the exact rational prefactor, not a truncation. -/
 private def dyadicScale (n : ℕ) : ℚ :=
   (2 : ℚ) ^ (-(Nat.choose (n + 1) 2 : ℤ)) / n.factorial
 
+/-- The polynomial kernel of equation (32): `∑_{2 k ≤ n}` of
+`Nat.choose n (2 k) * x ^ (n - 2 k) * moment k`.  Only even binomial indices
+occur, so the moments enter at index `k` while the power of `x` keeps the
+parity of `n`.  Multiplying the signed sum of
+`thueMorseSign h * dyadicKernel n (2 a - 2 h - 1)` over `h < a` by
+`dyadicScale n` gives `fabiusDyadic n a`. -/
 private def dyadicKernel (n : ℕ) (x : ℚ) : ℚ :=
   ∑ k : Fin (n / 2 + 1),
     (Nat.choose n (2 * k.val) : ℚ) * x ^ (n - 2 * k.val) * moment k.val
 
+/-- Rewrites the `Fin`-indexed kernel sum as a sum over
+`Finset.range (n / 2 + 1)`, the form the polynomial computations below use. -/
 lemma dyadicKernel_eq_sum_range (n : ℕ) (x : ℚ) :
     dyadicKernel n x =
       ∑ k ∈ Finset.range (n / 2 + 1),
@@ -265,11 +327,18 @@ lemma dyadicKernel_eq_sum_range (n : ℕ) (x : ℚ) :
   change (∑ k : Fin (n / 2 + 1), g k.val) = _
   rw [Fin.sum_univ_eq_sum_range g (n / 2 + 1)]
 
+/-- The kernel `dyadicKernel n` as a formal polynomial over `ℚ`, built from
+monomials of degree `n - 2 k`.  Working with the polynomial rather than
+the function is what makes the derivative and Taylor arguments below
+available. -/
 private noncomputable def dyadicKernelPolynomial (n : ℕ) : Polynomial ℚ :=
   ∑ k ∈ Finset.range (n / 2 + 1),
     Polynomial.monomial (n - 2 * k)
       ((Nat.choose n (2 * k) : ℚ) * moment k)
 
+/-- The kernel polynomial evaluates to the kernel function.  This is the
+bridge that lets the refinement law be proved as a polynomial identity and
+then transported back to values. -/
 lemma dyadicKernelPolynomial_eval (n : ℕ) (x : ℚ) :
     (dyadicKernelPolynomial n).eval x = dyadicKernel n x := by
   rw [dyadicKernelPolynomial, dyadicKernel,
@@ -286,6 +355,10 @@ lemma dyadicKernelPolynomial_eval (n : ℕ) (x : ℚ) :
   rw [Polynomial.eval_monomial]
   ring
 
+/-- The `j`-th Hasse derivative of the kernel polynomial, for `j ≤ n`, is
+`Nat.choose n j` times the kernel polynomial of index `n - j`.  This closure
+of the kernel family under differentiation is what gives the finite Taylor
+expansion `dyadicKernel_taylor`. -/
 lemma dyadicKernelPolynomial_hasseDeriv (n j : ℕ) (hj : j ≤ n) :
     Polynomial.hasseDeriv j (dyadicKernelPolynomial n) =
       Polynomial.C (Nat.choose n j : ℚ) * dyadicKernelPolynomial (n - j) := by
@@ -329,6 +402,8 @@ lemma dyadicKernelPolynomial_hasseDeriv (n j : ℕ) (hj : j ≤ n) :
         rw [hcoefficientQ]
       _ = _ := by ring
 
+/-- The kernel polynomial has degree at most `n`, so its Taylor expansion
+terminates after `n + 1` terms. -/
 lemma dyadicKernelPolynomial_natDegree_le (n : ℕ) :
     (dyadicKernelPolynomial n).natDegree ≤ n := by
   rw [dyadicKernelPolynomial]
@@ -336,6 +411,10 @@ lemma dyadicKernelPolynomial_natDegree_le (n : ℕ) :
   intro k hk
   exact (Polynomial.natDegree_monomial_le _).trans (Nat.sub_le n (2 * k))
 
+/-- Finite Taylor expansion of the kernel: `dyadicKernel n (x + y)` equals
+`∑_{j ≤ n} Nat.choose n j * dyadicKernel (n - j) x * y ^ j`.  The identity is
+exact, not an approximation, because the kernel is a polynomial of degree at
+most `n`; `dyadicBlock_expand` sums it over a Thue--Morse block. -/
 lemma dyadicKernel_taylor (n : ℕ) (x y : ℚ) :
     dyadicKernel n (x + y) =
       ∑ j ∈ Finset.range (n + 1),
@@ -366,6 +445,10 @@ lemma dyadicKernel_taylor (n : ℕ) (x y : ℚ) :
         Polynomial.eval_mul, Polynomial.eval_C,
         dyadicKernelPolynomial_eval]
 
+/-- Value of an odd-index kernel at `x = 1`:
+`dyadicKernel (2 q + 1) 1 = (2 q + 1) * 2 ^ (2 q) * moment q`.  The moment
+recurrence `moment_succ` is what collapses the sum to this single term.  Used
+to evaluate the refinement defect in `dyadicKernelPolynomial_refinement`. -/
 lemma dyadicKernel_odd_one (q : ℕ) :
     dyadicKernel (2 * q + 1) 1 =
       ((2 * q + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (2 * q) * moment q := by
@@ -404,6 +487,9 @@ lemma dyadicKernel_odd_one (q : ℕ) :
       field_simp [hden, hpowden]
       ring
 
+/-- The kernel has the parity of its index: `dyadicKernel n (-x)` equals
+`(-1) ^ n * dyadicKernel n x`, because every exponent `n - 2 k` occurring in
+it has the parity of `n`. -/
 lemma dyadicKernel_neg (n : ℕ) (x : ℚ) :
     dyadicKernel n (-x) = (-1 : ℚ) ^ n * dyadicKernel n x := by
   rw [dyadicKernel_eq_sum_range, dyadicKernel_eq_sum_range, Finset.mul_sum]
@@ -422,6 +508,9 @@ lemma dyadicKernel_neg (n : ℕ) (x : ℚ) :
   rw [show -x = (-1 : ℚ) * x by ring, mul_pow, hsign]
   ring
 
+/-- At the origin only the constant term of an even-index kernel survives,
+leaving `dyadicKernel (2 q) 0 = moment q`.  This uses the convention
+`0 ^ 0 = 1` for the term `k = q`. -/
 lemma dyadicKernel_even_zero (q : ℕ) :
     dyadicKernel (2 * q) 0 = moment q := by
   rw [dyadicKernel_eq_sum_range]
@@ -439,6 +528,8 @@ lemma dyadicKernel_even_zero (q : ℕ) :
       · simp
     _ = _ := by simp
 
+/-- Every exponent occurring in an odd-index kernel is positive, so
+`dyadicKernel (2 q + 1) 0 = 0`. -/
 lemma dyadicKernel_odd_zero (q : ℕ) :
     dyadicKernel (2 * q + 1) 0 = 0 := by
   rw [dyadicKernel_eq_sum_range]
@@ -450,17 +541,27 @@ lemma dyadicKernel_odd_zero (q : ℕ) :
   have hpow : 2 * q + 1 - 2 * k ≠ 0 := by omega
   simp [hpow]
 
+/-- The `j = 1` case of `dyadicKernelPolynomial_hasseDeriv`: differentiating
+the kernel polynomial lowers its index by one and multiplies by `n + 1`. -/
 lemma dyadicKernelPolynomial_derivative_succ (n : ℕ) :
     (dyadicKernelPolynomial (n + 1)).derivative =
       Polynomial.C ((n + 1 : ℕ) : ℚ) * dyadicKernelPolynomial n := by
   simpa using dyadicKernelPolynomial_hasseDeriv (n + 1) 1 (by omega)
 
+/-- The affine substitution `2 X + 1`, the right branch of the refinement. -/
 private noncomputable def dyadicAffinePlus : Polynomial ℚ :=
   Polynomial.C 2 * Polynomial.X + Polynomial.C 1
 
+/-- The affine substitution `2 X - 1`, the left branch of the refinement. -/
 private noncomputable def dyadicAffineMinus : Polynomial ℚ :=
   Polynomial.C 2 * Polynomial.X - Polynomial.C 1
 
+/-- **Kernel refinement law, polynomial form.**  Composing the index-`n + 1`
+kernel polynomial with `2 X + 1` and with `2 X - 1` and subtracting gives
+`(n + 1) * 2 ^ (n + 1)` times the index-`n` kernel polynomial.  The induction
+compares derivatives, then pins the remaining constant using the parity and
+endpoint evaluations above.  `dyadicKernel_has_refinement` evaluates this
+identity at a point. -/
 lemma dyadicKernelPolynomial_refinement (n : ℕ) :
     (dyadicKernelPolynomial (n + 1)).comp dyadicAffinePlus -
         (dyadicKernelPolynomial (n + 1)).comp dyadicAffineMinus =
@@ -578,6 +679,10 @@ lemma dyadicKernelPolynomial_refinement (n : ℕ) :
           _ = 0 := by rw [heval, Polynomial.C_0]
       exact sub_eq_zero.mp hzero
 
+/-- The normalization absorbs exactly the constant produced by the kernel
+refinement law: `dyadicScale (n + 1) * (n + 1) * 2 ^ (n + 1) = dyadicScale n`.
+This cancellation is what makes `fabiusDyadic` invariant under refining the
+dyadic grid. -/
 lemma dyadicScale_succ_mul (n : ℕ) :
     dyadicScale (n + 1) * ((n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (n + 1) =
       dyadicScale n := by
@@ -606,6 +711,11 @@ lemma dyadicScale_succ_mul (n : ℕ) :
           (((2 : ℚ) ^ (n + 1))⁻¹ * (2 : ℚ) ^ (n + 1)) := by ring
     _ = _ := by rw [inv_mul_cancel₀ hn, inv_mul_cancel₀ hp]; ring
 
+/-- Regrouping of a single Taylor coefficient, for `j ≤ n`:
+`dyadicScale n * Nat.choose n j * (2 r) ^ j` equals
+`2 ^ Nat.choose (j + 1) 2 * (r / 2 ^ n) ^ j / j ! * dyadicScale (n - j)`.
+This converts the block expansion into the shape evaluated by
+`fabiusTaylorHorner`; the exponent bookkeeping is `choose_add_succ_two`. -/
 lemma dyadicScale_choose_taylor (n j : ℕ) (hj : j ≤ n) (r : ℚ) :
     dyadicScale n * (Nat.choose n j : ℚ) * ((2 : ℚ) * r) ^ j =
       (2 : ℚ) ^ (j + 1).choose 2 *
@@ -658,6 +768,11 @@ lemma dyadicScale_choose_taylor (n j : ℕ) (hj : j ≤ n) (r : ℚ) :
             (2 : ℚ) ^ (j + 1).choose 2) * r ^ j := by rw [hfacQ, hpowers]
     _ = _ := by ring
 
+/-- A complete Thue--Morse block annihilates a kernel of lower index: for
+`n < b` the signed sum of `dyadicKernel n (x - 2 h)` over `h < 2 ^ b` vanishes,
+for every `x`.  Each monomial has degree at most `n < b`, so
+`thueMorse_affine_power_sum_eq_zero` applies term by term.  This is what
+truncates the expansion in `dyadicBlock_expand_truncated`. -/
 lemma thueMorse_kernel_block_eq_zero (n b : ℕ) (hn : n < b) (x : ℚ) :
     (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
       dyadicKernel n (x - 2 * h.val)) = 0 := by
@@ -682,6 +797,10 @@ lemma thueMorse_kernel_block_eq_zero (n b : ℕ) (hn : n < b) (x : ℚ) :
     ring
   rw [heq, hzero, mul_zero]
 
+/-- Taylor-expands the scaled signed block sum in the displacement `2 r`:
+adding `2 r` to every kernel argument spreads the sum over the `n + 1` terms
+of `dyadicKernel_taylor`, each carrying its own signed block sum at kernel
+index `n - j`. -/
 lemma dyadicBlock_expand (n b : ℕ) (r : ℚ) :
     dyadicScale n *
         (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
@@ -700,6 +819,9 @@ lemma dyadicBlock_expand (n b : ℕ) (r : ℚ) :
   intro h hh
   ring
 
+/-- The expansion of `dyadicBlock_expand`, truncated to `j ≤ n - b` under the
+hypothesis `b ≤ n`.  The discarded terms vanish because their kernel index
+`n - j` drops below `b`, where `thueMorse_kernel_block_eq_zero` applies. -/
 lemma dyadicBlock_expand_truncated (n b : ℕ) (hb : b ≤ n) (r : ℚ) :
     dyadicScale n *
         (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
@@ -725,12 +847,19 @@ lemma dyadicBlock_expand_truncated (n b : ℕ) (hb : b ≤ n) (r : ℚ) :
     convert hzero using 1 <;> ring
   rw [hzero', mul_zero]
 
+/-- The kernel refinement law as a `Prop`: for all `n` and all rational `x`,
+`dyadicKernel (n + 1) (2 x + 1) - dyadicKernel (n + 1) (2 x - 1)` equals
+`(n + 1) * 2 ^ (n + 1) * dyadicKernel n x`.  Packaging it this way lets the
+consequences below be stated as hypothetical implications; it is discharged
+once, by `dyadicKernel_has_refinement`. -/
 def DyadicKernelHasRefinement : Prop :=
   ∀ n : ℕ, ∀ x : ℚ,
     dyadicKernel (n + 1) (2 * x + 1) -
         dyadicKernel (n + 1) (2 * x - 1) =
       ((n + 1 : ℕ) : ℚ) * (2 : ℚ) ^ (n + 1) * dyadicKernel n x
 
+/-- The refinement law holds, by evaluating the polynomial identity
+`dyadicKernelPolynomial_refinement` at each rational point. -/
 theorem dyadicKernel_has_refinement : DyadicKernelHasRefinement := by
   intro n x
   have h := congrArg (Polynomial.eval x) (dyadicKernelPolynomial_refinement n)
@@ -738,6 +867,9 @@ theorem dyadicKernel_has_refinement : DyadicKernelHasRefinement := by
     Polynomial.eval_comp, dyadicAffinePlus, dyadicAffineMinus,
     dyadicKernelPolynomial_eval] using h
 
+/-- Unfolds equation (32) into the normalization `dyadicScale n` times the
+signed kernel sum, the shape every proof in this file works with.  It holds by
+`rfl`, so rewriting with it in either direction is free. -/
 lemma fabiusDyadic_eq_scale_sum (n a : ℕ) :
     fabiusDyadic n a = dyadicScale n *
       ∑ h : Fin a, (thueMorseSign h.val : ℚ) *
@@ -910,6 +1042,10 @@ theorem fabiusDyadic_block_translate_le (n block residue : ℕ)
         rw [fabiusDyadic_two_pow_succ, mul_zero]
   · exact fabiusDyadic_block_translate n block residue hresidue
 
+/-- Assuming the kernel refinement law, equation (32) is consistent under
+refining the dyadic grid: `fabiusDyadic (n + 1) (2 a) = fabiusDyadic n a`, so
+the value depends only on the rational `a / 2 ^ n`.  Callers supply
+`dyadicKernel_has_refinement` for `hk`. -/
 lemma fabiusDyadic_refine_of_kernel (hk : DyadicKernelHasRefinement)
     (n a : ℕ) :
     fabiusDyadic (n + 1) (2 * a) = fabiusDyadic n a := by
@@ -949,6 +1085,8 @@ lemma fabiusDyadic_refine_of_kernel (hk : DyadicKernelHasRefinement)
   rw [hterms]
   rw [← mul_assoc, ← mul_assoc, dyadicScale_succ_mul]
 
+/-- Iterating `fabiusDyadic_refine_of_kernel` `b` times: refining the grid by
+a factor `2 ^ b` leaves the closed-form value unchanged. -/
 lemma fabiusDyadic_refine_pow_of_kernel (hk : DyadicKernelHasRefinement)
     (m b a : ℕ) :
     fabiusDyadic (m + b) (2 ^ b * a) = fabiusDyadic m a := by
@@ -958,12 +1096,20 @@ lemma fabiusDyadic_refine_pow_of_kernel (hk : DyadicKernelHasRefinement)
       rw [show m + (b + 1) = (m + b) + 1 by omega,
         pow_succ', mul_assoc, fabiusDyadic_refine_of_kernel hk, ih]
 
+/-- The case `a = 1` of `fabiusDyadic_refine_pow_of_kernel`: every grid
+representation of `2 ^ (-m)` gives the tabulated value
+`fabiusAtInverseTwoPow m`. -/
 lemma fabiusDyadic_pow_two_eq_inverse_of_kernel (hk : DyadicKernelHasRefinement)
     (m b : ℕ) :
     fabiusDyadic (m + b) (2 ^ b) = fabiusAtInverseTwoPow m := by
   simpa [fabiusAtInverseTwoPow] using
     fabiusDyadic_refine_pow_of_kernel hk m b 1
 
+/-- Identifies the constant term of the block expansion: the scaled signed
+kernel sum over a complete block `h < 2 ^ b`, with kernel arguments
+`2 * 2 ^ b - 2 h - 1`, is `fabiusAtInverseTwoPow m`.  Same content as
+`fabiusDyadic_pow_two_eq_inverse_of_kernel`, written in the summed form that
+`dyadicBlock_eq_taylor_sum` consumes. -/
 lemma dyadic_block_base_eq_inverse_of_kernel (hk : DyadicKernelHasRefinement)
     (m b : ℕ) :
     dyadicScale (m + b) *
@@ -977,6 +1123,13 @@ lemma dyadic_block_base_eq_inverse_of_kernel (hk : DyadicKernelHasRefinement)
       rfl
     _ = _ := fabiusDyadic_pow_two_eq_inverse_of_kernel hk m b
 
+/-- **The block Taylor identity.**  For `b ≤ n` and any rational `r`, the
+scaled signed kernel sum over the block `h < 2 ^ b`, with its argument
+displaced by `2 r`, equals the finite sum over `j ≤ n - b` of
+`2 ^ Nat.choose (j + 1) 2 * fabiusAtInverseTwoPow (n - b - j) *
+(r / 2 ^ n) ^ j / j !`.  Every coefficient is a tabulated inverse-power value,
+which is what makes the Horner evaluator exact.  `GlobalDyadic` and
+`DyadicAnalytic` use it as well as the correctness proof below. -/
 lemma dyadicBlock_eq_taylor_sum (n b : ℕ) (hb : b ≤ n) (r : ℚ) :
     dyadicScale n *
         (∑ h : Fin (2 ^ b), (thueMorseSign h.val : ℚ) *
@@ -1096,6 +1249,10 @@ lemma fabiusDyadic_add_remainder_eq_block (n b r : ℕ) (hr : r ≤ 2 ^ b) :
   rw [hshift]
   ring
 
+/-- Data attached to the leading binary bit of `a`: with `b = Nat.log2 a` and
+`r = a - 2 ^ b` one has `b ≤ n`, `r < 2 ^ b`, and `a = 2 ^ b + r`.  These are
+exactly the side conditions each step of the bit recursion needs; both `0 < a`
+and `a ≤ 2 ^ n` are used. -/
 lemma leading_bit_data (n a : ℕ) (ha0 : 0 < a) (ha : a ≤ 2 ^ n) :
     let b := Nat.log2 a
     let r := a - 2 ^ b
@@ -1123,6 +1280,10 @@ def FabiusDyadicHasBlockTaylor (values : Array ℚ) (n : ℕ) : Prop :=
           dyadicKernel n ((2 : ℚ) * (2 ^ b + r) - 2 * h.val - 1)) =
       fabiusTaylorHorner values (n - b) ((r : ℚ) / (2 : ℚ) ^ n)
 
+/-- The block Taylor identity for a table of values implies the single-step
+bit recurrence for that table: splitting `a` at its leading bit, cancelling the
+remainder block by `fabiusDyadic_add_remainder_eq_block`, and rewriting the
+block by `hblock` gives exactly the recurrence. -/
 theorem blockTaylor_implies_bitRecurrence (values : Array ℚ) (n : ℕ)
     (hblock : FabiusDyadicHasBlockTaylor values n) :
     FabiusDyadicHasBitRecurrence values n := by
@@ -1139,6 +1300,9 @@ theorem blockTaylor_implies_bitRecurrence (values : Array ℚ) (n : ℕ)
   rw [eq_sub_iff_add_eq, ha_split]
   exact hcancel.trans htaylor
 
+/-- The precomputed inverse-power table satisfies the block Taylor identity at
+grid exponent `n`; this instantiates `dyadicBlock_eq_taylor_sum` through
+`fabiusTaylorHorner_eq_sum`. -/
 theorem fabiusInversePowTwoTable_hasBlockTaylor (n : ℕ) :
     FabiusDyadicHasBlockTaylor (fabiusInversePowTwoTable n) n := by
   intro b r hb _hr
@@ -1151,6 +1315,8 @@ theorem fabiusInversePowTwoTable_hasBlockTaylor (n : ℕ) :
   congr 2
   ring
 
+/-- The precomputed inverse-power table satisfies the bit recurrence.  This is
+the hypothesis consumed by `fabiusDyadicUnit_eq_fabiusDyadic`. -/
 theorem fabiusInversePowTwoTable_hasBitRecurrence (n : ℕ) :
     FabiusDyadicHasBitRecurrence (fabiusInversePowTwoTable n) n :=
   blockTaylor_implies_bitRecurrence (fabiusInversePowTwoTable n) n

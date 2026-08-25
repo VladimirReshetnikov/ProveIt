@@ -68,6 +68,9 @@ theorem fabiusUniformSpline_eq_zero_of_neg
     fabiusUniformSpline p x = 0 :=
   fabiusUniformSpline_eq_zero_of_nonpos p hx.le
 
+/-- At degree zero the normalizing constant is `1` and each power term is
+`1` under the `0 ^ 0 = 1` convention, so the centered spline reduces to the
+plain prefix sum of Thue--Morse signs. -/
 @[simp] lemma fabiusUniformSpline_zero (x : ℝ) :
     fabiusUniformSpline 0 x =
       ∑ r ∈ Finset.range (fabiusDiscreteLimitRangeLength x 0),
@@ -96,6 +99,10 @@ private lemma abs_sum_range_thueMorseSign_le_one (N : ℕ) :
   · rw [Finset.sum_range_succ, sum_range_thueMorseSign_two_mul, zero_add]
     norm_num [thueMorseSign]
 
+/-- The degree-zero centered spline is a partial sum of Thue--Morse signs, and
+every such partial sum lies in `[-1, 1]`; hence the bound, at every real point
+and with no interval restriction.  This is the degree-zero base case of
+`abs_fabiusUniformSpline_le_one`. -/
 lemma abs_fabiusUniformSpline_zero_le_one (x : ℝ) :
     |fabiusUniformSpline 0 x| ≤ 1 := by
   rw [fabiusUniformSpline_zero]
@@ -600,11 +607,6 @@ private theorem fabiusUniformSpline_eq_positiveSpline
   field_simp
   rw [pow_two, hsquare, one_mul]
 
-private lemma choose_succ_two_uniformSpline (p : ℕ) :
-    (p + 1).choose 2 = p.choose 2 + p := by
-  rw [show p + 1 = Nat.succ p by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 private theorem fabiusUniformPositiveSpline_smoothing
     (p : ℕ) (hp : 0 < p) (x : ℝ) :
     fabiusUniformPositiveSpline (p + 1) x =
@@ -683,7 +685,7 @@ private theorem fabiusUniformPositiveSpline_smoothing
     ring
   rw [hfactor, hsum]
   dsimp only [P]
-  rw [choose_succ_two_uniformSpline, pow_add, Nat.factorial_succ]
+  rw [choose_succ_two, pow_add, Nat.factorial_succ]
   push_cast
   field_simp
 
@@ -718,14 +720,21 @@ namespace ProbabilityRepresentation
 def uniformPartialSum (p : ℕ) (ω : SampleSpace) : ℝ :=
   ∑ i ∈ Finset.range p, (ω i : ℝ) / 2 / (2 : ℝ) ^ i
 
+/-- The empty prefix contributes nothing. -/
 lemma uniformPartialSum_zero (ω : SampleSpace) : uniformPartialSum 0 ω = 0 := by
   simp [uniformPartialSum]
 
+/-- Peels the last coordinate off the prefix.  This is the induction step used
+by `uniformPartialSum_le_one_sub_inv_pow`. -/
 lemma uniformPartialSum_succ (p : ℕ) (ω : SampleSpace) :
     uniformPartialSum (p + 1) ω =
       uniformPartialSum p ω + (ω p : ℝ) / 2 / (2 : ℝ) ^ p := by
   simp [uniformPartialSum, Finset.sum_range_succ]
 
+/-- Peels the *first* coordinate off instead: the length `p + 1` prefix of `ω`
+is the average of `ω 0` with the length `p` prefix of `tail ω`.  This
+pointwise identity is what makes `uniformPartialDistribution_selfSimilar`
+true. -/
 lemma uniformPartialSum_succ_split (p : ℕ) (ω : SampleSpace) :
     uniformPartialSum (p + 1) ω =
       ((ω 0 : ℝ) + uniformPartialSum p (tail ω)) / 2 := by
@@ -744,6 +753,8 @@ lemma uniformPartialSum_succ_split (p : ℕ) (ω : SampleSpace) :
   rw [hsum]
   ring
 
+/-- Measurability of the finite prefix map, needed to push `uniformProduct`
+forward along it in `uniformPartialDistribution`. -/
 lemma measurable_uniformPartialSum (p : ℕ) : Measurable (uniformPartialSum p) := by
   unfold uniformPartialSum
   fun_prop
@@ -761,6 +772,9 @@ private lemma summable_uniformCoordinateTerm (ω : SampleSpace) :
 def uniformPartialDistribution (p : ℕ) : Measure ℝ :=
   uniformProduct.map (uniformPartialSum p)
 
+/-- A pushforward of the product probability measure is again a probability
+measure.  This instance is what makes Mathlib's `cdf` API applicable to
+`uniformPartialDistribution`, hence available for `uniformPartialCDF`. -/
 instance uniformPartialDistribution_isProbability (p : ℕ) :
     IsProbabilityMeasure (uniformPartialDistribution p) := by
   unfold uniformPartialDistribution
@@ -776,6 +790,9 @@ theorem monotone_uniformPartialCDF (p : ℕ) :
   intro x y hxy
   exact ProbabilityTheory.monotone_cdf (uniformPartialDistribution p) hxy
 
+/-- Unfolds the finite CDF as the measure of the sublevel set
+`{ω | uniformPartialSum p ω ≤ x}` in the sample space.  The support bounds and
+the comparisons with `weightedSumCDF` are all proved through this form. -/
 lemma uniformPartialCDF_eq_measureReal (p : ℕ) (x : ℝ) :
     uniformPartialCDF p x =
       uniformProduct.real {ω | uniformPartialSum p ω ≤ x} := by
@@ -784,6 +801,10 @@ lemma uniformPartialCDF_eq_measureReal (p : ℕ) (x : ℝ) :
     map_measureReal_apply (measurable_uniformPartialSum p) measurableSet_Iic]
   rfl
 
+/-- The joint law of the head coordinate and the length `p` prefix of the tail
+is the product of Lebesgue measure on `[0,1]` with
+`uniformPartialDistribution p`.  This independence statement is the input to
+`uniformPartialDistribution_selfSimilar`. -/
 lemma uniformProduct_map_head_uniformPartialSum (p : ℕ) :
     uniformProduct.map
         (fun ω : SampleSpace => (ω 0, uniformPartialSum p (tail ω))) =
@@ -812,6 +833,9 @@ lemma uniformProduct_map_head_uniformPartialSum (p : ℕ) :
   filter_upwards with ω
   rfl
 
+/-- Self-similarity of the finite laws: the order `p + 1` distribution is the
+image of `[0,1] × (order p distribution)` under `(u, z) ↦ (u + z) / 2`.
+Integrating it out gives `uniformPartialCDF_eq_integral`. -/
 lemma uniformPartialDistribution_selfSimilar (p : ℕ) :
     uniformPartialDistribution (p + 1) =
       ((volume : Measure (Set.Icc (0 : ℝ) 1)).prod
@@ -838,6 +862,9 @@ lemma uniformPartialDistribution_selfSimilar (p : ℕ) :
   filter_upwards with ω
   exact uniformPartialSum_succ_split p ω
 
+/-- Smoothing recurrence for the finite CDFs: the order `p + 1` CDF at `y` is
+the average over `u ∈ [0,1]` of the order `p` CDF at `2 * y - u`.  It is the
+probabilistic counterpart of `fabiusUniformPositiveSpline_smoothing`. -/
 lemma uniformPartialCDF_eq_integral (p : ℕ) (y : ℝ) :
     uniformPartialCDF (p + 1) y =
       ∫ u : Set.Icc (0 : ℝ) 1, uniformPartialCDF p (2 * y - (u : ℝ)) := by
@@ -900,6 +927,11 @@ theorem monotone_uniformCenteredPartialCDF (p : ℕ) :
   intro x y hxy
   exact monotone_uniformPartialCDF p (sub_le_sub_right hxy _)
 
+/-- The same smoothing recurrence for the midpoint-corrected CDFs; the
+correction `1 / 2 ^ (p + 1)` is exactly the one carried along by
+`u ↦ 2 * x - u`.  This is the step matched against
+`fabiusUniformPositiveSpline_smoothing` in the induction identifying the two
+families. -/
 lemma uniformCenteredPartialCDF_eq_integral (p : ℕ) (x : ℝ) :
     uniformCenteredPartialCDF (p + 1) x =
       ∫ u : Set.Icc (0 : ℝ) 1,
@@ -982,6 +1014,12 @@ private theorem fabiusUniformPositiveSpline_eq_centeredPartialCDF
           filter_upwards with u
           exact ih (2 * x - (u : ℝ))
 
+/-- In positive degree, on the fundamental interval `[0,1]`, the centered spline
+is exactly the midpoint-corrected CDF of the first `p` weighted uniform
+coordinates.  This is the bridge from the combinatorial Thue--Morse sum to
+probability, and it supplies the monotonicity, the `[0,1]` range bound and the
+convergence results below.  Degree zero is handled separately by
+`fabiusUniformSpline_zero_eq_centeredPartialCDF_of_mem_Icc`. -/
 theorem fabiusUniformSpline_eq_centeredPartialCDF
     (p : ℕ) (hp : 0 < p) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     fabiusUniformSpline p x = uniformCenteredPartialCDF p x := by
@@ -998,6 +1036,10 @@ theorem monotoneOn_fabiusUniformSpline
     fabiusUniformSpline_eq_centeredPartialCDF p hp hy]
   exact monotone_uniformCenteredPartialCDF p hxy
 
+/-- In positive degree the centered spline takes values in `[0,1]` on the
+fundamental interval, being a cumulative distribution function there.  Used in
+`FabiusFunction.FabiusComputableSpline` to see that the exact rational spline
+value is nonnegative. -/
 theorem fabiusUniformSpline_mem_Icc
     (p : ℕ) (hp : 0 < p) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     fabiusUniformSpline p x ∈ Icc (0 : ℝ) 1 := by
@@ -1008,6 +1050,8 @@ theorem fabiusUniformSpline_mem_Icc
   · rw [uniformCenteredPartialCDF, uniformPartialCDF]
     exact ProbabilityTheory.cdf_le_one (uniformPartialDistribution p) _
 
+/-- Absolute-value form of `fabiusUniformSpline_mem_Icc`: in positive degree the
+centered spline is bounded by one on the fundamental interval `[0,1]`. -/
 theorem abs_fabiusUniformSpline_le_one_of_mem_Icc
     (p : ℕ) (hp : 0 < p) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     |fabiusUniformSpline p x| ≤ 1 := by
@@ -1017,6 +1061,8 @@ theorem abs_fabiusUniformSpline_le_one_of_mem_Icc
   · linarith [hs.1]
   · exact hs.2
 
+/-- The prefix sums are nonnegative, the coordinates lying in `[0,1]`.  This
+gives the left support bound `uniformPartialCDF_eq_zero_of_neg`. -/
 lemma uniformPartialSum_nonneg (p : ℕ) (ω : SampleSpace) :
     0 ≤ uniformPartialSum p ω := by
   apply Finset.sum_nonneg
@@ -1040,6 +1086,8 @@ lemma uniformPartialSum_le_one_sub_inv_pow (p : ℕ) (ω : SampleSpace) :
           field_simp
           ring
 
+/-- Truncation only loses mass: the length `p` prefix never exceeds the full
+random series.  This is the lower half of `uniformPartialCDF_sandwich`. -/
 lemma uniformPartialSum_le_weightedCoordinateSum (p : ℕ) (ω : SampleSpace) :
     uniformPartialSum p ω ≤ weightedCoordinateSum ω := by
   rw [uniformPartialSum, weightedCoordinateSum]
@@ -1047,6 +1095,9 @@ lemma uniformPartialSum_le_weightedCoordinateSum (p : ℕ) (ω : SampleSpace) :
     (fun i hi =>
       div_nonneg (div_nonneg (ω i).property.1 (by norm_num)) (by positivity))
 
+/-- Complementary tail bound: the full random series exceeds its length `p`
+prefix by at most `1 / 2 ^ p`, by summing the geometric majorant.  This is the
+upper half of `uniformPartialCDF_sandwich`. -/
 lemma weightedCoordinateSum_le_uniformPartialSum_add (p : ℕ) (ω : SampleSpace) :
     weightedCoordinateSum ω ≤ uniformPartialSum p ω + 1 / (2 : ℝ) ^ p := by
   let f : ℕ → ℝ := fun i => (ω i : ℝ) / 2 / (2 : ℝ) ^ i
@@ -1186,6 +1237,10 @@ theorem monotoneOn_fabiusUniformSpline_all (p : ℕ) :
   | succ p =>
       exact monotoneOn_fabiusUniformSpline (p + 1) (by omega)
 
+/-- Two-sided comparison of the finite CDF with the limiting CDF
+`weightedSumCDF`: the truncation shows up only as the threshold shift
+`1 / 2 ^ p`, never as an additive error on the value.  Squeezing this gives
+`uniformPartialCDF_tendsto_weightedSumCDF`. -/
 theorem uniformPartialCDF_sandwich (p : ℕ) (x : ℝ) :
     weightedSumCDF x ≤ uniformPartialCDF p x ∧
       uniformPartialCDF p x ≤ weightedSumCDF (x + 1 / (2 : ℝ) ^ p) := by
@@ -1200,6 +1255,9 @@ theorem uniformPartialCDF_sandwich (p : ℕ) (x : ℝ) :
       (add_le_add_left hω _)
     simp
 
+/-- The finite CDFs converge to `weightedSumCDF` at every real point, by
+squeezing the sandwich between two arguments that tend to `x` and using
+continuity of the limiting CDF. -/
 theorem uniformPartialCDF_tendsto_weightedSumCDF (x : ℝ) :
     Tendsto (fun p : ℕ => uniformPartialCDF p x) atTop (nhds (weightedSumCDF x)) := by
   have hshift : Tendsto (fun p : ℕ => x + 1 / (2 : ℝ) ^ p)
@@ -1217,6 +1275,10 @@ theorem uniformPartialCDF_tendsto_weightedSumCDF (x : ℝ) :
   · exact fun p => (uniformPartialCDF_sandwich p x).1
   · exact fun p => (uniformPartialCDF_sandwich p x).2
 
+/-- Midpoint-corrected form of `uniformPartialCDF_sandwich`, with the threshold
+shifted symmetrically by `1 / 2 ^ (p + 1)`.  Together with the Lipschitz bound
+for `fabiusReal` this yields the explicit `(2 ^ p)⁻¹` spline error proved in
+`FabiusFunction.FabiusComputability`. -/
 theorem uniformCenteredPartialCDF_sandwich (p : ℕ) (x : ℝ) :
     weightedSumCDF (x - 1 / (2 : ℝ) ^ (p + 1)) ≤
         uniformCenteredPartialCDF p x ∧
@@ -1229,6 +1291,8 @@ theorem uniformCenteredPartialCDF_sandwich (p : ℕ) (x : ℝ) :
   field_simp
   ring
 
+/-- The midpoint-corrected finite CDFs converge to `weightedSumCDF` at every
+real point. -/
 theorem uniformCenteredPartialCDF_tendsto_weightedSumCDF (x : ℝ) :
     Tendsto (fun p : ℕ => uniformCenteredPartialCDF p x)
       atTop (nhds (weightedSumCDF x)) := by
@@ -1263,6 +1327,10 @@ theorem uniformCenteredPartialCDF_tendsto_weightedSumCDF (x : ℝ) :
   · exact fun p => (uniformCenteredPartialCDF_sandwich p x).1
   · exact fun p => (uniformCenteredPartialCDF_sandwich p x).2
 
+/-- On the fundamental interval `[0,1]` the centered splines converge pointwise
+to the bounded Fabius function.  The identification
+`fabiusUniformSpline_eq_centeredPartialCDF` invoked here is stated in positive
+degree, so the limit is transferred along that eventual equality. -/
 theorem fabiusUniformSpline_tendsto_fabiusReal_of_mem_Icc
     {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop
@@ -1272,6 +1340,10 @@ theorem fabiusUniformSpline_tendsto_fabiusReal_of_mem_Icc
   filter_upwards [eventually_ge_atTop 1] with p hp
   exact (fabiusUniformSpline_eq_centeredPartialCDF p (by omega) hx).symm
 
+/-- The same limit phrased through the signed global extension, still only on
+`[0,1]`.  The block-translation argument in
+`fabiusUniformSpline_tendsto_globalFabius` extends it to the whole nonnegative
+axis. -/
 theorem fabiusUniformSpline_tendsto_globalFabius_of_mem_Icc
     {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop

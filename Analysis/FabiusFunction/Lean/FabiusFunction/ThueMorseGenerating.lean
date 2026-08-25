@@ -200,11 +200,6 @@ theorem coeff_eq6_finite (k r n : ℕ) (hn : n < 2 ^ r) :
   rw [one_sub_X_pow_mul_iteratedPrefixSeries]
   exact (coeff_finite_thueMorse_product r n hn).symm
 
-private lemma choose_succ_two_grid (q : ℕ) :
-    (q + 1).choose 2 = q.choose 2 + q := by
-  rw [show q + 1 = Nat.succ q by omega, Nat.choose_succ_succ]
-  simp [Nat.choose_one_right, add_comm]
-
 /-- Equation (1), interpreted literally at its dyadic grid points. -/
 def paperPrefixGridValue (k j : ℕ) : ℚ :=
   (iteratedPrefix k j : ℚ) / (2 : ℚ) ^ k.choose 2
@@ -224,7 +219,7 @@ theorem paperPrefixGridValue_succ_sub (q j : ℕ) :
       paperPrefixGridValue q (j + 1) / (2 : ℚ) ^ q := by
   rw [paperPrefixGridValue, paperPrefixGridValue, paperPrefixGridValue]
   rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two_grid, pow_add, div_div]
+  rw [choose_succ_two, pow_add, div_div]
 
 /-- The corrected grid obeys the same normalization recurrence, with each
 prefix order shifted up by one. -/
@@ -235,7 +230,7 @@ theorem correctedPrefixGridValue_succ_sub (q j : ℕ) :
   rw [correctedPrefixGridValue, correctedPrefixGridValue,
     correctedPrefixGridValue]
   rw [← sub_div, ← Int.cast_sub, iteratedPrefix_succ_sub]
-  rw [choose_succ_two_grid, pow_add, div_div]
+  rw [choose_succ_two, pow_add, div_div]
 
 /-- The exact forward-difference identity, before restricting the argument of
 the lower-level grid value to `[0,1]`. -/
