@@ -118,6 +118,25 @@ both endpoints.  The primary public results are
 forms available for both.  No corresponding equality is asserted outside
 the natural Legendre interval.
 
+`FabiusTranslatedLegendreSeries.lean` translates this expansion to the
+signed global Fabius function on `[0,2]`.  It proves
+
+```text
+P_(2n)(x-1) = sum (j = 0..2n),
+  (-1)^j * 2^(-j) * choose(2n,j) * choose(j+2n,j) * x^j,
+```
+
+and substitutes this finite polynomial into the coefficient formula above.
+The resulting public `HasSum` and `tsum` theorems display the complete nested
+`k`- and `j`-sums, including the integer exponent
+`k - j + 2*k^2 - 2*n`.  They use `globalFabius` both for the value at `x`
+and for every dyadic value inside the coefficient.  This signed/global
+interpretation is essential on `1 < x ≤ 2`; the bounded CDF-style function is
+clamped to one there.  At `x = 0`, natural powers use the convention
+`0^0 = 1`.  The primary endpoints are
+`Fabius.hasSum_globalFabius_translatedLegendre_formula` and
+`Fabius.globalFabius_eq_tsum_translatedLegendre_formula`.
+
 ## Paper coverage
 
 `Paper05442.lean` is the public import for the first paper.  It includes all
