@@ -15,7 +15,8 @@ For parameter-dependent bounded coefficients, a small polynomial calculus
 shows that evaluating this formal discrepancy is `O(scale^N)`.  The analytic
 component supplies the logarithmic Taylor remainder and stability under an
 `O(scale^N)` perturbation.  These pieces culminate in
-`HasAsymptoticExpansion.real_log`.
+`HasAsymptoticExpansion.real_log`; the Taylor remainder is also available
+after pullback along any map tending to zero.
 -/
 
 set_option autoImplicit false
@@ -549,6 +550,16 @@ theorem realLog_sub_realLogTaylor_isBigO (N : ℕ) :
       exact Complex.isBigO_ofReal_right.mp
         (Complex.isBigO_ofReal_left.mp hcast)
 
+/-- Pull the logarithmic Taylor remainder back along any map tending to zero.
+This is the filter-generic composition form of
+`realLog_sub_realLogTaylor_isBigO`. -/
+theorem realLog_sub_realLogTaylor_comp_isBigO
+    (N : ℕ) {u : α → ℝ} (hu : Tendsto u l (𝓝 0)) :
+    (fun x => Real.log (1 + u x) - realLogTaylor N (u x)) =O[l]
+      (fun x => u x ^ N) := by
+  simpa only [Function.comp_def] using
+    (realLog_sub_realLogTaylor_isBigO N).comp_tendsto hu
+
 /-- If `u - v` is `O (r)` and both `u` and `v` are `O (1)`, then
 `u ^ n - v ^ n` is `O (r)`, by the geometric factorization of
 `u ^ n - v ^ n`. -/
@@ -657,7 +668,7 @@ theorem HasAsymptoticExpansion.real_log_of_unit_constantCoeff
         ring
       · rfl
     have hTaylor :=
-      (realLog_sub_realLogTaylor_isBigO N).comp_tendsto huTendsto
+      realLog_sub_realLogTaylor_comp_isBigO N huTendsto
     have hA := hTaylor.trans (hf1.pow N)
     have hB := realLogTaylor_sub_isBigO huv huOne hvOne N
     have hC := formalLogRemainderEvaluation_isBigO h.1 hcoeff0 hscaleO N
