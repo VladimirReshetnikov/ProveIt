@@ -64,10 +64,15 @@ agreement on *any* subset of `[0,1]` with nonempty interior — that
 generalization came from a `codex/*` workstream and is kept — and the same
 holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 
-All 100 theorems exported by the five new modules — `ElementaryFunction`,
+All 98 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
-anywhere.  The audit is a generated `#print axioms` sweep over every
+anywhere, and so do the five inverse-calculus theorems this workstream
+contributed to `FabiusInverse.lean` (`fabiusInv_mem_Ioo`,
+`fabiusInv_hasDerivAt`, `deriv_fabiusInv`, `deriv_fabiusInv_pos`,
+`deriv_fabiusInv_eq_inv_two_mul_rvachevUp`).  The count fell from 100 to 98
+because two of them moved out of `InverseNotElementary.lean` in that
+upstreaming, not because anything was dropped.  The audit is a generated `#print axioms` sweep over every
 `theorem`/`lemma` at any namespace depth in those files, run against the fully
 built closure; it is re-run after every change to them.
 
