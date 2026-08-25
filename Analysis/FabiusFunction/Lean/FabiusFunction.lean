@@ -17,6 +17,7 @@ import FabiusFunction.Regularity
 import FabiusFunction.Convexity
 import FabiusFunction.EffectiveFlatness
 import FabiusFunction.SharpFlatness
+import FabiusFunction.FabiusInverse
 import FabiusFunction.GlobalBounds
 import FabiusFunction.BoundedDerivatives
 import FabiusFunction.NowhereAnalytic
@@ -54,6 +55,12 @@ the exact support `(-1,1)` of `up` and its strict unimodality, convexity of
 `|F^(k)| ≤ 2^C(k+1,2)` with the value attained, and the exact real-analytic
 locus: `F` is analytic at `x` if and only if `x ∉ [0,1]`.
 
+The regularity layer also inverts the bijection `F : [0,1] → [0,1]`.  The
+inverse is continuous and monotone on all of `ℝ` once totalized by the
+endpoint values, and the flatness bounds transport through it into lower
+bounds `y ≤ 2^C(n+1,2) · F⁻¹(y)^n`: the inverse is steeper than every root at
+the origin, with `F⁻¹(y)/y → ∞` as `y → 0⁺`.
+
 The small-argument asymptotic layer is completed by closed forms for the
 objects that previously existed only as recursions.  The differential
 recurrence for the periodic saddle jets is solved: the `n`-th jet is a
@@ -65,7 +72,7 @@ of `I` multiplying a jet term and a universal jet-free tail.  Together these
 make every coefficient of the all-orders expansion an explicit finite
 expression with rational coefficients in `1 / log 2` and the derivatives of
 the periodic correction, rather than the output of a recursion.  See
-`docs/SMALL_ARGUMENT_ASYMPTOTICS.md`.
+`docs/Small_Argument_Asymptotics/`.
 
 Finally, the canonical bounded Fabius function is proved computable in the
 Grzegorczyk sense: a primitive-recursive centered-spline evaluator preserves

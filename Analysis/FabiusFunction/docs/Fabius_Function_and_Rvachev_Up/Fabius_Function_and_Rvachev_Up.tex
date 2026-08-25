@@ -48,6 +48,12 @@
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
 \setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
 
+% Long unbreakable inline mathematics occasionally leaves a line with no legal
+% break point.  A small emergency stretch lets TeX loosen such a line rather
+% than let it protrude into the margin; it applies only to lines that would
+% otherwise be overfull.
+\setlength{\emergencystretch}{2em}
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -127,16 +133,29 @@ a probability law of an infinite weighted sum of independent uniform random vari
 infinite convolution, an infinite product of sinc functions, a Thue--Morse translate sum,
 and a family of exact rational recurrences.
 
-This article develops these descriptions and proves their equivalence.  Particular emphasis
+This article develops these descriptions and proves their equivalence.  The elementary
+theory is carried further than is usual: the exact shape of $F$ and $\Up$, including strict
+unimodality, the unique inflection point, and the fact that $2$ is the \emph{least} Lipschitz
+constant; the sharp uniform derivative bound $2^{\binom{m+1}{2}}$, which is attained; two
+effective flatness estimates with explicit constants; and the exact real-analytic locus of
+each of the three functions, endpoints included.
+
+Particular emphasis
 is placed on two subjects for which the formal development goes substantially beyond the
 usual short accounts.  First, every dyadic value is evaluated by an explicit finite
 Thue--Morse/moment formula, and also by a fast terminating recursion that removes one set bit
-of the numerator at each step.  Second, the small-argument asymptotic is derived by an exact
-negative-Laplace decomposition and a quantitative saddle-point argument.  The correct main
-term contains a genuine nonconstant periodic fluctuation in the lower Lambert coordinate.
-Its Fourier coefficients are explicit Gamma--zeta values.  Omitting that fluctuation, as in
-a frequently reproduced elementary formula, destroys the claimed inverse-logarithmic error
-bound.  The first saddle correction and the full all-orders expansion are also described.
+of the numerator at each step.  The mechanism behind the first of these is a half-base
+$q$-calculus, developed here in full: the Gaussian binomial row at base $1/2$ is the
+leading-coefficient functional for Lagrange interpolation through the geometric nodes
+$-1,-2,\ldots,-2^n$, and the Thue--Morse signs supply a second, independent triangular
+cancellation inside each dyadic block.  Second, the small-argument asymptotic is derived by
+an exact negative-Laplace decomposition and a quantitative saddle-point argument.  The
+correct main term contains a genuine nonconstant periodic fluctuation in the lower Lambert
+coordinate.  Its Fourier coefficients are explicit Gamma--zeta values, and the fluctuation is
+\emph{unique}: no other continuous periodic function completes the expansion.  Omitting it,
+as in a frequently reproduced elementary formula, destroys the claimed inverse-logarithmic
+error bound.  The first saddle correction and the full all-orders expansion are also
+described, together with a numerical check against exact rational values.
 
 The presentation follows the theorem structure of the Lean formalization under
 \repo, while translating the machine-oriented decomposition into conventional mathematical
@@ -1809,6 +1828,154 @@ constructs $\Up$ as an infinite convolution of shrinking boxes, a perspective us
 approximation theory and wavelet analysis.
 
 
+The three properties recorded next make the convergence quantitative and expose the
+mechanism behind it.  They also justify the statement, used repeatedly later, that each
+additional box kernel buys exactly one more derivative.
+
+\begin{proposition}[Tail factorization, derivative recursion, and error at the tail scale]
+\label{prop:res-convolutions}
+Let $u_N=b_0*b_1*\cdots*b_N$ be the finite convolution \eqref{eq:finite-convolution}, built
+from the $N+1$ box densities \eqref{eq:box-density}.  Then the following hold.
+\begin{enumerate}
+\item Each $u_N$ is a probability density with
+\begin{equation}
+ \supp u_N=\left[-\left(1-2^{-N-1}\right),\,1-2^{-N-1}\right].
+                                                          \label{eq:res-conv-support}
+\end{equation}
+\item For every $N\ge0$ the bump factors exactly as the finite stage convolved with a tail
+kernel supported in a symmetric interval of radius $2^{-N-1}$ about the origin:
+\begin{equation}
+ \Up(x)=\int_{-2^{-N-1}}^{2^{-N-1}}
+ u_N(x-t)\,2^{\,N+1}\Up\!\left(2^{\,N+1}t\right)\dd t,
+                                                          \label{eq:res-tail-factorization}
+\end{equation}
+the second factor being itself a probability density.
+\item For every $N\ge1$ the stages obey the exact refinement identity
+\begin{equation}
+ u_N(x)=\int_{2x-1}^{2x+1}u_{N-1}(t)\dd t,                \label{eq:res-finite-refinement}
+\end{equation}
+and hence the derivative recursion
+\begin{equation}
+ u_N'(x)=2\bigl(u_{N-1}(2x+1)-u_{N-1}(2x-1)\bigr)
+ =2^{N}\left(u_{N-1}\!\left(x+2^{-N-1}\right)-u_{N-1}\!\left(x-2^{-N-1}\right)\right).
+                                                          \label{eq:res-derivative-recursion}
+\end{equation}
+Consequently $u_N\in C^{N-1}(\R)$ for $N\ge1$, and no better: $u_N^{(N)}$ is a step function.
+\item For every bounded uniformly continuous $f:\R\to\C$,
+\begin{equation}
+ \left|\int_{\R}f(x)u_N(x)\dd x-\int_{\R}f(x)\Up(x)\dd x\right|
+ \le\operatorname{osc}\!\left(f;2^{-N-1}\right),          \label{eq:res-tail-error}
+\end{equation}
+where $\operatorname{osc}(f;\delta)=\sup\left\{|f(s)-f(s')|:|s-s'|\le\delta\right\}$ is the
+modulus of continuity of $f$ at scale $\delta$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For (1), each $b_n$ of \eqref{eq:box-density} is a probability density supported on
+$[-2^{-n-1},2^{-n-1}]$.  A convolution of probability densities is a probability density, and
+the support of a convolution of compactly supported nonnegative densities on intervals is the
+sum of the supports, so the radius is
+$\sum_{n=0}^{N}2^{-n-1}=1-2^{-N-1}$.  This is the first place where the indexing matters: the
+$N$th stage carries $N+1$ factors, so the radius is $1-2^{-N-1}$ and not $1-2^{-N}$; the
+radii increase to the radius $1$ of $\supp\Up$ without ever attaining it.
+
+For (2), split the series \eqref{eq:random-Y} at the cutoff:
+$Y=Y_N+\left(Y-Y_N\right)$, where the two summands are independent and
+\[
+ Y-Y_N=\sum_{n=N+1}^{\infty}\frac{V_n}{2^{\,n+1}}
+ =2^{-N-1}\sum_{m=0}^{\infty}\frac{V_{N+1+m}}{2^{\,m+1}}.
+\]
+The last series is an independent copy of $Y$, so $Y-Y_N$ has the law of $2^{-N-1}Y$.  By
+\eqref{eq:up-density} the density of $Y$ is $\Up$, so the density of $Y-Y_N$ is
+$t\mapsto2^{\,N+1}\Up\bigl(2^{\,N+1}t\bigr)$, supported in $[-2^{-N-1},2^{-N-1}]$ because
+$\Up$ vanishes off $[-1,1]$.  Densities of independent summands convolve, and the density of
+$Y_N$ is $u_N$; this is \eqref{eq:res-tail-factorization}.
+
+For (3), the two forms in \eqref{eq:res-derivative-recursion} come from peeling the outermost
+and the innermost factor respectively.  Peeling the outermost, $u_N=u_{N-1}*b_N$ gives
+\[
+ u_N(x)=2^{N}\int_{x-2^{-N-1}}^{x+2^{-N-1}}u_{N-1}(t)\dd t,
+\]
+and differentiating the endpoints produces the second expression.  Peeling the innermost,
+observe from \eqref{eq:box-density} that $b_{n+1}(x)=2\,b_n(2x)$ for every $n$; hence the
+convolution of the last $N$ factors is a rescaling of the previous stage,
+\[
+ \left(b_1*\cdots*b_N\right)(x)=2\,u_{N-1}(2x),
+\]
+and therefore, with $b_0=\mathbf 1_{[-1/2,1/2]}$ and the substitution $t=2x-2s$,
+\[
+ u_N(x)=\int_{-1/2}^{1/2}2\,u_{N-1}\bigl(2(x-s)\bigr)\dd s
+ =\int_{2x-1}^{2x+1}u_{N-1}(t)\dd t,
+\]
+which is \eqref{eq:res-finite-refinement}.  Differentiating it gives the first expression in
+\eqref{eq:res-derivative-recursion}.  Both displays are exact finite-stage analogues of the
+integral form of the Rvachev equation and of \eqref{eq:up-diffeq} itself, with the single
+difference that the limit equation relates $\Up$ to $\Up$ whereas the finite one relates
+stage $N$ to stage $N-1$.
+
+That difference is precisely why one more convolution buys one more derivative.  The right
+side of \eqref{eq:res-derivative-recursion} involves $u_{N-1}$ itself, never a derivative of
+$u_{N-1}$.  So if $u_{N-1}\in C^{k}$, then $u_N'\in C^{k}$, that is $u_N\in C^{k+1}$.  The
+stage $u_0=b_0$ is a bounded step function and $u_1$, being an integral of it by
+\eqref{eq:res-finite-refinement}, is continuous; induction along
+\eqref{eq:res-derivative-recursion} then gives $u_N\in C^{N-1}$ for all $N\ge1$.  Iterating
+\eqref{eq:res-derivative-recursion} $N$ times instead expresses $u_N^{(N)}$ as a signed
+combination of dilates $u_0\bigl(2^{N}x+c\bigr)$ with pairwise distinct odd integers $c$;
+their jump sets are disjoint, so no cancellation occurs and $u_N^{(N)}$ genuinely jumps.
+Hence the regularity is exactly $C^{N-1}$, and passing to the limit, where the equation
+becomes self-referential, is what makes $\Up$ infinitely differentiable.
+
+For (4), integrate \eqref{eq:res-tail-factorization} against $f$, or equivalently use the
+coupling supplied by the same splitting.  By \eqref{eq:up-density},
+$\int f\Up=\E f(Y)$ and $\int fu_N=\E f(Y_N)$, while
+\[
+ \left|Y-Y_N\right|\le\sum_{n=N+1}^{\infty}\frac1{2^{\,n+1}}=2^{-N-1}
+\]
+holds surely, since $|V_n|\le1$.  Therefore
+$\left|f(Y)-f(Y_N)\right|\le\operatorname{osc}\bigl(f;2^{-N-1}\bigr)$ pointwise, and taking
+expectations gives \eqref{eq:res-tail-error}.  In particular
+$\int fu_N\to\int f\Up$ for every bounded uniformly continuous $f$, with a rate governed by
+the tail radius $2^{-N-1}$ and by nothing else.
+\end{proof}
+
+\begin{remark}[The first two stages, checked by hand]
+\label{rem:res-first-stages}
+At $N=0$ there is a single factor and $u_0=b_0=\mathbf 1_{[-1/2,1/2]}$, whose support radius
+is $1-2^{-1}=1/2$, in agreement with \eqref{eq:res-conv-support}.  It is a step function, so
+the regularity claim in part (3) begins at $N=1$, as it must.
+
+At $N=1$ the radius is $\tfrac12+\tfrac14=\tfrac34=1-2^{-2}$, again as predicted.  Formula
+\eqref{eq:res-finite-refinement} gives
+\[
+ u_1(x)=\int_{2x-1}^{2x+1}\mathbf 1_{[-1/2,1/2]}(t)\dd t
+ =\left|\,[2x-1,2x+1]\cap\left[-\tfrac12,\tfrac12\right]\right|,
+\]
+the trapezoid that vanishes outside the interval $[-3/4,3/4]$, rises with slope $2$ on
+$[-3/4,-1/4]$, equals $1$ on $[-1/4,1/4]$, and then falls with slope $-2$ on $[1/4,3/4]$.
+Both expressions in
+\eqref{eq:res-derivative-recursion} return exactly that derivative: the dilated form is
+\[
+ 2\bigl(u_0(2x+1)-u_0(2x-1)\bigr)
+ =2\left(\mathbf 1_{[-3/4,-1/4]}(x)-\mathbf 1_{[1/4,3/4]}(x)\right),
+\]
+and the translated form is
+\[
+ 2\left(u_0\!\left(x+\tfrac14\right)-u_0\!\left(x-\tfrac14\right)\right)
+ =2\left(\mathbf 1_{[-3/4,1/4]}(x)-\mathbf 1_{[-1/4,3/4]}(x)\right),
+\]
+which is the same function, the overlap $[-1/4,1/4]$ cancelling.  Thus $u_1$ is continuous
+with corners, that is $u_1\in C^0\setminus C^1$.
+
+One stage further, \eqref{eq:res-derivative-recursion} reads
+$u_2'(x)=2\bigl(u_1(2x+1)-u_1(2x-1)\bigr)$, which is continuous because $u_1$ is, and which
+vanishes for $|x|\le1/8$ since both arguments then lie in the plateau $[-1/4,1/4]$ of $u_1$.
+That flat piece is confirmed directly from $u_2=u_1*b_2$: for $|x|\le1/8$ the window
+$[x-\tfrac18,x+\tfrac18]$ lies inside $[-1/4,1/4]$, so
+$u_2(x)=4\int_{x-1/8}^{x+1/8}u_1=4\cdot\tfrac14=1$.  Hence $u_2\in C^1$: one more
+convolution, one more derivative.
+\end{remark}
+
 \subsection{Combinatorial step functions and the half-weight convention}
 
 The convolutions \eqref{eq:finite-convolution} are piecewise polynomial of growing degree.
@@ -3250,7 +3417,8 @@ $n$ & $C_n$ & $D_n$\\
 4 & $2788989$ & $4004$\\
 5 & $14754820185$ & $494760$\\
 6 & $402830065455939$ & $150120600$\\
-7 & --- & $107969547840$\\
+7 & $54259734183964303995$ & $107969547840$\\
+8 & $34931036957548128175343565$ & $179605731622464$\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3554,6 +3722,13 @@ Eliminating $d_n$ between \eqref{eq:d-recurrence} and
 The restriction $n\ge1$ is essential: at $n=0$ the denominator $2^n-1$ is zero and the
 sum is empty, whereas $V_0=F(1)=1$.  Thus the initial value is part of the recurrence data,
 not a removable endpoint convention.
+
+The point survives every attempt to legislate it away.  In a formal development in which
+division by zero is totalized, so that $x/0$ is given the value $0$, the instance $n=0$ of
+\eqref{eq:inverse-dyadic-recurrence} is not vacuous but false: its right side reduces to
+zero, both because the sum is empty and because the prefactor has a zero denominator, while
+$V_0=1$.  No convention makes the recurrence assertable at $n=0$, and the restriction is
+therefore part of the statement rather than an artifact of how it is written.
 
 The triangular powers of two disappear after the normalization
 \begin{equation}
@@ -4212,6 +4387,42 @@ truncation.  It is not, however, an efficient one: the outer range has length $a
 the bit recursion of Algorithm~\ref{alg:dyadic-evaluator} needs only $\wt(a)$ steps.
 \end{remark}
 
+\begin{example}[The closed formula evaluated]
+\label{ex:dy-closed-worked}
+The formula is stated, globalized, used to bound denominators, and proved finite above
+without ever being evaluated.  Three small cases, using $c_0=1$ and $c_1=1/9$.
+
+For $n=2$, $a=1$ the outer sum has the single term $h=0$ with $\varepsilon_0=+1$ and
+$2a-2h-1=1$, so
+\begin{equation*}
+ F\!\left(\frac14\right)=\frac{2^{-3}}{2!}
+ \left[\binom20c_0\cdot1^{2}+\binom22c_1\cdot1^{0}\right]
+ =\frac1{16}\left(1+\frac19\right)=\frac5{72}.
+\end{equation*}
+
+For $n=3$, $a=1$ the same single term gives
+\begin{equation*}
+ F\!\left(\frac18\right)=\frac{2^{-6}}{3!}
+ \left[\binom30c_0\cdot1^{3}+\binom32c_1\cdot1^{1}\right]
+ =\frac1{384}\left(1+\frac39\right)=\frac1{288}.
+\end{equation*}
+
+For $n=3$, $a=3$ the Thue--Morse signs finally do some work: $h=0,1,2$ carry
+$\varepsilon_h=+1,-1,-1$ and $2a-2h-1=5,3,1$, so
+\begin{align*}
+ F\!\left(\frac38\right)
+ &=\frac{2^{-6}}{3!}\left[\left(5^{3}+3\cdot\frac{5}{9}\right)
+   -\left(3^{3}+3\cdot\frac{3}{9}\right)
+   -\left(1^{3}+3\cdot\frac{1}{9}\right)\right]\\
+ &=\frac1{384}\left[\left(125+\frac53\right)-28-\left(1+\frac13\right)\right]
+ =\frac1{384}\cdot\frac{292}{3}=\frac{73}{288},
+\end{align*}
+in agreement with the level-$4$ table below.  The third case is the smallest one in which the
+signs are not all positive, and it shows the characteristic feature of the formula: the
+individual bracketed terms are much larger than the answer, and the cancellation among them
+is what produces a value in $[0,1]$.
+\end{example}
+
 \subsection{Thue--Morse cancellation}
 
 The mechanism that makes the dyadic formulas simplify is the Prouhet cancellation carried by
@@ -4566,6 +4777,31 @@ $7/16$&$777743/2073600$&$15/16$&$2073457/2073600$\\
 \end{tabular}
 \end{center}
 
+\subsection{The odd numerators at level $5$}
+
+One tier further is worth recording, because every numerator at level $4$ has at most two set
+bits, so the level-$4$ table never exercises a three-step bit recursion.  At level $5$ the
+values with odd numerator all share the denominator $33\,177\,600$, and the even numerators
+reduce to earlier levels.  Writing $F(a/32)=N_a/33\,177\,600$:
+
+\begin{center}
+\begin{tabular}{c@{\qquad}r@{\qquad\qquad}c@{\qquad}r}
+\toprule
+$a$&$N_a$&$a$&$N_a$\\
+\midrule
+$1$&$19$&$9$&$3\,470\,381$\\
+$3$&$25\,219$&$11$&$6\,555\,581$\\
+$5$&$334\,781$&$13$&$10\,393\,219$\\
+$7$&$1\,396\,781$&$15$&$14\,515\,219$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each fraction is already in lowest terms, and the reflection
+$N_{32-a}=33\,177\,600-N_a$ supplies the upper half.  The numerator $a=7$, with three set
+bits, is the first entry that costs the bit recursion three reduction steps; $a=15$ costs
+four.  These make better regression tests than the level-$4$ values for exactly that reason.
+
 \subsection{Denominator bounds}
 
 Let
@@ -4598,6 +4834,32 @@ $\Up(a/2^n)$ with odd $a$ in the support.  The theorem gives the explicit divisi
  \Delta_n\mid n!\,2^{\binom{n+1}{2}}
  \bigl(2\lfloor n/2\rfloor+1\bigr)!!M_{\lfloor n/2\rfloor}. \label{eq:lcm-bound}
 \end{equation}
+A complementary lower statement is available at no cost, and it is what makes the
+normalization of the conjecture below meaningful.
+
+\begin{proposition}[The reciprocal power is one of the samples]
+\label{prop:dy-delta-lower}
+For every $n\ge1$ the reduced denominator of $F(2^{-n})$ divides $\Delta_n$.  Consequently
+\begin{equation}
+ \vtwo(\Delta_n)\ge\binom n2+1+\vtwo(n!).                  \label{eq:dy-delta-lower}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By the fold \eqref{eq:up-absolute}, $F(2^{-n})=\Up(1-2^{-n})=\Up\bigl((2^n-1)/2^n\bigr)$, and
+the numerator $2^n-1$ is odd.  So $F(2^{-n})$ is itself one of the samples whose denominators
+$\Delta_n$ is the least common multiple of, and its reduced denominator therefore divides
+$\Delta_n$.  The valuation statement follows from \eqref{eq:valuation-inverse}, which gives
+$\vtwo\bigl(F(2^{-n})\bigr)=-\binom n2-1-\vtwo(n!)$, so the reduced denominator contains
+exactly that power of two.
+\end{proof}
+
+Together, \eqref{eq:lcm-bound} and \eqref{eq:dy-delta-lower} trap $\Delta_n$ between an
+explicit multiple and an explicit power of two.  In particular the power of two in $\Delta_n$
+is pinned from below, which is what the normalizer of the conjecture below relies on: dividing
+$\Delta_n$ by $2^{\binom n2}$ is only informative because that much of a power of two is known
+to be present.
+
 The exact closed form of $\Delta_n$ is subtler.  The source paper records a conjectural
 factorization; the formal development correctly retains it as a conjecture rather than a
 theorem.
@@ -4938,6 +5200,65 @@ and the reciprocal-power theorem \eqref{eq:F-inverse-power} reads
 $F(2^{-n})=2^{-\binom n2}a_n$.  The first values are
 $a_0=1$, $a_1=1/2$, $a_2=5/36$, $a_3=1/36$, $a_4=143/32400$, $a_5=19/32400$,
 $a_6=1153/17146080$.
+
+One analytic fact is worth recording before the finite theory begins, because it shows that
+the geometric grid of \cref{subsec:qs-why-geometric} is already visible in the moment series
+itself, and not only in the interpolation stencil built later.  By
+\eqref{eq:qs-a-and-series} and \eqref{eq:G-def} the two normalizations agree,
+$\mathscr A(z)=G(z)$, so $\mathscr A$ is an entire function and not merely a formal series.
+
+\begin{proposition}[Entire dyadic product for the moment series]
+\label{prop:blu-entire-product}
+For every $z\in\C$,
+\begin{equation}
+ \mathscr A(z)=\prod_{j=1}^{\infty}E\!\left(\frac z{2^j}\right)
+ =\prod_{j=1}^{\infty}\frac{\e^{z/2^j}-1}{z/2^j},          \label{eq:blu-entire-product}
+\end{equation}
+each factor being given its removable value $1$ at $z=0$.  The product converges absolutely
+and uniformly on every disk $|z|\le R$, so its limit is entire.
+\end{proposition}
+
+\begin{proof}
+Each factor is entire, since $E(w)=\sum_{i\ge0}w^i/(i+1)!$.  For $|w|\le R$,
+\begin{equation*}
+ |E(w)-1|\le\sum_{i\ge1}\frac{|w|^i}{(i+1)!}
+ \le|w|\sum_{i\ge1}\frac{|w|^{i-1}}{(i-1)!}
+ =|w|\e^{|w|},
+\end{equation*}
+using $(i+1)!\ge(i-1)!$.  Taking $w=z/2^j$ with $|z|\le R$ gives
+$|E(z/2^j)-1|\le R\e^{R}2^{-j}$, and $\sum_{j\ge1}R\e^R2^{-j}=R\e^R<\infty$.  A product
+$\prod_j(1+u_j)$ of holomorphic factors whose deviations $u_j$ are uniformly summable on a
+compact set converges absolutely and uniformly there, and its limit is holomorphic; since
+$R$ is arbitrary, the limit is entire.
+
+It remains to identify the limit.  Putting $z/2$ for $z$ in \eqref{eq:G-functional} gives
+$G(z)=E(z/2)\,G(z/2)$, and iterating $J$ times,
+\begin{equation*}
+ G(z)=\left(\prod_{j=1}^{J}E\!\left(\frac z{2^j}\right)\right)G\!\left(\frac z{2^J}\right).
+\end{equation*}
+The function $G$ is continuous with $G(0)=d_0=1$, so $G(z/2^J)\to1$ uniformly on $|z|\le R$
+as $J\to\infty$.  Letting $J\to\infty$ in the display and using $\mathscr A=G$ gives
+\eqref{eq:blu-entire-product}.
+\end{proof}
+
+The identity \eqref{eq:negative-Laplace-product} is the restriction of
+\eqref{eq:blu-entire-product} to the negative real axis, where it is used as a Laplace
+transform; the statement above is the entire version, valid on all of $\C$, and it costs no
+extra work.  Note also what the product says structurally.  Its scales are
+$1/2,1/4,1/8,\ldots$, a geometric progression of ratio $1/2$, and the factor attached to
+each scale is one and the same function $E$.  Thus $\mathscr A$ is a multiplicative object
+over a base-$1/2$ geometric grid before any Gaussian binomial coefficient has been written
+down.  The half-base $q$-calculus that follows does not impose that grid on the problem; it
+reads off a grid the refinement equation \eqref{eq:q-moment-refinement} has already fixed.
+The zeros of \eqref{eq:blu-entire-product} are transparent as well, and they confirm the
+identification.  The factor $E(z/2^j)$ vanishes exactly at the points $z=2^{j+1}\pi\ii\ell$
+with $\ell\in\Z\setminus\{0\}$, so $\mathscr A$ vanishes precisely on
+$4\pi\ii\bigl(\Z\setminus\{0\}\bigr)$, and the number of factors responsible for the zero at
+$4\pi\ii m$ is the number of indices $j\ge1$ with $2^{j-1}$ dividing $m$, namely
+$1+\vtwo(|m|)$.  That is exactly the multiplicity supplied by the canonical product
+\eqref{eq:four-product-canonical} through \eqref{eq:G-Fourier}, so the dyadic product and
+the sinc product are two factorizations of one entire function, grouped by scale in the
+first case and by zero in the second.
 
 \subsection{Why a geometric calculus should be expected}
 \label{subsec:qs-why-geometric}
@@ -5519,6 +5840,64 @@ annihilates powers of the geometric nodes below degree $n$; the coefficient iden
 coefficients of the normalized Thue--Morse factors.  No summation theorem from the catalogue
 of basic hypergeometric series is used or needed.
 
+\Cref{thm:qs-extraction} is stated with the geometric nodes $-2^k$ and the half-base weights
+built in, and its proof reads as though both were needed.  Neither was.  The only property
+of the weights the argument used is the annihilation of node powers below degree $n$, and
+the only property of the nodes is that they can be substituted into a rescaling.  The
+general statement is the following, and its proof is the proof of
+\cref{thm:qs-extraction} with the two specializations removed.
+
+\begin{proposition}[Abstract weighted coefficient isolation]
+\label{prop:blu-isolation-general}
+Let $I$ be a finite index set, let $(x_k)_{k\in I}$ be scalars in a field $K$ of
+characteristic zero, and let $(w_k)_{k\in I}$ be weights satisfying
+\begin{equation}
+ \sum_{k\in I}w_kx_k^{\,d}=0\qquad(0\le d<n).             \label{eq:blu-abstract-annihilation}
+\end{equation}
+Let $\mathscr A=\sum_{m\ge0}a_mX^m$, $\mathscr B=\sum_{m\ge0}b_mX^m$ and
+$\mathscr U=\sum_{m\ge0}u_mX^m$ be formal power series over $K$ with
+$a_0=b_0=u_0=1$, and for each $k\in I$ let $P_k\in K[[X]]$ satisfy
+\begin{equation}
+ P_k(X)\,\mathscr B(X)=\mathscr U(X)\,\mathscr A(x_kX).    \label{eq:blu-abstract-bridge}
+\end{equation}
+Then
+\begin{equation}
+ \sum_{k\in I}w_k\,[X^d]P_k=0\quad(0\le d<n),
+ \qquad
+ \sum_{k\in I}w_k\,[X^n]P_k=\left(\sum_{k\in I}w_kx_k^{\,n}\right)a_n. \label{eq:blu-abstract-isolation}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Extract the coefficient of $X^d$ from \eqref{eq:blu-abstract-bridge}:
+\begin{equation*}
+ \sum_{i=0}^{d}\bigl([X^i]P_k\bigr)b_{d-i}
+ =\sum_{j=0}^{d}u_ja_{d-j}x_k^{\,d-j}.
+\end{equation*}
+Multiply by $w_k$ and sum over $k\in I$.  On the right the only $k$-dependence is
+$x_k^{\,d-j}$.
+
+Let $d<n$ and argue by strong induction on $d$.  Every exponent satisfies $d-j\le d<n$, so
+the right side vanishes by \eqref{eq:blu-abstract-annihilation}.  On the left the terms with
+$i<d$ carry the factor $\sum_kw_k[X^i]P_k$, which vanishes by the induction hypothesis, and
+the term $i=d$ is $b_0\sum_kw_k[X^d]P_k=\sum_kw_k[X^d]P_k$.  The case $d=0$ is the same
+computation with no hypothesis used.
+
+Let $d=n$.  On the right the terms with $j>0$ have node exponent $n-j<n$ and vanish, and the
+term $j=0$ is $u_0a_n\sum_kw_kx_k^{\,n}$.  On the left the terms with $i<n$ vanish by what
+has just been proved, leaving $\sum_kw_k[X^n]P_k$.
+\end{proof}
+
+\Cref{thm:qs-extraction} is the case $I=\{0,\ldots,n\}$, $x_k=-2^k$,
+$\mathscr B(X)=\mathscr A(-X)$, $\mathscr U(X)=\e^{-X}$, $P_k=\mathscr E_k$, and
+$w_k=w_{n,k}$, in which \eqref{eq:blu-abstract-bridge} is \eqref{eq:qs-bridge} and
+\eqref{eq:blu-abstract-annihilation} is the lower half of \eqref{eq:qs-moment-annihilation}.
+The dyadic structure of the problem is therefore confined to a single place: verifying
+\eqref{eq:blu-abstract-annihilation}, which is where the finite $q$-binomial theorem
+\eqref{eq:half-q-binomial-theorem} is used.  Any other node set with a matching annihilator
+would run through the same argument unchanged, and this is what makes the base-$b$ heuristic
+of \cref{subsec:qs-two-differences} more than an analogy.
+
 The same conclusion has a purely interpolatory reading, which explains what the induction is
 doing.  Because $\mathscr A(0)=1$, the series $\mathscr A(-X)$ is a unit in $\Q[[X]]$, so one
 may introduce a polynomial parameter $z$ and set, as in \cref{subsec:q-binomial-dyadic},
@@ -5550,6 +5929,23 @@ Applying $\mathcal J_n$ from \eqref{eq:qs-Kn-def} to $r_n$ therefore returns $a_
 \cref{thm:qs-extraction} into a familiar interpolation statement: the quantity being
 extracted is the leading coefficient of a polynomial of degree $n$ in the geometric scale
 node, and the Gaussian row is the divided-difference stencil that extracts it.
+
+The two derivations of \eqref{eq:qs-extraction-top} given above are not redundant, and the
+difference between them is not stylistic.  The quotient form is the natural analytic
+statement: $\mathscr R(z;X)$ of \eqref{eq:qs-R-and-rn} is a single generating function in
+which the node $z$ appears as a free parameter, so
+\cref{prop:qs-coefficient-polynomial} can say in one line what is being extracted, namely
+the leading coefficient of a polynomial in $z$, and the divided-difference reading of
+\cref{prop:qs-barycentric} then applies verbatim.  That form presupposes the inversion of
+$\mathscr A(-X)$, which is legitimate because $\mathscr A(0)=1$ makes it a unit in
+$\Q[[X]]$, but it is an extra construction.  The product form \eqref{eq:qs-bridge} presupposes
+nothing: extracting a coefficient from a product is a finite convolution
+\eqref{eq:qs-coefficient-identity}, and the induction of \cref{thm:qs-extraction} closes on
+that convolution alone.  A development that works with formal power series --- as the formal
+development of this article does --- proves the product form directly and never needs the
+inverse series, while a reader who wants to see why the stencil is a divided difference wants
+the quotient form.  Both are recorded because each is the shortest route to a different one
+of the two things being asserted.
 
 We can now assemble the one-block identity.  Define the complete numerator
 \begin{equation}
@@ -6112,7 +6508,7 @@ result is thus a small number obtained as a quotient of a moderate number by a v
 \end{enumerate}
 
 Consequently the displayed order of summation destroys essentially all significance in fixed
-precision.  Three evaluation strategies are sound.
+precision.  Five evaluation strategies are sound.
 
 \begin{itemize}
 \item \emph{Exact rational arithmetic.}  Every quantity in \eqref{eq:qbinomial-dyadic} is
@@ -6127,6 +6523,32 @@ denominator bound, the number of primes needed can be fixed in advance.
 rigorous enclosures.  The width of the final ball then reports the cancellation honestly
 instead of silently returning noise; in practice the working precision must exceed the
 cancellation exponent estimated in item~(1) above.
+
+\item \emph{Barycentric assembly of the outer weights.}  Do not form $2^{-\binom k2}$ and
+$\qbinom nk{1/2}$ separately and multiply.  By \cref{prop:qs-barycentric} and
+\eqref{eq:qs-node-difference-product} the weight is a single reciprocal,
+\begin{equation*}
+ w_{n,k}=\frac{\mathfrak m_n}
+ {(-1)^k2^{\binom k2+k(n-k)}\mathfrak m_k\mathfrak m_{n-k}},
+\end{equation*}
+so the whole row is built from the two Mersenne prefix products
+$\mathfrak m_0,\ldots,\mathfrak m_n$ and one exponent per index.  Every intermediate is then
+an integer divided by an explicit power of two, the largest of which is bounded by
+\eqref{eq:qs-half-valuation}; the raw-power route instead builds a large numerator and a
+large denominator that cancel afterwards.
+\item \emph{Direct prefix coefficient for a general numerator.}  For $m>1$ do not expand the
+double sum of \eqref{eq:qbinomial-dyadic}, whose inner ranges have total length
+$m(2^{n+1}-1)$.  Compute instead the single coefficient that
+\eqref{eq:qs-prefix-value} identifies with the value.  Expanding \eqref{eq:qs-Bm-def} gives
+$[X^j]B_m=\bigl(\sum_{h<m}\varepsilon_h(m-1-h)^j\bigr)/j!$, hence
+\begin{equation*}
+ \mathcal F\!\left(\frac m{2^n}\right)
+ =2^{-\binom n2}\sum_{i=0}^{n}\frac{a_i}{(n-i)!}
+ \sum_{h=0}^{m-1}\varepsilon_h\,(m-1-h)^{\,n-i},
+\end{equation*}
+with the $a_i$ taken from \eqref{eq:qs-a-recurrence}.  This costs $\bigO(mn)$ rational
+operations rather than $\bigO(m2^n)$, and it exhibits none of the cancellation catalogued
+above, since the only signed sum left is the short Thue--Morse prefix.
 \end{itemize}
 
 The translation freedom of \cref{thm:qs-translation} is occasionally useful here, since a
@@ -6158,6 +6580,111 @@ exactly where the powers of two enter, isolates the odd Mersenne part, and reduc
 an integer signed-power-sum problem --- together with the interpolation picture that makes
 translation invariance, the raw-coordinate variant \eqref{eq:qbinomial-raw}, and the
 Toeplitz-row phenomenon of \cref{sec:q-discrete-limit} all instances of one identity.
+
+\subsection{How to reconstruct the formula from scratch}
+\label{subsec:blu-blueprint}
+
+The proofs above are arranged for verification: each ingredient is isolated, stated, and
+checked.  A reader who wants to rebuild \eqref{eq:qbinomial-dyadic} without them needs a
+different arrangement, namely the shortest chain of forced steps.  That chain is the
+following, and it fits on one page.  Nothing in it is a guess: at every stage the next
+object is the only one that can appear.
+
+\begin{enumerate}
+\item \emph{Normalize the half moments.}  Define $d_n$ by \eqref{eq:d-integral}, put
+$a_n=d_n/n!$ and $\mathscr A(X)=\sum_{n\ge0}a_nX^n$ as in \eqref{eq:qs-a-and-series}, and
+prove the reciprocal-power theorem $F(2^{-n})=2^{-\binom n2}a_n$, that is
+\eqref{eq:F-inverse-power}.  From here to the last step the Fabius function is present only
+through the single rational sequence $(a_n)$.
+
+\item \emph{Package the refinement as a generating-series identity.}  The half-moment
+recurrence \eqref{eq:d-recurrence}, in the normalized form \eqref{eq:qs-a-recurrence}, is
+equivalent coefficient by coefficient to the one-line identity
+$\mathscr A(2X)=E(X)\mathscr A(X)$ of \eqref{eq:q-moment-refinement}, with
+$E(X)=(\e^X-1)/X$.  This is an identity in $\Q[[X]]$; no radius of convergence is required
+for any later step.
+
+\item \emph{Form the Thue--Morse block generating polynomial.}  Expanding the binary digits
+of $r$ gives $\sum_{r<2^k}\varepsilon_rz^r=\prod_{j<k}\bigl(1-z^{2^j}\bigr)$, which is
+\eqref{eq:thue-generating-product} and \cref{prop:qs-tm-factorization}.  One factor appears
+per dyadic scale; an arbitrary alternating sign pattern would not factor this way.
+
+\item \emph{Substitute the exponential, center, and divide out the forced zero.}  Put
+$z=\e^X$ and multiply by $\e^{-2^kX}$, which centers the block at its right endpoint and
+produces $C_k$ of \eqref{eq:qs-Ck-def}.  Each factor is $1-\e^{u}=-u\,E(u)$ with $u=2^jX$,
+so the product carries an explicit zero of order $k$ with leading constant
+$(-1)^k2^{\binom k2}$; this is \eqref{eq:qs-Ck-factor}.  Dividing by $X^k$ leaves
+$\mathscr E_k(X)=\e^{-X}\prod_{j<k}E(-2^jX)$ up to that constant, which is
+\eqref{eq:qs-Hk}.  Reading the vanishing coefficients off the same display gives Prouhet's
+cancellation \eqref{eq:qs-prouhet} for free.
+
+\item \emph{Identify the quotient series by its product identity with the moment series.}
+Iterate \eqref{eq:q-moment-refinement} at $-X,-2X,\ldots,-2^{k-1}X$ and multiply by
+$\e^{-X}$: the result is the bridge
+$\mathscr E_k(X)\mathscr A(-X)=\e^{-X}\mathscr A(-2^kX)$ of \eqref{eq:qs-bridge}.  This is
+the hinge of the whole derivation.  The same product $\prod_{j<k}E(-2^jX)$ has now been
+produced twice, once by the binary digit character and once by the dilation equation, and
+the right-hand side depends on $k$ only through the rescaling $-2^k$.
+
+\item \emph{Introduce the geometric nodes and the half-base weights.}  Set $x_k=-2^k$ and
+$w_{n,k}=(-1)^k2^{-\binom k2}\qbinom nk{1/2}$ as in \eqref{eq:qs-weights-nodes}.  The base
+$q=1/2$ is not chosen: it is the reciprocal of the dilation ratio in
+\eqref{eq:q-moment-refinement}, so it is forced by step~2.
+
+\item \emph{Kill the low moments with the finite $q$-binomial theorem.}  Expand
+$(z;1/2)_n$ by \eqref{eq:half-q-binomial-theorem}, then use that its roots are exactly
+$1,2,\ldots,2^{n-1}$ and that its value at the first non-root $z=2^n$ is
+$(-1)^n\mathfrak m_n$.  In the node variable this is
+\eqref{eq:qs-moment-annihilation}: the weights annihilate $x_k^{\,d}$ for $d<n$ and return
+$\mathfrak m_n$ at $d=n$.
+
+\item \emph{Isolate the degree-$n$ coefficient.}  Two routes are available and give the same
+identity.  The leading-coefficient route observes, as in
+\cref{prop:qs-coefficient-polynomial}, that $[X^n]\mathscr R(z;X)$ is a polynomial of degree
+at most $n$ in the node $z$ with leading coefficient $a_n$, so step~7 extracts exactly that
+leading coefficient.  The inductive route, \cref{thm:qs-extraction}, extracts the
+coefficient of $X^d$ from \eqref{eq:qs-bridge} and runs a strong induction on $d$, never
+dividing by $\mathscr A(-X)$.  Either yields
+$\sum_{k}w_{n,k}\beta_{k,n}=\mathfrak m_n\,a_n$, which is \eqref{eq:qs-extraction-top}.
+
+\item \emph{Recognize the weighted summand.}  Combining
+\eqref{eq:qs-beta-from-sigma} with \eqref{eq:qs-weights-nodes} makes the two signs
+$(-1)^k$ cancel and the two triangular powers of two combine, so that
+$w_{n,k}\beta_{k,n}$ is literally the $k$th summand of \eqref{eq:qbinomial-dyadic}; this is
+\eqref{eq:qs-weight-times-beta}.  Hence the numerator \eqref{eq:qs-numerator} at $m=1$,
+$Q=0$ equals $\mathfrak m_n\,a_n$.
+
+\item \emph{Normalize.}  Convert the half-base Pochhammer product into the odd Mersenne
+product by \eqref{eq:half-q-mersenne}, and split the exponent as
+$n^2=\binom{n+1}2+\binom n2$, which is \eqref{eq:qs-square-split}.  The first triangle
+cancels the $q$-product, the second is the inverse-dyadic scaling already fixed in step~1.
+The outcome is \eqref{eq:qs-one-block}.
+
+\item \emph{Get translation invariance from the order-$n$ vanishing.}  A common shift $Q$
+multiplies every block series by $\e^{QX}$, by \eqref{eq:qs-translated-block}.  Expanding
+that exponential contributes only coefficients of degree below $n$ in the node, and step~7
+has already annihilated all of them, so every positive power of $Q$ drops out and
+$\mathcal N_{m,n}(Q)$ is a constant polynomial.  This is \cref{thm:qs-translation}; the word
+\emph{common} may not be dropped, by \cref{warn:qs-common-shift}.
+
+\item \emph{Extend to a general numerator by the long-block factorization.}  Write
+$r=h2^k+s$ with $0\le h<m$ and $0\le s<2^k$ and use multiplicativity of the Thue--Morse
+sign: the long block factors as
+$\mathscr D_{m,k}(X)=B_m\bigl(-2^kX\bigr)C_k(X)$, which is \eqref{eq:qs-long-block}.  Steps
+6--10 then apply verbatim with $\mathscr A$ replaced by $B_m\mathscr A$, and the extracted
+coefficient $[X^n]\bigl(B_m(X)\mathscr A(X)\bigr)$ is the dyadic value itself by
+\eqref{eq:qs-prefix-value}.  No new cancellation is needed.
+
+\item \emph{Pass to the global series.}  Identify each normalized numerator with a Taylor
+coefficient of $\mathcal F$ through \eqref{eq:q-taylor-normalization}, and insert those
+coefficients scale by scale into the absolutely convergent binary-reduction telescope of
+\cref{sec:global-binary-reduction}.
+\end{enumerate}
+
+Only the last step involves convergence; steps 1--12 are finite identities in $\Q$ or in
+$\Q[[X]]$.  In particular neither the inverse-dyadic formula
+\eqref{eq:qs-one-block} nor its independence of the shift $Q$ requires analytic
+continuation, contour integration, or any infinite $q$-series summation theorem.
 
 \section{The global binary-reduction telescope}
 \label{sec:global-binary-reduction}
@@ -6326,6 +6853,22 @@ is exactly $\alpha_m(x)\mathcal T_m(y_m)$.  Both exponents
 $((j+2)(j-1))/2$ and $j-m$ in this display are integer exponents, not truncated natural
 subtractions.
 
+\begin{warning}
+\label{warn:blu-natural-subtraction}
+The same reading discipline applies to the \emph{base} of the inner powers, and there the
+article's displays give no visual warning at all.  In
+\eqref{eq:qs-sigma-def} and in \eqref{eq:qbinomial-dyadic} the quantity $r-m2^k+Q$ begins
+life with natural numbers: $r$ is a summation index, $m$ is a numerator, and $2^k$ is a
+block length.  The subtraction must nevertheless be performed after these have been embedded
+in a field of characteristic zero.  Truncated natural subtraction returns $0$ whenever
+$r<m2^k$, that is for every term of every inner sum, so the whole inner sum would collapse
+to $\bigl(\sum_{r<m2^k}\varepsilon_r\bigr)Q^{\,n+k}$ and the identity would be destroyed.
+Already at $m=n=1$ and $Q=0$ the truncated reading gives $\sigma_{0,1}(0)=0$ and
+$\sigma_{1,2}(0)=0$, hence numerator $0$, whereas the correct value is $\tfrac12$ as in
+\cref{ex:qs-n1}.  The centered coordinate is negative by design: it is what makes the block
+of length $m2^k$ end at the evaluation point.
+\end{warning}
+
 \begin{theorem}[Corrected parity-power series]
 For every $x\ge0$,
 \begin{equation}
@@ -6472,6 +7015,148 @@ At $Q=1/2$ this is exactly the centered spline
 \begin{equation*}
  S_p^{(1/2)}(x)\longrightarrow\mathcal F(x).
 \end{equation*}
+\begin{lemma}[Fixed-cutoff Taylor expansion of a complex shift]
+\label{lem:res-spline-taylor}
+Read \eqref{eq:centered-spline} at $p=0$ as
+\begin{equation}
+ S_0(x)=\sum_{r=0}^{N_0(x)-1}\varepsilon_r,               \label{eq:res-degree-zero-spline}
+\end{equation}
+so that a centered branch $S_d$ is defined for every integer $d\ge0$.  Fix $p\ge1$ and
+$x\in\R$, and abbreviate $M=N_p(x)$.  For every $d$ with $0\le d\le p$, the degree-$d$ branch
+carried by that one fixed cutoff satisfies
+\begin{equation}
+ \frac1{2^{\binom d2}d!}\sum_{r=0}^{M-1}\varepsilon_r
+ \left(2^px-\frac12-r\right)^{d}
+ =S_d\!\left(2^{\,p-d}x\right),                           \label{eq:res-fixed-cutoff-branch}
+\end{equation}
+and in particular $\left|S_d\!\left(2^{\,p-d}x\right)\right|\le1$.  Moreover, for every
+$Q\in\C$,
+\begin{equation}
+ S_p^{(Q)}(x)-S_p^{(1/2)}(x)
+ =\sum_{d=0}^{p-1}
+ \frac{2^{\binom d2}}{2^{\binom p2}(p-d)!}
+ \left(\frac12-Q\right)^{p-d}
+ S_d\!\left(2^{\,p-d}x\right).                            \label{eq:res-spline-taylor}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write the shifted spline in its descending orientation.  Since
+$(-1)^p(r-2^px+Q)^p=(2^px-Q-r)^p$, definition \eqref{eq:complex-shift-spline} reads
+\begin{equation}
+ S_p^{(Q)}(x)=\frac1{2^{\binom p2}p!}
+ \sum_{r=0}^{M-1}\varepsilon_r\left(2^px-Q-r\right)^{p},
+ \qquad M=N_p(x),                                         \label{eq:res-descending-spline}
+\end{equation}
+and at $Q=1/2$ this is \eqref{eq:centered-spline}.  The cutoff $M$ depends on $p$ and $x$
+only.  It is unaffected by $Q$, and it is held fixed in what follows while the degree of the
+summand varies; that is the whole point of \eqref{eq:res-fixed-cutoff-branch}.
+
+We prove \eqref{eq:res-fixed-cutoff-branch}.  The dilation $x\mapsto2^{\,p-d}x$ compensates
+exactly for the drop in degree, in the sense that
+\begin{equation}
+ N_d\!\left(2^{\,p-d}x\right)
+ =\max\left(0,\left\lfloor2^{p}x+\frac12\right\rfloor\right)
+ =N_p(x)=M                                                \label{eq:res-cutoff-invariance}
+\end{equation}
+by \eqref{eq:centered-cutoff}.  If $M=0$, both sides of
+\eqref{eq:res-fixed-cutoff-branch} are empty sums and there is nothing to prove.  Assume
+$M\ge1$.  Every index in the range satisfies
+\[
+ r\le M-1=\left\lfloor2^px+\frac12\right\rfloor-1\le2^px-\frac12,
+\]
+so every base $2^px-\frac12-r$ occurring in \eqref{eq:res-fixed-cutoff-branch} is
+nonnegative and the truncation in \eqref{eq:centered-spline-positive} is inactive.  For
+$d\ge1$, formula \eqref{eq:centered-spline-positive} evaluated at the point $2^{\,p-d}x$,
+whose own cutoff is $M$ by \eqref{eq:res-cutoff-invariance}, is therefore literally the left
+side of \eqref{eq:res-fixed-cutoff-branch}.  For $d=0$ both sides equal
+$\sum_{r=0}^{M-1}\varepsilon_r$, by \eqref{eq:res-degree-zero-spline} and
+\eqref{eq:res-cutoff-invariance}.
+
+For the uniform bound, the case $d\ge1$ is the global estimate in
+\eqref{eq:centered-spline-global-limit}.  For $d=0$ pair the indices: since
+$\varepsilon_{2r}=\varepsilon_r$ and $\varepsilon_{2r+1}=-\varepsilon_r$, consecutive pairs
+cancel, so $\sum_{r=0}^{2m-1}\varepsilon_r=0$ and $\sum_{r=0}^{2m}\varepsilon_r=\varepsilon_m$.
+Thus $S_0$ takes only the values $0$ and $\pm1$.
+
+Now expand.  Put $w=2^px-\frac12$ for the descending argument at $Q=1/2$ and
+$t=\frac12-Q$ for its increment, so that $2^px-Q=w+t$.  The binomial theorem gives
+\[
+ (w+t-r)^{p}=\sum_{d=0}^{p}\binom pd\,t^{\,p-d}(w-r)^{d}.
+\]
+Multiply by $\varepsilon_r\bigl/\bigl(2^{\binom p2}p!\bigr)$, sum over $0\le r\le M-1$, and
+interchange the two finite sums.  Using \eqref{eq:res-descending-spline} on the left and
+\eqref{eq:res-fixed-cutoff-branch} on each inner sum,
+\begin{align}
+ S_p^{(Q)}(x)
+ &=\sum_{d=0}^{p}\frac{t^{\,p-d}}{2^{\binom p2}p!}\binom pd
+   \sum_{r=0}^{M-1}\varepsilon_r(w-r)^{d}                 \notag\\
+ &=\sum_{d=0}^{p}\frac{2^{\binom d2}}{2^{\binom p2}(p-d)!}\,t^{\,p-d}\,
+   S_d\!\left(2^{\,p-d}x\right),                          \label{eq:res-full-expansion}
+\end{align}
+because $\binom pd\bigl/p!=1\bigl/\bigl(d!\,(p-d)!\bigr)$ and the inner sum is
+$2^{\binom d2}d!\,S_d(2^{\,p-d}x)$.  The term $d=p$ is $S_p(x)=S_p^{(1/2)}(x)$; subtracting
+it leaves \eqref{eq:res-spline-taylor}.
+\end{proof}
+
+\begin{remark}[Which convention makes the sign disappear]
+\label{rem:res-sign-convention}
+The expansion \eqref{eq:res-spline-taylor} is free of alternating signs only because the
+increment is measured in the \emph{descending} variable $2^px-Q$ of
+\eqref{eq:res-descending-spline}, that is, because the coefficient carries
+$\left(\tfrac12-Q\right)^{p-d}$ and not $\left(Q-\tfrac12\right)^{p-d}$.  If one instead
+measures the shift by the ascending increment $q=Q-\tfrac12$, which is the natural reading
+when the branch is written as a function of the ascending argument $r-2^px+Q$ of
+\eqref{eq:complex-shift-spline}, then the identity acquires exactly the factor
+$(-1)^{p+d}$:
+\begin{equation}
+ S_p^{(Q)}(x)-S_p^{(1/2)}(x)
+ =\sum_{d=0}^{p-1}(-1)^{p+d}
+ \frac{2^{\binom d2}}{2^{\binom p2}(p-d)!}\,
+ q^{\,p-d}\,S_d\!\left(2^{\,p-d}x\right),
+ \qquad q=Q-\frac12.                                      \label{eq:res-ascending-form}
+\end{equation}
+The two displays are the same statement, since $(-1)^{p+d}=(-1)^{p-d}$ and therefore
+$(-1)^{p+d}q^{\,p-d}=\left(\tfrac12-Q\right)^{p-d}$.  It is worth being explicit about where
+the sign does \emph{not} live: it is not a matter of renormalizing the lower branches.  The
+alternating prefactor $(-1)^d$ of \eqref{eq:centered-spline} is cancelled exactly by the
+$(-1)^d$ produced when the ascending argument is reversed, so the branch values
+$S_d(2^{\,p-d}x)$ appearing in \eqref{eq:res-spline-taylor} and in
+\eqref{eq:res-ascending-form} are the same numbers.  The sign belongs to the increment
+alone, and the convention that removes it is the descending one.
+\end{remark}
+
+\begin{remark}[Where the two constants of the bound come from]
+\label{rem:res-taylor-constants}
+Taking absolute values in \eqref{eq:res-spline-taylor} and using
+$\left|S_d(2^{\,p-d}x)\right|\le1$ gives
+\begin{equation}
+ \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
+ \le\sum_{d=0}^{p-1}2^{\binom d2-\binom p2}\,
+ \frac{\left|Q-\tfrac12\right|^{\,p-d}}{(p-d)!}.          \label{eq:res-taylor-majorant}
+\end{equation}
+Both constants of \eqref{eq:complex-shift-spline-bound} are visible in
+\eqref{eq:res-taylor-majorant}.  Write $e=p-d$, so that $1\le e\le p$ and
+\[
+ \binom p2-\binom d2=\frac{(p-d)(p+d-1)}2=\frac{e\,(2p-e-1)}2.
+\]
+As a function of $e$ this is a downward parabola, so on $1\le e\le p$ it attains its minimum
+at an endpoint; the value at $e=1$ is $p-1$ and the value at $e=p$ is
+$\binom p2\ge p-1$.  Hence every power of two in \eqref{eq:res-taylor-majorant} is at most
+$2^{-(p-1)}$, with equality exactly in the top term $d=p-1$, and
+\begin{equation}
+ \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
+ \le2^{-(p-1)}\sum_{e=1}^{p}\frac{\left|Q-\tfrac12\right|^{e}}{e!}
+ \le2^{-(p-1)}\left(\exp\!\left(\left|Q-\tfrac12\right|\right)-1\right).
+                                                          \label{eq:res-taylor-bound}
+\end{equation}
+This is \eqref{eq:complex-shift-spline-bound}, marginally sharpened.  The factor
+$2^{-(p-1)}$ is the extremal case $d=p-1$ of the triangular exponent; the exponential is the
+truncated exponential series of the increment; and the only input from the normalized
+Thue--Morse branches is the uniform bound $\left|S_d\right|\le1$, which is why no further
+constant appears.
+\end{remark}
+
 Expanding a fixed cutoff branch about $Q=1/2$ gives an exact finite Taylor combination of
 lower-degree centered branches.  The normalized Thue--Morse bounds then give, for $p\ge1$,
 \begin{equation}
@@ -7475,7 +8160,25 @@ orders of magnitude,
  \approx(3.2481234772+5.8517589871\,\ii)\times10^{-13},    \label{eq:Psi-second-coeff}
 \end{equation}
 of magnitude $6.6927863679\times10^{-13}$, so the first harmonic already describes $\Psi$ to
-better than one part in a million of its own size.  Thus the visible oscillation is
+better than one part in a million of its own size.
+
+\begin{warning}[A numerical hazard specific to these points]
+Evaluating \eqref{eq:Psi-Fourier} numerically is delicate for a reason that has nothing to do
+with rounding.  Many implementations of the zeta function compute it from the alternating
+Dirichlet series through
+\begin{equation}
+ \zeta(s)=\frac1{1-2^{1-s}}\sum_{m\ge1}\frac{(-1)^{m-1}}{m^{s}}.  \label{eq:eta-series}
+\end{equation}
+At the points that \eqref{eq:Psi-Fourier} needs, $s=1-\chi_k$, one has
+$2^{1-s}=2^{\chi_k}=\e^{\chi_kL}=\e^{2\pi\ii k}=1$ exactly, so the prefactor in
+\eqref{eq:eta-series} has a pole precisely there.  The singularity is removable in $\zeta$
+but not in that formula, and a routine built on it returns an overflow or, worse, a plausible
+wrong number.  This is not a rounding story; it is a defect of the algorithm at exactly the
+arguments this problem cares about, and it explains how two independently published decimal
+values for $\widehat\Psi(1)$ can agree with each other to eight figures and both be wrong.
+Use an Euler--Maclaurin or Hurwitz evaluation instead, and check the answer at two working
+precisions.
+\end{warning}  Thus the visible oscillation is
 on the scale of a few parts in a million in the logarithm.  Tiny is not the same as zero: its
 nonvanishing changes the logical status of an asymptotic equivalent.
 
@@ -8359,6 +9062,33 @@ by $\lambda_n$ they are $0.507$, $0.510$, $0.515$, confirming the remainder
 $\bigO(\lambda^{-2})$ of \eqref{eq:first-corrected-asymptotic} and showing that the next
 coefficient $A_2$ is of size about one half.
 
+\begin{warning}
+That last observation is a trap, and it is worth spelling out because the trap is generic to
+this whole expansion.  Extending the same computation along $n=10,20,40,80,160,320$ gives
+scaled second differences $0.5066$, $0.5103$, $0.5151$, $0.5179$, $0.5193$, $0.5199$, which
+look like a sequence converging to a constant near $0.520$.  They are not.  The theorem of
+\Cref{sec:full-asymptotic} says every coefficient $A_j$ is one-periodic in $\lambda$, and
+$A_2$ is no exception.  Doubling $n$ increases $\log_2\lambda$ by roughly one, so
+$\lambda_n\bmod 1$ returns to nearly the same place; a geometric sample of $n$ therefore
+holds the phase almost fixed and displays only the residual drift in $\lambda$.  Sampling
+$n$ densely instead separates the two effects.  Over $300\le n\le400$, where $\lambda$ moves
+by only a third, the quantity
+$\lambda^2\bigl(\log F-\mathcal M-A_1(\lambda)/\lambda\bigr)$ sweeps from $0.52105$ down to
+$0.51810$ and back up, tracking $\lambda\bmod1$, a spread of $2.95\times10^{-3}$.  Held at
+one phase instead and varied in magnitude, it moves by only $3.7\times10^{-4}$ from
+$n=173$ to $n=352$, consistent with an $\bigO(\lambda^{-1})$ correction.  So $A_2$ is a
+genuinely nonconstant periodic function of mean about $0.5199$ and peak-to-peak amplitude
+about $3\times10^{-3}$.
+
+The amplitude is not surprising once one looks at where it must come from.  The periodic part
+of $A_1$ is of size $8.7\times10^{-5}$ because it involves $\Psi''$, which multiplies the
+$k$th Fourier mode by $(2\pi k)^{2}$.  A coefficient one order further carries derivatives of
+$\Psi$ two orders higher, and $(2\pi)^{4}\cdot2|\widehat\Psi(1)|\approx3.3\times10^{-3}$.
+The smallness of $\widehat\Psi(1)$ is progressively cancelled by differentiation, so the
+oscillation of $A_j$ grows with $j$ even though $\Psi$ itself is minute.  Any numerical
+extraction of a later coefficient must therefore fix the phase first.
+\end{warning}
+
 Third, and for honesty about what the table can and cannot show at these sizes: the periodic
 part of $A_1$ is minute.  The constant part $1/24+1/(2L)=0.7630141871$ of \eqref{eq:A1} is
 modulated by $-(\Psi''+(\Psi')^{2})/(2L^{2})$, whose amplitude is about $8.7\times10^{-5}$
@@ -8972,13 +9702,13 @@ $P_4(y)=(35y^4-30y^2+3)/8$ at $y=x-1$ gives
  P_4(x-1)=\frac{35}{8}x^4-\frac{35}{2}x^3+\frac{45}{2}x^2-10x+1,
 \end{equation*}
 while \eqref{eq:four-shifted-legendre} gives, for $j=0,1,2,3,4$ in turn,
-\begin{equation*}
+\begin{gather*}
  1,\qquad
  -\tfrac12\binom41\binom51=-10,\qquad
- \tfrac14\binom42\binom62=\tfrac{45}2,\qquad
+ \tfrac14\binom42\binom62=\tfrac{45}2,\\
  -\tfrac18\binom43\binom73=-\tfrac{35}2,\qquad
  \tfrac1{16}\binom44\binom84=\tfrac{35}8 .
-\end{equation*}
+\end{gather*}
 The two computations agree in every coefficient.
 
 Combining \eqref{eq:four-translated-series} with \eqref{eq:four-shifted-legendre} converts
@@ -9241,7 +9971,7 @@ $2^{-10^6}$.
 \subsection{Which representation should be used?}
 
 \begin{center}
-\begin{tabularx}{0.96\textwidth}{@{}p{0.20\textwidth}X X@{}}
+\begin{tabularx}{0.96\textwidth}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 Representation & Principal strength & Principal limitation\\
 \midrule
@@ -10269,7 +10999,7 @@ and limitation and answers the question which one to compute with; the table bel
 by explanatory power and answers the question which one to think with.
 
 \begin{center}
-\begin{tabularx}{0.96\textwidth}{@{}p{0.26\textwidth}X@{}}
+\begin{tabularx}{0.96\textwidth}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}X@{}}
 \toprule
 Viewpoint & What it makes transparent that the others do not\\
 \midrule
@@ -10344,12 +11074,34 @@ $n$ & $c_n$ & $d_n$\\
 5 & $\dfrac{46840699}{24405225075}$ & $\dfrac{19}{270}$\\[0.8ex]
 6 & $\dfrac{4068990560161}{4133856862760625}$ &
     $\dfrac{1153}{23814}$\\[0.8ex]
-7 & --- & $\dfrac{583}{17010}$\\
+7 & $\dfrac{1204567303451311}{2232691548877164375}$ &
+    $\dfrac{583}{17010}$\\[0.8ex]
+8 & --- & $\dfrac{1616353}{65063250}$\\
 \bottomrule
 \end{longtable}
 
 The $c_n$ column satisfies \eqref{eq:c-recurrence}; the $d_n$ column satisfies
 \eqref{eq:d-recurrence}.  Substitution in \eqref{eq:F-inverse-power} gives the next table.
+
+\subsection{Constants of the endpoint expansion}
+
+The sharp asymptotic \eqref{eq:sharp-main-lambda} needs three real constants that are
+otherwise reachable only through a table of Stieltjes constants.  To twenty significant
+figures,
+\begin{align}
+ L=\log2&=0.69314718055994530942,                          \notag\\
+ \gamma_1&=-0.072815845483676724861,                       \notag\\
+ A_0=\frac{6\gamma^2+12\gamma_1-\pi^2}{12}
+   &=-0.72869391700393060594,                              \label{eq:data-A0-numeric}\\
+ \overline P=\frac{A_0}{L}-\frac{L}{12}
+   &=-1.10904536543418668219,                              \notag\\
+ C_F=\overline P-\tfrac12\log(2\pi)
+   &=-2.02798389863885942397.                              \notag
+\end{align}
+Here $\gamma_1$ is the first Stieltjes constant, appearing through the Laurent expansion of
+$\zeta$ at $1$.  The last line is \eqref{eq:CF} rewritten through $\overline P$; the two
+forms agree, which is a useful check on an implementation, since one routes through
+$-7L/12-\tfrac12\log\pi$ and the other through $-L/12-\tfrac12\log(2\pi)$.
 
 \subsection{Reciprocal powers and normalized odd integers}
 
@@ -11602,7 +12354,7 @@ Different sources use $F$, $\varphi$, $\theta$, and $\operatorname{up}$ for over
 objects.  The following crosswalk records the convention used here.
 
 \begin{center}
-\begin{tabularx}{0.95\textwidth}{@{}lXX@{}}
+\begin{tabularx}{0.95\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
 This article & Definition & Frequent source notation\\
 \midrule
@@ -11633,6 +12385,22 @@ $-W_{-1}(-x\log2)/\log2$.\\
 \bottomrule
 \end{tabularx}
 \end{center}
+
+One collision of letters deserves an explicit warning, because it is invisible in a formula
+read out of context.  In the $q$-special-function objects $(a;q)_n$ of
+\eqref{eq:qpochhammer} and $\qbinom nkq$ of \eqref{eq:qs-qbinom-def}, the symbol $q$ is the
+\emph{base}, and throughout this article it is fixed at $q=1/2$ by the dilation ratio of
+\eqref{eq:q-moment-refinement}; it is never a free parameter and never a shift.  The
+arbitrary common translation in \eqref{eq:qbinomial-dyadic} is written $Q$ here for exactly
+that reason.
+
+The 2019 source formula \cite{reshetnikovMSE} that this article cites for the shape of
+\eqref{eq:qbinomial-dyadic} uses the same lowercase letter for the shift, so that its
+$(r-2^k+q)^{n+k}$ has $q$ meaning the translation and not the base, while the Gaussian
+coefficient standing beside it is at base $1/2$.  A reader comparing the two presentations
+term by term should substitute $q\mapsto Q$ in the power and leave the base alone; no other
+change is needed, and in particular the numerical value $1/2$ appears in that source in both
+roles at once, since the shift chosen there is also $1/2$.
 
 When comparing formulas, one should first identify which global convention is in force and
 only then compare signs, supports, and endpoint values.

@@ -1,5 +1,64 @@
 import FabiusFunction.QuantitativeSaddle
 
+/-!
+# Arbitrary-order Gaussian saddle-point bookkeeping
+
+`FabiusFunction.QuantitativeSaddle` compares a rescaled saddle kernel with a
+single Gaussian and extracts a relative `1 + O(1 / b)` estimate.  This module
+raises the same comparison to every order.  On a central set the kernel is
+still written as `K v = exp (-v ^ 2 / 2) * Complex.exp (E v)`, but the exact
+exponent `E` is replaced by an arbitrary truncation `P`, and `Complex.exp P`
+by its Taylor polynomial.  The governing estimate is the two-source bound
+
+`‖exp E - sum_{q < m} P ^ q / q!‖ ≤ exp ‖P‖ * (2 * ‖E - P‖ + ‖P‖ ^ m)`,
+
+valid whenever `‖E - P‖ ≤ 1`, which separates the error of truncating the
+exponent from the Taylor remainder of the exponential.
+
+Nothing here mentions the Fabius function or any particular saddle: the index
+type `α`, the filter `l`, the comparison function `rate`, the central set and
+the majorant are all parameters.  The module holds the generic
+measure-theoretic bookkeeping -- pointwise majorant to `L¹` bound, `L¹` bound
+to normalized-integral bound, central set plus complementary tail -- that
+would otherwise be rewritten at every order by
+`FabiusFunction.FabiusSaddleMassAllOrders`, its only consumer, which
+instantiates it for the dyadic Lambert kernel on the way to the full Poincare
+expansion of the normalized saddle-kernel mass.
+
+## Main results
+
+* `expTaylorPolynomial`, `gaussianExpTaylorReference` -- the truncation
+  `sum_{q ∈ range m} z ^ q / q!` and its Gaussian-weighted form, which serves
+  as the central reference.
+* `norm_exp_sub_expTaylorPolynomial_le`, with Gaussian-weighted companion
+  `norm_standardGaussian_mul_exp_sub_expTaylorPolynomial_le` -- the displayed
+  two-source bound.
+* `centralL1Error_isBigO_of_pointwise_majorant` -- a pointwise majorant on a
+  measurable central set upgrades to an `L¹` big-`O` estimate there.
+* `central_expTaylor_error_isBigO` -- the two previous steps combined.
+* `normalizedIntegral_sub_reference_isBigO_of_L1` and its
+  `..._of_central_tail` form -- transfer an `L¹` bound, respectively a central
+  bound plus a complementary tail bound, to the normalized integrals of `K`
+  and of the reference.
+* `pairedReference`, `normalizedEvenExpansion` and
+  `normalizedIntegral_sub_evenExpansion_isBigO` (with its central/tail
+  variant) -- an optional parity layer: when the reference is grouped into
+  even/odd pairs `eps ^ (2 * j) * A (2 * j) + eps ^ (2 * j + 1) * A (2 * j + 1)`
+  and every odd-indexed coefficient is an odd function, the odd terms
+  integrate away and only the even expansion survives.
+
+## Conventions and caveats
+
+`expTaylorPolynomial m` sums over `Finset.range m`, hence has degree `m - 1`
+and is identically zero for `m = 0`; the remainder exponent in `‖P‖ ^ m`
+follows that same indexing.  "Normalized" always means division by the
+Gaussian mass `Real.sqrt (2 * Real.pi)`, never by the mass of the kernel
+itself.  The central set is assumed only measurable, never an interval and
+never bounded, and the representation `K = Gaussian * exp E` is assumed only
+on it.  The constants are the sufficient ones produced by the triangle
+inequality and `Complex.norm_exp_sub_one_le`; none of them is sharp.
+-/
+
 set_option autoImplicit false
 
 open Filter MeasureTheory Set Asymptotics

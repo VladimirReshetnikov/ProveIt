@@ -20,6 +20,10 @@ open scoped Topology
 
 namespace Fabius
 
+/-- Second-order Taylor bound for the logarithm near zero: after subtracting
+`x - x ^ 2 / 2` from `Real.log (1 + x)`, the error is `O(x ^ 3)` on the
+neighborhood filter `𝓝 0`.  Composing this with a function tending to zero is
+how every quadratic expansion in this file is produced. -/
 lemma real_log_second_order_isBigO :
     (fun x : ℝ => Real.log (1 + x) - x + x ^ 2 / 2) =O[𝓝 0]
       (fun x : ℝ => x ^ 3) := by
@@ -55,6 +59,9 @@ lemma real_log_second_order_isBigO :
         linarith
       nlinarith [pow_nonneg (abs_nonneg x) 3]
 
+/-- First-order Taylor bound for the logarithm near zero: `Real.log (1 + x) - x`
+is `O(x ^ 2)` on `𝓝 0`.  Weakened from the cubic bound above and used for the
+crude estimate `logMainShift_isBigO`. -/
 lemma real_log_first_order_isBigO :
     (fun x : ℝ => Real.log (1 + x) - x) =O[𝓝 0] (fun x : ℝ => x ^ 2) := by
   have hcubic : (fun x : ℝ => x ^ 3) =O[𝓝 0] (fun x : ℝ => x ^ 2) :=
@@ -130,6 +137,10 @@ theorem fabiusLogRemainder_difference_eq
   unfold logMainDefect
   ring
 
+/-- For `t ≠ 0` the derivative factors as `(log 2) * t` times
+`1 + logMainDerivativePerturbation t`.  This is what lets `Real.log` of the
+derivative split into `log (log 2) + log t + log (1 + u)` in
+`logMainDefect_eq`. -/
 lemma logMainDerivative_factor {t : ℝ} (ht : t ≠ 0) :
     logMainDerivative t = Real.log 2 * t * (1 + logMainDerivativePerturbation t) := by
   unfold logMainDerivative logMainDerivativePerturbation
@@ -173,10 +184,14 @@ theorem logMainDefect_eq {t : ℝ} (ht : 1 < t) :
   field_simp [ha0]
   ring
 
+/-- `-(1 / t)` tends to zero as `t → ∞`.  This is the argument fed to the Taylor
+bounds above to expand `logMainShift t = Real.log (1 - 1 / t)`. -/
 lemma tendsto_neg_one_div_atTop :
     Tendsto (fun t : ℝ => -(1 / t)) atTop (𝓝 0) := by
   simpa [one_div] using (tendsto_inv_atTop_zero (𝕜 := ℝ)).neg
 
+/-- The relative perturbation tends to zero as `t → ∞`, so the Taylor bounds
+above apply to `log (1 + logMainDerivativePerturbation t)`. -/
 lemma tendsto_logMainDerivativePerturbation :
     Tendsto logMainDerivativePerturbation atTop (𝓝 0) := by
   have ha0 : Real.log (2 : ℝ) ≠ 0 :=
@@ -199,6 +214,8 @@ lemma tendsto_logMainDerivativePerturbation :
   unfold logMainDerivativePerturbation
   field_simp [ha0, ht]
 
+/-- Quadratic expansion of the logarithmic unit shift: the residual
+`logMainShift t + 1 / t + (1 / t) ^ 2 / 2` is `O((1 / t) ^ 3)` as `t → ∞`. -/
 lemma logMainShift_second_order_isBigO :
     (fun t : ℝ => logMainShift t + 1 / t + (1 / t) ^ 2 / 2) =O[atTop]
       (fun t : ℝ => (1 / t) ^ 3) := by
@@ -214,21 +231,32 @@ lemma logMainShift_second_order_isBigO :
       ring)
   exact hneg.trans ((isBigO_refl (fun t : ℝ => (1 / t) ^ 3) atTop).neg_left)
 
+/-- Quadratic expansion of the logarithm of the derivative factor: writing `u`
+for `logMainDerivativePerturbation t`, the residual
+`log (1 + u) - u + u ^ 2 / 2` is `O(u ^ 3)` as `t → ∞`. -/
 lemma logMainDerivative_log_second_order_isBigO :
     (fun t : ℝ => Real.log (1 + logMainDerivativePerturbation t) -
       logMainDerivativePerturbation t + (logMainDerivativePerturbation t) ^ 2 / 2) =O[atTop]
       (fun t : ℝ => (logMainDerivativePerturbation t) ^ 3) := by
   exact real_log_second_order_isBigO.comp_tendsto tendsto_logMainDerivativePerturbation
 
+/-- The rate `log t / t`.  Its square is the comparison function against which
+the defect of the proposed main term is measured. -/
 noncomputable def logScaleRate (t : ℝ) : ℝ :=
   Real.log t / t
 
+/-- The rate `(log t / t) ^ 2`, the comparison function in
+`logMainDefect_isBigO_logScaleSquaredRate` and in the refutation of the
+source's `O(t⁻²)` claim. -/
 noncomputable def logScaleSquaredRate (t : ℝ) : ℝ :=
   (logScaleRate t) ^ 2
 
+/-- `log t / t` tends to zero as `t → ∞`. -/
 lemma tendsto_logScaleRate : Tendsto logScaleRate atTop (𝓝 0) := by
   exact Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero
 
+/-- `1 / t` is `O(log t / t)` as `t → ∞`, because the constant `1` is
+eventually dominated by `log t`. -/
 lemma one_div_isBigO_logScaleRate :
     (fun t : ℝ => 1 / t) =O[atTop] logScaleRate := by
   have h := (Real.isLittleO_const_log_atTop (c := (1 : ℝ))).isBigO.mul
@@ -237,16 +265,20 @@ lemma one_div_isBigO_logScaleRate :
     (Filter.Eventually.of_forall fun t => by simp)
     (Filter.Eventually.of_forall fun t => by simp [logScaleRate, div_eq_mul_inv])
 
+/-- `1 / t` is `O(1)` as `t → ∞`. -/
 lemma one_div_isBigO_one :
     (fun t : ℝ => 1 / t) =O[atTop] (fun _ : ℝ => (1 : ℝ)) := by
   have h : Tendsto (fun t : ℝ => 1 / t) atTop (𝓝 0) := by
     simpa [one_div] using (tendsto_inv_atTop_zero (𝕜 := ℝ))
   exact h.isBigO_one ℝ
 
+/-- `log t / t` is `O(1)` as `t → ∞`. -/
 lemma logScaleRate_isBigO_one :
     logScaleRate =O[atTop] (fun _ : ℝ => (1 : ℝ)) :=
   tendsto_logScaleRate.isBigO_one ℝ
 
+/-- The relative perturbation in the derivative is `O(log t / t)`.  This is the
+estimate that converts the Taylor remainders into powers of `logScaleRate`. -/
 lemma logMainDerivativePerturbation_isBigO :
     logMainDerivativePerturbation =O[atTop] logScaleRate := by
   have ha0 : Real.log (2 : ℝ) ≠ 0 :=
@@ -270,6 +302,7 @@ lemma logMainDerivativePerturbation_isBigO :
     ring
   · exact EventuallyEq.rfl
 
+/-- The logarithmic unit shift `log (1 - 1 / t)` is `O(1 / t)` as `t → ∞`. -/
 lemma logMainShift_isBigO :
     logMainShift =O[atTop] (fun t : ℝ => 1 / t) := by
   have hfirst := real_log_first_order_isBigO.comp_tendsto tendsto_neg_one_div_atTop
@@ -298,6 +331,10 @@ noncomputable def logMainDerivativeLogRemainder (t : ℝ) : ℝ :=
 noncomputable def logMainShiftRemainder (t : ℝ) : ℝ :=
   logMainShift t + 1 / t + (1 / t) ^ 2 / 2
 
+/-- Exact expansion of the relative perturbation for `t ≠ 0` into the three
+terms `(log 2)⁻¹ * logScaleRate t`, `-(1 / 2) * (1 / t)` and
+`(log 2)⁻¹ ^ 2 * logScaleRate t * (1 / t)`.  It is an identity rather than an
+estimate, and it exhibits `(log 2)⁻¹ * logScaleRate t` as the leading term. -/
 lemma logMainDerivativePerturbation_eq {t : ℝ} (ht : t ≠ 0) :
     logMainDerivativePerturbation t =
       (Real.log 2)⁻¹ * logScaleRate t - (2 : ℝ)⁻¹ * (1 / t) +
@@ -327,12 +364,14 @@ theorem logMainDefect_decomposition {t : ℝ} (ht : 1 < t) :
   field_simp [ha0, ht0]
   ring
 
+/-- `(1 / t) ^ 2` is `O((log t / t) ^ 2)` as `t → ∞`. -/
 lemma one_div_sq_isBigO_logScaleSquaredRate :
     (fun t : ℝ => (1 / t) ^ 2) =O[atTop] logScaleSquaredRate := by
   exact (one_div_isBigO_logScaleRate.pow 2).congr'
     EventuallyEq.rfl
     (Filter.Eventually.of_forall fun t => by rfl)
 
+/-- `(log t / t) ^ 3` is `O((log t / t) ^ 2)` as `t → ∞`. -/
 lemma logScaleRate_cube_isBigO_logScaleSquaredRate :
     (fun t : ℝ => (logScaleRate t) ^ 3) =O[atTop] logScaleSquaredRate := by
   have hmul := ((isBigO_refl logScaleRate atTop).pow 2).mul logScaleRate_isBigO_one
@@ -340,6 +379,8 @@ lemma logScaleRate_cube_isBigO_logScaleSquaredRate :
     (Filter.Eventually.of_forall fun t => by ring)
     (Filter.Eventually.of_forall fun t => by simp [logScaleSquaredRate])
 
+/-- First term of `logMainDefect_decomposition`: the cubic Taylor remainder in
+`log (1 + u)` is `O((log t / t) ^ 2)`. -/
 lemma logMainDerivativeLogRemainder_isBigO :
     logMainDerivativeLogRemainder =O[atTop] logScaleSquaredRate := by
   have hcubic := logMainDerivative_log_second_order_isBigO.trans
@@ -348,12 +389,16 @@ lemma logMainDerivativeLogRemainder_isBigO :
     (Filter.Eventually.of_forall fun t => by rfl)
     EventuallyEq.rfl
 
+/-- The cubic Taylor remainder in the unit shift is `O((1 / t) ^ 3)`, restated
+from `logMainShift_second_order_isBigO` for the named remainder. -/
 lemma logMainShiftRemainder_isBigO :
     logMainShiftRemainder =O[atTop] (fun t : ℝ => (1 / t) ^ 3) := by
   exact logMainShift_second_order_isBigO.congr'
     (Filter.Eventually.of_forall fun t => by rfl)
     EventuallyEq.rfl
 
+/-- The multiplier `t - 1 + log t / log 2` of the shift remainder in
+`logMainDefect_decomposition` is `O(t)` as `t → ∞`. -/
 lemma logMainDefectMultiplier_isBigO :
     (fun t : ℝ => t - 1 + Real.log t / Real.log 2) =O[atTop] (fun t : ℝ => t) := by
   have hlin := isBigO_refl (fun t : ℝ => t) atTop
@@ -367,6 +412,8 @@ lemma logMainDefectMultiplier_isBigO :
     (Filter.Eventually.of_forall fun t => by ring)
     EventuallyEq.rfl
 
+/-- Second term of `logMainDefect_decomposition`: the multiplier times the shift
+remainder is `O((log t / t) ^ 2)`, being an `O(t)` times an `O((1 / t) ^ 3)`. -/
 lemma logMainDefectMultiplier_mul_shiftRemainder_isBigO :
     (fun t : ℝ =>
       (t - 1 + Real.log t / Real.log 2) * logMainShiftRemainder t) =O[atTop]
@@ -382,6 +429,8 @@ lemma logMainDefectMultiplier_mul_shiftRemainder_isBigO :
       field_simp [ht]
   exact hsq.trans one_div_sq_isBigO_logScaleSquaredRate
 
+/-- Third term of `logMainDefect_decomposition`:
+`(logMainShift t) ^ 2 / (2 * log 2)` is `O((log t / t) ^ 2)`. -/
 lemma logMainShift_sq_div_isBigO :
     (fun t : ℝ => (logMainShift t) ^ 2 / (2 * Real.log 2)) =O[atTop]
       logScaleSquaredRate := by
@@ -390,12 +439,16 @@ lemma logMainShift_sq_div_isBigO :
     (Filter.Eventually.of_forall fun t => by ring)
     EventuallyEq.rfl
 
+/-- Fourth term of `logMainDefect_decomposition`: `(1 / t) ^ 2 / 2` is
+`O((log t / t) ^ 2)`. -/
 lemma one_div_sq_div_two_isBigO :
     (fun t : ℝ => (1 / t) ^ 2 / 2) =O[atTop] logScaleSquaredRate := by
   exact (one_div_sq_isBigO_logScaleSquaredRate.const_mul_left (2 : ℝ)⁻¹).congr'
     (Filter.Eventually.of_forall fun t => by ring)
     EventuallyEq.rfl
 
+/-- Fifth term of `logMainDefect_decomposition`: the cross term, a constant
+multiple of `logScaleRate t * (1 / t)`, is `O((log t / t) ^ 2)`. -/
 lemma logMainDefect_crossTerm_isBigO :
     (fun t : ℝ =>
       ((Real.log 2)⁻¹ ^ 2 - (2 * Real.log 2)⁻¹) * logScaleRate t * (1 / t))
@@ -410,6 +463,8 @@ lemma logMainDefect_crossTerm_isBigO :
       (Filter.Eventually.of_forall fun t => by ring)
       EventuallyEq.rfl
 
+/-- Sixth term of `logMainDefect_decomposition`: `u ^ 2 / 2` is
+`O((log t / t) ^ 2)`, where `u` is `logMainDerivativePerturbation t`. -/
 lemma logMainDerivativePerturbation_sq_div_two_isBigO :
     (fun t : ℝ => (logMainDerivativePerturbation t) ^ 2 / 2) =O[atTop]
       logScaleSquaredRate := by
@@ -434,6 +489,8 @@ theorem logMainDefect_isBigO_logScaleSquaredRate :
     rw [logMainDefect_decomposition ht]
   · exact EventuallyEq.rfl
 
+/-- `1 / t` is `o(log t / t)` as `t → ∞`.  The little-o strengthening of
+`one_div_isBigO_logScaleRate`, needed for the leading-coefficient argument. -/
 lemma one_div_isLittleO_logScaleRate :
     (fun t : ℝ => 1 / t) =o[atTop] logScaleRate := by
   have h := (Real.isLittleO_const_log_atTop (c := (1 : ℝ))).mul_isBigO
@@ -442,17 +499,20 @@ lemma one_div_isLittleO_logScaleRate :
     (Filter.Eventually.of_forall fun t => by simp)
     (Filter.Eventually.of_forall fun t => by simp [logScaleRate, div_eq_mul_inv])
 
+/-- `(1 / t) ^ 2` is `o((log t / t) ^ 2)` as `t → ∞`. -/
 lemma one_div_sq_isLittleO_logScaleSquaredRate :
     (fun t : ℝ => (1 / t) ^ 2) =o[atTop] logScaleSquaredRate := by
   exact (one_div_isLittleO_logScaleRate.pow (by omega : 0 < 2)).congr'
     EventuallyEq.rfl
     (Filter.Eventually.of_forall fun t => by rfl)
 
+/-- `log t / t` is `o(1)` as `t → ∞`. -/
 lemma logScaleRate_isLittleO_one :
     logScaleRate =o[atTop] (fun _ : ℝ => (1 : ℝ)) := by
   rw [isLittleO_const_iff (one_ne_zero : (1 : ℝ) ≠ 0)]
   exact tendsto_logScaleRate
 
+/-- `(log t / t) ^ 3` is `o((log t / t) ^ 2)` as `t → ∞`. -/
 lemma logScaleRate_cube_isLittleO_logScaleSquaredRate :
     (fun t : ℝ => (logScaleRate t) ^ 3) =o[atTop] logScaleSquaredRate := by
   have h := ((isBigO_refl logScaleRate atTop).pow 2).mul_isLittleO
@@ -461,6 +521,9 @@ lemma logScaleRate_cube_isLittleO_logScaleSquaredRate :
     (Filter.Eventually.of_forall fun t => by ring)
     (Filter.Eventually.of_forall fun t => by simp [logScaleSquaredRate])
 
+/-- Little-o form of `logMainDerivativeLogRemainder_isBigO`: the first of the
+five terms of `logMainDefect_decomposition` that are negligible against
+`(log t / t) ^ 2` in `logMainDefect_sub_lead_isLittleO`. -/
 lemma logMainDerivativeLogRemainder_isLittleO :
     logMainDerivativeLogRemainder =o[atTop] logScaleSquaredRate := by
   have hcubic := logMainDerivative_log_second_order_isBigO.trans
@@ -469,6 +532,7 @@ lemma logMainDerivativeLogRemainder_isLittleO :
     (Filter.Eventually.of_forall fun t => by rfl)
     EventuallyEq.rfl
 
+/-- Little-o form of `logMainDefectMultiplier_mul_shiftRemainder_isBigO`. -/
 lemma logMainDefectMultiplier_mul_shiftRemainder_isLittleO :
     (fun t : ℝ =>
       (t - 1 + Real.log t / Real.log 2) * logMainShiftRemainder t) =o[atTop]
@@ -484,6 +548,7 @@ lemma logMainDefectMultiplier_mul_shiftRemainder_isLittleO :
       field_simp [ht]
   exact hsq.trans_isLittleO one_div_sq_isLittleO_logScaleSquaredRate
 
+/-- Little-o form of `logMainShift_sq_div_isBigO`. -/
 lemma logMainShift_sq_div_isLittleO :
     (fun t : ℝ => (logMainShift t) ^ 2 / (2 * Real.log 2)) =o[atTop]
       logScaleSquaredRate := by
@@ -493,12 +558,14 @@ lemma logMainShift_sq_div_isLittleO :
     (Filter.Eventually.of_forall fun t => by ring)
     EventuallyEq.rfl
 
+/-- Little-o form of `one_div_sq_div_two_isBigO`. -/
 lemma one_div_sq_div_two_isLittleO :
     (fun t : ℝ => (1 / t) ^ 2 / 2) =o[atTop] logScaleSquaredRate := by
   exact (one_div_sq_isLittleO_logScaleSquaredRate.const_mul_left (2 : ℝ)⁻¹).congr'
     (Filter.Eventually.of_forall fun t => by ring)
     EventuallyEq.rfl
 
+/-- Little-o form of `logMainDefect_crossTerm_isBigO`. -/
 lemma logMainDefect_crossTerm_isLittleO :
     (fun t : ℝ =>
       ((Real.log 2)⁻¹ ^ 2 - (2 * Real.log 2)⁻¹) * logScaleRate t * (1 / t))
@@ -514,6 +581,8 @@ lemma logMainDefect_crossTerm_isLittleO :
       (Filter.Eventually.of_forall fun t => by ring)
       EventuallyEq.rfl
 
+/-- The relative perturbation agrees with `(log 2)⁻¹ * logScaleRate t` to higher
+order: the difference is `o(log t / t)` as `t → ∞`. -/
 lemma logMainDerivativePerturbation_sub_lead_isLittleO :
     (fun t : ℝ =>
       logMainDerivativePerturbation t - (Real.log 2)⁻¹ * logScaleRate t) =o[atTop]
@@ -535,6 +604,10 @@ lemma logMainDerivativePerturbation_sub_lead_isLittleO :
     ring
   · exact EventuallyEq.rfl
 
+/-- Squared form of the preceding lemma: `u ^ 2` agrees with
+`(log 2)⁻¹ ^ 2 * (log t / t) ^ 2` up to `o((log t / t) ^ 2)`.  This is what
+supplies the nonzero leading coefficient in
+`logMainDefect_sub_lead_isLittleO`. -/
 lemma logMainDerivativePerturbation_sq_sub_lead_isLittleO :
     (fun t : ℝ =>
       (logMainDerivativePerturbation t) ^ 2 -

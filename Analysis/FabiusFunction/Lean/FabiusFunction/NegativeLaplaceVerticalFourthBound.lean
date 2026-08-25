@@ -2,9 +2,76 @@ import FabiusFunction.NegativeLaplaceVerticalTaylor
 import FabiusFunction.FabiusLambertSaddle
 
 /-!
-# A uniform off-axis fourth derivative bound
+# Uniform fourth-order vertical Laplace bounds
 
-Scratch development for the fourth vertical logarithmic derivative.
+The vertical negative-Laplace transform `P(z) = G(-z)`, with `G` the complex
+generating function of a Fabius solution, obeys the exact one-factor dilation
+law `P(2z) = ((1 - e^(-z)) / z) * P(z)`.  Restricting to the vertical line
+`z = s * (1 + i * θ)` and taking the branch-safe logarithm of
+`FabiusFunction.NegativeLaplaceVerticalLog` turns that law into an additive
+recurrence for the derivatives in `θ`.  Writing
+
+`K₁(s, θ) = (s * i) * (e^(-z) / (1 - e^(-z)) - 1 / z)`,  `z = s * (1 + i * θ)`,
+
+for the logarithmic derivative of the dilation factor, the first derivative
+satisfies `L₁(2s, θ) = K₁(s, θ) + L₁(s, θ)`; since the dilation acts on the
+parameter `s` while the differentiation acts on `θ`, every higher order
+inherits the same recurrence with no extra weight.  The increment `K₄` is
+bounded by a single absolute constant once `s ≥ 1`, so iterating outward from
+the compact base rectangle `1 ≤ r ≤ 2`, `|θ| ≤ 1` costs one constant per
+dyadic scale and gives growth linear in the number of scales.
+
+The module exists to supply the quartic Taylor-remainder constant used by the
+first quantitative central saddle theorem, and it stops at order four for that
+reason.  Its complex kernels are the right half-plane analogues of the real
+kernels of `FabiusFunction.NegativeLaplaceDerivativeBounds`, with `Real.exp`
+replaced by `Complex.exp`.  The later module
+`FabiusFunction.NegativeLaplaceVerticalAllOrderBound` reuses the order-one
+material from here and replaces this hand-run order-by-order chain with Cauchy
+estimates valid at every order.
+
+## Main results
+
+* `negativeLaplaceComplexFactor_hasDerivAt`, and
+  `negativeLaplaceComplexKernelFirst_hasDerivAt` with its `Second` and `Third`
+  companions -- the dilation factor has logarithmic derivative `K₁`, and each
+  complex kernel differentiates to the next, on the half-plane `0 < z.re`.
+* `negativeLaplaceVerticalKernelLogFirst_hasDerivAt` and its `Second` and
+  `Third` companions -- the same chain after `z = s * (1 + i * θ)`,
+  differentiated in `θ` for `s > 0`.
+* `negativeLaplaceVerticalLogFirst_two_mul` through
+  `negativeLaplaceVerticalLogFourth_two_mul` -- the exact unweighted dyadic
+  recurrence at orders one through four.
+* `norm_negativeLaplaceVerticalKernelLogFourth_le` -- `‖K₄(s, θ)‖ ≤ 1542` for
+  every `s ≥ 1` and every real `θ`.
+* `exists_norm_negativeLaplaceVerticalLogFourth_le_dyadicScales` -- iterating
+  the recurrence bounds `‖L₄(r, θ)‖` by a compactness constant plus `1542` per
+  dyadic scale, for `1 ≤ r ≤ 2 ^ (m + 1)` and `|θ| ≤ 1`.
+* `exists_norm_negativeLaplaceVerticalLogFourth_rpow_le` -- the resulting
+  `O(b)` bound at radius `r = 2 ^ b`, `b ≥ 1`, uniform in the strip `|θ| ≤ 1`.
+  This is the form `FabiusFunction.FabiusSaddleCentralLambert` consumes, as the
+  quartic coefficient of its exponent remainder.
+* `exists_norm_negativeLaplaceVerticalLogFourth_lambertRadius_le` -- the same
+  bound restated in the explicit lower-Lambert saddle coordinates
+  `r = fabiusLambertRadius x`, `b = fabiusLambertPhase x`.
+
+## Conventions and caveats
+
+* `Lⱼ` abbreviates `negativeLaplaceVerticalLogFirst` through
+  `negativeLaplaceVerticalLogFourth`, the `j`th `θ`-derivative of the
+  branch-safe vertical logarithm.  Its chain-rule prefactor is
+  `(-(r * i)) ^ j`, because the transform is read at `-(r * (1 + i * θ))`,
+  whereas `Kⱼ` carries `(s * i) ^ j`, because the dilation factor is read at
+  `s * (1 + i * θ)`; both are ordinary logarithmic derivatives in `θ`.
+* The uniform bounds are restricted to radius `r ≥ 1` and to the fixed strip
+  `|θ| ≤ 1`, and nothing is claimed for smaller radius or larger `θ`.  The
+  differentiation chain and the exact dyadic recurrences themselves hold for
+  every `s > 0` and every real `θ`, and the `K₄` bound for every `s ≥ 1` and
+  every real `θ`.
+* `1542 = 64 * 24 + 6` is explicit but deliberately generous, sized so that the
+  crude estimate `s ^ 4 * e^(-s) ≤ 4!` closes the proof; it is not sharp, and
+  the base constant supplied by compactness is not explicit at all.
+* Every statement is for an arbitrary `F : BoundedFabius` with `IsFabius F`.
 -/
 
 set_option autoImplicit false

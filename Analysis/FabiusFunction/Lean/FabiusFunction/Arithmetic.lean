@@ -31,6 +31,49 @@ open Finset
 
 namespace Fabius
 
+/-! ### Triangular numbers
+
+`Nat.choose n 2` is the `n`-th triangular number, and it appears throughout
+this development as the exponent of a power of two: in `dyadicScale`, in the
+Thue--Morse block weights, in the flatness constants `2 ^ C(n+1,2)`, and in
+every q-binomial formula.  The step and square identities below were
+previously re-proved privately in ten places under ten different names; they
+are stated once here because `Arithmetic` is the only module every consumer
+already imports. -/
+
+/-- The triangular step identity: `C(n+1, 2) = C(n, 2) + n`.
+
+This is `Nat.choose_succ_succ` followed by `Nat.choose_one_right`, but it is
+used often enough, and in enough modules that share no ancestor but this one,
+to deserve a name. -/
+theorem choose_succ_two (n : ℕ) :
+    (n + 1).choose 2 = n.choose 2 + n := by
+  rw [show n + 1 = Nat.succ n by omega, Nat.choose_succ_succ]
+  simp [Nat.choose_one_right, add_comm]
+
+/-- Twice a triangular number plus its index is a square:
+`2 * C(n, 2) + n = n ^ 2`.
+
+Equivalently `C(n, 2) = n(n-1)/2`, stated without natural subtraction or
+division so that it can be transported into any semiring by `push_cast`. -/
+theorem two_mul_choose_two_add (n : ℕ) :
+    2 * n.choose 2 + n = n ^ 2 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      have hstep : 2 * (n + 1).choose 2 + (n + 1)
+          = (2 * n.choose 2 + n) + (2 * n + 1) := by
+        rw [choose_succ_two]
+        ring
+      rw [hstep, ih]
+      ring
+
+/-- The shifted form of `choose_succ_two`, stated at `n + 2` because several
+dyadic recursions index their blocks from one rather than zero. -/
+theorem choose_add_two_two (n : ℕ) :
+    (n + 2).choose 2 = (n + 1).choose 2 + (n + 1) :=
+  choose_succ_two (n + 1)
+
 /-- The sum of the binary digits of `n`, denoted `w(n)` in the paper. -/
 def binaryWeight (n : ℕ) : ℕ :=
   (Nat.digits 2 n).sum

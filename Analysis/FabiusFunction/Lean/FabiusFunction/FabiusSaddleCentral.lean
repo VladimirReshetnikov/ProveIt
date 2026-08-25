@@ -2,6 +2,76 @@ import FabiusFunction.FabiusSaddleTail
 import FabiusFunction.FabiusComplexMGF
 import FabiusFunction.NegativeLaplaceDerivativeBounds
 
+/-!
+# Corrected central estimate for the Fabius saddle integral
+
+On the central arc of the Fabius saddle the rescaled kernel `K` has the
+exponential representation
+
+`K v = exp (-v ^ 2 / 2) * exp ((a * v + c * v ^ 3) * I + R v)`,
+
+with linear and cubic coefficients `a`, `c` of size `b ^ (-1 / 2)` and a
+Taylor remainder `R v` of size `(v ^ 2 + v ^ 4) / b`.  Comparing `K` with the
+bare Gaussian is not accurate enough at this precision: the odd first-order
+term has absolute integral of size `b ^ (-1 / 2)`, which swamps the target
+`O (1 / b)`.  It is therefore kept in the reference,
+
+`oddCorrection a c v = exp (-v ^ 2 / 2) * ((a * v + c * v ^ 3) * I)`,
+
+whose signed integral vanishes by oddness, and this module bounds the `L¹`
+distance from `K` to `standardGaussian + oddCorrection a c` on the arc.  The
+retained phase is purely imaginary, so a second-order exponential estimate
+lets it enter only through its square, and that is exactly why coefficients
+of size `b ^ (-1 / 2)` end up contributing only `O (1 / b)`.
+
+Nothing here is specific to the Fabius function: the kernel, the remainder,
+the central set and the index filter are all arbitrary, and the coefficient
+sizes enter as the square-root-free hypotheses `b * a ^ 2 ≤ Clinear ^ 2` and
+`b * c ^ 2 ≤ Ccubic ^ 2`.  That is the point of the separation.
+`FabiusFunction.FabiusSaddleCentralLambert` discharges those hypotheses from
+the dyadic Lambert Taylor data, `FabiusFunction.FabiusSaddleReferenceTail`
+supplies the matching estimate over the complement `(Icc (-A) A)ᶜ`, and
+`FabiusFunction.QuantitativeSaddle` turns central plus tail into normalized
+Gaussian mass.
+
+## Main results
+
+* `oddPhase` and `oddCorrection` -- the retained imaginary
+  linear-plus-cubic phase and its Gaussian-weighted form, together with the
+  oddness, norm and integrability lemmas the reference needs.
+* `centralMajorant` -- the arc-independent integrable majorant
+  `exp (-v ^ 2 / 2) * ((2 * Clinear ^ 2 + 2 * Cquadratic) * v ^ 2 +
+  2 * Cquartic * v ^ 4 + 2 * Ccubic ^ 2 * v ^ 6)`.
+* `norm_exp_add_sub_one_sub_le` -- the complex estimate
+  `‖exp (u + w) - (1 + u)‖ ≤ ‖u‖ ^ 2 + 2 * ‖w‖` for purely imaginary `u`,
+  valid for `‖u‖ ≤ 1` and `‖w‖ ≤ 1`.
+* `norm_sub_gaussian_add_oddCorrection_le` -- the pointwise corrected-kernel
+  bound, by `centralMajorant` divided by `b`.
+* `integral_norm_sub_gaussian_add_oddCorrection_le` -- its integrated form
+  over an arbitrary measurable central set, bounded by the whole-line
+  integral of `centralMajorant` divided by `b`.
+* `central_corrected_error_isBigO` and
+  `standardRadius_central_corrected_error_isBigO` -- the filter forms
+  `=O[l] (fun i => (b i)⁻¹)`, the second specialized to the standard radius
+  `fabiusSaddleCentralRadius b = sqrt (32 * log b)`.
+* `normalized_integral_sub_one_isBigO_of_standardRadius_taylor` -- central
+  Taylor control plus a corrected complementary tail gives the normalized
+  saddle integral `(sqrt (2 * pi))⁻¹ * ∫ K = 1 + O (1 / b)`.
+
+The remaining declarations are Gaussian-moment and coefficient plumbing for
+those statements.
+
+## Conventions
+
+`QuantitativeSaddle.standardGaussian` is `exp (-v ^ 2 / 2)` carrying no
+`1 / sqrt (2 * pi)`; that normalization is applied once, in the last theorem.
+The smallness hypotheses `‖oddPhase a c v‖ ≤ 1` and `‖R v‖ ≤ 1` are what the
+Mathlib exponential estimates require, they do not follow from the size
+hypotheses, and callers must discharge them on the arc they use.  Every
+constant is sufficient rather than sharp; they come from
+`(x + y) ^ 2 ≤ 2 * x ^ 2 + 2 * y ^ 2` and the crude `‖exp w - 1‖ ≤ 2 * ‖w‖`.
+-/
+
 set_option autoImplicit false
 
 open Filter Set MeasureTheory Asymptotics
