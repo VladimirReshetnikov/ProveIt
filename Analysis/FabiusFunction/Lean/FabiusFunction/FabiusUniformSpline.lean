@@ -996,6 +996,23 @@ lemma uniformPartialSum_nonneg (p : ℕ) (ω : SampleSpace) :
   intro i hi
   exact div_nonneg (div_nonneg (ω i).property.1 (by norm_num)) (by positivity)
 
+/-- Sharp upper endpoint of the first `p` weighted coordinates. -/
+lemma uniformPartialSum_le_one_sub_inv_pow (p : ℕ) (ω : SampleSpace) :
+    uniformPartialSum p ω ≤ 1 - 1 / (2 : ℝ) ^ p := by
+  induction p with
+  | zero => simp [uniformPartialSum]
+  | succ p ih =>
+      rw [uniformPartialSum_succ]
+      calc
+        uniformPartialSum p ω + (ω p : ℝ) / 2 / (2 : ℝ) ^ p ≤
+            (1 - 1 / (2 : ℝ) ^ p) + 1 / 2 / (2 : ℝ) ^ p := by
+          gcongr
+          exact (ω p).property.2
+        _ = 1 - 1 / (2 : ℝ) ^ (p + 1) := by
+          rw [pow_succ]
+          field_simp
+          ring
+
 lemma uniformPartialSum_le_weightedCoordinateSum (p : ℕ) (ω : SampleSpace) :
     uniformPartialSum p ω ≤ weightedCoordinateSum ω := by
   rw [uniformPartialSum, weightedCoordinateSum]
@@ -1039,6 +1056,75 @@ lemma weightedCoordinateSum_le_uniformPartialSum_add (p : ℕ) (ω : SampleSpace
           rw [show (∑' i : ℕ, g i) = 1 by
             simpa only [g] using tsum_geometric_two' 1]
           ring
+
+/-- Quantitative pointwise error of truncating the weighted coordinate
+series after `p` terms. -/
+theorem abs_uniformPartialSum_sub_weightedCoordinateSum_le
+    (p : ℕ) (ω : SampleSpace) :
+    |uniformPartialSum p ω - weightedCoordinateSum ω| ≤
+      1 / (2 : ℝ) ^ p := by
+  rw [abs_of_nonpos (sub_nonpos.mpr
+    (uniformPartialSum_le_weightedCoordinateSum p ω))]
+  linarith [weightedCoordinateSum_le_uniformPartialSum_add p ω]
+
+/-- The finite weighted-coordinate sums converge pointwise to the full
+random series. -/
+theorem uniformPartialSum_tendsto_weightedCoordinateSum (ω : SampleSpace) :
+    Tendsto (fun p : ℕ => uniformPartialSum p ω) atTop
+      (nhds (weightedCoordinateSum ω)) := by
+  rw [weightedCoordinateSum]
+  simpa only [uniformPartialSum] using
+    (summable_uniformCoordinateTerm ω).hasSum.tendsto_sum_nat
+
+/-- The partial-sum distribution has no mass below zero. -/
+theorem uniformPartialCDF_eq_zero_of_neg
+    (p : ℕ) {x : ℝ} (hx : x < 0) :
+    uniformPartialCDF p x = 0 := by
+  rw [uniformPartialCDF_eq_measureReal]
+  have hset : {ω : SampleSpace | uniformPartialSum p ω ≤ x} = ∅ := by
+    ext ω
+    simp only [mem_setOf_eq, mem_empty_iff_false, iff_false]
+    exact not_le_of_gt (hx.trans_le (uniformPartialSum_nonneg p ω))
+  rw [hset]
+  simp
+
+/-- The partial-sum CDF is one at and above its sharp upper endpoint. -/
+theorem uniformPartialCDF_eq_one_of_max_le
+    (p : ℕ) {x : ℝ} (hx : 1 - 1 / (2 : ℝ) ^ p ≤ x) :
+    uniformPartialCDF p x = 1 := by
+  rw [uniformPartialCDF_eq_measureReal]
+  have hset : {ω : SampleSpace | uniformPartialSum p ω ≤ x} = Set.univ := by
+    ext ω
+    simp only [mem_setOf_eq, Set.mem_univ, iff_true]
+    exact (uniformPartialSum_le_one_sub_inv_pow p ω).trans hx
+  rw [hset, probReal_univ]
+
+/-- In particular, the partial-sum CDF is one at and above one. -/
+theorem uniformPartialCDF_eq_one_of_one_le
+    (p : ℕ) {x : ℝ} (hx : 1 ≤ x) :
+    uniformPartialCDF p x = 1 := by
+  apply uniformPartialCDF_eq_one_of_max_le
+  have : 0 ≤ 1 / (2 : ℝ) ^ p := by positivity
+  linarith
+
+/-- Support bound for the midpoint-corrected partial CDF at its left edge. -/
+theorem uniformCenteredPartialCDF_eq_zero_of_lt
+    (p : ℕ) {x : ℝ} (hx : x < 1 / (2 : ℝ) ^ (p + 1)) :
+    uniformCenteredPartialCDF p x = 0 := by
+  apply uniformPartialCDF_eq_zero_of_neg
+  simpa only [uniformCenteredPartialCDF] using sub_neg.mpr hx
+
+/-- Support bound for the midpoint-corrected partial CDF at its right edge. -/
+theorem uniformCenteredPartialCDF_eq_one_of_le
+    (p : ℕ) {x : ℝ} (hx : 1 - 1 / (2 : ℝ) ^ (p + 1) ≤ x) :
+    uniformCenteredPartialCDF p x = 1 := by
+  apply uniformPartialCDF_eq_one_of_max_le
+  have hpow : 1 / (2 : ℝ) ^ p =
+      2 * (1 / (2 : ℝ) ^ (p + 1)) := by
+    rw [pow_succ]
+    field_simp
+  rw [hpow]
+  linarith
 
 theorem uniformPartialCDF_sandwich (p : ℕ) (x : ℝ) :
     weightedSumCDF x ≤ uniformPartialCDF p x ∧

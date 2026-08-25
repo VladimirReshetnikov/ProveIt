@@ -29,6 +29,38 @@ theorem rvachevUp_mem_unitInterval (F : BoundedFabius) (x : ℝ) :
   unfold rvachevUp
   split_ifs <;> exact ⟨fabiusReal_nonneg F _, fabiusReal_le_one F _⟩
 
+/-- Rvachev's folded function is nonnegative, without any Fabius equations. -/
+theorem rvachevUp_nonneg (F : BoundedFabius) (x : ℝ) :
+    0 ≤ rvachevUp F x :=
+  (rvachevUp_mem_unitInterval F x).1
+
+/-- Rvachev's folded function is at most one, without any Fabius equations. -/
+theorem rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    rvachevUp F x ≤ 1 :=
+  (rvachevUp_mem_unitInterval F x).2
+
+/-- Absolute values may be removed from the nonnegative folded function. -/
+@[simp]
+theorem abs_rvachevUp (F : BoundedFabius) (x : ℝ) :
+    |rvachevUp F x| = rvachevUp F x :=
+  abs_of_nonneg (rvachevUp_nonneg F x)
+
+/-- The folded function is bounded by one in absolute value. -/
+theorem abs_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    |rvachevUp F x| ≤ 1 := by
+  rw [abs_rvachevUp]
+  exact rvachevUp_le_one F x
+
+/-- The folded function is bounded by one in the real norm. -/
+theorem norm_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    ‖rvachevUp F x‖ ≤ 1 := by
+  simpa [Real.norm_eq_abs] using abs_rvachevUp_le_one F x
+
+/-- The complex coercion of the folded function is bounded by one in norm. -/
+theorem norm_coe_rvachevUp_le_one (F : BoundedFabius) (x : ℝ) :
+    ‖(rvachevUp F x : ℂ)‖ ≤ 1 := by
+  simpa [Complex.norm_real, Real.norm_eq_abs] using abs_rvachevUp_le_one F x
+
 private lemma fabius_hasDerivAt_one (F : BoundedFabius) (hF : IsFabius F) :
     HasDerivAt (fabiusReal F) (0 : ℝ) (1 : ℝ) := by
   have hmax : IsMaxOn (fabiusReal F) Set.univ 1 := by

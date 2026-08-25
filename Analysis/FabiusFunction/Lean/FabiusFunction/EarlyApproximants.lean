@@ -164,6 +164,19 @@ theorem geometricPolynomial_monic {r : ℕ} (hr : 0 < r) :
     geometricPolynomial_natDegree hr, geometricPolynomial_coeff,
     if_pos (by omega)]
 
+/-- Every polynomial approximant is monic. -/
+theorem approximationPolynomial_monic (n : ℕ) :
+    (approximationPolynomial n).Monic := by
+  unfold approximationPolynomial
+  apply Polynomial.monic_prod_of_monic
+  intro k _hk
+  exact geometricPolynomial_monic (by positivity)
+
+@[simp]
+theorem approximationPolynomial_leadingCoeff (n : ℕ) :
+    (approximationPolynomial n).leadingCoeff = 1 :=
+  (approximationPolynomial_monic n).leadingCoeff
+
 theorem approximationPolynomial_natDegree (n : ℕ) :
     (approximationPolynomial n).natDegree = approximationDegree n := by
   unfold approximationPolynomial approximationDegree

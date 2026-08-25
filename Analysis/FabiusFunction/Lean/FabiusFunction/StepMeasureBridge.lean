@@ -148,10 +148,6 @@ theorem rvachevMeasure_real_Ioc_eq_intervalIntegral
   · exact (rvachevUp_integrable F hF).integrableOn
   · exact Eventually.of_forall (rvachevUp_nonneg F)
 
-theorem rvachevUp_le_one (F : BoundedFabius) (x : ℝ) : rvachevUp F x ≤ 1 := by
-  unfold rvachevUp
-  split_ifs <;> exact fabiusReal_le_one F _
-
 theorem intervalIntegral_rvachevUp_nonneg
     (F : BoundedFabius) (a b : ℝ) (hab : a ≤ b) :
     0 ≤ ∫ x in a..b, rvachevUp F x :=
@@ -317,6 +313,33 @@ theorem stepCell_normalization (n m : ℕ) :
     (2 : ℝ) ^ n * (stepIntervalRight n m - stepIntervalLeft n m) = 1 := by
   rw [stepCellWidth_eq]
   field_simp
+
+/-- Each histogram approximant has total mass one. -/
+theorem integral_stepApproximant (n : ℕ) :
+    (∫ x : ℝ, stepApproximant n x) = 1 := by
+  unfold stepApproximant
+  rw [integral_const_mul, integral_finsetSum]
+  · have hwidth (m : ℕ) :
+        max (stepIntervalRight n m - stepIntervalLeft n m) 0 =
+          1 / (2 : ℝ) ^ n := by
+      rw [stepCellWidth_eq, max_eq_left]
+      positivity
+    simp_rw [integral_const_mul, integral_halfEndpointIntervalIndicator,
+      hwidth]
+    rw [← Finset.sum_mul]
+    have hcoeff :
+        (∑ m ∈ range (approximationDegree n + 1),
+            ((approximationPolynomial n).coeff m : ℝ)) =
+          (2 : ℝ) ^ ((n + 1).choose 2) := by
+      norm_cast
+      rw [← approximationPolynomial_eval_one,
+        Polynomial.eval_eq_sum_range, approximationPolynomial_natDegree]
+      simp
+    rw [hcoeff]
+    field_simp
+  · intro m hm
+    exact (halfEndpointIntervalIndicator_integrable
+      (stepIntervalLeft n m) (stepIntervalRight n m)).const_mul _
 
 noncomputable def stepOverlap (n m : ℕ) (a b : ℝ) : ℝ :=
   max (min b (stepIntervalRight n m) - max a (stepIntervalLeft n m)) 0
