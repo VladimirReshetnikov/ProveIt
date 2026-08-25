@@ -63,8 +63,12 @@ The right endpoint behaves the same way, by the reflection symmetry
   `fabiusInv_fabiusReal` its two inversion identities on `[0,1]`.
 * `continuous_fabiusInv`, `monotone_fabiusInv`, `strictMonoOn_fabiusInv`,
   `bijOn_fabiusInv` — regularity and the inverse bijection.
-* `fabiusInv_zero`, `fabiusInv_one`, `fabiusInv_half` — the three values
-  known in closed form.
+* `fabiusInv_zero`, `fabiusInv_one`, `fabiusInv_half` — the values at the two
+  endpoints and at the fixed point of the reflection.  These are not the only
+  closed-form values: `DyadicAnalytic.fabiusDyadicUnit_cast` evaluates `F` at
+  every dyadic rational of `[0,1]` exactly, so every such value inverts.  For
+  instance `F (1/4) = 5/72`, which is the threshold appearing in
+  `mul_lt_fabiusInv` below.
 * `le_two_pow_mul_fabiusInv_pow` and
   `le_two_pow_div_factorial_mul_fabiusInv_pow` — the transported flatness
   bounds, with `le_two_pow_mul_fabiusInv_pow_of_le` restating the scale
@@ -194,7 +198,13 @@ theorem fabiusInv_le_iff_le_fabiusReal (F : BoundedFabius) (hF : IsFabius F)
   rwa [hF.one_of_one_le 1 le_rfl] at h
 
 /-- The reflection symmetry fixes the midpoint, hence so does the inverse.
-This is the only interior value of either function known in closed form. -/
+
+The midpoint is the unique fixed point of `F` in the interior, but it is far
+from the only interior value known in closed form: every dyadic rational of
+`[0,1]` has an exact rational value, computed by `Arithmetic.fabiusDyadic` and
+transferred to `fabiusReal` by `DyadicAnalytic.fabiusDyadicUnit_cast`.  So
+`fabiusInv F hF` is likewise known exactly at every such value — for example
+`fabiusInv F hF (5/72) = 1/4`, since `F (1/4) = 5/72`. -/
 theorem fabiusInv_half (F : BoundedFabius) (hF : IsFabius F) :
     fabiusInv F hF (1 / 2) = 1 / 2 := by
   have h := fabiusInv_fabiusReal F hF
@@ -253,9 +263,11 @@ theorem le_two_pow_mul_fabiusInv_pow_of_le (F : BoundedFabius) (hF : IsFabius F)
 /-! ## Infinite steepness at the origin -/
 
 /-- **The inverse outruns every linear function at the origin, effectively.**
-For every slope `M`, once `y` is positive, below `F (1/4)`, and small enough
-that `8 * M ^ 2 * y < 1`, the inverse already exceeds `M * y`.  The constant
-`8` is `2 ^ C(3,2)`, the flatness constant at `n = 2`.
+For every slope `M`, once `y` is positive, below `F (1/4) = 5/72`, and small
+enough that `8 * M ^ 2 * y < 1`, the inverse already exceeds `M * y`.  The
+constant `8` is `2 ^ C(3,2)`, the flatness constant at `n = 2`; the threshold
+`F (1/4)` is exactly `5 / 72` by the dyadic evaluation of
+`DyadicAnalytic.fabiusDyadicUnit_cast`.
 
 No positivity is assumed of `M`: for `M ≤ 0` the conclusion is weaker than the
 positive case but the same proof gives it, so requiring `0 < M` would only
