@@ -28,14 +28,6 @@ noncomputable def tiltedSurvivalMoment
     (F : BoundedFabius) (k : ℕ) (s : ℝ) : ℝ :=
   ∫ t in (0 : ℝ)..1, t ^ k * rvachevUp F t * Real.exp (-s * t)
 
-private lemma abs_rvachevUp_le_one (F : BoundedFabius) (t : ℝ) :
-    |rvachevUp F t| ≤ 1 := by
-  rw [abs_of_nonneg]
-  · rw [rvachevUp]
-    split_ifs <;> exact fabiusReal_le_one F _
-  · rw [rvachevUp]
-    split_ifs <;> exact fabiusReal_nonneg F _
-
 /-- Differentiating a tilted survival moment adds one power and a minus sign. -/
 theorem tiltedSurvivalMoment_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (s : ℝ) :

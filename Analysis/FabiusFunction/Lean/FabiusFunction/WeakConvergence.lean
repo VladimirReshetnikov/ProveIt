@@ -32,11 +32,6 @@ namespace Fabius
 
 noncomputable section
 
-/-- Rvachev's up function is nonnegative. -/
-theorem rvachevUp_nonneg (F : BoundedFabius) (x : ℝ) : 0 ≤ rvachevUp F x := by
-  unfold rvachevUp
-  split_ifs <;> exact fabiusReal_nonneg F _
-
 /-- Rvachev's up function is integrable. -/
 theorem rvachevUp_integrable (F : BoundedFabius) (hF : IsFabius F) :
     Integrable (rvachevUp F) := by
