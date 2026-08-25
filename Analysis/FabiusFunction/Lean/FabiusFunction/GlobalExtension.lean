@@ -69,7 +69,7 @@ theorem extendedFabius_two_mul_add (F : BoundedFabius) (hF : IsFabius F)
   have h := extendedFabius_eq_single_translate F hF b
     (x := 2 * (b : ℝ) + t) (by linarith [ht.1]) (by linarith [ht.2])
   convert h using 1
-  ring
+  ring_nf
 
 /-- The signed extension vanishes at every nonnegative even integer knot. -/
 theorem extendedFabius_two_mul_nat (F : BoundedFabius) (hF : IsFabius F)
@@ -188,7 +188,7 @@ private lemma extendedFabius_refinement_tsum
           intro n
           simp only [f, binaryWeight_two_mul, binaryWeight_two_mul_add_one, pow_succ]
           push_cast
-          ring
+          ring_nf
     _ = (∑' n : ℕ, f (2 * n)) + ∑' n : ℕ, f (2 * n + 1) :=
       heven.tsum_add hodd
     _ = ∑' n : ℕ, f n := tsum_even_add_odd heven hodd
@@ -209,7 +209,7 @@ private lemma deriv_extendedSummand
     ring
   rw [hfun, deriv_comp_sub_const,
     (rvachev_hasDerivAt F hF (x - (2 * (n : ℝ) + 1))).deriv]
-  ring
+  ring_nf
 
 /-- The signed extension satisfies `F'(x) = 2 F(2x)` on all of `ℝ`. -/
 theorem extendedFabius_hasDerivAt
@@ -317,7 +317,7 @@ theorem iteratedDeriv_extendedFabius
           show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
         simp [Nat.choose_one_right, add_comm]
       rw [show k + 1 + 1 = k + 2 by omega, hchoose, pow_add]
-      ring
+      ring_nf
 
 /-- On the first block the signed extension is literally the translate of
 Rvachev's compactly supported function: `extendedFabius F (x + 1) = up F x`
@@ -413,6 +413,6 @@ theorem iteratedDeriv_rvachev
           show 2 = 1 + 1 by omega, Nat.choose_succ_succ]
         simp [Nat.choose_one_right, add_comm]
       rw [show n + 1 + 1 = n + 2 by omega, hchoose, pow_add]
-      ring
+      ring_nf
 
 end Fabius
