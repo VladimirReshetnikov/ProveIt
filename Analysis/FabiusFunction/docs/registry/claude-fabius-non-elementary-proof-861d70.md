@@ -74,7 +74,12 @@ from "closed under `n`-th roots" (Wikipedia's formulation) to "closed under
 arbitrary algebraic functions" (Liouville's).  This is a strengthening beyond
 the task's stated scope, and the main result does not depend on it: if it does
 not land, `ElementaryFunction.lean` and `NotElementary.lean` stand unchanged.
-It will not be committed until it compiles.
+
+**Status: on this branch, not yet compiled, and deliberately not registered in
+`Lean/FabiusFunction.lean`.**  Nothing imports it, so it cannot affect anyone
+else's build.  It will not be pushed to `origin/main` until it is
+machine-checked; if it does not converge it will be removed from the branch
+before the next push to `main`.
 
 ## Build ownership
 

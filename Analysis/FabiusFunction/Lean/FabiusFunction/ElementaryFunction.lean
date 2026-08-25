@@ -62,7 +62,11 @@ each such `t`.
 The class is closed under `n`-th roots but not under passage to an arbitrary
 algebraic function: `IsElementary` has no constructor for a continuous branch
 of `P (x, y) = 0` with elementary coefficients.  Wikipedia's definition speaks
-of "roots", which is what `IsElementary.rpow` provides.
+of "roots", and those the class does contain — but by two different
+derivations, not one.  `IsElementary.rpow` gives them on `[0, ∞)`; at a
+negative base `Mathlib`'s `Real.rpow` is `|x| ^ r * cos (π r)`, so
+`(-8 : ℝ) ^ (1/3 : ℝ) = 1`, and the classical odd root is instead
+`IsElementary.signedRpow`, whose defining property is `Fabius.signedRoot_pow`.
 -/
 
 set_option autoImplicit false
