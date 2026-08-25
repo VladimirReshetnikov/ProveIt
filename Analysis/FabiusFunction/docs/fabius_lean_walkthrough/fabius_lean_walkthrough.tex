@@ -118,7 +118,7 @@
 \author{Proof architecture, exact computation, asymptotics, and effective approximation\\
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
-\small commit \nolinkurl{5646fd86264c9b67f13ab555816ce362d6e00572}}
+\small commit \nolinkurl{169de0901be8f9be4b8988f09ecada1d888765dd}}
 
 \begin{document}
 \maketitle
@@ -135,7 +135,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \section*{Scope and conventions}
 \addcontentsline{toc}{section}{Scope and conventions}
-The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{5646fd86264c9b67f13ab555816ce362d6e00572} on the \texttt{codex/fabius-both-papers} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
+The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{169de0901be8f9be4b8988f09ecada1d888765dd} on the \texttt{codex/fabius-both-papers} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -177,7 +177,7 @@ The normal build command from the project root is:
 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
-\nolinkurl{5646fd86264c9b67f13ab555816ce362d6e00572}.  Before reproducing a
+\nolinkurl{169de0901be8f9be4b8988f09ecada1d888765dd}.  Before reproducing a
 declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
@@ -874,9 +874,27 @@ and records the primitive-recursive modulus \(d(n)=2n\) coming from the sharp
 Lipschitz bound.  \nolinkurl{FabiusComputableSpline.lean} implements the centered
 Thue--Morse spline using signed pairs of natural numerators, proves its pieces
 primitive recursive, rounds to a dyadic name with an explicit error budget,
-and packages the result as \nolinkurl{IsComputableRealFunction (fabiusReal F)}.
-Thus the computability theorem contains both required clauses: preservation of
-computable real sequences and effective uniform continuity.
+and supplies two evaluators with the same error \(5\cdot2^{-(p+3)}\).  The
+first clamps its input to the bounded interval and packages
+\nolinkurl{IsComputableRealFunction (fabiusReal F)}.  The second retains the
+unrestricted signed spline code; \nolinkurl{extendedFabiusSplineApproxPR_error}
+proves its global error, and
+\nolinkurl{extendedFabius_isComputableRealFunction} packages the result for
+the signed extension of every \(F\) satisfying \nolinkurl{IsFabius F}.  Its canonical specialization is
+\nolinkurl{globalFabius_isComputableRealFunction}.  Thus both bounded and
+signed-global computability theorems contain the two required clauses:
+preservation of computable real sequences and effective uniform continuity.
+The unrestricted evaluator is a primitive-recursive certificate rather than a
+complexity claim, since its finite fold length depends on the positive input
+numerator.
+
+Uniform convergence also controls changing inputs.  The theorem
+\nolinkurl{abs_fabiusUniformSpline_sub_extendedFabius_le_add} states
+\[
+  |S_p(x)-\widetilde F(y)|\leq 2^{-p}+2|x-y|,
+\]
+and \nolinkurl{fabiusUniformSpline_tendsto_extendedFabius_of_tendsto} concludes
+that \(S_p(x_p)\to\widetilde F(x)\) whenever \(x_p\to x\).
 
 \section{The exact--analytic dyadic bridge}\label{ch:dyadic-bridge}
 
@@ -2788,8 +2806,8 @@ Module & Role in the development \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
 \nolinkurl{NotElementary.lean} & Non-elementarity theorem for the bounded Fabius function on its transition interval. \\
 \nolinkurl{InverseNotElementary.lean} & Interior noncriticality derived from the positive derivative API in \nolinkurl{FabiusInverse.lean}, the exact analytic locus of \nolinkurl{fabiusInv}, and local analytic-density/non-elementarity obstructions. \\
-\nolinkurl{FabiusComputability.lean} & Uniform spline error \(\leq2^{-p}\), an effective uniform-continuity modulus, and the computable-real-function bridge. \\
-\nolinkurl{FabiusComputableSpline.lean} & Primitive-recursive dyadic spline evaluator and computable-real interface. \\
+\nolinkurl{FabiusComputability.lean} & Global uniform spline error \(\leq2^{-p}\), moving-input stability and diagonal convergence, an effective uniform-continuity modulus, and the computable-real-function bridge. \\
+\nolinkurl{FabiusComputableSpline.lean} & Primitive-recursive bounded and signed-global dyadic spline evaluators, each with an explicit error certificate, and their computable-real interfaces. \\
 \addlinespace[0.45em]
 \multicolumn{2}{l}{\textbf{Dyadic formulas and verified computation}}\\[0.25em]
 \nolinkurl{DyadicClosedForm.lean} & Closed finite Taylor formulas, highest-bit decompositions, and equivalence among exact dyadic expressions. \\
@@ -3151,7 +3169,7 @@ not against an unspecified moving branch.  A reproduction run should begin
 with:
 \begin{lstlisting}[style=pseudo,language={}]
 git rev-parse HEAD
-source_pin=5646fd86264c9b67f13ab555816ce362d6e00572
+source_pin=169de0901be8f9be4b8988f09ecada1d888765dd
 test "$(git rev-parse "$source_pin^{commit}")" = "$source_pin"
 git diff --exit-code "$source_pin" -- \
   Analysis/FabiusFunction/Lean
@@ -3160,7 +3178,7 @@ lake env lean --version
 rg --files Analysis/FabiusFunction/Lean/FabiusFunction \
   -g '*.lean' | wc -l
 \end{lstlisting}
-At the pinned snapshot the last command reports \(188\) leaf modules.  A
+At the pinned snapshot the last command reports \(189\) leaf modules.  A
 different count is not automatically an error, but it means this guide's
 module inventory must be compared with the newer umbrella import.  Do not run
 \texttt{lake update}: the committed manifest is part of the audited
@@ -3225,7 +3243,7 @@ records its nonclaims.
 Vladimir Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction},
 GitHub repository, source tree and README inspected 25 August 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/5646fd86264c9b67f13ab555816ce362d6e00572/Analysis/FabiusFunction}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/169de0901be8f9be4b8988f09ecada1d888765dd/Analysis/FabiusFunction}
 
 \bibitem{Arias05442}
 Juan Arias de Reyna,
@@ -3257,7 +3275,7 @@ CPP 2020 and continuously maintained Lean 4 library.
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 Title & The Fabius Function in Lean: A Guided Walkthrough of the ProveIt Formalization \\
-Source snapshot & commit \nolinkurl{5646fd86264c9b67f13ab555816ce362d6e00572} on \texttt{codex/fabius-both-papers}, inspected 25 August 2026 \\
+Source snapshot & commit \nolinkurl{169de0901be8f9be4b8988f09ecada1d888765dd} on \texttt{codex/fabius-both-papers}, inspected 25 August 2026 \\
 Toolchain recorded by source & Lean 4.32.0; repository-pinned mathlib revision \\
 Primary path & \nolinkurl{Analysis/FabiusFunction/Lean/} \\
 Umbrella module & \nolinkurl{FabiusFunction.lean} \\
