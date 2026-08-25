@@ -5,49 +5,43 @@ This file implements the per-branch registry fallback in
 
 ```text
 SYNC Fabius
-worktree/task: /root — exact forward and inverse curvature profile
-branch/base: codex/fabius-both-papers merged with origin/main
-  3d6cc72721129ba1fee040215c5cafa8adedbe0c in
-  edc04fb9fa22153a73260f8b53e171965f081bbe
-writing: none; workstream closed
-reading: none
-expected API: exact second-derivative formula, global sign and zero loci for
-  `fabiusReal`; midpoint first/second inverse derivatives; exact interior sign
-  and zero loci for the inverse curvature; divergence of the interior inverse
-  derivative at both clamping endpoints
-completed: integrated the exact global forward second-derivative formula and
-  sign/zero loci in Convexity; integrated the inverse midpoint jet, interior
-  sign/zero loci, and both endpoint derivative limits in FabiusInverse; updated
-  the README focused API and shape summary; committed the Lean/API tranche as
-  `eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80`; updated the primary exposition,
-  published walkthrough, and consolidated research-frontier status ledger;
-  repinned the primary article, walkthrough, and integration-frontier source
-  claims to that code commit and rebuilt all three paired PDFs in three passes;
-  committed the coherent documentation batch as
-  `2127f5bb3e4bea1731301dbbc27d7eeaca21047e`; fetched and merged the latest
-  origin/main, including its dyadic scale-zero and periodic/saddle refactors,
-  without conflicts in `edc04fb9fa22153a73260f8b53e171965f081bbe`
-validated: direct Lean elaboration and focused Lake builds pass for both
-  `FabiusFunction.Convexity` (2661 jobs) and
-  `FabiusFunction.FabiusInverse` (3248 jobs); the facade-only
-  `/tmp/FabiusCurvatureFacadeAudit.lean` resolves every new declaration,
-  passes `assert_no_sorry`, and reports exactly `[propext, Classical.choice,
-  Quot.sound]`; all three final LaTeX logs were free of undefined/multiply
-  defined references and errors, and rendered-text checks find the new names,
-  exact pin, and no `??`; independent source/API and documentation audits pass;
-  after the upstream merge, focused builds pass for
-  `FabiusFunction.Convexity` (2661 jobs) and
-  `FabiusFunction.FabiusInverse` (3248 jobs), the expanded facade audit again
-  passes all 13 `assert_no_sorry` and exact-axiom checks, and
-  `lake build +FabiusFunction` completes all 4008 jobs; both merge-parent
-  `git diff --check` checks are clean
-next: push the validated merge to main and codex/fabius-both-papers
-lease: released 2026-08-25T15:40:31-07:00
-git owner / build owner: /root / /root
-risks/questions: keep inverse zero/sign statements restricted to `(0,1)` so
-  Mathlib's default-zero derivative at nondifferentiable clamp points is not
-  misread as geometric curvature; place new forward results in Convexity
-  rather than paying a root Differential invalidation
+branch / worktree / machine: codex/fabius-both-papers /
+  /home/codex/src/Proofs / codexbox
+fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
+HEAD and dirty paths: 1da2fde2285e3970267b7dc2561bcd0d897be1b4
+  (closed lower-Lambert preservation
+  checkpoint); only this registry is being refreshed
+writing (exact paths): this registry only; no further source writes until the
+  coordinator acknowledges the requested lease
+expected declarations or document claims: `lowerLambertW_branchPoint`,
+  `lowerLambertW_le_neg_one`, `lowerLambertW_mul_exp_of_mem_Ico`,
+  `lowerLambertW_unique_of_mem_Ico`, `lowerLambertW_strictAntiOn_Ico`,
+  `lowerLambertW_image_Ico`, `paperLambertN_eq9_of_le`,
+  `one_div_log_two_le_paperLambertN`,
+  `paperLambertN_eq_one_div_log_two`,
+  `paperLambertN_eq_one_div_log_two_iff`, and
+  `one_div_log_two_lt_paperLambertN`; existing open-domain names remain
+  exact compatibility wrappers
+completed commits: `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
+  preserves the exact closed lower-Lambert source
+  and the initial coordinator reply; no documentation or aggregate file was
+  changed
+validated (exact command, SHA/state, exit code): delegated prototype command
+  `lake env lean /tmp/LowerLambertWPrototype.lean` at base 09ae23f63, exit 0;
+  all 11 new declarations report exactly `[propext, Classical.choice,
+  Quot.sound]`; production source is byte-for-byte identical to that final
+  prototype by `diff -q`, and `git diff --check` is clean
+not yet validated: no Lean/Lake command has run on the production checkpoint;
+  no focused, facade, downstream, or aggregate build claim is made
+requested integration or lease: acknowledge an exact write lease for
+  Lean/FabiusFunction/LowerLambertW.lean and assign the build token for
+  `+FabiusFunction.LowerLambertW`; documentation remains frozen for the
+  coordinator's semantic integrator
+conflicts / dependencies: current main advanced after this branch's clean
+  base; do not merge while preserving this checkpoint; all old public names
+  and binders are retained; calculus remains on the open smooth interior
+next bounded step: push this exact feature tip, then wait for coordinator
+  acknowledgement and build assignment
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
