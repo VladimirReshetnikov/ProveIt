@@ -30,29 +30,22 @@ theorem HasAsymptoticExpansion.smallArgument_of_logScale
       (scale ∘ fabiusLogArgument) (f ∘ fabiusLogArgument)
       (fun k => coeff k ∘ fabiusLogArgument)) :
     HasAsymptoticExpansion (nhdsWithin 0 (Ioi 0)) scale f coeff := by
-  constructor
-  · intro k
-    have hc := (h.coeff_isBigO k).comp_tendsto
-      fabiusSmallArgumentLog_tendsto_atTop
-    apply hc.congr'
-    · filter_upwards [self_mem_nhdsWithin] with x hx
-      exact congrArg (coeff k) (fabiusLogArgument_smallArgumentLog hx)
-    · filter_upwards with x
-      rfl
-  · intro N
-    have hc := (h.remainder_isBigO N).comp_tendsto
-      fabiusSmallArgumentLog_tendsto_atTop
-    apply hc.congr'
-    · filter_upwards [self_mem_nhdsWithin] with x hx
-      simp only [Function.comp_apply]
-      rw [show fabiusLogArgument (fabiusSmallArgumentLog x) = x from
-        fabiusLogArgument_smallArgumentLog hx]
-      simp [partialSum, Function.comp_apply,
-        fabiusLogArgument_smallArgumentLog hx]
-    · filter_upwards [self_mem_nhdsWithin] with x hx
-      simp only [Function.comp_apply]
-      rw [show fabiusLogArgument (fabiusSmallArgumentLog x) = x from
-        fabiusLogArgument_smallArgumentLog hx]
+  have hcomp := h.comp_tendsto fabiusSmallArgumentLog
+    fabiusSmallArgumentLog_tendsto_atTop
+  have hscale : ((scale ∘ fabiusLogArgument) ∘ fabiusSmallArgumentLog) =ᶠ[
+      nhdsWithin 0 (Ioi 0)] scale := by
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    simp only [Function.comp_apply, fabiusLogArgument_smallArgumentLog hx]
+  have hf : ((f ∘ fabiusLogArgument) ∘ fabiusSmallArgumentLog) =ᶠ[
+      nhdsWithin 0 (Ioi 0)] f := by
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    simp only [Function.comp_apply, fabiusLogArgument_smallArgumentLog hx]
+  have hcoeff : ∀ k, ((coeff k ∘ fabiusLogArgument) ∘
+      fabiusSmallArgumentLog) =ᶠ[nhdsWithin 0 (Ioi 0)] coeff k := by
+    intro k
+    filter_upwards [self_mem_nhdsWithin] with x hx
+    simp only [Function.comp_apply, fabiusLogArgument_smallArgumentLog hx]
+  exact (hcomp.congr hscale hf).congr_coeff hcoeff
 
 /-- Pull a full small-positive-argument expansion back to the exact
 logarithmic coordinate `t ↦ 2⁻ᵗ`, with arbitrary normed scalar and
