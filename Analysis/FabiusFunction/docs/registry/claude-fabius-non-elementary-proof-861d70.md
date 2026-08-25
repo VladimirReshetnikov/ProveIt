@@ -3,7 +3,7 @@
 **Status: closed historical source record; exact combined-tree validation
 pending.** The elementary/algebraic work and its later inverse extension are
 integrated through pinned `origin/main` at
-`a24af8347aba5d38b8febf2cf9a19eeef6aba18a`.  This file grants no
+`35852aa65ba66cf700419c296a78460b02bb65b3`.  This file grants no
 live source or build lease.  All validation statements below are reports tied
 to immutable historical commits, not evidence for the manually resolved
 combined tree.  The normal lease and build-terminal-event rules in
@@ -20,7 +20,7 @@ HISTORICAL SYNC Fabius
 worktree/task: fabius-non-elementary-proof-861d70 — elementary, algebraic-
   branch, inverse-branch, and inverse-Fabius non-representability
 integration pin: pinned origin/main at
-  a24af8347aba5d38b8febf2cf9a19eeef6aba18a
+  35852aa65ba66cf700419c296a78460b02bb65b3
 source/build owner: none granted by this closed record
 validation: immutable reported evidence is recorded below; exact combined-tree
   validation remains pending
@@ -73,8 +73,18 @@ At its then-immutable source state, the earlier elementary/algebraic batch was
 reported to have eighteen exported theorems with axiom set
 `[propext, Classical.choice, Quot.sound]`.  Later five-module closure and
 expanded inverse-calculus evidence is recorded below with its exact source
-commits, including a reported 104-declaration full-block axiom sweep.  None of
-those reports validates the exact combined post-merge tree.
+commits.  At immutable commit `c6e2da733`, the originating workstream reported
+a generated full-block `#print axioms` sweep over all 99 exported theorems in
+`ElementaryFunction`, `AlgebraicBranch`, `NotElementary`, `InverseBranch`, and
+`InverseNotElementary`, plus six imported inverse-calculus theorems.  All 105
+declarations were reported to use only
+`[propext, Classical.choice, Quot.sound]`, with no `sorryAx`.  This later count
+supersedes the earlier 104-declaration report only for that immutable source
+state.  Neither report validates the exact combined post-merge tree.
+The same `c6e2da733` record reports a clean 35-module closure build, all 35
+documented declaration names resolving, and a warning-free three-pass build of
+the 13-page non-elementarity paper.  These remain immutable component reports,
+not validation of the present resolved union.
 
 The mathematical input from this branch is
 `Fabius.IsElementary.dense_analyticLocus`: the analytic locus of an elementary
@@ -213,9 +223,45 @@ kept.  `fabiusInv_mem_Ioo` moved with it.  The original spelling
 that file; docstrings here cite `deriv_fabiusInv_pos` because it is the
 primary name, not because the alias was broken.
 
-Every ``Fabius.*`` name appearing in a docstring of the five modules — thirty
-of them — is checked to resolve, by a generated `#check` sweep run against the
+Every ``Fabius.*`` name appearing in a docstring of the five modules — 35 of
+them — is checked to resolve, by a generated `#check` sweep run against the
 built closure.  Prose citations are otherwise invisible to the compiler.
+
+## Findings of the final adversarial review
+
+Five independent lenses over the Lean and the write-up, run after the last
+merge.  Ten distinct defects, all in prose about correct code, all fixed.  The
+substantive one: the write-up asserted that "no single elementary formula
+covers both signs at once" for `Mathlib`'s two-variable power.  That is false.
+For a nonvanishing base,
+
+    f ^ g = exp (log f * g) * cos (g * π * (1 - f / |f|) / 2)
+
+covers both signs, since `(1 - f/|f|)/2` is the indicator of `f < 0` and
+`Mathlib` already sets `log x = log |x|`.  Rather than weaken the sentence,
+the identity is now formalized as `IsElementary.rpow_of_ne_zero`.  The genuine
+obstruction is the *zero set* of the base — `0 ^ r = 0` for `r ≠ 0` against
+`0 ^ 0 = 1` is discontinuous in the exponent — which is why `x ↦ x ^ x` is the
+honest counterexample and no negative-base example is.
+
+Also fixed: two docstrings advertised theorems as the ones "the applications
+use" and "used downstream" when a `codex/*` refactoring had left both with
+zero call sites; the claim that *every* non-representability theorem factors
+through `not_eqOn_of_dense_analyticLocus` (two now use the relative
+`AnalyticDenseOn` form); `IsElementaryOrInverse` described as adding "every
+continuous inverse branch", dropping the essential `interior Uᶜ` clause; the
+discreteness of the exceptional set presented as an open question when
+`x ↦ (sin (1/x))⁻¹` settles it negatively in one line; "an interval with some
+of its rational points removed" as an example of nonempty interior, which
+fails if all of them are removed; two correspondence-table rows citing only the
+`Ioo 0 1` specializations of corollaries stated for general `U`; and "bounded
+away from `0`" used for a hypothesis that is positivity.
+
+One gap is now stated rather than left implicit: `Elem⁻¹` is **not** claimed to
+be closed under composition.  For `Elem` that closure is a theorem, proved by
+inducting on the outer derivation, but the induction does not replay, since
+`g` being a branch of `f z = x` says nothing about `g ∘ h`.  The density
+theorem does not need it.
 
 `F'` now enters the five modules of this workstream only through the imported
 `deriv_fabiusInv_pos`.  It is *not* true that this is the only use of a
@@ -304,9 +350,12 @@ preimages of dense open sets stay dense; classical, and not formalized here.
 
 Two further caveats, both recorded in the write-up:
 
-- The unrestricted two-variable power `f ^ g` is not a constructor, because
-  `Mathlib`'s `Real.rpow` is sign-dependent at a negative base.
-  `IsElementary.rpow_of_pos` covers every positive base.
+- The unrestricted two-variable power `f ^ g` is not a constructor.
+  `IsElementary.rpow_of_pos` covers every positive base, while
+  `IsElementary.rpow_of_ne_zero` covers both signs whenever the base never
+  vanishes.  Variable exponents at zeros still require separate treatment;
+  this does not rule out special expressions already covered by other
+  constructors, such as fixed natural powers.
 - `IsElementary.rpow` gives `n`-th roots only on `[0, ∞)`, since
   `(-8 : ℝ) ^ (1/3 : ℝ) = 1`.  The classical odd root is in the class by the
   separate derivation `IsElementary.signedRpow`, verified by

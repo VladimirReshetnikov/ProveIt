@@ -692,7 +692,7 @@ private theorem thueMorseDyadicNumeratorPowerSeries_factor
     PowerSeries.exp_mul_exp_eq_exp_add]
   congr 2
   unfold dyadicNode
-  ring
+  ring_nf
 
 private noncomputable def dyadicNumeratorRefinementFactorSeries
     (m k : ℕ) : PowerSeries ℚ :=
@@ -907,7 +907,7 @@ theorem coeff_dyadicNumeratorPrefixSeries_mul_recurrenceSeries
           centeredMomentPowerSeries := by
     rw [← mul_assoc, PowerSeries.exp_mul_exp_eq_exp_add]
     congr 2
-    ring
+    ring_nf
   simp_rw [hterm]
   simp only [map_sum, map_smul, smul_eq_mul,
     coeff_exp_mul_centeredMomentPowerSeries]
@@ -1032,7 +1032,7 @@ private theorem thueMorseDyadicNumeratorTranslatedPowerSeries_eq_exp_mul
   intro r _hr
   rw [mul_smul_comm, PowerSeries.exp_mul_exp_eq_exp_add]
   congr 2
-  ring
+  ring_nf
 
 private theorem X_pow_mul_dyadicNumeratorShiftedPowerSeries
     (m k : ℕ) :

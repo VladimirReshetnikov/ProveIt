@@ -333,16 +333,19 @@ everywhere-positive elementary base — no uniform lower bound is needed — but
 `(0, ∞)`; for that, see `Fabius.eqOn_rpow_of_pos`, which is a statement about a
 region rather than about membership in the class.
 
-The unrestricted two-variable power is not a constructor of `IsElementary`.
-The positive-base formula below does not cover negative bases, where
-`Mathlib`'s `Real.rpow` is sign-dependent (`x ^ y = |x| ^ y * cos (π y)`), and
-its zero-base convention is exceptional.  On a region where `f` has fixed
-nonzero sign, however, `f ^ g` does agree with a member of the class — the
-witness being `exp (log f * g)` for a positive base, formalized as
-`Fabius.eqOn_rpow_of_pos`, and `exp (log |f| * g) * cos (π * g)` for a
-negative one, which is elementary by the same constructors but is not spelled
-out here.  So nothing is lost for the purposes of
-`Fabius.not_isElementary_eqOn`. -/
+The positivity premise is pointwise; it does not assert a uniform positive
+lower bound.  Negative bases are also covered under the sufficient global
+nonvanishing premise of `Fabius.IsElementary.rpow_of_ne_zero`.
+
+The unrestricted two-variable power is not a constructor of `IsElementary`,
+because a variable exponent at a zero of the base needs separate treatment:
+the conventions `0 ^ r = 0` for `r ≠ 0` and `0 ^ 0 = 1` are discontinuous in
+the exponent.  This does not say that every particular power with a vanishing
+base is non-elementary — fixed natural powers are elementary by other
+constructors.  On a region where the base is positive, `f ^ g` agrees with
+`exp (log f * g)`, which is `Fabius.eqOn_rpow_of_pos`; on an everywhere
+nonvanishing base, `Fabius.IsElementary.rpow_of_ne_zero` handles both signs in
+one formula. -/
 theorem rpow_of_pos {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
     (hpos : ∀ x, 0 < f x) : IsElementary fun x => f x ^ g x := by
   have h : (fun x => f x ^ g x) = fun x => Real.exp (Real.log (f x) * g x) := by
@@ -358,6 +361,47 @@ theorem arsinh {f : ℝ → ℝ} (hf : IsElementary f) :
   rw [h]
   exact (hf.add ((IsElementary.const 1).add (hf.npow 2)).sqrt).log
 
+/-- **Variable exponents at any nonvanishing base.**
+
+`Fabius.IsElementary.rpow_of_pos` needs the base positive.  It does not have
+to be: a base that merely never vanishes is enough, and *one* formula covers
+both signs at once,
+
+`f ^ g = exp (log f * g) * cos (g * π * (1 - f / |f|) / 2)`.
+
+The second factor is the sign correction.  `(1 - f / |f|) / 2` is the
+indicator of `f < 0`, so the cosine is `cos 0 = 1` where `f` is positive and
+`cos (g * π)` where `f` is negative — which is exactly the discrepancy between
+`Real.rpow_def_of_pos` and `Real.rpow_def_of_neg`.  No absolute value is
+needed inside the logarithm, since `Mathlib` defines `Real.log x = Real.log |x|`
+already.
+
+So the sign of the base is not an obstruction to elementarity.  The zero set
+of the base is: at `f x = 0` the conventions `0 ^ r = 0` for `r ≠ 0` and
+`0 ^ 0 = 1` are discontinuous in the exponent, and no continuous correction
+factor can reproduce them.  That is the real reason `fun x => x ^ x` is out of
+reach of a global membership statement, and why `Fabius.eqOn_rpow_of_pos` is
+phrased for a region instead. -/
+theorem rpow_of_ne_zero {f g : ℝ → ℝ} (hf : IsElementary f) (hg : IsElementary g)
+    (hne : ∀ x, f x ≠ 0) : IsElementary fun x => f x ^ g x := by
+  have h : (fun x => f x ^ g x)
+      = fun x => Real.exp (Real.log (f x) * g x)
+          * Real.cos (g x * Real.pi * ((1 - f x / |f x|) / 2)) := by
+    funext x
+    rcases lt_or_gt_of_ne (hne x) with hx | hx
+    · have hdiv : (1 - f x / |f x|) / 2 = 1 := by
+        rw [abs_of_neg hx, div_neg, div_self hx.ne]; norm_num
+      rw [hdiv, mul_one]
+      exact Real.rpow_def_of_neg hx _
+    · have hdiv : (1 - f x / |f x|) / 2 = 0 := by
+        rw [abs_of_pos hx, div_self hx.ne']; norm_num
+      rw [hdiv, mul_zero, Real.cos_zero, mul_one]
+      exact Real.rpow_def_of_pos hx _
+  rw [h]
+  exact (hf.log.mul hg).exp.mul
+    ((hg.mul (IsElementary.const Real.pi)).mul
+      (((IsElementary.const 1).sub (hf.div hf.abs)).div (IsElementary.const 2))).cos
+
 end IsElementary
 
 /-- For odd `n`, the elementary expression `t ↦ (t / |t|) * |t| ^ (n : ℝ)⁻¹`
@@ -365,10 +409,11 @@ of `Fabius.IsElementary.signedRpow` is a genuine real `n`-th root: raising it
 to the `n`-th power returns the argument, at negative arguments and at zero as
 well as at positive ones.
 
-This substantiates closure under classical odd roots.  The constructor
-`IsElementary.rpow` on its own does not give it: with `Mathlib`'s convention
-`t ^ (n : ℝ)⁻¹ = |t| ^ (n : ℝ)⁻¹ * cos (π / n)` for `t < 0`, whose `n`-th
-power is not `t`. -/
+This is what substantiates the claim that the class is closed under `n`-th
+roots.  The constructor `IsElementary.rpow` on its own does not give it for `n ≥ 3`:
+with `Mathlib`'s convention `t ^ (n : ℝ)⁻¹ = |t| ^ (n : ℝ)⁻¹ * cos (π / n)` for
+`t < 0`, whose `n`-th power is not `t`.  (At `n = 1` the convention returns `t`
+and there is nothing to repair, so the qualification is needed: `Odd 1` holds.) -/
 theorem signedRoot_pow {n : ℕ} (hn : Odd n) (t : ℝ) :
     (t / |t| * |t| ^ ((n : ℝ))⁻¹) ^ n = t := by
   have hn0 : n ≠ 0 := hn.pos.ne'
@@ -614,8 +659,12 @@ A function analytic on a dense set cannot agree, on a set with nonempty
 interior, with a function that is nonanalytic throughout that interior.
 
 Nothing about elementary functions enters: density of the analytic locus is
-the whole hypothesis.  Every non-representability theorem in this development
-is this lemma applied to a class for which that density has been proved. -/
+the whole hypothesis.  Most non-representability theorems in this development
+are this lemma applied to a class for which that density has been proved.  Two
+are not, and use the relative form
+`Fabius.AnalyticDenseOn.not_eqOn_of_forall_not_analyticAt` instead:
+`Fabius.not_algebraicBranch_eqOn`, whose branch has no globally dense analytic
+locus to offer, and `Fabius.not_eqOn_fabiusInv_of_analyticDenseOn`. -/
 theorem not_eqOn_of_dense_analyticLocus {f g : ℝ → ℝ}
     (hg : Dense (analyticLocus g)) {S : Set ℝ} (hSne : (interior S).Nonempty)
     (hf : ∀ x ∈ interior S, ¬ AnalyticAt ℝ f x) :

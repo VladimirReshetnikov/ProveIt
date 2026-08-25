@@ -186,7 +186,7 @@ theorem finiteCosineProduct_mul_sincTail_pow (n : ℕ) (t : ℝ) :
           Complex.cos ((t : ℂ) / (2 : ℂ) ^ (n + 2)) * sincTail (n + 1) t := by
         unfold sincTail
         rw [complexSinc_eq_cos_mul]
-        congr 1 <;> rw [pow_succ] <;> ring
+        congr 1 <;> rw [pow_succ] <;> ring_nf
       have hprod :
           (∏ k ∈ range (n + 1), complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) =
             (∏ k ∈ range n, complexSinc ((t : ℂ) / (2 : ℂ) ^ (k + 1))) *
@@ -226,7 +226,7 @@ theorem tendsto_sincTail_pow (t : ℝ) :
       rw [pow_succ]
       simp only [div_eq_mul_inv, mul_inv_rev, inv_pow]
       ring
-    · ring
+    · ring_nf
   have hnO : (fun n : ℕ => (n : ℂ)) =O[atTop] (fun n : ℕ => (n : ℂ)) :=
     isBigO_refl _ _
   have hsmall : Tendsto (fun n : ℕ => (n : ℂ) * (sincTail n t - 1)) atTop (𝓝 0) :=

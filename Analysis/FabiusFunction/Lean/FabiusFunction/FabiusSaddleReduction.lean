@@ -1,5 +1,6 @@
 import FabiusFunction.FabiusBromwichInput
 import FabiusFunction.NegativeLaplaceDerivatives
+import Mathlib.Analysis.Complex.Asymptotics
 
 /-!
 # From a normalized saddle integral to a logarithmic Fabius asymptotic
@@ -7,7 +8,9 @@ import FabiusFunction.NegativeLaplaceDerivatives
 The exact Bromwich formula separates into a positive real saddle prefactor
 and a normalized complex kernel integral.  This module records that separation
 as the real quantity `fabiusSaddleRatio` and proves that its complexification
-is exactly the kernel mass used by `QuantitativeSaddle`.
+is exactly the kernel mass used by `QuantitativeSaddle`.  In particular, the
+normalized kernel mass is real: its real part is the saddle ratio and its
+imaginary part vanishes.
 
 The final theorem is the algebraic/analytic reduction used by the sharp
 asymptotic: if the normalized kernel mass is `1 + O(1 / b)` and `b → ∞`,
@@ -64,6 +67,24 @@ theorem fabiusSaddleRatio_ofReal_eq_kernelMass
   rw [← Complex.exp_add]
   field_simp [hsqrtC]
 
+/-- The real part of the normalized complex kernel mass is exactly the real
+saddle ratio. -/
+theorem fabiusSaddleKernelMass_re_eq_ratio
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x r b : ℝ} (hr : 0 < r) (hb : 0 < b) :
+    (fabiusSaddleKernelMass F x r b).re = fabiusSaddleRatio F x r b := by
+  simpa using congrArg Complex.re
+    (fabiusSaddleRatio_ofReal_eq_kernelMass F hF hr hb).symm
+
+/-- The normalized complex kernel mass has zero imaginary part on the
+positive saddle domain. -/
+theorem fabiusSaddleKernelMass_im_eq_zero
+    (F : BoundedFabius) (hF : IsFabius F)
+    {x r b : ℝ} (hr : 0 < r) (hb : 0 < b) :
+    (fabiusSaddleKernelMass F x r b).im = 0 := by
+  simpa using congrArg Complex.im
+    (fabiusSaddleRatio_ofReal_eq_kernelMass F hF hr hb).symm
+
 /-- Positivity of the exact saddle ratio. -/
 theorem fabiusSaddleRatio_pos
     (F : BoundedFabius) {x r b : ℝ}
@@ -116,15 +137,7 @@ theorem fabius_saddle_log_error_isBigO
   have hratio :
       (fun i => fabiusSaddleRatio F (x i) (r i) (b i) - 1) =O[l]
         (fun i => (b i)⁻¹) := by
-    rw [isBigO_iff] at hratioComplex ⊢
-    obtain ⟨c, hc⟩ := hratioComplex
-    refine ⟨c, ?_⟩
-    filter_upwards [hc] with i hi
-    calc
-      ‖fabiusSaddleRatio F (x i) (r i) (b i) - 1‖ =
-          ‖((fabiusSaddleRatio F (x i) (r i) (b i) - 1 : ℝ) : ℂ)‖ :=
-            (Complex.norm_real _).symm
-      _ ≤ c * ‖(b i)⁻¹‖ := hi
+    exact Complex.isBigO_ofReal_left.mp hratioComplex
   have hlog := QuantitativeSaddle.real_log_of_relative_error_isBigO_inv
     l b (fun i => fabiusSaddleRatio F (x i) (r i) (b i)) hbinfty hratio
   exact hlog.congr'

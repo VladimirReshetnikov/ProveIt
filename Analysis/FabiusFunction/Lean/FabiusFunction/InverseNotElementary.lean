@@ -52,7 +52,10 @@ at `1`.
 `Fabius.IsElementaryOrInverse` adds to the elementary functions every
 totalized continuous inverse branch satisfying its open-domain right-inverse
 identity and its analytic-completion premise on the interior of the
-complementary region, then permits that rule at every finite depth.  By
+complementary region, then permits that rule at every finite depth.  The last
+premise constrains how the selected totalization behaves away from its branch
+domain; without it, the branch would be arbitrary there and the density
+theorem would be false.  By
 `Fabius.IsElementaryOrInverse.dense_analyticLocus` every
 member is still analytic on a dense set, so
 `Fabius.not_eqOn_of_dense_analyticLocus` applies unchanged.  Neither `F` nor
