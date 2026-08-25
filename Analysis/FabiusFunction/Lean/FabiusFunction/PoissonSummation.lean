@@ -461,6 +461,27 @@ theorem rvachev_poisson_support_specialization_unscaled_of_one_half_le
   push_cast
   rfl
 
+/-- Multiplying the unscaled support identity by a positive lattice spacing
+cancels its inverse factor term by term. -/
+private lemma rvachev_poisson_support_specialization_of_unscaled
+    (F : BoundedFabius) {a : ℝ} (ha : 0 < a)
+    (h : (1 : ℂ) + 2 * rvachevUp F a =
+      ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ))) :
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+      ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+  calc
+    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
+        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
+    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
+    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
+      rw [← tsum_mul_left]
+      apply tsum_congr
+      intro m
+      push_cast
+      field_simp [ha.ne']
+
 /-- Corrected equation (32) for every lattice spacing `a ≥ 1 / 2`.
 
 As above, the paper's upper bound `a ≤ 1` plays no role; multiplying the
@@ -475,19 +496,10 @@ theorem rvachev_poisson_support_specialization_of_one_half_le
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
       ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  have h := rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0
-  calc
-    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
-        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
-    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
-        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
-    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-      rw [← tsum_mul_left]
-      apply tsum_congr
-      intro m
-      push_cast
-      field_simp [ha.ne']
+  exact rvachev_poisson_support_specialization_of_unscaled F ha
+    (rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0)
 
+set_option linter.unusedVariables false in
 /-- The direct support specialization of (31), before multiplying by `a`.
 This is the identity from which the corrected equation (32) follows.
 
@@ -496,15 +508,11 @@ is not needed, see
 `rvachev_poisson_support_specialization_unscaled_of_one_half_le`. -/
 theorem rvachev_poisson_support_specialization_unscaled
     (F : BoundedFabius) (hF : IsFabius F) {a : ℝ}
-    (ha0 : 1 / 2 ≤ a) (_ha1 : a ≤ 1) :
+    (ha0 : 1 / 2 ≤ a) (ha1 : a ≤ 1) :
     (1 : ℂ) + 2 * rvachevUp F a =
       ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
-        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-  have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  rw [← rvachev_poisson_at_zero F hF ha, ← Complex.ofReal_tsum,
-    rvachev_lattice_sum_of_one_half_le F hF ha0]
-  push_cast
-  rfl
+        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) :=
+  rvachev_poisson_support_specialization_unscaled_of_one_half_le F hF ha0
 
 /-- Corrected equation (32).  The source leaves an extra factor `1 / a` on
 the right after multiplying the preceding identity by `a`.
@@ -517,18 +525,8 @@ theorem rvachev_poisson_support_specialization
     (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
       ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
   have ha : 0 < a := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2) ha0
-  have h := rvachev_poisson_support_specialization_unscaled F hF ha0 ha1
-  calc
-    (a : ℂ) + 2 * (a : ℂ) * rvachevUp F a =
-        (a : ℂ) * ((1 : ℂ) + 2 * rvachevUp F a) := by ring
-    _ = (a : ℂ) * ∑' m : ℤ, ((a⁻¹ : ℝ) : ℂ) *
-        rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by rw [h]
-    _ = ∑' m : ℤ, rvachevFourier F ((((m : ℝ) / a : ℝ) : ℂ)) := by
-      rw [← tsum_mul_left]
-      apply tsum_congr
-      intro m
-      push_cast
-      field_simp [ha.ne']
+  exact rvachev_poisson_support_specialization_of_unscaled F ha
+    (rvachev_poisson_support_specialization_unscaled F hF ha0 ha1)
 
 end
 

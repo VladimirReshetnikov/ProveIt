@@ -14,6 +14,11 @@ strict contraction on the complete space of continuous, symmetric,
 equation supplies a global first-derivative identity. The corresponding
 Rvachev equation bootstraps the fixed point to smoothness.
 
+The construction layer also exposes reusable facts about reflection on the
+unit interval, the constant-tail extension, and differentiation of its
+interval-integral primitive; candidate-specific lemmas are thin
+specializations of those general APIs.
+
 Uniqueness follows because every `IsFabius` function has the same values on
 dyadic rationals and those rationals approximate every point of `[0, 1]`.
 -/
@@ -42,6 +47,11 @@ def reflect (x : I) : I :=
 /-- Reflection of `I` about `1 / 2` is continuous. -/
 lemma continuous_reflect : Continuous reflect := by
   exact (continuous_const.sub continuous_subtype_val).subtype_mk _
+
+/-- Reflection about `1 / 2` is an involution on the unit interval. -/
+lemma reflect_reflect (x : I) : reflect (reflect x) = x := by
+  apply Subtype.ext
+  simp [reflect]
 
 /-- A continuous `f : C` is admissible when it takes values in `[0, 1]` and
 satisfies the reflection identity `f (1 - x) = 1 - f x` at every point of `I`.
@@ -112,6 +122,18 @@ lemma extend_eq (f : C) {x : ℝ} (hx : x ∈ Icc (0 : ℝ) 1) :
     extend f x = f ⟨x, hx⟩ := by
   simp [extend, Set.projIcc_of_mem (by norm_num) hx]
 
+/-- On the closed left tail, the projected extension is the left endpoint
+value of the original continuous map. -/
+lemma extend_eq_zero_of_nonpos (f : C) {x : ℝ} (hx : x ≤ 0) :
+    extend f x = f ⟨0, by constructor <;> norm_num⟩ := by
+  rw [extend, (Set.projIcc_eq_left (by norm_num : (0 : ℝ) < 1)).2 hx]
+
+/-- On the closed right tail, the projected extension is the right endpoint
+value of the original continuous map. -/
+lemma extend_eq_one_of_one_le (f : C) {x : ℝ} (hx : 1 ≤ x) :
+    extend f x = f ⟨1, by constructor <;> norm_num⟩ := by
+  rw [extend, (Set.projIcc_eq_right (by norm_num : (0 : ℝ) < 1)).2 hx]
+
 /-- The primitive `y ↦ ∫ t in 0..y, extend f t` of the extension of `f`,
 normalized to vanish at `0` and defined for every real `y`. -/
 def cumulative (f : C) (y : ℝ) : ℝ :=
@@ -126,6 +148,15 @@ lemma continuous_cumulative (f : C) : Continuous (cumulative f) := by
 /-- The primitive of any `f : C` vanishes at `0`. -/
 lemma cumulative_zero (f : C) : cumulative f 0 = 0 := by
   simp [cumulative]
+
+/-- Fundamental theorem of calculus for the projected extension: the
+primitive `cumulative f` has derivative `extend f y` at every real `y`. -/
+lemma cumulative_hasDerivAt (f : C) (y : ℝ) :
+    HasDerivAt (cumulative f) (extend f y) y := by
+  apply intervalIntegral.integral_hasDerivAt_right
+  · exact (continuous_extend f).intervalIntegrable 0 y
+  · exact (continuous_extend f).aestronglyMeasurable.stronglyMeasurableAtFilter
+  · exact (continuous_extend f).continuousAt
 
 /-- For admissible `f` the primitive reaches `1 / 2` at `1`; this is the
 reflection identity integrated over `[0, 1]`.  It is what makes the two
@@ -407,7 +438,7 @@ noncomputable def boundedCandidate : Fabius.BoundedFabius := fun x =>
 lemma boundedCandidate_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
     Fabius.fabiusReal boundedCandidate x = 0 := by
   change extend fixedCandidate.1 x = 0
-  rw [extend, (Set.projIcc_eq_left (by norm_num : (0 : ℝ) < 1)).2 hx]
+  rw [extend_eq_zero_of_nonpos fixedCandidate.1 hx]
   exact fixedCandidate_zero
 
 /-- `boundedCandidate` equals `1` on `[1, ∞)`; the `one_of_one_le` field of
@@ -415,7 +446,7 @@ lemma boundedCandidate_zero_of_nonpos {x : ℝ} (hx : x ≤ 0) :
 lemma boundedCandidate_one_of_one_le {x : ℝ} (hx : 1 ≤ x) :
     Fabius.fabiusReal boundedCandidate x = 1 := by
   change extend fixedCandidate.1 x = 1
-  rw [extend, (Set.projIcc_eq_right (by norm_num : (0 : ℝ) < 1)).2 hx]
+  rw [extend_eq_one_of_one_le fixedCandidate.1 hx]
   exact fixedCandidate_one
 
 /-- Reflection symmetry of `boundedCandidate` on `[0, 1]`, inherited from
@@ -461,11 +492,8 @@ lemma fixedCandidate_right_formula {x : ℝ}
 the primitive `cumulative fixedCandidate.1` has derivative
 `extend fixedCandidate.1 y`. -/
 lemma cumulative_fixed_hasDerivAt (y : ℝ) :
-    HasDerivAt (cumulative fixedCandidate.1) (extend fixedCandidate.1 y) y := by
-  apply intervalIntegral.integral_hasDerivAt_right
-  · exact (continuous_extend fixedCandidate.1).intervalIntegrable 0 y
-  · exact (continuous_extend fixedCandidate.1).aestronglyMeasurable.stronglyMeasurableAtFilter
-  · exact (continuous_extend fixedCandidate.1).continuousAt
+    HasDerivAt (cumulative fixedCandidate.1) (extend fixedCandidate.1 y) y :=
+  cumulative_hasDerivAt fixedCandidate.1 y
 
 /-- Chain rule for the left branch: `z ↦ cumulative fixedCandidate.1 (2 * z)`
 has derivative `2 * extend fixedCandidate.1 (2 * x)` at every real `x`. -/
