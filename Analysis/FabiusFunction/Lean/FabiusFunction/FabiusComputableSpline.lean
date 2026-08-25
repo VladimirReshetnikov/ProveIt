@@ -428,9 +428,6 @@ theorem splineCodePR_value (p a : ℕ) :
 
 /-! ## Signed-pair fast-grid wrapper -/
 
-private theorem natPowPrimrec : Primrec₂ ((· ^ ·) : ℕ → ℕ → ℕ) :=
-  Primrec₂.unpaired'.1 Nat.Primrec.pow
-
 private theorem addThreePrimrec : Primrec (fun p : ℕ => p + 3) :=
   Primrec.nat_add.comp Primrec.id (Primrec.const 3)
 
@@ -449,7 +446,7 @@ theorem clampDyadicNumeratorPR_primrec : Primrec₂ clampDyadicNumeratorPR := by
     (Primrec.nat_min.comp
       (Primrec.nat_sub.comp (Primrec.fst.comp Primrec.fst)
         (Primrec.snd.comp Primrec.fst))
-      (natPowPrimrec.comp (Primrec.const 2) Primrec.snd))
+      (nat_pow_primrec.comp (Primrec.const 2) Primrec.snd))
 
 /-- The clamped numerator never exceeds `2 ^ s`, so the grid point it names
 is at most `1`. -/
@@ -616,7 +613,7 @@ theorem fabiusSplineApproxPR_primrec : Primrec₂ fabiusSplineApproxPR := by
   let hden : Primrec₂ (fun (_ : DyadicNumerator) p => splineDenPR (p + 3)) :=
     splineDenPR_primrec.comp₂ hs
   let hpTwo : Primrec₂ (fun (_ : DyadicNumerator) p => 2 ^ p) :=
-    natPowPrimrec.comp₂ (Primrec.const 2).to₂ Primrec₂.right
+    nat_pow_primrec.comp₂ (Primrec.const 2).to₂ Primrec₂.right
   apply Primrec₂.pair.comp₂
   · exact Primrec.nat_div.comp₂
       (Primrec.nat_add.comp₂

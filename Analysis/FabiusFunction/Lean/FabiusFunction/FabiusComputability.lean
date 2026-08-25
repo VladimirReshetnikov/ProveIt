@@ -214,6 +214,23 @@ theorem fabiusUniformSpline_tendstoUniformlyOn_fabiusReal
   intro x hx
   exact extendedFabius_eq_fabiusReal F hF hx
 
+/-- Pointwise form of the global uniform approximation theorem: at every real
+input, the centered uniform splines converge to the signed Fabius extension. -/
+theorem fabiusUniformSpline_tendsto_extendedFabius
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop
+      (𝓝 (extendedFabius F x)) :=
+  (fabiusUniformSpline_tendstoUniformly_extendedFabius F hF).tendsto_at x
+
+/-- On the unit interval, the same spline sequence converges pointwise to the
+bounded/CDF representative of every Fabius solution. -/
+theorem fabiusUniformSpline_tendsto_fabiusReal
+    (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
+    (hx : x ∈ Icc (0 : ℝ) 1) :
+    Tendsto (fun p : ℕ => fabiusUniformSpline p x) atTop
+      (𝓝 (fabiusReal F x)) :=
+  (fabiusUniformSpline_tendstoUniformlyOn_fabiusReal F hF).tendsto_at hx
+
 /-- Canonical specialization: the centered uniform splines converge uniformly
 on `ℝ` to `globalFabius`. -/
 theorem fabiusUniformSpline_tendstoUniformly_globalFabius :
@@ -377,12 +394,20 @@ theorem fabiusReal_effectivelyUniformContinuous
   effectivelyUniformContinuous_of_lipschitzWith_two
     (fabiusReal_lipschitzWith_two F hF)
 
+/-- Every signed global Fabius extension is effectively uniformly continuous,
+with the same explicit primitive-recursive modulus `d(n)=2n`. -/
+theorem extendedFabius_effectivelyUniformContinuous
+    (F : BoundedFabius) (hF : IsFabius F) :
+    EffectivelyUniformContinuous (extendedFabius F) :=
+  effectivelyUniformContinuous_of_lipschitzWith_two
+    (extendedFabius_lipschitzWith_two F hF)
+
 /-- The canonical signed global extension is effectively uniformly
 continuous with modulus `d(n)=2n`. -/
 theorem globalFabius_effectivelyUniformContinuous :
-    EffectivelyUniformContinuous globalFabius :=
-  effectivelyUniformContinuous_of_lipschitzWith_two
-    globalFabius_lipschitzWith_two
+    EffectivelyUniformContinuous globalFabius := by
+  simpa only [globalFabius] using
+    extendedFabius_effectivelyUniformContinuous fabius fabius_spec
 
 /-- Effective uniform continuity in the reciprocal convention: for positive
 `n`, input distance less than `1 / d(n)` forces output distance less than
