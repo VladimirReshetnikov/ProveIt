@@ -132,7 +132,8 @@ theorem moment_eq_integral (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) :
     (moment n : ℝ) = momentIntegral F n := by
   exact moment_eq_integral_formula F hF n
 
-/-- Equation (21), whose integral form starts at `n = 1`. -/
+/-- Equation (21), whose literal integral form starts at `n = 1`.  See
+`halfMoment_eq_integral_formula_all` for the normalized all-index identity. -/
 theorem halfMoment_eq_integral (F : BoundedFabius) (hF : IsFabius F)
     (n : ℕ) (hn : 1 ≤ n) :
     (halfMoment n : ℝ) = halfMomentIntegral F n := by
@@ -334,9 +335,10 @@ theorem reshetnikov_cast (F : BoundedFabius) (hF : IsFabius F)
     (reshetnikov n : ℝ) =
       (2 : ℝ) ^ (n - 1).choose 2 * (Nat.factorial (2 * n) : ℝ) *
         fabiusReal F (((2 : ℝ) ^ n)⁻¹) * evenMersenneProduct (n / 2) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
   unfold reshetnikov fabiusAtInverseTwoPow
   push_cast
-  rw [fabiusDyadic_cast F hF n 1 Nat.one_le_two_pow]
+  rw [fabiusDyadic_cast F hF (1 + m) 1 Nat.one_le_two_pow]
   congr 3
   norm_num
 
@@ -631,19 +633,27 @@ Definition 12 is `dyadicDenominator` in `Arithmetic.lean`: the LCM of the
 reduced denominators on the positive odd level-`n` dyadic grid.
 -/
 
-/-- Theorem 13: a common integral scaling of all level-`n` dyadic values. -/
-theorem theorem_thirteen (n : ℕ) (_hn : 1 ≤ n) (a : ℤ)
+/-- Theorem 13: a common integral scaling of all level-`n` dyadic values.
+The positivity hypothesis mirrors the paper; the underlying exact scaling
+theorem is valid at level zero as well. -/
+theorem theorem_thirteen (n : ℕ) (hn : 1 ≤ n) (a : ℤ)
     (haLower : -((2 ^ n : ℕ) : ℤ) < a)
     (haUpper : a < ((2 ^ n : ℕ) : ℤ)) :
     IsNatural (rvachevDyadic n a * denominatorBound n) := by
-  have habs : a.natAbs ≤ 2 ^ n := by
-    rcases Int.natAbs_eq a with h | h <;> omega
-  exact rvachevDyadic_mul_denominatorBound_isNatural n a habs
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+  have habs : a.natAbs ≤ 2 ^ (1 + m) := by
+    rcases Int.natAbs_eq a with h | h
+    · omega
+    · omega
+  exact rvachevDyadic_mul_denominatorBound_isNatural (1 + m) a habs
 
-/-- The common-denominator formulation following Theorem 13. -/
-theorem theorem_thirteen_denominator_bound (n : ℕ) (_hn : 1 ≤ n) :
+/-- The common-denominator formulation following Theorem 13.  Positivity is
+retained to mirror the paper, although the denominator bound holds at every
+natural level. -/
+theorem theorem_thirteen_denominator_bound (n : ℕ) (hn : 1 ≤ n) :
     dyadicDenominator n ∣ denominatorBound n := by
-  exact dyadicDenominator_dvd_denominatorBound n
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+  exact dyadicDenominator_dvd_denominatorBound (1 + m)
 
 /-- Proposition 15: the denominator at `2⁻ⁿ` divides the common denominator. -/
 theorem proposition_fifteen (n : ℕ) :
@@ -683,15 +693,18 @@ theorem theorem_seventeen (p n k a : ℕ) (hp : p.Prime)
   letI : Fact (Nat.Prime p) := ⟨hp⟩
   exact Choose.lucas_theorem_nat hn hk
 
-/-- Proposition 18: counts of the odd binomial coefficients in the two ranges. -/
-theorem proposition_eighteen (n : ℕ) (_hn : 1 ≤ n) :
+/-- Proposition 18: counts of the odd binomial coefficients in the two ranges.
+The positivity hypothesis follows the paper's indexing; the underlying count
+also holds at `n = 0`. -/
+theorem proposition_eighteen (n : ℕ) (hn : 1 ≤ n) :
     ((range (n + 1)).filter
       (fun k => Odd (Nat.choose (2 * n + 1) (2 * k)))).card =
         2 ^ binaryWeight n ∧
     ((range (2 * n + 2)).filter
       (fun k => Odd (Nat.choose (2 * n + 1) k))).card =
         2 ^ (binaryWeight n + 1) := by
-  exact odd_binomial_coefficient_counts n
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hn
+  exact odd_binomial_coefficient_counts (1 + m)
 
 /-- Proposition 19: every natural moment numerator `F_n` is odd. -/
 theorem proposition_nineteen (n : ℕ) :

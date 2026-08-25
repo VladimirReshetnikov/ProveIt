@@ -535,16 +535,16 @@ lemma weightedSumCDF_symmetry (x : ℝ) :
   norm_num at h ⊢
   linarith
 
-/-- On the left half `[0, 1/2]` the smoothing equation collapses to
-`H x = ∫ t in 0..2 * x, H t`, because `H` vanishes below `0`.  This is
-the `x ≤ 1/2` branch of `Existence.transformValue`, and is what
-`cdfAdmissible_fixed` matches against. -/
-lemma weightedSumCDF_left_formula {x : ℝ}
-    (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
+/-- Whenever `x ≤ 1/2`, the smoothing equation collapses to
+`H x = ∫ t in 0..2 * x, H t`.  No lower bound on `x` is needed: the CDF
+vanishes on the nonpositive axis, including in the reversed-orientation
+integral when `x < 0`. -/
+lemma weightedSumCDF_eq_intervalIntegral_of_le_half {x : ℝ}
+    (hx : x ≤ 1 / 2) :
     weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t := by
   have hint : ∀ a b : ℝ, IntervalIntegrable weightedSumCDF volume a b :=
     fun _ _ => (ProbabilityTheory.monotone_cdf weightedSumDistribution).intervalIntegrable
-  have hlower : 2 * x - 1 ≤ 0 := by linarith [hx.2]
+  have hlower : 2 * x - 1 ≤ 0 := by linarith
   have hzero : (∫ t in (2 * x - 1)..(0 : ℝ), weightedSumCDF t) = 0 := by
     calc
       (∫ t in (2 * x - 1)..(0 : ℝ), weightedSumCDF t) =
@@ -557,6 +557,12 @@ lemma weightedSumCDF_left_formula {x : ℝ}
   rw [weightedSumCDF_eq_intervalIntegral,
     ← intervalIntegral.integral_add_adjacent_intervals
       (hint (2 * x - 1) 0) (hint 0 (2 * x)), hzero, zero_add]
+
+/-- Compatibility wrapper for the left-half interval formulation. -/
+lemma weightedSumCDF_left_formula {x : ℝ}
+    (hx : x ∈ Icc (0 : ℝ) (1 / 2)) :
+    weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t :=
+  weightedSumCDF_eq_intervalIntegral_of_le_half hx.2
 
 /-- The CDF restricted to the unit interval, as an element of the function
 space used in the existence proof. -/
@@ -592,8 +598,9 @@ private lemma cumulative_cdfContinuousMap {y : ℝ} (hy : y ∈ Icc (0 : ℝ) 1)
   rfl
 
 /-- The restricted CDF is a fixed point of `Existence.transformSelf`.
-The `x ≤ 1/2` branch is `weightedSumCDF_left_formula`; the other branch
-combines that formula with `weightedSumCDF_symmetry`. -/
+The `x ≤ 1/2` branch is
+`weightedSumCDF_eq_intervalIntegral_of_le_half`; the other branch combines
+that formula with `weightedSumCDF_symmetry`. -/
 lemma cdfAdmissible_fixed :
     Existence.transformSelf cdfAdmissible = cdfAdmissible := by
   apply Subtype.ext
@@ -605,15 +612,14 @@ lemma cdfAdmissible_fixed :
     have h2x : 2 * (x : ℝ) ∈ Icc (0 : ℝ) 1 := by
       constructor <;> linarith [x.property.1]
     rw [cumulative_cdfContinuousMap h2x]
-    exact (weightedSumCDF_left_formula ⟨x.property.1, hx⟩).symm
+    exact (weightedSumCDF_eq_intervalIntegral_of_le_half hx).symm
   · rw [Existence.transformValue, if_neg hx]
     have hxhalf : 1 / 2 < (x : ℝ) := lt_of_not_ge hx
-    have honeSub : 1 - (x : ℝ) ∈ Icc (0 : ℝ) (1 / 2) := by
-      constructor <;> linarith [x.property.2]
+    have honeSub : 1 - (x : ℝ) ≤ 1 / 2 := by linarith
     have harg : 2 - 2 * (x : ℝ) ∈ Icc (0 : ℝ) 1 := by
       constructor <;> linarith [x.property.2]
     rw [cumulative_cdfContinuousMap harg]
-    have hleft := weightedSumCDF_left_formula honeSub
+    have hleft := weightedSumCDF_eq_intervalIntegral_of_le_half honeSub
     have hsymm := weightedSumCDF_symmetry (x : ℝ)
     have heq : 2 * (1 - (x : ℝ)) = 2 - 2 * (x : ℝ) := by ring
     rw [heq] at hleft

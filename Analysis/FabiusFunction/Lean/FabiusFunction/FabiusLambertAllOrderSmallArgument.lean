@@ -103,13 +103,8 @@ private theorem eventually_logarithmicApproximation_eq_literal (N : ℕ) :
 private theorem smallArgumentLog_inv_pow_isBigO_literal (N : ℕ) :
     (fun x : ℝ => (fabiusSmallArgumentLog x)⁻¹ ^ N)
       =O[nhdsWithin 0 (Ioi 0)]
-        (fun x : ℝ => ((-Real.log x)⁻¹) ^ N) := by
-  have h := (isBigO_refl
-    (fun x : ℝ => ((-Real.log x)⁻¹) ^ N)
-      (nhdsWithin 0 (Ioi 0))).const_mul_left ((Real.log 2) ^ N)
-  apply h.congr' _ Filter.EventuallyEq.rfl
-  filter_upwards [self_mem_nhdsWithin] with x hx
-  rw [smallArgumentLog_inv_eq hx, mul_pow]
+        (fun x : ℝ => ((-Real.log x)⁻¹) ^ N) :=
+  (smallArgumentLog_inv_isBigO _).pow N
 
 /-- Literal all-order lower-Lambert expansion at `x → 0⁺`.  The
 coefficient functions contain only `log x`, `log (-log x)`, and the explicit

@@ -390,7 +390,10 @@ aggregate also proves
 weak-* convergence of the finite convolution measures, pointwise convergence
 of the polynomial step approximants, the infinite-product probability model,
 the differential identities, Poisson summation, moment formulas, and global
-rationality at dyadic points.
+rationality at dyadic points.  Its Schwartz construction also exposes rapid
+decay of every real-axis derivative of the entire Fourier transform through
+`rvachevFourier_real_iteratedDeriv_rapidDecay`, with the transform-only form
+`rvachevFourier_real_rapidDecay` as a direct corollary.
 
 `Paper06487.lean` is the public import for the arithmetic paper.
 `PaperStatements.lean` contains all 18 proved numbered results in the v3 PDF:
@@ -435,11 +438,13 @@ F(2^(-n)) = 2^(-choose(n,2)) / (2^n - 1) *
   sum (k < n), 2^(choose(k,2)) / (n-k+1)! * F(2^(-k))
 ```
 
-for every `n ≥ 1`; exact rational, generic `IsFabius`, and canonical global
-forms are exposed by `fabiusAtInverseTwoPow_recurrence_zpow`,
-`fabiusFunction_inverse_two_pow_recurrence_zpow`, and
-`globalFabius_inverse_two_pow_recurrence`.  The restriction is necessary:
-at `n = 0` the displayed denominator vanishes.
+for every `n ≥ 1`; exact rational, generic bounded, generic signed-global,
+and canonical signed-global forms are exposed by
+`fabiusAtInverseTwoPow_recurrence_zpow`,
+`fabiusFunction_inverse_two_pow_recurrence_zpow`,
+`extendedFabius_inverse_two_pow_recurrence`, and
+`globalFabius_inverse_two_pow_recurrence`, respectively.  The restriction is
+necessary: at `n = 0` the displayed denominator vanishes.
 
 `FabiusInverseDyadicClosedForm.lean` solves this recurrence completely.  If
 `(r₁,…,rₘ)` ranges over the ordered compositions of `n` and

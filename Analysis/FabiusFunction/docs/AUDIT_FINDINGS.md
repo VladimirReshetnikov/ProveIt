@@ -155,9 +155,13 @@ By cluster: core 7, discrete-limits-computability 10, dyadic 8, fourier-legendre
 
 #### IMPLEMENTED: `IsOriginalFabius.scale_pos` is a redundant structure field: positivity of the dilation constant follows from the other five hypotheses
 
-Confidence medium.  `OriginalCharacterization.lean:32`, `OriginalCharacterization.lean:232`, `OriginalCharacterization.lean:271`, `OriginalUniqueness.lean:396`
+Confidence medium.  `OriginalCharacterization.lean`, `OriginalUniqueness.lean`
 
-**Why.** `scale_pos` is dead weight: grepping all 174 files shows the field is referenced exactly twice — its declaration (line 37) and the `by norm_num` that discharges it for the canonical solution (line 271). No proof anywhere consumes it. In particular `IsOriginalFabius.scale_eq_two` (line 232), which derives `k = 2`, uses only `hasDerivAt`, `eq_zero_of_le_neg_one`, `contDiff`, `value_zero`, `value_neg_one` and `intervalIntegral_eq_one`, and each of those in turn traces back only to `contDiff`, ...
+**Why.** Before this strengthening, `scale_pos` was supplied only by callers and
+was not consumed by the proof of `IsOriginalFabius.scale_eq_two`.  That proof
+uses only `hasDerivAt`, support consequences, `contDiff`, `value_zero`, and the
+normalization argument.  The smart constructor now records the derived
+positivity in the retained compatibility field.
 
 **Implementation.** CONFIRMED with two corrections.  The compatibility-preserving
 smart constructor is now `IsOriginalFabius.mk_of_derivative_law`; the
@@ -179,7 +183,10 @@ CORRECTION 1 (proof route). Route (b) is not needed and route (a) is far cheaper
   - `hfar : ∀ x, x < -1 → φ x = 0` (directly from `htsupport` via `subset_tsupport`; note `2*c - 1 < -1` strictly, so `value_neg_one` is NOT needed here);
   - ...
 
-**Verifier.** The finding survives every adversarial check. (1) Signatures are quoted correctly: `IsOriginalFabius` is at OriginalCharacterization.lean:32-39 with `scale_pos : 0 < k` at line 37, `scale_eq_two` at 232, the canonical `scale_pos := by norm_num` at 271, `existsUnique_originalFabius` at 404-408 of OriginalUniqueness.lean. (2) The dead-field claim is ...
+**Verifier.** The finding survived adversarial checking before implementation:
+the mean-value point lies strictly in `(-1,0)`, so one translated argument is
+strictly outside the support and the other is strictly inside it.  Thus the
+proof never assumes endpoint positivity, and `k ≤ 0` is impossible.
 
 #### `card_odd_inner_binomial_coefficients` does not need `1 ≤ m`
 
@@ -345,35 +352,25 @@ Proof route, as stated in the finding: `cases n`; the `zero` branch closes by `s
 
 **Verifier.** All eight cited locations exist with the signatures as quoted, and the boundary case is safe. halfMoment_zero (Arithmetic.lean:276) gives halfMoment 0 = 1, so at n = 0 the four half-moment claims reduce to 1 ≤ 1, 1/2 ≤ 1, log 1 = 0 ≤ 0, and -log 2 ≤ 0 — all true. For the two F-carrying claims, dyadicLogError_eq (FabiusDyadicLogBounds.lean:168) ...
 
-#### `globalFabius_inverse_two_pow_recurrence` is stated only for the canonical instance although its proof is generic in `(F, hF)`
+#### IMPLEMENTED: the signed-global inverse-dyadic recurrence is generic in `(F, hF)`
 
-Confidence high.  `FabiusRecurrenceSequence.lean:305`, `FabiusRecurrenceSequence.lean:292`, `FabiusInverseDyadicClosedForm.lean:572`
+Confidence high.  `FabiusRecurrenceSequence.lean`,
+`FabiusInverseDyadicClosedForm.lean`
 
-**Why.** Every other real-valued statement in this module comes in the generic/canonical pair (`fabiusFunction_inverse_two_pow_recurrence` / `fabius_inverse_two_pow_recurrence`, `fabiusFunction_inverse_two_pow_recurrence_zpow` / `fabius_inverse_two_pow_recurrence_zpow`) — the signed-global one is the sole exception, and the downstream sibling result `extendedFabius_inverse_two_pow_eq_sum_compositions (F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` in FabiusInverseDyadicClosedForm.lean:572 already follows ...
+**Why.** The bounded inverse-dyadic recurrence already came in generic and
+canonical forms, and the signed extension agrees with the bounded function at
+every inverse-dyadic argument in `[0,1]`.  The previous canonical-only global
+proof therefore contained no canonical ingredient beyond its final
+specialization.
 
-**Proposal.** Same proposal, with the two line references fixed and the canonical derivation matched to the module's established idiom. Insert immediately before FabiusRecurrenceSequence.lean:302 (before the existing doc comment):
-
-/-- Signed-global form of the displayed recurrence for any bounded Fabius
-function satisfying its defining equations.  All arguments are in `[0, 1]`,
-where the signed extension agrees with the bounded function. -/
-theorem extendedFabius_inverse_two_pow_recurrence
-    (F : BoundedFabius) (hF : IsFabius F) (n : ℕ) (hn : 1 ≤ n) :
-    extendedFabius F ((2 : ℝ) ^ (-(n : ℤ))) =
-      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
-        ∑ k ∈ range n,
-          ((2 : ℝ) ^ k.choose 2 /
-              (((n - k + 1).factorial : ℕ) : ℝ)) *
-            extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) := by
-  have hlocal (k : ℕ) :
-      extendedFabius F ((2 : ℝ) ^ (-(k : ℤ))) =
-        fabiusReal F ((2 : ℝ) ^ (-(k : ℤ))) := by
-    apply extendedFabius_eq_fabiusReal F hF
-    constructor
-    · positivity
-    · rw [zpow_neg]
-      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by ...
-
-**Verifier.** Survives adversarial checking on all five axes. (1) The declaration exists at FabiusRecurrenceSequence.lean:305 with exactly the quoted signature and body — lines 302-323 match the `current` block verbatim. (2) The weakened statement is TRUE, not just plausible: every step of the existing proof has a generic parent — `extendedFabius_eq_fabiusReal ...
+**Implementation.** `extendedFabius_inverse_two_pow_recurrence` now states the
+literal `2^(-n)` recurrence for every `F : BoundedFabius` satisfying
+`IsFabius F`.  It rewrites each inverse-dyadic signed value with
+`extendedFabius_eq_fabiusReal` and delegates to the existing generic bounded
+recurrence.  `globalFabius_inverse_two_pow_recurrence` is retained unchanged as
+a two-line specialization to `fabius` and `fabius_spec`.  The necessary
+hypothesis `1 ≤ n` remains: at `n = 0` the displayed denominator vanishes while
+the normalized value at `1` is one.
 
 ### Cluster: fourier-legendre
 
@@ -400,23 +397,24 @@ theorem rvachev_poisson_support_specialization_of_one_half_le
 
 ### Cluster: lambert-asymptotics
 
-#### `smallArgumentLog_inv_eq` needs no hypothesis at all; the resulting Big-O comparison holds on every filter, killing a duplicated proof block
+#### IMPLEMENTED: the reciprocal logarithmic identity needs no hypothesis, and its Big-O comparison holds on every filter
 
-Confidence high.  `FabiusLambertRates.lean:43`, `FabiusLambertRates.lean:67`, `FabiusWikipediaExpansion.lean:267`, `FabiusLambertAllOrderSmallArgument.lean:108`, `FabiusSmallArgumentScale.lean:19`
+Confidence high.  `FabiusLambertRates.lean`,
+`FabiusWikipediaExpansion.lean`,
+`FabiusLambertAllOrderSmallArgument.lean`
 
-**Why.** `fabiusSmallArgumentLog x = -Real.logb 2 x` and `Real.logb b x = Real.log x / Real.log b` by definition, so both sides are `((-Real.log x) * (Real.log 2)⁻¹)⁻¹` versus `Real.log 2 * (-Real.log x)⁻¹`. In ℝ inversion is total (`0⁻¹ = 0`), so `mul_inv_rev` + `inv_inv` prove the identity for every real `x` — including `x = 0`, `x = 1`, and `x < 0`. The `0 < x` hypothesis and the `by_cases h : x = 1` branch are pure artifacts of proving it with `field_simp`. Because the identity is filter-free, the ...
+**Why.** Since real inversion is total, the reciprocal-coordinate identity is
+algebraic even at `x = 0`, `x = 1`, and negative arguments.  The former
+positivity hypothesis and exceptional `x = 1` branch were artifacts of a
+`field_simp` proof.
 
-**Proposal.** The finding stands as stated; two cosmetic corrections to the proposal text.
-
-(a) The suggested compatibility wrapper `fun hx => smallArgumentLog_inv_eq' _` does not typecheck, since `hx` is already bound by the theorem signature, and an unused `hx` binder trips the `unusedVariables` linter. If a wrapper is kept it must read:
-
-theorem smallArgumentLog_inv_eq {x : ℝ} (_hx : 0 < x) :
-    (fabiusSmallArgumentLog x)⁻¹ = Real.log 2 * (-Real.log x)⁻¹ :=
-  smallArgumentLog_inv_eq' x
-
-(b) The wrapper is not actually needed. `smallArgumentLog_inv_eq` has exactly three references in the whole corpus — FabiusLambertRates.lean:71, FabiusWikipediaExpansion.lean:271, FabiusLambertAllOrderSmallArgument.lean:108 — all passing `hx` positionally, and no doc file under Analysis/FabiusFunction mentions the name. So the cleaner edit is to weaken `smallArgumentLog_inv_eq` in place to `(x : ℝ)` with the six-rewrite proof, add `smallArgumentLog_inv_isBigO` beside it (or in FabiusSmallArgumentScale.lean as proposed), replace the two `htarget` blocks with `smallArgumentLog_inv_isBigO _`, and change line ...
-
-**Verifier.** Confirmed on every axis. (1) Signature at FabiusLambertRates.lean:43-52 matches the quote verbatim. (2) The weakened statement is TRUE at every boundary: with Real.log 0 = 0, Real.log 1 = 0, and 0⁻¹ = 0 in ℝ, both sides are 0 at x = 0, x = 1, and x = -1; for x < 0 with log|x| ≠ 0 (e.g. x = -2) both sides equal -1; for log x ≠ 0 both sides equal ...
+**Implementation.** `smallArgumentLog_inv_eq_all` is unconditional, while the
+old positive-argument `smallArgumentLog_inv_eq` signature remains as a
+compatibility wrapper.  The public `smallArgumentLog_inv_isBigO` packages the
+comparison on an arbitrary filter.  Both local small-argument Big-O proofs
+delegate to this theorem, and the all-order power comparison is simply
+`(smallArgumentLog_inv_isBigO _).pow N`.  This removes the duplicated
+filter-local estimates while strengthening the reusable API.
 
 #### `rvachevUp_eq_one_sub_fabiusReal_of_mem_Icc` only needs `0 ≤ t`, and belongs next to `IsFabius.symmetry_all`, which already does the work
 
@@ -453,23 +451,36 @@ Confidence medium.  `EndpointLaplaceComparison.lean:243`, `EndpointLaplaceCompar
 
 ### Cluster: moments-probability
 
-#### `halfMoment_eq_integral_formula` does not need `1 ≤ n`; the identity is already true at n = 0
+#### IMPLEMENTED: the normalized half-moment identity is valid also at `n = 0`
 
-Confidence high.  `AnalyticMoments.lean:440`, `AnalyticMoments.lean:415`, `PaperStatements.lean:135`, `Basic.lean:284`, `Arithmetic.lean:276`
+Confidence high.  `AnalyticMoments.lean`, `PaperStatements.lean`, `Basic.lean`, `Arithmetic.lean`
 
-**Why.** `hn` forces every caller to discharge a side condition for a lemma that is unconditionally true, and it is the reason `LaplaceMoments.fabiusLaplaceMoment_zero_eq_halfMoment` and `FabiusDyadicLogBounds` (lines 58, 87) all carry `(by omega)` noise. Every one of the six call sites passes a literal successor.
+**Why.** The identity is unconditionally true.  Four of its six former call
+sites passed a literal successor and discharged positivity with `(by omega)`;
+the other two already carried a positive-index hypothesis.
 
-**Proposal.** Drop `hn` from exactly two declarations in AnalyticMoments.lean, keeping the existing names (no new name, no wrapper, no circularity). First, `halfMomentIntegral_eq_evenMoment_sum` (line 415) becomes `(F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` with the `| zero =>` branch changed from `omega` to a proof that the RHS collapses to `momentIntegral F 0`, which equals `1` by `rw [← moment_eq_integral_formula F hF 0, moment_zero]` (available: `moment_eq_integral_formula` is unconditional at AnalyticMoments.lean:362, `moment_zero` at Arithmetic.lean:272); the `| succ m =>` branch is unchanged. Second, `halfMoment_eq_integral_formula` (line 440) becomes `(F : BoundedFabius) (hF : IsFabius F) (n : ℕ)` and its existing proof body works verbatim after deleting the `hn` argument from the `rw [halfMomentIntegral_eq_evenMoment_sum F hF n]` line, since `halfMoment_eq_evenMomentSum` and `moment_eq_integral_formula` are both already unconditional; no `cases n` split is needed. Then fix the four call sites that pass a literal successor by deleting the `(by omega)` argument ...
+**Implementation.** To preserve the source-facing equation and public API, the
+positive-index theorem keeps its original signature.  The additive theorem
+`halfMoment_eq_integral_formula_all` handles `n = 0` from
+`halfMoment_zero = halfMomentIntegral_zero = 1` and delegates successors to
+the existing result.  Internal analytic and dyadic callers use this all-index
+form, removing their repeated positivity side conditions.
 
-**Verifier.** The mathematical core holds and I could positively confirm it. All five cited locations exist with the quoted signatures: AnalyticMoments.lean:440 verbatim; AnalyticMoments.lean:415 is the private lemma with `(hn : 1 ≤ n)` whose zero branch is discharged by `omega`; Basic.lean:278-284 defines `halfMomentIntegral F 0 = 1` with `@[simp] ...
+**Verifier.** The zero branch is definitionally the normalized equality
+`1 = 1`; the successor branch is exactly the already-verified positive-index
+identity.  No integral with the exponent `n-1` is asserted at zero.
 
-#### `weightedSumCDF_left_formula` uses only `x ≤ 1/2`; the `0 ≤ x` half of the `Icc` hypothesis is dead
+#### IMPLEMENTED: `weightedSumCDF_left_formula` uses only `x ≤ 1/2`; the `0 ≤ x` half of the `Icc` hypothesis is dead
 
 Confidence high.  `ProbabilityRepresentation.lean:474`, `ProbabilityRepresentation.lean:532`, `ProbabilityRepresentation.lean:540`
 
-**Why.** The `Icc` phrasing makes the lemma look like a genuinely interval-restricted statement (the name even says `left_formula`), when it is a global identity on `(-∞, 1/2]`. The two call sites in `cdfAdmissible_fixed` currently build `Icc` membership proofs (`⟨x.property.1, hx⟩` and `honeSub : 1 - x ∈ Icc 0 (1/2)`) whose first components are never used.
+**Why.** The `Icc` phrasing made the lemma look like a genuinely
+interval-restricted statement, although it is a global identity on
+`(-∞,1/2]`.  The two former call sites in `cdfAdmissible_fixed` built `Icc`
+membership proofs whose lower-bound components were never used.
 
-**Proposal.** Weaken the hypothesis in place at ProbabilityRepresentation.lean:474:
+**Implementation.** The strengthened theorem is now
+`weightedSumCDF_eq_intervalIntegral_of_le_half`:
 
 /-- The smoothing equation collapses to a single integral from the origin
 whenever `x ≤ 1/2`; no lower bound on `x` is needed, since the CDF vanishes
@@ -480,17 +491,11 @@ lemma weightedSumCDF_eq_intervalIntegral_of_le_half {x : ℝ} (hx : x ≤ 1 / 2)
   -- body unchanged except:
   have hlower : 2 * x - 1 ≤ 0 := by linarith   -- was: linarith [hx.2]
 
-Call sites in `cdfAdmissible_fixed`:
-- line 532: `exact (weightedSumCDF_eq_intervalIntegral_of_le_half hx).symm` (drop `⟨x.property.1, hx⟩`).
-- lines 535-540: replace `honeSub` with `have honeSub : 1 - (x : ℝ) ≤ 1 / 2 := by linarith` (justified by `hxhalf : 1/2 < (x : ℝ)`; `x.property.2` is no longer needed for `honeSub`, but keep it for `harg` at line 537), then `have hleft := weightedSumCDF_eq_intervalIntegral_of_le_half honeSub`.
-
-If a compatibility name is wanted, it must carry a full statement — `lemma f (h : P) := e` is a ...
-
-**Verifier.** Confirmed on all counts.
-
-(1) Signature quoted accurately. `ProbabilityRepresentation.lean:474-476` reads exactly `lemma weightedSumCDF_left_formula {x : ℝ} (hx : x ∈ Icc (0 : ℝ) (1 / 2)) : weightedSumCDF x = ∫ t in (0 : ℝ)..(2 * x), weightedSumCDF t`.
-
-(2) `hx.1` is genuinely dead. The body (lines 477-491) mentions `hx` exactly once: `have hlower ...
+The original `weightedSumCDF_left_formula` name remains as a compatibility
+wrapper on `Icc 0 (1/2)`.  Both branches of `cdfAdmissible_fixed` now use the
+strong theorem directly, so they no longer manufacture unused lower bounds.
+The negative-input endpoint behavior is genuine rather than vacuous: both the
+CDF and the reversed-orientation integral vanish there.
 
 #### Four public theorems carry hypotheses the author already marked unused with a leading underscore
 

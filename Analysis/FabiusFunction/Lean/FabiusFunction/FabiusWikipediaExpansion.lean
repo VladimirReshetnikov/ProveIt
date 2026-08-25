@@ -264,12 +264,6 @@ theorem fabiusCorrectedWikipediaMain_sub_explicit_isBigO :
       rw [fabiusSmallArgumentLog_logArgument]
   have hs := isBigO_smallArgument_of_logScale f
     (fun x => (fabiusSmallArgumentLog x)⁻¹) hlog
-  have htarget : (fun x : ℝ => (fabiusSmallArgumentLog x)⁻¹) =O[
-      nhdsWithin 0 (Set.Ioi 0)] (fun x => (-Real.log x)⁻¹) := by
-    apply IsBigO.of_bound (Real.log 2)
-    filter_upwards [self_mem_nhdsWithin] with x hx
-    rw [smallArgumentLog_inv_eq hx, norm_mul, Real.norm_eq_abs,
-      abs_of_pos (Real.log_pos (by norm_num))]
-  exact hs.trans htarget
+  exact hs.trans (smallArgumentLog_inv_isBigO _)
 
 end Fabius
