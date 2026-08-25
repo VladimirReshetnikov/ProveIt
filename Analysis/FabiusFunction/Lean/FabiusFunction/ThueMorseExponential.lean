@@ -88,6 +88,25 @@ theorem thueMorseCenteredPowerSum_eq_zero_of_lt
   convert hzero using 1
   ring_nf
 
+/-- The first centered power sum beyond the Prouhet zero range.  Centering
+does not change this leading-degree value. -/
+theorem thueMorseCenteredPowerSum_self (k : ℕ) :
+    thueMorseCenteredPowerSum k k =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
+  let p : Polynomial ℚ :=
+    (Polynomial.X + Polynomial.C (-(2 : ℚ) ^ k)) ^ k
+  have hp : p.natDegree ≤ k := by
+    dsimp [p]
+    rw [Polynomial.natDegree_pow_X_add_C]
+  have h := thueMorse_polynomial_sum_eq_coeff k p hp
+  have hcoeff : p.coeff k = 1 := by
+    dsimp [p]
+    rw [Polynomial.coeff_X_add_C_pow]
+    simp
+  rw [hcoeff, one_mul] at h
+  rw [thueMorseCenteredPowerSum]
+  simpa [p, sub_eq_add_neg] using h
+
 /-- The finite exponential generating series before removing its forced
 zero of order `k`. -/
 noncomputable def thueMorseCenteredPowerSeries (k : ℕ) : PowerSeries ℚ :=
@@ -109,6 +128,28 @@ power sums divided by factorials. -/
   simp only [smul_eq_mul]
   norm_num
   ring
+
+/-- The first nonzero coefficient of the centered exponential series. -/
+@[simp] theorem coeff_self_thueMorseCenteredPowerSeries (k : ℕ) :
+    PowerSeries.coeff k (thueMorseCenteredPowerSeries k) =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 := by
+  rw [coeff_thueMorseCenteredPowerSeries,
+    thueMorseCenteredPowerSum_self]
+  have hfactorial : (k.factorial : ℚ) ≠ 0 := by positivity
+  field_simp
+
+/-- Prouhet cancellation is sharp: the centered exponential series has a
+zero of order exactly `k`. -/
+theorem order_thueMorseCenteredPowerSeries (k : ℕ) :
+    (thueMorseCenteredPowerSeries k).order = k := by
+  rw [PowerSeries.order_eq_nat]
+  constructor
+  · rw [coeff_self_thueMorseCenteredPowerSeries]
+    exact mul_ne_zero (pow_ne_zero k (by norm_num))
+      (pow_ne_zero (k.choose 2) (by norm_num))
+  · intro m hm
+    rw [coeff_thueMorseCenteredPowerSeries,
+      thueMorseCenteredPowerSum_eq_zero_of_lt k m hm, zero_div]
 
 /-- The centered exponential series at the empty binary scale. -/
 @[simp] theorem thueMorseCenteredPowerSeries_zero :
@@ -219,6 +260,25 @@ theorem thueMorseTranslatedPowerSum_eq_zero_of_lt
   simpa only [one_mul, sub_eq_add_neg, add_comm, add_left_comm, add_assoc]
     using hzero
 
+/-- Translation by an arbitrary rational constant also leaves the first
+nonzero Thue--Morse power sum unchanged. -/
+theorem thueMorseTranslatedPowerSum_self (c : ℚ) (k : ℕ) :
+    thueMorseTranslatedPowerSum c k k =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 * k.factorial := by
+  let p : Polynomial ℚ :=
+    (Polynomial.X + Polynomial.C (-(2 : ℚ) ^ k + c)) ^ k
+  have hp : p.natDegree ≤ k := by
+    dsimp [p]
+    rw [Polynomial.natDegree_pow_X_add_C]
+  have h := thueMorse_polynomial_sum_eq_coeff k p hp
+  have hcoeff : p.coeff k = 1 := by
+    dsimp [p]
+    rw [Polynomial.coeff_X_add_C_pow]
+    simp
+  rw [hcoeff, one_mul] at h
+  rw [thueMorseTranslatedPowerSum]
+  simpa [p, sub_eq_add_neg, add_assoc] using h
+
 /-- The full exponential generating series of the translated sums. -/
 noncomputable def thueMorseTranslatedPowerSeries
     (c : ℚ) (k : ℕ) : PowerSeries ℚ :=
@@ -241,6 +301,29 @@ noncomputable def thueMorseTranslatedPowerSeries
   simp only [smul_eq_mul]
   norm_num
   ring
+
+/-- Every translated exponential series has the same first nonzero
+coefficient as the centered series. -/
+@[simp] theorem coeff_self_thueMorseTranslatedPowerSeries
+    (c : ℚ) (k : ℕ) :
+    PowerSeries.coeff k (thueMorseTranslatedPowerSeries c k) =
+      (-1 : ℚ) ^ k * (2 : ℚ) ^ k.choose 2 := by
+  rw [coeff_thueMorseTranslatedPowerSeries,
+    thueMorseTranslatedPowerSum_self]
+  have hfactorial : (k.factorial : ℚ) ≠ 0 := by positivity
+  field_simp
+
+/-- Rational translation preserves the exact order of vanishing. -/
+theorem order_thueMorseTranslatedPowerSeries (c : ℚ) (k : ℕ) :
+    (thueMorseTranslatedPowerSeries c k).order = k := by
+  rw [PowerSeries.order_eq_nat]
+  constructor
+  · rw [coeff_self_thueMorseTranslatedPowerSeries]
+    exact mul_ne_zero (pow_ne_zero k (by norm_num))
+      (pow_ne_zero (k.choose 2) (by norm_num))
+  · intro m hm
+    rw [coeff_thueMorseTranslatedPowerSeries,
+      thueMorseTranslatedPowerSum_eq_zero_of_lt c k m hm, zero_div]
 
 private theorem translated_exp_term
     (c : ℚ) (k : ℕ) (r : Fin (2 ^ k)) :

@@ -101,29 +101,106 @@ theorem iteratedPrefix_eq_sum_kernel (k n : ℕ) (hk : 1 ≤ k) :
   unfold iteratedPrefixKernel
   congr 1
 
+/-- The signed power sum over a complete dyadic Thue--Morse block. -/
+def thueMorsePowerSum (r d : ℕ) : ℚ :=
+  ∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ d
+
+/-- Splitting a dyadic block in half gives a recurrence in lower power
+sums. -/
+theorem thueMorsePowerSum_succ (r d : ℕ) :
+    thueMorsePowerSum (r + 1) d =
+      -(∑ k ∈ Finset.range d,
+        (Nat.choose d k : ℚ) * (2 : ℚ) ^ k * thueMorsePowerSum r k) := by
+  have h := thuePowerSum_succ r d
+  change thueMorsePowerSum (r + 1) d =
+    -(∑ k ∈ Finset.range d,
+      (Nat.choose d k : ℚ) * (2 : ℚ) ^ k * thueMorsePowerSum r k) at h
+  exact h
+
+/-- Prouhet cancellation for monomials below the block exponent. -/
+theorem thueMorsePowerSum_eq_zero_of_lt (r d : ℕ) (hd : d < r) :
+    thueMorsePowerSum r d = 0 := by
+  have h := thuePowerSum_eq_zero_of_lt r d hd
+  change thueMorsePowerSum r d = 0 at h
+  exact h
+
+/-- The first power not annihilated by a dyadic Thue--Morse block has an
+explicit value.  This is the sharp boundary case of Prouhet cancellation. -/
+theorem thueMorsePowerSum_self (r : ℕ) :
+    thueMorsePowerSum r r =
+      (-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial := by
+  induction r with
+  | zero =>
+      norm_num [thueMorsePowerSum, thueMorseSign, binaryWeight]
+  | succ r ih =>
+      rw [show r + 1 = r.succ by omega,
+        show r.succ = r + 1 by omega,
+        thueMorsePowerSum_succ, Finset.sum_range_succ]
+      have hzero :
+          (∑ k ∈ Finset.range r,
+            (Nat.choose (r + 1) k : ℚ) * (2 : ℚ) ^ k *
+              thueMorsePowerSum r k) = 0 := by
+        apply Finset.sum_eq_zero
+        intro k hk
+        rw [thueMorsePowerSum_eq_zero_of_lt r k (Finset.mem_range.mp hk), mul_zero]
+      rw [hzero, zero_add, ih]
+      rw [show (r + 1).choose 2 = r.choose 2 + r by
+        rw [Nat.choose_succ_succ]
+        simp [Nat.choose_one_right, Nat.add_comm],
+        pow_add, Nat.factorial_succ, pow_succ]
+      rw [Nat.choose_succ_self_right]
+      push_cast
+      ring
+
+/-- On polynomials of degree at most `r`, summation against a dyadic
+Thue--Morse block extracts the degree-`r` coefficient, up to the explicit
+nonzero Prouhet factor. -/
+theorem thueMorse_polynomial_sum_eq_coeff (r : ℕ) (p : Polynomial ℚ)
+    (hp : p.natDegree ≤ r) :
+    (∑ h : Fin (2 ^ r),
+        (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) =
+      p.coeff r *
+        ((-1 : ℚ) ^ r * (2 : ℚ) ^ r.choose 2 * r.factorial) := by
+  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  have hexpand :
+      (∑ d ∈ p.support, ∑ h : Fin (2 ^ r),
+          (thueMorseSign h.val : ℚ) *
+            (p.coeff d * (h.val : ℚ) ^ d)) =
+        ∑ d ∈ p.support, p.coeff d * thueMorsePowerSum r d := by
+    apply Finset.sum_congr rfl
+    intro d hd
+    rw [thueMorsePowerSum, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro h hh
+    ring
+  rw [hexpand]
+  classical
+  by_cases hr : r ∈ p.support
+  · rw [Finset.sum_eq_single r]
+    · rw [thueMorsePowerSum_self]
+    · intro d hd hdr
+      have hdr' : d < r :=
+        lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
+      rw [thueMorsePowerSum_eq_zero_of_lt r d hdr', mul_zero]
+    · exact fun h => (h hr).elim
+  · have hcoeff : p.coeff r = 0 := by
+      simpa only [Polynomial.mem_support_iff, not_ne_iff] using hr
+    rw [hcoeff, zero_mul]
+    apply Finset.sum_eq_zero
+    intro d hd
+    have hdr : d ≠ r := fun h => hr (h ▸ hd)
+    have hdr' : d < r :=
+      lt_of_le_of_ne (Polynomial.le_natDegree_of_mem_supp d hd |>.trans hp) hdr
+    rw [thueMorsePowerSum_eq_zero_of_lt r d hdr', mul_zero]
+
 /-- Thue--Morse signs annihilate every rational polynomial of degree below the
 dyadic block exponent. -/
 lemma thueMorse_polynomial_sum_eq_zero (r : ℕ) (p : Polynomial ℚ)
     (hp : p.natDegree < r) :
     (∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) * p.eval (h.val : ℚ)) = 0 := by
-  simp_rw [Polynomial.eval_eq_sum, Polynomial.sum_def, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_eq_zero
-  intro d hd
-  have hdle : d ≤ p.natDegree := Polynomial.le_natDegree_of_mem_supp d hd
-  have hdr : d < r := hdle.trans_lt hp
-  have hzero := thueMorse_affine_power_sum_eq_zero r d hdr (0 : ℚ) 1
-  simp only [zero_add, one_mul] at hzero
-  calc
-    (∑ h : Fin (2 ^ r),
-        (thueMorseSign h.val : ℚ) * (p.coeff d * (h.val : ℚ) ^ d)) =
-        p.coeff d *
-          ∑ h : Fin (2 ^ r), (thueMorseSign h.val : ℚ) * (h.val : ℚ) ^ d := by
-            rw [Finset.mul_sum]
-            apply Finset.sum_congr rfl
-            intro h hh
-            ring
-    _ = 0 := by rw [hzero, mul_zero]
+  rw [thueMorse_polynomial_sum_eq_coeff r p hp.le,
+    Polynomial.coeff_eq_zero_of_natDegree_lt hp, zero_mul]
 
 private noncomputable def prefixEndpointPolynomial (N k : ℕ) : Polynomial ℚ :=
   (ascPochhammer ℚ k).comp (Polynomial.C (N : ℚ) - Polynomial.X)
