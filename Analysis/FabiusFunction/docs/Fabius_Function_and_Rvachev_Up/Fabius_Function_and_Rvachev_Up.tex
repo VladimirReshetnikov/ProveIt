@@ -91,7 +91,7 @@
 \newcommand{\qbinom}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \newcommand{\repo}{\nolinkurl{Analysis/FabiusFunction}}
 \newcommand{\lean}[1]{%
-  \ifmmode\text{\texttt{\detokenize{#1}}}\else\nolinkurl{#1}\fi}
+  \ifmmode\text{\nolinkurl{#1}}\else\nolinkurl{#1}\fi}
 
 \newenvironment{proofidea}{\par\smallskip\noindent\textit{Proof architecture.}\ }{\hfill$\square$\par\smallskip}
 \newenvironment{boxedremark}{%
@@ -147,7 +147,7 @@ The endpoint chapters report only the negative-Laplace decompositions, periodic 
 lower-Lambert formulas, saddle estimates, and correction terms that have named proved
 counterparts in the formal source.  Plausible extensions, numerical observations, generic
 $q$-analogues, and other arguments not yet represented by an exact Lean theorem are kept in
-the companion notebooks under \path{docs/non-formalized-research-frontiers/}, not in this
+the companion volume under \path{docs/non-formalized-research-frontiers/}, not in this
 primary exposition.
 \end{abstract}
 
@@ -252,8 +252,8 @@ declarations supporting each retained theorem.
 
 A statement appears here only when its complete mathematical content has an exact proved Lean
 counterpart.  Material removed from earlier drafts because that test is not yet met is
-preserved in the research-frontier notebooks.  Thus the division between this document and
-those notebooks is a proof-status boundary, not a judgment about mathematical plausibility
+preserved in the research-frontier volume.  Thus the division between this document and
+that volume is a proof-status boundary, not a judgment about mathematical plausibility
 or importance.
 
 \begin{boxedremark}
@@ -337,12 +337,6 @@ Let $\wt(n)$ denote the sum of the binary digits of $n$, and put
 \begin{equation}
  \varepsilon_n=(-1)^{\wt(n)}.                             \label{eq:tm-sign}
 \end{equation}
-The binary recurrences are
-\begin{align}
- \wt(2n)&=\wt(n),& \wt(2n+1)&=\wt(n)+1,                  \label{eq:weight-even-odd}\\
- \varepsilon_{2n}&=\varepsilon_n,&
- \varepsilon_{2n+1}&=-\varepsilon_n.                     \label{eq:tm-even-odd}
-\end{align}
 The sequence $(\varepsilon_n)$ is the $\{\pm1\}$ form of the Thue--Morse sequence
 \cite{allouche2003}.
 
@@ -859,6 +853,17 @@ The indexing in \eqref{eq:finite-atomic-law} is worth noticing: the new scale at
 
 Let \(\mu_{\Up}\) denote the formal measure \lean{rvachevMeasure}; by definition it is
 Lebesgue measure with density \(\operatorname{ofReal}\!\circ\Up\).
+It is absolutely continuous with respect to Lebesgue measure; in particular, every
+Lebesgue-null set is also \(\mu_{\Up}\)-null.  These are
+\lean{rvachevMeasure_absolutelyContinuous} and
+\lean{rvachevMeasure_eq_zero_of_volume_eq_zero} in \path{StepMeasureBridge.lean}.
+Its characteristic function uses the positive-frequency normalization
+\begin{equation}
+ \operatorname{charFun}(\mu_{\Up},t)
+ =\widehat{\Up}\!\left(\frac{t}{2\pi}\right)\qquad(t\in\R),
+                                                               \label{eq:rvachev-charfun}
+\end{equation}
+the exact identity \lean{rvachevMeasure_charFun_pos} in \path{WeakConvergence.lean}.
 The finite laws converge weakly to \(\mu_{\Up}\):
 \begin{equation}
  \nu_n\Longrightarrow\mu_{\Up}.                               \label{eq:finite-atomic-weak}
@@ -1121,16 +1126,18 @@ for the computability proof in \cref{sec:effective-computability}.
 The same finite formula also has the correct signed global behavior.  For $x\le0$ its safe
 cutoff is empty, so $S_p(x)=\mathcal F(x)=0$.  On the nonnegative half-line, binary block
 translation and midpoint reflection extend the local identification.  Consequently, for
-every $p\ge1$,
+every $p\ge1$ and every $x\in\R$,
 \begin{equation}
- \sup_{x\in\R}|S_p(x)-\mathcal F(x)|\le2^{-p},\qquad
- S_p\longrightarrow\mathcal F\quad\hbox{uniformly on }\R. \label{eq:centered-spline-global-limit}
+ |S_p(x)-\mathcal F(x)|\le2^{-p}.                         \label{eq:centered-spline-global-limit}
 \end{equation}
 Indeed, every nonnegative two-unit block is a common signed copy of the first block, and
 on the second unit cell both functions use the same complement.  Neither operation changes
 the absolute error in \eqref{eq:centered-error}; the nonpositive half-line is exact.  This
-global uniform form strengthens and packages the pointwise analytic input used by the
-complex-shift and discrete-limit results below.
+pointwise all-real bound is
+\lean{abs_fabiusUniformSpline_sub_extendedFabius_le}; it implies the separately proved
+uniform convergence \lean{fabiusUniformSpline_tendstoUniformly_extendedFabius}.  This
+global form strengthens and packages the analytic input used by the complex-shift and
+discrete-limit results below.
 
 \section{Fourier products, inversion, and Poisson summation}
 \label{sec:fourier}
@@ -1162,13 +1169,24 @@ The transform also satisfies
 The finite-product refinement and its infinite limit are
 \lean{rvachevFourier_eq_finite_product} and
 \lean{rvachevFourier_eq_product} in \path{FourierProduct.lean}.
-The entire-function theorem is
-\lean{rvachevFourier_differentiable_analytic} in
+The refinement equation is \lean{rvachevFourier_scaling} in the same module.
+The whole-plane analyticity theorem is
+\lean{rvachevFourier_analyticOnNhd} in
 \path{FourierAnalytic.lean}.  The weighted cosine product is
 \lean{rvachevFourierProduct_eq_cosineProduct} in
 \path{OriginalPaperSupplement.lean}; its finite telescoping identity is proved internally in
 the same module.
 \end{proof}
+
+The transform also has the exact conjugation, parity, and real-axis identities
+\begin{equation}
+ \overline{\widehat{\Up}(z)}=\widehat{\Up}(-\overline z),
+ \qquad \widehat{\Up}(-z)=\widehat{\Up}(z),
+ \qquad \operatorname{Im}\widehat{\Up}(t)=0\quad(t\in\R).   \label{eq:fourier-symmetries}
+\end{equation}
+These are \lean{rvachevFourier_conj} in \path{FourierAnalytic.lean} and
+\lean{rvachevFourier_neg}, \lean{rvachevFourier_ofReal_im_eq_zero} in
+\path{FourierProduct.lean}.
 
 A consequence needed for Poisson summation is the formally proved integer-zero statement
 \begin{equation}
@@ -1181,10 +1199,10 @@ classification is asserted here.
 
 For every \(N\in\N\) there is a constant \(C_N>0\) such that
 \begin{equation}
- |\widehat{\Up}(\xi)|\le C_N(1+|\xi|)^{-N}\qquad(\xi\in\R), \label{eq:schwartz-decay}
+ |\xi|^N|\widehat{\Up}(\xi)|\le C_N\qquad(\xi\in\R),     \label{eq:schwartz-decay}
 \end{equation}
-and the stronger formal theorem gives polynomially weighted bounds for every real-frequency
-derivative.  Fourier inversion holds in the exact form
+and the companion formal theorem gives the corresponding polynomially weighted bound for
+every iterated real-frequency derivative.  Fourier inversion holds in the exact form
 \begin{equation}
  \Up(x)=\int_\R\widehat{\Up}(\xi)\e^{2\pi\ii x\xi}\dd\xi. \label{eq:fourier-inversion}
 \end{equation}
@@ -1217,7 +1235,7 @@ These are \lean{rvachev_partition_one_over_nat} and
 
 With
 \begin{equation}
- c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,                       \label{eq:c-fourier-moment-def}
+ c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x.                    \label{eq:c-def}
 \end{equation}
 the exact entire series is
 \begin{equation}
@@ -1333,20 +1351,20 @@ Interior smoothness and the derivative chain are
 \lean{deriv_fabiusInv_pos}, all in \path{FabiusInverse.lean}.
 \end{proof}
 
-The same module gives the exact second derivative on the open interval,
+The same module controls the curvature of the inverse without asserting differentiability
+at the clamped endpoints.  For \(0<y<1\),
 \begin{equation}
- I''(y)=-\frac{F''(I(y))}{F'(I(y))^3},\qquad 0<y<1,        \label{eq:fabius-inverse-second-derivative}
+ I''(y)=-\frac{F''(I(y))}{F'(I(y))^3}.                     \label{eq:fabius-inverse-second-derivative}
 \end{equation}
-and proves the sharp closed-half shape statements
+This is \lean{deriv_deriv_fabiusInv}, with the corresponding derivative witness
+\lean{deriv_fabiusInv_hasDerivAt}.  On the closed half intervals, continuity at the
+endpoints and the interior derivative criterion give
 \begin{equation}
- I\text{ is strictly concave on }[0,\tfrac12],\qquad
- I\text{ is strictly convex on }[\tfrac12,1].            \label{eq:fabius-inverse-curvature}
+ I\text{ is strictly concave on }[0,\tfrac12]
+ \quad\hbox{and strictly convex on }[\tfrac12,1].           \label{eq:fabius-inverse-curvature}
 \end{equation}
-These are \lean{deriv_fabiusInv_hasDerivAt},
-\lean{deriv_deriv_fabiusInv},
-\lean{strictConcaveOn_fabiusInv_firstHalf}, and
-\lean{strictConvexOn_fabiusInv_secondHalf}.  The closed endpoints in
-\eqref{eq:fabius-inverse-curvature} use continuity; no endpoint differentiability is claimed.
+The exact declarations are \lean{strictConcaveOn_fabiusInv_firstHalf} and
+\lean{strictConvexOn_fabiusInv_secondHalf}.
 
 The pointwise statement is sharper.  The midpoint jet is
 \begin{equation}
@@ -1383,17 +1401,26 @@ These are \lean{fabiusInv_one_sub}, \lean{fabiusInv_half}, and
 by \lean{fabiusInv_analyticAt_iff}; in the open interval its derivative never vanishes by
 \lean{deriv_fabiusInv_ne_zero}.
 
-At the two clamping endpoints the inverse is steeper than every root: for every
-\(n\in\N\),
-\begin{equation}
- y=o\!\left(I(y)^n\right)\quad(y\downarrow0),\qquad
- 1-y=o\!\left((1-I(y))^n\right)\quad(y\uparrow1).          \label{eq:fabius-inverse-all-order-steepness}
-\end{equation}
+Flatness of \(F\) becomes infinite endpoint steepness of \(I\).  For every \(n\in\N\),
+\begin{align}
+ y&=o\bigl(I(y)^n\bigr) &&(y\downarrow0),                  \label{eq:fabius-inverse-left-steepness}\\
+ 1-y&=o\bigl((1-I(y))^n\bigr) &&(y\uparrow1).             \label{eq:fabius-inverse-right-steepness}
+\end{align}
 These are \lean{id_isLittleO_fabiusInv_pow_at_zero_right} and
-\lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular the one-sided
-difference quotients tend to \(+\infty\), as stated by
-\lean{tendsto_fabiusInv_div_atTop} and its reflected companion.
-The stronger limits of the positive interior derivative itself are also
+\lean{one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left}.  In particular, the two
+one-sided difference quotients diverge:
+\begin{equation}
+ \frac{I(y)}{y}\longrightarrow+\infty\quad(y\downarrow0),
+ \qquad
+ \frac{1-I(y)}{1-y}\longrightarrow+\infty\quad(y\uparrow1). \label{eq:fabius-inverse-infinite-slopes}
+\end{equation}
+The formally proved counterparts are \lean{tendsto_fabiusInv_div_atTop} and
+\lean{tendsto_one_sub_fabiusInv_div_one_sub_atTop}.  Thus the totalized inverse is not
+differentiable at either clamping point, exactly as stated by
+\lean{fabiusInv_not_differentiableAt_zero} and
+\lean{fabiusInv_not_differentiableAt_one}; no finite endpoint derivative is being smuggled
+into the curvature statement above.  The stronger limits of the positive interior derivative
+itself are also
 formalized:
 \begin{equation}
  I'(y)\longrightarrow+\infty\quad(y\downarrow0),\qquad
@@ -1406,8 +1433,11 @@ the open interval, not finite derivatives at \(0\) or \(1\).
 \subsection{Precise non-elementarity}
 
 The inductive predicate \lean{IsElementary} contains constants and the identity and is
-closed under arithmetic operations, composition, real powers on positive inputs,
-exponential, logarithm, and trigonometric operations.  Every such expression has a dense
+closed under arithmetic operations, composition, exponential, logarithm, trigonometric
+operations, and variable real powers whose elementary base is globally nonvanishing.  The
+last closure statement is \lean{IsElementary.rpow_of_ne_zero}; the positive-base and
+positive-region interfaces are \lean{IsElementary.rpow_of_pos} and
+\lean{eqOn_rpow_of_pos}.  Every expression in this class has a dense
 real-analytic locus:
 \[
  \lean{IsElementary}\ g
@@ -1429,8 +1459,15 @@ The exact declarations are
 
 The larger formal class \lean{IsElementaryOrInverse} admits an inverse-branch constructor
 only with an open branch domain, continuity and a right-inverse identity there, and
-analyticity of the chosen total extension on the interior of the complement.  Even that
-class cannot represent \(F\) or \(I\) on \((0,1)\), by
+analyticity of the chosen total extension on the interior of the complement.  The canonical
+global functions themselves are not members of that larger class:
+\begin{equation}
+ \neg\lean{IsElementaryOrInverse}\,F,
+ \qquad \neg\lean{IsElementaryOrInverse}\,I.                \label{eq:not-elementary-or-inverse}
+\end{equation}
+These are \lean{fabius_not_isElementaryOrInverse} and
+\lean{fabiusInv_not_isElementaryOrInverse}.  More strongly in a different direction, no
+member of the class can represent \(F\) or \(I\) even merely on \((0,1)\), by
 \lean{canonical_fabius_not_isElementaryOrInverse_on_Ioo} and
 \lean{canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo} in
 \path{InverseNotElementary.lean}.
@@ -1440,11 +1477,7 @@ class cannot represent \(F\) or \(I\) on \((0,1)\), by
 
 \subsection{Even and half moments}
 
-Define
-\begin{equation}
- c_n=\int_{-1}^{1}x^{2n}\Up(x)\dd x,\qquad c_0=1,          \label{eq:c-def}
-\end{equation}
-and
+Retain the even moments \(c_n\) from \eqref{eq:c-def}; in particular, \(c_0=1\).  Define
 \begin{equation}
  d_0=1,\qquad
  d_n=n\int_0^1t^{n-1}\Up(t)\dd t\quad(n\ge1).              \label{eq:d-integral}
@@ -1459,13 +1492,11 @@ are
 \end{align}
 These are the rational declarations \lean{moment_succ} and
 \lean{halfMoment_succ} in \path{Arithmetic.lean}; positivity is
-\lean{moment_pos} and \lean{halfMoment_pos}.
-
-For denominator arguments, write the exact natural normalization as
-\begin{equation}
- c_n=\frac{C_n}{(2n+1)!!\prod_{j=1}^{n}(2^{2j}-1)},        \label{eq:c-normalized}
-\end{equation}
-where \(C_n\) is the positive integer \lean{momentNumerator} at index \(n\).
+\lean{moment_pos} in \path{Paper06487Supplement.lean} and
+\lean{halfMoment_pos} in \path{Arithmetic.lean}.  The displayed integral definitions are
+\lean{integral_even_pow_mul_rvachev_eq_moment},
+\lean{moment_eq_integral_formula}, and
+\lean{halfMoment_eq_integral_formula_all} in \path{AnalyticMoments.lean}.
 
 The entire generating function
 \begin{equation}
@@ -1479,7 +1510,9 @@ satisfies
 with the removable value at \(z=0\).  The exact formal statements are
 \lean{proposition_two_formula} and
 \lean{complexGeneratingFunction_eq_series_formula} in
-\path{AnalyticMoments.lean}.
+\path{AnalyticMoments.lean}; entire differentiability is
+\lean{differentiable_complexGeneratingFunction} in
+\path{NegativeLaplaceVerticalLog.lean}.
 
 The two sequences are linked by
 \begin{equation}
@@ -1496,6 +1529,19 @@ bridge, are formalized by \lean{momentNumerator},
 \lean{halfMomentNumerator}, \lean{halfMomentNumerator_succ},
 \lean{halfMomentNumerator_odd_index_eq}, and
 \lean{halfMomentNumerator_odd_index_formula}.  No unproved numerical table is needed.
+
+More explicitly, if \(C_n=\lean{momentNumerator}\,(n)\), then \(C_n\) is a positive
+integer and
+\begin{equation}
+ c_n=
+ \frac{C_n}
+ {(2n+1)!!\displaystyle\prod_{j=1}^{n}(2^{2j}-1)}.          \label{eq:moment-natural-normalization}
+\end{equation}
+The exact rational identity is \lean{moment_eq_momentNumerator_div}; the product
+reindexing is \lean{evenMersenneProduct_eq_prod_Ico}, and positivity is
+\lean{momentNumerator_pos}.  Thus \eqref{eq:moment-natural-normalization} records the
+proved natural normalization, not a claim that the displayed denominator is already
+reduced.
 
 \subsection{The probability--Laplace bridge}
 \label{sec:probability-laplace-bridge}
@@ -1520,6 +1566,22 @@ tilt
 \begin{equation}
  L_n(0)=\int_{[0,1]}(1-x)^n\,\dd\mu_X(x)=d_n.              \label{eq:probability-half-moment}
 \end{equation}
+On the real axis, every derivative of the generating function is a tilted moment:
+\begin{equation}
+ G^{(n)}(s)=L_n(-s),\qquad G^{(n)}(0)=d_n.                  \label{eq:G-derivative-laplace}
+\end{equation}
+Reflection of the law about \(1/2\) gives
+\begin{equation}
+ L_0(s)=\e^{-s}L_0(-s),\qquad
+ \e^{s/2}L_0(s)=\e^{-s/2}L_0(-s),                          \label{eq:laplace-reflection}
+\end{equation}
+so \(s\mapsto\e^{s/2}L_0(s)\) is even.  Two useful quantitative forms, with all
+variables real, are
+\begin{align}
+ L_0\!\left(\frac{a+b}{2}\right)^2
+   &\le L_0(a)L_0(b) &&(a,b\in\R),                         \label{eq:laplace-midpoint}\\
+ L_k(s)&\le (1/a)^k k!\,L_0(s-a) &&(a>0).                 \label{eq:laplace-shift}
+\end{align}
 
 \begin{proof}[Formal proof]
 The survival identity and integration-by-parts formula are
@@ -1529,12 +1591,19 @@ identities are
 \lean{unitLaplaceMoment_weightedSumDistribution_eq_fabiusLaplaceMoment},
 \lean{unitLaplaceMoment_weightedSumDistribution_zero_eq_halfMoment}, and
 \lean{unitEndpointMoment_weightedSumDistribution_eq_halfMoment} in
-\path{ProbabilityLaplaceMoments.lean}.
+\path{ProbabilityLaplaceMoments.lean}.  The derivative identities are
+\lean{iteratedDeriv_generatingFunction} and
+\lean{iteratedDeriv_generatingFunction_zero} in \path{LaplaceMoments.lean};
+\eqref{eq:laplace-reflection} is
+\lean{fabiusLaplaceMoment_zero_reflection} and
+\lean{fabiusLaplaceMoment_zero_centered_even}.  Finally,
+\eqref{eq:laplace-midpoint}--\eqref{eq:laplace-shift} are
+\lean{fabiusLaplaceMoment_midpoint_sq_le_all} and
+\lean{fabiusLaplaceMoment_le_shift} in \path{UnitLaplaceMomentBounds.lean}.
 \end{proof}
 
 \subsection{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
-\label{subsec:inverse-dyadic-compositions}
 
 For every \(n\in\N\),
 \begin{equation}
@@ -1562,6 +1631,18 @@ and ordered-composition descriptions, proved by
 \lean{fabiusRecurrenceSequence_eq_sum_compositions} in
 \path{FabiusInverseDyadicClosedForm.lean}.  Their positivity and recurrence uniqueness are
 \lean{fabiusCompositionSum_pos} and \lean{triangularRecurrence_unique}.
+
+The totalized inverse sends both exact rational presentations straight back to their
+arguments.  In particular, for every \(n\in\N\), including \(n=0\),
+\begin{align}
+ I\!\left(\lean{fabiusAtInverseTwoPow}\,n\right)&=2^{-n},
+                                                               \label{eq:inverse-power-inversion}\\
+ I\!\left(2^{-\binom n2}\lean{fabiusCompositionSum}\,n\right)&=2^{-n}.
+                                                               \label{eq:composition-inversion}
+\end{align}
+These are \lean{fabiusInv_fabiusAtInverseTwoPow} in \path{FabiusInverse.lean} and
+\lean{fabiusInv_two_pow_choose_mul_fabiusCompositionSum} in
+\path{FabiusInverseDyadicClosedForm.lean}.
 
 \subsection{Parity and the exact two-adic valuation}
 
@@ -1636,34 +1717,10 @@ Let $n,a\in\N$ with $0\le a\le2^n$.  Then
 An empty outer sum has value $0$.
 \end{theorem}
 
-\begin{proof}
-Write $x=a/2^n$ and use $F(x)=\Up(x-1)$.  Since $\Up$ and all its derivatives vanish at
-$-1$, Taylor's theorem with integral remainder gives
-\begin{equation}
- \Up(x-1)=\frac1{n!}\int_{-1}^{x-1}(x-1-t)^n\Up^{(n+1)}(t)\dd t. \label{eq:dyadic-taylor-integral}
-\end{equation}
-Insert the exact derivative identity \eqref{eq:up-global-derivatives}:
-\begin{equation*}
- \Up^{(n+1)}(t)=2^{\binom{n+2}{2}}
- \mathcal F\bigl(2^{n+1}(t+1)\bigr).
-\end{equation*}
-Put $s=2^{n+1}(t+1)$.  As $t$ runs from $-1$ to $x-1$, $s$ runs from $0$ to $2a$.
-Split this interval into the blocks $[2h,2h+2]$, $0\le h<a$.  On the $h$th block,
-\eqref{eq:single-block} gives
-\begin{equation*}
- \mathcal F(s)=(-1)^{\wt(h)}\Up(s-2h-1).
-\end{equation*}
-The substitution $u=s-2h-1$ maps the block to $[-1,1]$.  Gathering the powers of two gives
-\begin{equation}
- F(a/2^n)=\frac{2^{-\binom{n+1}{2}}}{n!}
- \sum_{h=0}^{a-1}(-1)^{\wt(h)}
- \int_{-1}^{1}(2a-2h-1-u)^n\Up(u)\dd u.                  \label{eq:dyadic-before-moments}
-\end{equation}
-Expand the $n$th power.  Odd powers of $u$ integrate to zero because $\Up$ is even, while
-\begin{equation*}
- \int_{-1}^{1}u^{2k}\Up(u)\dd u=c_k.
-\end{equation*}
-The surviving even terms are exactly the inner sum in \eqref{eq:dyadic-closed}.
+\begin{proof}[Formal proof]
+The rational expression on the right is the definition \lean{fabiusDyadic}.  Its equality,
+after coercion to \(\R\), with \(F(a/2^n)\) under the displayed bound on \(a\) is
+\lean{fabiusDyadic_cast} in \path{DyadicAnalytic.lean}.
 \end{proof}
 
 Every quantity on the right of \eqref{eq:dyadic-closed} is rational, so dyadic rationality is
@@ -1686,38 +1743,23 @@ For all $n,a\in\N$ the signed global extension satisfies
 No upper bound on $a$ is imposed.  An empty outer sum has value $0$.
 \end{theorem}
 
-\begin{proof}
-By \eqref{eq:global-derivatives} the $m$th derivative of $\mathcal F$ is
-$2^{\binom{m+1}{2}}\mathcal F(2^mx)$, and $\mathcal F$ vanishes on $(-\infty,0]$.  Hence
-$\mathcal F^{(m)}(0)=0$ for every $m\ge0$, and Taylor's theorem with integral remainder at
-the base point $0$, applied through order $n$, gives for $x\ge0$
-\begin{equation}
- \mathcal F(x)=\frac1{n!}\int_0^x(x-t)^n\mathcal F^{(n+1)}(t)\dd t.
-                                                               \label{eq:dy-global-taylor}
-\end{equation}
-Put $x=a/2^n$ and insert $\mathcal F^{(n+1)}(t)=2^{\binom{n+2}{2}}\mathcal F(2^{n+1}t)$.
-The substitution $u=2^{n+1}t$ carries $[0,x]$ onto $[0,2a]$ and produces
-$(x-t)^n=2^{-n(n+1)}(2a-u)^n$ together with $\dd t=2^{-(n+1)}\dd u$.  Since
-\begin{equation*}
- \binom{n+2}{2}-n(n+1)-(n+1)=-\binom{n+1}{2},
-\end{equation*}
-this is exactly
-\begin{equation}
- \mathcal F\!\left(\frac a{2^n}\right)
- =\frac{2^{-\binom{n+1}{2}}}{n!}\int_0^{2a}(2a-u)^n\mathcal F(u)\dd u.
-                                                               \label{eq:dy-global-integral}
-\end{equation}
-Split $[0,2a]$ into the $a$ blocks $[2h,2h+2]$ with $0\le h<a$.  On the $h$th block
-\eqref{eq:single-block} gives $\mathcal F(u)=\varepsilon_h\Up(u-2h-1)$, and the
-substitution $v=u-2h-1$ maps that block onto $[-1,1]$:
-\begin{equation*}
- \int_{2h}^{2h+2}(2a-u)^n\mathcal F(u)\dd u
- =\varepsilon_h\int_{-1}^{1}(2a-2h-1-v)^n\Up(v)\dd v.
-\end{equation*}
-Expand the $n$th power by the binomial theorem.  The function $\Up$ is even, so every odd
-moment vanishes, while $\int_{-1}^1v^{2k}\Up(v)\dd v=c_k$ and the surviving sign
-$(-1)^{2k}$ is $+1$.  Summing over $h$ gives \eqref{eq:dy-global-closed}.
+\begin{proof}[Formal proof]
+The displayed rational identity is \lean{fabiusDyadic_cast_extended_nat} in
+\path{GlobalDyadic.lean}, after unfolding the closed form \lean{fabiusDyadic}.
 \end{proof}
+
+This closed form depends only on the represented dyadic rational, not on the chosen
+numerator--exponent pair.  Writing
+\(\operatorname{Dyad}(n,m)=\lean{fabiusDyadic}\,n\,m\), Lean proves
+\begin{align}
+ \operatorname{Dyad}(n+k,2^km)&=\operatorname{Dyad}(n,m),
+                                                               \label{eq:dyadic-refine-pow}\\
+ \frac{m_1}{2^{n_1}}=\frac{m_2}{2^{n_2}}\ \text{in }\Q
+ &\Longrightarrow
+ \operatorname{Dyad}(n_1,m_1)=\operatorname{Dyad}(n_2,m_2).   \label{eq:dyadic-rat-invariance}
+\end{align}
+The exact declarations are \lean{fabiusDyadic_refine_pow} and
+\lean{fabiusDyadic_eq_of_rat_eq} in \path{GlobalDyadic.lean}.
 
 Two special cases are the ones used in practice.
 
@@ -1763,225 +1805,129 @@ for $q=2^n$ the value is $\mathcal F(2)=0$.
 
 \begin{remark}[Why the sum is finite]
 \label{rem:dy-finiteness}
-Finiteness has two independent sources, and neither involves a limit.  Horizontally, only
-the $a$ complete translated bumps indexed by $0\le h<a$ meet the integration range in
-\eqref{eq:dy-global-integral}; the locally finite sum \eqref{eq:global-extension} therefore
-contributes finitely many terms.  Vertically, expanding $(2a-2h-1-v)^n$ produces only
-powers $v^j$ with $j\le n$, and all odd $j$ integrate to zero, leaving the
-$\lfloor n/2\rfloor+1$ even moments $c_0,\ldots,c_{\lfloor n/2\rfloor}$.  Every one of these
-is an explicit rational number produced by \eqref{eq:c-recurrence}, so
-\eqref{eq:dy-global-closed} is an exact algorithm over $\Q$ with no roundoff and no
-truncation.  It is not, however, an efficient one: the outer range has length $a$, whereas
-the bit recursion of Algorithm~\ref{alg:dyadic-evaluator} needs only $\wt(a)$ steps.
+Both index sets in \eqref{eq:dy-global-closed} are finite: the outer range is
+\(0\le h<a\), and the inner range is \(0\le k\le\lfloor n/2\rfloor\).
+The moments \(c_k\) are rational by the proved recurrence \eqref{eq:c-recurrence}.
+Thus the formula is an exact computation in \(\Q\), with no analytic truncation or
+floating-point roundoff.
 \end{remark}
 
-\begin{example}[The closed formula evaluated]
-\label{ex:dy-closed-worked}
-The formula is stated, globalized, used to bound denominators, and proved finite above
-without ever being evaluated.  Three small cases, using $c_0=1$ and $c_1=1/9$.
-
-For $n=2$, $a=1$ the outer sum has the single term $h=0$ with $\varepsilon_0=+1$ and
-$2a-2h-1=1$, so
-\begin{equation*}
- F\!\left(\frac14\right)=\frac{2^{-3}}{2!}
- \left[\binom20c_0\cdot1^{2}+\binom22c_1\cdot1^{0}\right]
- =\frac1{16}\left(1+\frac19\right)=\frac5{72}.
-\end{equation*}
-
-For $n=3$, $a=1$ the same single term gives
-\begin{equation*}
- F\!\left(\frac18\right)=\frac{2^{-6}}{3!}
- \left[\binom30c_0\cdot1^{3}+\binom32c_1\cdot1^{1}\right]
- =\frac1{384}\left(1+\frac39\right)=\frac1{288}.
-\end{equation*}
-
-For $n=3$, $a=3$ the Thue--Morse signs finally do some work: $h=0,1,2$ carry
-$\varepsilon_h=+1,-1,-1$ and $2a-2h-1=5,3,1$, so
-\begin{align*}
- F\!\left(\frac38\right)
- &=\frac{2^{-6}}{3!}\left[\left(5^{3}+3\cdot\frac{5}{9}\right)
-   -\left(3^{3}+3\cdot\frac{3}{9}\right)
-   -\left(1^{3}+3\cdot\frac{1}{9}\right)\right]\\
- &=\frac1{384}\left[\left(125+\frac53\right)-28-\left(1+\frac13\right)\right]
- =\frac1{384}\cdot\frac{292}{3}=\frac{73}{288},
-\end{align*}
-in agreement with the level-$4$ table below.  The third case is the smallest one in which the
-signs are not all positive, and it shows the characteristic feature of the formula: the
-individual bracketed terms are much larger than the answer, and the cancellation among them
-is what produces a value in $[0,1]$.
-\end{example}
+\begin{remark}[Exact evaluation without uncertified examples]
+The finite sum is an exact rational algorithm, and its agreement with the analytic Fabius
+function is \lean{fabiusDyadic_cast}.  Concrete numerical specializations that do not yet
+have their own named Lean theorems are recorded only in the consolidated research-frontier
+volume.
+\end{remark}
 
 \subsection{Thue--Morse cancellation}
 
-The mechanism that makes the dyadic formulas simplify is the Prouhet cancellation carried by
-the Thue--Morse signs.
+The mechanism that makes the dyadic formulas simplify is the exact Prouhet cancellation
+carried by the Thue--Morse signs.
 
 \begin{lemma}[Affine power cancellation]
-If $d<b$, then for all $X,Y\in\Q$,
+If \(d<b\), then for all \(X,Y\in\Q\),
 \begin{equation}
  \sum_{h=0}^{2^b-1}(-1)^{\wt(h)}(X+Yh)^d=0.               \label{eq:thue-affine-cancel}
 \end{equation}
 \end{lemma}
 
-\begin{proof}
-It is enough to prove the claim for $h^j$, $0\le j\le d$, and then expand the affine power.
-Let
-\begin{equation*}
- S_{b,j}=\sum_{h=0}^{2^b-1}(-1)^{\wt(h)}h^j.
-\end{equation*}
-Split the sum for $S_{b+1,j}$ at $2^b$ and use
-$\varepsilon_{2^b+h}=-\varepsilon_h$:
-\begin{align*}
- S_{b+1,j}
- &=\sum_{h<2^b}\varepsilon_h\bigl(h^j-(2^b+h)^j\bigr)\\
- &=-\sum_{r=0}^{j-1}\binom jr2^{b(j-r)}S_{b,r}.
-\end{align*}
-If $j<b+1$, every index $r$ on the right satisfies $r<b$, so the induction hypothesis makes
-all terms zero.  The base case is immediate.
+\begin{proof}[Formal proof]
+This is the strict-degree case of
+\lean{thueMorse_affine_power_sum_of_le} in \path{ThueMorsePrefix.lean};
+the monomial statement used internally is
+\lean{thueMorsePowerSum_eq_zero_of_lt}.
 \end{proof}
 
-A compact generating-function version is
+The finite block polynomial packages the same signs without introducing an analytic
+exponential identity:
 \begin{equation}
- \sum_{h<2^b}(-1)^{\wt(h)}\e^{ht}
- =\prod_{j=0}^{b-1}(1-\e^{2^jt}),                          \label{eq:thue-exponential-product}
+ \sum_{h<2^b}\varepsilon_hz^h
+ =\prod_{j=0}^{b-1}(1-z^{2^j}).                            \label{eq:thue-block-product}
 \end{equation}
-whose right side has a zero of order $b$ at $t=0$.  Differentiating fewer than $b$ times at
-zero gives the same cancellation.
-
-This lemma explains why apparently large translated sums in \eqref{eq:dyadic-closed} collapse
-to short Taylor blocks when the numerator crosses a binary boundary.
-
-
-The cancellation lemma states that the first $b$ moments of the signed block vanish.  The
-first surviving moment has an equally clean closed value, and that value is the constant
-that governs every leading coefficient in the $q$-binomial analysis of
-\Cref{subsec:q-binomial-dyadic}.
+This is \lean{thueMorseBlockPolynomial_eq_product} in
+\path{ThueMorseGenerating.lean}.  At the level of the centered formal exponential series,
+the corresponding zero has exact order \(b\), by
+\lean{order_thueMorseCenteredPowerSeries} and
+\lean{thueMorseCenteredPowerSeries_eq_product} in
+\path{ThueMorseExponential.lean}.
 
 \begin{proposition}[The first surviving Thue--Morse moment]
 \label{prop:dy-tm-moment}
-For every $k\ge0$,
+For every \(k\ge0\),
 \begin{equation}
-\boxed{
- \sum_{r=0}^{2^k-1}\varepsilon_r\,r^k=(-1)^k2^{\binom k2}k!.}
-                                                               \label{eq:dy-tm-moment}
+ \boxed{\;
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,r^k
+ =(-1)^k2^{\binom k2}k!.
+ \;}                                                       \label{eq:dy-tm-moment}
 \end{equation}
 \end{proposition}
 
-\begin{proof}
-By \eqref{eq:thue-exponential-product},
-\begin{equation}
- \sum_{r<2^k}\varepsilon_r\e^{rt}=\prod_{j=0}^{k-1}\bigl(1-\e^{2^jt}\bigr).
-                                                               \label{eq:dy-tm-product}
-\end{equation}
-Each factor is an entire function with a simple zero at $t=0$, and
-\begin{equation*}
- 1-\e^{2^jt}=-2^jt+\bigO(t^2)\qquad(t\to0),
-\end{equation*}
-so the product has a zero of order exactly $k$ at the origin, with
-\begin{equation*}
- \prod_{j=0}^{k-1}\bigl(1-\e^{2^jt}\bigr)
- =\Bigl(\prod_{j=0}^{k-1}(-2^j)\Bigr)t^k+\bigO(t^{k+1})
- =(-1)^k2^{\binom k2}t^k+\bigO(t^{k+1}),
-\end{equation*}
-because $\sum_{j=0}^{k-1}j=\binom k2$.  The left side of \eqref{eq:dy-tm-product} is the
-exponential generating function
-\begin{equation*}
- \sum_{d\ge0}\Bigl(\sum_{r<2^k}\varepsilon_r r^d\Bigr)\frac{t^d}{d!}.
-\end{equation*}
-Comparing coefficients of $t^d$ for $d<k$ recovers \eqref{eq:thue-affine-cancel}; comparing
-coefficients of $t^k$ gives
-\begin{equation*}
- \frac1{k!}\sum_{r<2^k}\varepsilon_r r^k=(-1)^k2^{\binom k2}.
-\end{equation*}
-The case $k=0$ is the empty product, both sides being $1$.
+\begin{proof}[Formal proof]
+This is \lean{thueMorsePowerSum_self} in \path{ThueMorsePrefix.lean}.
+Together with \lean{thueMorsePowerSum_eq_zero_of_lt}, it is also the coefficient
+calculation behind the exact-order theorem above.
 \end{proof}
 
 \begin{corollary}[Translation invariance]
 \label{cor:dy-tm-moment-shift}
-For every $k\ge0$ and every $Q$ in a field of characteristic zero,
+For every \(k\ge0\) and \(Q\in\Q\),
 \begin{equation}
- \sum_{r=0}^{2^k-1}\varepsilon_r\,(r+Q)^k=(-1)^k2^{\binom k2}k!.
-                                                               \label{eq:dy-tm-moment-shift}
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,(r+Q)^k
+ =(-1)^k2^{\binom k2}k!.                                  \label{eq:dy-tm-moment-shift}
 \end{equation}
 \end{corollary}
 
-\begin{proof}
-Expand $(r+Q)^k=\sum_{d=0}^{k}\binom kdQ^{k-d}r^d$ and interchange the two finite sums.  For
-$d<k$ the inner sum $\sum_{r<2^k}\varepsilon_rr^d$ vanishes by \eqref{eq:thue-affine-cancel},
-so only $d=k$ survives, with coefficient $1$.  Apply \eqref{eq:dy-tm-moment}.
+\begin{proof}[Formal proof]
+Apply \lean{thueMorse_affine_power_sum_self} with \(X=Q\) and \(Y=1\).
 \end{proof}
 
-Thus the value is unchanged if $r$ is replaced by $r+Q$ for any constant $Q$, precisely
-because all the lower moments vanish: a shift can only alter the coefficients of degrees
-below the top, and those coefficients are already zero.  The centered choice $Q=-2^k$ gives
+The centered specialization \(Q=-2^k\) is therefore
 \begin{equation}
- \sum_{r=0}^{2^k-1}\varepsilon_r\,(r-2^k)^k=(-1)^k2^{\binom k2}k!,
-                                                               \label{eq:dy-tm-moment-centered}
+ \sum_{r=0}^{2^k-1}\varepsilon_r\,(r-2^k)^k
+ =(-1)^k2^{\binom k2}k!,                                  \label{eq:dy-tm-moment-centered}
 \end{equation}
-which is the formally proved centered version of the same exact moment identity.  Together
-with the lower-moment annihilation, it proves that the zero in
-\eqref{eq:thue-generating-product} has order exactly $k$.
+the exact declaration \lean{thueMorseCenteredPowerSum_self}.
 
-\subsection{A Taylor block that removes the leading bit}
+\subsection{The exact leading-bit recurrence}
 
-Suppose $0<x<1$, and let $r$ be the unique integer such that
+Let \(e,a\in\N\) with \(0<a\le2^e\), and write
 \begin{equation}
- 2^{-r}\le x<2^{-r+1}.                                    \label{eq:dyadic-shell}
+ b=\lfloor\log_2a\rfloor,\qquad
+ r=e-b,\qquad q=a-2^b,\qquad y=\frac{q}{2^e}.              \label{eq:bit-split}
 \end{equation}
-Put $y=x-2^{-r}$.  Then $0\le y<2^{-r}$.
+Thus \(0\le q<a\): the leading binary power has been removed.  Put
+\(V_m=F(2^{-m})\), whose exact half-moment form is \eqref{eq:F-inverse-power}, and define
+\begin{equation}
+ T_r(y)=\sum_{j=0}^{r}
+ \frac{2^{\binom{j+1}{2}}V_{r-j}}{j!}\,y^j.               \label{eq:Horner-polynomial}
+\end{equation}
+Then the exact rational recurrence is
+\begin{equation}
+ \boxed{\;
+ F\!\left(\frac a{2^e}\right)
+ =T_r\!\left(\frac q{2^e}\right)
+  -F\!\left(\frac q{2^e}\right).
+ \;}                                                       \label{eq:taylor-block}
+\end{equation}
 
-\begin{theorem}[Exact Taylor-block recursion]
-With the notation above,
-\begin{equation}
- F(x)=-F(y)+\sum_{j=0}^{r}
- \frac{2^{\binom{j+1}{2}}F(2^{j-r})}{j!}\,y^j.            \label{eq:taylor-block}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Apply Taylor's theorem at the point $2^{-r}$ through degree $r$:
-\begin{equation}
- F(2^{-r}+y)=\sum_{j=0}^{r}\frac{F^{(j)}(2^{-r})}{j!}y^j+R_r(y). \label{eq:taylor-shell}
-\end{equation}
-The derivative scaling formula gives
-\begin{equation}
- F^{(j)}(2^{-r})
- =2^{\binom{j+1}{2}}F(2^{j-r}),\qquad 0\le j\le r.         \label{eq:shell-derivatives}
-\end{equation}
-It remains to identify the integral remainder.  The scaling equation carries the interval
-$[2^{-r},2^{-r}+y]$ into the adjacent signed translate of the interval $[0,y]$; on that
-translate the Thue--Morse sign is negative.  Reversing the substitutions in the derivative
-identity shows
-\begin{equation*}
- R_r(y)=-\frac1{r!}\int_0^y(y-t)^rF^{(r+1)}(t)\dd t=-F(y),
-\end{equation*}
-where the last equality is Taylor's integral formula at the flat point $0$.  Substitution in
-\eqref{eq:taylor-shell} proves \eqref{eq:taylor-block}.
-\end{proof}
-
-Using \eqref{eq:F-inverse-power}, the coefficients may be written entirely in terms of the
-half moments:
-\begin{equation}
- \frac{2^{\binom{j+1}{2}}F(2^{j-r})}{j!}
- =\frac{2^{\binom{j+1}{2}-\binom{r-j}{2}}d_{r-j}}
- {j!(r-j)!}.                                               \label{eq:taylor-block-d}
-\end{equation}
-This is the form that appears in the original arithmetic recurrence.
+The formal route stays entirely inside the rational dyadic model:
+\lean{fabiusTaylorHorner_eq_sum} identifies the Horner routine with
+\eqref{eq:Horner-polynomial};
+\lean{fabiusInversePowTwoTable_hasBlockTaylor} proves the block identity;
+\lean{blockTaylor_implies_bitRecurrence} turns it into the leading-bit recurrence; and
+\lean{fabiusInversePowTwoTable_hasBitRecurrence} instantiates that recurrence for the
+precomputed inverse-power table.  Finally,
+\lean{fabiusDyadicUnit_eq_fabiusDyadic} and
+\lean{fabiusDyadic_cast} identify the executable rational result with the analytic
+function.  These declarations are in \path{DyadicClosedForm.lean} and
+\path{DyadicAnalytic.lean}.
 
 \subsection{The bit-recursive evaluator}
 
-Let $x=a/2^e$ with $0<a<2^e$.  Write
-\begin{equation}
- b=\lfloor\log_2a\rfloor,
- \qquad r=e-b,
- \qquad q=a-2^b.                                          \label{eq:bit-split}
-\end{equation}
-Then $2^{-r}$ is the leading binary term of $x$ and
-\begin{equation}
- y=\frac{q}{2^e}.                                         \label{eq:bit-remainder}
-\end{equation}
-Applying \eqref{eq:taylor-block} reduces $F(a/2^e)$ to $F(q/2^e)$; the highest set bit of
-the numerator has disappeared.
+Use \(b,r,q,y\), and \(T_r\) from
+\eqref{eq:bit-split}--\eqref{eq:Horner-polynomial}.  Equation
+\eqref{eq:taylor-block} reduces the numerator from \(a\) to the strictly smaller
+\(q\).
 
 \begin{algorithm}[Exact dyadic evaluator]
 \label{alg:dyadic-evaluator}
@@ -1995,12 +1941,7 @@ Precompute $V_j=F(2^{-j})$ for $0\le j\le e$ from
   T_r(q/2^e)-\operatorname{Eval}(e,q),&0<a<2^e,
  \end{cases}
 \end{equation*}
-where $b,r,q$ are given by \eqref{eq:bit-split} and
-\begin{equation}
- T_r(z)=\sum_{j=0}^{r}
- \frac{2^{\binom{j+1}{2}}V_{r-j}}{j!}z^j.                 \label{eq:Horner-polynomial}
-\end{equation}
-Evaluate $T_r$ by Horner's rule.
+where \(b,r,q\) are given by \eqref{eq:bit-split}; evaluate \(T_r\) by Horner's rule.
 \end{algorithm}
 
 A literal pseudocode version is:
@@ -2022,7 +1963,8 @@ Eval(e, a, V):
     return p - Eval(e, q, V)
 \end{lstlisting}
 The displayed loop is one convenient Horner ordering; any exact evaluation of
-\eqref{eq:Horner-polynomial} is equivalent.
+\eqref{eq:Horner-polynomial} is equivalent.  In the formal source this evaluator is
+\lean{fabiusDyadicValue}.
 
 \begin{theorem}[Correctness and termination]
 For every $e\in\N$ and $a\in\Z$,
@@ -2032,10 +1974,11 @@ For every $e\in\N$ and $a\in\Z$,
 under the bounded convention $F=0$ to the left and $F=1$ to the right.
 \end{theorem}
 
-\begin{proof}
-The boundary clauses agree with \eqref{eq:F-left} and \eqref{eq:F-right}.  In the interior,
-\eqref{eq:taylor-block} is precisely the recursive clause.  Since
-$0\le q<a$, strong induction proves correctness and termination.
+\begin{proof}[Formal proof]
+The pseudocode is the rational routine \lean{fabiusDyadicValue}, whose analytic correctness
+is \lean{fabiusDyadicValue_cast} in \path{PaperStatements.lean}.  The interior recursion is
+\lean{fabiusInversePowTwoTable_hasBitRecurrence}; the corresponding total recursive
+correctness theorem is \lean{fabiusDyadicUnitAux_eq_of_bitRecurrence}.
 \end{proof}
 
 
@@ -2120,12 +2063,11 @@ Let $n\ge1$ and $a\in\Z$ with $|a|<2^n$.  Then
 is an integer.
 \end{theorem}
 
-\begin{proof}
-Apply the global dyadic form of \eqref{eq:dyadic-closed}.  Replace each $c_k$ by
-\eqref{eq:c-normalized}.  For $k\le\lfloor n/2\rfloor$, both the odd double factorial in the
-denominator of $c_k$ and its even-Mersenne product divide the two common products in
-\eqref{eq:denominator-bound}.  The remaining factors are integers.  Thus every summand becomes
-integral after multiplication by the displayed common factor.
+\begin{proof}[Formal proof]
+This is \lean{rvachevDyadic_mul_denominatorBound_isNatural_all} in
+\path{DenominatorBound.lean}.  Its proof uses
+\lean{moment_mul_common_denominator} for the moments and
+\lean{fabiusDyadic_mul_denominatorBound_isInteger} for the bounded dyadic values.
 \end{proof}
 
 Let $\Delta_n$ be the least common multiple of the reduced denominators of the values
@@ -2134,8 +2076,7 @@ $\Up(a/2^n)$ with odd $a$ in the support.  The theorem gives the explicit divisi
  \Delta_n\mid n!\,2^{\binom{n+1}{2}}
  \bigl(2\lfloor n/2\rfloor+1\bigr)!!M_{\lfloor n/2\rfloor}. \label{eq:lcm-bound}
 \end{equation}
-A complementary lower statement is available at no cost, and it is what makes the
-normalization of the conjecture below meaningful.
+A complementary lower statement is also formalized.
 
 \begin{proposition}[The reciprocal power is one of the samples]
 \label{prop:dy-delta-lower}
@@ -2145,19 +2086,17 @@ For every $n\ge1$ the reduced denominator of $F(2^{-n})$ divides $\Delta_n$.  Co
 \end{equation}
 \end{proposition}
 
-\begin{proof}
-By the fold \eqref{eq:up-absolute}, $F(2^{-n})=\Up(1-2^{-n})=\Up\bigl((2^n-1)/2^n\bigr)$, and
-the numerator $2^n-1$ is odd.  So $F(2^{-n})$ is itself one of the samples whose denominators
-$\Delta_n$ is the least common multiple of, and its reduced denominator therefore divides
-$\Delta_n$.  The valuation statement follows from \eqref{eq:valuation-inverse}, which gives
-$\vtwo\bigl(F(2^{-n})\bigr)=-\binom n2-1-\vtwo(n!)$, so the reduced denominator contains
-exactly that power of two.
+\begin{proof}[Formal proof]
+The denominator divisibility is \lean{proposition_fifteen} in
+\path{PaperStatements.lean}, after the bridge
+\lean{dyadicDenominator_eq_fabiusDyadicDenominator}.  The exact two-adic exponent is
+\lean{fabiusAtInverseTwoPow_padicVal_two_closed}.
 \end{proof}
 
 Together, \eqref{eq:lcm-bound} and \eqref{eq:dy-delta-lower} give the formally
 proved denominator information used in this article.  Proposed exact factorizations of the
 least common denominator, together with the associated numerical tables, are kept in the
-dyadic research-frontier notebooks until their individual statements are formalized.
+consolidated research-frontier volume until their individual statements are formalized.
 
 \subsection{The exact half-base \(q\)-binomial layer}
 \label{subsec:q-binomial-dyadic}
@@ -2187,14 +2126,17 @@ For every \(n\in\N\) and \(z\in\Q\),
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
  \qbinom nk{1/2}z^k.                                        \label{eq:half-q-binomial-theorem}
 \end{equation}
-At the dyadic nodes this gives
-\begin{align}
+At every dyadic node this gives the single closed evaluation
+\begin{equation}
  \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
- \qbinom nk{1/2}(2^m)^k&=0 &&(m<n), \notag\\
- \sum_{k=0}^{n}(-1)^k2^{-\binom k2}
- \qbinom nk{1/2}(2^n)^k
- &=(-1)^n2^{\binom{n+1}{2}}(1/2;1/2)_n.                    \label{eq:qs-moment-annihilation}
-\end{align}
+ \qbinom nk{1/2}(2^m)^k
+ =
+ \begin{cases}
+  0,&m<n,\\[2pt]
+  (-1)^n\mathfrak m_m/\mathfrak m_{m-n},&n\le m.
+ \end{cases}                                                \label{eq:qs-moment-annihilation}
+\end{equation}
+In particular, the sum vanishes if and only if \(m<n\).
 Moreover,
 \begin{equation}
  (1/2;1/2)_n=2^{-\binom{n+1}{2}}\mathfrak m_n.              \label{eq:half-q-mersenne}
@@ -2203,8 +2145,8 @@ Moreover,
 
 \begin{proof}[Formal proof]
 These are \lean{halfQBinomial_theorem},
-\lean{halfQBinomial_two_pow_sum_eq_zero},
-\lean{halfQBinomial_two_pow_sum_eq_self},
+\lean{qBinomial_half_two_pow_sum_eq_ite},
+\lean{qBinomial_half_two_pow_sum_eq_zero_iff},
 \lean{halfQPochhammer_eq_mersenne_div},
 \lean{halfQBinomial_eq_mersenne}, and
 \lean{halfQBinomial_symm} in \path{HalfQBinomial.lean}.
@@ -2218,7 +2160,7 @@ The inner cancellation in the dyadic formula is the exact Thue--Morse block iden
 formalized as \lean{thueMorseBlockPolynomial_eq_product}.  Its affine power-sum form
 annihilates every degree below \(k\), while its first surviving moment is
 \((-1)^k2^{\binom k2}k!\); see
-\lean{thueMorse_affine_power_sum_eq_zero} and
+\lean{thueMorse_affine_power_sum_of_le} and
 \lean{thueMorse_affine_power_sum_self}.
 
 For comparison with the moment recurrence, put
@@ -2236,7 +2178,11 @@ and its coefficient recurrence is
  (2^n-1)a_n=\sum_{j=0}^{n-1}\frac{a_j}{(n-j+1)!}
  \quad(n\ge1),\qquad a_0=1.                                 \label{eq:qs-a-recurrence}
 \end{equation}
-These identities are the formal-series bridge used by the specialized dyadic theorem.
+The functional identity follows from \lean{proposition_two_formula} and
+\lean{complexGeneratingFunction_eq_series_formula} in \path{AnalyticMoments.lean};
+the coefficient recurrence is \lean{halfMoment_original_recurrence} in
+\path{BernoulliRecurrences.lean}.  These are the formal-series bridge used by the
+specialized dyadic theorem.
 
 For \(m,k,d\in\N\) and \(Q\in\C\), write
 \begin{equation}
@@ -2274,6 +2220,18 @@ the rational core and real, complex, and Gaussian-rational specializations are i
 \path{FabiusDyadicQBinomialScalar.lean}.
 \end{proof}
 
+The rational specialization is also independent of how the dyadic argument is written.
+If
+\[
+ \frac{m_1}{2^{n_1}}=\frac{m_2}{2^{n_2}},
+\]
+then the two translated rational formulas agree even when their common translations
+\(Q_1,Q_2\in\Q\) differ.  This is
+\lean{qBinomialThueMorseDyadicTranslatedFormula_eq_of_rat_eq}; the one-step refinement
+\((m,n)\mapsto(2m,n+1)\) is
+\lean{qBinomialThueMorseDyadicTranslatedFormula_refine}.  Thus translation invariance and
+representation invariance are both theorem-level properties of the finite formula.
+
 Binary complementation gives the raw inverse-dyadic form
 \begin{equation}
  \boxed{
@@ -2288,7 +2246,7 @@ Its translated numerator is constant by
 \lean{fabiusAtInverseTwoPow_cast_eq_qBinomialThueMorse_rawTranslated_sum} in
 \path{FabiusRawQBinomialScalar.lean}.  Generic-\(q\) interpolation formulas, barycentric
 identities, numerical cancellation studies, and complexity comparisons are maintained in the
-dyadic research-frontier notebooks rather than used as theorems here.
+consolidated research-frontier volume rather than used as theorems here.
 
 \section{The global binary-reduction telescope}
 \label{sec:global-binary-reduction}
@@ -2382,14 +2340,14 @@ $0\le\mathcal F(y)=F(y)\le2y$, so
  |R_N(x)|\le2^{1-N}.                                     \label{eq:global-residual-bound}
 \end{equation}
 The estimate is independent of $x$.  Therefore, if $B_N(x)$ denotes the finite sum in
-\eqref{eq:global-finite-binary-telescope}, then
+\eqref{eq:global-finite-binary-telescope}, then for every $x\in\R$ and $N\ge1$,
 \begin{equation}
- \sup_{x\ge0}|B_N(x)-\mathcal F(x)|\le2^{1-N}.            \label{eq:global-binary-uniform-bound}
+ |B_N(x)-\mathcal F(x)|\le2^{1-N}.                       \label{eq:global-binary-uniform-bound}
 \end{equation}
-Lean's natural-floor convention extends every $B_N$ by zero on $x\le0$, where
-$\mathcal F$ also vanishes.  In that convention \eqref{eq:global-binary-uniform-bound}
-holds with the supremum over all of $\R$, so the finite telescopes converge uniformly on
-the whole line.
+This is \lean{norm_globalBinaryReductionSum_sub_extendedFabius_le}.  Lean's natural-floor
+convention extends every $B_N$ by zero on $x\le0$, where $\mathcal F$ also vanishes, and
+\lean{globalBinaryReductionSum_tendstoUniformly_extendedFabius} proves that the finite
+telescopes converge uniformly on the whole line.
 The one-step identity then gives, for $m\ge2$,
 \begin{equation}
  |\alpha_m(x)\mathcal T_m(y_m)|
@@ -2406,6 +2364,16 @@ For every $x\ge0$,
 \end{equation}
 On $0\le x\le1$, the sum is equivalently $F(x)$.
 \end{theorem}
+
+Lean's natural-floor definitions make the telescope genuinely all-real: when \(x\le0\),
+every binary prefix, summand, residual, and \(\mathcal F(x)\) vanishes termwise.  Thus the
+finite identity and the \(m=0\) infinite series hold for every \(x\in\R\), as
+\lean{extendedFabius_eq_globalBinaryReductionSum_add_remainder_all} and
+\lean{extendedFabius_eq_tsum_globalBinaryReductionSummand_all} in
+\path{FabiusBinaryReductionSeries.lean}.  The fully expanded parity-power version has the
+same all-real scope by \lean{globalFabius_eq_tsum_fabiusParityPower_literal_all} in
+\path{FabiusParityPowerSeries.lean}.  The displayed floor formulas above remain ordinary
+nonnegative-floor formulas on their stated domain.
 
 The index $m=0$ is indispensable globally.  For $0\le x<1$ it vanishes, so a series
 starting at $m=1$ happens to be valid there.  At $x=1$, however, the zeroth term is $1$ and
@@ -2627,7 +2595,7 @@ Read \eqref{eq:centered-spline} at $p=0$ as
  S_0(x)=\sum_{r=0}^{N_0(x)-1}\varepsilon_r,               \label{eq:res-degree-zero-spline}
 \end{equation}
 so that a centered branch $S_d$ is defined for every integer $d\ge0$.  Fix $p\ge1$ and
-$x\in\R$, and abbreviate $M=N_p(x)$.  For every $d$ with $0\le d\le p$, the degree-$d$ branch
+$x\ge0$, and abbreviate $M=N_p(x)$.  For every $d$ with $0\le d\le p$, the degree-$d$ branch
 carried by that one fixed cutoff satisfies
 \begin{equation}
  \frac1{2^{\binom d2}d!}\sum_{r=0}^{M-1}\varepsilon_r
@@ -2678,11 +2646,9 @@ side of \eqref{eq:res-fixed-cutoff-branch}.  For $d=0$ both sides equal
 $\sum_{r=0}^{M-1}\varepsilon_r$, by \eqref{eq:res-degree-zero-spline} and
 \eqref{eq:res-cutoff-invariance}.
 
-For the uniform bound, the case $d\ge1$ is the global estimate in
-\eqref{eq:centered-spline-global-limit}.  For $d=0$ pair the indices: since
-$\varepsilon_{2r}=\varepsilon_r$ and $\varepsilon_{2r+1}=-\varepsilon_r$, consecutive pairs
-cancel, so $\sum_{r=0}^{2m-1}\varepsilon_r=0$ and $\sum_{r=0}^{2m}\varepsilon_r=\varepsilon_m$.
-Thus $S_0$ takes only the values $0$ and $\pm1$.
+For the uniform bound, the rescaled argument \(2^{p-d}x\) is nonnegative.
+The all-degree declaration \lean{abs_fabiusUniformSpline_le_one} therefore gives the
+claim directly, including \(d=0\).
 
 Now expand.  Put $w=2^px-\frac12$ for the descending argument at $Q=1/2$ and
 $t=\frac12-Q$ for its increment, so that $2^px-Q=w+t$.  The binomial theorem gives
@@ -2731,44 +2697,23 @@ $S_d(2^{\,p-d}x)$ appearing in \eqref{eq:res-spline-taylor} and in
 alone, and the convention that removes it is the descending one.
 \end{remark}
 
-\begin{remark}[Where the two constants of the bound come from]
-\label{rem:res-taylor-constants}
-Taking absolute values in \eqref{eq:res-spline-taylor} and using
-$\left|S_d(2^{\,p-d}x)\right|\le1$ gives
-\begin{equation}
- \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
- \le\sum_{d=0}^{p-1}2^{\binom d2-\binom p2}\,
- \frac{\left|Q-\tfrac12\right|^{\,p-d}}{(p-d)!}.          \label{eq:res-taylor-majorant}
-\end{equation}
-Both constants of \eqref{eq:complex-shift-spline-bound} are visible in
-\eqref{eq:res-taylor-majorant}.  Write $e=p-d$, so that $1\le e\le p$ and
-\[
- \binom p2-\binom d2=\frac{(p-d)(p+d-1)}2=\frac{e\,(2p-e-1)}2.
-\]
-As a function of $e$ this is a downward parabola, so on $1\le e\le p$ it attains its minimum
-at an endpoint; the value at $e=1$ is $p-1$ and the value at $e=p$ is
-$\binom p2\ge p-1$.  Hence every power of two in \eqref{eq:res-taylor-majorant} is at most
-$2^{-(p-1)}$, with equality exactly in the top term $d=p-1$, and
-\begin{equation}
- \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
- \le2^{-(p-1)}\sum_{e=1}^{p}\frac{\left|Q-\tfrac12\right|^{e}}{e!}
- \le2^{-(p-1)}\left(\exp\!\left(\left|Q-\tfrac12\right|\right)-1\right).
-                                                          \label{eq:res-taylor-bound}
-\end{equation}
-This is \eqref{eq:complex-shift-spline-bound}, marginally sharpened.  The factor
-$2^{-(p-1)}$ is the extremal case $d=p-1$ of the triangular exponent; the exponential is the
-truncated exponential series of the increment; and the only input from the normalized
-Thue--Morse branches is the uniform bound $\left|S_d\right|\le1$, which is why no further
-constant appears.
+\begin{remark}[Formal bound]
+Only the exponential bound \eqref{eq:complex-shift-spline-bound} is asserted here; it is
+\lean{norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp} in
+\path{FabiusComplexShiftSpline.lean}.  A proposed sharper constant is recorded in the
+research-frontier gap register pending a corrected named theorem.
 \end{remark}
 
 Expanding a fixed cutoff branch about $Q=1/2$ gives an exact finite Taylor combination of
-lower-degree centered branches.  The normalized Thue--Morse bounds then give, for $p\ge1$,
+lower-degree centered branches.  The normalized Thue--Morse bounds then give, for $p\ge1$
+and $x\ge0$,
 \begin{equation}
  \left|S_p^{(Q)}(x)-S_p^{(1/2)}(x)\right|
  \le2^{-(p-1)}\exp\!\left(|Q-\tfrac12|\right).            \label{eq:complex-shift-spline-bound}
 \end{equation}
-Thus every fixed complex shift has the same spline limit.
+The nonpositive half-line is handled separately by exact vanishing, and
+\lean{fabiusComplexShiftSpline_tendsto_globalFabius_all} proves that every fixed complex
+shift has the same pointwise spline limit for every real $x$.
 
 Now reindex the outer sum in \eqref{eq:discrete-q-approximant} by $j=n-k$.  Direct
 collection of signs, powers, and factorials gives the exact finite identity
@@ -2860,11 +2805,24 @@ kernel, the exact zero runs forced by Prouhet cancellation, the two generating-s
 identities, the discrete functional equation satisfied by the normalized grid, and the
 precise sense in which the normalized grid converges.  The convergence statement requires
 one shift of the prefix order and the centered reading of the grid cells; the literal
-normalization does not converge, while the corrected centered formulation below does.
-Two further pieces of foundational material are attached at
+normalization does not converge, and that failure is recorded separately in
+\cref{tm:sub-literal-endpoint}.  Two further pieces of foundational material are attached at
 the end: the lower branch of Lambert's $W$-function, which the asymptotic sections of this
 article use but never construct, and an exact binomial--logarithm formula for the
 Thue--Morse bit.
+
+The two binary recurrences used throughout this section are
+\begin{align}
+ \varepsilon_{2m}&=\varepsilon_m,&
+ \varepsilon_{2m+1}&=-\varepsilon_m,                       \label{eq:tm-even-odd}\\
+ \wt(2m)&=\wt(m),&
+ \wt(2m+1)&=\wt(m)+1.                                     \label{eq:weight-even-odd}
+\end{align}
+They are exactly
+\lean{thueMorseSign_two_mul},
+\lean{thueMorseSign_two_mul_add_one},
+\lean{binaryWeight_two_mul}, and
+\lean{binaryWeight_two_mul_add_one} in \path{DyadicClosedForm.lean}.
 
 \subsection{Iterated prefix sums and the binomial convolution law}
 \label{tm:sub-convolution}
@@ -2887,25 +2845,19 @@ source of an index shift later:
 The increment of a prefix sum is the lower-order value at the \emph{new} index, not at the
 old one.
 
-\begin{proposition}[Odd zeros of the first prefix sum]
-\label{thm:tm-odd-zeros}
-For every $m\ge0$, $\sigma_1(2m+1)=0$.
-\end{proposition}
-
-\begin{proof}
-By \eqref{eq:tm-even-odd}, $\varepsilon_{2j}+\varepsilon_{2j+1}=0$ for every $j$.  The
-range $0\le n\le 2m+1$ is the disjoint union of the pairs $\{2j,2j+1\}$ for $0\le j\le m$,
-so the sum of $\varepsilon_n$ over that range vanishes.
-\end{proof}
+The first prefix sum nevertheless vanishes at every odd index:
+\[
+ \sigma_1(2m+1)=0\qquad(m\in\N).
+\]
+This is exactly \lean{iteratedPrefix_one_two_mul_add_one} in
+\path{ThueMorsePrefix.lean}.
 
 The general structure is a discrete convolution.  Write
 \begin{equation}
  \mathcal B_k(i)=\binom{i+k-1}{k-1}\qquad(k\ge1,\ i\ge0)   \label{eq:tm-kernel}
 \end{equation}
-for the number of ways of writing $i$ as an ordered sum of $k$ nonnegative integers.  The
-family $\mathcal B_k$ is the $k$-fold discrete convolution power of the constant kernel
-$\mathcal B_1\equiv1$.  Because the argument
-$i=n-m$ is automatically nonnegative in the sums below, no indicator function is needed.
+which is \lean{iteratedPrefixKernel}.  Because the argument \(i=n-m\) is
+nonnegative in the sums below, no separate indicator is needed.
 
 \begin{theorem}[Binomial convolution law]
 \label{thm:tm-convolution}
@@ -3002,12 +2954,11 @@ Expand $(X+Yh)^r$ by the binomial theorem and apply \eqref{eq:tm-polynomial-extr
 coefficient of $h^r$ is $Y^r$.
 \end{proof}
 
-Equivalently, \eqref{eq:tm-polynomial-extract} is the statement that the block polynomial
-of \eqref{eq:thue-generating-product} has a zero of exact order $r$ at $z=1$: the
-$m$\/th derivative of $\prod_{j<r}(1-z^{2^j})$ at $z=1$ vanishes for $m<r$, while the
-$r$\/th derivative equals $(-1)^r r!\prod_{j<r}2^j=(-1)^rr!\,2^{\binom r2}$.  We use the
-polynomial form because it applies directly to the binomial kernel
-\eqref{eq:tm-kernel}, which is a polynomial in the summation index.
+At the level of the centered formal exponential series, the corresponding zero has exact
+order \(r\); this is \lean{order_thueMorseCenteredPowerSeries}.  For the binomial kernel
+\eqref{eq:tm-kernel}, the directly applicable formally proved form is instead the
+coefficient-extraction theorem \lean{thueMorse_polynomial_sum_eq_coeff}, displayed in
+\eqref{eq:tm-polynomial-extract}.
 
 \begin{theorem}[Exact dyadic zero runs]
 \label{thm:tm-zero-run}
@@ -3061,7 +3012,8 @@ $\sigma_{k+1}(2^r)=\sigma_{k+1}(2^r-1)+\sigma_k(2^r)=0-1=-1$.
 \begin{remark}
 The right boundary value is not $+1$.  Every iterated prefix sum, at every order
 $k\le r$, takes the value $-1$ at the index $2^r$.  This single sign is what makes the
-literal normalization of \cref{tm:sub-grid-equation} fail at the right endpoint.
+literal normalization of \cref{tm:sub-grid-equation} fail at the right endpoint; see
+\cref{tm:sub-literal-endpoint}.
 \end{remark}
 
 \subsection{Two generating-series identities}
@@ -3081,60 +3033,44 @@ Let
 
 \begin{proposition}[Block product and coefficient stabilization]
 \label{thm:tm-block-product}
-For every $r\ge0$,
+For every \(r\ge0\),
 \begin{equation}
  \mathcal K_r(z)=\prod_{j=0}^{r-1}\bigl(1-z^{2^j}\bigr),   \label{eq:tm-block-product}
 \end{equation}
-which is \eqref{eq:thue-generating-product}.  Moreover, for every $n<2^r$ the coefficient
-of $z^n$ in the finite product \eqref{eq:tm-block-product} equals $\varepsilon_n$ and is
-therefore independent of $r$.  Consequently the infinite product
-$\prod_{j\ge0}(1-z^{2^j})$ is a well-defined formal power series, and it equals
-$\mathcal K(z)$.
+and, whenever \(n<2^r\), the coefficient of \(z^n\) in this finite product is
+\(\varepsilon_n\).  Hence each coefficient stabilizes once the finite product reaches a
+large enough dyadic block.
 \end{proposition}
 
-\begin{proof}
-Induct on $r$.  For $r=0$ both sides are $1$.  For the step, split the block of length
-$2^{r+1}$ at $2^r$ and use $\varepsilon_{2^r+n}=-\varepsilon_n$ for $n<2^r$:
-\begin{equation*}
- \mathcal K_{r+1}(z)
- =\sum_{n<2^r}\varepsilon_nz^n-z^{2^r}\sum_{n<2^r}\varepsilon_nz^n
- =\mathcal K_r(z)\bigl(1-z^{2^r}\bigr),
-\end{equation*}
-and the product formula follows.  For the stabilization, $\mathcal K_r$ is a polynomial of
-degree $2^r-1$ whose coefficient of $z^n$ is $\varepsilon_n$ for every $n<2^r$; adjoining
-the factor $1-z^{2^r}$ changes only coefficients of index $\ge2^r$.  Thus for fixed $n$ the
-coefficient of $z^n$ in $\prod_{j<r}(1-z^{2^j})$ is constant once $2^r>n$, which is the
-definition of convergence of the infinite product in the formal topology, and the stable
-value is $\varepsilon_n$.
+\begin{proof}[Formal proof]
+The finite product is \lean{thueMorseBlockPolynomial_eq_product}; the stable coefficient
+identity is \lean{coeff_finite_thueMorse_product}, both in
+\path{ThueMorseGenerating.lean}.
 \end{proof}
 
 \begin{theorem}[Prefix generating series]
 \label{thm:tm-generating}
-For every $k\ge0$,
+For every \(k\ge0\),
 \begin{equation}
  \mathcal S_k(z)=\frac{\mathcal K(z)}{(1-z)^k},            \label{eq:tm-prefix-series}
 \end{equation}
-equivalently, in denominator-cleared form,
+or equivalently
 \begin{equation}
- (1-z)^k\,\mathcal S_k(z)=\mathcal K(z)=\prod_{j\ge0}\bigl(1-z^{2^j}\bigr).
-                                                          \label{eq:tm-prefix-series-cleared}
+ (1-z)^k\,\mathcal S_k(z)=\mathcal K(z).                  \label{eq:tm-prefix-series-cleared}
 \end{equation}
-Both identities have a finite verification: for every $r$ and every $n<2^r$, the coefficient
-of $z^n$ on either side of \eqref{eq:tm-prefix-series-cleared} may be computed from the
-polynomial $\prod_{j<r}(1-z^{2^j})$ alone.
+For each fixed coefficient index, either side can be computed from a sufficiently long
+finite product \eqref{eq:tm-block-product}.
 \end{theorem}
 
-\begin{proof}
-For $k=0$ both sides of \eqref{eq:tm-prefix-series} are $\mathcal K(z)$.  For $k\ge1$,
-expand $(1-z)^{-k}=\sum_{i\ge0}\binom{i+k-1}{k-1}z^i=\sum_{i\ge0}\mathcal B_k(i)z^i$.  The
-coefficient of $z^n$ in $\mathcal K(z)(1-z)^{-k}$ is then the Cauchy product
-$\sum_{m=0}^n\mathcal B_k(n-m)\varepsilon_m$, which is $\sigma_k(n)$ by
-\eqref{eq:tm-kernel-sum}.  Since $(1-z)^k$ is a unit multiple of the invertible series
-$(1-z)^{-k}$, the cleared form \eqref{eq:tm-prefix-series-cleared} is equivalent, and the
-product expression is \cref{thm:tm-block-product}.  The finite verification is the
-stabilization statement of that proposition: no coefficient of index below $2^r$ sees any
-factor $1-z^{2^j}$ with $j\ge r$.
+\begin{proof}[Formal proof]
+The two identities are \lean{iteratedPrefixSeries_eq} and
+\lean{one_sub_X_pow_mul_iteratedPrefixSeries}; their finite coefficient bridge is
+\lean{coeff_eq6_finite} in \path{ThueMorseGenerating.lean}.
 \end{proof}
+
+We use \(\prod_{j\ge0}(1-z^{2^j})\) only as shorthand for the coefficientwise stabilization
+of the finite products \eqref{eq:tm-block-product}; no separate infinite-product object is
+asserted.
 
 The two identities of \cref{thm:tm-generating} connect the prefix sums to the polynomial
 approximants used in \cref{tm:sub-corrected}.  These are the combinatorial step polynomials
@@ -3217,6 +3153,16 @@ so it is meaningful as a statement about $F$ or $\Up$ only when the doubled absc
 the relevant interval, that is, only when $j<2^q$.  Both features are used in
 \cref{tm:sub-corrected}.
 
+\subsection{The literal right endpoint does not converge}
+\label{tm:sub-literal-endpoint}
+
+The unshifted normalization printed in the source formula cannot converge to a function
+whose right-endpoint value is \(1\): the sequence of literal values at the index \(2^k\)
+does not tend to \(1\).  This exact negative statement is
+\lean{paperPrefixGridValue_endpoint_not_tendsto_one} in
+\path{ThueMorseGenerating.lean}.  The corrected normalization below is therefore a
+mathematical requirement, not a cosmetic reindexing.
+
 \subsection{Corrected normalization and pointwise convergence}
 \label{tm:sub-corrected}
 
@@ -3290,9 +3236,9 @@ $[z^m]\mathcal P_n=\sigma_{n+1}(m)=0$ because $\deg\mathcal P_n=g_n$.  Thus both
 again agree.
 \end{proof}
 
-Sampling at the dyadic floor now gives an approximation scheme.  For $x\ge0$ set
+Sampling at the dyadic floor now gives an approximation scheme.  For $x\in\R$ set
 \begin{equation}
- j_n(x)=\bigl\lfloor2^{n+1}x\bigr\rfloor,
+ j_n(x)=\max\!\left(0,\bigl\lfloor2^{n+1}x\bigr\rfloor\right),
  \qquad
  \mathcal J_n(x)=\widetilde{\mathcal V}_n\bigl(j_n(x)\bigr)
  =\frac{\sigma_{n+1}\bigl(j_n(x)\bigr)}{2^{\binom n2}}.    \label{eq:tm-sample}
@@ -3333,9 +3279,13 @@ $\varepsilon/2$ of $\Up(0)$.
 
 \begin{theorem}[Corrected prefix approximation]
 \label{thm:tm-corrected-convergence}
-For every $x\in[0,1]$,
+For every \(x\le1\),
 \begin{equation}
  \mathcal J_n(x)\longrightarrow\Up(2x-1),                      \label{eq:tm-corrected-limit}
+\end{equation}
+and on the whole nonpositive half-line the finite-stage values are exactly
+\begin{equation}
+ \mathcal J_n(x)=\mathcal J_n(0)=2^{-\binom n2}\qquad(x\le0).  \label{eq:tm-left-tail-exact}
 \end{equation}
 and consequently, for every $x\in[0,1]$,
 \begin{equation}
@@ -3344,7 +3294,11 @@ and consequently, for every $x\in[0,1]$,
 \end{theorem}
 
 \begin{proof}
-Let $0\le x<1$.  Then $2^{n+1}x<2^{n+1}$, so $j_n(x)<2^{n+1}$ and
+For \(x\le0\), the natural-floor clamp is exact:
+\lean{correctedPrefixGridSample_eq_at_zero_of_nonpos} and
+\lean{correctedPrefixGridSample_zero} give \eqref{eq:tm-left-tail-exact}, while
+\lean{correctedPrefixGridSample_tendsto_of_nonpos} gives the asserted limit.  Now let
+$0<x<1$.  Then $2^{n+1}x<2^{n+1}$, so $j_n(x)<2^{n+1}$ and
 \cref{thm:tm-histogram-identity} applies:
 $\mathcal J_n(x)=\mathcal W_n(\xi_{n,j_n(x)})$.  Combining
 \cref{thm:tm-moving-center} with \cref{thm:tm-moving} gives
@@ -3357,8 +3311,9 @@ covered by \eqref{eq:tm-prefix-eq-coeff}.  Here the value is computed instead fr
  \mathcal J_n(1)=\frac{\sigma_{n+1}(2^{n+1})}{2^{\binom n2}}=-\frac1{2^{\binom n2}}
  \longrightarrow0=\Up(1),
 \end{equation*}
-since $\binom n2\to\infty$ and $\Up(1)=F(0)=0$.  This proves
-\eqref{eq:tm-corrected-limit} on all of $[0,1]$.  For \eqref{eq:tm-corrected-fabius}, apply
+since $\binom n2\to\infty$ and $\Up(1)=F(0)=0$.  Altogether this is the public theorem
+\lean{correctedPrefixGridSample_tendsto_rvachevUp_of_le_one} in
+\path{ThueMorseApproximation.lean}.  For \eqref{eq:tm-corrected-fabius}, apply
 it at $x/2\in[0,1]$ and use $2(x/2)-1=x-1\le0$, so that $\Up(x-1)=F(x)$ by
 \eqref{eq:up-fold}.
 \end{proof}
@@ -3398,9 +3353,8 @@ subsequent estimate in the Lambert variable.
 
 \begin{proposition}[Existence, defining equation, and uniqueness]
 \label{thm:tm-lambert-branch}
-The map $u\mapsto u\log u$ is a strictly decreasing bijection from $(0,\e^{-1})$ onto
-$(-\e^{-1},0)$.  For $z\in(-\e^{-1},0)$ let $u(z)$ be its unique preimage and set
-$W_{-1}(z)=\log u(z)$.  Then
+For \(z\in(-\e^{-1},0)\), let \(W_{-1}(z)\) denote the totalized lower branch
+\lean{lowerLambertW}.  Then
 \begin{equation}
  W_{-1}(z)<-1,
  \qquad
@@ -3409,27 +3363,32 @@ $W_{-1}(z)=\log u(z)$.  Then
 and $W_{-1}(z)$ is the unique real $w<-1$ with $w\e^w=z$.
 \end{proposition}
 
-\begin{proof}
-On $(0,\e^{-1})$ the derivative of $u\log u$ is $1+\log u<0$, so the map is strictly
-decreasing there.  Its limit at $u\downarrow0$ is $0$ and its value at $u=\e^{-1}$ is
-$-\e^{-1}$; by the intermediate value theorem and strict monotonicity it is a bijection onto
-$(-\e^{-1},0)$.  Write $u=u(z)$ and $w=\log u$.  Since $0<u<\e^{-1}$ we get $w<-1$, and
-$\e^w=u$, so $w\e^w=u\log u=z$, which is \eqref{eq:tm-lambert-eq}.  Conversely, if $w<-1$
-and $w\e^w=z$, put $v=\e^w$; then $v\in(0,\e^{-1})$ and $v\log v=w\e^w=z$, so $v=u(z)$ by
-injectivity, hence $w=\log u(z)=W_{-1}(z)$.
+\begin{proof}[Formal proof]
+These are respectively \lean{lowerLambertW_lt_neg_one},
+\lean{lowerLambertW_mul_exp}, and \lean{lowerLambertW_unique} in
+\path{LowerLambertW.lean}.
 \end{proof}
+
+On its natural domain, \(W_{-1}\) is continuous and strictly decreasing, and its image is
+exactly \((-\infty,-1)\).  At every \(z\in(-\e^{-1},0)\), it is differentiable with
+\begin{equation}
+ \frac{d}{dz}W_{-1}(z)
+ =\frac{W_{-1}(z)}{z\bigl(1+W_{-1}(z)\bigr)}<0.              \label{eq:lower-lambert-derivative}
+\end{equation}
+These four assertions are \lean{lowerLambertW_continuousOn},
+\lean{lowerLambertW_strictAntiOn}, \lean{lowerLambertW_image},
+\lean{deriv_lowerLambertW}, and \lean{deriv_lowerLambertW_neg}; the underlying derivative
+witness is \lean{lowerLambertW_hasDerivAt}, all in \path{LowerLambertW.lean}.
 
 \begin{corollary}[Solution of the saddle equation]
 \label{thm:tm-lambert-lambda}
 Let $x>0$ with $Lx<\e^{-1}$, where $L=\log2$ as in \eqref{eq:L-def}, and put
-$\lambda=-W_{-1}(-Lx)/L$ as in \eqref{eq:lambda-def}.  Then $\lambda>1/L$ and
+$\lambda=-W_{-1}(-Lx)/L$ as in \eqref{eq:lambda-def}.  Then
 $\lambda2^{-\lambda}=x$, which is \eqref{eq:lambda-equation}.
 \end{corollary}
 
-\begin{proof}
-The number $z=-Lx$ lies in $(-\e^{-1},0)$, so \cref{thm:tm-lambert-branch} applies.  Write
-$W=W_{-1}(z)$, so $\lambda=-W/L$ and $2^{-\lambda}=\e^{-L\lambda}=\e^{W}$.  Hence
-$\lambda2^{-\lambda}=(-W/L)\e^{W}=-z/L=x$.  Finally $W<-1$ gives $\lambda>1/L$.
+\begin{proof}[Formal proof]
+The saddle equation is \lean{paperLambertN_eq9} in \path{LowerLambertW.lean}.
 \end{proof}
 
 \begin{proposition}[Two-term expansion]
@@ -3441,41 +3400,19 @@ As $\epsilon\downarrow0$,
 \end{equation}
 \end{proposition}
 
-\begin{proof}
-For $0<\epsilon<\e^{-1}$ put $y=y(\epsilon)=-W_{-1}(-\epsilon)>1$.  Negating
-\eqref{eq:tm-lambert-eq} gives the defining equation in the convenient form
-\begin{equation*}
- y\,\e^{-y}=\epsilon .
-\end{equation*}
-The map $t\mapsto t\e^{-t}$ is strictly decreasing on $[1,\infty)$ with limit $0$ at
-infinity, so $y(\epsilon)\to\infty$ as $\epsilon\downarrow0$.  Taking logarithms in the
-displayed equation gives $\log\epsilon=\log y-y$, hence
-\begin{equation*}
- \frac{-\log\epsilon}{y}=1-\frac{\log y}{y}\longrightarrow1,
-\end{equation*}
-because $\log y/y\to0$.  Finally, $\epsilon<1$ makes $\log\epsilon<0$, so
-$|\log\epsilon|=-\log\epsilon$, and
-\begin{align*}
- W_{-1}(-\epsilon)-\bigl(\log\epsilon-\log|\log\epsilon|\bigr)
- &=-y-(\log y-y)+\log(-\log\epsilon)\\
- &=\log\frac{-\log\epsilon}{y}\longrightarrow\log1=0. \qedhere
-\end{align*}
+\begin{proof}[Formal proof]
+This is \lean{tendsto_lowerLambertW_expansion} in \path{LowerLambertW.lean}.
 \end{proof}
 
 \subsection{A binomial--logarithm formula for the Thue--Morse bit}
 \label{tm:sub-binomial-log}
 
-The zero-one Thue--Morse bit is $\tau(n)=\wt(n)\bmod2$, so that
-$\varepsilon_n=1-2\tau(n)$.  Its primitive-recursive evaluation computes one binary digit
-at a time:
-\begin{equation}
- b(0)=0,\qquad
- b(m)=\bigl(b(\lfloor m/2\rfloor)+(m\bmod2)\bigr)\bmod2
- \quad(m>0).                                               \label{eq:primitive-thue-bit}
-\end{equation}
-It also admits a
-closed formula in which the entire binary structure is hidden inside a single row of
-Pascal's triangle.  Set
+The zero-one Thue--Morse bit is \(\tau(n)=\wt(n)\bmod2\), so that
+\(\varepsilon_n=1-2\tau(n)\).  Its primitive-recursive evaluator is
+\lean{tmBitPR}; the theorems \lean{tmBitPR_of_pos} and
+\lean{tmBitPR_eq_thueMorseBit} prove its agreement with the binary-weight definition.
+The bit also admits a closed formula in which the binary structure is hidden inside a
+single row of Pascal's triangle.  Set
 \begin{equation}
  \mathcal X(n)=\sum_{k=0}^{n}(-1)^{\binom nk}\in\Z.        \label{eq:tm-parity-sum}
 \end{equation}
@@ -3544,1996 +3481,449 @@ function whose output is then rounded, is an approximation to a formula rather t
 formula.
 \end{remark}
 
-\section{Endpoint asymptotics: exact logarithmic decomposition}
+\section{Endpoint asymptotics: the exact formal hierarchy}
 \label{sec:asymptotic-decomposition}
 \sectionmark{Endpoint asymptotics}
 
-We now turn to the behavior of $F(x)$ as $x\downarrow0$.  This is the technically deepest
-part of the theory and the place where a very small, but mathematically unavoidable,
-log-periodic fluctuation appears.
+The behavior of \(F(x)\) as \(x\downarrow0\) is governed by three nested structures: an
+exact dyadic product on the negative Laplace axis, a genuinely nonconstant periodic
+correction on logarithmic scale, and a lower-Lambert saddle coordinate.  This section
+states the hierarchy in the form proved in Lean.  Longer heuristic derivations, numerical
+experiments, and proposed refinements without exact theorem counterparts are collected in
+\path{docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex}.
 
-Throughout the asymptotic sections, put
+Throughout, put
 \begin{equation}
- L=\log2.                                                   \label{eq:L-def}
+ L=\log 2.                                                   \label{eq:L-def}
 \end{equation}
-We use the standard Stieltjes convention
-\begin{equation}
- \zeta(1+s)=\frac1s+\gamma-\gamma_1s+\bigO(s^2),           \label{eq:stieltjes-convention}
-\end{equation}
-where $\gamma$ is Euler's constant and $\gamma_1$ is the first Stieltjes constant.
 
-\subsection{An exact delay identity and the coarse quadratic scale}
+\subsection{The negative-Laplace product and its exact decomposition}
 
-Before introducing the saddle point, it is useful to isolate what follows directly from the
-differential equation.  Put
-\begin{equation}
- \phi(t)=F(2^{-t}),\qquad \Gamma(t)=-\log\phi(t).           \label{eq:log-scale-def}
-\end{equation}
-For $t\ge1$, the argument $2^{-t}$ lies in the left half of the unit interval, and the chain
-rule with $F'(x)=2F(2x)$ gives
-\begin{equation}
- \phi'(t)=-L\,2^{1-t}\phi(t-1),\qquad
- \Gamma'(t)=L\,2^{1-t}\frac{\phi(t-1)}{\phi(t)}>0.        \label{eq:log-scale-derivative}
-\end{equation}
-Taking logarithms of the second identity yields the exact delay relation
-\begin{equation}
- \boxed{\Gamma(t)-\Gamma(t-1)
- =\log\Gamma'(t)-\log L-(1-t)L,\qquad t\ge1.}             \label{eq:log-scale-delay}
-\end{equation}
-The restriction $t\ge1$ is essential: it is precisely what licenses the left-half bounded
-differential law.
-
-The recurrence and monotonicity already prove, independently of the sharper periodic saddle
-decomposition below,
-\begin{equation}
- \frac{\Gamma(t)}{t^2}\longrightarrow\frac L2,             \label{eq:coarse-log-square}
-\end{equation}
-and, for all sufficiently large $t$,
-\begin{equation}
- \left|\Gamma(t)-\frac L2t^2\right|\le16t\log t.           \label{eq:coarse-log-error}
-\end{equation}
-At integral scales the elementary estimate is sharper:
-\begin{equation}
- \left|\Gamma(n)-\frac L2n^2\right|
- \le3n\log(n+1)\qquad(n\ge1).                              \label{eq:integer-log-error}
-\end{equation}
-Monotonicity of $\Gamma$ and $\lfloor t\rfloor\le t<\lfloor t\rfloor+1$ transfer the
-integer estimate to real $t$.  These facts are formalized separately in the log-scale
-modules: they establish the quadratic law before the analysis below resolves the linear and
-logarithmic drift, the exact phase, and its unavoidable periodic fluctuation.
-
-\subsection{The negative Laplace product}
-
-The function $G$ from \eqref{eq:G-def} is the moment generating function of the random
-variable $X$ in \eqref{eq:random-X}:
-\begin{equation}
- G(z)=\E\e^{zX}.                                           \label{eq:G-mgf}
-\end{equation}
-Therefore, for $s>0$, $G(-s)$ is the ordinary Laplace transform of the probability law.
-
-Iterating the functional equation \eqref{eq:G-functional} in the negative direction gives
-an exact product.
-
-\begin{proposition}[Negative Laplace product]
-For $s>0$,
+For \(s>0\), the entire generating function \(G\) from \eqref{eq:G-def} satisfies
 \begin{equation}
  G(-s)=\prod_{j=1}^{\infty}
- \frac{1-\e^{-s/2^j}}{s/2^j}.                              \label{eq:negative-Laplace-product}
+ \frac{1-\exp(-s/2^j)}{s/2^j}.                              \label{eq:negative-Laplace-product}
 \end{equation}
-Consequently
-\begin{equation}
- \Lambda(s):=\log G(-s)
- =\sum_{j=1}^{\infty}\kappa(s/2^j),
- \qquad
- \kappa(u)=\log\frac{1-\e^{-u}}u.                         \label{eq:Lambda-series}
-\end{equation}
-The series converges absolutely and locally uniformly on $(0,\infty)$.
-\end{proposition}
-
-\begin{proof}
-Putting $z=-s/2$ in \eqref{eq:G-functional} gives
-\begin{equation*}
- G(-s)=\frac{1-\e^{-s/2}}{s/2}G(-s/2).
-\end{equation*}
-After $N$ iterations, the remaining factor is $G(-s/2^N)$, which tends to $G(0)=1$.
-For small $u$,
-\begin{equation*}
- \kappa(u)=-\frac u2+\bigO(u^2),
-\end{equation*}
-so the logarithmic series is dominated on compact $s$-intervals by a geometric series.
-\end{proof}
-
-The product has the exact dilation law
-\begin{equation}
- \Lambda(2s)=\kappa(s)+\Lambda(s).                         \label{eq:Lambda-dilation}
-\end{equation}
-This equation resembles a renewal equation on the logarithmic scale.  Its homogeneous
-solutions are periodic functions of $\log_2s$, which is the conceptual origin of the
-fluctuation in the final asymptotic.
-
-\subsection{Removing the quadratic drift}
-
-Define the forward tail
-\begin{equation}
- T(s)=\sum_{m=0}^{\infty}\log(1-\e^{-s2^m})<0             \label{eq:forward-tail}
-\end{equation}
-and the positive tail error
-\begin{equation}
- E(s)=-T(s)\ge0.                                           \label{eq:tail-error}
-\end{equation}
-The series is exponentially small as $s\to\infty$.
-
-\begin{lemma}[Forward-tail bound]
-For $s>0$,
-\begin{equation}
- 0\le E(s)\le\frac{\e^{-s}}{(1-\e^{-s})^2}.               \label{eq:tail-bound}
-\end{equation}
-In particular $E(s)\le4\e^{-s}$ for $s\ge\log2$.
-\end{lemma}
-
-\begin{proof}
-For $0<q<1$, $-\log(1-q)\le q/(1-q)$.  Hence
-\begin{equation*}
- E(s)\le\frac1{1-\e^{-s}}
- \sum_{m\ge0}\e^{-s2^m}.
-\end{equation*}
-Since $2^m\ge m+1$, the last sum is at most
-$\sum_{m\ge0}\e^{-s(m+1)}=\e^{-s}/(1-\e^{-s})$.
-\end{proof}
-
-For $t\in\R$, set
-\begin{equation}
- P(t)=\Lambda(2^t)+\frac L2(t^2-t)+T(2^t).                 \label{eq:P-def}
-\end{equation}
-
-\begin{theorem}[Exact periodic decomposition]
-The function $P$ is $1$-periodic and smooth.  For every $s>0$, with
-$t=\log_2s$, one has the exact identity
-\begin{equation}
- \boxed{
- \Lambda(s)=-\frac{(\log s)^2}{2L}+\frac{\log s}{2}
-             +P(\log_2s)+E(s).}                           \label{eq:Lambda-exact-periodic}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Write $s=2^t$.  Using \eqref{eq:Lambda-dilation},
-\begin{equation*}
- \Lambda(2s)=\Lambda(s)+\log(1-\e^{-s})-\log s.
-\end{equation*}
-Also
-\begin{equation*}
- T(2s)=T(s)-\log(1-\e^{-s}).
-\end{equation*}
-The change in the quadratic correction is
-\begin{equation*}
- \frac L2\bigl((t+1)^2-(t+1)-(t^2-t)\bigr)=Lt=\log s.
-\end{equation*}
-The three changes cancel, proving $P(t+1)=P(t)$.  Rearranging
-\eqref{eq:P-def} and using $E=-T$ yields \eqref{eq:Lambda-exact-periodic}.
-Smoothness follows by differentiating locally uniformly convergent series; periodicity then
-makes every derivative bounded.
-\end{proof}
-
-Let
-\begin{equation}
- \overline P=\int_0^1P(t)\dd t,
- \qquad \Psi(t)=P(t)-\overline P.                          \label{eq:Psi-def}
-\end{equation}
-Then $\Psi$ is smooth, real-valued, $1$-periodic, and has mean zero.
-
-\subsection{Fourier coefficients of the periodic correction}
-
-The periodic term is not an unspecified bounded nuisance: all of its Fourier coefficients
-are explicit.  Put
-\begin{equation}
- \chi_k=\frac{2\pi\ii k}{L}\qquad(k\in\Z),                 \label{eq:chi-k}
-\end{equation}
-and use the convention
-\begin{equation}
- \widehat\Psi(k)=\int_0^1\Psi(t)\e^{-2\pi\ii kt}\dd t.    \label{eq:Psi-Fourier-def}
-\end{equation}
-
-\begin{theorem}[Gamma--zeta Fourier coefficients]
-One has $\widehat\Psi(0)=0$, and for $k\ne0$,
-\begin{equation}
- \boxed{
- \widehat\Psi(k)=
- -\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L}.}              \label{eq:Psi-Fourier}
-\end{equation}
-Every nonzero Fourier coefficient is nonzero.  In particular, $\Psi$ is genuinely
-nonconstant.
-\end{theorem}
-
-\begin{proof}
-The zero coefficient is zero by definition.  For $k\ne0$, change variables $s=2^t$ in
-\eqref{eq:Psi-Fourier-def}.  Dyadic periodization turns the integral over one logarithmic
-period into a Mellin transform; this is the standard harmonic-sum framework for dyadic
-periodicities \cite{flajolet1995}.  The basic Mellin identity is
-\begin{equation}
- \int_0^\infty s^{z-1}\log(1-\e^{-s})\dd s
- =-\Gamma(z)\zeta(1+z),\qquad \Re z>0.                    \label{eq:Mellin-Bose}
-\end{equation}
-It follows by expanding $\log(1-\e^{-s})=-\sum_{m\ge1}\e^{-ms}/m$ and integrating term by
-term.  Near $s=0$ the kernel contains logarithmic and linear divergences; the quadratic
-correction in \eqref{eq:P-def} is exactly the finite-part subtraction that removes them.
-Analytic continuation of the regularized Mellin transform to the imaginary axis gives
-\eqref{eq:Psi-Fourier} at $z=-\chi_k$.
-
-The Gamma function has no zeros.  Moreover $1-\chi_k$ lies on the line $\Re z=1$ away from
-the pole at $1$, and the zeta function has no zeros there.  Hence the product in
-\eqref{eq:Psi-Fourier} is nonzero.
-\end{proof}
-
-Conjugate symmetry $\widehat\Psi(-k)=\overline{\widehat\Psi(k)}$ reconstructs a real-valued
-Fourier series.  Stirling's estimate for $\Gamma$ on vertical lines implies exponential
-decay of the coefficients, so the Fourier series and all of its differentiated series
-converge rapidly.
-
-The first coefficient is tiny:
-\begin{equation}
- \widehat\Psi(1)
- \approx(7.5586475410-7.4701035590\,\ii)\times10^{-7},     \label{eq:Psi-first-coeff}
-\end{equation}
-with magnitude approximately $1.0627116252\times10^{-6}$.  The second is smaller by six
-orders of magnitude,
-\begin{equation}
- \widehat\Psi(2)
- \approx(3.2481234772+5.8517589871\,\ii)\times10^{-13},    \label{eq:Psi-second-coeff}
-\end{equation}
-of magnitude $6.6927863679\times10^{-13}$, so the first harmonic already describes $\Psi$ to
-better than one part in a million of its own size.
-
-\begin{warning}[A numerical hazard specific to these points]
-Evaluating \eqref{eq:Psi-Fourier} numerically is delicate for a reason that has nothing to do
-with rounding.  Many implementations of the zeta function compute it from the alternating
-Dirichlet series through
-\begin{equation}
- \zeta(s)=\frac1{1-2^{1-s}}\sum_{m\ge1}\frac{(-1)^{m-1}}{m^{s}}.  \label{eq:eta-series}
-\end{equation}
-At the points that \eqref{eq:Psi-Fourier} needs, $s=1-\chi_k$, one has
-$2^{1-s}=2^{\chi_k}=\e^{\chi_kL}=\e^{2\pi\ii k}=1$ exactly, so the prefactor in
-\eqref{eq:eta-series} has a pole precisely there.  The singularity is removable in $\zeta$
-but not in that formula, and a routine built on it returns an overflow or, worse, a plausible
-wrong number.  This is not a rounding story; it is a defect of the algorithm at exactly the
-arguments this problem cares about, and it explains how two independently published decimal
-values for $\widehat\Psi(1)$ can agree with each other to eight figures and both be wrong.
-
-The symptom that identifies the defect is that raising the working precision does not shrink
-the error.  It moves it:
-\begin{center}
-\begin{tabular}{@{}ll@{}}
-\toprule
-working digits & value returned for $10^{7}\widehat\Psi(1)$\\
-\midrule
-$30$ & $7.55865005-7.47011001\,\ii$\\
-$50$ & $7.55864674-7.47009636\,\ii$\\
-$80$ & $7.55865060-7.47008702\,\ii$\\
-\midrule
-any & $7.55864754-7.47010356\,\ii$ \quad(Euler--Maclaurin)\\
-\bottomrule
-\end{tabular}
-\end{center}
-The first three rows come from a widely used arbitrary-precision library whose complex zeta
-routes through \eqref{eq:eta-series}; the last is a hand-written Euler--Maclaurin evaluation,
-which is stable at all three precisions and agrees with
-\eqref{eq:Psi-first-coeff}.\footnote{The precision table is due to an independent
-recomputation carried out alongside this article; the Euler--Maclaurin values were checked
-here at two truncations, $60$ terms with $12$ Bernoulli corrections and $100$ with $16$,
-which agree with each other to $37$ digits.}
-Digits that wander as the precision rises are the signature of a removable singularity being
-divided by, and they are exactly what would persuade a careful reader to trust a wrong value.
-Use an Euler--Maclaurin or Hurwitz evaluation instead, and check the answer at two working
-precisions.
-\end{warning}  Thus the visible oscillation is
-on the scale of a few parts in a million in the logarithm.  Tiny is not the same as zero: its
-nonvanishing changes the logical status of an asymptotic equivalent.
-
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
- width=0.86\textwidth,height=0.34\textwidth,
- xmin=0,xmax=1,
- xlabel={$t$},ylabel={$10^{6}\,\Psi(t)$},
- grid=major,major grid style={draw=gray!18},
- axis line style={draw=rulegray},
- tick label style={font=\small},label style={font=\small},
- line width=0.9pt]
-\addplot[draw=linkblue,smooth] coordinates {
-(0.000000,1.511730) (0.010000,1.602557) (0.020000,1.687060) (0.030000,1.764904)
-(0.040000,1.835784) (0.050000,1.899418) (0.060000,1.955556) (0.070000,2.003976)
-(0.080000,2.044488) (0.090000,2.076931) (0.100000,2.101177) (0.110000,2.117131)
-(0.120000,2.124730) (0.130000,2.123943) (0.140000,2.114774) (0.150000,2.097259)
-(0.160000,2.071467) (0.170000,2.037500) (0.180000,1.995492) (0.190000,1.945609)
-(0.200000,1.888047) (0.210000,1.823034) (0.220000,1.750826) (0.230000,1.671709)
-(0.240000,1.585994) (0.250000,1.494020) (0.260000,1.396150) (0.270000,1.292770)
-(0.280000,1.184287) (0.290000,1.071131) (0.300000,0.953748) (0.310000,0.832601)
-(0.320000,0.708168) (0.330000,0.580940) (0.340000,0.451419) (0.350000,0.320117)
-(0.360000,0.187551) (0.370000,0.054245) (0.380000,-0.079275) (0.390000,-0.212482)
-(0.400000,-0.344850) (0.410000,-0.475858) (0.420000,-0.604987) (0.430000,-0.731729)
-(0.440000,-0.855584) (0.450000,-0.976061) (0.460000,-1.092687) (0.470000,-1.205000)
-(0.480000,-1.312558) (0.490000,-1.414935) (0.500000,-1.511729) (0.510000,-1.602556)
-(0.520000,-1.687059) (0.530000,-1.764904) (0.540000,-1.835784) (0.550000,-1.899418)
-(0.560000,-1.955557) (0.570000,-2.003977) (0.580000,-2.044489) (0.590000,-2.076933)
-(0.600000,-2.101179) (0.610000,-2.117133) (0.620000,-2.124732) (0.630000,-2.123945)
-(0.640000,-2.114777) (0.650000,-2.097262) (0.660000,-2.071470) (0.670000,-2.037503)
-(0.680000,-1.995495) (0.690000,-1.945611) (0.700000,-1.888049) (0.710000,-1.823036)
-(0.720000,-1.750828) (0.730000,-1.671711) (0.740000,-1.585996) (0.750000,-1.494021)
-(0.760000,-1.396151) (0.770000,-1.292770) (0.780000,-1.184288) (0.790000,-1.071131)
-(0.800000,-0.953748) (0.810000,-0.832600) (0.820000,-0.708167) (0.830000,-0.580938)
-(0.840000,-0.451417) (0.850000,-0.320115) (0.860000,-0.187549) (0.870000,-0.054243)
-(0.880000,0.079277) (0.890000,0.212484) (0.900000,0.344853) (0.910000,0.475860)
-(0.920000,0.604990) (0.930000,0.731732) (0.940000,0.855586) (0.950000,0.976064)
-(0.960000,1.092689) (0.970000,1.205002) (0.980000,1.312560) (0.990000,1.414937)
-(1.000000,1.511730)
-};
-\end{axis}
-\end{tikzpicture}
-\caption{The periodic correction $\Psi$, magnified by $10^{6}$.  The curve is
-indistinguishable from its first Fourier harmonic at this resolution, and the
-half-period antisymmetry $\Psi(t+\tfrac12)\approx-\Psi(t)$ visible here is the statement
-that the even harmonics are negligible.  The vertical scale is the point of the picture:
-the oscillation is a few parts in a million in the logarithm, but it does not tend to
-zero.}
-\label{fig:Psi-plot}
-\end{figure}
-
-\subsection{The finite part at the Mellin origin}
-
-The constant that enters the saddle asymptotic comes from the finite part of
-$-\Gamma(z)\zeta(1+z)$ at $z=0$.  Using
-\begin{align*}
- \Gamma(z)&=\frac1z-\gamma+
-   \left(\frac{\gamma^2}{2}+\frac{\pi^2}{12}\right)z+\bigO(z^2),\\
- \zeta(1+z)&=\frac1z+\gamma-\gamma_1z+\bigO(z^2),
-\end{align*}
-one finds
-\begin{equation}
- -\Gamma(z)\zeta(1+z)+\frac1{z^2}
- =A_0+\bigO(z),                                            \label{eq:A0-finite-part}
-\end{equation}
-where
-\begin{equation}
- A_0=\frac{6\gamma^2+12\gamma_1-\pi^2}{12}.               \label{eq:A0}
-\end{equation}
-
-\subsubsection{A convergent real finite-part integral}
-\label{subsub:as-real-finite-part}
-
-The formal development also realizes this Laurent coefficient as an ordinary sum of two
-absolutely convergent real integrals.  For \(x>0\), write
-\begin{equation}
- \kappa_0(x)=\frac1x\log\frac{1-\e^{-x}}x,
- \qquad
- \kappa_\infty(x)=\frac1x\log(1-\e^{-x}).                 \label{eq:bose-finite-part-kernels}
-\end{equation}
-The first kernel stays uniformly bounded as \(x\downarrow0\): the formal estimate is
-
-\begin{equation}
- |\kappa_0(x)|\le1\qquad(x>0).                            \label{eq:bose-small-bound}
-\end{equation}
-
-The second is integrable at infinity, by an explicit exponential majorant.  Thus no
-analytic-continuation convention is hidden in the following identity.
-
-\begin{theorem}[Convergent Bose finite part]
-\label{thm:bose-real-finite-part}
-For every cutoff \(c>0\), one has the cutoff-independent identity
-\begin{equation}
- \boxed{
- \int_{(0,c]}\kappa_0(x)\dd x+
- \int_{(c,\infty)}\kappa_\infty(x)\dd x+
- \frac{(\log c)^2}{2}=A_0.}                               \label{eq:bose-real-finite-part-cutoff}
-\end{equation}
-In particular, the unit cutoff gives
-\begin{equation}
- \int_{(0,1]}\kappa_0(x)\dd x+
- \int_{(1,\infty)}\kappa_\infty(x)\dd x=A_0.             \label{eq:bose-real-finite-part}
-\end{equation}
-Moreover, if \(0<a\le b\), then moving between the two regularizations over the transition
-interval incurs exactly
-\begin{equation}
- \int_{(a,b]}\bigl(\kappa_\infty(x)-\kappa_0(x)\bigr)\dd x
- =\frac{(\log b)^2-(\log a)^2}{2}.                        \label{eq:bose-cutoff-transition}
-\end{equation}
-\end{theorem}
-
-In Lean, the kernels in \eqref{eq:bose-finite-part-kernels} are
-\lean{boseFinitePartSmallKernel} and \lean{boseFinitePartLargeKernel}.  Their arbitrary-cutoff
-integrability is
-\lean{integrableOn_boseFinitePartSmallKernel_Ioc} and
-\lean{integrableOn_boseFinitePartLargeKernel_Ioi_of_pos}; the pointwise estimate
-\eqref{eq:bose-small-bound} is \lean{abs_boseFinitePartSmallKernel_le_one_of_pos}.
-Equation \eqref{eq:bose-cutoff-transition} is
-\lean{integral_boseFinitePartLargeKernel_sub_small_Ioc}, and
-\eqref{eq:bose-real-finite-part-cutoff} is the expanded theorem
-\lean{boseFinitePartIntegral_eq_gammaZetaConstant_of_pos}.  Equivalently, Lean packages its
-left side as \lean{boseFinitePartIntegralAtCutoff}; its cutoff independence and evaluation
-are \lean{boseFinitePartIntegralAtCutoff_eq} and
-\lean{boseFinitePartIntegralAtCutoff_eq_gammaZetaConstant}.  Before adding the logarithmic
-correction, the raw quantity \lean{boseFinitePartSplitIntegral} is evaluated by
-\lean{boseFinitePartSplitIntegral_eq_gammaZetaConstant_sub}, which fixes the minus sign in
-\(A_0-(\log c)^2/2\).  The unit-cutoff specialization
-\eqref{eq:bose-real-finite-part} is
-\lean{boseFinitePartIntegral_eq_gammaZetaConstant}.  All these declarations are in
-\path{BoseFinitePartIntegral.lean}.  The proof first establishes the positive-real Mellin
-identity \lean{bose_mellin_integral_zeta} in \path{MellinBose.lean}, splits off the elementary
-integral of \(x^{r-1}\log x\), and then uses
-\lean{tendsto_realGamma_mul_zeta_finitePart} from \path{MellinFinitePart.lean} as
-\(r\downarrow0\).  In particular, the displayed equality is a theorem about convergent real
-integrals, not a notation for a divergent integral assigned a regularized value.
-
-The final constant is
-\begin{equation}
- C_F=\frac{A_0}{L}-\frac{7L}{12}-\frac12\log\pi
- \approx-2.02798389863885942397.                           \label{eq:CF}
-\end{equation}
-The terms $-7L/12$ and $-(1/2)\log\pi$ arise from the dyadic Euler--Maclaurin finite part and
-the leading Gaussian saddle mass, respectively.
-
-
-\subsubsection{The Mellin transform in the relevant strip}
-\label{subsub:as-mellin}
-
-The identity \eqref{eq:Mellin-Bose} is stated for the kernel $\log(1-\e^{-s})$ in the
-half-plane $\Re z>0$.  The kernel that actually occurs in \eqref{eq:Lambda-series} is not
-that one but
-\begin{equation*}
- \kappa(u)=\log\frac{1-\e^{-u}}u=\log(1-\e^{-u})-\log u,
-\end{equation*}
-and its Mellin transform lives in a different strip.  Both facts are needed, and it is worth
-saying at once that they do not compete.
-
-\begin{lemma}[Mellin transform of the dyadic kernel]
-\label{lem:as-mellin-kappa}
-The integral
-\begin{equation}
- \widetilde\kappa(z)=\int_0^{\infty}\kappa(u)u^{z-1}\dd u  \label{eq:as-mellin-kappa-def}
-\end{equation}
-converges absolutely precisely in the strip $-1<\Re z<0$, and there
-\begin{equation}
- \widetilde\kappa(z)=-\Gamma(z)\zeta(1+z).                 \label{eq:as-mellin-kappa}
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-As $u\downarrow0$ one has $\kappa(u)=-u/2+\bigO(u^2)$, so $\kappa(u)u^{z-1}=\bigO(u^{\Re z})$
-and the integral converges at the origin exactly when $\Re z>-1$.  As $u\to\infty$ one has
-$\kappa(u)=-\log u+\bigO(\e^{-u})$, so the integrand is of size $u^{\Re z-1}\log u$ and the
-integral converges at infinity exactly when $\Re z<0$.
-
-Fix $z$ in the strip.  Differentiating,
-\begin{equation}
- \kappa'(u)=\frac{1}{\e^{u}-1}-\frac1u.                    \label{eq:as-kappa-derivative}
-\end{equation}
-Integration by parts is legitimate because the boundary term $\kappa(u)u^{z}/z$ vanishes at
-both ends: near $0$ it is $\bigO(u^{1+\Re z})$ and near $\infty$ it is
-$\bigO(u^{\Re z}\log u)$, and $-1<\Re z<0$.  Hence
-\begin{equation*}
- \widetilde\kappa(z)=-\frac1z\int_0^{\infty}\kappa'(u)u^{z}\dd u
- =-\frac1z\int_0^{\infty}\left(\frac1{\e^{u}-1}-\frac1u\right)u^{z}\dd u.
-\end{equation*}
-The subtracted Bose integral is the classical analytic continuation of
-$\int_0^\infty u^{w-1}(\e^u-1)^{-1}\dd u=\Gamma(w)\zeta(w)$ from $\Re w>1$ to the critical
-strip: for $0<\Re w<1$,
-\begin{equation}
- \int_0^{\infty}u^{w-1}\left(\frac1{\e^{u}-1}-\frac1u\right)\dd u=\Gamma(w)\zeta(w).
-                                                          \label{eq:as-bose-continued}
-\end{equation}
-Applying \eqref{eq:as-bose-continued} with $w=z+1$, which lies in $0<\Re w<1$ exactly when
-$-1<\Re z<0$, and using $\Gamma(z+1)=z\Gamma(z)$ gives
-\begin{equation*}
- \widetilde\kappa(z)=-\frac{\Gamma(z+1)\zeta(z+1)}{z}=-\Gamma(z)\zeta(1+z).\qedhere
-\end{equation*}
-\end{proof}
-
-\begin{remark}[The two Mellin identities continue each other]
-\label{rem:as-two-strips}
-A reader who has just met \eqref{eq:Mellin-Bose} will notice that \eqref{eq:as-mellin-kappa}
-has the same right-hand side in a disjoint region, and may suspect a clash.  There is none.
-The kernel $\log(1-\e^{-s})$ decays exponentially at infinity but is logarithmically singular
-at the origin, so its transform converges exactly in $\Re z>0$.  Subtracting $\log s$ replaces
-that logarithmic singularity by a zero of order one, which moves the left edge of the strip
-from $0$ to $-1$; the price is that the subtracted term destroys convergence at infinity,
-which caps the strip at $\Re z<0$.  The two strips therefore abut along the line $\Re z=0$,
-and the two integrals are the restrictions to the two sides of that line of the single
-meromorphic function $-\Gamma(z)\zeta(1+z)$, which has a double pole at $z=0$.  Neither
-identity is more fundamental; \eqref{eq:as-mellin-kappa} is simply the one adapted to the
-harmonic sum \eqref{eq:Lambda-series}.
-\end{remark}
-
-Because $\Lambda$ is the dyadic harmonic sum of $\kappa$, its Mellin transform acquires a
-geometric factor.  For $-1<\Re z<0$ the substitution $s\mapsto2^{j}s$ gives
-$\int_0^\infty\kappa(s/2^{j})s^{z-1}\dd s=2^{jz}\widetilde\kappa(z)$, and
-$\sum_{j\ge1}2^{jz}$ converges in that strip, so
-\begin{equation}
- \widetilde\Lambda(z)=\int_0^{\infty}\Lambda(s)s^{z-1}\dd s
- =\frac{2^{z}}{1-2^{z}}\bigl(-\Gamma(z)\zeta(1+z)\bigr),
- \qquad -1<\Re z<0.                                       \label{eq:as-mellin-Lambda}
-\end{equation}
-The factor $2^{z}/(1-2^{z})$ is where the discrete dyadic scale enters, and it is the source
-of both the periodicity and the constant $\overline P$.  Writing $w=Lz$ and using
-$(\e^{w}-1)^{-1}=w^{-1}-\tfrac12+w/12+\bigO(w^{3})$,
-\begin{equation}
- \frac{2^{z}}{1-2^{z}}=-1-\frac1{\e^{w}-1}
- =-\frac1{Lz}-\frac12-\frac{Lz}{12}+\bigO(z^{3}).         \label{eq:as-geometric-laurent}
-\end{equation}
-Its poles are simple and lie exactly at the points $z=\chi_k=2\pi\ii k/L$ of
-\eqref{eq:chi-k}, since $1-2^{z}$ vanishes there with derivative $-L$.
-
-\begin{proposition}[Derivation of the mean of the periodic function]
-\label{prop:as-mean-derivation}
-The mean $\overline P$ of \eqref{eq:Psi-def} is
-\begin{equation}
- \overline P=\frac{A_0}{L}-\frac{L}{12},                   \label{eq:as-P-mean-derived}
-\end{equation}
-with $A_0$ as in \eqref{eq:A0}.
-\end{proposition}
-
-\begin{proof}
-Combining \eqref{eq:as-geometric-laurent} with the finite-part expansion
-\eqref{eq:A0-finite-part}, that is $-\Gamma(z)\zeta(1+z)=-z^{-2}+A_0+\bigO(z)$, the product
-\eqref{eq:as-mellin-Lambda} has a triple pole at the origin with Laurent expansion
-\begin{equation}
- \widetilde\Lambda(z)=\frac{1}{Lz^{3}}+\frac{1}{2z^{2}}
- +\frac1z\left(\frac{L}{12}-\frac{A_0}{L}\right)+\bigO(1). \label{eq:as-Lambda-laurent}
-\end{equation}
-Mellin inversion writes $\Lambda(s)$ as an integral of $\widetilde\Lambda(z)s^{-z}$ along a
-vertical line inside the strip; displacing that line to the right past $\Re z=0$ contributes
-minus the residues at the poles crossed.  Expanding
-$s^{-z}=1-z\log s+\tfrac12z^{2}\log^{2}s-\cdots$ and reading off the coefficient of $z^{-1}$
-in $\widetilde\Lambda(z)s^{-z}$ gives
-\begin{equation*}
- \operatorname*{Res}_{z=0}\widetilde\Lambda(z)s^{-z}
- =\frac{\log^{2}s}{2L}-\frac{\log s}{2}+\frac{L}{12}-\frac{A_0}{L},
-\end{equation*}
-so the contribution of the triple pole is
-\begin{equation*}
- -\frac{(\log s)^{2}}{2L}+\frac{\log s}{2}+\frac{A_0}{L}-\frac{L}{12}.
-\end{equation*}
-Comparison with the exact decomposition \eqref{eq:Lambda-exact-periodic}, which is proved
-independently and elementarily, identifies the first two terms with the explicit quadratic
-drift and the constant with the mean of $P$; the remaining displaced integral is smaller than
-every power of $1/\log s$ and is the forward tail $E(s)$.  This proves
-\eqref{eq:as-P-mean-derived}.
-\end{proof}
-
-The same residue computation reproduces \eqref{eq:Psi-Fourier} and thereby confirms the
-normalizations.  Near $z=\chi_k$ with $k\ne0$ one has $1-2^{z}\sim-L(z-\chi_k)$ and
-$2^{z}\to1$, so
-\begin{equation*}
- \operatorname*{Res}_{z=\chi_k}\widetilde\Lambda(z)s^{-z}
- =\frac{\Gamma(\chi_k)\zeta(1+\chi_k)}{L}\,s^{-\chi_k}.
-\end{equation*}
-With $s=2^{t}$ one has $s^{-\chi_k}=\e^{-2\pi\ii kt}$.  After replacing $k$ by $-k$, minus
-the sum of these residues is
+This is the real specialization of
+\lean{complexGeneratingFunction_neg_eq_tprod} in
+\path{NegativeLaplaceVertical.lean}.  If
 \[
- \sum_{k\ne0}-L^{-1}\Gamma(-\chi_k)\zeta(1-\chi_k)\e^{2\pi\ii kt},
+ \kappa(u)=\log\!\left(\frac{1-\exp(-u)}{u}\right),
+ \qquad
+ \Lambda(s)=\log G(-s)=\sum_{j=1}^{\infty}\kappa(s/2^j),
 \]
-which is precisely the Fourier series of $\Psi$ with the coefficients
-\eqref{eq:Psi-Fourier}.  Thus the mean and every oscillating mode come from the single
-factorization \eqref{eq:as-mellin-Lambda}: the triple pole at the origin produces the
-nonperiodic part together with $\overline P$, and the simple poles on the imaginary axis
-produce $\Psi$.
+then the series is absolutely summable for every \(s>0\); the precise declarations are
+\lean{summable_negativeLaplaceTerm},
+\lean{exp_negativeLaplaceLog_eq_generatingFunction_neg}, and
+\lean{negativeLaplaceLog_eq_log_laplaceMoment}.
 
-\section{The corrected sharp asymptotic}
+Let \(P\) denote \lean{negativeLaplacePeriodicCorrection} and let \(E\) denote
+\lean{negativeLaplaceTailError}.  The exact decomposition is
+\begin{equation}
+ \boxed{\;
+ \Lambda(s)=
+ -\frac{(\log s)^2}{2L}+\frac{\log s}{2}
+ +P(\log_2 s)+E(s)
+ \;}\qquad(s>0).                                            \label{eq:Lambda-exact-periodic}
+\end{equation}
+Moreover,
+\begin{equation}
+ 0\le E(s)\le
+ \frac{\exp(-s)}{(1-\exp(-s))^2},\qquad
+ E(s)\le4\exp(-s)\quad(s\ge L).                             \label{eq:negative-Laplace-tail-bound}
+\end{equation}
+These are exactly
+\lean{negativeLaplaceLog_exact_periodic_decomposition},
+\lean{negativeLaplaceTailError_nonneg},
+\lean{abs_negativeLaplaceTailError_le}, and
+\lean{abs_negativeLaplaceTailError_le_four_exp} in
+\path{NegativeLaplace.lean}.  The correction \(P\) is \(C^\infty\) and one-periodic by
+\lean{contDiff_infty_negativeLaplacePeriodicCorrection} and
+\lean{negativeLaplacePeriodicCorrection_add_one}.
+
+Write
+\begin{equation}
+ \overline P=\int_0^1P(u)\,\dd u,\qquad
+ \Psi(t)=P(t)-\overline P.                                  \label{eq:Psi-def}
+\end{equation}
+Then \(\Psi\) is \(C^\infty\), one-periodic, and has mean zero:
+\[
+ \Psi(t+1)=\Psi(t),\qquad \int_0^1\Psi(t)\,\dd t=0.
+\]
+The formal counterparts are
+\lean{contDiff_infty_negativeLaplacePsi},
+\lean{negativeLaplacePsi_add_one}, and
+\lean{integral_negativeLaplacePsi_zero}.
+
+The first logarithmic derivative has a correspondingly sharp full-ray expansion.  As
+\(s\to+\infty\),
+\begin{equation}
+ \Lambda'(s)=
+ \frac{-\log s/L+1/2+\Psi'(\log_2s)/L}{s}
+ +\bigO(s^{-2}).                                            \label{eq:negative-Laplace-first-derivative}
+\end{equation}
+Here \(\Lambda'\) is the formal \lean{negativeLaplaceLogFirst}, identified with the
+derivative of \(\Lambda\) by \lean{negativeLaplaceLog_hasDerivAt}.  The exact
+\(\bigO(s^{-2})\) statement is
+\lean{negativeLaplaceLogFirst_sub_periodic_main_isBigO_inv_sq_real} in
+\path{LaplacePeriodicSecondOrder.lean}.  This promotes the proved derivative estimate
+without importing the longer unformalized contour and Mellin derivations from the frontier
+volume.
+
+\subsection{The Gamma--zeta Fourier series}
+
+For \(k\in\Z\), use the Fourier convention
+\begin{equation}
+ \widehat\Psi(k)=\int_0^1\Psi(t)\exp(-2\pi\ii kt)\,\dd t,
+ \qquad
+ \chi_k=\frac{2\pi\ii k}{L}.                                \label{eq:Psi-Fourier-def}
+\end{equation}
+The zero mode vanishes, and every nonzero mode has the closed form
+\begin{equation}
+ \widehat\Psi(0)=0,\qquad
+ \widehat\Psi(k)=
+ -\frac{\Gamma(-\chi_k)\zeta(1-\chi_k)}{L}
+ \quad(k\ne0).                                              \label{eq:Psi-Fourier}
+\end{equation}
+Every coefficient with \(k\ne0\) is nonzero, so \(\Psi\) is genuinely nonconstant.
+The coefficient sequence is absolutely summable and reconstructs \(\Psi\) pointwise:
+\begin{equation}
+ \Psi(t)=\sum_{k\in\Z}\widehat\Psi(k)\exp(2\pi\ii kt).
+                                                                  \label{eq:Psi-Fourier-series}
+\end{equation}
+These assertions are
+\lean{negativeLaplacePsiFourierCoeff_zero},
+\lean{negativeLaplacePsiFourierCoeff_eq_neg_gamma_zeta},
+\lean{negativeLaplacePsiFourierCoeff_ne_zero},
+\lean{negativeLaplacePsi_not_constant},
+\lean{summable_negativeLaplacePsiGammaZetaFourierCoeff}, and
+\lean{hasSum_negativeLaplacePsi_gammaZeta_fourierSeries} in
+\path{PeriodicFourier.lean}.  No numerical truncation or stronger coefficient-decay
+claim is needed here.
+
+\subsection{The evaluated constant}
+
+Let \(\gamma\) be Euler's constant and let \(\gamma_1\) denote the formally defined first
+Stieltjes constant \lean{firstStieltjesConstant}.  The regularized Gamma--zeta
+combination
+\[
+ A_0=\frac{\gamma^2}{2}+\gamma_1-\frac{\pi^2}{12}
+\]
+is \lean{gammaZetaConstant}; its equivalent common-denominator form is proved by
+\lean{gammaZetaConstant_eq_div_twelve}.  The split, convergent finite-part Bose integral
+is evaluated as this same constant by
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant}.
+
+The formal finite part is independent of where the convergent integral is split.  More
+precisely, put
+\[
+ \kappa_0(x)=\frac1x\log\!\left(\frac{1-\exp(-x)}x\right),
+ \qquad
+ \kappa_\infty(x)=\frac1x\log(1-\exp(-x)).
+\]
+For every \(c>0\), both integrals below are convergent and
+\begin{equation}
+ \boxed{
+ \int_{(0,c]}\kappa_0(x)\,dx+
+ \int_{(c,\infty)}\kappa_\infty(x)\,dx+
+ \frac{(\log c)^2}{2}=A_0.}                                  \label{eq:bose-finite-part-cutoff}
+\end{equation}
+If \(0<a\le b\), changing the splitting point is governed by the exact transition identity
+\begin{equation}
+ \int_{(a,b]}\bigl(\kappa_\infty(x)-\kappa_0(x)\bigr)\,dx
+ =\frac{(\log b)^2-(\log a)^2}{2}.                           \label{eq:bose-cutoff-transition}
+\end{equation}
+Here the two kernels are \lean{boseFinitePartSmallKernel} and
+\lean{boseFinitePartLargeKernel}; their integrability is
+\lean{integrableOn_boseFinitePartSmallKernel_Ioc} and
+\lean{integrableOn_boseFinitePartLargeKernel_Ioi_of_pos}.  Equations
+\eqref{eq:bose-finite-part-cutoff} and \eqref{eq:bose-cutoff-transition} are respectively
+\lean{boseFinitePartIntegral_eq_gammaZetaConstant_of_pos} and
+\lean{integral_boseFinitePartLargeKernel_sub_small_Ioc} in
+\path{BoseFinitePartIntegral.lean}.  Thus the constant is represented by ordinary convergent
+real integrals, without assigning a value to a divergent integral.
+
+In turn,
+\lean{negativeLaplacePeriodicMean_eq} gives
+\[
+ \overline P=\frac{A_0}{L}-\frac{L}{12}.
+\]
+After the Gaussian normalization, the sharp Fabius constant is
+\begin{equation}
+ C_F=
+ \frac{6\gamma^2+12\gamma_1-\pi^2}{12L}
+ -\frac{7L}{12}-\frac12\log\pi.                             \label{eq:sharp-constant}
+\end{equation}
+This is the exact identity
+\lean{fabiusSharpAsymptoticConstant_eq} in
+\path{FabiusSharpConstant.lean}.
+
+\subsection{A fully effective dyadic bound}
+
+The dyadic specialization admits a proved numerical threshold and error constant.  For
+\(n\ge1\), define
+\begin{align}
+ D_n={}&-\frac L2n^2-n\log n+\left(1+\frac L2\right)n
+       -\frac{(\log n)^2}{2L}+C_F+\Psi(\log_2n) \notag\\
+     &-\frac n2\bigl(\Lambda''(n)+\Lambda'(n)^2\bigr).       \label{eq:dyadic-effective-main}
+\end{align}
+Here the final term is exactly \lean{dyadicEndpointSecondOrder}; the derivative
+identifications are \lean{negativeLaplaceLog_hasDerivAt} and
+\lean{negativeLaplaceLogFirst_hasDerivAt}.  Then, for every \(n\ge224043\),
+\begin{equation}
+ \boxed{
+ \left|\log F(2^{-n})-D_n\right|
+ \le\frac{2512945}{12n}.}
+                                                               \label{eq:dyadic-effective-bound}
+\end{equation}
+This is \lean{abs_log_fabius_dyadic_sub_explicitCumulantMain_le} in
+\path{FabiusDyadicSharpCumulant.lean}.  The threshold is a sufficient certified threshold,
+not an optimality claim.  Its proof uses the pointwise bounds
+\lean{dyadicEndpointSecondOrder_sq_le},
+\lean{dyadicHigherLaplaceMoments_le}, and
+\lean{abs_dyadicEndpointLaplaceLogError_add_secondOrder_le_unconditional} in
+\path{LaplaceMomentBounds.lean}, with respective constants \(256/n\), \(104448/n\), and
+\(209408/n\) on their stated ranges.
+
+\subsection{The lower-Lambert saddle and exact reduction}
 \label{sec:sharp-asymptotic}
 
-\subsection{The lower Lambert coordinate}
-
-For sufficiently small $x>0$, define
+For \(x>0\) with \(Lx<\e^{-1}\), let
 \begin{equation}
  W=W_{-1}(-Lx),                                             \label{eq:W-def}
 \end{equation}
-where $W_{-1}$ is the lower real branch of Lambert's $W$-function \cite{corless1996},
-and put
+and define
 \begin{equation}
- \lambda=\lambda(x)=-\frac{W}{L}.                          \label{eq:lambda-def}
+ \lambda=\lambda(x)=-\frac{W}{L},
+ \qquad r=r(x)=2^\lambda.                                  \label{eq:lambda-def}
 \end{equation}
-Then $\lambda\to\infty$ as $x\downarrow0$ and
+The phase and radius are \lean{fabiusLambertPhase} and
+\lean{fabiusLambertRadius}.  Their exact identities are
 \begin{equation}
- \lambda2^{-\lambda}=x.                                   \label{eq:lambda-equation}
+ \lambda2^{-\lambda}=x,\qquad
+ \frac{\lambda}{r}=x,\qquad
+ rx=\lambda,\qquad
+ \log r=L\lambda.                                          \label{eq:lambda-equation}
 \end{equation}
-Equivalently,
-\begin{equation}
- r=2^\lambda=\frac\lambda x.                              \label{eq:saddle-radius}
-\end{equation}
-The real number $r$ is the explicit Lambert saddle radius used in the contour analysis.
+They are proved by
+\lean{fabiusLambertPhase_div_radius},
+\lean{fabiusLambertRadius_mul_argument}, and
+\lean{log_fabiusLambertRadius} in \path{FabiusLambertSaddle.lean}.
 
-\subsection{The main term}
+On the exact domain \(0<x<\e^{-1}/L\), the phase \(\lambda(x)\) is continuous and
+strictly decreasing, with image \((1/L,\infty)\), and
+\begin{equation}
+ \lambda'(x)=
+ \frac{\lambda(x)}{x\bigl(1-L\lambda(x)\bigr)}<0.            \label{eq:lambert-phase-derivative}
+\end{equation}
+These are \lean{fabiusLambertPhase_continuousOn},
+\lean{fabiusLambertPhase_strictAntiOn}, \lean{fabiusLambertPhase_image},
+\lean{deriv_fabiusLambertPhase}, and \lean{deriv_fabiusLambertPhase_neg} in
+\path{FabiusLambertSaddle.lean}; the derivative witness is
+\lean{fabiusLambertPhase_hasDerivAt}.
+
+The corrected main term is
+\begin{equation}
+ \mathcal M(x)=
+ -\frac L2\lambda(x)^2+
+ \left(1+\frac L2\right)\lambda(x)
+ -\frac12\log\lambda(x)+C_F+\Psi(\lambda(x)).
+                                                               \label{eq:sharp-main-lambda}
+\end{equation}
+This is definition \lean{fabiusSharpLambertMain}.  If
+\(\mathcal R(x)\) denotes the normalized saddle ratio
+\lean{fabiusSaddleRatio} at \(r(x)\) and \(\lambda(x)\), then Lean proves the exact
+error separation
+\begin{equation}
+ \log F(x)-\mathcal M(x)=\log\mathcal R(x)+E(r(x)).
+                                                               \label{eq:sharp-exact-reduction}
+\end{equation}
+The declaration is
+\lean{log_fabius_sub_sharpLambertMain_eq_log_ratio_add_tail} in
+\path{FabiusSharpExactReduction.lean}.
+
+The analytic input to that reduction is an exact Bromwich formula.  For every \(r>0\)
+and \(x\in\R\), as an identity in \(\C\),
+\begin{equation}
+ F(x)=\exp(rx)\int_{\R}
+ \exp(2\pi\ii\xi x)\,
+ \frac{G(-(r+2\pi\ii\xi))}{r+2\pi\ii\xi}\,\dd\xi.
+                                                               \label{eq:bromwich}
+\end{equation}
+This is \lean{fabius_bromwich}; the dimensionless, Gaussian-normalized version used by
+the saddle machinery is \lean{fabius_bromwich_scaled}.  The supporting Laplace-transform
+identity is \lean{generatingFunction_neg_div_eq_laplace}.  All three occur in
+\path{LaplaceTransform.lean} and \path{FabiusBromwichInput.lean} with the positivity and
+integrability hypotheses shown there.
+
+\subsection{The first two periodic saddle corrections}
 
 Define
 \begin{equation}
- \mathcal M(x)=
- -\frac L2\lambda^2+
- \left(1+\frac L2\right)\lambda-\frac12\log\lambda
- +C_F+\Psi(\lambda),                                      \label{eq:sharp-main-lambda}
-\end{equation}
-where $C_F$ is given by \eqref{eq:CF} and $\lambda=\lambda(x)$.  The same expression can be
-written compactly in the Lambert variable $W$:
-\begin{equation}
- \mathcal M(x)=
- -\frac{7L}{12}-\frac12\log(\pi x)
- +\frac{A_0-W-\tfrac12W^2}{L}
- +\Psi\!\left(-\frac WL\right).                           \label{eq:sharp-main-W}
-\end{equation}
-The equivalence follows from $W=-L\lambda$ and
-$\log x=\log\lambda-L\lambda$.
-
-\begin{theorem}[Corrected sharp endpoint asymptotic]
-As $x\downarrow0$,
-\begin{equation}
- \boxed{
- \log F(x)=\mathcal M(x)+\bigO\!\left(\frac1{\lambda(x)}\right)
- =\mathcal M(x)+\bigO\!\left(\frac1{-\log x}\right).}     \label{eq:sharp-log-asymptotic}
-\end{equation}
-Equivalently,
-\begin{equation}
- F(x)\sim\exp\mathcal M(x).                               \label{eq:sharp-equivalent}
-\end{equation}
-\end{theorem}
-
-The periodic term is evaluated at the \emph{exact} phase $\lambda(x)$, not at a truncated
-log--log approximation to it.  This matters at the stated error scale.
-
-\subsection{Bromwich inversion}
-
-
-The contour representation used below rests on one elementary identity, which is worth
-recording separately because it is what converts a statement about the probability law into
-a statement about a Laplace transform with an explicit pole at the origin.
-
-\begin{proposition}[Laplace transform of the distribution function]
-\label{prop:as-laplace}
-For every $s>0$,
-\begin{equation}
- \int_0^{\infty}\e^{-sx}F(x)\dd x=\frac{G(-s)}{s},        \label{eq:as-laplace}
-\end{equation}
-where $G$ is the moment generating function \eqref{eq:G-mgf}.
-\end{proposition}
-
-\begin{proof}
-By \eqref{eq:F-CDF} the function $F$ is the distribution function of the random variable $X$
-of \eqref{eq:random-X}, so $F(0)=0$, $F(x)=1$ for $x\ge1$, and $F$ is continuous and
-nondecreasing.  Split the integral at $x=1$.
-
-On $[0,1]$, Stieltjes integration by parts gives
-\begin{equation}
- G(-s)=\int_0^1\e^{-sx}\dd F(x)
- =\bigl[\e^{-sx}F(x)\bigr]_{0}^{1}+s\int_0^1\e^{-sx}F(x)\dd x
- =\e^{-s}+s\int_0^1\e^{-sx}F(x)\dd x,                     \label{eq:as-laplace-parts}
-\end{equation}
-because $F(1)=1$ and $F(0)=0$.  Hence
-\begin{equation*}
- \int_0^1\e^{-sx}F(x)\dd x=\frac{G(-s)}{s}-\frac{\e^{-s}}{s}.
-\end{equation*}
-On $[1,\infty)$ the integrand is the constant tail $\e^{-sx}$, and
-\begin{equation*}
- \int_1^{\infty}\e^{-sx}\dd x=\frac{\e^{-s}}{s}.
-\end{equation*}
-The boundary term $\e^{-s}/s$ produced by the integration by parts and the contribution of
-the constant tail are therefore equal and opposite, and adding the two pieces gives
-\eqref{eq:as-laplace}.
-\end{proof}
-
-Two features of \eqref{eq:as-laplace} decide the geometry of the inversion.  First, since
-$X$ is bounded, $G(-z)=\E\e^{-zX}$ is entire, so the only singularity of the transform
-$G(-z)/z$ is the simple pole at $z=0$ coming from the constant tail of $F$; the integral in
-\eqref{eq:as-laplace} converges absolutely for every $z$ with $\Re z>0$ and diverges at
-$z=0$.  The Bromwich representation
-\begin{equation*}
- F(x)=\frac1{2\pi\ii}\int_{r-\ii\infty}^{r+\ii\infty}
- \frac{\e^{zx}G(-z)}{z}\dd z
-\end{equation*}
-of \eqref{eq:bromwich} is consequently valid on \emph{every} vertical line $\Re z=r$ with
-$r>0$, and on no vertical line with $r\le0$.  The freedom in $r$ is exactly what the saddle
-choice $r=2^{\lambda}$ of \eqref{eq:saddle-radius} exploits.  Second, absolute convergence of
-the contour integral on each such line follows from the rapid decay of
-$\tau\mapsto G(-r-\ii\tau)$, which is the Fourier transform of a smooth compactly supported
-density up to an exponential tilt and therefore decays faster than every power
-(\cref{sec:fourier}).  No contour shifting hypothesis is needed: the line $\Re z=r$ is
-admissible for all $r>0$ simultaneously.
-
-Because $G(-z)=\E\e^{-zX}$ is entire and $F$ is continuous, Laplace--Stieltjes inversion
-gives, for every $r>0$ and $0<x<1$,
-\begin{equation}
- F(x)=\frac1{2\pi\ii}\int_{r-\ii\infty}^{r+\ii\infty}
- \frac{\e^{zx}G(-z)}{z}\dd z.                             \label{eq:bromwich}
-\end{equation}
-Set $z=r(1+\ii\theta)$ and choose $r=2^\lambda=\lambda/x$.  Then
-\begin{equation}
- F(x)=\frac{\e^{\lambda+\Lambda(r)}}{2\pi}
- \int_{-\infty}^{\infty}
- \e^{\ii\lambda\theta}
- \frac{G(-r(1+\ii\theta))}{G(-r)}
- \frac{\dd\theta}{1+\ii\theta}.                         \label{eq:bromwich-scaled}
-\end{equation}
-The exact real decomposition \eqref{eq:Lambda-exact-periodic} at $r=2^\lambda$ gives
-\begin{equation}
- \lambda+\Lambda(r)
- =-\frac L2\lambda^2+
- \left(1+\frac L2\right)\lambda+P(\lambda)+E(r).          \label{eq:real-exponent-at-r}
-\end{equation}
-Since
-\begin{equation}
- \overline P=\frac{A_0}{L}-\frac L{12},
- \qquad
- \overline P-\frac12\log(2\pi)=C_F,                      \label{eq:P-mean}
-\end{equation}
-the missing factors in \eqref{eq:sharp-main-lambda} are exactly the leading Gaussian mass
-$1/\sqrt{2\pi\lambda}$ and the centered fluctuation $\Psi=P-\overline P$.
-
-
-\subsection{The normalized saddle mass}
-\label{subsec:as-saddle-mass}
-
-It is convenient to give the entire remaining error a name.  Everything in
-\eqref{eq:bromwich-scaled} except the scaled oscillatory integral is explicit, and that
-integral is a positive real number divided by the Gaussian mass it is supposed to reproduce.
-
-\begin{definition}
-\label{def:as-saddle-mass}
-For small $x>0$, with $\lambda=\lambda(x)$ from \eqref{eq:lambda-def} and $r=2^{\lambda}$
-from \eqref{eq:saddle-radius}, put
-\begin{equation}
- \mathcal G(x)=
- \frac{F(x)\sqrt{2\pi\lambda}}
-      {\exp\bigl(rx+\Lambda(r)\bigr)},                    \label{eq:as-saddle-mass-def}
-\end{equation}
-where $\Lambda=\log G(-\,\cdot\,)$ is the log-transform of \eqref{eq:Lambda-series}.
-\end{definition}
-
-The symbol $\mathcal G$ is used nowhere else in this article.  Because $F(x)>0$ for $x>0$,
-the quantity $\mathcal G(x)$ is a positive real number, and by \eqref{eq:bromwich-scaled}
-together with $rx=\lambda$ it has the exact integral representation
-\begin{equation}
- \mathcal G(x)=\sqrt{\frac{\lambda}{2\pi}}
- \int_{-\infty}^{\infty}
- \e^{\ii\lambda\theta}
- \frac{G(-r(1+\ii\theta))}{G(-r)}
- \frac{\dd\theta}{1+\ii\theta}
- =\frac1{\sqrt{2\pi}}\int_{-\infty}^{\infty}
- \exp\Phi_\lambda\!\left(\frac{v}{\sqrt\lambda}\right)\dd v, \label{eq:as-saddle-mass-integral}
-\end{equation}
-the second form arising from the substitution \eqref{eq:central-scale} and the local phase
-\eqref{eq:local-phase} of the next subsection.  Taking logarithms in
-\eqref{eq:as-saddle-mass-def} and using $rx=\lambda$ gives the exact identity
-\begin{equation}
- \boxed{
- \log F(x)=rx+\Lambda(r)-\frac12\log(2\pi\lambda)+\log\mathcal G(x).}
-                                                          \label{eq:as-exact-log-saddle}
-\end{equation}
-No approximation whatever has been made in \eqref{eq:as-exact-log-saddle}: it is a
-rearrangement of the definition of $\mathcal G$, valid for every $x$ small enough that
-$\lambda(x)$ is defined.  All of the analysis still to be done is the analysis of the single
-positive number $\mathcal G(x)$.
-
-\begin{proposition}[Exact separation of the error]
-\label{prop:as-error-separation}
-For small $x>0$, with $r=2^{\lambda(x)}$,
-\begin{equation}
- rx+\Lambda(r)-\frac12\log(2\pi\lambda)=\mathcal M(x)+E(r), \label{eq:as-main-separation}
-\end{equation}
-where $\mathcal M$ is the main term \eqref{eq:sharp-main-lambda} and $E$ is the forward-tail
-error \eqref{eq:tail-error}.  Consequently
-\begin{equation}
- \boxed{
- \log F(x)-\mathcal M(x)=\log\mathcal G(x)+E(r).}         \label{eq:as-error-separation}
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-By \eqref{eq:real-exponent-at-r} and $rx=\lambda$,
-\begin{equation*}
- rx+\Lambda(r)
- =-\frac L2\lambda^2+\left(1+\frac L2\right)\lambda+P(\lambda)+E(r).
-\end{equation*}
-Subtract $\tfrac12\log(2\pi\lambda)=\tfrac12\log\lambda+\tfrac12\log(2\pi)$ and split
-$P=\overline P+\Psi$ as in \eqref{eq:Psi-def}.  By \eqref{eq:P-mean} one has
-$\overline P-\tfrac12\log(2\pi)=C_F$, so the right-hand side becomes
-\begin{equation*}
- -\frac L2\lambda^2+\left(1+\frac L2\right)\lambda-\frac12\log\lambda
- +C_F+\Psi(\lambda)+E(r),
-\end{equation*}
-which is $\mathcal M(x)+E(r)$ by \eqref{eq:sharp-main-lambda}.  Subtracting
-\eqref{eq:as-main-separation} from \eqref{eq:as-exact-log-saddle} gives
-\eqref{eq:as-error-separation}.
-\end{proof}
-
-Equation \eqref{eq:as-error-separation} splits the total error into two parts of completely
-different nature.  The term $E(r)$ is beyond all orders: by \eqref{eq:tail-bound},
-\begin{equation}
- 0\le E(2^{\lambda})\le4\exp\bigl(-2^{\lambda}\bigr),      \label{eq:as-tail-beyond}
-\end{equation}
-which is smaller than every power of $1/\lambda$, and indeed smaller than
-$\exp(-\lambda^{K})$ for every $K$.  It can never be the obstruction to any inverse-power
-expansion, and it may be carried along inertly through every order.  Everything else is
-$\log\mathcal G(x)$, an algebraic quantity computed from a single explicit integral.
-
-This bookkeeping is preferable to working with the phase integral directly.  The phase
-integral in \eqref{eq:bromwich-scaled} is a complex oscillatory object whose normalization
-changes at every stage of the argument, so error statements about it must always be qualified
-by which prefactors have already been extracted.  By contrast, $\mathcal G$ is dimensionless
-and pinned: it is a single positive real number whose distance from $1$ \emph{is} the entire
-error, up to the beyond-all-orders term.  The leading theorem
-\eqref{eq:sharp-log-asymptotic} is exactly the statement
-\begin{equation}
- \mathcal G(x)=1+\bigO\!\left(\frac1{\lambda(x)}\right),   \label{eq:as-mass-leading}
-\end{equation}
-the first correction \eqref{eq:first-corrected-asymptotic} is the statement that
-$\log\mathcal G(x)=A_1(\lambda)/\lambda+\bigO(\lambda^{-2})$, and the all-orders theorem
-\eqref{eq:all-orders-log} is the statement that
-\begin{equation}
- \log\mathcal G(x)=\sum_{j=1}^{N-1}\frac{A_j(\lambda)}{\lambda^{j}}
- +\bigO\!\left(\lambda^{-N}\right)                        \label{eq:as-mass-all-orders}
-\end{equation}
-for every $N$.  In each case the periodic coefficients are those of the relative saddle mass
-\eqref{eq:relative-mass-series}, and no further normalization has to be tracked.
-
-\subsection{The local phase}
-
-Let
-\begin{equation}
- u=\log(1+\ii\theta),                                     \label{eq:u-log}
-\end{equation}
-with the principal logarithm near the saddle.  Subtracting the value at $\theta=0$ from the
-complexified version of \eqref{eq:Lambda-exact-periodic}, and including the factor
-$(1+\ii\theta)^{-1}$ in \eqref{eq:bromwich-scaled}, gives the local phase
-\begin{align}
- \Phi_\lambda(\theta)
- &=\lambda(\ii\theta-u)-\frac u2-\frac{u^2}{2L}
-   +\Psi\!\left(\lambda+\frac uL\right)-\Psi(\lambda)
-   +\mathcal E_r(\theta),                                 \label{eq:local-phase}
-\end{align}
-where $\mathcal E_r(0)=0$ and, on a fixed neighborhood of zero, every derivative of
-$\mathcal E_r$ is exponentially small in $r$.  This last term comes from the forward tail
-$E$ and is far smaller than every power of $1/\lambda$.
-
-The elementary expansion
-\begin{equation}
- \log(1+\ii\theta)
- =\ii\theta+\frac{\theta^2}{2}-\frac{\ii\theta^3}{3}
-  -\frac{\theta^4}{4}+\bigO(\theta^5)                     \label{eq:log-one-itheta}
-\end{equation}
-shows that
-\begin{equation}
- \lambda(\ii\theta-u)=-\frac{\lambda\theta^2}{2}
- +\frac{\ii\lambda\theta^3}{3}+\frac{\lambda\theta^4}{4}+\
- \bigO(\lambda|\theta|^5).                                \label{eq:gaussian-leading}
-\end{equation}
-Thus the natural central scale is
-\begin{equation}
- \theta=\frac v{\sqrt\lambda}.                            \label{eq:central-scale}
-\end{equation}
-Uniformly for $|v|$ growing sufficiently slowly with $\lambda$,
-\begin{equation}
- \Phi_\lambda(v/\sqrt\lambda)
- =-\frac{v^2}{2}+\lambda^{-1/2}P_1(v;\lambda)
- +\lambda^{-1}P_2(v;\lambda)
- +\bigO\!\left(\lambda^{-3/2}(1+|v|^9)\right),            \label{eq:phase-first-expansion}
-\end{equation}
-where
-\begin{align}
- A(u)&=\frac{\Psi'(u)}L-\frac12,                           \label{eq:A-periodic}\\
- B(u)&=-\frac14+\frac1{2L}+\frac{\Psi'(u)}{2L}
-       -\frac{\Psi''(u)}{2L^2},                           \label{eq:B-periodic}\\
- P_1(v;u)&=\ii\left(A(u)v+\frac{v^3}{3}\right),           \label{eq:P1}\\
- P_2(v;u)&=\frac{v^4}{4}+B(u)v^2.                         \label{eq:P2}
-\end{align}
-In \eqref{eq:phase-first-expansion}, the second argument is $u=\lambda$.
-
-\subsection{Central and tail estimates}
-
-For completeness, the quantitative saddle proof is organized by the following estimates.
-They are stated here in the form needed for the argument; the formal development proves them
-with explicit domains and constants.
-
-\begin{lemma}[Central expansion]
-For every fixed truncation order $N$, there is $\delta>0$ such that on
-$|\theta|\le\delta$ the exponent in \eqref{eq:bromwich-scaled} admits a Taylor expansion
-through order $N$ after the scaling \eqref{eq:central-scale}.  Its coefficients are smooth
-$1$-periodic functions of $\lambda$, and the remainder is dominated by a polynomial in $v$
-times the next power of $\lambda^{-1/2}$.
-\end{lemma}
-
-\begin{proof}
-The logarithm in \eqref{eq:u-log} is analytic for $|\theta|<1$.  The periodic function
-$\Psi$ is smooth with bounded derivatives of every order.  Taylor's theorem applied to each
-term of \eqref{eq:local-phase}, together with the exponentially small bounds on
-$\mathcal E_r$, gives a uniform expansion.  The dependence on $\lambda$ occurs only through
-$\Psi^{(j)}(\lambda)$, hence is periodic.
-\end{proof}
-
-\begin{lemma}[Gaussian domination]
-There are positive constants $c,\delta$ and $\lambda_0$ such that, for
-$\lambda\ge\lambda_0$ and $|\theta|\le\delta$,
-\begin{equation}
- \Re\Phi_\lambda(\theta)\le-c\lambda\theta^2.             \label{eq:central-domination}
-\end{equation}
-\end{lemma}
-
-\begin{proofidea}
-The exact function $\Re(\ii\theta-\log(1+\ii\theta))
-=-(1/2)\log(1+\theta^2)$ supplies the negative quadratic term.  All remaining terms in
-\eqref{eq:local-phase} have bounded first and second derivatives on a fixed neighborhood.
-For large $\lambda$ the $-\lambda\theta^2/2$ contribution dominates them.
-\end{proofidea}
-
-\begin{lemma}[Off-saddle decay]
-For each $N$ one may choose the central window so that the contribution to
-\eqref{eq:bromwich-scaled} outside that window is $O(\lambda^{-N})$ relative to the leading
-saddle mass.
-\end{lemma}
-
-\begin{proofidea}
-Split the negative-Laplace product at the dyadic index nearest $\lambda$.  In the intermediate
-range, a positive proportion of the factors have arguments of order one and their moduli are
-strictly smaller off the real axis, yielding exponential decay in $\lambda\theta^2$.  In the
-far range, repeated use of the sinc/Laplace product bounds gives arbitrarily high polynomial
-decay.  The two bounds overlap and cover the whole complement of the central window.  The
-factor $(1+\ii\theta)^{-1}$ is harmless.
-\end{proofidea}
-
-These lemmas justify extending the scaled central integral to the entire real $v$-axis and
-integrating its expansion term by term against $\e^{-v^2/2}$.
-
-\subsection{Completion of the leading proof}
-
-Keeping only the Gaussian term in \eqref{eq:phase-first-expansion} gives
-\begin{equation}
- \int_\R\e^{\Phi_\lambda(\theta)}\dd\theta
- =\frac1{\sqrt\lambda}\int_\R\e^{-v^2/2}\dd v
-  \left(1+\bigO(\lambda^{-1})\right)
- =\sqrt{\frac{2\pi}{\lambda}}
-  \left(1+\bigO(\lambda^{-1})\right).                     \label{eq:leading-saddle-mass}
-\end{equation}
-The term of order $\lambda^{-1/2}$ integrates to zero because $P_1$ is odd in $v$ and purely
-imaginary.  Combining \eqref{eq:real-exponent-at-r}, \eqref{eq:P-mean}, and
-\eqref{eq:leading-saddle-mass} yields
-\begin{equation*}
- \log F(x)
- =-\frac L2\lambda^2+
- \left(1+\frac L2\right)\lambda-\frac12\log\lambda
- +C_F+\Psi(\lambda)+\bigO(\lambda^{-1}),
-\end{equation*}
-which is \eqref{eq:sharp-log-asymptotic}.  Finally,
-$\lambda\asymp-\log x$ follows from \eqref{eq:lambda-equation}, so the two displayed error
-scales are equivalent.
-
-\section{First correction and the all-orders saddle expansion}
-\label{sec:full-asymptotic}
-
-The leading theorem leaves an error of order $1/\lambda$.  The same contour analysis can be
-continued to arbitrary order.  The coefficient functions are periodic because every local
-coefficient is built from derivatives of $\Psi$ evaluated at the exact phase $\lambda$.
-
-\subsection{The first correction}
-
-Expand the exponential in \eqref{eq:phase-first-expansion}:
-\begin{align}
- \e^{\Phi_\lambda(v/\sqrt\lambda)}
- &=\e^{-v^2/2}\Bigl[1+\lambda^{-1/2}P_1(v;\lambda) \\[-0.3ex]
- &\qquad+\lambda^{-1}\bigl(P_2(v;\lambda)+\tfrac12P_1(v;\lambda)^2\bigr)
- +\bigO(\lambda^{-3/2}(1+|v|^{12}))\Bigr].                \label{eq:exp-phase-first}
-\end{align}
-Let $Z$ be a standard normal random variable.  Since
-\begin{equation}
- \E Z^2=1,\qquad \E Z^4=3,\qquad \E Z^6=15,               \label{eq:gaussian-moments}
-\end{equation}
-the normalized coefficient of $\lambda^{-1}$ in the saddle mass is
-\begin{align}
- b_1(u)
- &=\E\left[P_2(Z;u)+\tfrac12P_1(Z;u)^2\right]             \notag\\
- &=\frac34+B(u)-\frac12\left(A(u)^2+2A(u)+\frac53\right). \label{eq:b1-gaussian}
-\end{align}
-Substituting \eqref{eq:A-periodic} and \eqref{eq:B-periodic} simplifies the expression
-considerably.
-
-\begin{theorem}[First saddle correction]
-Define
-\begin{equation}
- A_1(u)=\frac1{24}+\frac1{2L}
+ A_1(u)=
+ \frac1{24}+\frac1{2L}
  -\frac{\Psi''(u)+\Psi'(u)^2}{2L^2}.                       \label{eq:A1}
 \end{equation}
-Then
+This is \lean{fabiusFirstSaddleCorrection}.  It is continuous, one-periodic, and bounded
+by
+\lean{continuous_fabiusFirstSaddleCorrection},
+\lean{fabiusFirstSaddleCorrection_periodic}, and
+\lean{isBounded_range_fabiusFirstSaddleCorrection}.  The first corrected expansion is
 \begin{equation}
- \boxed{
- \log F(x)=\mathcal M(x)+\frac{A_1(\lambda(x))}{\lambda(x)}
- +\bigO\!\left(\lambda(x)^{-2}\right).}                  \label{eq:first-corrected-asymptotic}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-The order-$\lambda^{-1/2}$ term in \eqref{eq:exp-phase-first} is odd and integrates to zero.
-Equation \eqref{eq:b1-gaussian} gives the first nonzero relative correction to the integral.
-A direct simplification yields \eqref{eq:A1}.  If the normalized saddle mass is
-$1+b_1/\lambda+O(\lambda^{-2})$, then its logarithm is
-$b_1/\lambda+O(\lambda^{-2})$, so the same coefficient appears in the logarithmic expansion.
-The off-saddle contribution is smaller than the stated remainder by the tail estimates of the
-preceding section.
-\end{proof}
-
-The constant part $1/24+1/(2L)$ is the usual type of Gaussian/curvature correction.  The
-terms involving $\Psi'$ and $\Psi''$ record the fact that the log-periodic environment is not
-constant across the saddle width.
-
-\subsection{All orders}
-
-At order $N$, Taylor expansion of \eqref{eq:local-phase} produces finitely many polynomials
-in $v$ whose coefficients are differential polynomials in
-\begin{equation*}
- \Psi'(u),\Psi''(u),\ldots,\Psi^{(2N)}(u).
-\end{equation*}
-After exponentiation, all odd powers of $\lambda^{-1/2}$ integrate to zero by parity.  The
-remaining Gaussian moments are integers, so one obtains integer powers of $1/\lambda$.
-
-\begin{theorem}[Full logarithmic expansion]
-There are smooth $1$-periodic functions $A_j:\R\to\R$, $j\ge0$, with
-$A_0=0$ and $A_1$ given by \eqref{eq:A1}, such that for every $N\ge1$,
-\begin{equation}
- \boxed{
+ \boxed{\;
  \log F(x)=\mathcal M(x)+
-   \sum_{j=1}^{N-1}\frac{A_j(\lambda(x))}{\lambda(x)^j}
-   +\bigO\!\left(\lambda(x)^{-N}\right)}                 \label{eq:all-orders-log}
+ \frac{A_1(\lambda(x))}{\lambda(x)}
+ +\bigO\!\left(\lambda(x)^{-2}\right)
+ \;}\qquad(x\downarrow0).                                  \label{eq:first-corrected-asymptotic}
 \end{equation}
-as $x\downarrow0$.
-\end{theorem}
+It is the \(N=2\) specialization of
+\lean{log_fabius_sub_sharpLambertExpansion_isBigO}, together with
+\lean{fabiusSharpLambertExpansion_two}.
 
-\begin{proofidea}
-Fix $N$.  Expand the analytic local phase through sufficiently high order in
-$\lambda^{-1/2}$, with a Gaussian-dominated remainder.  Exponentiate using complete Bell
-polynomials, integrate term by term, and discard odd terms.  The quantitative tail theorem
-makes the complement of the central region $O(\lambda^{-N})$.  This gives a relative saddle
-mass expansion
+The second coefficient has a compact closed form in the bounded exponent jets.  For each
+\(m\), write \(J_m(u)\) for the jet
+\lean{negativeLaplaceBoundedExponentJet}\((m,u)\), and define
 \begin{equation}
- 1+\sum_{j=1}^{N-1}\frac{b_j(\lambda)}{\lambda^j}
- +O(\lambda^{-N}),                                        \label{eq:relative-mass-series}
+ \begin{split}
+ A_2(u)=\frac1{24}\bigl(&8J_0^3+12J_0^2J_1+12J_0^2+48J_0J_1+12J_0J_2\\
+                       &+6J_1^2+24J_1+20J_2+3J_3\bigr)(u).
+ \end{split}                                                \label{eq:A2-jets}
 \end{equation}
-where every $b_j$ is smooth and periodic.  Taking the formal logarithm defines the $A_j$.
-If
-\begin{equation*}
- \log\left(1+\sum_{j\ge1}b_jz^j\right)=\sum_{j\ge1}A_jz^j,
-\end{equation*}
-then the coefficients may be generated recursively by
+This is exactly \lean{fabiusSecondSaddleCorrection}; it is continuous, one-periodic,
+and bounded by
+\lean{continuous_fabiusSecondSaddleCorrection},
+\lean{fabiusSecondSaddleCorrection_periodic}, and
+\lean{isBounded_range_fabiusSecondSaddleCorrection}.  The formally proved
+second-correction theorem is
 \begin{equation}
- A_n=b_n-\frac1n\sum_{k=1}^{n-1}kA_kb_{n-k}.               \label{eq:log-coefficient-recurrence}
+ \boxed{\;
+ \log F(x)=\mathcal M(x)+
+ \frac{A_1(\lambda(x))}{\lambda(x)}
+ +\frac{A_2(\lambda(x))}{\lambda(x)^2}
+ +\bigO\!\left(\lambda(x)^{-3}\right)
+ \;}\qquad(x\downarrow0).                                  \label{eq:second-corrected-asymptotic}
 \end{equation}
-All operations preserve smooth periodic dependence on the phase.
-\end{proofidea}
+Its exact declarations are
+\lean{fabiusSharpLambertExpansion_three} and
+\lean{log_fabius_sub_twoSaddleCorrections_isBigO} in
+\path{FabiusSecondSaddleExpansion.lean}; the companion theorem
+\lean{log_fabius_sub_twoSaddleCorrections_isBigO_negLog} gives the literal remainder
+\(\bigO((-\log x)^{-3})\).
 
-This form of the expansion is preferable to a very long series in nested logarithms.  The
-exact Lambert coordinate absorbs the dominant implicit inversion, while the exact periodic
-phase prevents phase errors from being magnified into false remainder claims.
+\subsection{The recursive all-orders theorem}
 
-\subsection{The saddle jets in closed form}
-\label{subsec:as-jets}
+For \(j\in\N\), let \(a_j(u)\) denote
+\lean{fabiusSaddleLogCoefficient}\((j,u)\).
+Every \(a_j\) is continuous, one-periodic, and bounded, by
+\lean{continuous_fabiusSaddleLogCoefficient},
+\lean{fabiusSaddleLogCoefficient_periodic}, and
+\lean{isBounded_range_fabiusSaddleLogCoefficient}.  The initial identifications are
+\[
+ a_0=0,\qquad a_1=A_1,\qquad a_2=A_2,
+\]
+proved by
+\lean{fabiusSaddleLogCoefficient_zero},
+\lean{fabiusSaddleLogCoefficient_one_eq_firstSaddleCorrection}, and
+\lean{fabiusSaddleLogCoefficient_two_eq_secondSaddleCorrection}.
 
-The description just given defines the $A_j$ only as the output of a chain: a differential
-recursion for the periodic quantities that enter the local phase, then exponentiation, then
-Gaussian contraction, then a formal logarithm.  Every step after the first is algebraic.  The
-first is not, and it can be solved.
-
-Write $\mathcal H_n=\sum_{i\le n}1/i$ for the harmonic numbers, and let $\mathcal Z_{n}$ be the periodic
-\emph{jets} generated by
+For every \(N\in\N\), the complete exact-phase expansion is
 \begin{equation}
- \mathcal Z_{0}=\frac12+\frac{\Psi'}{L},
- \qquad
- \mathcal Z_{n+1}=\left(\frac{\mathrm D}{L}-(n+1)\right)\mathcal Z_{n}+\frac{(-1)^{n+1}n!}{L},
-                                                          \label{eq:as-jet-recursion}
+ \boxed{\;
+ \log F(x)=\mathcal M(x)+
+ \sum_{j=0}^{N-1}\frac{a_j(\lambda(x))}{\lambda(x)^j}
+ +\bigO\!\left(\lambda(x)^{-N}\right)
+ \;}\qquad(x\downarrow0).                                  \label{eq:all-orders-log}
 \end{equation}
-where $\mathrm D$ is differentiation in the phase variable.  The operators $\mathrm D/L-k$ commute, since
-$(\mathrm D/L-j)(\mathrm D/L-k)$ is symmetric in $j$ and $k$, so the homogeneous part of the solution is the
-falling-factorial operator $\prod_{k=1}^{n}(\mathrm D/L-k)$ applied to $\mathcal Z_{0}$, and each inhomogeneous
-constant is an eigenvector of the remaining factors.  Carrying this out gives a closed form.
+The precise formal statement is
+\lean{log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion}; its finite-remainder
+forms are
+\lean{log_fabius_sub_sharpLambertExpansion_isBigO} and
+\lean{log_fabius_sub_sharpLambertExpansion_isBigO_negLog} in
+\path{FabiusFullAsymptoticExpansion.lean}.
 
-\begin{theorem}[Closed form of the jets]
-\label{thm:as-jet-closed-form}
-Let $c(n,m)$ be defined by
-\begin{equation}
- \prod_{k=1}^{n}(z-k)=\sum_{m=0}^{n}c(n,m)z^{m}.          \label{eq:as-jet-weights}
-\end{equation}
-Then for every $n\ge0$,
+The coefficients are constructive rather than existential.  The formal development
+identifies the jet weights as coefficients of
+\[
+ \prod_{k=0}^{n-1}\bigl(X-(k+1)\bigr),
+\]
+proves closed forms for the periodic and bounded exponent jets, and gives recursive
+exponent-polynomial identities.  The exact declarations are
+\lean{negativeLaplaceJetPolynomial_eq_prod},
+\lean{negativeLaplaceJetStirling_eq_coeff},
+\lean{negativeLaplacePeriodicJet_eq_closedForm},
+\lean{negativeLaplaceBoundedExponentJet_eq_closedForm},
+\lean{negativeLaplaceExponentCoefficient_succ_eq}, and
+\lean{negativeLaplaceExponentPolynomial_succ_eq}.  This coefficient-of-a-product
+description is the proved statement; no identification with an external Stirling-number
+API is asserted here.
+
+The algebraic conversion between relative-mass and logarithmic coefficients is normalized
+at every index rather than only asymptotically.  If \(\operatorname{ExpCoeff}\) and
+\(\operatorname{LogCoeff}\) denote the formal recurrences \lean{expCoeff} and
+\lean{logCoeff}, then
 \begin{align}
- \mathcal Z_{n}(u)&=(-1)^{n}n!\left(\frac12+\frac{\mathcal H_n}{L}\right)
-   +\sum_{m=0}^{n}c(n,m)\,\frac{\Psi^{(m+1)}(u)}{L^{m+1}},  \label{eq:as-jet-p}\\
- \widetilde{\mathcal Z}_{n}(u)&=(-1)^{n}n!\left(\frac{\mathcal H_n}{L}-\frac12\right)
-   +\sum_{m=0}^{n}c(n,m)\,\frac{\Psi^{(m+1)}(u)}{L^{m+1}},  \label{eq:as-jet-d}
+ \operatorname{ExpCoeff}(\operatorname{LogCoeff}(a))_n
+  &=\begin{cases}1,&n=0,\\a_n,&n>0,\end{cases} \notag\\
+ \operatorname{LogCoeff}(\operatorname{ExpCoeff}(E))_n
+  &=\begin{cases}0,&n=0,\\E_n,&n>0.\end{cases}              \label{eq:saddle-coefficient-normalization}
 \end{align}
-where $\widetilde{\mathcal Z}_{n}=\mathcal Z_{n}+(-1)^{n+1}n!$ are the bounded exponent jets.  The polynomial in
-\eqref{eq:as-jet-weights} is monic of degree exactly $n$.
-\end{theorem}
+These are \lean{expCoeff_logCoeff_eq_ite} and
+\lean{logCoeff_expCoeff_eq_ite}; the corresponding identities of formal power series are
+\lean{expSeries_logCoeff_eq_massSeries_normalize_zero} and
+\lean{logSeries_expCoeff_eq_exponentSeries_normalize_zero} in
+\path{SaddleLogExpansionAlgebra.lean} and
+\path{SaddleLogExpansionPowerSeries.lean}.
 
-In terms of these jets the exponent polynomials collapse: the $m$th one is
-\begin{equation}
- \Xi_m(u,v)=\ii^{m}\left(\frac{\widetilde{\mathcal Z}_{m-1}(u)\,v^{m}}{m!}
-   +\frac{(-1)^{m+1}v^{m+2}}{m+2}\right),                  \label{eq:as-exponent-collapse}
-\end{equation}
-with no factorial surviving in the second term.  Substituting
-\eqref{eq:as-jet-d} therefore exhibits every $A_j$ as a finite polynomial in
-$\Psi',\ldots,\Psi^{(2j)}$ with coefficients in $\Q[1/L]$, and hence, through
-\eqref{eq:Psi-Fourier}, as an explicit Gamma--zeta Fourier object.  This is what makes
-\Cref{thm:as-leading-derivative} below a statement about a formula rather than about a
-recursion.
-
-\begin{warning}[Which Stirling numbers]
-\label{warn:as-stirling-shift}
-The weights \eqref{eq:as-jet-weights} are signed Stirling numbers of the first kind
-\emph{shifted by one in each index}.  With the standard convention
-$x(x-1)\cdots(x-n+1)=\sum_k s(n,k)x^k$, multiplying \eqref{eq:as-jet-weights} by $z$ gives
-$\prod_{k=0}^{n}(z-k)$, whence
-\begin{equation}
- c(n,m)=s(n+1,m+1)=(-1)^{n-m}\mathfrak s(n+1,m+1),         \label{eq:as-stirling-shift}
-\end{equation}
-with $\mathfrak s$ the unsigned numbers already used in \eqref{eq:as-stirling-form}.  The
-shift is not cosmetic.  One has $s(n,0)=0$ for every $n\ge1$, whereas
-$c(n,0)=\prod_{k=1}^{n}(-k)=(-1)^{n}n!$, and that constant column is precisely what carries
-the harmonic-number term in \eqref{eq:as-jet-p}.  Reading $c(n,m)$ as $s(n,m)$ therefore
-deletes the entire non-oscillatory part of the jet.  Explicitly,
-\begin{equation*}
- c(2,\cdot)=(2,-3,1),\quad s(2,\cdot)=(0,-1,1);
- \qquad
- c(3,\cdot)=(-6,11,-6,1),\quad s(3,\cdot)=(0,2,-3,1).
-\end{equation*}
-\end{warning}
-
-\begin{remark}
-\Cref{thm:as-jet-closed-form} and \eqref{eq:as-exponent-collapse}, together with the
-monicity and degree statement, are machine-checked in the formal development.  The
-identification \eqref{eq:as-stirling-shift} is elementary and is verified here; note that it
-was the one item in this circle of results that neither a compiler nor a numerical check
-could have caught, since every number in sight is computed from the product
-\eqref{eq:as-jet-weights} and never from the name.
-\end{remark}
-
-Written in the jets, the first two coefficients are far shorter than in the derivatives of
-$\Psi$:
-\begin{align}
- A_1&=-\frac{\widetilde{\mathcal Z}_0^{2}}{2}-\widetilde{\mathcal Z}_0
-      -\frac{\widetilde{\mathcal Z}_1}{2}-\frac1{12},      \label{eq:as-A1-jets}\\
- A_2&=\frac1{24}\Bigl(8\widetilde{\mathcal Z}_0^{3}
-      +12\widetilde{\mathcal Z}_0^{2}\widetilde{\mathcal Z}_1
-      +12\widetilde{\mathcal Z}_0^{2}
-      +48\widetilde{\mathcal Z}_0\widetilde{\mathcal Z}_1
-      +12\widetilde{\mathcal Z}_0\widetilde{\mathcal Z}_2                 \notag\\
-   &\hspace{3.2em}
-      +6\widetilde{\mathcal Z}_1^{2}+24\widetilde{\mathcal Z}_1
-      +20\widetilde{\mathcal Z}_2+3\widetilde{\mathcal Z}_3\Bigr).        \label{eq:as-A2-jets}
-\end{align}
-Both are machine-checked.  Expanding \eqref{eq:as-A1-jets} through \eqref{eq:as-jet-d}
-reproduces \eqref{eq:A1} exactly: the terms in $\Psi'$ cancel, and the constants collapse to
-$1/24+1/(2L)$.  That is a useful check in its own right, because \eqref{eq:A1} predates the
-jet parametrization and so is an independent anchor for it.
-
-These forms also make \Cref{thm:as-leading-derivative} below legible: the top jet enters
-\eqref{eq:as-A1-jets} with coefficient $-\tfrac12$ and \eqref{eq:as-A2-jets} with
-coefficient $\tfrac3{24}=\tfrac18$, which are $(-1)^{j}/(2^{j}j!)$ at $j=1$ and $j=2$.
-
-\subsection{Every coefficient in closed form}
-\label{subsec:as-general-coefficient}
-
-With the jets solved, the remaining steps are pure algebra and can be carried out once and
-for all, replacing the recursion \eqref{eq:log-coefficient-recurrence} by a formula.  Write
-$(m_1,\ldots,m_r)\vDash N$ for a composition of $N$ into $r$ positive parts, as in
-\Cref{subsec:inverse-dyadic-compositions}.
-
-\begin{theorem}[Explicit saddle mass coefficients]
-\label{thm:as-mass-coefficients}
-Let $1+\sum_{j\ge1}a_j(u)\lambda^{-j}$ be the normalized saddle mass.  Then for $j\ge1$,
-\begin{align}
- a_j(u)=(-1)^{j}\sum_{r=1}^{2j}\frac1{r!}
-   \sum_{(m_1,\ldots,m_r)\vDash 2j}\ \sum_{S\subseteq\{1,\ldots,r\}}
-   \bigl(2j+2|S|-1\bigr)!!                                 \notag\\
-   \times\prod_{i\in S}\frac{(-1)^{m_i+1}}{m_i+2}
-   \prod_{i\notin S}\frac{\widetilde{\mathcal Z}_{m_i-1}(u)}{m_i!}.
-                                                          \label{eq:as-mass-coefficients}
-\end{align}
-\end{theorem}
-
-The set $S$ records which of the two monomials of \eqref{eq:as-exponent-collapse} is taken
-from each factor: $i\in S$ selects the universal tail $v^{m_i+2}/(m_i+2)$ and $i\notin S$
-selects the jet term.  The total degree is then $2j+2|S|$, always even, and the double
-factorial is its Gaussian moment.  The prefactor is $\ii^{2j}$.
-
-\begin{theorem}[Explicit logarithmic coefficients]
-\label{thm:as-log-coefficients}
-With $a_0=1$, for every $j\ge1$,
-\begin{equation}
- A_j(u)=\sum_{r=1}^{j}\frac{(-1)^{r-1}}{r}
-   \sum_{(q_1,\ldots,q_r)\vDash j}a_{q_1}(u)\cdots a_{q_r}(u).
-                                                          \label{eq:as-log-coefficients}
-\end{equation}
-\end{theorem}
-
-Substituting \eqref{eq:as-jet-d} into these two leaves no recursion anywhere: every $A_j$ is
-a finite expression with rational coefficients in $1/L$ and $\Psi'(u),\ldots,\Psi^{(2j)}(u)$.
-Three structural facts follow immediately.  No derivative beyond $\Psi^{(2j)}$ occurs,
-because the highest jet reached at order $2j$ is $\widetilde{\mathcal Z}_{2j-1}$.  Every
-$A_j$ is smooth, one-periodic and bounded, being a polynomial in such functions.  And the
-mean of $A_j$ is its $\Psi$-free part plus the means of its terms of degree two and higher,
-which is the content of \Cref{warn:as-products}.
-
-\begin{remark}
-Unlike \Cref{thm:as-jet-closed-form}, these two are not machine-checked.  They were verified
-symbolically against the recursions they replace for $j\le3$, with identically vanishing
-residuals, and \eqref{eq:as-mass-coefficients} is checked here at $j=1$: it returns
-$-\widetilde{\mathcal Z}_0^{2}/2-\widetilde{\mathcal Z}_0-\widetilde{\mathcal Z}_1/2-1/12$,
-which is \eqref{eq:as-A1-jets}, and $A_1=a_1$.
-\end{remark}
-
-For reference, the $\Psi$-free parts of the first four coefficients --- the values obtained
-by setting $\Psi\equiv0$, which by \Cref{warn:as-products} are close to but not equal to the
-means --- are
-\begin{center}
-\begin{tabular}{@{}clr@{}}
-\toprule
-$j$ & $\Psi$-free part of $A_j$ & value\\
-\midrule
-$1$ & $\dfrac1{24}+\dfrac1{2L}$ & $0.7630141871$\\[0.6em]
-$2$ & $\dfrac1{4L^{2}}$ & $0.5203422453$\\[0.6em]
-$3$ & $-\dfrac7{2880}-\dfrac1{24L}-\dfrac1{4L^{2}}+\dfrac1{6L^{3}}$ & $-0.0824216430$\\[0.6em]
-$4$ & $\dfrac{-L^{3}-72L^{2}-816L+144}{1152L^{4}}$ & $-1.7167954639$\\
-\bottomrule
-\end{tabular}
-\end{center}
-The order-two entry is unexpectedly clean: it is exactly $1/(4\log^{2}2)$, with no rational
-term and no term in $1/L$.
-
-
-\subsection{The phase to all orders}
-\label{subsec:as-phase-all-orders}
-
-The proof of the corrected elementary expansion \eqref{eq:corrected-elementary} appeals to
-the lower-branch Lambert expansion without displaying it, even though the precision of that
-expansion is what controls the residual.  We display it here, in the general variable, and
-state the all-orders form.
-
-Throughout, $S=-\log x$ and $a=\log L$ as in \eqref{eq:S-m-a}, and we write
-\begin{equation}
- z=\log S-\log L=m-a,                                     \label{eq:as-z-def}
-\end{equation}
-so that $z$ is the second logarithm of the primary scale measured in units of $L$.  Taking
-logarithms in \eqref{eq:lambda-equation} gives the equation that defines the phase,
-\begin{equation}
- L\lambda-\log\lambda=S,
- \qquad\text{equivalently}\qquad
- L\lambda-\log(L\lambda)=S-a.                             \label{eq:as-phase-equation}
-\end{equation}
-
-\begin{theorem}[Lambert phase expansion]
-\label{thm:as-phase-expansion}
-As $x\downarrow0$,
-\begin{equation}
- L\lambda(x)=S+z+\frac{z}{S}
- +\frac{z-\tfrac12z^{2}}{S^{2}}
- +\frac{z-\tfrac32z^{2}+\tfrac13z^{3}}{S^{3}}
- +\bigO\!\left(\frac{(1+|z|)^{4}}{S^{4}}\right).          \label{eq:as-phase-four-terms}
-\end{equation}
-More generally, there are unique polynomials $p_j$, with $\deg p_j=j$ and $p_j(0)=0$, such
-that for every $N\ge1$
-\begin{equation}
- \boxed{
- L\lambda(x)=S+z+\sum_{j=1}^{N-1}\frac{p_j(z)}{S^{j}}
- +\bigO\!\left(\frac{(1+|z|)^{N}}{S^{N}}\right).}         \label{eq:as-phase-all-orders}
-\end{equation}
-The first three are
-\begin{equation}
- p_1(z)=z,\qquad
- p_2(z)=z-\frac{z^{2}}{2},\qquad
- p_3(z)=z-\frac{3z^{2}}{2}+\frac{z^{3}}{3}.               \label{eq:as-phase-polynomials}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-Write $w=L\lambda$.  By \eqref{eq:as-phase-equation}, $w=S+\log w-a$.  Substituting
-$w=S+z+\delta$ and using $\log(S+z+\delta)=\log S+\log\bigl(1+(z+\delta)/S\bigr)$ together
-with $z=\log S-a$ turns the equation into the fixed-point form
-\begin{equation}
- \delta=\log\left(1+\frac{z+\delta}{S}\right).            \label{eq:as-delta-fixed-point}
-\end{equation}
-Since $\lambda\to\infty$ and $z=\smallo(S)$, one has $\delta\to0$, and
-\eqref{eq:as-delta-fixed-point} may be solved by successive substitution.  Expanding the
-logarithm,
-\begin{equation*}
- \delta=\frac{z+\delta}{S}-\frac{(z+\delta)^{2}}{2S^{2}}
- +\frac{(z+\delta)^{3}}{3S^{3}}-\cdots,
-\end{equation*}
-and inserting $\delta=p_1(z)S^{-1}+p_2(z)S^{-2}+\cdots$ determines the $p_j$ recursively:
-comparing coefficients of $S^{-1}$ gives $p_1=z$; of $S^{-2}$ gives
-$p_2=p_1-z^{2}/2=z-z^{2}/2$; of $S^{-3}$ gives
-\begin{equation*}
- p_3=p_2-z^{2}+\frac{z^{3}}{3}=z-\frac{3z^{2}}{2}+\frac{z^{3}}{3}.
-\end{equation*}
-At each stage the coefficient of $S^{-j}$ on the right involves only $p_1,\ldots,p_{j-1}$, so
-the recursion is triangular and the $p_j$ are unique; an induction on $j$ shows
-$\deg p_j=j$, with leading coefficient $(-1)^{j+1}/j$ and $p_j(0)=0$.  The remainder bound
-follows by tracking the same recursion one step further, all terms at level $N$ being
-polynomials of degree $N$ in $z$.  Truncating after $j=3$ gives
-\eqref{eq:as-phase-four-terms}.
-\end{proof}
-
-\begin{remark}[Closed form of the coefficients]
-\label{rem:as-stirling}
-The recursion has the classical solution in unsigned Stirling numbers of the first kind
-$\mathfrak s(j,k)$ familiar from the asymptotic series of Lambert $W$ \cite{corless1996}:
-\begin{equation}
- p_j(z)=\sum_{m=1}^{j}\frac{(-1)^{m+1}}{m!}\,\mathfrak s(j,\,j-m+1)\,z^{m}.
-                                                          \label{eq:as-stirling-form}
-\end{equation}
-For $j=4$ this gives $p_4(z)=z-3z^{2}+\tfrac{11}{6}z^{3}-\tfrac14z^{4}$, and for $j=5$,
-$p_5(z)=z-5z^{2}+\tfrac{35}{6}z^{3}-\tfrac{25}{12}z^{4}+\tfrac15z^{5}$.
-\end{remark}
-
-\begin{remark}[Substituting a truncated phase is a separate step]
-\label{rem:as-truncation-warning}
-It is tempting to insert \eqref{eq:as-phase-all-orders} into the all-orders formula
-\eqref{eq:all-orders-log} and read off a purely elementary logarithmic expansion of
-$\log F(x)$ to any order.  That step needs its own argument, for two reasons that reinforce
-each other.
-
-First, the main exponent contains $-L\lambda^{2}/2$, so an error $\delta\lambda$ in the phase
-propagates to an error of size about $L\lambda\,\delta\lambda$ in the answer; the phase must
-therefore be known one order beyond the naive count, which is precisely why the fourth term of
-\eqref{eq:as-phase-four-terms} is required to reach the residual $\bigO(1/S)$ claimed in
-\eqref{eq:corrected-elementary}.
-
-Second, the truncation error in \eqref{eq:as-phase-all-orders} is
-$\bigO\bigl((1+|z|)^{N}S^{-N}\bigr)$, not $\bigO(S^{-N})$; the factor $(1+|z|)^{N}$ is a
-power of $\log\log(1/x)$ and is not absorbed by the stated order.  When the truncated phase is
-substituted into $\Psi$ and into the coefficients $A_j$, these logarithmic factors are
-inherited and then multiplied by the amplification just described.  The periodic function is
-smooth with bounded derivatives, so it is Lipschitz in the abstract; but the error one is
-allowed to make in its argument is exactly of the same order as the terms being claimed, so
-Lipschitz control by the truncation error alone does not close the estimate.  A genuine
-all-orders elementary statement requires composing the two expansions with matched precision
-and re-collecting the resulting cross terms, and that composition is not assumed silently
-here.  Keeping the exact phase $\lambda(x)$ inside $\Psi$ and inside every $A_j$, as in
-\eqref{eq:all-orders-log}, avoids the entire issue.
-\end{remark}
-
-Finally, \eqref{eq:as-phase-four-terms} specializes correctly to the dyadic scale.  Put
-$x=2^{-t}$, so that $S=Lt$ and, by \eqref{eq:as-z-def}, $z=\log(Lt)-\log L=\log t$.  Dividing
-\eqref{eq:as-phase-four-terms} by $L$ gives
-\begin{equation}
- \lambda_t=t+\frac{\log t}{L}+\frac{\log t}{L^{2}t}
- +\frac{\log t-\tfrac12\log^{2}t}{L^{3}t^{2}}
- +\frac{\log t-\tfrac32\log^{2}t+\tfrac13\log^{3}t}{L^{4}t^{3}}
- +\bigO\!\left(\frac{\log^{4}t}{t^{4}}\right),            \label{eq:as-phase-dyadic}
-\end{equation}
-whose first four terms are exactly \eqref{eq:lambda-t-expansion}, and whose fourth term is
-the explicit form of the error term displayed there.
-
-
-\subsection{A numerical check at reciprocal powers}
-\label{subsec:as-numerics}
-
-The values $F(2^{-n})$ of \eqref{eq:F-inverse-power} are exact rationals, obtained from the
-half-moment recurrence \eqref{eq:d-recurrence} without any floating-point step, so they give
-an unusually clean test of \eqref{eq:first-corrected-asymptotic}.  For example
-\begin{equation}
- F(2^{-10})=\frac{134926369}{1246394851358539387238350848000},  \label{eq:as-F-ten}
-\end{equation}
-whose logarithm is $-50.5775682823\ldots$, is computed in exact arithmetic and then converted
-to a high-precision float once, at the end.
-
-\Cref{tab:as-numerics} reports, for $n=10,20,40$: the exact Lambert coordinate $\lambda_n$
-solving \eqref{eq:lambda-t-fixed}; the residual $\log F(2^{-n})-\mathcal M(2^{-n})$ against
-the main term \eqref{eq:sharp-main-lambda}; that residual multiplied by $\lambda_n$; and the
-predicted first coefficient $A_1(\lambda_n)$ of \eqref{eq:A1}.  All entries were recomputed
-from the definitions; the periodic function and its derivatives were evaluated from the
-Gamma--zeta Fourier series \eqref{eq:Psi-Fourier}, and independently from the defining series
-\eqref{eq:P-def}, the two agreeing to fifteen digits.
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{@{}rrrrr@{}}
-\toprule
-$n$ & $\lambda_n$ & $\log F(2^{-n})-\mathcal M$ &
-$\lambda_n\bigl(\log F(2^{-n})-\mathcal M\bigr)$ & $A_1(\lambda_n)$\\
-\midrule
-$10$ & $13.78503056$ & $0.05801333439$ & $0.7997155875$ & $0.7629678468$\\
-$20$ & $24.62186833$ & $0.03182756966$ & $0.7836542295$ & $0.7629268731$\\
-$40$ & $45.50804986$ & $0.01701388954$ & $0.7742689337$ & $0.7629490545$\\
-\bottomrule
-\end{tabular}
-\caption{Exact-rational test of the first saddle correction at $x=2^{-n}$.  The third column
-tends to zero; the fourth, which is the third scaled by the exact Lambert coordinate, tends
-to the periodic coefficient $A_1$ of the fifth column rather than to any other constant.}
-\label{tab:as-numerics}
-\end{table}
-
-Three things are visible in the table.  First, the unscaled residual does tend to zero, which
-is \eqref{eq:sharp-log-asymptotic}.  Second, the scaled residual does not tend to zero and
-does not grow: it stays near $0.78$, which is the content of
-\eqref{eq:first-corrected-asymptotic}, and it converges to the value of the periodic
-coefficient $A_1$ evaluated at the exact phase, not to a fitted constant of its own.  The
-differences between the fourth and fifth columns are $0.03675$, $0.02073$, $0.01132$; scaled
-by $\lambda_n$ they are $0.507$, $0.510$, $0.515$, confirming the remainder
-$\bigO(\lambda^{-2})$ of \eqref{eq:first-corrected-asymptotic} and showing that the next
-coefficient $A_2$ is of size about one half.
-
-\begin{warning}
-That last observation is a trap, and it is worth spelling out because the trap is generic to
-this whole expansion.  Extending the same computation along $n=10,20,40,80,160,320$ gives
-scaled second differences $0.5066$, $0.5103$, $0.5151$, $0.5179$, $0.5193$, $0.5199$, which
-look like a sequence converging to a constant near $0.520$.  They are not.  The theorem of
-\Cref{sec:full-asymptotic} says every coefficient $A_j$ is one-periodic in $\lambda$, and
-$A_2$ is no exception.  Doubling $n$ increases $\log_2\lambda$ by roughly one, so
-$\lambda_n\bmod 1$ returns to nearly the same place; a geometric sample of $n$ therefore
-holds the phase almost fixed and displays only the residual drift in $\lambda$.  Sampling
-$n$ densely instead separates the two effects.  Over $300\le n\le400$, where $\lambda$ moves
-by only a third, the quantity
-$\lambda^2\bigl(\log F-\mathcal M-A_1(\lambda)/\lambda\bigr)$ sweeps from $0.52105$ down to
-$0.51810$ and back up, tracking $\lambda\bmod1$, a spread of $2.95\times10^{-3}$.  Held at
-one phase instead and varied in magnitude, it moves by only $3.7\times10^{-4}$ from
-$n=173$ to $n=352$, consistent with an $\bigO(\lambda^{-1})$ correction.  So $A_2$ is a
-genuinely nonconstant periodic function.
-
-Neither of those sampled numbers should be mistaken for a property of $A_2$ itself, and the
-distinction is worth drawing because it is the same trap one level down.  The sample covers
-$0.268\le\lambda\bmod1\le0.675$, which is $41\%$ of a period and misses the maximum; and it
-carries an $A_3/\lambda$ displacement of about $-3\times10^{-4}$.  Computed from the
-coefficient rather than from the sample, $A_2$ has
-\begin{equation}
- \max A_2=0.522282117,\quad \min A_2=0.518402361,
- \qquad \langle A_2\rangle=0.5203422413,                   \label{eq:as-A2-stats}
-\end{equation}
-attained at $\lambda\bmod1=0.101128$ and $0.601131$, so the true peak-to-peak swing is
-$3.880\times10^{-3}$ rather than the $2.95\times10^{-3}$ visible in the window.  The measured
-minimum at $0.602$ does agree with the true one.
-
-The amplitude is not an accident, and its growth with $j$ is governed by an exact law, which
-is the subject of \Cref{subsec:as-leading-derivative} below.  Any numerical extraction of a
-later coefficient must fix the phase first.
-\end{warning}
-
-\subsection{The highest derivative in each coefficient}
-\label{subsec:as-leading-derivative}
-
-The coefficients $A_j$ of \eqref{eq:all-orders-log} are polynomials in $L^{-1}$ and in the
-derivatives of $\Psi$.  Two facts about them are worth isolating, because together they
-explain both the size of the oscillation seen above and the ultimate divergence of the
-series.
-
-\begin{theorem}[Leading-derivative law]
-\label{thm:as-leading-derivative}
-For every $j\ge1$ the coefficient $A_j$ involves no derivative of $\Psi$ beyond the
-$2j$th, that derivative occurs linearly, and its coefficient is exactly
-\begin{equation}
- \frac{(-1)^{j}}{2^{j}\,j!\,L^{2j}}\,\Psi^{(2j)}(u).       \label{eq:as-leading-derivative}
-\end{equation}
-\end{theorem}
-
-\begin{proofidea}
-The $(2j)$th derivative reaches $A_j$ through exactly one route.  It enters the exponent
-expansion only in the top exponent polynomial, and there linearly, with coefficient
-$\ii^{2j}/(2j)!=(-1)^{j}/(2j)!$.  The Gaussian contraction replaces $v^{2j}$ by the moment
-$(2j-1)!!$, and the passage from the saddle mass to its logarithm leaves a linear term
-untouched.  The stated constant is then the identity
-\begin{equation*}
- \frac{(2j-1)!!}{(2j)!}=\frac1{2^{j}\,j!},
-\end{equation*}
-which is $(2j)!=2^{j}j!\,(2j-1)!!$.
-\end{proofidea}
-
-The law is visible in the coefficients that have been computed.  For $j=1$ it gives
-$-\Psi''/(2L^{2})$, which is the $\Psi''$ term of \eqref{eq:A1}; for $j=2$ it gives
-$+\Psi^{(4)}/(8L^{4})$; for $j=3$, $-\Psi^{(6)}/(48L^{6})$; for $j=4$,
-$+\Psi^{(8)}/(384L^{8})$.
-
-\begin{remark}[What is formalized here, and what is not]
-\label{rem:as-leading-derivative-status}
-The substance of \Cref{thm:as-leading-derivative} is machine-checked for general $j$, and
-not merely verified in the four cases just listed.  What the formal development proves is
-the statement about the Gaussian \emph{mass} coefficient: for an arbitrary jet sequence and
-every $j$, the order-$(j+1)$ mass coefficient depends on the top jet
-$\widetilde{\mathcal Z}_{2j+1}$ exactly linearly, with coefficient
-$(-1)^{j+1}/\bigl(2^{j+1}(j+1)!\bigr)$.  The engine of that proof is the observation that the
-exponential recurrence is affine in its top exponent coefficient, which is what makes the
-statement provable at once for all orders rather than checkable one order at a time.
-
-The passage from the mass coefficient to the logarithmic coefficient $A_j$ is not
-formalized.  It is immediate --- taking the formal logarithm subtracts from the order-$j$
-mass coefficient only products of strictly lower mass coefficients, and no such product
-reaches $\widetilde{\mathcal Z}_{2j-1}$, so the linear term survives unchanged --- but it is
-an elementary observation and the article does not claim otherwise.
-\end{remark}
-
-\begin{corollary}[Growth of the oscillation]
-\label{cor:as-amplitude-growth}
-Differentiating multiplies the first Fourier mode by $(2\pi)^{2j}$, so that mode of
-$\Psi^{(2j)}$ has amplitude $2|\widehat\Psi(1)|(2\pi)^{2j}$, and the leading term
-\eqref{eq:as-leading-derivative} therefore contributes an oscillation of amplitude
-\begin{equation}
- 2|\widehat\Psi(1)|\,\frac1{j!}\left(\frac{2\pi^{2}}{L^{2}}\right)^{\!j},
- \qquad \frac{2\pi^{2}}{L^{2}}=41.0845769104.              \label{eq:as-amplitude-law}
-\end{equation}
-\end{corollary}
-
-Numerically this predicts $8.73\times10^{-5}$, $1.79\times10^{-3}$, $2.46\times10^{-2}$ and
-$2.52\times10^{-1}$ for $j=1,2,3,4$.
-
-\begin{warning}
-Equation~\eqref{eq:as-amplitude-law} is a growth rate, not the amplitude.  It uses only the
-top derivative; the lower ones contribute in phase and inflate the true swing by a factor
-that itself grows.  Measuring amplitudes --- half the peak-to-peak swing, on the same
-convention as \eqref{eq:as-amplitude-law} itself --- the true values are
-$8.73\times10^{-5}$, $1.94\times10^{-3}$, about $3\times10^{-2}$ and about $0.41$ for
-$j=1,2,3,4$, against the estimates $8.73\times10^{-5}$, $1.79\times10^{-3}$,
-$2.46\times10^{-2}$, $2.52\times10^{-1}$.  The ratio of truth to estimate drifts $1.00$,
-$1.08$, about $1.2$, about $1.6$.  Use \eqref{eq:as-amplitude-law} to see how fast the
-oscillation grows, never to size a particular coefficient.
-\end{warning}
-
-\begin{warning}[Products of derivatives are not negligible either]
-\label{warn:as-products}
-It is tempting to argue that since $\Psi$ oscillates by only about $2\times10^{-6}$, products
-of its derivatives are of order $4\times10^{-12}$ and may be dropped.  That reasoning
-contradicts the one above and is false.  A mean of a product is
-\begin{equation}
- \bigl\langle\Psi^{(a)}\Psi^{(b)}\bigr\rangle
- =\sum_{k\ne0}(2\pi\ii k)^{a}(-2\pi\ii k)^{b}\bigl|\widehat\Psi(k)\bigr|^{2},
-                                                          \label{eq:as-product-mean}
-\end{equation}
-which carries the same amplification $(2\pi k)^{a+b}$ as everything else, and it vanishes
-unless $a+b$ is even.  Numerically
-$\langle(\Psi')^{2}\rangle=8.917\times10^{-11}$ but
-$\langle(\Psi''')^{2}\rangle=1.390\times10^{-7}$, four decades larger.
-
-The practical consequence is that the $\Psi$-free part of $A_j$ is \emph{not} its mean.  The
-means themselves are available in closed form.  Every mean of a derivative vanishes, and
-integration by parts over a period kills or pairs the rest:
-\begin{equation}
- \langle\Psi'\Psi''\rangle=0,\qquad
- \langle(\Psi')^{2}\Psi''\rangle=0,\qquad
- \langle\Psi'\Psi'''\rangle=-\langle(\Psi'')^{2}\rangle,   \label{eq:as-parts-identities}
-\end{equation}
-the first two because each integrand is the derivative of a periodic function.  Applying
-these to \eqref{eq:A1} and to the corresponding expression one order further leaves
-\begin{align}
- \langle A_1\rangle&=\frac1{24}+\frac1{2L}
-   -\frac{\langle(\Psi')^{2}\rangle}{2L^{2}},               \label{eq:as-mean-A1}\\
- \langle A_2\rangle&=\frac1{4L^{2}}
-   -\frac{\langle(\Psi')^{2}\rangle}{2L^{3}}
-   -\frac{\langle(\Psi'')^{2}\rangle}{4L^{4}}
-   -\frac{\langle(\Psi')^{3}\rangle}{6L^{3}}.               \label{eq:as-mean-A2}
-\end{align}
-Both are exact.  With
-$\langle(\Psi')^{2}\rangle=8.917038\times10^{-11}$,
-$\langle(\Psi'')^{2}\rangle=3.520305\times10^{-9}$ and
-$\langle(\Psi')^{3}\rangle=1.115006\times10^{-21}$ they give
-$\langle A_1\rangle=0.7630141870184$ and $\langle A_2\rangle=0.5203422413049$.
-
-The cubic term in \eqref{eq:as-mean-A2} is $-5.58\times10^{-22}$, twelve orders below the
-smallest term beside it, and it is the only one with no partner to cancel against.  It is
-kept because \eqref{eq:as-mean-A2} is an identity and not an estimate; dropping it would
-change the equals sign into an approximation, which is a different claim.
-
-The gap between the mean and the $\Psi$-free part grows with $j$ like everything else here:
-it is $-9.3\times10^{-11}$, $-3.9\times10^{-9}$ and $-1.14\times10^{-7}$ at $j=1,2,3$, so it
-is invisible at $j=1$ and reaches the seventh digit by $j=3$.  The $\Psi$-free part remains
-the right practical value for the mean, but the reason is a ratio and not an absolute bound:
-at each order it sits four to five decades below the oscillation of $A_j$ itself.
-\end{warning}
-
-The same two facts explain why the expansion \eqref{eq:all-orders-log} is asymptotic and not
-convergent, and the mechanism is worth naming because it is not the usual one.  Stirling's
-estimate for $\Gamma$ on vertical lines gives
-\begin{equation}
- |\widehat\Psi(k)|\asymp\e^{-\pi^{2}k/L},
- \qquad \frac{\pi^{2}}{L}=14.2385595,                      \label{eq:as-mode-decay}
-\end{equation}
-so the Fourier modes of $\Psi$ die extremely fast; already
-$|\widehat\Psi(2)|/|\widehat\Psi(1)|\approx6.3\times10^{-7}$.  But mode $k$ enters $A_j$
-amplified by $(2\pi k)^{2j}/(2^{j}j!L^{2j})$, so its contribution behaves like
-$\exp\bigl(2j\log k-\pi^{2}k/L\bigr)$, which is maximized at $k\approx0.14j$.  For small $j$
-the first mode dominates and the coefficients are minute; past roughly $j=8$ the higher modes
-take over and $\sup|A_j|$ grows faster than geometrically.  The divergence of the expansion is
-therefore caused by the \emph{high-frequency} content of the periodic correction, not by the
-factorial growth one expects from a saddle-point expansion.  This paragraph is a size
-estimate, not a theorem.
-
-Third, and for honesty about what the table can and cannot show at these sizes: the periodic
-part of $A_1$ is minute.  The constant part $1/24+1/(2L)=0.7630141871$ of \eqref{eq:A1} is
-modulated by $-(\Psi''+(\Psi')^{2})/(2L^{2})$, whose amplitude is about $8.7\times10^{-5}$
-(the second derivative multiplies the first Fourier mode by $(2\pi)^{2}$),
-while $\Psi(\lambda_n)$ itself is $-1.13\times10^{-6}$, $-2.13\times10^{-6}$ and
-$-1.59\times10^{-6}$ at $n=10,20,40$.  These are far below the $\bigO(\lambda^{-2})$
-remainder at $n\le40$.  The table therefore confirms the size and value of the periodic
-coefficient $A_1$; it does not, by itself, isolate the oscillation.  The proof that the
-oscillation cannot be dropped is the subsequential-limit argument of
-\eqref{eq:false-uncorrected}, not a table.  The forward tail plays no role at all here: at
-$n=10$ the saddle radius is $r=\lambda_{10}2^{10}\approx1.41\times10^{4}$, so by
-\eqref{eq:as-tail-beyond} the term $E(r)$ is smaller than $10^{-6100}$.
-
-\section{Elementary log--log forms and the missing periodic term}
+\subsection{Recursive elementary re-expansion of the phase}
 \label{sec:elementary-asymptotic}
 
-Lambert $W$ gives the cleanest formula, but an expansion in elementary logarithms is useful
-for comparison with published displays.  It must, however, retain $\Psi$ at the exact Lambert
-phase.
-
-\subsection{The literal small-$x$ expansion}
-
-Put
+The exact Lambert phase can itself be expanded to arbitrary order.  With
+\[
+ T(x)=-\log_2x,
+\]
+write \(\mathcal L_N(x)\) for
+\lean{fabiusLambertLogarithmicApproximation}\((N,x)\).  This approximation is built from the
+recursively defined polynomials
+\lean{dyadicLambertDisplacementPolynomial}.  For every \(N\in\N\),
 \begin{equation}
- S=-\log x,\qquad m=\log S,\qquad a=\log L.                \label{eq:S-m-a}
+ \lambda(x)-\mathcal L_N(x)
+ =\bigO\!\left(T(x)^{-N}\right)
+ \qquad(x\downarrow0).                                     \label{eq:lambert-recursive-all-orders}
 \end{equation}
-Thus $S\to\infty$ as $x\downarrow0$.  Define the nonperiodic elementary expression
-\begin{align}
- \mathcal E_0(x)
-={}&-\frac{S^2}{2L}-\frac{Sm}{L}
- +\left(\frac12+\frac{1+a}{L}\right)S                     \notag\\
- &-\frac{m^2}{2L}+\frac{am}{L}
- +\frac{6\gamma^2+12\gamma_1-\pi^2-6a^2}{12L}
- -\frac{7L}{12}-\frac12\log\pi                           \notag\\
- &-\frac{m^2}{2LS}+\frac{am}{LS}.                         \label{eq:elementary-main}
-\end{align}
+This is
+\lean{fabiusLambertPhase_sub_logarithmicApproximation_isBigO}; the equivalent dyadic-scale
+form is \lean{dyadicLambertAllOrderRemainder_isBigO}.  Explicit coefficient polynomials
+are proved through index two, while higher orders are represented by the formal recursion.
 
-\begin{theorem}[Corrected elementary expansion]
-As $x\downarrow0$,
+The periodic term cannot simply be discarded from a sharp estimate.  If
+\(\mathcal M_{\mathrm{Wiki}}\) denotes the uncorrected elementary expression
+\lean{fabiusWikipediaElementaryMain}, then Lean proves that
+\(x\mapsto\log F(x)-\mathcal M_{\mathrm{Wiki}}(x)\) is not
+\(\bigO((-\log x)^{-1})\) as \(x\downarrow0\).
+This is \lean{log_fabius_sub_WikipediaElementaryMain_not_isBigO} in
+\path{FabiusSharpAsymptotic.lean}.  The obstruction is therefore a theorem, not a
+numerical diagnosis.
+
+\subsection{Three endpoint consequences already formalized}
+
+On the dyadic logarithmic scale, let
+\(g(t)=-\log F(2^{-t})\).  Then
 \begin{equation}
- \boxed{
- \log F(x)=\mathcal E_0(x)+\Psi(\lambda(x))
- +\bigO\!\left(\frac1{-\log x}\right).}                  \label{eq:corrected-elementary}
+ \lim_{t\to\infty}\frac{g(t)}{t^2}=\frac{L}{2}.             \label{eq:dyadic-quadratic-law}
 \end{equation}
-\end{theorem}
-
-\begin{proofidea}
-The standard lower-branch Lambert expansion solves
-$\lambda L-\log\lambda=S$ by successive substitution.  Substituting that expansion into
-\eqref{eq:sharp-main-lambda}, and retaining enough phase terms to control the amplified
-quadratic contribution, gives \eqref{eq:elementary-main}.  A coarse two-term approximation to
-$\lambda$ is insufficient: because the main exponent contains $-L\lambda^2/2$, an error
-$\delta\lambda$ contributes about $-L\lambda\delta\lambda$, so the phase must be known one
-order more accurately than a naive count suggests.  The fourth Lambert phase term in the
-formal proof is exactly what reduces the residual to $O(1/S)$.
-\end{proofidea}
-
-In the original variable $\ell=\log x<0$, the same expression is
-\begin{align}
- \mathcal E_0(x)
-={}&-\frac{\ell^2}{2L}+\frac{\ell\log(-\ell)}L
- -\left(\frac12+\frac{1+\log L}{L}\right)\ell             \notag\\
- &-\frac{\log^2(-\ell)}{2L}
- +\frac{\log L\,\log(-\ell)}L                             \notag\\
- &+\frac{6\gamma^2+12\gamma_1-\pi^2-6\log^2L}{12L}
- -\frac{7L}{12}-\frac12\log\pi                           \notag\\
- &+\frac{\log^2(-\ell)}{2L\ell}
- -\frac{\log L\,\log(-\ell)}{L\ell}.                   \label{eq:elementary-main-ell}
-\end{align}
-This is the literal elementary display formalized in the repository, with the periodic term
-added separately.
-
-\subsection{The dyadic logarithmic scale}
-
-Set $x=2^{-t}$ and let
+This is \lean{fabiusLogProfile_normalized_tendsto} in
+\path{FabiusLogSquaredAsymptotic.lean}.  On the original small-argument scale, for every
+\(c>0\),
 \begin{equation}
- \lambda_t=-\frac1L W_{-1}(-L2^{-t}).                      \label{eq:lambda-t}
+ \exp(-c/x)=o(F(x))\qquad(x\downarrow0).                     \label{eq:exp-inverse-little-o}
 \end{equation}
-Then $\lambda_t$ is the unique large solution of
+This is \lean{exp_neg_div_isLittleO_fabius} in
+\path{FabiusDecayComparison.lean}.  At the opposite endpoint, the exact global
+symmetry already proved in \eqref{eq:shape-symmetry-global} gives only the identity
 \begin{equation}
- \lambda_t-\log_2\lambda_t=t.                             \label{eq:lambda-t-fixed}
+ 1-F(1-x)=F(x).                                             \label{eq:right-endpoint-sym}
 \end{equation}
-Its first terms are
-\begin{equation}
- \lambda_t=t+\frac{\log t}{L}
- +\frac{\log t}{L^2t}
- +\frac{\log t-\tfrac12\log^2t}{L^3t^2}
- +\bigO\!\left(\frac{\log^3t}{t^3}\right).              \label{eq:lambda-t-expansion}
-\end{equation}
-Define
-\begin{align}
- \mathcal D_0(t)
-={}&-\frac L2t^2-t\log t+
- \left(1+\frac L2\right)t-\frac{\log^2t}{2L}+C_F
- -\frac{\log^2t}{2L^2t}.                                 \label{eq:dyadic-main}
-\end{align}
-
-\begin{theorem}[Corrected dyadic-scale expansion]
-As $t\to\infty$,
-\begin{equation}
- \boxed{
- \log F(2^{-t})=\mathcal D_0(t)+\Psi(\lambda_t)
- +\bigO(t^{-1}).}                                         \label{eq:dyadic-asymptotic}
-\end{equation}
-\end{theorem}
-
-The literal substitution of $x=2^{-t}$ into \eqref{eq:elementary-main} differs from
-$\mathcal D_0(t)$ by the explicit term
-\begin{equation}
- \frac{\log^2L}{2L^2t},                                   \label{eq:literal-dyadic-difference}
-\end{equation}
-which is itself $O(1/t)$.  Thus both nonperiodic displays are valid at the stated precision,
-but they are not algebraically identical.
-
-\subsection{Why the uncorrected formula is false at the claimed scale}
-
-Let $\mathcal M_0(x)=\mathcal M(x)-\Psi(\lambda(x))$ be the nonperiodic Lambert main.  From
-\eqref{eq:sharp-log-asymptotic},
-\begin{equation}
- \log F(x)-\mathcal M_0(x)=\Psi(\lambda(x))+O(1/\lambda(x)). \label{eq:uncorrected-residual}
-\end{equation}
-Since $\Psi$ is nonconstant, the right side does not tend to zero.
-
-\begin{proposition}[Failure without the periodic correction]
-The relation
-\begin{equation}
- \log F(x)=\mathcal M_0(x)+O(1/(-\log x))                  \label{eq:false-uncorrected}
-\end{equation}
- is false.  In fact $F(x)/\exp(\mathcal M_0(x))$ has distinct subsequential limits.
-\end{proposition}
-
-\begin{proof}
-Choose $u,v\in[0,1)$ with $\Psi(u)\ne\Psi(v)$.  Set
-\begin{equation*}
- \lambda_n=n+u,
- \qquad x_n=\lambda_n2^{-\lambda_n}.
-\end{equation*}
-Then $x_n\downarrow0$ and the exact Lambert phase of $x_n$ is $\lambda_n$.  Hence
-\begin{equation*}
- \log F(x_n)-\mathcal M_0(x_n)\longrightarrow\Psi(u).
-\end{equation*}
-The analogous sequence with phase $n+v$ tends to $\Psi(v)$.  Since
-$1/(-\log x)\to0$, the bound \eqref{eq:false-uncorrected} is impossible.  Exponentiating
-gives distinct ratio limits $\e^{\Psi(u)}$ and $\e^{\Psi(v)}$.
-\end{proof}
-
-Numerically the discrepancy is minute because the first Fourier mode has size about
-$10^{-6}$, but asymptotic equivalence is a limit statement, not a graphical tolerance.  A
-nonzero bounded oscillation cannot be hidden inside an error term that tends to zero.
-
-
-\subsection{The periodic correction is unique}
-\label{subsec:as-uniqueness}
-
-The previous subsection shows that the periodic term cannot be deleted.  A little more is
-true and is worth recording, because it removes the last escape route: the periodic term
-cannot be replaced either.  There is exactly one $1$-periodic function that makes the sharp
-formula correct, and it is $\Psi$.
-
-\begin{theorem}[Uniqueness of the periodic correction]
-\label{thm:as-uniqueness}
-Let $\mathcal M_0(x)=\mathcal M(x)-\Psi(\lambda(x))$ be the nonperiodic Lambert main term, and
-let $\widetilde\Psi:\R\to\R$ be continuous, $1$-periodic and of mean zero.  Suppose that
-\begin{equation}
- \log F(x)=\mathcal M_0(x)+\widetilde\Psi(\lambda(x))+\smallo(1)
- \qquad(x\downarrow0).                                    \label{eq:as-alt-periodic}
-\end{equation}
-Then $\widetilde\Psi=\Psi$ identically.
-\end{theorem}
-
-\begin{proof}
-By \eqref{eq:sharp-log-asymptotic} one has
-$\log F(x)=\mathcal M_0(x)+\Psi(\lambda(x))+\bigO(1/\lambda(x))$, and $\lambda(x)\to\infty$
-as $x\downarrow0$.  Subtracting \eqref{eq:as-alt-periodic} gives
-\begin{equation}
- \bigl(\Psi-\widetilde\Psi\bigr)(\lambda(x))\longrightarrow0
- \qquad(x\downarrow0).                                    \label{eq:as-difference-vanishes}
-\end{equation}
-
-Fix $t\in\R$ and, for integers $n$ with $n+t>1/L$, set
-\begin{equation}
- x_n=(n+t)\,2^{-(n+t)}.                                   \label{eq:as-phase-locked-sequence}
-\end{equation}
-Then $x_n\downarrow0$, and by \eqref{eq:lambda-equation} the number $n+t$ is a solution of
-$\lambda2^{-\lambda}=x_n$ on the branch where $\lambda>1/L$; since that solution is unique
-and equals $\lambda(x_n)$, the sequence has exact Lambert coordinate
-\begin{equation*}
- \lambda(x_n)=n+t.
-\end{equation*}
-This is the point of the construction: the sequence is chosen so that the Lambert coordinate,
-not the naive scale $\log_2(1/x_n)$, lands on a prescribed residue.  By $1$-periodicity,
-\begin{equation*}
- \bigl(\Psi-\widetilde\Psi\bigr)(\lambda(x_n))
- =\bigl(\Psi-\widetilde\Psi\bigr)(n+t)
- =\bigl(\Psi-\widetilde\Psi\bigr)(t)
-\end{equation*}
-for every $n$, so the left-hand side of \eqref{eq:as-difference-vanishes} is a constant
-sequence along $(x_n)$.  A constant sequence that tends to zero is zero, whence
-$\Psi(t)=\widetilde\Psi(t)$.  As $t\in\R$ was arbitrary, the two functions agree everywhere.
-\end{proof}
-
-\begin{remark}
-\label{rem:as-uniqueness-hypotheses}
-The proof uses only $1$-periodicity: continuity is never invoked, since the argument produces
-equality at each real $t$ separately rather than on a dense set.  Uniqueness therefore holds
-in the class of all $1$-periodic functions.  The mean-zero normalization is likewise not used
-here, because \eqref{eq:as-alt-periodic} fixes the nonperiodic main term, including the
-constant $C_F$; its role is to remove the trivial ambiguity that arises if one allows the
-additive constant in $\mathcal M_0$ to float, in which case the pair $(C_F,\Psi)$ is
-determined only up to moving a constant between them, and centering pins it.  In particular
-$C_F$ is itself uniquely determined by \eqref{eq:sharp-log-asymptotic}.
-\end{remark}
-
-This matters because it changes the logical status of the correction.  One might hope that
-$\Psi$ is an artifact of the Mellin route, and that some other bounded oscillation, or some
-cleverer nonperiodic reshuffling, would make the elementary formula true.
-\Cref{thm:as-uniqueness} closes that possibility: the order-one periodic term is pinned by the
-asymptotic statement itself, independently of how it was derived.  Any correct sharp formula
-with this main term must contain exactly the Gamma--zeta function $\Psi$ of
-\eqref{eq:Psi-Fourier}, evaluated at exactly the Lambert phase.  Together with the
-nonvanishing of every Fourier coefficient, this makes the fluctuation an intrinsic feature of
-the Fabius law at the endpoint rather than a feature of one proof.
-
-\subsection{Symmetry at the right endpoint}
-
-The symmetry $F(1-x)=1-F(x)$ immediately transfers the left-endpoint expansion to the right:
-\begin{equation}
- 1-F(1-x)=F(x).                                            \label{eq:right-endpoint-sym}
-\end{equation}
-Thus the same Lambert phase, periodic fluctuation, and all-orders coefficients describe the
-survival probability near $1$.
-
-\section{Consequences of the endpoint expansion}
-\label{sec:asymptotic-consequences}
-
-The full sharp formula immediately settles several qualitative questions that are otherwise
-awkward to read from the differential equation.
-
-\begin{theorem}[Quadratic logarithmic law]
-As $x\downarrow0$,
-\begin{equation}
- \frac{\log F(x)}{(\log x)^2}\longrightarrow-\frac1{2\log2}. \label{eq:quadratic-log-law}
-\end{equation}
-Equivalently, on the dyadic scale,
-\begin{equation}
- \log F(2^{-t})\sim-\frac{\log2}{2}t^2.                    \label{eq:dyadic-quadratic-law}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-In \eqref{eq:sharp-main-lambda}, $\lambda\sim S/L$ with $S=-\log x$.  The quadratic term
-$-L\lambda^2/2$ dominates the linear term, the logarithmic term, and the bounded periodic
-correction.  Substitution gives \eqref{eq:quadratic-log-law}.
-\end{proof}
-
-\begin{corollary}[Between powers and pure endpoint exponentials]
-\label{cor:decay-comparison}
-For every $N>0$ and every $c>0$,
-\begin{equation}
- F(x)=o(x^N),                                               \label{eq:faster-than-powers}
-\end{equation}
-and
-\begin{equation}
- \e^{-c/x}=o(F(x))                                         \label{eq:slower-than-exp-inv-x}
-\end{equation}
-as $x\downarrow0$.
-\end{corollary}
-
-\begin{proof}
-The logarithm of $x^N$ is $-NS$, whereas
-$\log F(x)\sim-S^2/(2L)$, so $F(x)/x^N\to0$.  On the other hand,
-$\log\e^{-c/x}=-c\e^S$, which is much more negative than $-S^2/(2L)$; therefore
-$\e^{-c/x}/F(x)\to0$.
-\end{proof}
-
-This places the endpoint decay in an intermediate regime.  The function is flatter than any
-finite algebraic order, as every compactly supported smooth function must be at its support
-boundary, but it is vastly larger than the familiar model $\e^{-1/x}$.
-
-\begin{corollary}[Asymptotics of reciprocal-power values]
-For integers $n\to\infty$,
-\begin{align}
- \log F(2^{-n})
-={}&-\frac L2n^2-n\log n+
- \left(1+\frac L2\right)n-\frac{\log^2n}{2L}+C_F           \notag\\
- &-\frac{\log^2n}{2L^2n}+\Psi(\lambda_n)+O(n^{-1}),       \label{eq:integer-dyadic-asymptotic}
-\end{align}
-where $\lambda_n$ is defined by \eqref{eq:lambda-t}.  Combining this with
-\eqref{eq:F-inverse-power} gives an equally sharp expansion for the half moments $d_n$.
-\end{corollary}
-
-The formula shows why a fixed multiplicative constant cannot complete a recurrence-based
-ansatz for $F(2^{-n})$: the fractional parts of $\lambda_n$ drift, and the factor
-$\exp\Psi(\lambda_n)$ is nonconstant.
-
-The corollary above was left at the level of a remark; the resulting expansion of the half
-moments is worth displaying, because the cancellation is exact and total.
-
-\begin{corollary}[Sharp asymptotic for the half moments]
-\label{cor:as-dn}
-Let $\lambda_n$ be the solution of $\lambda_n-(\log\lambda_n)/L=n$ given by
-\eqref{eq:lambda-t}.  Then, as $n\to\infty$,
-\begin{equation}
- \log d_n=\frac12\log(2\pi n)+C_F+\Psi(\lambda_n)
- -\frac{(\log n)^{2}}{2L}-\frac{(\log n)^{2}}{2L^{2}n}
- +\bigO\!\left(\frac1n\right),                            \label{eq:as-log-dn}
-\end{equation}
-and in particular
-\begin{equation}
- \boxed{
- d_n\sim\sqrt{2\pi n}\,
- \exp\!\left(C_F+\Psi(\lambda_n)-\frac{(\log n)^{2}}{2L}\right).}
-                                                          \label{eq:as-dn-asymptotic}
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-By the bridge \eqref{eq:F-inverse-power},
-\begin{equation}
- \log d_n=\log n!+\binom n2L+\log F(2^{-n}).              \label{eq:as-dn-bridge}
-\end{equation}
-Insert Stirling's formula $\log n!=n\log n-n+\tfrac12\log(2\pi n)+\bigO(n^{-1})$, the
-identity $\binom n2L=\tfrac L2n^{2}-\tfrac L2n$, and the expansion
-\eqref{eq:integer-dyadic-asymptotic}.  The three leading blocks cancel identically:
-\begin{align*}
- n^{2}\ \text{terms:}\quad&\frac L2n^{2}-\frac L2n^{2}=0,\\
- n\log n\ \text{terms:}\quad&n\log n-n\log n=0,\\
- n\ \text{terms:}\quad&-n-\frac L2n+\left(1+\frac L2\right)n=0.
-\end{align*}
-What survives is
-\begin{equation*}
- \log d_n=\frac12\log(2\pi n)+C_F+\Psi(\lambda_n)
- -\frac{(\log n)^{2}}{2L}-\frac{(\log n)^{2}}{2L^{2}n}+\bigO(n^{-1}),
-\end{equation*}
-which is \eqref{eq:as-log-dn}.  The constant is exactly $C_F$ of \eqref{eq:CF}; no separate
-constant is generated by the cancellation.  Since $(\log n)^{2}/n\to0$, exponentiating and
-absorbing the last two terms into a factor tending to $1$ gives
-\eqref{eq:as-dn-asymptotic}.
-\end{proof}
-
-The three cancellations are the reason the half moments look deceptively simple: the
-superexponentially small factor $F(2^{-n})$ and the superexponentially large factor
-$n!\,2^{\binom n2}$ agree through the quadratic, the $n\log n$, and the linear order, and
-their quotient retains only a Gaussian-type prefactor $\sqrt{2\pi n}$, the endpoint constant,
-the log-square drift, and the periodic fluctuation.  Note that $\Psi$ survives the
-cancellation untouched.  Consequently the normalized sequence
-$d_n\exp\bigl((\log n)^{2}/(2L)\bigr)/\sqrt{2\pi n}$ does not converge.  Indeed
-\eqref{eq:lambda-t-fixed} gives $\lambda_n-n=\log_2\lambda_n$, which tends to infinity with
-increments tending to zero, so the fractional parts of $\lambda_n$ are dense in $[0,1)$; since
-$\Psi$ is continuous and nonconstant, the set of limit points of the normalized sequence is the
-full interval
-\begin{equation*}
- \left[\e^{C_F+\min\Psi},\ \e^{C_F+\max\Psi}\right].
-\end{equation*}
-Any conjecture that this sequence tends to a limit is false, even though its numerical
-variation is only a few parts in a million.
-
-The comparison \eqref{eq:slower-than-exp-inv-x} is far from sharp.  The true decay is
-governed by $(\log x)^{2}$, and every negative power of $x$ in the exponent beats that,
-however small the power.
-
-\begin{proposition}[Strengthened decay comparison]
-\label{prop:as-decay}
-For every $c>0$ and every $\alpha>0$,
-\begin{equation}
- \exp\!\left(-\frac{c}{x^{\alpha}}\right)=\smallo\bigl(F(x)\bigr)
- \qquad(x\downarrow0).                                    \label{eq:as-strong-decay}
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-Put $S=-\log x\to\infty$.  By \eqref{eq:quadratic-log-law},
-$\log F(x)=-\bigl(1+\smallo(1)\bigr)S^{2}/(2L)$, while
-\begin{equation*}
- \log\exp\!\left(-\frac{c}{x^{\alpha}}\right)=-c\,\e^{\alpha S}.
-\end{equation*}
-Hence
-\begin{equation*}
- \log\frac{\exp(-cx^{-\alpha})}{F(x)}
- =-c\,\e^{\alpha S}+\bigl(1+\smallo(1)\bigr)\frac{S^{2}}{2L}
- =-c\,\e^{\alpha S}\left(1-\bigl(1+\smallo(1)\bigr)\frac{S^{2}}{2cL\e^{\alpha S}}\right).
-\end{equation*}
-For every fixed $\alpha>0$ one has $S^{2}\e^{-\alpha S}\to0$, so the bracket tends to $1$ and
-the whole expression tends to $-\infty$.  Exponentiating gives
-\eqref{eq:as-strong-decay}.
-\end{proof}
-
-Taking $\alpha=1$ recovers \eqref{eq:slower-than-exp-inv-x}.  The gain is that no exponent is
-too small: even $\exp(-x^{-1/100})$, which decays extremely slowly by the standards of
-endpoint models, is still negligible compared with $F$.  Combined with
-\eqref{eq:faster-than-powers}, the Fabius endpoint is squeezed between the two scales from
-both sides, and the squeeze is now tight enough to be decisive for the candidate
-approximations discussed in \cref{sec:audit}.  In particular, the quotient of exponentials
-examined in the subsection on a visually good quotient with the wrong boundary scale has a
-numerator of the form $\exp(-|x|^{-\alpha})$ with $\alpha=\tfrac34\sqrt{2\pi}$; by
-\Cref{prop:as-decay} that factor alone already forces the candidate to be
-$\smallo(F)$ at the endpoint, without any appeal to the sharper bound
-$\exp(-1/(2y))$ used there.  The failure is therefore not an artifact of the particular
-constant in that bound: no expression whose logarithm decays like a negative power of the
-distance to the endpoint can match a function whose logarithm decays like the square of the
-logarithm of that distance.
+No additional right-endpoint asymptotic-transfer theorem is asserted here.
 
 \section{The Fourier--Legendre expansion of \(\Up\)}
 \label{sec:legendre}
@@ -5567,8 +3957,8 @@ converges absolutely and uniformly in the formal development.  The exact declara
 competitor has strictly larger error.  These are
 \lean{rvachevLegendrePartialSum_least_squares} and
 \lean{rvachevLegendrePartialSum_strict_least_squares} in
-\path{FabiusLegendreLeastSquares.lean}.  The signed global extension has the corresponding
-locally finite translated Legendre representation by
+\path{FabiusLegendreLeastSquares.lean}.  On $[0,2]$, the signed global extension has the
+corresponding translated Legendre series
 \lean{globalFabius_eq_tsum_translatedLegendre_formula}.
 
 \section{Additional proved summation identities}
@@ -5586,9 +3976,17 @@ This is \lean{rvachev_cosine_series}.  The two-term support specialization
  \Up(t)+\Up(t-1)=1\qquad(0\le t\le1)                       \label{eq:two-term-partition}
 \end{equation}
 is \lean{rvachev_add_shift_eq_one}.  More general scaled Poisson support identities are
-\lean{rvachev_poisson_support_specialization_unscaled_of_one_half_le} and
-\lean{rvachev_poisson_support_specialization_of_one_half_le} in
-\path{PoissonSummation.lean}.  These supplement the partition formulas
+sharp for either orientation of the lattice: whenever \(1/2\le|a|\),
+\begin{align}
+ 1+2\Up(a)
+   &=\sum_{m\in\Z}|a|^{-1}\widehat{\Up}(m/a),              \label{eq:poisson-support-abs-unscaled}\\
+ |a|+2|a|\Up(a)
+   &=\sum_{m\in\Z}\widehat{\Up}(m/a).                     \label{eq:poisson-support-abs}
+\end{align}
+These are \lean{rvachev_poisson_support_specialization_unscaled_of_one_half_le_abs} and
+\lean{rvachev_poisson_support_specialization_of_one_half_le_abs} in
+\path{PoissonSummation.lean}; the oriented frequency \(m/a\) is retained while the
+covolume is \(|a|\).  They supplement the partition formulas
 \eqref{eq:partition-unity}--\eqref{eq:integer-partition}; no unformalized derivative
 partition, probabilistic convolution interpretation, or moment statistic is inferred.
 
@@ -5615,6 +4013,15 @@ definition.  The declarations are
 \lean{fabiusReal_effectivelyUniformContinuous}, and
 \lean{fabiusReal_isComputableRealFunction} in
 \path{FabiusComputableSpline.lean} and \path{FabiusComputability.lean}.
+The same effective continuity holds for every signed global extension:
+\lean{extendedFabius_effectivelyUniformContinuous}.  For the canonical extension
+\(\mathcal F=\lean{globalFabius}\), the explicit modulus is \(d(n)=2n\): whenever
+\(n>0\) and \(|x-y|<1/(2n)\),
+\begin{equation}
+ |\mathcal F(x)-\mathcal F(y)|<\frac1n.                      \label{eq:global-effective-modulus}
+\end{equation}
+This is \lean{globalFabius_effectively_uniformly_continuous}, together with the definition
+\lean{fabiusEffectiveUniformModulus}, in \path{FabiusComputability.lean}.
 
 The same finite spline code also gives a signed-global algorithm.  Instead of clamping the
 positive numerator to the unit grid, it retains the unrestricted centered spline and rounds
@@ -5719,6 +4126,7 @@ Shape and regularity &
 Probability and finite approximants &
 \path{ProbabilityRepresentation.lean}, \path{EarlyApproximants.lean},
 \path{EarlyMeasureBridge.lean}, \path{WeakConvergence.lean},
+\path{ProbabilityLaplaceMoments.lean}, \path{LaplaceMoments.lean},
 \path{StepMeasureBridge.lean}, \path{StepApproximationLimit.lean},
 \path{FabiusUniformSpline.lean}, \path{FabiusComputability.lean}\\
 Fourier analysis &
@@ -5734,24 +4142,32 @@ Analyticity, inverse, elementary obstruction &
 \path{InverseBranch.lean}, \path{InverseNotElementary.lean}\\
 Moments and exact arithmetic &
 \path{Arithmetic.lean}, \path{AnalyticMoments.lean},
-\path{MomentPowerSeries.lean}, \path{BernoulliRecurrences.lean},
+\path{MomentPowerSeries.lean}, \path{UnitLaplaceMomentBounds.lean},
+\path{NormalizedEvenMoments.lean},
+\path{BernoulliRecurrences.lean},
 \path{ExactInversePower.lean}, \path{Parity.lean}, \path{TwoAdic.lean}\\
 Dyadic and \(q\)-binomial formulas &
-\path{DyadicClosedForm.lean}, \path{GlobalDyadic.lean},
-\path{DyadicCorrectness.lean},
+\path{DyadicClosedForm.lean}, \path{DyadicAnalytic.lean}, \path{GlobalDyadic.lean},
+\path{DyadicCorrectness.lean}, \path{HalfQBinomial.lean},
 \path{FabiusDyadicQBinomialScalar.lean}, \path{FabiusQBinomialFormula.lean},
-\path{FabiusBinaryReductionSeries.lean}, \path{FabiusGlobalQBinomialSeries.lean},
+\path{FabiusBinaryReductionSeries.lean}, \path{FabiusParityPowerSeries.lean},
+\path{FabiusGlobalQBinomialSeries.lean},
 \path{FabiusDiscreteLimitIntegration.lean}\\
 Thue--Morse prefixes &
 \path{ThueMorsePrefix.lean}, \path{ThueMorseGenerating.lean},
-\path{ThueMorseApproximation.lean}\\
+\path{ThueMorseExponential.lean}, \path{ThueMorseApproximation.lean},
+\path{PaperKFoldThueMorse.lean}\\
 Endpoint asymptotics &
-\path{NegativeLaplace.lean},
+\path{NegativeLaplace.lean}, \path{NegativeLaplaceVertical.lean},
 \path{PeriodicCorrection.lean}, \path{PeriodicFourier.lean},
 \path{MellinBose.lean}, \path{MellinFinitePart.lean},
 \path{BoseFinitePartIntegral.lean},
-\path{FabiusLambertPhase.lean}, \path{FabiusLambertSaddle.lean},
-\path{FabiusDyadicSharpAsymptotic.lean}, \path{FabiusSecondSaddleCorrection.lean},
+\path{LowerLambertW.lean}, \path{FabiusLambertPhase.lean},
+\path{FabiusLambertSaddle.lean}, \path{FabiusDecayComparison.lean},
+\path{FabiusSharpAsymptotic.lean}, \path{FabiusFullAsymptoticExpansion.lean},
+\path{LaplaceMomentBounds.lean}, \path{FabiusDyadicSharpCumulant.lean},
+\path{SaddleLogExpansionAlgebra.lean}, \path{SaddleLogExpansionPowerSeries.lean},
+\path{FabiusSecondSaddleCorrection.lean},
 \path{FabiusSecondSaddleExpansion.lean}\\
 Legendre expansion and computability &
 \path{FabiusLegendreCoefficients.lean}, \path{FabiusLegendreSeries.lean},
@@ -5768,14 +4184,14 @@ Legendre expansion and computability &
 \toprule
 Article & Lean & Meaning\\
 \midrule
-\(F\) & \texttt{fabiusReal fabius} & bounded canonical Fabius function\\
-\(\Up\) & \texttt{rvachevUp fabius} & compactly supported fold\\
-\(\mathcal F\) & \texttt{extendedFabius fabius} & signed global extension\\
-\(I\) & \texttt{fabiusInv fabius fabius\_spec} & totalized inverse\\
-\(c_n\) & \texttt{moment n} & even moment\\
-\(d_n\) & \texttt{halfMoment n} & half moment\\
-\(\varepsilon_n\) & \texttt{thueMorseSign n} & signed Thue--Morse value\\
-\(\wt(n)\) & \texttt{binaryWeight n} & binary digit sum\\
+\(F\) & \lean{fabiusReal fabius} & bounded canonical Fabius function\\
+\(\Up\) & \lean{rvachevUp fabius} & compactly supported fold\\
+\(\mathcal F\) & \lean{extendedFabius fabius} & signed global extension\\
+\(I\) & \lean{fabiusInv fabius fabius_spec} & totalized inverse\\
+\(c_n\) & \lean{moment n} & even moment\\
+\(d_n\) & \lean{halfMoment n} & half moment\\
+\(\varepsilon_n\) & \lean{thueMorseSign n} & signed Thue--Morse value\\
+\(\wt(n)\) & \lean{binaryWeight n} & binary digit sum\\
 \bottomrule
 \end{tabular}
 \end{center}

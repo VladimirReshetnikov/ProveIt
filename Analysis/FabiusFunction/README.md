@@ -28,11 +28,15 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The corrected small-argument asymptotics, including the general coefficient
-formula for the all-orders expansion, are developed in Lean and summarized in
-the primary exposition.  Longer supplementary derivations are retained in the
-[consolidated research-frontier source](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
+The formally proved small-argument hierarchy—including the corrected sharp
+asymptotic, the general coefficient algebra for the recursive all-orders
+expansion, and the first two explicit periodic saddle corrections—is integrated
+into the primary exposition. Exploratory derivations, the small-argument
+notebook, and the primary-exposition gap register are preserved in the canonical
+[research-frontier LaTeX volume](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
 ([PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf)).
+That volume labels claims still awaiting literal Lean counterparts and records
+their exact outstanding proof obligations.
 
 Non-elementarity is treated in
 [*The Fabius Function and Its Inverse are Not Elementary*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
@@ -500,10 +504,13 @@ value `F(1)=1`, so unlike the recurrence this formula holds for every natural
 decomposition.  Public endpoints include
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula`, the explicitly nested
 `Fabius.fabiusAtInverseTwoPow_eq_composition_formula_by_length`, and generic,
-canonical, and signed-global real corollaries.  A self-contained derivation is
-retained in the
-[consolidated research-frontier source](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
-and its [rendered PDF](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.pdf).
+canonical, and signed-global real corollaries.  The self-contained derivation
+is integrated into the primary exposition, available as
+[LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
+and as a
+[rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+The consolidated frontier volume retains longer alternative derivations and
+their provenance without weakening this exact, primary-document integration.
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
