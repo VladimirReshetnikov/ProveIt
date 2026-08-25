@@ -11,6 +11,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
 import Mathlib.Analysis.SpecialFunctions.Arsinh
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Topology.GDelta.Basic
 
 /-!
 # Elementary functions of one real variable and their analytic locus
@@ -46,6 +47,12 @@ derivation, because the junk values are never consulted.
 is a *dense* open subset of `ℝ`.  Density — rather than "analytic
 everywhere" — is exactly right: `fun x => x⁻¹` and `|·|` are elementary and
 fail to be analytic at `0`.
+
+Equivalently, the exceptional set is nowhere dense.  The reusable obstruction
+`Fabius.IsElementary.not_eqOn_of_interior_nonempty` packages the consequence
+used by the Fabius application: an elementary function cannot agree on a set
+with nonempty interior with a function that is nonanalytic throughout that
+interior.
 
 The proof is a single induction.  The interesting step is the unary one, and
 it is isolated as `Fabius.dense_analyticLocus_comp`: if `g` is analytic off a
@@ -493,6 +500,13 @@ theorem IsElementary.interior_compl_analyticLocus {f : ℝ → ℝ} (hf : IsElem
     interior (analyticLocus f)ᶜ = ∅ := by
   rw [interior_compl, hf.dense_analyticLocus.closure_eq, compl_univ]
 
+/-- The nonanalytic locus of an elementary function is nowhere dense. -/
+theorem IsElementary.isNowhereDense_compl_analyticLocus
+    {f : ℝ → ℝ} (hf : IsElementary f) :
+    IsNowhereDense (analyticLocus f)ᶜ :=
+  (isClosed_compl_analyticLocus f).isNowhereDense_iff.mpr
+    hf.interior_compl_analyticLocus
+
 /-- An elementary function is real analytic at *some* point of every nonempty
 open set. -/
 theorem IsElementary.exists_analyticAt_of_isOpen {f : ℝ → ℝ} (hf : IsElementary f)
@@ -500,5 +514,19 @@ theorem IsElementary.exists_analyticAt_of_isOpen {f : ℝ → ℝ} (hf : IsEleme
     ∃ x ∈ U, AnalyticAt ℝ f x := by
   obtain ⟨x, hxU, hxf⟩ := (dense_iff_inter_open.mp hf.dense_analyticLocus) U hU hUne
   exact ⟨x, hxU, hxf⟩
+
+/-- An elementary function cannot agree on a set with nonempty interior with
+a function that is nonanalytic at every point of that interior. -/
+theorem IsElementary.not_eqOn_of_interior_nonempty
+    {f g : ℝ → ℝ} (hg : IsElementary g) {S : Set ℝ}
+    (hSne : (interior S).Nonempty)
+    (hf : ∀ x ∈ interior S, ¬ AnalyticAt ℝ f x) :
+    ¬ EqOn g f S := by
+  intro heq
+  obtain ⟨x, hxS, hxg⟩ :=
+    hg.exists_analyticAt_of_isOpen isOpen_interior hSne
+  exact hf x hxS (hxg.congr <| by
+    filter_upwards [isOpen_interior.mem_nhds hxS] with t ht
+    exact heq (interior_subset ht))
 
 end Fabius
