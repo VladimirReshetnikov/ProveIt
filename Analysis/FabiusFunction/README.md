@@ -20,8 +20,9 @@ and as a [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_
 That primary exposition is deliberately proof-backed: every mathematical claim
 in it must have a proved counterpart in the Lean development.
 
-The formally proved small-argument hierarchy, including the first two explicit
-periodic saddle corrections and the recursive all-orders theorem, is integrated
+The formally proved small-argument hierarchy—including the corrected sharp
+asymptotic, the general coefficient algebra for the recursive all-orders
+expansion, and the first two explicit periodic saddle corrections—is integrated
 into the primary exposition. Exploratory derivations, the small-argument
 notebook, and the primary-exposition gap register are preserved in the canonical
 [research-frontier LaTeX volume](docs/non-formalized-research-frontiers/non-formalized-research-frontiers.tex)
@@ -111,7 +112,7 @@ complex exponential generating function are also represented explicitly.
 From the repository root, the complete public surface is checked with
 
 ```sh
-lake build FabiusFunction
+lake build +FabiusFunction
 ```
 
 Use `import FabiusFunction` when downstream code needs the entire development.
@@ -129,7 +130,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `abs_log_fabius_dyadic_sub_explicitCumulantMain_le`, `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
-| Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_fabiusInv_div_atTop` |
+| Inverse construction, exact smoothness locus, interior calculus, curvature, and endpoint steepness | `FabiusFunction.FabiusInverse` | `fabiusInv`, `fabiusReal_fabiusInv`, `fabiusInv_hasDerivAt`, `deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `deriv_fabiusInv_pos`, `fabiusInv_contDiffOn_Ioo`, `fabiusInv_contDiffAt_infty_iff`, `fabiusInv_differentiableAt_iff`, `deriv_deriv_fabiusInv`, `deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_half`, `deriv_deriv_fabiusInv_neg_iff`, `deriv_deriv_fabiusInv_pos_iff`, `deriv_deriv_fabiusInv_eq_zero_iff`, `strictConcaveOn_fabiusInv_firstHalf`, `strictConvexOn_fabiusInv_secondHalf`, `id_isLittleO_fabiusInv_pow_at_zero_right`, `one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, `tendsto_deriv_fabiusInv_atTop_at_zero_right`, `tendsto_deriv_fabiusInv_atTop_at_one_left` |
 | Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.AlgebraicBranch`, `FabiusFunction.InverseBranch`, `FabiusFunction.NotElementary`, `FabiusFunction.InverseNotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.rpow_of_ne_zero`, `IsElementary.dense_analyticLocus`, `analyticDenseOn_of_algebraic`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary`, `canonical_fabius_not_algebraicBranch_on_Ioo`, `IsElementaryOrInverse`, `fabiusInv_not_analyticAt`, `canonical_fabiusInv_not_isElementary_on_Ioo`, `canonical_fabiusInv_not_isElementaryOrInverse_on_Ioo` |
 | Computable-real-function theorems | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `extendedFabiusSplineApproxPR_computable`, `fabius_isComputableRealFunction`, `globalFabius_isComputableRealFunction` |
 
@@ -334,7 +335,19 @@ constant of each.  The linear majorant `F(x) ≤ 2x` holds on all of `[0, ∞)`.
 
 `Convexity.lean` shows that `F` is convex on `(-∞, 1/2]` and concave on
 `[1/2, ∞)`, strictly so on the two halves of the unit interval, so the
-midpoint is the unique inflection point.
+midpoint is the unique inflection point.  It also gives the exact pointwise
+formula
+
+```text
+F''(x) = 8 * (up(4x - 1) - up(4x - 3)),
+```
+
+and proves that `F''` is positive exactly on `(0, 1/2)`, negative exactly on
+`(1/2, 1)`, and zero outside `(0,1)` and at the midpoint.  The entry points
+are `Fabius.deriv_deriv_fabiusReal`,
+`Fabius.deriv_deriv_fabiusReal_pos_iff`,
+`Fabius.deriv_deriv_fabiusReal_neg_iff`, and
+`Fabius.deriv_deriv_fabiusReal_eq_zero_iff`.
 
 `EffectiveFlatness.lean` replaces the qualitative `o(x^n)` flatness statement
 by the effective bound
@@ -488,6 +501,8 @@ is integrated into the primary exposition, available as
 [LaTeX source](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.tex)
 and as a
 [rendered PDF](docs/Fabius_Function_and_Rvachev_Up/Fabius_Function_and_Rvachev_Up.pdf).
+The consolidated frontier volume retains longer alternative derivations and
+their provenance without weakening this exact, primary-document integration.
 
 The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
@@ -694,5 +709,5 @@ proposals are welcome.
 From the repository root:
 
 ```sh
-lake build FabiusFunction
+lake build +FabiusFunction
 ```

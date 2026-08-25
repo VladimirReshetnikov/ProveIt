@@ -16,7 +16,9 @@ normalization are C⁴.
 
 The module also exposes one-periodicity and global boundedness for the first
 two derivatives of the normalized correction, the regularity input needed by
-the sharp dyadic phase expansion.
+the sharp dyadic phase expansion.  The four termwise derivative tails are
+identified explicitly with successive ordinary derivatives, giving later
+all-orders arguments a reusable bridge from `HasDerivAt` to `deriv`.
 -/
 
 set_option autoImplicit false
@@ -521,6 +523,31 @@ theorem negativeLaplaceForwardTailThird_hasDerivAt (s : ℝ) (hs : 0 < s) :
   · exact summable_negativeLaplaceForwardTermThird s hs
   · exact show a < s by dsimp [a]; linarith
 
+/-- The first derivative of the forward logarithmic tail on the positive
+half-line is its termwise first-derivative series. -/
+theorem deriv_negativeLaplaceForwardTail (s : ℝ) (hs : 0 < s) :
+    deriv negativeLaplaceForwardTail s =
+      negativeLaplaceForwardTailFirst s :=
+  (negativeLaplaceForwardTail_hasDerivAt s hs).deriv
+
+/-- The derivative of the first forward-tail series is the second series. -/
+theorem deriv_negativeLaplaceForwardTailFirst (s : ℝ) (hs : 0 < s) :
+    deriv negativeLaplaceForwardTailFirst s =
+      negativeLaplaceForwardTailSecond s :=
+  (negativeLaplaceForwardTailFirst_hasDerivAt s hs).deriv
+
+/-- The derivative of the second forward-tail series is the third series. -/
+theorem deriv_negativeLaplaceForwardTailSecond (s : ℝ) (hs : 0 < s) :
+    deriv negativeLaplaceForwardTailSecond s =
+      negativeLaplaceForwardTailThird s :=
+  (negativeLaplaceForwardTailSecond_hasDerivAt s hs).deriv
+
+/-- The derivative of the third forward-tail series is the fourth series. -/
+theorem deriv_negativeLaplaceForwardTailThird (s : ℝ) (hs : 0 < s) :
+    deriv negativeLaplaceForwardTailThird s =
+      negativeLaplaceForwardTailFourth s :=
+  (negativeLaplaceForwardTailThird_hasDerivAt s hs).deriv
+
 theorem continuousOn_negativeLaplaceForwardTermFourth (n : ℕ) :
     ContinuousOn (fun s : ℝ => negativeLaplaceForwardTermFourth s n) (Ioi 0) := by
   intro s hs
@@ -579,25 +606,21 @@ theorem contDiffOn_negativeLaplaceForwardTail :
     rw [show (1 : ℕ∞ω) = 0 + 1 by norm_num,
       contDiffOn_succ_iff_deriv_of_isOpen isOpen_Ioi]
     refine ⟨hd3, by simp, ?_⟩
-    exact h4.congr fun s hs =>
-      (negativeLaplaceForwardTailThird_hasDerivAt s hs).deriv
+    exact h4.congr fun s hs => deriv_negativeLaplaceForwardTailThird s hs
   have h2 : ContDiffOn ℝ 2 negativeLaplaceForwardTailSecond (Ioi 0) := by
     rw [show (2 : ℕ∞ω) = 1 + 1 by norm_num,
       contDiffOn_succ_iff_deriv_of_isOpen isOpen_Ioi]
     refine ⟨hd2, by simp, ?_⟩
-    exact h3.congr fun s hs =>
-      (negativeLaplaceForwardTailSecond_hasDerivAt s hs).deriv
+    exact h3.congr fun s hs => deriv_negativeLaplaceForwardTailSecond s hs
   have h1 : ContDiffOn ℝ 3 negativeLaplaceForwardTailFirst (Ioi 0) := by
     rw [show (3 : ℕ∞ω) = 2 + 1 by norm_num,
       contDiffOn_succ_iff_deriv_of_isOpen isOpen_Ioi]
     refine ⟨hd1, by simp, ?_⟩
-    exact h2.congr fun s hs =>
-      (negativeLaplaceForwardTailFirst_hasDerivAt s hs).deriv
+    exact h2.congr fun s hs => deriv_negativeLaplaceForwardTailFirst s hs
   rw [show (4 : ℕ∞ω) = 3 + 1 by norm_num,
     contDiffOn_succ_iff_deriv_of_isOpen isOpen_Ioi]
   refine ⟨hd0, by simp, ?_⟩
-  exact h1.congr fun s hs =>
-    (negativeLaplaceForwardTail_hasDerivAt s hs).deriv
+  exact h1.congr fun s hs => deriv_negativeLaplaceForwardTail s hs
 
 theorem contDiff_fabiusLaplaceMoment_nat
     (F : BoundedFabius) (hF : IsFabius F) (n k : ℕ) :

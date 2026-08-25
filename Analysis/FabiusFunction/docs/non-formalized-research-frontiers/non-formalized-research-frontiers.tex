@@ -304,7 +304,7 @@ Signed global extension & \nolinkurl{extendedFabius} & \nolinkurl{GlobalExtensio
 Exact dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.lean}, \nolinkurl{PaperStatements.lean} \\
 Binary and q-binomial series & \nolinkurl{fabiusReductionSum} and global q-series declarations & \nolinkurl{TaylorReduction.lean}, \nolinkurl{FabiusGlobalQBinomialSeries.lean} \\
 Thue--Morse grid samples & \nolinkurl{correctedPrefixGridSample} & \nolinkurl{ThueMorseApproximation.lean} \\
-Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
+Totalized inverse & \nolinkurl{fabiusInv}, \nolinkurl{deriv_deriv_fabiusInv_eq_zero_iff}, \nolinkurl{tendsto_deriv_fabiusInv_atTop_at_zero_right}, \nolinkurl{fabiusInv_differentiableAt_iff}, \nolinkurl{fabiusInv_contDiffAt_infty_iff}, \nolinkurl{fabiusInv_analyticAt_iff} & \nolinkurl{FabiusInverse.lean}, \nolinkurl{InverseNotElementary.lean} \\
 Lower-Lambert coordinate & \nolinkurl{fabiusLambertPhase} & \nolinkurl{FabiusLambertSaddle.lean} \\
 All-orders saddle expansion & saddle mass/log coefficient declarations & \nolinkurl{FabiusFullAsymptoticExpansion.lean} and related modules \\
 \bottomrule
@@ -395,18 +395,29 @@ global extension used in the Lean development.  On $[0,1]$ the basic identities 
 \end{equation}
 These are inputs here, not topics to be reproved.
 
+The current formal library also packages their exact curvature consequence:
+\begin{equation}
+ F''(x)=8\bigl(\Up(4x-1)-\Up(4x-3)\bigr),
+ \label{integration:eq:forward-second-derivative}
+\end{equation}
+with \(F''>0\) exactly on \((0,1/2)\), \(F''<0\) exactly on \((1/2,1)\), and
+\(F''=0\) exactly off \((0,1)\) or at \(1/2\).  These are
+\path{deriv_deriv_fabiusReal}, \path{deriv_deriv_fabiusReal_pos_iff},
+\path{deriv_deriv_fabiusReal_neg_iff}, and
+\path{deriv_deriv_fabiusReal_eq_zero_iff}.
+
 The repository snapshot underlying this supplement is the following commit on
 the \texttt{codex/fabius-both-papers} branch, dated 25 August 2026.
 \begin{center}
- \texttt{531338d79f2f640041562138c7b80772ee2f0490}.
+ \texttt{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}.
 \end{center}
-The main article itself records an earlier pinned snapshot and, near the beginning of its
-module guide, explicitly says that four clusters have ``no counterpart anywhere in the
-article'': Gaussian contraction and Gaussian tails, the formal saddle exponential and
+An earlier version of the main article left four clusters to its module guide:
+Gaussian contraction and Gaussian tails, the formal saddle exponential and
 logarithm algebra, the abstract Toeplitz row lemma, and the generic weighted-path solver.
-Those four clusters receive complete mathematical chapters below.  Two additional clusters,
-the inverse and non-elementarity developments, are absent because they were added after the
-article's pinned snapshot.  The current snapshot also adds a proof that positivity of the
+Those four clusters receive complete mathematical chapters below.  The inverse and
+non-elementarity developments were likewise absent from that earlier version; the current
+main article now summarizes them, while this frontier retains their longer proof-oriented
+account.  The current snapshot also adds a proof that positivity of the
 dilation parameter in the original compact-support characterization is redundant.  Finally,
 several bridges are present only as one- or two-sentence transitions; they are expanded here
 into proof-level arguments.
@@ -419,9 +430,10 @@ To keep the audit precise, each topic belongs to one of the following levels.
 Status & Meaning in this companion\\
 \midrule
 \endhead
-\textbf{New branch} & A current Lean module whose mathematical content does not occur in the
-main article: principally \path{FabiusInverse.lean}, \path{ElementaryFunction.lean},
-\path{NotElementary.lean}, and \path{ProbabilityLaplaceMoments.lean}.\\
+\textbf{Expanded branch} & A current Lean module whose mathematical content is treated more
+fully here than in the main article: principally \path{FabiusInverse.lean},
+\path{ElementaryFunction.lean}, \path{NotElementary.lean}, and
+\path{ProbabilityLaplaceMoments.lean}.\\
 \textbf{Missing engine} & A generic theorem family that the main article deliberately leaves in
 the module guide: path sums, Toeplitz rows, formal coefficient recurrences, finite
 remainders, and Gaussian polynomial estimates.\\
@@ -449,8 +461,9 @@ positive $x$.
 library, the corresponding declaration is named in the margin of the discussion or in the
 concordance in \cref{integration:app:concordance}.  When a statement is an immediate classical calculus
 corollary but is not presently packaged as a declaration, it is called a \emph{corollary in
-ordinary analysis}.  The inverse second-derivative formula and its strict closed-half shape
-are now packaged formally; the distinction remains relevant for general higher inverse
+ordinary analysis}.  The forward and inverse second-derivative profiles, midpoint inverse
+jet, strict closed-half shape, and endpoint interior-derivative limits are now packaged
+formally; the distinction remains relevant for general higher inverse
 derivatives and for the transfer of the highest-jet coefficient from mass coefficients to
 logarithmic coefficients.
 \end{boxedremark}
@@ -691,6 +704,20 @@ $0<y<1$,
  \label{integration:eq:inverse-second-derivative}
 \end{equation}
 The midpoint is the reflection-symmetric change of curvature.
+More precisely,
+\begin{equation}
+ I(1/2)=1/2,\qquad I'(1/2)=1/2,\qquad I''(1/2)=0,
+ \label{integration:eq:inverse-midpoint-jet}
+\end{equation}
+and for \(0<y<1\),
+\begin{equation}
+ \begin{aligned}
+ I''(y)<0&\iff 0<y<1/2,\\
+ I''(y)>0&\iff 1/2<y<1,\\
+ I''(y)=0&\iff y=1/2.
+ \end{aligned}
+ \label{integration:eq:inverse-curvature-loci}
+\end{equation}
 \end{corollary}
 
 \begin{remark}
@@ -705,6 +732,13 @@ positivity, and the resulting interior smoothness are the named Lean declaration
 \path{strictConcaveOn_fabiusInv_firstHalf} and
 \path{strictConvexOn_fabiusInv_secondHalf}.  These shape theorems use derivatives only on
 the interval interiors, so they do not assert finite endpoint derivatives.
+The midpoint identities are \path{fabiusInv_half},
+\path{deriv_fabiusInv_half}, and \path{deriv_deriv_fabiusInv_half}; the three
+interior equivalences are \path{deriv_deriv_fabiusInv_neg_iff},
+\path{deriv_deriv_fabiusInv_pos_iff}, and
+\path{deriv_deriv_fabiusInv_eq_zero_iff}.  Their explicit (0<y<1)
+hypothesis prevents the total derivative convention at nondifferentiable clamp points from
+being mistaken for geometric curvature.
 \end{remark}
 
 \subsection{Flatness of \texorpdfstring{$F$}{F} becomes steepness of \texorpdfstring{$I$}{I}}
@@ -826,6 +860,18 @@ $(|M|+1)y<I(y)$, hence $M<I(y)/y$.  This is exactly convergence to $+\infty$ in 
 order topology.  For the right endpoint, put $z=1-y$ and use
 $I(1-z)=1-I(z)$.
 \end{proof}
+
+\begin{theorem}[Interior-derivative blow-up; \Formalized]
+The positive interior derivative itself diverges at both clamping endpoints:
+\[
+ I'(y)\longrightarrow+\infty\quad(y\downarrow0),\qquad
+ I'(y)\longrightarrow+\infty\quad(y\uparrow1).
+\]
+The named Lean statements are
+\path{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
+\path{tendsto_deriv_fabiusInv_atTop_at_one_left}.  They are limits through
+\((0,1)\); the totalized inverse has no finite derivative at either endpoint.
+\end{theorem}
 
 \begin{corollary}[Failure of endpoint Lipschitz and H\"older bounds]
 \label{integration:cor:inverse-not-holder}
@@ -3294,9 +3340,13 @@ that scale positivity follows from the other original-characterization assumptio
 \lean{fabiusInv\_fabiusDyadicUnit}, \lean{fabiusInv\_hasDerivAt},
 \lean{deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_eq\_inv\_two\_mul\_rvachevUp},
 \lean{deriv\_fabiusInv\_pos}, \lean{fabiusInv\_contDiffOn\_Ioo},
-\lean{deriv\_deriv\_fabiusInv}, \lean{strictConcaveOn\_fabiusInv\_firstHalf},
+\lean{deriv\_deriv\_fabiusInv}, \lean{deriv\_fabiusInv\_half},
+\lean{deriv\_deriv\_fabiusInv\_half},
+\lean{deriv\_deriv\_fabiusInv\_eq\_zero\_iff},
+\lean{strictConcaveOn\_fabiusInv\_firstHalf},
 \lean{strictConvexOn\_fabiusInv\_secondHalf}, the transported root-free bounds,
-\lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop}, and reflected companions;
+\lean{mul\_lt\_fabiusInv}, \lean{tendsto\_fabiusInv\_div\_atTop},
+\lean{tendsto\_deriv\_fabiusInv\_atTop\_at\_zero\_right}, and reflected companions;
 \cref{integration:sec:inverse,integration:sec:inverse-steepness}.\\
 \path{ElementaryFunction.lean} &
 The inductive predicate \lean{IsElementary}, composition closure, derived elementary
@@ -3394,12 +3444,12 @@ Topic & Status before this companion & Added here\\
 \endhead
 Original scale positivity & Assumed in the source statement & Mean-value proof that the dilation
 parameter is automatically positive before its exact value $k=2$ is derived.\\
-Total inverse $I$ & Absent & Global clamped construction, order calculus, reflection, exact
+Total inverse $I$ & Absent from the earlier article snapshot; now summarized & Global clamped construction, order calculus, reflection, exact
 dyadic inverse values, interior calculus consequences, endpoint steepness, and non-H\"older
 corollaries.\\
-Elementary function class & Absent & Exact inductive closure, totalization convention,
+Elementary function class & Absent from the earlier article snapshot; now summarized & Exact inductive closure, totalization convention,
 finite-bad-value composition, and dense-open analytic locus.\\
-Non-elementarity & Absent & No local agreement on any set with nonempty interior for $F$,
+Non-elementarity & Absent from the earlier article snapshot; now summarized & No local agreement on any set with nonempty interior for $F$,
 $\Up$, and the signed extension.\\
 Product probability law & Headline proof only & Uniform convergence and measurability,
 head--tail pushforward identity, coordinate reflection, and global support bookkeeping.\\
@@ -3421,7 +3471,7 @@ Gaussian contraction/tails & Explicitly omitted & Moment recurrence, contraction
 factorial coefficient weight, explicit tail, and all-orders radius.\\
 Closed saddle jets & Stated, lightly motivated & Operator-product solution, harmonic constants,
 shifted signed Stirling identification, and first four bounded jets.\\
-Second saddle correction & Not yet in pinned snapshot & Complete $E_1$--$E_4$ expansion,
+Second saddle correction & Absent from the earlier article snapshot & Complete $E_1$--$E_4$ expansion,
 order-four polynomial, Gaussian contraction, $B_2$, and closed $A_2$.\\
 Full saddle assembly & Proof architecture only & Exact sequence of finite remainder, central
 window, contraction, Gaussian tail, minor arc, log transfer, flat-tail restoration, and filter
@@ -3551,8 +3601,8 @@ V.~Reshetnikov,
 \newblock \texttt{ProveIt}: formal development of the Fabius function and Rvachev's
 up-function,
 \newblock GitHub repository, snapshot
-\texttt{531338d79f2f640041562138c7b80772ee2f0490}, 25 August 2026,
-\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/531338d79f2f640041562138c7b80772ee2f0490/Analysis/FabiusFunction}.
+\texttt{eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80}, 25 August 2026,
+\newblock \url{https://github.com/VladimirReshetnikov/ProveIt/tree/eaea1b9afe2b7ff0b7dd880bd1710e303dec6d80/Analysis/FabiusFunction}.
 
 \end{thebibliography}
 
@@ -11392,6 +11442,15 @@ theory:
 \end{align}
 where $\Up$ is positive on $(-1,1)$ and $\Up(0)=1$.  Consequently $F$ is a
 continuous strictly increasing bijection of $[0,1]$ onto itself.
+The exact second derivative is now also a named formal input:
+\[
+ F''(x)=8\bigl(\Up(4x-1)-\Up(4x-3)\bigr).
+\]
+Its positive, negative, and zero loci are respectively \((0,1/2)\),
+\((1/2,1)\), and \(\R\setminus(0,1)\cup\{1/2\}\), by
+\path{deriv_deriv_fabiusReal_pos_iff},
+\path{deriv_deriv_fabiusReal_neg_iff}, and
+\path{deriv_deriv_fabiusReal_eq_zero_iff}.
 
 The main companion article already explains the random-series model,
 infinite convolutions, the Fourier transform, moment recurrences,
@@ -11413,8 +11472,8 @@ Topic & Situation in the main article & Treatment here\\
 Topic & Situation in the main article & Treatment here\\
 \midrule
 \endhead
-Inverse function & The totalized inverse module and its endpoint estimates
-are absent. & Full construction, exact identities, dyadic inversion,
+Inverse function & The current article summarizes the totalized inverse and its endpoint
+estimates. & Full construction, exact identities, dyadic inversion,
 effective steepness, endpoint limits, regularity, and inverse
 asymptotics.\\
 Closed saddle jets & Closed formulas are displayed, but the operator
@@ -11909,7 +11968,7 @@ power of $F'(\InvF(y))$ in the denominator.  These general Fa\`a di Bruno
 inverse-derivative polynomials are not separately packaged in the Lean API.
 \end{remark}
 
-\begin{corollary}[Midpoint differential data; \Derived]
+\begin{corollary}[Midpoint differential data; \Formalized]
 \label{inverse:cor:midpoint-inverse}
 At the fixed point $1/2$,
 \[
@@ -11923,8 +11982,26 @@ At the fixed point $1/2$,
 The value follows from reflection.  Since $\Up(0)=1$,
 \eqref{inverse:eq:Gprime} gives $\InvF'(1/2)=1/2$.  The up-function is even, so
 $\Up'(0)=0$, hence $F''(1/2)=4\Up'(0)=0$; now use
-\eqref{inverse:eq:Gsecond}.
+\eqref{inverse:eq:Gsecond}.  The three exact Lean declarations are
+\path{fabiusInv_half}, \path{deriv_fabiusInv_half}, and
+\path{deriv_deriv_fabiusInv_half}.
 \end{proof}
+
+\begin{proposition}[Exact interior curvature loci; \Formalized]
+For \(0<y<1\),
+\[
+ \InvF''(y)<0\iff0<y<1/2,\qquad
+ \InvF''(y)>0\iff1/2<y<1,
+\]
+and
+\[
+ \InvF''(y)=0\iff y=1/2.
+\]
+These are \path{deriv_deriv_fabiusInv_neg_iff},
+\path{deriv_deriv_fabiusInv_pos_iff}, and
+\path{deriv_deriv_fabiusInv_eq_zero_iff}.  Their interior hypothesis is
+part of the statement: \(\InvF\) is not differentiable at the clamping points.
+\end{proposition}
 
 \subsection{Shape reversal under inversion}
 
@@ -11954,11 +12031,17 @@ only the two open interval interiors, while global continuity supplies the
 endpoints; no finite endpoint derivative is asserted.
 \end{proof}
 
-\begin{remark}[Endpoint slope; \Derived]
-The secant slopes from the origin diverge by \cref{inverse:thm:inverse-quotient}, and
-reflection gives the right-endpoint counterpart.  Interpreting this together
-with concavity as an extended one-sided derivative statement remains ordinary
-analysis rather than a separately named Lean theorem.
+\begin{remark}[Interior derivative blow-up; \Formalized]
+The secant slopes diverge by \cref{inverse:thm:inverse-quotient}.  More
+strongly, the positive interior derivative satisfies
+\[
+ \InvF'(y)\longrightarrow+\infty\quad(y\downarrow0),\qquad
+ \InvF'(y)\longrightarrow+\infty\quad(y\uparrow1).
+\]
+These are \path{tendsto_deriv_fabiusInv_atTop_at_zero_right} and
+\path{tendsto_deriv_fabiusInv_atTop_at_one_left}.  They are one-sided limits
+through the open interval, not derivative values at the nondifferentiable
+clamping points.
 \end{remark}
 
 \subsection{\texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}}
@@ -13325,8 +13408,9 @@ Module & Principal role & Status\\
 Order isomorphism of $[0,1]$, totalized inverse, global continuity and
 monotonicity, comparison equivalences, tails, reflection, exact dyadic
 inversion, reciprocal first and second derivatives, interior smoothness,
-strict closed-half curvature, transported flatness, effective steepness,
-exact global differentiability and $C^\infty$ loci, and endpoint quotient divergence. & \Formalized\\
+midpoint jet, exact interior curvature loci, strict closed-half curvature,
+transported flatness, effective steepness, exact global differentiability and
+$C^\infty$ loci, and endpoint quotient and derivative divergence. & \Formalized\\
 \texttt{InverseNotElementary.lean} &
 Exact analytic locus of the totalized inverse and the analytic-density
 obstructions used in its non-elementarity theorem. & \Formalized\\
@@ -13391,6 +13475,11 @@ le_two_pow_div_factorial_mul_fabiusInv_pow
 mul_lt_fabiusInv
 tendsto_fabiusInv_div_atTop
 tendsto_one_sub_fabiusInv_div_one_sub_atTop
+deriv_fabiusInv_half
+deriv_deriv_fabiusInv_half
+deriv_deriv_fabiusInv_eq_zero_iff
+tendsto_deriv_fabiusInv_atTop_at_zero_right
+tendsto_deriv_fabiusInv_atTop_at_one_left
 \end{lstlisting}
 The all-orders endpoint interface culminates in
 \begin{lstlisting}[style=pseudo]
@@ -13419,10 +13508,11 @@ equivalences;
 \item the constant tails, reflection, midpoint, and exact dyadic
 inversion;
 \item interior $C^\infty$ regularity, the exact formulas for $\InvF'$ and
-$\InvF''$, and strict concavity on $[0,1/2]$ and strict convexity on
-$[1/2,1]$;
+$\InvF''$, the midpoint jet, exact interior curvature sign and zero loci, and
+strict concavity on $[0,1/2]$ and strict convexity on $[1/2,1]$;
 \item the effective and sharp inverse power inequalities, effective
-linear steepness, and the two endpoint quotient limits;
+linear steepness, the two endpoint quotient limits, and divergence of the
+positive interior derivative at both endpoints;
 \item the exact global differentiability, $C^\infty$, and analytic loci
 of the totalized inverse;
 \item the closed jet formulas, shifted Stirling conversion, and closed
@@ -13529,6 +13619,9 @@ $\InvF(y)=F_I^{-1}(\clamp(y))$:
  \quad\text{when }2^n\InvF(y)\leq1,\\
 &\InvF(y)/y\to+\infty\quad(y\downarrow0),\qquad
  (1-\InvF(y))/(1-y)\to+\infty\quad(y\uparrow1),\\
+&\InvF'(y)\to+\infty\quad(y\downarrow0),\qquad
+ \InvF'(y)\to+\infty\quad(y\uparrow1),\\
+&\InvF'(1/2)=1/2,\qquad \InvF''(1/2)=0,\\
 &\InvF(y)\sim
  \frac{\sqrt{\log(1/y)}}{\e\sqrt{\log2}}\,
  \exp\!\left[-\sqrt{2\log2\,\log(1/y)}\right].
