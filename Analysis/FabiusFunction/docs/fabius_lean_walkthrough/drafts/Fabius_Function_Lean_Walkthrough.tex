@@ -5,10 +5,16 @@
 \usepackage{fontspec}
 \usepackage{mathtools}
 \usepackage{unicode-math}
-\setmainfont{EB Garamond}
-\setsansfont{Noto Sans}[Scale=0.90]
+\IfFontExistsTF{EB Garamond}
+  {\setmainfont{EB Garamond}}
+  {\setmainfont{Latin Modern Roman}}
+\IfFontExistsTF{Noto Sans}
+  {\setsansfont{Noto Sans}[Scale=0.90]}
+  {\setsansfont{DejaVu Sans}[Scale=0.90]}
 \setmonofont{DejaVu Sans Mono}[Scale=0.82]
-\setmathfont{Asana Math}
+\IfFontExistsTF{Asana Math}
+  {\setmathfont{Asana Math}}
+  {\setmathfont{Latin Modern Math}}
 \usepackage{microtype}
 \usepackage{setspace}
 \setstretch{1.045}
@@ -1193,7 +1199,10 @@ identifies the integral with the exact sequence:
 \[
  \int_{-1}^{1} x^{2n}\upfun_F(x)\,dx=c_n.
 \]
-A half-interval version similarly identifies \decl{halfMoment}.
+A half-interval version similarly identifies \decl{halfMoment}.  The additive
+theorem \pathbreak{halfMoment_eq_integral_formula_all} includes the normalized
+zeroth term, where both exact and analytic definitions equal one, without
+changing the source-faithful positive-index theorem.
 
 \section{The inverse-power identity}
 One of the most important bridges in the library relates the value at
@@ -1655,6 +1664,16 @@ gives
 \[
  H(y)=\int_0^1 H(2y-u)\,du.
 \]
+Because $H$ vanishes on the nonpositive axis, this collapses for every
+$y\leq1/2$ to
+\[
+ H(y)=\int_0^{2y}H(t)\,dt.
+\]
+The statement remains valid for negative $y$: the interval integral has
+reversed orientation, but its integrand vanishes throughout.  This sharp
+domain is the public theorem
+\pathbreak{weightedSumCDF_eq_intervalIntegral_of_le_half}; the older
+\pathbreak{weightedSumCDF_left_formula} remains as its $[0,1/2]$ wrapper.
 The Lean proof is explicit: rewrite the CDF as a measure of a measurable set,
 use the map equation for $\mu$, apply product integration/Fubini to the
 indicator, and identify each fiber measure with $H(2y-u)$.
@@ -1687,6 +1706,12 @@ product.
 
 For Poisson summation, \module{PoissonSummation} packages a positively rescaled
 \upfun as a Schwartz map and computes its Fourier transform under scaling.
+The same construction exposes
+\pathbreak{rvachevFourier_real_iteratedDeriv_rapidDecay}: for every pair of
+natural indices, an arbitrary polynomial frequency weight times the
+corresponding real-axis derivative is uniformly bounded.  Its specialization
+\pathbreak{rvachevFourier_real_rapidDecay} is the rapid decay of the transform
+itself.
 Mathlib's Schwartz Poisson theorem then gives
 \[
  \sum_{k\in\Z}\upfun_F(t+uk)
@@ -3133,7 +3158,7 @@ Module & Principal role (continued) \\
 \addlinespace[.28em]
 \module{ProbabilityRepresentation} & Infinite product probability space, weighted random series, self-similar law, and CDF identification. \\
 \addlinespace[.28em]
-\module{PoissonSummation} & Schwartz Poisson summation, partitions of unity, period-two expansions, and source corrections. \\
+\module{PoissonSummation} & Schwartz rapid decay of every real-axis Fourier derivative, Poisson summation, partitions of unity, period-two expansions, and source corrections. \\
 \addlinespace[.28em]
 \multicolumn{2}{@{}l}{\sffamily\bfseries\color{OliveDark} Translation, Taylor reduction, and arithmetic-paper support} \\
 \addlinespace[.45em]
@@ -3521,6 +3546,8 @@ Declaration & Role in the development (continued) \\
 \pathbreak{weightedSumCDF_eq_integral} & Integral smoothing equation for the CDF of the random series. \\
 \addlinespace[.28em]
 \pathbreak{rvachev_poisson_summation} & Corrected Poisson summation formula, retaining the source's omitted phase variable. \\
+\addlinespace[.28em]
+\pathbreak{rvachevFourier_real_iteratedDeriv_rapidDecay} & Arbitrary polynomial decay for every real-axis derivative of the Fourier transform. \\
 \addlinespace[.28em]
 \pathbreak{rvachev_partition_unity} & Integer translates of the up function form a partition of unity. \\
 \addlinespace[.28em]

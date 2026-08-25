@@ -233,7 +233,7 @@ theorem fabiusLaplaceMoment_zero_eq_halfMoment
   | succ n =>
       rw [fabiusLaplaceMoment_succ]
       simp only [zero_mul, sub_zero]
-      rw [halfMoment_eq_integral_formula F hF (n + 1) (by omega),
+      rw [halfMoment_eq_integral_formula_all F hF (n + 1),
         halfMomentIntegral_succ]
       simp [tiltedSurvivalMoment]
 
