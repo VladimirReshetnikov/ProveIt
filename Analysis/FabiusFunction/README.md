@@ -206,7 +206,19 @@ The asymptotic aggregate also audits four linked Stack Exchange discussions.
 The recurrence sequence is exposed directly as
 `fabiusRecurrenceSequence n = halfMoment n / n!`, with its displayed
 recurrence, Bernoulli recurrence, inverse-dyadic bridge, generating series,
-and product all proved.  The
+and product all proved.  Substituting the inverse-dyadic bridge back into the
+sequence recurrence gives the direct formula
+
+```text
+F(2^(-n)) = 2^(-choose(n,2)) / (2^n - 1) *
+  sum (k < n), 2^(choose(k,2)) / (n-k+1)! * F(2^(-k))
+```
+
+for every `n ≥ 1`; exact rational, generic `IsFabius`, and canonical global
+forms are exposed by `fabiusAtInverseTwoPow_recurrence_zpow`,
+`fabiusFunction_inverse_two_pow_recurrence_zpow`, and
+`globalFabius_inverse_two_pow_recurrence`.  The restriction is necessary:
+at `n = 0` the displayed denominator vanishes.  The
 [conjectured finite q-binomial formula](https://math.stackexchange.com/questions/3283519/conjectured-formula-for-the-fabius-function)
 is proved exactly in its full stated scope: for all natural `m,n`, its
 half-shifted Thue--Morse sum is the signed global Fabius value at `m / 2^n`.

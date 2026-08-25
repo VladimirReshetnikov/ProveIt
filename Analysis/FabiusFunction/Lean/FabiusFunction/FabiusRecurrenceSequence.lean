@@ -152,6 +152,147 @@ theorem fabius_inverse_two_pow_eq_recurrenceSequence
   rw [halfMoment_eq_fabius_formula F hF n]
   field_simp
 
+/-- The exact rational inverse-power value in the recurrence-sequence
+normalization. -/
+theorem fabiusAtInverseTwoPow_eq_recurrenceSequence (n : ℕ) :
+    fabiusAtInverseTwoPow n =
+      ((2 : ℚ) ^ n.choose 2)⁻¹ * fabiusRecurrenceSequence n := by
+  rw [fabiusAtInverseTwoPow_eq_halfMoment,
+    halfMomentFabiusValue_eq_fabiusRecurrenceSequence]
+
+/-- Exact rational form of the inverse-dyadic Fabius recurrence. -/
+theorem fabiusAtInverseTwoPow_recurrence
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusAtInverseTwoPow n =
+      (((2 : ℚ) ^ n.choose 2)⁻¹ / ((2 : ℚ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℚ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℚ)) *
+            fabiusAtInverseTwoPow k := by
+  have hsum :
+      (∑ k ∈ range n,
+          fabiusRecurrenceSequence k /
+            (((n - k + 1).factorial : ℕ) : ℚ)) =
+        ∑ k ∈ range n,
+          ((2 : ℚ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℚ)) *
+            fabiusAtInverseTwoPow k := by
+    apply Finset.sum_congr rfl
+    intro k _hk
+    rw [fabiusAtInverseTwoPow_eq_recurrenceSequence]
+    have hpow : (2 : ℚ) ^ k.choose 2 ≠ 0 := by positivity
+    have hfac : ((((n - k + 1).factorial : ℕ) : ℚ)) ≠ 0 := by
+      positivity
+    field_simp
+  rw [fabiusAtInverseTwoPow_eq_recurrenceSequence,
+    fabiusRecurrenceSequence_recurrence n hn, hsum]
+  ring
+
+/-- Exact rational form with the literal negative exponent from the displayed
+recurrence. -/
+theorem fabiusAtInverseTwoPow_recurrence_zpow
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusAtInverseTwoPow n =
+      ((2 : ℚ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℚ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℚ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℚ)) *
+            fabiusAtInverseTwoPow k := by
+  simpa [zpow_neg] using fabiusAtInverseTwoPow_recurrence n hn
+
+/-- Generic real form of the inverse-dyadic recurrence for any bounded Fabius
+function. -/
+theorem fabiusFunction_inverse_two_pow_recurrence
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusReal F (((2 : ℝ) ^ n)⁻¹) =
+      (((2 : ℝ) ^ n.choose 2)⁻¹ / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            fabiusReal F (((2 : ℝ) ^ k)⁻¹) := by
+  have hsum :
+      (∑ k ∈ range n,
+          (fabiusRecurrenceSequence k : ℝ) /
+            (((n - k + 1).factorial : ℕ) : ℝ)) =
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            fabiusReal F (((2 : ℝ) ^ k)⁻¹) := by
+    apply Finset.sum_congr rfl
+    intro k _hk
+    rw [fabius_inverse_two_pow_eq_recurrenceSequence F hF k]
+    have hpow : (2 : ℝ) ^ k.choose 2 ≠ 0 := by positivity
+    have hfac : ((((n - k + 1).factorial : ℕ) : ℝ)) ≠ 0 := by
+      positivity
+    field_simp
+  rw [fabius_inverse_two_pow_eq_recurrenceSequence F hF n]
+  have hrec := congrArg ((↑) : ℚ → ℝ)
+    (fabiusRecurrenceSequence_recurrence n hn)
+  push_cast at hrec
+  rw [hrec, hsum]
+  ring
+
+/-- Generic real form matching the literal `2^(-n)` notation and factor order
+in the displayed recurrence. -/
+theorem fabiusFunction_inverse_two_pow_recurrence_zpow
+    (F : BoundedFabius) (hF : IsFabius F)
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusReal F ((2 : ℝ) ^ (-(n : ℤ))) =
+      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            fabiusReal F ((2 : ℝ) ^ (-(k : ℤ))) := by
+  simpa [zpow_neg] using
+    fabiusFunction_inverse_two_pow_recurrence F hF n hn
+
+/-- Canonical real form of the inverse-dyadic recurrence. -/
+theorem fabius_inverse_two_pow_recurrence
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusReal fabius (((2 : ℝ) ^ n)⁻¹) =
+      (((2 : ℝ) ^ n.choose 2)⁻¹ / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            fabiusReal fabius (((2 : ℝ) ^ k)⁻¹) :=
+  fabiusFunction_inverse_two_pow_recurrence fabius fabius_spec n hn
+
+/-- Canonical real form matching the literal `2^(-n)` notation in the
+displayed recurrence. -/
+theorem fabius_inverse_two_pow_recurrence_zpow
+    (n : ℕ) (hn : 1 ≤ n) :
+    fabiusReal fabius ((2 : ℝ) ^ (-(n : ℤ))) =
+      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            fabiusReal fabius ((2 : ℝ) ^ (-(k : ℤ))) :=
+  fabiusFunction_inverse_two_pow_recurrence_zpow fabius fabius_spec n hn
+
+/-- Signed-global form of the displayed recurrence.  All arguments are in
+`[0, 1]`, where the signed extension agrees with the bounded Fabius
+function. -/
+theorem globalFabius_inverse_two_pow_recurrence
+    (n : ℕ) (hn : 1 ≤ n) :
+    globalFabius ((2 : ℝ) ^ (-(n : ℤ))) =
+      ((2 : ℝ) ^ (-(n.choose 2 : ℤ)) / ((2 : ℝ) ^ n - 1)) *
+        ∑ k ∈ range n,
+          ((2 : ℝ) ^ k.choose 2 /
+              (((n - k + 1).factorial : ℕ) : ℝ)) *
+            globalFabius ((2 : ℝ) ^ (-(k : ℤ))) := by
+  have hlocal (k : ℕ) :
+      globalFabius ((2 : ℝ) ^ (-(k : ℤ))) =
+        fabiusReal fabius ((2 : ℝ) ^ (-(k : ℤ))) := by
+    rw [globalFabius]
+    apply extendedFabius_eq_fabiusReal fabius fabius_spec
+    constructor
+    · positivity
+    · rw [zpow_neg]
+      exact (inv_le_one₀ (by positivity)).2 (one_le_pow₀ (by norm_num))
+  simp_rw [hlocal]
+  exact fabius_inverse_two_pow_recurrence_zpow n hn
+
 /-- The Bernoulli convolution before reflecting the finite sum. -/
 theorem fabiusRecurrenceSequence_bernoulli_convolution (n : ℕ) :
     (∑ k ∈ range (n + 1),
