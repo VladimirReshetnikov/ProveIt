@@ -307,12 +307,30 @@ arbitrary algebraic function: Definition~\ref{def:elem} has no clause producing 
 continuous branch of $P(x,y)=0$ for a polynomial $P$ with elementary
 coefficients whose Galois group is not solvable.  Liouville's differential
 field definition of ``elementary'' does admit such branches.  We do not claim
-them here.  The obstruction is purely one of formalization cost: the analogue
-of \Cref{thm:density} for algebraic branches is true and classical --- away
-from the zero set of the discriminant, the analytic implicit function theorem
-applies, and that zero set is finite on each interval --- but the analytic
-implicit function theorem over $\R$ is not available in \texttt{Mathlib} at
-the time of writing.
+them here.
+
+The obstruction is one of formalization effort rather than of missing
+infrastructure, and it is worth being exact about where the effort goes, since
+the obvious route is a dead end.  The classical argument runs the implicit
+function theorem away from the zero set of the discriminant, and that step
+does need an \emph{analytic} implicit function theorem --- which
+\texttt{Mathlib} does have, in the form of
+\texttt{ContDiffAt.implicitFunction}, stated for every smoothness exponent in
+$\N\cup\{\infty,\omega\}$ and therefore usable at $\omega$.  What
+\texttt{Mathlib} does not have is the discriminant theory: \texttt{Polynomial.discr}
+carries no bridge to separability, and there is no continuity of roots in the
+coefficients.
+
+The discriminant can be avoided.  Write $g$ for $\partial P/\partial y$
+evaluated along the branch and split the region into $V=\{g\ne 0\}$, where the
+implicit function theorem applies directly, and $W$, the interior of the
+complement of $\overline V$, where $g\equiv 0$ and the branch therefore solves
+the \emph{derivative} equation --- of degree one lower, with leading
+coefficient $n\,a_n$, still nowhere zero.  Induction on the degree closes the
+argument, and $V$ together with a dense subset of $W$ is dense.  A module
+carrying this out is drafted alongside this development but is not part of the
+theorem stated here; until it is machine-checked, the class is the one of
+Definition~\ref{def:elem} and the claim is exactly the claim about that class.
 
 A second, much smaller gap concerns variable exponents.  Definition~\ref{def:elem}
 provides $x\mapsto f(x)^r$ for a \emph{fixed} real $r$, and
@@ -624,8 +642,8 @@ Two natural strengthenings are visible from here.
       admits antiderivatives, and so contains $\operatorname{erf}$,
       $\operatorname{Ei}$ and $\operatorname{Si}$, which are not elementary;
       that class is not what is meant here.)  The analytic content is
-      unchanged; the missing ingredient for the algebraic branches is an
-      analytic implicit function theorem, as recorded in
+      unchanged; what the algebraic branches still cost is the degree
+      induction described in
       \Cref{sec:notclaimed}.
 \item \emph{Differential algebraicity.}  A stronger and genuinely different
       statement is that $F$ satisfies no algebraic differential equation

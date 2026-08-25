@@ -93,7 +93,7 @@ theorem analyticAt_of_continuous_branch {f : ℝ × ℝ → ℝ} {y : ℝ → �
   obtain ⟨φ, hφ, -, hiff⟩ := analyticAt_implicitFunction hf hc hc0
   refine hφ.congr ?_
   have hmap : Tendsto (fun x : ℝ => (x, y x)) (𝓝 x₀) (𝓝 (x₀, y x₀)) :=
-    Filter.Tendsto.prodMk_nhds tendsto_id hy
+    tendsto_id.prodMk_nhds hy
   filter_upwards [hmap.eventually hiff, hzero] with x hx hx0
   exact hx.mp hx0
 
@@ -139,7 +139,8 @@ theorem analyticAt_branchPoly {a : ℕ → ℝ → ℝ} (n : ℕ) {x₀ y₀ : �
     AnalyticAt ℝ (branchPoly a n) (x₀, y₀) := by
   have hfst : AnalyticAt ℝ (fun p : ℝ × ℝ => p.1) (x₀, y₀) := analyticAt_fst
   have hsnd : AnalyticAt ℝ (fun p : ℝ × ℝ => p.2) (x₀, y₀) := analyticAt_snd
-  refine Finset.analyticAt_sum _ fun i _ => ?_
+  simp only [branchPoly]
+  refine Finset.analyticAt_fun_sum _ fun i _ => ?_
   have h1 : AnalyticAt ℝ (fun p : ℝ × ℝ => a i p.1) (x₀, y₀) := by
     simpa [Function.comp_def] using (ha i).comp hfst
   exact h1.fun_mul (hsnd.fun_pow i)
@@ -150,7 +151,7 @@ theorem continuousOn_branchPoly {a : ℕ → ℝ → ℝ} {n : ℕ} {y : ℝ →
     (ha : ∀ i, ContinuousOn (a i) U) (hy : ContinuousOn y U) :
     ContinuousOn (fun x => branchPoly a n (x, y x)) U := by
   simp only [branchPoly]
-  exact continuousOn_finset_sum _ fun i _ => (ha i).mul (hy.pow i)
+  exact continuousOn_finsetSum _ fun i _ => (ha i).fun_mul (hy.fun_pow i)
 
 /-- The derivative of `w ↦ branchPoly a (n + 1) (x, w)` is the formal `∂/∂y`
 of the polynomial, which is `branchPoly` of degree `n` with the coefficients
@@ -203,7 +204,7 @@ theorem analyticDenseOn_of_algebraic :
         ((ha i x hx).continuousAt).continuousWithinAt
       have hgcont : ContinuousOn (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) U := by
         refine continuousOn_branchPoly (fun i => ?_) hy
-        exact continuousOn_const.mul (hacont (i + 1))
+        exact continuousOn_const.fun_mul (hacont (i + 1))
       have hVopen :
           IsOpen (U ∩ (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) ⁻¹' {0}ᶜ) :=
         hgcont.isOpen_inter_preimage hU isOpen_compl_singleton
@@ -211,9 +212,10 @@ theorem analyticDenseOn_of_algebraic :
       have hVan : ∀ x ∈ U ∩ (fun x => branchPoly (branchDerivCoeff a) n (x, y x)) ⁻¹' {0}ᶜ,
           AnalyticAt ℝ y x := by
         rintro x ⟨hxU, hxg⟩
+        have hxg' : branchPoly (branchDerivCoeff a) n (x, y x) ≠ 0 := hxg
         refine analyticAt_of_continuous_branch
           (analyticAt_branchPoly (n + 1) fun i => ha i x hxU)
-          (hasDerivAt_branchPoly_snd a n x (y x)) hxg
+          (hasDerivAt_branchPoly_snd a n x (y x)) hxg'
           (hy.continuousAt (hU.mem_nhds hxU)) ?_
         filter_upwards [hU.mem_nhds hxU] with x' hx'
         rw [heq x' hx', heq x hxU]
