@@ -872,6 +872,20 @@ and \lean{fabiusInv_contDiffOn_Ioo} proves that the totalized inverse is
 \(C^\infty\) throughout the open unit interval.  The endpoints are excluded
 sharply: their one-sided difference quotients diverge.
 
+The next derivative is also packaged exactly.  The declarations
+\lean{deriv_fabiusInv_hasDerivAt} and \lean{deriv_deriv_fabiusInv} prove
+\[
+  (F^{-1})''(y)
+    =-\frac{F''(F^{-1}(y))}{F'(F^{-1}(y))^3}
+    \qquad(0<y<1).
+\]
+The reciprocal reverses the monotonicity of \(F'\).  Consequently
+\lean{strictConcaveOn_fabiusInv_firstHalf} proves strict concavity on the
+closed interval \([0,1/2]\), while
+\lean{strictConvexOn_fabiusInv_secondHalf} proves strict convexity on
+\([1/2,1]\).  These closed-interval shape theorems use differentiability only
+on the interiors, so they are compatible with the singular endpoint slopes.
+
 Flatness of \(F\) becomes steepness of \(F^{-1}\).  Substituting
 \(x=F^{-1}(y)\) into the effective estimate gives, on the stated shrinking
 window,
@@ -2676,6 +2690,7 @@ Dyadic common denominator \(D_n\) & \lean{dyadicDenominator} & \file{Arithmetic.
 Reshetnikov quantity \(R_n\) & \lean{reshetnikov} & \file{Arithmetic.lean} and \file{PaperStatements.lean} \\
 Weighted-sum CDF & \lean{weightedSumCDF} & \file{ProbabilityRepresentation.lean} \\
 Totalized inverse \(F^{-1}\) & \lean{fabiusInv}, \lean{fabiusOrderIso}, \lean{fabiusInv_contDiffOn_Ioo} & \file{FabiusInverse.lean} \\
+Inverse curvature & \lean{deriv_deriv_fabiusInv}, \lean{strictConcaveOn_fabiusInv_firstHalf}, \lean{strictConvexOn_fabiusInv_secondHalf} & \file{FabiusInverse.lean} \\
 Uniform spline \(S_p\) & \lean{fabiusUniformSpline} & \file{FabiusUniformSpline.lean} and \file{FabiusComputability.lean} \\
 Logarithmic profile & \lean{fabiusLogProfile} & \file{FabiusLogScale.lean} \\
 Lower-Lambert reference coordinate \(\lambda\) & \lean{fabiusLambertPhase} & \file{FabiusLambertSaddle.lean} \\
@@ -2726,7 +2741,7 @@ Module & Role in the development \\
 \modulefile{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
 \modulefile{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\upf\). \\
 \modulefile{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
-\modulefile{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, interior \(C^\infty\) smoothness, and endpoint steepness. \\
+\modulefile{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, reciprocal-cubic second derivative, interior \(C^\infty\) smoothness, strict closed-half curvature, and endpoint steepness. \\
 \modulefile{InverseBranch.lean} & Local inverse-branch regularity on the open range. \\
 \modulefile{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \modulefile{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
