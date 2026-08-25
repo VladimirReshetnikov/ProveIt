@@ -111,7 +111,7 @@
 \large Exact arithmetic, probability, Fourier analysis, and corrected sharp asymptotics}
 \author{Human-readable synthesis of the formal development\\
 \small Vladimir Reshetnikov's \texttt{ProveIt} repository}
-\date{Repository snapshot: 24 August 2026}
+\date{Repository snapshot: 25 August 2026}
 
 \begin{document}
 \maketitle
@@ -1098,7 +1098,8 @@ Define
 \end{definition}
 
 At a fixed $x$ only finitely many summands can be nonzero, so this is a locally finite sum.
-On every block $[2b,2b+2]$ there is exactly one nonzero translate:
+On every block $[2b,2b+2]$ only the $b$th translate can be nonzero (at the two
+endpoints it also vanishes):
 \begin{equation}
  \mathcal F(x)=\varepsilon_b\Up(x-2b-1),
  \qquad 2b\le x\le 2b+2.                                  \label{eq:single-block}
@@ -1234,29 +1235,166 @@ continuously differentiable, \eqref{eq:up-diffeq} bootstraps regularity: if $\Up
 then the right side is $C^r$, so $\Up\in C^{r+1}$.  Induction gives $\Up\in C^\infty$ and
 then $F\in C^\infty$.
 
-\begin{proposition}[Basic shape]
-The functions $F$ and $\Up$ have the following properties.
-\begin{enumerate}
-\item $F$ is strictly increasing on $(0,1)$ and satisfies $0<F(x)<1$ there.
-\item $\Up$ is even, strictly positive on $(-1,1)$, and zero outside $[-1,1]$.
-\item $\int_{-1}^{1}\Up(x)\dd x=1$.
-\item Every derivative of $\Up$ vanishes at $x=\pm1$.
-\end{enumerate}
-\end{proposition}
+\subsection{The unified slope equation and exact shape}
 
-\begin{proof}
-For $0<x\le1/2$, \eqref{eq:F-diffeq} gives $F'(x)=2F(2x)$.  Positivity follows first near
-$1/2$ from $F(1/2)=1/2$, and then propagates toward zero by repeatedly doubling the
-argument; symmetry handles the right half.  This proves strict monotonicity and, by
-\eqref{eq:up-absolute}, positivity of $\Up$ in the interior of its support.  Finally,
-\begin{equation*}
- \int_{-1}^{1}\Up(x)\dd x
- =2\int_0^1F(t)\dd t=1,
-\end{equation*}
-where the middle identity uses the fold and the last uses symmetry.  Flatness at the support
-endpoints follows from smoothness and the fact that $\Up$ is identically zero just outside
-the support.
-\end{proof}
+The bounded function itself satisfies a single differential identity on the whole real line:
+\begin{equation}
+ F'(x)=2\Up(2x-1)\qquad(x\in\R).                         \label{eq:F-global-slope}
+\end{equation}
+Indeed, for $0\le x\le1/2$ the argument $2x-1$ is nonpositive, and the fold gives
+$\Up(2x-1)=F(2x)$.  For $1/2\le x\le1$ it gives
+$\Up(2x-1)=F(2-2x)$.  Outside $[0,1]$, both sides of
+\eqref{eq:F-global-slope} vanish.
+
+Since $0\le\Up\le1$, equation \eqref{eq:F-global-slope} first shows that $F$ is
+nondecreasing on $\R$.  Reflection gives $F(1/2)=1/2$.  We next prove the strict positivity
+needed for the exact shape.  Suppose $0<x<1/2$ and $F(x)=0$.  Choose the least $n$ for which
+$2^nx\ge1/2$.  If $F(2^jx)=0$ for some $j<n$, then $2^jx$ is a global minimum of the
+nonnegative differentiable function $F$, so
+\[
+ 0=F'(2^jx)=2F(2^{j+1}x).
+\]
+Induction therefore gives $F(2^nx)=0$, whereas monotonicity and $2^nx\ge1/2$ give
+$F(2^nx)\ge F(1/2)=1/2$, a contradiction.  Together with the constant tails and symmetry,
+this proves
+\begin{equation}
+ F(x)>0\iff x>0,\qquad F(x)<1\iff x<1.                  \label{eq:F-strict-range}
+\end{equation}
+
+For $0<x<1$, the number $2x-1$ belongs to $(-1,1)$ and
+\[
+ \Up(2x-1)=F(1-|2x-1|)>0.
+\]
+Thus $F'(x)>0$ throughout $(0,1)$, and $F$ is strictly increasing on the closed interval
+$[0,1]$.  Continuity and the endpoint values then show that its restriction is a bijection
+\[
+ F:[0,1]\longrightarrow[0,1].
+\]
+
+The fold also identifies both notions of support exactly:
+\begin{equation}
+ \Up(x)>0\iff |x|<1,\qquad
+ \{x\in\R:\Up(x)\ne0\}=(-1,1),                         \label{eq:up-point-support}
+\end{equation}
+whereas the topological support is
+\begin{equation}
+ \overline{\{x:\Up(x)\ne0\}}=[-1,1].                   \label{eq:up-top-support}
+\end{equation}
+Moreover, $\Up(x)=F(x+1)$ on $[-1,0]$ and $\Up(x)=F(1-x)$ on $[0,1]$.  Hence
+$\Up$ is strictly increasing on $[-1,0]$, strictly decreasing on $[0,1]$, and
+\begin{equation}
+ \Up(x)=1\iff x=0.                                      \label{eq:up-unique-maximum}
+\end{equation}
+Thus $\Up$ is strictly unimodal and its unique global maximum is $1$.  Its total mass is
+\begin{equation}
+ \int_{-1}^{1}\Up(x)\dd x=2\int_0^1F(t)\dd t=1,        \label{eq:up-total-mass}
+\end{equation}
+where the fold gives the first equality and symmetry gives the second.  Finally every
+derivative of $\Up$ vanishes at $\pm1$, since the smooth function is identically zero just
+outside its support.
+
+\subsection{Optimal Lipschitz regularity and curvature}
+
+The same equations give the sharp metric bounds.  From \eqref{eq:F-global-slope},
+$|F'(x)|\le2$.  Also
+\[
+ |\Up'(x)|=2|\Up(2x+1)-\Up(2x-1)|\le2,
+\]
+because both values lie in $[0,1]$.  The mean-value theorem therefore gives
+\begin{equation}
+ |F(x)-F(y)|\le2|x-y|,\qquad
+ |\Up(x)-\Up(y)|\le2|x-y|                              \label{eq:sharp-lipschitz}
+\end{equation}
+for all real $x,y$.
+
+The constant is optimal for both functions.  At the midpoint,
+\[
+ F'(1/2)=2\Up(0)=2,
+\]
+while
+\[
+ \Up'(1/2)=2\bigl(\Up(2)-\Up(0)\bigr)=-2.
+\]
+A differentiable $K$-Lipschitz function has derivative of absolute value at most $K$
+wherever the derivative exists.  Consequently no constant smaller than $2$ can satisfy
+either inequality in \eqref{eq:sharp-lipschitz}.
+
+Taking one endpoint as the second argument yields the useful linear majorants
+\begin{align}
+ F(x)&\le2x &&(x\ge0),                                   \label{eq:F-linear-left}\\
+ 1-F(x)&\le2(1-x) &&(x\le1),                             \label{eq:F-linear-right}\\
+ \Up(x)&\le2(1-|x|) &&(|x|\le1).                        \label{eq:up-linear-ends}
+\end{align}
+
+Finally, $\Up$ is nondecreasing on $(-\infty,0]$ and nonincreasing on $[0,\infty)$.  Since
+$F'(x)=2\Up(2x-1)$, the derivative of $F$ is nondecreasing on $(-\infty,1/2]$ and
+nonincreasing on $[1/2,\infty)$.  Hence $F$ is convex on $(-\infty,1/2]$ and concave on
+$[1/2,\infty)$.  The monotonicity of the derivative is strict on $(0,1/2)$ and $(1/2,1)$,
+respectively, so $F$ is strictly convex on $[0,1/2]$ and strictly concave on $[1/2,1]$.
+Within the unit interval the midpoint is therefore the unique transition from strict
+convexity to strict concavity, and $F'(1/2)=2$ is the unique maximum slope.
+
+\subsection{Effective and factorial endpoint flatness}
+
+Put
+\[
+ A_n=2^{\binom{n+1}{2}}.
+\]
+For $0\le x\le1/2$, the mean-value theorem and monotonicity give the self-improving estimate
+\begin{equation}
+ F(x)\le2xF(2x).                                         \label{eq:F-flatness-step}
+\end{equation}
+Indeed, for some $c\in(0,x)$,
+\[
+ F(x)=xF'(c)=2xF(2c)\le2xF(2x).
+\]
+Iterating \eqref{eq:F-flatness-step} shows that, whenever $0\le x$ and $2^nx\le1$,
+\begin{equation}
+ F(x)\le A_nx^n.                                         \label{eq:F-effective-flatness}
+\end{equation}
+The product accumulated during the iteration is
+\[
+ \prod_{j=0}^{n-1}2(2^jx)=2^{1+2+\cdots+n}x^n=A_nx^n.
+\]
+
+The fundamental theorem of calculus retains the factorial lost by the pointwise mean-value
+estimate.  In fact,
+\begin{equation}
+ \boxed{F(x)\le\frac{A_n}{n!}\,x^n
+ \qquad(0\le x,\;2^nx\le1).}                            \label{eq:F-factorial-flatness}
+\end{equation}
+For the induction step, assume the estimate of order $n$.  If $2^{n+1}x\le1$, then
+\begin{align*}
+ F(x)
+ &=\int_0^x2F(2t)\,\dd t\\
+ &\le\int_0^x2\,\frac{A_n}{n!}(2t)^n\,\dd t\\
+ &=\frac{2^{n+1}A_n}{(n+1)!}x^{n+1}
+  =\frac{A_{n+1}}{(n+1)!}x^{n+1}.
+\end{align*}
+
+Reflection and folding give the corresponding estimates at every other endpoint.  If
+$x\le1$ and $2^n(1-x)\le1$, then
+\begin{equation}
+ 1-F(x)\le\frac{A_n}{n!}(1-x)^n,                         \label{eq:F-factorial-right}
+\end{equation}
+and if $|x|\le1$ and $2^n(1-|x|)\le1$, then
+\begin{equation}
+ \Up(x)\le\frac{A_n}{n!}(1-|x|)^n.                      \label{eq:up-factorial-flatness}
+\end{equation}
+
+Taking order $n+1$ in these estimates proves the qualitative little-$o$ statements
+\[
+ F(x)=o(x^n)\quad(x\downarrow0),\qquad
+ 1-F(x)=o((1-x)^n)\quad(x\uparrow1).
+\]
+The signed extension satisfies $\mathcal F(x)=o(x^n)$ two-sided at the origin, because it is
+zero to the left and agrees with $F$ immediately to the right.  At the dyadic boundary
+$x=2^{-n}$, the right side of \eqref{eq:F-factorial-flatness} is
+$2^{-\binom n2}/n!$, while
+\[
+ F(2^{-n})=\frac{2^{-\binom n2}d_n}{n!};
+\]
+thus its remaining multiplicative overshoot is exactly $1/d_n$.
 
 \subsection{The original Rvachev characterization}
 
@@ -1264,22 +1402,24 @@ The preceding construction is equivalent to the characterization historically as
 with Rvachev.
 
 \begin{theorem}[Original characterization]
-There is a unique nonzero $C^\infty$ function $\varphi:\R\to\R$ such that
+There is a unique pair $(\varphi,k)$ with $\varphi:\R\to\R$ and $k>0$ such that
+$\varphi\in C^\infty$, its topological support is $[-1,1]$,
 \begin{equation}
- \supp\varphi=[-1,1],\qquad
- \int_\R\varphi(x)\dd x=1,                                \label{eq:original-normalization}
+ \varphi(x)>0\quad(-1<x<1),\qquad \varphi(0)=1,             \label{eq:original-normalization}
 \end{equation}
 and
 \begin{equation}
- \varphi'(x)=k\bigl(\varphi(2x+1)-\varphi(2x-1)\bigr)       \label{eq:original-rvachev}
+ \varphi'(x)=k\bigl(\varphi(2x+1)-\varphi(2x-1)\bigr).      \label{eq:original-rvachev}
 \end{equation}
-for some real scale $k$.  Necessarily $k=2$, and $\varphi=\Up$.
+Necessarily $k=2$, $\varphi=\Up$, and the normalization
+$\int_\R\varphi(x)\dd x=1$ follows from these hypotheses.
 \end{theorem}
 
 \begin{proofidea}
-Integrating \eqref{eq:original-rvachev} against suitable test functions, or taking its
-Fourier transform, first forces $k=2$ under the normalization
-\eqref{eq:original-normalization}.  With the Fourier convention
+The support and positivity hypotheses first give the exact ordinary support $(-1,1)$,
+nonnegativity, endpoint vanishing, and the translate identity on $[0,1]$.  Integrating the
+differential equation and using $\varphi(0)=1$ then gives total mass one and forces $k=2$.
+With the Fourier convention
 \begin{equation}
  \widehat\varphi(z)=\int_\R\varphi(x)\e^{-2\pi\ii xz}\dd x,
 \end{equation}
@@ -1370,11 +1510,111 @@ has density
 \begin{equation}
  u_N=b_0*b_1*\cdots*b_N.                                  \label{eq:finite-convolution}
 \end{equation}
-These compactly supported piecewise-polynomial densities converge to $\Up$.  Weak convergence
-is immediate from almost-sure convergence of $Y_N$; the refinement equation and uniform
-bounds upgrade the convergence to the strong forms used in the formal development.  This
-constructs $\Up$ as an infinite convolution of shrinking boxes, a perspective useful in
-approximation theory and wavelet analysis.
+Their transforms and supports are
+\begin{equation}
+ \widehat u_N(z)=\prod_{j=0}^{N}\sinc\!\left(\frac{\pi z}{2^j}\right),
+ \qquad
+ \supp u_N\subset[-1+2^{-N-1},,1-2^{-N-1}],              \label{eq:finite-box-data}
+\end{equation}
+and differentiating the last convolution gives
+\begin{equation}
+ u_{N+1}'(x)=2^{N+1}\left(
+ u_N(x+2^{-N-2})-u_N(x-2^{-N-2})\right).                 \label{eq:finite-box-derivative}
+\end{equation}
+These compactly supported piecewise-polynomial densities converge to $\Up$ in every
+$C^m(\R)$ norm.  To see the strong convergence, fix $m$ and choose $M>m+1$.  For $N\ge M$
+the additional real sinc factors have modulus at most one, so
+\[
+ |\xi|^m|\widehat u_N(\xi)-\widehat\Up(\xi)|
+ \le2|\xi|^m|\widehat u_M(\xi)|\in L^1(\R).
+\]
+Dominated convergence and Fourier inversion give uniform convergence of all derivatives
+through order $m$.  Coupling the partial and full random sums also gives the quantitative
+weak estimate
+\begin{equation}
+ \left|\int g(x)u_N(x)\dd x-\int g(x)\Up(x)\dd x\right|
+ \le\omega_g(2^{-N-1})                                   \label{eq:finite-box-modulus}
+\end{equation}
+for every uniformly continuous $g$, where $\omega_g$ is its modulus of continuity.
+
+The original paper also uses a different finite family: step functions built from rows of a
+coefficient triangle.  For $n\ge1$ write
+\begin{equation}
+ \mathfrak p_n(Z)=\prod_{j=1}^{n}(1+Z+\cdots+Z^{2^j-1})
+ =\sum_{r=0}^{g_n}a_{n,r}Z^r,
+ \qquad g_n=2^{n+1}-n-2.                                \label{eq:step-coefficient-polynomial}
+\end{equation}
+Then
+\begin{equation}
+ \sum_ra_{n,r}=2^{\binom{n+1}{2}},qquad
+ \mathfrak p_{n+1}(Z)=\mathfrak p_n(Z^2)(1+Z)^{n+1}.     \label{eq:step-coefficient-recursion}
+\end{equation}
+Equivalently, $a_{n,r}$ counts tuples
+$r=s_1+\cdots+s_n$ with $0\le s_j<2^j$.
+
+Put
+\begin{equation}
+ x_{n,r}=\frac{2r-g_n}{2^{n+1}},\qquad
+ \mu_n=\sum_{r=0}^{g_n}
+ \frac{a_{n,r}}{2^{\binom{n+1}{2}}}\,\delta_{x_{n,r}}.  \label{eq:step-atomic-measure}
+\end{equation}
+If
+\[
+ \beta_j=\frac12\bigl(\delta_{2^{-j-1}}+\delta_{-2^{-j-1}}\bigr),
+\]
+then
+\begin{equation}
+ \mu_n=\beta_1^{*1}*\cdots*\beta_n^{*n},\qquad
+ \widehat\mu_n(z)=\prod_{j=1}^{n}
+ \left(\cos\frac{\pi z}{2^j}\right)^j.                 \label{eq:step-cosine-product}
+\end{equation}
+Thus $\mu_n$ converges weakly to the measure with density $\Up$.  Notice that this is a
+weighted-cosine partial product, not the finite sinc product in
+\eqref{eq:finite-box-data}; the two approximation families should not be conflated.
+
+For an interval $I=[a,b]$, let $\mathbf1_I^*$ equal $1$ in its interior, $1/2$ at either
+endpoint, and $0$ elsewhere.  Define
+\begin{equation}
+ I_{n,r}=\left[
+ \frac{2r-1-g_n}{2^{n+1}},
+ \frac{2r+1-g_n}{2^{n+1}}
+ \right]                                                 \label{eq:step-cell}
+\end{equation}
+and
+\begin{equation}
+ \phi_n(x)=2^{n-\binom{n+1}{2}}
+ \sum_{r=0}^{g_n}a_{n,r}\mathbf1_{I_{n,r}}^*(x).         \label{eq:step-approximant}
+\end{equation}
+Then
+\begin{equation}
+ 0\le\phi_n\le1,\qquad \int_\R\phi_n=1,\qquad
+ \phi_n(0)=1,\qquad \phi_n(x)\longrightarrow\Up(x)      \label{eq:step-pointwise-limit}
+\end{equation}
+for every real $x$.  Moreover $\phi_n$ is nondecreasing on $(-\infty,0)$ and nonincreasing
+on $(0,\infty)$.
+
+Here is the proof mechanism.  Every cell has half-width $\delta_n=2^{-n-1}$, and for
+$a\le b$,
+\begin{equation}
+ \mu_n((a+\delta_n,b-\delta_n])
+ \le\int_a^b\phi_n(x)\dd x
+ \le\mu_n((a-\delta_n,b+\delta_n]).                     \label{eq:step-cell-sandwich}
+\end{equation}
+Weak convergence, $\delta_n\to0$, and atomlessness of the limiting density give convergence
+of all interval integrals.  The sliding-window coefficient recurrence in
+\eqref{eq:step-coefficient-recursion} proves that each row increases, has a central plateau,
+and then decreases; ordered adjacent cells transfer this to the monotonicity of $\phi_n$.
+For $x<0$ and small $h>0$,
+\[
+ \frac1h\int_{x-h}^{x}\phi_n(t)\dd t
+ \le\phi_n(x)\le
+ \frac1h\int_x^{x+h}\phi_n(t)\dd t,
+\]
+with the corresponding reversed placement of the averages for $x>0$.  First let
+$n\to\infty$, then $h\downarrow0$, and use continuity of $\Up$.  The point $x=0$ follows
+from $\phi_n(0)=1=\Up(0)$.  The half-endpoint convention is essential: for $n=1$ the two
+cells meet at zero, and ordinary closed indicators would give the false value
+$\phi_1(0)=2$.
 
 \subsection{Centered finite splines and an explicit error bound}
 \label{sec:centered-splines}
@@ -1545,6 +1785,42 @@ entire function.  Equality on the real axis and the identity theorem extend the 
 all complex $z$.
 \end{proof}
 
+The sinc product admits two useful equivalent factorizations:
+\begin{equation}
+ \boxed{
+ \widehat\Up(z)
+ =\prod_{j=0}^{\infty}\sinc\!\left(\frac{\pi z}{2^j}\right)
+ =\prod_{m=1}^{\infty}\left(\cos\frac{\pi z}{2^m}\right)^m
+ =\prod_{m=1}^{\infty}\left(1-\frac{z^2}{m^2}\right)^{1+\nu_2(m)}.} \label{eq:three-fourier-products}
+\end{equation}
+For the cosine form, the exact finite identity is
+\begin{equation}
+ \prod_{j=0}^{N-1}\sinc\!\left(\frac{\pi z}{2^j}\right)
+ =\left[\prod_{m=1}^{N}\left(\cos\frac{\pi z}{2^m}\right)^m\right]
+ \sinc\!\left(\frac{\pi z}{2^N}\right)^N.              \label{eq:finite-sinc-cosine}
+\end{equation}
+The last factor tends locally uniformly to $1$, since on a fixed compact set its logarithm
+is $O(N4^{-N})$.
+
+For the final product, insert Euler's factorization
+\[
+ \sinc(\pi w)=\prod_{r\ge1}\left(1-\frac{w^2}{r^2}\right)
+\]
+in every sinc factor.  The double product may be reordered locally uniformly because the
+sum of the absolute quadratic deviations is bounded by
+\[
+ |z|^2\sum_{j\ge0}4^{-j}\sum_{r\ge1}r^{-2}<\infty.
+\]
+A positive integer $m$ occurs once for every factorization $m=2^jr$, namely for
+$0\le j\le\nu_2(m)$.  Therefore the nonzero zeros of $\widehat\Up$ are exactly the nonzero
+integers, with exact multiplicity
+\begin{equation}
+ \operatorname{ord}_{z=m}\widehat\Up(z)=1+\nu_2(|m|)
+ \qquad(m\in\Z\setminus\{0\}).                           \label{eq:fourier-zero-multiplicity}
+\end{equation}
+Away from these factors no extra zeros arise, since the tail deviations are absolutely
+summable.
+
 Separating the first factor gives the refinement equation already seen in
 \eqref{eq:fourier-refinement-preview}:
 \begin{equation}
@@ -1582,6 +1858,22 @@ For $u>0$ and $t\in\R$,
 Both series converge absolutely and locally uniformly.
 \end{theorem}
 
+\begin{proof}
+Let
+\[
+ P_u(t)=\sum_{k\in\Z}\Up(t+uk).
+\]
+Compact support makes the sum locally finite, so $P_u$ is a smooth $u$-periodic function.
+Unfolding one period shows that its $n$th Fourier coefficient is
+\begin{align*}
+ \frac1u\int_0^uP_u(t)\e^{-2\pi\ii nt/u}\dd t
+ &=\frac1u\int_\R\Up(y)\e^{-2\pi\ii ny/u}\dd y\\
+ &=\frac1u\widehat\Up(n/u).
+\end{align*}
+The rapid decay in \eqref{eq:schwartz-decay} makes the Fourier series converge absolutely,
+with every derivative, and proves \eqref{eq:poisson-up}.
+\end{proof}
+
 For a positive integer $m$, every nonzero term $\widehat{\Up}(mk)$ vanishes because the
 first sinc factor in \eqref{eq:sinc-product} vanishes at nonzero integers.  Taking
 $u=1/m$ in \eqref{eq:poisson-up} gives the exact partition of unity
@@ -1592,8 +1884,24 @@ In particular,
 \begin{equation}
  \sum_{k\in\Z}\Up(t+k)=1.                                \label{eq:integer-partition}
 \end{equation}
+On $0\le t\le1$ only the two neighboring translates can contribute, so this specializes to
+\begin{equation}
+ \Up(t)+\Up(t-1)=1.                                      \label{eq:neighbor-partition}
+\end{equation}
 This identity is one reason $\Up$ is useful as a smooth compactly supported averaging
 kernel.
+
+Setting $t=0$ in the general Poisson formula gives the useful sampling identity
+\begin{equation}
+ \sum_{m\in\Z}\Up(am)=\frac1a\sum_{m\in\Z}\widehat\Up(m/a)
+ \qquad(a>0).                                             \label{eq:poisson-sampling}
+\end{equation}
+For $1/2\le a\le1$, compact support leaves only $m=-1,0,1$ on the left, and evenness gives
+\begin{equation}
+ 1+2\Up(a)=\frac1a\sum_{m\in\Z}\widehat\Up(m/a),
+ \qquad
+ a+2a\Up(a)=\sum_{m\in\Z}\widehat\Up(m/a).             \label{eq:poisson-support-specialization}
+\end{equation}
 
 \subsection{Moment expansion of the Fourier transform}
 
@@ -1689,40 +1997,122 @@ rescaling of the original function; it is an exact rescaling of the signed exten
 large factor $2^{m(m+1)/2}$ quantifies the rapid growth of high derivatives, while the
 argument $2^m x$ accounts for the increasingly fine oscillatory structure.
 
-\subsection{Polynomial behavior near dyadic points}
+\subsection{Sharp global derivative bounds}
 
-Let $x_0=a/2^n$ be a dyadic point in the interior of the unit interval.  For $m>n$, the
-argument $2^m x_0$ in \eqref{eq:global-derivatives} is an even integer.  The local translate
-formula \eqref{eq:single-block} and flatness of $\Up$ at its endpoints imply
+The scaling constants in the preceding theorem are exact uniform norms, not merely convenient
+upper bounds.  Write $A_k=2^{\binom{k+1}{2}}$.  First,
 \begin{equation}
- F^{(m)}(x_0)=0\qquad(m>n).                                \label{eq:dyadic-high-derivatives-zero}
+ |\mathcal F(x)|\le1\qquad(x\in\R).                      \label{eq:global-F-bound}
 \end{equation}
-Thus the Taylor series of $F$ at a dyadic point terminates.
+For $x\le0$ this is immediate.  If $x>0$ and $b=\lfloor x/2\rfloor$, then only the $b$th
+translate in the locally finite definition can contribute, and
+\[
+ \mathcal F(x)=(-1)^{\wt(b)}\Up(x-2b-1).
+\]
+The assertion follows from $0\le\Up\le1$.  Combining
+\eqref{eq:global-F-bound} with derivative scaling gives
+\begin{equation}
+ |\mathcal F^{(k)}(x)|\le A_k\qquad(k\ge0, x\in\R).     \label{eq:global-derivative-bound}
+\end{equation}
+This bound is attained:
+\[
+ \mathcal F^{(k)}(2^{-k})=A_k\mathcal F(1)=A_k.
+\]
+Consequently
+\begin{equation}
+ \sup_{x\in\R}|\mathcal F^{(k)}(x)|=A_k.                 \label{eq:global-derivative-sup}
+\end{equation}
 
-\begin{proposition}[Terminating Taylor series]
-If $x_0=a/2^n\in(0,1)$ with $a$ odd, then the formal Taylor series of $F$ at $x_0$ is a
-polynomial of degree at most $n$.  Nevertheless $F$ does not agree with that polynomial on
-any neighborhood of $x_0$.
-\end{proposition}
+For $\Up$, the derivative formula on $[-1,1]$ and local vanishing outside that interval yield
+\begin{equation}
+ |\Up^{(k)}(x)|\le A_k\qquad(x\in\R).                   \label{eq:up-derivative-bound}
+\end{equation}
+At $x_k=2^{-k}-1$, the scaled argument is $2^k(x_k+1)=1$, so
+$\Up^{(k)}(x_k)=A_k$.  Thus
+\begin{equation}
+ \sup_{x\in\R}|\Up^{(k)}(x)|=A_k.                       \label{eq:up-derivative-sup}
+\end{equation}
+
+The bounded function agrees with $\mathcal F$ as a germ at every $x<1$.  Therefore
+\begin{equation}
+ F^{(k)}(x)=A_k\mathcal F(2^kx)\qquad(x<1).              \label{eq:bounded-derivative-scaling}
+\end{equation}
+Every positive-order derivative vanishes for $x>1$, because $F$ is locally constant there.
+At $x=1$ the same global estimate follows by continuity of $F^{(k)}$.  Hence
+\begin{equation}
+ |F^{(k)}(x)|\le A_k\qquad(k\ge0, x\in\R).             \label{eq:bounded-derivative-bound}
+\end{equation}
+For $k\ge1$ equality is attained at $x=2^{-k}$; for $k=0$ it is attained at $x=1$.
+Thus in every order
+\begin{equation}
+ \sup_{x\in\R}|F^{(k)}(x)|=A_k.                         \label{eq:bounded-derivative-sup}
+\end{equation}
+Setting $x=0$ in \eqref{eq:bounded-derivative-scaling} also gives
+$F^{(k)}(0)=0$ for every $k$, including $k=0$.
+
+\subsection{Exact dyadic jets}
+
+Let
+\[
+ y_{n,a}=\frac{a}{2^n}-1,\qquad 0\le a\le2^{n+1}.
+\]
+These are the centered level-$n$ dyadic points of $[-1,1]$.  If $k>n$, then
+$2^k(y_{n,a}+1)=2^{k-n}a$ is an even nonnegative integer.  The signed extension vanishes at
+every such integer, so
+\begin{equation}
+ \Up^{(k)}(y_{n,a})=0\qquad(k>n).                        \label{eq:up-dyadic-jet-zero}
+\end{equation}
+If $a$ is odd, write $a=2b+1$.  At order $n$,
+\begin{equation}
+ \Up^{(n)}(y_{n,a})
+ =A_n\mathcal F(a)=A_n(-1)^{\wt(b)}\ne0.                \label{eq:up-dyadic-leading-jet}
+\end{equation}
+Thus the formal Taylor polynomial of $\Up$ at a reduced level-$n$ centered dyadic has degree
+exactly $n$.
+
+Translating this statement to $F$, if $x_0=a/2^n\in(0,1)$ with $a$ odd, then
+\begin{align}
+ F^{(k)}(x_0)&=0 &&(k>n),                                \label{eq:F-dyadic-jet-zero}\\
+ F^{(n)}(x_0)&=A_n(-1)^{\wt((a-1)/2)}\ne0.              \label{eq:F-dyadic-leading-jet}
+\end{align}
+Consequently its formal Taylor series has degree exactly $n$, although the function does not
+agree with that polynomial on any neighborhood.
+
+\subsection{Exact real-analytic loci}
+
+\begin{theorem}[Analytic and nonanalytic loci]
+The following statements hold.
+\begin{enumerate}
+\item $\Up$ is not real analytic at any point of $[-1,1]$; outside that interval it is
+      locally zero and hence analytic.
+\item The bounded Fabius function is analytic at $x$ if and only if $x\notin[0,1]$.
+\item The signed extension $\mathcal F$ is not real analytic at any point of the first block
+      $[0,2)$.
+\end{enumerate}
+\end{theorem}
 
 \begin{proof}
-Equation \eqref{eq:dyadic-high-derivatives-zero} proves termination.  If $F$ agreed with the
-Taylor polynomial on a nonempty interval, analyticity of the polynomial and the differential
-scaling relation would propagate polynomial behavior across successively enlarged dyadic
-intervals.  Ultimately $F$ would be polynomial on $(0,1)$, which is incompatible with its
-flatness at $0$ and its nonconstant value $F(1/2)=1/2$.  Equivalently, a polynomial with all
-positive-order derivatives zero at $0$ is constant, whereas $F$ is not.
-\end{proof}
+Odd centered dyadics of arbitrarily high level occur in every neighborhood of every point of
+$[-1,1]$.  Suppose that $\Up$ were analytic at such a point.  Shrinking to a ball of
+analyticity, choose an odd centered dyadic $y_{n,a}$ in that ball.  By
+\eqref{eq:up-dyadic-jet-zero}, every derivative at $y_{n,a}$ above order $n$ vanishes.  The
+convergent Taylor series there is therefore a polynomial of degree at most $n$, so $\Up$
+agrees with that polynomial on a smaller ball.
 
-\begin{corollary}[Nowhere analytic]
-Neither $F$ on $(0,1)$ nor $\Up$ on $(-1,1)$ is real analytic at any point.
-\end{corollary}
+Choose in this smaller ball an odd centered dyadic $y_{m,c}$ of level $m>n$.  Since the
+function there is a polynomial of degree at most $n$, its $m$th derivative must vanish.  But
+\eqref{eq:up-dyadic-leading-jet} says $\Up^{(m)}(y_{m,c})\ne0$, a contradiction.  This also
+covers the support endpoints, since odd centered dyadics approach both from the interior.
+For $|x|>1$, $\Up$ is identically zero on a neighborhood of $x$.
 
-\begin{proof}
-Dyadic points are dense.  If $F$ were analytic at one point, the differential equations and
-translation/reflection identities would extend analyticity to an interval and then to dyadic
-points in that interval, contradicting the preceding proposition.  The statement for $\Up$
-follows from the fold relation.
+For $0\le x<1$, the germs of $F(y)$ and $\Up(1-y)$ agree near $x$.  Analyticity of $F$
+would therefore imply analyticity of $\Up$ at $1-x$.  If $F$ were analytic at $1$, reflection
+$F(y)=1-F(1-y)$ would make it analytic at $0$, again a contradiction.  On the two exterior
+open half-lines $F$ is locally constant, proving the claimed equivalence.
+
+Finally, at $x=0$ the germs of $\mathcal F$ and $F$ agree.  For $0<x<2$, the single-block
+formula gives locally $\mathcal F(y)=\Up(y-1)$.  Analyticity of $\mathcal F$ at $x$ would
+therefore imply analyticity of $\Up$ at $x-1\in(-1,1)$, which is impossible.
 \end{proof}
 
 \section{Moments and generating functions}
@@ -1835,6 +2225,17 @@ $\sinc(\ii z/2)=2\sinh(z/2)/z$ gives
 \end{equation*}
 \end{proof}
 
+Iterating \eqref{eq:G-functional}, or simply multiplying the moment-generating functions of
+the independent uniform coordinates in \eqref{eq:random-X}, gives the locally uniformly
+convergent entire product
+\begin{equation}
+ G(z)=\prod_{j=1}^{\infty}
+ \frac{\e^{z/2^j}-1}{z/2^j},\qquad z\in\C,               \label{eq:G-entire-product}
+\end{equation}
+where each factor has its removable value $1$ at $z=0$.  Compact support of the underlying
+law also makes entire convergence transparent.  The negative-Laplace product used later is
+the specialization $z=-s$.
+
 \begin{corollary}[Half-moment recurrence]
 For $n\ge1$,
 \begin{equation}
@@ -1892,26 +2293,55 @@ Multiplying by $\e^{z/2}$ and extracting the coefficient of $z^n/n!$ gives exact
 
 \subsection{Bernoulli-number recurrences}
 
-Taking logarithms in \eqref{eq:G-functional} and using
+Let $B_j$ denote the Bernoulli numbers with $B_1=-1/2$.  The two moment sequences satisfy the
+explicit triangular recurrences
 \begin{equation}
- \log\frac{\e^z-1}{z}
- =\frac z2+\sum_{m\ge1}\frac{B_{2m}}{2m(2m)!}z^{2m}       \label{eq:bernoulli-log}
+ c_n=\frac{1}{2^{2n}-1}
+ \sum_{k=1}^{n}2^{2n-2k}(2^{2k}-2)
+ \binom{2n}{2k}B_{2k}c_{n-k}                             \label{eq:c-bernoulli-recurrence}
 \end{equation}
-produces recurrences in which Bernoulli numbers replace binomial convolutions.  One convenient
-form for the even moments is obtained by taking the logarithmic derivative of the sinc
-product.  If
-\begin{equation*}
- \widehat{\Up}(z)=\sum_{n\ge0}(-1)^nc_n\frac{(2\pi z)^{2n}}{(2n)!},
-\end{equation*}
-then the coefficients satisfy a triangular recurrence whose $m$th logarithmic coefficient is
-proportional to
+and
 \begin{equation}
- \frac{B_{2m}}{m(2m)!}\frac{1}{1-2^{-2m}}.
+ d_n=\frac{n2^{n-2}}{2^n-1}d_{n-1}
+ -\frac{1}{2^n-1}
+ \sum_{k=1}^{\lfloor n/2\rfloor}
+ \binom n{2k}2^{n-2k}B_{2k}d_{n-2k}.                    \label{eq:d-bernoulli-recurrence}
 \end{equation}
-The formal development proves both the ordinary convolution recurrences and these Bernoulli
-forms, and proves their equivalence by formal power-series algebra.  The binomial recurrences
-are usually better for exact computation; the Bernoulli forms are often better for
-asymptotic estimates.
+
+For the proof, rewrite the two refinements as
+\begin{equation}
+ \frac{\pi z}{\sin\pi z}\widehat\Up(z)=\widehat\Up(z/2),
+ \qquad
+ \frac{z}{\e^z-1}G(2z)=G(z).                            \label{eq:bernoulli-refinements}
+\end{equation}
+Insert
+\begin{equation}
+ \frac{z}{\e^z-1}=\sum_{k\ge0}B_k\frac{z^k}{k!},
+ \qquad
+ \frac{z}{\sin z}=\sum_{k\ge0}(-1)^{k+1}(2^{2k}-2)B_{2k}
+ \frac{z^{2k}}{(2k)!}.                                  \label{eq:bernoulli-series}
+\end{equation}
+Coefficient comparison in the second identity of \eqref{eq:bernoulli-refinements} first
+gives
+\begin{equation}
+ \sum_{k=0}^{n}\binom nkB_k2^{n-k}d_{n-k}=d_n.           \label{eq:d-bernoulli-convolution}
+\end{equation}
+Separate $k=0$ and $k=1$, use $B_1=-1/2$, and use
+$B_{2j+1}=0$ for $j\ge1$ to obtain \eqref{eq:d-bernoulli-recurrence}.  The same calculation
+with the first identity and the even Fourier series gives
+\eqref{eq:c-bernoulli-recurrence}.
+
+There is also a particularly simple bridge between the two sequences:
+\begin{equation}
+ d_{2n+1}=\frac{2n+1}{2}\,c_n.                           \label{eq:odd-half-moment-even-moment}
+\end{equation}
+Indeed, by evenness,
+\[
+ d_{2n+1}=(2n+1)\int_0^1t^{2n}\Up(t)\dd t
+ =\frac{2n+1}{2}\int_{-1}^{1}t^{2n}\Up(t)\dd t.
+\]
+The ordinary binomial recurrences are usually better for exact computation; the Bernoulli
+forms are often better for symbolic transformations and asymptotic estimates.
 
 \section{Exact values at reciprocal powers of two}
 \label{sec:inverse-powers}
@@ -2987,18 +3417,56 @@ shift.  Second, the Toeplitz row \eqref{eq:discrete-toeplitz-reindex} is not a f
 telescope or a partial sum of \eqref{eq:global-q-binomial-series}.  These finite expressions
 share a limit but are not equal term by term.
 
-\section{Endpoint asymptotics: exact logarithmic decomposition}
+\section{Logarithmic scale and endpoint asymptotics}
 \label{sec:asymptotic-decomposition}
 \sectionmark{Endpoint asymptotics}
+
+Before the sharp saddle-point analysis, it is useful to isolate an exact delay identity and
+the independently proved coarse scale.  Put
+\begin{equation}
+ \phi(t)=F(2^{-t}),\qquad \gamma(t)=-\log\phi(t),\qquad L=\log2. \label{eq:log-scale-def}
+\end{equation}
+For $t\ge1$, the argument $2^{-t}$ lies in the left half of the unit interval, and the chain
+rule with $F'(x)=2F(2x)$ gives
+\begin{equation}
+ \phi'(t)=-L\,2^{1-t}\phi(t-1),\qquad
+ \gamma'(t)=L\,2^{1-t}\frac{\phi(t-1)}{\phi(t)}>0.       \label{eq:log-scale-derivative}
+\end{equation}
+Taking logarithms of the second formula yields the exact delay relation
+\begin{equation}
+ \boxed{
+ \gamma(t)-\gamma(t-1)
+ =\log\gamma'(t)-\log L-(1-t)L,qquad t\ge1.}             \label{eq:log-scale-delay}
+\end{equation}
+The restriction $t\ge1$ is essential: it is precisely what permits use of the left-half
+bounded differential law.
+
+Without using the later sharp periodic decomposition, the recurrence and monotonicity already
+give
+\begin{equation}
+ \frac{\gamma(t)}{t^2}\longrightarrow\frac L2,           \label{eq:coarse-log-square}
+\end{equation}
+and, for all sufficiently large $t$,
+\begin{equation}
+ \left|\gamma(t)-\frac L2t^2\right|\le16t\log t.         \label{eq:coarse-log-error}
+\end{equation}
+At integral scales the sharper elementary estimate is
+\begin{equation}
+ \left|\gamma(n)-\frac L2n^2\right|
+ \le3n\log(n+1)\qquad(n\ge1).                            \label{eq:integer-log-error}
+\end{equation}
+Monotonicity of $\gamma$ and
+$\lfloor t\rfloor\le t<\lfloor t\rfloor+1$ transfer the integer estimate to real $t$.
+These bounds establish the quadratic logarithmic law independently; the analysis below
+resolves the lower-order drift, the exact phase, and its unavoidable periodic fluctuation.
+
+\subsection{Exact logarithmic decomposition}
 
 We now turn to the behavior of $F(x)$ as $x\downarrow0$.  This is the technically deepest
 part of the theory and the place where a very small, but mathematically unavoidable,
 log-periodic fluctuation appears.
 
-Throughout the asymptotic sections, put
-\begin{equation}
- L=\log2.                                                   \label{eq:L-def}
-\end{equation}
+Throughout the remaining asymptotic sections we continue to write $L=\log2$.
 We use the standard Stieltjes convention
 \begin{equation}
  \zeta(1+s)=\frac1s+\gamma-\gamma_1s+\bigO(s^2),           \label{eq:stieltjes-convention}
@@ -3849,6 +4317,28 @@ The endpoint statement is worth emphasizing.  Generic Fourier--Legendre converge
 are often quoted only on the open interval, or with an endpoint average.  Here smoothness and
 absolute uniform convergence give the literal values $\Up(\pm1)=0$.
 
+\subsection{Translation to the signed Fabius extension}
+
+On the first two-unit block, the single-translate formula says
+$\mathcal F(x)=\Up(x-1)$ for $0\le x\le2$.  Translating
+\eqref{eq:legendre-series} therefore gives the exact companion expansion
+\begin{equation}
+ \boxed{
+ \mathcal F(x)=\sum_{n=0}^{\infty}u_nP_{2n}(x-1),
+ \qquad 0\le x\le2.}                                    \label{eq:translated-legendre-series}
+\end{equation}
+It converges absolutely and uniformly on the whole closed block, including both endpoints.
+The translated polynomial itself has the finite monomial expansion
+\begin{equation}
+ P_{2n}(x-1)=\sum_{j=0}^{2n}(-1)^j2^{-j}
+ \binom{2n}{j}\binom{2n+j}{j}x^j.                       \label{eq:translated-even-legendre}
+\end{equation}
+To derive it, use parity to replace $P_{2n}(x-1)$ by $P_{2n}(1-x)$, then apply the standard
+shifted-Legendre coefficient formula to $P_{2n}(1-2y)$ at $y=x/2$.  Substituting
+\eqref{eq:legendre-exact-coeff} into \eqref{eq:translated-legendre-series} and then using
+\eqref{eq:translated-even-legendre} gives the completely explicit nested finite sums in
+$j$ and $k$ proved by the formal development; no interchange of two infinite sums is needed.
+
 \subsection{A practical polynomial approximation}
 
 Truncating \eqref{eq:legendre-series} at $n=N$ gives a polynomial of degree $2N$ with exact
@@ -3911,11 +4401,14 @@ periodization agrees with $\Up$ on $[-1,1]$.  Its Fourier coefficients are
 $\widehat{\Up}(n/2)/2$, so rapid Fourier decay gives the uniformly convergent cosine series
 \begin{equation}
  \Up(x)=\frac12+
- \sum_{n=1}^{\infty}\widehat{\Up}(n/2)\cos(\pi nx),
+ \sum_{k=0}^{\infty}\widehat{\Up}\!\left(\frac{2k+1}{2}\right)
+ \cos((2k+1)\pi x),
  \qquad -1\le x\le1.                                     \label{eq:up-cosine-series}
 \end{equation}
-Using \eqref{eq:sinc-product}, every coefficient is an explicit infinite product.  Many
-coefficients vanish because one of the sinc factors is evaluated at a nonzero integer.
+Indeed every nonzero even harmonic vanishes because
+$\widehat\Up(n)=0$ for $n\in\Z\setminus\{0\}$.  Using
+\eqref{eq:sinc-product}, every surviving coefficient is an explicit infinite product.
+The series converges uniformly together with every derivative.
 
 \subsection{Scaled partitions}
 
@@ -4303,7 +4796,8 @@ ones most likely to create a silent error in a human treatment.
 \subsection{Bounded versus signed-global Fabius functions}
 
 The bounded function $F$ takes values in $[0,1]$ and is constant to the right of $1$.
-The signed extension $\mathcal F$ is not bounded in that way and instead obeys
+The signed extension $\mathcal F$ is not $[0,1]$-valued---it changes sign from block to
+block---although \eqref{eq:global-F-bound} shows that $|\mathcal F|\le1$.  It instead obeys
 \begin{equation*}
  \mathcal F'(x)=2\mathcal F(2x)\qquad(x\in\R).
 \end{equation*}
@@ -4316,6 +4810,49 @@ that the global sum is locally finite rather than merely conditionally convergen
 Likewise, the support statement for $\Up$ concerns the topological support:
 $\supp\Up=[-1,1]$, even though $\Up(\pm1)=0$.  Endpoint formulas must distinguish
 closed support from the open set on which the function is positive.
+
+\subsection{Corrected iterated Thue--Morse samples}
+
+One proposed discrete construction becomes correct after its endpoint and summation
+conventions are made explicit.  Define inclusive prefixes recursively by
+\begin{equation}
+ I_0(m)=(-1)^{\wt(m)},\qquad
+ I_{k+1}(m)=\sum_{j=0}^{m}I_k(j),                         \label{eq:iterated-inclusive-prefix}
+\end{equation}
+and put
+\begin{equation}
+ A_n(x)=2^{-\binom n2}
+ I_{n+1}\!\left(\left\lfloor2^{n+1}x\right\rfloor\right). \label{eq:iterated-tm-sample}
+\end{equation}
+Then the finite step-approximation theory proves
+\begin{equation}
+ A_n(x)\longrightarrow\Up(2x-1)\quad(0\le x\le1),
+ \qquad
+ A_n(x/2)\longrightarrow F(x)\quad(0\le x\le1).         \label{eq:iterated-tm-limit}
+\end{equation}
+The exceptional right endpoint is handled exactly rather than by an interior argument:
+\begin{equation}
+ A_n(1)=-2^{-\binom n2}\longrightarrow0=\Up(1).          \label{eq:iterated-tm-right-endpoint}
+\end{equation}
+No polygonal interpolation or uniform convergence rate is needed for this pointwise result.
+
+Two tempting saddle heuristics fail for elementary reasons.  If
+\[
+ T_n(x)=\frac{(2^nx)^n}{n!\,2^{\binom n2}},
+\]
+then for every $x>0$
+\begin{equation}
+ \frac{T_{n+1}(x)}{T_n(x)}=\frac{x2^{n+1}}{n+1}\longrightarrow\infty, \label{eq:false-max-ratio}
+\end{equation}
+so the proposed maximum over $n$ does not exist.  Likewise, for
+\[
+ \Phi_x(n)=\frac L2n^2+n\log x-n\log n+n,
+\]
+the stationary relation $nL+\log x=\log n$ gives
+\begin{equation}
+ \Phi_x(n)=-\frac L2n^2+n.                               \label{eq:stationary-plus-n}
+\end{equation}
+The omitted $+n$ term cannot be absorbed into an $O(\log n)$ error.
 
 \subsection{The Reshetnikov normalization}
 
@@ -4544,6 +5081,31 @@ Differential equations &
 \path{Differential.lean} &
 Proves evenness and the global Rvachev equation, including the gluing argument at the fold
 point, then bootstraps to $C^\infty$.\\
+Order, support, and shape &
+\path{Monotonicity.lean},
+\path{Regularity.lean},
+\path{Convexity.lean} &
+Proves exact positivity and support, strict monotonicity and bijectivity of $F$, strict
+unimodality of $\Up$, the optimal Lipschitz constant $2$, endpoint majorants, and the global
+convex--concave decomposition.\\
+Quantitative flatness &
+\path{FabiusFlatness.lean},
+\path{EffectiveFlatness.lean},
+\path{SharpFlatness.lean} &
+Proves qualitative little-$o$ flatness, the effective dyadic-scale power bound, and its
+factorial-strengthened form for $F$ and both support ends of $\Up$.\\
+Sharp derivative norms &
+\path{GlobalBounds.lean},
+\path{BoundedDerivatives.lean} &
+Bounds the signed extension by one, derives the exact attained norms
+$2^{\binom{k+1}{2}}$ for every derivative of $\mathcal F$, $\Up$, and bounded $F$, and
+transfers global derivative scaling to bounded $F$ below one.\\
+Dyadic jets and analytic loci &
+\path{OriginalPaperSupplement.lean},
+\path{NowhereAnalytic.lean} &
+Proves exact finite dyadic jets, nonanalyticity of $\Up$ on its closed support, the exact
+analytic locus $\R\setminus[0,1]$ of bounded $F$, and nonanalyticity of the signed extension
+on $[0,2)$.\\
 Original characterization &
 \path{OriginalCharacterization.lean},
 \path{OriginalUniqueness.lean} &
@@ -4570,6 +5132,14 @@ Finite convolutions &
 \path{StepApproximationLimit.lean} &
 Connects polynomial densities, repeated convolutions, weak convergence, and the explicit
 step approximants of the original paper, including their measure and endpoint conventions.\\
+Iterated Thue--Morse samples &
+\path{ThueMorseGenerating.lean},
+\path{ThueMorseApproximation.lean},
+\path{PaperKFoldThueMorse.lean},
+\path{DraftCounterexamples.lean} &
+Proves convergence of correctly normalized inclusive-prefix samples to $\Up$ and $F$,
+handles the exceptional endpoint, and formally refutes two tempting but divergent or
+mis-scaled approximation heuristics.\\
 Fourier and Poisson &
 \path{FourierProduct.lean},
 \path{FourierAnalytic.lean},
@@ -4627,6 +5197,11 @@ Discrete $q$-limit &
 \path{FabiusDiscreteLimitIntegration.lean} &
 Controls complex-shift splines, normalizes the finite Gaussian rows, proves their uniform
 variation bound, and applies the Toeplitz theorem for every real argument.\\
+Coarse logarithmic scale &
+\path{FabiusLogScale.lean},
+\path{FabiusLogSquaredAsymptotic.lean} &
+Derives the exact delay identity for $-\log F(2^{-t})$, proves its quadratic logarithmic
+limit independently of saddle analysis, and supplies explicit $t\log t$ error bounds.\\
 Negative-Laplace product &
 \path{NegativeLaplace.lean},
 \path{PeriodicCorrection.lean} &
