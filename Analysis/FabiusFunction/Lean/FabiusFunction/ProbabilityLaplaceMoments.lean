@@ -11,8 +11,10 @@ provides:
 * endpoint and exponentially tilted raw moments on the unit interval;
 * almost-sure support and restriction identities for the weighted-sum law;
 * its survival function on the full nonnegative ray;
-* a compact-support Fubini identity for expectations of differentiable
-  functions; and
+* a general compact-probability Fubini identity for expectations of
+  differentiable functions, expressed through the survival function;
+* a reflection principle and exact degree-zero normalizations for arbitrary
+  probability laws supported on the unit interval; and
 * the resulting identifications with `fabiusLaplaceMoment` and
   `halfMoment`, including the reflection and degree-zero normalizations.
 
@@ -43,6 +45,170 @@ lemma unitLaplaceMoment_nonneg (μ : Measure ℝ) (s : ℝ) (k : ℕ) :
   apply integral_nonneg_of_ae
   filter_upwards [ae_restrict_mem measurableSet_Icc] with x hx
   exact mul_nonneg (Real.exp_nonneg _) (pow_nonneg hx.1 k)
+
+/-- Integration by parts for a probability law supported on `[a,b]`, written
+in terms of its survival function.  In probabilistic notation this is
+
+`E[g(X)] = g(a) + ∫ₐᵇ g'(t) P(X > t) dt`.
+
+The theorem is independent of the Fabius law; the specialized Rvachev form
+below is obtained by setting `a = 0`, `b = 1` and identifying the weighted-sum
+survival function.  Both continuity hypotheses are local to `[a,b]`. -/
+theorem integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival
+    (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    {a b : ℝ} (hab : a ≤ b) (hμ : ∀ᵐ x ∂μ, x ∈ Icc a b)
+    (g g' : ℝ → ℝ) (hg : ContinuousOn g (Icc a b))
+    (hg' : ContinuousOn g' (Icc a b))
+    (hderiv : ∀ x ∈ Icc a b, HasDerivAt g (g' x) x) :
+    (∫ x in Icc a b, g x ∂μ) =
+      g a + ∫ t in a..b, g' t * μ.real (Ioi t) := by
+  let ν : Measure ℝ := volume.restrict (Icc a b)
+  let A : Set (ℝ × ℝ) := {z | z.1 < z.2}
+  let H : ℝ × ℝ → ℝ := fun z => A.indicator (fun z => g' z.1) z
+  have hA : MeasurableSet A := by
+    dsimp [A]
+    exact measurableSet_lt measurable_fst measurable_snd
+  have hg'ν : Integrable g' ν := by
+    dsimp [ν]
+    exact hg'.integrableOn_Icc
+  have hH : Integrable H (ν.prod μ) := by
+    have hbase : Integrable (fun z : ℝ × ℝ => g' z.1 * (1 : ℝ))
+        (ν.prod μ) :=
+      hg'ν.mul_prod (integrable_const (1 : ℝ))
+    have hi := hbase.indicator hA
+    simpa only [H, one_mul, mul_one] using hi
+  have hrestrict : μ.restrict (Icc a b) = μ :=
+    Measure.restrict_eq_self_of_ae_mem hμ
+  have hgμ : Integrable g μ := by
+    rw [← hrestrict]
+    exact hg.integrableOn_Icc
+  have hinner_t (x : ℝ) (hx : x ∈ Icc a b) :
+      (∫ t : ℝ, H (t, x) ∂ν) = g x - g a := by
+    have hind : (fun t : ℝ => H (t, x)) = (Iio x).indicator g' := by
+      funext t
+      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Iio]
+    rw [hind, integral_indicator measurableSet_Iio]
+    change (∫ t : ℝ, g' t ∂(ν.restrict (Iio x))) = _
+    rw [show ν.restrict (Iio x) = volume.restrict (Ico a x) by
+      dsimp [ν]
+      rw [Measure.restrict_restrict measurableSet_Iio]
+      congr 1
+      ext t
+      simp only [mem_inter_iff, mem_Iio, mem_Icc, mem_Ico]
+      constructor <;> intro ht
+      · exact ⟨ht.2.1, ht.1⟩
+      · exact ⟨ht.2, ht.1, (ht.2.trans_le hx.2).le⟩]
+    rw [integral_Ico_eq_integral_Ioc,
+      ← intervalIntegral.integral_of_le hx.1]
+    apply intervalIntegral.integral_eq_sub_of_hasDerivAt
+    · intro t ht
+      apply hderiv t
+      rw [uIcc_of_le hx.1] at ht
+      exact ⟨ht.1, ht.2.trans hx.2⟩
+    · exact
+        (hg'.mono (Icc_subset_Icc_right hx.2)).intervalIntegrable_of_Icc hx.1
+  have hinner_x (t : ℝ) :
+      (∫ x : ℝ, H (t, x) ∂μ) = g' t * μ.real (Ioi t) := by
+    have hind : (fun x : ℝ => H (t, x)) =
+        (Ioi t).indicator (fun _ => g' t) := by
+      funext x
+      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Ioi]
+    rw [hind, integral_indicator_const (g' t) measurableSet_Ioi]
+    simp only [smul_eq_mul]
+    ring
+  have horder_x :
+      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
+        (∫ x : ℝ, g x ∂μ) - g a := by
+    calc
+      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
+          ∫ x : ℝ, (g x - g a) ∂μ := by
+            apply integral_congr_ae
+            filter_upwards [hμ] with x hx
+            exact hinner_t x hx
+      _ = (∫ x : ℝ, g x ∂μ) - g a := by
+        rw [integral_sub hgμ (integrable_const _), integral_const,
+          probReal_univ, one_smul]
+  have horder_t :
+      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν) =
+        ∫ t in a..b, g' t * μ.real (Ioi t) := by
+    calc
+      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν) =
+          ∫ t in Icc a b, g' t * μ.real (Ioi t) := by
+            apply integral_congr_ae
+            filter_upwards [ae_restrict_mem measurableSet_Icc] with t _ht
+            exact hinner_x t
+      _ = ∫ t in a..b, g' t * μ.real (Ioi t) := by
+        rw [intervalIntegral.integral_of_le hab,
+          integral_Icc_eq_integral_Ioc]
+  have hswap :
+      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂μ) =
+        ∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂μ ∂ν := by
+    exact (integral_prod_symm H hH).symm.trans (integral_prod H hH)
+  rw [horder_x, horder_t] at hswap
+  rw [show (∫ x in Icc a b, g x ∂μ) = ∫ x : ℝ, g x ∂μ by
+    rw [hrestrict]]
+  linarith
+
+/-- Unit-interval form of
+`integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival`. -/
+theorem integral_unit_eq_zero_add_integral_deriv_mul_survival
+    (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1)
+    (g g' : ℝ → ℝ)
+    (hg : ContinuousOn g (Icc (0 : ℝ) 1))
+    (hg' : ContinuousOn g' (Icc (0 : ℝ) 1))
+    (hderiv : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivAt g (g' x) x) :
+    (∫ x in Icc (0 : ℝ) 1, g x ∂μ) =
+      g 0 + ∫ t in (0 : ℝ)..1, g' t * μ.real (Ioi t) :=
+  integral_Icc_eq_left_add_intervalIntegral_deriv_mul_survival
+    μ (by norm_num) hμ g g' hg hg' hderiv
+
+/-- A measure supported on `[0,1]` and invariant under reflection about
+`1/2` has equal endpoint and ordinary moments. -/
+theorem unitEndpointMoment_eq_unitLaplaceMoment_zero_of_reflection
+    (μ : Measure ℝ) (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1)
+    (hreflect : μ.map (fun x : ℝ => 1 - x) = μ) (n : ℕ) :
+    unitEndpointMoment μ n = unitLaplaceMoment μ 0 n := by
+  let r : ℝ → ℝ := fun x => 1 - x
+  have hr : Measurable r := by
+    dsimp [r]
+    fun_prop
+  have hmap :
+      (∫ y : ℝ, y ^ n ∂μ.map r) = ∫ x : ℝ, (1 - x) ^ n ∂μ := by
+    simpa only [r, Pi.pow_apply, id_eq] using integral_map hr.aemeasurable
+      (continuous_id.pow n).aestronglyMeasurable
+  have hreflect' :
+      (∫ x : ℝ, (1 - x) ^ n ∂μ) = ∫ x : ℝ, x ^ n ∂μ := by
+    rw [← hmap, hreflect]
+  have hrestrict : μ.restrict (Icc (0 : ℝ) 1) = μ :=
+    Measure.restrict_eq_self_of_ae_mem hμ
+  calc
+    unitEndpointMoment μ n = ∫ x : ℝ, (1 - x) ^ n ∂μ := by
+      unfold unitEndpointMoment
+      rw [hrestrict]
+    _ = ∫ x : ℝ, x ^ n ∂μ := hreflect'
+    _ = unitLaplaceMoment μ 0 n := by
+      unfold unitLaplaceMoment
+      rw [hrestrict]
+      simp
+
+/-- The zero-tilt zeroth moment of a unit-interval probability law is one. -/
+theorem unitLaplaceMoment_zero_zero_of_ae_mem_Icc
+    (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1) :
+    unitLaplaceMoment μ 0 0 = 1 := by
+  unfold unitLaplaceMoment
+  rw [Measure.restrict_eq_self_of_ae_mem hμ]
+  simp
+
+/-- The zeroth endpoint moment of a unit-interval probability law is one. -/
+theorem unitEndpointMoment_zero_of_ae_mem_Icc
+    (μ : Measure ℝ) [IsProbabilityMeasure μ]
+    (hμ : ∀ᵐ x ∂μ, x ∈ Icc (0 : ℝ) 1) :
+    unitEndpointMoment μ 0 = 1 := by
+  unfold unitEndpointMoment
+  rw [Measure.restrict_eq_self_of_ae_mem hμ]
+  simp
 
 namespace ProbabilityRepresentation
 
@@ -95,92 +261,21 @@ theorem integral_unit_eq_zero_add_integral_deriv_mul_rvachevUp
     (hderiv : ∀ x ∈ Icc (0 : ℝ) 1, HasDerivAt g (g' x) x) :
     (∫ x in Icc (0 : ℝ) 1, g x ∂weightedSumDistribution) =
       g 0 + ∫ t in (0 : ℝ)..1, g' t * rvachevUp F t := by
-  let ν : Measure ℝ := volume.restrict (Icc (0 : ℝ) 1)
-  let A : Set (ℝ × ℝ) := {z | z.1 < z.2}
-  let H : ℝ × ℝ → ℝ := fun z => A.indicator (fun z => g' z.1) z
-  have hA : MeasurableSet A := by
-    dsimp [A]
-    exact measurableSet_lt measurable_fst measurable_snd
-  have hg'ν : Integrable g' ν := by
-    dsimp [ν]
-    exact hg'.integrableOn_Icc
-  have hH : Integrable H (ν.prod weightedSumDistribution) := by
-    have hbase : Integrable (fun z : ℝ × ℝ => g' z.1 * (1 : ℝ))
-        (ν.prod weightedSumDistribution) :=
-      hg'ν.mul_prod (integrable_const (1 : ℝ))
-    have hi := hbase.indicator hA
-    simpa only [H, one_mul, mul_one] using hi
-  have hgμ : Integrable g weightedSumDistribution := by
-    rw [← weightedSumDistribution_restrict_Icc]
-    exact hg.integrableOn_Icc
-  have hinner_t (x : ℝ) (hx : x ∈ Icc (0 : ℝ) 1) :
-      (∫ t : ℝ, H (t, x) ∂ν) = g x - g 0 := by
-    have hind : (fun t : ℝ => H (t, x)) = (Iio x).indicator g' := by
-      funext t
-      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Iio]
-    rw [hind, integral_indicator measurableSet_Iio]
-    change (∫ t : ℝ, g' t ∂(ν.restrict (Iio x))) = _
-    rw [show ν.restrict (Iio x) = volume.restrict (Ico 0 x) by
-      dsimp [ν]
-      rw [Measure.restrict_restrict measurableSet_Iio]
-      congr 1
-      ext t
-      simp only [mem_inter_iff, mem_Iio, mem_Icc, mem_Ico]
-      constructor <;> intro ht
-      · exact ⟨ht.2.1, ht.1⟩
-      · exact ⟨ht.2, ht.1, (ht.2.trans_le hx.2).le⟩]
-    rw [integral_Ico_eq_integral_Ioc,
-      ← intervalIntegral.integral_of_le hx.1]
-    apply intervalIntegral.integral_eq_sub_of_hasDerivAt
-    · intro t ht
-      apply hderiv t
-      rw [uIcc_of_le hx.1] at ht
-      exact ⟨ht.1, ht.2.trans hx.2⟩
-    · exact hg'.intervalIntegrable 0 x
-  have hinner_x (t : ℝ) (ht : t ∈ Icc (0 : ℝ) 1) :
-      (∫ x : ℝ, H (t, x) ∂weightedSumDistribution) =
-        g' t * rvachevUp F t := by
-    have hind : (fun x : ℝ => H (t, x)) =
-        (Ioi t).indicator (fun _ => g' t) := by
-      funext x
-      simp only [H, A, Set.indicator, mem_setOf_eq, mem_Ioi]
-    rw [hind, integral_indicator_const (g' t) measurableSet_Ioi]
-    rw [weightedSumDistribution_real_Ioi_eq_rvachevUp F hF ht]
-    simp only [smul_eq_mul]
-    ring
-  have horder_x :
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂weightedSumDistribution) =
-        (∫ x : ℝ, g x ∂weightedSumDistribution) - g 0 := by
-    calc
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂weightedSumDistribution) =
-          ∫ x : ℝ, (g x - g 0) ∂weightedSumDistribution := by
-            apply integral_congr_ae
-            filter_upwards [ae_weightedSumDistribution_mem_Icc] with x hx
-            exact hinner_t x hx
-      _ = (∫ x : ℝ, g x ∂weightedSumDistribution) - g 0 := by
-        rw [integral_sub hgμ (integrable_const _), integral_const,
-          probReal_univ, one_smul]
-  have horder_t :
-      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂weightedSumDistribution ∂ν) =
-        ∫ t in (0 : ℝ)..1, g' t * rvachevUp F t := by
-    calc
-      (∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂weightedSumDistribution ∂ν) =
-          ∫ t in Icc (0 : ℝ) 1, g' t * rvachevUp F t := by
-            apply integral_congr_ae
-            filter_upwards [ae_restrict_mem measurableSet_Icc] with t ht
-            exact hinner_x t ht
-      _ = ∫ t in (0 : ℝ)..1, g' t * rvachevUp F t := by
-        rw [intervalIntegral.integral_of_le (by norm_num : (0 : ℝ) ≤ 1),
-          integral_Icc_eq_integral_Ioc]
-  have hswap :
-      (∫ x : ℝ, ∫ t : ℝ, H (t, x) ∂ν ∂weightedSumDistribution) =
-        ∫ t : ℝ, ∫ x : ℝ, H (t, x) ∂weightedSumDistribution ∂ν := by
-    exact (integral_prod_symm H hH).symm.trans (integral_prod H hH)
-  rw [horder_x, horder_t] at hswap
-  rw [show (∫ x in Icc (0 : ℝ) 1, g x ∂weightedSumDistribution) =
-      ∫ x : ℝ, g x ∂weightedSumDistribution by
-    rw [weightedSumDistribution_restrict_Icc]]
-  linarith
+  calc
+    (∫ x in Icc (0 : ℝ) 1, g x ∂weightedSumDistribution) =
+        g 0 + ∫ t in (0 : ℝ)..1,
+          g' t * weightedSumDistribution.real (Ioi t) :=
+      integral_unit_eq_zero_add_integral_deriv_mul_survival
+        weightedSumDistribution ae_weightedSumDistribution_mem_Icc
+        g g' hg.continuousOn hg'.continuousOn hderiv
+    _ = g 0 + ∫ t in (0 : ℝ)..1, g' t * rvachevUp F t := by
+      apply congrArg (fun y : ℝ => g 0 + y)
+      apply intervalIntegral.integral_congr
+      intro t ht
+      rw [uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] at ht
+      change g' t * weightedSumDistribution.real (Ioi t) =
+        g' t * rvachevUp F t
+      rw [weightedSumDistribution_real_Ioi_eq_rvachevUp F hF ht]
 
 /-- The raw Laplace moments of the weighted-sum probability law are the
 survival-function moments from `LaplaceMoments`. -/
@@ -274,42 +369,21 @@ theorem unitEndpointMoment_weightedSumDistribution_eq_unitLaplaceMoment_zero
     (n : ℕ) :
     unitEndpointMoment weightedSumDistribution n =
       unitLaplaceMoment weightedSumDistribution 0 n := by
-  let r : ℝ → ℝ := fun x => 1 - x
-  have hr : Measurable r := by
-    dsimp [r]
-    fun_prop
-  have hmap :
-      (∫ y : ℝ, y ^ n ∂weightedSumDistribution.map r) =
-        ∫ x : ℝ, (1 - x) ^ n ∂weightedSumDistribution := by
-    simpa only [r, Pi.pow_apply, id_eq] using integral_map hr.aemeasurable
-      (continuous_id.pow n).aestronglyMeasurable
-  have hreflect :
-      (∫ x : ℝ, (1 - x) ^ n ∂weightedSumDistribution) =
-        ∫ x : ℝ, x ^ n ∂weightedSumDistribution := by
-    rw [← hmap, weightedSumDistribution_reflection]
-  calc
-    unitEndpointMoment weightedSumDistribution n =
-        ∫ x : ℝ, (1 - x) ^ n ∂weightedSumDistribution := by
-      unfold unitEndpointMoment
-      rw [weightedSumDistribution_restrict_Icc]
-    _ = ∫ x : ℝ, x ^ n ∂weightedSumDistribution := hreflect
-    _ = unitLaplaceMoment weightedSumDistribution 0 n := by
-      unfold unitLaplaceMoment
-      rw [weightedSumDistribution_restrict_Icc]
-      simp
+  exact unitEndpointMoment_eq_unitLaplaceMoment_zero_of_reflection
+    weightedSumDistribution ae_weightedSumDistribution_mem_Icc
+    weightedSumDistribution_reflection n
 
 /-- The zero-tilt zeroth moment has total mass one. -/
 @[simp] theorem unitLaplaceMoment_weightedSumDistribution_zero_zero :
     unitLaplaceMoment weightedSumDistribution 0 0 = 1 := by
-  unfold unitLaplaceMoment
-  rw [weightedSumDistribution_restrict_Icc]
-  simp
+  exact unitLaplaceMoment_zero_zero_of_ae_mem_Icc
+    weightedSumDistribution ae_weightedSumDistribution_mem_Icc
 
 /-- Exact endpoint-moment normalization in degree zero. -/
 @[simp] theorem unitEndpointMoment_weightedSumDistribution_zero :
     unitEndpointMoment weightedSumDistribution 0 = 1 := by
-  rw [unitEndpointMoment_weightedSumDistribution_eq_unitLaplaceMoment_zero,
-    unitLaplaceMoment_weightedSumDistribution_zero_zero]
+  exact unitEndpointMoment_zero_of_ae_mem_Icc
+    weightedSumDistribution ae_weightedSumDistribution_mem_Icc
 
 /-- At zero tilt, the raw moments of the weighted-sum law are exactly the
 rational half moments. -/

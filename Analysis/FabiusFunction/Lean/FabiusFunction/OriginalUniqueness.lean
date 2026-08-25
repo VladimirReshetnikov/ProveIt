@@ -12,8 +12,10 @@ the Fourier-refinement argument used in the paper.  The intermediate Fourier
 facts are part of the public API: every original solution has transform value
 one at the origin, satisfies the finite and infinite dyadic sinc-product
 formulas, and consequently has the same transform as every other solution.
-The final equivalence identifies these original solutions with the scale-two
-folds of unique bounded `IsFabius` witnesses.
+The final equivalences identify these original solutions with the scale-two
+folds of unique bounded `IsFabius` witnesses, describe exactly which values a
+fold forgets, and recover a sharp fixed-candidate characterization by restoring
+the omitted right tail.
 -/
 
 set_option autoImplicit false
@@ -417,6 +419,62 @@ theorem isOriginalFabius_iff_eq_canonical (φ : ℝ → ℝ) (k : ℝ) :
   · exact originalFabius_eq_canonical
   · rintro ⟨rfl, rfl⟩
     exact canonical_isOriginalFabius
+
+/-- Folding a bounded candidate forgets exactly its values strictly to the
+right of one.  This result belongs conceptually next to `rvachevUp` in
+`Basic.lean`; it is kept here to avoid invalidating the full foundational
+import graph for a new, non-duplicated declaration. -/
+theorem rvachevUp_eq_iff_eqOn_Iic_one (F G : BoundedFabius) :
+    rvachevUp F = rvachevUp G ↔
+      Set.EqOn (fabiusReal F) (fabiusReal G) (Set.Iic (1 : ℝ)) := by
+  constructor
+  · intro h t ht
+    have hpoint := congrFun h (t - 1)
+    have hnonpos : t - 1 ≤ 0 := sub_nonpos.mpr ht
+    rw [rvachevUp_of_nonpos F hnonpos,
+      rvachevUp_of_nonpos G hnonpos] at hpoint
+    simpa only [sub_add_cancel] using hpoint
+  · intro h
+    funext x
+    by_cases hx : x ≤ 0
+    · rw [rvachevUp_of_nonpos F hx, rvachevUp_of_nonpos G hx]
+      exact h (by
+        change x + 1 ≤ 1
+        linarith)
+    · have hxpos : 0 < x := lt_of_not_ge hx
+      rw [rvachevUp_of_pos F hxpos, rvachevUp_of_pos G hxpos]
+      exact h (by
+        change 1 - x ≤ 1
+        linarith)
+
+/-- A bounded candidate satisfies the Fabius characterization exactly when
+its fold satisfies Rvachev's original characterization and its omitted open
+right tail is constantly one.  The strict inequality is sharp: the fold still
+observes the value at one through its value at zero. -/
+theorem isFabius_iff_isOriginalFabius_rvachevUp_and_rightTail
+    (F : BoundedFabius) :
+    IsFabius F ↔
+      IsOriginalFabius (rvachevUp F) 2 ∧
+        ∀ x : ℝ, 1 < x → fabiusReal F x = 1 := by
+  constructor
+  · intro hF
+    exact ⟨hF.isOriginalFabius_rvachevUp,
+      fun x hx => hF.one_of_one_le x hx.le⟩
+  · rintro ⟨hO, htail⟩
+    have hup : rvachevUp F = rvachevUp fabius := hO.eq_canonical
+    have hleft : Set.EqOn (fabiusReal F) (fabiusReal fabius)
+        (Set.Iic (1 : ℝ)) :=
+      (rvachevUp_eq_iff_eqOn_Iic_one F fabius).mp hup
+    have hF_eq : F = fabius := by
+      funext x
+      apply Subtype.ext
+      change fabiusReal F x = fabiusReal fabius x
+      by_cases hx : x ≤ 1
+      · exact hleft hx
+      · have hx' : 1 < x := lt_of_not_ge hx
+        rw [htail x hx', fabius_spec.one_of_one_le x hx'.le]
+    rw [hF_eq]
+    exact fabius_spec
 
 /-- Original compact-support solutions are exactly the folds of bounded
 Fabius solutions, with scale two; the bounded witness is unique. -/

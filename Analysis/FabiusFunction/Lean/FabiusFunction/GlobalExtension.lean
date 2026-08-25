@@ -8,7 +8,9 @@ import Mathlib.Topology.Algebra.InfiniteSum.NatInt
 This module proves that the Thue–Morse translate series defining
 `extendedFabius` is locally finite.  It then derives the global differential
 equation and the closed formulas for all iterated derivatives of both the
-signed extension and Rvachev's compactly supported function.
+signed extension and Rvachev's compactly supported function.  A cell-coordinate
+form of the locally finite series records its exact values at every even and
+odd nonnegative integer knot.
 -/
 
 open scoped BigOperators ContDiff
@@ -56,6 +58,32 @@ theorem extendedFabius_eq_single_translate (F : BoundedFabius)
     have hmleR : (b : ℝ) + 1 ≤ m := by exact_mod_cast hmle
     rw [rvachevUp_eq_zero_of_le_neg_one F hF (by nlinarith)]
     ring
+
+/-- Cell-coordinate form of `extendedFabius_eq_single_translate`.  On the
+`b`-th length-two cell, writing the argument as `2b + t` with `0 ≤ t ≤ 2`
+removes all ambient offsets from the surviving Rvachev translate. -/
+theorem extendedFabius_two_mul_add (F : BoundedFabius) (hF : IsFabius F)
+    (b : ℕ) (t : ℝ) (ht : t ∈ Icc (0 : ℝ) 2) :
+    extendedFabius F (2 * (b : ℝ) + t) =
+      (-1 : ℝ) ^ binaryWeight b * rvachevUp F (t - 1) := by
+  have h := extendedFabius_eq_single_translate F hF b
+    (x := 2 * (b : ℝ) + t) (by linarith [ht.1]) (by linarith [ht.2])
+  convert h using 1
+  ring
+
+/-- The signed extension vanishes at every nonnegative even integer knot. -/
+theorem extendedFabius_two_mul_nat (F : BoundedFabius) (hF : IsFabius F)
+    (b : ℕ) : extendedFabius F (2 * (b : ℝ)) = 0 := by
+  simpa [rvachevUp_neg_one F hF] using
+    extendedFabius_two_mul_add F hF b 0 (by constructor <;> norm_num)
+
+/-- At the midpoint of the `b`-th cell, the signed extension is exactly the
+corresponding Thue--Morse sign. -/
+theorem extendedFabius_two_mul_nat_add_one
+    (F : BoundedFabius) (hF : IsFabius F) (b : ℕ) :
+    extendedFabius F (2 * (b : ℝ) + 1) = (-1 : ℝ) ^ binaryWeight b := by
+  simpa [rvachevUp_zero F hF] using
+    extendedFabius_two_mul_add F hF b 1 (by constructor <;> norm_num)
 
 /-- The signed extension vanishes on nonpositive arguments. -/
 theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)

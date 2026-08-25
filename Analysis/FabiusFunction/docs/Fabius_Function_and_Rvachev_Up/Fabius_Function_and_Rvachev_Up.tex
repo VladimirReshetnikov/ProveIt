@@ -1641,7 +1641,7 @@ on $(1,\infty)$; the precise equivalence below retains a unique bounded Fabius w
 \begin{theorem}[Original characterization in the formal development]
 \label{thm:formal-original-characterization}
 Let $\varphi:\R\to\R$ be $C^\infty$, strictly positive on $(-1,1)$, normalized by
-$\varphi(0)=1$, and have topological support exactly $[-1,1]$.  If $k>0$ and
+$\varphi(0)=1$, and have topological support exactly $[-1,1]$.  Let $k\in\R$.  If
 \begin{equation}
  \varphi'(x)=k\bigl(\varphi(2x+1)-\varphi(2x-1)\bigr)
  \qquad(x\in\R),                                           \label{eq:formal-original-rvachev}
@@ -1651,7 +1651,10 @@ then $k=2$ and $\varphi=\Up$.
 
 \begin{proof}
 Continuity and the support hypothesis give $\varphi(\pm1)=0$, while strict interior
-positivity identifies its ordinary nonzero set as $(-1,1)$.  For $0\le t\le1$, differentiate
+positivity identifies its ordinary nonzero set as $(-1,1)$.  Positivity of $k$ need not be
+assumed: the mean-value theorem on $[-1,0]$ gives some $c\in(-1,0)$ for which
+$k\varphi(2c+1)=1$, because the other translated term vanishes; hence $k>0$.
+For $0\le t\le1$, differentiate
 $H(t)=\varphi(t)+\varphi(t-1)$.  Equation \eqref{eq:formal-original-rvachev} makes the two
 middle terms cancel and leaves
 \[
@@ -1690,6 +1693,33 @@ bounded solution is therefore a witness, and uniqueness of bounded Fabius soluti
 it the only witness.  Conversely, every bounded Fabius solution folds to a smooth function
 with topological support $[-1,1]$, strict positivity on $(-1,1)$, value one at the origin,
 and derivative law \eqref{eq:formal-original-rvachev} with scale two.
+\end{proof}
+
+The missing tail can itself be described without any Fabius hypotheses.
+
+\begin{proposition}[Exact kernel of the fold]
+\label{prop:exact-kernel-fold}
+For arbitrary bounded candidates $G,H:\R\to[0,1]$,
+\begin{equation}
+ \Up_G=\Up_H
+ \quad\Longleftrightarrow\quad
+ G(t)=H(t)\quad\hbox{for every }t\le1.                 \label{eq:exact-kernel-fold}
+\end{equation}
+Consequently, a bounded candidate $G$ satisfies the Fabius characterization if and only if
+$\Up_G$ satisfies the original characterization at scale two and
+$G(t)=1$ for every $t>1$.
+\end{proposition}
+
+\begin{proof}
+If the folds agree and $t\le1$, evaluate them at $t-1\le0$; the left branch of
+\eqref{eq:up-fold} returns exactly $G(t)$ and $H(t)$.  Conversely, each branch of the fold
+queries its candidate at either $x+1\le1$ or $1-x<1$, so agreement through $1$ makes the
+folds equal.  For the final assertion, the forward implication is immediate.  In the
+reverse direction, uniqueness of the original solution makes $\Up_G$ canonical;
+\eqref{eq:exact-kernel-fold} therefore identifies $G$ with the canonical bounded solution
+on $(-\infty,1]$, while the added hypothesis identifies their remaining values.  Thus $G$
+is the canonical Fabius solution.  The strict inequality is optimal: the fold still sees
+$G(1)$ at its input zero.
 \end{proof}
 
 The mass-normalized Fourier form is a useful corollary in which positivity and the value at
@@ -11779,14 +11809,15 @@ Derives the Rvachev differential equation, gluing the two one-sided derivatives 
 point $x=0$, and bootstraps the equation to smoothness of every finite order.\\
 \path{OriginalCharacterization.lean} &
 Formalizes Theorem~1 of the compact-support paper starting from an unspecified constant $k$,
-and derives the exact support, nonnegativity, translate identity, normalization, and the
-forced value $k=2$.  It also proves that every bounded Fabius solution folds to an original
-compact-support solution.\\
+derives positivity of $k$ from the other hypotheses, and then obtains the exact support,
+nonnegativity, translate identity, normalization, and the forced value $k=2$.  It also proves
+that every bounded Fabius solution folds to an original compact-support solution.\\
 \path{OriginalUniqueness.lean} &
 Proves the uniqueness half of that theorem by the Fourier refinement argument: every
 solution has transform value one at the origin and satisfies the same finite and infinite
-dyadic $\sinc$-product formulas.  The final iff packages original solutions as exactly the
-scale-two folds of unique bounded Fabius solutions.\\
+dyadic $\sinc$-product formulas.  The final theorems identify the exact kernel of folding,
+give the sharp fixed-candidate iff after restoring the strict right tail, and package
+original solutions as exactly the scale-two folds of unique bounded Fabius solutions.\\
 \path{OriginalPaperSupplement.lean} &
 Packages Theorems 4, 6, and 7 of the compact-support paper, the finite Taylor expansion at
 dyadic points, the nowhere-analyticity corollary, and the exact even and odd integer values

@@ -9,11 +9,13 @@ supplement it but do not replace it.
 ```text
 SYNC Fabius
 worktree/task: c9a3 / root — theorem refinements and documentation
-branch/base: codex/fabius-theorem-refinements at a877f9c82 before merging
-  pinned origin/main 3de52ca1c3402b57db2601fbf8e664df615b39a7
+branch/base: codex/fabius-theorem-refinements at 72d33be08 before merging
+  pinned origin/main 5e80805b1ee92697723949d125aa0d6dbf32f538
 git owner: root in this worktree
-build owner: not held; another worktree currently owns the host-wide Lean lane
-source lease: 2026-08-25 09:37 -07:00 through 10:07 -07:00
+build owner: not held; the external non-elementarity worktree owns target
+  +FabiusFunction.InverseNotElementary, process tree 17168 -> 3916 -> 27744,
+  until its terminal event
+source lease: 2026-08-25 09:57 -07:00 through 10:27 -07:00
 next synchronization checkpoint: after this pinned-main merge is committed and
   pushed, then before theorem edits if a fetched branch overlaps the translated
   polynomial declaration family
@@ -27,10 +29,9 @@ next synchronization checkpoint: after this pinned-main merge is committed and
   `thueMorseTranslatedPowerSumPolynomial`.
 - `docs/registry/codex-fabius-theorem-refinements.md`: this status record.
 
-The integration lease on `Lean/FabiusFunction/ElementaryFunction.lean`,
-`docs/Non_Elementarity_of_the_Fabius_Function/`, the Claude workstream
-registry, and this registry ends when the pinned-main merge is reviewed,
-committed, and pushed.
+The temporary integration lease covers the exact paths changed by immutable
+range `3de52ca1c..5e80805b1`, plus this registry, and ends when the pinned-main
+merge is reviewed, committed, and pushed.
 
 ## Read-only survey
 
@@ -65,6 +66,10 @@ committed, and pushed.
 - `3de52ca1c` on mainline completes and registers the localized
   algebraic-branch obstruction, including the direct nowhere-analytic
   corollaries, so that formerly advertised work is no longer an open lane.
+- `5e80805b1` on mainline integrates the foundational/Fourier/probability and
+  finite-remainder generalizations.  In particular `cfc70e3bc` factors the
+  q-binomial refinement coefficient argument by degree without consuming the
+  separate translated-polynomial coefficient/zero/degree lane leased here.
 
 Each commit message records its exact textual validation and any deferred Lean
 targets.  Focused compilation of the formerly branch-only Lean slices remains

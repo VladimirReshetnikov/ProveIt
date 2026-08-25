@@ -15,6 +15,9 @@ Besides packaging the hypotheses, the file derives the elementary consequences
 needed by the Fourier uniqueness argument: the exact ordinary support,
 nonnegativity, the translate identity on `[0,1]`, normalization on both the
 support interval and the whole real line, and the forced value `k = 2`.
+For compatibility with the paper, positivity of `k` remains a field of the
+predicate; `IsOriginalFabius.mk_of_derivative_law` proves that it follows from
+the other hypotheses.
 It also proves that the Rvachev fold of every bounded `IsFabius` solution
 satisfies this original characterization at scale two.
 -/
@@ -39,6 +42,70 @@ structure IsOriginalFabius (φ : ℝ → ℝ) (k : ℝ) : Prop where
   scale_pos : 0 < k
   hasDerivAt : ∀ x : ℝ,
     HasDerivAt φ (k * (φ (2 * x + 1) - φ (2 * x - 1))) x
+
+/-- The positivity of the dilation constant follows from the other hypotheses
+of the original characterization.  This smart constructor retains the
+source-faithful `scale_pos` field without making callers prove it separately. -/
+theorem IsOriginalFabius.mk_of_derivative_law
+    {φ : ℝ → ℝ} {k : ℝ}
+    (hcont : ContDiff ℝ ∞ φ)
+    (hsupp : tsupport φ = Icc (-1 : ℝ) 1)
+    (hpos : ∀ x ∈ Ioo (-1 : ℝ) 1, 0 < φ x)
+    (hzero : φ 0 = 1)
+    (hderiv : ∀ x : ℝ,
+      HasDerivAt φ (k * (φ (2 * x + 1) - φ (2 * x - 1))) x) :
+    IsOriginalFabius φ k := by
+  have houtside : ∀ {x : ℝ}, x ∉ Icc (-1 : ℝ) 1 → φ x = 0 := by
+    intro x hx
+    by_contra hne
+    have hsuppmem : x ∈ Function.support φ := hne
+    have htop : x ∈ tsupport φ := subset_tsupport φ hsuppmem
+    rw [hsupp] at htop
+    exact hx htop
+  have hnegone : φ (-1) = 0 := by
+    have hzclosed : IsClosed {x : ℝ | φ x = 0} :=
+      isClosed_eq hcont.continuous continuous_const
+    have hsub : Iio (-1 : ℝ) ⊆ {x : ℝ | φ x = 0} := by
+      intro x hx
+      change x < -1 at hx
+      exact houtside (by
+        intro hm
+        change -1 ≤ x ∧ x ≤ 1 at hm
+        linarith [hm.1, hx])
+    have hmem : (-1 : ℝ) ∈ closure (Iio (-1 : ℝ)) := by
+      rw [closure_Iio]
+      simp
+    exact (closure_minimal hsub hzclosed) hmem
+  obtain ⟨c, hc, hslope⟩ :=
+    exists_hasDerivAt_eq_slope φ
+      (fun x : ℝ => k * (φ (2 * x + 1) - φ (2 * x - 1)))
+      (by norm_num : (-1 : ℝ) < 0)
+      hcont.continuous.continuousOn
+      (fun x _ => hderiv x)
+  have hfar : φ (2 * c - 1) = 0 :=
+    houtside (by
+      intro hm
+      change -1 ≤ 2 * c - 1 ∧ 2 * c - 1 ≤ 1 at hm
+      linarith [hm.1, hc.2])
+  have hnear : 0 < φ (2 * c + 1) :=
+    hpos (2 * c + 1) (by
+      constructor <;> linarith [hc.1, hc.2])
+  have hprod : k * φ (2 * c + 1) = 1 := by
+    rw [hzero, hnegone, hfar] at hslope
+    norm_num at hslope
+    exact hslope
+  have hmul : 0 < k * φ (2 * c + 1) := by
+    rw [hprod]
+    norm_num
+  have hk : 0 < k := pos_of_mul_pos_left hmul hnear.le
+  exact {
+    contDiff := hcont
+    tsupport_eq := hsupp
+    pos_of_mem := hpos
+    value_zero := hzero
+    scale_pos := hk
+    hasDerivAt := hderiv
+  }
 
 namespace IsOriginalFabius
 

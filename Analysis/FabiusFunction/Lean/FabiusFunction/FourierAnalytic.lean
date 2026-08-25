@@ -25,23 +25,27 @@ noncomputable section
 
 /-- Rvachev's compactly supported function has support contained in `[-1, 1]`. -/
 theorem rvachevUp_support_subset (F : BoundedFabius) (hF : IsFabius F) :
-    Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 := by
-  intro x hx
-  constructor
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
+    Function.support (rvachevUp F) ⊆ Icc (-1 : ℝ) 1 :=
+  (support_rvachev_subset_Ioo F hF).trans Ioo_subset_Icc_self
 
 /-- Rvachev's function has compact support. -/
 theorem rvachevUp_hasCompactSupport (F : BoundedFabius) (hF : IsFabius F) :
     HasCompactSupport (rvachevUp F) :=
   HasCompactSupport.of_support_subset_isCompact isCompact_Icc
     (rvachevUp_support_subset F hF)
+
+/-- The complex-valued coercion of Rvachev's function is smooth. -/
+theorem rvachevUp_complex_contDiff
+    (F : BoundedFabius) (hF : IsFabius F) :
+    ContDiff ℝ ∞ (fun x : ℝ => (rvachevUp F x : ℂ)) := by
+  change ContDiff ℝ ∞ (Complex.ofRealCLM ∘ rvachevUp F)
+  exact Complex.ofRealCLM.contDiff.comp (rvachev_contDiff F hF)
+
+/-- The complex-valued coercion of Rvachev's function also has compact support. -/
+theorem rvachevUp_complex_hasCompactSupport
+    (F : BoundedFabius) (hF : IsFabius F) :
+    HasCompactSupport (fun x : ℝ => (rvachevUp F x : ℂ)) :=
+  (rvachevUp_hasCompactSupport F hF).comp_left (map_zero Complex.ofRealCLM)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The complex Fourier transform of Rvachev's function is entire. -/
@@ -55,14 +59,9 @@ theorem rvachevFourier_differentiable_analytic
     (rvachevUp F t : ℂ) * Complex.exp (A * (t : ℂ) * z) *
       (A * (t : ℂ))
   have hcont : Continuous (fun t : ℝ => (rvachevUp F t : ℂ)) :=
-    Complex.continuous_ofReal.comp (rvachev_contDiff F hF).continuous
-  have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) := by
-    apply HasCompactSupport.of_support_subset_isCompact isCompact_Icc
-    intro t ht
-    apply rvachevUp_support_subset F hF
-    intro hup
-    apply ht
-    norm_num [hup]
+    (rvachevUp_complex_contDiff F hF).continuous
+  have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) :=
+    rvachevUp_complex_hasCompactSupport F hF
   intro z
   let K : ℝ := Real.exp (‖A‖ * (‖z‖ + 1)) * ‖A‖
   let bound : ℝ → ℝ := fun t => K * ‖(rvachevUp F t : ℂ)‖
@@ -82,7 +81,9 @@ theorem rvachevFourier_differentiable_analytic
     intro t w
     dsimp [G, G']
     convert! (((hasDerivAt_id w).const_mul (A * (t : ℂ))).cexp.const_mul
-      (rvachevUp F t : ℂ)) using 1 <;> simp [id] <;> ring
+      (rvachevUp F t : ℂ)) using 1
+    simp [id]
+    ring
   have hbound : ∀ (t : ℝ) (w : ℂ), w ∈ Metric.ball z 1 →
       ‖G' w t‖ ≤ bound t := by
     intro t w hw
@@ -162,17 +163,11 @@ theorem rvachev_fourier_inversion_analytic
       ∫ t : ℝ, rvachevFourier F t *
         Complex.exp (2 * Real.pi * Complex.I * t * x) := by
   have hcont : Continuous (fun t : ℝ => (rvachevUp F t : ℂ)) :=
-    Complex.continuous_ofReal.comp (rvachev_contDiff F hF).continuous
-  have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) := by
-    apply HasCompactSupport.of_support_subset_isCompact isCompact_Icc
-    intro t ht
-    apply rvachevUp_support_subset F hF
-    intro hup
-    apply ht
-    norm_num [hup]
-  have hsmooth : ContDiff ℝ ∞ (fun t : ℝ => (rvachevUp F t : ℂ)) := by
-    change ContDiff ℝ ∞ (Complex.ofRealCLM ∘ rvachevUp F)
-    exact Complex.ofRealCLM.contDiff.comp (rvachev_contDiff F hF)
+    (rvachevUp_complex_contDiff F hF).continuous
+  have hcomp : HasCompactSupport (fun t : ℝ => (rvachevUp F t : ℂ)) :=
+    rvachevUp_complex_hasCompactSupport F hF
+  have hsmooth : ContDiff ℝ ∞ (fun t : ℝ => (rvachevUp F t : ℂ)) :=
+    rvachevUp_complex_contDiff F hF
   let φ : 𝓢(ℝ, ℂ) := hcomp.toSchwartzMap hsmooth
   have hφcoe : (φ : ℝ → ℂ) = fun t : ℝ => (rvachevUp F t : ℂ) := rfl
   have hfourier_int : Integrable (𝓕 (φ : ℝ → ℂ)) := by
@@ -213,7 +208,9 @@ private lemma rvachevUp_complex_hasDerivAt_on_unit
       ((-2 * rvachevUp F (2 * x - 1) : ℝ) : ℂ) x := by
   have h := rvachev_hasDerivAt F hF x
   rw [rvachevUp_two_mul_add_one_eq_zero F hF hx] at h
-  convert! h.ofReal_comp using 1 <;> push_cast <;> ring
+  convert! h.ofReal_comp using 1
+  push_cast
+  ring
 
 private lemma complexGeneratingFunction_eq_affine_integral
     (F : BoundedFabius) (hF : IsFabius F) (z : ℂ) :
@@ -246,8 +243,9 @@ private lemma complexGeneratingFunction_eq_affine_integral
   have hv : ∀ x ∈ uIcc (0 : ℝ) 1, HasDerivAt v (v' x) x := by
     intro x hx
     dsimp [v, v']
-    convert! (((hasDerivAt_id x).ofReal_comp.const_mul z).cexp) using 1 <;>
-      simp [id] <;> ring
+    convert! (((hasDerivAt_id x).ofReal_comp.const_mul z).cexp) using 1
+    simp [id]
+    ring
   have hu'_int : IntervalIntegrable u' volume (0 : ℝ) 1 :=
     hu'cont.intervalIntegrable (μ := volume) 0 1
   have hv'_int : IntervalIntegrable v' volume (0 : ℝ) 1 :=
@@ -263,7 +261,7 @@ private lemma complexGeneratingFunction_eq_affine_integral
         (rvachevUp F (2 * x - 1) : ℂ) * Complex.exp (z * x) := by
     rw [← intervalIntegral.integral_const_mul]
     apply intervalIntegral.integral_congr
-    intro x hx
+    intro x _hx
     dsimp [u', v]
     push_cast
     ring
@@ -272,7 +270,7 @@ private lemma complexGeneratingFunction_eq_affine_integral
         (rvachevUp F x : ℂ) * Complex.exp (z * x) := by
     rw [← intervalIntegral.integral_const_mul]
     apply intervalIntegral.integral_congr
-    intro x hx
+    intro x _hx
     dsimp [u, v']
     ring
   rw [hfirst, hsecond] at hibp
@@ -286,15 +284,8 @@ private lemma complexGeneratingFunction_eq_affine_integral
 private lemma up_support_subset_Ioc (F : BoundedFabius) (hF : IsFabius F) :
     Function.support (rvachevUp F) ⊆ Ioc (-1 : ℝ) 1 := by
   intro x hx
-  constructor
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_pos (by linarith : x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
-  · by_contra h
-    apply hx
-    rw [rvachevUp, if_neg (by linarith : ¬ x ≤ 0)]
-    exact hF.zero_of_nonpos _ (by linarith)
+  have hx' := support_rvachev_subset_Ioo F hF hx
+  exact ⟨hx'.1, hx'.2.le⟩
 
 /-- The half-moment generating function is the Fourier transform evaluated
 at the corresponding imaginary argument. -/
@@ -331,7 +322,7 @@ theorem complexGeneratingFunction_eq_fourier_analytic
         ∫ x in (0 : ℝ)..1,
           (rvachevUp F (2 * x - 1) : ℂ) * Complex.exp (z * x) := by
     apply intervalIntegral.integral_congr
-    intro x hx
+    intro x _hx
     dsimp [p, q]
     have hexp : z / 2 + z * ((2 * x - 1 : ℝ) : ℂ) / 2 = z * (x : ℂ) := by
       push_cast
@@ -356,9 +347,11 @@ theorem complexGeneratingFunction_eq_fourier_analytic
     have hsubst' :
         (2 : ℝ) • (∫ x in (0 : ℝ)..1, p (2 * x - 1)) =
           ∫ t in (-1 : ℝ)..1, p t := by
-      convert! hsubst using 1 <;> norm_num [sub_eq_add_neg]
+      convert! hsubst using 1
+      norm_num [sub_eq_add_neg]
     rw [hpcomp] at hsubst'
-    convert hsubst'.symm using 1 <;> norm_num
+    convert hsubst'.symm using 1
+    norm_num
   rw [complexGeneratingFunction_eq_affine_integral F hF z, hfourier]
   symm
   calc

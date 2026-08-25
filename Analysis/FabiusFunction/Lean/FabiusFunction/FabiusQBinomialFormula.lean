@@ -730,12 +730,15 @@ private theorem coeff_dyadicNumeratorRefinementFactorSeries
     PowerSeries.coeff_C_mul] at hc
   exact hc.symm
 
-private theorem weighted_dyadicNumeratorRefinementFactorSeries (m n : ℕ) :
+private theorem weighted_dyadicNumeratorRefinementFactorSeries_degree
+    (m n d : ℕ) (hd : d ≤ n) :
     (∑ k ∈ Finset.range (n + 1),
-      qWeight n k * PowerSeries.coeff n
+      qWeight n k * PowerSeries.coeff d
         (dyadicNumeratorRefinementFactorSeries m k)) =
-      ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
-        PowerSeries.coeff n (dyadicNumeratorPrefixSeries m * recurrenceSeries) := by
+      (∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ d) *
+        PowerSeries.coeff d
+          (dyadicNumeratorPrefixSeries m * recurrenceSeries) := by
   simp only [dyadicNumeratorRefinementFactorSeries,
     PowerSeries.coeff_mul,
     Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
@@ -745,8 +748,8 @@ private theorem weighted_dyadicNumeratorRefinementFactorSeries (m n : ℕ) :
   simp only [recurrenceSeries, PowerSeries.coeff_mk]
   apply Finset.sum_congr rfl
   intro i hi
-  have hile : i ≤ n := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
-  have hann (e : ℕ) (he : e < n - i) :
+  have hile : i ≤ d := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
+  have hann (e : ℕ) (he : e < d - i) :
       (∑ k ∈ Finset.range (n + 1),
         (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) = 0 := by
     have hie : i + e < n := by omega
@@ -764,46 +767,54 @@ private theorem weighted_dyadicNumeratorRefinementFactorSeries (m n : ℕ) :
     (weight := fun k => qWeight n k * dyadicNode k ^ i)
     (node := dyadicNode) (P := refinementFactorSeries)
     (hP := fun k _hk => refinementFactorSeries_mul k)
-    (n - i) hann
+    (d - i) hann
   have hnode :
       (∑ k ∈ Finset.range (n + 1),
         (qWeight n k * dyadicNode k ^ i) *
-          dyadicNode k ^ (n - i)) =
-        (2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n := by
-    rw [show (∑ k ∈ Finset.range (n + 1),
-        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ (n - i)) =
+          dyadicNode k ^ (d - i)) =
       ∑ k ∈ Finset.range (n + 1),
-        qWeight n k * dyadicNode k ^ n by
-      apply Finset.sum_congr rfl
-      intro k _hk
-      calc
-        qWeight n k * dyadicNode k ^ i * dyadicNode k ^ (n - i) =
-            qWeight n k *
-              (dyadicNode k ^ i * dyadicNode k ^ (n - i)) := by ring
-        _ = qWeight n k * dyadicNode k ^ n := by
-          rw [← pow_add, Nat.add_sub_of_le hile]]
-    exact qWeight_nodes_self n
+        qWeight n k * dyadicNode k ^ d := by
+    apply Finset.sum_congr rfl
+    intro k _hk
+    calc
+      qWeight n k * dyadicNode k ^ i * dyadicNode k ^ (d - i) =
+          qWeight n k *
+            (dyadicNode k ^ i * dyadicNode k ^ (d - i)) := by ring
+      _ = qWeight n k * dyadicNode k ^ d := by
+        rw [← pow_add, Nat.add_sub_of_le hile]
   rw [hnode] at hweighted
   calc
     (∑ k ∈ Finset.range (n + 1),
         qWeight n k *
           (dyadicNode k ^ i *
             PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
-              PowerSeries.coeff (n - i) (refinementFactorSeries k))) =
+              PowerSeries.coeff (d - i) (refinementFactorSeries k))) =
       PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
         ∑ k ∈ Finset.range (n + 1),
           (qWeight n k * dyadicNode k ^ i) *
-            PowerSeries.coeff (n - i) (refinementFactorSeries k) := by
+            PowerSeries.coeff (d - i) (refinementFactorSeries k) := by
         rw [Finset.mul_sum]
         apply Finset.sum_congr rfl
         intro k _hk
         ring
     _ = PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
-        (((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
-          fabiusRecurrenceSequence (n - i)) := by rw [hweighted]
-    _ = ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
+        ((∑ k ∈ Finset.range (n + 1),
+          qWeight n k * dyadicNode k ^ d) *
+          fabiusRecurrenceSequence (d - i)) := by rw [hweighted]
+    _ = (∑ k ∈ Finset.range (n + 1),
+        qWeight n k * dyadicNode k ^ d) *
         (PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
-          fabiusRecurrenceSequence (n - i)) := by ring
+          fabiusRecurrenceSequence (d - i)) := by ring
+
+private theorem weighted_dyadicNumeratorRefinementFactorSeries (m n : ℕ) :
+    (∑ k ∈ Finset.range (n + 1),
+      qWeight n k * PowerSeries.coeff n
+        (dyadicNumeratorRefinementFactorSeries m k)) =
+      ((2 : ℚ) ^ ((n + 1).choose 2) * halfQPochhammer n) *
+        PowerSeries.coeff n
+          (dyadicNumeratorPrefixSeries m * recurrenceSeries) := by
+  rw [weighted_dyadicNumeratorRefinementFactorSeries_degree m n n le_rfl,
+    qWeight_nodes_self]
 
 private theorem qBinomialThueMorseDyadicNumerator_eq_weighted (m n : ℕ) :
     (∑ k ∈ Finset.range (n + 1),
@@ -925,67 +936,9 @@ private theorem weighted_dyadicNumeratorRefinementFactorSeries_eq_zero
     (∑ k ∈ Finset.range (n + 1),
       qWeight n k * PowerSeries.coeff d
         (dyadicNumeratorRefinementFactorSeries m k)) = 0 := by
-  simp only [dyadicNumeratorRefinementFactorSeries,
-    PowerSeries.coeff_mul,
-    Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
-    PowerSeries.coeff_rescale]
-  simp_rw [Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_eq_zero
-  intro i hi
-  have hile : i ≤ d := Nat.le_of_lt_succ (Finset.mem_range.mp hi)
-  have hann (e : ℕ) (he : e < d - i) :
-      (∑ k ∈ Finset.range (n + 1),
-        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) = 0 := by
-    have hie : i + e < n := by omega
-    rw [show (∑ k ∈ Finset.range (n + 1),
-        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ e) =
-      ∑ k ∈ Finset.range (n + 1),
-        qWeight n k * dyadicNode k ^ (i + e) by
-      apply Finset.sum_congr rfl
-      intro k _hk
-      rw [pow_add]
-      ring]
-    exact qWeight_nodes_zero hie
-  have hweighted := weighted_factor_coefficient
-    (s := Finset.range (n + 1))
-    (weight := fun k => qWeight n k * dyadicNode k ^ i)
-    (node := dyadicNode) (P := refinementFactorSeries)
-    (hP := fun k _hk => refinementFactorSeries_mul k)
-    (d - i) hann
-  have hnode :
-      (∑ k ∈ Finset.range (n + 1),
-        (qWeight n k * dyadicNode k ^ i) *
-          dyadicNode k ^ (d - i)) = 0 := by
-    rw [show (∑ k ∈ Finset.range (n + 1),
-        (qWeight n k * dyadicNode k ^ i) * dyadicNode k ^ (d - i)) =
-      ∑ k ∈ Finset.range (n + 1),
-        qWeight n k * dyadicNode k ^ d by
-      apply Finset.sum_congr rfl
-      intro k _hk
-      calc
-        qWeight n k * dyadicNode k ^ i * dyadicNode k ^ (d - i) =
-            qWeight n k *
-              (dyadicNode k ^ i * dyadicNode k ^ (d - i)) := by ring
-        _ = qWeight n k * dyadicNode k ^ d := by
-          rw [← pow_add, Nat.add_sub_of_le hile]]
-    exact qWeight_nodes_zero hd
-  rw [hnode, zero_mul] at hweighted
-  calc
-    (∑ k ∈ Finset.range (n + 1),
-        qWeight n k *
-          (dyadicNode k ^ i *
-            PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
-              PowerSeries.coeff (d - i) (refinementFactorSeries k))) =
-      PowerSeries.coeff i (dyadicNumeratorPrefixSeries m) *
-        ∑ k ∈ Finset.range (n + 1),
-          (qWeight n k * dyadicNode k ^ i) *
-            PowerSeries.coeff (d - i) (refinementFactorSeries k) := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro k _hk
-        ring
-    _ = 0 := by rw [hweighted, mul_zero]
+  rw [weighted_dyadicNumeratorRefinementFactorSeries_degree
+      m n d (Nat.le_of_lt hd),
+    qWeight_nodes_zero hd, zero_mul]
 
 private noncomputable def dyadicNumeratorShiftedPowerSeries
     (m k : ℕ) : PowerSeries ℚ :=

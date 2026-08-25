@@ -6,7 +6,10 @@ import FabiusFunction.GlobalExtension
 The Thue–Morse series changes sign when translated by a power of two over
 the corresponding initial block.  Combining this with the global derivative
 formula gives the translated Taylor-remainder identity used in Lemma 1 and
-Proposition 10 of Arias de Reyna's paper.
+Proposition 10 of Arias de Reyna's paper.  Closed-endpoint and
+interval-membership forms are provided so callers need not strengthen natural
+weak inequalities or repeat positivity facts already implied by a dyadic
+interval.
 -/
 
 open scoped BigOperators ContDiff
@@ -21,10 +24,11 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
     (r : ℕ) (hr : 1 ≤ r) {x : ℝ} (hx0 : 0 ≤ x) (hxpow : x ≤ (2 : ℝ) ^ r) :
     extendedFabius F (x + (2 : ℝ) ^ r) = -extendedFabius F x := by
   let B : ℕ := 2 ^ (r - 1)
-  have hBpos : 0 < B := by simp [B]
   have hpowNat : 2 ^ r = 2 * B := by
     calc
-      2 ^ r = 2 ^ ((r - 1) + 1) := by congr 1 <;> omega
+      2 ^ r = 2 ^ ((r - 1) + 1) := by
+        congr 1
+        omega
       _ = 2 ^ (r - 1) * 2 := by rw [pow_succ]
       _ = 2 * B := by simp only [B]; ring
   have hpowReal : (2 : ℝ) ^ r = 2 * (B : ℝ) := by
@@ -78,11 +82,12 @@ theorem extendedFabius_add_pow_two (F : BoundedFabius) (hF : IsFabius F)
   simp only [B, Nat.cast_pow, Nat.cast_ofNat]
   ring
 
-/-- Translating by `2^scale` negates a sufficiently high iterated derivative. -/
-theorem iteratedDeriv_add_zpow
+/-- Translating by `2^scale` negates a sufficiently high iterated derivative,
+including at the right endpoint of the source interval. -/
+theorem iteratedDeriv_add_zpow_of_le
     (F : BoundedFabius) (hF : IsFabius F)
     (scale : ℤ) (order : ℕ) (horder : (0 : ℤ) ≤ scale + order)
-    {t : ℝ} (ht0 : 0 ≤ t) (htlt : t < (2 : ℝ) ^ scale) :
+    {t : ℝ} (ht0 : 0 ≤ t) (htle : t ≤ (2 : ℝ) ^ scale) :
     iteratedDeriv (order + 1) (extendedFabius F) (t + (2 : ℝ) ^ scale) =
       -iteratedDeriv (order + 1) (extendedFabius F) t := by
   let r : ℕ := (scale + order + 1).toNat
@@ -105,7 +110,7 @@ theorem iteratedDeriv_add_zpow
   have hz0 : 0 ≤ (2 : ℝ) ^ (order + 1) * t := mul_nonneg (by positivity) ht0
   have hzpow : (2 : ℝ) ^ (order + 1) * t ≤ (2 : ℝ) ^ r := by
     rw [hpow]
-    exact mul_le_mul_of_nonneg_left htlt.le (by positivity)
+    exact mul_le_mul_of_nonneg_left htle (by positivity)
   have hshift := extendedFabius_add_pow_two F hF r hr hz0 hzpow
   have harg : (2 : ℝ) ^ (order + 1) * (t + (2 : ℝ) ^ scale) =
       (2 : ℝ) ^ (order + 1) * t + (2 : ℝ) ^ r := by
@@ -114,18 +119,29 @@ theorem iteratedDeriv_add_zpow
   rw [harg, hshift]
   ring
 
-/-- The translated Taylor remainders on the two adjacent intervals cancel. -/
-theorem taylorRemainder_translate (F : BoundedFabius) (hF : IsFabius F)
+/-- Open-endpoint compatibility form of `iteratedDeriv_add_zpow_of_le`. -/
+theorem iteratedDeriv_add_zpow
+    (F : BoundedFabius) (hF : IsFabius F)
+    (scale : ℤ) (order : ℕ) (horder : (0 : ℤ) ≤ scale + order)
+    {t : ℝ} (ht0 : 0 ≤ t) (htlt : t < (2 : ℝ) ^ scale) :
+    iteratedDeriv (order + 1) (extendedFabius F) (t + (2 : ℝ) ^ scale) =
+      -iteratedDeriv (order + 1) (extendedFabius F) t :=
+  iteratedDeriv_add_zpow_of_le F hF scale order horder ht0 htlt.le
+
+/-- The translated Taylor remainders on two adjacent closed intervals cancel.
+The dyadic interval membership already implies the positivity hypothesis
+carried by the original compatibility theorem below. -/
+theorem taylorRemainder_translate_of_mem_Icc
+    (F : BoundedFabius) (hF : IsFabius F)
     (x : ℝ) (scale : ℤ) (order : ℕ)
-    (_hx : 0 < x)
-    (hlo : (2 : ℝ) ^ scale ≤ x)
-    (hhi : x < (2 : ℝ) ^ (scale + 1))
+    (hx : x ∈ Icc ((2 : ℝ) ^ scale) ((2 : ℝ) ^ (scale + 1)))
     (horder : (0 : ℤ) ≤ scale + order) :
     (∫ t in (2 : ℝ) ^ scale..x,
         (x - t) ^ order * iteratedDeriv (order + 1) (extendedFabius F) t) =
       -(∫ t in 0..(x - (2 : ℝ) ^ scale),
         (x - (2 : ℝ) ^ scale - t) ^ order *
           iteratedDeriv (order + 1) (extendedFabius F) t) := by
+  rcases hx with ⟨hlo, hhi⟩
   let a : ℝ := (2 : ℝ) ^ scale
   let y : ℝ := x - a
   have haPos : 0 < a := by exact zpow_pos (by norm_num) scale
@@ -135,7 +151,7 @@ theorem taylorRemainder_translate (F : BoundedFabius) (hF : IsFabius F)
     rw [zpow_add₀ (by norm_num : (2 : ℝ) ≠ 0)]
     norm_num
     ring
-  have hylt : y < a := by
+  have hyle : y ≤ a := by
     rw [hpowSucc] at hhi
     dsimp only [y]
     linarith
@@ -145,17 +161,48 @@ theorem taylorRemainder_translate (F : BoundedFabius) (hF : IsFabius F)
     (y - t) ^ order * iteratedDeriv (order + 1) (extendedFabius F) t
   have htranslate : (∫ t in a..x, g t) = ∫ t in 0..y, g (t + a) := by
     convert (intervalIntegral.integral_comp_add_right (a := 0) (b := y) g a).symm using 1
-    <;> dsimp only [y] <;> ring
+    dsimp only [y]
+    ring
   have hintegrand : Set.EqOn (fun t => g (t + a)) (fun t => -q t) (uIcc 0 y) := by
     intro t ht
     rw [uIcc_of_le hy0] at ht
-    have hderiv := iteratedDeriv_add_zpow F hF scale order horder
-      ht.1 (ht.2.trans_lt hylt)
+    have hderiv := iteratedDeriv_add_zpow_of_le F hF scale order horder
+      ht.1 (ht.2.trans hyle)
     dsimp only [g, q, a, y]
     rw [hderiv]
     ring
   change (∫ t in a..x, g t) = -∫ t in 0..y, q t
   rw [htranslate, intervalIntegral.integral_congr hintegrand,
     intervalIntegral.integral_neg]
+
+/-- Half-open interval form of `taylorRemainder_translate_of_mem_Icc`. -/
+theorem taylorRemainder_translate_of_mem_Ico
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (scale : ℤ) (order : ℕ)
+    (hx : x ∈ Ico ((2 : ℝ) ^ scale) ((2 : ℝ) ^ (scale + 1)))
+    (horder : (0 : ℤ) ≤ scale + order) :
+    (∫ t in (2 : ℝ) ^ scale..x,
+        (x - t) ^ order * iteratedDeriv (order + 1) (extendedFabius F) t) =
+      -(∫ t in 0..(x - (2 : ℝ) ^ scale),
+        (x - (2 : ℝ) ^ scale - t) ^ order *
+          iteratedDeriv (order + 1) (extendedFabius F) t) :=
+  taylorRemainder_translate_of_mem_Icc F hF x scale order
+    ⟨hx.1, hx.2.le⟩ horder
+
+set_option linter.unusedVariables false in
+/-- Compatibility form of `taylorRemainder_translate_of_mem_Icc` retaining
+the original explicit hypotheses and binder order. -/
+theorem taylorRemainder_translate (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (scale : ℤ) (order : ℕ)
+    (hx : 0 < x)
+    (hlo : (2 : ℝ) ^ scale ≤ x)
+    (hhi : x < (2 : ℝ) ^ (scale + 1))
+    (horder : (0 : ℤ) ≤ scale + order) :
+    (∫ t in (2 : ℝ) ^ scale..x,
+        (x - t) ^ order * iteratedDeriv (order + 1) (extendedFabius F) t) =
+      -(∫ t in 0..(x - (2 : ℝ) ^ scale),
+        (x - (2 : ℝ) ^ scale - t) ^ order *
+          iteratedDeriv (order + 1) (extendedFabius F) t) :=
+  taylorRemainder_translate_of_mem_Ico F hF x scale order ⟨hlo, hhi⟩ horder
 
 end Fabius
