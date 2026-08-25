@@ -7,10 +7,9 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
-HEAD and dirty paths: 1da2fde2285e3970267b7dc2561bcd0d897be1b4
-  (closed lower-Lambert preservation
-  checkpoint); only this registry is being refreshed
+fetched main SHA: 046946a974467e83244fd3a183a3e084e70d3379
+HEAD and dirty paths: 9290aa77955a5ae3bc6b916bf72fb3b1a14a5c5d;
+  clean before this registry-only refresh
 writing (exact paths): this registry only; no further source writes until the
   coordinator acknowledges the requested lease
 expected declarations or document claims: `lowerLambertW_branchPoint`,
@@ -23,9 +22,9 @@ expected declarations or document claims: `lowerLambertW_branchPoint`,
   `one_div_log_two_lt_paperLambertN`; existing open-domain names remain
   exact compatibility wrappers
 completed commits: `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
-  preserves the exact closed lower-Lambert source
-  and the initial coordinator reply; no documentation or aggregate file was
-  changed
+  preserves the exact closed lower-Lambert source and the initial coordinator
+  reply; `9290aa77955a5ae3bc6b916bf72fb3b1a14a5c5d` records the exact source-lease
+  and build-token request; no documentation or aggregate file was changed
 validated (exact command, SHA/state, exit code): delegated prototype command
   `lake env lean /tmp/LowerLambertWPrototype.lean` at base 09ae23f63, exit 0;
   all 11 new declarations report exactly `[propext, Classical.choice,
@@ -40,9 +39,24 @@ requested integration or lease: acknowledge an exact write lease for
 conflicts / dependencies: current main advanced after this branch's clean
   base; do not merge while preserving this checkpoint; all old public names
   and binders are retained; calculus remains on the open smooth interior
-next bounded step: push this exact feature tip, then wait for coordinator
-  acknowledgement and build assignment
+next bounded step: wait for coordinator acknowledgement of the exact source
+  lease and build assignment; do not merge current main, edit source/docs, or
+  launch validation while the token remains paused
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
 leased production paths, run builds, or mutate Git state.
+
+Read-only prototype inventory reported under the coordinator freeze:
+
+- `/tmp/FabiusInversePowerBridgeAudit.lean` compiled before the freeze and
+  packages the existing inverse-power identity as
+  `fabiusAtInverseTwoPow_cast`; no production edit or integration request.
+- `/tmp/FabiusGammaZetaSignAudit.lean` compiled before the freeze and proves
+  strict negativity of `gammaZetaConstant` and the corresponding strict upper
+  bound for `firstStieltjesConstant`; no production edit or integration
+  request.
+- `/tmp/FabiusNatDerivativeAudit.lean` compiled before the freeze and proves
+  the sharp natural-knot classification
+  `iteratedDeriv_extendedFabius_natCast_eq_zero_iff`; no production edit or
+  integration request.
