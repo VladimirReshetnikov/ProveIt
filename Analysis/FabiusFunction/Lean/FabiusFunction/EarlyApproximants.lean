@@ -13,7 +13,8 @@ The polynomial API records the product and recursion formulas, exact degree,
 coefficient interpretation, and coefficient normalization.  The measure API
 then constructs the associated atomic probability measures and finite
 Bernoulli convolutions, while the last section defines the corrected pointwise
-step representatives.
+step representatives and records their exact endpoint range, including the
+base approximant at the origin.
 
 Two corrections to the source are built into the definitions:
 
@@ -500,16 +501,27 @@ theorem stepIntervalLeft_lt_right (n m : ℕ) :
     halfEndpointIntervalIndicator a b b = 1 / 2 := by
   simp [halfEndpointIntervalIndicator]
 
-/-- The half-endpoint interval representative is everywhere nonnegative. -/
-theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
-    0 ≤ halfEndpointIntervalIndicator a b x := by
+/-- The half-endpoint representative always lies in `[0, 1]`, without any
+ordering assumption on its displayed endpoints. -/
+theorem halfEndpointIntervalIndicator_mem_Icc (a b x : ℝ) :
+    halfEndpointIntervalIndicator a b x ∈ Icc (0 : ℝ) 1 := by
   unfold halfEndpointIntervalIndicator
   split_ifs <;> norm_num
+
+/-- The half-endpoint interval representative is everywhere nonnegative. -/
+theorem halfEndpointIntervalIndicator_nonneg (a b x : ℝ) :
+    0 ≤ halfEndpointIntervalIndicator a b x :=
+  (halfEndpointIntervalIndicator_mem_Icc a b x).1
 
 @[simp] theorem stepApproximant_zero (x : ℝ) :
     stepApproximant 0 x = halfEndpointIntervalIndicator (-1 / 2) (1 / 2) x := by
   simp [stepApproximant, stepIntervalLeft, stepIntervalRight, approximationDegree,
     approximationPolynomial]
+
+/-- The base step approximant is exactly one at the origin. -/
+theorem stepApproximant_zero_zero : stepApproximant 0 0 = 1 := by
+  rw [stepApproximant_zero]
+  norm_num [halfEndpointIntervalIndicator]
 
 @[simp] theorem stepApproximant_one_zero : stepApproximant 1 0 = 1 := by
   have hp : approximationPolynomial 1 = 1 + X := by
