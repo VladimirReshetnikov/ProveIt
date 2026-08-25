@@ -153,17 +153,21 @@ By cluster: core 7, discrete-limits-computability 10, dyadic 8, fourier-legendre
 
 ### Cluster: core
 
-#### `IsOriginalFabius.scale_pos` is a redundant structure field: positivity of the dilation constant follows from the other five hypotheses
+#### IMPLEMENTED: `IsOriginalFabius.scale_pos` is a redundant structure field: positivity of the dilation constant follows from the other five hypotheses
 
 Confidence medium.  `OriginalCharacterization.lean:32`, `OriginalCharacterization.lean:232`, `OriginalCharacterization.lean:271`, `OriginalUniqueness.lean:396`
 
 **Why.** `scale_pos` is dead weight: grepping all 174 files shows the field is referenced exactly twice — its declaration (line 37) and the `by norm_num` that discharges it for the canonical solution (line 271). No proof anywhere consumes it. In particular `IsOriginalFabius.scale_eq_two` (line 232), which derives `k = 2`, uses only `hasDerivAt`, `eq_zero_of_le_neg_one`, `contDiff`, `value_zero`, `value_neg_one` and `intervalIntegral_eq_one`, and each of those in turn traces back only to `contDiff`, ...
 
-**Proposal.** CONFIRMED with two corrections.
+**Implementation.** CONFIRMED with two corrections.  The compatibility-preserving
+smart constructor is now `IsOriginalFabius.mk_of_derivative_law`; the
+source-faithful `scale_pos` field remains in the structure.
 
-Correct core claim: `scale_pos : 0 < k` (OriginalCharacterization.lean:37) is a redundant field of `IsOriginalFabius`; it follows from `contDiff`, `tsupport_eq`, `pos_of_mem`, `value_zero`, `hasDerivAt`. Add to OriginalCharacterization.lean:
+Correct core claim: `scale_pos : 0 < k` is a redundant field of
+`IsOriginalFabius`; it follows from `contDiff`, `tsupport_eq`, `pos_of_mem`,
+`value_zero`, and `hasDerivAt`.  The implemented declaration is:
 
-theorem isOriginalFabius_of_hasDerivAt {φ : ℝ → ℝ} {k : ℝ}
+theorem IsOriginalFabius.mk_of_derivative_law {φ : ℝ → ℝ} {k : ℝ}
     (hcontDiff : ContDiff ℝ ∞ φ)
     (htsupport : tsupport φ = Set.Icc (-1 : ℝ) 1)
     (hpos : ∀ x ∈ Set.Ioo (-1 : ℝ) 1, 0 < φ x)

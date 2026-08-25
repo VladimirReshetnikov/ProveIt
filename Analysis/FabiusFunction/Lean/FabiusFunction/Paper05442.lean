@@ -16,6 +16,7 @@ Every theorem, lemma, corollary, and prose proposition in the paper has a
 proved Lean counterpart:
 
 * Theorem 1: `Fabius.IsOriginalFabius`,
+  `Fabius.IsOriginalFabius.mk_of_derivative_law`,
   `Fabius.IsFabius.isOriginalFabius_rvachevUp`,
   `Fabius.isOriginalFabius_iff_eq_canonical`,
   `Fabius.rvachevUp_eq_iff_eqOn_Iic_one`,
