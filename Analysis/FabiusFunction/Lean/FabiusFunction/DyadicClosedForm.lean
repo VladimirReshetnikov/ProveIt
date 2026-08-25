@@ -744,7 +744,15 @@ lemma fabiusDyadic_eq_scale_sum (n a : ℕ) :
         dyadicKernel n ((2 : ℚ) * a - 2 * h.val - 1) := by
   rfl
 
-private theorem thueMorseSign_block_concat
+/-- **Thue--Morse block concatenation.**  Splitting an index as a multiple of
+`2 ^ k` plus a residue below `2 ^ k` splits its Thue--Morse sign into the
+product of the signs of the two parts, because the binary expansions of
+`h * 2 ^ k` and of `r` occupy disjoint digit ranges.
+
+This multiplicativity is what makes every dyadic Fabius numerator
+quasi-periodic.  It is public because the uniform-spline and q-binomial layers
+need it too; all three had previously proved it privately. -/
+theorem thueMorseSign_block_concat
     (k h r : ℕ) (hr : r < 2 ^ k) :
     thueMorseSign (h * 2 ^ k + r) =
       thueMorseSign h * thueMorseSign r := by
@@ -771,7 +779,11 @@ private theorem thueMorseSign_block_concat
           thueMorseSign_two_mul_add_one, ih h r hr']
         ring
 
-private lemma sum_range_block_decomposition
+/-- **Block decomposition of a range sum.**  A sum over `Finset.range (m * p)`
+is the sum of `m` consecutive blocks of length `p`.  Stated over an arbitrary
+`AddCommMonoid`, since the corpus applies it over the rationals, over the
+reals, and over formal power series. -/
+theorem sum_range_block_decomposition
     {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p : ℕ) :
     (∑ j ∈ Finset.range (m * p), f j) =
       ∑ h ∈ Finset.range m, ∑ r ∈ Finset.range p, f (h * p + r) := by
@@ -781,7 +793,10 @@ private lemma sum_range_block_decomposition
       rw [Nat.succ_mul, Finset.sum_range_add, ih,
         Finset.sum_range_succ]
 
-private lemma sum_range_block_decomposition_with_remainder
+/-- **Block decomposition with a partial final block.**  The variant of
+`sum_range_block_decomposition` for a range whose length `m * p + r` need not
+be a multiple of the block length `p`. -/
+theorem sum_range_block_decomposition_with_remainder
     {A : Type*} [AddCommMonoid A] (f : ℕ → A) (m p r : ℕ) :
     (∑ j ∈ Finset.range (m * p + r), f j) =
       (∑ h ∈ Finset.range m,

@@ -1,4 +1,5 @@
 import FabiusFunction.LaplaceMomentBounds
+import FabiusFunction.ScalingRecurrence
 import Mathlib.Data.Nat.Log
 
 /-!
@@ -279,81 +280,63 @@ theorem abs_fourth_mul_negativeLaplaceKernelFourth_le
       norm_num at hpow
       nlinarith
 
+/-- Differentiating the exact dilation equation `negativeLaplaceLog_two_mul`
+once.  The dyadic weight doubles at each order, so the first derivative
+carries the weight `2`. -/
 theorem negativeLaplaceLogFirst_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) :
     2 * negativeLaplaceLogFirst F (2 * s) =
-      negativeLaplaceKernelFirst s + negativeLaplaceLogFirst F s := by
-  have h2s : 0 < 2 * s := by positivity
-  have hl := (negativeLaplaceLog_hasDerivAt F hF h2s).comp s
-    ((hasDerivAt_id s).const_mul 2)
-  have hr := (negativeLaplaceKernel_hasDerivAt hs).add
-    (negativeLaplaceLog_hasDerivAt F hF hs)
-  have heq : (fun x => negativeLaplaceLog (2 * x)) =ᶠ[nhds s]
-      (fun x => negativeLaplaceKernel x + negativeLaplaceLog x) := by
-    filter_upwards [Ioi_mem_nhds hs] with x hx
-    exact negativeLaplaceLog_two_mul x hx
-  have hr' := hr.congr_of_eventuallyEq heq
-  have hu := hl.unique hr'
-  convert hu using 1
-  ring
+      negativeLaplaceKernelFirst s + negativeLaplaceLogFirst F s :=
+  hasDerivAt_of_scalingRecurrence_two_mul
+    (f := negativeLaplaceLog) (f' := negativeLaplaceLogFirst F)
+    (g := negativeLaplaceKernel) (g' := negativeLaplaceKernelFirst)
+    (c := 1) (by norm_num)
+    (fun _ ht => negativeLaplaceLog_hasDerivAt F hF ht)
+    (fun _ ht => negativeLaplaceKernel_hasDerivAt ht)
+    (fun t ht => (one_mul _).trans (negativeLaplaceLog_two_mul t ht)) hs
 
+/-- The second-derivative dilation recurrence, with weight `4`. -/
 theorem negativeLaplaceLogSecond_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) :
     4 * negativeLaplaceLogSecond F (2 * s) =
-      negativeLaplaceKernelSecond s + negativeLaplaceLogSecond F s := by
-  have h2s : 0 < 2 * s := by positivity
-  have hl := ((negativeLaplaceLogFirst_hasDerivAt F hF h2s).comp s
-    ((hasDerivAt_id s).const_mul 2)).const_mul 2
-  have hr := (negativeLaplaceKernelFirst_hasDerivAt hs).add
-    (negativeLaplaceLogFirst_hasDerivAt F hF hs)
-  have heq : (fun x => 2 * negativeLaplaceLogFirst F (2 * x)) =ᶠ[nhds s]
-      (fun x => negativeLaplaceKernelFirst x + negativeLaplaceLogFirst F x) := by
-    filter_upwards [Ioi_mem_nhds hs] with x hx
-    exact negativeLaplaceLogFirst_two_mul F hF hx
-  have hr' := hr.congr_of_eventuallyEq heq
-  have hu := hl.unique hr'
-  convert hu using 1
-  ring
+      negativeLaplaceKernelSecond s + negativeLaplaceLogSecond F s :=
+  hasDerivAt_of_scalingRecurrence_two_mul
+    (f := negativeLaplaceLogFirst F) (f' := negativeLaplaceLogSecond F)
+    (g := negativeLaplaceKernelFirst) (g' := negativeLaplaceKernelSecond)
+    (c := 2) (by norm_num)
+    (fun _ ht => negativeLaplaceLogFirst_hasDerivAt F hF ht)
+    (fun _ ht => negativeLaplaceKernelFirst_hasDerivAt ht)
+    (fun _ ht => negativeLaplaceLogFirst_two_mul F hF ht) hs
 
+/-- The third-derivative dilation recurrence, with weight `8`. -/
 theorem negativeLaplaceLogThird_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) :
     8 * negativeLaplaceLogThird F (2 * s) =
-      negativeLaplaceKernelThird s + negativeLaplaceLogThird F s := by
-  have h2s : 0 < 2 * s := by positivity
-  have hl := ((negativeLaplaceLogSecond_hasDerivAt F hF h2s).comp s
-    ((hasDerivAt_id s).const_mul 2)).const_mul 4
-  have hr := (negativeLaplaceKernelSecond_hasDerivAt hs).add
-    (negativeLaplaceLogSecond_hasDerivAt F hF hs)
-  have heq : (fun x => 4 * negativeLaplaceLogSecond F (2 * x)) =ᶠ[nhds s]
-      (fun x => negativeLaplaceKernelSecond x + negativeLaplaceLogSecond F x) := by
-    filter_upwards [Ioi_mem_nhds hs] with x hx
-    exact negativeLaplaceLogSecond_two_mul F hF hx
-  have hr' := hr.congr_of_eventuallyEq heq
-  have hu := hl.unique hr'
-  convert hu using 1
-  ring
+      negativeLaplaceKernelThird s + negativeLaplaceLogThird F s :=
+  hasDerivAt_of_scalingRecurrence_two_mul
+    (f := negativeLaplaceLogSecond F) (f' := negativeLaplaceLogThird F)
+    (g := negativeLaplaceKernelSecond) (g' := negativeLaplaceKernelThird)
+    (c := 4) (by norm_num)
+    (fun _ ht => negativeLaplaceLogSecond_hasDerivAt F hF ht)
+    (fun _ ht => negativeLaplaceKernelSecond_hasDerivAt ht)
+    (fun _ ht => negativeLaplaceLogSecond_two_mul F hF ht) hs
 
+/-- The fourth-derivative dilation recurrence, with weight `16`. -/
 theorem negativeLaplaceLogFourth_two_mul
     (F : BoundedFabius) (hF : IsFabius F)
     {s : ℝ} (hs : 0 < s) :
     16 * negativeLaplaceLogFourth F (2 * s) =
-      negativeLaplaceKernelFourth s + negativeLaplaceLogFourth F s := by
-  have h2s : 0 < 2 * s := by positivity
-  have hl := ((negativeLaplaceLogThird_hasDerivAt F hF h2s).comp s
-    ((hasDerivAt_id s).const_mul 2)).const_mul 8
-  have hr := (negativeLaplaceKernelThird_hasDerivAt hs).add
-    (negativeLaplaceLogThird_hasDerivAt F hF hs)
-  have heq : (fun x => 8 * negativeLaplaceLogThird F (2 * x)) =ᶠ[nhds s]
-      (fun x => negativeLaplaceKernelThird x + negativeLaplaceLogThird F x) := by
-    filter_upwards [Ioi_mem_nhds hs] with x hx
-    exact negativeLaplaceLogThird_two_mul F hF hx
-  have hr' := hr.congr_of_eventuallyEq heq
-  have hu := hl.unique hr'
-  convert hu using 1
-  ring
+      negativeLaplaceKernelFourth s + negativeLaplaceLogFourth F s :=
+  hasDerivAt_of_scalingRecurrence_two_mul
+    (f := negativeLaplaceLogThird F) (f' := negativeLaplaceLogFourth F)
+    (g := negativeLaplaceKernelThird) (g' := negativeLaplaceKernelFourth)
+    (c := 8) (by norm_num)
+    (fun _ ht => negativeLaplaceLogThird_hasDerivAt F hF ht)
+    (fun _ ht => negativeLaplaceKernelThird_hasDerivAt ht)
+    (fun _ ht => negativeLaplaceLogThird_two_mul F hF ht) hs
 
 private theorem dyadic_recurrence_isBigO_nat
     (j : ℕ) (f g : ℝ → ℝ) (C : ℝ) (hC : 0 ≤ C)
