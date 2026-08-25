@@ -23,6 +23,14 @@ for every coefficient of the all-orders expansion, in
 [*The Small-Argument Asymptotic Expansion of the Fabius Function*](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.tex)
 ([PDF](docs/Small_Argument_Asymptotics/Small_Argument_Asymptotics.pdf)).
 
+Non-elementarity is treated in
+[*The Fabius Function is Not an Elementary Function*](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.tex)
+([PDF](docs/Non_Elementarity_of_the_Fabius_Function/Non_Elementarity_of_the_Fabius_Function.pdf)):
+the class of elementary functions of one real variable is formalized, every
+member of it is proved real analytic on a dense open subset of the line, and
+this is combined with nowhere analyticity to show that no elementary function
+agrees with the Fabius function on any nonempty open subset of `[0,1]`.
+
 The development contains executable exact arithmetic.  The evaluator and its
 analytic correctness at every dyadic, the canonical function's existence and
 uniqueness, the moment and denominator arithmetic, the global differential
@@ -104,6 +112,7 @@ points:
 | First and second published papers | `FabiusFunction.Paper05442`, `FabiusFunction.Paper06487` | the theorem maps in the module docstrings and [`docs/PAPER_COVERAGE.md`](docs/PAPER_COVERAGE.md) |
 | Corrected sharp and all-orders asymptotics | `FabiusFunction.PaperFabiusAsymptotic` | `log_fabius_sub_sharpLambertMain_hasAsymptoticExpansion`, `fabiusSharpLambertExpansion_two` |
 | Fourier--Legendre expansions | `FabiusFunction.FabiusTranslatedLegendreSeries`, `FabiusFunction.FabiusLegendreLeastSquares` | `hasSum_canonical_rvachevLegendreSeries_formula`, `rvachevLegendrePartialSum_pythagorean` |
+| Elementary functions and non-elementarity | `FabiusFunction.ElementaryFunction`, `FabiusFunction.NotElementary` | `IsElementary`, `IsElementary.comp`, `IsElementary.dense_analyticLocus`, `canonical_fabius_not_isElementary_on_Ioo`, `canonical_fabius_not_isElementary` |
 | Computable-real-function theorem | `FabiusFunction.FabiusComputableSpline` | `fabiusSplineApproxPR_computable`, `fabius_sequentiallyComputable`, `fabius_isComputableRealFunction` |
 
 Most analytic theorems first appear in a reusable form with arguments
