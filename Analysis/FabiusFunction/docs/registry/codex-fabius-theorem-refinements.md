@@ -1,6 +1,6 @@
 # Workstream registry: `codex/fabius-theorem-refinements`
 
-**Status: checkpointed and frozen pending coordinator review.** All former
+**Status: synchronized and frozen pending coordinator extraction.** All former
 source/build leases are released. The only current write is this branch's own
 registry reply.
 
@@ -12,9 +12,9 @@ supplement it but do not replace it.
 SYNC Fabius
 branch / worktree / machine: codex/fabius-theorem-refinements / c9a3 /
   EVO (Windows)
-fetched main SHA: a49db73131bf46030df0e8ccb273b10bca06f539
-HEAD and dirty paths: 3621e4a4b54f960542bd4b98168b70e3b60be928;
-  clean before this final pre-push registry refresh
+fetched main SHA: f74396e5a7ea04fe26accdc6e7dc4cd65f7f50a3
+HEAD and dirty paths: 015c3cf266c45f82163193885aa0fcdee36ad4e2;
+  clean before this registry-only refresh
 writing (exact paths): docs/registry/codex-fabius-theorem-refinements.md only
 expected declarations or document claims: no new work; preserve the exact
   translated Thue--Morse polynomial API and proof-boundary repairs enumerated
@@ -23,22 +23,28 @@ completed commits: a95bd19137c75dba867e0a17019036c0ea6d77fc
   (unique polynomial/API tranche); 455a28661df4149ed2d57a9c8ea27c965b32e91e
   (preserved merge checkpoint); e9dd4aae299b3a9882990e6d6b5fd0c835524c94
   (declaration-by-declaration coordinator inventory); e8ece5ed92f0ed7661a6c85ee27f03c0e51c42c4
-  (FABIUS-R001 facts)
+  (FABIUS-R001 facts); 0d86d1633, 605de06ea, 21e61ecdf, and 015c3cf26
+  (explicit user-directed synchronization through main f74396e5a)
 validated (exact command, SHA/state, exit code): on immutable 4c54e8d9b,
   `lake build +FabiusFunction.FabiusQBinomialTaylor` passed 3,320 jobs and
   `lake build +FabiusFunction.FabiusQBinomialFormula` passed 3,317 jobs, both
-  exit 0; the FabiusQBinomialTaylor blob is unchanged at 455a28661. Static and
-  documentation gates for 455a28661 are recorded in the seventh checkpoint
-  below
+  exit 0; at merged tree 015c3cf26, `git diff --check`, the unmerged-index and
+  conflict-marker scans, exact main-owned blob comparisons, seven-declaration
+  census, and 55-link Markdown audit are clean; canonical control-plane and
+  primary/frontier/walkthrough TeX/PDF blobs match main f74396e5a exactly
 not yet validated: no exact-tree aggregate Lean build or axiom replay for
-  455a28661; no build was launched after the coordinator freeze
+  015c3cf26; no Lean, Lake, pdflatex, or cache-mutating job was launched while
+  the codexbox token remained coordinator-reserved
 requested integration or lease: extract/review the unique declarations below;
-  do not merge this branch wholesale; no new path or build lease requested
-conflicts / dependencies: main and feature diverge 39 / 18 commits from
-  6fcbbb5da; canonical documents, README, aggregate, and coordination files
-  are frozen; 09885a710 is superseded by the coordinator board
-next bounded step: commit and push this registry-only status to the feature
-  branch, then remain read-only pending coordinator instructions
+  although the feature branch itself is now synchronized by explicit user
+  request, do not merge it wholesale to main; no new path or build lease is
+  requested
+conflicts / dependencies: main advanced three times during synchronization;
+  four immutable merge commits now contain f74396e5a. Canonical documents,
+  README, campaign policy, and other-workstream registries resolve exactly to
+  current main; 09885a710 remains superseded by the coordinator board
+next bounded step: commit and push this truthful registry status to the named
+  feature branch, then remain read-only pending coordinator instructions
 ```
 
 ## `FABIUS-R001` recovery facts
@@ -59,14 +65,15 @@ abort. No abort, reset, checkout, stash, or conflict-path replacement was run
 after the directive. The committed feature history is preserved for the
 coordinator's source-only extraction.
 
-## Coordinator extraction inventory against `a49db731`
+## Historical coordinator extraction inventory against `a49db731`
 
 The Lean declaration inventory was refreshed from feature
 `3621e4a4b54f960542bd4b98168b70e3b60be928` against fetched main
 `a49db73131bf46030df0e8ccb273b10bca06f539`,
 with common base `6fcbbb5da45330bdc78c6090706cf1479f3d3afb` and
-18/39 feature/main commit divergence. All seven names below remain absent from
-current main, matching the board's candidate `a95bd1913`. The documentation
+18/39 feature/main commit divergence. A fresh source/name check at merged tree
+`015c3cf26` against main `f74396e5a` confirms that all seven names below remain
+feature-only, matching the board's candidate `a95bd1913`. The documentation
 claim inventory was audited exactly against earlier main `22d63a9f`; because
 main has since integrated another exposition checkpoint, it is routing evidence
 for a fresh semantic audit, not a claim that its line-level patches still apply.
