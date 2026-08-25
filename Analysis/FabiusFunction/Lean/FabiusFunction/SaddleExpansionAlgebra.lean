@@ -20,8 +20,9 @@ formal exponential series at every finite truncation order.
 
 The final section defines a full Poincaré expansion with bounded,
 parameter-dependent coefficients, suitable for periodic saddle phases.  This
-notion is functorial under continuous linear maps and invariant under
-continuous linear equivalences.
+notion is stable under bounded parameter-dependent scalar multiplication,
+functorial under continuous linear maps, and invariant under continuous
+linear equivalences.
 -/
 
 set_option autoImplicit false
@@ -355,15 +356,22 @@ theorem partialSum_add (scale : α → 𝕜)
   simp [partialSum, smul_add, Finset.sum_add_distrib]
 
 @[simp]
-theorem partialSum_const_smul (c : 𝕜) (scale : α → 𝕜)
+theorem partialSum_smul (c scale : α → 𝕜)
     (coeff : ℕ → α → ℰ) (N : ℕ) (x : α) :
-    partialSum scale (fun k x => c • coeff k x) N x =
-      c • partialSum scale coeff N x := by
+    partialSum scale (fun k x => c x • coeff k x) N x =
+      c x • partialSum scale coeff N x := by
   unfold partialSum
   rw [Finset.smul_sum]
   apply Finset.sum_congr rfl
   intro k _hk
-  exact smul_comm (scale x ^ k) c (coeff k x)
+  exact smul_comm (scale x ^ k) (c x) (coeff k x)
+
+@[simp]
+theorem partialSum_const_smul (c : 𝕜) (scale : α → 𝕜)
+    (coeff : ℕ → α → ℰ) (N : ℕ) (x : α) :
+    partialSum scale (fun k x => c • coeff k x) N x =
+      c • partialSum scale coeff N x := by
+  exact partialSum_smul (fun _ : α => c) scale coeff N x
 
 @[simp]
 theorem partialSum_neg (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
@@ -379,6 +387,15 @@ theorem partialSum_sub (scale : α → 𝕜)
       partialSum scale coeff N x - partialSum scale coeff' N x := by
   simp [sub_eq_add_neg]
 
+/-- Linear maps commute algebraically with finite asymptotic partial sums. -/
+theorem partialSum_linearMap {ℱ : Type*}
+    [NormedAddCommGroup ℱ] [NormedSpace 𝕜 ℱ]
+    (L : ℰ →ₗ[𝕜] ℱ) (scale : α → 𝕜) (coeff : ℕ → α → ℰ)
+    (N : ℕ) (x : α) :
+    partialSum scale (fun k x => L (coeff k x)) N x =
+      L (partialSum scale coeff N x) := by
+  simp [partialSum]
+
 /-- Continuous linear maps commute with finite asymptotic partial sums. -/
 @[simp]
 theorem partialSum_continuousLinearMap {ℱ : Type*}
@@ -387,7 +404,7 @@ theorem partialSum_continuousLinearMap {ℱ : Type*}
     (N : ℕ) (x : α) :
     partialSum scale (fun k x => L (coeff k x)) N x =
       L (partialSum scale coeff N x) := by
-  simp [partialSum]
+  exact partialSum_linearMap (L : ℰ →ₗ[𝕜] ℱ) scale coeff N x
 
 /-- A full Poincaré expansion along `l`.  Coefficients may depend on the
 asymptotic parameter (for example through a periodic phase), but each such
@@ -502,6 +519,22 @@ theorem HasAsymptoticExpansion.add
       abel
     · rfl
 
+/-- Multiplying a full expansion by a bounded, parameter-dependent scalar
+family multiplies every coefficient pointwise by the same family. -/
+theorem HasAsymptoticExpansion.smul
+    {l : Filter α} {scale : α → 𝕜} {f : α → ℰ}
+    {coeff : ℕ → α → ℰ} {c : α → 𝕜}
+    (h : HasAsymptoticExpansion l scale f coeff)
+    (hc : c =O[l] (fun _ : α => (1 : 𝕜))) :
+    HasAsymptoticExpansion l scale (fun x => c x • f x)
+      (fun k x => c x • coeff k x) := by
+  constructor
+  · intro k
+    simpa only [one_smul] using hc.smul (h.coeff_isBigO k)
+  · intro N
+    simpa only [partialSum_smul, smul_sub, one_smul] using
+      hc.smul (h.remainder_isBigO N)
+
 /-- Multiplying a full expansion by a constant multiplies every coefficient
 by the same constant. -/
 theorem HasAsymptoticExpansion.const_smul (c : 𝕜)
@@ -510,18 +543,7 @@ theorem HasAsymptoticExpansion.const_smul (c : 𝕜)
     (h : HasAsymptoticExpansion l scale f coeff) :
     HasAsymptoticExpansion l scale (fun x => c • f x)
       (fun k x => c • coeff k x) := by
-  constructor
-  · intro k
-    apply (h.1 k).const_smul_left c |>.congr'
-    · exact EventuallyEq.rfl
-    · exact EventuallyEq.rfl
-  · intro N
-    apply (h.2 N).const_smul_left c |>.congr'
-    · filter_upwards with x
-      rw [partialSum_const_smul]
-      change c • (f x - partialSum scale coeff N x) = _
-      exact smul_sub c (f x) (partialSum scale coeff N x)
-    · exact EventuallyEq.rfl
+  exact h.smul (isBigO_const_const c one_ne_zero l)
 
 /-- Full expansions are closed under pointwise negation. -/
 theorem HasAsymptoticExpansion.neg
