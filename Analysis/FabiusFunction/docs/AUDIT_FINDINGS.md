@@ -77,11 +77,21 @@ holds only on a measure-zero set.  The generic statement over an arbitrary jet
 sequence was sound throughout — only the specialization to Fabius was
 degenerate, which is what made it hard to see.
 
-*Detection.* For every hypothesis, ask **who can satisfy it**, and produce two
-genuinely different witnesses.  If the only witnesses you can construct make
-both sides of the conclusion equal, the theorem is vacuous at exactly the
-points you care about.  Periodicity, symmetry and reflection hypotheses are the
-usual sources, because they silently supply a trivial witness.
+*Detection, from the signature alone.*  A theorem quantified over a **free
+parameter** is hard to make vacuous: witnesses are trivial to produce and
+manifestly disagree.  A theorem quantified over **two constrained instances of
+a fixed object** is easy to make vacuous, because the constraint may admit only
+the trivial pair.  That is the whole difference between the generic and
+specialized forms in the case above, and it is readable off the binders before
+any thought about the mathematics.  Check that first; it costs seconds.
+
+*Detection, when the signature does not settle it.*  For every hypothesis, ask
+**who can satisfy it**, and produce two genuinely different witnesses.  If the
+only witnesses you can construct make both sides of the conclusion equal, the
+theorem is vacuous at exactly the points you care about.  Periodicity, symmetry
+and reflection hypotheses are the usual sources, because they silently supply a
+trivial witness — and in this repository nearly every object in the asymptotic
+layer is one-periodic, so the trivial witness is always available.
 *Prevention.* Prefer a statement that *exhibits* a dependence — an affine
 decomposition, an explicit formula — over one that asserts it as an equality
 between two points constrained to agree.
