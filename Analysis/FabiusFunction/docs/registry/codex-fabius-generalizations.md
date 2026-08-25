@@ -6,15 +6,17 @@ branch / worktree / machine:
 `codex/fabius-generalizations` / `/home/codex/.codex/worktrees/042c/Proofs` / `codexbox`
 
 fetched main SHA:
-`22d63a9f74a9dd022b243fc3836930ae94354ff9`
+`ccf81cf8399630b64492460d2b39ccaacc8b191a`
 
 HEAD and dirty paths:
-Source checkpoint HEAD before this registry-only commit:
+Branch HEAD before this registry refresh:
+`3619ad3a708c3c8c2ca43b642930f0306cdcfb34`; the source checkpoint remains
 `269a57d7b7d667aba83e584172fb978b777127ac`.
 The source worktree was clean.  This registry file is the only subsequent path
-written.  The branch and fetched `main` have common base
-`3d6cc72721129ba1fee040215c5cafa8adedbe0c` and are respectively five commits
-ahead / five commits behind; no merge was attempted during the checkpoint.
+written.  After `origin/main` integrated the first two source commits, the
+branch and fetched `main` have common base
+`ef38522c89a6ae1fd82632de682bed83e692e1af` and are respectively four commits
+ahead / fifteen commits behind by graph count; no merge was attempted.
 
 writing (exact paths):
 The thirteen-path preservation tranche is source-complete and frozen:
@@ -56,9 +58,11 @@ expected declarations or document claims:
 completed commits:
 
 - `5bf954537109a4e7896b7121ac5ee33eb3f39f13` — Complete saddle-kernel and
-  central-radius boundary APIs.
+  central-radius boundary APIs; integrated on `origin/main` by
+  `eabf440e8`.
 - `ef38522c89a6ae1fd82632de682bed83e692e1af` — Expose corrected sharp
-  asymptotics as exact equivalents.
+  asymptotics as exact equivalents; integrated on `origin/main` by
+  `eabf440e8`.
 - `8124078231e5e5b1a645c198a751a6883bb08c2f` — Generalize dyadic Taylor
   representation invariance.
 - `b13690159e34200ea542d1151c0f5ac8061b910d` — Complete the Thue--Morse
@@ -109,22 +113,21 @@ No Lean/Lake target has been run at immutable source tip
 immutable SHA.  No LaTeX or PDF path is part of this tranche.
 
 requested integration or lease:
-Please review and integrate the five commits above in dependency order.  No
-new write lease is requested.  If the coordinator wants immutable-SHA
-validation before integration, please assign the build token and exact target
-set (the cheapest suggested gates are the edited focused modules, followed by
-`FabiusFullAsymptoticExpansion`, `PaperStatements`, and
-`FabiusQBinomialTaylor`).
+The saddle/sharp pair is already integrated.  Please review and integrate the
+three remaining source commits `812407823`, `b13690159`, and `269a57d7b` in
+that order.  No new write lease is requested.  If the coordinator wants
+immutable-SHA validation before integration, please assign the build token and
+exact target set (the cheapest suggested gates are the edited focused modules,
+followed by `PaperStatements` and `FabiusQBinomialTaylor`).
 
 conflicts / dependencies:
-Fetched `main` is five commits ahead of the common base.  Per the board, this
-branch did not merge, rebase, stash, reset, or push to `main`; the coordinator
-should inspect those five upstream commits for overlap before integration.
-The sharp-transfer tranche consumes existing saddle APIs but does not depend
-on the newly added central-radius boundary wrappers.  The three dyadic/Taylor
-commits are independent of the saddle/sharp pair.
+`git cherry -v origin/main HEAD` lists only the three remaining dyadic/Taylor
+source commits and the registry commit; it omits `5bf954537` and `ef38522c8`,
+confirming their patch-equivalent integration.  Per the board, this branch did
+not merge, rebase, stash, reset, or push to `main`.  The three remaining source
+commits are independent of the integrated saddle/sharp pair.
 
 next bounded step:
-Push this registry checkpoint to `codex/fabius-generalizations`, then remain
+Push this registry refresh to `codex/fabius-generalizations`, then remain
 read-only and wait for coordinator integration review, conflict instructions,
 or an explicit build/source lease.
