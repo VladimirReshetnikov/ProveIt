@@ -63,7 +63,7 @@ theorem original_theorem_four_c
       2 ^ (k + 1).choose 2 * paperTheta F (2 ^ k * t + 2 ^ k) := by
   rw [iteratedDeriv_rvachev F hF k t ht]
   congr 1
-  ring
+  ring_nf
 
 /-! ## The alternate cosine product in equation (9) -/
 

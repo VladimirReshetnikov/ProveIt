@@ -8,6 +8,9 @@ dyadic formula from `ℚ` to any field carrying an `ℚ`-algebra structure.
 The finite expression is first packaged as a polynomial over `ℚ`; rational
 translation invariance says that polynomial is constant, so evaluation works
 uniformly over `ℝ`, `ℂ`, and other characteristic-zero scalar fields.
+The constant-polynomial identity is exposed at every coefficient, retaining
+the exact arbitrary-dyadic normalization in degree zero and the cancellation
+of every positive translation coefficient.
 -/
 
 set_option autoImplicit false
@@ -119,6 +122,19 @@ theorem qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const
   rw [qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eval,
     qBinomialThueMorseDyadicTranslatedFormula_eq_centered,
     Polynomial.eval_C]
+
+/-- The arbitrary-dyadic translated formula has only its constant
+coefficient: degree zero is the exact centered value, while every positive
+translation coefficient vanishes. -/
+theorem qBinomialThueMorseDyadicTranslatedFormulaPolynomial_coeff
+    (m n j : ℕ) :
+    (qBinomialThueMorseDyadicTranslatedFormulaPolynomial m n).coeff j =
+      if j = 0 then qBinomialThueMorseDyadicFormula m n else 0 := by
+  rw [qBinomialThueMorseDyadicTranslatedFormulaPolynomial_eq_const]
+  by_cases hj : j = 0
+  · subst j
+    rw [Polynomial.coeff_C_zero, if_pos rfl]
+  · rw [Polynomial.coeff_C_of_ne_zero hj, if_neg hj]
 
 /-- Evaluation of the arbitrary-numerator translated formula in a scalar
 field over `ℚ`. -/

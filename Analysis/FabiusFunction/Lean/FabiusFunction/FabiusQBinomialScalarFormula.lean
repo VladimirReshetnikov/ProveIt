@@ -7,6 +7,9 @@ The centered inverse-dyadic q-binomial numerator is already known to be a
 constant polynomial in its common translation.  This module restores the
 normalizing prefactor at the same scalar level and exposes the resulting exact
 Fabius identity for arbitrary real and complex translations.
+It also records the constant-polynomial theorem coefficientwise: the centered
+numerator is the degree-zero coefficient and every positive translation
+coefficient vanishes exactly.
 -/
 
 set_option autoImplicit false
@@ -17,6 +20,19 @@ open Finset
 namespace Fabius
 
 noncomputable section
+
+/-- All translation coefficients of the centered numerator are explicit:
+the constant coefficient is the centered numerator itself, and every positive
+coefficient cancels. -/
+theorem qBinomialThueMorseTranslatedNumeratorPolynomial_coeff
+    (n j : ℕ) :
+    (qBinomialThueMorseTranslatedNumeratorPolynomial n).coeff j =
+      if j = 0 then qBinomialThueMorseNumerator n else 0 := by
+  rw [qBinomialThueMorseTranslatedNumeratorPolynomial_eq_const]
+  by_cases hj : j = 0
+  · subst j
+    rw [Polynomial.coeff_C_zero, if_pos rfl]
+  · rw [Polynomial.coeff_C_of_ne_zero hj, if_neg hj]
 
 /-- The complete centered translated formula evaluated in a field over `ℚ`. -/
 def qBinomialThueMorseTranslatedFormulaIn

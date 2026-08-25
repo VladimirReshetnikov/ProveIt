@@ -698,7 +698,7 @@ private lemma fabiusUniformPositiveSpline_one (x : ℝ) :
     simp only [sub_eq_add_neg]
     norm_num [fabiusUniformPositiveSpline, Finset.sum_range_succ,
       thueMorseSign, binaryWeight, z]
-    ring
+    ring_nf
   rw [hformula]
   change max z 0 - max (z - 1) 0 = max 0 (min 1 z)
   rcases le_total z 0 with hz0 | hz0
@@ -1289,7 +1289,7 @@ theorem uniformCenteredPartialCDF_sandwich (p : ℕ) (x : ℝ) :
   convert hs using 1
   rw [pow_succ]
   field_simp
-  ring
+  ring_nf
 
 /-- The midpoint-corrected finite CDFs converge to `weightedSumCDF` at every
 real point. -/

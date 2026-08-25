@@ -84,7 +84,7 @@ private lemma fourier_scaledRvachevSchwartz
       filter_upwards with y
       dsimp only [q]
       push_cast
-      ring
+      ring_nf
 
 /-- Every derivative of the real-axis Fourier transform of Rvachev's function
 is rapidly decreasing. -/
@@ -145,22 +145,14 @@ theorem rvachev_poisson_summation
       rw [fourier_scaledRvachevSchwartz F hF hu]
       simp only [fourier_coe_apply, Complex.real_smul]
       push_cast
-      ring
+      ring_nf
 
 /-- The Fourier transform vanishes at every nonzero integer.  In the sinc
 product it is already the zeroth factor which vanishes. -/
 lemma rvachevFourier_int_eq_zero
     (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) (hm : m ≠ 0) :
-    rvachevFourier F (m : ℂ) = 0 := by
-  rw [rvachevFourier_eq_product F hF, rvachevFourierProduct]
-  apply tprod_of_exists_eq_zero
-  refine ⟨0, ?_⟩
-  simp only [pow_zero, div_one]
-  rw [complexSinc, if_neg]
-  · rw [show (Real.pi : ℂ) * (m : ℂ) = (m : ℂ) * Real.pi by ring,
-      Complex.sin_int_mul_pi]
-    simp
-  · exact mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) (Int.cast_ne_zero.mpr hm)
+    rvachevFourier F (m : ℂ) = 0 :=
+  (rvachevFourier_int_eq_zero_iff F hF m).2 hm
 
 /-- Equation (26), first in the complex-valued form naturally produced by
 Poisson summation.  The positivity hypothesis records the implicit `n ≥ 1`
@@ -438,7 +430,7 @@ theorem rvachev_cosine_series
       intro k
       dsimp only [c]
       congr 2
-      ring
+      ring_nf
 
 /-- Equation (31), Poisson summation specialized at `t = 0`. -/
 theorem rvachev_poisson_at_zero

@@ -10,6 +10,9 @@ This module proves the first equality in equation (5) of Arias de Reyna's
 paper.  The removable complex sinc factors form a genuine convergent infinite
 product, and the Fourier transform satisfies the corresponding finite
 refinement identity.  Passing to the limit identifies the two functions.
+At integer frequencies the product has exact Kronecker-delta samples; the
+all-index formula and its zero criterion are recorded here for reuse without
+the stronger Poisson-summation import.
 -/
 
 set_option autoImplicit false
@@ -247,6 +250,45 @@ theorem rvachevFourier_eq_product
         (rvachevFourier_eq_finite_product F hF z N).symm)
   unfold rvachevFourierProduct
   exact tendsto_nhds_unique tendsto_const_nhds hlim
+
+/-- The sinc product vanishes at every nonzero integer.  Its zeroth factor is
+already `sin (π m) / (π m) = 0`. -/
+theorem rvachevFourierProduct_int_eq_zero (m : ℤ) (hm : m ≠ 0) :
+    rvachevFourierProduct (m : ℂ) = 0 := by
+  rw [rvachevFourierProduct]
+  apply tprod_of_exists_eq_zero
+  refine ⟨0, ?_⟩
+  simp only [pow_zero, div_one]
+  rw [complexSinc, if_neg]
+  · rw [show (Real.pi : ℂ) * (m : ℂ) = (m : ℂ) * Real.pi by ring,
+      Complex.sin_int_mul_pi]
+    simp
+  · exact mul_ne_zero (by exact_mod_cast Real.pi_ne_zero)
+      (Int.cast_ne_zero.mpr hm)
+
+/-- Exact integer samples of the sinc product, including the zero-frequency
+endpoint.  This piecewise identity is intentionally not a simp lemma. -/
+theorem rvachevFourierProduct_int_eq_ite (m : ℤ) :
+    rvachevFourierProduct (m : ℂ) = if m = 0 then 1 else 0 := by
+  by_cases hm : m = 0
+  · subst m
+    simp [rvachevFourierProduct, complexSinc]
+  · rw [if_neg hm, rvachevFourierProduct_int_eq_zero m hm]
+
+/-- Exact integer-frequency samples of Rvachev's Fourier transform. -/
+theorem rvachevFourier_int_eq_ite
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) :
+    rvachevFourier F (m : ℂ) = if m = 0 then 1 else 0 := by
+  rw [rvachevFourier_eq_product F hF,
+    rvachevFourierProduct_int_eq_ite]
+
+/-- The Fourier transform at an integer frequency vanishes exactly away from
+the zero frequency. -/
+theorem rvachevFourier_int_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℤ) :
+    rvachevFourier F (m : ℂ) = 0 ↔ m ≠ 0 := by
+  rw [rvachevFourier_int_eq_ite F hF m]
+  by_cases hm : m = 0 <;> simp [hm]
 
 end
 
