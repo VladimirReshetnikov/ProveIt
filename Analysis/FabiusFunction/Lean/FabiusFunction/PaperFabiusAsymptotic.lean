@@ -8,6 +8,7 @@ import FabiusFunction.FabiusSharpExactReduction
 import FabiusFunction.FabiusFullAsymptoticExpansion
 import FabiusFunction.FabiusLambertAllOrderSmallArgument
 import FabiusFunction.FabiusRecurrenceSequence
+import FabiusFunction.FabiusInverseDyadicClosedForm
 import FabiusFunction.FabiusQBinomialFormula
 import FabiusFunction.FabiusQBinomialScalarFormula
 import FabiusFunction.FabiusDyadicQBinomialScalar
@@ -50,6 +51,10 @@ machinery, and branch-safe vertical Taylor estimates used to refine this
 formula to all orders.  For every `N`, the exact lower-Lambert expansion has
 an `O(lambda^-N)` remainder; the lower-Lambert phase itself also has a
 separate all-orders expansion in `-log x` and `log (-log x)`.
+The inverse-dyadic recurrence is additionally solved as a finite weighted
+path sum.  Equivalently, `F(2⁻ⁿ)` is an explicit product-sum over all
+ordered compositions of `n`; the empty composition makes this closed formula
+valid at `n = 0` as well.
 The related Mathematica Stack Exchange quotient is also proved not to be an
 endpoint asymptotic equivalent.  The finite q-binomial/Thue--Morse formula
 conjectured at
