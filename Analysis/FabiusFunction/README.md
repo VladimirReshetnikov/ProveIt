@@ -54,6 +54,14 @@ This makes denominator, divisibility, parity, and valuation proofs live in
 The Fourier transform, sinc product, inversion integral, moment series, and
 complex exponential generating function are also represented explicitly.
 
+## Parallel contribution
+
+Parallel contributors and agents should also read the
+[`collaboration and coordination proposal`](docs/COLLABORATION.md).  It
+describes file ownership, synchronization checkpoints, public-API
+compatibility, serialized build discipline, review gates, and the tentative
+integration roadmap for simultaneous Fabius worktrees.
+
 ## Using the Lean library
 
 From the repository root, the complete public surface is checked with
