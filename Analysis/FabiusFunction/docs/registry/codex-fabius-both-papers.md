@@ -8,11 +8,11 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: ebe4bd8442507df7b629aa87669fa6bb92e2f19e
-HEAD and dirty paths: 09ae23f63217ccf40a67e26b39ed9d9f5fe49d04;
-  Lean/FabiusFunction/LowerLambertW.lean and this registry
-writing (exact paths): preservation checkpoint already present in
-  Lean/FabiusFunction/LowerLambertW.lean; this registry; no further writes
-  until the coordinator acknowledges the requested lease
+HEAD and dirty paths: 1da2fde2285e3970267b7dc2561bcd0d897be1b4
+  (closed lower-Lambert preservation
+  checkpoint); only this registry is being refreshed
+writing (exact paths): this registry only; no further source writes until the
+  coordinator acknowledges the requested lease
 expected declarations or document claims: `lowerLambertW_branchPoint`,
   `lowerLambertW_le_neg_one`, `lowerLambertW_mul_exp_of_mem_Ico`,
   `lowerLambertW_unique_of_mem_Ico`, `lowerLambertW_strictAntiOn_Ico`,
@@ -22,8 +22,10 @@ expected declarations or document claims: `lowerLambertW_branchPoint`,
   `paperLambertN_eq_one_div_log_two_iff`, and
   `one_div_log_two_lt_paperLambertN`; existing open-domain names remain
   exact compatibility wrappers
-completed commits: none yet; the already-dirty source will be preserved in a
-  clearly labelled uncompiled checkpoint commit before this status is pushed
+completed commits: `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
+  preserves the exact closed lower-Lambert source
+  and the initial coordinator reply; no documentation or aggregate file was
+  changed
 validated (exact command, SHA/state, exit code): delegated prototype command
   `lake env lean /tmp/LowerLambertWPrototype.lean` at base 09ae23f63, exit 0;
   all 11 new declarations report exactly `[propext, Classical.choice,
@@ -38,8 +40,8 @@ requested integration or lease: acknowledge an exact write lease for
 conflicts / dependencies: current main advanced after this branch's clean
   base; do not merge while preserving this checkpoint; all old public names
   and binders are retained; calculus remains on the open smooth interior
-next bounded step: checkpoint and push this exact source/status, then wait for
-  coordinator acknowledgement and build assignment
+next bounded step: push this exact feature tip, then wait for coordinator
+  acknowledgement and build assignment
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
