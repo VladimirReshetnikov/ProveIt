@@ -755,7 +755,7 @@ analysis rather than a separately named Lean theorem.
 
 \subsection{\texorpdfstring{The \(C^\infty\) and analytic loci}{The smooth and analytic loci}}
 
-\begin{theorem}[Exact regularity locus; \Derived]
+\begin{theorem}[Exact regularity locus; \Formalized]
 \label{thm:inverse-regularity}
 The totalized inverse has the following regularity.
 \begin{enumerate}
@@ -785,6 +785,11 @@ nonzero by \eqref{eq:Gprime}; the analytic inverse function theorem would
 then make its local inverse $F$ analytic near $x_0=\InvF(y_0)$.  But the
 Fabius function is nowhere analytic on the interior of its transition
 interval.  This contradiction proves the claim.
+
+The exact smoothness and differentiability classifications are
+\path{fabiusInv_contDiffAt_infty_iff} and
+\path{fabiusInv_differentiableAt_iff}; the analytic classification is
+\path{fabiusInv_analyticAt_iff}.
 \end{proof}
 
 \section{Inverting the sharp small-argument asymptotic}
@@ -2205,7 +2210,8 @@ inversion;
 \item interior $C^\infty$ regularity, the exact formulas for $\InvF'$ and
 $\InvF''$, and strict concavity on $[0,1/2]$ and strict convexity on
 $[1/2,1]$;
-\item the exact analytic locus of the totalized inverse;
+\item the exact smoothness, differentiability, and analytic loci of the
+totalized inverse;
 \item the effective and sharp inverse power inequalities, effective
 linear steepness, and the two endpoint quotient limits;
 \item the closed jet formulas, shifted Stirling conversion, and closed
@@ -2220,7 +2226,6 @@ asymptotic theorems.
 
 The following statements are proved here from the formalized input:
 \begin{itemize}
-\item the exact smooth locus of the totalized inverse;
 \item divergence of $\InvF(y)/y^\alpha$ for every $\alpha>0$;
 \item the sharp equivalent \eqref{eq:sharp-inverse} and the scale
 hierarchy \eqref{eq:power-below-G}--\eqref{eq:G-below-log};

@@ -118,7 +118,7 @@
 \author{Proof architecture, exact computation, asymptotics, and effective approximation\\
 \small Human-readable guide to Vladimir Reshetnikov's \texttt{ProveIt} repository}
 \date{Repository source snapshot: 25 August 2026\\
-\small commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7}}
+\small commit \nolinkurl{2aa887bc0dbad62d073b574ae28b804a9438d8fd}}
 
 \begin{document}
 \maketitle
@@ -135,7 +135,7 @@ A mathematically oriented reader should begin with Sections~\ref{ch:objects}, \r
 
 \section*{Scope and conventions}
 \addcontentsline{toc}{section}{Scope and conventions}
-The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7} on the \texttt{main} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
+The repository is active source code, and module boundaries can evolve.  Names and dependencies described here refer to commit \nolinkurl{2aa887bc0dbad62d073b574ae28b804a9438d8fd} on the \texttt{codex/fabius-both-papers} branch, inspected on 25 August 2026.  The walkthrough quotes identifiers and very short fragments where useful, but it paraphrases proof bodies rather than reproducing them.  The exact Lean source remains the authoritative statement of hypotheses, namespaces, coercions, and imported lemmas.  Claims described as questions, conjectures, conditional results, audits, or counterexamples are not silently promoted here to proved positive theorems.
 
 Mathematically, two functions must be kept distinct throughout:
 \begin{itemize}
@@ -177,7 +177,7 @@ The normal build command from the project root is:
 lake build +FabiusFunction
 \end{lstlisting}
 The source claims in this walkthrough are pinned to commit
-\nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7}.  Before reproducing a
+\nolinkurl{2aa887bc0dbad62d073b574ae28b804a9438d8fd}.  Before reproducing a
 declaration or module count, check the checkout with \texttt{git rev-parse
 HEAD}; a moving \texttt{main} branch is not a reproducible specification.
 After dependencies have been installed, a focused edit loop can build one
@@ -739,8 +739,12 @@ smoothness.  On \(0<y<1\),
     =\frac{1}{2\Up(2F^{-1}(y)-1)}>0,
 \]
 and \nolinkurl{fabiusInv_contDiffOn_Ioo} proves that the totalized inverse is
-\(C^\infty\) throughout the open unit interval.  The endpoints are excluded
-sharply: their one-sided difference quotients diverge.
+\(C^\infty\) throughout the open unit interval.  More globally,
+\nolinkurl{fabiusInv_contDiffAt_infty_iff} and
+\nolinkurl{fabiusInv_differentiableAt_iff} show that smoothness and
+differentiability fail exactly at the two clamping points (0) and (1).
+This endpoint exclusion agrees with the divergent one-sided difference
+quotients.
 
 The next derivative is also packaged exactly.  The declarations
 \nolinkurl{deriv_fabiusInv_hasDerivAt} and
@@ -2672,7 +2676,7 @@ Total dyadic evaluator & \nolinkurl{fabiusDyadicValue} & \nolinkurl{Arithmetic.l
 Dyadic common denominator \(D_n\) & \nolinkurl{dyadicDenominator} & \nolinkurl{Arithmetic.lean} and \nolinkurl{DenominatorBound.lean} \\
 Reshetnikov quantity \(R_n\) & \nolinkurl{reshetnikov} & \nolinkurl{Arithmetic.lean} and \nolinkurl{PaperStatements.lean} \\
 Weighted-sum CDF & \nolinkurl{weightedSumCDF} & \nolinkurl{ProbabilityRepresentation.lean} \\
-Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_contDiffOn_Ioo} & \nolinkurl{FabiusInverse.lean} \\
+Totalized inverse \(F^{-1}\) & \nolinkurl{fabiusInv}, \nolinkurl{fabiusOrderIso}, \nolinkurl{fabiusInv_contDiffAt_infty_iff} & \nolinkurl{FabiusInverse.lean} \\
 Inverse curvature & \nolinkurl{deriv_deriv_fabiusInv}, \nolinkurl{strictConcaveOn_fabiusInv_firstHalf}, \nolinkurl{strictConvexOn_fabiusInv_secondHalf} & \nolinkurl{FabiusInverse.lean} \\
 Uniform spline \(S_p\) & \nolinkurl{fabiusUniformSpline} & \nolinkurl{FabiusUniformSpline.lean} and \nolinkurl{FabiusComputability.lean} \\
 Logarithmic profile & \nolinkurl{fabiusLogProfile} & \nolinkurl{FabiusLogScale.lean} \\
@@ -2724,7 +2728,7 @@ Module & Role in the development \\
 \nolinkurl{EffectiveFlatness.lean} & Explicit power bounds at the flat endpoint. \\
 \nolinkurl{SharpFlatness.lean} & Factorial-strengthened endpoint power bounds for \(F\) and \(\Up\). \\
 \nolinkurl{NowhereAnalytic.lean} & Exact real-analytic loci: off the closed transition supports and nowhere on them. \\
-\nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact positive reciprocal derivative, reciprocal-cubic second derivative, interior \(C^\infty\) smoothness, strict closed-half curvature, and endpoint steepness. \\
+\nolinkurl{FabiusInverse.lean} & Totalized inverse, order isomorphism on the unit interval, exact global smoothness locus, positive reciprocal derivative, reciprocal-cubic second derivative, strict closed-half curvature, and endpoint steepness. \\
 \nolinkurl{InverseBranch.lean} & Analytic inverse theorem, analytic-density preservation for continuous right-inverse branches, and the complement-interior analyticity condition and conditional Lambert-branch criterion for \nolinkurl{IsElementaryOrInverse}. \\
 \nolinkurl{AlgebraicBranch.lean} & Algebraic-function branch interface used in non-elementarity arguments. \\
 \nolinkurl{ElementaryFunction.lean} & Formal expression language and semantics for elementary real functions. \\
@@ -3093,7 +3097,7 @@ not against an unspecified moving branch.  A reproduction run should begin
 with:
 \begin{lstlisting}[style=pseudo,language={}]
 git rev-parse HEAD
-source_pin=9900722f892490d9fe6091c66fa31523b7b29ae7
+source_pin=2aa887bc0dbad62d073b574ae28b804a9438d8fd
 test "$(git rev-parse "$source_pin^{commit}")" = "$source_pin"
 git diff --exit-code "$source_pin" -- \
   Analysis/FabiusFunction/Lean
@@ -3167,7 +3171,7 @@ records its nonclaims.
 Vladimir Reshetnikov,
 \emph{ProveIt: Analysis/FabiusFunction},
 GitHub repository, source tree and README inspected 25 August 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/tree/9900722f892490d9fe6091c66fa31523b7b29ae7/Analysis/FabiusFunction}
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2aa887bc0dbad62d073b574ae28b804a9438d8fd/Analysis/FabiusFunction}
 
 \bibitem{Arias05442}
 Juan Arias de Reyna,
@@ -3199,7 +3203,7 @@ CPP 2020 and continuously maintained Lean 4 library.
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 Title & The Fabius Function in Lean: A Guided Walkthrough of the ProveIt Formalization \\
-Source snapshot & commit \nolinkurl{9900722f892490d9fe6091c66fa31523b7b29ae7} on \texttt{main}, inspected 25 August 2026 \\
+Source snapshot & commit \nolinkurl{2aa887bc0dbad62d073b574ae28b804a9438d8fd} on \texttt{codex/fabius-both-papers}, inspected 25 August 2026 \\
 Toolchain recorded by source & Lean 4.32.0; repository-pinned mathlib revision \\
 Primary path & \nolinkurl{Analysis/FabiusFunction/Lean/} \\
 Umbrella module & \nolinkurl{FabiusFunction.lean} \\
