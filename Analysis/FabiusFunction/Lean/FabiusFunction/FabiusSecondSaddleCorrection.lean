@@ -76,7 +76,8 @@ fabiusSecondSaddleCorrection
 ```
 
 Every jet is bounded, one-periodic and `C∞`, so the same three properties are
-recorded for the correction at the end of the module.
+recorded for the correction at the end of the module, together with a
+convenient global absolute-bound corollary.
 -/
 
 set_option autoImplicit false
@@ -266,8 +267,7 @@ private theorem secondSaddleExponent_one (t : ℝ) :
   apply Polynomial.funext
   intro z
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C,
-    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_zero, Nat.cast_one,
-    Nat.cast_ofNat]
+    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_zero, Nat.cast_one]
   ring
 
 private theorem secondSaddleExponent_two (t : ℝ) :
@@ -279,7 +279,7 @@ private theorem secondSaddleExponent_two (t : ℝ) :
   apply Polynomial.funext
   intro z
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C,
-    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_zero, Nat.cast_one,
+    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_one,
     Nat.cast_ofNat]
   ring
 
@@ -294,8 +294,7 @@ private theorem secondSaddleExponent_three (t : ℝ) :
   apply Polynomial.funext
   intro z
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C,
-    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_zero, Nat.cast_one,
-    Nat.cast_ofNat]
+    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_ofNat]
   ring
 
 private theorem secondSaddleExponent_four (t : ℝ) :
@@ -307,8 +306,7 @@ private theorem secondSaddleExponent_four (t : ℝ) :
   apply Polynomial.funext
   intro z
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C,
-    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_zero, Nat.cast_one,
-    Nat.cast_ofNat]
+    Polynomial.eval_X, Polynomial.eval_pow, Nat.cast_ofNat]
   ring
 
 private theorem C_I_mul_C_I : (C I : Polynomial ℂ) * C I = -1 := by
@@ -530,6 +528,22 @@ theorem isBounded_range_fabiusSecondSaddleCorrection :
     Bornology.IsBounded (Set.range fabiusSecondSaddleCorrection) :=
   fabiusSecondSaddleCorrection_periodic.isBounded_of_continuous one_ne_zero
     continuous_fabiusSecondSaddleCorrection
+
+/-- Some nonnegative constant bounds the second saddle correction globally.
+This pointwise form is convenient for asymptotic estimates that do not need a
+named or sharp bound. -/
+theorem exists_bound_abs_fabiusSecondSaddleCorrection :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ u : ℝ, |fabiusSecondSaddleCorrection u| ≤ C := by
+  rcases (Metric.isBounded_iff_subset_closedBall 0).mp
+      isBounded_range_fabiusSecondSaddleCorrection with ⟨C, hC⟩
+  have hzero := hC (Set.mem_range_self (0 : ℝ))
+  have hC0 : 0 ≤ C := by
+    have : |fabiusSecondSaddleCorrection 0| ≤ C := by
+      simpa [Metric.mem_closedBall, Real.dist_eq] using hzero
+    exact (abs_nonneg _).trans this
+  refine ⟨C, hC0, fun u => ?_⟩
+  simpa [Metric.mem_closedBall, Real.dist_eq] using
+    hC (Set.mem_range_self u)
 
 end
 
