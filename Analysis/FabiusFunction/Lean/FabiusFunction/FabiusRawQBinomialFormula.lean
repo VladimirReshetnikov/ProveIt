@@ -17,6 +17,10 @@ the sign in `(-2)^(n^2)`, since `n^2` and `n` have the same parity.
 Lean's natural-power convention includes `0 ^ 0 = 1`.  The theorem
 `qBinomialThueMorseRawTranslatedFormula_zero` records the resulting `n = 0`
 value explicitly, including the case `q = 0`.
+
+The raw/centered numerator sign is also recorded in both orientations.  This
+makes the involutive `(-1)^n` normalization reusable by scalar transports
+without repeating the parity calculation.
 -/
 
 set_option autoImplicit false
@@ -151,6 +155,24 @@ theorem qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw
   intro k _hk
   rw [thueMorseTranslatedPowerSum_one_sub_eq_raw_diagonal]
   ring
+
+/-- Reverse orientation of the raw/centered numerator normalization.  Since
+`(-1)^n` is its own inverse, the same sign converts centered coordinates back
+to raw coordinates. -/
+theorem qBinomialThueMorseRawTranslatedNumerator_eq_neg_one_pow_mul_centered
+    (q : ℚ) (n : ℕ) :
+    qBinomialThueMorseRawTranslatedNumerator q n =
+      (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n := by
+  have h := qBinomialThueMorseNumerator_eq_neg_one_pow_mul_raw q n
+  have hsquare : ((-1 : ℚ) ^ n) ^ 2 = 1 := by
+    rw [← pow_mul]
+    norm_num
+  calc
+    qBinomialThueMorseRawTranslatedNumerator q n =
+        1 * qBinomialThueMorseRawTranslatedNumerator q n := by ring
+    _ = ((-1 : ℚ) ^ n) ^ 2 *
+        qBinomialThueMorseRawTranslatedNumerator q n := by rw [hsquare]
+    _ = (-1 : ℚ) ^ n * qBinomialThueMorseNumerator n := by rw [h]; ring
 
 /-- The rational right-hand side with raw powers `(r+q)^(n+k)` and
 denominator `(-2)^(n^2)`. -/
