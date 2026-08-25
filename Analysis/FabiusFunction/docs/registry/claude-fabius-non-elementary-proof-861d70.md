@@ -67,12 +67,14 @@ holds for `rvachevUp` on `[-1,1]` and for `extendedFabius` on `[0,2)`.
 All 98 theorems exported by the five new modules — `ElementaryFunction`,
 `AlgebraicBranch`, `NotElementary`, `InverseBranch`, `InverseNotElementary` —
 have axiom set `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`
-anywhere, and so do the five inverse-calculus theorems this workstream
-contributed to `FabiusInverse.lean` (`fabiusInv_mem_Ioo`,
+anywhere, and so do the six inverse-calculus theorems in `FabiusInverse.lean`
+that this workstream contributed to or depends on (`fabiusInv_mem_Ioo`,
 `fabiusInv_hasDerivAt`, `deriv_fabiusInv`, `deriv_fabiusInv_pos`,
-`deriv_fabiusInv_eq_inv_two_mul_rvachevUp`).  The count fell from 100 to 98
-because two of them moved out of `InverseNotElementary.lean` in that
-upstreaming, not because anything was dropped.  The audit is a generated `#print axioms` sweep over every
+`deriv_fabiusInv_eq_inv_two_mul_rvachevUp`, `fabiusInv_contDiffOn_Ioo`).  That
+is 104 declarations, each audited by parsing the full `#print axioms` block
+rather than a single line, since long ones wrap.  The module count fell from
+100 to 98 because two declarations moved out of `InverseNotElementary.lean` in
+the upstreaming, not because anything was dropped.  The audit is a generated `#print axioms` sweep over every
 `theorem`/`lemma` at any namespace depth in those files, run against the fully
 built closure; it is re-run after every change to them.
 
