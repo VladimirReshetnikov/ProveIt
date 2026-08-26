@@ -7,20 +7,20 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: c7c2321bc6ea7292996b40dd333d4d148f7e75d5;
-  clean before this registry-only validation handoff
+fetched main SHA: c9eac55c5a9e10723cea061393d192e7a1134392
+HEAD and dirty paths: c41a522839850a699f7de8a2f07e15180ae45f7d;
+  clean before this ordinary one-source claim
 writing (exact paths):
+  Lean/FabiusFunction/FourierProduct.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
-  promote the shared dyadic-exponential calculus to
-  `exp_neg_mul_two_pow_ne_one`, `hasDerivAt_exp_neg_mul_two_pow`,
-  `exp_neg_mul_two_pow_le_of_le`, and
-  `one_sub_exp_neg_mul_two_pow_pos`; delete the four byte-identical private
-  copies in `PeriodicSmooth`; strengthen the promoted nonunit fact from
-  `0 < s` to the exact `s ≠ 0` condition; drop the provably unused positivity
-  argument from the scale-monotonicity helper and its private denominator
-  consequence; preserve every existing public signature
+  `complexSinc_eq_zero_iff`, identifying the zeros of removable complex sinc
+  as the nonzero integral multiples of `π`;
+  `rvachevFourierProduct_eq_zero_iff`, identifying every complex zero of the
+  infinite sinc product as a nonzero embedded integer;
+  `rvachevFourier_eq_zero_iff`, transporting the complete zero locus to the
+  Fourier transform of every bounded Fabius solution;
+  retain the existing integer-sample API as convenient specializations
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -56,7 +56,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   declaration; periodic consolidation claim `896e25742` and exact-domain
   expansion `10717109f` precede unvalidated source checkpoint
   `c7c2321bc6ea7292996b40dd333d4d148f7e75d5`, whose net source delta is 40
-  insertions and 58 deletions
+  insertions and 58 deletions; clean merge
+  `c41a522839850a699f7de8a2f07e15180ae45f7d` incorporates validated current
+  main `c9eac55c5`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -122,9 +124,16 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   as an unimplemented high-confidence deduplication in `AUDIT_FINDINGS.md`, and
   a fresh sweep of every advertised Fabius tip and registry finds no production
   declaration, alternate public API, or live claim on either periodic module;
-  the only registry mention is a closed historical read-only list
-next bounded step: push this registry handoff, await serialized validation,
-  and begin only a separately advertised collision-free ordinary tranche
+  the only registry mention is a closed historical read-only list; a refreshed
+  sweep of current main and every advertised remote Fabius tip finds no exact
+  name, semantic-equivalent complete complex zero-locus theorem, or registry
+  claim on `FourierProduct.lean`; the current file already contains precisely
+  the sinc zero criterion, absolute product convergence, and integer-zero facts
+  needed by the proposed proof
+next bounded step: push this exact one-source claim, implement the complete
+  complex zero-locus family without running a build, obtain independent static
+  review, and hand it off for serialized `+FabiusFunction.FourierProduct`
+  validation
 ```
 
 ## Coordinator natural-knot integration disposition
