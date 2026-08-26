@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:48 PDT
+## Checkpoint 2026-08-25 21:52 PDT
 
 ```text
-observed main before this directive: 36672c4677bc3556f89057bb74ed59e4ac86a5fb
+observed main before this directive: 03540bab399836bb87e338ce970b21b4c46f5eaa
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after total binary-reduction validation)
+  (IDLE after normalized-L1 validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; assigned document stream is on EVO)
 EVO Lean/Lake owner: unassigned
@@ -644,12 +644,14 @@ normalization constant, positivity, integrability hypotheses, mass
 specialization, imports, naming, and duplicate scan.  The inactive serialized
 proposal to relocate `norm_standardGaussian` is explicitly excluded, as are
 all imports, facades, root files, and documents.  Exact source commit
-`24f1eee30` now implements the two declarations and proof-only Big-O refactor
-in exactly that one module.  It is frozen under exact source review and remains
-unelaborated; no build token is granted yet.  After a green review, the intended
-gates are
-`+FabiusFunction.QuantitativeSaddle` and then its direct API consumer
-`+FabiusFunction.SaddleAllOrders`.
+`24f1eee30` implements the two declarations and proof-only Big-O refactor in
+exactly that one module and is integrated as `caed8800e`.  Independent exact
+review accepts the normalization, integrability hypotheses, mass
+specialization, arbitrary-filter refactor, imports, compatibility, and absence
+of a duplicate.  Separate serialized builds of
+`+FabiusFunction.QuantitativeSaddle` (2782 jobs) and its direct API consumer
+`+FabiusFunction.SaddleAllOrders` (2783 jobs) both exited 0 without warnings.
+The path and codexbox token are released.
 
 Registry-first claim `90432f3c6` advertises a further disjoint ordinary
 one-file tranche in `UnitLaplaceMomentBounds.lean`.  It proposes
@@ -659,10 +661,10 @@ preserving every existing header and import.  Preflight accepts the two-sided
 comparison with factors `exp (min (t - s) 0)` and
 `exp (max (t - s) 0)`, positivity transport, the half-moment specialization,
 placement, imports, and duplicate scan; `fabiusLaplaceMoment_zero_pos_all` is
-only its degree-zero special case.  This claim is registry-only and disjoint
-from the frozen QuantitativeSaddle source, so ordinary source work may proceed
-in this file plus the own registry without a build token.  After an immutable
-reviewed handoff, the intended gates are
+only its degree-zero special case.  Exact source commit `d9598f3b6` now
+implements the four declarations in the claimed module and is frozen under
+exact review.  It remains unelaborated and has no build token.  After a green
+immutable-source disposition, the intended gates are
 `+FabiusFunction.UnitLaplaceMomentBounds` and then
 `+FabiusFunction.LaplaceMomentBounds`.  No document, facade, root, import, or
 other path is authorized by either source claim.
@@ -1027,11 +1029,10 @@ integrated, compiled, and released.
 
 The both-papers product-positivity consolidation, theorem-polish normalized
 Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
-are also integrated and green.  The total binary-reduction tranche is now
-integrated and green as well.  Effective-bounds has frozen normalized-`L¹`
-source checkpoint `24f1eee30` under exact review and a disjoint, still-
-unimplemented Unit-Laplace tilt-comparison lease.  Neither has a build token
-yet.
+are also integrated and green.  The total binary-reduction and normalized-`L¹`
+tranches are now integrated, compiled, and released as well.  Effective-bounds
+has frozen Unit-Laplace tilt-comparison source checkpoint `d9598f3b6` under
+exact review; it has no build token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1225,6 +1226,10 @@ For total binary-reduction estimates, separate serialized builds at
 `9f4b6be52` of `+FabiusFunction.FabiusBinaryReductionSeries` (2819 jobs) and
 `+FabiusFunction.FabiusGlobalQBinomialSeries` (3323 jobs) both exited 0 without
 warnings.
+
+For the normalized-`L¹` transfer bounds, separate serialized builds at
+`caed8800e` of `+FabiusFunction.QuantitativeSaddle` (2782 jobs) and
+`+FabiusFunction.SaddleAllOrders` (2783 jobs) both exited 0 without warnings.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
