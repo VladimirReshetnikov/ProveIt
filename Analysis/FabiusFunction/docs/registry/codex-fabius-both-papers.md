@@ -1952,3 +1952,81 @@ LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
 ```
 
 Stop after the first nonzero exit and run no root, facade, or document build.
+
+## Handoff: exact rational-input evaluator for Rvachev's function
+
+Exact source checkpoint `c2904fdf51a222269dfe1423ff003fb94e96b60a`,
+tree `6ed2c9265bc35cb6ccda03bffe0407b8d37b5538`, implements the
+advertised three-file family.  Clean synchronization merge
+`fed511d3f88831c276c941742fdf6359578b2d98` incorporates current coordinator
+main `65df99318029015fc04b971c439dc754f2ef7dd6` without altering any of the
+three claimed source blobs.  The exact artifacts are:
+
+```text
+Arithmetic.lean
+  Git blob  df36fe3c07bd7d4840fd659bebb6d6a18a58a8ee
+  SHA-256   CAABAE17282746858142CB75049BEAA6972E51525835CABBC07AEA341B8EDDB2
+  size      696 lines, 26,378 bytes
+DyadicCorrectness.lean
+  Git blob  433a9b000f9600d8476893215ed4e40d4702be40
+  SHA-256   8800BEBB0893A259D1C7D0CCD826C70F55615D54323C74A89E3EB733CF4F34D7
+  size      609 lines, 26,476 bytes
+GlobalDyadic.lean
+  Git blob  1eb61de52279d1da29e8848c359933cbefda1eca
+  SHA-256   99B3B501EE05BE5A37E192D6043361E7E2E93DB01911F1734CF995967F5F6836
+  size      434 lines, 17,412 bytes
+```
+
+The exact source delta is 69 insertions and 17 deletions: 7/0 in
+`Arithmetic`, 18/16 in `DyadicCorrectness`, and 44/1 in `GlobalDyadic`.  It
+adds exactly the four claimed documented, untagged public declarations:
+
+- `evalRvachevDyadic`;
+- `evalRvachevDyadic_eq_none_iff`;
+- `evalRvachevDyadic_eq_some_correct`;
+- `evalRvachevDyadic_complete_correct`.
+
+The definition matches the two existing rational interfaces exactly: it
+queries `dyadicExponent? x` and, on success, returns
+`rvachevDyadic exponent x.num`.  `DyadicCorrectness` now proves the shared
+match-recognition fact once as private `evalDyadic_eq_none_iff`; the bounded,
+global, and new Rvachev `eq_none_iff` theorems are definitionally exact
+applications.  This deletes the second copy of the old case split while
+avoiding a third.  The two pre-existing public theorem comments, headers,
+attributes, and statements are byte-identical.
+
+Successful correctness follows the recognized exponent to
+`x.den = 2 ^ exponent`, invokes `rvachevDyadic_cast_global`, and uses
+`Rat.cast_def` to identify the decoded real argument with `(x : ℝ)`.
+Completeness chooses the exact rational result at the exponent supplied by
+`dyadicExponent?_exists_iff` and delegates to successful correctness.  The
+global bridge already handles exponent zero, zero and negative inputs, both
+support endpoints, and dyadic inputs outside `[-1,1]`; no restricted-domain
+case was reintroduced.
+
+Imports, namespaces, existing public declaration types, attributes, simp
+rules, facades, the aggregate, and canonical documents are unchanged.  The
+`GlobalDyadic` module overview and all four public doc comments describe the
+new interface directly.  The family exactly discharges the frozen frontier's
+“Rvachev rational-input wrapper” obligation and completes the primary
+exposition's promised three-way rational interface, but no document path was
+edited under the current freeze.
+
+Two independent exact-live static audits pass the private helper type and
+match orientation, all three definitional wrappers, denominator extraction,
+cast direction, global analytic rewrite, completeness witness, edge cases,
+declaration order, import closure, API placement, and documentation.  The
+`git diff --check`, 100-column, forbidden-declaration, exact-name,
+public-header, all-advertised-tip, and every-registry scans are clean.  No
+Lean, Lake, TeX, PDF, or cache-mutating process ran, so the source is frozen
+pending coordinator review and these two separate serialized gates:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.GlobalDyadic
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PaperStatements
+```
+
+Stop after the first nonzero exit.  After compiled integration, a separately
+assigned documentation owner should retire the exact frontier obligation and
+add the four names to the primary/coverage crosswalk; no root, facade, or
+document build is requested here.
