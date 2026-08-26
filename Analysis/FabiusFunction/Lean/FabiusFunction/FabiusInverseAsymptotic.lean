@@ -23,6 +23,10 @@ turns that phase estimate into the sharp three-term logarithmic inverse
 formula.  Exponentiation gives the explicit equivalent at zero, and the exact
 reflection law for `fabiusInv` transports it to one.
 
+The same logarithmic formula places the inverse strictly between every
+positive real power of the endpoint argument and every real power of its
+logarithmic scale.
+
 Only the phase estimate retains the quantitative error.  The logarithmic and
 exponentiated statements use its immediate `o(1)` consequence, which is the
 weakest input they need.
@@ -381,6 +385,17 @@ private theorem exp_fabiusInverseLogAsymptoticMain_eq
   simp only [div_eq_mul_inv, mul_inv]
   ring
 
+private theorem fabiusInv_isEquivalent_exp_fabiusInverseLogAsymptoticMain
+    (F : BoundedFabius) (hF : IsFabius F) :
+    (fabiusInv F hF) ~[𝓝[>] (0 : ℝ)]
+      (fun y => Real.exp (fabiusInverseLogAsymptoticMain y)) := by
+  have hpositive :
+      ∀ᶠ y : ℝ in 𝓝[>] (0 : ℝ), 0 < fabiusInv F hF y := by
+    filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+    exact (fabiusInv_mem_Ioo F hF hy).1
+  exact isEquivalent_exp_of_tendsto_log_sub hpositive
+    (tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain F hF)
+
 /-- **Explicit sharp equivalent of the inverse at zero.**
 
 Writing `T = -log y` and `L = log 2`, the inverse is asymptotic to
@@ -392,19 +407,191 @@ formula disappear because their induced phase displacement is `o(1)`. -/
 theorem fabiusInv_isEquivalent_fabiusInverseAsymptoticMain
     (F : BoundedFabius) (hF : IsFabius F) :
     (fabiusInv F hF) ~[𝓝[>] (0 : ℝ)] fabiusInverseAsymptoticMain := by
-  have hpositive :
-      ∀ᶠ y : ℝ in 𝓝[>] (0 : ℝ), 0 < fabiusInv F hF y := by
-    filter_upwards [self_mem_nhdsWithin,
-      nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))]
-      with y hy0 hy1
-    exact (fabiusInv_mem_Ioo F hF ⟨hy0, hy1⟩).1
-  have hexp := isEquivalent_exp_of_tendsto_log_sub hpositive
-    (tendsto_log_fabiusInv_sub_fabiusInverseLogAsymptoticMain F hF)
-  apply hexp.congr_right
-  filter_upwards [self_mem_nhdsWithin,
-    nhdsWithin_le_nhds (Iio_mem_nhds (zero_lt_one : (0 : ℝ) < 1))]
-    with y hy0 hy1
-  exact exp_fabiusInverseLogAsymptoticMain_eq hy0 hy1
+  refine (fabiusInv_isEquivalent_exp_fabiusInverseLogAsymptoticMain F hF).trans_eventuallyEq ?_
+  filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+  exact exp_fabiusInverseLogAsymptoticMain_eq hy.1 hy.2
+
+private theorem sqrt_const_mul_isLittleO_id_atTop
+    {c : ℝ} (hc : 0 < c) :
+    (fun T : ℝ => Real.sqrt (c * T)) =o[atTop] (fun T => T) := by
+  have h :=
+    (Asymptotics.isLittleO_pow_pow_atTop_of_lt
+      (𝕜 := ℝ) (p := 1) (q := 2) (by norm_num)).comp_tendsto
+        (Real.tendsto_sqrt_atTop.comp
+          (tendsto_id.const_mul_atTop hc))
+  have hscaled :
+      (fun T : ℝ => Real.sqrt (c * T)) =o[atTop]
+        (fun T => c * T) := by
+    apply h.congr'
+    · filter_upwards with T
+      simp only [Function.comp_apply, pow_one, id_eq]
+    · filter_upwards [eventually_ge_atTop (0 : ℝ)] with T hT
+      simp only [Function.comp_apply, id_eq]
+      rw [Real.sq_sqrt (mul_nonneg hc.le hT)]
+  exact hscaled.of_const_mul_right
+
+private theorem tendsto_fabiusInversePowerGap_atTop
+    {α : ℝ} (hα : 0 < α) :
+    Tendsto
+      (fun T : ℝ =>
+        α * T - Real.sqrt (2 * Real.log 2 * T) +
+          Real.log T / 2 - 1 - Real.log (Real.log 2) / 2)
+      atTop atTop := by
+  have hc : 0 < 2 * Real.log (2 : ℝ) :=
+    mul_pos (by norm_num) (Real.log_pos (by norm_num))
+  have hroot :
+      (fun T : ℝ => Real.sqrt (2 * Real.log 2 * T)) =o[atTop]
+        (fun T => α * T) :=
+    (sqrt_const_mul_isLittleO_id_atTop hc).const_mul_right hα.ne'
+  have hlogRaw :=
+    (Real.isLittleO_log_id_atTop.const_mul_left (1 / 2 : ℝ)).const_mul_right hα.ne'
+  have hlog :
+      (fun T : ℝ => Real.log T / 2) =o[atTop]
+        (fun T => α * T) :=
+    hlogRaw.congr_left fun T => by ring
+  have hconstant :
+      (fun _ : ℝ => -1 - Real.log (Real.log 2) / 2) =o[atTop]
+        (fun T => α * T) := by
+    simpa only [id_eq] using
+      (Asymptotics.isLittleO_const_id_atTop
+        (-1 - Real.log (Real.log 2) / 2)).const_mul_right hα.ne'
+  have hlinearEq :=
+    IsEquivalent.refl (l := atTop) (u := fun T : ℝ => α * T)
+  have hraw :=
+    ((hlinearEq.sub_isLittleO hroot).add_isLittleO hlog).add_isLittleO hconstant
+  have heq :
+      (fun T : ℝ =>
+        α * T - Real.sqrt (2 * Real.log 2 * T) +
+          Real.log T / 2 - 1 - Real.log (Real.log 2) / 2) ~[atTop]
+        (fun T => α * T) := by
+    apply hraw.congr_left
+    filter_upwards with T
+    simp only [Pi.add_apply, Pi.sub_apply]
+    ring_nf
+  exact heq.symm.tendsto_atTop (tendsto_id.const_mul_atTop hα)
+
+private theorem tendsto_fabiusInverseLogPowerGap_atTop (r : ℝ) :
+    Tendsto
+      (fun T : ℝ =>
+        Real.sqrt (2 * Real.log 2 * T) +
+          (r - 1 / 2) * Real.log T +
+          1 + Real.log (Real.log 2) / 2)
+      atTop atTop := by
+  have hc : 0 < 2 * Real.log (2 : ℝ) :=
+    mul_pos (by norm_num) (Real.log_pos (by norm_num))
+  have hrootTop :
+      Tendsto (fun T : ℝ => Real.sqrt (2 * Real.log 2 * T))
+        atTop atTop :=
+    Real.tendsto_sqrt_atTop.comp (tendsto_id.const_mul_atTop hc)
+  have hlogRoot :
+      (fun T : ℝ => Real.log T) =o[atTop]
+        (fun T => Real.sqrt (2 * Real.log 2 * T)) := by
+    have h :=
+      (isLittleO_log_rpow_atTop
+        (r := (1 / 2 : ℝ)) (by norm_num)).const_mul_right
+          (Real.sqrt_pos.2 hc).ne'
+    exact h.congr_right fun T => by
+      rw [← Real.sqrt_eq_rpow, ← Real.sqrt_mul hc.le]
+  have hlog :
+      (fun T : ℝ => (r - 1 / 2) * Real.log T) =o[atTop]
+        (fun T => Real.sqrt (2 * Real.log 2 * T)) :=
+    hlogRoot.const_mul_left (r - 1 / 2)
+  have hconstant :
+      (fun _ : ℝ => 1 + Real.log (Real.log 2) / 2) =o[atTop]
+        (fun T => Real.sqrt (2 * Real.log 2 * T)) := by
+    simpa only [Function.comp_def, id_eq] using
+      (Asymptotics.isLittleO_const_id_atTop
+        (1 + Real.log (Real.log 2) / 2)).comp_tendsto hrootTop
+  have hrootEq :=
+    IsEquivalent.refl
+      (l := atTop)
+      (u := fun T : ℝ => Real.sqrt (2 * Real.log 2 * T))
+  have hraw := (hrootEq.add_isLittleO hlog).add_isLittleO hconstant
+  have heq :
+      (fun T : ℝ =>
+        Real.sqrt (2 * Real.log 2 * T) +
+          (r - 1 / 2) * Real.log T +
+          1 + Real.log (Real.log 2) / 2) ~[atTop]
+        (fun T => Real.sqrt (2 * Real.log 2 * T)) := by
+    apply hraw.congr_left
+    filter_upwards with T
+    simp only [Pi.add_apply]
+    ring_nf
+  exact heq.symm.tendsto_atTop hrootTop
+
+/-! ## Complete hierarchy of elementary inverse scales -/
+
+/-- Every positive real power of the endpoint argument is negligible beside
+the inverse Fabius function at zero:
+
+`y ^ α = o(fabiusInv F hF y)` for every `α > 0` as `y -> 0+`. -/
+theorem rpow_isLittleO_fabiusInv_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    (fun y : ℝ => y ^ α) =o[𝓝[>] (0 : ℝ)] fabiusInv F hF := by
+  let l : Filter ℝ := 𝓝[>] (0 : ℝ)
+  have hT : Tendsto (fun y : ℝ => -Real.log y) l atTop :=
+    tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
+  have hgap :
+      Tendsto
+        (fun y : ℝ =>
+          fabiusInverseLogAsymptoticMain y - Real.log y * α)
+        l atTop := by
+    apply ((tendsto_fabiusInversePowerGap_atTop hα).comp hT).congr'
+    filter_upwards with y
+    unfold fabiusInverseLogAsymptoticMain
+    simp only [Function.comp_def]
+    ring_nf
+  have hexp :
+      (fun y : ℝ => Real.exp (Real.log y * α)) =o[l]
+        (fun y => Real.exp (fabiusInverseLogAsymptoticMain y)) :=
+    Real.isLittleO_exp_comp_exp_comp.mpr hgap
+  have hpowExp :
+      (fun y : ℝ => y ^ α) =o[l]
+        (fun y => Real.exp (fabiusInverseLogAsymptoticMain y)) := by
+    apply hexp.congr'
+    · filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+      rw [Real.rpow_def_of_pos hy.1]
+    · exact Filter.EventuallyEq.rfl
+  exact hpowExp.trans_isEquivalent
+    (fabiusInv_isEquivalent_exp_fabiusInverseLogAsymptoticMain F hF).symm
+
+/-- The inverse Fabius function is negligible beside every real power of its
+endpoint logarithmic scale:
+
+`fabiusInv F hF y = o((-log y) ^ r)` for every `r : ℝ` as `y -> 0+`.
+
+Taking `r = -m` gives the negative-logarithmic-power half of the canonical
+inverse scale hierarchy for every `m > 0`. -/
+theorem fabiusInv_isLittleO_negLog_rpow_at_zero_right
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    (fabiusInv F hF) =o[𝓝[>] (0 : ℝ)]
+      (fun y : ℝ => (-Real.log y) ^ r) := by
+  let l : Filter ℝ := 𝓝[>] (0 : ℝ)
+  have hT : Tendsto (fun y : ℝ => -Real.log y) l atTop :=
+    tendsto_neg_atBot_atTop.comp Real.tendsto_log_nhdsGT_zero
+  have hgap :
+      Tendsto
+        (fun y : ℝ => Real.log (-Real.log y) * r -
+          fabiusInverseLogAsymptoticMain y)
+        l atTop := by
+    apply ((tendsto_fabiusInverseLogPowerGap_atTop r).comp hT).congr'
+    filter_upwards with y
+    unfold fabiusInverseLogAsymptoticMain
+    simp only [Function.comp_def]
+    ring_nf
+  have hexp :
+      (fun y : ℝ => Real.exp (fabiusInverseLogAsymptoticMain y)) =o[l]
+        (fun y => Real.exp (Real.log (-Real.log y) * r)) :=
+    Real.isLittleO_exp_comp_exp_comp.mpr hgap
+  have hinvExp :=
+    (fabiusInv_isEquivalent_exp_fabiusInverseLogAsymptoticMain F hF).trans_isLittleO hexp
+  apply hinvExp.congr'
+  · exact Filter.EventuallyEq.rfl
+  · filter_upwards [Ioo_mem_nhdsGT zero_lt_one] with y hy
+    have hTPos : 0 < -Real.log y :=
+      neg_pos.mpr (Real.log_neg hy.1 hy.2)
+    rw [Real.rpow_def_of_pos hTPos]
 
 private theorem tendsto_one_sub_nhdsLT_one_nhdsGT_zero :
     Tendsto (fun y : ℝ => 1 - y) (𝓝[<] (1 : ℝ)) (𝓝[>] (0 : ℝ)) := by

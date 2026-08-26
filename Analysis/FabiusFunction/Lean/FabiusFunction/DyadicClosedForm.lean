@@ -153,7 +153,9 @@ theorem thueMorseSign_xor (a b : ℕ) :
   induction a using Nat.binaryRec generalizing b with
   | zero => simp [thueMorseSign, binaryWeight]
   | bit ba a ih =>
-      refine Nat.bitCasesOn b ?_
+      refine Nat.bitCasesOn (motive := fun b =>
+        thueMorseSign (Nat.bit ba a ^^^ b) =
+          thueMorseSign (Nat.bit ba a) * thueMorseSign b) b ?_
       intro bb b
       rw [Nat.xor_bit]
       cases ba <;> cases bb <;> simp [ih]

@@ -730,10 +730,20 @@ theorem theorem_twenty_one (n : ℕ) (hn : 1 ≤ n) :
     · positivity
   · exact (theorem_seven m).2.1
 
-/-- Proposition 22: the Bernoulli recurrences for `c_n` and `d_n`. -/
+/-- Proposition 22, initial conditions: `c_0 = d_0 = 1`, represented here by
+`moment 0 = 1` and `halfMoment 0 = 1`. -/
 theorem proposition_twenty_two_initial : moment 0 = 1 ∧ halfMoment 0 = 1 := by
   simp
 
+/-- Proposition 22: for `1 ≤ n`, write `c_j = moment j`,
+`d_j = halfMoment j`, and `B_j = bernoulli j`.  Then
+`c_n = (∑ k ∈ [1, n], 2 ^ (2 * n - 2 * k) * (2 ^ (2 * k) - 2) *
+  (2 * n).choose (2 * k) * B_(2 * k) * c_(n - k)) /
+  (2 ^ (2 * n) - 1)` and
+`d_n = (n * 2 ^ n / (4 * (2 ^ n - 1))) * d_(n - 1) -
+  (∑ k ∈ [1, n / 2], n.choose (2 * k) * 2 ^ (n - 2 * k) *
+    B_(2 * k) * d_(n - 2 * k)) / (2 ^ n - 1)`, where both ranges are
+inclusive. -/
 theorem proposition_twenty_two (n : ℕ) (hn : 1 ≤ n) :
     moment n =
       (∑ k ∈ Icc 1 n,

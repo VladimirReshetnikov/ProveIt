@@ -371,7 +371,10 @@ theorem abs_negativeLaplaceTailError_le_four_exp
       mul_le_mul_of_nonneg_left hsq hr0
     _ = 4 * Real.exp (-s) * (1 - Real.exp (-s)) ^ 2 := by ring
 
-private lemma negativeLaplaceKernel_eq_log_sub_log (s : ℝ) (hs : 0 < s) :
+/-- For `0 < s`, the logarithmic Laplace factor splits into its numerator and
+scale logarithms:
+`negativeLaplaceKernel s = Real.log (1 - Real.exp (-s)) - Real.log s`. -/
+theorem negativeLaplaceKernel_eq_log_sub_log (s : ℝ) (hs : 0 < s) :
     negativeLaplaceKernel s =
       Real.log (1 - Real.exp (-s)) - Real.log s := by
   have hnum : 1 - Real.exp (-s) ≠ 0 :=
