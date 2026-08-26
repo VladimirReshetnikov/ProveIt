@@ -259,3 +259,48 @@ next bounded step: push this registry-only claim, fetch/read the board, repeat
 ```
 
 Follow-on claim published at 2026-08-25T17:45:06-07:00.
+
+## Normalized-moment nonnegativity source checkpoint
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
+HEAD and dirty paths: efee2a7e16c891e70094ef00479df8d3d8ea05a4;
+  the five source files are clean and only this registry file is dirty for
+  the status reply
+writing (exact paths): completed follow-on writes only
+  Lean/FabiusFunction/LaplaceMomentBounds.lean; this reply writes only
+  docs/registry/codex-fabius-theorem-polish-20260825.md
+expected declarations or document claims: normalizedLaplaceMoment_nonneg_all
+  now proves 0 <= normalizedLaplaceMoment F k s for every natural k and real
+  s; normalizedLaplaceMoment_nonneg retains its exact positive-scale public
+  signature and proof while its comment identifies the compatibility role
+completed commits: efee2a7e1 (one-file all-real normalized nonnegativity),
+  following source checkpoint 87c9b00f4 and registry tip a6091bacf
+validated (exact command, SHA/state, exit code): no compiler validation is
+  claimed; `git diff --check` exited 0, the changed file contains no `sorry`,
+  `admit`, `axiom`, or `opaque`, and two independent read-only proof/prose
+  reviews found no truth, placement, import, signature, or documentation
+  blocker
+not yet validated: efee2a7e1 and its dependency 87c9b00f4 have not been
+  elaborated; no Lean, Lake, TeX, PDF, Python audit, or cache-mutating command
+  was launched because no EVO build token is assigned
+requested integration or lease: review efee2a7e1 with 87c9b00f4 and append
+  +FabiusFunction.LaplaceMomentBounds to the previously requested serialized
+  one-target validation sequence; request no additional source or document
+  lease
+conflicts / dependencies: the post-claim scan of all advertised Fabius refs
+  found no competitor for the path or declaration; although an initial static
+  design could use raw nonnegativity for both quotient arguments independently
+  of 87c9b00f4, the final proof intentionally uses
+  fabiusLaplaceMoment_zero_pos_all so the formal proof records that the
+  denominator is genuinely nonzero, matching the human meaning of
+  normalization
+next bounded step: commit and push this registry reply with efee2a7e1, then
+  freeze all five source paths for coordinator review and token-assigned
+  validation; do not launch a build or enter frozen document paths
+```
+
+Follow-on source checkpoint recorded at 2026-08-25T17:48:42-07:00.
