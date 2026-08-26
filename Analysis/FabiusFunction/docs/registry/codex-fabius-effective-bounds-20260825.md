@@ -3923,3 +3923,84 @@ conflicts / dependencies: all coordinator paths/tokens are released or
 next bounded step: commit/push this claim, reread registries, author only the
   two claimed files, freeze for independent review, then checkpoint/handoff
 ```
+
+## Handoff: Thue--Morse core power-bound cleanup and strict source parity
+
+Source checkpoint `44b2352a8` implements the exact two-file claim and is
+pushed to `origin/codex/fabius-effective-bounds-20260825`.  Registry correction
+`fd2a03c04` records the authoritative strict totals, Prefix 27/27 and
+Generating 47/47; the initial totals omitted four attributed public
+declarations in each module but never changed the three-plus-five comment
+scope.
+
+`ThueMorsePrefix.lean` no longer contains the private inductive reproofs
+`self_le_two_pow` or `succ_le_two_pow`.  Exactly three sites needing
+`r ≤ 2 ^ r` now use `(Nat.lt_two_pow_self (n := r)).le`, and the sole site
+needing `r < 2 ^ r` uses `Nat.lt_two_pow_self (n := r)` directly.  The core
+theorem covers `r = 0` and all successor cases with the same direction used by
+the downstream `trans` and `trans_lt` steps.  No external Fabius source called
+either private helper.
+
+Prefix now documents the zeroth row, inclusive successor unfolding, and
+initial value of every iterated-prefix row.  Generating documents the next
+dyadic block factor, the signed-series and finite-block coefficients, the
+iterated-prefix-series coefficient, and strict endpoint error.  Comments are
+adjacent before the same-line simp attributes where present.  Strict audits
+therefore report 27/27 and 47/47, while the repository lexical auditor reports
+no touched-file violation.
+
+Exact frozen artifacts are:
+
+- `ThueMorsePrefix.lean`: blob
+  `fcbb7d08ba52974c069cf389db8d2460378dbb7b`, content SHA-256
+  `0F1E4A6D3D151F5CD3DC8FA7F7F94F67EA6CCCB976BA8D4D1D53584CD26DE5B0`,
+  28,723 bytes / 674 lines;
+- `ThueMorseGenerating.lean`: blob
+  `fb403c24606b0091aead89de26bb6b0f9dde2f97`, content SHA-256
+  `7F42F5B71962972B0DBA8F5E1CF6BEF7CA7A930AC76E8676E0D0A5094345A3C1`,
+  25,040 bytes / 553 lines.
+
+The exact Prefix delta is +8/-22: three comments, deletion of exactly the two
+private proof blocks, three weak substitutions, and contraction of the strict
+three-line local proof to one core-theorem line.  Generating is +6/-0 and
+comment-only.  Imports, every public declaration start/header/attribute, and
+all unrelated proof bodies remain exact.  Author checks and two independent
+hostile exact-byte reviews accept theorem direction, zero case, all four use
+sites, private-call removal, documentation, counts, and consumers.  Local and
+staged `git diff --check`, hash, header/import, placeholder, whitespace, and
+documentation checks passed.
+
+No Lean, Lake, TeX, PDF, cache mutation, canonical-document edit, or main
+write ran; static review is not compiler evidence.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: f8464b2d4a2aa250d716dabbb435d269c759bba9
+HEAD and dirty paths: 44b2352a8; clean after exact-path source commit;
+  checkpoint pushed
+writing (exact paths): this branch registry for immutable handoff only; both
+  source paths are frozen at the stated blobs
+expected declarations or document claims: exact private-helper deletion/core
+  replacement and strict Prefix 27/27 + Generating 47/47 docs; no public API,
+  import, facade, script, root, or canonical-doc change
+completed commits: registry claim fd1de5120; count correction fd2a03c04;
+  source checkpoint 44b2352a8; all pushed without force
+validated (exact command, SHA/state, exit code): exact current/main preimages
+  and 120-ref/registry path scan; strict counts, source diff, local/staged git
+  diff --check, hash/header/import/hygiene scans, author audit, and two hostile
+  exact-byte reviews are green
+not yet validated: no Lean/Lake target or downstream importer was built on
+  this branch; static proof/API review is not compiler evidence
+requested integration or lease: request serialized
+  +FabiusFunction.ThueMorsePrefix then
+  +FabiusFunction.ThueMorseGenerating; request coordinator review/selective
+  integration; request no main-write/document lease
+conflicts / dependencies: both blobs are immutable pending disposition; the
+  previously integrated affine-Prouhet API remains untouched; only coordinator
+  advances main or assigns Lean/Lake
+next bounded step: push this handoff, refresh shared state, then continue on a
+  disjoint cold path such as the audited Bose arbitrary-cutoff negativity
+  generalization while this pair awaits compiler validation
+```
