@@ -388,9 +388,8 @@ theorem logCoeff_expCoeff_of_pos (E : ℕ → R) (n : ℕ) (hn : 0 < n) :
   let E' : ℕ → R := fun j => if j = 0 then 0 else E j
   have hE'zero : E' 0 = 0 := by simp [E']
   have hexp : expCoeff E = expCoeff E' := by
-    funext j
-    apply expCoeff_congr_of_pos j
-    intro k hkpos _hk
+    apply expCoeff_eq_of_forall_pos
+    intro k hkpos
     simp [E', Nat.ne_of_gt hkpos]
   calc
     logCoeff (expCoeff E) n = logCoeff (expCoeff E') n := by rw [hexp]

@@ -18,6 +18,8 @@ central radius `A > 0` the resulting explicit bound is
 
 At the standardized radius `A(b) = √(32 log b)`, the hypotheses `2m ≥ b/2`
 and `C(r,2m) = O(1)` imply that the complementary tail is `O(1/b)`.
+Before imposing boundedness of the minor-arc constant, the factorized form is
+`O(C(r,2m)/b)` under only the eventual pointwise saddle hypotheses.
 -/
 
 set_option autoImplicit false
@@ -32,14 +34,20 @@ Laplace factors. -/
 noncomputable def scaledPolynomialKernel (b : ℝ) (m : ℕ) (v : ℝ) : ℝ :=
   ((1 + v ^ 2 / b) ^ m)⁻¹
 
+/-- For `b > 0`, the scaled polynomial kernel is nonnegative at every order
+`m` and every real argument `v`. -/
 lemma scaledPolynomialKernel_nonneg (b : ℝ) (m : ℕ) (v : ℝ) (hb : 0 < b) :
     0 ≤ scaledPolynomialKernel b m v := by
   exact inv_nonneg.mpr (pow_nonneg (by positivity) m)
 
+/-- The scaled polynomial kernel is even in its real argument:
+`scaledPolynomialKernel b m (-v) = scaledPolynomialKernel b m v`. -/
 lemma scaledPolynomialKernel_neg (b : ℝ) (m : ℕ) (v : ℝ) :
     scaledPolynomialKernel b m (-v) = scaledPolynomialKernel b m v := by
   simp [scaledPolynomialKernel]
 
+/-- For `b > 0` and `1 ≤ m`, the function
+`v ↦ (1 + v²/b)⁻ᵐ` is integrable on the real line. -/
 lemma integrable_scaledPolynomialKernel
     (b : ℝ) (m : ℕ) (hb : 0 < b) (hm : 1 ≤ m) :
     Integrable (scaledPolynomialKernel b m) := by
@@ -68,6 +76,8 @@ lemma integrable_scaledPolynomialKernel
       abs_of_nonneg (inv_nonneg.mpr (pow_nonneg (zero_le_one.trans hy) m))]
     exact (inv_le_inv₀ (pow_pos (by positivity) m) (by positivity)).2 hpow
 
+/-- If `A ≥ 0` and `f` is an integrable even real function, then its integral
+outside `[-A, A]` is twice its integral over `(A, ∞)`. -/
 lemma integral_compl_Icc_eq_two_mul_integral_Ioi_of_even
     (f : ℝ → ℝ) (A : ℝ) (hA : 0 ≤ A) (hf : Integrable f)
     (heven : ∀ v : ℝ, f (-v) = f v) :
@@ -94,6 +104,8 @@ lemma integral_compl_Icc_eq_two_mul_integral_Ioi_of_even
   rw [hleft]
   ring
 
+/-- For `lam > 0`, the two-sided exponential
+`v ↦ exp (-lam * |v|)` is integrable on the real line. -/
 lemma integrable_exp_neg_mul_abs (lam : ℝ) (hlam : 0 < lam) :
     Integrable (fun v : ℝ => Real.exp (-lam * |v|)) := by
   have hneg : IntegrableOn (fun v : ℝ => Real.exp (-lam * |v|)) (Iic 0) := by
@@ -114,6 +126,9 @@ lemma integrable_exp_neg_mul_abs (lam : ℝ) (hlam : 0 < lam) :
   have hunion := hneg.union hpos
   simpa only [Iic_union_Ioi, integrableOn_univ] using hunion
 
+/-- For `lam > 0` and `A ≥ 0`, the complementary two-sided exponential tail
+has the exact value
+`∫ v in (Icc (-A) A)ᶜ, exp (-lam * |v|) = 2 * exp (-lam * A) / lam`. -/
 lemma integral_exp_neg_mul_abs_compl_Icc
     (lam A : ℝ) (hlam : 0 < lam) (hA : 0 ≤ A) :
     (∫ v in (Icc (-A) A)ᶜ, Real.exp (-lam * |v|)) =
@@ -133,6 +148,8 @@ lemma integral_exp_neg_mul_abs_compl_Icc
   · intro v
     rw [abs_neg]
 
+/-- For `b > 0`, the scaled Cauchy kernel has exact total mass
+`∫ v : ℝ, (1 + v²/b)⁻¹ = √b * π`. -/
 lemma integral_scaled_inv_one_add_sq (b : ℝ) (hb : 0 < b) :
     (∫ v : ℝ, (1 + v ^ 2 / b)⁻¹) = Real.sqrt b * Real.pi := by
   have hsqrt : Real.sqrt b ≠ 0 := (Real.sqrt_pos.2 hb).ne'
@@ -147,6 +164,8 @@ lemma integral_scaled_inv_one_add_sq (b : ℝ) (hb : 0 < b) :
   rw [hfun, integral_univ_inv_one_add_sq] at hscale
   simpa [abs_of_pos (Real.sqrt_pos.2 hb), hsqrt] using hscale
 
+/-- On `0 ≤ y ≤ 1`, the logarithm admits the elementary lower bound
+`y / 2 ≤ log (1 + y)`. -/
 lemma half_mul_le_log_one_add {y : ℝ} (hy0 : 0 ≤ y) (hy1 : y ≤ 1) :
     y / 2 ≤ Real.log (1 + y) := by
   calc
@@ -155,6 +174,9 @@ lemma half_mul_le_log_one_add {y : ℝ} (hy0 : 0 ≤ y) (hy1 : y ≤ 1) :
       nlinarith [sq_nonneg y]
     _ ≤ Real.log (1 + y) := Real.le_log_one_add_of_nonneg hy0
 
+/-- In the intermediate region `A ≤ |v| ≤ √b`, for `b > 0` and `1 ≤ m`,
+the polynomial kernel is bounded by
+`exp (-((m : ℝ) * A / (2 * b)) * |v|)`. -/
 lemma scaledPolynomialKernel_le_exp_on_intermediate
     (b A : ℝ) (m : ℕ) (v : ℝ)
     (hb : 0 < b) (hm : 1 ≤ m)
@@ -205,6 +227,9 @@ lemma scaledPolynomialKernel_le_exp_on_intermediate
       _ = (m : ℝ) * A / (2 * b) * |v| := by ring
   exact hfirst.trans hsecond
 
+/-- In the far region `√b ≤ |v|`, for `b > 0` and `1 ≤ m`, extracting
+`m - 1` powers of two bounds the kernel by
+`((2 : ℝ) ^ (m - 1))⁻¹ * (1 + v²/b)⁻¹`. -/
 lemma scaledPolynomialKernel_le_geometric_mul_base
     (b : ℝ) (m : ℕ) (v : ℝ)
     (hb : 0 < b) (hm : 1 ≤ m) (hv : Real.sqrt b ≤ |v|) :
@@ -493,6 +518,10 @@ theorem integral_norm_fabius_scaledSaddleKernel_compl_Icc_le
             ((m : ℝ) * A / (2 * b)) +
           ((2 : ℝ) ^ (m - 1))⁻¹ * (Real.sqrt b * Real.pi)) := by rfl
 
+/-- If `1 ≤ b`, `1 ≤ A`, `b / 4 ≤ m`, and `A² = 32 * log b`, then the
+intermediate contribution satisfies
+`2 * exp (-((m : ℝ) * A / (2 * b)) * A) / ((m : ℝ) * A / (2 * b)) ≤
+  16 * b⁻¹`. -/
 lemma standardized_intermediate_tail_le_inv
     (b A : ℝ) (m : ℕ) (hb : 1 ≤ b) (hA : 1 ≤ A)
     (hm : b / 4 ≤ (m : ℝ)) (hA_sq : A ^ 2 = 32 * Real.log b) :
@@ -548,6 +577,9 @@ lemma standardized_intermediate_tail_le_inv
       mul_le_mul hcoeff hexp (Real.exp_nonneg _) (by norm_num)
     _ ≤ 16 * b⁻¹ := mul_le_mul_of_nonneg_left hinvpow (by norm_num)
 
+/-- If `4 ≤ b`, `b / 4 ≤ m`, and `(m : ℝ)² ≤ 2ᵐ`, then the far geometric
+contribution satisfies
+`((2 : ℝ) ^ (m - 1))⁻¹ * (√b * π) ≤ 32 * π * b⁻¹`. -/
 lemma standardized_geometric_tail_le_inv
     (b : ℝ) (m : ℕ) (hb : 4 ≤ b) (hm : b / 4 ≤ (m : ℝ))
     (hpow : (m : ℝ) ^ 2 ≤ (2 : ℝ) ^ m) :
@@ -593,17 +625,22 @@ collapses to zero. -/
 lemma fabiusSaddleCentralRadius_one : fabiusSaddleCentralRadius 1 = 0 := by
   simp [fabiusSaddleCentralRadius]
 
+/-- The standard central radius `√(32 * log b)` is strictly positive whenever
+`1 < b`. -/
 lemma fabiusSaddleCentralRadius_pos {b : ℝ} (hb : 1 < b) :
     0 < fabiusSaddleCentralRadius b := by
   unfold fabiusSaddleCentralRadius
   exact Real.sqrt_pos.2 (mul_pos (by norm_num) (Real.log_pos hb))
 
+/-- For `1 ≤ b`, squaring the standard central radius recovers its defining
+radicand: `fabiusSaddleCentralRadius b ^ 2 = 32 * log b`. -/
 lemma sq_fabiusSaddleCentralRadius {b : ℝ} (hb : 1 ≤ b) :
     fabiusSaddleCentralRadius b ^ 2 = 32 * Real.log b := by
   unfold fabiusSaddleCentralRadius
   rw [Real.sq_sqrt]
   exact mul_nonneg (by norm_num) (Real.log_nonneg hb)
 
+/-- If `exp 1 ≤ b`, then the standard central radius is at least one. -/
 lemma one_le_fabiusSaddleCentralRadius
     {b : ℝ} (hb : Real.exp 1 ≤ b) :
     1 ≤ fabiusSaddleCentralRadius b := by
@@ -622,6 +659,9 @@ lemma exp_one_le_of_four_le {b : ℝ} (hb4 : 4 ≤ b) : Real.exp 1 ≤ b := by
   have := Real.exp_one_lt_d9
   linarith
 
+/-- If `exp 1 ≤ b`, `4 ≤ b`, `b / 4 ≤ m`, and `(m : ℝ)² ≤ 2ᵐ`, then the
+scaled polynomial-kernel mass outside the standard radius is at most
+`(16 + 32 * π) * b⁻¹`. -/
 lemma integral_scaledPolynomialKernel_standardRadius_le
     (b : ℝ) (m : ℕ)
     (hbexp : Real.exp 1 ≤ b) (hb4 : 4 ≤ b)
@@ -672,6 +712,8 @@ lemma integral_scaledPolynomialKernel_standardRadius_le_of_four_le
   integral_scaledPolynomialKernel_standardRadius_le b m
     (exp_one_le_of_four_le hb4) hb4 hm hpow
 
+/-- For every natural number `n ≥ 4`, its real square is bounded by the
+corresponding power of two: `(n : ℝ)² ≤ 2ⁿ`. -/
 lemma natCast_sq_le_two_pow {n : ℕ} (hn : 4 ≤ n) :
     (n : ℝ) ^ 2 ≤ (2 : ℝ) ^ n := by
   induction n, hn using Nat.le_induction with
@@ -727,9 +769,10 @@ theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_le
 
 /-- `integral_norm_fabius_scaledSaddleKernel_standardRadius_le` without the
 redundant hypothesis `Real.exp 1 ≤ b`: it already follows from `16 ≤ b`.
-Prefer this form; the original is kept unchanged so that its existing
-consumer `integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO`
-is untouched. -/
+Prefer this form; the original pointwise theorem is retained for compatibility,
+while the downstream
+`integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO` public
+statement remains unchanged. -/
 theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_le_of_sixteen_le
     (F : BoundedFabius) (hF : IsFabius F)
     (x r b : ℝ) (m : ℕ)
@@ -743,6 +786,61 @@ theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_le_of_sixteen_le
         ((16 + 32 * Real.pi) * b⁻¹) :=
   integral_norm_fabius_scaledSaddleKernel_standardRadius_le F hF x r b m hr
     (exp_one_le_of_four_le (by linarith)) hb16 hm
+
+/-- Under the eventual pointwise hypotheses `0 < r`, `16 ≤ b`, and
+`b / 4 ≤ m`, the standardized complementary tail is
+`O(negativeLaplaceMinorArcConstant r (2 * m) * b⁻¹)`.  In particular, this
+factorized estimate needs neither `b → ∞` nor boundedness of the minor-arc
+constant. -/
+theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO_minorArcConstant_mul_inv
+    {α : Type*} (l : Filter α)
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x r b : α → ℝ) (m : α → ℕ)
+    (hr : ∀ᶠ i in l, 0 < r i)
+    (hb16 : ∀ᶠ i in l, (16 : ℝ) ≤ b i)
+    (hm : ∀ᶠ i in l, b i / 4 ≤ (m i : ℝ)) :
+    (fun i => ∫ v in
+      (Icc (-fabiusSaddleCentralRadius (b i))
+        (fabiusSaddleCentralRadius (b i)))ᶜ,
+      ‖QuantitativeSaddle.scaledSaddleKernel
+        (fun z => complexGeneratingFunction F (-z))
+          (x i) (r i) (b i) v‖) =O[l]
+      (fun i => negativeLaplaceMinorArcConstant (r i) (2 * m i) *
+        (b i)⁻¹) := by
+  let C : α → ℝ := fun i =>
+    negativeLaplaceMinorArcConstant (r i) (2 * m i)
+  let invB : α → ℝ := fun i => (b i)⁻¹
+  let D : ℝ := 16 + 32 * Real.pi
+  let tail : α → ℝ := fun i => ∫ v in
+    (Icc (-fabiusSaddleCentralRadius (b i))
+      (fabiusSaddleCentralRadius (b i)))ᶜ,
+    ‖QuantitativeSaddle.scaledSaddleKernel
+      (fun z => complexGeneratingFunction F (-z))
+        (x i) (r i) (b i) v‖
+  change tail =O[l] (fun i => C i * invB i)
+  apply IsBigO.of_bound D
+  filter_upwards [hr, hb16, hm] with i hri hbi16 hmi
+  have hbound :=
+    integral_norm_fabius_scaledSaddleKernel_standardRadius_le_of_sixteen_le
+      F hF (x i) (r i) (b i) (m i) hri hbi16 hmi
+  have htail0 : 0 ≤ tail i := by
+    dsimp [tail]
+    apply integral_nonneg_of_ae
+    filter_upwards with v
+    exact norm_nonneg _
+  have hCi : 0 ≤ C i := by
+    dsimp [C]
+    exact (negativeLaplaceMinorArcConstant_pos (r i) hri (2 * m i)).le
+  have hinv : 0 ≤ invB i := by
+    dsimp [invB]
+    exact inv_nonneg.mpr (by linarith)
+  have hright0 : 0 ≤ C i * invB i := mul_nonneg hCi hinv
+  rw [Real.norm_eq_abs, abs_of_nonneg htail0,
+    Real.norm_eq_abs, abs_of_nonneg hright0]
+  calc
+    tail i ≤ C i * (D * invB i) := by
+      simpa only [tail, C, D, invB] using hbound
+    _ = D * (C i * invB i) := by ring
 
 /-- Complementary-tail `O(1/b)` for the normalized scaled Fabius kernel.
 The extracted factor count is `N = 2m`; the hypothesis `b/4 ≤ m` is exactly
@@ -765,57 +863,14 @@ theorem integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO
         (fun z => complexGeneratingFunction F (-z))
           (x i) (r i) (b i) v‖) =O[l]
       (fun i => (b i)⁻¹) := by
-  let C : α → ℝ := fun i =>
-    negativeLaplaceMinorArcConstant (r i) (2 * m i)
-  let invB : α → ℝ := fun i => (b i)⁻¹
-  let D : ℝ := 16 + 32 * Real.pi
-  let tail : α → ℝ := fun i => ∫ v in
-    (Icc (-fabiusSaddleCentralRadius (b i))
-      (fabiusSaddleCentralRadius (b i)))ᶜ,
-    ‖QuantitativeSaddle.scaledSaddleKernel
-      (fun z => complexGeneratingFunction F (-z))
-        (x i) (r i) (b i) v‖
-  have hbexp : ∀ᶠ i in l, Real.exp 1 ≤ b i := hb.eventually_ge_atTop _
-  have hb16 : ∀ᶠ i in l, (16 : ℝ) ≤ b i := hb.eventually_ge_atTop _
-  have hleft : tail =O[l] (fun i => D * C i * invB i) := by
-    apply IsBigO.of_bound'
-    filter_upwards [hr, hbexp, hb16, hm] with i hri hbie hbi16 hmi
-    have hbound :=
-      integral_norm_fabius_scaledSaddleKernel_standardRadius_le
-        F hF (x i) (r i) (b i) (m i) hri hbie hbi16 hmi
-    have htail0 : 0 ≤ tail i := by
-      dsimp [tail]
-      apply integral_nonneg_of_ae
-      filter_upwards with v
-      exact norm_nonneg _
-    have hright0 : 0 ≤ D * C i * invB i := by
-      have hCi : 0 ≤ C i := by
-        dsimp [C]
-        exact (negativeLaplaceMinorArcConstant_pos (r i) hri (2 * m i)).le
-      have hinv : 0 ≤ invB i := by
-        dsimp [invB]
-        exact inv_nonneg.mpr (by linarith)
-      have hD : 0 ≤ D := by dsimp [D]; positivity
-      positivity
-    rw [Real.norm_eq_abs, abs_of_nonneg htail0,
-      Real.norm_eq_abs, abs_of_nonneg hright0]
-    dsimp [tail, D, C, invB]
-    calc
-      (∫ v in (Icc (-fabiusSaddleCentralRadius (b i))
-          (fabiusSaddleCentralRadius (b i)))ᶜ,
-        ‖QuantitativeSaddle.scaledSaddleKernel
-          (fun z => complexGeneratingFunction F (-z))
-            (x i) (r i) (b i) v‖) ≤
-          negativeLaplaceMinorArcConstant (r i) (2 * m i) *
-            ((16 + 32 * Real.pi) * (b i)⁻¹) := hbound
-      _ = (16 + 32 * Real.pi) *
-          negativeLaplaceMinorArcConstant (r i) (2 * m i) * (b i)⁻¹ := by ring
-  have hright : (fun i => D * C i * invB i) =O[l] invB := by
-    have hC : C =O[l] (fun _i => (1 : ℝ)) := by
-      simpa only [C] using hminor
-    have hmul := (hC.const_mul_left D).mul (isBigO_refl invB l)
+  have htail :=
+    integral_norm_fabius_scaledSaddleKernel_standardRadius_isBigO_minorArcConstant_mul_inv
+      l F hF x r b m hr (hb.eventually_ge_atTop (16 : ℝ)) hm
+  have hright :
+      (fun i => negativeLaplaceMinorArcConstant (r i) (2 * m i) *
+        (b i)⁻¹) =O[l] (fun i => (b i)⁻¹) := by
+    have hmul := hminor.mul (isBigO_refl (fun i => (b i)⁻¹) l)
     simpa only [one_mul] using hmul
-  have hresult := hleft.trans hright
-  simpa only [tail, invB] using hresult
+  exact htail.trans hright
 
 end Fabius
