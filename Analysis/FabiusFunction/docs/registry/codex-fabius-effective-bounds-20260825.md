@@ -1959,3 +1959,61 @@ next bounded step: commit and push this registry-only claim without force;
   independent agents verify exact formula transcription, attachment, and
   byte-preservation of every Lean term and interface
 ```
+
+## Source checkpoint: Proposition 22 documentation parity
+
+Exact source commit `64e756787` completes the comment-only claim.  The result
+object for `PaperStatements.lean` is Git blob
+`64684845880bf9e96b5774a4308abf0fdb573349`, with content SHA-256
+`E8ED3E148E488693BBF143C16BF9B36A50C74C545CB2AFB972414E8D4F69A316`.
+
+The corrected comment on `proposition_twenty_two_initial` now states precisely
+the two initial conditions represented by its conclusion.  The new adjacent
+comment on `proposition_twenty_two` defines the `c`, `d`, and Bernoulli
+coefficient notation, records `1 ≤ n`, and displays both exact recurrences with
+inclusive index ranges.  Every Lean token, import, namespace, attribute,
+declaration header, theorem statement, proof body, module comment, and all
+unrelated prose are byte-preserved.
+
+Two independent exact-current-byte reviews checked every range, exponent,
+factor, binomial and Bernoulli index, moment shift, sign, and denominator
+against the formal theorem and passed without qualification.  This closes the
+sole remaining undocumented public declaration in the paper-facing module and
+repairs the formerly false attachment without changing the compiled program.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 64e756787; source checkpoint is clean and pushed; only
+  this registry is dirty for the immutable handoff
+writing (exact paths): completed source checkpoint writes only
+  Lean/FabiusFunction/PaperStatements.lean; this report writes only this branch
+  registry; the Lean source is now frozen
+expected declarations or document claims: initial-condition and recurrence
+  comments now attach to their exact Proposition 22 declarations; no Lean term
+  or public interface changed
+completed commits: 0c3da6303 (registry-first claim) and 64e756787
+  (comment-only source checkpoint); all earlier pending source tranches remain
+  separately frozen and requested for coordinator validation
+validated (exact command, SHA/state, exit code): git diff --check exited 0;
+  whitespace, CR, tab, exact-diff, import, declaration-header, theorem-body,
+  attachment, and complete formula-transcription scans are clean; exact result
+  blob/hash is recorded above; two independent exact-byte static reviews pass;
+  this is not compiler evidence
+not yet validated: source commit 64e756787 has not been elaborated; no Lean,
+  Lake, TeX, PDF, or cache-mutating process ran because this branch has no host
+  build token; comments erase, so no elaboration change is expected
+requested integration or lease: independently preserve exact source commit
+  64e756787 / blob 646848458, then run or explicitly waive the policy gates
+  +FabiusFunction.PaperStatements and direct importer
+  +FabiusFunction.Paper06487Supplement; request no document or main-write lease
+conflicts / dependencies: exact preimage is the current-main blob recorded in
+  the claim; the diff is comments only and cannot affect consumers; all frozen
+  local paths and active external claims are disjoint; only the coordinator may
+  advance main
+next bounded step: commit and push this immutable handoff; freeze the source
+  for coordinator disposition; refresh main and the full ownership board before
+  claiming the next ordinary theorem tranche
+```
