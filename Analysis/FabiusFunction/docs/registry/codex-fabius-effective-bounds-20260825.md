@@ -1092,3 +1092,72 @@ next bounded step: commit and push this immutable handoff; keep all three
   their current direct dependency gates are integrated and released, and
   continue read-only auditing of other disjoint cold paths
 ```
+
+## Claim: exact constant-three binary-reduction majorant and regularity deduplication
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: 5b053a32b10e758e39f1be23cb2e8d821fba8de6
+HEAD and dirty paths: 295c75b934daac7d34fa98ef86243643064b2b99;
+  clean and pushed after the three preceding immutable source handoffs; only
+  this registry is dirty for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/all-tip scan remains green, only
+  Lean/FabiusFunction/FabiusBinaryReductionSeries.lean and this registry
+expected declarations or document claims:
+  norm_globalBinaryReductionSummand_le_three_mul_inv_pow, proving for every
+    real x and every 1 <= m the exact telescope-derived majorant
+    ‖globalBinaryReductionSummand x m‖ <= 3 * ((2 : R)^(m - 1))⁻¹;
+  preserve the exact public headers of
+    norm_globalBinaryReductionSummand_le_ge_two and
+    norm_globalBinaryReductionSummand_le_of_one_le_all as constant-four
+    compatibility corollaries;
+  use the new constant-three comparison in
+    summable_norm_globalBinaryReductionSummand_all without changing its
+    public header;
+  add the explicit FabiusFunction.Regularity import, delete the private
+    fabiusReal_le_two_mul_of_mem_Icc_half re-proof, and call the existing
+    public fabiusReal_le_two_mul theorem at its sole use;
+  expand only the source module/declaration documentation with the exact
+    constant-three formula, the positive-scale qualification, the retained
+    compatibility estimates, and an explicit statement that no optimality is
+    claimed; no canonical document, facade, root, or other source path claimed
+completed commits: all-order Lambert source 8f47687e5, strict Laplace-order
+  source caf654097, and all-real cumulant-chain source d07e8ad3b are separately
+  frozen and requested for coordinator validation; this is the registry-first
+  claim for a disjoint eighth source unit
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share FabiusBinaryReductionSeries.lean blob
+  9944118b1cfa0791d8b3235586f5856a9f95a166, content SHA-256
+  806F8D49B826C3580CDDBe21C34CB6881A73515B22D0CBD4C9530B671FC6BD6C;
+  exact-name, plausible-semantic-name, exact-path, every-registry, and all-
+  fetched-Fabius-tip scans found no constant-three implementation or competing
+  lease; the coordinator explicitly records the prior six-name binary tranche
+  as integrated, built, and released, with this Regularity/private-helper
+  cleanup excluded; read-only arithmetic audit verifies
+  2*A + 2*(2*A)⁻¹ = 3*A after A is identified with 2^(m-1), and the public
+  Regularity theorem has exactly the needed nonnegativity hypothesis; this is
+  not compiler evidence
+not yet validated: the proposed declaration and cleanup do not exist yet; no
+  Lean, Lake, TeX, PDF, or cache-mutating process is authorized or running for
+  this branch
+requested integration or lease: advertise this ordinary one-source/one-name
+  claim; after an immutable independently reviewed checkpoint, request
+  separate serialized builds of +FabiusFunction.FabiusBinaryReductionSeries
+  and its smallest direct consumer +FabiusFunction.FabiusGlobalQBinomialSeries;
+  request no document or main-write lease
+conflicts / dependencies: retain 1 <= m because the residual-difference
+  identity is false at m = 0; retain inverse_two_pow_le_half and
+  binaryTail_mem_Icc_half because the restricted residual API still uses
+  their interval transport; Regularity imports Differential and creates no
+  cycle with the existing TaylorReduction cone; the three pending source
+  handoffs and every active external claim are disjoint; only the coordinator
+  may advance main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat all-tip collision checks, then
+  edit only the claimed Lean source while three agents independently review
+  proof arithmetic, exact header preservation, imports, and source-level
+  documentation
+```
