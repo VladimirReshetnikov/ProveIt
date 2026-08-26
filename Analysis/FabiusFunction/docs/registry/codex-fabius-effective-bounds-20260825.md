@@ -2867,3 +2867,117 @@ No source was changed during this synchronization.  The merge and this note
 claim no validation token, main write, document path, or authority over the
 active inverse branch.  New ordinary source work will stay disjoint from both
 inverse paths until the coordinator resolves that ordering.
+
+## Claim: complete source documentation for periodic C⁴ regularity
+
+Claimed exact source path:
+
+- `Lean/FabiusFunction/PeriodicRegularity.lean`.
+
+This one-file, comment-only source-parity tranche supplies adjacent,
+formula-and-hypothesis-bearing human-readable documentation for all 41 public
+declarations that the repository audit currently reports as undocumented.  It
+also expands the module overview with one structured paragraph describing the
+public proof chain from dyadic derivative summability through C⁴ regularity to
+periodic bounded first and second derivatives.
+
+The exact declaration inventory is:
+
+```text
+summable_two_pow_mul_exp_neg_two_pow
+summable_forward_derivative_majorant
+negativeLaplaceForwardTermFirst
+negativeLaplaceForwardTermSecond
+negativeLaplaceForwardTermThird
+negativeLaplaceForwardTermFourth
+negativeLaplaceForwardTerm_hasDerivAt
+negativeLaplaceForwardTermFirst_hasDerivAt
+negativeLaplaceForwardTermSecond_hasDerivAt
+negativeLaplaceForwardTermThird_hasDerivAt
+norm_negativeLaplaceForwardTermFirst_le
+norm_negativeLaplaceForwardTermSecond_le
+norm_negativeLaplaceForwardTermThird_le
+norm_negativeLaplaceForwardTermFourth_le
+negativeLaplaceForwardTailFirst
+negativeLaplaceForwardTailSecond
+negativeLaplaceForwardTailThird
+negativeLaplaceForwardTailFourth
+summable_negativeLaplaceForwardTermFirst
+summable_negativeLaplaceForwardTermSecond
+summable_negativeLaplaceForwardTermThird
+summable_negativeLaplaceForwardTermFourth
+negativeLaplaceForwardTail_hasDerivAt
+negativeLaplaceForwardTailFirst_hasDerivAt
+negativeLaplaceForwardTailSecond_hasDerivAt
+negativeLaplaceForwardTailThird_hasDerivAt
+continuousOn_negativeLaplaceForwardTermFourth
+continuousAt_negativeLaplaceForwardTailFourth
+continuousOn_negativeLaplaceForwardTailFourth
+contDiff_fabiusLaplaceMoment_nat
+contDiff_negativeLaplaceLog_two_rpow
+contDiff_negativeLaplaceForwardTail_two_rpow
+negativeLaplacePsi_hasDerivAt
+contDiff_deriv_negativeLaplacePsi
+negativeLaplacePsi_deriv_hasDerivAt
+negativeLaplacePsi_deriv_periodic
+negativeLaplacePsi_secondDeriv_periodic
+continuous_deriv_negativeLaplacePsi
+continuous_secondDeriv_negativeLaplacePsi
+isBounded_range_deriv_negativeLaplacePsi
+isBounded_range_secondDeriv_negativeLaplacePsi
+```
+
+Every new comment will state the exact domain, sign, derivative order,
+summability or boundedness hypothesis, and displayed formula represented by
+its Lean declaration; definitions will identify the corresponding derivative
+term or tail.  The comments will not claim absolute convergence where Lean
+only states `Summable`, global regularity where the theorem is restricted to a
+half-line, or higher smoothness than the proved order.  All existing comments
+remain intact.
+
+No Lean token, proof, declaration header, attribute, import, namespace,
+consumer, root/facade, canonical document, or audit/control file is claimed.
+This directly reduces the stated public-declaration/source-prose gap without
+entering the separately serialized TeX/PDF workflow.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: a949e2efaa485283e66a7d2130fc723168c01efa
+HEAD and dirty paths: ac02f61d9 plus clean merge 18832d3b3; clean before this
+  registry-only claim; all earlier source checkpoints and handoffs are pushed
+writing (exact paths): Lean/FabiusFunction/PeriodicRegularity.lean; this
+  branch registry for claim/handoff only
+expected declarations or document claims: exact adjacent comments for the 41
+  names above plus one structured module-overview paragraph; no Lean-token or
+  other-source change
+completed commits: all earlier checkpoints, synchronization notes, and
+  handoffs are clean and pushed; this is a disjoint registry-first one-file
+  source-documentation claim
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share blob 8eb0647ebbcb5d5d7a274332ab16b5e39da96076,
+  content SHA-256
+  24DC01CE6E4F45F5A64C7EE7D1E0F2F07267A19710CCC50F3A4B5C89BA11795F;
+  repository doc_audit reports exactly 41 missing comments in this module;
+  independent declaration inventory matches 56 public declarations total,
+  15 already documented, and exactly the 41 names above undocumented;
+  all-visible-ref and registry/path scans find no parity implementation or
+  active claim; the board records the historical path lease as compiled and
+  released; this is not compiler evidence
+not yet validated: comment wording, attachment, exact mathematical parity,
+  and comment syntax are not implemented; no Lean, Lake, TeX, PDF, or cache-
+  mutating process is authorized or running on this branch
+requested integration or lease: advertise this ordinary one-source comment-
+  only claim; after an immutable independently reviewed checkpoint, request
+  one serialized LAKE_JOBS=1 build of +FabiusFunction.PeriodicRegularity and
+  optional direct-import smoke target +FabiusFunction.PeriodicSmooth; request
+  no main-write or document lease
+conflicts / dependencies: this file is disjoint from the active Wikipedia and
+  inverse validation targets and from every frozen local source blob; no
+  canonical document is touched; only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat the path/name audit, then edit comments only while three agents
+  independently verify every attached declaration, formula, hypothesis,
+  domain, sign, derivative order, and overclaim boundary
+```
