@@ -8,17 +8,11 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
-HEAD and dirty paths: 9efba031547f243d7922ec56726f7055814bda63;
-  clean before this ordinary all-degree branch-bound claim
-writing (exact paths):
-  Lean/FabiusFunction/FabiusDiscreteLimitComplexShift.lean;
-  docs/registry/codex-fabius-both-papers.md
-expected declarations or document claims:
-  add
-  `norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all`,
-  extending the existing positive-degree complex branch-translation estimate
-  to every `p : ℕ`; preserve the positive-degree theorem unchanged and explain
-  in the module prose that the degree-zero branch is constant
+HEAD and dirty paths: 1b0792b2b22ed51b28404cc42175befb45313668;
+  dirty only in this own-registry handoff after the clean source checkpoint
+writing (exact paths): none; the complex branch-bound source claim is released
+expected declarations or document claims: none in flight; the all-degree
+  complex branch estimate is frozen at the source checkpoint below
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -99,7 +93,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `dbb7ace603bbdb87915d35c8c06623a479a63298`, which extracts the Rvachev
   refinement bridge and removes the duplicate fixed-point proof; clean merge
   `a69159a65f447778fc25d30a5a5a4b591f53af1a` incorporates fetched main
-  `1401f2d9b`
+  `1401f2d9b`; clean merge `9efba031547f243d7922ec56726f7055814bda63`
+  incorporates fetched main `39ad356c7`; all-degree branch-bound claim
+  `04bc271617b4f33ee02015a86dc5b7fb944091c0` precedes source checkpoint
+  `1b0792b2b22ed51b28404cc42175befb45313668`
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -170,7 +167,11 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   sign branches, endpoint derivative gluing, the four conditional simplifier
   reductions, wrapper inference, specialization, imports, dependency
   acyclicity, collisions, public-signature preservation, and diff hygiene, but
-  has not been elaborated or built
+  has not been elaborated or built; the all-degree complex branch checkpoint
+  has three independent read-only reviews covering the empty-sum zero case,
+  natural truncated subtraction, positive-degree delegation, inference,
+  hypothesis vacuity, API placement, source documentation, collisions, and
+  diff hygiene, but has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -202,7 +203,11 @@ requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.Paper06487`, and its source writing claim is released by
   this handoff; the generic Rvachev derivative checkpoint needs serialized
   `+FabiusFunction.Existence`, which transitively covers `Differential`, and
-  both source writing claims are released by this handoff;
+  both source writing claims are released by this handoff; the all-degree
+  complex branch checkpoint needs serialized
+  `+FabiusFunction.FabiusDiscreteLimitComplexShift` followed by its direct
+  consumer `+FabiusFunction.FabiusComplexShiftSpline`, and its source writing
+  claim is released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -254,11 +259,39 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   positive-degree complex branch estimate, no `_all` or semantic-equivalent
   theorem, and no active claim on `FabiusDiscreteLimitComplexShift.lean`; the
   exact `_all` name occurs only in the unimplemented serialized audit proposal
-next bounded step: push this exact one-source-file claim, add the degree-zero
-  totalization and source-local documentation without running a build, obtain
-  independent review, and request serialized
-  `+FabiusFunction.FabiusDiscreteLimitComplexShift` validation
+next bounded step: push this independently reviewed all-degree handoff,
+  request serialized `+FabiusFunction.FabiusDiscreteLimitComplexShift` and
+  direct-consumer `+FabiusFunction.FabiusComplexShiftSpline` validation, and
+  begin the next ordinary nonoverlapping audit
 ```
+
+## All-degree complex branch-translation handoff
+
+Source checkpoint `1b0792b2b22ed51b28404cc42175befb45313668`
+adds
+`norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all`
+immediately after the existing positive-degree theorem.  At `p = 0` the branch
+is independent of its complex argument, `Finset.range 0` makes the lower-degree
+hypothesis vacuous, the finite Taylor bound is the empty sum, and natural
+subtraction makes `p - 1 = 0`.  The target therefore follows from
+`Real.exp_nonneg`.  Positive degrees delegate unchanged to the retained
+theorem.
+
+The change is additive: no import, attribute, existing signature, caller, or
+facade changes.  Source-local module and theorem prose explicitly record the
+degree-zero behavior without strengthening the downstream centered-spline
+domain or the still-open `exp ‖δ‖ - 1` frontier estimate.  Three independent
+read-only audits passed, `git diff --check` is clean, and no Lean/Lake process
+was run.  The requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusDiscreteLimitComplexShift
+LAKE_JOBS=1 lake build +FabiusFunction.FabiusComplexShiftSpline
+```
+
+The broader serialized `AUDIT_FINDINGS.md` item also requests two downstream
+companions, so this checkpoint implements only its first part and must not be
+recorded as closing the entire finding.
 
 ## Generic Rvachev derivative bridge handoff
 
