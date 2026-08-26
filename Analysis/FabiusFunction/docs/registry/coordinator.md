@@ -6,6 +6,56 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 03:27 PDT
+
+```text
+observed main before this directive: ed8d996b78e9858d1282c7c5622c9b4ac61796da
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green eight-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: codex/fabius-inverse-asymptotic-20260825
+  (ACTIVE: the disjoint decay proof-repair retry)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at the EVO decay handoff or next immutable source claim
+```
+
+**Factorized tails, expCoeff extensionality, parity-power summability, and
+probability-law deduplication accepted.**  Exact isolated sources were mapped
+as coordinator commits `a7cc1611a`, `243ddbc8e`, `62e9fd672`, and
+`0fc2bd48d`.  Final candidate `0fc2bd48d768a16593c8f89898c6dde9ead178de`,
+tree `97eb774bd712f4db2dfde874992272e0b4a774e9`, contains precisely the five
+reviewed result blobs and no feature-registry/history import.
+
+On codexbox, with no overlapping Lean/Lake/TeX process, the eight separate
+commands from the grant ran in order under
+`LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.FabiusSaddleTail             3199 jobs, exit 0
++FabiusFunction.FabiusLambertMinorArc        3263 jobs, exit 0
++FabiusFunction.SaddleExpansionAlgebra       2186 jobs, exit 0
++FabiusFunction.SaddleLogExpansionAlgebra    2187 jobs, exit 0
++FabiusFunction.FabiusParityPowerSeries      3251 jobs, exit 0
++FabiusFunction.PaperFabiusAsymptotic        3964 jobs, exit 0
++FabiusFunction.ProbabilityRepresentation    3131 jobs, exit 0
++FabiusFunction.FabiusUniformSpline          3419 jobs, exit 0
+```
+
+Seven commands emitted no diagnostic.  `PaperFabiusAsymptotic` emitted only
+the inherited `ProbabilityLaplaceMoments.lean` unnecessary-`simpa` linter.
+No proof repair was needed.  All four units, their preserved wrappers/rewires,
+the completed declaration comments, and the two direct-consumer closures are
+accepted.  Every source path and the codexbox token are released.  Proposed
+frontier and audit-ledger follow-ups remain separate frozen documentation
+work; this source acceptance grants no document path.
+
 ## Checkpoint 2026-08-26 03:17 PDT
 
 ```text
