@@ -8,8 +8,10 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: c1d681f70dedad3a708a8baa0c06113390bf6a28;
-  clean before this registry-only claim expansion
+HEAD and dirty paths: 5db4ab6f9add0aed692e746da0dc0a7fb9ce23fd;
+  `Lean/FabiusFunction/GlobalDyadic.lean`,
+  `Lean/FabiusFunction/OriginalPaperSupplement.lean`, and this registry are
+  dirty for the unvalidated total dyadic-cast relocation checkpoint
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   Lean/FabiusFunction/GlobalDyadic.lean;
@@ -38,7 +40,9 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `0095fb161db5e6ef03df7bd391fbf45e96efc792` aligns the odd branch with the
   literal `2 * b + 1` witness; checkpoint
   `c1d681f70dedad3a708a8baa0c06113390bf6a28` matches the coordinator's exact
-  directly elaborated module blob
+  directly elaborated module blob; claim expansion
+  `5db4ab6f9add0aed692e746da0dc0a7fb9ce23fd` advertises the two exact dyadic
+  relocation paths before authoring
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -48,9 +52,11 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `62f4142a9f290c570299e200192a4818dc7529d2` directly ran
   `LAKE_JOBS=1 lake env lean` on the exact corrected module and exited 0
 not yet validated: no focused Lake target, downstream module, public facade,
-  or aggregate build is claimed for the natural-knot checkpoint; only the
-  exact module elaboration plus read-only source/collision/marker/diff checks
-  are currently validated
+  or aggregate build is claimed for the natural-knot checkpoint; the moved
+  dyadic theorem body was already compiled in its downstream home by the green
+  aggregate at `9887ea584`, but its new module ownership/import context has not
+  been compiled; only the exact natural-knot module elaboration plus read-only
+  source/collision/marker/diff checks are currently validated
 requested integration or lease: natural-knot source is ready for integration;
   request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
@@ -71,9 +77,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   read-only audit across advertised tips found no competing claim or alternate
   total dyadic-cast bridge on either relocation path; documentation remains
   serialized and unclaimed
-next bounded step: push this exact-path expansion claim, reread the board and
-  advertised tips, then perform only the theorem relocation while validation
-  and documentation leases remain pending
+next bounded step: finish the read-only relocation review, checkpoint and push
+  the unvalidated source move, then await focused/downstream build tokens and
+  the natural-knot documentation lease
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
