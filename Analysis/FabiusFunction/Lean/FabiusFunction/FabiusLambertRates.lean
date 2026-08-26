@@ -51,7 +51,8 @@ Lambert phase is asymptotically equivalent to `1 / t`. -/
 theorem dyadicLambertPhase_inv_isEquivalent_inv :
     (fun t : ℝ => (dyadicLambertPhase t)⁻¹) ~[atTop]
       (fun t : ℝ => t⁻¹) := by
-  simpa only [Pi.inv_apply] using dyadicLambertPhase_isEquivalent_id.inv
+  change (dyadicLambertPhase⁻¹) ~[atTop] ((fun t : ℝ => t)⁻¹)
+  exact dyadicLambertPhase_isEquivalent_id.inv
 
 /-- Sharp reciprocal form of the first-order Lambert asymptotic:
 `t / dyadicLambertPhase t → 1`. -/
