@@ -9,9 +9,10 @@ import Mathlib.Topology.Algebra.Order.Field
 The discrete-limit formula contains a complex shift `q` inside each finite
 Thue--Morse spline.  This module identifies that expression with a fixed
 polynomial branch, expands it exactly around the centered shift `q = 1/2`,
-and proves an exponentially small translation bound.  Consequently every
-fixed complex shift has the same pointwise limit on the whole real line;
-to the left of the first half-cell the finite splines vanish exactly.
+and proves a uniform exponential translation bound in every natural degree
+and at every real input.  Consequently every fixed complex shift has the same
+pointwise limit on the whole real line; to the left of the first half-cell the
+finite splines vanish exactly.
 -/
 
 set_option autoImplicit false
@@ -157,6 +158,31 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound
     ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) ((1 / 2 : ℂ) - q) hp hbound
   simpa only [norm_neg, show (1 / 2 : ℂ) - q = -(q - 1 / 2) by ring] using h
 
+/-- Conditional quantitative translation bound in every degree, including
+degree zero. -/
+theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all
+    (p : ℕ) (q : ℂ) (x : ℝ)
+    (hbound : ∀ d ∈ Finset.range p,
+      ‖normalizedThueMorseSplineBranch d
+        (fabiusDiscreteLimitRangeLength x p)
+        ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2)‖ ≤ 1) :
+    ‖fabiusComplexShiftSpline p q x -
+        fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) *
+        Real.exp ‖q - (1 / 2 : ℂ)‖ := by
+  rw [fabiusComplexShiftSpline_eq_branch,
+    fabiusComplexShiftSpline_eq_branch]
+  have hargq :
+      (2 : ℂ) ^ p * (x : ℂ) - q =
+        ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) + ((1 / 2 : ℂ) - q) := by
+    ring
+  rw [hargq]
+  have h :=
+    norm_normalizedThueMorseSplineBranch_add_sub_le_half_pow_mul_exp_all
+      p (fabiusDiscreteLimitRangeLength x p)
+      ((2 : ℂ) ^ p * (x : ℂ) - 1 / 2) ((1 / 2 : ℂ) - q) hbound
+  simpa only [norm_neg, show (1 / 2 : ℂ) - q = -(q - 1 / 2) by ring] using h
+
 /-- Centering at `q=1/2` recovers the real uniform spline. -/
 theorem fabiusComplexShiftSpline_center (p : ℕ) (x : ℝ) :
     fabiusComplexShiftSpline p (1 / 2 : ℂ) x =
@@ -241,6 +267,25 @@ theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp
     p q x hp (fun d hd =>
       norm_normalizedThueMorseSplineBranch_center_le_one p d
         (Nat.le_of_lt (Finset.mem_range.mp hd)) hx)
+
+/-- Uniform translation bound in every degree and on the whole real line.
+For nonpositive inputs both splines vanish exactly. -/
+theorem norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all
+    (p : ℕ) (q : ℂ) (x : ℝ) :
+    ‖fabiusComplexShiftSpline p q x -
+        fabiusComplexShiftSpline p (1 / 2 : ℂ) x‖ ≤
+      (1 / 2 : ℝ) ^ (p - 1) *
+        Real.exp ‖q - (1 / 2 : ℂ)‖ := by
+  rcases le_total 0 x with hx | hx
+  · exact
+      norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all
+        p q x (fun d hd =>
+          norm_normalizedThueMorseSplineBranch_center_le_one p d
+            (Nat.le_of_lt (Finset.mem_range.mp hd)) hx)
+  · rw [fabiusComplexShiftSpline_eq_zero_of_nonpos p q hx,
+      fabiusComplexShiftSpline_eq_zero_of_nonpos p (1 / 2 : ℂ) hx,
+      sub_self, norm_zero]
+    exact mul_nonneg (by positivity) (Real.exp_nonneg _)
 
 private theorem half_pow_sub_one_tendsto_zero :
     Tendsto (fun p : ℕ => (1 / 2 : ℝ) ^ (p - 1)) atTop (nhds 0) := by
@@ -356,6 +401,30 @@ theorem fabiusComplexShiftSpline_tendsto_globalFabius_gaussianRat
       atTop (nhds (globalFabius x : ℂ)) :=
   fabiusComplexShiftSpline_tendsto_globalFabius
     ((a : ℂ) + (b : ℂ) * Complex.I) hx
+
+/-- Every real shift, including an irrational one, converges on the whole
+real line. -/
+theorem fabiusComplexShiftSpline_tendsto_globalFabius_real_all
+    (q x : ℝ) :
+    Tendsto (fun p : ℕ => fabiusComplexShiftSpline p (q : ℂ) x)
+      atTop (nhds (globalFabius x : ℂ)) :=
+  fabiusComplexShiftSpline_tendsto_globalFabius_all (q : ℂ) x
+
+/-- Every rational shift converges on the whole real line. -/
+theorem fabiusComplexShiftSpline_tendsto_globalFabius_rat_all
+    (q : ℚ) (x : ℝ) :
+    Tendsto (fun p : ℕ => fabiusComplexShiftSpline p (q : ℂ) x)
+      atTop (nhds (globalFabius x : ℂ)) :=
+  fabiusComplexShiftSpline_tendsto_globalFabius_all (q : ℂ) x
+
+/-- Every Gaussian-rational shift converges on the whole real line. -/
+theorem fabiusComplexShiftSpline_tendsto_globalFabius_gaussianRat_all
+    (a b : ℚ) (x : ℝ) :
+    Tendsto (fun p : ℕ =>
+      fabiusComplexShiftSpline p ((a : ℂ) + (b : ℂ) * Complex.I) x)
+      atTop (nhds (globalFabius x : ℂ)) :=
+  fabiusComplexShiftSpline_tendsto_globalFabius_all
+    ((a : ℂ) + (b : ℂ) * Complex.I) x
 
 end
 

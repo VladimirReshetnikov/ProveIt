@@ -1,4 +1,4 @@
-import FabiusFunction.LaplaceMoments
+import FabiusFunction.NegativeLaplaceDerivatives
 import FabiusFunction.ProbabilityRepresentation
 import Mathlib.Data.Nat.Choose.Sum
 
@@ -15,8 +15,10 @@ provides:
 * a general compact-probability Fubini identity for expectations of
   differentiable functions, expressed through the survival function;
 * reflection principles for unrestricted and unit-restricted integrals, and
-  the resulting signed binomial transform of the complete tilted-moment
-  hierarchy;
+  the resulting signed binomial transforms of the complete raw and normalized
+  tilted-moment hierarchies;
+* complementarity and centered oddness of opposite tilted means, together with
+  evenness of the tilted variance;
 * centered Laplace functional equations and exact degree-zero normalizations
   for arbitrary probability laws supported on the unit interval; and
 * the resulting identifications with `fabiusLaplaceMoment` and
@@ -626,6 +628,67 @@ theorem fabiusLaplaceMoment_zero_centered_even
       ProbabilityRepresentation.weightedSumDistribution
       ProbabilityRepresentation.ae_weightedSumDistribution_mem_Icc
       ProbabilityRepresentation.weightedSumDistribution_reflection s
+
+/-- After normalization by the zeroth tilted moment, reflection reverses the
+tilt and applies the signed binomial transform
+
+`Rₖ(s) = ∑ j ≤ k, (-1)^j * choose k j * Rⱼ(-s)`.
+
+The exponential factor in the raw reflection law disappears because the
+normalizing zeroth moment carries exactly the same factor. -/
+theorem normalizedLaplaceMoment_reflection
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) (s : ℝ) :
+    normalizedLaplaceMoment F k s =
+      ∑ j ∈ Finset.range (k + 1),
+        (-1 : ℝ) ^ j * (k.choose j : ℝ) *
+          normalizedLaplaceMoment F j (-s) := by
+  unfold normalizedLaplaceMoment
+  rw [fabiusLaplaceMoment_reflection F hF k s,
+    fabiusLaplaceMoment_zero_reflection F hF s,
+    mul_div_mul_left _ _ (Real.exp_ne_zero (-s)),
+    Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro j _hj
+  simpa only [mul_div_assoc]
+
+/-- The normalized means under opposite exponential tilts are complementary:
+`R₁(s) + R₁(-s) = 1`. -/
+theorem normalizedLaplaceMoment_one_complement
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
+    normalizedLaplaceMoment F 1 s +
+        normalizedLaplaceMoment F 1 (-s) =
+      1 := by
+  have hreflect := normalizedLaplaceMoment_reflection F hF 1 s
+  norm_num [Finset.sum_range_succ,
+    normalizedLaplaceMoment_zero_all F hF] at hreflect
+  linarith
+
+/-- Centering the normalized first tilted moment at the reflection center
+`1 / 2` produces an odd function of the tilt. -/
+theorem normalizedLaplaceMoment_one_sub_half_odd
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Function.Odd
+      (fun s : ℝ => normalizedLaplaceMoment F 1 s - (1 / 2 : ℝ)) := by
+  intro s
+  dsimp
+  linarith [normalizedLaplaceMoment_one_complement F hF s]
+
+/-- The second normalized logarithmic cumulant—the variance of the
+exponentially tilted law—is even under reversal of the tilt. -/
+theorem negativeLaplaceLogSecond_even
+    (F : BoundedFabius) (hF : IsFabius F) :
+    Function.Even (negativeLaplaceLogSecond F) := by
+  intro s
+  have hone :
+      normalizedLaplaceMoment F 1 s =
+        1 - normalizedLaplaceMoment F 1 (-s) := by
+    linarith [normalizedLaplaceMoment_one_complement F hF s]
+  have htwo := normalizedLaplaceMoment_reflection F hF 2 s
+  norm_num [Finset.sum_range_succ,
+    normalizedLaplaceMoment_zero_all F hF] at htwo
+  unfold negativeLaplaceLogSecond
+  rw [hone, htwo]
+  ring
 
 /-- Every real tilted Fabius moment is nonnegative. -/
 lemma fabiusLaplaceMoment_nonneg
