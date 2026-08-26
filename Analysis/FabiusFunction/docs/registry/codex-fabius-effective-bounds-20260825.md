@@ -3863,11 +3863,11 @@ changes.
 Complete strict attribute-aware source documentation at the same time:
 
 - Prefix receives adjacent formula comments for `iteratedPrefix_zero`,
-  `iteratedPrefix_succ`, and `iteratedPrefix_at_zero`, becoming 23/23;
+  `iteratedPrefix_succ`, and `iteratedPrefix_at_zero`, becoming 27/27;
 - Generating receives comments for `thueMorseBlockPolynomial_succ`,
   attributed `coeff_thueMorseSeries`, `coeff_thueMorseBlockPolynomial`,
   attributed `coeff_iteratedPrefixSeries`, and
-  `one_lt_paperPrefixGridValue_endpoint_error`, becoming 43/43.
+  `one_lt_paperPrefixGridValue_endpoint_error`, becoming 47/47.
 
 The repository lexical audit currently reports only one and three gaps because
 it skips same-line attributed declarations; the strict claim deliberately
@@ -3905,7 +3905,7 @@ HEAD and dirty paths: 47b1c26af; only this branch registry is being written
 writing (exact paths): the two Lean sources above after this claim is pushed;
   this branch registry for claim/handoff
 expected declarations or document claims: delete two private reproofs, use
-  Nat.lt_two_pow_self at four sites, strict Prefix 23/23 and Generating 43/43;
+  Nat.lt_two_pow_self at four sites, strict Prefix 27/27 and Generating 47/47;
   no public API/import change
 completed commits: merged current origin/main as 47b1c26af; source not yet
   authored
