@@ -432,3 +432,68 @@ conflicts / dependencies: no current exact-path or declaration collision;
 next bounded step: commit and push this registry handoff, notify the
   coordinator, and launch nothing until an explicit host grant appears
 ```
+
+## Registry amendment: reflected inverse scale hierarchy
+
+The left-endpoint hierarchy has a formal reflection consequence at the right
+endpoint.  This follow-on tranche advertises exactly two additional public
+corollaries, both obtained by composing the corresponding zero-endpoint
+theorem with `y ↦ 1 - y` and rewriting by `fabiusInv_one_sub`:
+
+```lean
+theorem one_sub_rpow_isLittleO_one_sub_fabiusInv_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F)
+    {α : ℝ} (hα : 0 < α) :
+    (fun y : ℝ => (1 - y) ^ α) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => 1 - fabiusInv F hF y)
+
+theorem one_sub_fabiusInv_isLittleO_negLog_one_sub_rpow_at_one_left
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    (fun y : ℝ => 1 - fabiusInv F hF y) =o[𝓝[<] (1 : ℝ)]
+      (fun y : ℝ => (-Real.log (1 - y)) ^ r)
+```
+
+A read-only preflight checked all currently fetched advertised remote Fabius
+tips and their registries.  Neither exact name nor a formula-equivalent
+all-real reflected hierarchy exists.  The nearest theorem,
+`one_sub_isLittleO_one_sub_fabiusInv_pow_at_one_left`, instead compares
+`1 - y` with natural powers of the complementary inverse and is not a
+duplicate.  The proposed proofs are each a single `comp_tendsto` followed by
+`simpa only [Function.comp_def, fabiusInv_one_sub]`.
+
+The existing private reflection-filter helper in
+`FabiusInverseAsymptotic.lean` is sufficient.  A private copy of the same
+helper also exists in `FabiusInverse.lean`, but
+`origin/codex/fabius-both-papers` currently freezes that path for its inverse
+diagonal-classification handoff.  This branch will not touch, claim, or
+deduplicate `FabiusInverse.lean`; that cleanup can be reconsidered only after
+the competing source is integrated and explicitly released.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched main SHA: 948bf3f377472c068f9539e0569d383ddc35f617
+HEAD before this amendment: 6a2d3fd39566d82647a5796bb3cf0bbae463f6f9;
+  tracked worktree and index clean; unrelated reciprocity sidecars and tmp/
+  remain untracked and untouched
+writing (exact paths after the current frozen build disposition):
+  Lean/FabiusFunction/FabiusInverseAsymptotic.lean, adding exactly the two
+    public reflected hierarchy corollaries above;
+  Lean/FabiusFunction/PaperFabiusAsymptotic.lean, extending only the existing
+    inverse hierarchy prose to mention reflection at one; and
+  this registry
+validated: exact-name, plausible-formula, path-ownership, filter-direction,
+  rewrite, and Mathlib API preflight are green; this is source/static evidence
+not yet validated: no source for this amendment exists yet; immutable current
+  source/facade tip 29f9b0a2b remains under its superseding two-target
+  serialized validation request
+requested integration or lease: advertise only these two declarations and
+  the narrow facade paragraph; do not change the active 29f9b0a2b build request
+conflicts / dependencies: do not edit or claim FabiusInverse.lean while the
+  both-papers diagonal tranche is frozen; no canonical document, root
+  aggregate, TeX/PDF, or main-write lane is requested
+next bounded step: push this registry-first amendment, keep all source frozen
+  until the current build request is acknowledged, then implement only the
+  two one-line corollaries and their exact facade sentence
+```
