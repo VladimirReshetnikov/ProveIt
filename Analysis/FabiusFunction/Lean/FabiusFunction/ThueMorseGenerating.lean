@@ -17,10 +17,10 @@ summation over the signed Thue--Morse sequence*:
 Both are proved as identities of formal power series over `ℤ`, so no complex
 variable and no convergence hypothesis is involved.  The infinite product is
 rendered coefficientwise, as a finite stabilization: the first `r` factors
-already fix every coefficient of degree below `2^r`.  Division by `(1 - X)^k`
-uses Mathlib's unit `PowerSeries.invOneSubPow`, and the denominator-cleared
-identity `(1 - X)^k * sum_n S^k_n X^n = sum_n t(n) X^n` avoids inverses
-altogether.
+already fix every coefficient of degree below `2^r`, even after right
+multiplication by an arbitrary power series.  Division by `(1 - X)^k` uses
+Mathlib's unit `PowerSeries.invOneSubPow`, and the denominator-cleared identity
+`(1 - X)^k * sum_n S^k_n X^n = sum_n t(n) X^n` avoids inverses altogether.
 
 These identities exist as a separate layer because
 `FabiusFunction.ThueMorseApproximation` needs them to identify `S^k_m`, for
@@ -40,12 +40,16 @@ tending to `F(1) = 1`.
 
 ## Main results
 
-* `thueMorseBlockPolynomial_eq_product` and `coeff_finite_thueMorse_product`
-  -- the dyadic block polynomial is `prod_{j<r} (1 - X^(2^j))`, and its
-  coefficients below `2^r` are already the Thue--Morse signs.
-* `iteratedPrefixSeries_eq`, `one_sub_X_pow_mul_iteratedPrefixSeries`, and
-  `coeff_eq6_finite` -- the convolution half of equation (6) for every order
-  `k`, including `k = 0`, in quotient, cleared, and coefficient form.
+* `thueMorseBlockPolynomial_eq_product`, `coeff_finite_thueMorse_product`, and
+  `coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul` -- the dyadic
+  block polynomial is `prod_{j<r} (1 - X^(2^j))`, and below degree `2^r` it is
+  indistinguishable from the full series, even after arbitrary right
+  convolution.
+* `iteratedPrefixSeries_eq`, `one_sub_X_pow_mul_iteratedPrefixSeries`,
+  `coeff_eq6_finite`, and
+  `coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix` -- the
+  convolution half of equation (6) for every order `k`, including `k = 0`, in
+  quotient, cleared, product-coefficient, and finite-block coefficient form.
 * `shiftedPrefixGridValue`, `shiftedPrefixGridValue_equation`, and
   `shiftedPrefixGridValue_equation_of_pos` -- the prefix-grid recurrence for
   every prefix-order shift, with the admissible index range made explicit;
@@ -140,6 +144,22 @@ theorem coeff_finite_thueMorse_product (r n : ℕ) (hn : n < 2 ^ r) :
   rw [← thueMorseBlockPolynomial_eq_product]
   simp [Polynomial.coeff_coe, coeff_thueMorseBlockPolynomial r n hn]
 
+/-- Below the first omitted dyadic coefficient, right multiplication by an
+arbitrary power series cannot distinguish the finite Thue--Morse block from
+the full Thue--Morse series. -/
+theorem coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul
+    (f : PowerSeries ℤ) (r m : ℕ) (hm : m < 2 ^ r) :
+    PowerSeries.coeff m
+        ((thueMorseBlockPolynomial r : PowerSeries ℤ) * f) =
+      PowerSeries.coeff m (thueMorseSeries * f) := by
+  simp only [PowerSeries.coeff_mul]
+  apply Finset.sum_congr rfl
+  intro ab hab
+  have habsum : ab.1 + ab.2 = m := Finset.mem_antidiagonal.mp hab
+  have halt : ab.1 < 2 ^ r := by omega
+  rw [Polynomial.coeff_coe,
+    coeff_thueMorseBlockPolynomial r ab.1 halt, coeff_thueMorseSeries]
+
 /-- Formal generating series of the `k`-fold inclusive prefix sums. -/
 def iteratedPrefixSeries (k : ℕ) : PowerSeries ℤ :=
   PowerSeries.mk (iteratedPrefix k)
@@ -177,6 +197,27 @@ theorem iteratedPrefixSeries_eq (k : ℕ) :
       simp [iteratedPrefixSeries, thueMorseSeries,
         PowerSeries.invOneSubPow_zero]
   | succ k => simpa [Nat.succ_eq_add_one] using iteratedPrefixSeries_succ_eq k
+
+/-- Below the first omitted coefficient of a finite Thue--Morse block,
+multiplication by the order-`k` prefix kernel recovers the `k`-fold inclusive
+prefix sum.  The block depth `r` and prefix order `k` are independent. -/
+theorem coeff_thueMorseBlockPolynomial_mul_invOneSubPow_eq_iteratedPrefix
+    (r k m : ℕ) (hm : m < 2 ^ r) :
+    PowerSeries.coeff m
+        ((thueMorseBlockPolynomial r : PowerSeries ℤ) *
+          (PowerSeries.invOneSubPow ℤ k).val) =
+      iteratedPrefix k m := by
+  calc
+    PowerSeries.coeff m
+        ((thueMorseBlockPolynomial r : PowerSeries ℤ) *
+          (PowerSeries.invOneSubPow ℤ k).val) =
+      PowerSeries.coeff m
+        (thueMorseSeries * (PowerSeries.invOneSubPow ℤ k).val) :=
+          coeff_thueMorseBlockPolynomial_mul_eq_thueMorseSeries_mul
+            (PowerSeries.invOneSubPow ℤ k).val r m hm
+    _ = PowerSeries.coeff m (iteratedPrefixSeries k) := by
+      rw [iteratedPrefixSeries_eq]
+    _ = iteratedPrefix k m := coeff_iteratedPrefixSeries k m
 
 /-- Denominator-cleared formal-series form of equation (6). -/
 theorem one_sub_X_pow_mul_iteratedPrefixSeries (k : ℕ) :
