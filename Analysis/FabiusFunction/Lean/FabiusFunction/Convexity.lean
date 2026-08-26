@@ -424,7 +424,10 @@ theorem fabiusReal_lt_self_of_mem_Ioo_zero_half
     (F : BoundedFabius) (hF : IsFabius F) {x : ℝ}
     (hx : x ∈ Ioo (0 : ℝ) (1 / 2)) :
     fabiusReal F x < x := by
-  have h := (strictConvexOn_fabiusReal_firstHalf F hF).2
+  have hstrict := strictConvexOn_fabiusReal_firstHalf F hF
+  unfold StrictConvexOn at hstrict
+  rcases hstrict with ⟨_, hstrict⟩
+  have h := hstrict
     (x := (0 : ℝ)) (y := (1 / 2 : ℝ))
     (a := 1 - 2 * x) (b := 2 * x)
     (by norm_num) (by norm_num) (by norm_num)
