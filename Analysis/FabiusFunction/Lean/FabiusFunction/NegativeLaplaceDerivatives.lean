@@ -17,9 +17,15 @@ saddle-point argument.
 
 The zeroth tilted moment is in fact positive at every real tilt.  Thus each
 quotient `R_k` is globally smooth, and its differential recurrence holds on
-the whole real line.  The positive-scale declarations are retained below as
-compatibility interfaces because the logarithmic product itself still has a
-separately proved positive-scale domain.
+the whole real line.  Consequently the normalized cumulant polynomials
+themselves satisfy the global differential chain
+
+`κ₁' = κ₂`, `κ₂' = κ₃`, and `κ₃' = κ₄`.
+
+Only their identification with the successive derivatives of
+`negativeLaplaceLog` remains restricted to positive scale.  The original
+positive-scale declarations are retained below as compatibility interfaces,
+with their now-unnecessary positivity hypotheses left in place.
 -/
 
 set_option autoImplicit false
@@ -211,34 +217,57 @@ theorem negativeLaplaceLog_hasDerivAt
   simp [negativeLaplaceLogFirst, normalizedLaplaceMoment]
   ring
 
-/-- The derivative of the first log derivative is the tilted variance. -/
-theorem negativeLaplaceLogFirst_hasDerivAt
-    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+/-- At every real tilt, the derivative of the first normalized cumulant
+polynomial is the second one, the tilted variance. -/
+theorem negativeLaplaceLogFirst_hasDerivAt_all
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
     HasDerivAt (negativeLaplaceLogFirst F) (negativeLaplaceLogSecond F s) s := by
   unfold negativeLaplaceLogFirst negativeLaplaceLogSecond
-  have h := (normalizedLaplaceMoment_hasDerivAt F hF 1 hs).neg
+  have h := (normalizedLaplaceMoment_hasDerivAt_all F hF 1 s).neg
   refine h.congr_deriv ?_
   ring
 
-/-- The derivative of the tilted variance is the third log derivative. -/
-theorem negativeLaplaceLogSecond_hasDerivAt
+set_option linter.unusedVariables false in
+/-- Positive-scale compatibility form of
+`negativeLaplaceLogFirst_hasDerivAt_all`.  The hypothesis `hs` is retained for
+API compatibility; the cumulant-polynomial identity holds at every real
+tilt. -/
+theorem negativeLaplaceLogFirst_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    HasDerivAt (negativeLaplaceLogFirst F) (negativeLaplaceLogSecond F s) s := by
+  exact negativeLaplaceLogFirst_hasDerivAt_all F hF s
+
+/-- At every real tilt, the derivative of the tilted variance is the third
+normalized cumulant polynomial. -/
+theorem negativeLaplaceLogSecond_hasDerivAt_all
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
     HasDerivAt (negativeLaplaceLogSecond F) (negativeLaplaceLogThird F s) s := by
   unfold negativeLaplaceLogSecond negativeLaplaceLogThird
-  have h1 := normalizedLaplaceMoment_hasDerivAt F hF 1 hs
-  have h2 := normalizedLaplaceMoment_hasDerivAt F hF 2 hs
+  have h1 := normalizedLaplaceMoment_hasDerivAt_all F hF 1 s
+  have h2 := normalizedLaplaceMoment_hasDerivAt_all F hF 2 s
   have h := h2.sub (h1.pow 2)
   refine h.congr_deriv ?_
   ring
 
-/-- The derivative of the third log derivative is the fourth one. -/
-theorem negativeLaplaceLogThird_hasDerivAt
+set_option linter.unusedVariables false in
+/-- Positive-scale compatibility form of
+`negativeLaplaceLogSecond_hasDerivAt_all`.  The hypothesis `hs` is retained
+for API compatibility; the cumulant-polynomial identity holds at every real
+tilt. -/
+theorem negativeLaplaceLogSecond_hasDerivAt
     (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    HasDerivAt (negativeLaplaceLogSecond F) (negativeLaplaceLogThird F s) s := by
+  exact negativeLaplaceLogSecond_hasDerivAt_all F hF s
+
+/-- At every real tilt, the derivative of the third normalized cumulant
+polynomial is the fourth one. -/
+theorem negativeLaplaceLogThird_hasDerivAt_all
+    (F : BoundedFabius) (hF : IsFabius F) (s : ℝ) :
     HasDerivAt (negativeLaplaceLogThird F) (negativeLaplaceLogFourth F s) s := by
   unfold negativeLaplaceLogThird negativeLaplaceLogFourth
-  have h1 := normalizedLaplaceMoment_hasDerivAt F hF 1 hs
-  have h2 := normalizedLaplaceMoment_hasDerivAt F hF 2 hs
-  have h3 := normalizedLaplaceMoment_hasDerivAt F hF 3 hs
+  have h1 := normalizedLaplaceMoment_hasDerivAt_all F hF 1 s
+  have h2 := normalizedLaplaceMoment_hasDerivAt_all F hF 2 s
+  have h3 := normalizedLaplaceMoment_hasDerivAt_all F hF 3 s
   have h := h3.neg.add ((h1.mul h2).const_mul 3) |>.sub ((h1.pow 3).const_mul 2)
   have hc := h.congr_deriv (g' :=
       normalizedLaplaceMoment F 4 s -
@@ -251,5 +280,15 @@ theorem negativeLaplaceLogThird_hasDerivAt
   simp only [Pi.neg_apply, Pi.add_apply, Pi.sub_apply, Pi.mul_apply,
     Pi.pow_apply]
   ring
+
+set_option linter.unusedVariables false in
+/-- Positive-scale compatibility form of
+`negativeLaplaceLogThird_hasDerivAt_all`.  The hypothesis `hs` is retained for
+API compatibility; the cumulant-polynomial identity holds at every real
+tilt. -/
+theorem negativeLaplaceLogThird_hasDerivAt
+    (F : BoundedFabius) (hF : IsFabius F) {s : ℝ} (hs : 0 < s) :
+    HasDerivAt (negativeLaplaceLogThird F) (negativeLaplaceLogFourth F s) s := by
+  exact negativeLaplaceLogThird_hasDerivAt_all F hF s
 
 end Fabius

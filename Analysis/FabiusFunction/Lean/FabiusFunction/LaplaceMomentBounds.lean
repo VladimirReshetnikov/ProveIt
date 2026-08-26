@@ -14,8 +14,10 @@ where `R_k=M_k/M_0` is the normalized tilted moment.  Hölder log-convexity
 at the intermediate tilt `3s/4`, together with the exact dyadic product
 factor between `s/2` and `s`, proves the estimate without any periodic
 regularity input.  Before imposing the positive-scale hypotheses needed by
-those quantitative bounds, the module records that every `R_k(s)` is
-nonnegative for every real tilt.  The cases `k=2,3,4` discharge both
+those quantitative bounds, the module records that every raw moment `M_k` is
+strictly positive and strictly decreasing on the whole real line, and hence
+that every `R_k(s)` is strictly positive for every real tilt.  The cases
+`k=2,3,4` discharge both
 hypotheses of `EndpointLaplaceComparison` and give an unconditional sharp
 dyadic formula
 with its exact cumulant correction.  The measure-generic Cauchy--Schwarz and
@@ -107,26 +109,46 @@ lemma fabiusLaplaceMoment_zero_half_le_mul
   rw [div_le_iff₀ hs0] at hmul
   simpa [mul_comm] using hmul
 
-/-- Every normalized tilted Fabius moment is nonnegative at every real tilt.
-Its raw numerator is nonnegative and its zeroth-moment denominator is strictly
-positive, so their quotient is nonnegative. -/
+/-- Every Fabius Laplace moment is strictly decreasing on the whole real line:
+if `s < t`, then `fabiusLaplaceMoment F k t <
+fabiusLaplaceMoment F k s`.  Its derivative at `s` is the negative of the
+strictly positive successor moment. -/
+theorem fabiusLaplaceMoment_strictAnti
+    (F : BoundedFabius) (hF : IsFabius F) (k : ℕ) :
+    StrictAnti (fabiusLaplaceMoment F k) := by
+  exact strictAnti_of_hasDerivAt_neg
+    (fabiusLaplaceMoment_hasDerivAt F hF k)
+    (fun s => neg_lt_zero.mpr
+      (fabiusLaplaceMoment_pos_all F hF (k + 1) s))
+
+/-- Every normalized tilted Fabius moment is strictly positive at every real
+tilt: `0 < normalizedLaplaceMoment F k s`.  Both its raw numerator and its
+zeroth-moment denominator are strictly positive. -/
+theorem normalizedLaplaceMoment_pos_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (k : ℕ) (s : ℝ) :
+    0 < normalizedLaplaceMoment F k s := by
+  unfold normalizedLaplaceMoment
+  exact div_pos (fabiusLaplaceMoment_pos_all F hF k s)
+    (fabiusLaplaceMoment_zero_pos_all F hF s)
+
+/-- Nonnegative compatibility form of
+`normalizedLaplaceMoment_pos_all` at every real tilt. -/
 lemma normalizedLaplaceMoment_nonneg_all
     (F : BoundedFabius) (hF : IsFabius F)
     (k : ℕ) (s : ℝ) :
     0 ≤ normalizedLaplaceMoment F k s := by
-  unfold normalizedLaplaceMoment
-  exact div_nonneg (fabiusLaplaceMoment_nonneg F hF k s)
-    (fabiusLaplaceMoment_zero_pos_all F hF s).le
+  exact (normalizedLaplaceMoment_pos_all F hF k s).le
 
+set_option linter.unusedVariables false in
 /-- Positive-scale compatibility form of
-`normalizedLaplaceMoment_nonneg_all`. -/
+`normalizedLaplaceMoment_pos_all`.  The hypothesis `hs` is retained for API
+compatibility; strict positivity itself holds at every real tilt. -/
 lemma normalizedLaplaceMoment_nonneg
     (F : BoundedFabius) (hF : IsFabius F)
     (k : ℕ) {s : ℝ} (hs : 0 < s) :
     0 ≤ normalizedLaplaceMoment F k s := by
-  unfold normalizedLaplaceMoment
-  exact div_nonneg (fabiusLaplaceMoment_nonneg F hF k s)
-    (fabiusLaplaceMoment_zero_pos F hF hs).le
+  exact (normalizedLaplaceMoment_pos_all F hF k s).le
 
 /-- A uniform square bound for every normalized tilted moment.  The loss of
 one power of `s` comes from the exact dyadic factor, while log-convexity at
