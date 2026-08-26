@@ -12,17 +12,17 @@ essential: at scale zero, `Floor[2^(m-1)x]` is `Floor[x/2]`, and the resulting
 term distinguishes the even and odd unit blocks of the signed global Fabius
 extension.
 
-The exact finite identity has a signed residual term.  Binary tails tend to
-zero, so the residual tends to zero.  Its input-independent geometric bound
-also proves uniform convergence of the finite telescopes on the real line.
-The summand norms are summable on the nonnegative half-line.  Since both the
-summand and the signed extension vanish identically on the nonpositive
-half-line, the resulting `HasSum` and `tsum` identities are stated on all of
-`ℝ`; the established nonnegative signatures remain as compatibility wrappers.
-The finite telescope and residual estimate likewise have all-real cores;
-nonpositive inputs reduce termwise to zero.  The shifted series starting at
-`m = 1` consequently holds on the full domain `x < 1` where its omitted
-scale-zero term vanishes.
+The exact finite identity has a signed residual term.  On nonnegative inputs,
+binary tails tend to zero; on nonpositive inputs, the residual vanishes
+termwise.  Its input-independent geometric bound holds at every natural scale,
+including zero, and proves uniform convergence of the finite telescopes on the
+real line.  Every positive-index summand has a
+uniform geometric majorant on all of `ℝ`, so the summand norms are summable
+there.  Since both the summand and the signed extension vanish identically on
+the nonpositive half-line, the resulting `HasSum` and `tsum` identities are
+stated on all of `ℝ`; the established nonnegative signatures remain as
+compatibility wrappers.  The shifted series starting at `m = 1` consequently
+holds on the full domain `x < 1` where its omitted scale-zero term vanishes.
 
 The elementary binary API is stated uniformly at every scale, including
 `m = 0`: the previous prefix is the quotient of the current prefix by two,
@@ -611,6 +611,32 @@ theorem norm_binaryReductionRemainder_le_all
     simp only [norm_zero]
     positivity
 
+/-- The binary-reduction residual satisfies its geometric bound at every
+real input and every natural scale, including scale zero. -/
+theorem norm_binaryReductionRemainder_le_total
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (N : ℕ) :
+    ‖binaryReductionRemainder F x N‖ ≤
+      2 * ((2 : ℝ) ^ N)⁻¹ := by
+  cases N with
+  | zero =>
+      rcases le_total 0 x with hx | hx
+      · have htailLt : binaryTail x 0 < 1 := by
+          simpa using binaryTail_lt x 0
+        have htailUnit : binaryTail x 0 ∈ Icc (0 : ℝ) 1 :=
+          ⟨binaryTail_nonneg x 0 hx, htailLt.le⟩
+        have hE := extendedFabius_eq_fabiusReal F hF htailUnit
+        rw [binaryReductionRemainder, norm_mul, norm_pow]
+        norm_num
+        rw [hE, abs_of_nonneg (fabiusReal_nonneg F _)]
+        linarith [fabiusReal_le_one F (binaryTail x 0)]
+      · rw [binaryReductionRemainder_eq_zero_of_nonpos F hF 0 hx,
+          norm_zero]
+        norm_num
+  | succ N =>
+      exact norm_binaryReductionRemainder_le_all
+        F hF x (N + 1) (by omega)
+
 /-- Uniform quantitative error for the finite binary-reduction telescope.
 After retaining the scales `0, ..., N`, the error is at most `2 * 2⁻ᴺ`,
 independently of the nonnegative input `x`. -/
@@ -641,6 +667,20 @@ theorem norm_globalBinaryReductionSum_sub_extendedFabius_le
   rw [hid]
   simpa only [add_sub_cancel_left] using hrem
 
+/-- Uniform finite-telescope error at every real input and every natural
+scale, including scale zero. -/
+theorem norm_globalBinaryReductionSum_sub_extendedFabius_le_total
+    (F : BoundedFabius) (hF : IsFabius F)
+    (N : ℕ) (x : ℝ) :
+    ‖(∑ m ∈ Finset.range (N + 1), globalBinaryReductionSummand x m) -
+        extendedFabius F x‖ ≤ 2 * ((2 : ℝ) ^ N)⁻¹ := by
+  rw [norm_sub_rev]
+  have hrem := norm_binaryReductionRemainder_le_total F hF x N
+  have hid :=
+    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x N
+  rw [hid]
+  simpa only [add_sub_cancel_left] using hrem
+
 /-- For `0 ≤ x` and `1 ≤ m` the outer summand at scale `m` is
 exactly one step of the residual telescope.  Restated for the
 concrete Fabius function as `globalFabius_binary_telescope_step`
@@ -657,6 +697,24 @@ theorem globalBinaryReductionSummand_eq_remainder_sub
   have hcur :=
     extendedFabius_eq_globalBinaryReductionSum_add_remainder
       F hF x hx0 m
+  have hsucc : m - 1 + 1 = m := Nat.sub_add_cancel hm
+  rw [hsucc] at hprev
+  rw [Finset.sum_range_succ] at hcur
+  linarith
+
+/-- At every real input, each positive-index summand is exactly one step of the
+residual telescope. -/
+theorem globalBinaryReductionSummand_eq_remainder_sub_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (m : ℕ) (hm : 1 ≤ m) :
+    globalBinaryReductionSummand x m =
+      binaryReductionRemainder F x (m - 1) -
+        binaryReductionRemainder F x m := by
+  have hprev :=
+    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all
+      F hF x (m - 1)
+  have hcur :=
+    extendedFabius_eq_globalBinaryReductionSum_add_remainder_all F hF x m
   have hsucc : m - 1 + 1 = m := Nat.sub_add_cancel hm
   rw [hsucc] at hprev
   rw [Finset.sum_range_succ] at hcur
@@ -685,6 +743,35 @@ theorem norm_globalBinaryReductionSummand_le_ge_two
         calc
           (2 : ℝ) ^ m = 2 ^ ((m - 1) + 1) := by
             rw [Nat.sub_add_cancel (by omega)]
+          _ = 2 ^ (m - 1) * 2 := by rw [pow_succ]
+      rw [hpow, mul_inv]
+      have hnonneg : 0 ≤ ((2 : ℝ) ^ (m - 1))⁻¹ := by positivity
+      norm_num
+      linarith
+
+/-- At every real input, each positive-index binary-reduction summand has the
+geometric majorant `4 * 2⁻⁽ᵐ⁻¹⁾`. -/
+theorem norm_globalBinaryReductionSummand_le_of_one_le_all
+    (F : BoundedFabius) (hF : IsFabius F)
+    (x : ℝ) (m : ℕ) (hm : 1 ≤ m) :
+    ‖globalBinaryReductionSummand x m‖ ≤
+      4 * ((2 : ℝ) ^ (m - 1))⁻¹ := by
+  rw [globalBinaryReductionSummand_eq_remainder_sub_all F hF x m hm]
+  calc
+    ‖binaryReductionRemainder F x (m - 1) -
+        binaryReductionRemainder F x m‖ ≤
+        ‖binaryReductionRemainder F x (m - 1)‖ +
+          ‖binaryReductionRemainder F x m‖ := norm_sub_le _ _
+    _ ≤ 2 * ((2 : ℝ) ^ (m - 1))⁻¹ +
+          2 * ((2 : ℝ) ^ m)⁻¹ := by
+      gcongr
+      · exact norm_binaryReductionRemainder_le_total F hF x (m - 1)
+      · exact norm_binaryReductionRemainder_le_total F hF x m
+    _ ≤ 4 * ((2 : ℝ) ^ (m - 1))⁻¹ := by
+      have hpow : (2 : ℝ) ^ m = 2 ^ (m - 1) * 2 := by
+        calc
+          (2 : ℝ) ^ m = 2 ^ ((m - 1) + 1) := by
+            rw [Nat.sub_add_cancel hm]
           _ = 2 ^ (m - 1) * 2 := by rw [pow_succ]
       rw [hpow, mul_inv]
       have hnonneg : 0 ≤ ((2 : ℝ) ^ (m - 1))⁻¹ := by positivity
@@ -722,6 +809,31 @@ theorem summable_globalBinaryReductionSummand
     (x : ℝ) (hx0 : 0 ≤ x) :
     Summable (globalBinaryReductionSummand x) :=
   Summable.of_norm (summable_norm_globalBinaryReductionSummand F hF x hx0)
+
+/-- The binary-reduction summands are absolutely summable at every real
+input.  The geometric comparison starts at the first positive index. -/
+theorem summable_norm_globalBinaryReductionSummand_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    Summable (fun m : ℕ ↦ ‖globalBinaryReductionSummand x m‖) := by
+  rw [← summable_nat_add_iff (f := fun m : ℕ ↦
+    ‖globalBinaryReductionSummand x m‖) 1]
+  refine ((summable_geometric_of_norm_lt_one
+      (by norm_num : ‖(2 : ℝ)⁻¹‖ < 1)).mul_left 4).of_nonneg_of_le
+    (fun _ ↦ norm_nonneg _) ?_
+  intro j
+  calc
+    ‖globalBinaryReductionSummand x (j + 1)‖ ≤
+        4 * ((2 : ℝ) ^ (j + 1 - 1))⁻¹ :=
+      norm_globalBinaryReductionSummand_le_of_one_le_all
+        F hF x (j + 1) (by omega)
+    _ = 4 * ((2 : ℝ)⁻¹) ^ j := by
+      rw [show j + 1 - 1 = j by omega, inv_pow]
+
+/-- The binary-reduction series is summable at every real input. -/
+theorem summable_globalBinaryReductionSummand_all
+    (F : BoundedFabius) (hF : IsFabius F) (x : ℝ) :
+    Summable (globalBinaryReductionSummand x) :=
+  Summable.of_norm (summable_norm_globalBinaryReductionSummand_all F hF x)
 
 /-- For nonnegative `x` the partial sums over `Finset.range N`
 converge to `extendedFabius F x`.  Restated for the concrete
@@ -773,11 +885,11 @@ theorem globalBinaryReductionSum_tendstoUniformly_extendedFabius
     simpa only [inv_pow, mul_zero] using tendsto_const_nhds.mul hhalf
   have heps : ∀ᶠ N : ℕ in atTop, 2 * ((2 : ℝ) ^ N)⁻¹ < ε :=
     (tendsto_order.1 hgeom).2 ε hε
-  filter_upwards [heps, eventually_ge_atTop 1] with N hbound hN
+  filter_upwards [heps] with N hbound
   intro x
   exact lt_of_le_of_lt
     (by simpa [Real.dist_eq, Real.norm_eq_abs, abs_sub_comm] using
-      norm_globalBinaryReductionSum_sub_extendedFabius_le F hF N hN x)
+      norm_globalBinaryReductionSum_sub_extendedFabius_le_total F hF N x)
     hbound
 
 /-- All-real core of the corrected binary-reduction series.  Absolute
