@@ -8,6 +8,7 @@ import FabiusFunction.ThueMorseDigits
 import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.ThueMorseRarefied
 import FabiusFunction.ThueMorseAperiodicity
+import FabiusFunction.ThueMorseSparseProuhet
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds
