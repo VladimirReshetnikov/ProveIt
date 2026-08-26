@@ -8,10 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 407da44a69a56aa8c1de5e817aa1792af5ed0a46
-HEAD and dirty paths: 80c6643abc68213ec1bef60db1e13bf9707c3e00;
-  clean before this ordinary one-source claim
+HEAD and dirty paths: a987b3bb9e983ff771729e2ad20699959a72bfb8;
+  clean source checkpoint before this registry handoff
 writing (exact paths):
-  Lean/FabiusFunction/HalfQBinomial.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `finiteQPochhammer_eq_zero_iff`, the unrestricted rational product-zero
@@ -63,7 +62,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   source checkpoint `64a95d363cec9647cdd6c93bd63bba1d1d5e11da`, which adds the three
   public iff theorems and one private dyadic-factor bridge; clean merge
   `80c6643abc68213ec1bef60db1e13bf9707c3e00` incorporates current main
-  `407da44a6`
+  `407da44a6`; exact half-q root-locus claim `301ca2d60` precedes source
+  checkpoint `a987b3bb9e983ff771729e2ad20699959a72bfb8`, whose 67 insertions and four
+  deletions add the generic rational product-zero criterion, its complete
+  `q = 1/2` rational specialization, and both q-binomial transports
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -98,7 +100,13 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   checkpoint at `64a95d363` has three independent static reviews covering the
   sinc simplification, dyadic cancellation, integer/complex coercions,
   infinite-product nonvanishing API, theorem order, collisions, imports,
-  facade exposure, and source hygiene, but has not been elaborated or built
+  facade exposure, and source hygiene, but has not been elaborated or built;
+  the half-q root-locus checkpoint at `a987b3bb9` has three independent
+  read-only reviews covering `Finset.prod_eq_zero_iff`, both `sub_eq_zero`
+  orientations, half-power cancellation, q-binomial transports, `n = 0`,
+  `j = 0`, `q = 0`, `q = 1`, arbitrary rational arguments, API placement,
+  rational-only documentation, collisions, forbidden markers, and diff
+  hygiene, but no Lean or Lake process has elaborated the production file
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
@@ -112,7 +120,10 @@ requested integration or lease: the dyadic relocation needs serialized
   periodic source writing claims are released by this handoff;
   the Fourier zero-locus checkpoint needs serialized
   `+FabiusFunction.FourierProduct`, and its source writing claim is released by
-  this handoff;
+  that handoff; the half-q root-locus checkpoint needs serialized
+  `+FabiusFunction.HalfQBinomial` followed by its direct consumer
+  `+FabiusFunction.FabiusQBinomialFormula`, and the `HalfQBinomial.lean` source
+  writing claim is released by this handoff;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
 conflicts / dependencies: all advertised Fabius heads and their registries
@@ -146,10 +157,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   arbitrary-rational root classification, and no registry claims
   `HalfQBinomial.lean`; its coefficient-index zero theorem is semantically
   distinct from this polynomial-root locus
-next bounded step: push this exact one-source claim, implement the four-theorem
-  rational root-locus family without running a build, obtain independent static
-  review, and hand it off for serialized `+FabiusFunction.HalfQBinomial` and
-  `+FabiusFunction.FabiusQBinomialFormula` validation
+next bounded step: push this source-and-registry handoff, then after a fresh
+  fetch and board read select and advertise another disjoint ordinary source
+  cleanup while all pending build requests remain coordinator-owned
 ```
 
 ## Coordinator natural-knot integration disposition
