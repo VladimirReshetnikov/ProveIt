@@ -8,8 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: e18f5d0b0e3ec78e2b14e7006af6c7e916b42923
-HEAD and dirty paths: 0095fb161db5e6ef03df7bd391fbf45e96efc792;
-  clean before this registry-only status refresh
+HEAD and dirty paths: d139cc6920fae705528143fa95a132c6bbef78e6;
+  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty while
+  matching the coordinator's directly validated elaboration fix
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -36,13 +37,13 @@ validated (exact command, SHA/state, exit code): coordinator board records
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
   read-only natural-knot audits at `12e7137a8` and refreshed main found no exact or semantic
   duplicate across all advertised tips and verified the theorem domains,
-  edge cases, placement, imports, and public export path
-not yet validated: both natural-knot declarations are implemented in the
-  claimed source, but no Lean/Lake/TeX command is authorized or claimed for
-  this source checkpoint; only read-only source review, collision search,
-  marker scans, and `git diff --check` are claimed; the final read-only review
-  caught and corrected an odd-branch rewrite from `b + b + 1` to the literal
-  witness form `2 * b + 1`
+  edge cases, placement, imports, and public export path; coordinator commit
+  `62f4142a9f290c570299e200192a4818dc7529d2` directly ran
+  `LAKE_JOBS=1 lake env lean` on the exact corrected module and exited 0
+not yet validated: no focused Lake target, downstream module, public facade,
+  or aggregate build is claimed for the natural-knot checkpoint; only the
+  exact module elaboration plus read-only source/collision/marker/diff checks
+  are currently validated
 requested integration or lease: after this unvalidated source checkpoint is
   pushed, request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
@@ -54,11 +55,11 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   existing even/odd ingredients and downstream special cases that this API
   packages without modifying; local coordinator candidate merge
   `8d27ea2079ca4146d02ae104dfd48b06f388f49c` contains the pre-correction source
-  checkpoint `34fec97bd` but does not contain correction `0095fb161`, so it
-  must not be published as the final source integration without first taking
-  the corrected feature tip; documentation remains serialized and unclaimed
-next bounded step: await an assigned build token for the four serialized
-  targets; leave documentation and downstream source paths untouched
+  checkpoint, while follow-up `62f4142a9f290c570299e200192a4818dc7529d2`
+  supplies both the literal odd witness and explicit rewrite arguments;
+  documentation remains serialized and unclaimed
+next bounded step: checkpoint the exact validated module blob, then await the
+  focused/downstream build token and documentation lease
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the
