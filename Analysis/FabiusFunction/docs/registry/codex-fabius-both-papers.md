@@ -8,10 +8,9 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 148990f0a2a9b665edaf3394656be1e7c46caf7e
-HEAD and dirty paths: 00f0edfe244ad1ceea964cf3855314b9beeb0e71;
-  clean before this registry-only claim expansion
+HEAD and dirty paths: 9458b1949cfb1b0a0290c0ab533a50d2e8ff908d;
+  clean before this registry-only validation handoff
 writing (exact paths):
-  Lean/FabiusFunction/DyadicAnalytic.lean;
   docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   `fabiusAtInverseTwoPow_cast`, the generic real-cast bridge identifying the
@@ -45,6 +44,11 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   and proof/docstring polish `991add419fb7fda185f4a79cb87cae59f3b37205`
   leaves the final five-theorem strict API; clean merge
   `00f0edfe244ad1ceea964cf3855314b9beeb0e71` incorporates validated current main
+  `148990f0a`; exact inverse-power bridge claim
+  `f858c1bd938932a32c0a73551b5944a3cd3c3a0b` precedes unvalidated source
+  checkpoint `9458b1949cfb1b0a0290c0ab533a50d2e8ff908d`, which adds the one-line
+  `fabiusAtInverseTwoPow_cast` specialization without changing any existing
+  declaration
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -69,13 +73,15 @@ not yet validated: the moved dyadic theorem body was already compiled in its
   review, but has not been elaborated or built in production; its predecessor
   non-strict `/tmp` proof was green, while the strict logarithmic and large
   kernel upgrades are statically reviewed only; the exact inverse-power bridge
-  has a previously green `/tmp` prototype but is not yet implemented or
-  validated in production
+  is implemented at `9458b1949`, and its proof, placement, normalization, and
+  public API have two independent static reviews plus a previously green
+  `/tmp` prototype, but the production module has not been elaborated or built
 requested integration or lease: the dyadic relocation needs serialized
   `+FabiusFunction.GlobalDyadic`
   and `+FabiusFunction.OriginalPaperSupplement` validation; this new ordinary
-  claim covers only `DyadicAnalytic.lean` and the one advertised public cast
-  bridge; the Gamma--zeta checkpoint needs serialized
+  source checkpoint needs serialized `+FabiusFunction.DyadicAnalytic`
+  validation; the `DyadicAnalytic.lean` writing claim is released by this
+  handoff; the Gamma--zeta checkpoint needs serialized
   `+FabiusFunction.BoseFinitePartIntegral` followed by its sole non-facade
   direct importer `+FabiusFunction.PeriodicMean`;
   serialized README/primary/walkthrough/coverage paths are deliberately not
@@ -98,9 +104,9 @@ conflicts / dependencies: all advertised Fabius heads and their registries
   `DyadicAnalytic.lean`; existing scalar q-binomial cast theorems have different
   right-hand sides, while the same mathematics occurs only behind private
   wrappers in `DyadicAnalytic`
-next bounded step: push this exact one-file claim, implement the already-green
-  one-line cast specialization, and hand it off without running a production
-  build
+next bounded step: push this registry handoff, await serialized validation of
+  the three independent source tranches, and begin only a new collision-free
+  ordinary claim after another fetched-main/registry sweep
 ```
 
 ## Coordinator natural-knot integration disposition
