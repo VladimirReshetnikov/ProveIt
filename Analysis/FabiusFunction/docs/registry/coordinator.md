@@ -6,15 +6,15 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
-## Checkpoint 2026-08-25 21:52 PDT
+## Checkpoint 2026-08-25 21:57 PDT
 
 ```text
-observed main before this directive: 03540bab399836bb87e338ce970b21b4c46f5eaa
+observed main before this directive: 0bc0bf55135d2dea10c5fb8320e69a00ab55ded0
 coordinator branch: codex/fabius-coordinator-20260825
 integration mode: feature branches -> coordinator -> fast-forward main
 main write owner: coordinator
 codexbox Lean/Lake owner: coordinator
-  (IDLE after normalized-L1 validation)
+  (IDLE after Unit-Laplace validation)
 codexbox TeX/PDF owner: unassigned
   (IDLE; assigned document stream is on EVO)
 EVO Lean/Lake owner: unassigned
@@ -476,6 +476,24 @@ the stale request fields.  Separate serialized builds of
 warnings.  The source lease and codexbox token are released; the excluded
 `Regularity`/private-helper cleanup remains outside this tranche.
 
+Registry-only claim `29e465362` advertises a new ordinary one-file tranche in
+`PoissonSummation.lean`.  It proposes
+`rvachevFourier_real_iteratedDeriv_shiftedDecay` for each `(k n : ℕ)`, with a
+strictly positive constant bounding the `n`th real derivative by
+`C * ((1 + |x|) ^ k)⁻¹`, and the order-zero wrapper
+`rvachevFourier_real_shiftedDecay`.  Exact preflight accepts the Schwartz
+seminorm argument, shifted normalization, zero-order and zero-weight cases,
+placement, imports, and duplicate scan.  The constant may depend on
+`F`, `hF`, `k`, and `n`; no uniformity in derivative order or on the complex
+plane may be claimed.  Source work may proceed after merging/rereading current
+main in exactly `Lean/FabiusFunction/PoissonSummation.lean` plus the own
+registry.  Preserve every old header and import; all documents, facades, root
+files, and other paths remain excluded.  No build token is granted before an
+immutable reviewed source handoff.  The later intended serialized gates are
+`+FabiusFunction.PoissonSummation` and `+FabiusFunction.Paper05442`; integrate
+the exact source checkpoint rather than the branch's historical feature
+lineage.
+
 ### `codex/fabius-theorem-polish-20260825`
 
 The prior task is complete and its complete source tranche is integrated on
@@ -662,12 +680,15 @@ comparison with factors `exp (min (t - s) 0)` and
 `exp (max (t - s) 0)`, positivity transport, the half-moment specialization,
 placement, imports, and duplicate scan; `fabiusLaplaceMoment_zero_pos_all` is
 only its degree-zero special case.  Exact source commit `d9598f3b6` now
-implements the four declarations in the claimed module and is frozen under
-exact review.  It remains unelaborated and has no build token.  After a green
-immutable-source disposition, the intended gates are
-`+FabiusFunction.UnitLaplaceMomentBounds` and then
-`+FabiusFunction.LaplaceMomentBounds`.  No document, facade, root, import, or
-other path is authorized by either source claim.
+implements the four declarations in the claimed module and is integrated as
+`7b892b41c`.  Two independent reviews accept the sign cases, endpoint behavior,
+positivity equivalence, half-moment specialization, exact preimage, imports,
+and API preservation.  Separate serialized builds of
+`+FabiusFunction.UnitLaplaceMomentBounds` (3189 jobs) and its sole direct
+importer `+FabiusFunction.LaplaceMomentBounds` (3417 jobs) both exited 0.  They
+reported only the already-recorded nonblocking `unnecessarySimpa` linter from
+`ProbabilityLaplaceMoments.lean`.  The path and codexbox token are released;
+no document, facade, root, import, or other path was changed.
 
 ### `codex/fabius-shifted-prefix-grid`
 
@@ -1029,10 +1050,10 @@ integrated, compiled, and released.
 
 The both-papers product-positivity consolidation, theorem-polish normalized
 Laplace-reflection tranche, and shifted-prefix signed dyadic-reflection tranche
-are also integrated and green.  The total binary-reduction and normalized-`L¹`
-tranches are now integrated, compiled, and released as well.  Effective-bounds
-has frozen Unit-Laplace tilt-comparison source checkpoint `d9598f3b6` under
-exact review; it has no build token yet.
+are also integrated and green.  The total binary-reduction, normalized-`L¹`,
+and Unit-Laplace tilt-comparison tranches are now integrated, compiled, and
+released as well.  Both-papers has a disjoint registry-only
+`PoissonSummation.lean` claim with no source checkpoint or build token yet.
 
 Theorem-polish source commit `665b6bce` is integrated as `c80f61c90`, repaired
 without statement changes at `6b6757e90`, and accepted after its focused
@@ -1230,6 +1251,14 @@ warnings.
 For the normalized-`L¹` transfer bounds, separate serialized builds at
 `caed8800e` of `+FabiusFunction.QuantitativeSaddle` (2782 jobs) and
 `+FabiusFunction.SaddleAllOrders` (2783 jobs) both exited 0 without warnings.
+
+For the Unit-Laplace tilt comparison, separate serialized builds at
+`7b892b41c` of `+FabiusFunction.UnitLaplaceMomentBounds` (3189 jobs) and
+`+FabiusFunction.LaplaceMomentBounds` (3417 jobs) both exited 0.  Both reported
+only the inherited nonblocking `unnecessarySimpa` linter in
+`ProbabilityLaplaceMoments.lean`.  Two preliminary commands were issued from
+nested directories without a Lake configuration; both exited before invoking
+Lean and supply no validation evidence.
 
 On EVO, exact shifted-prefix merge `4367a7f86` and tree `db635e6a073b`
 preserved source commits `8021c555f` and `f7152d5fc`.  Separate sequential
