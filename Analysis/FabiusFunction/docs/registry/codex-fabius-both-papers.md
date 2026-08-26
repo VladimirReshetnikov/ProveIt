@@ -7,9 +7,10 @@ This file implements the per-branch registry fallback in
 SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
-fetched main SHA: 12e7137a897b8ec99ddf8935f64fff9f35977617
-HEAD and dirty paths: 225f5338de9ea92489ed6a2c0c371c6edb4f5db9;
-  clean before this registry-only claim
+fetched main SHA: 893d4c25d81740b7b695f72bc364eed941932ca1
+HEAD and dirty paths: f1b33700b6da547acea678791e77a06b2e326521;
+  `Lean/FabiusFunction/GlobalExtension.lean` and this registry are dirty for
+  the unvalidated natural-knot source checkpoint
 writing (exact paths):
   Lean/FabiusFunction/GlobalExtension.lean;
   docs/registry/codex-fabius-both-papers.md
@@ -21,29 +22,33 @@ expected declarations or document claims:
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
-  closed that slice and recorded the frozen documentation gaps
+  closed that slice and recorded the frozen documentation gaps;
+  claim commit `0cb92989d580228917a99293647411ba85d6d452`
+  advertised this exact one-source-file tranche; merge
+  `f1b33700b6da547acea678791e77a06b2e326521` synchronized it with fetched main
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
-  read-only natural-knot audits at `12e7137a8` found no exact or semantic
+  read-only natural-knot audits at `12e7137a8` and refreshed main found no exact or semantic
   duplicate across all advertised tips and verified the theorem domains,
   edge cases, placement, imports, and public export path
-not yet validated: the two natural-knot declarations are not implemented;
-  no Lean/Lake/TeX command is authorized or claimed for this new slice
-requested integration or lease: this is a nonoverlapping ordinary source
-  claim under the 17:10 shared protocol; after an unvalidated source checkpoint
-  is pushed, request the codexbox token for serialized targets
+not yet validated: both natural-knot declarations are implemented in the
+  claimed source, but no Lean/Lake/TeX command is authorized or claimed for
+  this source checkpoint; only read-only source review, collision search,
+  marker scans, and `git diff --check` are claimed
+requested integration or lease: after this unvalidated source checkpoint is
+  pushed, request the codexbox token for serialized targets
   `+FabiusFunction.GlobalExtension`, `+FabiusFunction.PaperStatements`,
   `+FabiusFunction.Paper06487Supplement`, and `+FabiusFunction.Paper06487`;
   serialized README/primary/walkthrough/coverage paths are deliberately not
   claimed yet
-conflicts / dependencies: all 16 advertised Fabius heads and their registries
+conflicts / dependencies: all advertised Fabius heads and their registries
   were checked; no branch claims GlobalExtension and the only overlap is the
   existing even/odd ingredients and downstream special cases that this API
-  packages without modifying; current HEAD is a clean ancestor of main
-next bounded step: push this claim, reread the board, merge current main into
-  the clean feature branch, then edit only GlobalExtension.lean and checkpoint
-  the source explicitly as not yet validated
+  packages without modifying; documentation remains serialized and unclaimed
+next bounded step: checkpoint and push the explicitly unvalidated source,
+  reread the board, merge current origin/main once more on the clean feature
+  branch, and await an assigned build token
 ```
 
 Source-only subagents inspect and prototype in `/tmp`; they do not edit the

@@ -10,7 +10,8 @@ This module proves that the Thue–Morse translate series defining
 equation and the closed formulas for all iterated derivatives of both the
 signed extension and Rvachev's compactly supported function.  A cell-coordinate
 form of the locally finite series records its exact values at every even and
-odd nonnegative integer knot.
+odd nonnegative integer knot, and these values yield a sharp classification of
+all derivative zeros on the natural-number grid.
 -/
 
 open scoped BigOperators ContDiff
@@ -84,6 +85,24 @@ theorem extendedFabius_two_mul_nat_add_one
     extendedFabius F (2 * (b : ℝ) + 1) = (-1 : ℝ) ^ binaryWeight b := by
   simpa [rvachevUp_zero F hF] using
     extendedFabius_two_mul_add F hF b 1 (by constructor <;> norm_num)
+
+/-- Exact value of the signed extension at every nonnegative integer.  Even
+knots vanish, while an odd knot retains the Thue--Morse sign of its cell. -/
+theorem extendedFabius_natCast_eq_ite
+    (F : BoundedFabius) (hF : IsFabius F) (m : ℕ) :
+    extendedFabius F (m : ℝ) =
+      if Even m then 0 else (-1 : ℝ) ^ binaryWeight (m / 2) := by
+  rcases m.even_or_odd with ⟨b, rfl⟩ | ⟨b, rfl⟩
+  · rw [if_pos (Even.add_self b)]
+    simpa only [Nat.cast_add, two_mul] using
+      extendedFabius_two_mul_nat F hF b
+  · have hodd : ¬ Even (b + b + 1) := by
+      simpa only [two_mul] using Nat.not_even_two_mul_add_one b
+    rw [if_neg hodd]
+    have hdiv : (b + b + 1) / 2 = b := by omega
+    rw [hdiv]
+    simpa only [Nat.cast_add, Nat.cast_one, two_mul] using
+      extendedFabius_two_mul_nat_add_one F hF b
 
 /-- The signed extension vanishes on nonpositive arguments. -/
 theorem extendedFabius_eq_zero_of_nonpos (F : BoundedFabius) (hF : IsFabius F)
@@ -318,6 +337,41 @@ theorem iteratedDeriv_extendedFabius
         simp [Nat.choose_one_right, add_comm]
       rw [show k + 1 + 1 = k + 2 by omega, hchoose, pow_add]
       ring_nf
+
+/-- At a nonnegative integer knot, an iterated derivative of the signed
+extension vanishes exactly in positive order or at an even knot. -/
+theorem iteratedDeriv_extendedFabius_natCast_eq_zero_iff
+    (F : BoundedFabius) (hF : IsFabius F) (order m : ℕ) :
+    iteratedDeriv order (extendedFabius F) (m : ℝ) = 0 ↔
+      1 ≤ order ∨ Even m := by
+  constructor
+  · intro hzero
+    by_cases horder : order = 0
+    · subst order
+      have hvalue : extendedFabius F (m : ℝ) = 0 := by
+        simpa only [iteratedDeriv_zero] using hzero
+      rw [extendedFabius_natCast_eq_ite] at hvalue
+      by_cases hm : Even m
+      · exact Or.inr hm
+      · rw [if_neg hm] at hvalue
+        have hne : (-1 : ℝ) ^ binaryWeight (m / 2) ≠ 0 :=
+          pow_ne_zero _ (by norm_num)
+        exact (hne hvalue).elim
+    · exact Or.inl (Nat.one_le_iff_ne_zero.mpr horder)
+  · intro h
+    have heven : Even (2 ^ order * m) := by
+      rcases h with horder | ⟨b, rfl⟩
+      · obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le horder
+        refine ⟨2 ^ k * m, ?_⟩
+        rw [show 1 + k = k + 1 by omega, pow_succ]
+        ring
+      · refine ⟨2 ^ order * b, ?_⟩
+        ring
+    rw [iteratedDeriv_extendedFabius F hF]
+    have hcast : ((2 ^ order * m : ℕ) : ℝ) =
+        (2 : ℝ) ^ order * (m : ℝ) := by
+      norm_num
+    rw [← hcast, extendedFabius_natCast_eq_ite, if_pos heven, mul_zero]
 
 /-- On the first block the signed extension is literally the translate of
 Rvachev's compactly supported function: `extendedFabius F (x + 1) = up F x`
