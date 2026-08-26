@@ -15,9 +15,10 @@ The final section converts the parity result into the dyadic valuation of the
 Fabius value at `2⁻ⁿ`, the valuation component of Theorem 21.  Parameter-free
 forms isolate the exceptional zeroth half moment, and Legendre's formula at
 `p = 2` removes the remaining factorial valuation in favor of binary weight.
-Kummer's theorem also identifies that binary weight with the two-adic
-valuation of a central binomial coefficient, giving a one-coefficient formula
-for the Thue--Morse sign.
+Kummer's theorem identifies the binary-weight loss under arbitrary addition
+with the two-adic valuation of one binomial coefficient.  This gives a
+carry-twisted multiplication law for the Thue--Morse sign and, on the diagonal,
+the central-binomial formula.
 -/
 
 set_option autoImplicit false
@@ -399,6 +400,71 @@ theorem factorial_padicVal_two (n : ℕ) :
   rw [padicValRat.of_nat]
   have h := sub_one_mul_padicValNat_factorial (p := 2) n
   simpa [binaryWeight] using congrArg (fun k : ℕ => (k : ℤ)) h
+
+/-- Kummer's digit-sum formula at two for an arbitrary binomial coefficient. -/
+theorem addChoose_padicValNat_two (a b : ℕ) :
+    padicValNat 2 (Nat.choose (a + b) a) =
+      binaryWeight a + binaryWeight b - binaryWeight (a + b) := by
+  rw [add_comm a b]
+  simpa [binaryWeight] using
+    (sub_one_mul_padicValNat_choose_eq_sub_sum_digits'
+      (p := 2) (n := b) (k := a))
+
+private lemma binaryWeight_add_addChoose_padicValNat_two (a b : ℕ) :
+    binaryWeight (a + b) +
+        padicValNat 2 (Nat.choose (a + b) a) =
+      binaryWeight a + binaryWeight b := by
+  have hweight_le (n : ℕ) : binaryWeight n ≤ n := by
+    simpa [binaryWeight] using Nat.digit_sum_le 2 n
+  have hchoose : Nat.choose (a + b) a ≠ 0 :=
+    Nat.choose_ne_zero (Nat.le_add_right a b)
+  have hfactorialIdentity :
+      Nat.choose (a + b) a * a.factorial * b.factorial =
+        (a + b).factorial := by
+    rw [Nat.choose_symm_add (a := a) (b := b)]
+    exact Nat.add_choose_mul_factorial_mul_factorial a b
+  have h := congrArg (padicValNat 2) hfactorialIdentity
+  rw [padicValNat.mul
+        (mul_ne_zero hchoose (Nat.factorial_ne_zero a))
+        (Nat.factorial_ne_zero b),
+      padicValNat.mul hchoose (Nat.factorial_ne_zero a)] at h
+  change padicValNat 2 (Nat.choose (a + b) a) +
+          padicValNat 2 a.factorial + padicValNat 2 b.factorial =
+        padicValNat 2 (a + b).factorial at h
+  have hfactorialNat (n : ℕ) :
+      padicValNat 2 n.factorial = n - binaryWeight n := by
+    have hn := sub_one_mul_padicValNat_factorial (p := 2) n
+    simpa [binaryWeight] using hn
+  rw [hfactorialNat a, hfactorialNat b, hfactorialNat (a + b)] at h
+  have ha := hweight_le a
+  have hb := hweight_le b
+  have hab := hweight_le (a + b)
+  omega
+
+/-- Ordinary addition is Thue--Morse multiplicative up to the two-adic carry
+valuation of its binomial coefficient. -/
+theorem thueMorseSign_add_valuation (a b : ℕ) :
+    thueMorseSign (a + b) =
+      thueMorseSign a * thueMorseSign b *
+        (-1 : ℤ) ^ padicValNat 2 (Nat.choose (a + b) a) := by
+  let v : ℕ := padicValNat 2 (Nat.choose (a + b) a)
+  change thueMorseSign (a + b) =
+    thueMorseSign a * thueMorseSign b * (-1 : ℤ) ^ v
+  have hbalance :
+      binaryWeight (a + b) + v = binaryWeight a + binaryWeight b := by
+    simpa only [v] using binaryWeight_add_addChoose_padicValNat_two a b
+  simp only [thueMorseSign]
+  calc
+    (-1 : ℤ) ^ binaryWeight (a + b) =
+        (-1 : ℤ) ^ binaryWeight (a + b) * (-1 : ℤ) ^ (v + v) := by
+      rw [(Even.add_self v).neg_one_pow, mul_one]
+    _ = (-1 : ℤ) ^ ((binaryWeight (a + b) + v) + v) := by
+      rw [← pow_add, ← add_assoc]
+    _ = (-1 : ℤ) ^ ((binaryWeight a + binaryWeight b) + v) := by
+      rw [hbalance]
+    _ = (-1 : ℤ) ^ binaryWeight a * (-1 : ℤ) ^ binaryWeight b *
+          (-1 : ℤ) ^ v := by
+      rw [pow_add, pow_add]
 
 /-- Kummer's theorem at `p = 2`: the two-adic valuation of the central
 binomial coefficient is the binary weight. -/
