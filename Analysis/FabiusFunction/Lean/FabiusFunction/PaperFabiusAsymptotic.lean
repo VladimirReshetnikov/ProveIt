@@ -63,6 +63,13 @@ lower-Lambert phase at `fabiusInv F hF y` differs from
 asymptotic to `fabiusInverseAsymptoticMain`.  At `y -> 1-`, reflection
 makes `1 - fabiusInv F hF y` asymptotic to
 `fabiusInverseAsymptoticMain (1 - y)`.
+The two resulting little-o theorems formalize the canonical frontier's
+complete elementary inverse scale hierarchy at zero, with a stronger Lean
+statement on the logarithmic side.  For every real `α > 0`,
+`y ^ α = o(fabiusInv F hF y)`, while
+`fabiusInv F hF y = o((-Real.log y) ^ r)` for every `r : ℝ`.
+The frontier's negative-logarithmic-power family is recovered by taking
+`r = -m` with `m > 0`.
 The inverse-dyadic recurrence is additionally solved as a finite weighted
 path sum.  Equivalently, `F(2⁻ⁿ)` is an explicit product-sum over all
 ordered compositions of `n`; the empty composition makes this closed formula

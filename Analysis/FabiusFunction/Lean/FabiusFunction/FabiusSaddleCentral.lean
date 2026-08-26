@@ -1,6 +1,7 @@
 import FabiusFunction.FabiusSaddleTail
 import FabiusFunction.FabiusComplexMGF
 import FabiusFunction.NegativeLaplaceDerivativeBounds
+import FabiusFunction.GaussianPolynomialContraction
 
 /-!
 # Corrected central estimate for the Fabius saddle integral
@@ -121,21 +122,12 @@ lemma oddCorrection_odd (a c : ℝ) : Function.Odd (oddCorrection a c) := by
   ring
 
 /-- Every Gaussian moment integrand `v ↦ exp (-v ^ 2 / 2) * v ^ n` is
-integrable on the real line.  This is the plumbing behind the integrability
-of `oddCorrection` and of `centralMajorant`; `FabiusSaddleReferenceTail`
-also uses it. -/
+integrable on the real line.  This compatibility name supplies
+`oddCorrection` and `centralMajorant`; the shared proof is
+`SaddleExpansion.integrable_realGaussian_mul_pow`. -/
 lemma integrable_gaussian_mul_pow (n : ℕ) :
     Integrable (fun v : ℝ => Real.exp (-(v ^ 2) / 2) * v ^ n) := by
-  have hs : (-1 : ℝ) < (n : ℝ) := by
-    have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-    linarith
-  have h := integrable_rpow_mul_exp_neg_mul_sq
-    (b := (1 / 2 : ℝ)) (s := (n : ℝ)) (by norm_num)
-    hs
-  convert h using 1
-  funext v
-  rw [Real.rpow_natCast]
-  ring_nf
+  exact SaddleExpansion.integrable_realGaussian_mul_pow n
 
 /-- The odd correction is integrable on the whole real line, for arbitrary
 real coefficients `a` and `c`.  It is the reference term that must be

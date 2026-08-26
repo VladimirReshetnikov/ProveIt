@@ -1,5 +1,6 @@
 import FabiusFunction.DyadicClosedForm
 import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.Real.Basic
 import Mathlib.RingTheory.Polynomial.Pochhammer
 
 /-!

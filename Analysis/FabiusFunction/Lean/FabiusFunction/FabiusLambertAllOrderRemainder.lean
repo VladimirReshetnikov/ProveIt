@@ -283,7 +283,7 @@ private theorem X_pow_dvd_dyadicLambertAlgebraicResidual (N : ℕ) :
   by_cases hm0 : m = 0
   · subst m
     simp
-  · simp [hm0]
+  · simp [Polynomial.coeff_C, hm0]
 
 private theorem dyadicLambertAlgebraicResidual_isBigO (N : ℕ) :
     (fun t : ℝ => nestedLambertEval

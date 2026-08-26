@@ -1,3 +1,4 @@
+import FabiusFunction.DyadicClosedForm
 import FabiusFunction.Parity
 import Mathlib.Data.Nat.Log
 
@@ -21,6 +22,11 @@ share one exact algebraic bridge instead of reopening the modulo-two
 definition.  The accompanying positivity and range lemmas make explicit that
 the logarithm argument is never truncated by `Int.toNat` and that the bit is
 indeed zero-one valued at every index, including `n = 0`.
+
+The Pascal-row count also yields a logarithm-free formula modulo three.  The
+number of odd entries in row `n` has residue `thueMorseBit n + 1`, hence residue
+one or two; subtracting one recovers the zero-one sequence, while the affine
+expression `3 - 2 * residue` recovers the signed sequence.
 -/
 
 set_option autoImplicit false
@@ -115,6 +121,72 @@ theorem thueMorseSign_eq_one_sub_two_mul_bit (n : ℕ) :
   · rw [thueMorseSign, thueMorseBit, Nat.odd_iff.mp hodd,
       hodd.neg_one_pow]
     norm_num
+
+private theorem two_pow_mod_three_eq_mod_two_add_one (r : ℕ) :
+    2 ^ r % 3 = r % 2 + 1 := by
+  induction r using Nat.twoStepInduction with
+  | zero => norm_num
+  | one => norm_num
+  | more r hr _ =>
+      calc
+        2 ^ (r + 2) % 3 = (2 ^ r * 2 ^ 2) % 3 := by rw [pow_add]
+        _ = ((2 ^ r % 3) * (2 ^ 2 % 3)) % 3 := by
+          exact Nat.mul_mod ..
+        _ = (r % 2 + 1) % 3 := by
+          rw [hr]
+          norm_num
+        _ = r % 2 + 1 := by
+          apply Nat.mod_eq_of_lt
+          have h := Nat.mod_lt r (by omega : 0 < 2)
+          omega
+        _ = (r + 2) % 2 + 1 := by
+          rw [Nat.add_mod]
+          norm_num
+
+/-- The number of odd entries in Pascal row `n`, reduced modulo three, is one
+plus the zero-one Thue--Morse bit. -/
+theorem card_oddBinomialIndices_mod_three_eq_bit_add_one (n : ℕ) :
+    (oddBinomialIndices n).card % 3 = thueMorseBit n + 1 := by
+  simpa only [card_oddBinomialIndices, thueMorseBit] using
+    two_pow_mod_three_eq_mod_two_add_one (binaryWeight n)
+
+/-- The zero-one Thue--Morse bit is obtained without a logarithm from the
+number of odd entries in Pascal row `n`, reduced modulo three. -/
+theorem thueMorseBit_eq_card_oddBinomialIndices_mod_three_sub_one (n : ℕ) :
+    thueMorseBit n = (oddBinomialIndices n).card % 3 - 1 := by
+  have h := card_oddBinomialIndices_mod_three_eq_bit_add_one n
+  omega
+
+/-- The signed Thue--Morse value is obtained without a logarithm from the
+number of odd entries in Pascal row `n`, reduced modulo three. -/
+theorem thueMorseSign_eq_three_sub_two_mul_card_oddBinomialIndices_mod_three
+    (n : ℕ) :
+    thueMorseSign n =
+      (3 : ℤ) - 2 * (↑((oddBinomialIndices n).card % 3) : ℤ) := by
+  rw [thueMorseSign_eq_one_sub_two_mul_bit,
+    card_oddBinomialIndices_mod_three_eq_bit_add_one]
+  push_cast
+  ring
+
+/-- The number of odd entries in a Pascal row is never divisible by three. -/
+theorem card_oddBinomialIndices_mod_three_ne_zero (n : ℕ) :
+    (oddBinomialIndices n).card % 3 ≠ 0 := by
+  have h := card_oddBinomialIndices_mod_three_eq_bit_add_one n
+  omega
+
+/-- The zero-one Thue--Morse sequence carries bitwise xor to bitwise xor. -/
+theorem thueMorseBit_xor (a b : ℕ) :
+    thueMorseBit (a ^^^ b) = thueMorseBit a ^^^ thueMorseBit b := by
+  have hsign := thueMorseSign_xor a b
+  simp_rw [thueMorseSign_eq_one_sub_two_mul_bit] at hsign
+  have ha : thueMorseBit a = 0 ∨ thueMorseBit a = 1 := by
+    have ha_le := thueMorseBit_le_one a
+    omega
+  have hb : thueMorseBit b = 0 ∨ thueMorseBit b = 1 := by
+    have hb_le := thueMorseBit_le_one b
+    omega
+  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+    simp [ha, hb] at hsign ⊢ <;> omega
 
 /-- Raising `-1` to the zero-one Thue--Morse bit is the same as raising it
 to the full binary weight, in any ring.  This is the direct coefficient form
