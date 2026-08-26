@@ -4324,3 +4324,117 @@ conflicts / dependencies: Second is based on accepted post-Gaussian blob
 next bounded step: push this handoff, refresh main/board, then advertise the
   audited disjoint vertical-log zero-free generalization if still unclaimed
 ```
+
+## Claim: off-axis zero-freeness and all-line vertical logarithm
+
+Claimed at 2026-08-26 from clean merged branch checkpoint `115ebcf4d`, after
+refreshing accepted `origin/main` `dabcc17ab`.  This ordinary one-source claim
+owns exactly `Lean/FabiusFunction/NegativeLaplaceVerticalLog.lean` plus this
+branch registry.
+
+The current proofs use positivity only to establish that a relevant complex
+real part is nonzero.  Generalize the factor/product stack to the exact
+off-axis condition, and then include the degenerate vertical line `r = 0`:
+
+```lean
+lemma negativeLaplaceComplexFactor_ne_zero_of_re_ne_zero
+    {z : ℂ} (hz : z.re ≠ 0) :
+    negativeLaplaceComplexFactor z ≠ 0
+
+lemma negativeLaplaceDyadicFactor_ne_zero_of_re_ne_zero
+    {z : ℂ} (hz : z.re ≠ 0) (n : ℕ) :
+    negativeLaplaceDyadicFactor z n ≠ 0
+
+theorem complexGeneratingFunction_neg_ne_zero_of_re_ne_zero
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : z.re ≠ 0) :
+    complexGeneratingFunction F (-z) ≠ 0
+
+theorem complexGeneratingFunction_ne_zero_of_re_ne_zero
+    (F : BoundedFabius) (hF : IsFabius F) {z : ℂ} (hz : z.re ≠ 0) :
+    complexGeneratingFunction F z ≠ 0
+
+theorem negativeLaplaceVerticalCurve_ne_zero_all
+    (F : BoundedFabius) (hF : IsFabius F) (r θ : ℝ) :
+    negativeLaplaceVerticalCurve F r θ ≠ 0
+
+theorem continuous_negativeLaplaceVerticalLogDerivative_all
+    (F : BoundedFabius) (hF : IsFabius F) (r : ℝ) :
+    Continuous (negativeLaplaceVerticalLogDerivative F r)
+
+theorem negativeLaplaceVerticalLog_hasDerivAt_all
+    (F : BoundedFabius) (hF : IsFabius F) (r θ : ℝ) :
+    HasDerivAt (negativeLaplaceVerticalLog F r)
+      (negativeLaplaceVerticalLogDerivative F r θ) θ
+
+theorem exp_negativeLaplaceVerticalLog_all
+    (F : BoundedFabius) (hF : IsFabius F) (r θ : ℝ) :
+    Complex.exp (negativeLaplaceVerticalLog F r θ) =
+      negativeLaplaceVerticalCurve F r θ /
+        negativeLaplaceVerticalCurve F r 0
+```
+
+For the first theorem, `z.re ≠ 0` implies `z ≠ 0`; a zero numerator would
+give `exp (-z) = 1`, whose norm forces `(-z).re = 0`, contradicting the
+hypothesis.  Division by the positive real dyadic scale preserves nonzero real
+part, so the existing infinite-product proof then applies verbatim.  The
+natural-sign generating-function result is the negative-sign theorem at
+`-z`.
+
+For the vertical curve, split on `r = 0`.  The zero line simplifies to
+`complexGeneratingFunction F 0 = 1`; otherwise the product argument has real
+part `r ≠ 0`.  Global denominator nonvanishing removes the positivity
+hypothesis from continuity, the interval-integral fundamental theorem, and
+the existing constant-ODE exponential recovery proof.  Preserve the exact
+headers of all seven current positive-domain theorems as compatibility
+forwards.  The first three forwards consume `hz.ne'`; wrap the four now-proof-
+unused `hr` compatibility declarations in declaration-local
+`set_option linter.unusedVariables false in` and say so accurately in their
+comments.  Add no simp attribute to a structural/nonzero theorem.
+
+Document all eight additions and the sole inherited strict gap,
+`@[simp] theorem negativeLaplaceVerticalLog_zero`.  Update only the module
+guide to say the product is zero-free off the imaginary axis and that the
+vertical curve/logarithm results hold for every real `r`.  Preserve the two
+imports and every other old public header/attribute/body.  The strict inventory
+moves from 14 public / 13 documented to 22/22; there are zero private
+declarations.
+
+The exact accepted-main preimage is blob
+`64691d93682030673e67156f3936600a53ee77e0`, content SHA-256
+`DE4C7B6BD16FCFD9F4F5DA4AE98393A4001B1778F0E47B6D91465E25D87C4EFF`,
+8,557 bytes / 191 lines.  The authoritative all-visible-ref scan finds zero
+occurrence of all eight names; current source/worktree/registry scans find no
+semantic competitor or path lease.  Existing consumers in the vertical
+smoothness, Taylor, ordinary-jet, fourth/all-order-bound, and saddle modules
+retain the seven old names unchanged.
+
+No Lean/Lake/TeX/PDF/main-write token is claimed.  Requested later serialized
+gates are `+FabiusFunction.NegativeLaplaceVerticalLog`, direct importer
+`+FabiusFunction.FabiusComplexMGF`, then maximal name-using closure
+`+FabiusFunction.NegativeLaplaceVerticalAllOrderBound`.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: dabcc17abed3
+HEAD and dirty paths: 115ebcf4d; only this branch registry is being written
+  for the registry-first claim
+writing (exact paths): NegativeLaplaceVerticalLog.lean after claim push; this
+  branch registry for claim/handoff
+expected declarations or document claims: eight exact off-axis/all-line
+  declarations, seven preserved positive wrappers, strict 22/22 docs; no
+  import/downstream/facade/root/script/canonical-doc change
+completed commits: merged accepted main as 115ebcf4d; source not yet authored
+validated (exact command, SHA/state, exit code): exact current-main preimage;
+  all-visible-ref eight-name scan zero; registry/path/consumer/import and
+  mathematical/API proof audits independently green, including r=0
+not yet validated: no live diff, exact-byte hostile review, or Lean/Lake
+  compiler evidence exists for this tranche
+requested integration or lease: ordinary exact one-source claim only; later
+  request three serialized focused gates and coordinator selective integration
+conflicts / dependencies: bounded-jet source is disjoint and immutable;
+  active EVO decay retry is disjoint; only coordinator advances main/builds
+next bounded step: commit/push claim, repeat name/path scan, author only the
+  claimed module, freeze, and obtain two independent exact-byte reviews
+```
