@@ -3354,3 +3354,59 @@ next bounded step: push this registry handoff, fetch and reread main, then
   coefficient-family congruence and Gaussian contraction deduplication as
   audited future candidates rather than broadening this checkpoint
 ```
+
+## Claim: positive-index exponential-coefficient extensionality
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: c7dfc250fe42bf66a241b59e1fa11eb5dd340d0f
+HEAD and dirty paths: 0515d3c97; clean before this registry-only claim
+writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/SaddleExpansionAlgebra.lean
+  Analysis/FabiusFunction/Lean/FabiusFunction/SaddleLogExpansionAlgebra.lean
+  Analysis/FabiusFunction/docs/registry/codex-fabius-effective-bounds-20260825.md
+expected declarations or document claims:
+  theorem expCoeff_eq_of_forall_pos {E F : ℕ → R}
+    (hEF : ∀ j, 0 < j → E j = F j) : expCoeff E = expCoeff F;
+  prove it by function extensionality and the existing finite-index theorem
+  expCoeff_congr_of_pos, making explicit that the recursive exponential
+  transform ignores index zero as a whole family;
+  replace only the repeated five-line `funext` proof of `hexp` inside
+  logCoeff_expCoeff_of_pos by the new public theorem, preserving its header;
+  add exact adjacent formula comments to the 12 undocumented declarations in
+  SaddleExpansionAlgebra and one concise module-guide paragraph for the
+  existing locality, map, rescaling, convolution, evaluation, parity,
+  partial-sum, eventual-equality, pullback, and linear-map APIs; after the new
+  theorem, require strict 46 public declarations / 46 comments / zero missing
+completed commits: synchronized main c7dfc250f in merge 0515d3c97 and pushed;
+  no source commit exists for this claim yet
+validated (exact command, SHA/state, exit code): authoritative all-visible-ref
+  `git grep` finds no proposed theorem-name occurrence; current source blobs
+  are 80018c6b7af028d4bf3cb4656ec56e7373a4bfbc and
+  98b1490cd397e8923488be5b57927b8b3a64f242, with content SHA-256 values
+  735798D3452714A9660C49AB236CFD837BF06CD7717CF4C497808DD544278088 and
+  99B4A70E001FF09259582C7EFCD0FB36EF6643DB785353AA29C1A6978C798612;
+  strict audit reports 45 public / 12 undocumented in the algebra module and
+  no attributed-declaration blind spot; current registries show only closed
+  historical source work and no active path/name claim
+not yet validated: the claim is not implemented; no Lean, Lake, TeX, PDF, or
+  cache-mutating process is authorized or running on this branch
+requested integration or lease: advertise this ordinary two-source algebra
+  and comment-parity claim; after immutable independent review request
+  serialized +FabiusFunction.SaddleExpansionAlgebra followed by
+  +FabiusFunction.SaddleLogExpansionAlgebra and, if the coordinator chooses,
+  the broad consumer +FabiusFunction.PaperFabiusAsymptotic; request no
+  main-write or canonical-document lease
+conflicts / dependencies: both paths are disjoint from active radial/parity/
+  arithmetic and inverse-decay build grants and all frozen local source
+  artifacts; the algebra module has a broad import cone, so its source blob is
+  frozen immediately after authoring; all old headers/imports remain exact;
+  only the coordinator may advance main
+next bounded step: commit and push this registry-only claim without force;
+  repeat all-ref/path/name scans, then author exactly the one theorem, one
+  local proof deduplication, 12 declaration comments, and one module paragraph
+  while independent agents audit coefficient-zero semantics, attribute/comment
+  placement, old-header preservation, imports, and direct consumer behavior
+```
