@@ -122,12 +122,7 @@ theorem fabiusFirstSaddleCorrection_eq_jets (u : ℝ) :
       -negativeLaplaceBoundedExponentJet 0 u ^ 2 / 2 -
         negativeLaplaceBoundedExponentJet 0 u -
         negativeLaplaceBoundedExponentJet 1 u / 2 - 1 / 12 := by
-  have hL : Real.log 2 ≠ 0 := (Real.log_pos (by norm_num)).ne'
-  rw [negativeLaplaceBoundedExponentJet_zero,
-    negativeLaplaceBoundedExponentJet_one]
-  unfold fabiusFirstSaddleCorrection
-  field_simp
-  ring
+  exact fabiusFirstSaddleCorrection_eq_boundedExponentJets u
 
 namespace SaddleExpansion
 
