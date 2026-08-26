@@ -1,3 +1,4 @@
+import FabiusFunction.DyadicClosedForm
 import FabiusFunction.Parity
 import Mathlib.Data.Nat.Log
 
@@ -115,6 +116,20 @@ theorem thueMorseSign_eq_one_sub_two_mul_bit (n : ℕ) :
   · rw [thueMorseSign, thueMorseBit, Nat.odd_iff.mp hodd,
       hodd.neg_one_pow]
     norm_num
+
+/-- The zero-one Thue--Morse sequence carries bitwise xor to bitwise xor. -/
+theorem thueMorseBit_xor (a b : ℕ) :
+    thueMorseBit (a ^^^ b) = thueMorseBit a ^^^ thueMorseBit b := by
+  have hsign := thueMorseSign_xor a b
+  simp_rw [thueMorseSign_eq_one_sub_two_mul_bit] at hsign
+  have ha : thueMorseBit a = 0 ∨ thueMorseBit a = 1 := by
+    have ha_le := thueMorseBit_le_one a
+    omega
+  have hb : thueMorseBit b = 0 ∨ thueMorseBit b = 1 := by
+    have hb_le := thueMorseBit_le_one b
+    omega
+  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+    simp [ha, hb] at hsign ⊢ <;> omega
 
 /-- Raising `-1` to the zero-one Thue--Morse bit is the same as raising it
 to the full binary weight, in any ring.  This is the direct coefficient form

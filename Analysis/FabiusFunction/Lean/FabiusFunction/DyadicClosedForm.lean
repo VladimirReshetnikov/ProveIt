@@ -1,5 +1,6 @@
 import FabiusFunction.DyadicCorrectness
 import FabiusFunction.MomentPowerSeries
+import Mathlib.Data.Nat.Bitwise
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Algebra.Polynomial.Taylor
 import Mathlib.Tactic.FieldSimp
@@ -145,6 +146,17 @@ theorem binaryWeight_add_pow_two (b h : ℕ) (hh : h < 2 ^ b) :
 @[simp] theorem thueMorseSign_two_mul_add_one (h : ℕ) :
     thueMorseSign (2 * h + 1) = -thueMorseSign h := by
   simp [thueMorseSign, pow_succ]
+
+/-- The signed Thue--Morse sequence is a character of bitwise xor. -/
+theorem thueMorseSign_xor (a b : ℕ) :
+    thueMorseSign (a ^^^ b) = thueMorseSign a * thueMorseSign b := by
+  induction a using Nat.binaryRec generalizing b with
+  | zero => simp [thueMorseSign, binaryWeight]
+  | bit ba a ih =>
+      refine Nat.bitCasesOn b ?_
+      intro bb b
+      rw [Nat.xor_bit]
+      cases ba <;> cases bb <;> simp [ih]
 
 /-- Reflecting an index in a dyadic block complements its first `k` binary
 digits and multiplies its Thue--Morse sign by `(-1)^k`. -/
