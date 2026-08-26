@@ -1829,3 +1829,82 @@ next bounded step: commit and push this final registry record to the feature
   branch, then freeze it; undertake no further source, document, or build work
   without a fresh exact claim and any required board grant
 ```
+
+## Exact cluster interval and literal Lambert factor successor claim
+
+The user asks for the strongest closed-form replacement for the false
+ratio-one online formula.  Read-only preflight at fetched
+`origin/main` `fc63c39788ab4c31694e4f57efe05b543165675a` found no active
+claim, competing declaration, or differing live-tip blob on the three source
+paths below.  This successor therefore claims exactly:
+
+- `Lean/FabiusFunction/FabiusWikipediaMain.lean`;
+- `Lean/FabiusFunction/FabiusWikipediaObstruction.lean`;
+- `Lean/FabiusFunction/FabiusSharpAsymptotic.lean`; and
+- this branch registry.
+
+The intended public surface is:
+
+- `fabiusWikipediaLambertFactor`,
+  `exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor`,
+  `fabiusWikipediaLambertFactor_pos`, and
+  `exp_fabiusCorrectedWikipediaMain_eq_WikipediaLambertFactor_mul_periodic`,
+  spelling out the screenshot's literal multiplicative factor and its exact
+  missing periodic multiplier;
+- `mapClusterPt_periodic_comp_fabiusLambertPhase` and
+  `mapClusterPt_periodic_comp_fabiusLambertPhase_iff`, extracting the exact
+  phase-sampling argument into a reusable cluster-point theorem for continuous
+  one-periodic functions;
+- `fabiusWikipediaLambertRatio`, `negativeLaplacePsiPeriodMin`,
+  `negativeLaplacePsiPeriodMax`, the corresponding attained-extrema and range
+  declarations, and
+  `mapClusterPt_fabiusWikipediaLambertRatio_nhdsGT_zero_iff`, identifying the
+  ratio's complete cluster interval;
+- `liminf_fabiusWikipediaLambertRatio_nhdsGT_zero_eq` and
+  `limsup_fabiusWikipediaLambertRatio_nhdsGT_zero_eq`, with exact values
+  `exp negativeLaplacePsiPeriodMin` and
+  `exp negativeLaplacePsiPeriodMax`; and
+- `fabius_not_isEquivalent_WikipediaLambertFactor` plus
+  `fabius_not_isEquivalent_const_mul_WikipediaLambertFactor`, giving direct
+  literal-factor formulations and ruling out every constant repair.
+
+Private helpers may be added only inside these modules for cluster
+preservation under a vanishing perturbation and boundedness.  No root
+aggregate change is needed because all three modules already exist in the
+dependency graph.  The canonical primary TeX/PDF pair remains frozen: after
+Lean validation and review, a separate exact document and TeX/PDF-lane grant
+will be requested before adding the human-readable liminf/limsup theorem.
+No numerical-extremum assertion is claimed in this source tranche.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: fc63c39788ab4c31694e4f57efe05b543165675a
+HEAD and dirty paths: 33e85e9526f7c39ae7c5e6738df6a73b64239de7;
+  clean before this registry-only claim, then only this own registry is dirty
+writing (exact paths): after this claim is pushed, exactly
+  Lean/FabiusFunction/FabiusWikipediaMain.lean,
+  Lean/FabiusFunction/FabiusWikipediaObstruction.lean,
+  Lean/FabiusFunction/FabiusSharpAsymptotic.lean, and this own registry
+expected declarations or document claims: the literal factorization,
+  reusable periodic phase-cluster engine, exact ratio cluster interval,
+  variational closed forms for liminf/limsup, and impossibility of every
+  constant multiplier, under the exact public surface listed above
+completed commits: none for this successor claim
+validated (exact command, SHA/state, exit code): read-only source/API and
+  cross-branch collision audits only; no Lean, Lake, LaTeX, or PDF process ran
+not yet validated: all proposed declarations remain unimplemented and
+  uncompiled; no document claim is active
+requested integration or lease: ordinary nonoverlapping source ownership for
+  exactly the three Lean paths after this pushed claim; no build or document
+  token yet
+conflicts / dependencies: none found across current main, the coordinator
+  board, every advertised registry, and all live-looking Fabius branch tips;
+  the existing compact-main theorem and lower-branch inverse are dependencies,
+  not duplicates
+next bounded step: commit and push this registry-only claim; fetch and reread
+  the board and advertised tips; if still nonoverlapping, implement source
+  without running Lean/Lake, obtain independent source reviews, checkpoint the
+  immutable result, and request the sole EVO Lean/Lake token
+```
