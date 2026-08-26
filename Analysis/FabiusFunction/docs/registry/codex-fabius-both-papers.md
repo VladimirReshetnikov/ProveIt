@@ -8,11 +8,20 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 39ad356c7a433c1b7dfdaec5bb3e3e4163c9fd35
-HEAD and dirty paths: 1b0792b2b22ed51b28404cc42175befb45313668;
-  dirty only in this own-registry handoff after the clean source checkpoint
-writing (exact paths): none; the complex branch-bound source claim is released
-expected declarations or document claims: none in flight; the all-degree
-  complex branch estimate is frozen at the source checkpoint below
+HEAD and dirty paths: 66c1573d654c3b2ce9c64e51aac035472e7273cb;
+  dirty only in this own-registry claim
+writing (exact paths):
+  Analysis/FabiusFunction/Lean/FabiusFunction/FabiusComplexShiftSpline.lean;
+  Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
+expected declarations or document claims:
+  norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_of_bound_all;
+  norm_fabiusComplexShiftSpline_sub_center_le_half_pow_mul_exp_all;
+  fabiusComplexShiftSpline_tendsto_globalFabius_real_all;
+  fabiusComplexShiftSpline_tendsto_globalFabius_rat_all;
+  fabiusComplexShiftSpline_tendsto_globalFabius_gaussianRat_all;
+  this is an ordinary downstream continuation of source checkpoint
+  1b0792b2b22ed51b28404cc42175befb45313668 and preserves every existing
+  restricted theorem signature as a compatibility API
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
