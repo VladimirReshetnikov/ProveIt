@@ -20,9 +20,10 @@ recorded for arbitrary cutoffs, together with the exact logarithmic correction
 incurred when the cutoff moves.  In particular, the cutoff-indexed finite part
 defined below is independent of every positive choice of split point and is
 always equal to `gammaZetaConstant`.  Both finite-part kernels are strictly
-negative on the positive half-line, so this identity also proves the strict
-sign of `gammaZetaConstant` and an unconditional strict upper bound for the
-first Stieltjes constant.
+negative on the positive half-line, and the small-kernel integral is strictly
+negative up to every positive cutoff.  The finite-part identity also proves
+the strict sign of `gammaZetaConstant` and an unconditional strict upper bound
+for the first Stieltjes constant.
 -/
 
 set_option autoImplicit false
@@ -91,6 +92,8 @@ lemma continuousOn_boseLogKernel :
     exact (sub_pos.mpr (Real.exp_lt_one_iff.mpr (by linarith))).ne'
   fun_prop (disch := assumption)
 
+/-- The regularized small-scale kernel is continuous on the positive
+half-line. -/
 lemma continuousOn_boseFinitePartSmallKernel :
     ContinuousOn boseFinitePartSmallKernel (Ioi 0) := by
   intro x hx
@@ -138,25 +141,30 @@ lemma integrableOn_boseFinitePartSmallKernel :
     IntegrableOn boseFinitePartSmallKernel (Ioc 0 1) := by
   simpa using integrableOn_boseFinitePartSmallKernel_Ioc 1
 
-private lemma integral_boseFinitePartSmallKernel_neg :
-    (∫ x : ℝ in Ioc 0 1, boseFinitePartSmallKernel x) < 0 := by
-  have hint : IntegrableOn boseFinitePartSmallKernel (Ioc (0 : ℝ) 1) :=
-    integrableOn_boseFinitePartSmallKernel_Ioc 1
-  have hnonneg : 0 ≤ᵐ[volume.restrict (Ioc (0 : ℝ) 1)]
+/-- The regularized small-kernel integral is strictly negative up to every
+positive cutoff. -/
+lemma integral_boseFinitePartSmallKernel_Ioc_neg
+    (c : ℝ) (hc : 0 < c) :
+    (∫ x : ℝ in Ioc 0 c, boseFinitePartSmallKernel x) < 0 := by
+  have hint : IntegrableOn boseFinitePartSmallKernel (Ioc (0 : ℝ) c) :=
+    integrableOn_boseFinitePartSmallKernel_Ioc c
+  have hnonneg : 0 ≤ᵐ[volume.restrict (Ioc (0 : ℝ) c)]
       (fun x : ℝ ↦ -boseFinitePartSmallKernel x) := by
     filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx
     exact neg_nonneg.mpr (boseFinitePartSmallKernel_neg x hx.1).le
-  have hpos : 0 < ∫ x : ℝ in Ioc 0 1, -boseFinitePartSmallKernel x := by
+  have hpos : 0 < ∫ x : ℝ in Ioc 0 c, -boseFinitePartSmallKernel x := by
     rw [MeasureTheory.setIntegral_pos_iff_support_of_nonneg_ae hnonneg hint.neg]
-    have hsubset : Ioc (0 : ℝ) 1 ⊆
-        Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩ Ioc 0 1 := by
+    have hsubset : Ioc (0 : ℝ) c ⊆
+        Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩ Ioc 0 c := by
       intro x hx
       refine ⟨?_, hx⟩
       exact (neg_pos.mpr (boseFinitePartSmallKernel_neg x hx.1)).ne'
     calc
-      0 < volume (Ioc (0 : ℝ) 1) := by norm_num
+      0 < volume (Ioc (0 : ℝ) c) := by
+        rw [Real.volume_Ioc, ENNReal.ofReal_pos]
+        simpa using hc
       _ ≤ volume (Function.support (fun x : ℝ ↦ -boseFinitePartSmallKernel x) ∩
-          Ioc 0 1) := measure_mono hsubset
+          Ioc 0 c) := measure_mono hsubset
   rw [MeasureTheory.integral_neg] at hpos
   exact neg_pos.mp hpos
 
@@ -167,6 +175,8 @@ lemma abs_boseFinitePartSmallKernel_le_one
     |boseFinitePartSmallKernel x| ≤ 1 :=
   abs_boseFinitePartSmallKernel_le_one_of_pos x hx.1
 
+/-- The large-scale finite-part kernel is continuous on the positive
+half-line. -/
 lemma continuousOn_boseFinitePartLargeKernel :
     ContinuousOn boseFinitePartLargeKernel (Ioi 0) := by
   intro x hx
@@ -284,6 +294,8 @@ lemma integrableOn_boseFinitePartLargeKernel :
     IntegrableOn boseFinitePartLargeKernel (Ioi 1) := by
   simpa using integrableOn_boseFinitePartLargeKernel_Ioi_of_pos 1 (by norm_num)
 
+/-- As the Mellin exponent tends to zero from the right, the small weighted
+integral converges to the unweighted small finite-part integral. -/
 theorem tendsto_small_regularized_bose_integral :
     Tendsto (fun a : ℝ => ∫ x : ℝ in Ioc 0 1,
       x ^ a * boseFinitePartSmallKernel x) (𝓝[>] 0)
@@ -315,6 +327,8 @@ theorem tendsto_small_regularized_bose_integral :
         nhdsWithin_le_nhds
     simpa using hp.mul_const (boseFinitePartSmallKernel x)
 
+/-- As the Mellin exponent tends to zero from the right, the large weighted
+integral converges to the unweighted large finite-part integral. -/
 theorem tendsto_large_regularized_bose_integral :
     Tendsto (fun a : ℝ => ∫ x : ℝ in Ioi 1,
       x ^ (a - 1) * boseLogKernel x) (𝓝[>] 0)
@@ -356,6 +370,8 @@ theorem tendsto_large_regularized_bose_integral :
     have hm := hp.mul_const (boseLogKernel x)
     simpa [boseFinitePartLargeKernel, div_eq_inv_mul, mul_comm] using hm
 
+/-- For every nonnegative exponent `a`, the small regularized kernel weighted
+by `x ^ a` is integrable on `(0, 1]`. -/
 lemma integrableOn_small_weighted_kernel (a : ℝ) (ha : 0 ≤ a) :
     IntegrableOn (fun x : ℝ => x ^ a * boseFinitePartSmallKernel x) (Ioc 0 1) := by
   have hone : IntegrableOn (fun _ : ℝ => (1 : ℝ)) (Ioc 0 1) :=
@@ -378,6 +394,8 @@ lemma integrableOn_small_weighted_kernel (a : ℝ) (ha : 0 ≤ a) :
       _ ≤ 1 := by simpa using Real.rpow_le_one hx.1.le hx.2 ha
       _ = ‖(1 : ℝ)‖ := by norm_num
 
+/-- For every exponent `a ≤ 1`, the large Bose Mellin integrand is
+integrable on `(1, ∞)`. -/
 lemma integrableOn_large_weighted_kernel (a : ℝ) (ha : a ≤ 1) :
     IntegrableOn (fun x : ℝ => x ^ (a - 1) * boseLogKernel x) (Ioi 1) := by
   have hH := integrableOn_boseLogKernel_Ioi_one.norm
@@ -409,6 +427,8 @@ lemma integrableOn_large_weighted_kernel (a : ℝ) (ha : a ≤ 1) :
       _ = |boseLogKernel x| := one_mul _
       _ = ‖‖boseLogKernel x‖‖ := by simp [Real.norm_eq_abs]
 
+/-- For `a > 0`, the elementary singular term
+`x ^ (a - 1) * log x` is integrable on `(0, 1]`. -/
 lemma integrableOn_rpow_sub_one_mul_log_Ioc (a : ℝ) (ha : 0 < a) :
     IntegrableOn (fun x : ℝ => x ^ (a - 1) * Real.log x) (Ioc 0 1) := by
   have hg0 : IntegrableOn (fun x : ℝ => x ^ (a / 2 - 1)) (Ioo 0 1) :=
@@ -459,6 +479,8 @@ lemma integrableOn_rpow_sub_one_mul_log_Ioc (a : ℝ) (ha : 0 < a) :
             (Real.rpow_nonneg hx.1.le _)
   exact IntegrableOn.congr_set_ae hfIoo Ioo_ae_eq_Ioc.symm
 
+/-- For `a > 0`, the function `x ↦ x ^ a` tends to zero as `x` tends to
+zero from the right. -/
 lemma tendsto_rpow_nhdsGT_zero_of_pos (a : ℝ) (ha : 0 < a) :
     Tendsto (fun x : ℝ => x ^ a) (𝓝[>] 0) (𝓝 0) := by
   have h := (tendsto_rpow_neg_atTop ha).comp tendsto_inv_nhdsGT_zero
@@ -469,6 +491,8 @@ lemma tendsto_rpow_nhdsGT_zero_of_pos (a : ℝ) (ha : 0 < a) :
   rw [Real.inv_rpow hx.le, Real.rpow_neg hx.le]
   simp
 
+/-- For `a > 0`, the elementary logarithmic Mellin integral over `(0, 1]`
+equals `-1 / a ^ 2`. -/
 lemma integral_rpow_sub_one_mul_log_Ioc (a : ℝ) (ha : 0 < a) :
     ∫ x : ℝ in Ioc 0 1, x ^ (a - 1) * Real.log x = -1 / a ^ 2 := by
   let F : ℝ → ℝ := fun x => x ^ a * (Real.log x / a - 1 / a ^ 2)
@@ -671,6 +695,8 @@ lemma small_weighted_bose_decomposition (a x : ℝ) (hx : 0 < x) :
   rw [hterm]
   ring
 
+/-- For every positive exponent, the unsplit Bose Mellin integrand is
+integrable on `(0, 1]`. -/
 lemma integrableOn_small_weighted_bose (a : ℝ) (ha : 0 < a) :
     IntegrableOn (fun x : ℝ => x ^ (a - 1) * boseLogKernel x) (Ioc 0 1) := by
   have hsum := (integrableOn_small_weighted_kernel a ha.le).add
@@ -759,7 +785,8 @@ theorem boseFinitePartIntegral_eq_gammaZetaConstant :
 is strictly negative. -/
 theorem gammaZetaConstant_neg : gammaZetaConstant < 0 := by
   rw [← boseFinitePartIntegral_eq_gammaZetaConstant]
-  exact add_neg_of_neg_of_nonpos integral_boseFinitePartSmallKernel_neg
+  exact add_neg_of_neg_of_nonpos
+    (integral_boseFinitePartSmallKernel_Ioc_neg 1 (by norm_num))
     (MeasureTheory.setIntegral_nonpos measurableSet_Ioi
       (fun x hx ↦ (boseFinitePartLargeKernel_neg x (zero_lt_one.trans hx)).le))
 
