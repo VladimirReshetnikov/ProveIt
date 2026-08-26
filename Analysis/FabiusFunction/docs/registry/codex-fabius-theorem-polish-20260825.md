@@ -346,3 +346,101 @@ Freeze status recorded after the 2026-08-25 17:21 PDT board was re-read from
 `origin/main`.  The feature tip remained clean, contained current main as an
 ancestor, and matched its remote tracking branch before this registry-only
 reply.
+
+## Read-only proof and reciprocity audit under the freeze
+
+Three independent read-only reviews examined the preserved five-source
+checkpoint, all advertised Fabius branch tips available after the latest
+fetch, and the canonical human-readable Laplace/discrete-limit statements.
+They did not edit production source, run Lean, Lake, TeX, PDF, or Python
+validation, or mutate Git state.
+
+### Proof preflight
+
+No definite elaboration blocker was found.  The reviews checked the actual
+Mathlib signatures of `intervalIntegral.integral_nonneg`, `ContDiff.div`, and
+`HasDerivAt.deriv`; the transitive import paths of both relocated declarations;
+the `ContDiff` scoped infinity notation; every public binder preserved by the
+compatibility wrappers; and uniqueness of all eleven new or relocated names.
+
+The fifth-file theorem `normalizedLaplaceMoment_nonneg_all` intentionally uses
+`fabiusLaplaceMoment_zero_pos_all`.  It is therefore a consumer of the first
+four-file tranche, not an independently validatable checkpoint.  Its focused
+build belongs after `NegativeLaplace`, `LaplaceMoments`, and
+`NegativeLaplaceDerivatives` in the requested serialized sequence.  Although
+raw zeroth-moment nonnegativity would suffice for `div_nonneg`, retaining the
+strictly positive denominator records why the quotient is an honest
+normalization rather than an artifact of totalized division.
+
+### Human-readable claims that need correction or formalization
+
+1. The walkthrough at lines 1491 and 1523--1525, the primary exposition at
+   lines 2754--2758, `PAPER_COVERAGE.md` line 168, and the glossary's
+   `complex-shift` and `q-discrete-limit` entries assert that a finite
+   discrete-limit row can genuinely depend on the shift and, in several
+   places, that this is explicitly formalized.  Current main proves that every
+   fixed shift has the same limit but contains no theorem exhibiting unequal
+   finite rows.  The primary and glossary additionally say the discrete row
+   and global-series construction are not termwise identical, for which there
+   is likewise no named finite-index inequality.  Until a witness is proved,
+   the accurate statement is that finite rows retain the shift parameter and
+   Lean proves independence only in the limit; no finite-row independence or
+   nonconstancy theorem, and no termwise identity, is currently asserted.
+
+2. The walkthrough at lines 1888--1892 calls
+   `normalizedLaplaceMoment F 1 s = -L'(s)` exact without side conditions.
+   Algebraically, `negativeLaplaceLogFirst F s` is globally defined as the
+   negative of the first normalized moment.  Its identification with the
+   derivative of the actual negative-Laplace product logarithm is proved only
+   for `0 < s`, by `negativeLaplaceLog_hasDerivAt`.  The global quotient APIs
+   in `87c9b00f4` deliberately do not enlarge that logarithmic domain.
+
+3. Current main already proves, but the primary exposition does not state as a
+   coherent theorem, the all-real raw-moment package
+   `fabiusLaplaceMoment_nonneg`, `fabiusLaplaceMoment_hasDerivAt`, and
+   `contDiff_fabiusLaplaceMoment`: respectively `M_k(s) >= 0`,
+   `M_k'(s) = -M_(k+1)(s)`, and `M_k` smooth on all of `Real`.  The current-main
+   positive-scale normalized APIs are also substantially underdocumented.
+
+4. The primary complex discrete-limit theorem has the right all-real meaning
+   but omits adjacent mappings to
+   `fabiusDiscreteLimitApproximationComplex_tendsto_globalFabius_all`, the two
+   all-real `tsum` endpoints, the weighted-shift-spline identity, and the
+   Toeplitz mass/variation declarations.  Its fixed-cutoff Taylor lemma also
+   lacks adjacent mappings to
+   `fabiusComplexShiftSpline_sub_center_eq_taylorBranches`,
+   `normalizedThueMorseSplineBranch_center_eq_uniformSpline`, and
+   `norm_normalizedThueMorseSplineBranch_center_le_one`.
+
+### Exact future reciprocity handoff
+
+After `87c9b00f4` and `efee2a7e1` are compiled and integrated, the document
+owner can add one compact theorem after the primary probability--Laplace
+bridge.  With `M_k(s)` the raw tilted moments and `R_k(s)=M_k(s)/M_0(s)`, it
+should state for all natural `k` and real `s`:
+
+- `M_k(s) >= 0`, `M_0(s) = G(-s) > 0`,
+  `M_k'(s) = -M_(k+1)(s)`, and `M_k` is smooth;
+- `R_0(s) = 1`, `R_k(s) >= 0`, and `R_k` is smooth; and
+- `R_k'(s) = -R_(k+1)(s) + R_k(s) R_1(s)`.
+
+The exact branch-only names are
+`one_le_generatingFunction_of_nonneg`, `generatingFunction_pos`,
+`fabiusLaplaceMoment_zero_pos_all`, `normalizedLaplaceMoment_zero_all`,
+`normalizedLaplaceMoment_nonneg_all`, `contDiff_normalizedLaplaceMoment`,
+`continuous_normalizedLaplaceMoment`,
+`normalizedLaplaceMoment_hasDerivAt_all`, and
+`deriv_normalizedLaplaceMoment_all`.  They remain uncompiled feature-branch
+artifacts and must not yet be described as proved current-main results.  The
+human theorem must end with the explicit warning that the product-logarithm
+and cumulant-derivative identifications remain restricted to `s > 0`.
+
+The smallest exact repair for finite-stage dependence is still excluded from
+this branch's live tranche: in
+`FabiusDiscreteLimitToeplitz.lean`, prove the depth-one identity
+`fabiusDiscreteLimitApproximationReal q (1 / 3) 1 =
+q ^ 2 / 2 - q / 3 + 2 / 9`, then derive the unequal values `2 / 9` and
+`7 / 18` at `q = 0` and `q = 1`.  No advertised tip contains that theorem and
+no active registry claims the file, but this branch will not write it unless a
+later board checkpoint releases the present bounded tranche and a new exact
+claim is published first.
