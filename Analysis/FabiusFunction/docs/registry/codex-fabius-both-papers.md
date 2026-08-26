@@ -8,18 +8,17 @@ SYNC Fabius
 branch / worktree / machine: codex/fabius-both-papers /
   /home/codex/src/Proofs / codexbox
 fetched main SHA: 741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb
-HEAD and dirty paths: 7f625bcf8999b702294e72e20df14fd21e4738cc;
-  dirty only in this own-registry claim
+HEAD and dirty paths: a72ca3c9290e59b4bf4b3e9c29082d92041cd218;
+  dirty only in this own-registry handoff
 writing (exact paths):
-  Analysis/FabiusFunction/Lean/FabiusFunction/OriginalUniqueness.lean;
-  Analysis/FabiusFunction/Lean/FabiusFunction/LegendreSeriesConvergence.lean;
   Analysis/FabiusFunction/docs/registry/codex-fabius-both-papers.md
 expected declarations or document claims:
   delete the unused private `[simp]` theorem `schwartzMap_apply` from
   `OriginalUniqueness.lean` and the unused private lemmas
   `legendre_weight_at_neg_one` / `legendre_weight_at_one` from
   `LegendreSeriesConvergence.lean`; change no surviving declaration, import,
-  proof, attribute, or public API
+  proof, attribute, or public API; both source claims are released by this
+  handoff
 completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561bcd0d897be1b4`
   was integrated by coordinator merge `046946a974467e83244fd3a183a3e084e70d3379`;
   registry handoff `225f5338de9ea92489ed6a2c0c371c6edb4f5db9`
@@ -156,6 +155,10 @@ completed commits: Lower-Lambert source checkpoint `1da2fde2285e3970267b7dc2561b
   `TwoAdic.lean`; clean merge
   `7f625bcf8999b702294e72e20df14fd21e4738cc` incorporates fetched main
   `741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb` without changing its result blob;
+  exact private-deletion claim
+  `4f555dbc9ca23d232602ced1670c2d17890c3d67` precedes unvalidated source
+  checkpoint `a72ca3c9290e59b4bf4b3e9c29082d92041cd218`, whose complete source delta is
+  ten deletions and zero additions;
 validated (exact command, SHA/state, exit code): coordinator board records
   serialized immutable `lake build +FabiusFunction.LowerLambertW` at
   `4c6bbac41`, exit 0, with its source blob unchanged on current main;
@@ -217,8 +220,15 @@ validated (exact command, SHA/state, exit code): coordinator board records
   linter; three independent read-only reviews of `48024a1d4` accept both
   general Kummer statements, the private factorial-valuation balance, all zero
   cases, natural-subtraction handling, parity algebra, imports, collision scan,
-  and diff hygiene
-not yet validated: the general Kummer/carry-cocycle source checkpoint
+  and diff hygiene; two independent live-diff reviews of `a72ca3c92` verify
+  that the removed private names have no callers, the former `[simp]` theorem
+  affects no later simplification, both surviving `schwartzMap` uses reduce
+  definitionally, the endpoint identities are reproved directly at their use
+  sites, every surviving declaration/import is unchanged, and diff hygiene is
+  clean
+not yet validated: the private-deletion source checkpoint
+  `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` has not been elaborated or built;
+  the general Kummer/carry-cocycle source checkpoint
   `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` has not been elaborated or built;
   the historical validation-state paragraphs below are
   superseded by the coordinator board and retained only as provenance: the
@@ -320,10 +330,14 @@ historical integration requests, all superseded by the current coordinator
 requested integration or lease: integrate exact general Kummer/carry-cocycle
   source checkpoint `48024a1d4ee468e4d76f3e7d93b98f1c342c5b37` and run
   serialized `LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic`, followed by
-  `LAKE_JOBS=1 lake build +FabiusFunction.Paper06487`; the `TwoAdic.lean`
-  source claim is released by this handoff; canonical README, AUDIT_FINDINGS,
-  PAPER_COVERAGE, primary, walkthrough, frontier, and user-supplied draft paths
-  remain frozen and unclaimed
+  `LAKE_JOBS=1 lake build +FabiusFunction.Paper06487`; also integrate exact
+  private-deletion checkpoint `a72ca3c9290e59b4bf4b3e9c29082d92041cd218`
+  and run separate serialized
+  `LAKE_JOBS=1 lake build +FabiusFunction.OriginalUniqueness` and
+  `LAKE_JOBS=1 lake build +FabiusFunction.LegendreSeriesConvergence` gates;
+  all three Lean source claims are released by this handoff; canonical README,
+  AUDIT_FINDINGS, PAPER_COVERAGE, primary, walkthrough, frontier, and
+  user-supplied draft paths remain frozen and unclaimed
 conflicts / dependencies: fresh current-main, all-tip, and registry scans find
   no exact or semantic general-addition Kummer/sign implementation or competing
   `TwoAdic.lean` claim; the prior central-binomial source is integrated,
@@ -385,11 +399,14 @@ conflicts / dependencies: fresh current-main, all-tip, and registry scans find
   proofs consume the polynomial family itself; fresh scans at main
   `741db6b4b` find each newly claimed private name only at its own declaration,
   every advertised source tip retains the same three declarations, and no
-  registry claims either source path or deletion
-next bounded step: delete exactly the three advertised unused private
-  declarations, obtain independent live-diff review, then publish an
-  unvalidated source handoff; coordinator integration and the two serialized
-  focused and paper-facade builds for `48024a1d4` remain separately requested
+  competing registry claims either source path or deletion; exact result blobs
+  are `b29edf55ab6a2dc6c8abc56048f55324f1a6dc73` for
+  `OriginalUniqueness.lean` and
+  `2c02832f07dd67ac0a29cb4ab7d17b023a815eb7` for
+  `LegendreSeriesConvergence.lean`
+next bounded step: coordinator integration and serialized validation of the
+  general Kummer and private-deletion checkpoints; continue read-only scouting
+  for the next disjoint ordinary source tranche
 ```
 
 ## General Kummer carry-cocycle handoff
@@ -418,6 +435,33 @@ gates are:
 LAKE_JOBS=1 lake build +FabiusFunction.TwoAdic
 LAKE_JOBS=1 lake build +FabiusFunction.Paper06487
 ```
+
+## Exhaustive dead-private sweep handoff
+
+At fetched main `741db6b4b777abc3fb4ca9ba6a6f0f098399c1bb`, source
+checkpoint `a72ca3c9290e59b4bf4b3e9c29082d92041cd218` deletes the
+unused private `[simp]` theorem `schwartzMap_apply` from
+`OriginalUniqueness.lean` and the unused private endpoint lemmas
+`legendre_weight_at_neg_one` / `legendre_weight_at_one` from
+`LegendreSeriesConvergence.lean`.  The exact result blobs are
+`b29edf55ab6a2dc6c8abc56048f55324f1a6dc73` and
+`2c02832f07dd67ac0a29cb4ab7d17b023a815eb7`, respectively.
+
+The complete source delta is ten deletions and zero additions.  Two
+independent live-diff audits verify that the former simp theorem affects no
+later simplification, the two surviving `schwartzMap` proof sites reduce
+definitionally, the Legendre endpoint facts remain proved directly by
+`simp [vf, w]`, and no import, surviving declaration, proof, attribute, or
+public API changes.  A complete current-source inventory finds no remaining
+named private declaration with only its own declaration occurrence.  No
+Lean/Lake process was run.  The requested serialized gates are:
+
+```text
+LAKE_JOBS=1 lake build +FabiusFunction.OriginalUniqueness
+LAKE_JOBS=1 lake build +FabiusFunction.LegendreSeriesConvergence
+```
+
+Both source claims are released by this handoff.
 
 ## Negative-Laplace denominator consolidation handoff
 
