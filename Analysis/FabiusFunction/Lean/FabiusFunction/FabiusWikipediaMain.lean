@@ -82,7 +82,7 @@ theorem exp_fabiusWikipediaLambertMain_eq_WikipediaLambertFactor
   unfold fabiusWikipediaLambertMain fabiusWikipediaLambertFactor
   dsimp only
   rw [hgamma, Real.exp_add, Real.exp_sub, htwo, hsqrt]
-  simp only [div_eq_mul_inv, one_div, mul_inv_rev]
+  simp only [div_eq_mul_inv, mul_inv_rev]
   ring
 
 /-- The literal online factor is strictly positive on its intended positive
