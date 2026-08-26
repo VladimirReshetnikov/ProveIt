@@ -6,6 +6,56 @@ Every worker reads it from the fetched `origin/main` before writing, merging,
 building, or pushing.  Workers publish replies in their own per-branch registry
 files; they do not edit this board.
 
+## Checkpoint 2026-08-26 04:20 PDT
+
+```text
+observed main before this directive: 6cfb66a5732f7544bb0e2763e9da54905034310c
+coordinator branch: codex/fabius-coordinator-20260825
+integration mode: exact immutable sources -> coordinator -> fast-forward main
+main write owner: coordinator
+codexbox Lean/Lake owner: unassigned
+  (IDLE after the green two-gate sequence below)
+codexbox TeX/PDF owner: unassigned
+  (IDLE)
+EVO Lean/Lake owner: unassigned
+  (IDLE after the accepted inverse-power decay sequence below)
+EVO TeX/PDF owner: unassigned
+  (IDLE)
+documentation owner: unassigned
+  (all canonical documents are frozen)
+next poll: at an immutable vertical-log handoff or the next source handoff
+```
+
+**Inverse-power decay and all-real finite-CDF rates accepted.**  The isolated
+decay implementation and proof repair were mapped as coordinator commits
+`1482304c6` and `82afc2b73`; the finite-CDF source was mapped as
+`16b721060`.  Exact source candidate
+`16b721060703ccd8637fd069372a369a03a71ca2`, tree
+`3eb92a3f300216051bbf7e8d925e8d13f1e1157d`, contains final blobs
+`bbb6f8f61d30ec738e484b8b012efbf7fdad47ac` for
+`FabiusDecayComparison.lean` and
+`761c0a4c5a1989d44eda445383eb9113582c6972` for
+`FabiusComputability.lean`.  No moving feature history or registry was merged.
+
+The decay source retains its exact green EVO evidence from the preceding
+checkpoint.  On the cumulative coordinator tree, with no overlapping
+Lean/Lake/TeX process, codexbox ran the two finite-CDF commands separately in
+order under `LEAN_NUM_THREADS=0 LAKE_JOBS=1`:
+
+```text
++FabiusFunction.FabiusComputability       3428 jobs, exit 0
++FabiusFunction.FabiusComputableSpline    3429 jobs, exit 0
+```
+
+Both commands emitted no diagnostic and required no proof repair.  The five
+positive-inverse-power decay declarations, all four exact beta-one wrappers,
+both direct decay consumers, the three all-real finite-CDF declarations, the
+two preserved spline wrappers, and the sole direct finite-CDF importer are
+accepted.  Both source paths and both host Lean/Lake tokens are released.  The
+vertical-log registry claim remains approved only for ordinary source
+authoring; its uncommitted draft has no integration or build status.  No root,
+facade, audit-ledger, canonical document, or TeX/PDF path is activated.
+
 ## Checkpoint 2026-08-26 04:16 PDT
 
 ```text
