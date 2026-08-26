@@ -716,3 +716,90 @@ conflicts / dependencies: inverse hierarchy source/API and its validation stay
 next bounded step: commit and push this registry-first claim, reread fetched
   main and advertised registries, then implement only the claimed one-file API
 ```
+
+## Immutable inverse-power decay source checkpoint and build request
+
+The claimed one-file generalization is source-complete and pushed.  Source
+commit `e601015588ad26dd95c860686d5cf1e5ea3bb123` adds the five advertised
+positive-`β` declarations and preserves all four existing `β = 1` public
+statements as direct specializations.  After that commit, current main
+`4789f05b1a1abc34b5753c166a524be1f62078c3` was merged as
+`1ab32c423531b90ce07db0482f8ad229b2d01db1`.  The sole merge conflict was the
+already-audited inverse hierarchy file; it was resolved exactly to the
+coordinator's compiled main blob `b02fd05fae88d0521930281e09c0813daee97650`.
+The independent decay source survived at its exact pre-merge blob.
+
+Immutable checkpoint coordinates are:
+
+```text
+branch tip: 1ab32c423531b90ce07db0482f8ad229b2d01db1
+tree: 766c9e1635360f0718d11d08c0757588fe8283dc
+FabiusDecayComparison.lean blob:
+  5a407fe366bead3fa2bb8f9d90cac14900fc46bf
+FabiusDecayComparison.lean SHA-256:
+  50D055DFE92CCB49DB871DC7E0CA0DCCB1A26B8874DDEB4CD0CD413075D8DA9D
+FabiusDecayComparison.lean size: 7,895 bytes
+```
+
+The earlier claim used “stretched exponential” as an informal umbrella term.
+Hostile review correctly noted that the theorem covers every `β > 0`, whereas
+that term is conventionally narrower.  The source now uses the precise phrase
+“inverse-power exponentials” and states explicitly that the K-fold draft gives
+the `β = 1` case while this module proves the stronger all-positive-`β` family.
+The registered formulas and ownership boundary were already exact and are
+unchanged.
+
+Two independent read-only reviews checked the dirty source against Lean 4.32,
+Mathlib `81a5d257c8e410db227a6665ed08f64fea08e997`, and the exact downstream
+call site.  They verified the signs and asymptotic direction, the
+`Real.rpow_mul` and `Real.rpow_neg` orientations, the positive-rate `atTop`
+composition, the quotient identity, every compatibility simplification, all
+nine doc comments, absence of forbidden placeholders/conflict markers, and
+preservation of the sole direct theorem application.  `git diff --check` and
+the 100-column audit were clean.  This remains source/static evidence only.
+
+The latest coordinator board reports both host Lean/Lake tokens idle and
+confirms `LEAN_NUM_THREADS=0` as the effective strict Lake 5.0 serialization
+control.  Request the EVO token for exactly these three separate invocations,
+in order, stopping and releasing the token after the first failure:
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.FabiusDecayComparison
+```
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.FabiusQuotientExponentialMismatch
+```
+
+```powershell
+$env:LEAN_NUM_THREADS = '0'
+$env:LAKE_JOBS = '1'
+lake build +FabiusFunction.PaperKFoldThueMorse
+```
+
+No root aggregate, inverse module, facade, fourth target, TeX/PDF command,
+cache clean/reconstruction, or parallel process is requested.  The second and
+third targets are the complete direct-importer closure and verify that the
+retained legacy names remain usable.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-inverse-asymptotic-20260825 /
+  C:/Users/vresh/.codex/worktrees/c9a3/ProveIt / EVO (Windows)
+fetched and merged main SHA: 4789f05b1a1abc34b5753c166a524be1f62078c3
+immutable validation candidate: 1ab32c423531b90ce07db0482f8ad229b2d01db1
+writing: this registry only; claimed Lean source is frozen at blob 5a407fe366
+validated: exact merge ancestry/blob preservation plus the two independent
+  mathematical, API, compatibility, documentation, and static source reviews
+not yet validated: no Lean/Lake target has run for the new decay source
+requested integration or lease: sole EVO Lean/Lake ownership for exactly the
+  three separate commands above, in order, with strict stop-on-failure
+conflicts / dependencies: the inverse hierarchy is now integrated, green, and
+  released; canonical documents remain with their current sole owner
+next bounded step: commit and push this immutable handoff, notify the
+  coordinator, and launch no Lean/Lake process before an explicit board grant
+```
