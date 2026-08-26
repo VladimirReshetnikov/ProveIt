@@ -12,9 +12,10 @@ The exponent is an integer exponent, so its value at `n = 0` is genuinely
 
 The corrected series starts at `m = 0` and equals the signed global Fabius
 extension for every real input: on the nonpositive half-line both sides
-vanish termwise.  The established theorem signatures with `0 ≤ x` are kept
-as wrappers.  The original series starting at `m = 1` remains valid on the
-full domain `x < 1`; its nonpositive branch is identically zero.
+vanish termwise.  Its summands are absolutely summable on the whole real
+line.  The established theorem signatures with `0 ≤ x` are kept as wrappers.
+The original series starting at `m = 1` remains valid on the full domain
+`x < 1`; its nonpositive branch is identically zero.
 -/
 
 set_option autoImplicit false
@@ -180,6 +181,22 @@ theorem fabiusParityPowerSummand_one_zero :
     fabiusParityPowerSummand 1 0 = 1 := by
   rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand,
     globalBinaryReductionSummand_one_zero]
+
+/-- The corrected parity-power summands are absolutely summable at every real
+input. -/
+theorem summable_norm_fabiusParityPowerSummand_all (x : ℝ) :
+    Summable (fun m : ℕ => ‖fabiusParityPowerSummand x m‖) := by
+  exact (summable_norm_globalBinaryReductionSummand_all
+    fabius fabius_spec x).congr
+      (fun m => by
+        rw [fabiusParityPowerSummand_eq_globalBinaryReductionSummand])
+
+/-- Compatibility form of absolute summability on nonnegative inputs. -/
+theorem summable_norm_fabiusParityPowerSummand
+    (x : ℝ) (hx : 0 ≤ x) :
+    Summable (fun m : ℕ => ‖fabiusParityPowerSummand x m‖) := by
+  simpa only [max_eq_left hx] using
+    summable_norm_fabiusParityPowerSummand_all (max x 0)
 
 /-- All-real core of the corrected parity-power series, starting at `m = 0`.
 On nonpositive inputs it is the zero series. -/
