@@ -621,3 +621,77 @@ source: Git blob `ac0349d2c96460ddc758a6069fca79fe2359b5c2`, content SHA-256
 `3F609EA6B099602C3503831919F21A0357746618FDE14887C2B9564A36F22ED9`.
 Every source and build lease held by this branch is now released.  No local
 Lean/Lake invocation was launched during any tranche.
+
+## Ordinary follow-on claim: exact degree and leading term at every order
+
+The recursive lower-Lambert displacement polynomials currently have explicit
+closed forms only through order two.  Their recurrence nevertheless determines
+the degree and highest coefficient uniformly: the natural degrees are
+`1, 1, 2, 3, ...`, and for every `n : ℕ` the leading coefficient of
+`a_(n+1)` is
+
+```text
+(-1)^n * (n + 1)^(-1) * (log 2)^(-(n + 2)).
+```
+
+Only the `j = 0` convolution summand can reach the new highest degree.  Every
+positive-index summand has degree at most the preceding order, so the top
+coefficient obeys the scalar recurrence
+`L_(n+1) = -(n / (n + 1)) * (log 2)^(-1) * L_n`.  This gives a short
+structural proof rather than expanding individual polynomials.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-effective-bounds-20260825 /
+  /home/codex/.codex/worktrees/d6d3/Proofs / codexbox
+fetched main SHA: c5ee98fc72489312e042eb0a4f2280827ee96457
+HEAD and dirty paths: b44ddee7c294e579c63ca7cf71db10ffef8c56f7;
+  branch is clean, pushed, and contains current main; only this registry is
+  dirty for the registry-first claim
+writing (exact paths): this registry initially; after this claim is pushed and
+  a repeated board/registry/all-tip scan remains green, only
+  Lean/FabiusFunction/FabiusLambertAllOrderAlgebra.lean and this registry
+expected declarations or document claims:
+  dyadicLambertDisplacementPolynomial_natDegree, proving
+    (dyadicLambertDisplacementPolynomial n).natDegree = max n 1 for every n;
+  dyadicLambertDisplacementPolynomial_leadingCoeff_succ, proving the displayed
+    all-order leading-coefficient formula for a_(n+1);
+  use documented private degree-bound and top-coefficient helpers to expose
+    the unique-highest-summand argument without adding redundant public API;
+  expand the module overview and declaration comments with both formulas, the
+    degree sequence, and the recurrence insight, and add the missing prose
+    comments for the four existing public zero/one/two simp evaluations;
+    preserve every old public declaration header; no canonical TeX/PDF,
+    walkthrough, facade, root, or campaign-wide document path is claimed
+completed commits: d9598f3b6 is accepted on main as 7b892b41c; merge
+  b44ddee7c incorporates current main c5ee98fc7 and its accepted shifted-
+  Fourier tranche; this is the registry-first claim for a fifth source unit
+validated (exact command, SHA/state, exit code): current HEAD and origin/main
+  share target blob 5ac6f66612b415ee3524f694e07571e5e887f76f,
+  content SHA-256
+  244265A906963BAE781FD752792D3AF303506AF87FD44C2C7E75104FEA92FA3B;
+  exact-name, plausible-semantic-name, exact-path, every-registry, and all-
+  fetched-Fabius-tip scans found no implementation or competing lease; the
+  conditional theorem-polish primary reservation concerns a different future
+  two-source asymptotic-formula checkpoint and grants no overlapping source;
+  read-only Mathlib API inspection confirms the required degree, coefficient,
+  finite-sum, and polynomial-product lemmas; this is not compiler evidence
+not yet validated: neither proposed public declaration nor its private proof
+  helpers exists yet; no Lean, Lake, TeX, PDF, or cache-mutating process is
+  authorized or running for this branch
+requested integration or lease: advertise this ordinary one-source/two-name
+  claim; after an immutable independently reviewed checkpoint, request
+  separate serialized builds of
+  +FabiusFunction.FabiusLambertAllOrderAlgebra and its sole direct importer
+  +FabiusFunction.FabiusLambertFormalLog; request no document or main-write
+  lease
+conflicts / dependencies: the newly accepted PoissonSummation source and the
+  frontier draft additions are disjoint; every canonical document remains
+  frozen; the explicit Polynomial.BigOperators import may be added in the
+  claimed source for stable API provenance; only the coordinator may advance
+  main
+next bounded step: commit and push this registry-only claim without force;
+  fetch and reread any changed board, repeat all-tip collision checks, then
+  edit only the claimed Lean source while three agents independently audit
+  proof robustness, alternative cold paths, and human-readable parity
+```
