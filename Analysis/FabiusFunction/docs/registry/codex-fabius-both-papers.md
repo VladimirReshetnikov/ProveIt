@@ -2030,3 +2030,68 @@ Stop after the first nonzero exit.  After compiled integration, a separately
 assigned documentation owner should retire the exact frontier obligation and
 add the four names to the primary/coverage crosswalk; no root, facade, or
 document build is requested here.
+
+## Claim: consolidate bounded real ranges into absolute-value bounds
+
+Fresh `origin/main` `c241ff2b0d7a9af57bc2b959f39e0f08b8a82ff1`
+has the exact prospective source blobs
+
+```text
+PeriodicRegularity.lean              394e2ba61edb76f65c44e90fd722c6f448b56253
+FabiusLambertDerivativeBounds.lean   b343d722173ae1851d022db43f21f2a6430ecb8a
+FabiusSecondSaddleCorrection.lean    c9a762985186e06030d789b1774ac01af8f3fa76
+```
+
+The exact prospective write set is:
+
+- `Lean/FabiusFunction/PeriodicRegularity.lean`;
+- `Lean/FabiusFunction/FabiusLambertDerivativeBounds.lean`;
+- `Lean/FabiusFunction/FabiusSecondSaddleCorrection.lean`;
+- this branch's own registry.
+
+The branch claims one documented, untagged public helper:
+
+- `exists_nonneg_bound_abs_of_isBounded_range`.
+
+The helper will live in the common upstream module `PeriodicRegularity` and
+state that a real-valued function with bounded range admits a nonnegative
+uniform absolute-value bound.  Its proof is the direct Mathlib abstraction:
+`Bornology.IsBounded.exists_pos_norm_le`, followed by
+`Set.forall_mem_range` and `Real.norm_eq_abs`.
+
+The existing public theorem
+`exists_bound_abs_secondDeriv_negativeLaplacePsi` will become a two-line
+specialization.  The private theorem of the same generic shape in
+`FabiusLambertDerivativeBounds` will be deleted; its two existing public
+consumers resolve unchanged to the new upstream name.  The public theorem
+`exists_bound_abs_fabiusSecondSaddleCorrection` will likewise become a direct
+specialization.  This removes every bespoke closed-ball reconstruction whose
+goal is a nonnegative pointwise absolute-value bound, for a projected exact
+delta of 11 insertions and 32 deletions (net minus 21 lines).
+
+`LaplacePeriodicSecondOrder.deriv_negativeLaplacePsi_comp_isBigO_one` remains
+unchanged deliberately: its target is an `IsBigO` statement and directly
+discarding the helper's nonnegative-real packaging would be an abstraction
+mismatch.  It may instead use the norm-native bounded-set API in a separate
+proof-only cleanup if worthwhile.
+
+No existing public comment, header, theorem type, import, namespace,
+attribute, simp rule, facade, aggregate, or canonical document change is
+claimed.  All three modules already see `PeriodicRegularity` along their
+acyclic import chains.  All-advertised-tip path/name/source-history and every
+registry scan found no public implementation or live claim.  The historical
+Periodic, Lambert-derivative, and second-saddle leases are integrated,
+compiled, and explicitly released; current inverse-decay and frozen Rvachev
+evaluator work are disjoint.
+
+No Lean, Lake, TeX, PDF, or cache-mutating process is authorized or has run for
+this claim.  After an immutable reviewed source checkpoint, the requested
+separate serialized gates are:
+
+```text
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.PeriodicRegularity
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusLambertDerivativeBounds
+LEAN_NUM_THREADS=0 LAKE_JOBS=1 lake build +FabiusFunction.FabiusSecondSaddleCorrection
+```
+
+Stop after the first nonzero exit and run no root, facade, or document build.
