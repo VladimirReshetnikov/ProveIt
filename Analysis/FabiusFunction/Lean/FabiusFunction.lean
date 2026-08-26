@@ -2,6 +2,10 @@ import FabiusFunction.Paper05442
 import FabiusFunction.Paper06487
 import FabiusFunction.PaperFabiusAsymptotic
 import FabiusFunction.PaperKFoldThueMorse
+import FabiusFunction.ThueMorseBooleanCube
+import FabiusFunction.ThueMorseValuation
+import FabiusFunction.ThueMorseDigits
+import FabiusFunction.ThueMorseEnumerators
 import FabiusFunction.NegativeLaplace
 import FabiusFunction.ProbabilityLaplaceMoments
 import FabiusFunction.UnitLaplaceMomentBounds

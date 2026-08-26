@@ -1,4 +1,5 @@
 import FabiusFunction.ThueMorseBinomialLog
+import FabiusFunction.ThueMorseBooleanCube
 import FabiusFunction.ThueMorseValuation
 
 /-!
@@ -36,47 +37,34 @@ namespace Fabius
 
 /-- Splitting a dyadic block sum by the lowest binary digit.  The even and
 odd halves of `range (2 * k)` are the images of `range k` under doubling
-and doubling-plus-one. -/
+and doubling-plus-one.  A thin specialization of
+`sum_range_block_decomposition` in the shape the recursions below use. -/
 theorem sum_range_two_mul {M : Type*} [AddCommMonoid M]
     (k : ℕ) (f : ℕ → M) :
     ∑ n ∈ range (2 * k), f n =
       ∑ j ∈ range k, (f (2 * j) + f (2 * j + 1)) := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-      rw [show 2 * (k + 1) = 2 * k + 1 + 1 by ring, Finset.sum_range_succ,
-        Finset.sum_range_succ, ih, Finset.sum_range_succ,
-        show 2 * k + 1 = 2 * k + 1 by rfl]
-      ring_nf
-
-/-- **Binomial weight enumerator.**  Over any commutative semiring, the
-weights of a dyadic block generate `(1 + u) ^ m`. -/
-theorem sum_pow_binaryWeight {R : Type*} [CommSemiring R] (u : R) (m : ℕ) :
-    ∑ n ∈ range (2 ^ m), u ^ binaryWeight n = (1 + u) ^ m := by
-  induction m with
-  | zero => simp [binaryWeight]
-  | succ m ih =>
-      rw [pow_succ, mul_comm (2 ^ m) 2, ← ih, sum_range_two_mul]
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun j _ => ?_
-      rw [binaryWeight_two_mul, binaryWeight_two_mul_add_one, pow_succ]
-      ring
+  rw [mul_comm, sum_range_block_decomposition f k 2]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [Finset.sum_range_succ, Finset.sum_range_one, Nat.add_zero,
+    Nat.mul_comm j 2]
 
 /-- **Weight distribution.**  A dyadic block of level `m` contains exactly
-`m.choose r` integers of binary weight `r`. -/
+`m.choose r` integers of binary weight `r`.  Extracted from the general
+weight enumerator `sum_pow_binaryWeight_eq_one_add_pow` by comparing
+coefficients in `Polynomial ℕ`. -/
 theorem card_filter_binaryWeight_eq (m r : ℕ) :
     #({n ∈ range (2 ^ m) | binaryWeight n = r}) = m.choose r := by
-  have henum := sum_pow_binaryWeight (Polynomial.X : Polynomial ℕ) m
+  classical
+  have henum :=
+    sum_pow_binaryWeight_eq_one_add_pow (Polynomial.X : Polynomial ℕ) m
   have hcoeff := congrArg (fun p : Polynomial ℕ => p.coeff r) henum
-  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_X_pow] at hcoeff
-  rw [Polynomial.coeff_one_add_X_pow] at hcoeff
-  rw [Finset.sum_ite_eq_card_filter] at hcoeff
-  · exact hcoeff
-
-/-- Auxiliary: a sum of indicator ones counts the filter. -/
-theorem sum_ite_eq_card_filter {α : Type*} [DecidableEq α]
-    (s : Finset ℕ) (p : ℕ → Prop) [DecidablePred p] :
-    True := trivial
+  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_X_pow,
+    Polynomial.coeff_one_add_X_pow, Nat.cast_id] at hcoeff
+  rw [Finset.card_filter, ← hcoeff]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  by_cases h : binaryWeight n = r
+  · simp [h]
+  · simp [eq_comm, h]
 
 /-! ## Evil and odious numbers -/
 
@@ -136,6 +124,7 @@ theorem evilEnum_div_two (m : ℕ) (h : thueMorseBit m = 0) :
   · rw [show k + k = 2 * k from (two_mul k).symm] at h ⊢
     rw [thueMorseBit_two_mul] at h
     rw [evilEnum, Nat.mul_div_cancel_left k (by norm_num), h]
+    omega
   · rw [thueMorseBit_two_mul_add_one] at h
     have hb := thueMorseBit_le_one k
     have h1 : thueMorseBit k = 1 := by omega
@@ -148,10 +137,12 @@ theorem odiousEnum_div_two (m : ℕ) (h : thueMorseBit m = 1) :
   · rw [show k + k = 2 * k from (two_mul k).symm] at h ⊢
     rw [thueMorseBit_two_mul] at h
     rw [odiousEnum, Nat.mul_div_cancel_left k (by norm_num), h]
+    omega
   · rw [thueMorseBit_two_mul_add_one] at h
     have hb := thueMorseBit_le_one k
     have h0 : thueMorseBit k = 0 := by omega
     rw [odiousEnum, show (2 * k + 1) / 2 = k by omega, h0]
+    omega
 
 /-- The evil enumeration is strictly monotone. -/
 theorem evilEnum_strictMono : StrictMono evilEnum := by
@@ -218,6 +209,7 @@ theorem odiousEnum_odiousEnum (n : ℕ) :
   rw [show odiousEnum (odiousEnum n) =
       2 * odiousEnum n + 1 - thueMorseBit (odiousEnum n) from rfl,
     thueMorseBit_odiousEnum]
+  omega
 
 /-! ## XOR autocorrelation and Hamming spheres -/
 
@@ -236,47 +228,53 @@ theorem sum_thueMorseSign_mul_xor (m a : ℕ) :
   push_cast
   ring
 
+/-- Bitwise XOR does not leave a dyadic block: the bound of
+`Nat.bitwise_lt_two_pow` specialized to XOR. -/
+theorem xor_lt_two_pow {a b m : ℕ} (ha : a < 2 ^ m) (hb : b < 2 ^ m) :
+    a ^^^ b < 2 ^ m :=
+  Nat.bitwise_lt_two_pow ha hb
+
 /-- **Signed Hamming spheres.**  Within a dyadic block containing `a`, the
 signed count of the sphere of XOR-radius `r` around `a` is
-`ε(a) (-1)^r m.choose r`. -/
+`ε(a) (-1)^r m.choose r`: spheres inherit the sign of their center,
+attenuated binomially. -/
 theorem sum_thueMorseSign_hammingSphere (m a r : ℕ) (ha : a < 2 ^ m) :
     ∑ n ∈ {n ∈ range (2 ^ m) | binaryWeight (n ^^^ a) = r},
         thueMorseSign n =
       thueMorseSign a * (-1) ^ r * m.choose r := by
   classical
-  -- Reindex by `h = n XOR a`, an involution of the block.
-  have hbij : ∀ n ∈ {n ∈ range (2 ^ m) | binaryWeight (n ^^^ a) = r},
-      (n ^^^ a) ∈ {h ∈ range (2 ^ m) | binaryWeight h = r} := by
-    intro n hn
-    simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
-    exact ⟨Nat.xor_lt_two_pow hn.1 ha, hn.2⟩
-  rw [← Finset.sum_nbij' (i := fun n _ => n ^^^ a) (j := fun h _ => h ^^^ a)
-    (f := fun n => thueMorseSign n)
-    (g := fun h => thueMorseSign a * thueMorseSign h)]
-  · rw [← Finset.mul_sum]
-    have hsum : ∑ h ∈ {h ∈ range (2 ^ m) | binaryWeight h = r},
-        thueMorseSign h = (-1) ^ r * m.choose r := by
-      have hval : ∀ h ∈ {h ∈ range (2 ^ m) | binaryWeight h = r},
-          thueMorseSign h = (-1 : ℤ) ^ r := by
-        intro h hh
-        simp only [Finset.mem_filter] at hh
-        rw [thueMorseSign, hh.2]
-      rw [Finset.sum_congr rfl hval, Finset.sum_const,
-        card_filter_binaryWeight_eq, nsmul_eq_mul]
-      ring
-    rw [hsum]
-    ring
-  · exact hbij
-  · intro h hh
-    simp only [Finset.mem_filter, Finset.mem_range] at hh ⊢
-    refine ⟨Nat.xor_lt_two_pow hh.1 ha, ?_⟩
-    rw [Nat.xor_assoc, Nat.xor_self, Nat.xor_zero] at *
-    exact hh.2 ▸ rfl
-  · intro n hn
+  -- Reindex by the involution `n ↦ n XOR a` of the block.
+  have hinv : ∀ n : ℕ, n ^^^ a ^^^ a = n := by
+    intro n
     rw [Nat.xor_assoc, Nat.xor_self, Nat.xor_zero]
-  · intro h hh
-    rw [Nat.xor_assoc, Nat.xor_self, Nat.xor_zero]
-  · intro n hn
-    rw [thueMorseSign_xor, ← mul_assoc, thueMorseSign_mul_self, one_mul]
+  have key : ∑ n ∈ {n ∈ range (2 ^ m) | binaryWeight (n ^^^ a) = r},
+      thueMorseSign n =
+      ∑ h ∈ {h ∈ range (2 ^ m) | binaryWeight h = r},
+        thueMorseSign a * thueMorseSign h := by
+    refine Finset.sum_equiv
+      ⟨fun n => n ^^^ a, fun h => h ^^^ a, hinv, hinv⟩ ?_ ?_
+    · intro n
+      simp only [Equiv.coe_fn_mk, Finset.mem_filter, Finset.mem_range]
+      constructor
+      · rintro ⟨hn, hw⟩
+        exact ⟨xor_lt_two_pow hn ha, hw⟩
+      · rintro ⟨hn, hw⟩
+        refine ⟨?_, hw⟩
+        have := xor_lt_two_pow hn ha
+        rwa [hinv] at this
+    · intro n hn
+      simp only [Equiv.coe_fn_mk]
+      rw [thueMorseSign_xor]
+      have hsq := thueMorseSign_mul_self a
+      linear_combination (-(thueMorseSign n)) * hsq
+  rw [key, ← Finset.mul_sum]
+  have hval : ∀ h ∈ {h ∈ range (2 ^ m) | binaryWeight h = r},
+      thueMorseSign h = (-1 : ℤ) ^ r := by
+    intro h hh
+    simp only [Finset.mem_filter] at hh
+    rw [thueMorseSign, hh.2]
+  rw [Finset.sum_congr rfl hval, Finset.sum_const,
+    card_filter_binaryWeight_eq, nsmul_eq_mul]
+  ring
 
 end Fabius

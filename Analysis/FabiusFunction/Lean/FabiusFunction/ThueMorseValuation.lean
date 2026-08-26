@@ -1,5 +1,6 @@
+import FabiusFunction.DyadicClosedForm
 import FabiusFunction.TwoAdic
-import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Combinatorics.Enumerative.Catalan.Basic
 
 /-!
 # Valuation formulas for the Thue--Morse sign
@@ -111,7 +112,8 @@ theorem binaryWeight_add_le (a : ℕ) :
           subst ha hb
       · -- even + even
         rw [show a' + a' = 2 * a' from (two_mul a').symm,
-          show 2 * a' + (b' + b') = 2 * (a' + b') by ring,
+          show b' + b' = 2 * b' from (two_mul b').symm,
+          show 2 * a' + 2 * b' = 2 * (a' + b') by ring,
           binaryWeight_two_mul, binaryWeight_two_mul, binaryWeight_two_mul]
         exact ih a' (by omega) b'
       · -- even + odd
@@ -174,9 +176,14 @@ theorem catalan_padicValNat_two_add_one (n : ℕ) :
     padicValNat 2 (catalan n) + 1 = binaryWeight (n + 1) := by
   have hmul : (n + 1) * catalan n = (2 * n).choose n := by
     simpa [Nat.centralBinom] using succ_mul_catalan_eq_centralBinom n
+  have hcat : catalan n ≠ 0 := by
+    intro h0
+    have hzero := succ_mul_catalan_eq_centralBinom n
+    rw [h0, Nat.mul_zero] at hzero
+    exact absurd hzero.symm (Nat.centralBinom_pos n).ne'
   have hval : padicValNat 2 (n + 1) + padicValNat 2 (catalan n) =
       binaryWeight n := by
-    rw [← padicValNat.mul (p := 2) (by omega) (catalan_pos n).ne', hmul,
+    rw [← padicValNat.mul (p := 2) (by omega) hcat, hmul,
       centralChoose_padicValNat_two]
   have hsucc := binaryWeight_succ_add_padicValNat n
   omega

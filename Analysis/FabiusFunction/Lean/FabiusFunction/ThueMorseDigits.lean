@@ -59,9 +59,7 @@ theorem binaryWeight_add_padicValNat_factorial (n : ℕ) :
 `n - w(n)`; stated additively. -/
 theorem binaryWeight_add_sum_div_two_pow (n b : ℕ) (hb : Nat.log 2 n < b) :
     binaryWeight n + ∑ i ∈ Ico 1 b, n / 2 ^ i = n := by
-  have hfact := Nat.Prime.factorization_factorial (p := 2) Nat.prime_two hb
-  have hval : (n.factorial.factorization) 2 = padicValNat 2 n.factorial :=
-    Nat.factorization_def _ Nat.prime_two
+  have hfact := padicValNat_factorial (p := 2) hb
   have hleg := binaryWeight_add_padicValNat_factorial n
   omega
 
@@ -72,7 +70,7 @@ theorem sum_div_two_pow_add_binaryWeight (n m : ℕ) (hm : Nat.log 2 n < m) :
   have hm0 : 0 < m := lt_of_le_of_lt (Nat.zero_le _) hm
   have hsplit : ∑ j ∈ range m, n / 2 ^ j =
       n / 2 ^ 0 + ∑ j ∈ Ico 1 m, n / 2 ^ j := by
-    rw [Finset.range_eq_Ico, ← Finset.sum_eq_sum_Ico_succ_bot hm0]
+    rw [Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot hm0]
   have hIco := binaryWeight_add_sum_div_two_pow n m hm
   simp only [pow_zero, Nat.div_one] at hsplit
   omega
@@ -111,7 +109,7 @@ theorem binaryWeight_eq_sum_testBit (m : ℕ) :
             rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
             · rw [show k + k = 2 * k from (two_mul k).symm,
                 binaryWeight_two_mul, Nat.testBit_zero]
-              simp [Nat.mul_div_cancel_left]
+              simp
             · rw [binaryWeight_two_mul_add_one, Nat.testBit_zero]
               have : (2 * k + 1) / 2 = k := by omega
               simp [this]
