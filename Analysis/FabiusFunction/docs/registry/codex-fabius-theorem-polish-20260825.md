@@ -892,3 +892,41 @@ next bounded step: commit and push this status only to the feature branch,
   never to main and never with force; then remain read-only until the board
   grants an exact source path or physical-host build token
 ```
+
+### Final pre-push refresh at `99b67cf5b`
+
+The mandatory fetch immediately before publication advanced `origin/main`
+from `b0b896e39` to `99b67cf5b5b8084d097205d1f701d13285ecd3b7` by one
+coordinator-registry-only commit granting the frontier successor's codexbox
+PDF stage.  The exact theorem-polish instruction is unchanged: former source
+leases are released, no new claim exists here, and this branch has no EVO
+validation token.  The board records EVO as idle and coordinator-reserved.
+
+Registry-only preservation commit `35e9ccef6d2d4a160694d42c836781dab7a82523`
+was pushed by fast-forward to the feature branch; it was not amended and no
+force was used.  This addendum updates only the fetched-main snapshot.  Local
+HEAD `35e9ccef6` was clean before the addendum, no source or document path was
+edited, fetched main remains unmerged, and no validation process was launched.
+
+```text
+SYNC Fabius
+branch / worktree / machine: codex/fabius-theorem-polish-20260825 /
+  C:/Users/vresh/.codex/worktrees/10ef/ProveIt / EVO (Windows)
+fetched main SHA: 99b67cf5b5b8084d097205d1f701d13285ecd3b7
+HEAD and dirty paths: 35e9ccef6d2d4a160694d42c836781dab7a82523;
+  clean after its feature-only fast-forward push, then only this registry is
+  dirty for the fetched-main addendum
+writing (exact paths): this branch registry only
+expected declarations or document claims: none
+completed commits: 35e9ccef6 (published coordination-freeze checkpoint)
+validated (exact command, SHA/state, exit code): no new validation; no Lean,
+  Lake, LaTeX, PDF, Python audit, or cache-mutating command was launched
+not yet validated: current local feature tree; the read-only, unclaimed
+  Laplace-reflection proof design has not been written or elaborated
+requested integration or lease: none; no source/document path or build token
+conflicts / dependencies: main's only b0b896e39..99b67cf5b delta is the
+  coordinator registry; the assigned codexbox PDF token does not grant an EVO
+  validator or any theorem-polish write path
+next bounded step: push this addendum to the feature branch without force,
+  then remain read-only pending an explicit board assignment
+```
